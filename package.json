@@ -1,0 +1,7 @@
+{
+  "name": "hero-travel-monorepo",
+  "version": "0.0.1-beta",
+  "devDependencies": {
+    "lerna": "2.0.0-beta.38"
+  }
+}

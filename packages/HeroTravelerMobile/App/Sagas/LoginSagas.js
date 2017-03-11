@@ -11,3 +11,7 @@ export function * login ({ username, password }) {
     yield put(LoginActions.loginSuccess(username))
   }
 }
+
+export function * loginFacebook () {
+  yield put(LoginActions.loginFacebookSuccess())
+}

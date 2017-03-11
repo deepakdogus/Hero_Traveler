@@ -7,6 +7,9 @@ const { Types, Creators } = createActions({
   loginRequest: ['username', 'password'],
   loginSuccess: ['username'],
   loginFailure: ['error'],
+  loginFacebook: null,
+  loginFacebookSuccess: ['username'],
+  loginFacebookError: ['error'],
   logout: null
 })
 
@@ -30,6 +33,9 @@ export const request = (state) => state.merge({ fetching: true })
 export const success = (state, { username }) =>
   state.merge({ fetching: false, error: null, username })
 
+export const successFacebook = (state, { username }) =>
+  state.merge({fetching: false, error: null, username: 'rwoody'})
+
 // we've had a problem logging in
 export const failure = (state, { error }) =>
   state.merge({ fetching: false, error })
@@ -43,6 +49,9 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOGIN_REQUEST]: request,
   [Types.LOGIN_SUCCESS]: success,
   [Types.LOGIN_FAILURE]: failure,
+  [Types.LOGIN_FACEBOOK]: request,
+  [Types.LOGIN_FACEBOOK_SUCCESS]: successFacebook,
+  [Types.LOGIN_FACEBOOK_ERROR]: failure,
   [Types.LOGOUT]: logout
 })
 

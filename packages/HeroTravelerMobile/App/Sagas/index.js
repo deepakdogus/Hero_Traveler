@@ -13,7 +13,7 @@ import { OpenScreenTypes } from '../Redux/OpenScreenRedux'
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas'
-import { login } from './LoginSagas'
+import { login, loginFacebook } from './LoginSagas'
 import { getUserAvatar } from './GithubSagas'
 import { openScreen } from './OpenScreenSagas'
 
@@ -30,6 +30,7 @@ export default function * root () {
     // some sagas only receive an action
     takeLatest(StartupTypes.STARTUP, startup),
     takeLatest(LoginTypes.LOGIN_REQUEST, login),
+    takeLatest(LoginTypes.LOGIN_FACEBOOK, loginFacebook),
     takeLatest(OpenScreenTypes.OPEN_SCREEN, openScreen),
 
     // some sagas receive extra parameters in addition to an action

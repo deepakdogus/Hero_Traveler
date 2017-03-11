@@ -7,6 +7,9 @@ export default {
   navBar: {
     backgroundColor: Colors.background
   },
+  tabBar: {
+    backgroundColor: Colors.background
+  },
   title: {
     color: Colors.snow
   },

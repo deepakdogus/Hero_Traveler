@@ -10,8 +10,10 @@ import styles from './Styles/LaunchScreenStyles'
 export default class LaunchScreen extends React.Component {
   render () {
     return (
-      <View style={styles.mainContainer}>
-        <Image source={Images.launchBackground} style={styles.backgroundImage} resizeMode='stretch' />
+      <Image
+        source={Images.launchBackground}
+        style={styles.backgroundImage}
+      >
         <View style={[styles.section, styles.centered]}>
           <Image source={Images.whiteLogo} style={styles.logo} />
           <Text
@@ -35,7 +37,7 @@ export default class LaunchScreen extends React.Component {
             />
           </View>
         </View>
-      </View>
+      </Image>
     )
   }
 }

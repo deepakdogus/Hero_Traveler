@@ -12,11 +12,15 @@ const ApplicationStyles = {
       backgroundColor: Colors.transparent
     },
     backgroundImage: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      bottom: 0,
-      right: 0
+      // position: 'absolute',
+      // top: 0,
+      // left: 0,
+      // bottom: 0,
+      // right: 0
+      flex: 1,
+      width: undefined,
+      height: undefined,
+      backgroundColor: Colors.transparent
     },
     container: {
       flex: 1,

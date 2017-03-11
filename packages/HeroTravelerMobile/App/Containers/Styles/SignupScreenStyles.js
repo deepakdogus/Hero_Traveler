@@ -10,6 +10,24 @@ export default StyleSheet.create({
   },
   title: {
     ...Fonts.style.title,
-    color: Colors.snow
+    marginTop: Metrics.marginVertical,
+    color: Colors.snow,
+    textAlign: 'center'
+  },
+  instructions: {
+    ...Fonts.style.instructions,
+    marginTop: Metrics.marginVertical,
+    textAlign: 'center'
+  },
+  social: {
+    marginTop: Metrics.doubleBaseMargin
+  },
+  twitter: {
+    marginTop: 0,
+    backgroundColor: Colors.twitterBlue
+  },
+  facebook: {
+    margin: 0,
+    backgroundColor: Colors.facebookBlue
   }
 })

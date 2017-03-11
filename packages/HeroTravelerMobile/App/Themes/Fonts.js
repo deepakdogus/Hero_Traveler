@@ -45,7 +45,12 @@ const style = {
   },
   title: {
     fontFamily: type.base,
-    fontSize: size.h2
+    fontSize: 25
+  },
+  instructions: {
+    color: '#9e9e9e',
+    fontSize: 16,
+    fontWeight: '300'
   },
   normal: {
     fontFamily: type.base,

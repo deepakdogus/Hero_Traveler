@@ -1,13 +1,21 @@
 import React from 'react'
 import { ScrollView, Text, Image, View } from 'react-native'
-import { Actions } from 'react-native-router-flux'
-import SquaredButton from '../Components/SquaredButton'
-import { Images } from '../Themes'
+import { connect } from 'react-redux'
+import { Actions as NavigationActions, ActionConst as NavActionConst } from 'react-native-router-flux'
 
-// Styles
+import {hasAuthData} from '../Redux/SessionRedux'
+import RoundedButton from '../Components/RoundedButton'
+import { Images } from '../Themes'
 import styles from './Styles/LaunchScreenStyles'
 
-export default class LaunchScreen extends React.Component {
+class LaunchScreen extends React.Component {
+
+  componentWillReceiveProps(newProps) {
+    if (!this.props.isLoggedIn && newProps.isLoggedIn) {
+      NavigationActions.tabbar({type: NavActionConst.REPLACE})
+    }
+  }
+
   render () {
     return (
       <Image
@@ -21,23 +29,41 @@ export default class LaunchScreen extends React.Component {
             textAlign='center'
           >{'Share your adventures with the world.'}</Text>
         </View>
-        <View style={styles.launchButtonGroup}>
-          <View style={[styles.launchButtonWrapper, styles.launchButtonBorderRight]}>
-            <SquaredButton
-              style={styles.launchButton}
-              onPress={Actions.signup}
-              text='Sign Up'
-            />
-          </View>
-          <View style={styles.launchButtonWrapper}>
-            <SquaredButton
-              style={styles.launchButton}
-              onPress={() => alert('Login')}
-              text='Login'
-            />
-          </View>
+        <View style={styles.signupButtons}>
+          <RoundedButton
+            style={styles.facebook}
+            text='Sign up with Facebook'
+          />
+          <RoundedButton
+            style={styles.twitter}
+            text='Sign up with Twitter'
+          />
+          <RoundedButton
+            style={styles.email}
+            onPress={NavigationActions.signup}
+            text='Sign up with Email'
+          />
+          <Text style={styles.instructions}>Already have an account?</Text>
+          <RoundedButton
+            style={styles.login}
+            onPress={NavigationActions.login}
+            text='Login'
+          />
         </View>
       </Image>
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    isLoggedIn: hasAuthData(state.session)
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LaunchScreen)

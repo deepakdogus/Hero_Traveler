@@ -55,6 +55,11 @@ const style = {
     fontSize: 16,
     fontWeight: '300'
   },
+  inputLabels: {
+    fontWeight: '300',
+    letterSpacing: .7,
+    fontSize: 16
+  },
   normal: {
     fontFamily: type.base,
     fontSize: size.regular

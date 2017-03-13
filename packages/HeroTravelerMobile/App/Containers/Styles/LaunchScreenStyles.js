@@ -17,29 +17,22 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  launchButtonGroup: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    borderTopWidth: 1,
-    borderTopColor: Colors.faintWhite,
-    borderStyle: 'solid'
+  instructions: {
+    ...Fonts.style.instructions,
+    textAlign: 'center'
   },
-  launchButtonBorderRight: {
-    borderRightWidth: 1,
-    borderRightColor: Colors.faintWhite,
-    borderStyle: 'solid'
+  twitter: {
+    marginTop: 0,
+    backgroundColor: Colors.twitterBlue
   },
-  launchButtonWrapper: {
-    flexGrow: 1,
-    alignItems: 'stretch'
+  email: {
+    backgroundColor: Colors.red
   },
-  launchButton: {
-    flexGrow: 1,
-    marginVertical: 0,
-    marginHorizontal: 0
+  facebook: {
+    margin: 0,
+    backgroundColor: Colors.facebookBlue
+  },
+  login: {
+    backgroundColor: 'green'
   }
 })

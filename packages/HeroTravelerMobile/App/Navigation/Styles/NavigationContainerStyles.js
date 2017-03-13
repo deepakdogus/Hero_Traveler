@@ -12,16 +12,21 @@ export default {
   navBarTitle: {
     color: Colors.text
   },
+  navBarClear: {
+    backgroundColor: Colors.clear,
+    borderBottomWidth: 0
+  },
   tabBar: {
     backgroundColor: Colors.cloud
   },
   title: {
     color: Colors.snow
   },
-  leftButton: {
-    tintColor: Colors.snow
+  navText: {
+    color: Colors.snow
   },
-  rightButton: {
+  browseGuest: {
+    fontSize: 12,
     color: Colors.snow
   }
 }

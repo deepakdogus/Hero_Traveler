@@ -2,8 +2,8 @@ import immutablePersistenceTransform from '../Services/ImmutablePersistenceTrans
 import { AsyncStorage } from 'react-native'
 
 const REDUX_PERSIST = {
-  active: true,
-  reducerVersion: '4',
+  // active: true,
+  reducerVersion: '7',
   storeConfig: {
     storage: AsyncStorage,
     blacklist: ['login', 'search', 'feed'], // reducer keys that you do NOT want stored to persistence here

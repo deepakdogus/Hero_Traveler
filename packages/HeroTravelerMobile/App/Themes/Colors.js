@@ -8,6 +8,8 @@ const colors = {
   error: 'rgba(200, 0, 0, 0.8)',
   ricePaper: 'rgba(255,255,255, 0.75)',
   faintWhite: 'rgba(255,255,255,.2)',
+  whiteAlphaPt3: 'rgba(255,255,255,.3)',
+  red: '#ed1e2e',
   frost: '#D8D8D8',
   cloud: 'rgba(200,200,200, 0.35)',
   windowTint: 'rgba(0, 0, 0, 0.4)',

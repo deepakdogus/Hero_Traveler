@@ -1,35 +1,46 @@
 import { StyleSheet } from 'react-native'
-import { Colors, Metrics } from '../../Themes'
+import { ApplicationStyles, Colors, Metrics, Fonts } from '../../Themes'
 
 export default StyleSheet.create({
+  ...ApplicationStyles.screen,
   container: {
-    paddingTop: 70,
-    backgroundColor: Colors.background
-  },
-  form: {
-    backgroundColor: Colors.snow,
-    margin: Metrics.baseMargin,
-    borderRadius: 4
-  },
-  row: {
-    paddingVertical: Metrics.doubleBaseMargin,
-    paddingHorizontal: Metrics.doubleBaseMargin
-  },
-  rowLabel: {
-    color: Colors.charcoal
-  },
-  textInput: {
-    height: 40,
-    color: Colors.coal
+    flex: 1,
+    paddingTop: Metrics.navBarHeight,
+    backgroundColor: Colors.windowTint,
   },
   textInputReadonly: {
+    ...Fonts.style.inputLabels,
     height: 40,
     color: Colors.steel
   },
-  loginRow: {
-    paddingBottom: Metrics.doubleBaseMargin,
-    paddingHorizontal: Metrics.doubleBaseMargin,
-    flexDirection: 'row'
+  title: {
+    ...Fonts.style.title,
+    color: Colors.snow,
+    textAlign: 'center'
+  },
+  instructions: {
+    ...Fonts.style.instructions,
+    marginTop: Metrics.marginVertical,
+    textAlign: 'center'
+  },
+  error: {
+    color: Colors.red
+  },
+  inputContainer: {
+    flex: 1,
+    height: 40,
+    marginLeft: Metrics.section,
+    marginRight: Metrics.section,
+    marginTop: Metrics.marginVertical,
+    marginBottom: Metrics.marginVertical,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.whiteAlphaPt3,
+    borderStyle: 'solid'
+  },
+  input: {
+    ...Fonts.style.inputLabels,
+    height: 40,
+    color: Colors.snow
   },
   loginButtonWrapper: {
     flex: 1
@@ -41,12 +52,24 @@ export default StyleSheet.create({
     backgroundColor: Colors.panther,
     padding: 6
   },
-  loginText: {
-    textAlign: 'center',
-    color: Colors.silver
+  twitter: {
+    marginTop: 0,
+    backgroundColor: Colors.twitterBlue
   },
-  topLogo: {
-    alignSelf: 'center',
-    resizeMode: 'contain'
+  facebook: {
+    margin: 0,
+    backgroundColor: Colors.facebookBlue
+  },
+  forgotWrapper: {
+    marginTop: Metrics.marginVertical
+  },
+  forgot: {
+    textAlign: 'center',
+    color: Colors.snow,
+  },
+  tos: {
+    marginTop: Metrics.marginVertical,
+    marginLeft: Metrics.section,
+    marginRight: Metrics.section
   }
 })

@@ -1,12 +1,13 @@
 import React from 'react'
 import { View, Text, Image, TouchableHighlight } from 'react-native'
 import styles from './Styles/StoryPreviewStyle'
+import { Metrics } from '../Themes'
 
 /*
 TODO:
-- make Views the height of the container
 - add gradient overlay to bottom of image opacity #000 0.3
-- refactor styles into module
+- Fix the navbar height / photo height issue
+- populate story with user data
  */
 
 export default class StoryPreview extends React.Component {
@@ -15,47 +16,43 @@ export default class StoryPreview extends React.Component {
   }
 
   render () {
-    let {
-      story: {
-          coverImage,
-          title,
-          description,
-          author: {
-            fullName
-          },
-          likes,
-          createdAt
-      }
-    } = this.props;
+    let { story } = this.props,
+      { coverImage,
+        title,
+        description,
+        author: {
+          username
+        },
+        likes,
+        createdAt
+      } = story;
 
     return (
-
-      <TouchableHighlight onPress={()=>this._onPress(title)}>
-        <View style={{flex: 1, height: 300, flexDirection: "row"}}>
+      <TouchableHighlight onPress={()=>this._onPress(title)} style={styles.storyPreviewContainer}>
+        <View style={styles.contentContainer}>
           <Image
             resizeMode="cover"
             source={{uri: coverImage}}
-            style={[styles.backgroundImage, {flexDirection: "column", justifyContent: "flex-end"}]}
+            style={[styles.backgroundImage, styles.previewImage]}
           >
-            <View style={{padding: 16}}>
-              <Text style={{fontSize: 28, fontWeight: "200", color: "white", letterSpacing: 1.5}}>{title.toUpperCase()}</Text>
-              <Text style={{fontSize: 16, color: "#e0e0e0", letterSpacing:0.7}}>{description}</Text>
-              <View style={{height: 1, width: 300, backgroundColor: "#fff", opacity: 0.5}}></View>
-              <View style={{width: 300, marginTop: 10, flexDirection: "row", justifyContent: "space-between"}}>
-                <View style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                  <Image style={{height: 36, width: 36, borderRadius: 18, marginRight: 5}} source={{uri: coverImage}}></Image>
-                  <Text style={{color: "#e0e0e0", fontWeight: "300", fontSize: 15}}>{fullName}</Text>
+            <View style={styles.previewInfo}>
+              <Text style={styles.title}>{title.toUpperCase()}</Text>
+              <Text style={styles.subtitle}>{description}</Text>
+              <View style={styles.divider}></View>
+              <View style={styles.detailContainer}>
+                <View style={styles.row}>
+                  <Image style={styles.avatar} source={{uri: coverImage}}></Image>
+                  <Text style={styles.username}>{username}</Text>
                 </View>
-                <View style={{flexDirection: "row", alignItems: "center"}}>
-                  <Text style={{color: "#e0e0e0", fontStyle: "italic", marginRight: 5}}>2 days ago</Text>
-                  <Text style={{color: "#e0e0e0", fontStyle: "italic"}}>{likes} likes</Text>
+                <View style={styles.row}>
+                  <Text style={styles.bottomRight}>2 days ago</Text>
+                  <Text style={styles.bottomRight}>{likes} likes</Text>
                 </View>
               </View>
             </View>
           </Image>
         </View>
       </TouchableHighlight>
-
     )
   }
 }

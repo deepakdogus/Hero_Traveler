@@ -13,7 +13,7 @@ export default class StoryList extends React.Component {
     let { stories } = this.props;
 
     return (
-      <View style={styles.container}>
+      <View style={[styles.container]}>
         { stories.map( (story, idx) => <StoryPreview story={story} key={idx} />)}
       </View>
     )

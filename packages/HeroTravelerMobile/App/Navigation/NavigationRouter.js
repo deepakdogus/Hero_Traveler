@@ -38,8 +38,6 @@ class NavigationRouter extends Component {
           <Scene
             key='root'
             titleStyle={Styles.title}
-            navBar={NavBar}
-            navigationBarStyle={Styles.navBar}
             leftButtonIconStyle={Styles.leftButton}
             rightButtonTextStyle={Styles.rightButton}
           >
@@ -52,7 +50,6 @@ class NavigationRouter extends Component {
             />
             <Scene key='tabbar'
               tabs
-              navigationBarStyle={Styles.navBar}
               tabBarStyle={Styles.tabBar}
             >
               <Scene
@@ -61,6 +58,8 @@ class NavigationRouter extends Component {
                 icon={TabIcon}
                 component={MyFeedScreen}
                 title='Feed'
+                navigationBarStyle={Styles.navBar}
+                titleStyle={Styles.navBarTitle}
               />
               <Scene
                 key='explore'

@@ -1,67 +1,69 @@
 import React, { PropTypes } from 'react'
 import { ScrollView, Text } from 'react-native'
+import { connect } from 'react-redux'
 
 // Styles
 import styles from './Styles/MyFeedScreenStyles'
 
 import StoryList from '../Components/StoryList.js'
+import StoryActions from '../Redux/StoryRedux.js'
 
-export default class MyFeedScreen extends React.Component {
+class MyFeedScreen extends React.Component {
   static propTypes = {
-    stories: PropTypes.array
+    posts: PropTypes.array,
+    fetching: PropTypes.bool,
+    error: PropTypes.bool
   };
 
-  static defaultProps = {
-  };
-
-  componentDidMount(){
-  //  dispatch action to get stories
+  componentDidMount() {
+    this.props.attemptGetUserFeed()
   }
 
   render () {
+    let { posts: stories, fetching, error } = this.props;
+    let content;
 
-    let loaded = true;
+    console.log("stories", stories);
 
+    if (error){
+      content = <Text>Something went wrong ...</Text>
+    }
 
-    if (loaded){
+    if (fetching){
+      content = <Text>Loading</Text>
+    }
 
-      let { stories } = this.props;
-
-      if (stories.length){
-        return (
-          <ScrollView style={styles.containerWithNavbar}>
-            <StoryList stories={stories}/>
-          </ScrollView>
-        )
+    if (!fetching && !error){
+      if (!stories || !stories.length) {
+        content = <Text style={styles.title}>There are no stories here</Text>
       } else {
-        return (
-          <ScrollView style={styles.containerWithNavbar}>
-            <Text style={styles.title}>There are no stories here</Text>
-          </ScrollView>
-        )
+        content = <StoryList stories={stories}/>
       }
-    } else {
-      alert("stories loading")
+    }
+
+    return (
+      <ScrollView style={styles.containerWithNavbar}>
+        { content }
+      </ScrollView>
+    )
+  }
+}
+
+
+const mapStateToProps = (state) => {
+  let { fetching, posts, error } = state.feed;
+  return {
+    fetching, posts, error
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    attemptGetUserFeed: () => {
+      const userId = "1234"
+      return dispatch(StoryActions.feedRequest(userId))
     }
   }
 }
 
-//
-// const mapStateToProps = (state) => {
-//   return {
-//     stories: isLoggedIn(state.login)
-//   }
-// }
-//
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     goToMyFeed: () => {
-//       return NavigationActions.tabbar()
-//     },
-//     attemptFacebookLogin: () => {
-//       return dispatch(LoginActions.loginFacebook())
-//     }
-//   }
-// }
-//
-// export default connect(mapStateToProps, mapDispatchToProps)(SignupScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(MyFeedScreen)

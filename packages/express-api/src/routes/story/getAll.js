@@ -5,3 +5,4 @@ export default function getAllStories(req, res) {
     res.json(data)
   })
 }
+

@@ -1,25 +1,24 @@
 {
-  "name": "express-api",
-  "version": "1.0.0",
-  "description": "",
+  "name": "@rwoody/ht-express-api",
+  "private": true,
+  "version": "0.0.1-beta",
+  "description": "HERO Traveler application API",
   "main": "index.js",
   "scripts": {
+    "build": "babel src -d dist",
+    "clean": "rimraf dist",
     "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-es2015": "^6.22.0",
-    "babel-register": "^6.23.0",
     "bcrypt": "^1.0.2",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
     "compose-middleware": "^2.2.0",
-    "debug": "^2.6.2",
     "express": "^4.15.2",
-    "ht-core": "*",
+    "@rwoody/ht-core": "~0.0.1-beta",
     "moment": "^2.17.1",
     "morgan": "^1.8.1",
     "passport": "^0.3.2",
@@ -27,6 +26,9 @@
     "passport-http-bearer": "^1.0.1"
   },
   "devDependencies": {
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-register": "^6.23.0",
     "nodemon": "^1.11.0"
   }
 }

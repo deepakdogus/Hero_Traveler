@@ -1,13 +1,19 @@
 {
-  "name": "ht-util",
-  "version": "1.0.0",
-  "description": "",
+  "name": "@rwoody/ht-util",
+  "version": "0.0.1-beta",
+  "description": "Common server/client javascript functions",
   "main": "index.js",
   "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
+  "author": "Rehash Studio",
+  "license": "© Rehash Studio",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "babel src -d dist"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.0",
     "babel-preset-es2015": "^6.22.0",
-    "babel-register": "^6.23.0"
+    "babel-register": "^6.23.0",
+    "rimraf": "^2.6.1"
   }
 }

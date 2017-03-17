@@ -1,4 +1,4 @@
-import {User} from 'ht-core'
+import {User} from '@rwoody/ht-core'
 
 export default function revokeAccessToken(req, res, next) {
   const userId = req.user._id

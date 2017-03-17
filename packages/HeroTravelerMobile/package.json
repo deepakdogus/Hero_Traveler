@@ -96,7 +96,7 @@
   },
   "rnpm": {
     "assets": [
-      "./App/Fonts",
+      "./App/Fonts"
     ]
   }
 }

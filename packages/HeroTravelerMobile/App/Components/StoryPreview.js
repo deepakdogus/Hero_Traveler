@@ -5,8 +5,10 @@ import { Metrics, Images } from '../Themes'
 import LinearGradient from 'react-native-linear-gradient';
 
 /*
+
 TODO:
 - Fix the Navar height issue
+
 */
 
 export default class StoryPreview extends React.Component {

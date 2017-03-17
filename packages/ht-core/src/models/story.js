@@ -28,7 +28,7 @@ const StorySchema = new mongoose.Schema({
 });
 
 
-StorySchema.methods.getUserFeed = userId => {
+StorySchema.statics.getUserFeed = function getUserFeed(userId){
     return this.find({author: {$ne: userId}})
 }
 

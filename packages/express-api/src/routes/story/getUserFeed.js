@@ -10,8 +10,8 @@ corresponds to 'Posts.getTopFiveGlobal' & 'Posts.userFeed' in the meteor reposit
 
 export default function getUserFeed(req, res) {
     let { id: userId } = req.query;
-    Models.Story.find({}).populate('author').then(data => {
+    Models.Story.getUserFeed(userId).then( data => {
         res.json(data)
-    })
+    });
 }
 

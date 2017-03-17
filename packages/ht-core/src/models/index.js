@@ -1,5 +1,7 @@
 import Story from './story'
+import User from './user'
 
 export default {
-  Story
+  Story,
+  User
 }

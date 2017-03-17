@@ -32,6 +32,7 @@
     "react-native-config": "^0.2.1",
     "react-native-device-info": "^0.10.0",
     "react-native-drawer": "^2.3.0",
+    "react-native-linear-gradient": "^2.0.0",
     "react-native-router-flux": "^3.37.0",
     "react-native-vector-icons": "^4.0.0",
     "react-redux": "^5.0.2",
@@ -92,5 +93,10 @@
     "ghooks": {
       "pre-commit": "if [ -d 'ignite-base' ]; then cd ignite-base; fi; npm run lint"
     }
+  },
+  "rnpm": {
+    "assets": [
+      "./App/Fonts"
+    ]
   }
 }

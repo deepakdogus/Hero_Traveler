@@ -1,6 +1,7 @@
 import moment from 'moment'
 import Models from '../models'
 import formatTokenResponse from '../utils/formatTokenResponse'
+import getUser from './getUser'
 
 export default function getOrCreateTokens(userId) {
   return Models.AuthToken.findOrAdd({
@@ -13,7 +14,10 @@ export default function getOrCreateTokens(userId) {
         type: 'refresh'
       })
       .then(refreshToken => {
-        return formatTokenResponse(accessToken, refreshToken, userId)
+        return getUser({_id: userId})
+          .then(user => {
+            return formatTokenResponse(accessToken, refreshToken, user)
+          })
       })
     })
 }

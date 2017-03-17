@@ -5,7 +5,7 @@ const expiresIn = expiresAt =>
     moment(expiresAt).diff(moment())
   ).asSeconds());
 
-export default function formatTokenResponse(accessToken, refreshToken, userId) {
+export default function formatTokenResponse(accessToken, refreshToken, user) {
   return {
     tokens: [{
       type: 'access',
@@ -15,8 +15,6 @@ export default function formatTokenResponse(accessToken, refreshToken, userId) {
       type: 'refresh',
       value: refreshToken.value,
     }],
-    user: {
-      _id: userId
-    },
+    user
   }
 }

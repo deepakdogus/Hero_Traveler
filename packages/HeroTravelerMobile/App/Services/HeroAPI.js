@@ -76,6 +76,10 @@ const create = (baseURL = 'http://localhost:3000/') => {
     })
   }
 
+  const getUserFeed = (userId) => {
+    return api.get(`story/${userId}/feed`)
+  }
+
   // ------
   // STEP 3
   // ------
@@ -93,7 +97,8 @@ const create = (baseURL = 'http://localhost:3000/') => {
     unsetAuth,
     login,
     logout,
-    signupEmail
+    signupEmail,
+    getUserFeed
   }
 }
 

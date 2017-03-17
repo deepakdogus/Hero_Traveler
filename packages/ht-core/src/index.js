@@ -7,8 +7,7 @@ mongoose.Promise = Promise
 // @TODO extract to init function
 mongoose.connect('mongodb://localhost/ht-mono');
 
-const seed = true;
-
+const seed = false;
 if (seed){
     try {
         seedDB()

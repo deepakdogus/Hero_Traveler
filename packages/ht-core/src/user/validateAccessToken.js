@@ -3,7 +3,6 @@ import Models from '../models'
 import getUser from './getUser'
 
 export default function validateAccessToken(accessToken) {
-  console.log('accessToken', accessToken)
   return Models.AuthToken.findOne({
     value: accessToken,
     type: 'access'

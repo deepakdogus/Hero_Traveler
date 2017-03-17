@@ -45,8 +45,6 @@ const create = (baseURL = 'http://localhost:3000') => {
   const getRate = () => api.get('rate_limit')
   const getUser = (username) => api.get('search/users', {q: username})
 
-  const getUserFeed = (userId) => api.get(`story/${userId}/feed`)
-
   // ------
   // STEP 3
   // ------
@@ -63,8 +61,7 @@ const create = (baseURL = 'http://localhost:3000') => {
     // a list of the API functions from step 2
     getRoot,
     getRate,
-    getUser,
-    getUserFeed
+    getUser
   }
 }
 

@@ -1,6 +1,6 @@
 import crypto from 'crypto'
 import mongoose, {Schema} from 'mongoose'
-import mongooseHidden from 'mongoose-hidden'
+import mongooseHidden from './mongooseHidden'
 
 import encryptPassword from '../utils/encryptPassword'
 
@@ -13,7 +13,7 @@ const UserSchema = new Schema({
     type: String,
     unique: true
   },
-  emailIsVerified: {
+  isEmailVerified: {
     type: Boolean,
     default: false
   },
@@ -21,14 +21,9 @@ const UserSchema = new Schema({
     type: String,
     hideJSON: true
   },
-  salt: {
-    type: String
-  },
   profile: {
-    fullName: String
-  },
-  profileAvatar: {
-      type: String
+    fullName: String,
+    avatar: String
   },
   // Timestamps
   createdAt: {
@@ -41,7 +36,7 @@ const UserSchema = new Schema({
   }
 })
 
-UserSchema.plugin(mongooseHidden())
+UserSchema.plugin(mongooseHidden)
 
 const UserModel = mongoose.model('User', UserSchema)
 

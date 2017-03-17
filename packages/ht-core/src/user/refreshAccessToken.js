@@ -1,5 +1,6 @@
 import Models from '../models'
 import formatTokenResponse from '../utils/formatTokenResponse'
+import getUser from './getUser'
 
 export default function refreshAccessToken(userId, refreshTokenValue) {
   return Models.AuthToken.findOne({
@@ -18,7 +19,9 @@ export default function refreshAccessToken(userId, refreshTokenValue) {
         type: 'access'
       })
       .then(accessToken => {
-        return formatTokenResponse(accessToken, refreshToken, userId)
+        return getUser(userId).then(user => {
+          return formatTokenResponse(accessToken, refreshToken, user)
+        })
       })
     })
   })

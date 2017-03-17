@@ -69,7 +69,7 @@ class SignupScreen extends React.Component {
       >
         <ScrollView style={styles.container}>
           <View style={styles.section}>
-            <Text style={styles.title}>Signup</Text>
+            <Text style={styles.title}>SIGN UP</Text>
             <Text style={styles.instructions}>
               Let's start by setting up your account
             </Text>
@@ -108,7 +108,8 @@ class SignupScreen extends React.Component {
               secureTextEntry={true}
             />
             <RoundedButton
-              text="SIGN UP"
+              text="Sign Up"
+              capitalize={true}
               onPress={this._signup}
             />
             {this.props.signupError && <Text style={[styles.section, styles.error]}>{this.props.signupError}</Text>}

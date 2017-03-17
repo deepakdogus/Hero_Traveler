@@ -11,9 +11,9 @@ export default StyleSheet.create({
     justifyContent: 'center'
   },
   buttonText: {
+    ...Fonts.style.buttonText,
     color: Colors.snow,
     textAlign: 'center',
-    fontWeight: 'bold',
     fontSize: Fonts.size.medium,
     marginVertical: Metrics.baseMargin
   }

@@ -1,4 +1,4 @@
-import {Colors, Metrics} from '../../Themes/'
+import {Colors, Metrics, Fonts} from '../../Themes/'
 
 export default {
   container: {
@@ -17,13 +17,16 @@ export default {
     borderBottomWidth: 0
   },
   tabBar: {
-    backgroundColor: Colors.cloud
+    backgroundColor: Colors.background
   },
-  title: {
-    color: Colors.snow
+  navText: {
+    fontFamily: Fonts.type.montserrat,
+    fontSize: 16,
+    color: '#bdbdbd'
   },
-  navTextWhite: {
-    color: Colors.snow
+  navTitle: {
+    fontFamily: Fonts.type.montserrat,
+    fontSize: 20
   },
   browseGuest: {
     fontSize: 12,

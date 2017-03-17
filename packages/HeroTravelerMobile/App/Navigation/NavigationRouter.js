@@ -3,7 +3,7 @@ import { Text } from 'react-native'
 import { connect } from 'react-redux'
 import { Scene, Router, Modal, NavBar, Switch, Actions as NavActions } from 'react-native-router-flux'
 import Styles from './Styles/NavigationContainerStyles'
-
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 // screens identified by the router
 import LaunchScreen from '../Containers/LaunchScreen'
@@ -23,26 +23,52 @@ const getSceneStyle = (/* NavigationSceneRendererProps */ props, computedProps) 
 }
 
 class TabIcon extends React.Component {
+
+  getIconName(navKey) {
+    switch (navKey) {
+      case 'myFeed':
+        return 'home'
+      case 'activity':
+        return 'bolt'
+      case 'explore':
+        return 'search'
+      case 'createStory':
+       return 'plus'
+      case 'profile':
+        return 'user'
+    }
+  }
+
   render(){
     return (
-      <Text style={{color: this.props.selected ? 'red' : 'white'}}>{this.props.title}</Text>
+      <Icon
+        name={this.getIconName(this.props.name)}
+        size={20}
+        color={this.props.selected ? 'white' : '#666666'}
+      />
     );
   }
 }
 
 const darkNavBarProps = {
   navigationBarStyle: Styles.navBar,
-  titleStyle: Styles.navTextWhite,
-  backButtonTextStyle: Styles.navTextWhite,
-  leftButtonTextStyle: Styles.navTextWhite,
-  rightButtonTextStyle: Styles.navTextWhite
+  titleStyle: [Styles.navText, Styles.navText],
+  backButtonTextStyle: Styles.navText,
+  leftButtonTextStyle: Styles.navText,
+  rightButtonTextStyle: Styles.navText
 }
 
 const clearNavBarProps = {
   navigationBarStyle: Styles.navBarClear,
-  backButtonTextStyle: Styles.navTextWhite,
-  leftButtonTextStyle: Styles.navTextWhite,
-  rightButtonTextStyle: Styles.navTextWhite
+  titleStyle: [Styles.navText, Styles.navTitle],
+  backButtonTextStyle: Styles.navText,
+  leftButtonTextStyle: Styles.navText,
+  rightButtonTextStyle: Styles.navText
+}
+
+const tabBarProps = {
+  tabs: true,
+  tabBarStyle: Styles.tabBar
 }
 
 /* **************************
@@ -56,7 +82,6 @@ class NavigationRouter extends Component {
         <Scene key='drawer' component={Modal}>
           <Scene
             key='root'
-            titleStyle={Styles.title}
             {...clearNavBarProps}
           >
             <Scene
@@ -95,8 +120,7 @@ class NavigationRouter extends Component {
               component={LoginScreen}
             />
             <Scene key='tabbar'
-              tabs
-              tabBarStyle={Styles.tabBar}
+              {...tabBarProps}
             >
               <Scene
                 key='myFeed'

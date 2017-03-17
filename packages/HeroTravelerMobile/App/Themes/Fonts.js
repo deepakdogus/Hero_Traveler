@@ -1,10 +1,10 @@
 const type = {
-  base: 'Avenir-Book',
-  bold: 'Avenir-Black',
-  emphasis: 'HelveticaNeue-Italic',
-  source: "SourceSansPro-Regular",
-  montserrat: "Montserrat-Medium",
-  crimson: "CrimsonText-Roman"
+  base: 'Source Sans Pro',
+  emphasis: 'Source Sans Pro',
+  bold: 'Source Sans Pro',
+  sourceSansPro: 'Source Sans Pro',
+  crimsonText: 'Crimson Text',
+  montserrat: 'Montserrat'
 }
 
 const size = {
@@ -47,12 +47,15 @@ const style = {
     fontSize: size.h6
   },
   title: {
-    fontFamily: type.base,
+    fontFamily: type.montserrat,
+    letterSpacing: 1.05,
     fontSize: 25
   },
   instructions: {
     color: '#9e9e9e',
     fontSize: 16,
+    fontFamily: type.sourceSansPro,
+    letterSpacing: .7,
     fontWeight: '300'
   },
   tos: {
@@ -60,6 +63,9 @@ const style = {
     fontSize: 13,
     fontWeight: '300',
     letterSpacing: .7
+  },
+  buttonText: {
+    fontFamily: type.montserrat
   },
   inputLabels: {
     fontWeight: '300',

@@ -32,7 +32,7 @@ export default StyleSheet.create({
   subtitle: {
     fontSize: 16,
     color: "#e0e0e0",
-    fontFamily: Fonts.type.source,
+    fontFamily: Fonts.type.sourceSansPro,
     letterSpacing:0.7
   },
   divider: {
@@ -62,12 +62,12 @@ export default StyleSheet.create({
     color: "#e0e0e0",
     fontWeight: "300",
     fontSize: 15,
-    fontFamily: Fonts.type.source
+    fontFamily: Fonts.type.sourceSansPro
   },
   bottomRight: {
     color: "#e0e0e0",
     marginRight: 5,
-    fontFamily: Fonts.type.crimson
+    fontFamily: Fonts.type.crimsonText
   },
   tagline: {
     ...Fonts.style.h1,

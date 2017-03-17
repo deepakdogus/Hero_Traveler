@@ -3,6 +3,12 @@ import { Metrics, ApplicationStyles, Colors, Fonts } from '../../Themes/'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
+  logoSection: {
+    margin: Metrics.section,
+    marginTop: 75,
+    flex: 1,
+    alignItems: 'center'
+  },
   logo: {
     height: 100,
     width: 300,
@@ -10,36 +16,39 @@ export default StyleSheet.create({
   },
   tagline: {
     ...Fonts.style.h5,
-    color: Colors.snow
+    color: Colors.snow,
+    textAlign: 'center',
+    fontWeight: '300',
+    width: '75%'
   },
-  centered: {
-    flex: 1,
+  spacer: {
+    flexGrow: 10
+  },
+  twitter: {
+    marginTop: 0,
+    backgroundColor: Colors.twitterBlue
+  },
+  email: {
+    marginTop: 0,
+    backgroundColor: Colors.red
+  },
+  facebook: {
+    margin: 0,
+    backgroundColor: Colors.facebookBlue
+  },
+  loginWrapper: {
     justifyContent: 'center',
-    alignItems: 'center'
-  },
-  launchButtonGroup: {
+    flexGrow: 1,
     flexDirection: 'row',
-    alignItems: 'flex-start',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    borderTopWidth: 1,
-    borderTopColor: Colors.faintWhite,
-    borderStyle: 'solid'
+    alignItems: 'baseline',
+    marginTop: Metrics.baseMargin
   },
-  launchButtonBorderRight: {
-    borderRightWidth: 1,
-    borderRightColor: Colors.faintWhite,
-    borderStyle: 'solid'
+  loginText: {
+    color: Colors.snow,
+    fontWeight: '600',
+    fontSize: 13
   },
-  launchButtonWrapper: {
-    flexGrow: 1,
-    alignItems: 'stretch'
-  },
-  launchButton: {
-    flexGrow: 1,
-    marginVertical: 0,
-    marginHorizontal: 0
+  tosText: {
+    ...Fonts.style.tos,
   }
 })

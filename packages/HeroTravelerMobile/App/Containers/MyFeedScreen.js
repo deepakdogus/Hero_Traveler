@@ -11,13 +11,14 @@ import StoryList from '../Components/StoryList'
 
 class MyFeedScreen extends React.Component {
   static propTypes = {
+    user: PropTypes.object,
     posts: PropTypes.array,
     fetching: PropTypes.bool,
     error: PropTypes.bool
   };
 
   componentDidMount() {
-    this.props.attemptGetUserFeed()
+    this.props.attemptGetUserFeed(this.props.user._id)
   }
 
   _wrapElt(elt){
@@ -72,14 +73,16 @@ class MyFeedScreen extends React.Component {
 const mapStateToProps = (state) => {
   let { fetching, posts, error } = state.feed;
   return {
-    fetching, posts, error
+    user: state.session.user,
+    fetching,
+    posts,
+    error
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    attemptGetUserFeed: () => {
-      const userId = "1234"
+    attemptGetUserFeed: (userId) => {
       return dispatch(StoryActions.feedRequest(userId))
     }
   }

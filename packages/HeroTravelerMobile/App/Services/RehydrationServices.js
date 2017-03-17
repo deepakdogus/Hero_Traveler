@@ -24,9 +24,17 @@ const updateReducers = (store: Object) => {
       persistStore(store, config, startup).purge()
       AsyncStorage.setItem('reducerVersion', reducerVersion)
     } else {
+      console.tron.display({
+        messsage: 'Store',
+        preview: 'Store!',
+        value: {
+          store: store.getState()
+        }
+      })
       persistStore(store, config, startup)
     }
   }).catch(() => {
+    console.tron.log('Caught something!')
     persistStore(store, config, startup)
     AsyncStorage.setItem('reducerVersion', reducerVersion)
   })

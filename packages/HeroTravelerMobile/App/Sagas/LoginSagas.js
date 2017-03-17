@@ -1,14 +1,26 @@
-import { put } from 'redux-saga/effects'
+import { call, put } from 'redux-saga/effects'
 import LoginActions from '../Redux/LoginRedux'
+import SessionActions from '../Redux/SessionRedux'
+import _ from 'lodash'
 
 // attempts to login
-export function * login ({ username, password }) {
-  if (password === '') {
-    // dispatch failure
-    yield put(LoginActions.loginFailure('WRONG'))
+export function * login (api, { username, password }) {
+  const response = yield call(
+    api.login,
+    username,
+    password
+  )
+
+  if (response.ok) {
+    const {user, tokens} = response.data
+    const accessToken = _.find(tokens, {type: 'access'})
+    yield [
+      call(api.setAuth, accessToken.value),
+      put(SessionActions.initializeSession(user, tokens))
+    ]
   } else {
-    // dispatch successful logins
-    yield put(LoginActions.loginSuccess(username))
+    // dispatch failure
+    yield put(LoginActions.loginFailure(response.data.message))
   }
 }
 

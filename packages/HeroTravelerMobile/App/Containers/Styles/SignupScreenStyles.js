@@ -19,15 +19,34 @@ export default StyleSheet.create({
     marginTop: Metrics.marginVertical,
     textAlign: 'center'
   },
-  social: {
-    marginTop: Metrics.doubleBaseMargin
+  error: {
+    color: Colors.red
   },
-  twitter: {
-    marginTop: 0,
-    backgroundColor: Colors.twitterBlue
+  inputContainer: {
+    flex: 1,
+    height: 40,
+    marginLeft: Metrics.section,
+    marginRight: Metrics.section,
+    marginTop: Metrics.marginVertical,
+    marginBottom: Metrics.marginVertical,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.whiteAlphaPt3,
+    borderStyle: 'solid'
   },
-  facebook: {
-    margin: 0,
-    backgroundColor: Colors.facebookBlue
+  input: {
+    ...Fonts.style.inputLabels,
+    height: 40,
+    color: Colors.snow
+  },
+  form: {
+    flex: 1,
+    alignItems: 'stretch',
+    flexDirection: 'column',
+    justifyContent: 'flex-start'
+  },
+  tos: {
+    marginTop: Metrics.marginVertical,
+    marginLeft: Metrics.section,
+    marginRight: Metrics.section
   }
 })

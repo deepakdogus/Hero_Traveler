@@ -30,6 +30,7 @@ const StorySchema = new mongoose.Schema({
 
 StorySchema.statics.getUserFeed = function getUserFeed(userId){
     return this.find({author: {$ne: userId}})
+      .populate('author')
 }
 
 export default mongoose.model('Story', StorySchema)

@@ -16,12 +16,15 @@ export default class RoundedButton extends React.Component {
     onPress: PropTypes.func,
     text: PropTypes.string,
     // style: PropTypes.object,
+    capitalize: PropTypes.bool,
     children: PropTypes.node,
     navigator: PropTypes.object
   }
 
   getText () {
-    const buttonText = this.props.text || this.props.children || ''
+    const text = this.props.capitalize && this.props.text ?
+      this.props.text.toUpperCase() : this.props.text
+    const buttonText = this.props.children || text || ''
     return buttonText
   }
 

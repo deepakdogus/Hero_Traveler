@@ -23,7 +23,7 @@ export default class StoryPreview extends React.Component {
         description,
         author: {
           username,
-          profileAvatar
+          profile
         },
         likes,
         createdAt
@@ -43,7 +43,7 @@ export default class StoryPreview extends React.Component {
               <View style={styles.divider}></View>
               <View style={styles.detailContainer}>
                 <View style={styles.row}>
-                  <Image style={styles.avatar} source={{uri: profileAvatar}}></Image>
+                  <Image style={styles.avatar} source={{uri: profile.avatar}}></Image>
                   <Text style={styles.username}>{username}</Text>
                 </View>
                 <View style={styles.row}>

@@ -1,7 +1,7 @@
 const storyData = [
     {
         title: "Story 1",
-        description: "Test Story 1",
+        description: "Rufus the Retriever get Lost in Paradise",
         author: null,
         likes: 10,
         createdAt: Date.now(),
@@ -9,7 +9,7 @@ const storyData = [
     },
     {
         title: "My Longer Story Title 2",
-        description: "Testing the longer titles is probably something that we should be doing anyway",
+        description: "The Incredible Journey of Fido into Bali's Ancient Heartland",
         author: null,
         likes: 0,
         createdAt: Date.now(),

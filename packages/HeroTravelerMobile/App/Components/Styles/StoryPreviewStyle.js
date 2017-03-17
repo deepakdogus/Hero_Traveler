@@ -20,17 +20,19 @@ export default StyleSheet.create({
   },
   previewInfo: {
     padding: 16,
-    paddingBottom: Metrics.navBarHeight + 20
+    paddingBottom: Metrics.navBarHeight + 20,
   },
   title: {
     fontSize: 28,
     fontWeight: "200",
+    fontFamily: Fonts.type.montserrat,
     color: "white",
     letterSpacing: 1.5
   },
   subtitle: {
     fontSize: 16,
     color: "#e0e0e0",
+    fontFamily: Fonts.type.source,
     letterSpacing:0.7
   },
   divider: {
@@ -59,12 +61,14 @@ export default StyleSheet.create({
   username: {
     color: "#e0e0e0",
     fontWeight: "300",
-    fontSize: 15
+    fontSize: 15,
+    fontFamily: Fonts.type.source
   },
   bottomRight: {
     color: "#e0e0e0",
-    fontStyle: "italic",
-    marginRight: 5
+    // fontStyle: "italic",
+    marginRight: 5,
+    fontFamily: Fonts.type.crimson
   },
   tagline: {
     ...Fonts.style.h1,

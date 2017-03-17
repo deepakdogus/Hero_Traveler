@@ -30,6 +30,21 @@ class TabIcon extends React.Component {
   }
 }
 
+const darkNavBarProps = {
+  navigationBarStyle: Styles.navBar,
+  titleStyle: Styles.navTextWhite,
+  backButtonTextStyle: Styles.navTextWhite,
+  leftButtonTextStyle: Styles.navTextWhite,
+  rightButtonTextStyle: Styles.navTextWhite
+}
+
+const clearNavBarProps = {
+  navigationBarStyle: Styles.navBarClear,
+  backButtonTextStyle: Styles.navTextWhite,
+  leftButtonTextStyle: Styles.navTextWhite,
+  rightButtonTextStyle: Styles.navTextWhite
+}
+
 /* **************************
 * Documentation: https://github.com/aksonov/react-native-router-flux
 ***************************/
@@ -42,10 +57,7 @@ class NavigationRouter extends Component {
           <Scene
             key='root'
             titleStyle={Styles.title}
-            navigationBarStyle={Styles.navBarClear}
-            backButtonTextStyle={Styles.navText}
-            leftButtonTextStyle={Styles.navText}
-            rightButtonTextStyle={Styles.navText}
+            {...clearNavBarProps}
           >
             <Scene
               initial
@@ -81,7 +93,6 @@ class NavigationRouter extends Component {
             <Scene
               key='login'
               component={LoginScreen}
-              backTitle=' '
             />
             <Scene key='tabbar'
               tabs
@@ -93,32 +104,36 @@ class NavigationRouter extends Component {
                 icon={TabIcon}
                 component={MyFeedScreen}
                 title='Feed'
-                navigationBarStyle={Styles.navBar}
-                titleStyle={Styles.navBarTitle}
+                renderBackButton={() => null}
+                {...darkNavBarProps}
               />
               <Scene
                 key='explore'
                 icon={TabIcon}
                 component={ExploreScreen}
                 title='Explore'
+                {...darkNavBarProps}
               />
               <Scene
                 key='createStory'
                 icon={TabIcon}
                 component={NewStoryScreen}
                 title='New Story'
+                {...darkNavBarProps}
               />
               <Scene
                 key='activity'
                 icon={TabIcon}
                 component={ActivityScreen}
                 title='Activity'
+                {...darkNavBarProps}
               />
               <Scene
                 key='profile'
                 icon={TabIcon}
                 component={ProfileScreen}
                 title='Profile'
+                {...darkNavBarProps}
               />
             </Scene>
           </Scene>

@@ -5,6 +5,7 @@ import { Actions as NavigationActions, ActionConst as NavActionConst } from 'rea
 
 import {hasAuthData} from '../Redux/SessionRedux'
 import RoundedButton from '../Components/RoundedButton'
+import TextButton from '../Components/TextButton'
 import { Images } from '../Themes'
 import styles from './Styles/LaunchScreenStyles'
 
@@ -20,15 +21,16 @@ class LaunchScreen extends React.Component {
     return (
       <Image
         source={Images.launchBackground}
-        style={styles.backgroundImage}
+        style={[styles.backgroundImage]}
       >
-        <View style={[styles.section, styles.centered]}>
+        <View style={[styles.logoSection]}>
           <Image source={Images.whiteLogo} style={styles.logo} />
           <Text
             style={styles.tagline}
             textAlign='center'
-          >{'Share your adventures with the world.'}</Text>
+          >{'Share Your Adventures with the World'}</Text>
         </View>
+        <View style={styles.spacer} />
         <View style={styles.signupButtons}>
           <RoundedButton
             style={styles.facebook}
@@ -43,11 +45,13 @@ class LaunchScreen extends React.Component {
             onPress={NavigationActions.signup}
             text='Sign up with Email'
           />
-          <Text style={styles.instructions}>Already have an account?</Text>
-          <RoundedButton
-            style={styles.login}
+        </View>
+        <View style={styles.loginWrapper}>
+          <Text style={styles.tosText}>Already have an account?&nbsp;</Text>
+          <TextButton
+            style={[styles.tosText, styles.loginText]}
             onPress={NavigationActions.login}
-            text='Login'
+            text='Log In'
           />
         </View>
       </Image>

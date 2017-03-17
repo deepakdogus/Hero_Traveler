@@ -12,7 +12,7 @@ const size = {
   h2: 34,
   h3: 30,
   h4: 26,
-  h5: 20,
+  h5: 21,
   h6: 19,
   input: 18,
   regular: 17,
@@ -54,6 +54,12 @@ const style = {
     color: '#9e9e9e',
     fontSize: 16,
     fontWeight: '300'
+  },
+  tos: {
+    color: '#9e9e9e',
+    fontSize: 13,
+    fontWeight: '300',
+    letterSpacing: .7
   },
   inputLabels: {
     fontWeight: '300',

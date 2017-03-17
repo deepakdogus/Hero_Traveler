@@ -22,7 +22,7 @@ export default {
   title: {
     color: Colors.snow
   },
-  navText: {
+  navTextWhite: {
     color: Colors.snow
   },
   browseGuest: {

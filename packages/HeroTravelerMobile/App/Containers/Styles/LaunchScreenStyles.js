@@ -3,6 +3,12 @@ import { Metrics, ApplicationStyles, Colors, Fonts } from '../../Themes/'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
+  logoSection: {
+    margin: Metrics.section,
+    marginTop: 75,
+    flex: 1,
+    alignItems: 'center'
+  },
   logo: {
     height: 100,
     width: 300,
@@ -10,29 +16,39 @@ export default StyleSheet.create({
   },
   tagline: {
     ...Fonts.style.h5,
-    color: Colors.snow
+    color: Colors.snow,
+    textAlign: 'center',
+    fontWeight: '300',
+    width: '75%'
   },
-  centered: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  instructions: {
-    ...Fonts.style.instructions,
-    textAlign: 'center'
+  spacer: {
+    flexGrow: 10
   },
   twitter: {
     marginTop: 0,
     backgroundColor: Colors.twitterBlue
   },
   email: {
+    marginTop: 0,
     backgroundColor: Colors.red
   },
   facebook: {
     margin: 0,
     backgroundColor: Colors.facebookBlue
   },
-  login: {
-    backgroundColor: 'green'
+  loginWrapper: {
+    justifyContent: 'center',
+    flexGrow: 1,
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    marginTop: Metrics.baseMargin
+  },
+  loginText: {
+    color: Colors.snow,
+    fontWeight: '600',
+    fontSize: 13
+  },
+  tosText: {
+    ...Fonts.style.tos,
   }
 })

@@ -10,7 +10,10 @@ import {
   LayoutAnimation
 } from 'react-native'
 import { connect } from 'react-redux'
-import { Actions as NavigationActions } from 'react-native-router-flux'
+import {
+  Actions as NavigationActions,
+  ActionConst as NavActionConst
+} from 'react-native-router-flux'
 
 import {Images, Metrics} from '../Themes'
 import RoundedButton from '../Components/RoundedButton'
@@ -209,7 +212,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     goToMyFeed: () => {
-      return NavigationActions.tabbar()
+      return NavigationActions.tabbar({type: NavActionConst.POP_AND_REPLACE})
     },
     attemptLogin: (username, password) => dispatch(LoginActions.loginRequest(username, password))
   }

@@ -56,14 +56,3 @@ export default class StoryPreview extends React.Component {
     )
   }
 }
-
-// // Prop type warnings
-// StoryPreview.propTypes = {
-//   someProperty: React.PropTypes.object,
-//   someSetting: React.PropTypes.bool.isRequired
-// }
-//
-// // Defaults for props
-// StoryPreview.defaultProps = {
-//   someSetting: false
-// }

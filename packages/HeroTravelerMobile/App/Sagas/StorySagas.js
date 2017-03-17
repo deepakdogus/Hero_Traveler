@@ -8,7 +8,6 @@ export function * getUserFeed (api, action) {
     const { data: posts } = response;
     yield put(StoryActions.feedSuccess(posts))
   } else {
-    console.log(response)
     yield put(StoryActions.feedFailure())
   }
 }

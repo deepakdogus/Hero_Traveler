@@ -100,8 +100,6 @@
   "rnpm": {
     "assets": [
       "./App/Fonts",
-      "./App/Images",
-      "./App/Images/Icons"
     ]
   }
 }

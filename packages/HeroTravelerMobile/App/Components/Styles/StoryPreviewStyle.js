@@ -66,7 +66,6 @@ export default StyleSheet.create({
   },
   bottomRight: {
     color: "#e0e0e0",
-    // fontStyle: "italic",
     marginRight: 5,
     fontFamily: Fonts.type.crimson
   },

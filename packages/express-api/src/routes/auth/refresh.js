@@ -1,6 +1,6 @@
 import Promise from 'bluebird'
 import passport from 'passport'
-import {User} from 'ht-core'
+import {User} from '@rwoody/ht-core'
 
 export default function refreshAccessToken(req, res, next) {
   const userId = req.user._id

@@ -11,6 +11,8 @@ export function * login (api, { username, password }) {
     password
   )
 
+  console.log('response', response)
+
   if (response.ok) {
     const {user, tokens} = response.data
     const accessToken = _.find(tokens, {type: 'access'})

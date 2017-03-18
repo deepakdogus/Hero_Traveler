@@ -1,4 +1,4 @@
-import {Models} from 'ht-core'
+import {Models} from '@rwoody/ht-core'
 
 export default function createStory(req, res) {
   const {title} = req.body

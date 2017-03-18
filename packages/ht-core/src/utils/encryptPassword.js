@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import Promise from 'bluebird'
-import {Constants} from 'ht-util'
+import {Constants} from '@rwoody/ht-util'
 
 const hash = Promise.promisify(bcrypt.hash)
 const genSalt = Promise.promisify(bcrypt.genSalt)

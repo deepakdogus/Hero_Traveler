@@ -1,6 +1,6 @@
 import Promise from 'bluebird'
 import passport from 'passport'
-import {User} from 'ht-core'
+import {User} from '@rwoody/ht-core'
 
 // @TODO standard-error
 export default function checkLogin(req, res, next) {

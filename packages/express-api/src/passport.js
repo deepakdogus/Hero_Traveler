@@ -1,7 +1,7 @@
 import passport from 'passport'
 import {Strategy as BearerStrategy} from 'passport-http-bearer'
 import {BasicStrategy} from 'passport-http'
-import {User} from 'ht-core'
+import {User} from '@rwoody/ht-core'
 
 passport.use(
   new BasicStrategy(

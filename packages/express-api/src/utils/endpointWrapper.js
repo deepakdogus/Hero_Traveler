@@ -1,5 +1,4 @@
 import Promise from 'bluebird'
-import debug from 'debug'
 
 export default function endpointWrapper(originalFunction) {
   return function (req, res, next) {
@@ -8,7 +7,6 @@ export default function endpointWrapper(originalFunction) {
         return res.json(output)
       })
       .catch(err => {
-        debug('err', err)
         return next(err)
       })
   }

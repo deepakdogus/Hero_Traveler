@@ -2,10 +2,11 @@
 import apisauce from 'apisauce'
 
 // our "constructor"
-const create = (url = 'http://localhost:3000/') => {
-  const baseURL = __DEV__ ? url : 'http://ht-api-dev.rehashstudio.com/'
+const create = () => {
   const api = apisauce.create({
-    baseURL,
+    baseURL: __DEV__ ?
+      'http://localhost:3000/':
+      'http://ht-api-dev.rehashstudio.com/',
     headers: {
       // @TODO client-id
       'client-id': 'xzy',

@@ -27,7 +27,13 @@ const colors = {
   banner: '#5F3E63',
   text: '#E0D7E5',
   twitterBlue: '#0084b4',
-  facebookBlue: '#3b5998'
+  facebookBlue: '#3b5998',
+  darkBackground: '#1a1c21',
+  redHighlights: '#ed1e2e',
+  lightGreyAreas: '#eeeeee',
+  white: '#ffffff',
+  navBarText: '#bdbdbd',
+  photoOverlay: '#000000'
 }
 
 export default colors

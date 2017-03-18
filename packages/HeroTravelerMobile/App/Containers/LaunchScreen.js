@@ -1,7 +1,11 @@
+/* global alert */
 import React from 'react'
-import { ScrollView, Text, Image, View } from 'react-native'
+import { Text, Image, View } from 'react-native'
 import { connect } from 'react-redux'
-import { Actions as NavigationActions, ActionConst as NavActionConst } from 'react-native-router-flux'
+import {
+  Actions as NavigationActions,
+  ActionConst as NavActionConst
+} from 'react-native-router-flux'
 
 import {hasAuthData} from '../Redux/SessionRedux'
 import RoundedButton from '../Components/RoundedButton'

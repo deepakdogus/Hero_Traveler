@@ -3,6 +3,7 @@ import { autoRehydrate } from 'redux-persist'
 import Config from '../Config/DebugConfig'
 import createSagaMiddleware from 'redux-saga'
 import RehydrationServices from '../Services/RehydrationServices'
+import CreateLogger from 'redux-logger'
 import ReduxPersist from '../Config/ReduxPersist'
 
 // creates the store
@@ -17,6 +18,7 @@ export default (rootReducer, rootSaga) => {
   const sagaMonitor = __DEV__ ? console.tron.createSagaMonitor() : null
   const sagaMiddleware = createSagaMiddleware({ sagaMonitor })
   middleware.push(sagaMiddleware)
+  middleware.push(CreateLogger({collapsed: true}))
 
   /* ------------- Assemble Middleware ------------- */
 
@@ -26,7 +28,7 @@ export default (rootReducer, rootSaga) => {
 
   // add the autoRehydrate enhancer
   if (ReduxPersist.active) {
-    enhancers.push(autoRehydrate())
+    // enhancers.push(autoRehydrate())
   }
 
   // if Reactotron is enabled (default for __DEV__), we'll create the store through Reactotron
@@ -35,7 +37,7 @@ export default (rootReducer, rootSaga) => {
 
   // configure persistStore and check reducer version number
   if (ReduxPersist.active) {
-    RehydrationServices.updateReducers(store)
+    // RehydrationServices.updateReducers(store)
   }
 
   // kick off root saga

@@ -27,6 +27,12 @@ const ApplicationStyles = {
       marginTop: Metrics.navBarHeight,
       backgroundColor: Colors.transparent
     },
+    containerWithNavbarAndTabbar: {
+      flex: 1,
+      marginTop: Metrics.navBarHeight,
+      marginBottom: Metrics.tabBarHeight,
+      backgroundColor: Colors.transparent
+    },
     section: {
       margin: Metrics.section,
       padding: Metrics.baseMargin

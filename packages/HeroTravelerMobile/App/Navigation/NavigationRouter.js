@@ -1,21 +1,29 @@
 import React, { Component } from 'react'
 import { Text } from 'react-native'
-import { connect } from 'react-redux'
-import { Scene, Router, Modal, NavBar, Switch, Actions as NavActions } from 'react-native-router-flux'
-import Styles from './Styles/NavigationContainerStyles'
+import {
+  Scene,
+  Router,
+  Modal,
+  Actions as NavigationActions
+} from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 // screens identified by the router
 import LaunchScreen from '../Containers/LaunchScreen'
 import SignupScreen from '../Containers/SignupScreen'
 import LoginScreen from '../Containers/LoginScreen'
+import Styles from './Styles/NavigationContainerStyles'
+
 import MyFeedScreen from '../Containers/MyFeedScreen'
 import ExploreScreen from '../Containers/ExploreScreen'
-import NewStoryScreen from '../Containers/NewStoryScreen'
+import CreateStoryScreen from '../Containers/CreateStoryScreen'
+import CreateStoryDetailScreen from '../Containers/CreateStoryDetailScreen'
 import ActivityScreen from '../Containers/ActivityScreen'
 import ProfileScreen from '../Containers/ProfileScreen'
 import SignupTopics from '../Containers/SignupTopics'
 import SignupSocial from '../Containers/SignupSocial'
+import PhotoSelectorScreen from '../Containers/PhotoSelectorScreen'
+import PhotoTakerScreen from '../Containers/PhotoTakerScreen'
 
 // https://github.com/aksonov/react-native-router-flux/blob/master/Example/Example.js#L52
 const getSceneStyle = (/* NavigationSceneRendererProps */ props, computedProps) => {
@@ -23,7 +31,6 @@ const getSceneStyle = (/* NavigationSceneRendererProps */ props, computedProps) 
 }
 
 class TabIcon extends React.Component {
-
   getIconName(navKey) {
     switch (navKey) {
       case 'myFeed':
@@ -76,6 +83,15 @@ const tabBarProps = {
 ***************************/
 
 class NavigationRouter extends Component {
+  constructor (props) {
+    super(props)
+    this.renderLeftButton = this.renderLeftButton.bind(this)
+  }
+
+  renderLeftButton (arg) {
+    console.log('it is ', arg)
+  }
+
   render () {
     return (
       <Router getSceneStyle={getSceneStyle}>
@@ -140,10 +156,9 @@ class NavigationRouter extends Component {
               />
               <Scene
                 key='createStory'
+                title='Create Story'
                 icon={TabIcon}
-                component={NewStoryScreen}
-                title='New Story'
-                {...darkNavBarProps}
+                onPress={() => NavActions.createStoryFlow()}
               />
               <Scene
                 key='activity'
@@ -160,11 +175,68 @@ class NavigationRouter extends Component {
                 {...darkNavBarProps}
               />
             </Scene>
+            <Scene
+              key='createStoryFlow'
+              direction='vertical'
+            >
+              <Scene
+                key='createStory_info'
+                title='Create Story'
+                component={CreateStoryScreen}
+                panHandlers={null}
+                leftTitle='Cancel'
+                onLeft={() => NavActions.pop()}
+                rightTitle='Next'
+                onRight={() => NavActions.createStory_details()}
+              />
+              <Scene
+                key='createStory_details'
+                title='Create Story Details'
+                panHandlers={null}
+                component={CreateStoryDetailScreen}
+                backTitle='Cancel'
+                rightTitle='Publish'
+                onRight={() => console.log('Publishing')}
+              />
+            </Scene>
+            <Scene
+              key='photoSelectorScreen'
+              {...tabBarProps}
+            >
+              <Scene
+                key='selectPhoto'
+                panHandlers={null}
+                title='Library'
+                icon={TabIcon}
+                component={PhotoSelectorScreen}
+                leftTitle='Cancel'
+                onLeft={() => NavActions.pop()}
+                {...darkNavBarProps}
+              />
+              <Scene
+                initial
+                key='takePhoto'
+                panHandlers={null}
+                title='Photo'
+                icon={TabIcon}
+                backTitle='Cancel'
+                hideBackImage
+                {...darkNavBarProps}
+                leftTitle='Cancel'
+                onLeft={() => NavActions.pop()}
+                component={PhotoTakerScreen}
+              />
+            </Scene>
           </Scene>
         </Scene>
       </Router>
     )
   }
 }
+
+/* navigationBarStyle={Styles.navBar}
+    renderLeftButton={this.renderLeftButton}
+    leftButtonIconStyle={Styles.leftButton}
+    rightButtonTextStyle={Styles.rightButton} */
 
 export default NavigationRouter

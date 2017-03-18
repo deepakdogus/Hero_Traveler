@@ -10,7 +10,7 @@ export default {
     height: Metrics.navBarHeight
   },
   navBarTitle: {
-    color: Colors.text
+    color: Colors.navBarText
   },
   navBarClear: {
     backgroundColor: Colors.clear,
@@ -22,7 +22,7 @@ export default {
   navText: {
     fontFamily: Fonts.type.montserrat,
     fontSize: 16,
-    color: '#bdbdbd'
+    color: Colors.navBarText
   },
   navTitle: {
     fontFamily: Fonts.type.montserrat,

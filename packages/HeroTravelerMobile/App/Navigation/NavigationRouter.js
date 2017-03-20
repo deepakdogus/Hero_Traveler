@@ -17,6 +17,7 @@ import Styles from './Styles/NavigationContainerStyles'
 import MyFeedScreen from '../Containers/Tabs/MyFeedScreen'
 import ExploreScreen from '../Containers/Tabs/ExploreScreen'
 import CreateStoryScreen from '../Containers/CreateStory/CreateStoryScreen'
+import PhotoStoryScreen from '../Containers/CreateStory/PhotoStoryScreen'
 import CreateStoryDetailScreen from '../Containers/CreateStory/CreateStoryDetailScreen'
 import ActivityScreen from '../Containers/Tabs/ActivityScreen'
 import ProfileScreen from '../Containers/Tabs/ProfileScreen'
@@ -183,12 +184,21 @@ class NavigationRouter extends Component {
               <Scene
                 key='createStory_info'
                 title='Create Story'
+                hideNavBar={true}
                 component={CreateStoryScreen}
+              />
+              <Scene
+                key='createStory_photo'
+                title='Create Story'
+                component={PhotoStoryScreen}
                 panHandlers={null}
+                hideNavBar={false}
+                type="replace"
+                direction="horizontal"
                 leftTitle='Cancel'
                 onLeft={() => NavActions.pop()}
                 rightTitle='Next'
-                onRight={() => NavActions.createStory_details()}
+                onRight={() => NavActions.createStory_photo()}
               />
               <Scene
                 key='createStory_details'

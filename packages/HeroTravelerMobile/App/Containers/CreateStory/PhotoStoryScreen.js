@@ -3,14 +3,25 @@ import { ScrollView, Text, TouchableOpacity, View, KeyboardAvoidingView, Image }
 import { Actions as NavigationActions } from 'react-native-router-flux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
+import R from 'ramda'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import * as Animatable from 'react-native-animatable'
+
 import RoundedButton from '../../Components/RoundedButton'
 import RenderTextInput from '../../Components/RenderTextInput'
-import R from 'ramda'
-
-// Styles
 import styles, { placeholderColor } from './CreateStoryScreenStyles'
+import pstyles from './PhotoStoryScreenStyles'
 
 class PhotoStoryScreen extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      isAddContentMenuOpen: false,
+      newContentSection: null
+    }
+  }
+
   renderCoverPhoto = (photoPath) => {
     return R.ifElse(
       R.identity,
@@ -73,50 +84,65 @@ class PhotoStoryScreen extends React.Component {
     )
   }
 
-  renderStoryElements (elements) {
-    console.log('elements are ', !!elements)
-    return R.ifElse(
-      R.identity,
-      () => (
-        <View>
-          {
-            elements.map(({ Component, ...props }, index) => {
-              const map = {
-                'RoundedButton': RoundedButton
-              }
-              const RenderComponent = map[Component]
-              return <RenderComponent key={index} {...props} />
-            })
-          }
-        </View>
-      ),
-      R.always(null)
-    )(!!elements)
-  }
-
   render () {
-    console.log('foo is ', this.props.foo)
-    console.log('title is ', this.props.title)
     return (
       <ScrollView style={[styles.containerWithNavbar, styles.containerWithNavbarOverride]}>
         {this.renderCoverPhoto(this.props.coverPhoto)}
-        <View style={{flexDirection: 'row'}}>
+        <View style={pstyles.addContentWrapper}>
           <RoundedButton
-            style={{flex: 1}}
-            text='photo'
+            text={<Icon name="plus" size={15} />}
+            onPress={this._toggleCreateButton}
+            style={pstyles.newContentButton}
           />
-          <RoundedButton
-            style={{flex: 1}}
-            text='video'
-          />
-          <RoundedButton
-            style={{flex: 1}}
-            text='text'
-          />
+          {this.state.isAddContentMenuOpen && <View
+              style={pstyles.createMenu}
+            >
+              <RoundedButton
+                style={pstyles.createMenuButton}
+                onPress={this._addPhoto}
+              >
+                <Icon name="camera" size={15} />
+              </RoundedButton>
+              <RoundedButton
+                style={pstyles.createMenuButton}
+                onPress={this._addVideo}
+              >
+                <Icon name="video-camera" size={15} />
+              </RoundedButton>
+              <RoundedButton
+                style={pstyles.createMenuButton}
+                onPress={this._addText}
+              >
+                <Icon name="font" size={15} />
+              </RoundedButton>
+            </View>}
         </View>
-        {this.renderStoryElements(this.props.storyElements)}
       </ScrollView>
     )
+  }
+
+  _toggleCreateButton = () => {
+    this.setState({
+      isAddContentMenuOpen: !this.state.isAddContentMenuOpen
+    })
+  }
+
+  _addPhoto = () => {
+    this.setState({
+      newContentSection: 'photo'
+    })
+  }
+
+  _addVideo = () => {
+    this.setState({
+      newContentSection: 'video'
+    })
+  }
+
+  _addText = () => {
+    this.setState({
+      newContentSection: 'text'
+    })
   }
 }
 

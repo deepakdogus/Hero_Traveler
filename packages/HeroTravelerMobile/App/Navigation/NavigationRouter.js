@@ -4,7 +4,7 @@ import {
   Scene,
   Router,
   Modal,
-  Actions as NavigationActions
+  Actions as NavActions
 } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -178,6 +178,7 @@ class NavigationRouter extends Component {
             <Scene
               key='createStoryFlow'
               direction='vertical'
+              {...darkNavBarProps}
             >
               <Scene
                 key='createStory_info'

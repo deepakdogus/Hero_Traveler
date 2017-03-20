@@ -10,20 +10,20 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 // screens identified by the router
 import LaunchScreen from '../Containers/LaunchScreen'
-import SignupScreen from '../Containers/SignupScreen'
+import SignupScreen from '../Containers/Signup/SignupScreen'
 import LoginScreen from '../Containers/LoginScreen'
 import Styles from './Styles/NavigationContainerStyles'
 
-import MyFeedScreen from '../Containers/MyFeedScreen'
-import ExploreScreen from '../Containers/ExploreScreen'
-import CreateStoryScreen from '../Containers/CreateStoryScreen'
-import CreateStoryDetailScreen from '../Containers/CreateStoryDetailScreen'
-import ActivityScreen from '../Containers/ActivityScreen'
-import ProfileScreen from '../Containers/ProfileScreen'
-import SignupTopics from '../Containers/SignupTopics'
-import SignupSocial from '../Containers/SignupSocial'
-import PhotoSelectorScreen from '../Containers/PhotoSelectorScreen'
-import PhotoTakerScreen from '../Containers/PhotoTakerScreen'
+import MyFeedScreen from '../Containers/Tabs/MyFeedScreen'
+import ExploreScreen from '../Containers/Tabs/ExploreScreen'
+import CreateStoryScreen from '../Containers/CreateStory/CreateStoryScreen'
+import CreateStoryDetailScreen from '../Containers/CreateStory/CreateStoryDetailScreen'
+import ActivityScreen from '../Containers/Tabs/ActivityScreen'
+import ProfileScreen from '../Containers/Tabs/ProfileScreen'
+import SignupTopics from '../Containers/Signup/SignupTopics'
+import SignupSocial from '../Containers/Signup/SignupSocial'
+import PhotoSelectorScreen from '../Containers/CreateStory/PhotoSelectorScreen'
+import PhotoTakerScreen from '../Containers/CreateStory/PhotoTakerScreen'
 
 // https://github.com/aksonov/react-native-router-flux/blob/master/Example/Example.js#L52
 const getSceneStyle = (/* NavigationSceneRendererProps */ props, computedProps) => {

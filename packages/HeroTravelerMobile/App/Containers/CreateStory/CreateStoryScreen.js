@@ -3,23 +3,15 @@ import { ScrollView, Text, TouchableOpacity, View, KeyboardAvoidingView, Image }
 import { Actions as NavigationActions } from 'react-native-router-flux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
-import RoundedButton from '../Components/RoundedButton'
-import RenderTextInput from '../Components/RenderTextInput'
+import RoundedButton from '../../Components/RoundedButton'
+import RenderTextInput from '../../Components/RenderTextInput'
 import R from 'ramda'
 
 // Styles
-import styles, { placeholderColor } from './Styles/CreateStoryScreenStyles'
+import styles, { placeholderColor } from './CreateStoryScreenStyles'
 
 class CreateStoryScreen extends React.Component {
-  constructor (props) {
-    super(props)
-    this.renderCoverPhoto = this.renderCoverPhoto.bind(this)
-    this.renderContent = this.renderContent.bind(this)
-    this.renderPlaceholderColor = this.renderPlaceholderColor.bind(this)
-    this.capitalizeText = this.capitalizeText.bind(this)
-  }
-
-  renderCoverPhoto (photoPath) {
+  renderCoverPhoto = (photoPath) => {
     return R.ifElse(
       R.identity,
       R.always((
@@ -32,7 +24,7 @@ class CreateStoryScreen extends React.Component {
     )(!!photoPath)
   }
 
-  renderTextColor (baseStyle, photoPath) {
+  renderTextColor = (baseStyle, photoPath) => {
     return R.ifElse(
       R.identity,
       R.always([baseStyle, { color: 'white' }]),
@@ -40,16 +32,12 @@ class CreateStoryScreen extends React.Component {
     )(!!photoPath)
   }
 
-  renderPlaceholderColor (baseColor, photoPath) {
+  renderPlaceholderColor = (baseColor, photoPath) => {
     return R.ifElse(
       R.identity,
       R.always('white'),
       R.always(baseColor)
     )(!!photoPath)
-  }
-
-  capitalizeText (value) {
-    return value.toUpperCase()
   }
 
   renderContent (photoPath) {

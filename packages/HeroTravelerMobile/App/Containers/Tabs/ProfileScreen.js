@@ -2,11 +2,11 @@ import React from 'react'
 import { ScrollView, Text } from 'react-native'
 import { connect } from 'react-redux'
 import { Actions as NavActions, ActionConst as NavActionConst } from 'react-native-router-flux'
-import SessionActions, {hasAuthData} from '../Redux/SessionRedux'
-import RoundedButton from '../Components/RoundedButton'
+import SessionActions, {hasAuthData} from '../../Redux/SessionRedux'
+import RoundedButton from '../../Components/RoundedButton'
 
 // Styles
-import styles from './Styles/MyFeedScreenStyles'
+import styles from '../Styles/MyFeedScreenStyles'
 
 class ProfileScreen extends React.Component {
 

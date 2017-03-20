@@ -5,7 +5,7 @@ import { Actions as NavigationActions } from 'react-native-router-flux'
 import Svg, { Circle, Polygon } from 'react-native-svg'
 import { reduxForm } from 'redux-form'
 // Styles
-import styles from './Styles/PhotoTakerScreenStyles'
+import styles from './PhotoTakerScreenStyles'
 
 class PhotoTakerScreen extends React.Component {
   constructor (props) {

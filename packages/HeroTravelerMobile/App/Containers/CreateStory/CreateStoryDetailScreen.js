@@ -1,9 +1,7 @@
 import React from 'react'
 import { ScrollView, Text } from 'react-native'
-/* import { Actions as NavigationActions } from 'react-native-router-flux' */
-
 // Styles
-import styles from './Styles/MyFeedScreenStyles'
+import styles from './CreateStoryScreenStyles'
 
 export default class CreateStoryDetailScreen extends React.Component {
 

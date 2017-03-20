@@ -8,13 +8,13 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { Actions as NavigationActions } from 'react-native-router-flux'
-import SignupActions, {hasSignedUp} from '../Redux/SignupRedux'
-import { Images } from '../Themes'
-import RoundedButton from '../Components/RoundedButton'
-import TOS from '../Components/TosFooter'
+import SignupActions, {hasSignedUp} from '../../Redux/SignupRedux'
+import { Images } from '../../Themes'
+import RoundedButton from '../../Components/RoundedButton'
+import TOS from '../../Components/TosFooter'
 
 // styles
-import styles from './Styles/SignupScreenStyles'
+import styles from '../Styles/SignupScreenStyles'
 
 class Input extends React.Component {
   render() {

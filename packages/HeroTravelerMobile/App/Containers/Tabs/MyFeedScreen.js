@@ -3,11 +3,11 @@ import { ScrollView, Text, View } from 'react-native'
 import { connect } from 'react-redux'
 
 // Styles
-import styles from './Styles/MyFeedScreenStyles'
-import StoryActions from '../Redux/StoryRedux.js'
+import styles from '../Styles/MyFeedScreenStyles'
+import StoryActions from '../../Redux/StoryRedux.js'
 
 // import ErrorScreen
-import StoryList from '../Components/StoryList'
+import StoryList from '../../Components/StoryList'
 
 class MyFeedScreen extends React.Component {
   static propTypes = {

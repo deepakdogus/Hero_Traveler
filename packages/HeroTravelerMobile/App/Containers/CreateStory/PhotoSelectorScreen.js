@@ -2,10 +2,11 @@ import React from 'react'
 import { View } from 'react-native'
 import { reduxForm } from 'redux-form'
 import { Actions as NavigationActions } from 'react-native-router-flux'
-const ImagePicker = require('react-native-image-picker')
+// const ImagePicker = require('react-native-image-picker')
+import ImagePicker from 'react-native-image-picker'
 
 // Styles
-import styles from './Styles/MyFeedScreenStyles'
+import styles from './CreateStoryScreenStyles'
 
 class PhotoSelectorScreen extends React.Component {
   constructor (props) {

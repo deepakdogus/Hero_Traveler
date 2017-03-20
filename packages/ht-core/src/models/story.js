@@ -29,7 +29,9 @@ const StorySchema = new mongoose.Schema({
 
 
 StorySchema.statics.getUserFeed = function getUserFeed(userId){
-    return this.find({author: {$ne: userId}})
+    return this
+      .find({author: {$ne: userId}})
+      .sort({createdAt: -1})
       .populate('author')
 }
 

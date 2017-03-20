@@ -1,23 +1,21 @@
 const storyData = [
-    {
-        title: "Story 1",
-        description: "Rufus the Retriever get Lost in Paradise",
-        author: null,
-        likes: 10,
-        createdAt: Date.now(),
-        coverImage: "http://www.discover-bali-indonesia.com/photos/bali-rice-fields-02.jpg"
-    },
-    {
-        title: "My Longer Story Title 2",
-        description: "The Incredible Journey of Fido into Bali's Ancient Heartland",
-        author: null,
-        likes: 0,
-        createdAt: Date.now(),
-        coverImage: "https://pix6.agoda.net/city/17193/17193-7x3.jpg"
-    }
+  {
+    title: "The first story ever",
+    description: "Rufus the Retriever get Lost in Paradise",
+    author: null,
+    likes: 10,
+    coverImage: "https://c1.staticflickr.com/5/4123/4796402805_ea2c065272_b.jpg"
+  },
+  {
+    title: "Napa Valley Tour",
+    description: "The Incredible Journey of Fido into Bali's Ancient Heartland",
+    author: null,
+    likes: 0,
+    coverImage: "https://c1.staticflickr.com/5/4082/4776008973_7617678619_b.jpg"
+  }
 ];
 
-export default (users) =>{
+export default (users) => {
     if (!users || !users.length){
         throw new Error("No users supplied to story generator")
     } else {

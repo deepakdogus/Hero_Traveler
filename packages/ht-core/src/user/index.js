@@ -6,7 +6,7 @@ import getOrCreateTokens from './getOrCreateTokens'
 import refreshAccessToken from './refreshAccessToken'
 import revokeAccessToken from './revokeAccessToken'
 
-export default {
+export {
   create,
   get,
   validateCredentials,

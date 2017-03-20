@@ -1,11 +1,12 @@
 // a library to wrap and simplify api calls
 import apisauce from 'apisauce'
+import {get} from 'lodash'
 
 // our "constructor"
 const create = () => {
   const api = apisauce.create({
     baseURL: __DEV__ ?
-      'http://localhost:3000/':
+      'http://10.0.3.2:3000/':
       'http://ht-api-dev.rehashstudio.com/',
     headers: {
       // @TODO client-id

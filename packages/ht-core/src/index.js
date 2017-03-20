@@ -1,24 +1,28 @@
 import mongoose from 'mongoose'
 import Promise from 'bluebird'
 import seedDB from './seed'
-
+import * as User from './user'
+import * as Models from './models'
+import * as Story from './story'
 
 mongoose.Promise = Promise
-// @TODO extract to init function
-if (process.env.NODE_ENV === 'development') {
-  mongoose.connect('mongodb://localhost/ht-mono');
-} else {
-  mongoose.connect('mongodb://ht-api:lFMGJtlEO13MV5qd4GBa0wjkQLiteVq9n1pyQChp3aRgH@ds161008.mlab.com:61008/hero-traveler')
-}
 
-const seed = false;
-if (seed){
+export {User, Story, Models}
+
+function startMongoDB(options) {
+  mongoose.connect(options.mongoDB)
+
+  if (options.seedDB && process.env.NODE_ENV === 'development'){
     try {
-        seedDB()
-    } catch (err){
-        console.log(err)
+      seedDB()
+    } catch (err) {
+      console.log(err)
     }
+  }
 }
 
-export {default as User} from './user'
-export {default as Models} from './models'
+export default function initializeCore(options) {
+  return Promise.all([
+    startMongoDB(options)
+  ])
+}

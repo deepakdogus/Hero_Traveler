@@ -1,10 +1,8 @@
-import {Models} from '@rwoody/ht-core'
+import {Story} from '@rwoody/ht-core'
 
 export default function createStory(req, res) {
-  const {title} = req.body
-  Models.Story.create({
-    title,
-  }).then(data => {
+  const {story} = req.body
+  Story.create(story).then(data => {
     res.json(data)
   })
 }

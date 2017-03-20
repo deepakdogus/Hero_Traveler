@@ -1,20 +1,20 @@
-import Models from '../models'
+import {AuthToken} from '../models'
 import formatTokenResponse from '../utils/formatTokenResponse'
 import getUser from './getUser'
 
 export default function refreshAccessToken(userId, refreshTokenValue) {
-  return Models.AuthToken.findOne({
+  return AuthToken.findOne({
     user: userId,
     value: refreshTokenValue,
     type: 'refresh'
   })
   .then(refreshToken => {
-    return Models.AuthToken.remove({
+    return AuthToken.remove({
       user: userId,
       type: 'access'
     })
     .then(() => {
-      return Models.AuthToken.findOrAdd({
+      return AuthToken.findOrAdd({
         user: userId,
         type: 'access'
       })

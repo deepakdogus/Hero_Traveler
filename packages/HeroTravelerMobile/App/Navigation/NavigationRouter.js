@@ -44,6 +44,8 @@ class TabIcon extends React.Component {
        return 'plus'
       case 'profile':
         return 'user'
+      default:
+        return 'rocket'
     }
   }
 

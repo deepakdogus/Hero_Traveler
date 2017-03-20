@@ -5,7 +5,6 @@ import getUser from './getUser'
 const comparePassword = Promise.promisify(bcrypt.compare)
 
 export default function validateCredentials(username, password) {
-  console.log('email', username)
   return getUser({username})
     .then(user => {
       if (!user) {

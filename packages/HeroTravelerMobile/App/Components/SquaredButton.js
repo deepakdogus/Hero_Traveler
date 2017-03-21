@@ -14,15 +14,15 @@ ExamplesRegistry.addComponentExample('Squared Button', () =>
 export default class SquaredButton extends React.Component {
   static propTypes = {
     onPress: PropTypes.func,
-    text: PropTypes.string,
-    children: PropTypes.string,
+    text: PropTypes.node,
+    children: PropTypes.node,
     // style: PropTypes.object,
     navigator: PropTypes.object
   }
 
   getText () {
     const buttonText = this.props.text || this.props.children || ''
-    return buttonText.toUpperCase()
+    return buttonText
   }
 
   render () {

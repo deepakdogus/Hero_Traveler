@@ -7,10 +7,9 @@ import R from 'ramda'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import * as Animatable from 'react-native-animatable'
 
-import RoundedButton from '../../Components/RoundedButton'
+import SquaredButton from '../../Components/SquaredButton'
 import RenderTextInput from '../../Components/RenderTextInput'
-import styles, { placeholderColor } from './CreateStoryScreenStyles'
-import pstyles from './PhotoStoryScreenStyles'
+import styles, { placeholderColor } from './PhotoStoryScreenStyles'
 
 class PhotoStoryScreen extends React.Component {
 
@@ -23,6 +22,7 @@ class PhotoStoryScreen extends React.Component {
   }
 
   renderCoverPhoto = (photoPath) => {
+    console.log('photoPath', photoPath)
     return R.ifElse(
       R.identity,
       R.always((
@@ -60,6 +60,7 @@ class PhotoStoryScreen extends React.Component {
             style={styles.addPhotoButton}
             onPress={() => NavigationActions.photoSelectorScreen()}
           >
+            <Icon name='camera' size={40} color='gray' />
             <Text style={this.renderTextColor(styles.baseTextColor, photoPath)}>+ ADD COVER PHOTO</Text>
           </TouchableOpacity>
         </View>
@@ -68,7 +69,6 @@ class PhotoStoryScreen extends React.Component {
             name='title'
             component={RenderTextInput}
             style={this.renderTextColor(styles.titleInput, photoPath)}
-            autoCapitalize='characters'
             placeholder='ADD A TITLE'
             placeholderTextColor={this.renderPlaceholderColor(placeholderColor, photoPath)}
           />
@@ -86,36 +86,35 @@ class PhotoStoryScreen extends React.Component {
 
   render () {
     return (
-      <ScrollView style={[styles.containerWithNavbar, styles.containerWithNavbarOverride]}>
+      <ScrollView style={[styles.containerWithNavbarAndTabbar]}>
         {this.renderCoverPhoto(this.props.coverPhoto)}
-        <View style={pstyles.addContentWrapper}>
-          <RoundedButton
-            text={<Icon name="plus" size={15} />}
-            onPress={this._toggleCreateButton}
-            style={pstyles.newContentButton}
-          />
-          {this.state.isAddContentMenuOpen && <View
-              style={pstyles.createMenu}
-            >
-              <RoundedButton
-                style={pstyles.createMenuButton}
-                onPress={this._addPhoto}
-              >
-                <Icon name="camera" size={15} />
-              </RoundedButton>
-              <RoundedButton
-                style={pstyles.createMenuButton}
-                onPress={this._addVideo}
-              >
-                <Icon name="video-camera" size={15} />
-              </RoundedButton>
-              <RoundedButton
-                style={pstyles.createMenuButton}
-                onPress={this._addText}
-              >
-                <Icon name="font" size={15} />
-              </RoundedButton>
-            </View>}
+        <View
+          style={styles.addContentWrapper}
+        >
+          <SquaredButton
+            style={styles.createMenuButton}
+            onPress={this._addText}
+          >
+            <Icon name="font" size={15} />
+          </SquaredButton>
+          <SquaredButton
+            style={styles.createMenuButton}
+            onPress={this._addLink}
+          >
+            <Icon name="link" size={15} />
+          </SquaredButton>
+          <SquaredButton
+            style={styles.createMenuButton}
+            onPress={this._addPhoto}
+          >
+            <Icon name="camera" size={15} />
+          </SquaredButton>
+          <SquaredButton
+            style={styles.createMenuButton}
+            onPress={this._addVideo}
+          >
+            <Icon name="video-camera" size={15} />
+          </SquaredButton>
         </View>
       </ScrollView>
     )

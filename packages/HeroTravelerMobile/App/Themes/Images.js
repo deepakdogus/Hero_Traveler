@@ -22,7 +22,8 @@ const images = {
   hamburger: require('../Images/Icons/hamburger.png'),
   backButton: require('../Images/Icons/back-button.png'),
   closeButton: require('../Images/Icons/close-button.png'),
-  likes: require('../Images/Icons/ic-favorite-border.png')
+  likes: require('../Images/Icons/ic-favorite-border.png'),
+  createStory: require('../Images/create-story.png')
 }
 
 export default images

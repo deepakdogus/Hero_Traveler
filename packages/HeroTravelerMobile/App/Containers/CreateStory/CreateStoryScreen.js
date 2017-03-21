@@ -23,7 +23,7 @@ class CreateStoryScreen extends React.Component {
         contentContainerStyle={{alignItems: 'center'}}
       >
         <Image source={Images.whiteLogo} style={styles.logoImage} />
-        <Image source={Images.ignite} style={styles.storyImage} />
+        <Image source={Images.createStory} style={styles.storyImage} />
         <View style={styles.buttonGroup}>
           <TouchableOpacity
             style={styles.button}

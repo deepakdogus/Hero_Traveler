@@ -33,6 +33,7 @@ const getSceneStyle = (/* NavigationSceneRendererProps */ props, computedProps) 
 
 class TabIcon extends React.Component {
   getIconName(navKey) {
+    console.log('navKey', navKey)
     switch (navKey) {
       case 'myFeed':
         return 'home'
@@ -200,7 +201,7 @@ class NavigationRouter extends Component {
                 leftTitle='Cancel'
                 onLeft={() => NavActions.pop()}
                 rightTitle='Next'
-                onRight={() => NavActions.createStory_photo()}
+                onRight={() => NavActions.createStory_details()}
               />
               <Scene
                 key='createStory_details'

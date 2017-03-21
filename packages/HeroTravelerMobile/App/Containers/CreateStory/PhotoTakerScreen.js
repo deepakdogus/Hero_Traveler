@@ -1,8 +1,8 @@
 import React from 'react'
 import { View, TouchableOpacity } from 'react-native'
 import Camera from 'react-native-camera'
+import Icon from 'react-native-vector-icons/FontAwesome'
 import { Actions as NavigationActions } from 'react-native-router-flux'
-import Svg, { Circle, Polygon } from 'react-native-svg'
 import { reduxForm } from 'redux-form'
 // Styles
 import styles from './PhotoTakerScreenStyles'
@@ -10,11 +10,10 @@ import styles from './PhotoTakerScreenStyles'
 class PhotoTakerScreen extends React.Component {
   constructor (props) {
     super(props)
-    this.handleTakePhoto = this.handleTakePhoto.bind(this)
     this.state = {}
   }
 
-  handleTakePhoto () {
+  _handleTakePhoto = () => {
     this.cameraRef.capture()
         .then(({ path }) => {
           this.props.change('coverPhoto', path)
@@ -36,32 +35,10 @@ class PhotoTakerScreen extends React.Component {
          >
           <View style={styles.cameraControls}>
             <View>
-              <Svg
-                height='30'
-                width='30'
-              >
-                <Polygon
-                  points='1,1 29,1 15,29'
-                  stroke='white'
-                  fill='transparent'
-                  strokeWidth='2'
-                  />
-              </Svg>
+              <Icon name='bolt' size={30} />
             </View>
             <View style={{marginTop: 30}}>
-              <Svg
-                height='30'
-                width='30'
-              >
-                <Circle
-                  cx='15'
-                  cy='15'
-                  r='13'
-                  stroke='white'
-                  fill='transparent'
-                  strokeWidth='2'
-                />
-              </Svg>
+              <Icon name='camera' size={30} />
             </View>
           </View>
           <View style={{flex: 1}} />
@@ -70,25 +47,7 @@ class PhotoTakerScreen extends React.Component {
               touchableOpacity={0.2}
               onPress={this.handleTakePhoto}
             >
-              <Svg
-                height='80'
-                width='80'
-              >
-                <Circle
-                  cx='40'
-                  cy='40'
-                  r='40'
-                  fill='white'
-                />
-                <Circle
-                  cx='40'
-                  cy='40'
-                  r='33'
-                  stroke='black'
-                  strokeWidth='2'
-                  fill='white'
-                />
-              </Svg>
+              <Icon name='circle-o' size={30} />
             </TouchableOpacity>
           </View>
         </Camera>
@@ -101,4 +60,3 @@ export default reduxForm({
   form: 'createStory',
   destroyOnUnmount: false
 })(PhotoTakerScreen)
-

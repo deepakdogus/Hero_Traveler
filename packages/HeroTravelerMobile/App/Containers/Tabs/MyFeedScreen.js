@@ -60,7 +60,7 @@ class MyFeedScreen extends React.Component {
     } else {
       content = (
         <StoryList
-          stories={stories.asMutable()}
+          stories={stories}
           onPressStory={story => alert(`Story ${story._id} pressed`)}
           onPressLike={story => alert(`Story ${story._id} liked`)}
         />

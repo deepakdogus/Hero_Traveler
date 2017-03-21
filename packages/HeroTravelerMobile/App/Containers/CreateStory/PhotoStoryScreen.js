@@ -5,7 +5,6 @@ import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
 import R from 'ramda'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import * as Animatable from 'react-native-animatable'
 
 import SquaredButton from '../../Components/SquaredButton'
 import RenderTextInput from '../../Components/RenderTextInput'
@@ -21,37 +20,38 @@ class PhotoStoryScreen extends React.Component {
     }
   }
 
-  renderCoverPhoto = (photoPath) => {
-    console.log('photoPath', photoPath)
+  renderCoverPhoto = () => {
+    const {story: {coverPhoto}} = this.props
     return R.ifElse(
       R.identity,
       R.always((
-        <Image source={{uri: photoPath}}>
+        <Image source={{uri: coverPhoto}}>
           <View style={styles.photoOverlay} />
-          {this.renderContent(photoPath)}
+          {this.renderContent()}
         </Image>
       )),
-      R.always(this.renderContent(photoPath))
-    )(!!photoPath)
+      R.always(this.renderContent(coverPhoto))
+    )(!!coverPhoto)
   }
 
-  renderTextColor = (baseStyle, photoPath) => {
+  renderTextColor = (baseStyle) => {
     return R.ifElse(
       R.identity,
       R.always([baseStyle, { color: 'white' }]),
       R.always(baseStyle),
-    )(!!photoPath)
+    )(!!this.props.story.coverPhoto)
   }
 
-  renderPlaceholderColor = (baseColor, photoPath) => {
+  renderPlaceholderColor = (baseColor) => {
     return R.ifElse(
       R.identity,
       R.always('white'),
       R.always(baseColor)
-    )(!!photoPath)
+    )(!!this.props.story.coverPhoto)
   }
 
-  renderContent (photoPath) {
+  renderContent () {
+    const {story} = this.props
     return (
       <KeyboardAvoidingView behavior='position'>
         <View style={styles.spaceView} />
@@ -61,23 +61,24 @@ class PhotoStoryScreen extends React.Component {
             onPress={() => NavigationActions.photoSelectorScreen()}
           >
             <Icon name='camera' size={40} color='gray' />
-            <Text style={this.renderTextColor(styles.baseTextColor, photoPath)}>+ ADD COVER PHOTO</Text>
+            <Text style={this.renderTextColor(styles.baseTextColor)}>+ ADD COVER PHOTO</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.addTitleView}>
           <Field
             name='title'
             component={RenderTextInput}
-            style={this.renderTextColor(styles.titleInput, photoPath)}
+            style={this.renderTextColor(styles.titleInput)}
             placeholder='ADD A TITLE'
-            placeholderTextColor={this.renderPlaceholderColor(placeholderColor, photoPath)}
+            placeholderTextColor={this.renderPlaceholderColor(placeholderColor)}
           />
           <Field
-            name='subTitle'
+            name='description'
             component={RenderTextInput}
-            style={this.renderTextColor(styles.subTitleInput, photoPath)}
+            style={this.renderTextColor(styles.subTitleInput)}
+            value={story.description}
             placeholder='Add a subtitle'
-            placeholderTextColor={this.renderPlaceholderColor(placeholderColor, photoPath)}
+            placeholderTextColor={this.renderPlaceholderColor(placeholderColor)}
           />
         </View>
       </KeyboardAvoidingView>
@@ -85,9 +86,10 @@ class PhotoStoryScreen extends React.Component {
   }
 
   render () {
+    console.log('this.props.story', this.props)
     return (
       <ScrollView style={[styles.containerWithNavbarAndTabbar]}>
-        {this.renderCoverPhoto(this.props.coverPhoto)}
+        {this.renderCoverPhoto(this.props.story.coverPhoto)}
         <View
           style={styles.addContentWrapper}
         >
@@ -148,23 +150,20 @@ class PhotoStoryScreen extends React.Component {
 const selector = formValueSelector('createStory')
 export default R.compose(
   connect(state => ({
-    coverPhoto: selector(state, 'coverPhoto'),
-    storyElements: selector(state, 'storyElements'),
-    foo: selector(state, 'foo'),
-    title: selector(state, 'title'),
-    state: state
+    story: {
+      title: selector(state, 'title'),
+      description: selector(state, 'description'),
+      coverPhoto: selector(state, 'coverPhoto'),
+    }
+    // state: state
   })),
   reduxForm({
     form: 'createStory',
     destoryOnUnmount: false,
     initialValues: {
       title: '',
-      subTitle: '',
-      coverPhoto: null,
-      storyElements: [{
-        Component: 'RoundedButton',
-        text: 'work!'
-      }]
+      description: '',
+      coverPhoto: null
     }
   })
 )(PhotoStoryScreen)

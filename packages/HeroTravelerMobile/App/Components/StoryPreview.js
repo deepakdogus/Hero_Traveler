@@ -29,8 +29,10 @@ export default class StoryPreview extends Component {
         createdAt
       } = story;
 
+    console.log('this.props.height', this.props.height)
     return (
-      <TouchableHighlight onPress={this._onPress} style={styles.storyPreviewContainer}>
+      <TouchableHighlight onPress={this._onPress}
+        style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}>
         <View style={styles.contentContainer}>
           <Image
             resizeMode="cover"

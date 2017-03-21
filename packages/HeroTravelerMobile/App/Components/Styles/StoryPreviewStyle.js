@@ -7,9 +7,6 @@ export default StyleSheet.create({
     flex: 1,
     // paddingTop: Metrics.titlePadding
   },
-  storyPreviewContainer: {
-    height: Metrics.screenHeight - Metrics.navBarHeight - 20,
-  },
   contentContainer: {
     flex: 1,
     flexDirection: "row"

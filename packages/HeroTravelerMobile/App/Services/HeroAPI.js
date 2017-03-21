@@ -83,6 +83,18 @@ const create = () => {
     return api.get(`story/${userId}/feed`)
   }
 
+  const getUserStories = (userId) => {
+    return api.get(`story/user/${userId}`)
+  }
+
+  const createStory = (story) => {
+    return api.post('story', {story})
+  }
+
+  const updateStoryCover = (story) => {
+    return api.put(`story/${story._id}/cover`)
+  }
+
   // ------
   // STEP 3
   // ------
@@ -101,7 +113,8 @@ const create = () => {
     login,
     logout,
     signupEmail,
-    getUserFeed
+    getUserFeed,
+    createStory
   }
 }
 

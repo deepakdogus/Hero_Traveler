@@ -6,6 +6,7 @@ import StoryPreview from '../Components/StoryPreview'
 
 export default class StoryList extends React.Component {
   static propTypes = {
+    height: PropTypes.number,
     stories: PropTypes.array,
     onPressLike: PropTypes.func,
     onPressStory: PropTypes.func
@@ -34,6 +35,7 @@ export default class StoryList extends React.Component {
     return (
       <StoryPreview
         key={story._id}
+        height={this.props.height}
         story={story}
         onPress={this._onPressStory}
         onPressLike={this._onPressLike}

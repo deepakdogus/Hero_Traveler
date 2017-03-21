@@ -16,6 +16,7 @@ import { SessionTypes } from '../Redux/SessionRedux'
 
 
 import { StoryTypes } from '../Redux/StoryRedux'
+import { StoryCreateTypes } from '../Redux/StoryCreateRedux'
 
 /* ------------- Sagas ------------- */
 
@@ -27,7 +28,11 @@ import { getUserAvatar } from './GithubSagas'
 import { openScreen } from './OpenScreenSagas'
 
 
-import { getUserFeed } from './StorySagas'
+import {
+  getUserFeed,
+  createPhotoStory,
+  getUserStories
+} from './StorySagas'
 
 /* ------------- API ------------- */
 
@@ -53,6 +58,8 @@ export default function * root () {
     // some sagas receive extra parameters in addition to an action
     takeLatest(GithubTypes.USER_REQUEST, getUserAvatar, api),
 
-    takeLatest(StoryTypes.FEED_REQUEST, getUserFeed, heroAPI)
+    takeLatest(StoryCreateTypes.PUBLISH_REQUEST, createPhotoStory, heroAPI),
+    takeLatest(StoryTypes.FEED_REQUEST, getUserFeed, heroAPI),
+    takeLatest(StoryTypes.FROM_USER_REQUEST, getUserStories, heroAPI),
   ]
 }

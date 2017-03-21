@@ -69,6 +69,9 @@ export default StyleSheet.create({
     marginRight: 5,
     fontFamily: Fonts.type.crimsonText
   },
+  timeSince: {
+    marginRight: Metrics.doubleBaseMargin
+  },
   tagline: {
     ...Fonts.style.h1,
     color: Colors.steel

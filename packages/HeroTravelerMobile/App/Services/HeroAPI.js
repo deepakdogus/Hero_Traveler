@@ -1,13 +1,14 @@
 // a library to wrap and simplify api calls
+import {Platform} from 'react-native'
 import apisauce from 'apisauce'
 import {get} from 'lodash'
+
+const devURL = Platform.OS === 'ios' ? 'http://localhost:3000/' : 'http://10.0.3.2:3000/'
 
 // our "constructor"
 const create = () => {
   const api = apisauce.create({
-    baseURL: __DEV__ ?
-      'http://10.0.3.2:3000/':
-      'http://ht-api-dev.rehashstudio.com/',
+    baseURL: __DEV__ ? devURL : 'http://ht-api-dev.rehashstudio.com/',
     headers: {
       // @TODO client-id
       'client-id': 'xzy',

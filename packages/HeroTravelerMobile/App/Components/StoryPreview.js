@@ -1,19 +1,19 @@
-import React from 'react'
+import React, {PropTypes, Component} from 'react'
 import { View, Text, Image, TouchableHighlight } from 'react-native'
-import styles from './Styles/StoryPreviewStyle'
-import { Metrics, Images } from '../Themes'
 import LinearGradient from 'react-native-linear-gradient';
 
-/*
+import { Metrics, Images } from '../Themes'
+import styles from './Styles/StoryPreviewStyle'
+import LikesComponent from './LikeComponent'
 
+/*
 TODO:
 - Fix the Navar height issue
-
 */
-
-export default class StoryPreview extends React.Component {
-  _onPress(title){
-    alert(`story ${this.props.story.title} pressed`)
+export default class StoryPreview extends Component {
+  static propTypes = {
+    onPressLike: PropTypes.func,
+    onPress: PropTypes.func,
   }
 
   render () {
@@ -30,7 +30,7 @@ export default class StoryPreview extends React.Component {
       } = story;
 
     return (
-      <TouchableHighlight onPress={()=>this._onPress(title)} style={styles.storyPreviewContainer}>
+      <TouchableHighlight onPress={this._onPress} style={styles.storyPreviewContainer}>
         <View style={styles.contentContainer}>
           <Image
             resizeMode="cover"
@@ -47,8 +47,13 @@ export default class StoryPreview extends React.Component {
                   <Text style={styles.username}>{username}</Text>
                 </View>
                 <View style={styles.row}>
-                  <Text style={styles.bottomRight}>2 days ago</Text>
-                  <Text style={styles.bottomRight}>{likes}</Text>
+                  <Text style={[styles.bottomRight, styles.timeSince]}>2 days ago</Text>
+                  <LikesComponent
+                    onPress={this._onPressLike}
+                    numberStyle={styles.bottomRight}
+                    likes={42}
+                    isLiked={false}
+                  />
                 </View>
               </View>
             </LinearGradient>
@@ -56,5 +61,19 @@ export default class StoryPreview extends React.Component {
         </View>
       </TouchableHighlight>
     )
+  }
+
+  _onPress = () => {
+    const {story, onPress} = this.props
+    if (onPress) {
+      onPress(story)
+    }
+  }
+
+  _onPressLike = () => {
+    const {story, onPressLike} = this.props
+    if (onPressLike) {
+      onPressLike(story)
+    }
   }
 }

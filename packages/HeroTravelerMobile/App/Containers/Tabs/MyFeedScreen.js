@@ -58,13 +58,19 @@ class MyFeedScreen extends React.Component {
       let innerContent = this._showNoStories();
       content = this._wrapElt(innerContent);
     } else {
-      content = (<StoryList stories={stories}/>);
+      content = (
+        <StoryList
+          stories={stories.asMutable()}
+          onPressStory={story => alert(`Story ${story._id} pressed`)}
+          onPressLike={story => alert(`Story ${story._id} liked`)}
+        />
+      );
     }
 
     return (
-      <ScrollView style={styles.scrollContainer}>
+      <View style={styles.scrollContainer}>
         { content }
-      </ScrollView>
+      </View>
     )
   }
 }

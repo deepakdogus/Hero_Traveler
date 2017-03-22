@@ -28,15 +28,18 @@ const StorySchema = new mongoose.Schema({
 });
 
 
-StorySchema.statics.getUserFeed = function getUserFeed(userId){
+StorySchema.statics.getUserFeed = function getUserFeed(userId) {
     return this
       .find({author: {$ne: userId}})
       .sort({createdAt: -1})
       .populate('author')
 }
 
+StorySchema.statics.getUserStories = function getUserStories(userId) {
+  return this
+    .find({author: userId})
+    .sort({createdAt: -1})
+    .populate('author')
+}
+
 export default mongoose.model('Story', StorySchema)
-
-
-//
-// stories:

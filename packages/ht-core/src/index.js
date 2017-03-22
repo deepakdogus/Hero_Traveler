@@ -4,10 +4,16 @@ import seedDB from './seed'
 import * as User from './user'
 import * as Models from './models'
 import * as Story from './story'
+import * as Category from './category'
 
 mongoose.Promise = Promise
 
-export {User, Story, Models}
+export {
+  User,
+  Story,
+  Category,
+  Models,
+}
 
 function startMongoDB(options) {
   mongoose.connect(options.mongoDB)

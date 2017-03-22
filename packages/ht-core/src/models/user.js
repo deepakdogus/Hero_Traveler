@@ -1,6 +1,6 @@
 import crypto from 'crypto'
 import mongoose, {Schema} from 'mongoose'
-import mongooseHidden from './mongooseHidden'
+import mongooseHidden from './plugins/mongooseHidden'
 
 import encryptPassword from '../utils/encryptPassword'
 

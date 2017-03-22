@@ -13,10 +13,9 @@ import { LoginTypes } from '../Redux/LoginRedux'
 import { OpenScreenTypes } from '../Redux/OpenScreenRedux'
 import { SignupTypes } from '../Redux/SignupRedux'
 import { SessionTypes } from '../Redux/SessionRedux'
-
-
 import { StoryTypes } from '../Redux/StoryRedux'
 import { StoryCreateTypes } from '../Redux/StoryCreateRedux'
+import { CategoryTypes } from '../Redux/CategoryRedux'
 
 /* ------------- Sagas ------------- */
 
@@ -26,7 +25,7 @@ import { signupEmail } from './SignupSagas'
 import { logout } from './SessionSagas'
 import { getUserAvatar } from './GithubSagas'
 import { openScreen } from './OpenScreenSagas'
-
+import { getCategories } from './CategorySagas'
 
 import {
   getUserFeed,
@@ -61,5 +60,6 @@ export default function * root () {
     takeLatest(StoryCreateTypes.PUBLISH_REQUEST, createPhotoStory, heroAPI),
     takeLatest(StoryTypes.FEED_REQUEST, getUserFeed, heroAPI),
     takeLatest(StoryTypes.FROM_USER_REQUEST, getUserStories, heroAPI),
+    takeLatest(CategoryTypes.LOAD_CATEGORIES_REQUEST, getCategories, heroAPI),
   ]
 }

@@ -1,0 +1,65 @@
+import React, {Component} from 'react'
+import {
+  View,
+  Text,
+  ListView,
+  TouchableOpacity,
+  Image
+} from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import _ from 'lodash'
+
+import {Colors} from '../../Themes'
+import styles from './ExploreGridStyles'
+
+function getUrl(categoryImage) {
+  return `https://s3.amazonaws.com/hero-traveler/${categoryImage.path}${categoryImage.filename}`
+}
+
+export default class ExploreGrid extends Component {
+
+  constructor(props) {
+    super(props)
+    const rowHasChanged = (r1, r2) => {
+      console.log('row has changed', rowHasChanged)
+      return _.isEqual(r1, r2)
+    }
+    const ds = new ListView.DataSource({rowHasChanged})
+    this.data = ds.cloneWithRows(props.categories)
+  }
+
+  render() {
+    return (
+      <ListView
+        contentContainerStyle={styles.grid}
+        dataSource={this.state.dataSource}
+        renderRow={this.renderRow}
+        pageSize={this.props.categories.length}
+      />
+    )
+  }
+
+  renderRow = (category) => {
+    console.log('category checked', category.title, category.selected)
+    return (
+      <TouchableOpacity
+        onPress={() => this._onPress(category)}
+        style={styles.gridRow}
+      >
+        <Image
+          source={{uri: getUrl(category.image.versions.thumbnail240)}}
+          style={styles.gridImage}
+        >
+          <Text style={styles.gridRowText}>{category.title}</Text>
+          {category.selected && <Icon style={styles.selectedIcon} name='check-circle-o' color={Colors.red} />}
+        </Image>
+      </TouchableOpacity>
+    )
+  }
+
+  _onPress = (category) => {
+    if (this.props.onPress) {
+      this.props.onPress(category)
+    }
+  }
+}

@@ -50,14 +50,15 @@ class SignupScreen extends React.Component {
   }
 
   _signup = () => {
-    if (!this.props.fetching) {
-      this.props.attemptSignup(
-        this.state.fullName,
-        this.state.username,
-        this.state.email,
-        this.state.password
-      )
-    }
+    NavigationActions.signupFlow()
+    // if (!this.props.fetching) {
+    //   this.props.attemptSignup(
+    //     this.state.fullName,
+    //     this.state.username,
+    //     this.state.email,
+    //     this.state.password
+    //   )
+    // }
   }
 
   render () {

@@ -118,12 +118,12 @@ class NavigationRouter extends Component {
             />
             <Scene
               key='signupFlow'
-              navigationBarStyle={Styles.navBar}
+              {...darkNavBarProps}
             >
               <Scene
+                initial
                 key='signupFlow_topics'
                 component={SignupTopics}
-                title='Welcome!'
                 rightTitle='Next'
                 onRight={() => NavActions.signupFlow_social()}
               />
@@ -157,6 +157,7 @@ class NavigationRouter extends Component {
                 component={ExploreScreen}
                 title='Explore'
                 {...darkNavBarProps}
+                hideNavBar={true}
               />
               <Scene
                 key='createStory'

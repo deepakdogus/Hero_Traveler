@@ -95,6 +95,10 @@ const create = () => {
     return api.put(`story/${story._id}/cover`)
   }
 
+  const getCategories = () => {
+    return api.get('category')
+  }
+
   // ------
   // STEP 3
   // ------
@@ -114,7 +118,9 @@ const create = () => {
     logout,
     signupEmail,
     getUserFeed,
-    createStory
+    createStory,
+    getCategories,
+    getUserStories
   }
 }
 

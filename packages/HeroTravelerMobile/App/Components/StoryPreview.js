@@ -29,7 +29,8 @@ export default class StoryPreview extends Component {
         createdAt
       } = story;
 
-    console.log('this.props.height', this.props.height)
+      console.log('storypreview', username, profile)
+
     return (
       <TouchableHighlight onPress={this._onPress}
         style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}>

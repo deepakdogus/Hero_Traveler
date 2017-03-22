@@ -13,6 +13,7 @@ export default () => {
     signup: require('./SignupRedux').reducer,
     session: require('./SessionRedux').reducer,
     storyCreate: require('./StoryCreateRedux').reducer,
+    categories: require('./CategoryRedux').reducer,
     form: formReducer,
   })
 

@@ -22,6 +22,7 @@ class ProfileScreen extends React.Component {
   }
 
   render () {
+    console.log('this.props.posts', this.props.posts)
     return (
       <View style={styles.containerWithNavbar}>
         <Text style={styles.title}>Profile</Text>
@@ -33,7 +34,7 @@ class ProfileScreen extends React.Component {
           onPress={this._getMyToken}
           text='Token'
         />
-        {this.props.posts &&
+        {this.props.posts && this.props.posts.length > 0 &&
           <StoryList
             stories={this.props.posts}
             height={200}
@@ -53,6 +54,7 @@ class ProfileScreen extends React.Component {
 const mapStateToProps = (state) => {
   let { fetching, posts, error } = state.feed;
   return {
+    user: state.session.user,
     isLoggedIn: hasAuthData(state.session),
     apiTokens: state.session.tokens,
     fetching,
@@ -63,7 +65,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    user: state.auth.user,
     logout: (tokens) => dispatch(SessionActions.logout(tokens)),
     attemptGetUserStories: (userId) => dispatch(StoryActions.fromUserRequest(userId))
   }

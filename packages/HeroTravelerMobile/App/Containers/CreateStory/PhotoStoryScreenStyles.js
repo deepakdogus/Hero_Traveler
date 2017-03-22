@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
-import { ApplicationStyles, Colors, Metrics } from '../../Themes/'
+import { ApplicationStyles, Colors, Metrics, Fonts } from '../../Themes/'
 
-const third = (1 / 3) * (Metrics.screenHeight - Metrics.navBarHeight)
+const third = (1 / 3) * (Metrics.screenHeight - 20)
 
 export const placeholderColor = Colors.darkBackground
 
@@ -9,14 +9,19 @@ export default StyleSheet.create({
   containerWithNavbarAndTabbar: {
     ...ApplicationStyles.screen.containerWithNavbarAndTabbar
   },
+  lightGreyAreasBG: {
+    backgroundColor: Colors.lightGreyAreas
+  },
   spaceView: {
     height: third
   },
   titleInput: {
+    ...Fonts.style.title,
+    color: '#1a1c21',
     marginTop: 20,
     marginLeft: 20,
     height: 28,
-    fontSize: 28
+    fontSize: 28,
   },
   subTitleInput: {
     height: 28,
@@ -40,20 +45,6 @@ export default StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start'
   },
-  createMenuButton: {
-    justifyContent: 'space-around',
-    alignItems: 'center'
-  },
-  addContentWrapper: {
-    flex: 1,
-    flexDirection: 'row',
-    height: 40,
-    backgroundColor: 'gray',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
   addPhotoButton: {
     padding: 50,
     justifyContent: 'center',
@@ -62,4 +53,10 @@ export default StyleSheet.create({
   baseTextColor: {
     color: Colors.darkBackground
   },
+  iconDownView: {
+    backgroundColor: Colors.snow,
+    alignItems: 'center',
+    paddingTop: Metrics.baseMargin / 2,
+    paddingBottom: Metrics.baseMargin / 2
+  }
 })

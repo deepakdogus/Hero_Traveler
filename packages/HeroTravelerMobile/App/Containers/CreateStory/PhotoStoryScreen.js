@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 import SquaredButton from '../../Components/SquaredButton'
 import RenderTextInput from '../../Components/RenderTextInput'
+import Editor from '../../Components/Editor'
 import styles, { placeholderColor } from './PhotoStoryScreenStyles'
 
 class PhotoStoryScreen extends React.Component {
@@ -54,96 +55,51 @@ class PhotoStoryScreen extends React.Component {
     const {story} = this.props
     return (
       <KeyboardAvoidingView behavior='position'>
-        <View style={styles.spaceView} />
-        <View style={styles.addPhotoView}>
-          <TouchableOpacity
-            style={styles.addPhotoButton}
-            onPress={() => NavigationActions.photoSelectorScreen()}
-          >
-            <Icon name='camera' size={40} color='gray' />
-            <Text style={this.renderTextColor(styles.baseTextColor)}>+ ADD COVER PHOTO</Text>
-          </TouchableOpacity>
+        <View style={styles.lightGreyAreasBG}>
+          <View style={styles.spaceView} />
+          <View style={styles.addPhotoView}>
+            <TouchableOpacity
+              style={styles.addPhotoButton}
+              onPress={() => NavigationActions.photoSelectorScreen()}
+            >
+              <Icon name='camera' size={40} color='gray' />
+              <Text style={this.renderTextColor(styles.baseTextColor)}>+ ADD COVER PHOTO</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.addTitleView}>
+            <Field
+              name='title'
+              component={RenderTextInput}
+              style={this.renderTextColor(styles.titleInput)}
+              placeholder='ADD A TITLE'
+              placeholderTextColor={this.renderPlaceholderColor(placeholderColor)}
+            />
+            <Field
+              name='description'
+              component={RenderTextInput}
+              style={this.renderTextColor(styles.subTitleInput)}
+              value={story.description}
+              placeholder='Add a subtitle'
+              placeholderTextColor={this.renderPlaceholderColor(placeholderColor)}
+            />
+          </View>
         </View>
-        <View style={styles.addTitleView}>
-          <Field
-            name='title'
-            component={RenderTextInput}
-            style={this.renderTextColor(styles.titleInput)}
-            placeholder='ADD A TITLE'
-            placeholderTextColor={this.renderPlaceholderColor(placeholderColor)}
-          />
-          <Field
-            name='description'
-            component={RenderTextInput}
-            style={this.renderTextColor(styles.subTitleInput)}
-            value={story.description}
-            placeholder='Add a subtitle'
-            placeholderTextColor={this.renderPlaceholderColor(placeholderColor)}
-          />
+        <View style={styles.iconDownView}>
+          <Icon name='caret-down' size={12} />
         </View>
       </KeyboardAvoidingView>
     )
   }
 
   render () {
-    console.log('this.props.story', this.props)
     return (
-      <ScrollView style={[styles.containerWithNavbarAndTabbar]}>
-        {this.renderCoverPhoto(this.props.story.coverPhoto)}
-        <View
-          style={styles.addContentWrapper}
-        >
-          <SquaredButton
-            style={styles.createMenuButton}
-            onPress={this._addText}
-          >
-            <Icon name="font" size={15} />
-          </SquaredButton>
-          <SquaredButton
-            style={styles.createMenuButton}
-            onPress={this._addLink}
-          >
-            <Icon name="link" size={15} />
-          </SquaredButton>
-          <SquaredButton
-            style={styles.createMenuButton}
-            onPress={this._addPhoto}
-          >
-            <Icon name="camera" size={15} />
-          </SquaredButton>
-          <SquaredButton
-            style={styles.createMenuButton}
-            onPress={this._addVideo}
-          >
-            <Icon name="video-camera" size={15} />
-          </SquaredButton>
-        </View>
-      </ScrollView>
+      <View style={[styles.containerWithNavbar]}>
+        <ScrollView>
+          {this.renderCoverPhoto(this.props.story.coverPhoto)}
+          <Editor />
+        </ScrollView>
+      </View>
     )
-  }
-
-  _toggleCreateButton = () => {
-    this.setState({
-      isAddContentMenuOpen: !this.state.isAddContentMenuOpen
-    })
-  }
-
-  _addPhoto = () => {
-    this.setState({
-      newContentSection: 'photo'
-    })
-  }
-
-  _addVideo = () => {
-    this.setState({
-      newContentSection: 'video'
-    })
-  }
-
-  _addText = () => {
-    this.setState({
-      newContentSection: 'text'
-    })
   }
 }
 

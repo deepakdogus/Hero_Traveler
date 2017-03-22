@@ -8,6 +8,7 @@ export default StyleSheet.create({
     marginHorizontal: Metrics.section,
     marginVertical: Metrics.baseMargin,
     backgroundColor: Colors.red,
+    flexDirection: 'column',
     justifyContent: 'center'
   },
   buttonText: {

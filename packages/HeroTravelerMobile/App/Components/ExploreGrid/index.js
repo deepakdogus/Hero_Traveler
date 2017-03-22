@@ -20,38 +20,43 @@ export default class ExploreGrid extends Component {
 
   constructor(props) {
     super(props)
-    const rowHasChanged = (r1, r2) => {
-      console.log('row has changed', rowHasChanged)
-      return _.isEqual(r1, r2)
-    }
-    const ds = new ListView.DataSource({rowHasChanged})
-    this.data = ds.cloneWithRows(props.categories)
+    // const rowHasChanged = (r1, r2) => {
+    //   console.log('row has changed', rowHasChanged)
+    //   return _.isEqual(r1, r2)
+    // }
+    // const ds = new ListView.DataSource({rowHasChanged})
+    // this.data = ds.cloneWithRows(props.categories)
   }
 
   render() {
     return (
-      <ListView
-        contentContainerStyle={styles.grid}
-        dataSource={this.state.dataSource}
-        renderRow={this.renderRow}
-        pageSize={this.props.categories.length}
-      />
+      <View
+        style={styles.grid}
+      >
+        {this.props.categories.map(this.renderRow)}
+      </View>
     )
   }
 
   renderRow = (category) => {
-    console.log('category checked', category.title, category.selected)
     return (
       <TouchableOpacity
         onPress={() => this._onPress(category)}
         style={styles.gridRow}
+        key={category._id}
       >
         <Image
           source={{uri: getUrl(category.image.versions.thumbnail240)}}
           style={styles.gridImage}
         >
           <Text style={styles.gridRowText}>{category.title}</Text>
-          {category.selected && <Icon style={styles.selectedIcon} name='check-circle-o' color={Colors.red} />}
+          {category.selected &&
+            <Icon
+              style={styles.selectedIcon}
+              size={20}
+              name='check-circle-o'
+              color={Colors.red} />
+          }
         </Image>
       </TouchableOpacity>
     )

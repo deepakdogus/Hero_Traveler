@@ -99,6 +99,10 @@ const create = () => {
     return api.get('category')
   }
 
+  const getSuggestedUsers = () => {
+    return api.get('user/suggestFollowers')
+  }
+
   // ------
   // STEP 3
   // ------
@@ -120,7 +124,8 @@ const create = () => {
     getUserFeed,
     createStory,
     getCategories,
-    getUserStories
+    getUserStories,
+    getSuggestedUsers
   }
 }
 

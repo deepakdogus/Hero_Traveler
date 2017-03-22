@@ -130,7 +130,6 @@ class NavigationRouter extends Component {
               <Scene
                 key='signupFlow_social'
                 component={SignupSocial}
-                title='Follow'
                 rightTitle='Done'
                 onRight={() => NavActions.tabbar()}
               />

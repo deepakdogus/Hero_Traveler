@@ -61,7 +61,6 @@ class SignupTopicsScreen extends React.Component {
 
   _toggleCategory = (category) => {
     const isChecked = this.getIsChecked(category)
-    console.log('isChecked', isChecked)
     this.setState({
       selectedCategories: {
         ...this.state.selectedCategories,

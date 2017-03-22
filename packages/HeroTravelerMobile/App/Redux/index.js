@@ -14,6 +14,7 @@ export default () => {
     session: require('./SessionRedux').reducer,
     storyCreate: require('./StoryCreateRedux').reducer,
     categories: require('./CategoryRedux').reducer,
+    users: require('./UserRedux').reducer,
     form: formReducer,
   })
 

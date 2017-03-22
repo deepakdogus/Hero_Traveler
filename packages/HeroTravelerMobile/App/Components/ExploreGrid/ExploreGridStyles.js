@@ -35,7 +35,7 @@ export default StyleSheet.create({
   },
   selectedIcon: {
     position: 'absolute',
-    bottom: 0,
-    right: 0,
+    bottom: 5,
+    right: 5,
   }
 })

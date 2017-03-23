@@ -4,6 +4,8 @@ import mongooseHidden from './plugins/mongooseHidden'
 
 import encryptPassword from '../utils/encryptPassword'
 
+export const ModelName = 'User'
+
 const UserSchema = new Schema({
   username: {
     type: String,
@@ -25,6 +27,16 @@ const UserSchema = new Schema({
     fullName: String,
     avatar: String
   },
+  counts: {
+    followers: {
+      type: Number,
+      default: 0
+    },
+    following: {
+      type: Number,
+      default: 0
+    }
+  },
   // Timestamps
   createdAt: {
     type: Date,
@@ -38,6 +50,4 @@ const UserSchema = new Schema({
 
 UserSchema.plugin(mongooseHidden)
 
-const UserModel = mongoose.model('User', UserSchema)
-
-export default UserModel
+export default mongoose.model(ModelName, UserSchema)

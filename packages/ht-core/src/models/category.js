@@ -1,5 +1,7 @@
 import mongoose from 'mongoose'
 
+export const ModelName = 'Category'
+
 const CategorySchema = new mongoose.Schema({
   title: String,
   image: {
@@ -33,4 +35,4 @@ const CategorySchema = new mongoose.Schema({
   }
 });
 
-export default mongoose.model('Category', CategorySchema)
+export default mongoose.model(ModelName, CategorySchema)

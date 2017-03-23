@@ -79,6 +79,10 @@ const create = () => {
     })
   }
 
+  const getMe = () => {
+    return api.get('user')
+  }
+
   const getUserFeed = (userId) => {
     return api.get(`story/${userId}/feed`)
   }
@@ -140,6 +144,7 @@ const create = () => {
   return {
     setAuth,
     unsetAuth,
+    getMe,
     login,
     logout,
     signupEmail,

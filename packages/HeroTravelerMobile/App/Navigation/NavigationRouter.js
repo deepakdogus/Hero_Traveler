@@ -142,7 +142,7 @@ class NavigationRouter extends Component {
             <Scene
               key='settings'
               component={SettingsScreen}
-              direction='vertical'
+              direction='horizontal'
               onLeft={() => NavActions.pop()}
               title='Settings'
               {...darkNavBarProps}

@@ -47,7 +47,7 @@ export default StyleSheet.create({
   row: {
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "flex-start"
+    alignItems: "center"
   },
   avatar: {
     height: 36,

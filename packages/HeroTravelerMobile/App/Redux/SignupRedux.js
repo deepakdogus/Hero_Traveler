@@ -14,6 +14,12 @@ const { Types, Creators } = createActions({
   signupUnfollowCategory: ['categoryId'],
   signupUnfollowCategorySuccess: ['categoryId'],
   signupUnfollowCategoryFailure: ['categoryId', 'error'],
+  signupFollowUser: ['userId'],
+  signupFollowUserSuccess: ['userId'],
+  signupFollowUserFailure: ['userId', 'error'],
+  signupUnfollowUser: ['userId'],
+  signupUnfollowUserSuccess: ['userId'],
+  signupUnfollowUserFailure: ['userId', 'error'],
 })
 
 export const SignupTypes = Types
@@ -26,6 +32,7 @@ export const INITIAL_STATE = Immutable({
   saving: false,
   signedUp: false,
   selectedCategories: [],
+  selectedUsers: []
 })
 
 /* ------------- Reducers ------------- */
@@ -55,6 +62,24 @@ export const unfollowCategoryFailure = (state, {categoryId}) =>
 export const unfollowCategorySuccess = (state, {categoryId}) =>
   state.merge({error: null})
 
+export const followUser = (state, {userId}) =>
+  state.merge({selectedUsers: state.selectedUsers.concat(userId)})
+
+export const followUserFailure = (state, {userId}) =>
+  state.merge({selectedUsers: _.without(state.selectedUsers, userId), error: 'Failed to follow user'})
+
+export const followUserSuccess = (state, {userId}) =>
+  state.merge({error: null})
+
+export const unfollowUser = (state, {userId}) =>
+  state.merge({selectedUsers: _.without(state.selectedUsers, userId)})
+
+export const unfollowUserFailure = (state, {userId}) =>
+  state.merge({selectedUsers: state.selectedUsers.concat(userId), error: 'Failed to follow user'})
+
+export const unfollowUserSuccess = (state, {userId}) =>
+  state.merge({error: null})
+
 /* ------------- Hookup Reducers To Types ------------- */
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.SIGNUP_EMAIL]: signupEmail,
@@ -66,6 +91,12 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SIGNUP_UNFOLLOW_CATEGORY]: unfollowCategory,
   [Types.SIGNUP_UNFOLLOW_CATEGORY_SUCCESS]: unfollowCategorySuccess,
   [Types.SIGNUP_UNFOLLOW_CATEGORY_FAILURE]: unfollowCategoryFailure,
+  [Types.SIGNUP_FOLLOW_USER]: followUser,
+  [Types.SIGNUP_FOLLOW_USER_SUCCESS]: followUserSuccess,
+  [Types.SIGNUP_FOLLOW_USER_FAILURE]: followUserFailure,
+  [Types.SIGNUP_UNFOLLOW_USER]: unfollowUser,
+  [Types.SIGNUP_UNFOLLOW_USER_SUCCESS]: unfollowUserSuccess,
+  [Types.SIGNUP_UNFOLLOW_USER_FAILURE]: unfollowUserFailure,
 })
 
 export const hasSignedUp = (signupState) => signupState.signedUp

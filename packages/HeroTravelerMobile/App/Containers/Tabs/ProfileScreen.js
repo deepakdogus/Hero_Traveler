@@ -32,6 +32,7 @@ const Tab = ({text, onPress, selected}) => {
 class ProfileScreen extends React.Component {
 
   componentDidMount() {
+    this.props.attemptRefreshUser()
     this.props.attemptGetUserStories(this.props.user._id)
   }
 
@@ -143,7 +144,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     logout: (tokens) => dispatch(SessionActions.logout(tokens)),
-    attemptGetUserStories: (userId) => dispatch(StoryActions.fromUserRequest(userId))
+    attemptGetUserStories: (userId) => dispatch(StoryActions.fromUserRequest(userId)),
+    attemptRefreshUser: (userId) => dispatch(SessionActions.refreshUser(userId))
   }
 }
 

@@ -22,6 +22,10 @@ class SignupSocialScreen extends React.Component {
     this.props.loadSuggestedPeople()
   }
 
+  userIsSelected(user) {
+    return _.includes(this.props.selectedUsersById, user._id)
+  }
+
   render () {
     let content
 
@@ -61,6 +65,7 @@ class SignupSocialScreen extends React.Component {
           </View>
           <Text style={styles.sectionHeader}>SUGGESTED PEOPLE</Text>
           {this.props.users.map(u => {
+            const selected = this.userIsSelected(u)
             return (
               <View style={[styles.rowWrapper]} key={u._id}>
                 <View style={[styles.row, styles.followers]}>
@@ -70,9 +75,10 @@ class SignupSocialScreen extends React.Component {
                     <Text style={styles.followerCount}>100 followers</Text>
                   </View>
                   <RoundedButton
-                    style={styles.followersButton}
-                    textStyle={styles.followersButtonText}
-                    text='FOLLOWING'
+                    style={selected ? styles.selectedFollowersButton : styles.followersButton}
+                    textStyle={selected ? styles.selectedFollowersButtonText : styles.followersButtonText}
+                    text={selected ? 'FOLLOWING' : '+ FOLLOW'}
+                    onPress={() => this.toggleFollow(u)}
                   />
                 </View>
               </View>
@@ -96,17 +102,29 @@ class SignupSocialScreen extends React.Component {
       </ScrollView>
     )
   }
+
+  toggleFollow = (u) => {
+    const isSelected = this.userIsSelected(u)
+    if (!isSelected) {
+      this.props.followUser(u._id)
+    } else {
+      this.props.unfollowUser(u._id)
+    }
+  }
 }
 
 const mapStateToProps = (state) => {
   return {
-    users: state.users.users
+    users: state.users.users,
+    selectedUsersById: state.signup.selectedUsers
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadSuggestedPeople: () => dispatch(UserActions.loadUserSuggestionsRequest())
+    loadSuggestedPeople: () => dispatch(UserActions.loadUserSuggestionsRequest()),
+    followUser: (userId) => dispatch(SignupActions.signupFollowUser(userId)),
+    unfollowUser: (userId) => dispatch(SignupActions.signupUnfollowUser(userId))
   }
 }
 

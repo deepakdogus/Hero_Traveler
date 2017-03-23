@@ -62,13 +62,30 @@ export default StyleSheet.create({
     fontSize: 14,
     color: '#757575'
   },
-  followersButton: {
+  selectedFollowersButton: {
+    borderColor: Colors.red,
+    borderWidth: 1,
+    backgroundColor: Colors.red,
     height: 20,
     borderRadius: 5,
     marginVertical: 0,
     marginHorizontal: 0,
   },
+  selectedFollowersButtonText: {
+    marginVertical: 0,
+    marginHorizontal: 5,
+  },
+  followersButton: {
+    borderColor: Colors.red,
+    borderWidth: 1,
+    height: 20,
+    backgroundColor: Colors.snow,
+    borderRadius: 5,
+    marginVertical: 0,
+    marginHorizontal: 0,
+  },
   followersButtonText: {
+    color: Colors.red,
     marginVertical: 0,
     marginHorizontal: 5,
   },

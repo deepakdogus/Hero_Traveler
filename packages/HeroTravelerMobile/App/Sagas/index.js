@@ -22,8 +22,8 @@ import { UserTypes } from '../Redux/UserRedux'
 
 import { startup } from './StartupSagas'
 import { login, loginFacebook } from './LoginSagas'
-import { signupEmail, followCategory, unfollowCategory } from './SignupSagas'
-import { logout } from './SessionSagas'
+import { signupEmail, followCategory, unfollowCategory, followUser, unfollowUser } from './SignupSagas'
+import { logout, getMe } from './SessionSagas'
 import { getUserAvatar } from './GithubSagas'
 import { openScreen } from './OpenScreenSagas'
 import { getCategories } from './CategorySagas'
@@ -56,6 +56,9 @@ export default function * root () {
     takeLatest(SignupTypes.SIGNUP_EMAIL, signupEmail, heroAPI),
     takeLatest(SignupTypes.SIGNUP_FOLLOW_CATEGORY, followCategory, heroAPI),
     takeLatest(SignupTypes.SIGNUP_UNFOLLOW_CATEGORY, unfollowCategory, heroAPI),
+    takeLatest(SignupTypes.SIGNUP_FOLLOW_USER, followUser, heroAPI),
+    takeLatest(SignupTypes.SIGNUP_UNFOLLOW_USER, unfollowUser, heroAPI),
+    takeLatest(SessionTypes.REFRESH_USER, getMe, heroAPI),
     takeLatest(SessionTypes.LOGOUT, logout, heroAPI),
 
     // some sagas receive extra parameters in addition to an action

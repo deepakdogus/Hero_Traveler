@@ -1,12 +1,19 @@
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
+import _ from 'lodash'
 
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
   signupEmail: ['fullName', 'username', 'email', 'password'],
   signupEmailSuccess: null,
-  signupEmailFailure: ['error']
+  signupEmailFailure: ['error'],
+  signupFollowCategory: ['categoryId'],
+  signupFollowCategorySuccess: ['categoryId'],
+  signupFollowCategoryFailure: ['categoryId', 'error'],
+  signupUnfollowCategory: ['categoryId'],
+  signupUnfollowCategorySuccess: ['categoryId'],
+  signupUnfollowCategoryFailure: ['categoryId', 'error'],
 })
 
 export const SignupTypes = Types
@@ -16,7 +23,9 @@ export default Creators
 export const INITIAL_STATE = Immutable({
   error: null,
   fetching: false,
-  signedUp: false
+  saving: false,
+  signedUp: false,
+  selectedCategories: [],
 })
 
 /* ------------- Reducers ------------- */
@@ -28,11 +37,35 @@ export const signupEmailSuccess = (state) =>
 export const failure = (state, { error }) =>
   state.merge({ fetching: false, error })
 
+export const followCategory = (state, {categoryId}) =>
+  state.merge({selectedCategories: state.selectedCategories.concat(categoryId)})
+
+export const followCategoryFailure = (state, {categoryId}) =>
+  state.merge({selectedCategories: _.without(state.selectedCategories, categoryId), error: 'Failed to add category'})
+
+export const followCategorySuccess = (state, {categoryId}) =>
+  state.merge({error: null})
+
+export const unfollowCategory = (state, {categoryId}) =>
+  state.merge({selectedCategories: _.without(state.selectedCategories, categoryId)})
+
+export const unfollowCategoryFailure = (state, {categoryId}) =>
+  state.merge({selectedCategories: state.selectedCategories.concat(categoryId), error: 'Failed to remove category'})
+
+export const unfollowCategorySuccess = (state, {categoryId}) =>
+  state.merge({error: null})
+
 /* ------------- Hookup Reducers To Types ------------- */
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.SIGNUP_EMAIL]: signupEmail,
   [Types.SIGNUP_EMAIL_SUCCESS]: signupEmailSuccess,
-  [Types.SIGNUP_EMAIL_FAILURE]: failure
+  [Types.SIGNUP_EMAIL_FAILURE]: failure,
+  [Types.SIGNUP_FOLLOW_CATEGORY]: followCategory,
+  [Types.SIGNUP_FOLLOW_CATEGORY_SUCCESS]: followCategorySuccess,
+  [Types.SIGNUP_FOLLOW_CATEGORY_FAILURE]: followCategoryFailure,
+  [Types.SIGNUP_UNFOLLOW_CATEGORY]: unfollowCategory,
+  [Types.SIGNUP_UNFOLLOW_CATEGORY_SUCCESS]: unfollowCategorySuccess,
+  [Types.SIGNUP_UNFOLLOW_CATEGORY_FAILURE]: unfollowCategoryFailure,
 })
 
 export const hasSignedUp = (signupState) => signupState.signedUp

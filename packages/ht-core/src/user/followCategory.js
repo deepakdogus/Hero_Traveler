@@ -1,17 +1,25 @@
 import {Category, Follower} from '../models'
+import _ from 'lodash'
 
 // called when userId follows categoryId
-export default function followCategory(userId, categoryId) {
-  return Follower.create({
-    follower: userId,
-    followee: categoryId,
-    type: 'Category'
+export default function followCategories(userId, categoryIds) {
+  const records = _.map(categoryIds, catId => {
+    return {
+      follower: userId,
+      followee: catId,
+      type: 'Category'
+    }
   })
+  return Follower.insertMany(records)
   .then(() => {
     return Category.update({
-      _id: categoryId
+      _id: {
+        $in: [categoryIds]
+      }
     }, {
       $inc: {'counts.following': 1}
+    }, {
+      multi: true
     })
   })
 }

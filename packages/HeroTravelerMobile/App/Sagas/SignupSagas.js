@@ -26,3 +26,33 @@ export function * signupEmail (api, action) {
     yield put(SignupActions.signupEmailFailure(response.data.message))
   }
 }
+
+export function * followCategory(api, {categoryId}) {
+  const response = yield call(
+    api.followCategory,
+    categoryId
+  )
+
+  if (response.ok) {
+    yield [
+      put(SignupActions.signupFollowCategorySuccess(categoryId))
+    ]
+  } else {
+    yield put(SignupActions.signupFollowCategoryFailure(categoryId, 'Did not save'))
+  }
+}
+
+export function * unfollowCategory(api, {categoryId}) {
+  const response = yield call(
+    api.unfollowCategory,
+    categoryId
+  )
+
+  if (response.ok) {
+    yield [
+      put(SignupActions.signupUnfollowCategorySuccess(categoryId))
+    ]
+  } else {
+    yield put(SignupActions.signupUnfollowCategoryFailure(categoryId, 'Did not save'))
+  }
+}

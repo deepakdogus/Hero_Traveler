@@ -9,6 +9,7 @@ import {connect} from 'react-redux'
 import _ from 'lodash'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
+import SignupActions from '../../Redux/SignupRedux'
 import UserActions from '../../Redux/UserRedux'
 import RoundedButton from '../../Components/RoundedButton'
 import ExploreGrid from '../../Components/ExploreGrid'

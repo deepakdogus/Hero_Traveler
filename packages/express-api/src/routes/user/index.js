@@ -62,12 +62,12 @@ router.put('/unfollow/user/:userId',
   endpointWrapper(unfollowUser)
 )
 
-router.post('/follow/category/:categoryId',
+router.post('/follow/category',
   hasValidOauth,
   endpointWrapper(followCategory)
 )
 
-router.put('/unfollow/category/:categoryId',
+router.put('/unfollow/category',
   hasValidOauth,
   endpointWrapper(unfollowCategory)
 )

@@ -15,12 +15,6 @@ import styles from './Styles/LaunchScreenStyles'
 
 class LaunchScreen extends React.Component {
 
-  componentWillReceiveProps(newProps) {
-    if (!this.props.isLoggedIn && newProps.isLoggedIn) {
-      NavigationActions.tabbar({type: NavActionConst.REPLACE})
-    }
-  }
-
   render () {
     return (
       <Image

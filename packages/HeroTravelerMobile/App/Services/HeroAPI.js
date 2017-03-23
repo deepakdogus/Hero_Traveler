@@ -1,7 +1,7 @@
 // a library to wrap and simplify api calls
 import {Platform} from 'react-native'
 import apisauce from 'apisauce'
-import {get} from 'lodash'
+import {get, isArray} from 'lodash'
 
 const devURL = Platform.OS === 'ios' ? 'http://localhost:3000/' : 'http://10.0.3.2:3000/'
 
@@ -103,6 +103,28 @@ const create = () => {
     return api.get('user/suggestFollowers')
   }
 
+  const followUser = (userId) => {
+    return api.post(`user/follow/user/${userId}`)
+  }
+
+  const unfollowUser = (userId) => {
+    return api.put(`user/unfollow/user/${userId}`)
+  }
+
+  const followCategory = (categoryIds) => {
+    const categories = isArray(categoryIds) ? categoryIds : [categoryIds]
+    return api.post(`user/follow/category`, {
+      categories
+    })
+  }
+
+  const unfollowCategory = (categoryIds) => {
+    const categories = isArray(categoryIds) ? categoryIds : [categoryIds]
+    return api.put(`user/unfollow/category`, {
+      categories
+    })
+  }
+
   // ------
   // STEP 3
   // ------
@@ -125,7 +147,11 @@ const create = () => {
     createStory,
     getCategories,
     getUserStories,
-    getSuggestedUsers
+    getSuggestedUsers,
+    followUser,
+    unfollowUser,
+    followCategory,
+    unfollowCategory
   }
 }
 

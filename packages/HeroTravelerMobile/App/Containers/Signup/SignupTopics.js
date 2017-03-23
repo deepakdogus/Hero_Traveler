@@ -7,6 +7,7 @@ import {
 import {connect} from 'react-redux'
 import _ from 'lodash'
 
+import SignupActions from '../../Redux/SignupRedux'
 import CategoryActions from '../../Redux/CategoryRedux'
 import ExploreGrid from '../../Components/ExploreGrid'
 import styles from './SignupTopicsStyles'
@@ -34,7 +35,7 @@ class SignupTopicsScreen extends React.Component {
           categories={this.props.categories.map(c => {
             return {
               ...c,
-              selected: this.getIsChecked(c)
+              selected: this.getIsSelected(c)
             }
           })} />
       )
@@ -55,30 +56,32 @@ class SignupTopicsScreen extends React.Component {
     )
   }
 
-  getIsChecked(category) {
-    return _.get(this.state, `selectedCategories.${category._id}`, false)
+  getIsSelected(category) {
+    return _.includes(this.props.selectedCategories, category._id)
   }
 
   _toggleCategory = (category) => {
-    const isChecked = this.getIsChecked(category)
-    this.setState({
-      selectedCategories: {
-        ...this.state.selectedCategories,
-        [category._id]: !isChecked
-      }
-    })
+    const isSelected = this.getIsSelected(category)
+    if (!isSelected) {
+      this.props.selectCategory(category._id)
+    } else {
+      this.props.unselectCategory(category._id)
+    }
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    categories: state.categories.categories
+    categories: state.categories.categories,
+    selectedCategories: state.signup.selectedCategories
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest())
+    loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
+    selectCategory: (categoryId) => dispatch(SignupActions.signupFollowCategory(categoryId)),
+    unselectCategory: (categoryId) => dispatch(SignupActions.signupUnfollowCategory(categoryId)),
   }
 }
 

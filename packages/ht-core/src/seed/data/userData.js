@@ -6,7 +6,7 @@ export default () => (
       email: 'ryanwood+test@rehashstudio.com',
       profile: {
         fullName: 'Ryan Wood',
-        avatar: 'https://68.media.tumblr.com/avatar_29bdba358c83_128.png'
+        avatar: 'https://en.gravatar.com/userimage/12681921/294792c8dcd398e5896c31fff5f09c58.jpg?size=200'
       }
     },
     {
@@ -15,7 +15,7 @@ export default () => (
       email: 'ben+test@rehashstudio.com',
       profile: {
         fullName: 'Ben Neiswander',
-        avatar: 'http://icons.iconarchive.com/icons/wackypixel/dogs-n-puppies/128/Puppy-6-icon.png'
+        avatar: 'https://68.media.tumblr.com/avatar_29bdba358c83_128.png'
       }
     }
   ]

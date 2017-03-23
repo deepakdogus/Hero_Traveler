@@ -20,7 +20,7 @@ export default (users) => {
         throw new Error("No users supplied to story generator")
     } else {
         return storyData.map( (story, idx) => {
-            story.author = users[0]._id
+            story.author = users[1]._id
             return story;
         })
     }

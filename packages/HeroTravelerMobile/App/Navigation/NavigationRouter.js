@@ -25,6 +25,7 @@ import SignupTopics from '../Containers/Signup/SignupTopics'
 import SignupSocial from '../Containers/Signup/SignupSocial'
 import PhotoSelectorScreen from '../Containers/CreateStory/PhotoSelectorScreen'
 import PhotoTakerScreen from '../Containers/CreateStory/PhotoTakerScreen'
+import SettingsScreen from '../Containers/SettingsScreen'
 
 // https://github.com/aksonov/react-native-router-flux/blob/master/Example/Example.js#L52
 const getSceneStyle = (/* NavigationSceneRendererProps */ props, computedProps) => {
@@ -138,6 +139,14 @@ class NavigationRouter extends Component {
               key='login'
               component={LoginScreen}
             />
+            <Scene
+              key='settings'
+              component={SettingsScreen}
+              direction='vertical'
+              onLeft={() => NavActions.pop()}
+              title='Settings'
+              {...darkNavBarProps}
+            />
             <Scene key='tabbar'
               {...tabBarProps}
             >
@@ -175,8 +184,7 @@ class NavigationRouter extends Component {
                 key='profile'
                 icon={TabIcon}
                 component={ProfileScreen}
-                title='Profile'
-                {...darkNavBarProps}
+                hideNavBar
               />
             </Scene>
             <Scene

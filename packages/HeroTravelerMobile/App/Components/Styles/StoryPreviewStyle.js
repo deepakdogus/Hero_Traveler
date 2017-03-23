@@ -15,9 +15,9 @@ export default StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-end"
   },
-  previewInfo: {
-    padding: 16,
-    paddingBottom: Metrics.navBarHeight + 20,
+  gradient: {
+    paddingHorizontal: Metrics.doubleBaseMargin,
+    paddingVertical: Metrics.doubleBaseMargin
   },
   title: {
     fontSize: 28,
@@ -47,7 +47,7 @@ export default StyleSheet.create({
   row: {
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "flex-start"
   },
   avatar: {
     height: 36,

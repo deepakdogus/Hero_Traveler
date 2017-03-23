@@ -3,11 +3,13 @@ import { ScrollView, Text, View } from 'react-native'
 import { connect } from 'react-redux'
 
 // Styles
-import styles from '../Styles/MyFeedScreenStyles'
-import StoryActions from '../../Redux/StoryRedux.js'
 
-// import ErrorScreen
+import {Metrics} from '../../Themes'
+import StoryActions from '../../Redux/StoryRedux.js'
 import StoryList from '../../Components/StoryList'
+import styles from '../Styles/MyFeedScreenStyles'
+
+const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
 
 class MyFeedScreen extends React.Component {
   static propTypes = {
@@ -60,7 +62,9 @@ class MyFeedScreen extends React.Component {
     } else {
       content = (
         <StoryList
+          style={styles.storyList}
           stories={stories}
+          height={imageHeight}
           onPressStory={story => alert(`Story ${story._id} pressed`)}
           onPressLike={story => alert(`Story ${story._id} liked`)}
         />
@@ -68,7 +72,7 @@ class MyFeedScreen extends React.Component {
     }
 
     return (
-      <View style={styles.scrollContainer}>
+      <View style={[styles.containerWithNavbarAndTabbar, styles.root]}>
         { content }
       </View>
     )

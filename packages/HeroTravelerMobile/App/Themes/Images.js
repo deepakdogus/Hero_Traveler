@@ -23,7 +23,8 @@ const images = {
   backButton: require('../Images/Icons/back-button.png'),
   closeButton: require('../Images/Icons/close-button.png'),
   likes: require('../Images/Icons/ic-favorite-border.png'),
-  createStory: require('../Images/create-story.png')
+  createStory: require('../Images/create-story.png'),
+  profile: require('../Images/profile.png')
 }
 
 export default images

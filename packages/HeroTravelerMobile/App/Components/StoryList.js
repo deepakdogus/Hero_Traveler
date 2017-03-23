@@ -9,7 +9,8 @@ export default class StoryList extends React.Component {
     height: PropTypes.number,
     stories: PropTypes.array,
     onPressLike: PropTypes.func,
-    onPressStory: PropTypes.func
+    onPressStory: PropTypes.func,
+    forProfile: PropTypes.bool,
   }
 
   constructor(props) {
@@ -26,7 +27,7 @@ export default class StoryList extends React.Component {
       <ListView
         dataSource={this.state.dataSource}
         renderRow={this._renderStory}
-        style={[styles.container]}
+        style={[styles.container, this.props.style]}
       />
     )
   }
@@ -34,6 +35,9 @@ export default class StoryList extends React.Component {
   _renderStory = (story) => {
     return (
       <StoryPreview
+        forProfile={this.props.forProfile}
+        titleStyle={this.props.titleStyle}
+        subtitleStyle={this.props.subtitleStyle}
         key={story._id}
         height={this.props.height}
         story={story}

@@ -17,16 +17,16 @@ export default class LikeComponent extends Component {
     let rootComponent
     const container = (
       <View style={styles.wrapper}>
-        <Icon
-          name={this.props.isLiked ? 'heart' : 'heart-o'}
-          color={this.props.isLiked ? Colors.red : 'white'}
-          size={12}
-        />
         <Text
           style={[styles.text, this.props.numberStyle]}
         >
           {this.props.likes}
         </Text>
+        <Icon
+          name={this.props.isLiked ? 'heart' : 'heart-o'}
+          color={this.props.isLiked ? Colors.red : 'white'}
+          size={12}
+        />
       </View>
     )
 

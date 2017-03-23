@@ -14,6 +14,7 @@ export default () => {
     signup: require('./SignupRedux').reducer,
     session: require('./SessionRedux').reducer,
     storyCreate: require('./StoryCreateRedux').reducer,
+    guideCreate: require('./GuideCreateRedux').reducer,
     form: formReducer,
     startup: require('./StartupRedux').reducer,
     mediaUpload: require('./MediaUploadRedux').reducer,

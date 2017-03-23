@@ -11,11 +11,13 @@ class GuideListItem extends Component {
   static defaultProps = {
     active: false,
     create: false,
+    onPress: () => {}
   }
   static propTypes = {
     active: PropTypes.bool,
     create: PropTypes.bool,
     label: PropTypes.string,
+    onPress: PropTypes.func,
   }
   state = {
     active: this.props.active
@@ -27,11 +29,11 @@ class GuideListItem extends Component {
   }
   render = () => {
     const { onToggle, props, state} = this
-    const { create, img, label } = props
+    const { create, img, label, onPress } = props
     const { active } = state
     return (
       <ListItem
-        onPress={onToggle}
+        onPress={create ? onPress : onToggle}
         style={styles.container}
         leftElement={
           <View

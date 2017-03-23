@@ -42,6 +42,7 @@ import MediaSelectorScreen from '../Containers/MediaSelectorScreen'
 import ActivityScreen from '../Containers/Tabs/ActivityScreen'
 
 import AddToGuideScreen from '../Containers/AddToGuide/'
+import CreateGuideScreen from '../Containers/CreateGuide/'
 
 // Signup & login
 import LoginScreen from '../Containers/LoginScreen'
@@ -288,6 +289,11 @@ export default NavActions.create(
       <Scene
         key='addStoryToGuide'
         component={AddToGuideScreen}
+        hideNavBar={true}
+      />
+      <Scene
+        key='createGuide'
+        component={CreateGuideScreen}
         hideNavBar={true}
       />
       <Scene

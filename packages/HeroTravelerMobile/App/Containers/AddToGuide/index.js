@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { Actions } from 'react-native-router-flux'
+import { Actions as NavActions } from 'react-native-router-flux'
 import React, { Component } from 'react'
 import { Image, ScrollView, View, Text } from 'react-native'
 import { connect } from 'react-redux'
@@ -13,7 +13,7 @@ import NavBar from '../CreateStory/NavBar'
 
 import { Images, Colors, Metrics } from '../../Shared/Themes'
 
-import styles from './addtoguide.style'
+import styles from '../Styles/AddToGuide'
 
 const mapStateToProps = state => ({
   user: state.entities.users.entities[state.session.userId],
@@ -24,13 +24,17 @@ const mapDispatchToProps = () => ({})
 
 class AddToGuide extends Component {
   static defaultProps = {
-    onCancel: Actions.pop,
-    onDone: Actions.pop,
+    onCancel: NavActions.pop,
+    onDone: NavActions.pop,
   }
 
   static propTypes = {
     onCancel: PropTypes.func,
     onDone: PropTypes.func,
+  }
+
+  onDone = () => {
+    NavActions.pop()
   }
 
   render = () => {
@@ -52,13 +56,13 @@ class AddToGuide extends Component {
     ]
     return (
       <View style={storyCoverStyles.root}>
-        <ScrollView keyboardShouldPersistTaps="handled" bounces={false}>
+        <ScrollView keyboardShouldPersistTaps="handled" bounces={false} stickyHeaderIndices={[0]}>
           <NavBar
             onLeft={onCancel}
             leftTitle={'Cancel'}
             title={'ADD TO GUIDE'}
             isRightValid={false}
-            onRight={onDone}
+            onRight={this.onDone}
             rightTitle={'Done'}
             rightTextStyle={storyCoverStyles.navBarRightTextStyle}
             style={storyCoverStyles.navBarStyle}
@@ -76,8 +80,7 @@ class AddToGuide extends Component {
               placeholderTextColor={Colors.grey}
               containerStyles={styles.searchBar}
             />
-
-            <GuideListItem create/>
+            <GuideListItem create onPress={NavActions.createGuide}/>
 
             {dummyGuides.map((guide, idx) => (
               <GuideListItem active={guide.active} img={guide.coverImage} label={guide.title} key={`guide--${idx}`}/>

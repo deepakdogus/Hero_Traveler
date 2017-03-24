@@ -1,5 +1,5 @@
-import Models from '../models'
+import {User} from '../models'
 
 export default function getUser(query) {
-  return Models.User.findOne(query)
+  return User.findOne(query)
 }

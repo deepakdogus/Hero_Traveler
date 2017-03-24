@@ -10,20 +10,22 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 // screens identified by the router
 import LaunchScreen from '../Containers/LaunchScreen'
-import SignupScreen from '../Containers/SignupScreen'
+import SignupScreen from '../Containers/Signup/SignupScreen'
 import LoginScreen from '../Containers/LoginScreen'
 import Styles from './Styles/NavigationContainerStyles'
 
-import MyFeedScreen from '../Containers/MyFeedScreen'
-import ExploreScreen from '../Containers/ExploreScreen'
-import CreateStoryScreen from '../Containers/CreateStoryScreen'
-import CreateStoryDetailScreen from '../Containers/CreateStoryDetailScreen'
-import ActivityScreen from '../Containers/ActivityScreen'
-import ProfileScreen from '../Containers/ProfileScreen'
-import SignupTopics from '../Containers/SignupTopics'
-import SignupSocial from '../Containers/SignupSocial'
-import PhotoSelectorScreen from '../Containers/PhotoSelectorScreen'
-import PhotoTakerScreen from '../Containers/PhotoTakerScreen'
+import MyFeedScreen from '../Containers/Tabs/MyFeedScreen'
+import ExploreScreen from '../Containers/Tabs/ExploreScreen'
+import CreateStoryScreen from '../Containers/CreateStory/CreateStoryScreen'
+import PhotoStoryScreen from '../Containers/CreateStory/PhotoStoryScreen'
+import CreateStoryDetailScreen from '../Containers/CreateStory/CreateStoryDetailScreen'
+import ActivityScreen from '../Containers/Tabs/ActivityScreen'
+import ProfileScreen from '../Containers/Tabs/ProfileScreen'
+import SignupTopics from '../Containers/Signup/SignupTopics'
+import SignupSocial from '../Containers/Signup/SignupSocial'
+import PhotoSelectorScreen from '../Containers/CreateStory/PhotoSelectorScreen'
+import PhotoTakerScreen from '../Containers/CreateStory/PhotoTakerScreen'
+import SettingsScreen from '../Containers/SettingsScreen'
 
 // https://github.com/aksonov/react-native-router-flux/blob/master/Example/Example.js#L52
 const getSceneStyle = (/* NavigationSceneRendererProps */ props, computedProps) => {
@@ -43,6 +45,8 @@ class TabIcon extends React.Component {
        return 'plus'
       case 'profile':
         return 'user'
+      default:
+        return 'rocket'
     }
   }
 
@@ -83,15 +87,6 @@ const tabBarProps = {
 ***************************/
 
 class NavigationRouter extends Component {
-  constructor (props) {
-    super(props)
-    this.renderLeftButton = this.renderLeftButton.bind(this)
-  }
-
-  renderLeftButton (arg) {
-    console.log('it is ', arg)
-  }
-
   render () {
     return (
       <Router getSceneStyle={getSceneStyle}>
@@ -114,19 +109,18 @@ class NavigationRouter extends Component {
             />
             <Scene
               key='signupFlow'
-              navigationBarStyle={Styles.navBar}
+              {...darkNavBarProps}
             >
               <Scene
+                initial
                 key='signupFlow_topics'
                 component={SignupTopics}
-                title='Welcome!'
                 rightTitle='Next'
                 onRight={() => NavActions.signupFlow_social()}
               />
               <Scene
                 key='signupFlow_social'
                 component={SignupSocial}
-                title='Follow'
                 rightTitle='Done'
                 onRight={() => NavActions.tabbar()}
               />
@@ -134,6 +128,14 @@ class NavigationRouter extends Component {
             <Scene
               key='login'
               component={LoginScreen}
+            />
+            <Scene
+              key='settings'
+              component={SettingsScreen}
+              direction='horizontal'
+              onLeft={() => NavActions.pop()}
+              title='Settings'
+              {...darkNavBarProps}
             />
             <Scene key='tabbar'
               {...tabBarProps}
@@ -153,6 +155,7 @@ class NavigationRouter extends Component {
                 component={ExploreScreen}
                 title='Explore'
                 {...darkNavBarProps}
+                hideNavBar={true}
               />
               <Scene
                 key='createStory'
@@ -171,8 +174,7 @@ class NavigationRouter extends Component {
                 key='profile'
                 icon={TabIcon}
                 component={ProfileScreen}
-                title='Profile'
-                {...darkNavBarProps}
+                hideNavBar
               />
             </Scene>
             <Scene
@@ -183,8 +185,17 @@ class NavigationRouter extends Component {
               <Scene
                 key='createStory_info'
                 title='Create Story'
+                hideNavBar={true}
                 component={CreateStoryScreen}
+              />
+              <Scene
+                key='createStory_photo'
+                title='Create Story'
+                component={PhotoStoryScreen}
                 panHandlers={null}
+                hideNavBar={false}
+                type="replace"
+                direction="horizontal"
                 leftTitle='Cancel'
                 onLeft={() => NavActions.pop()}
                 rightTitle='Next'
@@ -234,10 +245,5 @@ class NavigationRouter extends Component {
     )
   }
 }
-
-/* navigationBarStyle={Styles.navBar}
-    renderLeftButton={this.renderLeftButton}
-    leftButtonIconStyle={Styles.leftButton}
-    rightButtonTextStyle={Styles.rightButton} */
 
 export default NavigationRouter

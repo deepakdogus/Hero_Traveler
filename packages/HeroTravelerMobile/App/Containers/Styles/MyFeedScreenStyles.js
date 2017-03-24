@@ -1,21 +1,18 @@
 import { StyleSheet } from 'react-native'
-import { ApplicationStyles, Metrics } from '../../Themes/'
+import { ApplicationStyles, Colors, Metrics } from '../../Themes/'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
-  scrollContainer: {
-    height: Metrics.screenHeight - Metrics.navBarHeight,
-    width: Metrics.screenWidth,
+  root: {
     backgroundColor: '#000',
-    flexDirection: "column",
   },
   scrollItemFullScreen: {
     height: Metrics.screenHeight - Metrics.navBarHeight,
     width: Metrics.screenWidth,
   },
   center: {
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   message: {
     fontSize: 24,

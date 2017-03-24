@@ -1,17 +1,16 @@
-import create from './createUser'
-import get from './getUser'
-import validateCredentials from './validateCredentials'
-import validateAccessToken from './validateAccessToken'
-import getOrCreateTokens from './getOrCreateTokens'
-import refreshAccessToken from './refreshAccessToken'
-import revokeAccessToken from './revokeAccessToken'
-
-export default {
-  create,
-  get,
-  validateCredentials,
-  validateAccessToken,
-  getOrCreateTokens,
-  refreshAccessToken,
-  revokeAccessToken
-}
+export {default as create} from './createUser'
+export {default as get} from './getUser'
+export {default as getFollowers} from './getFollowers'
+export {default as getFollowees} from './getFollowees'
+export {default as getCategories} from './getCategories'
+export {default as find} from './find'
+export {default as validateCredentials} from './validateCredentials'
+export {default as validateAccessToken} from './validateAccessToken'
+export {default as getOrCreateTokens} from './getOrCreateTokens'
+export {default as refreshAccessToken} from './refreshAccessToken'
+export {default as revokeAccessToken} from './revokeAccessToken'
+export {default as followUser} from './followUser'
+export {default as unfollowUser} from './unfollowUser'
+export {default as followCategory} from './followCategory'
+export {default as unfollowCategory} from './unfollowCategory'
+export {default as suggestedFollowers} from './suggestedFollowers'

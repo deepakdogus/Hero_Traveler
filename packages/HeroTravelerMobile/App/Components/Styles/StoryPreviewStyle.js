@@ -7,9 +7,6 @@ export default StyleSheet.create({
     flex: 1,
     // paddingTop: Metrics.titlePadding
   },
-  storyPreviewContainer: {
-    height: Metrics.screenHeight - Metrics.navBarHeight - 20,
-  },
   contentContainer: {
     flex: 1,
     flexDirection: "row"
@@ -18,9 +15,9 @@ export default StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-end"
   },
-  previewInfo: {
-    padding: 16,
-    paddingBottom: Metrics.navBarHeight + 20,
+  gradient: {
+    paddingHorizontal: Metrics.doubleBaseMargin,
+    paddingVertical: Metrics.doubleBaseMargin
   },
   title: {
     fontSize: 28,
@@ -68,6 +65,9 @@ export default StyleSheet.create({
     color: "#e0e0e0",
     marginRight: 5,
     fontFamily: Fonts.type.crimsonText
+  },
+  timeSince: {
+    marginRight: Metrics.doubleBaseMargin
   },
   tagline: {
     ...Fonts.style.h1,

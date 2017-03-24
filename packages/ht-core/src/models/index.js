@@ -1,9 +1,5 @@
-import Story from './story'
-import User from './user'
-import AuthToken from './authToken'
-
-export default {
-  Story,
-  User,
-  AuthToken
-}
+export {default as Story} from './story'
+export {default as User} from './user'
+export {default as AuthToken} from './authToken'
+export {default as Category} from './category'
+export {default as Follower} from './follower'

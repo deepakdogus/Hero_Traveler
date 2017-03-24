@@ -1,12 +1,14 @@
 // a library to wrap and simplify api calls
+import {Platform} from 'react-native'
 import apisauce from 'apisauce'
+import {get, isArray} from 'lodash'
+
+const devURL = Platform.OS === 'ios' ? 'http://localhost:3000/' : 'http://10.0.3.2:3000/'
 
 // our "constructor"
 const create = () => {
   const api = apisauce.create({
-    baseURL: __DEV__ ?
-      'http://localhost:3000/':
-      'http://ht-api-dev.rehashstudio.com/',
+    baseURL: __DEV__ ? devURL : 'http://ht-api-dev.rehashstudio.com/',
     headers: {
       // @TODO client-id
       'client-id': 'xzy',
@@ -77,8 +79,54 @@ const create = () => {
     })
   }
 
+  const getMe = () => {
+    return api.get('user')
+  }
+
   const getUserFeed = (userId) => {
     return api.get(`story/${userId}/feed`)
+  }
+
+  const getUserStories = (userId) => {
+    return api.get(`story/user/${userId}`)
+  }
+
+  const createStory = (story) => {
+    return api.post('story', {story})
+  }
+
+  const updateStoryCover = (story) => {
+    return api.put(`story/${story._id}/cover`)
+  }
+
+  const getCategories = () => {
+    return api.get('category')
+  }
+
+  const getSuggestedUsers = () => {
+    return api.get('user/suggestFollowers')
+  }
+
+  const followUser = (userId) => {
+    return api.post(`user/follow/user/${userId}`)
+  }
+
+  const unfollowUser = (userId) => {
+    return api.put(`user/unfollow/user/${userId}`)
+  }
+
+  const followCategory = (categoryIds) => {
+    const categories = isArray(categoryIds) ? categoryIds : [categoryIds]
+    return api.post(`user/follow/category`, {
+      categories
+    })
+  }
+
+  const unfollowCategory = (categoryIds) => {
+    const categories = isArray(categoryIds) ? categoryIds : [categoryIds]
+    return api.put(`user/unfollow/category`, {
+      categories
+    })
   }
 
   // ------
@@ -96,10 +144,19 @@ const create = () => {
   return {
     setAuth,
     unsetAuth,
+    getMe,
     login,
     logout,
     signupEmail,
-    getUserFeed
+    getUserFeed,
+    createStory,
+    getCategories,
+    getUserStories,
+    getSuggestedUsers,
+    followUser,
+    unfollowUser,
+    followCategory,
+    unfollowCategory
   }
 }
 

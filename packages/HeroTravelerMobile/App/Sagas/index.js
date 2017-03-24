@@ -13,21 +13,27 @@ import { LoginTypes } from '../Redux/LoginRedux'
 import { OpenScreenTypes } from '../Redux/OpenScreenRedux'
 import { SignupTypes } from '../Redux/SignupRedux'
 import { SessionTypes } from '../Redux/SessionRedux'
-
-
 import { StoryTypes } from '../Redux/StoryRedux'
+import { StoryCreateTypes } from '../Redux/StoryCreateRedux'
+import { CategoryTypes } from '../Redux/CategoryRedux'
+import { UserTypes } from '../Redux/UserRedux'
 
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas'
 import { login, loginFacebook } from './LoginSagas'
-import { signupEmail } from './SignupSagas'
-import { logout } from './SessionSagas'
+import { signupEmail, followCategory, unfollowCategory, followUser, unfollowUser } from './SignupSagas'
+import { logout, getMe } from './SessionSagas'
 import { getUserAvatar } from './GithubSagas'
 import { openScreen } from './OpenScreenSagas'
+import { getCategories } from './CategorySagas'
+import { getSuggestedUsers } from './UserSagas'
 
-
-import { getUserFeed } from './StorySagas'
+import {
+  getUserFeed,
+  createPhotoStory,
+  getUserStories
+} from './StorySagas'
 
 /* ------------- API ------------- */
 
@@ -48,11 +54,20 @@ export default function * root () {
     takeLatest(LoginTypes.LOGIN_FACEBOOK, loginFacebook),
 
     takeLatest(SignupTypes.SIGNUP_EMAIL, signupEmail, heroAPI),
+    takeLatest(SignupTypes.SIGNUP_FOLLOW_CATEGORY, followCategory, heroAPI),
+    takeLatest(SignupTypes.SIGNUP_UNFOLLOW_CATEGORY, unfollowCategory, heroAPI),
+    takeLatest(SignupTypes.SIGNUP_FOLLOW_USER, followUser, heroAPI),
+    takeLatest(SignupTypes.SIGNUP_UNFOLLOW_USER, unfollowUser, heroAPI),
+    takeLatest(SessionTypes.REFRESH_USER, getMe, heroAPI),
     takeLatest(SessionTypes.LOGOUT, logout, heroAPI),
 
     // some sagas receive extra parameters in addition to an action
     takeLatest(GithubTypes.USER_REQUEST, getUserAvatar, api),
 
-    takeLatest(StoryTypes.FEED_REQUEST, getUserFeed, heroAPI)
+    takeLatest(StoryCreateTypes.PUBLISH_REQUEST, createPhotoStory, heroAPI),
+    takeLatest(StoryTypes.FEED_REQUEST, getUserFeed, heroAPI),
+    takeLatest(StoryTypes.FROM_USER_REQUEST, getUserStories, heroAPI),
+    takeLatest(CategoryTypes.LOAD_CATEGORIES_REQUEST, getCategories, heroAPI),
+    takeLatest(UserTypes.LOAD_USER_SUGGESTIONS_REQUEST, getSuggestedUsers, heroAPI),
   ]
 }

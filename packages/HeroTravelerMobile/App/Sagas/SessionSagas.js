@@ -17,3 +17,17 @@ export function * logout (api, action) {
     ]
   }
 }
+
+// attempts to signup with email
+export function * getMe (api, action) {
+  const {tokens} = action
+  const response = yield call(
+    api.getMe
+  )
+
+  if (response.ok) {
+    yield put(SessionActions.refreshUserSuccess(response.data))
+  } else {
+    yield put(SessionActions.refreshUserFailure())
+  }
+}

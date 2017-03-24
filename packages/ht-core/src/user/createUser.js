@@ -1,5 +1,5 @@
 import joi from 'joi'
-import Models from '../models'
+import {User} from '../models'
 import encryptPassword from '../utils/encryptPassword'
 import getOrCreateTokens from './getOrCreateTokens'
 
@@ -11,6 +11,6 @@ export default function createUser(userData) {
   return encryptPassword(userAttrs.password)
     .then(hashedPassword => {
       userAttrs.password = hashedPassword
-      return Models.User.create(userAttrs)
+      return User.create(userAttrs)
     })
 }

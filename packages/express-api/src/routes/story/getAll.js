@@ -1,8 +1,7 @@
-import {Models} from '@rwoody/ht-core'
+import {Story} from '@rwoody/ht-core'
 
 export default function getAllStories(req, res) {
-  Models.Story.find({}).then(data => {
+  return Story.find().then(data => {
     res.json(data)
   })
 }
-

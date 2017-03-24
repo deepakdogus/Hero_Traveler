@@ -12,6 +12,9 @@ export default () => {
     feed: require('./StoryRedux').reducer,
     signup: require('./SignupRedux').reducer,
     session: require('./SessionRedux').reducer,
+    storyCreate: require('./StoryCreateRedux').reducer,
+    categories: require('./CategoryRedux').reducer,
+    users: require('./UserRedux').reducer,
     form: formReducer,
   })
 

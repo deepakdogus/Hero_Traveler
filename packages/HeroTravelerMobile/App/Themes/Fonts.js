@@ -49,7 +49,7 @@ const style = {
   title: {
     fontFamily: type.montserrat,
     letterSpacing: 1.05,
-    fontSize: 25
+    fontSize: 25,
   },
   instructions: {
     color: '#9e9e9e',

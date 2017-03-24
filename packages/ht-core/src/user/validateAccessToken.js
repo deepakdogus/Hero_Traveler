@@ -1,9 +1,9 @@
 import moment from 'moment'
-import Models from '../models'
+import {AuthToken} from '../models'
 import getUser from './getUser'
 
 export default function validateAccessToken(accessToken) {
-  return Models.AuthToken.findOne({
+  return AuthToken.findOne({
     value: accessToken,
     type: 'access'
   })
@@ -13,7 +13,7 @@ export default function validateAccessToken(accessToken) {
     }
 
     if (moment(userAccessToken.expiresAt).unix() < moment().unix()) {
-      Models.AuthToken.remove({
+      AuthToken.remove({
         value: tokenValue,
         type: 'access'
       })

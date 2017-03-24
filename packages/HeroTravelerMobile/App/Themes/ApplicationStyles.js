@@ -33,6 +33,11 @@ const ApplicationStyles = {
       marginBottom: Metrics.tabBarHeight,
       backgroundColor: Colors.transparent
     },
+    containerWithTabbar: {
+      flex: 1,
+      marginBottom: Metrics.tabBarHeight,
+      backgroundColor: Colors.transparent
+    },
     section: {
       margin: Metrics.section,
       padding: Metrics.baseMargin

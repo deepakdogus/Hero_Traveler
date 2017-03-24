@@ -6,7 +6,7 @@ export default {
   },
   navBar: {
     backgroundColor: Colors.background,
-    // color: Colors.text,
+    borderBottomWidth: 0,
     height: Metrics.navBarHeight
   },
   navBarTitle: {

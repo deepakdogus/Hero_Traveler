@@ -753,8 +753,8 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = 9JD56759PL;
-						ProvisioningStyle = Automatic;
+						DevelopmentTeam = 9498CR345N;
+						ProvisioningStyle = Manual;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
@@ -1235,8 +1235,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 9JD56759PL;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				DEVELOPMENT_TEAM = 9498CR345N;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1276,9 +1276,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = 9JD56759PL;
+				DEVELOPMENT_TEAM = 9498CR345N;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-config/ios/ReactNativeConfig",
@@ -1335,7 +1335,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = herotraveler;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rehashstudio.herotraveler;
 				PRODUCT_NAME = HeroTravelerMobile;
 				PROVISIONING_PROFILE = "614eb516-f1e8-4ae8-9b5d-1c84688ba4ce";
 				PROVISIONING_PROFILE_SPECIFIER = "HERO Traveler Ad Hoc";
@@ -1367,7 +1367,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = herotraveler;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rehashstudio.herotraveler;
 				PRODUCT_NAME = HeroTravelerMobile;
 				PROVISIONING_PROFILE = "614eb516-f1e8-4ae8-9b5d-1c84688ba4ce";
 				PROVISIONING_PROFILE_SPECIFIER = "HERO Traveler Ad Hoc";

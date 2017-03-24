@@ -109,11 +109,9 @@ export default class Editor extends Component {
               multiline={true}
               style={[styles.textInput, {height: Math.max(30, this.state.height)}]}
               onContentSizeChange={(event) => {
-                console.log('height', event.nativeEvent.contentSize.height)
                 this.setState({height: event.nativeEvent.contentSize.height});
               }}
               onChangeText={(text) => {
-                console.log('index')
                 this._replaceContentAtIndex(index, {value: text})
               }}
             >
@@ -163,7 +161,6 @@ export default class Editor extends Component {
       }
     ]
 
-    console.log('content', content)
     this.setState({content})
   }
 

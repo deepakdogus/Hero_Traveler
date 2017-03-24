@@ -35,23 +35,37 @@ class SignupScreen extends React.Component {
     super(props)
 
     this.state = {
-      fullName: 'Ryan W',
-      username: 'rwoody',
-      email: 'rwoody@gmail.com',
-      password: 'ryanwood',
-      confirmPassword: 'ryanwood'
+      fullName: '',
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
     }
   }
 
   componentWillReceiveProps(newProps) {
     if (!newProps.fetching && newProps.hasSignedUp) {
-      console.log('SIGNUP FLOW')
       NavigationActions.signupFlow()
     }
   }
 
   _signup = () => {
-    // NavigationActions.signupFlow()
+
+    // TODO fix Ghetto check
+    const conditions = _.every([
+      _.isString(this.state.fullName),
+      _.isString(this.state.username),
+      _.isString(this.state.email),
+      _.isString(this.state.password),
+      _.isString(this.state.confirmPassword),
+      this.state.password === this.state.confirmPassword,
+    ])
+
+    if (!conditions) {
+      alert('Please complete all fields')
+      return
+    }
+
     if (!this.props.fetching) {
       this.props.attemptSignup(
         this.state.fullName,

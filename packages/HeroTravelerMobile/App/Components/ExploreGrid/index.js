@@ -18,16 +18,6 @@ function getUrl(categoryImage) {
 
 export default class ExploreGrid extends Component {
 
-  constructor(props) {
-    super(props)
-    // const rowHasChanged = (r1, r2) => {
-    //   console.log('row has changed', rowHasChanged)
-    //   return _.isEqual(r1, r2)
-    // }
-    // const ds = new ListView.DataSource({rowHasChanged})
-    // this.data = ds.cloneWithRows(props.categories)
-  }
-
   render() {
     return (
       <View

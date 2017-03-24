@@ -30,7 +30,6 @@ export function * createPhotoStory (api, action) {
     const {data: story} = response
     yield put(StoryCreateActions.publishSuccess(story))
   } else {
-    console.log('Publish error response', response)
     yield put(StoryCreateActions.publishFailure(new Error('Failed to publish story')))
   }
 }

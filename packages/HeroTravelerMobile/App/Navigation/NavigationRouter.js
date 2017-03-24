@@ -34,7 +34,6 @@ const getSceneStyle = (/* NavigationSceneRendererProps */ props, computedProps) 
 
 class TabIcon extends React.Component {
   getIconName(navKey) {
-    console.log('navKey', navKey)
     switch (navKey) {
       case 'myFeed':
         return 'home'

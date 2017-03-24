@@ -43,7 +43,6 @@ const List = ({children}) => {
 class SettingsScreen extends React.Component {
 
   componentWillReceiveProps(newProps) {
-    console.log('isLoggedIn', this.props.isLoggedIn, newProps.isLoggedIn)
     if (this.props.isLoggedIn && !newProps.isLoggedIn) {
       NavActions.launchScreen({type: NavActionConst.REPLACE})
     }

@@ -27,7 +27,7 @@ class CreateStoryScreen extends React.Component {
         <View style={styles.buttonGroup}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => NavActions.createStory_photo()}>
+          >
             <Icon
               name='file-word-o'
               size={40}
@@ -37,7 +37,7 @@ class CreateStoryScreen extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => NavActions.createStory_photo()}>
+          >
             <Icon
               name='video-camera'
               size={40}

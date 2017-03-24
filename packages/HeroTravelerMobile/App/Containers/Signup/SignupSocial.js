@@ -72,7 +72,7 @@ class SignupSocialScreen extends React.Component {
                   <Image style={styles.avatar} source={{uri: u.profile.avatar}} />
                   <View style={styles.nameWrapper}>
                     <Text style={styles.name}>{u.profile.fullName}</Text>
-                    <Text style={styles.followerCount}>100 followers</Text>
+                    <Text style={styles.followerCount}>{u.counts.following} followers</Text>
                   </View>
                   <RoundedButton
                     style={selected ? styles.selectedFollowersButton : styles.followersButton}

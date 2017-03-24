@@ -1,6 +1,5 @@
 import mongoose from 'mongoose'
 import Promise from 'bluebird'
-import seedDB from './seed'
 import * as User from './user'
 import * as Models from './models'
 import * as Story from './story'
@@ -16,15 +15,7 @@ export {
 }
 
 function startMongoDB(options) {
-  mongoose.connect(options.mongoDB)
-
-  if (options.seedDB && process.env.NODE_ENV === 'development'){
-    try {
-      seedDB()
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  return mongoose.connect(options.mongoDB)
 }
 
 export default function initializeCore(options) {

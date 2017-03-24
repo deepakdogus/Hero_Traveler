@@ -1,0 +1,30 @@
+{
+  "name": "@rwoody/ht-util",
+  "version": "0.0.2",
+  "description": "Common server/client javascript functions",
+  "main": "index.js",
+  "keywords": [],
+  "author": "Rehash Studio",
+  "license": "© Rehash Studio",
+  "scripts": {
+    "seed": "node index.js",
+    "dev": "nodemon -w src index.js",
+    "postinstall": "mkdir -p dist/categories dist/categories"
+  },
+  "devDependencies": {
+    "@rwoody/ht-core": "*",
+    "babel-cli": "^6.24.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-register": "^6.23.0",
+    "dotenv": "^4.0.0",
+    "faker": "^4.1.0",
+    "image-size": "^0.5.1",
+    "lodash": "^4.17.4",
+    "nodemon": "^1.11.0",
+    "rimraf": "^2.6.1",
+    "sharp": "^0.17.2",
+    "string": "^3.3.3"
+  }
+}

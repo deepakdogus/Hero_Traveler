@@ -6,6 +6,10 @@ import { Metrics, Images } from '../Themes'
 import styles from './Styles/StoryPreviewStyle'
 import LikesComponent from './LikeComponent'
 
+function getUrl(coverImage) {
+  return `https://s3.amazonaws.com/hero-traveler/story/750x1334/${coverImage.original.filename}`
+}
+
 /*
 TODO:
 - Fix the Navar height issue
@@ -36,7 +40,7 @@ export default class StoryPreview extends Component {
         <View style={styles.contentContainer}>
           <Image
             resizeMode="cover"
-            source={{uri: coverImage}}
+            source={{uri: getUrl(coverImage)}}
             style={[styles.backgroundImage, styles.previewImage]}
           >
             <LinearGradient colors={['transparent', 'black']} style={styles.gradient}>
@@ -56,8 +60,8 @@ export default class StoryPreview extends Component {
                     <LikesComponent
                       onPress={this._onPressLike}
                       numberStyle={styles.bottomRight}
-                      likes={42}
-                      isLiked={false}
+                      likes={story.counts.likes}
+                      isLiked={story.counts.likes % 2 === 0}
                     />
                   </View>
                 }

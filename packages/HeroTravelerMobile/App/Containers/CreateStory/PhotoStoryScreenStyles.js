@@ -28,6 +28,10 @@ export default StyleSheet.create({
     fontSize: 14,
     marginLeft: 20
   },
+  cameraIcon: {
+    textAlign: 'center',
+    marginBottom: Metrics.baseMargin
+  },
   addPhotoView: {
     height: third,
     flexDirection: 'column',

@@ -4,6 +4,7 @@ import { ApplicationStyles, Fonts, Colors, Metrics } from '../../Themes/'
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
+    flex: 1,
     paddingTop: 20,
     backgroundColor: Colors.background
   },
@@ -45,11 +46,11 @@ export default StyleSheet.create({
     height: 200,
   },
   buttonGroup: {
-    marginTop: Metrics.section,
-    marginBottom: Metrics.section,
-    flexGrow: 2,
+    marginTop: Metrics.baseMargin,
+    marginBottom: Metrics.section * 2,
+    flexGrow: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
   },
   button: {
     marginTop: Metrics.baseMargin,
@@ -58,6 +59,8 @@ export default StyleSheet.create({
   },
   fakeTabbar: {
     height: 50,
+    position: 'absolute',
+    bottom: 0,
     backgroundColor: Colors.background
   }
 })

@@ -20,7 +20,7 @@ class CreateStoryScreen extends React.Component {
     return (
       <ScrollView
         style={[styles.container, styles.root]}
-        contentContainerStyle={{alignItems: 'center'}}
+        contentContainerStyle={{flex: 1, alignItems: 'center'}}
       >
         <Image source={Images.whiteLogo} style={styles.logoImage} />
         <Image source={Images.createStory} style={styles.storyImage} />

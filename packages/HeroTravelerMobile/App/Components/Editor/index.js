@@ -107,13 +107,7 @@ export default class Editor extends Component {
             <TextInput
               key={index}
               multiline={true}
-              style={[styles.textInput, {height: Math.max(30, this.state.height)}]}
-              onContentSizeChange={(event) => {
-                this.setState({height: event.nativeEvent.contentSize.height});
-              }}
-              onChangeText={(text) => {
-                this._replaceContentAtIndex(index, {value: text})
-              }}
+              style={[styles.textInput, {height: Math.max(100, this.state.height)}]}
             >
               <Text style={styles.baseText}>{item.value}</Text>
             </TextInput>
@@ -156,7 +150,11 @@ export default class Editor extends Component {
       ...this.state.content,
       {
         type: ItemTypes.IMAGE,
-        value: 'Some Image',
+        value: 'Some Image'
+      },
+      {
+        type: ItemTypes.TEXT,
+        value: '',
         isEditing: true
       }
     ]

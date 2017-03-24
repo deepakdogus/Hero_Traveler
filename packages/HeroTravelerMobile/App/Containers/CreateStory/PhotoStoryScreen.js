@@ -62,7 +62,7 @@ class PhotoStoryScreen extends React.Component {
               style={styles.addPhotoButton}
               onPress={() => NavigationActions.photoSelectorScreen()}
             >
-              <Icon name='camera' size={40} color='gray' />
+              <Icon name='camera' size={40} color='gray' style={styles.cameraIcon} />
               <Text style={this.renderTextColor(styles.baseTextColor)}>+ ADD COVER PHOTO</Text>
             </TouchableOpacity>
           </View>

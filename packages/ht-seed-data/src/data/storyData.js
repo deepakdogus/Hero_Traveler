@@ -5,7 +5,7 @@ import path from 'path'
 import sizeOf from 'image-size'
 import sharp from 'sharp'
 
-const distPath = path.resolve(__dirname, '../../dist/stories')
+const distPath = path.resolve(__dirname, '../../dist/story_images')
 const imagesPath = path.resolve(__dirname, '../../resources/story_images')
 const storyImages = fs.readdirSync(imagesPath)
 

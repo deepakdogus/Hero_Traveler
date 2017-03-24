@@ -28,7 +28,7 @@ function removeAllData() {
 async function seedAllData() {
   try {
     let users = await createUsers(50)
-    let followers = await createFollowers(users, 1200)
+    let followers = await createFollowers(users, 1500)
     let categories = await createCategories()
     let stories = await createStories(users, categories, 100)
     return Promise.resolve()
@@ -81,7 +81,8 @@ async function seed() {
 }
 
 Core({
-  mongoDB: process.env.MONGODB_URL
+  // mongoDB: process.env.MONGODB_URL
+  mongoDB: "mongodb://ht-api:lFMGJtlEO13MV5qd4GBa0wjkQLiteVq9n1pyQChp3aRgH@ds161008.mlab.com:61008/hero-traveler"
 })
 .then(() => {
   seed()

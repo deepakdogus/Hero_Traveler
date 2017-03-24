@@ -5,7 +5,7 @@ import path from 'path'
 import sizeOf from 'image-size'
 import sharp from 'sharp'
 
-const distPath = path.resolve(__dirname, '../../dist/categories')
+const distPath = path.resolve(__dirname, '../../dist/category_images')
 const imagesPath = path.resolve(__dirname, '../../resources/categories')
 const categoryImages = fs.readdirSync(imagesPath)
 

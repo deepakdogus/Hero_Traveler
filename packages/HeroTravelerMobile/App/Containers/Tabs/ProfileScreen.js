@@ -36,15 +36,16 @@ class ProfileScreen extends React.Component {
     this.props.attemptGetUserStories(this.props.user._id)
   }
 
-  componentWillReceiveProps(newProps) {
-    if (this.props.isLoggedIn && !newProps.isLoggedIn) {
-      NavActions.launchScreen({type: NavActionConst.REPLACE})
-    }
-  }
-
   render () {
     const {user} = this.props
     let avatar
+
+    // Deals with the case that the user logs out
+    // and this page is still mounted and rendering
+    if (!user) {
+      return null
+    }
+
     if (user.profile.avatar) {
       avatar = (
         <Image

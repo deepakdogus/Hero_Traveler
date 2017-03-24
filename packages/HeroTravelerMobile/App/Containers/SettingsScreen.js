@@ -44,7 +44,7 @@ class SettingsScreen extends React.Component {
 
   componentWillReceiveProps(newProps) {
     if (this.props.isLoggedIn && !newProps.isLoggedIn) {
-      NavActions.launchScreen({type: NavActionConst.REPLACE})
+      NavActions.launchScreen({type: NavActionConst.RESET})
     }
   }
 
@@ -93,7 +93,7 @@ class SettingsScreen extends React.Component {
         <Row
           text='Sign Out'
           hideAngleRight={true}
-          onPress={() => this.props.logout()}
+          onPress={() => this.props.logout(this.props.tokens)}
           textStyle={{color: Colors.red}}
         />
         </List>
@@ -104,7 +104,8 @@ class SettingsScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    isLoggedIn: hasAuthData(state.session)
+    isLoggedIn: hasAuthData(state.session),
+    tokens: state.session.tokens
   }
 }
 

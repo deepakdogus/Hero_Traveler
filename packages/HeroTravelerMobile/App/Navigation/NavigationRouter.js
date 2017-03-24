@@ -87,15 +87,6 @@ const tabBarProps = {
 ***************************/
 
 class NavigationRouter extends Component {
-  constructor (props) {
-    super(props)
-    this.renderLeftButton = this.renderLeftButton.bind(this)
-  }
-
-  renderLeftButton (arg) {
-    console.log('it is ', arg)
-  }
-
   render () {
     return (
       <Router getSceneStyle={getSceneStyle}>
@@ -254,10 +245,5 @@ class NavigationRouter extends Component {
     )
   }
 }
-
-/* navigationBarStyle={Styles.navBar}
-    renderLeftButton={this.renderLeftButton}
-    leftButtonIconStyle={Styles.leftButton}
-    rightButtonTextStyle={Styles.rightButton} */
 
 export default NavigationRouter

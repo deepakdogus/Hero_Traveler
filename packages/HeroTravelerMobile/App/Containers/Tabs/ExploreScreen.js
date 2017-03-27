@@ -9,6 +9,7 @@ import {
   Image
 } from 'react-native'
 import {connect} from 'react-redux'
+import {Actions as NavActions} from 'react-native-router-flux'
 
 import CategoryActions from '../../Redux/CategoryRedux'
 import ExploreGrid from '../../Components/ExploreGrid'
@@ -26,7 +27,7 @@ class ExploreScreen extends Component {
     if (this.props.categories.length) {
       content = (
         <ExploreGrid
-          onPress={(category) => alert(`Category ${category.title} pressed`)}
+          onPress={(category) => NavActions.categoryFeed()}
           categories={this.props.categories} />
       )
     } else {

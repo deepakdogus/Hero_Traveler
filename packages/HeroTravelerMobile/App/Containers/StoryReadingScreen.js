@@ -3,17 +3,18 @@ import { ScrollView, Text, View } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
-import {Metrics} from '../../Themes'
-import StoryActions from '../../Redux/StoryRedux.js'
-import StoryList from '../../Components/StoryList'
-import styles from '../Styles/MyFeedScreenStyles'
+import StoryActions from '../Redux/StoryRedux.js'
+import StoryList from '../Components/StoryList'
+import RoundedButton from '../Components/RoundedButton'
+import {Metrics} from '../Themes'
+import styles from './Styles/StoryReadingScreenStyles'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
 
-class MyFeedScreen extends React.Component {
+class StoryReadingScreen extends React.Component {
   static propTypes = {
     user: PropTypes.object,
-    posts: PropTypes.array,
+    stories: PropTypes.array,
     fetching: PropTypes.bool,
     error: PropTypes.bool
   };
@@ -49,30 +50,15 @@ class MyFeedScreen extends React.Component {
   }
 
   render () {
-    let { posts: stories, fetching, error } = this.props;
-    let content;
+    let { stories, fetching, error } = this.props;
 
-    if (fetching || error){
-      let innerContent = fetching ? this._showLoader() : this._showError()
-      content = this._wrapElt(innerContent);
-    } else if (!stories || !stories.length) {
-      let innerContent = this._showNoStories();
-      content = this._wrapElt(innerContent);
-    } else {
-      content = (
-        <StoryList
-          style={styles.storyList}
-          stories={stories}
-          height={imageHeight}
-          onPressStory={story => NavActions.story()}
-          onPressLike={story => alert(`Story ${story._id} liked`)}
-        />
-      );
-    }
+    let story = stories[0]
 
     return (
       <View style={[styles.containerWithNavbarAndTabbar, styles.root]}>
-        { content }
+        <RoundedButton onPress={() => NavActions.storyComments()}>
+          Comments
+        </RoundedButton>
       </View>
     )
   }
@@ -84,7 +70,7 @@ const mapStateToProps = (state) => {
   return {
     user: state.session.user,
     fetching,
-    posts,
+    stories: posts,
     error
   }
 }
@@ -97,4 +83,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyFeedScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(StoryReadingScreen)

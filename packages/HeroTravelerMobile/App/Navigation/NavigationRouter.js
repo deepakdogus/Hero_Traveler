@@ -16,6 +16,9 @@ import Styles from './Styles/NavigationContainerStyles'
 
 import MyFeedScreen from '../Containers/Tabs/MyFeedScreen'
 import ExploreScreen from '../Containers/Tabs/ExploreScreen'
+import CategoryFeedScreen from '../Containers/Explore/CategoryFeedScreen'
+import StoryReadingScreen from '../Containers/StoryReadingScreen'
+import StoryCommentsScreen from '../Containers/StoryCommentsScreen'
 import CreateStoryScreen from '../Containers/CreateStory/CreateStoryScreen'
 import PhotoStoryScreen from '../Containers/CreateStory/PhotoStoryScreen'
 import CreateStoryDetailScreen from '../Containers/CreateStory/CreateStoryDetailScreen'
@@ -135,6 +138,30 @@ class NavigationRouter extends Component {
               direction='horizontal'
               onLeft={() => NavActions.pop()}
               title='Settings'
+              {...darkNavBarProps}
+            />
+            <Scene
+              key='categoryFeed'
+              component={CategoryFeedScreen}
+              direction='horizontal'
+              onLeft={() => NavActions.pop()}
+              title='Category Feed'
+              {...darkNavBarProps}
+            />
+            <Scene
+              key='story'
+              component={StoryReadingScreen}
+              direction='horizontal'
+              onLeft={() => NavActions.pop()}
+              title='Story Read'
+              {...darkNavBarProps}
+            />
+            <Scene
+              key='storyComments'
+              component={StoryCommentsScreen}
+              direction='horizontal'
+              onLeft={() => NavActions.pop()}
+              title='Comments'
               {...darkNavBarProps}
             />
             <Scene key='tabbar'

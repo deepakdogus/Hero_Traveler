@@ -3,14 +3,14 @@ import { ScrollView, Text, View } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
-import {Metrics} from '../../Themes'
 import StoryActions from '../../Redux/StoryRedux.js'
 import StoryList from '../../Components/StoryList'
-import styles from '../Styles/MyFeedScreenStyles'
+import {Metrics} from '../../Themes'
+import styles from '../Styles/CategoryFeedScreenStyles'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
 
-class MyFeedScreen extends React.Component {
+class CategoryFeedScreen extends React.Component {
   static propTypes = {
     user: PropTypes.object,
     posts: PropTypes.array,
@@ -97,4 +97,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyFeedScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryFeedScreen)

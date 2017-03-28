@@ -1,16 +1,31 @@
 import React, { PropTypes } from 'react'
-import { ScrollView, Text, View } from 'react-native'
+import { ScrollView, Text, View, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
 import StoryActions from '../../Redux/StoryRedux.js'
-import StoryList from '../../Components/StoryList'
+import StorySearchList from '../../Components/StorySearchList'
 import {Metrics} from '../../Themes'
 import styles from '../Styles/CategoryFeedScreenStyles'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
 
+
+const Tab = ({text, onPress, selected}) => {
+  return (
+    <TouchableOpacity style={[styles.tab, selected ? styles.tabSelected : null]} onPress={onPress}>
+      <Text style={[styles.tabText, selected ? styles.tabTextSelected : null]}>{text}</Text>
+    </TouchableOpacity>
+  )
+}
+
+
 class CategoryFeedScreen extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { selectedTabIndex: 0 }
+
+  }
   static propTypes = {
     user: PropTypes.object,
     posts: PropTypes.array,
@@ -60,13 +75,23 @@ class CategoryFeedScreen extends React.Component {
       content = this._wrapElt(innerContent);
     } else {
       content = (
-        <StoryList
-          style={styles.storyList}
-          stories={stories}
-          height={imageHeight}
-          onPressStory={story => NavActions.story()}
-          onPressLike={story => alert(`Story ${story._id} liked`)}
-        />
+        <View style={styles.tabs}>
+          <View style={styles.tabnav}>
+            <Tab selected={true} onPress={() => alert('stories')} text='STORIES' />
+            <Tab onPress={() => alert('people')} text='PEOPLE' />
+          </View>
+          {this.props.posts && this.props.posts.length > 0 &&
+            <StorySearchList
+              stories={this.props.posts}
+              height={70}
+              titleStyle={styles.storyTitleStyle}
+              subtitleStyle={styles.subtitleStyle}
+              forProfile={true}
+              onPressStory={story => alert(`Story ${story._id} pressed`)}
+              onPressLike={story => alert(`Story ${story._id} liked`)}
+            />
+          }
+        </View>
       );
     }
 

@@ -57,10 +57,9 @@ class ExploreScreen extends Component {
               onChangeText={(text) => this.setState({text})}
             />
           </View>
-            <Text> Text: {this.state.text} </Text>
-          <View style={styles.titleWrapper}>
+          { !this.state.text ? <View style={styles.titleWrapper}>
             <Text style={styles.title}>EXPLORE</Text>
-          </View>
+          </View> : null } 
         </View>
         {content}
       </ScrollView>

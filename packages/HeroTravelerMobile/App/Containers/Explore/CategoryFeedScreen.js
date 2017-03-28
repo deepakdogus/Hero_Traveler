@@ -4,7 +4,14 @@ import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
 import StoryActions from '../../Redux/StoryRedux.js'
-import StorySearchList from '../../Components/StorySearchList'
+
+// ******************************************************************************************************
+// @TODO Ryan: changing the import below to StorySearchList will import my work in progress component, but
+// it's not styled properly yet
+// ******************************************************************************************************
+import StorySearchList from '../../Components/StoryList'
+
+
 import {Metrics} from '../../Themes'
 import styles from '../Styles/CategoryFeedScreenStyles'
 
@@ -66,6 +73,7 @@ class CategoryFeedScreen extends React.Component {
   render () {
     let { posts: stories, fetching, error } = this.props;
     let content;
+    console.log('posts', stories)
 
     if (fetching || error){
       let innerContent = fetching ? this._showLoader() : this._showError()

@@ -7,7 +7,6 @@ export default StyleSheet.create({
     backgroundColor: '#000',
   },
   scrollItemFullScreen: {
-    height: Metrics.screenHeight - Metrics.navBarHeight,
     width: Metrics.screenWidth,
   },
   center: {

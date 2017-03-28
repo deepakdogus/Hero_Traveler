@@ -11,11 +11,16 @@ import {
 import {connect} from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
+import CategoryFeedScreen from '../Explore/CategoryFeedScreen'
 import CategoryActions from '../../Redux/CategoryRedux'
 import ExploreGrid from '../../Components/ExploreGrid'
 import styles from '../Styles/ExploreScreenStyles'
 
 class ExploreScreen extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { text: null }
+  }
 
   componentDidMount() {
     this.props.loadCategories()
@@ -24,11 +29,16 @@ class ExploreScreen extends Component {
   render () {
     let content
 
-    if (this.props.categories.length) {
+    if (this.props.categories.length && !this.state.text) {
       content = (
         <ExploreGrid
           onPress={(category) => NavActions.categoryFeed()}
           categories={this.props.categories} />
+      )
+
+    } else if (this.state.text) {
+      content = (
+        <CategoryFeedScreen />
       )
     } else {
       content = (
@@ -44,9 +54,10 @@ class ExploreScreen extends Component {
               style={styles.searchInput}
               placeholder='Search'
               placeholderTextColor='#757575'
-              onTextChange={() => {}}
+              onChangeText={(text) => this.setState({text})}
             />
           </View>
+            <Text> Text: {this.state.text} </Text>
           <View style={styles.titleWrapper}>
             <Text style={styles.title}>EXPLORE</Text>
           </View>

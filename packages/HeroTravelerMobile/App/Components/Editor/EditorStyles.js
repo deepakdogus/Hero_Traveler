@@ -40,6 +40,8 @@ export default StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    minHeight: 30
+    backgroundColor: '#e1e1e1',
+    paddingVertical: Metrics.baseMargin / 2,
+    paddingHorizontal: Metrics.baseMargin / 5
   }
 })

@@ -11,7 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 
-import RoundedButton from '../RoundedButton'
+import ShadowButton from '../ShadowButton'
 import {Images, Colors} from '../../Themes'
 import styles from './EditorStyles'
 
@@ -82,8 +82,9 @@ export default class Editor extends Component {
       <View style={styles.root}>
         <View style={styles.contentWrapper}>
           {this.state.content.length === 0 &&
-            <RoundedButton
+            <ShadowButton
               onPress={this._startTyping}
+              style={{margin: 20}}
               text='Tap here to start typing'
             />
           }
@@ -107,7 +108,7 @@ export default class Editor extends Component {
             <TextInput
               key={index}
               multiline={true}
-              style={[styles.textInput, {height: Math.max(100, this.state.height)}]}
+              style={[styles.textInput]}
             >
               <Text style={styles.baseText}>{item.value}</Text>
             </TextInput>

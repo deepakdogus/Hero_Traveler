@@ -19,7 +19,7 @@ export default StyleSheet.create({
     color: Colors.snow,
     textAlign: 'center',
     fontWeight: '300',
-    width: '75%'
+    width: 200
   },
   spacer: {
     flexGrow: 10
@@ -40,7 +40,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     flexGrow: 1,
     flexDirection: 'row',
-    alignItems: 'baseline',
+    alignItems: 'flex-start',
     marginTop: Metrics.baseMargin
   },
   loginText: {

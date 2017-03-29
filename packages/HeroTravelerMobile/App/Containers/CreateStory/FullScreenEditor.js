@@ -1,6 +1,11 @@
 import React from 'react'
-import { ScrollView, Text, TouchableOpacity, View, KeyboardAvoidingView, Image } from 'react-native'
+import {
+  View,
+  TouchableOpacity,
+  Text
+} from 'react-native'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
+import {Actions as NavActions} from 'react-native-router-flux'
 import { connect } from 'react-redux'
 import R from 'ramda'
 
@@ -12,9 +17,35 @@ class FullScreenEditor extends React.Component {
   render () {
     return (
       <View style={[styles.root]}>
-        <Editor />
+        <Editor
+          ref={(editor) => {
+            this.editor = editor.getEditor()
+          }}
+          onAddImage={this._handlePressAddImage}
+        />
+        <TouchableOpacity onPress={() => {
+          this.editor.getContentHtml()
+          .then(html => {
+            console.log('html', html)
+          })
+        }}>
+          <Text color='black'>Get HTML</Text>
+        </TouchableOpacity>
       </View>
     )
+  }
+
+  _handlePressAddImage = () => {
+    NavActions.mediaSelectorScreen({
+      mediaType: 'photo',
+      title: 'Add Image',
+      onSelectMedia: this._handleAddImage
+    })
+  }
+
+  _handleAddImage = (localFilePath) => {
+    console.log('this.editor.insertImage', localFilePath)
+    NavActions.pop()
   }
 }
 

@@ -75,7 +75,7 @@ class MediaSelectorScreen extends React.Component {
       return
     }
 
-    this.props.onSelectMedia(data.uri)
+    this.props.onSelectMedia(data.origURL)
   }
 
   _handleCaptureMedia = (data) => {

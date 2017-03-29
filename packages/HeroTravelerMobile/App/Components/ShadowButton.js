@@ -4,7 +4,7 @@ import styles from './Styles/ShadowButtonStyles'
 import ExamplesRegistry from '../Services/ExamplesRegistry'
 
 // Example
-ExamplesRegistry.addComponentExample('Rounded Button', () =>
+ExamplesRegistry.addComponentExample('Shadow Button', () =>
   <ShadowButton
     text='Real buttons have shadows'
     onPress={() => window.alert('ShadowButton Pressed!')}

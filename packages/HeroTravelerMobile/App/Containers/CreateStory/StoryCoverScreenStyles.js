@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 import { ApplicationStyles, Colors, Metrics, Fonts } from '../../Themes/'
 
-const third = (1 / 3) * (Metrics.screenHeight - 20)
+const third = (1 / 3) * (Metrics.screenHeight - Metrics.navBarHeight)
 
 export const placeholderColor = Colors.darkBackground
 
@@ -10,7 +10,15 @@ export default StyleSheet.create({
     ...ApplicationStyles.screen.containerWithNavbar
   },
   lightGreyAreasBG: {
-    backgroundColor: Colors.lightGreyAreas
+    backgroundColor: Colors.transparent
+  },
+  errorButton: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    marginVertical: Metrics.baseMargin,
+    marginHorizontal: Metrics.section
   },
   spaceView: {
     height: third
@@ -32,6 +40,14 @@ export default StyleSheet.create({
     textAlign: 'center',
     marginBottom: Metrics.baseMargin
   },
+  colorOverLay: {
+    backgroundColor: Colors.windowTint,
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
   addPhotoView: {
     height: third,
     flexDirection: 'column',
@@ -39,7 +55,14 @@ export default StyleSheet.create({
     justifyContent: 'center'
   },
   addTitleView: {
-    height: third
+    height: third,
+    justifyContent: 'center'
+  },
+  imageMenuView: {
+    height: third,
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   newContentButton: {
     padding: 10

@@ -24,7 +24,12 @@ const images = {
   closeButton: require('../Images/Icons/close-button.png'),
   likes: require('../Images/Icons/ic-favorite-border.png'),
   createStory: require('../Images/create-story.png'),
-  profile: require('../Images/profile.png')
+  profile: require('../Images/profile.png'),
+  // ht-icons
+  iconEditImageCamera: require('../Images/ht-icons/icon_edit-image-camera.png'),
+  iconEditImageCrop: require('../Images/ht-icons/icon_edit-image-crop.png'),
+  iconEditImageTrash: require('../Images/ht-icons/icon_edit-image-trash.png'),
+  iconContentXWhite: require('../Images/ht-icons/icon_content-x-white.png'),
 }
 
 export default images

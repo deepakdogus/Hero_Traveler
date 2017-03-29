@@ -5,12 +5,8 @@ import {Actions as NavActions} from 'react-native-router-flux'
 
 import StoryActions from '../../Redux/StoryRedux.js'
 
-// ******************************************************************************************************
-// @TODO Ryan: changing the import below to StorySearchList will import my work in progress component, but
-// it's not styled properly yet
-// ******************************************************************************************************
 import StorySearchList from '../../Components/StorySearchList'
-
+import PeopleSearchList from '../../Components/PeopleSearchList'
 
 import {Metrics} from '../../Themes'
 import styles from '../Styles/CategoryFeedScreenStyles'
@@ -85,11 +81,22 @@ class CategoryFeedScreen extends React.Component {
       content = (
         <View style={styles.tabs}>
           <View style={styles.tabnav}>
-            <Tab selected={true} onPress={() => alert('stories')} text='STORIES' />
-            <Tab onPress={() => alert('people')} text='PEOPLE' />
+            <Tab selected={this.state.selectedTabIndex === 0} onPress={() => this.setState({selectedTabIndex: 0})} text='STORIES' />
+            <Tab selected={this.state.selectedTabIndex === 1} onPress={() => this.setState({selectedTabIndex: 1})} text='PEOPLE' />
           </View>
-          {this.props.posts && this.props.posts.length > 0 &&
+          {this.props.posts && this.props.posts.length > 0 && this.state.selectedTabIndex === 0 &&
             <StorySearchList
+              stories={this.props.posts}
+              height={70}
+              titleStyle={styles.storyTitleStyle}
+              subtitleStyle={styles.subtitleStyle}
+              forProfile={true}
+              onPressStory={story => alert(`Story ${story._id} pressed`)}
+              onPressLike={story => alert(`Story ${story._id} liked`)}
+            />
+          }
+          {this.props.posts && this.props.posts.length > 0 && this.state.selectedTabIndex === 0 &&
+            <PeopleSearchList
               stories={this.props.posts}
               height={70}
               titleStyle={styles.storyTitleStyle}

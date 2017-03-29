@@ -9,7 +9,10 @@ export default StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    flexDirection: "row"
+    flexDirection: "row",
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.coal,
+
   },
   previewImage: {
     flexDirection: "column",
@@ -20,14 +23,14 @@ export default StyleSheet.create({
     paddingVertical: Metrics.doubleBaseMargin
   },
   title: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: "200",
     fontFamily: Fonts.type.montserrat,
     color: "white",
     letterSpacing: 1.5
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 12,
     color: "#e0e0e0",
     fontFamily: Fonts.type.sourceSansPro,
     letterSpacing:0.7
@@ -45,14 +48,18 @@ export default StyleSheet.create({
     justifyContent: "space-between"
   },
   row: {
+    width: "90%",
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center"
   },
   thumbnailImage: {
-    height: 20,
-    width: 20,
-    marginLeft: 5
+    height: 50,
+    width: 30,
+    marginLeft: 20,
+    marginTop: 20,
+    marginBottom: 20,
+    marginRight: 20
   },
   username: {
     color: "#e0e0e0",
@@ -65,6 +72,10 @@ export default StyleSheet.create({
     marginRight: 5,
     fontFamily: Fonts.type.crimsonText
   },
+  icon: {
+    alignSelf: "center",
+  },
+
   timeSince: {
     marginRight: Metrics.doubleBaseMargin
   },

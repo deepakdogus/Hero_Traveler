@@ -2,8 +2,9 @@
 import React, {PropTypes, Component} from 'react'
 import { View, Text, Image, TouchableHighlight } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { Metrics, Images } from '../Themes'
+import { Metrics, Images, Colors } from '../Themes'
 import styles from './Styles/StorySearchItemStyle'
 import LikesComponent from './LikeComponent'
 
@@ -36,14 +37,25 @@ export default class StorySearchItem extends Component {
       } = story;
 
     return (
+      <TouchableHighlight onPress={this._onPress}
+      style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}>
         <View style={styles.contentContainer}>
-          <Image
-            resizeMode="cover"
-            source={{uri: getUrl(coverImage)}}
-            style={styles.thumbnailImage}
-          >
-          </Image>
+          <View style={styles.row}>
+            <Image
+              resizeMode="cover"
+              source={{uri: getUrl(coverImage)}}
+              style={styles.thumbnailImage}
+          ></Image>
+          <View style={{flexDirection: "column"}}>
+            <Text style={[styles.title, this.props.titleStyle]}>{title}</Text>
+            <Text style={[styles.subtitle, this.props.subtitleStyle]}>{description}</Text>
+          </View>
         </View>
+        <View style={styles.icon}>
+          <Icon name='chevron-right' size={15} color={Colors.steel} />
+        </View>
+        </View>
+      </TouchableHighlight>
     )
   }
 

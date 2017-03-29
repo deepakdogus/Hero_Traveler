@@ -9,7 +9,7 @@ import StoryActions from '../../Redux/StoryRedux.js'
 // @TODO Ryan: changing the import below to StorySearchList will import my work in progress component, but
 // it's not styled properly yet
 // ******************************************************************************************************
-import StorySearchList from '../../Components/StoryList'
+import StorySearchList from '../../Components/StorySearchList'
 
 
 import {Metrics} from '../../Themes'

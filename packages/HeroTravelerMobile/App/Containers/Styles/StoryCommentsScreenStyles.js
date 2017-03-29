@@ -25,6 +25,7 @@ export default StyleSheet.create({
     flexDirection: 'column',
     width: '60%',
     justifyContent: 'flex-start',
+    marginLeft: -18,
   },  
   commentText: {
     fontFamily: Fonts.type.base,
@@ -48,9 +49,11 @@ export default StyleSheet.create({
   timestamp: {
     fontFamily: Fonts.type.base,
     fontSize: 12,
+    width: '16%',
     color: '#757575',
     fontWeight: '300',
     letterSpacing: .7,
+    textAlign: 'right',
     alignSelf: 'flex-start',
   },
   inputGroupWrapper: {
@@ -85,7 +88,7 @@ export default StyleSheet.create({
   inputButton: {
   	width: '18%',
   	height: Metrics.tabBarHeight/1.4,
-  	borderRadius: 14,
+  	borderRadius: 10,
   	marginLeft: '2%',
   },
 })

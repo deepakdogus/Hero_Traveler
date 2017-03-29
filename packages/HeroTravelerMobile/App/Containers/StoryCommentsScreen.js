@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import RoundedButton from '../Components/RoundedButton'
 import { Colors, Metrics } from '../Themes/'
 import SearchBar from '../Components/SearchBar'
+import moment from 'moment'
 
 import styles from './Styles/StoryCommentsScreenStyles'
 
@@ -31,74 +32,50 @@ const List = ({children}) => {
   )
 }
 
-
 const formatDate = function(stamp){
-  var duration = Date.now() - stamp;
-
-  if(duration < 86400000){
-    return 'Today';
-  } else if (duration < 172800000) {
-    return '1 day ago';
-  } else {
-    var newMonth = new Date(stamp).getMonth(),
-    newDate = new Date(stamp).getDate().toString(),
-    months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    return months[newMonth] + ' ' + newDate;
-  }
+  var calendar = moment(stamp).calendar().split(' ')[0];
+  return (calendar === 'Today')
+    ? calendar
+    : (calendar === 'Yesterday')
+      ? '1 day ago'
+      : moment(stamp).format('MMM DD');
 }
 
 class StoryCommentsScreen extends React.Component {
-
-  static defaultProps = { 
-    comments: [{
-      comment: "This is my comment",
-      createdAt: 1490710993,
-      user: {
-        profile: {
-          fullName: "Vladimir Putin",
-          avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/solid_color/128.jpg"
-        }
-      }
-    }, {
-      comment: "This is another comment",
-      createdAt: 1490709965,
-      user: {
-        profile: {
-          fullName: "Andy Watt",
-          avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/solid_color/128.jpg"
-        }
-      }
-    }, {
-      comment: "This is another goshdarned comment",
-      createdAt: 1483228800000,
-      user: {
-        profile: {
-          fullName: "Jasper Johns",
-          avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/solid_color/128.jpg"
-        }
-      }
-    }, {
-      comment: "This is another goshdarned comment, Robin",
-      createdAt: 1490731854179,
-      user: {
-        profile: {
-          fullName: "The Batman",
-          avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/solid_color/128.jpg"
-        }
-      }
-    }]
+  constructor(props) {    
+    super(props);
+ 
+    this.state = {
+      comment: '',
+      name: 'Heronymous Travelerski',
+      avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/solid_color/128.jpg',
+      comments: [],
+    };
+    this.handleSend = this.handleSend.bind(this);
   }
 
-  static propTypes = {
-    comments: PropTypes.array,
-  }  
+  handleSend(){
+    const newComment = {};
+    newComment.user = {};
+    newComment.user.profile = {};
+    newComment.user.profile.fullName = this.state.name;
+    newComment.user.profile.avatar = this.state.avatar;
+    newComment.createdAt = Date.now();
+    newComment.comment = this.state.comment;
+    const newCommentArray = this.state.comments.slice(0);
+    newCommentArray.push(newComment)
+    this.setState({
+      comments: newCommentArray,
+      comment: '',
+    });
+  }
 
   render () {
 
     return (
         <KeyboardAvoidingView behavior='position' style={[styles.containerWithNavbar, styles.root]}>
           <List>
-          {this.props.comments.map(comment => {
+          {this.state.comments.map(comment => {
             return(
               <Comment
                 avatar={comment.user.profile.avatar}
@@ -115,17 +92,19 @@ class StoryCommentsScreen extends React.Component {
                 autoFocus
                 placeholder='Add a comment'
                 style={styles.input}
+                value={this.state.comment}
                 autoCapitalize='none'
+                onSubmitEditing={this.handleSend}
+                onChangeText={(text) => this.setState({comment: text})}
                 autoCorrect={false}
                 />
             </View>
-            <RoundedButton style={styles.inputButton}>Send</RoundedButton>
+            <RoundedButton style={styles.inputButton} onPress={this.handleSend}>Send</RoundedButton>
           </View>
         </KeyboardAvoidingView>
     )
   }
 }
-
 
 const mapStateToProps = (state) => {
   return {

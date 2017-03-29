@@ -84,9 +84,6 @@ class PhotoStoryScreen extends React.Component {
             />
           </View>
         </View>
-        <View style={styles.iconDownView}>
-          <Icon name='caret-down' size={12} />
-        </View>
       </KeyboardAvoidingView>
     )
   }
@@ -96,7 +93,6 @@ class PhotoStoryScreen extends React.Component {
       <View style={[styles.containerWithNavbar]}>
         <ScrollView>
           {this.renderCoverPhoto(this.props.story.coverPhoto)}
-          <Editor />
         </ScrollView>
       </View>
     )

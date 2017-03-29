@@ -6,8 +6,8 @@ const third = (1 / 3) * (Metrics.screenHeight - 20)
 export const placeholderColor = Colors.darkBackground
 
 export default StyleSheet.create({
-  containerWithNavbarAndTabbar: {
-    ...ApplicationStyles.screen.containerWithNavbarAndTabbar
+  containerWithNavbar: {
+    ...ApplicationStyles.screen.containerWithNavbar
   },
   lightGreyAreasBG: {
     backgroundColor: Colors.lightGreyAreas

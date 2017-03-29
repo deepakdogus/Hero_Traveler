@@ -21,6 +21,7 @@ import StoryReadingScreen from '../Containers/StoryReadingScreen'
 import StoryCommentsScreen from '../Containers/StoryCommentsScreen'
 import CreateStoryScreen from '../Containers/CreateStory/CreateStoryScreen'
 import PhotoStoryScreen from '../Containers/CreateStory/PhotoStoryScreen'
+import FullScreenEditor from '../Containers/CreateStory/FullScreenEditor'
 import CreateStoryDetailScreen from '../Containers/CreateStory/CreateStoryDetailScreen'
 import ActivityScreen from '../Containers/Tabs/ActivityScreen'
 import ProfileScreen from '../Containers/Tabs/ProfileScreen'
@@ -226,12 +227,24 @@ class NavigationRouter extends Component {
                 leftTitle='Cancel'
                 onLeft={() => NavActions.pop()}
                 rightTitle='Next'
+                onRight={() => NavActions.createStory_content()}
+              />
+              <Scene
+                key='createStory_content'
+                title='Story Content'
+                component={FullScreenEditor}
+                panHandlers={null}
+                direction='horizontal'
+                leftTitle='Back'
+                onLeft={() => NavActions.pop()}
+                rightTitle='Next'
                 onRight={() => NavActions.createStory_details()}
               />
               <Scene
                 key='createStory_details'
                 title='Create Story Details'
                 panHandlers={null}
+                hideNavBar={false}
                 component={CreateStoryDetailScreen}
                 backTitle='Cancel'
                 rightTitle='Publish'

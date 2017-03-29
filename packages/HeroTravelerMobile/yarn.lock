@@ -4546,9 +4546,21 @@ react-native-experimental-navigation@0.26.x:
     fbjs "^0.8.1"
     react-addons-pure-render-mixin "^15.0.2"
 
+react-native-global-props@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-global-props/-/react-native-global-props-1.1.1.tgz#7d254a18b57a027e1006fe20c2502cddb646d9e5"
+
 react-native-image-picker@^0.26.2:
   version "0.26.2"
   resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-0.26.2.tgz#1280627d61438027284c97d0a8892b7d3777f2e3"
+
+react-native-keyboard-spacer@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-spacer/-/react-native-keyboard-spacer-0.3.1.tgz#9580297ebfd078202dc4c65303d29cda35de67f1"
+
+react-native-linear-gradient@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.0.0.tgz#7442c00e1fcd9fca329119dcbaf744d12bcd1b5a"
 
 react-native-mock@^0.3.1:
   version "0.3.1"
@@ -4592,6 +4604,10 @@ react-native-vector-icons@^4.0.0:
   dependencies:
     lodash "^4.0.0"
     yargs "^6.3.0"
+
+"react-native-zss-rich-text-editor@https://github.com/rwoody/react-native-zss-rich-text-editor":
+  version "1.0.2"
+  resolved "https://github.com/rwoody/react-native-zss-rich-text-editor#fb4bbce5dec22e587422addb8a779e1d0ba3eb31"
 
 react-native@0.42.0:
   version "0.42.0"

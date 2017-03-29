@@ -141,14 +141,6 @@ class NavigationRouter extends Component {
               {...darkNavBarProps}
             />
             <Scene
-              key='categoryFeed'
-              component={CategoryFeedScreen}
-              direction='horizontal'
-              onLeft={() => NavActions.pop()}
-              title='Category Feed'
-              {...darkNavBarProps}
-            />
-            <Scene
               key='story'
               component={StoryReadingScreen}
               direction='horizontal'
@@ -179,11 +171,25 @@ class NavigationRouter extends Component {
               <Scene
                 key='explore'
                 icon={TabIcon}
-                component={ExploreScreen}
-                title='Explore'
-                {...darkNavBarProps}
-                hideNavBar={true}
-              />
+              >
+                <Scene
+                  key='explore_grid'
+                  initial
+                  component={ExploreScreen}
+                  title='Explore'
+                  {...darkNavBarProps}
+                  hideNavBar={true}
+                />
+                <Scene
+                  key='explore_categoryFeed'
+                  component={CategoryFeedScreen}
+                  direction='horizontal'
+                  onLeft={() => NavActions.pop()}
+                  title='Category Feed'
+                  hideNavBar={false}
+                  {...darkNavBarProps}
+                />
+              </Scene>
               <Scene
                 key='createStory'
                 title='Create Story'

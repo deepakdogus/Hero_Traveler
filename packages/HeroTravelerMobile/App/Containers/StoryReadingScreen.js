@@ -6,6 +6,7 @@ import {Actions as NavActions} from 'react-native-router-flux'
 import StoryActions from '../Redux/StoryRedux.js'
 import StoryList from '../Components/StoryList'
 import RoundedButton from '../Components/RoundedButton'
+import StoryReadingToolbar from '../Components/StoryReadingToolbar'
 import {Metrics} from '../Themes'
 import styles from './Styles/StoryReadingScreenStyles'
 
@@ -18,7 +19,7 @@ class StoryReadingScreen extends React.Component {
     fetching: PropTypes.bool,
     error: PropTypes.bool
   };
-
+ 
   componentDidMount() {
     this.props.attemptGetUserFeed(this.props.user._id)
   }
@@ -55,10 +56,11 @@ class StoryReadingScreen extends React.Component {
     let story = stories[0]
 
     return (
-      <View style={[styles.containerWithNavbarAndTabbar, styles.root]}>
+      <View style={[styles.containerWithNavbar, styles.root]}>
         <RoundedButton onPress={() => NavActions.storyComments()}>
           Comments
         </RoundedButton>
+        <StoryReadingToolbar style={styles.toolBar}/>
       </View>
     )
   }

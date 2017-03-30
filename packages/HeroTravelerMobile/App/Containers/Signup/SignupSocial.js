@@ -30,7 +30,7 @@ class SignupSocialScreen extends React.Component {
   render () {
     let content
 
-    if (this.props.users.length) {
+    if (_.values(this.props.users).length) {
       content = (
         <View style={styles.lightBG}>
           <Text style={styles.sectionHeader}>FIND FRIENDS</Text>

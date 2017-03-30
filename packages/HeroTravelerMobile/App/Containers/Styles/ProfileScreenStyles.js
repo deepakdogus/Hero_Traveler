@@ -5,6 +5,9 @@ const avatarImageSize = 80
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
+  root: {
+    minHeight: Metrics.screenHeight - Metrics.tabBarHeight
+  },
   gradient: {
     paddingTop: 20,
     flex: 1
@@ -103,6 +106,7 @@ export default StyleSheet.create({
     lineHeight: 15
   },
   tabs: {
+    flex: 1
   },
   tabnav: {
     height: 50,
@@ -140,5 +144,16 @@ export default StyleSheet.create({
     fontSize: 13,
     letterSpacing: .7,
     fontWeight: '300'
+  },
+  spinnerWrapper: {
+    marginTop: Metrics.doubleSection
+  },
+  noStories: {
+    marginTop: Metrics.doubleSection,
+  },
+  noStoriesText: {
+    color: '#757575',
+    textAlign: 'center',
+    fontFamily: Fonts.type.montserrat
   }
 })

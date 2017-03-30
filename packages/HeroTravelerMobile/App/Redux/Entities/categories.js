@@ -34,7 +34,7 @@ export const request = (state) => {
   )
 }
 
-export const receive = (state, {categories}) => {
+export const receive = (state, {categories = {}}) => {
   return state.merge({
     fetchStatus: {
       fetching: false,
@@ -42,6 +42,8 @@ export const receive = (state, {categories}) => {
     },
     error: null,
     entities: categories
+  }, {
+    deep: true
   })
 }
 

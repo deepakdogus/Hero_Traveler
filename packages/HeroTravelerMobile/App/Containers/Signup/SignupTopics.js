@@ -74,7 +74,7 @@ class SignupTopicsScreen extends React.Component {
 const mapStateToProps = (state) => {
   return {
     categories: state.entities.categories.entities,
-    categoriesLoaded: state.entities.categories.loaded,
+    categoriesLoaded: state.entities.categories.fetchStatus.loaded,
     selectedCategories: state.signup.selectedCategories
   }
 }

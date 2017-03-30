@@ -145,8 +145,7 @@ class NavigationRouter extends Component {
               component={StoryReadingScreen}
               direction='horizontal'
               onLeft={() => NavActions.pop()}
-              title='Story Read'
-              {...darkNavBarProps}
+              {...clearNavBarProps}
             />
             <Scene
               key='storyComments'
@@ -166,11 +165,12 @@ class NavigationRouter extends Component {
                 component={MyFeedScreen}
                 title='Feed'
                 renderBackButton={() => null}
-                {...darkNavBarProps}
+                hideNavBar={true}
               />
               <Scene
                 key='explore'
                 icon={TabIcon}
+                hideNavBar={false}
               >
                 <Scene
                   key='explore_grid'

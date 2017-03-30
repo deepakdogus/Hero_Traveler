@@ -39,8 +39,7 @@ export const request = (state, { userId }) => {
   );
 }
 // successful temperature lookup
-export const receive = (state, action) => {
-  const { stories } = action;
+export const receive = (state, {stories = {}}) => {
   return state.merge({
     fetchStatus: {
       fetching: false,
@@ -48,6 +47,8 @@ export const receive = (state, action) => {
     },
     error: null,
     entities: stories
+  }, {
+    deep: true
   })
 }
 
@@ -71,6 +72,12 @@ export const getByCategory = (storyEntities, categoryId) => {
   })
 }
 
+export const getByUser = (storyEntities, userId) => {
+  return _.filter(storyEntities, s => {
+    return s.author === userId
+  })
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -80,5 +87,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.FROM_USER_REQUEST]: request,
   [Types.FROM_USER_SUCCESS]: receive,
   [Types.FROM_USER_FAILURE]: failure,
-  [Types.RECEIVE_STORIES]: receive,
+  [Types.RECEIVE_USERS]: receive,
 })

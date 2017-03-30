@@ -18,7 +18,8 @@ export function * login (api, { username, password }) {
       const accessToken = _.find(tokens, {type: 'access'})
       yield [
         call(api.setAuth, accessToken.value),
-        put(SessionActions.initializeSession(user, tokens))
+        put(SessionActions.initializeSession(user, tokens)),
+        put(LoginActions.loginSuccess())
       ]
     } else {
       yield put(LoginActions.loginFailure(errorFormatter(response)))

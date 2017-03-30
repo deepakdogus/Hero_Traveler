@@ -8,17 +8,14 @@ export default StyleSheet.create({
     backgroundColor: Colors.background,
     paddingTop: Metrics.baseMargin*2,
   },
-  header: {
-    height: 40,
-    marginLeft: Metrics.baseMargin,
-    marginRight: Metrics.baseMargin,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+  loader: {
+    height: Metrics.screenHeight - 100 - Metrics.tabBarHeight,
   },
   headerSearch: {
     marginHorizontal: Metrics.baseMargin,
     flexDirection: 'column',
-    justifyContent: 'space-around'
+    justifyContent: 'space-between',
+    height: 40,
   },
   searchWrapper: {
     marginTop: Metrics.baseMargin,

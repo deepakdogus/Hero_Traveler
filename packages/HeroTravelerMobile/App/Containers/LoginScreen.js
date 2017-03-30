@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   Keyboard,
+  KeyboardAvoidingView,
   LayoutAnimation
 } from 'react-native'
 import { connect } from 'react-redux'
@@ -15,7 +16,8 @@ import {
   ActionConst as NavActionConst
 } from 'react-native-router-flux'
 
-import {Images, Metrics} from '../Themes'
+import {Images, Metrics, Colors} from '../Themes'
+import Loader from '../Components/Loader'
 import RoundedButton from '../Components/RoundedButton'
 import TextButton from '../Components/TextButton'
 import TOS from '../Components/TosFooter'
@@ -46,16 +48,12 @@ class LoginScreen extends React.Component {
   }
 
   isAttempting = false
-  keyboardDidShowListener = {}
-  keyboardDidHideListener = {}
 
   constructor (props) {
     super(props)
     this.state = {
       username: 'rwoody',
       password: 'r',
-      visibleHeight: Metrics.screenHeight,
-      topLogo: { width: Metrics.screenWidth }
     }
     this.isAttempting = false
   }
@@ -64,37 +62,6 @@ class LoginScreen extends React.Component {
     if (newProps.isLoggedIn) {
       this.props.goToMyFeed()
     }
-  }
-
-  componentWillMount () {
-    // Using keyboardWillShow/Hide looks 1,000 times better, but doesn't work on Android
-    // TODO: Revisit this if Android begins to support - https://github.com/facebook/react-native/issues/3468
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow)
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide)
-  }
-
-  componentWillUnmount () {
-    this.keyboardDidShowListener.remove()
-    this.keyboardDidHideListener.remove()
-  }
-
-  keyboardDidShow = (e) => {
-    // Animation types easeInEaseOut/linear/spring
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-    let newSize = Metrics.screenHeight - e.endCoordinates.height
-    this.setState({
-      visibleHeight: newSize,
-      topLogo: {width: 100, height: 70}
-    })
-  }
-
-  keyboardDidHide = (e) => {
-    // Animation types easeInEaseOut/linear/spring
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-    this.setState({
-      visibleHeight: Metrics.screenHeight,
-      topLogo: {width: Metrics.screenWidth}
-    })
   }
 
   handlePressLogin = () => {
@@ -124,77 +91,83 @@ class LoginScreen extends React.Component {
         blurRadius={10}
       >
         <ScrollView
-          style={[styles.container, {height: this.state.visibleHeight}]}
-          contentContainerStyle={{justifyContent: 'flex-start'}}
-          keyboardShouldPersistTaps='always'>
+          style={[styles.container]}
+          contentContainerStyle={{justifyContent: 'flex-start'}}>
+          <KeyboardAvoidingView behavior='position'>
+            <View style={[styles.section, {marginTop: 0}]}>
+              <Text style={styles.title}>Login</Text>
+              <Text style={styles.instructions}>
+                Welcome back!
+              </Text>
+            </View>
 
-          <View style={[styles.section, {marginTop: 0}]}>
-            <Text style={styles.title}>Login</Text>
+            <RoundedButton
+              style={styles.facebook}
+              onPress={this.props.attemptFacebookSignup}
+              text='Sign up with Facebook'
+            />
+            <RoundedButton
+              style={styles.twitter}
+              text='Sign up with Twitter'
+            />
+
             <Text style={styles.instructions}>
-              Welcome back!
+              Or
             </Text>
-          </View>
 
-          <RoundedButton
-            style={styles.facebook}
-            onPress={this.props.attemptFacebookSignup}
-            text='Sign up with Facebook'
-          />
-          <RoundedButton
-            style={styles.twitter}
-            text='Sign up with Twitter'
-          />
+            <Input
+              ref='username'
+              style={textInputStyle}
+              value={username}
+              editable={editable}
+              keyboardType='default'
+              returnKeyType='next'
+              autoCapitalize='none'
+              autoCorrect={false}
+              onChangeText={this.handleChangeUsername}
+              underlineColorAndroid='transparent'
+              onSubmitEditing={() => this.refs.password.focus()}
+              placeholder='Username' />
 
-          <Text style={styles.instructions}>
-            Or
-          </Text>
+            <Input
+              ref='password'
+              style={textInputStyle}
+              value={password}
+              editable={editable}
+              keyboardType='default'
+              returnKeyType='go'
+              autoCapitalize='none'
+              autoCorrect={false}
+              secureTextEntry
+              onChangeText={this.handleChangePassword}
+              underlineColorAndroid='transparent'
+              onSubmitEditing={this.handlePressLogin}
+              placeholder='Password' />
 
-          <Input
-            ref='username'
-            style={textInputStyle}
-            value={username}
-            editable={editable}
-            keyboardType='default'
-            returnKeyType='next'
-            autoCapitalize='none'
-            autoCorrect={false}
-            onChangeText={this.handleChangeUsername}
-            underlineColorAndroid='transparent'
-            onSubmitEditing={() => this.refs.password.focus()}
-            placeholder='Username' />
+            <RoundedButton
+              text="Login"
+              onPress={this.handlePressLogin}
+            />
 
-          <Input
-            ref='password'
-            style={textInputStyle}
-            value={password}
-            editable={editable}
-            keyboardType='default'
-            returnKeyType='go'
-            autoCapitalize='none'
-            autoCorrect={false}
-            secureTextEntry
-            onChangeText={this.handleChangePassword}
-            underlineColorAndroid='transparent'
-            onSubmitEditing={this.handlePressLogin}
-            placeholder='Password' />
+            <TextButton
+              containerStyle={styles.forgotWrapper}
+              style={styles.forgot}
+              text="Forgot your password?"
+              onPress={() => alert('Forgot password')}
+            />
 
-          <RoundedButton
-            text="Login"
-            onPress={this.handlePressLogin}
-          />
+            <TOS style={styles.tos} />
 
-          <TextButton
-            containerStyle={styles.forgotWrapper}
-            style={styles.forgot}
-            text="Forgot your password?"
-            onPress={() => alert('Forgot password')}
-          />
-
-          <TOS style={styles.tos} />
-
-          {this.props.error && <Text style={styles.error}>{this.props.error}</Text>}
-
+            {this.props.error && <Text style={styles.error}>{this.props.error}</Text>}
+          </KeyboardAvoidingView>
         </ScrollView>
+        {this.props.fetching &&
+          <Loader
+            style={styles.spinner}
+            tintColor={Colors.blackoutTint}
+            spinnerColor={Colors.snow}
+          />
+        }
       </Image>
     )
   }

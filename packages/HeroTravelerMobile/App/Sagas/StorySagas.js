@@ -21,8 +21,9 @@ export function * getUserStories (api, {userId}) {
   const response = yield call(api.getUserStories, userId)
   if (response.ok) {
     const { data } = response;
+    console.log('saga getUserStories', data)
     yield [
-      put(StoryActions.receiveUsers(data.users)),
+      put(UserActions.receiveUsers(data.users)),
       put(StoryActions.fromUserSuccess(data.stories)),
     ]
   } else {

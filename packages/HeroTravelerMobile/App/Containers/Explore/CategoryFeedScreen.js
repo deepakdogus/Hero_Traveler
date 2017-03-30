@@ -77,7 +77,7 @@ class CategoryFeedScreen extends React.Component {
           style={styles.storyList}
           stories={storiesAsArray}
           height={imageHeight}
-          onPressStory={story => NavActions.story()}
+          onPressStory={story => NavActions.story({storyId: story.id})}
           onPressLike={story => alert(`Story ${story.id} liked`)}
         />
       );

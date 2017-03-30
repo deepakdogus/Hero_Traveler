@@ -1,11 +1,12 @@
 import _ from 'lodash'
 import React, { PropTypes } from 'react'
-import { ScrollView, Text, View } from 'react-native'
+import { ScrollView, Text, View, Image } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
-import {Metrics} from '../../Themes'
+import {Metrics, Images} from '../../Themes'
 import StoryActions from '../../Redux/Entities/Stories'
+import Loader from '../../Components/Loader'
 import StoryList from '../../Components/StoryList'
 import styles from '../Styles/MyFeedScreenStyles'
 
@@ -59,9 +60,12 @@ class MyFeedScreen extends React.Component {
     })
     let content;
 
-    if (fetchStatus.fetching || error) {
-      let innerContent = fetchStatus.fetching ? this._showLoader() : this._showError()
-      content = this._wrapElt(innerContent);
+    if (fetchStatus.fetching) {
+      content = (
+        <Loader />
+      )
+    } else if (error) {
+      content = this._wrapElt(this._showError())
     } else if (!storiesAsArray || !storiesAsArray.length) {
       let innerContent = this._showNoStories();
       content = this._wrapElt(innerContent);
@@ -71,14 +75,19 @@ class MyFeedScreen extends React.Component {
           style={styles.storyList}
           stories={storiesAsArray}
           height={imageHeight}
-          onPressStory={story => NavActions.story()}
+          onPressStory={story => NavActions.story({
+            storyId: story.id
+          })}
           onPressLike={story => alert(`Story ${story.id} liked`)}
         />
       );
     }
 
     return (
-      <View style={[styles.containerWithNavbarAndTabbar, styles.root]}>
+      <View style={[styles.containerWithTabbar, styles.root]}>
+        <View style={styles.fakeNavBar}>
+          <Image source={Images.whiteLogo} style={styles.logo} />
+        </View>
         { content }
       </View>
     )

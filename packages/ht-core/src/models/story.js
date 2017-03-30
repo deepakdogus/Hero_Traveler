@@ -16,7 +16,7 @@ const StorySchema = new mongoose.Schema({
   },
   category: {
     type: mongoose.Schema.ObjectId,
-    ref: 'User',
+    ref: 'Category',
     required: true
   },
   counts: {

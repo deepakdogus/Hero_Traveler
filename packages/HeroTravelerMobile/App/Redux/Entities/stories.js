@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
 
@@ -23,7 +24,7 @@ export const INITIAL_STATE = Immutable({
   fetchStatus: {
     fetching: false,
     loaded: false,
-  }
+  },
   error: null,
 })
 
@@ -44,7 +45,7 @@ export const receive = (state, action) => {
     fetchStatus: {
       fetching: false,
       loaded: true,
-    }
+    },
     error: null,
     entities: stories
   })
@@ -60,6 +61,15 @@ export const failure = (state) =>
   }, {
     deep: true
   })
+
+
+/* ------------- Selectors ------------- */
+
+export const getByCategory = (storyEntities, categoryId) => {
+  return _.filter(storyEntities, s => {
+    return s.category === categoryId
+  })
+}
 
 /* ------------- Hookup Reducers To Types ------------- */
 

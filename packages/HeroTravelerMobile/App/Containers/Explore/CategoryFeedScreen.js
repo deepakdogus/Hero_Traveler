@@ -1,12 +1,12 @@
+import _ from 'lodash'
 import React, { PropTypes } from 'react'
 import { ScrollView, Text, View, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
-import StoryActions from '../../Redux/Entities/Stories'
+import {getByCategory} from '../../Redux/Entities/Stories'
 
-import StorySearchList from '../../Components/StorySearchList'
-import PeopleSearchList from '../../Components/PeopleSearchList'
+import StoryList from '../../Components/StoryList'
 
 import {Metrics} from '../../Themes'
 import styles from '../Styles/CategoryFeedScreenStyles'
@@ -15,22 +15,17 @@ const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBar
 
 
 class CategoryFeedScreen extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = { selectedTabIndex: 0 }
-  }
+
   static propTypes = {
+    categoryId: PropTypes.string,
     user: PropTypes.object,
-    stories: PropTypes.object,
+    usersById: PropTypes.object,
+    stories: PropTypes.array,
     fetching: PropTypes.bool,
     error: PropTypes.bool
-  };
-
-  componentDidMount() {
-    this.props.attemptGetUserFeed(this.props.user.id)
   }
 
-  _wrapElt(elt){
+  _wrapElt(elt) {
     return (
       <View style={[styles.scrollItemFullScreen, styles.center]}>
         {elt}
@@ -50,56 +45,70 @@ class CategoryFeedScreen extends React.Component {
     )
   }
 
-  _showNoStories(){
+  _showNoStories() {
     return (
       <Text style={styles.title}>There are no stories here</Text>
     )
   }
 
   render () {
-    let { stories, fetching, error } = this.props;
+    let { stories, fetchStatus, error } = this.props;
+
+    const storiesAsArray = _.map(stories, s => {
+      return {
+        ...s,
+        author: this.props.usersById[s.author]
+      }
+    })
     let content;
 
-
-    // if (fetching || error){
-    //   let innerContent = fetching ? this._showLoader() : this._showError()
-    //   content = this._wrapElt(innerContent);
-    // } else if (!stories || !stories.length) {
-    //   let innerContent = this._showNoStories();
-    //   content = this._wrapElt(innerContent);
-    // } else {
-    //   content = (
-    //   );
-    // }
+    if (fetchStatus.fetching || error) {
+      console.log('1');
+      let innerContent = fetchStatus.fetching ? this._showLoader() : this._showError()
+      content = this._wrapElt(innerContent);
+    } else if (!storiesAsArray || !storiesAsArray.length) {
+      console.log('2');
+      let innerContent = this._showNoStories();
+      content = this._wrapElt(innerContent);
+    } else {
+      console.log('3');
+      content = (
+        <StoryList
+          style={styles.storyList}
+          stories={storiesAsArray}
+          height={imageHeight}
+          onPressStory={story => NavActions.story()}
+          onPressLike={story => alert(`Story ${story.id} liked`)}
+        />
+      );
+    }
 
     return (
       <View style={[styles.containerWithNavbarAndTabbar, styles.root]}>
-        <View><Text>Category Feed</Text></View>
+        { content }
       </View>
     )
   }
 }
 
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
   let {
-    fetching,
+    fetchStatus,
     entities: stories,
     error
   } = state.entities.stories;
   return {
     user: state.session.user,
-    fetching,
-    stories,
+    usersById: state.entities.users.entities,
+    fetchStatus,
+    stories: getByCategory(stories, props.categoryId),
     error
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    attemptGetUserFeed: (userId) => {
-      return dispatch(StoryActions.feedRequest(userId))
-    }
   }
 }
 

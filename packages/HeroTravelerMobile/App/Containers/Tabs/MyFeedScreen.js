@@ -50,22 +50,26 @@ class MyFeedScreen extends React.Component {
   }
 
   render () {
-    let { stories, fetching, error } = this.props;
+    let { stories, fetchStatus, error } = this.props;
+    const storiesAsArray = _.map(stories, s => {
+      return {
+        ...s,
+        author: this.props.usersById[s.author]
+      }
+    })
     let content;
 
-    console.log('MyFeed render', stories, _.values(stories))
-
-    if (fetching || error) {
-      let innerContent = fetching ? this._showLoader() : this._showError()
+    if (fetchStatus.fetching || error) {
+      let innerContent = fetchStatus.fetching ? this._showLoader() : this._showError()
       content = this._wrapElt(innerContent);
-    } else if (!stories || !stories.length) {
+    } else if (!storiesAsArray || !storiesAsArray.length) {
       let innerContent = this._showNoStories();
       content = this._wrapElt(innerContent);
     } else {
       content = (
         <StoryList
           style={styles.storyList}
-          stories={_.values(stories)}
+          stories={storiesAsArray}
           height={imageHeight}
           onPressStory={story => NavActions.story()}
           onPressLike={story => alert(`Story ${story.id} liked`)}
@@ -84,13 +88,14 @@ class MyFeedScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   let {
-    fetching,
+    fetchStatus,
     entities: stories,
     error
   } = state.entities.stories;
   return {
     user: state.session.user,
-    fetching,
+    usersById: state.entities.users.entities,
+    fetchStatus,
     stories,
     error
   }

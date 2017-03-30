@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, {Component} from 'react'
 import {
   ScrollView,
@@ -75,12 +76,13 @@ class ExploreScreen extends Component {
   render () {
     let content
 
-    if (this.props.categories.length && !this.state.text) {
+    if (this.props.categoriesFetchStatus.loaded && !this.state.text) {
       content = (
         <ExploreGrid
           onPress={(category) => {
             NavActions.explore_categoryFeed({
-              categoryId: category.id
+              categoryId: category.id,
+              title: category.title
             })
           }}
           categories={_.values(this.props.categories)}
@@ -120,21 +122,22 @@ class ExploreScreen extends Component {
 
 const mapStateToProps = (state) => {
   let {
-    fetching: storiesFetching,
+    fetchStatus: storiesFetchStatus,
     entities: stories,
     error: storiesError
   } = state.entities.stories;
   let {
-    fetching: categoriesFetching,
+    fetchStatus: categoriesFetchStatus,
     entities: categories,
     error: categoriesError
-  } = state.entities.stories;
+  } = state.entities.categories;
 
   return {
     user: state.session.user,
     categories,
     stories,
-    fetching: categoriesFetching || storiesFetching,
+    categoriesFetchStatus,
+    storiesFetchStatus,
     error: categoriesError || storiesError
   }
 }

@@ -95,20 +95,33 @@ const create = () => {
     return api.get('user')
   }
 
-  const getUserFeed = (userId) => {
-    return api.get(`story/${userId}/feed`)
+  const getUserFeed = (userId, params) => {
+    return api.get(`story/user/${userId}/feed`, {
+        params
+      })
       .then(response => {
-        console.log('NORMALIZE: getUserFeed', normalize(response.data, [Story]))
         return Object.assign({}, response, {
           data: normalize(response.data, [Story]).entities
         })
       })
   }
 
-  const getUserStories = (userId) => {
-    return api.get(`story/user/${userId}`)
+  const getUserStories = (userId, params) => {
+    return api.get(`story/user/${userId}`, {
+        params
+      })
       .then(response => {
-        console.log('NORMALIZE: getUserStories', normalize(response.data, [Story]))
+        return Object.assign({}, response, {
+          data: normalize(response.data, [Story]).entities
+        })
+      })
+  }
+
+  const getCategoryStories = (categoryId, params) => {
+    return api.get(`story/category/${categoryId}`, {
+        params
+      })
+      .then(response => {
         return Object.assign({}, response, {
           data: normalize(response.data, [Story]).entities
         })
@@ -126,17 +139,17 @@ const create = () => {
   const getCategories = () => {
     return api.get('category')
       .then(response => {
-        console.log('NORMALIZE: getCategories', normalize(response.data, [Category]))
         return  Object.assign({}, response, {
           data: normalize(response.data, [Category]).entities
         })
       })
   }
 
-  const getSuggestedUsers = () => {
-    return api.get('user/suggestFollowers')
+  const getSuggestedUsers = (params) => {
+    return api.get('user/suggestFollowers', {
+        params
+      })
       .then(response => {
-        console.log('NORMALIZE: getCategories', normalize(response.data, [User]))
         return  Object.assign({}, response, {
           data: normalize(response.data, [User]).entities
         })

@@ -56,8 +56,6 @@ export const failure = (state) =>
 
 /* ------------- Hookup Reducers To Types ------------- */
 
-console.log('Types.REV', Types.RECEIVE)
-
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOAD_USER_SUGGESTIONS_REQUEST]: request,
   [Types.LOAD_USER_SUGGESTIONS_SUCCESS]: receive,

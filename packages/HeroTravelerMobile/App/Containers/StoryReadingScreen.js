@@ -3,7 +3,7 @@ import { ScrollView, Text, View } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
-import StoryActions from '../Redux/StoryRedux.js'
+import StoryActions from '../Redux/Entities/Stories.js'
 import StoryList from '../Components/StoryList'
 import RoundedButton from '../Components/RoundedButton'
 import {Metrics} from '../Themes'
@@ -20,7 +20,7 @@ class StoryReadingScreen extends React.Component {
   };
 
   componentDidMount() {
-    this.props.attemptGetUserFeed(this.props.user._id)
+    this.props.attemptGetUserFeed(this.props.user.id)
   }
 
   _wrapElt(elt){
@@ -66,11 +66,11 @@ class StoryReadingScreen extends React.Component {
 
 
 const mapStateToProps = (state) => {
-  let { fetching, posts, error } = state.feed;
+  let { fetching, entities: stories, error } = state.entities.stories;
   return {
     user: state.session.user,
     fetching,
-    stories: posts,
+    stories,
     error
   }
 }

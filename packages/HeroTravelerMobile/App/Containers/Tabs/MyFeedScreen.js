@@ -1,10 +1,11 @@
+import _ from 'lodash'
 import React, { PropTypes } from 'react'
 import { ScrollView, Text, View } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
 import {Metrics} from '../../Themes'
-import StoryActions from '../../Redux/StoryRedux.js'
+import StoryActions from '../../Redux/Entities/Stories'
 import StoryList from '../../Components/StoryList'
 import styles from '../Styles/MyFeedScreenStyles'
 
@@ -13,13 +14,13 @@ const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBar
 class MyFeedScreen extends React.Component {
   static propTypes = {
     user: PropTypes.object,
-    posts: PropTypes.array,
+    stories: PropTypes.object,
     fetching: PropTypes.bool,
     error: PropTypes.bool
   };
 
   componentDidMount() {
-    this.props.attemptGetUserFeed(this.props.user._id)
+    this.props.attemptGetUserFeed(this.props.user.id)
   }
 
   _wrapElt(elt){
@@ -49,10 +50,12 @@ class MyFeedScreen extends React.Component {
   }
 
   render () {
-    let { posts: stories, fetching, error } = this.props;
+    let { stories, fetching, error } = this.props;
     let content;
 
-    if (fetching || error){
+    console.log('MyFeed render', stories, _.values(stories))
+
+    if (fetching || error) {
       let innerContent = fetching ? this._showLoader() : this._showError()
       content = this._wrapElt(innerContent);
     } else if (!stories || !stories.length) {
@@ -62,10 +65,10 @@ class MyFeedScreen extends React.Component {
       content = (
         <StoryList
           style={styles.storyList}
-          stories={stories}
+          stories={_.values(stories)}
           height={imageHeight}
           onPressStory={story => NavActions.story()}
-          onPressLike={story => alert(`Story ${story._id} liked`)}
+          onPressLike={story => alert(`Story ${story.id} liked`)}
         />
       );
     }
@@ -80,11 +83,15 @@ class MyFeedScreen extends React.Component {
 
 
 const mapStateToProps = (state) => {
-  let { fetching, posts, error } = state.feed;
+  let {
+    fetching,
+    entities: stories,
+    error
+  } = state.entities.stories;
   return {
     user: state.session.user,
     fetching,
-    posts,
+    stories,
     error
   }
 }

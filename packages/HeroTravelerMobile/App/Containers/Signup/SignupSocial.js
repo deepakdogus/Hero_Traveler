@@ -10,7 +10,8 @@ import _ from 'lodash'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import SignupActions from '../../Redux/SignupRedux'
-import UserActions from '../../Redux/UserRedux'
+import UserActions from '../../Redux/Entities/Users'
+
 import RoundedButton from '../../Components/RoundedButton'
 import ExploreGrid from '../../Components/ExploreGrid'
 import {Colors} from '../../Themes'
@@ -23,7 +24,7 @@ class SignupSocialScreen extends React.Component {
   }
 
   userIsSelected(user) {
-    return _.includes(this.props.selectedUsersById, user._id)
+    return _.includes(this.props.selectedUsersById, user.id)
   }
 
   render () {
@@ -64,10 +65,10 @@ class SignupSocialScreen extends React.Component {
             </View>
           </View>
           <Text style={styles.sectionHeader}>SUGGESTED PEOPLE</Text>
-          {this.props.users.map(u => {
+          {_.values(this.props.users).map(u => {
             const selected = this.userIsSelected(u)
             return (
-              <View style={[styles.rowWrapper]} key={u._id}>
+              <View style={[styles.rowWrapper]} key={u.id}>
                 <View style={[styles.row, styles.followers]}>
                   <Image style={styles.avatar} source={{uri: u.profile.avatar}} />
                   <View style={styles.nameWrapper}>
@@ -106,16 +107,16 @@ class SignupSocialScreen extends React.Component {
   toggleFollow = (u) => {
     const isSelected = this.userIsSelected(u)
     if (!isSelected) {
-      this.props.followUser(u._id)
+      this.props.followUser(u.id)
     } else {
-      this.props.unfollowUser(u._id)
+      this.props.unfollowUser(u.id)
     }
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    users: state.users.users,
+    users: state.entities.users.entities,
     selectedUsersById: state.signup.selectedUsers
   }
 }

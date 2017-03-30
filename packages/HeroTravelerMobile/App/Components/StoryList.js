@@ -38,7 +38,7 @@ export default class StoryList extends React.Component {
         forProfile={this.props.forProfile}
         titleStyle={this.props.titleStyle}
         subtitleStyle={this.props.subtitleStyle}
-        key={story._id}
+        key={story.id}
         height={this.props.height}
         story={story}
         onPress={this._onPressStory}

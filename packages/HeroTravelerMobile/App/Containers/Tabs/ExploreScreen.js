@@ -11,9 +11,9 @@ import {
 import {connect} from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
+import CategoryActions from '../../Redux/Entities/Categories'
+import StoryActions from '../../Redux/Entities/Stories'
 import CategoryFeedScreen from '../Explore/CategoryFeedScreen'
-import CategoryActions from '../../Redux/CategoryRedux'
-import StoryActions from '../../Redux/StoryRedux.js'
 import ExploreGrid from '../../Components/ExploreGrid'
 import StorySearchList from '../../Components/StorySearchList'
 import styles from '../Styles/ExploreScreenStyles'
@@ -37,7 +37,7 @@ class ExploreScreen extends Component {
 
   componentDidMount() {
     this.props.loadCategories()
-    this.props.attemptGetUserFeed(this.props.user._id)
+    this.props.attemptGetUserFeed(this.props.user.id)
   }
 
   renderSearchSection() {
@@ -55,16 +55,16 @@ class ExploreScreen extends Component {
             text='PEOPLE'
           />
         </View>
-        {this.props.posts && this.props.posts.length > 0 && this.state.selectedTabIndex === 0 &&
+        {this.props.stories && this.props.stories.length > 0 && this.state.selectedTabIndex === 0 &&
           <ScrollView>
             <StorySearchList
-              stories={this.props.posts}
+              stories={this.props.stories}
               height={70}
               titleStyle={styles.storyTitleStyle}
               subtitleStyle={styles.subtitleStyle}
               forProfile={true}
-              onPressStory={story => alert(`Story ${story._id} pressed`)}
-              onPressLike={story => alert(`Story ${story._id} liked`)}
+              onPressStory={story => alert(`Story ${story.id} pressed`)}
+              onPressLike={story => alert(`Story ${story.id} liked`)}
             />
           </ScrollView>
         }
@@ -80,10 +80,10 @@ class ExploreScreen extends Component {
         <ExploreGrid
           onPress={(category) => {
             NavActions.explore_categoryFeed({
-              categoryId: category._id
+              categoryId: category.id
             })
           }}
-          categories={this.props.categories}
+          categories={_.values(this.props.categories)}
         />
       )
 
@@ -119,13 +119,23 @@ class ExploreScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-  let { fetching, posts, error } = state.feed;
+  let {
+    fetching: storiesFetching,
+    entities: stories,
+    error: storiesError
+  } = state.entities.stories;
+  let {
+    fetching: categoriesFetching,
+    entities: categories,
+    error: categoriesError
+  } = state.entities.stories;
+
   return {
     user: state.session.user,
-    categories: state.categories.categories,
-    fetching,
-    posts,
-    error
+    categories,
+    stories,
+    fetching: categoriesFetching || storiesFetching,
+    error: categoriesError || storiesError
   }
 }
 

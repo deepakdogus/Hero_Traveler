@@ -8,7 +8,8 @@ import {connect} from 'react-redux'
 import _ from 'lodash'
 
 import SignupActions from '../../Redux/SignupRedux'
-import CategoryActions from '../../Redux/CategoryRedux'
+import CategoryActions from '../../Redux/Entities/Categories'
+
 import ExploreGrid from '../../Components/ExploreGrid'
 import styles from './SignupTopicsStyles'
 
@@ -28,11 +29,11 @@ class SignupTopicsScreen extends React.Component {
   render () {
     let content
 
-    if (this.props.categories.length) {
+    if (this.props.categoriesLoaded) {
       content = (
         <ExploreGrid
           onPress={this._toggleCategory}
-          categories={this.props.categories.map(c => {
+          categories={_.values(this.props.categories).map(c => {
             return {
               ...c,
               selected: this.getIsSelected(c)
@@ -57,22 +58,24 @@ class SignupTopicsScreen extends React.Component {
   }
 
   getIsSelected(category) {
-    return _.includes(this.props.selectedCategories, category._id)
+    return _.includes(this.props.selectedCategories, category.id)
   }
 
   _toggleCategory = (category) => {
     const isSelected = this.getIsSelected(category)
     if (!isSelected) {
-      this.props.selectCategory(category._id)
+      this.props.selectCategory(category.id)
     } else {
-      this.props.unselectCategory(category._id)
+      this.props.unselectCategory(category.id)
     }
   }
 }
 
 const mapStateToProps = (state) => {
+  console.log('TOPICS state', state.entities.categories)
   return {
-    categories: state.categories.categories,
+    categories: state.entities.categories.entities,
+    categoriesLoaded: state.entities.categories.loaded,
     selectedCategories: state.signup.selectedCategories
   }
 }

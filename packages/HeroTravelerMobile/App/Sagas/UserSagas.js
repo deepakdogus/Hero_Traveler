@@ -1,11 +1,11 @@
 import { call, put } from 'redux-saga/effects'
-import UserActions from '../Redux/UserRedux'
+import UserActions from '../Redux/Entities/Users'
 
 export function * getSuggestedUsers (api, action) {
   const response = yield call(api.getSuggestedUsers)
   if (response.ok) {
-    const { data: users } = response;
-    yield put(UserActions.loadUserSuggestionsSuccess(users))
+    const { data } = response;
+    yield put(UserActions.receiveUsers(data.users))
   } else {
     yield put(UserActions.loadUserSuggestionsFailure())
   }

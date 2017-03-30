@@ -60,6 +60,7 @@ StorySchema.statics.getUserFeed = function getUserFeed(userId) {
       .find({author: {$ne: userId}})
       .sort({createdAt: -1})
       .populate('author')
+      .populate('category')
 }
 
 StorySchema.statics.getUserStories = function getUserStories(userId) {
@@ -67,6 +68,7 @@ StorySchema.statics.getUserStories = function getUserStories(userId) {
     .find({author: userId})
     .sort({createdAt: -1})
     .populate('author')
+    .populate('category')
 }
 
 export default mongoose.model('Story', StorySchema)

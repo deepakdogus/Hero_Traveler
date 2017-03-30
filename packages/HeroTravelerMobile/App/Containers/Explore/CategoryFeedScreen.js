@@ -3,7 +3,7 @@ import { ScrollView, Text, View, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
-import StoryActions from '../../Redux/StoryRedux.js'
+import StoryActions from '../../Redux/Entities/Stories'
 
 import StorySearchList from '../../Components/StorySearchList'
 import PeopleSearchList from '../../Components/PeopleSearchList'
@@ -21,13 +21,13 @@ class CategoryFeedScreen extends React.Component {
   }
   static propTypes = {
     user: PropTypes.object,
-    posts: PropTypes.array,
+    stories: PropTypes.object,
     fetching: PropTypes.bool,
     error: PropTypes.bool
   };
 
   componentDidMount() {
-    this.props.attemptGetUserFeed(this.props.user._id)
+    this.props.attemptGetUserFeed(this.props.user.id)
   }
 
   _wrapElt(elt){
@@ -57,7 +57,7 @@ class CategoryFeedScreen extends React.Component {
   }
 
   render () {
-    let { posts: stories, fetching, error } = this.props;
+    let { stories, fetching, error } = this.props;
     let content;
 
 
@@ -82,11 +82,15 @@ class CategoryFeedScreen extends React.Component {
 
 
 const mapStateToProps = (state) => {
-  let { fetching, posts, error } = state.feed;
+  let {
+    fetching,
+    entities: stories,
+    error
+  } = state.entities.stories;
   return {
     user: state.session.user,
     fetching,
-    posts,
+    stories,
     error
   }
 }

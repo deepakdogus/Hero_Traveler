@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React from 'react'
 import {
   ScrollView,
@@ -17,7 +18,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import {Images, Colors} from '../../Themes'
 import SessionActions, {hasAuthData} from '../../Redux/SessionRedux'
 import RoundedButton from '../../Components/RoundedButton'
-import StoryActions from '../../Redux/StoryRedux.js'
+import StoryActions from '../../Redux/Entities/Stories'
 import StoryList from '../../Components/StoryList'
 import styles from '../Styles/ProfileScreenStyles'
 
@@ -33,7 +34,7 @@ class ProfileScreen extends React.Component {
 
   componentDidMount() {
     this.props.attemptRefreshUser()
-    this.props.attemptGetUserStories(this.props.user._id)
+    this.props.attemptGetUserStories(this.props.user.id)
   }
 
   render () {
@@ -113,15 +114,15 @@ class ProfileScreen extends React.Component {
             <Tab onPress={() => alert('drafts')} text='DRAFT' />
             <Tab onPress={() => alert('bookmarks')} text='BOOKMARKS' />
           </View>
-          {this.props.posts && this.props.posts.length > 0 &&
+          {this.props.stories && this.props.stories.length > 0 &&
             <StoryList
-              stories={this.props.posts}
+              stories={_.values(this.props.stories)}
               height={200}
               titleStyle={styles.storyTitleStyle}
               subtitleStyle={styles.subtitleStyle}
               forProfile={true}
-              onPressStory={story => alert(`Story ${story._id} pressed`)}
-              onPressLike={story => alert(`Story ${story._id} liked`)}
+              onPressStory={story => alert(`Story ${story.id} pressed`)}
+              onPressLike={story => alert(`Story ${story.id} liked`)}
             />
           }
         </View>
@@ -131,13 +132,17 @@ class ProfileScreen extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  let { fetching, posts, error } = state.feed;
+  let {
+    fetching,
+    entities: stories,
+    error
+  } = state.entities.stories;
   return {
     user: state.session.user,
     isLoggedIn: hasAuthData(state.session),
     apiTokens: state.session.tokens,
     fetching,
-    posts,
+    stories,
     error
   }
 }

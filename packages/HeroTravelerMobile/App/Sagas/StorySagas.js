@@ -1,13 +1,17 @@
 import { call, put } from 'redux-saga/effects'
-import StoryActions from '../Redux/StoryRedux'
+import StoryActions from '../Redux/Entities/Stories'
+import UserActions from '../Redux/Entities/Users'
 import StoryCreateActions from '../Redux/StoryCreateRedux'
 
 export function * getUserFeed (api, action) {
   const { userId } = action
   const response = yield call(api.getUserFeed, userId)
   if (response.ok) {
-    const { data: posts } = response;
-    yield put(StoryActions.feedSuccess(posts))
+    const { data: entities } = response;
+    yield [
+      put(StoryActions.feedSuccess(data.stories)),
+      put(UserActions.receiveUsers(data.users)),
+    ]
   } else {
     yield put(StoryActions.feedFailure())
   }
@@ -16,8 +20,9 @@ export function * getUserFeed (api, action) {
 export function * getUserStories (api, {userId}) {
   const response = yield call(api.getUserStories, userId)
   if (response.ok) {
-    const { data: posts } = response;
-    yield put(StoryActions.fromUserSuccess(posts))
+    const { data } = response;
+    yield put(StoryActions.fromUserSuccess(data.stories)),
+    yield put(StoryActions.receiveUsers(data.users)),
   } else {
     yield put(StoryActions.fromUserFailure())
   }

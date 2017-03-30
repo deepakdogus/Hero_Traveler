@@ -2,6 +2,18 @@
 import {Platform} from 'react-native'
 import apisauce from 'apisauce'
 import {get, isArray} from 'lodash'
+import {normalize, schema} from 'normalizr'
+
+const User = new schema.Entity('users')
+const Category = new schema.Entity('categories')
+const Story = new schema.Entity('stories', {
+  author: User,
+  category: Category
+})
+const Followers = new schema.Entity('follows', {
+  follower: User,
+  followee: User
+})
 
 const devURL = Platform.OS === 'ios' ? 'http://localhost:3000/' : 'http://10.0.3.2:3000/'
 
@@ -85,10 +97,22 @@ const create = () => {
 
   const getUserFeed = (userId) => {
     return api.get(`story/${userId}/feed`)
+      .then(response => {
+        console.log('NORMALIZE: getUserFeed', normalize(response.data, [Story]))
+        return Object.assign({}, response, {
+          data: normalize(response.data, [Story]).entities
+        })
+      })
   }
 
   const getUserStories = (userId) => {
     return api.get(`story/user/${userId}`)
+      .then(response => {
+        console.log('NORMALIZE: getUserStories', normalize(response.data, [Story]))
+        return Object.assign({}, response, {
+          data: normalize(response.data, [Story]).entities
+        })
+      })
   }
 
   const createStory = (story) => {
@@ -96,15 +120,27 @@ const create = () => {
   }
 
   const updateStoryCover = (story) => {
-    return api.put(`story/${story._id}/cover`)
+    return api.put(`story/${story.id}/cover`)
   }
 
   const getCategories = () => {
     return api.get('category')
+      .then(response => {
+        console.log('NORMALIZE: getCategories', normalize(response.data, [Category]))
+        return  Object.assign({}, response, {
+          data: normalize(response.data, [Category]).entities
+        })
+      })
   }
 
   const getSuggestedUsers = () => {
     return api.get('user/suggestFollowers')
+      .then(response => {
+        console.log('NORMALIZE: getCategories', normalize(response.data, [User]))
+        return  Object.assign({}, response, {
+          data: normalize(response.data, [User]).entities
+        })
+      })
   }
 
   const followUser = (userId) => {

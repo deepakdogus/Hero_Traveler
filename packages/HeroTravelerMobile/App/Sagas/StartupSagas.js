@@ -1,7 +1,5 @@
 import { put, select } from 'redux-saga/effects'
 import {Actions as NavActions, ActionConst as NavActionConst} from 'react-native-router-flux'
-import GithubActions from '../Redux/GithubRedux'
-import { is } from 'ramda'
 
 // exported to make available for tests
 // export const selectAvatar = (state) => state.github.avatar

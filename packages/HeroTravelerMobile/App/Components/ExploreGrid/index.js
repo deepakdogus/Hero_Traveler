@@ -7,7 +7,6 @@ import {
   Image
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import _ from 'lodash'
 
 import {Colors} from '../../Themes'
 import styles from './ExploreGridStyles'
@@ -33,7 +32,7 @@ export default class ExploreGrid extends Component {
       <TouchableOpacity
         onPress={() => this._onPress(category)}
         style={styles.gridRow}
-        key={category._id}
+        key={category.id}
       >
         <Image
           source={{uri: getUrl(category.image.versions.thumbnail240)}}

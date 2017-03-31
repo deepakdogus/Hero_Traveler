@@ -27,7 +27,7 @@ class CreateStoryScreen extends React.Component {
         <View style={styles.buttonGroup}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => NavActions.createStory_photo()}
+            onPress={() => 1}
           >
             <Icon
               name='file-word-o'

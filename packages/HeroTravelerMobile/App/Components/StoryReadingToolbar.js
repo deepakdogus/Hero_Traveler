@@ -14,9 +14,9 @@ export default class StoryReadingToolbarComponent extends Component {
     onPressShare: PropTypes.func,
     isLiked: PropTypes.bool,
     isBookmarked: PropTypes.bool,
-    likeCount: PropTypes.number,
-    commentCount: PropTypes.number,
-    boomarkCount: PropTypes.number,
+    likeCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    commentCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    boomarkCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   }
 
   render() {

@@ -167,7 +167,6 @@ class NavigationRouter extends Component {
               <Scene
                 key='myFeed'
                 initial
-                type='reset'
                 icon={TabIcon}
                 component={MyFeedScreen}
                 title='Feed'

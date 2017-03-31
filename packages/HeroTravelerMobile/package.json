@@ -21,6 +21,8 @@
     "android:shake": "$ANDROID_HOME/platform-tools/adb devices | grep '\\t' | awk '{print $1}' | sed 's/\\s//g' | xargs -I {} $ANDROID_HOME/platform-tools/adb -s {} shell input keyevent 82"
   },
   "dependencies": {
+    "algoliasearch": "^3.22.1",
+    "algoliasearch-helper": "^2.20.1",
     "apisauce": "^0.10.0",
     "format-json": "^1.0.3",
     "lodash": "^4.17.2",

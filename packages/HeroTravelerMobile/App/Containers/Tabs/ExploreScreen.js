@@ -12,8 +12,12 @@ import {
 import {connect} from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
+// Search
+import algoliasearchModule from 'algoliasearch/reactnative'
+const algoliasearch = algoliasearchModule('BEEW4KQKOP', '9aa2c15ed03f4826dd559bea4087592e')
+import AlgoliaSearchHelper from 'algoliasearch-helper';
+
 import CategoryActions from '../../Redux/Entities/Categories'
-import StoryActions from '../../Redux/Entities/Stories'
 
 import Loader from '../../Components/Loader'
 import ExploreGrid from '../../Components/ExploreGrid'
@@ -32,37 +36,109 @@ class ExploreScreen extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      text: null,
+      lastSearchResults: null,
       selectedTabIndex: 0
     }
   }
 
+  componentWillMount() {
+    this.helper = AlgoliaSearchHelper(algoliasearch, 'dev_STORIES')
+    this.setupSearchListeners(this.helper)
+  }
+
+  componentWillUnmount() {
+    this.removeSearchListeners(this.helper)
+  }
+
+  setupSearchListeners(helper) {
+    helper.on('result', res => {
+      this.setState({
+        searching: false,
+        lastSearchResults: res,
+      })
+    })
+    helper.on('result', res => {
+      console.log('res', res)
+      this.setState({
+        searching: false,
+        lastSearchResults: res,
+      })
+    })
+    helper.on('search', () => {
+      this.setState({searching: true})
+    })
+  }
+
+  removeSearchListeners(helper) {
+    helper.removeAllListeners('result')
+    helper.removeAllListeners('search')
+  }
+
+  getSearchIndex(selectedTabIndex) {
+    return selectedTabIndex === 0 ? 'dev_STORIES' : 'dev_USERS'
+  }
+
+  changeIndex(newIndex) {
+    this.removeSearchListeners(this.helper)
+    this.helper = this.helper.setIndex(newIndex)
+    this.setupSearchListeners(this.helper)
+    return this.helper
+  }
+
+  _changeQuery = (e) => {
+    const helper = this.helper
+    const q = e.nativeEvent.text
+    const self = this
+
+    if (_.isString(q) && q.length === 0) {
+      self.setState({
+        lastSearchResults: null,
+        searching: false,
+        selectedTabIndex: 0
+      })
+      return
+    } else if (_.isString(q) && q.length < 3) {
+      return
+    }
+
+    _.debounce(() => {
+      helper
+        .setQuery(q)
+        .search()
+    }, 300)()
+  }
+
   componentDidMount() {
     this.props.loadCategories()
-    this.props.attemptGetUserFeed(this.props.user.id)
+  }
+
+  _changeTab = (selectedTabIndex) => {
+    this.changeIndex(this.getSearchIndex(selectedTabIndex))
+    this.setState({selectedTabIndex})
+    this.helper.search()
   }
 
   renderSearchSection() {
-    const storiesAsArray = _.values(this.props.stories)
+    const searchHits = _.get(this.state.lastSearchResults, 'hits', [])
 
     return (
       <View style={styles.tabs}>
         <View style={styles.tabnav}>
           <Tab
             selected={this.state.selectedTabIndex === 0}
-            onPress={() => this.setState({selectedTabIndex: 0})}
+            onPress={() => this._changeTab(0)}
             text='STORIES'
           />
           <Tab
             selected={this.state.selectedTabIndex === 1}
-            onPress={() => this.setState({selectedTabIndex: 1})}
+            onPress={() => this._changeTab(1)}
             text='PEOPLE'
           />
         </View>
-        {storiesAsArray && storiesAsArray.length > 0 && this.state.selectedTabIndex === 0 &&
+        {searchHits && searchHits.length > 0 && this.state.selectedTabIndex === 0 &&
           <ScrollView>
             <StorySearchList
-              stories={storiesAsArray}
+              stories={this.state.lastSearchResults.hits}
               height={70}
               titleStyle={styles.storyTitleStyle}
               subtitleStyle={styles.subtitleStyle}
@@ -80,11 +156,11 @@ class ExploreScreen extends Component {
   render () {
     let content
 
-    if (this.props.categoriesFetchStatus.fetching || this.props.storiesFetchStatus.fetching) {
+    if (this.props.categoriesFetchStatus.fetching || this.state.searching) {
       content = (
         <Loader style={styles.loader} />
       )
-    } else if (this.props.categoriesFetchStatus.loaded && !this.state.text) {
+    } else if (this.props.categoriesFetchStatus.loaded && !this.state.lastSearchResults) {
       content = (
         <ExploreGrid
           onPress={(category) => {
@@ -97,7 +173,7 @@ class ExploreScreen extends Component {
         />
       )
 
-    } else if (this.state.text) {
+    } else if (this.state.lastSearchResults) {
       content = this.renderSearchSection()
     } else {
       content = (
@@ -113,11 +189,11 @@ class ExploreScreen extends Component {
               style={styles.searchInput}
               placeholder='Search'
               placeholderTextColor='#757575'
-              onChangeText={(text) => this.setState({text})}
+              onChange={e => this._changeQuery(e)}
             />
           </View>
         </View>
-        {!this.state.text &&
+        {!this.state.lastSearchResults &&
           <View style={styles.titleWrapper}>
             <Text style={styles.title}>EXPLORE</Text>
           </View>
@@ -130,11 +206,6 @@ class ExploreScreen extends Component {
 
 const mapStateToProps = (state) => {
   let {
-    fetchStatus: storiesFetchStatus,
-    entities: stories,
-    error: storiesError
-  } = state.entities.stories;
-  let {
     fetchStatus: categoriesFetchStatus,
     entities: categories,
     error: categoriesError
@@ -143,19 +214,14 @@ const mapStateToProps = (state) => {
   return {
     user: state.session.user,
     categories,
-    stories,
     categoriesFetchStatus,
-    storiesFetchStatus,
-    error: categoriesError || storiesError
+    error: categoriesError
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
-    attemptGetUserFeed: (userId) => {
-      return dispatch(StoryActions.feedRequest(userId))
-    }
+    loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest())
   }
 }
 

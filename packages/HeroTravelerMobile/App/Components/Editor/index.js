@@ -6,171 +6,101 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Image
+  Image,
+  Platform
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import {RichTextEditor, RichTextToolbar, actions} from 'react-native-zss-rich-text-editor';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 
-import RoundedButton from '../RoundedButton'
+import ShadowButton from '../ShadowButton'
 import {Images, Colors} from '../../Themes'
 import styles from './EditorStyles'
 
-const ItemTypes = {
-  TEXT: 'EDITOR_TEXT',
-  IMAGE: 'EDITOR_IMAGE',
-  VIDEO: 'EDITOR_VIDEO',
-}
-
-class IconButton extends Component {
-  render() {
-    return (
-      <TouchableOpacity {...this.props}>
-        <Icon name={this.props.name} size={15} color={Colors.background} />
-      </TouchableOpacity>
-    )
-  }
-}
-
-class Toolbar extends Component {
-  render() {
-    return (
-      <View
-        style={styles.toolbar}
-      >
-        <IconButton
-          style={styles.createMenuButton}
-          onPress={this.props.addText}
-          name="font"
-        />
-        <IconButton
-          style={styles.createMenuButton}
-          onPress={this.props.addLink}
-          name="link"
-        />
-        <IconButton
-          style={styles.createMenuButton}
-          onPress={this.props.addPhoto}
-          name="image"
-        />
-        <IconButton
-          style={styles.createMenuButton}
-          onPress={this.props.addVideo}
-          name="video-camera"
-        />
-      </View>
-    )
-  }
-}
-
 export default class Editor extends Component {
-
-  static defaultProps = {
-
-  }
 
   constructor(props) {
     super(props)
-
-    this.state = {
-      content: [],
-      height: 0,
-    }
+    this.getHTML = this.getHTML.bind(this);
+    this.setFocusHandlers = this.setFocusHandlers.bind(this);
   }
 
   render() {
+
+    const h1Icon = (
+      <Icon name='rocket' size={15} />
+    )
+
     return (
       <View style={styles.root}>
-        <View style={styles.contentWrapper}>
-          {this.state.content.length === 0 &&
-            <RoundedButton
-              onPress={this._startTyping}
-              text='Tap here to start typing'
-            />
-          }
-          {this.state.content.length > 0 && this._renderContent()}
-        </View>
-        <Toolbar
-          addText={this._addText}
-          addLink={this._addLink}
-          addPhoto={this._addPhoto}
-          addVideo={this._addVideo}
-        />
+        <RichTextEditor
+            ref={(r)=> this.richtext = r}
+            style={styles.richText}
+            hiddenTitle={true}
+            enableOnChange={true}
+            initialContentHTML={[
+              "Hello <b>World</b>",
+              "<p>this is a new paragraph</p>",
+              "<p>this is another new paragraph</p>",
+              "<p>",
+              "Hello",
+              "</p>",
+              "<p>",
+              '<img src="https://c1.staticflickr.com/3/2616/5813184171_42dcfb6bb6_o.jpg" />',
+              "</p>"
+            ].join('')}
+            editorInitializedCallback={() => this.onEditorInitialized()}
+          />
+          <RichTextToolbar
+            onPressAddImage={this._addImage}
+            actions={[
+              actions.setBold,
+              actions.setItalic,
+              actions.heading1,
+              actions.removeFormat,
+              actions.insertImage,
+              actions.insertLink,
+            ]}
+            iconMap={{
+              [actions.heading1]: require('../../Images/ht-icons/icon_content-text.png'),
+              [actions.removeFormat]: require('../../Images/ht-icons/icon_content-x.png')
+            }}
+            getEditor={() => this.richtext}
+            style={styles.toolbar}
+          />
+          {Platform.OS === 'ios' && <KeyboardSpacer/>}
       </View>
     )
   }
 
-  _renderContent() {
-    const content = reduce(this.state.content, (content, item, index) => {
-      switch (item.type) {
-        case ItemTypes.TEXT:
-          return content.concat(
-            <TextInput
-              key={index}
-              multiline={true}
-              style={[styles.textInput, {height: Math.max(100, this.state.height)}]}
-            >
-              <Text style={styles.baseText}>{item.value}</Text>
-            </TextInput>
-          )
-        case ItemTypes.IMAGE:
-          return content.concat(
-            <Image
-              key={index}
-              source={Images.createStory}
-              style={styles.baseImage}
-            />
-          )
-      }
-    }, [])
-
-    return content
+  getEditor = () => {
+    return this.richtext
   }
 
-  _replaceContentAtIndex = (index, newItem) => {
-    const item = Object.assign({}, this.state.content.slice(index, index + 1), newItem)
-    return [
-      ...this.state.slice(0, index),
-      item,
-      ...this.state.slice(this.state.length > index + 1 ? index + 1 : index),
-    ]
+  _addImage = () => {
+    if (this.props.onAddImage) {
+      this.props.onAddImage()
+    }
   }
 
-  _startTyping = () => {
-    this.setState({
-      content: [{
-        type: ItemTypes.TEXT,
-        value: 'Change me',
-        isEditing: true
-      }]
-    })
+  onEditorInitialized() {
+    this.setFocusHandlers();
+    this.getHTML();
   }
 
-  _addPhoto = () => {
-    const content = [
-      ...this.state.content,
-      {
-        type: ItemTypes.IMAGE,
-        value: 'Some Image'
-      },
-      {
-        type: ItemTypes.TEXT,
-        value: '',
-        isEditing: true
-      }
-    ]
-
-    this.setState({content})
+  async getHTML() {
+    const titleHtml = await this.richtext.getTitleHtml();
+    const contentHtml = await this.richtext.getContentHtml();
+    //alert(titleHtml + ' ' + contentHtml)
   }
 
-  _addVideo = () => {
-    this.setState({
-      newContentSection: 'video'
-    })
-  }
-
-  _addText = () => {
-    this.setState({
-      newContentSection: 'text'
-    })
+  setFocusHandlers() {
+    // this.richtext.setTitleFocusHandler(() => {
+    //   //alert('title focus');
+    // });
+    this.richtext.setContentFocusHandler(() => {
+      //alert('content focus');
+    });
   }
 }

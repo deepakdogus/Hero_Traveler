@@ -8,27 +8,33 @@ import {
 } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-// screens identified by the router
 import LaunchScreen from '../Containers/LaunchScreen'
-import SignupScreen from '../Containers/Signup/SignupScreen'
-import LoginScreen from '../Containers/LoginScreen'
 import Styles from './Styles/NavigationContainerStyles'
 
+// Tabs
 import MyFeedScreen from '../Containers/Tabs/MyFeedScreen'
 import ExploreScreen from '../Containers/Tabs/ExploreScreen'
+// Profile tab
+import ProfileScreen from '../Containers/Tabs/ProfileScreen'
+import SettingsScreen from '../Containers/SettingsScreen'
 import CategoryFeedScreen from '../Containers/Explore/CategoryFeedScreen'
+
+// Story reading & creating
 import StoryReadingScreen from '../Containers/StoryReadingScreen'
 import StoryCommentsScreen from '../Containers/StoryCommentsScreen'
-import CreateStoryScreen from '../Containers/CreateStory/CreateStoryScreen'
-import PhotoStoryScreen from '../Containers/CreateStory/PhotoStoryScreen'
+import StoryCoverScreen from '../Containers/CreateStory/StoryCoverScreen'
+import StoryCreateScreen from '../Containers/CreateStory/CreateStoryScreen'
+import FullScreenEditor from '../Containers/CreateStory/FullScreenEditor'
 import CreateStoryDetailScreen from '../Containers/CreateStory/CreateStoryDetailScreen'
+import MediaSelectorScreen from '../Containers/MediaSelectorScreen'
+
 import ActivityScreen from '../Containers/Tabs/ActivityScreen'
-import ProfileScreen from '../Containers/Tabs/ProfileScreen'
+
+// Signup & login
+import LoginScreen from '../Containers/LoginScreen'
+import SignupScreen from '../Containers/Signup/SignupScreen'
 import SignupTopics from '../Containers/Signup/SignupTopics'
 import SignupSocial from '../Containers/Signup/SignupSocial'
-import PhotoSelectorScreen from '../Containers/CreateStory/PhotoSelectorScreen'
-import PhotoTakerScreen from '../Containers/CreateStory/PhotoTakerScreen'
-import SettingsScreen from '../Containers/SettingsScreen'
 
 // https://github.com/aksonov/react-native-router-flux/blob/master/Example/Example.js#L52
 const getSceneStyle = (/* NavigationSceneRendererProps */ props, computedProps) => {
@@ -54,6 +60,7 @@ class TabIcon extends React.Component {
   }
 
   render(){
+    console.log('TabIcon props', this.props)
     return (
       <Icon
         name={this.getIconName(this.props.name)}
@@ -213,17 +220,28 @@ class NavigationRouter extends Component {
                 key='createStory_info'
                 title='Create Story'
                 hideNavBar={true}
-                component={CreateStoryScreen}
+                component={StoryCreateScreen}
               />
               <Scene
                 key='createStory_photo'
                 title='Create Story'
-                component={PhotoStoryScreen}
+                component={StoryCoverScreen}
                 panHandlers={null}
                 hideNavBar={false}
                 type="replace"
                 direction="horizontal"
                 leftTitle='Cancel'
+                onLeft={() => NavActions.pop()}
+                rightTitle='Next'
+                onRight={() => NavActions.createStory_content()}
+              />
+              <Scene
+                key='createStory_content'
+                title='Story Content'
+                component={FullScreenEditor}
+                panHandlers={null}
+                direction='horizontal'
+                leftTitle='Back'
                 onLeft={() => NavActions.pop()}
                 rightTitle='Next'
                 onRight={() => NavActions.createStory_details()}
@@ -232,6 +250,7 @@ class NavigationRouter extends Component {
                 key='createStory_details'
                 title='Create Story Details'
                 panHandlers={null}
+                hideNavBar={false}
                 component={CreateStoryDetailScreen}
                 backTitle='Cancel'
                 rightTitle='Publish'
@@ -239,33 +258,14 @@ class NavigationRouter extends Component {
               />
             </Scene>
             <Scene
-              key='photoSelectorScreen'
-              {...tabBarProps}
-            >
-              <Scene
-                key='selectPhoto'
-                panHandlers={null}
-                title='Library'
-                icon={TabIcon}
-                component={PhotoSelectorScreen}
-                leftTitle='Cancel'
-                onLeft={() => NavActions.pop()}
-                {...darkNavBarProps}
-              />
-              <Scene
-                initial
-                key='takePhoto'
-                panHandlers={null}
-                title='Photo'
-                icon={TabIcon}
-                backTitle='Cancel'
-                hideBackImage
-                {...darkNavBarProps}
-                leftTitle='Cancel'
-                onLeft={() => NavActions.pop()}
-                component={PhotoTakerScreen}
-              />
-            </Scene>
+              key='mediaSelectorScreen'
+              component={MediaSelectorScreen}
+              backTitle='Cancel'
+              rightTitle='Publish'
+              onRight={() => console.log('Publishing')}
+              direction='horizontal'
+              {...darkNavBarProps}
+            />
           </Scene>
         </Scene>
       </Router>

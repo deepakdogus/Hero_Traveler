@@ -112,7 +112,7 @@ export default StyleSheet.create({
   tab: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: '33%',
+    flex: .33,
     borderBottomWidth: 2,
     borderBottomColor: Colors.snow,
   },

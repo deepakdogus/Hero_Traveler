@@ -90,8 +90,8 @@ export default class StoryPreview extends Component {
                     <LikesComponent
                       onPress={this._onPressLike}
                       numberStyle={styles.bottomRight}
-                      likes={story.counts.likes}
-                      isLiked={story.counts.likes % 2 === 0}
+                      likes={counts.likes}
+                      isLiked={story.isLiked}
                     />
                   </View>
                 }
@@ -102,7 +102,7 @@ export default class StoryPreview extends Component {
                       onPress={this._onPressLike}
                       numberStyle={styles.bottomRight}
                       likes={counts.likes}
-                      isLiked={false}
+                      isLiked={story.isLiked}
                     />
                   </View>
                 }

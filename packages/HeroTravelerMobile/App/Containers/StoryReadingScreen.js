@@ -8,6 +8,7 @@ import StoryList from '../Components/StoryList'
 import StoryPreview from '../Components/StoryPreview'
 import RoundedButton from '../Components/RoundedButton'
 import {Metrics, Images} from '../Themes'
+import StoryReadingToolbar from '../Components/StoryReadingToolbar'
 import styles from './Styles/StoryReadingScreenStyles'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
@@ -84,18 +85,30 @@ class StoryReadingScreen extends React.Component {
     }
 
     return (
-      <ScrollView style={[styles.root]}>
-        <StoryPreview
-          onPressUser={(userId) => alert(`User ${userId} pressed`)}
-          key={story.id}
-          height={Metrics.screenHeight}
-          story={storyWithUser}
-        />
-        <StoryContent
-          style={styles.content}
-          story={storyWithUser}
-        />
-      </ScrollView>
+      <View style={[styles.root]}>
+        <ScrollView style={[styles.scrollView]}>
+          <StoryPreview
+            onPressUser={(userId) => alert(`User ${userId} pressed`)}
+            key={story.id}
+            height={Metrics.screenHeight}
+            story={storyWithUser}
+          />
+          <StoryContent
+            style={styles.content}
+            story={storyWithUser}
+          />
+          <StoryReadingToolbar
+            style={styles.toolBar}
+            likeCount={storyWithUser.counts.likes}
+            commentCount={storyWithUser.counts.comments}
+            boomarkCount={storyWithUser.counts.bookmarks}
+            isBookmarked={storyWithUser.isBookmarked}
+            isLiked={storyWithUser.isLiked}
+            onPressLike={() => this.props.toggleLike(storyWithUser.id)}
+            onPressBookmark={() => this.props.toggleBookmark(storyWithUser.id)}
+          />
+        </ScrollView>
+      </View>
     )
   }
 }
@@ -114,6 +127,8 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    toggleLike: (storyId) => dispatch(StoryActions.storyLike(storyId)),
+    toggleBookmark: (storyId) => dispatch(StoryActions.storyBookmark(storyId))
   }
 }
 

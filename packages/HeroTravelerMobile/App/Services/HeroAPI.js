@@ -178,6 +178,14 @@ const create = () => {
     })
   }
 
+  const likeStory = (storyId) => {
+    return api.get(`story/${storyId}/like`)
+  }
+
+  const bookmarkStory = (storyId) => {
+    return api.get(`story/${storyId}/bookmark`)
+  }
+
   // ------
   // STEP 3
   // ------
@@ -205,7 +213,9 @@ const create = () => {
     followUser,
     unfollowUser,
     followCategory,
-    unfollowCategory
+    unfollowCategory,
+    likeStory,
+    bookmarkStory,
   }
 }
 

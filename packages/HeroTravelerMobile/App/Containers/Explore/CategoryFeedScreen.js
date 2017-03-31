@@ -4,7 +4,7 @@ import { ScrollView, Text, View, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
-import {getByCategory} from '../../Redux/Entities/Stories'
+import StoryActions, {getByCategory} from '../../Redux/Entities/Stories'
 
 import StoryList from '../../Components/StoryList'
 
@@ -63,15 +63,12 @@ class CategoryFeedScreen extends React.Component {
     let content;
 
     if (fetchStatus.fetching || error) {
-      console.log('1');
       let innerContent = fetchStatus.fetching ? this._showLoader() : this._showError()
       content = this._wrapElt(innerContent);
     } else if (!storiesAsArray || !storiesAsArray.length) {
-      console.log('2');
       let innerContent = this._showNoStories();
       content = this._wrapElt(innerContent);
     } else {
-      console.log('3');
       content = (
         <StoryList
           style={styles.storyList}
@@ -109,6 +106,7 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    toggleLike: (storyId) => dispatch(StoryActions.storyLike(storyId))
   }
 }
 

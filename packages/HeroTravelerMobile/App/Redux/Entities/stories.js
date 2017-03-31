@@ -11,7 +11,13 @@ const { Types, Creators } = createActions({
   fromUserRequest: ['userId'],
   fromUserSuccess: ['stories'],
   fromUserFailure: null,
-  receiveStories: ['stories']
+  receiveStories: ['stories'],
+  storyLike: ['storyId'],
+  storyLikeSuccess: ['storyId'],
+  storyLikeFailure: ['storyId'],
+  storyBookmark: ['storyId'],
+  storyBookmarkSuccess: ['storyId'],
+  storyBookmarkFailure: ['storyId'],
 })
 
 export const StoryTypes = Types
@@ -63,6 +69,63 @@ export const failure = (state) =>
     deep: true
   })
 
+// Toggle like optimistically
+const storyLike = (state, {storyId}) => {
+  const isToggled = _.get(state, `entities.${storyId}.isLiked`, false)
+  const numOfLikes = _.get(state, `entities.${storyId}.counts.likes`, 0)
+  return state.setIn(
+    ['entities', storyId, 'isLiked'],
+    !isToggled
+  )
+  .setIn(
+    ['entities', storyId, 'counts', 'likes'],
+    !isToggled ? numOfLikes + 1 : numOfLikes - 1
+  )
+}
+
+const storyLikeSuccess = (state, {}) => state
+
+// Revert the optimistic update on like failure
+const storyLikeFailure = (state, {storyId}) => {
+  const isToggled = _.get(state, `entities.${storyId}.isLiked`, false)
+  const numOfLikes = _.get(state, `entities.${storyId}.counts.likes`, 0)
+  return state.setIn(
+    ['entities', storyId, 'isLiked'],
+    !isToggled
+  )
+  .setIn(
+    ['entities', storyId, 'counts', 'likes'],
+    !isToggled ? numOfLikes - 1 : numOfLikes + 1
+  )
+}
+
+// Toggle bookmark optimistically
+const storyBookmark = (state, {storyId}) => {
+  const isToggled = _.get(state, `entities.${storyId}.isBookmarked`, false)
+  const numOfLikes = _.get(state, `entities.${storyId}.counts.bookmarks`, 0)
+  return state.setIn(
+    ['entities', storyId, 'isBookmarked'],
+    !isToggled
+  )
+  .setIn(
+    ['entities', storyId, 'counts', 'bookmarks'],
+    !isToggled ? numOfLikes + 1 : numOfLikes - 1
+  )
+}
+const storyBookmarkSuccess = (state, {}) => state
+// Revert the optimistic update on bookmark failure
+const storyBookmarkFailure = (state, {storyId}) => {
+  const isToggled = _.get(state, `entities.${storyId}.isBookmarked`, false)
+  const numOfLikes = _.get(state, `entities.${storyId}.counts.bookmarks`, 0)
+  return state.setIn(
+    ['entities', storyId, 'isBookmarked'],
+    !isToggled
+  )
+  .setIn(
+    ['entities', storyId, 'counts', 'bookmarks'],
+    !isToggled ? numOfLikes - 1 : numOfLikes + 1
+  )
+}
 
 /* ------------- Selectors ------------- */
 
@@ -88,4 +151,10 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.FROM_USER_SUCCESS]: receive,
   [Types.FROM_USER_FAILURE]: failure,
   [Types.RECEIVE_USERS]: receive,
+  [Types.STORY_LIKE]: storyLike,
+  [Types.STORY_LIKE_SUCCESS]: storyLikeSuccess,
+  [Types.STORY_LIKE_FAILURE]: storyLikeFailure,
+  [Types.STORY_BOOKMARK]: storyBookmark,
+  [Types.STORY_BOOKMARK_SUCCESS]: storyBookmarkSuccess,
+  [Types.STORY_BOOKMARK_FAILURE]: storyBookmarkFailure,
 })

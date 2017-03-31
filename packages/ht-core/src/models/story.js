@@ -23,6 +23,10 @@ const StorySchema = new mongoose.Schema({
     likes: {
       type: Number,
       default: 0
+    },
+    bookmarks: {
+      type: Number,
+      default: 0
     }
   },
   coverImage: {
@@ -53,7 +57,6 @@ const StorySchema = new mongoose.Schema({
     default: Date.now
   },
 });
-
 
 StorySchema.statics.getUserFeed = function getUserFeed(userId) {
     return this

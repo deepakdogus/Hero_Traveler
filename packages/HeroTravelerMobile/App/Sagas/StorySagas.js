@@ -41,3 +41,33 @@ export function * createPhotoStory (api, action) {
     yield put(StoryCreateActions.publishFailure(new Error('Failed to publish story')))
   }
 }
+
+export function * likeStory(api, {storyId}) {
+  const response = yield call(
+    api.likeStory,
+    storyId
+  )
+
+  if (response.ok) {
+    yield [
+      put(StoryActions.storyLikeSuccess())
+    ]
+  } else {
+    yield put(StoryActions.storyLikeFailure(storyId))
+  }
+}
+
+export function * bookmarkStory(api, {storyId}) {
+  const response = yield call(
+    api.bookmarkStory,
+    storyId
+  )
+
+  if (response.ok) {
+    yield [
+      put(StoryActions.storyBookmarkSuccess())
+    ]
+  } else {
+    yield put(StoryActions.storyBookmarkFailure(storyId))
+  }
+}

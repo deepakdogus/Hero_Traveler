@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { PropTypes } from 'react'
 import { ListView } from 'react-native'
 import styles from './Styles/StoryListStyle'
@@ -15,7 +16,7 @@ export default class StoryList extends React.Component {
 
   constructor(props) {
     super(props)
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => _.isEqual(r1, r2)})
     this.state = {
       dataSource: ds.cloneWithRows(props.stories)
     }

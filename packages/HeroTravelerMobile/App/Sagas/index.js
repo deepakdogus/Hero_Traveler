@@ -34,7 +34,9 @@ import { getSuggestedUsers } from './UserSagas'
 import {
   getUserFeed,
   createPhotoStory,
-  getUserStories
+  getUserStories,
+  likeStory,
+  bookmarkStory
 } from './StorySagas'
 
 /* ------------- API ------------- */
@@ -62,6 +64,8 @@ export default function * root () {
     takeLatest(StoryCreateTypes.PUBLISH_REQUEST, createPhotoStory, heroAPI),
     takeLatest(StoryTypes.FEED_REQUEST, getUserFeed, heroAPI),
     takeLatest(StoryTypes.FROM_USER_REQUEST, getUserStories, heroAPI),
+    takeLatest(StoryTypes.STORY_LIKE, likeStory, heroAPI),
+    takeLatest(StoryTypes.STORY_BOOKMARK, bookmarkStory, heroAPI),
     takeLatest(CategoryTypes.LOAD_CATEGORIES_REQUEST, getCategories, heroAPI),
     takeLatest(UserTypes.LOAD_USER_SUGGESTIONS_REQUEST, getSuggestedUsers, heroAPI),
   ]

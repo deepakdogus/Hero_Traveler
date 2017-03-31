@@ -78,7 +78,7 @@ class MyFeedScreen extends React.Component {
           onPressStory={story => NavActions.story({
             storyId: story.id
           })}
-          onPressLike={story => alert(`Story ${story.id} liked`)}
+          onPressLike={story => this.props.toggleLike(story.id)}
         />
       );
     }
@@ -112,9 +112,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    attemptGetUserFeed: (userId) => {
-      return dispatch(StoryActions.feedRequest(userId))
-    }
+    attemptGetUserFeed: (userId) => dispatch(StoryActions.feedRequest(userId)),
+    toggleLike: (storyId) => dispatch(StoryActions.storyLike(storyId))
   }
 }
 

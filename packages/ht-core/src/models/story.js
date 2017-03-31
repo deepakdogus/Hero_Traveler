@@ -16,11 +16,15 @@ const StorySchema = new mongoose.Schema({
   },
   category: {
     type: mongoose.Schema.ObjectId,
-    ref: 'User',
+    ref: 'Category',
     required: true
   },
   counts: {
     likes: {
+      type: Number,
+      default: 0
+    },
+    bookmarks: {
       type: Number,
       default: 0
     }
@@ -54,12 +58,12 @@ const StorySchema = new mongoose.Schema({
   },
 });
 
-
 StorySchema.statics.getUserFeed = function getUserFeed(userId) {
     return this
       .find({author: {$ne: userId}})
       .sort({createdAt: -1})
       .populate('author')
+      .populate('category')
 }
 
 StorySchema.statics.getUserStories = function getUserStories(userId) {
@@ -67,6 +71,7 @@ StorySchema.statics.getUserStories = function getUserStories(userId) {
     .find({author: userId})
     .sort({createdAt: -1})
     .populate('author')
+    .populate('category')
 }
 
 export default mongoose.model('Story', StorySchema)

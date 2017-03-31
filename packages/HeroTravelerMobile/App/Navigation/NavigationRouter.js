@@ -148,20 +148,11 @@ class NavigationRouter extends Component {
               {...darkNavBarProps}
             />
             <Scene
-              key='categoryFeed'
-              component={CategoryFeedScreen}
-              direction='horizontal'
-              onLeft={() => NavActions.pop()}
-              title='Category Feed'
-              {...darkNavBarProps}
-            />
-            <Scene
               key='story'
               component={StoryReadingScreen}
               direction='horizontal'
               onLeft={() => NavActions.pop()}
-              title='Story Read'
-              {...darkNavBarProps}
+              {...clearNavBarProps}
             />
             <Scene
               key='storyComments'
@@ -181,16 +172,31 @@ class NavigationRouter extends Component {
                 component={MyFeedScreen}
                 title='Feed'
                 renderBackButton={() => null}
-                {...darkNavBarProps}
+                hideNavBar={true}
               />
               <Scene
                 key='explore'
                 icon={TabIcon}
-                component={ExploreScreen}
-                title='Explore'
-                {...darkNavBarProps}
-                hideNavBar={true}
-              />
+                hideNavBar={false}
+              >
+                <Scene
+                  key='explore_grid'
+                  initial
+                  component={ExploreScreen}
+                  title='Explore'
+                  {...darkNavBarProps}
+                  hideNavBar={true}
+                />
+                <Scene
+                  key='explore_categoryFeed'
+                  component={CategoryFeedScreen}
+                  direction='horizontal'
+                  onLeft={() => NavActions.pop()}
+                  title='Category Feed'
+                  hideNavBar={false}
+                  {...darkNavBarProps}
+                />
+              </Scene>
               <Scene
                 key='createStory'
                 title='Create Story'

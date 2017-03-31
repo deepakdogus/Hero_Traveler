@@ -31,7 +31,6 @@ app.use((err, req, res, next) => {
     message: err.message || 'There was an error processing your request.'
   })
 })
-
 const stageDBUrl = 'mongodb://ht-api:lFMGJtlEO13MV5qd4GBa0wjkQLiteVq9n1pyQChp3aRgH@ds161008.mlab.com:61008/hero-traveler'
 
 initCore({

@@ -1,28 +1,31 @@
+import _ from 'lodash'
 import React, { PropTypes } from 'react'
-import { ScrollView, Text, View } from 'react-native'
+import { ScrollView, Text, View, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
-import StoryActions from '../../Redux/StoryRedux.js'
+import StoryActions, {getByCategory} from '../../Redux/Entities/Stories'
+
 import StoryList from '../../Components/StoryList'
+
 import {Metrics} from '../../Themes'
 import styles from '../Styles/CategoryFeedScreenStyles'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
 
+
 class CategoryFeedScreen extends React.Component {
+
   static propTypes = {
+    categoryId: PropTypes.string,
     user: PropTypes.object,
-    posts: PropTypes.array,
+    usersById: PropTypes.object,
+    stories: PropTypes.array,
     fetching: PropTypes.bool,
     error: PropTypes.bool
-  };
-
-  componentDidMount() {
-    this.props.attemptGetUserFeed(this.props.user._id)
   }
 
-  _wrapElt(elt){
+  _wrapElt(elt) {
     return (
       <View style={[styles.scrollItemFullScreen, styles.center]}>
         {elt}
@@ -42,30 +45,37 @@ class CategoryFeedScreen extends React.Component {
     )
   }
 
-  _showNoStories(){
+  _showNoStories() {
     return (
       <Text style={styles.title}>There are no stories here</Text>
     )
   }
 
   render () {
-    let { posts: stories, fetching, error } = this.props;
+    let { stories, fetchStatus, error } = this.props;
+
+    const storiesAsArray = _.map(stories, s => {
+      return {
+        ...s,
+        author: this.props.usersById[s.author]
+      }
+    })
     let content;
 
-    if (fetching || error){
-      let innerContent = fetching ? this._showLoader() : this._showError()
+    if (fetchStatus.fetching || error) {
+      let innerContent = fetchStatus.fetching ? this._showLoader() : this._showError()
       content = this._wrapElt(innerContent);
-    } else if (!stories || !stories.length) {
+    } else if (!storiesAsArray || !storiesAsArray.length) {
       let innerContent = this._showNoStories();
       content = this._wrapElt(innerContent);
     } else {
       content = (
         <StoryList
           style={styles.storyList}
-          stories={stories}
+          stories={storiesAsArray}
           height={imageHeight}
-          onPressStory={story => NavActions.story()}
-          onPressLike={story => alert(`Story ${story._id} liked`)}
+          onPressStory={story => NavActions.story({storyId: story.id})}
+          onPressLike={story => alert(`Story ${story.id} liked`)}
         />
       );
     }
@@ -79,21 +89,24 @@ class CategoryFeedScreen extends React.Component {
 }
 
 
-const mapStateToProps = (state) => {
-  let { fetching, posts, error } = state.feed;
+const mapStateToProps = (state, props) => {
+  let {
+    fetchStatus,
+    entities: stories,
+    error
+  } = state.entities.stories;
   return {
     user: state.session.user,
-    fetching,
-    posts,
+    usersById: state.entities.users.entities,
+    fetchStatus,
+    stories: getByCategory(stories, props.categoryId),
     error
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    attemptGetUserFeed: (userId) => {
-      return dispatch(StoryActions.feedRequest(userId))
-    }
+    toggleLike: (storyId) => dispatch(StoryActions.storyLike(storyId))
   }
 }
 

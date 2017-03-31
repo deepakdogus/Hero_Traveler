@@ -1,10 +1,12 @@
+import _ from 'lodash'
 import React, { PropTypes } from 'react'
-import { ScrollView, Text, View } from 'react-native'
+import { ScrollView, Text, View, Image } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
-import {Metrics} from '../../Themes'
-import StoryActions from '../../Redux/StoryRedux.js'
+import {Metrics, Images} from '../../Themes'
+import StoryActions from '../../Redux/Entities/Stories'
+import Loader from '../../Components/Loader'
 import StoryList from '../../Components/StoryList'
 import styles from '../Styles/MyFeedScreenStyles'
 
@@ -13,13 +15,13 @@ const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBar
 class MyFeedScreen extends React.Component {
   static propTypes = {
     user: PropTypes.object,
-    posts: PropTypes.array,
+    stories: PropTypes.object,
     fetching: PropTypes.bool,
     error: PropTypes.bool
   };
 
   componentDidMount() {
-    this.props.attemptGetUserFeed(this.props.user._id)
+    this.props.attemptGetUserFeed(this.props.user.id)
   }
 
   _wrapElt(elt){
@@ -49,29 +51,43 @@ class MyFeedScreen extends React.Component {
   }
 
   render () {
-    let { posts: stories, fetching, error } = this.props;
+    let { stories, fetchStatus, error } = this.props;
+    const storiesAsArray = _.map(stories, s => {
+      return {
+        ...s,
+        author: this.props.usersById[s.author]
+      }
+    })
     let content;
 
-    if (fetching || error){
-      let innerContent = fetching ? this._showLoader() : this._showError()
-      content = this._wrapElt(innerContent);
-    } else if (!stories || !stories.length) {
+    if (fetchStatus.fetching) {
+      content = (
+        <Loader />
+      )
+    } else if (error) {
+      content = this._wrapElt(this._showError())
+    } else if (!storiesAsArray || !storiesAsArray.length) {
       let innerContent = this._showNoStories();
       content = this._wrapElt(innerContent);
     } else {
       content = (
         <StoryList
           style={styles.storyList}
-          stories={stories}
+          stories={storiesAsArray}
           height={imageHeight}
-          onPressStory={story => NavActions.story()}
-          onPressLike={story => alert(`Story ${story._id} liked`)}
+          onPressStory={story => NavActions.story({
+            storyId: story.id
+          })}
+          onPressLike={story => this.props.toggleLike(story.id)}
         />
       );
     }
 
     return (
-      <View style={[styles.containerWithNavbarAndTabbar, styles.root]}>
+      <View style={[styles.containerWithTabbar, styles.root]}>
+        <View style={styles.fakeNavBar}>
+          <Image source={Images.whiteLogo} style={styles.logo} />
+        </View>
         { content }
       </View>
     )
@@ -80,20 +96,24 @@ class MyFeedScreen extends React.Component {
 
 
 const mapStateToProps = (state) => {
-  let { fetching, posts, error } = state.feed;
+  let {
+    fetchStatus,
+    entities: stories,
+    error
+  } = state.entities.stories;
   return {
     user: state.session.user,
-    fetching,
-    posts,
+    usersById: state.entities.users.entities,
+    fetchStatus,
+    stories,
     error
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    attemptGetUserFeed: (userId) => {
-      return dispatch(StoryActions.feedRequest(userId))
-    }
+    attemptGetUserFeed: (userId) => dispatch(StoryActions.feedRequest(userId)),
+    toggleLike: (storyId) => dispatch(StoryActions.storyLike(storyId))
   }
 }
 

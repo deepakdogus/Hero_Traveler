@@ -8,12 +8,14 @@ export default StyleSheet.create({
     backgroundColor: Colors.background,
     paddingTop: Metrics.baseMargin*2,
   },
-  header: {
-    height: 105,
-    marginLeft: Metrics.baseMargin,
-    marginRight: Metrics.baseMargin,
+  loader: {
+    height: Metrics.screenHeight - 100 - Metrics.tabBarHeight,
+  },
+  headerSearch: {
+    marginHorizontal: Metrics.baseMargin,
     flexDirection: 'column',
     justifyContent: 'space-between',
+    height: 40,
   },
   searchWrapper: {
     marginTop: Metrics.baseMargin,
@@ -22,7 +24,7 @@ export default StyleSheet.create({
     opacity: .6,
     paddingLeft: Metrics.baseMargin/2,
     paddingRight: Metrics.baseMargin/2,
-    borderRadius: 5
+    borderRadius: 5,
   },
   searchInput: {
     flex: 1,
@@ -32,6 +34,7 @@ export default StyleSheet.create({
   },
   titleWrapper: {
     flex: 1,
+    marginVertical: Metrics.doubleBaseMargin,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -71,5 +74,41 @@ export default StyleSheet.create({
     right: 0,
     textAlign: 'center',
     lineHeight: 100
+  },
+  tabs: {
+  },
+  tabnav: {
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  tab: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '50%',
+    borderBottomWidth: 2,
+    borderBottomColor: Colors.coal,
+  },
+  tabText: {
+    fontFamily: Fonts.type.montserrat,
+    color: '#bdbdbd',
+    fontSize: 13,
+    letterSpacing: 1.2,
+    textAlign: 'center'
+  },
+  tabSelected: {
+    borderBottomColor: Colors.red
+  },
+  tabTextSelected: {
+    fontFamily: Fonts.type.montserrat,
+    color: '#757575',
+    fontSize: 13,
+    letterSpacing: 1.2,
+  },
+  storyTitleStyle: {
+    fontSize: 12
+  },
+  storySubtitleStyle: {
+    fontSize: 8
   }
 })

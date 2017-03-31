@@ -53,7 +53,7 @@ export default class StoryReadingToolbarComponent extends Component {
           size={24}
         />
       </View>
-    ) 
+    )
 
     const bookmarkContainer = (
       <View style={styles.wrapper}>
@@ -138,7 +138,7 @@ export default class StoryReadingToolbarComponent extends Component {
     }
 
     return (
-      <View style={this.props.style}>
+      <View style={[styles.root, this.props.style]}>
         {likeComponent}
         {commentComponent}
         {bookmarkComponent}

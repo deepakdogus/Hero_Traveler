@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React from 'react'
 import {
   ScrollView,
@@ -16,8 +17,8 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 import {Images, Colors} from '../../Themes'
 import SessionActions, {hasAuthData} from '../../Redux/SessionRedux'
-import RoundedButton from '../../Components/RoundedButton'
-import StoryActions from '../../Redux/StoryRedux.js'
+import Loader from '../../Components/Loader'
+import StoryActions, {getByUser} from '../../Redux/Entities/Stories'
 import StoryList from '../../Components/StoryList'
 import styles from '../Styles/ProfileScreenStyles'
 
@@ -33,12 +34,18 @@ class ProfileScreen extends React.Component {
 
   componentDidMount() {
     this.props.attemptRefreshUser()
-    this.props.attemptGetUserStories(this.props.user._id)
+    this.props.attemptGetUserStories(this.props.user.id)
   }
 
   render () {
-    const {user} = this.props
+    const {user, stories, storyFetchStatus} = this.props
     let avatar
+
+    const storiesAsArray = _.map(stories, s => {
+      return {
+        ...s
+      }
+    })
 
     // Deals with the case that the user logs out
     // and this page is still mounted and rendering
@@ -60,7 +67,7 @@ class ProfileScreen extends React.Component {
     }
 
     return (
-      <ScrollView style={[styles.containerWithTabbar]}>
+      <ScrollView style={[styles.containerWithTabbar, styles.root]}>
         <Image
           style={styles.coverImage}
           source={Images.profile}
@@ -113,16 +120,28 @@ class ProfileScreen extends React.Component {
             <Tab onPress={() => alert('drafts')} text='DRAFT' />
             <Tab onPress={() => alert('bookmarks')} text='BOOKMARKS' />
           </View>
-          {this.props.posts && this.props.posts.length > 0 &&
+          {storiesAsArray.length > 0 &&
             <StoryList
-              stories={this.props.posts}
+              stories={storiesAsArray}
               height={200}
               titleStyle={styles.storyTitleStyle}
               subtitleStyle={styles.subtitleStyle}
               forProfile={true}
-              onPressStory={story => alert(`Story ${story._id} pressed`)}
-              onPressLike={story => alert(`Story ${story._id} liked`)}
+              onPressStory={story => alert(`Story ${story.id} pressed`)}
+              onPressLike={story => alert(`Story ${story.id} liked`)}
             />
+          }
+          {storyFetchStatus.loaded && storiesAsArray.length === 0 &&
+            <View style={styles.noStories}>
+              <Text style={styles.noStoriesText}>You have no stories published</Text>
+            </View>
+          }
+          {!storyFetchStatus.loaded && storyFetchStatus.fetching &&
+            <View style={styles.spinnerWrapper}>
+              <Loader
+                style={styles.spinner}
+                spinnerColor={Colors.background} />
+            </View>
           }
         </View>
       </ScrollView>
@@ -131,13 +150,20 @@ class ProfileScreen extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  let { fetching, posts, error } = state.feed;
+  const {user} = state.session
+  const userId = user ? user.id : null
+  let {
+    fetchStatus,
+    entities: stories,
+    error
+  } = state.entities.stories;
   return {
     user: state.session.user,
+    usersById: state.entities.users.entities,
     isLoggedIn: hasAuthData(state.session),
     apiTokens: state.session.tokens,
-    fetching,
-    posts,
+    storyFetchStatus: fetchStatus,
+    stories: getByUser(stories, userId),
     error
   }
 }

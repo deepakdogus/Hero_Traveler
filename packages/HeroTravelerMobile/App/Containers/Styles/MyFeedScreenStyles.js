@@ -6,6 +6,17 @@ export default StyleSheet.create({
   root: {
     backgroundColor: '#000',
   },
+  fakeNavBar: {
+    height: Metrics.navBarHeight,
+    backgroundColor: Colors.background,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  logo: {
+    marginTop: Metrics.baseMargin * 1.5,
+    width: 148,
+    height: 30
+  },
   scrollItemFullScreen: {
     height: Metrics.screenHeight - Metrics.navBarHeight,
     width: Metrics.screenWidth,

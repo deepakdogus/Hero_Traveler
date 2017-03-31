@@ -11,10 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@rwoody/ht-util": "*",
     "babel-register": "^6.23.0",
     "bcrypt": "^1.0.2",
-    "@rwoody/ht-util": "*",
     "joi": "^10.2.2",
+    "meanie-mongoose-to-json": "^1.2.1",
     "moment": "^2.17.1",
     "mongoose": "^4.8.6",
     "mongoose-hidden": "^1.1.0",

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { ApplicationStyles, Colors, Metrics } from '../../Themes/'
+import { ApplicationStyles, Fonts, Colors, Metrics } from '../../Themes/'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
@@ -7,7 +7,6 @@ export default StyleSheet.create({
     backgroundColor: '#000',
   },
   scrollItemFullScreen: {
-    height: Metrics.screenHeight - Metrics.navBarHeight,
     width: Metrics.screenWidth,
   },
   center: {
@@ -17,5 +16,5 @@ export default StyleSheet.create({
   message: {
     fontSize: 24,
     color: '#fff'
-  }
+  },
 })

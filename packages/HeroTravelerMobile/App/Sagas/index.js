@@ -1,30 +1,32 @@
 import { takeLatest } from 'redux-saga/effects'
-import API from '../Services/Api'
-import FixtureAPI from '../Services/FixtureApi'
-import DebugConfig from '../Config/DebugConfig'
 
 import HeroAPI from '../Services/HeroAPI'
 
 /* ------------- Types ------------- */
 
 import { StartupTypes } from '../Redux/StartupRedux'
-import { GithubTypes } from '../Redux/GithubRedux'
-import { LoginTypes } from '../Redux/LoginRedux'
 import { OpenScreenTypes } from '../Redux/OpenScreenRedux'
+import { LoginTypes } from '../Redux/LoginRedux'
 import { SignupTypes } from '../Redux/SignupRedux'
 import { SessionTypes } from '../Redux/SessionRedux'
-import { StoryTypes } from '../Redux/StoryRedux'
 import { StoryCreateTypes } from '../Redux/StoryCreateRedux'
-import { CategoryTypes } from '../Redux/CategoryRedux'
-import { UserTypes } from '../Redux/UserRedux'
+// Entities
+import { StoryTypes } from '../Redux/Entities/Stories'
+import { CategoryTypes } from '../Redux/Entities/Categories'
+import { UserTypes } from '../Redux/Entities/Users'
 
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas'
 import { login, loginFacebook } from './LoginSagas'
-import { signupEmail, followCategory, unfollowCategory, followUser, unfollowUser } from './SignupSagas'
+import {
+  signupEmail,
+  followCategory,
+  unfollowCategory,
+  followUser,
+  unfollowUser
+} from './SignupSagas'
 import { logout, getMe } from './SessionSagas'
-import { getUserAvatar } from './GithubSagas'
 import { openScreen } from './OpenScreenSagas'
 import { getCategories } from './CategorySagas'
 import { getSuggestedUsers } from './UserSagas'
@@ -32,14 +34,12 @@ import { getSuggestedUsers } from './UserSagas'
 import {
   getUserFeed,
   createPhotoStory,
-  getUserStories
+  getUserStories,
+  likeStory,
+  bookmarkStory
 } from './StorySagas'
 
 /* ------------- API ------------- */
-
-// The API we use is only used from Sagas, so we create it here and pass along
-// to the sagas which need it.
-const api = DebugConfig.useFixtures ? FixtureAPI : API.create()
 
 const heroAPI = HeroAPI.create()
 
@@ -61,12 +61,11 @@ export default function * root () {
     takeLatest(SessionTypes.REFRESH_USER, getMe, heroAPI),
     takeLatest(SessionTypes.LOGOUT, logout, heroAPI),
 
-    // some sagas receive extra parameters in addition to an action
-    takeLatest(GithubTypes.USER_REQUEST, getUserAvatar, api),
-
     takeLatest(StoryCreateTypes.PUBLISH_REQUEST, createPhotoStory, heroAPI),
     takeLatest(StoryTypes.FEED_REQUEST, getUserFeed, heroAPI),
     takeLatest(StoryTypes.FROM_USER_REQUEST, getUserStories, heroAPI),
+    takeLatest(StoryTypes.STORY_LIKE, likeStory, heroAPI),
+    takeLatest(StoryTypes.STORY_BOOKMARK, bookmarkStory, heroAPI),
     takeLatest(CategoryTypes.LOAD_CATEGORIES_REQUEST, getCategories, heroAPI),
     takeLatest(UserTypes.LOAD_USER_SUGGESTIONS_REQUEST, getSuggestedUsers, heroAPI),
   ]

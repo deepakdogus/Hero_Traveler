@@ -2,6 +2,18 @@
 import {Platform} from 'react-native'
 import apisauce from 'apisauce'
 import {get, isArray} from 'lodash'
+import {normalize, schema} from 'normalizr'
+
+const User = new schema.Entity('users')
+const Category = new schema.Entity('categories')
+const Story = new schema.Entity('stories', {
+  author: User,
+  category: Category
+})
+const Followers = new schema.Entity('follows', {
+  follower: User,
+  followee: User
+})
 
 const devURL = Platform.OS === 'ios' ? 'http://localhost:3000/' : 'http://10.0.3.2:3000/'
 
@@ -83,12 +95,37 @@ const create = () => {
     return api.get('user')
   }
 
-  const getUserFeed = (userId) => {
-    return api.get(`story/${userId}/feed`)
+  const getUserFeed = (userId, params) => {
+    return api.get(`story/user/${userId}/feed`, {
+        params
+      })
+      .then(response => {
+        return Object.assign({}, response, {
+          data: normalize(response.data, [Story]).entities
+        })
+      })
   }
 
-  const getUserStories = (userId) => {
-    return api.get(`story/user/${userId}`)
+  const getUserStories = (userId, params) => {
+    return api.get(`story/user/${userId}`, {
+        params
+      })
+      .then(response => {
+        return Object.assign({}, response, {
+          data: normalize(response.data, [Story]).entities
+        })
+      })
+  }
+
+  const getCategoryStories = (categoryId, params) => {
+    return api.get(`story/category/${categoryId}`, {
+        params
+      })
+      .then(response => {
+        return Object.assign({}, response, {
+          data: normalize(response.data, [Story]).entities
+        })
+      })
   }
 
   const createStory = (story) => {
@@ -96,15 +133,27 @@ const create = () => {
   }
 
   const updateStoryCover = (story) => {
-    return api.put(`story/${story._id}/cover`)
+    return api.put(`story/${story.id}/cover`)
   }
 
   const getCategories = () => {
     return api.get('category')
+      .then(response => {
+        return  Object.assign({}, response, {
+          data: normalize(response.data, [Category]).entities
+        })
+      })
   }
 
-  const getSuggestedUsers = () => {
-    return api.get('user/suggestFollowers')
+  const getSuggestedUsers = (params) => {
+    return api.get('user/suggestFollowers', {
+        params
+      })
+      .then(response => {
+        return  Object.assign({}, response, {
+          data: normalize(response.data, [User]).entities
+        })
+      })
   }
 
   const followUser = (userId) => {
@@ -127,6 +176,14 @@ const create = () => {
     return api.put(`user/unfollow/category`, {
       categories
     })
+  }
+
+  const likeStory = (storyId) => {
+    return api.get(`story/${storyId}/like`)
+  }
+
+  const bookmarkStory = (storyId) => {
+    return api.get(`story/${storyId}/bookmark`)
   }
 
   // ------
@@ -156,7 +213,9 @@ const create = () => {
     followUser,
     unfollowUser,
     followCategory,
-    unfollowCategory
+    unfollowCategory,
+    likeStory,
+    bookmarkStory,
   }
 }
 

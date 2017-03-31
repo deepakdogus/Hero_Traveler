@@ -1,5 +1,10 @@
 import React, {PropTypes, Component} from 'react'
-import { View, Text, Image, TouchableHighlight } from 'react-native'
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  TouchableHighlight } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 
 import { Metrics, Images } from '../Themes'
@@ -21,22 +26,47 @@ export default class StoryPreview extends Component {
     forProfile: PropTypes.bool,
   }
 
+  wrap(content) {
+    if (this.props.onPress) {
+      return (
+        <TouchableHighlight
+          onPress={this._onPress}
+          children={content}
+          style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}
+        />
+      )
+    }
+
+    return (
+      <View
+        children={content}
+        style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}
+      />
+    )
+  }
+
   render () {
     let { story } = this.props,
       { coverImage,
         title,
         description,
         author: {
+          id: authorId,
           username,
           profile
         },
-        likes,
+        counts,
         createdAt
       } = story;
 
-    return (
-      <TouchableHighlight onPress={this._onPress}
-        style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}>
+    const userContent = (
+      <View style={styles.row}>
+        <Image style={styles.avatar} source={{uri: profile.avatar}}></Image>
+        <Text style={styles.username}>{username}</Text>
+      </View>
+    )
+
+    return this.wrap(
         <View style={styles.contentContainer}>
           <Image
             resizeMode="cover"
@@ -48,20 +78,20 @@ export default class StoryPreview extends Component {
               {!this.props.forProfile && <Text style={[styles.subtitle, this.props.subTitleStyle]}>{description}</Text>}
               {!this.props.forProfile && <View style={styles.divider}></View>}
               <View style={styles.detailContainer}>
-                {!this.props.forProfile &&
-                  <View style={styles.row}>
-                    <Image style={styles.avatar} source={{uri: profile.avatar}}></Image>
-                    <Text style={styles.username}>{username}</Text>
-                  </View>
+                {!this.props.forProfile && this.props.onPressUser &&
+                  <TouchableOpacity onPress={() => this.props.onPressUser(authorId)}>
+                    {userContent}
+                  </TouchableOpacity>
                 }
+                {!this.props.forProfile && !this.props.onPressUser && userContent}
                 {this.props.forProfile &&
                   <View style={styles.row}>
                     <Text style={[styles.subtitle, this.props.subtitleStyle]}>{description}</Text>
                     <LikesComponent
                       onPress={this._onPressLike}
                       numberStyle={styles.bottomRight}
-                      likes={story.counts.likes}
-                      isLiked={story.counts.likes % 2 === 0}
+                      likes={counts.likes}
+                      isLiked={story.isLiked}
                     />
                   </View>
                 }
@@ -71,8 +101,8 @@ export default class StoryPreview extends Component {
                     <LikesComponent
                       onPress={this._onPressLike}
                       numberStyle={styles.bottomRight}
-                      likes={42}
-                      isLiked={false}
+                      likes={counts.likes}
+                      isLiked={story.isLiked}
                     />
                   </View>
                 }
@@ -80,7 +110,6 @@ export default class StoryPreview extends Component {
             </LinearGradient>
           </Image>
         </View>
-      </TouchableHighlight>
     )
   }
 

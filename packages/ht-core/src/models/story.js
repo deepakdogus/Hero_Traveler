@@ -19,6 +19,10 @@ const StorySchema = new mongoose.Schema({
     ref: 'Category',
     required: true
   },
+  content: {
+    type: String,
+    default: ''
+  },
   counts: {
     likes: {
       type: Number,
@@ -27,7 +31,11 @@ const StorySchema = new mongoose.Schema({
     bookmarks: {
       type: Number,
       default: 0
-    }
+    },
+    comments: {
+      type: Number,
+      default: 0
+    },
   },
   coverImage: {
     altText: String,

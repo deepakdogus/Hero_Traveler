@@ -18,15 +18,14 @@ export default StyleSheet.create({
   comment: {
     padding: Metrics.doubleBaseMargin,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
   },
   commentTextWrapper: {
     flexDirection: 'column',
-    width: '60%',
+    flex: 1,
     justifyContent: 'flex-start',
-    marginLeft: -18,
-  },  
+    marginLeft: Metrics.baseMargin,
+  },
   commentText: {
     fontFamily: Fonts.type.base,
     fontSize: 16,
@@ -44,12 +43,18 @@ export default StyleSheet.create({
     height: 36,
     width: 36,
     borderRadius: 18,
-    marginRight: 5,
+    marginRight: Metrics.baseMargin / 2,
+  },
+  iconAvatar: {
+    marginRight: Metrics.baseMargin / 2,
+  },
+  nameAndTimeStamp: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   timestamp: {
     fontFamily: Fonts.type.base,
     fontSize: 12,
-    width: '16%',
     color: '#757575',
     fontWeight: '300',
     letterSpacing: .7,
@@ -60,7 +65,7 @@ export default StyleSheet.create({
   	flexDirection: 'row',
   	height: Metrics.tabBarHeight,
   	borderWidth: 1,
-  	borderColor: Colors.navBarText,	
+  	borderColor: Colors.navBarText,
   	backgroundColor: Colors.lightGreyAreas,
   	justifyContent: 'flex-start',
   	alignItems: 'center',

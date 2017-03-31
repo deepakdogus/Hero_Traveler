@@ -16,6 +16,7 @@ function create(users, categories) {
   const imagePath = path.resolve(imagesPath, imageName)
   const baseName = path.basename(imagePath)
   const title = _.capitalize(faker.random.words())
+  const description = _.capitalize(faker.random.words())
   const dimensions = sizeOf(imagePath)
 
   return Promise.all([
@@ -25,12 +26,16 @@ function create(users, categories) {
   ])
   .then(([file]) => {
     return {
-      "title": title,
-      "description": _.capitalize(faker.random.words()),
       "author": user._id,
+      "title": title,
+      "description": description,
+      "content": description,
       "category": category._id,
+      "createdAt": faker.date.past(),
       "counts": {
-        "likes": _.random(1, 999)
+        "likes": _.random(1, 50000),
+        "bookmarks": _.random(1, 50000),
+        "comments": _.random(1, 50000)
       },
       "coverImage": {
         "altText": title,

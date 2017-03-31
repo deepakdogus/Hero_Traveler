@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
 import StoryActions from '../Redux/Entities/Stories.js'
+import formatCount from '../Lib/formatCount'
 import StoryList from '../Components/StoryList'
 import StoryPreview from '../Components/StoryPreview'
 import RoundedButton from '../Components/RoundedButton'
@@ -99,20 +100,20 @@ class StoryReadingScreen extends React.Component {
           />
           <StoryReadingToolbar
             style={styles.toolBar}
-            likeCount={storyWithUser.counts.likes}
-            commentCount={storyWithUser.counts.comments}
-            boomarkCount={storyWithUser.counts.bookmarks}
+            likeCount={formatCount(storyWithUser.counts.likes)}
+            commentCount={formatCount(storyWithUser.counts.comments)}
+            boomarkCount={formatCount(storyWithUser.counts.bookmarks)}
             isBookmarked={storyWithUser.isBookmarked}
             isLiked={storyWithUser.isLiked}
             onPressLike={() => this.props.toggleLike(storyWithUser.id)}
             onPressBookmark={() => this.props.toggleBookmark(storyWithUser.id)}
+            onPressComment={() => NavActions.storyComments()}
           />
         </ScrollView>
       </View>
     )
   }
 }
-
 
 const mapStateToProps = (state, props) => {
   let { fetching, entities: stories, error } = state.entities.stories;

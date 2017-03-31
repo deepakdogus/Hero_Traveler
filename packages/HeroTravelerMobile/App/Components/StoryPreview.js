@@ -6,7 +6,9 @@ import {
   TouchableOpacity,
   TouchableHighlight } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
+import moment from 'moment'
 
+import formatCount from '../Lib/formatCount'
 import { Metrics, Images } from '../Themes'
 import styles from './Styles/StoryPreviewStyle'
 import LikesComponent from './LikeComponent'
@@ -90,18 +92,18 @@ export default class StoryPreview extends Component {
                     <LikesComponent
                       onPress={this._onPressLike}
                       numberStyle={styles.bottomRight}
-                      likes={counts.likes}
+                      likes={formatCount(counts.likes)}
                       isLiked={story.isLiked}
                     />
                   </View>
                 }
                 {!this.props.forProfile &&
                   <View style={styles.row}>
-                    <Text style={[styles.bottomRight, styles.timeSince]}>2 days ago</Text>
+                    <Text style={[styles.bottomRight, styles.timeSince]}>{moment(story.createdAt).fromNow()}</Text>
                     <LikesComponent
                       onPress={this._onPressLike}
                       numberStyle={styles.bottomRight}
-                      likes={counts.likes}
+                      likes={formatCount(counts.likes)}
                       isLiked={story.isLiked}
                     />
                   </View>

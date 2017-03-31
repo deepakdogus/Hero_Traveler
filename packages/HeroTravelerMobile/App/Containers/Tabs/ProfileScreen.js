@@ -15,6 +15,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
+import formatCount from '../../Lib/formatCount'
 import {Images, Colors} from '../../Themes'
 import SessionActions, {hasAuthData} from '../../Redux/SessionRedux'
 import Loader from '../../Components/Loader'
@@ -91,14 +92,14 @@ class ProfileScreen extends React.Component {
                   <TouchableOpacity
                     onPress={() => alert('list followers')}
                     style={[styles.followersColumn]}>
-                    <Text style={styles.followerNumber}>{user.counts.followers}</Text>
+                    <Text style={styles.followerNumber}>{formatCount(user.counts.followers)}</Text>
                     <Text style={styles.followerLabel}>Followers</Text>
                   </TouchableOpacity>
                 </View>
                 <TouchableOpacity
                   onPress={() => alert('list following')}
                   style={styles.followersColumn}>
-                  <Text style={styles.followerNumber}>{user.counts.following}</Text>
+                  <Text style={styles.followerNumber}>{formatCount(user.counts.following)}</Text>
                   <Text style={styles.followerLabel}>Following</Text>
                 </TouchableOpacity>
               </View>

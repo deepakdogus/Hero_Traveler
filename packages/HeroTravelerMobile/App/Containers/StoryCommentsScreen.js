@@ -5,6 +5,7 @@ import RoundedButton from '../Components/RoundedButton'
 import { Colors, Metrics } from '../Themes/'
 import SearchBar from '../Components/SearchBar'
 import moment from 'moment'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 import styles from './Styles/StoryCommentsScreenStyles'
 
@@ -13,60 +14,42 @@ const Comment = ({avatar, name, comment, timestamp}) => {
   return (
     <View style={styles.commentWrapper}>
       <View style={styles.comment}>
-        <Image style={styles.avatar} source={{uri: avatar }}></Image>
+        {avatar && <Image style={styles.avatar} source={{uri: avatar }} />}
+        {!avatar && <Icon name='user-circle-o' style={styles.iconAvatar} size={36} />}
         <View style={styles.commentTextWrapper}>
-          <Text style={styles.commentName}>{name}</Text>
+          <View style={styles.nameAndTimeStamp}>
+            <Text style={styles.commentName}>{name}</Text>
+            <Text style={styles.timestamp}>{timestamp}</Text>
+          </View>
           <Text style={styles.commentText}>{comment}</Text>
         </View>
-        <Text style={styles.timestamp}>{timestamp}</Text>
       </View>
     </View>
   )
 }
 
-const List = ({children}) => {
-  return (
-    <ScrollView style={styles.list}>
-      {children}
-    </ScrollView>
-  )
-}
-
-const formatDate = function(stamp){
-  var calendar = moment(stamp).calendar().split(' ')[0];
-  return (calendar === 'Today')
-    ? calendar
-    : (calendar === 'Yesterday')
-      ? '1 day ago'
-      : moment(stamp).format('MMM DD');
-}
-
 class StoryCommentsScreen extends React.Component {
-  constructor(props) {    
+  constructor(props) {
     super(props);
- 
+
     this.state = {
-      comment: '',
-      name: 'Heronymous Travelerski',
-      avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/solid_color/128.jpg',
-      comments: [],
-    };
-    this.handleSend = this.handleSend.bind(this);
+      text: '',
+      comments: []
+    }
   }
 
-  handleSend(){
-    const newComment = {};
-    newComment.user = {};
-    newComment.user.profile = {};
-    newComment.user.profile.fullName = this.state.name;
-    newComment.user.profile.avatar = this.state.avatar;
-    newComment.createdAt = Date.now();
-    newComment.comment = this.state.comment;
-    const newCommentArray = this.state.comments.slice(0);
-    newCommentArray.push(newComment)
+  handleSend = () => {
+    const newComment = {
+      user: this.props.user,
+      createdAt: Date.now(),
+      comment: this.state.text
+    };
     this.setState({
-      comments: newCommentArray,
-      comment: '',
+      comments: [
+        ...this.state.comments,
+        newComment
+      ],
+      text: '',
     });
   }
 
@@ -74,32 +57,36 @@ class StoryCommentsScreen extends React.Component {
 
     return (
         <KeyboardAvoidingView behavior='position' style={[styles.containerWithNavbar, styles.root]}>
-          <List>
+          <ScrollView style={styles.list}>
           {this.state.comments.map(comment => {
             return(
               <Comment
                 avatar={comment.user.profile.avatar}
                 name={comment.user.profile.fullName}
                 comment={comment.comment}
-                timestamp={formatDate(comment.createdAt)}
+                timestamp={moment(comment.createdAt).fromNow()}
                 key={comment.createdAt.toString()}
               />
-              )})}          
-          </List>
+              )})}
+          </ScrollView>
           <View style={styles.inputGroupWrapper}>
             <View style={styles.inputWrapper}>
-                <TextInput
+              <TextInput
                 autoFocus
                 placeholder='Add a comment'
                 style={styles.input}
-                value={this.state.comment}
+                value={this.state.text}
                 autoCapitalize='none'
                 onSubmitEditing={this.handleSend}
-                onChangeText={(text) => this.setState({comment: text})}
+                onChangeText={(text) => this.setState({text: text})}
                 autoCorrect={false}
-                />
+              />
             </View>
-            <RoundedButton style={styles.inputButton} onPress={this.handleSend}>Send</RoundedButton>
+            <RoundedButton style={styles.inputButton}
+              onPress={this.handleSend}
+            >
+              Send
+            </RoundedButton>
           </View>
         </KeyboardAvoidingView>
     )
@@ -108,6 +95,7 @@ class StoryCommentsScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    user: state.session.user,
   }
 }
 

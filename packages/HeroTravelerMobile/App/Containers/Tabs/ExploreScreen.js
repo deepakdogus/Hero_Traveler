@@ -43,6 +43,8 @@ class ExploreScreen extends Component {
   }
 
   renderSearchSection() {
+    const storiesAsArray = _.values(this.props.stories)
+
     return (
       <View style={styles.tabs}>
         <View style={styles.tabnav}>
@@ -57,16 +59,17 @@ class ExploreScreen extends Component {
             text='PEOPLE'
           />
         </View>
-        {this.props.stories && this.props.stories.length > 0 && this.state.selectedTabIndex === 0 &&
+        {storiesAsArray && storiesAsArray.length > 0 && this.state.selectedTabIndex === 0 &&
           <ScrollView>
             <StorySearchList
-              stories={this.props.stories}
+              stories={storiesAsArray}
               height={70}
               titleStyle={styles.storyTitleStyle}
               subtitleStyle={styles.subtitleStyle}
               forProfile={true}
-              onPressStory={story => alert(`Story ${story.id} pressed`)}
-              onPressLike={story => alert(`Story ${story.id} liked`)}
+              onPressStory={story => NavActions.story({
+                storyId: story.id
+              })}
             />
           </ScrollView>
         }

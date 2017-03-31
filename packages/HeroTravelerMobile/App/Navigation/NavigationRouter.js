@@ -60,7 +60,6 @@ class TabIcon extends React.Component {
   }
 
   render(){
-    console.log('TabIcon props', this.props)
     return (
       <Icon
         name={this.getIconName(this.props.name)}
@@ -168,6 +167,7 @@ class NavigationRouter extends Component {
               <Scene
                 key='myFeed'
                 initial
+                type='reset'
                 icon={TabIcon}
                 component={MyFeedScreen}
                 title='Feed'

@@ -20,6 +20,8 @@ function removeAllData() {
     Models.AuthToken.remove({}),
     Models.Story.remove({}),
     Models.Follower.remove({}),
+    Models.StoryBookmark.remove({}),
+    Models.StoryLike.remove({}),
   ]
 
   return Promise.all(promises)
@@ -82,7 +84,6 @@ async function seed() {
 
 Core({
   mongoDB: process.env.MONGODB_URL
-  // mongoDB: "mongodb://ht-api:lFMGJtlEO13MV5qd4GBa0wjkQLiteVq9n1pyQChp3aRgH@ds161008.mlab.com:61008/hero-traveler"
 })
 .then(() => {
   seed()

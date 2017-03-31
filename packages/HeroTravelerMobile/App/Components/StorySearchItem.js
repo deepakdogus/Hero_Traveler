@@ -18,9 +18,7 @@ TODO:
 */
 export default class StorySearchItem extends Component {
   static propTypes = {
-    onPressLike: PropTypes.func,
-    onPress: PropTypes.func,
-    forProfile: PropTypes.bool,
+    onPress: PropTypes.func
   }
 
   render () {
@@ -37,23 +35,27 @@ export default class StorySearchItem extends Component {
       } = story;
 
     return (
-      <TouchableHighlight onPress={this._onPress}
-      style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}>
+      <TouchableHighlight
+        onPress={this._onPress}
+        style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}
+      >
         <View style={styles.contentContainer}>
           <View style={styles.row}>
             <Image
               resizeMode="cover"
               source={{uri: getUrl(coverImage)}}
               style={styles.thumbnailImage}
-          ></Image>
-          <View style={{flexDirection: "column"}}>
-            <Text style={[styles.title, this.props.titleStyle]}>{title}</Text>
-            <Text style={[styles.subtitle, this.props.subtitleStyle]}>{description}</Text>
+            />
+            <View style={{flexDirection: "column"}}>
+              <Text style={[styles.title, this.props.titleStyle]}>{title}</Text>
+              {description &&
+                <Text style={[styles.subtitle, this.props.subtitleStyle]}>{description}</Text>
+              }
+            </View>
           </View>
-        </View>
-        <View style={styles.icon}>
-          <Icon name='chevron-right' size={15} color={Colors.steel} />
-        </View>
+          <View style={styles.icon}>
+            <Icon name='chevron-right' size={15} color={Colors.steel} />
+          </View>
         </View>
       </TouchableHighlight>
     )
@@ -63,13 +65,6 @@ export default class StorySearchItem extends Component {
     const {story, onPress} = this.props
     if (onPress) {
       onPress(story)
-    }
-  }
-
-  _onPressLike = () => {
-    const {story, onPressLike} = this.props
-    if (onPressLike) {
-      onPressLike(story)
     }
   }
 }

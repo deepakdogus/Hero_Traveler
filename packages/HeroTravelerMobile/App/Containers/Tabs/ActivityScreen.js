@@ -1,10 +1,12 @@
 import React from 'react'
-import { ScrollView, Text, View, TouchableOpacity } from 'react-native'
+import { ScrollView, Text, Image, View, TouchableOpacity } from 'react-native'
 
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 // Styles
 import styles from '../Styles/NotificationScreenStyles'
+import ActivityList from '../../Components/ActivityList'
+import StoryActions from '../../Redux/StoryRedux'
 
 
 const Tab = ({text, onPress, selected}) => {
@@ -15,17 +17,25 @@ const Tab = ({text, onPress, selected}) => {
   )
 }
 
-export default class NotificationScreen extends React.Component {
+class NotificationScreen extends React.Component {
   constructor(props){
     super(props)
 
     this.state = { selectedTab: 0 }
   }
 
+
   componentDidMount() {
     this.props.attemptGetUserFeed(this.props.user._id)
   }
 
+  _wrapElt(elt){
+    return (
+      <View style={[styles.scrollItemFullScreen, styles.center]}>
+        {elt}
+      </View>
+    )
+  }
   _showLoader(){
    return (
      <Text style={styles.message}>Loading</Text>
@@ -42,6 +52,7 @@ export default class NotificationScreen extends React.Component {
     return (
       <Text style={styles.title}>There is no activity here</Text>
     )
+  }
 
   _showNoInbox(){
     return (
@@ -50,69 +61,40 @@ export default class NotificationScreen extends React.Component {
   }
     render () {
 
-      let { users, fetching, error } = this.props
+      let { posts: activities, users, fetching, error } = this.props
       let content
 
       if (fetching || error) {
         let innerContent = fetching ? this._showLoader() : this._showError()
         content = this._wrapElt(innerContent);
       }
+      if (this.state.selectedTab === 1 ) {
+        content = ( <ActivityList
+          style={styles.activityList}
+          activities={activities}
+          height={50}
+          onPressActivity={() => alert('Activity navigation function goes here')}
+          /> )
+      } else {
+        content = (
+          <ActivityList
+          style={styles.inboxList}
+          activities={activities}
+          height={90}
+          onPressActivity={() => alert('Inbox navigation function goes here')}
+        /> ) 
+      }
 
     return (
       <ScrollView style={styles.containerWithNavbar}>
-        <View style={styles.tabs}>
-          <View style={styles.tabnav}>
-            <Tab selected={this.state.selectedTab === 0} onPress={() => this.setState({selectedTab: 0})} text='ACTIVITY' />
-            <Tab selected={this.state.selectedTab === 1} onPress={() => this.setState({selectedTab: 1})} text='INBOX' />
-        { this.state.selectedTab === 0 ? <ActivityList
-          style={styles.activityList}
-          activities={activities}
-          height={imageHeight}
-          onPressActivity={() => alert('Activity navigation function goes here')}
-         />: null }
+      <View style={styles.tabs}>
+      <View style={styles.tabnav}>
+      <Tab selected={this.state.selectedTab === 0} onPress={() => this.setState({selectedTab: 0})} text='ACTIVITY' />
+      <Tab selected={this.state.selectedTab === 1} onPress={() => this.setState({selectedTab: 1})} text='INBOX' />
+      </View>
 
-
-        { this.state.selectedTab === 1 ? <InboxList
-          style={styles.inboxList}
-          activities={activities}
-          height={imageHeight}
-          onPressActivity={() => alert('Inbox navigation function goes here')}
-        /> : null}
-
-            {!this.props.forProfile && <View style={styles.divider}></View>}
-              <View style={styles.detailContainer}>
-                {!this.props.forProfile &&
-                  <View style={styles.row}>
-                    <Image style={styles.avatar} source={{uri: profile.avatar}}></Image>
-                    <Text style={styles.username}>{username}</Text>
-                  </View>
-                }
-                {this.props.forProfile &&
-                  <View style={styles.row}>
-                    <Text style={[styles.subtitle, this.props.subtitleStyle]}>{description}</Text>
-                    <LikesComponent
-                      onPress={this._onPressLike}
-                      numberStyle={styles.bottomRight}
-                      likes={story.counts.likes}
-                      isLiked={story.counts.likes % 2 === 0}
-                    />
-                  </View>
-                }
-                {!this.props.forProfile &&
-                  <View style={styles.row}>
-                    <Text style={[styles.bottomRight, styles.timeSince]}>2 days ago</Text>
-                    <LikesComponent
-                      onPress={this._onPressLike}
-                      numberStyle={styles.bottomRight}
-                      likes={42}
-                      isLiked={false}
-                    />
-                  </View>
-                }
-              </View>
+      {content}
           </View>
-
-        </View>
       </ScrollView>
     )
   }
@@ -137,4 +119,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NotificationsScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationScreen)

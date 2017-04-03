@@ -2,27 +2,30 @@ import React, { PropTypes } from 'react'
 import { ListView } from 'react-native'
 import styles from './Styles/StoryListStyle'
 
-import Activity from '../Components/Activity'
+import Activity from './Activity'
+import StoryPreview from './StoryPreview'
 
 export default class ActivityList extends React.Component {
   static propTypes = {
     height: PropTypes.number,
-    stories: PropTypes.array,
+    activities: PropTypes.array,
     onPressLike: PropTypes.func,
     onPressStory: PropTypes.func,
-    forProfile: PropTypes.bool,
   }
 
   constructor(props) {
     super(props)
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
     this.state = {
-      dataSource: ds.cloneWithRows(props.stories)
+      dataSource: ds.cloneWithRows(props.activities)
     }
   }
 
   render () {
-    let { stories } = this.props;
+    console.log('ActivityList this.props', this.props)
+    let { activities } = this.props;
+    console.log('activities', activities)
+    console.log('this.state', this.state)
     return (
       <ListView
         dataSource={this.state.dataSource}
@@ -34,8 +37,7 @@ export default class ActivityList extends React.Component {
 
   _renderStory = (story) => {
     return (
-      <StoryPreview
-        forProfile={this.props.forProfile}
+      <Activity
         titleStyle={this.props.titleStyle}
         subtitleStyle={this.props.subtitleStyle}
         key={story._id}

@@ -33,7 +33,6 @@ export default class StoryPreview extends Component {
         likes,
         createdAt
       } = story;
-console.log('story within story preview', title)
     return (
       <TouchableHighlight onPress={this._onPress}
         style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}>

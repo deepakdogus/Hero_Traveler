@@ -194,7 +194,7 @@ class NavigationRouter extends Component {
                 key='activity'
                 icon={TabIcon}
                 component={ActivityScreen}
-                title='Activity'
+                title='Notifications'
                 {...darkNavBarProps}
               />
               <Scene

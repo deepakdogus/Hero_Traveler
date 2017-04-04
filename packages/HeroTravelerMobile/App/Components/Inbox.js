@@ -4,13 +4,16 @@ import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import { Metrics, Images, Colors } from '../Themes'
-import styles from './Styles/ActivityStyle'
-import LikesComponent from './LikeComponent'
+import styles from './Styles/InboxStyle'
 
 function getUrl(coverImage) {
   return `https://s3.amazonaws.com/hero-traveler/story/750x1334/${coverImage.original.filename}`
 }
 
+
+let placeholderContent = (
+    <Text style={styles.placeHolderContent}> Bacon ipsum dolor amet cow meatloaf flank pastrami, jowl frankfurter sausage. </Text>
+)
 /*
 TODO:
 - Fix the Navar height issue
@@ -34,16 +37,22 @@ export default class Activity extends Component {
         likes,
         createdAt
       } = story;
+    let date = new Date(Date.parse(createdAt)).toDateString().split(' ').slice(1,3).join(' ')
 
     return (
       <TouchableHighlight onPress={this._onPress}
                           style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}>
         <View style={styles.contentContainer}>
-              <Image style={styles.avatar} source={{uri: profile.avatar}}></Image>
-              <Text style={styles.title}>{username}</Text>
-              <Text style={styles.subtitle}>{description}</Text>
+        <Image style={styles.avatar} source={{uri: profile.avatar}}></Image>
+        <View style={styles.column}>
+        <Text style={styles.title}>{username}</Text>
+            {placeholderContent}
+      </View>
+        <View style={styles.date}>
+        <Text style={styles.subtitle}>{date}</Text>
             </View>
-      </TouchableHighlight>
+        </View>
+        </TouchableHighlight>
     )
   }
 

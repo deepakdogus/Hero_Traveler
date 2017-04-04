@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import { ListView } from 'react-native'
 import styles from './Styles/StoryListStyle'
 
-import Activity from './Activity'
+import Inbox from './Inbox'
 import StoryPreview from './StoryPreview'
 
 export default class ActivityList extends React.Component {
@@ -34,7 +34,7 @@ export default class ActivityList extends React.Component {
 
   _renderStory = (story) => {
     return (
-      <Activity
+      <Inbox
         titleStyle={this.props.titleStyle}
         subtitleStyle={this.props.subtitleStyle}
         key={story._id}

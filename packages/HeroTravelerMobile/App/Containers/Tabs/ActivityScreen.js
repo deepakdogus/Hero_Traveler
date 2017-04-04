@@ -6,6 +6,7 @@ import {Actions as NavActions} from 'react-native-router-flux'
 // Styles
 import styles from '../Styles/NotificationScreenStyles'
 import ActivityList from '../../Components/ActivityList'
+import InboxList from '../../Components/InboxList'
 import StoryActions from '../../Redux/StoryRedux'
 
 
@@ -69,10 +70,10 @@ class NotificationScreen extends React.Component {
         content = this._wrapElt(innerContent);
       }
       if (this.state.selectedTab === 1 ) {
-        content = ( <ActivityList
+        content = ( <InboxList
           style={styles.activityList}
           activities={activities}
-          height={50}
+          height={90}
           onPressActivity={() => alert('Activity navigation function goes here')}
           /> )
       } else {
@@ -92,7 +93,6 @@ class NotificationScreen extends React.Component {
       <Tab selected={this.state.selectedTab === 0} onPress={() => this.setState({selectedTab: 0})} text='ACTIVITY' />
       <Tab selected={this.state.selectedTab === 1} onPress={() => this.setState({selectedTab: 1})} text='INBOX' />
       </View>
-
       {content}
           </View>
       </ScrollView>
@@ -102,6 +102,7 @@ class NotificationScreen extends React.Component {
 
 
 const mapStateToProps = (state) => {
+  console.log('state tree', state)
   let { fetching, posts, error } = state.feed;
   return {
     user: state.session.user,

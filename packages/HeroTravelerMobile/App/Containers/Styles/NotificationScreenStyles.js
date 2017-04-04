@@ -48,4 +48,7 @@ export default StyleSheet.create({
     fontSize: 13,
     letterSpacing: 1.2,
   },
+  activityList: {
+    
+  }
 })

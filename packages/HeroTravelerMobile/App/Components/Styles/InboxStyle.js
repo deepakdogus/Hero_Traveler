@@ -1,4 +1,3 @@
-
 import { StyleSheet } from 'react-native'
 import { Colors, Metrics, ApplicationStyles, Fonts } from '../../Themes/'
 
@@ -10,7 +9,12 @@ export default StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    flexDirection: "row"
+    flexDirection: "row",
+
+  },
+  column: {
+    flexDirection: "column",
+    width: "65%"
   },
   previewImage: {
     flexDirection: "column",
@@ -26,15 +30,23 @@ export default StyleSheet.create({
     fontSize: 14,
     fontWeight: "200",
     fontFamily: Fonts.type.montserrat,
-    marginLeft: 5,
+    marginLeft: 10,
   },
   subtitle: {
     fontSize: 12,
     color: Colors.charcoal,
     fontFamily: Fonts.type.sourceSansPro,
     letterSpacing:0.7,
+    marginLeft: 30,
+  },
+  date: {
+  },
+  placeHolderContent: {
+    fontSize: 12,
+    color: Colors.charcoal,
+    fontFamily: Fonts.type.sourceSansPro,
+    letterSpacing:0.7,
     marginLeft: 10,
-
   },
   divider: {
     height: 1,

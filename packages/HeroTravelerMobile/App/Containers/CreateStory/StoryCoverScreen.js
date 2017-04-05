@@ -198,7 +198,7 @@ export default R.compose(
   })),
   reduxForm({
     form: 'createStory',
-    destoryOnUnmount: false,
+    destroyOnUnmount: false,
     initialValues: {
       title: '',
       description: '',

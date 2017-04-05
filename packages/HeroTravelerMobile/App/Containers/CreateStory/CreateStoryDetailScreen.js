@@ -100,6 +100,6 @@ export default R.compose(
   ),
   reduxForm({
     form: 'createStory',
-    destoryOnUnmount: true
+    destroyOnUnmount: true
   })
 )(CreateStoryDetailScreen)

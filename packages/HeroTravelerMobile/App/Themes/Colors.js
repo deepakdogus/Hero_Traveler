@@ -11,6 +11,7 @@ const colors = {
   whiteAlphaPt3: 'rgba(255,255,255,.3)',
   redLight: '#ed1e2e',
   red: '#d60000',
+  errorRed: '#ed1e2e',
   frost: '#D8D8D8',
   cloud: 'rgba(200,200,200, 0.35)',
   windowTint: 'rgba(0, 0, 0, 0.4)',

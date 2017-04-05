@@ -27,7 +27,15 @@ export default StyleSheet.create({
     textAlign: 'center'
   },
   error: {
-    color: Colors.red
+    color: Colors.errorRed,
+    fontSize: 12,
+    textAlign: 'right'
+  },
+  errorView: {
+    position: 'absolute',
+    right: 0,
+    left: 0,
+    bottom: -20
   },
   inputContainer: {
     flex: 1,
@@ -50,6 +58,9 @@ export default StyleSheet.create({
     alignItems: 'stretch',
     flexDirection: 'column',
     justifyContent: 'flex-start'
+  },
+  submitButton: {
+    marginTop: Metrics.baseMargin*2
   },
   tos: {
     marginTop: Metrics.marginVertical,

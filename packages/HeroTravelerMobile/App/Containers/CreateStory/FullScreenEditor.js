@@ -1,8 +1,6 @@
 import React from 'react'
 import {
-  View,
-  TouchableOpacity,
-  Text
+  View
 } from 'react-native'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import {Actions as NavActions} from 'react-native-router-flux'
@@ -15,13 +13,30 @@ import styles from './FullScreenEditorStyles'
 
 class FullScreenEditor extends React.Component {
 
+  _onLeft = () => {
+    NavActions.pop()
+  }
+
+  _onRight = () => {
+    this.editor.getContentHtml()
+      .then(html => {
+        this.props.update(this.props.story.id, {
+          content
+        })
+        
+      })
+  }
+
   render () {
+    console.log('story content', this.props.story.content.trim())
     return (
       <View style={[styles.root]}>
         <NavBar
           title='Content'
           rightTitle='Next'
+          onRight={this._onRight}
           leftTitle='Cancel'
+          onLeft={this._onLeft}
         />
         <Editor
           ref={(editor) => {
@@ -29,16 +44,9 @@ class FullScreenEditor extends React.Component {
               this.editor = editor.getEditor()
             }
           }}
+          content={this.props.story.content.trim()}
           onAddImage={this._handlePressAddImage}
         />
-        <TouchableOpacity onPress={() => {
-          this.editor.getContentHtml()
-          .then(html => {
-            console.log('html', html)
-          })
-        }}>
-          <Text color='black'>Get HTML</Text>
-        </TouchableOpacity>
       </View>
     )
   }
@@ -59,11 +67,15 @@ class FullScreenEditor extends React.Component {
 
 const selector = formValueSelector('createStory')
 export default R.compose(
-  connect(state => ({
-    story: {
+  connect(state => {
+    console.log('state', state.storyCreate)
+    return {
+      story: {
+        id: state.storyCreate.draft.id,
+        content: state.storyCreate.content ||`<h1>Hello <b>World</b></h1>`
+      }
     }
-    // state: state
-  })),
+  }),
   reduxForm({
     form: 'createStory',
     destroyOnUnmount: false,

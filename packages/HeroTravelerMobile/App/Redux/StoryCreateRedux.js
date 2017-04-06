@@ -14,7 +14,7 @@ const { Types, Creators } = createActions({
   discardDraft: ['draftId'],
   discardDraftSuccess: ['draft'],
   discardDraftFailure: ['error'],
-  updateDraft: ['draft'],
+  updateDraft: ['draftId', 'draft'],
   updateDraftSuccess: ['draft'],
   updateDraftFailure: ['error'],
 })

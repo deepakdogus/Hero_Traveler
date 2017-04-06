@@ -28,9 +28,11 @@ export default class Editor extends Component {
 
   render() {
 
-    const h1Icon = (
-      <Icon name='rocket' size={15} />
-    )
+    // const h1Icon = (
+    //   <Icon name='rocket' size={15} />
+    // )
+
+    console.log('this.props.content', this.props.content)
 
     return (
       <View style={styles.root}>
@@ -39,17 +41,7 @@ export default class Editor extends Component {
             style={styles.richText}
             hiddenTitle={true}
             enableOnChange={true}
-            initialContentHTML={[
-              "Hello <b>World</b>",
-              "<p>this is a new paragraph</p>",
-              "<p>this is another new paragraph</p>",
-              "<p>",
-              "Hello",
-              "</p>",
-              "<p>",
-              '<img src="https://c1.staticflickr.com/3/2616/5813184171_42dcfb6bb6_o.jpg" />',
-              "</p>"
-            ].join('')}
+            initialContentHTML={this.props.content}
             editorInitializedCallback={() => this.onEditorInitialized()}
           />
           <RichTextToolbar

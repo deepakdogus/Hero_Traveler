@@ -137,13 +137,9 @@ const create = () => {
     return api.post(`story/draft`)
   }
   
-  const updateDraft = (attrs) => {
-    console.log('attrs.id', attrs)
-    return api.put(`story/draft/${attrs.id}`, {
-      story: {
-        ...attrs,
-        _id: attrs.id
-      }
+  const updateDraft = (id, attrs) => {
+    return api.put(`story/draft/${id}`, {
+      story: attrs
     })
   }
 

@@ -100,7 +100,7 @@ class StoryCoverScreen extends React.Component {
       return
     }
 
-    this.props.update(story)
+    this.props.update(this.props.story.id, story)
     NavActions.createStory_content()
   }
 
@@ -246,9 +246,9 @@ export default R.compose(
     registerDraft: () => dispatch(StoryEditActions.registerDraft()),
     discardDraft: (draftId) => dispatch(StoryEditActions.discardDraft(draftId)),
     resetForm: () => dispatch(resetForm('createStory')),
-    update: (draft) => {
+    update: (id, attrs) => {
       dispatch(
-        StoryEditActions.updateDraft(draft)
+        StoryEditActions.updateDraft(id, attrs)
       )
     }
   })),

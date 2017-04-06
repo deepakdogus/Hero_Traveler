@@ -33,7 +33,10 @@ import { getSuggestedUsers } from './UserSagas'
 
 import {
   getUserFeed,
-  createPhotoStory,
+  registerDraft,
+  publishDraft,
+  discardDraft,
+  updateDraft,
   getUserStories,
   likeStory,
   bookmarkStory
@@ -61,7 +64,12 @@ export default function * root () {
     takeLatest(SessionTypes.REFRESH_USER, getMe, heroAPI),
     takeLatest(SessionTypes.LOGOUT, logout, heroAPI),
 
-    takeLatest(StoryCreateTypes.PUBLISH_REQUEST, createPhotoStory, heroAPI),
+    // Drafts and story creation
+    takeLatest(StoryCreateTypes.PUBLISH_DRAFT, publishDraft, heroAPI),
+    takeLatest(StoryCreateTypes.REGISTER_DRAFT, registerDraft, heroAPI),
+    takeLatest(StoryCreateTypes.DISCARD_DRAFT, discardDraft, heroAPI),
+    takeLatest(StoryCreateTypes.UPDATE_DRAFT, updateDraft, heroAPI),
+
     takeLatest(StoryTypes.FEED_REQUEST, getUserFeed, heroAPI),
     takeLatest(StoryTypes.FROM_USER_REQUEST, getUserStories, heroAPI),
     takeLatest(StoryTypes.STORY_LIKE, likeStory, heroAPI),

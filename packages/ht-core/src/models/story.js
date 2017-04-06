@@ -82,4 +82,6 @@ StorySchema.statics.getUserStories = function getUserStories(userId) {
     .populate('category')
 }
 
+export {StorySchema as Schema}
+
 export default mongoose.model('Story', StorySchema)

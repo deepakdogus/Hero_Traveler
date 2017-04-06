@@ -1,19 +1,30 @@
 import { StyleSheet } from 'react-native'
-import { ApplicationStyles } from '../../Themes/'
+import { ApplicationStyles, Colors, Metrics } from '../../Themes/'
 
 export default StyleSheet.create({
   containerWithNavbarAndTabbar: {
-    ...ApplicationStyles.screen.containerWithNavbarAndTabbar
+    ...ApplicationStyles.screen.containerWithNavbarAndTabbar,
+    backgroundColor: Colors.background,
   },
   camera: {
     flex: 1
   },
   cameraControls: {
-    marginTop: 50,
-    marginLeft: 25
+    marginTop: Metrics.section,
+    marginLeft: Metrics.section
+  },
+  cameraControl: {
+    backgroundColor: Colors.clear
+  },
+  flipCamera: {
+    marginTop: Metrics.doubleBaseMargin
+  },
+  flash: {
+    marginLeft: Metrics.baseMargin
   },
   cameraShutterButton: {
     alignItems: 'center',
-    marginBottom: 40
-  }
+    marginBottom: 40 + Metrics.section,
+    backgroundColor: Colors.clear,
+  },
 })

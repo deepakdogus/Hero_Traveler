@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React from 'react'
 import {
   ScrollView,
@@ -6,18 +7,22 @@ import {
   TouchableWithoutFeedback,
   View,
   KeyboardAvoidingView,
-  Image
+  Image,
+  Alert
 } from 'react-native'
-import { Actions as NavigationActions } from 'react-native-router-flux'
+import { Actions as NavActions } from 'react-native-router-flux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
+import { reset as resetForm } from 'redux-form'
 import { connect } from 'react-redux'
 import R from 'ramda'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
+import StoryEditActions from '../../Redux/StoryCreateRedux'
 import ShadowButton from '../../Components/ShadowButton'
 import RenderTextInput from '../../Components/RenderTextInput'
+import {Colors, Images, Metrics} from '../../Themes'
 import styles, { placeholderColor } from './StoryCoverScreenStyles'
-import {Colors, Images} from '../../Themes'
+import NavBar from './NavBar'
 
 class StoryCoverScreen extends React.Component {
 
@@ -29,16 +34,22 @@ class StoryCoverScreen extends React.Component {
     }
   }
 
+  componentDidMount() {
+    // Create a new draft to work with if one doesn't exist
+    if (!this.props.story.id) {
+      this.props.registerDraft()
+    }
+  }
+
   _toggleImageMenu = () => {
     this.setState({imageMenuOpen: !this.state.imageMenuOpen})
   }
 
-  renderCoverPhoto = () => {
-    const {story: {coverPhoto}} = this.props
+  renderCoverPhoto(coverPhoto) {
     return R.ifElse(
       R.identity,
       R.always((
-        <Image source={{uri: coverPhoto}}>
+        <Image source={{uri: coverPhoto}} style={styles.coverPhoto}>
           {this.renderContent()}
         </Image>
       )),
@@ -62,6 +73,37 @@ class StoryCoverScreen extends React.Component {
     )(!!this.props.story.coverPhoto)
   }
 
+  _onLeft = () => {
+    // When a user cancels the draft flow, remove the draft
+    Alert.alert(
+      'Cancel Draft',
+      'Do you want to save this draft?',
+      [{
+        text: 'Yes, save the draft',
+        onPress: () => NavActions.pop()
+      }, {
+        text: 'No, remove it',
+        onPress: () => {
+          this.props.discardDraft(this.props.story.id)
+          this.props.resetForm()
+          NavActions.pop()
+        }
+      }]
+    )
+  }
+
+  _onRight = () => {
+    const {story} = this.props
+
+    if (!story.coverPhoto && !story.title) {
+      this.setState({error: 'Please add a cover and a title to continue'})
+      return
+    }
+
+    this.props.update(story)
+    NavActions.createStory_content()
+  }
+
   renderContent () {
     const {story} = this.props
 
@@ -74,9 +116,12 @@ class StoryCoverScreen extends React.Component {
               <TouchableOpacity
                 style={styles.addPhotoButton}
                 onPress={() => {
-                  NavigationActions.mediaSelectorScreen({
+                  NavActions.mediaSelectorScreen({
                     mediaType: 'photo',
                     title: 'Add a Cover',
+                    leftTitle: 'Cancel',
+                    onLeft: () => NavActions.pop(),
+                    rightTitle: 'Next',
                     onSelectMedia: this._handleSelectCoverPhoto
                   })
                 }}
@@ -101,14 +146,16 @@ class StoryCoverScreen extends React.Component {
                   <View style={styles.spaceView} />
                   <View style={styles.imageMenuView}>
                     <TouchableOpacity
-                      onPress={() => NavigationActions.mediaSelectorScreen({
-                        mediaType: 'photo',
-                        title: 'Change Cover Photo',
-                        onSelectMedia: (...args) => {
-                          this._handleSelectCoverPhoto(...args)
-                          this.setState({imageMenuOpen: false})
-                        }
-                      })}
+                      onPress={() =>
+                        NavActions.mediaSelectorScreen({
+                          mediaType: 'photo',
+                          title: 'Change Cover',
+                          leftTitle: 'Cancel',
+                          onLeft: () => NavActions.pop(),
+                          rightTitle: 'Update',
+                          onSelectMedia: this._handleSelectCoverPhoto
+                        })
+                      }
                       style={styles.iconButton}>
                       <Icon name='camera' color={Colors.snow} size={30} />
                     </TouchableOpacity>
@@ -136,7 +183,7 @@ class StoryCoverScreen extends React.Component {
             <Field
               name='title'
               component={RenderTextInput}
-              disabled={this.state.imageMenuOpen}
+              editable={!this.state.imageMenuOpen}
               style={this.renderTextColor(styles.titleInput)}
               placeholder='ADD A TITLE'
               placeholderTextColor={this.renderPlaceholderColor(placeholderColor)}
@@ -144,6 +191,7 @@ class StoryCoverScreen extends React.Component {
             <Field
               name='description'
               component={RenderTextInput}
+              editable={!this.state.imageMenuOpen}
               style={this.renderTextColor(styles.subTitleInput)}
               value={story.description}
               placeholder='Add a subtitle'
@@ -157,32 +205,30 @@ class StoryCoverScreen extends React.Component {
 
   render () {
     return (
-      <View style={[styles.containerWithNavbar]}>
-        {this.state.error &&
-          <ShadowButton
-            style={styles.errorButton}
-            onPress={() => this.setState({error: null})}
-            text={this.state.error} />
-        }
-        {this.renderCoverPhoto(this.props.story.coverPhoto)}
+      <View style={{flex: 1}}>
+        <NavBar
+          title='Story Cover'
+          leftTitle='Cancel'
+          onLeft={this._onLeft}
+          rightTitle='Next'
+          onRight={this._onRight}
+        />
+        <View style={{flex: 1}}>
+          {this.state.error &&
+            <ShadowButton
+              style={styles.errorButton}
+              onPress={() => this.setState({error: null})}
+              text={this.state.error} />
+          }
+          {this.renderCoverPhoto(this.props.story.coverPhoto)}
+        </View>
       </View>
     )
   }
 
   _handleSelectCoverPhoto = (path) => {
     this.props.change('coverPhoto', path)
-    NavigationActions.pop()
-  }
-
-  nextPage() {
-    const {story} = this.props
-
-    if (!story.coverPhoto && !story.title) {
-      this.setState({error: 'Please add a cover and a title to continue'})
-      return
-    }
-
-    NavigationActions.createStory_content()
+    NavActions.pop()
   }
 }
 
@@ -190,11 +236,21 @@ const selector = formValueSelector('createStory')
 export default R.compose(
   connect(state => ({
     story: {
+      id: _.get(state.storyCreate.draft, 'id', null),
       title: selector(state, 'title'),
       description: selector(state, 'description'),
       coverPhoto: selector(state, 'coverPhoto'),
     }
     // state: state
+  }), dispatch => ({
+    registerDraft: () => dispatch(StoryEditActions.registerDraft()),
+    discardDraft: (draftId) => dispatch(StoryEditActions.discardDraft(draftId)),
+    resetForm: () => dispatch(resetForm('createStory')),
+    update: (draft) => {
+      dispatch(
+        StoryEditActions.updateDraft(draft)
+      )
+    }
   })),
   reduxForm({
     form: 'createStory',

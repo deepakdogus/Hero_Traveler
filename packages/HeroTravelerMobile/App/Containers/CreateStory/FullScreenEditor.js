@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import R from 'ramda'
 
 import Editor from '../../Components/Editor'
+import NavBar from './NavBar'
 import styles from './FullScreenEditorStyles'
 
 class FullScreenEditor extends React.Component {
@@ -17,9 +18,16 @@ class FullScreenEditor extends React.Component {
   render () {
     return (
       <View style={[styles.root]}>
+        <NavBar
+          title='Content'
+          rightTitle='Next'
+          leftTitle='Cancel'
+        />
         <Editor
           ref={(editor) => {
-            this.editor = editor.getEditor()
+            if (editor) {
+              this.editor = editor.getEditor()
+            }
           }}
           onAddImage={this._handlePressAddImage}
         />

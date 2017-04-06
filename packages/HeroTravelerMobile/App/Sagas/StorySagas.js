@@ -20,8 +20,7 @@ export function * getUserFeed (api, action) {
 export function * getUserStories (api, {userId}) {
   const response = yield call(api.getUserStories, userId)
   if (response.ok) {
-    const { data } = response;
-    console.log('saga getUserStories', data)
+    const { data } = response
     yield [
       put(UserActions.receiveUsers(data.users)),
       put(StoryActions.fromUserSuccess(data.stories)),
@@ -31,14 +30,46 @@ export function * getUserStories (api, {userId}) {
   }
 }
 
-export function * createPhotoStory (api, action) {
-  const {story} = action
-  const response = yield call(api.createStory, story)
+export function * publishDraft (api, action) {
+  const {draft} = action
+  const response = yield call(api.createStory, draft)
   if (response.ok) {
     const {data: story} = response
-    yield put(StoryCreateActions.publishSuccess(story))
+    yield put(StoryCreateActions.publishDraftSuccess(story))
   } else {
-    yield put(StoryCreateActions.publishFailure(new Error('Failed to publish story')))
+    yield put(StoryCreateActions.publishDraftFailure(new Error('Failed to publish story')))
+  }
+}
+
+export function * registerDraft (api, action) {
+  const response = yield call(api.createDraft)
+  if (response.ok) {
+    const {data: draft} = response
+    yield put(StoryCreateActions.registerDraftSuccess(draft))
+  } else {
+    yield put(StoryCreateActions.registerDraftFailure(new Error('Failed to initialize draft')))
+  }
+}
+
+export function * discardDraft (api, action) {
+  const {draftId} = action
+  const response = yield call(api.removeDraft, draftId)
+  if (response.ok) {
+    yield put(StoryCreateActions.discardDraftSuccess())
+  } else {
+    yield put(StoryCreateActions.discardDraftFailure(new Error('Failed to initialize draft')))
+  }
+}
+
+export function * updateDraft (api, action) {
+  const {draft} = action
+  console.log('draft', action)
+  const response = yield call(api.updateDraft, draft)
+  if (response.ok) {
+    const {data: draft} = response.data
+    yield put(StoryCreateActions.updateDraftSuccess(draft))
+  } else {
+    yield put(StoryCreateActions.updateDraftFailure(new Error('Failed to update draft')))
   }
 }
 

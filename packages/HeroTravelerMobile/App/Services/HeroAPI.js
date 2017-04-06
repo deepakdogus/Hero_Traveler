@@ -128,8 +128,35 @@ const create = () => {
       })
   }
 
+  // publishes a draft
   const createStory = (story) => {
     return api.post('story', {story})
+  }
+  
+  const createDraft = () => {
+    return api.post(`story/draft`)
+  }
+  
+  const updateDraft = (attrs) => {
+    console.log('attrs.id', attrs)
+    return api.put(`story/draft/${attrs.id}`, {
+      story: {
+        ...attrs,
+        _id: attrs.id
+      }
+    })
+  }
+
+  const removeDraft = (draftId) => {
+    return api.delete(`story/draft/${draftId}`)
+  }
+
+  const getDraft = (draftId) => {
+    return api.get(`story/draft/${draftId}`)
+  }
+  
+  const getDrafts = () => {
+    return api.get(`story/draft`)
   }
 
   const updateStoryCover = (story) => {
@@ -216,6 +243,11 @@ const create = () => {
     unfollowCategory,
     likeStory,
     bookmarkStory,
+    getDraft,
+    getDrafts,
+    updateDraft,
+    createDraft,
+    removeDraft,
   }
 }
 

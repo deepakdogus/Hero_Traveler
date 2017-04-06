@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React from 'react'
 import {
   ScrollView,
@@ -11,10 +12,17 @@ import { Actions as NavActions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { connect } from 'react-redux'
 
+import StoryEditActions, {hasDraft} from '../../Redux/StoryCreateRedux'
 import { Images } from '../../Themes'
 import styles from './CreateStoryScreenStyles'
 
 class CreateStoryScreen extends React.Component {
+
+  componentDidMount() {
+    if (this.props.hasLocalDraft) {
+      NavActions.createStory_photo()
+    }
+  }
 
   render () {
     return (
@@ -27,7 +35,7 @@ class CreateStoryScreen extends React.Component {
         <View style={styles.buttonGroup}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => 1}
+            onPress={() => NavActions.createStory_photo()}
           >
             <Icon
               name='file-word-o'
@@ -64,5 +72,6 @@ class CreateStoryScreen extends React.Component {
 }
 
 export default connect(state => ({
-
+  hasLocalDraft: hasDraft(state.storyCreate)
+}), dispatch => ({
 }))(CreateStoryScreen)

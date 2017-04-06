@@ -219,57 +219,36 @@ class NavigationRouter extends Component {
             <Scene
               key='createStoryFlow'
               direction='vertical'
-              {...darkNavBarProps}
+              hideNavBar={true}
             >
               <Scene
                 key='createStory_info'
                 title='Create Story'
-                hideNavBar={true}
                 component={StoryCreateScreen}
               />
               <Scene
                 key='createStory_photo'
-                title='Create Story'
                 component={StoryCoverScreen}
                 panHandlers={null}
-                hideNavBar={false}
                 type="replace"
                 direction="horizontal"
-                leftTitle='Cancel'
-                onLeft={() => NavActions.pop()}
-                rightTitle='Next'
-                onRight={() => NavActions.createStory_content()}
               />
               <Scene
                 key='createStory_content'
-                title='Story Content'
                 component={FullScreenEditor}
                 panHandlers={null}
                 direction='horizontal'
-                leftTitle='Back'
-                onLeft={() => NavActions.pop()}
-                rightTitle='Next'
-                onRight={() => NavActions.createStory_details()}
               />
               <Scene
                 key='createStory_details'
-                title='Create Story Details'
                 panHandlers={null}
-                hideNavBar={false}
                 component={CreateStoryDetailScreen}
-                backTitle='Cancel'
-                rightTitle='Publish'
-                onRight={() => console.log('Publishing')}
               />
             </Scene>
             <Scene
               key='mediaSelectorScreen'
               component={MediaSelectorScreen}
-              backTitle='Cancel'
-              rightTitle='Publish'
-              onRight={() => console.log('Publishing')}
               direction='horizontal'
-              {...darkNavBarProps}
             />
           </Scene>
         </Scene>

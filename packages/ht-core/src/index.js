@@ -4,6 +4,7 @@ import './models/plugins/meanie'
 import * as User from './user'
 import * as Models from './models'
 import * as Story from './story'
+import * as StoryDraft from './storyDraft'
 import * as Category from './category'
 
 mongoose.Promise = Promise
@@ -11,6 +12,7 @@ mongoose.Promise = Promise
 export {
   User,
   Story,
+  StoryDraft,
   Category,
   Models,
 }

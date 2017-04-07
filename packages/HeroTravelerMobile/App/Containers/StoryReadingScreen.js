@@ -3,7 +3,7 @@ import { ScrollView, Text, View, Image } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
-import StoryActions from '../Redux/Entities/Stories.js'
+import StoryActions from '../Redux/Entities/Stories'
 import formatCount from '../Lib/formatCount'
 import StoryList from '../Components/StoryList'
 import StoryPreview from '../Components/StoryPreview'

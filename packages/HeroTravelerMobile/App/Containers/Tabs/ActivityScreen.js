@@ -102,7 +102,6 @@ class NotificationScreen extends React.Component {
 
 
 const mapStateToProps = (state) => {
-  console.log('state tree', state)
   let { fetching, posts, error } = state.feed;
   return {
     user: state.session.user,

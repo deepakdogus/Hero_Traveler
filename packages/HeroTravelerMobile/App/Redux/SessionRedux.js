@@ -62,3 +62,4 @@ export const reducer = createReducer(INITIAL_STATE, {
 
 // Does the user have necessary info to make API requests?
 export const hasAuthData = (sessionState) => sessionState.tokens && is(Object, sessionState.user)
+export const getUserId = (sessionState) => _.get(sessionState, 'user.id')

@@ -17,6 +17,7 @@ export default class StoryList extends React.Component {
   constructor(props) {
     super(props)
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => _.isEqual(r1, r2)})
+    console.log('props.stories', props.stories)
     this.state = {
       dataSource: ds.cloneWithRows(props.stories)
     }

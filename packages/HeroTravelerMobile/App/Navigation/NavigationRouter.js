@@ -26,6 +26,7 @@ import StoryCoverScreen from '../Containers/CreateStory/StoryCoverScreen'
 import StoryCreateScreen from '../Containers/CreateStory/CreateStoryScreen'
 import FullScreenEditor from '../Containers/CreateStory/FullScreenEditor'
 import CreateStoryDetailScreen from '../Containers/CreateStory/CreateStoryDetailScreen'
+import TagScreen from '../Containers/CreateStory/TagScreen'
 import MediaSelectorScreen from '../Containers/MediaSelectorScreen'
 
 import ActivityScreen from '../Containers/Tabs/ActivityScreen'
@@ -243,6 +244,11 @@ class NavigationRouter extends Component {
                 key='createStory_details'
                 panHandlers={null}
                 component={CreateStoryDetailScreen}
+              />
+              <Scene
+                key='createStory_tags'
+                panHandlers={null}
+                component={TagScreen}
               />
             </Scene>
             <Scene

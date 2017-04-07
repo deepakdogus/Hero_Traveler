@@ -255,10 +255,12 @@ export default R.compose(
   reduxForm({
     form: 'createStory',
     destroyOnUnmount: false,
+    keepDirtyOnReinitialize: true,
+    enableReinitialize: true,
     initialValues: {
       title: '',
       description: '',
-      coverPhoto: null
+      coverPhoto: null,
     }
   })
 )(StoryCoverScreen)

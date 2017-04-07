@@ -20,12 +20,16 @@ import RoundedButton from '../../Components/RoundedButton'
 import TOS from '../../Components/TosFooter'
 import styles from '../Styles/SignupScreenStyles'
 
-const MINIMUM_USERNAME_LENGTH = 5
-const MAXIMUM_USERNAME_LENGTH = 20
-const USERNAME_REGEX = /(?=^.{5,20}$)^[a-zA-Z][a-zA-Z0-9]*[._-]?[a-zA-Z0-9]+$/
-const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-const MINIMUM_PASSWORD_LENGTH = 8
-const MAXIMUM_PASSWORD_LENGTH = 64
+// These should be in ht-util
+// but there appears to be a symlink bug with RN/lerna
+const Constants = {
+  PASSWORD_MIN_LENGTH: 8,
+  PASSWORD_MAX_LENGTH: 64,
+  USERNAME_MIN_LENGTH: 5,
+  USERNAME_MAX_LENGTH: 20,
+  USERNAME_REGEX: /(?=^.{5,20}$)^[a-zA-Z][a-zA-Z0-9]*[._-]?[a-zA-Z0-9]+$/,
+  EMAIL_REGEX: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+}
 
 const validate = (values) => {
   const errors = {}
@@ -34,18 +38,18 @@ const validate = (values) => {
     errors.fullName = 'Required'
   } else if (!values.username) {
     errors.username = 'Required'
-  } else if (values.username.length < MINIMUM_USERNAME_LENGTH || values.username.length > MAXIMUM_USERNAME_LENGTH) {
-    errors.username = `Must be between ${MINIMUM_USERNAME_LENGTH} and ${MAXIMUM_USERNAME_LENGTH} characters`
-  } else if (!USERNAME_REGEX.test(values.username)) {
+  } else if (values.username.length < Constants.USERNAME_MIN_LENGTH || values.username.length > Constants.USERNAME_MAX_LENGTH) {
+    errors.username = `Must be between ${Constants.USERNAME_MIN_LENGTH} and ${Constants.USERNAME_MAX_LENGTH} characters`
+  } else if (!Constants.USERNAME_REGEX.test(values.username)) {
     errors.username = 'Usernames may contain letters, numbers, _ and -'
   } else if (!values.email) {
     errors.email = 'Required'
-  } else if (!EMAIL_REGEX.test(values.email)) {
+  } else if (!Constants.EMAIL_REGEX.test(values.email)) {
     errors.email = 'Invalid email address'
   } else if (!values.password) {
     errors.password = 'Required'
-  } else if (values.password.length < MINIMUM_PASSWORD_LENGTH || values.password.length > MAXIMUM_PASSWORD_LENGTH) {
-    errors.password = `Passwords must be ${MINIMUM_PASSWORD_LENGTH} to ${MAXIMUM_PASSWORD_LENGTH} characters long`
+  } else if (values.password.length < Constants.PASSWORD_MIN_LENGTH || values.password.length > Constants.PASSWORD_MAX_LENGTH) {
+    errors.password = `Passwords must be ${Constants.PASSWORD_MIN_LENGTH} to ${Constants.PASSWORD_MAX_LENGTH} characters long`
   } else if (!values.confirmPassword || values.password !== values.confirmPassword) {
     errors.confirmPassword = 'Passwords must match'
   }
@@ -173,7 +177,6 @@ const selector = formValueSelector('signupForm')
 export default R.compose(
   connect(
     (state) => {
-      console.log(state)
       return {
         fetching: state.signup.fetching,
         hasSignedUp: hasSignedUp(state.signup),

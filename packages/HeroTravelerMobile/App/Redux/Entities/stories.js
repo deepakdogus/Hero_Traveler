@@ -9,7 +9,7 @@ const { Types, Creators } = createActions({
   feedSuccess: ['stories'],
   feedFailure: null,
   fromUserRequest: ['userId'],
-  fromUserSuccess: ['stories'],
+  fromUserSuccess: ['stories', 'userStoriesById'],
   fromUserFailure: null,
   receiveStories: ['stories'],
   storyLike: ['storyId'],
@@ -18,6 +18,9 @@ const { Types, Creators } = createActions({
   storyBookmark: ['storyId'],
   storyBookmarkSuccess: ['storyId'],
   storyBookmarkFailure: ['storyId'],
+  getBookmarks: null,
+  getBookmarksSuccess: ['bookmarks', 'myBookmarksById'],
+  getBookmarksFailure: null,
 })
 
 export const StoryTypes = Types
@@ -25,12 +28,16 @@ export default Creators
 
 /* ------------- Initial State ------------- */
 
+const initialFetchStatus = () => ({
+  fetching: false,
+  loaded: false,
+})
+
 export const INITIAL_STATE = Immutable({
   entities: {},
-  fetchStatus: {
-    fetching: false,
-    loaded: false,
-  },
+  fetchStatus: initialFetchStatus(),
+  userStoriesFetchStatus: initialFetchStatus(),
+  userBookmarksFetchStatus: initialFetchStatus(),
   error: null,
 })
 
@@ -53,6 +60,43 @@ export const receive = (state, {stories = {}}) => {
     },
     error: null,
     entities: stories
+  }, {
+    deep: true
+  })
+}
+
+export const requestById = (state) => {
+  return state.merge({
+    userStoriesFetchStatus: {
+      fetching: true,
+      loaded: false
+    }
+  }, {
+    deep: true
+  })
+}
+
+export const receiveById = (state, {stories, userStoriesById}) => {
+  return state.merge({
+    userStoriesFetchStatus: {
+      fetching: false,
+      loaded: true,
+    },
+    error: null,
+    entities: stories,
+    ...userStoriesById
+  }, {
+    deep: true
+  })
+}
+
+export const receiveByIdFailure = (state, {error}) => {
+  return state.merge({
+    userStoriesFetchStatus: {
+      fetching: false,
+      loaded: false,
+    },
+    error
   }, {
     deep: true
   })
@@ -127,6 +171,25 @@ const storyBookmarkFailure = (state, {storyId}) => {
   )
 }
 
+export const receiveBookmarks = (state, {stories, myBookmarksById}) => {
+  console.log('myBookmarksById', myBookmarksById)
+  return state.merge({
+    userBookmarksFetchStatus: {
+      loaded: true,
+      fetching: false
+    },
+    ...myBookmarksById,
+    stories,
+    error: null,
+  }, {
+    deep: true
+  })
+}
+
+export const receiveBookmarksFailure = (state, {error}) => {
+  return state.merge({error})
+}
+
 /* ------------- Selectors ------------- */
 
 export const getByCategory = (storyEntities, categoryId) => {
@@ -147,14 +210,16 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.FEED_REQUEST]: request,
   [Types.FEED_SUCCESS]: receive,
   [Types.FEED_FAILURE]: failure,
-  [Types.FROM_USER_REQUEST]: request,
-  [Types.FROM_USER_SUCCESS]: receive,
-  [Types.FROM_USER_FAILURE]: failure,
-  [Types.RECEIVE_USERS]: receive,
+  [Types.FROM_USER_REQUEST]: requestById,
+  [Types.FROM_USER_SUCCESS]: receiveById,
+  [Types.FROM_USER_FAILURE]: receiveByIdFailure,
+  [Types.RECEIVE_USERS]: receiveById,
   [Types.STORY_LIKE]: storyLike,
   [Types.STORY_LIKE_SUCCESS]: storyLikeSuccess,
   [Types.STORY_LIKE_FAILURE]: storyLikeFailure,
   [Types.STORY_BOOKMARK]: storyBookmark,
   [Types.STORY_BOOKMARK_SUCCESS]: storyBookmarkSuccess,
   [Types.STORY_BOOKMARK_FAILURE]: storyBookmarkFailure,
+  [Types.GET_BOOKMARKS_SUCCESS]: receiveBookmarks,
+  [Types.GET_BOOKMARKS_FAILURE]: receiveBookmarksFailure,
 })

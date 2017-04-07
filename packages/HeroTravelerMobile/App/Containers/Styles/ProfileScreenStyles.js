@@ -106,6 +106,10 @@ export default StyleSheet.create({
     lineHeight: 15
   },
   tabs: {
+    flex: 1,
+    flexDirection: 'column'
+  },
+  tabWrapper: {
     flex: 1
   },
   tabnav: {

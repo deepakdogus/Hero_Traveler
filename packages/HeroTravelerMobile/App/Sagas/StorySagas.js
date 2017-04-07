@@ -1,7 +1,8 @@
-import { call, put } from 'redux-saga/effects'
+import _ from 'lodash'
+import { call, put, select } from 'redux-saga/effects'
 import StoryActions from '../Redux/Entities/Stories'
 import UserActions from '../Redux/Entities/Users'
-import StoryCreateActions from '../Redux/StoryCreateRedux'
+import StoryCreateActions, {getDraft} from '../Redux/StoryCreateRedux'
 
 export function * getUserFeed (api, action) {
   const { userId } = action
@@ -20,10 +21,10 @@ export function * getUserFeed (api, action) {
 export function * getUserStories (api, {userId}) {
   const response = yield call(api.getUserStories, userId)
   if (response.ok) {
-    const { data } = response
+    const { entities, result } = response.data
     yield [
-      put(UserActions.receiveUsers(data.users)),
-      put(StoryActions.fromUserSuccess(data.stories)),
+      put(UserActions.receiveUsers(entities.users)),
+      put(StoryActions.fromUserSuccess(entities.stories, {userStoriesById: result})),
     ]
   } else {
     yield put(StoryActions.fromUserFailure())
@@ -31,7 +32,7 @@ export function * getUserStories (api, {userId}) {
 }
 
 export function * publishDraft (api, action) {
-  const {draft} = action
+  const draft = yield select(getDraft)
   const response = yield call(api.createStory, draft)
   if (response.ok) {
     const {data: story} = response
@@ -100,5 +101,24 @@ export function * bookmarkStory(api, {storyId}) {
     ]
   } else {
     yield put(StoryActions.storyBookmarkFailure(storyId))
+  }
+}
+
+export function * getBookmarks(api) {
+  const response = yield call(
+    api.getBookmarks
+  )
+
+  if (response.ok) {
+    const {entities, result} = response.data
+    const myBookmarksById = _.map(entities.bookmarks, b => {
+      console.log(b)
+      return b.story
+    })
+
+    console.log('myBookmarksById 2', myBookmarksById)
+    yield put(StoryActions.getBookmarksSuccess(entities.stories, {myBookmarksById}))
+  } else {
+    yield put(StoryActions.getBookmarksFailure(new Error('Failed to get bookmarks')))
   }
 }

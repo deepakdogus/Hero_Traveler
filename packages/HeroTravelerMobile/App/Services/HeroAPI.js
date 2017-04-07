@@ -14,6 +14,10 @@ const Followers = new schema.Entity('follows', {
   follower: User,
   followee: User
 })
+const Bookmarks = new schema.Entity('bookmarks', {
+  user: User,
+  story: Story
+})
 
 const devURL = Platform.OS === 'ios' ? 'http://localhost:3000/' : 'http://10.0.3.2:3000/'
 
@@ -111,8 +115,9 @@ const create = () => {
         params
       })
       .then(response => {
+        console.log('normalize(response.data, [Story])', normalize(response.data, [Story]))
         return Object.assign({}, response, {
-          data: normalize(response.data, [Story]).entities
+          data: normalize(response.data, [Story])
         })
       })
   }
@@ -208,6 +213,16 @@ const create = () => {
   const bookmarkStory = (storyId) => {
     return api.get(`story/${storyId}/bookmark`)
   }
+  
+  const getBookmarks = (storyId) => {
+    return api.get(`story/bookmark`)
+      .then(response => {
+        console.log('normalize(response.data, [Bookmarks])', normalize(response.data, [Bookmarks]))
+        return  Object.assign({}, response, {
+          data: normalize(response.data, [Bookmarks])
+        })
+      })
+  }
 
   // ------
   // STEP 3
@@ -244,6 +259,7 @@ const create = () => {
     updateDraft,
     createDraft,
     removeDraft,
+    getBookmarks,
   }
 }
 

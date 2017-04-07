@@ -23,7 +23,7 @@ export default StyleSheet.create({
     alignItems: 'center'
   },
   fieldLabel: {
-    marginBottom: 5,
+    marginBottom: Metrics.baseMargin / 2,
     fontSize: 12
   },
   fieldIcon: {
@@ -35,5 +35,37 @@ export default StyleSheet.create({
     color: Colors.background,
     fontSize: 16,
     height: 30
+  },
+  radioGroup: {
+    marginLeft: Metrics.section,
+    flexDirection: 'row',
+    flex: 1
+  },
+  radio: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: Metrics.baseMargin / 5,
+  },
+  radioText: {
+    marginLeft: Metrics.baseMargin,
+    fontWeight: 'bold'
+  },
+  finishButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  finishButton: {
+    flex: .45,
+    marginHorizontal: 0
+  },
+  draftButton: {
+    borderColor: Colors.red,
+    borderWidth: 1,
+    backgroundColor: Colors.clear,
+  },
+  draftButtonText: {
+    color: Colors.red
   }
 })

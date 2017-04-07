@@ -76,4 +76,8 @@ export const reducer = createReducer(INITIAL_STATE, {
 })
 
 export const hasDraft = (state) => _.get(state.draft, 'id') ? true : false
-export const DISCARDed = (state) => state.isPublished
+export const isCreated = (state) => state.isPublished
+export const getDraft = (state) => {
+  console.log('state', state)
+  return state.storyCreate.draft
+}

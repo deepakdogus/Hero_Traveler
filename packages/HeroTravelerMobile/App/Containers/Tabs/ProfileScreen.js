@@ -33,18 +33,57 @@ const Tab = ({text, onPress, selected}) => {
 
 class ProfileScreen extends React.Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      selectTabIndex: 0
+    }
+  }
+
   componentDidMount() {
     this.props.attemptRefreshUser()
     this.props.attemptGetUserStories(this.props.user.id)
   }
 
+  _storiesTab = () => {
+    this.setState({selectTabIndex: 0})
+  }
+  
+  _draftsTab = () => {
+    // this.props.loadDrafts()
+    this.setState({selectTabIndex: 1})
+  }
+  
+  _bookmarksTab = () => {
+    this.props.loadBookmarks()
+    this.setState({selectTabIndex: 2})
+  }
+
   render () {
-    const {user, stories, storyFetchStatus} = this.props
+    const {
+      user,
+      stories,
+      userStoriesById,
+      userStoriesFetchStatus,
+      draftFetchStatus,
+      userBookmarksFetchStatus,
+      myBookmarksById
+    } = this.props
     let avatar
 
-    const storiesAsArray = _.map(stories, s => {
+console.log('myBookmarksById', myBookmarksById)
+    const draftsAsArray = []
+    const bookmarksAsArray = _.map(myBookmarksById, storyId => {
+      console.log('bookmark', stories[storyId])
       return {
-        ...s
+        ...stories[storyId],
+        author: this.props.user
+      }
+    })
+    const storiesAsArray = _.map(userStoriesById, storyId => {
+      return {
+        ...stories[storyId],
+        author: this.props.user
       }
     })
 
@@ -66,6 +105,8 @@ class ProfileScreen extends React.Component {
         <Icon name="user-circle-o" color={Colors.snow} size={40} />
       )
     }
+
+    console.log('user stories', bookmarksAsArray)
 
     return (
       <ScrollView style={[styles.containerWithTabbar, styles.root]}>
@@ -117,32 +158,101 @@ class ProfileScreen extends React.Component {
         </Image>
         <View style={styles.tabs}>
           <View style={styles.tabnav}>
-            <Tab selected={true} onPress={() => alert('stories')} text='STORIES' />
-            <Tab onPress={() => alert('drafts')} text='DRAFT' />
-            <Tab onPress={() => alert('bookmarks')} text='BOOKMARKS' />
-          </View>
-          {storiesAsArray.length > 0 &&
-            <StoryList
-              stories={storiesAsArray}
-              height={200}
-              titleStyle={styles.storyTitleStyle}
-              subtitleStyle={styles.subtitleStyle}
-              forProfile={true}
-              onPressStory={story => alert(`Story ${story.id} pressed`)}
-              onPressLike={story => alert(`Story ${story.id} liked`)}
+            <Tab
+              selected={this.state.selectTabIndex === 0}
+              onPress={() => this._storiesTab()}
+              text='STORIES'
             />
+            <Tab
+              selected={this.state.selectTabIndex === 1}
+              onPress={() => this._draftsTab()}
+              text='DRAFT'
+            />
+            <Tab
+              selected={this.state.selectTabIndex === 2}
+              onPress={() => this._bookmarksTab()}
+              text='BOOKMARKS'
+            />
+          </View>
+          {this.state.selectTabIndex === 0 && <View style={styles.tabWrapper}>
+            {storiesAsArray.length > 0 &&
+              <StoryList
+                stories={storiesAsArray}
+                height={200}
+                titleStyle={styles.storyTitleStyle}
+                subtitleStyle={styles.subtitleStyle}
+                forProfile={true}
+                onPressStory={story => alert(`Story ${story.id} pressed`)}
+                onPressLike={story => alert(`Story ${story.id} liked`)}
+              />
+            }
+            {userStoriesFetchStatus.loaded && storiesAsArray.length === 0 &&
+              <View style={styles.noStories}>
+                <Text style={styles.noStoriesText}>You have no stories published</Text>
+              </View>
+            }
+            {!userStoriesFetchStatus.loaded && userStoriesFetchStatus.fetching &&
+              <View style={styles.spinnerWrapper}>
+                <Loader
+                  style={styles.spinner}
+                  spinnerColor={Colors.background} />
+              </View>
+            }
+          </View>
           }
-          {storyFetchStatus.loaded && storiesAsArray.length === 0 &&
-            <View style={styles.noStories}>
-              <Text style={styles.noStoriesText}>You have no stories published</Text>
-            </View>
+
+          {this.state.selectTabIndex === 1 && <View style={styles.tabWrapper}>
+            {draftsAsArray.length > 0 &&
+              <StoryList
+                stories={draftsAsArray}
+                height={200}
+                titleStyle={styles.storyTitleStyle}
+                subtitleStyle={styles.subtitleStyle}
+                forProfile={true}
+                onPressStory={story => alert(`Story ${story.id} pressed`)}
+                onPressLike={story => alert(`Story ${story.id} liked`)}
+              />
+            }
+            {draftFetchStatus.loaded && draftsAsArray.length === 0 &&
+              <View style={styles.noStories}>
+                <Text style={styles.noStoriesText}>You have no drafts</Text>
+              </View>
+            }
+            {!draftFetchStatus.loaded && draftFetchStatus.fetching &&
+              <View style={styles.spinnerWrapper}>
+                <Loader
+                  style={styles.spinner}
+                  spinnerColor={Colors.background} />
+              </View>
+            }
+          </View>
           }
-          {!storyFetchStatus.loaded && storyFetchStatus.fetching &&
-            <View style={styles.spinnerWrapper}>
-              <Loader
-                style={styles.spinner}
-                spinnerColor={Colors.background} />
-            </View>
+          
+          {this.state.selectTabIndex === 2 && <View style={styles.tabWrapper}>
+            {bookmarksAsArray.length > 0 &&
+              <StoryList
+                stories={bookmarksAsArray}
+                height={200}
+                titleStyle={styles.storyTitleStyle}
+                subtitleStyle={styles.subtitleStyle}
+                forProfile={true}
+                onPressStory={story => alert(`Story ${story.id} pressed`)}
+                onPressLike={story => alert(`Story ${story.id} liked`)}
+              />
+            }
+            {userBookmarksFetchStatus.loaded && bookmarksAsArray.length === 0 &&
+              <View style={styles.noStories}>
+                <Text style={styles.noStoriesText}>You have no bookmarks</Text>
+              </View>
+            }
+            {!userBookmarksFetchStatus.loaded && userBookmarksFetchStatus.fetching &&
+              <View style={styles.spinnerWrapper}>
+                <Loader
+                  style={styles.spinner}
+                  spinnerColor={Colors.background} />
+              </View>
+            }
+          </View>
           }
         </View>
       </ScrollView>
@@ -154,17 +264,23 @@ const mapStateToProps = (state) => {
   const {user} = state.session
   const userId = user ? user.id : null
   let {
-    fetchStatus,
+    userStoriesFetchStatus,
+    userStoriesById,
+    userBookmarksFetchStatus,
+    myBookmarksById,
     entities: stories,
     error
   } = state.entities.stories;
   return {
     user: state.session.user,
-    usersById: state.entities.users.entities,
-    isLoggedIn: hasAuthData(state.session),
-    apiTokens: state.session.tokens,
-    storyFetchStatus: fetchStatus,
-    stories: getByUser(stories, userId),
+    userStoriesFetchStatus,
+    // @TODO: bookmarkFetchStatus
+    userBookmarksFetchStatus,
+    myBookmarksById,
+    // @TODO: draftFetchStatus
+    draftFetchStatus: {fetching: false, loaded: true},
+    stories: stories,
+    userStoriesById,
     error
   }
 }
@@ -173,7 +289,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     logout: (tokens) => dispatch(SessionActions.logout(tokens)),
     attemptGetUserStories: (userId) => dispatch(StoryActions.fromUserRequest(userId)),
-    attemptRefreshUser: (userId) => dispatch(SessionActions.refreshUser(userId))
+    attemptRefreshUser: (userId) => dispatch(SessionActions.refreshUser(userId)),
+    loadDrafts: () => dispatch(StoryActions.getDrafts()),
+    loadBookmarks: () => dispatch(StoryActions.getBookmarks()),
   }
 }
 

@@ -1,27 +1,44 @@
 import mongoose from 'mongoose'
+import {ModelName as CategoryRef} from './category'
+import {ModelName as UserRef} from './user'
+import {Constants} from '@rwoody/ht-util'
+
+export const ModelName = 'Story'
 
 const StorySchema = new mongoose.Schema({
   title: {
     type: String,
     required: true
   },
-  description: {
+  type: {
     type: String,
+    enum: [
+      Constants.STORY_TYPE_EAT_VALUE,
+      Constants.STORY_TYPE_STAY_VALUE,
+      Constants.STORY_TYPE_DO_VALUE,
+    ],
+    default: Constants.STORY_TYPE_EAT_VALUE,
     required: true
+  },
+  description: {
+    type: String
   },
   author: {
     type: mongoose.Schema.ObjectId,
-    ref: 'User',
+    ref: UserRef,
     required: true
   },
   category: {
     type: mongoose.Schema.ObjectId,
-    ref: 'Category',
+    ref: CategoryRef,
     required: true
   },
   content: {
     type: String,
-    default: ''
+    required: true
+  },
+  location: {
+    type: String
   },
   counts: {
     likes: {
@@ -84,4 +101,4 @@ StorySchema.statics.getUserStories = function getUserStories(userId) {
 
 export {StorySchema as Schema}
 
-export default mongoose.model('Story', StorySchema)
+export default mongoose.model(ModelName, StorySchema)

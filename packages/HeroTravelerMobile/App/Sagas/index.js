@@ -39,7 +39,8 @@ import {
   updateDraft,
   getUserStories,
   likeStory,
-  bookmarkStory
+  bookmarkStory,
+  getBookmarks,
 } from './StorySagas'
 
 /* ------------- API ------------- */
@@ -76,5 +77,6 @@ export default function * root () {
     takeLatest(StoryTypes.STORY_BOOKMARK, bookmarkStory, heroAPI),
     takeLatest(CategoryTypes.LOAD_CATEGORIES_REQUEST, getCategories, heroAPI),
     takeLatest(UserTypes.LOAD_USER_SUGGESTIONS_REQUEST, getSuggestedUsers, heroAPI),
+    takeLatest(StoryTypes.GET_BOOKMARKS, getBookmarks, heroAPI)
   ]
 }

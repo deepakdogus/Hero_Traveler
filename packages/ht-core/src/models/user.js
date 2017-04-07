@@ -1,7 +1,9 @@
+import _ from 'lodash'
 import crypto from 'crypto'
 import mongoose, {Schema} from 'mongoose'
-import mongooseHidden from './plugins/mongooseHidden'
+import {Constants} from '@rwoody/ht-util'
 
+import mongooseHidden from './plugins/mongooseHidden'
 import encryptPassword from '../utils/encryptPassword'
 
 export const ModelName = 'User'
@@ -36,6 +38,16 @@ const UserSchema = new Schema({
       type: Number,
       default: 0
     }
+  },
+  role: {
+    type: String,
+    enum: [
+      Constants.USER_ROLES_USER_VALUE,
+      Constants.USER_ROLES_ADMIN_VALUE,
+      Constants.USER_ROLES_BRAND_VALUE,
+      Constants.USER_ROLES_CONTRIBUTOR_VALUE,
+    ],
+    default: Constants.USER_ROLES_USER_VALUE
   },
   // Timestamps
   createdAt: {

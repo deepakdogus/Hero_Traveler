@@ -7,6 +7,7 @@ import {Actions as NavActions} from 'react-native-router-flux'
 import { connect } from 'react-redux'
 import R from 'ramda'
 
+import StoryEditActions from '../../Redux/StoryCreateRedux'
 import Editor from '../../Components/Editor'
 import NavBar from './NavBar'
 import styles from './FullScreenEditorStyles'
@@ -20,15 +21,12 @@ class FullScreenEditor extends React.Component {
   _onRight = () => {
     this.editor.getContentHtml()
       .then(html => {
-        this.props.update(this.props.story.id, {
-          content
-        })
-        
+        this.props.change('content', html)
+        NavActions.createStory_details()
       })
   }
 
   render () {
-    console.log('story content', this.props.story.content.trim())
     return (
       <View style={[styles.root]}>
         <NavBar
@@ -44,7 +42,7 @@ class FullScreenEditor extends React.Component {
               this.editor = editor.getEditor()
             }
           }}
-          content={this.props.story.content.trim()}
+          content={this.props.story.content}
           onAddImage={this._handlePressAddImage}
         />
       </View>
@@ -68,21 +66,28 @@ class FullScreenEditor extends React.Component {
 const selector = formValueSelector('createStory')
 export default R.compose(
   connect(state => {
-    console.log('state', state.storyCreate)
     return {
       story: {
         id: state.storyCreate.draft.id,
         content: state.storyCreate.content ||`<h1>Hello <b>World</b></h1>`
       }
     }
+  }, dispatch => {
+    return {
+      update: (id, attrs) => {
+        dispatch(
+          StoryEditActions.updateDraft(id, attrs)
+        )
+      }
+    }
   }),
   reduxForm({
     form: 'createStory',
     destroyOnUnmount: false,
+    keepDirtyOnReinitialize: true,
+    enableReinitialize: true,
     initialValues: {
-      title: '',
-      description: '',
-      coverPhoto: null
+      content: ''
     }
   })
 )(FullScreenEditor)

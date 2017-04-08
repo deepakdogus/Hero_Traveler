@@ -28,32 +28,37 @@ export default class Activity extends Component {
     } = this.props
 
     return (
-      <TouchableOpacity
-        onPress={this._onPress}
-      >
-        <View style={styles.root}>
-          <Avatar
-            style={styles.avatar}
-            avatarUrl={actionUser.profile.avatar}
-          />
-          <View style={styles.middle}>
-            <Text style={styles.description}>
-              <Text style={styles.actionUserText}>{actionUser.profile.fullName} </Text>
-              <Text>{description}</Text>
-            </Text>
-            {content &&
-              <View style={styles.content}>
-                <Text style={styles.contentText}>
-                  {content}
-                </Text>
-              </View>
-            }
-            <Text style={styles.dateText}>
-              {moment(createdAt).fromNow()}
-            </Text>
+      <View style={styles.root}>
+        <TouchableOpacity
+          onPress={this._onPress}
+        >
+          <View style={styles.innerButton}>
+            <Avatar
+              style={styles.avatar}
+              avatarUrl={actionUser.profile.avatar}
+            />
+            <View style={styles.middle}>
+              <Text style={styles.description}>
+                <Text style={styles.actionUserText}>{actionUser.profile.fullName} </Text>
+                <Text>{description}.</Text>
+              </Text>
+              {content &&
+                <View style={styles.content}>
+                  <Text
+                    numberOfLines={2}
+                    style={styles.contentText}
+                  >
+                    {content}
+                  </Text>
+                </View>
+              }
+              <Text style={styles.dateText}>
+                {moment(createdAt).fromNow()}
+              </Text>
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
     )
   }
 
@@ -75,17 +80,17 @@ export default class Activity extends Component {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    flexDirection: "row",
     borderBottomColor: '#bdbdbd',
     borderBottomWidth: 1,
-    padding: Metrics.baseMargin
+  },
+  innerButton: {
+    flexDirection: "row",
+    paddingVertical: Metrics.baseMargin,
+    paddingHorizontal: Metrics.doubleBaseMargin,
   },
   middle: {
     flex: .7,
     marginLeft: Metrics.baseMargin,
-  },
-  date: {
-    
   },
   dateText: {
     marginTop: Metrics.baseMargin / 2,

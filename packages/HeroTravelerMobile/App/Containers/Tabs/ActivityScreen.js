@@ -9,7 +9,7 @@ import {Actions as NavActions} from 'react-native-router-flux'
 import Loader from '../../Components/Loader'
 import styles from '../Styles/NotificationScreenStyles'
 import ActivityList from '../../Components/ActivityList'
-import InboxList from '../../Components/InboxList'
+import ThreadList from '../../Components/ThreadList'
 import StoryActions from '../../Redux/Entities/Stories'
 
 
@@ -41,7 +41,7 @@ class NotificationScreen extends React.Component {
     )
   }
 
-  _showNoActivity(){
+  _showNoActivity() {
     return (
       <Text style={styles.title}>There is no activity here</Text>
     )
@@ -56,27 +56,18 @@ class NotificationScreen extends React.Component {
   render () {
     let content
 
-    // if (error) {
-    //   content = this._wrapElt(this._showError());
-    // } else if (fetchStatus.fetching) {
-    //   content = (
-    //     <Loader />
-    //   )
-    // }
     if (this.state.selectedTab === 1 ) {
-      content = ( <InboxList
-        style={styles.inboxList}
-        activities={this.props.threads}
-        height={90}
-        onPressActivity={() => alert('Activity navigation function goes here')}
+      content = ( <ThreadList
+        style={styles.threadList}
+        threads={this.props.threads}
+        onPress={() => alert('Navigate to thread')}
         /> )
     } else {
       content = (
         <ActivityList
           style={styles.activityList}
           activities={this.props.activities}
-          height={90}
-          onPressActivity={() => alert('Inbox navigation function goes here')}
+          onPress={() => alert('Navigate to activity')}
         />
       )
     }
@@ -110,7 +101,7 @@ const mapStateToProps = (state) => {
         actionUser: _.values(users)[_.random(0, users.length - 1)],
         user: user,
         description: 'commented on your story',
-        content: 'That place looks amazing! I want to go!!',
+        content: 'That place looks amazing! I so want to go here on vacation!!',
         createdAt: moment().subtract(5, 'hours').toDate()
       }, {
         id: 2,
@@ -121,27 +112,17 @@ const mapStateToProps = (state) => {
       }
     ],
     threads: [{
-      users: [
-        _.values(users)[_.random(0, users.length - 1)],
-        user
-      ],
+      id: 2,
       isUnread: true,
-      lastMessage: {
-        user: user.id,
-        message: 'This is a cool app',
-        createdAt: moment().subtract(3, 'days').toDate()
-      }
+      fromUser: _.values(users)[_.random(0, users.length - 1)],
+      message: 'I tried to contact you via phone, but it went straight to voicemail. I\'m concerned that our last post is not very good',
+      createdAt: moment().subtract(3, '6').toDate()
     }, {
-      users: [
-        _.values(users)[_.random(0, users.length - 1)],
-        user
-      ],
+      id: 1,
       isUnread: false,
-      lastMessage: {
-        user: user.id,
-        message: 'I tried to contact you via email, but...',
-        createdAt: moment().subtract(3, '6').toDate()
-      }
+      fromUser: user,
+      message: 'This is a cool app',
+      createdAt: moment().subtract(3, 'days').toDate()
     }]
   }
 }

@@ -1,12 +1,12 @@
 import React, { PropTypes } from 'react'
 import { ListView } from 'react-native'
 
-import Activity, {ActivityProps} from './Activity'
+import ThreadListItem, {ThreadListItemProps} from './ThreadListItem'
 
-export default class ActivityList extends React.Component {
+export default class ThreadList extends React.Component {
   static propTypes = {
-    activities: PropTypes.arrayOf(
-      PropTypes.shape(ActivityProps)
+    threads: PropTypes.arrayOf(
+      PropTypes.shape(ThreadListItemProps)
     ),
     onPress: PropTypes.func,
   }
@@ -15,7 +15,7 @@ export default class ActivityList extends React.Component {
     super(props)
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
     this.state = {
-      dataSource: ds.cloneWithRows(props.activities)
+      dataSource: ds.cloneWithRows(props.threads)
     }
   }
 
@@ -29,11 +29,11 @@ export default class ActivityList extends React.Component {
     )
   }
 
-  _renderRow = (activity) => {
+  _renderRow = (thread) => {
     return (
-      <Activity
-        {...activity}
-        key={activity.id}
+      <ThreadListItem
+        {...thread}
+        key={thread.id}
         onPress={this.props.onPress}
       />
     )

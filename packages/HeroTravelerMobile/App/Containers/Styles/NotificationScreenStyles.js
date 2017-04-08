@@ -20,7 +20,8 @@ export default StyleSheet.create({
   tabnav: {
     height: 50,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    backgroundColor: Colors.lightGreyAreas
   },
   tabContent: {
     paddingTop: Metrics.baseMargin
@@ -30,7 +31,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     width: '50%',
     borderBottomWidth: 2,
-    borderBottomColor: Colors.snow,
+    borderBottomColor: Colors.lightGreyAreas,
   },
   tabText: {
     fontFamily: Fonts.type.montserrat,

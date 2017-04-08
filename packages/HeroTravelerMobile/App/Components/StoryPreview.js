@@ -12,6 +12,7 @@ import formatCount from '../Lib/formatCount'
 import { Metrics, Images } from '../Themes'
 import styles from './Styles/StoryPreviewStyle'
 import LikesComponent from './LikeComponent'
+import Avatar from './Avatar'
 
 function getUrl(coverImage) {
   return `https://s3.amazonaws.com/hero-traveler/story/750x1334/${coverImage.original.filename}`
@@ -63,7 +64,10 @@ export default class StoryPreview extends Component {
 
     const userContent = (
       <View style={styles.row}>
-        <Image style={styles.avatar} source={{uri: profile.avatar}}></Image>
+        <Avatar
+          style={styles.avatar}
+          avatarUrl={profile.avatar}
+        />
         <Text style={styles.username}>{username}</Text>
       </View>
     )

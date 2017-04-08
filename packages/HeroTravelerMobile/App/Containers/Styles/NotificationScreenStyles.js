@@ -3,9 +3,6 @@ import { ApplicationStyles, Colors, Metrics, Fonts } from '../../Themes/'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
-  root: {
-    backgroundColor: '#000',
-  },
   scrollItemFullScreen: {
     height: Metrics.screenHeight - Metrics.navBarHeight,
     width: Metrics.screenWidth,
@@ -24,6 +21,9 @@ export default StyleSheet.create({
     height: 50,
     flexDirection: 'row',
     justifyContent: 'space-between'
+  },
+  tabContent: {
+    paddingTop: Metrics.baseMargin
   },
   tab: {
     justifyContent: 'center',

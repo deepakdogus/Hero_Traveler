@@ -50,10 +50,7 @@ export default StyleSheet.create({
     alignItems: "center"
   },
   avatar: {
-    height: 36,
-    width: 36,
-    borderRadius: 18,
-    marginRight: 5
+    marginRight: Metrics.baseMargin
   },
   username: {
     color: "#e0e0e0",

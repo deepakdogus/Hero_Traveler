@@ -71,11 +71,6 @@ export default StyleSheet.create({
     color: '#e0e0e0',
     textAlign: 'center',
   },
-  avatarImage: {
-    width: avatarImageSize,
-    height: avatarImageSize,
-    borderRadius: avatarImageSize/2
-  },
   titleText: {
     ...Fonts.style.title,
     textAlign: 'center',

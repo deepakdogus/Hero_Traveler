@@ -37,7 +37,7 @@ export default class ActivityList extends React.Component {
       <Inbox
         titleStyle={this.props.titleStyle}
         subtitleStyle={this.props.subtitleStyle}
-        key={story._id}
+        key={story.id}
         height={this.props.height}
         story={story}
         onPress={this._onPressStory}

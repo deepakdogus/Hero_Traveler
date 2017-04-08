@@ -13,7 +13,7 @@ import SignupActions from '../../Redux/SignupRedux'
 import UserActions from '../../Redux/Entities/Users'
 
 import RoundedButton from '../../Components/RoundedButton'
-import ExploreGrid from '../../Components/ExploreGrid'
+import Avatar from '../../Components/Avatar'
 import {Colors} from '../../Themes'
 import styles from './SignupSocialStyles'
 
@@ -70,7 +70,10 @@ class SignupSocialScreen extends React.Component {
             return (
               <View style={[styles.rowWrapper]} key={u.id}>
                 <View style={[styles.row, styles.followers]}>
-                  <Image style={styles.avatar} source={{uri: u.profile.avatar}} />
+                  <Avatar
+                    style={styles.avatar}
+                    avatarUrl={u.profile.avatar}
+                  />
                   <View style={styles.nameWrapper}>
                     <Text style={styles.name}>{u.profile.fullName}</Text>
                     <Text style={styles.followerCount}>{u.counts.following} followers</Text>

@@ -1,16 +1,14 @@
 import React, { PropTypes } from 'react'
 import { ListView } from 'react-native'
-import styles from './Styles/StoryListStyle'
 
-import Activity from './Activity'
+import Activity, {ActivityProps} from './Activity'
 import StoryPreview from './StoryPreview'
 
 export default class ActivityList extends React.Component {
   static propTypes = {
     height: PropTypes.number,
-    activities: PropTypes.array,
-    onPressLike: PropTypes.func,
-    onPressStory: PropTypes.func,
+    activities: PropTypes.arrayOf(PropTypes.shape(ActivityProps)),
+    onPress: PropTypes.func,
   }
 
   constructor(props) {
@@ -26,29 +24,25 @@ export default class ActivityList extends React.Component {
     return (
       <ListView
         dataSource={this.state.dataSource}
-        renderRow={this._renderStory}
-        style={[styles.container, this.props.style]}
+        renderRow={this._renderRow}
+        style={this.props.style}
       />
     )
   }
 
-  _renderStory = (story) => {
+  _renderRow = (activity) => {
+    console.log('activity', activity)
     return (
       <Activity
-        titleStyle={this.props.titleStyle}
-        subtitleStyle={this.props.subtitleStyle}
-        key={story._id}
-        height={this.props.height}
-        story={story}
-        onPress={this._onPressStory}
-        onPressLike={this._onPressLike}
+        {...activity}
+        onPress={this._onPress}
       />
     )
   }
 
-  _onPressStory = (story) => {
-    if (this.props.onPressStory) {
-      this.props.onPressStory(story)
+  _onPress = (activity) => {
+    if (this.props.onPress) {
+      this.props.onPress(activity)
     }
   }
 

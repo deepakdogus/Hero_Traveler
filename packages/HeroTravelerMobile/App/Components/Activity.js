@@ -1,49 +1,59 @@
 import React, {PropTypes, Component} from 'react'
-import { View, Text, Image, TouchableHighlight } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import moment from 'moment'
 
-import { Metrics, Images, Colors } from '../Themes'
-import styles from './Styles/ActivityStyle'
-import LikesComponent from './LikeComponent'
+import { Colors, Metrics, Fonts } from '../Themes/'
+import Avatar from '../Components/Avatar'
 
-function getUrl(coverImage) {
-  return `https://s3.amazonaws.com/hero-traveler/story/750x1334/${coverImage.original.filename}`
+export const ActivityProps = {
+  user: PropTypes.object,
+  actionUser: PropTypes.object,
+  description: PropTypes.string,
+  content: PropTypes.string,
+  createdAt: PropTypes.instanceOf(Date)
 }
 
-/*
-TODO:
-- Fix the Navar height issue
-*/
 export default class Activity extends Component {
-  static propTypes = {
-    onPressLike: PropTypes.func,
-    onPress: PropTypes.func,
-  }
-
+  static propTypes = ActivityProps
 
   render () {
-    let { story } = this.props,
-      { coverImage,
-        title,
-        description,
-        author: {
-          username,
-          profile
-        },
-        likes,
-        createdAt
-      } = story;
+    let {
+      actionUser,
+      description,
+      content,
+      onPress,
+      createdAt,
+    } = this.props
 
     return (
-      <TouchableHighlight onPress={this._onPress}
-                          style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}>
-        <View style={styles.contentContainer}>
-              <Image style={styles.avatar} source={{uri: profile.avatar}}></Image>
-              <Text style={styles.title}>{username}</Text>
-              <Text style={styles.subtitle}>{description}</Text>
-            </View>
-      </TouchableHighlight>
+      <TouchableOpacity
+        onPress={this._onPress}
+      >
+        <View style={styles.root}>
+          <Avatar
+            style={styles.avatar}
+            avatarUrl={actionUser.profile.avatar}
+          />
+          <View style={styles.middle}>
+            <Text style={styles.description}>
+              <Text style={styles.actionUserText}>{actionUser.profile.fullName} </Text>
+              <Text>{description}</Text>
+            </Text>
+            {content &&
+              <View style={styles.content}>
+                <Text style={styles.contentText}>
+                  {content}
+                </Text>
+              </View>
+            }
+            <Text style={styles.dateText}>
+              {moment(createdAt).fromNow()}
+            </Text>
+          </View>
+        </View>
+      </TouchableOpacity>
     )
   }
 
@@ -61,3 +71,44 @@ export default class Activity extends Component {
     }
   }
 }
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    flexDirection: "row",
+    borderBottomColor: '#bdbdbd',
+    borderBottomWidth: 1,
+    padding: Metrics.baseMargin
+  },
+  middle: {
+    flex: .7,
+    marginLeft: Metrics.baseMargin,
+  },
+  date: {
+    
+  },
+  dateText: {
+    marginTop: Metrics.baseMargin / 2,
+    color: '#757575',
+  },
+  content: {
+    marginTop: Metrics.baseMargin / 2
+  },
+  contentText: {
+    color: '#757575',
+    fontSize: 15
+  },
+  description: {
+    fontSize: 16,
+    color: Colors.background,
+    fontWeight: '300',
+    // fontFamily: Fonts.type.sourceSansPro,
+    letterSpacing: 0.7,
+  },
+  avatar: {
+    marginHorizontal: Metrics.baseMargin
+  },
+  actionUserText: {
+    fontWeight: 'bold'
+  }
+})

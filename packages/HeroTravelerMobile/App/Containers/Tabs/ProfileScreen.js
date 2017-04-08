@@ -19,6 +19,7 @@ import formatCount from '../../Lib/formatCount'
 import {Images, Colors} from '../../Themes'
 import SessionActions, {hasAuthData} from '../../Redux/SessionRedux'
 import Loader from '../../Components/Loader'
+import Avatar from '../../Components/Avatar'
 import StoryActions, {getByUser} from '../../Redux/Entities/Stories'
 import StoryList from '../../Components/StoryList'
 import styles from '../Styles/ProfileScreenStyles'
@@ -69,12 +70,9 @@ class ProfileScreen extends React.Component {
       userBookmarksFetchStatus,
       myBookmarksById
     } = this.props
-    let avatar
 
-console.log('myBookmarksById', myBookmarksById)
     const draftsAsArray = []
     const bookmarksAsArray = _.map(myBookmarksById, storyId => {
-      console.log('bookmark', stories[storyId])
       return {
         ...stories[storyId],
         author: this.props.user
@@ -93,21 +91,6 @@ console.log('myBookmarksById', myBookmarksById)
       return null
     }
 
-    if (user.profile.avatar) {
-      avatar = (
-        <Image
-          style={styles.avatarImage}
-          source={{uri: user.profile.avatar}}
-        />
-      )
-    } else {
-      avatar = (
-        <Icon name="user-circle-o" color={Colors.snow} size={40} />
-      )
-    }
-
-    console.log('user stories', bookmarksAsArray)
-
     return (
       <ScrollView style={[styles.containerWithTabbar, styles.root]}>
         <Image
@@ -124,7 +107,11 @@ console.log('myBookmarksById', myBookmarksById)
                 <View style={styles.nameSeparator} />
                 <Text style={styles.italicText}>{user.profile.fullName}</Text>
               </View>
-              {avatar}
+              <Avatar
+                avatarUrl={user.profile.avatar}
+                size='large'
+                iconColor={Colors.snow}
+              />
               <TouchableOpacity onPress={() => alert('read bio')}>
                 <Text style={styles.italicText}>Read Bio</Text>
               </TouchableOpacity>

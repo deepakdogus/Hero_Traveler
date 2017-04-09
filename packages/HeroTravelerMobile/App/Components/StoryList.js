@@ -1,6 +1,9 @@
 import _ from 'lodash'
 import React, { PropTypes } from 'react'
-import { ListView } from 'react-native'
+import {
+  ListView,
+  RefreshControl
+} from 'react-native'
 import styles from './Styles/StoryListStyle'
 
 import StoryPreview from '../Components/StoryPreview'
@@ -12,6 +15,8 @@ export default class StoryList extends React.Component {
     onPressLike: PropTypes.func,
     onPressStory: PropTypes.func,
     forProfile: PropTypes.bool,
+    onRefresh: PropTypes.func,
+    refreshing: PropTypes.bool,
   }
 
   constructor(props) {
@@ -29,6 +34,12 @@ export default class StoryList extends React.Component {
         dataSource={this.state.dataSource}
         pagingEnabled={true}
         renderRow={this._renderStory}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.props.refreshing}
+            onRefresh={this.props.onRefresh}
+          />
+        }
         style={[styles.container, this.props.style]}
       />
     )

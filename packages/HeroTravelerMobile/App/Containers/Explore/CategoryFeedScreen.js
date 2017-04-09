@@ -7,6 +7,7 @@ import {Actions as NavActions} from 'react-native-router-flux'
 import StoryActions, {getByCategory} from '../../Redux/Entities/Stories'
 
 import StoryList from '../../Components/StoryList'
+import Loader from '../../Components/Loader'
 
 import {Metrics} from '../../Themes'
 import styles from '../Styles/CategoryFeedScreenStyles'
@@ -23,6 +24,19 @@ class CategoryFeedScreen extends React.Component {
     stories: PropTypes.array,
     fetching: PropTypes.bool,
     error: PropTypes.bool
+  }
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      refreshing: false
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.state.refreshing && nextProps.fetchStatus.loaded) {
+      this.setState({refreshing: false})
+    }
   }
 
   _wrapElt(elt) {
@@ -51,6 +65,11 @@ class CategoryFeedScreen extends React.Component {
     )
   }
 
+  _onRefresh = () => {
+    this.setState({refreshing: true})
+    this.props.attemptGetUserFeed(this.props.user.id)
+  }
+
   render () {
     let { stories, fetchStatus, error } = this.props;
 
@@ -62,20 +81,26 @@ class CategoryFeedScreen extends React.Component {
     })
     let content;
 
-    if (fetchStatus.fetching || error) {
-      let innerContent = fetchStatus.fetching ? this._showLoader() : this._showError()
-      content = this._wrapElt(innerContent);
+    if (fetchStatus.fetching && !this.state.refreshing) {
+      content = (
+        <Loader />
+      )
+    } else if (error) {
+      content = this._wrapElt(this._showError());
     } else if (!storiesAsArray || !storiesAsArray.length) {
-      let innerContent = this._showNoStories();
-      content = this._wrapElt(innerContent);
+      content = this._wrapElt(this._showNoStories());
     } else {
       content = (
         <StoryList
           style={styles.storyList}
           stories={storiesAsArray}
           height={imageHeight}
-          onPressStory={story => NavActions.story({storyId: story.id})}
-          onPressLike={story => alert(`Story ${story.id} liked`)}
+          onPressStory={story => NavActions.story({
+            storyId: story.id
+          })}
+          onRefresh={this._onRefresh}
+          refreshing={this.state.refreshing}
+          onPressLike={story => this.props.toggleLike(story.id)}
         />
       );
     }
@@ -106,6 +131,7 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    attemptGetUserFeed: (userId) => dispatch(StoryActions.feedRequest(userId)),
     toggleLike: (storyId) => dispatch(StoryActions.storyLike(storyId))
   }
 }

@@ -17,11 +17,24 @@ class MyFeedScreen extends React.Component {
     user: PropTypes.object,
     stories: PropTypes.object,
     fetching: PropTypes.bool,
-    error: PropTypes.bool
+    error: PropTypes.bool,
   };
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      refreshing: false
+    }
+  }
 
   componentDidMount() {
     this.props.attemptGetUserFeed(this.props.user.id)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.state.refreshing && nextProps.fetchStatus.loaded) {
+      this.setState({refreshing: false})
+    }
   }
 
   _wrapElt(elt){
@@ -50,6 +63,11 @@ class MyFeedScreen extends React.Component {
     )
   }
 
+  _onRefresh = () => {
+    this.setState({refreshing: true})
+    this.props.attemptGetUserFeed(this.props.user.id)
+  }
+
   render () {
     let { stories, fetchStatus, error } = this.props;
     const storiesAsArray = _.map(stories, s => {
@@ -60,7 +78,7 @@ class MyFeedScreen extends React.Component {
     })
     let content;
 
-    if (fetchStatus.fetching) {
+    if (fetchStatus.fetching && this.state.refreshing) {
       content = (
         <Loader />
       )
@@ -78,6 +96,8 @@ class MyFeedScreen extends React.Component {
           onPressStory={story => NavActions.story({
             storyId: story.id
           })}
+          onRefresh={this._onRefresh}
+          refreshing={this.state.refreshing}
           onPressLike={story => this.props.toggleLike(story.id)}
         />
       );

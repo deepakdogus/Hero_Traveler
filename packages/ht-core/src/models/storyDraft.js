@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import {ModelName as CategoryRef} from './category'
 import {ModelName as UserRef} from './user'
 import {Constants} from '@rwoody/ht-util'
+import ImageSchema from './_image'
 
 const StoryDraftSchema = new mongoose.Schema({
   title: {
@@ -34,6 +35,7 @@ const StoryDraftSchema = new mongoose.Schema({
   content: {
     type: String
   },
+  coverImage: ImageSchema,
   createdAt: {
     type: Date,
     default: Date.now

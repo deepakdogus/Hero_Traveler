@@ -27,6 +27,7 @@ export default class StoryList extends React.Component {
     return (
       <ListView
         dataSource={this.state.dataSource}
+        pagingEnabled={true}
         renderRow={this._renderStory}
         style={[styles.container, this.props.style]}
       />

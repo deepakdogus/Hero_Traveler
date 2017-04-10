@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react'
+import _ from 'lodash'
 import {
   View,
   ScrollView,
@@ -65,6 +66,18 @@ class LoginScreen extends React.Component {
   }
 
   handlePressLogin = () => {
+
+    // TODO fix Ghetto check
+    const conditions = _.every([
+      this.state.username,
+      this.state.password,
+    ])
+
+    if (!conditions) {
+      alert('Please complete all fields')
+      return
+    }
+
     const { username, password } = this.state
     this.isAttempting = true
     // attempt a login - a saga is listening to pick it up from here.
@@ -158,7 +171,7 @@ class LoginScreen extends React.Component {
 
             <TOS style={styles.tos} />
 
-            {this.props.error && <Text style={styles.error}>{this.props.error}</Text>}
+            {this.props.error && <Text style={[styles.section, styles.error]}>{this.props.error}</Text>}
           </KeyboardAvoidingView>
         </ScrollView>
         {this.props.fetching &&

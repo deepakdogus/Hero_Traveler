@@ -1,7 +1,7 @@
 import joi from 'joi'
 import {User} from '../models'
 import encryptPassword from '../utils/encryptPassword'
-import sendEmail from '../utils/emailService/index'
+import {welcomeEmail} from '../utils/emailService'
 import getOrCreateTokens from './getOrCreateTokens'
 
 export default function createUser(userData) {
@@ -11,16 +11,14 @@ export default function createUser(userData) {
 
   return encryptPassword(userAttrs.password)
   .then(hashedPassword => {
-  	
-  	userAttrs.password = hashedPassword
-  	return User.create(userAttrs)
+    userAttrs.password = hashedPassword
+    return User.create(userAttrs)
   })
   .then(newUser => {
-
-	//send welcome email
-	sendEmail(newUser)
-	return newUser;
-    })    
+    //send welcome email
+    welcomeEmail(newUser)
+    return newUser;
+  })
 }
 
 

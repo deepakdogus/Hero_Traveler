@@ -35,7 +35,7 @@
                 padding-right: 12px !important;
             }
         }
-        a{
+        a {
           color: {{accentColor}};
           font-weight: bold;
           text-decoration: none;
@@ -62,7 +62,7 @@
         .main-container{
           line-height: 1.7;
           background: white;
-          padding: 0 30px;
+          padding: 30px;
           font-size: 15px;
           font-family: Helvetica, sans-serif;
           color: #555;
@@ -107,20 +107,19 @@
         <tr>
           <td class="heading-container">
             <a href="{{siteUrl}}">
-              {{#if logoUrl}}
+              {{#logoUrl}}
                 <img class="logo" src="{{logoUrl}}" height="{{logoHeight}}" width="{{logoWidth}}" alt="{{siteName}}"/>
-              {{else}}
+              {{/logoUrl}}
+              {{^logoUrl}}
                 {{siteName}}
-              {{/if}}
+              {{/logoUrl}}
             </a>
           </td>
         </tr>
         <tr>
           <td class="main-container container-padding" bgcolor="#ffffff">
-            <br>
-
-            {{{body}}}
-
+            <p>Thank you for becoming a HERO Traveler {{user.profile.fullName}}. Let the adventure begin!</p>
+            <p>Please <a href={{confirmationUrl}}>confirm your email</a> to get started.</p>
           </td>
         </tr>
       </table>

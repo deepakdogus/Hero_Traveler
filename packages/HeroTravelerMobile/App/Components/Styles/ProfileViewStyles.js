@@ -83,15 +83,17 @@ export default StyleSheet.create({
     letterSpacing: 3,
     color: Colors.snow
   },
-  editProfile: {
+  buttons: {
     backgroundColor: 'rgba(0,0,0,.25)',
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,.6)',
     borderRadius: 12,
     paddingVertical: 4,
     paddingHorizontal: 8,
+    marginLeft: 10
   },
-  editProfileText: {
+
+  buttonsText: {
     fontFamily: Fonts.type.montserrat,
     fontSize: 11,
     color: Colors.snow

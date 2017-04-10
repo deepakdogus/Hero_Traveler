@@ -16,6 +16,7 @@ import MyFeedScreen from '../Containers/Tabs/MyFeedScreen'
 import ExploreScreen from '../Containers/Tabs/ExploreScreen'
 // Profile tab
 import ProfileScreen from '../Containers/Tabs/ProfileScreen'
+import ReadOnlyProfileScreen from '../Containers/ReadOnlyProfileScreen'
 import SettingsScreen from '../Containers/SettingsScreen'
 import CategoryFeedScreen from '../Containers/Explore/CategoryFeedScreen'
 
@@ -220,6 +221,12 @@ class NavigationRouter extends Component {
                 icon={TabIcon}
                 component={ProfileScreen}
                 hideNavBar
+              />
+              <Scene
+                key='readOnlyProfile'
+                component={ReadOnlyProfileScreen}
+                hideNavBar
+                onLeft={() => NavActions.pop()}
               />
             </Scene>
             <Scene

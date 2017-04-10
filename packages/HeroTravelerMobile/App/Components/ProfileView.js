@@ -43,9 +43,9 @@ export default class ProfileView extends React.Component {
 
       buttons = (
         <TouchableOpacity
-          style={styles.editProfile}
+          style={styles.buttons}
           onPress={() => alert('edit profile')}>
-          <Text style={styles.editProfileText}>EDIT PROFILE</Text>
+          <Text style={styles.buttonsText}>EDIT PROFILE</Text>
         </TouchableOpacity>
       )
 
@@ -61,22 +61,22 @@ export default class ProfileView extends React.Component {
       cog = null
 
       buttons = (
-        <View>
+        <View style={{flexDirection: 'row'}}>
           <TouchableOpacity
-            style={styles.editProfile}
+            style={styles.buttons}
             onPress={() => alert('FOLLOWING')}>
-            <Text style={styles.editProfileText}>FOLLOWING</Text>
+            <Text style={styles.buttonsText}>FOLLOWING</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.editProfile}
+            style={styles.buttons}
             onPress={() => alert('MESSAGE')}>
-            <Text style={styles.editProfileText}>MESSAGE</Text>
+            <Text style={styles.buttonsText}>MESSAGE</Text>
           </TouchableOpacity>
         </View>
       )
 
       tabs = (
-        <View style={styles.tabnav}>
+        <View style={styles.tabnavEdit}>
           <Tab selected={false} onPress={() => alert('stories')} text='STORIES' />
         </View>
       )

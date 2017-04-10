@@ -96,8 +96,8 @@ class StoryReadingScreen extends React.Component {
       <View style={[styles.root]}>
         <ScrollView style={[styles.scrollView]}>
           <StoryPreview
-            onPressUser={(userId) => alert(`User ${userId} pressed`)}
             onPressLike={this._toggleLike}
+            onPressUser={(userId) => NavActions.readOnlyProfile({test: "wow!"})}
             key={story.id}
             height={Metrics.screenHeight}
             story={storyWithUser}

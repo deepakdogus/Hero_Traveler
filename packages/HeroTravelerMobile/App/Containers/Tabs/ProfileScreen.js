@@ -1,35 +1,14 @@
 import _ from 'lodash'
 import React from 'react'
-import {
-  ScrollView,
-  View,
-  Text,
-  Image,
-  TouchableOpacity
-} from 'react-native'
 import { connect } from 'react-redux'
-import {
-  Actions as NavActions
-} from 'react-native-router-flux'
-import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import {Images, Colors} from '../../Themes'
 import SessionActions, {hasAuthData} from '../../Redux/SessionRedux'
-import Loader from '../../Components/Loader'
-import Avatar from '../../Components/Avatar'
 import StoryActions, {getByUser} from '../../Redux/Entities/Stories'
-import StoryList from '../../Components/StoryList'
 import ProfileView from '../../Components/ProfileView'
 import styles from '../Styles/ProfileScreenStyles'
 
-const Tab = ({text, onPress, selected}) => {
-  return (
-    <TouchableOpacity style={[styles.tab, selected ? styles.tabSelected : null]} onPress={onPress}>
-      <Text style={[styles.tabText, selected ? styles.tabTextSelected : null]}>{text}</Text>
-    </TouchableOpacity>
-  )
-}
 
 class ProfileScreen extends React.Component {
 
@@ -86,6 +65,7 @@ class ProfileScreen extends React.Component {
 
     // Deals with the case that the user logs out
     // and this page is still mounted and rendering
+
     if (!user) {
       return null
     }

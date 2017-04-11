@@ -41,7 +41,6 @@ const create = () => {
   }
 
   const setAuth = (accessToken) => {
-    console.log('setAuth', accessToken)
     api.setHeader('Authorization', `Bearer ${accessToken}`)
     return Promise.resolve()
   }
@@ -235,6 +234,13 @@ const create = () => {
     })
   }
 
+  const uploadCoverImage = (draftId, pathToFile) => {
+    const data = new FormData()
+    console.log('pathToFile', pathToFile)
+    data.append('image', pathToFile)
+    return api.put(`story/draft/${draftId}/cover-image`, data)
+  }
+
   // ------
   // STEP 3
   // ------
@@ -272,7 +278,8 @@ const create = () => {
     removeDraft,
     getBookmarks,
     getComments,
-    createComment
+    createComment,
+    uploadCoverImage
   }
 }
 

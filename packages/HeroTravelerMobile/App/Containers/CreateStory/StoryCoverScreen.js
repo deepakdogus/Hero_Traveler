@@ -24,13 +24,33 @@ import {Colors, Images, Metrics} from '../../Themes'
 import styles, { placeholderColor } from './StoryCoverScreenStyles'
 import NavBar from './NavBar'
 
+function getMimeType(filename) {
+  const ext = filename.split('.').pop().toLowerCase()
+  if (_.includes(ext, 'jpg') || _.includes(ext, 'jpg')) {
+    return 'image/jpeg'
+  } else if (_.includes(ext, 'png')) {
+    return 'image/png'
+  } else if (_.includes(ext, 'gif')) {
+    return 'image/gif'
+  }
+}
+
+function getImage(story) {
+  const path = _.get(story, 'coverImage.original.path')
+
+  if (!path) return null
+  
+  return `https://s3.amazonaws.com/hero-traveler/${path}`
+}
+
 class StoryCoverScreen extends React.Component {
 
   constructor(props) {
     super(props)
 
     this.state = {
-      imageMenuOpen: false
+      imageMenuOpen: false,
+      file: null
     }
   }
 
@@ -95,23 +115,31 @@ class StoryCoverScreen extends React.Component {
   _onRight = () => {
     const {story} = this.props
 
-    if (!story.coverPhoto && !story.title) {
+    if ((!story.coverImage || !story.coverPhoto) && !story.title) {
       this.setState({error: 'Please add a cover and a title to continue'})
       return
     }
 
     this.props.update(this.props.story.id, story)
+    if (this.state.file) {
+      this.props.uploadCover(this.props.story.id, this.state.file)
+      this.setState({file: null})
+    }
     NavActions.createStory_content()
+  }
+
+  hasNoPhoto() {
+    return !this.props.story.coverPhoto && !this.props.story.coverImage
   }
 
   renderContent () {
     const {story} = this.props
-
+    console.log('story', story)
     return (
       <KeyboardAvoidingView behavior='position'>
-        <View style={!story.coverPhoto ? styles.lightGreyAreasBG : null}>
-          {!story.coverPhoto && <View style={styles.spaceView} />}
-          {!story.coverPhoto &&
+        <View style={this.hasNoPhoto() ? styles.lightGreyAreasBG : null}>
+          {this.hasNoPhoto() && <View style={styles.spaceView} />}
+          {this.hasNoPhoto() &&
             <View style={[styles.spaceView, styles.addPhotoView]}>
               <TouchableOpacity
                 style={styles.addPhotoButton}
@@ -131,7 +159,7 @@ class StoryCoverScreen extends React.Component {
               </TouchableOpacity>
             </View>
           }
-          {story.coverPhoto && !this.state.imageMenuOpen &&
+          {!this.hasNoPhoto() && !this.state.imageMenuOpen &&
             <TouchableWithoutFeedback onPress={this._toggleImageMenu}>
               <View>
                 <View style={styles.spaceView} />
@@ -139,7 +167,7 @@ class StoryCoverScreen extends React.Component {
               </View>
             </TouchableWithoutFeedback>
           }
-          {story.coverPhoto && this.state.imageMenuOpen &&
+          {!this.hasNoPhoto() && this.state.imageMenuOpen &&
             <View>
               <TouchableWithoutFeedback onPress={this._toggleImageMenu}>
                 <View>
@@ -204,6 +232,7 @@ class StoryCoverScreen extends React.Component {
   }
 
   render () {
+    console.log('getImage(this.props.story)',getImage(this.props.story))
     return (
       <View style={{flex: 1}}>
         <NavBar
@@ -220,13 +249,20 @@ class StoryCoverScreen extends React.Component {
               onPress={() => this.setState({error: null})}
               text={this.state.error} />
           }
-          {this.renderCoverPhoto(this.props.story.coverPhoto)}
+          {this.renderCoverPhoto(this.props.story.coverPhoto || getImage(this.props.story))}
         </View>
       </View>
     )
   }
 
   _handleSelectCoverPhoto = (path) => {
+    console.log('_handleSelectCoverPhoto', data)
+    const file = {
+      uri: path,
+      name: path.split('/').pop(),
+      type: getMimeType(path)
+    }
+    this.setState({file: file})
     this.props.change('coverPhoto', path)
     NavActions.pop()
   }
@@ -236,10 +272,10 @@ const selector = formValueSelector('createStory')
 export default R.compose(
   connect(state => ({
     story: {
-      id: _.get(state.storyCreate.draft, 'id', null),
       title: selector(state, 'title'),
       description: selector(state, 'description'),
       coverPhoto: selector(state, 'coverPhoto'),
+      ...state.storyCreate.draft
     }
     // state: state
   }), dispatch => ({
@@ -249,6 +285,11 @@ export default R.compose(
     update: (id, attrs) => {
       dispatch(
         StoryEditActions.updateDraft(id, attrs)
+      )
+    },
+    uploadCover: (id, path) => {
+      dispatch(
+        StoryEditActions.uploadCoverImage(id, path)
       )
     }
   })),

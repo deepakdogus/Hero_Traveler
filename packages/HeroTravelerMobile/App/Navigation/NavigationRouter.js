@@ -231,7 +231,6 @@ class NavigationRouter extends Component {
                 key='createStory_photo'
                 component={StoryCoverScreen}
                 panHandlers={null}
-                type="replace"
                 direction="horizontal"
               />
               <Scene

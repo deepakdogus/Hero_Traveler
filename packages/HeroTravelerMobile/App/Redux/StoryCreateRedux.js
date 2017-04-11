@@ -17,6 +17,9 @@ const { Types, Creators } = createActions({
   updateDraft: ['draftId', 'draft'],
   updateDraftSuccess: ['draft'],
   updateDraftFailure: ['error'],
+  uploadCoverImage: ['draftId', 'path'],
+  uploadCoverImageSuccess: ['draft'],
+  uploadCoverImageFailure: ['error']
 })
 
 export const StoryCreateTypes = Types
@@ -61,6 +64,15 @@ export const updateDraft = (state, {draft}) => {
   return state.merge({draft}, {deep: true})
 }
 
+export const uploadCoverImageSuccess = (state, {draft}) => {
+  console.log('upload success', draft)
+  return state.merge({draft}, {deep: true})
+}
+
+export const uploadCoverImageFailure = (state, {draft}) => {
+  return state
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -73,11 +85,12 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_DRAFT_FAILURE]: failure,
   [Types.REGISTER_DRAFT_SUCCESS]: registerDraftSuccess,
   [Types.REGISTER_DRAFT_FAILURE]: failure,
+  [Types.UPLOAD_COVER_IMAGE_SUCCESS]: uploadCoverImageSuccess,
+  [Types.UPLOAD_COVER_IMAGE_FAILURE]: uploadCoverImageFailure,
 })
 
 export const hasDraft = (state) => _.get(state.draft, 'id') ? true : false
 export const isCreated = (state) => state.isPublished
 export const getDraft = (state) => {
-  console.log('state', state)
   return state.storyCreate.draft
 }

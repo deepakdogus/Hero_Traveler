@@ -41,6 +41,7 @@ import {
   likeStory,
   bookmarkStory,
   getBookmarks,
+  uploadCoverImage,
 } from './StorySagas'
 
 /* ------------- API ------------- */
@@ -70,6 +71,7 @@ export default function * root () {
     takeLatest(StoryCreateTypes.REGISTER_DRAFT, registerDraft, heroAPI),
     takeLatest(StoryCreateTypes.DISCARD_DRAFT, discardDraft, heroAPI),
     takeLatest(StoryCreateTypes.UPDATE_DRAFT, updateDraft, heroAPI),
+    takeLatest(StoryCreateTypes.UPLOAD_COVER_IMAGE, uploadCoverImage, heroAPI),
 
     takeLatest(StoryTypes.FEED_REQUEST, getUserFeed, heroAPI),
     takeLatest(StoryTypes.FROM_USER_REQUEST, getUserStories, heroAPI),

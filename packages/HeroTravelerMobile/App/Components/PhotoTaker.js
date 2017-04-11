@@ -25,16 +25,16 @@ class PhotoTaker extends Component {
   }
 
   _handleTakePhoto = () => {
-    this.cameraRef.capture(this.props.captureOptions)
-        .then(response => {
+    this.cameraRef.capture()
+        .then((response) => {
           this.props.onTakePhoto(response)
         })
-      .catch(err => {
-        console.log('error taking photo', err)
-        if (this.props.onError) {
-          this.props.onError(err)
-        }
-      })
+        .catch(err => {
+          console.log('error taking photo', err)
+          if (this.props.onError) {
+            this.props.onError(err)
+          }
+        })
   }
 
   hasFlash() {

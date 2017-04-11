@@ -74,6 +74,18 @@ export function * updateDraft (api, action) {
   }
 }
 
+export function * uploadCoverImage(api, action) {
+  const {draftId, path} = action
+  const response = yield call(api.uploadCoverImage, draftId, path)
+  if (response.ok) {
+    const {data: draft} = response
+    console.log('draft', draft)
+    yield put(StoryCreateActions.uploadCoverImageSuccess(draft))
+  } else {
+    yield put(StoryCreateActions.uploadCoverImageFailure(new Error('Failed to upload cover image')))
+  }
+}
+
 export function * likeStory(api, {storyId}) {
   const response = yield call(
     api.likeStory,

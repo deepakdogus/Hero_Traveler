@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { PropTypes } from 'react'
 import { Text, View, ScrollView, Image, TextInput, KeyboardAvoidingView } from 'react-native'
 import { connect } from 'react-redux'
@@ -7,8 +8,10 @@ import SearchBar from '../Components/SearchBar'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
+import API from '../Services/HeroAPI'
 import styles from './Styles/StoryCommentsScreenStyles'
 
+const api = API.create()
 
 const Comment = ({avatar, name, comment, timestamp}) => {
   return (
@@ -30,27 +33,49 @@ const Comment = ({avatar, name, comment, timestamp}) => {
 
 class StoryCommentsScreen extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
+      loading: true,
       text: '',
       comments: []
     }
+  }
+
+  componentDidMount() {
+    api.setAuth(this.props.accessToken.value)
+      .then(() => {
+        api.getComments(this.props.storyId)
+          .then(({data}) => {
+            console.log('comments', data)
+            this.setState({
+              loading: false,
+              comments: data
+            })
+          })
+      })
   }
 
   handleSend = () => {
     const newComment = {
       user: this.props.user,
       createdAt: Date.now(),
-      comment: this.state.text
+      content: this.state.text,
+      story: this.props.storyId
     };
+
+    api.createComment(
+      this.props.storyId,
+      this.state.text
+    )
+
     this.setState({
       comments: [
         ...this.state.comments,
         newComment
       ],
       text: '',
-    });
+    })
   }
 
   render () {
@@ -63,7 +88,7 @@ class StoryCommentsScreen extends React.Component {
               <Comment
                 avatar={comment.user.profile.avatar}
                 name={comment.user.profile.fullName}
-                comment={comment.comment}
+                comment={comment.content}
                 timestamp={moment(comment.createdAt).fromNow()}
                 key={comment.createdAt.toString()}
               />
@@ -96,6 +121,7 @@ class StoryCommentsScreen extends React.Component {
 const mapStateToProps = (state) => {
   return {
     user: state.session.user,
+    accessToken: _.find(state.session.tokens, {type: 'access'})
   }
 }
 

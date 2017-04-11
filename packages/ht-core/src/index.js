@@ -6,6 +6,7 @@ import * as Models from './models'
 import * as Story from './story'
 import * as StoryDraft from './storyDraft'
 import * as Category from './category'
+import * as Comment from './comment'
 
 mongoose.Promise = Promise
 
@@ -15,6 +16,7 @@ export {
   StoryDraft,
   Category,
   Models,
+  Comment
 }
 
 function startMongoDB(options) {

@@ -41,6 +41,7 @@ const create = () => {
   }
 
   const setAuth = (accessToken) => {
+    console.log('setAuth', accessToken)
     api.setHeader('Authorization', `Bearer ${accessToken}`)
     return Promise.resolve()
   }
@@ -224,6 +225,16 @@ const create = () => {
       })
   }
 
+  const getComments = (storyId) => {
+    return api.get(`story/${storyId}/comment`)
+  }
+
+  const createComment = (storyId, text) => {
+    return api.post(`story/${storyId}/comment`, {
+      content: text
+    })
+  }
+
   // ------
   // STEP 3
   // ------
@@ -260,6 +271,8 @@ const create = () => {
     createDraft,
     removeDraft,
     getBookmarks,
+    getComments,
+    createComment
   }
 }
 

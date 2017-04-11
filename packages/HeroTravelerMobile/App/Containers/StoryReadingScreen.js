@@ -107,7 +107,9 @@ class StoryReadingScreen extends React.Component {
             isLiked={storyWithUser.isLiked}
             onPressLike={() => this.props.toggleLike(storyWithUser.id)}
             onPressBookmark={() => this.props.toggleBookmark(storyWithUser.id)}
-            onPressComment={() => NavActions.storyComments()}
+            onPressComment={() => NavActions.storyComments({
+              storyId: story.id
+            })}
           />
         </ScrollView>
       </View>

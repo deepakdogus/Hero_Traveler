@@ -11,6 +11,8 @@ import getCategoryStories from './getCategoryStories'
 import toggleLike from './toggleLike'
 import toggleBookmark from './toggleBookmark'
 import getBookmarks from './getBookmarks'
+import getComments from './getComments'
+import createComment from './createComment'
 
 import getDraft from './draft/get'
 import findDrafts from './draft/find'
@@ -36,6 +38,9 @@ router.put('/draft/:id/cover-image',
   uploadDraft
 )
 router.post('/draft', hasValidOauth, endpointWrapper(createDraft))
+
+router.get('/:id/comment', hasValidOauth, endpointWrapper(getComments))
+router.post('/:id/comment', hasValidOauth, endpointWrapper(createComment))
 
 router.get('/:id', endpointWrapper(getStory));
 router.get('/:id/like', hasValidOauth, endpointWrapper(toggleLike));

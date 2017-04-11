@@ -15,17 +15,19 @@ import styles from './Styles/ProfileScreenStyles'
 class ReadOnlyProfileScreen extends React.Component {
 
   render () {
-    const { userId, entities } = this.props
-
-    const stories = getByUser(entities, userId)
+    const { userId, allStories, usersById, fetchStatus} = this.props
 
     let avatar
+
+    const stories = getByUser(allStories, userId)
+    const user = usersById[userId]
 
     const storiesAsArray = _.map(stories, s => {
       return {
         ...s
       }
     })
+
     // Deals with the case that the user logs out
     // and this page is still mounted and rendering
 
@@ -53,16 +55,17 @@ class ReadOnlyProfileScreen extends React.Component {
         stories={storiesAsArray}
         editable={false}
         profileImage={Images.profile}
-        fetchStatus={storyFetchStatus}
+        fetchStatus={fetchStatus}
       />
     )
   }
 }
 
 const mapStateToProps = (state) => {
+  const {user} = state.session
   let {
     fetchStatus,
-    entities: stories,
+    entities: allStories,
     error
   } = state.entities.stories
   return {
@@ -70,8 +73,8 @@ const mapStateToProps = (state) => {
     usersById: state.entities.users.entities,
     isLoggedIn: hasAuthData(state.session),
     apiTokens: state.session.tokens,
-    storyFetchStatus: fetchStatus,
-    stories: getByUser(stories, userId),
+    fetchStatus,
+    allStories,
     error
   }
 }

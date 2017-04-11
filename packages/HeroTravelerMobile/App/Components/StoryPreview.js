@@ -69,6 +69,8 @@ export default class StoryPreview extends Component {
         createdAt
       } = story;
 
+    console.log('profile.avatar where it counts', profile.avatar)
+
     const userContent = (
       <View style={styles.row}>
         <Avatar

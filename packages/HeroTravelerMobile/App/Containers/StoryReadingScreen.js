@@ -149,7 +149,6 @@ class StoryReadingScreen extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  console.log("state.entities.stories", state.entities.stories)
   let { fetching, entities: stories, error } = state.entities.stories
   return {
      user: state.session.user,

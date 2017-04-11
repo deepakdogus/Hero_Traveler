@@ -32,11 +32,11 @@ export function * getUserStories (api, {userId}) {
 }
 
 export function * publishDraft (api, action) {
-  const draft = yield select(getDraft)
+  const {draft} = action
   const response = yield call(api.createStory, draft)
   if (response.ok) {
     const {data: story} = response
-    yield put(StoryCreateActions.publishDraftSuccess(story))
+    yield put(StoryCreateActions.publishDraftSuccess(draft))
   } else {
     yield put(StoryCreateActions.publishDraftFailure(new Error('Failed to publish story')))
   }
@@ -64,7 +64,6 @@ export function * discardDraft (api, action) {
 
 export function * updateDraft (api, action) {
   const {draftId, draft} = action
-  console.log('draft', action)
   const response = yield call(api.updateDraft, draftId, draft)
   if (response.ok) {
     const {data: draft} = response
@@ -79,7 +78,6 @@ export function * uploadCoverImage(api, action) {
   const response = yield call(api.uploadCoverImage, draftId, path)
   if (response.ok) {
     const {data: draft} = response
-    console.log('draft', draft)
     yield put(StoryCreateActions.uploadCoverImageSuccess(draft))
   } else {
     yield put(StoryCreateActions.uploadCoverImageFailure(new Error('Failed to upload cover image')))
@@ -124,11 +122,9 @@ export function * getBookmarks(api) {
   if (response.ok) {
     const {entities, result} = response.data
     const myBookmarksById = _.map(entities.bookmarks, b => {
-      console.log(b)
       return b.story
     })
 
-    console.log('myBookmarksById 2', myBookmarksById)
     yield put(StoryActions.getBookmarksSuccess(entities.stories, {myBookmarksById}))
   } else {
     yield put(StoryActions.getBookmarksFailure(new Error('Failed to get bookmarks')))

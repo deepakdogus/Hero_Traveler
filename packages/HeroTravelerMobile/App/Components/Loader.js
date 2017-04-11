@@ -1,8 +1,17 @@
 import React, { Component, PropTypes } from 'react'
-import { View, Text, ActivityIndicator } from 'react-native'
+import { View, Text, ActivityIndicator, StyleSheet } from 'react-native'
 
-import {Colors} from '../Themes'
-import styles from './Styles/LoaderStyles'
+import {Fonts, Colors} from '../Themes'
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+})
+
 
 export default class Loader extends Component {
   static propTypes = {

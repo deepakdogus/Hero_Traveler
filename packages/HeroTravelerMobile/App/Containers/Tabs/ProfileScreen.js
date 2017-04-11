@@ -49,12 +49,12 @@ class ProfileScreen extends React.Component {
   _storiesTab = () => {
     this.setState({selectTabIndex: 0})
   }
-  
+
   _draftsTab = () => {
     // this.props.loadDrafts()
     this.setState({selectTabIndex: 1})
   }
-  
+
   _bookmarksTab = () => {
     this.props.loadBookmarks()
     this.setState({selectTabIndex: 2})
@@ -169,7 +169,8 @@ class ProfileScreen extends React.Component {
                 titleStyle={styles.storyTitleStyle}
                 subtitleStyle={styles.subtitleStyle}
                 forProfile={true}
-                onPressStory={story => alert(`Story ${story.id} pressed`)}
+                refreshing={false}
+                onPressStory={story => NavActions.story({storyId: story.id})}
                 onPressLike={story => alert(`Story ${story.id} liked`)}
               />
             }
@@ -214,7 +215,7 @@ class ProfileScreen extends React.Component {
             }
           </View>
           }
-          
+
           {this.state.selectTabIndex === 2 && <View style={styles.tabWrapper}>
             {bookmarksAsArray.length > 0 &&
               <StoryList

@@ -134,7 +134,6 @@ class StoryCoverScreen extends React.Component {
 
   renderContent () {
     const {story} = this.props
-    console.log('story', story)
     return (
       <KeyboardAvoidingView behavior='position'>
         <View style={this.hasNoPhoto() ? styles.lightGreyAreasBG : null}>
@@ -232,7 +231,6 @@ class StoryCoverScreen extends React.Component {
   }
 
   render () {
-    console.log('getImage(this.props.story)',getImage(this.props.story))
     return (
       <View style={{flex: 1}}>
         <NavBar
@@ -256,7 +254,6 @@ class StoryCoverScreen extends React.Component {
   }
 
   _handleSelectCoverPhoto = (path) => {
-    console.log('_handleSelectCoverPhoto', data)
     const file = {
       uri: path,
       name: path.split('/').pop(),

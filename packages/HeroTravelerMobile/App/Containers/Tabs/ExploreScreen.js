@@ -58,7 +58,6 @@ class ExploreScreen extends Component {
       })
     })
     helper.on('result', res => {
-      console.log('res', res)
       this.setState({
         searching: false,
         lastSearchResults: res,

@@ -1,13 +1,24 @@
-import {Story} from '@rwoody/ht-core'
+import {Story, StoryDraft} from '@rwoody/ht-core'
 
 export default function createStory(req, res) {
-  const {story} = req.body
+  const {story: storyAttrs} = req.body
   const author = req.user._id
-  Story.create(Object.assign(
+
+  return Story.create(Object.assign(
     {},
-    story,
+    storyAttrs,
     {author}
-  )).then(data => {
-    res.json(data)
+  ))
+  .then(story => {
+    let promise
+
+    // if we were passed a draft, remove it
+    if (storyAttrs.id) {
+      promise = StoryDraft.remove(storyAttrs.id)
+    } else {
+      promise = Promise.resolve()
+    }
+
+    return promise.then(() => story)
   })
 }

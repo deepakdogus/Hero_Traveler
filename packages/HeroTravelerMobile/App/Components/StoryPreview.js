@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, {PropTypes, Component} from 'react'
 import {
   View,
@@ -15,7 +16,13 @@ import LikesComponent from './LikeComponent'
 import Avatar from './Avatar'
 
 function getUrl(coverImage) {
-  return `https://s3.amazonaws.com/hero-traveler/story/750x1334/${coverImage.original.filename}`
+  const baseUrl = 'https://s3.amazonaws.com/hero-traveler/'
+  const mobile = _.get(coverImage, 'versions.mobile.path', null)
+  if (mobile) {
+    return baseUrl + mobile
+  }
+
+  return baseUrl + coverImage.original.path
 }
 
 /*

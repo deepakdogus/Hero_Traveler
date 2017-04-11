@@ -12,6 +12,7 @@ export default StyleSheet.create({
   },
   content: {
     paddingTop: Metrics.section,
+    paddingBottom: Metrics.tabBarHeight,
   },
 
   toolBar: {

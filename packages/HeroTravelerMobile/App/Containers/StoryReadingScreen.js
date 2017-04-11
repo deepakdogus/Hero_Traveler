@@ -78,6 +78,10 @@ class StoryReadingScreen extends React.Component {
     )
   }
 
+  _toggleLike = () => {
+    this.props.toggleLike(storyWithUser.id)
+  }
+
   render () {
     let { story, fetching, error } = this.props;
     const storyWithUser = {
@@ -90,14 +94,29 @@ class StoryReadingScreen extends React.Component {
         <ScrollView style={[styles.scrollView]}>
           <StoryPreview
             onPressUser={(userId) => alert(`User ${userId} pressed`)}
+            onPressLike={this._toggleLike}
             key={story.id}
             height={Metrics.screenHeight}
             story={storyWithUser}
           />
-          <StoryContent
-            style={styles.content}
-            story={storyWithUser}
-          />
+          <View style={styles.content}>
+            {!story.content &&
+              <StoryContent
+                style={styles.content}
+                story={storyWithUser}
+              />
+            }
+            {story.content &&
+              <Text style={styles.storyContentText}>{story.content}</Text>
+            }
+
+            {story.location &&
+              <View style={styles.locationWrapper}>
+                <Text style={styles.storyContentText}>Location: {story.location}</Text>
+              </View>
+            }
+          </View>
+
           <StoryReadingToolbar
             style={styles.toolBar}
             likeCount={formatCount(storyWithUser.counts.likes)}
@@ -105,7 +124,7 @@ class StoryReadingScreen extends React.Component {
             boomarkCount={formatCount(storyWithUser.counts.bookmarks)}
             isBookmarked={storyWithUser.isBookmarked}
             isLiked={storyWithUser.isLiked}
-            onPressLike={() => this.props.toggleLike(storyWithUser.id)}
+            onPressLike={() => this._toggleLike}
             onPressBookmark={() => this.props.toggleBookmark(storyWithUser.id)}
             onPressComment={() => NavActions.storyComments({
               storyId: story.id

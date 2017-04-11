@@ -10,8 +10,8 @@ import {
   Platform
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import {RichTextEditor, RichTextToolbar, actions} from 'react-native-zss-rich-text-editor';
-import KeyboardSpacer from 'react-native-keyboard-spacer';
+// import {RichTextEditor, RichTextToolbar, actions} from 'react-native-zss-rich-text-editor';
+// import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 
 import ShadowButton from '../ShadowButton'
@@ -20,21 +20,13 @@ import styles from './EditorStyles'
 
 export default class Editor extends Component {
 
-  constructor(props) {
-    super(props)
-    this.getHTML = this.getHTML.bind(this);
-    this.setFocusHandlers = this.setFocusHandlers.bind(this);
-  }
-
   render() {
 
     // const h1Icon = (
     //   <Icon name='rocket' size={15} />
     // )
 
-    console.log('this.props.content', this.props.content)
-
-    return (
+    /*return (
       <View style={styles.root}>
         <RichTextEditor
             ref={(r)=> this.richtext = r}
@@ -62,6 +54,18 @@ export default class Editor extends Component {
             style={styles.toolbar}
           />
           {Platform.OS === 'ios' && <KeyboardSpacer/>}
+      </View>
+    )*/
+
+    return (
+      <View style={[styles.root, this.props.style]}>
+          <TextInput
+            autoFocus={true}
+            multiline={true}
+            onChangeText={this.props.onChange}
+            value={this.props.content}
+            style={styles.textInput}
+          />
       </View>
     )
   }

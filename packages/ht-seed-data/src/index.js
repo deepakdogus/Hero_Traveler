@@ -22,6 +22,8 @@ function removeAllData() {
     Models.Follower.remove({}),
     Models.StoryBookmark.remove({}),
     Models.StoryLike.remove({}),
+    Models.StoryDraft.remove({}),
+    Models.Comments.remove({}),
   ]
 
   return Promise.all(promises)

@@ -45,6 +45,6 @@ router.post('/:id/comment', hasValidOauth, endpointWrapper(createComment))
 router.get('/:id', endpointWrapper(getStory));
 router.get('/:id/like', hasValidOauth, endpointWrapper(toggleLike));
 router.get('/:id/bookmark', hasValidOauth, endpointWrapper(toggleBookmark));
-router.post('/', hasValidOauth, create)
+router.post('/', hasValidOauth, endpointWrapper(create))
 
 export default router

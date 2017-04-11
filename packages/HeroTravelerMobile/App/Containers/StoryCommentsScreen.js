@@ -47,7 +47,6 @@ class StoryCommentsScreen extends React.Component {
       .then(() => {
         api.getComments(this.props.storyId)
           .then(({data}) => {
-            console.log('comments', data)
             this.setState({
               loading: false,
               comments: data

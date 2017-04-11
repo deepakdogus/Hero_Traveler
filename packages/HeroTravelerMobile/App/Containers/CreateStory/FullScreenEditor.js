@@ -19,11 +19,11 @@ class FullScreenEditor extends React.Component {
   }
 
   _onRight = () => {
-    this.editor.getContentHtml()
-      .then(html => {
-        this.props.change('content', html)
+    // this.editor.getContentHtml()
+    //   .then(html => {
+    //     this.props.change('content', html)
         NavActions.createStory_details()
-      })
+      // })
   }
 
   render () {
@@ -37,12 +37,8 @@ class FullScreenEditor extends React.Component {
           onLeft={this._onLeft}
         />
         <Editor
-          ref={(editor) => {
-            if (editor) {
-              this.editor = editor.getEditor()
-            }
-          }}
           content={this.props.story.content}
+          onChange={(text) => this.props.change('content', text)}
           onAddImage={this._handlePressAddImage}
         />
       </View>
@@ -58,7 +54,6 @@ class FullScreenEditor extends React.Component {
   }
 
   _handleAddImage = (localFilePath) => {
-    console.log('this.editor.insertImage', localFilePath)
     NavActions.pop()
   }
 }
@@ -69,7 +64,7 @@ export default R.compose(
     return {
       story: {
         id: state.storyCreate.draft.id,
-        content: state.storyCreate.content ||`<h1>Hello <b>World</b></h1>`
+        // content: state.storyCreate.content
       }
     }
   }, dispatch => {

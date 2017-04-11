@@ -8,8 +8,8 @@ const { Types, Creators } = createActions({
   registerDraft: null,
   registerDraftSuccess: ['draft'],
   registerDraftFailure: null,
-  publishDraft: null,
-  publishDraftSuccess: null,
+  publishDraft: ['draft'],
+  publishDraftSuccess: ['draft'],
   publishDraftFailure: ['error'],
   discardDraft: ['draftId'],
   discardDraftSuccess: ['draft'],
@@ -37,17 +37,19 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Reducers ------------- */
 export const reset = () => INITIAL_STATE
 
-export const request = (state, { userId }) => {
-  return state.merge({publishing: true, error: null});
+export const publish = (state, { userId }) => {
+  return state.merge({
+    publishing: true, error: null
+  })
 }
 
-export const success = (state, {draft}) => {
+export const publishSuccess = (state, {draft}) => {
   return state.merge({
     publishing: false,
     error: null,
     isPublished: true,
     draft
-  })
+  }, {deep: true})
 }
 
 export const failure = (state, {error}) =>
@@ -55,6 +57,8 @@ export const failure = (state, {error}) =>
     publishing: false,
     error
   })
+
+export const registerDraft = () => INITIAL_STATE
 
 export const registerDraftSuccess = (state, {draft}) => {
   return state.merge({draft})
@@ -65,7 +69,6 @@ export const updateDraft = (state, {draft}) => {
 }
 
 export const uploadCoverImageSuccess = (state, {draft}) => {
-  console.log('upload success', draft)
   return state.merge({draft}, {deep: true})
 }
 
@@ -76,13 +79,14 @@ export const uploadCoverImageFailure = (state, {draft}) => {
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.PUBLISH_DRAFT]: request,
-  [Types.PUBLISH_DRAFT_SUCCESS]: success,
+  [Types.PUBLISH_DRAFT]: publish,
+  [Types.PUBLISH_DRAFT_SUCCESS]: publishSuccess,
   [Types.PUBLISH_DRAFT_FAILURE]: failure,
   [Types.DISCARD_DRAFT_SUCCESS]: reset,
   [Types.DISCARD_DRAFT_FAILURE]: failure,
   [Types.UPDATE_DRAFT_SUCCESS]: updateDraft,
   [Types.UPDATE_DRAFT_FAILURE]: failure,
+  [Types.REGISTER_DRAFT]: registerDraft,
   [Types.REGISTER_DRAFT_SUCCESS]: registerDraftSuccess,
   [Types.REGISTER_DRAFT_FAILURE]: failure,
   [Types.UPLOAD_COVER_IMAGE_SUCCESS]: uploadCoverImageSuccess,
@@ -91,6 +95,7 @@ export const reducer = createReducer(INITIAL_STATE, {
 
 export const hasDraft = (state) => _.get(state.draft, 'id') ? true : false
 export const isCreated = (state) => state.isPublished
+export const isPublishing = (state) => state.publishing
 export const getDraft = (state) => {
   return state.storyCreate.draft
 }

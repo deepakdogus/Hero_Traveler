@@ -13,8 +13,9 @@ import { Field, reduxForm, formValueSelector } from 'redux-form'
 import {Actions as NavActions} from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import StoryEditActions, {isCreated} from '../../Redux/StoryCreateRedux'
+import StoryEditActions, {isCreated, isPublishing} from '../../Redux/StoryCreateRedux'
 import {Colors, Metrics} from '../../Themes'
+import Loader from '../../Components/Loader'
 import RoundedButton from '../../Components/RoundedButton'
 import RenderTextInput from '../../Components/RenderTextInput'
 import NavBar from './NavBar'
@@ -45,12 +46,12 @@ class CreateStoryDetailScreen extends React.Component {
 
   componentWillReceiveProps(newProps) {
     if (!newProps.publishing && newProps.isCreated) {
-      NavActions.profile({type: 'replace'})
+      NavActions.tabbar({type: 'reset'})
     }
   }
 
   _publish = () => {
-    this.props.publish()
+    this.props.publish(this.props.story)
   }
 
   _updateType = (type) => {
@@ -65,7 +66,6 @@ class CreateStoryDetailScreen extends React.Component {
       this.props.story.id,
       story
     )
-    console.log('updating to here?')
     NavActions.tabbar({type: 'reset'})
   }
 
@@ -79,78 +79,80 @@ class CreateStoryDetailScreen extends React.Component {
             rightTitle='Publish'
             onRight={() => this._publish()}
           />
-        <ScrollView style={styles.root}>
-          <Text style={styles.title}>{this.props.story.title} Details</Text>
-          <View style={styles.fieldWrapper}>
-            <Icon name='map-marker' size={18} color='#424242' style={styles.fieldIcon} />
-            <Field
-              name='location'
-              component={RenderTextInput}
-              style={styles.inputStyle}
-              placeholder='Location'
-              placeholderTextColor={Colors.navBarText}
-            />
-          </View>
-          <View style={styles.fieldWrapper}>
-            <Icon name='calendar-o' size={18} color='#424242' style={styles.fieldIcon} />
-            <Field
-              name='date'
-              component={RenderTextInput}
-              style={styles.inputStyle}
-              placeholder='Date'
-              placeholderTextColor={Colors.navBarText}
-            />
-          </View>
-          <View style={styles.fieldWrapper}>
-            <Icon name='tag' size={18} color='#424242' style={styles.fieldIcon} />
-            <Field
-              name='tags'
-              component={RenderTextInput}
-              style={styles.inputStyle}
-              placeholder='Add tags'
-              placeholderTextColor={Colors.navBarText}
-            />
-          </View>
-          <View style={styles.fieldWrapper}>
-            <Text style={styles.fieldLabel}>Category: </Text>
-            <View style={styles.radioGroup}>
-              <Radio
-                selected={this.props.story.type === 'eat'}
-                onPress={() => this._updateType('eat')}
-                text='EAT'
-              />
-              <Radio
-                style={{marginLeft: Metrics.baseMargin}}
-                selected={this.props.story.type === 'stay'}
-                onPress={() => this._updateType('stay')}
-                text='STAY'
-              />
-              <Radio
-                style={{marginLeft: Metrics.baseMargin}}
-                selected={this.props.story.type === 'do'}
-                onPress={() => this._updateType('do')}
-                text='DO'
+          <ScrollView style={styles.root}>
+            <Text style={styles.title}>{this.props.story.title} Details</Text>
+            <Text style={styles.title}>Content: {this.props.story.content}</Text>
+            <View style={styles.fieldWrapper}>
+              <Icon name='map-marker' size={18} color='#424242' style={styles.fieldIcon} />
+              <Field
+                name='location'
+                component={RenderTextInput}
+                style={styles.inputStyle}
+                placeholder='Location'
+                placeholderTextColor={Colors.navBarText}
               />
             </View>
-          </View>
-          <View style={styles.finishButtons}>
-            <RoundedButton
-              style={[
-                styles.finishButton,
-                {marginRight: Metrics.section},
-                styles.draftButton
-              ]}
-              textStyle={styles.draftButtonText}
-              onPress={this._update}
-              text='Save Draft'
-            />
-            <RoundedButton
-              style={styles.finishButton}
-              onPress={() => this._publish}
-              text='Publish'
-            />
-          </View>
-        </ScrollView>
+            <View style={styles.fieldWrapper}>
+              <Icon name='calendar-o' size={18} color='#424242' style={styles.fieldIcon} />
+              <Field
+                name='date'
+                component={RenderTextInput}
+                style={styles.inputStyle}
+                placeholder='Date'
+                placeholderTextColor={Colors.navBarText}
+              />
+            </View>
+            <View style={styles.fieldWrapper}>
+              <Icon name='tag' size={18} color='#424242' style={styles.fieldIcon} />
+              <Field
+                name='tags'
+                component={RenderTextInput}
+                style={styles.inputStyle}
+                placeholder='Add tags'
+                placeholderTextColor={Colors.navBarText}
+              />
+            </View>
+            <View style={styles.fieldWrapper}>
+              <Text style={styles.fieldLabel}>Category: </Text>
+              <View style={styles.radioGroup}>
+                <Radio
+                  selected={this.props.story.type === 'eat'}
+                  onPress={() => this._updateType('eat')}
+                  text='EAT'
+                />
+                <Radio
+                  style={{marginLeft: Metrics.baseMargin}}
+                  selected={this.props.story.type === 'stay'}
+                  onPress={() => this._updateType('stay')}
+                  text='STAY'
+                />
+                <Radio
+                  style={{marginLeft: Metrics.baseMargin}}
+                  selected={this.props.story.type === 'do'}
+                  onPress={() => this._updateType('do')}
+                  text='DO'
+                />
+              </View>
+            </View>
+            <View style={styles.finishButtons}>
+              <RoundedButton
+                style={[
+                  styles.finishButton,
+                  {marginRight: Metrics.section},
+                  styles.draftButton
+                ]}
+                textStyle={styles.draftButtonText}
+                onPress={this._update}
+                text='Save Draft'
+              />
+              <RoundedButton
+                style={styles.finishButton}
+                onPress={this._publish}
+                text='Publish'
+              />
+            </View>
+          </ScrollView>
+          {this.props.publishing && <Loader style={styles.loader} tintColor={Colors.blackoutTint} />}
         </View>
     )
   }
@@ -160,16 +162,21 @@ class CreateStoryDetailScreen extends React.Component {
 const selector = formValueSelector('createStory')
 export default R.compose(
   connect(
-    state => ({
-      isCreated: isCreated(state.storyCreate),
-      story: {
-        id: _.get(state.storyCreate, 'draft.id', null),
-        title: selector(state, 'title'),
-        type: selector(state, 'type') || 'eat',
-        location: selector(state, 'location'),
-      },
-      tags: selector(state, 'tags')
-    }),
+    (state) => {
+      return {
+        publishing: isPublishing(state.storyCreate),
+        isCreated: isCreated(state.storyCreate),
+        story: {
+          title: selector(state, 'title'),
+          category: _.values(state.entities.stories.entities)[0].category,
+          type: selector(state, 'type') || 'eat',
+          location: selector(state, 'location'),
+          content: selector(state, 'content'),
+          ...state.storyCreate.draft
+        },
+        tags: selector(state, 'tags')
+      }
+    },
     dispatch => ({
       publish: (story) => dispatch(StoryEditActions.publishDraft(story)),
       update: (id, attrs) => dispatch(StoryEditActions.updateDraft(id, attrs))
@@ -178,8 +185,10 @@ export default R.compose(
   reduxForm({
     form: 'createStory',
     destroyOnUnmount: true,
-    keepDirtyOnReinitialize: true,
-    enableReinitialize: true,
-    initialValues: {}
+    // keepDirtyOnReinitialize: true,
+    // enableReinitialize: true,
+    // initialValues: {
+    //   content: '1'
+    // }
   })
 )(CreateStoryDetailScreen)

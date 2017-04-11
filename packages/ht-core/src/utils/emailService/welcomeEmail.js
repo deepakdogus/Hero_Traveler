@@ -21,6 +21,11 @@ function renderTemplate(templateName, context) {
 }
 
 export default function sendWelcomeEmail(user) {
+
+  if (process.env.DISABLE_EMAIL) {
+    return Promise.resolve()
+  }
+
   const context = {
     subject: 'Welcome to HERO Traveler!',
     confirmationUrl: 'https://www.google.com',

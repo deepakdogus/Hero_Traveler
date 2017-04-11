@@ -27,7 +27,7 @@ function create(imageName) {
         "altText": title,
         "original": {
           "filename": imageName,
-          "path": "category/",
+          "path": `category/${imageName}`,
           "width": dimensions.width,
           "height": dimensions.height,
           "meta": {
@@ -37,7 +37,7 @@ function create(imageName) {
         "versions": {
           "thumbnail240": {
             "filename": imageName,
-            "path": "category/thumbnail240/",
+            "path": `category/thumbnail240/${imageName}`,
             "width": 240,
             "height": 240,
             "meta": {

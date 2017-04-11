@@ -20,6 +20,3 @@ export default function createUser(userData) {
     return newUser;
   })
 }
-
-
-

@@ -34,8 +34,7 @@ const StorySchema = new mongoose.Schema({
     required: true
   },
   content: {
-    type: String,
-    required: true
+    type: String
   },
   location: {
     type: String

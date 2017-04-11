@@ -135,6 +135,7 @@ const create = () => {
 
   // publishes a draft
   const createStory = (story) => {
+    console.log('posting', story)
     return api.post('story', {story})
   }
   

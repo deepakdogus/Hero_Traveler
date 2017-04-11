@@ -29,7 +29,6 @@ function create(users, categories) {
       "author": user._id,
       "title": title,
       "description": description,
-      "content": description,
       "category": category._id,
       "createdAt": faker.date.past(),
       "counts": {
@@ -41,7 +40,7 @@ function create(users, categories) {
         "altText": title,
         "original": {
           "filename": imageName,
-          "path": "category/",
+          "path": `story/originals/${imageName}`,
           "width": dimensions.width,
           "height": dimensions.height,
           "meta": {
@@ -51,7 +50,7 @@ function create(users, categories) {
         "versions": {
           "mobile": {
             "filename": imageName,
-            "path": "story/750x1334/",
+            "path": `story/750x1334/${imageName}`,
             "width": 750,
             "height": 1334,
             "meta": {

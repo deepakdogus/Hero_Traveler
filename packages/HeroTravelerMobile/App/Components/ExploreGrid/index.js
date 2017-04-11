@@ -12,7 +12,7 @@ import {Colors} from '../../Themes'
 import styles from './ExploreGridStyles'
 
 function getUrl(categoryImage) {
-  return `https://s3.amazonaws.com/hero-traveler/${categoryImage.path}${categoryImage.filename}`
+  return `https://s3.amazonaws.com/hero-traveler/${categoryImage.path}`
 }
 
 export default class ExploreGrid extends Component {

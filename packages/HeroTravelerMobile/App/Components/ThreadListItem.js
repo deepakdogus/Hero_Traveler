@@ -25,8 +25,6 @@ export default class ThreadListItem extends Component {
       createdAt,
     } = this.props
 
-    console.log('isUnread', isUnread)
-
     return (
       <View style={styles.root}>
         <TouchableOpacity

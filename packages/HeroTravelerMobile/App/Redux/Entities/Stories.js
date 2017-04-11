@@ -172,7 +172,6 @@ const storyBookmarkFailure = (state, {storyId}) => {
 }
 
 export const receiveBookmarks = (state, {stories, myBookmarksById}) => {
-  console.log('myBookmarksById', myBookmarksById)
   return state.merge({
     userBookmarksFetchStatus: {
       loaded: true,

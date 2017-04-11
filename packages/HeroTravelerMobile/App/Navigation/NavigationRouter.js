@@ -33,6 +33,7 @@ import ActivityScreen from '../Containers/Tabs/ActivityScreen'
 
 // Signup & login
 import LoginScreen from '../Containers/LoginScreen'
+import ResetPasswordScreen from '../Containers/ResetPasswordScreen'
 import SignupScreen from '../Containers/Signup/SignupScreen'
 import SignupTopics from '../Containers/Signup/SignupTopics'
 import SignupSocial from '../Containers/Signup/SignupSocial'
@@ -138,6 +139,10 @@ class NavigationRouter extends Component {
             <Scene
               key='login'
               component={LoginScreen}
+            />
+            <Scene
+              key='resetPassword'
+              component={ResetPasswordScreen}
             />
             <Scene
               key='settings'

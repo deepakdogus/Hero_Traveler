@@ -21,9 +21,10 @@ import Loader from '../Components/Loader'
 import RoundedButton from '../Components/RoundedButton'
 import TextButton from '../Components/TextButton'
 import TOS from '../Components/TosFooter'
-import styles from './Styles/LoginScreenStyles'
-import LoginActions from '../Redux/LoginRedux'
-import {hasAuthData} from '../Redux/SessionRedux'
+import styles from './Styles/ResetPasswordScreenStyles'
+
+// import ResetPasswordActions from '../Redux/LoginRedux'
+// import {hasAuthData} from '../Redux/SessionRedux'
 
 class Input extends React.Component {
   render() {
@@ -43,19 +44,15 @@ class LoginScreen extends React.Component {
 
   static propTypes = {
     dispatch: PropTypes.func,
-    fetching: PropTypes.bool,
-    attemptLogin: PropTypes.func
+    updatePassword: PropTypes.func
   }
-
-  isAttempting = false
 
   constructor (props) {
     super(props)
     this.state = {
-      username: '',
-      password: '',
+      newPassword: '',
+      confirmPassword: '',
     }
-    this.isAttempting = false
   }
 
   componentWillReceiveProps (newProps) {
@@ -64,26 +61,36 @@ class LoginScreen extends React.Component {
     }
   }
 
-  handlePressLogin = () => {
-    const { username, password } = this.state
-    this.isAttempting = true
-    // attempt a login - a saga is listening to pick it up from here.
-    this.props.attemptLogin(username, password)
+  handlePressResetPassword = () => {
+    const { newPassword, confirmPassword } = this.state
+
+    if (newPassword.length < 4 || newPassword.length > 60) {
+      alert('Please limit password length to 4-60 characters')
+      return
+    }
+
+    if (newPassword !== confirmPassword) {
+      alert('Passwords do not match - please re-enter')
+      return
+    }    
+
+    // TODO implement backend update.
+    // this.props.updatePassword(newPassword)
+    alert('Your password has been reset!')
+    NavigationActions.login()
+
   }
 
-  handleChangeUsername = (text) => {
-    this.setState({ username: text })
+  handleChangeNewPassword = (text) => {
+    this.setState({ newPassword: text })
   }
 
-  handleChangePassword = (text) => {
-    this.setState({ password: text })
+  handleChangeConfirmPassword = (text) => {
+    this.setState({ confirmPassword: text })
   }
 
   render () {
-    const { username, password } = this.state
-    const { fetching } = this.props
-    const editable = !fetching
-    const textInputStyle = editable ? styles.input : styles.textInputReadonly
+    const { newPassword, confirmPassword } = this.state
     return (
       <Image
         source={Images.launchBackground}
@@ -95,65 +102,44 @@ class LoginScreen extends React.Component {
           contentContainerStyle={{justifyContent: 'flex-start'}}>
           <KeyboardAvoidingView behavior='position'>
             <View style={[styles.section, {marginTop: 0}]}>
-              <Text style={styles.title}>Login</Text>
+              <Text style={styles.title}>Reset Password</Text>
               <Text style={styles.instructions}>
-                Welcome back!
+              Please enter a new password between 4-60 characters
               </Text>
             </View>
-
-            <RoundedButton
-              style={styles.facebook}
-              onPress={this.props.attemptFacebookSignup}
-              text='Sign up with Facebook'
-            />
-            <RoundedButton
-              style={styles.twitter}
-              text='Sign up with Twitter'
-            />
-
-            <Text style={styles.instructions}>
-              Or
-            </Text>
-
+            <View style={{height: 100}}>
+            </View>
             <Input
-              ref='username'
-              style={textInputStyle}
-              value={username}
-              editable={editable}
+              ref='newPassword'
+              style={styles.input}
+              value={newPassword}
               keyboardType='default'
               returnKeyType='next'
               autoCapitalize='none'
               autoCorrect={false}
-              onChangeText={this.handleChangeUsername}
+              secureTextEntry
+              onChangeText={this.handleChangeNewPassword}
               underlineColorAndroid='transparent'
               onSubmitEditing={() => this.refs.password.focus()}
-              placeholder='Username' />
+              placeholder='New password' />
 
             <Input
-              ref='password'
-              style={textInputStyle}
-              value={password}
-              editable={editable}
+              ref='confirmPassword'
+              style={styles.input}
+              value={confirmPassword}
               keyboardType='default'
               returnKeyType='go'
               autoCapitalize='none'
               autoCorrect={false}
               secureTextEntry
-              onChangeText={this.handleChangePassword}
+              onChangeText={this.handleChangeConfirmPassword}
               underlineColorAndroid='transparent'
               onSubmitEditing={this.handlePressLogin}
-              placeholder='Password' />
+              placeholder='Confirm new password' />
 
             <RoundedButton
-              text="Login"
-              onPress={this.handlePressLogin}
-            />
-
-            <TextButton
-              containerStyle={styles.forgotWrapper}
-              style={styles.forgot}
-              text="Forgot your password?"
-              onPress={NavigationActions.resetPassword}
+              text="Submit"
+              onPress={this.handlePressResetPassword}
             />
 
             <TOS style={styles.tos} />
@@ -171,23 +157,18 @@ class LoginScreen extends React.Component {
       </Image>
     )
   }
-
 }
 
 const mapStateToProps = (state) => {
   return {
-    error: state.login.error,
-    fetching: state.login.fetching,
-    isLoggedIn: hasAuthData(state.session)
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    goToMyFeed: () => {
-      return NavigationActions.tabbar({type: NavActionConst.POP_AND_REPLACE})
-    },
-    attemptLogin: (username, password) => dispatch(LoginActions.loginRequest(username, password))
+    updatePassword: (newPassword) => {
+      // return dispatch(SignupActions.signupEmail(fullName, username, email, password))
+    }
   }
 }
 

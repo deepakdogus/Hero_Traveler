@@ -84,7 +84,7 @@ class StoryReadingScreen extends React.Component {
   }
 
   render () {
-    let { story, fetching, error } = this.props;
+    let { story, fetching, error, stories, user } = this.props;
     const storyWithUser = {
       ...story,
       author: this.props.usersById[story.author]
@@ -97,7 +97,7 @@ class StoryReadingScreen extends React.Component {
         <ScrollView style={[styles.scrollView]}>
           <StoryPreview
             onPressLike={this._toggleLike}
-            onPressUser={(userId) => NavActions.readOnlyProfile({test: "wow!"})}
+            onPressUser={(userId) => NavActions.readOnlyProfile({ userId })}
             key={story.id}
             height={Metrics.screenHeight}
             story={storyWithUser}
@@ -149,11 +149,13 @@ class StoryReadingScreen extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  let { fetching, entities: stories, error } = state.entities.stories;
+  console.log("state.entities.stories", state.entities.stories)
+  let { fetching, entities: stories, error } = state.entities.stories
   return {
-    user: state.session.user,
+     user: state.session.user,
     usersById: state.entities.users.entities,
     fetching,
+    stories,
     story: stories[props.storyId],
     error
   }

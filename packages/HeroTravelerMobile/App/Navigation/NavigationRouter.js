@@ -262,6 +262,12 @@ class NavigationRouter extends Component {
                 component={TagScreen}
               />
             </Scene>
+              <Scene
+                key='readOnlyProfile'
+                component={ReadOnlyProfileScreen}
+                hideNavBar
+                onLeft={() => NavActions.pop()}
+              />
             <Scene
               key='mediaSelectorScreen'
               component={MediaSelectorScreen}

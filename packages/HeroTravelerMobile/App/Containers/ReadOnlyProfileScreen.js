@@ -3,6 +3,7 @@ import _ from 'lodash'
 import React from 'react'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import {Image} from 'react-native'
 
 import {Images, Colors} from '../Themes'
 import SessionActions, {hasAuthData} from '../Redux/SessionRedux'
@@ -12,13 +13,12 @@ import styles from './Styles/ProfileScreenStyles'
 
 
 class ReadOnlyProfileScreen extends React.Component {
-  componentDidMount() {
-    this.props.attemptRefreshUser()
-    this.props.attemptGetUserStories(this.props.user.id)
-  }
 
   render () {
-    const {user, stories, storyFetchStatus} = this.props
+    const { userId, entities } = this.props
+
+    const stories = getByUser(entities, userId)
+
     let avatar
 
     const storiesAsArray = _.map(stories, s => {
@@ -26,7 +26,6 @@ class ReadOnlyProfileScreen extends React.Component {
         ...s
       }
     })
-
     // Deals with the case that the user logs out
     // and this page is still mounted and rendering
 
@@ -61,8 +60,6 @@ class ReadOnlyProfileScreen extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const {user} = state.session
-  const userId = user ? user.id : null
   let {
     fetchStatus,
     entities: stories,

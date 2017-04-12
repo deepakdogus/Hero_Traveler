@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 import { ScrollView, Text, View, Image } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
+import MapView from 'react-native-maps';
 
 import StoryActions from '../Redux/Entities/Stories'
 import formatCount from '../Lib/formatCount'
@@ -89,6 +90,8 @@ class StoryReadingScreen extends React.Component {
       author: this.props.usersById[story.author]
     }
 
+    const baseText = styles.storyContentText
+
     return (
       <View style={[styles.root]}>
         <ScrollView style={[styles.scrollView]}>
@@ -112,7 +115,16 @@ class StoryReadingScreen extends React.Component {
 
             {story.location &&
               <View style={styles.locationWrapper}>
-                <Text style={styles.storyContentText}>Location: {story.location}</Text>
+                <MapView
+                  style={{flex: 1, height: 200}}
+                  initialRegion={{
+                    latitude: 37.78825,
+                    longitude: -122.4324,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                  }}
+                />
+                <Text style={[baseText, styles.locationText]}>Location: {story.location}</Text>
               </View>
             }
           </View>

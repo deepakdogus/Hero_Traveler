@@ -14,7 +14,9 @@ export default StyleSheet.create({
     paddingTop: Metrics.section,
     paddingBottom: Metrics.tabBarHeight,
   },
-
+  locationText: {
+    marginTop: Metrics.baseMargin
+  },
   toolBar: {
     flex: 1,
     position: 'absolute',

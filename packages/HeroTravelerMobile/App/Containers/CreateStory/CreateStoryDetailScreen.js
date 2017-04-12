@@ -81,7 +81,6 @@ class CreateStoryDetailScreen extends React.Component {
           />
           <ScrollView style={styles.root}>
             <Text style={styles.title}>{this.props.story.title} Details</Text>
-            <Text style={styles.title}>Content: {this.props.story.content}</Text>
             <View style={styles.fieldWrapper}>
               <Icon name='map-marker' size={18} color='#424242' style={styles.fieldIcon} />
               <Field

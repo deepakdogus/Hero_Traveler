@@ -10,7 +10,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import moment from 'moment'
 
 import formatCount from '../Lib/formatCount'
-import { Metrics, Images } from '../Themes'
+import { Metrics } from '../Themes'
 import styles from './Styles/StoryPreviewStyle'
 import LikesComponent from './LikeComponent'
 import Avatar from './Avatar'
@@ -65,17 +65,16 @@ export default class StoryPreview extends Component {
           username,
           profile
         },
-        counts,
-        createdAt
-      } = story;
+        counts
+      } = story
 
-    console.log('profile.avatar where it counts', profile.avatar)
+    console.log('profile where it counts', profile)
 
     const userContent = (
       <View style={styles.row}>
         <Avatar
           style={styles.avatar}
-          avatarUrl={profile.avatar}
+          avatarUrl={profile ? profile.avatar : null}
         />
         <Text style={styles.username}>{username}</Text>
       </View>

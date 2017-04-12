@@ -22,6 +22,7 @@ import CategoryActions from '../../Redux/Entities/Categories'
 import Loader from '../../Components/Loader'
 import ExploreGrid from '../../Components/ExploreGrid'
 import StorySearchList from '../../Components/StorySearchList'
+import {Metrics} from '../../Themes'
 import styles from '../Styles/ExploreScreenStyles'
 
 const Tab = ({text, onPress, selected}) => {
@@ -37,7 +38,7 @@ class ExploreScreen extends Component {
     super(props)
     this.state = {
       lastSearchResults: null,
-      selectedTabIndex: 0
+      selectedTabIndex: null
     }
   }
 
@@ -89,12 +90,18 @@ class ExploreScreen extends Component {
     const q = e.nativeEvent.text
     const self = this
 
+    if (this.state.selectedTabIndex === null) {
+      this.setState({selectedTabIndex: 0})
+    }
+
     if (_.isString(q) && q.length === 0) {
-      self.setState({
-        lastSearchResults: null,
-        searching: false,
-        selectedTabIndex: 0
-      })
+      setTimeout(() => {
+        this.setState({
+          lastSearchResults: null,
+          searching: false,
+          selectedTabIndex: null
+        })
+      }, 1000)
       return
     } else if (_.isString(q) && q.length < 3) {
       return
@@ -113,13 +120,17 @@ class ExploreScreen extends Component {
 
   _changeTab = (selectedTabIndex) => {
     this.changeIndex(this.getSearchIndex(selectedTabIndex))
-    this.setState({selectedTabIndex})
+    this.setState({
+      searching: true,
+      selectedTabIndex,
+      lastSearchResults: null,
+    })
     this.helper.search()
   }
 
   renderSearchSection() {
     const searchHits = _.get(this.state.lastSearchResults, 'hits', [])
-
+    const isSearching = this.state.searching
     return (
       <View style={styles.tabs}>
         <View style={styles.tabnav}>
@@ -134,10 +145,20 @@ class ExploreScreen extends Component {
             text='PEOPLE'
           />
         </View>
-        {searchHits && searchHits.length > 0 && this.state.selectedTabIndex === 0 &&
+        <View style={{flex: 1, flexDirection: 'column'}}>
+        {isSearching && <Loader style={{
+          flex: 1,
+          position: 'absolute',
+          marginTop: 400,
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0
+        }} />}
+        {searchHits.length > 0 && this.state.selectedTabIndex === 0 &&
           <ScrollView>
             <StorySearchList
-              stories={this.state.lastSearchResults.hits}
+              stories={searchHits}
               height={70}
               titleStyle={styles.storyTitleStyle}
               subtitleStyle={styles.subtitleStyle}
@@ -148,6 +169,16 @@ class ExploreScreen extends Component {
             />
           </ScrollView>
         }
+        {!isSearching && searchHits.length === 0 && this.state.selectedTabIndex === 0 &&
+          <Text style={{color: 'white', padding: Metrics.section, textAlign: 'center'}}>No stories found</Text>
+        }
+        {!isSearching && searchHits.length > 0 && this.state.selectedTabIndex === 1 &&
+          <Text style={{color: 'white', padding: Metrics.section, textAlign: 'center'}}>Render searched people</Text>
+        }
+        {!isSearching && searchHits.length === 0 && this.state.selectedTabIndex === 1 &&
+          <Text style={{color: 'white', padding: Metrics.section, textAlign: 'center'}}>No users found</Text>
+        }
+        </View>
       </View>
     )
   }
@@ -155,11 +186,15 @@ class ExploreScreen extends Component {
   render () {
     let content
 
-    if (this.props.categoriesFetchStatus.fetching || this.state.searching) {
+    const showSearch = this.state.lastSearchResults || this.state.selectedTabIndex !== null
+
+    if (this.props.categoriesFetchStatus.fetching) {
       content = (
         <Loader style={styles.loader} />
       )
-    } else if (this.props.categoriesFetchStatus.loaded && !this.state.lastSearchResults) {
+    } else if (showSearch) {
+      content = this.renderSearchSection()
+    } else {
       content = (
         <ExploreGrid
           onPress={(category) => {
@@ -170,13 +205,6 @@ class ExploreScreen extends Component {
           }}
           categories={_.values(this.props.categories)}
         />
-      )
-
-    } else if (this.state.lastSearchResults) {
-      content = this.renderSearchSection()
-    } else {
-      content = (
-        <Text>No categories yet</Text>
       )
     }
 
@@ -192,7 +220,7 @@ class ExploreScreen extends Component {
             />
           </View>
         </View>
-        {!this.state.lastSearchResults &&
+        {!showSearch &&
           <View style={styles.titleWrapper}>
             <Text style={styles.title}>EXPLORE</Text>
           </View>

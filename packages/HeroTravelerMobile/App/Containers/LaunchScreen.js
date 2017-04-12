@@ -1,4 +1,3 @@
-/* global alert */
 import React from 'react'
 import { Text, Image, View } from 'react-native'
 import { connect } from 'react-redux'
@@ -6,6 +5,7 @@ import {
   Actions as NavigationActions,
   ActionConst as NavActionConst
 } from 'react-native-router-flux'
+import SplashScreen from 'react-native-splash-screen'
 
 import {hasAuthData} from '../Redux/SessionRedux'
 import RoundedButton from '../Components/RoundedButton'
@@ -14,6 +14,11 @@ import { Images } from '../Themes'
 import styles from './Styles/LaunchScreenStyles'
 
 class LaunchScreen extends React.Component {
+
+  componentDidMount() {
+    // @TODO check for login credentials and forward user
+    SplashScreen.hide()
+  }
 
   render () {
     return (

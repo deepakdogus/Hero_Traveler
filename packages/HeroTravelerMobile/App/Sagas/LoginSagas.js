@@ -34,6 +34,8 @@ export function * loginFacebook () {
 }
 
 export function * resetPassword (api, {email}) {
+
+  console.log("api.resetPassword: ", api.resetPassword)
   try {
     const response = yield call(
       api.resetPassword,

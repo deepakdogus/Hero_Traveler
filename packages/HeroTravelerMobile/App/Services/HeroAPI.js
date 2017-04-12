@@ -265,6 +265,7 @@ const create = () => {
     getMe,
     login,
     logout,
+    resetPassword,
     signupEmail,
     getUserFeed,
     createStory,

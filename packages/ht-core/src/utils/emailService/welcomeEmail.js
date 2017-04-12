@@ -35,6 +35,7 @@ export default function sendWelcomeEmail(user) {
     accentColor: 'blue',
     secondaryColor: '#1a1c21',
     siteName: 'HERO Traveler',
+    fullName: user.profile.fullName
   }
 
   return renderTemplate('newUserTemplate', context)

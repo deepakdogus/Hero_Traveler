@@ -4,12 +4,13 @@ import {resetPasswordEmail} from '../utils/emailService'
 export default function resetPassword(email) {
   return User.find({ email: email})
   .then((registeredUser) => {
-    console.log("registeredUser in HT-core: ", registeredUser)
     if (registeredUser){
-    // resetPasswordEmail(email)
+
+    //TODO generate token for email link back to re-set password UI
+    resetPasswordEmail(registeredUser[0], 'xyz')
     return registeredUser
   } else {
-    //handle error
+    //handle unregistered user error
   }
     
   })

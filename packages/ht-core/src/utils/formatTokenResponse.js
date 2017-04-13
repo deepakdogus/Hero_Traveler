@@ -6,6 +6,7 @@ const expiresIn = expiresAt =>
   ).asSeconds());
 
 export default function formatTokenResponse(accessToken, refreshToken, user) {
+  console.log('formatTokenResponse', user)
   return {
     tokens: [{
       type: 'access',

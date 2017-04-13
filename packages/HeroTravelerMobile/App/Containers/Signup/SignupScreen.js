@@ -201,11 +201,11 @@ export default R.compose(
     destroyOnUnmount: true,
     validate,
     initialValues: {
-      fullName: '',
-      username: '',
-      email: '',
-      password: '',
-      confirmPassword: ''
+      fullName: 'Ryan W',
+      username: 'rwoody',
+      email: 'rwoody@gmail.com',
+      password: 'ryanwood',
+      confirmPassword: 'ryanwood'
     }
   })
 )(SignupScreen)

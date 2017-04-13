@@ -21,6 +21,7 @@ import { startup } from './StartupSagas'
 import { login, loginFacebook, resetPassword } from './LoginSagas'
 import {
   signupEmail,
+  signupFacebook,
   followCategory,
   unfollowCategory,
   followUser,
@@ -60,6 +61,7 @@ export default function * root () {
     takeLatest(LoginTypes.RESET_PASSWORD_REQUEST, resetPassword, heroAPI),
 
     takeLatest(SignupTypes.SIGNUP_EMAIL, signupEmail, heroAPI),
+    takeLatest(SignupTypes.SIGNUP_FACEBOOK, signupFacebook, heroAPI),
     takeLatest(SignupTypes.SIGNUP_FOLLOW_CATEGORY, followCategory, heroAPI),
     takeLatest(SignupTypes.SIGNUP_UNFOLLOW_CATEGORY, unfollowCategory, heroAPI),
     takeLatest(SignupTypes.SIGNUP_FOLLOW_USER, followUser, heroAPI),

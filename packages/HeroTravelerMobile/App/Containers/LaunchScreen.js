@@ -14,6 +14,7 @@ import {
 } from 'react-native-fbsdk'
 
 import {hasAuthData} from '../Redux/SessionRedux'
+import SignupActions, {hasSignedUp} from '../Redux/SignupRedux'
 import RoundedButton from '../Components/RoundedButton'
 import TextButton from '../Components/TextButton'
 import { Images } from '../Themes'
@@ -48,6 +49,12 @@ class LaunchScreen extends React.Component {
     SplashScreen.hide()
   }
 
+  componentWillReceiveProps(newProps) {
+    if (!newProps.fetching && newProps.hasSignedUp) {
+      NavigationActions.signupFlow()
+    }
+  }
+
   _signupFacebook = () => {
     // Attempt a login using the Facebook login dialog asking for default permissions.
     LoginManager.logInWithReadPermissions([
@@ -56,47 +63,46 @@ class LaunchScreen extends React.Component {
       'user_friends'
     ]).then(
       (result) => {
-        console.log('result', result)
-
-        if(result.isCancelled) {
-          return
-        }
-
         AccessToken.getCurrentAccessToken().then(data => {
-          this.setState({
-            facebookLoggedIn: data.accessToken
-          })
-          console.log('data', data)
-          this.props.signupFacebook(
-            data.userID
-          )
-        })
+          if(result.isCancelled) {
+            return
+          }
 
+          this.getUserInfoAndSignup()
+        })
       },
       (error) => {
-        alert('Login fail with error: ' + error);
+        console.log('Login fail with error: ' + error);
       }
-    );
+    )
   }
 
-  _handleGraphQuery = (error, result) => {
+  _handleGraphQuery = (error, data) => {
     if (error) {
       console.log('Error fetching data', error);
-    } else {
-      console.log('graph result', result)
+      return
     }
+
+    const userPicture = !data.picture.data.is_silhouette ?
+      data.picture.data.url : null
+
+    this.props.signupFacebook(
+      data.id,
+      data.email,
+      data.name,
+      userPicture
+    )
   }
 
-  _testGraphQuery = () => {
+  getUserInfoAndSignup = () => {
     const infoRequest = new GraphRequest(
       '/me',
       {
         parameters: {
           fields: {
-            string: 'email,about,name,picture'
+            string: 'email,about,name,picture.type(large)'
           }
-        },
-        // accessToken: this.state.accessToken
+        }
       },
       this._handleGraphQuery,
     );
@@ -122,7 +128,7 @@ class LaunchScreen extends React.Component {
 
           <RoundedButton
             style={styles.facebook}
-            onPress={this._testGraphQuery}
+            onPress={this.getUserInfoAndSignup}
             text='Make Graph Query'
           />
 
@@ -166,13 +172,15 @@ class LaunchScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    isLoggedIn: hasAuthData(state.session)
+    isLoggedIn: hasAuthData(state.session),
+    fetching: state.signup.fetching,
+    hasSignedUp: hasSignedUp(state.signup),
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signupFacebook: (...args) => console.log('DISPATCH facebook signup', ...args)
+    signupFacebook: (...args) => dispatch(SignupActions.signupFacebook(...args))
   }
 }
 

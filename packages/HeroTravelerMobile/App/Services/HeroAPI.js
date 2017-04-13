@@ -80,6 +80,15 @@ const create = () => {
     })
   }
 
+  const signupFacebook = (fbid, email, name, pictureUrl) => {
+    return api.post('user/facebook', {
+      fbid,
+      name,
+      email,
+      pictureUrl
+    })
+  }
+
   const login = (username, password) => {
     return api.post('auth', {}, {
       auth: {
@@ -143,11 +152,11 @@ const create = () => {
     console.log('posting', story)
     return api.post('story', {story})
   }
-  
+
   const createDraft = () => {
     return api.post(`story/draft`)
   }
-  
+
   const updateDraft = (id, attrs) => {
     return api.put(`story/draft/${id}`, {
       story: attrs
@@ -161,7 +170,7 @@ const create = () => {
   const getDraft = (draftId) => {
     return api.get(`story/draft/${draftId}`)
   }
-  
+
   const getDrafts = () => {
     return api.get(`story/draft`)
   }
@@ -219,7 +228,7 @@ const create = () => {
   const bookmarkStory = (storyId) => {
     return api.get(`story/${storyId}/bookmark`)
   }
-  
+
   const getBookmarks = (storyId) => {
     return api.get(`story/bookmark`)
       .then(response => {
@@ -267,6 +276,7 @@ const create = () => {
     logout,
     resetPassword,
     signupEmail,
+    signupFacebook,
     getUserFeed,
     createStory,
     getCategories,

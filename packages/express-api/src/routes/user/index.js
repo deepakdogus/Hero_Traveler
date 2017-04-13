@@ -4,6 +4,7 @@ import {hasValidOauth, hasClientId} from '../../middleware'
 import endpointWrapper from '../../utils/endpointWrapper'
 import getMe from './getMe'
 import create from './create'
+import createFacebook from './createFacebook'
 import update from './update'
 import suggestFollowers from './suggestFollowers'
 import getFollowers from './getFollowers'
@@ -37,6 +38,11 @@ router.post('/',
 router.post('/resetPassword',
   hasClientId,
   endpointWrapper(resetPassword)
+)
+
+router.post('/facebook',
+  hasClientId,
+  endpointWrapper(createFacebook)
 )
 
 router.get(

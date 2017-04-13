@@ -100,7 +100,7 @@ class SignupScreen extends React.Component {
   // this.props.fetching
   render () {
     const {handleSubmit} = this.props
-    
+
     return (
       <Image
         source={Images.launchBackground}

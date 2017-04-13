@@ -6,6 +6,12 @@ import {
   ActionConst as NavActionConst
 } from 'react-native-router-flux'
 import SplashScreen from 'react-native-splash-screen'
+import {
+  AccessToken,
+  LoginManager,
+  GraphRequest,
+  GraphRequestManager,
+} from 'react-native-fbsdk'
 
 import {hasAuthData} from '../Redux/SessionRedux'
 import RoundedButton from '../Components/RoundedButton'
@@ -15,9 +21,87 @@ import styles from './Styles/LaunchScreenStyles'
 
 class LaunchScreen extends React.Component {
 
-  componentDidMount() {
-    // @TODO check for login credentials and forward user
+  constructor(props) {
+    super(props)
+    this.state = {
+      facebookLoggedIn: false
+    }
+  }
+
+  async componentDidMount() {
+    const fbAccessToken = await AccessToken.getCurrentAccessToken()
+
+    // are we logged in to facebook?
+    if (fbAccessToken) {
+      // do something here
+    }
+
+    console.log('tokenInfo', fbAccessToken)
+
+    // dev only
+    this.setState({
+      facebookLoggedIn: fbAccessToken
+    })
+
+    // @TODO check for email credentials and forward user
+
     SplashScreen.hide()
+  }
+
+  _signupFacebook = () => {
+    // Attempt a login using the Facebook login dialog asking for default permissions.
+    LoginManager.logInWithReadPermissions([
+      'public_profile',
+      'email',
+      'user_friends'
+    ]).then(
+      (result) => {
+        console.log('result', result)
+
+        if(result.isCancelled) {
+          return
+        }
+
+        AccessToken.getCurrentAccessToken().then(data => {
+          this.setState({
+            facebookLoggedIn: data.accessToken
+          })
+          console.log('data', data)
+          this.props.signupFacebook(
+            data.userID
+          )
+        })
+
+      },
+      (error) => {
+        alert('Login fail with error: ' + error);
+      }
+    );
+  }
+
+  _handleGraphQuery = (error, result) => {
+    if (error) {
+      console.log('Error fetching data', error);
+    } else {
+      console.log('graph result', result)
+    }
+  }
+
+  _testGraphQuery = () => {
+    const infoRequest = new GraphRequest(
+      '/me',
+      {
+        parameters: {
+          fields: {
+            string: 'email,about,name,picture'
+          }
+        },
+        // accessToken: this.state.accessToken
+      },
+      this._handleGraphQuery,
+    );
+
+    new GraphRequestManager().addRequest(infoRequest).start();
   }
 
   render () {
@@ -35,8 +119,26 @@ class LaunchScreen extends React.Component {
         </View>
         <View style={styles.spacer} />
         <View style={styles.signupButtons}>
+
           <RoundedButton
             style={styles.facebook}
+            onPress={this._testGraphQuery}
+            text='Make Graph Query'
+          />
+
+          {this.state.facebookLoggedIn && <RoundedButton
+            style={styles.facebook}
+            onPress={() => {
+              LoginManager.logOut()
+              this.setState({
+                facebookLoggedIn: false
+              })
+            }}
+            text='Logout of facebook'
+          />}
+          <RoundedButton
+            style={styles.facebook}
+            onPress={this._signupFacebook}
             text='Sign up with Facebook'
           />
           <RoundedButton
@@ -70,6 +172,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    signupFacebook: (...args) => console.log('DISPATCH facebook signup', ...args)
   }
 }
 

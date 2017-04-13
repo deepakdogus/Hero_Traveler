@@ -26,13 +26,12 @@ export default class StorySearchItem extends Component {
       { coverImage,
         title,
         description,
-        author: {
-          username,
-          profile
-        },
+        author,
         likes,
         createdAt
       } = story;
+
+    let  { username, profile } = author
 
     return (
       <TouchableHighlight

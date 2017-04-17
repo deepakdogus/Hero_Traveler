@@ -97,7 +97,7 @@ class SignupScreen extends React.Component {
     }
   }
 
-  //this.props.fetching
+  // this.props.fetching
   render () {
     const {handleSubmit} = this.props
     

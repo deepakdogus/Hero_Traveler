@@ -16,6 +16,7 @@ import MyFeedScreen from '../Containers/Tabs/MyFeedScreen'
 import ExploreScreen from '../Containers/Tabs/ExploreScreen'
 // Profile tab
 import ProfileScreen from '../Containers/Tabs/ProfileScreen'
+import ReadOnlyProfileScreen from '../Containers/ReadOnlyProfileScreen'
 import SettingsScreen from '../Containers/SettingsScreen'
 import CategoryFeedScreen from '../Containers/Explore/CategoryFeedScreen'
 
@@ -221,6 +222,12 @@ class NavigationRouter extends Component {
                 component={ProfileScreen}
                 hideNavBar
               />
+              <Scene
+                key='readOnlyProfile'
+                component={ReadOnlyProfileScreen}
+                hideNavBar
+                onLeft={() => NavActions.pop()}
+              />
             </Scene>
             <Scene
               key='createStoryFlow'
@@ -255,6 +262,12 @@ class NavigationRouter extends Component {
                 component={TagScreen}
               />
             </Scene>
+              <Scene
+                key='readOnlyProfile'
+                component={ReadOnlyProfileScreen}
+                hideNavBar
+                onLeft={() => NavActions.pop()}
+              />
             <Scene
               key='mediaSelectorScreen'
               component={MediaSelectorScreen}

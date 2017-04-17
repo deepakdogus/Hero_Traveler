@@ -14,6 +14,7 @@ import { Colors } from '../Themes'
 import Loader from './Loader'
 import StoryList from './StoryList'
 import formatCount from '../Lib/formatCount'
+import Avatar from './Avatar'
 
 const Tab = ({text, onPress, selected}) => {
   return (
@@ -25,7 +26,7 @@ const Tab = ({text, onPress, selected}) => {
 
 export default class ProfileView extends React.Component {
   render() {
-    const { user, stories, fetchStatus, editable, avatar, profileImage } = this.props
+    const { user, stories, fetchStatus, editable, profileImage } = this.props
     let cog
     let buttons
     let tabs
@@ -95,7 +96,7 @@ export default class ProfileView extends React.Component {
                 <View style={styles.nameSeparator} />
                 <Text style={styles.italicText}>{user.profile.fullName}</Text>
               </View>
-              {avatar}
+              <Avatar avatarUrl={user.profile.avatar} />
               <TouchableOpacity onPress={() => alert('read bio')}>
                 <Text style={styles.italicText}>Read Bio</Text>
               </TouchableOpacity>

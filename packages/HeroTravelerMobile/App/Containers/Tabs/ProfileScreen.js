@@ -73,11 +73,10 @@ class ProfileScreen extends React.Component {
     return (
       <ProfileView
         user={user}
-        avatar={avatar}
         stories={storiesAsArray}
         editable={true}
         profileImage={Images.profile}
-        fetchStatus={storyFetchStatus}
+        fetchStatus={userStoriesFetchStatus}
       />
     )
   }

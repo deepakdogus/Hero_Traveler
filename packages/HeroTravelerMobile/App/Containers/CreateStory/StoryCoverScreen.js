@@ -115,7 +115,7 @@ class StoryCoverScreen extends React.Component {
   _onRight = () => {
     const {story} = this.props
 
-    if ((!story.coverImage || !story.coverPhoto) && !story.title) {
+    if ((!story.coverImage && !story.coverPhoto) || !story.title) {
       this.setState({error: 'Please add a cover and a title to continue'})
       return
     }
@@ -143,6 +143,7 @@ class StoryCoverScreen extends React.Component {
               <TouchableOpacity
                 style={styles.addPhotoButton}
                 onPress={() => {
+                  this.setState({error: null})
                   NavActions.mediaSelectorScreen({
                     mediaType: 'photo',
                     title: 'Add a Cover',

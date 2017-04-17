@@ -23,7 +23,7 @@ function removeAllData() {
     Models.StoryBookmark.remove({}),
     Models.StoryLike.remove({}),
     Models.StoryDraft.remove({}),
-    Models.Comments.remove({}),
+    Models.Comment.remove({}),
   ]
 
   return Promise.all(promises)

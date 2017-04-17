@@ -166,7 +166,7 @@ class LoginScreen extends React.Component {
               containerStyle={styles.forgotWrapper}
               style={styles.forgot}
               text="Forgot your password?"
-              onPress={NavigationActions.resetPassword}
+              onPress={() => alert('Forgot password')}
             />
 
             <TOS style={styles.tos} />

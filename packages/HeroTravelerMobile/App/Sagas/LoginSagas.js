@@ -32,3 +32,29 @@ export function * login (api, { username, password }) {
 export function * loginFacebook () {
   yield put(LoginActions.loginFacebookSuccess())
 }
+
+export function * resetPassword (api, {email}) {
+
+  console.log("api.resetPassword: ", api.resetPassword)
+  try {
+    const response = yield call(
+      api.resetPassword,
+      email
+    )
+
+    if (response.ok) {
+      yield put(LoginActions.resetPasswordRequestSuccess())
+    } else {
+      yield put(LoginActions.resetPasswordRequestFailure(new Error('Reset request failed')))
+    }
+  } catch (e) {
+    yield put(LoginActions.resetPasswordRequestFailure(e))
+  }
+}
+
+
+
+
+
+
+

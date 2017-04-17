@@ -12,6 +12,7 @@ import followUser from './followUser'
 import unfollowUser from './unfollowUser'
 import followCategory from './followCategory'
 import unfollowCategory from './unfollowCategory'
+import resetPassword from './resetPassword'
 
 const router = express.Router()
 
@@ -24,6 +25,11 @@ router.get(
 router.post('/',
   hasClientId,
   endpointWrapper(create)
+)
+
+router.post('/resetPassword',
+  hasClientId,
+  endpointWrapper(resetPassword)
 )
 
 router.get(

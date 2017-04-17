@@ -20,15 +20,14 @@ function renderTemplate(templateName, context) {
   })
 }
 
-export default function sendWelcomeEmail(user) {
+export default function resetPasswordEmail(user, token) {
 
-  if (process.env.DISABLE_EMAIL) {
-    return Promise.resolve()
-  }
+  console.log("user in email function: ", user)
+  console.log("token in email function: ", token)
 
   const context = {
-    subject: 'Welcome to HERO Traveler!',
-    confirmationUrl: 'https://www.google.com',
+    subject: 'Link to Reset Your HERO Traveler Password',
+    resetPasswordUrl: 'https://www.google.com',
     logoUrl: 'https://s3.amazonaws.com/hero-traveler/assets/ht-logo-white-small.png',
     logoHeight: '50px',
     logoWidth: '246px',
@@ -38,7 +37,7 @@ export default function sendWelcomeEmail(user) {
     fullName: user.profile.fullName
   }
 
-  return renderTemplate('newUserTemplate', context)
+  return renderTemplate('resetPasswordTemplate', context)
     .then(html => {
       return new Promise((resolve, reject) => {
         mailer.sendMail({

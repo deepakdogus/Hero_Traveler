@@ -9,7 +9,10 @@ const { Types, Creators } = createActions({
   loginFailure: ['error'],
   loginFacebook: null,
   loginFacebookSuccess: ['username'],
-  loginFacebookFailure: ['error']
+  loginFacebookFailure: ['error'],
+  resetPasswordRequest: ['email'],
+  resetPasswordRequestSuccess: [],
+  resetPasswordRequestFailure: ['error']
 })
 
 export const LoginTypes = Types
@@ -39,6 +42,15 @@ export const successFacebook = (state, { username }) =>
 export const failure = (state, { error }) =>
   state.merge({ fetching: false, error })
 
+// we're attempting to find user who requested PW reset
+export const requestReset = (state) => state
+
+// success: found user requesting PW reset
+export const successRequestReset = (state) => state
+
+// success: did not find user requesting PW reset
+export const failureRequestReset = (state) => state
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -47,5 +59,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOGIN_FAILURE]: failure,
   [Types.LOGIN_FACEBOOK]: request,
   [Types.LOGIN_FACEBOOK_SUCCESS]: successFacebook,
-  [Types.LOGIN_FACEBOOK_FAILURE]: failure
+  [Types.LOGIN_FACEBOOK_FAILURE]: failure,
+  [Types.RESET_PASSWORD_REQUEST]: requestReset,
+  [Types.RESET_PASSWORD_REQUEST_SUCCESS]: successRequestReset,
+  [Types.RESET_PASSWORD_REQUEST_FAILURE]: failureRequestReset,
 })

@@ -95,6 +95,11 @@ const create = () => {
     })
   }
 
+  const resetPassword = (email) => {
+    return api.post('user/resetPassword', {email})
+  }
+
+
   const getMe = () => {
     return api.get('user')
   }
@@ -260,6 +265,7 @@ const create = () => {
     getMe,
     login,
     logout,
+    resetPassword,
     signupEmail,
     getUserFeed,
     createStory,

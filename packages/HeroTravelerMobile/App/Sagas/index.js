@@ -18,7 +18,7 @@ import { UserTypes } from '../Redux/Entities/Users'
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas'
-import { login, loginFacebook } from './LoginSagas'
+import { login, loginFacebook, resetPassword } from './LoginSagas'
 import {
   signupEmail,
   followCategory,
@@ -57,6 +57,7 @@ export default function * root () {
     takeLatest(OpenScreenTypes.OPEN_SCREEN, openScreen),
     takeLatest(LoginTypes.LOGIN_REQUEST, login, heroAPI),
     takeLatest(LoginTypes.LOGIN_FACEBOOK, loginFacebook),
+    takeLatest(LoginTypes.RESET_PASSWORD_REQUEST, resetPassword, heroAPI),
 
     takeLatest(SignupTypes.SIGNUP_EMAIL, signupEmail, heroAPI),
     takeLatest(SignupTypes.SIGNUP_FOLLOW_CATEGORY, followCategory, heroAPI),

@@ -6,7 +6,7 @@ import {User} from '@rwoody/ht-core'
 passport.use(
   new BasicStrategy(
     (username, password, next) => {
-      return User.validateCredentials(username, password)
+      User.validateCredentials(username, password)
         .then(user => next(null, user))
         .catch(err => {
           console.log('Auth error', err)
@@ -19,7 +19,7 @@ passport.use(
 passport.use(
   new BearerStrategy(
     (accessToken, next) => {
-      return User.validateAccessToken(accessToken)
+      User.validateAccessToken(accessToken)
         .then(user => next(null, user))
         .catch(err => {
           console.log('Auth error', err)

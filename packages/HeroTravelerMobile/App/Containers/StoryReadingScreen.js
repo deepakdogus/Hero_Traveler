@@ -80,7 +80,8 @@ class StoryReadingScreen extends React.Component {
   }
 
   _toggleLike = () => {
-    this.props.toggleLike(storyWithUser.id)
+    console.log('this.props.story.id', this.props.story.id)
+    this.props.toggleLike(this.props.story.id)
   }
 
   render () {

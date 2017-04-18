@@ -4,13 +4,9 @@ import encryptPassword from '../utils/encryptPassword'
 import {welcomeEmail} from '../utils/emailService'
 import getOrCreateTokens from './getOrCreateTokens'
 import uuid from 'uuid'
-
 import algoliasearchModule from 'algoliasearch'
 
-require('dotenv').config()
-
 const client = algoliasearchModule(process.env.ALGOLIA_ACCT_KEY, process.env.ALGOLIA_API_KEY)
-
 const userIndex = client.initIndex('dev_USERS')
 
 

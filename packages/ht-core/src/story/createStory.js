@@ -1,5 +1,4 @@
 import {Story} from '../models'
-require('dotenv').config()
 import algoliasearchModule from 'algoliasearch'
 
 const client = algoliasearchModule(process.env.ALGOLIA_ACCT_KEY, process.env.ALGOLIA_API_KEY)

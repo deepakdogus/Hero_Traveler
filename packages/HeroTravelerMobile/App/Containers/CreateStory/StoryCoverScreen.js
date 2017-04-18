@@ -226,6 +226,7 @@ class StoryCoverScreen extends React.Component {
               style={this.renderTextColor(styles.titleInput)}
               placeholder='ADD A TITLE'
               placeholderTextColor={this.renderPlaceholderColor(placeholderColor)}
+              returnKeyType='next'
             />
             <Field
               name='description'
@@ -235,6 +236,7 @@ class StoryCoverScreen extends React.Component {
               value={story.description}
               placeholder='Add a subtitle'
               placeholderTextColor={this.renderPlaceholderColor(placeholderColor)}
+              returnKeyType='done'
             />
           </View>
         </View>

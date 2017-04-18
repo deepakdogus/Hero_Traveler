@@ -91,9 +91,7 @@ export function * likeStory(api, {storyId}) {
   )
 
   if (response.ok) {
-    yield [
-      put(StoryActions.storyLikeSuccess())
-    ]
+    yield put(StoryActions.storyLikeSuccess())
   } else {
     yield put(StoryActions.storyLikeFailure(storyId))
   }

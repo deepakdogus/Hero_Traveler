@@ -13,7 +13,7 @@ const { Types, Creators } = createActions({
   fromUserFailure: null,
   receiveStories: ['stories'],
   storyLike: ['storyId'],
-  storyLikeSuccess: ['storyId'],
+  storyLikeSuccess: null,
   storyLikeFailure: ['storyId'],
   storyBookmark: ['storyId'],
   storyBookmarkSuccess: ['storyId'],
@@ -127,7 +127,7 @@ const storyLike = (state, {storyId}) => {
   )
 }
 
-const storyLikeSuccess = (state, {}) => state
+const storyLikeSuccess = (state) => state
 
 // Revert the optimistic update on like failure
 const storyLikeFailure = (state, {storyId}) => {

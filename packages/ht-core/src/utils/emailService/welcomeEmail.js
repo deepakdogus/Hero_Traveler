@@ -28,7 +28,7 @@ export default function sendWelcomeEmail(user) {
 
   const context = {
     subject: 'Welcome to HERO Traveler!',
-    confirmationUrl: 'https://www.google.com',
+    confirmationUrl: `https://www.herotraveler.com/email-verify/${user.emailConfirmationToken}`,
     logoUrl: 'https://s3.amazonaws.com/hero-traveler/assets/ht-logo-white-small.png',
     logoHeight: '50px',
     logoWidth: '246px',

@@ -68,8 +68,6 @@ export default class StoryPreview extends Component {
         counts
       } = story
 
-    console.log('profile where it counts', profile)
-
     const userContent = (
       <View style={styles.row}>
         <Avatar

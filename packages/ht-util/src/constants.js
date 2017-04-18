@@ -6,10 +6,10 @@ export default {
   USERNAME_MAX_LENGTH: 20,
   USERNAME_REGEX: /(?=^.{5,20}$)^[a-zA-Z][a-zA-Z0-9]*[._-]?[a-zA-Z0-9]+$/,
   EMAIL_REGEX: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-  
+
   // Story types
   STORY_TYPE_EAT_LABEL: 'EAT',
-  STORY_TYPE_EAT_VALUE: 'do',
+  STORY_TYPE_EAT_VALUE: 'eat',
   STORY_TYPE_DO_LABEL: 'DO',
   STORY_TYPE_DO_VALUE: 'do',
   STORY_TYPE_STAY_LABEL: 'Stay',

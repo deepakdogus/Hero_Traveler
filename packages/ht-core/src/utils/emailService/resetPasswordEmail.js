@@ -20,14 +20,11 @@ function renderTemplate(templateName, context) {
   })
 }
 
-export default function resetPasswordEmail(user, token) {
-
-  console.log("user in email function: ", user)
-  console.log("token in email function: ", token)
-
+export default function resetPasswordEmail(user) {
   const context = {
     subject: 'Link to Reset Your HERO Traveler Password',
-    resetPasswordUrl: 'https://www.google.com',
+    // @TODO: this should be a link to the mobile app
+    resetPasswordUrl: `http://herotraveler.com/reset/${user.passwordResetToken}`,
     logoUrl: 'https://s3.amazonaws.com/hero-traveler/assets/ht-logo-white-small.png',
     logoHeight: '50px',
     logoWidth: '246px',

@@ -10,7 +10,7 @@ import {
 import { Actions as NavActions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import LinearGradient from 'react-native-linear-gradient'
-import { Colors } from '../Themes'
+import { Colors, Metrics } from '../Themes'
 import Loader from './Loader'
 import StoryList from './StoryList'
 import formatCount from '../Lib/formatCount'
@@ -82,8 +82,14 @@ export default class ProfileView extends React.Component {
         </View>
       )
     }
+
+    console.log('stories', stories)
     return (
-      <ScrollView style={[styles.containerWithTabbar, styles.root]}>
+      <ScrollView style={[
+        this.props.hasTabbar ? styles.containerWithTabbar : null,
+        styles.root,
+        this.props.style,
+      ]}>
         <Image
           style={styles.coverImage}
           source={profileImage}
@@ -133,7 +139,8 @@ export default class ProfileView extends React.Component {
               titleStyle={styles.storyTitleStyle}
               subtitleStyle={styles.subtitleStyle}
               editable={editable}
-              onPressStory={story => alert(`Story ${story.id} pressed`)}
+              forProfile={true}
+              onPressStory={story => NavActions.story({storyId: story.id})}
               onPressLike={story => alert(`Story ${story.id} liked`)}
             />
           }

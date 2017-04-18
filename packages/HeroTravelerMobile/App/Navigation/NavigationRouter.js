@@ -144,7 +144,7 @@ class NavigationRouter extends Component {
             <Scene
               key='resetPasswordRequest'
               component={ResetPasswordRequestScreen}
-            />            
+            />
             <Scene
               key='settings'
               component={SettingsScreen}
@@ -222,12 +222,6 @@ class NavigationRouter extends Component {
                 component={ProfileScreen}
                 hideNavBar
               />
-              <Scene
-                key='readOnlyProfile'
-                component={ReadOnlyProfileScreen}
-                hideNavBar
-                onLeft={() => NavActions.pop()}
-              />
             </Scene>
             <Scene
               key='createStoryFlow'
@@ -262,12 +256,12 @@ class NavigationRouter extends Component {
                 component={TagScreen}
               />
             </Scene>
-              <Scene
-                key='readOnlyProfile'
-                component={ReadOnlyProfileScreen}
-                hideNavBar
-                onLeft={() => NavActions.pop()}
-              />
+            <Scene
+              key='readOnlyProfile'
+              component={ReadOnlyProfileScreen}
+              {...clearNavBarProps}
+              onLeft={() => NavActions.pop()}
+            />
             <Scene
               key='mediaSelectorScreen'
               component={MediaSelectorScreen}

@@ -19,11 +19,7 @@ class FullScreenEditor extends React.Component {
   }
 
   _onRight = () => {
-    // this.editor.getContentHtml()
-    //   .then(html => {
-    //     this.props.change('content', html)
-        NavActions.createStory_details()
-      // })
+    NavActions.createStory_details()
   }
 
   render () {
@@ -63,17 +59,17 @@ export default R.compose(
   connect(state => {
     return {
       story: {
-        id: state.storyCreate.draft.id,
-        // content: state.storyCreate.content
+      //   id: state.storyCreate.draft.id,
+      //   // content: state.storyCreate.content
       }
     }
-  }, dispatch => {
+  }, (dispatch) => {
     return {
-      update: (id, attrs) => {
-        dispatch(
-          StoryEditActions.updateDraft(id, attrs)
-        )
-      }
+      // update: (id, attrs) => {
+      //   dispatch(
+      //     StoryEditActions.updateDraft(id, attrs)
+      //   )
+      // }
     }
   }),
   reduxForm({

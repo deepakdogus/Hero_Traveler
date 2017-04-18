@@ -6,7 +6,8 @@ const avatarImageSize = 80
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
-    minHeight: Metrics.screenHeight - Metrics.tabBarHeight
+    flex: 1,
+    height: Metrics.screenHeight + Metrics.tabBarHeight
   },
   avatarImage: {
     width: avatarImageSize,

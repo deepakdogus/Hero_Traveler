@@ -3,9 +3,9 @@ import _ from 'lodash'
 import React from 'react'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import {Image} from 'react-native'
+import {Image, View} from 'react-native'
 
-import {Images, Colors} from '../Themes'
+import {Images, Colors, Metrics} from '../Themes'
 import SessionActions, {hasAuthData} from '../Redux/SessionRedux'
 import StoryActions, {getByUser} from '../Redux/Entities/Stories'
 import ProfileView from '../Components/ProfileView'
@@ -22,9 +22,11 @@ class ReadOnlyProfileScreen extends React.Component {
     const stories = getByUser(allStories, userId)
     const user = usersById[userId]
 
+console.log('user', user)
     const storiesAsArray = _.map(stories, s => {
       return {
-        ...s
+        ...s,
+        author: user
       }
     })
 
@@ -35,27 +37,15 @@ class ReadOnlyProfileScreen extends React.Component {
       return null
     }
 
-    if (user.profile.avatar) {
-      avatar = (
-        <Image
-          style={styles.avatarImage}
-          source={{uri: user.profile.avatar}}
-        />
-      )
-    } else {
-      avatar = (
-        <Icon name="user-circle-o" color={Colors.snow} size={40} />
-      )
-    }
-
     return (
       <ProfileView
         user={user}
-        avatar={avatar}
         stories={storiesAsArray}
         editable={false}
+        hasTabbar={false}
         profileImage={Images.profile}
         fetchStatus={fetchStatus}
+        style={styles.root}
       />
     )
   }

@@ -6,7 +6,7 @@ const avatarImageSize = 80
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
-    minHeight: Metrics.screenHeight - Metrics.tabBarHeight
+    backgroundColor: Colors.clear
   },
   gradient: {
     paddingTop: 20,
@@ -21,7 +21,7 @@ export default StyleSheet.create({
     flexDirection: 'column'
   },
   coverInner: {
-    // flex: 1,
+    paddingTop: Metrics.section,
     height: 325,
     flexDirection: 'column',
     justifyContent: 'space-around',

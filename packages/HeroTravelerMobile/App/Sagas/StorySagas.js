@@ -63,11 +63,11 @@ export function * discardDraft (api, action) {
 }
 
 export function * updateDraft (api, action) {
-  const {draftId, draft} = action
+  const {draftId, draft, resetAfterUpdate} = action
   const response = yield call(api.updateDraft, draftId, draft)
   if (response.ok) {
     const {data: draft} = response
-    yield put(StoryCreateActions.updateDraftSuccess(draft))
+    yield put(StoryCreateActions.updateDraftSuccess(draft, resetAfterUpdate))
   } else {
     yield put(StoryCreateActions.updateDraftFailure(new Error('Failed to update draft')))
   }

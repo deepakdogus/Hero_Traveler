@@ -29,6 +29,8 @@ const UserSchema = new Schema({
     fullName: String,
     avatar: String
   },
+  passwordResetToken: String,
+  emailConfirmationToken: String,
   counts: {
     followers: {
       type: Number,

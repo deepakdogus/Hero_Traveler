@@ -25,11 +25,6 @@ import styles from './Styles/ResetPasswordRequestScreenStyles'
 import LoginActions from '../Redux/LoginRedux'
 
 const Constants = {
-  PASSWORD_MIN_LENGTH: 8,
-  PASSWORD_MAX_LENGTH: 64,
-  USERNAME_MIN_LENGTH: 5,
-  USERNAME_MAX_LENGTH: 20,
-  USERNAME_REGEX: /(?=^.{5,20}$)^[a-zA-Z][a-zA-Z0-9]*[._-]?[a-zA-Z0-9]+$/,
   EMAIL_REGEX: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 }
 
@@ -92,12 +87,12 @@ class ResetPasswordRequestScreen extends React.Component {
           contentContainerStyle={{justifyContent: 'flex-start'}}>
           <KeyboardAvoidingView behavior='position'>
             <View style={[styles.section, {marginTop: 0}]}>
-              <Text style={styles.title}>Reset Password Request</Text>
+              <Text style={styles.title}>RESET PASSWORD</Text>
               <Text style={styles.instructions}>
               Please enter your email address
               </Text>
             </View>
-            <View style={{height: 100}}>
+            <View style={{height: 120}}>
             </View>
             <Input
               ref='email'
@@ -110,14 +105,12 @@ class ResetPasswordRequestScreen extends React.Component {
               onChangeText={this.handleChangeEmail}
               underlineColorAndroid='transparent'
               onSubmitEditing={() => this.refs.password.focus()}
-              placeholder='email address' />
+              placeholder='Email' />
 
             <RoundedButton
               text="Submit"
               onPress={this.handlePressResetPasswordRequest}
             />
-
-            <TOS style={styles.tos} />
 
             {this.props.error && <Text style={styles.error}>{this.props.error}</Text>}
           </KeyboardAvoidingView>

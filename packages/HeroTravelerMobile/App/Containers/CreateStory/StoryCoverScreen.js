@@ -39,7 +39,7 @@ function getImage(story) {
   const path = _.get(story, 'coverImage.original.path')
 
   if (!path) return null
-  
+
   return `https://s3.amazonaws.com/hero-traveler/${path}`
 }
 
@@ -58,6 +58,17 @@ class StoryCoverScreen extends React.Component {
     // Create a new draft to work with if one doesn't exist
     if (!this.props.story.id) {
       this.props.registerDraft()
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // If we are cancelling the screen,
+    // the draft resets,
+    // redux-form clears,
+    // and we pop()
+    if (this.props.story && !nextProps.story) {
+      NavActions.pop()
+      this.props.resetForm()
     }
   }
 
@@ -100,13 +111,13 @@ class StoryCoverScreen extends React.Component {
       'Do you want to save this draft?',
       [{
         text: 'Yes, save the draft',
-        onPress: () => NavActions.pop()
+        onPress: () => {
+          this.props.update(this.props.story.id, this.props.story, true)
+        }
       }, {
         text: 'No, remove it',
         onPress: () => {
           this.props.discardDraft(this.props.story.id)
-          this.props.resetForm()
-          NavActions.pop()
         }
       }]
     )
@@ -279,9 +290,9 @@ export default R.compose(
     registerDraft: () => dispatch(StoryEditActions.registerDraft()),
     discardDraft: (draftId) => dispatch(StoryEditActions.discardDraft(draftId)),
     resetForm: () => dispatch(resetForm('createStory')),
-    update: (id, attrs) => {
+    update: (id, attrs, doReset) => {
       dispatch(
-        StoryEditActions.updateDraft(id, attrs)
+        StoryEditActions.updateDraft(id, attrs, doReset)
       )
     },
     uploadCover: (id, path) => {

@@ -19,6 +19,10 @@ export default class StoryList extends React.Component {
     refreshing: PropTypes.bool,
   }
 
+  static defaultProps = {
+    refreshing: false
+  }
+
   constructor(props) {
     super(props)
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => _.isEqual(r1, r2)})

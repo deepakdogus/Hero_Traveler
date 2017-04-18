@@ -14,8 +14,8 @@ const { Types, Creators } = createActions({
   discardDraft: ['draftId'],
   discardDraftSuccess: ['draft'],
   discardDraftFailure: ['error'],
-  updateDraft: ['draftId', 'draft'],
-  updateDraftSuccess: ['draft'],
+  updateDraft: ['draftId', 'draft', 'resetAfterUpdate'],
+  updateDraftSuccess: ['draft', 'resetAfterUpdate'],
   updateDraftFailure: ['error'],
   uploadCoverImage: ['draftId', 'path'],
   uploadCoverImageSuccess: ['draft'],
@@ -48,7 +48,7 @@ export const publishSuccess = (state, {draft}) => {
     publishing: false,
     error: null,
     isPublished: true,
-    draft
+    draft: null
   }, {deep: true})
 }
 
@@ -64,7 +64,11 @@ export const registerDraftSuccess = (state, {draft}) => {
   return state.merge({draft})
 }
 
-export const updateDraft = (state, {draft}) => {
+export const updateDraft = (state, {draft, resetAfterUpdate}) => {
+  if (resetAfterUpdate) {
+    return INITIAL_STATE
+  }
+
   return state.merge({draft}, {deep: true})
 }
 

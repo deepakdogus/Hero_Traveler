@@ -45,8 +45,11 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
+    console.log('new props', newProps)
     if (!newProps.publishing && newProps.isCreated) {
+      console.log('we are here')
       NavActions.tabbar({type: 'reset'})
+      this.props.resetForm()
     }
   }
 
@@ -67,6 +70,7 @@ class CreateStoryDetailScreen extends React.Component {
       story
     )
     NavActions.tabbar({type: 'reset'})
+    this.props.resetForm()
   }
 
   render () {
@@ -162,32 +166,34 @@ const selector = formValueSelector('createStory')
 export default R.compose(
   connect(
     (state) => {
+      const draft = state.storyCreate.draft ? state.storyCreate.draft : {}
       return {
         publishing: isPublishing(state.storyCreate),
         isCreated: isCreated(state.storyCreate),
         story: {
+          ...draft,
           title: selector(state, 'title'),
           category: _.values(state.entities.stories.entities)[0].category,
-          type: selector(state, 'type') || 'eat',
+          type: selector(state, 'type') || draft.type,
           location: selector(state, 'location'),
           content: selector(state, 'content'),
-          ...state.storyCreate.draft
         },
         tags: selector(state, 'tags')
       }
     },
     dispatch => ({
       publish: (story) => dispatch(StoryEditActions.publishDraft(story)),
-      update: (id, attrs) => dispatch(StoryEditActions.updateDraft(id, attrs))
+      update: (id, attrs) => dispatch(StoryEditActions.updateDraft(id, attrs, true))
     })
   ),
   reduxForm({
     form: 'createStory',
     destroyOnUnmount: true,
-    // keepDirtyOnReinitialize: true,
-    // enableReinitialize: true,
-    // initialValues: {
-    //   content: '1'
-    // }
+    keepDirtyOnReinitialize: true,
+    enableReinitialize: true,
+    initialValues: {
+      type: '',
+      tags: ''
+    }
   })
 )(CreateStoryDetailScreen)

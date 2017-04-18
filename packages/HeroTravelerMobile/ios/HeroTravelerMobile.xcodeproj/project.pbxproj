@@ -285,6 +285,13 @@
 			remoteGlobalIDString = 11FA5C511C4A1296003AC2EE;
 			remoteInfo = AirMaps;
 		};
+		948D409F1EA6528B00DE9ED9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 83CBBA2D1A601D0E00E9B192;
+			remoteInfo = React;
+		};
 		94C6F84B1E9EAA7700CD88F7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D3288C03382F4F709FD69BF5 /* SplashScreen.xcodeproj */;
@@ -775,6 +782,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				948D40A01EA6528B00DE9ED9 /* PBXTargetDependency */,
 			);
 			name = HeroTravelerMobile;
 			productName = "Hello World";
@@ -1324,6 +1332,11 @@
 			target = 2D02E47A1E0B4A5D006451C7 /* HeroTravelerMobile-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
 		};
+		948D40A01EA6528B00DE9ED9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = React;
+			targetProxy = 948D409F1EA6528B00DE9ED9 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -1425,6 +1438,7 @@
 				DEVELOPMENT_TEAM = 9498CR345N;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(REACT_HEADERS_PATH)",
 					"$(SRCROOT)/../node_modules/react-native-config/ios/ReactNativeConfig",
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
@@ -1460,6 +1474,7 @@
 				DEVELOPMENT_TEAM = 9498CR345N;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(REACT_HEADERS_PATH)",
 					"$(SRCROOT)/../node_modules/react-native-config/ios/ReactNativeConfig",
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",

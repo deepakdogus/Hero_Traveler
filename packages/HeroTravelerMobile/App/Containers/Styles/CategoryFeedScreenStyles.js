@@ -17,4 +17,32 @@ export default StyleSheet.create({
     fontSize: 24,
     color: '#fff'
   },
+  tabnav: {
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  tab: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '25%',
+    borderBottomWidth: 2,
+    borderBottomColor: Colors.coal,
+  },
+  tabText: {
+    fontFamily: Fonts.type.montserrat,
+    color: '#bdbdbd',
+    fontSize: 13,
+    letterSpacing: 1.2,
+    textAlign: 'center'
+  },
+  tabSelected: {
+    borderBottomColor: Colors.red
+  },
+  tabTextSelected: {
+    fontFamily: Fonts.type.montserrat,
+    color: '#757575',
+    fontSize: 13,
+    letterSpacing: 1.2,
+  },
 })

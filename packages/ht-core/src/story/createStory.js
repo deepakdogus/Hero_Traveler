@@ -3,7 +3,7 @@ import algoliasearchModule from 'algoliasearch'
 
 const client = algoliasearchModule(process.env.ALGOLIA_ACCT_KEY, process.env.ALGOLIA_API_KEY)
 
-const storyIndex = client.initIndex('dev_STORIES')
+const storyIndex = client.initIndex(process.env.ALGOLIA_STORY_INDEX)
 
 const addStoryToIndex = (story) => new Promise((resolve, reject) => {
   storyIndex.addObject(story, (err, content) => {

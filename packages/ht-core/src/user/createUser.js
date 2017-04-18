@@ -7,7 +7,7 @@ import uuid from 'uuid'
 import algoliasearchModule from 'algoliasearch'
 
 const client = algoliasearchModule(process.env.ALGOLIA_ACCT_KEY, process.env.ALGOLIA_API_KEY)
-const userIndex = client.initIndex('dev_USERS')
+const userIndex = client.initIndex(process.env.ALGOLIA_USER_INDEX)
 
 
 // converting algoliasearch callback api to promise

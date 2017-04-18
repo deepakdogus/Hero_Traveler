@@ -68,7 +68,6 @@ class StoryCoverScreen extends React.Component {
     // and we pop()
     if (this.props.story && !nextProps.story) {
       NavActions.pop()
-      this.props.resetForm()
     }
   }
 

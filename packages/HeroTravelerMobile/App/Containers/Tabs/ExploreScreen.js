@@ -25,6 +25,9 @@ import StorySearchList from '../../Components/StorySearchList'
 import {Metrics} from '../../Themes'
 import styles from '../Styles/ExploreScreenStyles'
 
+const STORY_INDEX = __DEV__ ? 'ryan_dev_STORIES' : 'dev_STORIES'
+const USERS_INDEX = __DEV__ ? 'ryan_dev_USERS' : 'dev_USERS'
+
 const Tab = ({text, onPress, selected}) => {
   return (
     <TouchableOpacity style={[styles.tab, selected ? styles.tabSelected : null]} onPress={onPress}>
@@ -43,7 +46,7 @@ class ExploreScreen extends Component {
   }
 
   componentWillMount() {
-    this.helper = AlgoliaSearchHelper(algoliasearch, 'dev_STORIES')
+    this.helper = AlgoliaSearchHelper(algoliasearch, STORY_INDEX)
     this.setupSearchListeners(this.helper)
   }
 
@@ -75,7 +78,7 @@ class ExploreScreen extends Component {
   }
 
   getSearchIndex(selectedTabIndex) {
-    return selectedTabIndex === 0 ? 'dev_STORIES' : 'dev_USERS'
+    return selectedTabIndex === 0 ? STORY_INDEX : USERS_INDEX
   }
 
   changeIndex(newIndex) {
@@ -129,7 +132,13 @@ class ExploreScreen extends Component {
   }
 
   renderSearchSection() {
-    const searchHits = _.get(this.state.lastSearchResults, 'hits', [])
+    let searchHits = _.get(this.state.lastSearchResults, 'hits', [])
+    searchHits = _.map(searchHits, story => {
+      return {
+        ...story,
+        author: this.props.users[story.author]
+      }
+    })
     const isSearching = this.state.searching
     return (
       <View style={styles.tabs}>
@@ -240,6 +249,7 @@ const mapStateToProps = (state) => {
 
   return {
     user: state.session.user,
+    users: state.entities.users.entities,
     categories,
     categoriesFetchStatus,
     error: categoriesError

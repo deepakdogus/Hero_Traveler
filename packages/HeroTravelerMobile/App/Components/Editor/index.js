@@ -7,16 +7,35 @@ import {
   TouchableOpacity,
   View,
   Image,
+  StyleSheet,
   Platform
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
-// import {RichTextEditor, RichTextToolbar, actions} from 'react-native-zss-rich-text-editor';
-// import KeyboardSpacer from 'react-native-keyboard-spacer';
-
+import {RichTextEditor, RichTextToolbar, actions} from 'react-native-zss-rich-text-editor';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 import ShadowButton from '../ShadowButton'
-import {Images, Colors} from '../../Themes'
-import styles from './EditorStyles'
+import {Images, Colors, Metrics} from '../../Themes'
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: Colors.white,
+    paddingTop: Metrics.baseMargin
+  },
+  editorWrapper: {
+    flex: 1,
+    paddingHorizontal: Metrics.baseMargin
+  },
+  richText: {
+    flex: 1,
+    width: Metrics.screenWidth - Metrics.doubleBaseMargin,
+  },
+  toolbar: {
+    backgroundColor: Colors.background
+  }
+})
 
 export default class Editor extends Component {
 
@@ -26,46 +45,36 @@ export default class Editor extends Component {
     //   <Icon name='rocket' size={15} />
     // )
 
-    /*return (
+    console.log('rendering')
+
+    return (
       <View style={styles.root}>
-        <RichTextEditor
+        <View style={styles.editorWrapper}>
+          <RichTextEditor
             ref={(r)=> this.richtext = r}
             style={styles.richText}
             hiddenTitle={true}
-            enableOnChange={true}
             initialContentHTML={this.props.content}
-            editorInitializedCallback={() => this.onEditorInitialized()}
           />
-          <RichTextToolbar
-            onPressAddImage={this._addImage}
-            actions={[
-              actions.setBold,
-              actions.setItalic,
-              actions.heading1,
-              actions.removeFormat,
-              actions.insertImage,
-              actions.insertLink,
-            ]}
-            iconMap={{
-              [actions.heading1]: require('../../Images/ht-icons/icon_content-text.png'),
-              [actions.removeFormat]: require('../../Images/ht-icons/icon_content-x.png')
-            }}
-            getEditor={() => this.richtext}
-            style={styles.toolbar}
-          />
-          {Platform.OS === 'ios' && <KeyboardSpacer/>}
-      </View>
-    )*/
-
-    return (
-      <View style={[styles.root, this.props.style]}>
-          <TextInput
-            autoFocus={true}
-            multiline={true}
-            onChangeText={this.props.onChange}
-            value={this.props.content}
-            style={styles.textInput}
-          />
+        </View>
+        <RichTextToolbar
+          onPressAddImage={this._addImage}
+          actions={[
+            actions.setBold,
+            actions.setItalic,
+            actions.heading1,
+            actions.removeFormat,
+            actions.insertImage,
+            actions.insertLink,
+          ]}
+          iconMap={{
+            [actions.heading1]: require('../../Images/ht-icons/icon_content-text.png'),
+            [actions.removeFormat]: require('../../Images/ht-icons/icon_content-x-white.png')
+          }}
+          getEditor={() => this.richtext}
+          style={styles.toolbar}
+        />
+        {Platform.OS === 'ios' && <KeyboardSpacer/>}
       </View>
     )
   }
@@ -78,11 +87,6 @@ export default class Editor extends Component {
     if (this.props.onAddImage) {
       this.props.onAddImage()
     }
-  }
-
-  onEditorInitialized() {
-    this.setFocusHandlers();
-    this.getHTML();
   }
 
   async getHTML() {

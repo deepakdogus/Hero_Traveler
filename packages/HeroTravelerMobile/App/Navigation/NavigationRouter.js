@@ -9,6 +9,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import LaunchScreen from '../Containers/LaunchScreen'
+import EditorTestScreen from '../Containers/EditorTestScreen'
 import Styles from './Styles/NavigationContainerStyles'
 
 // Tabs
@@ -110,10 +111,11 @@ class NavigationRouter extends Component {
             <Scene
               initial
               key='launchScreen'
-              component={LaunchScreen}
+              component={EditorTestScreen}
               rightTitle='Browse as a Guest >'
               rightButtonTextStyle={Styles.browseGuest}
               onRight={() => alert('TODO Browse as guest')}
+              hideNavBar={true}
             />
             <Scene
               key='signup'

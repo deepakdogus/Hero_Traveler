@@ -14,6 +14,14 @@ import styles from '../Styles/CategoryFeedScreenStyles'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
 
+const Tab = ({text, onPress, selected}) => {
+  return (
+    <TouchableOpacity style={[styles.tab, selected ? styles.tabSelected : null]} onPress={onPress}>
+      <Text style={[styles.tabText, selected ? styles.tabTextSelected : null]}>{text}</Text>
+    </TouchableOpacity>
+  )
+}
+
 
 class CategoryFeedScreen extends React.Component {
 
@@ -29,7 +37,8 @@ class CategoryFeedScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      refreshing: false
+      refreshing: false,
+      selectedTabIndex: 0
     }
   }
 
@@ -45,6 +54,12 @@ class CategoryFeedScreen extends React.Component {
         {elt}
       </View>
     )
+  }
+
+  _changeTab = (selectedTabIndex) => {
+    this.setState({
+      selectedTabIndex
+    })
   }
 
   _showLoader(){
@@ -73,12 +88,25 @@ class CategoryFeedScreen extends React.Component {
   render () {
     let { stories, fetchStatus, error } = this.props;
 
+    const filterMap = {
+      0: true,
+      1: 'do',
+      2: 'eat',
+      3: 'stay'
+    }
+
+    const filterByTopic = value => {
+      if (this.state.selectedTabIndex === 0 ) return true
+      return value.type === filterMap[this.state.selectedTabIndex]
+    }
+
     const storiesAsArray = _.map(stories, s => {
       return {
         ...s,
         author: this.props.usersById[s.author]
       }
-    })
+    }).filter(filterByTopic)
+
     let content;
 
     if (fetchStatus.fetching && !this.state.refreshing) {
@@ -102,11 +130,35 @@ class CategoryFeedScreen extends React.Component {
           refreshing={this.state.refreshing}
           onPressLike={story => this.props.toggleLike(story.id)}
         />
-      );
+      )
     }
 
     return (
       <View style={[styles.containerWithNavbarAndTabbar, styles.root]}>
+          <View style={styles.tabs}>
+            <View style={styles.tabnav}>
+              <Tab
+                selected={this.state.selectedTabIndex === 0}
+                onPress={() => this._changeTab(0)}
+                text='ALL'
+              />
+              <Tab
+                selected={this.state.selectedTabIndex === 1}
+                onPress={() => this._changeTab(1)}
+                text='DO'
+              />
+              <Tab
+                selected={this.state.selectedTabIndex === 2}
+                onPress={() => this._changeTab(2)}
+                text='EAT'
+              />
+              <Tab
+                selected={this.state.selectedTabIndex === 3}
+                onPress={() => this._changeTab(3)}
+                text='STAY'
+              />
+            </View>
+          </View>
         { content }
       </View>
     )

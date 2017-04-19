@@ -19,6 +19,9 @@ import ProfileScreen from '../Containers/Tabs/ProfileScreen'
 import ReadOnlyProfileScreen from '../Containers/ReadOnlyProfileScreen'
 import SettingsScreen from '../Containers/SettingsScreen'
 import CategoryFeedScreen from '../Containers/Explore/CategoryFeedScreen'
+import ProfileEdit from '../Components/ProfileEdit'
+
+console.log("PROFILEEDIT TYPEOF: ", typeof ProfileEdit)
 
 // Story reading & creating
 import StoryReadingScreen from '../Containers/StoryReadingScreen'
@@ -223,6 +226,13 @@ class NavigationRouter extends Component {
                 hideNavBar
               />
             </Scene>
+            <Scene
+              key='edit_profile'
+              component={ProfileScreen}
+              hideNavBar
+              isEditing={true}
+              direction='vertical'
+            />
             <Scene
               key='createStoryFlow'
               direction='vertical'

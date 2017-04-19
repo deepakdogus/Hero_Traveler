@@ -98,6 +98,17 @@ export default StyleSheet.create({
     fontSize: 11,
     color: Colors.snow
   },
+  cameraIcon: {
+    textAlign: 'center',
+    marginBottom: Metrics.baseMargin
+  },
+  updateAvatorIcon: {
+  },
+  addPhotoButton: {
+    padding: 50,
+    justifyContent: 'center',
+    backgroundColor: 'transparent'
+  },    
   contributor: {
     marginLeft: Metrics.baseMargin
   },

@@ -10,7 +10,6 @@ import com.horcrux.svg.SvgPackage;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
-import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -37,8 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
             new SvgPackage(),
             new RCTCameraPackage(),
             new VectorIconsPackage(),
-            new RNDeviceInfo(),
-            new ReactNativeConfigPackage()
+            new RNDeviceInfo()
       );
     }
   };

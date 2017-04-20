@@ -20,22 +20,48 @@ import {Images, Colors, Metrics} from '../../Themes'
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    flexDirection: 'column',
+    // flexDirection: 'column',
     backgroundColor: Colors.white,
-    paddingTop: Metrics.baseMargin
+    // paddingTop: Metrics.baseMargin
   },
   editorWrapper: {
     flex: 1,
-    paddingHorizontal: Metrics.baseMargin
+    padding: 10,
+    // paddingHorizontal: Metrics.baseMargin,
   },
   richText: {
     flex: 1,
     width: Metrics.screenWidth - Metrics.doubleBaseMargin,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   toolbar: {
+    // flex: 1,
     backgroundColor: Colors.background
   }
 })
+
+
+customEditorCSS = `
+  html, body {
+    // font-size: 18px;
+    font-weight: 300;
+    color: #757575;
+  }
+
+  h1 {
+    // font-size: 21px;
+    color: #1a1c21;
+    letter-spacing: .7px;
+  }
+
+  .caption {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    text-align: center;
+    margin: 10px;
+  }
+`
 
 export default class Editor extends Component {
 
@@ -55,6 +81,7 @@ export default class Editor extends Component {
             style={styles.richText}
             hiddenTitle={true}
             initialContentHTML={this.props.content}
+            customCSS={customEditorCSS}
           />
         </View>
         <RichTextToolbar
@@ -63,18 +90,20 @@ export default class Editor extends Component {
             actions.setBold,
             actions.setItalic,
             actions.heading1,
+            actions.setParagraph,
             actions.removeFormat,
             actions.insertImage,
             actions.insertLink,
           ]}
           iconMap={{
             [actions.heading1]: require('../../Images/ht-icons/icon_content-text.png'),
-            [actions.removeFormat]: require('../../Images/ht-icons/icon_content-x-white.png')
+            [actions.removeFormat]: require('../../Images/ht-icons/icon_content-x-white.png'),
+            [actions.setParagraph]: require('../../Images/ht-icons/icon_content-x-white.png'),
           }}
           getEditor={() => this.richtext}
           style={styles.toolbar}
         />
-        {Platform.OS === 'ios' && <KeyboardSpacer/>}
+        <KeyboardSpacer />
       </View>
     )
   }

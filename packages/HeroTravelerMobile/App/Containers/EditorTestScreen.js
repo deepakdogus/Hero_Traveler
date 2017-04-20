@@ -20,23 +20,7 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: 'transparent',
-    width: Metrics.screenWidth,
-  },
-  editorWrapper: {
-    flex: 1,
-    paddingHorizontal: 10
-  },
-  container: {
-    paddingLeft: Metrics.baseMargin,
-    paddingRight: Metrics.baseMargin,
-    backgroundColor: 'red',
-    flex: 1,
-    width: Metrics.screenWidth
-  },
-  webView: {
-    backgroundColor: 'red',
-    paddingLeft: Metrics.baseMargin,
-    paddingRight: Metrics.baseMargin,
+    // paddingTop: 40
   }
 })
 
@@ -61,13 +45,7 @@ export default class EditorTestScreen extends Component {
   render() {
     return (
       <View style={styles.root}>
-        <NavBar
-          title='Content'
-          rightTitle='Next'
-          onRight={this._onRight}
-          leftTitle='Cancel'
-          onLeft={this._onLeft}
-        />
+
         <Editor
           ref={c => {
             if (c) {
@@ -82,10 +60,6 @@ export default class EditorTestScreen extends Component {
       </View>
     )
   }
-
-  // getEditor = () => {
-  //   return this.richtext
-  // }
 
   _handlePressAddImage = () => {
     this.editor.prepareInsert()
@@ -104,7 +78,7 @@ export default class EditorTestScreen extends Component {
         rightTitle: 'Next',
         onSelectMedia: this._handleAddImage
       })
-    }, 1000)
+    }, 500)
   }
 
   _handleAddImage = (data) => {
@@ -114,10 +88,12 @@ export default class EditorTestScreen extends Component {
     setTimeout(() => {
       console.log('insertImage 1')
       this.editor.insertImage({
-        src: 'https://c1.staticflickr.com/3/2396/5813752744_17c3a3c46e_b.jpg'
+        src: 'https://c1.staticflickr.com/3/2396/5813752744_17c3a3c46e_b.jpg',
+        // src: data,
       })
-      // this.c.forceUpdate()
-      this.editor.getContentHtml().then(console.log)
+      setTimeout(() => {
+        this.editor.getContentHtml().then(console.log)
+      }, 3000)
     }, 1000)
     NavActions.pop()
   }

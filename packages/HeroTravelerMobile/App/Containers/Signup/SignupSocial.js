@@ -14,6 +14,7 @@ import UserActions from '../../Redux/Entities/Users'
 
 import RoundedButton from '../../Components/RoundedButton'
 import Avatar from '../../Components/Avatar'
+import getImageUrl from '../../Lib/getImageUrl'
 import {Colors} from '../../Themes'
 import styles from './SignupSocialStyles'
 
@@ -72,7 +73,7 @@ class SignupSocialScreen extends React.Component {
                 <View style={[styles.row, styles.followers]}>
                   <Avatar
                     style={styles.avatar}
-                    avatarUrl={u.profile.avatar}
+                    avatarUrl={getImageUrl(u.profile.avatar)}
                   />
                   <View style={styles.nameWrapper}>
                     <Text style={styles.name}>{u.profile.fullName}</Text>

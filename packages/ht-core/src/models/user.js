@@ -1,13 +1,12 @@
 import _ from 'lodash'
 import randToken from 'rand-token'
-import crypto from 'crypto'
 import uuid from 'uuid'
 import mongoose, {Schema} from 'mongoose'
 import uniqueValidator from 'mongoose-unique-validator'
 import {Constants} from '@rwoody/ht-util'
 
 import CoreError from '../utils/error'
-import ImageSchema from './_image'
+import {ModelName as UploadRef} from './upload'
 import mongooseHidden from './plugins/mongooseHidden'
 import encryptPassword from '../utils/encryptPassword'
 
@@ -58,9 +57,8 @@ const UserSchema = new Schema({
   },
   profile: {
     fullName: String,
-    avatar: String,
-    picture: {type: ImageSchema},
-    cover: {type: ImageSchema}
+    avatar: {type: Schema.Types.ObjectId, ref: UploadRef},
+    cover: {type: Schema.Types.ObjectId, ref: UploadRef},
   },
   passwordResetToken: String,
   emailConfirmationToken: String,

@@ -1,11 +1,13 @@
 import express from 'express'
 import passport from 'passport'
-import {hasValidOauth, hasClientId} from '../../middleware'
+import {hasValidOauth, hasClientId, multer} from '../../middleware'
 import endpointWrapper from '../../utils/endpointWrapper'
 import getMe from './getMe'
 import create from './create'
 import createFacebook from './createFacebook'
 import update from './update'
+import updateAvatar from './updateAvatar'
+import updateCover from './updateCover'
 import suggestFollowers from './suggestFollowers'
 import getFollowers from './getFollowers'
 import getFollowees from './getFollowees'
@@ -124,6 +126,18 @@ router.post('/threads/:id',
 router.put('/:id',
   hasValidOauth,
   endpointWrapper(update)
+)
+
+router.put('/:id/avatar',
+  hasValidOauth,
+  multer.single('image'),
+  endpointWrapper(updateAvatar)
+)
+
+router.put('/:id/cover',
+  hasValidOauth,
+  multer.single('image'),
+  endpointWrapper(updateCover)
 )
 
 export default router

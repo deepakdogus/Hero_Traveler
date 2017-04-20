@@ -7,6 +7,7 @@ import {Images, Colors} from '../../Themes'
 import SessionActions, {hasAuthData} from '../../Redux/SessionRedux'
 import StoryActions, {getByUser} from '../../Redux/Entities/Stories'
 import ProfileView from '../../Components/ProfileView'
+import getImageUrl from '../../Lib/getImageUrl'
 import styles from '../Styles/ProfileScreenStyles'
 
 
@@ -75,7 +76,7 @@ class ProfileScreen extends React.Component {
         user={user}
         stories={storiesAsArray}
         editable={true}
-        profileImage={Images.profile}
+        profileImage={getImageUrl(user.profile.cover)}
         fetchStatus={userStoriesFetchStatus}
       />
     )

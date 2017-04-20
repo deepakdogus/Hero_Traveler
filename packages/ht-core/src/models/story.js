@@ -89,7 +89,7 @@ StorySchema.statics.getUserStories = function getUserStories(userId) {
   return this
     .find({author: userId})
     .sort({createdAt: -1})
-    .populate('author')
+    .populate('author author.profile.avatar')
     .populate('category')
     .populate('coverImage')
     .populate('coverVideo')

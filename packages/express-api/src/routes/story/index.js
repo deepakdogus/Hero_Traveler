@@ -34,6 +34,7 @@ router.get('/draft/:id', hasValidOauth, endpointWrapper(getDraft))
 router.delete('/draft/:id', hasValidOauth, endpointWrapper(removeDraft))
 router.put('/draft/:id', hasValidOauth, endpointWrapper(updateDraft))
 router.put('/draft/:id/cover-image',
+  hasValidOauth,
   multer.single('image'),
   endpointWrapper(uploadDraft)
 )

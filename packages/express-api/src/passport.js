@@ -7,7 +7,10 @@ passport.use(
   new BasicStrategy(
     (username, password, next) => {
       User.validateCredentials(username, password)
-        .then(user => next(null, user))
+        .then(user => {
+          next(null, user)
+          return Promise.resolve()
+        })
         .catch(err => {
           console.log('Auth error', err)
           next(new Error('Unauthorized'))
@@ -20,7 +23,10 @@ passport.use(
   new BearerStrategy(
     (accessToken, next) => {
       User.validateAccessToken(accessToken)
-        .then(user => next(null, user))
+        .then(user => {
+          next(null, user)
+          return Promise.resolve()
+        })
         .catch(err => {
           console.log('Auth error', err)
           next(new Error('Unauthorized'))

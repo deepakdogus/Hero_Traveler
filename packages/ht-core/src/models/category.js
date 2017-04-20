@@ -43,6 +43,14 @@ const CategorySchema = new mongoose.Schema({
       default: 0
     }
   }
-});
+}, {
+  timestamps: true,
+  toObject: {
+    virtuals: true
+  },
+  toJSON: {
+    virtuals: true
+  }
+})
 
 export default mongoose.model(ModelName, CategorySchema)

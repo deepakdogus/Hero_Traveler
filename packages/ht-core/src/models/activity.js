@@ -17,7 +17,13 @@ const ActivitySchema = new Schema({
   }
 }, {
   timestamps: true,
-  discriminatorKey: 'kind'
+  discriminatorKey: 'kind',
+  toObject: {
+    virtuals: true
+  },
+  toJSON: {
+    virtuals: true
+  }
 })
 
 // Always sorting new -> old

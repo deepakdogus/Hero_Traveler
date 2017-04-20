@@ -15,7 +15,13 @@ const UploadSchema = new Schema({
   }
 }, {
   timestamps: true,
-  discriminatorKey: 'kind'
+  discriminatorKey: 'kind',
+  toObject: {
+    virtuals: true
+  },
+  toJSON: {
+    virtuals: true
+  }
 })
 
 export default mongoose.model(ModelName, UploadSchema)

@@ -66,8 +66,14 @@ const StorySchema = new Schema({
     ref: UploadRef,
   }
 }, {
-  timestamps: true
-});
+  timestamps: true,
+  toObject: {
+    virtuals: true
+  },
+  toJSON: {
+    virtuals: true
+  }
+})
 
 StorySchema.statics.getUserFeed = function getUserFeed(userId) {
     return this

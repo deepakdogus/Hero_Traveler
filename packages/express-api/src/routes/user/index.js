@@ -15,6 +15,10 @@ import unfollowCategory from './unfollowCategory'
 import resetPassword from './resetPassword'
 import activityList from './activityList'
 import activitySetRead from './activitySetRead'
+import threadList from './threadList'
+import threadMessageList from './threadMessageList'
+import threadCreate from './threadCreate'
+import threadCreateMessage from './threadCreateMessage'
 
 const router = express.Router()
 
@@ -88,6 +92,26 @@ router.get('/activity',
 router.put('/activity/:id',
   hasValidOauth,
   endpointWrapper(activitySetRead)
+)
+
+router.get('/threads',
+  hasValidOauth,
+  endpointWrapper(threadList)
+)
+
+router.get('/threads/:id',
+  hasValidOauth,
+  endpointWrapper(threadMessageList)
+)
+
+router.post('/threads',
+  hasValidOauth,
+  endpointWrapper(threadCreate)
+)
+
+router.post('/threads/:id',
+  hasValidOauth,
+  endpointWrapper(threadCreateMessage)
 )
 
 export default router

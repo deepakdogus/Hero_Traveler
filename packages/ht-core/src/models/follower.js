@@ -25,7 +25,14 @@ const FollowerSchema = new mongoose.Schema({
     default: Date.now
   },
   endAt: Date
-});
+}, {
+  toObject: {
+    virtuals: true
+  },
+  toJSON: {
+    virtuals: true
+  }
+})
 
 FollowerSchema.statics = {
   // Look up who a user follows

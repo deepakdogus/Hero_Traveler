@@ -4,5 +4,5 @@ export default function findBookmarks(userId) {
   return StoryBookmark.find({
     user: userId
   })
-  .populate('story')
+  .populate('story story.coverImage story.coverVideo')
 }

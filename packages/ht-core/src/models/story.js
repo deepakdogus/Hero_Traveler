@@ -1,11 +1,12 @@
-import mongoose from 'mongoose'
+import mongoose, {Schema} from 'mongoose'
 import {ModelName as CategoryRef} from './category'
 import {ModelName as UserRef} from './user'
+import {ModelName as UploadRef} from './upload'
 import {Constants} from '@rwoody/ht-util'
 
 export const ModelName = 'Story'
 
-const StorySchema = new mongoose.Schema({
+const StorySchema = new Schema({
   title: {
     type: String,
     required: true
@@ -24,12 +25,12 @@ const StorySchema = new mongoose.Schema({
     type: String
   },
   author: {
-    type: mongoose.Schema.ObjectId,
+    type: Schema.ObjectId,
     ref: UserRef,
     required: true
   },
   category: {
-    type: mongoose.Schema.ObjectId,
+    type: Schema.ObjectId,
     ref: CategoryRef,
     required: true
   },
@@ -57,33 +58,22 @@ const StorySchema = new mongoose.Schema({
     },
   },
   coverImage: {
-    altText: String,
-    original: {
-      filename: String,
-      path: String,
-      width: Number,
-      height: Number,
-      meta: {
-        mimeType: String
-      }
-    },
-    versions: {
-      mobile: {
-        filename: String,
-        path: String,
-        width: Number,
-        height: Number,
-        meta: {
-          mimeType: String
-        }
-      }
-    }
+    type: Schema.ObjectId,
+    ref: UploadRef,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
+  coverVideo: {
+    type: Schema.ObjectId,
+    ref: UploadRef,
+  }
+}, {
+  timestamps: true,
+  toObject: {
+    virtuals: true
   },
-});
+  toJSON: {
+    virtuals: true
+  }
+})
 
 StorySchema.statics.getUserFeed = function getUserFeed(userId) {
     return this
@@ -91,6 +81,8 @@ StorySchema.statics.getUserFeed = function getUserFeed(userId) {
       .sort({createdAt: -1})
       .populate('author')
       .populate('category')
+      .populate('coverImage')
+      .populate('coverVideo')
 }
 
 StorySchema.statics.getUserStories = function getUserStories(userId) {
@@ -99,8 +91,10 @@ StorySchema.statics.getUserStories = function getUserStories(userId) {
     .sort({createdAt: -1})
     .populate('author')
     .populate('category')
+    .populate('coverImage')
+    .populate('coverVideo')
 }
 
-export {StorySchema as Schema}
+// export {StorySchema as Schema}
 
 export default mongoose.model(ModelName, StorySchema)

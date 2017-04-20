@@ -1,4 +1,4 @@
-import {Story, StoryLike} from '../models'
+import {Story, StoryLike, ActivityStoryLike} from '../models'
 
 export default function toggleLike(storyId, userId) {
   const record = {
@@ -18,11 +18,26 @@ export default function toggleLike(storyId, userId) {
       }
     })
     .then(isLiked => {
-      return Story.update({
-        _id: storyId
-      }, {
-        $inc: {'counts.likes': isLiked ? 1 : -1}
-      })
-      .then(() => {isLiked})
+      return [
+        isLiked,
+        Story.findOneAndUpdate({
+          _id: storyId
+        }, {
+          $inc: {'counts.likes': isLiked ? 1 : -1}
+        }, {
+          new: true
+        })
+      ]
+    })
+    .spread((isLiked, story) => {
+      if (isLiked) {
+        return ActivityStoryLike.add(
+          story.author,
+          userId,
+          storyId
+        ).then(() => {isLiked})
+      }
+
+      return {isLiked}
     })
 }

@@ -60,6 +60,14 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now
   }
+}, {
+  timestamps: true,
+  toObject: {
+    virtuals: true
+  },
+  toJSON: {
+    virtuals: true
+  }
 })
 
 UserSchema.plugin(mongooseHidden)

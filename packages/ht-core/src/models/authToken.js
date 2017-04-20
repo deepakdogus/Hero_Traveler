@@ -31,6 +31,13 @@ const TokenSchema = new Schema({
     enum: ['access', 'refresh']
   },
   expiresAt: Date
+}, {
+  toObject: {
+    virtuals: true
+  },
+  toJSON: {
+    virtuals: true
+  }
 })
 
 TokenSchema.statics = {

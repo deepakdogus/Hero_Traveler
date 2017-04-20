@@ -1,10 +1,10 @@
-import mongoose from 'mongoose'
+import mongoose, {Schema} from 'mongoose'
 import {ModelName as CategoryRef} from './category'
 import {ModelName as UserRef} from './user'
+import {ModelName as UploadRef} from './upload'
 import {Constants} from '@rwoody/ht-util'
-import ImageSchema from './_image'
 
-const StoryDraftSchema = new mongoose.Schema({
+const StoryDraftSchema = new Schema({
   title: {
     type: String
   },
@@ -24,12 +24,12 @@ const StoryDraftSchema = new mongoose.Schema({
     type: String
   },
   author: {
-    type: mongoose.Schema.ObjectId,
+    type: Schema.ObjectId,
     ref: UserRef,
     required: true
   },
   category: {
-    type: mongoose.Schema.ObjectId,
+    type: Schema.ObjectId,
     ref: CategoryRef
   },
   content: {
@@ -38,10 +38,21 @@ const StoryDraftSchema = new mongoose.Schema({
   tripDate: {
     type: Date
   },
-  coverImage: ImageSchema,
-  createdAt: {
-    type: Date,
-    default: Date.now
+  coverImage: {
+    type: Schema.ObjectId,
+    ref: UploadRef,
+  },
+  coverVideo: {
+    type: Schema.ObjectId,
+    ref: UploadRef,
+  }
+}, {
+  timestamps: true,
+  toObject: {
+    virtuals: true
+  },
+  toJSON: {
+    virtuals: true
   }
 })
 

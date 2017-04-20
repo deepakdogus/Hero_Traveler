@@ -4,6 +4,7 @@ import {hasValidOauth, hasClientId} from '../../middleware'
 import endpointWrapper from '../../utils/endpointWrapper'
 import getMe from './getMe'
 import create from './create'
+import update from './update'
 import suggestFollowers from './suggestFollowers'
 import getFollowers from './getFollowers'
 import getFollowees from './getFollowees'
@@ -112,6 +113,11 @@ router.post('/threads',
 router.post('/threads/:id',
   hasValidOauth,
   endpointWrapper(threadCreateMessage)
+)
+
+router.put('/:id',
+  hasValidOauth,
+  endpointWrapper(update)
 )
 
 export default router

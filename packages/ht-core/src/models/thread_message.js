@@ -32,7 +32,6 @@ const ThreadMessageSchema = new Schema({
 
 ThreadMessageSchema.statics = {
   list(threadId, readingUserId) {
-    console.log('message list', threadId, readingUserId)
     return Thread.findOneAndUpdate({
       _id: threadId,
       'users.user': mongoose.Types.ObjectId(readingUserId)

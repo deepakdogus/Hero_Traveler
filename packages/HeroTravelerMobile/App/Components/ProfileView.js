@@ -109,14 +109,14 @@ export default class ProfileView extends React.Component {
               <View style={styles.followersWrapper}>
                 <View style={styles.firstFollowerColumn}>
                   <TouchableOpacity
-                    onPress={() => alert('list followers')}
+                    onPress={() => NavActions.followersScreen()}
                     style={[styles.followersColumn]}>
                     <Text style={styles.followerNumber}>{formatCount(user.counts.followers)}</Text>
                     <Text style={styles.followerLabel}>Followers</Text>
                   </TouchableOpacity>
                 </View>
                 <TouchableOpacity
-                  onPress={() => alert('list following')}
+                  onPress={() => NavActions.followingScreen()}
                   style={styles.followersColumn}>
                   <Text style={styles.followerNumber}>{formatCount(user.counts.following)}</Text>
                   <Text style={styles.followerLabel}>Following</Text>

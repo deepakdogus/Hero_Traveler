@@ -35,6 +35,9 @@ const StoryDraftSchema = new mongoose.Schema({
   content: {
     type: String
   },
+  tripDate: {
+    type: Date
+  },
   coverImage: ImageSchema,
   createdAt: {
     type: Date,

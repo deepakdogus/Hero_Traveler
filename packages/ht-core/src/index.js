@@ -10,6 +10,7 @@ import * as Comment from './comment'
 
 mongoose.Promise = Promise
 
+
 export {
   User,
   Story,

@@ -39,6 +39,9 @@ const StorySchema = new mongoose.Schema({
   location: {
     type: String
   },
+  tripDate: {
+    type: Date
+  },
   counts: {
     likes: {
       type: Number,

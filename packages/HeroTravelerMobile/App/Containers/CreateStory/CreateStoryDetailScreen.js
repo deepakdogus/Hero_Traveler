@@ -5,11 +5,13 @@ import {
   View,
   Text,
   TextInput,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  TouchableHighlight,
+  DatePickerIOS
 } from 'react-native'
 import { connect } from 'react-redux'
 import R from 'ramda'
-import { Field, reduxForm, formValueSelector } from 'redux-form'
+import { reset as resetForm, Field, reduxForm, formValueSelector } from 'redux-form'
 import {Actions as NavActions} from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -41,7 +43,14 @@ const Radio = ({text, onPress, name, selected}) => {
 class CreateStoryDetailScreen extends React.Component {
 
   static defaultProps = {
-    story: {}
+    story: {
+      tripDate: new Date()
+    },
+    date: new Date()
+  }
+
+  state = {
+    date: this.props.date
   }
 
   componentWillReceiveProps(newProps) {
@@ -51,6 +60,15 @@ class CreateStoryDetailScreen extends React.Component {
       NavActions.tabbar({type: 'reset'})
       this.props.resetForm()
     }
+  }
+
+  _setModalVisible = (visible) => {
+    this.setState({ modalVisible: visible })
+  }
+
+  _onDateChange = (date) => {
+    this.setState({date: date})
+    this.props.story.tripDate = date
   }
 
   _publish = () => {
@@ -75,7 +93,7 @@ class CreateStoryDetailScreen extends React.Component {
 
   render () {
     return (
-        <View style={{flex: 1}}>
+      <View style={{flex: 1, position: 'relative'}}>
           <NavBar
             title='Story Details'
             leftTitle='Back'
@@ -84,7 +102,7 @@ class CreateStoryDetailScreen extends React.Component {
             onRight={() => this._publish()}
           />
           <ScrollView style={styles.root}>
-            <Text style={styles.title}>{this.props.story.title} Details</Text>
+            <Text style={styles.title}>{this.props.story.title} Details </Text>
             <View style={styles.fieldWrapper}>
               <Icon name='map-marker' size={18} color='#424242' style={styles.fieldIcon} />
               <Field
@@ -95,15 +113,13 @@ class CreateStoryDetailScreen extends React.Component {
                 placeholderTextColor={Colors.navBarText}
               />
             </View>
-            <View style={styles.fieldWrapper}>
-              <Icon name='calendar-o' size={18} color='#424242' style={styles.fieldIcon} />
-              <Field
-                name='date'
-                component={RenderTextInput}
-                style={styles.inputStyle}
-                placeholder='Date'
-                placeholderTextColor={Colors.navBarText}
-              />
+            <View style={styles.fieldWrapper} >
+              <Icon name='calendar' size={18} color='#424242' style={styles.fieldIcon} />
+              <TouchableHighlight
+                onPress={() => this._setModalVisible(true)}
+              >
+                <Text style={styles.inputStyle}>{this.state.date ? this.state.date.toDateString() : 'Add Date'}</Text>
+              </TouchableHighlight>
             </View>
             <View style={styles.fieldWrapper}>
               <Icon name='tag' size={18} color='#424242' style={styles.fieldIcon} />
@@ -156,7 +172,27 @@ class CreateStoryDetailScreen extends React.Component {
             </View>
           </ScrollView>
           {this.props.publishing && <Loader style={styles.loader} tintColor={Colors.blackoutTint} />}
-        </View>
+      { this.state.modalVisible &&
+        <View
+          style={{position: 'absolute', top: 250, left: 40, elevation: 100}}
+          shadowColor='black'
+          shadowOpacity={.9}
+          shadowRadius={10}
+          shadowOffset={{width: 0, height: 0}}>
+          <View
+            style={{ backgroundColor: 'white', height: 300, width: 300 }}>
+            <DatePickerIOS
+              date={this.state.date}
+              mode="date"
+              onDateChange={this._onDateChange}
+            />
+            <RoundedButton
+              text='Confirm'
+              onPress={() => this._setModalVisible(!this.state.modalVisible)}
+            />
+          </View>
+        </View> }
+      </View>
     )
   }
 }
@@ -183,7 +219,9 @@ export default R.compose(
     },
     dispatch => ({
       publish: (story) => dispatch(StoryEditActions.publishDraft(story)),
-      update: (id, attrs) => dispatch(StoryEditActions.updateDraft(id, attrs, true))
+      update: (id, attrs) => dispatch(StoryEditActions.updateDraft(id, attrs, true)),
+      resetForm: () => dispatch(resetForm('createStory')),
+
     })
   ),
   reduxForm({

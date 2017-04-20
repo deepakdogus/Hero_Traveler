@@ -1,4 +1,4 @@
-import {User, Follower} from '../models'
+import {User, Follower, ActivityFollow} from '../models'
 
 // called when userId follows followeeUserId
 export default function followUser(userId, followeeUserId) {
@@ -6,6 +6,9 @@ export default function followUser(userId, followeeUserId) {
     follower: userId,
     followee: followeeUserId,
     type: 'User'
+  })
+  .then(() => {
+    return ActivityFollow.add(followeeUserId, userId)
   })
   .then(() => {
     return Promise.all([

@@ -13,6 +13,8 @@ import unfollowUser from './unfollowUser'
 import followCategory from './followCategory'
 import unfollowCategory from './unfollowCategory'
 import resetPassword from './resetPassword'
+import activityList from './activityList'
+import activitySetRead from './activitySetRead'
 
 const router = express.Router()
 
@@ -76,6 +78,16 @@ router.post('/follow/category',
 router.put('/unfollow/category',
   hasValidOauth,
   endpointWrapper(unfollowCategory)
+)
+
+router.get('/activity',
+  hasValidOauth,
+  endpointWrapper(activityList)
+)
+
+router.put('/activity/:id',
+  hasValidOauth,
+  endpointWrapper(activitySetRead)
 )
 
 export default router

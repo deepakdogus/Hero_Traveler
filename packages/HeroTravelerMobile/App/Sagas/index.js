@@ -27,7 +27,7 @@ import {
   followUser,
   unfollowUser
 } from './SignupSagas'
-import { logout, getMe } from './SessionSagas'
+import { logout, getMe, updateUser } from './SessionSagas'
 import { openScreen } from './OpenScreenSagas'
 import { getCategories } from './CategorySagas'
 import { getSuggestedUsers } from './UserSagas'
@@ -68,6 +68,7 @@ export default function * root () {
     takeLatest(SignupTypes.SIGNUP_UNFOLLOW_USER, unfollowUser, heroAPI),
     takeLatest(SessionTypes.REFRESH_USER, getMe, heroAPI),
     takeLatest(SessionTypes.LOGOUT, logout, heroAPI),
+    takeLatest(SessionTypes.UPDATE_USER, updateUser, heroAPI),
 
     // Drafts and story creation
     takeLatest(StoryCreateTypes.PUBLISH_DRAFT, publishDraft, heroAPI),

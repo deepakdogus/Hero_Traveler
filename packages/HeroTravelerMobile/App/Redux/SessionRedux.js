@@ -11,6 +11,9 @@ const { Types, Creators } = createActions({
   refreshUser: null,
   refreshUserSuccess: ['user'],
   refreshUserFailure: null,
+  updateUser: ['attrs'],
+  updateUserSuccess: ['user'],
+  updateUserFailure: ['error'],
 })
 
 export const SessionTypes = Types
@@ -22,7 +25,8 @@ export const INITIAL_STATE = Immutable({
   tokens: null,
   user: null,
   isLoggingOut: false,
-  refreshingUser: false
+  refreshingUser: false,
+  updating: false,
 })
 
 /* ------------- Reducers ------------- */
@@ -37,6 +41,24 @@ export const logout = (state) => state.merge({ isLoggingOut: true })
 
 export const logoutSuccess = (state) => INITIAL_STATE
 
+export const updateUser = (state) => state.merge({
+  error: null,
+  updating: true
+})
+
+export const updateUserSuccess = (state, {user}) =>
+  state.merge({
+    user,
+    error: null,
+    updating: false
+  })
+
+export const updateUserFailure = (state, {error}) =>
+  state.merge({
+    error,
+    updating: false
+  })
+
 export const refreshUser = (state) =>
   state.merge({refreshingUser: true})
 
@@ -44,7 +66,7 @@ export const refreshUserSuccess = (state, {user}) =>
   state.merge({refreshingUser: false, user})
 
 export const refreshUserFailure = (state) =>
-  state.merge({refreshingUser: false, user})
+  state.merge({refreshingUser: false})
 
 
 /* ------------- Hookup Reducers To Types ------------- */
@@ -54,6 +76,9 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOGOUT]: logout,
   [Types.LOGOUT_SUCCESS]: logoutSuccess,
   [Types.REFRESH_USER]: refreshUser,
+  [Types.UPDATE_USER]: updateUser,
+  [Types.UPDATE_USER_SUCCESS]: updateUserSuccess,
+  [Types.UPDATE_USER_FAILURE]: updateUserFailure,
   [Types.REFRESH_USER_SUCCESS]: refreshUserSuccess,
   [Types.REFRESH_USER_FAILURE]: refreshUserFailure,
 })

@@ -1,4 +1,4 @@
-import {Models} from '@rwoody/ht-core'
+import {User, Models} from '@rwoody/ht-core'
 import {Constants} from '@rwoody/ht-util'
 
 export default function updateUser(req) {
@@ -17,4 +17,7 @@ export default function updateUser(req) {
   }
 
   return Models.User.update({_id: userIdToUpdate}, attrs)
+    .then(() => {
+      return User.get({_id: userIdToUpdate})
+    })
 }

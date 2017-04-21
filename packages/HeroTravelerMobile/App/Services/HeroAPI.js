@@ -113,6 +113,10 @@ const create = () => {
     return api.get('user')
   }
 
+  const updateUser = (userId, attrs) => {
+    return api.put(`user/${userId}`, attrs)
+  }
+
   const getUserFeed = (userId, params) => {
     return api.get(`story/user/${userId}/feed`, {
         params
@@ -272,6 +276,7 @@ const create = () => {
     setAuth,
     unsetAuth,
     getMe,
+    updateUser,
     login,
     logout,
     resetPassword,

@@ -81,7 +81,11 @@ const UserSchema = new Schema({
       Constants.USER_ROLES_CONTRIBUTOR_VALUE,
     ],
     default: Constants.USER_ROLES_USER_VALUE
-  }
+  },
+  introTooltips: [{
+    name: String,
+    seen: Boolean
+  }]
 }, {
   timestamps: true,
   toObject: {
@@ -148,7 +152,6 @@ UserSchema.methods = {
 
   // Returns the password for email signups/logins
   getInternalPassword() {
-    console.log('this.accounts', this.accounts)
     const internalAccount = _.find(this.accounts, account => {
       return account.kind === ACCOUNT_TYPE_EMAIL
     })

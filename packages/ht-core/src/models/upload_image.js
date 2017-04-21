@@ -1,6 +1,8 @@
 import {Schema} from 'mongoose'
 
-export default Schema({
+import Upload from './upload'
+
+const ImageSchema = Schema({
   altText: String,
   original: {
     filename: String,
@@ -25,3 +27,5 @@ export default Schema({
     }
   }
 })
+
+export default Upload.discriminator('Image', ImageSchema)

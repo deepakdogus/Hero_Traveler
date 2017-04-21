@@ -18,10 +18,14 @@ const CommentSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: StoryRef,
     required: true
+  }
+}, {
+  timestamps: true,
+  toObject: {
+    virtuals: true
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
+  toJSON: {
+    virtuals: true
   }
 })
 

@@ -70,7 +70,7 @@ async function seed() {
   try {
     await removeAllData()
   } catch(err) {
-    console.log("error removing data")
+    console.log("error removing data", err)
   }
 
   console.log("data removed")
@@ -78,7 +78,7 @@ async function seed() {
   try {
     await seedAllData()
   } catch (err) {
-    console.log("error seeding data", err)
+    console.log("error seeding data")
   }
 
   console.log("data seeded")

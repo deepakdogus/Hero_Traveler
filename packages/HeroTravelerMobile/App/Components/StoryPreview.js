@@ -10,6 +10,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import moment from 'moment'
 
 import formatCount from '../Lib/formatCount'
+import getImageUrl from '../Lib/getImageUrl'
 import { Metrics } from '../Themes'
 import styles from './Styles/StoryPreviewStyle'
 import LikesComponent from './LikeComponent'
@@ -72,7 +73,7 @@ export default class StoryPreview extends Component {
       <View style={styles.row}>
         <Avatar
           style={styles.avatar}
-          avatarUrl={profile ? profile.avatar : null}
+          avatarUrl={getImageUrl(profile.avatar)}
         />
         <Text style={styles.username}>{username}</Text>
       </View>

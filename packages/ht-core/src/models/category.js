@@ -4,6 +4,16 @@ export const ModelName = 'Category'
 
 const CategorySchema = new mongoose.Schema({
   title: String,
+  // Default categories are created by the system
+  isDefault: {
+    type: Boolean,
+    default: false
+  },
+  // Categories can be promoted by admins
+  isPromoted: {
+    type: Boolean,
+    default: false
+  },
   image: {
     altText: String,
     original: {
@@ -33,6 +43,14 @@ const CategorySchema = new mongoose.Schema({
       default: 0
     }
   }
-});
+}, {
+  timestamps: true,
+  toObject: {
+    virtuals: true
+  },
+  toJSON: {
+    virtuals: true
+  }
+})
 
 export default mongoose.model(ModelName, CategorySchema)

@@ -17,6 +17,7 @@ import { Colors } from '../Themes'
 import Loader from './Loader'
 import StoryList from './StoryList'
 import formatCount from '../Lib/formatCount'
+import getImageUrl from '../Lib/getImageUrl'
 import Avatar from './Avatar'
 import NavBar from '../Containers/CreateStory/NavBar'
 
@@ -187,7 +188,7 @@ export default class ProfileView extends React.Component {
 
     }
 
-    console.log('stories', stories)
+    const gradientStyle = profileImage ? ['rgba(0,0,0,.6)', 'transparent', 'rgba(0,0,0,.6)'] : ['transparent', 'rgba(0,0,0,.6)']
     return (
       <View>
         {isEditing &&
@@ -204,16 +205,18 @@ export default class ProfileView extends React.Component {
           styles.root,
           this.props.style,
         ]}>
+        <View style={styles.gradientWrapper}>
           <Image
-            style={styles.coverImage}
-            source={profileImage}
+            style={[styles.coverImage, profileImage ? null : styles.noCoverImage]}
+            resizeMode='cover'
+            source={{uri: profileImage || ''}}
           >
-            <LinearGradient colors={['rgba(0,0,0,.6)', 'transparent', 'rgba(0,0,0,.6)']} style={styles.gradient}>
+            <LinearGradient colors={gradientStyle} style={styles.gradient}>
               <View style={styles.coverInner}>
                 {cog}
                 {name}
               <View >
-                <Avatar style={{alignItems: 'center', marginTop: 20 }} size='medium' avatarUrl={user.profile.avatar} />
+                <Avatar style={{alignItems: 'center', marginTop: 20 }} size='medium' avatarUrl={getImageUrl(user.profile.avatar)} />
                 {avatarCamera}
               </View>
               {!isEditing &&
@@ -225,14 +228,14 @@ export default class ProfileView extends React.Component {
                 <View style={styles.followersWrapper}>
                   <View style={styles.firstFollowerColumn}>
                     <TouchableOpacity
-                      onPress={() => alert('list followers')}
+                      onPress={() => NavActions.followersScreen()}
                       style={[styles.followersColumn]}>
                       <Text style={styles.followerNumber}>{formatCount(user.counts.followers)}</Text>
                       <Text style={styles.followerLabel}>Followers</Text>
                     </TouchableOpacity>
                   </View>
                   <TouchableOpacity
-                    onPress={() => alert('list following')}
+                    onPress={() => NavActions.followingScreen()}
                     style={styles.followersColumn}>
                     <Text style={styles.followerNumber}>{formatCount(user.counts.following)}</Text>
                     <Text style={styles.followerLabel}>Following</Text>
@@ -293,6 +296,7 @@ export default class ProfileView extends React.Component {
             }
           </View>
         }
+        </View>
         </ScrollView>
       </View>
     )

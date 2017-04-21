@@ -1,13 +1,17 @@
 import _ from 'lodash'
 import React, { PropTypes } from 'react'
-import { ScrollView, Text, View, Image } from 'react-native'
+import { ScrollView, Text, View, Image, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 import {Metrics, Images} from '../../Themes'
+import isTooltipComplete, {Types as TooltipTypes} from '../../Lib/firstTimeTooltips'
 import StoryActions from '../../Redux/Entities/Stories'
+import SessionActions from '../../Redux/SessionRedux'
 import Loader from '../../Components/Loader'
 import StoryList from '../../Components/StoryList'
+import RoundedButton from '../../Components/RoundedButton'
 import styles from '../Styles/MyFeedScreenStyles'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
@@ -68,6 +72,56 @@ class MyFeedScreen extends React.Component {
     this.props.attemptGetUserFeed(this.props.user.id)
   }
 
+  _completeTooltip = () => {
+    const tooltips = this.props.user.introTooltips.concat({
+      name: TooltipTypes.MY_FEED,
+      seen: true,
+    })
+    this.props.completeTooltip(tooltips)
+  }
+
+  renderTooltip() {
+    return (
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          backgroundColor: 'rgba(0,0,0,.4)',
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+        onPress={this._completeTooltip}
+      >
+          <View style={{
+            height: 175,
+            width: 200,
+            padding: 20,
+            borderRadius: 20,
+            backgroundColor: 'white',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            shadowColor: 'black',
+            shadowOpacity: .2,
+            shadowRadius: 30
+          }}>
+            <Icon name='hand-pointer-o' size={40} />
+            <Text style={{marginTop: 10}}>Swipe up for more stories!</Text>
+            <RoundedButton
+              style={{
+                height: 30,
+                borderRadius: 10,
+                paddingHorizontal: 10
+              }} onPress={this._completeTooltip}>Ok, I got it</RoundedButton>
+          </View>
+
+      </TouchableOpacity>
+    )
+  }
+
   render () {
     let { stories, fetchStatus, error } = this.props;
     const storiesAsArray = _.map(stories, s => {
@@ -77,6 +131,11 @@ class MyFeedScreen extends React.Component {
       }
     })
     let content;
+
+    const showTooltip = !isTooltipComplete(
+      TooltipTypes.MY_FEED,
+      this.props.user.introTooltips
+    )
 
     if (fetchStatus.fetching && this.state.refreshing) {
       content = (
@@ -109,6 +168,7 @@ class MyFeedScreen extends React.Component {
           <Image source={Images.whiteLogo} style={styles.logo} />
         </View>
         { content }
+        {showTooltip && this.renderTooltip()}
       </View>
     )
   }
@@ -133,7 +193,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     attemptGetUserFeed: (userId) => dispatch(StoryActions.feedRequest(userId)),
-    toggleLike: (storyId) => dispatch(StoryActions.storyLike(storyId))
+    toggleLike: (storyId) => dispatch(StoryActions.storyLike(storyId)),
+    completeTooltip: (introTooltips) => dispatch(SessionActions.updateUser({introTooltips}))
   }
 }
 

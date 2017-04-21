@@ -19,6 +19,8 @@ import ProfileScreen from '../Containers/Tabs/ProfileScreen'
 import ReadOnlyProfileScreen from '../Containers/ReadOnlyProfileScreen'
 import SettingsScreen from '../Containers/SettingsScreen'
 import CategoryFeedScreen from '../Containers/Explore/CategoryFeedScreen'
+import FollowersScreen from '../Containers/FollowersScreen'
+import FollowingScreen from '../Containers/FollowingScreen'
 
 // Story reading & creating
 import StoryReadingScreen from '../Containers/StoryReadingScreen'
@@ -266,8 +268,19 @@ class NavigationRouter extends Component {
             <Scene
               key='readOnlyProfile'
               component={ReadOnlyProfileScreen}
-              {...clearNavBarProps}
               onLeft={() => NavActions.pop()}
+            />
+            <Scene
+              key='followersScreen'
+              component={FollowersScreen}
+              {...clearNavBarProps}
+              hideNavBar={true}
+            />
+            <Scene
+              key='followingScreen'
+              component={FollowingScreen}
+              {...clearNavBarProps}
+              hideNavBar={true}
             />
             <Scene
               key='mediaSelectorScreen'

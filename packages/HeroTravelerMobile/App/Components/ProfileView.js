@@ -84,7 +84,7 @@ export default class ProfileView extends React.Component {
       )
     }
 
-    console.log('stories', stories, profileImage)
+    const gradientStyle = profileImage ? ['rgba(0,0,0,.6)', 'transparent', 'rgba(0,0,0,.6)'] : ['transparent', 'rgba(0,0,0,.6)']
     return (
       <ScrollView style={[
         this.props.hasTabbar ? styles.containerWithTabbar : null,
@@ -92,11 +92,12 @@ export default class ProfileView extends React.Component {
         this.props.style,
       ]}>
         <Image
-          style={styles.coverImage}
+          style={[styles.coverImage, profileImage ? null : styles.noCoverImage]}
           resizeMode='cover'
-          source={{uri: profileImage}}
+          source={{uri: profileImage || ''}}
         >
-          <LinearGradient colors={['rgba(0,0,0,.6)', 'transparent', 'rgba(0,0,0,.6)']} style={styles.gradient}>
+        <View style={styles.gradientWrapper}>
+          <LinearGradient colors={gradientStyle} style={styles.gradient}>
             <View style={styles.coverInner}>
               {cog}
               <View style={styles.nameWrapper}>
@@ -131,6 +132,7 @@ export default class ProfileView extends React.Component {
               <Text style={styles.contributorText}>&nbsp;&nbsp;&nbsp;CONTRIBUTOR</Text>
             </Text>
           </LinearGradient>
+          </View>
         </Image>
         <View style={styles.tabs}>
           {tabs}

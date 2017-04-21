@@ -250,8 +250,11 @@ export default class ProfileView extends React.Component {
             </LinearGradient>
           </Image>
           {isEditing &&
+           <View style={{marginLeft: 20, marginRight: 20}}>
+               <Text style={{fontWeight: 'bold', fontSize: 16, marginTop: 10}}>Edit Bio</Text>
            <TextInput
-             style={{height: 200}}
+             style={{height: 150}}
+             color={Colors.gray}
               autoFocus={true}
               multiline={true}
               editable={true}
@@ -259,7 +262,8 @@ export default class ProfileView extends React.Component {
              value={this.state.text}
              placeholder='Tell us about yourself!'
              maxLength={500}
-            />
+           />
+           </View>
           }
           {!isEditing && <View style={styles.tabs}>
             {tabs}

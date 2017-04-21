@@ -5,9 +5,10 @@ import {Actions as NavActions} from 'react-native-router-flux'
 import MapView from 'react-native-maps';
 
 import StoryActions from '../Redux/Entities/Stories'
+import {isStoryLiked} from '../Redux/SessionRedux'
 import formatCount from '../Lib/formatCount'
 import StoryList from '../Components/StoryList'
-import StoryPreview from '../Components/StoryPreview'
+import ConnectedStoryPreview from './ConnectedStoryPreview'
 import RoundedButton from '../Components/RoundedButton'
 import {Metrics, Images} from '../Themes'
 import StoryReadingToolbar from '../Components/StoryReadingToolbar'
@@ -80,7 +81,6 @@ class StoryReadingScreen extends React.Component {
   }
 
   _toggleLike = () => {
-    console.log('this.props.story.id', this.props.story.id)
     this.props.toggleLike(this.props.story.id)
   }
 
@@ -96,12 +96,12 @@ class StoryReadingScreen extends React.Component {
     return (
       <View style={[styles.root]}>
         <ScrollView style={[styles.scrollView]}>
-          <StoryPreview
+          <ConnectedStoryPreview
             onPressLike={this._toggleLike}
             onPressUser={(userId) => NavActions.readOnlyProfile({ userId })}
             key={story.id}
             height={Metrics.screenHeight}
-            story={storyWithUser}
+            storyId={this.props.storyId}
           />
           <View style={styles.content}>
             {!story.content &&
@@ -136,7 +136,7 @@ class StoryReadingScreen extends React.Component {
             commentCount={formatCount(storyWithUser.counts.comments)}
             boomarkCount={formatCount(storyWithUser.counts.bookmarks)}
             isBookmarked={storyWithUser.isBookmarked}
-            isLiked={storyWithUser.isLiked}
+            isLiked={this.props.isStoryLiked}
             onPressLike={() => this._toggleLike}
             onPressBookmark={() => this.props.toggleBookmark(storyWithUser.id)}
             onPressComment={() => NavActions.storyComments({
@@ -151,13 +151,15 @@ class StoryReadingScreen extends React.Component {
 
 const mapStateToProps = (state, props) => {
   let { fetching, entities: stories, error } = state.entities.stories
+  const story = stories[props.storyId]
   return {
-     user: state.session.user,
+    user: state.session.user,
     usersById: state.entities.users.entities,
     fetching,
     stories,
-    story: stories[props.storyId],
-    error
+    story,
+    error,
+    isStoryLiked: isStoryLiked(state.session, story.id)
   }
 }
 

@@ -60,12 +60,6 @@ class ProfileScreen extends React.Component {
         author: this.props.user
       }
     })
-    const storiesAsArray = _.map(userStoriesById, storyId => {
-      return {
-        ...stories[storyId],
-        author: this.props.user
-      }
-    })
 
     // Deals with the case that the user logs out
     // and this page is still mounted and rendering
@@ -77,7 +71,7 @@ class ProfileScreen extends React.Component {
     return (
       <ProfileView
         user={user}
-        stories={storiesAsArray}
+        stories={userStoriesById}
         editable={true}
         isEditing={this.props.isEditing}
         profileImage={getImageUrl(user.profile.cover)}
@@ -95,7 +89,6 @@ const mapStateToProps = (state) => {
     userStoriesById,
     userBookmarksFetchStatus,
     myBookmarksById,
-    entities: stories,
     error
   } = state.entities.stories
   return {
@@ -106,7 +99,6 @@ const mapStateToProps = (state) => {
     myBookmarksById,
     // @TODO: draftFetchStatus
     draftFetchStatus: {fetching: false, loaded: true},
-    stories: stories,
     userStoriesById,
     error
   }

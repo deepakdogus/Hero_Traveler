@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
 import {is} from 'ramda'
@@ -14,6 +15,8 @@ const { Types, Creators } = createActions({
   updateUser: ['attrs'],
   updateUserSuccess: ['user'],
   updateUserFailure: ['error'],
+  receiveLikes: ['storyIds'],
+  toggleLike: ['storyId'],
 })
 
 export const SessionTypes = Types
@@ -68,6 +71,25 @@ export const refreshUserSuccess = (state, {user}) =>
 export const refreshUserFailure = (state) =>
   state.merge({refreshingUser: false})
 
+export const receiveLikes = (state, {storyIds}) => state.setIn(
+  ['likesById'],
+  storyIds
+)
+
+export const toggleLike = (state, {storyId}) => {
+  const likes = _.get(state, 'likesById', [])
+  if (_.includes(likes, storyId)) {
+    return state.setIn(
+      ['likesById'],
+      _.without(likes, storyId)
+    )
+  } else {
+    return state.setIn(
+      ['likesById'],
+      likes.concat(storyId)
+    )
+  }
+}
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -81,10 +103,18 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_USER_FAILURE]: updateUserFailure,
   [Types.REFRESH_USER_SUCCESS]: refreshUserSuccess,
   [Types.REFRESH_USER_FAILURE]: refreshUserFailure,
+  [Types.RECEIVE_LIKES]: receiveLikes,
+  [Types.TOGGLE_LIKE]: toggleLike,
 })
 
 /* ------------- Selectors ------------- */
 
 // Does the user have necessary info to make API requests?
-export const hasAuthData = (sessionState) => sessionState.tokens && is(Object, sessionState.user)
-export const getUserId = (sessionState) => _.get(sessionState, 'user.id')
+export const hasAuthData: boolean = (sessionState) => sessionState.tokens && is(Object, sessionState.user)
+export const getUserId: string = (sessionState) => _.get(sessionState, 'user.id')
+export const isInitialAppDataLoaded: boolean = (sessionState) => _.every([
+  _.has(sessionState, 'likesById'),
+  // _.has(user, 'bookmarksById'),
+  // _.has(user, 'followingById'),
+])
+export const isStoryLiked = (sessionState, storyId) => _.includes(sessionState.likesById, storyId)

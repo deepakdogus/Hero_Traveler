@@ -16,6 +16,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import { Colors } from '../Themes'
 import Loader from './Loader'
 import StoryList from './StoryList'
+import ConnectedStoryPreview from '../Containers/ConnectedStoryPreview'
 import formatCount from '../Lib/formatCount'
 import getImageUrl from '../Lib/getImageUrl'
 import Avatar from './Avatar'
@@ -272,14 +273,23 @@ export default class ProfileView extends React.Component {
             {tabs}
             {stories.length > 0 &&
               <StoryList
-                stories={stories}
-                height={200}
-                titleStyle={styles.storyTitleStyle}
-                subtitleStyle={styles.subtitleStyle}
-                editable={editable}
-                forProfile={true}
-                onPressStory={story => NavActions.story({storyId: story.id})}
-                onPressLike={story => alert(`Story ${story.id} liked`)}
+                storiesById={stories}
+                refreshing={false}
+                renderStory={(storyId) => {
+                  return (
+                    <ConnectedStoryPreview
+                      forProfile={true}
+                      editable={editable}
+                      titleStyle={styles.storyTitleStyle}
+                      subtitleStyle={styles.subtitleStyle}
+                      key={storyId}
+                      height={200}
+                      storyId={storyId}
+                      onPress={story => NavActions.story({storyId: story.id})}
+                      onPressLike={story => alert(`Story ${story.id} liked`)}
+                    />
+                  )
+                }}
               />
             }
             {fetchStatus.loaded && stories.length === 0 &&

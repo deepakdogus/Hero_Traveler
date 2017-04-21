@@ -6,12 +6,11 @@ import Immutable from 'seamless-immutable'
 
 const { Types, Creators } = createActions({
   feedRequest: ['userId'],
-  feedSuccess: ['stories'],
+  feedSuccess: ['userFeedById', 'stories'],
   feedFailure: null,
   fromUserRequest: ['userId'],
   fromUserSuccess: ['stories', 'userStoriesById'],
   fromUserFailure: null,
-  receiveStories: ['stories'],
   storyLike: ['storyId'],
   storyLikeSuccess: null,
   storyLikeFailure: ['storyId'],
@@ -35,6 +34,8 @@ const initialFetchStatus = () => ({
 
 export const INITIAL_STATE = Immutable({
   entities: {},
+  userFeedById: [],
+  userStoriesById: [],
   fetchStatus: initialFetchStatus(),
   userStoriesFetchStatus: initialFetchStatus(),
   userBookmarksFetchStatus: initialFetchStatus(),
@@ -52,13 +53,14 @@ export const request = (state, { userId }) => {
   );
 }
 // successful temperature lookup
-export const receive = (state, {stories = {}}) => {
+export const receive = (state, {userFeedById, stories = {}}) => {
   return state.merge({
     fetchStatus: {
       fetching: false,
       loaded: true,
     },
     error: null,
+    userFeedById,
     entities: stories
   }, {
     deep: true
@@ -76,7 +78,7 @@ export const requestById = (state) => {
   })
 }
 
-export const receiveById = (state, {stories, userStoriesById}) => {
+export const receiveById = (state, {stories = {}, userStoriesById}) => {
   return state.merge({
     userStoriesFetchStatus: {
       fetching: false,
@@ -84,10 +86,13 @@ export const receiveById = (state, {stories, userStoriesById}) => {
     },
     error: null,
     entities: stories,
-    ...userStoriesById
   }, {
     deep: true
   })
+  .setIn(
+    ['userStoriesById'],
+    userStoriesById
+  )
 }
 
 export const receiveByIdFailure = (state, {error}) => {
@@ -131,13 +136,8 @@ const storyLikeSuccess = (state) => state
 
 // Revert the optimistic update on like failure
 const storyLikeFailure = (state, {storyId}) => {
-  const isToggled = _.get(state, `entities.${storyId}.isLiked`, false)
   const numOfLikes = _.get(state, `entities.${storyId}.counts.likes`, 0)
   return state.setIn(
-    ['entities', storyId, 'isLiked'],
-    !isToggled
-  )
-  .setIn(
     ['entities', storyId, 'counts', 'likes'],
     !isToggled ? numOfLikes - 1 : numOfLikes + 1
   )
@@ -212,7 +212,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.FROM_USER_REQUEST]: requestById,
   [Types.FROM_USER_SUCCESS]: receiveById,
   [Types.FROM_USER_FAILURE]: receiveByIdFailure,
-  [Types.RECEIVE_USERS]: receiveById,
   [Types.STORY_LIKE]: storyLike,
   [Types.STORY_LIKE_SUCCESS]: storyLikeSuccess,
   [Types.STORY_LIKE_FAILURE]: storyLikeFailure,

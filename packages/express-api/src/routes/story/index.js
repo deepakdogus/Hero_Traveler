@@ -7,6 +7,7 @@ import getStory from './getStory'
 import getUser from './getUser'
 import create from './create'
 import getUserFeed from './getUserFeed'
+import getUserLikes from './getUserLikes'
 import getCategoryStories from './getCategoryStories'
 import toggleLike from './toggleLike'
 import toggleBookmark from './toggleBookmark'
@@ -25,6 +26,7 @@ const router = express.Router()
 
 router.get('/user/:userId', hasValidOauth, getUser)
 router.get('/user/:userId/feed', hasValidOauth, getUserFeed);
+router.get('/user/:userId/like', hasValidOauth, endpointWrapper(getUserLikes));
 router.get('/category/:categoryId', endpointWrapper(getCategoryStories));
 router.get('/bookmark', hasValidOauth, endpointWrapper(getBookmarks))
 

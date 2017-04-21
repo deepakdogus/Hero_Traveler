@@ -2,16 +2,41 @@ import _ from 'lodash'
 import { call, put, select } from 'redux-saga/effects'
 import StoryActions from '../Redux/Entities/Stories'
 import UserActions from '../Redux/Entities/Users'
+import CategoryActions from '../Redux/Entities/Categories'
+import SessionActions, {isInitialAppDataLoaded, isStoryLiked} from '../Redux/SessionRedux'
 import StoryCreateActions, {getDraft} from '../Redux/StoryCreateRedux'
+
+const isStoryLikedSelector = ({session}, storyId) => isStoryLiked(session, storyId)
+const hasInitialAppDataLoaded = ({session}) => isInitialAppDataLoaded(session)
 
 export function * getUserFeed (api, action) {
   const { userId } = action
+
+  // See if we need to load likes and bookmark info
+  const initialAppDataLoaded = yield select(hasInitialAppDataLoaded)
+
+  if (!initialAppDataLoaded) {
+    const [likesResponse] = yield [
+      call(api.getUserLikes, userId)
+    ]
+
+    // console.log('likesResponse', likesResponse)
+    if (likesResponse.ok) {
+      yield [
+        put(SessionActions.receiveLikes(likesResponse.data))
+      ]
+    }
+  }
+
   const response = yield call(api.getUserFeed, userId)
+
   if (response.ok) {
-    const { data } = response;
+    console.log('response', response)
+    const { entities, result } = response.data;
     yield [
-      put(UserActions.receiveUsers(data.users)),
-      put(StoryActions.feedSuccess(data.stories)),
+      put(UserActions.receiveUsers(entities.users)),
+      put(CategoryActions.receiveCategories(entities.categories)),
+      put(StoryActions.feedSuccess(result, entities.stories)),
     ]
   } else {
     yield put(StoryActions.feedFailure())
@@ -24,7 +49,7 @@ export function * getUserStories (api, {userId}) {
     const { entities, result } = response.data
     yield [
       put(UserActions.receiveUsers(entities.users)),
-      put(StoryActions.fromUserSuccess(entities.stories, {userStoriesById: result})),
+      put(StoryActions.fromUserSuccess(entities.stories || {}, result)),
     ]
   } else {
     yield put(StoryActions.fromUserFailure())
@@ -85,15 +110,15 @@ export function * uploadCoverImage(api, action) {
 }
 
 export function * likeStory(api, {storyId}) {
-  const response = yield call(
-    api.likeStory,
-    storyId
-  )
+  const response = yield call(api.likeStory, storyId)
 
-  if (response.ok) {
-    yield put(StoryActions.storyLikeSuccess())
-  } else {
-    yield put(StoryActions.storyLikeFailure(storyId))
+  yield put(SessionActions.toggleLike(storyId))
+
+  if (!response.ok) {
+    yield [
+      put(SessionActions.toggleLike(storyId)),
+      put(StoryActions.storyLikeFailure(storyId))
+    ]
   }
 }
 

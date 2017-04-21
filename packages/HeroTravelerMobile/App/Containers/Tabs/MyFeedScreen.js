@@ -11,6 +11,7 @@ import StoryActions from '../../Redux/Entities/Stories'
 import SessionActions from '../../Redux/SessionRedux'
 import Loader from '../../Components/Loader'
 import StoryList from '../../Components/StoryList'
+import ConnectedStoryPreview from '../ConnectedStoryPreview'
 import RoundedButton from '../../Components/RoundedButton'
 import styles from '../Styles/MyFeedScreenStyles'
 
@@ -123,14 +124,14 @@ class MyFeedScreen extends React.Component {
   }
 
   render () {
-    let { stories, fetchStatus, error } = this.props;
-    const storiesAsArray = _.map(stories, s => {
-      return {
-        ...s,
-        author: this.props.usersById[s.author]
-      }
-    })
-    let content;
+    let { storiesById, fetchStatus, error } = this.props;
+    // const storiesAsArray = _.map(stories, s => {
+    //   return {
+    //     ...s,
+    //     author: this.props.usersById[s.author]
+    //   }
+    // })
+    // let content;
 
     const showTooltip = !isTooltipComplete(
       TooltipTypes.MY_FEED,
@@ -143,21 +144,30 @@ class MyFeedScreen extends React.Component {
       )
     } else if (error) {
       content = this._wrapElt(this._showError())
-    } else if (!storiesAsArray || !storiesAsArray.length) {
+    } else if (!storiesById || !storiesById.length) {
       let innerContent = this._showNoStories();
       content = this._wrapElt(innerContent);
     } else {
       content = (
         <StoryList
           style={styles.storyList}
-          stories={storiesAsArray}
-          height={imageHeight}
-          onPressStory={story => NavActions.story({
-            storyId: story.id
-          })}
+          storiesById={storiesById}
+          renderStory={(storyId) => {
+            return (
+              <ConnectedStoryPreview
+                key={storyId}
+                height={imageHeight}
+                storyId={storyId}
+                onPress={story => {
+                  NavActions.story({
+                  storyId: story.id
+                })}}
+                onPressLike={story => this.props.toggleLike(story.id)}
+              />
+            )
+          }}
           onRefresh={this._onRefresh}
           refreshing={this.state.refreshing}
-          onPressLike={story => this.props.toggleLike(story.id)}
         />
       );
     }
@@ -177,6 +187,7 @@ class MyFeedScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   let {
+    userFeedById,
     fetchStatus,
     entities: stories,
     error
@@ -185,7 +196,7 @@ const mapStateToProps = (state) => {
     user: state.session.user,
     usersById: state.entities.users.entities,
     fetchStatus,
-    stories,
+    storiesById: userFeedById,
     error
   }
 }

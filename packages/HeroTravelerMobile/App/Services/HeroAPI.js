@@ -123,7 +123,7 @@ const create = () => {
       })
       .then(response => {
         return Object.assign({}, response, {
-          data: normalize(response.data, [Story]).entities
+          data: normalize(response.data, [Story])
         })
       })
   }
@@ -225,6 +225,10 @@ const create = () => {
     })
   }
 
+  const getUserLikes = (userId) => {
+    return api.get(`story/user/${userId}/like`)
+  }
+
   const likeStory = (storyId) => {
     return api.get(`story/${storyId}/like`)
   }
@@ -291,6 +295,7 @@ const create = () => {
     unfollowUser,
     followCategory,
     unfollowCategory,
+    getUserLikes,
     likeStory,
     bookmarkStory,
     getDraft,

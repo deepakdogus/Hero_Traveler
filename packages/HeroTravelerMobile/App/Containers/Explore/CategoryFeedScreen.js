@@ -12,7 +12,7 @@ import Loader from '../../Components/Loader'
 import {Metrics} from '../../Themes'
 import styles from '../Styles/CategoryFeedScreenStyles'
 
-const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
+const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight - 50
 
 const Tab = ({text, onPress, selected}) => {
   return (

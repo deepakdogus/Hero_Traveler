@@ -27,6 +27,29 @@ export function * signupEmail (api, action) {
   }
 }
 
+export function * signupFacebook(api, action) {
+  const {fbid, email, name, pictureUrl} = action
+  const response = yield call(
+    api.signupFacebook,
+    fbid,
+    email,
+    name,
+    pictureUrl
+  )
+
+  if (response.ok) {
+    const {user, tokens} = response.data
+    const accessToken = _.find(tokens, {type: 'access'})
+    yield [
+      call(api.setAuth, accessToken.value),
+      put(SignupActions.signupFacebookSuccess()),
+      put(SessionActions.initializeSession(user, tokens))
+    ]
+  } else {
+    yield put(SignupActions.signupEmailFailure(response.data.message))
+  }
+}
+
 export function * followCategory(api, {categoryId}) {
   const response = yield call(
     api.followCategory,

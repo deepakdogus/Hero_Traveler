@@ -12,6 +12,9 @@ export default StyleSheet.create({
     paddingTop: 20,
     flex: 1
   },
+  gradientWrapper: {
+    backgroundColor: Colors.clear
+  },
   settingsCog: {
     position: 'absolute',
     right: Metrics.doubleBaseMargin,
@@ -19,6 +22,9 @@ export default StyleSheet.create({
   },
   coverImage: {
     flexDirection: 'column'
+  },
+  noCoverImage: {
+    backgroundColor: Colors.redLight
   },
   coverInner: {
     paddingTop: Metrics.section,

@@ -75,26 +75,32 @@ const StorySchema = new Schema({
   }
 })
 
-StorySchema.statics.getUserFeed = function getUserFeed(userId) {
+StorySchema.statics = {
+  getUserFeed(userId: string, followingIds: string[]) {
     return this
-      .find({author: {$ne: userId}})
-      .sort({createdAt: -1})
-      .populate('author')
+      .find({
+        author: {$ne: userId},
+        $or: [
+          {author: {$in: followingIds}},
+          {category: {$in: followingIds}},
+        ]
+      })
+      .sort({createdAt: -1, 'counts.likes': -1})
+      .populate('author author.profile.avatar')
       .populate('category')
       .populate('coverImage')
       .populate('coverVideo')
-}
+  },
 
-StorySchema.statics.getUserStories = function getUserStories(userId) {
-  return this
-    .find({author: userId})
-    .sort({createdAt: -1})
-    .populate('author')
-    .populate('category')
-    .populate('coverImage')
-    .populate('coverVideo')
+  getUserStories(userId) {
+    return this
+      .find({author: userId})
+      .sort({createdAt: -1})
+      .populate('author author.profile.avatar')
+      .populate('category')
+      .populate('coverImage')
+      .populate('coverVideo')
+  }
 }
-
-// export {StorySchema as Schema}
 
 export default mongoose.model(ModelName, StorySchema)

@@ -1,6 +1,8 @@
-import { call, put } from 'redux-saga/effects'
+import { call, put, select } from 'redux-saga/effects'
 import SignupActions from '../Redux/SignupRedux'
 import SessionActions from '../Redux/SessionRedux'
+
+const currentUserId = ({session}) => session.user.id
 
 // attempts to signup with email
 export function * logout (api, action) {
@@ -29,5 +31,21 @@ export function * getMe (api, action) {
     yield put(SessionActions.refreshUserSuccess(response.data))
   } else {
     yield put(SessionActions.refreshUserFailure())
+  }
+}
+
+export function * updateUser (api, action) {
+  const {attrs} = action
+  const userId = yield select(currentUserId)
+  const response = yield call(
+    api.updateUser,
+    userId,
+    attrs
+  )
+
+  if (response.ok) {
+    yield put(SessionActions.updateUserSuccess(response.data))
+  } else {
+    yield put(SessionActions.updateUserFailure(new Error('Failed to update user')))
   }
 }

@@ -14,6 +14,7 @@ import { Colors, Metrics } from '../Themes'
 import Loader from './Loader'
 import StoryList from './StoryList'
 import formatCount from '../Lib/formatCount'
+import getImageUrl from '../Lib/getImageUrl'
 import Avatar from './Avatar'
 
 const Tab = ({text, onPress, selected}) => {
@@ -83,7 +84,7 @@ export default class ProfileView extends React.Component {
       )
     }
 
-    console.log('stories', stories)
+    const gradientStyle = profileImage ? ['rgba(0,0,0,.6)', 'transparent', 'rgba(0,0,0,.6)'] : ['transparent', 'rgba(0,0,0,.6)']
     return (
       <ScrollView style={[
         this.props.hasTabbar ? styles.containerWithTabbar : null,
@@ -91,10 +92,12 @@ export default class ProfileView extends React.Component {
         this.props.style,
       ]}>
         <Image
-          style={styles.coverImage}
-          source={profileImage}
+          style={[styles.coverImage, profileImage ? null : styles.noCoverImage]}
+          resizeMode='cover'
+          source={{uri: profileImage || ''}}
         >
-          <LinearGradient colors={['rgba(0,0,0,.6)', 'transparent', 'rgba(0,0,0,.6)']} style={styles.gradient}>
+        <View style={styles.gradientWrapper}>
+          <LinearGradient colors={gradientStyle} style={styles.gradient}>
             <View style={styles.coverInner}>
               {cog}
               <View style={styles.nameWrapper}>
@@ -102,7 +105,7 @@ export default class ProfileView extends React.Component {
                 <View style={styles.nameSeparator} />
                 <Text style={styles.italicText}>{user.profile.fullName}</Text>
               </View>
-              <Avatar avatarUrl={user.profile.avatar} />
+              <Avatar avatarUrl={getImageUrl(user.profile.avatar)} />
               <TouchableOpacity onPress={() => alert('read bio')}>
                 <Text style={styles.italicText}>Read Bio</Text>
               </TouchableOpacity>
@@ -129,6 +132,7 @@ export default class ProfileView extends React.Component {
               <Text style={styles.contributorText}>&nbsp;&nbsp;&nbsp;CONTRIBUTOR</Text>
             </Text>
           </LinearGradient>
+          </View>
         </Image>
         <View style={styles.tabs}>
           {tabs}

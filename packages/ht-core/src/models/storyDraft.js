@@ -54,6 +54,14 @@ const StoryDraftSchema = new Schema({
   toJSON: {
     virtuals: true
   }
+}, {
+  timestamps: true,
+  toObject: {
+    virtuals: true
+  },
+  toJSON: {
+    virtuals: true
+  }
 })
 
 export default mongoose.model('StoryDraft', StoryDraftSchema)

@@ -16,6 +16,14 @@ const StoryLikeSchema = new mongoose.Schema({
     ref: StoryRef,
     required: true
   }
+}, {
+  timestamps: true,
+  toObject: {
+    virtuals: true
+  },
+  toJSON: {
+    virtuals: true
+  }
 })
 
 export default mongoose.model(ModelName, StoryLikeSchema)

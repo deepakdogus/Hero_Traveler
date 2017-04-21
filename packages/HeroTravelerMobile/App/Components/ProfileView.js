@@ -86,14 +86,17 @@ export default class ProfileView extends React.Component {
       // buttons = null;
       name = (
         <View style={styles.nameWrapper}>
+          <View style={{flexDirection: 'row'}}>
           <Text style={styles.titleText}>{user.username}</Text>
-          <Icon name='pencil' size={10} color={Colors.snow} />
-        </View> 
+          <Icon style={{paddingTop: 7}} name='pencil' size={12} color={Colors.snow} />
+          </View>
+        </View>
       )
 
       avatarCamera = (
+        <View style={{position: 'relative'}}>
             <TouchableOpacity
-              style={styles.addPhotoButton}
+              style={styles.addAvatarPhotoButton}
               onPress={() => {
                 NavActions.mediaSelectorScreen({
                   mediaType: 'photo',
@@ -106,12 +109,13 @@ export default class ProfileView extends React.Component {
               }}
             >
               <Icon name='camera' size={20} color='gray' style={styles.updateAvatorIcon} />
-            </TouchableOpacity>          
+          </TouchableOpacity>
+        </View>
       )
 
       buttons = (
         <TouchableOpacity
-          style={styles.addPhotoButton}
+          style={styles.addCoverPhotoButton}
           onPress={() => {
             NavActions.mediaSelectorScreen({
               mediaType: 'photo',
@@ -152,7 +156,6 @@ export default class ProfileView extends React.Component {
         </View>
       )
 
-      name = name;
       avatarCamera = null;
 
     } else {
@@ -179,8 +182,6 @@ export default class ProfileView extends React.Component {
         </View>
       )
 
-      name = name;
-      contributor = contributor;
       avatarCamera = null;
 
     }
@@ -210,8 +211,8 @@ export default class ProfileView extends React.Component {
               <View style={styles.coverInner}>
                 {cog}
                 {name}
-              <View>
-                <Avatar size='medium' avatarUrl={user.profile.avatar} />
+              <View >
+                <Avatar style={{alignItems: 'center', marginTop: 20 }} size='medium' avatarUrl={user.profile.avatar} />
                 {avatarCamera}
               </View>
               {!isEditing &&
@@ -255,7 +256,7 @@ export default class ProfileView extends React.Component {
               onChangeText={(text) => this.setState({text})}
               value={this.state.text}
             />
-          }          
+          }
           {!isEditing && <View style={styles.tabs}>
             {tabs}
             {stories.length > 0 &&

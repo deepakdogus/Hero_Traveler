@@ -102,13 +102,18 @@ export default StyleSheet.create({
     textAlign: 'center',
     marginBottom: Metrics.baseMargin
   },
-  updateAvatorIcon: {
-  },
-  addPhotoButton: {
+  addCoverPhotoButton: {
     padding: 50,
     justifyContent: 'center',
     backgroundColor: 'transparent'
-  },    
+  },
+  addAvatarPhotoButton: {
+    position: 'absolute',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    top: -35,
+    left: 15,
+  },
   contributor: {
     marginLeft: Metrics.baseMargin
   },

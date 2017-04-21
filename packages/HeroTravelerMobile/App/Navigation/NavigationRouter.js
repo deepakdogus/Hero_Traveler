@@ -226,6 +226,13 @@ class NavigationRouter extends Component {
               />
             </Scene>
             <Scene
+              key='edit_profile'
+              component={ProfileScreen}
+              hideNavBar
+              isEditing={true}
+              direction='vertical'
+            />
+            <Scene
               key='createStoryFlow'
               direction='vertical'
               hideNavBar={true}

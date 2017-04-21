@@ -104,6 +104,22 @@ export default StyleSheet.create({
     fontSize: 11,
     color: Colors.snow
   },
+  cameraIcon: {
+    textAlign: 'center',
+    marginBottom: Metrics.baseMargin
+  },
+  addCoverPhotoButton: {
+    padding: 50,
+    justifyContent: 'center',
+    backgroundColor: 'transparent'
+  },
+  addAvatarPhotoButton: {
+    position: 'absolute',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    top: -35,
+    left: 15,
+  },
   contributor: {
     marginLeft: Metrics.baseMargin
   },

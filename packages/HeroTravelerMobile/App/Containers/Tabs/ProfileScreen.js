@@ -15,6 +15,9 @@ class ProfileScreen extends React.Component {
 
   constructor(props) {
     super(props)
+
+    console.log("this.props.isEditing in ProfileScreen: ", this.props.isEditing)
+
     this.state = {
       selectTabIndex: 0
     }
@@ -76,6 +79,7 @@ class ProfileScreen extends React.Component {
         user={user}
         stories={storiesAsArray}
         editable={true}
+        isEditing={this.props.isEditing}
         profileImage={getImageUrl(user.profile.cover)}
         fetchStatus={userStoriesFetchStatus}
       />

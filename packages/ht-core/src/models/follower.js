@@ -5,10 +5,12 @@ import {ModelName as CategoryModelRef} from './category'
 export const ModelName = 'Follower'
 
 const FollowerSchema = new mongoose.Schema({
+  // The user that is following the followee
   follower: {
     type: Schema.Types.ObjectId,
     ref: UserModelRef
   },
+  // The target thing being followed
   followee: {
     type: Schema.Types.ObjectId,
     refPath: 'type'
@@ -35,6 +37,24 @@ const FollowerSchema = new mongoose.Schema({
 })
 
 FollowerSchema.statics = {
+  followUser(userId, userIdBeingFollowed) {
+    return this.create({
+      follower: userId,
+      followee: userIdBeingFollowed,
+      type: UserModelRef
+    })
+  },
+
+  // called when userId unfollows followeeUserId
+  unfollowUser(userId, userIdBeingFollowed) {
+    return this.update({
+      follower: userId,
+      followee: followeeUserId
+    }, {
+      endAt: Date.now()
+    })
+  },
+
   // Look up who a user follows
   getUserFollowers(userId) {
     return this.find({
@@ -64,6 +84,17 @@ FollowerSchema.statics = {
         $exists: false
       }
     })
+  },
+
+  getUserFollowingIds(userId: string): Promise<mongoose.Types.ObjectId[]> {
+    return this.find({
+      follower: userId,
+      endAt: {
+        $exists: false
+      }
+    })
+    .lean()
+    .distinct('followee')
   }
 }
 

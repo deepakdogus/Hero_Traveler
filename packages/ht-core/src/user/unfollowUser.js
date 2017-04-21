@@ -2,12 +2,7 @@ import {User, Follower} from '../models'
 
 // called when userId unfollows followeeUserId
 export default function unfollowUser(userId, followeeUserId) {
-  return Follower.update({
-    follower: userId,
-    followee: followeeUserId
-  }, {
-    endAt: Date.now()
-  })
+  return Follower.unfollowUser(userId, followeeUserId)
   .then(() => {
     return Promise.all([
       User.update({

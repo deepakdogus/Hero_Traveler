@@ -9,10 +9,11 @@ import {
   TouchableOpacity,
   Alert
 } from 'react-native'
+import Editor from '../Components/Editor'
 import { Actions as NavActions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import LinearGradient from 'react-native-linear-gradient'
-import { Colors, Metrics } from '../Themes'
+import { Colors } from '../Themes'
 import Loader from './Loader'
 import StoryList from './StoryList'
 import formatCount from '../Lib/formatCount'
@@ -100,7 +101,7 @@ export default class ProfileView extends React.Component {
               onPress={() => {
                 NavActions.mediaSelectorScreen({
                   mediaType: 'photo',
-                  title: 'Edit Cover Image',
+                  title: 'Edit Avatar Image',
                   leftTitle: 'Cancel',
                   onLeft: () => NavActions.pop(),
                   rightTitle: 'Next',
@@ -286,6 +287,7 @@ export default class ProfileView extends React.Component {
           </View>
         }
         </ScrollView>
+      <Editor/>
       </View>
     )
   }

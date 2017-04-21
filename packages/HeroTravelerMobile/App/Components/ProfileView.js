@@ -34,7 +34,7 @@ export default class ProfileView extends React.Component {
 
     this.state = {
       imageMenuOpen: false,
-      file: null
+      file: null,
     }
   }
 
@@ -250,12 +250,15 @@ export default class ProfileView extends React.Component {
             </LinearGradient>
           </Image>
           {isEditing &&
-            <TextInput
+           <TextInput
+             style={{height: 200}}
               autoFocus={true}
               multiline={true}
               editable={true}
               onChangeText={(text) => this.setState({text})}
-              value={this.state.text}
+             value={this.state.text}
+             placeholder='Tell us about yourself!'
+             maxLength={500}
             />
           }
           {!isEditing && <View style={styles.tabs}>
@@ -287,7 +290,6 @@ export default class ProfileView extends React.Component {
           </View>
         }
         </ScrollView>
-      <Editor/>
       </View>
     )
   }

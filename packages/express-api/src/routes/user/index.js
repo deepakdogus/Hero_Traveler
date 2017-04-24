@@ -3,6 +3,7 @@ import passport from 'passport'
 import {hasValidOauth, hasClientId, multer} from '../../middleware'
 import endpointWrapper from '../../utils/endpointWrapper'
 import getMe from './getMe'
+import getUser from './getUser'
 import create from './create'
 import createFacebook from './createFacebook'
 import update from './update'
@@ -121,6 +122,11 @@ router.post('/threads',
 router.post('/threads/:id',
   hasValidOauth,
   endpointWrapper(threadCreateMessage)
+)
+
+router.get('/:id',
+  hasValidOauth,
+  endpointWrapper(getUser)
 )
 
 router.put('/:id',

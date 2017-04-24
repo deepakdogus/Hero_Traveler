@@ -91,7 +91,7 @@ class NotificationScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   const users = state.entities.users.entities
-  const user = state.session.user
+  const user = state.entities.users[state.session.userId]
   return {
     user,
     users,

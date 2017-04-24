@@ -28,7 +28,7 @@ router.get('/user/:userId', hasValidOauth, getUser)
 router.get('/user/:userId/feed', hasValidOauth, getUserFeed);
 router.get('/user/:userId/like', hasValidOauth, endpointWrapper(getUserLikes));
 router.get('/category/:categoryId', endpointWrapper(getCategoryStories));
-router.get('/bookmark', hasValidOauth, endpointWrapper(getBookmarks))
+router.get('/user/:userId/bookmark', hasValidOauth, endpointWrapper(getBookmarks))
 
 // Story draft related routes
 router.get('/draft', hasValidOauth, endpointWrapper(findDrafts))

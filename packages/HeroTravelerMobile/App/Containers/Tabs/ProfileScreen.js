@@ -92,7 +92,7 @@ const mapStateToProps = (state) => {
     error
   } = state.entities.stories
   return {
-    user: state.session.user,
+    user: state.entities.users[state.session.userId],
     userStoriesFetchStatus,
     // @TODO: bookmarkFetchStatus
     userBookmarksFetchStatus,

@@ -1,29 +1,32 @@
 import _ from 'lodash'
 import { call, put, select } from 'redux-saga/effects'
 import StoryActions from '../Redux/Entities/Stories'
-import UserActions from '../Redux/Entities/Users'
+import UserActions, {isInitialAppDataLoaded} from '../Redux/Entities/Users'
 import CategoryActions from '../Redux/Entities/Categories'
-import SessionActions, {isInitialAppDataLoaded, isStoryLiked} from '../Redux/SessionRedux'
+import {getUserId, isStoryLiked} from '../Redux/SessionRedux'
 import StoryCreateActions, {getDraft} from '../Redux/StoryCreateRedux'
 
 const isStoryLikedSelector = ({session}, storyId) => isStoryLiked(session, storyId)
-const hasInitialAppDataLoaded = ({session}) => isInitialAppDataLoaded(session)
+const hasInitialAppDataLoaded = ({entities}, userId) => isInitialAppDataLoaded(entities.users, userId)
 
 export function * getUserFeed (api, action) {
   const { userId } = action
 
   // See if we need to load likes and bookmark info
-  const initialAppDataLoaded = yield select(hasInitialAppDataLoaded)
-
+  const initialAppDataLoaded = yield select(hasInitialAppDataLoaded, userId)
   if (!initialAppDataLoaded) {
-    const [likesResponse] = yield [
-      call(api.getUserLikes, userId)
+    const [likesResponse, bookmarksResponse] = yield [
+      call(api.getUserLikes, userId),
+      call(api.getBookmarks, userId)
     ]
-
-    // console.log('likesResponse', likesResponse)
-    if (likesResponse.ok) {
+    if (likesResponse.ok && bookmarksResponse.ok) {
+      const {result: bookmarksById, entities} = bookmarksResponse.data
       yield [
-        put(SessionActions.receiveLikes(likesResponse.data))
+        put(UserActions.receiveUsers(entities.users)),
+        put(CategoryActions.receiveCategories(entities.categories)),
+        put(StoryActions.receiveStories(entities.stories)),
+        put(UserActions.receiveLikes(userId, likesResponse.data)),
+        put(UserActions.receiveBookmarks(userId, bookmarksById)),
       ]
     }
   }
@@ -31,12 +34,12 @@ export function * getUserFeed (api, action) {
   const response = yield call(api.getUserFeed, userId)
 
   if (response.ok) {
-    console.log('response', response)
     const { entities, result } = response.data;
     yield [
       put(UserActions.receiveUsers(entities.users)),
       put(CategoryActions.receiveCategories(entities.categories)),
-      put(StoryActions.feedSuccess(result, entities.stories)),
+      put(StoryActions.receiveStories(entities.stories)),
+      put(StoryActions.feedSuccess(result)),
     ]
   } else {
     yield put(StoryActions.feedFailure())
@@ -49,10 +52,27 @@ export function * getUserStories (api, {userId}) {
     const { entities, result } = response.data
     yield [
       put(UserActions.receiveUsers(entities.users)),
-      put(StoryActions.fromUserSuccess(entities.stories || {}, result)),
+      put(CategoryActions.receiveCategories(entities.categories)),
+      put(StoryActions.receiveStories(entities.stories)),
+      put(StoryActions.fromUserSuccess(userId, result)),
     ]
   } else {
-    yield put(StoryActions.fromUserFailure())
+    yield put(StoryActions.fromUserFailure(new Error('Failed to get stories for user')))
+  }
+}
+
+export function * getCategoryStories (api, {categoryId}) {
+  const response = yield call(api.getCategoryStories, categoryId)
+  if (response.ok) {
+    const { entities, result } = response.data
+    yield [
+      put(UserActions.receiveUsers(entities.users)),
+      put(CategoryActions.receiveCategories(entities.categories)),
+      put(StoryActions.receiveStories(entities.stories)),
+      put(StoryActions.fromCategorySuccess(categoryId, result)),
+    ]
+  } else {
+    yield put(StoryActions.fromCategoryFailure(new Error('Failed to get stories for category')))
   }
 }
 
@@ -112,12 +132,15 @@ export function * uploadCoverImage(api, action) {
 export function * likeStory(api, {storyId}) {
   const response = yield call(api.likeStory, storyId)
 
-  yield put(SessionActions.toggleLike(storyId))
+  yield [
+    put(UserActions.toggleLike(storyId)),
+    put(StoryActions.toggleLike(storyId)),
+  ]
 
   if (!response.ok) {
     yield [
-      put(SessionActions.toggleLike(storyId)),
-      put(StoryActions.storyLikeFailure(storyId))
+      put(UserActions.toggleLike(storyId)),
+      put(StoryActions.toggleLike(storyId)),
     ]
   }
 }
@@ -128,27 +151,34 @@ export function * bookmarkStory(api, {storyId}) {
     storyId
   )
 
-  if (response.ok) {
+  yield [
+    put(UserActions.toggleBookmark()),
+    put(StoryActions.toggleBookmark())
+  ]
+
+  if (!response.ok) {
     yield [
-      put(StoryActions.storyBookmarkSuccess())
+      put(UserActions.toggleBookmark()),
+      put(StoryActions.toggleBookmark())
     ]
-  } else {
-    yield put(StoryActions.storyBookmarkFailure(storyId))
   }
 }
 
 export function * getBookmarks(api) {
   const response = yield call(
-    api.getBookmarks
+    api.getBookmarks,
+    userId
   )
 
   if (response.ok) {
     const {entities, result} = response.data
-    const myBookmarksById = _.map(entities.bookmarks, b => {
-      return b.story
-    })
 
-    yield put(StoryActions.getBookmarksSuccess(entities.stories, {myBookmarksById}))
+    yield [
+      put(UserActions.receiveUsers(entities.users)),
+      put(CategoryActions.receiveCategories(entities.categories)),
+      put(StoryActions.receiveStories(entities.stories)),
+      put(UserActions.receiveBookmarks(userId, result))
+    ]
   } else {
     yield put(StoryActions.getBookmarksFailure(new Error('Failed to get bookmarks')))
   }

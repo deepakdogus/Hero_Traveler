@@ -5,7 +5,7 @@ import {Actions as NavActions} from 'react-native-router-flux'
 import MapView from 'react-native-maps';
 
 import StoryActions from '../Redux/Entities/Stories'
-import {isStoryLiked} from '../Redux/SessionRedux'
+import {isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
 import formatCount from '../Lib/formatCount'
 import StoryList from '../Components/StoryList'
 import ConnectedStoryPreview from './ConnectedStoryPreview'
@@ -81,16 +81,11 @@ class StoryReadingScreen extends React.Component {
   }
 
   _toggleLike = () => {
-    this.props.toggleLike(this.props.story.id)
+    this.props.toggleLike(this.props.user.id, this.props.story.id)
   }
 
   render () {
-    let { story, fetching, error, stories, user } = this.props;
-    const storyWithUser = {
-      ...story,
-      author: this.props.usersById[story.author]
-    }
-
+    const { story, fetching, error, user } = this.props;
     const baseText = styles.storyContentText
 
     return (
@@ -107,13 +102,12 @@ class StoryReadingScreen extends React.Component {
             {!story.content &&
               <StoryContent
                 style={styles.content}
-                story={storyWithUser}
+                story={story}
               />
             }
             {story.content &&
               <Text style={styles.storyContentText}>{story.content}</Text>
             }
-
             {story.location &&
               <View style={styles.locationWrapper}>
                 <MapView
@@ -132,13 +126,13 @@ class StoryReadingScreen extends React.Component {
 
           <StoryReadingToolbar
             style={styles.toolBar}
-            likeCount={formatCount(storyWithUser.counts.likes)}
-            commentCount={formatCount(storyWithUser.counts.comments)}
-            boomarkCount={formatCount(storyWithUser.counts.bookmarks)}
-            isBookmarked={storyWithUser.isBookmarked}
-            isLiked={this.props.isStoryLiked}
+            likeCount={formatCount(story.counts.likes)}
+            commentCount={formatCount(story.counts.comments)}
+            boomarkCount={formatCount(story.counts.bookmarks)}
+            isBookmarked={this.props.isBookmarked}
+            isLiked={this.props.isLiked}
             onPressLike={() => this._toggleLike}
-            onPressBookmark={() => this.props.toggleBookmark(storyWithUser.id)}
+            onPressBookmark={() => this.props.toggleBookmark(this.props.user.id, story.id)}
             onPressComment={() => NavActions.storyComments({
               storyId: story.id
             })}
@@ -150,23 +144,24 @@ class StoryReadingScreen extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+  const {session: {userId}} = state
   let { fetching, entities: stories, error } = state.entities.stories
   const story = stories[props.storyId]
   return {
-    user: state.session.user,
-    usersById: state.entities.users.entities,
+    user: state.entities.users.entities[userId],
+    // author: state.entities.users.entities[story.author],
     fetching,
-    stories,
     story,
     error,
-    isStoryLiked: isStoryLiked(state.session, story.id)
+    isLiked: isStoryLiked(state.entities.users, userId, props.storyId),
+    isBookmarked: isStoryBookmarked(state.entities.users, userId, props.storyId),
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleLike: (storyId) => dispatch(StoryActions.storyLike(storyId)),
-    toggleBookmark: (storyId) => dispatch(StoryActions.storyBookmark(storyId))
+    toggleLike: (userId, storyId) => dispatch(UserAction.toggle(userId, storyId)),
+    toggleBookmark: (userId, storyId) => dispatch(UserAction.toggleBookmark(userId, storyId))
   }
 }
 

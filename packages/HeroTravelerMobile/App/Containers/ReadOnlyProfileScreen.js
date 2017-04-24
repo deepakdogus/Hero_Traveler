@@ -6,8 +6,8 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import {Image, View} from 'react-native'
 
 import {Images, Colors, Metrics} from '../Themes'
-import SessionActions, {hasAuthData} from '../Redux/SessionRedux'
-import StoryActions, {getByUser} from '../Redux/Entities/Stories'
+import UserActions from '../Redux/Entities/Users'
+import StoryActions, {getIdsByUser} from '../Redux/Entities/Stories'
 import ProfileView from '../Components/ProfileView'
 import getImageUrl from '../Lib/getImageUrl'
 import styles from './Styles/ProfileScreenStyles'
@@ -15,33 +15,17 @@ import styles from './Styles/ProfileScreenStyles'
 
 class ReadOnlyProfileScreen extends React.Component {
 
+  componentDidMount() {
+    this.props.attemptGetUserStories(this.props.userId)
+  }
+
   render () {
-    const { userId, allStories, usersById, fetchStatus} = this.props
-
-    let avatar
-
-    const stories = getByUser(allStories, userId)
-    const user = usersById[userId]
-
-console.log('user', user)
-    const storiesAsArray = _.map(stories, s => {
-      return {
-        ...s,
-        author: user
-      }
-    })
-
-    // Deals with the case that the user logs out
-    // and this page is still mounted and rendering
-
-    if (!user) {
-      return null
-    }
+    const { userId, user, storiesById, fetchStatus} = this.props
 
     return (
       <ProfileView
         user={user}
-        stories={storiesAsArray}
+        stories={storiesById}
         editable={false}
         hasTabbar={false}
         profileImage={getImageUrl(user.profile.cover)}
@@ -52,7 +36,7 @@ console.log('user', user)
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ) => {
   const {user} = state.session
   let {
     fetchStatus,
@@ -60,10 +44,8 @@ const mapStateToProps = (state) => {
     error
   } = state.entities.stories
   return {
-    user: state.session.user,
-    usersById: state.entities.users.entities,
-    isLoggedIn: hasAuthData(state.session),
-    apiTokens: state.session.tokens,
+    user: state.entities.users.entities[userId],
+    storiesById: getIdsByUser(state.entities.stories, userId),
     fetchStatus,
     allStories,
     error
@@ -72,9 +54,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logout: (tokens) => dispatch(SessionActions.logout(tokens)),
     attemptGetUserStories: (userId) => dispatch(StoryActions.fromUserRequest(userId)),
-    attemptRefreshUser: (userId) => dispatch(SessionActions.refreshUser(userId))
+    attemptRefreshUser: (userId) => dispatch(UserActions.loadUser(userId))
   }
 }
 

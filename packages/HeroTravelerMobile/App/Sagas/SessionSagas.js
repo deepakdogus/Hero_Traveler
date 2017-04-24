@@ -2,7 +2,7 @@ import { call, put, select } from 'redux-saga/effects'
 import SignupActions from '../Redux/SignupRedux'
 import SessionActions from '../Redux/SessionRedux'
 
-const currentUserId = ({session}) => session.user.id
+const currentUserId = ({session}) => session.userId
 
 // attempts to signup with email
 export function * logout (api, action) {

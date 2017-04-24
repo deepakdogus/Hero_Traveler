@@ -113,6 +113,10 @@ const create = () => {
     return api.get('user')
   }
 
+  const getUser = (userId) => {
+    return api.get(`user/${userId}`)
+  }
+
   const updateUser = (userId, attrs) => {
     return api.put(`user/${userId}`, attrs)
   }
@@ -133,7 +137,6 @@ const create = () => {
         params
       })
       .then(response => {
-        console.log('normalize(response.data, [Story])', normalize(response.data, [Story]))
         return Object.assign({}, response, {
           data: normalize(response.data, [Story])
         })
@@ -237,10 +240,9 @@ const create = () => {
     return api.get(`story/${storyId}/bookmark`)
   }
 
-  const getBookmarks = (storyId) => {
-    return api.get(`story/bookmark`)
+  const getBookmarks = (userId) => {
+    return api.get(`story/user/${userId}/bookmark`)
       .then(response => {
-        console.log('normalize(response.data, [Bookmarks])', normalize(response.data, [Bookmarks]))
         return  Object.assign({}, response, {
           data: normalize(response.data, [Bookmarks])
         })
@@ -290,6 +292,7 @@ const create = () => {
     createStory,
     getCategories,
     getUserStories,
+    getCategoryStories,
     getSuggestedUsers,
     followUser,
     unfollowUser,

@@ -156,8 +156,8 @@ class MyFeedScreen extends React.Component {
             return (
               <ConnectedStoryPreview
                 key={storyId}
-                height={imageHeight}
                 storyId={storyId}
+                height={imageHeight}
                 onPress={story => {
                   NavActions.story({
                   storyId: story.id
@@ -193,7 +193,7 @@ const mapStateToProps = (state) => {
     error
   } = state.entities.stories;
   return {
-    user: state.session.user,
+    user: state.entities.users[state.session.userId],
     usersById: state.entities.users.entities,
     fetchStatus,
     storiesById: userFeedById,

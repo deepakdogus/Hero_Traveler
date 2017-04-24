@@ -1,0 +1,20 @@
+{
+  "name": "cms",
+  "version": "1.0.0",
+  "description": "Content Management System for the Herotraveller App",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "watch": "nodemon ./src/index.js"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  },
+  "dependencies": {
+    "express": "^4.15.2",
+    "express-nunjucks": "^2.2.3",
+    "nunjucks": "^3.0.0"
+  }
+}

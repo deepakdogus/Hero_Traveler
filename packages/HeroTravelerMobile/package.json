@@ -42,7 +42,7 @@
     "react-native-keyboard-spacer": "^0.3.1",
     "react-native-linear-gradient": "^2.0.0",
     "react-native-maps": "^0.14.0",
-    "react-native-router-flux": "^3.37.0",
+    "react-native-router-flux": "https://github.com/rwoody/react-native-router-flux",
     "react-native-splash-screen": "^2.0.0",
     "react-native-svg": "^5.1.5",
     "react-native-vector-icons": "^4.0.0",

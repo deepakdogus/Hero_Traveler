@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% block head %}
+  <link rel="stylesheet" href="https://unpkg.com/ace-css/css/ace.min.css"/>
+  <title>HeroTraveller CMS</title>
+{% endblock %}
+</head>
+
+
+{% block header %}
+  <div class="flex justify-around flex-row m2">
+    <a href="/users" class="ml1 btn btn-primary">Users</a>
+    <a href="/categories" class="ml1 btn btn-primary">Categories</button>
+    <a href="/stories" class="ml1 btn btn-primary">Stories</button>
+    <a href="/" class="ml1 btn btn-primary">Home</a>
+  </div>
+{% endblock %}
+
+{% block main %}
+  <p> this is the content that will change depening on which page you're on</p>
+  <ul>
+  {% for user in data %}
+    <li>{{user.username}}</li>
+  {%  endfor %}
+  </ul>
+{% endblock %}

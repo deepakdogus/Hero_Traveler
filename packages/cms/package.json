@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "test",
-    "watch": "nodemon ./src/index.js"
+    "watch": "NODE_ENV='development' && nodemon ./src/index.js"
   },
   "author": "",
   "license": "UNLICENSED",
@@ -13,8 +13,12 @@
     "nodemon": "^1.11.0"
   },
   "dependencies": {
-    "ace-css": "^1.1.0",
+    "@rwoody/ht-core": "~0.0.3",
+    "@rwoody/ht-util": "0.0.4",
+    "body-parser": "^1.17.1",
+    "dotenv": "^4.0.0",
     "express": "^4.15.2",
+    "morgan": "^1.8.1",
     "nunjucks": "^3.0.0"
   }
 }

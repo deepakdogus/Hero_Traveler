@@ -1,0 +1,18 @@
+{% macro leftArrow(page, sortBy, direction, searchType)%}
+  <div>
+    <a class="btn" href="/{{searchType}}?sortBy={{sortBy}}&page={{page - 1}}&direction={{direction}}">
+      <i class="fa fa-arrow-left m2"></i>
+      Previous Page
+    </a>
+  </div>
+{% endmacro %}
+
+
+{% macro rightArrow(page, sortBy, direction, searchType)%}
+  <div> 
+    <a class="btn" href="/{{searchType}}?sortBy={{sortBy}}&page={{(page | int) + 1}}&direction={{direction}}">
+      Next Page
+      <i class="fa fa-arrow-right m2"></i>
+    </a>
+  </div>
+{% endmacro %}

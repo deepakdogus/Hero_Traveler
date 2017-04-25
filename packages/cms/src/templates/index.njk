@@ -2,19 +2,26 @@
 <html lang="en">
 <head>
 {% block head %}
-  <link rel="stylesheet" href="https://unpkg.com/ace-css/css/ace.min.css"/>
+  <link href="https://unpkg.com/basscss@7.1.1/css/basscss.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <title>HeroTraveller CMS</title>
 {% endblock %}
 </head>
 
+{% set sortBy = 'user' %}
+{% set searchType = 'users' %}
+{% if not page %}
+  {% set page = 0 %}
+{% endif %}
 
 {% block header %}
-  <div class="flex justify-around flex-row m2">
-    <a href="/users" class="ml1 btn btn-primary">Users</a>
-    <a href="/categories" class="ml1 btn btn-primary">Categories</button>
-    <a href="/stories" class="ml1 btn btn-primary">Stories</button>
+  <div class="flex flex-row m2">
+    <a href="/users?sortby=username&direction={{ direction }}&page={{ page }}" class="ml1 btn btn-primary">Users</a>
+    <a href="/categories?sortby=category&direction=1&page={{ page }}" class="ml1 btn btn-primary">Categories</a>
+    <a href="/stories" class="ml1 btn btn-primary">Stories</a>
     <a href="/" class="ml1 btn btn-primary">Home</a>
   </div>
+  <div>
 {% endblock %}
 
 {% block main %}

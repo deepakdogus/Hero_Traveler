@@ -14,10 +14,12 @@ const { Types, Creators } = createActions({
   fromCategoryRequest: ['categoryId'],
   fromCategorySuccess: ['categoryId', 'categoryStoriesById'],
   fromCategoryFailure: ['error'],
-  storyLike: ['storyId'],
-  storyLikeFailure: ['storyId'],
-  storyBookmark: ['storyId'],
-  storyBookmarkFailure: ['storyId'],
+  toggleLike: ['storyId', 'wasLiked'],
+  storyLike: ['userId', 'storyId'],
+  // storyLikeFailure: ['storyId', 'wasLiked'],
+  toggleBookmark: ['storyId', 'wasLiked'],
+  storyBookmark: ['userId', 'storyId'],
+  // storyBookmarkFailure: ['storyId', 'wasLiked'],
   receiveStories: ['stories']
 })
 
@@ -59,6 +61,7 @@ export const feedSuccess = (state, {userFeedById}) => {
       fetching: false,
       loaded: true,
     },
+    userFeedById,
     error: null
   }, {
     deep: true
@@ -69,6 +72,10 @@ export const userRequest = (state, {userId}) => {
   return state.setIn(
     ['storiesByUserAndId', userId, 'fetchStatus'],
     {fetching: true, loaded: false}
+  )
+  .setIn(
+    ['storiesByUserAndId', userId, 'byId'],
+    []
   )
 }
 
@@ -88,10 +95,6 @@ export const userFailure = (state, {error}) => {
     ['storiesByUserAndId', userId, 'fetchStatus'],
     {fetching: false, loaded: false, error}
   )
-  .setIn(
-    ['storiesByUserAndId', userId, 'byId'],
-    userStoriesById
-  )
 }
 
 export const categoryRequest = (state, {categoryId}) => {
@@ -99,6 +102,10 @@ export const categoryRequest = (state, {categoryId}) => {
     ['storiesByCategoryAndId', categoryId, 'fetchStatus'],
     {fetching: true, loaded: false}
   )
+  // .setIn(
+  //   ['storiesByCategoryAndId', categoryId, 'byId'],
+  //   []
+  // )
 }
 
 export const categorySuccess = (state, {categoryId, categoryStoriesById}) => {
@@ -117,10 +124,6 @@ export const categoryFailure = (state, {error}) => {
     ['storiesByCategoryAndId', categoryId, 'fetchStatus'],
     {fetching: false, loaded: false, error}
   )
-  .setIn(
-    ['storiesByCategoryAndId', categoryId, 'byId'],
-    categoryStoriesById
-  )
 }
 
 export const failure = (state, {error}) =>
@@ -135,43 +138,40 @@ export const failure = (state, {error}) =>
   })
 
 // Toggle like optimistically
-const storyLike = (state, {storyId}) => {
-  const isToggled = _.get(state, `entities.${storyId}.isLiked`, false)
+const storyLike = (state, {storyId, wasLiked}) => {
   const numOfLikes = _.get(state, `entities.${storyId}.counts.likes`, 0)
   return state.setIn(
     ['entities', storyId, 'counts', 'likes'],
-    !isToggled ? numOfLikes + 1 : numOfLikes - 1
+    !wasLiked ? numOfLikes + 1 : numOfLikes - 1
   )
 }
 
-// Revert the optimistic update on like failure
-const storyLikeFailure = (state, {storyId}) => {
-  const numOfLikes = _.get(state, `entities.${storyId}.counts.likes`, 0)
-  return state.setIn(
-    ['entities', storyId, 'counts', 'likes'],
-    !isToggled ? numOfLikes - 1 : numOfLikes + 1
-  )
-}
+// // Revert the optimistic update on like failure
+// const storyLikeFailure = (state, {storyId, wasLiked}) => {
+//   const numOfLikes = _.get(state, `entities.${storyId}.counts.likes`, 0)
+//   return state.setIn(
+//     ['entities', storyId, 'counts', 'likes'],
+//     !wasLiked ? numOfLikes - 1 : numOfLikes + 1
+//   )
+// }
 
 // Increase count of bookmarks
-const storyBookmark = (state, {storyId}) => {
-  const isToggled = _.get(state, `entities.${storyId}.isBookmarked`, false)
+const storyBookmark = (state, {storyId, wasLiked}) => {
   const numOfLikes = _.get(state, `entities.${storyId}.counts.bookmarks`, 0)
   return state.setIn(
     ['entities', storyId, 'counts', 'bookmarks'],
-    !isToggled ? numOfLikes + 1 : numOfLikes - 1
+    !wasLiked ? numOfLikes + 1 : numOfLikes - 1
   )
 }
 
-// Revert the optimistic update on bookmark failure
-const storyBookmarkFailure = (state, {storyId}) => {
-  const isToggled = _.get(state, `entities.${storyId}.isBookmarked`, false)
-  const numOfLikes = _.get(state, `entities.${storyId}.counts.bookmarks`, 0)
-  return state.setIn(
-    ['entities', storyId, 'counts', 'bookmarks'],
-    !isToggled ? numOfLikes - 1 : numOfLikes + 1
-  )
-}
+// // Revert the optimistic update on bookmark failure
+// const storyBookmarkFailure = (state, {storyId, wasLiked}) => {
+//   const numOfLikes = _.get(state, `entities.${storyId}.counts.bookmarks`, 0)
+//   return state.setIn(
+//     ['entities', storyId, 'counts', 'bookmarks'],
+//     !wasLiked ? numOfLikes - 1 : numOfLikes + 1
+//   )
+// }
 
 export const updateEntities = (state, {stories = {}}) => {
   return state.merge({entities: stories}, {deep: true})
@@ -185,6 +185,14 @@ export const getByCategory = (state, categoryId) => {
 
 export const getFetchStatus = (state, categoryId) => {
   return state.getIn(['storiesByCategoryAndId', categoryId, 'fetchStatus'], {})
+}
+
+export const getByUser = (state, userId) => {
+  return state.getIn(['storiesByUserAndId', userId, 'byId'], [])
+}
+
+export const getUserFetchStatus = (state, userId) => {
+  return state.getIn(['storiesByUserAndId', userId, 'fetchStatus'], {})
 }
 
 export const getIdsByUser = (state, userId: string) => {
@@ -203,9 +211,9 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.FROM_CATEGORY_REQUEST]: categoryRequest,
   [Types.FROM_CATEGORY_SUCCESS]: categorySuccess,
   [Types.FROM_CATEGORY_FAILURE]: categoryFailure,
-  [Types.STORY_LIKE]: storyLike,
-  [Types.STORY_LIKE_FAILURE]: storyLikeFailure,
-  [Types.STORY_BOOKMARK]: storyBookmark,
-  [Types.STORY_BOOKMARK_FAILURE]: storyBookmarkFailure,
+  [Types.TOGGLE_LIKE]: storyLike,
+  // [Types.STORY_LIKE_FAILURE]: storyLikeFailure,
+  [Types.TOGGLE_BOOKMARK]: storyBookmark,
+  // [Types.STORY_BOOKMARK_FAILURE]: storyBookmarkFailure,
   [Types.RECEIVE_STORIES]: updateEntities,
 })

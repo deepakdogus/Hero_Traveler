@@ -1,13 +1,13 @@
 import _ from 'lodash'
 import { call, put, select } from 'redux-saga/effects'
 import StoryActions from '../Redux/Entities/Stories'
-import UserActions, {isInitialAppDataLoaded} from '../Redux/Entities/Users'
+import UserActions, {isInitialAppDataLoaded, isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
 import CategoryActions from '../Redux/Entities/Categories'
-import {getUserId, isStoryLiked} from '../Redux/SessionRedux'
 import StoryCreateActions, {getDraft} from '../Redux/StoryCreateRedux'
 
-const isStoryLikedSelector = ({session}, storyId) => isStoryLiked(session, storyId)
 const hasInitialAppDataLoaded = ({entities}, userId) => isInitialAppDataLoaded(entities.users, userId)
+const isStoryLikedSelector = ({entities}, userId, storyId) => isStoryLiked(entities.users, userId, storyId)
+const isStoryBookmarkedSelector = ({entities}, userId, storyId) => isStoryBookmarked(entities.users, userId, storyId)
 
 export function * getUserFeed (api, action) {
   const { userId } = action
@@ -129,37 +129,44 @@ export function * uploadCoverImage(api, action) {
   }
 }
 
-export function * likeStory(api, {storyId}) {
-  const response = yield call(api.likeStory, storyId)
+export function * likeStory(api, {userId, storyId}) {
+  const [wasLiked, response] = yield [
+    select(isStoryLikedSelector, userId, storyId),
+    call(api.likeStory, storyId)
+  ]
 
   yield [
-    put(UserActions.toggleLike(storyId)),
-    put(StoryActions.toggleLike(storyId)),
+    put(UserActions.userToggleLike(userId, storyId)),
+    put(StoryActions.toggleLike(storyId, wasLiked)),
   ]
 
   if (!response.ok) {
+    console.log('!response.ok')
     yield [
-      put(UserActions.toggleLike(storyId)),
-      put(StoryActions.toggleLike(storyId)),
+      put(UserActions.userToggleLike(userId, storyId)),
+      put(StoryActions.toggleLike(storyId, !wasLiked)),
     ]
   }
 }
 
-export function * bookmarkStory(api, {storyId}) {
-  const response = yield call(
-    api.bookmarkStory,
-    storyId
-  )
+export function * bookmarkStory(api, {userId, storyId}) {
+  const [wasLiked, response] = yield [
+    select(isStoryBookmarkedSelector, userId, storyId),
+    call(
+      api.bookmarkStory,
+      storyId
+    )
+  ]
 
   yield [
-    put(UserActions.toggleBookmark()),
-    put(StoryActions.toggleBookmark())
+    put(UserActions.userToggleBookmark(userId, storyId)),
+    put(StoryActions.toggleBookmark(storyId, wasLiked))
   ]
 
   if (!response.ok) {
     yield [
-      put(UserActions.toggleBookmark()),
-      put(StoryActions.toggleBookmark())
+      put(UserActions.userToggleBookmark(userId, storyId)),
+      put(StoryActions.toggleBookmark(storyId, !wasLiked))
     ]
   }
 }

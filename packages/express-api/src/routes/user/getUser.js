@@ -1,7 +1,6 @@
-import {Models} from '@rwoody/ht-core'
+import {User} from '@rwoody/ht-core'
 
 export default function getUser(req, res) {
-  return Models.User.findOne({
-    _id: req.params.id
-  })
+  const userId = req.params.id
+  return User.get({_id: userId})
 }

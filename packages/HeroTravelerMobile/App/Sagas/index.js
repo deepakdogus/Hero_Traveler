@@ -82,7 +82,7 @@ export default function * root () {
     takeLatest(StoryTypes.STORY_LIKE, likeStory, heroAPI),
     takeLatest(StoryTypes.STORY_BOOKMARK, bookmarkStory, heroAPI),
     takeLatest(CategoryTypes.LOAD_CATEGORIES_REQUEST, getCategories, heroAPI),
-    takeLatest(StoryTypes.GET_BOOKMARKS, getBookmarks, heroAPI),
+    // takeLatest(StoryTypes.GET_BOOKMARKS, getBookmarks, heroAPI),
 
     // Users
     takeLatest(UserTypes.LOAD_USER_SUGGESTIONS_REQUEST, getSuggestedUsers, heroAPI),

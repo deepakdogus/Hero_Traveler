@@ -17,8 +17,8 @@ const { Types, Creators } = createActions({
   receiveUsers: ['users'],
   receiveLikes: ['userId', 'storyIds'],
   receiveBookmarks: ['userId', 'storyIds'],
-  toggleLike: ['userId', 'storyId'],
-  toggleBookmark: ['userId', 'storyId']
+  userToggleLike: ['userId', 'storyId'],
+  userToggleBookmark: ['userId', 'storyId']
 })
 
 export const UserTypes = Types
@@ -34,7 +34,6 @@ export const INITIAL_STATE = Immutable({
   },
   usersLikesById: {},
   usersBookmarksById: {},
-  usersStoriesById: {},
   error: null,
 })
 
@@ -42,8 +41,8 @@ export const INITIAL_STATE = Immutable({
 
 export const loadUser = (state) => {
   return state.setIn(
-    ['fetchStatus', 'fetching'],
-    true
+    ['fetchStatus'],
+    {fetching: true, loaded: false}
   )
 }
 export const loadUserSuccess = (state, {user}) => {
@@ -173,6 +172,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.RECEIVE_USERS]: receive,
   [Types.RECEIVE_LIKES]: receiveLikes,
   [Types.RECEIVE_BOOKMARKS]: receiveBookmarks,
-  [Types.TOGGLE_LIKE]: toggleLike,
-  [Types.TOGGLE_BOOKMARK]: toggleBookmark,
+  [Types.USER_TOGGLE_LIKE]: toggleLike,
+  [Types.USER_TOGGLE_BOOKMARK]: toggleBookmark,
 })

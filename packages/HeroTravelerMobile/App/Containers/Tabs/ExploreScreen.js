@@ -248,7 +248,7 @@ const mapStateToProps = (state) => {
   } = state.entities.categories;
 
   return {
-    user: state.entities.users[state.session.userId],
+    user: state.entities.users.entities[state.session.userId],
     users: state.entities.users.entities,
     categories,
     categoriesFetchStatus,

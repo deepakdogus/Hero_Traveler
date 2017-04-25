@@ -54,9 +54,7 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    console.log('new props', newProps)
     if (!newProps.publishing && newProps.isCreated) {
-      console.log('we are here')
       NavActions.tabbar({type: 'reset'})
       this.props.resetForm()
     }

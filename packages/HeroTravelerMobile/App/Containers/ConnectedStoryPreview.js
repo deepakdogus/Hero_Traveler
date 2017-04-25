@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 
-import {isStoryLiked} from '../Redux/Entities/Users'
+import {isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
 import StoryPreview from '../Components/StoryPreview'
 
 const mapStateToProps = (state, ownProps) => {
@@ -9,7 +9,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     story,
     user: entities.users.entities[story.author],
-    isLiked: isStoryLiked(state.session, userId, story.id)
+    isLiked: isStoryLiked(entities.users, userId, story.id),
+    isBookmarked: isStoryBookmarked(entities.users, userId, story.id)
   }
 }
 

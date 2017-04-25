@@ -36,8 +36,8 @@ class ReadOnlyProfileScreen extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ) => {
-  const {user} = state.session
+const mapStateToProps = (state) => {
+  const {userId} = state.session
   let {
     fetchStatus,
     entities: allStories,

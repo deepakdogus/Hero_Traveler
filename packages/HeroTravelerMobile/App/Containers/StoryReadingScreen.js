@@ -96,7 +96,7 @@ class StoryReadingScreen extends React.Component {
             onPressUser={(userId) => NavActions.readOnlyProfile({ userId })}
             key={story.id}
             height={Metrics.screenHeight}
-            storyId={this.props.storyId}
+            storyId={story.id}
           />
           <View style={styles.content}>
             {!story.content &&
@@ -160,8 +160,8 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleLike: (userId, storyId) => dispatch(UserAction.toggle(userId, storyId)),
-    toggleBookmark: (userId, storyId) => dispatch(UserAction.toggleBookmark(userId, storyId))
+    toggleLike: (userId, storyId) => dispatch(StoryActions.storyLike(userId, storyId)),
+    toggleBookmark: (userId, storyId) => dispatch(StoryActions.storyBookmark(userId, storyId))
   }
 }
 

@@ -125,13 +125,6 @@ class MyFeedScreen extends React.Component {
 
   render () {
     let { storiesById, fetchStatus, error } = this.props;
-    // const storiesAsArray = _.map(stories, s => {
-    //   return {
-    //     ...s,
-    //     author: this.props.usersById[s.author]
-    //   }
-    // })
-    // let content;
 
     const showTooltip = !isTooltipComplete(
       TooltipTypes.MY_FEED,
@@ -162,7 +155,7 @@ class MyFeedScreen extends React.Component {
                   NavActions.story({
                   storyId: story.id
                 })}}
-                onPressLike={story => this.props.toggleLike(story.id)}
+                onPressLike={story => this.props.toggleLike(this.props.user.id, story.id)}
               />
             )
           }}
@@ -193,8 +186,7 @@ const mapStateToProps = (state) => {
     error
   } = state.entities.stories;
   return {
-    user: state.entities.users[state.session.userId],
-    usersById: state.entities.users.entities,
+    user: state.entities.users.entities[state.session.userId],
     fetchStatus,
     storiesById: userFeedById,
     error
@@ -204,7 +196,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     attemptGetUserFeed: (userId) => dispatch(StoryActions.feedRequest(userId)),
-    toggleLike: (storyId) => dispatch(StoryActions.storyLike(storyId)),
+    toggleLike: (userId, storyId) => dispatch(StoryActions.storyLike(userId, storyId)),
     completeTooltip: (introTooltips) => dispatch(SessionActions.updateUser({introTooltips}))
   }
 }

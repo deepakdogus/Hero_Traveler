@@ -4,8 +4,9 @@ import CategoryActions from '../Redux/Entities/Categories'
 export function * getCategories (api, action) {
   const response = yield call(api.getCategories)
   if (response.ok) {
-    const { data } = response;
-    yield put(CategoryActions.loadCategoriesSuccess(data.categories))
+    const { entities } = response.data;
+    console.log('get cats', response.data)
+    yield put(CategoryActions.loadCategoriesSuccess(entities.categories))
   } else {
     yield put(CategoryActions.loadCategoriesFailure())
   }

@@ -128,7 +128,7 @@ class SettingsScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.entities.users[state.session.userId],
+    user: state.entities.users.entities[state.session.userId],
     isLoggedIn: hasAuthData(state.session),
     tokens: state.session.tokens
   }

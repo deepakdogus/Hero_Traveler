@@ -29,8 +29,8 @@ class CategoryFeedScreen extends React.Component {
   static propTypes = {
     categoryId: PropTypes.string,
     user: PropTypes.object,
-    storiesById: PropTypes.object,
-    fetchStatus: PropTypes.bool,
+    storiesById: PropTypes.array,
+    fetchStatus: PropTypes.object,
     error: PropTypes.string
   }
 
@@ -133,7 +133,7 @@ class CategoryFeedScreen extends React.Component {
                   NavActions.story({
                     storyId: story.id
                 })}}
-                onPressLike={story => this.props.toggleLike(story.id)}
+                onPressLike={story => this.props.toggleLike(this.props.user.id, story.id)}
               />
             )
           }}
@@ -181,18 +181,23 @@ const mapStateToProps = (state, props) => {
     entities: stories,
     error
   } = state.entities.stories;
+  console.log('props.categoryId', props.categoryId)
+  console.log('getByCategory(stories, props.categoryId)', getByCategory(stories, props.categoryId))
   return {
     user: state.entities.users.entities[state.session.userId],
-    fetchStatus: getFetchStatus(stories, props.categoryId),
-    storiesById: getByCategory(stories, props.categoryId),
+    fetchStatus: getFetchStatus(state.entities.stories, props.categoryId),
+    storiesById: getByCategory(state.entities.stories, props.categoryId),
     error
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, props) => {
   return {
     loadCategory: (categoryId) => dispatch(StoryActions.fromCategoryRequest(categoryId)),
-    toggleLike: (storyId) => dispatch(StoryActions.storyLike(storyId))
+    toggleLike: (userId, storyId) => dispatch(StoryActions.storyLike(
+      userId,
+      storyId
+    ))
   }
 }
 

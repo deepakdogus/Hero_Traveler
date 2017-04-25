@@ -115,6 +115,11 @@ const create = () => {
 
   const getUser = (userId) => {
     return api.get(`user/${userId}`)
+    .then(response => {
+      return Object.assign({}, response, {
+        data: normalize(response.data, User)
+      })
+    })
   }
 
   const updateUser = (userId, attrs) => {
@@ -149,7 +154,7 @@ const create = () => {
       })
       .then(response => {
         return Object.assign({}, response, {
-          data: normalize(response.data, [Story]).entities
+          data: normalize(response.data, [Story])
         })
       })
   }
@@ -190,7 +195,7 @@ const create = () => {
     return api.get('category')
       .then(response => {
         return  Object.assign({}, response, {
-          data: normalize(response.data, [Category]).entities
+          data: normalize(response.data, [Category])
         })
       })
   }
@@ -201,7 +206,7 @@ const create = () => {
       })
       .then(response => {
         return  Object.assign({}, response, {
-          data: normalize(response.data, [User]).entities
+          data: normalize(response.data, [User])
         })
       })
   }
@@ -243,8 +248,9 @@ const create = () => {
   const getBookmarks = (userId) => {
     return api.get(`story/user/${userId}/bookmark`)
       .then(response => {
+        console.log('getBookmarks', response.data)
         return  Object.assign({}, response, {
-          data: normalize(response.data, [Bookmarks])
+          data: normalize(response.data, [Story])
         })
       })
   }
@@ -281,10 +287,11 @@ const create = () => {
   return {
     setAuth,
     unsetAuth,
-    getMe,
-    updateUser,
     login,
     logout,
+    getMe,
+    updateUser,
+    getUser,
     resetPassword,
     signupEmail,
     signupFacebook,

@@ -10,7 +10,6 @@ import Loader from '../../Components/Loader'
 import styles from '../Styles/NotificationScreenStyles'
 import ActivityList from '../../Components/ActivityList'
 import ThreadList from '../../Components/ThreadList'
-import StoryActions from '../../Redux/Entities/Stories'
 
 
 const Tab = ({text, onPress, selected}) => {
@@ -91,7 +90,7 @@ class NotificationScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   const users = state.entities.users.entities
-  const user = state.session.user
+  const user = state.entities.users.entities[state.session.userId]
   return {
     user,
     users,
@@ -129,9 +128,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    // getActivity: (userId) => {
-    //   return dispatch(StoryActions.feedRequest(userId))
-    // }
   }
 }
 

@@ -12,36 +12,61 @@ import _ from 'lodash'
 // TODO create redux action to load followers or else load all users and filter for followers
 // on the front end.
 
-import UserActions from '../Redux/Entities/Users'
+import UserActions, {getFollowers, getFollowersFetchStatus} from '../Redux/Entities/Users'
+import Loader from '../Components/Loader'
+import RoundedButton from '../Components/RoundedButton'
 import Avatar from '../Components/Avatar'
+import {Colors} from '../Themes'
 import NavBar from './CreateStory/NavBar'
 import styles from './Signup/SignupSocialStyles'
 
 class FollowersScreen extends React.Component {
 
   static propTypes = {
-    followers: PropTypes.array
+    followers: PropTypes.array,
+    followersType: PropTypes.oneOf(['followers', 'following']).isRequired,
+    loadDataAction: PropTypes.func.isRequired,
+    userId: PropTypes.string.isRequired
   }
 
   componentDidMount() {
-    this.props.loadFollowers()
+    this.props.loadData()
   }
 
-  // TODO replace the function below if necessary.
-  /* It exists right now so that the signup data does not throw an error, but it isn't being used*/
+  userIsFollowed(userId: string) {
+    return _.includes(this.props.myFollowedUsers, userId)
+  }
 
-  userIsSelected(user) { 
-    return _.includes(this.props.selectedUsersById, user.id)
+  renderEmptyMessage(msg: string) {
+    return (
+      <View style={styles.emptyMessage}>
+        <Text style={styles.emptyMessageText}>{msg}</Text>
+        <RoundedButton
+          style={styles.emptyMessageBtn}
+          onPress={this.props.onLeft}>Back</RoundedButton>
+      </View>
+    )
   }
 
   render () {
     let content
 
-    if (_.values(this.props.users).length) {
+    if (this.props.fetchStatus.loading) {
+      return (
+        <Loader
+          style={styles.spinner}
+          tintColor={Colors.blackoutTint}
+          spinnerColor={Colors.snow}
+        />
+      )
+    }
+
+    if (this.props.usersById.length) {
       content = (
-        <View style={styles.lightBG}>
-          {_.values(this.props.users).map(u => {
-            const selected = !this.userIsSelected(u)
+        <View style={styles.followers}>
+          {_.map(this.props.usersById, uid => {
+            const u = this.props.users[uid]
+            const selected = this.userIsFollowed(u.id)
             return (
               <View style={[styles.rowWrapper]} key={u.id}>
                 <View style={[styles.row, styles.followers]}>
@@ -55,53 +80,59 @@ class FollowersScreen extends React.Component {
                     <Text style={styles.name}>{u.profile.fullName}</Text>
                     <Text style={styles.followerCount}>{u.counts.following} followers</Text>
                   </View>
+                  <RoundedButton
+                    style={selected ? styles.selectedFollowersButton : styles.followersButton}
+                    textStyle={selected ? styles.selectedFollowersButtonText : styles.followersButtonText}
+                    text={selected ? 'FOLLOWING' : '+ FOLLOW'}
+                    onPress={() => this.toggleFollow(u)}
+                  />
                 </View>
               </View>
             )
           })}
         </View>
       )
+    } else if (this.props.followersType === 'followers') {
+      // If the authenticated user is viewing another users followers
+      content = this.renderEmptyMessage('No followers found')
     } else {
-      content = (
-        <Text>No Followers yet</Text>
-      )
+      content = this.renderEmptyMessage('Not following any users')
     }
 
     return (
-      <ScrollView style={[styles.root]}>
-          <NavBar
-            leftTitle='Back'
-            onLeft={() => NavActions.pop()}
-          />
-        <View style={styles.header}>
-          <Text style={styles.title}>FOLLOWERS</Text>
-          <Text style={styles.subtitle}>These are the people following you</Text>
-        </View>
+      <ScrollView style={[styles.containerWithNavbar, styles.root, styles.lightBG]}>
         {content}
       </ScrollView>
     )
   }
 
   toggleFollow = (u) => {
-    const isSelected = this.userIsSelected(u)
-    if (!isSelected) {
-      this.props.followUser(u.id)
+    if (!this.userIsFollowed(u)) {
+      this.props.followUser(this.props.user.id, u.id)
     } else {
-      this.props.unfollowUser(u.id)
+      this.props.unfollowUser(this.props.user.id, u.id)
     }
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
+  const {users} = state.entities
+  const authedUserId = state.session.userId
+
   return {
-    users: state.entities.users.entities,
-    selectedUsersById: state.signup.selectedUsers
+    users: users.entities,
+    user: users.entities[authedUserId],
+    usersById: getFollowers(users, props.followersType, props.userId),
+    fetchStatus: getFollowersFetchStatus(users, props.followersType, props.userId),
+    myFollowedUsers: getFollowers(users, 'following', authedUserId)
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, props) => {
   return {
-    loadFollowers: () => dispatch(UserActions.loadUserSuggestionsRequest()),
+    loadData: () => dispatch(props.loadDataAction(props.userId)),
+    followUser: (userId, userIdToFollow) => console.log('dispatch follow user'),
+    unfollowUser: (userId, userIdToUnfollow) => console.log('dispatch unfollow user'),
   }
 }
 

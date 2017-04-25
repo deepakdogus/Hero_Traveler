@@ -35,6 +35,8 @@ export default class StoryPreview extends Component {
     onPressLike: PropTypes.func,
     onPress: PropTypes.func,
     forProfile: PropTypes.bool,
+    height: PropTypes.number,
+    isLiked: PropTypes.bool,
   }
 
   wrap(content) {
@@ -57,17 +59,18 @@ export default class StoryPreview extends Component {
   }
 
   render () {
-    let { story } = this.props,
-      { coverImage,
-        title,
-        description,
-        author: {
-          id: authorId,
-          username,
-          profile
-        },
-        counts
-      } = story
+    const { story, user } = this.props
+    const {
+      id: userId,
+      username,
+      profile
+    } = user;
+    const {
+      coverImage,
+      title,
+      description,
+      counts
+    } = story;
 
     const userContent = (
       <View style={styles.row}>
@@ -92,7 +95,7 @@ export default class StoryPreview extends Component {
               {!this.props.forProfile && <View style={styles.divider}></View>}
               <View style={styles.detailContainer}>
                 {!this.props.forProfile && this.props.onPressUser &&
-                  <TouchableOpacity onPress={() => this.props.onPressUser(authorId)}>
+                  <TouchableOpacity onPress={() => this.props.onPressUser(userId)}>
                     {userContent}
                   </TouchableOpacity>
                 }
@@ -104,7 +107,7 @@ export default class StoryPreview extends Component {
                       onPress={this._onPressLike}
                       numberStyle={styles.bottomRight}
                       likes={formatCount(counts.likes)}
-                      isLiked={story.isLiked}
+                      isLiked={this.props.isLiked}
                     />
                   </View>
                 }
@@ -115,7 +118,7 @@ export default class StoryPreview extends Component {
                       onPress={this._onPressLike}
                       numberStyle={styles.bottomRight}
                       likes={formatCount(counts.likes)}
-                      isLiked={story.isLiked}
+                      isLiked={this.props.isLiked}
                     />
                   </View>
                 }

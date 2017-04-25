@@ -119,7 +119,7 @@ class StoryCommentsScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.session.user,
+    user: state.entities.users.entities[state.session.userId],
     accessToken: _.find(state.session.tokens, {type: 'access'})
   }
 }

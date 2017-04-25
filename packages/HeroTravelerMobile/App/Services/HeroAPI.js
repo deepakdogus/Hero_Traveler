@@ -113,6 +113,15 @@ const create = () => {
     return api.get('user')
   }
 
+  const getUser = (userId) => {
+    return api.get(`user/${userId}`)
+    .then(response => {
+      return Object.assign({}, response, {
+        data: normalize(response.data, User)
+      })
+    })
+  }
+
   const updateUser = (userId, attrs) => {
     return api.put(`user/${userId}`, attrs)
   }
@@ -123,7 +132,7 @@ const create = () => {
       })
       .then(response => {
         return Object.assign({}, response, {
-          data: normalize(response.data, [Story]).entities
+          data: normalize(response.data, [Story])
         })
       })
   }
@@ -133,7 +142,6 @@ const create = () => {
         params
       })
       .then(response => {
-        console.log('normalize(response.data, [Story])', normalize(response.data, [Story]))
         return Object.assign({}, response, {
           data: normalize(response.data, [Story])
         })
@@ -146,7 +154,7 @@ const create = () => {
       })
       .then(response => {
         return Object.assign({}, response, {
-          data: normalize(response.data, [Story]).entities
+          data: normalize(response.data, [Story])
         })
       })
   }
@@ -187,7 +195,7 @@ const create = () => {
     return api.get('category')
       .then(response => {
         return  Object.assign({}, response, {
-          data: normalize(response.data, [Category]).entities
+          data: normalize(response.data, [Category])
         })
       })
   }
@@ -198,7 +206,7 @@ const create = () => {
       })
       .then(response => {
         return  Object.assign({}, response, {
-          data: normalize(response.data, [User]).entities
+          data: normalize(response.data, [User])
         })
       })
   }
@@ -225,6 +233,28 @@ const create = () => {
     })
   }
 
+  const getUserFollowers = (userId) => {
+    return api.get(`user/${userId}/followers`)
+      .then(response => {
+        return  Object.assign({}, response, {
+          data: normalize(response.data, [User])
+        })
+      })
+  }
+
+  const getUserFollowing = (userId) => {
+    return api.get(`user/${userId}/following`)
+      .then(response => {
+        return  Object.assign({}, response, {
+          data: normalize(response.data, [User])
+        })
+      })
+  }
+
+  const getUserLikes = (userId) => {
+    return api.get(`story/user/${userId}/like`)
+  }
+
   const likeStory = (storyId) => {
     return api.get(`story/${storyId}/like`)
   }
@@ -233,12 +263,12 @@ const create = () => {
     return api.get(`story/${storyId}/bookmark`)
   }
 
-  const getBookmarks = (storyId) => {
-    return api.get(`story/bookmark`)
+  const getBookmarks = (userId) => {
+    return api.get(`story/user/${userId}/bookmark`)
       .then(response => {
-        console.log('normalize(response.data, [Bookmarks])', normalize(response.data, [Bookmarks]))
+        console.log('getBookmarks', response.data)
         return  Object.assign({}, response, {
-          data: normalize(response.data, [Bookmarks])
+          data: normalize(response.data, [Story])
         })
       })
   }
@@ -275,10 +305,11 @@ const create = () => {
   return {
     setAuth,
     unsetAuth,
-    getMe,
-    updateUser,
     login,
     logout,
+    getMe,
+    updateUser,
+    getUser,
     resetPassword,
     signupEmail,
     signupFacebook,
@@ -286,11 +317,15 @@ const create = () => {
     createStory,
     getCategories,
     getUserStories,
+    getCategoryStories,
     getSuggestedUsers,
+    getUserFollowers,
+    getUserFollowing,
     followUser,
     unfollowUser,
     followCategory,
     unfollowCategory,
+    getUserLikes,
     likeStory,
     bookmarkStory,
     getDraft,

@@ -30,7 +30,12 @@ import {
 import { logout, getMe, updateUser } from './SessionSagas'
 import { openScreen } from './OpenScreenSagas'
 import { getCategories } from './CategorySagas'
-import { getSuggestedUsers } from './UserSagas'
+import {
+  getSuggestedUsers,
+  loadUser,
+  loadUserFollowing,
+  loadUserFollowers
+} from './UserSagas'
 
 import {
   getUserFeed,
@@ -39,6 +44,7 @@ import {
   discardDraft,
   updateDraft,
   getUserStories,
+  getCategoryStories,
   likeStory,
   bookmarkStory,
   getBookmarks,
@@ -66,9 +72,7 @@ export default function * root () {
     takeLatest(SignupTypes.SIGNUP_UNFOLLOW_CATEGORY, unfollowCategory, heroAPI),
     takeLatest(SignupTypes.SIGNUP_FOLLOW_USER, followUser, heroAPI),
     takeLatest(SignupTypes.SIGNUP_UNFOLLOW_USER, unfollowUser, heroAPI),
-    takeLatest(SessionTypes.REFRESH_USER, getMe, heroAPI),
     takeLatest(SessionTypes.LOGOUT, logout, heroAPI),
-    takeLatest(SessionTypes.UPDATE_USER, updateUser, heroAPI),
 
     // Drafts and story creation
     takeLatest(StoryCreateTypes.PUBLISH_DRAFT, publishDraft, heroAPI),
@@ -79,10 +83,17 @@ export default function * root () {
 
     takeLatest(StoryTypes.FEED_REQUEST, getUserFeed, heroAPI),
     takeLatest(StoryTypes.FROM_USER_REQUEST, getUserStories, heroAPI),
+    takeLatest(StoryTypes.FROM_CATEGORY_REQUEST, getCategoryStories, heroAPI),
     takeLatest(StoryTypes.STORY_LIKE, likeStory, heroAPI),
     takeLatest(StoryTypes.STORY_BOOKMARK, bookmarkStory, heroAPI),
     takeLatest(CategoryTypes.LOAD_CATEGORIES_REQUEST, getCategories, heroAPI),
+    // takeLatest(StoryTypes.GET_BOOKMARKS, getBookmarks, heroAPI),
+
+    // Users
     takeLatest(UserTypes.LOAD_USER_SUGGESTIONS_REQUEST, getSuggestedUsers, heroAPI),
-    takeLatest(StoryTypes.GET_BOOKMARKS, getBookmarks, heroAPI)
+    takeLatest(UserTypes.LOAD_USER, loadUser, heroAPI),
+    takeLatest(UserTypes.UPDATE_USER, updateUser, heroAPI),
+    takeLatest(UserTypes.LOAD_USER_FOLLOWING, loadUserFollowing, heroAPI),
+    takeLatest(UserTypes.LOAD_USER_FOLLOWERS, loadUserFollowers, heroAPI),
   ]
 }

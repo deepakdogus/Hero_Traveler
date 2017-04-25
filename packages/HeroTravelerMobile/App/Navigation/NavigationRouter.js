@@ -20,7 +20,7 @@ import ReadOnlyProfileScreen from '../Containers/ReadOnlyProfileScreen'
 import SettingsScreen from '../Containers/SettingsScreen'
 import CategoryFeedScreen from '../Containers/Explore/CategoryFeedScreen'
 import FollowersScreen from '../Containers/FollowersScreen'
-import FollowingScreen from '../Containers/FollowingScreen'
+// import FollowingScreen from '../Containers/FollowingScreen'
 
 // Story reading & creating
 import StoryReadingScreen from '../Containers/StoryReadingScreen'
@@ -273,14 +273,10 @@ class NavigationRouter extends Component {
             <Scene
               key='followersScreen'
               component={FollowersScreen}
-              {...clearNavBarProps}
-              hideNavBar={true}
-            />
-            <Scene
-              key='followingScreen'
-              component={FollowingScreen}
-              {...clearNavBarProps}
-              hideNavBar={true}
+              title='Followers'
+              direction='horizontal'
+              onLeft={() => NavActions.pop({direction: 'horizontal'})}
+              {...darkNavBarProps}
             />
             <Scene
               key='mediaSelectorScreen'

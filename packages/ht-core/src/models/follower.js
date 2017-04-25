@@ -64,6 +64,8 @@ FollowerSchema.statics = {
         $exists: false
       }
     })
+    .lean()
+    .distinct('followee')
   },
   // Look up who follows a user
   getUserFollowees(userId) {
@@ -74,6 +76,8 @@ FollowerSchema.statics = {
         $exists: false
       }
     })
+    .lean()
+    .distinct('follower')
   },
   // Look up user categories
   getUserCategories(userId) {

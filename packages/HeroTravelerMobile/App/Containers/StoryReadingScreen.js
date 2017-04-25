@@ -5,9 +5,10 @@ import {Actions as NavActions} from 'react-native-router-flux'
 import MapView from 'react-native-maps';
 
 import StoryActions from '../Redux/Entities/Stories'
+import {isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
 import formatCount from '../Lib/formatCount'
 import StoryList from '../Components/StoryList'
-import StoryPreview from '../Components/StoryPreview'
+import ConnectedStoryPreview from './ConnectedStoryPreview'
 import RoundedButton from '../Components/RoundedButton'
 import {Metrics, Images} from '../Themes'
 import StoryReadingToolbar from '../Components/StoryReadingToolbar'
@@ -80,40 +81,33 @@ class StoryReadingScreen extends React.Component {
   }
 
   _toggleLike = () => {
-    console.log('this.props.story.id', this.props.story.id)
-    this.props.toggleLike(this.props.story.id)
+    this.props.toggleLike(this.props.user.id, this.props.story.id)
   }
 
   render () {
-    let { story, fetching, error, stories, user } = this.props;
-    const storyWithUser = {
-      ...story,
-      author: this.props.usersById[story.author]
-    }
-
+    const { story, fetching, error, user } = this.props;
     const baseText = styles.storyContentText
 
     return (
       <View style={[styles.root]}>
         <ScrollView style={[styles.scrollView]}>
-          <StoryPreview
+          <ConnectedStoryPreview
             onPressLike={this._toggleLike}
             onPressUser={(userId) => NavActions.readOnlyProfile({ userId })}
             key={story.id}
             height={Metrics.screenHeight}
-            story={storyWithUser}
+            storyId={story.id}
           />
           <View style={styles.content}>
             {!story.content &&
               <StoryContent
                 style={styles.content}
-                story={storyWithUser}
+                story={story}
               />
             }
             {story.content &&
               <Text style={styles.storyContentText}>{story.content}</Text>
             }
-
             {story.location &&
               <View style={styles.locationWrapper}>
                 <MapView
@@ -132,13 +126,13 @@ class StoryReadingScreen extends React.Component {
 
           <StoryReadingToolbar
             style={styles.toolBar}
-            likeCount={formatCount(storyWithUser.counts.likes)}
-            commentCount={formatCount(storyWithUser.counts.comments)}
-            boomarkCount={formatCount(storyWithUser.counts.bookmarks)}
-            isBookmarked={storyWithUser.isBookmarked}
-            isLiked={storyWithUser.isLiked}
+            likeCount={formatCount(story.counts.likes)}
+            commentCount={formatCount(story.counts.comments)}
+            boomarkCount={formatCount(story.counts.bookmarks)}
+            isBookmarked={this.props.isBookmarked}
+            isLiked={this.props.isLiked}
             onPressLike={() => this._toggleLike}
-            onPressBookmark={() => this.props.toggleBookmark(storyWithUser.id)}
+            onPressBookmark={() => this.props.toggleBookmark(this.props.user.id, story.id)}
             onPressComment={() => NavActions.storyComments({
               storyId: story.id
             })}
@@ -150,21 +144,24 @@ class StoryReadingScreen extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+  const {session: {userId}} = state
   let { fetching, entities: stories, error } = state.entities.stories
+  const story = stories[props.storyId]
   return {
-     user: state.session.user,
-    usersById: state.entities.users.entities,
+    user: state.entities.users.entities[userId],
+    // author: state.entities.users.entities[story.author],
     fetching,
-    stories,
-    story: stories[props.storyId],
-    error
+    story,
+    error,
+    isLiked: isStoryLiked(state.entities.users, userId, props.storyId),
+    isBookmarked: isStoryBookmarked(state.entities.users, userId, props.storyId),
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleLike: (storyId) => dispatch(StoryActions.storyLike(storyId)),
-    toggleBookmark: (storyId) => dispatch(StoryActions.storyBookmark(storyId))
+    toggleLike: (userId, storyId) => dispatch(StoryActions.storyLike(userId, storyId)),
+    toggleBookmark: (userId, storyId) => dispatch(StoryActions.storyBookmark(userId, storyId))
   }
 }
 

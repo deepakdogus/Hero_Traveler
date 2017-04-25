@@ -1,26 +1,48 @@
 
 import _ from 'lodash'
-import React from 'react'
+import React, {PropTypes, Component} from 'react'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import {Image, View} from 'react-native'
 
 import {Images, Colors, Metrics} from '../Themes'
 import UserActions from '../Redux/Entities/Users'
-import StoryActions, {getIdsByUser} from '../Redux/Entities/Stories'
+import StoryActions, {getByUser, getUserFetchStatus} from '../Redux/Entities/Stories'
 import ProfileView from '../Components/ProfileView'
+import Loader from '../Components/Loader'
 import getImageUrl from '../Lib/getImageUrl'
 import styles from './Styles/ProfileScreenStyles'
 
 
-class ReadOnlyProfileScreen extends React.Component {
+class ReadOnlyProfileScreen extends Component {
+
+  static propTypes = {
+    userId: PropTypes.string.isRequired
+  }
 
   componentDidMount() {
+    this.props.attemptRefreshUser(this.props.userId)
     this.props.attemptGetUserStories(this.props.userId)
   }
 
   render () {
-    const { userId, user, storiesById, fetchStatus} = this.props
+    const {
+      userId,
+      user,
+      storiesById,
+      userFetchStatus,
+      storiesFetchStatus
+    } = this.props
+
+    if (userFetchStatus.loading) {
+      return (
+        <Loader
+          style={styles.spinner}
+          tintColor={Colors.blackoutTint}
+          spinnerColor={Colors.snow}
+        />
+      )
+    }
 
     return (
       <ProfileView
@@ -29,26 +51,19 @@ class ReadOnlyProfileScreen extends React.Component {
         editable={false}
         hasTabbar={false}
         profileImage={getImageUrl(user.profile.cover)}
-        fetchStatus={fetchStatus}
+        fetchStatus={storiesFetchStatus}
         style={styles.root}
       />
     )
   }
 }
 
-const mapStateToProps = (state) => {
-  const {userId} = state.session
-  let {
-    fetchStatus,
-    entities: allStories,
-    error
-  } = state.entities.stories
+const mapStateToProps = (state, props) => {
   return {
-    user: state.entities.users.entities[userId],
-    storiesById: getIdsByUser(state.entities.stories, userId),
-    fetchStatus,
-    allStories,
-    error
+    user: state.entities.users.entities[props.userId],
+    storiesById: getByUser(state.entities.stories, props.userId),
+    storiesFetchStatus: getUserFetchStatus(state.entities.stories, props.userId),
+    userFetchStatus: state.entities.users.fetchStatus
   }
 }
 

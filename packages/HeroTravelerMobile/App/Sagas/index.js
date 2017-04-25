@@ -30,7 +30,12 @@ import {
 import { logout, getMe, updateUser } from './SessionSagas'
 import { openScreen } from './OpenScreenSagas'
 import { getCategories } from './CategorySagas'
-import { getSuggestedUsers, loadUser } from './UserSagas'
+import {
+  getSuggestedUsers,
+  loadUser,
+  loadUserFollowing,
+  loadUserFollowers
+} from './UserSagas'
 
 import {
   getUserFeed,
@@ -88,5 +93,7 @@ export default function * root () {
     takeLatest(UserTypes.LOAD_USER_SUGGESTIONS_REQUEST, getSuggestedUsers, heroAPI),
     takeLatest(UserTypes.LOAD_USER, loadUser, heroAPI),
     takeLatest(UserTypes.UPDATE_USER, updateUser, heroAPI),
+    takeLatest(UserTypes.LOAD_USER_FOLLOWING, loadUserFollowing, heroAPI),
+    takeLatest(UserTypes.LOAD_USER_FOLLOWERS, loadUserFollowers, heroAPI),
   ]
 }

@@ -54,20 +54,6 @@ router.get(
   endpointWrapper(suggestFollowers)
 )
 
-// Who is following me?
-router.get(
-  '/followers',
-  hasValidOauth,
-  endpointWrapper(getFollowees)
-)
-
-// Who do I follow?
-router.get(
-  '/following',
-  hasValidOauth,
-  endpointWrapper(getFollowers)
-)
-
 router.get(
   '/categories',
   hasValidOauth,
@@ -144,6 +130,20 @@ router.put('/:id/cover',
   hasValidOauth,
   multer.single('image'),
   endpointWrapper(updateCover)
+)
+
+// Who is following a user?
+router.get(
+  '/:id/followers',
+  hasValidOauth,
+  endpointWrapper(getFollowees)
+)
+
+// Who does a user follow?
+router.get(
+  '/:id/following',
+  hasValidOauth,
+  endpointWrapper(getFollowers)
 )
 
 export default router

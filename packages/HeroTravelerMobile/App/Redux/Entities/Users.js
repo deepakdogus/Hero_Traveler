@@ -7,7 +7,13 @@ import Immutable from 'seamless-immutable'
 const { Types, Creators } = createActions({
   loadUser: ['userId'],
   loadUserSuccess: ['user'],
-  loadUserFailure: null,
+  loadUserFailure: ['error'],
+  loadUserFollowers: ['userId'],
+  loadUserFollowersSuccess: ['userId', 'usersById'],
+  loadUserFollowersFailure: null,
+  loadUserFollowing: ['userId'],
+  loadUserFollowingSuccess: ['userId', 'usersById'],
+  loadUserFollowingFailure: null,
   loadUserSuggestionsRequest: null,
   loadUserSuggestionsSuccess: ['users'],
   loadUserSuggestionsFailure: null,
@@ -34,6 +40,8 @@ export const INITIAL_STATE = Immutable({
   },
   usersLikesById: {},
   usersBookmarksById: {},
+  userFollowersByUserIdAndId: {},
+  userFollowingByUserIdAndId: {},
   error: null,
 })
 
@@ -46,11 +54,14 @@ export const loadUser = (state) => {
   )
 }
 export const loadUserSuccess = (state, {user}) => {
-  const path = ['entities', user.id]
-  const updatedUser = state.getIn(path)
-                           .merge(user, {deep: true})
-  return state.setIn(path, updatedUser)
-              .merge({error: null, fetchStatus: {fetching: false, loaded: true}})
+  return state.merge({
+    fetchStatus: {
+      fetching: false,
+      loaded: true
+    },
+    user,
+    error: null
+  }, {deep: true})
 }
 export const loadUserFailure = (state, {error}) => {
   return state.merge({error, fetchStatus: {fetching: false, loaded: false}})
@@ -141,6 +152,56 @@ export const toggleBookmark = (state, {userId, storyId}) => {
   }
 }
 
+export const loadUserFollowers = (state, {userId}) => {
+  return state.setIn(
+    ['userFollowersByUserIdAndId', userId, 'fetchStatus'],
+    {fetching: true, loaded: false}
+  )
+}
+
+export const loadUserFollowersSuccess = (state, {userId, usersById}) => {
+  return state.setIn(
+    ['userFollowersByUserIdAndId', userId, 'fetchStatus'],
+    {fetching: false, loaded: true}
+  )
+  .setIn(
+    ['userFollowersByUserIdAndId', userId, 'byId'],
+    usersById
+  )
+}
+
+export const loadUserFollowersFailure = (state, {error}) => {
+  return state.setIn(
+    ['userFollowersByUserIdAndId', categoryId, 'fetchStatus'],
+    {fetching: false, loaded: false, error}
+  )
+}
+
+export const loadUserFollowing = (state, {userId}) => {
+  return state.setIn(
+    ['userFollowingByUserIdAndId', userId, 'fetchStatus'],
+    {fetching: true, loaded: false}
+  )
+}
+
+export const loadUserFollowingSuccess = (state, {userId, usersById}) => {
+  return state.setIn(
+    ['userFollowingByUserIdAndId', userId, 'fetchStatus'],
+    {fetching: false, loaded: true}
+  )
+  .setIn(
+    ['userFollowingByUserIdAndId', userId, 'byId'],
+    usersById
+  )
+}
+
+export const loadUserFollowingFailure = (state, {error}) => {
+  return state.setIn(
+    ['userFollowingByUserIdAndId', categoryId, 'fetchStatus'],
+    {fetching: false, loaded: false, error}
+  )
+}
+
 /* -------------        Selectors        ------------- */
 export const isInitialAppDataLoaded = (state, userId) => {
   return _.every([
@@ -156,6 +217,22 @@ export const isStoryBookmarked = (state: object, userId: string, storyId: string
   return _.includes(state.getIn(['usersBookmarksById', userId]), storyId)
 }
 
+export const getFollowers = (state: object, followersType: string, userId: string) => {
+  if (followersType === 'followers') {
+    return state.getIn(['userFollowersByUserIdAndId', userId, 'byId'], [])
+  } else {
+    return state.getIn(['userFollowingByUserIdAndId', userId, 'byId'], [])
+  }
+}
+
+export const getFollowersFetchStatus = (state: object, followersType: string, userId: string) => {
+  if (followersType === 'followers') {
+    return state.getIn(['userFollowersByUserIdAndId', userId, 'fetchStatus'], [])
+  } else {
+    return state.getIn(['userFollowingByUserIdAndId', userId, 'fetchStatus'], [])
+  }
+}
+
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -166,6 +243,12 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOAD_USER]: loadUser,
   [Types.LOAD_USER_SUCCESS]: loadUserSuccess,
   [Types.LOAD_USER_FAILURE]: loadUserFailure,
+  [Types.LOAD_USER_FOLLOWERS]: loadUserFollowers,
+  [Types.LOAD_USER_FOLLOWERS_SUCCESS]: loadUserFollowersSuccess,
+  [Types.LOAD_USER_FOLLOWERS_FAILURE]: loadUserFollowersFailure,
+  [Types.LOAD_USER_FOLLOWING]: loadUserFollowing,
+  [Types.LOAD_USER_FOLLOWING_SUCCESS]: loadUserFollowingSuccess,
+  [Types.LOAD_USER_FOLLOWING_FAILURE]: loadUserFollowingFailure,
   [Types.UPDATE_USER]: updateUser,
   [Types.UPDATE_USER_SUCCESS]: updateUserSuccess,
   [Types.UPDATE_USER_FAILURE]: updateUserFailure,

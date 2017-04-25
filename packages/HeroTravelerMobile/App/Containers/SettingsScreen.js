@@ -44,21 +44,15 @@ const List = ({children}) => {
 
 class SettingsScreen extends React.Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      loggingOut: false
-    }
-  }
-
+  // Go to launch page and reset all store state on logout
   componentWillReceiveProps(newProps) {
     if (this.props.isLoggedIn && !newProps.isLoggedIn) {
       NavActions.launchScreen({type: NavActionConst.RESET})
+      this.props.resetStore()
     }
   }
 
   _logOut = () => {
-    this.setState({loggingOut: true})
     this.props.logout(this.props.user.id)
   }
 
@@ -107,12 +101,12 @@ class SettingsScreen extends React.Component {
           <Row
             text='Sign Out'
             hideAngleRight={true}
-            onPress={() => this.props.logout(this.props.tokens)}
+            onPress={() => this._logOut()}
             textStyle={{color: Colors.red}}
           />
           </List>
         </ScrollView>
-        {this.state.loggingOut &&
+        {this.props.loggingOut &&
           <Loader tintColor={Colors.blackoutTint} style={{
             position: 'absolute',
             top: 0,
@@ -129,14 +123,16 @@ class SettingsScreen extends React.Component {
 const mapStateToProps = (state) => {
   return {
     user: state.entities.users.entities[state.session.userId],
-    isLoggedIn: hasAuthData(state.session),
+    isLoggedIn: !state.session.isLoggedOut,
+    loggingOut: state.session.isLoggingOut,
     tokens: state.session.tokens
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logout: (tokens) => dispatch(SessionActions.logout(tokens))
+    logout: (tokens) => dispatch(SessionActions.logout(tokens)),
+    resetStore: () => dispatch(SessionActions.resetRootStore())
   }
 }
 

@@ -233,6 +233,24 @@ const create = () => {
     })
   }
 
+  const getUserFollowers = (userId) => {
+    return api.get(`user/${userId}/followers`)
+      .then(response => {
+        return  Object.assign({}, response, {
+          data: normalize(response.data, [User])
+        })
+      })
+  }
+
+  const getUserFollowing = (userId) => {
+    return api.get(`user/${userId}/following`)
+      .then(response => {
+        return  Object.assign({}, response, {
+          data: normalize(response.data, [User])
+        })
+      })
+  }
+
   const getUserLikes = (userId) => {
     return api.get(`story/user/${userId}/like`)
   }
@@ -301,6 +319,8 @@ const create = () => {
     getUserStories,
     getCategoryStories,
     getSuggestedUsers,
+    getUserFollowers,
+    getUserFollowing,
     followUser,
     unfollowUser,
     followCategory,

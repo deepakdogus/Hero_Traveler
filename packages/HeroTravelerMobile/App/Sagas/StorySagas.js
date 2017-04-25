@@ -15,16 +15,26 @@ export function * getUserFeed (api, action) {
   // See if we need to load likes and bookmark info
   const initialAppDataLoaded = yield select(hasInitialAppDataLoaded, userId)
   if (!initialAppDataLoaded) {
-    const [likesResponse, bookmarksResponse] = yield [
+    const [
+      likesResponse,
+      bookmarksResponse,
+      followingResponse
+    ] = yield [
       call(api.getUserLikes, userId),
-      call(api.getBookmarks, userId)
+      call(api.getBookmarks, userId),
+      call(api.getUserFollowing, userId),
     ]
-    if (likesResponse.ok && bookmarksResponse.ok) {
-      const {result: bookmarksById, entities} = bookmarksResponse.data
+    if (likesResponse.ok && bookmarksResponse.ok && followingResponse.ok) {
+      const {result: followingById, entities: followingEntities} = followingResponse.data
+      const {result: bookmarksById, entities: bookmarkEntities} = bookmarksResponse.data
       yield [
-        put(UserActions.receiveUsers(entities.users)),
-        put(CategoryActions.receiveCategories(entities.categories)),
-        put(StoryActions.receiveStories(entities.stories)),
+        put(UserActions.receiveUsers({
+          ...bookmarkEntities.users,
+          ...followingEntities.users
+        })),
+        put(UserActions.loadUserFollowingSuccess(userId, followingById)),
+        put(CategoryActions.receiveCategories(bookmarkEntities.categories)),
+        put(StoryActions.receiveStories(bookmarkEntities.stories)),
         put(UserActions.receiveLikes(userId, likesResponse.data)),
         put(UserActions.receiveBookmarks(userId, bookmarksById)),
       ]

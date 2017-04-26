@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native'
 
-import {Fonts, Colors} from '../Themes'
+import {Fonts, Colors, Metrics} from '../Themes'
 
 const styles = StyleSheet.create({
   root: {
@@ -9,6 +9,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  textStyle: {
+    fontSize: 18,
+    fontFamily: Fonts.type.montserrat,
+    marginTop: Metrics.baseMargin
   }
 })
 
@@ -44,6 +49,16 @@ export default class Loader extends Component {
           color={this.props.spinnerColor}
           size={this.props.size}
         />
+        {this.props.text &&
+          <Text
+            style={[
+              styles.textStyle,
+              this.props.textStyle
+            ]}
+          >
+            {this.props.text}
+          </Text>
+        }
       </View>
     )
   }

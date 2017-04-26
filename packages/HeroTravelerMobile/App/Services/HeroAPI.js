@@ -285,9 +285,14 @@ const create = () => {
 
   const uploadCoverImage = (draftId, pathToFile) => {
     const data = new FormData()
-    console.log('pathToFile', pathToFile)
     data.append('image', pathToFile)
     return api.put(`story/draft/${draftId}/cover-image`, data)
+  }
+
+  const uploadCoverVideo = (draftId, pathToFile) => {
+    const data = new FormData()
+    data.append('video', pathToFile)
+    return api.put(`story/draft/${draftId}/cover-video`, data)
   }
 
   // ------
@@ -336,7 +341,8 @@ const create = () => {
     getBookmarks,
     getComments,
     createComment,
-    uploadCoverImage
+    uploadCoverImage,
+    uploadCoverVideo,
   }
 }
 

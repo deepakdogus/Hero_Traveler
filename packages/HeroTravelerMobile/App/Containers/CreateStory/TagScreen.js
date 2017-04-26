@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import StoryEditActions, {isCreated} from '../../Redux/StoryCreateRedux'
 import {Colors, Metrics} from '../../Themes'
 import RenderTextInput from '../../Components/RenderTextInput'
-import styles from './CreateStoryDetailScreenStyles'
+import styles from './4_CreateStoryDetailScreenStyles'
 
 class TagScreen extends React.Component {
 

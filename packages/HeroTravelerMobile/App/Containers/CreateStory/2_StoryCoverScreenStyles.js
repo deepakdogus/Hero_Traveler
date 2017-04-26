@@ -23,6 +23,18 @@ export default StyleSheet.create({
   spaceView: {
     height: third
   },
+  loading: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0
+  },
+  loadingText: {
+    color: 'white',
+    fontSize: 18,
+    fontFamily: Fonts.type.montserrat
+  },
   titleInput: {
     ...Fonts.style.title,
     color: '#1a1c21',

@@ -21,7 +21,7 @@ import Loader from '../../Components/Loader'
 import RoundedButton from '../../Components/RoundedButton'
 import RenderTextInput from '../../Components/RenderTextInput'
 import NavBar from './NavBar'
-import styles from './CreateStoryDetailScreenStyles'
+import styles from './4_CreateStoryDetailScreenStyles'
 
 const Radio = ({text, onPress, name, selected}) => {
   return (

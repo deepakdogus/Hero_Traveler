@@ -20,7 +20,8 @@ import findDrafts from './draft/find'
 import createDraft from './draft/create'
 import removeDraft from './draft/remove'
 import updateDraft from './draft/update'
-import uploadDraft from './draft/upload'
+import uploadDraftImage from './draft/upload'
+import uploadDraftVideo from './draft/upload_video'
 
 const router = express.Router()
 
@@ -38,7 +39,12 @@ router.put('/draft/:id', hasValidOauth, endpointWrapper(updateDraft))
 router.put('/draft/:id/cover-image',
   hasValidOauth,
   multer.single('image'),
-  endpointWrapper(uploadDraft)
+  endpointWrapper(uploadDraftImage)
+)
+router.put('/draft/:id/cover-video',
+  hasValidOauth,
+  multer.single('video'),
+  endpointWrapper(uploadDraftVideo)
 )
 router.post('/draft', hasValidOauth, endpointWrapper(createDraft))
 

@@ -46,6 +46,7 @@ class MediaSelectorScreen extends React.Component {
     if (this.state.captureOpen && !this.state.media && this.props.mediaType === 'photo') {
       content = (
         <PhotoTaker
+          mediaType={this.props.mediaType}
           onTakePhoto={this._handleCaptureMedia}
         />
       )
@@ -98,6 +99,7 @@ class MediaSelectorScreen extends React.Component {
   }
 
   _handleMediaSelector = (data) => {
+    console.log('_handleMediaSelector', data)
     if (data.didCancel) {
       this.setState({captureOpen: true})
       return;

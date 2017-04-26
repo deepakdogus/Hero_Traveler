@@ -10,7 +10,8 @@ class PhotoTaker extends Component {
   static propTypes = {
     captureOptions: PropTypes.object,
     onTakePhoto: PropTypes.func.isRequired,
-    onError: PropTypes.func
+    onError: PropTypes.func,
+    mediaType: PropTypes.oneOf(['photo', 'video']).isRequired,
   }
 
   static defaultProps = {
@@ -41,10 +42,16 @@ class PhotoTaker extends Component {
     return this.cameraRef && this.cameraRef.hasFlash()
   }
 
+  getCaptureMode() {
+    return this.props.mediaType === 'photo' ?
+      Camera.constants.CaptureMode.still : Camera.constants.CaptureMode.video
+  }
+
   render () {
     return (
       <Camera
         ref={(camera) => { this.cameraRef = camera }}
+        captureMode={this.getCaptureMode()}
         captureTarget={Camera.constants.CaptureTarget.disk}
         keepAwake={true}
         type={this.state.backCamera ? Camera.constants.Type.back : Camera.constants.Type.front}

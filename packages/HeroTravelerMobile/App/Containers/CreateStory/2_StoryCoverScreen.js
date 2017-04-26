@@ -25,6 +25,9 @@ import Loader from '../../Components/Loader'
 import {Colors, Images, Metrics} from '../../Themes'
 import styles, { placeholderColor } from './2_StoryCoverScreenStyles'
 import NavBar from './NavBar'
+import getImageUrl from '../../Lib/getImageUrl'
+import getVideoUrl from '../../Lib/getVideoUrl'
+import Video from '../../Components/Video'
 
 const api = API.create()
 
@@ -49,14 +52,6 @@ function getMimeType(filename) {
   } else if (_.includes(ext, 'mp2')) {
     return 'video/mpeg'
   }
-}
-
-function getImage(story) {
-  const path = _.get(story, 'coverImage.original.path')
-
-  if (!path) return null
-
-  return `https://s3.amazonaws.com/hero-traveler/${path}`
 }
 
 class StoryCoverScreen extends Component {
@@ -117,6 +112,24 @@ class StoryCoverScreen extends Component {
     )(!!coverPhoto)
   }
 
+  renderCoverVideo(coverVideo) {
+    console.log('coverVideo', coverVideo)
+    return R.ifElse(
+      R.identity,
+      R.always((
+        <View style={styles.coverVideo}>
+          <Video
+            path={coverVideo}
+            allowVideoPlay={false}
+            autoPlayVideo={false}
+          />
+          {this.renderContent()}
+        </View>
+      )),
+      R.always(this.renderContent())
+    )(!!coverVideo)
+  }
+
   renderTextColor = (baseStyle) => {
     return R.ifElse(
       R.identity,
@@ -160,7 +173,7 @@ class StoryCoverScreen extends Component {
       return
     }
 
-    if ((this.props.story.coverVideo || this.props.story.coverImage) && !this.state.file) {
+    if ((this.props.story.coverVideoTemp || this.props.story.coverImage) && !this.state.file) {
       this.setState({error: 'Sorry, could not process file.'})
       return
     }
@@ -208,8 +221,10 @@ class StoryCoverScreen extends Component {
                   })
                 }}
               >
-                <Icon name='camera' size={40} color='gray' style={styles.cameraIcon} />
-                <Text style={this.renderTextColor(styles.baseTextColor)}>+ ADD COVER PHOTO</Text>
+                <Icon name={this.isPhotoType() ? 'camera' : 'video-camera'} size={40} color='gray' style={styles.cameraIcon} />
+                <Text style={this.renderTextColor(styles.baseTextColor)}>
+                  {this.isPhotoType() ? '+ ADD COVER PHOTO' : '+ ADD COVER VIDEO'}
+                </Text>
               </TouchableOpacity>
             </View>
           }
@@ -304,7 +319,8 @@ class StoryCoverScreen extends Component {
               onPress={() => this.setState({error: null})}
               text={this.state.error} />
           }
-          {this.renderCoverPhoto(this.props.story.coverPhoto || getImage(this.props.story))}
+          {this.isPhotoType() && this.renderCoverPhoto(this.props.story.coverPhoto || getImageUrl(this.props.story.coverImage))}
+          {!this.isPhotoType() && this.renderCoverVideo(this.props.story.coverVideoTemp || getVideoUrl(this.props.story.coverVideo))}
         </View>
         {this.state.updating &&
           <Loader
@@ -323,11 +339,12 @@ class StoryCoverScreen extends Component {
       name: path.split('/').pop(),
       type: getMimeType(path)
     }
+    console.log('_handleSelectCover', path, file)
     this.setState({file: file})
     if (this.props.mediaType === 'photo') {
       this.props.change('coverPhoto', path)
     } else {
-      this.props.change('coverVideo', path)
+      this.props.change('coverVideoTemp', path)
     }
     NavActions.pop()
   }
@@ -341,7 +358,7 @@ export default R.compose(
       title: selector(state, 'title'),
       description: selector(state, 'description'),
       coverPhoto: selector(state, 'coverPhoto'),
-      coverVideo: selector(state, 'coverVideo'),
+      coverVideoTemp: selector(state, 'coverVideoTemp'),
       ...state.storyCreate.draft
     }
     // state: state
@@ -374,7 +391,7 @@ export default R.compose(
       title: '',
       description: '',
       coverPhoto: null,
-      coverVideo: null,
+      coverVideoTemp: null,
     }
   })
 )(StoryCoverScreen)

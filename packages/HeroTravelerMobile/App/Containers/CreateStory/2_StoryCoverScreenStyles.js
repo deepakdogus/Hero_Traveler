@@ -92,6 +92,14 @@ export default StyleSheet.create({
     right: 0,
     flex: 1
   },
+  coverVideo: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flex: 1
+  },
   iconButton: {
     backgroundColor: Colors.clear
   }

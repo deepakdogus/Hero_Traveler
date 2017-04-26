@@ -7,40 +7,12 @@ import {
   View
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
-import Video from 'react-native-video'
-import Icon from 'react-native-vector-icons/FontAwesome'
 
+import Video, {PlayButton} from './Video'
 import getImageUrl from '../Lib/getImageUrl'
 import {Metrics} from '../Themes'
 import Colors from '../Themes/Colors'
 import getVideoUrl from '../Lib/getVideoUrl'
-
-const buttonLarge = 80
-const buttonSmall = 40
-const VideoButton = ({size, icon, onPress}) => {
-  const sizeUnits = size !== 'small' ? buttonLarge : buttonSmall
-  return (
-    <TouchableWithoutFeedback
-      onPress={onPress}>
-      <View
-        style={{
-          width: sizeUnits,
-          height: sizeUnits,
-          borderRadius: sizeUnits / 2,
-          backgroundColor: Colors.windowTint,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Icon
-          name={icon}
-          size={sizeUnits / 2}
-          color={Colors.snow}
-        />
-      </View>
-    </TouchableWithoutFeedback>
-  )
-}
 
 export default class StoryCover extends Component {
 
@@ -54,21 +26,15 @@ export default class StoryCover extends Component {
 
   constructor(props) {
     super(props)
-    this._togglePlayVideo = this._togglePlayVideo.bind(this)
+    // this._togglePlayVideo = this._togglePlayVideo.bind(this)
     this._tapVideoWrapper = this._tapVideoWrapper.bind(this)
     const startVideoImmediately = props.allowVideoPlay && props.autoPlayVideo
     this.state = {
-      videoPlaying: startVideoImmediately,
-      videoStarted: startVideoImmediately,
-      showVideoPlayButton: props.allowVideoPlay && !startVideoImmediately,
-      videoEnded: false,
-      videoFadeAnim: props.allowVideoPlay ? new Animated.Value(1) : new Animated.Value(0)
-    }
-  }
-
-  componentDidMount() {
-    if (this.props.autoPlayVideo) {
-      this.fadeOutVideoUI(2000)
+      isPlaying: startVideoImmediately,
+      // showVideoPlayButton: props.allowVideoPlay && !startVideoImmediately,
+      // videoEnded: false,
+      // videoFadeAnim: props.allowVideoPlay ? new Animated.Value(1) : new Animated.Value(0)
+      videoLoaded: false
     }
   }
 
@@ -95,106 +61,55 @@ export default class StoryCover extends Component {
     )
   }
 
-  fadeInVideoUI(duration = 300) {
-    Animated.timing(
-      this.state.videoFadeAnim,
-      {
-        toValue: 1,
-        duration
-      },
-    ).start()
-  }
-
-  fadeOutVideoUI(duration = 300) {
-    Animated.timing(
-      this.state.videoFadeAnim,
-      {
-        toValue: 0,
-        duration
-      },
-    ).start()
-  }
-
-  // warning, setting videoPlaying: false here will
-  // probably prevent the repeat functionality of <Video />
-  _onVideoEnd = () => {
-    this.fadeInVideoUI()
-    this.setState({
-      videoPlaying: false,
-      videoEnded: true
-    })
-  }
-
-  _togglePlayVideo() {
-    const newPlayingState = !this.state.videoPlaying
-
-    // If the video ended, go to the beginning
-    // of the video and play again
-    if (this.state.videoEnded) {
-      this.player.seek(0)
-      this.fadeOutVideoUI()
-      return this.setState({
-        videoPlaying: true,
-        videoEnded: false
-      })
-    }
-
-    if (newPlayingState) {
-      this.fadeOutVideoUI()
-    } else {
-      this.fadeInVideoUI()
-    }
-
-    return this.setState({
-      videoPlaying: newPlayingState
-    })
-  }
-
   _tapVideoWrapper() {
     const {onPress} = this.props
 
     // If the video is not playing, invoke the usual callback
-    if (!this.state.videoPlaying && onPress) {
+    if (!this.player.getIsPlaying() && onPress) {
       return this.props.onPress()
     }
 
-    this._togglePlayVideo()
+    this.player.toggle()
   }
 
   renderVideo() {
     return (
-      <TouchableWithoutFeedback onPress={this._tapVideoWrapper}>
-        <View style={styles.videoWrapper}>
-          <Video
-            source={{uri: getVideoUrl(this.props.cover)}}
-            ref={i => this.player = i}
-            paused={!this.state.videoPlaying}
-            muted={__DEV__}
-            style={[styles.video, this.props.videoStyle]}
-            onEnd={this._onVideoEnd}
-            onError={(err) => alert(err)}
-            resizeMode='cover'
-          />
-          <View style={styles.videoChildren}>
+      <View style={{flex: 1}}>
+        <Video
+          path={getVideoUrl(this.props.cover)}
+          ref={i => this.player = i}
+          allowVideoPlay={this.props.allowVideoPlay}
+          autoPlayVideo={this.props.autoPlayVideo}
+          showPlayButton={false}
+          onIsPlayingChange={(value) => this.setState({isPlaying: value})}
+          onLoad={() => this.setState({videoLoaded: true})}
+          style={[
+            this.props.videoStyle,
+          ]}
+        />
+        <TouchableWithoutFeedback
+          onPress={this._tapVideoWrapper}>
+          <View style={[
+            styles.videoChildren
+          ]}>
             {this.props.children}
           </View>
-          {this.props.allowVideoPlay &&
-          <Animated.View
-            style={[styles.buttons, {
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-              opacity: this.state.videoFadeAnim
-            }]}
-          >
-            <VideoButton
-              onPress={this._togglePlayVideo}
-              icon={this.state.videoPlaying ? 'pause' : 'play'}
-            />
-          </Animated.View>
-          }
-        </View>
-      </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
+        {this.props.allowVideoPlay && <PlayButton
+          onPress={() => this.player.toggle()}
+          isPlaying={this.state.isPlaying}
+          videoFadeAnim={this.player && this.player.getAnimationState()}
+          style={{
+            position: 'absolute',
+            width: 100,
+            height: 100,
+            top: '50%',
+            left: '50%',
+            marginTop: -50,
+            marginLeft: -50
+          }}
+        />}
+      </View>
     )
   }
 
@@ -221,33 +136,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   videoChildren: {
+    // zIndex: 10,
     flex: 1,
     flexDirection: "column",
     justifyContent: "flex-end",
     padding: Metrics.doubleBaseMargin,
-  },
-  video: {
-    flex: 1,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0
-  },
-  buttons: {
-    flex: 1,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    // backgroundColor: 'red',
-    paddingTop: 125,
-    bottom: 125
-  },
-  videoPlayButton: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   gradient: {
     paddingHorizontal: Metrics.doubleBaseMargin,

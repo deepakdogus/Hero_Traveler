@@ -296,6 +296,7 @@ export default class ProfileView extends React.Component {
                       titleStyle={styles.storyTitleStyle}
                       subtitleStyle={styles.subtitleStyle}
                       allowVideoPlay={false}
+                      autoPlayVideo={false}
                       key={storyId}
                       height={200}
                       storyId={storyId}

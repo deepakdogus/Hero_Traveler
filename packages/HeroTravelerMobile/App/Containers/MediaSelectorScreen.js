@@ -11,6 +11,7 @@ import ImagePicker from 'react-native-image-picker'
 
 import NavBar from './CreateStory/NavBar'
 import PhotoTaker from '../Components/PhotoTaker'
+import Video from '../Components/Video'
 import styles from './Styles/MediaSelectorScreenStyles'
 
 class MediaSelectorScreen extends React.Component {
@@ -25,17 +26,18 @@ class MediaSelectorScreen extends React.Component {
     this.state = {
       captureOpen: true,
       media: null,
-      photoTaken: false,
+      mediaCaptured: false,
     }
   }
 
   launchMediaCapture() {
-    this.setState({captureOpen: true})
+    this.setState({captureOpen: true, media: null})
   }
 
   launchMediaSelector() {
     this.setState({captureOpen: false})
     ImagePicker.launchImageLibrary({
+      videoQuality: 'high',
       mediaType: this.props.mediaType
     }, this._handleMediaSelector)
   }
@@ -43,19 +45,38 @@ class MediaSelectorScreen extends React.Component {
   render () {
     let content
 
-    if (this.state.captureOpen && !this.state.media && this.props.mediaType === 'photo') {
+    if (this.state.captureOpen && !this.state.media) {
       content = (
         <PhotoTaker
           mediaType={this.props.mediaType}
-          onTakePhoto={this._handleCaptureMedia}
+          onCapture={this._handleCaptureMedia}
         />
       )
-    } else if (this.state.media) {
+    } else if (this.state.media && this.props.mediaType === 'photo') {
       content = (
         <View style={styles.imageWrapper}>
           <Image source={{uri: this.state.media}} style={styles.image} />
           <View style={{flex: 1}} />
-          {this.state.photoTaken &&
+          {this.state.mediaCaptured &&
+            <TouchableOpacity
+              style={styles.retakeButton}
+              onPress={() => this.setState({media: null})}
+            >
+              <Text style={styles.retakeButtonText}>RETAKE</Text>
+            </TouchableOpacity>
+          }
+        </View>
+      )
+    } else if (this.state.media && this.props.mediaType === 'video') {
+      content = (
+        <View style={styles.imageWrapper}>
+          <Video
+            path={this.state.media}
+            autoPlayVideo={false}
+            allowVideoPlay={true}
+          />
+          <View style={{flex: 1}} />
+          {this.state.mediaCaptured &&
             <TouchableOpacity
               style={styles.retakeButton}
               onPress={() => this.setState({media: null})}
@@ -99,7 +120,6 @@ class MediaSelectorScreen extends React.Component {
   }
 
   _handleMediaSelector = (data) => {
-    console.log('_handleMediaSelector', data)
     if (data.didCancel) {
       this.setState({captureOpen: true})
       return;
@@ -111,14 +131,14 @@ class MediaSelectorScreen extends React.Component {
     }
 
     this.setState({
-      photoTaken: false,
+      mediaCaptured: false,
       media: data.uri
     })
   }
 
   _handleCaptureMedia = (data) => {
     this.setState({
-      photoTaken: true,
+      mediaCaptured: true,
       media: data.path
     })
   }

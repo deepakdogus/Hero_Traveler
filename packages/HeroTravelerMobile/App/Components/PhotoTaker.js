@@ -9,7 +9,7 @@ import styles from './Styles/PhotoTakerStyles'
 class PhotoTaker extends Component {
   static propTypes = {
     captureOptions: PropTypes.object,
-    onTakePhoto: PropTypes.func.isRequired,
+    onCapture: PropTypes.func.isRequired,
     onError: PropTypes.func,
     mediaType: PropTypes.oneOf(['photo', 'video']).isRequired,
   }
@@ -21,14 +21,15 @@ class PhotoTaker extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      backCamera: true
+      backCamera: true,
+      isRecording: false
     }
   }
 
   _handleTakePhoto = () => {
     this.cameraRef.capture()
         .then((response) => {
-          this.props.onTakePhoto(response)
+          this.props.onCapture(response)
         })
         .catch(err => {
           console.log('error taking photo', err)
@@ -36,6 +37,28 @@ class PhotoTaker extends Component {
             this.props.onError(err)
           }
         })
+  }
+
+  _startRecordVideo = () => {
+    console.log('starting capture')
+    this.setState({
+      isRecording: true
+    })
+    return this.cameraRef.capture({
+      audio: true,
+      mode: this.getCaptureMode()
+    })
+      .then((resp) => {
+        console.log('capture2', resp)
+        this.props.onCapture(resp)
+      })
+
+  }
+
+  _stopRecordVideo = () => {
+    console.log('endcapture')
+    this.cameraRef.stopCapture()
+    this.setState({isRecording: false})
   }
 
   hasFlash() {
@@ -52,6 +75,8 @@ class PhotoTaker extends Component {
       <Camera
         ref={(camera) => { this.cameraRef = camera }}
         captureMode={this.getCaptureMode()}
+        captureAudio={true}
+        orientation={Camera.constants.Orientation.portrait}
         captureTarget={Camera.constants.CaptureTarget.disk}
         keepAwake={true}
         type={this.state.backCamera ? Camera.constants.Type.back : Camera.constants.Type.front}
@@ -76,17 +101,32 @@ class PhotoTaker extends Component {
           </View>
         </View>
         <View style={{flex: 1}} />
-        <View style={styles.cameraShutterButton} >
-          <TouchableOpacity
-            touchableOpacity={0.2}
-            onPress={this._handleTakePhoto}
-          >
-            <Icon
-              color={Colors.snow}
-              name='circle-o'
-              size={50} />
-          </TouchableOpacity>
-        </View>
+        {this.props.mediaType === 'photo' &&
+          <View style={styles.cameraShutterButton}>
+            <TouchableOpacity
+              touchableOpacity={0.2}
+              onPress={this._handleTakePhoto}
+            >
+              <Icon
+                color={Colors.snow}
+                name='circle-o'
+                size={50}/>
+            </TouchableOpacity>
+          </View>
+        }
+        {this.props.mediaType === 'video' &&
+          <View style={styles.cameraShutterButton}>
+            <TouchableOpacity
+              touchableOpacity={0.2}
+              onPress={!this.state.isRecording ? this._startRecordVideo : this._stopRecordVideo}
+            >
+              <Icon
+                color={this.state.isRecording ? Colors.redLight : Colors.snow}
+                name={this.state.isRecording ? 'circle' : 'circle-o'}
+                size={50}/>
+            </TouchableOpacity>
+          </View>
+        }
       </Camera>
     )
   }

@@ -133,7 +133,7 @@ class StoryReadingScreen extends React.Component {
             boomarkCount={formatCount(story.counts.bookmarks)}
             isBookmarked={this.props.isBookmarked}
             isLiked={this.props.isLiked}
-            onPressLike={() => this._toggleLike}
+            onPressLike={() => this._toggleLike()}
             onPressBookmark={() => this.props.toggleBookmark(this.props.user.id, story.id)}
             onPressComment={() => NavActions.storyComments({
               storyId: story.id

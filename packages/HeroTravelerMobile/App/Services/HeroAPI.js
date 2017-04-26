@@ -69,11 +69,9 @@ const create = () => {
   // const getRoot = () => api.get('')
   // const getRate = () => api.get('rate_limit')
   // const getUser = (username) => api.get('search/users', {q: username})
-  const signupEmail = (fullName, username, email, password) => {
+const signupEmail = (name, username, email, password) => {
     return api.post('user', {
-      profile: {
-        fullName
-      },
+      name,
       username,
       email,
       password

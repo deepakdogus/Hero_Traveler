@@ -6,10 +6,7 @@ function create() {
     username: faker.internet.userName(),
     password: 'herotraveler',
     email: faker.internet.email(),
-    profile: {
-      fullName: faker.name.findName(),
-      avatar: faker.internet.avatar()
-    }
+    name: faker.name.findName()
   }
 }
 

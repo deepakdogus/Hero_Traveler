@@ -19,7 +19,7 @@ const Bookmarks = new schema.Entity('bookmarks', {
   story: Story
 })
 
-const devURL = Platform.OS === 'ios' ? 'http://localhost:3000/' : 'http://10.0.3.2:3000/'
+const devURL = Platform.OS === 'ios' ? 'http://10.0.0.218:3000/' : 'http://10.0.3.2:3000/'
 
 // our "constructor"
 const create = () => {
@@ -283,9 +283,14 @@ const signupEmail = (name, username, email, password) => {
 
   const uploadCoverImage = (draftId, pathToFile) => {
     const data = new FormData()
-    console.log('pathToFile', pathToFile)
     data.append('image', pathToFile)
     return api.put(`story/draft/${draftId}/cover-image`, data)
+  }
+
+  const uploadCoverVideo = (draftId, pathToFile) => {
+    const data = new FormData()
+    data.append('video', pathToFile)
+    return api.put(`story/draft/${draftId}/cover-video`, data)
   }
 
   // ------
@@ -334,7 +339,8 @@ const signupEmail = (name, username, email, password) => {
     getBookmarks,
     getComments,
     createComment,
-    uploadCoverImage
+    uploadCoverImage,
+    uploadCoverVideo,
   }
 }
 

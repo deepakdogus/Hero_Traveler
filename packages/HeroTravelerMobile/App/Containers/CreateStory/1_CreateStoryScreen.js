@@ -14,7 +14,7 @@ import { connect } from 'react-redux'
 
 import StoryEditActions, {hasDraft} from '../../Redux/StoryCreateRedux'
 import { Images } from '../../Themes'
-import styles from './CreateStoryScreenStyles'
+import styles from './1_CreateStoryScreenStyles'
 
 class CreateStoryScreen extends React.Component {
 
@@ -35,7 +35,9 @@ class CreateStoryScreen extends React.Component {
         <View style={styles.buttonGroup}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => NavActions.createStory_photo()}
+            onPress={() => NavActions.createStory_cover({
+              mediaType: 'photo'
+            })}
           >
             <Icon
               name='file-word-o'
@@ -51,6 +53,9 @@ class CreateStoryScreen extends React.Component {
               name='video-camera'
               size={40}
               color='white'
+              onPress={() => NavActions.createStory_cover({
+                mediaType: 'video'
+              })}
             />
             <Text style={[styles.lightText, styles.buttonText]}>CREATE VIDEO</Text>
           </TouchableOpacity>

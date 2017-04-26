@@ -25,10 +25,10 @@ import FollowersScreen from '../Containers/FollowersScreen'
 // Story reading & creating
 import StoryReadingScreen from '../Containers/StoryReadingScreen'
 import StoryCommentsScreen from '../Containers/StoryCommentsScreen'
-import StoryCoverScreen from '../Containers/CreateStory/StoryCoverScreen'
-import StoryCreateScreen from '../Containers/CreateStory/CreateStoryScreen'
-import FullScreenEditor from '../Containers/CreateStory/FullScreenEditor'
-import CreateStoryDetailScreen from '../Containers/CreateStory/CreateStoryDetailScreen'
+import StoryCreateScreen from '../Containers/CreateStory/1_CreateStoryScreen'
+import StoryCoverScreen from '../Containers/CreateStory/2_StoryCoverScreen'
+import FullScreenEditor from '../Containers/CreateStory/3_FullScreenEditor'
+import CreateStoryDetailScreen from '../Containers/CreateStory/4_CreateStoryDetailScreen'
 import TagScreen from '../Containers/CreateStory/TagScreen'
 import MediaSelectorScreen from '../Containers/MediaSelectorScreen'
 
@@ -243,7 +243,7 @@ class NavigationRouter extends Component {
                 component={StoryCreateScreen}
               />
               <Scene
-                key='createStory_photo'
+                key='createStory_cover'
                 component={StoryCoverScreen}
                 panHandlers={null}
                 direction="horizontal"

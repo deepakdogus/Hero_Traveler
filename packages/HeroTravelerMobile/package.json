@@ -46,6 +46,7 @@
     "react-native-splash-screen": "^2.0.0",
     "react-native-svg": "^5.1.5",
     "react-native-vector-icons": "^4.0.0",
+    "react-native-video": "^1.0.0",
     "react-native-zss-rich-text-editor": "https://github.com/rwoody/react-native-zss-rich-text-editor",
     "react-redux": "^5.0.2",
     "redux": "^3.6.0",

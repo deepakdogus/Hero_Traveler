@@ -10,7 +10,7 @@ import R from 'ramda'
 import StoryEditActions from '../../Redux/StoryCreateRedux'
 import Editor from '../../Components/Editor'
 import NavBar from './NavBar'
-import styles from './FullScreenEditorStyles'
+import styles from './3_FullScreenEditorStyles'
 
 class FullScreenEditor extends React.Component {
 

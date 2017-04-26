@@ -8,7 +8,7 @@ import {
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 
-import Video, {PlayButton} from './Video'
+import Video, {MuteButton, PlayButton} from './Video'
 import getImageUrl from '../Lib/getImageUrl'
 import {Metrics} from '../Themes'
 import Colors from '../Themes/Colors'
@@ -31,6 +31,7 @@ export default class StoryCover extends Component {
     const startVideoImmediately = props.allowVideoPlay && props.autoPlayVideo
     this.state = {
       isPlaying: startVideoImmediately,
+      isMuted: __DEV__,
       // showVideoPlayButton: props.allowVideoPlay && !startVideoImmediately,
       // videoEnded: false,
       // videoFadeAnim: props.allowVideoPlay ? new Animated.Value(1) : new Animated.Value(0)
@@ -82,6 +83,7 @@ export default class StoryCover extends Component {
           autoPlayVideo={this.props.autoPlayVideo}
           showPlayButton={false}
           onIsPlayingChange={(value) => this.setState({isPlaying: value})}
+          onMuteChange={val => this.setState({isMuted: val})}
           onLoad={() => this.setState({videoLoaded: true})}
           style={[
             this.props.videoStyle,
@@ -109,6 +111,19 @@ export default class StoryCover extends Component {
             marginLeft: -50
           }}
         />}
+        {this.props.allowVideoPlay && this.state.isPlaying &&
+          <MuteButton
+            onPress={() => this.player.toggleMute()}
+            isMuted={this.state.isMuted}
+            style={{
+              position: 'absolute',
+              width: 40,
+              height: 40,
+              top: Metrics.section,
+              right: Metrics.section,
+            }}
+          />
+        }
       </View>
     )
   }

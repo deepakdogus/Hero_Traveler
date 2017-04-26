@@ -49,6 +49,18 @@ export const PlayButton = ({videoFadeAnim, onPress, isPlaying, style = {}}) => {
   )
 }
 
+export const MuteButton = ({onPress, isMuted, style = {}}) => {
+  return (
+    <View style={style}>
+      <VideoButton
+        size='small'
+        icon={isMuted ? 'volume-off' : 'volume-up'}
+        onPress={onPress}
+      />
+    </View>
+  )
+}
+
 export default class VideoPlayer extends React.Component {
 
   static defaultProps = {
@@ -67,13 +79,13 @@ export default class VideoPlayer extends React.Component {
       videoStarted: startVideoImmediately,
       videoEnded: false,
       videoFadeAnim: props.allowVideoPlay ? new Animated.Value(1) : new Animated.Value(0),
+      // Sound is muted in __DEV__ because it gets annoying
       muted: __DEV__,
     }
   }
 
   componentDidMount() {
     if (this.props.autoPlayVideo) {
-      console.log('auto fade out?')
       this.fadeOutVideoUI(2000)
     }
   }
@@ -162,6 +174,15 @@ export default class VideoPlayer extends React.Component {
     return this.state.videoFadeAnim
   }
 
+  toggleMute() {
+    const newMuteState = !this.state.muted
+    if (this.props.onMuteChange) {
+      this.props.onMuteChange(newMuteState)
+    }
+
+    this.setState({muted: newMuteState})
+  }
+
   render() {
     return (
       <View style={[styles.root, this.props.style]}>
@@ -182,6 +203,13 @@ export default class VideoPlayer extends React.Component {
             onPress={this._togglePlayVideo}
             isPlaying={this.state.videoPlaying}
             videoFadeAnim={this.state.videoFadeAnim} />
+        }
+        {this.props.showPlayButton &&
+          <MuteButton
+            style={styles.mute}
+            onPress={() => this.toggleMute()}
+            isMuted={this.state.muted}
+          />
         }
       </View>
     )
@@ -214,4 +242,7 @@ const styles = StyleSheet.create({
     marginTop: -50,
     marginLeft: -50,
   },
+  mute: {
+
+  }
 })

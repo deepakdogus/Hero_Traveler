@@ -22,7 +22,8 @@ class PhotoTaker extends Component {
     super(props)
     this.state = {
       backCamera: true,
-      isRecording: false
+      isRecording: false,
+      captureAudio: true
     }
   }
 
@@ -40,7 +41,6 @@ class PhotoTaker extends Component {
   }
 
   _startRecordVideo = () => {
-    console.log('starting capture')
     this.setState({
       isRecording: true
     })
@@ -49,14 +49,12 @@ class PhotoTaker extends Component {
       mode: this.getCaptureMode()
     })
       .then((resp) => {
-        console.log('capture2', resp)
         this.props.onCapture(resp)
       })
 
   }
 
   _stopRecordVideo = () => {
-    console.log('endcapture')
     this.cameraRef.stopCapture()
     this.setState({isRecording: false})
   }
@@ -73,9 +71,9 @@ class PhotoTaker extends Component {
   render () {
     return (
       <Camera
-        ref={(camera) => { this.cameraRef = camera }}
+        ref={camera => this.cameraRef = camera}
         captureMode={this.getCaptureMode()}
-        captureAudio={true}
+        captureAudio={this.state.captureAudio}
         orientation={Camera.constants.Orientation.portrait}
         captureTarget={Camera.constants.CaptureTarget.disk}
         keepAwake={true}
@@ -92,13 +90,26 @@ class PhotoTaker extends Component {
                 size={30} />
             </View>
           }
-          <View
-            style={[styles.cameraControl, styles.flipCamera]}>
-            <Icon
-              color={Colors.snow}
-              name='camera'
-              size={30} />
-          </View>
+          <TouchableOpacity onPress={() => this.setState({backCamera: !this.state.backCamera})}>
+            <View
+              style={[styles.cameraControl, styles.flipCamera]}>
+              <Icon
+                color={Colors.snow}
+                name='camera'
+                size={30} />
+            </View>
+          </TouchableOpacity>
+          {this.props.mediaType === 'video' &&
+            <TouchableOpacity onPress={() => this.setState({captureAudio: !this.state.captureAudio})}>
+              <View
+                style={[styles.cameraControl, styles.flipCamera]}>
+                <Icon
+                  color={Colors.snow}
+                  name={!this.state.captureAudio ? 'volume-off' : 'volume-up'}
+                  size={30} />
+              </View>
+            </TouchableOpacity>
+          }
         </View>
         <View style={{flex: 1}} />
         {this.props.mediaType === 'photo' &&

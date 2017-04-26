@@ -126,13 +126,13 @@ class LaunchScreen extends React.Component {
         <View style={styles.spacer} />
         <View style={styles.signupButtons}>
 
-          <RoundedButton
+          {false && <RoundedButton
             style={styles.facebook}
             onPress={this.getUserInfoAndSignup}
             text='Make Graph Query'
-          />
+          />}
 
-          {this.state.facebookLoggedIn && <RoundedButton
+          {this.state.facebookLoggedIn && false && <RoundedButton
             style={styles.facebook}
             onPress={() => {
               LoginManager.logOut()

@@ -11,14 +11,6 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: "row"
   },
-  previewImage: {
-    flexDirection: "column",
-    justifyContent: "flex-end"
-  },
-  gradient: {
-    paddingHorizontal: Metrics.doubleBaseMargin,
-    paddingVertical: Metrics.doubleBaseMargin
-  },
   title: {
     fontSize: 28,
     fontWeight: "200",

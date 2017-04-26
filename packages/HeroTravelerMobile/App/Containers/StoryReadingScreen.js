@@ -97,6 +97,8 @@ class StoryReadingScreen extends React.Component {
             key={story.id}
             height={Metrics.screenHeight}
             storyId={story.id}
+            autoPlayVideo={true}
+            allowVideoPlay={true}
           />
           <View style={styles.content}>
             {!story.content &&

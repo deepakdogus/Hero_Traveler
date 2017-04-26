@@ -295,11 +295,12 @@ export default class ProfileView extends React.Component {
                       editable={editable}
                       titleStyle={styles.storyTitleStyle}
                       subtitleStyle={styles.subtitleStyle}
+                      allowVideoPlay={false}
                       key={storyId}
                       height={200}
                       storyId={storyId}
-                      onPress={story => NavActions.story({storyId: story.id})}
-                      onPressLike={story => alert(`Story ${story.id} liked`)}
+                      onPress={() => NavActions.story({storyId})}
+                      onPressLike={story => alert(`Story ${storyId} liked`)}
                     />
                   )
                 }}

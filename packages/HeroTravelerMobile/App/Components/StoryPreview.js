@@ -11,25 +11,14 @@ import moment from 'moment'
 
 import formatCount from '../Lib/formatCount'
 import getImageUrl from '../Lib/getImageUrl'
+import getVideoUrl from '../Lib/getVideoUrl'
 import { Metrics } from '../Themes'
 import styles from './Styles/StoryPreviewStyle'
 import LikesComponent from './LikeComponent'
 import Avatar from './Avatar'
+import StoryCover from './StoryCover'
 
-function getUrl(coverImage) {
-  const baseUrl = 'https://s3.amazonaws.com/hero-traveler/'
-  const mobile = _.get(coverImage, 'versions.mobile.path', null)
-  if (mobile) {
-    return baseUrl + mobile
-  }
 
-  return baseUrl + coverImage.original.path
-}
-
-/*
-TODO:
-- Fix the Navar height issue
-*/
 export default class StoryPreview extends Component {
   static propTypes = {
     onPressLike: PropTypes.func,
@@ -37,6 +26,8 @@ export default class StoryPreview extends Component {
     forProfile: PropTypes.bool,
     height: PropTypes.number,
     isLiked: PropTypes.bool,
+    autoPlayVideo: PropTypes.bool,
+    allowVideoPlay: PropTypes.bool
   }
 
   wrap(content) {
@@ -66,7 +57,6 @@ export default class StoryPreview extends Component {
       profile
     } = user;
     const {
-      coverImage,
       title,
       description,
       counts
@@ -82,58 +72,53 @@ export default class StoryPreview extends Component {
       </View>
     )
 
-    return this.wrap(
+    return (
+      <View style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}>
         <View style={styles.contentContainer}>
-          <Image
-            resizeMode="cover"
-            source={{uri: getUrl(coverImage)}}
-            style={[styles.backgroundImage, styles.previewImage]}
+          <StoryCover
+            autoPlayVideo={this.props.autoPlayVideo}
+            allowVideoPlay={this.props.allowVideoPlay}
+            cover={story.coverImage ? story.coverImage : story.coverVideo}
+            coverType={story.coverImage ? 'image' : 'video'}
+            onPress={this.props.onPress}
           >
-            <LinearGradient colors={['transparent', 'black']} style={styles.gradient}>
-              <Text style={[styles.title, this.props.titleStyle]}>{title.toUpperCase()}</Text>
-              {!this.props.forProfile && <Text style={[styles.subtitle, this.props.subTitleStyle]}>{description}</Text>}
-              {!this.props.forProfile && <View style={styles.divider}></View>}
-              <View style={styles.detailContainer}>
-                {!this.props.forProfile && this.props.onPressUser &&
-                  <TouchableOpacity onPress={() => this.props.onPressUser(userId)}>
-                    {userContent}
-                  </TouchableOpacity>
-                }
-                {!this.props.forProfile && !this.props.onPressUser && userContent}
-                {this.props.forProfile &&
-                  <View style={styles.row}>
-                    <Text style={[styles.subtitle, this.props.subtitleStyle]}>{description}</Text>
-                    <LikesComponent
-                      onPress={this._onPressLike}
-                      numberStyle={styles.bottomRight}
-                      likes={formatCount(counts.likes)}
-                      isLiked={this.props.isLiked}
-                    />
-                  </View>
-                }
-                {!this.props.forProfile &&
-                  <View style={styles.row}>
-                    <Text style={[styles.bottomRight, styles.timeSince]}>{moment(story.createdAt).fromNow()}</Text>
-                    <LikesComponent
-                      onPress={this._onPressLike}
-                      numberStyle={styles.bottomRight}
-                      likes={formatCount(counts.likes)}
-                      isLiked={this.props.isLiked}
-                    />
-                  </View>
-                }
-              </View>
-            </LinearGradient>
-          </Image>
+            <Text style={[styles.title, this.props.titleStyle]}>{title.toUpperCase()}</Text>
+            {!this.props.forProfile && <Text style={[styles.subtitle, this.props.subTitleStyle]}>{description}</Text>}
+            {!this.props.forProfile && <View style={styles.divider} />}
+            <View style={styles.detailContainer}>
+              {!this.props.forProfile && this.props.onPressUser &&
+                <TouchableOpacity onPress={() => this.props.onPressUser(userId)}>
+                  {userContent}
+                </TouchableOpacity>
+              }
+              {!this.props.forProfile && !this.props.onPressUser && userContent}
+              {this.props.forProfile &&
+                <View style={styles.row}>
+                  <Text style={[styles.subtitle, this.props.subtitleStyle]}>{description}</Text>
+                  <LikesComponent
+                    onPress={this._onPressLike}
+                    numberStyle={styles.bottomRight}
+                    likes={formatCount(counts.likes)}
+                    isLiked={this.props.isLiked}
+                  />
+                </View>
+              }
+              {!this.props.forProfile &&
+                <View style={styles.row}>
+                  <Text style={[styles.bottomRight, styles.timeSince]}>{moment(story.createdAt).fromNow()}</Text>
+                  <LikesComponent
+                    onPress={this._onPressLike}
+                    numberStyle={styles.bottomRight}
+                    likes={formatCount(counts.likes)}
+                    isLiked={this.props.isLiked}
+                  />
+                </View>
+              }
+            </View>
+          </StoryCover>
         </View>
+      </View>
     )
-  }
-
-  _onPress = () => {
-    const {story, onPress} = this.props
-    if (onPress) {
-      onPress(story)
-    }
   }
 
   _onPressLike = () => {

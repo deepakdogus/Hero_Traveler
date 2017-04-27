@@ -22,6 +22,11 @@ import CategoryFeedScreen from '../Containers/Explore/CategoryFeedScreen'
 import FollowersScreen from '../Containers/FollowersScreen'
 // import FollowingScreen from '../Containers/FollowingScreen'
 
+// Info Screens
+import TermsAndConditionsScreen from '../Containers/TermsAndConditionsScreen'
+import FAQScreen from '../Containers/FAQScreen'
+import PrivacyScreen from '../Components/PrivacyScreen'
+
 // Story reading & creating
 import StoryReadingScreen from '../Containers/StoryReadingScreen'
 import StoryCommentsScreen from '../Containers/StoryCommentsScreen'
@@ -155,6 +160,30 @@ class NavigationRouter extends Component {
               title='Settings'
               {...darkNavBarProps}
             />
+            <Scene
+              key='terms'
+              component={TermsAndConditionsScreen}
+              direction='horizontal'
+              onLeft={() => NavActions.pop()}
+              title='Terms & Conditions'
+              {...darkNavBarProps}
+            />            
+            <Scene
+              key='FAQ'
+              component={FAQScreen}
+              direction='horizontal'
+              onLeft={() => NavActions.pop()}
+              title='FAQ'
+              {...darkNavBarProps}
+            />
+            <Scene
+              key='privacy'
+              component={PrivacyScreen}
+              direction='horizontal'
+              onLeft={() => NavActions.pop()}
+              title='Privacy Policy'
+              {...darkNavBarProps}
+            />                                    
             <Scene
               key='story'
               component={StoryReadingScreen}

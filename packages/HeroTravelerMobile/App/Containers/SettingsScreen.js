@@ -92,11 +92,11 @@ class SettingsScreen extends React.Component {
           <List>
           <Row
             text='FAQ'
-            onPress={() => alert('FAQ')}
+            onPress={() => NavActions.FAQ()}
           />
           <Row
             text='Terms & Conditions'
-            onPress={() => alert('Terms & Conditions')}
+            onPress={() => NavActions.terms()}
           />
           <Row
             text='Sign Out'

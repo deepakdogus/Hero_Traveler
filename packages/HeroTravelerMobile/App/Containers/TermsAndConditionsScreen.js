@@ -12,7 +12,6 @@ export default class TermsAndConditionsScreen extends React.Component {
   render () {
     return (
       <ScrollView style={styles.scrollViewWrapper}>
-        <View style={styles.FAQContentWrapper}>
           <Text style={styles.titleText}>
             Terms of Use
           </Text>
@@ -295,7 +294,6 @@ export default class TermsAndConditionsScreen extends React.Component {
           <Text style={styles.bodyText}>
             If you are using the Service on behalf of a legal entity, you represent that you are authorized to enter into an agreement on behalf of that legal entity. These Terms of Use constitute the entire agreement between you and Hero Traveler's and governs your use of the Service, superseding any prior agreements between you and Hero Traveler's. You will not assign the Terms of Use or assign any rights or delegate any obligations hereunder, in whole or in part, whether voluntarily or by operation of law, without the prior written consent of Instagram. Any purported assignment or delegation by you without the appropriate prior written consent of Hero Traveler's will be null and void. Hero Traveler's may assign these Terms of Use or any rights hereunder without your consent. If any provision of these Terms of Use is found by a court of competent jurisdiction to be invalid or otherwise unenforceable, the parties nevertheless agree that such portion will be deemed severable from these Terms of Use and will not affect the validity and enforceability of the remaining provisions, and the remaining provisions of the Terms of Use remain in full force and effect. Neither the course of conduct between the parties nor trade practice will act to modify the Terms of Use. These Terms of Use do not confer any third-party beneficiary rights.
           </Text>
-        </View>
       </ScrollView>
     )
   }

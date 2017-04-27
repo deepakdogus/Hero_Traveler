@@ -181,7 +181,7 @@ class NavigationRouter extends Component {
               component={PrivacyScreen}
               direction='horizontal'
               onLeft={() => NavActions.pop()}
-              title='Terms of Use & Privacy Policy'
+              title='Privacy Policy'
               {...darkNavBarProps}
             />                                    
             <Scene

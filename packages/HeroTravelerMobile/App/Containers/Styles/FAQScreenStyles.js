@@ -13,10 +13,6 @@ export default StyleSheet.create({
   scrollViewWrapper: {
     paddingTop: 1.5*Metrics.tabBarHeight,
   },
-  FAQContentWrapper: {
-    backgroundColor: Colors.snow,
-    paddingBottom: Metrics.tabBarHeight + Metrics.section
-  },
   questionText: {
     color: Colors.blackoutTint,
     fontSize: 18,

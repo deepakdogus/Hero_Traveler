@@ -12,7 +12,6 @@ export default class FAQScreen extends React.Component {
   render () {
     return (
       <ScrollView style={styles.scrollViewWrapper}>
-        <View style={styles.FAQContentWrapper}>
           <Text style={styles.questionText}>
             What is HERO Traveler?
           </Text>
@@ -62,7 +61,6 @@ export default class FAQScreen extends React.Component {
           <Text style={styles.answerText}>
             Contributors are the cream of the crop, representing our most passionate users. To be labeled with the “Contributor” star on your profile, you must first publish 200 stories or more. To learn about other eligibility requirements, click here/ send us an email at contributors@herotraveler.com 
           </Text>                
-        </View>
       </ScrollView>
     )
   }

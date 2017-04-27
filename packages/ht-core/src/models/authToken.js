@@ -31,6 +31,14 @@ const TokenSchema = new Schema({
     enum: ['access', 'refresh']
   },
   expiresAt: Date
+}, {
+  timestamps: true,
+  toObject: {
+    virtuals: true
+  },
+  toJSON: {
+    virtuals: true
+  }
 })
 
 TokenSchema.statics = {
@@ -52,6 +60,7 @@ TokenSchema.statics = {
       expiresAt: moment.utc().add(tokenConfig.life, 'seconds').toDate()
     })
 
+    // Remove tokens that are about to expire
     return this.remove(Object.assign({}, attrs, {
       expiresAt: {
         $lte: moment().utc().add(5, 'minutes').toDate()

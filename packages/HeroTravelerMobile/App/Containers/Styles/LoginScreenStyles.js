@@ -15,6 +15,12 @@ export default StyleSheet.create({
     left: 0,
     right: 0
   },
+  socialText: {
+    fontFamily: Fonts.type.montserrat
+  },
+  socialTextBold: {
+    fontWeight: '800'
+  },
   textInputReadonly: {
     ...Fonts.style.inputLabels,
     height: 40,

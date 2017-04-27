@@ -1,10 +1,13 @@
-import mongoose from 'mongoose'
+import mongoose, {Schema} from 'mongoose'
+import softDelete from 'mongoose-delete'
 import {ModelName as CategoryRef} from './category'
 import {ModelName as UserRef} from './user'
+import {ModelName as UploadRef} from './upload'
 import {Constants} from '@rwoody/ht-util'
-import ImageSchema from './_image'
 
-const StoryDraftSchema = new mongoose.Schema({
+export const ModelName = 'StoryDraft'
+
+const StoryDraftSchema = new Schema({
   title: {
     type: String
   },
@@ -24,22 +27,46 @@ const StoryDraftSchema = new mongoose.Schema({
     type: String
   },
   author: {
-    type: mongoose.Schema.ObjectId,
+    type: Schema.ObjectId,
     ref: UserRef,
     required: true
   },
   category: {
-    type: mongoose.Schema.ObjectId,
+    type: Schema.ObjectId,
     ref: CategoryRef
   },
   content: {
     type: String
   },
-  coverImage: ImageSchema,
-  createdAt: {
-    type: Date,
-    default: Date.now
+  tripDate: {
+    type: Date
+  },
+  coverImage: {
+    type: Schema.ObjectId,
+    ref: UploadRef,
+  },
+  coverVideo: {
+    type: Schema.ObjectId,
+    ref: UploadRef,
+  }
+}, {
+  timestamps: true,
+  toObject: {
+    virtuals: true
+  },
+  toJSON: {
+    virtuals: true
+  }
+}, {
+  timestamps: true,
+  toObject: {
+    virtuals: true
+  },
+  toJSON: {
+    virtuals: true
   }
 })
 
-export default mongoose.model('StoryDraft', StoryDraftSchema)
+StoryDraftSchema.plugin(softDelete)
+
+export default mongoose.model(ModelName, StoryDraftSchema)

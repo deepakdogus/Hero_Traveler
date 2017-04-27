@@ -10,7 +10,11 @@ export default StyleSheet.create({
   },
   gradient: {
     paddingTop: 20,
-    flex: 1
+    flex: 1,
+    backgroundColor: Colors.clear
+  },
+  gradientWrapper: {
+    backgroundColor: Colors.clear
   },
   settingsCog: {
     position: 'absolute',
@@ -19,6 +23,9 @@ export default StyleSheet.create({
   },
   coverImage: {
     flexDirection: 'column'
+  },
+  noCoverImage: {
+    backgroundColor: Colors.redLight
   },
   coverInner: {
     paddingTop: Metrics.section,
@@ -97,6 +104,22 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.montserrat,
     fontSize: 11,
     color: Colors.snow
+  },
+  cameraIcon: {
+    textAlign: 'center',
+    marginBottom: Metrics.baseMargin
+  },
+  addCoverPhotoButton: {
+    padding: 50,
+    justifyContent: 'center',
+    backgroundColor: 'transparent'
+  },
+  addAvatarPhotoButton: {
+    position: 'absolute',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    top: -35,
+    left: 15,
   },
   contributor: {
     marginLeft: Metrics.baseMargin

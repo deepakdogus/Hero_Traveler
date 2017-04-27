@@ -31,10 +31,10 @@ function removeAllData() {
 
 async function seedAllData() {
   try {
-    let users = await createUsers(50)
-    let followers = await createFollowers(users, 1500)
+    // let users = await createUsers(0)
+    // let followers = await createFollowers(users, 0)
     let categories = await createCategories()
-    let stories = await createStories(users, categories, 100)
+    // let stories = await createStories(users, categories, 0)
     return Promise.resolve()
   } catch (err) {
     console.log("ERROR: seedAllData", err)
@@ -70,7 +70,7 @@ async function seed() {
   try {
     await removeAllData()
   } catch(err) {
-    console.log("error removing data")
+    console.log("error removing data", err)
   }
 
   console.log("data removed")
@@ -78,7 +78,7 @@ async function seed() {
   try {
     await seedAllData()
   } catch (err) {
-    console.log("error seeding data", err)
+    console.log("error seeding data")
   }
 
   console.log("data seeded")

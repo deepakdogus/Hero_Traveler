@@ -23,6 +23,7 @@ function create(imageName) {
   .then(([file]) => {
     return {
       "title": title,
+      "isDefault": true,
       "image": {
         "altText": title,
         "original": {

@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import moment from 'moment'
 
 import { Colors, Metrics, Fonts } from '../Themes/'
+import getImageUrl from '../Lib/getImageUrl'
 import Avatar from '../Components/Avatar'
 
 export const ThreadListItemProps = {
@@ -33,7 +34,7 @@ export default class ThreadListItem extends Component {
           <View style={styles.innerButton}>
             <Avatar
               style={styles.avatar}
-              avatarUrl={fromUser.profile.avatar}
+              avatarUrl={getImageUrl(fromUser.profile.avatar)}
             />
             <View style={[styles.middle]}>
               <Text style={styles.usernameText}>

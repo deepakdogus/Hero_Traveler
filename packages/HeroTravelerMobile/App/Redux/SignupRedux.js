@@ -8,6 +8,9 @@ const { Types, Creators } = createActions({
   signupEmail: ['fullName', 'username', 'email', 'password'],
   signupEmailSuccess: null,
   signupEmailFailure: ['error'],
+  signupFacebook: ['fbid', 'email', 'name', 'pictureUrl'],
+  signupFacebookSuccess: null,
+  signupFacebookFailure: ['error'],
   signupFollowCategory: ['categoryId'],
   signupFollowCategorySuccess: ['categoryId'],
   signupFollowCategoryFailure: ['categoryId', 'error'],
@@ -39,6 +42,11 @@ export const INITIAL_STATE = Immutable({
 export const signupEmail = (state) => state.merge({fetching: true})
 
 export const signupEmailSuccess = (state) =>
+  state.merge({fetching: false, error: null, signedUp: true})
+
+export const signupFacebook = (state) => state.merge({fetching: true})
+
+export const signupFacebookSuccess = (state) =>
   state.merge({fetching: false, error: null, signedUp: true})
 
 export const failure = (state, { error }) =>
@@ -85,6 +93,9 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SIGNUP_EMAIL]: signupEmail,
   [Types.SIGNUP_EMAIL_SUCCESS]: signupEmailSuccess,
   [Types.SIGNUP_EMAIL_FAILURE]: failure,
+  [Types.SIGNUP_FACEBOOK]: signupFacebook,
+  [Types.SIGNUP_FACEBOOK_SUCCESS]: signupFacebookSuccess,
+  [Types.SIGNUP_FACEBOOK_FAILURE]: failure,
   [Types.SIGNUP_FOLLOW_CATEGORY]: followCategory,
   [Types.SIGNUP_FOLLOW_CATEGORY_SUCCESS]: followCategorySuccess,
   [Types.SIGNUP_FOLLOW_CATEGORY_FAILURE]: followCategoryFailure,

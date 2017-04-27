@@ -19,7 +19,7 @@ const Bookmarks = new schema.Entity('bookmarks', {
   story: Story
 })
 
-const devURL = Platform.OS === 'ios' ? 'http://localhost:3000/' : 'http://10.0.3.2:3000/'
+const devURL = Platform.OS === 'ios' ? 'http://10.0.0.218:3000/' : 'http://10.0.3.2:3000/'
 
 // our "constructor"
 const create = () => {
@@ -69,14 +69,21 @@ const create = () => {
   // const getRoot = () => api.get('')
   // const getRate = () => api.get('rate_limit')
   // const getUser = (username) => api.get('search/users', {q: username})
-  const signupEmail = (fullName, username, email, password) => {
+const signupEmail = (name, username, email, password) => {
     return api.post('user', {
-      profile: {
-        fullName
-      },
+      name,
       username,
       email,
       password
+    })
+  }
+
+  const signupFacebook = (fbid, email, name, pictureUrl) => {
+    return api.post('user/facebook', {
+      fbid,
+      name,
+      email,
+      pictureUrl
     })
   }
 
@@ -104,13 +111,26 @@ const create = () => {
     return api.get('user')
   }
 
+  const getUser = (userId) => {
+    return api.get(`user/${userId}`)
+    .then(response => {
+      return Object.assign({}, response, {
+        data: normalize(response.data, User)
+      })
+    })
+  }
+
+  const updateUser = (userId, attrs) => {
+    return api.put(`user/${userId}`, attrs)
+  }
+
   const getUserFeed = (userId, params) => {
     return api.get(`story/user/${userId}/feed`, {
         params
       })
       .then(response => {
         return Object.assign({}, response, {
-          data: normalize(response.data, [Story]).entities
+          data: normalize(response.data, [Story])
         })
       })
   }
@@ -120,7 +140,6 @@ const create = () => {
         params
       })
       .then(response => {
-        console.log('normalize(response.data, [Story])', normalize(response.data, [Story]))
         return Object.assign({}, response, {
           data: normalize(response.data, [Story])
         })
@@ -133,7 +152,7 @@ const create = () => {
       })
       .then(response => {
         return Object.assign({}, response, {
-          data: normalize(response.data, [Story]).entities
+          data: normalize(response.data, [Story])
         })
       })
   }
@@ -143,11 +162,11 @@ const create = () => {
     console.log('posting', story)
     return api.post('story', {story})
   }
-  
+
   const createDraft = () => {
     return api.post(`story/draft`)
   }
-  
+
   const updateDraft = (id, attrs) => {
     return api.put(`story/draft/${id}`, {
       story: attrs
@@ -161,7 +180,7 @@ const create = () => {
   const getDraft = (draftId) => {
     return api.get(`story/draft/${draftId}`)
   }
-  
+
   const getDrafts = () => {
     return api.get(`story/draft`)
   }
@@ -174,7 +193,7 @@ const create = () => {
     return api.get('category')
       .then(response => {
         return  Object.assign({}, response, {
-          data: normalize(response.data, [Category]).entities
+          data: normalize(response.data, [Category])
         })
       })
   }
@@ -185,7 +204,7 @@ const create = () => {
       })
       .then(response => {
         return  Object.assign({}, response, {
-          data: normalize(response.data, [User]).entities
+          data: normalize(response.data, [User])
         })
       })
   }
@@ -212,6 +231,28 @@ const create = () => {
     })
   }
 
+  const getUserFollowers = (userId) => {
+    return api.get(`user/${userId}/followers`)
+      .then(response => {
+        return  Object.assign({}, response, {
+          data: normalize(response.data, [User])
+        })
+      })
+  }
+
+  const getUserFollowing = (userId) => {
+    return api.get(`user/${userId}/following`)
+      .then(response => {
+        return  Object.assign({}, response, {
+          data: normalize(response.data, [User])
+        })
+      })
+  }
+
+  const getUserLikes = (userId) => {
+    return api.get(`story/user/${userId}/like`)
+  }
+
   const likeStory = (storyId) => {
     return api.get(`story/${storyId}/like`)
   }
@@ -219,13 +260,13 @@ const create = () => {
   const bookmarkStory = (storyId) => {
     return api.get(`story/${storyId}/bookmark`)
   }
-  
-  const getBookmarks = (storyId) => {
-    return api.get(`story/bookmark`)
+
+  const getBookmarks = (userId) => {
+    return api.get(`story/user/${userId}/bookmark`)
       .then(response => {
-        console.log('normalize(response.data, [Bookmarks])', normalize(response.data, [Bookmarks]))
+        console.log('getBookmarks', response.data)
         return  Object.assign({}, response, {
-          data: normalize(response.data, [Bookmarks])
+          data: normalize(response.data, [Story])
         })
       })
   }
@@ -242,9 +283,14 @@ const create = () => {
 
   const uploadCoverImage = (draftId, pathToFile) => {
     const data = new FormData()
-    console.log('pathToFile', pathToFile)
     data.append('image', pathToFile)
     return api.put(`story/draft/${draftId}/cover-image`, data)
+  }
+
+  const uploadCoverVideo = (draftId, pathToFile) => {
+    const data = new FormData()
+    data.append('video', pathToFile)
+    return api.put(`story/draft/${draftId}/cover-video`, data)
   }
 
   // ------
@@ -262,20 +308,27 @@ const create = () => {
   return {
     setAuth,
     unsetAuth,
-    getMe,
     login,
     logout,
+    getMe,
+    updateUser,
+    getUser,
     resetPassword,
     signupEmail,
+    signupFacebook,
     getUserFeed,
     createStory,
     getCategories,
     getUserStories,
+    getCategoryStories,
     getSuggestedUsers,
+    getUserFollowers,
+    getUserFollowing,
     followUser,
     unfollowUser,
     followCategory,
     unfollowCategory,
+    getUserLikes,
     likeStory,
     bookmarkStory,
     getDraft,
@@ -286,7 +339,8 @@ const create = () => {
     getBookmarks,
     getComments,
     createComment,
-    uploadCoverImage
+    uploadCoverImage,
+    uploadCoverVideo,
   }
 }
 

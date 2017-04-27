@@ -7,19 +7,19 @@ export default function validateAccessToken(accessToken) {
     value: accessToken,
     type: 'access'
   })
-  .then(userAccessToken => {
-    if (!userAccessToken) {
+  .then(accessToken => {
+    if (!accessToken) {
       return Promise.reject(new Error('Access token not found'))
     }
 
-    if (moment(userAccessToken.expiresAt).unix() < moment().unix()) {
+    if (moment(accessToken.expiresAt).unix() < moment().unix()) {
       AuthToken.remove({
-        value: tokenValue,
+        value: accessToken.value,
         type: 'access'
       })
       return Promise.reject(new Error('Access token has expired'))
     }
 
-    return getUser({_id: userAccessToken.user})
+    return getUser({_id: accessToken.user})
   })
 }

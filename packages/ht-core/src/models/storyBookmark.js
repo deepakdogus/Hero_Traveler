@@ -16,6 +16,13 @@ const StoryBookmarkSchema = new mongoose.Schema({
     ref: StoryRef,
     required: true
   }
+}, {
+  toObject: {
+    virtuals: true
+  },
+  toJSON: {
+    virtuals: true
+  }
 })
 
 export default mongoose.model(ModelName, StoryBookmarkSchema)

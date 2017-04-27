@@ -16,6 +16,7 @@ import {
   Actions as NavigationActions,
   ActionConst as NavActionConst
 } from 'react-native-router-flux'
+import {LoginButton, AccessToken, LoginManager} from 'react-native-fbsdk'
 
 import {Images, Metrics, Colors} from '../Themes'
 import Loader from '../Components/Loader'
@@ -53,10 +54,17 @@ class LoginScreen extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      username: 'rwoody',
+      username: 'cngirlie2',
       password: 'ryanwood',
     }
     this.isAttempting = false
+  }
+
+  componentDidMount() {
+    console.log('componentDidMount')
+    AccessToken.getCurrentAccessToken().then(data => {
+      console.log('logged in', data)
+    })
   }
 
   componentWillReceiveProps (newProps) {
@@ -82,6 +90,30 @@ class LoginScreen extends React.Component {
     this.isAttempting = true
     // attempt a login - a saga is listening to pick it up from here.
     this.props.attemptLogin(username, password)
+  }
+
+  handlePressFacebook = () => {
+    // Attempt a login using the Facebook login dialog asking for default permissions.
+    LoginManager.logInWithReadPermissions([
+      'public_profile',
+      'email',
+      'user_friends'
+    ]).then(
+      function(result) {
+        console.log('result', result)
+
+        if(result.loginCancelled) {
+          return
+        }
+
+        AccessToken.getCurrentAccessToken().then(data => {
+          console.log('data', data)
+        })
+      },
+      function(error) {
+        alert('Login fail with error: ' + error);
+      }
+    );
   }
 
   handleChangeUsername = (text) => {
@@ -116,12 +148,16 @@ class LoginScreen extends React.Component {
 
             <RoundedButton
               style={styles.facebook}
-              onPress={this.props.attemptFacebookSignup}
-              text='Sign up with Facebook'
+              onPress={this.handlePressFacebook}
+              text={
+                <Text>Login with <Text style={styles.socialTextBold}>Facebook</Text></Text>
+              }
             />
             <RoundedButton
               style={styles.twitter}
-              text='Sign up with Twitter'
+              text={
+                <Text>Login with <Text style={styles.socialText}>Twitter</Text></Text>
+              }
             />
 
             <Text style={styles.instructions}>

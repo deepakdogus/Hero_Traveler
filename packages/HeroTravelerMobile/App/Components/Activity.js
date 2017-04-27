@@ -6,6 +6,7 @@ import moment from 'moment'
 
 import { Colors, Metrics, Fonts } from '../Themes/'
 import Avatar from '../Components/Avatar'
+import getImageUrl from '../Lib/getImageUrl'
 
 export const ActivityProps = {
   user: PropTypes.object,
@@ -35,7 +36,7 @@ export default class Activity extends Component {
           <View style={styles.innerButton}>
             <Avatar
               style={styles.avatar}
-              avatarUrl={actionUser.profile.avatar}
+              avatarUrl={getImageUrl(actionUser.profile.avatar)}
             />
             <View style={styles.middle}>
               <Text style={styles.description}>

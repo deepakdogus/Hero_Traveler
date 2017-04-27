@@ -2,10 +2,13 @@ import {Story} from '../models'
 import algoliasearchModule from 'algoliasearch'
 
 const client = algoliasearchModule(process.env.ALGOLIA_ACCT_KEY, process.env.ALGOLIA_API_KEY)
-
 const storyIndex = client.initIndex(process.env.ALGOLIA_STORY_INDEX)
 
 const addStoryToIndex = (story) => new Promise((resolve, reject) => {
+  // return early if we are not seeding
+  if (process.env.DISABLE_ALGOLIA) {
+    return resolve()
+  }
   storyIndex.addObject(story, (err, content) => {
     if (err) reject(err)
     if (content) resolve(content)

@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { call, put } from 'redux-saga/effects'
 import LoginActions from '../Redux/LoginRedux'
 import SessionActions from '../Redux/SessionRedux'
+import UserActions from '../Redux/Entities/Users'
 import errorFormatter from '../Lib/errorFormatter'
 
 // attempts to login
@@ -17,9 +18,13 @@ export function * login (api, { username, password }) {
       const {user, tokens} = response.data
       const accessToken = _.find(tokens, {type: 'access'})
       yield [
+        // @TODO test me
+        // Must receive users before running session initialization
+        // so the user object is accessible
+        put(UserActions.receiveUsers({[user.id]: user})),
         call(api.setAuth, accessToken.value),
-        put(SessionActions.initializeSession(user, tokens)),
-        put(LoginActions.loginSuccess())
+        put(SessionActions.initializeSession(user.id, tokens)),
+        put(LoginActions.loginSuccess()),
       ]
     } else {
       yield put(LoginActions.loginFailure(errorFormatter(response)))
@@ -34,8 +39,6 @@ export function * loginFacebook () {
 }
 
 export function * resetPassword (api, {email}) {
-
-  console.log("api.resetPassword: ", api.resetPassword)
   try {
     const response = yield call(
       api.resetPassword,

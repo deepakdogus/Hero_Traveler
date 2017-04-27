@@ -18,11 +18,22 @@ export default StyleSheet.create({
     left: 0,
     right: 0,
     marginVertical: Metrics.baseMargin,
-    marginHorizontal: Metrics.section,
-    zIndex: 100,
+    marginHorizontal: Metrics.section
   },
   spaceView: {
     height: third
+  },
+  loading: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0
+  },
+  loadingText: {
+    color: 'white',
+    fontSize: 18,
+    fontFamily: Fonts.type.montserrat
   },
   titleInput: {
     ...Fonts.style.title,
@@ -74,6 +85,14 @@ export default StyleSheet.create({
     color: Colors.darkBackground
   },
   coverPhoto: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flex: 1
+  },
+  coverVideo: {
     position: 'absolute',
     top: 0,
     bottom: 0,

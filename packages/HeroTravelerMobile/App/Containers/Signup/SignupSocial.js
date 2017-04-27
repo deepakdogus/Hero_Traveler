@@ -14,6 +14,7 @@ import UserActions from '../../Redux/Entities/Users'
 
 import RoundedButton from '../../Components/RoundedButton'
 import Avatar from '../../Components/Avatar'
+import getImageUrl from '../../Lib/getImageUrl'
 import {Colors} from '../../Themes'
 import styles from './SignupSocialStyles'
 
@@ -65,18 +66,19 @@ class SignupSocialScreen extends React.Component {
             </View>
           </View>
           <Text style={styles.sectionHeader}>SUGGESTED PEOPLE</Text>
-          {_.values(this.props.users).map(u => {
+          {_.map(this.props.suggestedUsersById).map(uid => {
+            const u = this.props.users[uid]
             const selected = this.userIsSelected(u)
             return (
               <View style={[styles.rowWrapper]} key={u.id}>
                 <View style={[styles.row, styles.followers]}>
                   <Avatar
                     style={styles.avatar}
-                    avatarUrl={u.profile.avatar}
+                    avatarUrl={getImageUrl(u.profile.avatar)}
                   />
                   <View style={styles.nameWrapper}>
                     <Text style={styles.name}>{u.profile.fullName}</Text>
-                    <Text style={styles.followerCount}>{u.counts.following} followers</Text>
+                    <Text style={styles.followerCount}>{u.counts.followers} followers</Text>
                   </View>
                   <RoundedButton
                     style={selected ? styles.selectedFollowersButton : styles.followersButton}
@@ -120,6 +122,7 @@ class SignupSocialScreen extends React.Component {
 const mapStateToProps = (state) => {
   return {
     users: state.entities.users.entities,
+    suggestedUsersById: state.entities.users.suggestedUsersById,
     selectedUsersById: state.signup.selectedUsers
   }
 }

@@ -3,6 +3,8 @@ package com.herotravelermobile;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.brentvatne.react.ReactVideoPackage;
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.cboy.rn.splashscreen.SplashScreenReactPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -10,7 +12,6 @@ import com.horcrux.svg.SvgPackage;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
-import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -31,14 +32,15 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReactVideoPackage(),
+            new FBSDKPackage(),
             new SplashScreenReactPackage(),
             new LinearGradientPackage(),
             new ImagePickerPackage(),
             new SvgPackage(),
             new RCTCameraPackage(),
             new VectorIconsPackage(),
-            new RNDeviceInfo(),
-            new ReactNativeConfigPackage()
+            new RNDeviceInfo()
       );
     }
   };

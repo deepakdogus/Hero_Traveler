@@ -34,13 +34,21 @@ export const request = (state) => {
   )
 }
 
-export const receive = (state, {categories = {}}) => {
+export const loadSuccess = (state, {categories = {}}) => {
   return state.merge({
     fetchStatus: {
       fetching: false,
       loaded: true,
     },
     error: null,
+    entities: categories
+  }, {
+    deep: true
+  })
+}
+
+export const receive = (state, {categories = {}}) => {
+  return state.merge({
     entities: categories
   }, {
     deep: true
@@ -54,7 +62,7 @@ export const failure = (state) =>
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOAD_CATEGORIES_REQUEST]: request,
-  [Types.LOAD_CATEGORIES_SUCCESS]: receive,
+  [Types.LOAD_CATEGORIES_SUCCESS]: loadSuccess,
   [Types.LOAD_CATEGORIES_FAILURE]: failure,
   [Types.RECEIVE_CATEGORIES]: receive,
 })

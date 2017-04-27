@@ -13,9 +13,9 @@ const { Types, Creators } = createActions({
   loadUserFollowersFailure: null,
   loadUserFollowing: ['userId'],
   loadUserFollowingSuccess: ['userId', 'usersById'],
-  loadUserFollowingFailure: null,
+  loadUserFollowingFailure: ['error'],
   loadUserSuggestionsRequest: null,
-  loadUserSuggestionsSuccess: ['users'],
+  loadUserSuggestionsSuccess: ['usersById'],
   loadUserSuggestionsFailure: null,
   updateUser: ['attrs'],
   updateUserSuccess: ['user'],
@@ -72,14 +72,14 @@ export const suggestions = (state) => {
     true
   )
 }
-export const suggestionsSuccess = (state, {users = {}}) => {
+export const suggestionsSuccess = (state, {usersById = []}) => {
   return state.merge({
     fetchStatus: {
       fetching: false,
       loaded: true,
     },
     error: null,
-    entities: users
+    suggestedUsersById: usersById
   }, {
     deep: true
   })

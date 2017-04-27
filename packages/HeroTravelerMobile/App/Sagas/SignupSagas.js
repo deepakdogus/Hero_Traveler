@@ -2,6 +2,7 @@ import { call, put } from 'redux-saga/effects'
 import _ from 'lodash'
 import SignupActions from '../Redux/SignupRedux'
 import SessionActions from '../Redux/SessionRedux'
+import UserActions from '../Redux/Entities/Users'
 
 // attempts to signup with email
 export function * signupEmail (api, action) {
@@ -18,9 +19,10 @@ export function * signupEmail (api, action) {
     const {user, tokens} = response.data
     const accessToken = _.find(tokens, {type: 'access'})
     yield [
+      put(UserActions.receiveUsers({[user.id]: user})),
       call(api.setAuth, accessToken.value),
       put(SignupActions.signupEmailSuccess()),
-      put(SessionActions.initializeSession(user, tokens))
+      put(SessionActions.initializeSession(user.id, tokens))
     ]
   } else {
     yield put(SignupActions.signupEmailFailure(response.data.message))
@@ -41,9 +43,10 @@ export function * signupFacebook(api, action) {
     const {user, tokens} = response.data
     const accessToken = _.find(tokens, {type: 'access'})
     yield [
+      put(UserActions.receiveUsers({[user.id]: user})),
       call(api.setAuth, accessToken.value),
       put(SignupActions.signupFacebookSuccess()),
-      put(SessionActions.initializeSession(user, tokens))
+      put(SessionActions.initializeSession(user.id, tokens))
     ]
   } else {
     yield put(SignupActions.signupEmailFailure(response.data.message))

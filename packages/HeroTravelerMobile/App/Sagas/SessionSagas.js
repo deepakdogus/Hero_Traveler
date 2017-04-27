@@ -1,5 +1,5 @@
 import { call, put, select } from 'redux-saga/effects'
-import SignupActions from '../Redux/SignupRedux'
+import UserActions from '../Redux/Entities/Users'
 import SessionActions from '../Redux/SessionRedux'
 
 const currentUserId = ({session}) => session.userId
@@ -20,20 +20,7 @@ export function * logout (api, action) {
   }
 }
 
-// attempts to signup with email
-export function * getMe (api, action) {
-  const {tokens} = action
-  const response = yield call(
-    api.getMe
-  )
-
-  if (response.ok) {
-    yield put(SessionActions.refreshUserSuccess(response.data))
-  } else {
-    yield put(SessionActions.refreshUserFailure())
-  }
-}
-
+// @TODO move me to user sagas
 export function * updateUser (api, action) {
   const {attrs} = action
   const userId = yield select(currentUserId)
@@ -44,8 +31,8 @@ export function * updateUser (api, action) {
   )
 
   if (response.ok) {
-    yield put(SessionActions.updateUserSuccess(response.data))
+    yield put(UserActions.updateUserSuccess(response.data))
   } else {
-    yield put(SessionActions.updateUserFailure(new Error('Failed to update user')))
+    yield put(UserActions.updateUserFailure(new Error('Failed to update user')))
   }
 }

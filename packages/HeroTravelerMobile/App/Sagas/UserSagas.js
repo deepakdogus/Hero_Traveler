@@ -4,8 +4,11 @@ import UserActions from '../Redux/Entities/Users'
 export function * getSuggestedUsers (api, action) {
   const response = yield call(api.getSuggestedUsers)
   if (response.ok) {
-    const { data } = response;
-    yield put(UserActions.receiveUsers(data.users))
+    const { entities, result } = response.data;
+    yield [
+      put(UserActions.receiveUsers(entities.users)),
+      put(UserActions.loadUserSuggestionsSuccess(result))
+    ]
   } else {
     yield put(UserActions.loadUserSuggestionsFailure())
   }
@@ -17,7 +20,7 @@ export function * loadUser (api, {userId}) {
     const { entities } = response.data;
     yield put(UserActions.loadUserSuccess(entities.users[userId]))
   } else {
-    yield put(UserActions.loadUserSuggestionsFailure(new Error('Failed to load user')))
+    yield put(UserActions.loadUserFailure(new Error('Failed to load user')))
   }
 }
 
@@ -43,6 +46,6 @@ export function * loadUserFollowing (api, {userId}) {
       put(UserActions.loadUserFollowingSuccess(userId, result))
     ]
   } else {
-    yield put(UserActions.loadUserSuggestionsFailure(new Error('Failed to load follower suggestions')))
+    yield put(UserActions.loadUserFollowingFailure(new Error('Failed to load follower suggestions')))
   }
 }

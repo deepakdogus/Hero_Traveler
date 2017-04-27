@@ -66,7 +66,8 @@ class SignupSocialScreen extends React.Component {
             </View>
           </View>
           <Text style={styles.sectionHeader}>SUGGESTED PEOPLE</Text>
-          {_.values(this.props.users).map(u => {
+          {_.map(this.props.suggestedUsersById).map(uid => {
+            const u = this.props.users[uid]
             const selected = this.userIsSelected(u)
             return (
               <View style={[styles.rowWrapper]} key={u.id}>
@@ -121,6 +122,7 @@ class SignupSocialScreen extends React.Component {
 const mapStateToProps = (state) => {
   return {
     users: state.entities.users.entities,
+    suggestedUsersById: state.entities.users.suggestedUsersById,
     selectedUsersById: state.signup.selectedUsers
   }
 }

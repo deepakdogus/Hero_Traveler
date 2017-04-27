@@ -27,7 +27,7 @@ import {
   followUser,
   unfollowUser
 } from './SignupSagas'
-import { logout, getMe, updateUser } from './SessionSagas'
+import { logout, updateUser } from './SessionSagas'
 import { openScreen } from './OpenScreenSagas'
 import { getCategories } from './CategorySagas'
 import {

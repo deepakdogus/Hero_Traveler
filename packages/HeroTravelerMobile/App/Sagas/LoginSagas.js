@@ -18,11 +18,11 @@ export function * login (api, { username, password }) {
       const {user, tokens} = response.data
       const accessToken = _.find(tokens, {type: 'access'})
       yield [
-        call(api.setAuth, accessToken.value),
         // @TODO test me
         // Must receive users before running session initialization
         // so the user object is accessible
         put(UserActions.receiveUsers({[user.id]: user})),
+        call(api.setAuth, accessToken.value),
         put(SessionActions.initializeSession(user.id, tokens)),
         put(LoginActions.loginSuccess()),
       ]

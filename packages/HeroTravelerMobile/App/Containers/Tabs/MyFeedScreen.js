@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import {Metrics, Images} from '../../Themes'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Lib/firstTimeTooltips'
 import StoryActions from '../../Redux/Entities/Stories'
-import SessionActions from '../../Redux/SessionRedux'
+import UserActions from '../../Redux/Entities/Users'
 import Loader from '../../Components/Loader'
 import StoryList from '../../Components/StoryList'
 import ConnectedStoryPreview from '../ConnectedStoryPreview'
@@ -196,7 +196,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     attemptGetUserFeed: (userId) => dispatch(StoryActions.feedRequest(userId)),
     toggleLike: (userId, storyId) => dispatch(StoryActions.storyLike(userId, storyId)),
-    completeTooltip: (introTooltips) => dispatch(SessionActions.updateUser({introTooltips}))
+    completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips}))
   }
 }
 

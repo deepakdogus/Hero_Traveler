@@ -12,9 +12,14 @@ import {
 import SplashScreen from 'react-native-splash-screen'
 import { Actions as NavActions } from 'react-native-router-flux'
 
+import API from '../Services/HeroAPI'
 import Editor from '../Components/Editor'
 import NavBar from './CreateStory/NavBar'
 import {Images, Colors, Metrics} from '../Themes'
+import getImageUrl from '../Lib/getImageUrl'
+import pathAsFileObject from '../Lib/pathAsFileObject'
+
+const api = API.create()
 
 const styles = StyleSheet.create({
   root: {
@@ -82,19 +87,13 @@ export default class EditorTestScreen extends Component {
   }
 
   _handleAddImage = (data) => {
-    console.log('_handleAddImage', data)
     this.editor.restoreSelection()
-    // this.editor.focusContent()
-    setTimeout(() => {
-      console.log('insertImage 1')
-      this.editor.insertImage({
-        src: 'https://c1.staticflickr.com/3/2396/5813752744_17c3a3c46e_b.jpg',
-        // src: data,
+    api.uploadStoryImage('xyz', pathAsFileObject(data))
+      .then(({data: imageUpload}) => {
+        this.editor.insertImage({
+          src: getImageUrl(imageUpload)
+        })
       })
-      setTimeout(() => {
-        this.editor.getContentHtml().then(console.log)
-      }, 3000)
-    }, 1000)
     NavActions.pop()
   }
 }

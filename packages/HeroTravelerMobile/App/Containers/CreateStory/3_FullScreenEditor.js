@@ -1,4 +1,5 @@
 import React from 'react'
+import _ from 'lodash'
 import {
   View
 } from 'react-native'
@@ -11,15 +12,27 @@ import StoryEditActions from '../../Redux/StoryCreateRedux'
 import Editor from '../../Components/Editor'
 import NavBar from './NavBar'
 import styles from './3_FullScreenEditorStyles'
+import pathAsFileObject from '../../Lib/pathAsFileObject'
+import getImageUrl from '../../Lib/getImageUrl'
+import HeroAPI from '../../Services/HeroAPI'
+
+const api = HeroAPI.create()
 
 class FullScreenEditor extends React.Component {
+
+  componentDidMount() {
+    api.setAuth(this.props.accessToken)
+  }
 
   _onLeft = () => {
     NavActions.pop()
   }
 
   _onRight = () => {
-    NavActions.createStory_details()
+    this.editor.getContentHtml().then(storyContent => {
+      console.log('full screen storyContent', storyContent)
+      NavActions.createStory_details({storyContent})
+    })
   }
 
   render () {
@@ -33,8 +46,13 @@ class FullScreenEditor extends React.Component {
           onLeft={this._onLeft}
         />
         <Editor
+          ref={c => {
+            if (c) {
+              this.c = c
+              this.editor = c.getEditor()
+            }
+          }}
           content={this.props.story.content}
-          onChange={(text) => this.props.change('content', text)}
           onAddImage={this._handlePressAddImage}
         />
       </View>
@@ -42,14 +60,31 @@ class FullScreenEditor extends React.Component {
   }
 
   _handlePressAddImage = () => {
-    NavActions.mediaSelectorScreen({
-      mediaType: 'photo',
-      title: 'Add Image',
-      onSelectMedia: this._handleAddImage
-    })
+    this.editor.prepareInsert()
+    setTimeout(() => {
+      NavActions.mediaSelectorScreen({
+        type: 'push',
+        mediaType: 'photo',
+        title: 'Add Image',
+        leftTitle: 'Cancel',
+        onLeft: () => {
+          NavActions.pop()
+          setTimeout(() => this.editor.restoreSelection(), 1000)
+        },
+        rightTitle: 'Next',
+        onSelectMedia: this._handleAddImage
+      })
+    }, 500)
   }
 
-  _handleAddImage = (localFilePath) => {
+  _handleAddImage = (data) => {
+    this.editor.restoreSelection()
+    api.uploadStoryImage(this.props.story.id, pathAsFileObject(data))
+      .then(({data: imageUpload}) => {
+        this.editor.insertImage({
+          src: getImageUrl(imageUpload)
+        })
+      })
     NavActions.pop()
   }
 }
@@ -58,9 +93,9 @@ const selector = formValueSelector('createStory')
 export default R.compose(
   connect(state => {
     return {
+      accessToken: _.find(state.session.tokens, {type: 'access'}).value,
       story: {
-      //   id: state.storyCreate.draft.id,
-      //   // content: state.storyCreate.content
+        id: _.get(state.storyCreate.draft, 'id'),
       }
     }
   }, (dispatch) => {
@@ -78,7 +113,7 @@ export default R.compose(
     keepDirtyOnReinitialize: true,
     enableReinitialize: true,
     initialValues: {
-      content: ''
+      storyContent: ''
     }
   })
 )(FullScreenEditor)

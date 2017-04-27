@@ -70,7 +70,9 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   _publish = () => {
-    this.props.publish(this.props.story)
+    console.log('publishing', {...this.props.story, content: this.props.storyContent})
+    console.log('this.props.storyContent', this.props.storyContent)
+    this.props.publish({...this.props.story, content: this.props.storyContent})
   }
 
   _updateType = (type) => {
@@ -223,7 +225,7 @@ export default R.compose(
   ),
   reduxForm({
     form: 'createStory',
-    destroyOnUnmount: true,
+    destroyOnUnmount: false,
     keepDirtyOnReinitialize: true,
     enableReinitialize: true,
     initialValues: {

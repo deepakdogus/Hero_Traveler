@@ -113,11 +113,10 @@ class NavigationRouter extends Component {
             <Scene
               initial
               key='launchScreen'
-              component={EditorTestScreen}
+              component={LaunchScreen}
               rightTitle='Browse as a Guest >'
               rightButtonTextStyle={Styles.browseGuest}
               onRight={() => alert('TODO Browse as guest')}
-              hideNavBar={true}
             />
             <Scene
               key='signup'

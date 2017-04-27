@@ -1,21 +1,24 @@
 import React, {Component, PropTypes} from 'react'
-import {reduce} from 'lodash'
 import {
-  KeyboardAvoidingView,
-  TextInput,
-  Text,
-  TouchableOpacity,
   View,
-  Image,
   StyleSheet,
-  Platform
+  TouchableWithoutOpacity,
+  TextInput
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import {RichTextEditor, RichTextToolbar, actions} from 'react-native-zss-rich-text-editor';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
-import ShadowButton from '../ShadowButton'
-import {Images, Colors, Metrics} from '../../Themes'
+import {Colors, Metrics} from '../../Themes'
+import RoundedButton from '../RoundedButton'
+
+const ToolbarIcon = ({name, color}) => {
+  return (
+    <Icon name={name}
+          color={color || Colors.charcoal}
+          size={20} />
+  )
+}
 
 const styles = StyleSheet.create({
   root: {
@@ -38,6 +41,13 @@ const styles = StyleSheet.create({
   toolbar: {
     // flex: 1,
     backgroundColor: Colors.background
+  },
+  dialogWrapper: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   }
 })
 
@@ -65,13 +75,28 @@ customEditorCSS = `
 
 export default class Editor extends Component {
 
+  constructor(props) {
+    super(props)
+    // this._showLinkDialog = this._showLinkDialog.bind(this)
+    // this._cancelLinkDialog = this._cancelLinkDialog.bind(this)
+    // this._insertLink = this._insertLink.bind(this)
+    this.state = {
+      linkDialogOpen: false,
+      link: '',
+      title: ''
+    }
+  }
+
   render() {
 
     // const h1Icon = (
     //   <Icon name='rocket' size={15} />
     // )
 
-    console.log('rendering')
+    const baseButtonStyle = {
+      alignItems: 'center',
+      justifyContent: 'center'
+    }
 
     return (
       <View style={styles.root}>
@@ -86,23 +111,60 @@ export default class Editor extends Component {
         </View>
         <RichTextToolbar
           onPressAddImage={this._addImage}
+          onPressAddLink={this._showLinkDialog}
           actions={[
             actions.setBold,
             actions.setItalic,
             actions.heading1,
             actions.setParagraph,
-            actions.removeFormat,
             actions.insertImage,
-            actions.insertLink,
+            // actions.insertLink,
           ]}
           iconMap={{
-            [actions.heading1]: require('../../Images/ht-icons/icon_content-text.png'),
-            [actions.removeFormat]: require('../../Images/ht-icons/icon_content-x-white.png'),
-            [actions.setParagraph]: require('../../Images/ht-icons/icon_content-x-white.png'),
+            [actions.setBold]: (<ToolbarIcon name='bold' />),
+            [actions.setItalic]: (<ToolbarIcon name='italic' />),
+            [actions.heading1]: <ToolbarIcon name='header' />,
+            [actions.setParagraph]: <ToolbarIcon name='paragraph' />,
+            [actions.insertImage]: <ToolbarIcon name='image' />,
+            // [actions.insertLink]: <ToolbarIcon name='link' />,
           }}
           getEditor={() => this.richtext}
           style={styles.toolbar}
+          selectedButtonStyle={{
+            ...baseButtonStyle,
+          }}
+          unselectedButtonStyle={{
+            ...baseButtonStyle,
+          }}
+          selectedIconColor={Colors.snow}
         />
+        {this.state.linkDialogOpen &&
+          <View style={styles.dialogWrapper}>
+            <TouchableWithoutOpacity onPress={this._cancelLinkDialog}>
+              <View>
+                <TextInput />
+              </View>
+              <View>
+                <TextInput />
+              </View>
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between'
+              }}>
+                <RoundedButton
+                  style={[styles.cancelBtn, {marginRight: Metrics.baseMargin}]}
+                  text='Cancel'
+                  onPress={this._cancelLinkDialog}
+                />
+                <RoundedButton
+                  style={styles.insertLinkBtn}
+                  text='Insert'
+                  onPress={this._insertLink}
+                />
+              </View>
+            </TouchableWithoutOpacity>
+          </View>
+        }
         <KeyboardSpacer />
       </View>
     )
@@ -112,10 +174,30 @@ export default class Editor extends Component {
     return this.richtext
   }
 
-  _addImage = () => {
+  _addImage = (...args) => {
     if (this.props.onAddImage) {
-      this.props.onAddImage()
+      this.props.onAddImage(...args)
     }
+  }
+
+  _cancelLinkDialog() {
+    this.setState({
+      linkDialogOpen: false,
+    })
+  }
+
+  _showLinkDialog() {
+    console.log('_showLinkDialog')
+    this.setState({
+      linkDialogOpen: true,
+      link: '',
+      title: ''
+    })
+  }
+
+  _insertLink() {
+    this.richtext.insertLink('www.google.com', 'Google!')
+    // this.editor.insertLink(this.state.link, this.state.title)
   }
 
   async getHTML() {

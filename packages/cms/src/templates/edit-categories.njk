@@ -1,0 +1,13 @@
+{% extends 'index.njk' %}
+
+{% block main %}
+  <form enctype="application/json" action="/categories/edit?id={{data._id}} "method="post" class="sm-col-4 m3">
+    <label>Title</label>
+    <input name="title" type="text" value="{{data.title}}" class="block col-12 mb1 field">
+    <label>Upload Image</label>
+    <input type="text" value="{{data.title}}" class="block col-12 mb1 field">
+    <button type="submit" class="btn btn-primary">Change</button>
+    <button type="reset" class="btn btn-primary black bg-gray">Cancel</button>
+  </form>
+  <div class="m2">{{ data }}</div>
+{% endblock %}

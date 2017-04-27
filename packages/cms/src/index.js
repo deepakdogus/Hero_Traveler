@@ -2,7 +2,7 @@ const dotenv = require('dotenv')
 dotenv.config()
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
-const User = require('@rwoody/ht-core').Models.User
+const Models = require('@rwoody/ht-core').Models
 const _ = require('lodash')
 
 const initCore = require('@rwoody/ht-core').default
@@ -13,8 +13,9 @@ const path = require('path')
 const express = require('express')
 const nunjucks = require('nunjucks')
 const app = express()
-const messages = require('express-messages')
 const flash = require('connect-flash')
+const cookieParser = require('cookie-parser')
+const session = require('express-session')
 
 /* settings for template rendering */ 
 
@@ -22,60 +23,93 @@ const pathToTemplates = path.resolve(__dirname, 'templates/')
 const resultsPerPage = 15
 const makeDateReadable = (dataArray) => {
   return dataArray.map(element => {
-    element.createdString = element.createdAt.toDateString()
+    if (element.createdAt) {
+      element.createdString = element.createdAt.toDateString()
+    } else {
+      element.createdString = new Date().toDateString()
+    }
     return element
   })
 }
 
+const parseTable = (tableUrl) => {
+  if (tableUrl === 'users') return 'User'
+  if (tableUrl === 'categories') return 'Category'
+  if (tableUrl === 'stories') return 'Story'
+  throw new Error('The table url doesn\'t match any collection in the DB!')
+}
 
-// Middleware
+
 app.use(bodyParser.json({}))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(morgan('dev'))
-app.use()
+
+/* The four middleware functions below give express a method to flash
+   content on success or failure of a server side operation. These methods can
+   be used anywhere in the templates */
+
+// app.use(cookieParser('Optimus Prime is my real dad')) // string secret can be anything
+// app.use(session({cookie: {maxAge: 60000}}))
+// app.use(flash())
 
 
 nunjucks.configure(pathToTemplates, {
   autoescape: true,
   express: app,
-  watch: true,
-  cache: false
+  watch: process.env.NODE_ENV !== 'production',
+  cache: process.env.NODE_ENV === 'production'
 })
 
 
-app.get('/users', (req, res) => {
-  const query = req.query
-  const page = Math.max(0, query.page || 0) // Defaults to zero in case query is undefined
-  User.find({})
+app.get('/:table', (req, res) => {
+  console.log('req.params', req.params)
+  const { table } = req.params
+  const dbTable = parseTable(table)
+  console.log('table', dbTable)
+  const { direction, sortby } = req.query
+  const page = Math.max(0, req.query.page || 0) // Defaults to zero in case query is undefined
+  Models[dbTable].find({})
     .limit(resultsPerPage)
     .skip(page * resultsPerPage)
-    .sort({[query.sortby]: query.direction || 1}) // Defaults to one in case query is undefined
+    .sort({[sortby]: direction || 1}) // Defaults to one in case query is undefined
     .then((data) => {
       data = makeDateReadable(data)
-      res.render('users.njk', { data, sortby: query.sortby, page, direction: query.direction })
+      res.render(`${req.params.table}.njk`, { data, table, sortby, page, direction }
+      )
     })
 })
 
-app.get('/edit', (req, res) => {
+app.get('/:table/edit', (req, res) => {
   const { id } = req.query
-  User.findById(id)
-    .then((data) => res.render('edit.njk', { data }))
+  const dbTable = parseTable(req.params.table)
+  Models[dbTable].findById(id)
+    .then((data) => res.render(`edit-${req.params.table}.njk`, { data }))
 })
 
-app.post('/edituser/:id', (req, res) => {
-  const { email, username, role } = req.body
-  const { id } = req.params
-  console.log(req.body)
+app.get('/:table/create', (req, res) => {
+  const { table } = req.params
+  res.render(`edit-${table}.njk`)
+})
 
-  
+app.post('/:table/edit', (req, res, next) => {
+  console.log('req.body', req.body)
+  let { id } = req.query
+  // bug: upsert throws error where object id doesn't exist or is string
+  // possible solution: if (!id) id = mongoose.Types.ObjectId()
+  const dbTable = parseTable(req.params.table)
+  console.log('dbTable', dbTable)
+  Models[dbTable].findByIdAndUpdate(id, req.body, { upsert: true })
+    .then(data => {
+      console.log(data)
+      res.render('message.njk', { message: `${dbTable} saved successfully` })
+    }
+         )
+    .catch(error => res.render('message.njk', {message: `an error occurred: ${error}` }))
 })
 
 app.get('/', (req, res) => {
   res.render('index.njk')
 })
-
-// app.listen(3000, (req, res) => console.log('App listening on port 3000'))
-
 
 initCore({
   mongoDB: process.env.MONGODB_URL,

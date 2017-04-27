@@ -21,12 +21,12 @@
 {% block header %}
   <div class="flex flex-row m2">
     <a href="/users?sortby=username&direction={{ direction }}&page={{ page }}" class="ml1 btn btn-primary">Users Table</a>
-    <a href="/categories?sortby=category&direction=1&page={{ page }}" class="ml1 btn btn-primary">Categories Table</a>
+    <a href="/categories?sortby=title&direction={{ direction }}&page={{ page }}" class="ml1 btn btn-primary">Categories Table</a>
     <a href="/stories" class="ml1 btn btn-primary">Stories Table</a>
     <a href="/" class="ml1 btn btn-primary">Home</a>
   </div>
 {% endblock %}
 
 {% block main %}
-  <p> this is the content that will change depening on which page you're on</p>
+  <p class="m2 h4">Welcome to the HeroTraveller Admin Content Management System</p>
 {% endblock %}

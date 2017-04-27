@@ -26,6 +26,8 @@ import FollowersScreen from '../Containers/FollowersScreen'
 import TermsAndConditionsScreen from '../Containers/TermsAndConditionsScreen'
 import FAQScreen from '../Containers/FAQScreen'
 import PrivacyScreen from '../Components/PrivacyScreen'
+import ChangePasswordScreen from '../Containers/ChangePasswordScreen'
+
 
 // Story reading & creating
 import StoryReadingScreen from '../Containers/StoryReadingScreen'
@@ -153,6 +155,14 @@ class NavigationRouter extends Component {
               component={ResetPasswordRequestScreen}
             />
             <Scene
+              key='changePassword'
+              component={ChangePasswordScreen}
+              direction='horizontal'
+              onLeft={() => NavActions.pop()}
+              title='Change Password'
+              {...darkNavBarProps}
+            />
+            <Scene
               key='settings'
               component={SettingsScreen}
               direction='horizontal'
@@ -167,7 +177,7 @@ class NavigationRouter extends Component {
               onLeft={() => NavActions.pop()}
               title='Terms & Conditions'
               {...darkNavBarProps}
-            />            
+            />
             <Scene
               key='FAQ'
               component={FAQScreen}
@@ -183,7 +193,7 @@ class NavigationRouter extends Component {
               onLeft={() => NavActions.pop()}
               title='Privacy Policy'
               {...darkNavBarProps}
-            />                                    
+            />
             <Scene
               key='story'
               component={StoryReadingScreen}

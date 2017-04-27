@@ -15,7 +15,7 @@ export default StyleSheet.create({
   },
   headerText: {
     color: Colors.blackoutTint,
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "900",
     letterSpacing: .35,
     marginHorizontal: Metrics.section,
@@ -24,7 +24,7 @@ export default StyleSheet.create({
   },
   bodyText: {
     color: "#757575",
-    fontSize: 14,
+    fontSize: 16,
     marginHorizontal: Metrics.section,
     marginBottom: Metrics.section
   },

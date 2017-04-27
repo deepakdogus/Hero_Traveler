@@ -8,27 +8,25 @@
 {% endblock %}
 </head>
 
-{% set sortBy = 'user' %}
+{% if not sortby %}
+  {% set sortby = 'user' %}
+{% endif %}
+
 {% set searchType = 'users' %}
-{% if not page %}
+
+{% if not page or page < 0 %}
   {% set page = 0 %}
 {% endif %}
 
 {% block header %}
   <div class="flex flex-row m2">
-    <a href="/users?sortby=username&direction={{ direction }}&page={{ page }}" class="ml1 btn btn-primary">Users</a>
-    <a href="/categories?sortby=category&direction=1&page={{ page }}" class="ml1 btn btn-primary">Categories</a>
-    <a href="/stories" class="ml1 btn btn-primary">Stories</a>
+    <a href="/users?sortby=username&direction={{ direction }}&page={{ page }}" class="ml1 btn btn-primary">Users Table</a>
+    <a href="/categories?sortby=category&direction=1&page={{ page }}" class="ml1 btn btn-primary">Categories Table</a>
+    <a href="/stories" class="ml1 btn btn-primary">Stories Table</a>
     <a href="/" class="ml1 btn btn-primary">Home</a>
   </div>
-  <div>
 {% endblock %}
 
 {% block main %}
   <p> this is the content that will change depening on which page you're on</p>
-  <ul>
-  {% for user in data %}
-    <li>{{user.username}}</li>
-  {%  endfor %}
-  </ul>
 {% endblock %}

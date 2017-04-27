@@ -1,0 +1,22 @@
+{% extends 'index.njk' %}
+
+{% block main %}
+  <form enctype="application/json" action="/edituser/{{data._id}}" method="post" class="sm-col-4 m3">
+    <label>Email Address</label>
+    <input name="email" type="text" value="{{data.email}}" class="block col-12 mb1 field">
+    <label>Username</label>
+    <input name="username" type="text" value="{{data.username}}" class="block col-12 mb1 field">
+    <label>Role</label>
+    <select name="role" value="{{data.role}}" class="block col-12 mb1 field">
+      <option>user</option>
+      <option>admin</option>
+    </select>
+    <label class="block col-12 mb2">
+      <input name="featured" type="checkbox" checked>
+      Featured User
+    </label>
+    <button type="submit" class="btn btn-primary">Change</button>
+    <button type="reset" class="btn btn-primary black bg-gray">Cancel</button>
+  </form>
+  <div class="m2">{{ data }}</div>
+{% endblock %}

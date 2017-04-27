@@ -3,20 +3,23 @@
 
 
 {% block main %}
+  <div class="m1 h3">
+    <span>Sorting by: {{sortby}}</span>
+  </div>
   <div class="flex flex-justify m2" style="padding:10px 250px">
-    {{ navArrows.leftArrow(page, sortBy, direction, searchType) }}
+    {{ navArrows.leftArrow(page, sortby, direction, searchType) }}
     {{ navArrows.rightArrow(page, sortby, direction, searchType) }}
   </div>
   <div class="overflow-scroll">
-    <table class="table">
+    <table class="table-light">
       <thead>
       <tr>
-        <th>
-          <a href="/users?sortby=username&direction={{ '1' if direction === '-1' else '-1' }}">Username</a></th>
-        <th>Email</th>
-        <th>Full Name</th>
-        <th>Date Joined</th>
-        <th>User Type</th>
+        <th><a href="/users?sortby=username&direction={{ '1' if direction === '-1' else '-1' }}">Username</a></th>
+        <th><a href="/users?sortby=email&direction={{ '1' if direction === '-1' else '-1' }}">Email</a></th>
+        <th><a href="/users?sortby=profile.fullname&direction={{ '1' if direction === '-1' else '-1' }}">Full Name</a></th>
+        <th><a href="/users?sortby=createdAt&direction={{ '1' if direction === '-1' else '-1' }}">Date Joined</a></th>
+        <th><a href="/users?sortby=role&direction={{ '1' if direction === '-1' else '-1' }}">User Type</a></th>
+        <th>Edit</th>
       </tr>
       </thead>
       <tbody>
@@ -25,8 +28,10 @@
             <td>{{user.username}}</td>
             <td>{{user.email}}</td>
             <td>{{user.profile.fullName}}</td>
-            <td>{{user.createdAt }}</td>
+            <td>{{user.createdString }}</td>
             <td>{{user.role}}</td>
+            <td> <a href="/edit?id={{user._id}}"><i class="fa fa-pencil"></i></a></td>
+          </tr>
         {%  endfor %}
       </tbody>
     </table>

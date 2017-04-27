@@ -325,7 +325,7 @@ class StoryCoverScreen extends Component {
         {this.state.updating &&
           <Loader
             style={styles.loading}
-            text='Saving story'
+            text='Saving progress...'
             textStyle={styles.loadingText}
             tintColor='rgba(0,0,0,.9)' />
         }

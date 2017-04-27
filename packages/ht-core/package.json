@@ -20,6 +20,7 @@
     "joi": "^10.2.2",
     "moment": "^2.17.1",
     "mongoose": "^4.8.6",
+    "mongoose-delete": "^0.3.4",
     "mongoose-hidden": "^1.1.0",
     "mongoose-unique-validator": "^1.0.5",
     "mustache": "^2.3.0",

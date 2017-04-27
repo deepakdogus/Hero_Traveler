@@ -2,6 +2,7 @@ import _ from 'lodash'
 import randToken from 'rand-token'
 import uuid from 'uuid'
 import mongoose, {Schema} from 'mongoose'
+import softDelete from 'mongoose-delete'
 import uniqueValidator from 'mongoose-unique-validator'
 import {Constants} from '@rwoody/ht-util'
 
@@ -188,5 +189,6 @@ UserSchema.plugin(uniqueValidator, {
   message: '{PATH} already taken'
 })
 UserSchema.plugin(mongooseHidden)
+UserSchema.plugin(softDelete)
 
 export default mongoose.model(ModelName, UserSchema)

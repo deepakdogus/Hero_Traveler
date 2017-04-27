@@ -1,8 +1,11 @@
 import mongoose, {Schema} from 'mongoose'
+import softDelete from 'mongoose-delete'
 import {ModelName as CategoryRef} from './category'
 import {ModelName as UserRef} from './user'
 import {ModelName as UploadRef} from './upload'
 import {Constants} from '@rwoody/ht-util'
+
+export const ModelName = 'StoryDraft'
 
 const StoryDraftSchema = new Schema({
   title: {
@@ -64,4 +67,6 @@ const StoryDraftSchema = new Schema({
   }
 })
 
-export default mongoose.model('StoryDraft', StoryDraftSchema)
+StoryDraftSchema.plugin(softDelete)
+
+export default mongoose.model(ModelName, StoryDraftSchema)

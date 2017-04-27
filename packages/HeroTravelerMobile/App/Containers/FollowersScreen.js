@@ -22,6 +22,13 @@ import styles from './Signup/SignupSocialStyles'
 
 class FollowersScreen extends React.Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      usersById: props.usersById
+    }
+  }
+
   static propTypes = {
     followers: PropTypes.array,
     followersType: PropTypes.oneOf(['followers', 'following']).isRequired,
@@ -31,6 +38,12 @@ class FollowersScreen extends React.Component {
 
   componentDidMount() {
     this.props.loadData()
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.usersById.length !== this.props.usersById.length) {
+      this.setState({usersById: nextProps.usersById})
+    }
   }
 
   userIsFollowed(userId: string) {
@@ -61,10 +74,12 @@ class FollowersScreen extends React.Component {
       )
     }
 
-    if (this.props.usersById.length) {
+    // console.log('this.props.usersById', this.props.usersById)
+
+    if (this.state.usersById.length) {
       content = (
         <View style={styles.followers}>
-          {_.map(this.props.usersById, uid => {
+          {_.map(this.state.usersById, uid => {
             const u = this.props.users[uid]
             const selected = this.userIsFollowed(u.id)
             return (
@@ -78,7 +93,7 @@ class FollowersScreen extends React.Component {
                   </TouchableOpacity>
                   <View style={styles.nameWrapper}>
                     <Text style={styles.name}>{u.profile.fullName}</Text>
-                    <Text style={styles.followerCount}>{u.counts.following} followers</Text>
+                    <Text style={styles.followerCount}>{u.counts.followers} followers</Text>
                   </View>
                   <RoundedButton
                     style={selected ? styles.selectedFollowersButton : styles.followersButton}
@@ -100,17 +115,17 @@ class FollowersScreen extends React.Component {
     }
 
     return (
-      <ScrollView style={[styles.containerWithNavbar, styles.root, styles.lightBG]}>
+      <ScrollView style={[styles.containerWithNavbar, styles.lightBG]}>
         {content}
       </ScrollView>
     )
   }
 
   toggleFollow = (u) => {
-    if (!this.userIsFollowed(u)) {
-      this.props.followUser(this.props.user.id, u.id)
-    } else {
+    if (this.userIsFollowed(u.id)) {
       this.props.unfollowUser(this.props.user.id, u.id)
+    } else {
+      this.props.followUser(this.props.user.id, u.id)
     }
   }
 }
@@ -131,8 +146,8 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch, props) => {
   return {
     loadData: () => dispatch(props.loadDataAction(props.userId)),
-    followUser: (userId, userIdToFollow) => console.log('dispatch follow user'),
-    unfollowUser: (userId, userIdToUnfollow) => console.log('dispatch unfollow user'),
+    followUser: (userId, userIdToFollow) => dispatch(UserActions.followUser(userId, userIdToFollow)),
+    unfollowUser: (userId, userIdToUnfollow) => dispatch(UserActions.unfollowUser(userId, userIdToUnfollow)),
   }
 }
 

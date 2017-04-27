@@ -21,12 +21,7 @@ const FollowerSchema = new mongoose.Schema({
       UserModelRef,
       CategoryModelRef
     ]
-  },
-  startAt: {
-    type: Date,
-    default: Date.now
-  },
-  endAt: Date
+  }
 }, {
   toObject: {
     virtuals: true
@@ -47,11 +42,9 @@ FollowerSchema.statics = {
 
   // called when userId unfollows followeeUserId
   unfollowUser(userId, userIdBeingFollowed) {
-    return this.update({
+    return this.remove({
       follower: userId,
-      followee: followeeUserId
-    }, {
-      endAt: Date.now()
+      followee: userIdBeingFollowed
     })
   },
 
@@ -59,10 +52,7 @@ FollowerSchema.statics = {
   getUserFollowers(userId) {
     return this.find({
       follower: userId,
-      type: UserModelRef,
-      endAt: {
-        $exists: false
-      }
+      type: UserModelRef
     })
     .lean()
     .distinct('followee')
@@ -71,10 +61,7 @@ FollowerSchema.statics = {
   getUserFollowees(userId) {
     return this.find({
       followee: userId,
-      type: UserModelRef,
-      endAt: {
-        $exists: false
-      }
+      type: UserModelRef
     })
     .lean()
     .distinct('follower')
@@ -84,9 +71,6 @@ FollowerSchema.statics = {
     return this.find({
       follower: userId,
       type: CategoryModelRef,
-      endAt: {
-        $exists: false
-      }
     })
   },
 

@@ -2,15 +2,11 @@ import {Category, Follower} from '../models'
 
 // called when userId follows categoryId
 export default function unfollowCategories(userId, categoryIds) {
-  return Follower.update({
+  return Follower.remove({
     follower: userId,
     followee: {
       $in: [categoryIds]
     }
-  }, {
-    endAt: Date.now()
-  }, {
-    multi: true
   })
   .then(() => {
     return Category.update({

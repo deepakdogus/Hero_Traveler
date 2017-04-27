@@ -12,7 +12,6 @@ export default StyleSheet.create({
     // minHeight: Metrics.screenHeight
   },
   emptyMessage: {
-    textAlign: 'center',
     marginTop: Metrics.doubleSection
   },
   emptyMessageBtn: {

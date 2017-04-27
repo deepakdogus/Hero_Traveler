@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import softDelete from 'mongoose-delete'
 
 export const ModelName = 'Category'
 
@@ -52,5 +53,7 @@ const CategorySchema = new mongoose.Schema({
     virtuals: true
   }
 })
+
+CategorySchema.plugin(softDelete)
 
 export default mongoose.model(ModelName, CategorySchema)

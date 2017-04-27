@@ -207,7 +207,6 @@ export default R.compose(
         story: {
           ...draft,
           title: selector(state, 'title'),
-          category: _.values(state.entities.stories.entities)[0].category,
           type: selector(state, 'type') || draft.type,
           location: selector(state, 'location'),
           content: selector(state, 'content'),

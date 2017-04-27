@@ -10,13 +10,19 @@ const { Types, Creators } = createActions({
   loadUserFailure: ['error'],
   loadUserFollowers: ['userId'],
   loadUserFollowersSuccess: ['userId', 'usersById'],
-  loadUserFollowersFailure: null,
+  loadUserFollowersFailure: ['userId', 'error'],
   loadUserFollowing: ['userId'],
   loadUserFollowingSuccess: ['userId', 'usersById'],
-  loadUserFollowingFailure: ['error'],
+  loadUserFollowingFailure: ['userId', 'error'],
   loadUserSuggestionsRequest: null,
   loadUserSuggestionsSuccess: ['usersById'],
-  loadUserSuggestionsFailure: null,
+  loadUserSuggestionsFailure: ['error'],
+  followUser: ['userId', 'targetUserId'],
+  followUserSuccess: ['userId', 'targetUserId'],
+  followUserFailure: ['userId', 'targetUserId'],
+  unfollowUser: ['userId', 'targetUserId'],
+  unfollowUserSuccess: ['userId', 'targetUserId'],
+  unfollowUserFailure: ['userId', 'targetUserId'],
   updateUser: ['attrs'],
   updateUserSuccess: ['user'],
   updateUserFailure: ['error'],
@@ -84,13 +90,13 @@ export const suggestionsSuccess = (state, {usersById = []}) => {
     deep: true
   })
 }
-export const suggestionsFailure = (state) => {
+export const suggestionsFailure = (state, {error}) => {
   return state.merge({
     fetchStatus: {
       fetching: false,
       loaded: false
     },
-    error: 'Error loading categories'
+    error
   })
 }
 export const receive = (state, {users = {}}) => {
@@ -170,9 +176,9 @@ export const loadUserFollowersSuccess = (state, {userId, usersById}) => {
   )
 }
 
-export const loadUserFollowersFailure = (state, {error}) => {
+export const loadUserFollowersFailure = (state, {userId, error}) => {
   return state.setIn(
-    ['userFollowersByUserIdAndId', categoryId, 'fetchStatus'],
+    ['userFollowersByUserIdAndId', userId, 'fetchStatus'],
     {fetching: false, loaded: false, error}
   )
 }
@@ -195,12 +201,40 @@ export const loadUserFollowingSuccess = (state, {userId, usersById}) => {
   )
 }
 
-export const loadUserFollowingFailure = (state, {error}) => {
+export const loadUserFollowingFailure = (state, {userId, error}) => {
   return state.setIn(
-    ['userFollowingByUserIdAndId', categoryId, 'fetchStatus'],
+    ['userFollowingByUserIdAndId', userId, 'fetchStatus'],
     {fetching: false, loaded: false, error}
   )
 }
+
+export const followUser = (state, {userId, targetUserId}) =>
+  state.setIn(
+    ['userFollowingByUserIdAndId', userId, 'byId'],
+    state.getIn(['userFollowingByUserIdAndId', userId, 'byId'], []).concat(targetUserId)
+  )
+  .setIn(
+    ['entities', targetUserId, 'counts', 'followers'],
+    state.getIn(['entities', targetUserId, 'counts', 'followers'], 0) + 1
+  )
+  .setIn(
+    ['entities', userId, 'counts', 'following'],
+    state.getIn(['entities', userId, 'counts', 'following'], 0) + 1
+  )
+
+export const unfollowUser = (state, {userId, targetUserId}) =>
+  state.setIn(
+    ['userFollowingByUserIdAndId', userId, 'byId'],
+    _.without(state.getIn(['userFollowingByUserIdAndId', userId, 'byId'], []), targetUserId)
+  )
+  .setIn(
+    ['entities', targetUserId, 'counts', 'followers'],
+    state.getIn(['entities', targetUserId, 'counts', 'followers'], 0) - 1
+  )
+  .setIn(
+    ['entities', userId, 'counts', 'following'],
+    state.getIn(['entities', userId, 'counts', 'following'], 0) - 1
+  )
 
 /* -------------        Selectors        ------------- */
 export const isInitialAppDataLoaded = (state, userId) => {
@@ -249,6 +283,10 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOAD_USER_FOLLOWING]: loadUserFollowing,
   [Types.LOAD_USER_FOLLOWING_SUCCESS]: loadUserFollowingSuccess,
   [Types.LOAD_USER_FOLLOWING_FAILURE]: loadUserFollowingFailure,
+  [Types.FOLLOW_USER_SUCCESS]: followUser,
+  [Types.FOLLOW_USER_FAILURE]: unfollowUser,
+  [Types.UNFOLLOW_USER_SUCCESS]: unfollowUser,
+  [Types.UNFOLLOW_USER_FAILURE]: followUser,
   [Types.UPDATE_USER]: updateUser,
   [Types.UPDATE_USER_SUCCESS]: updateUserSuccess,
   [Types.UPDATE_USER_FAILURE]: updateUserFailure,

@@ -6,8 +6,8 @@ import {
   Text,
   TextInput,
   Image,
-  TouchableOpacity,
-  Alert
+  TouchableWithoutFeedback,
+  TouchableOpacity
 } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -26,9 +26,11 @@ import UserActions from '../Redux/Entities/Users'
 
 const Tab = ({text, onPress, selected}) => {
   return (
-    <TouchableOpacity style={[styles.tab, selected ? styles.tabSelected : null]} onPress={onPress}>
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View style={[styles.tab, selected ? styles.tabSelected : null]}>
       <Text style={[styles.tabText, selected ? styles.tabTextSelected : null]}>{text}</Text>
-    </TouchableOpacity>
+      </View>
+    </TouchableWithoutFeedback>
   )
 }
 
@@ -184,7 +186,7 @@ export default class ProfileView extends React.Component {
 
       tabs = (
         <View style={styles.tabnavEdit}>
-          <Tab selected={false} onPress={() => alert('stories')} text='STORIES' />
+          <Tab selected={false} text='STORIES' />
         </View>
       )
 
@@ -309,7 +311,7 @@ export default class ProfileView extends React.Component {
             }
             {fetchStatus.loaded && stories.length === 0 &&
               <View style={styles.noStories}>
-                <Text style={styles.noStoriesText}>You have no stories published</Text>
+                <Text style={styles.noStoriesText}>{this.props.editable ? 'You have no stories published' : 'This user has no stories published'}</Text>
               </View>
             }
             {!fetchStatus.loaded && fetchStatus.fetching &&

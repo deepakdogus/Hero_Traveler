@@ -293,6 +293,12 @@ const signupEmail = (name, username, email, password) => {
     return api.put(`story/draft/${draftId}/cover-video`, data)
   }
 
+  const uploadStoryImage = (draftId, pathToFile) => {
+    const data = new FormData()
+    data.append('image', pathToFile)
+    return api.put(`story/draft/xyz/image`, data)
+  }
+
   // ------
   // STEP 3
   // ------
@@ -341,6 +347,7 @@ const signupEmail = (name, username, email, password) => {
     createComment,
     uploadCoverImage,
     uploadCoverVideo,
+    uploadStoryImage,
   }
 }
 

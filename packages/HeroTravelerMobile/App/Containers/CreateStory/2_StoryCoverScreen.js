@@ -28,31 +28,9 @@ import NavBar from './NavBar'
 import getImageUrl from '../../Lib/getImageUrl'
 import getVideoUrl from '../../Lib/getVideoUrl'
 import Video from '../../Components/Video'
+import pathAsFileObject from '../../Lib/pathAsFileObject'
 
 const api = API.create()
-
-function getMimeType(filename) {
-  const ext = filename.split('.').pop().toLowerCase()
-  if (_.includes(ext, 'jpg') || _.includes(ext, 'jpg')) {
-    return 'image/jpeg'
-  } else if (_.includes(ext, 'png')) {
-    return 'image/png'
-  } else if (_.includes(ext, 'gif')) {
-    return 'image/gif'
-  } else if (_.includes(ext, 'avi')) {
-    return 'video/avi'
-  } else if (_.includes(ext, 'm1v')) {
-    return 'video/mpeg'
-  } else if (_.includes(ext, 'm2v')) {
-    return 'video/mpeg'
-  } else if (_.includes(ext, 'mov')) {
-    return 'video/quicktime'
-  } else if (_.includes(ext, 'moov')) {
-    return 'video/quicktime'
-  } else if (_.includes(ext, 'mp2')) {
-    return 'video/mpeg'
-  }
-}
 
 class StoryCoverScreen extends Component {
 
@@ -168,6 +146,11 @@ class StoryCoverScreen extends Component {
   _onRight = () => {
     const {story} = this.props
 
+    // Let the user go forward if the navigated back
+    if (!this.state.file && (story.coverImage || story.coverVideo)) {
+      return NavActions.createStory_content()
+    }
+
     if ((!story.coverImage || !story.coverPhoto) && !story.title) {
       this.setState({error: 'Please add a cover and a title to continue'})
       return
@@ -182,7 +165,9 @@ class StoryCoverScreen extends Component {
       updating: true
     })
 
-    let promise = this.isPhotoType() ?
+    let promise
+
+    promise = this.isPhotoType() ?
       api.uploadCoverImage(story.id, this.state.file) :
       api.uploadCoverVideo(story.id, this.state.file)
 
@@ -334,13 +319,8 @@ class StoryCoverScreen extends Component {
   }
 
   _handleSelectCover = (path) => {
-    const file = {
-      uri: path,
-      name: path.split('/').pop(),
-      type: getMimeType(path)
-    }
-    console.log('_handleSelectCover', path, file)
-    this.setState({file: file})
+    const file = pathAsFileObject(path)
+    this.setState({file})
     if (this.props.mediaType === 'photo') {
       this.props.change('coverPhoto', path)
     } else {

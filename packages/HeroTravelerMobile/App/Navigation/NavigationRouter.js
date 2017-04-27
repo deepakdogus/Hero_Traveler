@@ -9,6 +9,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import LaunchScreen from '../Containers/LaunchScreen'
+import EditorTestScreen from '../Containers/EditorTestScreen'
 import Styles from './Styles/NavigationContainerStyles'
 
 // Tabs

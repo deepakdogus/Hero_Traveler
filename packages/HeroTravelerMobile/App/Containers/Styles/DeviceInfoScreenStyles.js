@@ -45,7 +45,7 @@ export default StyleSheet.create({
   rowInfoContainer: {
     flex: 2,
     justifyContent: 'center',
-    backgroundColor: Colors.silver
+    backgroundColor: Colors.snow
   },
   rowInfo: {
     fontSize: Fonts.size.regular,

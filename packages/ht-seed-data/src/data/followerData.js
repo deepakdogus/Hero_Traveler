@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
 export default async function(users, count) {
-  if (!users || !users.length){
+  if (count !== 0 && (!users || !users.length)){
       throw new Error("No users supplied to story generator")
   }
   return Promise.resolve(_.map(_.range(count), () => {

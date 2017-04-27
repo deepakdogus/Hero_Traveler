@@ -31,10 +31,10 @@ function removeAllData() {
 
 async function seedAllData() {
   try {
-    let users = await createUsers(50)
-    let followers = await createFollowers(users, 1500)
+    // let users = await createUsers(0)
+    // let followers = await createFollowers(users, 0)
     let categories = await createCategories()
-    let stories = await createStories(users, categories, 100)
+    // let stories = await createStories(users, categories, 0)
     return Promise.resolve()
   } catch (err) {
     console.log("ERROR: seedAllData", err)

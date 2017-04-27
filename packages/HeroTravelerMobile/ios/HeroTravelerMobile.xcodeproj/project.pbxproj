@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -1484,7 +1485,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9498CR345N;
 				FRAMEWORK_SEARCH_PATHS = "/Users/$(USER)/Documents/FacebookSDK";
@@ -1513,8 +1514,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rehashstudio.herotraveler;
 				PRODUCT_NAME = HeroTravelerMobile;
-				PROVISIONING_PROFILE = "8989aa89-20bd-474e-b983-d64c1ff52239";
-				PROVISIONING_PROFILE_SPECIFIER = "HERO Traveler Dev";
+				PROVISIONING_PROFILE = "85a40dea-a124-49f4-8896-95f1a769d9cc";
+				PROVISIONING_PROFILE_SPECIFIER = "XC iOS Ad Hoc: com.rehashstudio.herotraveler";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

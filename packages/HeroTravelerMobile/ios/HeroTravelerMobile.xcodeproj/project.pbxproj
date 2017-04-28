@@ -29,7 +29,9 @@
 		4F782746B8A04446A5FE3372 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 676632C422244940B27E12E9 /* MaterialCommunityIcons.ttf */; };
 		521F175B938A4D9F99C19507 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5361ADDEFC0F4C1E9594D902 /* EvilIcons.ttf */; };
 		530D774BD2054AE48FD45B5B /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA5D95183E4649EC97F6E781 /* libRCTActionSheet.a */; };
+		592083ACE0994749571D40E1 /* libPods-HeroTravelerMobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03188FC3316AA2C99BA54850 /* libPods-HeroTravelerMobile.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
+		762A597C3D0A1EEFA308E633 /* libPods-HeroTravelerMobileTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE25BBEB7BFE7D18CC219357 /* libPods-HeroTravelerMobileTests.a */; };
 		76FAB8A089804C56B1E246FD /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 874196F6A7D04235AB7BC7CC /* Montserrat-Medium.ttf */; };
 		7E0F9011C3E64CE89B9E5CB8 /* libRCTCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AD7250F782F4D69A7BA0EC6 /* libRCTCamera.a */; };
 		822C44BADC544C769D606640 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BE943BB40944A8DA40C8D99 /* libBVLinearGradient.a */; };
@@ -356,6 +358,7 @@
 		00E356EE1AD99517003FC87E /* HeroTravelerMobileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HeroTravelerMobileTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* HeroTravelerMobileTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HeroTravelerMobileTests.m; sourceTree = "<group>"; };
+		03188FC3316AA2C99BA54850 /* libPods-HeroTravelerMobile.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HeroTravelerMobile.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		035E5819C0324C81AB897963 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		046966AAC2C144F6983A6C3E /* RCTFBSDK.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTFBSDK.xcodeproj; path = "../node_modules/react-native-fbsdk/ios/RCTFBSDK.xcodeproj"; sourceTree = "<group>"; };
 		072EA77351854378A1722EA9 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
@@ -392,6 +395,8 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		7981D79484EF455E8AB7E4CB /* SourceSansPro-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Light.ttf"; path = "../App/Fonts/SourceSansPro-Light.ttf"; sourceTree = "<group>"; };
 		79B8B02479474F58B551E540 /* libRCTVideo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTVideo.a; sourceTree = "<group>"; };
+		7A0C2AA1DB2A0DB5F139C805 /* Pods-HeroTravelerMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HeroTravelerMobile.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HeroTravelerMobile/Pods-HeroTravelerMobile.debug.xcconfig"; sourceTree = "<group>"; };
+		7D33B133BB5D4F0869B620CD /* Pods-HeroTravelerMobileTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HeroTravelerMobileTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-HeroTravelerMobileTests/Pods-HeroTravelerMobileTests.release.xcconfig"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		874196F6A7D04235AB7BC7CC /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = file; path = "Montserrat-Medium.ttf"; sourceTree = "<group>"; };
 		89D4C785A38B4E3DB068766B /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
@@ -414,18 +419,21 @@
 		949A3A661E9EB74600815C53 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../../../../../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		94AE1C091EA7BFE500B88515 /* React-Native-Webview-Bridge.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "React-Native-Webview-Bridge.xcodeproj"; path = "../node_modules/react-native-webview-bridge-updated/ios/React-Native-Webview-Bridge.xcodeproj"; sourceTree = "<group>"; };
 		96A7A968678E46938DCAE9E4 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
+		98D7E161748438C60F0507D1 /* Pods-HeroTravelerMobileTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HeroTravelerMobileTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HeroTravelerMobileTests/Pods-HeroTravelerMobileTests.debug.xcconfig"; sourceTree = "<group>"; };
 		9A709D29056D4818B6694D97 /* RCTCamera.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RCTCamera.xcodeproj"; sourceTree = "<group>"; };
 		9D28101C334E4AFD92A3F369 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		9E49328E9C1743E7889579BD /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		A0CFCDC48A0F4BC987EDABBB /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = ../App/Fonts/FontAwesome.ttf; sourceTree = "<group>"; };
 		A8118D23A4874082B4322141 /* AirMaps.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/lib/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
 		BBECC2FCD94C4652845B5B0D /* libAirMaps.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAirMaps.a; sourceTree = "<group>"; };
+		BE25BBEB7BFE7D18CC219357 /* libPods-HeroTravelerMobileTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HeroTravelerMobileTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C085C24A528845C782931BD5 /* CrimsonText-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "CrimsonText-Italic.ttf"; path = "../App/Fonts/CrimsonText-Italic.ttf"; sourceTree = "<group>"; };
 		C45D1A48CE714E7D9B79D789 /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
 		CB18C87B194B46A0A64B4F2F /* SourceSansPro-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Italic.ttf"; path = "../App/Fonts/SourceSansPro-Italic.ttf"; sourceTree = "<group>"; };
 		D3288C03382F4F709FD69BF5 /* SplashScreen.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SplashScreen.xcodeproj; path = "../node_modules/react-native-splash-screen/ios/SplashScreen.xcodeproj"; sourceTree = "<group>"; };
 		DA5D95183E4649EC97F6E781 /* libRCTActionSheet.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTActionSheet.a; sourceTree = "<group>"; };
 		E2B85240A9FD486F94B38027 /* SourceSansPro-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Regular.ttf"; path = "../App/Fonts/SourceSansPro-Regular.ttf"; sourceTree = "<group>"; };
+		E2F07C8B9AE71C5FDA66BFD7 /* Pods-HeroTravelerMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HeroTravelerMobile.release.xcconfig"; path = "Pods/Target Support Files/Pods-HeroTravelerMobile/Pods-HeroTravelerMobile.release.xcconfig"; sourceTree = "<group>"; };
 		E59D786F728F42FD974C7701 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		EC5A5C1664E34474BEE205DC /* ReactNativeConfig.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeConfig.xcodeproj; path = "../node_modules/react-native-config/ios/ReactNativeConfig.xcodeproj"; sourceTree = "<group>"; };
 		F61BE17E2ECB49B487C9A051 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../App/Fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
@@ -438,6 +446,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */,
+				762A597C3D0A1EEFA308E633 /* libPods-HeroTravelerMobileTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,6 +483,7 @@
 				530D774BD2054AE48FD45B5B /* libRCTActionSheet.a in Frameworks */,
 				998A514A1E3C4CEF89CF51BC /* libRCTFBSDK.a in Frameworks */,
 				C33BE7F70ED74FE3AADD46D7 /* libRCTVideo.a in Frameworks */,
+				592083ACE0994749571D40E1 /* libPods-HeroTravelerMobile.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -689,6 +699,7 @@
 				00E356EF1AD99517003FC87E /* HeroTravelerMobileTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				1375705AC0EA4F75BB5EDB45 /* Resources */,
+				F7D3EE7D375646B6151A0CF8 /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -740,6 +751,8 @@
 		};
 		94205ED01EB0F0E1004B9C6C /* Products */ = {
 			isa = PBXGroup;
+			children = (
+			);
 			name = Products;
 			sourceTree = "<group>";
 		};
@@ -776,6 +789,8 @@
 				949A3A641E9EB74600815C53 /* FBSDKCoreKit.framework */,
 				949A3A651E9EB74600815C53 /* FBSDKLoginKit.framework */,
 				949A3A661E9EB74600815C53 /* FBSDKShareKit.framework */,
+				03188FC3316AA2C99BA54850 /* libPods-HeroTravelerMobile.a */,
+				BE25BBEB7BFE7D18CC219357 /* libPods-HeroTravelerMobileTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -828,6 +843,17 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		F7D3EE7D375646B6151A0CF8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7A0C2AA1DB2A0DB5F139C805 /* Pods-HeroTravelerMobile.debug.xcconfig */,
+				E2F07C8B9AE71C5FDA66BFD7 /* Pods-HeroTravelerMobile.release.xcconfig */,
+				98D7E161748438C60F0507D1 /* Pods-HeroTravelerMobileTests.debug.xcconfig */,
+				7D33B133BB5D4F0869B620CD /* Pods-HeroTravelerMobileTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -835,9 +861,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "HeroTravelerMobileTests" */;
 			buildPhases = (
+				DBBC83CB7FE18DDE28434B24 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
+				B11CC33E2A65D43C7A4B022C /* [CP] Embed Pods Frameworks */,
+				FC8A2B13F649E487C9C005E7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -853,10 +882,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "HeroTravelerMobile" */;
 			buildPhases = (
+				052FB2737BC4540954751717 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				014482B1285095E8F3676463 /* [CP] Embed Pods Frameworks */,
+				5E59E24373337F1AFBED62F1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1336,6 +1368,96 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/packager/react-native-xcode.sh";
 		};
+		014482B1285095E8F3676463 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HeroTravelerMobile/Pods-HeroTravelerMobile-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		052FB2737BC4540954751717 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		5E59E24373337F1AFBED62F1 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HeroTravelerMobile/Pods-HeroTravelerMobile-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B11CC33E2A65D43C7A4B022C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HeroTravelerMobileTests/Pods-HeroTravelerMobileTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DBBC83CB7FE18DDE28434B24 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		FC8A2B13F649E487C9C005E7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HeroTravelerMobileTests/Pods-HeroTravelerMobileTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1374,6 +1496,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 98D7E161748438C60F0507D1 /* Pods-HeroTravelerMobileTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1416,6 +1539,7 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
+					"$(inherited)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HeroTravelerMobile.app/HeroTravelerMobile";
@@ -1424,6 +1548,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7D33B133BB5D4F0869B620CD /* Pods-HeroTravelerMobileTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
@@ -1463,6 +1588,7 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
+					"$(inherited)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HeroTravelerMobile.app/HeroTravelerMobile";
@@ -1471,6 +1597,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7A0C2AA1DB2A0DB5F139C805 /* Pods-HeroTravelerMobile.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1478,7 +1605,10 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 9498CR345N;
-				FRAMEWORK_SEARCH_PATHS = "/Users/$(USER)/Documents/FacebookSDK";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/$(USER)/Documents/FacebookSDK",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(REACT_HEADERS_PATH)",
@@ -1512,13 +1642,17 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E2F07C8B9AE71C5FDA66BFD7 /* Pods-HeroTravelerMobile.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9498CR345N;
-				FRAMEWORK_SEARCH_PATHS = "/Users/$(USER)/Documents/FacebookSDK";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/$(USER)/Documents/FacebookSDK",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(REACT_HEADERS_PATH)",

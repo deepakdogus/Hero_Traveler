@@ -54,8 +54,8 @@ class LoginScreen extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      username: 'cngirlie2',
-      password: 'ryanwood',
+      username: '',
+      password: '',
     }
     this.isAttempting = false
   }

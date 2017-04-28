@@ -19,6 +19,7 @@
         <th><a href="/users?sortby=profile.fullName&direction={{ '1' if direction === '-1' else '-1' }}">Full Name</a></th>
         <th><a href="/users?sortby=createdAt&direction={{ '1' if direction === '-1' else '-1' }}">Date Joined</a></th>
         <th><a href="/users?sortby=role&direction={{ '1' if direction === '-1' else '-1' }}">User Type</a></th>
+        <th>Hidden</th>
         <th>Edit</th>
       </tr>
       </thead>
@@ -30,6 +31,7 @@
             <td>{{user.profile.fullName}}</td>
             <td>{{user.createdString }}</td>
             <td>{{user.role}}</td>
+            <td>{{user.deleted}}</td>
             <td> <a href="/users/edit?id={{user._id}}"><i class="fa fa-pencil"></i></a></td>
           </tr>
         {%  endfor %}

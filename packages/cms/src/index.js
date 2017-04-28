@@ -64,7 +64,7 @@ app.get('/:table', (req, res) => {
   console.log('table', dbTable)
   const { direction, sortby } = req.query
   const page = Math.max(0, req.query.page || 0) // Defaults to zero in case query is undefined
-  Models[dbTable].find({})
+  Models[dbTable].find()
     .limit(resultsPerPage)
     .skip(page * resultsPerPage)
     .populate('author')
@@ -89,10 +89,8 @@ app.get('/:table/create', (req, res) => {
 })
 
 app.post('/:table/edit', multer.single('image'), (req, res, next) => {
-  console.log('req.body', req.body)
   const { id } = req.query
   const dbTable = parseTable(req.params.table)
-  console.log('dbTable', dbTable)
   Models[dbTable].findOneAndUpdate(id, req.body, { upsert: true })
     .then(data => {
       console.log(data)
@@ -102,9 +100,23 @@ app.post('/:table/edit', multer.single('image'), (req, res, next) => {
     .catch(error => res.render('message.njk', {message: `an error occurred: ${error}` }))
 })
 
+app.get('/:table/delete', (req, res) => {
+  const { id } = req.query
+  const dbTable = parseTable(req.params.table)
+  console.log('req.query', req.query)
+  Models[dbTable].delete({_id: id})
+    .then(deleted => {
+          console.log('deleted: ', deleted)
+          res.render('message.njk', { message: `Successfully deleted: ${deleted}` })
+    })
+    .catch(error => res.render('message.njk', {message: `an error occurred: ${error}`}))
+})
+
 app.get('/', (req, res) => {
   res.render('index.njk')
 })
+
+
 
 initCore({
   mongoDB: process.env.MONGODB_URL,

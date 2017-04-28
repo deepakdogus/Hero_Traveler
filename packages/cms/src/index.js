@@ -21,6 +21,7 @@ const session = require('express-session')
 
 const pathToTemplates = path.resolve(__dirname, 'templates/')
 const resultsPerPage = 15
+const multer = require('./multer.js')
 const makeDateReadable = (dataArray) => {
   return dataArray.map(element => {
     if (element.createdAt) {
@@ -48,10 +49,6 @@ app.use(morgan('dev'))
    content on success or failure of a server side operation. These methods can
    be used anywhere in the templates */
 
-// app.use(cookieParser('Optimus Prime is my real dad')) // string secret can be anything
-// app.use(session({cookie: {maxAge: 60000}}))
-// app.use(flash())
-
 
 nunjucks.configure(pathToTemplates, {
   autoescape: true,
@@ -59,7 +56,6 @@ nunjucks.configure(pathToTemplates, {
   watch: process.env.NODE_ENV !== 'production',
   cache: process.env.NODE_ENV === 'production'
 })
-
 
 app.get('/:table', (req, res) => {
   console.log('req.params', req.params)
@@ -71,6 +67,7 @@ app.get('/:table', (req, res) => {
   Models[dbTable].find({})
     .limit(resultsPerPage)
     .skip(page * resultsPerPage)
+    .populate('author')
     .sort({[sortby]: direction || 1}) // Defaults to one in case query is undefined
     .then((data) => {
       data = makeDateReadable(data)
@@ -91,14 +88,12 @@ app.get('/:table/create', (req, res) => {
   res.render(`edit-${table}.njk`)
 })
 
-app.post('/:table/edit', (req, res, next) => {
+app.post('/:table/edit', multer.single('image'), (req, res, next) => {
   console.log('req.body', req.body)
-  let { id } = req.query
-  // bug: upsert throws error where object id doesn't exist or is string
-  // possible solution: if (!id) id = mongoose.Types.ObjectId()
+  const { id } = req.query
   const dbTable = parseTable(req.params.table)
   console.log('dbTable', dbTable)
-  Models[dbTable].findByIdAndUpdate(id, req.body, { upsert: true })
+  Models[dbTable].findOneAndUpdate(id, req.body, { upsert: true })
     .then(data => {
       console.log(data)
       res.render('message.njk', { message: `${dbTable} saved successfully` })

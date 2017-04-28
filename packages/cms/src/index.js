@@ -58,10 +58,8 @@ nunjucks.configure(pathToTemplates, {
 })
 
 app.get('/:table', (req, res) => {
-  console.log('req.params', req.params)
   const { table } = req.params
   const dbTable = parseTable(table)
-  console.log('table', dbTable)
   const { direction, sortby } = req.query
   const page = Math.max(0, req.query.page || 0) // Defaults to zero in case query is undefined
   Models[dbTable].find()
@@ -93,7 +91,6 @@ app.post('/:table/edit', multer.single('image'), (req, res, next) => {
   const dbTable = parseTable(req.params.table)
   Models[dbTable].findOneAndUpdate(id, req.body, { upsert: true })
     .then(data => {
-      console.log(data)
       res.render('message.njk', { message: `${dbTable} saved successfully` })
     }
          )
@@ -103,7 +100,6 @@ app.post('/:table/edit', multer.single('image'), (req, res, next) => {
 app.get('/:table/delete', (req, res) => {
   const { id } = req.query
   const dbTable = parseTable(req.params.table)
-  console.log('req.query', req.query)
   Models[dbTable].delete({_id: id})
     .then(deleted => {
           console.log('deleted: ', deleted)

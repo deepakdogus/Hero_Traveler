@@ -48,10 +48,10 @@
 		949A3A681E9EB74600815C53 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 949A3A641E9EB74600815C53 /* FBSDKCoreKit.framework */; };
 		949A3A691E9EB74600815C53 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 949A3A651E9EB74600815C53 /* FBSDKLoginKit.framework */; };
 		949A3A6A1E9EB74600815C53 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 949A3A661E9EB74600815C53 /* FBSDKShareKit.framework */; };
+		94AE1C2F1EA7C01700B88515 /* libReact-Native-Webview-Bridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94AE1C221EA7BFE500B88515 /* libReact-Native-Webview-Bridge.a */; };
 		956748568BFA45CDB84EEA07 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96A7A968678E46938DCAE9E4 /* Foundation.ttf */; };
 		998A514A1E3C4CEF89CF51BC /* libRCTFBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48469546E47F4DF8A2A0AB96 /* libRCTFBSDK.a */; };
 		9F0E3B52C7E74A548CF53FA3 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 072EA77351854378A1722EA9 /* Octicons.ttf */; };
-		94AE1C2F1EA7C01700B88515 /* libReact-Native-Webview-Bridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94AE1C221EA7BFE500B88515 /* libReact-Native-Webview-Bridge.a */; };
 		AF011CBE1DE74E9DB1FF4182 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72700E4DD3BB45C692CE36B1 /* libRNDeviceInfo.a */; };
 		B3DC43C046254D6B894A3FC0 /* CrimsonText-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C085C24A528845C782931BD5 /* CrimsonText-Italic.ttf */; };
 		B7C3EEA8CF6C424A9F8101C6 /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BBECC2FCD94C4652845B5B0D /* libAirMaps.a */; };
@@ -295,19 +295,19 @@
 			remoteGlobalIDString = 83CBBA2D1A601D0E00E9B192;
 			remoteInfo = React;
 		};
-		94AE1C211EA7BFE500B88515 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 94AE1C091EA7BFE500B88515 /* React-Native-Webview-Bridge.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 4114DC4C1C187C3A003CD988;
-			remoteInfo = "React-Native-Webview-Bridge";
-    };
 		949A3A441E9EB68500815C53 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 046966AAC2C144F6983A6C3E /* RCTFBSDK.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 9350E0F11CE3B0920041D815;
 			remoteInfo = RCTFBSDK;
+		};
+		94AE1C211EA7BFE500B88515 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 94AE1C091EA7BFE500B88515 /* React-Native-Webview-Bridge.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4114DC4C1C187C3A003CD988;
+			remoteInfo = "React-Native-Webview-Bridge";
 		};
 		94C6F84B1E9EAA7700CD88F7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -412,8 +412,8 @@
 		949A3A641E9EB74600815C53 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../../../../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		949A3A651E9EB74600815C53 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../../../../../Documents/FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		949A3A661E9EB74600815C53 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../../../../../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
+		94AE1C091EA7BFE500B88515 /* React-Native-Webview-Bridge.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "React-Native-Webview-Bridge.xcodeproj"; path = "../node_modules/react-native-webview-bridge-updated/ios/React-Native-Webview-Bridge.xcodeproj"; sourceTree = "<group>"; };
 		96A7A968678E46938DCAE9E4 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
-    94AE1C091EA7BFE500B88515 /* React-Native-Webview-Bridge.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "React-Native-Webview-Bridge.xcodeproj"; path = "../node_modules/react-native-webview-bridge-updated/ios/React-Native-Webview-Bridge.xcodeproj"; sourceTree = "<group>"; };
 		9A709D29056D4818B6694D97 /* RCTCamera.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RCTCamera.xcodeproj"; sourceTree = "<group>"; };
 		9D28101C334E4AFD92A3F369 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		9E49328E9C1743E7889579BD /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
@@ -470,10 +470,10 @@
 				949A3A671E9EB74600815C53 /* Bolts.framework in Frameworks */,
 				949A3A681E9EB74600815C53 /* FBSDKCoreKit.framework in Frameworks */,
 				2317F45565AF467E999257D4 /* libSplashScreen.a in Frameworks */,
-        94AE1C2F1EA7C01700B88515 /* libReact-Native-Webview-Bridge.a in Frameworks */,
-        530D774BD2054AE48FD45B5B /* libRCTActionSheet.a in Frameworks */,
-        998A514A1E3C4CEF89CF51BC /* libRCTFBSDK.a in Frameworks */,
-        C33BE7F70ED74FE3AADD46D7 /* libRCTVideo.a in Frameworks */,
+				94AE1C2F1EA7C01700B88515 /* libReact-Native-Webview-Bridge.a in Frameworks */,
+				530D774BD2054AE48FD45B5B /* libRCTActionSheet.a in Frameworks */,
+				998A514A1E3C4CEF89CF51BC /* libRCTFBSDK.a in Frameworks */,
+				C33BE7F70ED74FE3AADD46D7 /* libRCTVideo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -759,14 +759,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		94AE1C0A1EA7BFE500B88515 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				94AE1C221EA7BFE500B88515 /* libReact-Native-Webview-Bridge.a */,
-      );
-      name = Products;
-      sourceTree = "<group>";
-    };
 		949A3A3B1E9EB68500815C53 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -786,6 +778,14 @@
 				949A3A661E9EB74600815C53 /* FBSDKShareKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		94AE1C0A1EA7BFE500B88515 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				94AE1C221EA7BFE500B88515 /* libReact-Native-Webview-Bridge.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		94C6F8271E9EAA7700CD88F7 /* Products */ = {
@@ -1232,18 +1232,18 @@
 			remoteRef = 948917E41E9D93F3005A6437 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		94AE1C221EA7BFE500B88515 /* libReact-Native-Webview-Bridge.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libReact-Native-Webview-Bridge.a";
-			remoteRef = 94AE1C211EA7BFE500B88515 /* PBXContainerItemProxy */;
-      sourceTree = BUILT_PRODUCTS_DIR;
-    };
 		949A3A451E9EB68500815C53 /* libRCTFBSDK.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRCTFBSDK.a;
 			remoteRef = 949A3A441E9EB68500815C53 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		94AE1C221EA7BFE500B88515 /* libReact-Native-Webview-Bridge.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libReact-Native-Webview-Bridge.a";
+			remoteRef = 94AE1C211EA7BFE500B88515 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		94C6F84C1E9EAA7700CD88F7 /* libSplashScreen.a */ = {

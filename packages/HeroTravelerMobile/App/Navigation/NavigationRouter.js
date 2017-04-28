@@ -9,6 +9,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import LaunchScreen from '../Containers/LaunchScreen'
+import EditorTestScreen from '../Containers/EditorTestScreen'
 import Styles from './Styles/NavigationContainerStyles'
 
 // Tabs
@@ -20,15 +21,22 @@ import ReadOnlyProfileScreen from '../Containers/ReadOnlyProfileScreen'
 import SettingsScreen from '../Containers/SettingsScreen'
 import CategoryFeedScreen from '../Containers/Explore/CategoryFeedScreen'
 import FollowersScreen from '../Containers/FollowersScreen'
-import FollowingScreen from '../Containers/FollowingScreen'
+// import FollowingScreen from '../Containers/FollowingScreen'
+
+// Info Screens
+import TermsAndConditionsScreen from '../Containers/TermsAndConditionsScreen'
+import FAQScreen from '../Containers/FAQScreen'
+import PrivacyScreen from '../Components/PrivacyScreen'
+import ChangePasswordScreen from '../Containers/ChangePasswordScreen'
+
 
 // Story reading & creating
 import StoryReadingScreen from '../Containers/StoryReadingScreen'
 import StoryCommentsScreen from '../Containers/StoryCommentsScreen'
-import StoryCoverScreen from '../Containers/CreateStory/StoryCoverScreen'
-import StoryCreateScreen from '../Containers/CreateStory/CreateStoryScreen'
-import FullScreenEditor from '../Containers/CreateStory/FullScreenEditor'
-import CreateStoryDetailScreen from '../Containers/CreateStory/CreateStoryDetailScreen'
+import StoryCreateScreen from '../Containers/CreateStory/1_CreateStoryScreen'
+import StoryCoverScreen from '../Containers/CreateStory/2_StoryCoverScreen'
+import FullScreenEditor from '../Containers/CreateStory/3_FullScreenEditor'
+import CreateStoryDetailScreen from '../Containers/CreateStory/4_CreateStoryDetailScreen'
 import TagScreen from '../Containers/CreateStory/TagScreen'
 import MediaSelectorScreen from '../Containers/MediaSelectorScreen'
 
@@ -148,11 +156,43 @@ class NavigationRouter extends Component {
               component={ResetPasswordRequestScreen}
             />
             <Scene
+              key='changePassword'
+              component={ChangePasswordScreen}
+              direction='horizontal'
+              onLeft={() => NavActions.pop()}
+              title='Change Password'
+              {...darkNavBarProps}
+            />
+            <Scene
               key='settings'
               component={SettingsScreen}
               direction='horizontal'
               onLeft={() => NavActions.pop()}
               title='Settings'
+              {...darkNavBarProps}
+            />
+            <Scene
+              key='terms'
+              component={TermsAndConditionsScreen}
+              direction='horizontal'
+              onLeft={() => NavActions.pop()}
+              title='Terms & Conditions'
+              {...darkNavBarProps}
+            />
+            <Scene
+              key='FAQ'
+              component={FAQScreen}
+              direction='horizontal'
+              onLeft={() => NavActions.pop()}
+              title='FAQ'
+              {...darkNavBarProps}
+            />
+            <Scene
+              key='privacy'
+              component={PrivacyScreen}
+              direction='horizontal'
+              onLeft={() => NavActions.pop()}
+              title='Privacy Policy'
               {...darkNavBarProps}
             />
             <Scene
@@ -243,7 +283,7 @@ class NavigationRouter extends Component {
                 component={StoryCreateScreen}
               />
               <Scene
-                key='createStory_photo'
+                key='createStory_cover'
                 component={StoryCoverScreen}
                 panHandlers={null}
                 direction="horizontal"
@@ -273,14 +313,10 @@ class NavigationRouter extends Component {
             <Scene
               key='followersScreen'
               component={FollowersScreen}
-              {...clearNavBarProps}
-              hideNavBar={true}
-            />
-            <Scene
-              key='followingScreen'
-              component={FollowingScreen}
-              {...clearNavBarProps}
-              hideNavBar={true}
+              title='Followers'
+              direction='horizontal'
+              onLeft={() => NavActions.pop({direction: 'horizontal'})}
+              {...darkNavBarProps}
             />
             <Scene
               key='mediaSelectorScreen'

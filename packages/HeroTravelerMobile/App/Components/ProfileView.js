@@ -6,29 +6,35 @@ import {
   Text,
   TextInput,
   Image,
-  TouchableOpacity,
-  Alert
+  TouchableWithoutFeedback,
+  TouchableOpacity
 } from 'react-native'
-import Editor from '../Components/Editor'
 import { Actions as NavActions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import LinearGradient from 'react-native-linear-gradient'
+
 import { Colors } from '../Themes'
 import Loader from './Loader'
 import StoryList from './StoryList'
+import ConnectedStoryPreview from '../Containers/ConnectedStoryPreview'
 import formatCount from '../Lib/formatCount'
 import getImageUrl from '../Lib/getImageUrl'
 import Avatar from './Avatar'
 import NavBar from '../Containers/CreateStory/NavBar'
+// @TODO UserActions shouldnt be in a component
+import UserActions from '../Redux/Entities/Users'
 
 const Tab = ({text, onPress, selected}) => {
   return (
-    <TouchableOpacity style={[styles.tab, selected ? styles.tabSelected : null]} onPress={onPress}>
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View style={[styles.tab, selected ? styles.tabSelected : null]}>
       <Text style={[styles.tabText, selected ? styles.tabTextSelected : null]}>{text}</Text>
-    </TouchableOpacity>
+      </View>
+    </TouchableWithoutFeedback>
   )
 }
 
+// @TOOO make this smaller
 export default class ProfileView extends React.Component {
   constructor(props) {
     super(props)
@@ -43,21 +49,21 @@ export default class ProfileView extends React.Component {
     this.setState({imageMenuOpen: !this.state.imageMenuOpen})
   }
 
-  _onLeft = () => {
-    Alert.alert(
-      'Cancel Draft',
-      'Do you want to save this draft?',
-      [{
-        text: 'Yes, save the draft',
-        onPress: () => NavActions.pop()
-      }, {
-        text: 'No, remove it',
-        onPress: () => {
-          NavActions.pop()
-        }
-      }]
-    )
-  }
+  // _onLeft = () => {
+  //   Alert.alert(
+  //     'Cancel Draft',
+  //     'Do you want to save this draft?',
+  //     [{
+  //       text: 'Yes, save the draft',
+  //       onPress: () => NavActions.pop()
+  //     }, {
+  //       text: 'No, remove it',
+  //       onPress: () => {
+  //         NavActions.pop()
+  //       }
+  //     }]
+  //   )
+  // }
 
   _onRight = () => {
     alert('save edits')
@@ -180,7 +186,7 @@ export default class ProfileView extends React.Component {
 
       tabs = (
         <View style={styles.tabnavEdit}>
-          <Tab selected={false} onPress={() => alert('stories')} text='STORIES' />
+          <Tab selected={false} text='STORIES' />
         </View>
       )
 
@@ -190,12 +196,12 @@ export default class ProfileView extends React.Component {
 
     const gradientStyle = profileImage ? ['rgba(0,0,0,.6)', 'transparent', 'rgba(0,0,0,.6)'] : ['transparent', 'rgba(0,0,0,.6)']
     return (
-      <View>
+      <View style={{flex: 1}}>
         {isEditing &&
           <NavBar
             title='Edit Profile'
             leftTitle='Cancel'
-            onLeft={this._onLeft}
+            onLeft={() => NavActions.pop()}
             rightTitle='Next'
             onRight={this._onRight}
           />
@@ -228,14 +234,24 @@ export default class ProfileView extends React.Component {
                 <View style={styles.followersWrapper}>
                   <View style={styles.firstFollowerColumn}>
                     <TouchableOpacity
-                      onPress={() => NavActions.followersScreen()}
+                      onPress={() => NavActions.followersScreen({
+                        title: 'Followers',
+                        followersType: 'followers',
+                        loadDataAction: UserActions.loadUserFollowers,
+                        userId: this.props.user.id
+                      })}
                       style={[styles.followersColumn]}>
                       <Text style={styles.followerNumber}>{formatCount(user.counts.followers)}</Text>
                       <Text style={styles.followerLabel}>Followers</Text>
                     </TouchableOpacity>
                   </View>
                   <TouchableOpacity
-                    onPress={() => NavActions.followingScreen()}
+                    onPress={() => NavActions.followersScreen({
+                      title: 'Following',
+                      followersType: 'following',
+                      loadDataAction: UserActions.loadUserFollowing,
+                      userId: this.props.user.id
+                    })}
                     style={styles.followersColumn}>
                     <Text style={styles.followerNumber}>{formatCount(user.counts.following)}</Text>
                     <Text style={styles.followerLabel}>Following</Text>
@@ -272,19 +288,30 @@ export default class ProfileView extends React.Component {
             {tabs}
             {stories.length > 0 &&
               <StoryList
-                stories={stories}
-                height={200}
-                titleStyle={styles.storyTitleStyle}
-                subtitleStyle={styles.subtitleStyle}
-                editable={editable}
-                forProfile={true}
-                onPressStory={story => NavActions.story({storyId: story.id})}
-                onPressLike={story => alert(`Story ${story.id} liked`)}
+                storiesById={stories}
+                refreshing={false}
+                renderStory={(storyId) => {
+                  return (
+                    <ConnectedStoryPreview
+                      forProfile={true}
+                      editable={editable}
+                      titleStyle={styles.storyTitleStyle}
+                      subtitleStyle={styles.subtitleStyle}
+                      allowVideoPlay={false}
+                      autoPlayVideo={false}
+                      key={storyId}
+                      height={200}
+                      storyId={storyId}
+                      onPress={() => NavActions.story({storyId})}
+                      onPressLike={story => alert(`Story ${storyId} liked`)}
+                    />
+                  )
+                }}
               />
             }
             {fetchStatus.loaded && stories.length === 0 &&
               <View style={styles.noStories}>
-                <Text style={styles.noStoriesText}>You have no stories published</Text>
+                <Text style={styles.noStoriesText}>{this.props.editable ? 'You have no stories published' : 'This user has no stories published'}</Text>
               </View>
             }
             {!fetchStatus.loaded && fetchStatus.fetching &&

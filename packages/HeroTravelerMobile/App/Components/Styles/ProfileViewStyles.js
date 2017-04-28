@@ -10,7 +10,8 @@ export default StyleSheet.create({
   },
   gradient: {
     paddingTop: 20,
-    flex: 1
+    flex: 1,
+    backgroundColor: Colors.clear
   },
   gradientWrapper: {
     backgroundColor: Colors.clear

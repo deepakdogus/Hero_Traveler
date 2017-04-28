@@ -3,6 +3,7 @@ import passport from 'passport'
 import {hasValidOauth, hasClientId, multer} from '../../middleware'
 import endpointWrapper from '../../utils/endpointWrapper'
 import getMe from './getMe'
+import getUser from './getUser'
 import create from './create'
 import createFacebook from './createFacebook'
 import update from './update'
@@ -51,20 +52,6 @@ router.get(
   '/suggestFollowers',
   hasValidOauth,
   endpointWrapper(suggestFollowers)
-)
-
-// Who is following me?
-router.get(
-  '/followers',
-  hasValidOauth,
-  endpointWrapper(getFollowees)
-)
-
-// Who do I follow?
-router.get(
-  '/following',
-  hasValidOauth,
-  endpointWrapper(getFollowers)
 )
 
 router.get(
@@ -123,6 +110,11 @@ router.post('/threads/:id',
   endpointWrapper(threadCreateMessage)
 )
 
+router.get('/:id',
+  hasValidOauth,
+  endpointWrapper(getUser)
+)
+
 router.put('/:id',
   hasValidOauth,
   endpointWrapper(update)
@@ -138,6 +130,20 @@ router.put('/:id/cover',
   hasValidOauth,
   multer.single('image'),
   endpointWrapper(updateCover)
+)
+
+// Who is following a user?
+router.get(
+  '/:id/followers',
+  hasValidOauth,
+  endpointWrapper(getFollowees)
+)
+
+// Who does a user follow?
+router.get(
+  '/:id/following',
+  hasValidOauth,
+  endpointWrapper(getFollowers)
 )
 
 export default router

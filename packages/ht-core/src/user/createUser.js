@@ -11,8 +11,12 @@ const userIndex = client.initIndex(process.env.ALGOLIA_USER_INDEX)
 
 
 // converting algoliasearch callback api to promise
-
 const addUserToIndex = (user) => new Promise((resolve, reject) => {
+  // return early if we are not seeding
+  if (process.env.DISABLE_ALGOLIA) {
+    return resolve()
+  }
+
   userIndex.addObject(user, (err, content) => {
     if (err) reject(err)
     if (content) resolve(content)

@@ -7,6 +7,7 @@ import getStory from './getStory'
 import getUser from './getUser'
 import create from './create'
 import getUserFeed from './getUserFeed'
+import getUserLikes from './getUserLikes'
 import getCategoryStories from './getCategoryStories'
 import toggleLike from './toggleLike'
 import toggleBookmark from './toggleBookmark'
@@ -19,14 +20,17 @@ import findDrafts from './draft/find'
 import createDraft from './draft/create'
 import removeDraft from './draft/remove'
 import updateDraft from './draft/update'
-import uploadDraft from './draft/upload'
+import uploadDraftCoverImage from './draft/upload'
+import uploadDraftCoverVideo from './draft/upload_video'
+import uploadDraftImage from './draft/upload_story_image'
 
 const router = express.Router()
 
 router.get('/user/:userId', hasValidOauth, getUser)
 router.get('/user/:userId/feed', hasValidOauth, getUserFeed);
+router.get('/user/:userId/like', hasValidOauth, endpointWrapper(getUserLikes));
 router.get('/category/:categoryId', endpointWrapper(getCategoryStories));
-router.get('/bookmark', hasValidOauth, endpointWrapper(getBookmarks))
+router.get('/user/:userId/bookmark', hasValidOauth, endpointWrapper(getBookmarks))
 
 // Story draft related routes
 router.get('/draft', hasValidOauth, endpointWrapper(findDrafts))
@@ -36,7 +40,17 @@ router.put('/draft/:id', hasValidOauth, endpointWrapper(updateDraft))
 router.put('/draft/:id/cover-image',
   hasValidOauth,
   multer.single('image'),
-  endpointWrapper(uploadDraft)
+  endpointWrapper(uploadDraftCoverImage)
+)
+router.put('/draft/:id/cover-video',
+  hasValidOauth,
+  multer.single('video'),
+  endpointWrapper(uploadDraftCoverVideo)
+)
+router.put('/draft/:id/image',
+  // hasValidOauth,
+  multer.single('image'),
+  endpointWrapper(uploadDraftImage)
 )
 router.post('/draft', hasValidOauth, endpointWrapper(createDraft))
 

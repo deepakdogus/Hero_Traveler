@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import React from 'react'
+import React, {PropTypes, Component} from 'react'
 import {
   ScrollView,
   Text,
@@ -17,44 +17,43 @@ import { connect } from 'react-redux'
 import R from 'ramda'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
+import API from '../../Services/HeroAPI'
 import StoryEditActions from '../../Redux/StoryCreateRedux'
 import ShadowButton from '../../Components/ShadowButton'
 import RenderTextInput from '../../Components/RenderTextInput'
+import Loader from '../../Components/Loader'
 import {Colors, Images, Metrics} from '../../Themes'
-import styles, { placeholderColor } from './StoryCoverScreenStyles'
+import styles, { placeholderColor } from './2_StoryCoverScreenStyles'
 import NavBar from './NavBar'
+import getImageUrl from '../../Lib/getImageUrl'
+import getVideoUrl from '../../Lib/getVideoUrl'
+import Video from '../../Components/Video'
+import pathAsFileObject from '../../Lib/pathAsFileObject'
 
-function getMimeType(filename) {
-  const ext = filename.split('.').pop().toLowerCase()
-  if (_.includes(ext, 'jpg') || _.includes(ext, 'jpg')) {
-    return 'image/jpeg'
-  } else if (_.includes(ext, 'png')) {
-    return 'image/png'
-  } else if (_.includes(ext, 'gif')) {
-    return 'image/gif'
+const api = API.create()
+
+class StoryCoverScreen extends Component {
+
+  static propTypes = {
+    mediaType: PropTypes.oneOf(['photo', 'video']).isRequired
   }
-}
 
-function getImage(story) {
-  const path = _.get(story, 'coverImage.original.path')
-
-  if (!path) return null
-
-  return `https://s3.amazonaws.com/hero-traveler/${path}`
-}
-
-class StoryCoverScreen extends React.Component {
+  static defaultProps = {
+    mediaType: 'photo'
+  }
 
   constructor(props) {
     super(props)
 
     this.state = {
       imageMenuOpen: false,
-      file: null
+      file: null,
+      updating: false
     }
   }
 
   componentDidMount() {
+    api.setAuth(this.props.accessToken.value)
     // Create a new draft to work with if one doesn't exist
     if (!this.props.story.id) {
       this.props.registerDraft()
@@ -71,6 +70,10 @@ class StoryCoverScreen extends React.Component {
     }
   }
 
+  isPhotoType() {
+    return this.props.mediaType === 'photo'
+  }
+
   _toggleImageMenu = () => {
     this.setState({imageMenuOpen: !this.state.imageMenuOpen})
   }
@@ -85,6 +88,24 @@ class StoryCoverScreen extends React.Component {
       )),
       R.always(this.renderContent(coverPhoto))
     )(!!coverPhoto)
+  }
+
+  renderCoverVideo(coverVideo) {
+    console.log('coverVideo', coverVideo)
+    return R.ifElse(
+      R.identity,
+      R.always((
+        <View style={styles.coverVideo}>
+          <Video
+            path={coverVideo}
+            allowVideoPlay={false}
+            autoPlayVideo={false}
+          />
+          {this.renderContent()}
+        </View>
+      )),
+      R.always(this.renderContent())
+    )(!!coverVideo)
   }
 
   renderTextColor = (baseStyle) => {
@@ -125,17 +146,39 @@ class StoryCoverScreen extends React.Component {
   _onRight = () => {
     const {story} = this.props
 
+    // Let the user go forward if the navigated back
+    if (!this.state.file && (story.coverImage || story.coverVideo)) {
+      return NavActions.createStory_content()
+    }
+
     if ((!story.coverImage || !story.coverPhoto) && !story.title) {
       this.setState({error: 'Please add a cover and a title to continue'})
       return
     }
 
-    this.props.update(this.props.story.id, story)
-    if (this.state.file) {
-      this.props.uploadCover(this.props.story.id, this.state.file)
-      this.setState({file: null})
+    if ((this.props.story.coverVideoTemp || this.props.story.coverImage) && !this.state.file) {
+      this.setState({error: 'Sorry, could not process file.'})
+      return
     }
-    NavActions.createStory_content()
+
+    this.setState({
+      updating: true
+    })
+
+    let promise
+
+    promise = this.isPhotoType() ?
+      api.uploadCoverImage(story.id, this.state.file) :
+      api.uploadCoverVideo(story.id, this.state.file)
+
+    promise.then(story => {
+      this.props.update(this.props.story.id, story)
+      NavActions.createStory_content()
+      this.setState({
+        file: null,
+        updating: false
+      })
+    })
   }
 
   hasNoPhoto() {
@@ -154,17 +197,19 @@ class StoryCoverScreen extends React.Component {
                 style={styles.addPhotoButton}
                 onPress={() => {
                   NavActions.mediaSelectorScreen({
-                    mediaType: 'photo',
+                    mediaType: this.props.mediaType,
                     title: 'Add a Cover',
                     leftTitle: 'Cancel',
                     onLeft: () => NavActions.pop(),
                     rightTitle: 'Next',
-                    onSelectMedia: this._handleSelectCoverPhoto
+                    onSelectMedia: this._handleSelectCover
                   })
                 }}
               >
-                <Icon name='camera' size={40} color='gray' style={styles.cameraIcon} />
-                <Text style={this.renderTextColor(styles.baseTextColor)}>+ ADD COVER PHOTO</Text>
+                <Icon name={this.isPhotoType() ? 'camera' : 'video-camera'} size={40} color='gray' style={styles.cameraIcon} />
+                <Text style={this.renderTextColor(styles.baseTextColor)}>
+                  {this.isPhotoType() ? '+ ADD COVER PHOTO' : '+ ADD COVER VIDEO'}
+                </Text>
               </TouchableOpacity>
             </View>
           }
@@ -185,12 +230,12 @@ class StoryCoverScreen extends React.Component {
                     <TouchableOpacity
                       onPress={() =>
                         NavActions.mediaSelectorScreen({
-                          mediaType: 'photo',
+                          mediaType: this.props.mediaType,
                           title: 'Change Cover',
                           leftTitle: 'Cancel',
                           onLeft: () => NavActions.pop(),
                           rightTitle: 'Update',
-                          onSelectMedia: this._handleSelectCoverPhoto
+                          onSelectMedia: this._handleSelectCover
                         })
                       }
                       style={styles.iconButton}>
@@ -259,20 +304,28 @@ class StoryCoverScreen extends React.Component {
               onPress={() => this.setState({error: null})}
               text={this.state.error} />
           }
-          {this.renderCoverPhoto(this.props.story.coverPhoto || getImage(this.props.story))}
+          {this.isPhotoType() && this.renderCoverPhoto(this.props.story.coverPhoto || getImageUrl(this.props.story.coverImage))}
+          {!this.isPhotoType() && this.renderCoverVideo(this.props.story.coverVideoTemp || getVideoUrl(this.props.story.coverVideo))}
         </View>
+        {this.state.updating &&
+          <Loader
+            style={styles.loading}
+            text='Saving progress...'
+            textStyle={styles.loadingText}
+            tintColor='rgba(0,0,0,.9)' />
+        }
       </View>
     )
   }
 
-  _handleSelectCoverPhoto = (path) => {
-    const file = {
-      uri: path,
-      name: path.split('/').pop(),
-      type: getMimeType(path)
+  _handleSelectCover = (path) => {
+    const file = pathAsFileObject(path)
+    this.setState({file})
+    if (this.props.mediaType === 'photo') {
+      this.props.change('coverPhoto', path)
+    } else {
+      this.props.change('coverVideoTemp', path)
     }
-    this.setState({file: file})
-    this.props.change('coverPhoto', path)
     NavActions.pop()
   }
 }
@@ -280,10 +333,12 @@ class StoryCoverScreen extends React.Component {
 const selector = formValueSelector('createStory')
 export default R.compose(
   connect(state => ({
+    accessToken: _.find(state.session.tokens, {type: 'access'}),
     story: {
       title: selector(state, 'title'),
       description: selector(state, 'description'),
       coverPhoto: selector(state, 'coverPhoto'),
+      coverVideoTemp: selector(state, 'coverVideoTemp'),
       ...state.storyCreate.draft
     }
     // state: state
@@ -296,9 +351,14 @@ export default R.compose(
         StoryEditActions.updateDraft(id, attrs, doReset)
       )
     },
-    uploadCover: (id, path) => {
+    uploadCoverImage: (id, path) => {
       dispatch(
         StoryEditActions.uploadCoverImage(id, path)
+      )
+    },
+    uploadCoverVideo: (id, path) => {
+      dispatch(
+        StoryEditActions.uploadCoverVideo(id, path)
       )
     }
   })),
@@ -311,6 +371,7 @@ export default R.compose(
       title: '',
       description: '',
       coverPhoto: null,
+      coverVideoTemp: null,
     }
   })
 )(StoryCoverScreen)

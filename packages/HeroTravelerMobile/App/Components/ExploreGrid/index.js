@@ -44,7 +44,7 @@ export default class ExploreGrid extends Component {
               style={styles.selectedIcon}
               size={20}
               name='check-circle-o'
-              color={Colors.red} />
+              color={Colors.white} />
           }
         </Image>
       </TouchableOpacity>

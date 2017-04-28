@@ -2,5 +2,8 @@ import {Story} from '../models'
 
 export default function findStories(query) {
   return Story.find(query)
-    .populate('coverImage coverVideo')
+    .populate('author author.profile.avatar')
+    .populate('category')
+    .populate('coverImage')
+    .populate('coverVideo')
 }

@@ -21,7 +21,7 @@ import Loader from '../../Components/Loader'
 import RoundedButton from '../../Components/RoundedButton'
 import RenderTextInput from '../../Components/RenderTextInput'
 import NavBar from './NavBar'
-import styles from './CreateStoryDetailScreenStyles'
+import styles from './4_CreateStoryDetailScreenStyles'
 
 const Radio = ({text, onPress, name, selected}) => {
   return (
@@ -54,9 +54,7 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    console.log('new props', newProps)
     if (!newProps.publishing && newProps.isCreated) {
-      console.log('we are here')
       NavActions.tabbar({type: 'reset'})
       this.props.resetForm()
     }
@@ -72,7 +70,9 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   _publish = () => {
-    this.props.publish(this.props.story)
+    console.log('publishing', {...this.props.story, content: this.props.storyContent})
+    console.log('this.props.storyContent', this.props.storyContent)
+    this.props.publish({...this.props.story, content: this.props.storyContent})
   }
 
   _updateType = (type) => {
@@ -209,7 +209,6 @@ export default R.compose(
         story: {
           ...draft,
           title: selector(state, 'title'),
-          category: _.values(state.entities.stories.entities)[0].category,
           type: selector(state, 'type') || draft.type,
           location: selector(state, 'location'),
           content: selector(state, 'content'),
@@ -226,7 +225,7 @@ export default R.compose(
   ),
   reduxForm({
     form: 'createStory',
-    destroyOnUnmount: true,
+    destroyOnUnmount: false,
     keepDirtyOnReinitialize: true,
     enableReinitialize: true,
     initialValues: {

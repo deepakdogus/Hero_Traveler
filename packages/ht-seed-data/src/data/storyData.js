@@ -5,6 +5,8 @@ import path from 'path'
 import sizeOf from 'image-size'
 import sharp from 'sharp'
 
+import {Models} from '@rwoody/ht-core'
+
 const distPath = path.resolve(__dirname, '../../dist/story_images')
 const imagesPath = path.resolve(__dirname, '../../resources/story_images')
 const storyImages = fs.readdirSync(imagesPath)
@@ -25,6 +27,35 @@ function create(users, categories) {
       .toFile(path.resolve(distPath, imageName))
   ])
   .then(([file]) => {
+    return Models.Image.create({
+      purpose: 'Seeded',
+      altText: title,
+      original: {
+        filename: imageName,
+        path: `seed/originals/${imageName}`,
+        bucket: process.env.AWS_S3_BUCKET,
+        width: dimensions.width,
+        height: dimensions.height,
+        meta: {
+          size: file.size,
+          mimeType: file.mimetype
+        }
+      },
+      versions: {
+        mobile: {
+          filename: imageName,
+          path: `story/750x1334/${imageName}`,
+          bucket: process.env.AWS_S3_BUCKET,
+          width: 750,
+          height: 1334,
+          meta: {
+            mimeType: file.mimetype
+          }
+        }
+      }
+    })
+  })
+  .then(imageModel => {
     return {
       "author": user._id,
       "title": title,
@@ -36,29 +67,7 @@ function create(users, categories) {
         "bookmarks": _.random(1, 50000),
         "comments": _.random(1, 50000)
       },
-      "coverImage": {
-        "altText": title,
-        "original": {
-          "filename": imageName,
-          "path": `story/originals/${imageName}`,
-          "width": dimensions.width,
-          "height": dimensions.height,
-          "meta": {
-            "mimeType": "image/jpeg"
-          }
-        },
-        "versions": {
-          "mobile": {
-            "filename": imageName,
-            "path": `story/750x1334/${imageName}`,
-            "width": 750,
-            "height": 1334,
-            "meta": {
-              "mimeType": "image/jpeg"
-            }
-          }
-        }
-      }
+      "coverImage": imageModel._id,
     }
   })
 }

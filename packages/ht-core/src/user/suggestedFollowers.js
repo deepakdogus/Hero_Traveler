@@ -5,10 +5,7 @@ export default function suggestedFollowers(userId) {
     _id: {
       $ne: userId
     }
-  }, null, {
-    sort: {
-      'counts.followers': -1
-    }
   })
+  .sort({'counts.followers': -1})
   .limit(10)
 }

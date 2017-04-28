@@ -1,4 +1,5 @@
 import mongoose, {Schema} from 'mongoose'
+import softDelete from 'mongoose-delete'
 import {ModelName as CategoryRef} from './category'
 import {ModelName as UserRef} from './user'
 import {ModelName as UploadRef} from './upload'
@@ -102,5 +103,7 @@ StorySchema.statics = {
       .populate('coverVideo')
   }
 }
+
+StorySchema.plugin(softDelete)
 
 export default mongoose.model(ModelName, StorySchema)

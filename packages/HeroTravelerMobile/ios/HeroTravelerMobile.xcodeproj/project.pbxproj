@@ -43,6 +43,7 @@
 		9417935B1E7C489F00B77D94 /* SourceSansPro-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 941793521E7C489F00B77D94 /* SourceSansPro-Light.ttf */; };
 		9417935C1E7C489F00B77D94 /* SourceSansPro-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 941793531E7C489F00B77D94 /* SourceSansPro-LightItalic.ttf */; };
 		9417935D1E7C489F00B77D94 /* SourceSansPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 941793541E7C489F00B77D94 /* SourceSansPro-Regular.ttf */; };
+		942D124B1EB395B200A0CFE5 /* RNHockeyApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 942D124A1EB395B200A0CFE5 /* RNHockeyApp.m */; };
 		9465AAA71EB0FDC7003109B0 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9465AAA61EB0FDC7003109B0 /* GameKit.framework */; };
 		9465AAA91EB0FDCC003109B0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9465AAA81EB0FDCC003109B0 /* StoreKit.framework */; };
 		9471EC541E818A5900D02E5D /* SourceSansPro-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 941793511E7C489F00B77D94 /* SourceSansPro-Italic.ttf */; };
@@ -283,6 +284,27 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RCTVideo;
 		};
+		942D121F1EB3956400A0CFE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 270363A78EFCA8E1CD72A017F5D44B0A;
+			remoteInfo = "HockeySDK-HockeySDKResources";
+		};
+		942D12211EB3956400A0CFE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F60670D3133E0FF38C48D5D459290E3B;
+			remoteInfo = "Pods-HeroTravelerMobile";
+		};
+		942D12231EB3956400A0CFE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DA60F70A69A5B889048E5C546776B30;
+			remoteInfo = "Pods-HeroTravelerMobileTests";
+		};
 		948917E41E9D93F3005A6437 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A8118D23A4874082B4322141 /* AirMaps.xcodeproj */;
@@ -411,6 +433,9 @@
 		941793521E7C489F00B77D94 /* SourceSansPro-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Light.ttf"; sourceTree = "<group>"; };
 		941793531E7C489F00B77D94 /* SourceSansPro-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-LightItalic.ttf"; sourceTree = "<group>"; };
 		941793541E7C489F00B77D94 /* SourceSansPro-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Regular.ttf"; sourceTree = "<group>"; };
+		942D12171EB3956400A0CFE5 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
+		942D12491EB395B200A0CFE5 /* RNHockeyApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNHockeyApp.h; sourceTree = "<group>"; };
+		942D124A1EB395B200A0CFE5 /* RNHockeyApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNHockeyApp.m; sourceTree = "<group>"; };
 		9465AAA61EB0FDC7003109B0 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		9465AAA81EB0FDCC003109B0 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		949A3A631E9EB74600815C53 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = ../../../../../../Documents/FacebookSDK/Bolts.framework; sourceTree = "<group>"; };
@@ -654,6 +679,8 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				942D12481EB395B200A0CFE5 /* RNHockeyApp */,
+				942D12171EB3956400A0CFE5 /* Pods.xcodeproj */,
 				94AE1C091EA7BFE500B88515 /* React-Native-Webview-Bridge.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
@@ -762,6 +789,26 @@
 				94205EF71EB0F0E2004B9C6C /* libRCTVideo.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		942D12181EB3956400A0CFE5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				942D12201EB3956400A0CFE5 /* HockeySDKResources.bundle */,
+				942D12221EB3956400A0CFE5 /* libPods-HeroTravelerMobile.a */,
+				942D12241EB3956400A0CFE5 /* libPods-HeroTravelerMobileTests.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		942D12481EB395B200A0CFE5 /* RNHockeyApp */ = {
+			isa = PBXGroup;
+			children = (
+				942D12491EB395B200A0CFE5 /* RNHockeyApp.h */,
+				942D124A1EB395B200A0CFE5 /* RNHockeyApp.m */,
+			);
+			name = RNHockeyApp;
+			path = "../node_modules/react-native-hockeyapp/RNHockeyApp";
 			sourceTree = "<group>";
 		};
 		948917E11E9D93F3005A6437 /* Products */ = {
@@ -948,6 +995,10 @@
 				{
 					ProductGroup = 94F381DB1E7CB87E00B0B727 /* Products */;
 					ProjectRef = 035E5819C0324C81AB897963 /* BVLinearGradient.xcodeproj */;
+				},
+				{
+					ProductGroup = 942D12181EB3956400A0CFE5 /* Products */;
+					ProjectRef = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
@@ -1257,6 +1308,27 @@
 			remoteRef = 94205EF61EB0F0E2004B9C6C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		942D12201EB3956400A0CFE5 /* HockeySDKResources.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = HockeySDKResources.bundle;
+			remoteRef = 942D121F1EB3956400A0CFE5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		942D12221EB3956400A0CFE5 /* libPods-HeroTravelerMobile.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libPods-HeroTravelerMobile.a";
+			remoteRef = 942D12211EB3956400A0CFE5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		942D12241EB3956400A0CFE5 /* libPods-HeroTravelerMobileTests.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libPods-HeroTravelerMobileTests.a";
+			remoteRef = 942D12231EB3956400A0CFE5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		948917E51E9D93F3005A6437 /* libAirMaps.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1475,6 +1547,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				942D124B1EB395B200A0CFE5 /* RNHockeyApp.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

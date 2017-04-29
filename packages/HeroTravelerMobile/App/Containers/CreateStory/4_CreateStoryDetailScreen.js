@@ -70,8 +70,6 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   _publish = () => {
-    console.log('publishing', {...this.props.story, content: this.props.storyContent})
-    console.log('this.props.storyContent', this.props.storyContent)
     this.props.publish({...this.props.story, content: this.props.storyContent})
   }
 

@@ -79,7 +79,6 @@ class StoryReadingScreen extends React.Component {
   render () {
     const { story, fetching, error, user } = this.props;
     const baseText = styles.storyContentText
-console.log('story.content', story.content)
     return (
       <View style={[styles.root]}>
         <ScrollView style={[styles.scrollView]}>
@@ -93,7 +92,7 @@ console.log('story.content', story.content)
             allowVideoPlay={true}
           />
           <View style={{flex: 1}}>
-            {story.content &&
+            {!!story.content &&
               <View style={{
                 flex: 1,
                 padding: Metrics.baseMargin,

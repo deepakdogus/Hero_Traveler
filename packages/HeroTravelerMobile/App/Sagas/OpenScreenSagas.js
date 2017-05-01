@@ -7,5 +7,6 @@ export function * openScreen (action) {
   // Always reset the nav stack when opening a screen by default
   // You can override the RESET type in the options passed to the OPEN_SCREEN dispatch
   const mergedOptions = {type: ActionConst.RESET, ...options}
+  console.log('calling open screen')
   yield call(NavigationActions[screen], mergedOptions)
 }

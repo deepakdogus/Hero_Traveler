@@ -60,12 +60,12 @@ class LoginScreen extends React.Component {
     this.isAttempting = false
   }
 
-  componentDidMount() {
-    console.log('componentDidMount')
-    AccessToken.getCurrentAccessToken().then(data => {
-      console.log('logged in', data)
-    })
-  }
+  // componentDidMount() {
+  //   console.log('componentDidMount')
+  //   AccessToken.getCurrentAccessToken().then(data => {
+  //     console.log('logged in', data)
+  //   })
+  // }
 
   componentWillReceiveProps (newProps) {
     if (newProps.isLoggedIn) {

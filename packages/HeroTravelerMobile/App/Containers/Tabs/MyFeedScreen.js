@@ -4,6 +4,7 @@ import { ScrollView, Text, View, Image, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import SplashScreen from 'react-native-splash-screen'
 
 import {Metrics, Images} from '../../Themes'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Lib/firstTimeTooltips'
@@ -34,6 +35,8 @@ class MyFeedScreen extends React.Component {
 
   componentDidMount() {
     this.props.attemptGetUserFeed(this.props.user.id)
+    console.log('my feed hide splash')
+    SplashScreen.hide()
   }
 
   componentWillReceiveProps(nextProps) {

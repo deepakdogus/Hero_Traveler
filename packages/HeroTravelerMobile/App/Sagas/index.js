@@ -17,7 +17,7 @@ import { UserTypes } from '../Redux/Entities/Users'
 
 /* ------------- Sagas ------------- */
 
-import { startup } from './StartupSagas'
+import { startup, hideSplash } from './StartupSagas'
 import { login, loginFacebook, resetPassword } from './LoginSagas'
 import {
   signupEmail,
@@ -27,7 +27,7 @@ import {
   followUser,
   unfollowUser
 } from './SignupSagas'
-import { logout, updateUser } from './SessionSagas'
+import { logout, updateUser, resumeSession } from './SessionSagas'
 import { openScreen } from './OpenScreenSagas'
 import { getCategories } from './CategorySagas'
 import {
@@ -61,6 +61,7 @@ export default function * root () {
   yield [
     // some sagas only receive an action
     takeLatest(StartupTypes.STARTUP, startup),
+    // takeLatest(StartupTypes.HIDE_SPLASH, hideSplash),
     takeLatest(OpenScreenTypes.OPEN_SCREEN, openScreen),
     takeLatest(LoginTypes.LOGIN_REQUEST, login, heroAPI),
     takeLatest(LoginTypes.LOGIN_FACEBOOK, loginFacebook),
@@ -73,6 +74,7 @@ export default function * root () {
     takeLatest(SignupTypes.SIGNUP_FOLLOW_USER, followUser, heroAPI),
     takeLatest(SignupTypes.SIGNUP_UNFOLLOW_USER, unfollowUser, heroAPI),
     takeLatest(SessionTypes.LOGOUT, logout, heroAPI),
+    takeLatest(SessionTypes.RESUME_SESSION, resumeSession, heroAPI),
 
     // Drafts and story creation
     takeLatest(StoryCreateTypes.PUBLISH_DRAFT, publishDraft, heroAPI),

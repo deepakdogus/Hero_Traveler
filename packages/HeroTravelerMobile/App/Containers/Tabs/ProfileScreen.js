@@ -23,6 +23,7 @@ class ProfileScreen extends React.Component {
   }
 
   componentDidMount() {
+    console.log('this.props.user.id',this.props.user.id)
     this.props.attemptRefreshUser(this.props.user.id)
     this.props.attemptGetUserStories(this.props.user.id)
   }
@@ -72,6 +73,7 @@ class ProfileScreen extends React.Component {
 const mapStateToProps = (state) => {
   const {userId} = state.session
   let {stories} = state.entities
+  console.log('state.entities.stories', state.entities.stories)
   return {
     user: state.entities.users.entities[userId],
     userStoriesFetchStatus: getUserFetchStatus(stories, userId),

@@ -29,29 +29,19 @@ class LaunchScreen extends React.Component {
     }
   }
 
-  async componentDidMount() {
-    const fbAccessToken = await AccessToken.getCurrentAccessToken()
-
-    // are we logged in to facebook?
-    if (fbAccessToken) {
-      // do something here
-    }
-
-    // console.log('tokenInfo', fbAccessToken)
-
-    // dev only
-    this.setState({
-      facebookLoggedIn: fbAccessToken
-    })
-
-    // @TODO check for email credentials and forward user
-
-    SplashScreen.hide()
-  }
-
   componentWillReceiveProps(newProps) {
     if (!newProps.fetching && newProps.hasSignedUp) {
       NavigationActions.signupFlow()
+    }
+
+    if (!this.props.hasAuthData && newProps.hasAuthData && !newProps.hasSignedUp) {
+      this.props.resumeSession()
+      return
+    }
+
+    if (this.props.splashShown && !newProps.splashShown && !this.props.hasAuthData) {
+      console.log('launch screen hide splash')
+      SplashScreen.hide()
     }
   }
 
@@ -63,7 +53,7 @@ class LaunchScreen extends React.Component {
       'user_friends'
     ]).then(
       (result) => {
-        AccessToken.getCurrentAccessToken().then(data => {
+        AccessToken.getCurrentAccessToken().then(token => {
           if(result.isCancelled) {
             return
           }
@@ -172,15 +162,17 @@ class LaunchScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    isLoggedIn: hasAuthData(state.session),
+    hasHeroAccessToken: hasAuthData(state.session),
     fetching: state.signup.fetching,
     hasSignedUp: hasSignedUp(state.signup),
+    splashShown: state.startup.splashShown,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signupFacebook: (...args) => dispatch(SignupActions.signupFacebook(...args))
+    resumeSession: () => dispatch(SessionActions.resumeSession()),
+    signupFacebook: (...args) => dispatch(SignupActions.signupFacebook(...args)),
   }
 }
 

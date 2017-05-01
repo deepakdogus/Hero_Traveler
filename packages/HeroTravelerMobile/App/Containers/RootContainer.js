@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import { View, StatusBar } from 'react-native'
 import HockeyApp from 'react-native-hockeyapp'
-import NavigationRouter from '../Navigation/NavigationRouter'
 import { connect } from 'react-redux'
+import { Router } from 'react-native-router-flux'
+
+import NavigationScenes from '../Navigation/NavigationRouter'
 import StartupActions from '../Redux/StartupRedux'
 import ReduxPersist from '../Config/ReduxPersist'
-
-// Styles
 import styles from './Styles/RootContainerStyles'
+
+const ConnectedRouter = connect()(Router)
 
 class RootContainer extends Component {
 
@@ -28,7 +30,7 @@ class RootContainer extends Component {
     return (
       <View style={styles.applicationView}>
         <StatusBar barStyle='light-content' />
-        <NavigationRouter />
+        <ConnectedRouter scenes={NavigationScenes} />
       </View>
     )
   }

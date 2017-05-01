@@ -1,7 +1,7 @@
 // a library to wrap and simplify api calls
 import {Platform} from 'react-native'
 import apisauce from 'apisauce'
-import {get, isArray} from 'lodash'
+import _, {get, isArray} from 'lodash'
 import {normalize, schema} from 'normalizr'
 import {getToken as getPushToken} from '../Config/PushConfig'
 
@@ -70,7 +70,7 @@ const create = () => {
   // const getRoot = () => api.get('')
   // const getRate = () => api.get('rate_limit')
   // const getUser = (username) => api.get('search/users', {q: username})
-const signupEmail = (name, username, email, password) => {
+  const signupEmail = (name, username, email, password) => {
     return api.post('user', {
       name,
       username,
@@ -100,6 +100,12 @@ const signupEmail = (name, username, email, password) => {
   const logout = (tokens) => {
     return api.post('auth/revoke', {
       tokens
+    })
+  }
+
+  const refreshTokens = (refreshToken) => {
+    return api.post('auth/refresh', {
+      refreshToken: refreshToken
     })
   }
 
@@ -319,6 +325,7 @@ const signupEmail = (name, username, email, password) => {
     unsetAuth,
     login,
     logout,
+    refreshTokens,
     getMe,
     updateUser,
     getUser,

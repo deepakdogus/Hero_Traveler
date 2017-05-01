@@ -126,6 +126,8 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-webview-bridge-updated')
+    compile project(':react-native-hockeyapp')
     compile project(':react-native-push-notification')
     compile project(':react-native-video')
     compile project(':react-native-fbsdk')

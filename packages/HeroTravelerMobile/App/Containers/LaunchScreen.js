@@ -37,7 +37,7 @@ class LaunchScreen extends React.Component {
       // do something here
     }
 
-    console.log('tokenInfo', fbAccessToken)
+    // console.log('tokenInfo', fbAccessToken)
 
     // dev only
     this.setState({

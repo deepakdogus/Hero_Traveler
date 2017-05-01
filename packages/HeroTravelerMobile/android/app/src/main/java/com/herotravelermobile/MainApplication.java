@@ -3,6 +3,8 @@ package com.herotravelermobile;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
+import com.slowpath.hockeyapp.RNHockeyAppPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
@@ -33,6 +35,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new WebViewBridgePackage(),
+            new RNHockeyAppPackage(),
             new ReactNativePushNotificationPackage(),
             new ReactVideoPackage(),
             new FBSDKPackage(),

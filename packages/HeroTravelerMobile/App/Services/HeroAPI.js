@@ -3,6 +3,7 @@ import {Platform} from 'react-native'
 import apisauce from 'apisauce'
 import {get, isArray} from 'lodash'
 import {normalize, schema} from 'normalizr'
+import {getToken as getPushToken} from '../Config/PushConfig'
 
 const User = new schema.Entity('users')
 const Category = new schema.Entity('categories')
@@ -298,6 +299,8 @@ const signupEmail = (name, username, email, password) => {
     data.append('image', pathToFile)
     return api.put(`story/draft/xyz/image`, data)
   }
+
+
 
   // ------
   // STEP 3

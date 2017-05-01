@@ -1,11 +1,14 @@
 import PushNotification from 'react-native-push-notification'
 
+let token = null
+
 // https://github.com/zo0r/react-native-push-notification
 PushNotification.configure({
 
   // (optional) Called when Token is generated (iOS and Android)
-  onRegister: (token) => {
-    if (__DEV__) console.log('TOKEN:', token)
+  onRegister: (deviceToken) => {
+    if (__DEV__) console.log('TOKEN:', deviceToken)
+    token = deviceToken
   },
 
   // (required) Called when a remote or local notification is opened or received
@@ -34,5 +37,9 @@ PushNotification.configure({
     * - if not, you must call PushNotificationsHandler.requestPermissions() later
     * This example app shows how to best call requestPermissions() later.
     */
-  requestPermissions: false
+  requestPermissions: true
 })
+
+export function getToken(): {token: string, os: string} {
+  return token
+}

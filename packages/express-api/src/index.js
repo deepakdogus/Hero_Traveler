@@ -1,14 +1,21 @@
 import dotenv from 'dotenv'
 dotenv.config()
+import path from 'path'
 import express from 'express'
 import bodyParser from 'body-parser'
 import morgan from 'morgan'
+import apn from 'apn'
 import initCore from '@rwoody/ht-core'
 import routes from './routes'
 import passport from './passport'
 
 const app = express()
 const PORT = process.env.PORT || 3000
+
+const apnProvider = new apn.Provider({
+  cert: path.resolve('../certificates/apn-cert.pem'),
+  key: path.resolve('../certificates/apn-key.pem')
+})
 
 // Middleware
 app.use(bodyParser.json({}))

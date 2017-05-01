@@ -1,5 +1,10 @@
 const dotenv = require('dotenv')
 dotenv.config()
+if ( process.env.NODE_ENV === 'development') {
+  require('babel-register')
+  require('babel-polyfill')
+}
+
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const Models = require('@rwoody/ht-core').Models
@@ -9,7 +14,7 @@ const initCore = require('@rwoody/ht-core').default
 const PORT = process.env.PORT || 3000
 const path = require('path')
 
-/* Nunjucks config */ 
+/* Nunjucks config */
 const express = require('express')
 const nunjucks = require('nunjucks')
 const app = express()
@@ -17,11 +22,12 @@ const flash = require('connect-flash')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 
-/* settings for template rendering */ 
+/* settings for template rendering */
 
 const pathToTemplates = path.resolve(__dirname, 'templates/')
 const resultsPerPage = 15
 const multer = require('./multer.js')
+const auth = require('./auth.js')
 const makeDateReadable = (dataArray) => {
   return dataArray.map(element => {
     if (element.createdAt) {
@@ -43,11 +49,10 @@ const parseTable = (tableUrl) => {
 
 app.use(bodyParser.json({}))
 app.use(bodyParser.urlencoded({extended: true}))
+app.use(cookieParser())
 app.use(morgan('dev'))
+app.use('/authenticate', auth)
 
-/* The four middleware functions below give express a method to flash
-   content on success or failure of a server side operation. These methods can
-   be used anywhere in the templates */
 
 
 nunjucks.configure(pathToTemplates, {

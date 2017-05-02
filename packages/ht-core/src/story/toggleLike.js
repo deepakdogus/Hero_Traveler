@@ -35,8 +35,7 @@ export default function toggleLike(storyId, userId) {
           story.author,
           userId,
           storyId
-        ).then(({activity, isNew}) => {
-          console.log('activity', activity, isNew)
+        ).then(({isNew}) => {
           return Promise.resolve({isLiked, story, notify: isNew})
         })
       }

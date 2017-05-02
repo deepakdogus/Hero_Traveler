@@ -74,14 +74,22 @@ class FollowersScreen extends React.Component {
       )
     }
 
-    // console.log('this.props.usersById', this.props.usersById)
-
     if (this.state.usersById.length) {
       content = (
         <View style={styles.followers}>
           {_.map(this.state.usersById, uid => {
             const u = this.props.users[uid]
             const selected = this.userIsFollowed(u.id)
+            let followingText
+
+            if (uid === this.props.user.id) {
+              followingText = 'YOU'
+            } else if (selected) {
+              followingText = 'FOLLOWING'
+            } else {
+              followingText = 'FOLLOW'
+            }
+
             return (
               <View style={[styles.rowWrapper]} key={u.id}>
                 <View style={[styles.row, styles.followers]}>
@@ -98,7 +106,7 @@ class FollowersScreen extends React.Component {
                   <RoundedButton
                     style={selected ? styles.selectedFollowersButton : styles.followersButton}
                     textStyle={selected ? styles.selectedFollowersButtonText : styles.followersButtonText}
-                    text={selected ? 'FOLLOWING' : '+ FOLLOW'}
+                    text={followingText}
                     onPress={() => this.toggleFollow(u)}
                   />
                 </View>
@@ -122,6 +130,12 @@ class FollowersScreen extends React.Component {
   }
 
   toggleFollow = (u) => {
+
+    // Cannot follow yourself
+    if (this.props.user.id === u.id) {
+      return
+    }
+
     if (this.userIsFollowed(u.id)) {
       this.props.unfollowUser(this.props.user.id, u.id)
     } else {

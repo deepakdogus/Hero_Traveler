@@ -11,10 +11,10 @@ export default function toggleLike(req, res) {
         promise = Models.Story.populate(story, {path: 'author'})
           .then(storyWithUser => {
             const user = storyWithUser.author
-            if (user.receivesLikeNotifications()) {
+            if (user.receivesLikeNotifications() && notify) {
               return Models.UserDevice.find({user: user._id})
                 .then(devices =>
-                  !!devices && notify ?
+                  !!devices ?
                     likeNotification(devices, req.user, storyWithUser) :
                     Promise.resolve()
                 )

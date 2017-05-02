@@ -4,20 +4,23 @@ import {User, Follower, ActivityFollow} from '../models'
 export default function followUser(userId, followeeUserId) {
   return Follower.followUser(userId, followeeUserId)
   .then(() => {
-    return ActivityFollow.add(followeeUserId, userId)
-  })
-  .then(() => {
-    return Promise.all([
-      User.update({
+    return [
+      User.findOneAndUpdate({
         _id: userId
       }, {
         $inc: {'counts.following': 1}
-      }),
-      User.update({
+      }, {new: true}),
+      User.findOneAndUpdate({
         _id: followeeUserId
       }, {
         $inc: {'counts.followers': 1}
+      }, {new: true})
+    ]
+  })
+  .spread((user, followedUser) => {
+    return ActivityFollow.add(followeeUserId, userId)
+      .then(({isNew}) => {
+        return Promise.resolve({user, followedUser, notify: isNew})
       })
-    ])
   })
 }

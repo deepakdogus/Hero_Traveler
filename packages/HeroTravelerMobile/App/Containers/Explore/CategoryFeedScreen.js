@@ -129,6 +129,8 @@ class CategoryFeedScreen extends React.Component {
                 key={storyId}
                 storyId={storyId}
                 height={imageHeight}
+                autoPlayVideo={false}
+                allowVideoPlay={true}
                 onPress={() => NavActions.story({storyId})}
                 onPressLike={story => this.props.toggleLike(this.props.user.id, story.id)}
               />
@@ -178,8 +180,6 @@ const mapStateToProps = (state, props) => {
     entities: stories,
     error
   } = state.entities.stories;
-  console.log('props.categoryId', props.categoryId)
-  console.log('getByCategory(stories, props.categoryId)', getByCategory(stories, props.categoryId))
   return {
     user: state.entities.users.entities[state.session.userId],
     fetchStatus: getFetchStatus(state.entities.stories, props.categoryId),

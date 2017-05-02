@@ -10,8 +10,11 @@ const apnProvider = new apn.Provider({
   key: path.resolve(path.join(__dirname, '../certificates/apn-key.pem'))
 })
 
+function getDeviceIds(devices) {
+  return _.map(devices, 'deviceId')
+}
+
 export function likeNotification(devices, user, story) {
-  const deviceIds = _.map(devices, 'deviceId')
   const notification = new apn.Notification({
     alert: `${user.profile.fullName} liked your story ${story.title}`,
     badge,
@@ -20,9 +23,26 @@ export function likeNotification(devices, user, story) {
       type: 'like'
     }
   })
-  return _send(notification, deviceIds)
+  return _send(notification, getDeviceIds(devices))
     .then(result => {
       console.log('like notif result', result)
+      return Promise.resolve()
+    })
+}
+
+export function followerNotification(devices, followingUser) {
+  const notification = new apn.Notification({
+    alert: `${followingUser.profile.fullName} is now following you`,
+    badge,
+    sound,
+    payload: {
+      type: 'follow'
+    }
+  })
+
+  return _send(notification, getDeviceIds(devices))
+    .then(result => {
+      console.log('follow notif result', result)
       return Promise.resolve()
     })
 }

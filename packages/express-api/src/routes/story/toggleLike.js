@@ -5,7 +5,7 @@ export default function toggleLike(req, res) {
   const userId = req.user._id
   const storyId = req.params.id
   return Story.toggleLike(storyId, userId)
-    .then(({isLiked, story}) => {
+    .then(({isLiked, story, notify}) => {
       let promise
       if (isLiked) {
         promise = Models.Story.populate(story, {path: 'author'})
@@ -14,7 +14,8 @@ export default function toggleLike(req, res) {
             if (user.receivesLikeNotifications()) {
               return Models.UserDevice.find({user: user._id})
                 .then(devices =>
-                  devices ? likeNotification(devices, req.user, storyWithUser) :
+                  !!devices && notify ?
+                    likeNotification(devices, req.user, storyWithUser) :
                     Promise.resolve()
                 )
             } else {

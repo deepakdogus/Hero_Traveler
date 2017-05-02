@@ -28,6 +28,7 @@ FollowActivitySchema.statics = {
         fromUser
       }
     }, {
+      new: true,
       upsert: true,
       setDefaultsOnInsert: true
     })

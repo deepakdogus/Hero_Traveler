@@ -28,19 +28,26 @@ StoryLikeActivitySchema.statics = {
     // Update the same activity record to prevent seeing
     // the same activity several times in a row,
     // or insert a new record.
-    return this.findOneAndUpdate({
-      user,
-      fromUser,
-      story
-    }, {
-      $set: {
+    return new Promise((resolve, reject) => {
+      this.findOneAndUpdate({
         user,
         fromUser,
         story
-      }
-    }, {
-      upsert: true,
-      setDefaultsOnInsert: true
+      }, {
+        $set: {
+          user,
+          fromUser,
+          story
+        }
+      }, {
+        new: true,
+        passRawResult: true,
+        upsert: true,
+        setDefaultsOnInsert: true
+      }, (err, doc, {lastErrorObject: {updatedExisting}}) => {
+        if (err) return reject(err)
+        return resolve({activity: doc, isNew: !updatedExisting})
+      })
     })
   }
 }

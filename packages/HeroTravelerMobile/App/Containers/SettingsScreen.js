@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 import {
   ScrollView,
   View,
@@ -7,12 +7,11 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import {
-  Actions as NavActions,
   ActionConst as NavActionConst
 } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import SessionActions, {hasAuthData} from '../Redux/SessionRedux'
+import SessionActions from '../Redux/SessionRedux'
 import {Colors} from '../Themes'
 import styles from './Styles/SettingsScreenStyles'
 import Loader from '../Components/Loader'
@@ -44,10 +43,14 @@ const List = ({children}) => {
 
 class SettingsScreen extends React.Component {
 
+  static contextTypes = {
+    routes: PropTypes.object.isRequired,
+  };
+
   // Go to launch page and reset all store state on logout
   componentWillReceiveProps(newProps) {
     if (this.props.isLoggedIn && !newProps.isLoggedIn) {
-      NavActions.launchScreen({type: NavActionConst.RESET})
+      this.context.routes.launchScreen({type: NavActionConst.RESET})
       this.props.resetStore()
     }
   }
@@ -58,6 +61,7 @@ class SettingsScreen extends React.Component {
 
   render () {
     const user = this.props.user || {}
+    const {routes} = this.context
 
     return (
       <View style={[styles.containerWithNavbar, styles.root]}>
@@ -85,18 +89,22 @@ class SettingsScreen extends React.Component {
             />
             <Row
               text='Notifications'
-              onPress={() => alert('notifications')}
+              onPress={() => {
+                console.log('this.props', this.props)
+                console.log('this.context', this.context.routes)
+                routes.settings_notification()
+              }}
             />
           </List>
           <View style={styles.separator} />
           <List>
           <Row
             text='FAQ'
-            onPress={() => NavActions.FAQ()}
+            onPress={() => routes.FAQ()}
           />
           <Row
             text='Terms & Conditions'
-            onPress={() => NavActions.terms()}
+            onPress={() => routes.terms()}
           />
           <Row
             text='Sign Out'

@@ -17,6 +17,7 @@ import ExploreScreen from '../Containers/Tabs/ExploreScreen'
 import ProfileScreen from '../Containers/Tabs/ProfileScreen'
 import ReadOnlyProfileScreen from '../Containers/ReadOnlyProfileScreen'
 import SettingsScreen from '../Containers/SettingsScreen'
+import Settings_NotificationScreen from '../Containers/Settings_NotificationScreen'
 import CategoryFeedScreen from '../Containers/Explore/CategoryFeedScreen'
 import FollowersScreen from '../Containers/FollowersScreen'
 // import FollowingScreen from '../Containers/FollowingScreen'
@@ -386,6 +387,14 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={() => NavActions.pop()}
         title='Settings'
+        {...darkNavBarProps}
+      />
+      <Scene
+        key='settings_notification'
+        component={Settings_NotificationScreen}
+        direction='horizontal'
+        onLeft={() => NavActions.pop()}
+        title='Notifications'
         {...darkNavBarProps}
       />
       <Scene

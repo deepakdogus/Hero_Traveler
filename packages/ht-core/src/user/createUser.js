@@ -30,7 +30,8 @@ export function createUserFacebook(facebookUserData, device: ?object) {
     facebookUserData.fbid,
     facebookUserData.email,
     facebookUserData.name,
-    facebookUserData.pictureUrl
+    facebookUserData.pictureUrl,
+    !!device
   )
   .then(newUser => {
     if (!device) {
@@ -55,7 +56,8 @@ export default function createUser(userData, device: ?object) {
     userData.name,
     userData.email,
     userData.username,
-    userData.password
+    userData.password,
+    !!device
   )
   .then(newUser => {
     if (!device) {
@@ -68,7 +70,6 @@ export default function createUser(userData, device: ?object) {
     ).then(() => Promise.resolve(newUser))
   })
   .then(newUser => {
-    console.log('newUser', newUser)
     addUserToIndex(newUser)
     welcomeEmail(newUser)
     return newUser;

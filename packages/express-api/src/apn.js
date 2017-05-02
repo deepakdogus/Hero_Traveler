@@ -1,7 +1,7 @@
 import apn from 'apn'
 import path from 'path'
 import _ from 'lodash'
-
+import {Models} from '@rwoody/ht-core'
 const sound = 'chime.caf'
 const badge = 1
 
@@ -47,8 +47,39 @@ export function followerNotification(devices, followingUser) {
     })
 }
 
+export function commentNotification(devices, story, user) {
+  const notification = new apn.Notification({
+    alert: `${user.profile.fullName} commented on your story ${story.title}`,
+    badge,
+    sound,
+    payload: {
+      type: 'comment'
+    }
+  })
+
+  return _send(notification, getDeviceIds(devices))
+    .then(result => {
+      console.log('comment notif result', result)
+      return Promise.resolve()
+    })
+}
+
 function _send(notification, devices) {
   return apnProvider.send(notification, devices)
+    .then(result => {
+      let promise
+      if (result.failed.length) {
+        promise = Models.UserDevice.remove({
+          deviceId: {
+            $in: _.map(result.failed, 'device')
+          }
+        })
+      } else {
+        promise = Promise.resolve()
+      }
+
+      return promise.then(() => Promise.resolve(result))
+    })
 }
 
 export function cleanup() {

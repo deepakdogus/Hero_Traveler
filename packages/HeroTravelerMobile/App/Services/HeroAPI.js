@@ -95,26 +95,35 @@ const create = () => {
   }
 
   const login = (username, password) => {
+    console.log('getPushToken()', getPushToken())
     return api.post('auth', {}, {
       auth: {
         username,
         password
-      },
-      deviceId: getPushToken()
+      }
     })
   }
 
   const logout = (tokens) => {
     return api.post('auth/revoke', {
-      tokens: tokens,
-      deviceId: getPushToken()
+      tokens: tokens
     })
+  }
+
+  const updateDevice = (userId) => {
+    return api.put(`user/${userId}/device`, {
+      device: getPushToken()
+    })
+  }
+
+  const removeDevice = (userId) => {
+    const device = getPushToken()
+    return api.delete(`user/${userId}/device/${device.token}`)
   }
 
   const refreshTokens = (refreshToken) => {
     return api.post('auth/refresh', {
-      refreshToken: refreshToken,
-      deviceId: getPushToken()
+      refreshToken: refreshToken
     })
   }
 
@@ -367,6 +376,8 @@ const create = () => {
     uploadCoverImage,
     uploadCoverVideo,
     uploadStoryImage,
+    removeDevice,
+    updateDevice,
   }
 }
 

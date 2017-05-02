@@ -137,7 +137,7 @@ UserSchema.virtual('devices', {
 })
 
 UserSchema.statics = {
-  createFromEmailData(name, email, username, password) {
+  createFromEmailData(name, email, username, password, hasDevice) {
     return encryptPassword(password).then(hashedPassword => {
       return this.create({
         username,
@@ -150,11 +150,11 @@ UserSchema.statics = {
           fullName: name
         },
         emailConfirmationToken: uuid(),
-        notificationTypes: defaultNotificationTypes,
+        notificationTypes: hasDevice ? defaultNotificationTypes : [],
       })
     })
   },
-  createFromFacebookData(fbid, email, name, pictureUrl) {
+  createFromFacebookData(fbid, email, name, pictureUrl, hasDevice) {
     // trim the name to be 10 characters long max
     const trimmedName = name.slice(0, 9).trim()
     // Make a semi-random username for the user:
@@ -171,7 +171,7 @@ UserSchema.statics = {
         fullName: name
       },
       emailConfirmationToken: uuid(),
-      notificationTypes: defaultNotificationTypes,
+      notificationTypes: hasDevice ? defaultNotificationTypes : [],
     })
   }
 }

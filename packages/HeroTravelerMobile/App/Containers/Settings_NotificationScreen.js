@@ -50,9 +50,9 @@ class NotificationsSettingsScreen extends React.Component {
       <View style={[styles.containerWithNavbar, styles.root]}>
         <List>
           {_.map(notificationOpts, ([label, value]) => {
-            console.log('label', label)
             return (
               <Row
+                key={value}
                 text={label}
                 onPress={() => this._changeVal(value)}
                 selected={_.includes(this.state.selectedTypes, value)}

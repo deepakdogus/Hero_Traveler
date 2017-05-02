@@ -11,6 +11,10 @@ const currentUserTokens = ({session}) => session.tokens
 // attempts to signup with email
 export function * logout (api, action) {
   const {tokens} = action
+
+  const userId = yield select(currentUserId)
+  yield call(api.removeDevice, userId)
+
   const response = yield call(
     api.logout,
     tokens

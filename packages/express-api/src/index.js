@@ -19,9 +19,12 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(morgan('dev'))
 app.use(passport.initialize())
 
-nodeCleanup(() => {
-  apnCleanup()
-})
+if (process.env.NODE_ENV !== 'development') {
+  nodeCleanup(() => {
+    console.log('cleaning up')
+    apnCleanup()
+  })
+}
 
 routes(app)
 

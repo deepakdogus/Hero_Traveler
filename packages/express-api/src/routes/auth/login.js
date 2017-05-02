@@ -9,11 +9,11 @@ export default function checkLogin(req, res, next) {
       return next(new Error('Unauthorized'))
     }
 
-    console.log('user', user.isFacebookConnected)
-    console.log('user', user.toJSON())
+    const {deviceId} = req.body
+    console.log('deviceId', deviceId)
 
     User.getOrCreateTokens(user._id)
-  .then(token => res.json(token))
+      .then(token => res.json(token))
       .catch(next)
   })(req, res)
 }

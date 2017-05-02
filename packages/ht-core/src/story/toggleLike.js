@@ -35,9 +35,9 @@ export default function toggleLike(storyId, userId) {
           story.author,
           userId,
           storyId
-        ).then(() => {isLiked})
+        ).then(() => Promise.resolve({isLiked, story}))
       }
 
-      return {isLiked}
+      return Promise.resolve({isLiked, story})
     })
 }

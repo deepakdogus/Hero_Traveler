@@ -72,19 +72,25 @@ const create = () => {
   // const getUser = (username) => api.get('search/users', {q: username})
   const signupEmail = (name, username, email, password) => {
     return api.post('user', {
-      name,
-      username,
-      email,
-      password
+      user: {
+        name,
+        username,
+        email,
+        password
+      },
+      deviceId: getPushToken()
     })
   }
 
   const signupFacebook = (fbid, email, name, pictureUrl) => {
     return api.post('user/facebook', {
-      fbid,
-      name,
-      email,
-      pictureUrl
+      user: {
+        fbid,
+        name,
+        email,
+        pictureUrl
+      },
+      deviceId: getPushToken()
     })
   }
 
@@ -93,19 +99,22 @@ const create = () => {
       auth: {
         username,
         password
-      }
+      },
+      deviceId: getPushToken()
     })
   }
 
   const logout = (tokens) => {
     return api.post('auth/revoke', {
-      tokens
+      tokens: tokens,
+      deviceId: getPushToken()
     })
   }
 
   const refreshTokens = (refreshToken) => {
     return api.post('auth/refresh', {
-      refreshToken: refreshToken
+      refreshToken: refreshToken,
+      deviceId: getPushToken()
     })
   }
 

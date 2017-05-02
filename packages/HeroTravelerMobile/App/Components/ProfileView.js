@@ -215,7 +215,7 @@ export default class ProfileView extends React.Component {
           <Image
             style={[styles.coverImage, profileImage ? null : styles.noCoverImage]}
             resizeMode='cover'
-            source={{uri: profileImage || ''}}
+            source={{uri: profileImage || undefined}}
           >
             <LinearGradient colors={gradientStyle} style={styles.gradient}>
               <View style={styles.coverInner}>

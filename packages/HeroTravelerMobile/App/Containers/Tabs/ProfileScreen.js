@@ -73,7 +73,6 @@ class ProfileScreen extends React.Component {
 const mapStateToProps = (state) => {
   const {userId} = state.session
   let {stories} = state.entities
-  console.log('state.entities.stories', state.entities.stories)
   return {
     user: state.entities.users.entities[userId],
     userStoriesFetchStatus: getUserFetchStatus(stories, userId),

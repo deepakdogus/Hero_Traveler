@@ -8,12 +8,19 @@ import {Constants} from '@rwoody/ht-util'
 
 import CoreError from '../utils/error'
 import {ModelName as UploadRef} from './upload'
+import {ModelName as DeviceRef} from './user_device'
 import mongooseHidden from './plugins/mongooseHidden'
 import encryptPassword from '../utils/encryptPassword'
 
 export const ACCOUNT_TYPE_FACEBOOK = 'facebook'
 export const ACCOUNT_TYPE_TWITTER  = 'twitter'
 export const ACCOUNT_TYPE_EMAIL    = 'email_internal'
+
+const defaultNotificationTypes = [
+  Constants.USER_NOTIFICATION_STORY_LIKE,
+  Constants.USER_NOTIFICATION_STORY_COMMENT,
+  Constants.USER_NOTIFICATION_FOLLOWER,
+]
 
 const AccountSchema = Schema({
   kind: {
@@ -86,7 +93,15 @@ const UserSchema = new Schema({
   introTooltips: [{
     name: String,
     seen: Boolean
-  }]
+  }],
+  notificationTypes: [{
+    type: String,
+    enum: [
+      Constants.USER_NOTIFICATION_STORY_LIKE,
+      Constants.USER_NOTIFICATION_STORY_COMMENT,
+      Constants.USER_NOTIFICATION_FOLLOWER,
+    ]
+  }],
 }, {
   timestamps: true,
   toObject: {
@@ -111,6 +126,16 @@ UserSchema.virtual('isTwitterConnected')
     )
   })
 
+UserSchema.virtual('devices', {
+  ref: DeviceRef,
+  localField: '_id',
+  foreignField: 'user',
+  // options: {
+  //   sort: {createdAt: -1},
+  //   limit: 1
+  // }
+})
+
 UserSchema.statics = {
   createFromEmailData(name, email, username, password) {
     return encryptPassword(password).then(hashedPassword => {
@@ -124,7 +149,8 @@ UserSchema.statics = {
         profile: {
           fullName: name
         },
-        emailConfirmationToken: uuid()
+        emailConfirmationToken: uuid(),
+        notificationTypes: defaultNotificationTypes,
       })
     })
   },
@@ -144,7 +170,8 @@ UserSchema.statics = {
       profile: {
         fullName: name
       },
-      emailConfirmationToken: uuid()
+      emailConfirmationToken: uuid(),
+      notificationTypes: defaultNotificationTypes,
     })
   }
 }
@@ -162,6 +189,27 @@ UserSchema.methods = {
     }
 
     return null
+  },
+
+  receivesLikeNotifications() {
+    return _.includes(
+      this.notificationTypes,
+      Constants.USER_NOTIFICATION_STORY_LIKE
+    )
+  },
+
+  receivesCommentNotifications() {
+    return _.includes(
+      this.notificationTypes,
+      Constants.USER_NOTIFICATION_STORY_COMMENT
+    )
+  },
+
+  receivesFollowerNotifications() {
+    return _.includes(
+      this.notificationTypes,
+      Constants.USER_NOTIFICATION_FOLLOWER
+    )
   }
 
 }

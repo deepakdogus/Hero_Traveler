@@ -115,7 +115,7 @@ const mapStateToProps = (state) => {
       isUnread: true,
       fromUser: _.values(users)[_.random(0, users.length - 1)],
       message: 'I tried to contact you via phone, but it went straight to voicemail. I\'m concerned that our last post is not very good',
-      createdAt: moment().subtract(3, '6').toDate()
+      createdAt: moment().subtract(3, 'days').toDate()
     }, {
       id: 1,
       isUnread: false,

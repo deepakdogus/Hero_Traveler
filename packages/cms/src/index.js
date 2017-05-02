@@ -1,6 +1,6 @@
 const dotenv = require('dotenv')
 dotenv.config()
-if ( process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development') {
   require('babel-register')
   require('babel-polyfill')
 }
@@ -51,7 +51,8 @@ app.use(bodyParser.json({}))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(cookieParser())
 app.use(morgan('dev'))
-app.use('/authenticate', auth)
+app.use('/authenticate', auth.authRouter)
+
 
 
 
@@ -62,7 +63,11 @@ nunjucks.configure(pathToTemplates, {
   cache: process.env.NODE_ENV === 'production'
 })
 
-app.get('/:table', (req, res) => {
+app.get('/logout', (req, res) => {
+  res.clearCookie('user').status(200).redirect('/')
+})
+
+app.get('/:table', auth.isAuthenticated, (req, res) => {
   const { table } = req.params
   const dbTable = parseTable(table)
   const { direction, sortby } = req.query
@@ -79,19 +84,19 @@ app.get('/:table', (req, res) => {
     })
 })
 
-app.get('/:table/edit', (req, res) => {
+app.get('/:table/edit', auth.isAuthenticated, (req, res) => {
   const { id } = req.query
   const dbTable = parseTable(req.params.table)
   Models[dbTable].findById(id)
     .then((data) => res.render(`edit-${req.params.table}.njk`, { data }))
 })
 
-app.get('/:table/create', (req, res) => {
+app.get('/:table/create', auth.isAuthenticated, (req, res) => {
   const { table } = req.params
   res.render(`edit-${table}.njk`)
 })
 
-app.post('/:table/edit', multer.single('image'), (req, res, next) => {
+app.post('/:table/edit', auth.isAuthenticated, multer.single('image'), (req, res, next) => {
   const { id } = req.query
   const dbTable = parseTable(req.params.table)
   Models[dbTable].findOneAndUpdate(id, req.body, { upsert: true })
@@ -102,7 +107,7 @@ app.post('/:table/edit', multer.single('image'), (req, res, next) => {
     .catch(error => res.render('message.njk', {message: `an error occurred: ${error}` }))
 })
 
-app.get('/:table/delete', (req, res) => {
+app.get('/:table/delete', auth.isAuthenticated, (req, res) => {
   const { id } = req.query
   const dbTable = parseTable(req.params.table)
   Models[dbTable].delete({_id: id})
@@ -114,10 +119,10 @@ app.get('/:table/delete', (req, res) => {
 })
 
 app.get('/', (req, res) => {
-  res.render('index.njk')
+  console.log('req.cookie', req.cookies)
+  const loggedIn = req.cookies.user ? req.cookies.user.username : false
+  res.render('index.njk', { loggedIn } )
 })
-
-
 
 initCore({
   mongoDB: process.env.MONGODB_URL,

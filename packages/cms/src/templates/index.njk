@@ -24,9 +24,25 @@
     <a href="/categories?sortby=title&direction={{ direction }}&page={{ page }}" class="ml1 btn btn-primary">Categories Table</a>
     <a href="/stories" class="ml1 btn btn-primary">Stories Table</a>
     <a href="/" class="ml1 btn btn-primary">Home</a>
+    {% if loggedIn %}
+      <div class="ml3 h4">Logged in as {{ loggedIn }}</div>
+    {% endif %}
   </div>
 {% endblock %}
 
 {% block main %}
-  <p class="m2 h4">Welcome to the HeroTraveller Admin Content Management System</p>
+  <p class="m2 h4">Welcome to the HeroTraveller Admin Content Management System.</p>
+  {% if not loggedIn %}
+    <p class="m2 h4"> Please Log In.</p>
+    <form enctype="application/json" action="/authenticate" method="post" class="sm-col-4 m3">
+      <label>Username</label>
+      <input name="username" type="text" value="{{data.username}}" class="block col-12 mb1 field">
+      <label>Password</label>
+      <input name="password" type="text" value="{{data.password}}" class="block col-12 mb1 field">
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="reset" class="btn btn-primary black bg-gray">Clear</button>
+    </form>
+  {% else %}
+    <a href="/logout" class="ml1 btn btn-primary black bg-gray">Log Out</a>
+  {% endif %}
 {% endblock %}

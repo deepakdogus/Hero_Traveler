@@ -464,7 +464,6 @@ export default NavActions.create(
           <Scene
             key='explore_categoryFeed'
             component={CategoryFeedScreen}
-            direction='horizontal'
             onLeft={() => NavActions.pop()}
             title='Category Feed'
             hideNavBar={false}

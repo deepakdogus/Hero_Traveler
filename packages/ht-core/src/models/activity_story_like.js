@@ -22,7 +22,7 @@ StoryLikeActivitySchema.statics = {
 
     // Don't create an activity if you like your own story
     if (user.equals(fromUser)) {
-      return Promise.resolve()
+      return Promise.resolve({isNew: false})
     }
 
     // Update the same activity record to prevent seeing
@@ -44,9 +44,9 @@ StoryLikeActivitySchema.statics = {
         passRawResult: true,
         upsert: true,
         setDefaultsOnInsert: true
-      }, (err, doc, {lastErrorObject: {updatedExisting}}) => {
+      }, (err, doc, {lastErrorObject}) => {
         if (err) return reject(err)
-        return resolve({activity: doc, isNew: !updatedExisting})
+        return resolve({activity: doc, isNew: !lastErrorObject.updatedExisting})
       })
     })
   }

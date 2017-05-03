@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import {Image, View} from 'react-native'
 
 import {Images, Colors, Metrics} from '../Themes'
-import UserActions from '../Redux/Entities/Users'
+import UserActions, {getFollowers} from '../Redux/Entities/Users'
 import StoryActions, {getByUser, getUserFetchStatus} from '../Redux/Entities/Stories'
 import ProfileView from '../Components/ProfileView'
 import Loader from '../Components/Loader'
@@ -52,25 +52,42 @@ class ReadOnlyProfileScreen extends Component {
         hasTabbar={false}
         profileImage={getImageUrl(user.profile.cover)}
         fetchStatus={storiesFetchStatus}
+        onPressFollow={this.follow}
+        onPressUnfollow={this.unfollow}
+        isFollowing={_.includes(this.props.myFollowedUsers, user.id)}
         style={styles.root}
       />
     )
   }
+
+  follow = () => {
+    this.props.followUser(this.props.authedUser.id, this.props.user.id)
+  }
+
+  unfollow = () => {
+    this.props.unfollowUser(this.props.authedUser.id, this.props.user.id)
+  }
 }
 
 const mapStateToProps = (state, props) => {
+  const users = state.entities.users
+  const authedUser = users.entities[state.session.userId]
   return {
-    user: state.entities.users.entities[props.userId],
+    authedUser,
+    user: users.entities[props.userId],
     storiesById: getByUser(state.entities.stories, props.userId),
     storiesFetchStatus: getUserFetchStatus(state.entities.stories, props.userId),
-    userFetchStatus: state.entities.users.fetchStatus
+    userFetchStatus: users.fetchStatus,
+    myFollowedUsers: getFollowers(users, 'following', authedUser.id)
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     attemptGetUserStories: (userId) => dispatch(StoryActions.fromUserRequest(userId)),
-    attemptRefreshUser: (userId) => dispatch(UserActions.loadUser(userId))
+    attemptRefreshUser: (userId) => dispatch(UserActions.loadUser(userId)),
+    followUser: (userId, userIdToFollow) => dispatch(UserActions.followUser(userId, userIdToFollow)),
+    unfollowUser: (userId, userIdToUnfollow) => dispatch(UserActions.unfollowUser(userId, userIdToUnfollow)),
   }
 }
 

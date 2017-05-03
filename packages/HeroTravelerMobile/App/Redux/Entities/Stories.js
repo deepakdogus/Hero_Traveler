@@ -48,8 +48,7 @@ export const INITIAL_STATE = Immutable({
 
 // request the temperature for a city
 export const feedRequest = (state, { userId }) => {
-  return Immutable.setIn(
-    state,
+  return state.setIn(
     ['fetchStatus', 'fetching'],
     true
   );
@@ -195,9 +194,9 @@ export const getUserFetchStatus = (state, userId) => {
   return state.getIn(['storiesByUserAndId', userId, 'fetchStatus'], {})
 }
 
-export const getIdsByUser = (state, userId: string) => {
-  return state.getIn(['storiesByUser', userId, 'byId'], [])
-}
+// export const getIdsByUser = (state, userId: string) => {
+//   return state.getIn(['storiesByUser', userId, 'byId'], [])
+// }
 
 /* ------------- Hookup Reducers To Types ------------- */
 

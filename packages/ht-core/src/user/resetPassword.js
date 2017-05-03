@@ -13,7 +13,6 @@ export default function resetPassword(email) {
     user.passwordResetToken = uuid()
     return user.save()
     .then(user => {
-      console.log('user has token', user)
       return resetPasswordEmail(user)
     })
     .then(() => {

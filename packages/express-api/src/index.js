@@ -1,11 +1,14 @@
 import dotenv from 'dotenv'
 dotenv.config()
+import path from 'path'
 import express from 'express'
 import bodyParser from 'body-parser'
 import morgan from 'morgan'
+import nodeCleanup from 'node-cleanup'
 import initCore from '@rwoody/ht-core'
 import routes from './routes'
 import passport from './passport'
+import {cleanup as apnCleanup} from './apn'
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -14,8 +17,14 @@ const PORT = process.env.PORT || 3000
 app.use(bodyParser.json({}))
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(morgan('dev'))
-
 app.use(passport.initialize())
+
+if (process.env.NODE_ENV !== 'development') {
+  nodeCleanup(() => {
+    console.log('cleaning up')
+    apnCleanup()
+  })
+}
 
 routes(app)
 

@@ -24,4 +24,10 @@ export default {
   USER_ROLES_ADMIN_VALUE: 'admin',
   USER_ROLES_BRAND_VALUE: 'brand',
   USER_ROLES_CONTRIBUTOR_VALUE: 'contributor',
+
+  USER_NOTIFICATION_STORY_LIKE: 'story_like',
+  USER_NOTIFICATION_STORY_COMMENT: 'story_comment',
+  USER_NOTIFICATION_FOLLOWER: 'user_new_follower',
+
+  DEVICE_TYPE_IOS: 'ios'
 }

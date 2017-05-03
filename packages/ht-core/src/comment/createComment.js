@@ -14,10 +14,10 @@ export default function createComment(attrs) {
             attrs.user,
             comment._id,
             story._id
-          )
+          ).then(() => Promise.resolve(story))
         })
-        .then(() => {
-          return comment
+        .then(story => {
+          return Promise.resolve({story, comment})
         })
     })
 }

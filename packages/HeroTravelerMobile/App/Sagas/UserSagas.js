@@ -57,6 +57,8 @@ export function * userFollowUser(api, {userId, targetUserId}) {
     targetUserId
   )
 
+  console.log('targetUserId', targetUserId)
+
   yield put(UserActions.followUserSuccess(userId, targetUserId))
 
   if (!response.ok) {

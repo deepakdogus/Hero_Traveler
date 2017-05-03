@@ -2,9 +2,9 @@ import { combineReducers } from 'redux'
 import configureStore from './CreateStore'
 import rootSaga from '../Sagas/'
 import { reducer as formReducer } from 'redux-form'
-
 import entities from './Entities'
 import {SessionTypes} from './SessionRedux'
+import routes from './Routes'
 
 export default () => {
   /* ------------- Assemble The Reducers ------------- */
@@ -14,6 +14,8 @@ export default () => {
     session: require('./SessionRedux').reducer,
     storyCreate: require('./StoryCreateRedux').reducer,
     form: formReducer,
+    startup: require('./StartupRedux').reducer,
+    routes,
     entities,
   })
 

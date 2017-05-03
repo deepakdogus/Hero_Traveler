@@ -2,6 +2,7 @@ import _ from 'lodash'
 import React from 'react'
 import { ScrollView, Text, Image, View, TouchableOpacity } from 'react-native'
 import moment from 'moment'
+import PushNotification from 'react-native-push-notification'
 
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
@@ -54,6 +55,10 @@ class NotificationScreen extends React.Component {
 
   render () {
     let content
+
+    PushNotification.getApplicationIconBadgeNumber(num => {
+      console.log('# of notifications', num)
+    })
 
     if (this.state.selectedTab === 1 ) {
       content = ( <ThreadList
@@ -115,7 +120,7 @@ const mapStateToProps = (state) => {
       isUnread: true,
       fromUser: _.values(users)[_.random(0, users.length - 1)],
       message: 'I tried to contact you via phone, but it went straight to voicemail. I\'m concerned that our last post is not very good',
-      createdAt: moment().subtract(3, '6').toDate()
+      createdAt: moment().subtract(3, 'days').toDate()
     }, {
       id: 1,
       isUnread: false,

@@ -24,6 +24,8 @@ import threadList from './threadList'
 import threadMessageList from './threadMessageList'
 import threadCreate from './threadCreate'
 import threadCreateMessage from './threadCreateMessage'
+import updateDevice from './deviceUpdate'
+import removeDevice from './deviceRemove'
 
 const router = express.Router()
 
@@ -144,6 +146,18 @@ router.get(
   '/:id/following',
   hasValidOauth,
   endpointWrapper(getFollowers)
+)
+
+router.put(
+  '/:id/device',
+  hasValidOauth,
+  endpointWrapper(updateDevice)
+)
+
+router.delete(
+  '/:id/device/:deviceId',
+  hasValidOauth,
+  endpointWrapper(removeDevice)
 )
 
 export default router

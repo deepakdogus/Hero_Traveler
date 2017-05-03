@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -51,6 +50,7 @@
 		949A3A681E9EB74600815C53 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 949A3A641E9EB74600815C53 /* FBSDKCoreKit.framework */; };
 		949A3A691E9EB74600815C53 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 949A3A651E9EB74600815C53 /* FBSDKLoginKit.framework */; };
 		949A3A6A1E9EB74600815C53 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 949A3A661E9EB74600815C53 /* FBSDKShareKit.framework */; };
+		94A4BD701EB77CFA003B75DD /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94A4BD561EB77CC7003B75DD /* libRCTPushNotification.a */; };
 		94AE1C2F1EA7C01700B88515 /* libReact-Native-Webview-Bridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94AE1C221EA7BFE500B88515 /* libReact-Native-Webview-Bridge.a */; };
 		956748568BFA45CDB84EEA07 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96A7A968678E46938DCAE9E4 /* Foundation.ttf */; };
 		998A514A1E3C4CEF89CF51BC /* libRCTFBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48469546E47F4DF8A2A0AB96 /* libRCTFBSDK.a */; };
@@ -326,6 +326,20 @@
 			remoteGlobalIDString = 9350E0F11CE3B0920041D815;
 			remoteInfo = RCTFBSDK;
 		};
+		94A4BD551EB77CC7003B75DD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 94A4BD3F1EB77CC7003B75DD /* RCTPushNotification.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RCTPushNotification;
+		};
+		94A4BD571EB77CC7003B75DD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 94A4BD3F1EB77CC7003B75DD /* RCTPushNotification.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3D05745F1DE6004600184BB4;
+			remoteInfo = "RCTPushNotification-tvOS";
+		};
 		94AE1C211EA7BFE500B88515 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 94AE1C091EA7BFE500B88515 /* React-Native-Webview-Bridge.xcodeproj */;
@@ -436,12 +450,14 @@
 		942D12171EB3956400A0CFE5 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
 		942D12491EB395B200A0CFE5 /* RNHockeyApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNHockeyApp.h; sourceTree = "<group>"; };
 		942D124A1EB395B200A0CFE5 /* RNHockeyApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNHockeyApp.m; sourceTree = "<group>"; };
+		945C658A1EB63EAF0032BBEC /* HeroTravelerMobile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = HeroTravelerMobile.entitlements; path = HeroTravelerMobile/HeroTravelerMobile.entitlements; sourceTree = "<group>"; };
 		9465AAA61EB0FDC7003109B0 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		9465AAA81EB0FDCC003109B0 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		949A3A631E9EB74600815C53 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = ../../../../../../Documents/FacebookSDK/Bolts.framework; sourceTree = "<group>"; };
 		949A3A641E9EB74600815C53 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../../../../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		949A3A651E9EB74600815C53 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../../../../../Documents/FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		949A3A661E9EB74600815C53 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../../../../../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
+		94A4BD3F1EB77CC7003B75DD /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		94AE1C091EA7BFE500B88515 /* React-Native-Webview-Bridge.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "React-Native-Webview-Bridge.xcodeproj"; path = "../node_modules/react-native-webview-bridge-updated/ios/React-Native-Webview-Bridge.xcodeproj"; sourceTree = "<group>"; };
 		96A7A968678E46938DCAE9E4 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		98D7E161748438C60F0507D1 /* Pods-HeroTravelerMobileTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HeroTravelerMobileTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HeroTravelerMobileTests/Pods-HeroTravelerMobileTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -479,6 +495,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94A4BD701EB77CFA003B75DD /* libRCTPushNotification.a in Frameworks */,
 				9465AAA71EB0FDC7003109B0 /* GameKit.framework in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
@@ -633,6 +650,7 @@
 		13B07FAE1A68108700A75B9A /* HeroTravelerMobile */ = {
 			isa = PBXGroup;
 			children = (
+				945C658A1EB63EAF0032BBEC /* HeroTravelerMobile.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -679,6 +697,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				94A4BD3F1EB77CC7003B75DD /* RCTPushNotification.xcodeproj */,
 				942D12481EB395B200A0CFE5 /* RNHockeyApp */,
 				942D12171EB3956400A0CFE5 /* Pods.xcodeproj */,
 				94AE1C091EA7BFE500B88515 /* React-Native-Webview-Bridge.xcodeproj */,
@@ -842,6 +861,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		94A4BD401EB77CC7003B75DD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				94A4BD561EB77CC7003B75DD /* libRCTPushNotification.a */,
+				94A4BD581EB77CC7003B75DD /* libRCTPushNotification-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		94AE1C0A1EA7BFE500B88515 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -966,10 +994,16 @@
 						DevelopmentTeam = 9498CR345N;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.GameCenter = {
 								enabled = 1;
 							};
 							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+							com.apple.Push = {
 								enabled = 1;
 							};
 						};
@@ -1031,6 +1065,10 @@
 				{
 					ProductGroup = 00C302D41ABCB9D200DB3ED1 /* Products */;
 					ProjectRef = 00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */;
+				},
+				{
+					ProductGroup = 94A4BD401EB77CC7003B75DD /* Products */;
+					ProjectRef = 94A4BD3F1EB77CC7003B75DD /* RCTPushNotification.xcodeproj */;
 				},
 				{
 					ProductGroup = 139105B71AF99BAD00B5F7CC /* Products */;
@@ -1341,6 +1379,20 @@
 			fileType = archive.ar;
 			path = libRCTFBSDK.a;
 			remoteRef = 949A3A441E9EB68500815C53 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		94A4BD561EB77CC7003B75DD /* libRCTPushNotification.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTPushNotification.a;
+			remoteRef = 94A4BD551EB77CC7003B75DD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		94A4BD581EB77CC7003B75DD /* libRCTPushNotification-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libRCTPushNotification-tvOS.a";
+			remoteRef = 94A4BD571EB77CC7003B75DD /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		94AE1C221EA7BFE500B88515 /* libReact-Native-Webview-Bridge.a */ = {
@@ -1674,6 +1726,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = HeroTravelerMobile/HeroTravelerMobile.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
@@ -1697,6 +1750,7 @@
 					"$(SRCROOT)/../node_modules/react-native-global-props/ios/ReactNativeGlobalProps/**",
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-video/ios",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS/**",
 				);
 				INFOPLIST_FILE = HeroTravelerMobile/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1719,6 +1773,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = HeroTravelerMobile/HeroTravelerMobile.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9498CR345N;
@@ -1741,6 +1796,7 @@
 					"$(SRCROOT)/../node_modules/react-native-global-props/ios/ReactNativeGlobalProps/**",
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-video/ios",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS/**",
 				);
 				INFOPLIST_FILE = HeroTravelerMobile/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

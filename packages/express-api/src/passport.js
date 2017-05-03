@@ -9,11 +9,12 @@ passport.use(
       User.validateCredentials(username, password)
         .then(user => {
           next(null, user)
-          return Promise.resolve()
+          return null
         })
         .catch(err => {
           console.log('Auth error', err)
           next(new Error('Unauthorized'))
+          return null
         })
     }
   )
@@ -25,11 +26,12 @@ passport.use(
       User.validateAccessToken(accessToken)
         .then(user => {
           next(null, user)
-          return Promise.resolve()
+          return null
         })
         .catch(err => {
           console.log('Auth error', err)
           next(new Error('Unauthorized'))
+          return null
         })
     }
   )

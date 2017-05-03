@@ -28,7 +28,7 @@ export default (rootReducer, rootSaga) => {
 
   // add the autoRehydrate enhancer
   if (ReduxPersist.active) {
-    // enhancers.push(autoRehydrate())
+    enhancers.push(autoRehydrate())
   }
 
   // if Reactotron is enabled (default for __DEV__), we'll create the store through Reactotron
@@ -37,7 +37,7 @@ export default (rootReducer, rootSaga) => {
 
   // configure persistStore and check reducer version number
   if (ReduxPersist.active) {
-    // RehydrationServices.updateReducers(store)
+    RehydrationServices.updateReducers(store)
   }
 
   // kick off root saga

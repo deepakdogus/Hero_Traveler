@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, Image, View } from 'react-native'
+import { Text, Image, View, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import {
   Actions as NavigationActions,
@@ -13,7 +13,7 @@ import {
   GraphRequestManager,
 } from 'react-native-fbsdk'
 
-import {hasAuthData} from '../Redux/SessionRedux'
+import SessionActions, {hasAuthData} from '../Redux/SessionRedux'
 import SignupActions, {hasSignedUp} from '../Redux/SignupRedux'
 import RoundedButton from '../Components/RoundedButton'
 import TextButton from '../Components/TextButton'
@@ -25,33 +25,19 @@ class LaunchScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      facebookLoggedIn: false
+      facebookLoggedIn: false,
+      animationValue: new Animated.Value(0)
     }
-  }
-
-  async componentDidMount() {
-    const fbAccessToken = await AccessToken.getCurrentAccessToken()
-
-    // are we logged in to facebook?
-    if (fbAccessToken) {
-      // do something here
-    }
-
-    console.log('tokenInfo', fbAccessToken)
-
-    // dev only
-    this.setState({
-      facebookLoggedIn: fbAccessToken
-    })
-
-    // @TODO check for email credentials and forward user
-
-    SplashScreen.hide()
   }
 
   componentWillReceiveProps(newProps) {
     if (!newProps.fetching && newProps.hasSignedUp) {
       NavigationActions.signupFlow()
+    }
+
+    if (this.props.splashShown && !newProps.splashShown && !this.props.hasHeroAccessToken) {
+      SplashScreen.hide()
+      this.fadeIn()
     }
   }
 
@@ -63,7 +49,7 @@ class LaunchScreen extends React.Component {
       'user_friends'
     ]).then(
       (result) => {
-        AccessToken.getCurrentAccessToken().then(data => {
+        AccessToken.getCurrentAccessToken().then(token => {
           if(result.isCancelled) {
             return
           }
@@ -110,12 +96,23 @@ class LaunchScreen extends React.Component {
     new GraphRequestManager().addRequest(infoRequest).start();
   }
 
+  fadeIn() {
+    Animated.timing(
+      this.state.animationValue,
+      {
+        toValue: 1,
+        duration: 1500
+      }
+    ).start()
+  }
+
   render () {
     return (
       <Image
         source={Images.launchBackground}
         style={[styles.backgroundImage]}
       >
+        <Animated.View style={{flex: 1, opacity: this.state.animationValue}}>
         <View style={[styles.logoSection]}>
           <Image source={Images.whiteLogo} style={styles.logo} />
           <Text
@@ -165,6 +162,7 @@ class LaunchScreen extends React.Component {
             text='Log In'
           />
         </View>
+        </Animated.View>
       </Image>
     )
   }
@@ -172,15 +170,17 @@ class LaunchScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    isLoggedIn: hasAuthData(state.session),
+    hasHeroAccessToken: hasAuthData(state.session),
     fetching: state.signup.fetching,
     hasSignedUp: hasSignedUp(state.signup),
+    splashShown: state.startup.splashShown,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signupFacebook: (...args) => dispatch(SignupActions.signupFacebook(...args))
+    resumeSession: () => dispatch(SessionActions.resumeSession()),
+    signupFacebook: (...args) => dispatch(SignupActions.signupFacebook(...args)),
   }
 }
 

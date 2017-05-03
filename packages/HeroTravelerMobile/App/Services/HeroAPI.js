@@ -1,8 +1,9 @@
 // a library to wrap and simplify api calls
 import {Platform} from 'react-native'
 import apisauce from 'apisauce'
-import {get, isArray} from 'lodash'
+import _, {get, isArray} from 'lodash'
 import {normalize, schema} from 'normalizr'
+import {getToken as getPushToken} from '../Config/PushConfig'
 
 const User = new schema.Entity('users')
 const Category = new schema.Entity('categories')
@@ -69,25 +70,32 @@ const create = () => {
   // const getRoot = () => api.get('')
   // const getRate = () => api.get('rate_limit')
   // const getUser = (username) => api.get('search/users', {q: username})
-const signupEmail = (name, username, email, password) => {
+  const signupEmail = (name, username, email, password) => {
     return api.post('user', {
-      name,
-      username,
-      email,
-      password
+      user: {
+        name,
+        username,
+        email,
+        password
+      },
+      deviceId: getPushToken()
     })
   }
 
   const signupFacebook = (fbid, email, name, pictureUrl) => {
     return api.post('user/facebook', {
-      fbid,
-      name,
-      email,
-      pictureUrl
+      user: {
+        fbid,
+        name,
+        email,
+        pictureUrl
+      },
+      deviceId: getPushToken()
     })
   }
 
   const login = (username, password) => {
+    console.log('getPushToken()', getPushToken())
     return api.post('auth', {}, {
       auth: {
         username,
@@ -98,7 +106,25 @@ const signupEmail = (name, username, email, password) => {
 
   const logout = (tokens) => {
     return api.post('auth/revoke', {
-      tokens
+      tokens: tokens
+    })
+  }
+
+  const updateDevice = (userId) => {
+    return api.put(`user/${userId}/device`, {
+      device: getPushToken()
+    })
+  }
+
+  const removeDevice = (userId) => {
+    const device = getPushToken()
+    if (device === null) return Promise.resolve()
+    return api.delete(`user/${userId}/device/${device.token}`)
+  }
+
+  const refreshTokens = (refreshToken) => {
+    return api.post('auth/refresh', {
+      refreshToken: refreshToken
     })
   }
 
@@ -109,6 +135,11 @@ const signupEmail = (name, username, email, password) => {
 
   const getMe = () => {
     return api.get('user')
+      .then(response => {
+        return Object.assign({}, response, {
+          data: normalize(response.data, User)
+        })
+      })
   }
 
   const getUser = (userId) => {
@@ -299,6 +330,8 @@ const signupEmail = (name, username, email, password) => {
     return api.put(`story/draft/xyz/image`, data)
   }
 
+
+
   // ------
   // STEP 3
   // ------
@@ -316,6 +349,7 @@ const signupEmail = (name, username, email, password) => {
     unsetAuth,
     login,
     logout,
+    refreshTokens,
     getMe,
     updateUser,
     getUser,
@@ -348,6 +382,8 @@ const signupEmail = (name, username, email, password) => {
     uploadCoverImage,
     uploadCoverVideo,
     uploadStoryImage,
+    removeDevice,
+    updateDevice,
   }
 }
 

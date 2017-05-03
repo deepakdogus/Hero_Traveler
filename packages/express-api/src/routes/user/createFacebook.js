@@ -5,8 +5,8 @@ const {ACCOUNT_TYPE_FACEBOOK} = Models.User
 // FACEBOOK Signup
 // Create the user and generate auth tokens
 export default function createUserFromFacebook(req, res) {
-  const user = req.body
-  return User.createFacebook(user)
+  const {user, deviceId} = req.body
+  return User.createFacebook(user, deviceId)
     .then(user => {
       return User.getOrCreateTokens(user._id)
         .then(({tokens}) => {

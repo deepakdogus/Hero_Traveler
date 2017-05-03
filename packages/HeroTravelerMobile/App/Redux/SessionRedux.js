@@ -1,7 +1,5 @@
-import _ from 'lodash'
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
-import {is} from 'ramda'
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -9,7 +7,11 @@ const { Types, Creators } = createActions({
   initializeSession: ['userId', 'tokens'],
   logout: ['tokens'],
   logoutSuccess: null,
-  resetRootStore: null
+  resetRootStore: null,
+  resumeSession: null,
+  resumeSessionFailure: ['error'],
+  refreshSession: null,
+  refreshSessionSuccess: ['tokens']
 })
 
 export const SessionTypes = Types
@@ -21,7 +23,8 @@ export const INITIAL_STATE = Immutable({
   tokens: null,
   userId: null,
   isLoggingOut: false,
-  isLoggedOut: true
+  isLoggedOut: true,
+  isResumingSession: false,
 })
 
 /* ------------- Reducers ------------- */
@@ -32,6 +35,7 @@ export const initializeSession = (state, {userId, tokens}) => {
     userId,
     tokens,
     isLoggedOut: false,
+    isResumingSession: false
   })
 }
 
@@ -45,6 +49,15 @@ export const logoutSuccess = (state) => state.merge({
   isLoggingOut: false
 })
 
+export const setIsResuming = (state, {isResuming}) => state.merge({
+  isResumingSession: isResuming
+})
+
+export const refreshSessionSuccess = (state, {tokens}) => {
+  return state.merge({tokens})
+}
+
+export const resumeError = (state, {error}) => state.merge({isResuming: false, error})
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -52,11 +65,18 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.INITIALIZE_SESSION]: initializeSession,
   [Types.LOGOUT]: logout,
   [Types.LOGOUT_SUCCESS]: logoutSuccess,
+  [Types.RESUME_SESSION]: setIsResuming,
+  [Types.RESUME_SESSION_FAILURE]: resumeError,
+  [Types.REFRESH_SESSION_SUCCESS]: refreshSessionSuccess
+
 })
 
 /* ------------- Selectors ------------- */
 
 // Does the user have necessary info to make API requests?
-export const hasAuthData: boolean = (sessionState) => sessionState.tokens && sessionState.userId
+export const hasAuthData: boolean = (sessionState) => {
+  // console.log('hasAuthData', !!sessionState.tokens, !!sessionState.userId)
+  return !!sessionState.tokens && !!sessionState.userId
+}
 export const getUserId: string = (sessionState) => sessionState.userId
 

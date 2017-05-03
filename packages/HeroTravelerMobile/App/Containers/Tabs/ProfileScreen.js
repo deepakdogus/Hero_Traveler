@@ -23,6 +23,7 @@ class ProfileScreen extends React.Component {
   }
 
   componentDidMount() {
+    console.log('this.props.user.id',this.props.user.id)
     this.props.attemptRefreshUser(this.props.user.id)
     this.props.attemptGetUserStories(this.props.user.id)
   }

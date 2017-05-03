@@ -1,4 +1,5 @@
-import { takeLatest } from 'redux-saga/effects'
+import { delay } from 'redux-saga'
+import { takeLatest, take, fork, race, call, put } from 'redux-saga/effects'
 
 import HeroAPI from '../Services/HeroAPI'
 
@@ -8,7 +9,7 @@ import { StartupTypes } from '../Redux/StartupRedux'
 import { OpenScreenTypes } from '../Redux/OpenScreenRedux'
 import { LoginTypes } from '../Redux/LoginRedux'
 import { SignupTypes } from '../Redux/SignupRedux'
-import { SessionTypes } from '../Redux/SessionRedux'
+import SessionActions, { SessionTypes } from '../Redux/SessionRedux'
 import { StoryCreateTypes } from '../Redux/StoryCreateRedux'
 // Entities
 import { StoryTypes } from '../Redux/Entities/Stories'
@@ -17,7 +18,7 @@ import { UserTypes } from '../Redux/Entities/Users'
 
 /* ------------- Sagas ------------- */
 
-import { startup } from './StartupSagas'
+import { startup, hideSplash } from './StartupSagas'
 import { login, loginFacebook, resetPassword } from './LoginSagas'
 import {
   signupEmail,
@@ -27,7 +28,12 @@ import {
   followUser,
   unfollowUser
 } from './SignupSagas'
-import { logout, updateUser } from './SessionSagas'
+import {
+  logout,
+  updateUser,
+  resumeSession,
+  refreshSession
+} from './SessionSagas'
 import { openScreen } from './OpenScreenSagas'
 import { getCategories } from './CategorySagas'
 import {
@@ -57,9 +63,34 @@ const heroAPI = HeroAPI.create()
 
 /* ------------- Connect Types To Sagas ------------- */
 
+// function delay(millis) {
+//   const promise = new Promise(resolve => {
+//     setTimeout(() => resolve(true), millis)
+//   });
+//   return promise;
+// }
+
+function * pollRefreshTokens() {
+  yield call(delay, 60 * 1000)
+  yield put(SessionActions.refreshSession())
+}
+
+function * watchRefreshTokens() {
+  while(true) {
+    yield take([
+      SessionTypes.INITIALIZE_SESSION,
+      SessionTypes.REFRESH_SESSION_SUCCESS
+    ])
+    yield race([
+      call(pollRefreshTokens),
+      take(SessionTypes.LOGOUT_SUCCESS)
+    ])
+  }
+}
+
 export default function * root () {
   yield [
-    // some sagas only receive an action
+    fork(watchRefreshTokens),
     takeLatest(StartupTypes.STARTUP, startup),
     takeLatest(OpenScreenTypes.OPEN_SCREEN, openScreen),
     takeLatest(LoginTypes.LOGIN_REQUEST, login, heroAPI),
@@ -73,6 +104,8 @@ export default function * root () {
     takeLatest(SignupTypes.SIGNUP_FOLLOW_USER, followUser, heroAPI),
     takeLatest(SignupTypes.SIGNUP_UNFOLLOW_USER, unfollowUser, heroAPI),
     takeLatest(SessionTypes.LOGOUT, logout, heroAPI),
+    takeLatest(SessionTypes.RESUME_SESSION, resumeSession, heroAPI),
+    takeLatest(SessionTypes.REFRESH_SESSION, refreshSession, heroAPI),
 
     // Drafts and story creation
     takeLatest(StoryCreateTypes.PUBLISH_DRAFT, publishDraft, heroAPI),

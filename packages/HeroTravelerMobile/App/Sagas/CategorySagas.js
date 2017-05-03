@@ -5,7 +5,6 @@ export function * getCategories (api, action) {
   const response = yield call(api.getCategories)
   if (response.ok) {
     const { entities } = response.data;
-    console.log('get cats', response.data)
     yield put(CategoryActions.loadCategoriesSuccess(entities.categories))
   } else {
     yield put(CategoryActions.loadCategoriesFailure())

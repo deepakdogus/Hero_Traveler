@@ -45,6 +45,11 @@ export default class ProfileView extends React.Component {
     }
   }
 
+  static defaultProps = {
+    onPressFollow: () => {},
+    myFollowersById: []
+  }
+
   _toggleImageMenu = () => {
     this.setState({imageMenuOpen: !this.state.imageMenuOpen})
   }
@@ -173,8 +178,8 @@ export default class ProfileView extends React.Component {
         <View style={{flexDirection: 'row'}}>
           <TouchableOpacity
             style={styles.buttons}
-            onPress={() => alert('FOLLOWING')}>
-            <Text style={styles.buttonsText}>FOLLOWING</Text>
+            onPress={this.props.isFollowing ? this.props.onPressUnfollow : this.props.onPressFollow}>
+            <Text style={styles.buttonsText}>{this.props.isFollowing ? 'FOLLOWING' : '+ FOLLOW'}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.buttons}
@@ -215,7 +220,7 @@ export default class ProfileView extends React.Component {
           <Image
             style={[styles.coverImage, profileImage ? null : styles.noCoverImage]}
             resizeMode='cover'
-            source={{uri: profileImage || ''}}
+            source={{uri: profileImage || undefined}}
           >
             <LinearGradient colors={gradientStyle} style={styles.gradient}>
               <View style={styles.coverInner}>

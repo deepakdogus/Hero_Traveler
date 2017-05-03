@@ -5,9 +5,19 @@ import {Models} from '@rwoody/ht-core'
 const sound = 'chime.caf'
 const badge = 1
 
+let certPath, keyPath
+
+if (process.env.NODE_ENV === 'development') {
+  certPath = path.resolve(path.join(__dirname, '../certificates/apn-cert.pem'))
+  keyPath = path.resolve(path.join(__dirname, '../certificates/apn-key.pem'))
+} else {
+  certPath = path.resolve(path.join(__dirname, '../certificates/apn-prod-cert.pem'))
+  keyPath = path.resolve(path.join(__dirname, '../certificates/apn-prod-key.pem'))
+}
+
 const apnProvider = new apn.Provider({
-  cert: path.resolve(path.join(__dirname, '../certificates/apn-cert.pem')),
-  key: path.resolve(path.join(__dirname, '../certificates/apn-key.pem'))
+  cert: certPath,
+  key: keyPath
 })
 
 function getDeviceIds(devices) {

@@ -10,6 +10,7 @@ COPY package.json /app/package.json
 RUN npm install --production
 RUN rm -f /app/.npmrc
 COPY dist/ /app/dist
+COPY certificates/ /app/certificates
 
 EXPOSE 3000
 CMD npm start

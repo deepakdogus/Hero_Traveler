@@ -18,7 +18,7 @@ router.post('/',
 
 router.post('/refresh',
   hasValidOauth,
-  refresh
+  endpointWrapper(refresh)
 )
 
 router.post('/revoke',

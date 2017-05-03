@@ -6,11 +6,11 @@ const oauth = {
 	tokens: {
 		access: {
 			length: 32,
-			life: 3600, // 1 hour
+			life: (3600 * 24 * 7),
 		},
 		refresh: {
 			length: 32,
-			life: (3600 * 24 * 90), // 90 days
+			life: (3600 * 24 * 90),
 		},
 	},
 	clients: {

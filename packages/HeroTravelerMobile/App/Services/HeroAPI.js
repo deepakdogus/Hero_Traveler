@@ -118,6 +118,7 @@ const create = () => {
 
   const removeDevice = (userId) => {
     const device = getPushToken()
+    if (device === null) return Promise.resolve()
     return api.delete(`user/${userId}/device/${device.token}`)
   }
 
@@ -134,6 +135,11 @@ const create = () => {
 
   const getMe = () => {
     return api.get('user')
+      .then(response => {
+        return Object.assign({}, response, {
+          data: normalize(response.data, User)
+        })
+      })
   }
 
   const getUser = (userId) => {

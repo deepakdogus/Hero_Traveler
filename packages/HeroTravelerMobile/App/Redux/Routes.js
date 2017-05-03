@@ -2,8 +2,8 @@ import { ActionConst } from 'react-native-router-flux';
 
 const initialState = {
   scene: {
-    sceneKey: 'login',
-    initial: true
+    // sceneKey: 'login',
+    // initial: true
   },
 };
 

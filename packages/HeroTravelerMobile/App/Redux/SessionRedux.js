@@ -10,6 +10,8 @@ const { Types, Creators } = createActions({
   resetRootStore: null,
   resumeSession: null,
   resumeSessionFailure: ['error'],
+  refreshSession: null,
+  refreshSessionSuccess: ['tokens']
 })
 
 export const SessionTypes = Types
@@ -51,6 +53,10 @@ export const setIsResuming = (state, {isResuming}) => state.merge({
   isResumingSession: isResuming
 })
 
+export const refreshSessionSuccess = (state, {tokens}) => {
+  return state.merge({tokens})
+}
+
 export const resumeError = (state, {error}) => state.merge({isResuming: false, error})
 
 /* ------------- Hookup Reducers To Types ------------- */
@@ -61,6 +67,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOGOUT_SUCCESS]: logoutSuccess,
   [Types.RESUME_SESSION]: setIsResuming,
   [Types.RESUME_SESSION_FAILURE]: resumeError,
+  [Types.REFRESH_SESSION_SUCCESS]: refreshSessionSuccess
 
 })
 
@@ -69,7 +76,7 @@ export const reducer = createReducer(INITIAL_STATE, {
 // Does the user have necessary info to make API requests?
 export const hasAuthData: boolean = (sessionState) => {
   // console.log('hasAuthData', !!sessionState.tokens, !!sessionState.userId)
-  return sessionState.tokens && sessionState.userId
+  return !!sessionState.tokens && !!sessionState.userId
 }
 export const getUserId: string = (sessionState) => sessionState.userId
 

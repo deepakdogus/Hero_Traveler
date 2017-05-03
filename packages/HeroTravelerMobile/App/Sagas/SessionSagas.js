@@ -23,8 +23,9 @@ export function * logout (api, action) {
   if (response.ok) {
     yield [
       put(SessionActions.logoutSuccess()),
-      call(api.unsetAuth)
+      call(api.unsetAuth),
     ]
+    yield put(StartupActions.hideSplash())
   }
 }
 
@@ -46,34 +47,59 @@ export function * updateUser (api, action) {
 }
 
 export function * resumeSession (api) {
-  const tokens = yield select(currentUserTokens)
+  const [userId, tokens]= yield [
+    select(currentUserId),
+    select(currentUserTokens)
+  ]
   const accessToken = _.find(tokens, {type: 'access'})
-  const refreshToken = _.find(tokens, {type: 'refresh'})
 
   yield call(api.setAuth, accessToken.value)
 
-  const refreshTokenResponse = yield call(
-    api.refreshTokens,
-    refreshToken.value
+  const response = yield call(
+    api.getMe,
+    userId
   )
 
-  if (refreshTokenResponse.ok) {
-    const {user, tokens: newTokens} = refreshTokenResponse.data
-    const newAccessToken = _.find(newTokens, {type: 'access'})
+  if (response.ok) {
+    const {users} = response.data.entities
+    const user = users[userId]
     yield [
       // @TODO test me
       // Must receive users before running session initialization
       // so the user object is accessible
       put(UserActions.receiveUsers({[user.id]: user})),
-      call(api.setAuth, newAccessToken.value),
-      put(SessionActions.initializeSession(user.id, newTokens)),
-      // call(ScreenActions.openScreen, 'tabbar'),
+      put(SessionActions.initializeSession(user.id, tokens)),
       put(ScreenActions.openScreen('tabbar')),
       put(StartupActions.hideSplash()),
     ]
   } else {
-    // Remove
+    yield put(SessionActions.resumeSessionFailure(new Error('You have been logged out.'))),
     yield put(SessionActions.resetRootStore())
-    yield put(SessionActions.resumeSessionError(new Error('Unable to login.')))
+    yield put(StartupActions.hideSplash())
+  }
+}
+
+// Check current tokens to see if they need to be refreshed
+export function * refreshSession(api) {
+  const tokens = yield select(currentUserTokens)
+  const accessToken = _.find(tokens, {type: 'access'})
+  const refreshToken = _.find(tokens, {type: 'refresh'})
+  const refreshWindow = 24 * 3600
+  if (accessToken.expiresIn > refreshWindow) {
+    return yield put(SessionActions.refreshSessionSuccess(tokens))
+  }
+
+  const response = yield call(api.refreshTokens, refreshToken.value)
+
+  if (response.ok) {
+    const {tokens: newTokens} = response.data
+    const newAccessToken = _.find(newTokens, {type: 'access'})
+    console.log('newAccessToken.value')
+    return yield [
+      call(api.setAuth, newAccessToken.value),
+      put(SessionActions.refreshSessionSuccess(tokens))
+    ]
+  } else {
+    return yield put(SessionActions.refreshSessionSuccess(tokens))
   }
 }

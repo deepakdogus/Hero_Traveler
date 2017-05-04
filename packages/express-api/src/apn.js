@@ -17,7 +17,8 @@ if (process.env.NODE_ENV === 'development') {
 
 const apnProvider = new apn.Provider({
   cert: certPath,
-  key: keyPath
+  key: keyPath,
+  ca: path.resolve(path.join(__dirname, '../certificates/entrust_2048_ca.pem'))
 })
 
 function getDeviceIds(devices) {

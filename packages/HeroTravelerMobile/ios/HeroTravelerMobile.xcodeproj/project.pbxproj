@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -1807,8 +1808,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rehashstudio.herotraveler;
 				PRODUCT_NAME = HeroTravelerMobile;
-				PROVISIONING_PROFILE = "85a40dea-a124-49f4-8896-95f1a769d9cc";
-				PROVISIONING_PROFILE_SPECIFIER = "XC iOS Ad Hoc: com.rehashstudio.herotraveler";
+				PROVISIONING_PROFILE = "e740b169-b5c0-4848-9429-93a695224724";
+				PROVISIONING_PROFILE_SPECIFIER = "Hero Traveler Ad Hoc - PushNotif";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

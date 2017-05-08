@@ -8,14 +8,16 @@
     "build": "babel src -d dist",
     "clean": "rimraf dist",
     "start": "node dist/index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "deploy": "./ops/deploy.sh",
+    "tail-logs": "./ops/tail_logs.sh"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@rwoody/ht-core": "~0.0.3",
-    "@rwoody/ht-util": "0.0.4",
+    "@rwoody/ht-util": "~0.0.4",
     "apn": "^2.1.4",
     "aws-sdk": "^2.40.0",
     "bcrypt": "^1.0.2",

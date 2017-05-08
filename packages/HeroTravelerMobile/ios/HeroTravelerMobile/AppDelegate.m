@@ -9,6 +9,7 @@
 
 #import "AppDelegate.h"
 
+#import <React/RCTLinkingManager.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import "RCTPushNotificationManager.h"
@@ -79,13 +80,42 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
             openURL:(NSURL *)url
             options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
   
-  BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
-                                                                openURL:url
+  NSString *myUrl = url.absoluteString;
+
+  
+//  BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
+//                                                                openURL:url
+//                                                      sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+//                                                             annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
+//                  ];
+  
+//  if(!handled) {
+//    return [RCTLinkingManager application:application openURL:url
+//                        sourceApplication:sourceApplication annotation:annotation];
+//  }
+
+//  return handled;
+  
+  
+//  if ([myUrl containsString:@])
+  
+  if ([myUrl containsString:@"com.rehashstudio.herotraveler"]) {
+    return [RCTLinkingManager application:application
+                              openURL:url
+                              sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+                              annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
+  } else {
+    return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                      openURL:url
                                                       sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
-                                                             annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
-                  ];
-  // Add any custom logic here.
-  return handled;
+                                                      annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
+  }
 }
+
+//- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+//  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+//{
+//  
+//}
 
 @end

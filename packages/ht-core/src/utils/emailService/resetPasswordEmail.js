@@ -24,7 +24,7 @@ export default function resetPasswordEmail(user) {
   const context = {
     subject: 'Link to Reset Your HERO Traveler Password',
     // @TODO: this should be a link to the mobile app
-    resetPasswordUrl: `http://herotraveler.com/reset/${user.passwordResetToken}`,
+    resetPasswordUrl: `com.rehashstudio.herotraveler://resetpassword/${user.passwordResetToken}`,
     logoUrl: 'https://s3.amazonaws.com/hero-traveler/assets/ht-logo-white-small.png',
     logoHeight: '50px',
     logoWidth: '246px',

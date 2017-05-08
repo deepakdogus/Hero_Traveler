@@ -1,22 +1,15 @@
 import {User} from '../models'
-import {resetPasswordEmail} from '../utils/emailService'
-import uuid from 'uuid'
 
-export default function resetPassword(email) {
-  return User.findOne({ email: email})
+export default function resetPassword(token, password) {
+  return User.findOne({passwordResetToken: token})
   .then((user) => {
-    // Return if we didn't find the email address
     if (!user) {
-      return
+      return Promise.reject(new Error('Token has expired'))
     }
 
-    user.passwordResetToken = uuid()
-    return user.save()
-    .then(user => {
-      return resetPasswordEmail(user)
-    })
-    .then(() => {
-      return user
-    })
+    return user.updatePassword(password)
+      .then(() => {
+        return Promise.resolve({ok: true})
+      })
   })
 }

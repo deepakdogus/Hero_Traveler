@@ -128,8 +128,19 @@ const create = () => {
     })
   }
 
-  const resetPassword = (email) => {
-    return api.post('user/resetPassword', {email})
+  const resetPasswordRequest = (email) => {
+    return api.post('user/resetPasswordRequest', {email})
+  }
+
+  const resetPassword = (token, password) => {
+    return api.put('user/resetPassword', {
+      token,
+      password
+    })
+  }
+
+  const verifyEmail = (token) => {
+    return api.get(`user/verify-email/${token}`)
   }
 
 
@@ -353,6 +364,7 @@ const create = () => {
     getMe,
     updateUser,
     getUser,
+    resetPasswordRequest,
     resetPassword,
     signupEmail,
     signupFacebook,
@@ -384,6 +396,7 @@ const create = () => {
     uploadStoryImage,
     removeDevice,
     updateDevice,
+    verifyEmail,
   }
 }
 

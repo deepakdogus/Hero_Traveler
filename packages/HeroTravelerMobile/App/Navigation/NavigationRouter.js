@@ -47,6 +47,7 @@ import ResetPasswordRequestScreen from '../Containers/ResetPasswordRequestScreen
 import SignupScreen from '../Containers/Signup/SignupScreen'
 import SignupTopics from '../Containers/Signup/SignupTopics'
 import SignupSocial from '../Containers/Signup/SignupSocial'
+import ResetPasswordScreen from '../Containers/ResetPasswordScreen'
 
 // https://github.com/aksonov/react-native-router-flux/blob/master/Example/Example.js#L52
 const getSceneStyle = (/* NavigationSceneRendererProps */ props, computedProps) => {
@@ -106,230 +107,6 @@ const tabBarProps = {
 /* **************************
 * Documentation: https://github.com/aksonov/react-native-router-flux
 ***************************/
-
-class NavigationRouter extends Component {
-  render () {
-    return (
-      <Router getSceneStyle={getSceneStyle}>
-        <Scene key='drawer' component={Modal}>
-          <Scene
-            key='root'
-            {...clearNavBarProps}
-          >
-            <Scene
-              key='launchScreen'
-              component={LaunchScreen}
-              rightTitle='Browse as a Guest >'
-              rightButtonTextStyle={Styles.browseGuest}
-              onRight={() => alert('TODO Browse as guest')}
-            />
-            <Scene
-              key='signup'
-              component={SignupScreen}
-            />
-            <Scene
-              key='signupFlow'
-              {...darkNavBarProps}
-            >
-              <Scene
-                initial
-                key='signupFlow_topics'
-                component={SignupTopics}
-                rightTitle='Next'
-                onRight={() => NavActions.signupFlow_social()}
-              />
-              <Scene
-                key='signupFlow_social'
-                component={SignupSocial}
-                rightTitle='Done'
-                onRight={() => NavActions.tabbar()}
-              />
-            </Scene>
-            <Scene
-              key='login'
-              component={LoginScreen}
-            />
-            <Scene
-              key='resetPasswordRequest'
-              component={ResetPasswordRequestScreen}
-            />
-            <Scene
-              key='changePassword'
-              component={ChangePasswordScreen}
-              direction='horizontal'
-              onLeft={() => NavActions.pop()}
-              title='Change Password'
-              {...darkNavBarProps}
-            />
-            <Scene
-              key='settings'
-              component={SettingsScreen}
-              direction='horizontal'
-              onLeft={() => NavActions.pop()}
-              title='Settings'
-              {...darkNavBarProps}
-            />
-            <Scene
-              key='terms'
-              component={TermsAndConditionsScreen}
-              direction='horizontal'
-              onLeft={() => NavActions.pop()}
-              title='Terms & Conditions'
-              {...darkNavBarProps}
-            />
-            <Scene
-              key='FAQ'
-              component={FAQScreen}
-              direction='horizontal'
-              onLeft={() => NavActions.pop()}
-              title='FAQ'
-              {...darkNavBarProps}
-            />
-            <Scene
-              key='privacy'
-              component={PrivacyScreen}
-              direction='horizontal'
-              onLeft={() => NavActions.pop()}
-              title='Privacy Policy'
-              {...darkNavBarProps}
-            />
-            <Scene
-              key='story'
-              component={StoryReadingScreen}
-              direction='horizontal'
-              onLeft={() => NavActions.pop()}
-              {...clearNavBarProps}
-            />
-            <Scene
-              key='storyComments'
-              component={StoryCommentsScreen}
-              direction='horizontal'
-              onLeft={() => NavActions.pop()}
-              title='Comments'
-              {...darkNavBarProps}
-            />
-            <Scene key='tabbar'
-              {...tabBarProps}
-            >
-              <Scene
-                key='myFeed'
-                initial
-                icon={TabIcon}
-                component={MyFeedScreen}
-                title='Feed'
-                renderBackButton={() => null}
-                hideNavBar={true}
-              />
-              <Scene
-                key='explore'
-                icon={TabIcon}
-                hideNavBar={false}
-              >
-                <Scene
-                  key='explore_grid'
-                  initial
-                  component={ExploreScreen}
-                  title='Explore'
-                  {...darkNavBarProps}
-                  hideNavBar={true}
-                />
-                <Scene
-                  key='explore_categoryFeed'
-                  component={CategoryFeedScreen}
-                  direction='horizontal'
-                  onLeft={() => NavActions.pop()}
-                  title='Category Feed'
-                  hideNavBar={false}
-                  {...darkNavBarProps}
-                />
-              </Scene>
-              <Scene
-                key='createStory'
-                title='Create Story'
-                icon={TabIcon}
-                onPress={() => NavActions.createStoryFlow()}
-              />
-              <Scene
-                key='activity'
-                icon={TabIcon}
-                component={ActivityScreen}
-                title='Notifications'
-                {...darkNavBarProps}
-              />
-              <Scene
-                key='profile'
-                icon={TabIcon}
-                component={ProfileScreen}
-                hideNavBar
-              />
-            </Scene>
-            <Scene
-              key='edit_profile'
-              component={ProfileScreen}
-              hideNavBar
-              isEditing={true}
-              direction='vertical'
-            />
-            <Scene
-              key='createStoryFlow'
-              direction='vertical'
-              hideNavBar={true}
-            >
-              <Scene
-                key='createStory_info'
-                title='Create Story'
-                component={StoryCreateScreen}
-              />
-              <Scene
-                key='createStory_cover'
-                component={StoryCoverScreen}
-                panHandlers={null}
-                direction="horizontal"
-              />
-              <Scene
-                key='createStory_content'
-                component={FullScreenEditor}
-                panHandlers={null}
-                direction='horizontal'
-              />
-              <Scene
-                key='createStory_details'
-                panHandlers={null}
-                component={CreateStoryDetailScreen}
-              />
-              <Scene
-                key='createStory_tags'
-                panHandlers={null}
-                component={TagScreen}
-              />
-            </Scene>
-            <Scene
-              key='readOnlyProfile'
-              component={ReadOnlyProfileScreen}
-              onLeft={() => NavActions.pop()}
-            />
-            <Scene
-              key='followersScreen'
-              component={FollowersScreen}
-              title='Followers'
-              direction='horizontal'
-              onLeft={() => NavActions.pop({direction: 'horizontal'})}
-              {...darkNavBarProps}
-            />
-            <Scene
-              key='mediaSelectorScreen'
-              component={MediaSelectorScreen}
-              direction='horizontal'
-            />
-          </Scene>
-        </Scene>
-      </Router>
-    )
-  }
-}
-
-// export default connect()(NavigationRouter)
-
 export default NavActions.create(
     <Scene
       key='root'
@@ -372,6 +149,10 @@ export default NavActions.create(
       <Scene
         key='resetPasswordRequest'
         component={ResetPasswordRequestScreen}
+      />
+      <Scene
+        key='resetPassword'
+        component={ResetPasswordScreen}
       />
       <Scene
         key='changePassword'

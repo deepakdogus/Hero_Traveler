@@ -16,8 +16,6 @@ if (process.env.NODE_ENV === 'development') {
   keyPath = path.resolve(path.join(__dirname, '../certificates/apn-prod-key.pem'))
 }
 
-console.log('paths', certPath, keyPath)
-
 const apnProvider = new apn.Provider({
   cert: certPath,
   key: keyPath,

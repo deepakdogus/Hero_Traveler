@@ -4,29 +4,16 @@ import {
   ScrollView,
   Text,
   TextInput,
-  TouchableOpacity,
   Image,
-  Keyboard,
   KeyboardAvoidingView,
-  LayoutAnimation
 } from 'react-native'
 import { connect } from 'react-redux'
-import {
-  Actions as NavigationActions,
-  ActionConst as NavActionConst
-} from 'react-native-router-flux'
 
-import {Images, Metrics, Colors} from '../Themes'
-import Loader from '../Components/Loader'
+import {Images} from '../Themes'
 import RoundedButton from '../Components/RoundedButton'
-import TextButton from '../Components/TextButton'
-import TOS from '../Components/TosFooter'
 import styles from './Styles/ResetPasswordRequestScreenStyles'
 import LoginActions from '../Redux/LoginRedux'
 
-const Constants = {
-  EMAIL_REGEX: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-}
 
 class Input extends React.Component {
   render() {
@@ -42,40 +29,42 @@ class Input extends React.Component {
   }
 }
 
-class ResetPasswordRequestScreen extends React.Component {
+class ResetPasswordScreen extends React.Component {
 
   static propTypes = {
     dispatch: PropTypes.func,
-    updatePassword: PropTypes.func
+    updatePassword: PropTypes.func,
+    token: PropTypes.string.isRequired
   }
+
+  static contextTypes = {
+    routes: PropTypes.object.isRequired,
+  };
 
   constructor (props) {
     super(props)
     this.state = {
-      email: ''
+      password: '',
+      confirmPassword: ''
     }
   }
 
-  handlePressResetPasswordRequest = () => {
+  handleResetPassword = () => {
+    const {token} = this.props
+    const {password, confirmPassword} = this.state
 
-    if (!Constants.EMAIL_REGEX.test(this.state.email)) {
-      alert('Invalid email address')
+    if (password !== confirmPassword) {
+      alert('Passwords must match')
       return
     }
-
-    // TODO implement backend update.
-    this.props.resetPasswordRequest(this.state.email)
-    alert('A password reset link has been emailed to you!')
-    NavigationActions.login()
-
-  }
-
-  handleChangeEmail = (text) => {
-    this.setState({ email: text })
+    this.props.resetPassword(
+      token,
+      password
+    )
+    this.context.routes.login()
   }
 
   render () {
-    const email = this.state.email
     return (
       <Image
         source={Images.launchBackground}
@@ -92,24 +81,39 @@ class ResetPasswordRequestScreen extends React.Component {
               Please enter your email address
               </Text>
             </View>
-            <View style={{height: 120}}>
+            <View style={{height: 60}}>
             </View>
             <Input
-              ref='email'
+              ref='password'
               style={styles.input}
-              value={email}
+              value={this.state.password}
               keyboardType='default'
               returnKeyType='next'
               autoCapitalize='none'
+              secureTextEntry
               autoCorrect={false}
-              onChangeText={this.handleChangeEmail}
+              onChangeText={(password) => this.setState({password})}
               underlineColorAndroid='transparent'
-              onSubmitEditing={this.handlePressResetPasswordRequest}
-              placeholder='Email' />
+              onSubmitEditing={() => this.refs.confirmPassword.focus()}
+              placeholder='Password' />
+
+            <Input
+              ref='confirmPassword'
+              style={styles.input}
+              value={this.state.confirmPassword}
+              keyboardType='default'
+              returnKeyType='done'
+              autoCapitalize='none'
+              secureTextEntry
+              autoCorrect={false}
+              onChangeText={(confirmPassword) => this.setState({confirmPassword})}
+              underlineColorAndroid='transparent'
+              onSubmitEditing={() => this.handleResetPassword}
+              placeholder='Confirm Password' />
 
             <RoundedButton
               text="Submit"
-              onPress={this.handlePressResetPasswordRequest}
+              onPress={this.handleResetPassword}
             />
 
             {this.props.error && <Text style={styles.error}>{this.props.error}</Text>}
@@ -128,8 +132,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    resetPasswordRequest: (email) => dispatch(LoginActions.resetPasswordRequest(email))
+    resetPassword: (token, password) => dispatch(LoginActions.resetPassword(token, password))
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResetPasswordRequestScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(ResetPasswordScreen)

@@ -26,6 +26,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>fb1780202858957884</string>
+				<string>com.rehashstudio.herotraveler</string>
 			</array>
 		</dict>
 	</array>

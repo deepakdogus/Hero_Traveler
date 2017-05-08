@@ -90,8 +90,6 @@ class SettingsScreen extends React.Component {
             <Row
               text='Notifications'
               onPress={() => {
-                console.log('this.props', this.props)
-                console.log('this.context', this.context.routes)
                 routes.settings_notification()
               }}
             />

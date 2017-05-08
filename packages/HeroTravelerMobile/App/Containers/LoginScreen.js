@@ -54,21 +54,15 @@ class LoginScreen extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
+      isLoggedIn: false,
       username: '',
       password: '',
     }
     this.isAttempting = false
   }
 
-  // componentDidMount() {
-  //   console.log('componentDidMount')
-  //   AccessToken.getCurrentAccessToken().then(data => {
-  //     console.log('logged in', data)
-  //   })
-  // }
-
   componentWillReceiveProps (newProps) {
-    if (newProps.isLoggedIn) {
+    if (!this.props.isLoggedIn && newProps.isLoggedIn) {
       this.props.goToMyFeed()
     }
   }
@@ -227,7 +221,7 @@ const mapStateToProps = (state) => {
   return {
     error: state.login.error,
     fetching: state.login.fetching,
-    isLoggedIn: hasAuthData(state.session)
+    isLoggedIn: state.login.isLoggedIn
   }
 }
 

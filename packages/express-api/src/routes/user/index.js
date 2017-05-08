@@ -17,6 +17,7 @@ import followUser from './followUser'
 import unfollowUser from './unfollowUser'
 import followCategory from './followCategory'
 import unfollowCategory from './unfollowCategory'
+import resetPasswordRequest from './resetPasswordRequest'
 import resetPassword from './resetPassword'
 import activityList from './activityList'
 import activitySetRead from './activitySetRead'
@@ -26,6 +27,7 @@ import threadCreate from './threadCreate'
 import threadCreateMessage from './threadCreateMessage'
 import updateDevice from './deviceUpdate'
 import removeDevice from './deviceRemove'
+import verifyEmail from './verifyEmail'
 
 const router = express.Router()
 
@@ -40,9 +42,20 @@ router.post('/',
   endpointWrapper(create)
 )
 
-router.post('/resetPassword',
+router.post('/resetPasswordRequest',
+  hasClientId,
+  endpointWrapper(resetPasswordRequest)
+)
+
+router.put('/resetPassword',
   hasClientId,
   endpointWrapper(resetPassword)
+)
+
+router.get(
+  '/verify-email/:token',
+  hasValidOauth,
+  endpointWrapper(verifyEmail)
 )
 
 router.post('/facebook',

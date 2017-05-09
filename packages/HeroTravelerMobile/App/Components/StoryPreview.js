@@ -26,8 +26,13 @@ export default class StoryPreview extends Component {
     forProfile: PropTypes.bool,
     height: PropTypes.number,
     isLiked: PropTypes.bool,
+    showLike: PropTypes.bool,
     autoPlayVideo: PropTypes.bool,
     allowVideoPlay: PropTypes.bool
+  }
+
+  static defaultProps = {
+    showLike: true
   }
 
   wrap(content) {
@@ -92,7 +97,7 @@ export default class StoryPreview extends Component {
                 </TouchableOpacity>
               }
               {!this.props.forProfile && !this.props.onPressUser && userContent}
-              {this.props.forProfile &&
+              {this.props.forProfile && this.props.showLike &&
                 <View style={styles.row}>
                   <Text style={[styles.subtitle, this.props.subtitleStyle]}>{description}</Text>
                   <LikesComponent

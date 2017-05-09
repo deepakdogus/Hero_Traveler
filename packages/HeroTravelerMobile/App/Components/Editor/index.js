@@ -187,7 +187,6 @@ export default class Editor extends Component {
   }
 
   _showLinkDialog() {
-    console.log('_showLinkDialog')
     this.setState({
       linkDialogOpen: true,
       link: '',

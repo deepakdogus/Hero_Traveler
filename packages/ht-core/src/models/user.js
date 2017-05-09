@@ -229,7 +229,6 @@ UserSchema.methods = {
 }
 
 UserSchema.post('save', function(error, doc, next) {
-  console.log('err', error)
   if (error.name === 'ValidationError') {
     next(new CoreError(error.message))
   } else {

@@ -19,22 +19,21 @@ export function * startup () {
 export function * heroStartup(api, {deeplinkObject}) {
   if (yield select(getHasAuthData)) {
     yield put(SessionActions.resumeSession())
+    yield put(ScreenActions.openScreen('tabbar'))
 
     if (deeplinkObject.action === 'resetpassword') {
       alert('You must logout to reset a password from an email link')
     }
 
     if (deeplinkObject.action === 'emailverify') {
-      yield call(api.emailVerify, deeplinkObject.id)
+      yield call(api.verifyEmail, deeplinkObject.id)
     }
 
   } else {
-
-    console.log('does not have auth data')
     if (deeplinkObject.action === 'resetpassword') {
       yield ScreenActions.openScreen('resetPassword', {type: 'push', token: deeplinkObject.id})
     }
-
-    yield put(StartupActions.hideSplash())
   }
+
+  yield put(StartupActions.hideSplash())
 }

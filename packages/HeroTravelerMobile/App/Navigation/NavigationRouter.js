@@ -48,6 +48,10 @@ import SignupScreen from '../Containers/Signup/SignupScreen'
 import SignupTopics from '../Containers/Signup/SignupTopics'
 import SignupSocial from '../Containers/Signup/SignupSocial'
 import ResetPasswordScreen from '../Containers/ResetPasswordScreen'
+import Colors from '../Themes/Colors'
+import {connect} from 'react-redux'
+import {Text, View} from 'react-native'
+import NotificationBadge from '../Components/NotificationBadge'
 
 // https://github.com/aksonov/react-native-router-flux/blob/master/Example/Example.js#L52
 const getSceneStyle = (/* NavigationSceneRendererProps */ props, computedProps) => {
@@ -72,16 +76,35 @@ class TabIcon extends React.Component {
     }
   }
 
-  render(){
+  render() {
     return (
-      <Icon
-        name={this.getIconName(this.props.name)}
-        size={20}
-        color={this.props.selected ? 'white' : '#666666'}
-      />
+      <View>
+        <Icon
+          name={this.getIconName(this.props.name)}
+          size={20}
+          color={this.props.selected ? 'white' : '#666666'}
+        />
+        {this.props.name === 'activity' && this.props.notificationCount > 0 &&
+          <NotificationBadge count={this.props.notificationCount} />
+        }
+      </View>
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    notificationCount: __DEV__ ? 4 : 0
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+  }
+}
+
+TabIcon = connect(mapStateToProps, mapDispatchToProps)(TabIcon)
+
 
 const darkNavBarProps = {
   navigationBarStyle: Styles.navBar,
@@ -117,7 +140,7 @@ export default NavActions.create(
         component={LaunchScreen}
         rightTitle='Browse as a Guest >'
         rightButtonTextStyle={Styles.browseGuest}
-        onRight={() => alert('TODO Browse as guest')}
+        onRight={() => __DEV__ ? NavActions.guestExplore() : alert('Browse as guest')}
         hideNavBar={false}
       />
       <Scene
@@ -314,6 +337,11 @@ export default NavActions.create(
       <Scene
         key='readOnlyProfile'
         component={ReadOnlyProfileScreen}
+        onLeft={() => NavActions.pop()}
+      />
+      <Scene
+        key='guestExplore'
+        component={ExploreScreen}
         onLeft={() => NavActions.pop()}
       />
       <Scene

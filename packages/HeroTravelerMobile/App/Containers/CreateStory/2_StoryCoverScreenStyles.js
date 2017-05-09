@@ -3,7 +3,7 @@ import { ApplicationStyles, Colors, Metrics, Fonts } from '../../Themes/'
 
 const third = (1 / 3) * (Metrics.screenHeight - Metrics.navBarHeight * 2)
 
-export const placeholderColor = Colors.darkBackground
+export const placeholderColor = Colors.background
 
 export default StyleSheet.create({
   containerWithNavbar: {
@@ -82,7 +82,7 @@ export default StyleSheet.create({
     backgroundColor: 'transparent'
   },
   baseTextColor: {
-    color: Colors.darkBackground
+    color: Colors.background
   },
   coverPhoto: {
     position: 'absolute',

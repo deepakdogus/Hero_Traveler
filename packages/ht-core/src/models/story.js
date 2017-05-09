@@ -1,16 +1,21 @@
 import mongoose, {Schema} from 'mongoose'
 import softDelete from 'mongoose-delete'
+import slug from 'mongoose-slug-generator'
 import {ModelName as CategoryRef} from './category'
 import {ModelName as UserRef} from './user'
 import {ModelName as UploadRef} from './upload'
 import {Constants} from '@rwoody/ht-util'
-
 export const ModelName = 'Story'
 
 const StorySchema = new Schema({
   title: {
     type: String,
     required: true
+  },
+  slug: {
+    type: String,
+    slug: 'title',
+    unique: true
   },
   type: {
     type: String,
@@ -30,11 +35,10 @@ const StorySchema = new Schema({
     ref: UserRef,
     required: true
   },
-  category: {
+  categories: [{
     type: Schema.ObjectId,
     ref: CategoryRef,
-    required: true
-  },
+  }],
   content: {
     type: String
   },
@@ -104,6 +108,7 @@ StorySchema.statics = {
   }
 }
 
+StorySchema.plugin(slug, {truncate: 120})
 StorySchema.plugin(softDelete)
 
 export default mongoose.model(ModelName, StorySchema)

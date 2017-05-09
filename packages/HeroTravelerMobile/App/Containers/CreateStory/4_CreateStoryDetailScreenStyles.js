@@ -36,6 +36,17 @@ export default StyleSheet.create({
     fontSize: 16,
     height: 30
   },
+  tagStyle: {
+    flexGrow: 1,
+    color: Colors.background,
+    fontSize: 16,
+    minHeight: 30
+  },
+  tagStyleText: {
+    fontSize: 16,
+    color: Colors.background,
+    marginBottom: 10
+  },
   radioGroup: {
     marginLeft: Metrics.section,
     flexDirection: 'row',

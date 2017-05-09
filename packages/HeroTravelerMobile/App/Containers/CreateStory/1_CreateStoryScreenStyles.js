@@ -26,7 +26,7 @@ export default StyleSheet.create({
     opacity: 0.4
   },
   baseTextColor: {
-    color: Colors.darkBackground
+    color: Colors.background
   },
   lightText: {
     color: Colors.snow

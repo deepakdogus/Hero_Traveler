@@ -71,8 +71,8 @@ export function * getUserStories (api, {userId}) {
   }
 }
 
-export function * getCategoryStories (api, {categoryId}) {
-  const response = yield call(api.getCategoryStories, categoryId)
+export function * getCategoryStories (api, {categoryId, storyType}) {
+  const response = yield call(api.getCategoryStories, categoryId, {type: storyType})
   if (response.ok) {
     const { entities, result } = response.data
     yield [
@@ -151,7 +151,6 @@ export function * likeStory(api, {userId, storyId}) {
   ]
 
   if (!response.ok) {
-    console.log('!response.ok')
     yield [
       put(UserActions.userToggleLike(userId, storyId)),
       put(StoryActions.toggleLike(storyId, !wasLiked)),

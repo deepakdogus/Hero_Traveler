@@ -19,7 +19,8 @@ const { Types, Creators } = createActions({
   updateDraftFailure: ['error'],
   uploadCoverImage: ['draftId', 'path'],
   uploadCoverImageSuccess: ['draft'],
-  uploadCoverImageFailure: ['error']
+  uploadCoverImageFailure: ['error'],
+  updateCategories: ['categories']
 })
 
 export const StoryCreateTypes = Types
@@ -80,6 +81,10 @@ export const uploadCoverImageFailure = (state, {draft}) => {
   return state
 }
 
+export const updateCategories = (state, {categories}) => {
+  return state.setIn(['draft', 'categories'], categories)
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -95,6 +100,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.REGISTER_DRAFT_FAILURE]: failure,
   [Types.UPLOAD_COVER_IMAGE_SUCCESS]: uploadCoverImageSuccess,
   [Types.UPLOAD_COVER_IMAGE_FAILURE]: uploadCoverImageFailure,
+  [Types.UPDATE_CATEGORIES]: updateCategories,
 })
 
 export const hasDraft = (state) => _.get(state.draft, 'id') ? true : false

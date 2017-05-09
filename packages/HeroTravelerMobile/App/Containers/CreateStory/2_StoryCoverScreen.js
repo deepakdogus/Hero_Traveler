@@ -91,7 +91,6 @@ class StoryCoverScreen extends Component {
   }
 
   renderCoverVideo(coverVideo) {
-    console.log('coverVideo', coverVideo)
     return R.ifElse(
       R.identity,
       R.always((

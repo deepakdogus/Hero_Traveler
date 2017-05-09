@@ -24,7 +24,6 @@ const htmlStyles = StyleSheet.create({
 function renderNode(node, index, siblings, parent, defaultRenderer) {
   if (node.name === 'img') {
     const img = node.attribs
-    console.log('node', node)
     return (
       <Image source={{uri: img.src}} resizeMode='cover'
         key={index} style={{
@@ -84,7 +83,13 @@ class StoryReadingScreen extends React.Component {
         <ScrollView style={[styles.scrollView]}>
           <ConnectedStoryPreview
             onPressLike={this._toggleLike}
-            onPressUser={(userId) => NavActions.readOnlyProfile({ userId })}
+            onPressUser={(userId) => {
+              if (this.props.user.id === userId) {
+                NavActions.profile({type: 'jump'})
+              } else {
+                NavActions.readOnlyProfile({userId})
+              }
+            }}
             key={story.id}
             height={Metrics.screenHeight}
             storyId={story.id}

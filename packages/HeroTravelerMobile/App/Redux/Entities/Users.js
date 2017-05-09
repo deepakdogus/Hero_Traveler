@@ -59,15 +59,15 @@ export const loadUser = (state) => {
     {fetching: true, loaded: false}
   )
 }
-export const loadUserSuccess = (state, {user}) => {
+
+export const loadUserSuccess = (state) => {
   return state.merge({
     fetchStatus: {
       fetching: false,
       loaded: true
     },
-    user,
     error: null
-  }, {deep: true})
+  })
 }
 export const loadUserFailure = (state, {error}) => {
   return state.merge({error, fetchStatus: {fetching: false, loaded: false}})

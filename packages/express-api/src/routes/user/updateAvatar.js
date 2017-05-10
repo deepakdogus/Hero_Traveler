@@ -4,6 +4,7 @@ import uuid from 'uuid'
 import {User, Models} from '@rwoody/ht-core'
 
 export default function updateAvatar(req, res, next) {
+  console.log('update Avatar req.user', req.user)
   const userId = req.user._id
   const file = req.file
 

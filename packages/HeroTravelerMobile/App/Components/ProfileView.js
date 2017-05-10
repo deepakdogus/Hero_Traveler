@@ -21,8 +21,13 @@ import formatCount from '../Lib/formatCount'
 import getImageUrl from '../Lib/getImageUrl'
 import Avatar from './Avatar'
 import NavBar from '../Containers/CreateStory/NavBar'
+import HeroAPI from '../Services/HeroAPI'
+import pathAsFileObject from '../Lib/pathAsFileObject'
+
 // @TODO UserActions shouldnt be in a component
 import UserActions from '../Redux/Entities/Users'
+
+const api = HeroAPI.create()
 
 const Tab = ({text, onPress, selected}) => {
   return (
@@ -52,6 +57,13 @@ export default class ProfileView extends React.Component {
 
   _toggleImageMenu = () => {
     this.setState({imageMenuOpen: !this.state.imageMenuOpen})
+  }
+
+  _handleUpdateAvatarPhoto = (data) => {
+    console.log('this.props.user.id', this.props.user.id)
+    console.log('pathAsFileObject(data)', pathAsFileObject(data))
+    api.uploadAvatarImage(this.props.user.id, pathAsFileObject(data))
+    NavActions.pop()
   }
 
   // _onLeft = () => {
@@ -117,7 +129,7 @@ export default class ProfileView extends React.Component {
                   leftTitle: 'Cancel',
                   onLeft: () => NavActions.pop(),
                   rightTitle: 'Next',
-                  onSelectMedia: this._handleSelectCoverPhoto
+                  onSelectMedia: this._handleUpdateAvatarPhoto
                 })
               }}
             >
@@ -136,7 +148,7 @@ export default class ProfileView extends React.Component {
               leftTitle: 'Cancel',
               onLeft: () => NavActions.pop(),
               rightTitle: 'Next',
-              onSelectMedia: this._handleSelectCoverPhoto
+              onSelectMedia: this._handleUpdateAvatarPhoto
             })
           }}
         >

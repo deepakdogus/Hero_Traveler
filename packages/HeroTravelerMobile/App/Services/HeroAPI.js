@@ -25,7 +25,7 @@ const devURL = Platform.OS === 'ios' ? 'http://10.0.0.218:3000/' : 'http://10.0.
 // our "constructor"
 const create = () => {
   const api = apisauce.create({
-    baseURL: __DEV__ ? devURL : 'http://ht-api-dev.rehashstudio.com/',
+    baseURL: __DEV__ ? 'http://localhost:3000': 'http://localhost:3000',
     headers: {
       // @TODO client-id
       'client-id': 'xzy',
@@ -324,6 +324,12 @@ const create = () => {
     return api.put(`story/draft/${draftId}/cover-video`, data)
   }
 
+  const uploadAvatarImage = (userId, pathToFile) => {
+    const data = new FormData()
+    data.append('image', pathToFile)
+    return api.put(`user/${userId}/avatar`, data)
+  }
+
   const uploadStoryImage = (draftId, pathToFile) => {
     const data = new FormData()
     data.append('image', pathToFile)
@@ -382,6 +388,7 @@ const create = () => {
     uploadCoverImage,
     uploadCoverVideo,
     uploadStoryImage,
+    uploadAvatarImage,
     removeDevice,
     updateDevice,
   }

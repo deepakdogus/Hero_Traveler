@@ -6,6 +6,6 @@ export default function hasOauthBearer(req, res, next) {
       return next(new Error('Unauthorized'))
     }
     req.user = user
-    return next();
+    return next()
   })(req, res)
 }

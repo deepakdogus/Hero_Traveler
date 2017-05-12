@@ -21,8 +21,13 @@ import formatCount from '../Lib/formatCount'
 import getImageUrl from '../Lib/getImageUrl'
 import Avatar from './Avatar'
 import NavBar from '../Containers/CreateStory/NavBar'
+import HeroAPI from '../Services/HeroAPI'
+import pathAsFileObject from '../Lib/pathAsFileObject'
+
 // @TODO UserActions shouldnt be in a component
 import UserActions from '../Redux/Entities/Users'
+
+const api = HeroAPI.create()
 
 const Tab = ({text, onPress, selected}) => {
   return (
@@ -44,6 +49,9 @@ export default class ProfileView extends React.Component {
       file: null,
     }
   }
+  componentDidMount() {
+    api.setAuth(this.props.accessToken)
+  }
 
   static defaultProps = {
     onPressFollow: () => {},
@@ -52,6 +60,16 @@ export default class ProfileView extends React.Component {
 
   _toggleImageMenu = () => {
     this.setState({imageMenuOpen: !this.state.imageMenuOpen})
+  }
+
+  _handleUpdateAvatarPhoto = (data) => {
+    api.uploadAvatarImage(this.props.user.id, pathAsFileObject(data))
+    NavActions.pop()
+  }
+
+  _handleUpdateCoverPhoto = (data) => {
+    api.uploadUserCoverImage(this.props.user.id, pathAsFileObject(data))
+    NavActions.pop()
   }
 
   // _onLeft = () => {
@@ -71,7 +89,7 @@ export default class ProfileView extends React.Component {
   // }
 
   _onRight = () => {
-    alert('save edits')
+    this.props.saveUser(this.state.text)
     NavActions.pop()
   }
 
@@ -91,7 +109,7 @@ export default class ProfileView extends React.Component {
 
     /* If the editable flag === true then the component will display the user's edit profile view,
        otherwise it will show the view that the user sees when looking at other profiles
-    */
+     */
 
     if(isEditing === true){
       cog = null;
@@ -117,7 +135,7 @@ export default class ProfileView extends React.Component {
                   leftTitle: 'Cancel',
                   onLeft: () => NavActions.pop(),
                   rightTitle: 'Next',
-                  onSelectMedia: this._handleSelectCoverPhoto
+                  onSelectMedia: this._handleUpdateAvatarPhoto
                 })
               }}
             >
@@ -136,7 +154,7 @@ export default class ProfileView extends React.Component {
               leftTitle: 'Cancel',
               onLeft: () => NavActions.pop(),
               rightTitle: 'Next',
-              onSelectMedia: this._handleSelectCoverPhoto
+              onSelectMedia: this._handleUpdateCoverPhoto
             })
           }}
         >
@@ -283,8 +301,8 @@ export default class ProfileView extends React.Component {
               multiline={true}
               editable={true}
               onChangeText={(text) => this.setState({text})}
-             value={this.state.text}
-             placeholder='Tell us about yourself!'
+              value={this.state.text}
+              placeholder={this.props.user.bio || 'Tell us about yourself!'}
              maxLength={500}
            />
            </View>

@@ -40,6 +40,6 @@ PushNotification.configure({
   requestPermissions: true
 })
 
-export function getToken(): {token: string, os: string} {
+export function getToken(){
   return token
 }

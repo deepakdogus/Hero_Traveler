@@ -71,6 +71,10 @@ const UserSchema = new Schema({
     avatar: {type: Schema.Types.ObjectId, ref: UploadRef},
     cover: {type: Schema.Types.ObjectId, ref: UploadRef},
   },
+  bio: {
+    type: String,
+    maxlength: 500
+  },
   passwordResetToken: {
     hidden: true,
     type: String

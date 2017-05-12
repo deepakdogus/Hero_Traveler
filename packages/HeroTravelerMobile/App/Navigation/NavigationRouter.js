@@ -20,6 +20,7 @@ import SettingsScreen from '../Containers/SettingsScreen'
 import Settings_NotificationScreen from '../Containers/Settings_NotificationScreen'
 import CategoryFeedScreen from '../Containers/Explore/CategoryFeedScreen'
 import FollowersScreen from '../Containers/FollowersScreen'
+import ViewBioScreen from '../Components/ViewBioScreen'
 // import FollowingScreen from '../Containers/FollowingScreen'
 
 // Info Screens
@@ -358,6 +359,11 @@ export default NavActions.create(
       <Scene
         key='mediaSelectorScreen'
         component={MediaSelectorScreen}
+        direction='horizontal'
+      />
+      <Scene
+        key='viewBioScreen'
+        component={ViewBioScreen}
         direction='horizontal'
       />
     </Scene>

@@ -19,9 +19,6 @@ export default class TermsAndConditionsScreen extends React.Component {
             (LAST UPDATED July 22ND, 2016)
           </Text>
           <Text style={styles.bodyText}>
-            HERO Traveler is a first-of-its-kind platform that is all about coming together to share life’s incredible adventures.
-          </Text>
-          <Text style={styles.bodyText}>
             By accessing or using the Hero Traveler website, the Hero Traveler service, or any applications (including mobile applications) made available by Hero Traveler (together, the “service”), however accessed, you agree to be bound by these terms of use. (“Terms of Use”). The service is owned or controlled by Hero Traveler, INC (“Hero Traveler”) These Terms of Use affect your legal rights and obligations. If you do not agree to be bound by all of these Terms of Use, do not access or use the Service.
           </Text>
           <Text style={styles.bodyText}>
@@ -35,7 +32,7 @@ export default class TermsAndConditionsScreen extends React.Component {
           </Text>
           <Text style={styles.bodyText}>
             ARBITRATION NOTICE: EXCEPT IF YOU OPT-OUT AND EXCEPT FOR CERTAIN TYPES OF DISPUTES DESCRIBED IN THE ARBITRATION SECTION BELOW, YOU AGREE THAT DISPUTES BETWEEN YOU AND INSTAGRAM WILL BE RESOLVED BY BINDING, INDIVIDUAL ARBITRATION AND YOU WAIVE YOUR RIGHT TO PARTICIPATE IN A CLASS ACTION LAWSUIT OR CLASS-WIDE ARBITRATION. YOU AGREE THAT ANY CLAIM YOU MAY HAVE ARISING OUT OF OR RELATED TO YOUR RELATIONSHIP WITH HERO TRAVELER MUST BE FILED WITHONE ONE YEAR AFTER SUCH CLAIM AROSE; OTHERWISE YOUR CLAIM IS PERMAMNENTLY BARRED.
-          </Text>          
+          </Text>
           <Text style={styles.headerText}>
             Arbitration
           </Text>
@@ -43,7 +40,7 @@ export default class TermsAndConditionsScreen extends React.Component {
             Except if you opt-out or for disputes relating to: (1) your or Hero Traveler's 's intellectual property (such as trademarks, trade dress, domain names, trade secrets, copyrights and patents); (2) violations of the API Terms; or (3) violations of provisions 13 or 15 of the Basic Terms, above ("Excluded Disputes"), you agree that all disputes between you and Hero Traveler's (whether or not such dispute involves a third party) with regard to your relationship with Hero Traveler's, including without limitation disputes related to these Terms of Use, your use of the Service, and/or rights of privacy and/or publicity, will be resolved by binding, individual arbitration under the American Arbitration Association's rules for arbitration of consumer-related disputes and you and Hero Traveler's hereby expressly waive trial by jury. As an alternative, you may bring your claim in your local "small claims" court, if permitted by that small claims court's rules. You may bring claims only on your own behalf. Neither you nor Hero Traveler's will participate in a class action or class-wide arbitration for any claims covered by this agreement. You also agree not to participate in claims brought in a private attorney general or representative capacity, or consolidated claims involving another person's account, if Hero Traveler's is a party to the proceeding. This dispute resolution provision will be governed by the Federal Arbitration Act. In the event the American Arbitration Association is unwilling or unable to set a hearing date within one hundred and sixty (160) days of filing the case, then either Hero Traveler's or you can elect to have the arbitration administered instead by the Judicial Arbitration and Mediation Services. Judgment on the award rendered by the arbitrator may be entered in any court having competent jurisdiction. Any provision of applicable law notwithstanding, the arbitrator will not have authority to award damages, remedies or awards that conflict with these Terms of Use.
           </Text>
           <Text style={styles.bodyText}>
-            You may opt out of this agreement to arbitrate. If you do so, neither you nor Hero Travelers can require the other to participate in an arbitration proceeding. To opt out, you must notify Instagram in writing within 30 days of the date that you first became subject to this arbitration provision. You must use this address to opt out: 
+            You may opt out of this agreement to arbitrate. If you do so, neither you nor Hero Travelers can require the other to participate in an arbitration proceeding. To opt out, you must notify Instagram in writing within 30 days of the date that you first became subject to this arbitration provision. You must use this address to opt out:
           </Text>
           <Text style={styles.bodyText}>
             Hero Traveler's, LLC ATTN: 44 West 28th street.  New York, NY 10010
@@ -74,7 +71,7 @@ export default class TermsAndConditionsScreen extends React.Component {
           </Text>
           <Text style={styles.OLbodyText}>
             6.  You must not defame, stalk, bully, abuse, harass, threaten, impersonate or intimidate people or entities and you must not post private or confidential information via the Service, including, without limitation, your or any other person's credit card information, social security or alternate national identity numbers, non-public phone numbers or non-public email addresses.
-          </Text>          
+          </Text>
           <Text style={styles.OLbodyText}>
             7.  You may not use the Service for any illegal or unauthorized purpose. You agree to comply with all laws, rules and regulations (for example, federal, state, local and provincial) applicable to your use of the Service and your Content (defined below), including but not limited to, copyright laws.
           </Text>
@@ -181,52 +178,52 @@ export default class TermsAndConditionsScreen extends React.Component {
             If any provision of these Terms of Use is held to be unlawful, void, or for any reason unenforceable during arbitration or by a court of competent jurisdiction, then that provision will be deemed severable from these Terms of Use and will not affect the validity and enforceability of any remaining provisions. Hero Traveler's 's failure to insist upon or enforce strict performance of any provision of these Terms will not be construed as a waiver of any provision or right. No waiver of any of these Terms will be deemed a further or continuing waiver of such term or condition or any other term or condition. Hero Traveler's reserves the right to change this dispute resolution provision, but any such changes will not apply to disputes arising before the effective date of the amendment. This dispute resolution provision will survive the termination of any or all of your transactions with Instagram.
           </Text>
           <Text style={styles.OLbodyText}>
-            1.  If your issue isn't related to Intellectual Property, please see one of the related issues below: 
+            1.  If your issue isn't related to Intellectual Property, please see one of the related issues below:
           </Text>
           <Text style={styles.OLbodyText}>
-            2.  If you repeatedly infringe other people's intellectual property rights, we will disable your account when appropriate. 
+            2.  If you repeatedly infringe other people's intellectual property rights, we will disable your account when appropriate.
           </Text>
           <Text style={styles.headerText}>
             1. Ownership of Materials; Limited License
           </Text>
           <Text style={styles.OLbodyText}>
-            <Text style={styles.bodyNumberText}>1.1</Text> The data and materials on the Hero Traveler Service, except the Produced Content (as defined below), including, without limitation, the text, graphics, interactive features, logos, photos, music, videos, software, and all other audible, visual or downloadable materials, as well as the selection, organization, coordination, compilation and overall look and feel of the Hero Traveler Service (collectively, the "Materials") are the intellectual property of Hero Traveler, its licensors and its suppliers. The Materials are protected by copyright, trade dress, patent, trademark and other laws, international conventions and proprietary rights and all ownership rights to the Materials remain with Hero Traveler, its licensors or its suppliers, as the case may be. All trademarks, service marks, and trade names are proprietary to Hero Traveler or its affiliates and/or third party licensors. Except as expressly authorized by Hero Traveler, You agree not to sell, license, distribute, copy, modify, publicly perform or display, transmit, publish, edit, adapt, create derivative works from, or otherwise make use of the Materials. If, with authorization, you download or print a copy of the Materials for personal use, you must retain all copyright, trademark, or other proprietary notices. Hero Traveler reserves all rights not expressly granted in and to the Hero Traveler Service and the Materials. 
+            <Text style={styles.bodyNumberText}>1.1</Text> The data and materials on the Hero Traveler Service, except the Produced Content (as defined below), including, without limitation, the text, graphics, interactive features, logos, photos, music, videos, software, and all other audible, visual or downloadable materials, as well as the selection, organization, coordination, compilation and overall look and feel of the Hero Traveler Service (collectively, the "Materials") are the intellectual property of Hero Traveler, its licensors and its suppliers. The Materials are protected by copyright, trade dress, patent, trademark and other laws, international conventions and proprietary rights and all ownership rights to the Materials remain with Hero Traveler, its licensors or its suppliers, as the case may be. All trademarks, service marks, and trade names are proprietary to Hero Traveler or its affiliates and/or third party licensors. Except as expressly authorized by Hero Traveler, You agree not to sell, license, distribute, copy, modify, publicly perform or display, transmit, publish, edit, adapt, create derivative works from, or otherwise make use of the Materials. If, with authorization, you download or print a copy of the Materials for personal use, you must retain all copyright, trademark, or other proprietary notices. Hero Traveler reserves all rights not expressly granted in and to the Hero Traveler Service and the Materials.
           </Text>
           <Text style={styles.OLbodyText}>
-            <Text style={styles.bodyNumberText}>1.2</Text> Subject to your compliance with the terms and conditions set out in these Terms, Hero Traveler hereby grants you a personal, limited, non-exclusive, non-transferable, freely revocable license to use the Hero Traveler Service for the non-commercial viewing of content (as defined below). 
+            <Text style={styles.bodyNumberText}>1.2</Text> Subject to your compliance with the terms and conditions set out in these Terms, Hero Traveler hereby grants you a personal, limited, non-exclusive, non-transferable, freely revocable license to use the Hero Traveler Service for the non-commercial viewing of content (as defined below).
           </Text>
           <Text style={styles.headerText}>
             3. Produced Content
           </Text>
           <Text style={styles.OLbodyText}>
-            <Text style={styles.bodyNumberText}>3.1</Text> The Hero Traveler Service permits its Users to create, upload and/or display content of their own creations, including audiovisual Content, written works, video, posted on message boards, chat and blogs, and any other content, including without limitation, videos, music, images, and text (collectively, "Produced Content"). 
+            <Text style={styles.bodyNumberText}>3.1</Text> The Hero Traveler Service permits its Users to create, upload and/or display content of their own creations, including audiovisual Content, written works, video, posted on message boards, chat and blogs, and any other content, including without limitation, videos, music, images, and text (collectively, "Produced Content").
           </Text>
           <Text style={styles.OLbodyText}>
-            <Text style={styles.bodyNumberText}>3.2</Text> You understand that when using the Hero Traveler Service, you will be exposed to Produced Content from a variety of sources, and that Hero Traveler is not responsible for the accuracy, usefulness, safety, or intellectual property rights of or relating to such Produced Content or other content. You further understand and acknowledge that you may be exposed to Produced Content that is inaccurate, offensive, indecent, or objectionable, and you agree to waive, and hereby do waive, any legal or equitable rights or remedies you have or may have against Hero Traveler with respect thereto. Hero Traveler does not endorse any Produced Content or any opinion, recommendation, or advice expressed therein, and Hero Traveler expressly disclaims any and all liability in connection with the Produced Content. YOU AGREE TO WAIVE, AND HEREBY DO WAIVE, ANY LEGAL OR EQUITABLE RIGHTS OR REMEDIES YOU HAVE OR MAY HAVE AGAINST ARTISTFAN, LLC WITH RESPECT THERETO AND AGREE TO INDEMNIFY AND HOLD ARTISTFAN, LLC, ITS OWNERS/OPERATORS, AFFILIATES, SUPPLIERS, AND/OR LICENSORS HARMLESS TO THE FULLEST EXTENT ALLOWED BY LAW REGARDING ALL MATTERS RELATED TO YOUR CONTENT AND END USER CONTENT AND USE OF THE ARTISTFAN SERVICE. 
+            <Text style={styles.bodyNumberText}>3.2</Text> You understand that when using the Hero Traveler Service, you will be exposed to Produced Content from a variety of sources, and that Hero Traveler is not responsible for the accuracy, usefulness, safety, or intellectual property rights of or relating to such Produced Content or other content. You further understand and acknowledge that you may be exposed to Produced Content that is inaccurate, offensive, indecent, or objectionable, and you agree to waive, and hereby do waive, any legal or equitable rights or remedies you have or may have against Hero Traveler with respect thereto. Hero Traveler does not endorse any Produced Content or any opinion, recommendation, or advice expressed therein, and Hero Traveler expressly disclaims any and all liability in connection with the Produced Content. YOU AGREE TO WAIVE, AND HEREBY DO WAIVE, ANY LEGAL OR EQUITABLE RIGHTS OR REMEDIES YOU HAVE OR MAY HAVE AGAINST ARTISTFAN, LLC WITH RESPECT THERETO AND AGREE TO INDEMNIFY AND HOLD ARTISTFAN, LLC, ITS OWNERS/OPERATORS, AFFILIATES, SUPPLIERS, AND/OR LICENSORS HARMLESS TO THE FULLEST EXTENT ALLOWED BY LAW REGARDING ALL MATTERS RELATED TO YOUR CONTENT AND END USER CONTENT AND USE OF THE ARTISTFAN SERVICE.
           </Text>
           <Text style={styles.OLbodyText}>
-            <Text style={styles.bodyNumberText}>3.3</Text> Hero Traveler permits you to link to the Hero Traveler Service for personal, non-commercial purposes only. 
+            <Text style={styles.bodyNumberText}>3.3</Text> Hero Traveler permits you to link to the Hero Traveler Service for personal, non-commercial purposes only.
           </Text>
           <Text style={styles.headerText}>
             4. Prohibited Uses
           </Text>
           <Text style={styles.bodyText}>
-            YOU HEREBY REPRESENT AND WARRANT THAT YOU WILL NOT (AND THE FOLLOWING SHALL SOMETIMES BE REFERRED TO AS "PROHIBITED USES"): 
+            YOU HEREBY REPRESENT AND WARRANT THAT YOU WILL NOT (AND THE FOLLOWING SHALL SOMETIMES BE REFERRED TO AS "PROHIBITED USES"):
           </Text>
           <Text style={styles.bodyText}>
             (I) UPLOAD TO OR CREATE ON THE SITE ANY PRODUCED CONTENT THAT VIOLATES ANY LAW, REGULATION, TREATY OR THIRD PARTY RIGHT (INCLUDING, WITHOUT LIMITATION, TRADE SECRET, INTELLECTUAL PROPERTY, PRIVACY, OR PUBLICITY RIGHTS);
           </Text>
           <Text style={styles.bodyText}>
-            (II) PUBLISH FALSEHOODS OR MISREPRESENTATIONS THAT COULD DAMAGE HERO TRAVELER OR ANY THIRD PARTY; 
+            (II) PUBLISH FALSEHOODS OR MISREPRESENTATIONS THAT COULD DAMAGE HERO TRAVELER OR ANY THIRD PARTY;
           </Text>
           <Text style={styles.bodyText}>
-            (III) POST, UPLOAD TO, OR CREATE ANY PRODUCED CONTENT THAT IS UNLAWFUL, OBSCENE, DEFAMATORY, LIBELOUS, THREATENING, PORNOGRAPHIC, VULGAR, HARASSING, HATEFUL, RACIALLY OR ETHNICALLY OFFENSIVE, OR ENCOURAGES CONDUCT THAT WOULD BE CONSIDERED A CRIMINAL OFFENSE, GIVE RISE TO CIVIL LIABILITY, VIOLATE ANY LAW, OR, IN HERO TRAVELER SOLE DISCRETION, IS OTHERWISE APPROPRIATE; 
+            (III) POST, UPLOAD TO, OR CREATE ANY PRODUCED CONTENT THAT IS UNLAWFUL, OBSCENE, DEFAMATORY, LIBELOUS, THREATENING, PORNOGRAPHIC, VULGAR, HARASSING, HATEFUL, RACIALLY OR ETHNICALLY OFFENSIVE, OR ENCOURAGES CONDUCT THAT WOULD BE CONSIDERED A CRIMINAL OFFENSE, GIVE RISE TO CIVIL LIABILITY, VIOLATE ANY LAW, OR, IN HERO TRAVELER SOLE DISCRETION, IS OTHERWISE APPROPRIATE;
           </Text>
           <Text style={styles.bodyText}>
             (IV) IMPERSONATE ANOTHER PERSON OR ENTITY, WHETHER ACTUAL OR FICTITIOUS, FALSELY CLAIM AN AFFILIATION WITH ANY PERSON OR ENTITY, OR ACCESS THE HERO TRAVELER SERVICE ACCOUNTS OF OTHERS WITHOUT PERMISSION, MISREPRESENT THE SOURCE, IDENTITY, OR CONTENT OF INFORMATION TRANSMITTED VIA THE HERO TRAVELER SERVICE, OR PERFORM ANY OTHER SIMILAR FRAUDULENT ACTIVITY;
           </Text>
           <Text style={styles.bodyText}>
-            (V) USE THE HERO TRAVELER WEBSITE FOR ANY PURPOSE OTHER THAN TO ACCESS THE TRAVELER SERVICE; 
+            (V) USE THE HERO TRAVELER WEBSITE FOR ANY PURPOSE OTHER THAN TO ACCESS THE TRAVELER SERVICE;
           </Text>
           <Text style={styles.bodyText}>
             (VI) CIRCUMVENT, DISABLE OR OTHERWISE INTERFERE WITH SECURITY-RELATED FEATURES OF THE HERO TRAVELER SERVICE OR FEATURES THAT PREVENT, LIMIT OR RESTRICT USE OR COPYING OF ANY MATERIALS OR ANOTHER USER'S PRODUCED CONTENT;
@@ -238,7 +235,7 @@ export default class TermsAndConditionsScreen extends React.Component {
             (VIII) DELETE INDICATIONS OR NOTICES REGARDING THE COPYRIGHT OR OTHER PROPRIETARY RIGHTS ON THE ARTISTFAN SERVICE OR ANY THIRD PARTY CONTENT;
           </Text>
           <Text style={styles.bodyText}>
-            (X) MAKE UNSOLICITED OFFERS, ADVERTISEMENTS, PROPOSALS, OR SEND JUNK MAIL OR SPAM TO OTHER USERS OF THE HERO TRAVELER SERVICE. THIS INCLUDES, BUT IS NOT LIMITED TO, UNSOLICITED ADVERTISING, PROMOTIONAL MATERIALS, OR OTHER SOLICITATION MATERIAL, BULK MAILING OF COMMERCIAL ADVERTISING, CHAIN MAIL, INFORMATIONAL ANNOUNCEMENTS, CHARITY REQUESTS, AND PETITIONS FOR SIGNATURES; 
+            (X) MAKE UNSOLICITED OFFERS, ADVERTISEMENTS, PROPOSALS, OR SEND JUNK MAIL OR SPAM TO OTHER USERS OF THE HERO TRAVELER SERVICE. THIS INCLUDES, BUT IS NOT LIMITED TO, UNSOLICITED ADVERTISING, PROMOTIONAL MATERIALS, OR OTHER SOLICITATION MATERIAL, BULK MAILING OF COMMERCIAL ADVERTISING, CHAIN MAIL, INFORMATIONAL ANNOUNCEMENTS, CHARITY REQUESTS, AND PETITIONS FOR SIGNATURES;
           </Text>
           <Text style={styles.bodyText}>
             (XI) USE THE HERO TRAVELER SERVICE FOR ANY ILLEGAL PURPOSE, OR IN VIOLATION OF ANY LOCAL, STATE, NATIONAL, OR INTERNATIONAL LAW, INCLUDING, WITHOUT LIMITATION, LAWS GOVERNING INTELLECTUAL PROPERTY AND OTHER PROPRIETARY RIGHTS, AND DATA PROTECTION AND PRIVACY;
@@ -259,10 +256,10 @@ export default class TermsAndConditionsScreen extends React.Component {
             (XVI) TAKE ANY ACTION THAT MAY UNDERMINE HERO TRAVELER RATING AND/OR COMMENT SYSTEMS (SUCH AS DISPLAYING, IMPORTING OR EXPORTING INFORMATION OFF THE HERO TRAVELER SERVICE, USING INFORMATION ON THE HERO TRAVELER SERVICE FOR PURPOSES UNRELATED TO THE HERO TRAVELER SERVICE, OR IMPROPERLY MANIPULATING OR USING THE RATINGS AND COMMENT SYSTEM);
           </Text>
           <Text style={styles.bodyText}>
-            (XVII) TAKE ANY ACTION THAT IMPOSES OR MAY IMPOSE (IN ARTISTFAN’S SOLE DISCRETION) AN UNREASONABLE OR DISPROPORTIONATELY LARGE LOAD ON HERO TRAVELER COMPUTER SERVER INFRASTRUCTURE; 
+            (XVII) TAKE ANY ACTION THAT IMPOSES OR MAY IMPOSE (IN ARTISTFAN’S SOLE DISCRETION) AN UNREASONABLE OR DISPROPORTIONATELY LARGE LOAD ON HERO TRAVELER COMPUTER SERVER INFRASTRUCTURE;
           </Text>
           <Text style={styles.bodyText}>
-            (XVIII) INTERFERE OR ATTEMPT TO INTERFERE WITH THE PROPER WORKINGS OF HERO TRAVELER 
+            (XVIII) INTERFERE OR ATTEMPT TO INTERFERE WITH THE PROPER WORKINGS OF HERO TRAVELER
           </Text>
           <Text style={styles.headerText}>
             7. Registration, Accounts and Passwords

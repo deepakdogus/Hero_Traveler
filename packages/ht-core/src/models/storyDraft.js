@@ -31,10 +31,10 @@ const StoryDraftSchema = new Schema({
     ref: UserRef,
     required: true
   },
-  category: {
+  categories: [{
     type: Schema.ObjectId,
     ref: CategoryRef
-  },
+  }],
   content: {
     type: String
   },

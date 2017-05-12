@@ -18,7 +18,9 @@
     "android:hockeyapp": "cd android && ./gradlew assembleRelease && puck -submit=auto app/build/outputs/apk/app-release.apk",
     "android:devices": "$ANDROID_HOME/platform-tools/adb devices",
     "android:logcat": "$ANDROID_HOME/platform-tools/adb logcat *:S ReactNative:V ReactNativeJS:V",
-    "android:shake": "$ANDROID_HOME/platform-tools/adb devices | grep '\\t' | awk '{print $1}' | sed 's/\\s//g' | xargs -I {} $ANDROID_HOME/platform-tools/adb -s {} shell input keyevent 82"
+    "android:shake": "$ANDROID_HOME/platform-tools/adb devices | grep '\\t' | awk '{print $1}' | sed 's/\\s//g' | xargs -I {} $ANDROID_HOME/platform-tools/adb -s {} shell input keyevent 82",
+    "dev-test-link-reset": "xcrun simctl openurl booted \"com.rehashstudio.herotraveler://resetpassword/a6671bb4-73df-4110-8a7b-c1f1dd579707\"",
+    "dev-test-link-email": "xcrun simctl openurl booted \"com.rehashstudio.herotraveler://emailverify/dc24a446-3a76-477a-8f17-255dfbaf0892\""
   },
   "dependencies": {
     "algoliasearch": "^3.22.1",

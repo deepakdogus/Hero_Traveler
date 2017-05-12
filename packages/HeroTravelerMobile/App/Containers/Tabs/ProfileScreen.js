@@ -64,10 +64,11 @@ class ProfileScreen extends React.Component {
         stories={userStoriesById}
         editable={true}
         isEditing={this.props.isEditing}
-      profileImage={getImageUrl(user.profile.cover)}
-      saveUser={saveUser}
-      fetchStatus={userStoriesFetchStatus}
-      accessToken={accessToken}
+        saveUser={saveUser}
+        showLike={false}
+        accessToken={accessToken}
+        profileImage={getImageUrl(user.profile.cover)}
+        fetchStatus={userStoriesFetchStatus}
       />
     )
   }

@@ -5,6 +5,7 @@ export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
     flex: 1,
+    flexDirection: 'column',
     backgroundColor: Colors.background,
     paddingTop: Metrics.baseMargin*2,
   },
@@ -13,12 +14,14 @@ export default StyleSheet.create({
   },
   headerSearch: {
     marginHorizontal: Metrics.baseMargin,
-    flexDirection: 'column',
+    // flexDirection: 'column',
+    flexDirection: 'row',
     justifyContent: 'space-between',
     height: 40,
   },
   searchWrapper: {
     marginTop: Metrics.baseMargin,
+    flex: 1,
     height: 20,
     backgroundColor: '#424242',
     opacity: .6,
@@ -31,6 +34,14 @@ export default StyleSheet.create({
     fontSize: 13,
     color: Colors.snow,
     textAlign: 'center'
+  },
+  cancelBtn: {
+    padding: Metrics.baseMargin,
+    paddingRight: 0
+  },
+  cancelBtnText: {
+    color: '#9e9e9e',
+    fontFamily: Fonts.type.montserrat,
   },
   titleWrapper: {
     flex: 1,
@@ -76,22 +87,24 @@ export default StyleSheet.create({
     lineHeight: 100
   },
   tabs: {
+    flex: 1
   },
   tabnav: {
     height: 50,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    backgroundColor: Colors.whiteAlphaPt15
   },
   tab: {
     justifyContent: 'center',
     alignItems: 'center',
     width: '50%',
     borderBottomWidth: 2,
-    borderBottomColor: Colors.coal,
+    borderBottomColor: Colors.clear,
   },
   tabText: {
     fontFamily: Fonts.type.montserrat,
-    color: '#bdbdbd',
+    color: '#9e9e9e',
     fontSize: 13,
     letterSpacing: 1.2,
     textAlign: 'center'
@@ -101,7 +114,7 @@ export default StyleSheet.create({
   },
   tabTextSelected: {
     fontFamily: Fonts.type.montserrat,
-    color: '#757575',
+    color: Colors.white,
     fontSize: 13,
     letterSpacing: 1.2,
   },
@@ -110,5 +123,9 @@ export default StyleSheet.create({
   },
   storySubtitleStyle: {
     fontSize: 8
+  },
+  thumbnailImage: {
+    height: 40,
+    width: 30,
   }
 })

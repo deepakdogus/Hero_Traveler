@@ -30,7 +30,6 @@ class FullScreenEditor extends React.Component {
 
   _onRight = () => {
     this.editor.getContentHtml().then(storyContent => {
-      console.log('full screen storyContent', storyContent)
       NavActions.createStory_details({storyContent})
     })
   }

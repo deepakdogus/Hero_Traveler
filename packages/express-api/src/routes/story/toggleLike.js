@@ -13,11 +13,11 @@ export default function toggleLike(req, res) {
             const user = storyWithUser.author
             if (user.receivesLikeNotifications() && notify) {
               return Models.UserDevice.find({user: user._id})
-                .then(devices =>
-                  !!devices ?
+                .then(devices => {
+                  return !!devices ?
                     likeNotification(devices, req.user, storyWithUser) :
                     Promise.resolve()
-                )
+                })
             } else {
               return Promise.resolve()
             }

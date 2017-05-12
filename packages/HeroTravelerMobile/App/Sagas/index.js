@@ -18,8 +18,15 @@ import { UserTypes } from '../Redux/Entities/Users'
 
 /* ------------- Sagas ------------- */
 
-import { startup, hideSplash } from './StartupSagas'
-import { login, loginFacebook, resetPassword } from './LoginSagas'
+import { startup, heroStartup } from './StartupSagas'
+import {
+  login,
+  loginFacebook,
+  resetPasswordRequest,
+  resetPassword,
+  loggedIn,
+  verifyEmail
+} from './LoginSagas'
 import {
   signupEmail,
   signupFacebook,
@@ -91,11 +98,15 @@ function * watchRefreshTokens() {
 export default function * root () {
   yield [
     fork(watchRefreshTokens),
-    takeLatest(StartupTypes.STARTUP, startup),
+    takeLatest(StartupTypes.STARTUP, startup, heroAPI),
+    takeLatest(StartupTypes.HERO_STARTUP, heroStartup, heroAPI),
     takeLatest(OpenScreenTypes.OPEN_SCREEN, openScreen),
     takeLatest(LoginTypes.LOGIN_REQUEST, login, heroAPI),
     takeLatest(LoginTypes.LOGIN_FACEBOOK, loginFacebook),
-    takeLatest(LoginTypes.RESET_PASSWORD_REQUEST, resetPassword, heroAPI),
+    takeLatest(LoginTypes.RESET_PASSWORD_REQUEST, resetPasswordRequest, heroAPI),
+    takeLatest(LoginTypes.RESET_PASSWORD, resetPassword, heroAPI),
+    takeLatest(LoginTypes.VERIFY_EMAIL, verifyEmail, heroAPI),
+    takeLatest(SessionTypes.INITIALIZE_SESSION, loggedIn),
 
     takeLatest(SignupTypes.SIGNUP_EMAIL, signupEmail, heroAPI),
     takeLatest(SignupTypes.SIGNUP_FACEBOOK, signupFacebook, heroAPI),

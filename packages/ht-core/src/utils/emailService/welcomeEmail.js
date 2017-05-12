@@ -1,6 +1,4 @@
-import _ from 'lodash'
 import Promise from 'bluebird'
-import path from 'path'
 const nodemailer = require('nodemailer');
 const sgTransport = require('nodemailer-sendgrid-transport');
 const cons = require('consolidate');
@@ -23,12 +21,12 @@ function renderTemplate(templateName, context) {
 export default function sendWelcomeEmail(user) {
 
   if (process.env.DISABLE_EMAIL) {
-    return Promise.resolve()
+    return Promise.resolve({})
   }
 
   const context = {
     subject: 'Welcome to HERO Traveler!',
-    confirmationUrl: `https://www.herotraveler.com/email-verify/${user.emailConfirmationToken}`,
+    confirmationUrl: `com.rehashstudio.herotraveler://emailverify/${user.emailConfirmationToken}`,
     logoUrl: 'https://s3.amazonaws.com/hero-traveler/assets/ht-logo-white-small.png',
     logoHeight: '50px',
     logoWidth: '246px',

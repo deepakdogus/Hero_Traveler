@@ -10,10 +10,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 import {Colors} from '../../Themes'
 import styles from './ExploreGridStyles'
-
-function getUrl(categoryImage) {
-  return `https://s3.amazonaws.com/hero-traveler/${categoryImage.path}`
-}
+import getImageUrl from '../../Lib/getImageUrl'
 
 export default class ExploreGrid extends Component {
 
@@ -35,7 +32,7 @@ export default class ExploreGrid extends Component {
         key={category.id}
       >
         <Image
-          source={{uri: getUrl(category.image.versions.thumbnail240)}}
+          source={{uri: getImageUrl(category.image) || undefined}}
           style={styles.gridImage}
         >
           <Text style={styles.gridRowText}>{category.title}</Text>

@@ -68,7 +68,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.RESUME_SESSION]: setIsResuming,
   [Types.RESUME_SESSION_FAILURE]: resumeError,
   [Types.REFRESH_SESSION_SUCCESS]: refreshSessionSuccess
-
 })
 
 /* ------------- Selectors ------------- */

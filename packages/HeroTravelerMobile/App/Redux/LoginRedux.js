@@ -12,7 +12,13 @@ const { Types, Creators } = createActions({
   loginFacebookFailure: ['error'],
   resetPasswordRequest: ['email'],
   resetPasswordRequestSuccess: [],
-  resetPasswordRequestFailure: ['error']
+  resetPasswordRequestFailure: ['error'],
+  resetPassword: ['token', 'password'],
+  resetPasswordSuccess: null,
+  resetPasswordFailure: ['error'],
+  setIsLoggedIn: ['isLoggedIn'],
+  verifyEmail: ['token'],
+  verifyEmailFailure: ['error'],
 })
 
 export const LoginTypes = Types
@@ -22,7 +28,8 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   error: null,
-  fetching: false
+  fetching: false,
+  isLoggedIn: false
 })
 
 /* ------------- Reducers ------------- */
@@ -51,6 +58,8 @@ export const successRequestReset = (state) => state
 // success: did not find user requesting PW reset
 export const failureRequestReset = (state) => state
 
+export const setIsLoggedIn = (state, {isLoggedIn}) => state.merge({isLoggedIn})
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -63,4 +72,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.RESET_PASSWORD_REQUEST]: requestReset,
   [Types.RESET_PASSWORD_REQUEST_SUCCESS]: successRequestReset,
   [Types.RESET_PASSWORD_REQUEST_FAILURE]: failureRequestReset,
+  [Types.SET_IS_LOGGED_IN]: setIsLoggedIn,
+  [Types.VERIFY_EMAIL_FAILURE]: failure,
 })

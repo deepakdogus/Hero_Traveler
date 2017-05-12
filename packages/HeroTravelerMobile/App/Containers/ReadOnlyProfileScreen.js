@@ -1,11 +1,8 @@
-
 import _ from 'lodash'
 import React, {PropTypes, Component} from 'react'
 import { connect } from 'react-redux'
-import Icon from 'react-native-vector-icons/FontAwesome'
-import {Image, View} from 'react-native'
 
-import {Images, Colors, Metrics} from '../Themes'
+import {Colors} from '../Themes'
 import UserActions, {getFollowers} from '../Redux/Entities/Users'
 import StoryActions, {getByUser, getUserFetchStatus} from '../Redux/Entities/Stories'
 import ProfileView from '../Components/ProfileView'
@@ -20,21 +17,21 @@ class ReadOnlyProfileScreen extends Component {
     userId: PropTypes.string.isRequired
   }
 
-  componentDidMount() {
+  constructor(props) {
+    super(props)
     this.props.attemptRefreshUser(this.props.userId)
     this.props.attemptGetUserStories(this.props.userId)
   }
 
   render () {
     const {
-      userId,
       user,
       storiesById,
       userFetchStatus,
       storiesFetchStatus
     } = this.props
 
-    if (userFetchStatus.loading) {
+    if (userFetchStatus.loading || !user) {
       return (
         <Loader
           style={styles.spinner}

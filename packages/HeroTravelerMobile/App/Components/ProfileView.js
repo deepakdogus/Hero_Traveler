@@ -283,7 +283,7 @@ export default class ProfileView extends React.Component {
               }
                 {buttons}
               </View>
-              {!isEditing &&
+              {!isEditing && false &&
                 <Text style={styles.contributor}>
                   <Icon name='star' color={Colors.red} size={15} style={styles.contributorIcon} />
                   <Text style={styles.contributorText}>&nbsp;&nbsp;&nbsp;CONTRIBUTOR</Text>
@@ -322,8 +322,9 @@ export default class ProfileView extends React.Component {
                       subtitleStyle={styles.subtitleStyle}
                       allowVideoPlay={false}
                       autoPlayVideo={false}
+                      showLike={this.props.showLike}
                       key={storyId}
-                      height={200}
+                      height={222}
                       storyId={storyId}
                       onPress={() => NavActions.story({storyId})}
                       onPressLike={story => alert(`Story ${storyId} liked`)}

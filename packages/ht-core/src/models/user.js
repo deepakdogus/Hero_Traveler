@@ -68,8 +68,14 @@ const UserSchema = new Schema({
     avatar: {type: Schema.Types.ObjectId, ref: UploadRef},
     cover: {type: Schema.Types.ObjectId, ref: UploadRef},
   },
-  passwordResetToken: String,
-  emailConfirmationToken: String,
+  passwordResetToken: {
+    hidden: true,
+    type: String
+  },
+  emailConfirmationToken: {
+    hidden: true,
+    type: String
+  },
   counts: {
     followers: {
       type: Number,
@@ -178,6 +184,14 @@ UserSchema.statics = {
 
 UserSchema.methods = {
 
+  async updatePassword(password) {
+    const hashedPassword = await encryptPassword(password)
+    const internalAccount = _.find(this.accounts, (a) => a.kind === ACCOUNT_TYPE_EMAIL)
+    internalAccount.password = hashedPassword
+    this.passwordResetToken = undefined
+    return this.save()
+  },
+
   // Returns the password for email signups/logins
   getInternalPassword() {
     const internalAccount = _.find(this.accounts, account => {
@@ -215,7 +229,6 @@ UserSchema.methods = {
 }
 
 UserSchema.post('save', function(error, doc, next) {
-  console.log('err', error)
   if (error.name === 'ValidationError') {
     next(new CoreError(error.message))
   } else {

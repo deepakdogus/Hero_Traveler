@@ -1,5 +1,6 @@
 import apn from 'apn'
 import path from 'path'
+import util from 'util'
 import _ from 'lodash'
 import {Models} from '@rwoody/ht-core'
 const sound = 'chime.caf'
@@ -17,7 +18,10 @@ if (process.env.NODE_ENV === 'development') {
 
 const apnProvider = new apn.Provider({
   cert: certPath,
-  key: keyPath
+  key: keyPath,
+  ca: [
+    path.resolve(path.join(__dirname, '../certificates/entrust_2048_ca.pem'))
+  ]
 })
 
 function getDeviceIds(devices) {
@@ -35,7 +39,7 @@ export function likeNotification(devices, user, story) {
   })
   return _send(notification, getDeviceIds(devices))
     .then(result => {
-      console.log('like notif result', result)
+      console.log('like notif result', util.inspect(result))
       return Promise.resolve()
     })
 }
@@ -52,7 +56,7 @@ export function followerNotification(devices, followingUser) {
 
   return _send(notification, getDeviceIds(devices))
     .then(result => {
-      console.log('follow notif result', result)
+      console.log('follow notif result', util.inspect(result))
       return Promise.resolve()
     })
 }
@@ -69,7 +73,7 @@ export function commentNotification(devices, story, user) {
 
   return _send(notification, getDeviceIds(devices))
     .then(result => {
-      console.log('comment notif result', result)
+      console.log('comment notif result', util.inspect(result))
       return Promise.resolve()
     })
 }

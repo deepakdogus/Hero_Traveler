@@ -5,21 +5,26 @@ import Immutable from 'seamless-immutable'
 
 const { Types, Creators } = createActions({
   startup: null,
-  started: false,
+  startupStarted: null,
   hideSplash: null,
+  heroStartup: ['deeplinkObject']
 })
 export const StartupTypes = Types
 
 const INITIAL_STATE = Immutable({
-  splashShown: true
+  splashShown: true,
+  started: false
 })
 
 export const hideSplash = (state) => state.merge({
   splashShown: false
 })
 
+export const markStarted = (state) => state.merge({started: true})
+
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.HIDE_SPLASH]: hideSplash,
+  [Types.STARTUP_STARTED]: markStarted
 })
 
 export default Creators

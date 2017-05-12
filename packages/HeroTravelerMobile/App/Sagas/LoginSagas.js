@@ -39,10 +39,10 @@ export function * loginFacebook () {
   yield put(LoginActions.loginFacebookSuccess())
 }
 
-export function * resetPassword (api, {email}) {
+export function * resetPasswordRequest (api, {email}) {
   try {
     const response = yield call(
-      api.resetPassword,
+      api.resetPasswordRequest,
       email
     )
 
@@ -56,9 +56,33 @@ export function * resetPassword (api, {email}) {
   }
 }
 
+export function * resetPassword (api, {token, password}) {
+  const response = yield call(
+    api.resetPassword,
+    token,
+    password
+  )
 
+  if (response.ok) {
+    yield put(LoginActions.resetPasswordSuccess())
+  } else {
+    yield put(LoginActions.resetPasswordFailure(new Error('Reset password attempt failed')))
+  }
+}
 
+export function * loggedIn() {
+  yield put(LoginActions.setIsLoggedIn(true))
+}
 
+export function * verifyEmail (api, {token}) {
+  const response = yield call(
+    api.verifyEmail,
+    token
+  )
 
-
-
+  if (response.ok) {
+    alert('Your email address has been verified')
+  } else {
+    yield put(LoginActions.verifyEmailFailure(new Error('Reset password attempt failed')))
+  }
+}

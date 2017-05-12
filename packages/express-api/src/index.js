@@ -24,7 +24,6 @@ app.use(passport.initialize())
 
 if (process.env.NODE_ENV !== 'development') {
   nodeCleanup(() => {
-    console.log('cleaning up')
     apnCleanup()
   })
 }

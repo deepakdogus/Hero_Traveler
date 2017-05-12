@@ -319,7 +319,9 @@ class ProfileView extends React.Component {
                 {avatarCamera}
               </View>
               {!isEditing &&
-                <TouchableOpacity onPress={() => alert('read bio')}>
+               <TouchableOpacity onPress={() => NavActions.viewBioScreen({
+                   user: this.props.user
+                 })}>
                   <Text style={styles.italicText}>Read Bio</Text>
                 </TouchableOpacity>
               }

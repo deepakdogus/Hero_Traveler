@@ -1,3 +1,5 @@
+import _ from 'lodash'
+import Promise from 'bluebird'
 import algoliasearchModule from 'algoliasearch'
 import {Constants} from '@rwoody/ht-util'
 import {User, UserDevice} from '../models'
@@ -7,17 +9,21 @@ const client = algoliasearchModule(process.env.ALGOLIA_ACCT_KEY, process.env.ALG
 const userIndex = client.initIndex(process.env.ALGOLIA_USER_INDEX)
 
 // converting algoliasearch callback api to promise
-const addUserToIndex = (user) => new Promise((resolve, reject) => {
-  // return early if we are not seeding
-  if (process.env.DISABLE_ALGOLIA) {
-    return resolve()
-  }
+const addUserToIndex = (user) => {
+  return new Promise((resolve, reject) => {
+    // return early if we are not seeding
+    if (process.env.DISABLE_ALGOLIA) {
+      return resolve({})
+    }
 
-  userIndex.addObject(user, (err, content) => {
-    if (err) reject(err)
-    if (content) resolve(content)
+    const userSearchObject = _.pick(user, ['username', 'profile.fullName', '_id'])
+
+    userIndex.addObject(userSearchObject, (err, content) => {
+      if (err) return reject(err)
+      return resolve(content)
+    })
   })
-})
+}
 
 const {
   ACCOUNT_TYPE_EMAIL,
@@ -44,9 +50,11 @@ export function createUserFacebook(facebookUserData, device: ?object) {
     ).then(() => Promise.resolve(newUser))
   })
   .then(newUser => {
-    addUserToIndex(newUser)
-    welcomeEmail(newUser)
-    return newUser
+    return Promise.all([
+      addUserToIndex(newUser),
+      welcomeEmail(newUser)
+    ])
+    .then(() => newUser)
   })
 }
 

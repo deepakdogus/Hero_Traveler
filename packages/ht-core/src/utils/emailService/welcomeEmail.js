@@ -1,6 +1,4 @@
-import _ from 'lodash'
 import Promise from 'bluebird'
-import path from 'path'
 const nodemailer = require('nodemailer');
 const sgTransport = require('nodemailer-sendgrid-transport');
 const cons = require('consolidate');
@@ -23,7 +21,7 @@ function renderTemplate(templateName, context) {
 export default function sendWelcomeEmail(user) {
 
   if (process.env.DISABLE_EMAIL) {
-    return Promise.resolve()
+    return Promise.resolve({})
   }
 
   const context = {

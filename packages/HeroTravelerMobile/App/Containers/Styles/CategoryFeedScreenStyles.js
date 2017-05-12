@@ -4,7 +4,7 @@ import { ApplicationStyles, Fonts, Colors, Metrics } from '../../Themes/'
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
-    backgroundColor: '#000',
+    backgroundColor: Colors.backgroundDark,
   },
   scrollItemFullScreen: {
     width: Metrics.screenWidth,
@@ -26,12 +26,13 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '25%',
+    backgroundColor: Colors.background,
     borderBottomWidth: 2,
-    borderBottomColor: Colors.coal,
+    borderBottomColor: Colors.background,
   },
   tabText: {
     fontFamily: Fonts.type.montserrat,
-    color: '#bdbdbd',
+    color: '#757575',
     fontSize: 13,
     letterSpacing: 1.2,
     textAlign: 'center'
@@ -41,7 +42,7 @@ export default StyleSheet.create({
   },
   tabTextSelected: {
     fontFamily: Fonts.type.montserrat,
-    color: '#757575',
+    color: '#bdbdbd',
     fontSize: 13,
     letterSpacing: 1.2,
   },

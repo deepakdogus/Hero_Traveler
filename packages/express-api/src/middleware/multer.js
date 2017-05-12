@@ -17,7 +17,6 @@ export default multer({
     cacheControl: 'max-age=31536000',
     contentType: multerS3.AUTO_CONTENT_TYPE,
     metadata(req, file, cb) {
-      // console.log('metadata', file)
       cb(null, {
         fieldName: file.fieldname
       })

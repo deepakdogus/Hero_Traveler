@@ -18,7 +18,8 @@ export function * loadUser (api, {userId}) {
   const response = yield call(api.getUser, userId)
   if (response.ok) {
     const { entities } = response.data;
-    yield put(UserActions.loadUserSuccess(entities.users[userId]))
+    yield put(UserActions.receiveUsers(entities.users))
+    yield put(UserActions.loadUserSuccess())
   } else {
     yield put(UserActions.loadUserFailure(new Error('Failed to load user')))
   }
@@ -26,7 +27,6 @@ export function * loadUser (api, {userId}) {
 
 export function * loadUserFollowers (api, {userId}) {
   const response = yield call(api.getUserFollowers, userId)
-  console.log('res', response)
   if (response.ok) {
     const { entities, result } = response.data;
     yield [
@@ -56,8 +56,6 @@ export function * userFollowUser(api, {userId, targetUserId}) {
     api.followUser,
     targetUserId
   )
-
-  console.log('targetUserId', targetUserId)
 
   yield put(UserActions.followUserSuccess(userId, targetUserId))
 

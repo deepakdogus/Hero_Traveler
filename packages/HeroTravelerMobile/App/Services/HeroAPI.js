@@ -1,9 +1,9 @@
 // a library to wrap and simplify api calls
-import {Platform} from 'react-native'
 import apisauce from 'apisauce'
 import _, {get, isArray} from 'lodash'
 import {normalize, schema} from 'normalizr'
 import {getToken as getPushToken} from '../Config/PushConfig'
+import env from '../Config/Env'
 
 const User = new schema.Entity('users')
 const Category = new schema.Entity('categories')
@@ -20,12 +20,10 @@ const Bookmarks = new schema.Entity('bookmarks', {
   story: Story
 })
 
-const devURL = Platform.OS === 'ios' ? 'http://10.0.0.218:3000/' : 'http://10.0.3.2:3000/'
-
 // our "constructor"
 const create = () => {
   const api = apisauce.create({
-    baseURL: __DEV__ ? devURL : 'http://ht-api-dev.rehashstudio.com/',
+    baseURL: env.API_URL,
     headers: {
       // @TODO client-id
       'client-id': 'xzy',
@@ -95,7 +93,6 @@ const create = () => {
   }
 
   const login = (username, password) => {
-    console.log('getPushToken()', getPushToken())
     return api.post('auth', {}, {
       auth: {
         username,
@@ -178,9 +175,7 @@ const create = () => {
   }
 
   const getUserStories = (userId, params) => {
-    return api.get(`story/user/${userId}`, {
-        params
-      })
+    return api.get(`story/user/${userId}`, params)
       .then(response => {
         return Object.assign({}, response, {
           data: normalize(response.data, [Story])
@@ -188,10 +183,8 @@ const create = () => {
       })
   }
 
-  const getCategoryStories = (categoryId, params) => {
-    return api.get(`story/category/${categoryId}`, {
-        params
-      })
+  const getCategoryStories = (categoryId, params = {}) => {
+    return api.get(`story/category/${categoryId}`, params)
       .then(response => {
         return Object.assign({}, response, {
           data: normalize(response.data, [Story])
@@ -201,7 +194,6 @@ const create = () => {
 
   // publishes a draft
   const createStory = (story) => {
-    console.log('posting', story)
     return api.post('story', {story})
   }
 
@@ -306,7 +298,6 @@ const create = () => {
   const getBookmarks = (userId) => {
     return api.get(`story/user/${userId}/bookmark`)
       .then(response => {
-        console.log('getBookmarks', response.data)
         return  Object.assign({}, response, {
           data: normalize(response.data, [Story])
         })

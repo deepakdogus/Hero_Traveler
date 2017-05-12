@@ -4,10 +4,8 @@ import { Actions as NavigationActions, ActionConst } from 'react-native-router-f
 // Process OPEN_SCREEN actions
 export function * openScreen (action) {
   const {screen, options = {}} = action
-  console.log('open screen options', options)
   // Always reset the nav stack when opening a screen by default
   // You can override the RESET type in the options passed to the OPEN_SCREEN dispatch
   const mergedOptions = {type: ActionConst.RESET, ...options}
-  console.log('calling open screen')
   yield call(NavigationActions[screen], mergedOptions)
 }

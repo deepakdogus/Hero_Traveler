@@ -15,6 +15,7 @@ import StoryList from '../../Components/StoryList'
 import ConnectedStoryPreview from '../ConnectedStoryPreview'
 import RoundedButton from '../../Components/RoundedButton'
 import styles from '../Styles/MyFeedScreenStyles'
+import NoStoriesMessage from '../../Components/NoStoriesMessage'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
 
@@ -34,8 +35,7 @@ class MyFeedScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.props.attemptGetUserFeed(this.props.user.id)
-    console.log('my feed hide splash')
+    this.props.attemptGetUserFeed(this.props.userId)
     SplashScreen.hide()
   }
 
@@ -53,21 +53,15 @@ class MyFeedScreen extends React.Component {
     )
   }
 
-  _showLoader(){
-   return (
-     <Text style={styles.message}>Loading</Text>
-   )
-  }
-
   _showError(){
     return (
       <Text style={styles.message}>Error</Text>
     )
   }
 
-  _showNoStories(){
+  _showNoStories() {
     return (
-      <Text style={styles.title}>There are no stories here</Text>
+      <NoStoriesMessage />
     )
   }
 
@@ -128,13 +122,16 @@ class MyFeedScreen extends React.Component {
 
   render () {
     let { storiesById, fetchStatus, error } = this.props;
+    let showTooltip = false;
 
-    const showTooltip = !isTooltipComplete(
-      TooltipTypes.MY_FEED,
-      this.props.user.introTooltips
-    )
+    if (this.props.user) {
+      showTooltip = !isTooltipComplete(
+        TooltipTypes.MY_FEED,
+        this.props.user.introTooltips
+      )
+    }
 
-    if (fetchStatus.fetching && this.state.refreshing) {
+    if (fetchStatus.fetching || this.state.refreshing) {
       content = (
         <Loader />
       )
@@ -188,6 +185,7 @@ const mapStateToProps = (state) => {
     error
   } = state.entities.stories;
   return {
+    userId: state.session.userId,
     user: state.entities.users.entities[state.session.userId],
     fetchStatus,
     storiesById: userFeedById,

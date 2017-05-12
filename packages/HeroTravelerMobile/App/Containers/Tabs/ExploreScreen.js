@@ -11,22 +11,26 @@ import {
 } from 'react-native'
 import {connect} from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
-
+import env from '../../Config/Env'
+import Icon from 'react-native-vector-icons/FontAwesome'
 // Search
 import algoliasearchModule from 'algoliasearch/reactnative'
-const algoliasearch = algoliasearchModule('BEEW4KQKOP', '9aa2c15ed03f4826dd559bea4087592e')
 import AlgoliaSearchHelper from 'algoliasearch-helper';
 
 import CategoryActions from '../../Redux/Entities/Categories'
-
 import Loader from '../../Components/Loader'
 import ExploreGrid from '../../Components/ExploreGrid'
-import StorySearchList from '../../Components/StorySearchList'
 import {Metrics} from '../../Themes'
 import styles from '../Styles/ExploreScreenStyles'
+import Colors from '../../Themes/Colors'
+import List from '../../Components/List'
+import ListItem from '../../Components/ListItem'
+import getImageUrl from '../../Lib/getImageUrl'
+import Avatar from '../../Components/Avatar'
 
-const STORY_INDEX = __DEV__ ? 'ryan_dev_STORIES' : 'dev_STORIES'
-const USERS_INDEX = __DEV__ ? 'ryan_dev_USERS' : 'dev_USERS'
+const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
+const STORY_INDEX = env.SEARCH_STORY_INDEX
+const USERS_INDEX = env.SEARCH_USER_INDEX
 
 const Tab = ({text, onPress, selected}) => {
   return (
@@ -61,6 +65,7 @@ class ExploreScreen extends Component {
         lastSearchResults: res,
       })
     })
+    // @TODO why is this duplicated?? probably needs deleting
     helper.on('result', res => {
       this.setState({
         searching: false,
@@ -91,7 +96,6 @@ class ExploreScreen extends Component {
   _changeQuery = (e) => {
     const helper = this.helper
     const q = e.nativeEvent.text
-    const self = this
 
     if (this.state.selectedTabIndex === null) {
       this.setState({selectedTabIndex: 0})
@@ -133,12 +137,6 @@ class ExploreScreen extends Component {
 
   renderSearchSection() {
     let searchHits = _.get(this.state.lastSearchResults, 'hits', [])
-    searchHits = _.map(searchHits, story => {
-      return {
-        ...story,
-        author: this.props.users[story.author]
-      }
-    })
     const isSearching = this.state.searching
     return (
       <View style={styles.tabs}>
@@ -166,23 +164,83 @@ class ExploreScreen extends Component {
         }} />}
         {searchHits.length > 0 && this.state.selectedTabIndex === 0 &&
           <ScrollView>
-            <StorySearchList
-              stories={searchHits}
-              height={70}
-              titleStyle={styles.storyTitleStyle}
-              subtitleStyle={styles.subtitleStyle}
-              forProfile={true}
-              onPressStory={story => NavActions.story({
-                storyId: story.id
-              })}
+            <List
+              items={searchHits}
+              renderRow={(story) => {
+                let leftEl
+
+                if (story.coverImage) {
+                  leftEl = (
+                    <Image
+                      resizeMode='cover'
+                      source={{uri: getImageUrl(story.coverImage)}}
+                      style={styles.thumbnailImage}
+                    />
+                  )
+                } else {
+                  leftEl = (
+                    <View style={[styles.thumbnailImage, {
+                      width: 30,
+                      height: 50,
+                      backgroundColor: Colors.backgroundDark,
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }]}>
+                      <Icon name='play' size={15} color={Colors.charcoal} style={{left: 1}} />
+                    </View>
+                  )
+                }
+                return (
+                  <ListItem
+                    onPress={() => NavActions.story({
+                      storyId: story._id
+                    })}
+                    leftElement={leftEl}
+                    text={<Text style={{fontSize: 15, color: Colors.snow}}>{story.title}</Text>}
+                    secondaryText={<Text style={{
+                      fontSize: 12,
+                      color: Colors.navBarText,
+                      fontStyle: 'italic'
+                    }}>{story.author}</Text>}
+                    rightElement={<Icon name='angle-right' color={Colors.whiteAlphaPt3} size={30} />}
+                  />
+                )
+              }}
+            />
+          </ScrollView>
+        }
+        {searchHits.length > 0 && this.state.selectedTabIndex === 1 &&
+          <ScrollView style={{flex: 1, flexDirection: 'column'}}>
+            <List
+              items={searchHits}
+              renderRow={(user) => {
+                return (
+                  <ListItem
+                    onPress={() => {
+                      if (user._id === this.props.user.id) {
+                        NavActions.profile({type: 'jump'})
+                      } else {
+                        NavActions.readOnlyProfile({
+                          userId: user._id
+                        })
+                      }
+                    }}
+                    leftElement={
+                      <Avatar
+                        avatarUrl={getImageUrl(user.profile.avatar)}
+                        iconColor={Colors.lightGreyAreas}
+                      />
+                    }
+                    text={<Text style={{fontSize: 15, color: Colors.snow}}>{user.profile.fullName}</Text>}
+                    rightElement={<Icon name='angle-right' color={Colors.whiteAlphaPt3} size={30} />}
+                  />
+                )
+              }}
             />
           </ScrollView>
         }
         {!isSearching && searchHits.length === 0 && this.state.selectedTabIndex === 0 &&
           <Text style={{color: 'white', padding: Metrics.section, textAlign: 'center'}}>No stories found</Text>
-        }
-        {!isSearching && searchHits.length > 0 && this.state.selectedTabIndex === 1 &&
-          <Text style={{color: 'white', padding: Metrics.section, textAlign: 'center'}}>Render searched people</Text>
         }
         {!isSearching && searchHits.length === 0 && this.state.selectedTabIndex === 1 &&
           <Text style={{color: 'white', padding: Metrics.section, textAlign: 'center'}}>No users found</Text>
@@ -222,12 +280,23 @@ class ExploreScreen extends Component {
         <View style={styles.headerSearch}>
           <View style={styles.searchWrapper}>
             <TextInput
+              ref={c => this._searchInput = c}
               style={styles.searchInput}
               placeholder='Search'
               placeholderTextColor='#757575'
               onChange={e => this._changeQuery(e)}
             />
           </View>
+          {this.state.selectedTabIndex !== null &&
+            <TouchableOpacity onPress={() => {
+              this._searchInput.setNativeProps({text: ''})
+              this.setState({selectedTabIndex: null, lastSearchResults: null})
+            }}>
+              <View style={styles.cancelBtn}>
+                <Text style={styles.cancelBtnText}>Cancel</Text>
+              </View>
+            </TouchableOpacity>
+          }
         </View>
         {!showSearch &&
           <View style={styles.titleWrapper}>

@@ -2,8 +2,8 @@ import { call, put, select } from 'redux-saga/effects'
 import _ from 'lodash'
 import UserActions from '../Redux/Entities/Users'
 import SessionActions from '../Redux/SessionRedux'
-import StartupActions from '../Redux/StartupRedux'
 import ScreenActions from '../Redux/OpenScreenRedux'
+import StartupActions from '../Redux/StartupRedux'
 
 const currentUserId = ({session}) => session.userId
 const currentUserTokens = ({session}) => session.tokens
@@ -68,13 +68,13 @@ export function * resumeSession (api) {
       // Must receive users before running session initialization
       // so the user object is accessible
       put(UserActions.receiveUsers({[user.id]: user})),
-      put(SessionActions.initializeSession(user.id, tokens)),
-      put(ScreenActions.openScreen('tabbar')),
-      put(StartupActions.hideSplash()),
+
     ]
+    yield put(SessionActions.initializeSession(user.id, tokens))
   } else {
     yield put(SessionActions.resumeSessionFailure(new Error('You have been logged out.'))),
     yield put(SessionActions.resetRootStore())
+    yield put(ScreenActions.openScreen('launchScreen'))
     yield put(StartupActions.hideSplash())
   }
 }
@@ -85,6 +85,7 @@ export function * refreshSession(api) {
   const accessToken = _.find(tokens, {type: 'access'})
   const refreshToken = _.find(tokens, {type: 'refresh'})
   const refreshWindow = 24 * 3600
+
   if (accessToken.expiresIn > refreshWindow) {
     return yield put(SessionActions.refreshSessionSuccess(tokens))
   }
@@ -94,7 +95,6 @@ export function * refreshSession(api) {
   if (response.ok) {
     const {tokens: newTokens} = response.data
     const newAccessToken = _.find(newTokens, {type: 'access'})
-    console.log('newAccessToken.value')
     return yield [
       call(api.setAuth, newAccessToken.value),
       put(SessionActions.refreshSessionSuccess(tokens))

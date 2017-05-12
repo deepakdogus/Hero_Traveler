@@ -11,7 +11,7 @@ const { Types, Creators } = createActions({
   fromUserRequest: ['userId'],
   fromUserSuccess: ['userId', 'userStoriesById'],
   fromUserFailure: ['error'],
-  fromCategoryRequest: ['categoryId'],
+  fromCategoryRequest: ['categoryId', 'storyType'],
   fromCategorySuccess: ['categoryId', 'categoryStoriesById'],
   fromCategoryFailure: ['error'],
   toggleLike: ['storyId', 'wasLiked'],
@@ -101,10 +101,6 @@ export const categoryRequest = (state, {categoryId}) => {
     ['storiesByCategoryAndId', categoryId, 'fetchStatus'],
     {fetching: true, loaded: false}
   )
-  // .setIn(
-  //   ['storiesByCategoryAndId', categoryId, 'byId'],
-  //   []
-  // )
 }
 
 export const categorySuccess = (state, {categoryId, categoryStoriesById}) => {

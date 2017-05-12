@@ -62,6 +62,7 @@ class ProfileScreen extends React.Component {
         stories={userStoriesById}
         editable={true}
         isEditing={this.props.isEditing}
+        showLike={false}
         profileImage={getImageUrl(user.profile.cover)}
         fetchStatus={userStoriesFetchStatus}
       />

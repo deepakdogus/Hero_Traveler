@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import React, { PropTypes } from 'react'
-import { ScrollView, Text, View, TouchableOpacity } from 'react-native'
+import {ScrollView, Text, View, TouchableOpacity, TouchableWithoutFeedback} from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
@@ -12,14 +12,17 @@ import Loader from '../../Components/Loader'
 
 import {Metrics} from '../../Themes'
 import styles from '../Styles/CategoryFeedScreenStyles'
+import NoStoriesMessage from '../../Components/NoStoriesMessage'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight - 50
 
 const Tab = ({text, onPress, selected}) => {
   return (
-    <TouchableOpacity style={[styles.tab, selected ? styles.tabSelected : null]} onPress={onPress}>
-      <Text style={[styles.tabText, selected ? styles.tabTextSelected : null]}>{text}</Text>
-    </TouchableOpacity>
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View style={[styles.tab, selected ? styles.tabSelected : null]}>
+        <Text style={[styles.tabText, selected ? styles.tabTextSelected : null]}>{text}</Text>
+      </View>
+    </TouchableWithoutFeedback>
   )
 }
 
@@ -43,7 +46,24 @@ class CategoryFeedScreen extends React.Component {
   }
 
   loadData() {
-    this.props.loadCategory(this.props.categoryId)
+    let storyType
+
+    switch (this.state.selectedTabIndex) {
+      case 0:
+        storyType = null
+        break;
+      case 1:
+        storyType = 'do'
+        break;
+      case 2:
+        storyType = 'eat'
+        break;
+      case 3:
+        storyType = 'stay'
+        break;
+    }
+
+    this.props.loadCategory(this.props.categoryId, storyType)
   }
 
   componentDidMount() {
@@ -72,41 +92,13 @@ class CategoryFeedScreen extends React.Component {
   _changeTab = (selectedTabIndex) => {
     this.setState({
       selectedTabIndex
+    }, () => {
+      this.loadData()
     })
-  }
-
-  _showLoader(){
-   return (
-     <Text style={styles.message}>Loading</Text>
-   )
-  }
-
-  _showError(){
-    return (
-      <Text style={styles.message}>Error</Text>
-    )
-  }
-
-  _showNoStories() {
-    return (
-      <Text style={styles.title}>There are no stories here</Text>
-    )
   }
 
   render () {
     let { storiesById, fetchStatus, error } = this.props;
-
-    const filterMap = {
-      0: true,
-      1: 'do',
-      2: 'eat',
-      3: 'stay'
-    }
-
-    const filterByTopic = value => {
-      if (this.state.selectedTabIndex === 0 ) return true
-      return value.type === filterMap[this.state.selectedTabIndex]
-    }
 
     let content;
 
@@ -115,9 +107,9 @@ class CategoryFeedScreen extends React.Component {
         <Loader />
       )
     } else if (error) {
-      content = this._wrapElt(this._showError());
-    } else if (!storiesById || !storiesById.length) {
-      content = this._wrapElt(this._showNoStories());
+      content = this._wrapElt(<Text style={styles.message}>Error</Text>);
+    } else if (_.size(storiesById) === 0) {
+      content = <NoStoriesMessage />
     } else {
       content = (
         <StoryList
@@ -176,21 +168,17 @@ class CategoryFeedScreen extends React.Component {
 
 
 const mapStateToProps = (state, props) => {
-  let {
-    entities: stories,
-    error
-  } = state.entities.stories;
   return {
     user: state.entities.users.entities[state.session.userId],
     fetchStatus: getFetchStatus(state.entities.stories, props.categoryId),
     storiesById: getByCategory(state.entities.stories, props.categoryId),
-    error
+    error: state.entities.stories.error
   }
 }
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
-    loadCategory: (categoryId) => dispatch(StoryActions.fromCategoryRequest(categoryId)),
+    loadCategory: (categoryId, storyType) => dispatch(StoryActions.fromCategoryRequest(categoryId, storyType)),
     toggleLike: (userId, storyId) => dispatch(StoryActions.storyLike(
       userId,
       storyId

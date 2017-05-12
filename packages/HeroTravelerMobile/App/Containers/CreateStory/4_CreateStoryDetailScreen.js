@@ -4,10 +4,9 @@ import {
   ScrollView,
   View,
   Text,
-  TextInput,
   TouchableWithoutFeedback,
   TouchableHighlight,
-  DatePickerIOS
+  DatePickerIOS, TextInput
 } from 'react-native'
 import { connect } from 'react-redux'
 import R from 'ramda'
@@ -89,6 +88,11 @@ class CreateStoryDetailScreen extends React.Component {
     this.props.resetForm()
   }
 
+  _receiveCategories = (selectedCategories) => {
+    this.props.updateCategories(selectedCategories)
+    NavActions.pop()
+  }
+
   render () {
     return (
       <View style={{flex: 1, position: 'relative'}}>
@@ -121,13 +125,18 @@ class CreateStoryDetailScreen extends React.Component {
             </View>
             <View style={styles.fieldWrapper}>
               <Icon name='tag' size={18} color='#424242' style={styles.fieldIcon} />
-              <Field
-                name='tags'
-                component={RenderTextInput}
-                style={styles.inputStyle}
-                placeholder='Add tags'
-                placeholderTextColor={Colors.navBarText}
-              />
+              <TouchableWithoutFeedback
+                onPress={() => NavActions.createStory_tags({
+                  onDone: this._receiveCategories,
+                  categories: this.props.story.categories
+                })}
+                style={styles.tagStyle}
+              >
+                <View>
+                  {_.size(this.props.story.categories) > 0 && <Text style={styles.tagStyleText}>{_.map(this.props.story.categories, 'title').join(', ')}</Text>}
+                  {_.size(this.props.story.categories) === 0 && <Text style={[styles.tagStyleText, {color: '#bdbdbd'}]}>Add tags...</Text>}
+                </View>
+              </TouchableWithoutFeedback>
             </View>
             <View style={styles.fieldWrapper}>
               <Text style={styles.fieldLabel}>Category: </Text>
@@ -210,15 +219,14 @@ export default R.compose(
           type: selector(state, 'type') || draft.type,
           location: selector(state, 'location'),
           content: selector(state, 'content'),
-        },
-        tags: selector(state, 'tags')
+        }
       }
     },
     dispatch => ({
       publish: (story) => dispatch(StoryEditActions.publishDraft(story)),
       update: (id, attrs) => dispatch(StoryEditActions.updateDraft(id, attrs, true)),
       resetForm: () => dispatch(resetForm('createStory')),
-
+      updateCategories: (cats) => dispatch(StoryEditActions.updateCategories(cats))
     })
   ),
   reduxForm({
@@ -227,8 +235,7 @@ export default R.compose(
     keepDirtyOnReinitialize: true,
     enableReinitialize: true,
     initialValues: {
-      type: '',
-      tags: ''
+      type: ''
     }
   })
 )(CreateStoryDetailScreen)

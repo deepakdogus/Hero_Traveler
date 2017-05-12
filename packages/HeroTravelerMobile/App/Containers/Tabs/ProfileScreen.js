@@ -23,7 +23,6 @@ class ProfileScreen extends React.Component {
   }
 
   componentDidMount() {
-    console.log('this.props.user.id',this.props.user.id)
     this.props.attemptRefreshUser(this.props.user.id)
     this.props.attemptGetUserStories(this.props.user.id)
   }
@@ -48,6 +47,8 @@ class ProfileScreen extends React.Component {
       stories,
       userStoriesById,
       userStoriesFetchStatus,
+      accessToken,
+      saveUser,
     } = this.props
 
     // Deals with the case that the user logs out
@@ -63,8 +64,10 @@ class ProfileScreen extends React.Component {
         stories={userStoriesById}
         editable={true}
         isEditing={this.props.isEditing}
-        profileImage={getImageUrl(user.profile.cover)}
-        fetchStatus={userStoriesFetchStatus}
+      profileImage={getImageUrl(user.profile.cover)}
+      saveUser={saveUser}
+      fetchStatus={userStoriesFetchStatus}
+      accessToken={accessToken}
       />
     )
   }
@@ -75,6 +78,7 @@ const mapStateToProps = (state) => {
   let {stories} = state.entities
   return {
     user: state.entities.users.entities[userId],
+    accessToken: _.find(state.session.tokens, {type: 'access'}).value,
     userStoriesFetchStatus: getUserFetchStatus(stories, userId),
     userStoriesById: getByUser(stories, userId),
     // userBookmarksFetchStatus: {fetching: false, loaded: true}
@@ -87,6 +91,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     attemptGetUserStories: (userId) => dispatch(StoryActions.fromUserRequest(userId)),
+    saveUser: (bioText) => dispatch(UserActions.updateUser({bio: bioText})),
     attemptRefreshUser: (userId) => dispatch(UserActions.loadUser(userId)),
     // loadDrafts: () => dispatch(StoryActions.getDrafts()),
     // @TODO fixme: .getBookmarks() not implemented?

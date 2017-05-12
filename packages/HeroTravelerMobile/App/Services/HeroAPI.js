@@ -329,6 +329,11 @@ const create = () => {
     data.append('image', pathToFile)
     return api.put(`user/${userId}/avatar`, data)
   }
+  const uploadUserCoverImage = (userId, pathToFile) => {
+    const data = new FormData()
+    data.append('image', pathToFile)
+    return api.put(`user/${userId}/cover`, data)
+  }
 
   const uploadStoryImage = (draftId, pathToFile) => {
     const data = new FormData()
@@ -389,6 +394,7 @@ const create = () => {
     uploadCoverVideo,
     uploadStoryImage,
     uploadAvatarImage,
+    uploadUserCoverImage,
     removeDevice,
     updateDevice,
   }

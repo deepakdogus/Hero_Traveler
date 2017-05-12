@@ -49,6 +49,9 @@ export default class ProfileView extends React.Component {
       file: null,
     }
   }
+  componentDidMount() {
+    api.setAuth(this.props.accessToken)
+  }
 
   static defaultProps = {
     onPressFollow: () => {},
@@ -60,9 +63,12 @@ export default class ProfileView extends React.Component {
   }
 
   _handleUpdateAvatarPhoto = (data) => {
-    console.log('this.props.user.id', this.props.user.id)
-    console.log('pathAsFileObject(data)', pathAsFileObject(data))
     api.uploadAvatarImage(this.props.user.id, pathAsFileObject(data))
+    NavActions.pop()
+  }
+
+  _handleUpdateCoverPhoto = (data) => {
+    api.uploadUserCoverImage(this.props.user.id, pathAsFileObject(data))
     NavActions.pop()
   }
 
@@ -83,7 +89,7 @@ export default class ProfileView extends React.Component {
   // }
 
   _onRight = () => {
-    alert('save edits')
+    this.props.saveUser(this.state.text)
     NavActions.pop()
   }
 
@@ -103,7 +109,7 @@ export default class ProfileView extends React.Component {
 
     /* If the editable flag === true then the component will display the user's edit profile view,
        otherwise it will show the view that the user sees when looking at other profiles
-    */
+     */
 
     if(isEditing === true){
       cog = null;
@@ -148,7 +154,7 @@ export default class ProfileView extends React.Component {
               leftTitle: 'Cancel',
               onLeft: () => NavActions.pop(),
               rightTitle: 'Next',
-              onSelectMedia: this._handleUpdateAvatarPhoto
+              onSelectMedia: this._handleUpdateCoverPhoto
             })
           }}
         >
@@ -295,8 +301,8 @@ export default class ProfileView extends React.Component {
               multiline={true}
               editable={true}
               onChangeText={(text) => this.setState({text})}
-             value={this.state.text}
-             placeholder='Tell us about yourself!'
+              value={this.state.text}
+              placeholder={this.props.user.bio || 'Tell us about yourself!'}
              maxLength={500}
            />
            </View>

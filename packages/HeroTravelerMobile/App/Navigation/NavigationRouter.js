@@ -365,6 +365,7 @@ export default NavActions.create(
         key='viewBioScreen'
         component={ViewBioScreen}
         direction='horizontal'
+        hideNavBar={true}
       />
     </Scene>
 )

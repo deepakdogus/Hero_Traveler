@@ -4,7 +4,8 @@ import {
   View,
   Text,
   TextInput,
-  Image
+  Image,
+  TouchableOpacity,
 } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 import styles from './Styles/ViewBioScreenStyle'
@@ -15,14 +16,17 @@ const viewBioScreen = (props) => {
   const { username, bio } = props.user
   return (
     <View>
-      <View style={styles.column}>
-        <View style={styles.usernameContainer}>
-          <Text style={styles.username}>{username.toUpperCase()}</Text>
-        </View>
+      <View style={styles.iconContainer}>
+        <TouchableOpacity onPress={() => NavActions.pop()}>
+          <Icon name='close' size={20}></Icon>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.usernameContainer}>
+        <Text style={styles.username}>{username.toUpperCase()}</Text>
         <View style={styles.divider}>
         </View>
-        <View style={styles.bio}>
-          <Text >{bio}</Text>
+        <View style={styles.bioContainer}>
+          <Text style={styles.bio}>{bio}</Text>
         </View>
       </View>
     </View>

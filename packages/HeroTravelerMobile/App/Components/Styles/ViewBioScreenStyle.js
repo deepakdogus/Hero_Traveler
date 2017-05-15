@@ -9,11 +9,15 @@ export default StyleSheet.create({
   },
   column: {
     flex: 1,
-    flexDirection: "column",
     alignItems: "center"
   },
+  iconContainer: {
+    marginLeft: 30,
+    marginTop: 40
+  },
   usernameContainer:{
-    marginTop: 60
+    marginTop: 60,
+    alignItems: "center",
   },
   username: {
     fontSize: 25,
@@ -26,13 +30,15 @@ export default StyleSheet.create({
     width: "10%",
     height: 1
   },
-  bio: {
+  bioContainer: {
     marginTop: 20,
-    fontSize: 12,
-    lineHeight: 1.5,
-    color: Colors.steel,
-    fontFamily: Fonts.type.sourceSansPro,
     width: "60%",
+  },
+  bio: {
+    fontSize: 14,
+    lineHeight: 1.5,
+    color: Colors.coal,
+    fontFamily: Fonts.type.sourceSansPro,
   },
   // divider: {
   //   height: 1,

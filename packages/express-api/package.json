@@ -20,6 +20,7 @@
     "@rwoody/ht-util": "~0.0.4",
     "apn": "^2.1.4",
     "aws-sdk": "^2.40.0",
+    "babel-polyfill": "^6.23.0",
     "bcrypt": "^1.0.2",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
@@ -41,7 +42,6 @@
   "devDependencies": {
     "babel-cli": "^6.24.0",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
-    "babel-polyfill": "^6.23.0",
     "babel-preset-env": "^1.4.0",
     "babel-register": "^6.23.0",
     "nodemon": "^1.11.0"

@@ -9,6 +9,7 @@ COPY .npmrc /app/.npmrc
 COPY package.json /app/package.json
 RUN npm install --production
 RUN rm -f /app/.npmrc
+COPY index.js /app/index.js
 COPY dist/ /app/dist
 COPY certificates/ /app/certificates
 

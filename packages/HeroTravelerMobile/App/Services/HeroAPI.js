@@ -340,7 +340,7 @@ const create = () => {
   const uploadStoryImage = (draftId, pathToFile) => {
     const data = new FormData()
     data.append('image', pathToFile)
-    return api.put(`story/draft/xyz/image`, data)
+    return api.put(`story/draft/${draftId}/image`, data)
   }
 
 

@@ -23,7 +23,6 @@ passport.use(
 passport.use(
   new BearerStrategy(
     (accessToken, next) => {
-      console.log('accessToken', accessToken)
       User.validateAccessToken(accessToken)
         .then(user => {
           console.log('user', user)

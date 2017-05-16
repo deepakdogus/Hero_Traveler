@@ -6,15 +6,17 @@ import {
   Image,
   TouchableOpacity,
   TouchableHighlight } from 'react-native'
-import LinearGradient from 'react-native-linear-gradient'
 import moment from 'moment'
+import Icon from 'react-native-vector-icons/FontAwesome'
+
 
 import formatCount from '../Lib/formatCount'
 import getImageUrl from '../Lib/getImageUrl'
 import getVideoUrl from '../Lib/getVideoUrl'
-import { Metrics } from '../Themes'
+import { Metrics, Colors } from '../Themes'
 import styles from './Styles/StoryPreviewStyle'
 import LikesComponent from './LikeComponent'
+import TrashCan from '../Components/TrashCan'
 import Avatar from './Avatar'
 import StoryCover from './StoryCover'
 
@@ -80,6 +82,7 @@ export default class StoryPreview extends Component {
     return (
       <View style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}>
         <View style={styles.contentContainer}>
+          <TrashCan />
           <StoryCover
             autoPlayVideo={this.props.autoPlayVideo}
             allowVideoPlay={this.props.allowVideoPlay}

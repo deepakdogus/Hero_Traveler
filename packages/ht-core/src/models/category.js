@@ -5,12 +5,15 @@ import slug from 'mongoose-slug-generator'
 export const ModelName = 'Category'
 
 const CategorySchema = new mongoose.Schema({
-  title: String,
-  slug: {
+  title: {
     type: String,
-    slug: 'title',
-    unique: true
+    required: true
   },
+  // slug: {
+  //   type: String,
+  //   slug: 'title',
+  //   unique: true
+  // },
   // Default categories are created by the system
   isDefault: {
     type: Boolean,

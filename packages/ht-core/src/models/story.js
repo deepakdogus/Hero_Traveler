@@ -12,11 +12,11 @@ const StorySchema = new Schema({
     type: String,
     required: true
   },
-  slug: {
-    type: String,
-    slug: 'title',
-    unique: true
-  },
+  // slug: {
+  //   type: String,
+  //   slug: 'title',
+  //   unique: true
+  // },
   type: {
     type: String,
     enum: [

@@ -1,5 +1,5 @@
 require('dotenv').config()
-
+require('babel-polyfill')
 if (process.env.NODE_ENV === 'development') {
   require('babel-register')
   module.exports = require('./src')

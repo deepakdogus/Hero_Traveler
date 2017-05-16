@@ -10,7 +10,7 @@ const { Types, Creators } = createActions({
   feedFailure: ['error'],
   fromUserRequest: ['userId'],
   fromUserSuccess: ['userId', 'userStoriesById'],
-  fromUserFailure: ['error'],
+  fromUserFailure: ['userId', 'error'],
   fromCategoryRequest: ['categoryId', 'storyType'],
   fromCategorySuccess: ['categoryId', 'categoryStoriesById'],
   fromCategoryFailure: ['error'],
@@ -89,7 +89,7 @@ export const userSuccess = (state, {userId, userStoriesById}) => {
   )
 }
 
-export const userFailure = (state, {error}) => {
+export const userFailure = (state, {userId, error}) => {
   return state.setIn(
     ['storiesByUserAndId', userId, 'fetchStatus'],
     {fetching: false, loaded: false, error}

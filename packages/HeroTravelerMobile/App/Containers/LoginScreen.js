@@ -5,27 +5,24 @@ import {
   ScrollView,
   Text,
   TextInput,
-  TouchableOpacity,
   Image,
-  Keyboard,
   KeyboardAvoidingView,
-  LayoutAnimation
 } from 'react-native'
 import { connect } from 'react-redux'
 import {
   Actions as NavigationActions,
   ActionConst as NavActionConst
 } from 'react-native-router-flux'
-import {LoginButton, AccessToken, LoginManager} from 'react-native-fbsdk'
+import {AccessToken, GraphRequest, GraphRequestManager, LoginManager} from 'react-native-fbsdk'
 
-import {Images, Metrics, Colors} from '../Themes'
+import {Images, Colors} from '../Themes'
 import Loader from '../Components/Loader'
 import RoundedButton from '../Components/RoundedButton'
 import TextButton from '../Components/TextButton'
 import TOS from '../Components/TosFooter'
 import styles from './Styles/LoginScreenStyles'
 import LoginActions from '../Redux/LoginRedux'
-import {hasAuthData} from '../Redux/SessionRedux'
+import SignupActions from '../Redux/SignupRedux'
 
 class Input extends React.Component {
   render() {
@@ -86,28 +83,54 @@ class LoginScreen extends React.Component {
     this.props.attemptLogin(username, password)
   }
 
-  handlePressFacebook = () => {
-    // Attempt a login using the Facebook login dialog asking for default permissions.
+  loginFinishedManager = (err, result) => {
     LoginManager.logInWithReadPermissions([
       'public_profile',
       'email',
       'user_friends'
-    ]).then(
-      function(result) {
-        console.log('result', result)
-
-        if(result.loginCancelled) {
-          return
-        }
-
+    ]).then(result => {
+      if(!result.isCancelled) {
         AccessToken.getCurrentAccessToken().then(data => {
-          console.log('data', data)
-        })
-      },
-      function(error) {
-        alert('Login fail with error: ' + error);
+            this.getUserInfoAndSignup()
+          }
+        )
       }
+    })
+    .catch(err => console.log('fb login error:', err))
+
+  }
+
+  _handleGraphQuery = (error, data) => {
+    if (error) {
+      console.log('Error fetching data', error);
+      return
+    }
+
+    const userPicture = !data.picture.data.is_silhouette ?
+      data.picture.data.url : null
+
+    this.props.signupFacebook(
+      data.id,
+      data.email,
+      data.name,
+      userPicture
+    )
+  }
+
+  getUserInfoAndSignup = () => {
+    const infoRequest = new GraphRequest(
+      '/me',
+      {
+        parameters: {
+          fields: {
+            string: 'email,about,name,picture.type(large)'
+          }
+        }
+      },
+      this._handleGraphQuery,
     );
+
+    new GraphRequestManager().addRequest(infoRequest).start();
   }
 
   handleChangeUsername = (text) => {
@@ -142,17 +165,17 @@ class LoginScreen extends React.Component {
 
             <RoundedButton
               style={styles.facebook}
-              onPress={this.handlePressFacebook}
+              onPress={this.loginFinishedManager}
               text={
                 <Text>Login with <Text style={styles.socialTextBold}>Facebook</Text></Text>
               }
             />
-            <RoundedButton
+            {/*<RoundedButton
               style={styles.twitter}
               text={
                 <Text>Login with <Text style={styles.socialText}>Twitter</Text></Text>
               }
-            />
+            />*/}
 
             <Text style={styles.instructions}>
               Or
@@ -230,7 +253,8 @@ const mapDispatchToProps = (dispatch) => {
     goToMyFeed: () => {
       return NavigationActions.tabbar({type: NavActionConst.POP_AND_REPLACE})
     },
-    attemptLogin: (username, password) => dispatch(LoginActions.loginRequest(username, password))
+    attemptLogin: (username, password) => dispatch(LoginActions.loginRequest(username, password)),
+    signupFacebook: (...args) => dispatch(SignupActions.signupFacebook(...args)),
   }
 }
 

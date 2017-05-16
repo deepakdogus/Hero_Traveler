@@ -1,6 +1,7 @@
 import { call, put } from 'redux-saga/effects'
 import _ from 'lodash'
 import SignupActions from '../Redux/SignupRedux'
+import OpenScreenActions from '../Redux/OpenScreenRedux'
 import SessionActions from '../Redux/SessionRedux'
 import UserActions from '../Redux/Entities/Users'
 
@@ -40,14 +41,19 @@ export function * signupFacebook(api, action) {
   )
 
   if (response.ok) {
-    const {user, tokens} = response.data
+    const {user, tokens, wasSignedUp} = response.data
+    console.log('user', response.data)
     const accessToken = _.find(tokens, {type: 'access'})
+    yield call(api.setAuth, accessToken.value)
     yield [
       put(UserActions.receiveUsers({[user.id]: user})),
-      call(api.setAuth, accessToken.value),
-      put(SignupActions.signupFacebookSuccess()),
       put(SessionActions.initializeSession(user.id, tokens))
     ]
+    if (wasSignedUp) {
+      yield put(OpenScreenActions.openScreen('tabbar'))
+    } else {
+      yield put(SignupActions.signupFacebookSuccess())
+    }
   } else {
     yield put(SignupActions.signupEmailFailure(response.data.message))
   }

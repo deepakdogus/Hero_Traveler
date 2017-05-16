@@ -67,7 +67,7 @@ export function * getUserStories (api, {userId}) {
       put(StoryActions.fromUserSuccess(userId, result)),
     ]
   } else {
-    yield put(StoryActions.fromUserFailure(new Error('Failed to get stories for user')))
+    yield put(StoryActions.fromUserFailure(userId, new Error('Failed to get stories for user')))
   }
 }
 

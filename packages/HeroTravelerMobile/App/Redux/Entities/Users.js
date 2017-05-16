@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
+import {fetching, fetchingError, fetchingSuccess} from '../helpers/fetchStatus'
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -30,7 +31,13 @@ const { Types, Creators } = createActions({
   receiveLikes: ['userId', 'storyIds'],
   receiveBookmarks: ['userId', 'storyIds'],
   userToggleLike: ['userId', 'storyId'],
-  userToggleBookmark: ['userId', 'storyId']
+  userToggleBookmark: ['userId', 'storyId'],
+  fetchActivities: null,
+  fetchActivitiesSuccess: ['activitiesById'],
+  fetchActivitiesFailure: ['error'],
+  receiveActivities: ['activities'],
+  activitySeen: ['activityId'],
+  activitySeenFailure: ['error', 'activityId'],
 })
 
 export const UserTypes = Types
@@ -44,6 +51,8 @@ export const INITIAL_STATE = Immutable({
     fetching: false,
     loaded: false,
   },
+  activities: {},
+  activitiesById: [],
   usersLikesById: {},
   usersBookmarksById: {},
   userFollowersByUserIdAndId: {},
@@ -236,6 +245,33 @@ export const unfollowUser = (state, {userId, targetUserId}) =>
     state.getIn(['entities', userId, 'counts', 'following'], 0) - 1
   )
 
+export const fetchActivities = (state) => {
+  return state.merge({fetchStatus: fetching()})
+}
+
+export const fetchActivitiesSuccess = (state, {activitiesById}) => {
+  return state.merge({fetchStatus: fetchingSuccess(), activitiesById})
+}
+
+export const fetchActivitiesFailure = (state, {error}) => {
+  return state.merge({fetchStatus: fetchingError(), error})
+}
+
+export const receiveActivities = (state, {activities}) => {
+  return state.merge({activities}, {deep: true})
+}
+
+export const activitySeen = (state, {activityId}) => {
+  return state.setIn(['activities', activityId, 'seen'], !state.getIn(['activities', activityId, 'seen']))
+}
+
+export const activitySeenFailure = (state, {activityId}) => {
+  return state.setIn(['activities', activityId, 'seen'], !state.getIn(['activities', activityId, 'seen']))
+}
+
+
+
+
 /* -------------        Selectors        ------------- */
 export const isInitialAppDataLoaded = (state, userId) => {
   return _.every([
@@ -295,4 +331,10 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.RECEIVE_BOOKMARKS]: receiveBookmarks,
   [Types.USER_TOGGLE_LIKE]: toggleLike,
   [Types.USER_TOGGLE_BOOKMARK]: toggleBookmark,
+  [Types.FETCH_ACTIVITIES]: fetchActivities,
+  [Types.FETCH_ACTIVITIES_SUCCESS]: fetchActivitiesSuccess,
+  [Types.FETCH_ACTIVITIES_FAILURE]: fetchActivitiesFailure,
+  [Types.RECEIVE_ACTIVITIES]: receiveActivities,
+  [Types.ACTIVITY_SEEN]: activitySeen,
+  [Types.ACTIVITY_SEEN_FAILURE]: activitySeenFailure,
 })

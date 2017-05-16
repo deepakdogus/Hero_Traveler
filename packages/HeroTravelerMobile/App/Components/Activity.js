@@ -9,11 +9,10 @@ import Avatar from '../Components/Avatar'
 import getImageUrl from '../Lib/getImageUrl'
 
 export const ActivityProps = {
-  user: PropTypes.object,
-  actionUser: PropTypes.object,
-  description: PropTypes.string,
+  user: PropTypes.object.isRequired,
+  description: PropTypes.string.isRequired,
   content: PropTypes.string,
-  createdAt: PropTypes.instanceOf(Date)
+  createdAt: PropTypes.string.isRequired,
 }
 
 export default class Activity extends Component {
@@ -21,11 +20,11 @@ export default class Activity extends Component {
 
   render () {
     let {
-      actionUser,
+      user,
       description,
       content,
-      onPress,
       createdAt,
+      seen,
     } = this.props
 
     return (
@@ -36,14 +35,14 @@ export default class Activity extends Component {
           <View style={styles.innerButton}>
             <Avatar
               style={styles.avatar}
-              avatarUrl={getImageUrl(actionUser.profile.avatar)}
+              avatarUrl={getImageUrl(user.profile.avatar)}
             />
             <View style={styles.middle}>
               <Text style={styles.description}>
-                <Text style={styles.actionUserText}>{actionUser.profile.fullName} </Text>
-                <Text>{description}.</Text>
+                <Text style={styles.actionUserText}>{user.profile.fullName} </Text>
+                <Text>{description}</Text>
               </Text>
-              {content &&
+              {!!content &&
                 <View style={styles.content}>
                   <Text
                     numberOfLines={2}
@@ -57,6 +56,9 @@ export default class Activity extends Component {
                 {moment(createdAt).fromNow()}
               </Text>
             </View>
+            {!seen &&
+              <Icon name='circle' size={10} />
+            }
           </View>
         </TouchableOpacity>
       </View>
@@ -64,16 +66,10 @@ export default class Activity extends Component {
   }
 
   _onPress = () => {
-    const {story, onPress} = this.props
+    const {activityId, seen, onPress} = this.props
+    console.log('onPress', seen, activityId)
     if (onPress) {
-      onPress(story)
-    }
-  }
-
-  _onPressLike = () => {
-    const {story, onPressLike} = this.props
-    if (onPressLike) {
-      onPressLike(story)
+      onPress(activityId, seen)
     }
   }
 }

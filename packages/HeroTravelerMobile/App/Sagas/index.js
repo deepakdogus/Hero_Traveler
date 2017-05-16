@@ -47,7 +47,7 @@ import {
   getSuggestedUsers,
   loadUser,
   loadUserFollowing,
-  loadUserFollowers, userFollowUser, userUnfollowUser
+  loadUserFollowers, userFollowUser, userUnfollowUser, getActivities, seenActivity
 } from './UserSagas'
 
 import {
@@ -141,5 +141,7 @@ export default function * root () {
     takeLatest(UserTypes.LOAD_USER_FOLLOWERS, loadUserFollowers, heroAPI),
     takeLatest(UserTypes.FOLLOW_USER, userFollowUser, heroAPI),
     takeLatest(UserTypes.UNFOLLOW_USER, userUnfollowUser, heroAPI),
+    takeLatest(UserTypes.FETCH_ACTIVITIES, getActivities, heroAPI),
+    takeLatest(UserTypes.ACTIVITY_SEEN, seenActivity, heroAPI),
   ]
 }

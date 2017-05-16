@@ -5,8 +5,8 @@ import Activity, {ActivityProps} from './Activity'
 
 export default class ActivityList extends React.Component {
   static propTypes = {
-    activities: PropTypes.arrayOf(
-      PropTypes.shape(ActivityProps)
+    activitiesById: PropTypes.arrayOf(
+      PropTypes.string
     ),
     onPress: PropTypes.func,
   }
@@ -15,7 +15,7 @@ export default class ActivityList extends React.Component {
     super(props)
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
     this.state = {
-      dataSource: ds.cloneWithRows(props.activities)
+      dataSource: ds.cloneWithRows(this.props.activitiesById)
     }
   }
 
@@ -23,18 +23,8 @@ export default class ActivityList extends React.Component {
     return (
       <ListView
         dataSource={this.state.dataSource}
-        renderRow={this._renderRow}
+        renderRow={this.props.renderRow}
         style={this.props.style}
-      />
-    )
-  }
-
-  _renderRow = (activity) => {
-    return (
-      <Activity
-        {...activity}
-        key={activity.id}
-        onPress={this.props.onPress}
       />
     )
   }

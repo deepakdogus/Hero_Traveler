@@ -1,5 +1,4 @@
 import express from 'express'
-import passport from 'passport'
 import {hasValidOauth, hasClientId, multer} from '../../middleware'
 import endpointWrapper from '../../utils/endpointWrapper'
 import getMe from './getMe'
@@ -100,7 +99,7 @@ router.get('/activity',
   endpointWrapper(activityList)
 )
 
-router.put('/activity/:id',
+router.put('/activity/:activityId',
   hasValidOauth,
   endpointWrapper(activitySetRead)
 )

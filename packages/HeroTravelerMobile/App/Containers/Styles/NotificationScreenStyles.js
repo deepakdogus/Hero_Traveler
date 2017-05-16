@@ -16,6 +16,7 @@ export default StyleSheet.create({
     color: '#fff'
   },
   tabs: {
+    flex: 1
   },
   tabnav: {
     height: 50,
@@ -24,9 +25,11 @@ export default StyleSheet.create({
     backgroundColor: Colors.lightGreyAreas
   },
   tabContent: {
+    flex: 1,
     paddingTop: Metrics.baseMargin
   },
   tab: {
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     width: '50%',
@@ -50,6 +53,6 @@ export default StyleSheet.create({
     letterSpacing: 1.2,
   },
   activityList: {
-    
+    flex: 1
   }
 })

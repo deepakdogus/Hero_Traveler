@@ -19,6 +19,10 @@ const Bookmarks = new schema.Entity('bookmarks', {
   user: User,
   story: Story
 })
+const Activity = new schema.Entity('activities', {
+  fromUser: User,
+  story: Story
+})
 
 // our "constructor"
 const create = () => {
@@ -343,6 +347,21 @@ const create = () => {
     return api.put(`story/draft/${draftId}/image`, data)
   }
 
+  const getActivity = () => {
+    return api.get(`user/activity`)
+      .then(response => {
+        console.log('api normalized activities', normalize(response.data, [Activity]))
+        return {
+          ...response,
+          data: normalize(response.data, [Activity])
+        }
+      })
+  }
+
+  const setActivityRead = (activityId) => {
+    return api.put(`user/activity/${activityId}`)
+  }
+
 
 
   // ------
@@ -401,6 +420,8 @@ const create = () => {
     removeDevice,
     updateDevice,
     verifyEmail,
+    getActivity,
+    setActivityRead,
   }
 }
 

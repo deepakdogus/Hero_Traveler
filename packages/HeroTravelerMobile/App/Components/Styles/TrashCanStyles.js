@@ -2,18 +2,22 @@ import { StyleSheet } from 'react-native'
 import { Fonts, Colors, Metrics } from '../../Themes/'
 
 export default StyleSheet.create({
-  // trashCanContainer: {
-  //   height: 35,
-  //   borderRadius: 14,
-  //   marginHorizontal: Metrics.section,
-  //   marginVertical: Metrics.baseMargin,
-  //   backgroundColor: Colors.black,
-  //   opacity: 0.6,
-  //   justifyContent: 'flex-end'
-  // },
+  trashCanContainer: {
+    flex: 1,
+    position: 'absolute',
+    zIndex: 1,
+    top: 10,
+    right: 10,
+
+  },
   trashCan: {
     color: Colors.snow,
     textAlign: 'center',
-    marginVertical: Metrics.baseMargin
+    backgroundColor: Colors.coal,
+    paddingTop: 8,
+    opacity: 0.7,
+    height: 40,
+    width: 40,
+    borderRadius: 14,
   }
 })

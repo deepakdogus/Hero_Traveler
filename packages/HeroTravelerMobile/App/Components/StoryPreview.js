@@ -80,9 +80,9 @@ export default class StoryPreview extends Component {
     )
 
     return (
-      <View style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}>
+        <View style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}>
         <View style={styles.contentContainer}>
-          <TrashCan />
+        {this.props.forProfile && <TrashCan touchTrash={_}/> }
           <StoryCover
             autoPlayVideo={this.props.autoPlayVideo}
             allowVideoPlay={this.props.allowVideoPlay}

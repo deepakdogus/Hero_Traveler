@@ -14,6 +14,7 @@ import toggleBookmark from './toggleBookmark'
 import getBookmarks from './getBookmarks'
 import getComments from './getComments'
 import createComment from './createComment'
+import deleteStory from './deleteStory'
 
 import getDraft from './draft/get'
 import findDrafts from './draft/find'
@@ -23,6 +24,7 @@ import updateDraft from './draft/update'
 import uploadDraftCoverImage from './draft/upload'
 import uploadDraftCoverVideo from './draft/upload_video'
 import uploadDraftImage from './draft/upload_story_image'
+
 
 const router = express.Router()
 
@@ -54,12 +56,14 @@ router.put('/draft/:id/image',
 )
 router.post('/draft', hasValidOauth, endpointWrapper(createDraft))
 
+router.delete('/:id', endpointWrapper(deleteStory))
+
 router.get('/:id/comment', hasValidOauth, endpointWrapper(getComments))
 router.post('/:id/comment', hasValidOauth, endpointWrapper(createComment))
 
-router.get('/:id', endpointWrapper(getStory));
-router.get('/:id/like', hasValidOauth, endpointWrapper(toggleLike));
-router.get('/:id/bookmark', hasValidOauth, endpointWrapper(toggleBookmark));
+router.get('/:id', endpointWrapper(getStory))
+router.get('/:id/like', hasValidOauth, endpointWrapper(toggleLike))
+router.get('/:id/bookmark', hasValidOauth, endpointWrapper(toggleBookmark))
 router.post('/', hasValidOauth, endpointWrapper(create))
 
 export default router

@@ -215,6 +215,10 @@ const create = () => {
     return api.delete(`story/draft/${draftId}`)
   }
 
+  const deleteStory = (story) => {
+    return api.delete(`story/${story.id}`)
+  }
+
   const getDraft = (draftId) => {
     return api.get(`story/draft/${draftId}`)
   }
@@ -422,6 +426,7 @@ const create = () => {
     verifyEmail,
     getActivity,
     setActivityRead,
+    deleteStory,
   }
 }
 

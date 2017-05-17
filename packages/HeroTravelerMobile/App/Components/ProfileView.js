@@ -94,7 +94,7 @@ class ProfileView extends React.Component {
   // }
 
   _onRight = () => {
-    api.updateUser({bio: this.state.bioText, username: this.state.usernameText})
+    this.props.updateUser({bio: this.state.bioText, username: this.state.usernameText})
     NavActions.pop()
   }
 

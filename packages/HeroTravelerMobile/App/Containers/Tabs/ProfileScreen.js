@@ -48,7 +48,7 @@ class ProfileScreen extends React.Component {
       userStoriesById,
       userStoriesFetchStatus,
       accessToken,
-      saveUser,
+      updateUser,
     } = this.props
 
     // Deals with the case that the user logs out
@@ -64,7 +64,7 @@ class ProfileScreen extends React.Component {
         stories={userStoriesById}
         editable={true}
         isEditing={this.props.isEditing}
-        saveUser={saveUser}
+        updateUser={updateUser}
         showLike={false}
         accessToken={accessToken}
         profileImage={getImageUrl(user.profile.cover)}
@@ -92,8 +92,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     attemptGetUserStories: (userId) => dispatch(StoryActions.fromUserRequest(userId)),
-    updateBio: (bioText) => dispatch(UserActions.updateUser({bio: bioText})),
-    updateUsername: (usernameText) => dispatch(UserActions.updateUser({username: usernameText})),
+    updateUser: (attrs) => dispatch(UserActions.updateUser(attrs)),
     attemptRefreshUser: (userId) => dispatch(UserActions.loadUser(userId)),
     // loadDrafts: () => dispatch(StoryActions.getDrafts()),
     // @TODO fixme: .getBookmarks() not implemented?

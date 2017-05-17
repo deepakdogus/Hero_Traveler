@@ -53,6 +53,14 @@ class MediaSelectorScreen extends React.Component {
     this.props.completeTooltip(tooltips)
   }
 
+  _completeNextTooltip = () => {
+    const tooltips = this.props.user.introTooltips.concat({
+      name: TooltipTypes.STORY_PHOTO_NEXT,
+      seen: true,
+    })
+    this.props.completeTooltip(tooltips)
+  }  
+
     renderPhotoTooltip() {
     return (
       <TouchableOpacity
@@ -62,7 +70,7 @@ class MediaSelectorScreen extends React.Component {
           bottom: 0,
           left: 190,
           right: 0,
-          backgroundColor: 'rgba(0,0,0,.4)',
+          backgroundColor: 'transparent',
           flex: 1,
           justifyContent: 'center',
           alignItems: 'center'
@@ -82,13 +90,56 @@ class MediaSelectorScreen extends React.Component {
           <View style={{
             height: 0,
             width: 0,
-            borderLeftWidth: 7,
+            borderLeftWidth: 6,
             borderLeftColor: 'transparent',            
-            borderRightWidth: 7,
+            borderRightWidth: 6,
             borderRightColor: 'transparent',
-            borderTopWidth: 7,
+            borderTopWidth: 6,
             borderTopColor: 'white',            
           }}>
+          </View>
+      </TouchableOpacity>
+    )
+  }
+
+    renderNextTooltip() {
+    return (
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          top: 0,
+          bottom: 490,
+          left: 220,
+          right: 0,
+          backgroundColor: 'transparent',
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+        onPress={this._completeNextTooltip}
+      >
+          <View style={{
+            height: 0,
+            width: 0,
+            borderLeftWidth: 6,
+            borderLeftColor: 'transparent',            
+            borderRightWidth: 6,
+            borderRightColor: 'transparent',
+            borderBottomWidth: 6,
+            borderBottomColor: 'white',
+            position: 'relative',
+            left: 42,           
+          }}>
+          </View>      
+          <View style={{
+            height: 38,
+            width: 124,
+            padding: 0,
+            borderRadius: 5,
+            backgroundColor: 'white',
+            alignItems: 'center',
+          }}>
+            <Text style={{marginTop: 10}}>Tap to continue</Text>
           </View>
       </TouchableOpacity>
     )
@@ -98,14 +149,22 @@ class MediaSelectorScreen extends React.Component {
   render () {
     let content
 
-    let showTooltip = false;
+    let showPhotoTooltip = false;
+    let showNextTooltip = false;
 
     if (this.props.user) {
-      showTooltip = !isTooltipComplete(
+      showPhotoTooltip = !isTooltipComplete(
         TooltipTypes.STORY_PHOTO_TAKE,
         this.props.user.introTooltips
       )
     }
+
+    if (this.props.user && this.state.media) {
+      showNextTooltip = !isTooltipComplete(
+        TooltipTypes.STORY_PHOTO_NEXT,
+        this.props.user.introTooltips
+      )
+    }    
 
     console.log("this.props in MediaSelectorScreen: ", this.props)
     if (this.state.captureOpen && !this.state.media) {
@@ -178,7 +237,8 @@ class MediaSelectorScreen extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
-        {showTooltip && this.renderPhotoTooltip()}
+        {showPhotoTooltip && this.renderPhotoTooltip()}
+        {showNextTooltip && this.renderNextTooltip()}
       </View>
     )
   }

@@ -12,7 +12,7 @@ import {
 } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
-import { reset as resetForm } from 'redux-form'
+// import { reset as resetForm } from 'redux-form'
 import { connect } from 'react-redux'
 import R from 'ramda'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -57,7 +57,7 @@ class StoryCoverScreen extends Component {
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     api.setAuth(this.props.accessToken.value)
     // Create a new draft to work with if one doesn't exist
     if (!this.props.story.id) {
@@ -423,20 +423,18 @@ export default R.compose(
     }
     // state: state
   }), dispatch => ({
-    registerDraft: () => dispatch(StoryEditActions.registerDraft()),
-    discardDraft: (draftId) => dispatch(StoryEditActions.discardDraft(draftId)),
-    completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips})),
-    resetForm: () => dispatch(resetForm('createStory')),
-    update: (id, attrs, doReset) => {
-      dispatch(
-        StoryEditActions.updateDraft(id, attrs, doReset)
-      )
-    },
-    uploadCoverImage: (id, path) => {
-      dispatch(
-        StoryEditActions.uploadCoverImage(id, path)
-      )
-    },
+    completeTooltip: (introTooltips) =>
+      dispatch(UserActions.updateUser({introTooltips})),
+    registerDraft: () =>
+      dispatch(StoryEditActions.registerDraft()),
+    discardDraft: (draftId) =>
+      dispatch(StoryEditActions.discardDraft(draftId)),
+    // resetForm: () =>
+    //   dispatch(resetForm('createStory')),
+    update: (id, attrs, doReset) =>
+      dispatch(StoryEditActions.updateDraft(id, attrs, doReset)),
+    uploadCoverImage: (id, path) =>
+      dispatch(StoryEditActions.uploadCoverImage(id, path)),
     uploadCoverVideo: (id, path) => {
       dispatch(
         StoryEditActions.uploadCoverVideo(id, path)

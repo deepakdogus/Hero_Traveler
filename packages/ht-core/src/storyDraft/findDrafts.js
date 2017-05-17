@@ -1,6 +1,7 @@
-import {StoryDraft} from '../models'
+import {Story} from '../models'
 
 export default function findDrafts(userId) {
-  return StoryDraft.find({author: userId})
-                   .populate('coverImage coverVideo')
+  return Story.find({author: userId, draft: true})
+    .populate('categories')
+    .populate('coverImage coverVideo')
 }

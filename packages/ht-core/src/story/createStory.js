@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import {Story, Category} from '../models'
+import updateDraft from '../storyDraft/updateDraft'
 import createCategories from '../category/create'
 import algoliasearchModule from 'algoliasearch'
 
@@ -28,20 +29,21 @@ async function incCounts(catIds) {
 }
 
 export default async function createStory(storyData) {
-  const attrs = {...storyData}
+  const attrs = {...storyData, draft: false}
+
+  // Separate the new categories (text string) from the existing
+  // categories (_ids)
   const newCategoryTitles = _.filter(attrs.categories, c => !_.has(c, '_id'))
   const existingCategories = _.filter(attrs.categories, c => _.has(c, '_id'))
   const newCategories = await createCategories(newCategoryTitles)
   attrs.categories = _.map(existingCategories.concat(newCategories), c => {
     return {_id: c._id}
   })
-  const updateCategoryCounts = incCounts(_.map(attrs.categories, '_id'))
-  const newStory = await Story.create(attrs)
-  const populatedStory = await Story.findOne({
-    _id: newStory._id
-  })
-  .select('title description createdAt content location tripDate coverImage coverVideo author')
-  .populate('coverImage coverVideo author')
+  let newStory = await updateDraft(attrs.id, attrs)
+
+  // make a query for the story with just the fields
+  // we want for the search index
+  const populatedStory = await Story.getSearchStory(newStory._id)
 
   return addStoryToIndex({
     ...populatedStory.toObject(),

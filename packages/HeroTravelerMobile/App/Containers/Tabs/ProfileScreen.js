@@ -1,15 +1,11 @@
 import _ from 'lodash'
 import React from 'react'
 import { connect } from 'react-redux'
-import Icon from 'react-native-vector-icons/FontAwesome'
 
-import {Images, Colors} from '../../Themes'
-import SessionActions, {hasAuthData} from '../../Redux/SessionRedux'
 import UserActions from '../../Redux/Entities/Users'
 import StoryActions, {getByUser, getUserFetchStatus} from '../../Redux/Entities/Stories'
 import ProfileView from '../../Components/ProfileView'
 import getImageUrl from '../../Lib/getImageUrl'
-import styles from '../Styles/ProfileScreenStyles'
 
 
 class ProfileScreen extends React.Component {
@@ -41,6 +37,14 @@ class ProfileScreen extends React.Component {
     this.setState({selectTabIndex: 2})
   }
 
+  _touchEdit = () => {
+    alert('touch edit')
+  }
+
+  _touchTrash = () => {
+    alert('touch trash')
+  }
+
   render () {
     const {
       user,
@@ -63,6 +67,8 @@ class ProfileScreen extends React.Component {
         user={user}
         stories={userStoriesById}
         editable={true}
+        touchTrash={this._touchTrash}
+        touchEdit={this._touchEdit}
         isEditing={this.props.isEditing}
         updateUser={updateUser}
         showLike={false}

@@ -1,5 +1,5 @@
-import {StoryDraft, Category} from '../models'
+import {Story} from '../models'
 
 export default function createDraft(attrs) {
-  return StoryDraft.create(attrs)
+  return Story.create({...attrs, draft: true})
 }

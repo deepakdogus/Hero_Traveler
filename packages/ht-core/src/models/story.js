@@ -10,7 +10,6 @@ export const ModelName = 'Story'
 const StorySchema = new Schema({
   title: {
     type: String,
-    required: true
   },
   // slug: {
   //   type: String,
@@ -25,7 +24,10 @@ const StorySchema = new Schema({
       Constants.STORY_TYPE_DO_VALUE,
     ],
     default: Constants.STORY_TYPE_EAT_VALUE,
-    required: true
+  },
+  draft: {
+    type: Boolean,
+    index: true
   },
   description: {
     type: String
@@ -103,26 +105,33 @@ StorySchema.statics = {
     return this
       .find({
         author: {$ne: userId},
+        draft: false,
         $or: [
           {author: {$in: followingIds}},
           {category: {$in: followingIds}},
         ]
       })
       .sort({createdAt: -1, 'counts.likes': -1})
-      .populate('author author.profile.avatar')
-      .populate('category')
-      .populate('coverImage')
-      .populate('coverVideo')
+      .populate('author author.profile.avatar author.profile.cover')
+      .populate('categories')
+      .populate('coverImage coverVideo')
   },
 
   getUserStories(userId) {
     return this
-      .find({author: userId})
+      .find({author: userId, draft: false})
       .sort({createdAt: -1})
-      .populate('author author.profile.avatar')
-      .populate('category')
-      .populate('coverImage')
-      .populate('coverVideo')
+      .populate('author author.profile.avatar author.profile.cover')
+      .populate('categories')
+      .populate('coverImage coverVideo')
+  },
+
+  getSearchStory(storyId) {
+    return this.findOne({
+      _id: storyId
+    })
+    .select('title description createdAt content location tripDate coverImage coverVideo author')
+    .populate('coverImage coverVideo author')
   }
 }
 

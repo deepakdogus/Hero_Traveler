@@ -390,6 +390,8 @@ class ProfileView extends React.Component {
                     <ConnectedStoryPreview
                       forProfile={true}
                       editable={editable}
+                      touchTrash={this.props.touchTrash}
+                      touchEdit={this.props.touchEdit}
                       titleStyle={styles.storyTitleStyle}
                       subtitleStyle={styles.subtitleStyle}
                       allowVideoPlay={false}

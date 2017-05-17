@@ -4,7 +4,7 @@ import slug from 'mongoose-slug-generator'
 import {ModelName as CategoryRef} from './category'
 import {ModelName as UserRef} from './user'
 import {ModelName as UploadRef} from './upload'
-import {Constants} from '@rwoody/ht-util'
+import {Constants, getGoogleLatLng} from '@rwoody/ht-util'
 export const ModelName = 'Story'
 
 const StorySchema = new Schema({
@@ -45,6 +45,12 @@ const StorySchema = new Schema({
   location: {
     type: String
   },
+  latitude: {
+    type: Number
+  },
+  longitude: {
+    type: Number
+  },
   tripDate: {
     type: Date
   },
@@ -78,6 +84,18 @@ const StorySchema = new Schema({
   toJSON: {
     virtuals: true
   }
+})
+
+StorySchema.pre('save', function(next) {
+  if (this.isModified('location')){
+    getGoogleLatLng(this.location)
+    .then(latlng => {
+      this.latitude = latlng.latitude
+      this.longitude = latlng.longitude
+      next()
+    })
+  }
+  else next();
 })
 
 StorySchema.statics = {

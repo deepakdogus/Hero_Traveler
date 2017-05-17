@@ -3,7 +3,7 @@ import softDelete from 'mongoose-delete'
 import {ModelName as CategoryRef} from './category'
 import {ModelName as UserRef} from './user'
 import {ModelName as UploadRef} from './upload'
-import {Constants} from '@rwoody/ht-util'
+import {Constants, getGoogleLatLng} from '@rwoody/ht-util'
 
 export const ModelName = 'StoryDraft'
 
@@ -25,6 +25,12 @@ const StoryDraftSchema = new Schema({
   },
   location: {
     type: String
+  },
+  latitude: {
+    type: Number
+  },
+  longitude: {
+    type: Number
   },
   author: {
     type: Schema.ObjectId,
@@ -65,6 +71,18 @@ const StoryDraftSchema = new Schema({
   toJSON: {
     virtuals: true
   }
+})
+
+StoryDraftSchema.pre('save', function(next) {
+  if (this.isModified('location')){
+    getGoogleLatLng(this.location)
+    .then(latlng => {
+      this.latitude = latlng.latitude
+      this.longitude = latlng.longitude
+      next()
+    })
+  }
+  else next();
 })
 
 StoryDraftSchema.plugin(softDelete)

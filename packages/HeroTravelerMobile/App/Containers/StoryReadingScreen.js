@@ -126,8 +126,8 @@ class StoryReadingScreen extends React.Component {
                 <MapView
                   style={{flex: 1, height: 200}}
                   initialRegion={{
-                    latitude: 37.78825,
-                    longitude: -122.4324,
+                    latitude: story.latitude,
+                    longitude: story.longitude,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                   }}

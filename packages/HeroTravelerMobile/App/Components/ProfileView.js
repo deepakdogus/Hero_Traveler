@@ -7,7 +7,8 @@ import {
   TextInput,
   Image,
   TouchableWithoutFeedback,
-  TouchableOpacity
+  TouchableOpacity,
+  KeyboardAvoidingView,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
@@ -49,6 +50,8 @@ class ProfileView extends React.Component {
     this.state = {
       imageMenuOpen: false,
       file: null,
+      bioText: props.user.bio || 'Tell us about yourself!',
+      usernameText: props.user.username || 'Enter a username'
     }
   }
   componentDidMount() {
@@ -84,14 +87,14 @@ class ProfileView extends React.Component {
   //     }, {
   //       text: 'No, remove it',
   //       onPress: () => {
-  //         NavActions.pop()
+  //         NavActions.pop()u
   //       }
   //     }]
   //   )
   // }
 
   _onRight = () => {
-    this.props.saveUser(this.state.text)
+    api.updateUser({bio: this.state.bioText, username: this.state.usernameText})
     NavActions.pop()
   }
 
@@ -101,7 +104,7 @@ class ProfileView extends React.Component {
       seen: true,
     })
     this.props.completeTooltip(tooltips)
-  }  
+  }
 
     renderTooltip() {
     return (
@@ -136,11 +139,11 @@ class ProfileView extends React.Component {
             height: 0,
             width: 0,
             borderLeftWidth: 7,
-            borderLeftColor: 'transparent',            
+            borderLeftColor: 'transparent',
             borderRightWidth: 7,
             borderRightColor: 'transparent',
             borderTopWidth: 10,
-            borderTopColor: 'white',                     
+            borderTopColor: 'white',
           }}>
           </View>
       </TouchableOpacity>
@@ -149,6 +152,7 @@ class ProfileView extends React.Component {
 
   render() {
     const { user, stories, fetchStatus, editable, isEditing, profileImage } = this.props
+    console.log('user', user)
     let cog
     let buttons
     let tabs
@@ -175,9 +179,15 @@ class ProfileView extends React.Component {
       // buttons = null;
       name = (
         <View style={styles.nameWrapper}>
-          <View style={{flexDirection: 'row'}}>
-          <Text style={styles.titleText}>{user.username}</Text>
-          <Icon style={{paddingTop: 7}} name='pencil' size={12} color={Colors.snow} />
+          <View style={{flexDirection: 'row', jusifyContent: 'center'}}>
+           <TextInput
+             placeholder={user.username}
+             value={this.state.usernameText}
+             style={styles.titleText}
+             onChangeText={(text) => this.setState({usernameText: text})}
+             maxLength={20}
+           />
+          <Icon style={{paddingTop: 4}} name='pencil' size={12} color={Colors.snow} />
           </View>
         </View>
       )
@@ -277,7 +287,7 @@ class ProfileView extends React.Component {
 
     const gradientStyle = profileImage ? ['rgba(0,0,0,.6)', 'transparent', 'rgba(0,0,0,.6)'] : ['transparent', 'rgba(0,0,0,.6)']
     return (
-      <View style={{flex: 1}}>
+      <KeyboardAvoidingView behavior='position' style={{flex: 1}}>
         {isEditing &&
           <NavBar
             title='Edit Profile'
@@ -351,18 +361,17 @@ class ProfileView extends React.Component {
           </Image>
           {isEditing &&
            <View style={{marginLeft: 20, marginRight: 20}}>
-               <Text style={{fontWeight: 'bold', fontSize: 16, marginTop: 10}}>Edit Bio</Text>
-           <TextInput
-             style={{height: 150}}
-             color={Colors.gray}
-              autoFocus={true}
-              multiline={true}
-              editable={true}
-              onChangeText={(text) => this.setState({text})}
-              value={this.state.text}
-              placeholder={this.props.user.bio || 'Tell us about yourself!'}
-             maxLength={500}
-           />
+             <Text style={{fontWeight: 'bold', fontSize: 16, marginTop: 10}}>Edit Bio</Text>
+             <TextInput
+               style={{height: 150}}
+               color={Colors.gray}
+               autoFocus={true}
+               multiline={true}
+               editable={true}
+               onChangeText={(text) => this.setState({bioText: text})}
+               value={this.state.bioText}
+               maxLength={500}
+             />
            </View>
           }
           {!isEditing && <View style={styles.tabs}>
@@ -406,8 +415,8 @@ class ProfileView extends React.Component {
           </View>
         }
         </View>
-        </ScrollView>
-        {showTooltip && this.renderTooltip()}  
+        </KeyboardAvoidingView>
+        {showTooltip && this.renderTooltip()}
       </View>
     )
   }
@@ -420,7 +429,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips}))    
+    completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips}))
   }
 }
 

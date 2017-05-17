@@ -92,7 +92,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     attemptGetUserStories: (userId) => dispatch(StoryActions.fromUserRequest(userId)),
-    saveUser: (bioText) => dispatch(UserActions.updateUser({bio: bioText})),
+    updateBio: (bioText) => dispatch(UserActions.updateUser({bio: bioText})),
+    updateUsername: (usernameText) => dispatch(UserActions.updateUser({username: usernameText})),
     attemptRefreshUser: (userId) => dispatch(UserActions.loadUser(userId)),
     // loadDrafts: () => dispatch(StoryActions.getDrafts()),
     // @TODO fixme: .getBookmarks() not implemented?

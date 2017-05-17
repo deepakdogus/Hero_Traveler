@@ -13,12 +13,15 @@ import NavBar from './CreateStory/NavBar'
 import PhotoTaker from '../Components/PhotoTaker'
 import Video from '../Components/Video'
 import styles from './Styles/MediaSelectorScreenStyles'
+import isTooltipComplete, {Types as TooltipTypes} from '../Lib/firstTimeTooltips'
+import UserActions from '../Redux/Entities/Users'
 
 class MediaSelectorScreen extends React.Component {
 
   static propTypes = {
     mediaType: PropTypes.oneOf(['photo', 'video']).isRequired,
-    onSelectMedia: PropTypes.func
+    onSelectMedia: PropTypes.func,
+    user: PropTypes.object,
   }
 
   constructor(props) {
@@ -42,9 +45,69 @@ class MediaSelectorScreen extends React.Component {
     }, this._handleMediaSelector)
   }
 
+  _completePhotoTooltip = () => {
+    const tooltips = this.props.user.introTooltips.concat({
+      name: TooltipTypes.STORY_PHOTO_TAKE,
+      seen: true,
+    })
+    this.props.completeTooltip(tooltips)
+  }
+
+    renderPhotoTooltip() {
+    return (
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          top: 540,
+          bottom: 0,
+          left: 190,
+          right: 0,
+          backgroundColor: 'rgba(0,0,0,.4)',
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+        onPress={this._completePhotoTooltip}
+      >
+          <View style={{
+            height: 38,
+            width: 144,
+            padding: 0,
+            borderRadius: 5,
+            backgroundColor: 'white',
+            alignItems: 'center',
+          }}>
+            <Text style={{marginTop: 10}}>Tap to take a photo</Text>
+          </View>
+          <View style={{
+            height: 0,
+            width: 0,
+            borderLeftWidth: 7,
+            borderLeftColor: 'transparent',            
+            borderRightWidth: 7,
+            borderRightColor: 'transparent',
+            borderTopWidth: 7,
+            borderTopColor: 'white',            
+          }}>
+          </View>
+      </TouchableOpacity>
+    )
+  }
+
+
   render () {
     let content
 
+    let showTooltip = false;
+
+    if (this.props.user) {
+      showTooltip = !isTooltipComplete(
+        TooltipTypes.STORY_PHOTO_TAKE,
+        this.props.user.introTooltips
+      )
+    }
+
+    console.log("this.props in MediaSelectorScreen: ", this.props)
     if (this.state.captureOpen && !this.state.media) {
       content = (
         <PhotoTaker
@@ -115,6 +178,7 @@ class MediaSelectorScreen extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
+        {showTooltip && this.renderPhotoTooltip()}
       </View>
     )
   }
@@ -153,11 +217,13 @@ class MediaSelectorScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    user: state.entities.users.entities[state.session.userId]
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips}))    
   }
 }
 

@@ -14,6 +14,7 @@ import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import LinearGradient from 'react-native-linear-gradient'
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 
 import { Colors } from '../Themes'
 import Loader from './Loader'
@@ -26,9 +27,10 @@ import NavBar from '../Containers/CreateStory/NavBar'
 import HeroAPI from '../Services/HeroAPI'
 import pathAsFileObject from '../Lib/pathAsFileObject'
 
-// @TODO UserActions shouldnt be in a component
+// @TODO UserActions shouldn't be in a component
 import UserActions from '../Redux/Entities/Users'
 import isTooltipComplete, {Types as TooltipTypes} from '../Lib/firstTimeTooltips'
+import Metrics from '../Themes/Metrics'
 
 const api = HeroAPI.create()
 
@@ -50,7 +52,7 @@ class ProfileView extends React.Component {
     this.state = {
       imageMenuOpen: false,
       file: null,
-      bioText: props.user.bio || 'Tell us about yourself!',
+      bioText: props.user.bio || '',
       usernameText: props.user.username || 'Enter a username'
     }
   }
@@ -152,7 +154,6 @@ class ProfileView extends React.Component {
 
   render() {
     const { user, stories, fetchStatus, editable, isEditing, profileImage } = this.props
-    console.log('user', user)
     let cog
     let buttons
     let tabs
@@ -164,7 +165,8 @@ class ProfileView extends React.Component {
         <Text style={styles.italicText}>{user.profile.fullName}</Text>
       </View>
     )
-    let showTooltip = !isTooltipComplete(
+
+    let showTooltip = !isEditing && editable && !isTooltipComplete(
         TooltipTypes.PROFILE_NO_STORIES,
         user.introTooltips
       )
@@ -179,7 +181,7 @@ class ProfileView extends React.Component {
       // buttons = null;
       name = (
         <View style={styles.nameWrapper}>
-          <View style={{flexDirection: 'row', jusifyContent: 'center'}}>
+          <View style={{flexDirection: 'row', jusifyContent: 'center', alignItems: 'center'}}>
            <TextInput
              placeholder={user.username}
              value={this.state.usernameText}
@@ -287,7 +289,7 @@ class ProfileView extends React.Component {
 
     const gradientStyle = profileImage ? ['rgba(0,0,0,.6)', 'transparent', 'rgba(0,0,0,.6)'] : ['transparent', 'rgba(0,0,0,.6)']
     return (
-      <KeyboardAvoidingView behavior='position' style={{flex: 1}}>
+      <View style={{flex: 1}}>
         {isEditing &&
           <NavBar
             title='Edit Profile'
@@ -297,7 +299,7 @@ class ProfileView extends React.Component {
             onRight={this._onRight}
           />
         }
-        <ScrollView style={[
+        <KeyboardAwareScrollView getTextInputRefs={() => [this.bioInput]} style={[
           this.props.hasTabbar ? styles.containerWithTabbar : null,
           styles.root,
           this.props.style,
@@ -360,17 +362,17 @@ class ProfileView extends React.Component {
             </LinearGradient>
           </Image>
           {isEditing &&
-           <View style={{marginLeft: 20, marginRight: 20}}>
-             <Text style={{fontWeight: 'bold', fontSize: 16, marginTop: 10}}>Edit Bio</Text>
+           <View style={{margin: Metrics.section}}>
+             <Text style={{fontWeight: 'bold', fontSize: 16, marginVertical: Metrics.baseMargin}}>Edit Bio</Text>
              <TextInput
-               style={{height: 150}}
-               color={Colors.gray}
-               autoFocus={true}
+               ref={c => this.bioInput = c}
+               style={{height: 150, fontSize: 16, color: '#757575'}}
                multiline={true}
                editable={true}
                onChangeText={(text) => this.setState({bioText: text})}
                value={this.state.bioText}
                maxLength={500}
+               placeholder={'Tell us about yourself!'}
              />
            </View>
           }
@@ -381,6 +383,7 @@ class ProfileView extends React.Component {
                 storiesById={stories}
                 refreshing={false}
                 renderStory={(storyId) => {
+                  // @TODO fix me magic number: 222
                   return (
                     <ConnectedStoryPreview
                       forProfile={true}
@@ -391,7 +394,7 @@ class ProfileView extends React.Component {
                       autoPlayVideo={false}
                       showLike={this.props.showLike}
                       key={storyId}
-                      height={222}
+                      height={this.props.hasTabbar ? 222 : 222 + Metrics.tabBarHeight}
                       storyId={storyId}
                       onPress={() => NavActions.story({storyId})}
                       onPressLike={story => alert(`Story ${storyId} liked`)}
@@ -415,7 +418,7 @@ class ProfileView extends React.Component {
           </View>
         }
         </View>
-        </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
         {showTooltip && this.renderTooltip()}
       </View>
     )

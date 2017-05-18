@@ -69,6 +69,7 @@ class ProfileScreen extends React.Component {
         accessToken={accessToken}
         profileImage={getImageUrl(user.profile.cover)}
         fetchStatus={userStoriesFetchStatus}
+        hasTabbar={!this.props.isEditing}
       />
     )
   }

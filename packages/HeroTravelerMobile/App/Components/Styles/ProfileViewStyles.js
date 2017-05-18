@@ -90,6 +90,7 @@ export default StyleSheet.create({
     letterSpacing: 3,
     color: Colors.snow,
     width: '50%',
+    height: 30
   },
   buttons: {
     backgroundColor: 'rgba(0,0,0,.25)',

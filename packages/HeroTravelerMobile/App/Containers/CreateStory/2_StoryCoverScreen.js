@@ -150,7 +150,7 @@ class StoryCoverScreen extends Component {
       return NavActions.createStory_content()
     }
 
-    if ((!story.coverImage || !story.coverPhoto) && !story.title) {
+    if ((!story.coverImage && !story.coverPhoto) || !story.title) {
       this.setState({error: 'Please add a cover and a title to continue'})
       return
     }
@@ -195,6 +195,7 @@ class StoryCoverScreen extends Component {
               <TouchableOpacity
                 style={styles.addPhotoButton}
                 onPress={() => {
+                  this.setState({error: null})
                   NavActions.mediaSelectorScreen({
                     mediaType: this.props.mediaType,
                     title: 'Add a Cover',

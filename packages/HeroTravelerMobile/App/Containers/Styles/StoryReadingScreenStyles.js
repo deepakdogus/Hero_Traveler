@@ -8,8 +8,7 @@ export default StyleSheet.create({
     backgroundColor: Colors.snow,
   },
   scrollView: {
-    flex: 1,
-    marginBottom: Metrics.tabBarHeight
+    flex: 1
   },
   content: {
     paddingTop: Metrics.section,

@@ -8,10 +8,8 @@ import HTMLView from 'react-native-htmlview'
 import StoryActions from '../Redux/Entities/Stories'
 import {isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
 import formatCount from '../Lib/formatCount'
-import StoryList from '../Components/StoryList'
 import ConnectedStoryPreview from './ConnectedStoryPreview'
-import RoundedButton from '../Components/RoundedButton'
-import {Metrics, Images} from '../Themes'
+import {Metrics} from '../Themes'
 import StoryReadingToolbar from '../Components/StoryReadingToolbar'
 import styles from './Styles/StoryReadingScreenStyles'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -48,9 +46,42 @@ class StoryReadingScreen extends React.Component {
 
   constructor(props) {
     super(props)
+    this.onScroll = this.onScroll.bind(this)
+    this.toolbarShown = false
     this.state = {
-      scrollY: new Animated.Value(0)
+      toolbarHeight: new Animated.Value(0)
     }
+  }
+
+  onScroll(event) {
+    const ypos = event.nativeEvent.contentOffset.y
+    if (ypos > 50 && !this.toolbarShown) {
+      this.toolbarShown = true
+      this.showToolbar()
+    } else if (ypos <= 50 && this.toolbarShown) {
+      this.toolbarShown = false
+      this.hideToolbar()
+    }
+  }
+
+  showToolbar() {
+    Animated.timing(
+      this.state.toolbarHeight,
+      {
+        toValue: Metrics.tabBarHeight,
+        duration: 200,
+      },
+    ).start()
+  }
+
+  hideToolbar() {
+    Animated.timing(
+      this.state.toolbarHeight,
+      {
+        toValue: 0,
+        duration: 200,
+      },
+    ).start()
   }
 
   _toggleLike = () => {
@@ -58,14 +89,13 @@ class StoryReadingScreen extends React.Component {
   }
 
   render () {
-    const { story, fetching, error, user } = this.props;
+    const { story } = this.props;
     const baseText = styles.storyContentText
     return (
       <View style={[styles.root]}>
         <ScrollView
-          onScroll={(...args) => {
-            console.log('scrolling!', ...args)
-          }}
+          onScroll={this.onScroll}
+          scrollEventThrottle={400}
           style={[styles.scrollView]}>
           <ConnectedStoryPreview
             onPressLike={this._toggleLike}
@@ -82,7 +112,7 @@ class StoryReadingScreen extends React.Component {
             autoPlayVideo={true}
             allowVideoPlay={true}
           />
-          <View style={{flex: 1}}>
+          <View style={{flex: 1, marginBottom: Metrics.tabBarHeight}}>
             {!!story.content &&
               <View style={{
                 flex: 1,
@@ -135,19 +165,21 @@ class StoryReadingScreen extends React.Component {
             }
           </View>
         </ScrollView>
-        <StoryReadingToolbar
-          style={styles.toolBar}
-          likeCount={formatCount(story.counts.likes)}
-          commentCount={formatCount(story.counts.comments)}
-          boomarkCount={formatCount(story.counts.bookmarks)}
-          isBookmarked={this.props.isBookmarked}
-          isLiked={this.props.isLiked}
-          onPressLike={() => this._toggleLike()}
-          onPressBookmark={() => this.props.toggleBookmark(this.props.user.id, story.id)}
-          onPressComment={() => NavActions.storyComments({
-            storyId: story.id
-          })}
-        />
+        <Animated.View style={[styles.toolBar, {height: this.state.toolbarHeight}]}>
+          <StoryReadingToolbar
+
+            likeCount={formatCount(story.counts.likes)}
+            commentCount={formatCount(story.counts.comments)}
+            boomarkCount={formatCount(story.counts.bookmarks)}
+            isBookmarked={this.props.isBookmarked}
+            isLiked={this.props.isLiked}
+            onPressLike={() => this._toggleLike()}
+            onPressBookmark={() => this.props.toggleBookmark(this.props.user.id, story.id)}
+            onPressComment={() => NavActions.storyComments({
+              storyId: story.id
+            })}
+          />
+        </Animated.View>
       </View>
     )
   }
@@ -159,7 +191,6 @@ const mapStateToProps = (state, props) => {
   const story = stories[props.storyId]
   return {
     user: state.entities.users.entities[userId],
-    // author: state.entities.users.entities[story.author],
     fetching,
     story,
     error,

@@ -126,6 +126,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-maps')
     compile project(':react-native-webview-bridge-updated')
     compile project(':react-native-hockeyapp')
     compile project(':react-native-push-notification')

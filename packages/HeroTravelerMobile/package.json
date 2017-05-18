@@ -45,7 +45,7 @@
     "react-native-image-picker": "^0.26.2",
     "react-native-keyboard-spacer": "^0.3.1",
     "react-native-linear-gradient": "^2.0.0",
-    "react-native-maps": "^0.14.0",
+    "react-native-maps": "~0.13.0",
     "react-native-push-notification": "^2.2.1",
     "react-native-router-flux": "https://github.com/rwoody/react-native-router-flux",
     "react-native-splash-screen": "^2.0.0",

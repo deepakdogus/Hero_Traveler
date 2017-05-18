@@ -136,21 +136,20 @@ class StoryReadingScreen extends React.Component {
               </View>
             }
           </View>
-
-          <StoryReadingToolbar
-            style={styles.toolBar}
-            likeCount={formatCount(story.counts.likes)}
-            commentCount={formatCount(story.counts.comments)}
-            boomarkCount={formatCount(story.counts.bookmarks)}
-            isBookmarked={this.props.isBookmarked}
-            isLiked={this.props.isLiked}
-            onPressLike={() => this._toggleLike()}
-            onPressBookmark={() => this.props.toggleBookmark(this.props.user.id, story.id)}
-            onPressComment={() => NavActions.storyComments({
-              storyId: story.id
-            })}
-          />
         </ScrollView>
+        <StoryReadingToolbar
+          style={styles.toolBar}
+          likeCount={formatCount(story.counts.likes)}
+          commentCount={formatCount(story.counts.comments)}
+          boomarkCount={formatCount(story.counts.bookmarks)}
+          isBookmarked={this.props.isBookmarked}
+          isLiked={this.props.isLiked}
+          onPressLike={() => this._toggleLike()}
+          onPressBookmark={() => this.props.toggleBookmark(this.props.user.id, story.id)}
+          onPressComment={() => NavActions.storyComments({
+            storyId: story.id
+          })}
+        />
       </View>
     )
   }

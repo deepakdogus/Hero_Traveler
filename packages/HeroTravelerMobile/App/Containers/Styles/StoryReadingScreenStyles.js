@@ -9,6 +9,7 @@ export default StyleSheet.create({
   },
   scrollView: {
     flex: 1,
+    marginBottom: Metrics.tabBarHeight
   },
   content: {
     paddingTop: Metrics.section,

@@ -157,36 +157,37 @@ class LoginScreen extends React.Component {
             <Text style={styles.instructions}>
               Or
             </Text>
+              {this.props.error && <Text style={[styles.error]}>{this.props.error}</Text>}
+            <View style={styles.form}>
+              <Input
+                ref='username'
+                style={textInputStyle}
+                value={username}
+                editable={editable}
+                keyboardType='default'
+                returnKeyType='next'
+                autoCapitalize='none'
+                autoCorrect={false}
+                onChangeText={this.handleChangeUsername}
+                underlineColorAndroid='transparent'
+                onSubmitEditing={() => this.refs.password.focus()}
+                placeholder='Username' />
 
-            <Input
-              ref='username'
-              style={textInputStyle}
-              value={username}
-              editable={editable}
-              keyboardType='default'
-              returnKeyType='next'
-              autoCapitalize='none'
-              autoCorrect={false}
-              onChangeText={this.handleChangeUsername}
-              underlineColorAndroid='transparent'
-              onSubmitEditing={() => this.refs.password.focus()}
-              placeholder='Username' />
-
-            <Input
-              ref='password'
-              style={textInputStyle}
-              value={password}
-              editable={editable}
-              keyboardType='default'
-              returnKeyType='go'
-              autoCapitalize='none'
-              autoCorrect={false}
-              secureTextEntry
-              onChangeText={this.handleChangePassword}
-              underlineColorAndroid='transparent'
-              onSubmitEditing={this.handlePressLogin}
-              placeholder='Password' />
-
+              <Input
+                ref='password'
+                style={textInputStyle}
+                value={password}
+                editable={editable}
+                keyboardType='default'
+                returnKeyType='go'
+                autoCapitalize='none'
+                autoCorrect={false}
+                secureTextEntry
+                onChangeText={this.handleChangePassword}
+                underlineColorAndroid='transparent'
+                onSubmitEditing={this.handlePressLogin}
+                placeholder='Password' />              
+            </View>
             <RoundedButton
               text="Login"
               onPress={this.handlePressLogin}
@@ -201,7 +202,7 @@ class LoginScreen extends React.Component {
 
             <TOS style={styles.tos} />
 
-            {this.props.error && <Text style={[styles.section, styles.error]}>{this.props.error}</Text>}
+            
           </KeyboardAvoidingView>
         </ScrollView>
         {this.props.fetching &&

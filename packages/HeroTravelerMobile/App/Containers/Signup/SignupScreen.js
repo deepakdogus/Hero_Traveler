@@ -114,6 +114,7 @@ class SignupScreen extends React.Component {
               <Text style={styles.instructions}>
                 Let's start by setting up your account
               </Text>
+              {this.props.signupError && <Text style={[styles.error]}>{this.props.signupError}</Text>}
             </View>
             <View style={styles.form}>
               <Field
@@ -154,7 +155,7 @@ class SignupScreen extends React.Component {
                 style={styles.submitButton}
                 onPress={handleSubmit(this._signup)}
               />
-              {this.props.signupError && <Text style={[styles.section, styles.error]}>{this.props.signupError}</Text>}
+              
 
               <TOS styles={[styles.section, styles.tos]} />
             </View>

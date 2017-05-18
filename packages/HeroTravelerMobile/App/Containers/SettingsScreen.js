@@ -7,7 +7,8 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import {
-  ActionConst as NavActionConst
+  ActionConst as NavActionConst,
+  Actions as NavActions,
 } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -85,7 +86,7 @@ class SettingsScreen extends React.Component {
           <List>
             <Row
               text='Change Password'
-              onPress={() => alert('change password')}
+              onPress={NavActions.resetPassword}
             />
             <Row
               text='Notifications'

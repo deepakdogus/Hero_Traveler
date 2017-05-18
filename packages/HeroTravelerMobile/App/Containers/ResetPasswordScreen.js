@@ -9,6 +9,8 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 
+import { Actions as NavActions } from 'react-native-router-flux'
+
 import {Images} from '../Themes'
 import RoundedButton from '../Components/RoundedButton'
 import styles from './Styles/ResetPasswordRequestScreenStyles'
@@ -61,7 +63,7 @@ class ResetPasswordScreen extends React.Component {
       token,
       password
     )
-    this.context.routes.login()
+    NavActions.pop()
   }
 
   render () {
@@ -78,7 +80,7 @@ class ResetPasswordScreen extends React.Component {
             <View style={[styles.section, {marginTop: 0}]}>
               <Text style={styles.title}>RESET PASSWORD</Text>
               <Text style={styles.instructions}>
-              Please enter your email address
+              Please enter your new password
               </Text>
             </View>
             <View style={{height: 60}}>
@@ -95,7 +97,7 @@ class ResetPasswordScreen extends React.Component {
               onChangeText={(password) => this.setState({password})}
               underlineColorAndroid='transparent'
               onSubmitEditing={() => this.refs.confirmPassword.focus()}
-              placeholder='Password' />
+              placeholder='New Password' />
 
             <Input
               ref='confirmPassword'
@@ -126,7 +128,7 @@ class ResetPasswordScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-
+    token: state.session.tokens[0].value
   }
 }
 

@@ -1,5 +1,6 @@
 import { call, put } from 'redux-saga/effects'
 import UserActions from '../Redux/Entities/Users'
+import StoryActions from '../Redux/Entities/Stories'
 
 export function * getSuggestedUsers (api, action) {
   const response = yield call(api.getSuggestedUsers)
@@ -74,5 +75,34 @@ export function * userUnfollowUser(api, {userId, targetUserId}) {
 
   if (!response.ok) {
     yield put(UserActions.unfollowUserFailure(userId, targetUserId))
+  }
+}
+
+export function  * getActivities(api) {
+  const response = yield call(
+    api.getActivity
+  )
+
+  if (response.ok) {
+    const {entities, result} = response.data
+    yield [
+      put(UserActions.receiveUsers(entities.users)),
+      put(UserActions.receiveActivities(entities.activities)),
+      put(StoryActions.receiveStories(entities.stories)),
+    ]
+    yield put(UserActions.fetchActivitiesSuccess(result))
+  } else {
+    yield put(UserActions.fetchActivitiesFailure(new Error('Failed to fetch activities')))
+  }
+}
+
+export function * seenActivity(api, {activityId}) {
+  const response = yield call(
+    api.setActivityRead,
+    activityId
+  )
+
+  if (!response.ok) {
+    yield put(UserActions.activitySeenFailure(new Error('Something went wrong'), activityId))
   }
 }

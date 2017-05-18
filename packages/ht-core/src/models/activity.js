@@ -37,7 +37,7 @@ ActivitySchema.statics = {
     })
     .sort({createdAt: -1})
     .populate('fromUser')
-    .populate('story')
+    .populate('story story.coverImage story.coverVideo')
     .populate('comment')
   },
 

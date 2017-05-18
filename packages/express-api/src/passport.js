@@ -25,7 +25,6 @@ passport.use(
     (accessToken, next) => {
       User.validateAccessToken(accessToken)
         .then(user => {
-          console.log('user', user)
           next(null, user)
           return null
         })

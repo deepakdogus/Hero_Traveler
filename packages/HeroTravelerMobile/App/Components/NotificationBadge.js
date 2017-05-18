@@ -19,9 +19,9 @@ const styles = StyleSheet.create({
   }
 })
 
-export default function NotificationBadge({count}) {
+export default function NotificationBadge({count, style}) {
   return (
-    <View style={styles.wrapper}>
+    <View style={[styles.wrapper, style]}>
       <Text style={styles.text}>{count}</Text>
     </View>
   )

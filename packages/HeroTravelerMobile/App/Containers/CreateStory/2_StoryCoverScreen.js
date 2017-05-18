@@ -12,7 +12,7 @@ import {
 } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
-// import { reset as resetForm } from 'redux-form'
+import { reset as resetForm } from 'redux-form'
 import { connect } from 'react-redux'
 import R from 'ramda'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -62,16 +62,6 @@ class StoryCoverScreen extends Component {
     // Create a new draft to work with if one doesn't exist
     if (!this.props.story.id) {
       this.props.registerDraft()
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    // If we are cancelling the screen,
-    // the draft resets,
-    // redux-form clears,
-    // and we pop()
-    if (this.props.story && !nextProps.story) {
-      NavActions.pop()
     }
   }
 
@@ -137,12 +127,14 @@ class StoryCoverScreen extends Component {
         text: 'Yes, save the draft',
         onPress: () => {
           this.props.update(this.props.story.id, this.props.story, true)
+          this.props.reset()
           NavActions.pop()
         }
       }, {
         text: 'No, remove it',
         onPress: () => {
           this.props.discardDraft(this.props.story.id)
+          this.props.reset()
           NavActions.pop()
         }
       }]
@@ -431,8 +423,6 @@ export default R.compose(
       dispatch(StoryEditActions.registerDraft()),
     discardDraft: (draftId) =>
       dispatch(StoryEditActions.discardDraft(draftId)),
-    // resetForm: () =>
-    //   dispatch(resetForm('createStory')),
     update: (id, attrs, doReset) =>
       dispatch(StoryEditActions.updateDraft(id, attrs, doReset)),
     uploadCoverImage: (id, path) =>

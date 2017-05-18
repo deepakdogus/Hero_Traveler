@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity
 } from 'react-native'
+import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import LinearGradient from 'react-native-linear-gradient'
@@ -26,6 +27,7 @@ import pathAsFileObject from '../Lib/pathAsFileObject'
 
 // @TODO UserActions shouldnt be in a component
 import UserActions from '../Redux/Entities/Users'
+import isTooltipComplete, {Types as TooltipTypes} from '../Lib/firstTimeTooltips'
 
 const api = HeroAPI.create()
 
@@ -40,7 +42,7 @@ const Tab = ({text, onPress, selected}) => {
 }
 
 // @TOOO make this smaller
-export default class ProfileView extends React.Component {
+class ProfileView extends React.Component {
   constructor(props) {
     super(props)
 
@@ -93,6 +95,58 @@ export default class ProfileView extends React.Component {
     NavActions.pop()
   }
 
+    _completeTooltip = () => {
+    const tooltips = this.props.user.introTooltips.concat({
+      name: TooltipTypes.PROFILE_NO_STORIES,
+      seen: true,
+    })
+    this.props.completeTooltip(tooltips)
+  }  
+
+    renderTooltip() {
+    return (
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          top: 470,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          backgroundColor: 'transparent',
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+        onPress={this._completeTooltip}
+      >
+          <View style={{
+            height: 80,
+            width: 300,
+            padding: 10,
+            borderRadius: 5,
+            backgroundColor: 'white',
+            alignItems: 'center',
+            shadowColor: 'black',
+            shadowOpacity: .2,
+            shadowRadius: 30
+          }}>
+            <Text style={{marginTop: 10, textAlign: 'center'}}>Looks like you don't have any stories.{"\n"}  Publish your first story now!</Text>
+          </View>
+          <View style={{
+            height: 0,
+            width: 0,
+            borderLeftWidth: 7,
+            borderLeftColor: 'transparent',            
+            borderRightWidth: 7,
+            borderRightColor: 'transparent',
+            borderTopWidth: 10,
+            borderTopColor: 'white',                     
+          }}>
+          </View>
+      </TouchableOpacity>
+    )
+  }
+
   render() {
     const { user, stories, fetchStatus, editable, isEditing, profileImage } = this.props
     let cog
@@ -106,6 +160,10 @@ export default class ProfileView extends React.Component {
         <Text style={styles.italicText}>{user.profile.fullName}</Text>
       </View>
     )
+    let showTooltip = !isTooltipComplete(
+        TooltipTypes.PROFILE_NO_STORIES,
+        user.introTooltips
+      )
 
     /* If the editable flag === true then the component will display the user's edit profile view,
        otherwise it will show the view that the user sees when looking at other profiles
@@ -335,7 +393,7 @@ export default class ProfileView extends React.Component {
             }
             {fetchStatus.loaded && stories.length === 0 &&
               <View style={styles.noStories}>
-                <Text style={styles.noStoriesText}>{this.props.editable ? 'You have no stories published' : 'This user has no stories published'}</Text>
+                <Text style={styles.noStoriesText}>{this.props.editable ? showTooltip ? '' : 'You have no stories published' : 'This user has no stories published'}</Text>
               </View>
             }
             {!fetchStatus.loaded && fetchStatus.fetching &&
@@ -349,7 +407,22 @@ export default class ProfileView extends React.Component {
         }
         </View>
         </ScrollView>
+        {showTooltip && this.renderTooltip()}  
       </View>
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips}))    
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileView)
+

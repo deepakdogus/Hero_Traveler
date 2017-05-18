@@ -18,7 +18,8 @@ export default StyleSheet.create({
     left: 0,
     right: 0,
     marginVertical: Metrics.baseMargin,
-    marginHorizontal: Metrics.section
+    marginHorizontal: Metrics.section,
+    zIndex: 100,
   },
   spaceView: {
     height: third

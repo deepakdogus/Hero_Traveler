@@ -78,10 +78,15 @@ class StoryCommentsScreen extends React.Component {
   }
 
   render () {
-
+    var _scrollView = ScrollView
     return (
-        <KeyboardAvoidingView behavior='position' style={[styles.containerWithNavbar, styles.root]}>
-          <ScrollView style={styles.list}>
+        <KeyboardAvoidingView
+          behavior={this.state.comments.length < 4 ? 'padding' : 'position'}
+          style={[styles.containerWithNavbar, styles.root]}>
+          <ScrollView
+            ref={(scrollView) => { _scrollView = scrollView; }}
+            onContentSizeChange={() => { this.state.comments.length > 6 ? _scrollView.scrollToEnd({animated: true}) : null }}
+            style={styles.list}>
           {this.state.comments.map(comment => {
             return(
               <Comment

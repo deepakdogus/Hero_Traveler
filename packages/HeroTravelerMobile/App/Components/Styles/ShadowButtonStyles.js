@@ -5,10 +5,11 @@ export default StyleSheet.create({
   button: {
 
     flexDirection: 'column',
-    backgroundColor: Colors.snow,
+    backgroundColor: 'transparent',
     justifyContent: 'center'
   },
   view: {
+    backgroundColor: Colors.snow,
     borderRadius: 5,
     marginHorizontal: Metrics.section,
     marginVertical: Metrics.baseMargin,

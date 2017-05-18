@@ -5,11 +5,13 @@ import {User, Models} from '@rwoody/ht-core'
 export default function createUserFromFacebook(req, res) {
   const {user, deviceId} = req.body
   return User.createFacebook(user, deviceId)
-    .then(user => {
+    .then(([user, wasSignedUp]) => {
+      console.log('createFacebook user', user)
       return User.getOrCreateTokens(user._id)
-        .then(({tokens}) => {
+        .then(({user, tokens}) => {
           return {
             user,
+            wasSignedUp,
             tokens
           }
         })

@@ -123,16 +123,7 @@ const UserSchema = new Schema({
 
 UserSchema.virtual('isFacebookConnected')
   .get(function() {
-    return 0 < _.size(
-      _.find(this.accounts, account => account.kind === ACCOUNT_TYPE_FACEBOOK)
-    )
-  })
-
-UserSchema.virtual('isTwitterConnected')
-  .get(function() {
-    return 0 < _.size(
-      _.find(this.accounts, account => account.kind === ACCOUNT_TYPE_TWITTER)
-    )
+    return this.hasFacebookAccountInfo()
   })
 
 UserSchema.virtual('devices', {
@@ -163,7 +154,7 @@ UserSchema.statics = {
       })
     })
   },
-  createFromFacebookData(fbid, email, name, pictureUrl, hasDevice) {
+  createFromFacebookData(fbid, email, name, pictureUrl) {
     // trim the name to be 10 characters long max
     const trimmedName = name.slice(0, 9).trim()
     // Make a semi-random username for the user:
@@ -180,7 +171,7 @@ UserSchema.statics = {
         fullName: name
       },
       emailConfirmationToken: uuid(),
-      notificationTypes: hasDevice ? defaultNotificationTypes : [],
+      notificationTypes: defaultNotificationTypes,
     })
   }
 }
@@ -227,6 +218,18 @@ UserSchema.methods = {
       this.notificationTypes,
       Constants.USER_NOTIFICATION_FOLLOWER
     )
+  },
+
+  hasFacebookAccountInfo() {
+    return !!_.find(this.accounts, account => account.kind === ACCOUNT_TYPE_FACEBOOK)
+  },
+
+  connectFacebook(uid) {
+    this.accounts.push({
+      kind: ACCOUNT_TYPE_FACEBOOK,
+      uid
+    })
+    return this.save()
   }
 
 }

@@ -145,10 +145,6 @@ class LaunchScreen extends React.Component {
             text='Sign up with Facebook'
           />
           <RoundedButton
-            style={styles.twitter}
-            text='Sign up with Twitter'
-          />
-          <RoundedButton
             style={styles.email}
             onPress={NavigationActions.signup}
             text='Sign up with Email'

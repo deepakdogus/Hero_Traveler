@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import {
   Scene,
-  Router,
   Modal,
   Actions as NavActions
 } from 'react-native-router-flux'
@@ -245,8 +244,9 @@ export default NavActions.create(
         title='Comments'
         {...darkNavBarProps}
       />
-      <Scene key='tabbar'
-             {...tabBarProps}
+      <Scene
+        key='tabbar'
+        {...tabBarProps}
       >
         <Scene
           key='myFeed'

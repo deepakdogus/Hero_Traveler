@@ -137,11 +137,13 @@ class StoryCoverScreen extends Component {
         text: 'Yes, save the draft',
         onPress: () => {
           this.props.update(this.props.story.id, this.props.story, true)
+          NavActions.pop()
         }
       }, {
         text: 'No, remove it',
         onPress: () => {
           this.props.discardDraft(this.props.story.id)
+          NavActions.pop()
         }
       }]
     )

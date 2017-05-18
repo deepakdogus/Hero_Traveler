@@ -114,6 +114,7 @@ class SignupScreen extends React.Component {
               <Text style={styles.instructions}>
                 Let's start by setting up your account
               </Text>
+              {this.props.signupError && <Text style={[styles.error]}>{this.props.signupError}</Text>}
             </View>
             <View style={styles.form}>
               <Field
@@ -154,7 +155,7 @@ class SignupScreen extends React.Component {
                 style={styles.submitButton}
                 onPress={handleSubmit(this._signup)}
               />
-              {this.props.signupError && <Text style={[styles.section, styles.error]}>{this.props.signupError}</Text>}
+              
 
               <TOS styles={[styles.section, styles.tos]} />
             </View>
@@ -181,11 +182,11 @@ export default R.compose(
         fetching: state.signup.fetching,
         hasSignedUp: hasSignedUp(state.signup),
         signupError: state.signup.error,
-        fullName: selector(state, 'fullName'),
-        username: selector(state, 'username'),
-        email: selector(state, 'email'),
-        password: selector(state, 'password'),
-        confirmPassword: selector(state, 'confirmPassword'),
+        fullName: _.trim(selector(state, 'fullName')),
+        username: _.trim(selector(state, 'username')),
+        email: _.trim(selector(state, 'email')),
+        password: _.trim(selector(state, 'password')),
+        confirmPassword: _.trim(selector(state, 'confirmPassword')),
       }
     },
     (dispatch) => {

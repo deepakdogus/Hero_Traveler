@@ -37,7 +37,14 @@ export default StyleSheet.create({
     textAlign: 'center'
   },
   error: {
-    color: Colors.red
+    marginTop: Metrics.marginVertical,
+    marginBottom: -25.5,
+    color: Colors.errorRed,
+    fontSize: 12,
+    textAlign: 'center'
+  },
+  form: {
+    marginTop: Metrics.marginVertical,
   },
   inputContainer: {
     flex: 1,

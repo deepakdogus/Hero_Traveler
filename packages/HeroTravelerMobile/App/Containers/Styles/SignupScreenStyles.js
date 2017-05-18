@@ -27,9 +27,11 @@ export default StyleSheet.create({
     textAlign: 'center'
   },
   error: {
+    marginTop: Metrics.marginVertical,
+    marginBottom: -25.5,
     color: Colors.errorRed,
     fontSize: 12,
-    textAlign: 'right'
+    textAlign: 'center'
   },
   errorView: {
     position: 'absolute',

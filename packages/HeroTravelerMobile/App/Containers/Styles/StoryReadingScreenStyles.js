@@ -15,8 +15,27 @@ export default StyleSheet.create({
     paddingTop: Metrics.section,
     paddingBottom: Metrics.tabBarHeight,
   },
+  locationWrapper: {
+    marginVertical: Metrics.section
+  },
   locationText: {
-    marginTop: Metrics.baseMargin
+    fontSize: 14,
+    // letterSpacing: .35,
+    // marginTop: Metrics.baseMargin,
+    color: '#757575'
+  },
+  locationLabel: {
+    fontSize: 14,
+    // letterSpacing: .35,
+    color: Colors.background
+  },
+  locationIcon: {
+    marginRight: Metrics.section
+  },
+  locationMap: {
+    flex: 1,
+    height: 200,
+    marginBottom: Metrics.section
   },
   toolBar: {
     flex: 1,

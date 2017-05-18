@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import { ScrollView, Text, View, Image, StyleSheet, WebView } from 'react-native'
+import { ScrollView, Text, View, Image, StyleSheet, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 import MapView from 'react-native-maps';
@@ -14,6 +14,7 @@ import RoundedButton from '../Components/RoundedButton'
 import {Metrics, Images} from '../Themes'
 import StoryReadingToolbar from '../Components/StoryReadingToolbar'
 import styles from './Styles/StoryReadingScreenStyles'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 const htmlStyles = StyleSheet.create({
   img: {
@@ -45,30 +46,11 @@ class StoryReadingScreen extends React.Component {
     error: PropTypes.bool
   };
 
-  _wrapElt(elt){
-    return (
-      <View style={[styles.scrollItemFullScreen, styles.center]}>
-        {elt}
-      </View>
-    )
-  }
-
-  _showLoader(){
-   return (
-     <Text style={styles.message}>Loading</Text>
-   )
-  }
-
-  _showError(){
-    return (
-      <Text style={styles.message}>Error</Text>
-    )
-  }
-
-  _showNoStories(){
-    return (
-      <Text style={styles.title}>There are no stories here</Text>
-    )
+  constructor(props) {
+    super(props)
+    this.state = {
+      scrollY: new Animated.Value(0)
+    }
   }
 
   _toggleLike = () => {
@@ -80,7 +62,11 @@ class StoryReadingScreen extends React.Component {
     const baseText = styles.storyContentText
     return (
       <View style={[styles.root]}>
-        <ScrollView style={[styles.scrollView]}>
+        <ScrollView
+          onScroll={(...args) => {
+            console.log('scrolling!', ...args)
+          }}
+          style={[styles.scrollView]}>
           <ConnectedStoryPreview
             onPressLike={this._toggleLike}
             onPressUser={(userId) => {
@@ -124,7 +110,7 @@ class StoryReadingScreen extends React.Component {
             {story.location &&
               <View style={styles.locationWrapper}>
                 <MapView
-                  style={{flex: 1, height: 200}}
+                  style={styles.locationMap}
                   initialRegion={{
                     latitude: story.latitude,
                     longitude: story.longitude,
@@ -132,7 +118,19 @@ class StoryReadingScreen extends React.Component {
                     longitudeDelta: 0.0421,
                   }}
                 />
-                <Text style={[baseText, styles.locationText]}>Location: {story.location}</Text>
+                <View style={{
+                  flexDirection: 'row',
+                  // alignItems: 'center',
+                  marginHorizontal: Metrics.section
+                }}>
+                  <View style={styles.locationIcon}>
+                    <Icon name='map-marker' color='#757575' size={25} />
+                  </View>
+                  <View style={{flexDirection: 'column', alignItems: 'flex-start'}}>
+                    <Text style={[styles.locationLabel]}>Location:</Text>
+                    <Text style={[styles.locationText]}>{story.location}</Text>
+                  </View>
+                </View>
               </View>
             }
           </View>

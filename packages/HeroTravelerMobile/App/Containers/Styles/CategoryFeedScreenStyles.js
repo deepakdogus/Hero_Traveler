@@ -27,7 +27,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     width: '25%',
     backgroundColor: Colors.background,
-    borderBottomWidth: 2,
+    borderBottomWidth: 3,
     borderBottomColor: Colors.background,
   },
   tabText: {

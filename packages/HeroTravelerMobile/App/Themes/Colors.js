@@ -36,6 +36,7 @@ const colors = {
   background: '#1a1c21',
   backgroundDark: '#111216',
   photoOverlay: '#000000',
+  sectionHighlight: '#343537',
 }
 
 export default colors

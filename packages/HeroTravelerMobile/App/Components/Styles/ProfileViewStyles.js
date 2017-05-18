@@ -36,7 +36,7 @@ export default StyleSheet.create({
   },
   nameWrapper: {
     flexDirection: 'column',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
     height: 50
   },
@@ -88,7 +88,9 @@ export default StyleSheet.create({
     textAlign: 'center',
     fontSize: 21,
     letterSpacing: 3,
-    color: Colors.snow
+    color: Colors.snow,
+    width: '50%',
+    height: 30
   },
   buttons: {
     backgroundColor: 'rgba(0,0,0,.25)',

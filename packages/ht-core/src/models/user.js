@@ -56,6 +56,9 @@ const UserSchema = new Schema({
     unique: true,
     uniqueCaseInsensitive: true
   },
+  bio: {
+    type: String
+  },
   isEmailVerified: {
     type: Boolean,
     default: false

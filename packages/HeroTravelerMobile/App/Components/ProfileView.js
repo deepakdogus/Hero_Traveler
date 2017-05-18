@@ -7,12 +7,14 @@ import {
   TextInput,
   Image,
   TouchableWithoutFeedback,
-  TouchableOpacity
+  TouchableOpacity,
+  KeyboardAvoidingView,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import LinearGradient from 'react-native-linear-gradient'
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 
 import { Colors } from '../Themes'
 import Loader from './Loader'
@@ -25,9 +27,10 @@ import NavBar from '../Containers/CreateStory/NavBar'
 import HeroAPI from '../Services/HeroAPI'
 import pathAsFileObject from '../Lib/pathAsFileObject'
 
-// @TODO UserActions shouldnt be in a component
+// @TODO UserActions shouldn't be in a component
 import UserActions from '../Redux/Entities/Users'
 import isTooltipComplete, {Types as TooltipTypes} from '../Lib/firstTimeTooltips'
+import Metrics from '../Themes/Metrics'
 
 const api = HeroAPI.create()
 
@@ -49,6 +52,8 @@ class ProfileView extends React.Component {
     this.state = {
       imageMenuOpen: false,
       file: null,
+      bioText: props.user.bio || '',
+      usernameText: props.user.username || 'Enter a username'
     }
   }
   componentDidMount() {
@@ -84,14 +89,14 @@ class ProfileView extends React.Component {
   //     }, {
   //       text: 'No, remove it',
   //       onPress: () => {
-  //         NavActions.pop()
+  //         NavActions.pop()u
   //       }
   //     }]
   //   )
   // }
 
   _onRight = () => {
-    this.props.saveUser(this.state.text)
+    this.props.updateUser({bio: this.state.bioText, username: this.state.usernameText})
     NavActions.pop()
   }
 
@@ -101,7 +106,7 @@ class ProfileView extends React.Component {
       seen: true,
     })
     this.props.completeTooltip(tooltips)
-  }  
+  }
 
     renderTooltip() {
     return (
@@ -136,11 +141,11 @@ class ProfileView extends React.Component {
             height: 0,
             width: 0,
             borderLeftWidth: 7,
-            borderLeftColor: 'transparent',            
+            borderLeftColor: 'transparent',
             borderRightWidth: 7,
             borderRightColor: 'transparent',
             borderTopWidth: 10,
-            borderTopColor: 'white',                     
+            borderTopColor: 'white',
           }}>
           </View>
       </TouchableOpacity>
@@ -160,7 +165,8 @@ class ProfileView extends React.Component {
         <Text style={styles.italicText}>{user.profile.fullName}</Text>
       </View>
     )
-    let showTooltip = !isTooltipComplete(
+
+    let showTooltip = !isEditing && editable && !isTooltipComplete(
         TooltipTypes.PROFILE_NO_STORIES,
         user.introTooltips
       )
@@ -175,9 +181,15 @@ class ProfileView extends React.Component {
       // buttons = null;
       name = (
         <View style={styles.nameWrapper}>
-          <View style={{flexDirection: 'row'}}>
-          <Text style={styles.titleText}>{user.username}</Text>
-          <Icon style={{paddingTop: 7}} name='pencil' size={12} color={Colors.snow} />
+          <View style={{flexDirection: 'row', jusifyContent: 'center', alignItems: 'center'}}>
+           <TextInput
+             placeholder={user.username}
+             value={this.state.usernameText}
+             style={styles.titleText}
+             onChangeText={(text) => this.setState({usernameText: text})}
+             maxLength={20}
+           />
+          <Icon style={{paddingTop: 4}} name='pencil' size={12} color={Colors.snow} />
           </View>
         </View>
       )
@@ -287,7 +299,7 @@ class ProfileView extends React.Component {
             onRight={this._onRight}
           />
         }
-        <ScrollView style={[
+        <KeyboardAwareScrollView getTextInputRefs={() => [this.bioInput]} style={[
           this.props.hasTabbar ? styles.containerWithTabbar : null,
           styles.root,
           this.props.style,
@@ -350,19 +362,18 @@ class ProfileView extends React.Component {
             </LinearGradient>
           </Image>
           {isEditing &&
-           <View style={{marginLeft: 20, marginRight: 20}}>
-               <Text style={{fontWeight: 'bold', fontSize: 16, marginTop: 10}}>Edit Bio</Text>
-           <TextInput
-             style={{height: 150}}
-             color={Colors.gray}
-              autoFocus={true}
-              multiline={true}
-              editable={true}
-              onChangeText={(text) => this.setState({text})}
-              value={this.state.text}
-              placeholder={this.props.user.bio || 'Tell us about yourself!'}
-             maxLength={500}
-           />
+           <View style={{margin: Metrics.section}}>
+             <Text style={{fontWeight: 'bold', fontSize: 16, marginVertical: Metrics.baseMargin}}>Edit Bio</Text>
+             <TextInput
+               ref={c => this.bioInput = c}
+               style={{height: 150, fontSize: 16, color: '#757575'}}
+               multiline={true}
+               editable={true}
+               onChangeText={(text) => this.setState({bioText: text})}
+               value={this.state.bioText}
+               maxLength={500}
+               placeholder={'Tell us about yourself!'}
+             />
            </View>
           }
           {!isEditing && <View style={styles.tabs}>
@@ -372,6 +383,7 @@ class ProfileView extends React.Component {
                 storiesById={stories}
                 refreshing={false}
                 renderStory={(storyId) => {
+                  // @TODO fix me magic number: 222
                   return (
                     <ConnectedStoryPreview
                       forProfile={true}
@@ -382,7 +394,7 @@ class ProfileView extends React.Component {
                       autoPlayVideo={false}
                       showLike={this.props.showLike}
                       key={storyId}
-                      height={222}
+                      height={this.props.hasTabbar ? 222 : 222 + Metrics.tabBarHeight}
                       storyId={storyId}
                       onPress={() => NavActions.story({storyId})}
                       onPressLike={story => alert(`Story ${storyId} liked`)}
@@ -406,8 +418,8 @@ class ProfileView extends React.Component {
           </View>
         }
         </View>
-        </ScrollView>
-        {showTooltip && this.renderTooltip()}  
+        </KeyboardAwareScrollView>
+        {showTooltip && this.renderTooltip()}
       </View>
     )
   }
@@ -420,7 +432,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips}))    
+    completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips}))
   }
 }
 

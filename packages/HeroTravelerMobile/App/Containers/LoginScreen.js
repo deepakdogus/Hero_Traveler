@@ -75,6 +75,11 @@ class LoginScreen extends React.Component {
       this.state.password,
     ])
 
+    this.setState({ 
+      username: _.trim(this.state.username),
+      password: _.trim(this.state.password),
+    })
+
     if (!conditions) {
       alert('Please complete all fields')
       return

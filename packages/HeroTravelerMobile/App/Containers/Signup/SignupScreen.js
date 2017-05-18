@@ -182,11 +182,11 @@ export default R.compose(
         fetching: state.signup.fetching,
         hasSignedUp: hasSignedUp(state.signup),
         signupError: state.signup.error,
-        fullName: selector(state, 'fullName'),
-        username: selector(state, 'username'),
-        email: selector(state, 'email'),
-        password: selector(state, 'password'),
-        confirmPassword: selector(state, 'confirmPassword'),
+        fullName: _.trim(selector(state, 'fullName')),
+        username: _.trim(selector(state, 'username')),
+        email: _.trim(selector(state, 'email')),
+        password: _.trim(selector(state, 'password')),
+        confirmPassword: _.trim(selector(state, 'confirmPassword')),
       }
     },
     (dispatch) => {

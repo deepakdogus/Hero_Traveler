@@ -19,6 +19,9 @@ export default {
   tabBar: {
     backgroundColor: Colors.background
   },
+  tabBarActive: {
+    backgroundColor: Colors.sectionHighlight,
+  },
   navText: {
     fontFamily: Fonts.type.montserrat,
     fontSize: 16,
@@ -26,7 +29,12 @@ export default {
   },
   navTitle: {
     fontFamily: Fonts.type.montserrat,
-    fontSize: 20
+    fontWeight: 'bold',
+    color: Colors.snow,
+    fontSize: 18
+  },
+  navBarBack: {
+    tintColor: 'white'
   },
   browseGuest: {
     fontSize: 12,

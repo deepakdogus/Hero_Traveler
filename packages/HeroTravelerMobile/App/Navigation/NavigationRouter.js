@@ -82,7 +82,7 @@ class TabIcon extends React.Component {
         <Icon
           name={this.getIconName(this.props.name)}
           size={20}
-          color={this.props.selected ? 'white' : '#666666'}
+          color={'#666666'}
         />
         {this.props.name === 'activity' && this.props.notificationCount > 0 &&
           <NotificationBadge count={this.props.notificationCount} />
@@ -108,10 +108,11 @@ TabIcon = connect(mapStateToProps, mapDispatchToProps)(TabIcon)
 
 const darkNavBarProps = {
   navigationBarStyle: Styles.navBar,
-  titleStyle: [Styles.navText, Styles.navText],
+  titleStyle: [Styles.navText, Styles.navTitle],
   backButtonTextStyle: Styles.navText,
   leftButtonTextStyle: Styles.navText,
-  rightButtonTextStyle: Styles.navText
+  rightButtonTextStyle: Styles.navText,
+  leftButtonIconStyle: Styles.navBarBack
 }
 
 const clearNavBarProps = {
@@ -119,12 +120,14 @@ const clearNavBarProps = {
   titleStyle: [Styles.navText, Styles.navTitle],
   backButtonTextStyle: Styles.navText,
   leftButtonTextStyle: Styles.navText,
-  rightButtonTextStyle: Styles.navText
+  rightButtonTextStyle: Styles.navText,
+  leftButtonIconStyle: Styles.navBarBack
 }
 
 const tabBarProps = {
   tabs: true,
-  tabBarStyle: Styles.tabBar
+  tabBarStyle: Styles.tabBar,
+  tabBarSelectedItemStyle: Styles.tabBarActive
 }
 
 /* **************************
@@ -230,6 +233,7 @@ export default NavActions.create(
         component={StoryReadingScreen}
         direction='horizontal'
         onLeft={() => NavActions.pop()}
+        duration={1}
         {...clearNavBarProps}
       />
       <Scene
@@ -261,7 +265,6 @@ export default NavActions.create(
             key='explore_grid'
             initial
             component={ExploreScreen}
-            title='Explore'
             {...darkNavBarProps}
             hideNavBar={true}
           />

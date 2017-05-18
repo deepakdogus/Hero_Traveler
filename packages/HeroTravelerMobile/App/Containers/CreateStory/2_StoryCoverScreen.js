@@ -29,12 +29,17 @@ import getImageUrl from '../../Lib/getImageUrl'
 import getVideoUrl from '../../Lib/getVideoUrl'
 import Video from '../../Components/Video'
 import pathAsFileObject from '../../Lib/pathAsFileObject'
+import isTooltipComplete, {Types as TooltipTypes} from '../../Lib/firstTimeTooltips'
+import RoundedButton from '../../Components/RoundedButton'
+import UserActions from '../../Redux/Entities/Users'
 
 const api = API.create()
+const third = (1 / 3) * (Metrics.screenHeight - Metrics.navBarHeight * 2)
 
 class StoryCoverScreen extends Component {
 
   static propTypes = {
+    user: PropTypes.object,
     mediaType: PropTypes.oneOf(['photo', 'video']).isRequired
   }
 
@@ -286,7 +291,80 @@ class StoryCoverScreen extends Component {
     )
   }
 
+  _completeTooltip = () => {
+    const tooltips = this.props.user.introTooltips.concat({
+      name: TooltipTypes.STORY_PHOTO_EDIT,
+      seen: true,
+    })
+    this.props.completeTooltip(tooltips)
+  }
+
+  renderTooltip() {
+    return (
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          backgroundColor: 'rgba(0,0,0,.4)',
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+        onPress={this._completeTooltip}
+      >
+          <View style={{
+            height: 200,
+            width: 200,
+            padding: 20,
+            borderRadius: 20,
+            backgroundColor: 'white',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            shadowColor: 'black',
+            shadowOpacity: .2,
+            shadowRadius: 30
+          }}>
+          <View style={{
+            height: 50,
+            width: 120,
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            alignItems: 'center'
+          }}>
+            <Icon name='camera' size={18} />
+            <Icon name='crop' size={18} />
+            <Icon name='trash' size={18} />
+          </View>
+            <Icon name='bullseye' style={{marginBottom: -10}} size={18} />
+            <Icon name='hand-pointer-o' style={{backgroundColor: 'transparent', marginRight: -8}} size={30} />
+            <Text style={{marginTop: 10}}>Tap an image to edit it</Text>
+            <RoundedButton
+              style={{
+                height: 30,
+                borderRadius: 10,
+                paddingHorizontal: 10
+              }} onPress={this._completeTooltip}>Ok, I got it</RoundedButton>
+          </View>
+
+      </TouchableOpacity>
+    )
+  }
+
   render () {
+
+    let showTooltip = false;
+
+    console.log("this.props in cover: ", this.props)
+    if (this.props.user && this.state.file) {
+      showTooltip = !isTooltipComplete(
+        TooltipTypes.STORY_PHOTO_EDIT,
+        this.props.user.introTooltips
+      )
+    }
+
     return (
       <View style={{flex: 1}}>
         <NavBar
@@ -313,6 +391,7 @@ class StoryCoverScreen extends Component {
             textStyle={styles.loadingText}
             tintColor='rgba(0,0,0,.9)' />
         }
+        {showTooltip && this.renderTooltip()}
       </View>
     )
   }
@@ -333,6 +412,7 @@ const selector = formValueSelector('createStory')
 export default R.compose(
   connect(state => ({
     accessToken: _.find(state.session.tokens, {type: 'access'}),
+    user: state.entities.users.entities[state.session.userId],
     story: {
       title: selector(state, 'title'),
       description: selector(state, 'description'),
@@ -344,6 +424,7 @@ export default R.compose(
   }), dispatch => ({
     registerDraft: () => dispatch(StoryEditActions.registerDraft()),
     discardDraft: (draftId) => dispatch(StoryEditActions.discardDraft(draftId)),
+    completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips})),
     resetForm: () => dispatch(resetForm('createStory')),
     update: (id, attrs, doReset) => {
       dispatch(

@@ -84,6 +84,9 @@ class MediaSelectorScreen extends React.Component {
             borderRadius: 5,
             backgroundColor: 'white',
             alignItems: 'center',
+            shadowColor: 'black',
+            shadowOpacity: .2,
+            shadowRadius: 30
           }}>
             <Text style={{marginTop: 10}}>Tap to take a photo</Text>
           </View>
@@ -95,7 +98,7 @@ class MediaSelectorScreen extends React.Component {
             borderRightWidth: 6,
             borderRightColor: 'transparent',
             borderTopWidth: 6,
-            borderTopColor: 'white',            
+            borderTopColor: 'white',                      
           }}>
           </View>
       </TouchableOpacity>
@@ -128,7 +131,7 @@ class MediaSelectorScreen extends React.Component {
             borderBottomWidth: 6,
             borderBottomColor: 'white',
             position: 'relative',
-            left: 42,           
+            left: 42,
           }}>
           </View>      
           <View style={{
@@ -138,6 +141,9 @@ class MediaSelectorScreen extends React.Component {
             borderRadius: 5,
             backgroundColor: 'white',
             alignItems: 'center',
+            shadowColor: 'black',
+            shadowOpacity: .2,
+            shadowRadius: 30
           }}>
             <Text style={{marginTop: 10}}>Tap to continue</Text>
           </View>

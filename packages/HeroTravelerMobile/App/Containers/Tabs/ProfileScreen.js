@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
 import { connect } from 'react-redux'
+import {Actions as NavActions} from 'react-native-router-flux'
 
 import UserActions from '../../Redux/Entities/Users'
 import StoryActions, {getByUser, getUserFetchStatus} from '../../Redux/Entities/Stories'
@@ -37,8 +38,9 @@ class ProfileScreen extends React.Component {
     this.setState({selectTabIndex: 2})
   }
 
-  _touchEdit = () => {
-    alert('touch edit')
+  _touchEdit = (storyId) => {
+    NavActions.createStoryFlow({type: 'reset'})
+    NavActions.createStory_cover({storyId, navigatedFromProfile: true})
   }
 
   _touchTrash = () => {

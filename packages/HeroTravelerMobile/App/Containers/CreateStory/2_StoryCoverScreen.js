@@ -1,18 +1,16 @@
 import _ from 'lodash'
 import React, {PropTypes, Component} from 'react'
 import {
-  ScrollView,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
   KeyboardAvoidingView,
   Image,
-  Alert
+  Alert,
+  TextInput
 } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
-import { Field, reduxForm, formValueSelector } from 'redux-form'
-import { reset as resetForm } from 'redux-form'
 import { connect } from 'react-redux'
 import R from 'ramda'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -20,7 +18,6 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import API from '../../Services/HeroAPI'
 import StoryEditActions from '../../Redux/StoryCreateRedux'
 import ShadowButton from '../../Components/ShadowButton'
-import RenderTextInput from '../../Components/RenderTextInput'
 import Loader from '../../Components/Loader'
 import {Colors, Images, Metrics} from '../../Themes'
 import styles, { placeholderColor } from './2_StoryCoverScreenStyles'
@@ -34,34 +31,45 @@ import RoundedButton from '../../Components/RoundedButton'
 import UserActions from '../../Redux/Entities/Users'
 
 const api = API.create()
-const third = (1 / 3) * (Metrics.screenHeight - Metrics.navBarHeight * 2)
 
 class StoryCoverScreen extends Component {
 
   static propTypes = {
     user: PropTypes.object,
-    mediaType: PropTypes.oneOf(['photo', 'video']).isRequired
+    mediaType: PropTypes.oneOf(['photo', 'video']).isRequired,
+    navigatedFromProfile: PropTypes.bool
   }
 
   static defaultProps = {
-    mediaType: 'photo'
+    mediaType: 'photo',
+    story: {},
+    navigatedFromProfile: false
   }
 
   constructor(props) {
     super(props)
-
     this.state = {
       imageMenuOpen: false,
       file: null,
-      updating: false
+      updating: false,
+      originalStory: props.story,
+      title: props.story.title || '',
+      description: props.story.description || '',
+      // Local file path to the image
+      coverImage: getImageUrl(props.story.coverImage),
+      // Local file path to the video
+      coverVideo: getVideoUrl(props.story.coverVideo)
     }
   }
 
   componentWillMount() {
+    const {storyId} = this.props
     api.setAuth(this.props.accessToken.value)
     // Create a new draft to work with if one doesn't exist
-    if (!this.props.story.id) {
+    if (!storyId) {
       this.props.registerDraft()
+    } else {
+      this.props.loadStory(storyId)
     }
   }
 
@@ -107,7 +115,7 @@ class StoryCoverScreen extends Component {
       R.identity,
       R.always([baseStyle, { color: 'white' }]),
       R.always(baseStyle),
-    )(!!this.props.story.coverPhoto)
+    )(!!this.state.coverImage)
   }
 
   renderPlaceholderColor = (baseColor) => {
@@ -115,76 +123,156 @@ class StoryCoverScreen extends Component {
       R.identity,
       R.always('white'),
       R.always(baseColor)
-    )(!!this.props.story.coverPhoto)
+    )(!!this.state.coverImage)
   }
 
   _onLeft = () => {
+    const isDraft = this.props.story.draft === true
+    console.log(isDraft)
+    const title = isDraft ? 'Cancel Draft' : 'Cancel Edits'
+    const message = isDraft ? 'Do you want to save this draft?' : 'Do you want to save these edits?'
+
     // When a user cancels the draft flow, remove the draft
     Alert.alert(
-      'Cancel Draft',
-      'Do you want to save this draft?',
+      title,
+      message,
       [{
-        text: 'Yes, save the draft',
+        text: 'Yes',
         onPress: () => {
-          this.props.update(this.props.story.id, this.props.story, true)
-          this.props.reset()
-          NavActions.pop()
+          if (!this.isValid()) {
+            this.setState({error: 'Please add a cover and a title to continue'})
+          } else {
+            this.saveStory().then(() => {
+              this.navBack()
+            })
+          }
         }
       }, {
-        text: 'No, remove it',
+        text: 'No',
         onPress: () => {
-          this.props.discardDraft(this.props.story.id)
-          this.props.reset()
-          NavActions.pop()
+          if (isDraft) {
+            this.props.discardDraft(this.props.story.id)
+          } else {
+            this.props.update(this.props.story.id, this.state.originalStory, true)
+          }
+          this.navBack()
         }
       }]
     )
   }
 
-  _onRight = () => {
-    const {story} = this.props
+  isValid() {
+    return _.every([
+      !!this.state.coverImage || !!this.state.coverVideo,
+      !!this.state.title
+    ])
+  }
 
-    // Let the user go forward if the navigated back
-    if (!this.state.file && (story.coverImage || story.coverVideo)) {
+  navBack() {
+    this.props.dispatch(StoryEditActions.resetCreateStore())
+    if (this.props.navigatedFromProfile) {
+      NavActions.tabbar({type: 'reset'})
+      NavActions.profile()
+    } else {
+      NavActions.pop()
+    }
+  }
+
+  hasTitleChanged() {
+    return !!this.state.title && this.state.title !== this.props.story.title
+  }
+
+  hasDescriptionChanged() {
+    return !!this.state.description && this.state.description !== this.props.story.description
+  }
+
+  hasImageChanged() {
+    return !!this.state.coverImage && this.state.coverImage !== getImageUrl(this.props.story.coverImage)
+  }
+
+  hasVideoChanged() {
+    return !!this.state.coverVideo && this.state.coverVideo !== getImageUrl(this.props.story.coverVideo)
+  }
+
+  _onRight = () => {
+    const hasImageChanged = this.hasImageChanged()
+    const hasVideoChanged = this.hasVideoChanged()
+    const hasVideoSelected = !!this.state.coverVideo
+    const hasImageSelected = !!this.state.coverImage
+    const hasTitleChanged = this.hasTitleChanged()
+    const hasDescriptionChanged = this.hasDescriptionChanged()
+    const nothingHasChanged = _.every([
+      hasVideoSelected || hasImageSelected,
+      !hasImageChanged,
+      !hasVideoChanged,
+      !hasTitleChanged,
+      !hasDescriptionChanged
+    ])
+
+    // If nothing has changed, let the user go forward if they navigated back
+    if (nothingHasChanged) {
       return NavActions.createStory_content()
     }
 
-    if ((!story.coverImage && !story.coverPhoto) || !story.title) {
+    if (!this.isValid()) {
       this.setState({error: 'Please add a cover and a title to continue'})
       return
     }
 
-    if ((this.props.story.coverVideoTemp || this.props.story.coverImage) && !this.state.file) {
-      this.setState({error: 'Sorry, could not process file.'})
+    if ((hasImageSelected || hasVideoSelected) && (hasVideoChanged || hasImageChanged) && !this.state.file) {
+      this.setState({error: 'Sorry, could not process file. Please try another file.'})
       return
     }
+
+    this.saveStory()
+      .then(() => {
+        NavActions.createStory_content()
+      })
+  }
+
+  saveStory() {
+    let promise
 
     this.setState({
       updating: true
     })
 
-    let promise
+    if (this.state.file) {
+      promise = this.isPhotoType() ?
+        api.uploadCoverImage(this.props.story.id, this.state.file) :
+        api.uploadCoverVideo(this.props.story.id, this.state.file)
 
-    promise = this.isPhotoType() ?
-      api.uploadCoverImage(story.id, this.state.file) :
-      api.uploadCoverVideo(story.id, this.state.file)
+      promise = promise.then(resp => resp.data)
+    } else {
+      promise = Promise.resolve(this.props.story)
+    }
 
-    promise.then(story => {
-      this.props.update(this.props.story.id, story)
-      NavActions.createStory_content()
+    return promise.then(story => {
+
+      if (this.hasTitleChanged()) {
+        story.title = _.trim(this.state.title)
+      }
+
+      if (this.hasDescriptionChanged()) {
+        story.description = _.trim(this.state.description)
+      }
+
+      this.props.update(story.id, story)
+
       this.setState({
         file: null,
-        updating: false
+        updating: false,
+        coverImage: story.coverImage ? getImageUrl(story.coverImage) : null,
+        coverVideo: story.coverVideo ? getVideoUrl(story.coverVideo) : null
       })
     })
   }
 
   hasNoPhoto() {
-    return !this.props.story.coverPhoto && !this.props.story.coverImage
+    return !this.state.coverImage
   }
 
   renderContent () {
-    const {story} = this.props
     return (
       <KeyboardAvoidingView behavior='position'>
         <View style={this.hasNoPhoto() ? styles.lightGreyAreasBG : null}>
@@ -246,7 +334,7 @@ class StoryCoverScreen extends Component {
                       <Icon name='crop' color={Colors.snow} size={30} />
                     </TouchableOpacity>
                     <TouchableOpacity
-                      onPress={() => alert('Remove Cover Image')}
+                      onPress={() => this.setState({coverImage: null, coverVideo: null, imageMenuOpen: false})}
                       style={styles.iconButton}>
                       <Icon name='trash' color={Colors.snow} size={30} />
                     </TouchableOpacity>
@@ -261,23 +349,22 @@ class StoryCoverScreen extends Component {
             </View>
           }
           <View style={styles.addTitleView}>
-            <Field
-              name='title'
-              component={RenderTextInput}
+            <TextInput
               editable={!this.state.imageMenuOpen}
               style={this.renderTextColor(styles.titleInput)}
               placeholder='ADD A TITLE'
               placeholderTextColor={this.renderPlaceholderColor(placeholderColor)}
               returnKeyType='next'
+              value={this.state.title}
+              onChangeText={title => this.setState({title})}
             />
-            <Field
-              name='description'
-              component={RenderTextInput}
+            <TextInput
               editable={!this.state.imageMenuOpen}
               style={this.renderTextColor(styles.subTitleInput)}
-              value={story.description}
               placeholder='Add a subtitle'
               placeholderTextColor={this.renderPlaceholderColor(placeholderColor)}
+              onChangeText={description => this.setState({description})}
+              value={this.state.description}
               returnKeyType='done'
             />
           </View>
@@ -349,10 +436,8 @@ class StoryCoverScreen extends Component {
   }
 
   render () {
-
     let showTooltip = false;
 
-    console.log("this.props in cover: ", this.props)
     if (this.props.user && this.state.file) {
       showTooltip = !isTooltipComplete(
         TooltipTypes.STORY_PHOTO_EDIT,
@@ -376,8 +461,8 @@ class StoryCoverScreen extends Component {
               onPress={() => this.setState({error: null})}
               text={this.state.error} />
           }
-          {this.isPhotoType() && this.renderCoverPhoto(this.props.story.coverPhoto || getImageUrl(this.props.story.coverImage))}
-          {!this.isPhotoType() && this.renderCoverVideo(this.props.story.coverVideoTemp || getVideoUrl(this.props.story.coverVideo))}
+          {this.isPhotoType() && this.renderCoverPhoto(this.state.coverImage)}
+          {!this.isPhotoType() && this.renderCoverVideo(this.state.coverVideo)}
         </View>
         {this.state.updating &&
           <Loader
@@ -395,54 +480,42 @@ class StoryCoverScreen extends Component {
     const file = pathAsFileObject(path)
     this.setState({file})
     if (this.props.mediaType === 'photo') {
-      this.props.change('coverPhoto', path)
+      this.setState({coverImage: path})
     } else {
-      this.props.change('coverVideoTemp', path)
+      this.setState({coverVideo: path})
     }
     NavActions.pop()
   }
 }
 
-const selector = formValueSelector('createStory')
-export default R.compose(
-  connect(state => ({
+export default connect((state, props) => {
+  let story
+
+  if (!state.storyCreate.draft && !!state.entities.stories.entities[props.storyId]) {
+    story = state.entities.stories.entities[props.storyId]
+  } else {
+    story = state.storyCreate.draft
+  }
+
+  return {
     accessToken: _.find(state.session.tokens, {type: 'access'}),
     user: state.entities.users.entities[state.session.userId],
-    story: {
-      title: selector(state, 'title'),
-      description: selector(state, 'description'),
-      coverPhoto: selector(state, 'coverPhoto'),
-      coverVideoTemp: selector(state, 'coverVideoTemp'),
-      ...state.storyCreate.draft
-    }
-    // state: state
-  }), dispatch => ({
-    completeTooltip: (introTooltips) =>
-      dispatch(UserActions.updateUser({introTooltips})),
-    registerDraft: () =>
-      dispatch(StoryEditActions.registerDraft()),
-    discardDraft: (draftId) =>
-      dispatch(StoryEditActions.discardDraft(draftId)),
-    update: (id, attrs, doReset) =>
-      dispatch(StoryEditActions.updateDraft(id, attrs, doReset)),
-    uploadCoverImage: (id, path) =>
-      dispatch(StoryEditActions.uploadCoverImage(id, path)),
-    uploadCoverVideo: (id, path) => {
-      dispatch(
-        StoryEditActions.uploadCoverVideo(id, path)
-      )
-    }
-  })),
-  reduxForm({
-    form: 'createStory',
-    destroyOnUnmount: false,
-    keepDirtyOnReinitialize: true,
-    enableReinitialize: true,
-    initialValues: {
-      title: '',
-      description: '',
-      coverPhoto: null,
-      coverVideoTemp: null,
-    }
-  })
+    story: {...story}
+  }
+}, dispatch => ({
+  registerDraft: () =>
+    dispatch(StoryEditActions.registerDraft()),
+  discardDraft: (draftId) =>
+    dispatch(StoryEditActions.discardDraft(draftId)),
+  update: (id, attrs, doReset) =>
+    dispatch(StoryEditActions.updateDraft(id, attrs, doReset)),
+  uploadCoverImage: (id, path) =>
+    dispatch(StoryEditActions.uploadCoverImage(id, path)),
+  uploadCoverVideo: (id, path) =>
+    dispatch(StoryEditActions.uploadCoverVideo(id, path)),
+  loadStory: (storyId) =>
+    dispatch(StoryEditActions.editStory(storyId)),
+  completeTooltip: (introTooltips) =>
+    dispatch(UserActions.updateUser({introTooltips})),
+})
 )(StoryCoverScreen)

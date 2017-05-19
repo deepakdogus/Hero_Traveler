@@ -18,12 +18,6 @@ import styles from './1_CreateStoryScreenStyles'
 
 class CreateStoryScreen extends React.Component {
 
-  componentDidMount() {
-    if (this.props.hasLocalDraft) {
-      NavActions.createStory_photo()
-    }
-  }
-
   render () {
     return (
       <ScrollView

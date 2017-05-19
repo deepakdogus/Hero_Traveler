@@ -108,7 +108,7 @@ class ProfileView extends React.Component {
     this.props.completeTooltip(tooltips)
   }
 
-    renderTooltip() {
+  renderTooltip() {
     return (
       <TouchableOpacity
         style={{

@@ -7,7 +7,7 @@ import _ from 'lodash'
 export default function updateDraft(draftId, attrs) {
 	return Story.findById(draftId)
 	.then(draft => {
-		_.assign(draft, attrs.data)
+		_.assign(draft, attrs)
 		return draft.save()
 	})
 	.then((updatedDraft) => {

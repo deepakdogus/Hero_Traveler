@@ -209,6 +209,11 @@ const create = () => {
     return api.put(`story/draft/${id}`, {
       story: attrs
     })
+    .then(response => {
+      return  Object.assign({}, response, {
+        data: normalize(response.data, Story)
+      })
+    })
   }
 
   const removeDraft = (draftId) => {
@@ -219,8 +224,13 @@ const create = () => {
     return api.delete(`story/${story.id}`)
   }
 
-  const getDraft = (draftId) => {
-    return api.get(`story/draft/${draftId}`)
+  const getStory = (storyId) => {
+    return api.get(`story/${storyId}`)
+      .then(response => {
+        return  Object.assign({}, response, {
+          data: normalize(response.data, Story)
+        })
+      })
   }
 
   const getDrafts = () => {
@@ -408,7 +418,7 @@ const create = () => {
     getUserLikes,
     likeStory,
     bookmarkStory,
-    getDraft,
+    getStory,
     getDrafts,
     updateDraft,
     createDraft,

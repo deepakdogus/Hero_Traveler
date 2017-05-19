@@ -136,6 +136,6 @@ StorySchema.statics = {
 }
 
 StorySchema.plugin(slug, {truncate: 120})
-StorySchema.plugin(softDelete)
+StorySchema.plugin(softDelete, {overrideMethods: true})
 
 export default mongoose.model(ModelName, StorySchema)

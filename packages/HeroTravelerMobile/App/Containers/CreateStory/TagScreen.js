@@ -154,6 +154,7 @@ class TagScreen extends Component {
 
   _selectSearchCategory = (searchCategory) => {
     this.setState({
+      text: '',
       selectedCategories: [
         ...this.state.selectedCategories,
         {_id: searchCategory._id, title: searchCategory.title}

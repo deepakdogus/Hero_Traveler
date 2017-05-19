@@ -10,6 +10,9 @@ export default StyleSheet.create({
     top: 10,
     right: 10,
   },
+  // touch: {
+  //   borderRadius: 10,
+  // },
   trashCanContainer: {
     backgroundColor: Colors.coal,
     opacity: .8,
@@ -24,6 +27,7 @@ export default StyleSheet.create({
     borderBottomLeftRadius: 10,
   },
   icon: {
+    backgroundColor: Colors.clear,
     color: Colors.snow,
     textAlign: 'center',
     paddingTop: 8,

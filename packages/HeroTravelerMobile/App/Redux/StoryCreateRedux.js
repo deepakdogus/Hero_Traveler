@@ -8,19 +8,23 @@ const { Types, Creators } = createActions({
   registerDraft: null,
   registerDraftSuccess: ['draft'],
   registerDraftFailure: null,
+  editStory: ['storyId'],
+  editStorySuccess: ['story'],
+  editStoryFailure: ['error'],
   publishDraft: ['draft'],
   publishDraftSuccess: ['draft'],
   publishDraftFailure: ['error'],
   discardDraft: ['draftId'],
   discardDraftSuccess: ['draft'],
   discardDraftFailure: ['error'],
-  updateDraft: ['draftId', 'draft', 'resetAfterUpdate'],
-  updateDraftSuccess: ['draft', 'resetAfterUpdate'],
+  updateDraft: ['draftId', 'draft', 'updateStoryEntity'],
+  updateDraftSuccess: ['draft'],
   updateDraftFailure: ['error'],
   uploadCoverImage: ['draftId', 'path'],
   uploadCoverImageSuccess: ['draft'],
   uploadCoverImageFailure: ['error'],
-  updateCategories: ['categories']
+  updateCategories: ['categories'],
+  resetCreateStore: null
 })
 
 export const StoryCreateTypes = Types
@@ -32,7 +36,11 @@ export const INITIAL_STATE = Immutable({
   draft: null,
   publishing: false,
   error: null,
-  isPublished: false
+  isPublished: false,
+  fetchStatus: {
+    loaded: false,
+    fetching: false
+  }
 })
 
 /* ------------- Reducers ------------- */
@@ -65,11 +73,7 @@ export const registerDraftSuccess = (state, {draft}) => {
   return state.merge({draft})
 }
 
-export const updateDraft = (state, {draft, resetAfterUpdate}) => {
-  if (resetAfterUpdate) {
-    return INITIAL_STATE
-  }
-
+export const updateDraft = (state, {draft}) => {
   return state.merge({draft}, {deep: true})
 }
 
@@ -84,6 +88,37 @@ export const uploadCoverImageFailure = (state, {draft}) => {
 export const updateCategories = (state, {categories}) => {
   return state.setIn(['draft', 'categories'], categories)
 }
+
+export const editStory = (state) => {
+  return state.merge({
+    fetchStatus: {
+      loaded: false,
+      fetching: true
+    }
+  })
+}
+
+export const editStorySuccess = (state, {story}) => {
+  return state.merge({
+    fetchStatus: {
+      loaded: true,
+      fetching: false
+    },
+    draft: story
+  })
+}
+
+export const editStoryFailure = (state, {error}) => {
+  return state.merge({
+    fetchStatus: {
+      loaded: false,
+      fetching: false
+    },
+    error
+  })
+}
+
+
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -101,9 +136,13 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPLOAD_COVER_IMAGE_SUCCESS]: uploadCoverImageSuccess,
   [Types.UPLOAD_COVER_IMAGE_FAILURE]: uploadCoverImageFailure,
   [Types.UPDATE_CATEGORIES]: updateCategories,
+  [Types.EDIT_STORY]: editStory,
+  [Types.EDIT_STORY_SUCCESS]: editStorySuccess,
+  [Types.EDIT_STORY_FAILURE]: editStoryFailure,
+  [Types.RESET_CREATE_STORE]: reset
 })
 
-export const hasDraft = (state) => _.get(state.draft, 'id') ? true : false
+export const hasDraft = (state) => !!_.get(state.draft, 'id')
 export const isCreated = (state) => state.isPublished
 export const isPublishing = (state) => state.publishing
 export const getDraft = (state) => {

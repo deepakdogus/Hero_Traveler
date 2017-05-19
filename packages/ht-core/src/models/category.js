@@ -75,6 +75,6 @@ CategorySchema.pre('save', function(next) {
 })
 
 CategorySchema.plugin(slug, {truncate: 50})
-CategorySchema.plugin(softDelete)
+CategorySchema.plugin(softDelete, {overrideMethods: true})
 
 export default mongoose.model(ModelName, CategorySchema)

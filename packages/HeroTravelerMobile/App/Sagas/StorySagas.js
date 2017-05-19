@@ -3,7 +3,7 @@ import { call, put, select } from 'redux-saga/effects'
 import StoryActions from '../Redux/Entities/Stories'
 import UserActions, {isInitialAppDataLoaded, isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
 import CategoryActions from '../Redux/Entities/Categories'
-import StoryCreateActions, {getDraft} from '../Redux/StoryCreateRedux'
+import StoryCreateActions from '../Redux/StoryCreateRedux'
 
 const hasInitialAppDataLoaded = ({entities}, userId) => isInitialAppDataLoaded(entities.users, userId)
 const isStoryLikedSelector = ({entities}, userId, storyId) => isStoryLiked(entities.users, userId, storyId)
@@ -118,11 +118,14 @@ export function * discardDraft (api, action) {
 }
 
 export function * updateDraft (api, action) {
-  const {draftId, draft, resetAfterUpdate} = action
+  const {draftId, draft, updateStoryEntity} = action
   const response = yield call(api.updateDraft, draftId, draft)
   if (response.ok) {
-    const {data: draft} = response
-    yield put(StoryCreateActions.updateDraftSuccess(draft, resetAfterUpdate))
+    const {entities, result} = response.data
+    if (updateStoryEntity) {
+      yield put(StoryActions.receiveStories(entities.stories))
+    }
+    yield put(StoryCreateActions.updateDraftSuccess(entities.stories[result]))
   } else {
     yield put(StoryCreateActions.updateDraftFailure(new Error('Failed to update draft')))
   }
@@ -197,5 +200,21 @@ export function * getBookmarks(api) {
     ]
   } else {
     yield put(StoryActions.getBookmarksFailure(new Error('Failed to get bookmarks')))
+  }
+}
+
+export function * loadStory(api, {storyId}) {
+  const response = yield call(
+    api.getStory,
+    storyId
+  )
+
+  console.log('loadStory', response.data)
+
+  if (response.ok) {
+    const {entities, result} = response.data
+    yield put(StoryCreateActions.editStorySuccess(entities.stories[result]))
+  } else {
+    yield put(StoryCreateActions.editStoryFailure(new Error('Failed to load story')))
   }
 }

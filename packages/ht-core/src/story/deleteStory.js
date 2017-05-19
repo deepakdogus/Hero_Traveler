@@ -1,5 +1,5 @@
 import {Story} from '../models'
 
-export default function deleteStory (draftId) {
-  return Story.delete({_id: draftId})
+export default function deleteStory (storyId) {
+  return Story.delete({_id: storyId})
 }

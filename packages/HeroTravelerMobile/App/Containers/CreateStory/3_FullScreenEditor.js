@@ -3,10 +3,8 @@ import _ from 'lodash'
 import {
   View
 } from 'react-native'
-import { Field, reduxForm, formValueSelector } from 'redux-form'
 import {Actions as NavActions} from 'react-native-router-flux'
 import { connect } from 'react-redux'
-import R from 'ramda'
 
 import StoryEditActions from '../../Redux/StoryCreateRedux'
 import Editor from '../../Components/Editor'
@@ -30,7 +28,11 @@ class FullScreenEditor extends React.Component {
 
   _onRight = () => {
     this.editor.getContentHtml().then(storyContent => {
-      NavActions.createStory_details({storyContent})
+      if (this.props.story.content !== storyContent) {
+        const story = {...this.props.story, content: storyContent}
+        this.props.update(this.props.story.id, story)
+      }
+      NavActions.createStory_details()
     })
   }
 
@@ -41,7 +43,7 @@ class FullScreenEditor extends React.Component {
           title='Content'
           rightTitle='Next'
           onRight={this._onRight}
-          leftTitle='Cancel'
+          leftTitle='Back'
           onLeft={this._onLeft}
         />
         <Editor
@@ -88,31 +90,16 @@ class FullScreenEditor extends React.Component {
   }
 }
 
-const selector = formValueSelector('createStory')
-export default R.compose(
-  connect(state => {
-    return {
-      accessToken: _.find(state.session.tokens, {type: 'access'}).value,
-      story: {
-        id: _.get(state.storyCreate.draft, 'id'),
-      }
+export default connect(state => {
+  return {
+    accessToken: _.find(state.session.tokens, {type: 'access'}).value,
+    story: {
+      ...state.storyCreate.draft
     }
-  }, (dispatch) => {
-    return {
-      // update: (id, attrs) => {
-      //   dispatch(
-      //     StoryEditActions.updateDraft(id, attrs)
-      //   )
-      // }
-    }
-  }),
-  reduxForm({
-    form: 'createStory',
-    destroyOnUnmount: false,
-    keepDirtyOnReinitialize: true,
-    enableReinitialize: true,
-    initialValues: {
-      storyContent: ''
-    }
-  })
-)(FullScreenEditor)
+  }
+}, (dispatch) => {
+  return {
+    update: (id, attrs) =>
+      dispatch(StoryEditActions.updateDraft(id, attrs)),
+  }
+})(FullScreenEditor)

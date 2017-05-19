@@ -56,6 +56,18 @@ export default class StoryPreview extends Component {
     )
   }
 
+  _touchEdit = () => {
+    if (this.props.touchEdit) {
+      this.props.touchEdit(this.props.story.id)
+    }
+  }
+
+  _touchTrash = () => {
+    if (this.props.touchTrash) {
+      this.props.touchTrash(this.props.story.id)
+    }
+  }
+
   render () {
     const { story, user } = this.props
     const {
@@ -83,7 +95,7 @@ export default class StoryPreview extends Component {
         <View style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}>
         <View style={styles.contentContainer}>
           {this.props.forProfile && this.props.editable &&
-            <TrashCan touchTrash={this.props.touchTrash} touchEdit={this.props.touchEdit} />
+            <TrashCan touchTrash={this._touchTrash} touchEdit={this._touchEdit} />
           }
           <StoryCover
             autoPlayVideo={this.props.autoPlayVideo}

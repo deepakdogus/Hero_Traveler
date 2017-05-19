@@ -59,7 +59,7 @@ class MediaSelectorScreen extends React.Component {
       seen: true,
     })
     this.props.completeTooltip(tooltips)
-  }  
+  }
 
     renderPhotoTooltip() {
     return (
@@ -94,11 +94,11 @@ class MediaSelectorScreen extends React.Component {
             height: 0,
             width: 0,
             borderLeftWidth: 6,
-            borderLeftColor: 'transparent',            
+            borderLeftColor: 'transparent',
             borderRightWidth: 6,
             borderRightColor: 'transparent',
             borderTopWidth: 6,
-            borderTopColor: 'white',                      
+            borderTopColor: 'white',
           }}>
           </View>
       </TouchableOpacity>
@@ -125,7 +125,7 @@ class MediaSelectorScreen extends React.Component {
             height: 0,
             width: 0,
             borderLeftWidth: 6,
-            borderLeftColor: 'transparent',            
+            borderLeftColor: 'transparent',
             borderRightWidth: 6,
             borderRightColor: 'transparent',
             borderBottomWidth: 6,
@@ -133,7 +133,7 @@ class MediaSelectorScreen extends React.Component {
             position: 'relative',
             left: 42,
           }}>
-          </View>      
+          </View>
           <View style={{
             height: 38,
             width: 124,
@@ -170,9 +170,8 @@ class MediaSelectorScreen extends React.Component {
         TooltipTypes.STORY_PHOTO_NEXT,
         this.props.user.introTooltips
       )
-    }    
+    }
 
-    console.log("this.props in MediaSelectorScreen: ", this.props)
     if (this.state.captureOpen && !this.state.media) {
       content = (
         <PhotoTaker
@@ -289,7 +288,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips}))    
+    completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips}))
   }
 }
 

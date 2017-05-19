@@ -33,9 +33,7 @@ export default function uploadDraftMedia(req, res, next) {
   .then(image => {
     // wrapping coverImage with data object to have consistent update calls
     return StoryDraft.update(draftId, {
-      data: {
-        coverImage: image._id
-      }
+      coverImage: image._id
     })
   })
   .then(() => {

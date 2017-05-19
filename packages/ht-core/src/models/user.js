@@ -260,6 +260,6 @@ UserSchema.plugin(uniqueValidator, {
   message: '{PATH} already taken'
 })
 UserSchema.plugin(mongooseHidden)
-UserSchema.plugin(softDelete)
+UserSchema.plugin(softDelete, {overrideMethods: true})
 
 export default mongoose.model(ModelName, UserSchema)

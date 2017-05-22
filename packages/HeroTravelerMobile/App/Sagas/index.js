@@ -61,7 +61,7 @@ import {
   likeStory,
   bookmarkStory,
   getBookmarks,
-  uploadCoverImage, loadStory, resetCreateStore,
+  uploadCoverImage, loadStory, resetCreateStore, loadDrafts, deleteStory,
 } from './StorySagas'
 
 /* ------------- API ------------- */
@@ -132,6 +132,8 @@ export default function * root () {
     takeLatest(StoryTypes.STORY_LIKE, likeStory, heroAPI),
     takeLatest(StoryTypes.STORY_BOOKMARK, bookmarkStory, heroAPI),
     takeLatest(CategoryTypes.LOAD_CATEGORIES_REQUEST, getCategories, heroAPI),
+    takeLatest(StoryTypes.LOAD_DRAFTS, loadDrafts, heroAPI),
+    takeLatest(StoryTypes.DELETE_STORY, deleteStory, heroAPI),
     // takeLatest(StoryTypes.GET_BOOKMARKS, getBookmarks, heroAPI),
 
     // Users

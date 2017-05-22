@@ -5,6 +5,7 @@ export default function findStories(query) {
       ...query,
       draft: false
     })
+    .sort({createdAt: -1})
     .populate('author author.profile.avatar author.profile.cover')
     .populate('categories')
     .populate('coverImage')

@@ -128,7 +128,6 @@ class StoryCoverScreen extends Component {
 
   _onLeft = () => {
     const isDraft = this.props.story.draft === true
-    console.log(isDraft)
     const title = isDraft ? 'Cancel Draft' : 'Cancel Edits'
     const message = isDraft ? 'Do you want to save this draft?' : 'Do you want to save these edits?'
 

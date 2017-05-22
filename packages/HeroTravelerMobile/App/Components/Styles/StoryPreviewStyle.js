@@ -26,12 +26,15 @@ export default StyleSheet.create({
   },
   divider: {
     height: 1,
-    width: 300,
+    // width: 300,
     backgroundColor: "#fff",
     opacity: 0.5
   },
+  contentWrapper: {
+    flexDirection: 'column',
+    justifyContent: 'flex-end'
+  },
   detailContainer: {
-    width: 300,
     marginTop: 10,
     flexDirection: "row",
     justifyContent: "space-between"
@@ -61,5 +64,13 @@ export default StyleSheet.create({
   tagline: {
     ...Fonts.style.h1,
     color: Colors.steel
+  },
+  readMore: {
+    marginTop: Metrics.baseMargin,
+  },
+  readMoreText: {
+    textAlign: 'center',
+    fontFamily: Fonts.type.montserrat,
+    color: Colors.white
   }
 })

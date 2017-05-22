@@ -20,6 +20,7 @@ export default function uploadDraftMedia(req, res, next) {
   return Models.Image.create({
     user: userId,
     altText: file.originalname,
+    purpose: 'cover',
     original: {
       filename: file.originalname,
       path: file.key,
@@ -31,12 +32,8 @@ export default function uploadDraftMedia(req, res, next) {
     }
   })
   .then(image => {
-    // wrapping coverImage with data object to have consistent update calls
     return StoryDraft.update(draftId, {
       coverImage: image._id
     })
-  })
-  .then(() => {
-    return StoryDraft.get(draftId)
   })
 }

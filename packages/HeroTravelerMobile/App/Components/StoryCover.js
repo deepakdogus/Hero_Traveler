@@ -3,10 +3,10 @@ import {
   Image,
   StyleSheet,
   TouchableWithoutFeedback,
-  Animated,
   View
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 import Video, {MuteButton, PlayButton} from './Video'
 import getImageUrl from '../Lib/getImageUrl'
@@ -17,7 +17,7 @@ import getVideoUrl from '../Lib/getVideoUrl'
 export default class StoryCover extends Component {
 
   static propTypes = {
-    cover: PropTypes.object.isRequired,
+    // cover: PropTypes.object.isRequired,
     coverType: PropTypes.oneOf(['image', 'video']).isRequired,
     onPress: PropTypes.func,
     autoPlayVideo: PropTypes.bool.isRequired,
@@ -39,8 +39,12 @@ export default class StoryCover extends Component {
     }
   }
 
-  isVideo() {
-    return this.props.coverType === 'video'
+  hasVideo() {
+    return this.props.coverType === 'video' && !! this.props.cover
+  }
+
+  hasImage() {
+    return this.props.coverType === 'image' && !! this.props.cover
   }
 
   renderImage() {
@@ -101,27 +105,13 @@ export default class StoryCover extends Component {
           onPress={() => this.player.toggle()}
           isPlaying={this.state.isPlaying}
           videoFadeAnim={this.player && this.player.getAnimationState()}
-          style={{
-            position: 'absolute',
-            width: 100,
-            height: 100,
-            top: '50%',
-            left: '50%',
-            marginTop: -50,
-            marginLeft: -50
-          }}
+          style={styles.playButton}
         />}
         {this.props.allowVideoPlay && this.state.isPlaying &&
           <MuteButton
             onPress={() => this.player.toggleMute()}
             isMuted={this.state.isMuted}
-            style={{
-              position: 'absolute',
-              width: 40,
-              height: 40,
-              top: Metrics.section,
-              right: Metrics.section,
-            }}
+            style={styles.muteButton}
           />
         }
       </View>
@@ -131,7 +121,19 @@ export default class StoryCover extends Component {
   render() {
     return (
       <View style={[styles.root, this.props.style]}>
-        {this.isVideo() ? this.renderVideo() : this.renderImage()}
+        {this.hasVideo() && this.renderVideo()}
+        {this.hasImage() && this.renderImage()}
+        {!this.props.cover &&
+          <TouchableWithoutFeedback onPress={this.props.onPress}>
+            <View style={styles.noCover}>
+              <Icon
+                name='image'
+                size={60}
+                style={styles.noCoverIcon}
+              />
+            </View>
+          </TouchableWithoutFeedback>
+        }
       </View>
     )
   }
@@ -161,4 +163,31 @@ const styles = StyleSheet.create({
     paddingHorizontal: Metrics.doubleBaseMargin,
     paddingVertical: Metrics.doubleBaseMargin
   },
+  playButton: {
+    position: 'absolute',
+    width: 100,
+    height: 100,
+    top: '50%',
+    left: '50%',
+    marginTop: -50,
+    marginLeft: -50
+  },
+  muteButton: {
+    position: 'absolute',
+    width: 40,
+    height: 40,
+    top: Metrics.section,
+    right: Metrics.section,
+  },
+  noCover: {
+    flex: 1,
+    backgroundColor: Colors.backgroundDark,
+    justifyContent: 'center',
+    alignItems: 'center',
+
+  },
+  noCoverIcon: {
+    color: Colors.lightGreyAreas
+
+  }
 })

@@ -28,18 +28,24 @@ async function incCounts(catIds) {
   return await Promise.all(asyncCalls)
 }
 
-export default async function createStory(storyData) {
-  const attrs = {...storyData, draft: false}
-
-  // Separate the new categories (text string) from the existing
-  // categories (_ids)
-  const newCategoryTitles = _.filter(attrs.categories, c => !_.has(c, '_id'))
-  const existingCategories = _.filter(attrs.categories, c => _.has(c, '_id'))
+// Separate the new categories (text string) from the existing
+// categories (_ids)
+export async function parseAndInsertStoryCategories(categories) {
+  const newCategoryTitles = _.filter(categories, c => !_.has(c, '_id'))
+  const existingCategories = _.filter(categories, c => _.has(c, '_id'))
   const newCategories = await createCategories(newCategoryTitles)
-  attrs.categories = _.map(existingCategories.concat(newCategories), c => {
+
+  return _.map(existingCategories.concat(newCategories), c => {
     return {_id: c._id}
   })
-  let newStory = await updateDraft(attrs.id, attrs)
+}
+
+export default async function createStory(storyData) {
+  const newStory = await updateDraft(storyData.id, {
+    ...storyData,
+    draft: false,
+    categories: await parseAndInsertStoryCategories(storyData.categories)
+  })
 
   // make a query for the story with just the fields
   // we want for the search index

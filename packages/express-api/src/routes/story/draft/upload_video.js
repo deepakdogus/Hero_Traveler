@@ -32,7 +32,4 @@ export default function uploadDraftMedia(req, res, next) {
       coverVideo: video._id
     })
   })
-  .then(() => {
-    return StoryDraft.get(draftId)
-  })
 }

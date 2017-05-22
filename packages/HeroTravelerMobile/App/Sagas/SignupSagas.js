@@ -42,7 +42,6 @@ export function * signupFacebook(api, action) {
 
   if (response.ok) {
     const {user, tokens, wasSignedUp} = response.data
-    console.log('user', response.data)
     const accessToken = _.find(tokens, {type: 'access'})
     yield call(api.setAuth, accessToken.value)
     yield [

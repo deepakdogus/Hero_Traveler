@@ -33,7 +33,7 @@ const create = () => {
       'client-id': 'xzy',
       'Cache-Control': 'no-cache'
     },
-    timeout: 10000
+    timeout: 15000
   })
 
   // Wrap api's addMonitor to allow the calling code to attach
@@ -235,10 +235,11 @@ const create = () => {
 
   const getDrafts = () => {
     return api.get(`story/draft`)
-  }
-
-  const updateStoryCover = (story) => {
-    return api.put(`story/${story.id}/cover`)
+      .then(response => {
+        return  Object.assign({}, response, {
+          data: normalize(response.data, [Story])
+        })
+      })
   }
 
   const getCategories = () => {
@@ -335,36 +336,45 @@ const create = () => {
   const uploadCoverImage = (draftId, pathToFile) => {
     const data = new FormData()
     data.append('image', pathToFile)
-    return api.put(`story/draft/${draftId}/cover-image`, data)
+    return api.put(`story/draft/${draftId}/cover-image`, data, {
+      timeout: 45 * 1000
+    })
   }
 
   const uploadCoverVideo = (draftId, pathToFile) => {
     const data = new FormData()
     data.append('video', pathToFile)
-    return api.put(`story/draft/${draftId}/cover-video`, data)
+    return api.put(`story/draft/${draftId}/cover-video`, data, {
+      timeout: 120 * 1000
+    })
   }
 
   const uploadAvatarImage = (userId, pathToFile) => {
     const data = new FormData()
     data.append('image', pathToFile)
-    return api.put(`user/${userId}/avatar`, data)
+    return api.put(`user/${userId}/avatar`, data, {
+      timeout: 45 * 1000
+    })
   }
   const uploadUserCoverImage = (userId, pathToFile) => {
     const data = new FormData()
     data.append('image', pathToFile)
-    return api.put(`user/${userId}/cover`, data)
+    return api.put(`user/${userId}/cover`, data, {
+      timeout: 45 * 1000
+    })
   }
 
   const uploadStoryImage = (draftId, pathToFile) => {
     const data = new FormData()
     data.append('image', pathToFile)
-    return api.put(`story/draft/${draftId}/image`, data)
+    return api.put(`story/draft/${draftId}/image`, data, {
+      timeout: 45 * 1000
+    })
   }
 
   const getActivity = () => {
     return api.get(`user/activity`)
       .then(response => {
-        console.log('api normalized activities', normalize(response.data, [Activity]))
         return {
           ...response,
           data: normalize(response.data, [Activity])

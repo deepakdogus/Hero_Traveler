@@ -14,13 +14,18 @@ const { Types, Creators } = createActions({
   fromCategoryRequest: ['categoryId', 'storyType'],
   fromCategorySuccess: ['categoryId', 'categoryStoriesById'],
   fromCategoryFailure: ['error'],
+  loadDrafts: null,
+  loadDraftsSuccess: ['draftsById'],
+  loadDraftsFailure: ['error'],
   toggleLike: ['storyId', 'wasLiked'],
   storyLike: ['userId', 'storyId'],
   // storyLikeFailure: ['storyId', 'wasLiked'],
   toggleBookmark: ['storyId', 'wasLiked'],
   storyBookmark: ['userId', 'storyId'],
   // storyBookmarkFailure: ['storyId', 'wasLiked'],
-  receiveStories: ['stories']
+  receiveStories: ['stories'],
+  deleteStory: ['userId', 'storyId'],
+  deleteStorySuccess: ['storyId'],
 })
 
 export const StoryTypes = Types
@@ -42,6 +47,11 @@ export const INITIAL_STATE = Immutable({
   userStoriesFetchStatus: initialFetchStatus(),
   userBookmarksFetchStatus: initialFetchStatus(),
   error: null,
+  drafts: {
+    error: null,
+    fetchStatus: initialFetchStatus(),
+    byId: []
+  }
 })
 
 /* ------------- Reducers ------------- */
@@ -172,6 +182,77 @@ export const updateEntities = (state, {stories = {}}) => {
   return state.merge({entities: stories}, {deep: true})
 }
 
+export const loadDrafts = (state) => {
+  return state.merge({
+    drafts: {
+      error: null,
+      fetchStatus: {
+        fetching: true,
+        loaded: false
+      },
+      byId: []
+    }
+  })
+}
+
+export const loadDraftsSuccess = (state, {draftsById}) => {
+  return state.merge({
+    drafts: {
+      fetchStatus: {
+        fetching: false,
+        loaded: true
+      },
+      byId: draftsById
+    }
+  })
+}
+
+export const loadDraftsFailure = (state, {error}) => {
+  return state.merge({
+    drafts: {
+      error,
+      fetchStatus: {
+        fetching: false,
+        loaded: false
+      },
+      byId: []
+    }
+  })
+}
+
+// export const deleteStory = (state, {userId, storyId}) => {
+//   const story = state.entities[storyId]
+//   let newState = state
+//
+//   if (story.draft) {
+//     const path = ['drafts', 'byId']
+//     newState = state.setIn(path, _.without(state.getIn(path, storyId)))
+//   } else {
+//     const path = ['storiesByUserAndId', userId, 'byId']
+//     newState = state.setIn(path, _.without(state.getIn(path, storyId)))
+//   }
+//
+//   return newState
+//     .setIn(['entities'], state.entities.without(storyId))
+// }
+
+export const deleteStory = (state, {userId, storyId}) => {
+  const story = state.entities[storyId]
+
+  if (story.draft) {
+    const path = ['drafts', 'byId']
+    return state.setIn(path, _.without(state.getIn(path, storyId)))
+  } else {
+    const path = ['storiesByUserAndId', userId, 'byId']
+    return state.setIn(path, _.without(state.getIn(path, storyId)))
+  }
+}
+
+export const deleteStorySuccess = (state, {storyId}) => {
+  return state
+    .setIn(['entities'], state.entities.without(storyId))
+}
+
 /* ------------- Selectors ------------- */
 
 export const getByCategory = (state, categoryId) => {
@@ -206,9 +287,12 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.FROM_CATEGORY_REQUEST]: categoryRequest,
   [Types.FROM_CATEGORY_SUCCESS]: categorySuccess,
   [Types.FROM_CATEGORY_FAILURE]: categoryFailure,
+  [Types.LOAD_DRAFTS]: loadDrafts,
+  [Types.LOAD_DRAFTS_SUCCESS]: loadDraftsSuccess,
+  [Types.LOAD_DRAFTS_FAILURE]: loadDraftsFailure,
   [Types.TOGGLE_LIKE]: storyLike,
-  // [Types.STORY_LIKE_FAILURE]: storyLikeFailure,
   [Types.TOGGLE_BOOKMARK]: storyBookmark,
-  // [Types.STORY_BOOKMARK_FAILURE]: storyBookmarkFailure,
   [Types.RECEIVE_STORIES]: updateEntities,
+  [Types.DELETE_STORY]: deleteStory,
+  [Types.DELETE_STORY_SUCCESS]: deleteStorySuccess,
 })

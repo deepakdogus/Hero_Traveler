@@ -5,7 +5,7 @@ import {Actions as NavActions} from 'react-native-router-flux'
 
 import UserActions from '../../Redux/Entities/Users'
 import StoryActions, {getByUser, getUserFetchStatus} from '../../Redux/Entities/Stories'
-import ProfileView from '../../Components/ProfileView'
+import ProfileView, {TabTypes} from '../../Components/ProfileView'
 import getImageUrl from '../../Lib/getImageUrl'
 
 
@@ -20,22 +20,8 @@ class ProfileScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.props.attemptRefreshUser(this.props.user.id)
-    this.props.attemptGetUserStories(this.props.user.id)
-  }
-
-  _storiesTab = () => {
-    this.setState({selectTabIndex: 0})
-  }
-
-  _draftsTab = () => {
-    // this.props.loadDrafts()
-    this.setState({selectTabIndex: 1})
-  }
-
-  _bookmarksTab = () => {
-    // this.props.loadBookmarks()
-    this.setState({selectTabIndex: 2})
+    this.props.getUser(this.props.user.id)
+    this.props.getStories(this.props.user.id)
   }
 
   _touchEdit = (storyId) => {
@@ -43,14 +29,24 @@ class ProfileScreen extends React.Component {
     NavActions.createStory_cover({storyId, navigatedFromProfile: true})
   }
 
-  _touchTrash = () => {
-    alert('touch trash')
+  _touchTrash = (storyId) => {
+    alert('delete story')
+    // this.props.deleteStory(this.props.user.id, storyId)
+  }
+
+  _selectTab = (tab) => {
+    switch (tab) {
+      case TabTypes.stories:
+        return this.props.getStories(this.props.user.id)
+      case TabTypes.drafts:
+        return this.props.getDrafts(this.props.user.id)
+    }
   }
 
   render () {
     const {
       user,
-      stories,
+      draftsById,
       userStoriesById,
       userStoriesFetchStatus,
       accessToken,
@@ -59,7 +55,6 @@ class ProfileScreen extends React.Component {
 
     // Deals with the case that the user logs out
     // and this page is still mounted and rendering
-
     if (!user) {
       return null
     }
@@ -68,6 +63,8 @@ class ProfileScreen extends React.Component {
       <ProfileView
         user={user}
         stories={userStoriesById}
+        drafts={draftsById}
+        onSelectTab={this._selectTab}
         editable={true}
         touchTrash={this._touchTrash}
         touchEdit={this._touchEdit}
@@ -77,6 +74,7 @@ class ProfileScreen extends React.Component {
         accessToken={accessToken}
         profileImage={getImageUrl(user.profile.cover)}
         fetchStatus={userStoriesFetchStatus}
+        draftsFetchStatus={this.props.draftsFetchStatus}
         hasTabbar={!this.props.isEditing}
       />
     )
@@ -91,6 +89,8 @@ const mapStateToProps = (state) => {
     accessToken: _.find(state.session.tokens, {type: 'access'}).value,
     userStoriesFetchStatus: getUserFetchStatus(stories, userId),
     userStoriesById: getByUser(stories, userId),
+    draftsFetchStatus: stories.drafts.fetchStatus,
+    draftsById: stories.drafts.byId,
     // userBookmarksFetchStatus: {fetching: false, loaded: true}
     // // @TODO: draftFetchStatus
     // draftFetchStatus: {fetching: false, loaded: true},
@@ -100,10 +100,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    attemptGetUserStories: (userId) => dispatch(StoryActions.fromUserRequest(userId)),
+    getStories: (userId) => dispatch(StoryActions.fromUserRequest(userId)),
+    getDrafts: () => dispatch(StoryActions.loadDrafts()),
     updateUser: (attrs) => dispatch(UserActions.updateUser(attrs)),
-    attemptRefreshUser: (userId) => dispatch(UserActions.loadUser(userId)),
-    // loadDrafts: () => dispatch(StoryActions.getDrafts()),
+    getUser: (userId) => dispatch(UserActions.loadUser(userId)),
+    deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId))
     // @TODO fixme: .getBookmarks() not implemented?
     // loadBookmarks: () => dispatch(StoryActions.getBookmarks()),
   }

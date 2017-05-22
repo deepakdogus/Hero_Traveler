@@ -1,4 +1,5 @@
 import mongoose, {Schema} from 'mongoose'
+import _ from 'lodash'
 import softDelete from 'mongoose-delete'
 import slug from 'mongoose-slug-generator'
 import {ModelName as CategoryRef} from './category'
@@ -89,7 +90,7 @@ const StorySchema = new Schema({
 })
 
 StorySchema.pre('save', function(next) {
-  if (this.isModified('location')){
+  if (_.size(this.location) > 0 && this.isModified('location')){
     getGoogleLatLng(this.location)
     .then(latlng => {
       this.latitude = latlng.latitude

@@ -55,10 +55,10 @@ class StoryReadingScreen extends React.Component {
 
   onScroll(event) {
     const ypos = event.nativeEvent.contentOffset.y
-    if (ypos > 50 && !this.toolbarShown) {
+    if (ypos > 25 && !this.toolbarShown) {
       this.toolbarShown = true
       this.showToolbar()
-    } else if (ypos <= 50 && this.toolbarShown) {
+    } else if (ypos <= 25 && this.toolbarShown) {
       this.toolbarShown = false
       this.hideToolbar()
     }

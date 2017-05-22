@@ -47,16 +47,14 @@ class CreateStoryDetailScreen extends React.Component {
     this.state = {
       date: props.story.tripDate ? moment(props.story.tripDate).toDate() : new Date(),
       location: props.story.location || '',
-      categories: props.story.categories|| [],
+      categories: props.story.categories || [],
       type: props.story.type || 'eat'
     }
   }
 
   componentWillReceiveProps(newProps) {
     if (!newProps.publishing && newProps.isCreated) {
-      NavActions.tabbar({type: 'reset'})
-      NavActions.profile()
-      this.props.resetCreateStore()
+      this.next()
     }
   }
 
@@ -65,12 +63,21 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   _onDateChange = (date) => {
-    console.log('date', date)
     this.setState({date: date})
   }
 
-  _publish = () => {
-    this.props.publish({...this.props.story})
+  _onRight = () => {
+    this.props.publish({
+      ...this.props.story,
+      location: _.trim(this.state.location),
+      categories: this.state.categories,
+      date: this.state.date
+    })
+  }
+
+  _onLeft = () => {
+    this.saveDraft()
+    NavActions.pop()
   }
 
   _updateType = (type) => {
@@ -78,6 +85,12 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   _update = () => {
+    this.saveDraft()
+    this.next()
+  }
+
+  saveDraft = () => {
+
     const story = {
       ...this.props.story,
       location: _.trim(this.state.location),
@@ -85,15 +98,10 @@ class CreateStoryDetailScreen extends React.Component {
       date: this.state.date
     }
 
-    console.log('updating story', story.location)
-
     this.props.update(
       this.props.story.id,
-      story,
-      true
+      story
     )
-
-    this.next()
   }
 
   next() {
@@ -112,15 +120,23 @@ class CreateStoryDetailScreen extends React.Component {
     return this.props.story.draft || false
   }
 
+  isValid() {
+    if (!!_.trim(this.state.location) && this.state.categories.length > 0) {
+      return true
+    }
+
+    return false
+  }
+
   render () {
     return (
       <View style={{flex: 1, position: 'relative'}}>
           <NavBar
             title='Story Details'
             leftTitle='Back'
-            onLeft={() => NavActions.pop()}
+            onLeft={this._onLeft}
             rightTitle={this.isDraft() ? 'Publish' : 'Save'}
-            onRight={() => this._publish()}
+            onRight={() => this._onRight()}
           />
           <ScrollView style={styles.root}>
             <Text style={styles.title}>{this.props.story.title} Details </Text>
@@ -195,7 +211,7 @@ class CreateStoryDetailScreen extends React.Component {
                 />
                 <RoundedButton
                   style={styles.finishButton}
-                  onPress={this._publish}
+                  onPress={this._onRight}
                   text='Publish'
                 />
               </View>

@@ -104,7 +104,8 @@ export default class StoryPreview extends Component {
             coverType={story.coverImage ? 'image' : 'video'}
             onPress={this.props.onPress}
           >
-            <Text style={[styles.title, this.props.titleStyle]}>{title.toUpperCase()}</Text>
+            <View style={styles.contentWrapper}>
+            <Text style={[styles.title, this.props.titleStyle]}>{_.upperCase(title)}</Text>
             {!this.props.forProfile && <Text style={[styles.subtitle, this.props.subTitleStyle]}>{description}</Text>}
             {!this.props.forProfile && <View style={styles.divider} />}
             <View style={styles.detailContainer}>
@@ -134,6 +135,12 @@ export default class StoryPreview extends Component {
                     likes={formatCount(counts.likes)}
                     isLiked={this.props.isLiked}
                   />
+                </View>
+              }
+            </View>
+              {!this.props.forProfile &&
+                <View style={styles.readMore}>
+                  <Text style={styles.readMoreText}>READ <Icon name='angle-up' size={18} /></Text>
                 </View>
               }
             </View>

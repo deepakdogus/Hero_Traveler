@@ -34,6 +34,12 @@ import Metrics from '../Themes/Metrics'
 
 const api = HeroAPI.create()
 
+export const TabTypes = {
+  stories: 'TAB_STORIES',
+  drafts: 'TAB_DRAFTS',
+  bookmarks: 'TAB_BOOKMARKS',
+}
+
 const Tab = ({text, onPress, selected}) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -46,23 +52,26 @@ const Tab = ({text, onPress, selected}) => {
 
 // @TOOO make this smaller
 class ProfileView extends React.Component {
+
+  static defaultProps = {
+    selectedTab: TabTypes.stories,
+    onPressFollow: () => {},
+    onSelectTab: () => {}
+  }
+
   constructor(props) {
     super(props)
-
     this.state = {
+      selectedTab: this.props.selectedTab,
       imageMenuOpen: false,
       file: null,
       bioText: props.user.bio || '',
       usernameText: props.user.username || 'Enter a username'
     }
   }
+
   componentDidMount() {
     api.setAuth(this.props.accessToken)
-  }
-
-  static defaultProps = {
-    onPressFollow: () => {},
-    myFollowersById: []
   }
 
   _toggleImageMenu = () => {
@@ -78,22 +87,6 @@ class ProfileView extends React.Component {
     api.uploadUserCoverImage(this.props.user.id, pathAsFileObject(data))
     NavActions.pop()
   }
-
-  // _onLeft = () => {
-  //   Alert.alert(
-  //     'Cancel Draft',
-  //     'Do you want to save this draft?',
-  //     [{
-  //       text: 'Yes, save the draft',
-  //       onPress: () => NavActions.pop()
-  //     }, {
-  //       text: 'No, remove it',
-  //       onPress: () => {
-  //         NavActions.pop()u
-  //       }
-  //     }]
-  //   )
-  // }
 
   _onRight = () => {
     this.props.updateUser({bio: this.state.bioText, username: this.state.usernameText})
@@ -152,8 +145,25 @@ class ProfileView extends React.Component {
     )
   }
 
+  selectTab = (tab) => {
+    this.setState({selectedTab: tab}, () => {
+      this.props.onSelectTab(tab)
+    })
+  }
+
   render() {
-    const { user, stories, fetchStatus, editable, isEditing, profileImage } = this.props
+    const { user, stories, drafts, editable, isEditing, profileImage } = this.props
+    let fetchStatus
+
+    switch (this.state.selectedTab) {
+      case TabTypes.stories:
+        fetchStatus = this.props.fetchStatus
+        break
+      case TabTypes.drafts:
+        fetchStatus = this.props.draftsFetchStatus
+        break
+    }
+
     let cog
     let buttons
     let tabs
@@ -251,9 +261,18 @@ class ProfileView extends React.Component {
 
       tabs = (
         <View style={styles.tabnavEdit}>
-          <Tab selected={true} onPress={() => alert('stories')} text='STORIES' />
-          <Tab onPress={() => alert('drafts')} text='DRAFT' />
-          <Tab onPress={() => alert('bookmarks')} text='BOOKMARKS' />
+          <Tab
+            selected={TabTypes.stories === this.state.selectedTab}
+            onPress={() => this.selectTab(TabTypes.stories)}
+            text='STORIES' />
+          <Tab
+            selected={TabTypes.drafts === this.state.selectedTab}
+            onPress={() => this.selectTab(TabTypes.drafts)}
+            text='DRAFTS' />
+          <Tab
+            selected={TabTypes.bookmarks === this.state.selectedTab}
+            onPress={() => this.selectTab(TabTypes.bookmarks)}
+            text='BOOKMARKS' />
         </View>
       )
 
@@ -380,7 +399,7 @@ class ProfileView extends React.Component {
           }
           {!isEditing && <View style={styles.tabs}>
             {tabs}
-            {stories.length > 0 &&
+            {this.state.selectedTab === TabTypes.stories && stories.length > 0 &&
               <StoryList
                 storiesById={stories}
                 refreshing={false}
@@ -407,9 +426,41 @@ class ProfileView extends React.Component {
                 }}
               />
             }
-            {fetchStatus.loaded && stories.length === 0 &&
+            {this.state.selectedTab === TabTypes.drafts && drafts.length > 0 &&
+              <StoryList
+                storiesById={drafts}
+                refreshing={false}
+                renderStory={(storyId) => {
+                  // @TODO fix me magic number: 222
+                  return (
+                    <ConnectedStoryPreview
+                      forProfile={true}
+                      editable={editable}
+                      touchTrash={this.props.touchTrash}
+                      touchEdit={this.props.touchEdit}
+                      titleStyle={styles.storyTitleStyle}
+                      subtitleStyle={styles.subtitleStyle}
+                      allowVideoPlay={false}
+                      autoPlayVideo={false}
+                      showLike={this.props.showLike}
+                      key={storyId}
+                      height={this.props.hasTabbar ? 222 : 222 + Metrics.tabBarHeight}
+                      storyId={storyId}
+                      onPress={() => NavActions.story({storyId})}
+                      onPressLike={story => alert(`Story ${storyId} liked`)}
+                    />
+                  )
+                }}
+              />
+            }
+            {this.state.selectedTab === TabTypes.stories && fetchStatus.loaded && stories.length === 0 &&
               <View style={styles.noStories}>
-                <Text style={styles.noStoriesText}>{this.props.editable ? showTooltip ? '' : 'You have no stories published' : 'This user has no stories published'}</Text>
+                <Text style={styles.noStoriesText}>{this.props.editable ? showTooltip ? '' : 'There are no stories here' : 'This user has no stories published'}</Text>
+              </View>
+            }
+            {this.state.selectedTab === TabTypes.drafts && fetchStatus.loaded && drafts.length === 0 &&
+              <View style={styles.noStories}>
+                <Text style={styles.noStoriesText}>{this.props.editable ? showTooltip ? '' : 'There are no stories here' : 'This user has no stories published'}</Text>
               </View>
             }
             {!fetchStatus.loaded && fetchStatus.fetching &&

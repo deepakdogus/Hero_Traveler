@@ -14,9 +14,6 @@ import {cleanup as apnCleanup} from './apn'
 const app = express()
 const PORT = process.env.PORT || 3000
 
-console.log('process.env.NODE_ENV', process.env.NODE_ENV)
-console.log('process.env.MONGODB_URL', process.env.MONGODB_URL)
-
 // Middleware
 app.use(bodyParser.json({}))
 app.use(bodyParser.urlencoded({extended: false}))

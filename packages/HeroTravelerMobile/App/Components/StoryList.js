@@ -30,6 +30,7 @@ export default class StoryList extends React.Component {
   render () {
     return (
       <ListView
+        key={this.props.storiesById}
         dataSource={this.state.dataSource}
         pagingEnabled={true}
         renderRow={this.props.renderStory}

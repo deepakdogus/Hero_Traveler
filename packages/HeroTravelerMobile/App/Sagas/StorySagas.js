@@ -209,12 +209,31 @@ export function * loadStory(api, {storyId}) {
     storyId
   )
 
-  console.log('loadStory', response.data)
-
   if (response.ok) {
     const {entities, result} = response.data
     yield put(StoryCreateActions.editStorySuccess(entities.stories[result]))
   } else {
     yield put(StoryCreateActions.editStoryFailure(new Error('Failed to load story')))
   }
+}
+
+export function * loadDrafts(api) {
+  const response = yield call(
+    api.getDrafts
+  )
+
+  if (response.ok) {
+    const {entities, result} = response.data
+    yield [
+      put(StoryActions.receiveStories(entities.stories)),
+      put(StoryActions.receiveStories(entities.categories)),
+    ]
+    yield put(StoryActions.loadDraftsSuccess(result))
+  } else {
+    yield put(StoryActions.loadDraftsFailure(new Error('Failed to load drafts')))
+  }
+}
+
+export function * deleteStory(api, {storyId}) {
+  yield put(StoryActions.deleteStorySuccess(storyId))
 }

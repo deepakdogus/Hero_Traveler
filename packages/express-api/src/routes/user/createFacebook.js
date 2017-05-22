@@ -6,7 +6,6 @@ export default function createUserFromFacebook(req, res) {
   const {user, deviceId} = req.body
   return User.createFacebook(user, deviceId)
     .then(([user, wasSignedUp]) => {
-      console.log('createFacebook user', user)
       return User.getOrCreateTokens(user._id)
         .then(({user, tokens}) => {
           return {

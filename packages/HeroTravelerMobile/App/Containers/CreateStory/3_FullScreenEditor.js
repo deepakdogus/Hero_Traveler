@@ -23,16 +23,23 @@ class FullScreenEditor extends React.Component {
   }
 
   _onLeft = () => {
-    NavActions.pop()
+    this.saveContent().then(() => {
+      NavActions.pop()
+    })
   }
 
   _onRight = () => {
-    this.editor.getContentHtml().then(storyContent => {
+    this.saveContent().then(() => {
+      NavActions.createStory_details()
+    })
+  }
+
+  saveContent() {
+    return this.editor.getContentHtml().then(storyContent => {
       if (this.props.story.content !== storyContent) {
         const story = {...this.props.story, content: storyContent}
         this.props.update(this.props.story.id, story)
       }
-      NavActions.createStory_details()
     })
   }
 

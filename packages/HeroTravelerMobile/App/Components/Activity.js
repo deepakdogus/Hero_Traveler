@@ -67,7 +67,6 @@ export default class Activity extends Component {
 
   _onPress = () => {
     const {activityId, seen, onPress} = this.props
-    console.log('onPress', seen, activityId)
     if (onPress) {
       onPress(activityId, seen)
     }

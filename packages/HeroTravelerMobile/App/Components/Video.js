@@ -192,7 +192,7 @@ export default class VideoPlayer extends React.Component {
           paused={!this.state.videoPlaying}
           muted={this.state.muted}
           style={[styles.video]}
-          onEnd={this._onVideoEnd}
+          repeat={true}
           onError={(err) => console.log('Video Error: ', err)}
           resizeMode='cover'
           onLoad={this._onLoad}

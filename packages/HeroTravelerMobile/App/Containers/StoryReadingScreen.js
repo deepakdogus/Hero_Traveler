@@ -137,7 +137,7 @@ class StoryReadingScreen extends React.Component {
                 />
               </View>
             }
-            {story.location &&
+            {!!story.location &&
               <View style={styles.locationWrapper}>
                 <MapView
                   style={styles.locationMap}
@@ -167,7 +167,6 @@ class StoryReadingScreen extends React.Component {
         </ScrollView>
         <Animated.View style={[styles.toolBar, {height: this.state.toolbarHeight}]}>
           <StoryReadingToolbar
-
             likeCount={formatCount(story.counts.likes)}
             commentCount={formatCount(story.counts.comments)}
             boomarkCount={formatCount(story.counts.bookmarks)}

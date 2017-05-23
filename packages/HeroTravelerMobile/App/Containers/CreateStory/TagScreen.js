@@ -25,31 +25,24 @@ import Loader from '../../Components/Loader'
 const S = StyleSheet.create({
   root: {
     flex: 1,
-    marginTop: Metrics.baseMargin,
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   content: {
+    flex: 1,
+    justifyContent: 'flex-start',
     marginHorizontal: Metrics.doubleBaseMargin,
+    flexDirection: 'column'
   },
   doneBtn: {
     flex: 1,
+    height: Metrics.navBarHeight,
     flexDirection: 'row',
-    paddingVertical: Metrics.baseMargin,
     paddingHorizontal: Metrics.doubleBaseMargin,
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    alignItems: 'center'
   },
   doneBtnText: {
     fontFamily: Fonts.type.montserrat
-  },
-  textInput: {
-    flex: 1,
-    height: 30,
-  },
-  textInputWrapper: {
-    flex: .7,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.lightGreyAreas,
-    marginVertical: Metrics.baseMargin / 2
   },
   row: {
     padding: Metrics.baseMargin,
@@ -69,22 +62,32 @@ const S = StyleSheet.create({
     color: Colors.background
   },
   formWrapper: {
+    flex: .2,
     flexDirection: 'row',
-    flex: 1
+    position: 'relative',
   },
-  addBtn: {
-    flex: .3,
-    height: 30,
-    // marginLeft: Metrics.baseMargin,
+  textInput: {
+    flexGrow: 1,
+    marginRight: 60
+  },
+  textInputWrapper: {
+    flexGrow: .7,
+    height: 35,
     borderBottomWidth: 1,
     borderBottomColor: Colors.lightGreyAreas,
+    marginVertical: Metrics.baseMargin / 2
+  },
+  addBtn: {
+    width: 60,
+    height: 40,
+    position: 'absolute',
+    left: -60,
     flexDirection: 'row',
-    // justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 5,
   },
   addText: {
-    top: 2,
+    flex: 1,
+    textAlign: 'center'
   },
   spinner: {
     margin: Metrics.section
@@ -238,10 +241,12 @@ class TagScreen extends Component {
     })
 
     return (
-      <ScrollView style={S.root}>
-        <TouchableOpacity style={S.doneBtn} onPress={this._done}>
-          <Text style={S.doneBtnText}>Done</Text>
-        </TouchableOpacity>
+      <View style={S.root}>
+        <View style={{marginTop: Metrics.baseMargin, height: 40}}>
+          <TouchableOpacity style={S.doneBtn} onPress={this._done}>
+            <Text style={S.doneBtnText}>Done</Text>
+          </TouchableOpacity>
+        </View>
         <View style={S.content}>
           <View style={S.formWrapper}>
             <View style={S.textInputWrapper}>
@@ -257,12 +262,12 @@ class TagScreen extends Component {
             {!!this.state.text &&
               <TouchableOpacity onPress={() => this._addNewCategory()}>
                 <View style={S.addBtn}>
-                  <Text style={S.addText}>Add</Text>
+                  <Text style={S.addText} textAlign='center'><Icon name='plus'/>  Add</Text>
                 </View>
               </TouchableOpacity>
             }
           </View>
-
+          <ScrollView style={{flexGrow: 3}}>
           {/*
             Render the selected categories
           */}
@@ -314,9 +319,9 @@ class TagScreen extends Component {
               })}
             </View>
           }
-
+          </ScrollView>
         </View>
-      </ScrollView>
+      </View>
     )
   }
 }

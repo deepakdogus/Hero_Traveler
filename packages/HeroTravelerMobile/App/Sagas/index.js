@@ -64,6 +64,8 @@ import {
   uploadCoverImage, loadStory, resetCreateStore, loadDrafts, deleteStory,
 } from './StorySagas'
 
+import { changePassword } from './ChangePasswordSaga'
+
 /* ------------- API ------------- */
 
 const heroAPI = HeroAPI.create()
@@ -107,6 +109,8 @@ export default function * root () {
     takeLatest(LoginTypes.RESET_PASSWORD, resetPassword, heroAPI),
     takeLatest(LoginTypes.VERIFY_EMAIL, verifyEmail, heroAPI),
     takeLatest(SessionTypes.INITIALIZE_SESSION, loggedIn),
+
+    takeLatest(LoginTypes.CHANGE_PASSWORD, changePassword, heroAPI),
 
     takeLatest(SignupTypes.SIGNUP_EMAIL, signupEmail, heroAPI),
     takeLatest(SignupTypes.SIGNUP_FACEBOOK, signupFacebook, heroAPI),

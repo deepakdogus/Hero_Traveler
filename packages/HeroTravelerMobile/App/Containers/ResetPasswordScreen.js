@@ -35,8 +35,7 @@ class ResetPasswordScreen extends React.Component {
 
   static propTypes = {
     dispatch: PropTypes.func,
-    updatePassword: PropTypes.func,
-    token: PropTypes.string.isRequired
+    updatePassword: PropTypes.func
   }
 
   static contextTypes = {
@@ -52,15 +51,15 @@ class ResetPasswordScreen extends React.Component {
   }
 
   handleResetPassword = () => {
-    const {token} = this.props
+    const {userId} = this.props
     const {password, confirmPassword} = this.state
 
     if (password !== confirmPassword) {
       alert('Passwords must match')
       return
     }
-    this.props.resetPassword(
-      token,
+    this.props.changePassword(
+      userId,
       password
     )
     NavActions.pop()
@@ -128,13 +127,13 @@ class ResetPasswordScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    token: state.session.tokens[0].value
+    userId: state.session.userId
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    resetPassword: (token, password) => dispatch(LoginActions.resetPassword(token, password))
+    changePassword: (userId, password) => dispatch(LoginActions.changePassword(userId, password))
   }
 }
 

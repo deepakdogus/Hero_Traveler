@@ -86,7 +86,7 @@ class SettingsScreen extends React.Component {
           <List>
             <Row
               text='Change Password'
-              onPress={NavActions.resetPassword}
+              onPress={NavActions.changePassword}
             />
             <Row
               text='Notifications'

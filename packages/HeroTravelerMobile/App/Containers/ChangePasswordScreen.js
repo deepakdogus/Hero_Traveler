@@ -1,7 +1,7 @@
 import React from 'react'
+import _ from 'lodash'
 import {
   View,
-  TouchableOpacity,
   Text,
   TextInput
 } from 'react-native'
@@ -12,27 +12,36 @@ import { Field, reduxForm, formValueSelector } from 'redux-form'
 import RoundedButton from '../Components/RoundedButton'
 import Loader from '../Components/Loader'
 import { connect } from 'react-redux'
-import SessionActions, {hasAuthData} from '../Redux/SessionRedux'
 import {Colors} from '../Themes'
 import styles from './Styles/ChangePasswordScreenStyles'
+/* import LoginActions from '../Redux/LoginRedux'*/
+import HeroAPI from '../Services/HeroAPI'
+import LoginActions from '../Redux/LoginRedux'
 
-export default class ChangePasswordScreen extends React.Component {
+const api = HeroAPI.create()
+
+class ChangePasswordScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       currentText: '',
       newText: '',
-      updating: false,
-      validationError: ''
     }
-  }  
-
-  handleSubmit = () => {
-  if (this.state.newText.length < 8 || this.state.newText.length > 64) {
-    this.setState({validationError: 'password must be between 8 and 64 characters long'})
-    return
   }
-   return alert(this.state.newText); 
+
+  conponentDidMount (){
+    console.log('this.props.accessToken', this.props.accessToken)
+    api.setAuth(this.props.accessToken)
+  }
+
+  handleSubmit = (userId, password) => {
+    if (this.state.newText.length < 8 || this.state.newText.length > 64) {
+      this.setState({validationError: 'password must be between 8 and 64 characters long'})
+      return
+    }
+    console.log('this.props.accessToken', this.props.accessToken)
+    console.log('function called with: ', this.props.userId, this.state.newText)
+    return api.changePassword(this.props.userId, this.state.newText)
   }
 
   render () {
@@ -97,20 +106,18 @@ export default class ChangePasswordScreen extends React.Component {
   }
 }
 
-// const mapStateToProps = (state) => {
-//   return {
-//     user: state.entities.users.entities[state.session.userId],
-//     isLoggedIn: !state.session.isLoggedOut,
-//     loggingOut: state.session.isLoggingOut,
-//     tokens: state.session.tokens
-//   }
-// }
+const mapStateToProps = (state) => {
+  console.log('state', state)
+  return {
+    userId: state.session.userId,
+    accessToken: _.find(state.session.tokens, {type: 'access'}).value,
+  }
+}
 
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     logout: (tokens) => dispatch(SessionActions.logout(tokens)),
-//     resetStore: () => dispatch(SessionActions.resetRootStore())
-//   }
-// }
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changePassword: (userId, password) => dispatch(LoginActions.changePassword(userId, password))
+  }
+}
 
-// export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(ChangePasswordScreen)

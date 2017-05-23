@@ -65,7 +65,6 @@ export const setIsLoggedIn = (state, {isLoggedIn}) => state.merge({isLoggedIn})
 
 // attempting to change password from the settings screen rather than the "forgot password" link
 
-export const changePassword = (state) => state
 
 export const changePasswordSuccess = (state) => state
 
@@ -83,7 +82,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.RESET_PASSWORD_REQUEST]: requestReset,
   [Types.RESET_PASSWORD_REQUEST_SUCCESS]: successRequestReset,
   [Types.RESET_PASSWORD_REQUEST_FAILURE]: failureRequestReset,
-  [Types.CHANGE_PASSWORD]: changePassword,
   [Types.CHANGE_PASSWORD_SUCCESS]: changePasswordSuccess,
   [Types.CHANGE_PASSWORD_FAILURE]: changePasswordFailure,
   [Types.SET_IS_LOGGED_IN]: setIsLoggedIn,

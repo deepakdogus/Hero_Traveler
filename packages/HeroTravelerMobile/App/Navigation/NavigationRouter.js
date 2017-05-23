@@ -369,5 +369,5 @@ export default NavActions.create(
         direction='horizontal'
         hideNavBar={true}
       />
-    </Scene>
+      </Scene>
 )

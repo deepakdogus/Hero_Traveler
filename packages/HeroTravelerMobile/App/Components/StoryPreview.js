@@ -30,11 +30,13 @@ export default class StoryPreview extends Component {
     isLiked: PropTypes.bool,
     showLike: PropTypes.bool,
     autoPlayVideo: PropTypes.bool,
-    allowVideoPlay: PropTypes.bool
+    allowVideoPlay: PropTypes.bool,
+    showReadMessage: PropTypes.bool
   }
 
   static defaultProps = {
-    showLike: true
+    showLike: true,
+    showReadMessage: false
   }
 
   wrap(content) {
@@ -138,7 +140,7 @@ export default class StoryPreview extends Component {
                 </View>
               }
             </View>
-              {!this.props.forProfile &&
+              {this.props.showReadMessage &&
                 <View style={styles.readMore}>
                   <Text style={styles.readMoreText}>READ <Icon name='angle-up' size={18} /></Text>
                 </View>

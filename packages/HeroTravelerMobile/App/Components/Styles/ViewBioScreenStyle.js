@@ -1,59 +1,40 @@
 import { StyleSheet } from 'react-native'
-import { Colors, ApplicationStyles, Fonts } from '../../Themes/'
+import { Colors, ApplicationStyles, Fonts, Metrics } from '../../Themes/'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   scrollView: {
     flex: 1,
+    flexDirection: 'column'
     // paddingTop: Metrics.titlePadding
   },
-  column: {
-    flex: 1,
-    alignItems: "center"
-  },
   iconContainer: {
-    marginLeft: 30,
-    marginTop: 40
+    margin: Metrics.section
   },
   usernameContainer:{
-    marginTop: 60,
-    alignItems: "center",
+    // flex: 1,
+    // marginTop: 60,
+    alignItems: 'center'
   },
   username: {
     fontSize: 25,
     fontWeight: "bold",
-    fontFamily: Fonts.type.sourceSansPro
+    fontFamily: Fonts.type.sourceSansPro,
+    textAlign: 'center'
   },
   divider: {
     backgroundColor: 'black',
-    marginTop: 20,
+    marginTop: Metrics.section,
     width: "10%",
     height: 1
   },
   bioContainer: {
-    marginTop: 20,
-    width: "60%",
+    marginVertical: Metrics.section,
+    marginHorizontal: Metrics.doubleSection
   },
   bio: {
     fontSize: 14,
-    lineHeight: 1.5,
     color: Colors.coal,
     fontFamily: Fonts.type.sourceSansPro,
   },
-  // divider: {
-  //   height: 1,
-  //   width: 300,
-  //   backgroundColor: "#fff",
-  //   opacity: 0.5
-  // },
-  // detailContainer: {
-  //   width: 300,
-  //   marginTop: 10,
-  //   flexDirection: "row",
-  //   justifyContent: "space-between"
-  // },
-  // row: {
-  //   flexDirection: "row",
-  //   justifyContent: "space-between",
-  // },
 })

@@ -15,16 +15,15 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 const viewBioScreen = (props) => {
   const { username, bio } = props.user
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.iconContainer}>
         <TouchableOpacity onPress={() => NavActions.pop()}>
-          <Icon name='close' size={20}></Icon>
+          <Icon name='close' size={20} />
         </TouchableOpacity>
       </View>
       <View style={styles.usernameContainer}>
         <Text style={styles.username}>{username.toUpperCase()}</Text>
-        <View style={styles.divider}>
-        </View>
+        <View style={styles.divider} />
         <View style={styles.bioContainer}>
           <Text style={styles.bio}>{bio}</Text>
         </View>

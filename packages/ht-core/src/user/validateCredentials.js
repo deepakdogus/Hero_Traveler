@@ -1,8 +1,5 @@
 import Promise from 'bluebird'
-import bcrypt from 'bcrypt'
 import getUser from './getUser'
-
-const comparePassword = Promise.promisify(bcrypt.compare)
 
 export default function validateCredentials(username, password) {
   return getUser({username})

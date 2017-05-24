@@ -17,9 +17,6 @@ const { Types, Creators } = createActions({
   resetPasswordSuccess: null,
   resetPasswordFailure: ['error'],
   setIsLoggedIn: ['isLoggedIn'],
-  changePassword: ['userId, newPassword'],
-  changePasswordSuccess: null,
-  changePasswordFailure: ['error'],
   verifyEmail: ['token'],
   verifyEmailFailure: ['error'],
 })
@@ -63,13 +60,6 @@ export const failureRequestReset = (state) => state
 
 export const setIsLoggedIn = (state, {isLoggedIn}) => state.merge({isLoggedIn})
 
-// attempting to change password from the settings screen rather than the "forgot password" link
-
-
-export const changePasswordSuccess = (state) => state
-
-export const changePasswordFailure = (state) => state
-
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -82,8 +72,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.RESET_PASSWORD_REQUEST]: requestReset,
   [Types.RESET_PASSWORD_REQUEST_SUCCESS]: successRequestReset,
   [Types.RESET_PASSWORD_REQUEST_FAILURE]: failureRequestReset,
-  [Types.CHANGE_PASSWORD_SUCCESS]: changePasswordSuccess,
-  [Types.CHANGE_PASSWORD_FAILURE]: changePasswordFailure,
   [Types.SET_IS_LOGGED_IN]: setIsLoggedIn,
   [Types.VERIFY_EMAIL_FAILURE]: failure,
 })

@@ -52,7 +52,6 @@ export function * resumeSession (api) {
     select(currentUserTokens)
   ]
   const accessToken = _.find(tokens, {type: 'access'})
-
   yield call(api.setAuth, accessToken.value)
 
   const response = yield call(

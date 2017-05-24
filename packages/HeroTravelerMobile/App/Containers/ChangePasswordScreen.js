@@ -17,6 +17,7 @@ import styles from './Styles/ChangePasswordScreenStyles'
 /* import LoginActions from '../Redux/LoginRedux'*/
 import HeroAPI from '../Services/HeroAPI'
 import LoginActions from '../Redux/LoginRedux'
+import { Actions as NavigationActions } from 'react-native-router-flux'
 
 const api = HeroAPI.create()
 
@@ -29,19 +30,22 @@ class ChangePasswordScreen extends React.Component {
     }
   }
 
-  conponentDidMount (){
-    console.log('this.props.accessToken', this.props.accessToken)
-    api.setAuth(this.props.accessToken)
-  }
-
   handleSubmit = (userId, password) => {
     if (this.state.newText.length < 8 || this.state.newText.length > 64) {
       this.setState({validationError: 'password must be between 8 and 64 characters long'})
       return
     }
-    console.log('this.props.accessToken', this.props.accessToken)
-    console.log('function called with: ', this.props.userId, this.state.newText)
-    return api.changePassword(this.props.userId, this.state.newText)
+    return api.setAuth(this.props.accessToken)
+    .then(() => {
+      return api.changePassword(this.props.userId, this.state.currentText, this.state.newText)
+      .then((res) => {
+        if (!res.ok) this.setState({validationError: 'We were unable to reset your password. Please verify your old password is correct.'})
+        else {
+          NavigationActions.pop()
+          alert("Password changed!")
+        }
+      })
+    })
   }
 
   render () {
@@ -107,7 +111,6 @@ class ChangePasswordScreen extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log('state', state)
   return {
     userId: state.session.userId,
     accessToken: _.find(state.session.tokens, {type: 'access'}).value,

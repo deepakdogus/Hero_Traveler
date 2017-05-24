@@ -1,4 +1,6 @@
 import _ from 'lodash'
+import Promise from 'bluebird'
+import bcrypt from 'bcrypt'
 import randToken from 'rand-token'
 import uuid from 'uuid'
 import mongoose, {Schema} from 'mongoose'
@@ -15,6 +17,8 @@ import encryptPassword from '../utils/encryptPassword'
 export const ACCOUNT_TYPE_FACEBOOK = 'facebook'
 export const ACCOUNT_TYPE_TWITTER  = 'twitter'
 export const ACCOUNT_TYPE_EMAIL    = 'email_internal'
+
+const comparePassword = Promise.promisify(bcrypt.compare)
 
 const defaultNotificationTypes = [
   Constants.USER_NOTIFICATION_STORY_LIKE,
@@ -208,6 +212,16 @@ UserSchema.methods = {
       this.notificationTypes,
       Constants.USER_NOTIFICATION_STORY_LIKE
     )
+  },
+
+  comparePassword(password) {
+    return comparePassword(password, this.getInternalPassword())
+    .then(isPasswordCorrect => {
+      if (!isPasswordCorrect) {
+        return Promise.reject(new Error('Incorrect password'))
+      }
+      return this
+    })  
   },
 
   receivesCommentNotifications() {

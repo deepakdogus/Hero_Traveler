@@ -44,11 +44,14 @@ const create = () => {
   }
 
   const setAuth = (accessToken) => {
+    console.log("setAuth is being called with", accessToken)
+    console.log("api before setAuth is", api)
     api.setHeader('Authorization', `Bearer ${accessToken}`)
     return Promise.resolve()
   }
 
   const unsetAuth = () => {
+    console.log("unset auth is somehow being called")
     const newHeaders = Object.assign({}, api.headers)
     delete newHeaders.Authorization
     api.setHeaders(newHeaders)
@@ -146,6 +149,7 @@ const create = () => {
 
 
   const getMe = () => {
+    console.log("getme api is", api)
     return api.get('user')
       .then(response => {
         return Object.assign({}, response, {
@@ -386,11 +390,9 @@ const create = () => {
     return api.put(`user/activity/${activityId}`)
   }
 
-  const changePassword = (userId, newPassword) => {
-    api.put(`user/changePassword`, {userId, newPassword})
+  const changePassword = (userId, oldPassword, newPassword) => {
+    return api.put(`user/changePassword`, {userId, oldPassword, newPassword})
   }
-
-
 
   // ------
   // STEP 3

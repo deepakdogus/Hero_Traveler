@@ -1,18 +1,17 @@
 import {User} from '../models'
 
-export default function changePassword (userId, password) {
-  console.log('id', userId)
-  console.log('password', password)
+export default function changePassword (userId, oldPassword, newPassword) {
   return User.findById(userId)
-    .then((user) => {
-      if (!user) {
-        return Promise.reject(new Error('User Not Found!'))
-      }
-
-      return user.updatePassword(password)
-        .then(() => {
-          return Promise.resolve({ok: true})
-        })
+  .then((user) => {
+    if (!user) {
+      return Promise.reject(new Error('User Not Found!'))
+    }
+    return user.comparePassword(oldPassword)
+    .then(user => {
+      return user.updatePassword(newPassword)
     })
-    .catch(error => console.error('Error!', error))
+    .then(() => {
+      return Promise.resolve({ok: true})
+    })
+  })
 }

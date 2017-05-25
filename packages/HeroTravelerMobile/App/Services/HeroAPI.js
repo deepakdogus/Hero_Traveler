@@ -386,7 +386,9 @@ const create = () => {
     return api.put(`user/activity/${activityId}`)
   }
 
-
+  const changePassword = (userId, oldPassword, newPassword) => {
+    return api.put(`user/changePassword`, {userId, oldPassword, newPassword})
+  }
 
   // ------
   // STEP 3
@@ -447,6 +449,8 @@ const create = () => {
     getActivity,
     setActivityRead,
     deleteStory,
+    changePassword,
+
   }
 }
 

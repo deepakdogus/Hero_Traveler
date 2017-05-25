@@ -44,10 +44,10 @@ import ActivityScreen from '../Containers/Tabs/ActivityScreen'
 // Signup & login
 import LoginScreen from '../Containers/LoginScreen'
 import ResetPasswordRequestScreen from '../Containers/ResetPasswordRequestScreen'
+import ResetPasswordScreen from '../Containers/ResetPasswordScreen'
 import SignupScreen from '../Containers/Signup/SignupScreen'
 import SignupTopics from '../Containers/Signup/SignupTopics'
 import SignupSocial from '../Containers/Signup/SignupSocial'
-import ResetPasswordScreen from '../Containers/ResetPasswordScreen'
 import Colors from '../Themes/Colors'
 import {connect} from 'react-redux'
 import {Text, View} from 'react-native'
@@ -177,10 +177,6 @@ export default NavActions.create(
         component={ResetPasswordRequestScreen}
       />
       <Scene
-        key='resetPassword'
-        component={ResetPasswordScreen}
-      />
-      <Scene
         key='changePassword'
         component={ChangePasswordScreen}
         direction='horizontal'
@@ -227,6 +223,12 @@ export default NavActions.create(
         onLeft={() => NavActions.pop()}
         title='Privacy Policy'
         {...darkNavBarProps}
+      />
+      <Scene
+        key='resetPassword'
+        component={ResetPasswordScreen}
+        onLeft={() => NavActions.pop()}
+        title='Reset Password'
       />
       <Scene
         key='story'
@@ -367,5 +369,5 @@ export default NavActions.create(
         direction='horizontal'
         hideNavBar={true}
       />
-    </Scene>
+      </Scene>
 )

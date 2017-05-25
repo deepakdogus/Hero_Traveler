@@ -27,6 +27,7 @@ import threadCreateMessage from './threadCreateMessage'
 import updateDevice from './deviceUpdate'
 import removeDevice from './deviceRemove'
 import verifyEmail from './verifyEmail'
+import changePassword from './changePassword'
 
 const router = express.Router()
 
@@ -49,6 +50,11 @@ router.post('/resetPasswordRequest',
 router.put('/resetPassword',
   hasClientId,
   endpointWrapper(resetPassword)
+          )
+
+router.put('/changePassword',
+  hasValidOauth,
+  endpointWrapper(changePassword)
 )
 
 router.get(

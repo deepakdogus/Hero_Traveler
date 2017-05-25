@@ -55,10 +55,10 @@ class StoryReadingScreen extends React.Component {
 
   onScroll(event) {
     const ypos = event.nativeEvent.contentOffset.y
-    if (ypos > 25 && !this.toolbarShown) {
+    if (ypos > 35 && !this.toolbarShown) {
       this.toolbarShown = true
       this.showToolbar()
-    } else if (ypos <= 25 && this.toolbarShown) {
+    } else if (ypos <= 35 && this.toolbarShown) {
       this.toolbarShown = false
       this.hideToolbar()
     }
@@ -111,6 +111,7 @@ class StoryReadingScreen extends React.Component {
             storyId={story.id}
             autoPlayVideo={true}
             allowVideoPlay={true}
+            showReadMessage={true}
           />
           <View style={{flex: 1, marginBottom: Metrics.tabBarHeight}}>
             {!!story.content &&
@@ -147,7 +148,12 @@ class StoryReadingScreen extends React.Component {
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                   }}
-                />
+                >
+                  <MapView.Marker coordinate={{
+                    latitude: story.latitude,
+                    longitude: story.longitude
+                  }} />
+                </MapView>
                 <View style={{
                   flexDirection: 'row',
                   // alignItems: 'center',

@@ -102,6 +102,7 @@ class StoryCoverScreen extends Component {
             path={coverVideo}
             allowVideoPlay={false}
             autoPlayVideo={false}
+            showPlayButton={false}
           />
           {this.renderContent()}
         </View>
@@ -271,12 +272,24 @@ class StoryCoverScreen extends Component {
     return !this.state.coverImage
   }
 
+  hasNoVideo() {
+    return !this.state.coverVideo
+  }
+
+  hasNoCover() {
+    return this.hasNoPhoto() && this.hasNoVideo()
+  }
+
+  getIcon() {
+    return this.isPhotoType() ? 'camera' : 'video-camera'
+  }
+
   renderContent () {
     return (
       <KeyboardAvoidingView behavior='position'>
-        <View style={this.hasNoPhoto() ? styles.lightGreyAreasBG : null}>
-          {this.hasNoPhoto() && <View style={styles.spaceView} />}
-          {this.hasNoPhoto() &&
+        <View style={this.hasNoCover() ? styles.lightGreyAreasBG : null}>
+          {this.hasNoCover() && <View style={styles.spaceView} />}
+          {this.hasNoCover() &&
             <View style={[styles.spaceView, styles.addPhotoView]}>
               <TouchableOpacity
                 style={styles.addPhotoButton}
@@ -292,14 +305,14 @@ class StoryCoverScreen extends Component {
                   })
                 }}
               >
-                <Icon name={this.isPhotoType() ? 'camera' : 'video-camera'} size={40} color='gray' style={styles.cameraIcon} />
+                <Icon name={this.getIcon()} size={40} color='gray' style={styles.cameraIcon} />
                 <Text style={this.renderTextColor(styles.baseTextColor)}>
                   {this.isPhotoType() ? '+ ADD COVER PHOTO' : '+ ADD COVER VIDEO'}
                 </Text>
               </TouchableOpacity>
             </View>
           }
-          {!this.hasNoPhoto() && !this.state.imageMenuOpen &&
+          {!this.hasNoCover() && !this.state.imageMenuOpen &&
             <TouchableWithoutFeedback onPress={this._toggleImageMenu}>
               <View>
                 <View style={styles.spaceView} />
@@ -307,7 +320,7 @@ class StoryCoverScreen extends Component {
               </View>
             </TouchableWithoutFeedback>
           }
-          {!this.hasNoPhoto() && this.state.imageMenuOpen &&
+          {!this.hasNoCover() && this.state.imageMenuOpen &&
             <View>
               <TouchableWithoutFeedback onPress={this._toggleImageMenu}>
                 <View>
@@ -325,13 +338,15 @@ class StoryCoverScreen extends Component {
                         })
                       }
                       style={styles.iconButton}>
-                      <Icon name='camera' color={Colors.snow} size={30} />
+                      <Icon name={this.getIcon()} color={Colors.snow} size={30} />
                     </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => alert('crop')}
-                      style={styles.iconButton}>
-                      <Icon name='crop' color={Colors.snow} size={30} />
-                    </TouchableOpacity>
+                    {this.isPhotoType() &&
+                      <TouchableOpacity
+                        onPress={() => alert('crop')}
+                        style={styles.iconButton}>
+                        <Icon name='crop' color={Colors.snow} size={30} />
+                      </TouchableOpacity>
+                    }
                     <TouchableOpacity
                       onPress={() => this.setState({coverImage: null, coverVideo: null, imageMenuOpen: false})}
                       style={styles.iconButton}>

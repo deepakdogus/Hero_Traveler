@@ -4,7 +4,6 @@ import {
   Modal,
   Actions as NavActions
 } from 'react-native-router-flux'
-import Icon from 'react-native-vector-icons/FontAwesome'
 
 import LaunchScreen from '../Containers/LaunchScreen'
 import Styles from './Styles/NavigationContainerStyles'
@@ -12,6 +11,7 @@ import Styles from './Styles/NavigationContainerStyles'
 // Tabs
 import MyFeedScreen from '../Containers/Tabs/MyFeedScreen'
 import ExploreScreen from '../Containers/Tabs/ExploreScreen'
+import TabIcon from '../Components/Tab'
 // Profile tab
 import ProfileScreen from '../Containers/Tabs/ProfileScreen'
 import ReadOnlyProfileScreen from '../Containers/ReadOnlyProfileScreen'
@@ -51,60 +51,11 @@ import ResetPasswordScreen from '../Containers/ResetPasswordScreen'
 import Colors from '../Themes/Colors'
 import {connect} from 'react-redux'
 import {Text, View} from 'react-native'
-import NotificationBadge from '../Components/NotificationBadge'
 
 // https://github.com/aksonov/react-native-router-flux/blob/master/Example/Example.js#L52
 const getSceneStyle = (/* NavigationSceneRendererProps */ props, computedProps) => {
   return {}
 }
-
-class TabIcon extends React.Component {
-  getIconName(navKey) {
-    switch (navKey) {
-      case 'myFeed':
-        return 'home'
-      case 'activity':
-        return 'bolt'
-      case 'explore':
-        return 'search'
-      case 'createStory':
-       return 'plus'
-      case 'profile':
-        return 'user'
-      default:
-        return 'rocket'
-    }
-  }
-
-  render() {
-    return (
-      <View>
-        <Icon
-          name={this.getIconName(this.props.name)}
-          size={20}
-          color={'#666666'}
-        />
-        {this.props.name === 'activity' && this.props.notificationCount > 0 &&
-          <NotificationBadge count={this.props.notificationCount} />
-        }
-      </View>
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    notificationCount: __DEV__ ? 4 : 0
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-  }
-}
-
-TabIcon = connect(mapStateToProps, mapDispatchToProps)(TabIcon)
-
 
 const darkNavBarProps = {
   navigationBarStyle: Styles.navBar,

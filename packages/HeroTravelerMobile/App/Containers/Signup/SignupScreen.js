@@ -89,9 +89,9 @@ class SignupScreen extends React.Component {
   _signup = () => {
     if (!this.props.fetching) {
       this.props.attemptSignup(
-        this.props.fullName,
-        this.props.username,
-        this.props.email,
+        _.trim(this.props.fullName),
+        _.trim(this.props.username),
+        _.trim(this.props.email),
         this.props.password
       )
     }
@@ -155,7 +155,7 @@ class SignupScreen extends React.Component {
                 style={styles.submitButton}
                 onPress={handleSubmit(this._signup)}
               />
-              
+
 
               <TOS styles={[styles.section, styles.tos]} />
             </View>

@@ -112,7 +112,8 @@ const darkNavBarProps = {
   backButtonTextStyle: Styles.navText,
   leftButtonTextStyle: Styles.navText,
   rightButtonTextStyle: Styles.navText,
-  leftButtonIconStyle: Styles.navBarBack
+  leftButtonIconStyle: Styles.navBarBack,
+  rightButtonIconStyle: Styles.navBarBack
 }
 
 const clearNavBarProps = {
@@ -121,7 +122,8 @@ const clearNavBarProps = {
   backButtonTextStyle: Styles.navText,
   leftButtonTextStyle: Styles.navText,
   rightButtonTextStyle: Styles.navText,
-  leftButtonIconStyle: Styles.navBarBack
+  leftButtonIconStyle: Styles.navBarBack,
+  rightButtonIconStyle: Styles.navBarBack,
 }
 
 const tabBarProps = {

@@ -1,9 +1,7 @@
 import {Story} from '../models'
 
 export default function getDraft(draftId) {
-  return Story.findOne({
+  return Story.get({
     _id: draftId
   })
-  .populate('categories')
-  .populate('coverImage coverVideo')
 }

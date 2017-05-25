@@ -102,9 +102,35 @@ StorySchema.pre('save', function(next) {
 })
 
 StorySchema.statics = {
+
+  get(/* args */) {
+    this.findOne(...arguments)
+      .populate({
+        path: 'author',
+        populate: {
+          path: 'profile.cover profile.avatar'
+        }
+      })
+      .populate('categories')
+      .populate('coverImage coverVideo')
+  },
+
+  list(/* args */) {
+    return this.find(...arguments)
+      .populate({
+        path: 'author',
+        populate: {
+          path: 'profile.cover profile.avatar'
+        }
+      })
+      .populate('categories')
+      .populate('coverImage coverVideo')
+      .sort({createdAt: -1})
+  },
+
   getUserFeed(userId: string, followingIds: string[]) {
     return this
-      .find({
+      .list({
         author: {$ne: userId},
         draft: false,
         $or: [
@@ -112,19 +138,13 @@ StorySchema.statics = {
           {category: {$in: followingIds}},
         ]
       })
-      .sort({createdAt: -1, 'counts.likes': -1})
-      .populate('author author.profile.avatar author.profile.cover')
-      .populate('categories')
-      .populate('coverImage coverVideo')
+      .exec()
   },
 
   getUserStories(userId) {
     return this
-      .find({author: userId, draft: false})
-      .sort({createdAt: -1})
-      .populate('author author.profile.avatar author.profile.cover')
-      .populate('categories')
-      .populate('coverImage coverVideo')
+      .list({author: userId, draft: false})
+      .exec()
   },
 
   getSearchStory(storyId) {
@@ -133,6 +153,7 @@ StorySchema.statics = {
     })
     .select('title description createdAt content location tripDate coverImage coverVideo author')
     .populate('coverImage coverVideo author')
+    .exec()
   }
 }
 

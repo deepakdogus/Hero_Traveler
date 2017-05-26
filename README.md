@@ -60,4 +60,6 @@ $ open packages/HeroTravelerMobile/ios/HeroTravelerMobile.xcworkspace
 * Create a .env file at `packages/exxpress-api`, see team for example file
 * Include the private NPM token and `export NODE_ENV=development` in your `.bash_profile`
 * Install the Facebook SDK https://developers.facebook.com/docs/ios/
-* Workaround for Facebook SDK requires that the path to repo is two levels in dir structure. If FacebookSDK is in `~/Documents/FacebookSDK` then HT repo should be in `~/Sites/Hero Traveler/hero-traveler-monorepo` for example
+* Workaround for Facebook SDK (v4.21.0) requires that the path to repo is two levels in dir structure. If FacebookSDK is in `~/Documents/FacebookSDK` then HT repo should be in `~/Sites/Hero Traveler/hero-traveler-monorepo` for example
+* Try open ios/HeroTravelerMobile.xcworkspace/ inside `packages/HeroTravelerMobile` and build from Xcode
+* Add to `/packages/HeroTravelerMobile/App/Config/` an `Env.js`

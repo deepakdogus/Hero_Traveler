@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 import { ApplicationStyles, Fonts, Colors, Metrics } from '../../Themes/'
 
-const avatarImageSize = 80
+const avatarImageSize = 95
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
@@ -19,7 +19,7 @@ export default StyleSheet.create({
   settingsCog: {
     position: 'absolute',
     right: Metrics.doubleBaseMargin,
-    top: 0
+    top: 10
   },
   coverImage: {
     flexDirection: 'column'
@@ -74,7 +74,7 @@ export default StyleSheet.create({
   followerLabel: {
     fontFamily: Fonts.type.montserrat,
     fontSize: 10,
-    letterSpacing: 3,
+    letterSpacing: 1,
     color: '#e0e0e0',
     textAlign: 'center',
   },
@@ -96,16 +96,18 @@ export default StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,.25)',
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,.6)',
-    borderRadius: 12,
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    marginLeft: 10
+    borderRadius: 20,
+    paddingHorizontal: 20,
+    height: 32,
+    marginBottom: 30,
   },
 
   buttonsText: {
     fontFamily: Fonts.type.montserrat,
     fontSize: 11,
-    color: Colors.snow
+    color: Colors.snow,
+    lineHeight: 28,
+
   },
   cameraIcon: {
     textAlign: 'center',
@@ -144,7 +146,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: .33,
-    borderBottomWidth: 2,
+    borderBottomWidth: 3,
     borderBottomColor: Colors.snow,
   },
   tabText: {

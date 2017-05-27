@@ -29,7 +29,6 @@ export default {
   },
   navTitle: {
     fontFamily: Fonts.type.montserrat,
-    fontWeight: 'bold',
     color: Colors.snow,
     fontSize: 18
   },

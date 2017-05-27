@@ -39,5 +39,8 @@ export default {
   browseGuest: {
     fontSize: 12,
     color: Colors.snow
+  },
+  doneFollow: {
+    color: Colors.red
   }
 }

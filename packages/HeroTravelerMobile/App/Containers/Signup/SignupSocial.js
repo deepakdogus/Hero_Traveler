@@ -38,7 +38,7 @@ class SignupSocialScreen extends React.Component {
           <View style={styles.rowWrapper}>
             <View style={styles.row}>
               <Icon name='facebook'
-                size={15}
+                size={25}
                 color={Colors.facebookBlue} />
               <Text style={styles.connectSocialText}>Facebook</Text>
               <View style={styles.connectWrapper}>
@@ -49,7 +49,7 @@ class SignupSocialScreen extends React.Component {
           </View>
           <View style={styles.rowWrapper}>
             <View style={styles.row}>
-              <Icon name='twitter' size={15} color={Colors.twitterBlue} />
+              <Icon name='twitter' size={25} color={Colors.twitterBlue} />
               <Text style={styles.connectSocialText}>Twitter</Text>
               <View style={styles.connectWrapper}>
                 <Icon name='angle-right' size={15} color={'#757575'} />
@@ -58,7 +58,7 @@ class SignupSocialScreen extends React.Component {
           </View>
           <View style={styles.rowWrapper}>
             <View style={styles.row}>
-              <Icon name='instagram' size={15} color={Colors.twitterBlue} />
+              <Icon name='instagram' size={25} color={Colors.twitterBlue} />
               <Text style={styles.connectSocialText}>Instagram</Text>
               <View style={styles.connectWrapper}>
                 <Icon name='angle-right' size={15} color='#757575' />

@@ -122,8 +122,8 @@ export default StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     backgroundColor: 'transparent',
-    top: -35,
-    left: 15,
+    top: -43,
+    left: 6,
   },
   contributor: {
     marginLeft: Metrics.baseMargin

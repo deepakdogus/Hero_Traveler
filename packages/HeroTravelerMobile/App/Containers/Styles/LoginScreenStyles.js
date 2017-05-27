@@ -37,8 +37,8 @@ export default StyleSheet.create({
     textAlign: 'center'
   },
   error: {
-    marginTop: Metrics.marginVertical,
-    marginBottom: -25.5,
+    marginTop: 20,
+    marginBottom: -10,
     color: Colors.errorRed,
     fontSize: 12,
     textAlign: 'center'
@@ -66,19 +66,22 @@ export default StyleSheet.create({
     flex: 1
   },
   loginButton: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: Colors.charcoal,
-    backgroundColor: Colors.panther,
-    padding: 6
+    // flex: 1,
+    // borderWidth: 1,
+    // borderColor: Colors.charcoal,
+    // backgroundColor: Colors.panther,
+    // padding: 6,
   },
   twitter: {
     marginTop: 0,
     backgroundColor: Colors.twitterBlue
   },
   facebook: {
-    margin: 0,
+    margin: 30,
     backgroundColor: Colors.facebookBlue
+  },
+  loginButton: {
+    marginTop: 40,
   },
   forgotWrapper: {
     marginTop: Metrics.marginVertical
@@ -86,6 +89,7 @@ export default StyleSheet.create({
   forgot: {
     textAlign: 'center',
     color: Colors.snow,
+    fontSize: 15
   },
   tos: {
     marginTop: Metrics.marginVertical,

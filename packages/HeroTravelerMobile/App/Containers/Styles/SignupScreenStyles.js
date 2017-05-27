@@ -5,7 +5,6 @@ export default StyleSheet.create({
   ...ApplicationStyles.screen,
   container: {
     flex: 1,
-    paddingTop: Metrics.navBarHeight,
     backgroundColor: Colors.windowTint
   },
   spinner: {
@@ -17,7 +16,7 @@ export default StyleSheet.create({
   },
   title: {
     ...Fonts.style.title,
-    marginTop: Metrics.marginVertical,
+    marginTop: Metrics.baseMargin*3,
     color: Colors.snow,
     textAlign: 'center'
   },
@@ -36,8 +35,7 @@ export default StyleSheet.create({
   errorView: {
     position: 'absolute',
     right: 0,
-    left: 0,
-    bottom: -20
+    bottom: 55
   },
   inputContainer: {
     flex: 1,
@@ -62,11 +60,11 @@ export default StyleSheet.create({
     justifyContent: 'flex-start'
   },
   submitButton: {
-    marginTop: Metrics.baseMargin*2
+    marginTop: Metrics.baseMargin*4
   },
   tos: {
-    marginTop: Metrics.marginVertical,
+    marginTop: Metrics.marginVertical*3,
     marginLeft: Metrics.section,
-    marginRight: Metrics.section
+    marginRight: Metrics.section,
   }
 })

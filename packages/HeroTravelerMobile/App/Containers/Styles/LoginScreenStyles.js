@@ -37,7 +37,7 @@ export default StyleSheet.create({
     textAlign: 'center'
   },
   error: {
-    marginTop: 20,
+    marginTop: Metrics.baseMargin*2,
     marginBottom: -10,
     color: Colors.errorRed,
     fontSize: 12,
@@ -81,7 +81,7 @@ export default StyleSheet.create({
     backgroundColor: Colors.facebookBlue
   },
   loginButton: {
-    marginTop: 40,
+    marginTop: Metrics.baseMargin*4,
   },
   forgotWrapper: {
     marginTop: Metrics.marginVertical

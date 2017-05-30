@@ -35,7 +35,6 @@ export default StyleSheet.create({
   },
   emailIcon: {
     marginTop: 16,
-    // paddingLeft: 40,
     paddingRight: 10,
   },
   emailTextStyle: {

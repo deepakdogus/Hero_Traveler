@@ -40,6 +40,10 @@ export default {
     color: Colors.snow
   },
   doneFollow: {
-    color: Colors.red
+    color: Colors.red,
+  },
+  signupTopicsRight: {
+    color: Colors.red,
+    paddingRight: 20,
   }
 }

@@ -49,6 +49,7 @@ import SignupScreen from '../Containers/Signup/SignupScreen'
 import SignupTopics from '../Containers/Signup/SignupTopics'
 import SignupSocial from '../Containers/Signup/SignupSocial'
 import Colors from '../Themes/Colors'
+import Images from '../Themes/Images'
 import {connect} from 'react-redux'
 import {Text, View} from 'react-native'
 
@@ -112,6 +113,8 @@ export default NavActions.create(
           key='signupFlow_topics'
           component={SignupTopics}
           rightTitle='Next'
+          rightButtonTextStyle={Styles.signupTopicsRight}
+          rightButtonImage={Images.chevronRight}
           onRight={() => NavActions.signupFlow_social()}
         />
         <Scene

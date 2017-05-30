@@ -10,6 +10,8 @@ class TabIcon extends React.Component {
 
   getIconName(navKey) {
     switch (navKey) {
+      case 'redCheck':
+        return Images.iconRedCheck
       case 'loginFacebook':
         return Images.iconLoginFacebook
       case 'loginEmail':

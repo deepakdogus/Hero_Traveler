@@ -7,18 +7,18 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginLeft: Metrics.baseMargin,
-    marginRight: Metrics.baseMargin,
+    marginLeft: 0,
+    marginRight: 0,
   },
   gridRow: {
-    width: (Metrics.screenWidth - 33) / 3,
-    height: 100,
+    width: (Metrics.screenWidth) / 3 - 4,
+    height: (Metrics.screenWidth) / 3 - 4,
     margin: 2,
     backgroundColor: Colors.transparent
   },
   gridImage: {
-    width: (Metrics.screenWidth - 33) / 3,
-    height: 100,
+    width: (Metrics.screenWidth) / 3 - 4,
+    height: (Metrics.screenWidth) / 3 - 4,
   },
   gridRowText: {
     fontFamily: Fonts.type.montserrat,

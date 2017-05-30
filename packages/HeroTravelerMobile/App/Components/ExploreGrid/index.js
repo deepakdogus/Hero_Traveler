@@ -4,10 +4,11 @@ import {
   Text,
   ListView,
   TouchableOpacity,
-  Image
+  Image,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
+import TabIcon from '../TabIcon'
 import {Colors} from '../../Themes'
 import styles from './ExploreGridStyles'
 import getImageUrl from '../../Lib/getImageUrl'
@@ -37,11 +38,10 @@ export default class ExploreGrid extends Component {
         >
           <Text style={styles.gridRowText}>{category.title}</Text>
           {category.selected &&
-            <Icon
+            <TabIcon 
+              name='redCheck'
               style={styles.selectedIcon}
-              size={20}
-              name='check-circle-o'
-              color={Colors.white} />
+            />
           }
         </Image>
       </TouchableOpacity>

@@ -8,7 +8,7 @@ import {parseAndInsertStoryCategories} from '../story/createStory'
 export default async function updateDraft(draftId, attrs) {
 	let draft = await Story.findById(draftId)
 
-  _.assign(draft, attrs)
+  _.assign(draft, _.omit(attrs, 'author'))
 
   if (attrs.categories && _.size(attrs.categories)) {
     // @TODO: this should probably happen in middleware

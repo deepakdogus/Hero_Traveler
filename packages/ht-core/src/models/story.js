@@ -104,7 +104,7 @@ StorySchema.pre('save', function(next) {
 StorySchema.statics = {
 
   get(/* args */) {
-    this.findOne(...arguments)
+    return this.findOne(...arguments)
       .populate({
         path: 'author',
         populate: {

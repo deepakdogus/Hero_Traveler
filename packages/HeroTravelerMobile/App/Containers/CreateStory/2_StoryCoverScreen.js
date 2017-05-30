@@ -164,7 +164,7 @@ class StoryCoverScreen extends Component {
   isValid() {
     return _.every([
       !!this.state.coverImage || !!this.state.coverVideo,
-      !!this.state.title
+      !!_.trim(this.state.title)
     ])
   }
 

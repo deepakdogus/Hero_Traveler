@@ -198,8 +198,9 @@ class ProfileView extends React.Component {
              style={styles.titleText}
              onChangeText={(text) => this.setState({usernameText: text})}
              maxLength={20}
+             returnKeyType={'done'}
            />
-          <Icon style={{paddingTop: 4}} name='pencil' size={12} color={Colors.snow} />
+          <Icon style={{paddingTop: 2}} name='pencil' size={12} color={Colors.snow} />
           </View>
         </View>
       )
@@ -219,7 +220,7 @@ class ProfileView extends React.Component {
                 })
               }}
             >
-              <Icon name='camera' size={20} color='gray' style={styles.updateAvatorIcon} />
+              <Icon name='camera' size={35} color={Colors.whiteAlphaPt80} style={styles.updateAvatorIcon} />
           </TouchableOpacity>
         </View>
       )
@@ -238,7 +239,7 @@ class ProfileView extends React.Component {
             })
           }}
         >
-          <Icon name='camera' size={20} color='gray' style={styles.cameraIcon} />
+          <Icon name='camera' size={35} color={Colors.whiteAlphaPt80} style={styles.cameraIcon} />
           <Text style={{color: Colors.snow}}>EDIT COVER IMAGE</Text>
         </TouchableOpacity>
       )
@@ -314,7 +315,7 @@ class ProfileView extends React.Component {
             title='Edit Profile'
             leftTitle='Cancel'
             onLeft={() => NavActions.pop()}
-            rightTitle='Next'
+            rightTitle='Save'
             onRight={this._onRight}
           />
         }
@@ -384,7 +385,7 @@ class ProfileView extends React.Component {
           </Image>
           {isEditing &&
            <View style={{margin: Metrics.section}}>
-             <Text style={{fontWeight: 'bold', fontSize: 16, marginVertical: Metrics.baseMargin}}>Edit Bio</Text>
+             <Text style={{fontWeight: '900', fontSize: 16, marginVertical: Metrics.baseMargin}}>Edit Bio</Text>
              <TextInput
                ref={c => this.bioInput = c}
                style={{height: 150, fontSize: 16, color: '#757575'}}

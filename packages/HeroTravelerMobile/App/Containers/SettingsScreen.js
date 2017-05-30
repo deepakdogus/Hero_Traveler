@@ -70,13 +70,13 @@ class SettingsScreen extends React.Component {
           <View style={styles.separator} />
           <List>
             <Row
-              icon={<Icon name='facebook' size={15} color={Colors.facebookBlue} />}
+              icon={<Icon name='facebook' size={22} color={Colors.facebookBlue} />}
               text='Facebook'
               connected={user.isFacebookConnected}
               onPress={() => alert('facebook!')}
             />
             <Row
-              icon={<Icon name='twitter' size={15} color={Colors.twitterBlue} />}
+              icon={<Icon name='twitter' size={22} color={Colors.twitterBlue} />}
               text='Twitter'
               connected={user.isTwitterConnected}
               onPress={() => alert('twitter!')}

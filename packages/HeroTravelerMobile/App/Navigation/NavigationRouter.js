@@ -118,6 +118,7 @@ export default NavActions.create(
           key='signupFlow_social'
           component={SignupSocial}
           rightTitle='Done'
+          rightButtonTextStyle={Styles.doneFollow}
           onRight={() => NavActions.tabbar()}
         />
       </Scene>

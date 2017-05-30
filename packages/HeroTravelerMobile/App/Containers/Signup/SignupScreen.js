@@ -64,6 +64,7 @@ class Input extends React.Component {
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
+          returnKeyType={'done'}
           onChangeText={this.props.input.onChange}
           placeholderTextColor='white'
           {...this.props}
@@ -105,7 +106,7 @@ class SignupScreen extends React.Component {
       <Image
         source={Images.launchBackground}
         style={styles.backgroundImage}
-        blurRadius={10}
+        blurRadius={20}
       >
         <ScrollView style={styles.container}>
           <KeyboardAvoidingView behavior='position'>

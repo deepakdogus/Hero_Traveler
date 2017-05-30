@@ -16,7 +16,7 @@ export default StyleSheet.create({
   questionText: {
     color: Colors.blackoutTint,
     fontSize: 18,
-    fontWeight: "800",
+    fontWeight: "900",
     marginHorizontal: Metrics.section,
     marginTop: Metrics.section * .5,
     marginBottom: Metrics.section * .5,

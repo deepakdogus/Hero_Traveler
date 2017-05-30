@@ -34,5 +34,12 @@ export default StyleSheet.create({
   isConnectedText: {
     color: Colors.red,
     marginRight: Metrics.baseMargin
+  },
+  settingsLabel: {
+    fontWeight: '900',
+    fontSize: 16,
+    marginHorizontal: 30,
+    marginTop: 50,
+    marginBottom: 10
   }
 })

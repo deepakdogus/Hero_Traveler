@@ -29,7 +29,6 @@ export default {
   },
   navTitle: {
     fontFamily: Fonts.type.montserrat,
-    fontWeight: 'bold',
     color: Colors.snow,
     fontSize: 18
   },
@@ -39,5 +38,8 @@ export default {
   browseGuest: {
     fontSize: 12,
     color: Colors.snow
+  },
+  doneFollow: {
+    color: Colors.red
   }
 }

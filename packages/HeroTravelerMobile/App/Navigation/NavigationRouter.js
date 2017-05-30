@@ -11,7 +11,7 @@ import Styles from './Styles/NavigationContainerStyles'
 // Tabs
 import MyFeedScreen from '../Containers/Tabs/MyFeedScreen'
 import ExploreScreen from '../Containers/Tabs/ExploreScreen'
-import TabIcon from '../Components/Tab'
+import TabIcon from '../Components/TabIcon'
 // Profile tab
 import ProfileScreen from '../Containers/Tabs/ProfileScreen'
 import ReadOnlyProfileScreen from '../Containers/ReadOnlyProfileScreen'

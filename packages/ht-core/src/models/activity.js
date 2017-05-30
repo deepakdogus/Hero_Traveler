@@ -32,8 +32,7 @@ ActivitySchema.index({user: 1, seen: 1, createdAt: -1})
 ActivitySchema.statics = {
   list(userId) {
     return this.find({
-      user: userId,
-      seen: false
+      user: userId
     })
     .sort({createdAt: -1})
     .populate('fromUser')

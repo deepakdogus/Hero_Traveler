@@ -172,6 +172,10 @@ class TagScreen extends Component {
 
   _addNewCategory = () => {
 
+    if (_.size(_.trim(this.state.text)) === 0) {
+      return
+    }
+
     // This strips everything done into real words, no special characters, etc.
     const formattedTitle = _.map(_.words(this.state.text), _.upperFirst).join(' ')
 

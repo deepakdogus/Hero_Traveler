@@ -4,6 +4,7 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  Animated,
   View,
   KeyboardAvoidingView,
   Image,
@@ -48,6 +49,7 @@ class StoryCoverScreen extends Component {
 
   constructor(props) {
     super(props)
+    this.timeout = null
     this.state = {
       imageMenuOpen: false,
       file: null,
@@ -58,7 +60,8 @@ class StoryCoverScreen extends Component {
       // Local file path to the image
       coverImage: getImageUrl(props.story.coverImage),
       // Local file path to the video
-      coverVideo: getVideoUrl(props.story.coverVideo)
+      coverVideo: getVideoUrl(props.story.coverVideo),
+      toolbarOpacity: new Animated.Value(1)
     }
   }
 
@@ -78,7 +81,73 @@ class StoryCoverScreen extends Component {
   }
 
   _toggleImageMenu = () => {
-    this.setState({imageMenuOpen: !this.state.imageMenuOpen})
+    if (this.state.imageMenuOpen) {
+
+      if (this.timeout) {
+        clearTimeout(this.timeout)
+      }
+
+      this.setState({imageMenuOpen: false}, () => {
+        this.resetAnimation()
+      })
+    } else {
+      this.setState({imageMenuOpen: true})
+      this.timeout = setTimeout(() => {
+        if (this.state.imageMenuOpen) {
+          this.fadeOutMenu()
+        }
+      }, 5000)
+    }
+  }
+
+  closeMenu() {
+    if (this.timeout) {
+      clearTimeout(this.timeout)
+    }
+
+    this.setState({imageMenuOpen: false}, () => {
+      this.resetAnimation()
+    })
+  }
+
+  fadeOutMenu() {
+    Animated.timing(
+      this.state.toolbarOpacity,
+      {
+        toValue: 0,
+        duration: 300
+      }
+    ).start(() => {
+      this.setState({imageMenuOpen: false}, () => {
+        this.resetAnimation()
+      })
+    })
+  }
+
+  resetAnimation() {
+    this.state.toolbarOpacity.stopAnimation(() => {
+      this.state.toolbarOpacity.setValue(1)
+    })
+  }
+
+  _touchTrash = () => {
+    this.setState({coverImage: null, coverVideo: null, imageMenuOpen: false}, () => {
+      this.resetAnimation()
+    })
+  }
+
+  _touchChangeCover = () => {
+    this.setState({imageMenuOpen: false}, () => {
+      this.resetAnimation()
+    })
+    NavActions.mediaSelectorScreen({
+      mediaType: this.props.mediaType,
+      title: 'Change Cover',
+      leftTitle: 'Cancel',
+      onLeft: () => NavActions.pop(),
+      rightTitle: 'Update',
+      onSelectMedia: this._handleSelectCover
+    })
   }
 
   renderCoverPhoto(coverPhoto) {
@@ -325,18 +394,12 @@ class StoryCoverScreen extends Component {
               <TouchableWithoutFeedback onPress={this._toggleImageMenu}>
                 <View>
                   <View style={styles.spaceView} />
-                  <View style={styles.imageMenuView}>
+                  <Animated.View style={[
+                    styles.imageMenuView,
+                    {opacity: this.state.toolbarOpacity}
+                  ]}>
                     <TouchableOpacity
-                      onPress={() =>
-                        NavActions.mediaSelectorScreen({
-                          mediaType: this.props.mediaType,
-                          title: 'Change Cover',
-                          leftTitle: 'Cancel',
-                          onLeft: () => NavActions.pop(),
-                          rightTitle: 'Update',
-                          onSelectMedia: this._handleSelectCover
-                        })
-                      }
+                      onPress={this._touchChangeCover}
                       style={styles.iconButton}>
                       <Icon name={this.getIcon()} color={Colors.snow} size={30} />
                     </TouchableOpacity>
@@ -348,7 +411,7 @@ class StoryCoverScreen extends Component {
                       </TouchableOpacity>
                     }
                     <TouchableOpacity
-                      onPress={() => this.setState({coverImage: null, coverVideo: null, imageMenuOpen: false})}
+                      onPress={this._touchTrash}
                       style={styles.iconButton}>
                       <Icon name='trash' color={Colors.snow} size={30} />
                     </TouchableOpacity>
@@ -357,14 +420,13 @@ class StoryCoverScreen extends Component {
                       style={styles.iconButton}>
                       <Icon name='close' color={Colors.snow} size={30} />
                     </TouchableOpacity>
-                  </View>
+                  </Animated.View>
                 </View>
               </TouchableWithoutFeedback>
             </View>
           }
           <View style={styles.addTitleView}>
             <TextInput
-              editable={!this.state.imageMenuOpen}
               style={this.renderTextColor(styles.titleInput)}
               placeholder='ADD A TITLE'
               placeholderTextColor={this.renderPlaceholderColor(placeholderColor)}
@@ -373,7 +435,6 @@ class StoryCoverScreen extends Component {
               onChangeText={title => this.setState({title})}
             />
             <TextInput
-              editable={!this.state.imageMenuOpen}
               style={this.renderTextColor(styles.subTitleInput)}
               placeholder='Add a subtitle'
               placeholderTextColor={this.renderPlaceholderColor(placeholderColor)}

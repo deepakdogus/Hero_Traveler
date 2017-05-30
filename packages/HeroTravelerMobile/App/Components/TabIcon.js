@@ -10,6 +10,10 @@ class TabIcon extends React.Component {
 
   getIconName(navKey) {
     switch (navKey) {
+      case 'loginFacebook':
+        return Images.iconLoginFacebook
+      case 'loginEmail':
+        return Images.iconLoginEmail
       case 'myFeed':
         return Images.iconNavHome
       case 'activity':
@@ -26,7 +30,7 @@ class TabIcon extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={this.props.style || {}}>
         <Image
           source={this.getIconName(this.props.name)}
           size={40}

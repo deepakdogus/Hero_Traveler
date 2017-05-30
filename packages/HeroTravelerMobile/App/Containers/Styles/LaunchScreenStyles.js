@@ -30,11 +30,39 @@ export default StyleSheet.create({
   },
   email: {
     marginTop: 0,
-    backgroundColor: Colors.red
+    backgroundColor: Colors.red,
+    flexDirection: 'row',
+  },
+  emailIcon: {
+    marginTop: 16,
+    paddingLeft: 15,
+  },
+  emailTextStyle: {
+    width: '85%',
+    textAlign: 'left',
+    paddingTop: 3,
+    paddingLeft: 21,
+    fontFamily: Fonts.type.base,
+    marginLeft: 0,
+    marginRight: 0,
   },
   facebook: {
     margin: 0,
-    backgroundColor: Colors.facebookBlue
+    backgroundColor: Colors.facebookBlue,
+    flexDirection: 'row',
+  },
+  facebookIcon: {
+    marginTop: 10,
+    paddingLeft: 15,
+  }, 
+  facebookTextStyle: {
+    width: '85%',
+    textAlign: 'left',
+    paddingTop: 3,
+    paddingLeft: 25,
+    fontFamily: Fonts.type.base,
+    marginLeft: 0,
+    marginRight: 0,
   },
   loginWrapper: {
     justifyContent: 'center',
@@ -46,9 +74,10 @@ export default StyleSheet.create({
   loginText: {
     color: Colors.snow,
     fontWeight: '600',
-    fontSize: 13
+    fontSize: 15,
   },
   tosText: {
     ...Fonts.style.tos,
+    fontSize: 15,
   }
 })

@@ -35,6 +35,8 @@ const images = {
   iconNavExplore: require('../Images/ht-icons/icon_nav-explore@2x.png'),
   iconNavCreate: require('../Images/ht-icons/icon_nav-create@2x.png'),
   iconNavProfile: require('../Images/ht-icons/icon_nav-profile@2x.png'),
+  iconLoginFacebook: require('../Images/ht-icons/icon_login-button-facebook.png'),
+  iconLoginEmail: require('../Images/ht-icons/icon_login-button-email.png'),
 }
 
 export default images

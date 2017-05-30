@@ -21,7 +21,7 @@ const Row = ({text, selected, onPress}) => {
     <View style={styles.rowWrapper}>
       <View style={styles.row}>
         <Text style={[styles.rowText, {flexGrow: 1, color: 'black'}]}>{text}</Text>
-        <Switch value={selected} onValueChange={onPress} />
+        <Switch onTintColor="red" value={selected} onValueChange={onPress} />
       </View>
     </View>
   )
@@ -48,6 +48,7 @@ class NotificationsSettingsScreen extends React.Component {
     const user = this.props.user || {}
     return (
       <View style={[styles.containerWithNavbar, styles.root]}>
+        <Text style={styles.settingsLabel}>Push Notifications</Text>
         <List>
           {_.map(notificationOpts, ([label, value]) => {
             return (

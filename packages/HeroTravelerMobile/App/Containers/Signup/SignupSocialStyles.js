@@ -17,7 +17,7 @@ export default StyleSheet.create({
   emptyMessageBtn: {
     marginTop: Metrics.section,
     marginHorizontal: Metrics.doubleSection,
-    backgroundColor: Colors.steel
+    backgroundColor: Colors.steel,
   },
   emptyMessageText: {
     textAlign: 'center',
@@ -54,7 +54,8 @@ export default StyleSheet.create({
     marginHorizontal: Metrics.doubleBaseMargin,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    height: 40,
   },
   avatar: {
     width: 36,
@@ -79,26 +80,32 @@ export default StyleSheet.create({
     borderColor: Colors.red,
     borderWidth: 1,
     backgroundColor: Colors.red,
-    height: 20,
-    borderRadius: 5,
+    height: 25,
+    width: 95,
+    borderRadius: 10,
     marginVertical: 0,
     marginHorizontal: 0,
+    padding: 5,
   },
   selectedFollowersButtonText: {
+    fontSize: 10,
     marginVertical: 0,
     marginHorizontal: 5,
   },
   followersButton: {
     borderColor: Colors.red,
     borderWidth: 1,
-    height: 20,
+    height: 25,
+    width: 95,
     backgroundColor: Colors.snow,
-    borderRadius: 5,
+    borderRadius: 10,
     marginVertical: 0,
     marginHorizontal: 0,
+    padding: 5,
   },
   followersButtonText: {
     color: Colors.red,
+    fontSize: 10,
     marginVertical: 0,
     marginHorizontal: 5,
   },

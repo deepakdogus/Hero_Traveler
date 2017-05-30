@@ -33,7 +33,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '50%',
-    borderBottomWidth: 2,
+    borderBottomWidth: 3,
     borderBottomColor: Colors.lightGreyAreas,
   },
   tabText: {

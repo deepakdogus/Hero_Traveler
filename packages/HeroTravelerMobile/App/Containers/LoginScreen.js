@@ -155,14 +155,14 @@ class LoginScreen extends React.Component {
       <Image
         source={Images.launchBackground}
         style={styles.backgroundImage}
-        blurRadius={10}
+        blurRadius={25}
       >
         <ScrollView
           style={[styles.container]}
           contentContainerStyle={{justifyContent: 'flex-start'}}>
           <KeyboardAvoidingView behavior='position'>
             <View style={[styles.section, {marginTop: 0}]}>
-              <Text style={styles.title}>Login</Text>
+              <Text style={styles.title}>LOG IN</Text>
               <Text style={styles.instructions}>
                 Welcome back!
               </Text>
@@ -217,7 +217,8 @@ class LoginScreen extends React.Component {
                 placeholder='Password' />              
             </View>
             <RoundedButton
-              text="Login"
+              style={styles.loginButton}
+              text="LOGIN"
               onPress={this.handlePressLogin}
             />
 
@@ -227,8 +228,6 @@ class LoginScreen extends React.Component {
               text="Forgot your password?"
               onPress={NavigationActions.resetPasswordRequest}
             />
-
-            <TOS style={styles.tos} />
 
             
           </KeyboardAvoidingView>

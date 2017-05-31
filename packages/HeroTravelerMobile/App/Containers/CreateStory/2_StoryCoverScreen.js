@@ -32,16 +32,21 @@ import UserActions from '../../Redux/Entities/Users'
 
 const api = API.create()
 
+const MediaTypes = {
+  video: 'video',
+  photo: 'photo',
+}
+
 class StoryCoverScreen extends Component {
 
   static propTypes = {
+    mediaType: PropTypes.oneOf([MediaTypes.video, MediaTypes.photo]),
     user: PropTypes.object,
-    mediaType: PropTypes.oneOf(['photo', 'video']).isRequired,
     navigatedFromProfile: PropTypes.bool
   }
 
   static defaultProps = {
-    mediaType: 'photo',
+    mediaType: MediaTypes.photo,
     story: {},
     navigatedFromProfile: false
   }
@@ -74,7 +79,19 @@ class StoryCoverScreen extends Component {
   }
 
   isPhotoType() {
-    return this.props.mediaType === 'photo'
+    return this.getMediaType() === MediaTypes.photo
+  }
+
+  getMediaType() {
+    if (this.props.story.coverVideo) {
+      return MediaTypes.video
+    }
+
+    if (this.props.story.coverImage) {
+      return MediaTypes.photo
+    }
+
+    return this.props.mediaType
   }
 
   _toggleImageMenu = () => {
@@ -284,6 +301,33 @@ class StoryCoverScreen extends Component {
     return this.isPhotoType() ? 'camera' : 'video-camera'
   }
 
+  _contentAddCover = () => {
+    this.setState({error: null})
+    NavActions.mediaSelectorScreen({
+      mediaType: this.getMediaType(),
+      title: 'Add a Cover',
+      leftTitle: 'Cancel',
+      onLeft: () => NavActions.pop(),
+      rightTitle: 'Next',
+      onSelectMedia: this._handleSelectCover
+    })
+  }
+
+  _contentChangeCover = () => {
+    NavActions.mediaSelectorScreen({
+      mediaType: this.getMediaType(),
+      title: 'Change Cover',
+      leftTitle: 'Cancel',
+      onLeft: () => NavActions.pop(),
+      rightTitle: 'Update',
+      onSelectMedia: this._handleSelectCover
+    })
+  }
+
+  _touchError = () => {
+    this.setState({error: null})
+  }
+
   renderContent () {
     return (
       <KeyboardAvoidingView behavior='position'>
@@ -293,17 +337,7 @@ class StoryCoverScreen extends Component {
             <View style={[styles.spaceView, styles.addPhotoView]}>
               <TouchableOpacity
                 style={styles.addPhotoButton}
-                onPress={() => {
-                  this.setState({error: null})
-                  NavActions.mediaSelectorScreen({
-                    mediaType: this.props.mediaType,
-                    title: 'Add a Cover',
-                    leftTitle: 'Cancel',
-                    onLeft: () => NavActions.pop(),
-                    rightTitle: 'Next',
-                    onSelectMedia: this._handleSelectCover
-                  })
-                }}
+                onPress={this._contentAddCover}
               >
                 <Icon name={this.getIcon()} size={40} color='gray' style={styles.cameraIcon} />
                 <Text style={this.renderTextColor(styles.baseTextColor)}>
@@ -327,22 +361,12 @@ class StoryCoverScreen extends Component {
                   <View style={styles.spaceView} />
                   <View style={styles.imageMenuView}>
                     <TouchableOpacity
-                      onPress={() =>
-                        NavActions.mediaSelectorScreen({
-                          mediaType: this.props.mediaType,
-                          title: 'Change Cover',
-                          leftTitle: 'Cancel',
-                          onLeft: () => NavActions.pop(),
-                          rightTitle: 'Update',
-                          onSelectMedia: this._handleSelectCover
-                        })
-                      }
+                      onPress={this._contentChangeCover}
                       style={styles.iconButton}>
                       <Icon name={this.getIcon()} color={Colors.snow} size={30} />
                     </TouchableOpacity>
                     {this.isPhotoType() &&
                       <TouchableOpacity
-                        onPress={() => alert('crop')}
                         style={styles.iconButton}>
                         <Icon name='crop' color={Colors.snow} size={30} />
                       </TouchableOpacity>
@@ -472,7 +496,7 @@ class StoryCoverScreen extends Component {
           {this.state.error &&
             <ShadowButton
               style={styles.errorButton}
-              onPress={() => this.setState({error: null})}
+              onPress={this._touchError}
               text={this.state.error} />
           }
           {this.isPhotoType() && this.renderCoverPhoto(this.state.coverImage)}
@@ -493,7 +517,7 @@ class StoryCoverScreen extends Component {
   _handleSelectCover = (path) => {
     const file = pathAsFileObject(path)
     this.setState({file})
-    if (this.props.mediaType === 'photo') {
+    if (this.isPhotoType()) {
       this.setState({coverImage: path})
     } else {
       this.setState({coverVideo: path})

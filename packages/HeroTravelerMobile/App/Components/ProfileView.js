@@ -310,7 +310,6 @@ class ProfileView extends React.Component {
             text='DRAFTS' />
           <Tab
             selected={TabTypes.bookmarks === this.state.selectedTab}
-            onPress={() => this.selectTab(TabTypes.bookmarks)}
             text='BOOKMARKS' />
         </View>
       )

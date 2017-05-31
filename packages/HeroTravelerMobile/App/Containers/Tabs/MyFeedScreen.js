@@ -152,7 +152,7 @@ class MyFeedScreen extends React.Component {
                 storyId={storyId}
                 height={imageHeight}
                 autoPlayVideo={false}
-                allowVideoPlay={true}
+                allowVideoPlay={false}
                 onPress={() => NavActions.story({storyId})}
                 onPressLike={story => this.props.toggleLike(this.props.user.id, story.id)}
               />

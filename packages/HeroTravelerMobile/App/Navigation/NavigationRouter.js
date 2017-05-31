@@ -48,7 +48,9 @@ import ResetPasswordScreen from '../Containers/ResetPasswordScreen'
 import SignupScreen from '../Containers/Signup/SignupScreen'
 import SignupTopics from '../Containers/Signup/SignupTopics'
 import SignupSocial from '../Containers/Signup/SignupSocial'
-import Colors from '../Themes/Colors'
+import NavButton from './NavButton'
+
+import {Colors, Images} from '../Themes'
 import {connect} from 'react-redux'
 import {Text, View} from 'react-native'
 
@@ -111,14 +113,25 @@ export default NavActions.create(
           initial
           key='signupFlow_topics'
           component={SignupTopics}
-          rightTitle='Next'
           onRight={() => NavActions.signupFlow_social()}
+          renderRightButton={(props) => {
+            return (<NavButton
+              onRight={props.onRight}
+              text='Next'
+              iconName='arrowRightRed'/>)
+          }}
         />
         <Scene
           key='signupFlow_social'
           component={SignupSocial}
-          rightTitle='Done'
-          rightButtonTextStyle={Styles.doneFollow}
+          renderRightButton={(props) => {
+            return (<NavButton
+              onRight={props.onRight}
+              text='Done'
+              iconName='arrowRightRed'/>)
+          }}
+          leftButtonIconStyle={Styles.leftButtonIconStyle}
+          backButtonImage={Images.iconArrowLeft}
           onRight={() => NavActions.tabbar()}
         />
       </Scene>

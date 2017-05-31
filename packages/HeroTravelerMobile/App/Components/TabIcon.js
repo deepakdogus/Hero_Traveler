@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import {View, Image, Text} from 'react-native'
 import {connect} from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -10,6 +10,16 @@ class TabIcon extends React.Component {
 
   getIconName(navKey) {
     switch (navKey) {
+      case 'arrowRight':
+        return Images.iconArrowRight
+      case 'arrowLeft':
+        return Images.iconArrowLeft
+      case 'arrowRightRed':
+        return Images.iconArrowRightRed
+      case 'arrowLeftRed':
+        return Images.iconArrowLeftRed
+      case 'redCheck':
+        return Images.iconRedCheck
       case 'loginFacebook':
         return Images.iconLoginFacebook
       case 'loginEmail':
@@ -28,12 +38,20 @@ class TabIcon extends React.Component {
     }
   }
 
+  static propTypes = {
+    name: PropTypes.string,
+    style: PropTypes.object,
+    notificationCount: PropTypes.number,
+  }
+
   render() {
+    const { style = {} } = this.props
     return (
-      <View style={this.props.style || {}}>
+      <View style={ style.view || {} }>
         <Image
           source={this.getIconName(this.props.name)}
           size={40}
+          style={style.image || {}}
           color={'white'}
         />  
         {this.props.name === 'activity' && this.props.notificationCount > 0 &&

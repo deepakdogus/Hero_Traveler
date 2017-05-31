@@ -35,7 +35,10 @@ export default class RoundedButton extends React.Component {
         style={[styles.button, this.props.style]}
         onPress={this.props.onPress}>
         {this.props.icon &&
-          <TabIcon name={this.props.icon} style={this.props.iconStyle || {}}/>
+          <TabIcon
+            name={this.props.icon}
+            style={{ view: this.props.iconStyle || {} }}
+          />
         }    
         <Text style={[styles.buttonText, this.props.textStyle]}>{this.getText()}</Text>
       </TouchableOpacity>

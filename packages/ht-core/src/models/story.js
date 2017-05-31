@@ -131,7 +131,6 @@ StorySchema.statics = {
   getUserFeed(userId: string, followingIds: string[]) {
     return this
       .list({
-        author: {$ne: userId},
         draft: false,
         $or: [
           {author: {$in: followingIds}},

@@ -74,10 +74,6 @@ class ProfileView extends React.Component {
     api.setAuth(this.props.accessToken)
   }
 
-  _toggleImageMenu = () => {
-    this.setState({imageMenuOpen: !this.state.imageMenuOpen})
-  }
-
   _handleUpdateAvatarPhoto = (data) => {
     api.uploadAvatarImage(this.props.user.id, pathAsFileObject(data))
     NavActions.pop()
@@ -151,6 +147,64 @@ class ProfileView extends React.Component {
     })
   }
 
+  _setText = (usernameText) => {
+    this.setState({usernameText})
+  }
+
+  _selectAvatar = () => {
+    NavActions.mediaSelectorScreen({
+      mediaType: 'photo',
+      title: 'Edit Avatar Image',
+      leftTitle: 'Cancel',
+      onLeft: () => NavActions.pop(),
+      rightTitle: 'Next',
+      onSelectMedia: this._handleUpdateAvatarPhoto
+    })
+  }
+
+  _selectCover = () => {
+    NavActions.mediaSelectorScreen({
+      mediaType: 'photo',
+      title: 'Edit Cover Image',
+      leftTitle: 'Cancel',
+      onLeft: () => NavActions.pop(),
+      rightTitle: 'Next',
+      onSelectMedia: this._handleUpdateCoverPhoto
+    })
+  }
+
+  _navToSettings = () => {
+    NavActions.settings({type: 'push'})
+  }
+
+  _navToEditProfile = () => {
+    NavActions.edit_profile()
+  }
+
+  _navToViewBio = () => {
+    NavActions.viewBioScreen({
+      user: this.props.user
+    })
+  }
+
+  _navToFollowers = () => {
+    NavActions.followersScreen({
+      title: 'Followers',
+      followersType: 'followers',
+      loadDataAction: UserActions.loadUserFollowers,
+      userId: this.props.user.id
+    })
+  }
+
+  _navToFollowing = () => {
+    NavActions.followersScreen({
+      title: 'Following',
+      followersType: 'following',
+      loadDataAction: UserActions.loadUserFollowing,
+      userId: this.props.user.id
+    })
+  }
+
   render() {
     const { user, stories, drafts, editable, isEditing, profileImage } = this.props
     let fetchStatus
@@ -181,8 +235,9 @@ class ProfileView extends React.Component {
         user.introTooltips
       )
 
-    /* If the editable flag === true then the component will display the user's edit profile view,
-       otherwise it will show the view that the user sees when looking at other profiles
+    /* If the isEditing flag === true then the component will display the user's edit profile view,
+       editable === true shows the user's profile view,
+       otherwise it will show the view that the user sees when looking at another user's profile
      */
 
     if(isEditing === true){
@@ -191,12 +246,13 @@ class ProfileView extends React.Component {
       // buttons = null;
       name = (
         <View style={styles.nameWrapper}>
-          <View style={{flexDirection: 'row', jusifyContent: 'center', alignItems: 'center'}}>
+          <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
            <TextInput
              placeholder={user.username}
              value={this.state.usernameText}
+             autoCapitalize='none'
              style={styles.titleText}
-             onChangeText={(text) => this.setState({usernameText: text})}
+             onChangeText={this._setText}
              maxLength={20}
              returnKeyType={'done'}
            />
@@ -209,16 +265,7 @@ class ProfileView extends React.Component {
         <View style={{position: 'relative'}}>
             <TouchableOpacity
               style={styles.addAvatarPhotoButton}
-              onPress={() => {
-                NavActions.mediaSelectorScreen({
-                  mediaType: 'photo',
-                  title: 'Edit Avatar Image',
-                  leftTitle: 'Cancel',
-                  onLeft: () => NavActions.pop(),
-                  rightTitle: 'Next',
-                  onSelectMedia: this._handleUpdateAvatarPhoto
-                })
-              }}
+              onPress={this._selectAvatar}
             >
               <Icon name='camera' size={35} color={Colors.whiteAlphaPt80} style={styles.updateAvatorIcon} />
           </TouchableOpacity>
@@ -228,16 +275,7 @@ class ProfileView extends React.Component {
       buttons = (
         <TouchableOpacity
           style={styles.addCoverPhotoButton}
-          onPress={() => {
-            NavActions.mediaSelectorScreen({
-              mediaType: 'photo',
-              title: 'Edit Cover Image',
-              leftTitle: 'Cancel',
-              onLeft: () => NavActions.pop(),
-              rightTitle: 'Next',
-              onSelectMedia: this._handleUpdateCoverPhoto
-            })
-          }}
+          onPress={this._selectCover}
         >
           <Icon name='camera' size={35} color={Colors.whiteAlphaPt80} style={styles.cameraIcon} />
           <Text style={{color: Colors.snow}}>EDIT COVER IMAGE</Text>
@@ -247,7 +285,7 @@ class ProfileView extends React.Component {
 
     } else if (editable === true) {
       cog = (
-        <TouchableOpacity style={styles.settingsCog} onPress={() => NavActions.settings({type: 'push'})}>
+        <TouchableOpacity style={styles.settingsCog} onPress={this._navToSettings}>
           <Icon name='cog' size={25} color={Colors.snow} />
         </TouchableOpacity>
       )
@@ -255,7 +293,7 @@ class ProfileView extends React.Component {
       buttons = (
         <TouchableOpacity
           style={styles.buttons}
-          onPress={() => NavActions.edit_profile()}>
+          onPress={this._navToEditProfile}>
           <Text style={styles.buttonsText}>EDIT PROFILE</Text>
         </TouchableOpacity>
       )
@@ -283,15 +321,18 @@ class ProfileView extends React.Component {
       cog = null
 
       buttons = (
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <TouchableOpacity
-            style={styles.buttons}
+            style={[
+              styles.buttons,
+              styles.followButton,
+              this.props.isFollowing && styles.isFollowed
+            ]}
             onPress={this.props.isFollowing ? this.props.onPressUnfollow : this.props.onPressFollow}>
             <Text style={styles.buttonsText}>{this.props.isFollowing ? 'FOLLOWING' : '+ FOLLOW'}</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.buttons}
-            onPress={() => alert('MESSAGE')}>
+            style={[styles.buttons, styles.messageButton]}>
             <Text style={styles.buttonsText}>MESSAGE</Text>
           </TouchableOpacity>
         </View>
@@ -314,7 +355,7 @@ class ProfileView extends React.Component {
           <NavBar
             title='Edit Profile'
             leftTitle='Cancel'
-            onLeft={() => NavActions.pop()}
+            onLeft={NavActions.pop}
             rightTitle='Save'
             onRight={this._onRight}
           />
@@ -339,9 +380,7 @@ class ProfileView extends React.Component {
                 {avatarCamera}
               </View>
               {!isEditing &&
-               <TouchableOpacity onPress={() => NavActions.viewBioScreen({
-                   user: this.props.user
-                 })}>
+               <TouchableOpacity onPress={this._navToViewBio}>
                   <Text style={styles.italicText}>Read Bio</Text>
                 </TouchableOpacity>
               }
@@ -349,24 +388,14 @@ class ProfileView extends React.Component {
                 <View style={styles.followersWrapper}>
                   <View style={styles.firstFollowerColumn}>
                     <TouchableOpacity
-                      onPress={() => NavActions.followersScreen({
-                        title: 'Followers',
-                        followersType: 'followers',
-                        loadDataAction: UserActions.loadUserFollowers,
-                        userId: this.props.user.id
-                      })}
+                      onPress={this._navToFollowers}
                       style={[styles.followersColumn]}>
                       <Text style={styles.followerNumber}>{formatCount(user.counts.followers)}</Text>
                       <Text style={styles.followerLabel}>Followers</Text>
                     </TouchableOpacity>
                   </View>
                   <TouchableOpacity
-                    onPress={() => NavActions.followersScreen({
-                      title: 'Following',
-                      followersType: 'following',
-                      loadDataAction: UserActions.loadUserFollowing,
-                      userId: this.props.user.id
-                    })}
+                    onPress={this._navToFollowing}
                     style={styles.followersColumn}>
                     <Text style={styles.followerNumber}>{formatCount(user.counts.following)}</Text>
                     <Text style={styles.followerLabel}>Following</Text>

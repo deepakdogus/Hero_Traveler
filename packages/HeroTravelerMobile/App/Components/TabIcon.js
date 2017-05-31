@@ -40,7 +40,7 @@ class TabIcon extends React.Component {
 
   static propTypes = {
     name: PropTypes.string,
-    style: PropTypes.object,
+    // style: PropTypes.object,
     notificationCount: PropTypes.number,
   }
 
@@ -53,10 +53,10 @@ class TabIcon extends React.Component {
           size={40}
           style={style.image || {}}
           color={'white'}
-        />  
+        />
         {this.props.name === 'activity' && this.props.notificationCount > 0 &&
           <NotificationBadge count={this.props.notificationCount} />
-        }    
+        }
       </View>
     );
   }

@@ -97,6 +97,14 @@ class CategoryFeedScreen extends React.Component {
     })
   }
 
+  _touchUser = (userId) => {
+    if (this.props.user.id === userId) {
+      NavActions.profile({type: 'jump'})
+    } else {
+      NavActions.readOnlyProfile({userId})
+    }
+  }
+
   render () {
     let { storiesById, fetchStatus, error } = this.props;
 
@@ -122,8 +130,9 @@ class CategoryFeedScreen extends React.Component {
                 storyId={storyId}
                 height={imageHeight}
                 autoPlayVideo={false}
-                allowVideoPlay={true}
+                allowVideoPlay={false}
                 onPress={() => NavActions.story({storyId})}
+                onPressUser={this._touchUser}
                 onPressLike={story => this.props.toggleLike(this.props.user.id, story.id)}
               />
             )

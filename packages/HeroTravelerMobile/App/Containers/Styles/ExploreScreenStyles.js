@@ -33,7 +33,10 @@ export default StyleSheet.create({
     flex: 1,
     fontSize: 13,
     color: Colors.snow,
-    textAlign: 'center'
+    textAlign: 'center',
+    height: 27,
+    marginLeft: 25,
+    marginRight: 25,
   },
   cancelBtn: {
     padding: Metrics.baseMargin,

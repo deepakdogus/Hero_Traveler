@@ -25,6 +25,7 @@ export default class StoryPreview extends Component {
   static propTypes = {
     onPressLike: PropTypes.func,
     onPress: PropTypes.func,
+    onPressUser: PropTypes.func,
     forProfile: PropTypes.bool,
     height: PropTypes.number,
     isLiked: PropTypes.bool,
@@ -70,6 +71,12 @@ export default class StoryPreview extends Component {
     }
   }
 
+  _touchUser = () => {
+    if (this.props.onPressUser) {
+      this.props.onPressUser(this.props.user.id)
+    }
+  }
+
   render () {
     const { story, user } = this.props
     const {
@@ -112,7 +119,7 @@ export default class StoryPreview extends Component {
             {!this.props.forProfile && <View style={styles.divider} />}
             <View style={styles.detailContainer}>
               {!this.props.forProfile && this.props.onPressUser &&
-                <TouchableOpacity onPress={() => this.props.onPressUser(userId)}>
+                <TouchableOpacity onPress={this._touchUser}>
                   {userContent}
                 </TouchableOpacity>
               }

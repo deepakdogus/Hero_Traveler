@@ -35,16 +35,16 @@ export default StyleSheet.create({
   },
   emailIcon: {
     marginTop: 16,
-    paddingLeft: 15,
+    paddingRight: 10,
   },
   emailTextStyle: {
     width: '85%',
-    textAlign: 'left',
+    textAlign: 'center',
     paddingTop: 3,
-    paddingLeft: 21,
     fontFamily: Fonts.type.base,
-    marginLeft: 0,
+    marginLeft: '-15%',
     marginRight: 0,
+    backgroundColor: 'transparent'
   },
   facebook: {
     margin: 0,
@@ -53,16 +53,16 @@ export default StyleSheet.create({
   },
   facebookIcon: {
     marginTop: 10,
-    paddingLeft: 15,
+    paddingLeft: 12,
   }, 
   facebookTextStyle: {
     width: '85%',
-    textAlign: 'left',
+    textAlign: 'center',
     paddingTop: 3,
-    paddingLeft: 25,
     fontFamily: Fonts.type.base,
-    marginLeft: 0,
-    marginRight: 0,
+    marginLeft: '-7.5%',
+    marginRight: '0%',
+    backgroundColor: 'transparent'
   },
   loginWrapper: {
     justifyContent: 'center',

@@ -101,13 +101,23 @@ export default StyleSheet.create({
     height: 32,
     marginBottom: 30,
   },
-
+  followButton: {
+    width: 110,
+    marginRight: Metrics.baseMargin
+  },
+  isFollowed: {
+    backgroundColor: 'rgba(255,255,255,.4)'
+  },
+  messageButton: {
+    width: 110,
+    marginLeft: Metrics.baseMargin
+  },
   buttonsText: {
     fontFamily: Fonts.type.montserrat,
     fontSize: 11,
     color: Colors.snow,
     lineHeight: 28,
-
+    textAlign: 'center'
   },
   cameraIcon: {
     textAlign: 'center',

@@ -40,7 +40,7 @@ export default class ExploreGrid extends Component {
           {category.selected &&
             <TabIcon 
               name='redCheck'
-              style={styles.selectedIcon}
+              style={{view: styles.selectedIcon}}
             />
           }
         </Image>

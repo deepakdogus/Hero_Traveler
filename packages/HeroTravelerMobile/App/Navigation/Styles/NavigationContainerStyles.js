@@ -45,5 +45,8 @@ export default {
   signupTopicsRight: {
     color: Colors.red,
     paddingRight: 20,
-  }
+  },
+  leftButtonIconStyle: {
+    tintColor: Colors.red,
+  },
 }

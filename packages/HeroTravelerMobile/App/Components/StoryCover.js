@@ -58,7 +58,10 @@ export default class StoryCover extends Component {
           source={{uri: getImageUrl(this.props.cover)}}
           style={[styles.image]}
         >
-          <LinearGradient colors={['transparent', 'black']} style={styles.gradient}>
+          <LinearGradient
+            colors={['transparent', '#333333']}
+            style={styles.gradient}
+          >
             {this.props.children}
           </LinearGradient>
         </Image>
@@ -160,8 +163,9 @@ const styles = StyleSheet.create({
     padding: Metrics.doubleBaseMargin,
   },
   gradient: {
-    paddingHorizontal: Metrics.doubleBaseMargin,
-    paddingVertical: Metrics.doubleBaseMargin
+    paddingHorizontal: 25,
+    paddingVertical: Metrics.doubleBaseMargin,
+    height: Metrics.screenHeight/2 - Metrics.navBarHeight,
   },
   playButton: {
     position: 'absolute',

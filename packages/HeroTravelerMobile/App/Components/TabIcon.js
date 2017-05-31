@@ -40,7 +40,10 @@ class TabIcon extends React.Component {
 
   static propTypes = {
     name: PropTypes.string,
-    style: PropTypes.object,
+    style: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.array,
+    ]),
     notificationCount: PropTypes.number,
   }
 

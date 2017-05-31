@@ -16,7 +16,8 @@ export default StyleSheet.create({
     fontWeight: "200",
     fontFamily: Fonts.type.montserrat,
     color: "white",
-    letterSpacing: 1.5
+    letterSpacing: 1.5,
+    paddingTop: 150,
   },
   subtitle: {
     fontSize: 16,
@@ -59,7 +60,8 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.crimsonText
   },
   timeSince: {
-    marginRight: Metrics.doubleBaseMargin
+    marginRight: Metrics.doubleBaseMargin,
+    fontStyle: 'italic',
   },
   tagline: {
     ...Fonts.style.h1,

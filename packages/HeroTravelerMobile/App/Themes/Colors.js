@@ -28,6 +28,7 @@ const colors = {
   facebookBlue: '#3b5998',
   redHighlights: '#ed1e2e',
   lightGreyAreas: '#eeeeee',
+  grey: '#757575',
   white: '#ffffff',
   text: '#E0D7E5',
   steel: '#CCCCCC',

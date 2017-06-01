@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
-import { ApplicationStyles, Colors, Metrics } from '../../Themes/'
+import { ApplicationStyles, Colors, Metrics, Fonts } from '../../Themes/'
 
-export default StyleSheet.create({
+export const styles = StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
     flex: 1,
@@ -29,12 +29,14 @@ export default StyleSheet.create({
     color: Colors.background
   },
   locationIcon: {
-    marginRight: Metrics.section
+    marginRight: Metrics.section,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   locationMap: {
     flex: 1,
     height: 200,
-    marginBottom: Metrics.section
+    marginBottom: 100
   },
   toolBar: {
     flex: 1,
@@ -57,5 +59,23 @@ export default StyleSheet.create({
   },
   storyContentImage: {
     marginBottom: Metrics.section
+  },
+})
+
+export const HTMLViewStyles = StyleSheet.create({
+  body: {
+    width: Metrics.screenWidth,
+  },
+  img: {
+    width: '100px',
+    maxHeight: '100px'
+  },
+  h1: {
+    fontSize: Fonts.size.h5,
+    color: Colors.background
+  },
+  div: {
+    fontSize: Fonts.size.h6,
+    color: Colors.grey,
   },
 })

@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     paddingVertical: Metrics.doubleBaseMargin,
     height: Metrics.screenHeight/2 - Metrics.navBarHeight,
+    width: Metrics.screenWidth,
   },
   videoGradient: {
     position: 'absolute',
@@ -178,7 +179,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 40,
     height: 40,
-    top: Metrics.section,
+    top: Metrics.section*2,
     right: Metrics.section,
   },
   noCover: {

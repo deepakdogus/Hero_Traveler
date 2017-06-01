@@ -13,14 +13,14 @@ export default StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    fontWeight: "200",
+    fontWeight: "700",
     fontFamily: Fonts.type.montserrat,
-    color: "white",
+    color: Colors.white,
     letterSpacing: 1.5,
     paddingTop: 150,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 21,
     color: "#e0e0e0",
     fontFamily: Fonts.type.sourceSansPro,
     letterSpacing:0.7

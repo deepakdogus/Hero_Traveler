@@ -138,6 +138,11 @@ class StoryReadingScreen extends React.Component {
                 />
               </View>
             }
+            {!!story.videoDescription &&
+              <View style={styles.videoDescription}>
+                <Text style={styles.videoDescriptionText}>{story.videoDescription}</Text>
+              </View>
+            }
             {!!story.location &&
               <View style={styles.locationWrapper}>
                 <MapView

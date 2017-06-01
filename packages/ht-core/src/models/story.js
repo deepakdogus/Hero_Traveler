@@ -33,6 +33,9 @@ const StorySchema = new Schema({
   description: {
     type: String
   },
+  videoDescription: {
+    type: String
+  },
   author: {
     type: Schema.ObjectId,
     ref: UserRef,

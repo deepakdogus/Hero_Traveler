@@ -85,5 +85,16 @@ export default StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0
+  },
+  videoDescriptionWrapper: {
+    borderColor: Colors.navBarText,
+    borderWidth: 1,
+    padding: Metrics.baseMargin,
+    marginBottom: Metrics.section
+  },
+  videoDescription: {
+    height: 100,
+    color: Colors.background,
+    fontSize: 16,
   }
 })

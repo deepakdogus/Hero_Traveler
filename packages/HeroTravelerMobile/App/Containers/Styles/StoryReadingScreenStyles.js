@@ -58,4 +58,12 @@ export default StyleSheet.create({
   storyContentImage: {
     marginBottom: Metrics.section
   },
+  videoDescription: {
+    flex: 1,
+    marginHorizontal: Metrics.section,
+    marginVertical: Metrics.doubleSection,
+  },
+  videoDescriptionText: {
+    color: '#757575'
+  }
 })

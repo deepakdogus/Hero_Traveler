@@ -75,9 +75,10 @@ export default StyleSheet.create({
   	height: Metrics.tabBarHeight/1.9,
   	alignSelf: 'center',
   	marginLeft: Metrics.doubleBaseMargin,
+    minHeight: 35,
   },
   input: {
-	flex: 1,
+	   flex: 1,
     backgroundColor: Colors.snow,
     fontSize: Fonts.size.medium,
     width: '100%',
@@ -88,12 +89,13 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.navBarText,
     color: '#757575',
-    paddingLeft: 4
+    paddingLeft: 4,
+    minHeight: 35,
   },
   inputButton: {
-  	width: '18%',
+  	width: '20%',
   	height: Metrics.tabBarHeight/1.4,
-  	borderRadius: 10,
+  	borderRadius: 15,
   	marginLeft: '2%',
   },
 })

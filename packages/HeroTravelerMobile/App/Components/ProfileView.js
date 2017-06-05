@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import LinearGradient from 'react-native-linear-gradient'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 
-import { Colors } from '../Themes'
+import { Colors, Fonts, Metrics } from '../Themes'
 import Loader from './Loader'
 import StoryList from './StoryList'
 import ConnectedStoryPreview from '../Containers/ConnectedStoryPreview'
@@ -26,11 +26,11 @@ import Avatar from './Avatar'
 import NavBar from '../Containers/CreateStory/NavBar'
 import HeroAPI from '../Services/HeroAPI'
 import pathAsFileObject from '../Lib/pathAsFileObject'
+import TabIcon from './TabIcon'
 
 // @TODO UserActions shouldn't be in a component
 import UserActions from '../Redux/Entities/Users'
 import isTooltipComplete, {Types as TooltipTypes} from '../Lib/firstTimeTooltips'
-import Metrics from '../Themes/Metrics'
 
 const api = HeroAPI.create()
 
@@ -247,17 +247,18 @@ class ProfileView extends React.Component {
       name = (
         <View style={styles.nameWrapper}>
           <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-           <TextInput
-             placeholder={user.username}
-             value={this.state.usernameText}
-             autoCapitalize='none'
-             style={styles.titleText}
-             onChangeText={this._setText}
-             maxLength={20}
-             returnKeyType={'done'}
-           />
-          <Icon style={{paddingTop: 2}} name='pencil' size={12} color={Colors.snow} />
+            <TextInput
+              placeholder={user.username}
+              value={this.state.usernameText}
+              autoCapitalize='none'
+              style={styles.titleText}
+              onChangeText={this._setText}
+              maxLength={20}
+              returnKeyType={'done'}
+            />
+          <TabIcon name='pencil'/>
           </View>
+          <View style={styles.inputUnderLine}/>
         </View>
       )
 
@@ -278,7 +279,7 @@ class ProfileView extends React.Component {
           onPress={this._selectCover}
         >
           <Icon name='camera' size={35} color={Colors.whiteAlphaPt80} style={styles.cameraIcon} />
-          <Text style={{color: Colors.snow}}>EDIT COVER IMAGE</Text>
+          <Text style={styles.editCoverText}>EDIT COVER IMAGE</Text>
         </TouchableOpacity>
       )
 
@@ -413,10 +414,10 @@ class ProfileView extends React.Component {
           </Image>
           {isEditing &&
            <View style={{margin: Metrics.section}}>
-             <Text style={{fontWeight: '900', fontSize: 16, marginVertical: Metrics.baseMargin}}>Edit Bio</Text>
+             <Text style={styles.editBio}>Edit Bio</Text>
              <TextInput
                ref={c => this.bioInput = c}
-               style={{height: 150, fontSize: 16, color: '#757575'}}
+               style={[styles.bioText, {height: 150}]}
                multiline={true}
                editable={true}
                onChangeText={(text) => this.setState({bioText: text})}

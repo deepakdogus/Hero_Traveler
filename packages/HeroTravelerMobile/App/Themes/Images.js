@@ -42,6 +42,7 @@ const images = {
   iconArrowLeft: require('../Images/ht-icons/icon_arrow_left.png'),
   iconArrowRightRed: require('../Images/ht-icons/icon_arrow_right_red.png'),
   iconArrowLeftRed: require('../Images/ht-icons/icon_arrow_left_red.png'),
+  iconGear: require('../Images/ht-icons/icon_profile-gear@2x.png'),
 }
 
 export default images

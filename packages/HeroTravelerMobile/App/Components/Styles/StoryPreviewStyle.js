@@ -40,8 +40,9 @@ export default StyleSheet.create({
     justifyContent: "space-between"
   },
   row: {
+    flex: 1,
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center"
   },
   avatar: {

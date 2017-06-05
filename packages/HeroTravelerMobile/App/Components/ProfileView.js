@@ -26,6 +26,7 @@ import Avatar from './Avatar'
 import NavBar from '../Containers/CreateStory/NavBar'
 import HeroAPI from '../Services/HeroAPI'
 import pathAsFileObject from '../Lib/pathAsFileObject'
+import TabIcon from './TabIcon'
 
 // @TODO UserActions shouldn't be in a component
 import UserActions from '../Redux/Entities/Users'
@@ -138,6 +139,27 @@ class ProfileView extends React.Component {
           }}>
           </View>
       </TouchableOpacity>
+    )
+  }
+
+  renderStory(storyId) {
+    return (
+      <ConnectedStoryPreview
+        forProfile={true}
+        editable={this.props.editable}
+        touchTrash={this.props.touchTrash}
+        touchEdit={this.props.touchEdit}
+        titleStyle={styles.storyTitleStyle}
+        subtitleStyle={styles.subtitleStyle}
+        allowVideoPlay={true}
+        autoPlayVideo={false}
+        showLike={this.props.showLike}
+        key={storyId}
+        height={this.props.hasTabbar ? 177 : 177 + Metrics.tabBarHeight}
+        storyId={storyId}
+        onPress={() => NavActions.story({storyId})}
+        onPressLike={story => alert(`Story ${storyId} liked`)}
+      />
     )
   }
 
@@ -286,7 +308,15 @@ class ProfileView extends React.Component {
     } else if (editable === true) {
       cog = (
         <TouchableOpacity style={styles.settingsCog} onPress={this._navToSettings}>
-          <Icon name='cog' size={25} color={Colors.snow} />
+          <TabIcon
+            name='gear'
+            style={{
+              image: {
+                height: 23,
+                width: 23,
+                tintColor: 'white',
+              }
+            }}></TabIcon>
         </TouchableOpacity>
       )
 
@@ -342,9 +372,7 @@ class ProfileView extends React.Component {
           <Tab selected={false} text='STORIES' />
         </View>
       )
-
       avatarCamera = null;
-
     }
 
     const gradientStyle = profileImage ? ['rgba(0,0,0,.6)', 'transparent', 'rgba(0,0,0,.6)'] : ['transparent', 'rgba(0,0,0,.6)']
@@ -432,54 +460,14 @@ class ProfileView extends React.Component {
               <StoryList
                 storiesById={stories}
                 refreshing={false}
-                renderStory={(storyId) => {
-                  // @TODO fix me magic number: 222
-                  return (
-                    <ConnectedStoryPreview
-                      forProfile={true}
-                      editable={editable}
-                      touchTrash={this.props.touchTrash}
-                      touchEdit={this.props.touchEdit}
-                      titleStyle={styles.storyTitleStyle}
-                      subtitleStyle={styles.subtitleStyle}
-                      allowVideoPlay={false}
-                      autoPlayVideo={false}
-                      showLike={this.props.showLike}
-                      key={storyId}
-                      height={this.props.hasTabbar ? 222 : 222 + Metrics.tabBarHeight}
-                      storyId={storyId}
-                      onPress={() => NavActions.story({storyId})}
-                      onPressLike={story => alert(`Story ${storyId} liked`)}
-                    />
-                  )
-                }}
+                renderStory={(storyId) => this.renderStory(storyId, this)}
               />
             }
             {this.state.selectedTab === TabTypes.drafts && drafts.length > 0 &&
               <StoryList
                 storiesById={drafts}
                 refreshing={false}
-                renderStory={(storyId) => {
-                  // @TODO fix me magic number: 222
-                  return (
-                    <ConnectedStoryPreview
-                      forProfile={true}
-                      editable={editable}
-                      touchTrash={this.props.touchTrash}
-                      touchEdit={this.props.touchEdit}
-                      titleStyle={styles.storyTitleStyle}
-                      subtitleStyle={styles.subtitleStyle}
-                      allowVideoPlay={false}
-                      autoPlayVideo={false}
-                      showLike={this.props.showLike}
-                      key={storyId}
-                      height={this.props.hasTabbar ? 222 : 222 + Metrics.tabBarHeight}
-                      storyId={storyId}
-                      onPress={() => NavActions.story({storyId})}
-                      onPressLike={story => alert(`Story ${storyId} liked`)}
-                    />
-                  )
-                }}
+                renderStory={(storyId) => this.renderStory(storyId, this)}
               />
             }
             {this.state.selectedTab === TabTypes.stories && fetchStatus.loaded && stories.length === 0 &&

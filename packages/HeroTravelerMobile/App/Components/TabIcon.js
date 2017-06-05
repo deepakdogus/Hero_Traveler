@@ -10,6 +10,8 @@ class TabIcon extends React.Component {
 
   getIconName(navKey) {
     switch (navKey) {
+      case 'gear':
+        return Images.iconGear
       case 'arrowRight':
         return Images.iconArrowRight
       case 'arrowLeft':

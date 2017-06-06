@@ -58,7 +58,10 @@ export default class StoryCover extends Component {
           source={{uri: getImageUrl(this.props.cover)}}
           style={[styles.image]}
         >
-          <LinearGradient colors={['transparent', 'black']} style={styles.gradient}>
+          <LinearGradient
+            colors={['transparent', '#333333']}
+            style={styles.gradient}
+          >
             {this.props.children}
           </LinearGradient>
         </Image>
@@ -95,11 +98,12 @@ export default class StoryCover extends Component {
         />
         <TouchableWithoutFeedback
           onPress={this._tapVideoWrapper}>
-          <View style={[
-            styles.videoChildren
-          ]}>
+          <LinearGradient
+            colors={['transparent', '#333333']}
+            style={[styles.gradient, styles.videoGradient]}
+          >
             {this.props.children}
-          </View>
+          </LinearGradient>
         </TouchableWithoutFeedback>
         {this.props.allowVideoPlay && <PlayButton
           onPress={() => this.player.toggle()}
@@ -152,16 +156,15 @@ const styles = StyleSheet.create({
   videoWrapper: {
     flex: 1,
   },
-  videoChildren: {
-    // zIndex: 10,
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "flex-end",
-    padding: Metrics.doubleBaseMargin,
-  },
   gradient: {
-    paddingHorizontal: Metrics.doubleBaseMargin,
-    paddingVertical: Metrics.doubleBaseMargin
+    paddingHorizontal: 25,
+    paddingVertical: Metrics.doubleBaseMargin,
+    height: Metrics.screenHeight/2 - Metrics.navBarHeight,
+    width: Metrics.screenWidth,
+  },
+  videoGradient: {
+    position: 'absolute',
+    bottom: 0
   },
   playButton: {
     position: 'absolute',
@@ -169,14 +172,14 @@ const styles = StyleSheet.create({
     height: 100,
     top: '50%',
     left: '50%',
-    marginTop: -50,
-    marginLeft: -50
+    marginTop: -40,
+    marginLeft: -40,
   },
   muteButton: {
     position: 'absolute',
     width: 40,
     height: 40,
-    top: Metrics.section,
+    top: Metrics.section*2,
     right: Metrics.section,
   },
   noCover: {

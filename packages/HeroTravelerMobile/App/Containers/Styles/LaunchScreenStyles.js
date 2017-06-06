@@ -36,13 +36,14 @@ export default StyleSheet.create({
   emailIcon: {
     marginTop: 16,
     paddingRight: 10,
+    paddingLeft: 10,
   },
   emailTextStyle: {
     width: '85%',
     textAlign: 'center',
     paddingTop: 3,
     fontFamily: Fonts.type.base,
-    marginLeft: '-15%',
+    marginLeft: '-12%',
     marginRight: 0,
     backgroundColor: 'transparent'
   },
@@ -53,14 +54,14 @@ export default StyleSheet.create({
   },
   facebookIcon: {
     marginTop: 10,
-    paddingLeft: 12,
+    paddingLeft: 22,
   }, 
   facebookTextStyle: {
     width: '85%',
     textAlign: 'center',
     paddingTop: 3,
     fontFamily: Fonts.type.base,
-    marginLeft: '-7.5%',
+    marginLeft: '-5%',
     marginRight: '0%',
     backgroundColor: 'transparent'
   },

@@ -1,6 +1,7 @@
 import React from 'react'
 import {View, Animated, StyleSheet, TouchableWithoutFeedback} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import TabIcon from './TabIcon'
 import Video from 'react-native-video'
 
 import Colors from '../Themes/Colors'
@@ -23,11 +24,24 @@ const VideoButton = ({size, icon, onPress, style = {}}) => {
           justifyContent: 'center',
         }}
       >
+        { !(icon === 'audio-off' || icon === 'audio-on') &&
         <Icon
           name={icon}
           size={sizeUnits / 2}
           color={Colors.snow}
         />
+        }
+        { (icon === 'audio-off' || icon === 'audio-on') &&
+          <TabIcon
+            style={{
+              image: {
+                width: 15,
+                height: 15,
+              }
+            }}
+            name={icon}
+          />
+        }
       </View>
     </TouchableWithoutFeedback>
   )
@@ -54,7 +68,7 @@ export const MuteButton = ({onPress, isMuted, style = {}}) => {
     <View style={style}>
       <VideoButton
         size='small'
-        icon={isMuted ? 'volume-off' : 'volume-up'}
+        icon={isMuted ? 'audio-off' : 'audio-on'}
         onPress={onPress}
       />
     </View>

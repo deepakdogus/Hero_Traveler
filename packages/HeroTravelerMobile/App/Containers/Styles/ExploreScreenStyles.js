@@ -50,6 +50,7 @@ export default StyleSheet.create({
   titleWrapper: {
     flex: 1,
     marginVertical: Metrics.doubleBaseMargin,
+    marginTop: 13.5,
     justifyContent: 'center',
     alignItems: 'center'
   },

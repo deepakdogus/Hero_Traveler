@@ -10,6 +10,24 @@ class TabIcon extends React.Component {
 
   getIconName(navKey) {
     switch (navKey) {
+      case 'audio-on':
+        return Images.iconAudioOn
+      case 'audio-off':
+        return Images.iconAudioOff
+      case 'like':
+        return Images.iconLike
+      case 'like-active':
+        return Images.iconLikeActive
+      case 'comment':
+        return Images.iconComment
+      case 'bookmark':
+        return Images.iconBookmark
+      case 'bookmark-active':
+        return Images.iconBookmarkActive
+      case 'share':
+        return Images.iconShare
+      case 'location':
+        return Images.iconLocation
       case 'arrowRight':
         return Images.iconArrowRight
       case 'arrowLeft':
@@ -40,7 +58,10 @@ class TabIcon extends React.Component {
 
   static propTypes = {
     name: PropTypes.string,
-    // style: PropTypes.object,
+    style: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.array,
+    ]),
     notificationCount: PropTypes.number,
   }
 

@@ -26,7 +26,6 @@ export default class Activity extends Component {
       createdAt,
       seen,
     } = this.props
-
     return (
       <View style={styles.root}>
         <TouchableOpacity
@@ -110,6 +109,7 @@ const styles = StyleSheet.create({
     marginHorizontal: Metrics.baseMargin
   },
   actionUserText: {
-    fontWeight: 'bold'
+    fontWeight: '600',
+    color: Colors.background,
   }
 })

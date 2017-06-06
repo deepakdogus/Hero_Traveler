@@ -27,6 +27,7 @@ const colors = {
   twitterBlue: '#0084b4',
   facebookBlue: '#3b5998',
   redHighlights: '#ed1e2e',
+  bioGrey: '#757575',
   lightGreyAreas: '#eeeeee',
   grey: '#757575',
   white: '#ffffff',

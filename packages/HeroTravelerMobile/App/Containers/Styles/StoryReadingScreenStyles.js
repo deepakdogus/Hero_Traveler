@@ -63,19 +63,24 @@ export const styles = StyleSheet.create({
 })
 
 export const HTMLViewStyles = StyleSheet.create({
-  body: {
-    width: Metrics.screenWidth,
-  },
   img: {
-    width: '100px',
-    maxHeight: '100px'
+    width: Metrics.screenWidth,
+    height: Metrics.screenHeight,
+    marginTop: 60,    
   },
-  h1: {
+  caption: {
+    marginBottom:60,
+    fontStyle: 'italic',
+    textAlign: 'center',
+  },
+  header: {
     fontSize: Fonts.size.h5,
-    color: Colors.background
+    color: Colors.background,
+    paddingHorizontal: 25,
   },
-  div: {
+  text: {
     fontSize: Fonts.size.h6,
     color: Colors.grey,
+    paddingHorizontal: 25,
   },
 })

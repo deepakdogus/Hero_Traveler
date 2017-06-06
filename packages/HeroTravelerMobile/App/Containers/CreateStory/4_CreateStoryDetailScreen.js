@@ -185,6 +185,7 @@ class CreateStoryDetailScreen extends React.Component {
                 placeholderTextColor={Colors.navBarText}
                 value={this.state.location}
                 onChangeText={location => this.setState({location})}
+                returnKeyType='done'
               />
             </View>
             <View style={styles.fieldWrapper} >
@@ -211,7 +212,7 @@ class CreateStoryDetailScreen extends React.Component {
               </TouchableWithoutFeedback>
             </View>
             <View style={styles.fieldWrapper}>
-              <Text style={styles.fieldLabel}>Category: </Text>
+              <Text style={styles.fieldLabel}>Activity: </Text>
               <View style={styles.radioGroup}>
                 <Radio
                   selected={this.state.type === 'eat'}

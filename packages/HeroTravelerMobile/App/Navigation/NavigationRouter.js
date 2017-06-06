@@ -300,12 +300,6 @@ export default NavActions.create(
           key='createStory_details'
           panHandlers={null}
           component={CreateStoryDetailScreen}
-          renderRightButton={(props) => {
-            return (<NavButton
-              onRight={props.onRight}
-              text='Next'
-              iconName='arrowRightRed'/>)
-          }}
         />
         <Scene
           key='createStory_tags'

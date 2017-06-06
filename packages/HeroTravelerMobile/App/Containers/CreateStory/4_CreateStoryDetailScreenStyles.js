@@ -20,11 +20,10 @@ export default StyleSheet.create({
     marginVertical: Metrics.baseMargin,
     flexDirection: 'row',
     // justifyContent: 'flex-start'
-    alignItems: 'center'
   },
   fieldLabel: {
     marginBottom: Metrics.baseMargin / 2,
-    fontSize: 12
+    fontSize: 14
   },
   fieldIcon: {
     marginRight: Metrics.doubleBaseMargin,
@@ -34,6 +33,7 @@ export default StyleSheet.create({
     flexGrow: 1,
     color: Colors.background,
     fontSize: 16,
+    marginBottom: 10,
     height: 30
   },
   tagStyle: {
@@ -45,7 +45,7 @@ export default StyleSheet.create({
   tagStyleText: {
     fontSize: 16,
     color: Colors.background,
-    marginBottom: 10
+    marginBottom: 20
   },
   radioGroup: {
     marginLeft: Metrics.section,
@@ -57,11 +57,13 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: Metrics.baseMargin / 5,
+    marginBottom: Metrics.baseMargin,
   },
   radioText: {
     marginLeft: Metrics.baseMargin,
-    fontWeight: 'bold'
+    fontWeight: '500',
+    fontSize: 16,
+
   },
   finishButtons: {
     flexDirection: 'row',

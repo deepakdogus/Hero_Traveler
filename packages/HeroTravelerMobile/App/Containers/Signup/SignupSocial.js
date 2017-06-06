@@ -13,6 +13,7 @@ import SignupActions from '../../Redux/SignupRedux'
 import UserActions from '../../Redux/Entities/Users'
 
 import RoundedButton from '../../Components/RoundedButton'
+import TabIcon from '../../Components/TabIcon'
 import Avatar from '../../Components/Avatar'
 import getImageUrl from '../../Lib/getImageUrl'
 import {Colors} from '../../Themes'
@@ -37,9 +38,13 @@ class SignupSocialScreen extends React.Component {
           <Text style={styles.sectionHeader}>FIND FRIENDS</Text>
           <View style={styles.rowWrapper}>
             <View style={styles.row}>
-              <Icon name='facebook'
-                size={25}
-                color={Colors.facebookBlue} />
+              <TabIcon
+                name='facebook'
+                style={{
+                  image: {tintColor: Colors.facebookBlue},
+                  view: {paddingHorizontal: 5.5},
+                }}
+              />
               <Text style={styles.connectSocialText}>Facebook</Text>
               <View style={styles.connectWrapper}>
                 <Text style={styles.isConnectedText}>Connected</Text>
@@ -49,7 +54,13 @@ class SignupSocialScreen extends React.Component {
           </View>
           <View style={styles.rowWrapper}>
             <View style={styles.row}>
-              <Icon name='twitter' size={25} color={Colors.twitterBlue} />
+              <TabIcon
+                name='twitter'
+                style={{
+                  image: {tintColor: Colors.twitterBlue},
+                  view: {paddingHorizontal: 1},
+                }}
+              />
               <Text style={styles.connectSocialText}>Twitter</Text>
               <View style={styles.connectWrapper}>
                 <Icon name='angle-right' size={15} color={'#757575'} />
@@ -58,7 +69,7 @@ class SignupSocialScreen extends React.Component {
           </View>
           <View style={styles.rowWrapper}>
             <View style={styles.row}>
-              <Icon name='instagram' size={25} color={Colors.twitterBlue} />
+              <Icon name='instagram' size={25} color={Colors.twitterBlue} style={{paddingLeft: .5}} />
               <Text style={styles.connectSocialText}>Instagram</Text>
               <View style={styles.connectWrapper}>
                 <Icon name='angle-right' size={15} color='#757575' />

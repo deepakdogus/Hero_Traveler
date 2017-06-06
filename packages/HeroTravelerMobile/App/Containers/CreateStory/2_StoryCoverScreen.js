@@ -578,14 +578,7 @@ class StoryCoverScreen extends Component {
 
     return (
       <View style={{flex: 1}}>
-        <NavBar
-          title='Story Cover'
-          leftTitle='Cancel'
-          onLeft={this._onLeft}
-          rightTitle='Next'
-          onRight={this._onRight}
-        />
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, marginTop: Metrics.navBarHeight}}>
           {this.state.error &&
             <ShadowButton
               style={styles.errorButton}
@@ -595,6 +588,14 @@ class StoryCoverScreen extends Component {
           {this.isPhotoType() && this.renderCoverPhoto(this.state.coverImage)}
           {!this.isPhotoType() && this.renderCoverVideo(this.state.coverVideo)}
         </View>
+        <NavBar
+          style={styles.navBarStyle}
+          title='Story Cover'
+          leftTitle='Cancel'
+          onLeft={this._onLeft}
+          rightTitle='Next'
+          onRight={this._onRight}
+        />
         {this.state.updating &&
           <Loader
             style={styles.loading}

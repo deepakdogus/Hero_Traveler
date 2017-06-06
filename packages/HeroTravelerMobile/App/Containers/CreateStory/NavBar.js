@@ -44,7 +44,7 @@ export default class NavBar extends Component {
 
   render() {
     return (
-      <View style={styles.root}>
+      <View style={[styles.root, this.props.style]}>
         {this.props.leftTitle &&
           <View style={styles.left}>
             <TextButton

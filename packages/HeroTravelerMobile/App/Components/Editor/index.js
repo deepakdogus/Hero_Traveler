@@ -111,6 +111,7 @@ export default class Editor extends Component {
         </View>
         <RichTextToolbar
           onPressAddImage={this._addImage}
+          onPressAddVideo={this._addVideo}
           onPressAddLink={this._showLinkDialog}
           actions={[
             actions.setBold,
@@ -118,6 +119,7 @@ export default class Editor extends Component {
             actions.heading1,
             actions.setParagraph,
             actions.insertImage,
+            actions.insertVideo,
             // actions.insertLink,
           ]}
           iconMap={{
@@ -126,6 +128,7 @@ export default class Editor extends Component {
             [actions.heading1]: <ToolbarIcon name='header' />,
             [actions.setParagraph]: <ToolbarIcon name='paragraph' />,
             [actions.insertImage]: <ToolbarIcon name='image' />,
+            [actions.insertVideo]: <ToolbarIcon name='video-camera' />,
             // [actions.insertLink]: <ToolbarIcon name='link' />,
           }}
           getEditor={() => this.richtext}
@@ -177,6 +180,12 @@ export default class Editor extends Component {
   _addImage = (...args) => {
     if (this.props.onAddImage) {
       this.props.onAddImage(...args)
+    }
+  }
+
+  _addVideo = (...args) => {
+    if (this.props.onAddVideo) {
+      this.props.onAddVideo(...args)
     }
   }
 

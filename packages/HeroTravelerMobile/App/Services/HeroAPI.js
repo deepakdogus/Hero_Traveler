@@ -372,6 +372,14 @@ const create = () => {
     })
   }
 
+  const uploadStoryVideo = (draftId, pathToFile) => {
+    const data = new FormData()
+    data.append('video', pathToFile)
+    return api.put(`story/draft/${draftId}/video`, data, {
+      timeout: 120 * 1000
+    })
+  }
+
   const getActivity = () => {
     return api.get(`user/activity`)
       .then(response => {
@@ -441,6 +449,7 @@ const create = () => {
     uploadCoverImage,
     uploadCoverVideo,
     uploadStoryImage,
+    uploadStoryVideo,
     uploadAvatarImage,
     uploadUserCoverImage,
     removeDevice,

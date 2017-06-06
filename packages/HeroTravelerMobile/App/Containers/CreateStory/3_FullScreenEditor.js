@@ -13,6 +13,7 @@ import styles from './3_FullScreenEditorStyles'
 import pathAsFileObject from '../../Lib/pathAsFileObject'
 import getImageUrl from '../../Lib/getImageUrl'
 import HeroAPI from '../../Services/HeroAPI'
+import getVideoUrl from '../../Lib/getVideoUrl'
 
 const api = HeroAPI.create()
 
@@ -62,6 +63,7 @@ class FullScreenEditor extends React.Component {
           }}
           content={this.props.story.content}
           onAddImage={this._handlePressAddImage}
+          onAddVideo={this._handlePressAddVideo}
         />
       </View>
     )
@@ -85,12 +87,50 @@ class FullScreenEditor extends React.Component {
     }, 500)
   }
 
+  _handlePressAddVideo = () => {
+    this.editor.prepareInsert()
+    setTimeout(() => {
+      NavActions.mediaSelectorScreen({
+        type: 'push',
+        mediaType: 'video',
+        title: 'Add Video',
+        leftTitle: 'Cancel',
+        onLeft: () => {
+          NavActions.pop()
+          setTimeout(() => this.editor.restoreSelection(), 1000)
+        },
+        rightTitle: 'Next',
+        onSelectMedia: this._handleAddVideo
+      })
+    }, 500)
+  }
+
   _handleAddImage = (data) => {
     this.editor.restoreSelection()
     api.uploadStoryImage(this.props.story.id, pathAsFileObject(data))
       .then(({data: imageUpload}) => {
         this.editor.insertImage({
           src: getImageUrl(imageUpload)
+        })
+      })
+    NavActions.pop()
+  }
+
+  _handleAddVideo = (data) => {
+    this.editor.restoreSelection()
+    api.uploadStoryVideo(this.props.story.id, pathAsFileObject(data))
+      .then(({data: videoUpload}) => {
+        console.log('videoUpload', videoUpload, getVideoUrl(videoUpload))
+        this.editor.insertVideo({
+        videoAttributes: {
+            width: 320,
+            height: 240,
+            controls: true,
+            src: getVideoUrl(videoUpload),
+          },
+          sourceAttributes: {
+            // type: 'video/quicktime'
+          }
         })
       })
     NavActions.pop()

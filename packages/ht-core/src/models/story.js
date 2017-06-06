@@ -136,6 +136,7 @@ StorySchema.statics = {
       .list({
         draft: false,
         $or: [
+          {author: userId},
           {author: {$in: followingIds}},
           {category: {$in: followingIds}},
         ]

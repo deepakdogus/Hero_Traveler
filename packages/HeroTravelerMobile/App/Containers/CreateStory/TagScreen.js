@@ -21,78 +21,7 @@ import CategoryActions from '../../Redux/Entities/Categories'
 import {Metrics, Fonts, Colors} from '../../Themes/'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Loader from '../../Components/Loader'
-
-const S = StyleSheet.create({
-  root: {
-    flex: 1,
-    flexDirection: 'column',
-  },
-  content: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    marginHorizontal: Metrics.doubleBaseMargin,
-    flexDirection: 'column'
-  },
-  doneBtn: {
-    flex: 1,
-    height: Metrics.navBarHeight,
-    flexDirection: 'row',
-    paddingHorizontal: Metrics.doubleBaseMargin,
-    justifyContent: 'flex-end',
-    alignItems: 'center'
-  },
-  doneBtnText: {
-    fontFamily: Fonts.type.montserrat
-  },
-  row: {
-    padding: Metrics.baseMargin,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  rowWrapper: {
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.lightGreyAreas
-  },
-  selectedCategoryRow: {
-    backgroundColor: Colors.lightGreyAreas,
-    marginBottom: Metrics.baseMargin / 5,
-  },
-  removeCategoryIcon: {
-    marginTop: 2,
-    color: Colors.background
-  },
-  formWrapper: {
-    flex: .2,
-    flexDirection: 'row',
-    position: 'relative',
-  },
-  textInput: {
-    flexGrow: 1,
-    marginRight: 60
-  },
-  textInputWrapper: {
-    flexGrow: .7,
-    height: 35,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.lightGreyAreas,
-    marginVertical: Metrics.baseMargin / 2
-  },
-  addBtn: {
-    width: 60,
-    height: 40,
-    position: 'absolute',
-    left: -60,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  addText: {
-    flex: 1,
-    textAlign: 'center'
-  },
-  spinner: {
-    margin: Metrics.section
-  }
-})
+import styles from './TagScreenStyles'
 
 class TagScreen extends Component {
 
@@ -245,44 +174,37 @@ class TagScreen extends Component {
     })
 
     return (
-      <View style={S.root}>
+      <View style={styles.root}>
         <View style={{marginTop: Metrics.baseMargin, height: 40}}>
-          <TouchableOpacity style={S.doneBtn} onPress={this._done}>
-            <Text style={S.doneBtnText}>Done</Text>
+          <TouchableOpacity style={styles.doneBtn} onPress={this._done}>
+            <Text style={styles.doneBtnText}>Done</Text>
           </TouchableOpacity>
         </View>
-        <View style={S.content}>
-          <View style={S.formWrapper}>
-            <View style={S.textInputWrapper}>
+        <View style={styles.content}>
+          <View style={styles.formWrapper}>
+            <View style={styles.textInputWrapper}>
               <TextInput
                 ref='input'
-                style={S.textInput}
+                style={styles.textInput}
                 value={this.state.text}
-                placeholder='Type...'
+                placeholder='Add Tags'
                 onChangeText={text => this._inputChanged(text)}
                 onSubmitEditing={this._addNewCategory}
               />
             </View>
-            {!!this.state.text &&
-              <TouchableOpacity onPress={() => this._addNewCategory()}>
-                <View style={S.addBtn}>
-                  <Text style={S.addText} textAlign='center'><Icon name='plus'/>  Add</Text>
-                </View>
-              </TouchableOpacity>
-            }
           </View>
           <ScrollView style={{flexGrow: 3}}>
           {/*
             Render the selected categories
           */}
           {_.size(this.state.selectedCategories) > 0 &&
-            <View style={S.selectedCategories}>
+            <View style={styles.selectedCategories}>
               {_.map(this.state.selectedCategories, c => {
                 return (
-                  <View key={c._id || c.title} style={S.selectedCategoryRow}>
-                    <TouchableOpacity onPress={() => this._removeCategory(c)} style={[S.row, S.rowSelected]}>
+                  <View key={c._id || c.title} style={styles.selectedCategoryRow}>
+                    <TouchableOpacity onPress={() => this._removeCategory(c)} style={[styles.row, styles.rowSelected]}>
                       <Text>{c.title}</Text>
-                      <Icon name='close' size={15} style={S.removeCategoryIcon} />
+                      <Icon name='close' size={15} style={styles.removeCategoryIcon} />
                     </TouchableOpacity>
                   </View>
                 )
@@ -291,16 +213,16 @@ class TagScreen extends Component {
           }
 
           {this.state.searching &&
-            <Loader style={S.spinner} spinnerColor={Colors.blackoutTint} />
+            <Loader style={styles.spinner} spinnerColor={Colors.blackoutTint} />
           }
 
           {/* Show search results when text is present */}
           {!this.state.searching && !!this.state.text && _.size(searchResultsToShow) > 0 &&
-            <View style={S.defaultCats}>
+            <View style={styles.defaultCats}>
               {_.map(searchResultsToShow, c => {
                 return (
-                  <View key={c._id} style={S.rowWrapper}>
-                    <TouchableOpacity onPress={() => this._selectSearchCategory(c)} style={S.row}>
+                  <View key={c._id} style={styles.rowWrapper}>
+                    <TouchableOpacity onPress={() => this._selectSearchCategory(c)} style={styles.row}>
                       <Text>{c.title}</Text>
                     </TouchableOpacity>
                   </View>
@@ -311,11 +233,11 @@ class TagScreen extends Component {
 
           {/* Show default categories from mongo */}
           {!this.state.text && _.size(defaultCategoriesToShow) > 0 &&
-            <View style={S.defaultCats}>
+            <View style={styles.defaultCats}>
               {_.map(defaultCategoriesToShow, c => {
                 return (
-                  <View key={c._id} style={S.rowWrapper}>
-                    <TouchableOpacity onPress={() => this._selectDefaultCategory(c)} style={S.row}>
+                  <View key={c._id} style={styles.rowWrapper}>
+                    <TouchableOpacity onPress={() => this._selectDefaultCategory(c)} style={styles.row}>
                       <Text>{c.title}</Text>
                     </TouchableOpacity>
                   </View>

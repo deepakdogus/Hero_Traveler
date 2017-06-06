@@ -142,7 +142,7 @@ class ProfileView extends React.Component {
     )
   }
 
-  renderStory(storyId) {
+  renderStory = (storyId) => {
     return (
       <ConnectedStoryPreview
         forProfile={true}
@@ -460,14 +460,14 @@ class ProfileView extends React.Component {
               <StoryList
                 storiesById={stories}
                 refreshing={false}
-                renderStory={(storyId) => this.renderStory(storyId, this)}
+                renderStory={this.renderStory}
               />
             }
             {this.state.selectedTab === TabTypes.drafts && drafts.length > 0 &&
               <StoryList
                 storiesById={drafts}
                 refreshing={false}
-                renderStory={(storyId) => this.renderStory(storyId, this)}
+                renderStory={this.renderStory}
               />
             }
             {this.state.selectedTab === TabTypes.stories && fetchStatus.loaded && stories.length === 0 &&

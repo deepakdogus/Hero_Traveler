@@ -9,29 +9,62 @@ import StoryActions from '../Redux/Entities/Stories'
 import {isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
 import formatCount from '../Lib/formatCount'
 import ConnectedStoryPreview from './ConnectedStoryPreview'
-import {Metrics} from '../Themes'
+import {Metrics, Fonts, Colors} from '../Themes'
 import StoryReadingToolbar from '../Components/StoryReadingToolbar'
-import styles from './Styles/StoryReadingScreenStyles'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import TabIcon from '../Components/TabIcon'
+import {styles, HTMLViewStyles} from './Styles/StoryReadingScreenStyles'
 
-const htmlStyles = StyleSheet.create({
-  img: {
-    width: '100%'
-  }
-})
+function isCaption(node) {
+  return node.attribs && node.attribs.class === 'caption'
+}
 
 function renderNode(node, index, siblings, parent, defaultRenderer) {
   if (node.name === 'img') {
     const img = node.attribs
+    // dynamic marginBottom for when we do not have a caption
+    const marginBottom = (siblings[index+1] && isCaption(siblings[index+1])) ? 0 : 60
     return (
       <Image source={{uri: img.src}} resizeMode='cover'
         key={index} style={{
           width: Metrics.screenWidth - 10,
           height: Metrics.screenHeight,
-          marginLeft: -10,
+          marginLeft: -20,
+          paddingTop: 60,
+          marginBottom: marginBottom,
         }}
       />
     )
+  }
+  /*
+    first bit of text does not currently get wrapped by a div so cannot be styled
+    as a HTMLView styleSheet property - so doing manually
+  */
+  if (node.type === 'text' && !node.parent) {
+    return (<Text
+      style={{
+        fontSize: Fonts.size.h6,
+        color: Colors.grey,
+      }}
+    >
+    {node.data}</Text>)
+  }
+  // ensuring caption has bottom margin
+  if (node.type === 'tag' && node.name === 'div' && node.attribs.class === 'caption') {
+    return (<View style={{
+      width: Metrics.screenWidth - 10,
+      marginLeft: -20,
+      height: 60,
+      marginBottom:60,
+      paddingHorizontal: 20,
+    }}>
+      <Text
+        style={{
+          fontSize: Fonts.size.h6,
+          color: Colors.grey,
+          fontStyle: 'italic',
+        }}
+      >{node.children[0].data}</Text>
+    </View>)
   }
 }
 
@@ -90,7 +123,6 @@ class StoryReadingScreen extends React.Component {
 
   render () {
     const { story } = this.props;
-    const baseText = styles.storyContentText
     return (
       <View style={[styles.root]}>
         <ScrollView
@@ -117,22 +149,16 @@ class StoryReadingScreen extends React.Component {
             {!!story.content &&
               <View style={{
                 flex: 1,
-                padding: Metrics.baseMargin,
-                marginBottom: Metrics.navBarHeight
+                paddingVertical: Metrics.baseMargin,
+                paddingHorizontal: 25,
+                marginBottom: Metrics.navBarHeight,
               }}>
                 <HTMLView
                   style={{
-                    flex: 1
+                    flex: 1,
+                    paddingTop: 60
                   }}
-                  stylesheet={StyleSheet.create({
-                    body: {
-                      width: Metrics.screenWidth
-                    },
-                    img: {
-                      width: '100px',
-                      maxHeight: '100px'
-                    }
-                  })}
+                  stylesheet={HTMLViewStyles}
                   value={story.content}
                   renderNode={renderNode}
                 />
@@ -156,11 +182,10 @@ class StoryReadingScreen extends React.Component {
                 </MapView>
                 <View style={{
                   flexDirection: 'row',
-                  // alignItems: 'center',
                   marginHorizontal: Metrics.section
                 }}>
                   <View style={styles.locationIcon}>
-                    <Icon name='map-marker' color='#757575' size={25} />
+                    <TabIcon name='location'/>
                   </View>
                   <View style={{flexDirection: 'column', alignItems: 'flex-start'}}>
                     <Text style={[styles.locationLabel]}>Location:</Text>

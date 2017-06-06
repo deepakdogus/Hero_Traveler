@@ -7,7 +7,8 @@ export default StyleSheet.create({
     marginTop: Metrics.smallMargin,
     backgroundColor: Colors.transparent,
     flexDirection: 'row',
-    width: Metrics.screenWidth - Metrics.baseMargin
+    width: Metrics.screenWidth - Metrics.baseMargin,
+    height: Metrics.searchBarHeight,
   },
   searchInput: {
     flex: 5,
@@ -33,7 +34,8 @@ export default StyleSheet.create({
   cancelButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: Metrics.baseMargin
+    marginHorizontal: Metrics.baseMargin,
+    marginTop: 5,
   },
   buttonLabel: {
     color: Colors.snow,

@@ -23,7 +23,7 @@ export default class LikeComponent extends Component {
           {this.props.likes}
         </Text>
         <Icon
-          name={this.props.isLiked ? 'heart' : 'heart-o'}
+          name={'heart'}
           color={this.props.isLiked ? Colors.red : 'white'}
           size={12}
         />

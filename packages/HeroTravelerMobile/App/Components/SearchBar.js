@@ -32,6 +32,7 @@ export default class SearchBar extends React.Component {
           returnKeyType={'search'}
           autoCorrect={false}
           selectionColor={Colors.snow}
+          clearButtonMode='while-editing'
         />
         <TouchableOpacity onPress={onCancel} style={styles.cancelButton}>
           <Text style={styles.buttonLabel}>Cancel</Text>

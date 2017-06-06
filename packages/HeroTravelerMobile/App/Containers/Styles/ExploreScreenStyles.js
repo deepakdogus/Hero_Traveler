@@ -17,12 +17,12 @@ export default StyleSheet.create({
     // flexDirection: 'column',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    height: 40,
+    height: 45,
   },
   searchWrapper: {
     marginTop: Metrics.baseMargin,
     flex: 1,
-    height: 20,
+    height: Metrics.searchBarHeight,
     backgroundColor: '#424242',
     opacity: .6,
     paddingLeft: Metrics.baseMargin/2,
@@ -34,11 +34,12 @@ export default StyleSheet.create({
     fontSize: 13,
     color: Colors.snow,
     textAlign: 'center',
-    height: 27,
+    height: Metrics.searchBarHeight,
     marginLeft: 25,
     marginRight: 25,
   },
   cancelBtn: {
+    marginTop: 5,
     padding: Metrics.baseMargin,
     paddingRight: 0
   },
@@ -49,6 +50,7 @@ export default StyleSheet.create({
   titleWrapper: {
     flex: 1,
     marginVertical: Metrics.doubleBaseMargin,
+    marginTop: 13.5,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -93,16 +95,17 @@ export default StyleSheet.create({
     flex: 1
   },
   tabnav: {
-    height: 50,
+    height: 46,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: Colors.whiteAlphaPt15
+    backgroundColor: Colors.whiteAlphaPt15,
+    marginTop: 12, 
   },
   tab: {
     justifyContent: 'center',
     alignItems: 'center',
     width: '50%',
-    borderBottomWidth: 2,
+    borderBottomWidth: 3,
     borderBottomColor: Colors.clear,
   },
   tabText: {

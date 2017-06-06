@@ -70,7 +70,7 @@ class ProfileScreen extends React.Component {
         touchEdit={this._touchEdit}
         isEditing={this.props.isEditing}
         updateUser={updateUser}
-        showLike={false}
+        showLike={true}
         accessToken={accessToken}
         profileImage={getImageUrl(user.profile.cover)}
         fetchStatus={userStoriesFetchStatus}

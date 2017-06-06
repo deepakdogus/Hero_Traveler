@@ -35,7 +35,10 @@ ActivitySchema.statics = {
       user: userId
     })
     .sort({createdAt: -1})
-    .populate('fromUser')
+    .populate({
+      path: 'fromUser',
+      populate: { path: 'profile.avatar' }
+    })
     .populate('story story.coverImage story.coverVideo')
     .populate('comment')
   },

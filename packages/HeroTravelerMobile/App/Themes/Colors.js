@@ -29,6 +29,7 @@ const colors = {
   redHighlights: '#ed1e2e',
   bioGrey: '#757575',
   lightGreyAreas: '#eeeeee',
+  grey: '#757575',
   white: '#ffffff',
   text: '#E0D7E5',
   steel: '#CCCCCC',

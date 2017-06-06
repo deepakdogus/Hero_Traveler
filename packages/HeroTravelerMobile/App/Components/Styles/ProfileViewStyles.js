@@ -29,7 +29,7 @@ export default StyleSheet.create({
   },
   coverInner: {
     paddingTop: Metrics.section,
-    height: 325,
+    height: 370,
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center'

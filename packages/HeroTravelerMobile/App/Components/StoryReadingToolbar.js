@@ -1,9 +1,9 @@
 import React, {PropTypes, Component} from 'react'
 import {View, Text, TouchableOpacity} from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
 
 import {Colors} from '../Themes'
 import styles from './Styles/StoryReadingToolbarStyles'
+import TabIcon from './TabIcon'
 
 export default class StoryReadingToolbarComponent extends Component {
 
@@ -32,11 +32,7 @@ export default class StoryReadingToolbarComponent extends Component {
         >
           {this.props.likeCount || 0}
         </Text>
-        <Icon
-          name={this.props.isLiked ? 'heart' : 'heart-o'}
-          color={this.props.isLiked ? Colors.red : Colors.navBarText}
-          size={24}
-        />
+        <TabIcon name={this.props.isLiked ? 'like-active' : 'like'}/>
       </View>
     )
 
@@ -47,11 +43,7 @@ export default class StoryReadingToolbarComponent extends Component {
         >
           {this.props.commentCount || 0}
         </Text>
-        <Icon
-          name={'comment-o'}
-          color={Colors.navBarText}
-          size={24}
-        />
+        <TabIcon name={'comment'}/>
       </View>
     )
 
@@ -62,21 +54,13 @@ export default class StoryReadingToolbarComponent extends Component {
         >
           {this.props.boomarkCount || 0}
         </Text>
-        <Icon
-          name={this.props.isBookmarked ? 'bookmark' : 'bookmark-o'}
-          color={this.props.isBookmarked ? Colors.red : Colors.navBarText}
-          size={24}
-        />
+        <TabIcon name={this.props.isBookmarked ? 'bookmark-active' : 'bookmark'}/>
       </View>
     )
 
     const shareContainer = (
       <View style={styles.wrapper}>
-        <Icon
-          name={'share'}
-          color={Colors.navBarText}
-          size={24}
-        />
+        <TabIcon name={'share'}/>
       </View>
     )
 

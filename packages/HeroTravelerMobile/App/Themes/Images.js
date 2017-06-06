@@ -43,6 +43,16 @@ const images = {
   iconArrowRightRed: require('../Images/ht-icons/icon_arrow_right_red.png'),
   iconArrowLeftRed: require('../Images/ht-icons/icon_arrow_left_red.png'),
   iconPencil: require('../Images/ht-icons/icon_profile-edit-username@2x.png'),
+  iconGear: require('../Images/ht-icons/icon_profile-gear@2x.png'),
+  iconLocation: require('../Images/ht-icons/icon_details-location@2x.png'),
+  iconLike: require('../Images/ht-icons/icon_action-like@2x.png'),
+  iconLikeActive: require('../Images/ht-icons/icon_action-like-active@2x.png'),
+  iconBookmark: require('../Images/ht-icons/icon_action-bookmark@2x.png'),
+  iconBookmarkActive: require('../Images/ht-icons/icon_action-bookmark-active@2x.png'),
+  iconComment: require('../Images/ht-icons/icon_action-comment@2x.png'),
+  iconShare: require('../Images/ht-icons/icon_action-share@2x.png'),
+  iconAudioOn: require('../Images/ht-icons/icon_audio-on.png'),
+  iconAudioOff: require('../Images/ht-icons/icon_audio-off.png'),
 }
 
 export default images

@@ -25,7 +25,6 @@ export default class ThreadListItem extends Component {
       message,
       createdAt,
     } = this.props
-
     return (
       <View style={styles.root}>
         <TouchableOpacity
@@ -44,7 +43,10 @@ export default class ThreadListItem extends Component {
                 numberOfLines={2}
                 style={[
                   styles.messageText,
-                  isUnread ? {color: Colors.background} : {}
+                  isUnread ? {
+                    color: Colors.background,
+                    fontWeight: '700'
+                  } : {}
                 ]}
               >
                 {message}
@@ -85,7 +87,7 @@ const styles = StyleSheet.create({
   },
   usernameText: {
     color: Colors.background,
-    fontWeight: '800'
+    fontWeight: '600'
   },
   dateText: {
     flex: .25,

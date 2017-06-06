@@ -36,6 +36,8 @@ const images = {
   iconNavCreate: require('../Images/ht-icons/icon_nav-create@2x.png'),
   iconNavProfile: require('../Images/ht-icons/icon_nav-profile@2x.png'),
   iconLoginFacebook: require('../Images/ht-icons/icon_login-button-facebook.png'),
+  iconTwitter: require('../Images/ht-icons/icon_login-button-twitter.png'),
+  iconInstagram: require('../Images/ht-icons/icon_instagram.png'),
   iconLoginEmail: require('../Images/ht-icons/icon_login-button-email.png'),
   iconRedCheck: require('../Images/ht-icons/icon_red-check-image-selected.png'),
   iconArrowRight: require('../Images/ht-icons/icon_arrow_right.png'),

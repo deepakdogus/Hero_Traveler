@@ -172,7 +172,7 @@ class LoginScreen extends React.Component {
             <RoundedButton
               style={launchStyles.facebook}
               onPress={this.loginFinishedManager}
-              icon='loginFacebook'
+              icon='facebook'
               iconStyle={launchStyles.facebookIcon}
               text='Log in with Facebook'
               textStyle={launchStyles.facebookTextStyle}

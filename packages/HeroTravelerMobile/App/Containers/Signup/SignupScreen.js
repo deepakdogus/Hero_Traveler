@@ -19,6 +19,9 @@ import Loader from '../../Components/Loader'
 import RoundedButton from '../../Components/RoundedButton'
 import TOS from '../../Components/TosFooter'
 import styles from '../Styles/SignupScreenStyles'
+import HeroAPI from '../../Services/HeroAPI'
+
+const api = HeroAPI.create()
 
 // These should be in ht-util
 // but there appears to be a symlink bug with RN/lerna
@@ -57,6 +60,19 @@ const validate = (values) => {
   return errors
 }
 
+const asyncValidate = (values, dispatch) => {
+  return api.signupCheck(values)
+  .then(response => {
+    const {data} = response
+    const errors = {}
+    for (key in data) {
+      if (data[key]) errors[key] = `That ${key} is already taken`
+    }
+    if (Object.keys(errors).length) throw errors
+    return {}
+  })
+}
+
 class Input extends React.Component {
   render() {
     const {input, meta} = this.props
@@ -66,10 +82,12 @@ class Input extends React.Component {
           style={styles.input}
           returnKeyType={'done'}
           onChangeText={this.props.input.onChange}
+          onFocus= { val => input.onFocus(val)}
+          onBlur= { val => input.onBlur(val)}
           placeholderTextColor='white'
           {...this.props}
         />
-        {meta.touched && meta.error &&
+        {!meta.pristine && !meta.active && meta.error &&
           <View style={styles.errorView}>
             <Text style={styles.error}>{meta.error}</Text>
           </View>
@@ -101,7 +119,6 @@ class SignupScreen extends React.Component {
   // this.props.fetching
   render () {
     const {handleSubmit} = this.props
-
     return (
       <Image
         source={Images.launchBackground}
@@ -202,12 +219,14 @@ export default R.compose(
     form: 'signupForm',
     destroyOnUnmount: true,
     validate,
+    asyncValidate: asyncValidate,
+    asyncBlurFields: ['username', 'email'],
     initialValues: {
       fullName: 'Ryan W',
-      username: 'rwoody',
-      email: 'rwoody@gmail.com',
+      username: '',
+      email: '',
       password: 'ryanwood',
       confirmPassword: 'ryanwood'
-    }
+    },
   })
 )(SignupScreen)

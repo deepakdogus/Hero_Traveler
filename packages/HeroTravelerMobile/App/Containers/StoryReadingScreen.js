@@ -141,6 +141,8 @@ class StoryReadingScreen extends React.Component {
           style={[styles.scrollView]}>
           <ConnectedStoryPreview
             onPressLike={this._toggleLike}
+            showLike={false}
+            showUserInfo={true}
             onPressUser={(userId) => {
               if (this.props.user.id === userId) {
                 NavActions.profile({type: 'jump'})
@@ -148,6 +150,8 @@ class StoryReadingScreen extends React.Component {
                 NavActions.readOnlyProfile({userId})
               }
             }}
+            titleStyle={{fontWeight: '700'}}
+            gradientColors={['rgba(0,0,0,.75)', 'transparent', 'rgba(0,0,0,.75)']}
             key={story.id}
             height={Metrics.screenHeight}
             storyId={story.id}

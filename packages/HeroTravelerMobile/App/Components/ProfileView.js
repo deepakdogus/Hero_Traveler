@@ -150,8 +150,6 @@ class ProfileView extends React.Component {
         touchEdit={this.props.touchEdit}
         titleStyle={styles.storyTitleStyle}
         subtitleStyle={styles.subtitleStyle}
-        allowVideoPlay={true}
-        autoPlayVideo={false}
         showLike={this.props.showLike}
         key={storyId}
         height={this.props.hasTabbar ? 177 : 177 + Metrics.tabBarHeight}

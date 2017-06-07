@@ -120,7 +120,6 @@ class FullScreenEditor extends React.Component {
     this.editor.restoreSelection()
     api.uploadStoryVideo(this.props.story.id, pathAsFileObject(data))
       .then(({data: videoUpload}) => {
-        console.log('videoUpload', videoUpload, getVideoUrl(videoUpload))
         this.editor.insertVideo({
         videoAttributes: {
             width: 320,

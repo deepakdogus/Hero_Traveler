@@ -22,6 +22,13 @@ export default class StoryCover extends Component {
     onPress: PropTypes.func,
     autoPlayVideo: PropTypes.bool.isRequired,
     allowVideoPlay: PropTypes.bool.isRequired,
+    gradientColors: PropTypes.arrayOf(PropTypes.string)
+  }
+
+  static defaultProps = {
+    autoPlayVideo: false,
+    allowVideoPlay: false,
+    gradientColors: ['transparent', 'rgba(0,0,0,.75)']
   }
 
   constructor(props) {
@@ -59,7 +66,7 @@ export default class StoryCover extends Component {
           style={[styles.image]}
         >
           <LinearGradient
-            colors={['transparent', '#333333']}
+            colors={this.props.gradientColors}
             style={styles.gradient}
           >
             {this.props.children}
@@ -99,7 +106,7 @@ export default class StoryCover extends Component {
         <TouchableWithoutFeedback
           onPress={this._tapVideoWrapper}>
           <LinearGradient
-            colors={['transparent', '#333333']}
+            colors={this.props.gradientColors}
             style={[styles.gradient, styles.videoGradient]}
           >
             {this.props.children}
@@ -151,7 +158,8 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
+    position: 'relative'
   },
   videoWrapper: {
     flex: 1,
@@ -159,8 +167,15 @@ const styles = StyleSheet.create({
   gradient: {
     paddingHorizontal: 25,
     paddingVertical: Metrics.doubleBaseMargin,
-    height: Metrics.screenHeight/2 - Metrics.navBarHeight,
-    width: Metrics.screenWidth,
+    // height: Metrics.screenHeight/2 - Metrics.navBarHeight,
+    // width: Metrics.screenWidth,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-end'
   },
   videoGradient: {
     position: 'absolute',

@@ -62,6 +62,12 @@ class TabIcon extends React.Component {
         return Images.iconNavExplore
       case 'createStory':
         return Images.iconNavCreate
+      case 'cameraReverse':
+        return Images.iconReverseCamera
+      case 'cameraFlash':
+        return Images.iconFlashCamera
+      case 'video':
+        return Images.iconCreateMenuVideo
       case 'profile':
       default:
         return Images.iconNavProfile

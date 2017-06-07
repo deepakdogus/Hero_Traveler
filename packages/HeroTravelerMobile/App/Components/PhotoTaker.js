@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react'
 import { View, TouchableOpacity } from 'react-native'
 import Camera from 'react-native-camera'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import TabIcon from './TabIcon'
 
 import {Colors} from '../Themes'
 import styles from './Styles/PhotoTakerStyles'
@@ -84,19 +85,13 @@ class PhotoTaker extends Component {
         <View style={styles.cameraControls}>
           {this.hasFlash() &&
             <View style={[styles.cameraControl, styles.flash]}>
-              <Icon
-                color={Colors.snow}
-                name='bolt'
-                size={30} />
+              <TabIcon name='cameraFlash' />
             </View>
           }
           <TouchableOpacity onPress={() => this.setState({backCamera: !this.state.backCamera})}>
             <View
               style={[styles.cameraControl, styles.flipCamera]}>
-              <Icon
-                color={Colors.snow}
-                name='camera'
-                size={30} />
+              <TabIcon name='cameraReverse' style={{ image: { marginLeft: 3 } }}/>
             </View>
           </TouchableOpacity>
           {this.props.mediaType === 'video' &&
@@ -121,7 +116,7 @@ class PhotoTaker extends Component {
               <Icon
                 color={Colors.snow}
                 name='circle-o'
-                size={50}/>
+                size={75}/>
             </TouchableOpacity>
           </View>
         }
@@ -134,7 +129,7 @@ class PhotoTaker extends Component {
               <Icon
                 color={this.state.isRecording ? Colors.redLight : Colors.snow}
                 name={this.state.isRecording ? 'circle' : 'circle-o'}
-                size={50}/>
+                size={75}/>
             </TouchableOpacity>
           </View>
         }

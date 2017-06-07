@@ -56,7 +56,10 @@ const images = {
   iconAudioOn: require('../Images/ht-icons/icon_audio-on.png'),
   iconAudioOff: require('../Images/ht-icons/icon_audio-off.png'),
   iconDate: require('../Images/ht-icons/icon_details-date@2x.png'),
-  iconTag: require('../Images/ht-icons/icon_details-tag@2x.png')
+  iconTag: require('../Images/ht-icons/icon_details-tag@2x.png'),
+  iconReverseCamera: require('../Images/ht-icons/icon_camera-reverse@2x.png'),
+  iconFlashCamera: require('../Images/ht-icons/icon_camera-flash@2x.png'),
+  iconCreateMenuVideo: require('../Images/ht-icons/icon_create-menu-video@2x.png')
 }
 
 export default images

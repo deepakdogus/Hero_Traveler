@@ -7,6 +7,7 @@ import { Colors, Metrics } from '../Themes/'
 import SearchBar from '../Components/SearchBar'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import getImageUrl from '../Lib/getImageUrl'
 
 import API from '../Services/HeroAPI'
 import styles from './Styles/StoryCommentsScreenStyles'
@@ -90,7 +91,7 @@ class StoryCommentsScreen extends React.Component {
           {this.state.comments.map(comment => {
             return(
               <Comment
-                avatar={comment.user.profile.avatar}
+                avatar={getImageUrl(comment.user.profile.avatar)}
                 name={comment.user.profile.fullName}
                 comment={comment.content}
                 timestamp={moment(comment.createdAt).fromNow()}

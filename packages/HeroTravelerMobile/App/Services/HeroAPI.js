@@ -398,6 +398,11 @@ const create = () => {
     return api.put(`user/changePassword`, {userId, oldPassword, newPassword})
   }
 
+  const signupCheck = (vals) => {
+    const {username, email} = vals
+    return api.post('user/signupCheck', {username, email})
+  }
+
   // ------
   // STEP 3
   // ------
@@ -459,7 +464,7 @@ const create = () => {
     setActivityRead,
     deleteStory,
     changePassword,
-
+    signupCheck,
   }
 }
 

@@ -10,6 +10,30 @@ class TabIcon extends React.Component {
 
   getIconName(navKey) {
     switch (navKey) {
+      case 'pencil':
+        return Images.iconPencil
+      case 'gear':
+        return Images.iconGear
+      case 'date':
+        return Images.iconDate
+      case 'audio-on':
+        return Images.iconAudioOn
+      case 'audio-off':
+        return Images.iconAudioOff
+      case 'like':
+        return Images.iconLike
+      case 'like-active':
+        return Images.iconLikeActive
+      case 'comment':
+        return Images.iconComment
+      case 'bookmark':
+        return Images.iconBookmark
+      case 'bookmark-active':
+        return Images.iconBookmarkActive
+      case 'share':
+        return Images.iconShare
+      case 'location':
+        return Images.iconLocation
       case 'arrowRight':
         return Images.iconArrowRight
       case 'arrowLeft':
@@ -20,14 +44,20 @@ class TabIcon extends React.Component {
         return Images.iconArrowLeftRed
       case 'redCheck':
         return Images.iconRedCheck
-      case 'loginFacebook':
+      case 'facebook':
         return Images.iconLoginFacebook
+      case 'twitter':
+        return Images.iconTwitter
+      case 'instagram':
+        return Images.iconInstagram
       case 'loginEmail':
         return Images.iconLoginEmail
       case 'myFeed':
         return Images.iconNavHome
       case 'activity':
         return Images.iconNavActivity
+      case 'tag':
+        return Images.iconTag
       case 'explore':
         return Images.iconNavExplore
       case 'createStory':
@@ -40,7 +70,10 @@ class TabIcon extends React.Component {
 
   static propTypes = {
     name: PropTypes.string,
-    // style: PropTypes.object,
+    style: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.array,
+    ]),
     notificationCount: PropTypes.number,
   }
 

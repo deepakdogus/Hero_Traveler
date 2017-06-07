@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {View, Text, StyleSheet} from 'react-native'
 
 import TextButton from '../../Components/TextButton'
+import TabIcon from '../../Components/TabIcon'
 import {Metrics, Colors, Fonts} from '../../Themes'
 
 const styles = StyleSheet.create({
@@ -45,6 +46,7 @@ export default class NavBar extends Component {
   render() {
     return (
       <View style={styles.root}>
+        {this.props.leftIcon && <TabIcon style={this.props.leftIconStyle} name={this.props.leftIcon}/>}
         {this.props.leftTitle &&
           <View style={styles.left}>
             <TextButton
@@ -70,6 +72,7 @@ export default class NavBar extends Component {
             </TextButton>
           </View>
         }
+        {this.props.rightIcon && <TabIcon style={this.props.rightIconStyle} name={this.props.rightIcon}/>}
       </View>
     )
   }

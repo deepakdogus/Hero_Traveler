@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import LinearGradient from 'react-native-linear-gradient'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 
-import { Colors } from '../Themes'
+import { Colors, Fonts, Metrics } from '../Themes'
 import Loader from './Loader'
 import StoryList from './StoryList'
 import ConnectedStoryPreview from '../Containers/ConnectedStoryPreview'
@@ -26,11 +26,11 @@ import Avatar from './Avatar'
 import NavBar from '../Containers/CreateStory/NavBar'
 import HeroAPI from '../Services/HeroAPI'
 import pathAsFileObject from '../Lib/pathAsFileObject'
+import TabIcon from './TabIcon'
 
 // @TODO UserActions shouldn't be in a component
 import UserActions from '../Redux/Entities/Users'
 import isTooltipComplete, {Types as TooltipTypes} from '../Lib/firstTimeTooltips'
-import Metrics from '../Themes/Metrics'
 
 const api = HeroAPI.create()
 
@@ -141,6 +141,27 @@ class ProfileView extends React.Component {
     )
   }
 
+  renderStory = (storyId) => {
+    return (
+      <ConnectedStoryPreview
+        forProfile={true}
+        editable={this.props.editable}
+        touchTrash={this.props.touchTrash}
+        touchEdit={this.props.touchEdit}
+        titleStyle={styles.storyTitleStyle}
+        subtitleStyle={styles.subtitleStyle}
+        allowVideoPlay={true}
+        autoPlayVideo={false}
+        showLike={this.props.showLike}
+        key={storyId}
+        height={this.props.hasTabbar ? 177 : 177 + Metrics.tabBarHeight}
+        storyId={storyId}
+        onPress={() => NavActions.story({storyId})}
+        onPressLike={story => alert(`Story ${storyId} liked`)}
+      />
+    )
+  }
+
   selectTab = (tab) => {
     this.setState({selectedTab: tab}, () => {
       this.props.onSelectTab(tab)
@@ -247,17 +268,18 @@ class ProfileView extends React.Component {
       name = (
         <View style={styles.nameWrapper}>
           <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-           <TextInput
-             placeholder={user.username}
-             value={this.state.usernameText}
-             autoCapitalize='none'
-             style={styles.titleText}
-             onChangeText={this._setText}
-             maxLength={20}
-             returnKeyType={'done'}
-           />
-          <Icon style={{paddingTop: 2}} name='pencil' size={12} color={Colors.snow} />
+            <TextInput
+              placeholder={user.username}
+              value={this.state.usernameText}
+              autoCapitalize='none'
+              style={styles.titleText}
+              onChangeText={this._setText}
+              maxLength={20}
+              returnKeyType={'done'}
+            />
+          <TabIcon name='pencil'/>
           </View>
+          <View style={styles.inputUnderLine}/>
         </View>
       )
 
@@ -278,7 +300,7 @@ class ProfileView extends React.Component {
           onPress={this._selectCover}
         >
           <Icon name='camera' size={35} color={Colors.whiteAlphaPt80} style={styles.cameraIcon} />
-          <Text style={{color: Colors.snow}}>EDIT COVER IMAGE</Text>
+          <Text style={styles.editCoverText}>EDIT COVER IMAGE</Text>
         </TouchableOpacity>
       )
 
@@ -286,7 +308,15 @@ class ProfileView extends React.Component {
     } else if (editable === true) {
       cog = (
         <TouchableOpacity style={styles.settingsCog} onPress={this._navToSettings}>
-          <Icon name='cog' size={25} color={Colors.snow} />
+          <TabIcon
+            name='gear'
+            style={{
+              image: {
+                height: 23,
+                width: 23,
+                tintColor: 'white',
+              }
+            }}></TabIcon>
         </TouchableOpacity>
       )
 
@@ -342,9 +372,7 @@ class ProfileView extends React.Component {
           <Tab selected={false} text='STORIES' />
         </View>
       )
-
       avatarCamera = null;
-
     }
 
     const gradientStyle = profileImage ? ['rgba(0,0,0,.6)', 'transparent', 'rgba(0,0,0,.6)'] : ['transparent', 'rgba(0,0,0,.6)']
@@ -413,10 +441,10 @@ class ProfileView extends React.Component {
           </Image>
           {isEditing &&
            <View style={{margin: Metrics.section}}>
-             <Text style={{fontWeight: '900', fontSize: 16, marginVertical: Metrics.baseMargin}}>Edit Bio</Text>
+             <Text style={styles.editBio}>Edit Bio</Text>
              <TextInput
                ref={c => this.bioInput = c}
-               style={{height: 150, fontSize: 16, color: '#757575'}}
+               style={[styles.bioText, {height: 150}]}
                multiline={true}
                editable={true}
                onChangeText={(text) => this.setState({bioText: text})}
@@ -432,54 +460,14 @@ class ProfileView extends React.Component {
               <StoryList
                 storiesById={stories}
                 refreshing={false}
-                renderStory={(storyId) => {
-                  // @TODO fix me magic number: 222
-                  return (
-                    <ConnectedStoryPreview
-                      forProfile={true}
-                      editable={editable}
-                      touchTrash={this.props.touchTrash}
-                      touchEdit={this.props.touchEdit}
-                      titleStyle={styles.storyTitleStyle}
-                      subtitleStyle={styles.subtitleStyle}
-                      allowVideoPlay={false}
-                      autoPlayVideo={false}
-                      showLike={this.props.showLike}
-                      key={storyId}
-                      height={this.props.hasTabbar ? 222 : 222 + Metrics.tabBarHeight}
-                      storyId={storyId}
-                      onPress={() => NavActions.story({storyId})}
-                      onPressLike={story => alert(`Story ${storyId} liked`)}
-                    />
-                  )
-                }}
+                renderStory={this.renderStory}
               />
             }
             {this.state.selectedTab === TabTypes.drafts && drafts.length > 0 &&
               <StoryList
                 storiesById={drafts}
                 refreshing={false}
-                renderStory={(storyId) => {
-                  // @TODO fix me magic number: 222
-                  return (
-                    <ConnectedStoryPreview
-                      forProfile={true}
-                      editable={editable}
-                      touchTrash={this.props.touchTrash}
-                      touchEdit={this.props.touchEdit}
-                      titleStyle={styles.storyTitleStyle}
-                      subtitleStyle={styles.subtitleStyle}
-                      allowVideoPlay={false}
-                      autoPlayVideo={false}
-                      showLike={this.props.showLike}
-                      key={storyId}
-                      height={this.props.hasTabbar ? 222 : 222 + Metrics.tabBarHeight}
-                      storyId={storyId}
-                      onPress={() => NavActions.story({storyId})}
-                      onPressLike={story => alert(`Story ${storyId} liked`)}
-                    />
-                  )
-                }}
+                renderStory={this.renderStory}
               />
             }
             {this.state.selectedTab === TabTypes.stories && fetchStatus.loaded && stories.length === 0 &&

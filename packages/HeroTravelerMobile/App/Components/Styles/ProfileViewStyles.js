@@ -29,7 +29,7 @@ export default StyleSheet.create({
   },
   coverInner: {
     paddingTop: Metrics.section,
-    height: 325,
+    height: 370,
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center'
@@ -91,6 +91,11 @@ export default StyleSheet.create({
     color: Colors.snow,
     width: '50%',
     height: 30
+  },
+  inputUnderLine: {
+    width: '50%',
+    borderTopWidth: 1,
+    borderColor: Colors.snow,
   },
   buttons: {
     backgroundColor: 'rgba(0,0,0,.25)',
@@ -183,6 +188,22 @@ export default StyleSheet.create({
     fontSize: 13,
     letterSpacing: .7,
     fontWeight: '300'
+  },
+  editCoverText: {
+    color: Colors.snow,
+    fontFamily: Fonts.type.montserrat,
+  },
+  editBio: {
+    fontWeight: '600',
+    fontSize: 16,
+    marginVertical: Metrics.baseMargin
+  },
+  bioText: {
+    fontFamily: Fonts.type.sourceSansPro,
+    letterSpacing: .7,
+    fontSize: 16,
+    color: Colors.bioGrey,
+    fontWeight: '300',
   },
   spinnerWrapper: {
     marginTop: Metrics.doubleSection

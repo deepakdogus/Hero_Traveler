@@ -99,7 +99,6 @@ export default class StoryPreview extends Component {
         <Text style={styles.username}>{username}</Text>
       </View>
     )
-
     return (
         <View style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}>
         <View style={styles.contentContainer}>

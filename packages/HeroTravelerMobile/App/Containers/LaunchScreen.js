@@ -142,7 +142,7 @@ class LaunchScreen extends React.Component {
           <RoundedButton
             style={styles.facebook}
             onPress={this._signupFacebook}
-            icon='loginFacebook'
+            icon='facebook'
             iconStyle={styles.facebookIcon}
             text='Sign up with Facebook'
             textStyle={styles.facebookTextStyle}

@@ -21,6 +21,8 @@ import RoundedButton from '../Components/RoundedButton'
 import TextButton from '../Components/TextButton'
 import TOS from '../Components/TosFooter'
 import styles from './Styles/LoginScreenStyles'
+// pulling launchStyles so that buttons are styled the same as launchScreen
+import launchStyles from './Styles/LaunchScreenStyles'
 import LoginActions from '../Redux/LoginRedux'
 import SignupActions from '../Redux/SignupRedux'
 
@@ -167,13 +169,13 @@ class LoginScreen extends React.Component {
                 Welcome back!
               </Text>
             </View>
-
             <RoundedButton
-              style={styles.facebook}
+              style={launchStyles.facebook}
               onPress={this.loginFinishedManager}
-              text={
-                <Text>Login with <Text style={styles.socialTextBold}>Facebook</Text></Text>
-              }
+              icon='facebook'
+              iconStyle={launchStyles.facebookIcon}
+              text='Log in with Facebook'
+              textStyle={launchStyles.facebookTextStyle}
             />
             {/*<RoundedButton
               style={styles.twitter}
@@ -217,11 +219,13 @@ class LoginScreen extends React.Component {
                 placeholder='Password' />              
             </View>
             <RoundedButton
-              style={styles.loginButton}
-              text="LOGIN"
+              style={launchStyles.email}
               onPress={this.handlePressLogin}
+              icon='loginEmail'
+              iconStyle={launchStyles.emailIcon}
+              text='LOG IN'
+              textStyle={launchStyles.emailTextStyle}
             />
-
             <TextButton
               containerStyle={styles.forgotWrapper}
               style={styles.forgot}

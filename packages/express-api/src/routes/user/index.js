@@ -28,6 +28,7 @@ import updateDevice from './deviceUpdate'
 import removeDevice from './deviceRemove'
 import verifyEmail from './verifyEmail'
 import changePassword from './changePassword'
+import signupCheck from './signupCheck'
 
 const router = express.Router()
 
@@ -176,6 +177,11 @@ router.delete(
   '/:id/device/:deviceId',
   hasValidOauth,
   endpointWrapper(removeDevice)
+)
+
+router.post('/signupCheck',
+  hasClientId,
+  endpointWrapper(signupCheck)
 )
 
 export default router

@@ -18,53 +18,63 @@ function isCaption(node) {
   return node.attribs && node.attribs.class === 'caption'
 }
 
+/*
+  - the first half of conditional statement captures initial text that is not wrapped in a div
+  - the second half of conditional captures normal divs
+*/
+function isText(node) {
+  return node.type === 'text' && !node.parent||
+  node.type === 'tag' && node.name === 'div' && !node.attribs.class
+}
+
+// - to properly apply styling we need to isolate the various elements we use
 function renderNode(node, index, siblings, parent, defaultRenderer) {
   if (node.name === 'img') {
     const img = node.attribs
     // dynamic marginBottom for when we do not have a caption
     const marginBottom = (siblings[index+1] && isCaption(siblings[index+1])) ? 0 : 60
     return (
-      <Image source={{uri: img.src}} resizeMode='cover'
-        key={index} style={{
-          width: Metrics.screenWidth - 10,
-          height: Metrics.screenHeight,
-          marginLeft: -20,
-          paddingTop: 60,
-          marginBottom: marginBottom,
-        }}
+      <Image
+        key={index}
+        source={{uri: img.src}}
+        resizeMode='cover'
+        style={[HTMLViewStyles.img, {marginBottom: marginBottom}]}
       />
     )
   }
-  /*
-    first bit of text does not currently get wrapped by a div so cannot be styled
-    as a HTMLView styleSheet property - so doing manually
-  */
-  if (node.type === 'text' && !node.parent) {
+
+  // captures normal text
+  if (isText(node)) {
+    const text = node.type === 'text' ? node.data : node.children[0].data
     return (<Text
-      style={{
-        fontSize: Fonts.size.h6,
-        color: Colors.grey,
-      }}
+      key={index}
+      style={HTMLViewStyles.text}
     >
-    {node.data}</Text>)
+      {text}
+    </Text>)
   }
+
+  // captures h1 and styles appropriately
+  if (node.type === 'tag' && node.name === 'h1') {
+    return (
+      <Text
+        key={index}
+        style={HTMLViewStyles.header}
+      >
+        {node.children[0].data}
+      </Text>)
+  }
+
   // ensuring caption has bottom margin
   if (node.type === 'tag' && node.name === 'div' && node.attribs.class === 'caption') {
-    return (<View style={{
-      width: Metrics.screenWidth - 10,
-      marginLeft: -20,
-      height: 60,
-      marginBottom:60,
-      paddingHorizontal: 20,
-    }}>
+    return (
       <Text
-        style={{
-          fontSize: Fonts.size.h6,
-          color: Colors.grey,
-          fontStyle: 'italic',
-        }}
-      >{node.children[0].data}</Text>
-    </View>)
+        key={index}
+        style={[HTMLViewStyles.text, HTMLViewStyles.caption]}
+      >
+        node.children[0].data}
+      </Text>
+    )
   }
 }
 
@@ -150,7 +160,6 @@ class StoryReadingScreen extends React.Component {
               <View style={{
                 flex: 1,
                 paddingVertical: Metrics.baseMargin,
-                paddingHorizontal: 25,
                 marginBottom: Metrics.navBarHeight,
               }}>
                 <HTMLView
@@ -158,7 +167,6 @@ class StoryReadingScreen extends React.Component {
                     flex: 1,
                     paddingTop: 60
                   }}
-                  stylesheet={HTMLViewStyles}
                   value={story.content}
                   renderNode={renderNode}
                 />

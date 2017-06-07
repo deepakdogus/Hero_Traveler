@@ -18,6 +18,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import StoryEditActions, {isCreated, isPublishing} from '../../Redux/StoryCreateRedux'
 import {Colors, Metrics} from '../../Themes'
 import Loader from '../../Components/Loader'
+import TabIcon from '../../Components/TabIcon'
 import RoundedButton from '../../Components/RoundedButton'
 import RenderTextInput from '../../Components/RenderTextInput'
 import NavBar from './NavBar'
@@ -37,6 +38,36 @@ const Radio = ({text, onPress, name, selected}) => {
       </View>
     </TouchableWithoutFeedback>
   )
+}
+
+/* note that the icon style objects below are separate because they must be a must
+be a plain objects instead of stylesheets */
+
+const locationIconStyle = {
+  image: {
+    marginRight: Metrics.doubleBaseMargin,
+    marginBottom: Metrics.baseMargin,
+    width: 14,
+    height: 22,
+  }
+}
+
+const dateIconStyle = {
+  image: {
+    marginRight: Metrics.doubleBaseMargin,
+    marginBottom: Metrics.baseMargin,
+    width: 18,
+    height: 18,
+  }
+}
+
+const tabIconStyle = {
+  image: {
+    marginRight: Metrics.doubleBaseMargin,
+    marginBottom: Metrics.baseMargin,
+    width: 18,
+    height: 18
+  }
 }
 
 
@@ -133,15 +164,19 @@ class CreateStoryDetailScreen extends React.Component {
       <View style={{flex: 1, position: 'relative'}}>
           <NavBar
             title='Story Details'
+            leftIcon='arrowLeft'
+            leftIconStyle={{image: { marginLeft: 10, paddingRight: -10, height: 15, width: 15 } }}
             leftTitle='Back'
             onLeft={this._onLeft}
             rightTitle={this.isDraft() ? 'Publish' : 'Save'}
             onRight={() => this._onRight()}
+            rightTextStyle={{color: Colors.red}}
+
           />
           <ScrollView style={styles.root}>
             <Text style={styles.title}>{this.props.story.title} Details </Text>
             <View style={styles.fieldWrapper}>
-              <Icon name='map-marker' size={18} color='#424242' style={styles.fieldIcon} />
+              <TabIcon name='location' style={locationIconStyle} />
               <TextInput
                 name='location'
                 component={RenderTextInput}
@@ -150,10 +185,11 @@ class CreateStoryDetailScreen extends React.Component {
                 placeholderTextColor={Colors.navBarText}
                 value={this.state.location}
                 onChangeText={location => this.setState({location})}
+                returnKeyType='done'
               />
             </View>
             <View style={styles.fieldWrapper} >
-              <Icon name='calendar' size={18} color='#424242' style={styles.fieldIcon} />
+              <TabIcon name='date' style={dateIconStyle} />
               <TouchableHighlight
                 onPress={() => this._setModalVisible(true)}
               >
@@ -161,7 +197,7 @@ class CreateStoryDetailScreen extends React.Component {
               </TouchableHighlight>
             </View>
             <View style={styles.fieldWrapper}>
-              <Icon name='tag' size={18} color='#424242' style={styles.fieldIcon} />
+              <TabIcon name='tag' style={tabIconStyle} />
               <TouchableWithoutFeedback
                 onPress={() => NavActions.createStory_tags({
                   onDone: this._receiveCategories,
@@ -176,7 +212,7 @@ class CreateStoryDetailScreen extends React.Component {
               </TouchableWithoutFeedback>
             </View>
             <View style={styles.fieldWrapper}>
-              <Text style={styles.fieldLabel}>Category: </Text>
+              <Text style={styles.fieldLabel}>Activity: </Text>
               <View style={styles.radioGroup}>
                 <Radio
                   selected={this.state.type === 'eat'}
@@ -197,25 +233,6 @@ class CreateStoryDetailScreen extends React.Component {
                 />
               </View>
             </View>
-            {this.isDraft() &&
-              <View style={styles.finishButtons}>
-                <RoundedButton
-                  style={[
-                    styles.finishButton,
-                    {marginRight: Metrics.section},
-                    styles.draftButton
-                  ]}
-                  textStyle={styles.draftButtonText}
-                  onPress={this._update}
-                  text='Save Draft'
-                />
-                <RoundedButton
-                  style={styles.finishButton}
-                  onPress={this._onRight}
-                  text='Publish'
-                />
-              </View>
-            }
             {!this.isDraft() &&
               <View style={styles.finishButtons}>
                 <RoundedButton

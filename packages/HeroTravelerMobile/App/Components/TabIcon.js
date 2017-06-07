@@ -14,6 +14,8 @@ class TabIcon extends React.Component {
         return Images.iconPencil
       case 'gear':
         return Images.iconGear
+      case 'date':
+        return Images.iconDate
       case 'audio-on':
         return Images.iconAudioOn
       case 'audio-off':
@@ -54,6 +56,8 @@ class TabIcon extends React.Component {
         return Images.iconNavHome
       case 'activity':
         return Images.iconNavActivity
+      case 'tag':
+        return Images.iconTag
       case 'explore':
         return Images.iconNavExplore
       case 'createStory':

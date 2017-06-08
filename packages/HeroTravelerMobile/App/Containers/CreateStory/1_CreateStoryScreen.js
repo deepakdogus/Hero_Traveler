@@ -27,6 +27,7 @@ class CreateStoryScreen extends Component {
     this.api.setAuth(this.props.accessToken)
     this.state = {
       uploading: false,
+      video: false,
       videoSelected: false
     }
   }
@@ -41,7 +42,7 @@ class CreateStoryScreen extends Component {
 
   componentWillReceiveProps(nextProps) {
     // Once a draft is created, move to media selector
-    if (!this.props.hasDraft && nextProps.hasDraft && !this.props.navigatedFromProfile && !this.state.videoSelected) {
+    if (!this.props.hasDraft && nextProps.hasDraft && !this.props.navigatedFromProfile && this.state.video && !this.state.videoSelected) {
       NavActions.mediaSelectorScreen({
         mediaType: 'video',
         title: 'Create Video',
@@ -69,7 +70,6 @@ class CreateStoryScreen extends Component {
           })
         })
     })
-
   }
 
   _createVideo = () => {
@@ -129,7 +129,7 @@ class CreateStoryScreen extends Component {
             />
           </TouchableOpacity>
         </View>
-        {this.state.uploading &&
+        {true || this.state.uploading &&
           <Loader
             style={styles.loading}
             text='Saving progress...'

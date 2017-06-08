@@ -6,6 +6,10 @@ const third = (1 / 3) * (Metrics.screenHeight - Metrics.navBarHeight * 2)
 export const placeholderColor = Colors.background
 
 export default StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    backgroundColor: Colors.lightGreyAreas,
+  },
   containerWithNavbar: {
     ...ApplicationStyles.screen.containerWithNavbar
   },
@@ -38,20 +42,33 @@ export default StyleSheet.create({
   },
   titleInput: {
     ...Fonts.style.title,
-    color: '#1a1c21',
+    color: Colors.snow,
     marginTop: 20,
     marginLeft: 20,
-    height: 28,
+    height: 34,
     fontSize: 28,
   },
   subTitleInput: {
+    color: Colors.snow,
     height: 28,
     fontSize: 14,
     marginLeft: 20
   },
   cameraIcon: {
-    textAlign: 'center',
-    marginBottom: Metrics.baseMargin
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: Metrics.baseMargin,
+  },
+  cameraIconImage: {
+    tintColor: 'gray',
+    height: 32,
+    width: 40,
+  },
+  videoIconImage: {
+    tintColor: 'gray',
+    height: 31,
+    width: 51,
   },
   colorOverLay: {
     backgroundColor: Colors.windowTint,
@@ -91,7 +108,7 @@ export default StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    flex: 1
+    flex: 1,
   },
   coverVideo: {
     position: 'absolute',
@@ -99,7 +116,11 @@ export default StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    flex: 1
+    flex: 1,
+  },
+  coverPhotoText: {
+    fontFamily: Fonts.type.montserrat,
+    fontSize: 13,
   },
   iconButton: {
     backgroundColor: Colors.clear

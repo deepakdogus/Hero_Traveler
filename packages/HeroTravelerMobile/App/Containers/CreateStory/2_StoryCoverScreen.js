@@ -30,6 +30,7 @@ import pathAsFileObject from '../../Lib/pathAsFileObject'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Lib/firstTimeTooltips'
 import RoundedButton from '../../Components/RoundedButton'
 import UserActions from '../../Redux/Entities/Users'
+import TabIcon from '../../Components/TabIcon'
 
 const api = API.create()
 
@@ -210,13 +211,13 @@ class StoryCoverScreen extends Component {
       R.identity,
       R.always('white'),
       R.always(baseColor)
-    )(!!this.state.coverImage)
+    )(!!(this.state.coverImage || this.state.coverVideo))
   }
 
   _onLeft = () => {
     const isDraft = this.props.story.draft === true
-    const title = isDraft ? 'Cancel Draft' : 'Cancel Edits'
-    const message = isDraft ? 'Do you want to save this draft?' : 'Do you want to save these edits?'
+    const title = isDraft ? 'Save Draft' : 'Save Edits'
+    const message = isDraft ? 'Do you want to save this story draft before you go?' : 'Do you want to save these edits before you go?'
 
     // When a user cancels the draft flow, remove the draft
     Alert.alert(
@@ -372,9 +373,10 @@ class StoryCoverScreen extends Component {
 
   _contentAddCover = () => {
     this.setState({error: null})
+    const mediaType = this.getMediaType()
     NavActions.mediaSelectorScreen({
-      mediaType: this.getMediaType(),
-      title: 'Add a Cover',
+      mediaType: mediaType,
+      title: `Add ${mediaType === 'video' ? 'a Video' : 'an Image'}`,
       leftTitle: 'Cancel',
       onLeft: () => NavActions.pop(),
       rightTitle: 'Next',
@@ -387,6 +389,7 @@ class StoryCoverScreen extends Component {
   }
 
   renderContent () {
+    const icon = this.getIcon()
     return (
       <KeyboardAvoidingView behavior='position'>
         <View style={this.hasNoCover() ? styles.lightGreyAreasBG : null}>
@@ -397,8 +400,11 @@ class StoryCoverScreen extends Component {
                 style={styles.addPhotoButton}
                 onPress={this._contentAddCover}
               >
-                <Icon name={this.getIcon()} size={40} color='gray' style={styles.cameraIcon} />
-                <Text style={this.renderTextColor(styles.baseTextColor)}>
+                <TabIcon name={icon} style={{
+                  view: styles.cameraIcon,
+                  image: icon === 'camera' ? styles.cameraIconImage : styles.videoIconImage,
+                }} />
+                <Text style={this.renderTextColor([styles.baseTextColor, styles.coverPhotoText])}>
                   {this.isPhotoType() ? '+ ADD COVER PHOTO' : '+ ADD COVER VIDEO'}
                 </Text>
               </TouchableOpacity>
@@ -424,7 +430,7 @@ class StoryCoverScreen extends Component {
                     <TouchableOpacity
                       onPress={this._touchChangeCover}
                       style={styles.iconButton}>
-                      <Icon name={this.getIcon()} color={Colors.snow} size={30} />
+                      <Icon name={icon} color={Colors.snow} size={30} />
                     </TouchableOpacity>
                     {this.isPhotoType() &&
                       <TouchableOpacity
@@ -436,11 +442,6 @@ class StoryCoverScreen extends Component {
                       onPress={this._touchTrash}
                       style={styles.iconButton}>
                       <Icon name='trash' color={Colors.snow} size={30} />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={this._toggleImageMenu}
-                      style={styles.iconButton}>
-                      <Icon name='close' color={Colors.snow} size={30} />
                     </TouchableOpacity>
                   </Animated.View>
                 </View>
@@ -455,6 +456,7 @@ class StoryCoverScreen extends Component {
               returnKeyType='next'
               value={this.state.title}
               onChangeText={title => this.setState({title})}
+              multiline
             />
             <TextInput
               style={this.renderTextColor(styles.subTitleInput)}
@@ -543,7 +545,7 @@ class StoryCoverScreen extends Component {
     }
 
     return (
-      <View style={{flex: 1}}>
+      <View style={styles.mainContainer}>
         <NavBar
           title='Story Cover'
           leftTitle='Cancel'

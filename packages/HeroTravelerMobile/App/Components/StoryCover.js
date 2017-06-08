@@ -99,9 +99,6 @@ export default class StoryCover extends Component {
           onIsPlayingChange={(value) => this.setState({isPlaying: value})}
           onMuteChange={val => this.setState({isMuted: val})}
           onLoad={() => this.setState({videoLoaded: true})}
-          style={[
-            this.props.videoStyle,
-          ]}
         />
         <TouchableWithoutFeedback
           onPress={this._tapVideoWrapper}>

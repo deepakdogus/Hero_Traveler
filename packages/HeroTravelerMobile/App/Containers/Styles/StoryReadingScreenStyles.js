@@ -54,6 +54,14 @@ export const styles = StyleSheet.create({
   storyContentImage: {
     marginBottom: Metrics.section
   },
+  videoDescription: {
+    flex: 1,
+    marginHorizontal: Metrics.section,
+    marginVertical: Metrics.doubleSection,
+  },
+  videoDescriptionText: {
+    color: '#757575'
+  }
 })
 
 export const HTMLViewStyles = StyleSheet.create({

@@ -45,7 +45,7 @@ export default class NavBar extends Component {
 
   render() {
     return (
-      <View style={styles.root}>
+      <View style={[styles.root, this.props.style]}>
         {this.props.leftIcon && <TabIcon style={this.props.leftIconStyle} name={this.props.leftIcon}/>}
         {this.props.leftTitle &&
           <View style={styles.left}>

@@ -29,6 +29,8 @@ import removeDevice from './deviceRemove'
 import verifyEmail from './verifyEmail'
 import changePassword from './changePassword'
 import signupCheck from './signupCheck'
+import resetPasswordRedirect from './resetPasswordRedirect'
+import verifyEmailRedirect from './verifyEmailRedirect'
 
 const router = express.Router()
 
@@ -62,6 +64,17 @@ router.get(
   '/verify-email/:token',
   hasValidOauth,
   endpointWrapper(verifyEmail)
+)
+
+router.get(
+  '/redirect-verify-email/:token',
+  hasValidOauth,
+  verifyEmailRedirect
+)
+
+router.get(
+  '/redirect-reset-password/:token',
+  resetPasswordRedirect
 )
 
 router.post('/facebook',

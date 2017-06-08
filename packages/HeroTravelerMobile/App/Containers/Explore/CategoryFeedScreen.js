@@ -129,8 +129,6 @@ class CategoryFeedScreen extends React.Component {
                 key={storyId}
                 storyId={storyId}
                 height={imageHeight}
-                autoPlayVideo={false}
-                allowVideoPlay={false}
                 onPress={() => NavActions.story({storyId})}
                 onPressUser={this._touchUser}
                 onPressLike={story => this.props.toggleLike(this.props.user.id, story.id)}

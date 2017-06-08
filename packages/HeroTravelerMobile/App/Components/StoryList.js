@@ -33,6 +33,7 @@ export default class StoryList extends React.Component {
         key={this.props.storiesById}
         dataSource={this.state.dataSource}
         pagingEnabled={true}
+        initialListSize={1}
         renderRow={this.props.renderStory}
         refreshControl={
           <RefreshControl

@@ -1,5 +1,6 @@
 import _ from 'lodash'
-import React, {PropTypes, Component} from 'react'
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {
   Text,
   TouchableOpacity,
@@ -43,13 +44,16 @@ class StoryCoverScreen extends Component {
   static propTypes = {
     mediaType: PropTypes.oneOf([MediaTypes.video, MediaTypes.photo]),
     user: PropTypes.object,
-    navigatedFromProfile: PropTypes.bool
+    navigatedFromProfile: PropTypes.bool,
+    loadStory: PropTypes.func,
+    shouldLoadStory: PropTypes.bool
   }
 
   static defaultProps = {
     mediaType: MediaTypes.photo,
     story: {},
-    navigatedFromProfile: false
+    navigatedFromProfile: false,
+    shouldLoadStory: true
   }
 
   constructor(props) {
@@ -76,9 +80,31 @@ class StoryCoverScreen extends Component {
     // Create a new draft to work with if one doesn't exist
     if (!storyId) {
       this.props.registerDraft()
-    } else {
+    } else if (this.props.shouldLoadStory) {
       this.props.loadStory(storyId)
     }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let nextState = {}
+
+    if (!this.props.story.title && nextProps.story.title) {
+      nextState.title = nextProps.story.title
+      nextState.description = nextProps.story.description
+    }
+
+    if (!this.props.story.coverVideo && nextProps.story.coverVideo) {
+      console.log('here')
+      nextState.coverVideo = getVideoUrl(nextProps.story.coverVideo)
+    }
+
+    if (!this.props.story.coverImage && nextProps.story.coverImage) {
+      nextState.coverImage = getVideoUrl(nextProps.story.coverImage)
+    }
+
+    console.log('nextState', nextState)
+
+    this.setState(nextState)
   }
 
   isPhotoType() {
@@ -297,7 +323,7 @@ class StoryCoverScreen extends Component {
 
     // If nothing has changed, let the user go forward if they navigated back
     if (nothingHasChanged) {
-      return NavActions.createStory_content()
+      this.nextScreen()
     }
 
     if (!this.isValid()) {
@@ -312,8 +338,16 @@ class StoryCoverScreen extends Component {
 
     this.saveStory()
       .then(() => {
-        NavActions.createStory_content()
+        this.nextScreen()
       })
+  }
+
+  nextScreen() {
+    if (this.isPhotoType()) {
+      NavActions.createStory_content()
+    } else {
+      NavActions.createStory_details()
+    }
   }
 
   saveStory() {
@@ -544,14 +578,7 @@ class StoryCoverScreen extends Component {
 
     return (
       <View style={{flex: 1}}>
-        <NavBar
-          title='Story Cover'
-          leftTitle='Cancel'
-          onLeft={this._onLeft}
-          rightTitle='Next'
-          onRight={this._onRight}
-        />
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, marginTop: Metrics.navBarHeight}}>
           {this.state.error &&
             <ShadowButton
               style={styles.errorButton}
@@ -561,6 +588,14 @@ class StoryCoverScreen extends Component {
           {this.isPhotoType() && this.renderCoverPhoto(this.state.coverImage)}
           {!this.isPhotoType() && this.renderCoverVideo(this.state.coverVideo)}
         </View>
+        <NavBar
+          style={styles.navBarStyle}
+          title='Story Cover'
+          leftTitle='Cancel'
+          onLeft={this._onLeft}
+          rightTitle='Next'
+          onRight={this._onRight}
+        />
         {this.state.updating &&
           <Loader
             style={styles.loading}

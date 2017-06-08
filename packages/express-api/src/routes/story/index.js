@@ -24,6 +24,7 @@ import updateDraft from './draft/update'
 import uploadDraftCoverImage from './draft/upload'
 import uploadDraftCoverVideo from './draft/upload_video'
 import uploadDraftImage from './draft/upload_story_image'
+import uploadDraftVideo from './draft/upload_story_video'
 
 
 const router = express.Router()
@@ -48,6 +49,11 @@ router.put('/draft/:id/cover-video',
   hasValidOauth,
   multer.single('video'),
   endpointWrapper(uploadDraftCoverVideo)
+)
+router.put('/draft/:id/video',
+  hasValidOauth,
+  multer.single('video'),
+  endpointWrapper(uploadDraftVideo)
 )
 router.put('/draft/:id/image',
   // hasValidOauth,

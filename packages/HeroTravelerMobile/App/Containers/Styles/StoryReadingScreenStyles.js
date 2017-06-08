@@ -51,25 +51,42 @@ export const styles = StyleSheet.create({
     backgroundColor: Colors.snow,
     paddingBottom: Metrics.tabBarHeight + Metrics.section
   },
-  storyContentText: {
-    fontSize: 18,
-    letterSpacing: .35,
-    marginHorizontal: Metrics.section,
-    marginBottom: Metrics.section
-  },
   storyContentImage: {
     marginBottom: Metrics.section
   },
+  videoDescription: {
+    flex: 1,
+    marginHorizontal: Metrics.section,
+    marginVertical: Metrics.doubleSection,
+  },
+  videoDescriptionText: {
+    color: '#757575'
+  }
 })
 
 export const HTMLViewStyles = StyleSheet.create({
   img: {
     width: Metrics.screenWidth,
     height: Metrics.screenHeight,
-    marginTop: 60,    
+    marginTop: 60,
+  },
+  videoButton: {
+    marginTop: 60,
+    position: 'relative',
+    width: Metrics.screenWidth,
+    height: 200,
+  },
+  video: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: Metrics.screenWidth,
+    height: 200,
   },
   caption: {
-    marginBottom:60,
+    marginBottom: 60,
     fontStyle: 'italic',
     textAlign: 'center',
   },
@@ -77,10 +94,11 @@ export const HTMLViewStyles = StyleSheet.create({
     fontSize: Fonts.size.h5,
     color: Colors.background,
     paddingHorizontal: 25,
+    marginBottom: Metrics.baseMargin
   },
   text: {
     fontSize: Fonts.size.h6,
     color: Colors.grey,
-    paddingHorizontal: 25,
+    paddingHorizontal: 25
   },
 })

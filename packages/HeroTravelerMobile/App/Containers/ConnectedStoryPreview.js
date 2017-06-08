@@ -9,7 +9,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     story,
     user: entities.users.entities[story.author],
-    isLiked: ownProps.editable || isStoryLiked(entities.users, userId, story.id),
+    isLiked: isStoryLiked(entities.users, userId, story.id),
     isBookmarked: isStoryBookmarked(entities.users, userId, story.id)
   }
 }

@@ -164,9 +164,11 @@ class CreateStoryDetailScreen extends React.Component {
       <View style={{flex: 1, position: 'relative'}}>
           <NavBar
             title='Story Details'
-            leftIcon='arrowLeft'
-            leftIconStyle={{image: { marginLeft: 10, paddingRight: -10, height: 15, width: 15 } }}
+            titleStyle={{marginLeft: -26}}
+            leftIcon='arrowLeftRed'
+            leftIconStyle={styles.navBarLeftIcon}
             leftTitle='Back'
+            leftTextStyle={{paddingLeft: 10}}
             onLeft={this._onLeft}
             rightTitle={this.isDraft() ? 'Publish' : 'Save'}
             onRight={() => this._onRight()}

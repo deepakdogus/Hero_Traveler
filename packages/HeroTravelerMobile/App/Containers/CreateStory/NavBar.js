@@ -4,6 +4,7 @@ import {View, Text, StyleSheet} from 'react-native'
 import TextButton from '../../Components/TextButton'
 import TabIcon from '../../Components/TabIcon'
 import {Metrics, Colors, Fonts} from '../../Themes'
+import NavButtonStyles from '../../Navigation/Styles/NavButtonStyles'
 
 const styles = StyleSheet.create({
   root: {
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: Fonts.type.montserrat,
     fontSize: 16,
-    color: Colors.navBarText,
+    color: Colors.red,
   },
   title: {
     flex: 1/3,
@@ -59,7 +60,7 @@ export default class NavBar extends Component {
         }
         {this.props.title &&
           <View style={styles.title}>
-            <Text style={[styles.text, styles.titleText]}>{this.props.title}</Text>
+            <Text style={[styles.text, styles.titleText, this.props.titleStyle || {}]}>{this.props.title}</Text>
           </View>
         }
         {this.props.rightTitle &&

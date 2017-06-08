@@ -15,6 +15,7 @@ import Video from '../Components/Video'
 import styles from './Styles/MediaSelectorScreenStyles'
 import isTooltipComplete, {Types as TooltipTypes} from '../Lib/firstTimeTooltips'
 import UserActions from '../Redux/Entities/Users'
+import NavButtonStyles from '../Navigation/Styles/NavButtonStyles'
 
 class MediaSelectorScreen extends React.Component {
 
@@ -157,7 +158,6 @@ class MediaSelectorScreen extends React.Component {
 
     let showPhotoTooltip = false;
     let showNextTooltip = false;
-
     if (this.props.user) {
       showPhotoTooltip = !isTooltipComplete(
         TooltipTypes.STORY_PHOTO_TAKE,
@@ -219,11 +219,23 @@ class MediaSelectorScreen extends React.Component {
       <View style={{flex: 1}}>
         <NavBar
           title={this.props.title}
+          titleStyle={{marginRight: -31}}
           onLeft={this.props.onLeft}
           leftTitle={this.props.leftTitle}
           onRight={this._onNext}
+          rightIcon={'arrowRightRed'}
+          rightIconStyle={{
+            image: {
+              ...NavButtonStyles.image, 
+              marginRight: 10,
+              opacity: !this.state.media ? .2 : 1,
+            }
+          }}
           rightTitle={this.props.rightTitle}
-          rightTextStyle={!this.state.media ? {opacity: .5} : {}}
+          rightTextStyle={{
+            opacity: !this.state.media ? .5 : 1,
+            paddingRight: 10,
+          }}
         />
         <View style={styles.root}>
           {content}

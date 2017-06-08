@@ -28,6 +28,9 @@ export default StyleSheet.create({
   spaceView: {
     height: third
   },
+  keyboardMargin: {
+    marginBottom: 50,
+  },
   loading: {
     position: 'absolute',
     top: 0,

@@ -15,6 +15,7 @@ import { Actions as NavActions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
 import R from 'ramda'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import LinearGradient from 'react-native-linear-gradient'
 
 import API from '../../Services/HeroAPI'
 import StoryEditActions from '../../Redux/StoryCreateRedux'
@@ -173,7 +174,12 @@ class StoryCoverScreen extends Component {
       R.identity,
       R.always((
         <Image source={{uri: coverPhoto}} style={styles.coverPhoto}>
-          {this.renderContent()}
+          <LinearGradient
+            colors={['rgba(0,0,0,.4)', 'rgba(0,0,0,.4)']}
+            style={{flex: 1}}
+          >
+            {this.renderContent()}
+          </LinearGradient>
         </Image>
       )),
       R.always(this.renderContent(coverPhoto))
@@ -376,7 +382,7 @@ class StoryCoverScreen extends Component {
     const mediaType = this.getMediaType()
     NavActions.mediaSelectorScreen({
       mediaType: mediaType,
-      title: `Add ${mediaType === 'video' ? 'a Video' : 'an Image'}`,
+      title: `Add ${mediaType === 'video' ? 'Video' : 'Image'}`,
       leftTitle: 'Cancel',
       onLeft: () => NavActions.pop(),
       rightTitle: 'Next',
@@ -391,7 +397,10 @@ class StoryCoverScreen extends Component {
   renderContent () {
     const icon = this.getIcon()
     return (
-      <KeyboardAvoidingView behavior='position'>
+      <KeyboardAvoidingView
+        behavior='position'
+        contentContainerStyle={styles.keyboardMargin}
+      >
         <View style={this.hasNoCover() ? styles.lightGreyAreasBG : null}>
           {this.hasNoCover() && <View style={styles.spaceView} />}
           {this.hasNoCover() &&
@@ -453,9 +462,9 @@ class StoryCoverScreen extends Component {
               style={this.renderTextColor(styles.titleInput)}
               placeholder='ADD A TITLE'
               placeholderTextColor={this.renderPlaceholderColor(placeholderColor)}
-              returnKeyType='next'
               value={this.state.title}
               onChangeText={title => this.setState({title})}
+              returnKeyType='done'
               multiline
             />
             <TextInput

@@ -14,10 +14,19 @@ import pathAsFileObject from '../../Lib/pathAsFileObject'
 import getImageUrl from '../../Lib/getImageUrl'
 import HeroAPI from '../../Services/HeroAPI'
 import getVideoUrl from '../../Lib/getVideoUrl'
+import Loader from '../../Components/Loader'
 
 const api = HeroAPI.create()
 
 class FullScreenEditor extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      imageUploading: false,
+      videoUploading: false,
+    }
+  }
 
   componentDidMount() {
     api.setAuth(this.props.accessToken)
@@ -33,6 +42,10 @@ class FullScreenEditor extends React.Component {
     this.saveContent().then(() => {
       NavActions.createStory_details()
     })
+  }
+
+  isUploading() {
+    return this.state.imageUploading || this.state.videoUploading
   }
 
   saveContent() {
@@ -65,6 +78,13 @@ class FullScreenEditor extends React.Component {
           onAddImage={this._handlePressAddImage}
           onAddVideo={this._handlePressAddVideo}
         />
+        {this.isUploading() &&
+          <Loader
+            style={styles.loading}
+            text={this.state.imageUploading ? 'Saving image...' : 'Saving video...'}
+            textStyle={styles.loadingText}
+            tintColor='rgba(0,0,0,.9)' />
+        }
       </View>
     )
   }
@@ -84,7 +104,7 @@ class FullScreenEditor extends React.Component {
         rightTitle: 'Next',
         onSelectMedia: this._handleAddImage
       })
-    }, 500)
+    }, 100)
   }
 
   _handlePressAddVideo = () => {
@@ -102,35 +122,39 @@ class FullScreenEditor extends React.Component {
         rightTitle: 'Next',
         onSelectMedia: this._handleAddVideo
       })
-    }, 500)
+    }, 100)
   }
 
   _handleAddImage = (data) => {
     this.editor.restoreSelection()
+    this.setState({imageUploading: true})
     api.uploadStoryImage(this.props.story.id, pathAsFileObject(data))
       .then(({data: imageUpload}) => {
         this.editor.insertImage({
           src: getImageUrl(imageUpload)
         })
+        this.setState({imageUploading: false})
       })
     NavActions.pop()
   }
 
   _handleAddVideo = (data) => {
     this.editor.restoreSelection()
+    this.setState({videoUploading: true})
     api.uploadStoryVideo(this.props.story.id, pathAsFileObject(data))
       .then(({data: videoUpload}) => {
         this.editor.insertVideo({
-        videoAttributes: {
-            width: 320,
-            height: 240,
-            controls: true,
-            src: getVideoUrl(videoUpload),
-          },
-          sourceAttributes: {
-            // type: 'video/quicktime'
-          }
+          videoAttributes: {
+              width: 320,
+              height: 240,
+              controls: true,
+              src: getVideoUrl(videoUpload),
+            },
+            sourceAttributes: {
+              // type: 'video/quicktime'
+            }
         })
+        this.setState({videoUploading: false})
       })
     NavActions.pop()
   }

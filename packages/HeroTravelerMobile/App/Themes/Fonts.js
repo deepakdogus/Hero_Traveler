@@ -13,7 +13,7 @@ const size = {
   h3: 30,
   h4: 26,
   h5: 21,
-  h6: 19,
+  h6: 18,
   input: 18,
   regular: 17,
   medium: 14,

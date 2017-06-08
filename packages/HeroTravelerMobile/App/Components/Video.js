@@ -64,6 +64,7 @@ export const PlayButton = ({videoFadeAnim, onPress, isPlaying, style = {}}) => {
 }
 
 export const MuteButton = ({onPress, isMuted, style = {}}) => {
+  console.log('isMuted', isMuted)
   return (
     <View style={style}>
       <VideoButton
@@ -79,7 +80,9 @@ export default class VideoPlayer extends React.Component {
 
   static defaultProps = {
     muted: false,
-    showPlayButton: true
+    showMuteButton: true,
+    showPlayButton: true,
+    videoFillSpace: true
   }
 
   constructor(props) {
@@ -100,7 +103,7 @@ export default class VideoPlayer extends React.Component {
 
   componentDidMount() {
     if (this.props.autoPlayVideo) {
-      this.fadeOutVideoUI(2000)
+      this.fadeOutVideoUI(1500)
     }
   }
 
@@ -136,6 +139,12 @@ export default class VideoPlayer extends React.Component {
   }
 
   _togglePlayVideo() {
+    console.log('toggle video')
+    if (!this.props.allowVideoPlay) {
+      console.log('video play not allowed')
+      return
+    }
+
     const newPlayingState = !this.state.videoPlaying
 
     // If the video ended, go to the beginning
@@ -160,13 +169,6 @@ export default class VideoPlayer extends React.Component {
 
     return this.setState({
       videoPlaying: newPlayingState
-    })
-  }
-
-  _onLoad = () => {
-    if (this.props.onLoad) this.props.onLoad(true)
-    this.setState({
-      loaded: true
     })
   }
 
@@ -197,31 +199,40 @@ export default class VideoPlayer extends React.Component {
     this.setState({muted: newMuteState})
   }
 
+  goFullscreen() {
+    this.player.presentFullscreenPlayer()
+  }
+
   render() {
     return (
-      <View style={[styles.root, this.props.style]}>
+      <View style={[
+        styles.root,
+        this.props.videoFillSpace && styles.full,
+        this.props.style
+      ]}>
         <Video
           source={{uri: this.props.path}}
           ref={i => this.player = i}
           paused={!this.state.videoPlaying}
           muted={this.state.muted}
-          style={[styles.video]}
+          style={[
+            styles.video,
+            this.props.videoFillSpace && styles.full,
+          ]}
           repeat={true}
-          onError={(err) => console.log('Video Error: ', err)}
           resizeMode='cover'
-          onLoad={this._onLoad}
         />
         {this.props.showPlayButton &&
           <PlayButton
-            style={styles.buttons}
+            style={[this.props.videoFillSpace ? styles.fullButtons : styles.buttons]}
             onPress={this._togglePlayVideo}
             isPlaying={this.state.videoPlaying}
             videoFadeAnim={this.state.videoFadeAnim} />
         }
-        {this.props.showPlayButton &&
+        {this.props.showMuteButton && this.props.showPlayButton &&
           <MuteButton
             style={styles.mute}
-            onPress={() => this.toggleMute()}
+            onPress={this.toggleMute}
             isMuted={this.state.muted}
           />
         }
@@ -233,11 +244,13 @@ export default class VideoPlayer extends React.Component {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0
+    position: 'relative',
+    justifyContent: 'center',
+    alignItems: 'center',
+    // top: 0,
+    // left: 0,
+    // right: 0,
+    // bottom: 0
   },
   video: {
     // flex: 1,
@@ -247,7 +260,21 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0
   },
+  full: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0
+  },
   buttons: {
+    width: 100,
+    height: 100,
+    position: 'absolute',
+    top: 0,
+    left: 0
+  },
+  fullButtons: {
     width: 100,
     height: 100,
     position: 'absolute',

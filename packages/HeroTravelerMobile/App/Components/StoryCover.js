@@ -33,16 +33,11 @@ export default class StoryCover extends Component {
 
   constructor(props) {
     super(props)
-    // this._togglePlayVideo = this._togglePlayVideo.bind(this)
     this._tapVideoWrapper = this._tapVideoWrapper.bind(this)
     const startVideoImmediately = props.allowVideoPlay && props.autoPlayVideo
     this.state = {
       isPlaying: startVideoImmediately,
       isMuted: __DEV__,
-      // showVideoPlayButton: props.allowVideoPlay && !startVideoImmediately,
-      // videoEnded: false,
-      // videoFadeAnim: props.allowVideoPlay ? new Animated.Value(1) : new Animated.Value(0)
-      videoLoaded: false
     }
   }
 
@@ -98,7 +93,6 @@ export default class StoryCover extends Component {
           showPlayButton={false}
           onIsPlayingChange={(value) => this.setState({isPlaying: value})}
           onMuteChange={val => this.setState({isMuted: val})}
-          onLoad={() => this.setState({videoLoaded: true})}
         />
         <TouchableWithoutFeedback
           onPress={this._tapVideoWrapper}>

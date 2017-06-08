@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import { ScrollView, Text, View, Image, StyleSheet, Animated } from 'react-native'
+import {ScrollView, Text, View, Image, Animated, TouchableOpacity} from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 import MapView from 'react-native-maps';
@@ -12,7 +12,8 @@ import ConnectedStoryPreview from './ConnectedStoryPreview'
 import {Metrics, Fonts, Colors} from '../Themes'
 import StoryReadingToolbar from '../Components/StoryReadingToolbar'
 import TabIcon from '../Components/TabIcon'
-import {styles, HTMLViewStyles} from './Styles/StoryReadingScreenStyles'
+import {styles, HTMLViewStyles, HTMLStylesheet} from './Styles/StoryReadingScreenStyles'
+import Video from '../Components/Video'
 
 function isCaption(node) {
   return node.attribs && node.attribs.class === 'caption'
@@ -29,6 +30,7 @@ function isText(node) {
 
 // - to properly apply styling we need to isolate the various elements we use
 function renderNode(node, index, siblings, parent, defaultRenderer) {
+
   if (node.name === 'img') {
     const img = node.attribs
     // dynamic marginBottom for when we do not have a caption
@@ -43,8 +45,34 @@ function renderNode(node, index, siblings, parent, defaultRenderer) {
     )
   }
 
+  if (node.name === 'video') {
+    const attrs = node.attribs
+    return (
+      <View key={index} style={styles.videoViewWrapper}>
+        <TouchableOpacity
+          style={HTMLViewStyles.videoButton}
+          onPress={() => {
+            this.video.goFullscreen()
+          }}
+        >
+          <Video
+            ref={i => this.video = i}
+            path={attrs.src}
+            style={HTMLViewStyles.video}
+            allowVideoPlay={false}
+            autoPlayVideo={false}
+            showMuteButton={false}
+            showPlayButton={true}
+            videoFillSpace={false}
+          />
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
   // captures normal text
   if (isText(node)) {
+    console.log('node is text', node)
     const text = node.type === 'text' ? node.data : node.children[0].data
     return (<Text
       key={index}
@@ -72,7 +100,7 @@ function renderNode(node, index, siblings, parent, defaultRenderer) {
         key={index}
         style={[HTMLViewStyles.text, HTMLViewStyles.caption]}
       >
-        node.children[0].data}
+        {node.children[0].data}
       </Text>
     )
   }
@@ -172,6 +200,7 @@ class StoryReadingScreen extends React.Component {
                     paddingTop: 60
                   }}
                   value={story.content}
+                  stylesheet={HTMLStylesheet}
                   renderNode={renderNode}
                 />
               </View>

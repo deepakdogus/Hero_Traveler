@@ -81,8 +81,12 @@ class CreateStoryScreen extends Component {
   }
 
   _createPhoto = () => {
-    NavActions.createStory_cover({
-      mediaType: 'photo'
+    this.setState({
+      video: false
+    }, () => {
+      NavActions.createStory_cover({
+        mediaType: 'photo'
+      })
     })
   }
 
@@ -129,10 +133,10 @@ class CreateStoryScreen extends Component {
             />
           </TouchableOpacity>
         </View>
-        {true || this.state.uploading &&
+        {this.state.uploading &&
           <Loader
             style={styles.loading}
-            text='Saving progress...'
+            text='Saving video...'
             textStyle={styles.loadingText}
             tintColor='rgba(0,0,0,.9)' />
         }

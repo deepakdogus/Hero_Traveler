@@ -588,10 +588,10 @@ class StoryCoverScreen extends Component {
       <View style={styles.mainContainer}>
         <NavBar
           title='Story Cover'
-          leftTitle='Cancel'
           onLeft={this._onLeft}
+          leftTitle='Cancel'
+          onRight={this._onRight}
           rightIcon={'arrowRightRed'}
-          rightTitle='Next'
           rightIconStyle={{
             image: {
               ...NavButtonStyles.image, 
@@ -599,11 +599,11 @@ class StoryCoverScreen extends Component {
               opacity: this.isValid() ? 1 : .2,
             }
           }}
+          rightTitle='Next'
           rightTextStyle={{
             opacity: this.isValid() ? 1 : .5,
             paddingRight: 10,
           }}
-          onRight={this._onRight}
         />
         <View style={{flex: 1}}>
           {this.state.error &&

@@ -82,7 +82,6 @@ export const MuteButton = ({onPress, isMuted, style = {}}) => {
 export default class VideoPlayer extends React.Component {
 
   static defaultProps = {
-    muted: false,
     showMuteButton: true,
     showPlayButton: true,
     videoFillSpace: true

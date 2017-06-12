@@ -192,8 +192,8 @@ class CreateStoryDetailScreen extends React.Component {
             leftTitle='Back'
             onLeft={this._onLeft}
             leftTextStyle={{paddingLeft: 10}}
-            rightTitle={this.isDraft() ? 'Publish' : 'Save'}
             onRight={() => this._onRight()}
+            rightTitle={this.isDraft() ? 'Publish' : 'Save'}
             rightTextStyle={{color: Colors.red}}
           />
           <ScrollView style={styles.root}>

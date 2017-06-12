@@ -1,30 +1,31 @@
 import React from 'react'
-import {View, Animated, StyleSheet, TouchableWithoutFeedback} from 'react-native'
+import {View, Animated, StyleSheet, TouchableWithoutFeedback, Text} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import TabIcon from './TabIcon'
 import Video from 'react-native-video'
+import MediaSelectorStyles from '../Containers/Styles/MediaSelectorScreenStyles'
 
 import Colors from '../Themes/Colors'
 
 const buttonLarge = 80
 const buttonSmall = 40
-const VideoButton = ({size, icon, onPress, style = {}}) => {
+const VideoButton = ({size, icon, onPress, style = {}, text}) => {
   const sizeUnits = size !== 'small' ? buttonLarge : buttonSmall
+
   return (
     <TouchableWithoutFeedback
       style={style}
       onPress={onPress}>
       <View
-        style={{
-          width: sizeUnits,
-          height: sizeUnits,
-          borderRadius: sizeUnits / 2,
-          backgroundColor: Colors.windowTint,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
+        style={text ? styles.videoBtnText :
+          [{
+            width: sizeUnits,
+            height: sizeUnits,
+            borderRadius: sizeUnits / 2,
+          }, styles.videoBtnImg]
+        }
       >
-        { !(icon === 'audio-off' || icon === 'audio-on') &&
+        { !text && !(icon === 'audio-off' || icon === 'audio-on') &&
         <Icon
           name={icon}
           size={sizeUnits / 2}
@@ -41,6 +42,9 @@ const VideoButton = ({size, icon, onPress, style = {}}) => {
             }}
             name={icon}
           />
+        }
+        { text &&
+          <Text style={MediaSelectorStyles.retakeButtonText}>{text}</Text>
         }
       </View>
     </TouchableWithoutFeedback>
@@ -79,7 +83,9 @@ export default class VideoPlayer extends React.Component {
 
   static defaultProps = {
     muted: false,
-    showPlayButton: true
+    showMuteButton: true,
+    showPlayButton: true,
+    videoFillSpace: true
   }
 
   constructor(props) {
@@ -100,7 +106,7 @@ export default class VideoPlayer extends React.Component {
 
   componentDidMount() {
     if (this.props.autoPlayVideo) {
-      this.fadeOutVideoUI(2000)
+      this.fadeOutVideoUI(1500)
     }
   }
 
@@ -136,6 +142,12 @@ export default class VideoPlayer extends React.Component {
   }
 
   _togglePlayVideo() {
+    console.log('toggle video')
+    if (!this.props.allowVideoPlay) {
+      console.log('video play not allowed')
+      return
+    }
+
     const newPlayingState = !this.state.videoPlaying
 
     // If the video ended, go to the beginning
@@ -160,13 +172,6 @@ export default class VideoPlayer extends React.Component {
 
     return this.setState({
       videoPlaying: newPlayingState
-    })
-  }
-
-  _onLoad = () => {
-    if (this.props.onLoad) this.props.onLoad(true)
-    this.setState({
-      loaded: true
     })
   }
 
@@ -197,33 +202,51 @@ export default class VideoPlayer extends React.Component {
     this.setState({muted: newMuteState})
   }
 
+  goFullscreen() {
+    this.player.presentFullscreenPlayer()
+  }
+
   render() {
     return (
-      <View style={[styles.root, this.props.style]}>
+      <View style={[
+        styles.root,
+        this.props.videoFillSpace && styles.full,
+        this.props.style
+      ]}>
         <Video
           source={{uri: this.props.path}}
           ref={i => this.player = i}
           paused={!this.state.videoPlaying}
           muted={this.state.muted}
-          style={[styles.video]}
+          style={[
+            styles.video,
+            this.props.videoFillSpace && styles.full,
+          ]}
           repeat={true}
-          onError={(err) => console.log('Video Error: ', err)}
           resizeMode='cover'
-          onLoad={this._onLoad}
         />
         {this.props.showPlayButton &&
           <PlayButton
-            style={styles.buttons}
+            style={[this.props.videoFillSpace ? styles.fullButtons : styles.buttons]}
             onPress={this._togglePlayVideo}
             isPlaying={this.state.videoPlaying}
             videoFadeAnim={this.state.videoFadeAnim} />
         }
-        {this.props.showPlayButton &&
+        {this.props.showMuteButton && this.props.showPlayButton &&
           <MuteButton
             style={styles.mute}
             onPress={() => this.toggleMute()}
             isMuted={this.state.muted}
           />
+        }
+        {
+          this.props.showChangeBtn &&
+          <View style={styles.changeBtn}>
+            <VideoButton
+              text='CHANGE'
+              onPress={() => this.props.changeBtnOnPress()}
+            />
+          </View>
         }
       </View>
     )
@@ -233,14 +256,23 @@ export default class VideoPlayer extends React.Component {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    position: 'relative',
+    justifyContent: 'center',
+    alignItems: 'center',
+    // top: 0,
+    // left: 0,
+    // right: 0,
+    // bottom: 0
+  },
+  video: {
+    // flex: 1,
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0
   },
-  video: {
-    // flex: 1,
+  full: {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -251,12 +283,39 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     position: 'absolute',
+    top: 0,
+    left: 0
+  },
+  fullButtons: {
+    width: 100,
+    height: 100,
+    position: 'absolute',
     top: '50%',
     left: '50%',
     marginTop: -50,
     marginLeft: -50,
   },
   mute: {
-
+    position: 'absolute',
+    top: 20,
+    right: 20,
+  },
+  changeBtn: {
+    position: 'absolute',
+    bottom: 60,
+  },
+  videoBtnText: {
+    backgroundColor: Colors.blackoutTint,
+    borderRadius: 15,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 95,
+    height: 35,
+  },
+  videoBtnImg: {
+    backgroundColor: Colors.windowTint,
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 })

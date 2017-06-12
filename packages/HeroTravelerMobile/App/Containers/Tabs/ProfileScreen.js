@@ -25,7 +25,7 @@ class ProfileScreen extends React.Component {
   }
 
   _touchEdit = (storyId) => {
-    NavActions.createStoryFlow({type: 'reset'})
+    NavActions.createStoryFlow({type: 'reset', navigatedFromProfile: true})
     NavActions.createStory_cover({storyId, navigatedFromProfile: true})
   }
 

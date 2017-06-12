@@ -12,11 +12,15 @@ import KeyboardSpacer from 'react-native-keyboard-spacer';
 import {Colors, Metrics} from '../../Themes'
 import RoundedButton from '../RoundedButton'
 
-const ToolbarIcon = ({name, color}) => {
+const ToolbarIcon = ({name, color, extraStyle = {}}) => {
   return (
-    <Icon name={name}
-          color={color || Colors.charcoal}
-          size={20} />
+    <View style={[styles.toolbarIcon, extraStyle]}>
+      <Icon
+        name={name}
+        color={color || Colors.background}
+        size={20}
+      />
+    </View>
   )
 }
 
@@ -40,7 +44,17 @@ const styles = StyleSheet.create({
   },
   toolbar: {
     // flex: 1,
-    backgroundColor: Colors.background
+    backgroundColor: Colors.charcoal,
+    justifyContent: 'space-between',
+  },
+  toolbarIcon: {
+    flex:1,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderTopWidth: 1,
+    borderRightWidth: 1,
+    borderColor: Colors.background
   },
   dialogWrapper: {
     position: 'absolute',
@@ -48,7 +62,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-  }
+  },
 })
 
 
@@ -89,10 +103,6 @@ export default class Editor extends Component {
 
   render() {
 
-    // const h1Icon = (
-    //   <Icon name='rocket' size={15} />
-    // )
-
     const baseButtonStyle = {
       alignItems: 'center',
       justifyContent: 'center'
@@ -111,6 +121,7 @@ export default class Editor extends Component {
         </View>
         <RichTextToolbar
           onPressAddImage={this._addImage}
+          onPressAddVideo={this._addVideo}
           onPressAddLink={this._showLinkDialog}
           actions={[
             actions.setBold,
@@ -118,14 +129,16 @@ export default class Editor extends Component {
             actions.heading1,
             actions.setParagraph,
             actions.insertImage,
+            actions.insertVideo,
             // actions.insertLink,
           ]}
           iconMap={{
-            [actions.setBold]: (<ToolbarIcon name='bold' />),
+            [actions.setBold]: (<ToolbarIcon name='bold' extraStyle={{borderLeftWidth: 1}}/>),
             [actions.setItalic]: (<ToolbarIcon name='italic' />),
             [actions.heading1]: <ToolbarIcon name='header' />,
             [actions.setParagraph]: <ToolbarIcon name='paragraph' />,
             [actions.insertImage]: <ToolbarIcon name='image' />,
+            [actions.insertVideo]: <ToolbarIcon name='video-camera' />,
             // [actions.insertLink]: <ToolbarIcon name='link' />,
           }}
           getEditor={() => this.richtext}
@@ -177,6 +190,12 @@ export default class Editor extends Component {
   _addImage = (...args) => {
     if (this.props.onAddImage) {
       this.props.onAddImage(...args)
+    }
+  }
+
+  _addVideo = (...args) => {
+    if (this.props.onAddVideo) {
+      this.props.onAddVideo(...args)
     }
   }
 

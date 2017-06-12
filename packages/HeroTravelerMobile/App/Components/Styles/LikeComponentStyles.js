@@ -9,6 +9,7 @@ export default StyleSheet.create({
   },
   text: {
     color: Colors.snow,
-    marginLeft: Metrics.baseMargin/2
+    marginRight: Metrics.baseMargin / 2,
+    fontSize: 13
   }
 })

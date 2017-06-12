@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
   TouchableHighlight,
   DatePickerIOS,
-  TextInput
+  TextInput, KeyboardAvoidingView
 } from 'react-native'
 import { connect } from 'react-redux'
 import moment from 'moment'
@@ -22,6 +22,7 @@ import TabIcon from '../../Components/TabIcon'
 import RoundedButton from '../../Components/RoundedButton'
 import RenderTextInput from '../../Components/RenderTextInput'
 import NavBar from './NavBar'
+import NavButtonStyles from '../../Navigation/Styles/NavButtonStyles'
 import styles from './4_CreateStoryDetailScreenStyles'
 
 const Radio = ({text, onPress, name, selected}) => {
@@ -79,7 +80,9 @@ class CreateStoryDetailScreen extends React.Component {
       date: props.story.tripDate ? moment(props.story.tripDate).toDate() : new Date(),
       location: props.story.location || '',
       categories: props.story.categories || [],
-      type: props.story.type || 'eat'
+      type: props.story.type || 'eat',
+      videoDescription: props.story.videoDescription || '',
+      videoDescHeight: 0
     }
   }
 
@@ -98,12 +101,17 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   _onRight = () => {
-    this.props.publish({
-      ...this.props.story,
-      location: _.trim(this.state.location),
-      categories: this.state.categories,
-      date: this.state.date
-    })
+    if (this.props.story.draft) {
+      this.props.publish({
+        ...this.props.story,
+        location: _.trim(this.state.location),
+        categories: this.state.categories,
+        date: this.state.date,
+        videoDescription: _.trim(this.state.videoDescription).slice(0, 500)
+      })
+    } else {
+      this._update()
+    }
   }
 
   _onLeft = () => {
@@ -126,8 +134,11 @@ class CreateStoryDetailScreen extends React.Component {
       ...this.props.story,
       location: _.trim(this.state.location),
       categories: this.state.categories,
-      date: this.state.date
+      date: this.state.date,
+      videoDescription: _.trim(this.state.videoDescription).slice(0, 500)
     }
+
+    console.log('story', story.videoDescription)
 
     this.props.update(
       this.props.story.id,
@@ -147,16 +158,23 @@ class CreateStoryDetailScreen extends React.Component {
     NavActions.pop()
   }
 
+  // _changeVideoDesc = (event) => {
+  //   this.setState({
+  //     videoDescription: event.nativeEvent.text,
+  //     videoDescHeight: event.nativeEvent.contentSize.height
+  //   })
+  // }
+
+  _changeVideoDescText = (videoDescription) => {
+    this.setState({videoDescription})
+  }
+
   isDraft() {
     return this.props.story.draft || false
   }
 
-  isValid() {
-    if (!!_.trim(this.state.location) && this.state.categories.length > 0) {
-      return true
-    }
-
-    return false
+  isVideo() {
+    return !!this.props.story.coverVideo
   }
 
   render () {
@@ -164,19 +182,33 @@ class CreateStoryDetailScreen extends React.Component {
       <View style={{flex: 1, position: 'relative'}}>
           <NavBar
             title='Story Details'
-            titleStyle={{marginLeft: -26}}
             leftIcon='arrowLeftRed'
-            leftIconStyle={styles.navBarLeftIcon}
+            leftIconStyle={{
+              image: {
+                ...NavButtonStyles.image,
+                marginLeft: 10,
+              }
+            }}
             leftTitle='Back'
-            leftTextStyle={{paddingLeft: 10}}
             onLeft={this._onLeft}
+            leftTextStyle={{paddingLeft: 10}}
             rightTitle={this.isDraft() ? 'Publish' : 'Save'}
             onRight={() => this._onRight()}
             rightTextStyle={{color: Colors.red}}
-
           />
           <ScrollView style={styles.root}>
             <Text style={styles.title}>{this.props.story.title} Details </Text>
+            <View style={styles.videoDescriptionWrapper}>
+              {this.isVideo() &&
+                <TextInput
+                  style={styles.videoDescription}
+                  value={this.state.videoDescription}
+                  onChangeText={this._changeVideoDescText}
+                  placeholder='Add a description'
+                  multiline={true}
+                />
+              }
+            </View>
             <View style={styles.fieldWrapper}>
               <TabIcon name='location' style={locationIconStyle} />
               <TextInput

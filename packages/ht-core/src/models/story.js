@@ -33,6 +33,9 @@ const StorySchema = new Schema({
   description: {
     type: String
   },
+  videoDescription: {
+    type: String
+  },
   author: {
     type: Schema.ObjectId,
     ref: UserRef,
@@ -133,6 +136,7 @@ StorySchema.statics = {
       .list({
         draft: false,
         $or: [
+          {author: userId},
           {author: {$in: followingIds}},
           {category: {$in: followingIds}},
         ]

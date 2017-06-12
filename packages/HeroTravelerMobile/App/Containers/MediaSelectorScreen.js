@@ -16,6 +16,7 @@ import styles from './Styles/MediaSelectorScreenStyles'
 import isTooltipComplete, {Types as TooltipTypes} from '../Lib/firstTimeTooltips'
 import UserActions from '../Redux/Entities/Users'
 import NavButtonStyles from '../Navigation/Styles/NavButtonStyles'
+import { Colors } from '../Themes'
 
 class MediaSelectorScreen extends React.Component {
 
@@ -60,6 +61,10 @@ class MediaSelectorScreen extends React.Component {
       seen: true,
     })
     this.props.completeTooltip(tooltips)
+  }
+
+  isCaptureInUse = () => {
+    return this.state.captureOpen || this.state.mediaCaptured
   }
 
     renderPhotoTooltip() {
@@ -199,11 +204,14 @@ class MediaSelectorScreen extends React.Component {
         <View style={styles.imageWrapper}>
           <Video
             path={this.state.media}
-            autoPlayVideo={false}
+            autoPlayVideo={true}
             allowVideoPlay={true}
+            showChangeBtn={!this.state.mediaCaptured}
+            changeBtnOnPress={() => this.launchMediaSelector()}
           />
           <View style={{flex: 1}} />
-          {this.state.mediaCaptured &&
+          {
+            this.state.mediaCaptured &&
             <TouchableOpacity
               style={styles.retakeButton}
               onPress={() => this.setState({media: null})}
@@ -219,7 +227,6 @@ class MediaSelectorScreen extends React.Component {
       <View style={{flex: 1}}>
         <NavBar
           title={this.props.title}
-          titleStyle={{marginRight: -31}}
           onLeft={this.props.onLeft}
           leftTitle={this.props.leftTitle}
           onRight={this._onNext}
@@ -244,13 +251,19 @@ class MediaSelectorScreen extends React.Component {
               style={styles.tabbarButton}
               onPress={() => this.launchMediaSelector()}
             >
-              <Text style={styles.tabbarText}>Library</Text>
+              <Text style={[
+                styles.tabbarText,
+                this.isCaptureInUse() ? { color: Colors.grey } : {}
+              ]}>Library</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.tabbarButton}
               onPress={() => this.launchMediaCapture()}
             >
-              <Text style={styles.tabbarText}>{this.props.mediaType === 'photo' ? 'Photo' : 'Video'}</Text>
+              <Text style={[
+                styles.tabbarText,
+                this.isCaptureInUse() ? {} : { color: Colors.grey }
+              ]}>{this.props.mediaType === 'photo' ? 'Photo' : 'Video'}</Text>
             </TouchableOpacity>
           </View>
         </View>

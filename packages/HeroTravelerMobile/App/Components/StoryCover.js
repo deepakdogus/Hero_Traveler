@@ -22,20 +22,22 @@ export default class StoryCover extends Component {
     onPress: PropTypes.func,
     autoPlayVideo: PropTypes.bool.isRequired,
     allowVideoPlay: PropTypes.bool.isRequired,
+    gradientColors: PropTypes.arrayOf(PropTypes.string)
+  }
+
+  static defaultProps = {
+    autoPlayVideo: false,
+    allowVideoPlay: false,
+    gradientColors: ['transparent', 'rgba(0,0,0,.75)']
   }
 
   constructor(props) {
     super(props)
-    // this._togglePlayVideo = this._togglePlayVideo.bind(this)
     this._tapVideoWrapper = this._tapVideoWrapper.bind(this)
     const startVideoImmediately = props.allowVideoPlay && props.autoPlayVideo
     this.state = {
       isPlaying: startVideoImmediately,
       isMuted: __DEV__,
-      // showVideoPlayButton: props.allowVideoPlay && !startVideoImmediately,
-      // videoEnded: false,
-      // videoFadeAnim: props.allowVideoPlay ? new Animated.Value(1) : new Animated.Value(0)
-      videoLoaded: false
     }
   }
 
@@ -59,7 +61,7 @@ export default class StoryCover extends Component {
           style={[styles.image]}
         >
           <LinearGradient
-            colors={['transparent', '#333333']}
+            colors={this.props.gradientColors}
             style={styles.gradient}
           >
             {this.props.children}
@@ -91,15 +93,11 @@ export default class StoryCover extends Component {
           showPlayButton={false}
           onIsPlayingChange={(value) => this.setState({isPlaying: value})}
           onMuteChange={val => this.setState({isMuted: val})}
-          onLoad={() => this.setState({videoLoaded: true})}
-          style={[
-            this.props.videoStyle,
-          ]}
         />
         <TouchableWithoutFeedback
           onPress={this._tapVideoWrapper}>
           <LinearGradient
-            colors={['transparent', '#333333']}
+            colors={this.props.gradientColors}
             style={[styles.gradient, styles.videoGradient]}
           >
             {this.props.children}
@@ -151,7 +149,8 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
+    position: 'relative'
   },
   videoWrapper: {
     flex: 1,
@@ -159,8 +158,15 @@ const styles = StyleSheet.create({
   gradient: {
     paddingHorizontal: 25,
     paddingVertical: Metrics.doubleBaseMargin,
-    height: Metrics.screenHeight/2 - Metrics.navBarHeight,
-    width: Metrics.screenWidth,
+    // height: Metrics.screenHeight/2 - Metrics.navBarHeight,
+    // width: Metrics.screenWidth,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-end'
   },
   videoGradient: {
     position: 'absolute',

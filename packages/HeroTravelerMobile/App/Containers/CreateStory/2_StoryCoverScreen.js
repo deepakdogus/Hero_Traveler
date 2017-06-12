@@ -1,5 +1,6 @@
 import _ from 'lodash'
-import React, {PropTypes, Component} from 'react'
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {
   Text,
   TouchableOpacity,
@@ -32,6 +33,7 @@ import isTooltipComplete, {Types as TooltipTypes} from '../../Lib/firstTimeToolt
 import RoundedButton from '../../Components/RoundedButton'
 import UserActions from '../../Redux/Entities/Users'
 import TabIcon from '../../Components/TabIcon'
+import NavButtonStyles from '../../Navigation/Styles/NavButtonStyles'
 
 const api = API.create()
 
@@ -45,13 +47,16 @@ class StoryCoverScreen extends Component {
   static propTypes = {
     mediaType: PropTypes.oneOf([MediaTypes.video, MediaTypes.photo]),
     user: PropTypes.object,
-    navigatedFromProfile: PropTypes.bool
+    navigatedFromProfile: PropTypes.bool,
+    loadStory: PropTypes.func,
+    shouldLoadStory: PropTypes.bool
   }
 
   static defaultProps = {
     mediaType: MediaTypes.photo,
     story: {},
-    navigatedFromProfile: false
+    navigatedFromProfile: false,
+    shouldLoadStory: true
   }
 
   constructor(props) {
@@ -78,9 +83,28 @@ class StoryCoverScreen extends Component {
     // Create a new draft to work with if one doesn't exist
     if (!storyId) {
       this.props.registerDraft()
-    } else {
+    } else if (this.props.shouldLoadStory) {
       this.props.loadStory(storyId)
     }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let nextState = {}
+
+    if (!this.props.story.title && nextProps.story.title) {
+      nextState.title = nextProps.story.title
+      nextState.description = nextProps.story.description
+    }
+
+    if (!this.props.story.coverVideo && nextProps.story.coverVideo) {
+      nextState.coverVideo = getVideoUrl(nextProps.story.coverVideo)
+    }
+
+    if (!this.props.story.coverImage && nextProps.story.coverImage) {
+      nextState.coverImage = getVideoUrl(nextProps.story.coverImage)
+    }
+
+    this.setState(nextState)
   }
 
   isPhotoType() {
@@ -304,7 +328,7 @@ class StoryCoverScreen extends Component {
 
     // If nothing has changed, let the user go forward if they navigated back
     if (nothingHasChanged) {
-      return NavActions.createStory_content()
+      this.nextScreen()
     }
 
     if (!this.isValid()) {
@@ -319,8 +343,16 @@ class StoryCoverScreen extends Component {
 
     this.saveStory()
       .then(() => {
-        NavActions.createStory_content()
+        this.nextScreen()
       })
+  }
+
+  nextScreen() {
+    if (this.isPhotoType()) {
+      NavActions.createStory_content()
+    } else {
+      NavActions.createStory_details()
+    }
   }
 
   saveStory() {
@@ -545,7 +577,6 @@ class StoryCoverScreen extends Component {
 
   render () {
     let showTooltip = false;
-
     if (this.props.user && this.state.file) {
       showTooltip = !isTooltipComplete(
         TooltipTypes.STORY_PHOTO_EDIT,
@@ -559,7 +590,19 @@ class StoryCoverScreen extends Component {
           title='Story Cover'
           leftTitle='Cancel'
           onLeft={this._onLeft}
+          rightIcon={'arrowRightRed'}
           rightTitle='Next'
+          rightIconStyle={{
+            image: {
+              ...NavButtonStyles.image, 
+              marginRight: 10,
+              opacity: this.isValid() ? 1 : .2,
+            }
+          }}
+          rightTextStyle={{
+            opacity: this.isValid() ? 1 : .5,
+            paddingRight: 10,
+          }}
           onRight={this._onRight}
         />
         <View style={{flex: 1}}>

@@ -8,7 +8,7 @@ export default StyleSheet.create({
     backgroundColor: Colors.background,
   },
   tabbar: {
-    height: 40,
+    height: 55,
     flex: 1,
     position: 'absolute',
     bottom: 0,
@@ -19,15 +19,17 @@ export default StyleSheet.create({
     backgroundColor: Colors.background
   },
   tabbarButton: {
-    height: 40,
+    height: 55,
     flex: .5,
   },
   tabbarText: {
     flex: 1,
-    height: 40,
-    lineHeight: 40,
+    height: 55,
+    lineHeight: 55,
     color: Colors.snow,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontSize: 15,
+    fontFamily: Fonts.type.montserrat,
   },
   imageWrapper: {
     flex: 1,
@@ -44,7 +46,7 @@ export default StyleSheet.create({
   },
   retakeButtonText: {
     color: Colors.snow,
-    fontSize: 10,
+    fontSize: 13,
     fontFamily: Fonts.type.montserrat,
   },
   retakeButton: {

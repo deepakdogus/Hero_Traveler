@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
   },
   left: {
     flex: 1/3,
+    flexDirection: 'row',
   },
   leftText: {
     textAlign: 'left',
@@ -35,6 +36,8 @@ const styles = StyleSheet.create({
   },
   right: {
     flex: 1/3,
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
   },
   rightText: {
     textAlign: 'right',
@@ -46,10 +49,10 @@ export default class NavBar extends Component {
 
   render() {
     return (
-      <View style={styles.root}>
-        {this.props.leftIcon && <TabIcon style={this.props.leftIconStyle} name={this.props.leftIcon}/>}
+      <View style={[styles.root, this.props.style]}>
         {this.props.leftTitle &&
           <View style={styles.left}>
+            {this.props.leftIcon && <TabIcon style={this.props.leftIconStyle} name={this.props.leftIcon}/>}
             <TextButton
               style={[styles.text, styles.leftText, this.props.leftTextStyle]}
               onPress={this.props.onLeft}
@@ -71,9 +74,9 @@ export default class NavBar extends Component {
             >
               {this.props.rightTitle}
             </TextButton>
+            {this.props.rightIcon && <TabIcon style={this.props.rightIconStyle} name={this.props.rightIcon}/>}
           </View>
         }
-        {this.props.rightIcon && <TabIcon style={this.props.rightIconStyle} name={this.props.rightIcon}/>}
       </View>
     )
   }

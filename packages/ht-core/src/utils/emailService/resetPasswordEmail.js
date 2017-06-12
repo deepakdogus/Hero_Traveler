@@ -23,8 +23,7 @@ function renderTemplate(templateName, context) {
 export default function resetPasswordEmail(user) {
   const context = {
     subject: 'Link to Reset Your HERO Traveler Password',
-    // @TODO: this should be a link to the mobile app
-    resetPasswordUrl: `com.rehashstudio.herotraveler://resetpassword/${user.passwordResetToken}`,
+    resetPasswordUrl: `${process.env.API_HOST}/user/redirect-reset-password/${user.passwordResetToken}`,
     logoUrl: 'https://s3.amazonaws.com/hero-traveler/assets/ht-logo-white-small.png',
     logoHeight: '50px',
     logoWidth: '246px',

@@ -155,7 +155,6 @@ export default class StoryPreview extends Component {
 
   render () {
     const {story} = this.props
-
     return (
         <View style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}>
         <View style={styles.contentContainer}>

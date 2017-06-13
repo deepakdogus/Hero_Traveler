@@ -16,6 +16,7 @@ import { Actions as NavActions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
 import R from 'ramda'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import LinearGradient from 'react-native-linear-gradient'
 
 import API from '../../Services/HeroAPI'
 import StoryEditActions from '../../Redux/StoryCreateRedux'
@@ -31,6 +32,8 @@ import pathAsFileObject from '../../Lib/pathAsFileObject'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Lib/firstTimeTooltips'
 import RoundedButton from '../../Components/RoundedButton'
 import UserActions from '../../Redux/Entities/Users'
+import TabIcon from '../../Components/TabIcon'
+import NavButtonStyles from '../../Navigation/Styles/NavButtonStyles'
 
 const api = API.create()
 
@@ -94,15 +97,12 @@ class StoryCoverScreen extends Component {
     }
 
     if (!this.props.story.coverVideo && nextProps.story.coverVideo) {
-      console.log('here')
       nextState.coverVideo = getVideoUrl(nextProps.story.coverVideo)
     }
 
     if (!this.props.story.coverImage && nextProps.story.coverImage) {
       nextState.coverImage = getVideoUrl(nextProps.story.coverImage)
     }
-
-    console.log('nextState', nextState)
 
     this.setState(nextState)
   }
@@ -198,7 +198,12 @@ class StoryCoverScreen extends Component {
       R.identity,
       R.always((
         <Image source={{uri: coverPhoto}} style={styles.coverPhoto}>
-          {this.renderContent()}
+          <LinearGradient
+            colors={['rgba(0,0,0,.4)', 'rgba(0,0,0,.4)']}
+            style={{flex: 1}}
+          >
+            {this.renderContent()}
+          </LinearGradient>
         </Image>
       )),
       R.always(this.renderContent(coverPhoto))
@@ -236,7 +241,7 @@ class StoryCoverScreen extends Component {
       R.identity,
       R.always('white'),
       R.always(baseColor)
-    )(!!this.state.coverImage)
+    )(!!(this.state.coverImage || this.state.coverVideo))
   }
 
   /*
@@ -251,8 +256,8 @@ class StoryCoverScreen extends Component {
 
   _onLeft = () => {
     const isDraft = this.props.story.draft === true
-    const title = isDraft ? 'Cancel Draft' : 'Cancel Edits'
-    const message = this.isSavedDraft() ? 'Do you want to save these edits?' : 'Do you want to save this draft?'
+    const title = isDraft ? 'Save Draft' : 'Save Edits'
+    const message = this.isSavedDraft() ? 'Do you want to save these edits before you go?' : 'Do you want to save this story draft before you go?'
 
     // When a user cancels the draft flow, remove the draft
     Alert.alert(
@@ -416,9 +421,10 @@ class StoryCoverScreen extends Component {
 
   _contentAddCover = () => {
     this.setState({error: null})
+    const mediaType = this.getMediaType()
     NavActions.mediaSelectorScreen({
-      mediaType: this.getMediaType(),
-      title: 'Add Cover',
+      mediaType: mediaType,
+      title: `Add ${mediaType === 'video' ? 'Video' : 'Image'}`,
       leftTitle: 'Cancel',
       onLeft: () => NavActions.pop(),
       rightTitle: 'Next',
@@ -431,8 +437,12 @@ class StoryCoverScreen extends Component {
   }
 
   renderContent () {
+    const icon = this.getIcon()
     return (
-      <KeyboardAvoidingView behavior='position'>
+      <KeyboardAvoidingView
+        behavior='position'
+        contentContainerStyle={styles.keyboardMargin}
+      >
         <View style={this.hasNoCover() ? styles.lightGreyAreasBG : null}>
           {this.hasNoCover() && <View style={styles.spaceView} />}
           {this.hasNoCover() &&
@@ -441,8 +451,11 @@ class StoryCoverScreen extends Component {
                 style={styles.addPhotoButton}
                 onPress={this._contentAddCover}
               >
-                <Icon name={this.getIcon()} size={40} color='gray' style={styles.cameraIcon} />
-                <Text style={this.renderTextColor(styles.baseTextColor)}>
+                <TabIcon name={icon} style={{
+                  view: styles.cameraIcon,
+                  image: icon === 'camera' ? styles.cameraIconImage : styles.videoIconImage,
+                }} />
+                <Text style={this.renderTextColor([styles.baseTextColor, styles.coverPhotoText])}>
                   {this.isPhotoType() ? '+ ADD COVER PHOTO' : '+ ADD COVER VIDEO'}
                 </Text>
               </TouchableOpacity>
@@ -468,7 +481,7 @@ class StoryCoverScreen extends Component {
                     <TouchableOpacity
                       onPress={this._touchChangeCover}
                       style={styles.iconButton}>
-                      <Icon name={this.getIcon()} color={Colors.snow} size={30} />
+                      <Icon name={icon} color={Colors.snow} size={30} />
                     </TouchableOpacity>
                     {this.isPhotoType() &&
                       <TouchableOpacity
@@ -481,11 +494,6 @@ class StoryCoverScreen extends Component {
                       style={styles.iconButton}>
                       <Icon name='trash' color={Colors.snow} size={30} />
                     </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={this._toggleImageMenu}
-                      style={styles.iconButton}>
-                      <Icon name='close' color={Colors.snow} size={30} />
-                    </TouchableOpacity>
                   </Animated.View>
                 </View>
               </TouchableWithoutFeedback>
@@ -496,9 +504,10 @@ class StoryCoverScreen extends Component {
               style={this.renderTextColor(styles.titleInput)}
               placeholder='ADD A TITLE'
               placeholderTextColor={this.renderPlaceholderColor(placeholderColor)}
-              returnKeyType='next'
               value={this.state.title}
               onChangeText={title => this.setState({title})}
+              returnKeyType='done'
+              multiline
             />
             <TextInput
               style={this.renderTextColor(styles.subTitleInput)}
@@ -586,8 +595,27 @@ class StoryCoverScreen extends Component {
     }
 
     return (
-      <View style={{flex: 1}}>
-        <View style={{flex: 1, marginTop: Metrics.navBarHeight}}>
+      <View style={styles.mainContainer}>
+        <NavBar
+          title='Story Cover'
+          onLeft={this._onLeft}
+          leftTitle='Cancel'
+          onRight={this._onRight}
+          rightIcon={'arrowRightRed'}
+          rightIconStyle={{
+            image: {
+              ...NavButtonStyles.image, 
+              marginRight: 10,
+              opacity: this.isValid() ? 1 : .2,
+            }
+          }}
+          rightTitle='Next'
+          rightTextStyle={{
+            opacity: this.isValid() ? 1 : .5,
+            paddingRight: 10,
+          }}
+        />
+        <View style={{flex: 1}}>
           {this.state.error &&
             <ShadowButton
               style={styles.errorButton}
@@ -597,14 +625,6 @@ class StoryCoverScreen extends Component {
           {this.isPhotoType() && this.renderCoverPhoto(this.state.coverImage)}
           {!this.isPhotoType() && this.renderCoverVideo(this.state.coverVideo)}
         </View>
-        <NavBar
-          style={styles.navBarStyle}
-          title='Story Cover'
-          leftTitle='Cancel'
-          onLeft={this._onLeft}
-          rightTitle='Next'
-          onRight={this._onRight}
-        />
         {this.state.updating &&
           <Loader
             style={styles.loading}

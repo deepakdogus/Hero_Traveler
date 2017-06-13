@@ -22,6 +22,7 @@ import TabIcon from '../../Components/TabIcon'
 import RoundedButton from '../../Components/RoundedButton'
 import RenderTextInput from '../../Components/RenderTextInput'
 import NavBar from './NavBar'
+import NavButtonStyles from '../../Navigation/Styles/NavButtonStyles'
 import styles from './4_CreateStoryDetailScreenStyles'
 
 const Radio = ({text, onPress, name, selected}) => {
@@ -181,14 +182,19 @@ class CreateStoryDetailScreen extends React.Component {
       <View style={{flex: 1, position: 'relative'}}>
           <NavBar
             title='Story Details'
-            leftIcon='arrowLeft'
-            leftIconStyle={{image: { marginLeft: 10, paddingRight: -10, height: 15, width: 15 } }}
+            leftIcon='arrowLeftRed'
+            leftIconStyle={{
+              image: {
+                ...NavButtonStyles.image,
+                marginLeft: 10,
+              }
+            }}
             leftTitle='Back'
             onLeft={this._onLeft}
-            rightTitle={this.isDraft() ? 'Publish' : 'Save'}
+            leftTextStyle={{paddingLeft: 10}}
             onRight={() => this._onRight()}
+            rightTitle={this.isDraft() ? 'Publish' : 'Save'}
             rightTextStyle={{color: Colors.red}}
-
           />
           <ScrollView style={styles.root}>
             <Text style={styles.title}>{this.props.story.title} Details </Text>

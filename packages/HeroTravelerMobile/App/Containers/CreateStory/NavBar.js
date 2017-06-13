@@ -4,6 +4,7 @@ import {View, Text, StyleSheet} from 'react-native'
 import TextButton from '../../Components/TextButton'
 import TabIcon from '../../Components/TabIcon'
 import {Metrics, Colors, Fonts} from '../../Themes'
+import NavButtonStyles from '../../Navigation/Styles/NavButtonStyles'
 
 const styles = StyleSheet.create({
   root: {
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: Fonts.type.montserrat,
     fontSize: 16,
-    color: Colors.navBarText,
+    color: Colors.red,
   },
   title: {
     flex: 1/3,
@@ -27,6 +28,7 @@ const styles = StyleSheet.create({
   },
   left: {
     flex: 1/3,
+    flexDirection: 'row',
   },
   leftText: {
     textAlign: 'left',
@@ -34,6 +36,8 @@ const styles = StyleSheet.create({
   },
   right: {
     flex: 1/3,
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
   },
   rightText: {
     textAlign: 'right',
@@ -46,9 +50,9 @@ export default class NavBar extends Component {
   render() {
     return (
       <View style={[styles.root, this.props.style]}>
-        {this.props.leftIcon && <TabIcon style={this.props.leftIconStyle} name={this.props.leftIcon}/>}
         {this.props.leftTitle &&
           <View style={styles.left}>
+            {this.props.leftIcon && <TabIcon style={this.props.leftIconStyle} name={this.props.leftIcon}/>}
             <TextButton
               style={[styles.text, styles.leftText, this.props.leftTextStyle]}
               onPress={this.props.onLeft}
@@ -59,7 +63,7 @@ export default class NavBar extends Component {
         }
         {this.props.title &&
           <View style={styles.title}>
-            <Text style={[styles.text, styles.titleText]}>{this.props.title}</Text>
+            <Text style={[styles.text, styles.titleText, this.props.titleStyle || {}]}>{this.props.title}</Text>
           </View>
         }
         {this.props.rightTitle &&
@@ -70,9 +74,9 @@ export default class NavBar extends Component {
             >
               {this.props.rightTitle}
             </TextButton>
+            {this.props.rightIcon && <TabIcon style={this.props.rightIconStyle} name={this.props.rightIcon}/>}
           </View>
         }
-        {this.props.rightIcon && <TabIcon style={this.props.rightIconStyle} name={this.props.rightIcon}/>}
       </View>
     )
   }

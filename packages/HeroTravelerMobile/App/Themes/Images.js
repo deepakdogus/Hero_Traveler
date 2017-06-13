@@ -27,6 +27,8 @@ const images = {
   profile: require('../Images/profile.png'),
   // ht-icons
   iconEditImageCamera: require('../Images/ht-icons/icon_edit-image-camera.png'),
+  iconEditImageCameraLarge: require('../Images/ht-icons/icon_edit-image-camera@2x.png'),
+  iconEditVideo: require('../Images/ht-icons/icon_create-menu-video@2x.png'),
   iconEditImageCrop: require('../Images/ht-icons/icon_edit-image-crop.png'),
   iconEditImageTrash: require('../Images/ht-icons/icon_edit-image-trash.png'),
   iconContentXWhite: require('../Images/ht-icons/icon_content-x-white.png'),

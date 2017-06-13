@@ -14,6 +14,7 @@ import pathAsFileObject from '../../Lib/pathAsFileObject'
 import getImageUrl from '../../Lib/getImageUrl'
 import HeroAPI from '../../Services/HeroAPI'
 import getVideoUrl from '../../Lib/getVideoUrl'
+import NavButtonStyles from '../../Navigation/Styles/NavButtonStyles'
 import Loader from '../../Components/Loader'
 
 const api = HeroAPI.create()
@@ -62,10 +63,18 @@ class FullScreenEditor extends React.Component {
       <View style={[styles.root]}>
         <NavBar
           title='Content'
-          rightTitle='Next'
-          onRight={this._onRight}
-          leftTitle='Back'
           onLeft={this._onLeft}
+          leftTitle='Back'
+          onRight={this._onRight}
+          rightIcon={'arrowRightRed'}
+          rightIconStyle={{
+            image: {
+              ...NavButtonStyles.image,
+              marginRight: 10,
+            }
+          }}
+          rightTitle='Next'
+          rightTextStyle={{paddingRight: 10}}
         />
         <Editor
           ref={c => {

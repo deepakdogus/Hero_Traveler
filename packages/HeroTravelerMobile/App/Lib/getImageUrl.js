@@ -5,7 +5,6 @@ export default function getImageUrl(image, path) {
   const mobile = _.get(image, path ? path : 'versions.mobile.path', undefined)
 
   if (mobile) {
-    console.log('url:', baseUrl + mobile)
     return baseUrl + mobile
   }
 

@@ -137,8 +137,6 @@ class CreateStoryDetailScreen extends React.Component {
       videoDescription: _.trim(this.state.videoDescription).slice(0, 500)
     }
 
-    console.log('story', story.videoDescription)
-
     this.props.update(
       this.props.story.id,
       story

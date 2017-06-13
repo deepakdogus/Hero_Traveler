@@ -26,6 +26,7 @@
     "algoliasearch": "^3.22.1",
     "algoliasearch-helper": "^2.20.1",
     "apisauce": "^0.10.0",
+    "babel-plugin-transform-remove-console": "^6.8.4",
     "babel-preset-stage-0": "^6.24.1",
     "format-json": "^1.0.3",
     "lodash": "^4.17.2",

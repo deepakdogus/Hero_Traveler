@@ -138,7 +138,6 @@ export default class VideoPlayer extends React.Component {
 
   _togglePlayVideo() {
     if (!this.props.allowVideoPlay) {
-      console.log('video play not allowed')
       return
     }
 

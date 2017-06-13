@@ -94,15 +94,12 @@ class StoryCoverScreen extends Component {
     }
 
     if (!this.props.story.coverVideo && nextProps.story.coverVideo) {
-      console.log('here')
       nextState.coverVideo = getVideoUrl(nextProps.story.coverVideo)
     }
 
     if (!this.props.story.coverImage && nextProps.story.coverImage) {
       nextState.coverImage = getVideoUrl(nextProps.story.coverImage)
     }
-
-    console.log('nextState', nextState)
 
     this.setState(nextState)
   }

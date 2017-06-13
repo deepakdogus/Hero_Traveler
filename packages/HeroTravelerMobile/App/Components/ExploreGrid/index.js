@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {
   View,
   Text,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
 } from 'react-native'
 
 import TabIcon from '../TabIcon'
@@ -24,25 +24,25 @@ export default class ExploreGrid extends Component {
 
   renderRow = (category) => {
     return (
-      <TouchableOpacity
-        onPress={() => this._onPress(category)}
-        style={styles.gridRow}
-        key={category.id}
-      >
-        <Image
-          cached={true}
-          source={{uri: getImageUrl(category.image, 'versions.thumbnail240.path')}}
-          style={styles.gridImage}
+      <View key={category.id} style={styles.gridRow}>
+        <TouchableWithoutFeedback
+          onPress={() => this._onPress(category)}
         >
-          <Text style={styles.gridRowText}>{category.title}</Text>
-          {category.selected &&
-            <TabIcon
-              name='redCheck'
-              style={{view: styles.selectedIcon}}
-            />
-          }
-        </Image>
-      </TouchableOpacity>
+          <Image
+            cached={true}
+            source={{uri: getImageUrl(category.image, 'versions.thumbnail240.path')}}
+            style={styles.gridImage}
+          >
+            <Text style={styles.gridRowText}>{category.title}</Text>
+            {category.selected &&
+              <TabIcon
+                name='redCheck'
+                style={{view: styles.selectedIcon}}
+              />
+            }
+          </Image>
+        </TouchableWithoutFeedback>
+      </View>
     )
   }
 

@@ -12,7 +12,6 @@ import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.cboy.rn.splashscreen.SplashScreenReactPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.imagepicker.ImagePickerPackage;
-import com.horcrux.svg.SvgPackage;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -45,7 +44,6 @@ public class MainApplication extends Application implements ReactApplication {
             new SplashScreenReactPackage(),
             new LinearGradientPackage(),
             new ImagePickerPackage(),
-            new SvgPackage(),
             new RCTCameraPackage(),
             new VectorIconsPackage(),
             new RNDeviceInfo()

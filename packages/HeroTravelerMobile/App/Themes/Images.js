@@ -56,7 +56,8 @@ const images = {
   iconAudioOn: require('../Images/ht-icons/icon_audio-on.png'),
   iconAudioOff: require('../Images/ht-icons/icon_audio-off.png'),
   iconDate: require('../Images/ht-icons/icon_details-date@2x.png'),
-  iconTag: require('../Images/ht-icons/icon_details-tag@2x.png')
+  iconTag: require('../Images/ht-icons/icon_details-tag@2x.png'),
+  iconClose: require('../Images/ht-icons/icon_create-menu-close-x@2x.png'),
 }
 
 export default images

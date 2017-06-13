@@ -13,21 +13,23 @@ export default class NavButton extends React.Component {
   }
 
   render () {
-
+    const {iconName, onRight, onLeft, text, style = {}} = this.props
     const TabIconInstance = (
       <TabIcon 
         name={ this.props.iconName } 
-        style={{image: Styles.image}}
+        style={{image: [Styles.image, style.icon || {} ] }}
       />)
+
+    console.log("this.props is", this.props)
 
     return (
       <TouchableOpacity
-        onPress={this.props.onRight || this.props.onLeft}
+        onPress={onRight || onLeft}
         style={Styles.touchableOpacity}
       >
-        {this.props.onLeft && TabIconInstance}
-        <Text style={ Styles.navButtonText }>{ this.props.text }</Text>
-        {this.props.onRight && TabIconInstance}
+        {onLeft && TabIconInstance}
+        <Text style={[ Styles.navButtonText, style.text || {} ]}>{ text }</Text>
+        {onRight && TabIconInstance}
       </TouchableOpacity>
     )
   }

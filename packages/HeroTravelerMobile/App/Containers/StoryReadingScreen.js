@@ -72,7 +72,6 @@ function renderNode(node, index, siblings, parent, defaultRenderer) {
 
   // captures normal text
   if (isText(node)) {
-    console.log('node is text', node)
     const text = node.type === 'text' ? node.data : node.children[0].data
     return (<Text
       key={index}

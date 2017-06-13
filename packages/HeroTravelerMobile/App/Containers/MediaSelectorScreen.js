@@ -200,8 +200,10 @@ class MediaSelectorScreen extends React.Component {
         <View style={styles.imageWrapper}>
           <Video
             path={this.state.media}
-            autoPlayVideo={false}
+            showMuteButton={false}
+            autoPlayVideo={true}
             allowVideoPlay={true}
+
           />
           <View style={{flex: 1}} />
           {this.state.mediaCaptured &&

@@ -28,7 +28,7 @@ const { Types, Creators } = createActions({
   getBookmarksFailure: ['userId', 'error'],
   receiveStories: ['stories'],
   deleteStory: ['userId', 'storyId'],
-  deleteStorySuccess: ['storyId'],
+  deleteStorySuccess: ['userId', 'storyId'],
 })
 
 export const StoryTypes = Types
@@ -244,37 +244,24 @@ export const loadDraftsFailure = (state, {error}) => {
   })
 }
 
-// export const deleteStory = (state, {userId, storyId}) => {
-//   const story = state.entities[storyId]
-//   let newState = state
-//
-//   if (story.draft) {
-//     const path = ['drafts', 'byId']
-//     newState = state.setIn(path, _.without(state.getIn(path, storyId)))
-//   } else {
-//     const path = ['storiesByUserAndId', userId, 'byId']
-//     newState = state.setIn(path, _.without(state.getIn(path, storyId)))
-//   }
-//
-//   return newState
-//     .setIn(['entities'], state.entities.without(storyId))
-// }
 
 export const deleteStory = (state, {userId, storyId}) => {
+  const story = state.entities[storyId]
+  return state
+}
+
+export const deleteStorySuccess = (state, {userId, storyId}) => {
+  let newState = state.setIn(['entities'], state.entities.without(storyId))
+
   const story = state.entities[storyId]
 
   if (story.draft) {
     const path = ['drafts', 'byId']
-    return state.setIn(path, _.without(state.getIn(path, storyId)))
+    return newState.setIn(path, _.without(state.getIn(path, storyId)))
   } else {
     const path = ['storiesByUserAndId', userId, 'byId']
-    return state.setIn(path, _.without(state.getIn(path, storyId)))
+    return newState.setIn(path, _.without(state.getIn(path, storyId)))
   }
-}
-
-export const deleteStorySuccess = (state, {storyId}) => {
-  return state
-    .setIn(['entities'], state.entities.without(storyId))
 }
 
 /* ------------- Selectors ------------- */

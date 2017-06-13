@@ -11,6 +11,7 @@ import ImagePicker from 'react-native-image-picker'
 
 import NavBar from './CreateStory/NavBar'
 import PhotoTaker from '../Components/PhotoTaker'
+import { Colors } from '../Themes'
 import Video from '../Components/Video'
 import styles from './Styles/MediaSelectorScreenStyles'
 import isTooltipComplete, {Types as TooltipTypes} from '../Lib/firstTimeTooltips'
@@ -223,7 +224,9 @@ class MediaSelectorScreen extends React.Component {
           leftTitle={this.props.leftTitle}
           onRight={this._onNext}
           rightTitle={this.props.rightTitle}
-          rightTextStyle={!this.state.media ? {opacity: .5} : {}}
+          rightTextStyle={!this.state.media ? {opacity: .5} : {color: Colors.red}}
+          rightIcon={!this.state.media ? null : 'arrowRightRed'}
+          rightIconStyle={{image: { height: 12, width: 12, marginLeft: -10, marginRight: 12}}}
         />
         <View style={styles.root}>
           {content}
@@ -232,7 +235,7 @@ class MediaSelectorScreen extends React.Component {
               style={styles.tabbarButton}
               onPress={() => this.launchMediaSelector()}
             >
-              <Text style={styles.tabbarText}>Library</Text>
+              <Text style={[styles.tabbarText, styles.tabbarTextNotSelected]}>Library</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.tabbarButton}

@@ -46,7 +46,7 @@ export default {
     color: Colors.red,
     paddingRight: 20,
   },
-  leftButtonIconStyle: {
+  buttonRed: {
     tintColor: Colors.red,
   },
 }

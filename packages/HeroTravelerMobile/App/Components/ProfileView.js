@@ -5,7 +5,6 @@ import {
   View,
   Text,
   TextInput,
-  Image,
   TouchableWithoutFeedback,
   TouchableOpacity,
   KeyboardAvoidingView,
@@ -27,6 +26,7 @@ import NavBar from '../Containers/CreateStory/NavBar'
 import HeroAPI from '../Services/HeroAPI'
 import pathAsFileObject from '../Lib/pathAsFileObject'
 import TabIcon from './TabIcon'
+import Image from './Image'
 
 // @TODO UserActions shouldn't be in a component
 import UserActions from '../Redux/Entities/Users'
@@ -225,15 +225,17 @@ class ProfileView extends React.Component {
   }
 
   render() {
-    const { user, stories, drafts, editable, isEditing, profileImage } = this.props
+    const { user, stories, drafts, editable, isEditing, profileImage, bookmarks } = this.props
     let fetchStatus
-
     switch (this.state.selectedTab) {
       case TabTypes.stories:
         fetchStatus = this.props.fetchStatus
         break
       case TabTypes.drafts:
         fetchStatus = this.props.draftsFetchStatus
+        break
+      case TabTypes.bookmarks:
+        fetchStatus = this.props.bookmarksFetchStatus
         break
     }
 
@@ -338,6 +340,7 @@ class ProfileView extends React.Component {
             text='DRAFTS' />
           <Tab
             selected={TabTypes.bookmarks === this.state.selectedTab}
+            onPress={() => this.selectTab(TabTypes.bookmarks)}
             text='BOOKMARKS' />
         </View>
       )
@@ -392,6 +395,7 @@ class ProfileView extends React.Component {
         ]}>
         <View style={styles.gradientWrapper}>
           <Image
+            cached={true}
             style={[styles.coverImage, profileImage ? null : styles.noCoverImage]}
             resizeMode='cover'
             source={{uri: profileImage || undefined}}
@@ -468,6 +472,13 @@ class ProfileView extends React.Component {
                 renderStory={this.renderStory}
               />
             }
+            {this.state.selectedTab === TabTypes.bookmarks && bookmarks.length > 0 &&
+              <StoryList
+                storiesById={bookmarks}
+                refreshing={false}
+                renderStory={this.renderStory}
+              />
+            }
             {this.state.selectedTab === TabTypes.stories && fetchStatus.loaded && stories.length === 0 &&
               <View style={styles.noStories}>
                 <Text style={styles.noStoriesText}>{this.props.editable ? showTooltip ? '' : 'There are no stories here' : 'This user has no stories published'}</Text>
@@ -476,6 +487,11 @@ class ProfileView extends React.Component {
             {this.state.selectedTab === TabTypes.drafts && fetchStatus.loaded && drafts.length === 0 &&
               <View style={styles.noStories}>
                 <Text style={styles.noStoriesText}>{this.props.editable ? showTooltip ? '' : 'There are no stories here' : 'This user has no stories published'}</Text>
+              </View>
+            }
+            {this.state.selectedTab === TabTypes.bookmarks && fetchStatus.loaded && bookmarks.length === 0 &&
+              <View style={styles.noStories}>
+                <Text style={styles.noStoriesText}>{this.props.editable ? showTooltip ? '' : 'There are no bookmarked stories here' : 'This user has no bookmarked stories'}</Text>
               </View>
             }
             {!fetchStatus.loaded && fetchStatus.fetching &&

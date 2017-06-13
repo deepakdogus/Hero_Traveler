@@ -3,8 +3,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
-import UserActions from '../../Redux/Entities/Users'
-import StoryActions, {getByUser, getUserFetchStatus} from '../../Redux/Entities/Stories'
+import UserActions, {getByBookmarks} from '../../Redux/Entities/Users'
+import StoryActions, {getByUser, getUserFetchStatus, getBookmarksFetchStatus} from '../../Redux/Entities/Stories'
 import ProfileView, {TabTypes} from '../../Components/ProfileView'
 import getImageUrl from '../../Lib/getImageUrl'
 
@@ -22,6 +22,7 @@ class ProfileScreen extends React.Component {
   componentDidMount() {
     this.props.getUser(this.props.user.id)
     this.props.getStories(this.props.user.id)
+    this.props.loadBookmarks(this.props.user.id)
   }
 
   _touchEdit = (storyId) => {
@@ -40,6 +41,8 @@ class ProfileScreen extends React.Component {
         return this.props.getStories(this.props.user.id)
       case TabTypes.drafts:
         return this.props.getDrafts(this.props.user.id)
+      case TabTypes.bookmarks:
+        return this.props.loadBookmarks(this.props.user.id)
     }
   }
 
@@ -51,6 +54,8 @@ class ProfileScreen extends React.Component {
       userStoriesFetchStatus,
       accessToken,
       updateUser,
+      userBookmarksById,
+      userBookmarksFetchStatus,
     } = this.props
 
     // Deals with the case that the user logs out
@@ -64,6 +69,7 @@ class ProfileScreen extends React.Component {
         user={user}
         stories={userStoriesById}
         drafts={draftsById}
+        bookmarks={userBookmarksById}
         onSelectTab={this._selectTab}
         editable={true}
         touchTrash={this._touchTrash}
@@ -75,6 +81,7 @@ class ProfileScreen extends React.Component {
         profileImage={getImageUrl(user.profile.cover)}
         fetchStatus={userStoriesFetchStatus}
         draftsFetchStatus={this.props.draftsFetchStatus}
+        bookmarksFetchStatus={userBookmarksFetchStatus}
         hasTabbar={!this.props.isEditing}
       />
     )
@@ -83,7 +90,7 @@ class ProfileScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   const {userId} = state.session
-  let {stories} = state.entities
+  let {stories, users} = state.entities
   return {
     user: state.entities.users.entities[userId],
     accessToken: _.find(state.session.tokens, {type: 'access'}).value,
@@ -91,9 +98,8 @@ const mapStateToProps = (state) => {
     userStoriesById: getByUser(stories, userId),
     draftsFetchStatus: stories.drafts.fetchStatus,
     draftsById: stories.drafts.byId,
-    // userBookmarksFetchStatus: {fetching: false, loaded: true}
-    // // @TODO: draftFetchStatus
-    // draftFetchStatus: {fetching: false, loaded: true},
+    userBookmarksById: getByBookmarks(users, userId),
+    userBookmarksFetchStatus: getBookmarksFetchStatus(stories, userId),
     error: stories.error
   }
 }
@@ -104,9 +110,8 @@ const mapDispatchToProps = (dispatch) => {
     getDrafts: () => dispatch(StoryActions.loadDrafts()),
     updateUser: (attrs) => dispatch(UserActions.updateUser(attrs)),
     getUser: (userId) => dispatch(UserActions.loadUser(userId)),
-    deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId))
-    // @TODO fixme: .getBookmarks() not implemented?
-    // loadBookmarks: () => dispatch(StoryActions.getBookmarks()),
+    deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
+    loadBookmarks: (userId) => dispatch(StoryActions.getBookmarks(userId)),
   }
 }
 

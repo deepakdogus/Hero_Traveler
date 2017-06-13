@@ -71,6 +71,26 @@ export function * getUserStories (api, {userId}) {
   }
 }
 
+export function * getBookmarks(api, {userId}) {
+  const response = yield call(
+    api.getBookmarks,
+    userId
+  )
+
+  if (response.ok) {
+    const {entities, result} = response.data
+    yield [
+      put(UserActions.receiveUsers(entities.users)),
+      put(CategoryActions.receiveCategories(entities.categories)),
+      put(StoryActions.receiveStories(entities.stories)),
+      put(UserActions.receiveBookmarks(userId, result)),
+      put(StoryActions.getBookmarksSuccess(userId, result)),
+    ]
+  } else {
+    yield put(StoryActions.getBookmarksFailure(new Error('Failed to get bookmarks')))
+  }
+}
+
 export function * getCategoryStories (api, {categoryId, storyType}) {
   const response = yield call(api.getCategoryStories, categoryId, {type: storyType})
   if (response.ok) {
@@ -180,26 +200,6 @@ export function * bookmarkStory(api, {userId, storyId}) {
       put(UserActions.userToggleBookmark(userId, storyId)),
       put(StoryActions.toggleBookmark(storyId, !wasLiked))
     ]
-  }
-}
-
-export function * getBookmarks(api) {
-  const response = yield call(
-    api.getBookmarks,
-    userId
-  )
-
-  if (response.ok) {
-    const {entities, result} = response.data
-
-    yield [
-      put(UserActions.receiveUsers(entities.users)),
-      put(CategoryActions.receiveCategories(entities.categories)),
-      put(StoryActions.receiveStories(entities.stories)),
-      put(UserActions.receiveBookmarks(userId, result))
-    ]
-  } else {
-    yield put(StoryActions.getBookmarksFailure(new Error('Failed to get bookmarks')))
   }
 }
 

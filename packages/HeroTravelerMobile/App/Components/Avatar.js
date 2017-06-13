@@ -1,11 +1,11 @@
 import React, {Component, PropTypes} from 'react'
 import {
   View,
-  Image,
   StyleSheet,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
+import Image from './Image'
 import {Colors} from '../Themes'
 
 const styles = StyleSheet.create({
@@ -35,8 +35,7 @@ export default class Avatar extends Component {
     const {
       avatarUrl,
       size,
-      iconColor,
-      style
+      iconColor
     } = this.props
 
     const rootStyles = [
@@ -59,6 +58,7 @@ export default class Avatar extends Component {
     return (
       <View style={rootStyles}>
         <Image
+          cached={true}
           source={{uri: avatarUrl}}
           style={{
             width: SIZES[size],

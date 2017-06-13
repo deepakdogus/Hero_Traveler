@@ -3,6 +3,7 @@ package com.herotravelermobile;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.RNFetchBlob.RNFetchBlobPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 import com.slowpath.hockeyapp.RNHockeyAppPackage;
@@ -12,7 +13,6 @@ import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.cboy.rn.splashscreen.SplashScreenReactPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.imagepicker.ImagePickerPackage;
-import com.horcrux.svg.SvgPackage;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -36,6 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNFetchBlobPackage(),
             new MapsPackage(),
             new WebViewBridgePackage(),
             new RNHockeyAppPackage(),
@@ -45,7 +46,6 @@ public class MainApplication extends Application implements ReactApplication {
             new SplashScreenReactPackage(),
             new LinearGradientPackage(),
             new ImagePickerPackage(),
-            new SvgPackage(),
             new RCTCameraPackage(),
             new VectorIconsPackage(),
             new RNDeviceInfo()

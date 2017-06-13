@@ -1,11 +1,10 @@
 import _ from 'lodash'
 import React from 'react'
-import { ScrollView, Text, Image, View, TouchableOpacity } from 'react-native'
+import { ScrollView, Text, View, TouchableOpacity } from 'react-native'
 import moment from 'moment'
 import PushNotification from 'react-native-push-notification'
 
 import { connect } from 'react-redux'
-import {Actions as NavActions} from 'react-native-router-flux'
 import UserActions from '../../Redux/Entities/Users'
 import Loader from '../../Components/Loader'
 import styles from '../Styles/NotificationScreenStyles'
@@ -130,7 +129,7 @@ class NotificationScreen extends React.Component {
                 description={this.getDescription(activity)}
                 content={this.getContent(activity)}
                 user={activity.user}
-                onPress={(aid, seen) => this._pressActivity(aid, seen)}
+                onPress={this._pressActivity}
               />
             )
           }}

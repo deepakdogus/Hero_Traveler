@@ -10,8 +10,6 @@ class TabIcon extends React.Component {
 
   getIconName(navKey) {
     switch (navKey) {
-      case 'cameraReverse':
-        return Images.iconCameraReverse
       case 'pencil':
         return Images.iconPencil
       case 'gear':
@@ -68,6 +66,14 @@ class TabIcon extends React.Component {
         return Images.iconNavExplore
       case 'createStory':
         return Images.iconNavCreate
+      case 'close':
+        return Images.iconContentXWhite
+      case 'cameraReverse':
+        return Images.iconReverseCamera
+      case 'cameraFlash':
+        return Images.iconFlashCamera
+      case 'video':
+        return Images.iconCreateMenuVideo
       case 'profile':
       default:
         return Images.iconNavProfile
@@ -84,16 +90,15 @@ class TabIcon extends React.Component {
   }
 
   render() {
-    const { style = {} } = this.props
+    const { style = {}, name, notificationCount } = this.props
     return (
       <View style={ style.view || {} }>
         <Image
-          source={this.getIconName(this.props.name)}
-          size={40}
+          source={this.getIconName(name)}
           style={style.image || {}}
         />
-        {this.props.name === 'activity' && this.props.notificationCount > 0 &&
-          <NotificationBadge count={this.props.notificationCount} />
+        {name === 'activity' && notificationCount > 0 &&
+          <NotificationBadge count={notificationCount} />
         }
       </View>
     );

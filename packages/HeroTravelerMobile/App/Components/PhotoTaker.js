@@ -85,18 +85,13 @@ class PhotoTaker extends Component {
         <View style={styles.cameraControls}>
           {this.props.mediaType === 'photo' && this.hasFlash() &&
             <View style={[styles.cameraControl, styles.flash]}>
-              <Icon
-                color={Colors.snow}
-                name='bolt'
-                size={30} />
+              <TabIcon name='cameraFlash' />
             </View>
           }
           <TouchableOpacity onPress={() => this.setState({backCamera: !this.state.backCamera})}>
             <View
               style={[styles.cameraControl, styles.flipCamera]}>
-              <TabIcon
-                name="cameraReverse"
-              />
+              <TabIcon name='cameraReverse' style={{ image: { marginLeft: 3 } }}/>
             </View>
           </TouchableOpacity>
         </View>
@@ -110,7 +105,7 @@ class PhotoTaker extends Component {
               <Icon
                 color={Colors.snow}
                 name='circle-o'
-                size={50}/>
+                size={75}/>
             </TouchableOpacity>
           </View>
         }
@@ -123,7 +118,7 @@ class PhotoTaker extends Component {
               <Icon
                 color={this.state.isRecording ? Colors.redLight : Colors.snow}
                 name={this.state.isRecording ? 'circle' : 'circle-o'}
-                size={50}/>
+                size={75}/>
             </TouchableOpacity>
           </View>
         }

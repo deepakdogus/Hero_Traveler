@@ -1,6 +1,5 @@
 import React, {PropTypes, Component} from 'react'
 import {
-  Image,
   StyleSheet,
   TouchableWithoutFeedback,
   View
@@ -8,6 +7,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
+import Image from './Image'
 import Video, {MuteButton, PlayButton} from './Video'
 import getImageUrl from '../Lib/getImageUrl'
 import {Metrics} from '../Themes'
@@ -56,6 +56,7 @@ export default class StoryCover extends Component {
         onPress={this.props.onPress}
       >
         <Image
+          cached={true}
           resizeMode="cover"
           source={{uri: getImageUrl(this.props.cover)}}
           style={[styles.image]}

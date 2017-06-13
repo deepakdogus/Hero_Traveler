@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@rwoody/ht-util@*":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@rwoody/ht-util/-/ht-util-0.0.9.tgz#3cddbf704927ada11b60b3a42babff42cfb15474"
+"@rwoody/ht-util@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@rwoody/ht-util/-/ht-util-0.0.10.tgz#fb8d61bae6f1c4de1402ad3d29e016f378d85d93"
   dependencies:
     request "^2.81.0"
     request-promise "^4.2.1"

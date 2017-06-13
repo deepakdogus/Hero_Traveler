@@ -1253,6 +1253,10 @@ balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
 
+base-64@0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/base-64/-/base-64-0.1.0.tgz#780a99c84e7d600260361511c4877613bf24f6bb"
+
 base64-arraybuffer@0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/base64-arraybuffer/-/base64-arraybuffer-0.1.5.tgz#73926771923b5a19747ad666aa5cd4bf9c6e9ce8"
@@ -1836,6 +1840,10 @@ cryptiles@2.x.x:
   resolved "https://registry.yarnpkg.com/cryptiles/-/cryptiles-2.0.5.tgz#3bdfecdc608147c1c67202fa291e7dca59eaa3b8"
   dependencies:
     boom "2.x.x"
+
+crypto-js@^3.1.9-1:
+  version "3.1.9-1"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-3.1.9-1.tgz#fda19e761fc077e01ffbfdc6e9fdfc59e8806cd8"
 
 csrf@~3.0.0:
   version "3.0.6"
@@ -3998,13 +4006,13 @@ mime-db@~1.23.0:
   version "1.23.0"
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.23.0.tgz#a31b4070adaea27d732ea333740a64d0ec9a6659"
 
-mime-types@2.1.11, mime-types@~2.1.7:
+mime-types@2.1.11, mime-types@~2.1.7, mime-types@~2.1.9:
   version "2.1.11"
   resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-2.1.11.tgz#c259c471bda808a85d6cd193b430a5fae4473b3c"
   dependencies:
     mime-db "~1.23.0"
 
-mime-types@^2.1.12, mime-types@~2.1.11, mime-types@~2.1.15, mime-types@~2.1.6, mime-types@~2.1.9:
+mime-types@^2.1.12, mime-types@~2.1.11, mime-types@~2.1.15, mime-types@~2.1.6:
   version "2.1.15"
   resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-2.1.15.tgz#a4ebf5064094569237b8cf70046776d09fc92aed"
   dependencies:
@@ -4830,6 +4838,13 @@ react-native-fbsdk@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/react-native-fbsdk/-/react-native-fbsdk-0.5.0.tgz#3ccd67d189755df11d366b8de9acb91ea2300e6e"
 
+react-native-fetch-blob@^0.10.5:
+  version "0.10.5"
+  resolved "https://registry.yarnpkg.com/react-native-fetch-blob/-/react-native-fetch-blob-0.10.5.tgz#498e5437ad604db126b46e4a06cd9cbf33d1ea42"
+  dependencies:
+    base-64 "0.1.0"
+    glob "^7.0.6"
+
 react-native-global-props@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-native-global-props/-/react-native-global-props-1.1.1.tgz#7d254a18b57a027e1006fe20c2502cddb646d9e5"
@@ -4848,6 +4863,12 @@ react-native-htmlview@^0.9.0:
 react-native-image-picker@^0.26.2:
   version "0.26.3"
   resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-0.26.3.tgz#0ad2eede49501a7046d8046a73813696539c3dcd"
+
+react-native-img-cache@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-img-cache/-/react-native-img-cache-1.4.0.tgz#b0a2495aa0289a35b15f7ff24c5769bb4a2b991f"
+  dependencies:
+    crypto-js "^3.1.9-1"
 
 react-native-keyboard-aware-scrollview@^1.1.6:
   version "1.1.6"

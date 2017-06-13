@@ -4,10 +4,8 @@ import {
   ScrollView,
   View,
   Text,
-  ListView,
   TextInput,
   TouchableOpacity,
-  Image
 } from 'react-native'
 import {connect} from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
@@ -27,6 +25,7 @@ import List from '../../Components/List'
 import ListItem from '../../Components/ListItem'
 import getImageUrl from '../../Lib/getImageUrl'
 import Avatar from '../../Components/Avatar'
+import Image from '../../Components/Image'
 
 const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
 const STORY_INDEX = env.SEARCH_STORY_INDEX
@@ -172,6 +171,7 @@ class ExploreScreen extends Component {
                 if (story.coverImage) {
                   leftEl = (
                     <Image
+                      cached={true}
                       resizeMode='cover'
                       source={{uri: getImageUrl(story.coverImage)}}
                       style={styles.thumbnailImage}

@@ -15,7 +15,6 @@ export default class Image extends Component {
   render () {
     const {cached, ...imageProps} = this.props
     const BaseComponent = cached ? CachedImage : RNImage
-
     return (
       <BaseComponent {...imageProps} />
     )

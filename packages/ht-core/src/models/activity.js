@@ -39,7 +39,12 @@ ActivitySchema.statics = {
       path: 'fromUser',
       populate: { path: 'profile.avatar' }
     })
-    .populate('story story.coverImage story.coverVideo')
+    .populate({
+      path: 'story',
+      populate: {
+        path: 'coverImage coverVideo'
+      }
+    })
     .populate('comment')
   },
 

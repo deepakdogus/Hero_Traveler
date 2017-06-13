@@ -62,7 +62,7 @@ router.put('/draft/:id/image',
 )
 router.post('/draft', hasValidOauth, endpointWrapper(createDraft))
 
-router.delete('/:id', endpointWrapper(deleteStory))
+router.delete('/:id', hasValidOauth, endpointWrapper(deleteStory))
 
 router.get('/:id/comment', hasValidOauth, endpointWrapper(getComments))
 router.post('/:id/comment', hasValidOauth, endpointWrapper(createComment))

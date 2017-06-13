@@ -220,8 +220,8 @@ const create = () => {
     return api.delete(`story/draft/${draftId}`)
   }
 
-  const deleteStory = (story) => {
-    return api.delete(`story/${story.id}`)
+  const deleteStory = (storyId) => {
+    return api.delete(`story/${storyId}`)
   }
 
   const getStory = (storyId) => {

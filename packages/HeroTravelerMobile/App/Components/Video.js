@@ -64,7 +64,6 @@ export const PlayButton = ({videoFadeAnim, onPress, isPlaying, style = {}}) => {
 }
 
 export const MuteButton = ({onPress, isMuted, style = {}}) => {
-  console.log('isMuted', isMuted)
   return (
     <View style={style}>
       <VideoButton
@@ -138,7 +137,6 @@ export default class VideoPlayer extends React.Component {
   }
 
   _togglePlayVideo() {
-    console.log('toggle video')
     if (!this.props.allowVideoPlay) {
       console.log('video play not allowed')
       return

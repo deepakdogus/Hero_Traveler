@@ -5,7 +5,6 @@ import {
   View,
   Text,
   TextInput,
-  Image,
   TouchableWithoutFeedback,
   TouchableOpacity,
   KeyboardAvoidingView,
@@ -27,6 +26,7 @@ import NavBar from '../Containers/CreateStory/NavBar'
 import HeroAPI from '../Services/HeroAPI'
 import pathAsFileObject from '../Lib/pathAsFileObject'
 import TabIcon from './TabIcon'
+import Image from './Image'
 
 // @TODO UserActions shouldn't be in a component
 import UserActions from '../Redux/Entities/Users'
@@ -395,6 +395,7 @@ class ProfileView extends React.Component {
         ]}>
         <View style={styles.gradientWrapper}>
           <Image
+            cached={true}
             style={[styles.coverImage, profileImage ? null : styles.noCoverImage]}
             resizeMode='cover'
             source={{uri: profileImage || undefined}}

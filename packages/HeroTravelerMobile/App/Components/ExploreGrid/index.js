@@ -2,14 +2,11 @@ import React, {Component} from 'react'
 import {
   View,
   Text,
-  ListView,
   TouchableOpacity,
-  Image,
 } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
 
 import TabIcon from '../TabIcon'
-import {Colors} from '../../Themes'
+import Image from '../Image'
 import styles from './ExploreGridStyles'
 import getImageUrl from '../../Lib/getImageUrl'
 
@@ -33,12 +30,13 @@ export default class ExploreGrid extends Component {
         key={category.id}
       >
         <Image
-          source={{uri: getImageUrl(category.image) || undefined}}
+          cached={true}
+          source={{uri: getImageUrl(category.image, 'versions.thumbnail240.path')}}
           style={styles.gridImage}
         >
           <Text style={styles.gridRowText}>{category.title}</Text>
           {category.selected &&
-            <TabIcon 
+            <TabIcon
               name='redCheck'
               style={{view: styles.selectedIcon}}
             />

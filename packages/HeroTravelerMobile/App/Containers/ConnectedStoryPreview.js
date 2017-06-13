@@ -6,6 +6,7 @@ import StoryPreview from '../Components/StoryPreview'
 const mapStateToProps = (state, ownProps) => {
   const {session: {userId}, entities} = state
   const story = entities.stories.entities[ownProps.storyId]
+  || entities.users.entities[ownProps.storyId]
   return {
     story,
     user: entities.users.entities[story.author],

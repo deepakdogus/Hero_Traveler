@@ -134,7 +134,7 @@ export default function * root () {
     takeLatest(CategoryTypes.LOAD_CATEGORIES_REQUEST, getCategories, heroAPI),
     takeLatest(StoryTypes.LOAD_DRAFTS, loadDrafts, heroAPI),
     takeLatest(StoryTypes.DELETE_STORY, deleteStory, heroAPI),
-    // takeLatest(StoryTypes.GET_BOOKMARKS, getBookmarks, heroAPI),
+    takeLatest(StoryTypes.GET_BOOKMARKS, getBookmarks, heroAPI),
 
     // Users
     takeLatest(UserTypes.LOAD_USER_SUGGESTIONS_REQUEST, getSuggestedUsers, heroAPI),

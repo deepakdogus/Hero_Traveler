@@ -54,7 +54,7 @@
     "react-native-router-flux": "https://github.com/rwoody/react-native-router-flux",
     "react-native-splash-screen": "^2.0.0",
     "react-native-vector-icons": "^4.0.0",
-    "react-native-video": "https://github.com/rwoody/react-native-video",
+    "react-native-video": "~1.0.0",
     "react-native-webview-bridge-updated": "https://github.com/rwoody/react-native-webview-bridge#container-style",
     "react-native-zss-rich-text-editor": "https://github.com/rwoody/react-native-zss-rich-text-editor#insert-video",
     "react-redux": "^5.0.2",

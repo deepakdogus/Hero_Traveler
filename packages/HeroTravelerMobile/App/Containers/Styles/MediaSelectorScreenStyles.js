@@ -8,7 +8,7 @@ export default StyleSheet.create({
     backgroundColor: Colors.background,
   },
   tabbar: {
-    height: 40,
+    height: 55,
     flex: 1,
     position: 'absolute',
     bottom: 0,
@@ -16,6 +16,7 @@ export default StyleSheet.create({
     right: 0,
     flexDirection: 'row',
     justifyContent: 'space-around',
+    alignItems: 'center',
     backgroundColor: Colors.background
   },
   tabbarButton: {
@@ -26,8 +27,13 @@ export default StyleSheet.create({
     flex: 1,
     height: 40,
     lineHeight: 40,
+    fontSize: 15,
+    letterSpacing: 1.5,
     color: Colors.snow,
     textAlign: 'center'
+  },
+  tabbarTextNotSelected: {
+    color: Colors.grey
   },
   imageWrapper: {
     flex: 1,
@@ -43,18 +49,17 @@ export default StyleSheet.create({
     right: 0
   },
   retakeButtonText: {
-    color: Colors.snow,
-    fontSize: 10,
+    color: Colors.white,
+    fontSize: 13,
     fontFamily: Fonts.type.montserrat,
   },
   retakeButton: {
     backgroundColor: Colors.blackoutTint,
     borderRadius: 15,
-    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    flex: .05,
-    width: 75,
-    marginBottom: 60,
+    width: 95,
+    height: 35,
+    marginBottom: 130,
   }
 })

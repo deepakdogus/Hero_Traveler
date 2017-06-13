@@ -137,6 +137,10 @@ export const receiveBookmarks = (state, {userId, storyIds}) => state.setIn(
   storyIds
 )
 
+export const getByBookmarks = (state, userId) => {
+  return state.getIn(['usersBookmarksById', userId], [])
+}
+
 export const toggleLike = (state, {userId, storyId}) => {
   const likes = _.get(state, `usersLikesById.${userId}`, [])
   if (_.includes(likes, storyId)) {

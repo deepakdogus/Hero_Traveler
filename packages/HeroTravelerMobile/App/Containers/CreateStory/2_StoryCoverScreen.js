@@ -239,10 +239,20 @@ class StoryCoverScreen extends Component {
     )(!!this.state.coverImage)
   }
 
+  /*
+  roundabout way to figure out if a draft has already been saved
+  we want to know this because if it already has we do NOT want to
+  delete it if they say no to _onLeft message and instead want to
+  merely revert the values
+  */
+  isSavedDraft = () => {
+    return Object.keys(this.state.originalStory).length
+  }
+
   _onLeft = () => {
     const isDraft = this.props.story.draft === true
     const title = isDraft ? 'Cancel Draft' : 'Cancel Edits'
-    const message = isDraft ? 'Do you want to save this draft?' : 'Do you want to save these edits?'
+    const message = this.isSavedDraft() ? 'Do you want to save these edits?' : 'Do you want to save this draft?'
 
     // When a user cancels the draft flow, remove the draft
     Alert.alert(
@@ -262,7 +272,7 @@ class StoryCoverScreen extends Component {
       }, {
         text: 'No',
         onPress: () => {
-          if (isDraft) {
+          if (!this.isSavedDraft()) {
             this.props.discardDraft(this.props.story.id)
           } else {
             this.props.update(this.props.story.id, this.state.originalStory, true)
@@ -408,7 +418,7 @@ class StoryCoverScreen extends Component {
     this.setState({error: null})
     NavActions.mediaSelectorScreen({
       mediaType: this.getMediaType(),
-      title: 'Add a Cover',
+      title: 'Add Cover',
       leftTitle: 'Cancel',
       onLeft: () => NavActions.pop(),
       rightTitle: 'Next',
@@ -568,7 +578,6 @@ class StoryCoverScreen extends Component {
 
   render () {
     let showTooltip = false;
-
     if (this.props.user && this.state.file) {
       showTooltip = !isTooltipComplete(
         TooltipTypes.STORY_PHOTO_EDIT,

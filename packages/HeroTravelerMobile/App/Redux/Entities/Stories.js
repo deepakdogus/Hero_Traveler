@@ -23,6 +23,9 @@ const { Types, Creators } = createActions({
   toggleBookmark: ['storyId', 'wasLiked'],
   storyBookmark: ['userId', 'storyId'],
   // storyBookmarkFailure: ['storyId', 'wasLiked'],
+  getBookmarks: ['userId'],
+  getBookmarksSuccess: ['userId', 'bookmarks'],
+  getBookmarksFailure: ['userId', 'error'],
   receiveStories: ['stories'],
   deleteStory: ['userId', 'storyId'],
   deleteStorySuccess: ['storyId'],
@@ -102,6 +105,27 @@ export const userSuccess = (state, {userId, userStoriesById}) => {
 export const userFailure = (state, {userId, error}) => {
   return state.setIn(
     ['storiesByUserAndId', userId, 'fetchStatus'],
+    {fetching: false, loaded: false, error}
+  )
+}
+
+export const getBookmarks = (state, {userId}) => {
+  return state.setIn(
+    ['bookmarks', userId, 'fetchStatus'],
+    {fetching: true, loaded: false}
+  )
+}
+
+export const getBookmarksSuccess = (state, {userId, bookmarks}) => {
+  return state.setIn(
+    ['bookmarks', userId, 'fetchStatus'],
+    {fetching: false, loaded: true}
+  )
+}
+
+export const getBookmarksFailure = (state, {userId, error}) => {
+  return state.setIn(
+    ['bookmarks', userId, 'fetchStatus'],
     {fetching: false, loaded: false, error}
   )
 }
@@ -271,6 +295,11 @@ export const getUserFetchStatus = (state, userId) => {
   return state.getIn(['storiesByUserAndId', userId, 'fetchStatus'], {})
 }
 
+export const getBookmarksFetchStatus = (state, userId) => {
+  return state.getIn(['bookmarks', userId, 'fetchStatus'], {})
+}
+
+
 // export const getIdsByUser = (state, userId: string) => {
 //   return state.getIn(['storiesByUser', userId, 'byId'], [])
 // }
@@ -295,4 +324,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.RECEIVE_STORIES]: updateEntities,
   [Types.DELETE_STORY]: deleteStory,
   [Types.DELETE_STORY_SUCCESS]: deleteStorySuccess,
+  [Types.GET_BOOKMARKS]: getBookmarks,
+  [Types.GET_BOOKMARKS_SUCCESS]: getBookmarksSuccess,
+  [Types.GET_BOOKMARKS_FAILURE]: getBookmarksFailure,
 })

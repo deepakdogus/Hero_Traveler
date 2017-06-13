@@ -96,14 +96,27 @@ export default NavActions.create(
       <Scene
         key='launchScreen'
         component={LaunchScreen}
-        rightTitle='Browse as a Guest >'
-        rightButtonTextStyle={Styles.browseGuest}
+        renderRightButton={(props) => {
+          return (<NavButton
+            onRight={props.onRight}
+            text='Browse as a Guest'
+            iconName='arrowRight'
+            style={{
+              text: Styles.browseGuest,
+              icon: {
+                height: 14,
+                width: 7,
+                marginTop: 1.5,
+              }
+            }}/>)
+        }}
         onRight={() => __DEV__ ? NavActions.guestExplore() : alert('Browse as guest')}
         hideNavBar={false}
       />
       <Scene
         key='signup'
         component={SignupScreen}
+        backButtonImage={Images.iconArrowLeft}
       />
       <Scene
         key='signupFlow'
@@ -130,13 +143,14 @@ export default NavActions.create(
               text='Done'
               iconName='arrowRightRed'/>)
           }}
-          leftButtonIconStyle={Styles.leftButtonIconStyle}
+          leftButtonIconStyle={Styles.buttonRed}
           backButtonImage={Images.iconArrowLeft}
           onRight={() => NavActions.tabbar()}
         />
       </Scene>
       <Scene
         key='login'
+        backButtonImage={Images.iconArrowLeft}
         component={LoginScreen}
       />
       <Scene
@@ -148,6 +162,7 @@ export default NavActions.create(
         component={ChangePasswordScreen}
         direction='horizontal'
         onLeft={() => NavActions.pop()}
+        backButtonImage={Images.iconArrowLeft}
         title='Change Password'
         {...darkNavBarProps}
       />
@@ -156,6 +171,7 @@ export default NavActions.create(
         component={SettingsScreen}
         direction='horizontal'
         onLeft={() => NavActions.pop()}
+        backButtonImage={Images.iconArrowLeft}
         title='Settings'
         {...darkNavBarProps}
       />
@@ -164,6 +180,7 @@ export default NavActions.create(
         component={Settings_NotificationScreen}
         direction='horizontal'
         onLeft={() => NavActions.pop()}
+        backButtonImage={Images.iconArrowLeft}
         title='Notifications'
         {...darkNavBarProps}
       />
@@ -172,6 +189,7 @@ export default NavActions.create(
         component={TermsAndConditionsScreen}
         direction='horizontal'
         onLeft={() => NavActions.pop()}
+        backButtonImage={Images.iconArrowLeft}
         title='Terms & Conditions'
         {...darkNavBarProps}
       />
@@ -180,6 +198,7 @@ export default NavActions.create(
         component={FAQScreen}
         direction='horizontal'
         onLeft={() => NavActions.pop()}
+        backButtonImage={Images.iconArrowLeft}
         title='FAQ'
         {...darkNavBarProps}
       />
@@ -202,6 +221,7 @@ export default NavActions.create(
         component={StoryReadingScreen}
         direction='horizontal'
         onLeft={() => NavActions.pop()}
+        backButtonImage={Images.iconArrowLeft}
         duration={1}
         {...clearNavBarProps}
       />
@@ -210,6 +230,7 @@ export default NavActions.create(
         component={StoryCommentsScreen}
         direction='horizontal'
         onLeft={() => NavActions.pop()}
+        backButtonImage={Images.iconClose}
         title='Comments'
         {...darkNavBarProps}
       />
@@ -242,6 +263,7 @@ export default NavActions.create(
             key='explore_categoryFeed'
             component={CategoryFeedScreen}
             onLeft={() => NavActions.pop()}
+            backButtonImage={Images.iconArrowLeft}
             title='Category Feed'
             hideNavBar={false}
             {...darkNavBarProps}
@@ -311,11 +333,13 @@ export default NavActions.create(
         key='readOnlyProfile'
         component={ReadOnlyProfileScreen}
         onLeft={() => NavActions.pop()}
+        backButtonImage={Images.iconArrowLeft}
       />
       <Scene
         key='guestExplore'
         component={ExploreScreen}
         onLeft={() => NavActions.pop()}
+        backButtonImage={Images.iconArrowLeft}
       />
       <Scene
         key='followersScreen'
@@ -323,6 +347,7 @@ export default NavActions.create(
         title='Followers'
         direction='horizontal'
         onLeft={() => NavActions.pop({direction: 'horizontal'})}
+        backButtonImage={Images.iconArrowLeft}
         {...darkNavBarProps}
       />
       <Scene

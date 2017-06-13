@@ -11,6 +11,7 @@ import { Actions as NavActions } from 'react-native-router-flux'
 import styles from './Styles/ViewBioScreenStyle'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
+import TabIcon from './TabIcon'
 
 const viewBioScreen = (props) => {
   const { username, bio } = props.user
@@ -18,7 +19,14 @@ const viewBioScreen = (props) => {
     <View style={styles.container}>
       <View style={styles.iconContainer}>
         <TouchableOpacity onPress={() => NavActions.pop()}>
-          <Icon name='close' size={20} />
+          <TabIcon
+            name='close'
+            style={{
+              image: {
+                tintColor: 'black',
+              }
+            }}
+          />
         </TouchableOpacity>
       </View>
       <View style={styles.usernameContainer}>

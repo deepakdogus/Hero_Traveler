@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import {ScrollView, Text, View, Image, Animated, TouchableOpacity} from 'react-native'
+import {ScrollView, Text, View, Animated, TouchableOpacity} from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 import MapView from 'react-native-maps';
@@ -12,6 +12,7 @@ import ConnectedStoryPreview from './ConnectedStoryPreview'
 import {Metrics, Fonts, Colors} from '../Themes'
 import StoryReadingToolbar from '../Components/StoryReadingToolbar'
 import TabIcon from '../Components/TabIcon'
+import Image from '../Components/Image'
 import {styles, HTMLViewStyles, HTMLStylesheet} from './Styles/StoryReadingScreenStyles'
 import Video from '../Components/Video'
 
@@ -37,6 +38,7 @@ function renderNode(node, index, siblings, parent, defaultRenderer) {
     const marginBottom = (siblings[index+1] && isCaption(siblings[index+1])) ? 0 : 60
     return (
       <Image
+        cached={true}
         key={index}
         source={{uri: img.src}}
         resizeMode='cover'

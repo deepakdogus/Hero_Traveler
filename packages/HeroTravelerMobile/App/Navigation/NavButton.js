@@ -20,8 +20,6 @@ export default class NavButton extends React.Component {
         style={{image: [Styles.image, style.icon || {} ] }}
       />)
 
-    console.log("this.props is", this.props)
-
     return (
       <TouchableOpacity
         onPress={onRight || onLeft}

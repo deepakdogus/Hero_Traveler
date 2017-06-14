@@ -234,6 +234,13 @@ export function * loadDrafts(api) {
   }
 }
 
-export function * deleteStory(api, {storyId}) {
-  yield put(StoryActions.deleteStorySuccess(storyId))
+export function * deleteStory(api, {userId, storyId}){
+  const response = yield call(
+    api.deleteStory,
+    storyId
+  )
+
+  if (response.ok) {
+    yield put(StoryActions.deleteStorySuccess(userId, storyId))
+  } 
 }

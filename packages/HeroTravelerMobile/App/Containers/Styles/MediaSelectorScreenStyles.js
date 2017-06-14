@@ -20,17 +20,18 @@ export default StyleSheet.create({
     backgroundColor: Colors.background
   },
   tabbarButton: {
-    height: 40,
+    height: 55,
     flex: .5,
   },
   tabbarText: {
     flex: 1,
-    height: 40,
-    lineHeight: 40,
-    fontSize: 15,
+    height: 55,
+    lineHeight: 55,
     letterSpacing: 1.5,
     color: Colors.snow,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontSize: 15,
+    fontFamily: Fonts.type.montserrat,
   },
   tabbarTextNotSelected: {
     color: Colors.grey

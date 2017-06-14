@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import { View, TouchableOpacity } from 'react-native'
 import Camera from 'react-native-camera'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import TabIcon from './TabIcon'
 
 import {Colors} from '../Themes'
 import styles from './Styles/PhotoTakerStyles'
+import TabIcon from './TabIcon'
 
 class PhotoTaker extends Component {
   static propTypes = {
@@ -24,8 +24,7 @@ class PhotoTaker extends Component {
     super(props)
     this.state = {
       backCamera: true,
-      isRecording: false,
-      captureAudio: true
+      isRecording: false
     }
   }
 
@@ -70,8 +69,6 @@ class PhotoTaker extends Component {
       Camera.constants.CaptureMode.still : Camera.constants.CaptureMode.video
   }
 
-  _toggleCaptureAudio = () => this.setState({captureAudio: !this.state.captureAudio})
-
   _flipCamera = () => this.setState({backCamera: !this.state.backCamera})
 
   _cameraRef = camera => this.cameraRef = camera
@@ -81,7 +78,7 @@ class PhotoTaker extends Component {
       <Camera
         ref={this._cameraRef}
         captureMode={this.getCaptureMode()}
-        captureAudio={this.state.captureAudio}
+        captureAudio={this.props.mediaType === 'video'}
         orientation={Camera.constants.Orientation.portrait}
         captureTarget={Camera.constants.CaptureTarget.disk}
         keepAwake={true}
@@ -90,7 +87,7 @@ class PhotoTaker extends Component {
         style={styles.camera}
        >
         <View style={styles.cameraControls}>
-          {this.hasFlash() &&
+          {this.props.mediaType === 'photo' && this.hasFlash() &&
             <View style={[styles.cameraControl, styles.flash]}>
               <TabIcon name='cameraFlash' />
             </View>
@@ -101,17 +98,6 @@ class PhotoTaker extends Component {
               <TabIcon name='cameraReverse' style={{ image: { marginLeft: 3 } }}/>
             </View>
           </TouchableOpacity>
-          {this.props.mediaType === 'video' &&
-            <TouchableOpacity onPress={this._toggleCaptureAudio}>
-              <View
-                style={[styles.cameraControl, styles.flipCamera]}>
-                <Icon
-                  color={Colors.snow}
-                  name={!this.state.captureAudio ? 'volume-off' : 'volume-up'}
-                  size={30} />
-              </View>
-            </TouchableOpacity>
-          }
         </View>
         <View style={{flex: 1}} />
         {this.props.mediaType === 'photo' &&

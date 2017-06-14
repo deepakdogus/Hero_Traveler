@@ -11,6 +11,7 @@ const colors = {
   whiteAlphaPt80: 'rgba(255,255,255,.8)',
   redLight: '#ed1e2e',
   red: '#d60000',
+  inactiveRed: 'rgba(214,0,0,.3)',
   errorRed: '#ed1e2e',
   cloud: 'rgba(200,200,200, 0.35)',
   windowTint: 'rgba(0, 0, 0, 0.4)',

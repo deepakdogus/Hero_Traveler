@@ -11,11 +11,12 @@ import ImagePicker from 'react-native-image-picker'
 
 import NavBar from './CreateStory/NavBar'
 import PhotoTaker from '../Components/PhotoTaker'
-import { Colors } from '../Themes'
 import Video from '../Components/Video'
 import styles from './Styles/MediaSelectorScreenStyles'
 import isTooltipComplete, {Types as TooltipTypes} from '../Lib/firstTimeTooltips'
 import UserActions from '../Redux/Entities/Users'
+import NavButtonStyles from '../Navigation/Styles/NavButtonStyles'
+import { Colors } from '../Themes'
 
 class MediaSelectorScreen extends React.Component {
 
@@ -60,6 +61,10 @@ class MediaSelectorScreen extends React.Component {
       seen: true,
     })
     this.props.completeTooltip(tooltips)
+  }
+
+  isCaptureInUse = () => {
+    return this.state.captureOpen || this.state.mediaCaptured
   }
 
     renderPhotoTooltip() {
@@ -152,6 +157,8 @@ class MediaSelectorScreen extends React.Component {
     )
   }
 
+  _launchMedia = () => this.launchMediaSelector()
+
   _retake = () => {
     this.setState({media: null})
   }
@@ -161,7 +168,6 @@ class MediaSelectorScreen extends React.Component {
 
     let showPhotoTooltip = false;
     let showNextTooltip = false;
-
     if (this.props.user) {
       showPhotoTooltip = !isTooltipComplete(
         TooltipTypes.STORY_PHOTO_TAKE,
@@ -206,10 +212,12 @@ class MediaSelectorScreen extends React.Component {
             showMuteButton={false}
             autoPlayVideo={true}
             allowVideoPlay={true}
-
+            showChangeBtn={!this.state.mediaCaptured}
+            changeBtnOnPress={this._launchMedia}
           />
           <View style={{flex: 1}} />
-          {this.state.mediaCaptured &&
+          {
+            this.state.mediaCaptured &&
             <TouchableOpacity
               style={styles.retakeButton}
               onPress={this._retake}
@@ -228,10 +236,16 @@ class MediaSelectorScreen extends React.Component {
           onLeft={this.props.onLeft}
           leftTitle={this.props.leftTitle}
           onRight={this._onNext}
-          rightTitle={this.props.rightTitle}
-          rightTextStyle={!this.state.media ? {opacity: .5} : {color: Colors.red}}
           rightIcon={!this.state.media ? null : 'arrowRightRed'}
-          rightIconStyle={{image: { height: 12, width: 12, marginLeft: -10, marginRight: 12}}}
+          rightIconStyle={{
+            image: {
+              ...NavButtonStyles.image, 
+              marginRight: 10,
+              opacity: !this.state.media ? .2 : 1,
+            }
+          }}
+          rightTitle={this.props.rightTitle}
+          rightTextStyle={[!this.state.media ? {opacity: .5} : {color: Colors.red}, {paddingRight: 10}]}
         />
         <View style={styles.root}>
           {content}
@@ -240,13 +254,19 @@ class MediaSelectorScreen extends React.Component {
               style={styles.tabbarButton}
               onPress={this.launchMediaSelector}
             >
-              <Text style={[styles.tabbarText, styles.tabbarTextNotSelected]}>Library</Text>
+              <Text style={[
+                styles.tabbarText,
+                this.isCaptureInUse() ? { color: Colors.grey } : {}
+              ]}>Library</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.tabbarButton}
               onPress={this.launchMediaCapture}
             >
-              <Text style={styles.tabbarText}>{this.props.mediaType === 'photo' ? 'Photo' : 'Video'}</Text>
+              <Text style={[
+                styles.tabbarText,
+                this.isCaptureInUse() ? {} : { color: Colors.grey }
+              ]}>{this.props.mediaType === 'photo' ? 'Photo' : 'Video'}</Text>
             </TouchableOpacity>
           </View>
         </View>

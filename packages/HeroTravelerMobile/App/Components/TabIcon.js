@@ -34,6 +34,10 @@ class TabIcon extends React.Component {
         return Images.iconShare
       case 'location':
         return Images.iconLocation
+      case 'camera':
+        return Images.iconEditImageCameraLarge
+      case 'video-camera':
+        return Images.iconEditVideo
       case 'arrowRight':
         return Images.iconArrowRight
       case 'arrowLeft':
@@ -92,7 +96,6 @@ class TabIcon extends React.Component {
         <Image
           source={this.getIconName(name)}
           style={style.image || {}}
-          color={'white'}
         />
         {name === 'activity' && notificationCount > 0 &&
           <NotificationBadge count={notificationCount} />

@@ -1,31 +1,32 @@
 import React from 'react'
-import {View, Animated, StyleSheet, TouchableWithoutFeedback} from 'react-native'
+import {View, Animated, StyleSheet, TouchableWithoutFeedback, Text} from 'react-native'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import TabIcon from './TabIcon'
 import Video from 'react-native-video'
+import MediaSelectorStyles from '../Containers/Styles/MediaSelectorScreenStyles'
 
 import Colors from '../Themes/Colors'
 
 const buttonLarge = 80
 const buttonSmall = 40
-const VideoButton = ({size, icon, onPress, style = {}}) => {
+const VideoButton = ({size, icon, onPress, style = {}, text}) => {
   const sizeUnits = size !== 'small' ? buttonLarge : buttonSmall
+
   return (
     <TouchableWithoutFeedback
       style={style}
       onPress={onPress}>
       <View
-        style={{
-          width: sizeUnits,
-          height: sizeUnits,
-          borderRadius: sizeUnits / 2,
-          backgroundColor: Colors.windowTint,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
+        style={text ? styles.videoBtnText :
+          [{
+            width: sizeUnits,
+            height: sizeUnits,
+            borderRadius: sizeUnits / 2,
+          }, styles.videoBtnImg]
+        }
       >
-        { !(icon === 'audio-off' || icon === 'audio-on') &&
+        { !text && !(icon === 'audio-off' || icon === 'audio-on') &&
         <Icon
           name={icon}
           size={sizeUnits / 2}
@@ -42,6 +43,9 @@ const VideoButton = ({size, icon, onPress, style = {}}) => {
             }}
             name={icon}
           />
+        }
+        { text &&
+          <Text style={MediaSelectorStyles.retakeButtonText}>{text}</Text>
         }
       </View>
     </TouchableWithoutFeedback>
@@ -236,9 +240,18 @@ export default class VideoPlayer extends React.Component {
         {this.props.showMuteButton && this.props.showPlayButton &&
           <MuteButton
             style={styles.mute}
-            onPress={this.toggleMute}
+            onPress={() => this.toggleMute()}
             isMuted={this.state.muted}
           />
+        }
+        {
+          this.props.showChangeBtn &&
+          <View style={styles.changeBtn}>
+            <VideoButton
+              text='CHANGE'
+              onPress={() => this.props.changeBtnOnPress()}
+            />
+          </View>
         }
       </View>
     )
@@ -288,6 +301,26 @@ const styles = StyleSheet.create({
     marginLeft: -50,
   },
   mute: {
-
+    position: 'absolute',
+    top: 20,
+    right: 20,
+  },
+  changeBtn: {
+    position: 'absolute',
+    bottom: 60,
+  },
+  videoBtnText: {
+    backgroundColor: Colors.blackoutTint,
+    borderRadius: 15,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 95,
+    height: 35,
+  },
+  videoBtnImg: {
+    backgroundColor: Colors.windowTint,
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 })

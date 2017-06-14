@@ -45,8 +45,7 @@ class ProfileScreen extends React.Component {
   }
 
   _touchTrash = (storyId) => {
-    alert('delete story')
-    // this.props.deleteStory(this.props.user.id, storyId)
+    this.props.deleteStory(this.props.user.id, storyId)
   }
 
   _selectTab = (tab) => {

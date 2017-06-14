@@ -14,7 +14,7 @@ export default StyleSheet.create({
     backgroundColor: Colors.snow
   },
   input: {
-    padding: Metrics.doubleBaseMargin,
+    padding: Metrics.baseMargin,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

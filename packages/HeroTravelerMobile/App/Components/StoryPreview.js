@@ -3,12 +3,11 @@ import React, {PropTypes, Component} from 'react'
 import {
   View,
   Text,
-  Image,
+  Alert,
   TouchableOpacity,
   TouchableHighlight } from 'react-native'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
-
 
 import formatCount from '../Lib/formatCount'
 import getImageUrl from '../Lib/getImageUrl'
@@ -19,6 +18,10 @@ import LikesComponent from './LikeComponent'
 import TrashCan from '../Components/TrashCan'
 import Avatar from './Avatar'
 import StoryCover from './StoryCover'
+
+import HeroAPI from '../Services/HeroAPI'
+
+const api = HeroAPI.create()
 
 
 export default class StoryPreview extends Component {
@@ -66,10 +69,21 @@ export default class StoryPreview extends Component {
     }
   }
 
+
   _touchTrash = () => {
-    if (this.props.touchTrash) {
-      this.props.touchTrash(this.props.story.id)
-    }
+    const storyId = this.props.story.id
+    const userId = this.props.user.id
+    const { deleteStory } = this.props
+    /* const setAuthAndDelete = () => api.setAuth(this.props.accessToken)
+     *   .then(() => api.deleteStory(storyId))*/
+    Alert.alert(
+      'Delete Story',
+      'Are you sure you want to delete this story?',
+      [
+        { text: 'Cancel' },
+        { text: 'Delete', onPress: () => deleteStory(userId, storyId), style: 'destructive' }
+      ]
+   )
   }
 
   _touchUser = () => {
@@ -155,6 +169,8 @@ export default class StoryPreview extends Component {
 
   render () {
     const {story} = this.props
+    if (!story) return null
+
     return (
         <View style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}>
         <View style={styles.contentContainer}>

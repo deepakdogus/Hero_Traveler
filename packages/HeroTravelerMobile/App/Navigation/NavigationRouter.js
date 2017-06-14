@@ -298,6 +298,7 @@ export default NavActions.create(
         hideNavBar
         isEditing={true}
         direction='vertical'
+        panHandlers={null}
       />
       <Scene
         key='createStoryFlow'

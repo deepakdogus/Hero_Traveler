@@ -19,6 +19,20 @@ class ProfileScreen extends React.Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const shouldUpdate = _.some([
+      this.state.selectedTab !== nextState.selectedTab,
+      this.props.user !== nextProps.user,
+      this.props.draftsById !== nextProps.draftsById,
+      this.props.userStoriesById !== nextProps.userStoriesById,
+      this.props.userStoriesFetchStatus !== nextProps.userStoriesFetchStatus,
+      this.props.userBookmarksById !== nextProps.userBookmarksById,
+      this.props.userBookmarksFetchStatus !== nextProps.userBookmarksFetchStatus,
+    ])
+
+    return shouldUpdate
+  }
+
   componentDidMount() {
     this.props.getUser(this.props.user.id)
     this.props.getStories(this.props.user.id)

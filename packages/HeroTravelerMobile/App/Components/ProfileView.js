@@ -254,7 +254,6 @@ class ProfileView extends React.Component {
   _bioRef = c => this.bioInput = c
 
   render() {
-    console.log('rendering!')
     const { user, stories, drafts, editable, isEditing, profileImage, bookmarks } = this.props
     let fetchStatus
     switch (this.state.selectedTab) {

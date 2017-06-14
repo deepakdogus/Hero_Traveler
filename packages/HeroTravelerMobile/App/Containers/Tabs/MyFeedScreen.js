@@ -16,14 +16,23 @@ import ConnectedStoryPreview from '../ConnectedStoryPreview'
 import RoundedButton from '../../Components/RoundedButton'
 import styles from '../Styles/MyFeedScreenStyles'
 import NoStoriesMessage from '../../Components/NoStoriesMessage'
+import {withHandlers} from 'recompose'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
+
+const enhanceStoryPreview = withHandlers({
+  onPressLike: props => () => {
+    props.toggleLike(props.userId, props.storyId)
+  },
+  onPress: props => () => {
+    NavActions.story({storyId: props.storyId})
+  }
+})
+const EnhancedStoryPreview = enhanceStoryPreview(ConnectedStoryPreview)
 
 class MyFeedScreen extends React.Component {
   static propTypes = {
     user: PropTypes.object,
-    stories: PropTypes.object,
-    fetching: PropTypes.bool,
     error: PropTypes.bool,
   };
 
@@ -43,6 +52,17 @@ class MyFeedScreen extends React.Component {
     if (this.state.refreshing && nextProps.fetchStatus.loaded) {
       this.setState({refreshing: false})
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const shouldUpdate = _.some([
+      this.state.refreshing !== nextState.refreshing,
+      this.props.storiesById !== nextProps.storiesById,
+      this.props.fetchStatus !== nextProps.fetchStatus,
+      this.props.error !== nextProps.error,
+    ])
+
+    return shouldUpdate
   }
 
   _wrapElt(elt){
@@ -128,9 +148,25 @@ class MyFeedScreen extends React.Component {
     }
   }
 
+  renderStory = (storyId) => {
+    return (
+      <EnhancedStoryPreview
+        key={storyId}
+        storyId={storyId}
+        height={imageHeight}
+        showLike={true}
+        showUserInfo={true}
+        onPressUser={this._touchUser}
+        userId={this.props.user.id}
+        toggleLike={this.props.toggleLike}
+      />
+    )
+  }
+
   render () {
-    let { storiesById, fetchStatus, error } = this.props;
+    let {storiesById, fetchStatus, error} = this.props;
     let showTooltip = false;
+    let content
 
     if (this.props.user) {
       showTooltip = !isTooltipComplete(
@@ -153,20 +189,7 @@ class MyFeedScreen extends React.Component {
         <StoryList
           style={styles.storyList}
           storiesById={storiesById}
-          renderStory={(storyId) => {
-            return (
-              <ConnectedStoryPreview
-                key={storyId}
-                storyId={storyId}
-                height={imageHeight}
-                showLike={true}
-                onPress={() => NavActions.story({storyId})}
-                showUserInfo={true}
-                onPressUser={this._touchUser}
-                onPressLike={story => this.props.toggleLike(this.props.user.id, story.id)}
-              />
-            )
-          }}
+          renderStory={this.renderStory}
           onRefresh={this._onRefresh}
           refreshing={this.state.refreshing}
         />

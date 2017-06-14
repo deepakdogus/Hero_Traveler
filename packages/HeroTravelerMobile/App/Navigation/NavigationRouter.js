@@ -1,7 +1,6 @@
-import React, { Component } from 'react'
+import React from 'react'
 import {
   Scene,
-  Modal,
   Actions as NavActions
 } from 'react-native-router-flux'
 
@@ -51,11 +50,6 @@ import SignupSocial from '../Containers/Signup/SignupSocial'
 import NavButton from './NavButton'
 
 import {Images} from '../Themes'
-
-// https://github.com/aksonov/react-native-router-flux/blob/master/Example/Example.js#L52
-const getSceneStyle = (/* NavigationSceneRendererProps */ props, computedProps) => {
-  return {}
-}
 
 const darkNavBarProps = {
   navigationBarStyle: Styles.navBar,
@@ -232,7 +226,6 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        duration={1}
         {...clearNavBarProps}
       />
       <Scene

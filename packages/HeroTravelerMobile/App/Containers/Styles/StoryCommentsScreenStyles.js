@@ -1,13 +1,16 @@
 import { StyleSheet } from 'react-native'
 import { ApplicationStyles, Colors, Metrics, Fonts } from '../../Themes/'
 
+export const listHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight - Metrics.doubleSection;
+
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
     backgroundColor: Colors.snow,
+    flex: 1,
   },
   list: {
-    height: Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight,
+    height: listHeight,
     width: Metrics.screenWidth,
   },
   commentWrapper: {

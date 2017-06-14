@@ -10,7 +10,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import getImageUrl from '../Lib/getImageUrl'
 
 import API from '../Services/HeroAPI'
-import styles from './Styles/StoryCommentsScreenStyles'
+import styles, { listHeight } from './Styles/StoryCommentsScreenStyles'
 
 const api = API.create()
 
@@ -39,7 +39,8 @@ class StoryCommentsScreen extends React.Component {
     this.state = {
       loading: true,
       text: '',
-      comments: []
+      comments: [],
+      isFocused: false,
     }
   }
 
@@ -84,6 +85,22 @@ class StoryCommentsScreen extends React.Component {
     })
   }
 
+  setFocusedTrue = () => {
+    this.setState({isFocused: true})
+  }
+
+  setFocusedFalse = () => {
+    this.setState({isFocused: false})
+  }
+
+  setChangedText = (text) => {
+    this.setState({text: text})
+  }
+
+  setInputRef = (input) => {
+    this.input = input
+  }
+
   render () {
     var _scrollView = ScrollView
     return (
@@ -91,7 +108,10 @@ class StoryCommentsScreen extends React.Component {
             <ScrollView
               ref={(scrollView) => { _scrollView = scrollView; }}
               onContentSizeChange={() => { this.state.comments.length > 6 ? _scrollView.scrollToEnd({animated: true}) : null }}
-              style={styles.list}>
+              style={[
+                styles.list,
+                this.state.isFocused ? {height: listHeight - 295} : {}
+              ]}>
             {this.state.comments.map(comment => {
               return(
                 <Comment
@@ -104,7 +124,7 @@ class StoryCommentsScreen extends React.Component {
                 )})}
             </ScrollView>
             <KeyboardAvoidingView
-              behavior={'position'}
+              behavior={'padding'}
               contentContainerStyle={{}}
               style={[styles.root]}>
               <View>
@@ -117,15 +137,17 @@ class StoryCommentsScreen extends React.Component {
                       value={this.state.text}
                       autoCapitalize='none'
                       onSubmitEditing={this.handleSend}
-                      onChangeText={(text) => this.setState({text: text})}
+                      onFocus={this.setFocusedTrue}
+                      onBlur={this.setFocusedFalse}
+                      onChangeText={this.setChangedText}
                       autoCorrect={false}
                       returnKeyType={'send'}
-                      ref={(input) => { this.input = input }}
+                      ref={this.setInputRef}
                     />
                   </View>
-                  <RoundedButton 
+                  <RoundedButton
                     style={[
-                      styles.inputButton, 
+                      styles.inputButton,
                       {backgroundColor: this.isValid() ? Colors.red : Colors.inactiveRed},
                     ]}
                     onPress={this.handleSend}

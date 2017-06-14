@@ -35,11 +35,11 @@ class MediaSelectorScreen extends React.Component {
     }
   }
 
-  launchMediaCapture() {
+  launchMediaCapture = () => {
     this.setState({captureOpen: true, media: null})
   }
 
-  launchMediaSelector() {
+  launchMediaSelector = () => {
     this.setState({captureOpen: false})
     ImagePicker.launchImageLibrary({
       videoQuality: 'high',
@@ -239,7 +239,7 @@ class MediaSelectorScreen extends React.Component {
           rightIcon={!this.state.media ? null : 'arrowRightRed'}
           rightIconStyle={{
             image: {
-              ...NavButtonStyles.image, 
+              ...NavButtonStyles.image,
               marginRight: 10,
               opacity: !this.state.media ? .2 : 1,
             }

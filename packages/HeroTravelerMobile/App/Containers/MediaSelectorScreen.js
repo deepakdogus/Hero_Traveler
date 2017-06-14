@@ -152,6 +152,9 @@ class MediaSelectorScreen extends React.Component {
     )
   }
 
+  _retake = () => {
+    this.setState({media: null})
+  }
 
   render () {
     let content
@@ -188,7 +191,7 @@ class MediaSelectorScreen extends React.Component {
           {this.state.mediaCaptured &&
             <TouchableOpacity
               style={styles.retakeButton}
-              onPress={() => this.setState({media: null})}
+              onPress={this._retake}
             >
               <Text style={styles.retakeButtonText}>RETAKE</Text>
             </TouchableOpacity>
@@ -209,7 +212,7 @@ class MediaSelectorScreen extends React.Component {
           {this.state.mediaCaptured &&
             <TouchableOpacity
               style={styles.retakeButton}
-              onPress={() => this.setState({media: null})}
+              onPress={this._retake}
             >
               <Text style={styles.retakeButtonText}>RETAKE</Text>
             </TouchableOpacity>
@@ -235,13 +238,13 @@ class MediaSelectorScreen extends React.Component {
           <View style={styles.tabbar}>
             <TouchableOpacity
               style={styles.tabbarButton}
-              onPress={() => this.launchMediaSelector()}
+              onPress={this.launchMediaSelector}
             >
               <Text style={[styles.tabbarText, styles.tabbarTextNotSelected]}>Library</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.tabbarButton}
-              onPress={() => this.launchMediaCapture()}
+              onPress={this.launchMediaCapture}
             >
               <Text style={styles.tabbarText}>{this.props.mediaType === 'photo' ? 'Photo' : 'Video'}</Text>
             </TouchableOpacity>

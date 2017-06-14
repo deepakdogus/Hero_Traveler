@@ -1,14 +1,15 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { View, StatusBar, Linking } from 'react-native'
 import HockeyApp from 'react-native-hockeyapp'
 import { connect } from 'react-redux'
 import { Router } from 'react-native-router-flux'
 
+// import PerfMonitor from 'react-native/Libraries/Performance/RCTRenderingPerf'
+
 import OpenScreenActions from '../Redux/OpenScreenRedux'
 import NavigationScenes from '../Navigation/NavigationRouter'
 import StartupActions from '../Redux/StartupRedux'
 import LoginActions from '../Redux/LoginRedux'
-// import ReduxPersist from '../Config/ReduxPersist'
 import styles from './Styles/RootContainerStyles'
 import deeplinkToAction from '../Lib/deeplinkToAction'
 
@@ -28,6 +29,14 @@ class RootContainer extends Component {
   }
 
   async componentDidMount() {
+    // PerfMonitor.toggle();
+    // setTimeout(() => {
+    //   PerfMonitor.start();
+    //   setTimeout(() => {
+    //     PerfMonitor.stop();
+    //   }, 14000);
+    // }, 5000);
+
     HockeyApp.start()
     Linking.addEventListener('url', this._handleOpenURL);
     return Linking.getInitialURL().then((url) => {

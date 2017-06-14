@@ -106,6 +106,13 @@ class LaunchScreen extends React.Component {
     ).start()
   }
 
+  _logoutFb = () => {
+    LoginManager.logOut()
+    this.setState({
+      facebookLoggedIn: false
+    })
+  }
+
   render () {
     return (
       <Image
@@ -131,12 +138,7 @@ class LaunchScreen extends React.Component {
 
           {this.state.facebookLoggedIn && false && <RoundedButton
             style={styles.facebook}
-            onPress={() => {
-              LoginManager.logOut()
-              this.setState({
-                facebookLoggedIn: false
-              })
-            }}
+            onPress={this._logoutFb}
             text='Logout of facebook'
           />}
           <RoundedButton

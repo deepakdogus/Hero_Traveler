@@ -1,15 +1,6 @@
 import React, { PropTypes } from 'react'
 import { TouchableOpacity, Text } from 'react-native'
 import styles from './Styles/SquaredButtonStyles'
-import ExamplesRegistry from '../Services/ExamplesRegistry'
-
-// Example
-ExamplesRegistry.addComponentExample('Squared Button', () =>
-  <SquaredButton
-    text='real buttons have curves'
-    onPress={() => window.alert('Rounded Button Pressed!')}
-  />
-)
 
 export default class SquaredButton extends React.Component {
   static propTypes = {

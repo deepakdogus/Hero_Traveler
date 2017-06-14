@@ -32,6 +32,8 @@ function isText(node) {
 // - to properly apply styling we need to isolate the various elements we use
 function renderNode(node, index, siblings, parent, defaultRenderer) {
 
+  console.log('node', node)
+
   if (node.name === 'img') {
     const img = node.attribs
     // dynamic marginBottom for when we do not have a caption
@@ -72,39 +74,39 @@ function renderNode(node, index, siblings, parent, defaultRenderer) {
     )
   }
 
-  // captures normal text
-  if (isText(node)) {
-    const text = node.type === 'text' ? node.data : node.children[0].data
-    return (<Text
-      key={index}
-      style={HTMLViewStyles.text}
-    >
-      {text}
-    </Text>)
-  }
-
-  // captures h1 and styles appropriately
-  if (node.type === 'tag' && node.name === 'h1') {
-    return (
-      <Text
-        key={index}
-        style={HTMLViewStyles.header}
-      >
-        {node.children[0].data}
-      </Text>)
-  }
-
-  // ensuring caption has bottom margin
-  if (node.type === 'tag' && node.name === 'div' && node.attribs.class === 'caption') {
-    return (
-      <Text
-        key={index}
-        style={[HTMLViewStyles.text, HTMLViewStyles.caption]}
-      >
-        {node.children[0].data}
-      </Text>
-    )
-  }
+  // // captures normal text
+  // if (isText(node)) {
+  //   const text = node.type === 'text' ? node.data : node.children[0].data
+  //   return (<Text
+  //     key={index}
+  //     style={HTMLViewStyles.text}
+  //   >
+  //     {text}
+  //   </Text>)
+  // }
+  //
+  // // captures h1 and styles appropriately
+  // if (node.type === 'tag' && node.name === 'h1') {
+  //   return (
+  //     <Text
+  //       key={index}
+  //       style={HTMLViewStyles.header}
+  //     >
+  //       {node.children[0].data}
+  //     </Text>)
+  // }
+  //
+  // // ensuring caption has bottom margin
+  // if (node.type === 'tag' && node.name === 'div' && node.attribs.class === 'caption') {
+  //   return (
+  //     <Text
+  //       key={index}
+  //       style={[HTMLViewStyles.text, HTMLViewStyles.caption]}
+  //     >
+  //       {node.children[0].data}
+  //     </Text>
+  //   )
+  // }
 }
 
 class StoryReadingScreen extends React.Component {

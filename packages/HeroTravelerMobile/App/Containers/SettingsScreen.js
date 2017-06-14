@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react'
+import React from 'react'
 import {
   ScrollView,
   View,
@@ -34,7 +34,7 @@ const Row = ({icon, text, textStyle, connected, hideAngleRight, onPress}) => {
   )
 }
 
-const List = ({children}) => {
+const NavList = ({children}) => {
   return (
     <View style={styles.list}>
       {children}
@@ -43,10 +43,6 @@ const List = ({children}) => {
 }
 
 class SettingsScreen extends React.Component {
-
-  static contextTypes = {
-    routes: PropTypes.object.isRequired,
-  };
 
   // Go to launch page and reset all store state on logout
   componentWillReceiveProps(newProps) {
@@ -60,58 +56,58 @@ class SettingsScreen extends React.Component {
     this.props.logout(this.props.user.id)
   }
 
+  _tapFacebook = () => alert('facebook!')
+  // _tapTwitter = () => alert('twitter!')
+
   render () {
     const user = this.props.user || {}
-    const {routes} = this.context
 
     return (
       <View style={[styles.containerWithNavbar, styles.root]}>
         <ScrollView style={{flex: 1}}>
           <View style={styles.separator} />
-          <List>
+          <NavList>
             <Row
               icon={<Icon name='facebook' size={22} color={Colors.facebookBlue} />}
               text='Facebook'
               connected={user.isFacebookConnected}
-              onPress={() => alert('facebook!')}
+              onPress={this._tapFacebook}
             />
-            <Row
+            {/*<Row
               icon={<Icon name='twitter' size={22} color={Colors.twitterBlue} />}
               text='Twitter'
               connected={user.isTwitterConnected}
-              onPress={() => alert('twitter!')}
-            />
-          </List>
+              onPress={this._tapTwitter}
+            />*/}
+          </NavList>
           <View style={styles.separator} />
-          <List>
+          <NavList>
             <Row
               text='Change Password'
               onPress={NavActions.changePassword}
             />
             <Row
               text='Notifications'
-              onPress={() => {
-                routes.settings_notification()
-              }}
+              onPress={NavActions.settings_notification}
             />
-          </List>
+          </NavList>
           <View style={styles.separator} />
-          <List>
+          <NavList>
           <Row
             text='FAQ'
-            onPress={() => routes.FAQ()}
+            onPress={NavActions.FAQ}
           />
           <Row
             text='Terms & Conditions'
-            onPress={() => routes.terms()}
+            onPress={NavActions.terms}
           />
           <Row
             text='Sign Out'
             hideAngleRight={true}
-            onPress={() => this._logOut()}
+            onPress={this._logOut}
             textStyle={{color: Colors.red}}
           />
-          </List>
+          </NavList>
         </ScrollView>
         {this.props.loggingOut &&
           <Loader tintColor={Colors.blackoutTint} style={{

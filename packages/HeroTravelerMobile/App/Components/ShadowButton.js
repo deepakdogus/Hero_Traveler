@@ -1,15 +1,6 @@
 import React, { PropTypes } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import styles from './Styles/ShadowButtonStyles'
-import ExamplesRegistry from '../Services/ExamplesRegistry'
-
-// Example
-ExamplesRegistry.addComponentExample('Shadow Button', () =>
-  <ShadowButton
-    text='Real buttons have shadows'
-    onPress={() => window.alert('ShadowButton Pressed!')}
-  />
-)
 
 export default class ShadowButton extends React.Component {
   static propTypes = {

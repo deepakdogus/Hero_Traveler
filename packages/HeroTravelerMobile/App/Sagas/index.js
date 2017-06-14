@@ -83,7 +83,7 @@ function * pollRefreshTokens() {
 }
 
 function * watchRefreshTokens() {
-  while(true) {
+  while(true) { // eslint-disable-line no-constant-condition
     yield take([
       SessionTypes.INITIALIZE_SESSION,
       SessionTypes.REFRESH_SESSION_SUCCESS

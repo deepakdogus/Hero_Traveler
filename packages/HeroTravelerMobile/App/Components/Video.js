@@ -1,5 +1,6 @@
 import React from 'react'
 import {View, Animated, StyleSheet, TouchableWithoutFeedback} from 'react-native'
+import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import TabIcon from './TabIcon'
 import Video from 'react-native-video'
@@ -76,6 +77,11 @@ export const MuteButton = ({onPress, isMuted, style = {}}) => {
 }
 
 export default class VideoPlayer extends React.Component {
+
+  static propTypes = {
+    autoPlayVideo: PropTypes.bool,
+    allowVideoPlay: PropTypes.bool,
+  }
 
   static defaultProps = {
     showMuteButton: true,
@@ -199,6 +205,8 @@ export default class VideoPlayer extends React.Component {
     this.player.presentFullscreenPlayer()
   }
 
+  _bindRef = (i) => this.player = i
+
   render() {
     return (
       <View style={[
@@ -208,7 +216,7 @@ export default class VideoPlayer extends React.Component {
       ]}>
         <Video
           source={{uri: this.props.path}}
-          ref={i => this.player = i}
+          ref={this._bindRef}
           paused={!this.state.videoPlaying}
           muted={this.state.muted}
           style={[

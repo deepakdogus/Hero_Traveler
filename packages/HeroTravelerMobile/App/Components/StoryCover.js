@@ -83,17 +83,27 @@ export default class StoryCover extends Component {
     this.player.toggle()
   }
 
+  _setIsPlaying = (value) => this.setState({isPlaying: value})
+
+  _togglePlayerRef = () => this.player.toggle()
+
+  _togglePlayerRefMuted = () => this.player.toggleMute()
+
+  _changeMute = (val) => this.setState({isMuted: val})
+
+  _makeRef = (i) => this.player = i
+
   renderVideo() {
     return (
       <View style={{flex: 1}}>
         <Video
           path={getVideoUrl(this.props.cover)}
-          ref={i => this.player = i}
+          ref={this._makeRef}
           allowVideoPlay={this.props.allowVideoPlay}
           autoPlayVideo={this.props.autoPlayVideo}
           showPlayButton={false}
-          onIsPlayingChange={(value) => this.setState({isPlaying: value})}
-          onMuteChange={val => this.setState({isMuted: val})}
+          onIsPlayingChange={this._setIsPlaying}
+          onMuteChange={this._changeMute}
         />
         <TouchableWithoutFeedback
           onPress={this._tapVideoWrapper}>
@@ -105,14 +115,14 @@ export default class StoryCover extends Component {
           </LinearGradient>
         </TouchableWithoutFeedback>
         {this.props.allowVideoPlay && <PlayButton
-          onPress={() => this.player.toggle()}
+          onPress={this._togglePlayerRef}
           isPlaying={this.state.isPlaying}
           videoFadeAnim={this.player && this.player.getAnimationState()}
           style={styles.playButton}
         />}
         {this.props.allowVideoPlay && this.state.isPlaying &&
           <MuteButton
-            onPress={() => this.player.toggleMute()}
+            onPress={this._togglePlayerRefMuted}
             isMuted={this.state.isMuted}
             style={styles.muteButton}
           />

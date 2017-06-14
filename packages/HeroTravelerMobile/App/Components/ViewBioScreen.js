@@ -1,16 +1,12 @@
 import React from 'react'
 import {
-  ScrollView,
   View,
   Text,
-  TextInput,
-  Image,
   TouchableOpacity,
 } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 import styles from './Styles/ViewBioScreenStyle'
 
-import Icon from 'react-native-vector-icons/FontAwesome'
 import TabIcon from './TabIcon'
 
 const viewBioScreen = (props) => {
@@ -18,7 +14,7 @@ const viewBioScreen = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.iconContainer}>
-        <TouchableOpacity onPress={() => NavActions.pop()}>
+        <TouchableOpacity onPress={NavActions.pop}>
           <TabIcon
             name='close'
             style={{

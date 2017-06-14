@@ -30,7 +30,9 @@ import Image from './Image'
 
 // @TODO UserActions shouldn't be in a component
 import UserActions from '../Redux/Entities/Users'
+import StoryActions from '../Redux/Entities/Stories'
 import isTooltipComplete, {Types as TooltipTypes} from '../Lib/firstTimeTooltips'
+import {withHandlers} from 'recompose'
 
 const api = HeroAPI.create()
 
@@ -40,15 +42,33 @@ export const TabTypes = {
   bookmarks: 'TAB_BOOKMARKS',
 }
 
-const Tab = ({text, onPress, selected}) => {
+const enhancedTab = withHandlers({
+  _onPress: props => () => {
+    if (props.onPress) {
+      props.onPress(props.type)
+    }
+  }
+})
+const Tab = enhancedTab(({text, _onPress, selected}) => {
   return (
-    <TouchableWithoutFeedback onPress={onPress}>
+    <TouchableWithoutFeedback onPress={_onPress}>
       <View style={[styles.tab, selected ? styles.tabSelected : null]}>
       <Text style={[styles.tabText, selected ? styles.tabTextSelected : null]}>{text}</Text>
       </View>
     </TouchableWithoutFeedback>
   )
-}
+})
+
+const enhanceStoryPreview = withHandlers({
+  onPress: props => () => {
+    NavActions.story({storyId: props.storyId})
+  },
+  onPressLike: props => () => {
+    props.onLike(props.userId, props.storyId)
+  }
+})
+
+const StoryPreviewEnhanced = enhanceStoryPreview(ConnectedStoryPreview)
 
 // @TOOO make this smaller
 class ProfileView extends React.Component {
@@ -56,7 +76,10 @@ class ProfileView extends React.Component {
   static defaultProps = {
     selectedTab: TabTypes.stories,
     onPressFollow: () => {},
-    onSelectTab: () => {}
+    onSelectTab: () => {},
+    bookmarksFetchStatus: {},
+    draftsFetchStatus: {},
+    storiesFetchStatus: {}
   }
 
   constructor(props) {
@@ -143,9 +166,9 @@ class ProfileView extends React.Component {
 
   renderStory = (storyId) => {
     return (
-      <ConnectedStoryPreview
+      <StoryPreviewEnhanced
         forProfile={true}
-        editable={this.props.editable}
+        editable={this.props.editable && this.state.selectedTab !== TabTypes.bookmarks}
         touchTrash={this.props.touchTrash}
         touchEdit={this.props.touchEdit}
         titleStyle={styles.storyTitleStyle}
@@ -154,8 +177,8 @@ class ProfileView extends React.Component {
         key={storyId}
         height={this.props.hasTabbar ? 177 : 177 + Metrics.tabBarHeight}
         storyId={storyId}
-        onPress={() => NavActions.story({storyId})}
-        onPressLike={story => alert(`Story ${storyId} liked`)}
+        userId={this.props.user.id}
+        onLike={this.props.toggleLike}
       />
     )
   }
@@ -223,6 +246,12 @@ class ProfileView extends React.Component {
       userId: this.props.user.id
     })
   }
+
+  _getTextInputRefs = () => [this.bioInput]
+
+  _setBioText = (bioText) => this.setState({bioText})
+
+  _bioRef = c => this.bioInput = c
 
   render() {
     const { user, stories, drafts, editable, isEditing, profileImage, bookmarks } = this.props
@@ -332,15 +361,18 @@ class ProfileView extends React.Component {
         <View style={styles.tabnavEdit}>
           <Tab
             selected={TabTypes.stories === this.state.selectedTab}
-            onPress={() => this.selectTab(TabTypes.stories)}
+            type={TabTypes.stories}
+            onPress={this.selectTab}
             text='STORIES' />
           <Tab
             selected={TabTypes.drafts === this.state.selectedTab}
-            onPress={() => this.selectTab(TabTypes.drafts)}
+            type={TabTypes.drafts}
+            onPress={this.selectTab}
             text='DRAFTS' />
           <Tab
             selected={TabTypes.bookmarks === this.state.selectedTab}
-            onPress={() => this.selectTab(TabTypes.bookmarks)}
+            type={TabTypes.bookmarks}
+            onPress={this.selectTab}
             text='BOOKMARKS' />
         </View>
       )
@@ -388,7 +420,7 @@ class ProfileView extends React.Component {
             onRight={this._onRight}
           />
         }
-        <KeyboardAwareScrollView getTextInputRefs={() => [this.bioInput]} style={[
+        <KeyboardAwareScrollView getTextInputRefs={this._getTextInputRefs} style={[
           this.props.hasTabbar ? styles.containerWithTabbar : null,
           styles.root,
           this.props.style,
@@ -445,11 +477,11 @@ class ProfileView extends React.Component {
            <View style={{margin: Metrics.section}}>
              <Text style={styles.editBio}>Edit Bio</Text>
              <TextInput
-               ref={c => this.bioInput = c}
+               ref={this._bioRef}
                style={[styles.bioText, {height: 150}]}
                multiline={true}
                editable={true}
-               onChangeText={(text) => this.setState({bioText: text})}
+               onChangeText={this._setBioText}
                value={this.state.bioText}
                maxLength={500}
                placeholder={'Tell us about yourself!'}
@@ -518,7 +550,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips}))
+    completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips})),
+    toggleLike: (userId, storyId) => dispatch(StoryActions.storyLike(
+      userId,
+      storyId
+    ))
   }
 }
 

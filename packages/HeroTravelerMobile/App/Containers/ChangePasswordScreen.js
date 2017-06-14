@@ -8,13 +8,11 @@ import {
 import {
   Actions as NavActions
 } from 'react-native-router-flux'
-import { Field, reduxForm, formValueSelector } from 'redux-form'
 import RoundedButton from '../Components/RoundedButton'
 import Loader from '../Components/Loader'
 import { connect } from 'react-redux'
 import {Colors} from '../Themes'
 import styles from './Styles/ChangePasswordScreenStyles'
-/* import LoginActions from '../Redux/LoginRedux'*/
 import HeroAPI from '../Services/HeroAPI'
 import LoginActions from '../Redux/LoginRedux'
 import { Actions as NavigationActions } from 'react-native-router-flux'
@@ -27,10 +25,11 @@ class ChangePasswordScreen extends React.Component {
     this.state = {
       currentText: '',
       newText: '',
+      validationError: null,
     }
   }
 
-  handleSubmit = (userId, password) => {
+  _handleSubmit = () => {
     if (this.state.newText.length < 8 || this.state.newText.length > 64) {
       this.setState({validationError: 'password must be between 8 and 64 characters long'})
       return
@@ -48,6 +47,10 @@ class ChangePasswordScreen extends React.Component {
     })
   }
 
+  _setText = (currentText) => this.setState({currentText})
+
+  _setNewText = (newText) => this.setState({newText})
+
   render () {
     return (
       <View style={[styles.containerWithNavbar, styles.root]}>
@@ -60,7 +63,7 @@ class ChangePasswordScreen extends React.Component {
               autoFocus
               value={this.state.currentText}
               autoCapitalize='none'
-              onChangeText={(text) => this.setState({currentText: text})}
+              onChangeText={this._setText}
               autoCorrect={false}
             />
           </View>
@@ -73,7 +76,7 @@ class ChangePasswordScreen extends React.Component {
               autoFocus
               value={this.state.newText}
               autoCapitalize='none'
-              onChangeText={(text) => this.setState({newText: text})}
+              onChangeText={this._setNewText}
               autoCorrect={false}
             />
           </View>
@@ -83,13 +86,13 @@ class ChangePasswordScreen extends React.Component {
               text='Cancel'
               textStyle={{color: Colors.blackoutTint}}
               style={styles.cancelButton}
-              onPress={() => NavActions.pop()}
+              onPress={NavActions.pop}
             />
             <RoundedButton
               text='Save Password'
               textStyle={{color: Colors.snow}}
               style={styles.submitButton}
-              onPress={() => this.handleSubmit()}
+              onPress={this._handleSubmit}
             />
             <Text>
               {this.state.validationError && <Text style={[styles.section, styles.error]}>{this.state.validationError}</Text>}

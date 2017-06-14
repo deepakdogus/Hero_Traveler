@@ -18,7 +18,10 @@ export default (rootReducer, rootSaga) => {
   const sagaMonitor = __DEV__ ? console.tron.createSagaMonitor() : null
   const sagaMiddleware = createSagaMiddleware({ sagaMonitor })
   middleware.push(sagaMiddleware)
-  middleware.push(CreateLogger({collapsed: true}))
+
+  if (Config.reduxLogging) {
+    middleware.push(CreateLogger({collapsed: true}))
+  }
 
   /* ------------- Assemble Middleware ------------- */
 

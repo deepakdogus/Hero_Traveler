@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react'
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import { View, TouchableOpacity } from 'react-native'
 import Camera from 'react-native-camera'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -23,8 +24,7 @@ class PhotoTaker extends Component {
     super(props)
     this.state = {
       backCamera: true,
-      isRecording: false,
-      captureAudio: true
+      isRecording: false
     }
   }
 
@@ -69,12 +69,16 @@ class PhotoTaker extends Component {
       Camera.constants.CaptureMode.still : Camera.constants.CaptureMode.video
   }
 
+  _flipCamera = () => this.setState({backCamera: !this.state.backCamera})
+
+  _cameraRef = camera => this.cameraRef = camera
+
   render () {
     return (
       <Camera
-        ref={camera => this.cameraRef = camera}
+        ref={this._cameraRef}
         captureMode={this.getCaptureMode()}
-        captureAudio={this.state.captureAudio}
+        captureAudio={this.props.mediaType === 'video'}
         orientation={Camera.constants.Orientation.portrait}
         captureTarget={Camera.constants.CaptureTarget.disk}
         keepAwake={true}
@@ -88,7 +92,7 @@ class PhotoTaker extends Component {
               <TabIcon name='cameraFlash' />
             </View>
           }
-          <TouchableOpacity onPress={() => this.setState({backCamera: !this.state.backCamera})}>
+          <TouchableOpacity onPress={this._flipCamera}>
             <View
               style={[styles.cameraControl, styles.flipCamera]}>
               <TabIcon name='cameraReverse' style={{ image: { marginLeft: 3 } }}/>

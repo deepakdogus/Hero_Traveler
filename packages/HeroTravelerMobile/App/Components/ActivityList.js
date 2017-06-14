@@ -1,7 +1,6 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 import { ListView } from 'react-native'
-
-import Activity, {ActivityProps} from './Activity'
+import PropTypes from 'prop-types'
 
 export default class ActivityList extends React.Component {
   static propTypes = {
@@ -22,6 +21,7 @@ export default class ActivityList extends React.Component {
   render () {
     return (
       <ListView
+        enableEmptySections={true}
         dataSource={this.state.dataSource}
         renderRow={this.props.renderRow}
         style={this.props.style}

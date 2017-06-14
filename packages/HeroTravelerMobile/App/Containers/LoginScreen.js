@@ -45,10 +45,12 @@ class LoginScreen extends React.Component {
   static propTypes = {
     dispatch: PropTypes.func,
     fetching: PropTypes.bool,
-    attemptLogin: PropTypes.func
+    attemptLogin: PropTypes.func,
+    isLoggedIn: PropTypes.bool,
+    error: PropTypes.string,
+    goToMyFeed: PropTypes.func,
+    signupFacebook: PropTypes.func
   }
-
-  isAttempting = false
 
   constructor (props) {
     super(props)
@@ -57,7 +59,6 @@ class LoginScreen extends React.Component {
       username: '',
       password: '',
     }
-    this.isAttempting = false
   }
 
   componentWillReceiveProps (newProps) {
@@ -74,7 +75,7 @@ class LoginScreen extends React.Component {
       this.state.password,
     ])
 
-    this.setState({ 
+    this.setState({
       username: _.trim(this.state.username),
       password: _.trim(this.state.password),
     })
@@ -85,19 +86,18 @@ class LoginScreen extends React.Component {
     }
 
     const { username, password } = this.state
-    this.isAttempting = true
     // attempt a login - a saga is listening to pick it up from here.
     this.props.attemptLogin(username, password)
   }
 
-  loginFinishedManager = (err, result) => {
+  loginFinishedManager = (/*err, result*/) => {
     LoginManager.logInWithReadPermissions([
       'public_profile',
       'email',
       'user_friends'
     ]).then(result => {
       if(!result.isCancelled) {
-        AccessToken.getCurrentAccessToken().then(data => {
+        AccessToken.getCurrentAccessToken().then((/*data*/) => {
             this.getUserInfoAndSignup()
           }
         )
@@ -187,10 +187,11 @@ class LoginScreen extends React.Component {
             <Text style={styles.instructions}>
               Or
             </Text>
-              {this.props.error && <Text style={[styles.error]}>{this.props.error}</Text>}
+
+            {this.props.error && <Text style={[styles.error]}>{this.props.error}</Text>}
+
             <View style={styles.form}>
               <Input
-                ref='username'
                 style={textInputStyle}
                 value={username}
                 editable={editable}
@@ -200,11 +201,9 @@ class LoginScreen extends React.Component {
                 autoCorrect={false}
                 onChangeText={this.handleChangeUsername}
                 underlineColorAndroid='transparent'
-                onSubmitEditing={() => this.refs.password.focus()}
                 placeholder='Username' />
 
               <Input
-                ref='password'
                 style={textInputStyle}
                 value={password}
                 editable={editable}
@@ -216,7 +215,7 @@ class LoginScreen extends React.Component {
                 onChangeText={this.handleChangePassword}
                 underlineColorAndroid='transparent'
                 onSubmitEditing={this.handlePressLogin}
-                placeholder='Password' />              
+                placeholder='Password' />
             </View>
             <RoundedButton
               style={launchStyles.email}
@@ -233,7 +232,7 @@ class LoginScreen extends React.Component {
               onPress={NavigationActions.resetPasswordRequest}
             />
 
-            
+
           </KeyboardAvoidingView>
         </ScrollView>
         {this.props.fetching &&

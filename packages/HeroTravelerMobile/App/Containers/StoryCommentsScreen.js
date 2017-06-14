@@ -1,14 +1,12 @@
 import _ from 'lodash'
-import React, { PropTypes } from 'react'
+import React from 'react'
 import { Text, View, ScrollView, Image, TextInput, KeyboardAvoidingView } from 'react-native'
 import { connect } from 'react-redux'
-import RoundedButton from '../Components/RoundedButton'
-import { Colors, Metrics } from '../Themes/'
-import SearchBar from '../Components/SearchBar'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import getImageUrl from '../Lib/getImageUrl'
 
+import RoundedButton from '../Components/RoundedButton'
+import getImageUrl from '../Lib/getImageUrl'
 import API from '../Services/HeroAPI'
 import styles, { listHeight } from './Styles/StoryCommentsScreenStyles'
 
@@ -85,6 +83,14 @@ class StoryCommentsScreen extends React.Component {
     })
   }
 
+  _setRef = i => this._scrollView = i
+
+  _onContentSizeChange = () => {
+    if (this.state.comments.length > 6) {
+      this._scrollView.scrollToEnd({animated: true})
+    }
+  }
+
   setFocusedTrue = () => {
     this.setState({isFocused: true})
   }
@@ -102,12 +108,11 @@ class StoryCommentsScreen extends React.Component {
   }
 
   render () {
-    var _scrollView = ScrollView
     return (
           <View style={[styles.containerWithNavbar]}>
             <ScrollView
-              ref={(scrollView) => { _scrollView = scrollView; }}
-              onContentSizeChange={() => { this.state.comments.length > 6 ? _scrollView.scrollToEnd({animated: true}) : null }}
+              ref={this._setRef}
+              onContentSizeChange={this._onContentSizeChange}
               style={[
                 styles.list,
                 this.state.isFocused ? {height: listHeight - 295} : {}
@@ -124,7 +129,7 @@ class StoryCommentsScreen extends React.Component {
                 )})}
             </ScrollView>
             <KeyboardAvoidingView
-              behavior={'padding'}
+              behavior='padding'
               contentContainerStyle={{}}
               style={[styles.root]}>
               <View>
@@ -169,7 +174,7 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = () => {
   return {
   }
 }

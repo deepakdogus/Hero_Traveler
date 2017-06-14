@@ -65,6 +65,10 @@ class ResetPasswordScreen extends React.Component {
     this.context.routes.login()
   }
 
+  _setPassword = (password) => this.setState({password})
+
+  _setConfirmPassword = (confirmPassword) => this.setState({confirmPassword})
+
   render () {
     return (
       <Image
@@ -85,7 +89,6 @@ class ResetPasswordScreen extends React.Component {
             <View style={{height: 60}}>
             </View>
             <Input
-              ref='password'
               style={styles.input}
               value={this.state.password}
               keyboardType='default'
@@ -93,13 +96,11 @@ class ResetPasswordScreen extends React.Component {
               autoCapitalize='none'
               secureTextEntry
               autoCorrect={false}
-              onChangeText={(password) => this.setState({password})}
+              onChangeText={this._setPassword}
               underlineColorAndroid='transparent'
-              onSubmitEditing={() => this.refs.confirmPassword.focus()}
               placeholder='Password' />
 
             <Input
-              ref='confirmPassword'
               style={styles.input}
               value={this.state.confirmPassword}
               keyboardType='default'
@@ -107,9 +108,9 @@ class ResetPasswordScreen extends React.Component {
               autoCapitalize='none'
               secureTextEntry
               autoCorrect={false}
-              onChangeText={(confirmPassword) => this.setState({confirmPassword})}
+              onChangeText={this._setConfirmPassword}
               underlineColorAndroid='transparent'
-              onSubmitEditing={() => this.handleResetPassword}
+              onSubmitEditing={this.handleResetPassword}
               placeholder='Confirm Password' />
 
             <RoundedButton

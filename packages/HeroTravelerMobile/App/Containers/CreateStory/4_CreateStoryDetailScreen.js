@@ -198,8 +198,8 @@ class CreateStoryDetailScreen extends React.Component {
           />
           <ScrollView style={styles.root}>
             <Text style={styles.title}>{this.props.story.title} Details </Text>
-            <View style={styles.videoDescriptionWrapper}>
-              {this.isVideo() &&
+            {this.isVideo() &&
+              <View style={styles.videoDescriptionWrapper}>
                 <TextInput
                   style={styles.videoDescription}
                   value={this.state.videoDescription}
@@ -207,8 +207,8 @@ class CreateStoryDetailScreen extends React.Component {
                   placeholder='Add a description'
                   multiline={true}
                 />
-              }
-            </View>
+              </View>
+            }
             <View style={styles.fieldWrapper}>
               <TabIcon name='location' style={locationIconStyle} />
               <TextInput

@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 import RoundedButton from '../Components/RoundedButton'
 import getImageUrl from '../Lib/getImageUrl'
+import {Colors} from '../Themes'
 import API from '../Services/HeroAPI'
 import styles, { listHeight } from './Styles/StoryCommentsScreenStyles'
 

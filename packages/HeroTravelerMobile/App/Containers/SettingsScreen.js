@@ -44,10 +44,10 @@ const NavList = ({children}) => {
 
 class SettingsScreen extends React.Component {
 
-  // Go to launch page and reset all store state on logout
+  // Go to launch page and reset all store state on
   componentWillReceiveProps(newProps) {
     if (this.props.isLoggedIn && !newProps.isLoggedIn) {
-      this.context.routes.launchScreen({type: NavActionConst.RESET})
+      NavActions.launchScreen({type: NavActionConst.RESET})
       this.props.resetStore()
     }
   }

@@ -112,6 +112,12 @@ const alwaysNull = () => null
 
 const popVertical = () => NavActions.pop({direction: 'horizontal'})
 
+const navToCreateFlow = () => NavActions.createStoryFlow()
+
+const navToSignupSocial = () => NavActions.signupFlow_social()
+
+const navToTabbar = () => NavActions.tabbar()
+
 /* **************************
 * Documentation: https://github.com/aksonov/react-native-router-flux
 ***************************/
@@ -140,7 +146,7 @@ export default NavActions.create(
           initial
           key='signupFlow_topics'
           component={SignupTopics}
-          onRight={NavActions.signupFlow_social}
+          onRight={navToSignupSocial}
           renderRightButton={topicsRightBtn}
         />
         <Scene
@@ -149,7 +155,7 @@ export default NavActions.create(
           renderRightButton={socialRightBtn}
           leftButtonIconStyle={Styles.buttonRed}
           backButtonImage={Images.iconArrowLeft}
-          onRight={NavActions.tabbar}
+          onRight={navToTabbar}
         />
       </Scene>
       <Scene
@@ -276,7 +282,7 @@ export default NavActions.create(
           key='createStory'
           title='Create Story'
           icon={TabIcon}
-          onPress={NavActions.createStoryFlow}
+          onPress={navToCreateFlow}
         />
         <Scene
           key='activity'

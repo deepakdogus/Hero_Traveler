@@ -10,7 +10,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import getImageUrl from '../Lib/getImageUrl'
 
 import API from '../Services/HeroAPI'
-import styles from './Styles/StoryCommentsScreenStyles'
+import styles, { listHeight } from './Styles/StoryCommentsScreenStyles'
 
 const api = API.create()
 
@@ -39,7 +39,8 @@ class StoryCommentsScreen extends React.Component {
     this.state = {
       loading: true,
       text: '',
-      comments: []
+      comments: [],
+      isFocused: false,
     }
   }
 
@@ -56,7 +57,13 @@ class StoryCommentsScreen extends React.Component {
       })
   }
 
+  isValid() {
+    return this.state.text.trim().length
+  }
+
   handleSend = () => {
+    // blur to hide keyboard
+    this.input.blur()
     const newComment = {
       user: this.props.user,
       createdAt: Date.now(),
@@ -78,47 +85,79 @@ class StoryCommentsScreen extends React.Component {
     })
   }
 
+  setFocusedTrue = () => {
+    this.setState({isFocused: true})
+  }
+
+  setFocusedFalse = () => {
+    this.setState({isFocused: false})
+  }
+
+  setChangedText = (text) => {
+    this.setState({text: text})
+  }
+
+  setInputRef = (input) => {
+    this.input = input
+  }
+
   render () {
     var _scrollView = ScrollView
     return (
-        <KeyboardAvoidingView
-          behavior={this.state.comments.length < 4 ? 'padding' : 'position'}
-          style={[styles.containerWithNavbar, styles.root]}>
-          <ScrollView
-            ref={(scrollView) => { _scrollView = scrollView; }}
-            onContentSizeChange={() => { this.state.comments.length > 6 ? _scrollView.scrollToEnd({animated: true}) : null }}
-            style={styles.list}>
-          {this.state.comments.map(comment => {
-            return(
-              <Comment
-                avatar={getImageUrl(comment.user.profile.avatar)}
-                name={comment.user.profile.fullName}
-                comment={comment.content}
-                timestamp={moment(comment.createdAt).fromNow()}
-                key={comment.createdAt.toString()}
-              />
-              )})}
-          </ScrollView>
-          <View style={styles.inputGroupWrapper}>
-            <View style={styles.inputWrapper}>
-              <TextInput
-                autoFocus
-                placeholder='Add a comment'
-                style={styles.input}
-                value={this.state.text}
-                autoCapitalize='none'
-                onSubmitEditing={this.handleSend}
-                onChangeText={(text) => this.setState({text: text})}
-                autoCorrect={false}
-              />
-            </View>
-            <RoundedButton style={styles.inputButton}
-              onPress={this.handleSend}
-            >
-              Send
-            </RoundedButton>
+          <View style={[styles.containerWithNavbar]}>
+            <ScrollView
+              ref={(scrollView) => { _scrollView = scrollView; }}
+              onContentSizeChange={() => { this.state.comments.length > 6 ? _scrollView.scrollToEnd({animated: true}) : null }}
+              style={[
+                styles.list,
+                this.state.isFocused ? {height: listHeight - 295} : {}
+              ]}>
+            {this.state.comments.map(comment => {
+              return(
+                <Comment
+                  avatar={getImageUrl(comment.user.profile.avatar)}
+                  name={comment.user.profile.fullName}
+                  comment={comment.content}
+                  timestamp={moment(comment.createdAt).fromNow()}
+                  key={comment.createdAt.toString()}
+                />
+                )})}
+            </ScrollView>
+            <KeyboardAvoidingView
+              behavior={'padding'}
+              contentContainerStyle={{}}
+              style={[styles.root]}>
+              <View>
+                <View style={styles.inputGroupWrapper}>
+                  <View style={styles.inputWrapper}>
+                    <TextInput
+                      autoFocus
+                      placeholder='Add a comment'
+                      style={styles.input}
+                      value={this.state.text}
+                      autoCapitalize='none'
+                      onSubmitEditing={this.handleSend}
+                      onFocus={this.setFocusedTrue}
+                      onBlur={this.setFocusedFalse}
+                      onChangeText={this.setChangedText}
+                      autoCorrect={false}
+                      returnKeyType={'send'}
+                      ref={this.setInputRef}
+                    />
+                  </View>
+                  <RoundedButton
+                    style={[
+                      styles.inputButton,
+                      {backgroundColor: this.isValid() ? Colors.red : Colors.inactiveRed},
+                    ]}
+                    onPress={this.handleSend}
+                  >
+                    Send
+                  </RoundedButton>
+                </View>
+              </View>
+            </KeyboardAvoidingView>
           </View>
-        </KeyboardAvoidingView>
     )
   }
 }

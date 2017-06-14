@@ -63,6 +63,7 @@
     "react-native-webview-bridge-updated": "https://github.com/rwoody/react-native-webview-bridge#container-style",
     "react-native-zss-rich-text-editor": "https://github.com/rwoody/react-native-zss-rich-text-editor#insert-video",
     "react-redux": "^5.0.2",
+    "recompose": "^0.23.5",
     "redux": "^3.6.0",
     "redux-form": "^6.5.0",
     "redux-logger": "^2.8.2",

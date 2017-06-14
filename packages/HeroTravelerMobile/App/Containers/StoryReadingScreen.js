@@ -1,15 +1,17 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import {ScrollView, Text, View, Animated, TouchableOpacity} from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 import MapView from 'react-native-maps';
 import HTMLView from 'react-native-htmlview'
+import {compose, toClass, withHandlers} from 'recompose'
 
 import StoryActions from '../Redux/Entities/Stories'
 import {isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
 import formatCount from '../Lib/formatCount'
 import ConnectedStoryPreview from './ConnectedStoryPreview'
-import {Metrics, Fonts, Colors} from '../Themes'
+import {Metrics} from '../Themes'
 import StoryReadingToolbar from '../Components/StoryReadingToolbar'
 import TabIcon from '../Components/TabIcon'
 import Image from '../Components/Image'
@@ -28,6 +30,39 @@ function isText(node) {
   return node.type === 'text' && !node.parent||
   node.type === 'tag' && node.name === 'div' && !node.attribs.class
 }
+
+const enhanceStoryVideo = compose(
+  withHandlers(() => {
+    let _ref
+    return {
+      registerRef: () => ref => {
+        _ref = ref
+      },
+      onPress: () => () => {
+        _ref.goFullscreen()
+      }
+    }
+  })
+)
+const StoryVideo = enhanceStoryVideo((props) => {
+  return (
+    <TouchableOpacity
+      style={HTMLViewStyles.videoButton}
+      onPress={props.onPress}
+    >
+      <Video
+        ref={props.registerRef}
+        path={props.src}
+        style={HTMLViewStyles.video}
+        allowVideoPlay={false}
+        autoPlayVideo={false}
+        showMuteButton={false}
+        showPlayButton={true}
+        videoFillSpace={false}
+      />
+    </TouchableOpacity>
+  )
+})
 
 // - to properly apply styling we need to isolate the various elements we use
 function renderNode(node, index, siblings, parent, defaultRenderer) {
@@ -53,23 +88,7 @@ function renderNode(node, index, siblings, parent, defaultRenderer) {
     const attrs = node.attribs
     return (
       <View key={index} style={styles.videoViewWrapper}>
-        <TouchableOpacity
-          style={HTMLViewStyles.videoButton}
-          onPress={() => {
-            this.video.goFullscreen()
-          }}
-        >
-          <Video
-            ref={i => this.video = i}
-            path={attrs.src}
-            style={HTMLViewStyles.video}
-            allowVideoPlay={false}
-            autoPlayVideo={false}
-            showMuteButton={false}
-            showPlayButton={true}
-            videoFillSpace={false}
-          />
-        </TouchableOpacity>
+        <StoryVideo src={attrs.src} />
       </View>
     )
   }
@@ -108,6 +127,17 @@ function renderNode(node, index, siblings, parent, defaultRenderer) {
   //   )
   // }
 }
+
+const EnhancedStoryReadingToolbar = withHandlers({
+  onPressBookmark: props => () => {
+    props.toggleBookmark(props.userId, props.storyId)
+  },
+  onPressComment: props => () => {
+    NavActions.storyComments({
+      storyId: props.storyId
+    })
+  }
+})(StoryReadingToolbar)
 
 class StoryReadingScreen extends React.Component {
   static propTypes = {
@@ -162,6 +192,14 @@ class StoryReadingScreen extends React.Component {
     this.props.toggleLike(this.props.user.id, this.props.story.id)
   }
 
+  _pressUser = (userId) => {
+    if (this.props.user.id === userId) {
+      NavActions.profile({type: 'jump'})
+    } else {
+      NavActions.readOnlyProfile({userId})
+    }
+  }
+
   render () {
     const { story } = this.props;
     return (
@@ -174,13 +212,7 @@ class StoryReadingScreen extends React.Component {
             onPressLike={this._toggleLike}
             showLike={false}
             showUserInfo={true}
-            onPressUser={(userId) => {
-              if (this.props.user.id === userId) {
-                NavActions.profile({type: 'jump'})
-              } else {
-                NavActions.readOnlyProfile({userId})
-              }
-            }}
+            onPressUser={this._pressUser}
             titleStyle={{fontWeight: '700'}}
             gradientColors={['rgba(0,0,0,.75)', 'transparent', 'rgba(0,0,0,.75)']}
             key={story.id}
@@ -246,17 +278,16 @@ class StoryReadingScreen extends React.Component {
           </View>
         </ScrollView>
         <Animated.View style={[styles.toolBar, {height: this.state.toolbarHeight}]}>
-          <StoryReadingToolbar
+          <EnhancedStoryReadingToolbar
             likeCount={formatCount(story.counts.likes)}
             commentCount={formatCount(story.counts.comments)}
             boomarkCount={formatCount(story.counts.bookmarks)}
             isBookmarked={this.props.isBookmarked}
             isLiked={this.props.isLiked}
-            onPressLike={() => this._toggleLike()}
-            onPressBookmark={() => this.props.toggleBookmark(this.props.user.id, story.id)}
-            onPressComment={() => NavActions.storyComments({
-              storyId: story.id
-            })}
+            userId={this.props.user.id}
+            storyId={story.id}
+            onPressLike={this._toggleLike}
+            toggleBookmark={this.props.toggleBookmark}
           />
         </Animated.View>
       </View>

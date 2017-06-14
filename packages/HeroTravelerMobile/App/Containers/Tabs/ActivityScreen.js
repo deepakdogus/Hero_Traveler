@@ -85,9 +85,11 @@ class NotificationScreen extends React.Component {
   render () {
     let content
 
-    PushNotification.getApplicationIconBadgeNumber(num => {
-      console.log('# of notifications', num)
-    })
+    console.log('this.props', this.props)
+
+    // PushNotification.getApplicationIconBadgeNumber(num => {
+    //   console.log('# of notifications', num)
+    // })
 
     const unseenActivities = _.size(_.filter(_.map(this.props.activitiesById, aid => ({...this.props.activities[aid]})), activity => {
       return !activity.seen

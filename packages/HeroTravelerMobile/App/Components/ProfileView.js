@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './Styles/ProfileViewStyles'
+import styles, { storyPreviewHeight } from './Styles/ProfileViewStyles'
 import {
   ScrollView,
   View,
@@ -175,7 +175,7 @@ class ProfileView extends React.Component {
         subtitleStyle={styles.subtitleStyle}
         showLike={this.props.showLike}
         key={storyId}
-        height={this.props.hasTabbar ? 177 : 177 + Metrics.tabBarHeight}
+        height={this.props.hasTabbar ? storyPreviewHeight : storyPreviewHeight + Metrics.tabBarHeight}
         storyId={storyId}
         userId={this.props.user.id}
         onLike={this.props.toggleLike}

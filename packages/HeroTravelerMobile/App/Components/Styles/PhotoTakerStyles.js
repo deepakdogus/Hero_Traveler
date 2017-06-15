@@ -27,4 +27,21 @@ export default StyleSheet.create({
     marginBottom: 40 + Metrics.section,
     backgroundColor: Colors.clear,
   },
+  circleDefault: {
+    backgroundColor: 'white',
+    borderRadius: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 75,
+    height: 75,
+  },
+  blackInnerCircle: {
+    backgroundColor: 'black',
+    width: 60,
+    height: 60,
+  },
+  whiteInnerCircle: {
+    width: 55,
+    height: 55,
+  }
 })

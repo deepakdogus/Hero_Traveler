@@ -286,7 +286,7 @@ class ExploreScreen extends Component {
               placeholderTextColor='#757575'
               onChange={e => this._changeQuery(e)}
               clearButtonMode='while-editing'
-              keyboardType='web-search'
+              returnKeyType='search'
             />
           </View>
           {this.state.selectedTabIndex !== null &&

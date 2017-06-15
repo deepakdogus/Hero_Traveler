@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import {Colors} from '../Themes'
 import styles from './Styles/PhotoTakerStyles'
 import TabIcon from './TabIcon'
+import MediaCaptureButton from './MediaCaptureButton'
 
 class PhotoTaker extends Component {
   static propTypes = {
@@ -24,7 +25,17 @@ class PhotoTaker extends Component {
     super(props)
     this.state = {
       backCamera: true,
-      isRecording: false
+      isRecording: false,
+      hasFlash: false,
+    }
+  }
+
+  componentDidMount = () => {
+    if (this.cameraRef) {
+      this.cameraRef.hasFlash()
+      .then((result) => {
+        this.setState({hasFlash: result})
+      })
     }
   }
 
@@ -60,10 +71,6 @@ class PhotoTaker extends Component {
     this.setState({isRecording: false})
   }
 
-  hasFlash() {
-    return this.cameraRef && this.cameraRef.hasFlash()
-  }
-
   getCaptureMode() {
     return this.props.mediaType === 'photo' ?
       Camera.constants.CaptureMode.still : Camera.constants.CaptureMode.video
@@ -87,7 +94,7 @@ class PhotoTaker extends Component {
         style={styles.camera}
        >
         <View style={styles.cameraControls}>
-          {this.props.mediaType === 'photo' && this.hasFlash() &&
+          {this.props.mediaType === 'photo' && this.state.hasFlash &&
             <View style={[styles.cameraControl, styles.flash]}>
               <TabIcon name='cameraFlash' />
             </View>
@@ -106,10 +113,7 @@ class PhotoTaker extends Component {
               touchableOpacity={0.2}
               onPress={this._handleTakePhoto}
             >
-              <Icon
-                color={Colors.snow}
-                name='circle-o'
-                size={75}/>
+              <MediaCaptureButton />
             </TouchableOpacity>
           </View>
         }
@@ -119,10 +123,8 @@ class PhotoTaker extends Component {
               touchableOpacity={0.2}
               onPress={!this.state.isRecording ? this._startRecordVideo : this._stopRecordVideo}
             >
-              <Icon
-                color={this.state.isRecording ? Colors.redLight : Colors.snow}
-                name={this.state.isRecording ? 'circle' : 'circle-o'}
-                size={75}/>
+              <MediaCaptureButton isRecording={this.state.isRecording}/>
+
             </TouchableOpacity>
           </View>
         }

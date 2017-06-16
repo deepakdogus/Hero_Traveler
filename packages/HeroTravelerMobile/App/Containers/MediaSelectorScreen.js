@@ -1,5 +1,5 @@
-import _ from 'lodash'
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import {
   Text,
   View,
@@ -157,8 +157,6 @@ class MediaSelectorScreen extends React.Component {
     )
   }
 
-  _launchMedia = () => this.launchMediaSelector()
-
   _retake = () => {
     this.setState({media: null})
   }
@@ -213,7 +211,7 @@ class MediaSelectorScreen extends React.Component {
             autoPlayVideo={true}
             allowVideoPlay={true}
             showChangeBtn={!this.state.mediaCaptured}
-            changeBtnOnPress={this._launchMedia}
+            changeBtnOnPress={this.launchMediaSelector}
           />
           <View style={{flex: 1}} />
           {

@@ -9,6 +9,7 @@ import TimerMixin from 'react-timer-mixin'
 import {Colors} from '../Themes'
 import styles from './Styles/PhotoTakerStyles'
 import TabIcon from './TabIcon'
+import MediaCaptureButton from './MediaCaptureButton'
 import Metrics from '../Themes/Metrics'
 
 class PhotoTaker extends Component {
@@ -30,8 +31,18 @@ class PhotoTaker extends Component {
     this.state = {
       backCamera: true,
       isRecording: false,
+      hasFlash: false,
       videoAnim: new Animated.Value(0),
       time: 0
+    }
+  }
+
+  componentDidMount = () => {
+    if (this.cameraRef) {
+      this.cameraRef.hasFlash()
+      .then((result) => {
+        this.setState({hasFlash: result})
+      })
     }
   }
 
@@ -140,7 +151,7 @@ class PhotoTaker extends Component {
           </View>
         }
         <View style={styles.cameraControls}>
-          {this.props.mediaType === 'photo' && this.hasFlash() &&
+          {this.props.mediaType === 'photo' && this.state.hasFlash &&
             <View style={[styles.cameraControl, styles.flash]}>
               <TabIcon name='cameraFlash' />
             </View>
@@ -161,10 +172,7 @@ class PhotoTaker extends Component {
               touchableOpacity={0.2}
               onPress={this._handleTakePhoto}
             >
-              <Icon
-                color={Colors.snow}
-                name='circle-o'
-                size={75}/>
+              <MediaCaptureButton />
             </TouchableOpacity>
           </View>
         }
@@ -174,10 +182,8 @@ class PhotoTaker extends Component {
               touchableOpacity={0.2}
               onPress={!this.state.isRecording ? this._startRecordVideo : this._stopRecordVideo}
             >
-              <Icon
-                color={this.state.isRecording ? Colors.redLight : Colors.snow}
-                name={this.state.isRecording ? 'circle' : 'circle-o'}
-                size={75}/>
+              <MediaCaptureButton isRecording={this.state.isRecording}/>
+
             </TouchableOpacity>
           </View>
         }

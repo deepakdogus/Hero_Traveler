@@ -294,7 +294,7 @@ class ExploreScreen extends Component {
               onChange={e => this._changeQuery(e)}
               onChangeText={this.checkClearResults}
               clearButtonMode='while-editing'
-              keyboardType='web-search'
+              returnKeyType='search'
             />
           </View>
           {this.state.selectedTabIndex !== null &&

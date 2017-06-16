@@ -2,6 +2,9 @@ import { StyleSheet } from 'react-native'
 import { ApplicationStyles, Fonts, Colors, Metrics } from '../../Themes/'
 
 const avatarImageSize = 95
+const coverInnerHeight = 370
+const tabNavEditHeight = 50
+export const storyPreviewHeight = Metrics.screenHeight - coverInnerHeight - tabNavEditHeight - Metrics.tabBarHeight
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
@@ -29,7 +32,7 @@ export default StyleSheet.create({
   },
   coverInner: {
     paddingTop: Metrics.section,
-    height: 370,
+    height: coverInnerHeight,
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center'
@@ -153,7 +156,7 @@ export default StyleSheet.create({
     flex: 1
   },
   tabnavEdit: {
-    height: 50,
+    height: tabNavEditHeight,
     flexDirection: 'row',
     justifyContent: 'space-between'
   },

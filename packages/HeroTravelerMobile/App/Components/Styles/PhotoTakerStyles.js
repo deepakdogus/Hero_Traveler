@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { ApplicationStyles, Colors, Metrics } from '../../Themes/'
+import { ApplicationStyles, Colors, Metrics, Fonts } from '../../Themes/'
 
 export default StyleSheet.create({
   containerWithNavbarAndTabbar: {
@@ -27,4 +27,28 @@ export default StyleSheet.create({
     marginBottom: 40 + Metrics.section,
     backgroundColor: Colors.clear,
   },
+  videoProgressWrapper: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+  },
+  videoProgressBar: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: Colors.red
+  },
+  videoProgressTextWrapper: {
+    marginTop: Metrics.baseMargin,
+    backgroundColor: Colors.clear
+  },
+  videoProgressText: {
+    fontFamily: Fonts.type.montserrat,
+    fontSize: 16,
+    color: Colors.snow,
+    textAlign: 'center'
+  }
 })

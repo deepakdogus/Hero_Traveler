@@ -64,13 +64,6 @@ class ExploreScreen extends Component {
         lastSearchResults: res,
       })
     })
-    // @TODO why is this duplicated?? probably needs deleting
-    helper.on('result', res => {
-      this.setState({
-        searching: false,
-        lastSearchResults: res,
-      })
-    })
     helper.on('search', () => {
       this.setState({searching: true})
     })
@@ -101,13 +94,10 @@ class ExploreScreen extends Component {
     }
 
     if (_.isString(q) && q.length === 0) {
-      setTimeout(() => {
-        this.setState({
-          lastSearchResults: null,
-          searching: false,
-          selectedTabIndex: null
-        })
-      }, 1000)
+      this.setState({
+        lastSearchResults: null,
+        searching: false,
+      })
       return
     } else if (_.isString(q) && q.length < 3) {
       return
@@ -126,12 +116,28 @@ class ExploreScreen extends Component {
 
   _changeTab = (selectedTabIndex) => {
     this.changeIndex(this.getSearchIndex(selectedTabIndex))
-    this.setState({
-      searching: true,
-      selectedTabIndex,
-      lastSearchResults: null,
-    })
-    this.helper.search()
+    const textValue = this._searchInput._lastNativeText;
+    if (textValue && textValue.length >= 3) {
+      this.setState({
+        searching: true,
+        selectedTabIndex,
+        lastSearchResults: null,
+      })
+      this.helper.search()
+    }
+    else {
+      this.setState({selectedTabIndex, lastSearchResults: null})
+    }
+  }
+
+  setFocus = () => {
+    if (this.state.selectedTabIndex === null) this.setState({selectedTabIndex: 0})
+  }
+
+  checkClearResults = (text) => {
+    if (text.length <= 2) {
+      this.setState({lastSearchResults: null})
+    }
   }
 
   renderSearchSection() {
@@ -284,7 +290,9 @@ class ExploreScreen extends Component {
               style={styles.searchInput}
               placeholder='Search'
               placeholderTextColor='#757575'
+              onFocus={this.setFocus}
               onChange={e => this._changeQuery(e)}
+              onChangeText={this.checkClearResults}
               clearButtonMode='while-editing'
               returnKeyType='search'
             />

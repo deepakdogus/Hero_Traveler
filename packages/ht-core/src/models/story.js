@@ -154,8 +154,8 @@ StorySchema.statics = {
     return this.findOne({
       _id: storyId
     })
-    .select('title description createdAt content location tripDate coverImage coverVideo author')
-    .populate('coverImage coverVideo author')
+    .select('title description createdAt content location tripDate coverImage coverVideo author categories')
+    .populate('coverImage coverVideo author categories')
     .exec()
   }
 }

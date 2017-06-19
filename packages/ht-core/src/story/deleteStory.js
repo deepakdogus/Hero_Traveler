@@ -5,7 +5,7 @@ const client = algoliasearchModule(process.env.ALGOLIA_ACCT_KEY, process.env.ALG
 const storyIndex = client.initIndex(process.env.ALGOLIA_STORY_INDEX)
 
 const deleteStoryFromIndex = (storyId) => new Promise((resolve, reject) => {
-  storyIndex.deleteByQuery(storyId, (error) => {
+  storyIndex.deleteObject(storyId, (error) => {
     if (error) reject(error)
     else resolve('sucessfully deleted')
   })

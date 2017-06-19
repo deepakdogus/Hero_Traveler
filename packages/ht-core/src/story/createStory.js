@@ -53,6 +53,7 @@ export default async function createStory(storyData) {
 
   return addStoryToIndex({
     ...populatedStory.toObject(),
-    author: _.get(populatedStory, 'author.profile.fullName')
+    author: _.get(populatedStory, 'author.profile.fullName'),
+    objectID: storyData.id
   })
 }

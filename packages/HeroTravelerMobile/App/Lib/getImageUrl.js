@@ -1,6 +1,8 @@
 import _ from 'lodash'
+import Config from '../Config/AppConfig'
+
 export default function getImageUrl(image, path) {
-  const baseUrl = 'https://s3.amazonaws.com/hero-traveler/'
+  const baseUrl = Config.cdnBaseUrl
   const original = _.get(image, 'original.path', undefined)
   const mobile = _.get(image, path ? path : 'versions.mobile.path', undefined)
 

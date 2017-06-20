@@ -220,6 +220,9 @@ class ExploreScreen extends Component {
             <List
               items={searchHits}
               renderRow={(user) => {
+                  console.log('usermap', user)
+                  console.log('user.profile.avatar', user.profile.avatar)
+                  console.log('getImageUrl(user.profile.avatar)', getImageUrl(user.profile.avatar))
                 return (
                   <ListItem
                     onPress={() => {
@@ -233,7 +236,7 @@ class ExploreScreen extends Component {
                     }}
                     leftElement={
                       <Avatar
-                        avatarUrl={getImageUrl(user.profile.avatar)}
+                        avatarUrl={getImageUrl(user.avatar)}
                         iconColor={Colors.lightGreyAreas}
                       />
                     }
@@ -258,6 +261,7 @@ class ExploreScreen extends Component {
 
   render () {
     let content
+    console.log('this.props', this.props)
 
     const showSearch = this.state.lastSearchResults || this.state.selectedTabIndex !== null
 

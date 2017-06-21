@@ -23,5 +23,8 @@ export default {
   },
   rightButton: {
     paddingTop: Metrics.baseMargin
+  },
+  buttonGrey: {
+    tintColor: Colors.navBarText
   }
 }

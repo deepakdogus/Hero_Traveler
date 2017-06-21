@@ -1,5 +1,4 @@
 const colors = {
-
   clear: 'rgba(0,0,0,0)',
   facebook: '#3b5998',
   transparent: 'rgba(0,0,0,0)',
@@ -31,6 +30,7 @@ const colors = {
   bioGrey: '#757575',
   lightGreyAreas: '#eeeeee',
   grey: '#757575',
+  signupGrey: '#9e9e9e',
   white: '#ffffff',
   text: '#E0D7E5',
   steel: '#CCCCCC',

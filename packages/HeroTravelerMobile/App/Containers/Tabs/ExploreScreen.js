@@ -267,7 +267,8 @@ class ExploreScreen extends Component {
           onPress={(category) => {
             NavActions.explore_categoryFeed({
               categoryId: category.id,
-              title: category.title
+              title: category.title,
+              leftButtonIconStyle: {tintColor: Colors.navBarText}
             })
           }}
           categories={_.values(this.props.categories)}

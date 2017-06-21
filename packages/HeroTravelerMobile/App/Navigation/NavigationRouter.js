@@ -137,6 +137,7 @@ export default NavActions.create(
         key='signup'
         component={SignupScreen}
         backButtonImage={Images.iconArrowLeft}
+        leftButtonIconStyle={Styles.buttonGrey}
       />
       <Scene
         key='signupFlow'
@@ -153,7 +154,8 @@ export default NavActions.create(
           key='signupFlow_social'
           component={SignupSocial}
           renderRightButton={socialRightBtn}
-          leftButtonIconStyle={Styles.buttonRed}
+          leftButtonIconStyle={Styles.buttonGrey}
+          backTitle='Back'
           backButtonImage={Images.iconArrowLeft}
           onRight={navToTabbar}
         />
@@ -161,6 +163,7 @@ export default NavActions.create(
       <Scene
         key='login'
         backButtonImage={Images.iconArrowLeft}
+        leftButtonIconStyle={Styles.buttonGrey}
         component={LoginScreen}
       />
       <Scene

@@ -21,7 +21,6 @@ const addAvatarToIndex = (avatarImage, user) => new Promise((resolve, reject) =>
     return resolve(content)
   })
 
-
 })
 
 export default async function updateAvatar(req, res, next) {
@@ -43,9 +42,8 @@ export default async function updateAvatar(req, res, next) {
       }
     }
   })
-  console.log('avatarImage', avatarImage)
   await addAvatarToIndex(avatarImage, user)
-  
+
   await Models.User.update({_id: userId}, {
     $set: {
       'profile.avatar': avatarImage._id

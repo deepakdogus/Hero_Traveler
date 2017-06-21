@@ -38,8 +38,6 @@ export default class Avatar extends Component {
       iconColor
     } = this.props
 
-    console.log('avatarUrl', avatarUrl)
-
     const rootStyles = [
       styles.root,
       this.props.style

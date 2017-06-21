@@ -22,7 +22,6 @@ const addUserToIndex = (user) => {
       _id: user._id,
       objectID: user._id,
     }
-    console.log('userSearchObject', userSearchObject)
 
     userIndex.addObject(userSearchObject, (err, content) => {
       if (err) return reject(err)

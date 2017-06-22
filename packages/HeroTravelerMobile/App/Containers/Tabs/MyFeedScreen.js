@@ -60,8 +60,9 @@ class MyFeedScreen extends React.Component {
       this.props.storiesById !== nextProps.storiesById,
       this.props.fetchStatus !== nextProps.fetchStatus,
       this.props.error !== nextProps.error,
+      this.props.user && !this.props.user.introTooltips.length && nextProps.user.introTooltips,
     ])
-
+    
     return shouldUpdate
   }
 

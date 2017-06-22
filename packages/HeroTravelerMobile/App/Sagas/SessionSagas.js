@@ -38,7 +38,6 @@ export function * updateUser (api, action) {
     userId,
     attrs
   )
-
   if (response.ok) {
     yield put(UserActions.updateUserSuccess(response.data))
   } else {
@@ -58,7 +57,7 @@ export function * resumeSession (api) {
     api.getMe,
     userId
   )
-
+  
   if (response.ok) {
     const {users} = response.data.entities
     const user = users[userId]

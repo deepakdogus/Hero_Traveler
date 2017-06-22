@@ -26,7 +26,13 @@ const styles = StyleSheet.create({
   },
   redLight: {
     backgroundColor: Colors.redLight,
-  }
+  },
+  recordingCircle: {
+    backgroundColor: Colors.redLight,
+    width: 35,
+    height: 35,
+    borderRadius: 10,
+  },
 })
 
 export default class MediaCaptureButton extends Component {
@@ -41,7 +47,7 @@ export default class MediaCaptureButton extends Component {
     return (
       <View style={ styles.circleDefault }>
         <View style={[ styles.circleDefault, styles.blackInnerCircle ]}>
-          <View style={[ styles.circleDefault, styles.whiteInnerCircle, isRecording ? styles.redLight : {} ]}/>
+          <View style={[ styles.circleDefault, styles.whiteInnerCircle, isRecording ? styles.recordingCircle : styles.redLight]}/>
         </View>
       </View>
     )

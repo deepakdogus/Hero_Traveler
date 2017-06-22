@@ -1,3 +1,5 @@
+import Colors from './Colors'
+
 const type = {
   base: 'Source Sans Pro',
   emphasis: 'Source Sans Pro',
@@ -52,14 +54,14 @@ const style = {
     fontSize: 25,
   },
   instructions: {
-    color: '#9e9e9e',
+    color: Colors.signupGrey,
     fontSize: 16,
     fontFamily: type.sourceSansPro,
     letterSpacing: .7,
     fontWeight: '300'
   },
   tos: {
-    color: '#9e9e9e',
+    color: Colors.signupGrey,
     fontSize: 13,
     fontWeight: '300',
     letterSpacing: .7

@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
     paddingTop: Metrics.baseMargin,
     backgroundColor: Colors.background,
     flexDirection: 'row',
-    // justifyContent: 'space-between',
     alignItems: 'center'
   },
   text: {
@@ -24,7 +23,8 @@ const styles = StyleSheet.create({
     flex: 1/3,
   },
   titleText: {
-    textAlign: 'center'
+    textAlign: 'center',
+    color: Colors.navBarText,
   },
   left: {
     flex: 1/3,
@@ -32,7 +32,8 @@ const styles = StyleSheet.create({
   },
   leftText: {
     textAlign: 'left',
-    paddingLeft: Metrics.doubleBaseMargin
+    paddingLeft: Metrics.doubleBaseMargin,
+    color: Colors.navBarText
   },
   right: {
     flex: 1/3,
@@ -41,40 +42,63 @@ const styles = StyleSheet.create({
   },
   rightText: {
     textAlign: 'right',
-    paddingRight: Metrics.doubleBaseMargin
-  }
+    paddingRight: Metrics.doubleBaseMargin,
+  },
+  leftGreyBtn: {
+    tintColor: Colors.navBarText
+  },
+  inactiveText: {
+    opacity: .5,
+    color: Colors.navBarText,
+  },
+  inactiveBtn: {
+    opacity: .2,
+    tintColor: Colors.navBarText,
+  },
+  leftIconStyle: {
+    ...NavButtonStyles.image,
+    marginLeft: 10,
+  },
+  rightIconStyle: {
+    ...NavButtonStyles.image,
+    marginRight: 10,
+  },
 })
 
 export default class NavBar extends Component {
 
   render() {
+    const { style, 
+        leftTitle, leftIcon, leftTextStyle, onLeft,
+        title, titleStyle,
+        rightTitle, rightIcon, rightTextStyle, onRight, isRightValid = true } = this.props
     return (
-      <View style={[styles.root, this.props.style]}>
-        {this.props.leftTitle &&
+      <View style={[styles.root, style]}>
+        {leftTitle &&
           <View style={styles.left}>
-            {this.props.leftIcon && <TabIcon style={this.props.leftIconStyle} name={this.props.leftIcon}/>}
+            {leftIcon && <TabIcon style={{ image: [styles.leftIconStyle, styles.leftGreyBtn] }} name={leftIcon}/>}
             <TextButton
-              style={[styles.text, styles.leftText, this.props.leftTextStyle]}
-              onPress={this.props.onLeft}
+              style={[styles.text, styles.leftText, leftTextStyle]}
+              onPress={onLeft}
             >
-              {this.props.leftTitle}
+              {leftTitle}
             </TextButton>
           </View>
         }
-        {this.props.title &&
+        {title &&
           <View style={styles.title}>
-            <Text style={[styles.text, styles.titleText, this.props.titleStyle || {}]}>{this.props.title}</Text>
+            <Text style={[styles.text, styles.titleText, titleStyle || {}]}>{title}</Text>
           </View>
         }
-        {this.props.rightTitle &&
+        {rightTitle &&
           <View style={styles.right}>
             <TextButton
-              style={[styles.text, styles.rightText, this.props.rightTextStyle]}
-              onPress={this.props.onRight}
+              style={[styles.text, styles.rightText, rightTextStyle, isRightValid ? {} : styles.inactiveText]}
+              onPress={onRight}
             >
-              {this.props.rightTitle}
+              {rightTitle}
             </TextButton>
-            {this.props.rightIcon && <TabIcon style={this.props.rightIconStyle} name={this.props.rightIcon}/>}
+            {rightIcon && <TabIcon style={{image: [styles.rightIconStyle, isRightValid ? {} : styles.inactiveBtn]}} name={rightIcon}/>}
           </View>
         }
       </View>

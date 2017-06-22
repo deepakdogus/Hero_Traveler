@@ -597,21 +597,14 @@ class StoryCoverScreen extends Component {
     return (
       <View style={styles.mainContainer}>
         <NavBar
-          title='Story Cover'
+          title='Save'
           onLeft={this._onLeft}
           leftTitle='Cancel'
           onRight={this._onRight}
           rightIcon={'arrowRightRed'}
-          rightIconStyle={{
-            image: {
-              ...NavButtonStyles.image, 
-              marginRight: 10,
-              opacity: this.isValid() ? 1 : .2,
-            }
-          }}
+          isRightValid={this.isValid()}
           rightTitle='Next'
           rightTextStyle={{
-            opacity: this.isValid() ? 1 : .5,
             paddingRight: 10,
           }}
         />

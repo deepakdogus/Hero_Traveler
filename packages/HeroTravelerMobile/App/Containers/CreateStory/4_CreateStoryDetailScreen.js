@@ -181,12 +181,6 @@ class CreateStoryDetailScreen extends React.Component {
           <NavBar
             title='Story Details'
             leftIcon='arrowLeftRed'
-            leftIconStyle={{
-              image: {
-                ...NavButtonStyles.image,
-                marginLeft: 10,
-              }
-            }}
             leftTitle='Back'
             onLeft={this._onLeft}
             leftTextStyle={{paddingLeft: 10}}

@@ -49,4 +49,7 @@ export default {
   buttonRed: {
     tintColor: Colors.red,
   },
+  buttonGrey: {
+    tintColor: Colors.navBarText,
+  },
 }

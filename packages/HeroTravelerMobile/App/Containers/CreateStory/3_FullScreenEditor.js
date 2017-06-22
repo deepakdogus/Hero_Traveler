@@ -67,12 +67,6 @@ class FullScreenEditor extends React.Component {
           leftTitle='Back'
           onRight={this._onRight}
           rightIcon={'arrowRightRed'}
-          rightIconStyle={{
-            image: {
-              ...NavButtonStyles.image,
-              marginRight: 10,
-            }
-          }}
           rightTitle='Next'
           rightTextStyle={{paddingRight: 10}}
         />

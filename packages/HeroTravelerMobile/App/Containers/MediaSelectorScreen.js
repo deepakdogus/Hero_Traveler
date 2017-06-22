@@ -234,16 +234,10 @@ class MediaSelectorScreen extends React.Component {
           onLeft={this.props.onLeft}
           leftTitle={this.props.leftTitle}
           onRight={this._onNext}
-          rightIcon={!this.state.media ? null : 'arrowRightRed'}
-          rightIconStyle={{
-            image: {
-              ...NavButtonStyles.image,
-              marginRight: 10,
-              opacity: !this.state.media ? .2 : 1,
-            }
-          }}
+          isRightValid={this.state.media}
+          rightIcon={'arrowRightRed'}
           rightTitle={this.props.rightTitle}
-          rightTextStyle={[!this.state.media ? {opacity: .5} : {color: Colors.red}, {paddingRight: 10}]}
+          rightTextStyle={{paddingRight: 10}}
         />
         <View style={styles.root}>
           {content}

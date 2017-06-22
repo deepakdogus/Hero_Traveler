@@ -8,4 +8,5 @@ export default function suggestedFollowers(userId) {
   })
   .sort({'counts.followers': -1})
   .limit(10)
+  .populate('profile.avatar')
 }

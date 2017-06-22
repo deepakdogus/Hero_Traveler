@@ -6,7 +6,8 @@ export default function getFollowers(userId) {
       return findUsers({
         _id: {
           $in: userIds
-        }
+        },
       })
+      .populate('profile.avatar')
     })
 }

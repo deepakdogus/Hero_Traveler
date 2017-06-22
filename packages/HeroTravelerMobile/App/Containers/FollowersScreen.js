@@ -19,6 +19,7 @@ import Avatar from '../Components/Avatar'
 import {Colors} from '../Themes'
 import NavBar from './CreateStory/NavBar'
 import styles from './Signup/SignupSocialStyles'
+import getImageUrl from '../Lib/getImageUrl'
 
 class FollowersScreen extends React.Component {
 
@@ -63,8 +64,7 @@ class FollowersScreen extends React.Component {
 
   render () {
     let content
-
-    if (this.props.fetchStatus.loading) {
+    if (this.state.fetchStatus && this.state.fetchStatus.loading) {
       return (
         <Loader
           style={styles.spinner}
@@ -96,7 +96,7 @@ class FollowersScreen extends React.Component {
                   <TouchableOpacity onPress={() => NavActions.readOnlyProfile({userId: u.id})}>
                   <Avatar
                     style={styles.avatar}
-                    avatarUrl={u.profile.avatar}
+                    avatarUrl={getImageUrl(u.profile.avatar)}
                   />
                   </TouchableOpacity>
                   <View style={styles.nameWrapper}>
@@ -147,7 +147,6 @@ class FollowersScreen extends React.Component {
 const mapStateToProps = (state, props) => {
   const {users} = state.entities
   const authedUserId = state.session.userId
-
   return {
     users: users.entities,
     user: users.entities[authedUserId],

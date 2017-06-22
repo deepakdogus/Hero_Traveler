@@ -9,5 +9,6 @@ export default function getFollowees(userId) {
           $in: userIds
         }
       })
+      .populate('profile.avatar')
     })
 }

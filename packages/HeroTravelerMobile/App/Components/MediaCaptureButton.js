@@ -38,16 +38,20 @@ const styles = StyleSheet.create({
 export default class MediaCaptureButton extends Component {
 
   static propTypes = {
-    isRecording: PropTypes.bool
+    isRecording: PropTypes.bool,
+    isVideo: PropTypes.bool,
   }
 
   render() {
-    const { isRecording } = this.props
-
+    const { isRecording, isVideo } = this.props
+    console.log("isVideo is", isVideo)
+    let innerStyle = {}
+    if (isVideo) innerStyle = isRecording ? styles.recordingCircle : styles.redLight
+    else innerStyle = {}
     return (
       <View style={ styles.circleDefault }>
         <View style={[ styles.circleDefault, styles.blackInnerCircle ]}>
-          <View style={[ styles.circleDefault, styles.whiteInnerCircle, isRecording ? styles.recordingCircle : styles.redLight]}/>
+          <View style={[ styles.circleDefault, styles.whiteInnerCircle, innerStyle]}/>
         </View>
       </View>
     )

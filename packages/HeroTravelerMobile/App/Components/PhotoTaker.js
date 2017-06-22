@@ -182,7 +182,7 @@ class PhotoTaker extends Component {
               touchableOpacity={0.2}
               onPress={!this.state.isRecording ? this._startRecordVideo : this._stopRecordVideo}
             >
-              <MediaCaptureButton isRecording={this.state.isRecording}/>
+              <MediaCaptureButton isVideo isRecording={this.state.isRecording}/>
 
             </TouchableOpacity>
           </View>

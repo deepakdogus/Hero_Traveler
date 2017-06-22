@@ -59,6 +59,10 @@ class ProfileScreen extends React.Component {
     }
   }
 
+  _isTempImage = () => {
+    return this.props.isEditing && this.props.user.profile.tempCover
+  }
+
   render () {
     const {
       user,
@@ -91,7 +95,7 @@ class ProfileScreen extends React.Component {
         updateUser={updateUser}
         showLike={true}
         accessToken={accessToken}
-        profileImage={getImageUrl(user.profile.cover)}
+        profileImage={this._isTempImage() ? getImageUrl(user.profile.tempCover) : getImageUrl(user.profile.cover)}
         fetchStatus={userStoriesFetchStatus}
         draftsFetchStatus={this.props.draftsFetchStatus}
         bookmarksFetchStatus={userBookmarksFetchStatus}

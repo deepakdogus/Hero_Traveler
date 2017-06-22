@@ -99,16 +99,50 @@ class ProfileView extends React.Component {
 
   _handleUpdateAvatarPhoto = (data) => {
     api.uploadAvatarImage(this.props.user.id, pathAsFileObject(data))
-    NavActions.pop()
+    .then(({ data }) => {
+      this.props.updateUserSuccess({
+        id: data.id,
+        profile: {
+          tempAvatar: data.profile.avatar,
+        }
+      })
+    })
+    .then(() => NavActions.pop())
   }
 
   _handleUpdateCoverPhoto = (data) => {
     api.uploadUserCoverImage(this.props.user.id, pathAsFileObject(data))
-    NavActions.pop()
+    .then(({ data }) => {
+      return this.props.updateUserSuccess({
+        id: data.id,
+        profile: {
+          tempCover: data.profile.cover,
+        }
+      })
+    })
+    .then(() => NavActions.pop())
   }
 
   _onRight = () => {
     this.props.updateUser({bio: this.state.bioText, username: this.state.usernameText})
+    NavActions.pop()
+  }
+
+  _onLeft = () => {
+    // currently tempCover and tempAvatar are actually directly saved to DB - so we need to revert
+    const profileReverts = {}
+    if (this.props.user.profile.tempCover) profileReverts.cover = this.props.user.profile.cover.id
+    if (this.props.user.profile.tempAvatar) profileReverts.avatar = this.props.user.profile.avatar.id
+    if (Object.keys(profileReverts).length) {
+      this.props.updateUser({profile: profileReverts})
+    }
+    this.props.updateUserSuccess({
+      id: this.props.user.id,
+      profile: {
+        tempCover: undefined,
+        tempAvatar: undefined,
+      }
+    })
     NavActions.pop()
   }
 
@@ -409,13 +443,14 @@ class ProfileView extends React.Component {
     }
 
     const gradientStyle = profileImage ? ['rgba(0,0,0,.6)', 'transparent', 'rgba(0,0,0,.6)'] : ['transparent', 'rgba(0,0,0,.6)']
+
     return (
       <View style={{flex: 1}}>
         {isEditing &&
           <NavBar
             title='Edit Profile'
             leftTitle='Cancel'
-            onLeft={NavActions.pop}
+            onLeft={this._onLeft}
             rightTitle='Save'
             onRight={this._onRight}
           />
@@ -437,7 +472,7 @@ class ProfileView extends React.Component {
                 {cog}
                 {name}
               <View >
-                <Avatar style={{alignItems: 'center', marginTop: 20 }} size='medium' avatarUrl={getImageUrl(user.profile.avatar)} />
+                <Avatar style={{alignItems: 'center', marginTop: 20 }} size='medium' avatarUrl={(isEditing && user.profile.tempAvatar) ? getImageUrl(user.profile.tempAvatar) : getImageUrl(user.profile.avatar)} />
                 {avatarCamera}
               </View>
               {!isEditing &&
@@ -554,7 +589,8 @@ const mapDispatchToProps = (dispatch) => {
     toggleLike: (userId, storyId) => dispatch(StoryActions.storyLike(
       userId,
       storyId
-    ))
+    )),
+    updateUserSuccess: (user) => dispatch(UserActions.updateUserSuccess(user)),
   }
 }
 

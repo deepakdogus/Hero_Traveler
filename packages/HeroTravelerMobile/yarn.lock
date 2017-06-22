@@ -5750,6 +5750,10 @@ react-native-vector-icons@^4.0.0:
     prop-types "^15.5.8"
     yargs "^6.3.0"
 
+react-native-version-number@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-version-number/-/react-native-version-number-0.1.2.tgz#03605e52f30d15a94884fee17fd0559c01b337d0"
+
 "react-native-video@https://github.com/react-native-community/react-native-video":
   version "1.1.0"
   resolved "https://github.com/react-native-community/react-native-video#ef2120b4187335e10eda32c86f42b49b91b45422"

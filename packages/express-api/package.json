@@ -18,6 +18,7 @@
   "dependencies": {
     "@rwoody/ht-core": "^0.0.23",
     "@rwoody/ht-util": "^0.0.10",
+    "algoliasearch": "^3.23.0",
     "apn": "^2.1.4",
     "aws-sdk": "^2.40.0",
     "babel-polyfill": "^6.23.0",

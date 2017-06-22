@@ -16,7 +16,12 @@ const addUserToIndex = (user) => {
       return resolve({})
     }
 
-    const userSearchObject = _.pick(user, ['username', 'profile.fullName', '_id'])
+    const userSearchObject = {
+      username: user.username,
+      profile: { fullName: user.profile.fullName },
+      _id: user._id,
+      objectID: user._id,
+    }
 
     userIndex.addObject(userSearchObject, (err, content) => {
       if (err) return reject(err)

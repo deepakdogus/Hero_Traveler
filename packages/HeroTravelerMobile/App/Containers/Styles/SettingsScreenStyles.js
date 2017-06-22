@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { ApplicationStyles, Colors, Metrics } from '../../Themes/'
+import { ApplicationStyles, Colors, Fonts, Metrics } from '../../Themes/'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
@@ -41,5 +41,14 @@ export default StyleSheet.create({
     marginHorizontal: 30,
     marginTop: 50,
     marginBottom: 10
+  },
+  version: {
+    marginTop: Metrics.section
+  },
+  versionText: {
+    textAlign: 'center',
+    fontSize: 8,
+    fontFamily: Fonts.type.montserrat,
+    color: Colors.navBarText
   }
 })

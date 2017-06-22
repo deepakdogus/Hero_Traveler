@@ -11,6 +11,7 @@ import {
   Actions as NavActions,
 } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import VersionNumber from 'react-native-version-number'
 
 import SessionActions from '../Redux/SessionRedux'
 import {Colors} from '../Themes'
@@ -41,6 +42,11 @@ const NavList = ({children}) => {
     </View>
   )
 }
+
+const Version = ({version}) =>
+  <View style={styles.version}>
+    <Text style={styles.versionText}>Version {version}</Text>
+  </View>
 
 class SettingsScreen extends React.Component {
 
@@ -108,6 +114,7 @@ class SettingsScreen extends React.Component {
             textStyle={{color: Colors.red}}
           />
           </NavList>
+          <Version version={VersionNumber.appVersion} />
         </ScrollView>
         {this.props.loggingOut &&
           <Loader tintColor={Colors.blackoutTint} style={{

@@ -44,7 +44,6 @@ export default class MediaCaptureButton extends Component {
 
   render() {
     const { isRecording, isVideo } = this.props
-    console.log("isVideo is", isVideo)
     let innerStyle = {}
     if (isVideo) innerStyle = isRecording ? styles.recordingCircle : styles.redLight
     else innerStyle = {}

@@ -15,6 +15,7 @@ export default () => {
     storyCreate: require('./StoryCreateRedux').reducer,
     form: formReducer,
     startup: require('./StartupRedux').reducer,
+    orientation: require('./OrientationRedux').reducer,
     routes,
     entities,
   })

@@ -10,6 +10,7 @@ import OpenScreenActions from '../Redux/OpenScreenRedux'
 import NavigationScenes from '../Navigation/NavigationRouter'
 import StartupActions from '../Redux/StartupRedux'
 import LoginActions from '../Redux/LoginRedux'
+import OrientationActions from '../Redux/OrientationRedux'
 import styles from './Styles/RootContainerStyles'
 import deeplinkToAction from '../Lib/deeplinkToAction'
 
@@ -73,9 +74,14 @@ class RootContainer extends Component {
     }
   }
 
+  _onLayout (event){
+    console.log('is this even getting called')
+    this.props.setOrientation(event.nativeEvent.layout)
+  }
+
   render () {
     return (
-      <View style={styles.applicationView}>
+      <View onLayout={(event) => this._onLayout(event)} style={styles.applicationView}>
         <StatusBar barStyle='light-content' />
         <ConnectedRouter scenes={NavigationScenes} />
       </View>
@@ -97,7 +103,8 @@ const mapDispatchToProps = (dispatch) => ({
   },
   heroStartup: (linkAction) => dispatch(StartupActions.heroStartup(linkAction)),
   openScreen: (...args) => dispatch(OpenScreenActions.openScreen(...args)),
-  verifyEmail: (token) => dispatch(LoginActions.verifyEmail(token))
+  verifyEmail: (token) => dispatch(LoginActions.verifyEmail(token)),
+  setOrientation: (orientation) => dispatch(OrientationActions.setOrientation(orientation))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RootContainer)

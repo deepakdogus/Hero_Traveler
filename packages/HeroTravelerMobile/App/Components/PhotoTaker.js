@@ -130,7 +130,7 @@ class PhotoTaker extends Component {
         ref={this._cameraRef}
         captureMode={this.getCaptureMode()}
         captureAudio={this.props.mediaType === 'video'}
-        orientation={Camera.constants.Orientation.portrait}
+        orientation={Camera.constants.Orientation.auto}
         captureTarget={Camera.constants.CaptureTarget.disk}
         keepAwake={true}
         type={this.state.backCamera ? Camera.constants.Type.back : Camera.constants.Type.front}

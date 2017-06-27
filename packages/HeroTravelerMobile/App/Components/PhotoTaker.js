@@ -79,6 +79,8 @@ class PhotoTaker extends Component {
       this._interval = this.setInterval(() => {
         this.tick(this.getElapsedTime())
       }, 100)
+      // resetting all timing to 0
+      this.state.videoAnim.setValue(0)
       Animated.timing(
         this.state.videoAnim,
         {
@@ -114,6 +116,10 @@ class PhotoTaker extends Component {
     return this.props.mediaType === 'video'
   }
 
+  displayTime() {
+    return this.state.time !== 0
+  }
+
   getCaptureMode() {
     return this.props.mediaType === 'photo' ?
       Camera.constants.CaptureMode.still : Camera.constants.CaptureMode.video
@@ -137,7 +143,7 @@ class PhotoTaker extends Component {
         aspect={Camera.constants.Aspect.fill}
         style={styles.camera}
        >
-        {this.isVideo() && this.state.isRecording &&
+        {this.isVideo() &&
           <View style={styles.videoProgressWrapper}>
             <Animated.View style={{
               width: this.state.videoAnim,
@@ -145,9 +151,11 @@ class PhotoTaker extends Component {
             }}>
               <View style={styles.videoProgressBar} />
             </Animated.View>
-            <View style={styles.videoProgressTextWrapper}>
-              <Text style={styles.videoProgressText}>{this.state.time}s</Text>
-            </View>
+            { this.displayTime() &&
+              <View style={styles.videoProgressTextWrapper}>
+                <Text style={styles.videoProgressText}>{this.state.time}s</Text>
+              </View>
+            }
           </View>
         }
         <View style={styles.cameraControls}>

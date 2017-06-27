@@ -75,7 +75,6 @@ class RootContainer extends Component {
   }
 
   _onLayout (event){
-    console.log('is this even getting called')
     this.props.setOrientation(event.nativeEvent.layout)
   }
 

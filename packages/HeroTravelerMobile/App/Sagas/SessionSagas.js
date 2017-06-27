@@ -67,7 +67,7 @@ export function * resumeSession (api) {
       // Must receive users before running session initialization
       // so the user object is accessible
       put(UserActions.receiveUsers({[user.id]: user})),
-
+      put(UserActions.fetchActivities()),
     ]
     yield put(SessionActions.initializeSession(user.id, tokens))
   } else {

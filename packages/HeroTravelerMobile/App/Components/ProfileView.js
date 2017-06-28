@@ -21,6 +21,8 @@ import StoryList from './StoryList'
 import ConnectedStoryPreview from '../Containers/ConnectedStoryPreview'
 import formatCount from '../Lib/formatCount'
 import getImageUrl from '../Lib/getImageUrl'
+import getImageSize from '../Lib/getImageSize'
+import getResizeMode from '../Lib/getResizeMode'
 import Avatar from './Avatar'
 import NavBar from '../Containers/CreateStory/NavBar'
 import HeroAPI from '../Services/HeroAPI'
@@ -290,6 +292,7 @@ class ProfileView extends React.Component {
   render() {
     const { user, stories, drafts, editable, isEditing, profileImage, bookmarks } = this.props
     let fetchStatus
+    getImageSize(profileImage, this)
     switch (this.state.selectedTab) {
       case TabTypes.stories:
         fetchStatus = this.props.fetchStatus
@@ -464,7 +467,7 @@ class ProfileView extends React.Component {
           <Image
             cached={true}
             style={[styles.coverImage, profileImage ? null : styles.noCoverImage]}
-            resizeMode='cover'
+            resizeMode={getResizeMode(this.state)}
             source={{uri: profileImage || undefined}}
           >
             <LinearGradient colors={gradientStyle} style={styles.gradient}>

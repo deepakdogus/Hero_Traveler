@@ -97,7 +97,8 @@ const mapDispatchToProps = (dispatch) => ({
   },
   heroStartup: (linkAction) => dispatch(StartupActions.heroStartup(linkAction)),
   openScreen: (...args) => dispatch(OpenScreenActions.openScreen(...args)),
-  verifyEmail: (token) => dispatch(LoginActions.verifyEmail(token))
+  verifyEmail: (token) => dispatch(LoginActions.verifyEmail(token)),
+  setOrientation: (orientation) => dispatch(OrientationActions.setOrientation(orientation))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RootContainer)

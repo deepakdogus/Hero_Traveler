@@ -13,6 +13,8 @@ import getImageUrl from '../Lib/getImageUrl'
 import {Metrics} from '../Themes'
 import Colors from '../Themes/Colors'
 import getVideoUrl from '../Lib/getVideoUrl'
+import getResizeMode from '../Lib/getResizeMode'
+import getImageSize from '../Lib/getImageSize'
 
 export default class StoryCover extends Component {
 
@@ -41,6 +43,10 @@ export default class StoryCover extends Component {
     }
   }
 
+  componentDidMount(){
+    getImageSize(getImageUrl(this.props.cover), this)
+  }
+
   hasVideo() {
     return this.props.coverType === 'video' && !! this.props.cover
   }
@@ -57,7 +63,7 @@ export default class StoryCover extends Component {
       >
         <Image
           cached={true}
-          resizeMode="cover"
+          resizeMode={getResizeMode(this.state)}
           source={{uri: getImageUrl(this.props.cover)}}
           style={[styles.image]}
         >

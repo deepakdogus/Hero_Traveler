@@ -10,7 +10,6 @@ import OpenScreenActions from '../Redux/OpenScreenRedux'
 import NavigationScenes from '../Navigation/NavigationRouter'
 import StartupActions from '../Redux/StartupRedux'
 import LoginActions from '../Redux/LoginRedux'
-import OrientationActions from '../Redux/OrientationRedux'
 import styles from './Styles/RootContainerStyles'
 import deeplinkToAction from '../Lib/deeplinkToAction'
 
@@ -74,13 +73,9 @@ class RootContainer extends Component {
     }
   }
 
-  _onLayout (event){
-    this.props.setOrientation(event.nativeEvent.layout)
-  }
-
   render () {
     return (
-      <View onLayout={(event) => this._onLayout(event)} style={styles.applicationView}>
+      <View style={styles.applicationView}>
         <StatusBar barStyle='light-content' />
         <ConnectedRouter scenes={NavigationScenes} />
       </View>

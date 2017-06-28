@@ -27,8 +27,6 @@ import styles, { placeholderColor } from './2_StoryCoverScreenStyles'
 import NavBar from './NavBar'
 import getImageUrl from '../../Lib/getImageUrl'
 import getVideoUrl from '../../Lib/getVideoUrl'
-import getResizeMode from '../../Lib/getResizeMode'
-import getImageSize from '../../Lib/getImageSize'
 import Video from '../../Components/Video'
 import pathAsFileObject from '../../Lib/pathAsFileObject'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Lib/firstTimeTooltips'
@@ -196,14 +194,12 @@ class StoryCoverScreen extends Component {
   }
 
   renderCoverPhoto(coverPhoto) {
-    if (coverPhoto !== this.state.imageUrl) getImageSize(coverPhoto, this)
     return R.ifElse(
       R.identity,
       R.always((
         <Image
           source={{uri: coverPhoto}}
           style={styles.coverPhoto}
-          resizeMode={getResizeMode(this.state)}
         >
           <LinearGradient
             colors={['rgba(0,0,0,.4)', 'rgba(0,0,0,.4)']}

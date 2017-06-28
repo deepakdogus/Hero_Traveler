@@ -22,7 +22,7 @@ import API from '../../Services/HeroAPI'
 import StoryEditActions from '../../Redux/StoryCreateRedux'
 import ShadowButton from '../../Components/ShadowButton'
 import Loader from '../../Components/Loader'
-import {Colors, Images, Metrics} from '../../Themes'
+import {Colors} from '../../Themes'
 import styles, { placeholderColor } from './2_StoryCoverScreenStyles'
 import NavBar from './NavBar'
 import getImageUrl from '../../Lib/getImageUrl'
@@ -35,7 +35,6 @@ import isTooltipComplete, {Types as TooltipTypes} from '../../Lib/firstTimeToolt
 import RoundedButton from '../../Components/RoundedButton'
 import UserActions from '../../Redux/Entities/Users'
 import TabIcon from '../../Components/TabIcon'
-import NavButtonStyles from '../../Navigation/Styles/NavButtonStyles'
 
 const api = API.create()
 
@@ -514,7 +513,6 @@ class StoryCoverScreen extends Component {
               value={this.state.title}
               onChangeText={title => this.setState({title})}
               returnKeyType='done'
-              multiline
             />
             <TextInput
               style={this.renderTextColor(styles.subTitleInput)}

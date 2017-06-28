@@ -50,6 +50,7 @@ export default StyleSheet.create({
     marginLeft: 20,
     height: 34,
     fontSize: 28,
+    fontFamily: 'Arial',
   },
   subTitleInput: {
     color: Colors.snow,

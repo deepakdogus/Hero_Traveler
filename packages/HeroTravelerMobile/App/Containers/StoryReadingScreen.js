@@ -4,7 +4,7 @@ import {ScrollView, Text, View, Animated, TouchableOpacity} from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 import MapView from 'react-native-maps';
-import HTMLView from 'react-native-htmlview'
+import RNDraftJSRender from 'react-native-draftjs-render';
 import {compose, toClass, withHandlers} from 'recompose'
 
 import StoryActions from '../Redux/Entities/Stories'
@@ -14,115 +14,112 @@ import ConnectedStoryPreview from './ConnectedStoryPreview'
 import {Metrics} from '../Themes'
 import StoryReadingToolbar from '../Components/StoryReadingToolbar'
 import TabIcon from '../Components/TabIcon'
-import Image from '../Components/Image'
-import {styles, HTMLViewStyles, HTMLStylesheet} from './Styles/StoryReadingScreenStyles'
-import Video from '../Components/Video'
+// import Image from '../Components/Image'
+import {styles} from './Styles/StoryReadingScreenStyles'
+// import Video from '../Components/Video'
 
-function isCaption(node) {
-  return node.attribs && node.attribs.class === 'caption'
-}
-
-/*
-  - the first half of conditional statement captures initial text that is not wrapped in a div
-  - the second half of conditional captures normal divs
-*/
-function isText(node) {
-  return node.type === 'text' && !node.parent||
-  node.type === 'tag' && node.name === 'div' && !node.attribs.class
-}
-
-const enhanceStoryVideo = compose(
-  withHandlers(() => {
-    let _ref
-    return {
-      registerRef: () => ref => {
-        _ref = ref
-      },
-      onPress: () => () => {
-        _ref.goFullscreen()
+const contentState = {
+  "blocks": [
+    {
+      "entityRanges": [],
+      "depth": 0,
+      "data": {},
+      "inlineStyleRanges": [],
+      "text": "This is the first header!",
+      "type": "header-one",
+      "key": "ad9sdfdg5"
+    },
+    {
+      "key": "5r867",
+      "text": "This is an example with multiple styles combined.",
+      "type": "unstyled",
+      "depth": 0,
+      "inlineStyleRanges": [
+        {
+          "offset": 0,
+          "length": 4,
+          "style": "BOLD"
+        },
+        {
+          "offset": 0,
+          "length": 4,
+          "style": "ITALIC"
+        }
+      ],
+      "entityRanges": [],
+      "data": {}
+    },
+    {
+      "key": "5r864123",
+      "text": "Has a link which is referred to as an entity.",
+      "type": "unstyled",
+      "depth": 0,
+      "inlineStyleRanges": [],
+      "entityRanges": [
+        {
+          "offset": 6,
+          "length": 4,
+          "key": 0
+        }
+      ],
+      "data": {}
+    },
+    {
+      "key": "5r8641253",
+      "text": "Should have some bolded text here.",
+      "type": "unstyled",
+      "depth": 0,
+      "inlineStyleRanges": [
+        {
+          "offset": 0,
+          "length": 6,
+          "style": "BOLD"
+        }
+      ],
+      "entityRanges": [],
+      "data": {}
+    },
+    {
+      "key": "5r8641",
+      "text": "This is my really awesome text",
+      "type": "unstyled",
+      "depth": 0,
+      "inlineStyleRanges": [
+        {
+          "offset": 7,
+          "length": 9,
+          "style": "BOLD"
+        },
+        {
+          "offset": 7,
+          "length": 10,
+          "style": "ITALIC"
+        }
+      ],
+      "entityRanges": [],
+      "data": {}
+    },
+    {
+      "key": "5r8641",
+      "text": "This is an awesome caption for an image",
+      "type": "atomic",
+      "depth": 0,
+      "inlineStyleRanges": [],
+      "entityRanges": [],
+      "data": {
+        "type": "image",
+        "url": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
       }
     }
-  })
-)
-const StoryVideo = enhanceStoryVideo((props) => {
-  return (
-    <TouchableOpacity
-      style={HTMLViewStyles.videoButton}
-      onPress={props.onPress}
-    >
-      <Video
-        ref={props.registerRef}
-        path={props.src}
-        style={HTMLViewStyles.video}
-        allowVideoPlay={false}
-        autoPlayVideo={false}
-        showMuteButton={false}
-        showPlayButton={true}
-        videoFillSpace={false}
-      />
-    </TouchableOpacity>
-  )
-})
-
-// - to properly apply styling we need to isolate the various elements we use
-function renderNode(node, index, siblings, parent, defaultRenderer) {
-
-  if (node.name === 'img') {
-    const img = node.attribs
-    // dynamic marginBottom for when we do not have a caption
-    const marginBottom = (siblings[index+1] && isCaption(siblings[index+1])) ? 0 : 60
-    return (
-      <Image
-        cached={true}
-        key={index}
-        source={{uri: img.src}}
-        resizeMode='cover'
-        style={[HTMLViewStyles.img, {marginBottom: marginBottom}]}
-      />
-    )
-  }
-
-  if (node.name === 'video') {
-    const attrs = node.attribs
-    return (
-      <View key={index} style={styles.videoViewWrapper}>
-        <StoryVideo src={attrs.src} />
-      </View>
-    )
-  }
-
-  // captures normal text
-  if (isText(node)) {
-    const text = node.type === 'text' ? node.data : node.children[0].data
-    return (<Text
-      key={index}
-      style={HTMLViewStyles.text}
-    >
-      {text}
-    </Text>)
-  }
-
-  // captures h1 and styles appropriately
-  if (node.type === 'tag' && node.name === 'h1') {
-    return (
-      <Text
-        key={index}
-        style={HTMLViewStyles.header}
-      >
-        {node.children[0].data}
-      </Text>)
-  }
-
-  // ensuring caption has bottom margin
-  if (node.type === 'tag' && node.name === 'div' && node.attribs.class === 'caption') {
-    return (
-      <Text
-        key={index}
-        style={[HTMLViewStyles.text, HTMLViewStyles.caption]}
-      >
-        {node.children[0].data}
-      </Text>
-    )
+  ],
+  "entityMap": {
+    "0": {
+      "type": "LINK",
+      "mutability": "MUTABLE",
+      "data": {
+        "url": "https://github.com/globocom/react-native-draftjs-render"
+      }
+    }
   }
 }
 
@@ -227,14 +224,8 @@ class StoryReadingScreen extends React.Component {
                 paddingVertical: Metrics.baseMargin,
                 marginBottom: Metrics.navBarHeight,
               }}>
-                <HTMLView
-                  style={{
-                    flex: 1,
-                    paddingTop: 60
-                  }}
-                  value={story.content}
-                  stylesheet={HTMLStylesheet}
-                  renderNode={renderNode}
+                <RNDraftJSRender
+                  contentState={contentState}
                 />
               </View>
             }

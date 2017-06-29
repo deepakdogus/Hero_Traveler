@@ -5633,6 +5633,10 @@ react-native-device-info@^0.10.0:
   version "0.10.2"
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-0.10.2.tgz#350cd68ed43839022ddea0a3a423439f16fa4fba"
 
+react-native-draftjs-render@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-draftjs-render/-/react-native-draftjs-render-1.0.3.tgz#cb416a42efe9cb30fc2ae2a08d44f83774779c89"
+
 react-native-drawer@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/react-native-drawer/-/react-native-drawer-2.3.0.tgz#a0369ec80ff0b61c9f152dbdea91fe76c843113a"

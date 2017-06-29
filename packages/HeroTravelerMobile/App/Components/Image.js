@@ -14,7 +14,7 @@ export default class Image extends Component {
     }
  }
   componentWillMount() {
-    this._setImageSize(this.props.source)
+    this._setImageSize(this.props.source.uri)
   }
 
   _setImageSize(imageUrl) {

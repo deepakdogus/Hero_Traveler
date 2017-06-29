@@ -13,7 +13,7 @@ export default class Image extends Component {
       width: null
     }
  }
-  componentDidMount(){
+  componentWillMount() {
     this._setImageSize(this.props.source)
   }
 

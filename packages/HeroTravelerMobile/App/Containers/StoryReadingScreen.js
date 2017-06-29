@@ -16,8 +16,10 @@ import {Metrics, Fonts, Colors} from '../Themes'
 import StoryReadingToolbar from '../Components/StoryReadingToolbar'
 import TabIcon from '../Components/TabIcon'
 import Image from '../Components/Image'
-import {styles} from './Styles/StoryReadingScreenStyles'
-// import Video from '../Components/Video'
+import {styles, rendererStyles} from './Styles/StoryReadingScreenStyles'
+import Video from '../Components/Video'
+
+// content block for testing editor
 
 const contentState = {
   "blocks": [
@@ -117,6 +119,18 @@ const contentState = {
         "url": "https://lorempixel.com/400/200/"
       }
     },
+    {
+      "key": "5r8641",
+      "text": "This is an awesome caption for an image",
+      "type": "atomic",
+      "depth": 0,
+      "inlineStyleRanges": [],
+      "entityRanges": [],      
+      "data": {
+        "type": "video",
+        "url": "https://d13na0u3ury9av.cloudfront.net/matthew_files/3e4fb12b-a297-4a2d-ad3f-8d8d74c1ed01-trim.9B1AF295-7D57-4F67-A14B-BE73687F5559.MOV"
+      }
+    },
   ],
   "entityMap": {
     "0": {
@@ -128,67 +142,59 @@ const contentState = {
     }
   }
 }
+const enhanceStoryVideo = compose(
+  withHandlers(() => {
+    let _ref
+    return {
+      registerRef: () => ref => {
+        _ref = ref
+      },
+      onPress: () => () => {
+        _ref.goFullscreen()
+      }
+    }
+  })
+)
+const StoryVideo = enhanceStoryVideo((props) => {
+  return (
+    <TouchableOpacity
+      style={styles.videoButton}
+      onPress={props.onPress}
+    >
+      <Video
+        ref={props.registerRef}
+        path={props.src}
+        style={styles.video}
+        allowVideoPlay={false}
+        autoPlayVideo={false}
+        showMuteButton={false}
+        showPlayButton={true}
+        videoFillSpace={false}
+      />
+    </TouchableOpacity>
+  )
+})
 
-
-const customStyles = StyleSheet.flatten({
-  unstyled: {
-    fontSize: 18,
-    fontWeight: '300',
-    fontFamily: Fonts.type.base,
-    color: Colors.grey,
-    letterSpacing: .7,
-    paddingHorizontal: 25,
-  },
-  'header-one': {
-    fontSize: Fonts.size.h5,
-    fontWeight: '400',
-    fontFamily: Fonts.type.base,
-    color: Colors.background,
-    letterSpacing: .7,
-    paddingHorizontal: 25,
-  },
-});
 
 const atomicHandler = (item: Object): any => {
   switch (item.data.type) {
     case 'image':
-      // getting the metrics for the image
-      // if (!this.state.media[item.key])
-      // RNImage.getSize(item.data.url, (width, height) => {
-      //   const mediaCopy = _.cloneDeep(this.state.media)
-      //   mediaCopy[item.key] = {
-      //     width,
-      //     height,
-      //   }
-      //   this.setState({
-      //     media: mediaCopy
-      //   })
-      // })
-
-      // // converting metrics to right scale
-      // const imageMetrics = this.state.media[item.key]
-      // if (!imageMetrics) return null
-      // const resizedHeight = Metrics.screenWidth / imageMetrics.width * imageMetrics.height
-      // console.log("resizedHeight is", resizedHeight)
       return (
-        <View key={item.key} style={{ flex: 1, marginBottom: 60 }}>
+        <View key={item.key} style={styles.mediaViewWrapper}>
           <Image
-            style={{
-              width: Metrics.screenWidth,
-              height: 200,
-            }}
+            fullWidth={true}
             source={{ uri: item.data.url }}
           />
-          <Text style={{
-            textAlign: 'center',
-            fontStyle: 'italic',
-            fontWeight: '300',
-            letterSpacing: .7,
-            fontSize: 15,
-            fontFamily: Fonts.type.base,
-          }}>{item.text}</Text>
+          { item.text && <Text style={styles.caption}>{item.text}</Text> }
         </View>
       );
+    case 'video':
+      return (
+        <View key={item.key} style={styles.mediaViewWrapper}>
+          <StoryVideo src={item.data.url} />
+          { item.text && <Text style={styles.caption}>{item.text}</Text> }
+        </View>
+      )
     default:
       return null;
   }
@@ -298,7 +304,7 @@ class StoryReadingScreen extends React.Component {
               }}>
                 <RNDraftJSRender
                   contentState={contentState}
-                  customStyles={customStyles}
+                  customStyles={rendererStyles}
                   atomicHandler={atomicHandler}
                 />
               </View>

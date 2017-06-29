@@ -54,6 +54,21 @@ export const styles = StyleSheet.create({
   storyContentImage: {
     marginBottom: Metrics.section
   },
+  videoButton: {
+    marginTop: 60,
+    position: 'relative',
+    width: Metrics.screenWidth,
+    height: 200,
+  },
+  video: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: Metrics.screenWidth,
+    height: 200,
+  },
   videoDescription: {
     flex: 1,
     marginHorizontal: Metrics.section,
@@ -61,5 +76,38 @@ export const styles = StyleSheet.create({
   },
   videoDescriptionText: {
     color: '#757575'
+  },
+  caption: {
+    textAlign: 'center',
+    fontStyle: 'italic',
+    fontWeight: '300',
+    letterSpacing: .7,
+    fontSize: 15,
+    fontFamily: Fonts.type.base,
+  },
+  mediaViewWrapper: {
+    flex: 1,
+    marginVertical: 60
   }
 })
+
+
+
+export const rendererStyles = StyleSheet.flatten({
+  unstyled: {
+    fontSize: 18,
+    fontWeight: '300',
+    fontFamily: Fonts.type.base,
+    color: Colors.grey,
+    letterSpacing: .7,
+    paddingHorizontal: 25,
+  },
+  'header-one': {
+    fontSize: Fonts.size.h5,
+    fontWeight: '400',
+    fontFamily: Fonts.type.base,
+    color: Colors.background,
+    letterSpacing: .7,
+    paddingHorizontal: 25,
+  },
+});

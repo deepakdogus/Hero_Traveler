@@ -10,6 +10,7 @@ import getImageUrl from '../Lib/getImageUrl'
 import {Colors} from '../Themes'
 import API from '../Services/HeroAPI'
 import styles, { listHeight } from './Styles/StoryCommentsScreenStyles'
+import StoryActions from '../Redux/Entities/Stories'
 
 const api = API.create()
 
@@ -74,13 +75,22 @@ class StoryCommentsScreen extends React.Component {
       this.props.storyId,
       this.state.text
     )
+    .then(() => {
+      const update = {}
+      update[this.props.storyId] = {
+        counts: {
+          comments: this.state.comments.length + 1,
+        }
+      }
+      this.props.updateStory(update)
 
-    this.setState({
-      comments: [
-        ...this.state.comments,
-        newComment
-      ],
-      text: '',
+      this.setState({
+        comments: [
+          ...this.state.comments,
+          newComment
+        ],
+        text: '',
+      })
     })
   }
 
@@ -175,8 +185,9 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = () => {
+const mapDispatchToProps = (dispatch) => {
   return {
+    updateStory: (story) => dispatch(StoryActions.receiveStories(story))
   }
 }
 

@@ -38,7 +38,6 @@ export function * updateUser (api, action) {
     userId,
     attrs
   )
-
   if (response.ok) {
     yield put(UserActions.updateUserSuccess(response.data))
   } else {
@@ -58,7 +57,7 @@ export function * resumeSession (api) {
     api.getMe,
     userId
   )
-
+  
   if (response.ok) {
     const {users} = response.data.entities
     const user = users[userId]
@@ -67,7 +66,7 @@ export function * resumeSession (api) {
       // Must receive users before running session initialization
       // so the user object is accessible
       put(UserActions.receiveUsers({[user.id]: user})),
-
+      put(UserActions.fetchActivities()),
     ]
     yield put(SessionActions.initializeSession(user.id, tokens))
   } else {

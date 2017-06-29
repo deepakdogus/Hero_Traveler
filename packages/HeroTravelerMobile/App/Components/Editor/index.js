@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
   },
   toolbar: {
     // flex: 1,
-    backgroundColor: Colors.charcoal,
+    width: Metrics.screenWidth,
+    backgroundColor: Colors.white,
     justifyContent: 'space-between',
   },
   toolbarIcon: {
@@ -130,7 +131,6 @@ export default class Editor extends Component {
             actions.setParagraph,
             actions.insertImage,
             actions.insertVideo,
-            // actions.insertLink,
           ]}
           iconMap={{
             [actions.setBold]: (<ToolbarIcon name='bold' extraStyle={{borderLeftWidth: 1}}/>),
@@ -139,7 +139,6 @@ export default class Editor extends Component {
             [actions.setParagraph]: <ToolbarIcon name='paragraph' />,
             [actions.insertImage]: <ToolbarIcon name='image' />,
             [actions.insertVideo]: <ToolbarIcon name='video-camera' />,
-            // [actions.insertLink]: <ToolbarIcon name='link' />,
           }}
           getEditor={() => this.richtext}
           style={styles.toolbar}

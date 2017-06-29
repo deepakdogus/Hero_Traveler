@@ -1,18 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {ScrollView, Text, View, Animated, TouchableOpacity, StyleSheet, Image as RNImage} from 'react-native'
+import {ScrollView, Text, View, Animated, TouchableOpacity} from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 import MapView from 'react-native-maps';
 import RNDraftJSRender from 'react-native-draftjs-render';
 import {compose, toClass, withHandlers} from 'recompose'
-import _ from 'lodash'
 
 import StoryActions from '../Redux/Entities/Stories'
 import {isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
 import formatCount from '../Lib/formatCount'
 import ConnectedStoryPreview from './ConnectedStoryPreview'
-import {Metrics, Fonts, Colors} from '../Themes'
+import {Metrics} from '../Themes'
 import StoryReadingToolbar from '../Components/StoryReadingToolbar'
 import TabIcon from '../Components/TabIcon'
 import Image from '../Components/Image'
@@ -142,6 +141,7 @@ const contentState = {
     }
   }
 }
+
 const enhanceStoryVideo = compose(
   withHandlers(() => {
     let _ref
@@ -155,6 +155,7 @@ const enhanceStoryVideo = compose(
     }
   })
 )
+
 const StoryVideo = enhanceStoryVideo((props) => {
   return (
     <TouchableOpacity
@@ -174,7 +175,6 @@ const StoryVideo = enhanceStoryVideo((props) => {
     </TouchableOpacity>
   )
 })
-
 
 const atomicHandler = (item: Object): any => {
   switch (item.data.type) {
@@ -226,7 +226,6 @@ class StoryReadingScreen extends React.Component {
     this.toolbarShown = false
     this.state = {
       toolbarHeight: new Animated.Value(0),
-      media: {},
     }
   }
 

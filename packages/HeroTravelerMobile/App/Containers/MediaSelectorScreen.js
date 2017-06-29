@@ -14,8 +14,6 @@ import PhotoTaker from '../Components/PhotoTaker'
 import Video from '../Components/Video'
 import styles from './Styles/MediaSelectorScreenStyles'
 import isTooltipComplete, {Types as TooltipTypes} from '../Lib/firstTimeTooltips'
-import getResizeMode from '../Lib/getResizeMode'
-import getImageSize from '../Lib/getImageSize'
 import UserActions from '../Redux/Entities/Users'
 import NavButtonStyles from '../Navigation/Styles/NavButtonStyles'
 import { Colors } from '../Themes'
@@ -190,13 +188,11 @@ class MediaSelectorScreen extends React.Component {
         />
       )
     } else if (this.state.media && this.props.mediaType === 'photo') {
-      if (this.state.media !== this.state.imageUrl) getImageSize(this.state.media, this)
       content = (
         <View style={styles.imageWrapper}>
           <Image
             source={{uri: this.state.media}}
             style={styles.image}
-            resizeMode={getResizeMode(this.state)}
           />
           <View style={{flex: 1}} />
           {this.state.mediaCaptured &&

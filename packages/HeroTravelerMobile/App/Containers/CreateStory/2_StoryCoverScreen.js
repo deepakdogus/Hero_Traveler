@@ -22,20 +22,17 @@ import API from '../../Services/HeroAPI'
 import StoryEditActions from '../../Redux/StoryCreateRedux'
 import ShadowButton from '../../Components/ShadowButton'
 import Loader from '../../Components/Loader'
-import {Colors, Images, Metrics} from '../../Themes'
+import {Colors} from '../../Themes'
 import styles, { placeholderColor } from './2_StoryCoverScreenStyles'
 import NavBar from './NavBar'
 import getImageUrl from '../../Lib/getImageUrl'
 import getVideoUrl from '../../Lib/getVideoUrl'
-import getResizeMode from '../../Lib/getResizeMode'
-import getImageSize from '../../Lib/getImageSize'
 import Video from '../../Components/Video'
 import pathAsFileObject from '../../Lib/pathAsFileObject'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Lib/firstTimeTooltips'
 import RoundedButton from '../../Components/RoundedButton'
 import UserActions from '../../Redux/Entities/Users'
 import TabIcon from '../../Components/TabIcon'
-import NavButtonStyles from '../../Navigation/Styles/NavButtonStyles'
 
 const api = API.create()
 
@@ -196,14 +193,12 @@ class StoryCoverScreen extends Component {
   }
 
   renderCoverPhoto(coverPhoto) {
-    if (coverPhoto !== this.state.imageUrl) getImageSize(coverPhoto, this)
     return R.ifElse(
       R.identity,
       R.always((
         <Image
           source={{uri: coverPhoto}}
           style={styles.coverPhoto}
-          resizeMode={getResizeMode(this.state)}
         >
           <LinearGradient
             colors={['rgba(0,0,0,.4)', 'rgba(0,0,0,.4)']}
@@ -514,7 +509,6 @@ class StoryCoverScreen extends Component {
               value={this.state.title}
               onChangeText={title => this.setState({title})}
               returnKeyType='done'
-              multiline
             />
             <TextInput
               style={this.renderTextColor(styles.subTitleInput)}

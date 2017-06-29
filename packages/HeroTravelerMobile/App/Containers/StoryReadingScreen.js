@@ -1,130 +1,198 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {ScrollView, Text, View, Animated, TouchableOpacity} from 'react-native'
+import {ScrollView, Text, View, Animated, TouchableOpacity, StyleSheet, Image as RNImage} from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 import MapView from 'react-native-maps';
-import HTMLView from 'react-native-htmlview'
+import RNDraftJSRender from 'react-native-draftjs-render';
 import {compose, toClass, withHandlers} from 'recompose'
+import _ from 'lodash'
 
 import StoryActions from '../Redux/Entities/Stories'
 import {isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
 import formatCount from '../Lib/formatCount'
 import ConnectedStoryPreview from './ConnectedStoryPreview'
-import {Metrics} from '../Themes'
+import {Metrics, Fonts, Colors} from '../Themes'
 import StoryReadingToolbar from '../Components/StoryReadingToolbar'
 import TabIcon from '../Components/TabIcon'
 import Image from '../Components/Image'
-import {styles, HTMLViewStyles, HTMLStylesheet} from './Styles/StoryReadingScreenStyles'
-import Video from '../Components/Video'
+import {styles} from './Styles/StoryReadingScreenStyles'
+// import Video from '../Components/Video'
 
-function isCaption(node) {
-  return node.attribs && node.attribs.class === 'caption'
-}
-
-/*
-  - the first half of conditional statement captures initial text that is not wrapped in a div
-  - the second half of conditional captures normal divs
-*/
-function isText(node) {
-  return node.type === 'text' && !node.parent||
-  node.type === 'tag' && node.name === 'div' && !node.attribs.class
-}
-
-const enhanceStoryVideo = compose(
-  withHandlers(() => {
-    let _ref
-    return {
-      registerRef: () => ref => {
-        _ref = ref
-      },
-      onPress: () => () => {
-        _ref.goFullscreen()
+const contentState = {
+  "blocks": [
+    {
+      "entityRanges": [],
+      "depth": 0,
+      "data": {},
+      "inlineStyleRanges": [],
+      "text": "Maecenas nec odio",
+      "type": "header-one",
+      "key": "ad9sdfdg5"
+    },
+    {
+      "key": "5r867",
+      "text": "Etiam ultricies nisi vel augue. Sed magna purus, fermentum eu, tincidunt eu, varius ut, felis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ac dui quis mi consectetuer lacinia. Cras dapibus. Sed mollis, eros et ultrices tempus, mauris ipsum aliquam libero, non adipiscing dolor urna a orci.",
+      "type": "unstyled",
+      "depth": 0,
+      "inlineStyleRanges": [
+        {
+          "offset": 25,
+          "length": 5,
+          "style": "BOLD"
+        },
+        {
+          "offset": 307,
+          "length": 10,
+          "style": "BOLD"
+        },
+        {
+          "offset": 241,
+          "length": 6,
+          "style": "ITALIC"
+        }
+      ],
+      "entityRanges": [],
+      "data": {}
+    },
+    {
+      "key": "5r864123",
+      "text": "Etiam ultricies nisi vel augue.",
+      "type": "unstyled",
+      "depth": 0,
+      "inlineStyleRanges": [],
+      "entityRanges": [
+        {
+          "offset": 0,
+          "length": 5,
+          "key": 0
+        }
+      ],
+      "data": {}
+    },
+    {
+      "key": "5r8641253",
+      "text": "Etiam ultricies nisi vel augue.",
+      "type": "unstyled",
+      "depth": 0,
+      "inlineStyleRanges": [
+        {
+          "offset": 0,
+          "length": 5,
+          "style": "BOLD"
+        }
+      ],
+      "entityRanges": [],
+      "data": {}
+    },
+    {
+      "key": "5r8641",
+      "text": "Etiam ultricies nisi vel augue.",
+      "type": "unstyled",
+      "depth": 0,
+      "inlineStyleRanges": [
+        {
+          "offset": 7,
+          "length": 9,
+          "style": "BOLD"
+        },
+        {
+          "offset": 7,
+          "length": 10,
+          "style": "ITALIC"
+        }
+      ],
+      "entityRanges": [],
+      "data": {}
+    },
+    {
+      "key": "5r8641",
+      "text": "This is an awesome caption for an image",
+      "type": "atomic",
+      "depth": 0,
+      "inlineStyleRanges": [],
+      "entityRanges": [],      
+      "data": {
+        "type": "image",
+        "url": "https://lorempixel.com/400/200/"
+      }
+    },
+  ],
+  "entityMap": {
+    "0": {
+      "type": "LINK",
+      "mutability": "MUTABLE",
+      "data": {
+        "url": "https://github.com/globocom/react-native-draftjs-render"
       }
     }
-  })
-)
-const StoryVideo = enhanceStoryVideo((props) => {
-  return (
-    <TouchableOpacity
-      style={HTMLViewStyles.videoButton}
-      onPress={props.onPress}
-    >
-      <Video
-        ref={props.registerRef}
-        path={props.src}
-        style={HTMLViewStyles.video}
-        allowVideoPlay={false}
-        autoPlayVideo={false}
-        showMuteButton={false}
-        showPlayButton={true}
-        videoFillSpace={false}
-      />
-    </TouchableOpacity>
-  )
-})
-
-// - to properly apply styling we need to isolate the various elements we use
-function renderNode(node, index, siblings, parent, defaultRenderer) {
-
-  if (node.name === 'img') {
-    const img = node.attribs
-    // dynamic marginBottom for when we do not have a caption
-    const marginBottom = (siblings[index+1] && isCaption(siblings[index+1])) ? 0 : 60
-    return (
-      <Image
-        cached={true}
-        key={index}
-        source={{uri: img.src}}
-        resizeMode='cover'
-        style={[HTMLViewStyles.img, {marginBottom: marginBottom}]}
-      />
-    )
-  }
-
-  if (node.name === 'video') {
-    const attrs = node.attribs
-    return (
-      <View key={index} style={styles.videoViewWrapper}>
-        <StoryVideo src={attrs.src} />
-      </View>
-    )
-  }
-
-  // captures normal text
-  if (isText(node)) {
-    const text = node.type === 'text' ? node.data : node.children[0].data
-    return (<Text
-      key={index}
-      style={HTMLViewStyles.text}
-    >
-      {text}
-    </Text>)
-  }
-
-  // captures h1 and styles appropriately
-  if (node.type === 'tag' && node.name === 'h1') {
-    return (
-      <Text
-        key={index}
-        style={HTMLViewStyles.header}
-      >
-        {node.children[0].data}
-      </Text>)
-  }
-
-  // ensuring caption has bottom margin
-  if (node.type === 'tag' && node.name === 'div' && node.attribs.class === 'caption') {
-    return (
-      <Text
-        key={index}
-        style={[HTMLViewStyles.text, HTMLViewStyles.caption]}
-      >
-        {node.children[0].data}
-      </Text>
-    )
   }
 }
+
+
+const customStyles = StyleSheet.flatten({
+  unstyled: {
+    fontSize: 18,
+    fontWeight: '300',
+    fontFamily: Fonts.type.base,
+    color: Colors.grey,
+    letterSpacing: .7,
+    paddingHorizontal: 25,
+  },
+  'header-one': {
+    fontSize: Fonts.size.h5,
+    fontWeight: '400',
+    fontFamily: Fonts.type.base,
+    color: Colors.background,
+    letterSpacing: .7,
+    paddingHorizontal: 25,
+  },
+});
+
+const atomicHandler = (item: Object): any => {
+  switch (item.data.type) {
+    case 'image':
+      // getting the metrics for the image
+      // if (!this.state.media[item.key])
+      // RNImage.getSize(item.data.url, (width, height) => {
+      //   const mediaCopy = _.cloneDeep(this.state.media)
+      //   mediaCopy[item.key] = {
+      //     width,
+      //     height,
+      //   }
+      //   this.setState({
+      //     media: mediaCopy
+      //   })
+      // })
+
+      // // converting metrics to right scale
+      // const imageMetrics = this.state.media[item.key]
+      // if (!imageMetrics) return null
+      // const resizedHeight = Metrics.screenWidth / imageMetrics.width * imageMetrics.height
+      // console.log("resizedHeight is", resizedHeight)
+      return (
+        <View key={item.key} style={{ flex: 1, marginBottom: 60 }}>
+          <Image
+            style={{
+              width: Metrics.screenWidth,
+              height: 200,
+            }}
+            source={{ uri: item.data.url }}
+          />
+          <Text style={{
+            textAlign: 'center',
+            fontStyle: 'italic',
+            fontWeight: '300',
+            letterSpacing: .7,
+            fontSize: 15,
+            fontFamily: Fonts.type.base,
+          }}>{item.text}</Text>
+        </View>
+      );
+    default:
+      return null;
+  }
+};
 
 const EnhancedStoryReadingToolbar = withHandlers({
   onPressBookmark: props => () => {
@@ -151,7 +219,8 @@ class StoryReadingScreen extends React.Component {
     this.onScroll = this.onScroll.bind(this)
     this.toolbarShown = false
     this.state = {
-      toolbarHeight: new Animated.Value(0)
+      toolbarHeight: new Animated.Value(0),
+      media: {},
     }
   }
 
@@ -227,14 +296,10 @@ class StoryReadingScreen extends React.Component {
                 paddingVertical: Metrics.baseMargin,
                 marginBottom: Metrics.navBarHeight,
               }}>
-                <HTMLView
-                  style={{
-                    flex: 1,
-                    paddingTop: 60
-                  }}
-                  value={story.content}
-                  stylesheet={HTMLStylesheet}
-                  renderNode={renderNode}
+                <RNDraftJSRender
+                  contentState={contentState}
+                  customStyles={customStyles}
+                  atomicHandler={atomicHandler}
                 />
               </View>
             }

@@ -1,0 +1,14 @@
+{% extends 'index.njk' %}
+
+{% block main %}
+  <form enctype="multipart/form-data" action="/categories/edit?id={{data._id}} "method="post" class="sm-col-4 m3">
+    <label>Title</label>
+    <input name="title" type="text" value="{{data.title}}" class="block col-12 mb1 field">
+    <label>Upload Image</label>
+    <input type="file" name="image" accept="image/*" class="block col-12 mb1 field">
+    <button type="submit" class="btn btn-primary">Change</button>
+    <button type="reset" class="btn btn-primary black bg-gray">Cancel</button>
+  </form>
+  <button class="btn bg-red ml2"><a class="white" href="/categories/delete?id={{data._id}}">Delete Entry</a></button>
+  <div class="m2">{{ data }}</div>
+{% endblock %}

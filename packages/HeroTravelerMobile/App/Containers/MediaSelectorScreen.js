@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import {
   Text,
   View,
-  Image,
   TouchableOpacity
 } from 'react-native'
 import { connect } from 'react-redux'
@@ -12,10 +11,10 @@ import ImagePicker from 'react-native-image-picker'
 import NavBar from './CreateStory/NavBar'
 import PhotoTaker from '../Components/PhotoTaker'
 import Video from '../Components/Video'
+import Image from '../Components/Image'
 import styles from './Styles/MediaSelectorScreenStyles'
 import isTooltipComplete, {Types as TooltipTypes} from '../Lib/firstTimeTooltips'
 import UserActions from '../Redux/Entities/Users'
-import NavButtonStyles from '../Navigation/Styles/NavButtonStyles'
 import { Colors } from '../Themes'
 
 class MediaSelectorScreen extends React.Component {

@@ -8,13 +8,15 @@
     "react-scripts": "1.0.10"
   },
   "scripts": {
-    "start": "npm run share && react-scripts start",
+    "start": "react-scripts start",
     "build": "npm run share && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "share": "rimraf src/App/shared && mkdir src/App/shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png}\" src/App/shared"
+    "share": "rimraf src/App/shared && mkdir src/App/shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png}\" src/App/shared",
+    "share:watch": "rimraf src/App/shared && mkdir src/App/shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png}\" src/App/shared --watch"
   },
   "devDependencies": {
+    "concurrently": "^3.5.0",
     "cpx": "^1.5.0",
     "rimraf": "^2.6.1"
   }

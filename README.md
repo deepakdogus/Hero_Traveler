@@ -35,13 +35,23 @@ cd packages/express-api
 npm run dev
 ```
 
-Next, start react-native in a simulator:
+To run the mobile app, start react-native in a simulator:
 
 ```bash
 cd packages/HeroTravelerMobile
-react-native run-ios
+npm run start:ios
 ```
 
+To run the web app,
+
+```bash
+cd packages/web
+npm run share:watch
+```
+In a separate window
+```bash
+npm run start
+```
 _Note: Android has been neglected for the v1, and does not work yet._
 
 To run the application in development mode on your phone, open xcode with the following command: 

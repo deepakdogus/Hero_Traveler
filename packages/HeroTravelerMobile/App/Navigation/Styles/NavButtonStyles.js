@@ -1,4 +1,4 @@
-import {Colors, Metrics, Fonts} from '../../Themes/'
+import {Colors, Fonts} from '../../Shared/Themes/'
 
 export default {
   navButtonText: {

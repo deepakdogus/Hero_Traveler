@@ -1,17 +1,17 @@
 import _ from 'lodash'
 import React from 'react'
 import PropTypes from 'prop-types'
-import {ScrollView, Text, View, TouchableOpacity, TouchableWithoutFeedback} from 'react-native'
+import { Text, View, TouchableWithoutFeedback} from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
-import StoryActions, {getByCategory, getFetchStatus} from '../../Redux/Entities/Stories'
+import StoryActions, {getByCategory, getFetchStatus} from '../../Shared/Redux/Entities/Stories'
 
 import ConnectedStoryPreview from '../ConnectedStoryPreview'
 import StoryList from '../../Components/StoryList'
 import Loader from '../../Components/Loader'
 
-import {Metrics} from '../../Themes'
+import {Metrics} from '../../Shared/Themes'
 import styles from '../Styles/CategoryFeedScreenStyles'
 import NoStoriesMessage from '../../Components/NoStoriesMessage'
 

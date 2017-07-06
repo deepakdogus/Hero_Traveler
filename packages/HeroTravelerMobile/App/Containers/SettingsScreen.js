@@ -13,8 +13,8 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome'
 import VersionNumber from 'react-native-version-number'
 
-import SessionActions from '../Redux/SessionRedux'
-import {Colors} from '../Themes'
+import SessionActions from '../Shared/Redux/SessionRedux'
+import {Colors} from '../Shared/Themes'
 import styles from './Styles/SettingsScreenStyles'
 import Loader from '../Components/Loader'
 

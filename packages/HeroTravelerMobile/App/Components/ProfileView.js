@@ -1,13 +1,11 @@
 import React from 'react'
 import styles, { storyPreviewHeight } from './Styles/ProfileViewStyles'
 import {
-  ScrollView,
   View,
   Text,
   TextInput,
   TouchableWithoutFeedback,
   TouchableOpacity,
-  KeyboardAvoidingView,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
@@ -15,23 +13,23 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import LinearGradient from 'react-native-linear-gradient'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 
-import { Colors, Fonts, Metrics } from '../Themes'
+import { Colors, Metrics } from '../Shared/Themes'
 import Loader from './Loader'
 import StoryList from './StoryList'
 import ConnectedStoryPreview from '../Containers/ConnectedStoryPreview'
-import formatCount from '../Lib/formatCount'
-import getImageUrl from '../Lib/getImageUrl'
+import formatCount from '../Shared/Lib/formatCount'
+import getImageUrl from '../Shared/Lib/getImageUrl'
 import Avatar from './Avatar'
 import NavBar from '../Containers/CreateStory/NavBar'
-import HeroAPI from '../Services/HeroAPI'
-import pathAsFileObject from '../Lib/pathAsFileObject'
+import HeroAPI from '../Shared/Services/HeroAPI'
+import pathAsFileObject from '../Shared/Lib/pathAsFileObject'
 import TabIcon from './TabIcon'
 import Image from './Image'
 
 // @TODO UserActions shouldn't be in a component
-import UserActions from '../Redux/Entities/Users'
-import StoryActions from '../Redux/Entities/Stories'
-import isTooltipComplete, {Types as TooltipTypes} from '../Lib/firstTimeTooltips'
+import UserActions from '../Shared/Redux/Entities/Users'
+import StoryActions from '../Shared/Redux/Entities/Stories'
+import isTooltipComplete, {Types as TooltipTypes} from '../Shared/Lib/firstTimeTooltips'
 import {withHandlers} from 'recompose'
 
 const api = HeroAPI.create()

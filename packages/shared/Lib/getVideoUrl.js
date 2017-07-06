@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import Config from '../Config/AppConfig'
+import Config from '../../Config/AppConfig'
 
 export default function getVideoUrl(video: object): ?string {
   const baseUrl = Config.cdnBaseUrl

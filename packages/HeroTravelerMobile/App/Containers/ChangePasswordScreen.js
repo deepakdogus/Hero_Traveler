@@ -11,10 +11,10 @@ import {
 import RoundedButton from '../Components/RoundedButton'
 import Loader from '../Components/Loader'
 import { connect } from 'react-redux'
-import {Colors} from '../Themes'
+import {Colors} from '../Shared/Themes'
 import styles from './Styles/ChangePasswordScreenStyles'
-import HeroAPI from '../Services/HeroAPI'
-import LoginActions from '../Redux/LoginRedux'
+import HeroAPI from '../Shared/Services/HeroAPI'
+import LoginActions from '../Shared/Redux/LoginRedux'
 import { Actions as NavigationActions } from 'react-native-router-flux'
 
 const api = HeroAPI.create()

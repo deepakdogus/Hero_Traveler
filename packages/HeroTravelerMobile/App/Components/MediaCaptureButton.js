@@ -4,7 +4,7 @@ import {
   StyleSheet,
 } from 'react-native'
 
-import {Colors} from '../Themes'
+import {Colors} from '../Shared/Themes'
 
 const styles = StyleSheet.create({
   circleDefault: {

@@ -2,8 +2,8 @@
 import apisauce from 'apisauce'
 import _, {get, isArray} from 'lodash'
 import {normalize, schema} from 'normalizr'
-import {getToken as getPushToken} from '../Config/PushConfig'
-import env from '../Config/Env'
+import {getToken as getPushToken} from '../../Config/PushConfig'
+import env from '../../Config/Env'
 
 const User = new schema.Entity('users')
 const Category = new schema.Entity('categories')

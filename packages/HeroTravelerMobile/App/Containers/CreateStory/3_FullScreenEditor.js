@@ -6,15 +6,14 @@ import {
 import {Actions as NavActions} from 'react-native-router-flux'
 import { connect } from 'react-redux'
 
-import StoryEditActions from '../../Redux/StoryCreateRedux'
+import StoryEditActions from '../../Shared/Redux/StoryCreateRedux'
 import Editor from '../../Components/Editor'
 import NavBar from './NavBar'
 import styles from './3_FullScreenEditorStyles'
-import pathAsFileObject from '../../Lib/pathAsFileObject'
-import getImageUrl from '../../Lib/getImageUrl'
-import HeroAPI from '../../Services/HeroAPI'
-import getVideoUrl from '../../Lib/getVideoUrl'
-import NavButtonStyles from '../../Navigation/Styles/NavButtonStyles'
+import pathAsFileObject from '../../Shared/Lib/pathAsFileObject'
+import getImageUrl from '../../Shared/Lib/getImageUrl'
+import HeroAPI from '../../Shared/Services/HeroAPI'
+import getVideoUrl from '../../Shared/Lib/getVideoUrl'
 import Loader from '../../Components/Loader'
 
 const api = HeroAPI.create()

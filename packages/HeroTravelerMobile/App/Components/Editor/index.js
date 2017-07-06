@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react'
+import React, {Component} from 'react'
 import {
   View,
   StyleSheet,
@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import {RichTextEditor, RichTextToolbar, actions} from 'react-native-zss-rich-text-editor';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
-import {Colors, Metrics} from '../../Themes'
+import {Colors, Metrics} from '../../Shared/Themes'
 import RoundedButton from '../RoundedButton'
 
 const ToolbarIcon = ({name, color, extraStyle = {}}) => {

@@ -1,4 +1,4 @@
-import { StartupTypes } from '../Redux/StartupRedux'
+import { StartupTypes } from '../Shared/Redux/StartupRedux'
 import Config from '../Config/DebugConfig'
 import Immutable from 'seamless-immutable'
 const Reactotron = require('reactotron-react-native').default

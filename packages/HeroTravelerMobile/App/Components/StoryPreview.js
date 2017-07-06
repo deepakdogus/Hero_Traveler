@@ -9,20 +9,14 @@ import {
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import formatCount from '../Lib/formatCount'
-import getImageUrl from '../Lib/getImageUrl'
-import getVideoUrl from '../Lib/getVideoUrl'
-import { Metrics, Colors } from '../Themes'
+import formatCount from '../Shared/Lib/formatCount'
+import getImageUrl from '../Shared/Lib/getImageUrl'
+import { Metrics } from '../Shared/Themes'
 import styles from './Styles/StoryPreviewStyle'
 import LikesComponent from './LikeComponent'
 import TrashCan from '../Components/TrashCan'
 import Avatar from './Avatar'
 import StoryCover from './StoryCover'
-
-import HeroAPI from '../Services/HeroAPI'
-
-const api = HeroAPI.create()
-
 
 export default class StoryPreview extends Component {
   static propTypes = {
@@ -74,8 +68,6 @@ export default class StoryPreview extends Component {
     const storyId = this.props.story.id
     const userId = this.props.user.id
     const { deleteStory } = this.props
-    /* const setAuthAndDelete = () => api.setAuth(this.props.accessToken)
-     *   .then(() => api.deleteStory(storyId))*/
     Alert.alert(
       'Delete Story',
       'Are you sure you want to delete this story?',

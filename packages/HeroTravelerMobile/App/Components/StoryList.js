@@ -6,8 +6,6 @@ import {
 } from 'react-native'
 import styles from './Styles/StoryListStyle'
 
-import StoryPreview from '../Components/StoryPreview'
-
 export default class StoryList extends React.Component {
   static propTypes = {
     storiesById: PropTypes.arrayOf(PropTypes.string).isRequired,

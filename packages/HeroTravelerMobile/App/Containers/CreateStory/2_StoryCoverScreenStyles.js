@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { ApplicationStyles, Colors, Metrics, Fonts } from '../../Themes/'
+import { ApplicationStyles, Colors, Metrics, Fonts } from '../../Shared/Themes/'
 
 const third = (1 / 3) * (Metrics.screenHeight - Metrics.navBarHeight * 2)
 

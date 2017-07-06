@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native'
 
-import {Fonts, Colors, Metrics} from '../Themes'
+import {Fonts, Colors, Metrics} from '../Shared/Themes'
 
 const styles = StyleSheet.create({
   root: {

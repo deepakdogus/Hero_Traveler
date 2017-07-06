@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import Config from '../Config/AppConfig'
+import Config from '../../Config/AppConfig'
 
 export default function getImageUrl(image, path) {
   const baseUrl = Config.cdnBaseUrl

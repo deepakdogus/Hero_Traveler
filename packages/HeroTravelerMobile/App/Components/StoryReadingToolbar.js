@@ -1,7 +1,6 @@
 import React, {PropTypes, Component} from 'react'
 import {View, Text, TouchableOpacity} from 'react-native'
 
-import {Colors} from '../Themes'
 import styles from './Styles/StoryReadingToolbarStyles'
 import TabIcon from './TabIcon'
 

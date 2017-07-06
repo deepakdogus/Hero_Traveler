@@ -15,7 +15,7 @@ const notificationOpts = [
 ]
 
 import styles from './Styles/SettingsScreenStyles'
-import UserActions from '../Redux/Entities/Users'
+import UserActions from '../Shared/Redux/Entities/Users'
 
 const enhancedRow = withHandlers({
   onValChange: props => () => {

@@ -6,7 +6,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import Image from './Image'
-import {Colors} from '../Themes'
+import {Colors} from '../Shared/Themes'
 
 const styles = StyleSheet.create({
   root: {}

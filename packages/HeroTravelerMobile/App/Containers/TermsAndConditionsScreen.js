@@ -1,11 +1,9 @@
 import React from 'react'
 import {
   ScrollView,
-  View,
   Text
 } from 'react-native'
 
-import {Colors} from '../Themes'
 import styles from './Styles/TermsAndConditionsScreenStyles'
 
 export default class TermsAndConditionsScreen extends React.Component {

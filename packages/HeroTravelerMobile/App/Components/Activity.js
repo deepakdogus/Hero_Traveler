@@ -1,12 +1,11 @@
 import React, {PropTypes, Component} from 'react'
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
-import LinearGradient from 'react-native-linear-gradient'
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import moment from 'moment'
 
-import { Colors, Metrics, Fonts } from '../Themes/'
+import { Colors, Metrics } from '../Shared/Themes/'
 import Avatar from '../Components/Avatar'
-import getImageUrl from '../Lib/getImageUrl'
+import getImageUrl from '../Shared/Lib/getImageUrl'
 
 export const ActivityProps = {
   user: PropTypes.object.isRequired,

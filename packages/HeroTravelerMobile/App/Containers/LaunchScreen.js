@@ -3,7 +3,6 @@ import { Text, Image, View, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import {
   Actions as NavigationActions,
-  ActionConst as NavActionConst
 } from 'react-native-router-flux'
 import SplashScreen from 'react-native-splash-screen'
 import {
@@ -13,11 +12,11 @@ import {
   GraphRequestManager,
 } from 'react-native-fbsdk'
 
-import SessionActions, {hasAuthData} from '../Redux/SessionRedux'
-import SignupActions, {hasSignedUp} from '../Redux/SignupRedux'
+import SessionActions, {hasAuthData} from '../Shared/Redux/SessionRedux'
+import SignupActions, {hasSignedUp} from '../Shared/Redux/SignupRedux'
 import RoundedButton from '../Components/RoundedButton'
 import TextButton from '../Components/TextButton'
-import { Images } from '../Themes'
+import { Images } from '../Shared/Themes'
 import styles from './Styles/LaunchScreenStyles'
 
 class LaunchScreen extends React.Component {

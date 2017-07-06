@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { ApplicationStyles, Fonts, Colors, Metrics } from '../../Themes/'
+import { ApplicationStyles, Fonts, Colors, Metrics } from '../../Shared/Themes/'
 
 const avatarImageSize = 95
 const coverInnerHeight = 370

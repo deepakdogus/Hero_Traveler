@@ -20,7 +20,8 @@
     "android:logcat": "$ANDROID_HOME/platform-tools/adb logcat *:S ReactNative:V ReactNativeJS:V",
     "android:shake": "$ANDROID_HOME/platform-tools/adb devices | grep '\\t' | awk '{print $1}' | sed 's/\\s//g' | xargs -I {} $ANDROID_HOME/platform-tools/adb -s {} shell input keyevent 82",
     "dev-test-link-reset": "xcrun simctl openurl booted \"com.rehashstudio.herotraveler://resetpassword/a6671bb4-73df-4110-8a7b-c1f1dd579707\"",
-    "dev-test-link-email": "xcrun simctl openurl booted \"com.rehashstudio.herotraveler://emailverify/dc24a446-3a76-477a-8f17-255dfbaf0892\""
+    "dev-test-link-email": "xcrun simctl openurl booted \"com.rehashstudio.herotraveler://emailverify/dc24a446-3a76-477a-8f17-255dfbaf0892\"",
+    "share": "rimraf App/Shared && mkdir App/Shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png}\" App/Shared"
   },
   "dependencies": {
     "algoliasearch": "^3.22.1",
@@ -81,6 +82,7 @@
     "babel-plugin-module-resolver": "^2.7.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-es2015": "^6.18.0",
+    "cpx": "^1.5.0",
     "enzyme": "^2.6.0",
     "eslint": "^4.0.0",
     "eslint-plugin-react": "^7.1.0",
@@ -98,6 +100,7 @@
     "reactotron-react-native": "^1.7.0",
     "reactotron-redux": "^1.7.0",
     "reactotron-redux-saga": "^1.7.0",
+    "rimraf": "^2.6.1",
     "snazzy": "^6.0.0",
     "standard": "8.6.0"
   },

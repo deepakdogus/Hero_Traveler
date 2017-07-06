@@ -12,14 +12,13 @@ import _ from 'lodash'
 // TODO create redux action to load followers or else load all users and filter for followers
 // on the front end.
 
-import UserActions, {getFollowers, getFollowersFetchStatus} from '../Redux/Entities/Users'
+import UserActions, {getFollowers, getFollowersFetchStatus} from '../Shared/Redux/Entities/Users'
 import Loader from '../Components/Loader'
 import RoundedButton from '../Components/RoundedButton'
 import Avatar from '../Components/Avatar'
-import {Colors} from '../Themes'
-import NavBar from './CreateStory/NavBar'
+import {Colors} from '../Shared/Themes'
 import styles from './Signup/SignupSocialStyles'
-import getImageUrl from '../Lib/getImageUrl'
+import getImageUrl from '../Shared/Lib/getImageUrl'
 
 class FollowersScreen extends React.Component {
 

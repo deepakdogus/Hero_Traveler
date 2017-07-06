@@ -2,15 +2,13 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {View, TouchableOpacity, Animated, Easing, Text} from 'react-native'
 import Camera from 'react-native-camera'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import reactMixin from 'react-mixin'
 import TimerMixin from 'react-timer-mixin'
 
-import {Colors} from '../Themes'
+import {Metrics} from '../Shared/Themes'
 import styles from './Styles/PhotoTakerStyles'
 import TabIcon from './TabIcon'
 import MediaCaptureButton from './MediaCaptureButton'
-import Metrics from '../Themes/Metrics'
 
 class PhotoTaker extends Component {
   static propTypes = {

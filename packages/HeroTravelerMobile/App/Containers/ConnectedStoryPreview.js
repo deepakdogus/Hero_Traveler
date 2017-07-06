@@ -1,9 +1,9 @@
 import { connect } from 'react-redux'
 import _ from 'lodash'
 
-import {isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
+import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
 import StoryPreview from '../Components/StoryPreview'
-import StoryActions from '../Redux/Entities/Stories'
+import StoryActions from '../Shared/Redux/Entities/Stories'
 
 const mapStateToProps = (state, ownProps) => {
   const {session: {userId}, entities} = state

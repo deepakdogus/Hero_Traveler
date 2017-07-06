@@ -7,8 +7,8 @@ import {
 import {connect} from 'react-redux'
 import _ from 'lodash'
 
-import SignupActions from '../../Redux/SignupRedux'
-import CategoryActions from '../../Redux/Entities/Categories'
+import SignupActions from '../../Shared/Redux/SignupRedux'
+import CategoryActions from '../../Shared/Redux/Entities/Categories'
 
 import ExploreGrid from '../../Components/ExploreGrid'
 import styles from './SignupTopicsStyles'

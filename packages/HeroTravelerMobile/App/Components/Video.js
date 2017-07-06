@@ -6,7 +6,7 @@ import TabIcon from './TabIcon'
 import Video from 'react-native-video'
 import MediaSelectorStyles from '../Containers/Styles/MediaSelectorScreenStyles'
 
-import Colors from '../Themes/Colors'
+import Colors from '../Shared/Themes/Colors'
 
 const buttonLarge = 80
 const buttonSmall = 40

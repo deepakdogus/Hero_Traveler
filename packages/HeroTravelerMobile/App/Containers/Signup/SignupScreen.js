@@ -13,13 +13,13 @@ import { connect } from 'react-redux'
 import { Actions as NavigationActions } from 'react-native-router-flux'
 import R from 'ramda'
 
-import SignupActions, {hasSignedUp} from '../../Redux/SignupRedux'
-import { Images, Colors } from '../../Themes'
+import SignupActions, {hasSignedUp} from '../../Shared/Redux/SignupRedux'
+import { Images, Colors } from '../../Shared/Themes'
 import Loader from '../../Components/Loader'
 import RoundedButton from '../../Components/RoundedButton'
 import TOS from '../../Components/TosFooter'
 import styles from '../Styles/SignupScreenStyles'
-import HeroAPI from '../../Services/HeroAPI'
+import HeroAPI from '../../Shared/Services/HeroAPI'
 
 const api = HeroAPI.create()
 

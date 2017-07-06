@@ -12,11 +12,11 @@ import { Actions as NavActions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { connect } from 'react-redux'
 
-import API from '../../Services/HeroAPI'
-import StoryEditActions, {hasDraft} from '../../Redux/StoryCreateRedux'
-import { Images } from '../../Themes'
+import API from '../../Shared/Services/HeroAPI'
+import StoryEditActions, {hasDraft} from '../../Shared/Redux/StoryCreateRedux'
+import { Images } from '../../Shared/Themes'
 import styles from './1_CreateStoryScreenStyles'
-import pathAsFileObject from '../../Lib/pathAsFileObject'
+import pathAsFileObject from '../../Shared/Lib/pathAsFileObject'
 import Loader from '../../Components/Loader'
 
 class CreateStoryScreen extends Component {

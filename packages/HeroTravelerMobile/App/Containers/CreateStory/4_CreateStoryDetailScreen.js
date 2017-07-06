@@ -7,22 +7,20 @@ import {
   TouchableWithoutFeedback,
   TouchableHighlight,
   DatePickerIOS,
-  TextInput, KeyboardAvoidingView
+  TextInput,
 } from 'react-native'
 import { connect } from 'react-redux'
 import moment from 'moment'
-import { reset as resetForm, Field, reduxForm, formValueSelector } from 'redux-form'
 import {Actions as NavActions} from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import StoryEditActions, {isCreated, isPublishing} from '../../Redux/StoryCreateRedux'
-import {Colors, Metrics} from '../../Themes'
+import StoryEditActions, {isCreated, isPublishing} from '../../Shared/Redux/StoryCreateRedux'
+import {Colors, Metrics} from '../../Shared/Themes'
 import Loader from '../../Components/Loader'
 import TabIcon from '../../Components/TabIcon'
 import RoundedButton from '../../Components/RoundedButton'
 import RenderTextInput from '../../Components/RenderTextInput'
 import NavBar from './NavBar'
-import NavButtonStyles from '../../Navigation/Styles/NavButtonStyles'
 import styles from './4_CreateStoryDetailScreenStyles'
 
 const Radio = ({text, onPress, name, selected}) => {

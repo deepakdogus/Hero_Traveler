@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { ApplicationStyles, Colors, Metrics, Fonts } from '../../Themes/'
+import { ApplicationStyles, Colors, Metrics, Fonts } from '../../Shared/Themes/'
 
 export default StyleSheet.create({
   containerWithNavbarAndTabbar: {

@@ -49,7 +49,7 @@ import SignupTopics from '../Containers/Signup/SignupTopics'
 import SignupSocial from '../Containers/Signup/SignupSocial'
 import NavButton from './NavButton'
 
-import {Images} from '../Themes'
+import {Images} from '../Shared/Themes'
 
 const darkNavBarProps = {
   navigationBarStyle: Styles.navBar,

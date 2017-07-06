@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { Fonts, Colors, Metrics } from '../../Themes/'
+import { Colors, Metrics } from '../../Shared/Themes/'
 
 export default StyleSheet.create({
   wrapper: {

@@ -6,11 +6,11 @@ import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import RoundedButton from '../Components/RoundedButton'
-import getImageUrl from '../Lib/getImageUrl'
-import {Colors} from '../Themes'
-import API from '../Services/HeroAPI'
+import getImageUrl from '../Shared/Lib/getImageUrl'
+import {Colors} from '../Shared/Themes'
+import API from '../Shared/Services/HeroAPI'
 import styles, { listHeight } from './Styles/StoryCommentsScreenStyles'
-import StoryActions from '../Redux/Entities/Stories'
+import StoryActions from '../Shared/Redux/Entities/Stories'
 
 const api = API.create()
 

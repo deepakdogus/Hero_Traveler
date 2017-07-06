@@ -4,25 +4,16 @@ import {
   ScrollView,
   Text,
   TextInput,
-  TouchableOpacity,
   Image,
-  Keyboard,
   KeyboardAvoidingView,
-  LayoutAnimation
 } from 'react-native'
 import { connect } from 'react-redux'
-import {
-  Actions as NavigationActions,
-  ActionConst as NavActionConst
-} from 'react-native-router-flux'
+import { Actions as NavigationActions } from 'react-native-router-flux'
 
-import {Images, Metrics, Colors} from '../Themes'
-import Loader from '../Components/Loader'
+import { Images } from '../Shared/Themes'
 import RoundedButton from '../Components/RoundedButton'
-import TextButton from '../Components/TextButton'
-import TOS from '../Components/TosFooter'
 import styles from './Styles/ResetPasswordRequestScreenStyles'
-import LoginActions from '../Redux/LoginRedux'
+import LoginActions from '../Shared/Redux/LoginRedux'
 
 const Constants = {
   EMAIL_REGEX: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,

@@ -17,130 +17,8 @@ import TabIcon from '../Components/TabIcon'
 import Image from '../Components/Image'
 import {styles, rendererStyles} from './Styles/StoryReadingScreenStyles'
 import Video from '../Components/Video'
+import Immutable from 'seamless-immutable'
 
-// content block for testing editor
-
-const contentState = {
-  "blocks": [
-    {
-      "entityRanges": [],
-      "depth": 0,
-      "data": {},
-      "inlineStyleRanges": [],
-      "text": "Maecenas nec odio",
-      "type": "header-one",
-      "key": "ad9sdfdg5"
-    },
-    {
-      "key": "5r867",
-      "text": "Etiam ultricies nisi vel augue. Sed magna purus, fermentum eu, tincidunt eu, varius ut, felis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ac dui quis mi consectetuer lacinia. Cras dapibus. Sed mollis, eros et ultrices tempus, mauris ipsum aliquam libero, non adipiscing dolor urna a orci.",
-      "type": "unstyled",
-      "depth": 0,
-      "inlineStyleRanges": [
-        {
-          "offset": 25,
-          "length": 5,
-          "style": "BOLD"
-        },
-        {
-          "offset": 307,
-          "length": 10,
-          "style": "BOLD"
-        },
-        {
-          "offset": 241,
-          "length": 6,
-          "style": "ITALIC"
-        }
-      ],
-      "entityRanges": [],
-      "data": {}
-    },
-    {
-      "key": "5r864123",
-      "text": "Etiam ultricies nisi vel augue.",
-      "type": "unstyled",
-      "depth": 0,
-      "inlineStyleRanges": [],
-      "entityRanges": [
-        {
-          "offset": 0,
-          "length": 5,
-          "key": 0
-        }
-      ],
-      "data": {}
-    },
-    {
-      "key": "5r8641253",
-      "text": "Etiam ultricies nisi vel augue.",
-      "type": "unstyled",
-      "depth": 0,
-      "inlineStyleRanges": [
-        {
-          "offset": 0,
-          "length": 5,
-          "style": "BOLD"
-        }
-      ],
-      "entityRanges": [],
-      "data": {}
-    },
-    {
-      "key": "5r8641",
-      "text": "Etiam ultricies nisi vel augue.",
-      "type": "unstyled",
-      "depth": 0,
-      "inlineStyleRanges": [
-        {
-          "offset": 7,
-          "length": 9,
-          "style": "BOLD"
-        },
-        {
-          "offset": 7,
-          "length": 10,
-          "style": "ITALIC"
-        }
-      ],
-      "entityRanges": [],
-      "data": {}
-    },
-    {
-      "key": "5r8641",
-      "text": "This is an awesome caption for an image",
-      "type": "atomic",
-      "depth": 0,
-      "inlineStyleRanges": [],
-      "entityRanges": [],      
-      "data": {
-        "type": "image",
-        "url": "https://lorempixel.com/400/200/"
-      }
-    },
-    {
-      "key": "5r8641",
-      "text": "This is an awesome caption for an image",
-      "type": "atomic",
-      "depth": 0,
-      "inlineStyleRanges": [],
-      "entityRanges": [],      
-      "data": {
-        "type": "video",
-        "url": "https://d13na0u3ury9av.cloudfront.net/matthew_files/3e4fb12b-a297-4a2d-ad3f-8d8d74c1ed01-trim.9B1AF295-7D57-4F67-A14B-BE73687F5559.MOV"
-      }
-    },
-  ],
-  "entityMap": {
-    "0": {
-      "type": "LINK",
-      "mutability": "MUTABLE",
-      "data": {
-        "url": "https://github.com/globocom/react-native-draftjs-render"
-      }
-    }
-  }
-}
 
 const enhanceStoryVideo = compose(
   withHandlers(() => {
@@ -169,7 +47,7 @@ const StoryVideo = enhanceStoryVideo((props) => {
         allowVideoPlay={false}
         autoPlayVideo={false}
         showMuteButton={false}
-        showPlayButton={true}
+        showPlayButton={false}
         videoFillSpace={false}
       />
     </TouchableOpacity>
@@ -185,14 +63,14 @@ const atomicHandler = (item: Object): any => {
             fullWidth={true}
             source={{ uri: item.data.url }}
           />
-          { item.text && <Text style={styles.caption}>{item.text}</Text> }
+          { !!item.text && <Text style={styles.caption}>{item.text}</Text> }
         </View>
       );
     case 'video':
       return (
         <View key={item.key} style={styles.mediaViewWrapper}>
           <StoryVideo src={item.data.url} />
-          { item.text && <Text style={styles.caption}>{item.text}</Text> }
+          { !!item.text && <Text style={styles.caption}>{item.text}</Text> }
         </View>
       )
     default:
@@ -295,14 +173,14 @@ class StoryReadingScreen extends React.Component {
             showReadMessage={true}
           />
           <View style={{flex: 1, marginBottom: Metrics.tabBarHeight}}>
-            {!!story.content &&
+            {!!story.draftjsContent &&
               <View style={{
                 flex: 1,
                 paddingVertical: Metrics.baseMargin,
                 marginBottom: Metrics.navBarHeight,
               }}>
                 <RNDraftJSRender
-                  contentState={contentState}
+                  contentState={Immutable.asMutable(story.draftjsContent, {deep: true})}
                   customStyles={rendererStyles}
                   atomicHandler={atomicHandler}
                 />

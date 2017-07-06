@@ -3,17 +3,17 @@ import PropTypes from 'prop-types'
 import {Image as RNImage} from 'react-native'
 import {CachedImage} from 'react-native-img-cache'
 import getResizeMode from '../Lib/getResizeMode'
+import Metrics from '../Themes/Metrics'
 
 export default class Image extends Component {
   constructor(props){
     super(props)
     this.state = {
       imageUrl: this.props.source,
-      height: null,
-      width: null
     }
- }
-  componentWillMount() {
+  }
+
+  componentWillMount(){
     this._setImageSize(this.props.source.uri)
   }
 
@@ -28,7 +28,6 @@ export default class Image extends Component {
     })
   }
 
-
   static propTypes = {
     cached: PropTypes.bool
   }
@@ -38,9 +37,15 @@ export default class Image extends Component {
   }
 
   render () {
-    const {cached, ...imageProps} = this.props
+    const {cached, fullWidth, ...imageProps} = this.props
     const BaseComponent = cached ? CachedImage : RNImage
     imageProps.resizeMode = getResizeMode(this.state)
+
+    if (fullWidth) {
+      imageProps.style = imageProps.style || {}
+      imageProps.style.width = Metrics.screenWidth
+      imageProps.style.height = Metrics.screenWidth / this.state.width * this.state.height
+    }
     return (
       <BaseComponent {...imageProps} />
     )

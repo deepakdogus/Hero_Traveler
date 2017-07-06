@@ -48,6 +48,10 @@ const StorySchema = new Schema({
   content: {
     type: String
   },
+  draftjsContent: {
+    type: Schema.Types.Mixed,
+    default: {}
+  },
   location: {
     type: String
   },

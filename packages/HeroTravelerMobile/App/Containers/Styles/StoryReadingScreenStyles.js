@@ -54,22 +54,6 @@ export const styles = StyleSheet.create({
   storyContentImage: {
     marginBottom: Metrics.section
   },
-  videoDescription: {
-    flex: 1,
-    marginHorizontal: Metrics.section,
-    marginVertical: Metrics.doubleSection,
-  },
-  videoDescriptionText: {
-    color: '#757575'
-  }
-})
-
-export const HTMLViewStyles = StyleSheet.create({
-  img: {
-    width: Metrics.screenWidth,
-    height: Metrics.screenHeight,
-    marginTop: 60,
-  },
   videoButton: {
     marginTop: 60,
     position: 'relative',
@@ -85,20 +69,45 @@ export const HTMLViewStyles = StyleSheet.create({
     width: Metrics.screenWidth,
     height: 200,
   },
+  videoDescription: {
+    flex: 1,
+    marginHorizontal: Metrics.section,
+    marginVertical: Metrics.doubleSection,
+  },
+  videoDescriptionText: {
+    color: '#757575'
+  },
   caption: {
-    marginBottom: 60,
-    fontStyle: 'italic',
     textAlign: 'center',
+    fontStyle: 'italic',
+    fontWeight: '300',
+    letterSpacing: .7,
+    fontSize: 15,
+    fontFamily: Fonts.type.base,
   },
-  header: {
-    fontSize: Fonts.size.h5,
-    color: Colors.background,
-    paddingHorizontal: 25,
-    marginBottom: Metrics.baseMargin
-  },
-  text: {
-    fontSize: Fonts.size.h6,
-    color: Colors.grey,
-    paddingHorizontal: 25
-  },
+  mediaViewWrapper: {
+    flex: 1,
+    marginVertical: 60
+  }
 })
+
+
+
+export const rendererStyles = StyleSheet.flatten({
+  unstyled: {
+    fontSize: 18,
+    fontWeight: '300',
+    fontFamily: Fonts.type.base,
+    color: Colors.grey,
+    letterSpacing: .7,
+    paddingHorizontal: 25,
+  },
+  'header-one': {
+    fontSize: Fonts.size.h5,
+    fontWeight: '400',
+    fontFamily: Fonts.type.base,
+    color: Colors.background,
+    letterSpacing: .7,
+    paddingHorizontal: 25,
+  },
+});

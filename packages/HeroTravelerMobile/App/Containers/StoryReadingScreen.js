@@ -4,7 +4,7 @@ import {ScrollView, Text, View, Animated, TouchableOpacity} from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 import MapView from 'react-native-maps';
-import HTMLView from 'react-native-htmlview'
+import RNDraftJSRender from 'react-native-draftjs-render';
 import {compose, toClass, withHandlers} from 'recompose'
 
 import StoryActions from '../Redux/Entities/Stories'
@@ -15,21 +15,10 @@ import {Metrics} from '../Themes'
 import StoryReadingToolbar from '../Components/StoryReadingToolbar'
 import TabIcon from '../Components/TabIcon'
 import Image from '../Components/Image'
-import {styles, HTMLViewStyles, HTMLStylesheet} from './Styles/StoryReadingScreenStyles'
+import {styles, rendererStyles} from './Styles/StoryReadingScreenStyles'
 import Video from '../Components/Video'
+import Immutable from 'seamless-immutable'
 
-function isCaption(node) {
-  return node.attribs && node.attribs.class === 'caption'
-}
-
-/*
-  - the first half of conditional statement captures initial text that is not wrapped in a div
-  - the second half of conditional captures normal divs
-*/
-function isText(node) {
-  return node.type === 'text' && !node.parent||
-  node.type === 'tag' && node.name === 'div' && !node.attribs.class
-}
 
 const enhanceStoryVideo = compose(
   withHandlers(() => {
@@ -44,87 +33,50 @@ const enhanceStoryVideo = compose(
     }
   })
 )
+
 const StoryVideo = enhanceStoryVideo((props) => {
   return (
     <TouchableOpacity
-      style={HTMLViewStyles.videoButton}
+      style={styles.videoButton}
       onPress={props.onPress}
     >
       <Video
         ref={props.registerRef}
         path={props.src}
-        style={HTMLViewStyles.video}
+        style={styles.video}
         allowVideoPlay={false}
         autoPlayVideo={false}
         showMuteButton={false}
-        showPlayButton={true}
+        showPlayButton={false}
         videoFillSpace={false}
       />
     </TouchableOpacity>
   )
 })
 
-// - to properly apply styling we need to isolate the various elements we use
-function renderNode(node, index, siblings, parent, defaultRenderer) {
-
-  if (node.name === 'img') {
-    const img = node.attribs
-    // dynamic marginBottom for when we do not have a caption
-    const marginBottom = (siblings[index+1] && isCaption(siblings[index+1])) ? 0 : 60
-    return (
-      <Image
-        cached={true}
-        key={index}
-        source={{uri: img.src}}
-        resizeMode='cover'
-        style={[HTMLViewStyles.img, {marginBottom: marginBottom}]}
-      />
-    )
+const atomicHandler = (item: Object): any => {
+  switch (item.data.type) {
+    case 'image':
+      return (
+        <View key={item.key} style={styles.mediaViewWrapper}>
+          <Image
+            fullWidth={true}
+            source={{ uri: item.data.url }}
+          />
+          { !!item.text && <Text style={styles.caption}>{item.text}</Text> }
+        </View>
+      );
+    case 'video':
+      return (
+        <View key={item.key} style={styles.mediaViewWrapper}>
+          <StoryVideo src={item.data.url} />
+          { !!item.text && <Text style={styles.caption}>{item.text}</Text> }
+        </View>
+      )
+    default:
+      return null;
   }
-
-  if (node.name === 'video') {
-    const attrs = node.attribs
-    return (
-      <View key={index} style={styles.videoViewWrapper}>
-        <StoryVideo src={attrs.src} />
-      </View>
-    )
-  }
-
-  // captures normal text
-  if (isText(node)) {
-    const text = node.type === 'text' ? node.data : node.children[0].data
-    return (<Text
-      key={index}
-      style={HTMLViewStyles.text}
-    >
-      {text}
-    </Text>)
-  }
-
-  // captures h1 and styles appropriately
-  if (node.type === 'tag' && node.name === 'h1') {
-    return (
-      <Text
-        key={index}
-        style={HTMLViewStyles.header}
-      >
-        {node.children[0].data}
-      </Text>)
-  }
-
-  // ensuring caption has bottom margin
-  if (node.type === 'tag' && node.name === 'div' && node.attribs.class === 'caption') {
-    return (
-      <Text
-        key={index}
-        style={[HTMLViewStyles.text, HTMLViewStyles.caption]}
-      >
-        {node.children[0].data}
-      </Text>
-    )
-  }
-}
+};
 
 const EnhancedStoryReadingToolbar = withHandlers({
   onPressBookmark: props => () => {
@@ -151,7 +103,7 @@ class StoryReadingScreen extends React.Component {
     this.onScroll = this.onScroll.bind(this)
     this.toolbarShown = false
     this.state = {
-      toolbarHeight: new Animated.Value(0)
+      toolbarHeight: new Animated.Value(0),
     }
   }
 
@@ -221,20 +173,16 @@ class StoryReadingScreen extends React.Component {
             showReadMessage={true}
           />
           <View style={{flex: 1, marginBottom: Metrics.tabBarHeight}}>
-            {!!story.content &&
+            {!!story.draftjsContent &&
               <View style={{
                 flex: 1,
                 paddingVertical: Metrics.baseMargin,
                 marginBottom: Metrics.navBarHeight,
               }}>
-                <HTMLView
-                  style={{
-                    flex: 1,
-                    paddingTop: 60
-                  }}
-                  value={story.content}
-                  stylesheet={HTMLStylesheet}
-                  renderNode={renderNode}
+                <RNDraftJSRender
+                  contentState={Immutable.asMutable(story.draftjsContent, {deep: true})}
+                  customStyles={rendererStyles}
+                  atomicHandler={atomicHandler}
                 />
               </View>
             }

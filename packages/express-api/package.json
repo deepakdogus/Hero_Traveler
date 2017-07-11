@@ -16,7 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@rwoody/ht-core": "^0.0.24",
+    "@rwoody/ht-core": "^0.0.25",
     "@rwoody/ht-util": "^0.0.10",
     "algoliasearch": "^3.23.0",
     "apn": "^2.1.4",

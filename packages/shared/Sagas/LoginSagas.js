@@ -26,6 +26,7 @@ export function * login (api, { username, password }) {
         call(api.updateDevice, user.id),
         put(SessionActions.initializeSession(user.id, tokens)),
         put(LoginActions.loginSuccess()),
+        put(UserActions.fetchActivities()),
       ]
     } else {
       yield put(LoginActions.loginFailure(errorFormatter(response)))

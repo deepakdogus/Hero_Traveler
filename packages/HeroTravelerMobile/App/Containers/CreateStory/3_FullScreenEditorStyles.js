@@ -17,3 +17,20 @@ export default StyleSheet.create({
     bottom: 0,
   }
 })
+
+export const customStyles = StyleSheet.create({
+  unstyled: {
+    fontSize: 18,
+    color: '#757575'
+  },
+  link: {
+    color: '#c4170c',
+    fontWeight: 'bold',
+    textDecorationLine: 'none',
+  },
+  'header-one': {
+    fontSize: 21,
+    fontWeight: 'bold',
+    color: '#1a1c21'
+  }
+})

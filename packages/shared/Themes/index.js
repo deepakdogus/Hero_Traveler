@@ -5,3 +5,10 @@ import Images from './Images'
 import ApplicationStyles from './ApplicationStyles'
 
 export { Colors, Fonts, Images, Metrics, ApplicationStyles }
+export default {
+	Colors,
+	Fonts,
+	Images,
+	Metrics,
+	ApplicationStyles,
+}

@@ -3,38 +3,9 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 import logo from '../Shared/Images/ht-logo-white.png'
-
-const TabContainer = styled.div`
-  display: inline-block;
-  padding: 0px 10px;
-`
-
-const TabText = styled.p`
-  color: white;
-`
-
-const Underline = styled.div`
-  background-color: red;
-  width: 100%;
-  height: 3px;
-`
-
-class HeaderTab extends React.Component {
-  static propTypes = {
-    isActive: PropTypes.bool,
-    text: PropTypes.string,
-  }
-
-  render() {
-    const {isActive, text} = this.props
-    return (   
-      <TabContainer>
-        <TabText>{text}</TabText>
-        {isActive && <Underline/>}
-      </TabContainer>
-    )
-  }
-}
+import HeaderTab from './HeaderTab'
+import RoundedButton from './RoundedButton'
+import Icon from './Icon'
 
 const HeaderContainer = styled.div`
   padding: 15px
@@ -49,6 +20,13 @@ const TabsContainer = styled.div`
   padding-left: 30px;
 `
 
+// Likely refactor this out into its own component later with &nbsp; included
+const Divider = styled.div`
+  display: inline-block;
+  width: 1px;
+  background-color: ${(props) => `${props.theme.Colors.snow}`};
+`
+
 export default class Header extends React.Component {
   static propTypes = {
     isLoggedIn: PropTypes.bool,
@@ -61,8 +39,16 @@ export default class Header extends React.Component {
         <Logo src={logo} alt={'hero-traveler-logo'}/>
         <TabsContainer>
           {isLoggedIn && <HeaderTab text='My Feed' isActive/>}
+          {isLoggedIn && <Divider>&nbsp;</Divider>}
           <HeaderTab text='Explore' isActive={!isLoggedIn}/>
         </TabsContainer>
+        <div style={{float: 'right'}}>
+          <RoundedButton type={'opaque'}>
+            <Icon name='explore' />
+          </RoundedButton>
+          <Divider>&nbsp;</Divider>
+          <RoundedButton text='Login'/>
+        </div>
       </HeaderContainer> 
     )
   }

@@ -1,6 +1,5 @@
-import {Dimensions, Platform} from 'react-native'
-
-const { width, height } = Dimensions.get('window')
+import _ from 'lodash'
+import platformSpecificMetrics from '../../Themes/Metrics'
 
 // Used via Metrics.baseMargin
 const metrics = {
@@ -14,9 +13,6 @@ const metrics = {
   horizontalLineHeight: 1,
   searchBarHeight: 30,
   mainNavHeight: 42,
-  screenWidth: width < height ? width : height,
-  screenHeight: width < height ? height : width,
-  navBarHeight: (Platform.OS === 'ios') ? 79 : 69,
   tabBarHeight: 50,
   buttonRadius: 4,
   icons: {
@@ -33,5 +29,7 @@ const metrics = {
     logo: 200
   }
 }
+
+_.assign(metrics, platformSpecificMetrics)
 
 export default metrics

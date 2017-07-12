@@ -22,7 +22,7 @@ class Feed extends Component {
       <ThemeProvider theme={themes}>
         <div>
           <Container>
-            <Header isLoggedIn={true}/>
+            <Header />
           </Container>
           <StoryList 
             stories={feedExample}

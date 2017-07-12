@@ -7,6 +7,7 @@ import HeaderTab from './HeaderTab'
 import RoundedButton from './RoundedButton'
 import Icon from './Icon'
 import FloatRight from './FloatRight'
+import Avatar from './Avatar'
 
 const HeaderContainer = styled.div`
   padding: 15px
@@ -26,6 +27,10 @@ const Divider = styled.div`
   display: inline-block;
   width: 1px;
   background-color: ${props => `${props.theme.Colors.snow}`};
+`
+
+const Inline = styled.div`
+  display: inline-block;
 `
 
 export default class Header extends React.Component {
@@ -48,7 +53,25 @@ export default class Header extends React.Component {
             <Icon name='explore' />
           </RoundedButton>
           <Divider>&nbsp;</Divider>
-          <RoundedButton text='Login'/>
+          {!isLoggedIn &&
+            <Inline>
+              <RoundedButton text='Login'/>
+            </Inline>
+          }
+          {isLoggedIn &&
+            <Inline>
+              <RoundedButton text='Create'/>
+              <RoundedButton type={'opaque'}>
+                <Icon name='loginEmail' />
+              </RoundedButton>
+              <RoundedButton type={'opaque'}>
+                <Icon name='cameraFlash' />
+              </RoundedButton>
+              <RoundedButton type={'opaque'}>
+                <Avatar />
+              </RoundedButton>
+            </Inline>
+          }
         </FloatRight>
       </HeaderContainer> 
     )

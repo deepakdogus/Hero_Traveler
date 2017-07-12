@@ -13,7 +13,7 @@ import formatCount from '../Shared/Lib/formatCount'
 const StoryContainer = styled.div`
   display: inline-block;
   height: 400px;
-  width: 24%;
+  width: 21.5%;
   background-image: ${props => `url(${getImageUrl(props.image)})`};
   background-size: cover;
   color: ${props => props.theme.Colors.lightGrey};

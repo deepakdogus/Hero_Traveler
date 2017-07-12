@@ -36,6 +36,7 @@ const colors = {
   steel: '#CCCCCC',
   navBarText: '#bdbdbd',
   charcoal: '#595959',
+  lightGrey: '#e0e0e0',
   coal: '#2d2d2d',
   background: '#1a1c21',
   backgroundDark: '#111216',

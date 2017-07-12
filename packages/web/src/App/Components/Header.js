@@ -6,6 +6,7 @@ import logo from '../Shared/Images/ht-logo-white.png'
 import HeaderTab from './HeaderTab'
 import RoundedButton from './RoundedButton'
 import Icon from './Icon'
+import FloatRight from './FloatRight'
 
 const HeaderContainer = styled.div`
   padding: 15px
@@ -24,7 +25,7 @@ const TabsContainer = styled.div`
 const Divider = styled.div`
   display: inline-block;
   width: 1px;
-  background-color: ${(props) => `${props.theme.Colors.snow}`};
+  background-color: ${props => `${props.theme.Colors.snow}`};
 `
 
 export default class Header extends React.Component {
@@ -42,13 +43,13 @@ export default class Header extends React.Component {
           {isLoggedIn && <Divider>&nbsp;</Divider>}
           <HeaderTab text='Explore' isActive={!isLoggedIn}/>
         </TabsContainer>
-        <div style={{float: 'right'}}>
+        <FloatRight>
           <RoundedButton type={'opaque'}>
             <Icon name='explore' />
           </RoundedButton>
           <Divider>&nbsp;</Divider>
           <RoundedButton text='Login'/>
-        </div>
+        </FloatRight>
       </HeaderContainer> 
     )
   }

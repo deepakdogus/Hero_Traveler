@@ -88,7 +88,7 @@ export default class Icon extends React.Component {
 
   render() {
     return (   
-      <StyledIcon src={this.getIconName(this.props.name)}/>
+      <StyledIcon src={this.getIconName(this.props.name)} {...this.props}/>
     )
   }
 }

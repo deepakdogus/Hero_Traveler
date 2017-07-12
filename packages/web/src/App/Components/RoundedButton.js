@@ -15,7 +15,7 @@ const StyledButton = styled.button`
 		}
 	}};
 	margin: ${(props) => `${props.theme.Metrics.baseMargin}px ${props.theme.Metrics.section}px`};
-	background-color: ${(props) => {
+	background-color: ${props => {
 		switch(props.type) {
 			case 'opaque':
 				return `${props.theme.Colors.windowTint}`
@@ -25,10 +25,10 @@ const StyledButton = styled.button`
 	}};
 `
 const Text = styled.p`
-	color: ${(props) => `${props.theme.Colors.snow}`};
+	color: ${props => `${props.theme.Colors.snow}`};
 	text-align: center;
-	font-size: ${(props) => `${props.theme.Fonts.size.medium}px`};
-	margin: ${(props) => `${props.theme.Metrics.baseMargin}px 2.5%`};
+	font-size: ${props => `${props.theme.Fonts.size.medium}px`};
+	margin: ${props => `${props.theme.Metrics.baseMargin}px 2.5%`};
 	padding: 0 10px;
 `
 

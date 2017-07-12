@@ -19,6 +19,7 @@ import Avatar from './Avatar'
 import StoryCover from './StoryCover'
 
 export default class StoryPreview extends Component {
+  // is showLike now always true? MBT - 12/07
   static propTypes = {
     onPressLike: PropTypes.func,
     onPress: PropTypes.func,

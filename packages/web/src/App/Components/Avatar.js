@@ -1,13 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
 
 import Icon from './Icon'
 import Image from './Image'
-
-const RoundedContainer = styled.div`
-  border-radius: 30px;
-`
 
 export default class Avatar extends React.Component {
   static propTypes = {

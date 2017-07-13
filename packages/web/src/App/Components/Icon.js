@@ -5,8 +5,8 @@ import styled from 'styled-components'
 import {Images} from '../Shared/Themes'
 
 const StyledIcon = styled.img`
-	width: 25px;
-	height: 25px;
+	width: ${props => props.size === 'small' ? '15px' : '25px'};
+	height: ${props => props.size === 'small' ? '15px' : '25px'};
 `
 
 export default class Icon extends React.Component {

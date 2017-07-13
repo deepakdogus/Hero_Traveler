@@ -28,7 +28,6 @@ const Text = styled.p`
 	color: ${props => `${props.theme.Colors.snow}`};
 	text-align: center;
 	font-size: ${props => `${props.theme.Fonts.size.medium}px`};
-	margin: ${props => `${props.theme.Metrics.baseMargin}px 2.5%`};
 	padding: 0 10px;
 `
 

@@ -3,32 +3,28 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
+import { Grid, Row, Col } from './FlexboxGrid';
 import Avatar from './Avatar'
-import FloatRight from './FloatRight'
 import LikeComponent from './LikeComponent'
 
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import formatCount from '../Shared/Lib/formatCount'
 
 const StoryContainer = styled.div`
-  display: inline-block;
   height: 400px;
-  width: 21.5%;
+  width: 100%;
   background-image: ${props => `url(${getImageUrl(props.image)})`};
   background-size: cover;
   color: ${props => props.theme.Colors.lightGrey};
-  margin: 2.5px;
-  padding: 0 1.5%;
   position: relative;
 `
 
 const StoryInfoContainer = styled.div`
   position: absolute;
   bottom: 0;
-  width: 89%;
+  width: 90%;
+  margin: 0 5%;
 `
-
-const StoryDetailsContainer = styled.div``
 
 const Username = styled.span``
 
@@ -41,6 +37,10 @@ const Title = styled.h3`
   color: ${props => props.theme.Colors.snow};
 `
 
+const Right = styled.div`
+  float: right;
+`
+
 export default class StoryPreview extends React.Component {
   static propTypes = {
     story: PropTypes.object,
@@ -49,24 +49,23 @@ export default class StoryPreview extends React.Component {
 
   render() {
     const {story, author} = this.props
-    console.log("story is", story);
     return (
       <StoryContainer image={story.coverImage || story.coverVideo}>
         <StoryInfoContainer>
           <Title>{story.title}</Title>
           <p>{story.description}</p>
           <hr />
-          <StoryDetailsContainer>
+          <div>
             <Avatar avatarUrl={getImageUrl(author.profile.avatar)}/>
             <Username>{author.username}</Username>
-            <FloatRight>
+            <Right>
               <Date>{moment(story.createdAt).fromNow()}</Date>
               <LikeComponent
                 likes={formatCount(story.counts.likes)}
                 isLiked={this.props.isLiked}
               />
-            </FloatRight>
-          </StoryDetailsContainer>
+            </Right>
+          </div>
         </StoryInfoContainer>
 
       </StoryContainer>

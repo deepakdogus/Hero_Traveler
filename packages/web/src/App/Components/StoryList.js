@@ -1,11 +1,8 @@
 import React from 'react'
-import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
+import { Grid, Row, Col } from './FlexboxGrid';
 import StoryPreview from './StoryPreview'
-const Container = styled.div`
-  padding: 0px 7.5%;
-`
 
 export default class StoryList extends React.Component {
   static propTypes = {
@@ -17,17 +14,20 @@ export default class StoryList extends React.Component {
     const {stories, users} = this.props
     const renderedStories = Object.keys(stories).map(key => {
       return (
-        <StoryPreview 
-          key={key} 
-          story={stories[key]}
-          author={users[stories[key].author]}
-        />
+        <Col key={key} xs={12} sm={6} md={4} lg={3}>
+          <StoryPreview
+            story={stories[key]}
+            author={users[stories[key].author]}
+          />
+        </Col>
       )
     })
-    return (   
-      <Container>
-        {renderedStories}
-      </Container>
+    return (
+      <Grid fluid>
+        <Row>
+          {renderedStories}
+        </Row>
+      </Grid>
     )
   }
 }

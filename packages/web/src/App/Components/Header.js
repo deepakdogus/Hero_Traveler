@@ -2,14 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
+import { Grid, Row, Col } from './FlexboxGrid';
 import logo from '../Shared/Images/ht-logo-white.png'
 import HeaderTab from './HeaderTab'
 import RoundedButton from './RoundedButton'
 import Icon from './Icon'
-import FloatRight from './FloatRight'
 import Avatar from './Avatar'
 
-const HeaderContainer = styled.div`
+const StyledGrid = styled(Grid)`
   padding: 15px
 `
 
@@ -18,7 +18,6 @@ const Logo = styled.img`
 `
 
 const TabsContainer = styled.div`
-  display: inline-block;
   padding-left: 30px;
 `
 
@@ -29,10 +28,6 @@ const Divider = styled.div`
   background-color: ${props => `${props.theme.Colors.snow}`};
 `
 
-const Inline = styled.div`
-  display: inline-block;
-`
-
 export default class Header extends React.Component {
   static propTypes = {
     isLoggedIn: PropTypes.bool,
@@ -41,39 +36,45 @@ export default class Header extends React.Component {
   render () {
     const {isLoggedIn} = this.props
     return (
-      <HeaderContainer>
-        <Logo src={logo} alt={'hero-traveler-logo'}/>
-        <TabsContainer>
-          {isLoggedIn && <HeaderTab text='My Feed' isActive/>}
-          {isLoggedIn && <Divider>&nbsp;</Divider>}
-          <HeaderTab text='Explore' isActive={!isLoggedIn}/>
-        </TabsContainer>
-        <FloatRight>
-          <RoundedButton type={'opaque'}>
-            <Icon name='explore' />
-          </RoundedButton>
-          <Divider>&nbsp;</Divider>
-          {!isLoggedIn &&
-            <Inline>
-              <RoundedButton text='Login'/>
-            </Inline>
-          }
-          {isLoggedIn &&
-            <Inline>
-              <RoundedButton text='Create'/>
+      <StyledGrid fluid>
+        <Row>
+          <Col xs>
+            <Row>
+              <Logo src={logo} alt={'hero-traveler-logo'}/>
+              <TabsContainer>
+                {isLoggedIn && <HeaderTab text='My Feed' isActive/>}
+                {isLoggedIn && <Divider>&nbsp;</Divider>}
+                <HeaderTab text='Explore' isActive={!isLoggedIn}/>
+              </TabsContainer>
+            </Row>
+          </Col>
+          <Col xs>
+            <Row end='xs'>
               <RoundedButton type={'opaque'}>
-                <Icon name='loginEmail' />
+                <Icon name='explore' />
               </RoundedButton>
-              <RoundedButton type={'opaque'}>
-                <Icon name='cameraFlash' />
-              </RoundedButton>
-              <RoundedButton type={'opaque'}>
-                <Avatar />
-              </RoundedButton>
-            </Inline>
-          }
-        </FloatRight>
-      </HeaderContainer> 
+              <Divider>&nbsp;</Divider>
+              {!isLoggedIn &&
+                <RoundedButton text='Login'/>
+              }
+              {isLoggedIn &&
+                <div>
+                  <RoundedButton text='Create'/>
+                  <RoundedButton type={'opaque'}>
+                    <Icon name='loginEmail' />
+                  </RoundedButton>
+                  <RoundedButton type={'opaque'}>
+                    <Icon name='cameraFlash' />
+                  </RoundedButton>
+                  <RoundedButton type={'opaque'}>
+                    <Avatar />
+                  </RoundedButton>
+                </div>
+              }
+            </Row>
+          </Col>
+        </Row>
+      </StyledGrid>
     )
   }
 }

@@ -7,9 +7,5 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "remove-modules": "lerna exec -- rm -rf ./node_modules"
-  },
-  "dependencies": {
-    "moment": "^2.18.1",
-    "numeral": "^2.0.6"
   }
 }

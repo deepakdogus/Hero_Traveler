@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import PropTypes from 'prop-types'
 
 export default styled.img`
   width: ${props => props.type === 'avatar' ? '30px' : 'auto'};

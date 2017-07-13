@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
-import { Grid, Row, Col } from './FlexboxGrid';
 import Avatar from './Avatar'
 import LikeComponent from './LikeComponent'
 
@@ -28,7 +27,7 @@ const StoryInfoContainer = styled.div`
 
 const Username = styled.span``
 
-const Date = styled.span`
+const CreatedAt = styled.span`
   font-style: italic;
   margin-right: 5px;
 `
@@ -59,7 +58,7 @@ export default class StoryPreview extends React.Component {
             <Avatar avatarUrl={getImageUrl(author.profile.avatar)}/>
             <Username>{author.username}</Username>
             <Right>
-              <Date>{moment(story.createdAt).fromNow()}</Date>
+              <CreatedAt>{moment(story.createdAt).fromNow()}</CreatedAt>
               <LikeComponent
                 likes={formatCount(story.counts.likes)}
                 isLiked={this.props.isLiked}

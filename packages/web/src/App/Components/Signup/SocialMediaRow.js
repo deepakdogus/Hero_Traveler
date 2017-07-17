@@ -3,10 +3,8 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import Icon from '../Icon'
-import HorizontalDivider from '../../Components/HorizontalDivider'
 
 const StyledIcon = styled(Icon)`
-	margin-left: 30px;
 	height: 25px;
 `
 
@@ -27,11 +25,12 @@ const InstagramIcon = styled(StyledIcon)`
 const SocialMediaItemContainer = styled.div`
 	position: relative;
 	vertical-align: middle;
+	margin: 0 3%;
 `
 
 const RightSpan = styled.span`
 	position: absolute;
-	right: 25px;
+	right: 0;
 	line-height: 25px;
 	bottom: 0;
 	color: ${props => `${props.isConnected ? props.theme.Colors.signupGrey : props.theme.Colors.red}`}

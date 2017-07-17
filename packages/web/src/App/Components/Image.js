@@ -5,7 +5,7 @@ function getSize(props) {
     case 'avatar':
       return '30px'
     case 'avatar-large':
-      return '60px'
+      return '62px'
     default:
       return 'auto'
   }

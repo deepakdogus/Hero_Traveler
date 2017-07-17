@@ -9,5 +9,6 @@ export default styled.hr`
         return props.theme.Colors.snow
     }}
   };
+  opacity: ${props => props.opaque ? .5 : 1};
   border-style: solid;
 `

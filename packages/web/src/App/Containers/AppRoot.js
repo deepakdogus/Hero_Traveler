@@ -14,7 +14,7 @@ const TopContainer = styled.div`
   background-image: url(${background});
   background-repeat: no-repeat;
   background-size: cover;
-  height: ${props => `${props.theme.Metrics.screenHeight*.45}px`};
+  height: 180px;
 `
 
 class AppRoot extends Component {

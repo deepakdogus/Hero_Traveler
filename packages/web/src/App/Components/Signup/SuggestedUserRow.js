@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import Avatar from '../Avatar'
 import RoundedButton from '../RoundedButton'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
+import VerticalCenter from '../VerticalCenter'
 
 const UserContainer = styled.div`
   margin: 0 3%;
@@ -12,11 +13,6 @@ const UserContainer = styled.div`
   position: relative;
 `
 
-const VerticalCenter = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`
 const UserInfo = styled(VerticalCenter)`
   padding-left: 25px;
 `

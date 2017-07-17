@@ -8,6 +8,10 @@ const Inline = styled.div`
   display: inline-block;
 `
 
+const Likes = styled.span`
+  margin: 0 5px;
+`
+
 export default class LikeComponent extends React.Component {
   static propTypes: {
     likes: PropTypes.number,
@@ -19,7 +23,7 @@ export default class LikeComponent extends React.Component {
     let rootComponent
     const container = (
       <Inline>
-        <span>{this.props.likes}</span>
+        <Likes>{this.props.likes}</Likes>
         <Icon
           name={this.props.isLiked ? 'like-active' : 'like'}
           size={'small'}

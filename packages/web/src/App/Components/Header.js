@@ -8,6 +8,7 @@ import HeaderTab from './HeaderTab'
 import RoundedButton from './RoundedButton'
 import Icon from './Icon'
 import Avatar from './Avatar'
+import {Link, NavLink} from 'react-router-dom';
 
 const StyledGrid = styled(Grid)`
   padding: 15px
@@ -28,6 +29,42 @@ const Divider = styled.div`
   background-color: ${props => `${props.theme.Colors.snow}`};
 `
 
+const MenuLinkContainer = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: 'row';
+`
+
+const MenuLink = (props) => {
+  return (
+    <NavLink
+      exact={props.exact}
+      style={{
+        textDecoration: 'none',
+        padding: 10,
+        marginRight: 10,
+        display: 'flex',
+        color: 'white',
+        borderBottomWidth: '3px',
+        borderBottomColor: 'transparent',
+        borderBottomStyle: 'solid'
+      }}
+      activeStyle={{
+        borderBottomWidth: '3px',
+        borderBottomColor: 'red'
+      }}
+      to={props.to}>
+      {props.children}
+    </NavLink>
+  )
+}
+
+//<TabsContainer>
+//  {isLoggedIn && <HeaderTab text='My Feed' isActive/>}
+//  {isLoggedIn && <Divider>&nbsp;</Divider>}
+//  <HeaderTab text='Explore' isActive={!isLoggedIn}/>
+//</TabsContainer>
+
 export default class Header extends React.Component {
   static propTypes = {
     isLoggedIn: PropTypes.bool,
@@ -37,16 +74,19 @@ export default class Header extends React.Component {
     const {isLoggedIn} = this.props
     return (
       <StyledGrid fluid>
-        <Row>
+        <Row start="xs">
+          <Col xs={12} md={2} >
+            <Logo src={logo} alt={'hero-traveler-logo'}/>
+          </Col>
           <Col xs>
-            <Row>
-              <Logo src={logo} alt={'hero-traveler-logo'}/>
-              <TabsContainer>
-                {isLoggedIn && <HeaderTab text='My Feed' isActive/>}
-                {isLoggedIn && <Divider>&nbsp;</Divider>}
-                <HeaderTab text='Explore' isActive={!isLoggedIn}/>
-              </TabsContainer>
-            </Row>
+            <MenuLinkContainer>
+              <MenuLink to='/' exact>
+                Explore
+              </MenuLink>
+              <MenuLink to='/story/123'>
+                Story
+              </MenuLink>
+            </MenuLinkContainer>
           </Col>
           <Col xs>
             <Row end='xs'>

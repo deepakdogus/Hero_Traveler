@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import moment from 'moment'
+import {NavLink} from 'react-router-dom';
 
 import Avatar from './Avatar'
 import LikeComponent from './LikeComponent'
@@ -11,8 +12,19 @@ import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import formatCount from '../Shared/Lib/formatCount'
 
+const StoryLink = styled(NavLink)`
+  text-decoration: none;
+  color: inherit;
+`
+
+const ProfileLink = styled(StoryLink)`
+  display: flex;
+`
+
 const MarginWrapper = styled.div`
-  margin: 2px
+  margin: 2px;
+  position: relative;
+  color: ${props => props.theme.Colors.lightGrey};
 `
 
 const StoryContainer = styled.div`
@@ -20,8 +32,19 @@ const StoryContainer = styled.div`
   width: 100%;
   background-image: ${props => `url(${getImageUrl(props.image)})`};
   background-size: cover;
-  color: ${props => props.theme.Colors.lightGrey};
   position: relative;
+  &:hover {
+    &:after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      opacity: 1;
+      background: rgba(0, 0, 0, 0.4);
+    }
+  }
 `
 
 const StoryInfoContainer = styled.div`
@@ -81,19 +104,29 @@ export default class StoryPreview extends React.Component {
 
   render() {
     const {story, author} = this.props
+    const image = story.coverImage || story.coverVideo
     return (
       <MarginWrapper>
-        <StoryContainer image={story.coverImage || story.coverVideo}>
-          <StoryInfoContainer>
+        <StoryLink to={`/story/${story.id}`}>
+          <StoryContainer
+            image={image}
+          />
+        </StoryLink>
+        <StoryInfoContainer>
+          <StoryLink to={`/story/${story.id}`}>
             <Title>{story.title}</Title>
             <Description>{story.description}</Description>
-            <HorizontalDivider opaque />
-            <DetailsContainer>
+          <HorizontalDivider opaque />
+          </StoryLink>
+          <DetailsContainer>
+            <ProfileLink to='/signup/social'>
               <Avatar avatarUrl={getImageUrl(author.profile.avatar)} size='large'/>
               <VerticalCenter>
                 <Username>{author.username}</Username>
               </VerticalCenter>
-              <Right>
+            </ProfileLink>
+            <StoryLink to={`/story/${story.id}`}>
+            <Right>
                 <div>
                   <CreatedAt>{moment(story.createdAt).fromNow()}</CreatedAt>
                   <LikeComponent
@@ -101,10 +134,10 @@ export default class StoryPreview extends React.Component {
                     isLiked={this.props.isLiked}
                   />
                 </div>
-              </Right>
-            </DetailsContainer>
-          </StoryInfoContainer>
-        </StoryContainer>
+            </Right>
+              </StoryLink>
+          </DetailsContainer>
+        </StoryInfoContainer>
       </MarginWrapper>
     )
   }

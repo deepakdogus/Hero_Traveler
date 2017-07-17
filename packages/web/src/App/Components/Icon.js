@@ -56,8 +56,12 @@ export default class Icon extends React.Component {
         return Images.iconRedCheck
       case 'facebook':
         return Images.iconLoginFacebook
+      case 'facebook-blue':
+        return Images.iconFacebook
       case 'twitter':
         return Images.iconTwitter
+      case 'twitter-blue':
+        return Images.iconTwitterBlue
       case 'instagram':
         return Images.iconInstagram
       case 'loginEmail':

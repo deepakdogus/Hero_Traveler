@@ -10,6 +10,8 @@ const StyledButton = styled.button`
 		switch(props.type) {
 			case 'opaque':
 				return `${props.theme.Colors.snow}`
+			case 'blackWhite':
+				return `${props.theme.Colors.photoOverlay}`
 			default:
 				return `${props.theme.Colors.red}`
 		}
@@ -19,13 +21,22 @@ const StyledButton = styled.button`
 		switch(props.type) {
 			case 'opaque':
 				return `${props.theme.Colors.windowTint}`
+			case 'blackWhite':
+				return `${props.theme.Colors.snow}`
 			default:
 				return `${props.theme.Colors.red}`
 		}
 	}};
 `
 const Text = styled.p`
-	color: ${props => `${props.theme.Colors.snow}`};
+	color: ${props => {
+		switch(props.type) {
+			case 'blackWhite':
+				return `${props.theme.Colors.photoOverlay}`
+			default:
+				return `${props.theme.Colors.snow}`
+		}
+	}};
 	text-align: center;
 	font-size: ${props => `${props.theme.Fonts.size.medium}px`};
 	padding: 0 10px;
@@ -44,9 +55,9 @@ export default class RoundedButton extends React.Component {
 	}
 
 	renderContent() {
-		const {text, children} = this.props
+		const {text, children, type} = this.props
 		if (children) return children
-		else return (<Text>{text}</Text>)
+		else return (<Text type={type}>{text}</Text>)
 	}
 
 	render() {

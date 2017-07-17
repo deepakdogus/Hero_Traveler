@@ -5,6 +5,7 @@ import moment from 'moment'
 
 import Avatar from './Avatar'
 import LikeComponent from './LikeComponent'
+import HorizontalDivider from './HorizontalDivider'
 
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import formatCount from '../Shared/Lib/formatCount'
@@ -53,7 +54,7 @@ export default class StoryPreview extends React.Component {
         <StoryInfoContainer>
           <Title>{story.title}</Title>
           <p>{story.description}</p>
-          <hr />
+          <HorizontalDivider />
           <div>
             <Avatar avatarUrl={getImageUrl(author.profile.avatar)}/>
             <Username>{author.username}</Username>

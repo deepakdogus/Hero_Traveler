@@ -4,9 +4,20 @@ import styled from 'styled-components'
 
 import {Images} from '../Shared/Themes'
 
+function getSize(props) {
+  switch(props.size) {
+    case 'small':
+      return '15px'
+    case 'large':
+      return '50px'
+    default:
+      return '25px'
+  }
+}
+
 const StyledIcon = styled.img`
-	width: ${props => props.size === 'small' ? '15px' : '25px'};
-	height: ${props => props.size === 'small' ? '15px' : '25px'};
+	width: ${props => getSize};
+	height: ${props => getSize};
 `
 
 export default class Icon extends React.Component {
@@ -56,8 +67,12 @@ export default class Icon extends React.Component {
         return Images.iconRedCheck
       case 'facebook':
         return Images.iconLoginFacebook
+      case 'facebook-blue':
+        return Images.iconFacebook
       case 'twitter':
         return Images.iconTwitter
+      case 'twitter-blue':
+        return Images.iconTwitterBlue
       case 'instagram':
         return Images.iconInstagram
       case 'loginEmail':

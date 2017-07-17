@@ -11,7 +11,7 @@ const Right = styled.div`
   float: right;
 `
 
-export default class Header extends React.Component {
+export default class SignupHeader extends React.Component {
   static propTypes = {
     isLoggedIn: PropTypes.bool,
   }

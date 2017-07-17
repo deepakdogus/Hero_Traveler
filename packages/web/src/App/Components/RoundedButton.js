@@ -2,33 +2,48 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
+function getMargin(props) {
+	if (props.margin === 'none') return 0;
+	return `${props.theme.Metrics.baseMargin}px ${props.theme.Metrics.section}px`
+}
+
 const StyledButton = styled.button`
-	height: 40px;
 	border-radius: 30px;
 	border: 1px solid;
 	border-color: ${props => {
 		switch(props.type) {
 			case 'opaque':
 				return `${props.theme.Colors.snow}`
+			case 'blackWhite':
+				return `${props.theme.Colors.photoOverlay}`
 			default:
 				return `${props.theme.Colors.red}`
 		}
 	}};
-	margin: ${(props) => `${props.theme.Metrics.baseMargin}px ${props.theme.Metrics.section}px`};
+	margin: ${(props) => getMargin};
 	background-color: ${props => {
 		switch(props.type) {
 			case 'opaque':
 				return `${props.theme.Colors.windowTint}`
+			case 'blackWhite':
+				return `${props.theme.Colors.snow}`
 			default:
 				return `${props.theme.Colors.red}`
 		}
 	}};
 `
 const Text = styled.p`
-	color: ${props => `${props.theme.Colors.snow}`};
+	color: ${props => {
+		switch(props.type) {
+			case 'blackWhite':
+				return `${props.theme.Colors.photoOverlay}`
+			default:
+				return `${props.theme.Colors.snow}`
+		}
+	}};
 	text-align: center;
 	font-size: ${props => `${props.theme.Fonts.size.medium}px`};
-	padding: 0 10px;
+	margin: 2.5px 10px;
 `
 
 /*
@@ -44,15 +59,14 @@ export default class RoundedButton extends React.Component {
 	}
 
 	renderContent() {
-		const {text, children} = this.props
+		const {text, children, type} = this.props
 		if (children) return children
-		else return (<Text>{text}</Text>)
+		else return (<Text type={type}>{text}</Text>)
 	}
 
 	render() {
-		const {onclick, type} = this.props
 		return (
-			<StyledButton type={type} onclick={onclick}>
+			<StyledButton {...this.props}>
 				{this.renderContent()}
 			</StyledButton>
 		)

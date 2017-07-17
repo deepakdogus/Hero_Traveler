@@ -35,7 +35,7 @@ const RedCheck = styled(Icon)`
   right: 10px;
 `
 
-export default class StoryList extends React.Component {
+export default class ExploreGrid extends React.Component {
   static propTypes = {
     categories: PropTypes.arrayOf(PropTypes.object),
   }

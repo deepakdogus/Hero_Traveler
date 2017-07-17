@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled, {ThemeProvider} from 'styled-components'
 
 import themes from '../../Shared/Themes'
-import Header from '../../Components/SignupHeader'
+import Header from '../../Components/Signup/Header'
 import RoundedButton from '../../Components/RoundedButton'
 import ExploreGrid from '../../Components/ExploreGrid'
 
@@ -16,7 +16,7 @@ const Subtitle = styled.div`
   color: ${props => props.theme.Colors.signupGrey};
 `
 
-class Feed extends Component {
+class SignupTopics extends Component {
   render() {
     return (
       <ThemeProvider theme={themes}>
@@ -35,4 +35,4 @@ class Feed extends Component {
   }
 }
 
-export default Feed
+export default SignupTopics

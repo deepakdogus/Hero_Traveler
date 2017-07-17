@@ -25,7 +25,7 @@ export default class HeaderTab extends React.Component {
 
   render() {
     const {isActive, text} = this.props
-    return (   
+    return (
       <TabContainer>
         <TabText>{text}</TabText>
         {isActive && <Underline/>}

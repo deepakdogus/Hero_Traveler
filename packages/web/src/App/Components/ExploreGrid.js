@@ -47,14 +47,14 @@ export default class ExploreGrid extends React.Component {
       return (
         <Col key={category.id} xs={6} sm={4} md={3} lg={2} >
           <Wrapper>
-          <CategoryTile 
+          <CategoryTile
             imageSource={getImageUrl(category.image, 'versions.thumbnail240.path')}
           >
             <TitleContainer>
               <Title>{category.title}</Title>
             </TitleContainer>
             {category.selected &&
-              <RedCheck name='redCheck' />  
+              <RedCheck name='redCheck' />
             }
           </CategoryTile>
           </Wrapper>

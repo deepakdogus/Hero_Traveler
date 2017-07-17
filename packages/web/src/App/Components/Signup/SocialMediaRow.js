@@ -5,71 +5,71 @@ import PropTypes from 'prop-types'
 import Icon from '../Icon'
 
 const StyledIcon = styled(Icon)`
-	height: 25px;
+  height: 25px;
 `
 
 const FacebookIcon = styled(StyledIcon)`
-	width: 12.5px;
-	padding: 0 9px;
+  width: 12.5px;
+  padding: 0 9px;
 `
 
 const TwitterIcon = styled(StyledIcon)`
-	width: 30.5px;
+  width: 30.5px;
 `
 
 const InstagramIcon = styled(StyledIcon)`
-	width: 25px;
-	padding: 0 2.5px;
+  width: 25px;
+  padding: 0 2.5px;
 `
 
 const SocialMediaItemContainer = styled.div`
-	position: relative;
-	vertical-align: middle;
-	margin: 0 3%;
+  position: relative;
+  vertical-align: middle;
+  margin: 0 3%;
 `
 
 const RightSpan = styled.span`
-	position: absolute;
-	right: 0;
-	line-height: 25px;
-	bottom: 0;
-	color: ${props => `${props.isConnected ? props.theme.Colors.signupGrey : props.theme.Colors.red}`}
+  position: absolute;
+  right: 0;
+  line-height: 25px;
+  bottom: 0;
+  color: ${props => `${props.isConnected ? props.theme.Colors.signupGrey : props.theme.Colors.red}`}
 `
 
 const LeftSpan = styled.span`
-	position: absolute;
-	padding-left: 10px;
-	line-height: 25px;
-	bottom: 0;
+  position: absolute;
+  padding-left: 10px;
+  line-height: 25px;
+  bottom: 0;
 `
 
 export default class SocialMediaRow extends Component {
-	 static propTypes = {
+   static propTypes = {
     iconName: PropTypes.string,
     text: PropTypes.string,
     isConnected: PropTypes.bool,
   }
 
   getIcon(text) {
-  	switch (text){
-  		case 'Facebook':
-  			return (<FacebookIcon name='facebook-blue' />)
-  		case 'Twitter':
-  			return (<TwitterIcon name='twitter-blue' />)
-  		case 'Instagram':
-  		default:
-  			return (<InstagramIcon name='instagram' />)
-  	}
+    switch (text){
+      case 'Facebook':
+        return (<FacebookIcon name='facebook-blue' />)
+      case 'Twitter':
+        return (<TwitterIcon name='twitter-blue' />)
+      case 'Instagram':
+      default:
+        return (<InstagramIcon name='instagram' />)
+    }
   }
 
   render() {
-  	const {text, isConnected} = this.props
+    const {text, isConnected} = this.props
     return (
-			<SocialMediaItemContainer>
-				{this.getIcon(text)}
-				<LeftSpan>{text}</LeftSpan>
-  			<RightSpan isConnected={isConnected}>{isConnected ? 'Connected' : 'Connect'}</RightSpan>
-			</SocialMediaItemContainer>
+      <SocialMediaItemContainer>
+        {this.getIcon(text)}
+        <LeftSpan>{text}</LeftSpan>
+        <RightSpan isConnected={isConnected}>{isConnected ? 'Connected' : 'Connect'}</RightSpan>
+      </SocialMediaItemContainer>
     )
   }
 }

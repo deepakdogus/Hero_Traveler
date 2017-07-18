@@ -33,7 +33,7 @@ const RightSpan = styled.span`
   right: 0;
   line-height: 25px;
   bottom: 0;
-  color: ${props => `${props.isConnected ? props.theme.Colors.signupGrey : props.theme.Colors.red}`}
+  color: ${props => props.isConnected ? props.theme.Colors.signupGrey : props.theme.Colors.red}
 `
 
 const LeftSpan = styled.span`

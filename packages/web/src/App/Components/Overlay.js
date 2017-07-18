@@ -11,7 +11,7 @@ export default styled.div`
       top: 0;
       left: 0;
       opacity: 1;
-      background: ${props => `${props.overlayColor ? props.overlayColor : 'rgba(256, 256, 256, 0.4)'}`};
+      background: ${props => props.overlayColor ? props.overlayColor : 'rgba(256, 256, 256, 0.4)'};
     }
   }
 `

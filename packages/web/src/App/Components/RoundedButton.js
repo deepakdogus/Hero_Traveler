@@ -13,22 +13,22 @@ const StyledButton = styled.button`
   border-color: ${props => {
     switch(props.type) {
       case 'opaque':
-        return `${props.theme.Colors.snow}`
+        return props.theme.Colors.snow
       case 'blackWhite':
-        return `${props.theme.Colors.photoOverlay}`
+        return props.theme.Colors.photoOverlay
       default:
-        return `${props.theme.Colors.red}`
+        return props.theme.Colors.red
     }
   }};
   margin: ${(props) => getMargin};
   background-color: ${props => {
     switch(props.type) {
       case 'opaque':
-        return `${props.theme.Colors.windowTint}`
+        return props.theme.Colors.windowTint
       case 'blackWhite':
-        return `${props.theme.Colors.snow}`
+        return props.theme.Colors.snow
       default:
-        return `${props.theme.Colors.red}`
+        return props.theme.Colors.red
     }
   }};
 `
@@ -36,9 +36,9 @@ const Text = styled.p`
   color: ${props => {
     switch(props.type) {
       case 'blackWhite':
-        return `${props.theme.Colors.photoOverlay}`
+        return props.theme.Colors.photoOverlay
       default:
-        return `${props.theme.Colors.snow}`
+        return props.theme.Colors.snow
     }
   }};
   text-align: center;

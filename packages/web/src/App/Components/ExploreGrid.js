@@ -5,7 +5,9 @@ import styled from 'styled-components'
 import { Grid, Row, Col } from './FlexboxGrid';
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Icon from './Icon'
-import VerticalCenter from './VerticalCenter'
+import {VerticalCenterStyles} from './VerticalCenter'
+import Overlay from './Overlay'
+
 
 const Wrapper = styled.div`
   margin: 1px;
@@ -21,23 +23,13 @@ const CategoryTile = styled.div`
   position: relative;
 `
 
-const TitleContainer = styled(VerticalCenter)`
+const TitleContainer = styled(Overlay)`
+  ${VerticalCenterStyles};
   position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
   background: ${props => props.selected ? 'rgba(256, 256, 256, 0.4)' : 'rgba(0, 0, 0, 0.3)'};
-  &:hover {
-    &:after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      background: rgba(256, 256, 256, 0.4);
-    }
-  }
 `
 
 const Title = styled.div`
@@ -52,10 +44,6 @@ const RedCheck = styled(Icon)`
   position: absolute;
   top: 10px;
   right: 10px;
-`
-
-const CustomVerticalCenter = styled(VerticalCenter)`
-  height: 100%;
 `
 
 export default class ExploreGrid extends React.Component {
@@ -74,7 +62,7 @@ export default class ExploreGrid extends React.Component {
               imageSource={getImageUrl(category.image, 'versions.thumbnail240.path')}
             />
             <TitleContainer selected={category.selected}>
-                <Title>{category.title}</Title>
+              <Title>{category.title}</Title>
             </TitleContainer>
             {category.selected &&
               <RedCheck name='redCheck' />

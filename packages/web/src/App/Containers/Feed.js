@@ -13,7 +13,7 @@ class Feed extends Component {
   render() {
     return (
       <ContentLayout>
-        <CenteredText style={{textAlign: 'center'}}>MY FEED</CenteredText>
+        <CenteredText>MY FEED</CenteredText>
         <StoryList
           stories={feedExample}
           users={usersExample}

@@ -26,7 +26,7 @@ const TabsContainer = styled.div`
 const Divider = styled.div`
   display: inline-block;
   width: 1px;
-  background-color: ${props => `${props.theme.Colors.snow}`};
+  background-color: ${props => props.theme.Colors.snow};
 `
 
 const MenuLinkContainer = styled.div`

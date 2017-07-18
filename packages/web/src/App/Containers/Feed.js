@@ -3,22 +3,27 @@ import styled from 'styled-components'
 
 import StoryList from '../Components/StoryList'
 import {feedExample, usersExample} from './Feed_TEST_DATA'
-import ContentLayout from '../Components/ContentLayout.component';
+import Footer from '../Components/Footer';
 
 const CenteredText = styled.p`
   text-align: center;
 `
 
+const ContentWrapper = styled.div`
+  margin: 0 7%;
+`
+
 class Feed extends Component {
   render() {
     return (
-      <ContentLayout>
+      <ContentWrapper>
         <CenteredText>MY FEED</CenteredText>
         <StoryList
           stories={feedExample}
           users={usersExample}
         />
-      </ContentLayout>
+        <Footer />
+      </ContentWrapper>
     )
   }
 }

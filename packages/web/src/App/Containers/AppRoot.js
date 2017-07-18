@@ -27,7 +27,6 @@ class AppRoot extends Component {
             <TopContainer>
               <Header />
             </TopContainer>
-
             <Route exact path='/' component={Feed} />
             <Route path='/signup/social' component={SignupSocial} />
             <Route path='/signup/topics' component={SignupTopics} />

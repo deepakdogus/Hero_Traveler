@@ -5,9 +5,11 @@ import styled from 'styled-components'
 import { Grid, Row, Col } from './FlexboxGrid';
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Icon from './Icon'
+import VerticalCenter from './VerticalCenter'
 
 const Wrapper = styled.div`
   margin: 1px;
+  position: relative;
 `
 
 const CategoryTile = styled.div`
@@ -19,13 +21,30 @@ const CategoryTile = styled.div`
   position: relative;
 `
 
-const TitleContainer = styled.div`
+const TitleContainer = styled(VerticalCenter)`
   position: absolute;
-  color: ${props => `${props.theme.Colors.snow}`};
   width: 100%;
+  height: 100%;
+  top: 0;
+  background: ${props => props.selected ? 'rgba(256, 256, 256, 0.4)' : 'rgba(0, 0, 0, 0.3)'};
+  &:hover {
+    &:after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: rgba(256, 256, 256, 0.4);
+    }
+  }
 `
 
 const Title = styled.div`
+  font-weight: 400;
+  font-size: 17px;
+  color: ${props => props.theme.Colors.snow};
+  letter-spacing: 1.2px;
   margin: 0;
 `
 
@@ -33,6 +52,10 @@ const RedCheck = styled(Icon)`
   position: absolute;
   top: 10px;
   right: 10px;
+`
+
+const CustomVerticalCenter = styled(VerticalCenter)`
+  height: 100%;
 `
 
 export default class ExploreGrid extends React.Component {
@@ -49,14 +72,13 @@ export default class ExploreGrid extends React.Component {
           <Wrapper>
             <CategoryTile
               imageSource={getImageUrl(category.image, 'versions.thumbnail240.path')}
-            >
-              <TitleContainer>
+            />
+            <TitleContainer selected={category.selected}>
                 <Title>{category.title}</Title>
-              </TitleContainer>
-              {category.selected &&
-                <RedCheck name='redCheck' />
-              }
-            </CategoryTile>
+            </TitleContainer>
+            {category.selected &&
+              <RedCheck name='redCheck' />
+            }
           </Wrapper>
         </Col>
       )

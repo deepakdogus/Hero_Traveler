@@ -12,8 +12,18 @@ const Container = styled.div`
   margin: 0 7.5%;
   text-align: center;
 `
+const Title = styled.p`
+  font-weight: 400;
+  font-size: 35px;
+  color: ${props => props.theme.Colors.background};
+  letter-spacing: 1.2px;
+`
+
 const Subtitle = styled.p`
-  color: ${props => props.theme.Colors.signupGrey};
+  font-weight: 400;
+  font-size: 18px;
+  color: ${props => props.theme.Colors.bioGrey};
+  letter-spacing: .7px;
   margin-bottom: 30px;
 `
 

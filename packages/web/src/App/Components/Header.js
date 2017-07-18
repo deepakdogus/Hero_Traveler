@@ -83,6 +83,9 @@ export default class Header extends React.Component {
               <MenuLink to='/' exact>
                 Explore
               </MenuLink>
+              <MenuLink to='/signup/topics'>
+                Signup (topics)
+              </MenuLink>
               <MenuLink to='/signup/social'>
                 Signup (social)
               </MenuLink>

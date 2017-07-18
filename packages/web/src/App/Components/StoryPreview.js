@@ -8,6 +8,7 @@ import Avatar from './Avatar'
 import LikeComponent from './LikeComponent'
 import HorizontalDivider from './HorizontalDivider'
 import VerticalCenter from './VerticalCenter'
+import Overlay from './Overlay'
 
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import formatCount from '../Shared/Lib/formatCount'
@@ -27,24 +28,12 @@ const MarginWrapper = styled.div`
   color: ${props => props.theme.Colors.lightGrey};
 `
 
-const StoryContainer = styled.div`
+const StoryOverlayContainer = styled(Overlay)`
   padding-top: 151%;
   width: 100%;
   background-image: ${props => `url(${getImageUrl(props.image)})`};
   background-size: cover;
   position: relative;
-  &:hover {
-    &:after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      opacity: 1;
-      background: rgba(0, 0, 0, 0.4);
-    }
-  }
 `
 
 const StoryInfoContainer = styled.div`
@@ -108,8 +97,9 @@ export default class StoryPreview extends React.Component {
     return (
       <MarginWrapper>
         <StoryLink to={`/story/${story.id}`}>
-          <StoryContainer
+          <StoryOverlayContainer
             image={image}
+            overlayColor={'rgba(0, 0, 0, 0.4)'}
           />
         </StoryLink>
         <StoryInfoContainer>

@@ -9,6 +9,7 @@ import Header from '../Components/Header'
 import Feed from './Feed'
 import Story from './Story.container'
 import SignupSocial from './Signup/SignupSocial';
+import SignupTopics from './Signup/SignupTopics';
 
 const TopContainer = styled.div`
   background-image: url(${background});
@@ -29,6 +30,7 @@ class AppRoot extends Component {
 
             <Route exact path='/' component={Feed} />
             <Route path='/signup/social' component={SignupSocial} />
+            <Route path='/signup/topics' component={SignupTopics} />
             <Route path='/story/:id' component={Story} />
           </div>
         </ThemeProvider>

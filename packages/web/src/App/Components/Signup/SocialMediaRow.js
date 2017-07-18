@@ -28,19 +28,23 @@ const SocialMediaItemContainer = styled.div`
   margin: 0 3%;
 `
 
-const RightSpan = styled.span`
+const StyledSpan = styled.span`
+  font-weight: 400;
+  font-size: 18px;
+  letter-spacing: .7px;
   position: absolute;
-  right: 0;
-  line-height: 25px;
+  line-height: 30px;
   bottom: 0;
-  color: ${props => props.isConnected ? props.theme.Colors.signupGrey : props.theme.Colors.red}
 `
 
-const LeftSpan = styled.span`
-  position: absolute;
+const RightSpan = styled(StyledSpan)`
+  right: 0;
+  color: ${props => props.isConnected ? props.theme.Colors.grey : props.theme.Colors.red}
+`
+
+const LeftSpan = styled(StyledSpan)`
   padding-left: 10px;
-  line-height: 25px;
-  bottom: 0;
+  color: ${props => props.theme.Colors.grey}
 `
 
 export default class SocialMediaRow extends Component {

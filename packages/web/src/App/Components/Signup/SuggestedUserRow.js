@@ -24,12 +24,19 @@ const Right = styled(VerticalCenter)`
 `
 
 const UserName = styled.p`
+  font-weight: 600;
+  font-size: 18px;
+  color: ${props => props.theme.Colors.background};
+  letter-spacing: .7px;
   margin: 0;
 `
 
 const Followers = styled.p`
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: .7px;
   margin: 0;
-  color: ${props => props.theme.Colors.signupGrey};
+  color: ${props => props.theme.Colors.grey};
 `
 
 
@@ -56,6 +63,7 @@ export default class SocialMediaRow extends Component {
             text={isSelected ? 'FOLLOWING' : '+ FOLLOW'}
             type={isSelected ? undefined : 'blackWhite'}
             margin='none'
+            width='118px'
           />
         </Right>
       </UserContainer>

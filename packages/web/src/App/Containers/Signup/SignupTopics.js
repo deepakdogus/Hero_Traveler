@@ -22,9 +22,14 @@ const Title = styled.p`
 const Subtitle = styled.p`
   font-weight: 400;
   font-size: 18px;
-  color: ${props => props.theme.Colors.bioGrey};
+  color: ${props => props.theme.Colors.grey};
   letter-spacing: .7px;
   margin-bottom: 30px;
+`
+
+const SizedDiv = styled.div`
+  max-width: 1000px;
+  margin: 0 auto;
 `
 
 class SignupTopics extends Component {
@@ -36,9 +41,11 @@ class SignupTopics extends Component {
             <RoundedButton text='Next >'></RoundedButton>
           </Header>
           <Container>
-            <Title>WELCOME!</Title>
-            <Subtitle>Pick some topics you are interested in. We will use them to customize your reading list based on your interests.</Subtitle>
-            <ExploreGrid categories={categories}/>
+            <SizedDiv>
+              <Title>WELCOME!</Title>
+              <Subtitle>Pick some topics you are interested in. We will use them to customize your reading list based on your interests.</Subtitle>
+              <ExploreGrid categories={categories}/>
+            </SizedDiv>
           </Container>
         </div>
       </ThemeProvider>

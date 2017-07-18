@@ -31,6 +31,7 @@ const StyledButton = styled.button`
         return props.theme.Colors.red
     }
   }};
+  width: ${props => props.width || undefined};
 `
 const Text = styled.p`
   color: ${props => {
@@ -56,6 +57,7 @@ export default class RoundedButton extends React.Component {
     children: PropTypes.node,
     onclick: PropTypes.func,
     type: PropTypes.string,
+    width: PropTypes.string,
   }
 
   renderContent() {

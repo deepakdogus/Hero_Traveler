@@ -66,7 +66,6 @@ export default class StoryActionBar extends React.Component {
 
   render () {
     const {story, isLiked} = this.props
-    console.log("story is", story)
     return (
       <div>
         <HorizontalDivider color='lightGrey'/>

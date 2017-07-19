@@ -8,6 +8,8 @@ function getSize(props) {
   switch(props.size) {
     case 'small':
       return '15px'
+    case 'medium':
+      return '50px'
     case 'large':
       return '62px'
     default:
@@ -89,6 +91,8 @@ export default class Icon extends React.Component {
         return Images.iconNavCreate
       case 'close':
         return Images.iconContentXWhite
+      case 'add':
+        return Images.iconContentPlusWhite
       case 'cameraReverse':
         return Images.iconReverseCamera
       case 'cameraFlash':

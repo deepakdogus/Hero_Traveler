@@ -99,7 +99,7 @@ export default class StoryPreview extends React.Component {
         <StoryLink to={`/story/${story.id}`}>
           <StoryOverlayContainer
             image={image}
-            overlayColor={'rgba(0, 0, 0, 0.4)'}
+            overlayColor='black'
           />
         </StoryLink>
         <StoryInfoContainer>

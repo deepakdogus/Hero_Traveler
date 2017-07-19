@@ -4,7 +4,9 @@ function getSize(props) {
   switch(props.type) {
     case 'avatar':
       return '30px'
-    case 'avatar-large':
+    case 'medium':
+      return '50px'
+    case 'large':
       return '62px'
     default:
       return 'auto'

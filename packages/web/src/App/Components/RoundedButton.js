@@ -2,9 +2,17 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
+import VerticalCenter from './VerticalCenter'
+
 function getMargin(props) {
   if (props.margin === 'none') return 0;
   return `${props.theme.Metrics.baseMargin}px ${props.theme.Metrics.section}px`
+}
+
+// 2px 6px 3px is default react padding.
+function getPadding(props) {
+  if (props.padding ==='even') return '5px';
+  return '2px 6px 3px'
 }
 
 const StyledButton = styled.button`
@@ -20,7 +28,8 @@ const StyledButton = styled.button`
         return props.theme.Colors.red
     }
   }};
-  margin: ${(props) => getMargin};
+  margin: ${props => getMargin};
+  padding: ${props => getPadding};
   background-color: ${props => {
     switch(props.type) {
       case 'opaque':
@@ -31,7 +40,7 @@ const StyledButton = styled.button`
         return props.theme.Colors.red
     }
   }};
-  width: ${props => props.width || undefined};
+  width: ${props => props.width || 'inherit'};
 `
 const Text = styled.p`
   color: ${props => {
@@ -69,7 +78,9 @@ export default class RoundedButton extends React.Component {
   render() {
     return (
       <StyledButton {...this.props}>
-        {this.renderContent()}
+        <VerticalCenter>
+          {this.renderContent()}
+        </VerticalCenter>
       </StyledButton>
     )
   }

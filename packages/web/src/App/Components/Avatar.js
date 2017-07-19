@@ -23,7 +23,7 @@ export default class Avatar extends React.Component {
       return (
         <Image
           src={avatarUrl}
-          type={size === 'large' ? 'avatar-large' : 'avatar'}
+          type={size || 'avatar'}
         />
       )
     }

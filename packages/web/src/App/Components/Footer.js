@@ -1,14 +1,8 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import { Grid, Row, Col } from './FlexboxGrid';
-import logo from '../Shared/Images/ht-logo-white.png'
-import HeaderTab from './HeaderTab'
-import RoundedButton from './RoundedButton'
 import Icon from './Icon'
-import Avatar from './Avatar'
-import {Link, NavLink} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 
 const Container = styled.div`
   width: 100%;
@@ -67,12 +61,8 @@ const InstagramIcon = styled(StyledIcon)`
 Need black icons and what size they want them. Ideally all icons should be square!
 */
 export default class Header extends React.Component {
-  static propTypes = {
-    isLoggedIn: PropTypes.bool,
-  }
 
   render () {
-    const {isLoggedIn} = this.props
     return (
       <Container fluid>
         <SizedDiv>

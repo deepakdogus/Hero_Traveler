@@ -1,22 +1,16 @@
 import React, {Component} from 'react'
-import styled, {ThemeProvider} from 'styled-components'
+import {ThemeProvider} from 'styled-components'
 import {Route, BrowserRouter as Router} from 'react-router-dom'
 
 import themes from '../Shared/Themes'
 import background from '../Shared/Images/BG.png'
 import Header from '../Components/Header'
+import HeaderImageWrapper from '../Components/HeaderImageWrapper'
 
 import Feed from './Feed'
-import Story from './Story.container'
+import Story from './Story'
 import SignupSocial from './Signup/SignupSocial';
 import SignupTopics from './Signup/SignupTopics';
-
-const TopContainer = styled.div`
-  background-image: url(${background});
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 180px;
-`
 
 class AppRoot extends Component {
   render() {
@@ -24,9 +18,9 @@ class AppRoot extends Component {
       <Router>
         <ThemeProvider theme={themes}>
           <div>
-            <TopContainer>
+            <HeaderImageWrapper backgroundImage={background}>
               <Header />
-            </TopContainer>
+            </HeaderImageWrapper>
             <Route exact path='/' component={Feed} />
             <Route path='/signup/social' component={SignupSocial} />
             <Route path='/signup/topics' component={SignupTopics} />

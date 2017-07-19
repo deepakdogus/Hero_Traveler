@@ -6,6 +6,7 @@ import VerticalCenter from './VerticalCenter'
 
 function getMargin(props) {
   if (props.margin === 'none') return 0;
+  else if (props.margin === 'small') return '3px'
   return `${props.theme.Metrics.baseMargin}px ${props.theme.Metrics.section}px`
 }
 
@@ -20,6 +21,14 @@ const StyledButton = styled.button`
   border: 1px solid;
   border-color: ${props => {
     switch(props.type) {
+      case 'lightGrey':
+        return props.theme.Colors.signupGrey
+      case 'facebook':
+        return props.theme.Colors.facebook
+      case 'twitter':
+        return props.theme.Colors.twitterBlue
+      case 'grey':
+        return props.theme.Colors.btnGreyBackground
       case 'opaque':
         return props.theme.Colors.snow
       case 'blackWhite':
@@ -32,15 +41,30 @@ const StyledButton = styled.button`
   padding: ${props => getPadding};
   background-color: ${props => {
     switch(props.type) {
+      case 'grey':
+        return props.theme.Colors.btnGreyBackground
       case 'opaque':
         return props.theme.Colors.windowTint
       case 'blackWhite':
+      case 'facebook':
+      case 'twitter':
+      case 'lightGrey':
         return props.theme.Colors.snow
       default:
         return props.theme.Colors.red
     }
   }};
   width: ${props => props.width || 'inherit'};
+  &:hover {
+    background-color: ${props => {
+      switch(props.type) {
+        case 'grey':
+          return props.theme.Colors.btnDarkGreyBackground
+        default:
+          return 'inherit'
+      }
+    }}
+  }
 `
 const Text = styled.p`
   color: ${props => {

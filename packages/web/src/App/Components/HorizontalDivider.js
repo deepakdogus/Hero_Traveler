@@ -3,6 +3,8 @@ import styled from 'styled-components'
 export default styled.hr`
   border-color: ${props => {
     switch (props.color) {
+      case 'light-grey':
+        return props.theme.Colors.dividerGrey
       case 'grey':
         return props.theme.Colors.lightGreyAreas
       default:

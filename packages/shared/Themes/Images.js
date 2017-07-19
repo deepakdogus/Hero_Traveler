@@ -53,6 +53,7 @@ const images = {
   iconGear: require('../Images/ht-icons/icon_profile-gear@2x.png'),
   iconLocation: require('../Images/ht-icons/icon_details-location@2x.png'),
   iconLike: require('../Images/ht-icons/icon_action-like@2x.png'),
+  iconLikeWhite: require('../Images/ht-icons/icon_feed-small-heart@2x.png'),
   iconLikeActive: require('../Images/ht-icons/icon_action-like-active@2x.png'),
   iconBookmark: require('../Images/ht-icons/icon_action-bookmark@2x.png'),
   iconBookmarkActive: require('../Images/ht-icons/icon_action-bookmark-active@2x.png'),

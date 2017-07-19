@@ -49,6 +49,7 @@ const Centered = styled(VerticalCenter)`
   height: 100vh;
   top:0;
   text-align:center;
+  z-index: 1;
 `
 
 const StyledHorizontalDivider = styled(HorizontalDivider)`
@@ -64,36 +65,30 @@ export default class StoryHeader extends React.Component {
 
   render () {
     const {story, author} = this.props
-    console.log("story is", story)
-    console.log("author is", author)
     return (
-      <div>
-        <HeaderImageWrapper
-          backgroundImage={getImageUrl(story.coverImage)}
-          size='fullScreen'
-        >
-          <Header isLoggedIn></Header>
-          <Centered>
-            <VerticalCenter>
-              <Title>{story.title}</Title>
-              <StyledHorizontalDivider />
-              <Subtitle>{story.description}</Subtitle>
-            </VerticalCenter>
-          </Centered>
-          <BottomContainer center="xs">
-            <div>
-              <Avatar
-                avatarUrl={getImageUrl(author.profile.avatar)}
-                size='medium'
-              />
-              <VerticalCenter>
-                <AuthorTime>By {author.username} | {moment(story.createdAt).format('MMMM Do YYYY')}</AuthorTime>
-                <p style={{color: 'white'}}>DOWN ARROW</p>
-              </VerticalCenter>
-            </div>
-          </BottomContainer>
-        </HeaderImageWrapper>
-      </div>
+      <HeaderImageWrapper
+        backgroundImage={getImageUrl(story.coverImage)}
+        size='fullScreen'
+      >
+        <Header isLoggedIn></Header>
+        <Centered>
+          <VerticalCenter>
+            <Title>{story.title}</Title>
+            <StyledHorizontalDivider />
+            <Subtitle>{story.description}</Subtitle>
+          </VerticalCenter>
+        </Centered>
+        <BottomContainer center="xs">
+          <Avatar
+            avatarUrl={getImageUrl(author.profile.avatar)}
+            size='medium'
+          />
+          <VerticalCenter>
+            <AuthorTime>By {author.username} | {moment(story.createdAt).format('MMMM Do YYYY')}</AuthorTime>
+            <p style={{color: 'white'}}>DOWN ARROW</p>
+          </VerticalCenter>
+        </BottomContainer>
+      </HeaderImageWrapper>
     )
   }
 }

@@ -43,6 +43,8 @@ export default class Icon extends React.Component {
         return Images.iconLike
       case 'like-active':
         return Images.iconLikeActive
+      case 'likeActiveWhite':
+        return Images.iconLikeWhite
       case 'comment':
         return Images.iconComment
       case 'bookmark':

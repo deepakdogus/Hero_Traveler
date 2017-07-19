@@ -42,6 +42,9 @@ const colors = {
   backgroundDark: '#111216',
   photoOverlay: '#000000',
   sectionHighlight: '#343537',
+  btnGreyBackground: '#949292',
+  btnDarkGreyBackground: '#5d5b5f',
+  dividerGrey: '#dedede',
 }
 
 export default colors

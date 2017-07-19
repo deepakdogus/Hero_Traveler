@@ -11,7 +11,11 @@ import Avatar from './Avatar'
 import {Link, NavLink} from 'react-router-dom';
 
 const StyledGrid = styled(Grid)`
-  padding: 15px
+  padding: 15px;
+  z-index: 2;
+  position: absolute;
+  width: 100%;
+  top: 0;
 `
 
 const Logo = styled.img`

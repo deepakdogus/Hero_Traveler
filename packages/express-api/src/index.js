@@ -1,7 +1,4 @@
 import 'babel-polyfill'
-import dotenv from 'dotenv'
-dotenv.config()
-import path from 'path'
 import express from 'express'
 import bodyParser from 'body-parser'
 import morgan from 'morgan'

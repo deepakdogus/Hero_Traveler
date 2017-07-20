@@ -3,9 +3,10 @@ import PropTypes from 'prop-types'
 import {ScrollView, Text, View, Animated, TouchableOpacity} from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
-import MapView from 'react-native-maps';
-import RNDraftJSRender from 'react-native-draftjs-render';
+import MapView from 'react-native-maps'
+import RNDraftJSRender from 'react-native-draftjs-render'
 import {compose, toClass, withHandlers} from 'recompose'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 import StoryActions from '../Redux/Entities/Stories'
 import {isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
@@ -18,6 +19,8 @@ import Image from '../Components/Image'
 import {styles, rendererStyles} from './Styles/StoryReadingScreenStyles'
 import Video from '../Components/Video'
 import Immutable from 'seamless-immutable'
+import {getVideoUrlBase} from '../Lib/getVideoUrl'
+import {getImageUrlBase} from '../Lib/getImageUrl'
 
 
 const enhanceStoryVideo = compose(
@@ -36,21 +39,35 @@ const enhanceStoryVideo = compose(
 
 const StoryVideo = enhanceStoryVideo((props) => {
   return (
-    <TouchableOpacity
-      style={styles.videoButton}
-      onPress={props.onPress}
+    <View
+      style={styles.videoWrapper}
     >
       <Video
         ref={props.registerRef}
         path={props.src}
         style={styles.video}
-        allowVideoPlay={false}
+        allowVideoPlay={true}
         autoPlayVideo={false}
         showMuteButton={false}
-        showPlayButton={false}
-        videoFillSpace={false}
-      />
-    </TouchableOpacity>
+        showPlayButton={true}
+        videoFillSpace={true}
+      >
+        <TouchableOpacity
+          style={styles.videoExpand}
+          onPress={props.onPress}
+        >
+          <Icon
+            name='expand'
+            color='white'
+            style={{
+              padding: 4,
+              borderRadius: 4,
+              backgroundColor: 'rgba(0,0,0,.75)'
+            }}
+            size={20} />
+        </TouchableOpacity>
+      </Video>
+    </View>
   )
 })
 
@@ -61,7 +78,7 @@ const atomicHandler = (item: Object): any => {
         <View key={item.key} style={styles.mediaViewWrapper}>
           <Image
             fullWidth={true}
-            source={{ uri: item.data.url }}
+            source={{uri: `${getImageUrlBase()}/${item.data.url}`}}
           />
           { !!item.text && <Text style={styles.caption}>{item.text}</Text> }
         </View>
@@ -69,7 +86,7 @@ const atomicHandler = (item: Object): any => {
     case 'video':
       return (
         <View key={item.key} style={styles.mediaViewWrapper}>
-          <StoryVideo src={item.data.url} />
+          <StoryVideo src={`${getVideoUrlBase()}/${item.data.url}`} />
           { !!item.text && <Text style={styles.caption}>{item.text}</Text> }
         </View>
       )

@@ -14,6 +14,8 @@ import Image from '../Image'
 import loadAttributes from './loadAttributes'
 import Video from '../Video'
 import Metrics from '../../Themes/Metrics'
+import {getVideoUrlBase} from "../../Lib/getVideoUrl"
+import {getImageUrlBase} from "../../Lib/getImageUrl"
 
 export default class TextBlock extends React.Component {
   buildText = true
@@ -130,7 +132,7 @@ export default class TextBlock extends React.Component {
           >
             <Image
               fullWidth={true}
-              source={{ uri: this.props.data.url }}
+              source={{ uri: `${getImageUrlBase()}/${this.props.data.url}` }}
             />
           </TouchableWithoutFeedback>
         </View>
@@ -140,6 +142,8 @@ export default class TextBlock extends React.Component {
 
   renderVideo() {
     if (this.props.type === 'video') {
+      const videoUrl = `${getVideoUrlBase()}/${this.props.data.url}`
+      console.log('video url', videoUrl)
       return (
         <View style={styles.videoView}>
           <TouchableWithoutFeedback
@@ -147,9 +151,7 @@ export default class TextBlock extends React.Component {
             onPress={this.toggleVideoFocus}
           >
             <Video
-              path={this.props.data.url}
-              style={{
-              }}
+              path={videoUrl}
               allowVideoPlay={true}
               autoPlayVideo={false}
               showMuteButton={false}

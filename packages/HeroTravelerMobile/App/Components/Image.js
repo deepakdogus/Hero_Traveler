@@ -18,6 +18,7 @@ export default class Image extends Component {
   }
 
   _setImageSize(imageUrl) {
+    console.log('The image getSize', imageUrl)
     if(!imageUrl) return
     RNImage.getSize(imageUrl, (width, height) => {
       this.setState({
@@ -39,7 +40,12 @@ export default class Image extends Component {
   render () {
     const {cached, fullWidth, ...imageProps} = this.props
     const BaseComponent = cached ? CachedImage : RNImage
-    imageProps.resizeMode = getResizeMode(this.state)
+
+    if (this.props.resizeMode) {
+      imageProps.resizeMode = this.props.resizeMode
+    } else {
+      imageProps.resizeMode = getResizeMode(this.state)
+    }
 
     if (fullWidth) {
       imageProps.style = imageProps.style || {}

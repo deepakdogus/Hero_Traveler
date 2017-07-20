@@ -57,6 +57,7 @@ export default class StoryCover extends Component {
       >
         <Image
           cached={true}
+          resizeMode='cover'
           source={{uri: getImageUrl(this.props.cover)}}
           style={[styles.image]}
         >
@@ -103,6 +104,7 @@ export default class StoryCover extends Component {
           showPlayButton={false}
           onIsPlayingChange={this._setIsPlaying}
           onMuteChange={this._changeMute}
+          resizeMode='cover'
         />
         <TouchableWithoutFeedback
           onPress={this._tapVideoWrapper}>

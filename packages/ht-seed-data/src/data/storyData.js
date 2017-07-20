@@ -28,7 +28,7 @@ function create(users, categories) {
   ])
   .then(([file]) => {
     return Models.Image.create({
-      purpose: 'Seeded',
+      purpose: 'storyImage',
       altText: title,
       original: {
         filename: imageName,

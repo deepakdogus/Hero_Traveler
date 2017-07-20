@@ -1796,7 +1796,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rehashstudio.herotraveler;
 				PRODUCT_NAME = HeroTravelerMobile;
-				PROVISIONING_PROFILE = "8989aa89-20bd-474e-b983-d64c1ff52239";
+				PROVISIONING_PROFILE = "4fffafe4-bc2b-415b-9710-3fa8f1fe1432";
 				PROVISIONING_PROFILE_SPECIFIER = "HERO Traveler Dev";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1843,7 +1843,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rehashstudio.herotraveler;
 				PRODUCT_NAME = HeroTravelerMobile;
-				PROVISIONING_PROFILE = "e740b169-b5c0-4848-9429-93a695224724";
+				PROVISIONING_PROFILE = "d0f840dd-71a2-4282-a49d-7204d7303c4d";
 				PROVISIONING_PROFILE_SPECIFIER = "Hero Traveler Ad Hoc - PushNotif";
 				VERSIONING_SYSTEM = "apple-generic";
 			};

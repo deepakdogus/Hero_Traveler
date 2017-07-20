@@ -45,7 +45,6 @@ export const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
-
   // StoryContent component
   storyContentWrapper: {
     backgroundColor: Colors.snow,
@@ -54,11 +53,11 @@ export const styles = StyleSheet.create({
   storyContentImage: {
     marginBottom: Metrics.section
   },
-  videoButton: {
-    marginTop: 60,
+  videoWrapper: {
+    marginTop: 30,
     position: 'relative',
     width: Metrics.screenWidth,
-    height: 200,
+    height: Metrics.screenWidth * 9 / 16,
   },
   video: {
     position: 'absolute',
@@ -67,7 +66,12 @@ export const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     width: Metrics.screenWidth,
-    height: 200,
+    height: Metrics.screenWidth * 9 / 16,
+  },
+  videoExpand: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10
   },
   videoDescription: {
     flex: 1,

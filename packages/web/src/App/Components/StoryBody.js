@@ -2,10 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
+import StoryContent from './StoryContent'
 import GMap from './GoogleMap'
 import StoryMetaInfo from './StoryMetaInfo'
 import StoryActionBar from './StoryActionBar'
-
 
 const BodyContainer = styled.div``
 
@@ -18,6 +18,7 @@ const LimitedWidthContainer = styled.div`
 export default class StoryBody extends React.Component {
   static propTypes = {
     story: PropTypes.object,
+    author: PropTypes.object,
   }
 
   render () {
@@ -25,10 +26,10 @@ export default class StoryBody extends React.Component {
     return (
       <BodyContainer>
         <LimitedWidthContainer>
-          <h1>WE NEED TO RENDER THE DRAFTJS STORY HERE LETS MaKE THIS LONGER AND SEE WHAT HAPPENS</h1>
+          <StoryContent story={story} />
         </LimitedWidthContainer>
         <div>
-          <p>Are they trying to do fixed map and/or hidden buttons on the map?</p>
+          <p style={{paddingLeft: '10px'}}>Are they trying to do fixed map and/or hidden buttons on the map?</p>
         </div>
         <GMap
           lat={story.latitude}

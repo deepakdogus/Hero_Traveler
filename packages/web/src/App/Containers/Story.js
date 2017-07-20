@@ -3,20 +3,43 @@ import styled from 'styled-components'
 
 import {feedExample, usersExample} from './Feed_TEST_DATA'
 import StoryHeader from '../Components/StoryHeader'
-import StoryBody from '../Components/StoryBody'
+import StoryContentRenderer from '../Components/StoryContentRenderer'
+import GMap from '../Components/GoogleMap'
+import StoryMetaInfo from '../Components/StoryMetaInfo'
+import StoryActionBar from '../Components/StoryActionBar'
 
 const ContentWrapper = styled.div``
 const Suggestions = styled.div``
 
-const story = feedExample['596775b90d4bb70010e2a5f8']
-const author = usersExample[story.author]
+const LimitedWidthContainer = styled.div`
+  width: 66%;
+  max-width: 900px;
+  margin: 0 auto;
+`
 
 class Story extends Component {
   render() {
+    const {match} = this.props
+    const story = feedExample[match.params.storyId]
+    const author = usersExample[story.author]
     return (
       <ContentWrapper>
         <StoryHeader story={story} author={author}/>
-        <StoryBody story={story} author={author}/>
+        <LimitedWidthContainer>
+          <StoryContentRenderer story={story} />
+        </LimitedWidthContainer>
+        <p style={{paddingLeft: '10px'}}>Are they trying to do fixed map and/or hidden buttons on the map?</p>
+        {story.latitude && story.longitude &&
+          <GMap
+            lat={story.latitude}
+            lng={story.longitude}
+            location={story.location}
+          />
+        }
+        <LimitedWidthContainer>
+          <StoryMetaInfo story={story}/>
+          <StoryActionBar story={story}/>
+        </LimitedWidthContainer>
         <Suggestions />
       </ContentWrapper>
     )

@@ -67,10 +67,10 @@ class SignupSocial extends Component {
       <ThemeProvider theme={themes}>
         <div>
          <Header>
-              <RoundedButton text='< Back' type="blackWhite"></RoundedButton>
-              <RoundedButton text='Finish'></RoundedButton>
-            </Header>
-         <Container>
+            <RoundedButton text='< Back' type="blackWhite"></RoundedButton>
+            <RoundedButton text='Finish'></RoundedButton>
+          </Header>
+          <Container>
           <Title>FOLLOW</Title>
             <Subtitle>We'll add stories by people you follow to your custom reading list</Subtitle>
             <Section>

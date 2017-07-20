@@ -24,7 +24,7 @@ class AppRoot extends Component {
             <Route exact path='/' component={Feed} />
             <Route path='/signup/social' component={SignupSocial} />
             <Route path='/signup/topics' component={SignupTopics} />
-            <Route path='/story/:id' component={Story} />
+            <Route path='/story/:storyId' component={Story} />
           </div>
         </ThemeProvider>
       </Router>

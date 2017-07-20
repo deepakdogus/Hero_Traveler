@@ -93,7 +93,7 @@ export default class Header extends React.Component {
               <MenuLink to='/signup/social'>
                 Signup (social)
               </MenuLink>
-              <MenuLink to='/story/123'>
+              <MenuLink to='/story/596775b90d4bb70010e2a5f8'>
                 Story
               </MenuLink>
             </MenuLinkContainer>

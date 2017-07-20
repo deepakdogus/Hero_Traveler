@@ -44,25 +44,6 @@ export default class StoryPreview extends Component {
     showReadMessage: false
   }
 
-  wrap(content) {
-    if (this.props.onPress) {
-      return (
-        <TouchableHighlight
-          onPress={this._onPress}
-          children={content}
-          style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}
-        />
-      )
-    }
-
-    return (
-      <View
-        children={content}
-        style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}
-      />
-    )
-  }
-
   _touchEdit = () => {
     if (this.props.touchEdit) {
       this.props.touchEdit(this.props.story.id)

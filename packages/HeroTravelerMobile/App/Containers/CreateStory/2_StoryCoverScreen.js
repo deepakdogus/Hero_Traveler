@@ -199,6 +199,7 @@ class StoryCoverScreen extends Component {
         <Image
           source={{uri: coverPhoto}}
           style={styles.coverPhoto}
+          resizeMode='cover'
         >
           <LinearGradient
             colors={['rgba(0,0,0,.4)', 'rgba(0,0,0,.4)']}
@@ -219,6 +220,7 @@ class StoryCoverScreen extends Component {
         <View style={styles.coverVideo}>
           <Video
             path={coverVideo}
+            resizeMode='cover'
             allowVideoPlay={false}
             autoPlayVideo={false}
             showPlayButton={false}
@@ -320,7 +322,7 @@ class StoryCoverScreen extends Component {
   }
 
   hasVideoChanged() {
-    return !!this.state.coverVideo && this.state.coverVideo !== getImageUrl(this.props.story.coverVideo)
+    return !!this.state.coverVideo && this.state.coverVideo !== getVideoUrl(this.props.story.coverVideo)
   }
 
   _onRight = () => {

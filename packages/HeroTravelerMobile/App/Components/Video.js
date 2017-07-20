@@ -90,7 +90,8 @@ export default class VideoPlayer extends React.Component {
   static defaultProps = {
     showMuteButton: true,
     showPlayButton: true,
-    videoFillSpace: true
+    videoFillSpace: true,
+    resizeMode: 'contain'
   }
 
   constructor(props) {
@@ -228,7 +229,7 @@ export default class VideoPlayer extends React.Component {
             this.props.videoFillSpace && styles.full,
           ]}
           repeat={true}
-          resizeMode='cover'
+          resizeMode={this.props.resizeMode}
         />
         {this.props.showPlayButton &&
           <PlayButton
@@ -253,6 +254,7 @@ export default class VideoPlayer extends React.Component {
             />
           </View>
         }
+        {this.props.children}
       </View>
     )
   }
@@ -289,7 +291,9 @@ const styles = StyleSheet.create({
     height: 100,
     position: 'absolute',
     top: 0,
-    left: 0
+    left: 0,
+    right: 0,
+    bottom: 0
   },
   fullButtons: {
     width: 100,

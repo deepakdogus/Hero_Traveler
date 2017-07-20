@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import React from 'react'
+import {PixelRatio} from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 

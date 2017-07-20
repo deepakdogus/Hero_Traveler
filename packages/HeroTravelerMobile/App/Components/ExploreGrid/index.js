@@ -8,7 +8,7 @@ import {
 import TabIcon from '../TabIcon'
 import Image from '../Image'
 import styles from './ExploreGridStyles'
-import getImageUrl from '../../Lib/getImageUrl'
+import getS3ImageUrl from "../../Lib/getS3ImageUrl";
 
 export default class ExploreGrid extends Component {
 
@@ -30,7 +30,7 @@ export default class ExploreGrid extends Component {
         >
           <Image
             cached={true}
-            source={{uri: getImageUrl(category.image, 'versions.thumbnail240.path')}}
+            source={{uri: getS3ImageUrl(category.image, 'versions.thumbnail240.path')}}
             style={styles.gridImage}
           >
             <Text style={styles.gridRowText}>{category.title}</Text>

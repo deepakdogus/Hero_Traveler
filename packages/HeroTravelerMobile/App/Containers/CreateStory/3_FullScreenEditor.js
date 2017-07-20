@@ -147,7 +147,8 @@ class FullScreenEditor extends React.Component {
     this.setState({imageUploading: true})
     api.uploadStoryImage(this.props.story.id, pathAsFileObject(data))
       .then(({data: imageUpload}) => {
-        this.editor.insertImage(getImageUrl(imageUpload))
+        console.log('imageUpload', imageUpload)
+        this.editor.insertImage(_.get(imageUpload, 'original.path'))
         this.setState({imageUploading: false})
       })
     NavActions.pop()
@@ -158,7 +159,7 @@ class FullScreenEditor extends React.Component {
     this.setState({videoUploading: true})
     api.uploadStoryVideo(this.props.story.id, pathAsFileObject(data))
       .then(({data: videoUpload}) => {
-        this.editor.insertVideo(getVideoUrl(videoUpload))
+        this.editor.insertVideo(_.get(videoUpload, 'original.path'))
         this.setState({videoUploading: false})
       })
     NavActions.pop()

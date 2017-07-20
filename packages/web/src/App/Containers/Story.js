@@ -7,14 +7,22 @@ import StoryContentRenderer from '../Components/StoryContentRenderer'
 import GMap from '../Components/GoogleMap'
 import StoryMetaInfo from '../Components/StoryMetaInfo'
 import StoryActionBar from '../Components/StoryActionBar'
+import StorySuggestions from '../Components/StorySuggestions'
 
-const ContentWrapper = styled.div``
-const Suggestions = styled.div``
+
+const ContentWrapper = styled.div`
+  margin: 0;
+  padding: 0 auto;
+`
 
 const LimitedWidthContainer = styled.div`
   width: 66%;
   max-width: 900px;
   margin: 0 auto;
+`
+
+const GreyWrapper = styled.div`
+  background-color: ${props => props.theme.Colors.dividerGrey};
 `
 
 class Story extends Component {
@@ -40,7 +48,11 @@ class Story extends Component {
           <StoryMetaInfo story={story}/>
           <StoryActionBar story={story}/>
         </LimitedWidthContainer>
-        <Suggestions />
+        <GreyWrapper>
+          <LimitedWidthContainer>
+            <StorySuggestions suggestedStories={feedExample}/>
+          </LimitedWidthContainer>
+        </GreyWrapper>
       </ContentWrapper>
     )
   }

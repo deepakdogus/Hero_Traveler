@@ -14,7 +14,7 @@ const StyledVideo = styled.video`
   max-width: 100%;
 `
 
-export default class Icon extends React.Component {
+export default class Video extends React.Component {
   static propTypes = {
     src: PropTypes.string,
   }

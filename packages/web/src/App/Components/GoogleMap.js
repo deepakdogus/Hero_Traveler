@@ -20,7 +20,7 @@ const GettingStartedGoogleMap = withGoogleMap(props => {
   )}
 );
 
-export default class Map extends React.Component {
+export default class GMap extends React.Component {
 
   render () {
     const {lat, lng, location} = this.props

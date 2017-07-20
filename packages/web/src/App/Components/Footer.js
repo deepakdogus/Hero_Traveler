@@ -60,7 +60,7 @@ const InstagramIcon = styled(StyledIcon)`
 /*
 Need black icons and what size they want them. Ideally all icons should be square!
 */
-export default class Header extends React.Component {
+export default class Footer extends React.Component {
 
   render () {
     return (

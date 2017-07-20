@@ -92,7 +92,7 @@ export default class StoryPreview extends React.Component {
   }
 
   render() {
-    const {story, author} = this.props
+    const {story, author, type} = this.props
     const image = story.coverImage || story.coverVideo
     return (
       <MarginWrapper>
@@ -105,28 +105,34 @@ export default class StoryPreview extends React.Component {
         <StoryInfoContainer>
           <StoryLink to={`/story/${story.id}`}>
             <Title>{story.title}</Title>
-            <Description>{story.description}</Description>
-          <HorizontalDivider opaque />
+            { type !== 'suggestions' &&
+              <div>
+                <Description>{story.description}</Description>
+                <HorizontalDivider opaque />
+              </div>
+            }
           </StoryLink>
-          <DetailsContainer>
-            <ProfileLink to='/signup/social'>
-              <Avatar avatarUrl={getImageUrl(author.profile.avatar)} size='large'/>
-              <VerticalCenter>
-                <Username>{author.username}</Username>
-              </VerticalCenter>
-            </ProfileLink>
-            <StoryLink to={`/story/${story.id}`}>
-            <Right>
-                <div>
-                  <CreatedAt>{moment(story.createdAt).fromNow()}</CreatedAt>
-                  <LikeComponent
-                    likes={formatCount(story.counts.likes)}
-                    isLiked={this.props.isLiked}
-                  />
-                </div>
-            </Right>
+          { type !== 'suggestions' &&
+            <DetailsContainer>
+              <ProfileLink to='/signup/social'>
+                <Avatar avatarUrl={getImageUrl(author.profile.avatar)} size='large'/>
+                <VerticalCenter>
+                  <Username>{author.username}</Username>
+                </VerticalCenter>
+              </ProfileLink>
+              <StoryLink to={`/story/${story.id}`}>
+                <Right>
+                  <div>
+                    <CreatedAt>{moment(story.createdAt).fromNow()}</CreatedAt>
+                    <LikeComponent
+                      likes={formatCount(story.counts.likes)}
+                      isLiked={this.props.isLiked}
+                    />
+                  </div>
+                </Right>
               </StoryLink>
-          </DetailsContainer>
+            </DetailsContainer>
+          }
         </StoryInfoContainer>
       </MarginWrapper>
     )

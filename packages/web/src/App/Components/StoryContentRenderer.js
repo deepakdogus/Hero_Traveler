@@ -14,18 +14,6 @@ const StyledImage = styled(Image)`
   width: 100%;
 `
 
-const VideoWrapper = styled.figure`
-  text-align: center;
-  background-color: ${props => props.theme.Colors.background};
-  margin: 0;
-  max-height: 700px;
-`
-
-const StyledVideo = styled.video`
-  max-height: 700px;
-  max-width: 100%;
-`
-
 const Caption = styled.p`
   font-weight: 400;
   font-size: 18px;
@@ -116,7 +104,7 @@ const options = {
   },
 };
 
-export default class StoryContent extends React.Component {
+export default class StoryContentRenderer extends React.Component {
   static propTypes = {
     story: PropTypes.object,
   }

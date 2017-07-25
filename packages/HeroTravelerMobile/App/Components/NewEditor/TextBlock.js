@@ -143,7 +143,6 @@ export default class TextBlock extends React.Component {
   renderVideo() {
     if (this.props.type === 'video') {
       const videoUrl = `${getVideoUrlBase()}/${this.props.data.url}`
-      console.log('video url', videoUrl)
       return (
         <View style={styles.videoView}>
           <TouchableWithoutFeedback

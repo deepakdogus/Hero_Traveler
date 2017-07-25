@@ -147,7 +147,6 @@ class FullScreenEditor extends React.Component {
     this.setState({imageUploading: true})
     api.uploadStoryImage(this.props.story.id, pathAsFileObject(data))
       .then(({data: imageUpload}) => {
-        console.log('imageUpload', imageUpload)
         this.editor.insertImage(_.get(imageUpload, 'original.path'))
         this.setState({imageUploading: false})
       })

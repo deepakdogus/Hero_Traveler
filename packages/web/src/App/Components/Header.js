@@ -4,7 +4,6 @@ import styled from 'styled-components'
 
 import { Grid, Row, Col } from './FlexboxGrid';
 import logo from '../Shared/Images/ht-logo-white.png'
-import HeaderTab from './HeaderTab'
 import RoundedButton from './RoundedButton'
 import Icon from './Icon'
 import Avatar from './Avatar'
@@ -62,12 +61,6 @@ const MenuLink = (props) => {
     </NavLink>
   )
 }
-
-//<TabsContainer>
-//  {isLoggedIn && <HeaderTab text='My Feed' isActive/>}
-//  {isLoggedIn && <Divider>&nbsp;</Divider>}
-//  <HeaderTab text='Explore' isActive={!isLoggedIn}/>
-//</TabsContainer>
 
 export default class Header extends React.Component {
   static propTypes = {

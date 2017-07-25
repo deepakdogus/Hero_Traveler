@@ -3,8 +3,15 @@ import styled from 'styled-components'
 
 import {feedExample, usersExample} from './Feed_TEST_DATA'
 import ProfileHeader from '../Components/ProfileHeader'
+import Togglebar from '../Components/Togglebar'
 
 const ContentWrapper = styled.div``
+
+const toggleBarTabs = [
+  { text: 'stories', isActive: true },
+  { text: 'drafts', isActive: false },
+  { text: 'collections', isActive: false },
+]
 
 class Profile extends Component {
   render() {
@@ -12,6 +19,7 @@ class Profile extends Component {
     return (
       <ContentWrapper>
         <ProfileHeader user={user}/>
+        <Togglebar tabs={toggleBarTabs}/>
       </ContentWrapper>
     )
   }

@@ -12,6 +12,8 @@ function getSize(props) {
       return '50px'
     case 'large':
       return '62px'
+    case 'x-large':
+      return '112px'
     default:
       return '25px'
   }
@@ -101,6 +103,8 @@ export default class Icon extends React.Component {
         return Images.iconFlashCamera
       case 'video':
         return Images.iconCreateMenuVideo
+      case 'defaultProfile':
+        return Images.iconDefaultProfile
       case 'profile':
       default:
         return Images.iconNavProfile

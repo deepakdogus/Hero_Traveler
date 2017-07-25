@@ -10,10 +10,7 @@ import StoryActionBar from '../Components/StoryActionBar'
 import StorySuggestions from '../Components/StorySuggestions'
 
 
-const ContentWrapper = styled.div`
-  margin: 0;
-  padding: 0 auto;
-`
+const ContentWrapper = styled.div``
 
 const LimitedWidthContainer = styled.div`
   width: 66%;

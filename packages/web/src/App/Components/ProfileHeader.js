@@ -15,22 +15,22 @@ import HorizontalDivider from './HorizontalDivider'
 import Video from './Video'
 
 
-const Title = styled.p`
+const Username = styled.p`
   font-weight: 400;
-  font-size: ${props => props.mediaType === 'video' ? '30px' : '65px'};
+  font-size: 30px;
   color: ${props => props.theme.Colors.snow};
   letter-spacing: 1.5px;
   text-transform: uppercase;
   margin: 0;
 `
 
-const Subtitle = styled.p`
+const ItalicText = styled.p`
   font-weight: 400;
-  font-size: 23px;
+  font-size: 18px;
   color: ${props => props.theme.Colors.snow};
   letter-spacing: .5px;
   font-style: italic;
-  margin: 0 0 10px 0;
+  margin: 0;
 `
 
 const BottomContainer = styled(Row)`
@@ -56,51 +56,37 @@ const Centered = styled(VerticalCenter)`
 `
 
 const StyledHorizontalDivider = styled(HorizontalDivider)`
-  width: 65px;
+  width: 72px;
   border-width: 1px 0 0 0;
+`
+
+const StyledAvatar = styled(Avatar)`
+  margin: 0 auto;
 `
 
 export default class StoryHeader extends React.Component {
   static propTypes = {
-    story: PropTypes.object,
-    author: PropTypes.object,
-  }
-
-  getMediaType() {
-    if (this.props.story.coverImage) return 'image'
-    else if (this.props.story.coverVideo)return 'video'
-    return undefined
+    user: PropTypes.object,
   }
 
   render () {
-    const {story, author} = this.props
+    const {user} = this.props
     return (
       <HeaderImageWrapper
-        backgroundImage={getImageUrl(story.coverImage)}
         size='fullScreen'
-        type='story'
+        type='profile'
       >
         <Header isLoggedIn></Header>
         <Centered>
           <VerticalCenter>
-            <Title mediaType={this.getMediaType()}>{story.title}</Title>
+            <Username>{user.username}</Username>
             <StyledHorizontalDivider />
-            <Subtitle>{story.description}</Subtitle>
-            {story.coverVideo &&
-              <Video src={getVideoUrl(story.coverVideo)} type='cover'/>
-            }
+            <ItalicText>{user.profile.fullName}</ItalicText>
+            <div style={{margin: 'auto'}}>
+              <StyledAvatar type='profile' size='x-large' />
+            </div>
           </VerticalCenter>
         </Centered>
-        <BottomContainer center="xs">
-          <Avatar
-            avatarUrl={getImageUrl(author.profile.avatar)}
-            size='medium'
-          />
-          <VerticalCenter>
-            <AuthorTime>By {author.username} | {moment(story.createdAt).format('MMMM Do YYYY')}</AuthorTime>
-            <p style={{color: 'white'}}>DOWN ARROW</p>
-          </VerticalCenter>
-        </BottomContainer>
       </HeaderImageWrapper>
     )
   }

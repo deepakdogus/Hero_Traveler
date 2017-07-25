@@ -10,11 +10,11 @@ export default class Avatar extends React.Component {
   }
 
   render() {
-    const {avatarUrl, size} = this.props
+    const {avatarUrl, size, type} = this.props
     if (!avatarUrl) {
       return (
         <Icon
-          name='user-circle-o'
+          name={type === 'profile' ? 'defaultProfile' : 'user-circle-o'}
           size={size}
         />
       )

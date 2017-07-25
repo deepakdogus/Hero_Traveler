@@ -8,6 +8,8 @@ function getSize(props) {
       return '50px'
     case 'large':
       return '62px'
+    case 'x-large':
+      return '112px'
     default:
       return 'auto'
   }

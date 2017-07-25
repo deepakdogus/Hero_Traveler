@@ -6,6 +6,7 @@ import {NavLink} from 'react-router-dom';
 
 const Container = styled.div`
   width: 100%;
+  margin-top: 25px;
 `
 
 const SizedDiv = styled.div`

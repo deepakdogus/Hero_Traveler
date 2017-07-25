@@ -30,6 +30,7 @@ const StyledButton = styled.button`
       case 'grey':
         return props.theme.Colors.btnGreyBackground
       case 'opaque':
+      case 'opaqueWhite':
         return props.theme.Colors.snow
       case 'blackWhite':
         return props.theme.Colors.photoOverlay
@@ -45,6 +46,8 @@ const StyledButton = styled.button`
         return props.theme.Colors.btnGreyBackground
       case 'opaque':
         return props.theme.Colors.windowTint
+      case 'opaqueWhite':
+        return props.theme.Colors.whiteAlphaPt4
       case 'blackWhite':
       case 'facebook':
       case 'twitter':

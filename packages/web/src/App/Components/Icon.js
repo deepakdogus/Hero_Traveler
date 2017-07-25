@@ -103,6 +103,8 @@ export default class Icon extends React.Component {
         return Images.iconFlashCamera
       case 'video':
         return Images.iconCreateMenuVideo
+      case 'profileBadge':
+        return Images.iconProfileBadge
       case 'defaultProfile':
         return Images.iconDefaultProfile
       case 'profile':

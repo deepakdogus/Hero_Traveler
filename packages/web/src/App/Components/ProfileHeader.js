@@ -9,6 +9,21 @@ import HeaderImageWrapper from './HeaderImageWrapper'
 import VerticalCenter from './VerticalCenter'
 import HorizontalDivider from './HorizontalDivider'
 import RoundedButton from './RoundedButton'
+import Icon from './Icon'
+import getImageUrl from '../Shared/Lib/getImageUrl'
+
+const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
+  &:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 1;
+    background: rgba(0, 0, 0, .3);
+  }
+`
 
 const Username = styled.p`
   font-weight: 400;
@@ -34,7 +49,7 @@ const Centered = styled(VerticalCenter)`
   height: 630px;
   top:0;
   text-align:center;
-  z-index: 1;
+  z-index: 2;
 `
 
 const Count = styled.p`
@@ -82,46 +97,94 @@ const ButtonWrapper = styled.div`
   margin-top: 25px;
 `
 
+const BottomLeft = styled.div`
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  z-index: 1;
+`
+
+const ContributorText = styled.p`
+  font-weight: 400;
+  font-size: 12px;
+  color: ${props => props.theme.Colors.snow};
+  letter-spacing: 1px;
+  margin: 0;
+  padding-left: 10px;
+  line-height: 25px;
+`
 
 export default class StoryHeader extends React.Component {
   static propTypes = {
     user: PropTypes.object,
+    isContributor: PropTypes.bool,
   }
 
   render () {
-    const {user} = this.props
+    const {user, isContributor} = this.props
+    const isUsersProfile = user.id === '596cd072fc3f8110a6f18342'
+    const backgroundImage = getImageUrl(user.profile.cover)
+    const ImageWrapper = backgroundImage ? OpaqueHeaderImageWrapper : HeaderImageWrapper
+    const isFollowing = user.id === '590b9b0a4990800011537924'
     return (
-      <HeaderImageWrapper
+      <ImageWrapper
+        backgroundImage={backgroundImage}
         size='large'
         type='profile'
       >
         <Header isLoggedIn></Header>
         <Centered>
-          <VerticalCenter>
-            <Username>{user.username}</Username>
-            <StyledHorizontalDivider />
-            <ItalicText>{user.profile.fullName}</ItalicText>
-            <AvatarWrapper>
-              <StyledAvatar type='profile' size='x-large' />
-            </AvatarWrapper>
-            <ItalicText>Read Bio</ItalicText>
-            <CountWrapper center='xs'>
-              <CountItemWrapper>
-                <Count>{user.counts.followers}</Count>
-                <CountLabel>Followers</CountLabel>
-              </CountItemWrapper>
-              <Divider/>
-              <CountItemWrapper>
-                <Count>{user.counts.following}</Count>
-                <CountLabel>Following</CountLabel>
-              </CountItemWrapper>
-            </CountWrapper>
-            <ButtonWrapper>
+          <Username>{user.username}</Username>
+          <StyledHorizontalDivider />
+          <ItalicText>{user.profile.fullName}</ItalicText>
+          <AvatarWrapper>
+            <StyledAvatar
+              avatarUrl={getImageUrl(user.profile.avatar)}
+              type='profile'
+              size='x-large'
+            />
+          </AvatarWrapper>
+          <ItalicText>Read Bio</ItalicText>
+          <CountWrapper center='xs'>
+            <CountItemWrapper>
+              <Count>{user.counts.followers}</Count>
+              <CountLabel>Followers</CountLabel>
+            </CountItemWrapper>
+            <Divider/>
+            <CountItemWrapper>
+              <Count>{user.counts.following}</Count>
+              <CountLabel>Following</CountLabel>
+            </CountItemWrapper>
+          </CountWrapper>
+          <ButtonWrapper>
+            { isUsersProfile &&
               <RoundedButton type='opaque' text='EDIT PROFILE'/>
-            </ButtonWrapper>
-          </VerticalCenter>
+            }
+            {
+              !isUsersProfile &&
+              <div>
+                <RoundedButton
+                  margin='small'
+                  type={isFollowing ? 'opaqueWhite' : 'opaque'}
+                  text={isFollowing ? 'FOLLOWING' : 'FOLLOW'}
+                />
+                <RoundedButton
+                  margin='small'
+                  type='opaque'
+                  text='MESSAGE'/>
+              </div>
+            }
+          </ButtonWrapper>
         </Centered>
-      </HeaderImageWrapper>
+        <BottomLeft>
+          {isContributor &&
+            <Row>
+              <Icon name='profileBadge'/>
+              <ContributorText>CONTRIBUTOR</ContributorText>
+            </Row>
+          }
+        </BottomLeft>
+      </ImageWrapper>
     )
   }
 }

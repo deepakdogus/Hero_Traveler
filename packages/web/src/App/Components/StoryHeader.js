@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import moment from 'moment'
+import {NavLink} from 'react-router-dom';
 
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import getVideoUrl from '../Shared/Lib/getVideoUrl'
@@ -14,6 +15,10 @@ import {Row} from './FlexboxGrid';
 import HorizontalDivider from './HorizontalDivider'
 import Video from './Video'
 
+const ProfileLink = styled(NavLink)`
+  text-decoration: none;
+  color: inherit;
+`
 
 const Title = styled.p`
   font-weight: 400;
@@ -37,6 +42,7 @@ const BottomContainer = styled(Row)`
   position: absolute;
   bottom: 0;
   width: 100%;
+  z-index: 1;
 `
 
 const AuthorTime = styled.div`
@@ -92,10 +98,12 @@ export default class StoryHeader extends React.Component {
           </VerticalCenter>
         </Centered>
         <BottomContainer center="xs">
-          <Avatar
-            avatarUrl={getImageUrl(author.profile.avatar)}
-            size='medium'
-          />
+          <ProfileLink to={`/profile/${author.id}`}>
+            <Avatar
+              avatarUrl={getImageUrl(author.profile.avatar)}
+              size='medium'
+            />
+          </ProfileLink>
           <VerticalCenter>
             <AuthorTime>By {author.username} | {moment(story.createdAt).format('MMMM Do YYYY')}</AuthorTime>
             <p style={{color: 'white'}}>DOWN ARROW</p>

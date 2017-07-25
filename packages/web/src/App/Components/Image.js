@@ -19,5 +19,5 @@ function getSize(props) {
 export default styled.img`
   width: ${props => getSize};
   height: ${props => getSize};
-  border-radius: ${props => props.type !== undefined ? '30px' : '0'};
+  border-radius: ${props => props.type !== undefined ? '100%' : '0'};
 `

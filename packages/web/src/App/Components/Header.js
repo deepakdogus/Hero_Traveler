@@ -11,7 +11,7 @@ import {Link, NavLink} from 'react-router-dom';
 
 const StyledGrid = styled(Grid)`
   padding: 15px;
-  z-index: 2;
+  z-index: 3;
   position: absolute;
   width: 100%;
   top: 0;

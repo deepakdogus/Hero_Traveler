@@ -46,7 +46,6 @@ export default class Editor extends Component {
     super(props)
     let editorState
 
-    console.log('ed', props)
     if (props.value) {
       const state = convertFromRaw(props.value)
       editorState = EditorState.createWithContent(state)
@@ -186,15 +185,12 @@ export default class Editor extends Component {
   }
 
   insertVideo = (url) => {
-    console.log('insertVideo', url)
     this.insertAtomicBlock('video', url)
   }
 
   insertAtomicBlock(type, url) {
     let insertAfterKey
     let lastBlockKey = getLastBlockKey(this.editorState)
-
-    console.log('insertAtomicBlock', type, url)
 
     // If no input is focused, insert image at the end of the content state
     if (!this.focusedBlock) {

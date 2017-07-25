@@ -1764,7 +1764,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 9498CR345N;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/$(USER)/Documents/FacebookSDK",
@@ -1796,8 +1796,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rehashstudio.herotraveler;
 				PRODUCT_NAME = HeroTravelerMobile;
-				PROVISIONING_PROFILE = "4fffafe4-bc2b-415b-9710-3fa8f1fe1432";
-				PROVISIONING_PROFILE_SPECIFIER = "HERO Traveler Dev";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1843,7 +1843,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rehashstudio.herotraveler;
 				PRODUCT_NAME = HeroTravelerMobile;
-				PROVISIONING_PROFILE = "d0f840dd-71a2-4282-a49d-7204d7303c4d";
+				PROVISIONING_PROFILE = "7d30e5ff-1636-4e68-904f-c4e3ddc18862";
 				PROVISIONING_PROFILE_SPECIFIER = "Hero Traveler Ad Hoc - PushNotif";
 				VERSIONING_SYSTEM = "apple-generic";
 			};

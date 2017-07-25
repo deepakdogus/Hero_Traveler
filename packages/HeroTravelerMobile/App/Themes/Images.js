@@ -62,7 +62,8 @@ const images = {
   iconClose: require('../Images/ht-icons/icon_create-menu-close-x@2x.png'),
   iconReverseCamera: require('../Images/ht-icons/icon_camera-reverse@2x.png'),
   iconFlashCamera: require('../Images/ht-icons/icon_camera-flash@2x.png'),
-  iconCreateMenuVideo: require('../Images/ht-icons/icon_create-menu-video@2x.png')
+  iconCreateMenuVideo: require('../Images/ht-icons/icon_create-menu-video@2x.png'),
+  iconCreateMenuStory: require('../Images/ht-icons/icon_create-menu-story@2x.png'),
 }
 
 export default images

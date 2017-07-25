@@ -29,7 +29,10 @@ export default StyleSheet.create({
     color: Colors.background
   },
   lightText: {
-    color: Colors.snow
+    color: Colors.snow,
+    paddingTop: 10,
+    fontSize: 14,
+    letterSpacing: 1.5,
   },
   buttonText: {
     ...Fonts.style.buttonText,
@@ -38,7 +41,7 @@ export default StyleSheet.create({
   },
   logoImage: {
     width: 250,
-    height: 50,
+    height: 55,
     marginTop: Metrics.section,
     marginBottom: Metrics.section,
   },
@@ -57,11 +60,20 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  closeButton: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    marginTop: 0,
+    zIndex: 300,
+  },
   fakeTabbar: {
     height: 50,
-    position: 'absolute',
+    width: '100%',
+    position: 'relative',
     bottom: 0,
-    backgroundColor: Colors.background
+    zIndex: 100,
+    backgroundColor: Colors.photoOverlay,
   },
   loading: {
     position: 'absolute',
@@ -72,5 +84,14 @@ export default StyleSheet.create({
   },
   loadingText: {
     color: Colors.white
+  },
+  wrapper: {
+    height: 300,
+    backgroundColor: Colors.background,
+    position: 'absolute',
+    top: -250,
+    left:  Metrics.screenWidth * -.8,
+    bottom: 0,
+    width: Metrics.screenWidth,
   }
 })

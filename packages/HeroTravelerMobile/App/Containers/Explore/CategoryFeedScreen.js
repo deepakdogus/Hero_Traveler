@@ -15,7 +15,7 @@ import {Metrics} from '../../Themes'
 import styles from '../Styles/CategoryFeedScreenStyles'
 import NoStoriesMessage from '../../Components/NoStoriesMessage'
 
-const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight - 50
+const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight - 40
 
 const Tab = ({text, onPress, selected}) => {
   return (
@@ -121,24 +121,26 @@ class CategoryFeedScreen extends React.Component {
       content = <NoStoriesMessage />
     } else {
       content = (
-        <StoryList
-          style={styles.storyList}
-          storiesById={storiesById}
-          renderStory={(storyId) => {
-            return (
-              <ConnectedStoryPreview
-                key={storyId}
-                storyId={storyId}
-                height={imageHeight}
-                onPress={() => NavActions.story({storyId})}
-                onPressUser={this._touchUser}
-                onPressLike={story => this.props.toggleLike(this.props.user.id, story.id)}
-              />
-            )
-          }}
-          onRefresh={this._onRefresh}
-          refreshing={this.state.refreshing}
-        />
+        <View style={{height: imageHeight}}>
+          <StoryList
+            style={styles.storyList}
+            storiesById={storiesById}
+            renderStory={(storyId) => {
+              return (
+                <ConnectedStoryPreview
+                  key={storyId}
+                  storyId={storyId}
+                  height={imageHeight}
+                  onPress={() => NavActions.story({storyId})}
+                  onPressUser={this._touchUser}
+                  onPressLike={story => this.props.toggleLike(this.props.user.id, story.id)}
+                />
+              )
+            }}
+            onRefresh={this._onRefresh}
+            refreshing={this.state.refreshing}
+          />
+        </View>
       )
     }
 

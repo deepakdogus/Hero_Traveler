@@ -49,14 +49,12 @@ export default StyleSheet.create({
     height: 200,
   },
   buttonGroup: {
-    marginTop: Metrics.baseMargin,
-    marginBottom: Metrics.section * 2,
     flexGrow: 1,
     flexDirection: 'column',
     justifyContent: 'space-around',
   },
   button: {
-    marginTop: Metrics.baseMargin,
+    paddingTop: Metrics.baseMargin,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -65,7 +63,19 @@ export default StyleSheet.create({
     width: '100%',
     height: '100%',
     marginTop: 0,
+    paddingTop: 0,
     zIndex: 300,
+  },
+  storyButton: {
+    paddingTop: Metrics.doubleBaseMargin + 10,
+  },
+  videoButton: {
+    paddingTop: Metrics.doubleBaseMargin + 10,
+    paddingBottom: Metrics.section * 2,
+  },
+  exitButton: {
+    width: Metrics.screenWidth,
+    height: Metrics.screenHeight - 300,
   },
   fakeTabbar: {
     height: 50,

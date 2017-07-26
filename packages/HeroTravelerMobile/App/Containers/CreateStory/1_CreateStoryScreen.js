@@ -48,6 +48,11 @@ class CreateStoryScreen extends Component {
         rightTitle: 'Next',
         onSelectMedia: this._handleAddVideo
       })
+      /*
+      Setting video to false in order to reinitialize state and so that we do not
+      retrigger this if statement when we go back from video Story Cover Screen
+      */
+      this.setState({video: false})
     }
   }
 
@@ -116,14 +121,14 @@ class CreateStoryScreen extends Component {
         <View style={styles.wrapper}>
           <View style={styles.buttonGroup}>
             <TouchableOpacity
-              style={styles.button}
+              style={[styles.button, styles.storyButton]}
               onPress={this._createPhoto}
             >
               <TabIcon name='createMenuStory'/>
               <Text style={[styles.lightText, styles.buttonText]}>CREATE STORY</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.button}
+              style={[styles.button, styles.videoButton]}
               onPress={this._createVideo}
             >
               <TabIcon name='video-camera'/>

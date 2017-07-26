@@ -8,22 +8,24 @@ import ContentBlock from 'draft-js/lib/ContentBlock'
 import AtomicBlockUtils from 'draft-js/lib/AtomicBlockUtils'
 import keyCommandInsertNewline from 'draft-js/lib/keyCommandInsertNewline'
 import keyCommandPlainBackspace from 'draft-js/lib/keyCommandPlainBackspace'
+import removeRangeFrom from 'draft-js/lib/removeRangeFromContentState'
 import _ from 'lodash'
 
-export const makeSelectionState = (key, start, end, hasFocus) => {
+export const makeSelectionState = (startKey, endKey, start, end, hasFocus) => {
   return SelectionState
-    .createEmpty(key)
+    .createEmpty(startKey)
     .merge({
-      anchorKey: key,
+      anchorKey: startKey,
       anchorOffset: start,
-      focusKey: key,
+      focusKey: endKey,
       focusOffset: end,
-      hasFocus: hasFocus || false
+      hasFocus: hasFocus || false,
+      isBackward: false
     })
 }
 
 export const updateEditorSelection = (editorState, key, start, end) => {
-  const newSelectionState = makeSelectionState(key, start, end)
+  const newSelectionState = makeSelectionState(key, key, start, end)
   return EditorState.forceSelection(
     editorState,
     newSelectionState
@@ -107,7 +109,7 @@ export const insertBlock = (editorState, blockKey, options = {}) => {
   let nextSelection
 
   if (options.focusNewBlock === true) {
-    nextSelection = makeSelectionState(newBlockKey, 0, 0)
+    nextSelection = makeSelectionState(newBlockKey, newBlockKey, 0, 0)
   } else {
     nextSelection = options.selection
   }
@@ -150,7 +152,7 @@ export const handleReturn = (editorState) => {
   if (selectedBlock.getType() === 'atomic') {
     let newEditorState = insertBlock(editorState, selectedBlock.getKey())
     const newBlock = newEditorState.getCurrentContent().getLastBlock()
-    newEditorState = EditorState.acceptSelection(newEditorState, makeSelectionState(newBlock.getKey(), 0, 0))
+    newEditorState = EditorState.acceptSelection(newEditorState, makeSelectionState(newBlock.getKey(), newBlock.getKey(), 0, 0))
     return newEditorState
   }
 
@@ -183,4 +185,27 @@ export const handleBackspace = (editorState) => {
   // }
 
   return keyCommandPlainBackspace(editorState)
+}
+
+export const removeBlock = (editorState, blockKey) => {
+  const contentState = editorState.getCurrentContent()
+  const blockToRemove = contentState.getBlockForKey(blockKey)
+  const blocks = contentState.getBlockMap()
+  const blocksBefore = blocks.toSeq().takeUntil(v => v === blockToRemove)
+  const blocksAfter = blocks.toSeq().skipUntil(v => v === blockToRemove).rest()
+  const newBlocks = blocksBefore.concat(blocksAfter).toOrderedMap()
+  const firstBlock = newBlocks.first()
+  const newContentState = contentState.merge({
+    blockMap: newBlocks
+  })
+
+  let newState = EditorState.push(editorState, newContentState, 'remove-range')
+  newState = EditorState.acceptSelection(newState, makeSelectionState(
+    firstBlock.getKey(),
+    firstBlock.getKey(),
+    0,
+    0,
+  ))
+
+  return newState
 }

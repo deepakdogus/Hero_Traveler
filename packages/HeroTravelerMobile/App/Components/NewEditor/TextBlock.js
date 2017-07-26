@@ -4,7 +4,7 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  // Image,
+  TouchableOpacity,
   TouchableWithoutFeedback
 } from 'react-native'
 import PropTypes from 'prop-types'
@@ -118,14 +118,31 @@ export default class TextBlock extends React.Component {
     this.wasManuallyFocused = false
   }
 
+  onPressDelete = () => {
+    this.props.onDelete(this.props.blockKey)
+  }
+
   toggleImageFocus = () => {
     this.setState({isImageFocused: !this.state.isImageFocused})
   }
 
   renderImage() {
     if (this.props.type === 'image') {
+
+      const imageEditOverlay = (
+        <TouchableWithoutFeedback onPress={this.toggleImageFocus}>
+          <View style={styles.imageEditOverlay}>
+            <TouchableOpacity onPress={this.onPressDelete}>
+              <Text>Delete</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableWithoutFeedback>
+      )
+
       return (
-        <View style={styles.imageView}>
+        <View style={[
+          styles.imageView
+        ]}>
           <TouchableWithoutFeedback
             style={{flex: 1}}
             onPress={this.toggleImageFocus}
@@ -133,7 +150,9 @@ export default class TextBlock extends React.Component {
             <Image
               fullWidth={true}
               source={{ uri: `${getImageUrlBase()}/${this.props.data.url}` }}
-            />
+            >
+              {this.state.isImageFocused && imageEditOverlay}
+            </Image>
           </TouchableWithoutFeedback>
         </View>
       )
@@ -238,9 +257,13 @@ const styles = StyleSheet.create({
   debugText: {
     color: 'red'
   },
-  imageFocused: {
-    borderColor: 'green',
-    borderWidth: 2
+  imageEditOverlay: {
+    backgroundColor: 'rgba(0,0,0,.4)',
+    position: 'absolute',
+    top: 0,
+    right:0,
+    bottom: 0,
+    left: 0,
   },
   placeholderStyle: {
     fontStyle: 'italic',

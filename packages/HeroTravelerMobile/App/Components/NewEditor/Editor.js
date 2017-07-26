@@ -3,9 +3,10 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet, ScrollView, KeyboardAvoidingView,
+  StyleSheet, ScrollView
 } from 'react-native'
 import PropTypes from 'prop-types'
+import _ from 'lodash'
 
 import EditorState from 'draft-js/lib/EditorState'
 import convertFromRaw from 'draft-js/lib/convertFromRawToDraftState'
@@ -21,12 +22,15 @@ import {
   handleReturn,
   insertBlock,
   applyStyle,
-  toggleStyle, handleBackspace
+  toggleStyle,
+  handleBackspace,
+  removeBlock
 } from './DraftjsUtils'
 
 import * as DJSConsts from './DraftjsConsts'
 import Metrics from '../../Themes/Metrics'
 import KeyboardSpacer from 'react-native-keyboard-spacer'
+import TextBlock from './TextBlock'
 
 export default class Editor extends Component {
 
@@ -250,17 +254,46 @@ export default class Editor extends Component {
     return convertToRaw(this.editorState.getCurrentContent())
   }
 
+  removeMediaBlock = (blockKey) => {
+    console.log('Editor.removeBlock', blockKey)
+    this.editorState = removeBlock(this.editorState, blockKey)
+    this.forceUpdate()
+  }
+
+  getBlocks() {
+    const selectionState = this.editorState.getSelection()
+    const {blocks, entityMap} = convertToRaw(this.editorState.getCurrentContent())
+
+    return _.map(blocks, block => {
+      return (
+        <TextBlock
+          key={block.key}
+          text={block.text}
+          type={block.type !== 'atomic' ? block.type : block.data.type}
+          data={block.data}
+          blockKey={block.key}
+          inlineStyles={block.inlineStyleRanges}
+          entityRanges={block.entityRanges}
+          onKeyPress={this._onKeyPress}
+          onDelete={this.removeMediaBlock}
+          onSelectionChange={this._onSelectionChange}
+          customStyles={this.props.customStyles}
+          onChange={this._onChange}
+          isFocused={block.key === this.getFocusedBlock()}
+          onFocus={this._onFocus}
+          onBlur={this._onBlur}
+          entityMap={entityMap}
+          selection={{
+            start: selectionState.getStartOffset(),
+            end: selectionState.getEndOffset()
+          }}
+        />
+      )
+    })
+  }
+
   render() {
-    const elements = getBlocks(
-      this.getEditorState(),
-      this.getFocusedBlock(),
-      this.props.customStyles,
-      this._onChange,
-      this._onKeyPress,
-      this._onSelectionChange,
-      this._onFocus,
-      this._onBlur,
-    )
+    const elements = this.getBlocks()
 
     return (
       <View style={[styles.root, this.props.style]}>

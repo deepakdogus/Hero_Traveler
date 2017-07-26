@@ -9,11 +9,12 @@ import {
 } from 'react-native'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
-import Image from '../Image'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
+import Image from '../Image'
 import loadAttributes from './loadAttributes'
 import Video from '../Video'
-import Metrics from '../../Themes/Metrics'
+import {Colors, Metrics} from '../../Themes'
 import {getVideoUrlBase} from "../../Lib/getVideoUrl"
 import {getImageUrlBase} from "../../Lib/getImageUrl"
 
@@ -131,9 +132,9 @@ export default class TextBlock extends React.Component {
 
       const imageEditOverlay = (
         <TouchableWithoutFeedback onPress={this.toggleImageFocus}>
-          <View style={styles.imageEditOverlay}>
+          <View style={styles.assetEditOverlay}>
             <TouchableOpacity onPress={this.onPressDelete}>
-              <Text>Delete</Text>
+              <Icon name='trash' color={Colors.snow} size={30} />
             </TouchableOpacity>
           </View>
         </TouchableWithoutFeedback>
@@ -162,20 +163,32 @@ export default class TextBlock extends React.Component {
   renderVideo() {
     if (this.props.type === 'video') {
       const videoUrl = `${getVideoUrlBase()}/${this.props.data.url}`
+      const videoEditOverlay = (
+        <TouchableWithoutFeedback onPress={this.toggleImageFocus}>
+          <View style={styles.assetEditOverlay}>
+            <TouchableOpacity onPress={this.onPressDelete}>
+              <Icon name='trash' color={Colors.snow} size={30} />
+            </TouchableOpacity>
+          </View>
+        </TouchableWithoutFeedback>
+      )
       return (
         <View style={styles.videoView}>
           <TouchableWithoutFeedback
             style={{flex: 1}}
-            onPress={this.toggleVideoFocus}
+            onPress={this.toggleImageFocus}
           >
-            <Video
-              path={videoUrl}
-              allowVideoPlay={true}
-              autoPlayVideo={false}
-              showMuteButton={false}
-              showPlayButton={true}
-              videoFillSpace={true}
-            />
+            <View style={styles.abs}>
+              <Video
+                path={videoUrl}
+                allowVideoPlay={true}
+                autoPlayVideo={false}
+                showMuteButton={false}
+                showPlayButton={true}
+                videoFillSpace={true}
+              />
+              {this.state.isImageFocused && videoEditOverlay}
+            </View>
           </TouchableWithoutFeedback>
         </View>
       )
@@ -246,6 +259,14 @@ export default class TextBlock extends React.Component {
   }
 }
 
+const absStretch = {
+  position: 'absolute',
+  top: 0,
+  right:0,
+  bottom: 0,
+  left: 0,
+}
+
 const styles = StyleSheet.create({
   root: {
     flex: 1,
@@ -257,13 +278,15 @@ const styles = StyleSheet.create({
   debugText: {
     color: 'red'
   },
-  imageEditOverlay: {
-    backgroundColor: 'rgba(0,0,0,.4)',
-    position: 'absolute',
-    top: 0,
-    right:0,
-    bottom: 0,
-    left: 0,
+  assetEditOverlay: {
+    backgroundColor: 'rgba(0,0,0,.6)',
+    ...absStretch,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  abs: {
+    ...absStretch
   },
   placeholderStyle: {
     fontStyle: 'italic',

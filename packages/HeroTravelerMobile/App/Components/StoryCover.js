@@ -22,13 +22,15 @@ export default class StoryCover extends Component {
     onPress: PropTypes.func,
     autoPlayVideo: PropTypes.bool.isRequired,
     allowVideoPlay: PropTypes.bool.isRequired,
-    gradientColors: PropTypes.arrayOf(PropTypes.string)
+    gradientColors: PropTypes.arrayOf(PropTypes.string),
+    gradientLocations: PropTypes.arrayOf(PropTypes.number)
   }
 
   static defaultProps = {
     autoPlayVideo: false,
     allowVideoPlay: false,
-    gradientColors: ['transparent', 'rgba(0,0,0,.65)']
+    gradientColors: ['transparent', 'rgba(0,0,0,.65)'],
+    gradientLocations: [.5, 1],
   }
 
   constructor(props) {
@@ -62,6 +64,7 @@ export default class StoryCover extends Component {
           style={[styles.image]}
         >
           <LinearGradient
+            locations={this.props.gradientLocations}
             colors={this.props.gradientColors}
             style={styles.gradient}
           >
@@ -109,6 +112,7 @@ export default class StoryCover extends Component {
         <TouchableWithoutFeedback
           onPress={this._tapVideoWrapper}>
           <LinearGradient
+            locations={this.props.gradientLocations}
             colors={this.props.gradientColors}
             style={[styles.gradient, styles.videoGradient]}
           >

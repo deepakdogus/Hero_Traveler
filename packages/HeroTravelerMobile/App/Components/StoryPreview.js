@@ -165,6 +165,7 @@ export default class StoryPreview extends Component {
             coverType={story.coverImage ? 'image' : 'video'}
             onPress={this.props.onPress}
             gradientColors={this.props.gradientColors}
+            gradientLocations={this.props.gradientLocations}
           >
             <View style={styles.contentWrapper}>
               {this.props.forProfile && this.renderProfileTitleSection()}

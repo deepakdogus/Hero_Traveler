@@ -180,8 +180,8 @@ class StoryReadingScreen extends React.Component {
             showLike={false}
             showUserInfo={true}
             onPressUser={this._pressUser}
-            titleStyle={{fontWeight: '700'}}
-            gradientColors={['rgba(0,0,0,.75)', 'transparent', 'rgba(0,0,0,.75)']}
+            gradientColors={['rgba(0,0,0,.65)', 'transparent', 'transparent', 'rgba(0,0,0,.65)']}
+            gradientLocations={[0,.25,.5,1]}
             key={story.id}
             height={Metrics.screenHeight}
             storyId={story.id}
@@ -228,8 +228,11 @@ class StoryReadingScreen extends React.Component {
                   flexDirection: 'row',
                   marginHorizontal: Metrics.section
                 }}>
-                  <View style={styles.locationIcon}>
-                    <TabIcon name='location'/>
+                  <View style={styles.locationIconWrapper}>
+                    <TabIcon
+                      name='location'
+                      style={{ image: styles.locationIcon }}
+                    />
                   </View>
                   <View style={{flexDirection: 'column', alignItems: 'flex-start'}}>
                     <Text style={[styles.locationLabel]}>Location:</Text>

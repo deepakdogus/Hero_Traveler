@@ -29,6 +29,7 @@ import ChangePasswordScreen from '../Containers/ChangePasswordScreen'
 
 
 // Story reading & creating
+import StoryCreateTabIcon from '../Containers/CreateStory/StoryCreateTabIcon'
 import StoryReadingScreen from '../Containers/StoryReadingScreen'
 import StoryCommentsScreen from '../Containers/StoryCommentsScreen'
 import StoryCreateScreen from '../Containers/CreateStory/1_CreateStoryScreen'
@@ -284,8 +285,8 @@ export default NavActions.create(
         <Scene
           key='createStory'
           title='Create Story'
-          icon={TabIcon}
-          onPress={navToCreateFlow}
+          icon={StoryCreateTabIcon}
+          onPress={alwaysNull}
         />
         <Scene
           key='activity'
@@ -296,7 +297,7 @@ export default NavActions.create(
         />
         <Scene
           key='profile'
-          icon={TabIcon}
+          icon={StoryCreateScreen}
           component={ProfileScreen}
           hideNavBar
         />
@@ -314,11 +315,6 @@ export default NavActions.create(
         direction='vertical'
         hideNavBar={true}
       >
-        <Scene
-          key='createStory_info'
-          title='Create Story'
-          component={StoryCreateScreen}
-        />
         <Scene
           key='createStory_cover'
           component={StoryCoverScreen}

@@ -12,7 +12,6 @@ import EditorState from 'draft-js/lib/EditorState'
 import convertFromRaw from 'draft-js/lib/convertFromRawToDraftState'
 import convertToRaw from 'draft-js/lib/convertFromDraftStateToRaw'
 
-import {getBlocks} from './getBlocks'
 import Toolbar, {PressTypes} from './Toolbar'
 import {KeyTypes} from './KeyTypes'
 import {

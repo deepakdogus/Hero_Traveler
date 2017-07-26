@@ -28,7 +28,7 @@ export const PressTypes = {
   Image: 'press-image',
   Video: 'press-video',
   HeaderOne: DJSConsts.HeaderOne,
-  Bold: DJSConsts.Bold,
+  Bold: 'bold', //DJSConsts.Bold,
   Normal: DJSConsts.Unstyled,
   Italic: DJSConsts.Italic,
 }

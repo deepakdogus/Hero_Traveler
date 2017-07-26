@@ -102,6 +102,7 @@ export default class Editor extends Component {
   }
 
   _onSelectionChange = (key, start, end) => {
+    console.log('_onSelectionChange', key, start, end)
     this.selectionStates[key] = {
       start,
       end
@@ -179,6 +180,7 @@ export default class Editor extends Component {
   }
 
   toggleStyle(styleType) {
+    console.log('toggle style', styleType)
     this.editorState = applyStyle(this.editorState, styleType)
     this.forceUpdate()
   }
@@ -296,7 +298,7 @@ export default class Editor extends Component {
 
     return (
       <View style={[styles.root, this.props.style]}>
-        <ScrollView keyboardShouldPersistTaps='handled' style={styles.blocksWrapper}>
+        <ScrollView keyboardShouldPersistTaps='handled' style={styles.scrollView}>
           {elements}
           <TouchableOpacity
             onPress={this._accessibilityPressed}
@@ -316,15 +318,15 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
+  scrollView: {
+    flex: 1,
+    flexDirection: 'column',
+    marginHorizontal: Metrics.baseMargin
+  },
   accessibilitySpacer: {
     // backgroundColor: 'pink',
     alignItems: 'stretch',
     minHeight: 50,
     flex: 1,
-  },
-  blocksWrapper: {
-    flex: 1,
-    flexDirection: 'column',
-    marginHorizontal: Metrics.baseMargin
   }
 })

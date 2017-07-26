@@ -36,7 +36,7 @@ export default class TextBlock extends React.Component {
 
   static defaultProps = {
     customStyles: {},
-    debug: false
+    debug: false,
   }
 
   constructor(props) {
@@ -45,6 +45,7 @@ export default class TextBlock extends React.Component {
     this.blurredByReturn = false
     this.state = {
       text: this.props.text || '',
+      height: 35,
       selection: {
         start: 0,
         end: 0,
@@ -59,6 +60,7 @@ export default class TextBlock extends React.Component {
   }
 
   componentWillReceiveProps(nextProps, nextState) {
+    console.log('build text', this.state.text !== nextState.text)
     this.buildText = this.state.text !== nextState.text
   }
 
@@ -70,7 +72,19 @@ export default class TextBlock extends React.Component {
   }
 
   onChange = (text) => {
-    this.setState({text})
+    this.buildText = true
+    this.setState({text}, () => {
+      this.buildText = false
+    })
+  }
+
+  onContentSizeChange = (event) => {
+    console.log('onContentSizeChange', event.nativeEvent)
+    if (this.state.height !== event.nativeEvent.contentSize.height) {
+      this.setState({
+        height: Math.max(this.props.defaultHeight, event.nativeEvent.contentSize.height),
+      });
+    }
   }
 
   onFocus = (e) => {
@@ -240,13 +254,15 @@ export default class TextBlock extends React.Component {
           selection={this.state.selection}
           style={[
             styles.input,
-            this.isCaptionable() && styles.placeholderStyle
+            this.isCaptionable() && styles.placeholderStyle,
+            {height: this.state.height}
           ]}
           placeholder={this.isCaptionable() ? 'Add a caption...' : ''}
           placeholderTextColor={'#757575'}
           autoCorrect={false}
           blurOnSubmit={true}
           onSubmitEditing={this.onReturn}
+          onContentSizeChange={this.onContentSizeChange}
         >
           {!this.isTextBlank() &&
             <Text style={customStyle}>
@@ -273,7 +289,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column'
   },
   input: {
-    paddingVertical: 7
+    paddingTop: 10,
+    paddingBottom: 10
   },
   debugText: {
     color: 'red'

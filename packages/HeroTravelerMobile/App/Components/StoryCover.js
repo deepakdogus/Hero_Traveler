@@ -28,7 +28,7 @@ export default class StoryCover extends Component {
   static defaultProps = {
     autoPlayVideo: false,
     allowVideoPlay: false,
-    gradientColors: ['transparent', 'rgba(0,0,0,.75)']
+    gradientColors: ['transparent', 'rgba(0,0,0,.65)']
   }
 
   constructor(props) {

@@ -121,11 +121,17 @@ class StoryReadingScreen extends React.Component {
     this.toolbarShown = false
     this.state = {
       toolbarHeight: new Animated.Value(0),
+      newYPos: -1,
+      oldYPos: 0,
     }
   }
 
   onScroll(event) {
     const ypos = event.nativeEvent.contentOffset.y
+    this.setState({
+      oldYPos: this.state.newYPos,
+      newYPos: ypos,
+    })
     if (ypos > 35 && !this.toolbarShown) {
       this.toolbarShown = true
       this.showToolbar()
@@ -133,6 +139,7 @@ class StoryReadingScreen extends React.Component {
       this.toolbarShown = false
       this.hideToolbar()
     }
+
   }
 
   showToolbar() {
@@ -167,6 +174,14 @@ class StoryReadingScreen extends React.Component {
     }
   }
 
+  /*
+  If the old YPos is superior the the new YPos it means we scrolled up
+  and should show the content. Otherwise we should hide it.
+  */
+  isShowContent() {
+    return this.state.oldYPos >  this.state.newYPos
+  }
+
   render () {
     const { story } = this.props;
     return (
@@ -188,6 +203,7 @@ class StoryReadingScreen extends React.Component {
             autoPlayVideo={true}
             allowVideoPlay={true}
             showReadMessage={true}
+            isContentVisible={this.isShowContent()}
           />
           <View style={{flex: 1, marginBottom: Metrics.tabBarHeight}}>
             {!!story.draftjsContent &&

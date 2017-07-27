@@ -179,7 +179,7 @@ class StoryReadingScreen extends React.Component {
   and should show the content. Otherwise we should hide it.
   */
   isShowContent() {
-    return this.state.oldYPos >  this.state.newYPos
+    return this.state.oldYPos >  this.state.newYPos || this.state.newYPos <= 0
   }
 
   render () {

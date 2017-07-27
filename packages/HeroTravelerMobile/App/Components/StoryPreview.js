@@ -169,6 +169,7 @@ export default class StoryPreview extends Component {
             onPress={this.props.onPress}
             gradientColors={this.props.gradientColors}
             gradientLocations={this.props.gradientLocations}
+            showPlayButton={this.props.showPlayButton}
           >
             <FadeInOut isVisible={isContentVisible} style={styles.contentWrapper}>
                 {this.props.forProfile && this.renderProfileTitleSection()}

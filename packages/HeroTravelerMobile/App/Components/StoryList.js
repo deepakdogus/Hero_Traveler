@@ -27,6 +27,10 @@ export default class StoryList extends React.Component {
     }
   }
 
+  _renderHeader = () => {
+    return this.props.renderHeaderContent || null
+  }
+
   render () {
     return (
       <ListView
@@ -35,6 +39,8 @@ export default class StoryList extends React.Component {
         pagingEnabled={true}
         initialListSize={1}
         renderRow={this.props.renderStory}
+        renderHeader={this._renderHeader}
+        stickyHeaderIndices={[0]}
         refreshControl={
           <RefreshControl
             refreshing={this.props.refreshing}

@@ -12,6 +12,8 @@ class TabIcon extends React.Component {
     switch (navKey) {
       case 'pencil':
         return Images.iconPencil
+      case 'pencilOutline':
+        return Images.iconPencilOutline
       case 'gear':
         return Images.iconGear
       case 'date':
@@ -78,6 +80,8 @@ class TabIcon extends React.Component {
         return Images.iconFlashCamera
       case 'video':
         return Images.iconCreateMenuVideo
+      case 'trash':
+        return Images.iconTrash
       case 'profile':
       default:
         return Images.iconNavProfile
@@ -96,7 +100,9 @@ class TabIcon extends React.Component {
   render() {
     const { style = {}, name, notificationCount } = this.props
     return (
-      <View style={ style.view || {} }>
+      <View
+        style={style.view}
+      >
         <Image
           source={this.getIconName(name)}
           style={style.image || {}}

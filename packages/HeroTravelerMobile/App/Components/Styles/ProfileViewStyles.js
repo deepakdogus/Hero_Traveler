@@ -140,8 +140,8 @@ export default StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     backgroundColor: 'transparent',
-    top: -43,
-    left: 6,
+    top: 30,
+    left: 28.5,
   },
   contributor: {
     marginLeft: Metrics.baseMargin
@@ -158,7 +158,8 @@ export default StyleSheet.create({
   tabnavEdit: {
     height: tabNavEditHeight,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    backgroundColor: Colors.white,
   },
   tab: {
     justifyContent: 'center',

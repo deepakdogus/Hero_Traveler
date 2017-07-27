@@ -96,6 +96,11 @@ export default class StoryCover extends Component {
 
   _makeRef = (i) => this.player = i
 
+  /*
+  Nota bene. We have two different ways to display the play button. One through the Video
+  component and a second through the conditional renders we have below. This should be
+  refactored
+  */
   renderVideo() {
     return (
       <View style={{flex: 1}}>
@@ -132,6 +137,9 @@ export default class StoryCover extends Component {
             style={styles.muteButton}
           />
         }
+         {this.props.showPlayButton &&
+          <PlayButton style={styles.playButton}/>
+         }
       </View>
     )
   }

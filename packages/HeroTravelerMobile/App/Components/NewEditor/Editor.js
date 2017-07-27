@@ -13,7 +13,7 @@ import convertFromRaw from 'draft-js/lib/convertFromRawToDraftState'
 import convertToRaw from 'draft-js/lib/convertFromDraftStateToRaw'
 
 import Toolbar, {PressTypes} from './Toolbar'
-import {KeyTypes} from './KeyTypes'
+import KeyTypes from './util/KeyTypes'
 import {
   updateEditorSelection,
   insertText,
@@ -24,9 +24,10 @@ import {
   toggleStyle,
   handleBackspace,
   removeBlock
-} from './DraftjsUtils'
+} from './draft-js/utils'
 
-import * as DJSConsts from './DraftjsConsts'
+
+import * as DJSConsts from './draft-js/constants'
 import Metrics from '../../Themes/Metrics'
 import KeyboardSpacer from 'react-native-keyboard-spacer'
 import TextBlock from './TextBlock'

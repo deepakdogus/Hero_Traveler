@@ -5,9 +5,9 @@ import {
 } from 'react-native';
 
 import TextStyled from './TextStyled';
-import generateKey from './util/genKey';
-import flatAttributesList from './util/flatAttributesList';
-import getItemType from './util/getItemType';
+import generateKey from './genKey';
+import flatAttributesList from './flatAttributesList';
+import getItemType from './getItemType';
 
 const getItemOnPress = (item: Object, entityMap: Object, navigate: Function) => {
   if (item.key !== undefined) {

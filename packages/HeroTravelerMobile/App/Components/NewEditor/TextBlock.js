@@ -12,7 +12,7 @@ import _ from 'lodash'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import Image from '../Image'
-import loadAttributes from './loadAttributes'
+import loadAttributes from './util/loadAttributes'
 import Video from '../Video'
 import {Colors, Metrics} from '../../Themes'
 import {getVideoUrlBase} from "../../Lib/getVideoUrl"

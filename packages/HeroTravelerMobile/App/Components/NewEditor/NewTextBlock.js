@@ -191,30 +191,6 @@ export default class NewTextBlock extends React.Component {
   }
 
   getText() {
-    // if (this.buildText) {
-    //   this.buildText = false
-      // this.textElements = loadAttributes(
-      //   this.state.text,
-      //   this.props.customStyles,
-      //   this.props.inlineStyles,
-      //   this.props.entityRanges,
-      //   this.props.entityMap,
-      //   this.props.navigate,
-      // )
-
-      // return (
-      //   <Text
-      //     text={this.state.text}
-      //     customStyles={this.props.customStyles}
-      //     inlineStyles={this.props.inlineStyles}
-      //     entityRanges={this.props.entityRanges}
-      //     entityMap={this.props.entityMap}
-      //     navigate={this.props.navigate}
-      //   />
-      // )
-    // }
-
-    // return this.textElements
     return (
       <Text>
         {this.props.block.getText()}
@@ -228,7 +204,6 @@ export default class NewTextBlock extends React.Component {
 
   render() {
     // const customStyle = this.props.customStyles[this.props.type]
-
     // Disabling autocorrect until we can find a workaround for
     // the extra insert of characters
     // {this.props.debug && <Text style={styles.debugText}>{this.props.blockKey}</Text>}

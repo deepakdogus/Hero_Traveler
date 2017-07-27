@@ -140,8 +140,8 @@ export default StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     backgroundColor: 'transparent',
-    top: 30,
-    left: 28.5,
+    top: 31,
+    left: 30,
   },
   contributor: {
     marginLeft: Metrics.baseMargin
@@ -196,6 +196,7 @@ export default StyleSheet.create({
   editCoverText: {
     color: Colors.snow,
     fontFamily: Fonts.type.montserrat,
+    fontSize: 11,
   },
   editBio: {
     fontWeight: '600',

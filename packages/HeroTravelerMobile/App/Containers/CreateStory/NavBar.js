@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 export default class NavBar extends Component {
 
   render() {
-    const { style, 
+    const { style,
         leftTitle, leftIcon, leftTextStyle, onLeft,
         title, titleStyle,
         rightTitle, rightIcon, rightTextStyle, onRight, isRightValid = true } = this.props
@@ -98,7 +98,7 @@ export default class NavBar extends Component {
             >
               {rightTitle}
             </TextButton>
-            {rightIcon && <TabIcon style={{image: [styles.rightIconStyle, isRightValid ? {} : styles.inactiveBtn]}} name={rightIcon}/>}
+            {rightIcon && rightIcon !== 'none' && <TabIcon style={{image: [styles.rightIconStyle, isRightValid ? {} : styles.inactiveBtn]}} name={rightIcon}/>}
           </View>
         }
       </View>

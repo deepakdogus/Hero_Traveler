@@ -232,10 +232,13 @@ class ProfileView extends React.Component {
   _selectAvatar = () => {
     NavActions.mediaSelectorScreen({
       mediaType: 'photo',
-      title: 'Edit Avatar Image',
+      title: 'Edit Avatar',
+      titleStyle: {color: Colors.white},
       leftTitle: 'Cancel',
+      leftTextStyle: {color: Colors.white},
       onLeft: () => NavActions.pop(),
-      rightTitle: 'Next',
+      rightTitle: 'Done',
+      rightIcon: 'none',
       onSelectMedia: this._handleUpdateAvatarPhoto
     })
   }
@@ -243,10 +246,13 @@ class ProfileView extends React.Component {
   _selectCover = () => {
     NavActions.mediaSelectorScreen({
       mediaType: 'photo',
-      title: 'Edit Cover Image',
+      title: 'Edit Cover',
+      titleStyle: {color: Colors.white},
       leftTitle: 'Cancel',
+      leftTextStyle: {color: Colors.white},
       onLeft: () => NavActions.pop(),
-      rightTitle: 'Next',
+      rightTitle: 'Done',
+      rightIcon: 'none',
       onSelectMedia: this._handleUpdateCoverPhoto
     })
   }
@@ -364,7 +370,7 @@ class ProfileView extends React.Component {
         >
           <Icon
             name='camera'
-            size={35}
+            size={32.5}
             color={Colors.whiteAlphaPt80}
             style={styles.updateAvatorIcon} />
         </TouchableOpacity>
@@ -375,7 +381,7 @@ class ProfileView extends React.Component {
           style={styles.addCoverPhotoButton}
           onPress={this._selectCover}
         >
-          <Icon name='camera' size={35} color={Colors.whiteAlphaPt80} style={styles.cameraIcon} />
+          <Icon name='camera' size={32.5} color={Colors.whiteAlphaPt80} style={styles.cameraIcon} />
           <Text style={styles.editCoverText}>EDIT COVER IMAGE</Text>
         </TouchableOpacity>
       )
@@ -465,6 +471,9 @@ class ProfileView extends React.Component {
             onLeft={this._onLeft}
             rightTitle='Save'
             onRight={this._onRight}
+            style={{paddingTop: 15}}
+            leftTextStyle={{color: Colors.white}}
+            titleStyle={{color: Colors.white}}
           />
         }
         <KeyboardAwareScrollView getTextInputRefs={this._getTextInputRefs} style={[

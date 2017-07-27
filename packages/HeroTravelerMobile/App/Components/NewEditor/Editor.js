@@ -102,7 +102,6 @@ export default class Editor extends Component {
   }
 
   _onSelectionChange = (key, start, end) => {
-    console.log('_onSelectionChange', key, start, end)
     this.selectionStates[key] = {
       start,
       end
@@ -180,7 +179,6 @@ export default class Editor extends Component {
   }
 
   toggleStyle(styleType) {
-    console.log('toggle style', styleType)
     this.editorState = applyStyle(this.editorState, styleType)
     this.forceUpdate()
   }
@@ -256,7 +254,6 @@ export default class Editor extends Component {
   }
 
   removeMediaBlock = (blockKey) => {
-    console.log('Editor.removeBlock', blockKey)
     this.editorState = removeBlock(this.editorState, blockKey)
     this.forceUpdate()
   }

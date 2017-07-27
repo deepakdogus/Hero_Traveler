@@ -18,7 +18,6 @@ export default class Image extends Component {
   }
 
   _setImageSize(imageUrl) {
-    console.log('The image getSize', imageUrl)
     if(!imageUrl) return
     RNImage.getSize(imageUrl, (width, height) => {
       this.setState({

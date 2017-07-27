@@ -60,7 +60,6 @@ export default class TextBlock extends React.Component {
   }
 
   componentWillReceiveProps(nextProps, nextState) {
-    console.log('build text', this.state.text !== nextState.text)
     this.buildText = this.state.text !== nextState.text
   }
 
@@ -79,7 +78,6 @@ export default class TextBlock extends React.Component {
   }
 
   onContentSizeChange = (event) => {
-    console.log('onContentSizeChange', event.nativeEvent)
     if (this.state.height !== event.nativeEvent.contentSize.height) {
       this.setState({
         height: Math.max(this.props.defaultHeight, event.nativeEvent.contentSize.height),

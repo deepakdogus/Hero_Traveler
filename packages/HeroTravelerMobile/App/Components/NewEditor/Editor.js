@@ -8,12 +8,8 @@ import {
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
-import EditorState from 'draft-js/lib/EditorState'
-import convertFromRaw from 'draft-js/lib/convertFromRawToDraftState'
-import convertToRaw from 'draft-js/lib/convertFromDraftStateToRaw'
-
 import Toolbar, {PressTypes} from './Toolbar'
-import KeyTypes from './util/KeyTypes'
+import {KeyTypes} from './util/KeyTypes'
 import {
   updateEditorSelection,
   insertText,
@@ -23,9 +19,12 @@ import {
   applyStyle,
   toggleStyle,
   handleBackspace,
-  removeBlock
-} from './draft-js/utils'
+  removeBlock,
+  rawToEditorState,
+  editorStateToRaw
+} from './draft-js'
 
+import {EditorState} from './draft-js/reexports'
 
 import * as DJSConsts from './draft-js/constants'
 import Metrics from '../../Themes/Metrics'
@@ -51,8 +50,7 @@ export default class Editor extends Component {
     let editorState
 
     if (props.value) {
-      const state = convertFromRaw(props.value)
-      editorState = EditorState.createWithContent(state)
+      editorState = rawToEditorState(props.value)
       this.focusedBlock = null
     } else {
       editorState = EditorState.createEmpty()
@@ -251,7 +249,7 @@ export default class Editor extends Component {
   }
 
   getEditorStateAsObject() {
-    return convertToRaw(this.editorState.getCurrentContent())
+    return editorStateToRaw(this.editorState)
   }
 
   removeMediaBlock = (blockKey) => {
@@ -261,7 +259,7 @@ export default class Editor extends Component {
 
   getBlocks() {
     const selectionState = this.editorState.getSelection()
-    const {blocks, entityMap} = convertToRaw(this.editorState.getCurrentContent())
+    const {blocks, entityMap} = editorStateToRaw(this.editorState)
 
     return _.map(blocks, block => {
       return (

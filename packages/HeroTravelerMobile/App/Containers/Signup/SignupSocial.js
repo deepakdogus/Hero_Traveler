@@ -113,7 +113,7 @@ class SignupSocialScreen extends React.Component {
       <ScrollView style={[styles.containerWithNavbar, styles.root]}>
         <View style={styles.header}>
           <Text style={styles.title}>FOLLOW</Text>
-          <Text style={styles.subtitle}>Follow people to see their trips</Text>
+          <Text style={styles.subtitle}>Follow people to see their stories</Text>
         </View>
         {content}
       </ScrollView>

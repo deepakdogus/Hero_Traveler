@@ -147,7 +147,7 @@ class LaunchScreen extends React.Component {
             icon='facebook'
             iconStyle={styles.facebookIcon}
             text='Sign up with Facebook'
-            textStyle={styles.facebookTextStyle}
+            textStyle={[styles.baseTextStyle, styles.facebookTextStyle]}
           />
           <RoundedButton
             style={styles.email}
@@ -155,7 +155,7 @@ class LaunchScreen extends React.Component {
             icon='loginEmail'
             iconStyle={styles.emailIcon}
             text='Sign up with Email'
-            textStyle={styles.emailTextStyle}
+            textStyle={[styles.baseTextStyle, styles.emailTextStyle]}
           />
         </View>
         <View style={styles.loginWrapper}>

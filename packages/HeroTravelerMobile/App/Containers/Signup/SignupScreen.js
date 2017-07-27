@@ -171,10 +171,9 @@ class SignupScreen extends React.Component {
                 text='Sign Up'
                 capitalize={true}
                 style={styles.submitButton}
+                textStyle={styles.submitText}
                 onPress={handleSubmit(this._signup)}
               />
-
-
               <TOS styles={[styles.section, styles.tos]} />
             </View>
           </KeyboardAvoidingView>

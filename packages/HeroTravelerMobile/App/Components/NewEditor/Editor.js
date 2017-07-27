@@ -24,12 +24,12 @@ import {
   editorStateToRaw
 } from './draft-js'
 
-import {EditorState} from './draft-js/reexports'
+import {EditorState, DraftOffsetKey} from './draft-js/reexports'
 
 import * as DJSConsts from './draft-js/constants'
 import Metrics from '../../Themes/Metrics'
 import KeyboardSpacer from 'react-native-keyboard-spacer'
-import TextBlock from './TextBlock'
+import NewTextBlock from './NewTextBlock'
 
 export default class Editor extends Component {
 
@@ -51,21 +51,20 @@ export default class Editor extends Component {
 
     if (props.value) {
       editorState = rawToEditorState(props.value)
-      this.focusedBlock = null
+      // this.focusedBlock = null
     } else {
       editorState = EditorState.createEmpty()
       // Focus the first block when we load
-      this.focusedBlock = getLastBlockKey(editorState)
+      // this.focusedBlock = getLastBlockKey(editorState)
     }
 
     this.state = {
-      showTextMenu: false,
       editorState: editorState,
     }
 
-    this.editorState = editorState
-    this.selectionStates = {}
-    this.lastEventCount = null
+    // this.editorState = editorState
+    // this.selectionStates = {}
+    // this.lastEventCount = null
   }
 
   /* Lifecycle methods */
@@ -258,44 +257,64 @@ export default class Editor extends Component {
   }
 
   getBlocks() {
-    const selectionState = this.editorState.getSelection()
-    const {blocks, entityMap} = editorStateToRaw(this.editorState)
+    // const selectionState = this.editorState.getSelection()
+    // const {blocks, entityMap} = editorStateToRaw(this.editorState)
+    const {editorState} = this.state
+    const content = editorState.getCurrentContent()
+    const decorator = editorState.getDecorator()
+    const selection = editorState.getSelection()
+    const blocksAsArray = content.getBlocksAsArray()
 
-    return _.map(blocks, block => {
+    return blocksAsArray.map(block => {
+      const key = block.getKey()
+      const offsetKey = DraftOffsetKey.encode(key, 0, 0)
+      const componentProps = {
+        contentState: content,
+        block,
+        decorator,
+        offsetKey,
+        selection,
+        tree: editorState.getBlockTree(key)
+      }
+
       return (
-        <TextBlock
-          key={block.key}
-          text={block.text}
-          type={block.type !== 'atomic' ? block.type : block.data.type}
-          data={block.data}
-          blockKey={block.key}
-          inlineStyles={block.inlineStyleRanges}
-          entityRanges={block.entityRanges}
-          onKeyPress={this._onKeyPress}
-          onDelete={this.removeMediaBlock}
-          onSelectionChange={this._onSelectionChange}
-          customStyles={this.props.customStyles}
-          onChange={this._onChange}
-          isFocused={block.key === this.getFocusedBlock()}
-          onFocus={this._onFocus}
-          onBlur={this._onBlur}
-          entityMap={entityMap}
-          selection={{
-            start: selectionState.getStartOffset(),
-            end: selectionState.getEndOffset()
-          }}
+        <NewTextBlock
+          {...componentProps}
         />
       )
+
+      // return (
+      //   <TextBlock
+      //     key={block.key}
+      //     text={block.text}
+      //     type={block.type !== 'atomic' ? block.type : block.data.type}
+      //     data={block.data}
+      //     blockKey={block.key}
+      //     inlineStyles={block.inlineStyleRanges}
+      //     entityRanges={block.entityRanges}
+      //     onKeyPress={this._onKeyPress}
+      //     onDelete={this.removeMediaBlock}
+      //     onSelectionChange={this._onSelectionChange}
+      //     customStyles={this.props.customStyles}
+      //     onChange={this._onChange}
+      //     isFocused={block.key === this.getFocusedBlock()}
+      //     onFocus={this._onFocus}
+      //     onBlur={this._onBlur}
+      //     entityMap={entityMap}
+      //     selection={{
+      //       start: selectionState.getStartOffset(),
+      //       end: selectionState.getEndOffset()
+      //     }}
+      //   />
+      // )
     })
   }
 
   render() {
-    const elements = this.getBlocks()
-
     return (
       <View style={[styles.root, this.props.style]}>
         <ScrollView keyboardShouldPersistTaps='handled' style={styles.scrollView}>
-          {elements}
+          {this.getBlocks()}
           <TouchableOpacity
             onPress={this._accessibilityPressed}
             style={styles.accessibilitySpacer}><Text> </Text></TouchableOpacity>

@@ -1,6 +1,6 @@
 import mockery from 'mockery'
 import m from 'module'
-import english from '../App/I18n/languages/english.json'
+// import english from '../App/I18n/languages/english.json'
 import {keys, replace, forEach} from 'ramda'
 
 // inject __DEV__ as it is not available when running through the tests
@@ -28,18 +28,18 @@ mockery.registerMock('react-native-router-flux', {Actions: {'myScreen': () => {}
 // If you are not using '../App/I18n/english.json' for your I18n values, simply replace import english
 // with the import at the top of this file from '../App/I18n/english.json' with the I18n json file you
 // want to use, such as "import french from '../App/I18n/fr.json'" and set 'let value = french[key]`
-mockery.registerMock('react-native-i18n', {
-  t: (key, replacements) => {
-    let value = english[key]
-    if (!value) return key
-    if (!replacements) return value
-
-    forEach((r) => {
-      value = replace(`{{${r}}}`, replacements[r], value)
-    }, keys(replacements))
-    return value
-  }
-})
+// mockery.registerMock('react-native-i18n', {
+//   t: (key, replacements) => {
+//     let value = english[key]
+//     if (!value) return key
+//     if (!replacements) return value
+//
+//     forEach((r) => {
+//       value = replace(`{{${r}}}`, replacements[r], value)
+//     }, keys(replacements))
+//     return value
+//   }
+// })
 
 // Mock all images for React Native
 const originalLoader = m._load

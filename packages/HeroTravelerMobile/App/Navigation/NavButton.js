@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import { TouchableOpacity, Text } from 'react-native'
 import TabIcon from '../Components/TabIcon'
 import Styles from './Styles/NavButtonStyles'
@@ -15,8 +16,8 @@ export default class NavButton extends React.Component {
   render () {
     const {iconName, onRight, onLeft, text, style = {}} = this.props
     const TabIconInstance = (
-      <TabIcon 
-        name={ this.props.iconName } 
+      <TabIcon
+        name={ this.props.iconName }
         style={{image: [Styles.image, style.icon || {} ] }}
       />)
 

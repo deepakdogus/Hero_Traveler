@@ -49,6 +49,8 @@ export default class Editor extends Component {
     super(props)
     let editorState
 
+    console.log('RAW', props.value)
+
     if (props.value) {
       editorState = rawToEditorState(props.value)
       // this.focusedBlock = null
@@ -269,6 +271,7 @@ export default class Editor extends Component {
       const key = block.getKey()
       const offsetKey = DraftOffsetKey.encode(key, 0, 0)
       const componentProps = {
+        key,
         contentState: content,
         block,
         decorator,
@@ -310,14 +313,14 @@ export default class Editor extends Component {
     })
   }
 
+    // <TouchableOpacity
+    //   onPress={this._accessibilityPressed}
+    //   style={styles.accessibilitySpacer}><Text> </Text></TouchableOpacity>
   render() {
     return (
       <View style={[styles.root, this.props.style]}>
         <ScrollView keyboardShouldPersistTaps='handled' style={styles.scrollView}>
           {this.getBlocks()}
-          <TouchableOpacity
-            onPress={this._accessibilityPressed}
-            style={styles.accessibilitySpacer}><Text> </Text></TouchableOpacity>
         </ScrollView>
         <Toolbar
           onPress={this._onToolbarPress}
@@ -336,7 +339,7 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
     flexDirection: 'column',
-    marginHorizontal: Metrics.baseMargin
+    // marginHorizontal: Metrics.baseMargin
   },
   accessibilitySpacer: {
     // backgroundColor: 'pink',

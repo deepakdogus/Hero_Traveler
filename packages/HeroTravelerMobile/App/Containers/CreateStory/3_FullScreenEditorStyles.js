@@ -25,12 +25,12 @@ export const customStyles = StyleSheet.create({
   },
   link: {
     color: '#c4170c',
-    fontWeight: 'bold',
+    fontWeight: '600',
     textDecorationLine: 'none',
   },
   'header-one': {
     fontSize: 21,
-    fontWeight: 'bold',
+    fontWeight: '600',
     color: '#1a1c21'
   }
 })

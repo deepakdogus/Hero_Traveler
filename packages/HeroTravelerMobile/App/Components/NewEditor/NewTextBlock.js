@@ -5,18 +5,20 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
 } from 'react-native'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
+import {DraftOffsetKey} from './draft-js/reexports'
 import Image from '../Image'
-import loadAttributes, {NewText} from './util/loadAttributes'
+// import loadAttributes, {NewText} from './util/loadAttributes'
 import Video from '../Video'
 import {Colors, Metrics} from '../../Themes'
 import {getVideoUrlBase} from "../../Lib/getVideoUrl"
 import {getImageUrlBase} from "../../Lib/getImageUrl"
+import Fonts from '../../Themes/Fonts'
 
 export default class NewTextBlock extends React.Component {
   static propTypes = {
@@ -113,42 +115,46 @@ export default class NewTextBlock extends React.Component {
   //   this.props.onDelete(this.props.blockKey)
   // }
 
-  // toggleImageFocus = () => {
-  //   this.setState({isImageFocused: !this.state.isImageFocused})
-  // }
+  toggleImageFocus = () => {
+    this.setState({isImageFocused: !this.state.isImageFocused})
+  }
 
-  // renderImage() {
-  //   if (this.props.type === 'image') {
-  //
-  //     const imageEditOverlay = (
-  //       <TouchableWithoutFeedback onPress={this.toggleImageFocus}>
-  //         <View style={styles.assetEditOverlay}>
-  //           <TouchableOpacity onPress={this.onPressDelete}>
-  //             <Icon name='trash' color={Colors.snow} size={30} />
-  //           </TouchableOpacity>
-  //         </View>
-  //       </TouchableWithoutFeedback>
-  //     )
-  //
-  //     return (
-  //       <View style={[
-  //         styles.imageView
-  //       ]}>
-  //         <TouchableWithoutFeedback
-  //           style={{flex: 1}}
-  //           onPress={this.toggleImageFocus}
-  //         >
-  //           <Image
-  //             fullWidth={true}
-  //             source={{ uri: `${getImageUrlBase()}/${this.props.data.url}` }}
-  //           >
-  //             {this.state.isImageFocused && imageEditOverlay}
-  //           </Image>
-  //         </TouchableWithoutFeedback>
-  //       </View>
-  //     )
-  //   }
-  // }
+  renderImage() {
+    const {block} = this.props
+    const type = block.getType()
+    const data = block.getData()
+    console.log('b data', data)
+    if (type === 'atomic' && data.get('type') === 'image') {
+      const url = data.get('url')
+      const imageEditOverlay = (
+        <TouchableWithoutFeedback onPress={this.toggleImageFocus}>
+          <View style={styles.assetEditOverlay}>
+            <TouchableOpacity onPress={this.onPressDelete}>
+              <Icon name='trash' color={Colors.snow} size={30} />
+            </TouchableOpacity>
+          </View>
+        </TouchableWithoutFeedback>
+      )
+
+      return (
+        <View style={[
+          styles.imageView
+        ]}>
+          <TouchableWithoutFeedback
+            style={{flex: 1}}
+            onPress={this.toggleImageFocus}
+          >
+            <Image
+              fullWidth={true}
+              source={{ uri: `${getImageUrlBase()}/${url}` }}
+            >
+              {this.state.isImageFocused && imageEditOverlay}
+            </Image>
+          </TouchableWithoutFeedback>
+        </View>
+      )
+    }
+  }
 
   // renderVideo() {
   //   if (this.props.type === 'video') {
@@ -190,12 +196,45 @@ export default class NewTextBlock extends React.Component {
     return false
   }
 
-  getText() {
-    return (
-      <Text>
-        {this.props.block.getText()}
-      </Text>
-    )
+  getText(): Array<React.Element<any>> {
+    const block = this.props.block
+    const blockKey = block.getKey()
+    const text = block.getText()
+    console.log('Node text', text)
+    const lastLeafSet = this.props.tree.size - 1
+    // console.log('this.props.tree', this.props.tree)
+    return this.props.tree.map((leafSet, ii) => {
+      const leavesForLeafSet = leafSet.get('leaves')
+      // console.log('leavesForLeafSet', leavesForLeafSet)
+      const leaves = leavesForLeafSet.map((leaf, jj) => {
+        const offsetKey = DraftOffsetKey.encode(blockKey, ii, jj)
+        const start = leaf.get('start')
+        const end = leaf.get('end')
+        const inlineStyleSet = block.getInlineStyleAt(start)
+        // console.log('inlineStyleSet', inlineStyleSet)
+
+        let styleObj = inlineStyleSet.toJS().reduce((map, styleName) => {
+          const mergedStyles = {};
+          // const style = customStyleMap[styleName];
+          const style = djStyles[styleName];
+
+          // console.log('STYLE obj', styleName, style)
+
+          return Object.assign(map, style, mergedStyles);
+        }, {});
+
+        return (
+          <Text
+            key={offsetKey}
+            style={styleObj}
+          >
+            {text.slice(start, end)}
+          </Text>
+        )
+      }).toArray()
+
+      return <Text>{leaves}</Text>
+    })
   }
 
   isTextBlank() {
@@ -217,25 +256,46 @@ export default class NewTextBlock extends React.Component {
     // selection={this.state.selection}
     // onSubmitEditing={this.onReturn}
     // onContentSizeChange={this.onContentSizeChange}
+
+    const text = this.getText()
+
+    console.log('getText()', text)
+
     return (
       <View style={styles.root}>
-        <TextInput
-          ref={i => this._input = i}
-          multiline={true}
-          style={[
-            styles.input,
-            this.isCaptionable() && styles.placeholderStyle,
-            // {height: this.state.height}
-          ]}
-          placeholder={this.isCaptionable() ? 'Add a caption...' : ''}
-          placeholderTextColor={'#757575'}
-          autoCorrect={false}
-          blurOnSubmit={true}
-        >
-          {!this.isTextBlank() && this.getText()}
-        </TextInput>
+        {this.renderImage()}
+        <View style={styles.inputWrapper}>
+          <TextInput
+            ref={i => this._input = i}
+            multiline={true}
+            style={[
+              styles.input,
+              this.isCaptionable() && styles.placeholderStyle,
+              // {height: this.state.height}
+            ]}
+            placeholder={this.isCaptionable() ? 'Add a caption...' : ''}
+            placeholderTextColor={'#757575'}
+            autoCorrect={false}
+            blurOnSubmit={true}
+          >
+            {!this.isTextBlank() &&
+              <Text style={styles.inputText}>
+                {text}
+              </Text>
+            }
+          </TextInput>
+        </View>
       </View>
     )
+  }
+}
+
+const djStyles = {
+  ITALIC: {
+    fontStyle: 'italic'
+  },
+  BOLD: {
+    fontWeight: '600'
   }
 }
 
@@ -247,16 +307,30 @@ const absStretch = {
   left: 0,
 }
 
+const baseFontSize = 18
+
 const styles = StyleSheet.create({
   root: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: 'tan',
-    marginBottom: 1
+    // flex: 1,
+    // flexDirection: 'column',
+    marginBottom: 1,
+  },
+  inputWrapper: {
+    flex: 0,
+    paddingHorizontal: 20
   },
   input: {
-    paddingTop: 10,
-    paddingBottom: 10
+    flex: 1,
+    lineHeight: baseFontSize,
+    fontSize: baseFontSize,
+    // backgroundColor: 'tan',
+    paddingVertical: 5,
+  },
+  inputText: {
+    lineHeight: baseFontSize,
+    fontSize: baseFontSize,
+    fontWeight: '300',
+    color: Colors.grey
   },
   debugText: {
     color: 'red'

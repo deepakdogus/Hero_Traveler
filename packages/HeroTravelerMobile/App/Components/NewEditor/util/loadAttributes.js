@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
 import {
   Text,
   Linking,
@@ -76,5 +76,25 @@ const loadAttributes = (
 
   return elementList;
 };
+
+export class NewText extends PureComponent {
+  render() {
+    return (
+      <Text
+        style={[
+          this.props.style
+        ]}>
+        {loadAttributes(
+          this.props.text,
+          this.props.customStyles,
+          this.props.inlineStyles,
+          this.props.entityRanges,
+          this.props.entityMap,
+          this.props.navigate,
+        )}
+      </Text>
+    )
+  }
+}
 
 export default loadAttributes;

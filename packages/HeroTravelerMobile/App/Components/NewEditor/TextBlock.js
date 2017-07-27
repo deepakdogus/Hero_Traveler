@@ -12,7 +12,7 @@ import _ from 'lodash'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import Image from '../Image'
-import loadAttributes from './util/loadAttributes'
+import loadAttributes, {NewText} from './util/loadAttributes'
 import Video from '../Video'
 import {Colors, Metrics} from '../../Themes'
 import {getVideoUrlBase} from "../../Lib/getVideoUrl"
@@ -214,13 +214,24 @@ export default class TextBlock extends React.Component {
   getText() {
     if (this.buildText) {
       this.buildText = false
-      this.textElements = loadAttributes(
-        this.state.text,
-        this.props.customStyles,
-        this.props.inlineStyles,
-        this.props.entityRanges,
-        this.props.entityMap,
-        this.props.navigate,
+      // this.textElements = loadAttributes(
+      //   this.state.text,
+      //   this.props.customStyles,
+      //   this.props.inlineStyles,
+      //   this.props.entityRanges,
+      //   this.props.entityMap,
+      //   this.props.navigate,
+      // )
+
+      return (
+        <NewText
+          text={this.state.text}
+          customStyles={this.props.customStyles}
+          inlineStyles={this.props.inlineStyles}
+          entityRanges={this.props.entityRanges}
+          entityMap={this.props.entityMap}
+          navigate={this.props.navigate}
+        />
       )
     }
 
@@ -262,11 +273,7 @@ export default class TextBlock extends React.Component {
           onSubmitEditing={this.onReturn}
           onContentSizeChange={this.onContentSizeChange}
         >
-          {!this.isTextBlank() &&
-            <Text style={customStyle}>
-              {this.getText()}
-            </Text>
-          }
+          {!this.isTextBlank() && this.getText()}
         </TextInput>
       </View>
     )

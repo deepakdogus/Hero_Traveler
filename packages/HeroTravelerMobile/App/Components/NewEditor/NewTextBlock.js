@@ -26,11 +26,13 @@ export default class NewTextBlock extends React.Component {
   }
 
   static defaultProps = {
+    defaultHeight: 35
   }
 
   constructor(props) {
     super(props)
     this.state = {
+      height: this.props.defaultHeight
     }
   }
 
@@ -123,7 +125,7 @@ export default class NewTextBlock extends React.Component {
     const {block} = this.props
     const type = block.getType()
     const data = block.getData()
-    console.log('b data', data)
+    // console.log('b data', data)
     if (type === 'atomic' && data.get('type') === 'image') {
       const url = data.get('url')
       const imageEditOverlay = (
@@ -191,38 +193,38 @@ export default class NewTextBlock extends React.Component {
   //   }
   // }
 
+  getAtomicType(): ?string {
+    const {block} = this.props
+    if (block.getType() === 'atomic') {
+      const data = block.getData()
+      return data.get('type')
+    }
+  }
+
+
   isCaptionable() {
-    // return _.includes(['image', 'video'], this.props.type)
-    return false
+    return _.includes(['image', 'video'], this.getAtomicType())
   }
 
   getText(): Array<React.Element<any>> {
     const block = this.props.block
     const blockKey = block.getKey()
     const text = block.getText()
-    console.log('Node text', text)
     const lastLeafSet = this.props.tree.size - 1
-    // console.log('this.props.tree', this.props.tree)
     return this.props.tree.map((leafSet, ii) => {
       const leavesForLeafSet = leafSet.get('leaves')
-      // console.log('leavesForLeafSet', leavesForLeafSet)
       const leaves = leavesForLeafSet.map((leaf, jj) => {
         const offsetKey = DraftOffsetKey.encode(blockKey, ii, jj)
         const start = leaf.get('start')
         const end = leaf.get('end')
         const inlineStyleSet = block.getInlineStyleAt(start)
-        // console.log('inlineStyleSet', inlineStyleSet)
-
         let styleObj = inlineStyleSet.toJS().reduce((map, styleName) => {
-          const mergedStyles = {};
-          // const style = customStyleMap[styleName];
-          const style = djStyles[styleName];
-
-          // console.log('STYLE obj', styleName, style)
-
-          return Object.assign(map, style, mergedStyles);
+          return Object.assign(
+            map,
+            djStyles[styleName],
+            this.getTypeStyles()
+          );
         }, {});
-
         return (
           <Text
             key={offsetKey}
@@ -233,12 +235,16 @@ export default class NewTextBlock extends React.Component {
         )
       }).toArray()
 
-      return <Text>{leaves}</Text>
+      return leaves
     })
   }
 
   isTextBlank() {
     return _.size(_.trim(this.props.block.getText())) === 0
+  }
+
+  getTypeStyles(): ?Object {
+    return this.props.customStyleMap[this.props.block.getType()]
   }
 
   render() {
@@ -255,32 +261,40 @@ export default class NewTextBlock extends React.Component {
     // onBlur={this.onBlur}
     // selection={this.state.selection}
     // onSubmitEditing={this.onReturn}
-    // onContentSizeChange={this.onContentSizeChange}
+
 
     const text = this.getText()
 
-    console.log('getText()', text)
+    // console.log('getText()', text)
 
     return (
       <View style={styles.root}>
         {this.renderImage()}
-        <View style={styles.inputWrapper}>
+        <View style={[
+          styles.inputWrapper,
+        ]}>
           <TextInput
             ref={i => this._input = i}
             multiline={true}
             style={[
               styles.input,
               this.isCaptionable() && styles.placeholderStyle,
-              // {height: this.state.height}
+              {height: this.state.height}
             ]}
             placeholder={this.isCaptionable() ? 'Add a caption...' : ''}
             placeholderTextColor={'#757575'}
             autoCorrect={false}
             blurOnSubmit={true}
+            onContentSizeChange={this.onContentSizeChange}
           >
             {!this.isTextBlank() &&
-              <Text style={styles.inputText}>
-                {text}
+              <Text>
+                <Text style={[
+                  styles.inputText,
+                  this.getTypeStyles()
+                ]}>
+                  {text}
+                </Text>
               </Text>
             }
           </TextInput>
@@ -312,28 +326,20 @@ const baseFontSize = 18
 const styles = StyleSheet.create({
   root: {
     // flex: 1,
-    // flexDirection: 'column',
-    marginBottom: 1,
+    flexDirection: 'column',
+    // marginBottom: 20,
   },
   inputWrapper: {
-    flex: 0,
-    paddingHorizontal: 20
+    flex: 1,
+    marginHorizontal: 20
   },
   input: {
-    flex: 1,
-    lineHeight: baseFontSize,
-    fontSize: baseFontSize,
-    // backgroundColor: 'tan',
-    paddingVertical: 5,
+    fontSize: 18,
+    minHeight: 35
   },
   inputText: {
-    lineHeight: baseFontSize,
-    fontSize: baseFontSize,
     fontWeight: '300',
-    color: Colors.grey
-  },
-  debugText: {
-    color: 'red'
+    color: Colors.grey,
   },
   assetEditOverlay: {
     backgroundColor: 'rgba(0,0,0,.6)',

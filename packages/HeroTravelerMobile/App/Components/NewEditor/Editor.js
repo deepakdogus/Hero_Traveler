@@ -34,7 +34,7 @@ import NewTextBlock from './NewTextBlock'
 export default class Editor extends Component {
 
   static propTypes = {
-    customStyles: PropTypes.object,
+    customStyleMap: PropTypes.object,
     onPressImage: PropTypes.func.isRequired,
     onPressVideo: PropTypes.func.isRequired,
     // Raw state
@@ -42,14 +42,12 @@ export default class Editor extends Component {
   }
 
   static defaultProps = {
-    customStyles: {}
+    customStyleMap: {}
   }
 
   constructor(props) {
     super(props)
     let editorState
-
-    console.log('RAW', props.value)
 
     if (props.value) {
       editorState = rawToEditorState(props.value)
@@ -277,6 +275,7 @@ export default class Editor extends Component {
         decorator,
         offsetKey,
         selection,
+        customStyleMap: this.props.customStyleMap,
         tree: editorState.getBlockTree(key)
       }
 
@@ -320,7 +319,9 @@ export default class Editor extends Component {
     return (
       <View style={[styles.root, this.props.style]}>
         <ScrollView keyboardShouldPersistTaps='handled' style={styles.scrollView}>
-          {this.getBlocks()}
+          <View style={styles.innerScroll}>
+            {this.getBlocks()}
+          </View>
         </ScrollView>
         <Toolbar
           onPress={this._onToolbarPress}
@@ -340,6 +341,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     // marginHorizontal: Metrics.baseMargin
+  },
+  innerScroll: {
+    marginBottom: Metrics.doubleBaseMargin,
   },
   accessibilitySpacer: {
     // backgroundColor: 'pink',

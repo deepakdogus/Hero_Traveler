@@ -1,8 +1,8 @@
 import {EditorState} from './reexports'
 import makeSelectionState from './makeSelectionState'
 
-export default function updateEditorSelection(editorState, key, start, end) {
-  const newSelectionState = makeSelectionState(key, key, start, end)
+export default function updateEditorSelection(editorState, key, start, end, hasFocus) {
+  const newSelectionState = makeSelectionState(key, key, start, end, hasFocus)
   return EditorState.forceSelection(
     editorState,
     newSelectionState

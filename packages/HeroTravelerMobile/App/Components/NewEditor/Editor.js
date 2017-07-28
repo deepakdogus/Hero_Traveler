@@ -31,12 +31,23 @@ import Metrics from '../../Themes/Metrics'
 import KeyboardSpacer from 'react-native-keyboard-spacer'
 import NewTextBlock from './NewTextBlock'
 
+const logSelection = (msg, selection) => {
+  console.log(
+    msg,
+    '\n',
+    `start: key(${selection.getAnchorKey()}) offset(${selection.getAnchorOffset()})`,
+    '\n',
+    `end:   key(${selection.getFocusKey()}) offset(${selection.getFocusOffset()})`
+  )
+}
+
+
 export default class Editor extends Component {
 
   static propTypes = {
     customStyleMap: PropTypes.object,
-    onPressImage: PropTypes.func.isRequired,
-    onPressVideo: PropTypes.func.isRequired,
+    // onPressImage: PropTypes.func.isRequired,
+    // onPressVideo: PropTypes.func.isRequired,
     // Raw state
     value: PropTypes.object
   }
@@ -51,6 +62,7 @@ export default class Editor extends Component {
 
     if (props.value) {
       editorState = rawToEditorState(props.value)
+      editorState = updateEditorSelection(editorState, '0', 4, 4, true)
       // this.focusedBlock = null
     } else {
       editorState = EditorState.createEmpty()
@@ -264,9 +276,9 @@ export default class Editor extends Component {
     const decorator = editorState.getDecorator()
     const selection = editorState.getSelection()
     const blocksAsArray = content.getBlocksAsArray()
-
     return blocksAsArray.map(block => {
       const key = block.getKey()
+      const isSelected = key === selection.getAnchorKey() && key === selection.getFocusKey()
       const offsetKey = DraftOffsetKey.encode(key, 0, 0)
       const componentProps = {
         key,
@@ -275,6 +287,7 @@ export default class Editor extends Component {
         decorator,
         offsetKey,
         selection,
+        isSelected,
         customStyleMap: this.props.customStyleMap,
         tree: editorState.getBlockTree(key)
       }
@@ -316,6 +329,7 @@ export default class Editor extends Component {
     //   onPress={this._accessibilityPressed}
     //   style={styles.accessibilitySpacer}><Text> </Text></TouchableOpacity>
   render() {
+    logSelection('Main render selection', this.state.editorState.getSelection())
     return (
       <View style={[styles.root, this.props.style]}>
         <View style={styles.innerScroll}>

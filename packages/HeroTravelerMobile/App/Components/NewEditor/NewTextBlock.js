@@ -22,11 +22,14 @@ import Fonts from '../../Themes/Fonts'
 
 export default class NewTextBlock extends React.Component {
   static propTypes = {
-
+    customStyleMap: PropTypes.object,
+    isSelected: PropTypes.bool,
+    offsetKey: PropTypes.string.isRequired,
   }
 
   static defaultProps = {
-    defaultHeight: 35
+    defaultHeight: 35,
+    customStyleMap: {},
   }
 
   constructor(props) {
@@ -261,6 +264,9 @@ export default class NewTextBlock extends React.Component {
   // onSubmitEditing={this.onReturn}
   render() {
     const text = this.getText()
+    const {isSelected, selection} = this.props
+    const inputSelection = isSelected ?
+      {start: selection.getAnchorOffset(), end: selection.getFocusOffset()} : undefined
     return (
       <View style={[
         styles.root,
@@ -283,6 +289,7 @@ export default class NewTextBlock extends React.Component {
             autoCorrect={false}
             blurOnSubmit={true}
             onContentSizeChange={this.onContentSizeChange}
+            selection={inputSelection}
           >
             {!this.isTextBlank() &&
               <Text>

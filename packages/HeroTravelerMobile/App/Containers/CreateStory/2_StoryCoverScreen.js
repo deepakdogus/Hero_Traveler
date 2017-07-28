@@ -676,8 +676,11 @@ class StoryCoverScreen extends Component {
             paddingRight: 10,
           }}
         />
-        <ScrollView keyboardShouldPersistTaps='handled' style={styles.scrollView}>
-          <View style={styles.coverWrapper}>
+        <ScrollView keyboardShouldPersistTaps='handled'>
+          <View style={[
+            styles.coverWrapper,
+            !this.isPhotoType() && styles.videoCoverWrapper
+          ]}>
             {this.state.error &&
               <ShadowButton
                 style={styles.errorButton}
@@ -855,6 +858,9 @@ const styles = StyleSheet.create({
   },
   coverWrapper: {
     height: Metrics.screenHeight - Metrics.navBarHeight - 30,
+  },
+  videoCoverWrapper: {
+    height: Metrics.screenHeight - Metrics.navBarHeight
   },
   angleDownIcon: {
     height: 20,

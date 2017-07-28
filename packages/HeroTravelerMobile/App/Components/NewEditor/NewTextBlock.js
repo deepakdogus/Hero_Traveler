@@ -25,6 +25,7 @@ export default class NewTextBlock extends React.Component {
     customStyleMap: PropTypes.object,
     isSelected: PropTypes.bool,
     offsetKey: PropTypes.string.isRequired,
+    onSelectionChange: PropTypes.func.isRequired
   }
 
   static defaultProps = {
@@ -70,16 +71,6 @@ export default class NewTextBlock extends React.Component {
     }
   }
 
-  // onFocus = (e) => {
-  //   if (this.wasManuallyFocused) {
-  //     this.wasManuallyFocused = false
-  //   } else {
-  //     this.props.onFocus(
-  //       this.props.blockKey
-  //     )
-  //   }
-  // }
-
   // onBlur = (e) => {
   //   this.props.onBlur(
   //     this.props.blockKey,
@@ -99,22 +90,40 @@ export default class NewTextBlock extends React.Component {
   //   this.props.onKeyPress(e, this._input)
   // }
 
-  // changeSelection = (e) => {
-  //   const {start, end} = e.nativeEvent.selection
-  //
-  //   if (!this.wasManuallyFocused) {
-  //     this.setState({
-  //       selection: {start, end}
-  //     })
-  //     this.props.onSelectionChange(
-  //       this.props.blockKey,
-  //       start,
-  //       end
-  //     )
-  //   }
-  //
-  //   this.wasManuallyFocused = false
-  // }
+  /*
+    Fire a selection change event if this view comes into focus
+    if the selection has not changed since last focus
+   */
+  onFocus = () => {
+    if (!this.selectionChangeFired) {
+      const {start, end} = this.lastSelectionChange
+      this.props.onSelectionChange(
+        this.props.block.getKey(),
+        start,
+        end
+      )
+    }
+  }
+
+  // Reset this.selectionChangeFired so next focus at the last saved
+  // cursor position fires a selection change event
+  onBlur = (e) => {
+    this.selectionChangeFired = false
+  }
+
+  onSelectionChange = (e) => {
+    const {start, end} = e.nativeEvent.selection
+    this.lastSelectionChange = {start, end}
+    // Only fire if focused
+    if (this.input.isFocused()) {
+      this.selectionChangeFired = true
+      this.props.onSelectionChange(
+        this.props.block.getKey(),
+        start,
+        end
+      )
+    }
+  }
 
   // onPressDelete = () => {
   //   this.props.onDelete(this.props.blockKey)
@@ -277,7 +286,7 @@ export default class NewTextBlock extends React.Component {
           styles.inputWrapper,
         ]}>
           <TextInput
-            ref={i => this._input = i}
+            ref={i => this.input = i}
             multiline={true}
             style={[
               styles.input,
@@ -288,8 +297,11 @@ export default class NewTextBlock extends React.Component {
             placeholderTextColor={'#757575'}
             autoCorrect={false}
             blurOnSubmit={true}
-            onContentSizeChange={this.onContentSizeChange}
             selection={inputSelection}
+            onBlur={this.onBlur}
+            onFocus={this.onFocus}
+            onSelectionChange={this.onSelectionChange}
+            onContentSizeChange={this.onContentSizeChange}
           >
             {!this.isTextBlank() &&
               <Text>

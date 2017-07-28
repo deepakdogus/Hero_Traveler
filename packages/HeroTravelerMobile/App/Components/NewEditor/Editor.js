@@ -125,6 +125,12 @@ export default class Editor extends Component {
     )
   }
 
+  onSelectionChange = (blockKey, start, end) => {
+    console.log('onSelectionChange', blockKey, start, end)
+    const editorState = updateEditorSelection(this.state.editorState, blockKey, start, end, true)
+    this.setState({editorState})
+  }
+
   _onFocus = (key) => {
     const selectionState = this.selectionStates[key]
     let start, end
@@ -289,7 +295,8 @@ export default class Editor extends Component {
         selection,
         isSelected,
         customStyleMap: this.props.customStyleMap,
-        tree: editorState.getBlockTree(key)
+        tree: editorState.getBlockTree(key),
+        onSelectionChange: this.onSelectionChange,
       }
 
       return (

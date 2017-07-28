@@ -1,8 +1,7 @@
-import React from 'react'
+import React, {PureComponent} from 'react'
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -10,20 +9,31 @@ import {
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
 
 import {DraftOffsetKey} from './draft-js/reexports'
 import Image from '../Image'
-// import loadAttributes, {NewText} from './util/loadAttributes'
 import Video from '../Video'
 import {Colors, Metrics} from '../../Themes'
 import {getVideoUrlBase} from "../../Lib/getVideoUrl"
 import {getImageUrlBase} from "../../Lib/getImageUrl"
 import Fonts from '../../Themes/Fonts'
 
-export default class NewTextBlock extends React.Component {
+const logSelection = (msg, selection) => {
+  console.log(
+    msg,
+    '\n',
+    `start: key(${selection.getAnchorKey()}) offset(${selection.getAnchorOffset()})`,
+    '\n',
+    `end:   key(${selection.getFocusKey()}) offset(${selection.getFocusOffset()})`,
+    '\n',
+    `focus: ${selection.getHasFocus()}`
+  )
+}
+
+export default class NewTextBlock extends PureComponent {
   static propTypes = {
     customStyleMap: PropTypes.object,
-    isSelected: PropTypes.bool,
     offsetKey: PropTypes.string.isRequired,
     onSelectionChange: PropTypes.func.isRequired
   }
@@ -35,72 +45,40 @@ export default class NewTextBlock extends React.Component {
 
   constructor(props) {
     super(props)
+    this.hasIgnoredFirstSelection = false
     this.state = {
       height: this.props.defaultHeight
     }
   }
 
-  // componentDidMount() {
-  //   if (this.props.isFocused) {
-  //     this._input.focus()
-  //   }
-  // }
-
-  // componentWillReceiveProps(nextProps, nextState) {
-  // }
-
-  // componentWillUpdate(nextProps, nextState) {
-  //   if ((this.props.isFocused || nextProps.isFocused) && !this._input.isFocused()) {
-  //     this.wasManuallyFocused = true
-  //     this._input.focus()
-  //   }
-  // }
-
-  // onChange = (text) => {
-  //   this.buildText = true
-  //   this.setState({text}, () => {
-  //     this.buildText = false
-  //   })
-  // }
-
-  onContentSizeChange = (event) => {
-    if (this.state.height !== event.nativeEvent.contentSize.height) {
-      this.setState({
-        height: Math.max(this.props.defaultHeight, event.nativeEvent.contentSize.height),
-      });
+  componentWillUpdate(nextProps) {
+    if (!this.input.isFocused() && nextProps.isSelected) {
+      this.input.focus()
     }
   }
-
-  // onBlur = (e) => {
-  //   this.props.onBlur(
-  //     this.props.blockKey,
-  //     'text',
-  //     this.state.text,
-  //     this.blurredByReturn
-  //   )
-  //
-  //   this.blurredByReturn = false
-  // }
-
-  // onReturn = (e) => {
-  //   this.blurredByReturn = true
-  // }
-
-  // onKeyPress = (e) => {
-  //   this.props.onKeyPress(e, this._input)
-  // }
 
   /*
     Fire a selection change event if this view comes into focus
     if the selection has not changed since last focus
    */
   onFocus = () => {
-    if (!this.selectionChangeFired) {
-      const {start, end} = this.lastSelectionChange
+    if (!this.selectionChangeFired && this.lastSelectionChange) {
+      const {selection, isSelected} = this.props
+      let start, end
+
+      if (isSelected && selection.getAnchorOffset() !== this.lastSelectionChange) {
+        start = selection.getAnchorOffset()
+        end = selection.getFocusOffset()
+      } else {
+        start = this.lastSelectionChange.start
+        end = this.lastSelectionChange.end
+      }
+
       this.props.onSelectionChange(
         this.props.block.getKey(),
         start,
-        end
+        end,
+        'focus'
       )
     }
   }
@@ -111,23 +89,35 @@ export default class NewTextBlock extends React.Component {
     this.selectionChangeFired = false
   }
 
-  onSelectionChange = (e) => {
-    const {start, end} = e.nativeEvent.selection
+  onSelectionChange = ({nativeEvent}) => {
+    const {start, end} = nativeEvent.selection
     this.lastSelectionChange = {start, end}
-    // Only fire if focused
+
+    if (!this.hasIgnoredFirstSelection) {
+      this.hasIgnoredFirstSelection = true
+      return
+    }
+
+    // Only fire if focused - ignores the initial event on mount
+    // so we don't update the EditorState unnecessarily
     if (this.input.isFocused()) {
       this.selectionChangeFired = true
       this.props.onSelectionChange(
         this.props.block.getKey(),
         start,
-        end
+        end,
+        'selection'
       )
     }
   }
 
-  // onPressDelete = () => {
-  //   this.props.onDelete(this.props.blockKey)
-  // }
+  onKeyPress = ({nativeEvent}) => {
+    this.props.onKeyPress(nativeEvent)
+  }
+
+  onDelete = () => {
+    this.props.onDelete(this.props.blockKey)
+  }
 
   toggleImageFocus = () => {
     this.setState({isImageFocused: !this.state.isImageFocused})
@@ -137,13 +127,12 @@ export default class NewTextBlock extends React.Component {
     const {block} = this.props
     const type = block.getType()
     const data = block.getData()
-    // console.log('b data', data)
     if (type === 'atomic' && data.get('type') === 'image') {
       const url = data.get('url')
       const imageEditOverlay = (
         <TouchableWithoutFeedback onPress={this.toggleImageFocus}>
           <View style={styles.assetEditOverlay}>
-            <TouchableOpacity onPress={this.onPressDelete}>
+            <TouchableOpacity onPress={this.onDelete}>
               <Icon name='trash' color={Colors.snow} size={30} />
             </TouchableOpacity>
           </View>
@@ -170,40 +159,44 @@ export default class NewTextBlock extends React.Component {
     }
   }
 
-  // renderVideo() {
-  //   if (this.props.type === 'video') {
-  //     const videoUrl = `${getVideoUrlBase()}/${this.props.data.url}`
-  //     const videoEditOverlay = (
-  //       <TouchableWithoutFeedback onPress={this.toggleImageFocus}>
-  //         <View style={styles.assetEditOverlay}>
-  //           <TouchableOpacity onPress={this.onPressDelete}>
-  //             <Icon name='trash' color={Colors.snow} size={30} />
-  //           </TouchableOpacity>
-  //         </View>
-  //       </TouchableWithoutFeedback>
-  //     )
-  //     return (
-  //       <View style={styles.videoView}>
-  //         <TouchableWithoutFeedback
-  //           style={{flex: 1}}
-  //           onPress={this.toggleImageFocus}
-  //         >
-  //           <View style={styles.abs}>
-  //             <Video
-  //               path={videoUrl}
-  //               allowVideoPlay={true}
-  //               autoPlayVideo={false}
-  //               showMuteButton={false}
-  //               showPlayButton={true}
-  //               videoFillSpace={true}
-  //             />
-  //             {this.state.isImageFocused && videoEditOverlay}
-  //           </View>
-  //         </TouchableWithoutFeedback>
-  //       </View>
-  //     )
-  //   }
-  // }
+  renderVideo() {
+    const {block} = this.props
+    const type = block.getType()
+    const data = block.getData()
+    if (type === 'atomic' && data.get('type') === 'video') {
+      const url = data.get('url')
+      const videoUrl = `${getVideoUrlBase()}/${url}`
+      const videoEditOverlay = (
+        <TouchableWithoutFeedback onPress={this.toggleImageFocus}>
+          <View style={styles.assetEditOverlay}>
+            <TouchableOpacity onPress={this.onDelete}>
+              <Icon name='trash' color={Colors.snow} size={30} />
+            </TouchableOpacity>
+          </View>
+        </TouchableWithoutFeedback>
+      )
+      return (
+        <View style={styles.videoView}>
+          <TouchableWithoutFeedback
+            style={{flex: 1}}
+            onPress={this.toggleImageFocus}
+          >
+            <View style={styles.abs}>
+              <Video
+                path={videoUrl}
+                allowVideoPlay={true}
+                autoPlayVideo={false}
+                showMuteButton={false}
+                showPlayButton={true}
+                videoFillSpace={true}
+              />
+              {this.state.isImageFocused && videoEditOverlay}
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+      )
+    }
+  }
 
   getAtomicType(): ?string {
     const {block} = this.props
@@ -229,10 +222,9 @@ export default class NewTextBlock extends React.Component {
     const block = this.props.block
     const blockKey = block.getKey()
     const text = block.getText()
-    const lastLeafSet = this.props.tree.size - 1
     return this.props.tree.map((leafSet, ii) => {
       const leavesForLeafSet = leafSet.get('leaves')
-      const leaves = leavesForLeafSet.map((leaf, jj) => {
+      return leavesForLeafSet.map((leaf, jj) => {
         const offsetKey = DraftOffsetKey.encode(blockKey, ii, jj)
         const start = leaf.get('start')
         const end = leaf.get('end')
@@ -253,67 +245,54 @@ export default class NewTextBlock extends React.Component {
           </Text>
         )
       }).toArray()
-
-      return leaves
     })
   }
 
-  // const customStyle = this.props.customStyles[this.props.type]
-  // Disabling autocorrect until we can find a workaround for
-  // the extra insert of characters
-  // {this.props.debug && <Text style={styles.debugText}>{this.props.blockKey}</Text>}
-  // {this.renderImage()}
-  // {this.renderVideo()}
-  // onSelectionChange={this.changeSelection}
-  // onKeyPress={this.onKeyPress}
-  // onChangeText={this.onChange}
-  // onFocus={this.onFocus}
-  // onBlur={this.onBlur}
-  // selection={this.state.selection}
-  // onSubmitEditing={this.onReturn}
   render() {
     const text = this.getText()
-    const {isSelected, selection} = this.props
-    const inputSelection = isSelected ?
+    const {selection} = this.props
+    const inputSelection = this.props.isSelected ?
       {start: selection.getAnchorOffset(), end: selection.getFocusOffset()} : undefined
+
     return (
       <View style={[
         styles.root,
         this.getAtomicType() && styles.atomicStyles,
       ]}>
         {this.renderImage()}
+        {this.renderVideo()}
         <View style={[
           styles.inputWrapper,
         ]}>
-          <TextInput
+          <AutoGrowingTextInput
             ref={i => this.input = i}
             multiline={true}
             style={[
               styles.input,
               this.isCaptionable() && styles.placeholderStyle,
-              {height: this.state.height}
             ]}
             placeholder={this.isCaptionable() ? 'Add a caption...' : ''}
+            onLayout={this.onLayout}
             placeholderTextColor={'#757575'}
+            autoFocus={this.props.autoFocus}
             autoCorrect={false}
             blurOnSubmit={true}
             selection={inputSelection}
+            onKeyPress={this.onKeyPress}
             onBlur={this.onBlur}
             onFocus={this.onFocus}
             onSelectionChange={this.onSelectionChange}
-            onContentSizeChange={this.onContentSizeChange}
+            onHeightChange={this.onHeightChanged}
           >
             {!this.isTextBlank() &&
-              <Text>
-                <Text style={[
-                  styles.inputText,
-                  this.getTypeStyles()
-                ]}>
-                  {text}
-                </Text>
+              <Text style={[
+                styles.inputText,
+                this.getTypeStyles()
+              ]}>
+                {text}
               </Text>
             }
-          </TextInput>
+          </AutoGrowingTextInput>
         </View>
       </View>
     )

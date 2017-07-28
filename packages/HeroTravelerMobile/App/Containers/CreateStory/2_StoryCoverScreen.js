@@ -365,6 +365,11 @@ class StoryCoverScreen extends Component {
 
   // TODO
   _onRight = () => {
+
+    console.log(this.editor.getEditorStateAsObject())
+
+    return
+
     const hasImageChanged = this.hasImageChanged()
     const hasVideoChanged = this.hasVideoChanged()
     const hasVideoSelected = !!this.state.coverVideo

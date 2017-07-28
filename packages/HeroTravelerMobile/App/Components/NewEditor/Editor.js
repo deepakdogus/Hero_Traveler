@@ -1,12 +1,9 @@
 import React, {Component} from 'react'
 import {
   View,
-  Text,
-  TouchableOpacity,
-  StyleSheet, ScrollView
+  StyleSheet,
 } from 'react-native'
 import PropTypes from 'prop-types'
-import _ from 'lodash'
 
 import Toolbar, {PressTypes} from './Toolbar'
 import {KeyTypes} from './util/KeyTypes'
@@ -18,28 +15,29 @@ import {
   insertBlock,
   applyStyle,
   toggleStyle,
-  handleBackspace,
   removeBlock,
   rawToEditorState,
   editorStateToRaw
 } from './draft-js'
 
-import {EditorState, DraftOffsetKey} from './draft-js/reexports'
+import {EditorState, DraftOffsetKey, keyCommandInsertNewline, keyCommandPlainBackspace} from './draft-js/reexports'
 
 import * as DJSConsts from './draft-js/constants'
 import Metrics from '../../Themes/Metrics'
-import KeyboardSpacer from 'react-native-keyboard-spacer'
-import NewTextBlock from './NewTextBlock'
+// import KeyboardSpacer from 'react-native-keyboard-spacer'
+import ContentBlock from './ContentBlock'
 
-const logSelection = (msg, selection) => {
-  console.log(
-    msg,
-    '\n',
-    `start: key(${selection.getAnchorKey()}) offset(${selection.getAnchorOffset()})`,
-    '\n',
-    `end:   key(${selection.getFocusKey()}) offset(${selection.getFocusOffset()})`
-  )
-}
+// const logSelection = (msg, selection) => {
+//   console.log(
+//     msg,
+//     '\n',
+//     `start: key(${selection.getAnchorKey()}) offset(${selection.getAnchorOffset()})`,
+//     '\n',
+//     `end:   key(${selection.getFocusKey()}) offset(${selection.getFocusOffset()})`,
+//     '\n',
+//     `focus: ${selection.getHasFocus()}`
+//   )
+// }
 
 
 export default class Editor extends Component {
@@ -62,109 +60,54 @@ export default class Editor extends Component {
 
     if (props.value) {
       editorState = rawToEditorState(props.value)
-      editorState = updateEditorSelection(editorState, '0', 4, 4, true)
-      // this.focusedBlock = null
     } else {
       editorState = EditorState.createEmpty()
-      // Focus the first block when we load
-      // this.focusedBlock = getLastBlockKey(editorState)
     }
 
     this.state = {
-      editorState: editorState,
+      editorState
     }
-
-    // this.editorState = editorState
-    // this.selectionStates = {}
-    // this.lastEventCount = null
   }
-
-  /* Lifecycle methods */
 
   /* Handlers */
-  _onChange = (key, text) => {
-
-  }
-
-  _onKeyPress = (e, inputRef) => {
-    const {key, eventCount} = e.nativeEvent
-
-    // This was to handle double spacebar tap to insert a period. is it needed?
-    if (key === KeyTypes.Backspace && eventCount === this.lastEventCount) {
-      return
-    }
-
-    switch (key) {
-      case KeyTypes.Backspace:
-        this.editorState = handleBackspace(this.editorState)
-        break
-
-      // Return is ignored here, and actually handled in _onBlur
-      case KeyTypes.Return:
-        break
-
-      default:
-        this.editorState = insertText(this.editorState, key)
-        break
-    }
-
-    this.lastEventCount = eventCount
-  }
-
-  _onSelectionChange = (key, start, end) => {
-    this.selectionStates[key] = {
-      start,
-      end
-    }
-
-    this.editorState = updateEditorSelection(
-      this.editorState,
-      key,
-      start,
-      end
-    )
-  }
-
-  onSelectionChange = (blockKey, start, end) => {
-    console.log('onSelectionChange', blockKey, start, end)
+  onSelectionChange = (blockKey, start, end, from) => {
+    // console.log(`selection! From: ${from}`, blockKey, start, end)
     const editorState = updateEditorSelection(this.state.editorState, blockKey, start, end, true)
     this.setState({editorState})
   }
 
-  _onFocus = (key) => {
-    const selectionState = this.selectionStates[key]
-    let start, end
-    // Newly added blocks don't have selection states yet
-    if (selectionState) {
-      start = selectionState.start
-      end = selectionState.end
-    } else {
-      start = 0
-      end = 0
+  onKeyPress = ({key}) => {
+    let editorState
+    switch (key) {
+      case KeyTypes.Backspace:
+        editorState = keyCommandPlainBackspace(this.state.editorState)
+        this.setIsNewBlock(editorState.getSelection().getAnchorKey())
+        break
+      case KeyTypes.Return:
+        editorState = keyCommandInsertNewline(this.state.editorState)
+        console.log('selection after insert', editorState.getSelection().getAnchorKey())
+        this.setIsNewBlock(editorState.getSelection().getAnchorKey())
+        break
+      default:
+        editorState = insertText(this.state.editorState, key)
     }
-    this.editorState = updateEditorSelection(
-      this.editorState,
-      key,
-      start,
-      end
-    )
 
-    this.focusedBlock = key
+    this.setState({editorState})
   }
 
-  _onBlur = (key, type, text, blurredByReturn) => {
-    // We want to insert the new block after the old block blurs
-    // because it appears any input blur will cause all inputs to blur
-    if (blurredByReturn) {
-      this.editorState = handleReturn(this.editorState)
-      this.focusedBlock = this.editorState.getSelection().getFocusKey()
-      this.forceUpdate()
-    } else {
-      this.focusedBlock = null
-    }
+  setIsNewBlock(blockKey) {
+    this.newBlock = blockKey
   }
 
-  _onToolbarPress = (pressType) => {
+  getIsNewBlock(blockKey) {
+    const isNew = blockKey === this.newBlock
+    if (isNew) {
+      this.newBlock = null
+    }
+    return isNew
+  }
+
+  onToolbarPress = (pressType) => {
     switch (pressType) {
       case PressTypes.HeaderOne:
         return this.toggleHeader()
@@ -245,28 +188,20 @@ export default class Editor extends Component {
     this.forceUpdate()
   }
 
-  _accessibilityPressed = () => {
-    const lastBlock = this.editorState.getCurrentContent().getLastBlock()
-    this.focusedBlock = lastBlock.getKey()
-    this.editorState = updateEditorSelection(
-      this.editorState,
-      this.focusedBlock,
-      lastBlock.getLength(),
-      lastBlock.getLength()
-    )
-    this.forceUpdate()
-  }
-
-  getEditorState() {
-    return this.editorState
-  }
-
-  getFocusedBlock() {
-    return this.focusedBlock
-  }
+  // _accessibilityPressed = () => {
+  //   const lastBlock = this.editorState.getCurrentContent().getLastBlock()
+  //   this.focusedBlock = lastBlock.getKey()
+  //   this.editorState = updateEditorSelection(
+  //     this.editorState,
+  //     this.focusedBlock,
+  //     lastBlock.getLength(),
+  //     lastBlock.getLength()
+  //   )
+  //   this.forceUpdate()
+  // }
 
   getEditorStateAsObject() {
-    return editorStateToRaw(this.editorState)
+    return editorStateToRaw(this.state.editorState)
   }
 
   removeMediaBlock = (blockKey) => {
@@ -280,55 +215,29 @@ export default class Editor extends Component {
     const {editorState} = this.state
     const content = editorState.getCurrentContent()
     const decorator = editorState.getDecorator()
-    const selection = editorState.getSelection()
+    const selectionState = editorState.getSelection()
     const blocksAsArray = content.getBlocksAsArray()
     return blocksAsArray.map(block => {
       const key = block.getKey()
-      const isSelected = key === selection.getAnchorKey() && key === selection.getFocusKey()
+      const isSelected = key === selectionState.getAnchorKey() && key === selectionState.getFocusKey()
+      const selection = isSelected ? selectionState : undefined
       const offsetKey = DraftOffsetKey.encode(key, 0, 0)
+      const autoFocus = this.getIsNewBlock(key)
       const componentProps = {
         key,
-        contentState: content,
         block,
         decorator,
         offsetKey,
-        selection,
         isSelected,
+        selection,
+        autoFocus,
         customStyleMap: this.props.customStyleMap,
         tree: editorState.getBlockTree(key),
         onSelectionChange: this.onSelectionChange,
+        onKeyPress: this.onKeyPress,
+        onDelete: this.removeMediaBlock
       }
-
-      return (
-        <NewTextBlock
-          {...componentProps}
-        />
-      )
-
-      // return (
-      //   <TextBlock
-      //     key={block.key}
-      //     text={block.text}
-      //     type={block.type !== 'atomic' ? block.type : block.data.type}
-      //     data={block.data}
-      //     blockKey={block.key}
-      //     inlineStyles={block.inlineStyleRanges}
-      //     entityRanges={block.entityRanges}
-      //     onKeyPress={this._onKeyPress}
-      //     onDelete={this.removeMediaBlock}
-      //     onSelectionChange={this._onSelectionChange}
-      //     customStyles={this.props.customStyles}
-      //     onChange={this._onChange}
-      //     isFocused={block.key === this.getFocusedBlock()}
-      //     onFocus={this._onFocus}
-      //     onBlur={this._onBlur}
-      //     entityMap={entityMap}
-      //     selection={{
-      //       start: selectionState.getStartOffset(),
-      //       end: selectionState.getEndOffset()
-      //     }}
-      //   />
-      // )
+      return <ContentBlock {...componentProps} />
     })
   }
 
@@ -336,14 +245,14 @@ export default class Editor extends Component {
     //   onPress={this._accessibilityPressed}
     //   style={styles.accessibilitySpacer}><Text> </Text></TouchableOpacity>
   render() {
-    logSelection('Main render selection', this.state.editorState.getSelection())
+    // logSelection('Main render selection', this.state.editorState.getSelection())
     return (
       <View style={[styles.root, this.props.style]}>
         <View style={styles.innerScroll}>
           {this.getBlocks()}
         </View>
         <Toolbar
-          onPress={this._onToolbarPress}
+          onPress={this.onToolbarPress}
         />
       </View>
     )

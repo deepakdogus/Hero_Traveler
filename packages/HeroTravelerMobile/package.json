@@ -44,6 +44,7 @@
     "react-mixin": "^3.0.5",
     "react-native": "~0.42.0",
     "react-native-animatable": "^1.1.0",
+    "react-native-autogrow-textinput": "^3.0.0",
     "react-native-camera": "0.6",
     "react-native-device-info": "^0.10.0",
     "react-native-draftjs-render": "^1.0.3",

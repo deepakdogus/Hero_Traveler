@@ -201,9 +201,16 @@ export default class NewTextBlock extends React.Component {
     }
   }
 
-
   isCaptionable() {
     return _.includes(['image', 'video'], this.getAtomicType())
+  }
+
+  isTextBlank() {
+    return _.size(_.trim(this.props.block.getText())) === 0
+  }
+
+  getTypeStyles(): ?Object {
+    return this.props.customStyleMap[this.props.block.getType()]
   }
 
   getText(): Array<React.Element<any>> {
@@ -239,36 +246,26 @@ export default class NewTextBlock extends React.Component {
     })
   }
 
-  isTextBlank() {
-    return _.size(_.trim(this.props.block.getText())) === 0
-  }
-
-  getTypeStyles(): ?Object {
-    return this.props.customStyleMap[this.props.block.getType()]
-  }
-
+  // const customStyle = this.props.customStyles[this.props.type]
+  // Disabling autocorrect until we can find a workaround for
+  // the extra insert of characters
+  // {this.props.debug && <Text style={styles.debugText}>{this.props.blockKey}</Text>}
+  // {this.renderImage()}
+  // {this.renderVideo()}
+  // onSelectionChange={this.changeSelection}
+  // onKeyPress={this.onKeyPress}
+  // onChangeText={this.onChange}
+  // onFocus={this.onFocus}
+  // onBlur={this.onBlur}
+  // selection={this.state.selection}
+  // onSubmitEditing={this.onReturn}
   render() {
-    // const customStyle = this.props.customStyles[this.props.type]
-    // Disabling autocorrect until we can find a workaround for
-    // the extra insert of characters
-    // {this.props.debug && <Text style={styles.debugText}>{this.props.blockKey}</Text>}
-    // {this.renderImage()}
-    // {this.renderVideo()}
-    // onSelectionChange={this.changeSelection}
-    // onKeyPress={this.onKeyPress}
-    // onChangeText={this.onChange}
-    // onFocus={this.onFocus}
-    // onBlur={this.onBlur}
-    // selection={this.state.selection}
-    // onSubmitEditing={this.onReturn}
-
-
     const text = this.getText()
-
-    // console.log('getText()', text)
-
     return (
-      <View style={styles.root}>
+      <View style={[
+        styles.root,
+        this.getAtomicType() && styles.atomicStyles,
+      ]}>
         {this.renderImage()}
         <View style={[
           styles.inputWrapper,
@@ -321,8 +318,6 @@ const absStretch = {
   left: 0,
 }
 
-const baseFontSize = 18
-
 const styles = StyleSheet.create({
   root: {
     // flex: 1,
@@ -355,7 +350,10 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     textAlign: 'center',
     color: '#757575',
-    padding: 20
+    marginTop: Metrics.baseMargin,
+  },
+  atomicStyles: {
+    marginTop: 20,
   },
   videoView: {
     // flex: 1,

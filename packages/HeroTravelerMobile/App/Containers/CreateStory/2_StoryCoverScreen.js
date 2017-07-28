@@ -10,29 +10,33 @@ import {
   KeyboardAvoidingView,
   Image,
   Alert,
-  TextInput
+  TextInput,
+  ScrollView,
+  StyleSheet
 } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
 import R from 'ramda'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import LinearGradient from 'react-native-linear-gradient'
+import Immutable from 'seamless-immutable'
 
 import API from '../../Services/HeroAPI'
-import StoryEditActions from '../../Redux/StoryCreateRedux'
-import ShadowButton from '../../Components/ShadowButton'
+import {Fonts, Colors, Metrics, ApplicationStyles} from '../../Themes'
 import Loader from '../../Components/Loader'
-import {Colors} from '../../Themes'
-import styles, { placeholderColor } from './2_StoryCoverScreenStyles'
-import NavBar from './NavBar'
+import ShadowButton from '../../Components/ShadowButton'
+import Video from '../../Components/Video'
+import RoundedButton from '../../Components/RoundedButton'
+import TabIcon from '../../Components/TabIcon'
+import Editor from '../../Components/NewEditor/Editor'
+import pathAsFileObject from '../../Lib/pathAsFileObject'
 import getImageUrl from '../../Lib/getImageUrl'
 import getVideoUrl from '../../Lib/getVideoUrl'
-import Video from '../../Components/Video'
-import pathAsFileObject from '../../Lib/pathAsFileObject'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Lib/firstTimeTooltips'
-import RoundedButton from '../../Components/RoundedButton'
+import StoryEditActions from '../../Redux/StoryCreateRedux'
 import UserActions from '../../Redux/Entities/Users'
-import TabIcon from '../../Components/TabIcon'
+import NavButtonStyles from '../../Navigation/Styles/NavButtonStyles'
+import NavBar from './NavBar'
 
 const api = API.create()
 
@@ -40,7 +44,17 @@ const MediaTypes = {
   video: 'video',
   photo: 'photo',
 }
-
+//   _onLeft = () => {
+//     this.saveContent().then(() => {
+//       NavActions.pop()
+//     })
+//   }
+//
+//   _onRight = () => {
+//     this.saveContent().then(() => {
+//       NavActions.createStory_details()
+//     })
+//   }
 class StoryCoverScreen extends Component {
 
   static propTypes = {
@@ -72,7 +86,9 @@ class StoryCoverScreen extends Component {
       coverImage: getImageUrl(props.story.coverImage),
       // Local file path to the video
       coverVideo: getVideoUrl(props.story.coverVideo),
-      toolbarOpacity: new Animated.Value(1)
+      toolbarOpacity: new Animated.Value(1),
+      imageUploading: false,
+      videoUploading: false,
     }
   }
 
@@ -104,6 +120,28 @@ class StoryCoverScreen extends Component {
     }
 
     this.setState(nextState)
+  }
+
+  isUploading() {
+    return this.state.imageUploading || this.state.videoUploading
+  }
+
+  saveContent() {
+    return Promise.resolve(this.editor.getEditorStateAsObject())
+      .then(draftjsObject => {
+        const story = {...this.props.story, draftjsContent: draftjsObject}
+        this.props.update(this.props.story.id, story)
+      })
+  }
+
+  getContent() {
+    if (_.keys(this.props.story.draftjsContent).length) {
+      const content = Immutable.asMutable(this.props.story.draftjsContent, {deep: true})
+      if (!content.entityMap) content.entityMap = {}
+      return {value: content}
+    } else {
+      return {}
+    }
   }
 
   isPhotoType() {
@@ -325,6 +363,7 @@ class StoryCoverScreen extends Component {
     return !!this.state.coverVideo && this.state.coverVideo !== getVideoUrl(this.props.story.coverVideo)
   }
 
+  // TODO
   _onRight = () => {
     const hasImageChanged = this.hasImageChanged()
     const hasVideoChanged = this.hasVideoChanged()
@@ -363,7 +402,7 @@ class StoryCoverScreen extends Component {
 
   nextScreen() {
     if (this.isPhotoType()) {
-      NavActions.createStory_content()
+      NavActions.createStory_details()
     } else {
       NavActions.createStory_details()
     }
@@ -507,7 +546,7 @@ class StoryCoverScreen extends Component {
             <TextInput
               style={this.renderTextColor(styles.titleInput)}
               placeholder='ADD A TITLE'
-              placeholderTextColor={this.renderPlaceholderColor(placeholderColor)}
+              placeholderTextColor={this.renderPlaceholderColor(Colors.background)}
               value={this.state.title}
               onChangeText={title => this.setState({title})}
               returnKeyType='done'
@@ -515,7 +554,7 @@ class StoryCoverScreen extends Component {
             <TextInput
               style={this.renderTextColor(styles.subTitleInput)}
               placeholder='Add a subtitle'
-              placeholderTextColor={this.renderPlaceholderColor(placeholderColor)}
+              placeholderTextColor={this.renderPlaceholderColor(Colors.background)}
               onChangeText={description => this.setState({description})}
               value={this.state.description}
               returnKeyType='done'
@@ -588,6 +627,32 @@ class StoryCoverScreen extends Component {
     )
   }
 
+  renderEditor() {
+    return (
+      <View style={[styles.editor]}>
+        <Editor
+          ref={i => this.editor = i}
+          style={{
+            flex: 1,
+            minHeight: Metrics.screenHeight - Metrics.navBarHeight,
+            minWidth: Metrics.screenWidth
+          }}
+          onPressImage={this._handlePressAddImage}
+          onPressVideo={this._handlePressAddVideo}
+          customStyleMap={customStyles}
+          {...this.getContent()}
+        />
+        {this.isUploading() &&
+        <Loader
+          style={styles.loading}
+          text={this.state.imageUploading ? 'Saving image...' : 'Saving video...'}
+          textStyle={styles.loadingText}
+          tintColor='rgba(0,0,0,.9)' />
+        }
+      </View>
+    )
+  }
+
   render () {
     let showTooltip = false;
     if (this.props.user && this.state.file) {
@@ -598,7 +663,7 @@ class StoryCoverScreen extends Component {
     }
 
     return (
-      <View style={styles.mainContainer}>
+      <View style={styles.root}>
         <NavBar
           title='Save'
           onLeft={this._onLeft}
@@ -611,21 +676,31 @@ class StoryCoverScreen extends Component {
             paddingRight: 10,
           }}
         />
-        <View style={{flex: 1}}>
-          {this.state.error &&
-            <ShadowButton
-              style={styles.errorButton}
-              onPress={this._touchError}
-              text={this.state.error} />
+        <ScrollView keyboardShouldPersistTaps='handled' style={styles.scrollView}>
+          <View style={styles.coverWrapper}>
+            {this.state.error &&
+              <ShadowButton
+                style={styles.errorButton}
+                onPress={this._touchError}
+                text={this.state.error} />
+            }
+            {this.isPhotoType() && this.renderCoverPhoto(this.state.coverImage)}
+            {!this.isPhotoType() && this.renderCoverVideo(this.state.coverVideo)}
+          </View>
+          {this.isPhotoType() &&
+            <View style={styles.editorWrapper}>
+              <View style={styles.angleDownIcon}>
+                <Icon name='angle-down' size={20} color='#9e9e9e' />
+              </View>
+              {this.renderEditor()}
+            </View>
           }
-          {this.isPhotoType() && this.renderCoverPhoto(this.state.coverImage)}
-          {!this.isPhotoType() && this.renderCoverVideo(this.state.coverVideo)}
-        </View>
+        </ScrollView>
         {this.state.updating &&
           <Loader
-            style={styles.loading}
+            style={styles.loader}
             text='Saving progress...'
-            textStyle={styles.loadingText}
+            textStyle={styles.loaderText}
             tintColor='rgba(0,0,0,.9)' />
         }
         {showTooltip && this.renderTooltip()}
@@ -642,6 +717,183 @@ class StoryCoverScreen extends Component {
       this.setState({coverVideo: path})
     }
     NavActions.pop()
+  }
+}
+
+const third = (1 / 3) * (Metrics.screenHeight - Metrics.navBarHeight * 2)
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: Colors.lightGreyAreas,
+  },
+  containerWithNavbar: {
+    ...ApplicationStyles.screen.containerWithNavbar
+  },
+  lightGreyAreasBG: {
+    backgroundColor: Colors.transparent,
+  },
+  errorButton: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    marginVertical: Metrics.baseMargin,
+    marginHorizontal: Metrics.section,
+    zIndex: 100,
+  },
+  spaceView: {
+    height: third
+  },
+  keyboardMargin: {
+    marginBottom: 50,
+  },
+  loader: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0
+  },
+  loaderText: {
+    color: 'white',
+    fontSize: 18,
+    fontFamily: Fonts.type.montserrat
+  },
+  titleInput: {
+    ...Fonts.style.title,
+    color: Colors.snow,
+    marginTop: 20,
+    marginLeft: 20,
+    height: 34,
+    fontSize: 28,
+    fontFamily: 'Arial',
+  },
+  subTitleInput: {
+    color: Colors.snow,
+    height: 28,
+    fontSize: 14,
+    marginLeft: 20
+  },
+  cameraIcon: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: Metrics.baseMargin,
+  },
+  cameraIconImage: {
+    tintColor: 'gray',
+    height: 32,
+    width: 40,
+  },
+  videoIconImage: {
+    tintColor: 'gray',
+    height: 31,
+    width: 51,
+  },
+  colorOverLay: {
+    backgroundColor: Colors.windowTint,
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  addPhotoView: {
+    height: third,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  addTitleView: {
+    height: third,
+    justifyContent: 'center'
+  },
+  imageMenuView: {
+    height: third,
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  addPhotoButton: {
+    padding: 50,
+    justifyContent: 'center',
+    backgroundColor: 'transparent'
+  },
+  baseTextColor: {
+    color: Colors.background
+  },
+  coverPhoto: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flex: 1,
+  },
+  coverVideo: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flex: 1,
+  },
+  coverPhotoText: {
+    fontFamily: Fonts.type.montserrat,
+    fontSize: 13,
+  },
+  iconButton: {
+    backgroundColor: Colors.clear
+  },
+  navBarStyle: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  coverWrapper: {
+    height: Metrics.screenHeight - Metrics.navBarHeight - 30,
+  },
+  angleDownIcon: {
+    height: 20,
+    alignItems: 'center',
+    marginVertical: Metrics.baseMargin / 2
+  },
+  editorWrapper: {
+    backgroundColor: Colors.snow
+  },
+  loadingText: {
+    color: Colors.white
+  },
+  loading: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  }
+})
+
+const customStyles = {
+  unstyled: {
+    fontSize: 18,
+    color: '#757575'
+  },
+  atomic: {
+    fontSize: 15,
+    color: '#757575'
+  },
+  link: {
+    color: '#c4170c',
+    fontWeight: '600',
+    textDecorationLine: 'none',
+  },
+  'header-one': {
+    fontSize: 21,
+    fontWeight: '400',
+    color: '#1a1c21'
   }
 }
 

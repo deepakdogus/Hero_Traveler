@@ -318,15 +318,12 @@ export default class Editor extends Component {
   render() {
     return (
       <View style={[styles.root, this.props.style]}>
-        <ScrollView keyboardShouldPersistTaps='handled' style={styles.scrollView}>
-          <View style={styles.innerScroll}>
-            {this.getBlocks()}
-          </View>
-        </ScrollView>
+        <View style={styles.innerScroll}>
+          {this.getBlocks()}
+        </View>
         <Toolbar
           onPress={this._onToolbarPress}
         />
-        <KeyboardSpacer/>
       </View>
     )
   }

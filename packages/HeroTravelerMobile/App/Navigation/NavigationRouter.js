@@ -246,6 +246,11 @@ export default NavActions.create(
         backButtonImage={Images.iconClose}
         title='Comments'
         {...darkNavBarProps}
+        navigationBarStyle={{
+          ...Styles.navBar,
+          paddingTop: 5
+        }}
+
       />
       <Scene
         key='tabbar'

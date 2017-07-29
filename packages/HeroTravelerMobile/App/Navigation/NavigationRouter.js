@@ -62,6 +62,11 @@ const darkNavBarProps = {
   rightButtonIconStyle: Styles.navBarBack
 }
 
+const extraPaddingDarkNavBarProps = {
+  ...Styles.navBar,
+  paddingTop: 5
+}
+
 const clearNavBarProps = {
   navigationBarStyle: Styles.navBarClear,
   titleStyle: [Styles.navText, Styles.navTitle],
@@ -188,6 +193,7 @@ export default NavActions.create(
         backButtonImage={Images.iconArrowLeft}
         title='Settings'
         {...darkNavBarProps}
+        navigationBarStyle={extraPaddingDarkNavBarProps}
       />
       <Scene
         key='settings_notification'
@@ -197,6 +203,7 @@ export default NavActions.create(
         backButtonImage={Images.iconArrowLeft}
         title='Notifications'
         {...darkNavBarProps}
+        navigationBarStyle={extraPaddingDarkNavBarProps}
       />
       <Scene
         key='terms'
@@ -206,6 +213,7 @@ export default NavActions.create(
         backButtonImage={Images.iconArrowLeft}
         title='Terms & Conditions'
         {...darkNavBarProps}
+        navigationBarStyle={extraPaddingDarkNavBarProps}
       />
       <Scene
         key='FAQ'
@@ -215,6 +223,7 @@ export default NavActions.create(
         backButtonImage={Images.iconArrowLeft}
         title='FAQ'
         {...darkNavBarProps}
+        navigationBarStyle={extraPaddingDarkNavBarProps}
       />
       <Scene
         key='privacy'
@@ -246,11 +255,7 @@ export default NavActions.create(
         backButtonImage={Images.iconClose}
         title='Comments'
         {...darkNavBarProps}
-        navigationBarStyle={{
-          ...Styles.navBar,
-          paddingTop: 5
-        }}
-
+        navigationBarStyle={extraPaddingDarkNavBarProps}
       />
       <Scene
         key='tabbar'
@@ -299,6 +304,7 @@ export default NavActions.create(
           component={ActivityScreen}
           title='Notifications'
           {...darkNavBarProps}
+          navigationBarStyle={extraPaddingDarkNavBarProps}
         />
         <Scene
           key='profile'
@@ -363,6 +369,7 @@ export default NavActions.create(
         onLeft={popVertical}
         backButtonImage={Images.iconArrowLeft}
         {...darkNavBarProps}
+        navigationBarStyle={extraPaddingDarkNavBarProps}
       />
       <Scene
         key='mediaSelectorScreen'

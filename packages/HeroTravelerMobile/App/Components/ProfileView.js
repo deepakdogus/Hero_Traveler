@@ -472,8 +472,6 @@ class ProfileView extends React.Component {
             rightTitle='Save'
             onRight={this._onRight}
             style={{paddingTop: 15}}
-            leftTextStyle={{color: Colors.white}}
-            titleStyle={{color: Colors.white}}
           />
         }
         <KeyboardAwareScrollView getTextInputRefs={this._getTextInputRefs} style={[

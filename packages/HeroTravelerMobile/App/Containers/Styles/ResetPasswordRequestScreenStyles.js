@@ -73,5 +73,8 @@ export default StyleSheet.create({
     marginTop: Metrics.marginVertical,
     marginLeft: Metrics.section,
     marginRight: Metrics.section
+  },
+  submit: {
+    marginTop: 40,
   }
 })

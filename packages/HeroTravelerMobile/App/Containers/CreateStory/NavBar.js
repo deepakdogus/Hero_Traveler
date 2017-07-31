@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     textAlign: 'center',
-    color: Colors.navBarText,
+    color: Colors.white,
   },
   left: {
     flex: 1/3,
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   leftText: {
     textAlign: 'left',
     paddingLeft: Metrics.doubleBaseMargin,
-    color: Colors.navBarText
+    color: Colors.white,
   },
   right: {
     flex: 1/3,
@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     paddingRight: Metrics.doubleBaseMargin,
   },
-  leftGreyBtn: {
-    tintColor: Colors.navBarText
+  leftBtn: {
+    tintColor: Colors.white
   },
   inactiveText: {
     opacity: .5,
@@ -76,7 +76,7 @@ export default class NavBar extends Component {
       <View style={[styles.root, style]}>
         {leftTitle &&
           <View style={styles.left}>
-            {leftIcon && <TabIcon style={{ image: [styles.leftIconStyle, styles.leftGreyBtn] }} name={leftIcon}/>}
+            {leftIcon && <TabIcon style={{ image: [styles.leftIconStyle, styles.leftBtn] }} name={leftIcon}/>}
             <TextButton
               style={[styles.text, styles.leftText, leftTextStyle]}
               onPress={onLeft}

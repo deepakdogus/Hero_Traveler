@@ -63,7 +63,7 @@ export default class SocialMediaRow extends Component {
             text={isSelected ? 'FOLLOWING' : '+ FOLLOW'}
             type={isSelected ? undefined : 'blackWhite'}
             margin='none'
-            width='118px'
+            width='138px'
           />
         </Right>
       </UserContainer>

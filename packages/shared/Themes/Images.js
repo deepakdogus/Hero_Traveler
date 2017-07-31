@@ -40,8 +40,10 @@ const images = {
   iconNavProfile: require('../Images/ht-icons/icon_nav-profile@2x.png'),
   iconDefaultProfile: require('../Images/ht-icons/icon_profile-default-avatar@2x.png'),
   iconLoginFacebook: require('../Images/ht-icons/icon_login-button-facebook.png'),
+  iconLoginFacebookLarge: require('../Images/ht-icons/icon_login-button-facebook@2x.png'),
   iconFacebook: require('../Images/ht-icons/icon_facebook@2x.png'),
   iconTwitter: require('../Images/ht-icons/icon_login-button-twitter.png'),
+  iconTwitterLarge: require('../Images/ht-icons/icon_login-button-twitter@2x.png'),
   iconTwitterBlue: require('../Images/ht-icons/icon_twitter@2x.png'),
   iconInstagram: require('../Images/ht-icons/icon_instagram.png'),
   iconLoginEmail: require('../Images/ht-icons/icon_login-button-email.png'),
@@ -68,6 +70,7 @@ const images = {
   iconReverseCamera: require('../Images/ht-icons/icon_camera-reverse@2x.png'),
   iconFlashCamera: require('../Images/ht-icons/icon_camera-flash@2x.png'),
   iconCreateMenuVideo: require('../Images/ht-icons/icon_create-menu-video@2x.png'),
+  iconProfileBadge: require('../Images/ht-icons/icon_profile-badge@2x.png'),
 }
 
 export default images

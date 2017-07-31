@@ -7,6 +7,7 @@ const colors = {
   faintWhite: 'rgba(255,255,255,.2)',
   whiteAlphaPt15: 'rgba(255,255,255,.15)',
   whiteAlphaPt3: 'rgba(255,255,255,.3)',
+  whiteAlphaPt4: 'rgba(255,255,255,.4)',
   whiteAlphaPt80: 'rgba(255,255,255,.8)',
   redLight: '#ed1e2e',
   red: '#d60000',

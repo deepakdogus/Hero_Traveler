@@ -1,13 +1,27 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import {NavLink} from 'react-router-dom';
+import Modal from 'react-modal'
 
 import { Grid, Row, Col } from './FlexboxGrid';
 import logo from '../Shared/Images/ht-logo-white.png'
 import RoundedButton from './RoundedButton'
 import Icon from './Icon'
 import Avatar from './Avatar'
-import {Link, NavLink} from 'react-router-dom';
+import Login from './Modals/Login'
+import Signup from './Modals/Signup'
+import ResetPassword from './Modals/ResetPassword'
+
+const customModalStyles = {
+  content: {
+    width: 420,
+    margin: 'auto',
+  },
+  overlay: {
+    backgroundColor: 'rgba(0,0,0, .5)'
+  }
+}
 
 const StyledGrid = styled(Grid)`
   padding: 15px;
@@ -19,10 +33,6 @@ const StyledGrid = styled(Grid)`
 
 const Logo = styled.img`
   height: 30px;
-`
-
-const TabsContainer = styled.div`
-  padding-left: 30px;
 `
 
 // Likely refactor this out into its own component later with &nbsp; included
@@ -67,6 +77,23 @@ export default class Header extends React.Component {
     isLoggedIn: PropTypes.bool,
   }
 
+  constructor(props) {
+    super(props)
+    this.state = {modal: 'resetPassword'}
+  }
+
+  openLoginModal = () => {
+    this.setState({ modal: 'login' })
+  }
+
+  openSignupModal = () => {
+    this.setState({ modal: 'signup' })
+  }
+
+  closeModal = () => {
+    this.setState({ modal: undefined })
+  }
+
   render () {
     const {isLoggedIn} = this.props
     return (
@@ -98,7 +125,10 @@ export default class Header extends React.Component {
               </RoundedButton>
               <Divider>&nbsp;</Divider>
               {!isLoggedIn &&
-                <RoundedButton text='Login'/>
+                <RoundedButton
+                  text='Login'
+                  onClick={this.openLoginModal}
+                />
               }
               {isLoggedIn &&
                 <div>
@@ -117,6 +147,30 @@ export default class Header extends React.Component {
             </Row>
           </Col>
         </Row>
+        <Modal
+          isOpen={this.state.modal === 'login'}
+          contentLabel="Login Modal"
+          onRequestClose={this.closeModal}
+          style={customModalStyles}
+        >
+          <Login onSignupClick={this.openSignupModal}/>
+        </Modal>
+        <Modal
+          isOpen={this.state.modal === 'signup'}
+          contentLabel="Signup Modal"
+          onRequestClose={this.closeModal}
+          style={customModalStyles}
+        >
+          <Signup onLoginClick={this.openLoginModal}/>
+        </Modal>
+        <Modal
+          isOpen={this.state.modal === 'resetPassword'}
+          contentLabel="Reset Password Modal"
+          onRequestClose={this.closeModal}
+          style={customModalStyles}
+        >
+          <ResetPassword/>
+        </Modal>
       </StyledGrid>
     )
   }

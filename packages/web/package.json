@@ -10,6 +10,7 @@
     "react-dom": "^15.6.1",
     "react-flexbox-grid": "^1.1.3",
     "react-google-maps": "next",
+    "react-modal": "^2.2.2",
     "react-router-dom": "^4.1.1",
     "react-scripts": "1.0.10",
     "redraft": "^0.8.0",

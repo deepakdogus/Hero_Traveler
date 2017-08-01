@@ -4,17 +4,7 @@ import PropTypes from 'prop-types'
 
 import {usersExample} from '../../Containers/Feed_TEST_DATA'
 import FollowFollowingRow from '../FollowFollowingRow'
-
-const Title = styled.p`
-  font-weight: 400;
-  font-size: 20px;
-  color: ${props => props.theme.Colors.background};
-  letter-spacing: 1.5px;
-  text-align: center;
-  background-color: ${props => props.theme.Colors.lightGreyAreas};
-  margin: 0;
-  padding: 20px;
-`
+import {RightTitle} from './Shared'
 
 const Container = styled.div``
 
@@ -49,7 +39,7 @@ export default class FollowFollowing extends React.Component {
 
     return (
       <Container>
-        <Title>{profile.username.toUpperCase()} IS FOLLOWED BY</Title>
+        <RightTitle>{profile.username.toUpperCase()} IS FOLLOWED BY</RightTitle>
         <UserRowsContainer>
           {this.renderUserRows(userKeys)}
         </UserRowsContainer>

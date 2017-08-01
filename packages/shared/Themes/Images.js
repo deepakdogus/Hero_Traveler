@@ -70,6 +70,7 @@ const images = {
   iconReverseCamera: require('../Images/ht-icons/icon_camera-reverse@2x.png'),
   iconFlashCamera: require('../Images/ht-icons/icon_camera-flash@2x.png'),
   iconCreateMenuVideo: require('../Images/ht-icons/icon_create-menu-video@2x.png'),
+  iconCreateMenuStory: require('../Images/ht-icons/icon_create-menu-story@2x.png'),
   iconProfileBadge: require('../Images/ht-icons/icon_profile-badge@2x.png'),
 }
 

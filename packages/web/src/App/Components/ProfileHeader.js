@@ -13,6 +13,7 @@ import RightModal from './RightModal'
 import Icon from './Icon'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import FollowFollowing from './Modals/FollowFollowing'
+import ProfileStats from './Modals/ProfileStats'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   &:after {
@@ -124,7 +125,7 @@ export default class StoryHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'followedBy'}
+    this.state = {modal: undefined}
   }
 
   closeModal = () => {
@@ -202,6 +203,13 @@ export default class StoryHeader extends React.Component {
           onRequestClose={this.closeModal}
         >
           <FollowFollowing profile={user}/>
+        </RightModal>
+        <RightModal
+          isOpen={this.state.modal === 'stats'}
+          contentLabel='Follewed By Modal'
+          onRequestClose={this.closeModal}
+        >
+          <ProfileStats profile={user}/>
         </RightModal>
       </ImageWrapper>
     )

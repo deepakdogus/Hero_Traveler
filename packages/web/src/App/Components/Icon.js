@@ -24,6 +24,7 @@ function getSize(props) {
 const StyledIcon = styled.img`
 	width: ${props => getSize};
 	height: ${props => getSize};
+  margin: ${props => props.center ? 'auto' : 0};
 `
 
 export default class Icon extends React.Component {
@@ -97,6 +98,8 @@ export default class Icon extends React.Component {
         return Images.iconTag
       case 'explore':
         return Images.iconNavExplore
+      case 'story':
+        return Images.iconCreateMenuStory
       case 'createStory':
         return Images.iconNavCreate
       case 'close':

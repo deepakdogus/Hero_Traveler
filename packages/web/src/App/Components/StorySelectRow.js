@@ -29,7 +29,6 @@ const StyledVerticalCenter = styled(VerticalCenter)`
   height: 100%;
 `
 
-// this Component should only be used for placement
 export default class StorySelectRow extends Component {
   static propTypes = {
     isSelected: PropTypes.bool,
@@ -45,9 +44,9 @@ export default class StorySelectRow extends Component {
 
   renderText = () => {
     return (
-        <StyledVerticalCenter>
-          <Text>{this.props.story.title}</Text>
-        </StyledVerticalCenter>
+      <StyledVerticalCenter>
+        <Text>{this.props.story.title}</Text>
+      </StyledVerticalCenter>
     )
   }
 

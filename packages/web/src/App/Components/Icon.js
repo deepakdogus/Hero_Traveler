@@ -12,6 +12,8 @@ function getSize(props) {
       return '50px'
     case 'large':
       return '62px'
+    case 'larger':
+      return '85px'
     case 'x-large':
       return '112px'
     default:

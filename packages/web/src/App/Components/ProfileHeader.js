@@ -9,8 +9,10 @@ import HeaderImageWrapper from './HeaderImageWrapper'
 import VerticalCenter from './VerticalCenter'
 import HorizontalDivider from './HorizontalDivider'
 import RoundedButton from './RoundedButton'
+import RightModal from './RightModal'
 import Icon from './Icon'
 import getImageUrl from '../Shared/Lib/getImageUrl'
+import FollowFollowing from './Modals/FollowFollowing'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   &:after {
@@ -120,6 +122,15 @@ export default class StoryHeader extends React.Component {
     isContributor: PropTypes.bool,
   }
 
+  constructor(props) {
+    super(props)
+    this.state = {modal: 'followedBy'}
+  }
+
+  closeModal = () => {
+    this.setState({ modal: undefined })
+  }
+
   render () {
     const {user, isContributor} = this.props
     const isUsersProfile = user.id === '596cd072fc3f8110a6f18342'
@@ -184,6 +195,14 @@ export default class StoryHeader extends React.Component {
             </Row>
           }
         </BottomLeft>
+
+        <RightModal
+          isOpen={this.state.modal === 'followedBy'}
+          contentLabel='Follewed By Modal'
+          onRequestClose={this.closeModal}
+        >
+          <FollowFollowing profile={user}/>
+        </RightModal>
       </ImageWrapper>
     )
   }

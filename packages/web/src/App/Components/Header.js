@@ -101,7 +101,7 @@ export default class Header extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'addToItinerary'}
+    this.state = {modal: undefined}
   }
 
   openLoginModal = () => {
@@ -169,6 +169,7 @@ export default class Header extends React.Component {
             </Row>
           </Col>
         </Row>
+
         <Modal
           isOpen={this.state.modal === 'login'}
           contentLabel="Login Modal"

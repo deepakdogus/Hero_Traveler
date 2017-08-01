@@ -96,7 +96,8 @@ export const styles = StyleSheet.create({
     letterSpacing: .7,
     fontSize: 15,
     fontFamily: Fonts.type.base,
-    marginTop: 15,
+    color: Colors.grey,
+    paddingTop: 15,
   },
   mediaViewWrapper: {
     flex: 1,

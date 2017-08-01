@@ -12,7 +12,6 @@ const buttonLarge = 80
 const buttonSmall = 40
 const VideoButton = ({size, icon, onPress, style = {}, text}) => {
   const sizeUnits = size !== 'small' ? buttonLarge : buttonSmall
-
   return (
     <TouchableWithoutFeedback
       style={style}

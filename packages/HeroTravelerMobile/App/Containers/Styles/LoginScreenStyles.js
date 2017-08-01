@@ -62,15 +62,8 @@ export default StyleSheet.create({
     height: 40,
     color: Colors.snow
   },
-  loginButtonWrapper: {
-    flex: 1
-  },
   loginButton: {
-    // flex: 1,
-    // borderWidth: 1,
-    // borderColor: Colors.charcoal,
-    // backgroundColor: Colors.panther,
-    // padding: 6,
+    marginTop: 40,
   },
   twitter: {
     marginTop: 0,
@@ -79,9 +72,6 @@ export default StyleSheet.create({
   facebook: {
     margin: 30,
     backgroundColor: Colors.facebookBlue
-  },
-  loginButton: {
-    marginTop: Metrics.baseMargin*4,
   },
   forgotWrapper: {
     marginTop: Metrics.marginVertical

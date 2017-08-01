@@ -16,6 +16,7 @@ const SIZES = {
   small: 36,
   medium: 50,
   large: 83,
+  extraLarge: 95,
 }
 
 export default class Avatar extends Component {

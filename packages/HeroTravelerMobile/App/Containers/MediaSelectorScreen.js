@@ -232,14 +232,16 @@ class MediaSelectorScreen extends React.Component {
     return (
       <View style={{flex: 1}}>
         <NavBar
-          title={this.props.title}
           onLeft={this.props.onLeft}
           leftTitle={this.props.leftTitle}
+          leftTextStyle={this.props.leftTextStyle}
+          title={this.props.title}
+          titleStyle={this.props.titleStyle}
           onRight={this._onNext}
           isRightValid={this.state.media}
-          rightIcon={'arrowRightRed'}
+          rightIcon={this.props.rightIcon || 'arrowRightRed'}
           rightTitle={this.props.rightTitle}
-          rightTextStyle={{paddingRight: 10}}
+          rightTextStyle={{paddingRight: this.props.rightIcon === 'none' ? 20 : 10}}
         />
         <View style={styles.root}>
           {content}

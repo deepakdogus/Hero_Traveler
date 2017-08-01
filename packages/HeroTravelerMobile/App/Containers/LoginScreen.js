@@ -175,7 +175,7 @@ class LoginScreen extends React.Component {
               icon='facebook'
               iconStyle={launchStyles.facebookIcon}
               text='Log in with Facebook'
-              textStyle={launchStyles.facebookTextStyle}
+              textStyle={[launchStyles.baseTextStyle, launchStyles.facebookTextStyle]}
             />
             {/*<RoundedButton
               style={styles.twitter}
@@ -218,12 +218,10 @@ class LoginScreen extends React.Component {
                 placeholder='Password' />
             </View>
             <RoundedButton
-              style={launchStyles.email}
+              style={[launchStyles.email, styles.loginButton]}
               onPress={this.handlePressLogin}
-              icon='loginEmail'
-              iconStyle={launchStyles.emailIcon}
               text='LOG IN'
-              textStyle={launchStyles.emailTextStyle}
+              textStyle={launchStyles.baseTextStyle}
             />
             <TextButton
               containerStyle={styles.forgotWrapper}

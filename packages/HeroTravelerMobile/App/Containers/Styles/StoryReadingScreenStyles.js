@@ -15,7 +15,8 @@ export const styles = StyleSheet.create({
     paddingBottom: Metrics.tabBarHeight,
   },
   locationWrapper: {
-    marginVertical: Metrics.section
+    marginTop: Metrics.section,
+    marginBottom: 100,
   },
   locationText: {
     fontSize: 14,
@@ -28,15 +29,19 @@ export const styles = StyleSheet.create({
     // letterSpacing: .35,
     color: Colors.background
   },
-  locationIcon: {
+  locationIconWrapper: {
     marginRight: Metrics.section,
     alignItems: 'center',
     justifyContent: 'center'
   },
+  locationIcon: {
+    width: 16.5,
+    height: 26.5,
+  },
   locationMap: {
     flex: 1,
     height: 200,
-    marginBottom: 100
+    marginBottom: 70,
   },
   toolBar: {
     flex: 1,
@@ -79,7 +84,10 @@ export const styles = StyleSheet.create({
     marginVertical: Metrics.doubleSection,
   },
   videoDescriptionText: {
-    color: '#757575'
+    fontWeight: '300',
+    fontSize: 18,
+    fontFamily: Fonts.type.base,
+    color: Colors.grey,
   },
   caption: {
     textAlign: 'center',
@@ -94,7 +102,7 @@ export const styles = StyleSheet.create({
   mediaViewWrapper: {
     flex: 1,
     marginVertical: 60
-  }
+  },
 })
 
 

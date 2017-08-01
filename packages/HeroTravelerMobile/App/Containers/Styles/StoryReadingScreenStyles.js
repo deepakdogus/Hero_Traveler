@@ -11,21 +11,19 @@ export const styles = StyleSheet.create({
     flex: 1
   },
   content: {
-    paddingTop: Metrics.section,
-    paddingBottom: Metrics.tabBarHeight,
+    flex: 1,
+    marginTop: Metrics.section,
+    marginBottom: Metrics.tabBarHeight
   },
   locationWrapper: {
     marginVertical: Metrics.section
   },
   locationText: {
     fontSize: 14,
-    // letterSpacing: .35,
-    // marginTop: Metrics.baseMargin,
     color: '#757575'
   },
   locationLabel: {
     fontSize: 14,
-    // letterSpacing: .35,
     color: Colors.background
   },
   locationIcon: {
@@ -54,7 +52,6 @@ export const styles = StyleSheet.create({
     marginBottom: Metrics.section
   },
   videoWrapper: {
-    marginTop: 30,
     position: 'relative',
     width: Metrics.screenWidth,
     height: Metrics.screenWidth * 9 / 16,
@@ -88,10 +85,11 @@ export const styles = StyleSheet.create({
     letterSpacing: .7,
     fontSize: 15,
     fontFamily: Fonts.type.base,
+    marginTop: Metrics.baseMargin
   },
   mediaViewWrapper: {
     flex: 1,
-    marginVertical: 60
+    marginVertical: 25
   }
 })
 
@@ -104,7 +102,8 @@ export const rendererStyles = StyleSheet.flatten({
     fontFamily: Fonts.type.base,
     color: Colors.grey,
     letterSpacing: .7,
-    paddingHorizontal: 25,
+    paddingHorizontal: Metrics.section,
+    marginBottom: Metrics.section
   },
   'header-one': {
     fontSize: Fonts.size.h5,
@@ -112,6 +111,8 @@ export const rendererStyles = StyleSheet.flatten({
     fontFamily: Fonts.type.base,
     color: Colors.background,
     letterSpacing: .7,
-    paddingHorizontal: 25,
+    paddingHorizontal: Metrics.section,
+    marginTop: Metrics.baseMargin,
+    marginBottom: 0,
   },
 });

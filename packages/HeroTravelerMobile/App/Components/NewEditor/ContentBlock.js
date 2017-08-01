@@ -93,11 +93,6 @@ export default class NewTextBlock extends PureComponent {
     const {start, end} = nativeEvent.selection
     this.lastSelectionChange = {start, end}
 
-    if (!this.hasIgnoredFirstSelection) {
-      this.hasIgnoredFirstSelection = true
-      return
-    }
-
     // Only fire if focused - ignores the initial event on mount
     // so we don't update the EditorState unnecessarily
     if (this.input.isFocused()) {
@@ -345,9 +340,11 @@ const styles = StyleSheet.create({
     ...absStretch
   },
   placeholderStyle: {
+    fontSize: 15,
+    fontWeight: '300',
+    color: Colors.grey,
     fontStyle: 'italic',
     textAlign: 'center',
-    color: '#757575',
     marginTop: Metrics.baseMargin,
   },
   atomicStyles: {
@@ -356,7 +353,7 @@ const styles = StyleSheet.create({
   videoView: {
     // flex: 1,
     position: 'relative',
-    width: Metrics.screenWidth - 20,
+    width: Metrics.screenWidth,
     height: 200
   }
 })

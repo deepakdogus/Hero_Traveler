@@ -17,14 +17,13 @@ import {
   toggleStyle,
   removeBlock,
   rawToEditorState,
-  editorStateToRaw
+  editorStateToRaw,
 } from './draft-js'
 
 import {EditorState, DraftOffsetKey, keyCommandInsertNewline, keyCommandPlainBackspace} from './draft-js/reexports'
 
 import * as DJSConsts from './draft-js/constants'
 import Metrics from '../../Themes/Metrics'
-// import KeyboardSpacer from 'react-native-keyboard-spacer'
 import ContentBlock from './ContentBlock'
 
 // const logSelection = (msg, selection) => {
@@ -128,18 +127,18 @@ export default class Editor extends Component {
   }
 
   toggleHeader() {
-    this.editorState = toggleStyle(this.editorState, DJSConsts.HeaderOne)
-    this.forceUpdate()
+    const editorState = toggleStyle(this.state.editorState, DJSConsts.HeaderOne)
+    this.setState({editorState})
   }
 
   toggleNormal() {
-    this.editorState = toggleStyle(this.editorState, DJSConsts.Unstyled)
-    this.forceUpdate()
+    const editorState = toggleStyle(this.state.editorState, DJSConsts.Unstyled)
+    this.setState({editorState})
   }
 
   toggleStyle(styleType) {
-    this.editorState = applyStyle(this.editorState, styleType)
-    this.forceUpdate()
+    const editorState = applyStyle(this.state.editorState, styleType)
+    this.setState({editorState})
   }
 
   insertImage = (url) => {
@@ -152,66 +151,54 @@ export default class Editor extends Component {
 
   insertAtomicBlock(type, url) {
     let insertAfterKey
-    let lastBlockKey = getLastBlockKey(this.editorState)
+    const selectedBlockKey = this.state.editorState.getSelection().getAnchorKey()
+    let lastBlockKey = getLastBlockKey(this.state.editorState)
 
     // If no input is focused, insert image at the end of the content state
-    if (!this.focusedBlock) {
+    if (!selectedBlockKey) {
       insertAfterKey = lastBlockKey
     } else {
-      insertAfterKey = this.focusedBlock
+      insertAfterKey = selectedBlockKey
     }
 
-    this.editorState = insertBlock(
-      this.editorState,
+    let editorState = insertBlock(
+      this.state.editorState,
       insertAfterKey,
       {
         type: 'atomic',
         data: {
           type: type,
           url: url
-        }
+        },
+        focusNewBlock: true
       }
     )
 
     // Get the key of the new block
-    const newFocusedBlock = this.editorState.getCurrentContent().getBlockAfter(insertAfterKey).getKey()
+    const newFocusedBlock = editorState.getCurrentContent().getBlockAfter(insertAfterKey).getKey()
 
     // If inserted at the bottom, insert a blank text box after it
     if (lastBlockKey === insertAfterKey) {
-      this.editorState = insertBlock(
-        this.editorState,
+      editorState = insertBlock(
+        editorState,
         newFocusedBlock
       )
     }
 
-    this.focusedBlock = newFocusedBlock
-    this.forceUpdate()
+    this.setState({editorState})
   }
-
-  // _accessibilityPressed = () => {
-  //   const lastBlock = this.editorState.getCurrentContent().getLastBlock()
-  //   this.focusedBlock = lastBlock.getKey()
-  //   this.editorState = updateEditorSelection(
-  //     this.editorState,
-  //     this.focusedBlock,
-  //     lastBlock.getLength(),
-  //     lastBlock.getLength()
-  //   )
-  //   this.forceUpdate()
-  // }
 
   getEditorStateAsObject() {
     return editorStateToRaw(this.state.editorState)
   }
 
   removeMediaBlock = (blockKey) => {
-    this.editorState = removeBlock(this.editorState, blockKey)
-    this.forceUpdate()
+    this.setState({
+      editorState: removeBlock(this.state.editorState, blockKey)
+    })
   }
 
   getBlocks() {
-    // const selectionState = this.editorState.getSelection()
-    // const {blocks, entityMap} = editorStateToRaw(this.editorState)
     const {editorState} = this.state
     const content = editorState.getCurrentContent()
     const decorator = editorState.getDecorator()

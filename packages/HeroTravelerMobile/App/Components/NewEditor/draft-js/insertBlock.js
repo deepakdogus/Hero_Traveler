@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 import makeSelectionState from './makeSelectionState'
 
-export const insertBlock = (editorState, blockKey, options = {}) => {
+export default function insertBlock(editorState, blockKey, options = {}) {
   _.defaults(options, {
     type: 'unstyled',
     direction: 'after',

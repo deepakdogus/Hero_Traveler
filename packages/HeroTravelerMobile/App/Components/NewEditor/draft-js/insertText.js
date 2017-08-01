@@ -8,8 +8,6 @@ export default function insertText(editorState, text) {
     editorState.getCurrentInlineStyle()
   )
 
-  console.log('newContentState', newContentState.getBlockForKey('0').getText())
-
   return EditorState.push(
     editorState,
     newContentState,

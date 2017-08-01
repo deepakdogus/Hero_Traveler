@@ -7,7 +7,7 @@ import MapView from 'react-native-maps'
 import RNDraftJSRender from 'react-native-draftjs-render'
 import {compose, toClass, withHandlers} from 'recompose'
 import Icon from 'react-native-vector-icons/FontAwesome'
-
+import _ from 'lodash'
 import StoryActions from '../Redux/Entities/Stories'
 import {isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
 import formatCount from '../Lib/formatCount'
@@ -72,28 +72,32 @@ const StoryVideo = enhanceStoryVideo((props) => {
 })
 
 const atomicHandler = (item: Object): any => {
-  switch (item.data.type) {
-    case 'image':
-      return (
-        <View key={item.key} style={styles.mediaViewWrapper}>
-          <Image
-            fullWidth={true}
-            source={{uri: `${getImageUrlBase()}/${item.data.url}`}}
-          />
-          { !!item.text && <Text style={styles.caption}>{item.text}</Text> }
-        </View>
-      );
-    case 'video':
-      return (
-        <View key={item.key} style={styles.mediaViewWrapper}>
-          <StoryVideo src={`${getVideoUrlBase()}/${item.data.url}`} />
-          { !!item.text && <Text style={styles.caption}>{item.text}</Text> }
-        </View>
-      )
-    default:
-      return null;
+  if (_.get(item, 'data.type')) {
+    switch (item.data.type) {
+      case 'image':
+        return (
+          <View key={item.key} style={styles.mediaViewWrapper}>
+            <Image
+              fullWidth={true}
+              source={{uri: `${getImageUrlBase()}/${item.data.url}`}}
+            />
+            {!!item.text && <Text style={styles.caption}>{item.text}</Text>}
+          </View>
+        );
+      case 'video':
+        return (
+          <View key={item.key} style={styles.mediaViewWrapper}>
+            <StoryVideo src={`${getVideoUrlBase()}/${item.data.url}`}/>
+            {!!item.text && <Text style={styles.caption}>{item.text}</Text>}
+          </View>
+        )
+      default:
+        return null;
+    }
   }
-};
+
+  return null
+}
 
 const EnhancedStoryReadingToolbar = withHandlers({
   onPressBookmark: props => () => {
@@ -189,19 +193,13 @@ class StoryReadingScreen extends React.Component {
             allowVideoPlay={true}
             showReadMessage={true}
           />
-          <View style={{flex: 1, marginBottom: Metrics.tabBarHeight}}>
+          <View style={styles.content}>
             {!!story.draftjsContent &&
-              <View style={{
-                flex: 1,
-                paddingVertical: Metrics.baseMargin,
-                marginBottom: Metrics.navBarHeight,
-              }}>
-                <RNDraftJSRender
-                  contentState={Immutable.asMutable(story.draftjsContent, {deep: true})}
-                  customStyles={rendererStyles}
-                  atomicHandler={atomicHandler}
-                />
-              </View>
+              <RNDraftJSRender
+                contentState={Immutable.asMutable(story.draftjsContent, {deep: true})}
+                customStyles={rendererStyles}
+                atomicHandler={atomicHandler}
+              />
             }
             {!!story.videoDescription &&
               <View style={styles.videoDescription}>

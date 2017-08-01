@@ -44,17 +44,6 @@ const MediaTypes = {
   video: 'video',
   photo: 'photo',
 }
-//   _onLeft = () => {
-//     this.saveContent().then(() => {
-//       NavActions.pop()
-//     })
-//   }
-//
-//   _onRight = () => {
-//     this.saveContent().then(() => {
-//       NavActions.createStory_details()
-//     })
-//   }
 class StoryCoverScreen extends Component {
 
   static propTypes = {
@@ -365,11 +354,6 @@ class StoryCoverScreen extends Component {
 
   // TODO
   _onRight = () => {
-
-    console.log(this.editor.getEditorStateAsObject())
-
-    return
-
     const hasImageChanged = this.hasImageChanged()
     const hasVideoChanged = this.hasVideoChanged()
     const hasVideoSelected = !!this.state.coverVideo
@@ -386,7 +370,10 @@ class StoryCoverScreen extends Component {
 
     // If nothing has changed, let the user go forward if they navigated back
     if (nothingHasChanged) {
-      this.nextScreen()
+      this.saveStory()
+        .then(() => {
+          this.nextScreen()
+        })
     }
 
     if (!this.isValid()) {
@@ -406,11 +393,7 @@ class StoryCoverScreen extends Component {
   }
 
   nextScreen() {
-    if (this.isPhotoType()) {
-      NavActions.createStory_details()
-    } else {
-      NavActions.createStory_details()
-    }
+    NavActions.createStory_details()
   }
 
   saveStory() {
@@ -439,6 +422,10 @@ class StoryCoverScreen extends Component {
       if (this.hasDescriptionChanged()) {
         story.description = _.trim(this.state.description)
       }
+
+      console.log('this.editor.getEditorStateAsObject()')
+
+      story.draftjsContent = this.editor.getEditorStateAsObject()
 
       this.props.update(story.id, story)
 
@@ -632,6 +619,54 @@ class StoryCoverScreen extends Component {
     )
   }
 
+  handlePressAddImage = () => {
+    NavActions.mediaSelectorScreen({
+      type: 'push',
+      mediaType: 'photo',
+      title: 'Add Image',
+      leftTitle: 'Cancel',
+      onLeft: () => {
+        NavActions.pop()
+      },
+      rightTitle: 'Next',
+      onSelectMedia: this.handleAddImage
+    })
+  }
+
+  handlePressAddVideo = () => {
+    NavActions.mediaSelectorScreen({
+      type: 'push',
+      mediaType: 'video',
+      title: 'Add Video',
+      leftTitle: 'Cancel',
+      onLeft: () => {
+        NavActions.pop()
+      },
+      rightTitle: 'Next',
+      onSelectMedia: this.handleAddVideo
+    })
+  }
+
+  handleAddImage = (data) => {
+    this.setState({imageUploading: true})
+    api.uploadStoryImage(this.props.story.id, pathAsFileObject(data))
+      .then(({data: imageUpload}) => {
+        this.editor.insertImage(_.get(imageUpload, 'original.path'))
+        this.setState({imageUploading: false})
+      })
+    NavActions.pop()
+  }
+
+  handleAddVideo = (data) => {
+    this.setState({videoUploading: true})
+    api.uploadStoryVideo(this.props.story.id, pathAsFileObject(data))
+      .then(({data: videoUpload}) => {
+        this.editor.insertVideo(_.get(videoUpload, 'original.path'))
+        this.setState({videoUploading: false})
+      })
+    NavActions.pop()
+  }
+
   renderEditor() {
     return (
       <View style={[styles.editor]}>
@@ -639,21 +674,13 @@ class StoryCoverScreen extends Component {
           ref={i => this.editor = i}
           style={{
             flex: 1,
-            minHeight: Metrics.screenHeight - Metrics.navBarHeight,
             minWidth: Metrics.screenWidth
           }}
-          onPressImage={this._handlePressAddImage}
-          onPressVideo={this._handlePressAddVideo}
+          onPressImage={this.handlePressAddImage}
+          onPressVideo={this.handlePressAddVideo}
           customStyleMap={customStyles}
           {...this.getContent()}
         />
-        {this.isUploading() &&
-        <Loader
-          style={styles.loading}
-          text={this.state.imageUploading ? 'Saving image...' : 'Saving video...'}
-          textStyle={styles.loadingText}
-          tintColor='rgba(0,0,0,.9)' />
-        }
       </View>
     )
   }
@@ -704,9 +731,16 @@ class StoryCoverScreen extends Component {
             </View>
           }
         </ScrollView>
+        {this.isUploading() &&
+          <Loader
+            style={styles.loading}
+            text={this.state.imageUploading ? 'Saving image...' : 'Saving video...'}
+            textStyle={styles.loadingText}
+            tintColor='rgba(0,0,0,.9)' />
+        }
         {this.state.updating &&
           <Loader
-            style={styles.loader}
+            style={styles.loading}
             text='Saving progress...'
             textStyle={styles.loaderText}
             tintColor='rgba(0,0,0,.9)' />
@@ -755,13 +789,6 @@ const styles = StyleSheet.create({
   },
   keyboardMargin: {
     marginBottom: 50,
-  },
-  loader: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0
   },
   loaderText: {
     color: 'white',

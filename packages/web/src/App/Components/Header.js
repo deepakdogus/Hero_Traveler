@@ -12,10 +12,21 @@ import Avatar from './Avatar'
 import Login from './Modals/Login'
 import Signup from './Modals/Signup'
 import ResetPassword from './Modals/ResetPassword'
+import Contributor from './Modals/Contributor'
 
 const customModalStyles = {
   content: {
     width: 420,
+    margin: 'auto',
+  },
+  overlay: {
+    backgroundColor: 'rgba(0,0,0, .5)'
+  }
+}
+
+const contributorModalStyles = {
+  content: {
+    width: 380,
     margin: 'auto',
   },
   overlay: {
@@ -79,7 +90,7 @@ export default class Header extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'resetPassword'}
+    this.state = {modal: 'contributor'}
   }
 
   openLoginModal = () => {
@@ -100,7 +111,7 @@ export default class Header extends React.Component {
       <StyledGrid fluid>
         <Row start="xs">
           <Col xs={12} md={2} >
-            <Logo src={logo} alt={'hero-traveler-logo'}/>
+            <Logo src={logo} alt={'Hero Traveler Logo'}/>
           </Col>
           <Col xs>
             <MenuLinkContainer>
@@ -170,6 +181,14 @@ export default class Header extends React.Component {
           style={customModalStyles}
         >
           <ResetPassword/>
+        </Modal>
+        <Modal
+          isOpen={this.state.modal === 'contributor'}
+          contentLabel="Reset Password Modal"
+          onRequestClose={this.closeModal}
+          style={contributorModalStyles}
+        >
+          <Contributor/>
         </Modal>
       </StyledGrid>
     )

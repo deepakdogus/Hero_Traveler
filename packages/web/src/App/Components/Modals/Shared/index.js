@@ -18,13 +18,18 @@ export const Title = styled.p`
   text-align: center;
 `
 
-export const StyledText = styled.p`
+export const Text = styled.p`
   ${basicTextStyle};
   color: ${props => props.theme.Colors.grey};
   text-align: center;
 `
 
-export const HasAccount = styled(StyledText)`
+export const DarkText = styled.p`
+  ${basicTextStyle};
+  color: ${props => props.theme.Colors.background}
+`
+
+export const HasAccount = styled(Text)`
   font-size: 15px;
   margin-top: 30px;
 `

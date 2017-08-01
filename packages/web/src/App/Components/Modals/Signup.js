@@ -6,7 +6,7 @@ import SocialMediaButton from './SocialMediaButton'
 import {
   Container,
   Title,
-  StyledText,
+  Text,
   HasAccount,
   SignupText,
   StyledInput,
@@ -16,7 +16,7 @@ const SmallBold = styled.strong`
   font-weight: 600;
 `
 
-const ToSText = styled(StyledText)`
+const ToSText = styled(Text)`
   font-size: 12px;
   margin-bottom: 39px;
 `
@@ -41,7 +41,7 @@ export default class Signup extends React.Component {
           iconName='twitterLarge'
           page='signup'
         />
-        <StyledText>Or</StyledText>
+        <Text>Or</Text>
         <StyledInput placeholder='Full Name'/>
         <StyledInput placeholder='Username'/>
         <StyledInput placeholder='Email'/>

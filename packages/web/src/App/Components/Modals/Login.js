@@ -6,13 +6,13 @@ import SocialMediaButton from './SocialMediaButton'
 import {
   Container,
   Title,
-  StyledText,
+  Text,
   HasAccount,
   SignupText,
   StyledInput,
 } from './Shared'
 
-const ForgotPasswordText = styled(StyledText)`
+const ForgotPasswordText = styled(Text)`
   font-size: 14px;
   margin-bottom: 39px;
 `
@@ -37,7 +37,7 @@ export default class Login extends React.Component {
           iconName='twitterLarge'
           page='login'
         />
-        <StyledText>Or</StyledText>
+        <Text>Or</Text>
         <StyledInput placeholder='Username'/>
         <StyledInput placeholder='Password' type='password'/>
         <ForgotPasswordText>Forgot Password?</ForgotPasswordText>

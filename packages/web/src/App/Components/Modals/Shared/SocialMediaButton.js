@@ -2,10 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import RoundedButton from '../RoundedButton'
-import Icon from '../Icon'
-import {Row} from '../FlexboxGrid'
-import VerticalCenter from '../VerticalCenter'
+import RoundedButton from '../../RoundedButton'
+import Icon from '../../Icon'
+import {Row} from '../../FlexboxGrid'
+import VerticalCenter from '../../VerticalCenter'
 
 const FacebookIcon = styled(Icon)`
   height: 21.5px;

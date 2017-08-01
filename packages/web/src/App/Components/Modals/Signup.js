@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import RoundedButton from '../RoundedButton'
-import SocialMediaButton from './SocialMediaButton'
+import SocialMediaButton from './Shared/SocialMediaButton'
 import {
   Container,
   Title,

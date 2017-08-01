@@ -13,6 +13,7 @@ import Login from './Modals/Login'
 import Signup from './Modals/Signup'
 import ResetPassword from './Modals/ResetPassword'
 import Contributor from './Modals/Contributor'
+import AddToItinerary from './Modals/AddToItinerary'
 
 const customModalStyles = {
   content: {
@@ -27,6 +28,16 @@ const customModalStyles = {
 const contributorModalStyles = {
   content: {
     width: 380,
+    margin: 'auto',
+  },
+  overlay: {
+    backgroundColor: 'rgba(0,0,0, .5)'
+  }
+}
+
+const addToItineraryModalStyles = {
+  content: {
+    width: 600,
     margin: 'auto',
   },
   overlay: {
@@ -90,7 +101,7 @@ export default class Header extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'contributor'}
+    this.state = {modal: 'addToItinerary'}
   }
 
   openLoginModal = () => {
@@ -189,6 +200,14 @@ export default class Header extends React.Component {
           style={contributorModalStyles}
         >
           <Contributor/>
+        </Modal>
+        <Modal
+          isOpen={this.state.modal === 'addToItinerary'}
+          contentLabel="Add To Itinerary Modal"
+          onRequestClose={this.closeModal}
+          style={addToItineraryModalStyles}
+        >
+          <AddToItinerary/>
         </Modal>
       </StyledGrid>
     )

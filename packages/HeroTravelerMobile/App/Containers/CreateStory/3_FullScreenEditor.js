@@ -2,22 +2,22 @@ import React from 'react'
 import _ from 'lodash'
 import {
   ScrollView,
+  StyleSheet,
   View
 } from 'react-native'
+import {Colors, Metrics} from '../../Themes/'
 import {Actions as NavActions} from 'react-native-router-flux'
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 
 import StoryEditActions from '../../Redux/StoryCreateRedux'
 import Editor from '../../Components/NewEditor/Editor'
 import NavBar from './NavBar'
-import styles, {customStyles} from './3_FullScreenEditorStyles'
 import pathAsFileObject from '../../Lib/pathAsFileObject'
 import getImageUrl from '../../Lib/getImageUrl'
 import HeroAPI from '../../Services/HeroAPI'
 import getVideoUrl from '../../Lib/getVideoUrl'
 import NavButtonStyles from '../../Navigation/Styles/NavButtonStyles'
 import Loader from '../../Components/Loader'
-import Metrics from '../../Themes/Metrics'
 import Immutable from 'seamless-immutable'
 
 const api = HeroAPI.create()
@@ -92,7 +92,7 @@ class FullScreenEditor extends React.Component {
           }}
           onPressImage={this._handlePressAddImage}
           onPressVideo={this._handlePressAddVideo}
-          customStyles={customStyles}
+          customStyleMap={customStyles}
           {...this.getContent()}
         />
         {this.isUploading() &&
@@ -143,11 +143,9 @@ class FullScreenEditor extends React.Component {
   }
 
   _handleAddImage = (data) => {
-    // this.editor.restoreSelection()
     this.setState({imageUploading: true})
     api.uploadStoryImage(this.props.story.id, pathAsFileObject(data))
       .then(({data: imageUpload}) => {
-        console.log('imageUpload', imageUpload)
         this.editor.insertImage(_.get(imageUpload, 'original.path'))
         this.setState({imageUploading: false})
       })
@@ -155,7 +153,6 @@ class FullScreenEditor extends React.Component {
   }
 
   _handleAddVideo = (data) => {
-    // this.editor.restoreSelection()
     this.setState({videoUploading: true})
     api.uploadStoryVideo(this.props.story.id, pathAsFileObject(data))
       .then(({data: videoUpload}) => {
@@ -163,6 +160,40 @@ class FullScreenEditor extends React.Component {
         this.setState({videoUploading: false})
       })
     NavActions.pop()
+  }
+}
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    flexDirection: 'column'
+  },
+  loadingText: {
+    color: Colors.white
+  },
+  loading: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  }
+})
+
+const customStyles = {
+  unstyled: {
+    fontSize: 18,
+    color: '#757575'
+  },
+  link: {
+    color: '#c4170c',
+    fontWeight: '600',
+    textDecorationLine: 'none',
+  },
+  'header-one': {
+    fontSize: 21,
+    fontWeight: '400',
+    color: '#1a1c21'
   }
 }
 

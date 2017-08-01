@@ -25,4 +25,8 @@ export default StyleSheet.create({
   commentTool: {},
   bookmarkTool: {},
   shareTool: {},
+  heartIcon: {
+    width: 26,
+    height: 23,
+  }
 })

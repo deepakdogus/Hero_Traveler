@@ -1,4 +1,5 @@
-import React, {PropTypes, Component} from 'react'
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {
   StyleSheet,
   TouchableWithoutFeedback,
@@ -22,13 +23,15 @@ export default class StoryCover extends Component {
     onPress: PropTypes.func,
     autoPlayVideo: PropTypes.bool.isRequired,
     allowVideoPlay: PropTypes.bool.isRequired,
-    gradientColors: PropTypes.arrayOf(PropTypes.string)
+    gradientColors: PropTypes.arrayOf(PropTypes.string),
+    gradientLocations: PropTypes.arrayOf(PropTypes.number)
   }
 
   static defaultProps = {
     autoPlayVideo: false,
     allowVideoPlay: false,
-    gradientColors: ['transparent', 'rgba(0,0,0,.75)']
+    gradientColors: ['transparent', 'rgba(0,0,0,.65)'],
+    gradientLocations: [.5, 1],
   }
 
   constructor(props) {
@@ -62,6 +65,7 @@ export default class StoryCover extends Component {
           style={[styles.image]}
         >
           <LinearGradient
+            locations={this.props.gradientLocations}
             colors={this.props.gradientColors}
             style={styles.gradient}
           >
@@ -93,6 +97,11 @@ export default class StoryCover extends Component {
 
   _makeRef = (i) => this.player = i
 
+  /*
+  Nota bene. We have two different ways to display the play button. One through the Video
+  component and a second through the conditional renders we have below. This should be
+  refactored
+  */
   renderVideo() {
     return (
       <View style={{flex: 1}}>
@@ -109,6 +118,7 @@ export default class StoryCover extends Component {
         <TouchableWithoutFeedback
           onPress={this._tapVideoWrapper}>
           <LinearGradient
+            locations={this.props.gradientLocations}
             colors={this.props.gradientColors}
             style={[styles.gradient, styles.videoGradient]}
           >
@@ -128,6 +138,9 @@ export default class StoryCover extends Component {
             style={styles.muteButton}
           />
         }
+         {this.props.showPlayButton &&
+          <PlayButton style={styles.playButton}/>
+         }
       </View>
     )
   }

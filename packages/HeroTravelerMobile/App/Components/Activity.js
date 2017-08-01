@@ -56,7 +56,7 @@ export default class Activity extends Component {
               </Text>
             </View>
             {!seen &&
-              <Icon name='circle' size={10} />
+              <Icon name='circle' size={10} color={Colors.redLight}/>
             }
           </View>
         </TouchableOpacity>

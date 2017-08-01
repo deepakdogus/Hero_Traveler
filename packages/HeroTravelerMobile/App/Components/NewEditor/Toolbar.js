@@ -8,7 +8,7 @@ import {
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import {Colors} from '../../Themes'
-import * as DJSConsts from './DraftjsConsts'
+import * as DJSConsts from './draft-js/constants'
 
 const ToolbarIcon = ({name, color, extraStyle = {}}) => {
   return (
@@ -28,7 +28,7 @@ export const PressTypes = {
   Image: 'press-image',
   Video: 'press-video',
   HeaderOne: DJSConsts.HeaderOne,
-  Bold: DJSConsts.Bold,
+  Bold: 'bold', //DJSConsts.Bold,
   Normal: DJSConsts.Unstyled,
   Italic: DJSConsts.Italic,
 }

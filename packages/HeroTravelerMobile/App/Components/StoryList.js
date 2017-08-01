@@ -1,5 +1,6 @@
 import _ from 'lodash'
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import {
   ListView,
   RefreshControl
@@ -27,6 +28,10 @@ export default class StoryList extends React.Component {
     }
   }
 
+  _renderHeader = () => {
+    return this.props.renderHeaderContent || null
+  }
+
   render () {
     return (
       <ListView
@@ -35,6 +40,8 @@ export default class StoryList extends React.Component {
         pagingEnabled={true}
         initialListSize={1}
         renderRow={this.props.renderStory}
+        renderHeader={this._renderHeader}
+        stickyHeaderIndices={this._renderHeader ? [] : [0]}
         refreshControl={
           <RefreshControl
             refreshing={this.props.refreshing}

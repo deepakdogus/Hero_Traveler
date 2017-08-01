@@ -62,6 +62,9 @@ export default StyleSheet.create({
   submitButton: {
     marginTop: Metrics.baseMargin*4
   },
+  submitText: {
+    fontSize: 16,
+  },
   tos: {
     marginTop: Metrics.marginVertical*3,
     marginLeft: Metrics.section,

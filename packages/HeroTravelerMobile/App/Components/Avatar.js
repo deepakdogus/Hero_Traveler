@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react'
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {
   View,
   StyleSheet,
@@ -16,6 +17,7 @@ const SIZES = {
   small: 36,
   medium: 50,
   large: 83,
+  extraLarge: 95,
 }
 
 export default class Avatar extends Component {

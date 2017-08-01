@@ -47,7 +47,9 @@ const images = {
   iconArrowRightRed: require('../Images/ht-icons/icon_arrow_right_red.png'),
   iconArrowLeftRed: require('../Images/ht-icons/icon_arrow_left_red.png'),
   iconPencil: require('../Images/ht-icons/icon_profile-edit-username@2x.png'),
+  iconPencilOutline: require('../Images/ht-icons/icon_profile-edit-story@2x.png'),
   iconGear: require('../Images/ht-icons/icon_profile-gear@2x.png'),
+  iconTrash: require('../Images/ht-icons/icon_profile-trash-story@2x.png'),
   iconLocation: require('../Images/ht-icons/icon_details-location@2x.png'),
   iconLike: require('../Images/ht-icons/icon_action-like@2x.png'),
   iconLikeActive: require('../Images/ht-icons/icon_action-like-active@2x.png'),
@@ -62,7 +64,8 @@ const images = {
   iconClose: require('../Images/ht-icons/icon_create-menu-close-x@2x.png'),
   iconReverseCamera: require('../Images/ht-icons/icon_camera-reverse@2x.png'),
   iconFlashCamera: require('../Images/ht-icons/icon_camera-flash@2x.png'),
-  iconCreateMenuVideo: require('../Images/ht-icons/icon_create-menu-video@2x.png')
+  iconCreateMenuVideo: require('../Images/ht-icons/icon_create-menu-video@2x.png'),
+  iconCreateMenuStory: require('../Images/ht-icons/icon_create-menu-story@2x.png'),
 }
 
 export default images

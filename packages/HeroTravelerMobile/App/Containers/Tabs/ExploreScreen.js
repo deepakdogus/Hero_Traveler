@@ -274,7 +274,13 @@ class ExploreScreen extends Component {
             NavActions.explore_categoryFeed({
               categoryId: category.id,
               title: category.title,
-              leftButtonIconStyle: {tintColor: Colors.navBarText}
+              leftButtonIconStyle: {tintColor: Colors.navBarText},
+              navigationBarStyle: {
+                paddingTop: 5,
+                borderBottomWidth: 0,
+                height: Metrics.navBarHeight - 10,
+                backgroundColor: Colors.background,
+              },
             })
           }}
           categories={_.values(this.props.categories)}

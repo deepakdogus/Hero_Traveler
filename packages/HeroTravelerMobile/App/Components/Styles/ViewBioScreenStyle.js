@@ -17,10 +17,11 @@ export default StyleSheet.create({
     alignItems: 'center'
   },
   username: {
-    fontSize: 25,
-    fontWeight: "bold",
-    fontFamily: Fonts.type.sourceSansPro,
-    textAlign: 'center'
+    fontSize: 21,
+    fontFamily: Fonts.type.montserrat,
+    color: Colors.background,
+    letterSpacing: 1.5,
+    textAlign: 'center',
   },
   divider: {
     backgroundColor: 'black',
@@ -30,11 +31,13 @@ export default StyleSheet.create({
   },
   bioContainer: {
     marginVertical: Metrics.section,
-    marginHorizontal: Metrics.doubleSection
+    marginHorizontal: 30,
   },
   bio: {
-    fontSize: 14,
-    color: Colors.coal,
+    fontWeight: '300',
+    fontSize: 18,
     fontFamily: Fonts.type.sourceSansPro,
+    letterSpacing: .7,
+    color: Colors.grey,
   },
 })

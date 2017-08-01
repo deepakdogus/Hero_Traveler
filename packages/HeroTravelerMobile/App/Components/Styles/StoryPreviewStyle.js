@@ -13,6 +13,7 @@ export default StyleSheet.create({
   },
   title: {
     fontSize: 28,
+    fontWeight: '500',
     fontFamily: Fonts.type.montserrat,
     color: Colors.white,
     letterSpacing: 1.5,
@@ -23,7 +24,8 @@ export default StyleSheet.create({
     fontWeight: '300',
     fontFamily: Fonts.type.sourceSansPro,
     letterSpacing:0.7,
-    marginVertical: Metrics.baseMargin / 2
+    marginTop: Metrics.baseMargin / 2,
+    marginBottom: Metrics.baseMargin / 2 + 10,
   },
   divider: {
     height: 1,

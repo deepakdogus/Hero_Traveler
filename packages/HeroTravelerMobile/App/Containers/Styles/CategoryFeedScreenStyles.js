@@ -5,6 +5,7 @@ export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
     backgroundColor: Colors.backgroundDark,
+    top: -10,
   },
   scrollItemFullScreen: {
     width: Metrics.screenWidth,

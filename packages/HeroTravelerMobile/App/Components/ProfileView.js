@@ -208,8 +208,10 @@ class ProfileView extends React.Component {
         titleStyle={styles.storyTitleStyle}
         subtitleStyle={styles.subtitleStyle}
         showLike={this.props.showLike}
+        showPlayButton
         key={storyId}
-        height={this.props.hasTabbar ? storyPreviewHeight : storyPreviewHeight + Metrics.tabBarHeight}
+        // height={this.props.hasTabbar ? storyPreviewHeight : storyPreviewHeight + Metrics.tabBarHeight}
+        height={245}
         storyId={storyId}
         userId={this.props.user.id}
         onLike={this.props.toggleLike}
@@ -230,10 +232,13 @@ class ProfileView extends React.Component {
   _selectAvatar = () => {
     NavActions.mediaSelectorScreen({
       mediaType: 'photo',
-      title: 'Edit Avatar Image',
+      title: 'Edit Avatar',
+      titleStyle: {color: Colors.white},
       leftTitle: 'Cancel',
+      leftTextStyle: {color: Colors.white},
       onLeft: () => NavActions.pop(),
-      rightTitle: 'Next',
+      rightTitle: 'Done',
+      rightIcon: 'none',
       onSelectMedia: this._handleUpdateAvatarPhoto
     })
   }
@@ -241,10 +246,13 @@ class ProfileView extends React.Component {
   _selectCover = () => {
     NavActions.mediaSelectorScreen({
       mediaType: 'photo',
-      title: 'Edit Cover Image',
+      title: 'Edit Cover',
+      titleStyle: {color: Colors.white},
       leftTitle: 'Cancel',
+      leftTextStyle: {color: Colors.white},
       onLeft: () => NavActions.pop(),
-      rightTitle: 'Next',
+      rightTitle: 'Done',
+      rightIcon: 'none',
       onSelectMedia: this._handleUpdateCoverPhoto
     })
   }
@@ -286,6 +294,15 @@ class ProfileView extends React.Component {
   _setBioText = (bioText) => this.setState({bioText})
 
   _bioRef = c => this.bioInput = c
+
+  areNoStories() {
+    if (
+      (this.state.selectedTab === TabTypes.stories && this.props.fetchStatus.loaded && this.props.stories.length === 0) ||
+      (this.state.selectedTab === TabTypes.drafts && this.props.fetchStatus.loaded && this.props.drafts.length === 0) ||
+      (this.state.selectedTab === TabTypes.bookmarks && this.props.fetchStatus.loaded && this.props.bookmarks.length === 0)
+    ) return true
+    return false
+  }
 
   render() {
     const { user, stories, drafts, editable, isEditing, profileImage, bookmarks } = this.props
@@ -347,14 +364,16 @@ class ProfileView extends React.Component {
       )
 
       avatarCamera = (
-        <View style={{position: 'relative'}}>
-            <TouchableOpacity
-              style={styles.addAvatarPhotoButton}
-              onPress={this._selectAvatar}
-            >
-              <Icon name='camera' size={35} color={Colors.whiteAlphaPt80} style={styles.updateAvatorIcon} />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={styles.addAvatarPhotoButton}
+          onPress={this._selectAvatar}
+        >
+          <Icon
+            name='camera'
+            size={32.5}
+            color={Colors.whiteAlphaPt80}
+            style={styles.updateAvatorIcon} />
+        </TouchableOpacity>
       )
 
       buttons = (
@@ -362,7 +381,7 @@ class ProfileView extends React.Component {
           style={styles.addCoverPhotoButton}
           onPress={this._selectCover}
         >
-          <Icon name='camera' size={35} color={Colors.whiteAlphaPt80} style={styles.cameraIcon} />
+          <Icon name='camera' size={32.5} color={Colors.whiteAlphaPt80} style={styles.cameraIcon} />
           <Text style={styles.editCoverText}>EDIT COVER IMAGE</Text>
         </TouchableOpacity>
       )
@@ -442,8 +461,7 @@ class ProfileView extends React.Component {
       avatarCamera = null;
     }
 
-    const gradientStyle = profileImage ? ['rgba(0,0,0,.6)', 'transparent', 'rgba(0,0,0,.6)'] : ['transparent', 'rgba(0,0,0,.6)']
-
+    const gradientStyle = profileImage ? ['rgba(0,0,0,.5)', 'transparent', 'rgba(0,0,0,.5)'] : ['transparent', 'rgba(0,0,0,.5)']
     return (
       <View style={{flex: 1}}>
         {isEditing &&
@@ -453,6 +471,7 @@ class ProfileView extends React.Component {
             onLeft={this._onLeft}
             rightTitle='Save'
             onRight={this._onRight}
+            style={{paddingTop: 15}}
           />
         }
         <KeyboardAwareScrollView getTextInputRefs={this._getTextInputRefs} style={[
@@ -470,8 +489,11 @@ class ProfileView extends React.Component {
               <View style={styles.coverInner}>
                 {cog}
                 {name}
-              <View >
-                <Avatar style={{alignItems: 'center', marginTop: 20 }} size='medium' avatarUrl={(isEditing && user.profile.tempAvatar) ? getImageUrl(user.profile.tempAvatar) : getImageUrl(user.profile.avatar)} />
+              <View style={{position: 'relative', marginTop: 20}}>
+                <Avatar
+                  style={{alignItems: 'center'}}
+                  size='extraLarge'
+                  avatarUrl={(isEditing && user.profile.tempAvatar) ? getImageUrl(user.profile.tempAvatar) : getImageUrl(user.profile.avatar)} />
                 {avatarCamera}
               </View>
               {!isEditing &&
@@ -523,11 +545,12 @@ class ProfileView extends React.Component {
            </View>
           }
           {!isEditing && <View style={styles.tabs}>
-            {tabs}
             {this.state.selectedTab === TabTypes.stories && stories.length > 0 &&
               <StoryList
                 storiesById={stories}
                 refreshing={false}
+                renderHeaderContent={tabs}
+                style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
                 renderStory={this.renderStory}
               />
             }
@@ -535,6 +558,8 @@ class ProfileView extends React.Component {
               <StoryList
                 storiesById={drafts}
                 refreshing={false}
+                renderHeaderContent={tabs}
+                style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
                 renderStory={this.renderStory}
               />
             }
@@ -542,9 +567,12 @@ class ProfileView extends React.Component {
               <StoryList
                 storiesById={bookmarks}
                 refreshing={false}
+                renderHeaderContent={tabs}
+                style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
                 renderStory={this.renderStory}
               />
             }
+            {this.areNoStories() && tabs}
             {this.state.selectedTab === TabTypes.stories && fetchStatus.loaded && stories.length === 0 &&
               <View style={styles.noStories}>
                 <Text style={styles.noStoriesText}>{this.props.editable ? showTooltip ? '' : 'There are no stories here' : 'This user has no stories published'}</Text>

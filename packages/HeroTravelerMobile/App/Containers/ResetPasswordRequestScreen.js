@@ -93,7 +93,7 @@ class ResetPasswordRequestScreen extends React.Component {
               Please enter your email address
               </Text>
             </View>
-            <View style={{height: 120}}>
+            <View style={{height: 95}}>
             </View>
             <Input
               ref='email'
@@ -109,6 +109,7 @@ class ResetPasswordRequestScreen extends React.Component {
               placeholder='Email' />
 
             <RoundedButton
+              style={styles.submit}
               text="Submit"
               onPress={this.handlePressResetPasswordRequest}
             />

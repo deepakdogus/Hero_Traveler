@@ -99,7 +99,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: Colors.whiteAlphaPt15,
-    marginTop: 12, 
+    marginTop: 12,
   },
   tab: {
     justifyContent: 'center',

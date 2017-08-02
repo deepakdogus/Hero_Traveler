@@ -474,86 +474,81 @@ class StoryCoverScreen extends Component {
   renderContent () {
     const icon = this.getIcon()
     return (
-      <KeyboardAvoidingView
-        behavior='position'
-        contentContainerStyle={styles.keyboardMargin}
-      >
-        <View style={this.hasNoCover() ? styles.lightGreyAreasBG : null}>
-          {this.hasNoCover() && <View style={styles.spaceView} />}
-          {this.hasNoCover() &&
-            <View style={[styles.spaceView, styles.addPhotoView]}>
-              <TouchableOpacity
-                style={styles.addPhotoButton}
-                onPress={this._contentAddCover}
-              >
-                <TabIcon name={icon} style={{
-                  view: styles.cameraIcon,
-                  image: icon === 'camera' ? styles.cameraIconImage : styles.videoIconImage,
-                }} />
-                <Text style={this.renderTextColor([styles.baseTextColor, styles.coverPhotoText])}>
-                  {this.isPhotoType() ? '+ ADD COVER PHOTO' : '+ ADD COVER VIDEO'}
-                </Text>
-              </TouchableOpacity>
+      <View style={this.hasNoCover() ? styles.lightGreyAreasBG : null}>
+        {this.hasNoCover() && <View style={styles.spaceView} />}
+        {this.hasNoCover() &&
+          <View style={[styles.spaceView, styles.addPhotoView]}>
+            <TouchableOpacity
+              style={styles.addPhotoButton}
+              onPress={this._contentAddCover}
+            >
+              <TabIcon name={icon} style={{
+                view: styles.cameraIcon,
+                image: icon === 'camera' ? styles.cameraIconImage : styles.videoIconImage,
+              }} />
+              <Text style={this.renderTextColor([styles.baseTextColor, styles.coverPhotoText])}>
+                {this.isPhotoType() ? '+ ADD COVER PHOTO' : '+ ADD COVER VIDEO'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        }
+        {!this.hasNoCover() && !this.state.imageMenuOpen &&
+          <TouchableWithoutFeedback onPress={this._toggleImageMenu}>
+            <View>
+              <View style={styles.spaceView} />
+              <View style={styles.spaceView} />
             </View>
-          }
-          {!this.hasNoCover() && !this.state.imageMenuOpen &&
+          </TouchableWithoutFeedback>
+        }
+        {!this.hasNoCover() && this.state.imageMenuOpen &&
+          <View>
             <TouchableWithoutFeedback onPress={this._toggleImageMenu}>
               <View>
                 <View style={styles.spaceView} />
-                <View style={styles.spaceView} />
+                <Animated.View style={[
+                  styles.imageMenuView,
+                  {opacity: this.state.toolbarOpacity}
+                ]}>
+                  <TouchableOpacity
+                    onPress={this._touchChangeCover}
+                    style={styles.iconButton}>
+                    <Icon name={icon} color={Colors.snow} size={30} />
+                  </TouchableOpacity>
+                  {this.isPhotoType() &&
+                    <TouchableOpacity
+                      style={styles.iconButton}>
+                      <Icon name='crop' color={Colors.snow} size={30} />
+                    </TouchableOpacity>
+                  }
+                  <TouchableOpacity
+                    onPress={this._touchTrash}
+                    style={styles.iconButton}>
+                    <Icon name='trash' color={Colors.snow} size={30} />
+                  </TouchableOpacity>
+                </Animated.View>
               </View>
             </TouchableWithoutFeedback>
-          }
-          {!this.hasNoCover() && this.state.imageMenuOpen &&
-            <View>
-              <TouchableWithoutFeedback onPress={this._toggleImageMenu}>
-                <View>
-                  <View style={styles.spaceView} />
-                  <Animated.View style={[
-                    styles.imageMenuView,
-                    {opacity: this.state.toolbarOpacity}
-                  ]}>
-                    <TouchableOpacity
-                      onPress={this._touchChangeCover}
-                      style={styles.iconButton}>
-                      <Icon name={icon} color={Colors.snow} size={30} />
-                    </TouchableOpacity>
-                    {this.isPhotoType() &&
-                      <TouchableOpacity
-                        style={styles.iconButton}>
-                        <Icon name='crop' color={Colors.snow} size={30} />
-                      </TouchableOpacity>
-                    }
-                    <TouchableOpacity
-                      onPress={this._touchTrash}
-                      style={styles.iconButton}>
-                      <Icon name='trash' color={Colors.snow} size={30} />
-                    </TouchableOpacity>
-                  </Animated.View>
-                </View>
-              </TouchableWithoutFeedback>
-            </View>
-          }
-          <View style={styles.addTitleView}>
-            <TextInput
-              style={this.renderTextColor(styles.titleInput)}
-              placeholder='ADD A TITLE'
-              placeholderTextColor={this.renderPlaceholderColor(Colors.background)}
-              value={this.state.title}
-              onChangeText={title => this.setState({title})}
-              returnKeyType='done'
-            />
-            <TextInput
-              style={this.renderTextColor(styles.subTitleInput)}
-              placeholder='Add a subtitle'
-              placeholderTextColor={this.renderPlaceholderColor(Colors.background)}
-              onChangeText={description => this.setState({description})}
-              value={this.state.description}
-              returnKeyType='done'
-            />
           </View>
+        }
+        <View style={styles.addTitleView}>
+          <TextInput
+            style={this.renderTextColor(styles.titleInput)}
+            placeholder='ADD A TITLE'
+            placeholderTextColor={this.renderPlaceholderColor(Colors.background)}
+            value={this.state.title}
+            onChangeText={title => this.setState({title})}
+            returnKeyType='done'
+          />
+          <TextInput
+            style={this.renderTextColor(styles.subTitleInput)}
+            placeholder='Add a subtitle'
+            placeholderTextColor={this.renderPlaceholderColor(Colors.background)}
+            onChangeText={description => this.setState({description})}
+            value={this.state.description}
+            returnKeyType='done'
+          />
         </View>
-      </KeyboardAvoidingView>
+      </View>
     )
   }
 
@@ -709,27 +704,31 @@ class StoryCoverScreen extends Component {
           }}
         />
         <ScrollView keyboardShouldPersistTaps='handled'>
-          <View style={[
-            styles.coverWrapper,
-            !this.isPhotoType() && styles.videoCoverWrapper
-          ]}>
-            {this.state.error &&
-              <ShadowButton
-                style={styles.errorButton}
-                onPress={this._touchError}
-                text={this.state.error} />
-            }
-            {this.isPhotoType() && this.renderCoverPhoto(this.state.coverImage)}
-            {!this.isPhotoType() && this.renderCoverVideo(this.state.coverVideo)}
-          </View>
-          {this.isPhotoType() &&
-            <View style={styles.editorWrapper}>
-              <View style={styles.angleDownIcon}>
-                <Icon name='angle-down' size={20} color='#9e9e9e' />
-              </View>
-              {this.renderEditor()}
+          <KeyboardAvoidingView
+            behavior='position'
+          >
+            <View style={[
+              styles.coverWrapper,
+              !this.isPhotoType() && styles.videoCoverWrapper
+            ]}>
+              {this.state.error &&
+                <ShadowButton
+                  style={styles.errorButton}
+                  onPress={this._touchError}
+                  text={this.state.error} />
+              }
+              {this.isPhotoType() && this.renderCoverPhoto(this.state.coverImage)}
+              {!this.isPhotoType() && this.renderCoverVideo(this.state.coverVideo)}
             </View>
-          }
+            {this.isPhotoType() &&
+              <View style={styles.editorWrapper}>
+                <View style={styles.angleDownIcon}>
+                  <Icon name='angle-down' size={20} color='#9e9e9e' />
+                </View>
+                {this.renderEditor()}
+              </View>
+            }
+          </KeyboardAvoidingView>
         </ScrollView>
         {this.isUploading() &&
           <Loader
@@ -786,9 +785,6 @@ const styles = StyleSheet.create({
   },
   spaceView: {
     height: third
-  },
-  keyboardMargin: {
-    marginBottom: 50,
   },
   loaderText: {
     color: 'white',

@@ -69,7 +69,6 @@ router.get(
 
 router.get(
   '/redirect-verify-email/:token',
-  hasValidOauth,
   verifyEmailRedirect
 )
 

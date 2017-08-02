@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     // bottom: 0,
     // left: 0,
     // right: 0,
-    borderTopColor: '#e7e7e7',
+    borderTopColor: '#dedede',
     borderTopWidth: 1,
     flexDirection: 'row'
   },
@@ -164,6 +164,6 @@ const styles = StyleSheet.create({
   },
   borderRight: {
     borderRightWidth: 1,
-    borderRightColor: '#e7e7e7'
+    borderRightColor: '#dedede'
   }
 })

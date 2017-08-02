@@ -26,6 +26,7 @@ import ListItem from '../../Components/ListItem'
 import getImageUrl from '../../Lib/getImageUrl'
 import Avatar from '../../Components/Avatar'
 import Image from '../../Components/Image'
+import TabIcon from '../../Components/TabIcon'
 
 const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
 const STORY_INDEX = env.SEARCH_STORY_INDEX
@@ -88,18 +89,25 @@ class ExploreScreen extends Component {
   _changeQuery = (e) => {
     const helper = this.helper
     const q = e.nativeEvent.text
-
+    const hasSearchText = q.length > 0
     if (this.state.selectedTabIndex === null) {
-      this.setState({selectedTabIndex: 0})
+      this.setState({
+        selectedTabIndex: 0,
+        hasSearchText
+      })
     }
 
     if (_.isString(q) && q.length === 0) {
       this.setState({
         lastSearchResults: null,
         searching: false,
+        hasSearchText
       })
       return
     } else if (_.isString(q) && q.length < 3) {
+      if (hasSearchText && !this.state.hasSearchText) {
+        this.setState({hasSearchText})
+      }
       return
     }
 
@@ -138,6 +146,11 @@ class ExploreScreen extends Component {
     if (text.length <= 2) {
       this.setState({lastSearchResults: null})
     }
+  }
+
+  resetSearchText = () => {
+    this._searchInput.setNativeProps({text: ''})
+    this.setState({hasSearchText: false})
   }
 
   renderSearchSection() {
@@ -300,9 +313,22 @@ class ExploreScreen extends Component {
               onFocus={this.setFocus}
               onChange={e => this._changeQuery(e)}
               onChangeText={this.checkClearResults}
-              clearButtonMode='while-editing'
               returnKeyType='search'
             />
+            { this.state.hasSearchText &&
+            <TouchableOpacity
+              style={styles.InputXPosition}
+              onPress={this.resetSearchText}
+            >
+              <TabIcon
+                name='closeDark'
+                style={{
+                  view: styles.InputXView,
+                  image: styles.InputXIcon,
+                }}
+              />
+            </TouchableOpacity>
+            }
           </View>
           {this.state.selectedTabIndex !== null &&
             <TouchableOpacity onPress={() => {

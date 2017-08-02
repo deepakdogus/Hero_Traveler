@@ -32,6 +32,7 @@ const images = {
   iconEditImageCrop: require('../Images/ht-icons/icon_edit-image-crop.png'),
   iconEditImageTrash: require('../Images/ht-icons/icon_edit-image-trash.png'),
   iconContentXWhite: require('../Images/ht-icons/icon_content-x-white.png'),
+  iconContentXDark: require('../Images/ht-icons/icon_content-x@2x.png'),
   iconNavHome: require('../Images/ht-icons/icon_nav-home@2x.png'),
   iconNavActivity: require('../Images/ht-icons/icon_nav-activity@2x.png'),
   iconNavExplore: require('../Images/ht-icons/icon_nav-explore@2x.png'),

@@ -133,5 +133,25 @@ export default StyleSheet.create({
   thumbnailImage: {
     height: 40,
     width: 30,
+  },
+  InputXPosition: {
+    position: 'absolute',
+    top: 0,
+    right: 5,
+  },
+  InputXView: {
+    backgroundColor: '#616161',
+    borderRadius: 100,
+    textAlign: 'center',
+    justifyContent: 'center',
+    height: 15,
+    width: 15,
+    paddingLeft: 2.5,
+    marginVertical: 7.5,
+  },
+  InputXIcon: {
+    width: 10,
+    height: 10,
+    paddingLeft: 5,
   }
 })

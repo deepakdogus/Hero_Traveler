@@ -14,6 +14,9 @@ import Icon from './Icon'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import FollowFollowing from './Modals/FollowFollowing'
 import ProfileStats from './Modals/ProfileStats'
+import UserComments from './Modals/UserComments'
+import LikedBy from './Modals/LikedBy'
+import SendTo from './Modals/SendTo'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   &:after {
@@ -125,7 +128,7 @@ export default class StoryHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: undefined}
+    this.state = {modal: 'likedBy'}
   }
 
   closeModal = () => {
@@ -199,18 +202,39 @@ export default class StoryHeader extends React.Component {
 
         <RightModal
           isOpen={this.state.modal === 'followedBy'}
-          contentLabel='Follewed By Modal'
+          contentLabel='Followed By Modal'
           onRequestClose={this.closeModal}
         >
           <FollowFollowing profile={user}/>
         </RightModal>
         <RightModal
           isOpen={this.state.modal === 'stats'}
-          contentLabel='Follewed By Modal'
+          contentLabel='User Stats Modal'
           onRequestClose={this.closeModal}
         >
           <ProfileStats profile={user}/>
         </RightModal>
+        <RightModal
+          isOpen={this.state.modal === 'userComments'}
+          contentLabel='User Comments Modal'
+          onRequestClose={this.closeModal}
+        >
+          <UserComments profile={user}/>
+        </RightModal>
+        <RightModal
+          isOpen={this.state.modal === 'likedBy'}
+          contentLabel='Liked By Modal'
+          onRequestClose={this.closeModal}
+        >
+          <LikedBy profile={user}/>
+        </RightModal>
+        <RightModal
+          isOpen={this.state.modal === 'sendTo'}
+          contentLabel='Send To Modal'
+          onRequestClose={this.closeModal}
+        >
+          <SendTo profile={user}/>
+        </RightModal>                        
       </ImageWrapper>
     )
   }

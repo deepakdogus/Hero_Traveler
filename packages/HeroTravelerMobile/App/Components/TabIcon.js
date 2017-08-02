@@ -73,6 +73,8 @@ class TabIcon extends React.Component {
         return Images.iconNavCreate
       case 'close':
         return Images.iconContentXWhite
+      case 'closeDark':
+        return Images.iconContentXDark
       case 'closeGrey':
         return Images.iconClose
       case 'cameraReverse':

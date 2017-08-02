@@ -41,7 +41,7 @@ export default class StoryList extends React.Component {
         initialListSize={1}
         renderRow={this.props.renderStory}
         renderHeader={this._renderHeader}
-        stickyHeaderIndices={this._renderHeader ? [] : [0]}
+        stickyHeaderIndices={this.props.renderHeaderContent ? [0] : []}
         refreshControl={
           <RefreshControl
             refreshing={this.props.refreshing}

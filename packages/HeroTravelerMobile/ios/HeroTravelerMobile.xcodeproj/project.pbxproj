@@ -36,7 +36,6 @@
 		592083ACE0994749571D40E1 /* libPods-HeroTravelerMobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03188FC3316AA2C99BA54850 /* libPods-HeroTravelerMobile.a */; };
 		5CADE360C1014D30965F6E69 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3BEA3920CDD45E787E601C0 /* Foundation.ttf */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
-		5FE0E3EC15F948F6ADDBF96B /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A930CC183E84436FAC09B6C2 /* FontAwesome.ttf */; };
 		61F7FBCB75814782822FFDA6 /* SourceSansPro-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BCD6AF1710BD47EDB3C343D7 /* SourceSansPro-Italic.ttf */; };
 		6DDD8F3D9D3C4798A2A63CD8 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5530D24D35DF4E9C98520270 /* Montserrat-Bold.ttf */; };
 		7014F18B00ED4573A547BD0D /* SourceSansPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6D90F19694EC4CB9AE99B71C /* SourceSansPro-Regular.ttf */; };
@@ -50,10 +49,6 @@
 		942D124B1EB395B200A0CFE5 /* RNHockeyApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 942D124A1EB395B200A0CFE5 /* RNHockeyApp.m */; };
 		9465AAA71EB0FDC7003109B0 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9465AAA61EB0FDC7003109B0 /* GameKit.framework */; };
 		9465AAA91EB0FDCC003109B0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9465AAA81EB0FDCC003109B0 /* StoreKit.framework */; };
-		949A3A671E9EB74600815C53 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 949A3A631E9EB74600815C53 /* Bolts.framework */; };
-		949A3A681E9EB74600815C53 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 949A3A641E9EB74600815C53 /* FBSDKCoreKit.framework */; };
-		949A3A691E9EB74600815C53 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 949A3A651E9EB74600815C53 /* FBSDKLoginKit.framework */; };
-		949A3A6A1E9EB74600815C53 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 949A3A661E9EB74600815C53 /* FBSDKShareKit.framework */; };
 		94A4BD701EB77CFA003B75DD /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94A4BD561EB77CC7003B75DD /* libRCTPushNotification.a */; };
 		94AE1C2F1EA7C01700B88515 /* libReact-Native-Webview-Bridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94AE1C221EA7BFE500B88515 /* libReact-Native-Webview-Bridge.a */; };
 		94CE74A51ECDE06200E0619D /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94CE74A41ECDE05300E0619D /* libAirMaps.a */; };
@@ -271,6 +266,34 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
+		91D044131F327BCB00FAA404 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 45954CBAA7B692A31AAE60A485ACBCEB;
+			remoteInfo = Bolts;
+		};
+		91D044151F327BCB00FAA404 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EFCD714B66300CE3401E1DBFFBD5154A;
+			remoteInfo = FBSDKCoreKit;
+		};
+		91D044171F327BCB00FAA404 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E6B6631B9F548C86B55549FEBFEDC61C;
+			remoteInfo = FBSDKLoginKit;
+		};
+		91D044191F327BCB00FAA404 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 12F7B2CD57A1EF44F848AA244D172280;
+			remoteInfo = FBSDKShareKit;
+		};
 		9404AF3A1E745B230054289E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 656DC182365C4CFC8F7AF2AD /* RNDeviceInfo.xcodeproj */;
@@ -464,9 +487,6 @@
 		9465AAA61EB0FDC7003109B0 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		9465AAA81EB0FDCC003109B0 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		949A3A631E9EB74600815C53 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = ../../../../../../Documents/FacebookSDK/Bolts.framework; sourceTree = "<group>"; };
-		949A3A641E9EB74600815C53 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../../../../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
-		949A3A651E9EB74600815C53 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../../../../../Documents/FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
-		949A3A661E9EB74600815C53 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../../../../../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		94A4BD3F1EB77CC7003B75DD /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		94AE1C091EA7BFE500B88515 /* React-Native-Webview-Bridge.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "React-Native-Webview-Bridge.xcodeproj"; path = "../node_modules/react-native-webview-bridge-updated/ios/React-Native-Webview-Bridge.xcodeproj"; sourceTree = "<group>"; };
 		94CE749F1ECDE05300E0619D /* AirMaps.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
@@ -525,17 +545,13 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
-				949A3A6A1E9EB74600815C53 /* FBSDKShareKit.framework in Frameworks */,
 				AF011CBE1DE74E9DB1FF4182 /* libRNDeviceInfo.a in Frameworks */,
 				D945DCD623FC4A389E074D21 /* libRNVectorIcons.a in Frameworks */,
 				9465AAA91EB0FDCC003109B0 /* StoreKit.framework in Frameworks */,
-				949A3A691E9EB74600815C53 /* FBSDKLoginKit.framework in Frameworks */,
 				822C44BADC544C769D606640 /* libBVLinearGradient.a in Frameworks */,
 				7E0F9011C3E64CE89B9E5CB8 /* libRCTCamera.a in Frameworks */,
 				94CE74A51ECDE06200E0619D /* libAirMaps.a in Frameworks */,
 				324235F739C34A709DD13882 /* libRNImagePicker.a in Frameworks */,
-				949A3A671E9EB74600815C53 /* Bolts.framework in Frameworks */,
-				949A3A681E9EB74600815C53 /* FBSDKCoreKit.framework in Frameworks */,
 				2317F45565AF467E999257D4 /* libSplashScreen.a in Frameworks */,
 				94AE1C2F1EA7C01700B88515 /* libReact-Native-Webview-Bridge.a in Frameworks */,
 				530D774BD2054AE48FD45B5B /* libRCTActionSheet.a in Frameworks */,
@@ -826,6 +842,10 @@
 		942D12181EB3956400A0CFE5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				91D044141F327BCB00FAA404 /* libBolts.a */,
+				91D044161F327BCB00FAA404 /* libFBSDKCoreKit.a */,
+				91D044181F327BCB00FAA404 /* libFBSDKLoginKit.a */,
+				91D0441A1F327BCB00FAA404 /* libFBSDKShareKit.a */,
 				942D12201EB3956400A0CFE5 /* HockeySDKResources.bundle */,
 				942D12221EB3956400A0CFE5 /* libPods-HeroTravelerMobile.a */,
 				942D12241EB3956400A0CFE5 /* libPods-HeroTravelerMobileTests.a */,
@@ -883,9 +903,6 @@
 				9465AAA81EB0FDCC003109B0 /* StoreKit.framework */,
 				9465AAA61EB0FDC7003109B0 /* GameKit.framework */,
 				949A3A631E9EB74600815C53 /* Bolts.framework */,
-				949A3A641E9EB74600815C53 /* FBSDKCoreKit.framework */,
-				949A3A651E9EB74600815C53 /* FBSDKLoginKit.framework */,
-				949A3A661E9EB74600815C53 /* FBSDKShareKit.framework */,
 				03188FC3316AA2C99BA54850 /* libPods-HeroTravelerMobile.a */,
 				BE25BBEB7BFE7D18CC219357 /* libPods-HeroTravelerMobileTests.a */,
 			);
@@ -1372,6 +1389,34 @@
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		91D044141F327BCB00FAA404 /* libBolts.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBolts.a;
+			remoteRef = 91D044131F327BCB00FAA404 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		91D044161F327BCB00FAA404 /* libFBSDKCoreKit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFBSDKCoreKit.a;
+			remoteRef = 91D044151F327BCB00FAA404 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		91D044181F327BCB00FAA404 /* libFBSDKLoginKit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFBSDKLoginKit.a;
+			remoteRef = 91D044171F327BCB00FAA404 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		91D0441A1F327BCB00FAA404 /* libFBSDKShareKit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFBSDKShareKit.a;
+			remoteRef = 91D044191F327BCB00FAA404 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		9404AF3B1E745B230054289E /* libRNDeviceInfo.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1530,7 +1575,6 @@
 				8BA419D9187244E6B9C41535 /* SourceSansPro-SemiBoldItalic.ttf in Resources */,
 				175E5111BF40407B93963B95 /* Entypo.ttf in Resources */,
 				AB0103C022824425B08C1ABF /* EvilIcons.ttf in Resources */,
-				5FE0E3EC15F948F6ADDBF96B /* FontAwesome.ttf in Resources */,
 				5CADE360C1014D30965F6E69 /* Foundation.ttf in Resources */,
 				4C2BFDE197014EEABB76EA00 /* Ionicons.ttf in Resources */,
 				9C36A3E56C584724A777E071 /* MaterialCommunityIcons.ttf in Resources */,
@@ -1787,10 +1831,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 9498CR345N;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"/Users/$(USER)/Documents/FacebookSDK",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(REACT_HEADERS_PATH)",
@@ -1835,10 +1876,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9498CR345N;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"/Users/$(USER)/Documents/FacebookSDK",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(REACT_HEADERS_PATH)",

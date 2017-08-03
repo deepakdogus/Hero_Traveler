@@ -142,7 +142,6 @@ export default StyleSheet.create({
   InputXView: {
     backgroundColor: '#616161',
     borderRadius: 100,
-    textAlign: 'center',
     justifyContent: 'center',
     height: 15,
     width: 15,

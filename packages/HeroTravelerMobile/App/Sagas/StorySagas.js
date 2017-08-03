@@ -217,6 +217,25 @@ export function * loadStory(api, {storyId}) {
   }
 }
 
+
+export function * getStory (api , {storyId}) {
+  const response = yield call(api.getStory, storyId)
+
+  if (response.ok) {
+    const {entities} = response.data
+    yield [
+      put(StoryActions.receiveStories(entities.stories)),
+      put(UserActions.receiveUsers(entities.users))
+    ]
+  } else {
+    const errorObj = {}
+    errorObj[storyId] = {
+      error: 'Story not found'
+    }
+    yield put(StoryActions.receiveStories(errorObj))
+  }
+}
+
 export function * loadDrafts(api) {
   const response = yield call(
     api.getDrafts
@@ -242,5 +261,5 @@ export function * deleteStory(api, {userId, storyId}){
 
   if (response.ok) {
     yield put(StoryActions.deleteStorySuccess(userId, storyId))
-  } 
+  }
 }

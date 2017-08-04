@@ -27,6 +27,7 @@ import HeroAPI from '../Services/HeroAPI'
 import pathAsFileObject from '../Lib/pathAsFileObject'
 import TabIcon from './TabIcon'
 import Image from './Image'
+import ShadowButton from './ShadowButton'
 
 // @TODO UserActions shouldn't be in a component
 import UserActions from '../Redux/Entities/Users'
@@ -117,8 +118,8 @@ class ProfileView extends React.Component {
       NavActions.pop()
     })
     .catch(() => {
-      // we need to add error handling
       NavActions.pop()
+      this.setState({error: 'There was an error updating your profile photo. Please try again'})
     })
   }
 
@@ -298,6 +299,10 @@ class ProfileView extends React.Component {
       loadDataAction: UserActions.loadUserFollowing,
       userId: this.props.user.id
     })
+  }
+
+  _clearError = () => {
+    this.setState({error: null})
   }
 
   _getTextInputRefs = () => [this.bioInput]
@@ -497,6 +502,13 @@ class ProfileView extends React.Component {
             source={{uri: profileImage || undefined}}
           >
             <LinearGradient colors={gradientStyle} style={styles.gradient}>
+              {this.state.error &&
+                <ShadowButton
+                  style={styles.errorButton}
+                  onPress={this._clearError}
+                  text={this.state.error}
+                />
+              }
               <View style={styles.coverInner}>
                 {cog}
                 {name}

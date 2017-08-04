@@ -27,6 +27,7 @@ import HeroAPI from '../Services/HeroAPI'
 import pathAsFileObject from '../Lib/pathAsFileObject'
 import TabIcon from './TabIcon'
 import Image from './Image'
+import ShadowButton from './ShadowButton'
 
 // @TODO UserActions shouldn't be in a component
 import UserActions from '../Redux/Entities/Users'
@@ -100,14 +101,26 @@ class ProfileView extends React.Component {
   _handleUpdateAvatarPhoto = (data) => {
     api.uploadAvatarImage(this.props.user.id, pathAsFileObject(data))
     .then(({ data }) => {
-      this.props.updateUserSuccess({
-        id: data.id,
-        profile: {
-          tempAvatar: data.profile.avatar,
-        }
-      })
+      // if there is a message it means there was an error
+      if (data.message) {
+        return Promise.reject(new Error(data.message))
+      }
+      else {
+        this.props.updateUserSuccess({
+          id: data.id,
+          profile: {
+            tempAvatar: data.profile.avatar,
+          }
+        })
+      }
     })
-    .then(() => NavActions.pop())
+    .then(() => {
+      NavActions.pop()
+    })
+    .catch(() => {
+      NavActions.pop()
+      this.setState({error: 'There was an error updating your profile photo. Please try again'})
+    })
   }
 
   _handleUpdateCoverPhoto = (data) => {
@@ -286,6 +299,10 @@ class ProfileView extends React.Component {
       loadDataAction: UserActions.loadUserFollowing,
       userId: this.props.user.id
     })
+  }
+
+  _clearError = () => {
+    this.setState({error: null})
   }
 
   _getTextInputRefs = () => [this.bioInput]
@@ -485,6 +502,13 @@ class ProfileView extends React.Component {
             source={{uri: profileImage || undefined}}
           >
             <LinearGradient colors={gradientStyle} style={styles.gradient}>
+              {this.state.error &&
+                <ShadowButton
+                  style={styles.errorButton}
+                  onPress={this._clearError}
+                  text={this.state.error}
+                />
+              }
               <View style={styles.coverInner}>
                 {cog}
                 {name}

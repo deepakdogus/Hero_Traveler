@@ -220,5 +220,14 @@ export default StyleSheet.create({
     color: '#757575',
     textAlign: 'center',
     fontFamily: Fonts.type.montserrat
-  }
+  },
+  errorButton: {
+    position: 'absolute',
+    top: 125,
+    left: 0,
+    right: 0,
+    marginVertical: Metrics.baseMargin,
+    marginHorizontal: Metrics.section,
+    zIndex: 100,
+  },
 })

@@ -16,6 +16,7 @@ import {Metrics} from '../Themes'
 import StoryReadingToolbar from '../Components/StoryReadingToolbar'
 import TabIcon from '../Components/TabIcon'
 import Image from '../Components/Image'
+import Loader from '../Components/Loader'
 import {styles, rendererStyles} from './Styles/StoryReadingScreenStyles'
 import Video from '../Components/Video'
 import Immutable from 'seamless-immutable'
@@ -128,6 +129,9 @@ class StoryReadingScreen extends React.Component {
       newYPos: -1,
       oldYPos: 0,
     }
+    if (!this.props.story) {
+      this.props.requestStory(this.props.storyId)
+    }
   }
 
   onScroll(event) {
@@ -187,7 +191,27 @@ class StoryReadingScreen extends React.Component {
   }
 
   render () {
-    const { story } = this.props;
+    const { story, author } = this.props;
+    if (!story || !author) {
+      return (
+        <View style={[styles.darkRoot]}>
+          {!story &&
+            <Loader style={{
+              flex: 1,
+              position: 'absolute',
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              }}
+            />
+          }
+          { story && story.error &&
+            <Text>{story.error}</Text>
+          }
+        </View>
+      )
+    }
     return (
       <View style={[styles.root]}>
         <ScrollView
@@ -280,6 +304,7 @@ const mapStateToProps = (state, props) => {
   let { fetching, entities: stories, error } = state.entities.stories
   const story = stories[props.storyId]
   return {
+    author: story ? state.entities.users.entities[story.author] : undefined,
     user: state.entities.users.entities[userId],
     fetching,
     story,
@@ -292,7 +317,8 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     toggleLike: (userId, storyId) => dispatch(StoryActions.storyLike(userId, storyId)),
-    toggleBookmark: (userId, storyId) => dispatch(StoryActions.storyBookmark(userId, storyId))
+    toggleBookmark: (userId, storyId) => dispatch(StoryActions.storyBookmark(userId, storyId)),
+    requestStory: (storyId) => dispatch(StoryActions.storyRequest(storyId)),
   }
 }
 

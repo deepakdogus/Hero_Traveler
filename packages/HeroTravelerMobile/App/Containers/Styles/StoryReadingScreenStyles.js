@@ -7,6 +7,11 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.snow,
   },
+  darkRoot: {
+    flex: 1,
+    backgroundColor: Colors.background,
+    justifyContent: 'center',
+  },
   scrollView: {
     flex: 1
   },

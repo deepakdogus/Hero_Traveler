@@ -100,14 +100,26 @@ class ProfileView extends React.Component {
   _handleUpdateAvatarPhoto = (data) => {
     api.uploadAvatarImage(this.props.user.id, pathAsFileObject(data))
     .then(({ data }) => {
-      this.props.updateUserSuccess({
-        id: data.id,
-        profile: {
-          tempAvatar: data.profile.avatar,
-        }
-      })
+      // if there is a message it means there was an error
+      if (data.message) {
+        return Promise.reject(new Error(data.message))
+      }
+      else {
+        this.props.updateUserSuccess({
+          id: data.id,
+          profile: {
+            tempAvatar: data.profile.avatar,
+          }
+        })
+      }
     })
-    .then(() => NavActions.pop())
+    .then(() => {
+      NavActions.pop()
+    })
+    .catch(() => {
+      // we need to add error handling
+      NavActions.pop()
+    })
   }
 
   _handleUpdateCoverPhoto = (data) => {

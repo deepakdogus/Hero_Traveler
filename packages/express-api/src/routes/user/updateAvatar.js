@@ -34,11 +34,11 @@ export default async function updateAvatar(req, res, next) {
   )
   await addAvatarToIndex(avatarImage, user)
 
-  await Models.User.update({_id: userId}, {
+  await Models.User.update({_id: user.id}, {
     $set: {
       'profile.avatar': avatarImage._id
     }
   })
-  return User.get(userId)
+  return User.get({_id: user.id})
 }
 

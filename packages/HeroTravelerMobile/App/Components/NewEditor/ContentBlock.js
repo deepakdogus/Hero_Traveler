@@ -271,6 +271,8 @@ export default class NewTextBlock extends PureComponent {
             placeholderTextColor={'#757575'}
             autoFocus={this.props.autoFocus}
             autoCorrect={false}
+            autoCapitalize={false}
+            spellCheck={false}
             blurOnSubmit={true}
             selection={inputSelection}
             onKeyPress={this.onKeyPress}

@@ -95,7 +95,7 @@ class StoryCoverScreen extends Component {
   componentWillReceiveProps(nextProps) {
     let nextState = {}
 
-    if (!this.props.story.title && nextProps.story.title) {
+    if (!this.props.story.title !== nextProps.story.title) {
       nextState.title = nextProps.story.title
       nextState.description = nextProps.story.description
     }
@@ -103,9 +103,21 @@ class StoryCoverScreen extends Component {
     if (!this.props.story.coverVideo && nextProps.story.coverVideo) {
       nextState.coverVideo = getVideoUrl(nextProps.story.coverVideo)
     }
+    // case of switching to new draft from existing story
+    if (this.state.coverVideo &&
+      (this.props.story.id !== nextProps.story.id)
+    ) {
+      nextState.coverVideo = undefined
+    }
 
     if (!this.props.story.coverImage && nextProps.story.coverImage) {
-      nextState.coverImage = getVideoUrl(nextProps.story.coverImage)
+      nextState.coverImage = getImageUrl(nextProps.story.coverImage)
+    }
+    // case of switching to new draft from existing story
+    if (this.state.coverImage &&
+      (this.props.story.id !== nextProps.story.id)
+    ) {
+      nextState.coverImage = undefined
     }
 
     this.setState(nextState)
@@ -422,8 +434,6 @@ class StoryCoverScreen extends Component {
       if (this.hasDescriptionChanged()) {
         story.description = _.trim(this.state.description)
       }
-
-      console.log('this.editor.getEditorStateAsObject()')
 
       story.draftjsContent = this.editor.getEditorStateAsObject()
 
@@ -933,8 +943,18 @@ const customStyles = {
 
 export default connect((state, props) => {
   let story
-
-  if (!state.storyCreate.draft && !!state.entities.stories.entities[props.storyId]) {
+  /*
+  go over logic to see if we can refactor.
+  I believe we can make it so that all new drafts have shouldLoadStory true
+  or some other such boolean.
+  If we are editing a story that means we are coming in through the profile page
+  that means we already have the story loaded so it should be entities.
+  This existing logic needs more clarity
+  */
+  if (props.shouldLoadStory) {
+    story = state.storyCreate.draft
+  }
+  else if (state.entities.stories.entities[props.storyId]) {
     story = state.entities.stories.entities[props.storyId]
   } else {
     story = state.storyCreate.draft

@@ -87,7 +87,9 @@ class CreateStoryScreen extends Component {
       video: false
     }, () => {
       NavActions.createStoryFlow({
-        mediaType: 'photo'
+        mediaType: 'photo',
+        type: 'reset',
+        shouldLoadStory: true,
       })
     })
   }

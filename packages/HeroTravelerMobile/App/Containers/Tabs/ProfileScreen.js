@@ -41,8 +41,10 @@ class ProfileScreen extends React.Component {
   }
 
   _touchEdit = (storyId) => {
-    NavActions.createStoryFlow({type: 'reset', navigatedFromProfile: true})
-    NavActions.createStory_cover({storyId, navigatedFromProfile: true})
+    // Future: see if we can refactor this into 1 call
+    // Note: We will idealy refactor navigator completely so not top priority
+    NavActions.createStoryFlow({storyId, type: 'reset', navigatedFromProfile: true, shouldLoadStory: false})
+    NavActions.createStory_cover({storyId, navigatedFromProfile: true, shouldLoadStory: false})
   }
 
   _touchTrash = (storyId) => {

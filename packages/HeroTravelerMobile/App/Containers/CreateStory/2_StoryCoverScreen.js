@@ -435,7 +435,9 @@ class StoryCoverScreen extends Component {
         story.description = _.trim(this.state.description)
       }
 
-      story.draftjsContent = this.editor.getEditorStateAsObject()
+      if (this.isPhotoType()) {
+        story.draftjsContent = this.editor.getEditorStateAsObject()
+      }
 
       this.props.update(story.id, story)
 

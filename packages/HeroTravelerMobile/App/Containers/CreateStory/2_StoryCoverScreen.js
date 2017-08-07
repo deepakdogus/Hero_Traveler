@@ -294,7 +294,7 @@ class StoryCoverScreen extends Component {
   merely revert the values
   */
   isSavedDraft = () => {
-    return Object.keys(this.state.originalStory).length
+    return this.state.originalStory && this.state.originalStory.id === this.props.story.id
   }
 
   _onLeft = () => {
@@ -344,7 +344,7 @@ class StoryCoverScreen extends Component {
       NavActions.tabbar({type: 'reset'})
       NavActions.profile()
     } else {
-      NavActions.pop()
+      NavActions.tabbar({type: 'reset'})
     }
   }
 

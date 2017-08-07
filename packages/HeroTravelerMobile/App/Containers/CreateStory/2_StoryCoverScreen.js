@@ -44,6 +44,7 @@ const MediaTypes = {
   video: 'video',
   photo: 'photo',
 }
+
 class StoryCoverScreen extends Component {
 
   static propTypes = {
@@ -121,6 +122,22 @@ class StoryCoverScreen extends Component {
     }
 
     this.setState(nextState)
+  }
+
+  componentDidMount(){
+    if (this.props.story &&
+      !this.isPhotoType() &&
+      !this.props.story.coverVideo
+    ) {
+      NavActions.mediaSelectorScreen({
+        mediaType: this.props.mediaType,
+        title: 'Add Video',
+        leftTitle: 'Cancel',
+        onLeft: this._onLeft,
+        rightTitle: 'Next',
+        onSelectMedia: this._handleSelectCover
+      })
+    }
   }
 
   isUploading() {
@@ -294,7 +311,9 @@ class StoryCoverScreen extends Component {
   merely revert the values
   */
   isSavedDraft = () => {
-    return this.state.originalStory && this.state.originalStory.id === this.props.story.id
+    return this.state.originalStory &&
+      this.state.originalStory.id &&
+      this.state.originalStory.id === this.props.story.id
   }
 
   _onLeft = () => {
@@ -309,7 +328,7 @@ class StoryCoverScreen extends Component {
       [{
         text: 'Yes',
         onPress: () => {
-          if (!this.isValid()) {
+          if (!this.isValid() && this.isPhotoType()) {
             this.setState({error: 'Please add a cover and a title to continue'})
           } else {
             this.saveStory().then(() => {

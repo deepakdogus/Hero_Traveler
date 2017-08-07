@@ -78,7 +78,11 @@ class CreateStoryScreen extends Component {
     this.setState({
       video: true
     }, () => {
-      this.props.registerDraft()
+      NavActions.createStoryFlow({
+        mediaType: 'video',
+        type: 'reset',
+        shouldLoadStory: true,
+      })
     })
   }
 

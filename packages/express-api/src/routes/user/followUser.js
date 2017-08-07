@@ -1,4 +1,4 @@
-import {User, Models} from '@rwoody/ht-core'
+import {User, Models} from '@hero/ht-core'
 import {followerNotification} from '../../apn'
 
 export default function followUser(req, res) {

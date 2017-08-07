@@ -17,10 +17,17 @@ $ pod install
 
 ### 2. Node & NPM
 
+We are hosting several dependencies on our own private npm server, located at https://npm.abeck.io/
+
+First you'll need to contact `andrew at rehashstudio dot com` to enable user registration.
+Next create a user with `npm adduser --registry  https://npm.abeck.io`
+After registration, we will close any future registrations, as our private npm will be accessible to anyone registered
+
 This project has only been tested on v7.7.2):
 
 ```bash
 nvm use 7.7.2
+npm set registry https://npm.abeck.io
 npm i -g react-native-cli
 npm i
 npm run bootstrap

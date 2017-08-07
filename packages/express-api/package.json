@@ -1,7 +1,7 @@
 {
-  "name": "@rwoody/ht-express-api",
+  "name": "@hero/ht-express-api",
   "private": true,
-  "version": "0.0.1-beta",
+  "version": "0.0.2-beta",
   "description": "HERO Traveler application API",
   "main": "index.js",
   "scripts": {
@@ -16,8 +16,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@rwoody/ht-core": "0.0.26",
-    "@rwoody/ht-util": "^0.0.10",
+    "@hero/ht-core": "0.0.27",
+    "@hero/ht-util": "^0.0.11",
     "algoliasearch": "^3.23.0",
     "apn": "^2.1.4",
     "aws-sdk": "^2.40.0",

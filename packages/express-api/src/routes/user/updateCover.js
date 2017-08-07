@@ -1,4 +1,4 @@
-import {User, Models} from '@rwoody/ht-core'
+import {User, Models} from '@hero/ht-core'
 import formatUploadObject from '../../utils/formatUploadObject'
 
 export default function updateCover(req, res, next) {

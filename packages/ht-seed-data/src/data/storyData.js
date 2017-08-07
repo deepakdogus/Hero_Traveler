@@ -5,7 +5,7 @@ import path from 'path'
 import sizeOf from 'image-size'
 import sharp from 'sharp'
 
-import {Models} from '@rwoody/ht-core'
+import {Models} from '@hero/ht-core'
 
 const distPath = path.resolve(__dirname, '../../dist/story_images')
 const imagesPath = path.resolve(__dirname, '../../resources/story_images')

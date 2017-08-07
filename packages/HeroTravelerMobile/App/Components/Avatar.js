@@ -67,6 +67,7 @@ export default class Avatar extends Component {
             height: SIZES[size],
             borderRadius: SIZES[size] / 2,
           }}
+          resizeMode={'cover'}
         />
       </View>
     )

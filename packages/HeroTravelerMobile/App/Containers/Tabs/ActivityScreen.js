@@ -117,6 +117,14 @@ class NotificationScreen extends React.Component {
               ]
             }
 
+            /*
+            solves for bad data on old account.
+            will update in the future
+            */
+            if (!activity.story) {
+              return (null)
+            }
+
             return (
               <ConnectedActivity
                 key={activityId}

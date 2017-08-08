@@ -232,9 +232,11 @@ class ProfileView extends React.Component {
   }
 
   selectTab = (tab) => {
-    this.setState({selectedTab: tab}, () => {
-      this.props.onSelectTab(tab)
-    })
+    if (this.state.selectedTab !== tab) {
+      this.setState({selectedTab: tab}, () => {
+        this.props.onSelectTab(tab)
+      })
+    }
   }
 
   _setText = (usernameText) => {
@@ -318,6 +320,10 @@ class ProfileView extends React.Component {
       (this.state.selectedTab === TabTypes.bookmarks && this.props.fetchStatus.loaded && this.props.bookmarks.length === 0)
     ) return true
     return false
+  }
+
+  isFetching(fetchStatus) {
+    return fetchStatus && fetchStatus.fetching
   }
 
   render() {
@@ -571,6 +577,12 @@ class ProfileView extends React.Component {
            </View>
           }
           {!isEditing && <View style={styles.tabs}>
+            {(this.areNoStories() || this.isFetching(fetchStatus)) &&
+              <View>
+                {profileInfo}
+                {tabs}
+              </View>
+            }
             {this.state.selectedTab === TabTypes.stories && stories.length > 0 &&
               <StoryList
                 storiesById={stories}
@@ -601,7 +613,6 @@ class ProfileView extends React.Component {
                 renderStory={this.renderStory}
               />
             }
-            {this.areNoStories() && tabs}
             {this.state.selectedTab === TabTypes.stories && fetchStatus.loaded && stories.length === 0 &&
               <View style={styles.noStories}>
                 <Text style={styles.noStoriesText}>{this.props.editable ? showTooltip ? '' : 'There are no stories here' : 'This user has no stories published'}</Text>

@@ -125,7 +125,7 @@ export default class StoryCover extends Component {
             {this.props.children}
           </LinearGradient>
         </TouchableWithoutFeedback>
-        {this.props.allowVideoPlay && <PlayButton
+        {this.props.allowVideoPlay && !this.state.isPlaying && <PlayButton
           onPress={this._togglePlayerRef}
           isPlaying={this.state.isPlaying}
           videoFadeAnim={this.player && this.player.getAnimationState()}
@@ -139,7 +139,7 @@ export default class StoryCover extends Component {
           />
         }
          {this.props.showPlayButton &&
-          <PlayButton 
+          <PlayButton
             onPress={this._tapVideoWrapper}
             style={styles.playButton}/>
          }

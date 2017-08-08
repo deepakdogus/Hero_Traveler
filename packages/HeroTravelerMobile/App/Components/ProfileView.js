@@ -476,8 +476,67 @@ class ProfileView extends React.Component {
       )
       avatarCamera = null;
     }
-
     const gradientStyle = profileImage ? ['rgba(0,0,0,.5)', 'transparent', 'rgba(0,0,0,.5)'] : ['transparent', 'rgba(0,0,0,.5)']
+    const profileInfo = (
+      <Image
+        cached={true}
+        style={[styles.coverImage, profileImage ? null : styles.noCoverImage]}
+        source={{uri: profileImage || undefined}}
+        resizeMode={'cover'}
+      >
+        <LinearGradient colors={gradientStyle} style={styles.gradient}>
+          {this.state.error &&
+            <ShadowButton
+              style={styles.errorButton}
+              onPress={this._clearError}
+              text={this.state.error}
+            />
+          }
+          <View style={styles.coverInner}>
+            {cog}
+            {name}
+          <View style={{position: 'relative', marginTop: 20}}>
+            <Avatar
+              style={{alignItems: 'center'}}
+              size='extraLarge'
+              avatarUrl={(isEditing && user.profile.tempAvatar) ? getImageUrl(user.profile.tempAvatar) : getImageUrl(user.profile.avatar)} />
+            {avatarCamera}
+          </View>
+          {!isEditing &&
+           <TouchableOpacity onPress={this._navToViewBio}>
+              <Text style={styles.italicText}>Read Bio</Text>
+            </TouchableOpacity>
+          }
+          {!isEditing &&
+            <View style={styles.followersWrapper}>
+              <View style={styles.firstFollowerColumn}>
+                <TouchableOpacity
+                  onPress={this._navToFollowers}
+                  style={[styles.followersColumn]}>
+                  <Text style={styles.followerNumber}>{formatCount(user.counts.followers)}</Text>
+                  <Text style={styles.followerLabel}>Followers</Text>
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+                onPress={this._navToFollowing}
+                style={styles.followersColumn}>
+                <Text style={styles.followerNumber}>{formatCount(user.counts.following)}</Text>
+                <Text style={styles.followerLabel}>Following</Text>
+              </TouchableOpacity>
+            </View>
+          }
+            {buttons}
+          </View>
+          {!isEditing && false &&
+            <Text style={styles.contributor}>
+              <Icon name='star' color={Colors.red} size={15} style={styles.contributorIcon} />
+              <Text style={styles.contributorText}>&nbsp;&nbsp;&nbsp;CONTRIBUTOR</Text>
+            </Text>
+          }
+        </LinearGradient>
+      </Image>
+    )
+
     return (
       <View style={{flex: 1}}>
         {isEditing &&
@@ -496,63 +555,6 @@ class ProfileView extends React.Component {
           this.props.style,
         ]}>
         <View style={styles.gradientWrapper}>
-          <Image
-            cached={true}
-            style={[styles.coverImage, profileImage ? null : styles.noCoverImage]}
-            source={{uri: profileImage || undefined}}
-            resizeMode={'cover'}
-          >
-            <LinearGradient colors={gradientStyle} style={styles.gradient}>
-              {this.state.error &&
-                <ShadowButton
-                  style={styles.errorButton}
-                  onPress={this._clearError}
-                  text={this.state.error}
-                />
-              }
-              <View style={styles.coverInner}>
-                {cog}
-                {name}
-              <View style={{position: 'relative', marginTop: 20}}>
-                <Avatar
-                  style={{alignItems: 'center'}}
-                  size='extraLarge'
-                  avatarUrl={(isEditing && user.profile.tempAvatar) ? getImageUrl(user.profile.tempAvatar) : getImageUrl(user.profile.avatar)} />
-                {avatarCamera}
-              </View>
-              {!isEditing &&
-               <TouchableOpacity onPress={this._navToViewBio}>
-                  <Text style={styles.italicText}>Read Bio</Text>
-                </TouchableOpacity>
-              }
-              {!isEditing &&
-                <View style={styles.followersWrapper}>
-                  <View style={styles.firstFollowerColumn}>
-                    <TouchableOpacity
-                      onPress={this._navToFollowers}
-                      style={[styles.followersColumn]}>
-                      <Text style={styles.followerNumber}>{formatCount(user.counts.followers)}</Text>
-                      <Text style={styles.followerLabel}>Followers</Text>
-                    </TouchableOpacity>
-                  </View>
-                  <TouchableOpacity
-                    onPress={this._navToFollowing}
-                    style={styles.followersColumn}>
-                    <Text style={styles.followerNumber}>{formatCount(user.counts.following)}</Text>
-                    <Text style={styles.followerLabel}>Following</Text>
-                  </TouchableOpacity>
-                </View>
-              }
-                {buttons}
-              </View>
-              {!isEditing && false &&
-                <Text style={styles.contributor}>
-                  <Icon name='star' color={Colors.red} size={15} style={styles.contributorIcon} />
-                  <Text style={styles.contributorText}>&nbsp;&nbsp;&nbsp;CONTRIBUTOR</Text>
-                </Text>
-              }
-            </LinearGradient>
-          </Image>
           {isEditing &&
            <View style={{margin: Metrics.section}}>
              <Text style={styles.editBio}>Edit Bio</Text>
@@ -573,7 +575,8 @@ class ProfileView extends React.Component {
               <StoryList
                 storiesById={stories}
                 refreshing={false}
-                renderHeaderContent={tabs}
+                renderHeaderContent={profileInfo}
+                renderSectionHeader={tabs}
                 style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
                 renderStory={this.renderStory}
               />
@@ -582,7 +585,8 @@ class ProfileView extends React.Component {
               <StoryList
                 storiesById={drafts}
                 refreshing={false}
-                renderHeaderContent={tabs}
+                renderHeaderContent={profileInfo}
+                renderSectionHeader={tabs}
                 style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
                 renderStory={this.renderStory}
               />
@@ -591,7 +595,8 @@ class ProfileView extends React.Component {
               <StoryList
                 storiesById={bookmarks}
                 refreshing={false}
-                renderHeaderContent={tabs}
+                renderHeaderContent={profileInfo}
+                renderSectionHeader={tabs}
                 style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
                 renderStory={this.renderStory}
               />

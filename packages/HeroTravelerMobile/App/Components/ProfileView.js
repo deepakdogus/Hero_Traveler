@@ -500,6 +500,7 @@ class ProfileView extends React.Component {
             cached={true}
             style={[styles.coverImage, profileImage ? null : styles.noCoverImage]}
             source={{uri: profileImage || undefined}}
+            resizeMode={'cover'}
           >
             <LinearGradient colors={gradientStyle} style={styles.gradient}>
               {this.state.error &&

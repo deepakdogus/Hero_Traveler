@@ -14,6 +14,8 @@ export default class StoryList extends React.Component {
     storiesById: PropTypes.arrayOf(PropTypes.string).isRequired,
     onRefresh: PropTypes.func,
     refreshing: PropTypes.bool,
+    renderHeaderContent: PropTypes.object,
+    renderSectionHeader: PropTypes.object,
   }
 
   static defaultProps = {
@@ -32,6 +34,10 @@ export default class StoryList extends React.Component {
     return this.props.renderHeaderContent || null
   }
 
+  _renderSectionHeader = () => {
+    return this.props.renderSectionHeader || null
+  }
+
   render () {
     return (
       <ListView
@@ -41,7 +47,8 @@ export default class StoryList extends React.Component {
         initialListSize={1}
         renderRow={this.props.renderStory}
         renderHeader={this._renderHeader}
-        stickyHeaderIndices={this.props.renderHeaderContent ? [0] : []}
+        renderSectionHeader={this._renderSectionHeader}
+        stickySectionHeadersEnabled={true}
         refreshControl={
           <RefreshControl
             refreshing={this.props.refreshing}

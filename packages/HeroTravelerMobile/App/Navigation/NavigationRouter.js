@@ -297,6 +297,7 @@ export default NavActions.create(
           title='Create Story'
           icon={StoryCreateTabIcon}
           onPress={alwaysNull}
+          style={Styles.createStory}
         />
         <Scene
           key='activity'

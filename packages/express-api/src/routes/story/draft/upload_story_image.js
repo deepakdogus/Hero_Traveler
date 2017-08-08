@@ -1,4 +1,4 @@
-import {StoryDraft, Models} from '@rwoody/ht-core'
+import {StoryDraft, Models} from '@hero/ht-core'
 import formatUploadObject from '../../../utils/formatUploadObject'
 
 export default function uploadDraftImage(req, res, next) {

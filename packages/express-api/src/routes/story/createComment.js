@@ -1,5 +1,5 @@
 import Promise from 'bluebird'
-import {Comment, Models} from '@rwoody/ht-core'
+import {Comment, Models} from '@hero/ht-core'
 import {commentNotification} from '../../apn'
 
 export default function createComment(req) {

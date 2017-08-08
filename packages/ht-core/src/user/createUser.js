@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import Promise from 'bluebird'
 import algoliasearchModule from 'algoliasearch'
-import {Constants} from '@rwoody/ht-util'
+import {Constants} from '@hero/ht-util'
 import {User, UserDevice} from '../models'
 import {welcomeEmail} from '../utils/emailService'
 

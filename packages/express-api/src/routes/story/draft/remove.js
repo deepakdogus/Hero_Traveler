@@ -1,4 +1,4 @@
-import {StoryDraft} from '@rwoody/ht-core'
+import {StoryDraft} from '@hero/ht-core'
 
 export default function removeDraft(req, res) {
   const storyId = req.params.id

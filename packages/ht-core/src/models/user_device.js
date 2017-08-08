@@ -1,5 +1,5 @@
 import mongoose, {Schema} from 'mongoose'
-import {Constants} from '@rwoody/ht-util'
+import {Constants} from '@hero/ht-util'
 import {UserRef} from './user'
 
 export const ModelName = 'UserDevice'

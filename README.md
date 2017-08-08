@@ -57,6 +57,24 @@ To run the application in development mode on your phone, open xcode with the fo
 $ open packages/HeroTravelerMobile/ios/HeroTravelerMobile.xcworkspace
 ```
 
+### 3. Docker, express-api and deployment
+
+Make sure to set env var `NPM_TOKEN` to the _authToken value you find in `~/.npmrc` after running `npm adduser --registry https://npm.abeck.io` before running `docker-compose build`
+
+These notes from Ryan are presented as is:
+
+```
+1. You need access to the npm packages mentioned above (use "npm login" ...)
+2. Copy the .env (usually posted in slack channel) to repo root
+3. Build with docker-compose
+4. Push image to dockerhub
+5. Connect to swarm through docker app
+6. Deploy with the "docker stack deploy" command (e.g. docker stack deploy --with-registry-auth --compose-file=docker-compose.yaml api)
+7. Verify the nodes are starting the app with "docker service ls" and "docker service ps service_name"
+```
+
+We currently use docker swarm on AWS with 3 workers running t3.medium and 1 controller running on t3.micro
+
 ## Development troubleshooting tips (please read)
 
 * Always keep the React Native **debug browser window visible and in its own tab**. Otherwise, the application will sometimes not startup (it'll get stuck on the splash screen) or it will get stuck on the launch screen's picture (the night sky image). If this happens, close the app or refresh the window (respectively) after moving the debug window to the foreground

@@ -139,7 +139,9 @@ export default class StoryCover extends Component {
           />
         }
          {this.props.showPlayButton &&
-          <PlayButton style={styles.playButton}/>
+          <PlayButton 
+            onPress={this._tapVideoWrapper}
+            style={styles.playButton}/>
          }
       </View>
     )

@@ -9,7 +9,7 @@ import {
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
+import {AutoGrowingTextInput} from '@hero/react-native-autogrow-textinput';
 
 import {DraftOffsetKey} from './draft-js/reexports'
 import Image from '../Image'

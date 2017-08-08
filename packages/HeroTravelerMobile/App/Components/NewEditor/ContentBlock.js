@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  NativeModules,
 } from 'react-native'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
@@ -18,6 +19,10 @@ import {Colors, Metrics} from '../../Themes'
 import {getVideoUrlBase} from "../../Lib/getVideoUrl"
 import {getImageUrlBase} from "../../Lib/getImageUrl"
 import Fonts from '../../Themes/Fonts'
+
+const AutoGrowTextInputManager = NativeModules.AutoGrowTextInputManager;
+
+AutoGrowTextInputManager.setupNotifyChangeOnSetText();
 
 const logSelection = (msg, selection) => {
   console.log(
@@ -106,8 +111,10 @@ export default class NewTextBlock extends PureComponent {
     }
   }
 
-  onKeyPress = ({nativeEvent}) => {
-    this.props.onKeyPress(nativeEvent)
+  onRangeChange = ({nativeEvent}) => {
+    if (this.props.onRangeChange) {
+      this.props.onRangeChange({...nativeEvent, blockId: this.props.block.key})
+    }
   }
 
   onDelete = () => {
@@ -270,16 +277,13 @@ export default class NewTextBlock extends PureComponent {
             onLayout={this.onLayout}
             placeholderTextColor={'#757575'}
             autoFocus={this.props.autoFocus}
-            autoCorrect={false}
-            autoCapitalize={'none'}
-            spellCheck={false}
             blurOnSubmit={true}
             selection={inputSelection}
-            onKeyPress={this.onKeyPress}
             onBlur={this.onBlur}
             onFocus={this.onFocus}
             onSelectionChange={this.onSelectionChange}
             onHeightChange={this.onHeightChanged}
+            onRangeChange={this.onRangeChange}
           >
             {!this.isTextBlank() &&
               <Text style={[

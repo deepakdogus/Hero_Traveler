@@ -20,7 +20,7 @@ import {
   editorStateToRaw,
 } from './draft-js'
 
-import {EditorState, DraftOffsetKey, keyCommandInsertNewline, keyCommandPlainBackspace} from './draft-js/reexports'
+import {SelectionState, EditorState, DraftOffsetKey, Modifier, keyCommandInsertNewline, keyCommandPlainBackspace} from './draft-js/reexports'
 
 import * as DJSConsts from './draft-js/constants'
 import Metrics from '../../Themes/Metrics'
@@ -68,30 +68,50 @@ export default class Editor extends Component {
     }
   }
 
-  /* Handlers */
-  onSelectionChange = (blockKey, start, end, from) => {
-    // console.log(`selection! From: ${from}`, blockKey, start, end)
-    const editorState = updateEditorSelection(this.state.editorState, blockKey, start, end, true)
-    this.setState({editorState})
+  setStateDebug = (state) => {
+    this.setState(state)
   }
 
-  onKeyPress = ({key}) => {
-    let editorState
-    switch (key) {
-      case KeyTypes.Backspace:
-        editorState = keyCommandPlainBackspace(this.state.editorState)
-        this.setIsNewBlock(editorState.getSelection().getAnchorKey())
-        break
-      case KeyTypes.Return:
-        editorState = keyCommandInsertNewline(this.state.editorState)
-        console.log('selection after insert', editorState.getSelection().getAnchorKey())
-        this.setIsNewBlock(editorState.getSelection().getAnchorKey())
-        break
-      default:
-        editorState = insertText(this.state.editorState, key)
-    }
+  /* Handlers */
+  onSelectionChange = (blockKey, start, end, from) => {
+    const editorState = updateEditorSelection(this.state.editorState, blockKey, start, end, true)
+    this.setStateDebug({editorState})
+  }
 
-    this.setState({editorState})
+  onRangeChange = ({src, blockId}) => {
+    const {replaceRange, text} = src
+
+    if (text == '\n') {
+      const editorState = keyCommandInsertNewline(this.state.editorState)
+      this.setIsNewBlock(editorState.getSelection().getAnchorKey())
+      this.setStateDebug({editorState})
+    } else if (text == '' && replaceRange.start == 0 && replaceRange.end == 0) {
+      const editorState = keyCommandPlainBackspace(this.state.editorState)
+      this.setIsNewBlock(editorState.getSelection().getAnchorKey())
+      this.setStateDebug({editorState})
+    } else {
+      let selectionState = SelectionState.createEmpty(blockId).merge({
+        anchorKey: blockId,
+        anchorOffset: replaceRange.start,
+        focusKey: blockId,
+        focusOffset: replaceRange.end,
+      })
+  
+      let newContentState = Modifier.replaceText(
+        this.state.editorState.getCurrentContent(),
+        selectionState,
+        text,
+        this.state.editorState.getCurrentInlineStyle()
+      )
+  
+      let editorState = EditorState.push(
+        this.state.editorState,
+        newContentState,
+        'insert-characters'
+        )
+  
+      this.setStateDebug({editorState})
+    }
   }
 
   setIsNewBlock(blockKey) {
@@ -128,17 +148,17 @@ export default class Editor extends Component {
 
   toggleHeader() {
     const editorState = toggleStyle(this.state.editorState, DJSConsts.HeaderOne)
-    this.setState({editorState})
+    this.setStateDebug({editorState})
   }
 
   toggleNormal() {
     const editorState = toggleStyle(this.state.editorState, DJSConsts.Unstyled)
-    this.setState({editorState})
+    this.setStateDebug({editorState})
   }
 
   toggleStyle(styleType) {
     const editorState = applyStyle(this.state.editorState, styleType)
-    this.setState({editorState})
+    this.setStateDebug({editorState})
   }
 
   insertImage = (url) => {
@@ -185,7 +205,7 @@ export default class Editor extends Component {
       )
     }
 
-    this.setState({editorState})
+    this.setStateDebug({editorState})
   }
 
   getEditorStateAsObject() {
@@ -193,7 +213,7 @@ export default class Editor extends Component {
   }
 
   removeMediaBlock = (blockKey) => {
-    this.setState({
+    this.setStateDebug({
       editorState: removeBlock(this.state.editorState, blockKey)
     })
   }
@@ -221,8 +241,8 @@ export default class Editor extends Component {
         customStyleMap: this.props.customStyleMap,
         tree: editorState.getBlockTree(key),
         onSelectionChange: this.onSelectionChange,
-        onKeyPress: this.onKeyPress,
-        onDelete: this.removeMediaBlock
+        onRangeChange: this.onRangeChange,
+        onDelete: this.removeMediaBlock,
       }
       return <ContentBlock {...componentProps} />
     })

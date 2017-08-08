@@ -52,4 +52,13 @@ export default {
   buttonGrey: {
     tintColor: Colors.navBarText,
   },
+  createStory: {
+    view: {
+      width: Math.round(Metrics.screenWidth / 5),
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+    }
+  }
 }

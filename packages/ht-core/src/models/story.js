@@ -24,7 +24,6 @@ const StorySchema = new Schema({
       Constants.STORY_TYPE_STAY_VALUE,
       Constants.STORY_TYPE_DO_VALUE,
     ],
-    default: Constants.STORY_TYPE_EAT_VALUE,
   },
   draft: {
     type: Boolean,

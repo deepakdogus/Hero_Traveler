@@ -28,13 +28,10 @@ import styles from './4_CreateStoryDetailScreenStyles'
 const Radio = ({text, onPress, name, selected}) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
-      <View style={[styles.radio]}>
-        <Icon
-          name={selected ? 'circle' : 'circle-o'}
-          style={styles.radioIcon}
-          size={13}
-          color={selected ? Colors.red : '#424242'}
-        />
+      <View style={styles.radio}>
+        <View style={[styles.radioBtnOuter, selected ? styles.radioBtnActiveBorder : {}]}>
+          <View style={[styles.radioBtnInner, selected ? styles.radioBtnActiveBackground : {}]}/>
+        </View>
         <Text style={styles.radioText}>{text}</Text>
       </View>
     </TouchableWithoutFeedback>
@@ -80,7 +77,7 @@ class CreateStoryDetailScreen extends React.Component {
       date: props.story.tripDate ? moment(props.story.tripDate).toDate() : new Date(),
       location: props.story.location || '',
       categories: props.story.categories || [],
-      type: props.story.type || 'eat',
+      type: props.story.type,
       videoDescription: props.story.videoDescription || '',
       videoDescHeight: 0,
       showError: false,
@@ -88,6 +85,13 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
+    // making sure we properly display each of these properties
+    const updates = {}
+    if (newProps.story.location) updates.location = newProps.story.location
+    if (newProps.story.categories && newProps.story.categories.length) updates.categories = newProps.story.categories
+    if (newProps.story.type) updates.type = newProps.story.type
+    if (Object.keys(updates).length) this.setState(updates)
+
     if (!newProps.publishing && newProps.isCreated) {
       this.next()
     }
@@ -108,6 +112,7 @@ class CreateStoryDetailScreen extends React.Component {
         location: _.trim(this.state.location),
         categories: this.state.categories,
         date: this.state.date,
+        type: this.state.type,
         videoDescription: _.trim(this.state.videoDescription).slice(0, 500)
       })
       this.state.showError = true
@@ -141,6 +146,7 @@ class CreateStoryDetailScreen extends React.Component {
       location: _.trim(this.state.location),
       categories: this.state.categories,
       date: this.state.date,
+      type: this.state.type,
       videoDescription: _.trim(this.state.videoDescription).slice(0, 500)
     }
 

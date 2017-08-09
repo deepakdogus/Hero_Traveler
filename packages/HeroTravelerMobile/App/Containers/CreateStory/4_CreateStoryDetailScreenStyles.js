@@ -59,11 +59,32 @@ export default StyleSheet.create({
     justifyContent: 'center',
     marginBottom: Metrics.baseMargin,
   },
+  radioBtnOuter: {
+    borderRadius: 100,
+    width: 15,
+    height: 15,
+    backgroundColor: Colors.white,
+    borderWidth: 1.5,
+    borderColor: Colors.navBarText,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  radioBtnInner: {
+    borderRadius: 100,
+    width: 7,
+    height: 7,
+    backgroundColor: Colors.white,
+  },
+  radioBtnActiveBorder: {
+    borderColor: Colors.redHighlights,
+  },
+  radioBtnActiveBackground: {
+    backgroundColor: Colors.redHighlights,
+  },
   radioText: {
     marginLeft: Metrics.baseMargin,
     fontWeight: '500',
     fontSize: 16,
-
   },
   finishButtons: {
     flexDirection: 'row',

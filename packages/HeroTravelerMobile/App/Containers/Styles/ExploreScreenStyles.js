@@ -154,3 +154,13 @@ export default StyleSheet.create({
     paddingLeft: 5,
   }
 })
+
+export const CategoryFeedNavActionStyles = StyleSheet.create({
+  leftButtonIconStyle: {tintColor: Colors.navBarText},
+  navigationBarStyle: {
+    paddingTop: 5,
+    borderBottomWidth: 0,
+    height: Metrics.navBarHeight - 10,
+    backgroundColor: Colors.background,
+  },
+})

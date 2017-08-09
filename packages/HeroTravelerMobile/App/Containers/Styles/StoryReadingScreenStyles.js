@@ -104,6 +104,17 @@ export const styles = StyleSheet.create({
   mediaViewWrapper: {
     flex: 1,
     marginVertical: 25
+  },
+  tag: {
+    fontWeight: '300',
+    fontSize: 15,
+    color: Colors.redHighlights,
+    fontFamily: Fonts.type.base,
+    letterSpacing: .7,
+  },
+  marginedRow: {
+    marginHorizontal: Metrics.section,
+    flexDirection: 'row',
   }
 })
 

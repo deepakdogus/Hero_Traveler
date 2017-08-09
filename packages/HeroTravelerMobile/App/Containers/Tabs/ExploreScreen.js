@@ -19,7 +19,7 @@ import CategoryActions from '../../Redux/Entities/Categories'
 import Loader from '../../Components/Loader'
 import ExploreGrid from '../../Components/ExploreGrid'
 import {Metrics} from '../../Themes'
-import styles from '../Styles/ExploreScreenStyles'
+import styles, {CategoryFeedNavActionStyles} from '../Styles/ExploreScreenStyles'
 import Colors from '../../Themes/Colors'
 import List from '../../Components/List'
 import ListItem from '../../Components/ListItem'
@@ -287,13 +287,8 @@ class ExploreScreen extends Component {
             NavActions.explore_categoryFeed({
               categoryId: category.id,
               title: category.title,
-              leftButtonIconStyle: {tintColor: Colors.navBarText},
-              navigationBarStyle: {
-                paddingTop: 5,
-                borderBottomWidth: 0,
-                height: Metrics.navBarHeight - 10,
-                backgroundColor: Colors.background,
-              },
+              leftButtonIconStyle: CategoryFeedNavActionStyles.leftButtonIconStyle,
+              navigationBarStyle: CategoryFeedNavActionStyles.navigationBarStyle,
             })
           }}
           categories={_.values(this.props.categories)}

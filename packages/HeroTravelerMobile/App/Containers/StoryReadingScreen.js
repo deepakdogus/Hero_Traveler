@@ -22,7 +22,7 @@ import Video from '../Components/Video'
 import Immutable from 'seamless-immutable'
 import {getVideoUrlBase} from '../Lib/getVideoUrl'
 import {getImageUrlBase} from '../Lib/getImageUrl'
-
+import {CategoryFeedNavActionStyles} from './Styles/ExploreScreenStyles'
 
 const enhanceStoryVideo = compose(
   withHandlers(() => {
@@ -182,12 +182,40 @@ class StoryReadingScreen extends React.Component {
     }
   }
 
+  /* MBT 08/08/17: Hold off on clickable tags until future notice
+  // _navBackToStory = () => {
+  //   NavActions.story({storyId: this.props.story.id})
+  // }
+
+  // _onPressTag = (category) => {
+  //   NavActions.explore_categoryFeed({
+  //     categoryId: category.id,
+  //     title: category.title,
+  //     leftButtonIconStyle: CategoryFeedNavActionStyles.leftButtonIconStyle,
+  //     navigationBarStyle: CategoryFeedNavActionStyles.navigationBarStyle,
+  //     onLeft: this._navBackToStory
+  //   })
+  // }
+    <TouchableOpacity
+      key={index}
+      onPress={() => this._onPressTag(category)}
+    >
+    </TouchableOpacity>
+  */
   /*
   If the old YPos is superior the the new YPos it means we scrolled up
   and should show the content. Otherwise we should hide it.
   */
   isShowContent() {
     return this.state.oldYPos >  this.state.newYPos || this.state.newYPos <= 0
+  }
+
+  renderTags = () => {
+    return this.props.story.categories.map((category, index) => {
+      return (
+        <Text key={index} style={styles.tag}>#{category.title} </Text>
+      )
+    })
   }
 
   render () {
@@ -246,6 +274,11 @@ class StoryReadingScreen extends React.Component {
                 <Text style={styles.videoDescriptionText}>{story.videoDescription}</Text>
               </View>
             }
+            {!!story.categories.length &&
+              <View style={styles.marginedRow}>
+                {this.renderTags()}
+              </View>
+            }
             {!!story.location &&
               <View style={styles.locationWrapper}>
                 <MapView
@@ -262,10 +295,7 @@ class StoryReadingScreen extends React.Component {
                     longitude: story.longitude
                   }} />
                 </MapView>
-                <View style={{
-                  flexDirection: 'row',
-                  marginHorizontal: Metrics.section
-                }}>
+                <View style={styles.marginedRow}>
                   <View style={styles.locationIconWrapper}>
                     <TabIcon
                       name='location'

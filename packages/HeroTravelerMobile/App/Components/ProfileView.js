@@ -562,19 +562,22 @@ class ProfileView extends React.Component {
         ]}>
         <View style={styles.gradientWrapper}>
           {isEditing &&
-           <View style={{margin: Metrics.section}}>
-             <Text style={styles.editBio}>Edit Bio</Text>
-             <TextInput
-               ref={this._bioRef}
-               style={[styles.bioText, {height: 150}]}
-               multiline={true}
-               editable={true}
-               onChangeText={this._setBioText}
-               value={this.state.bioText}
-               maxLength={500}
-               placeholder={'Tell us about yourself!'}
-             />
-           </View>
+            <View style={{flex: 1}}>
+              {profileInfo}
+              <View style={{margin: Metrics.section}}>
+                <Text style={styles.editBio}>Edit Bio</Text>
+                <TextInput
+                  ref={this._bioRef}
+                  style={[styles.bioText, {height: 150}]}
+                  multiline={true}
+                  editable={true}
+                  onChangeText={this._setBioText}
+                  value={this.state.bioText}
+                  maxLength={500}
+                  placeholder={'Tell us about yourself!'}
+                />
+              </View>
+            </View>
           }
           {!isEditing && <View style={styles.tabs}>
             {(this.areNoStories() || this.isFetching(fetchStatus)) &&

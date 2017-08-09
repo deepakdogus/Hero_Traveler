@@ -588,32 +588,35 @@ class ProfileView extends React.Component {
             }
             {this.state.selectedTab === TabTypes.stories && stories.length > 0 &&
               <StoryList
+                style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
                 storiesById={stories}
                 refreshing={false}
                 renderHeaderContent={profileInfo}
                 renderSectionHeader={tabs}
-                style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
                 renderStory={this.renderStory}
+                pagingIsDisabled
               />
             }
             {this.state.selectedTab === TabTypes.drafts && drafts.length > 0 &&
               <StoryList
+                style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
                 storiesById={drafts}
                 refreshing={false}
                 renderHeaderContent={profileInfo}
                 renderSectionHeader={tabs}
-                style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
                 renderStory={this.renderStory}
+                pagingIsDisabled
               />
             }
             {this.state.selectedTab === TabTypes.bookmarks && bookmarks.length > 0 &&
               <StoryList
+                style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
                 storiesById={bookmarks}
                 refreshing={false}
                 renderHeaderContent={profileInfo}
                 renderSectionHeader={tabs}
-                style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
                 renderStory={this.renderStory}
+                pagingIsDisabled
               />
             }
             {this.state.selectedTab === TabTypes.stories && fetchStatus.loaded && stories.length === 0 &&

@@ -96,7 +96,7 @@ class StoryCoverScreen extends Component {
   componentWillReceiveProps(nextProps) {
     let nextState = {}
 
-    if (!this.props.story.title !== nextProps.story.title) {
+    if (this.props.story.title != undefined && !this.props.story.title !== nextProps.story.title) {
       nextState.title = nextProps.story.title
       nextState.description = nextProps.story.description
     }

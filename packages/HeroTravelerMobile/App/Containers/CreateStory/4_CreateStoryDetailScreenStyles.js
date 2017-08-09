@@ -98,5 +98,14 @@ export default StyleSheet.create({
     height: 100,
     color: Colors.background,
     fontSize: 16,
-  }
+  },
+  errorButton: {
+    position: 'absolute',
+    top: 100,
+    left: 0,
+    right: 0,
+    marginVertical: Metrics.baseMargin,
+    marginHorizontal: Metrics.section,
+    zIndex: 100,
+  },
 })

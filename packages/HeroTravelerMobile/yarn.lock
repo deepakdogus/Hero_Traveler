@@ -44,9 +44,9 @@
   dependencies:
     arrify "^1.0.1"
 
-"@hero/react-native-autogrow-textinput@3.0.4":
-  version "3.0.4"
-  resolved "https://npm.abeck.io:443/@hero%2freact-native-autogrow-textinput/-/react-native-autogrow-textinput-3.0.4.tgz#699cff13a4b3557f958a69e651191d86bf3ba006"
+"@hero/react-native-autogrow-textinput@3.0.5":
+  version "3.0.5"
+  resolved "https://npm.abeck.io:443/@hero%2freact-native-autogrow-textinput/-/react-native-autogrow-textinput-3.0.5.tgz#a39ab3b12264e5893a0eec4ac77af78bcccf39b5"
 
 abbrev@1:
   version "1.1.0"

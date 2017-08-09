@@ -18,11 +18,11 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import StoryEditActions, {isCreated, isPublishing} from '../../Redux/StoryCreateRedux'
 import {Colors, Metrics} from '../../Themes'
 import Loader from '../../Components/Loader'
+import ShadowButton from '../../Components/ShadowButton'
 import TabIcon from '../../Components/TabIcon'
 import RoundedButton from '../../Components/RoundedButton'
 import RenderTextInput from '../../Components/RenderTextInput'
 import NavBar from './NavBar'
-import NavButtonStyles from '../../Navigation/Styles/NavButtonStyles'
 import styles from './4_CreateStoryDetailScreenStyles'
 
 const Radio = ({text, onPress, name, selected}) => {
@@ -183,8 +183,17 @@ class CreateStoryDetailScreen extends React.Component {
 
   render () {
     const err = this.props.error
+    const errText = (__DEV__ && err && err.problem && err.status) ? `${err.status}: ${err.problem}` : ""
     return (
       <View style={{flex: 1, position: 'relative'}}>
+          { this.state.showError && err &&
+          <ShadowButton
+            style={styles.errorButton}
+            onPress={this._closeError}
+            text={errText}
+            title={err.message}
+          />
+          }
           <NavBar
             title='Story Details'
             leftIcon='arrowLeftRed'
@@ -294,24 +303,6 @@ class CreateStoryDetailScreen extends React.Component {
             <RoundedButton
               text='Confirm'
               onPress={() => this._setModalVisible(!this.state.modalVisible)}
-            />
-          </View>
-        </View> }
-      { this.state.showError && err &&
-        <View
-          style={{position: 'absolute', top: 250, left: 40, elevation: 100}}
-          shadowColor='black'
-          shadowOpacity={.9}
-          shadowRadius={10}
-          shadowOffset={{width: 0, height: 0}}>
-          <View
-            style={{ backgroundColor: 'white', height: 300, width: 300 }}>
-            <Text>{err.message}</Text>
-            { __DEV__ && err.problem && err.status &&
-              <Text>{err.status}: {err.problem}</Text> }
-            <RoundedButton
-              text='Confirm'
-              onPress={() => this._closeError()}
             />
           </View>
         </View> }

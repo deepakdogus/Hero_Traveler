@@ -82,7 +82,8 @@ class CreateStoryDetailScreen extends React.Component {
       categories: props.story.categories || [],
       type: props.story.type || 'eat',
       videoDescription: props.story.videoDescription || '',
-      videoDescHeight: 0
+      videoDescHeight: 0,
+      showError: false,
     }
   }
 
@@ -109,6 +110,7 @@ class CreateStoryDetailScreen extends React.Component {
         date: this.state.date,
         videoDescription: _.trim(this.state.videoDescription).slice(0, 500)
       })
+      this.state.showError = true
     } else {
       this._update()
     }
@@ -126,6 +128,10 @@ class CreateStoryDetailScreen extends React.Component {
   _update = () => {
     this.saveDraft()
     this.next()
+  }
+
+  _closeError = () => {
+    this.setState({showError: false})
   }
 
   saveDraft = () => {
@@ -176,6 +182,7 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   render () {
+    const err = this.props.error
     return (
       <View style={{flex: 1, position: 'relative'}}>
           <NavBar
@@ -290,6 +297,24 @@ class CreateStoryDetailScreen extends React.Component {
             />
           </View>
         </View> }
+      { this.state.showError && err &&
+        <View
+          style={{position: 'absolute', top: 250, left: 40, elevation: 100}}
+          shadowColor='black'
+          shadowOpacity={.9}
+          shadowRadius={10}
+          shadowOffset={{width: 0, height: 0}}>
+          <View
+            style={{ backgroundColor: 'white', height: 300, width: 300 }}>
+            <Text>{err.message}</Text>
+            { __DEV__ && err.problem && err.status &&
+              <Text>{err.status}: {err.problem}</Text> }
+            <RoundedButton
+              text='Confirm'
+              onPress={() => this._closeError()}
+            />
+          </View>
+        </View> }
       </View>
     )
   }
@@ -301,7 +326,8 @@ export default connect(
     return {
       publishing: isPublishing(state.storyCreate),
       isCreated: isCreated(state.storyCreate),
-      story: {...state.storyCreate.draft}
+      story: {...state.storyCreate.draft},
+      error: state.storyCreate.error,
     }
   },
   dispatch => ({

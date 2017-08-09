@@ -20,10 +20,11 @@ export default class ShadowButton extends React.Component {
   }
 
   render () {
+    const {style, textStyle, titleStyle, onPress, title} = this.props
     return (
       <TouchableOpacity
-        style={[styles.button, this.props.style]}
-        onPress={this.props.onPress}>
+        style={[styles.button, style]}
+        onPress={onPress}>
         <View
           shadowColor='black'
           shadowOpacity={.2}
@@ -31,7 +32,8 @@ export default class ShadowButton extends React.Component {
           shadowOffset={{width: 0, height: 0}}
           style={styles.view}
         >
-          <Text style={[styles.buttonText, this.props.textStyle]}>{this.getText()}</Text>
+          {!!title && <Text style={[styles.buttonText, styles.bold, titleStyle]}>{title}</Text>}
+          <Text style={[styles.buttonText, textStyle]}>{this.getText()}</Text>
         </View>
       </TouchableOpacity>
     )

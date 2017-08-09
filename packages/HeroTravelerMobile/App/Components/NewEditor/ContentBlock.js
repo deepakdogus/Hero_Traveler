@@ -24,18 +24,6 @@ const AutoGrowTextInputManager = NativeModules.AutoGrowTextInputManager;
 
 AutoGrowTextInputManager.setupNotifyChangeOnSetText();
 
-const logSelection = (msg, selection) => {
-  console.log(
-    msg,
-    '\n',
-    `start: key(${selection.getAnchorKey()}) offset(${selection.getAnchorOffset()})`,
-    '\n',
-    `end:   key(${selection.getFocusKey()}) offset(${selection.getFocusOffset()})`,
-    '\n',
-    `focus: ${selection.getHasFocus()}`
-  )
-}
-
 export default class NewTextBlock extends PureComponent {
   static propTypes = {
     customStyleMap: PropTypes.object,

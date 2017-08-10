@@ -19,6 +19,8 @@ import LikedBy from './Modals/LikedBy'
 import SendTo from './Modals/SendTo'
 import AddToBoard from './Modals/AddToBoard'
 import CreateBoard from './Modals/CreateBoard'
+import Settings from './Modals/Settings'
+import SettingsPW from './Modals/SettingsPW'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   &:after {
@@ -130,7 +132,7 @@ export default class StoryHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'addToBoard' }
+    this.state = {modal: 'settings' }
   }
 
   closeModal = () => {
@@ -251,7 +253,20 @@ export default class StoryHeader extends React.Component {
         >
           <CreateBoard profile={user}/>
         </RightModal>             
-
+        <RightModal
+          isOpen={this.state.modal === 'settings'}
+          contentLabel='Create Board'
+          onRequestClose={this.closeModal}
+        >
+          <Settings profile={user}/>
+        </RightModal>
+        <RightModal
+          isOpen={this.state.modal === 'settingsPW'}
+          contentLabel='Create Board'
+          onRequestClose={this.closeModal}
+        >
+          <SettingsPW profile={user}/>
+        </RightModal>               
       </ImageWrapper>
     )
   }

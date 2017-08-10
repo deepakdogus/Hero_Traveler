@@ -171,9 +171,11 @@ export default class StoryPreview extends Component {
             gradientLocations={this.props.gradientLocations}
             showPlayButton={this.props.showPlayButton}
           >
-            <FadeInOut isVisible={isContentVisible} style={styles.contentWrapper}>
-                {this.props.forProfile && this.renderProfileTitleSection()}
-                {!this.props.forProfile && this.renderTitleSection()}
+            <FadeInOut
+              isVisible={isContentVisible}
+              style={styles.contentWrapper}
+            >
+              {this.props.forProfile ? this.renderProfileTitleSection() : this.renderTitleSection()}
             </FadeInOut>
           </StoryCover>
         </View>

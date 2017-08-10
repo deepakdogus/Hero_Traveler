@@ -11,7 +11,6 @@ import SpaceBetweenRowWithButton from '../SpaceBetweenRowWithButton'
 import VerticalCenter from '../VerticalCenter'
 import {RightTitle, StyledInput, StyledVerticalCenter} from './Shared'
 import Icon from '../Icon'
-import {Colors} from '../../Shared/Themes'
 
 const Container = styled.div``
 
@@ -22,8 +21,8 @@ const CreateContainer = styled.div`
   padding: 25px;
 `
 const CreateIconContainer = styled(VerticalCenter)`
-  background-color: ${Colors.inactiveRed};
-  border-color: ${Colors.bloodOrange};
+  background-color: ${props => props.theme.Colors.inactiveRed};
+  border-color: ${props => props.theme.Colors.bloodOrange};
   border-style: dashed;
   border-width: 5px;
   height: 85px;
@@ -46,7 +45,7 @@ const Title = styled.p`
 const CreateText = styled.p`
   font-weight: 600;
   font-size: 18px;
-  color: ${Colors.bloodOrange};
+  color: ${props => props.theme.Colors.bloodOrange};
   letter-spacing: .7px;
   margin: 0;
 `
@@ -57,8 +56,6 @@ const boardImages = [];
 
 // feedExample[Object.keys(feedExample)[0]].categories.forEach(function(cat){ return boardImages.push(cat.image) })
 
-console.log("__filename: ", __filename)
-console.log("categoriesExample: ", categoriesExample)
 
 export default class SendTo extends React.Component {
   static PropTypes = {
@@ -72,7 +69,7 @@ export default class SendTo extends React.Component {
           <Icon
             name='components'
             size={'medium'}
-            color={Colors.bloodOrange}
+            color={props => props.theme.Colors.bloodOrange}
           />
       </CreateIconContainer>
     )

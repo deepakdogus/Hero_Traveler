@@ -18,6 +18,7 @@ import UserComments from './Modals/UserComments'
 import LikedBy from './Modals/LikedBy'
 import SendTo from './Modals/SendTo'
 import AddToBoard from './Modals/AddToBoard'
+import CreateBoard from './Modals/CreateBoard'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   &:after {
@@ -243,6 +244,14 @@ export default class StoryHeader extends React.Component {
         >
           <AddToBoard profile={user}/>
         </RightModal>             
+        <RightModal
+          isOpen={this.state.modal === 'createBoard'}
+          contentLabel='Create Board'
+          onRequestClose={this.closeModal}
+        >
+          <CreateBoard profile={user}/>
+        </RightModal>             
+
       </ImageWrapper>
     )
   }

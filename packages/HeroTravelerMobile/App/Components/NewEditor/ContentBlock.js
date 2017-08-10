@@ -238,12 +238,17 @@ export default class NewTextBlock extends PureComponent {
     })
   }
 
+  getPlaceholder() {
+    if (this.isCaptionable()) return 'Add a caption...'
+    else if (this.props.index === 0) return 'Tell your story here...'
+    return ''
+  }
+
   render() {
     const text = this.getText()
     const {selection} = this.props
     const inputSelection = this.props.isSelected ?
       {start: selection.getAnchorOffset(), end: selection.getFocusOffset()} : undefined
-
     return (
       <View style={[
         styles.root,
@@ -261,7 +266,7 @@ export default class NewTextBlock extends PureComponent {
               styles.input,
               this.isCaptionable() && styles.placeholderStyle,
             ]}
-            placeholder={this.isCaptionable() ? 'Add a caption...' : ''}
+            placeholder={this.getPlaceholder()}
             onLayout={this.onLayout}
             placeholderTextColor={'#757575'}
             autoFocus={this.props.autoFocus}

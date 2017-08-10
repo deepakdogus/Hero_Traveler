@@ -6,12 +6,9 @@ import {
 import PropTypes from 'prop-types'
 
 import Toolbar, {PressTypes} from './Toolbar'
-import {KeyTypes} from './util/KeyTypes'
 import {
   updateEditorSelection,
-  insertText,
   getLastBlockKey,
-  handleReturn,
   insertBlock,
   applyStyle,
   toggleStyle,
@@ -96,20 +93,20 @@ export default class Editor extends Component {
         focusKey: blockId,
         focusOffset: replaceRange.end,
       })
-  
+
       let newContentState = Modifier.replaceText(
         this.state.editorState.getCurrentContent(),
         selectionState,
         text,
         this.state.editorState.getCurrentInlineStyle()
       )
-  
+
       let editorState = EditorState.push(
         this.state.editorState,
         newContentState,
         'insert-characters'
         )
-  
+
       this.setStateDebug({editorState})
     }
   }
@@ -224,7 +221,7 @@ export default class Editor extends Component {
     const decorator = editorState.getDecorator()
     const selectionState = editorState.getSelection()
     const blocksAsArray = content.getBlocksAsArray()
-    return blocksAsArray.map(block => {
+    return blocksAsArray.map((block, index) => {
       const key = block.getKey()
       const isSelected = key === selectionState.getAnchorKey() && key === selectionState.getFocusKey()
       const selection = isSelected ? selectionState : undefined
@@ -244,7 +241,7 @@ export default class Editor extends Component {
         onRangeChange: this.onRangeChange,
         onDelete: this.removeMediaBlock,
       }
-      return <ContentBlock {...componentProps} />
+      return <ContentBlock {...componentProps} index={index}/>
     })
   }
 

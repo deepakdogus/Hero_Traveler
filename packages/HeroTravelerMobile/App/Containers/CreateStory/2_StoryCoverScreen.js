@@ -7,7 +7,6 @@ import {
   TouchableWithoutFeedback,
   Animated,
   View,
-  KeyboardAvoidingView,
   Image,
   Alert,
   TextInput,
@@ -735,9 +734,7 @@ class StoryCoverScreen extends Component {
           }}
         />
         <ScrollView keyboardShouldPersistTaps='handled'>
-          <KeyboardAvoidingView
-            behavior='position'
-          >
+          <View>
             <View style={[
               styles.coverWrapper,
               !this.isPhotoType() && styles.videoCoverWrapper
@@ -759,7 +756,7 @@ class StoryCoverScreen extends Component {
                 {this.renderEditor()}
               </View>
             }
-          </KeyboardAvoidingView>
+          </View>
         </ScrollView>
         {this.isUploading() &&
           <Loader

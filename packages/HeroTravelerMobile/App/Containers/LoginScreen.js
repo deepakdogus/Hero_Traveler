@@ -7,7 +7,6 @@ import {
   Text,
   TextInput,
   Image,
-  KeyboardAvoidingView,
 } from 'react-native'
 import { connect } from 'react-redux'
 import {
@@ -163,76 +162,72 @@ class LoginScreen extends React.Component {
         <ScrollView
           style={[styles.container]}
           contentContainerStyle={{justifyContent: 'flex-start'}}>
-          <KeyboardAvoidingView behavior='position'>
-            <View style={[styles.section, {marginTop: 0}]}>
-              <Text style={styles.title}>LOG IN</Text>
-              <Text style={styles.instructions}>
-                Welcome back!
-              </Text>
-            </View>
-            <RoundedButton
-              style={launchStyles.facebook}
-              onPress={this.loginFinishedManager}
-              icon='facebook'
-              iconStyle={launchStyles.facebookIcon}
-              text='Log in with Facebook'
-              textStyle={[launchStyles.baseTextStyle, launchStyles.facebookTextStyle]}
-            />
-            {/*<RoundedButton
-              style={styles.twitter}
-              text={
-                <Text>Login with <Text style={styles.socialText}>Twitter</Text></Text>
-              }
-            />*/}
-
+          <View style={[styles.section, {marginTop: 0}]}>
+            <Text style={styles.title}>LOG IN</Text>
             <Text style={styles.instructions}>
-              Or
+              Welcome back!
             </Text>
+          </View>
+          <RoundedButton
+            style={launchStyles.facebook}
+            onPress={this.loginFinishedManager}
+            icon='facebook'
+            iconStyle={launchStyles.facebookIcon}
+            text='Log in with Facebook'
+            textStyle={[launchStyles.baseTextStyle, launchStyles.facebookTextStyle]}
+          />
+          {/*<RoundedButton
+            style={styles.twitter}
+            text={
+              <Text>Login with <Text style={styles.socialText}>Twitter</Text></Text>
+            }
+          />*/}
 
-            {this.props.error && <Text style={[styles.error]}>{this.props.error}</Text>}
+          <Text style={styles.instructions}>
+            Or
+          </Text>
 
-            <View style={styles.form}>
-              <Input
-                style={textInputStyle}
-                value={username}
-                editable={editable}
-                keyboardType='default'
-                returnKeyType='next'
-                autoCapitalize='none'
-                autoCorrect={false}
-                onChangeText={this.handleChangeUsername}
-                underlineColorAndroid='transparent'
-                placeholder='Username' />
+          {this.props.error && <Text style={[styles.error]}>{this.props.error}</Text>}
 
-              <Input
-                style={textInputStyle}
-                value={password}
-                editable={editable}
-                keyboardType='default'
-                returnKeyType='go'
-                autoCapitalize='none'
-                autoCorrect={false}
-                secureTextEntry
-                onChangeText={this.handleChangePassword}
-                underlineColorAndroid='transparent'
-                onSubmitEditing={this.handlePressLogin}
-                placeholder='Password' />
-            </View>
-            <RoundedButton
-              style={[launchStyles.email, styles.loginButton]}
-              onPress={this.handlePressLogin}
-              text='LOG IN'
-              textStyle={launchStyles.baseTextStyle}
-            />
-            <TextButton
-              containerStyle={styles.forgotWrapper}
-              style={styles.forgot}
-              text="Forgot your password?"
-              onPress={NavigationActions.resetPasswordRequest}
-            />
+          <View style={styles.form}>
+            <Input
+              style={textInputStyle}
+              value={username}
+              editable={editable}
+              keyboardType='default'
+              returnKeyType='next'
+              autoCapitalize='none'
+              autoCorrect={false}
+              onChangeText={this.handleChangeUsername}
+              underlineColorAndroid='transparent'
+              placeholder='Username' />
 
-
-          </KeyboardAvoidingView>
+            <Input
+              style={textInputStyle}
+              value={password}
+              editable={editable}
+              keyboardType='default'
+              returnKeyType='go'
+              autoCapitalize='none'
+              autoCorrect={false}
+              secureTextEntry
+              onChangeText={this.handleChangePassword}
+              underlineColorAndroid='transparent'
+              onSubmitEditing={this.handlePressLogin}
+              placeholder='Password' />
+          </View>
+          <RoundedButton
+            style={[launchStyles.email, styles.loginButton]}
+            onPress={this.handlePressLogin}
+            text='LOG IN'
+            textStyle={launchStyles.baseTextStyle}
+          />
+          <TextButton
+            containerStyle={styles.forgotWrapper}
+            style={styles.forgot}
+            text="Forgot your password?"
+            onPress={NavigationActions.resetPasswordRequest}
+          />
         </ScrollView>
         {this.props.fetching &&
           <Loader

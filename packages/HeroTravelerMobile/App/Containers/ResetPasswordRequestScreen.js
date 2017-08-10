@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   Image,
   Keyboard,
-  KeyboardAvoidingView,
   LayoutAnimation
 } from 'react-native'
 import { connect } from 'react-redux'
@@ -86,36 +85,34 @@ class ResetPasswordRequestScreen extends React.Component {
         <ScrollView
           style={[styles.container]}
           contentContainerStyle={{justifyContent: 'flex-start'}}>
-          <KeyboardAvoidingView behavior='position'>
-            <View style={[styles.section, {marginTop: 0}]}>
-              <Text style={styles.title}>RESET PASSWORD</Text>
-              <Text style={styles.instructions}>
-              Please enter your email address
-              </Text>
-            </View>
-            <View style={{height: 95}}>
-            </View>
-            <Input
-              ref='email'
-              style={styles.input}
-              value={email}
-              keyboardType='default'
-              returnKeyType='next'
-              autoCapitalize='none'
-              autoCorrect={false}
-              onChangeText={this.handleChangeEmail}
-              underlineColorAndroid='transparent'
-              onSubmitEditing={this.handlePressResetPasswordRequest}
-              placeholder='Email' />
+          <View style={[styles.section, {marginTop: 0}]}>
+            <Text style={styles.title}>RESET PASSWORD</Text>
+            <Text style={styles.instructions}>
+            Please enter your email address
+            </Text>
+          </View>
+          <View style={{height: 95}}>
+          </View>
+          <Input
+            ref='email'
+            style={styles.input}
+            value={email}
+            keyboardType='default'
+            returnKeyType='next'
+            autoCapitalize='none'
+            autoCorrect={false}
+            onChangeText={this.handleChangeEmail}
+            underlineColorAndroid='transparent'
+            onSubmitEditing={this.handlePressResetPasswordRequest}
+            placeholder='Email' />
 
-            <RoundedButton
-              style={styles.submit}
-              text="Submit"
-              onPress={this.handlePressResetPasswordRequest}
-            />
+          <RoundedButton
+            style={styles.submit}
+            text="Submit"
+            onPress={this.handlePressResetPasswordRequest}
+          />
 
-            {this.props.error && <Text style={styles.error}>{this.props.error}</Text>}
-          </KeyboardAvoidingView>
+          {this.props.error && <Text style={styles.error}>{this.props.error}</Text>}
         </ScrollView>
       </Image>
     )

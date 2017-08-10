@@ -116,6 +116,8 @@ export default class Icon extends React.Component {
         return Images.iconProfileBadge
       case 'defaultProfile':
         return Images.iconDefaultProfile
+      case 'components':
+        return Images.components
       case 'profile':
       default:
         return Images.iconNavProfile

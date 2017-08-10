@@ -16,6 +16,7 @@ const InputContainer = styled.div`
   padding: 25px;
 `
 
+console.log("usersExample: ", usersExample)
 
 export default class SendTo extends React.Component {
   static PropTypes = {

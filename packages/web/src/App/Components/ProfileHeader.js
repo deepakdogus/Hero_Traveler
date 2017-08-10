@@ -17,6 +17,7 @@ import ProfileStats from './Modals/ProfileStats'
 import UserComments from './Modals/UserComments'
 import LikedBy from './Modals/LikedBy'
 import SendTo from './Modals/SendTo'
+import AddToBoard from './Modals/AddToBoard'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   &:after {
@@ -128,7 +129,7 @@ export default class StoryHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: undefined }
+    this.state = {modal: 'addToBoard' }
   }
 
   closeModal = () => {
@@ -235,6 +236,13 @@ export default class StoryHeader extends React.Component {
         >
           <SendTo profile={user}/>
         </RightModal>                        
+        <RightModal
+          isOpen={this.state.modal === 'addToBoard'}
+          contentLabel='Add To Board Modal'
+          onRequestClose={this.closeModal}
+        >
+          <AddToBoard profile={user}/>
+        </RightModal>             
       </ImageWrapper>
     )
   }

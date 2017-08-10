@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import VerticalCenter from '../../VerticalCenter'
 
 const basicTextStyle = `
   font-weight: 400;
@@ -58,3 +59,43 @@ export const StyledInput = styled.input`
   border-color: ${props => props.theme.Colors.dividerGrey};
   margin-bottom: 25px;
 `
+
+//RightModal Styles
+
+export const StyledVerticalCenter = styled(VerticalCenter)`
+  height: 100%;
+  padding-left: 25px;
+`
+
+export const UserName = styled.p`
+  font-weight: 600;
+  font-size: 18px;
+  color: ${props => props.theme.Colors.background};
+  letter-spacing: .7px;
+  margin: 0;
+`
+
+export const CommentContent = styled.p`
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: .7px;
+  margin: 0;
+  color: ${props => props.theme.Colors.grey};
+`
+
+export const Timestamp = styled.p`
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: .7px;
+  margin: 0;
+  color: ${props => props.theme.Colors.grey};
+`
+
+export const ProfileDetail = styled.p`
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: .7px;
+  margin: 0;
+  color: ${props => props.theme.Colors.grey};
+`
+

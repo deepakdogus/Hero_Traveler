@@ -10,7 +10,7 @@ export default class Avatar extends React.Component {
   }
 
   render() {
-    const {avatarUrl, size, type} = this.props
+    const {avatarUrl, size, type, square} = this.props
     if (!avatarUrl) {
       return (
         <Icon
@@ -24,6 +24,7 @@ export default class Avatar extends React.Component {
         <Image
           src={avatarUrl}
           type={size || 'avatar'}
+          square={square || false}
         />
       )
     }

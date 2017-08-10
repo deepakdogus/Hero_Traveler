@@ -7,22 +7,13 @@ import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Avatar from './Avatar'
 import HorizontalDivider from './HorizontalDivider'
+import {
+  StyledVerticalCenter,
+  UserName,
+} from './Modals/Shared'
 
 const Container = styled.div`
   margin: ${props => props.margin ? props.margin : '0'};
-`
-
-const StyledVerticalCenter = styled(VerticalCenter)`
-  height: 100%;
-  padding-left: 25px;
-`
-
-const UserName = styled.p`
-  font-weight: 600;
-  font-size: 18px;
-  color: ${props => props.theme.Colors.background};
-  letter-spacing: .7px;
-  margin: 0;
 `
 
 export default class SendToRow extends Component {

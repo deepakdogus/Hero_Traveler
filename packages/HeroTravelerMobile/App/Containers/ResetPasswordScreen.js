@@ -6,7 +6,6 @@ import {
   Text,
   TextInput,
   Image,
-  KeyboardAvoidingView,
 } from 'react-native'
 import { connect } from 'react-redux'
 
@@ -79,48 +78,46 @@ class ResetPasswordScreen extends React.Component {
         <ScrollView
           style={[styles.container]}
           contentContainerStyle={{justifyContent: 'flex-start'}}>
-          <KeyboardAvoidingView behavior='position'>
-            <View style={[styles.section, {marginTop: 0}]}>
-              <Text style={styles.title}>RESET PASSWORD</Text>
-              <Text style={styles.instructions}>
-              Please enter your email address
-              </Text>
-            </View>
-            <View style={{height: 35}}>
-            </View>
-            <Input
-              style={styles.input}
-              value={this.state.password}
-              keyboardType='default'
-              returnKeyType='next'
-              autoCapitalize='none'
-              secureTextEntry
-              autoCorrect={false}
-              onChangeText={this._setPassword}
-              underlineColorAndroid='transparent'
-              placeholder='Password' />
+          <View style={[styles.section, {marginTop: 0}]}>
+            <Text style={styles.title}>RESET PASSWORD</Text>
+            <Text style={styles.instructions}>
+            Please enter your email address
+            </Text>
+          </View>
+          <View style={{height: 35}}>
+          </View>
+          <Input
+            style={styles.input}
+            value={this.state.password}
+            keyboardType='default'
+            returnKeyType='next'
+            autoCapitalize='none'
+            secureTextEntry
+            autoCorrect={false}
+            onChangeText={this._setPassword}
+            underlineColorAndroid='transparent'
+            placeholder='Password' />
 
-            <Input
-              style={styles.input}
-              value={this.state.confirmPassword}
-              keyboardType='default'
-              returnKeyType='done'
-              autoCapitalize='none'
-              secureTextEntry
-              autoCorrect={false}
-              onChangeText={this._setConfirmPassword}
-              underlineColorAndroid='transparent'
-              onSubmitEditing={this.handleResetPassword}
-              placeholder='Confirm Password' />
+          <Input
+            style={styles.input}
+            value={this.state.confirmPassword}
+            keyboardType='default'
+            returnKeyType='done'
+            autoCapitalize='none'
+            secureTextEntry
+            autoCorrect={false}
+            onChangeText={this._setConfirmPassword}
+            underlineColorAndroid='transparent'
+            onSubmitEditing={this.handleResetPassword}
+            placeholder='Confirm Password' />
 
-            <RoundedButton
-              style={styles.submit}
-              text="Submit"
-              onPress={this.handleResetPassword}
-            />
+          <RoundedButton
+            style={styles.submit}
+            text="Submit"
+            onPress={this.handleResetPassword}
+          />
 
-            {this.props.error && <Text style={styles.error}>{this.props.error}</Text>}
-          </KeyboardAvoidingView>
+          {this.props.error && <Text style={styles.error}>{this.props.error}</Text>}
         </ScrollView>
       </Image>
     )

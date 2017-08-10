@@ -12,6 +12,7 @@ PODS:
   - FBSDKShareKit (4.23.0):
     - FBSDKCoreKit
   - HockeySDK/AllFeaturesLib (4.1.4)
+  - IQKeyboardManager (4.0.9)
 
 DEPENDENCIES:
   - Bolts
@@ -19,6 +20,7 @@ DEPENDENCIES:
   - FBSDKLoginKit
   - FBSDKShareKit
   - HockeySDK/AllFeaturesLib
+  - IQKeyboardManager
 
 SPEC CHECKSUMS:
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
@@ -26,7 +28,8 @@ SPEC CHECKSUMS:
   FBSDKLoginKit: 6b92bd65f319d669d2b0730e49db495ef1660566
   FBSDKShareKit: 65751c3b9937ab9d594e6c37611ecc115ceeb448
   HockeySDK: 78a3f8bb9100277b531defc56c970369a3ca267a
+  IQKeyboardManager: 322c7405df3eb5f7e50dede32ea937bf3d4364e0
 
-PODFILE CHECKSUM: 54f410d38f46bbf1dc7910e1113f4874e3583078
+PODFILE CHECKSUM: cec2d9d58b7c8847148ffa3181fda5c8e11a1cfa
 
 COCOAPODS: 1.2.1

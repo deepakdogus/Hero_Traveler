@@ -7,15 +7,13 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   TouchableOpacity,
-  KeyboardAvoidingView,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import LinearGradient from 'react-native-linear-gradient'
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 
-import { Colors, Fonts, Metrics } from '../Themes'
+import { Colors, Metrics } from '../Themes'
 import Loader from './Loader'
 import StoryList from './StoryList'
 import ConnectedStoryPreview from '../Containers/ConnectedStoryPreview'
@@ -555,7 +553,7 @@ class ProfileView extends React.Component {
             style={{paddingTop: 15}}
           />
         }
-        <KeyboardAwareScrollView getTextInputRefs={this._getTextInputRefs} style={[
+        <ScrollView style={[
           this.props.hasTabbar ? styles.containerWithTabbar : null,
           styles.root,
           this.props.style,
@@ -644,7 +642,7 @@ class ProfileView extends React.Component {
           </View>
         }
         </View>
-        </KeyboardAwareScrollView>
+        </ScrollView>
         {showTooltip && this.renderTooltip()}
       </View>
     )

@@ -5832,10 +5832,6 @@ react-native-img-cache@^1.4.0:
   dependencies:
     crypto-js "^3.1.9-1"
 
-react-native-keyboard-aware-scrollview@^1.1.6:
-  version "1.1.7"
-  resolved "https://npm.abeck.io:443/react-native-keyboard-aware-scrollview/-/react-native-keyboard-aware-scrollview-1.1.7.tgz#9aea9f990162d544344f39bfadc41ca38a1d2a94"
-
 react-native-keyboard-spacer@^0.3.1:
   version "0.3.1"
   resolved "https://npm.abeck.io:443/react-native-keyboard-spacer/-/react-native-keyboard-spacer-0.3.1.tgz#9580297ebfd078202dc4c65303d29cda35de67f1"

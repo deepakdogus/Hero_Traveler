@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
   TouchableHighlight,
   DatePickerIOS,
-  TextInput, KeyboardAvoidingView
+  TextInput
 } from 'react-native'
 import { connect } from 'react-redux'
 import moment from 'moment'

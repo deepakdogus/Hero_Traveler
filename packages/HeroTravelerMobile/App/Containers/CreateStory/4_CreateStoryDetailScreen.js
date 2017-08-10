@@ -88,7 +88,7 @@ class CreateStoryDetailScreen extends React.Component {
     // making sure we properly display each of these properties
     const updates = {}
     if (newProps.story.location) updates.location = newProps.story.location
-    if (newProps.story.categories && newProps.story.categories.length) updates.categories = newProps.story.categories
+    if (this.props.story.id !== newProps.story.id) updates.categories = newProps.story.categories || []
     if (newProps.story.type) updates.type = newProps.story.type
     if (Object.keys(updates).length) this.setState(updates)
 

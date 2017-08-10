@@ -434,6 +434,13 @@
 			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
 			remoteInfo = RCTCamera;
 		};
+		EFE44EE91F3CF4BF00003CBA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2215B993E71FD766A2BFD424A42A4331;
+			remoteInfo = IQKeyboardManager;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -862,6 +869,7 @@
 				91D044181F327BCB00FAA404 /* libFBSDKLoginKit.a */,
 				91D0441A1F327BCB00FAA404 /* libFBSDKShareKit.a */,
 				942D12201EB3956400A0CFE5 /* HockeySDKResources.bundle */,
+				EFE44EEA1F3CF4BF00003CBA /* libIQKeyboardManager.a */,
 				942D12221EB3956400A0CFE5 /* libPods-HeroTravelerMobile.a */,
 				942D12241EB3956400A0CFE5 /* libPods-HeroTravelerMobileTests.a */,
 			);
@@ -1555,6 +1563,13 @@
 			fileType = archive.ar;
 			path = libRCTCamera.a;
 			remoteRef = 95F7E9541E79D5C8006344FE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		EFE44EEA1F3CF4BF00003CBA /* libIQKeyboardManager.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libIQKeyboardManager.a;
+			remoteRef = EFE44EE91F3CF4BF00003CBA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

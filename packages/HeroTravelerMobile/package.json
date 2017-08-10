@@ -23,6 +23,7 @@
     "dev-test-link-email": "xcrun simctl openurl booted \"com.rehashstudio.herotraveler://emailverify/dc24a446-3a76-477a-8f17-255dfbaf0892\""
   },
   "dependencies": {
+    "@hero/react-native-autogrow-textinput": "3.0.5",
     "algoliasearch": "^3.22.1",
     "algoliasearch-helper": "^2.20.1",
     "apisauce": "^0.10.0",
@@ -44,7 +45,6 @@
     "react-mixin": "^3.0.5",
     "react-native": "~0.42.0",
     "react-native-animatable": "^1.1.0",
-    "@hero/react-native-autogrow-textinput": "3.0.5", 
     "react-native-camera": "0.6",
     "react-native-device-info": "^0.10.0",
     "react-native-draftjs-render": "^1.0.3",
@@ -56,7 +56,6 @@
     "react-native-htmlview": "^0.9.0",
     "react-native-image-picker": "^0.26.2",
     "react-native-img-cache": "^1.4.0",
-    "react-native-keyboard-aware-scrollview": "^1.1.6",
     "react-native-keyboard-spacer": "^0.3.1",
     "react-native-linear-gradient": "^2.0.0",
     "react-native-maps": "~0.13.0",

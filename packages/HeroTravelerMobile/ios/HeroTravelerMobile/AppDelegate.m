@@ -15,6 +15,7 @@
 #import "RCTPushNotificationManager.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import "SplashScreen.h"
+#import <IQKeyboardManager/IQKeyboardManager.h>
 
 @implementation AppDelegate
 
@@ -54,6 +55,9 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [IQKeyboardManager sharedManager].enable = YES;
+  [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
+  
   NSURL *jsCodeLocation;
   
   [[FBSDKApplicationDelegate sharedInstance] application:application

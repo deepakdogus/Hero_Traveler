@@ -8,6 +8,7 @@ target 'HeroTravelerMobile' do
   pod "FBSDKLoginKit"
   pod "FBSDKShareKit"
   pod "Bolts"
+  pod "IQKeyboardManager"
 
   # Pods for HeroTravelerMobile
   pod "HockeySDK", :subspecs => ['AllFeaturesLib']

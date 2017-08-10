@@ -5,14 +5,12 @@ import {View, Animated,} from 'react-native';
 export default class FadeInOut extends Component {
   static propTypes = {
     isVisible: PropTypes.bool.isRequired,
-    children: PropTypes.node.isRequired,
     style: View.propTypes.style
   }
 
   constructor(props) {
     super(props)
     this.state = {
-      view: this.props.children,
       opacity: new Animated.Value(this.props.isVisible ? 1 : 0)
     }
   }
@@ -25,11 +23,10 @@ export default class FadeInOut extends Component {
       Animated.timing(this.state.opacity, {
         toValue: 0,
         duration: 200
-      }).start(() => {this.removeView()})
+      }).start()
     }
 
     if (!isVisible && shouldBeVisible) {
-      this.insertView();
       Animated.timing(this.state.opacity, {
         toValue: 1,
         duration: 200
@@ -37,24 +34,13 @@ export default class FadeInOut extends Component {
     }
   }
 
-  insertView() {
-    this.setState({
-      view: this.props.children
-    })
-  }
-
-  removeView() {
-    this.setState({
-      view: null
-    })
-  }
-
   render() {
     return (
       <Animated.View
         pointerEvents={this.props.isVisible ? 'auto' : 'none'}
-        style={[this.props.style, {opacity: this.state.opacity}]}>
-        {this.state.view}
+        style={[this.props.style, {opacity: this.state.opacity}]}
+      >
+        {this.props.children}
       </Animated.View>
     );
   }

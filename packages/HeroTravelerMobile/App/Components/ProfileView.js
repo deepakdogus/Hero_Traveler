@@ -372,7 +372,7 @@ class ProfileView extends React.Component {
               placeholder={user.username}
               value={this.state.usernameText}
               autoCapitalize='none'
-              style={styles.titleText}
+              style={[styles.titleText, styles.editTitle]}
               onChangeText={this._setText}
               maxLength={20}
               returnKeyType={'done'}

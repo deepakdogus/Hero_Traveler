@@ -275,7 +275,7 @@ class StoryReadingScreen extends React.Component {
               </View>
             }
             {!!story.categories.length &&
-              <View style={styles.marginedRow}>
+              <View style={[styles.marginedRow, styles.tagRow]}>
                 {this.renderTags()}
               </View>
             }

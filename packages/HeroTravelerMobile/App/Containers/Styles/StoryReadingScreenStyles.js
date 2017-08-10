@@ -111,10 +111,17 @@ export const styles = StyleSheet.create({
     color: Colors.redHighlights,
     fontFamily: Fonts.type.base,
     letterSpacing: .7,
+    height: 19,
+    lineHeight: 17,
   },
   marginedRow: {
     marginHorizontal: Metrics.section,
     flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  tagRow: {
+    marginTop: 0,
+    marginBottom: 20,
   }
 })
 

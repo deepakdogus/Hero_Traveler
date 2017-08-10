@@ -92,8 +92,11 @@ export default StyleSheet.create({
     fontSize: 21,
     letterSpacing: 3,
     color: Colors.snow,
-    width: '50%',
+    width: '100%',
     height: 30
+  },
+  editTitle: {
+    width: '50%',
   },
   inputUnderLine: {
     width: '50%',

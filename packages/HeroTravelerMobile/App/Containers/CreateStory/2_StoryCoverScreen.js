@@ -64,6 +64,8 @@ class StoryCoverScreen extends Component {
   constructor(props) {
     super(props)
     this.timeout = null
+    const coverImage = getImageUrl(props.story.coverImage)
+    const coverVideo = getVideoUrl(props.story.coverVideo)
     this.state = {
       imageMenuOpen: false,
       file: null,
@@ -72,12 +74,13 @@ class StoryCoverScreen extends Component {
       title: props.story.title || '',
       description: props.story.description || '',
       // Local file path to the image
-      coverImage: getImageUrl(props.story.coverImage),
+      coverImage,
       // Local file path to the video
-      coverVideo: getVideoUrl(props.story.coverVideo),
+      coverVideo,
       toolbarOpacity: new Animated.Value(1),
       imageUploading: false,
       videoUploading: false,
+      isScrollDown: !!coverImage || !!coverVideo,
     }
   }
 
@@ -710,15 +713,21 @@ class StoryCoverScreen extends Component {
     )
   }
 
+  _setScrollRef = ref => this.scrollViewRef = ref
+
   render () {
     let showTooltip = false;
+    const {story} = this.props
     if (this.props.user && this.state.file) {
       showTooltip = !isTooltipComplete(
         TooltipTypes.STORY_PHOTO_EDIT,
         this.props.user.introTooltips
       )
     }
-
+    if (this.scrollViewRef && this.state.isScrollDown) {
+      this.setState({isScrollDown: false})
+      this.scrollViewRef.scrollTo({x: 0, y: 100, animated: true})
+    }
     return (
       <View style={styles.root}>
         <NavBar
@@ -733,7 +742,10 @@ class StoryCoverScreen extends Component {
             paddingRight: 10,
           }}
         />
-        <ScrollView keyboardShouldPersistTaps='handled'>
+        <ScrollView
+          ref={this._setScrollRef}
+          keyboardShouldPersistTaps='handled'
+        >
           <View>
             <View style={[
               styles.coverWrapper,
@@ -780,11 +792,15 @@ class StoryCoverScreen extends Component {
   _handleSelectCover = (path) => {
     const file = pathAsFileObject(path)
     this.setState({file})
-    if (this.isPhotoType()) {
-      this.setState({coverImage: path})
-    } else {
-      this.setState({coverVideo: path})
+    const updatedState = {
+      isScrollDown: true
     }
+    if (this.isPhotoType()) {
+      updatedState.coverImage = path
+    } else {
+      updatedState.coverVideo = path
+    }
+    this.setState(updatedState)
     NavActions.pop()
   }
 }

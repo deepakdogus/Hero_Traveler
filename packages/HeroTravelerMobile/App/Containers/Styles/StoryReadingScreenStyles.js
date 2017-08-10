@@ -115,6 +115,11 @@ export const styles = StyleSheet.create({
   marginedRow: {
     marginHorizontal: Metrics.section,
     flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  tagRow: {
+    marginTop: 0,
+    marginBottom: 20,
   }
 })
 

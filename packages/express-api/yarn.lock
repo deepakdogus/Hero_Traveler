@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@hero/ht-core@0.0.28":
-  version "0.0.28"
-  resolved "https://npm.abeck.io:443/@hero%2fht-core/-/ht-core-0.0.28.tgz#31496e3815136227abeeb43af319ed812292bade"
+"@hero/ht-core@0.0.29":
+  version "0.0.29"
+  resolved "https://npm.abeck.io:443/@hero%2fht-core/-/ht-core-0.0.29.tgz#42d0155e8051cc7ba9d763bb9896cd335b628eb6"
   dependencies:
     "@hero/ht-util" "^0.0.12"
     algoliasearch "^3.22.1"
@@ -2709,15 +2709,15 @@ resolve-from@^2.0.0:
   version "2.0.0"
   resolved "https://npm.abeck.io:443/resolve-from/-/resolve-from-2.0.0.tgz#9480ab20e94ffa1d9e80a804c7ea147611966b57"
 
-rimraf@2, rimraf@^2.5.1, rimraf@^2.6.1:
-  version "2.6.1"
-  resolved "https://npm.abeck.io:443/rimraf/-/rimraf-2.6.1.tgz#c2338ec643df7a1b7fe5c54fa86f57428a55f33d"
+rimraf@2, rimraf@~2.5.1, rimraf@~2.5.4:
+  version "2.5.4"
+  resolved "https://npm.abeck.io:443/rimraf/-/rimraf-2.5.4.tgz#96800093cbf1a0c86bd95b4625467535c29dfa04"
   dependencies:
     glob "^7.0.5"
 
-rimraf@~2.5.1, rimraf@~2.5.4:
-  version "2.5.4"
-  resolved "https://npm.abeck.io:443/rimraf/-/rimraf-2.5.4.tgz#96800093cbf1a0c86bd95b4625467535c29dfa04"
+rimraf@^2.5.1, rimraf@^2.6.1:
+  version "2.6.1"
+  resolved "https://npm.abeck.io:443/rimraf/-/rimraf-2.6.1.tgz#c2338ec643df7a1b7fe5c54fa86f57428a55f33d"
   dependencies:
     glob "^7.0.5"
 

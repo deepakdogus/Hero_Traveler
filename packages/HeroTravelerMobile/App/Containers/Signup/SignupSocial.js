@@ -31,6 +31,7 @@ class SignupSocialScreen extends React.Component {
 
   render () {
     let content
+    const {user} = this.props
 
     if (_.values(this.props.users).length) {
       content = (
@@ -47,7 +48,7 @@ class SignupSocialScreen extends React.Component {
               />
               <Text style={styles.connectSocialText}>Facebook</Text>
               <View style={styles.connectWrapper}>
-                <Text style={styles.isConnectedText}>Connected</Text>
+                {user && user.isFacebookConnected && <Text style={styles.isConnectedText}>Connected</Text>}
                 <Icon name='angle-right' size={15} color={'#757575'} />
               </View>
             </View>
@@ -131,8 +132,10 @@ class SignupSocialScreen extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  const users = state.entities.users.entities
   return {
-    users: state.entities.users.entities,
+    user: users[state.session.userId],
+    users,
     suggestedUsersById: state.entities.users.suggestedUsersById,
     selectedUsersById: state.signup.selectedUsers
   }

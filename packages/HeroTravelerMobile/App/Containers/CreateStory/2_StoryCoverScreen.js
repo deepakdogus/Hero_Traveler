@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   Animated,
   View,
+  KeyboardAvoidingView,
   Image,
   Alert,
   TextInput,
@@ -717,7 +718,6 @@ class StoryCoverScreen extends Component {
 
   render () {
     let showTooltip = false;
-    const {story} = this.props
     if (this.props.user && this.state.file) {
       showTooltip = !isTooltipComplete(
         TooltipTypes.STORY_PHOTO_EDIT,
@@ -728,6 +728,7 @@ class StoryCoverScreen extends Component {
       this.setState({isScrollDown: false})
       this.scrollViewRef.scrollTo({x: 0, y: 100, animated: true})
     }
+
     return (
       <View style={styles.root}>
         <NavBar
@@ -746,7 +747,7 @@ class StoryCoverScreen extends Component {
           ref={this._setScrollRef}
           keyboardShouldPersistTaps='handled'
         >
-          <View>
+          <KeyboardAvoidingView behavior='position'>
             <View style={[
               styles.coverWrapper,
               !this.isPhotoType() && styles.videoCoverWrapper
@@ -768,23 +769,23 @@ class StoryCoverScreen extends Component {
                 {this.renderEditor()}
               </View>
             }
-          </View>
+          {this.isUploading() &&
+            <Loader
+              style={styles.loading}
+              text={this.state.imageUploading ? 'Saving image...' : 'Saving video...'}
+              textStyle={styles.loadingText}
+              tintColor='rgba(0,0,0,.9)' />
+          }
+          {this.state.updating &&
+            <Loader
+              style={styles.loading}
+              text='Saving progress...'
+              textStyle={styles.loaderText}
+              tintColor='rgba(0,0,0,.9)' />
+          }
+          {showTooltip && this.renderTooltip()}
+          </KeyboardAvoidingView>
         </ScrollView>
-        {this.isUploading() &&
-          <Loader
-            style={styles.loading}
-            text={this.state.imageUploading ? 'Saving image...' : 'Saving video...'}
-            textStyle={styles.loadingText}
-            tintColor='rgba(0,0,0,.9)' />
-        }
-        {this.state.updating &&
-          <Loader
-            style={styles.loading}
-            text='Saving progress...'
-            textStyle={styles.loaderText}
-            tintColor='rgba(0,0,0,.9)' />
-        }
-        {showTooltip && this.renderTooltip()}
       </View>
     )
   }

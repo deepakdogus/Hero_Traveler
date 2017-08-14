@@ -23,6 +23,7 @@ import Settings from './Modals/Settings'
 import SettingsPW from './Modals/SettingsPW'
 import SettingsServices from './Modals/SettingsServices'
 import SettingsNotifications from './Modals/SettingsNotifications'
+import Inbox from './Modals/Inbox'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   &:after {
@@ -134,7 +135,7 @@ export default class StoryHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'settingsServices' }
+    this.state = {modal: 'inbox' }
   }
 
   closeModal = () => {
@@ -282,7 +283,15 @@ export default class StoryHeader extends React.Component {
           onRequestClose={this.closeModal}
         >
           <SettingsNotifications profile={user}/>
-        </RightModal>                               
+        </RightModal>
+        <RightModal
+          isOpen={this.state.modal === 'inbox'}
+          contentLabel='inbox'
+          onRequestClose={this.closeModal}
+        >
+          <Inbox profile={user}/>
+        </RightModal>
+
       </ImageWrapper>
     )
   }

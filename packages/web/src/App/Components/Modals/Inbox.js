@@ -4,13 +4,13 @@ import PropTypes from 'prop-types'
 // import momentRandom from 'moment-random'
 
 import {usersExample} from '../../Containers/Feed_TEST_DATA'
-import CommentRow from '../CommentRow'
+import MessageRow from '../MessageRow'
 import InputRow from '../InputRow'
 import {RightTitle} from './Shared'
 
 const Container = styled.div``
 
-const UserCommentRowsContainer = styled.div`
+const UserMessageRowsContainer = styled.div`
   padding: 25px;
 `
 
@@ -20,13 +20,13 @@ export default class UserComments extends React.Component {
     users: PropTypes.object,
   }
 
-  renderUserCommentRows(userKeys) {
+  renderUserMessageRows(userKeys) {
     return userKeys.map((key, index) => {
       return (
-        <CommentRow
+        <MessageRow
           key={key}
           user={usersExample[key]}
-          comment=''
+          message=''
           timestamp={new Date()}
           margin='0 0 25px'
         />
@@ -42,11 +42,10 @@ export default class UserComments extends React.Component {
 
     return (
       <Container>
-        <RightTitle>COMMENTS</RightTitle>
-        <UserCommentRowsContainer>
-          {this.renderUserCommentRows(userKeys)}
-        </UserCommentRowsContainer>
-        <InputRow/>
+        <RightTitle>INBOX</RightTitle>
+        <UserMessageRowsContainer>
+          {this.renderUserMessageRows(userKeys)}
+        </UserMessageRowsContainer>
       </Container>
     )
   }

@@ -82,6 +82,13 @@ export const CommentContent = styled.p`
   margin: 0;
   color: ${props => props.theme.Colors.grey};
 `
+export const MessageContent = styled.p`
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: .7px;
+  margin: 0;
+  color: ${props => props.theme.Colors.grey};
+`
 
 export const Timestamp = styled.p`
   font-weight: 400;

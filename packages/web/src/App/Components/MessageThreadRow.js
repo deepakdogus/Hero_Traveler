@@ -3,7 +3,8 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
-import SpaceBetweenRowWithTimeStamp from './SpaceBetweenRowWithTimeStamp'
+import SpaceBetweenRowWithLeftAvatar from './SpaceBetweenRowWithLeftAvatar'
+import SpaceBetweenRowWithRightAvatar from './SpaceBetweenRowWithRightAvatar'
 import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Avatar from './Avatar'
@@ -19,10 +20,11 @@ const Container = styled.div`
   margin: ${props => props.margin ? props.margin : '0'};
 `
 
-export default class MessageRow extends Component {
+export default class MessageThreadRow extends Component {
   static propTypes = {
     message: PropTypes.string,
     user: PropTypes.object,
+    isSender: PropTypes.bool,
     timestamp: PropTypes.object,
   }
 
@@ -40,7 +42,6 @@ export default class MessageRow extends Component {
     const messageText = this.props.message ? this.props.message : 'Lorum Ipsum'
     return (
       <StyledVerticalCenter>
-        <UserName>{user.username}</UserName>
         <MessageContent>{messageText}</MessageContent>
       </StyledVerticalCenter>
     )
@@ -58,12 +59,19 @@ export default class MessageRow extends Component {
   render() {
     return (
       <Container margin={this.props.margin}>
-        <SpaceBetweenRowWithTimeStamp
+      {this.props.isSender ?
+        <SpaceBetweenRowWithLeftAvatar
           renderImage={this.renderImage}
           renderText={this.renderText}
           renderTimestamp={this.renderTimestamp}
         />
-        <HorizontalDivider color='light-grey'/>
+        :
+        <SpaceBetweenRowWithRightAvatar
+          renderImage={this.renderImage}
+          renderText={this.renderText}
+          renderTimestamp={this.renderTimestamp}
+        />
+      }
       </Container>
     )
   }

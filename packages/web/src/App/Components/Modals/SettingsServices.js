@@ -10,10 +10,16 @@ import ModalTogglebar from '../ModalTogglebar'
 import HorizontalDivider from '../HorizontalDivider'
 
 const toggleBarTabs = [
-  { text: 'Account', isActive: true, isLast: false },
-  { text: 'Services', isActive: false, isLast: false },
+  { text: 'Account', isActive: false, isLast: false },
+  { text: 'Services', isActive: true, isLast: false },
   { text: 'Notifications', isActive: false, isLast: false },
   { text: 'Password', isActive: false, isLast: true },
+]
+
+const serviceTypes = [
+  { iconName: 'facebook-blue', text: 'Facebook', isConnected: true },
+  { iconName: 'twitter-blue', text: 'Twitter', isConnected: false },
+  { iconName: 'instagram', text: 'Instagram', isConnected: true },
 ]
 
 const Container = styled.div``
@@ -23,6 +29,20 @@ const ServiceContainer = styled.div`
 `
 
 export default class SettingsServices extends React.Component {
+
+  renderServiceRows(notificationTypes) {
+    return notificationTypes.map((el) => {
+      return (
+        <ServiceIconRow
+          key={el.text}
+          iconName={el.iconName}
+          text={el.text}
+          isConnected={el.isConnected}
+        />
+      )
+    })
+  }
+
   render() {
     return (
       <Container>
@@ -32,13 +52,7 @@ export default class SettingsServices extends React.Component {
           <HorizontalDivider color='light-grey'/>
         </ServiceContainer>
         <ServiceContainer>
-          <ServiceIconRow iconName='facebook-blue' text='Facebook' isConnected={true}/>
-        </ServiceContainer>
-        <ServiceContainer>
-          <ServiceIconRow iconName='twitter-blue' text='Twitter' isConnected={false}/>
-        </ServiceContainer>
-        <ServiceContainer>
-          <ServiceIconRow iconName='instagram' text='Instagram' isConnected={true}/>
+          {this.renderServiceRows(serviceTypes)}
         </ServiceContainer>
       </Container>
     )

@@ -281,7 +281,7 @@ export default class StoryHeader extends React.Component {
           contentLabel='Edit Notifications'
           onRequestClose={this.closeModal}
         >
-          <SettingsServices profile={user}/>
+          <SettingsNotifications profile={user}/>
         </RightModal>                               
       </ImageWrapper>
     )

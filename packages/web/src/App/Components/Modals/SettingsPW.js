@@ -9,10 +9,10 @@ import RoundedButton from '../RoundedButton'
 import ModalTogglebar from '../ModalTogglebar'
 
 const toggleBarTabs = [
-  { text: 'Account', isActive: true, isLast: false },
+  { text: 'Account', isActive: false, isLast: false },
   { text: 'Services', isActive: false, isLast: false },
   { text: 'Notifications', isActive: false, isLast: false },
-  { text: 'Password', isActive: false, isLast: true },
+  { text: 'Password', isActive: true, isLast: true },
 ]
 
 const Container = styled.div``

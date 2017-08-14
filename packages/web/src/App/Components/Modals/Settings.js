@@ -11,7 +11,8 @@ import ModalTogglebar from '../ModalTogglebar'
 const toggleBarTabs = [
   { text: 'Account', isActive: true, isLast: false },
   { text: 'Services', isActive: false, isLast: false },
-  { text: 'Email Notifications', isActive: false, isLast: true },
+  { text: 'Notifications', isActive: false, isLast: false },
+  { text: 'Password', isActive: false, isLast: true },
 ]
 
 const Container = styled.div``

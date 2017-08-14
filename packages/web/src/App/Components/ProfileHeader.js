@@ -21,6 +21,8 @@ import AddToBoard from './Modals/AddToBoard'
 import CreateBoard from './Modals/CreateBoard'
 import Settings from './Modals/Settings'
 import SettingsPW from './Modals/SettingsPW'
+import SettingsServices from './Modals/SettingsServices'
+import SettingsNotifications from './Modals/SettingsNotifications'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   &:after {
@@ -132,7 +134,7 @@ export default class StoryHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'settingsPW' }
+    this.state = {modal: 'settingsServices' }
   }
 
   closeModal = () => {
@@ -255,18 +257,32 @@ export default class StoryHeader extends React.Component {
         </RightModal>             
         <RightModal
           isOpen={this.state.modal === 'settings'}
-          contentLabel='Create Board'
+          contentLabel='Edit Settings'
           onRequestClose={this.closeModal}
         >
           <Settings profile={user}/>
         </RightModal>
         <RightModal
           isOpen={this.state.modal === 'settingsPW'}
-          contentLabel='Create Board'
+          contentLabel='Edit Password'
           onRequestClose={this.closeModal}
         >
           <SettingsPW profile={user}/>
-        </RightModal>               
+        </RightModal>
+        <RightModal
+          isOpen={this.state.modal === 'settingsServices'}
+          contentLabel='Edit Services'
+          onRequestClose={this.closeModal}
+        >
+          <SettingsServices profile={user}/>
+        </RightModal>                       
+        <RightModal
+          isOpen={this.state.modal === 'settingsNotifications'}
+          contentLabel='Edit Notifications'
+          onRequestClose={this.closeModal}
+        >
+          <SettingsServices profile={user}/>
+        </RightModal>                               
       </ImageWrapper>
     )
   }

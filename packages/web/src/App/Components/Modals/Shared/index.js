@@ -30,6 +30,17 @@ export const RightTitle = styled.p`
   padding: 20px;
 `
 
+export const CenterTitle = styled.p`
+  font-weight: 400;
+  font-size: 20px;
+  color: ${props => props.theme.Colors.background};
+  letter-spacing: 1.5px;
+  text-align: center;
+  background-color: ${props => props.theme.Colors.white};
+  margin: 0;
+  padding: 20px;
+`
+
 export const Text = styled.p`
   ${basicTextStyle};
   color: ${props => props.theme.Colors.grey};

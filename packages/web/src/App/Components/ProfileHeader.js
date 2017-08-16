@@ -10,6 +10,7 @@ import VerticalCenter from './VerticalCenter'
 import HorizontalDivider from './HorizontalDivider'
 import RoundedButton from './RoundedButton'
 import RightModal from './RightModal'
+import CenterModal from './CenterModal'
 import Icon from './Icon'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import FollowFollowing from './Modals/FollowFollowing'
@@ -26,6 +27,7 @@ import SettingsNotifications from './Modals/SettingsNotifications'
 import Inbox from './Modals/Inbox'
 import MessageThread from './Modals/MessageThread'
 import Notifications from './Modals/Notifications'
+import FAQTermsAndConditions from './Modals/FAQTermsAndConditions'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   &:after {
@@ -137,7 +139,7 @@ export default class StoryHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'notifications' }
+    this.state = {modal: undefined }
   }
 
   closeModal = () => {
@@ -306,7 +308,15 @@ export default class StoryHeader extends React.Component {
           onRequestClose={this.closeModal}
         >
           <Notifications profile={user}/>
-        </RightModal>        
+        </RightModal>
+
+        <CenterModal
+          isOpen={this.state.modal === 'FAQTermsAndConditions'}
+          contentLabel='FAQ / Terms & Conditions'
+          onRequestClose={this.closeModal}
+        >
+          <FAQTermsAndConditions/>
+        </CenterModal>                
 
       </ImageWrapper>
     )

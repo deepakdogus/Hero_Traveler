@@ -70,6 +70,15 @@ const MenuLinkContainer = styled.div`
   flex-direction: 'row';
 `
 
+const RoundedButtonText = styled.p`
+  color: ${props => props.theme.Colors.snow };
+  text-align: center;
+  font-size: 16px;
+  margin: 2.5px 10px;
+  letter-spacing: 1.2px;
+  text-decoration: none;
+`
+
 const MenuLink = (props) => {
   return (
     <NavLink
@@ -154,7 +163,14 @@ export default class Header extends React.Component {
               }
               {isLoggedIn &&
                 <div>
-                  <RoundedButton text='Create'/>
+                  <RoundedButton>
+                    <NavLink 
+                      to='/createStory'
+                      style={{textDecoration: 'none'}}
+                    >
+                      <RoundedButtonText>Create</RoundedButtonText>
+                    </NavLink>
+                  </RoundedButton>
                   <RoundedButton type={'opaque'}>
                     <Icon name='loginEmail' />
                   </RoundedButton>

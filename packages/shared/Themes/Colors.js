@@ -46,6 +46,7 @@ const colors = {
   btnGreyBackground: '#949292',
   btnDarkGreyBackground: '#5d5b5f',
   dividerGrey: '#dedede',
+  pink: '#fde8ea',
 }
 
 export default colors

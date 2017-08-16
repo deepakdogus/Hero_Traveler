@@ -9,6 +9,7 @@ import HeaderImageWrapper from '../Components/HeaderImageWrapper'
 
 import Feed from './Feed'
 import Story from './Story'
+import CreateStory from './CreateStory'
 import SignupSocial from './Signup/SignupSocial';
 import SignupTopics from './Signup/SignupTopics';
 import Profile from './Profile'
@@ -26,6 +27,7 @@ class AppRoot extends Component {
             <Route path='/signup/social' component={SignupSocial} />
             <Route path='/signup/topics' component={SignupTopics} />
             <Route path='/story/:storyId' component={Story} />
+            <Route path='/createStory' component={CreateStory} />
             <Route path='/profile/:userId' component={Profile} />
           </div>
         </ThemeProvider>

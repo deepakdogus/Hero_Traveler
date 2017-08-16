@@ -14,7 +14,7 @@ const UserMessageRowsContainer = styled.div`
   padding: 25px;
 `
 
-export default class UserComments extends React.Component {
+export default class Inbox extends React.Component {
   static PropTypes = {
     profile: PropTypes.object,
     users: PropTypes.object,

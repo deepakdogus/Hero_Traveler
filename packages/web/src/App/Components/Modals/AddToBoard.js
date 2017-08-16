@@ -50,14 +50,14 @@ const CreateText = styled.p`
   margin: 0;
 `
 
-const categoriesExample = feedExample[Object.keys(feedExample)[0]].categories
 //test board images
-const boardImages = [];
+const categoriesExample = feedExample[Object.keys(feedExample)[0]].categories
+let categoriesExampleSliced = {};
+for (var i=0; i<3; i++)
+    categoriesExampleSliced[i] = categoriesExample[i];
 
-// feedExample[Object.keys(feedExample)[0]].categories.forEach(function(cat){ return boardImages.push(cat.image) })
 
-
-export default class SendTo extends React.Component {
+export default class AddToBoard extends React.Component {
   static PropTypes = {
     profile: PropTypes.object,
     users: PropTypes.object,
@@ -92,7 +92,7 @@ export default class SendTo extends React.Component {
       return (
         <AddToBoardRow
           key={key}
-          category={categoriesExample[key]}
+          category={categoriesExampleSliced[key]}
           margin='0 0 25px'
         />
       )
@@ -101,7 +101,7 @@ export default class SendTo extends React.Component {
 
   render() {
     // const {profile} = this.props
-    const categoryKeys = Object.keys(categoriesExample)
+    const categoryKeys = Object.keys(categoriesExampleSliced)
 
     return (
       <Container>

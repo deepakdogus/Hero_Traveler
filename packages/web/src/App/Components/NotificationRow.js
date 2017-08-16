@@ -1,63 +1,82 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import moment from 'moment'
 
-import SpaceBetweenRowWithTextAndSwitch from './SpaceBetweenRowWithTextAndSwitch'
+import SpaceBetweenRowWithTripImage from './SpaceBetweenRowWithTripImage'
 import VerticalCenter from './VerticalCenter'
-import TextButton from './TextButton'
-import {StyledVerticalCenter} from './Modals/Shared'
+import getImageUrl from '../Shared/Lib/getImageUrl'
+import Avatar from './Avatar'
 import HorizontalDivider from './HorizontalDivider'
-import Icon from './Icon'
-
-import 'react-ios-switch/build/bundle.css';
-import Switch from 'react-ios-switch';
+import {
+  StyledVerticalCenter,
+  UserName,
+  CommentContent,
+  NotificationContent,
+  Timestamp,
+} from './Modals/Shared'
 
 const Container = styled.div`
   margin: ${props => props.margin ? props.margin : '0'};
 `
 
-const NotificationTitle = styled.p`
-  font-weight: 400;
-  font-size: 16px;
-  letter-spacing: .7px;
-  margin: 0;
-  color: ${props => props.theme.Colors.grey};
-`
+export default class MessageRow extends Component {
+  static propTypes = {
+    notification: PropTypes.string,
+    comment: PropTypes.string,
+    user: PropTypes.object,
+    trip: PropTypes.object,
+    isTrip: PropTypes.bool,
+    timestamp: PropTypes.object,
+  }
 
-export default class ServiceIconRow extends Component {
-
-  static PropTypes = {
-    isNotifying: PropTypes.bool,
-    text: PropTypes.string,
+  renderImage = () => {
+    return (
+      <Avatar
+        avatarUrl={getImageUrl(this.props.user.profile.avatar)}
+        size='larger'
+      />
+    )
   }
 
   renderText = () => {
+    const {user} = this.props
     return (
       <StyledVerticalCenter>
-        <NotificationTitle>{this.props.text}</NotificationTitle>
+        <UserName>{user.username}</UserName>
+        <NotificationContent>{this.props.notification}</NotificationContent>
+        <CommentContent>{this.props.comment}</CommentContent>
       </StyledVerticalCenter>
     )
   }
 
-  renderSwitch = () => {
+
+  renderTimestamp = () => {
     return (
       <VerticalCenter>
-        <Switch
-          checked={this.props.isNotifying}
-          disabled={null}
-          onChange={null}
-          onColor={'#d60000'}
-        />
+        <Timestamp margin='none' width='50px' >{moment(this.props.timestamp).fromNow()}</Timestamp>
       </VerticalCenter>
+    )
+  }
+
+  renderTripImage = () => {
+    return (
+      <Avatar
+        avatarUrl={getImageUrl(this.props.trip.image)}
+        size='large'
+        square={true}
+      />
     )
   }
 
   render() {
     return (
       <Container margin={this.props.margin}>
-        <SpaceBetweenRowWithTextAndSwitch
+        <SpaceBetweenRowWithTripImage
+          renderImage={this.renderImage}
           renderText={this.renderText}
-          renderSwitch={this.renderSwitch}
+          renderTimestamp={this.renderTimestamp}
+          renderTripImage={this.renderTripImage}
         />
         <HorizontalDivider color='light-grey'/>
       </Container>

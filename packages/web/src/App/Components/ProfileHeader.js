@@ -25,6 +25,7 @@ import SettingsServices from './Modals/SettingsServices'
 import SettingsNotifications from './Modals/SettingsNotifications'
 import Inbox from './Modals/Inbox'
 import MessageThread from './Modals/MessageThread'
+import Notifications from './Modals/Notifications'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   &:after {
@@ -136,7 +137,7 @@ export default class StoryHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'message thread' }
+    this.state = {modal: 'notifications' }
   }
 
   closeModal = () => {
@@ -287,17 +288,24 @@ export default class StoryHeader extends React.Component {
         </RightModal>
         <RightModal
           isOpen={this.state.modal === 'inbox'}
-          contentLabel='inbox'
+          contentLabel='Inbox'
           onRequestClose={this.closeModal}
         >
           <Inbox profile={user}/>
         </RightModal>
         <RightModal
-          isOpen={this.state.modal === 'message thread'}
-          contentLabel='message thread'
+          isOpen={this.state.modal === 'messageThread'}
+          contentLabel='Message Thread'
           onRequestClose={this.closeModal}
         >
           <MessageThread profile={user}/>
+        </RightModal>
+        <RightModal
+          isOpen={this.state.modal === 'notifications'}
+          contentLabel='Notifications'
+          onRequestClose={this.closeModal}
+        >
+          <Notifications profile={user}/>
         </RightModal>        
 
       </ImageWrapper>

@@ -90,6 +90,15 @@ export const MessageContent = styled.p`
   color: ${props => props.theme.Colors.grey};
 `
 
+export const NotificationContent = styled.p`
+  display: inline;
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: .7px;
+  margin: 0;
+  color: ${props => props.theme.Colors.background};
+`
+
 export const Timestamp = styled.p`
   font-weight: 400;
   font-size: 16px;

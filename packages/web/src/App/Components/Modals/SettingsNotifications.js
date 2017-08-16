@@ -5,7 +5,7 @@ import InputRow from '../InputRow'
 import {RightTitle, StyledInput} from './Shared'
 
 import VerticalCenter from '../VerticalCenter'
-import NotificationRow from '../NotificationRow'
+import SettingsNotificationRow from '../SettingsNotificationRow'
 import ModalTogglebar from '../ModalTogglebar'
 import HorizontalDivider from '../HorizontalDivider'
 
@@ -31,10 +31,10 @@ const NotificationContainer = styled.div`
 `
 export default class SettingsNotifications extends React.Component {
 
-  renderNotificationRows(notificationTypes) {
+  renderSettingsNotificationRows(notificationTypes) {
     return notificationTypes.map((el) => {
       return (
-        <NotificationRow
+        <SettingsNotificationRow
           key={el.text}
           text={el.text}
           isNotifying={el.isNotifying}
@@ -52,7 +52,7 @@ export default class SettingsNotifications extends React.Component {
           <HorizontalDivider color='light-grey'/>
         </NotificationContainer>
         <NotificationContainer>
-          {this.renderNotificationRows(notificationTypes)}
+          {this.renderSettingsNotificationRows(notificationTypes)}
         </NotificationContainer>
       </Container>
     )

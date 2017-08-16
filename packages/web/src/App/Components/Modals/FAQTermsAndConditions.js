@@ -5,6 +5,7 @@ import {CenterTitle} from './Shared'
 import FAQScreen from '../FAQScreen'
 import TermsAndConditionsScreen from '../TermsAndConditionsScreen'
 import ModalTogglebar from '../ModalTogglebar'
+import HorizontalDivider from '../HorizontalDivider'
 
 const toggleBarTabs = [
   { text: 'FAQ', isActive: true, isLast: false },
@@ -27,6 +28,7 @@ export default class FAQTermsAndConditions extends React.Component {
     return (
       <Container>
         <ModalTogglebar tabs={toggleBarTabs}/>
+        <HorizontalDivider color='light-grey'/>
         {this.state.modal === 'FAQScreen' ? <FAQScreen/> : <TermsAndConditionsScreen/>}
       </Container>
     )

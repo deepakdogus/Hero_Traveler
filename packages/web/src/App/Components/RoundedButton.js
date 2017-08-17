@@ -7,6 +7,7 @@ import VerticalCenter from './VerticalCenter'
 function getMargin(props) {
   if (props.margin === 'none') return 0;
   else if (props.margin === 'small') return '3px'
+  else if (props.margin === 'medium') return '11px'
   else if (props.margin === 'vertical') return '5px 0'
   return `${props.theme.Metrics.baseMargin}px ${props.theme.Metrics.section}px`
 }
@@ -14,6 +15,7 @@ function getMargin(props) {
 // 2px 6px 3px is default react padding.
 function getPadding(props) {
   if (props.padding ==='even') return '5px';
+  if (props.padding ==='evenMedium') return '11px';
   return '2px 6px 3px'
 }
 

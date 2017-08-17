@@ -4,10 +4,20 @@ import styled from 'styled-components'
 import Icon from '../Components/Icon'
 import {Text} from '../Components/CreateStory/Shared'
 import AddCoverPhotoBox from '../Components/CreateStory/AddCoverPhotoBox'
+import CoverPhotoBox from '../Components/CreateStory/CoverPhotoBox'
 import {Row} from '../Components/FlexboxGrid'
 import VerticalCenter from '../Components/VerticalCenter'
 import RoundedButton from '../Components/RoundedButton'
 import SpaceBetweenRowWithIconsAndButtons from '../Components/SpaceBetweenRowWithIconsAndButtons'
+
+import {feedExample} from './Feed_TEST_DATA'
+
+//test data - Havana
+const testStory = feedExample[Object.keys(feedExample)[8]];
+
+const testCoverImage = testStory.coverImage || testStory.coverVideo
+
+
 
 const Container = styled.div``
 
@@ -25,29 +35,6 @@ const ItemContainer = styled.div`
   margin: 40px 0;
 `
 
-
-
-// const StyledCreateIcon = styled(Icon)`
-//   height: 30px;
-//   width: 30px;
-//   padding: 10px;
-//   margin: 30px 0px;
-//   border: 1px solid ${props => props.theme.Colors.bioGrey};
-//   border-radius: 50px;
-// `
-
-// const TrashIcon = styled(Icon)`
-//   height: 16px;
-//   width: 21px;
-//   padding: 6.5px 4px;
-// `
-
-// const SaveIcon = styled(Icon)`
-//   height: 16px;
-//   width: 21px;
-//   padding: 6.5px 4px;
-// `
-
 class CreateStory extends Component {
 
   constructor(props) {
@@ -59,15 +46,17 @@ class CreateStory extends Component {
     this.setState({toolBarOpen: !this.state.toolBarOpen })
   }
 
-  addCover = () => { return }
+  addCover = () => { alert("SELECT COVER IMAGE TO ADD") }
   
-  addVideo = () => { return }
+  addVideo = () => { alert("SELECT COVER IMAGE TO ADD") }
   
-  addPhoto = () => { return }
+  addPhoto = () => { alert("SELECT PHOTO TO ADD") }
   
   addText = () => { return }
   
   addDetails = () => { return }
+
+  closeImage = () => { alert("CLOSE IMAGE") }
 
   renderIcons = () => {
     return (
@@ -147,14 +136,21 @@ class CreateStory extends Component {
     )
   }
 
-
   render() {
     return (
       <Container>
         <ContentWrapper>
           <ItemContainer>
 
-            <AddCoverPhotoBox action={this.addCover}/>
+            <AddCoverPhotoBox 
+              action={this.addCover}
+            />
+            <CoverPhotoBox 
+              coverImage={testCoverImage}
+              title={testStory.title}
+              description={testStory.description}
+              closeImage={this.closeImage}
+            />
             {this.renderCreateToolBar()}
           </ItemContainer>
         </ContentWrapper>

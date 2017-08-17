@@ -54,8 +54,8 @@ export default class AddCoverPhotoBox extends React.Component {
   render() {
     return (
       <Container>
-        <IconContainer><StyledIcon name='components'/></IconContainer>
-          <IconSubTitle>+ ADD A COVER PHOTO</IconSubTitle>
+        <IconContainer onClick={this.props.action}><StyledIcon name='components'/></IconContainer>
+          <IconSubTitle onClick={this.props.action}>+ ADD A COVER PHOTO</IconSubTitle>
           <Title>ADD TITLE</Title>
         <SubTitle>Add a subtitle</SubTitle>        
       </Container>

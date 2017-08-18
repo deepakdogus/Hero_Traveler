@@ -23,3 +23,14 @@ export const Text = styled.p`
   color: ${props => props.theme.Colors.grey};
   text-align: center;
 `
+
+
+export const StyledInput = styled.input`
+  ${basicTextStyle};
+  width: 100%;
+  color: ${props => props.theme.Colors.grey};
+  padding-bottom: 5px;
+  border-width: 0 0 1px;
+  border-color: ${props => props.theme.Colors.dividerGrey};
+  margin-bottom: 25px;
+`

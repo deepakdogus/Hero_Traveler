@@ -5,6 +5,8 @@ export default styled.hr`
     switch (props.color) {
       case 'light-grey':
         return props.theme.Colors.dividerGrey
+      case 'lighter-grey':
+        return props.theme.Colors.navBarText
       case 'grey':
         return props.theme.Colors.lightGreyAreas
       default:

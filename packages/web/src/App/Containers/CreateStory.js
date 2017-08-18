@@ -6,6 +6,8 @@ import {Text} from '../Components/CreateStory/Shared'
 import AddCoverPhotoBox from '../Components/CreateStory/AddCoverPhotoBox'
 import CoverPhotoBox from '../Components/CreateStory/CoverPhotoBox'
 import PhotoBox from '../Components/CreateStory/PhotoBox'
+import VideoBox from '../Components/CreateStory/VideoBox'
+import StoryDetails from '../Components/CreateStory/StoryDetails'
 
 import {Row} from '../Components/FlexboxGrid'
 import VerticalCenter from '../Components/VerticalCenter'
@@ -21,8 +23,11 @@ const testCoverImage = testStory.coverImage || testStory.coverVideo
 
 const testImageURL = testStory.draftjsContent.blocks[4].data.url
 
+const testVideoURL = testStory.draftjsContent.blocks[8].data.url
+
 const testImageCaption = testStory.draftjsContent.blocks[4].text
 
+const testVideoCaption = testStory.draftjsContent.blocks[8].text
 
 
 //----------------
@@ -65,6 +70,8 @@ class CreateStory extends Component {
   addDetails = () => { alert("ADD DEETS") }
 
   closeImage = () => { alert("CLOSE IMAGE") }
+
+  closeVideo = () => { alert("CLOSE VIDEO") }
 
   renderIcons = () => {
     return (
@@ -160,12 +167,21 @@ class CreateStory extends Component {
               closeImage={this.closeImage}
             />
             <PhotoBox
-                closeImage={this.closeImage}
-                imageURL={testImageURL}
-                caption={testImageCaption}
+              closeImage={this.closeImage}
+              imageURL={testImageURL}
+              caption={testImageCaption}
+            />
+            <VideoBox
+              closeImage={this.closeVideo}
+              videoURL={testVideoURL}
+              caption={testVideoCaption}
             />
 
             {this.renderCreateToolBar()}
+            <StoryDetails
+              title={testStory.title}
+            />
+
           </ItemContainer>
         </ContentWrapper>
         <SpaceBetweenRowWithIconsAndButtons

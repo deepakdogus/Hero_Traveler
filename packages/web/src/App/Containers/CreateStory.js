@@ -5,6 +5,8 @@ import Icon from '../Components/Icon'
 import {Text} from '../Components/CreateStory/Shared'
 import AddCoverPhotoBox from '../Components/CreateStory/AddCoverPhotoBox'
 import CoverPhotoBox from '../Components/CreateStory/CoverPhotoBox'
+import PhotoBox from '../Components/CreateStory/PhotoBox'
+
 import {Row} from '../Components/FlexboxGrid'
 import VerticalCenter from '../Components/VerticalCenter'
 import RoundedButton from '../Components/RoundedButton'
@@ -12,15 +14,21 @@ import SpaceBetweenRowWithIconsAndButtons from '../Components/SpaceBetweenRowWit
 
 import {feedExample} from './Feed_TEST_DATA'
 
-//test data - Havana
+//test data - Havana Story
 const testStory = feedExample[Object.keys(feedExample)[8]];
 
 const testCoverImage = testStory.coverImage || testStory.coverVideo
 
+const testImageURL = testStory.draftjsContent.blocks[4].data.url
+
+const testImageCaption = testStory.draftjsContent.blocks[4].text
+
+
+
+//----------------
 
 
 const Container = styled.div``
-
 
 const PlaceholderText = styled(Text)`
   font-size: 18px;
@@ -46,15 +54,15 @@ class CreateStory extends Component {
     this.setState({toolBarOpen: !this.state.toolBarOpen })
   }
 
-  addCover = () => { alert("SELECT COVER IMAGE TO ADD") }
+  addCover = () => { alert("SELECT COVER IMAGE") }
   
-  addVideo = () => { alert("SELECT COVER IMAGE TO ADD") }
+  addVideo = () => { alert("SELECT VIDEO") }
   
-  addPhoto = () => { alert("SELECT PHOTO TO ADD") }
+  addPhoto = () => { alert("SELECT IMAGE") }
   
-  addText = () => { return }
+  addText = () => { alert("ADD TEXT") }
   
-  addDetails = () => { return }
+  addDetails = () => { alert("ADD DEETS") }
 
   closeImage = () => { alert("CLOSE IMAGE") }
 
@@ -151,6 +159,12 @@ class CreateStory extends Component {
               description={testStory.description}
               closeImage={this.closeImage}
             />
+            <PhotoBox
+                closeImage={this.closeImage}
+                imageURL={testImageURL}
+                caption={testImageCaption}
+            />
+
             {this.renderCreateToolBar()}
           </ItemContainer>
         </ContentWrapper>

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import {Row} from '../FlexboxGrid'
 import Icon from '../Icon'
 import HorizontalDivider from '../HorizontalDivider'
+import GoogleLocator from './GoogleLocator'
 
 
 const Container = styled.div`
@@ -68,7 +69,7 @@ export default class PhotoBox extends React.Component {
           <br/>
           <br/>
             <InputRowContainer>
-                <LocationIcon name='location'/><StyledInput type='text' placeholder='Add location'/>              
+                <LocationIcon name='location'/><GoogleLocator/>              
             </InputRowContainer>
             <HorizontalDivider color='lighter-grey'/>            
             <InputRowContainer>

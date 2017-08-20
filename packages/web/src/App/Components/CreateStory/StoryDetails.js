@@ -6,6 +6,8 @@ import {Row} from '../FlexboxGrid'
 import Icon from '../Icon'
 import HorizontalDivider from '../HorizontalDivider'
 
+import ReactDayPicker from './ReactDayPicker'
+
 
 const Container = styled.div`
 `
@@ -72,7 +74,7 @@ export default class PhotoBox extends React.Component {
             </InputRowContainer>
             <HorizontalDivider color='lighter-grey'/>            
             <InputRowContainer>
-                <DateIcon name='date'/><StyledInput type='text' placeholder='MM-DD-YYYY'/>              
+                <DateIcon name='date'/><ReactDayPicker/>              
             </InputRowContainer>
             <HorizontalDivider color='lighter-grey'/>
             <InputRowContainer>

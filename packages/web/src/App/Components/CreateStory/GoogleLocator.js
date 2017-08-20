@@ -49,15 +49,15 @@ const styles = {
     boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
     width: '320px',
     height: '400px',
+    padding: '5px',
+    overflowY: 'auto',
   },
   autocompleteItem: {
     backgroundColor: '#ffffff',
     padding: '10px',
     color: '#555555',
     cursor: 'pointer',
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    borderBottomColor: `${props => props.theme.Colors.lightGreyAreas}`,
+    borderBottom: '1px solid #eeeeee',
   },
   autocompleteItemActive: {
     backgroundColor: '#fafafa'

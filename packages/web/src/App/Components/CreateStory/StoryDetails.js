@@ -6,12 +6,19 @@ import {Row} from '../FlexboxGrid'
 import Icon from '../Icon'
 import HorizontalDivider from '../HorizontalDivider'
 
+import MultiTabSelect from './MultiTabSelect'
+
 
 const Container = styled.div`
 `
 
+const TagInputContainer = styled(Container)`
+  position: relative;
+`
+
 const InputRowContainer = styled(Container)`
   padding: 20px 0px 14px 0px;
+  position: relative;
 `
 
 const Title = styled.p`
@@ -76,7 +83,9 @@ export default class PhotoBox extends React.Component {
             </InputRowContainer>
             <HorizontalDivider color='lighter-grey'/>
             <InputRowContainer>
-                <TagIcon name='tag'/><StyledInput type='text' placeholder='Add tags'/>                 
+                <TagIcon name='tag'/>
+                <StyledInput type='text' placeholder='Add tags'/>
+                <MultiTabSelect/>
             </InputRowContainer>
             <HorizontalDivider color='lighter-grey'/>                                     
             <InputRowContainer>

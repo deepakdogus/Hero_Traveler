@@ -70,7 +70,7 @@ export default class NavBar extends Component {
   render() {
     const { style,
         leftTitle, leftIcon, leftTextStyle, onLeft,
-        title, titleStyle,
+        title, titleStyle, onTitle,
         rightTitle, rightIcon, rightTextStyle, onRight, isRightValid = true } = this.props
     return (
       <View style={[styles.root, style]}>
@@ -87,7 +87,13 @@ export default class NavBar extends Component {
         }
         {title &&
           <View style={styles.title}>
-            <Text style={[styles.text, styles.titleText, titleStyle || {}]}>{title}</Text>
+            {!onTitle && <Text style={[styles.text, styles.titleText, titleStyle || {}]}>{title}</Text>}
+            {onTitle && <TextButton
+              style={[styles.text, styles.titleText, titleStyle || {}, isRightValid ? {} : styles.inactiveText]}
+              onPress={onTitle}
+            >
+              {title}
+            </TextButton>}
           </View>
         }
         {rightTitle &&

@@ -55,7 +55,7 @@ export const PlayButton = ({videoFadeAnim, onPress, isPlaying, style = {}, size}
   return (
     <Animated.View
       style={[
-        ...style,
+        style,
         {opacity: videoFadeAnim}
       ]}
     >
@@ -237,7 +237,7 @@ export default class VideoPlayer extends React.Component {
             style={[this.props.videoFillSpace ? styles.fullButtons : styles.buttons, playButtonSize === 'small' ? styles.smallButton : {}]}
             onPress={this._togglePlayVideo}
             isPlaying={this.state.videoPlaying}
-            size={this.props.playButtonSize}
+            size={playButtonSize}
             videoFadeAnim={this.state.videoFadeAnim} />
         }
         {this.props.showMuteButton && this.props.showPlayButton &&

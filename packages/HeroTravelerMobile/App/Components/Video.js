@@ -51,16 +51,17 @@ const VideoButton = ({size, icon, onPress, style = {}, text}) => {
   )
 }
 
-export const PlayButton = ({videoFadeAnim, onPress, isPlaying, style = {}}) => {
+export const PlayButton = ({videoFadeAnim, onPress, isPlaying, style = {}, size}) => {
   return (
     <Animated.View
       style={[
-        style,
+        ...style,
         {opacity: videoFadeAnim}
       ]}
     >
       <VideoButton
         onPress={onPress}
+        size={size}
         icon={isPlaying ? 'pause' : 'play'}
       />
     </Animated.View>
@@ -212,6 +213,7 @@ export default class VideoPlayer extends React.Component {
   _bindRef = (i) => this.player = i
 
   render() {
+    const playButtonSize = this.props.playButtonSize
     return (
       <View style={[
         styles.root,
@@ -232,9 +234,10 @@ export default class VideoPlayer extends React.Component {
         />
         {this.props.showPlayButton &&
           <PlayButton
-            style={[this.props.videoFillSpace ? styles.fullButtons : styles.buttons]}
+            style={[this.props.videoFillSpace ? styles.fullButtons : styles.buttons, playButtonSize === 'small' ? styles.smallButton : {}]}
             onPress={this._togglePlayVideo}
             isPlaying={this.state.videoPlaying}
+            size={this.props.playButtonSize}
             videoFadeAnim={this.state.videoFadeAnim} />
         }
         {this.props.showMuteButton && this.props.showPlayButton &&
@@ -302,6 +305,10 @@ const styles = StyleSheet.create({
     left: '50%',
     marginTop: -50,
     marginLeft: -50,
+  },
+  smallButton: {
+    marginLeft: -20,
+    marginTop: -20,
   },
   mute: {
     position: 'absolute',

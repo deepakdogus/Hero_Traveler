@@ -178,6 +178,7 @@ export default class NewTextBlock extends PureComponent {
                 autoPlayVideo={false}
                 showMuteButton={false}
                 showPlayButton={true}
+                playButtonSize={'small'}
                 videoFillSpace={true}
               />
               {this.state.isImageFocused && videoEditOverlay}

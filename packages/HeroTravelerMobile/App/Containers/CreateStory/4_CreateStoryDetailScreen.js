@@ -92,7 +92,7 @@ class CreateStoryDetailScreen extends React.Component {
       updates.categories = []
       updates.videoDescription = ''
       updates.location = undefined
-      updates.story.type = ''
+      updates.type = ''
     }
     // setting the values when they are updated
     if (newProps.story.categories) updates.categories = newProps.story.categories

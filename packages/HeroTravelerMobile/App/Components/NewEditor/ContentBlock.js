@@ -106,7 +106,7 @@ export default class NewTextBlock extends PureComponent {
   }
 
   onDelete = () => {
-    this.props.onDelete(this.props.blockKey)
+    this.props.onDelete(this.props.block.key)
   }
 
   toggleImageFocus = () => {

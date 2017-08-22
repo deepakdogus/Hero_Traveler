@@ -604,7 +604,7 @@ class StoryCoverScreen extends Component {
             value={this.state.title}
             onChangeText={this.setTitle}
             returnKeyType='done'
-            maxLength={28}
+            maxLength={40}
             multiline={true}
             onContentSizeChange={this.setTitleHeight}
           />

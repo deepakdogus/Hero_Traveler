@@ -34,6 +34,11 @@ class MediaSelectorScreen extends React.Component {
     }
   }
 
+  // default to camera library on add media
+  componentDidMount() {
+    this.launchMediaSelector()
+  }
+
   launchMediaCapture = () => {
     this.setState({captureOpen: true, media: null})
   }

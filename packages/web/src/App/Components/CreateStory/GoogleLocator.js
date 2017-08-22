@@ -4,7 +4,7 @@ import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-au
 
 const StyledForm = styled.form`
   display: inline-block;
-  margin-left: 16px;
+  margin-left: 14px;
   width: 80%;
 `
 
@@ -42,8 +42,8 @@ const styles = {
   },
   autocompleteContainer: {
     position: 'absolute',
-    top: '100%',
-    left: '30px',
+    top: '124%',
+    left: '10px',
     backgroundColor: 'white',
     border: 'none',
     boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
@@ -51,6 +51,7 @@ const styles = {
     height: '400px',
     padding: '5px',
     overflowY: 'auto',
+    zIndex: '100',
   },
   autocompleteItem: {
     backgroundColor: '#ffffff',
@@ -102,7 +103,6 @@ class GoogleLocator extends React.Component {
           autocompleteItem={AutocompleteItem}
           styles={styles}
           googleLogo={false}
-
         />
       </StyledForm>
     )

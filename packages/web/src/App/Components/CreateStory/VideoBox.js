@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 import Icon from '../Icon'
 import Video from '../Video'
 import RoundedButton from '../RoundedButton'
-import getImageUrl from '../../Shared/Lib/getImageUrl'
 
 const Container = styled.div`
 `

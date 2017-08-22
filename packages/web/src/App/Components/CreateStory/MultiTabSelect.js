@@ -39,13 +39,13 @@ const styles = {
     left: '30px',
     textAlign: 'left',
     top: '0px',
+    zIndex: '1',
   },
   menuItemStyles: {
   	borderTop: 'none',
   	borderLeft: 'none',
   	borderRight: 'none',
-  	borderBottom: '1px solid red',
-  	borderBottomColor: 'grey',
+  	borderBottom: '1px solid #eeeeee',
   	margin: '0px 10px 0px 10px',
   	paddingLeft: '0px',
   },  
@@ -53,6 +53,9 @@ const styles = {
   	textAlign: 'left',
   },
 };
+
+
+
 
 export default class MultiTabSelect extends React.Component {
 
@@ -129,7 +132,6 @@ export default class MultiTabSelect extends React.Component {
       </div>      	
         <DropDownMenu
           value={null}
-          hintText="Hint Text"
           onChange={this.handleChange}
           style={styles.menuStyles}
           menuItemStyle={styles.menuItemStyles}

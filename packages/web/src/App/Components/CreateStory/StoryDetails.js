@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import {Row} from '../FlexboxGrid'
 import Icon from '../Icon'
 import HorizontalDivider from '../HorizontalDivider'
 import GoogleLocator from './GoogleLocator'
@@ -13,10 +12,6 @@ import MultiTabSelect from './MultiTabSelect'
 
 
 const Container = styled.div`
-`
-
-const TagInputContainer = styled(Container)`
-  position: relative;
 `
 
 const InputRowContainer = styled(Container)`
@@ -51,17 +46,21 @@ const StyledInput = styled.input`
 `
 
 const LocationIcon = styled(Icon)`
-  height: 35px;
-  margin-bottom: -9px;
+  height: 34px;
+  width: 23px;
+  margin-bottom: -12px;
+  margin-left: 2px;
 `
 
 const DateIcon = styled(Icon)`
-  height: 30px;
+  height: 26px;
+  width: 30px;  
   margin-bottom: -8px;
 `
 const TagIcon = styled(Icon)`
-  height: 30px;
+  height: 26px;
   margin-bottom: -8px;
+  margin-left: 2px;
 `
 
 export default class PhotoBox extends React.Component {

@@ -10,7 +10,6 @@ import VideoBox from '../Components/CreateStory/VideoBox'
 import StoryDetails from '../Components/CreateStory/StoryDetails'
 
 import {Row} from '../Components/FlexboxGrid'
-import VerticalCenter from '../Components/VerticalCenter'
 import RoundedButton from '../Components/RoundedButton'
 import SpaceBetweenRowWithIconsAndButtons from '../Components/SpaceBetweenRowWithIconsAndButtons'
 

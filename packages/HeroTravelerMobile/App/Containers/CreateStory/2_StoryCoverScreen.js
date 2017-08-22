@@ -81,7 +81,7 @@ class StoryCoverScreen extends Component {
       toolbarOpacity: new Animated.Value(1),
       imageUploading: false,
       videoUploading: false,
-      isScrollDown: !!coverImage || !!coverVideo,
+      isScrollDown: !!coverImage,
     }
   }
 
@@ -127,10 +127,11 @@ class StoryCoverScreen extends Component {
     this.setState(nextState)
   }
 
-  componentDidMount(){
+  componentWillUpdate(){
     if (this.props.story &&
       !this.isPhotoType() &&
-      !this.props.story.coverVideo
+      !this.props.story.coverVideo &&
+      !this.state.coverVideo
     ) {
       NavActions.mediaSelectorScreen({
         mediaType: this.props.mediaType,
@@ -808,17 +809,16 @@ class StoryCoverScreen extends Component {
 
   _handleSelectCover = (path) => {
     const file = pathAsFileObject(path)
-    this.setState({file})
-    const updatedState = {
-      isScrollDown: true
-    }
+    const updatedState = {file}
     if (this.isPhotoType()) {
+      updatedState.isScrollDown = true
       updatedState.coverImage = path
     } else {
       updatedState.coverVideo = path
     }
-    this.setState(updatedState)
-    NavActions.pop()
+    this.setState(updatedState, () => {
+      NavActions.pop()
+    })
   }
 }
 

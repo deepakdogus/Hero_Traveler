@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
+import {Row} from '../FlexboxGrid'
 import Icon from '../Icon'
 import HorizontalDivider from '../HorizontalDivider'
 import GoogleLocator from './GoogleLocator'
@@ -9,7 +10,7 @@ import GoogleLocator from './GoogleLocator'
 import ReactDayPicker from './ReactDayPicker'
 
 import MultiTabSelect from './MultiTabSelect'
-
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
 const Container = styled.div`
 `
@@ -28,7 +29,7 @@ const Title = styled.p`
   text-transform: uppercase;
 `
 
-const ActivityText = styled.p`
+const ActivitySelectRow = styled(Row)`
   font-weight: 600;
   font-size: 18px;
   color: ${props => props.theme.Colors.background};
@@ -62,6 +63,25 @@ const TagIcon = styled(Icon)`
   margin-bottom: -8px;
   margin-left: 2px;
 `
+
+const styles = {
+  radioButton: {
+    display: 'inline-block',
+    width: 120,
+  },
+  radioButtonLabel: {
+    fontWeight: 600,
+    fontSize: 18,
+    color: `${props => props.theme.Colors.background}`,
+    letterSpacing: .7,
+  },
+  radioIcon: {
+    fill: `${props => props.theme.Colors.background}`,
+  },
+  radioButtonGroup: {
+    marginLeft: 40,
+  },
+}
 
 export default class PhotoBox extends React.Component {
   static propTypes = {
@@ -102,12 +122,32 @@ export default class PhotoBox extends React.Component {
             </InputRowContainer>
             <HorizontalDivider color='lighter-grey'/>                                     
             <InputRowContainer>
-              <ActivityText>
-                <label>Activity: </label>
-                <label><StyledInput type='radio'/> Eat</label>
-                <label><StyledInput type='radio'/> Stay</label>
-                <label><StyledInput type='radio'/> Do</label>
-              </ActivityText>                           
+              <ActivitySelectRow>
+                  <label>Activity: </label>
+                  <RadioButtonGroup name="activity" defaultSelected="eat" style={styles.radioButtonGroup}>
+                    <RadioButton
+                      value="eat"
+                      label="EAT"
+                      style={styles.radioButton}
+                      labelStyle={styles.radioButtonLabel}
+                      iconStyle={styles.radioIcon}
+                    />
+                    <RadioButton
+                      value="stay"
+                      label="STAY"
+                      style={styles.radioButton}
+                      labelStyle={styles.radioButtonLabel}
+                      iconStyle={styles.radioIcon}
+                    />
+                    <RadioButton
+                      value="do"
+                      label="DO"
+                      style={styles.radioButton}
+                      labelStyle={styles.radioButtonLabel}
+                      iconStyle={styles.radioIcon}
+                    />
+                  </RadioButtonGroup>                
+              </ActivitySelectRow>                           
             </InputRowContainer>
             <HorizontalDivider color='lighter-grey'/>             
         </Container>

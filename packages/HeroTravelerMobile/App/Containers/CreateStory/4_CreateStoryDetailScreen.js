@@ -87,9 +87,18 @@ class CreateStoryDetailScreen extends React.Component {
   componentWillReceiveProps(newProps) {
     // making sure we properly display each of these properties
     const updates = {}
+    // resetting values for a new story
+    if (this.props.story.id !== newProps.story.id) {
+      updates.categories = []
+      updates.videoDescription = ''
+      updates.location = undefined
+      updates.type = ''
+    }
+    // setting the values when they are updated
+    if (newProps.story.categories) updates.categories = newProps.story.categories
     if (newProps.story.location) updates.location = newProps.story.location
-    if (this.props.story.id !== newProps.story.id) updates.categories = newProps.story.categories || []
     if (newProps.story.type) updates.type = newProps.story.type
+    if (newProps.story.videoDescription) updates.videoDescription = newProps.story.videoDescription
     if (Object.keys(updates).length) this.setState(updates)
 
     if (!newProps.publishing && newProps.isCreated) {

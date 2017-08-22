@@ -23,14 +23,10 @@ const ToolbarIcon = ({name, color, extraStyle = {}}) => {
 }
 
 export const PressTypes = {
-  // Text: 'press-text',
-  Link: 'press-link',
+  HeaderOne: DJSConsts.HeaderOne,
+  Normal: DJSConsts.Unstyled,
   Image: 'press-image',
   Video: 'press-video',
-  HeaderOne: DJSConsts.HeaderOne,
-  Bold: 'bold', //DJSConsts.Bold,
-  Normal: DJSConsts.Unstyled,
-  Italic: DJSConsts.Italic,
 }
 
 const Btn = (props) => {
@@ -52,10 +48,7 @@ export default class Toolbar extends React.Component {
     super(props)
 
     this.pressHeader = () => this.onPress(PressTypes.HeaderOne)
-    this.pressBold = () => this.onPress(PressTypes.Bold)
-    this.pressItalic = () => this.onPress(PressTypes.Italic)
     this.pressNormal = () => this.onPress(PressTypes.Normal)
-    this.pressLink = () => this.onPress(PressTypes.Link)
     this.pressImage = () => this.onPress(PressTypes.Image)
     this.pressVideo = () => this.onPress(PressTypes.Video)
 
@@ -72,7 +65,7 @@ export default class Toolbar extends React.Component {
     this.setState({showTextMenu: false})
   }
 
-  renderTextOptions() {
+  renderMainToolbar() {
     return (
       <View style={styles.list}>
         <Btn
@@ -81,39 +74,12 @@ export default class Toolbar extends React.Component {
         >
           <Text style={{fontSize: 21, fontWeight: 'bold'}}>Title</Text>
         </Btn>
-
-        <Btn
-          onPress={this.pressBold}
-          style={styles.borderRight}
-        >
-          <Text style={{fontWeight: 'bold'}}>Bold</Text>
-        </Btn>
-
         <Btn
           onPress={this.pressNormal}
           style={styles.borderRight}
         >
           <Text>Normal</Text>
         </Btn>
-
-        <Btn onPress={this.pressItalic}>
-          <Text style={{fontStyle: 'italic'}}>Italic</Text>
-        </Btn>
-      </View>
-    )
-  }
-
-  renderMainToolbar() {
-    return (
-      <View style={styles.list}>
-        <Btn onPress={this.toggleTextMenu} style={styles.borderRight}>
-          <ToolbarIcon name='font' />
-        </Btn>
-
-        <Btn onPress={this.pressLink} style={styles.borderRight}>
-          <ToolbarIcon name='link' />
-        </Btn>
-
         <Btn onPress={this.pressImage} style={styles.borderRight}>
           <ToolbarIcon name='image' />
         </Btn>
@@ -141,10 +107,6 @@ const styles = StyleSheet.create({
   root: {
     backgroundColor: 'white',
     height: TOOLBAR_HEIGHT,
-    // position: 'absolute',
-    // bottom: 0,
-    // left: 0,
-    // right: 0,
     borderTopColor: '#dedede',
     borderTopWidth: 1,
     flexDirection: 'row'

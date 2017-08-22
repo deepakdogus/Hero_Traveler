@@ -570,12 +570,6 @@ class StoryCoverScreen extends Component {
                     style={styles.iconButton}>
                     <Icon name={icon} color={Colors.snow} size={30} />
                   </TouchableOpacity>
-                  {this.isPhotoType() &&
-                    <TouchableOpacity
-                      style={styles.iconButton}>
-                      <Icon name='crop' color={Colors.snow} size={30} />
-                    </TouchableOpacity>
-                  }
                   <TouchableOpacity
                     onPress={this._touchTrash}
                     style={styles.iconButton}>
@@ -652,7 +646,6 @@ class StoryCoverScreen extends Component {
             alignItems: 'center'
           }}>
             <Icon name='camera' size={18} />
-            <Icon name='crop' size={18} />
             <Icon name='trash' size={18} />
           </View>
             <Icon name='bullseye' style={{marginBottom: -10}} size={18} />

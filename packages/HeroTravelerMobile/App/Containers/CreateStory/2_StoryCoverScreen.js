@@ -353,6 +353,32 @@ class StoryCoverScreen extends Component {
     )
   }
 
+  _onTitle = () => {
+    const title = 'Save Progess'
+    const message = 'Do you want to save your progress?'
+    if (!this.isValid()) {
+      this.setState({error: 'Please add a cover and a title to continue'})
+      return
+    }
+    Alert.alert(
+      title,
+      message,
+      [{
+        text: 'Yes',
+        onPress: () => {
+          if (!this.isValid() && this.isPhotoType()) {
+            this.setState({error: 'Please add a cover and a title to save'})
+          } else {
+            this.saveStory()
+          }
+        }
+      }, {
+        text: 'Cancel',
+        onPress: () => null
+      }]
+    )
+  }
+
   isValid() {
     return _.every([
       !!this.state.coverImage || !!this.state.coverVideo,
@@ -401,7 +427,6 @@ class StoryCoverScreen extends Component {
       !hasTitleChanged,
       !hasDescriptionChanged
     ])
-
     // If nothing has changed, let the user go forward if they navigated back
     if (nothingHasChanged) {
       this.saveStory()
@@ -409,17 +434,14 @@ class StoryCoverScreen extends Component {
           this.nextScreen()
         })
     }
-
     if (!this.isValid()) {
       this.setState({error: 'Please add a cover and a title to continue'})
       return
     }
-
     if ((hasImageSelected || hasVideoSelected) && (hasVideoChanged || hasImageChanged) && !this.state.file) {
       this.setState({error: 'Sorry, could not process file. Please try another file.'})
       return
     }
-
     this.saveStory()
       .then(() => {
         this.nextScreen()
@@ -733,6 +755,7 @@ class StoryCoverScreen extends Component {
       <View style={styles.root}>
         <NavBar
           title='Save'
+          onTitle={this._onTitle}
           onLeft={this._onLeft}
           leftTitle='Cancel'
           onRight={this._onRight}

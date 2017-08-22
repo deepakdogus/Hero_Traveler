@@ -303,8 +303,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '50%',
     left: '50%',
-    marginTop: -50,
-    marginLeft: -50,
+    marginTop: -40,
+    marginLeft: -40,
   },
   smallButton: {
     marginLeft: -20,

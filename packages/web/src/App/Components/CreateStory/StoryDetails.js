@@ -70,6 +70,17 @@ export default class PhotoBox extends React.Component {
     caption: PropTypes.string,
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      hidePlaceholder: false
+    };
+  }
+   
+  togglePlaceholder = (chipDataLength) => {
+      this.setState({hidePlaceholder: chipDataLength})
+  }
+
   render() {
       return (
         <Container>
@@ -86,8 +97,8 @@ export default class PhotoBox extends React.Component {
             <HorizontalDivider color='lighter-grey'/>
             <InputRowContainer>
                 <TagIcon name='tag'/>
-                <StyledInput type='text' placeholder='Add tags'/>
-                <MultiTabSelect/>
+                <StyledInput type='text' placeholder={this.state.hidePlaceholder ? '' : 'Add tags'}/>
+                <MultiTabSelect togglePlaceholder={this.togglePlaceholder}/>
             </InputRowContainer>
             <HorizontalDivider color='lighter-grey'/>                                     
             <InputRowContainer>

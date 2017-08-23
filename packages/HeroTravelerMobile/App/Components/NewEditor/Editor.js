@@ -215,6 +215,10 @@ export default class Editor extends Component {
     })
   }
 
+  onFocus = (blockKey) => {
+    this.setState({focusedBlock: blockKey})
+  }
+
   getBlocks() {
     const {editorState} = this.state
     const content = editorState.getCurrentContent()
@@ -240,6 +244,8 @@ export default class Editor extends Component {
         onSelectionChange: this.onSelectionChange,
         onRangeChange: this.onRangeChange,
         onDelete: this.removeMediaBlock,
+        onFocus: this.onFocus,
+        isFocused: this.state.focusedBlock === key,
       }
       return <ContentBlock {...componentProps} index={index}/>
     })

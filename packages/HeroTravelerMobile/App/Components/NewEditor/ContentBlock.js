@@ -45,7 +45,7 @@ export default class NewTextBlock extends PureComponent {
   }
 
   componentWillUpdate(nextProps) {
-    if (!this.input.isFocused() && nextProps.isSelected) {
+    if (!this.input.isFocused() && nextProps.isSelected && !this.props.isSelected) {
       this.input.focus()
     }
   }
@@ -79,6 +79,7 @@ export default class NewTextBlock extends PureComponent {
   // Reset this.selectionChangeFired so next focus at the last saved
   // cursor position fires a selection change event
   onBlur = (e) => {
+    this.props.onFocus("")
     this.selectionChangeFired = false
   }
 

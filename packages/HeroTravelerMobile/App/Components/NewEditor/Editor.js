@@ -5,7 +5,7 @@ import {
 } from 'react-native'
 import PropTypes from 'prop-types'
 
-import Toolbar, {PressTypes} from './Toolbar'
+import {PressTypes} from './Toolbar'
 import {
   updateEditorSelection,
   getLastBlockKey,
@@ -127,19 +127,13 @@ export default class Editor extends Component {
     switch (pressType) {
       case PressTypes.HeaderOne:
         return this.toggleHeader()
-
-      case PressTypes.Normal:
-        return this.toggleNormal()
-
-      case PressTypes.Italic:
-      case PressTypes.Bold:
-        return this.toggleStyle(pressType)
-
       case PressTypes.Image:
         return this.props.onPressImage()
-
       case PressTypes.Video:
         return this.props.onPressVideo()
+      case PressTypes.Normal:
+      default:
+        return this.toggleNormal()
     }
   }
 
@@ -215,7 +209,14 @@ export default class Editor extends Component {
     })
   }
 
+  // Editor Toolbar should only render when a block is focused
   onFocus = (blockKey) => {
+    if (!this.state.focusedBlock && blockKey) {
+      this.props.setToolbarDisplay(true)
+    }
+    else if (this.state.focusedBlock && !blockKey) {
+      this.props.setToolbarDisplay(false)
+    }
     this.setState({focusedBlock: blockKey})
   }
 
@@ -261,9 +262,6 @@ export default class Editor extends Component {
         <View style={styles.innerScroll}>
           {this.getBlocks()}
         </View>
-        <Toolbar
-          onPress={this.onToolbarPress}
-        />
       </View>
     )
   }

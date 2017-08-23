@@ -29,6 +29,7 @@ import Video from '../../Components/Video'
 import RoundedButton from '../../Components/RoundedButton'
 import TabIcon from '../../Components/TabIcon'
 import Editor from '../../Components/NewEditor/Editor'
+import Toolbar from '../../Components/NewEditor/Toolbar'
 import pathAsFileObject from '../../Lib/pathAsFileObject'
 import getImageUrl from '../../Lib/getImageUrl'
 import getVideoUrl from '../../Lib/getVideoUrl'
@@ -37,6 +38,7 @@ import StoryEditActions from '../../Redux/StoryCreateRedux'
 import UserActions from '../../Redux/Entities/Users'
 import NavButtonStyles from '../../Navigation/Styles/NavButtonStyles'
 import NavBar from './NavBar'
+import {KeyboardTrackingView} from 'react-native-keyboard-tracking-view';
 
 const api = API.create()
 
@@ -711,6 +713,12 @@ class StoryCoverScreen extends Component {
     NavActions.pop()
   }
 
+  setToolbarDisplay = (display) => {
+    if (this.toolbar) {
+      this.toolbar.setState({display})
+    }
+  }
+
   renderEditor() {
     return (
       <View style={[styles.editor]}>
@@ -723,6 +731,7 @@ class StoryCoverScreen extends Component {
           onPressImage={this.handlePressAddImage}
           onPressVideo={this.handlePressAddVideo}
           customStyleMap={customStyles}
+          setToolbarDisplay={this.setToolbarDisplay}
           {...this.getContent()}
         />
       </View>
@@ -746,23 +755,24 @@ class StoryCoverScreen extends Component {
 
     return (
       <View style={styles.root}>
-        <NavBar
-          title='Save'
-          onTitle={this._onTitle}
-          onLeft={this._onLeft}
-          leftTitle='Cancel'
-          onRight={this._onRight}
-          rightIcon={'arrowRightRed'}
-          isRightValid={this.isValid()}
-          rightTitle='Next'
-          rightTextStyle={{
-            paddingRight: 10,
-          }}
-        />
         <ScrollView
           ref={this._setScrollRef}
           keyboardShouldPersistTaps='handled'
+          stickyHeaderIndices={[0]}
         >
+          <NavBar
+            title='Save'
+            onTitle={this._onTitle}
+            onLeft={this._onLeft}
+            leftTitle='Cancel'
+            onRight={this._onRight}
+            rightIcon={'arrowRightRed'}
+            isRightValid={this.isValid()}
+            rightTitle='Next'
+            rightTextStyle={{
+              paddingRight: 10,
+            }}
+          />
           <KeyboardAvoidingView behavior='position'>
             <View style={[
               styles.coverWrapper,
@@ -802,6 +812,17 @@ class StoryCoverScreen extends Component {
           {showTooltip && this.renderTooltip()}
           </KeyboardAvoidingView>
         </ScrollView>
+        <KeyboardTrackingView
+          style={styles.trackingToolbarContainer}
+          trackInteractive={true}
+        >
+          { this.editor &&
+            <Toolbar
+              ref={i => this.toolbar = i}
+              onPress={this.editor.onToolbarPress}
+            />
+          }
+        </KeyboardTrackingView>
       </View>
     )
   }
@@ -968,7 +989,13 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-  }
+  },
+  trackingToolbarContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    width: Metrics.screenWidth,
+  },
 })
 
 const customStyles = {

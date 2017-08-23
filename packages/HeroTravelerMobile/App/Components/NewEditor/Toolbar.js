@@ -92,6 +92,7 @@ export default class Toolbar extends React.Component {
   }
 
   render() {
+    if (!this.state.display) return null
     return (
       <View style={styles.root}>
         {this.state.showTextMenu && this.renderTextOptions()}

@@ -51,6 +51,7 @@ const StoryVideo = enhanceStoryVideo((props) => {
         autoPlayVideo={false}
         showMuteButton={false}
         showPlayButton={true}
+        playButtonSize={'small'}
         videoFillSpace={true}
       >
         <TouchableOpacity

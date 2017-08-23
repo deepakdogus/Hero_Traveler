@@ -141,7 +141,9 @@ export default class StoryCover extends Component {
          {this.props.showPlayButton &&
           <PlayButton
             onPress={this._tapVideoWrapper}
-            style={styles.playButton}/>
+            style={[styles.playButton, styles.smallPlayButton]}
+            size='small'
+          />
          }
       </View>
     )
@@ -207,6 +209,10 @@ const styles = StyleSheet.create({
     left: '50%',
     marginTop: -40,
     marginLeft: -40,
+  },
+  smallPlayButton: {
+    marginTop: -20,
+    marginLeft: -20,
   },
   muteButton: {
     position: 'absolute',

@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
-import InputRow from '../InputRow'
-import {RightTitle, StyledInput} from './Shared'
+import {RightTitle, SettingsStyledInput, StyledInputLabel} from './Shared'
 import SpaceBetweenRowWithLeftRightButtons from '../SpaceBetweenRowWithLeftRightButtons'
 import VerticalCenter from '../VerticalCenter'
 import RoundedButton from '../RoundedButton'
@@ -17,35 +17,37 @@ const toggleBarTabs = [
 
 const Container = styled.div``
 
-const ButtonsContainer = styled.div`
-  padding: 25px;
-`
 const InputContainer = styled.div`
   padding: 25px;
 `
 
 export default class Settings extends React.Component {
+  static propTypes = {
+    toggleModal: PropTypes.func,
+  }
 
-  renderButtonL = () => {
+  renderButtonLeft = () => {
     return (
       <VerticalCenter>
         <RoundedButton
           text={'Cancel'}
           margin='none'
-          width='138px'
+          width='116px'
           type='blackWhite'
+          padding='even'
         />
       </VerticalCenter>
     )
   }
 
-  renderButtonR = () => {
+  renderButtonRight = () => {
     return (
       <VerticalCenter>
         <RoundedButton
           text={'Save Changes'}
           margin='none'
-          width='138px'
+          width='180px'
+          padding='even'
         />
       </VerticalCenter>
     )
@@ -55,19 +57,18 @@ export default class Settings extends React.Component {
     return (
       <Container>
         <RightTitle>SETTINGS</RightTitle>
-        <ModalTogglebar tabs={toggleBarTabs}/>
+        <ModalTogglebar toggleModal={this.props.toggleModal} tabs={toggleBarTabs}/>
         <InputContainer>
-          <StyledInput placeholder='Name'/>
+          <StyledInputLabel for='name'>Name</StyledInputLabel>
+          <SettingsStyledInput id='name'/>          
         </InputContainer>
         <InputContainer>
-          <StyledInput placeholder='Email'/>
-        </InputContainer>
-        <InputContainer>
-          <StyledInput placeholder='Password'/>
+          <StyledInputLabel for='email'>Email</StyledInputLabel>
+          <SettingsStyledInput id='email'/>
         </InputContainer>
         <SpaceBetweenRowWithLeftRightButtons
-          renderButtonL={this.renderButtonL}
-          renderButtonR={this.renderButtonR}
+          renderButtonLeft={this.renderButtonLeft}
+          renderButtonRight={this.renderButtonRight}
         />
       </Container>
     )

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 
 import {usersExample} from '../../Containers/Feed_TEST_DATA'
 import SendToRow from '../SendToRow'
-import InputRow from '../InputRow'
 import {RightTitle, StyledInput} from './Shared'
 
 const Container = styled.div``
@@ -15,8 +14,6 @@ const UserRowsContainer = styled.div`
 const InputContainer = styled.div`
   padding: 25px;
 `
-
-console.log("usersExample: ", usersExample)
 
 export default class SendTo extends React.Component {
   static PropTypes = {

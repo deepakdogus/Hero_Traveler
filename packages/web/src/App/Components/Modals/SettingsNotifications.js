@@ -1,10 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
-import InputRow from '../InputRow'
-import {RightTitle, StyledInput} from './Shared'
-
-import VerticalCenter from '../VerticalCenter'
+import {RightTitle} from './Shared'
 import SettingsNotificationRow from '../SettingsNotificationRow'
 import ModalTogglebar from '../ModalTogglebar'
 import HorizontalDivider from '../HorizontalDivider'
@@ -30,6 +28,9 @@ const NotificationContainer = styled.div`
   padding: 25px;
 `
 export default class SettingsNotifications extends React.Component {
+    static propTypes = {
+    toggleModal: PropTypes.func,
+  }
 
   renderSettingsNotificationRows(notificationTypes) {
     return notificationTypes.map((el) => {
@@ -47,7 +48,7 @@ export default class SettingsNotifications extends React.Component {
     return (
       <Container>
         <RightTitle>SETTINGS</RightTitle>
-        <ModalTogglebar tabs={toggleBarTabs}/>
+        <ModalTogglebar toggleModal={this.props.toggleModal} tabs={toggleBarTabs}/>
         <NotificationContainer>
           <HorizontalDivider color='light-grey'/>
         </NotificationContainer>

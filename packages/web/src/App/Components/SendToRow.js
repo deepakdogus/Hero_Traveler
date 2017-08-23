@@ -32,7 +32,6 @@ export default class SendToRow extends Component {
 
   renderText = () => {
     const {user} = this.props
-    const detailsText = this.props.type === 'count' ? `${user.counts.followers} followers` : 'Lorum Ipsum'
     return (
       <StyledVerticalCenter>
         <UserName>{user.username}</UserName>

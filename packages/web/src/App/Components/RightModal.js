@@ -10,9 +10,11 @@ const customModalStyles = {
     right: 0,
     left: 'auto',
     padding: 0,
+    borderRadius: 0,
   },
   overlay: {
-    backgroundColor: 'rgba(0,0,0, .5)'
+    backgroundColor: 'rgba(0,0,0, .5)',
+    zIndex: 100,
   }
 }
 

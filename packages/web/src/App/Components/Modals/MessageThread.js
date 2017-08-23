@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 
 import {usersExample} from '../../Containers/Feed_TEST_DATA'
 import MessageThreadRow from '../MessageThreadRow'
-import InputRow from '../InputRow'
 import {RightTitle} from './Shared'
 
 const Container = styled.div``

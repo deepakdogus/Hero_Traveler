@@ -21,7 +21,7 @@ import SendTo from './Modals/SendTo'
 import AddToBoard from './Modals/AddToBoard'
 import CreateBoard from './Modals/CreateBoard'
 import Settings from './Modals/Settings'
-import SettingsPW from './Modals/SettingsPW'
+import SettingsPassword from './Modals/SettingsPassword'
 import SettingsServices from './Modals/SettingsServices'
 import SettingsNotifications from './Modals/SettingsNotifications'
 import Inbox from './Modals/Inbox'
@@ -139,11 +139,24 @@ export default class StoryHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'FAQTermsAndConditions' }
+    this.state = {modal: 'account' }
   }
 
   closeModal = () => {
     this.setState({ modal: undefined })
+  }
+
+  openFollowedByModal = () => {
+    this.setState({ modal: 'followedBy' })
+  }
+
+  toggleModal = (e) => {
+    let target = e.target.innerHTML.toLowerCase();
+
+    console.log('target: ', target)
+
+    this.setState({ modal: target })
+
   }
 
   render () {
@@ -191,6 +204,7 @@ export default class StoryHeader extends React.Component {
               <div>
                 <RoundedButton
                   margin='small'
+                  onClick={this.openFollowedByModal}
                   type={isFollowing ? 'opaqueWhite' : 'opaque'}
                   text={isFollowing ? 'FOLLOWING' : 'FOLLOW'}
                 />
@@ -261,32 +275,32 @@ export default class StoryHeader extends React.Component {
           <CreateBoard profile={user}/>
         </RightModal>             
         <RightModal
-          isOpen={this.state.modal === 'settings'}
+          isOpen={this.state.modal === 'account'}
           contentLabel='Edit Settings'
           onRequestClose={this.closeModal}
         >
-          <Settings profile={user}/>
+          <Settings toggleModal={this.toggleModal} profile={user}/>
         </RightModal>
         <RightModal
-          isOpen={this.state.modal === 'settingsPW'}
+          isOpen={this.state.modal === 'password'}
           contentLabel='Edit Password'
           onRequestClose={this.closeModal}
         >
-          <SettingsPW profile={user}/>
+          <SettingsPassword toggleModal={this.toggleModal} profile={user}/>
         </RightModal>
         <RightModal
-          isOpen={this.state.modal === 'settingsServices'}
+          isOpen={this.state.modal === 'services'}
           contentLabel='Edit Services'
           onRequestClose={this.closeModal}
         >
-          <SettingsServices profile={user}/>
+          <SettingsServices toggleModal={this.toggleModal} profile={user}/>
         </RightModal>                       
         <RightModal
-          isOpen={this.state.modal === 'settingsNotifications'}
+          isOpen={this.state.modal === 'notifications'}
           contentLabel='Edit Notifications'
           onRequestClose={this.closeModal}
         >
-          <SettingsNotifications profile={user}/>
+          <SettingsNotifications toggleModal={this.toggleModal} profile={user}/>
         </RightModal>
         <RightModal
           isOpen={this.state.modal === 'inbox'}
@@ -303,7 +317,7 @@ export default class StoryHeader extends React.Component {
           <MessageThread profile={user}/>
         </RightModal>
         <RightModal
-          isOpen={this.state.modal === 'notifications'}
+          isOpen={this.state.modal === 'notificationsThread'}
           contentLabel='Notifications'
           onRequestClose={this.closeModal}
         >

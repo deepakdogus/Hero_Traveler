@@ -8,10 +8,8 @@ import SpaceBetweenRowWithRightAvatar from './SpaceBetweenRowWithRightAvatar'
 import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Avatar from './Avatar'
-import HorizontalDivider from './HorizontalDivider'
 import {
   StyledVerticalCenter,
-  UserName,
   MessageContent,
   Timestamp,
 } from './Modals/Shared'
@@ -38,7 +36,7 @@ export default class MessageThreadRow extends Component {
   }
 
   renderText = () => {
-    const {user} = this.props
+    // const {user} = this.props
     const messageText = this.props.message ? this.props.message : 'Lorum Ipsum'
     return (
       <StyledVerticalCenter>

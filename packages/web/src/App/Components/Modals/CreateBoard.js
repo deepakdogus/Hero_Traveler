@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import InputRow from '../InputRow'
 import {RightTitle, StyledInput} from './Shared'
 import SpaceBetweenRowWithLeftRightButtons from '../SpaceBetweenRowWithLeftRightButtons'
 import VerticalCenter from '../VerticalCenter'
@@ -9,16 +8,13 @@ import RoundedButton from '../RoundedButton'
 
 const Container = styled.div``
 
-const ButtonsContainer = styled.div`
-  padding: 25px;
-`
 const InputContainer = styled.div`
   padding: 25px;
 `
 
 export default class CreateBoard extends React.Component {
 
-  renderButtonL = () => {
+  renderButtonLeft = () => {
     return (
       <VerticalCenter>
         <RoundedButton
@@ -31,7 +27,7 @@ export default class CreateBoard extends React.Component {
     )
   }
 
-  renderButtonR = () => {
+  renderButtonRight = () => {
     return (
       <VerticalCenter>
         <RoundedButton
@@ -51,8 +47,8 @@ export default class CreateBoard extends React.Component {
           <StyledInput placeholder='Enter a title for your board'/>
         </InputContainer>
         <SpaceBetweenRowWithLeftRightButtons
-          renderButtonL={this.renderButtonL}
-          renderButtonR={this.renderButtonR}
+          renderButtonLeft={this.renderButtonLeft}
+          renderButtonRight={this.renderButtonRight}
         />
       </Container>
     )

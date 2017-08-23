@@ -6,7 +6,6 @@ import PropTypes from 'prop-types'
 import {usersExample} from '../../Containers/Feed_TEST_DATA'
 import {feedExample} from '../../Containers/Feed_TEST_DATA'
 import NotificationRow from '../NotificationRow'
-import InputRow from '../InputRow'
 import {RightTitle} from './Shared'
 
 const Container = styled.div``

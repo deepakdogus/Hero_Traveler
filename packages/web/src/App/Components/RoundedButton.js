@@ -91,7 +91,7 @@ const Text = styled.p`
   text-align: center;
   font-size: 16px;
   margin: 2.5px 10px;
-  letter-spacing: 1.2px;
+  letter-spacing: 1.5px;
 `
 
 /*

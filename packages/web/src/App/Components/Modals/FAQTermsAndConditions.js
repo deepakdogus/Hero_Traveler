@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import {CenterTitle} from './Shared'
 import FAQScreen from '../FAQScreen'
 import TermsAndConditionsScreen from '../TermsAndConditionsScreen'
 import ModalTogglebar from '../ModalTogglebar'

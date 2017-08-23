@@ -2,14 +2,12 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import {usersExample} from '../../Containers/Feed_TEST_DATA'
 import {feedExample} from '../../Containers/Feed_TEST_DATA'
 import AddToBoardRow from '../AddToBoardRow'
-import InputRow from '../InputRow'
 import HorizontalDivider from '../HorizontalDivider'
 import SpaceBetweenRowWithButton from '../SpaceBetweenRowWithButton'
 import VerticalCenter from '../VerticalCenter'
-import {RightTitle, StyledInput, StyledVerticalCenter} from './Shared'
+import {RightTitle, StyledVerticalCenter} from './Shared'
 import Icon from '../Icon'
 
 const Container = styled.div``
@@ -27,19 +25,6 @@ const CreateIconContainer = styled(VerticalCenter)`
   border-width: 5px;
   height: 85px;
   width: 85px;
-`
-
-// export const StyledVerticalCenter = styled(VerticalCenter)`
-//   height: 100%;
-//   padding-left: 25px;
-// `
-
-const Title = styled.p`
-  font-weight: 400;
-  font-size: 23px;
-  color: ${props => props.theme.Colors.background};
-  letter-spacing: 1.5px;
-  margin: 25px 0 10px;
 `
 
 const CreateText = styled.p`
@@ -100,7 +85,6 @@ export default class AddToBoard extends React.Component {
   }
 
   render() {
-    // const {profile} = this.props
     const categoryKeys = Object.keys(categoriesExampleSliced)
 
     return (

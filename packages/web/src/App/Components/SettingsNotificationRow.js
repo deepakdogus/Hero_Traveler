@@ -4,10 +4,8 @@ import PropTypes from 'prop-types'
 
 import SpaceBetweenRowWithTextAndSwitch from './SpaceBetweenRowWithTextAndSwitch'
 import VerticalCenter from './VerticalCenter'
-import TextButton from './TextButton'
 import {StyledVerticalCenter} from './Modals/Shared'
 import HorizontalDivider from './HorizontalDivider'
-import Icon from './Icon'
 
 import 'react-ios-switch/build/bundle.css';
 import Switch from 'react-ios-switch';

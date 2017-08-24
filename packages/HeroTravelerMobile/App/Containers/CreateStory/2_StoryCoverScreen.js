@@ -81,7 +81,8 @@ class StoryCoverScreen extends Component {
       toolbarOpacity: new Animated.Value(1),
       imageUploading: false,
       videoUploading: false,
-      isScrollDown: !!coverImage || !!coverVideo,
+      isScrollDown: !!coverImage,
+      titleHeight: 34,
     }
   }
 
@@ -127,10 +128,11 @@ class StoryCoverScreen extends Component {
     this.setState(nextState)
   }
 
-  componentDidMount(){
+  componentWillUpdate(){
     if (this.props.story &&
       !this.isPhotoType() &&
-      !this.props.story.coverVideo
+      !this.props.story.coverVideo &&
+      !this.state.coverVideo
     ) {
       NavActions.mediaSelectorScreen({
         mediaType: this.props.mediaType,
@@ -527,6 +529,18 @@ class StoryCoverScreen extends Component {
     this.setState({error: null})
   }
 
+  setTitleHeight = (event) => {
+    this.setState({titleHeight: event.nativeEvent.contentSize.height})
+  }
+
+  setTitle = (title) => {
+    this.setState({title})
+  }
+
+  setDescription = (description) => {
+    this.setState({description})
+  }
+
   renderContent () {
     const icon = this.getIcon()
     return (
@@ -582,20 +596,27 @@ class StoryCoverScreen extends Component {
         }
         <View style={styles.addTitleView}>
           <TextInput
-            style={this.renderTextColor(styles.titleInput)}
+            style={[
+              this.renderTextColor(styles.titleInput),
+              {height: this.state.titleHeight},
+            ]}
             placeholder='ADD A TITLE'
             placeholderTextColor={this.renderPlaceholderColor(Colors.background)}
             value={this.state.title}
-            onChangeText={title => this.setState({title})}
+            onChangeText={this.setTitle}
             returnKeyType='done'
+            maxLength={40}
+            multiline={true}
+            onContentSizeChange={this.setTitleHeight}
           />
           <TextInput
             style={this.renderTextColor(styles.subTitleInput)}
             placeholder='Add a subtitle'
             placeholderTextColor={this.renderPlaceholderColor(Colors.background)}
-            onChangeText={description => this.setState({description})}
+            onChangeText={this.setDescription}
             value={this.state.description}
             returnKeyType='done'
+            maxLength={32}
           />
         </View>
       </View>
@@ -808,17 +829,16 @@ class StoryCoverScreen extends Component {
 
   _handleSelectCover = (path) => {
     const file = pathAsFileObject(path)
-    this.setState({file})
-    const updatedState = {
-      isScrollDown: true
-    }
+    const updatedState = {file}
     if (this.isPhotoType()) {
+      updatedState.isScrollDown = true
       updatedState.coverImage = path
     } else {
       updatedState.coverVideo = path
     }
-    this.setState(updatedState)
-    NavActions.pop()
+    this.setState(updatedState, () => {
+      NavActions.pop()
+    })
   }
 }
 
@@ -857,9 +877,9 @@ const styles = StyleSheet.create({
     color: Colors.snow,
     marginTop: 20,
     marginLeft: 20,
-    height: 34,
     fontSize: 28,
     fontFamily: 'Arial',
+    fontWeight: '500',
   },
   subTitleInput: {
     color: Colors.snow,

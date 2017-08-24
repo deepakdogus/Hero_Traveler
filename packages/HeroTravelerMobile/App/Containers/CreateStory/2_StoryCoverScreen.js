@@ -841,6 +841,7 @@ class StoryCoverScreen extends Component {
               tintColor='rgba(0,0,0,.9)' />
           }
           {showTooltip && this.renderTooltip()}
+          <View style={styles.toolbarAvoiding}></View>
           </KeyboardAvoidingView>
         </ScrollView>
       </View>
@@ -1008,6 +1009,9 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+  },
+  toolbarAvoiding: {
+    height: Metrics.editorToolbarHeight
   }
 })
 

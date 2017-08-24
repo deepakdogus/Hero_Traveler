@@ -750,7 +750,24 @@ class StoryCoverScreen extends Component {
     )
   }
 
-  _setScrollRef = ref => this.scrollViewRef = ref
+  YOffset = 0
+  // getting rough YOffset
+  onScroll = (event) => {
+    // rounding offset to within 10
+    const newYOffset = (event.nativeEvent.contentOffset.y/10).toFixed()*10
+    if (newYOffset !== this.YOffset) {
+      this.YOffset = event.nativeEvent.contentOffset.y
+    }
+  }
+
+  // this gets triggered when an Editor's block size changes
+  onContentSizeChange = (contentWidth, contentHeight) => {
+    const diff = contentHeight - this.contentHeight
+    if (this.scrollViewRef) {
+      this.scrollViewRef.scrollTo({x:0, y: this.YOffset + diff, amimated: true})
+    }
+    this.contentHeight = contentHeight
+  }
 
   render () {
     let showTooltip = false;
@@ -781,8 +798,11 @@ class StoryCoverScreen extends Component {
           }}
         />
         <ScrollView
-          ref={this._setScrollRef}
+          ref={i => this.scrollViewRef = i}
           keyboardShouldPersistTaps='handled'
+          onScroll={this.onScroll}
+          scrollEventThrottle={16}
+          onContentSizeChange={this.onContentSizeChange}
         >
           <KeyboardAvoidingView behavior='position'>
             <View style={[

@@ -82,6 +82,7 @@ class StoryCoverScreen extends Component {
       imageUploading: false,
       videoUploading: false,
       isScrollDown: !!coverImage,
+      titleHeight: 34,
     }
   }
 
@@ -528,6 +529,18 @@ class StoryCoverScreen extends Component {
     this.setState({error: null})
   }
 
+  setTitleHeight = (event) => {
+    this.setState({titleHeight: event.nativeEvent.contentSize.height})
+  }
+
+  setTitle = (title) => {
+    this.setState({title})
+  }
+
+  setDescription = (description) => {
+    this.setState({description})
+  }
+
   renderContent () {
     const icon = this.getIcon()
     return (
@@ -583,20 +596,27 @@ class StoryCoverScreen extends Component {
         }
         <View style={styles.addTitleView}>
           <TextInput
-            style={this.renderTextColor(styles.titleInput)}
+            style={[
+              this.renderTextColor(styles.titleInput),
+              {height: this.state.titleHeight},
+            ]}
             placeholder='ADD A TITLE'
             placeholderTextColor={this.renderPlaceholderColor(Colors.background)}
             value={this.state.title}
-            onChangeText={title => this.setState({title})}
+            onChangeText={this.setTitle}
             returnKeyType='done'
+            maxLength={40}
+            multiline={true}
+            onContentSizeChange={this.setTitleHeight}
           />
           <TextInput
             style={this.renderTextColor(styles.subTitleInput)}
             placeholder='Add a subtitle'
             placeholderTextColor={this.renderPlaceholderColor(Colors.background)}
-            onChangeText={description => this.setState({description})}
+            onChangeText={this.setDescription}
             value={this.state.description}
             returnKeyType='done'
+            maxLength={32}
           />
         </View>
       </View>
@@ -857,9 +877,9 @@ const styles = StyleSheet.create({
     color: Colors.snow,
     marginTop: 20,
     marginLeft: 20,
-    height: 34,
     fontSize: 28,
     fontFamily: 'Arial',
+    fontWeight: '500',
   },
   subTitleInput: {
     color: Colors.snow,

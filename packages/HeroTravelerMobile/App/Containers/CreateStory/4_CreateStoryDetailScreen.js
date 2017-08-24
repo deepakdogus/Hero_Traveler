@@ -89,13 +89,12 @@ class CreateStoryDetailScreen extends React.Component {
     const updates = {}
     // resetting values for a new story
     if (this.props.story.id !== newProps.story.id) {
-      updates.categories = []
+      updates.categories = newProps.story.categories || []
       updates.videoDescription = ''
       updates.location = undefined
       updates.type = ''
     }
     // setting the values when they are updated
-    if (newProps.story.categories) updates.categories = newProps.story.categories
     if (newProps.story.location) updates.location = newProps.story.location
     if (newProps.story.type) updates.type = newProps.story.type
     if (newProps.story.videoDescription) updates.videoDescription = newProps.story.videoDescription

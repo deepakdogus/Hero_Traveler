@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 import {RightTitle, RightModalCloseX} from './Shared'
 import SettingsNotificationRow from '../SettingsNotificationRow'
 import ModalTogglebar from '../ModalTogglebar'
-import HorizontalDivider from '../HorizontalDivider'
 
 const toggleBarTabs = [
   { text: 'Account', isActive: false, isLast: false },

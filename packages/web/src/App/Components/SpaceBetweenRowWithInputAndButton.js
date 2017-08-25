@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import {Row, Col} from './FlexboxGrid'
+import {Row} from './FlexboxGrid'
 
 const Left = styled(Row)``
 const Right = styled(Row)``
@@ -19,9 +19,7 @@ export default class SpaceBetweenRowWithInputAndButton extends Component {
     return (
       <Row between='xs'>
         <Left>
-          <Col>
           {renderInput()}
-          </Col>
         </Left>
         <Right>
           {renderButton()}

@@ -6,6 +6,7 @@ import {usersExample} from '../../Containers/Feed_TEST_DATA'
 import MessageThreadRow from '../MessageThreadRow'
 import {RightTitle, RightModalCloseX} from './Shared'
 import {randomDate} from './Shared/RandomDate'
+import InputRow from '../InputRow'
 
 const Container = styled.div``
 
@@ -50,6 +51,7 @@ export default class UserComments extends React.Component {
         <MessageThreadRowsContainer>
           {this.renderMessageThreadRows(userKeys)}
         </MessageThreadRowsContainer>
+        <InputRow/>
       </Container>
     )
   }

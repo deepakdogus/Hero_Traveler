@@ -7,7 +7,6 @@ import SpaceBetweenRowWithLeftRightButtons from '../SpaceBetweenRowWithLeftRight
 import VerticalCenter from '../VerticalCenter'
 import RoundedButton from '../RoundedButton'
 import ModalTogglebar from '../ModalTogglebar'
-import Icon from '../Icon'
 
 const toggleBarTabs = [
   { text: 'Account', isActive: true, isLast: false },

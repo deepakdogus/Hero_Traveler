@@ -6,7 +6,6 @@ import {RightTitle, RightModalCloseX} from './Shared'
 
 import ServiceIconRow from '../ServiceIconRow'
 import ModalTogglebar from '../ModalTogglebar'
-import HorizontalDivider from '../HorizontalDivider'
 
 const toggleBarTabs = [
   { text: 'Account', isActive: false, isLast: false },

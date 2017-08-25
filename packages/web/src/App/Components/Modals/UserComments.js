@@ -11,8 +11,8 @@ import {randomDate} from './Shared/RandomDate'
 
 const Container = styled.div``
 
-const UserCommentRowsContainer = styled.div`
-  padding: 25px;
+const CommentContainer = styled(Container)`
+  margin-top: 15px;
 `
 
 export default class UserComments extends React.Component {
@@ -27,10 +27,11 @@ export default class UserComments extends React.Component {
       return (
         <CommentRow
           key={key}
+          index={index}
           user={usersExample[key]}
           comment=''
           timestamp={randomDate(new Date(2017,7,1), new Date())}
-          margin='0 0 25px'
+          padding='10px 30px'
         />
       )
     })
@@ -46,9 +47,9 @@ export default class UserComments extends React.Component {
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>COMMENTS</RightTitle>
-        <UserCommentRowsContainer>
+        <CommentContainer>
           {this.renderUserCommentRows(userKeys)}
-        </UserCommentRowsContainer>
+        </CommentContainer>
         <InputRow/>
       </Container>
     )

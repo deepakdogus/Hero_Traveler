@@ -17,13 +17,29 @@ import {
 
 const Container = styled.div`
   margin: ${props => props.margin ? props.margin : '0'};
+  padding: ${props => props.padding ? props.padding : '0'}
+`
+
+const CommentContainer = styled.div`
+  margin-left: 28px;
+  margin-top: 14px;
+`
+
+const TimeStampContainer = styled.div`
+
 `
 
 export default class CommentRow extends Component {
   static propTypes = {
     comment: PropTypes.string,
-    user: PropTypes.object
+    user: PropTypes.object,
+    key: PropTypes.string,
+    index: PropTypes.num,
+    timestamp: PropTypes.func,
+    margin: PropTypes.string,
+    padding: PropTypes.string,
   }
+
 
   renderImage = () => {
     return (
@@ -38,32 +54,34 @@ export default class CommentRow extends Component {
     const {user} = this.props
     const commentText = this.props.comment ? this.props.comment : 'Lorum Ipsum'
     return (
-      <StyledVerticalCenter>
+      <CommentContainer>
         <UserName>{user.username}</UserName>
         <CommentContent>{commentText}</CommentContent>
-      </StyledVerticalCenter>
+      </CommentContainer>
     )
   }
 
 
   renderTimestamp = () => {
     return (
-      <VerticalCenter>
+      <TimeStampContainer>
         <Timestamp margin='none' width='50px' >{moment(this.props.timestamp).fromNow()}</Timestamp>
-      </VerticalCenter>
+      </TimeStampContainer>
     )
   }
 
   render() {
     return (
-      <Container margin={this.props.margin}>
-        <SpaceBetweenRowWithTimeStamp
-          renderImage={this.renderImage}
-          renderText={this.renderText}
-          renderTimestamp={this.renderTimestamp}
-        />
-        <HorizontalDivider color='light-grey'/>
-      </Container>
+        <Container>
+        {this.props.index > 0 ? <HorizontalDivider color='light-grey'/> : null}
+          <Container padding={this.props.padding} margin={this.props.margin}>
+            <SpaceBetweenRowWithTimeStamp
+              renderImage={this.renderImage}
+              renderText={this.renderText}
+              renderTimestamp={this.renderTimestamp}
+            />
+          </Container>          
+        </Container>
     )
   }
 }

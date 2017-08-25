@@ -15,6 +15,7 @@ function getMargin(props) {
 function getPadding(props) {
   if (props.padding ==='even') return '5px';
   if (props.padding ==='mediumEven') return '8px';
+  if (props.padding ==='mediumDefault') return '4px 8px 5px';
   return '2px 6px 3px'
 }
 

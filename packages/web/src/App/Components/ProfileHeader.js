@@ -139,7 +139,7 @@ export default class StoryHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'messageThread' }
+    this.state = {modal: 'userComments' }
   }
 
   closeModal = () => {

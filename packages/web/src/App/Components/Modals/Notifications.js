@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-// import momentRandom from 'moment-random'
 
 import {usersExample} from '../../Containers/Feed_TEST_DATA'
 import {feedExample} from '../../Containers/Feed_TEST_DATA'
 import NotificationRow from '../NotificationRow'
-import {RightTitle} from './Shared'
+import {RightTitle, RightModalCloseX} from './Shared'
+import {randomDate} from './Shared/RandomDate'
 
 const Container = styled.div``
 
@@ -42,6 +42,7 @@ export default class Notifications extends React.Component {
   static PropTypes = {
     profile: PropTypes.object,
     users: PropTypes.object,
+    closeModal: PropTypes.func,
   }
 
   renderNotificationRows(userKeys) {
@@ -56,7 +57,7 @@ export default class Notifications extends React.Component {
           comment={notificationTypes[index].commentText}
           trip={tripsExampleSliced[index]}
           isTrip={notificationTypes[index].isTrip}
-          timestamp={new Date()}
+          timestamp={randomDate(new Date(2017,7,1), new Date())}
           margin='0 0 25px'
         />
       )
@@ -71,6 +72,7 @@ export default class Notifications extends React.Component {
 
     return (
       <Container>
+        <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>NOTIFICATIONS</RightTitle>
           <NotificationRowsContainer>
             {this.renderNotificationRows(userKeys)}

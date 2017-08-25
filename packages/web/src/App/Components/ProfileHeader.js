@@ -139,7 +139,7 @@ export default class StoryHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'createBoard' }
+    this.state = {modal: 'messageThread' }
   }
 
   closeModal = () => {
@@ -283,42 +283,42 @@ export default class StoryHeader extends React.Component {
           contentLabel='Edit Password'
           onRequestClose={this.closeModal}
         >
-          <SettingsPassword toggleModal={this.toggleModal} profile={user}/>
+          <SettingsPassword  closeModal={this.closeModal} toggleModal={this.toggleModal} profile={user}/>
         </RightModal>
         <RightModal
           isOpen={this.state.modal === 'services'}
           contentLabel='Edit Services'
           onRequestClose={this.closeModal}
         >
-          <SettingsServices toggleModal={this.toggleModal} profile={user}/>
+          <SettingsServices  closeModal={this.closeModal} toggleModal={this.toggleModal} profile={user}/>
         </RightModal>                       
         <RightModal
           isOpen={this.state.modal === 'notifications'}
           contentLabel='Edit Notifications'
           onRequestClose={this.closeModal}
         >
-          <SettingsNotifications toggleModal={this.toggleModal} profile={user}/>
+          <SettingsNotifications closeModal={this.closeModal} toggleModal={this.toggleModal} profile={user}/>
         </RightModal>
         <RightModal
           isOpen={this.state.modal === 'inbox'}
           contentLabel='Inbox'
           onRequestClose={this.closeModal}
         >
-          <Inbox profile={user}/>
+          <Inbox closeModal={this.closeModal} profile={user}/>
         </RightModal>
         <RightModal
           isOpen={this.state.modal === 'messageThread'}
           contentLabel='Message Thread'
           onRequestClose={this.closeModal}
         >
-          <MessageThread profile={user}/>
+          <MessageThread closeModal={this.closeModal} profile={user}/>
         </RightModal>
         <RightModal
           isOpen={this.state.modal === 'notificationsThread'}
           contentLabel='Notifications'
           onRequestClose={this.closeModal}
         >
-          <Notifications profile={user}/>
+          <Notifications closeModal={this.closeModal} profile={user}/>
         </RightModal>
 
         <CenterModal
@@ -326,7 +326,7 @@ export default class StoryHeader extends React.Component {
           contentLabel='FAQ / Terms & Conditions'
           onRequestClose={this.closeModal}
         >
-          <FAQTermsAndConditions/>
+          <FAQTermsAndConditions closeModal={this.closeModal} />
         </CenterModal>                
 
       </ImageWrapper>

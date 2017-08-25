@@ -1,11 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-// import momentRandom from 'moment-random'
 
 import {usersExample} from '../../Containers/Feed_TEST_DATA'
 import MessageRow from '../MessageRow'
-import {RightTitle} from './Shared'
+import {RightTitle, RightModalCloseX} from './Shared'
+import {randomDate} from './Shared/RandomDate'
 
 const Container = styled.div``
 
@@ -17,6 +17,7 @@ export default class Inbox extends React.Component {
   static PropTypes = {
     profile: PropTypes.object,
     users: PropTypes.object,
+    closeModal: PropTypes.func,
   }
 
   renderUserMessageRows(userKeys) {
@@ -26,7 +27,7 @@ export default class Inbox extends React.Component {
           key={key}
           user={usersExample[key]}
           message=''
-          timestamp={new Date()}
+          timestamp={randomDate(new Date(2017,7,1), new Date())}
           margin='0 0 25px'
         />
       )
@@ -41,6 +42,7 @@ export default class Inbox extends React.Component {
 
     return (
       <Container>
+        <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>INBOX</RightTitle>
         <UserMessageRowsContainer>
           {this.renderUserMessageRows(userKeys)}

@@ -1,12 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-// import momentRandom from 'moment-random'
 
 import {usersExample} from '../../Containers/Feed_TEST_DATA'
 import CommentRow from '../CommentRow'
 import InputRow from '../InputRow'
 import {RightTitle, RightModalCloseX} from './Shared'
+import {randomDate} from './Shared/RandomDate'
+
 
 const Container = styled.div``
 
@@ -28,7 +29,7 @@ export default class UserComments extends React.Component {
           key={key}
           user={usersExample[key]}
           comment=''
-          timestamp={new Date()}
+          timestamp={randomDate(new Date(2017,7,1), new Date())}
           margin='0 0 25px'
         />
       )

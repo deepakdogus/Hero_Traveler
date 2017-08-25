@@ -64,7 +64,7 @@ export default class AddToBoard extends React.Component {
   renderText = () => {
     return (
       <StyledVerticalCenter>
-        <CreateText>{"+Create new board"}</CreateText>
+        <CreateText>{"+Create new collection"}</CreateText>
       </StyledVerticalCenter>
     )
   }
@@ -91,7 +91,7 @@ export default class AddToBoard extends React.Component {
     return (
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
-        <RightTitle>ADD TO BOARD</RightTitle>
+        <RightTitle>ADD TO COLLECTION</RightTitle>
         <CreateContainer>
           <SpaceBetweenRowWithButton
             renderImage={this.renderImage}

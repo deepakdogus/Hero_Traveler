@@ -38,6 +38,8 @@ const Text = styled.p`
     switch(props.textAlign) {
       case 'right':
         return 'right'
+      case 'left':
+        return 'left'        
       default:
         return 'center'
     }

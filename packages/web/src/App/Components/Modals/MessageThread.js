@@ -4,14 +4,21 @@ import PropTypes from 'prop-types'
 
 import {usersExample} from '../../Containers/Feed_TEST_DATA'
 import MessageThreadRow from '../MessageThreadRow'
-import {RightTitle, RightModalCloseX} from './Shared'
+import {RightTitle} from './Shared'
 import {randomDate} from './Shared/RandomDate'
 import InputRow from '../InputRow'
+import TextButton from '../TextButton'
 
 const Container = styled.div``
 
 const MessageThreadRowsContainer = styled.div`
   padding: 25px;
+`
+export const StyledTextButton = styled(TextButton)`
+  position: absolute;
+  top: 17px;
+  left: 4px;
+  cursor: pointer;
 `
 
 export default class UserComments extends React.Component {
@@ -46,7 +53,13 @@ export default class UserComments extends React.Component {
 
     return (
       <Container>
-        <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
+        <StyledTextButton 
+          type='blackWhite'
+          textAlign='left'
+          margin='none'
+          onClick={this.props.closeModal}
+          text='< Inbox'
+          />
         <RightTitle>{seedSender}</RightTitle>
         <MessageThreadRowsContainer>
           {this.renderMessageThreadRows(userKeys)}

@@ -10,7 +10,13 @@ import RoundedButton from '../RoundedButton'
 const Container = styled.div``
 
 const InputContainer = styled.div`
-  padding: 25px;
+  padding: 60px 50px 40px 50px;
+`
+
+const CreateBoardStyledInput = styled(StyledInput)`
+  font-size: 18px;
+  padding-bottom: 15px;
+  outline: none;
 `
 
 export default class CreateBoard extends React.Component {
@@ -25,6 +31,7 @@ export default class CreateBoard extends React.Component {
           text={'Cancel'}
           margin='none'
           width='138px'
+          padding='even'
           type='blackWhite'
         />
       </VerticalCenter>
@@ -37,6 +44,7 @@ export default class CreateBoard extends React.Component {
         <RoundedButton
           text={'Create'}
           margin='none'
+          padding='even'
           width='138px'
         />
       </VerticalCenter>
@@ -49,7 +57,7 @@ export default class CreateBoard extends React.Component {
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>CREATE BOARD</RightTitle>
         <InputContainer>
-          <StyledInput placeholder='Enter a title for your board'/>
+          <CreateBoardStyledInput placeholder='Enter a title for your collection'/>
         </InputContainer>
         <SpaceBetweenRowWithLeftRightButtons
           renderButtonLeft={this.renderButtonLeft}

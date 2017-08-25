@@ -51,7 +51,8 @@ export default class LikedByRow extends Component {
           text={this.props.isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
           type={this.props.isFollowing ? undefined : 'blackWhite'}
           margin='none'
-          width='138px'
+          width='154px'
+          padding='even'
         />
       </VerticalCenter>
     )

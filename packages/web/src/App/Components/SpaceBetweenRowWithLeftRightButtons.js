@@ -7,12 +7,12 @@ import {Row} from './FlexboxGrid'
 const Left = styled(Row)`
   padding-top: 20px;
   padding-bottom: 20px;
-  padding-left: 23%;
+  padding-left: 24%;
 `
 const Right = styled(Row)`
   padding-top: 20px;
   padding-bottom: 20px;
-  padding-right: 23%;
+  padding-right: 24%;
 `
 
 // this Component should only be used for horizontal placement

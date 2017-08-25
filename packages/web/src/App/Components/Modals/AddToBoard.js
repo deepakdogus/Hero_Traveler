@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 
 import {feedExample} from '../../Containers/Feed_TEST_DATA'
 import AddToBoardRow from '../AddToBoardRow'
-import HorizontalDivider from '../HorizontalDivider'
 import SpaceBetweenRowWithButton from '../SpaceBetweenRowWithButton'
 import VerticalCenter from '../VerticalCenter'
 import {RightTitle, StyledVerticalCenter, RightModalCloseX} from './Shared'
@@ -13,24 +12,28 @@ import Icon from '../Icon'
 const Container = styled.div``
 
 const CategoryRowsContainer = styled.div`
-  padding: 25px;
+
 `
 const CreateContainer = styled.div`
-  padding: 25px;
+  padding: 9px 30px 0px 30px;
 `
 const CreateIconContainer = styled(VerticalCenter)`
-  background-color: ${props => props.theme.Colors.inactiveRed};
-  border-color: ${props => props.theme.Colors.bloodOrange};
+  background-color: ${props => props.theme.Colors.pink};
+  border-color: ${props => props.theme.Colors.redLight};
   border-style: dashed;
-  border-width: 5px;
-  height: 85px;
-  width: 85px;
+  border-width: 1px;
+  height: 108px;
+  width: 78px;
+`
+
+const StyledIcon = styled(Icon)`
+  align-self: center;
 `
 
 const CreateText = styled.p`
   font-weight: 600;
   font-size: 18px;
-  color: ${props => props.theme.Colors.bloodOrange};
+  color: ${props => props.theme.Colors.redLight};
   letter-spacing: .7px;
   margin: 0;
 `
@@ -52,10 +55,11 @@ export default class AddToBoard extends React.Component {
   renderImage = () => {
     return (
       <CreateIconContainer>
-          <Icon
+          <StyledIcon
             name='components'
-            size={'medium'}
-            color={props => props.theme.Colors.bloodOrange}
+            height='25px'
+            width='25px'
+            color={props => props.theme.Colors.redLight}
           />
       </CreateIconContainer>
     )
@@ -78,6 +82,7 @@ export default class AddToBoard extends React.Component {
       return (
         <AddToBoardRow
           key={key}
+          index={index}
           category={categoriesExampleSliced[key]}
           margin='0 0 25px'
         />
@@ -99,7 +104,6 @@ export default class AddToBoard extends React.Component {
             renderButton={this.renderButton}
           />
         </CreateContainer>
-        <HorizontalDivider color='light-grey'/>
         <CategoryRowsContainer>
           {this.renderCategoryRows(categoryKeys)}
         </CategoryRowsContainer>

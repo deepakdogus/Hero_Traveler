@@ -13,20 +13,28 @@ import {
 } from './Modals/Shared'
 
 const Container = styled.div`
-  margin: ${props => props.margin ? props.margin : '0'};
+
+`
+
+const StyledImage = styled.img`
+  width: 80px;
+  height: 110px;
+`
+
+const CategoriesContainer = styled(Container)`
+  padding: 0px 30px;
 `
 
 export default class AddToBoardRow extends Component {
   static propTypes = {
-    category: PropTypes.object
+    category: PropTypes.object,
+    index: PropTypes.number,
   }
 
   renderImage = () => {
     return (
-      <Avatar
-        avatarUrl={getImageUrl(this.props.category.image)}
-        size='larger'
-        square={true}
+      <StyledImage
+        src={getImageUrl(this.props.category.image)}
       />
     )
   }
@@ -51,13 +59,16 @@ export default class AddToBoardRow extends Component {
 
   render() {
     return (
-      <Container margin={this.props.margin}>
-        <SpaceBetweenRowWithButton
-          renderImage={this.renderImage}
-          renderText={this.renderText}
-          renderButton={this.renderButton}
-        />
-        <HorizontalDivider color='light-grey'/>
+      <Container>
+        {this.props.index < 1 ? <HorizontalDivider color='light-grey'/> : null}
+        <CategoriesContainer margin={this.props.margin}>
+          <SpaceBetweenRowWithButton
+            renderImage={this.renderImage}
+            renderText={this.renderText}
+            renderButton={this.renderButton}
+          />
+        </CategoriesContainer>
+        <HorizontalDivider color='light-grey'/>        
       </Container>
     )
   }

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import {usersExample} from '../../Containers/Feed_TEST_DATA'
 import CommentRow from '../CommentRow'
 import InputRow from '../InputRow'
-import {RightTitle} from './Shared'
+import {RightTitle, RightModalCloseX} from './Shared'
 
 const Container = styled.div``
 
@@ -18,6 +18,7 @@ export default class UserComments extends React.Component {
   static PropTypes = {
     profile: PropTypes.object,
     users: PropTypes.object,
+    closeModal: PropTypes.func,
   }
 
   renderUserCommentRows(userKeys) {
@@ -42,6 +43,7 @@ export default class UserComments extends React.Component {
 
     return (
       <Container>
+        <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>COMMENTS</RightTitle>
         <UserCommentRowsContainer>
           {this.renderUserCommentRows(userKeys)}

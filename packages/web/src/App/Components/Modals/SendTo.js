@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import {usersExample} from '../../Containers/Feed_TEST_DATA'
 import SendToRow from '../SendToRow'
-import {RightTitle, StyledInput} from './Shared'
+import {RightTitle, StyledInput, RightModalCloseX} from './Shared'
 
 const Container = styled.div``
 
@@ -19,6 +19,7 @@ export default class SendTo extends React.Component {
   static PropTypes = {
     profile: PropTypes.object,
     users: PropTypes.object,
+    closeModal: PropTypes.func,
   }
 
   renderUserRows(userKeys) {
@@ -41,6 +42,7 @@ export default class SendTo extends React.Component {
 
     return (
       <Container>
+        <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>SEND TO</RightTitle>
         <InputContainer>
           <StyledInput placeholder='Search by name or email'/>

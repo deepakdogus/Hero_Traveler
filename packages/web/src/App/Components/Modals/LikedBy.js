@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import {usersExample} from '../../Containers/Feed_TEST_DATA'
 import LikedByRow from '../LikedByRow'
-import {RightTitle} from './Shared'
+import {RightTitle, RightModalCloseX} from './Shared'
 
 const Container = styled.div``
 
@@ -16,6 +16,7 @@ export default class LikedBy extends React.Component {
   static PropTypes = {
     profile: PropTypes.object,
     users: PropTypes.object,
+    closeModal: PropTypes.func,
   }
 
   renderUserRows(userKeys) {
@@ -39,6 +40,7 @@ export default class LikedBy extends React.Component {
 
     return (
       <Container>
+        <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>LIKED BY</RightTitle>
         <UserRowsContainer>
           {this.renderUserRows(userKeys)}

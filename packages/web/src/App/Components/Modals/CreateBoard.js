@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
-import {RightTitle, StyledInput} from './Shared'
+import {RightTitle, StyledInput, RightModalCloseX} from './Shared'
 import SpaceBetweenRowWithLeftRightButtons from '../SpaceBetweenRowWithLeftRightButtons'
 import VerticalCenter from '../VerticalCenter'
 import RoundedButton from '../RoundedButton'
@@ -13,6 +14,9 @@ const InputContainer = styled.div`
 `
 
 export default class CreateBoard extends React.Component {
+  static PropTypes = {
+    closeModal: PropTypes.func,
+  }
 
   renderButtonLeft = () => {
     return (
@@ -42,6 +46,7 @@ export default class CreateBoard extends React.Component {
   render() {
     return (
       <Container>
+        <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>CREATE BOARD</RightTitle>
         <InputContainer>
           <StyledInput placeholder='Enter a title for your board'/>

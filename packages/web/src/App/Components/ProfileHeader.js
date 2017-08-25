@@ -139,7 +139,7 @@ export default class StoryHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'account' }
+    this.state = {modal: 'createBoard' }
   }
 
   closeModal = () => {
@@ -227,49 +227,49 @@ export default class StoryHeader extends React.Component {
           contentLabel='Followed By Modal'
           onRequestClose={this.closeModal}
         >
-          <FollowFollowing profile={user}/>
+          <FollowFollowing closeModal={this.closeModal}profile={user}/>
         </RightModal>
         <RightModal
           isOpen={this.state.modal === 'stats'}
           contentLabel='User Stats Modal'
           onRequestClose={this.closeModal}
         >
-          <ProfileStats profile={user}/>
+          <ProfileStats closeModal={this.closeModal} profile={user}/>
         </RightModal>
         <RightModal
           isOpen={this.state.modal === 'userComments'}
           contentLabel='User Comments Modal'
           onRequestClose={this.closeModal}
         >
-          <UserComments profile={user}/>
+          <UserComments closeModal={this.closeModal} profile={user}/>
         </RightModal>
         <RightModal
           isOpen={this.state.modal === 'likedBy'}
           contentLabel='Liked By Modal'
           onRequestClose={this.closeModal}
         >
-          <LikedBy profile={user}/>
+          <LikedBy closeModal={this.closeModal} profile={user}/>
         </RightModal>
         <RightModal
           isOpen={this.state.modal === 'sendTo'}
           contentLabel='Send To Modal'
           onRequestClose={this.closeModal}
         >
-          <SendTo profile={user}/>
+          <SendTo closeModal={this.closeModal} profile={user}/>
         </RightModal>                        
         <RightModal
           isOpen={this.state.modal === 'addToBoard'}
           contentLabel='Add To Board Modal'
           onRequestClose={this.closeModal}
         >
-          <AddToBoard profile={user}/>
+          <AddToBoard closeModal={this.closeModal} profile={user}/>
         </RightModal>             
         <RightModal
           isOpen={this.state.modal === 'createBoard'}
           contentLabel='Create Board'
           onRequestClose={this.closeModal}
         >
-          <CreateBoard profile={user}/>
+          <CreateBoard closeModal={this.closeModal} profile={user}/>
         </RightModal>             
         <RightModal
           isOpen={this.state.modal === 'account'}

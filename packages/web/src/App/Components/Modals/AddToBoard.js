@@ -7,7 +7,7 @@ import AddToBoardRow from '../AddToBoardRow'
 import HorizontalDivider from '../HorizontalDivider'
 import SpaceBetweenRowWithButton from '../SpaceBetweenRowWithButton'
 import VerticalCenter from '../VerticalCenter'
-import {RightTitle, StyledVerticalCenter} from './Shared'
+import {RightTitle, StyledVerticalCenter, RightModalCloseX} from './Shared'
 import Icon from '../Icon'
 
 const Container = styled.div``
@@ -46,6 +46,7 @@ export default class AddToBoard extends React.Component {
   static PropTypes = {
     profile: PropTypes.object,
     users: PropTypes.object,
+    closeModal: PropTypes.func,
   }
 
   renderImage = () => {
@@ -89,6 +90,7 @@ export default class AddToBoard extends React.Component {
 
     return (
       <Container>
+        <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>ADD TO BOARD</RightTitle>
         <CreateContainer>
           <SpaceBetweenRowWithButton

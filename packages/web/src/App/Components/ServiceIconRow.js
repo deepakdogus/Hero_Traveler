@@ -14,8 +14,13 @@ const Container = styled.div`
 `
 
 const StyledIcon = styled(Icon)`
-  height: 25px;
-  margin-top: 10px;
+  padding: 0;
+  align-self: center;
+`
+
+const IconContainer = styled(VerticalCenter)`
+  height: 30px;
+  width: 30px;
 `
 
 const ServiceTitle = styled.p`
@@ -26,17 +31,31 @@ const ServiceTitle = styled.p`
   color: ${props => props.theme.Colors.grey};
 `
 
+const RowSpacer = styled.div`
+  padding: 6px 0px;
+`
+
 const RenderedIcon = styled(StyledIcon)`
   width: ${props => {
     switch(props.service) {
       case 'facebook':
-        return '12.5px'
+        return '15px'
       case 'twitter':
-        return '30.5px'
+        return '26px'
       default:
         return '25px'
     }
   }};
+  height: ${props => {
+    switch(props.service) {
+      case 'facebook':
+        return '25px'
+      case 'twitter':
+        return '22px'
+      default:
+        return '25px'
+    }
+  }};  
   padding: ${props => {
     switch(props.service) {
       case 'facebook':
@@ -55,11 +74,15 @@ export default class ServiceIconRow extends Component {
     isConnected: PropTypes.bool,
     iconName: PropTypes.oneOf(['facebook-blue', 'twitter-blue', 'instagram']),
     text: PropTypes.string,
+    service: PropTypes.string,
+    index: PropTypes.num,
   }
 
   renderImage = () => {
     return (
-      <RenderedIcon name={this.props.iconName}/>
+      <IconContainer>
+        <RenderedIcon service={this.props.service} name={this.props.iconName}/>
+      </IconContainer>
     )
   }
 
@@ -79,6 +102,7 @@ export default class ServiceIconRow extends Component {
           type={this.props.isConnected ? 'blackWhite' : undefined}
           margin='none'
           width='138px'
+          textAlign='right'
         />
       </VerticalCenter>
     )
@@ -87,11 +111,14 @@ export default class ServiceIconRow extends Component {
   render() {
     return (
       <Container margin={this.props.margin}>
-        <SpaceBetweenRowWithButton
-          renderImage={this.renderImage}
-          renderText={this.renderText}
-          renderButton={this.renderButton}
-        />
+        {this.props.index > 0 ? null : <HorizontalDivider color='light-grey'/>}
+         <RowSpacer>
+          <SpaceBetweenRowWithButton
+            renderImage={this.renderImage}
+            renderText={this.renderText}
+            renderButton={this.renderButton}
+          />           
+         </RowSpacer> 
         <HorizontalDivider color='light-grey'/>
       </Container>
     )

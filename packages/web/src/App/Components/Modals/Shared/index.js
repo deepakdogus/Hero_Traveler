@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import VerticalCenter from '../../VerticalCenter'
+import Icon from '../../Icon'
 
 const basicTextStyle = `
   font-weight: 400;
@@ -147,3 +148,11 @@ export const StyledInputLabel = styled.label`
   margin-bottom: 10px;
 `
 
+export const RightModalCloseX = styled(Icon)`
+  position: absolute;
+  top: 20px;
+  left: 25px;
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+`

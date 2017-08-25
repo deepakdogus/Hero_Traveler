@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import {RightTitle} from './Shared'
+import {RightTitle, RightModalCloseX} from './Shared'
 
 import ServiceIconRow from '../ServiceIconRow'
 import ModalTogglebar from '../ModalTogglebar'
@@ -16,9 +16,9 @@ const toggleBarTabs = [
 ]
 
 const serviceTypes = [
-  { iconName: 'facebook-blue', text: 'Facebook', isConnected: true },
-  { iconName: 'twitter-blue', text: 'Twitter', isConnected: false },
-  { iconName: 'instagram', text: 'Instagram', isConnected: true },
+  { iconName: 'facebook-blue', text: 'Facebook', service: 'facebook', isConnected: true },
+  { iconName: 'twitter-blue', text: 'Twitter', service: 'twitter', isConnected: false },
+  { iconName: 'instagram', text: 'Instagram', service: 'instagram', isConnected: true },
 ]
 
 const Container = styled.div``
@@ -30,15 +30,18 @@ const ServiceContainer = styled.div`
 export default class SettingsServices extends React.Component {
       static propTypes = {
     toggleModal: PropTypes.func,
+    closeModal: PropTypes.func,
   }
 
-  renderServiceRows(notificationTypes) {
-    return notificationTypes.map((el) => {
+  renderServiceRows(serviceTypes) {
+    return serviceTypes.map((el, index) => {
       return (
         <ServiceIconRow
+          index={index}
           key={el.text}
           iconName={el.iconName}
           text={el.text}
+          service={el.service}
           isConnected={el.isConnected}
         />
       )
@@ -48,11 +51,9 @@ export default class SettingsServices extends React.Component {
   render() {
     return (
       <Container>
+        <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>SETTINGS</RightTitle>
         <ModalTogglebar toggleModal={this.props.toggleModal} tabs={toggleBarTabs}/>
-        <ServiceContainer>
-          <HorizontalDivider color='light-grey'/>
-        </ServiceContainer>
         <ServiceContainer>
           {this.renderServiceRows(serviceTypes)}
         </ServiceContainer>

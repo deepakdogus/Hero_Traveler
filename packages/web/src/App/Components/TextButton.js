@@ -34,10 +34,31 @@ const Text = styled.p`
         return props.theme.Colors.red
     }
   }};
-  text-align: center;
+  text-align: ${props => {
+    switch(props.textAlign) {
+      case 'right':
+        return 'right'
+      default:
+        return 'center'
+    }
+  }};
   font-size: 16px;
-  margin: 2.5px 10px;
-  letter-spacing: 1.2px;
+  margin: ${props => {
+    switch(props.textAlign) {
+      case 'right':
+        return '2.5px 0px'
+      default:
+        return '2.5px 10px'
+    }
+  }};
+  letter-spacing: ${props => {
+    switch(props.textAlign) {
+      case 'right':
+        return '.7px'
+      default:
+        return '1.5px'
+    }
+  }};
 `
 
 /*
@@ -50,6 +71,7 @@ export default class TextButton extends React.Component {
     children: PropTypes.node,
     onClick: PropTypes.func,
     type: PropTypes.string,
+    textAlign: PropTypes.string,
     width: PropTypes.string,
     margin: PropTypes.string,
     padding: PropTypes.string,
@@ -57,9 +79,9 @@ export default class TextButton extends React.Component {
   }
 
   renderContent() {
-    const {text, children, type} = this.props
+    const {text, children, type, textAlign} = this.props
     if (children) return children
-    else return (<Text type={type}>{text}</Text>)
+    else return (<Text textAlign={textAlign} type={type}>{text}</Text>)
   }
 
   render() {

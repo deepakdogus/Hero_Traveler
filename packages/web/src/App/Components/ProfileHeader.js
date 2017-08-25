@@ -152,9 +152,6 @@ export default class StoryHeader extends React.Component {
 
   toggleModal = (e) => {
     let target = e.target.innerHTML.toLowerCase();
-
-    console.log('target: ', target)
-
     this.setState({ modal: target })
 
   }
@@ -279,7 +276,7 @@ export default class StoryHeader extends React.Component {
           contentLabel='Edit Settings'
           onRequestClose={this.closeModal}
         >
-          <Settings toggleModal={this.toggleModal} profile={user}/>
+          <Settings closeModal={this.closeModal} toggleModal={this.toggleModal} profile={user}/>
         </RightModal>
         <RightModal
           isOpen={this.state.modal === 'password'}

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 
 import SpaceBetweenRowWithTextAndSwitch from './SpaceBetweenRowWithTextAndSwitch'
 import VerticalCenter from './VerticalCenter'
-import {StyledVerticalCenter} from './Modals/Shared'
 import HorizontalDivider from './HorizontalDivider'
 
 import 'react-ios-switch/build/bundle.css';
@@ -22,28 +21,44 @@ const NotificationTitle = styled.p`
   color: ${props => props.theme.Colors.grey};
 `
 
+const RowSpacer = styled.div`
+  padding: 6px 0px;
+`
+
 export default class SettingsNotificationRow extends Component {
+    constructor(props) {
+    super(props);
+    
+    this.state = {
+      checked: true,
+    };
+  }
 
   static PropTypes = {
     isNotifying: PropTypes.bool,
     text: PropTypes.string,
+    index: PropTypes.num,
+    toggleNotificationSwitch: PropTypes.func,
+    logOnChange: PropTypes.func,
   }
 
   renderText = () => {
     return (
-      <StyledVerticalCenter>
+      <VerticalCenter>
         <NotificationTitle>{this.props.text}</NotificationTitle>
-      </StyledVerticalCenter>
+      </VerticalCenter>
     )
   }
 
   renderSwitch = () => {
+    const { checked } = this.state;
     return (
       <VerticalCenter>
         <Switch
-          checked={this.props.isNotifying}
+          checked={checked}
+          index={this.props.index}
           disabled={null}
-          onChange={null}
+          onChange={checked => this.setState({ checked })}
           onColor={'#d60000'}
         />
       </VerticalCenter>
@@ -53,11 +68,14 @@ export default class SettingsNotificationRow extends Component {
   render() {
     return (
       <Container margin={this.props.margin}>
-        <SpaceBetweenRowWithTextAndSwitch
-          renderText={this.renderText}
-          renderSwitch={this.renderSwitch}
-        />
-        <HorizontalDivider color='light-grey'/>
+        {this.props.index > 0 ? null : <HorizontalDivider color='light-grey'/>}
+        <RowSpacer>
+          <SpaceBetweenRowWithTextAndSwitch
+            renderText={this.renderText}
+            renderSwitch={this.renderSwitch}
+          />
+        </RowSpacer>
+          <HorizontalDivider color='light-grey'/>
       </Container>
     )
   }

@@ -2,11 +2,12 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import {RightTitle, SettingsStyledInput, StyledInputLabel} from './Shared'
+import {RightTitle, SettingsStyledInput, StyledInputLabel, RightModalCloseX} from './Shared'
 import SpaceBetweenRowWithLeftRightButtons from '../SpaceBetweenRowWithLeftRightButtons'
 import VerticalCenter from '../VerticalCenter'
 import RoundedButton from '../RoundedButton'
 import ModalTogglebar from '../ModalTogglebar'
+import Icon from '../Icon'
 
 const toggleBarTabs = [
   { text: 'Account', isActive: true, isLast: false },
@@ -24,6 +25,7 @@ const InputContainer = styled.div`
 export default class Settings extends React.Component {
   static propTypes = {
     toggleModal: PropTypes.func,
+    closeModal: PropTypes.func,
   }
 
   renderButtonLeft = () => {
@@ -34,7 +36,7 @@ export default class Settings extends React.Component {
           margin='none'
           width='116px'
           type='blackWhite'
-          padding='even'
+          padding='mediumEven'
         />
       </VerticalCenter>
     )
@@ -47,7 +49,7 @@ export default class Settings extends React.Component {
           text={'Save Changes'}
           margin='none'
           width='180px'
-          padding='even'
+          padding='mediumEven'
         />
       </VerticalCenter>
     )
@@ -56,6 +58,7 @@ export default class Settings extends React.Component {
   render() {
     return (
       <Container>
+        <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>SETTINGS</RightTitle>
         <ModalTogglebar toggleModal={this.props.toggleModal} tabs={toggleBarTabs}/>
         <InputContainer>

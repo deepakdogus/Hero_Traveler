@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import {RightTitle} from './Shared'
+import {RightTitle, RightModalCloseX} from './Shared'
 import SettingsNotificationRow from '../SettingsNotificationRow'
 import ModalTogglebar from '../ModalTogglebar'
 import HorizontalDivider from '../HorizontalDivider'
@@ -30,15 +30,23 @@ const NotificationContainer = styled.div`
 export default class SettingsNotifications extends React.Component {
     static propTypes = {
     toggleModal: PropTypes.func,
+    closeModal: PropTypes.func,
   }
 
+  toggleNotificationSwitch = (e, f) => {console.log("toggleNotificationSwitch: ", e, f)}
+
+  logOnChange = (e) => {console.log("logOnChange: ", e)}
+
   renderSettingsNotificationRows(notificationTypes) {
-    return notificationTypes.map((el) => {
+    return notificationTypes.map((el,index) => {
       return (
         <SettingsNotificationRow
+          index={index}
           key={el.text}
           text={el.text}
           isNotifying={el.isNotifying}
+          toggleNotificationSwitch={this.toggleNotificationSwitch}
+          logOnChange={this.logOnChange}
         />
       )
     })
@@ -47,11 +55,9 @@ export default class SettingsNotifications extends React.Component {
   render() {
     return (
       <Container>
+        <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>SETTINGS</RightTitle>
         <ModalTogglebar toggleModal={this.props.toggleModal} tabs={toggleBarTabs}/>
-        <NotificationContainer>
-          <HorizontalDivider color='light-grey'/>
-        </NotificationContainer>
         <NotificationContainer>
           {this.renderSettingsNotificationRows(notificationTypes)}
         </NotificationContainer>

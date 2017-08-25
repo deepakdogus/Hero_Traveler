@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import {RightTitle, SettingsStyledInput, StyledInputLabel} from './Shared'
+import {RightTitle, SettingsStyledInput, StyledInputLabel, RightModalCloseX} from './Shared'
 import SpaceBetweenRowWithLeftRightButtons from '../SpaceBetweenRowWithLeftRightButtons'
 import VerticalCenter from '../VerticalCenter'
 import RoundedButton from '../RoundedButton'
@@ -24,6 +24,7 @@ const InputContainer = styled.div`
 export default class SettingsPassword extends React.Component {
     static propTypes = {
     toggleModal: PropTypes.func,
+    closeModal: PropTypes.func,
   }
 
   renderButtonLeft = () => {
@@ -34,7 +35,7 @@ export default class SettingsPassword extends React.Component {
           margin='none'
           width='116px'
           type='blackWhite'
-          padding='even'
+          padding='mediumEven'
         />
       </VerticalCenter>
     )
@@ -47,7 +48,7 @@ export default class SettingsPassword extends React.Component {
           text={'Save Password'}
           margin='none'
           width='180px'
-          padding='even'
+          padding='mediumEven'
         />
       </VerticalCenter>
     )
@@ -56,19 +57,20 @@ export default class SettingsPassword extends React.Component {
   render() {
     return (
       <Container>
+        <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>SETTINGS</RightTitle>
         <ModalTogglebar toggleModal={this.props.toggleModal} tabs={toggleBarTabs}/>
         <InputContainer>
           <StyledInputLabel for='oldPassword'>Old Password</StyledInputLabel>
-          <SettingsStyledInput id='oldPassword'/>
+          <SettingsStyledInput type='password' id='oldPassword'/>
         </InputContainer>
         <InputContainer>
           <StyledInputLabel for='newPassword'>New Password</StyledInputLabel>
-          <SettingsStyledInput id='newPassword'/>
+          <SettingsStyledInput type='password' id='newPassword'/>
         </InputContainer>
         <InputContainer>
           <StyledInputLabel for='retypePassword'>Retype Password</StyledInputLabel>
-          <SettingsStyledInput id='retypePassword'/>
+          <SettingsStyledInput type='password' id='retypePassword'/>
         </InputContainer>
         <SpaceBetweenRowWithLeftRightButtons
           renderButtonLeft={this.renderButtonLeft}

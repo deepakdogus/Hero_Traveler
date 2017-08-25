@@ -7,8 +7,7 @@ import {Row} from './FlexboxGrid'
 const Left = styled(Row)``
 const Right = styled(Row)``
 
-// this Component should only be used for horizontal placement
-export default class SpaceBetweenRowWithButton extends Component {
+export default class SpaceBetweenRowWithTextAndSwitch extends Component {
   static propTypes = {
     renderText: PropTypes.func,
     renderSwitch: PropTypes.func,

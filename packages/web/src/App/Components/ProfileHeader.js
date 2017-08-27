@@ -154,9 +154,6 @@ export default class StoryHeader extends React.Component {
   toggleModal = (e) => {
     let target = e.target.innerHTML.toLowerCase().split(' ')[0];
     this.setState({ modal: target })
-
-    console.log("target: ", target)
-
   }
 
   render () {

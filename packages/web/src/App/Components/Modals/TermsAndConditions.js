@@ -14,7 +14,7 @@ const toggleBarTabs = [
 ]
 
 const Container = styled.div`
-  padding: 25px;
+  padding: 0px 15px;
 `
 
 export default class TermsAndConditions extends React.Component {

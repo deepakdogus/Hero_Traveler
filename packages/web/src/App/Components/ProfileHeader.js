@@ -27,7 +27,8 @@ import SettingsNotifications from './Modals/SettingsNotifications'
 import Inbox from './Modals/Inbox'
 import MessageThread from './Modals/MessageThread'
 import Notifications from './Modals/Notifications'
-import FAQTermsAndConditions from './Modals/FAQTermsAndConditions'
+import FAQ from './Modals/FAQ'
+import TermsAndConditions from './Modals/TermsAndConditions'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   &:after {
@@ -139,7 +140,7 @@ export default class StoryHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'addToBoard' }
+    this.state = {modal: 'faq' }
   }
 
   closeModal = () => {
@@ -151,8 +152,10 @@ export default class StoryHeader extends React.Component {
   }
 
   toggleModal = (e) => {
-    let target = e.target.innerHTML.toLowerCase();
+    let target = e.target.innerHTML.toLowerCase().split(' ')[0];
     this.setState({ modal: target })
+
+    console.log("target: ", target)
 
   }
 
@@ -322,12 +325,19 @@ export default class StoryHeader extends React.Component {
         </RightModal>
 
         <CenterModal
-          isOpen={this.state.modal === 'FAQTermsAndConditions'}
-          contentLabel='FAQ / Terms & Conditions'
+          isOpen={this.state.modal === 'faq'}
+          contentLabel='FAQ'
           onRequestClose={this.closeModal}
         >
-          <FAQTermsAndConditions closeModal={this.closeModal} />
-        </CenterModal>                
+          <FAQ closeModal={this.closeModal} toggleModal={this.toggleModal}/>
+        </CenterModal>
+        <CenterModal
+          isOpen={this.state.modal === 'terms'}
+          contentLabel='Terms & Conditions'
+          onRequestClose={this.closeModal}
+        >
+          <TermsAndConditions closeModal={this.closeModal} toggleModal={this.toggleModal}/>
+        </CenterModal>                        
 
       </ImageWrapper>
     )

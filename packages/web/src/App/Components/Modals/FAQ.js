@@ -17,23 +17,19 @@ const Container = styled.div`
   padding: 25px;
 `
 
-export default class FAQTermsAndConditions extends React.Component {
+export default class FAQ extends React.Component {
   static propTypes = {
     closeModal: PropTypes.func,
-  }
-    //temporary screen switch
-    constructor(props) {
-    super(props)
-    this.state = {modal: 'FAQScreen' }
+    toggleModal: PropTypes.func,
   }
 
   render() {
     return (
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
-        <ModalTogglebar tabs={toggleBarTabs}/>
+        <ModalTogglebar toggleModal={this.props.toggleModal} tabs={toggleBarTabs}/>
         <HorizontalDivider color='light-grey'/>
-        {this.state.modal === 'FAQScreen' ? <FAQScreen/> : <TermsAndConditionsScreen/>}
+        <FAQScreen/>
       </Container>
     )
   }

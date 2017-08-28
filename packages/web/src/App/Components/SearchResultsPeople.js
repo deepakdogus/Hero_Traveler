@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import Togglebar from './Togglebar'
+import UserSearchResultRow from './UserSearchResultRow'
 
 
 
@@ -25,14 +26,39 @@ const ContentWrapper = styled.div`
 export default class SearchResultsPeople extends Component {
   static PropTypes = {
     toggleSearchResultTabs: PropTypes.func,
+    userSearchResults: PropTypes.object,
   }
   constructor(props) {
     super(props)
     this.state = {}
   }
 
-
   render() {
+
+    const users = this.props.userSearchResults;
+
+    
+    
+    const renderedUsers = Object.keys(users).map((key, index) => {
+      /*
+        We only need the first 4 elements for suggestions
+        We will improve this check to allow 'pagination' will carousel scroll
+      */
+      const user = users[key]
+
+      if (index >= 4) return null
+      return (
+        <UserSearchResultRow
+          user={user}
+          username={user.username}
+          key={key}
+          index={index}
+        />
+      )
+    })
+
+
+
     return (
       <Container>
         <ContentWrapper>
@@ -41,7 +67,10 @@ export default class SearchResultsPeople extends Component {
             isClear={true}
             onClick={this.props.toggleSearchResultTabs}
           />
-          PEOPLE
+
+          {renderedUsers}
+
+
         </ContentWrapper>
 
       </Container>

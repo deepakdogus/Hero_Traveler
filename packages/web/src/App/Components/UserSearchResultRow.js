@@ -5,10 +5,16 @@ import PropTypes from 'prop-types'
 import SpaceBetweenRowWithButton from './SpaceBetweenRowWithButton'
 import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
+import Avatar from './Avatar'
+import RoundedButton from './RoundedButton'
 import HorizontalDivider from './HorizontalDivider'
 
 
 const Container = styled.div`
+`
+
+const UserContainer = styled(Container)`
+  padding: 20px 0px;
 `
 
 const StyledHorizontalDivider = styled(HorizontalDivider)`
@@ -20,7 +26,7 @@ export const StyledVerticalCenter = styled(VerticalCenter)`
   padding-left: 25px;
 `
 
-export const StoryName = styled.p`
+export const UserName = styled.p`
   font-weight: 600;
   font-size: 18px;
   color: ${props => props.theme.Colors.background};
@@ -28,71 +34,69 @@ export const StoryName = styled.p`
   margin: 0;
 `
 
-export const UserName = styled.p`
+const Name = styled.p`
   font-weight: 400;
   font-size: 14px;
-  font-style: italic;
-  color: ${props => props.theme.Colors.grey};
   letter-spacing: .7px;
   margin: 0;
-`
-
-const StyledImage = styled.img`
-  width: 80px;
-  height: 110px;
-`
-
-const CategoriesContainer = styled(Container)`
-  padding: 10px 0px 6px;
+  color: ${props => props.theme.Colors.grey};
 `
 
 const TopSpacer = styled.div`
   margin-top: 34px;
 `
 
-export default class StorySearchResultRow extends Component {
+export default class UserSearchResultRow extends Component {
   static propTypes = {
-    story: PropTypes.object,
-    author: PropTypes.string,
-    title: PropTypes.string,
+    user: PropTypes.object,
+    key: PropTypes.number,
     margin: PropTypes.string,
-    image: PropTypes.object,
     index: PropTypes.number,
   }
 
-
   renderImage = () => {
     return (
-      <StyledImage
-        src={getImageUrl(this.props.image)}
+      <Avatar
+        avatarUrl={getImageUrl(this.props.user.profile.avatar)}
+        size='larger'
       />
     )
   }
 
   renderText = () => {
+    const {user} = this.props
     return (
       <StyledVerticalCenter>
-        <StoryName>{this.props.title}</StoryName>
-        <UserName>{this.props.author}</UserName>
+        <UserName>{user.username}</UserName>
+        <Name>Name</Name>
       </StyledVerticalCenter>
     )
   }
 
   renderButton = () => {
-    return null
+    return (
+      <VerticalCenter>
+        <RoundedButton
+          text='+ FOLLOW'
+          type='blackWhite'
+          margin='none'
+          width='138px'
+        />
+      </VerticalCenter>
+    )
   }
 
   render() {
     return (
       <Container>
         {this.props.index < 1 ? <TopSpacer/> : <StyledHorizontalDivider color='light-grey'/>}
-        <CategoriesContainer margin={this.props.margin}>
+        <UserContainer margin={this.props.margin}>
           <SpaceBetweenRowWithButton
             renderImage={this.renderImage}
             renderText={this.renderText}
             renderButton={this.renderButton}
           />
-        </CategoriesContainer>      
+        </UserContainer>  
       </Container>
     )
   }

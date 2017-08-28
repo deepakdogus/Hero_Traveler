@@ -35,9 +35,10 @@ const StyledTextButton = styled(TextButton)`
   position: absolute;
   right: 40px;
   top: 227px;
+  outline: none;
 `
 
-class Search extends Component {
+export default class Search extends Component {
   constructor(props) {
     super(props)
     this.state = {showPeopleResults: false}
@@ -61,8 +62,8 @@ class Search extends Component {
         </HeaderInputContainer>
         <ContentWrapper>
         {this.state.showPeopleResults
-        ? <SearchResultsPeople toggleSearchResultTabs={this.toggleSearchResultTabs}/>
-        : <SearchResultsStories toggleSearchResultTabs={this.toggleSearchResultTabs}/>
+        ? <SearchResultsPeople userSearchResults={usersExample} toggleSearchResultTabs={this.toggleSearchResultTabs}/>
+        : <SearchResultsStories storySearchResults={feedExample} userSearchResults={usersExample} toggleSearchResultTabs={this.toggleSearchResultTabs}/>
         }
         </ContentWrapper>
 
@@ -70,5 +71,3 @@ class Search extends Component {
     )
   }
 }
-
-export default Search

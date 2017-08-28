@@ -127,7 +127,7 @@ export default class Header extends React.Component {
           <Col xs>
             <MenuLinkContainer>
               <MenuLink to='/' exact>
-                Explore
+                `Explore`
               </MenuLink>
               <MenuLink to='/signup/topics'>
                 Signup (topics)
@@ -142,9 +142,13 @@ export default class Header extends React.Component {
           </Col>
           <Col xs>
             <Row end='xs'>
-              <RoundedButton type={'opaque'}>
-                <Icon name='explore' />
-              </RoundedButton>
+              <NavLink 
+                to='/search'
+              >
+                <RoundedButton type={'opaque'}>
+                  <Icon name='explore' />
+                </RoundedButton>
+              </NavLink>              
               <Divider>&nbsp;</Divider>
               {!isLoggedIn &&
                 <RoundedButton

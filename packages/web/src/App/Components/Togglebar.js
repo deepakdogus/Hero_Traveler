@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import {Row} from './FlexboxGrid'
 
 const StyledRow = styled(Row)`
-  background-color: ${props => props.theme.Colors.lightGreyAreas}
+  background-color: ${props => props.isClear ? props.theme.Colors.clear : props.theme.Colors.lightGreyAreas}
 `
 
 const TabContainer = styled.div`
@@ -30,7 +30,8 @@ export default class ToggleBar extends React.Component {
         text: PropTypes.string,
         isActive: PropTypes.bool,
       })
-    )
+    ),
+    isClear: PropTypes.bool,
   }
 
   renderTabs(){
@@ -46,7 +47,7 @@ export default class ToggleBar extends React.Component {
 
   render() {
     return (
-      <StyledRow center='xs'>
+      <StyledRow isClear={this.props.isClear} center='xs'>
         {this.renderTabs()}
       </StyledRow>
     )

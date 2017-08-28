@@ -735,7 +735,7 @@ class StoryCoverScreen extends Component {
   }
 
   setToolbarDisplay = (display) => {
-    if (this.toolbar) {
+    if (this.toolbar && this.toolbar.state !== display) {
       this.toolbar.setState({display})
     }
   }

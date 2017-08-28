@@ -53,7 +53,8 @@ export default class Toolbar extends React.Component {
     this.pressVideo = () => this.onPress(PressTypes.Video)
 
     this.state = {
-      showTextMenu: false
+      showTextMenu: false,
+      display: false,
     }
 
     this.toggleTextMenu = () =>

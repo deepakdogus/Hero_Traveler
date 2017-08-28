@@ -209,13 +209,25 @@ export default class Editor extends Component {
     })
   }
 
+  shouldUnfocus = true
+
   // Editor Toolbar should only render when a block is focused
   onFocus = (blockKey) => {
     if (!this.state.focusedBlock && blockKey) {
+      this.shouldUnfocus = false
       this.props.setToolbarDisplay(true)
     }
     else if (this.state.focusedBlock && !blockKey) {
-      this.props.setToolbarDisplay(false)
+      this.shouldUnfocus = true
+      /*
+      adding slight timeout to avoid the flicker caused by the split amount of time between
+      contentBlock focus change. This would hide the toolbar for a split second
+      */
+      setTimeout(() => {
+        if (this.shouldUnfocus) {
+          this.props.setToolbarDisplay(false)
+        }
+      }, 50);
     }
     this.setState({focusedBlock: blockKey})
   }

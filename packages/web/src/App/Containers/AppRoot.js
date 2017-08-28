@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {ThemeProvider} from 'styled-components'
 import {Route, BrowserRouter as Router} from 'react-router-dom'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 import themes from '../Shared/Themes'
 import background from '../Shared/Images/BG.png'
@@ -17,18 +18,20 @@ class AppRoot extends Component {
   render() {
     return (
       <Router>
-        <ThemeProvider theme={themes}>
-          <div>
-            <HeaderImageWrapper backgroundImage={background}>
-              <Header />
-            </HeaderImageWrapper>
-            <Route exact path='/' component={Feed} />
-            <Route path='/signup/social' component={SignupSocial} />
-            <Route path='/signup/topics' component={SignupTopics} />
-            <Route path='/story/:storyId' component={Story} />
-            <Route path='/profile/:userId' component={Profile} />
-          </div>
-        </ThemeProvider>
+        <MuiThemeProvider>
+          <ThemeProvider theme={themes}>
+            <div>
+              <HeaderImageWrapper backgroundImage={background}>
+                <Header />
+              </HeaderImageWrapper>
+              <Route exact path='/' component={Feed} />
+              <Route path='/signup/social' component={SignupSocial} />
+              <Route path='/signup/topics' component={SignupTopics} />
+              <Route path='/story/:storyId' component={Story} />
+              <Route path='/profile/:userId' component={Profile} />
+            </div>
+          </ThemeProvider>
+        </MuiThemeProvider>
       </Router>
     )
   }

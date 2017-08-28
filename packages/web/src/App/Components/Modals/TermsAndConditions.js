@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import {RightModalCloseX} from './Shared'
-import FAQScreen from '../FAQScreen'
 import TermsAndConditionsScreen from '../TermsAndConditionsScreen'
 import ModalTogglebar from '../ModalTogglebar'
 import HorizontalDivider from '../HorizontalDivider'

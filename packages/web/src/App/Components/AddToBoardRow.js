@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
 import SpaceBetweenRowWithButton from './SpaceBetweenRowWithButton'
 import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
-import Avatar from './Avatar'
 import HorizontalDivider from './HorizontalDivider'
 import {
   StyledVerticalCenter,
@@ -25,10 +25,23 @@ const CategoriesContainer = styled(Container)`
   padding: 0px 30px;
 `
 
+const styles = {
+  radioButton: {
+    // display: 'inline-block',
+  },
+  radioIcon: {
+    fill: `${props => props.theme.Colors.redLight}`,
+  },
+  radioButtonGroup: {
+    // marginLeft: 40,
+  },
+}
+
 export default class AddToBoardRow extends Component {
   static propTypes = {
     category: PropTypes.object,
     index: PropTypes.number,
+    closeModal: PropTypes.func,
   }
 
   renderImage = () => {
@@ -37,6 +50,11 @@ export default class AddToBoardRow extends Component {
         src={getImageUrl(this.props.category.image)}
       />
     )
+  }
+
+  closeModalWithDelay = () => {
+    alert("YOU HAVE ADDED TO YOUR COLLECTION")
+    setTimeout(this.props.closeModal, 1000)
   }
 
   renderText = () => {
@@ -50,9 +68,19 @@ export default class AddToBoardRow extends Component {
   renderButton = () => {
     return (
       <VerticalCenter>
-        <input
-          type='radio'
-        />
+        <RadioButtonGroup 
+          name="category"
+          onChange={this.closeModalWithDelay}
+          defaultSelected="default"
+          style={styles.radioButtonGroup}
+        >
+          <RadioButton
+            value=""
+            style={styles.radioButton}
+            labelStyle={styles.radioButtonLabel}
+            iconStyle={styles.radioIcon}
+          />
+        </RadioButtonGroup>          
       </VerticalCenter>
     )
   }

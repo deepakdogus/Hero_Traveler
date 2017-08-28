@@ -85,6 +85,7 @@ export default class AddToBoard extends React.Component {
           index={index}
           category={categoriesExampleSliced[key]}
           margin='0 0 25px'
+          closeModal={this.props.closeModal}
         />
       )
     })

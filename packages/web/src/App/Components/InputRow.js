@@ -3,7 +3,6 @@ import styled from 'styled-components'
 
 import SpaceBetweenRowWithInputAndButton from './SpaceBetweenRowWithInputAndButton'
 import VerticalCenter from './VerticalCenter'
-import {RightTitle, StyledInput} from './Modals/Shared'
 import RoundedButton from './RoundedButton'
 import HorizontalDivider from './HorizontalDivider'
 

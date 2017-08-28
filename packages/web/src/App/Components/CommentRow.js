@@ -4,12 +4,10 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 
 import SpaceBetweenRowWithTimeStamp from './SpaceBetweenRowWithTimeStamp'
-import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Avatar from './Avatar'
 import HorizontalDivider from './HorizontalDivider'
 import {
-  StyledVerticalCenter,
   UserName,
   CommentContent,
   Timestamp,

@@ -2,13 +2,16 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import Togglebar from '../Components/Togglebar'
+import TextButton from '../Components/TextButton'
 
 const togglebarTabs = [
   { text: 'stories', isActive: true },
   { text: 'people', isActive: false },
 ]
 
-
+const StyledTogglebar = styled(Togglebar)`
+  background-color: ${props => props.theme.Colors.clear}
+`
 
 const Container = styled.div``
 
@@ -21,7 +24,7 @@ const HeaderInput = styled.input`
   width: 80%;
   background-color: transparent;
   font-weight: 400;
-  font-size: 40px;
+  font-size: 30px;
   padding-left: 30px;
   border: none;
   outline: none;
@@ -29,15 +32,20 @@ const HeaderInput = styled.input`
   color: ${props => props.theme.Colors.signupGrey} 
 `
 
-const PlaceholderText = styled(Text)`
-  font-size: 18px;
-  color: ${props => props.theme.Colors.navBarText}
-`
 
 const ContentWrapper = styled.div`
   max-width: 800px;
   margin: 0 auto;
 `
+
+const StyledTextButton = styled(TextButton)`
+  position: absolute;
+  right: 40px;
+  top: 227px;
+`
+
+
+
 
 class Search extends Component {
 
@@ -49,14 +57,20 @@ class Search extends Component {
 
 
 
+
   render() {
     return (
       <Container>
         <HeaderInputContainer>
           <HeaderInput placeholder='Type to search' />
+          <StyledTextButton 
+            textAlign='right'
+            margin='none'
+            text='Cancel'
+          />
         </HeaderInputContainer>
         <ContentWrapper>
-          <Togglebar tabs={togglebarTabs} isClear={true}/>
+          <StyledTogglebar tabs={togglebarTabs} isClear={true}/>
         </ContentWrapper>
 
       </Container>

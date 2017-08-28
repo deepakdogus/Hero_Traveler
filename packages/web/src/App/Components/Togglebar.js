@@ -3,8 +3,12 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import {Row} from './FlexboxGrid'
 
+const Container = styled.div`
+  background-color: ${props => props.isClear ? props.theme.Colors.clear : props.theme.Colors.lightGreyAreas};
+`
+
 const StyledRow = styled(Row)`
-  background-color: ${props => props.isClear ? props.theme.Colors.clear : props.theme.Colors.lightGreyAreas}
+  
 `
 
 const TabContainer = styled.div`
@@ -47,9 +51,11 @@ export default class ToggleBar extends React.Component {
 
   render() {
     return (
-      <StyledRow isClear={this.props.isClear} center='xs'>
-        {this.renderTabs()}
-      </StyledRow>
+      <Container {...this.props}>
+        <StyledRow center='xs'>
+          {this.renderTabs()}
+        </StyledRow>        
+      </Container>
     )
   }
 }

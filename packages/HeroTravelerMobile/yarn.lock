@@ -5836,6 +5836,10 @@ react-native-keyboard-spacer@^0.3.1:
   version "0.3.1"
   resolved "https://npm.abeck.io:443/react-native-keyboard-spacer/-/react-native-keyboard-spacer-0.3.1.tgz#9580297ebfd078202dc4c65303d29cda35de67f1"
 
+react-native-keyboard-tracking-view@^3.0.13:
+  version "3.0.13"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-tracking-view/-/react-native-keyboard-tracking-view-3.0.13.tgz#a1eafebbed8300211ee89c19d4c3ca3f75039bc5"
+
 react-native-linear-gradient@^2.0.0:
   version "2.2.0"
   resolved "https://npm.abeck.io:443/react-native-linear-gradient/-/react-native-linear-gradient-2.2.0.tgz#7d9ff9fc3e413079cf3c7354873eaf923145364d"

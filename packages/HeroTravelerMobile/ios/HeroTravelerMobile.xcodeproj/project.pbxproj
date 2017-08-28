@@ -65,6 +65,7 @@
 		D945DCD623FC4A389E074D21 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E66CAAEFA4E4C6D98FA749E /* libRNVectorIcons.a */; };
 		E3D4F96C8FB54656AE42D3D5 /* SourceSansPro-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A1D88382444426887780FA8 /* SourceSansPro-LightItalic.ttf */; };
 		EB0DAD70D1AA43E3B8361B75 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E7E3F32C97249F1B23E8A2E /* libRNFetchBlob.a */; };
+		EF21699D1F4E0147008B3B0A /* libKeyboardTrackingView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EF21696D1F4E0111008B3B0A /* libKeyboardTrackingView.a */; };
 		FA909D0FB0AA4653B3E5FC2E /* SourceSansPro-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 74190A2AFF2947748D244D76 /* SourceSansPro-SemiBold.ttf */; };
 		FDD2E6721A3D430EBA74DC15 /* SourceSansPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2DB883986E93469BBFDD7CC8 /* SourceSansPro-Bold.ttf */; };
 /* End PBXBuildFile section */
@@ -434,6 +435,13 @@
 			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
 			remoteInfo = RCTCamera;
 		};
+		EF21696C1F4E0111008B3B0A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EF2169651F4E0111008B3B0A /* KeyboardTrackingView.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D834CED81CC64F2400FA5668;
+			remoteInfo = KeyboardTrackingView;
+		};
 		EFE44EE91F3CF4BF00003CBA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
@@ -525,6 +533,7 @@
 		EA0D0C081C1A412687636925 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = ../App/Fonts/FontAwesome.ttf; sourceTree = "<group>"; };
 		EC125337EF8B4BA48AC97222 /* SourceSansPro-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Light.ttf"; path = "../App/Fonts/SourceSansPro-Light.ttf"; sourceTree = "<group>"; };
 		EC5A5C1664E34474BEE205DC /* ReactNativeConfig.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeConfig.xcodeproj; path = "../node_modules/react-native-config/ios/ReactNativeConfig.xcodeproj"; sourceTree = "<group>"; };
+		EF2169651F4E0111008B3B0A /* KeyboardTrackingView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KeyboardTrackingView.xcodeproj; path = "../node_modules/react-native-keyboard-tracking-view/lib/KeyboardTrackingView.xcodeproj"; sourceTree = "<group>"; };
 		F75C35009747466FB2B666BB /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
 		F936E8DD8ABC453BAD7F5183 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		FAFFB79A3CCD444C9E204B78 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
@@ -545,6 +554,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EF21699D1F4E0147008B3B0A /* libKeyboardTrackingView.a in Frameworks */,
 				911D144D1F361EBB00F47BF8 /* libAutoGrowTextInput.a in Frameworks */,
 				94A4BD701EB77CFA003B75DD /* libRCTPushNotification.a in Frameworks */,
 				9465AAA71EB0FDC7003109B0 /* GameKit.framework in Frameworks */,
@@ -747,6 +757,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				EF2169651F4E0111008B3B0A /* KeyboardTrackingView.xcodeproj */,
 				911D14471F361E8300F47BF8 /* AutoGrowTextInput.xcodeproj */,
 				94CE749F1ECDE05300E0619D /* AirMaps.xcodeproj */,
 				94A4BD3F1EB77CC7003B75DD /* RCTPushNotification.xcodeproj */,
@@ -989,6 +1000,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		EF2169661F4E0111008B3B0A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EF21696D1F4E0111008B3B0A /* libKeyboardTrackingView.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		F7D3EE7D375646B6151A0CF8 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -1104,6 +1123,10 @@
 				{
 					ProductGroup = 94F381DB1E7CB87E00B0B727 /* Products */;
 					ProjectRef = 035E5819C0324C81AB897963 /* BVLinearGradient.xcodeproj */;
+				},
+				{
+					ProductGroup = EF2169661F4E0111008B3B0A /* Products */;
+					ProjectRef = EF2169651F4E0111008B3B0A /* KeyboardTrackingView.xcodeproj */;
 				},
 				{
 					ProductGroup = 942D12181EB3956400A0CFE5 /* Products */;
@@ -1563,6 +1586,13 @@
 			fileType = archive.ar;
 			path = libRCTCamera.a;
 			remoteRef = 95F7E9541E79D5C8006344FE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		EF21696D1F4E0111008B3B0A /* libKeyboardTrackingView.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libKeyboardTrackingView.a;
+			remoteRef = EF21696C1F4E0111008B3B0A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		EFE44EEA1F3CF4BF00003CBA /* libIQKeyboardManager.a */ = {

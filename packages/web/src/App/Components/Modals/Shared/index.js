@@ -116,7 +116,6 @@ export const MessageContent = styled.p`
 `
 
 export const NotificationContent = styled.p`
-  display: inline;
   font-weight: 400;
   font-size: 16px;
   letter-spacing: .7px;
@@ -126,7 +125,7 @@ export const NotificationContent = styled.p`
 
 export const Timestamp = styled.p`
   font-weight: 400;
-  font-size: 16px;
+  font-size: 12px;
   letter-spacing: .7px;
   margin: 0;
   color: ${props => props.theme.Colors.grey};

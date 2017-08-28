@@ -10,7 +10,6 @@ import {randomDate} from './Shared/RandomDate'
 const Container = styled.div``
 
 const UserMessageRowsContainer = styled.div`
-  padding: 25px;
 `
 
 export default class Inbox extends React.Component {

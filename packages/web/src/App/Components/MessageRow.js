@@ -9,14 +9,23 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import Avatar from './Avatar'
 import HorizontalDivider from './HorizontalDivider'
 import {
-  StyledVerticalCenter,
   UserName,
   MessageContent,
   Timestamp,
 } from './Modals/Shared'
 
 const Container = styled.div`
-  margin: ${props => props.margin ? props.margin : '0'};
+  padding: 20px 30px;
+`
+const TimestampContainer = styled(VerticalCenter)`
+  justify-content: flex-start;
+  margin-top: 10px;
+`
+
+const TextContainer = styled(VerticalCenter)`
+  justify-content: flex-start;
+  margin-left: 20px;
+  margin-top: 10px;
 `
 
 const InteractiveContainer = styled.div`
@@ -48,33 +57,33 @@ export default class MessageRow extends Component {
     const {user} = this.props
     const messageText = this.props.message ? this.props.message : 'Lorum Ipsum'
     return (
-      <StyledVerticalCenter>
+      <TextContainer>
         <UserName>{user.username}</UserName>
         <MessageContent>{messageText}</MessageContent>
-      </StyledVerticalCenter>
+      </TextContainer>
     )
   }
 
 
   renderTimestamp = () => {
     return (
-      <VerticalCenter>
+      <TimestampContainer>
         <Timestamp margin='none' width='50px' >{moment(this.props.timestamp).fromNow()}</Timestamp>
-      </VerticalCenter>
+      </TimestampContainer>
     )
   }
 
   render() {
     return (
       <InteractiveContainer>
-        <Container margin={this.props.margin}>
+        <Container>
           <SpaceBetweenRowWithTimeStamp
             renderImage={this.renderImage}
             renderText={this.renderText}
             renderTimestamp={this.renderTimestamp}
           />
-          <StyledHorizontalDivider color='light-grey'/>
         </Container>        
+        <StyledHorizontalDivider color='light-grey'/>
       </InteractiveContainer>
     )
   }

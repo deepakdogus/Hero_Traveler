@@ -11,7 +11,6 @@ import {randomDate} from './Shared/RandomDate'
 const Container = styled.div``
 
 const NotificationRowsContainer = styled.div`
-  padding: 25px;
 `
 
 const notificationTypes = [
@@ -58,7 +57,6 @@ export default class Notifications extends React.Component {
           trip={tripsExampleSliced[index]}
           isTrip={notificationTypes[index].isTrip}
           timestamp={randomDate(new Date(2017,7,1), new Date())}
-          margin='0 0 25px'
         />
       )
     })

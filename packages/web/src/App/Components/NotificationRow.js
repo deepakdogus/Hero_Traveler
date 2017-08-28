@@ -9,15 +9,24 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import Avatar from './Avatar'
 import HorizontalDivider from './HorizontalDivider'
 import {
-  StyledVerticalCenter,
   UserName,
   CommentContent,
   NotificationContent,
   Timestamp,
 } from './Modals/Shared'
+import {Row} from './FlexboxGrid'
 
 const Container = styled.div`
-  margin: ${props => props.margin ? props.margin : '0'};
+  padding: 25px;
+`
+
+const StyledUserName = styled(UserName)`
+  font-size: 16px;
+`
+
+const StyledTimestamp = styled(Timestamp)`
+  font-size: 12px;
+  margin-top: -8px;
 `
 
 const InteractiveContainer = styled.div`
@@ -51,11 +60,13 @@ export default class MessageRow extends Component {
   renderText = () => {
     const {user} = this.props
     return (
-      <StyledVerticalCenter>
-        <UserName>{user.username}</UserName>
-        <NotificationContent>{this.props.notification}</NotificationContent>
-        <CommentContent>{this.props.comment}</CommentContent>
-      </StyledVerticalCenter>
+      <VerticalCenter>
+        <Row>
+          <StyledUserName>{user.username}</StyledUserName>
+          <NotificationContent>{this.props.notification}</NotificationContent>          
+        </Row>
+        {this.props.comment ? <CommentContent>{this.props.comment}</CommentContent> : null }
+      </VerticalCenter>
     )
   }
 
@@ -63,7 +74,7 @@ export default class MessageRow extends Component {
   renderTimestamp = () => {
     return (
       <VerticalCenter>
-        <Timestamp margin='none' width='50px' >{moment(this.props.timestamp).fromNow()}</Timestamp>
+        <StyledTimestamp margin='none' width='50px' >{moment(this.props.timestamp).fromNow()}</StyledTimestamp>
       </VerticalCenter>
     )
   }

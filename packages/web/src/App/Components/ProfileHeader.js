@@ -140,7 +140,7 @@ export default class StoryHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'notificationsThread' }
+    this.state = {modal: 'inbox' }
   }
 
   closeModal = () => {

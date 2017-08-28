@@ -7,6 +7,11 @@ import {Row, Col} from './FlexboxGrid'
 const Left = styled(Row)``
 const Right = styled(Row)``
 
+const StyledCol = styled(Col)`
+  margin-top: 8px;
+  margin-left: 14px;
+`
+
 // this Component should only be used for horizontal placement
 export default class SpaceBetweenRowWithTimeStamp extends Component {
   static propTypes = {
@@ -21,19 +26,16 @@ export default class SpaceBetweenRowWithTimeStamp extends Component {
     return (
       <Row between='xs'>
         <Left>
-          <Col>
-            {renderImage()}
-          </Col>
-          <Col>
-            <Row>
-              {renderText()}
-            </Row>
+          {renderImage()}
+          <StyledCol>
+            {renderText()}
+            <br/>
             {renderTimestamp()}
-          </Col>
-        </Left>
+          </StyledCol>
+        </Left>  
         <Right>
-          {renderTripImage()}
-        </Right>
+          {renderTripImage()}      
+        </Right>    
       </Row>
     )
   }

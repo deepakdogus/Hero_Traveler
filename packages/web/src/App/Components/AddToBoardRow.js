@@ -16,13 +16,22 @@ const Container = styled.div`
 
 `
 
+const InteractiveContainer = styled.div`
+  &:hover ${Container} {
+    background-color: ${props => props.theme.Colors.onHoverGrey};
+  }
+`
+const StyledHorizontalDivider = styled(HorizontalDivider)`
+  margin: 0;
+`
+
 const StyledImage = styled.img`
   width: 80px;
   height: 110px;
 `
 
 const CategoriesContainer = styled(Container)`
-  padding: 0px 30px;
+  padding: 10px 30px 6px;
 `
 
 const styles = {
@@ -87,8 +96,8 @@ export default class AddToBoardRow extends Component {
 
   render() {
     return (
-      <Container>
-        {this.props.index < 1 ? <HorizontalDivider color='light-grey'/> : null}
+      <InteractiveContainer>
+        {this.props.index < 1 ? <StyledHorizontalDivider color='light-grey'/> : null}
         <CategoriesContainer margin={this.props.margin}>
           <SpaceBetweenRowWithButton
             renderImage={this.renderImage}
@@ -96,8 +105,8 @@ export default class AddToBoardRow extends Component {
             renderButton={this.renderButton}
           />
         </CategoriesContainer>
-        <HorizontalDivider color='light-grey'/>        
-      </Container>
+        <StyledHorizontalDivider color='light-grey'/>        
+      </InteractiveContainer>
     )
   }
 }

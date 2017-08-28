@@ -20,6 +20,15 @@ const Container = styled.div`
   margin: ${props => props.margin ? props.margin : '0'};
 `
 
+const InteractiveContainer = styled.div`
+  &:hover ${Container} {
+    background-color: ${props => props.theme.Colors.onHoverGrey};
+  }
+`
+const StyledHorizontalDivider = styled(HorizontalDivider)`
+  margin: 0;
+`
+
 export default class MessageRow extends Component {
   static propTypes = {
     notification: PropTypes.string,
@@ -71,15 +80,17 @@ export default class MessageRow extends Component {
 
   render() {
     return (
-      <Container margin={this.props.margin}>
-        <SpaceBetweenRowWithTripImage
-          renderImage={this.renderImage}
-          renderText={this.renderText}
-          renderTimestamp={this.renderTimestamp}
-          renderTripImage={this.renderTripImage}
-        />
-        <HorizontalDivider color='light-grey'/>
-      </Container>
+      <InteractiveContainer>
+        <Container margin={this.props.margin}>
+          <SpaceBetweenRowWithTripImage
+            renderImage={this.renderImage}
+            renderText={this.renderText}
+            renderTimestamp={this.renderTimestamp}
+            renderTripImage={this.renderTripImage}
+          />
+        </Container>
+        <StyledHorizontalDivider color='light-grey'/>        
+      </InteractiveContainer>
     )
   }
 }

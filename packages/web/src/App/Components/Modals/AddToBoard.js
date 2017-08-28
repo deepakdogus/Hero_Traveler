@@ -15,7 +15,7 @@ const CategoryRowsContainer = styled.div`
 
 `
 const CreateContainer = styled.div`
-  padding: 9px 30px 0px 30px;
+  padding: 9px 30px 8px 30px;
 `
 const CreateIconContainer = styled(VerticalCenter)`
   background-color: ${props => props.theme.Colors.pink};

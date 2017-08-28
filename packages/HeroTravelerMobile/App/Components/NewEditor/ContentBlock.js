@@ -45,7 +45,7 @@ export default class NewTextBlock extends PureComponent {
   }
 
   componentWillUpdate(nextProps) {
-    if (!this.input.isFocused() && nextProps.isSelected) {
+    if (!this.input.isFocused() && nextProps.isSelected && !this.props.isSelected) {
       this.input.focus()
     }
   }
@@ -55,10 +55,10 @@ export default class NewTextBlock extends PureComponent {
     if the selection has not changed since last focus
    */
   onFocus = () => {
+    this.props.onFocus(this.props.block.key)
     if (!this.selectionChangeFired && this.lastSelectionChange) {
       const {selection, isSelected} = this.props
       let start, end
-
       if (isSelected && selection.getAnchorOffset() !== this.lastSelectionChange) {
         start = selection.getAnchorOffset()
         end = selection.getFocusOffset()
@@ -79,6 +79,7 @@ export default class NewTextBlock extends PureComponent {
   // Reset this.selectionChangeFired so next focus at the last saved
   // cursor position fires a selection change event
   onBlur = (e) => {
+    this.props.onFocus("")
     this.selectionChangeFired = false
   }
 
@@ -247,8 +248,8 @@ export default class NewTextBlock extends PureComponent {
 
   render() {
     const text = this.getText()
-    const {selection} = this.props
-    const inputSelection = this.props.isSelected ?
+    const {selection , isSelected, isFocused} = this.props
+    const inputSelection = isSelected ?
       {start: selection.getAnchorOffset(), end: selection.getFocusOffset()} : undefined
     return (
       <View style={[
@@ -267,7 +268,6 @@ export default class NewTextBlock extends PureComponent {
               styles.input,
               this.isCaptionable() && styles.placeholderStyle,
             ]}
-            placeholder={this.getPlaceholder()}
             onLayout={this.onLayout}
             placeholderTextColor={'#757575'}
             autoFocus={this.props.autoFocus}
@@ -285,6 +285,12 @@ export default class NewTextBlock extends PureComponent {
                 this.getTypeStyles()
               ]}>
                 {text}
+              </Text>
+            }
+            {this.isTextBlank() && !isFocused &&
+              // placeholder is here instead of as an AutoGrowingTextInput prop in order to properly center
+              <Text>
+                {this.getPlaceholder()}
               </Text>
             }
           </AutoGrowingTextInput>

@@ -107,7 +107,7 @@ export default class NewTextBlock extends PureComponent {
   }
 
   onDelete = () => {
-    this.props.onDelete(this.props.blockKey)
+    this.props.onDelete(this.props.block.key)
   }
 
   toggleImageFocus = () => {
@@ -179,6 +179,7 @@ export default class NewTextBlock extends PureComponent {
                 autoPlayVideo={false}
                 showMuteButton={false}
                 showPlayButton={true}
+                playButtonSize={'small'}
                 videoFillSpace={true}
               />
               {this.state.isImageFocused && videoEditOverlay}

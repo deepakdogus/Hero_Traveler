@@ -165,8 +165,8 @@ export default class Editor extends Component {
     const selectedBlockKey = this.state.editorState.getSelection().getAnchorKey()
     let lastBlockKey = getLastBlockKey(this.state.editorState)
 
-    // If no input is focused, insert image at the end of the content state
-    if (!selectedBlockKey) {
+    // If no input has yet been focused, insert image at the end of the content state
+    if (this.state.focusedBlock === undefined) {
       insertAfterKey = lastBlockKey
     } else {
       insertAfterKey = selectedBlockKey

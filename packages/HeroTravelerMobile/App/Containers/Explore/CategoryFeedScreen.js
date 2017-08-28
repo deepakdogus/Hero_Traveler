@@ -134,6 +134,7 @@ class CategoryFeedScreen extends React.Component {
                   onPress={() => NavActions.story({storyId})}
                   onPressUser={this._touchUser}
                   onPressLike={story => this.props.toggleLike(this.props.user.id, story.id)}
+                  showPlayButton
                 />
               )
             }}

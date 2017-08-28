@@ -7,7 +7,7 @@ import {
 } from 'react-native'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import {Colors} from '../../Themes'
+import {Colors, Metrics} from '../../Themes'
 import * as DJSConsts from './draft-js/constants'
 
 const ToolbarIcon = ({name, color, extraStyle = {}}) => {
@@ -102,12 +102,10 @@ export default class Toolbar extends React.Component {
   }
 }
 
-const TOOLBAR_HEIGHT = 50
-
 const styles = StyleSheet.create({
   root: {
     backgroundColor: 'white',
-    height: TOOLBAR_HEIGHT,
+    height: Metrics.editorToolbarHeight,
     borderTopColor: '#dedede',
     borderTopWidth: 1,
     flexDirection: 'row'
@@ -117,7 +115,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'stretch',
-    height: TOOLBAR_HEIGHT,
+    height: Metrics.editorToolbarHeight,
   },
   btn: {
     flex: 1,

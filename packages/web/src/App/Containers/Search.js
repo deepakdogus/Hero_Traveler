@@ -1,17 +1,11 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import Togglebar from '../Components/Togglebar'
 import TextButton from '../Components/TextButton'
+import SearchResultsPeople from '../Components/SearchResultsPeople'
+import SearchResultsStories from '../Components/SearchResultsStories'
 
-const togglebarTabs = [
-  { text: 'stories', isActive: true },
-  { text: 'people', isActive: false },
-]
-
-const StyledTogglebar = styled(Togglebar)`
-  background-color: ${props => props.theme.Colors.clear}
-`
+import {feedExample, usersExample} from './Feed_TEST_DATA'
 
 const Container = styled.div``
 
@@ -32,7 +26,6 @@ const HeaderInput = styled.input`
   color: ${props => props.theme.Colors.signupGrey} 
 `
 
-
 const ContentWrapper = styled.div`
   max-width: 800px;
   margin: 0 auto;
@@ -44,18 +37,15 @@ const StyledTextButton = styled(TextButton)`
   top: 227px;
 `
 
-
-
-
 class Search extends Component {
-
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {showPeopleResults: false}
   }
 
-
-
+  toggleSearchResultTabs = () => {
+    this.setState({showPeopleResults: !this.state.showPeopleResults})
+  }
 
 
   render() {
@@ -70,7 +60,10 @@ class Search extends Component {
           />
         </HeaderInputContainer>
         <ContentWrapper>
-          <StyledTogglebar tabs={togglebarTabs} isClear={true}/>
+        {this.state.showPeopleResults
+        ? <SearchResultsPeople toggleSearchResultTabs={this.toggleSearchResultTabs}/>
+        : <SearchResultsStories toggleSearchResultTabs={this.toggleSearchResultTabs}/>
+        }
         </ContentWrapper>
 
       </Container>

@@ -13,6 +13,7 @@ const StyledRow = styled(Row)`
 
 const TabContainer = styled.div`
   padding: 0px 10px;
+  cursor: pointer;
 `
 
 const TabText = styled.p`

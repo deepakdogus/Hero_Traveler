@@ -146,7 +146,7 @@ export default class FeedHeader extends React.Component {
         size='large'
         type='profile'
       >
-        <Header ></Header>
+        <Header isLoggedIn></Header>
         <Centered>
           <Username>{user.username}</Username>
           <StyledHorizontalDivider />

@@ -31,7 +31,6 @@ const More = styled(CenteredText)`
 
 class Feed extends Component {
   render() {
-    const {match} = this.props
     const user = usersExample['596cd072fc3f8110a6f18342']
     const usersStories = Object.keys(feedExample).reduce((matchingStories, key) => {
       const story = feedExample[key]

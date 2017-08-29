@@ -4,9 +4,6 @@ import {Route, BrowserRouter as Router} from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 import themes from '../Shared/Themes'
-import background from '../Shared/Images/BG.png'
-import Header from '../Components/Header'
-import HeaderImageWrapper from '../Components/HeaderImageWrapper'
 
 import Explore from './Explore'
 import Feed from './Feed'

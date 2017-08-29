@@ -8,6 +8,8 @@ function getSize(props) {
   switch(props.size) {
     case 'small':
       return '15px'
+    case 'mediumSmall':
+      return '18px'
     case 'medium':
       return '50px'
     case 'large':

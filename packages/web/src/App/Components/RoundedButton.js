@@ -34,6 +34,8 @@ function getBackgroundColor (type, colors) {
     case 'twitter':
     case 'lightGrey':
       return colors.snow
+    case 'headerButton':
+      return colors.headerButtonBackgroundTint
     default:
       return colors.red
   }
@@ -60,6 +62,8 @@ const StyledButton = styled.button`
         return props.theme.Colors.snow
       case 'blackWhite':
         return props.theme.Colors.photoOverlay
+      case 'headerButton':
+        return props.theme.Colors.navBarText 
       default:
         return props.theme.Colors.red
     }

@@ -98,6 +98,11 @@ const StyledRoundedAvatarButton = styled(RoundedButton)`
   margin-right: 20px;
 `
 
+const StyledRoundedLoginButton = styled(RoundedButton)`
+  margin-left: 10px;
+  margin-right: 20px;
+`
+
 const MenuLink = (props) => {
   return (
     <NavLink
@@ -184,19 +189,24 @@ export default class Header extends React.Component {
           </Col>
           }
           {!isLoggedIn &&
-          <Col xsOffset={1} lg={4}>
-            <MenuLink to='/' exact>
-              Explore
-            </MenuLink>          
-            <MenuLink to='/signup/topics'>
-              Signup (topics)
-            </MenuLink>
-            <MenuLink to='/signup/social'>
-              Signup (social)
-            </MenuLink>
-            <MenuLink to='/story/596775b90d4bb70010e2a5f8'>
-              Story
-            </MenuLink>
+          <Col lg={5}>
+            <Row middle="xs">
+              <MenuLink to='/' exact>
+                Explore
+              </MenuLink>
+              <Divider>&nbsp;</Divider>          
+              <MenuLink to='/signup/topics'>
+                Signup (topics)
+              </MenuLink>
+              <Divider>&nbsp;</Divider>
+              <MenuLink to='/signup/social'>
+                Signup (social)
+              </MenuLink>
+              <Divider>&nbsp;</Divider>
+              <MenuLink to='/story/596775b90d4bb70010e2a5f8'>
+                Story
+              </MenuLink>           
+            </Row>          
           </Col>            
           }
           {isLoggedIn &&
@@ -241,14 +251,18 @@ export default class Header extends React.Component {
           }
           {!isLoggedIn &&
           <Col xsOffset={3} lg={2}>
-            <Row end='xs'>
-              <StyledRoundedButton type={'opaque'}>
-                <Icon name='explore' />
+            <Row end='xs' middle='xs'>
+              <StyledRoundedButton 
+                type='headerButton' 
+                height='32px' 
+                width='32px'
+              >
+                <SearchIcon name='explore' />
               </StyledRoundedButton>
               <Divider>&nbsp;</Divider>
-              <StyledRoundedButton
+              <StyledRoundedLoginButton
                 text='Login'
-                onClick={this.openLoginModal}
+                onClick={this.openLoginModal}        
               />
             </Row>
           </Col>

@@ -35,7 +35,7 @@ export default class ExploreHeader extends React.Component {
         size='large'
         type='profile'
       >
-        <Header isLoggedIn></Header>
+        <Header ></Header>
       </OpaqueHeaderImageWrapper>
     )
   }

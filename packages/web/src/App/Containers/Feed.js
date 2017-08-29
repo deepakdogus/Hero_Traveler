@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import StoryList from '../Components/StoryList'
+import FeedHeader from '../Components/FeedHeader'
 import {feedExample, usersExample} from './Feed_TEST_DATA'
 import Footer from '../Components/Footer';
 
@@ -17,6 +18,8 @@ const FeedText = styled(CenteredText)`
   letter-spacing: 1.5px;
 `
 
+const Wrapper = styled.div``
+
 const ContentWrapper = styled.div`
   margin: 0 7%;
 `
@@ -28,17 +31,28 @@ const More = styled(CenteredText)`
 
 class Feed extends Component {
   render() {
+    const {match} = this.props
+    const user = usersExample['596cd072fc3f8110a6f18342']
+    const usersStories = Object.keys(feedExample).reduce((matchingStories, key) => {
+      const story = feedExample[key]
+      if (story.author === user.id) matchingStories[key] = story;
+      return matchingStories
+    }, {})
+    const isContributor = Object.keys(usersStories).length > 0    
     return (
-      <ContentWrapper>
-        <FeedText>MY FEED</FeedText>
-        <StoryList
-          stories={feedExample}
-          users={usersExample}
-        />
-        <More>SHOW MORE</More>
-        <More>Need downwards black arrow</More>
-        <Footer />
-      </ContentWrapper>
+      <Wrapper>
+        <FeedHeader user={user} isContributor={isContributor}/>      
+        <ContentWrapper>
+          <FeedText>MY FEED</FeedText>
+          <StoryList
+            stories={feedExample}
+            users={usersExample}
+          />
+          <More>SHOW MORE</More>
+          <More>Need downwards black arrow</More>
+          <Footer />
+        </ContentWrapper>
+      </Wrapper>
     )
   }
 }

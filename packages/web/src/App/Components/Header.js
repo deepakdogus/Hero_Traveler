@@ -125,19 +125,33 @@ export default class Header extends React.Component {
             <Logo src={logo} alt={'Hero Traveler Logo'}/>
           </Col>
           <Col xs>
-            <MenuLinkContainer>
+            <MenuLinkContainer>\
+              {isLoggedIn &&
+              <MenuLink to='/feed' exact>
+                My Feed
+              </MenuLink>
+              }
+              {isLoggedIn &&
+              <Divider>&nbsp;</Divider>
+              }
               <MenuLink to='/' exact>
                 Explore
               </MenuLink>
-              <MenuLink to='/signup/topics'>
-                Signup (topics)
-              </MenuLink>
-              <MenuLink to='/signup/social'>
-                Signup (social)
-              </MenuLink>
-              <MenuLink to='/story/596775b90d4bb70010e2a5f8'>
-                Story
-              </MenuLink>
+              {!isLoggedIn &&
+                <MenuLink to='/signup/topics'>
+                  Signup (topics)
+                </MenuLink>
+              }
+              {!isLoggedIn &&
+                <MenuLink to='/signup/social'>
+                  Signup (social)
+                </MenuLink>
+              }
+              {!isLoggedIn &&
+                <MenuLink to='/story/596775b90d4bb70010e2a5f8'>
+                  Story
+                </MenuLink>
+              }                            
             </MenuLinkContainer>
           </Col>
           <Col xs>

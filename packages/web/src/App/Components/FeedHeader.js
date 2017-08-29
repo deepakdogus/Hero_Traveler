@@ -15,6 +15,8 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import FollowFollowing from './Modals/FollowFollowing'
 import ProfileStats from './Modals/ProfileStats'
 
+import background from '../Shared/Images/create-story.png'
+
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   &:after {
     content: '';
@@ -117,7 +119,7 @@ const ContributorText = styled.p`
   line-height: 25px;
 `
 
-export default class ProfileHeader extends React.Component {
+export default class FeedHeader extends React.Component {
   static propTypes = {
     user: PropTypes.object,
     isContributor: PropTypes.bool,
@@ -135,7 +137,7 @@ export default class ProfileHeader extends React.Component {
   render () {
     const {user, isContributor} = this.props
     const isUsersProfile = user.id === '596cd072fc3f8110a6f18342'
-    const backgroundImage = getImageUrl(user.profile.cover)
+    const backgroundImage = background || getImageUrl(user.profile.cover)
     const ImageWrapper = backgroundImage ? OpaqueHeaderImageWrapper : HeaderImageWrapper
     const isFollowing = user.id === '590b9b0a4990800011537924'
     return (

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import moment from 'moment'
-import {NavLink} from 'react-router-dom';
+import {NavLink} from 'react-router-dom'
 
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import getVideoUrl from '../Shared/Lib/getVideoUrl'
@@ -11,6 +11,7 @@ import Avatar from './Avatar'
 import Header from './Header'
 import RoundedButton from './RoundedButton'
 import HeaderImageWrapper from './HeaderImageWrapper'
+import FeedCarousel from './FeedCarousel'
 import VerticalCenter from './VerticalCenter'
 import {Row} from './FlexboxGrid';
 import HorizontalDivider from './HorizontalDivider'
@@ -59,7 +60,7 @@ const Centered = styled(VerticalCenter)`
   height: 100vh;
   top:0;
   text-align:center;
-  z-index: 1;
+  z-index: 100;
 `
 
 const StyledHorizontalDivider = styled(HorizontalDivider)`
@@ -72,6 +73,17 @@ const StyledRoundedButton = styled(RoundedButton)`
   align-self: center;
   margin: 25px;
   letter-spacing: 1.5px;
+  outline: none;
+`
+
+const StyledHeaderImageWrapper = styled(HeaderImageWrapper)`
+  max-height: 570px;
+`
+
+const StyledVideo = styled(Video)`
+  height: 570px;
+  position: relative;
+  z-index: -1;
 `
 
 export default class FeedHeader extends React.Component {
@@ -87,35 +99,75 @@ export default class FeedHeader extends React.Component {
     return undefined
   }
 
-  render () {
-  const story = this.props.stories["596775b90d4bb70010e2a5f8"]
-  const {author} = this.props    
-
-  console.log("stories: ", this.props.stories)
-    return (
-      <HeaderImageWrapper
-        backgroundImage={getImageUrl(story.coverImage)}
-        size='fullScreen'
-        type='story'
-      >
-        <Header isLoggedIn></Header>
-        <Centered>
-          <VerticalCenter>
-            <Title mediaType={this.getMediaType(story)}>{story.title}</Title>
-            <StyledHorizontalDivider />
-            <Subtitle>{story.description}</Subtitle>
-            {story.coverVideo &&
-              <Video src={getVideoUrl(story.coverVideo)} type='cover'/>
-            }
+  renderSlides(stories) {
+    const storyKeys = Object.keys(stories);    
+    return storyKeys.map((key, index) => {
+      const story = stories[key]
+      if(this.getMediaType(story) === 'video'){
+        return (
+        <div key={key}>
+          <StyledVideo 
+          src={getVideoUrl(story.coverVideo)}
+          type='preview'
+          noControls={true}
+          />
+          <Centered>
+            <VerticalCenter>
+              <Title mediaType='video'>{story.title}</Title>
+              <StyledHorizontalDivider />
+              <Subtitle>{story.description}</Subtitle>
               <StyledRoundedButton
                 type='myFeedHeaderButton'
                 padding='even'
                 text='READ MORE'
                 width='168px'
                 height='50px'
-              />
-          </VerticalCenter>
-        </Centered>
+              />              
+            </VerticalCenter>
+          </Centered>          
+        </div>
+          )
+      }
+      return (
+        <div key={key}>
+          <img
+            src={getImageUrl(story.coverImage)}
+            alt='HeroCover'
+            height='570px'
+            width='100%'
+          />
+          <Centered>
+            <VerticalCenter>
+              <Title mediaType='image'>{story.title}</Title>
+              <StyledHorizontalDivider />
+              <Subtitle>{story.description}</Subtitle>
+              <StyledRoundedButton
+                type='myFeedHeaderButton'
+                padding='even'
+                text='READ MORE'
+                width='168px'
+                height='50px'
+              />              
+            </VerticalCenter>
+          </Centered>          
+        </div>  
+        )
+    })
+  }
+
+  render () {
+  const story = this.props.stories["596775b90d4bb70010e2a5f8"]
+  const {author} = this.props    
+
+    return (
+      <StyledHeaderImageWrapper
+        size='fullScreen'
+        type='story'
+      >
+        <Header isLoggedIn></Header>
+        <FeedCarousel>
+          {this.renderSlides(this.props.stories)}
+        </FeedCarousel>        
         <BottomContainer center="xs">
           <ProfileLink to={`/profile/${author.id}`}>
             <Avatar
@@ -124,11 +176,10 @@ export default class FeedHeader extends React.Component {
             />
           </ProfileLink>
           <VerticalCenter>
-            <AuthorTime>By {author.username} | {moment(story.createdAt).format('MMMM Do YYYY')}</AuthorTime>
-            <p style={{color: 'white'}}>DOWN ARROW</p>
+            <AuthorTime>&nbsp;By {author.username} | {moment(story.createdAt).format('MMMM Do YYYY')}</AuthorTime>
           </VerticalCenter>
         </BottomContainer>
-      </HeaderImageWrapper>
+      </StyledHeaderImageWrapper>
     )
   }
 }

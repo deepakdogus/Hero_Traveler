@@ -5,6 +5,7 @@
   "dependencies": {
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
+    "nuka-carousel": "^2.2.1",
     "numeral": "^2.0.6",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",

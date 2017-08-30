@@ -32,6 +32,7 @@ const StyledIcon = styled.img`
 export default class Icon extends React.Component {
 	static propTypes = {
     name: PropTypes.string,
+    size: PropTypes.string,
   }
 
 	getIconName(navKey) {

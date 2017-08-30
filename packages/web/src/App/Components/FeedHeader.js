@@ -1,219 +1,134 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import moment from 'moment'
+import {NavLink} from 'react-router-dom';
+
+import getImageUrl from '../Shared/Lib/getImageUrl'
+import getVideoUrl from '../Shared/Lib/getVideoUrl'
 
 import Avatar from './Avatar'
 import Header from './Header'
-import {Row} from './FlexboxGrid'
+import RoundedButton from './RoundedButton'
 import HeaderImageWrapper from './HeaderImageWrapper'
 import VerticalCenter from './VerticalCenter'
+import {Row} from './FlexboxGrid';
 import HorizontalDivider from './HorizontalDivider'
-import RoundedButton from './RoundedButton'
-import RightModal from './RightModal'
-import Icon from './Icon'
-import getImageUrl from '../Shared/Lib/getImageUrl'
-import FollowFollowing from './Modals/FollowFollowing'
-import ProfileStats from './Modals/ProfileStats'
+import Video from './Video'
 
-import background from '../Shared/Images/create-story.png'
-
-const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
-  &:after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    opacity: 1;
-    background: rgba(0, 0, 0, .3);
-  }
+const ProfileLink = styled(NavLink)`
+  text-decoration: none;
+  color: inherit;
 `
 
-const Username = styled.p`
+const Title = styled.p`
   font-weight: 400;
-  font-size: 30px;
+  font-size: ${props => props.mediaType === 'video' ? '30px' : '65px'};
   color: ${props => props.theme.Colors.snow};
   letter-spacing: 1.5px;
   text-transform: uppercase;
   margin: 0;
 `
 
-const ItalicText = styled.p`
+const Subtitle = styled.p`
   font-weight: 400;
-  font-size: 18px;
+  font-size: 23px;
   color: ${props => props.theme.Colors.snow};
   letter-spacing: .5px;
   font-style: italic;
-  margin: 0;
+  margin: 0 0 10px 0;
+`
+
+const BottomContainer = styled(Row)`
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 1;
+`
+
+const AuthorTime = styled.div`
+  font-weight: 400;
+  font-size: 18px;
+  color: ${props => props.theme.Colors.snow};
+  letter-spacing: .7px;
 `
 
 const Centered = styled(VerticalCenter)`
   position: absolute;
   width: 100vw;
-  height: 630px;
+  height: 100vh;
   top:0;
   text-align:center;
-  z-index: 2;
-`
-
-const Count = styled.p`
-  margin: 0;
-  font-weight: 400;
-  font-size: 23px;
-  color ${props => props.theme.Colors.snow};
-  letter-spacing: 1.5px;
-`
-
-const CountLabel = styled.p`
-  margin: 0;
-  font-weight: 400;
-  font-size: 13px;
-  color ${props => props.theme.Colors.lightGrey};
-  letter-spacing: 1.5px;
-`
-
-const StyledHorizontalDivider = styled(HorizontalDivider)`
-  width: 72px;
-  border-width: 1px 0 0 0;
-`
-
-const StyledAvatar = styled(Avatar)`
-  margin: 0 auto;
-`
-
-const AvatarWrapper = styled.div`
-  margin: 25px 0;
-`
-
-const Divider = styled.div`
-  width: 1px;
-  background-color: ${props => props.theme.Colors.snow};
-  margin: 0 20px;
-`
-
-const CountWrapper = styled(Row)`
-  margin-top: 25px !important;
-`
-
-const CountItemWrapper = styled.div``
-
-const ButtonWrapper = styled.div`
-  margin-top: 25px;
-`
-
-const BottomLeft = styled.div`
-  position: absolute;
-  left: 20px;
-  bottom: 20px;
   z-index: 1;
 `
 
-const ContributorText = styled.p`
-  font-weight: 400;
-  font-size: 12px;
-  color: ${props => props.theme.Colors.snow};
-  letter-spacing: 1px;
-  margin: 0;
-  padding-left: 10px;
-  line-height: 25px;
+const StyledHorizontalDivider = styled(HorizontalDivider)`
+  width: 65px;
+  border-width: 1px 0 0 0;
+`
+
+const StyledRoundedButton = styled(RoundedButton)`
+  border: 2px solid white;
+  align-self: center;
+  margin: 25px;
+  letter-spacing: 1.5px;
 `
 
 export default class FeedHeader extends React.Component {
   static propTypes = {
-    user: PropTypes.object,
-    isContributor: PropTypes.bool,
+    stories: PropTypes.object,
+    author: PropTypes.object,
+
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {modal: undefined}
-  }
-
-  closeModal = () => {
-    this.setState({ modal: undefined })
+  getMediaType(story) {
+    if (story.coverImage) return 'image'
+    else if (story.coverVideo)return 'video'
+    return undefined
   }
 
   render () {
-    const {user, isContributor} = this.props
-    const isUsersProfile = user.id === '596cd072fc3f8110a6f18342'
-    const backgroundImage = background || getImageUrl(user.profile.cover)
-    const ImageWrapper = backgroundImage ? OpaqueHeaderImageWrapper : HeaderImageWrapper
-    const isFollowing = user.id === '590b9b0a4990800011537924'
+  const story = this.props.stories["596775b90d4bb70010e2a5f8"]
+  const {author} = this.props    
+
+  console.log("stories: ", this.props.stories)
     return (
-      <ImageWrapper
-        backgroundImage={backgroundImage}
-        size='large'
-        type='profile'
+      <HeaderImageWrapper
+        backgroundImage={getImageUrl(story.coverImage)}
+        size='fullScreen'
+        type='story'
       >
         <Header isLoggedIn></Header>
         <Centered>
-          <Username>{user.username}</Username>
-          <StyledHorizontalDivider />
-          <ItalicText>{user.profile.fullName}</ItalicText>
-          <AvatarWrapper>
-            <StyledAvatar
-              avatarUrl={getImageUrl(user.profile.avatar)}
-              type='profile'
-              size='x-large'
-            />
-          </AvatarWrapper>
-          <ItalicText>Read Bio</ItalicText>
-          <CountWrapper center='xs'>
-            <CountItemWrapper>
-              <Count>{user.counts.followers}</Count>
-              <CountLabel>Followers</CountLabel>
-            </CountItemWrapper>
-            <Divider/>
-            <CountItemWrapper>
-              <Count>{user.counts.following}</Count>
-              <CountLabel>Following</CountLabel>
-            </CountItemWrapper>
-          </CountWrapper>
-          <ButtonWrapper>
-            { isUsersProfile &&
-              <RoundedButton type='opaque' text='EDIT PROFILE'/>
+          <VerticalCenter>
+            <Title mediaType={this.getMediaType(story)}>{story.title}</Title>
+            <StyledHorizontalDivider />
+            <Subtitle>{story.description}</Subtitle>
+            {story.coverVideo &&
+              <Video src={getVideoUrl(story.coverVideo)} type='cover'/>
             }
-            {
-              !isUsersProfile &&
-              <div>
-                <RoundedButton
-                  margin='small'
-                  type={isFollowing ? 'opaqueWhite' : 'opaque'}
-                  text={isFollowing ? 'FOLLOWING' : 'FOLLOW'}
-                />
-                <RoundedButton
-                  margin='small'
-                  type='opaque'
-                  text='MESSAGE'/>
-              </div>
-            }
-          </ButtonWrapper>
+              <StyledRoundedButton
+                type='myFeedHeaderButton'
+                padding='even'
+                text='READ MORE'
+                width='168px'
+                height='50px'
+              />
+          </VerticalCenter>
         </Centered>
-        <BottomLeft>
-          {isContributor &&
-            <Row>
-              <Icon name='profileBadge'/>
-              <ContributorText>CONTRIBUTOR</ContributorText>
-            </Row>
-          }
-        </BottomLeft>
-
-        <RightModal
-          isOpen={this.state.modal === 'followedBy'}
-          contentLabel='Follewed By Modal'
-          onRequestClose={this.closeModal}
-        >
-          <FollowFollowing profile={user}/>
-        </RightModal>
-        <RightModal
-          isOpen={this.state.modal === 'stats'}
-          contentLabel='Follewed By Modal'
-          onRequestClose={this.closeModal}
-        >
-          <ProfileStats profile={user}/>
-        </RightModal>
-      </ImageWrapper>
+        <BottomContainer center="xs">
+          <ProfileLink to={`/profile/${author.id}`}>
+            <Avatar
+              avatarUrl={getImageUrl(author.profile.avatar)}
+              size='medium'
+            />
+          </ProfileLink>
+          <VerticalCenter>
+            <AuthorTime>By {author.username} | {moment(story.createdAt).format('MMMM Do YYYY')}</AuthorTime>
+            <p style={{color: 'white'}}>DOWN ARROW</p>
+          </VerticalCenter>
+        </BottomContainer>
+      </HeaderImageWrapper>
     )
   }
 }

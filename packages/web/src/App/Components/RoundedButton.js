@@ -36,6 +36,8 @@ function getBackgroundColor (type, colors) {
       return colors.snow
     case 'headerButton':
       return colors.headerButtonBackgroundTint
+    case 'myFeedHeaderButton':
+      return colors.myFeedButtonBackgroundTint
     default:
       return colors.red
   }
@@ -64,6 +66,8 @@ const StyledButton = styled.button`
         return props.theme.Colors.photoOverlay
       case 'headerButton':
         return props.theme.Colors.navBarText 
+      case 'myFeedHeaderButton':
+        return props.theme.Colors.snow
       default:
         return props.theme.Colors.red
     }

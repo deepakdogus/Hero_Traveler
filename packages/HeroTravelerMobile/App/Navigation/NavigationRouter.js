@@ -29,6 +29,7 @@ import ChangePasswordScreen from '../Containers/ChangePasswordScreen'
 
 
 // Story reading & creating
+import StoryCreateTabIcon from '../Containers/CreateStory/StoryCreateTabIcon'
 import StoryReadingScreen from '../Containers/StoryReadingScreen'
 import StoryCommentsScreen from '../Containers/StoryCommentsScreen'
 import StoryCreateScreen from '../Containers/CreateStory/1_CreateStoryScreen'
@@ -59,6 +60,11 @@ const darkNavBarProps = {
   rightButtonTextStyle: Styles.navText,
   leftButtonIconStyle: Styles.navBarBack,
   rightButtonIconStyle: Styles.navBarBack
+}
+
+const extraPaddingDarkNavBarProps = {
+  ...Styles.navBar,
+  paddingTop: 5
 }
 
 const clearNavBarProps = {
@@ -187,6 +193,7 @@ export default NavActions.create(
         backButtonImage={Images.iconArrowLeft}
         title='Settings'
         {...darkNavBarProps}
+        navigationBarStyle={extraPaddingDarkNavBarProps}
       />
       <Scene
         key='settings_notification'
@@ -196,6 +203,7 @@ export default NavActions.create(
         backButtonImage={Images.iconArrowLeft}
         title='Notifications'
         {...darkNavBarProps}
+        navigationBarStyle={extraPaddingDarkNavBarProps}
       />
       <Scene
         key='terms'
@@ -205,6 +213,7 @@ export default NavActions.create(
         backButtonImage={Images.iconArrowLeft}
         title='Terms & Conditions'
         {...darkNavBarProps}
+        navigationBarStyle={extraPaddingDarkNavBarProps}
       />
       <Scene
         key='FAQ'
@@ -214,6 +223,7 @@ export default NavActions.create(
         backButtonImage={Images.iconArrowLeft}
         title='FAQ'
         {...darkNavBarProps}
+        navigationBarStyle={extraPaddingDarkNavBarProps}
       />
       <Scene
         key='privacy'
@@ -245,6 +255,7 @@ export default NavActions.create(
         backButtonImage={Images.iconClose}
         title='Comments'
         {...darkNavBarProps}
+        navigationBarStyle={extraPaddingDarkNavBarProps}
       />
       <Scene
         key='tabbar'
@@ -284,8 +295,9 @@ export default NavActions.create(
         <Scene
           key='createStory'
           title='Create Story'
-          icon={TabIcon}
-          onPress={navToCreateFlow}
+          icon={StoryCreateTabIcon}
+          onPress={alwaysNull}
+          style={Styles.createStory}
         />
         <Scene
           key='activity'
@@ -293,10 +305,11 @@ export default NavActions.create(
           component={ActivityScreen}
           title='Notifications'
           {...darkNavBarProps}
+          navigationBarStyle={extraPaddingDarkNavBarProps}
         />
         <Scene
           key='profile'
-          icon={TabIcon}
+          icon={StoryCreateScreen}
           component={ProfileScreen}
           hideNavBar
         />
@@ -314,11 +327,6 @@ export default NavActions.create(
         direction='vertical'
         hideNavBar={true}
       >
-        <Scene
-          key='createStory_info'
-          title='Create Story'
-          component={StoryCreateScreen}
-        />
         <Scene
           key='createStory_cover'
           component={StoryCoverScreen}
@@ -362,6 +370,7 @@ export default NavActions.create(
         onLeft={popVertical}
         backButtonImage={Images.iconArrowLeft}
         {...darkNavBarProps}
+        navigationBarStyle={extraPaddingDarkNavBarProps}
       />
       <Scene
         key='mediaSelectorScreen'

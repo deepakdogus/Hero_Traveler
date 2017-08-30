@@ -5,6 +5,7 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
+  storyRequest: ['storyId'],
   feedRequest: ['userId'],
   feedSuccess: ['userFeedById'],
   feedFailure: ['error'],

@@ -31,9 +31,7 @@ export default StyleSheet.create({
   },
   buttonWrapper: {
     flexDirection:'row',
-    flexWrap:'wrap',
     justifyContent: 'center',
-    alignItems: 'center',
     paddingLeft: 20,
     paddingRight: 20,
     paddingTop: 40
@@ -41,21 +39,22 @@ export default StyleSheet.create({
   submitButton: {
     width: '50%',
     height: Metrics.tabBarHeight/1.4,
-    borderRadius: 10,
-    marginLeft: '%',
+    marginHorizontal: 0,
+    marginLeft: 15,
   },
   cancelButton: {
     width: '25%',
     height: Metrics.tabBarHeight/1.4,
-    borderRadius: 10,
     borderWidth: 1,
     borderColor: Colors.blackoutTint,
     backgroundColor: Colors.transparent,
-    marginLeft: '2%',
+    marginHorizontal: 0,
+  },
+  errorWrapper: {
+    textAlign: 'center',
   },
   error: {
     color: Colors.errorRed,
     fontSize: 12,
-    textAlign: 'right'
-  },    
+  },
 })

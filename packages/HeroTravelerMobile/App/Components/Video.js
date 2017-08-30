@@ -12,7 +12,6 @@ const buttonLarge = 80
 const buttonSmall = 40
 const VideoButton = ({size, icon, onPress, style = {}, text}) => {
   const sizeUnits = size !== 'small' ? buttonLarge : buttonSmall
-
   return (
     <TouchableWithoutFeedback
       style={style}
@@ -52,7 +51,7 @@ const VideoButton = ({size, icon, onPress, style = {}, text}) => {
   )
 }
 
-export const PlayButton = ({videoFadeAnim, onPress, isPlaying, style = {}}) => {
+export const PlayButton = ({videoFadeAnim, onPress, isPlaying, style = {}, size}) => {
   return (
     <Animated.View
       style={[
@@ -62,6 +61,7 @@ export const PlayButton = ({videoFadeAnim, onPress, isPlaying, style = {}}) => {
     >
       <VideoButton
         onPress={onPress}
+        size={size}
         icon={isPlaying ? 'pause' : 'play'}
       />
     </Animated.View>
@@ -90,7 +90,8 @@ export default class VideoPlayer extends React.Component {
   static defaultProps = {
     showMuteButton: true,
     showPlayButton: true,
-    videoFillSpace: true
+    videoFillSpace: true,
+    resizeMode: 'contain'
   }
 
   constructor(props) {
@@ -212,6 +213,7 @@ export default class VideoPlayer extends React.Component {
   _bindRef = (i) => this.player = i
 
   render() {
+    const playButtonSize = this.props.playButtonSize
     return (
       <View style={[
         styles.root,
@@ -228,13 +230,14 @@ export default class VideoPlayer extends React.Component {
             this.props.videoFillSpace && styles.full,
           ]}
           repeat={true}
-          resizeMode='cover'
+          resizeMode={this.props.resizeMode}
         />
         {this.props.showPlayButton &&
           <PlayButton
-            style={[this.props.videoFillSpace ? styles.fullButtons : styles.buttons]}
+            style={[this.props.videoFillSpace ? styles.fullButtons : styles.buttons, playButtonSize === 'small' ? styles.smallButton : {}]}
             onPress={this._togglePlayVideo}
             isPlaying={this.state.videoPlaying}
+            size={playButtonSize}
             videoFadeAnim={this.state.videoFadeAnim} />
         }
         {this.props.showMuteButton && this.props.showPlayButton &&
@@ -253,6 +256,7 @@ export default class VideoPlayer extends React.Component {
             />
           </View>
         }
+        {this.props.children}
       </View>
     )
   }
@@ -289,7 +293,9 @@ const styles = StyleSheet.create({
     height: 100,
     position: 'absolute',
     top: 0,
-    left: 0
+    left: 0,
+    right: 0,
+    bottom: 0
   },
   fullButtons: {
     width: 100,
@@ -297,8 +303,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '50%',
     left: '50%',
-    marginTop: -50,
-    marginLeft: -50,
+    marginTop: -40,
+    marginLeft: -40,
+  },
+  smallButton: {
+    marginLeft: -20,
+    marginTop: -20,
   },
   mute: {
     position: 'absolute',

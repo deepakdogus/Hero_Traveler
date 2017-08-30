@@ -1,4 +1,4 @@
-import {Story, User, Models} from '@rwoody/ht-core'
+import {Story, User, Models} from '@hero/ht-core'
 import {likeNotification} from '../../apn'
 
 export default function toggleLike(req, res) {

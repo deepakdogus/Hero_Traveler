@@ -6,14 +6,12 @@ const ImageSchema = Schema({
   altText: String,
   original: {
     filename: String,
+    folders: [String],
     path: String,
     bucket: String,
     width: Number,
     height: Number,
-    meta: {
-      mimeType: String,
-      size: Number,
-    }
+    meta: Schema.Types.Mixed
   },
   versions: {
     mobile: {

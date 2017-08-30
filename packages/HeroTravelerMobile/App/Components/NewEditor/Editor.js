@@ -1,184 +1,155 @@
 import React, {Component} from 'react'
 import {
   View,
-  Text,
-  TouchableOpacity,
-  StyleSheet, ScrollView, KeyboardAvoidingView,
+  StyleSheet,
 } from 'react-native'
 import PropTypes from 'prop-types'
 
-import EditorState from 'draft-js/lib/EditorState'
-import convertFromRaw from 'draft-js/lib/convertFromRawToDraftState'
-import convertToRaw from 'draft-js/lib/convertFromDraftStateToRaw'
-
-import {getBlocks} from './getBlocks'
-import Toolbar, {PressTypes} from './Toolbar'
-import {KeyTypes} from './KeyTypes'
+import {PressTypes} from './Toolbar'
 import {
   updateEditorSelection,
-  insertText,
   getLastBlockKey,
-  handleReturn,
   insertBlock,
   applyStyle,
-  toggleStyle, handleBackspace
-} from './DraftjsUtils'
+  toggleStyle,
+  removeBlock,
+  rawToEditorState,
+  editorStateToRaw,
+} from './draft-js'
 
-import * as DJSConsts from './DraftjsConsts'
+import {SelectionState, EditorState, DraftOffsetKey, Modifier, keyCommandInsertNewline, keyCommandPlainBackspace} from './draft-js/reexports'
+
+import * as DJSConsts from './draft-js/constants'
 import Metrics from '../../Themes/Metrics'
-import KeyboardSpacer from 'react-native-keyboard-spacer'
+import ContentBlock from './ContentBlock'
+
+// const logSelection = (msg, selection) => {
+//   console.log(
+//     msg,
+//     '\n',
+//     `start: key(${selection.getAnchorKey()}) offset(${selection.getAnchorOffset()})`,
+//     '\n',
+//     `end:   key(${selection.getFocusKey()}) offset(${selection.getFocusOffset()})`,
+//     '\n',
+//     `focus: ${selection.getHasFocus()}`
+//   )
+// }
+
 
 export default class Editor extends Component {
 
   static propTypes = {
-    customStyles: PropTypes.object,
-    onPressImage: PropTypes.func.isRequired,
-    onPressVideo: PropTypes.func.isRequired,
+    customStyleMap: PropTypes.object,
+    // onPressImage: PropTypes.func.isRequired,
+    // onPressVideo: PropTypes.func.isRequired,
     // Raw state
     value: PropTypes.object
   }
 
   static defaultProps = {
-    customStyles: {}
+    customStyleMap: {}
   }
 
   constructor(props) {
     super(props)
     let editorState
 
-    console.log('ed', props)
     if (props.value) {
-      const state = convertFromRaw(props.value)
-      editorState = EditorState.createWithContent(state)
-      this.focusedBlock = null
+      editorState = rawToEditorState(props.value)
     } else {
       editorState = EditorState.createEmpty()
-      // Focus the first block when we load
-      this.focusedBlock = getLastBlockKey(editorState)
     }
 
     this.state = {
-      showTextMenu: false,
-      editorState: editorState,
+      editorState
     }
-
-    this.editorState = editorState
-    this.selectionStates = {}
-    this.lastEventCount = null
   }
 
-  /* Lifecycle methods */
+  setStateDebug = (state) => {
+    this.setState(state)
+  }
 
   /* Handlers */
-  _onChange = (key, text) => {
-
+  onSelectionChange = (blockKey, start, end, from) => {
+    const editorState = updateEditorSelection(this.state.editorState, blockKey, start, end, true)
+    this.setStateDebug({editorState})
   }
 
-  _onKeyPress = (e, inputRef) => {
-    const {key, eventCount} = e.nativeEvent
+  onRangeChange = ({src, blockId}) => {
+    const {replaceRange, text} = src
 
-    // This was to handle double spacebar tap to insert a period. is it needed?
-    if (key === KeyTypes.Backspace && eventCount === this.lastEventCount) {
-      return
-    }
-
-    switch (key) {
-      case KeyTypes.Backspace:
-        this.editorState = handleBackspace(this.editorState)
-        break
-
-      // Return is ignored here, and actually handled in _onBlur
-      case KeyTypes.Return:
-        break
-
-      default:
-        this.editorState = insertText(this.editorState, key)
-        break
-    }
-
-    this.lastEventCount = eventCount
-  }
-
-  _onSelectionChange = (key, start, end) => {
-    this.selectionStates[key] = {
-      start,
-      end
-    }
-
-    this.editorState = updateEditorSelection(
-      this.editorState,
-      key,
-      start,
-      end
-    )
-  }
-
-  _onFocus = (key) => {
-    const selectionState = this.selectionStates[key]
-    let start, end
-    // Newly added blocks don't have selection states yet
-    if (selectionState) {
-      start = selectionState.start
-      end = selectionState.end
+    if (text == '\n') {
+      const editorState = keyCommandInsertNewline(this.state.editorState)
+      this.setIsNewBlock(editorState.getSelection().getAnchorKey())
+      this.setStateDebug({editorState})
+    } else if (text == '' && replaceRange.start == 0 && replaceRange.end == 0) {
+      const editorState = keyCommandPlainBackspace(this.state.editorState)
+      this.setIsNewBlock(editorState.getSelection().getAnchorKey())
+      this.setStateDebug({editorState})
     } else {
-      start = 0
-      end = 0
-    }
-    this.editorState = updateEditorSelection(
-      this.editorState,
-      key,
-      start,
-      end
-    )
+      let selectionState = SelectionState.createEmpty(blockId).merge({
+        anchorKey: blockId,
+        anchorOffset: replaceRange.start,
+        focusKey: blockId,
+        focusOffset: replaceRange.end,
+      })
 
-    this.focusedBlock = key
+      let newContentState = Modifier.replaceText(
+        this.state.editorState.getCurrentContent(),
+        selectionState,
+        text,
+        this.state.editorState.getCurrentInlineStyle()
+      )
+
+      let editorState = EditorState.push(
+        this.state.editorState,
+        newContentState,
+        'insert-characters'
+        )
+
+      this.setStateDebug({editorState})
+    }
   }
 
-  _onBlur = (key, type, text, blurredByReturn) => {
-    // We want to insert the new block after the old block blurs
-    // because it appears any input blur will cause all inputs to blur
-    if (blurredByReturn) {
-      this.editorState = handleReturn(this.editorState)
-      this.focusedBlock = this.editorState.getSelection().getFocusKey()
-      this.forceUpdate()
-    } else {
-      this.focusedBlock = null
-    }
+  setIsNewBlock(blockKey) {
+    this.newBlock = blockKey
   }
 
-  _onToolbarPress = (pressType) => {
+  getIsNewBlock(blockKey) {
+    const isNew = blockKey === this.newBlock
+    if (isNew) {
+      this.newBlock = null
+    }
+    return isNew
+  }
+
+  onToolbarPress = (pressType) => {
     switch (pressType) {
       case PressTypes.HeaderOne:
         return this.toggleHeader()
-
-      case PressTypes.Normal:
-        return this.toggleNormal()
-
-      case PressTypes.Italic:
-      case PressTypes.Bold:
-        return this.toggleStyle(pressType)
-
       case PressTypes.Image:
         return this.props.onPressImage()
-
       case PressTypes.Video:
         return this.props.onPressVideo()
+      case PressTypes.Normal:
+      default:
+        return this.toggleNormal()
     }
   }
 
   toggleHeader() {
-    this.editorState = toggleStyle(this.editorState, DJSConsts.HeaderOne)
-    this.forceUpdate()
+    const editorState = toggleStyle(this.state.editorState, DJSConsts.HeaderOne)
+    this.setStateDebug({editorState})
   }
 
   toggleNormal() {
-    this.editorState = toggleStyle(this.editorState, DJSConsts.Unstyled)
-    this.forceUpdate()
+    const editorState = toggleStyle(this.state.editorState, DJSConsts.Unstyled)
+    this.setStateDebug({editorState})
   }
 
   toggleStyle(styleType) {
-    this.editorState = applyStyle(this.editorState, styleType)
-    this.forceUpdate()
+    const editorState = applyStyle(this.state.editorState, styleType)
+    this.setStateDebug({editorState})
   }
 
   insertImage = (url) => {
@@ -186,103 +157,123 @@ export default class Editor extends Component {
   }
 
   insertVideo = (url) => {
-    console.log('insertVideo', url)
     this.insertAtomicBlock('video', url)
   }
 
   insertAtomicBlock(type, url) {
     let insertAfterKey
-    let lastBlockKey = getLastBlockKey(this.editorState)
+    const selectedBlockKey = this.state.editorState.getSelection().getAnchorKey()
+    let lastBlockKey = getLastBlockKey(this.state.editorState)
 
-    console.log('insertAtomicBlock', type, url)
-
-    // If no input is focused, insert image at the end of the content state
-    if (!this.focusedBlock) {
+    // If no input has yet been focused, insert image at the end of the content state
+    if (this.state.focusedBlock === undefined) {
       insertAfterKey = lastBlockKey
     } else {
-      insertAfterKey = this.focusedBlock
+      insertAfterKey = selectedBlockKey
     }
 
-    this.editorState = insertBlock(
-      this.editorState,
+    let editorState = insertBlock(
+      this.state.editorState,
       insertAfterKey,
       {
         type: 'atomic',
         data: {
           type: type,
           url: url
-        }
+        },
+        focusNewBlock: true
       }
     )
 
     // Get the key of the new block
-    const newFocusedBlock = this.editorState.getCurrentContent().getBlockAfter(insertAfterKey).getKey()
+    const newFocusedBlock = editorState.getCurrentContent().getBlockAfter(insertAfterKey).getKey()
 
     // If inserted at the bottom, insert a blank text box after it
     if (lastBlockKey === insertAfterKey) {
-      this.editorState = insertBlock(
-        this.editorState,
+      editorState = insertBlock(
+        editorState,
         newFocusedBlock
       )
     }
 
-    this.focusedBlock = newFocusedBlock
-    this.forceUpdate()
-  }
-
-  _accessibilityPressed = () => {
-    const lastBlock = this.editorState.getCurrentContent().getLastBlock()
-    this.focusedBlock = lastBlock.getKey()
-    this.editorState = updateEditorSelection(
-      this.editorState,
-      this.focusedBlock,
-      lastBlock.getLength(),
-      lastBlock.getLength()
-    )
-    this.forceUpdate()
-  }
-
-  getEditorState() {
-    return this.editorState
-  }
-
-  getFocusedBlock() {
-    return this.focusedBlock
+    this.setStateDebug({editorState})
   }
 
   getEditorStateAsObject() {
-    return convertToRaw(this.editorState.getCurrentContent())
+    return editorStateToRaw(this.state.editorState)
   }
 
-  _keyboardToggled = (state, height) => {
-    console.log('toggled', state, height)
+  removeMediaBlock = (blockKey) => {
+    this.setStateDebug({
+      editorState: removeBlock(this.state.editorState, blockKey)
+    })
   }
 
+  shouldUnfocus = true
+
+  // Editor Toolbar should only render when a block is focused
+  onFocus = (blockKey) => {
+    if (!this.state.focusedBlock && blockKey) {
+      this.shouldUnfocus = false
+      this.props.setToolbarDisplay(true)
+    }
+    else if (this.state.focusedBlock && !blockKey) {
+      this.shouldUnfocus = true
+      /*
+      adding slight timeout to avoid the flicker caused by the split amount of time between
+      contentBlock focus change. This would hide the toolbar for a split second
+      */
+      setTimeout(() => {
+        if (this.shouldUnfocus) {
+          this.props.setToolbarDisplay(false)
+        }
+      }, 50);
+    }
+    this.setState({focusedBlock: blockKey})
+  }
+
+  getBlocks() {
+    const {editorState} = this.state
+    const content = editorState.getCurrentContent()
+    const decorator = editorState.getDecorator()
+    const selectionState = editorState.getSelection()
+    const blocksAsArray = content.getBlocksAsArray()
+    return blocksAsArray.map((block, index) => {
+      const key = block.getKey()
+      const isSelected = key === selectionState.getAnchorKey() && key === selectionState.getFocusKey()
+      const selection = isSelected ? selectionState : undefined
+      const offsetKey = DraftOffsetKey.encode(key, 0, 0)
+      const autoFocus = this.getIsNewBlock(key)
+      const componentProps = {
+        key,
+        block,
+        decorator,
+        offsetKey,
+        isSelected,
+        selection,
+        autoFocus,
+        customStyleMap: this.props.customStyleMap,
+        tree: editorState.getBlockTree(key),
+        onSelectionChange: this.onSelectionChange,
+        onRangeChange: this.onRangeChange,
+        onDelete: this.removeMediaBlock,
+        onFocus: this.onFocus,
+        isFocused: this.state.focusedBlock === key,
+      }
+      return <ContentBlock {...componentProps} index={index}/>
+    })
+  }
+
+    // <TouchableOpacity
+    //   onPress={this._accessibilityPressed}
+    //   style={styles.accessibilitySpacer}><Text> </Text></TouchableOpacity>
   render() {
-    const elements = getBlocks(
-      this.getEditorState(),
-      this.getFocusedBlock(),
-      // this.getFocusedBlockSelection(),
-      this.props.customStyles,
-      this._onChange,
-      this._onKeyPress,
-      this._onSelectionChange,
-      this._onFocus,
-      this._onBlur,
-    )
-
+    // logSelection('Main render selection', this.state.editorState.getSelection())
     return (
       <View style={[styles.root, this.props.style]}>
-        <ScrollView keyboardShouldPersistTaps='handled' style={styles.blocksWrapper}>
-          {elements}
-          <TouchableOpacity
-            onPress={this._accessibilityPressed}
-            style={styles.accessibilitySpacer}><Text> </Text></TouchableOpacity>
-        </ScrollView>
-        <Toolbar
-          onPress={this._onToolbarPress}
-        />
-        <KeyboardSpacer/>
+        <View style={styles.innerScroll}>
+          {this.getBlocks()}
+        </View>
       </View>
     )
   }
@@ -292,17 +283,19 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     flexDirection: 'column',
-    // position: 'relative'
+  },
+  scrollView: {
+    flex: 1,
+    flexDirection: 'column',
+    // marginHorizontal: Metrics.baseMargin
+  },
+  innerScroll: {
+    marginBottom: Metrics.doubleBaseMargin,
   },
   accessibilitySpacer: {
     // backgroundColor: 'pink',
     alignItems: 'stretch',
     minHeight: 50,
     flex: 1,
-  },
-  blocksWrapper: {
-    flex: 1,
-    flexDirection: 'column',
-    marginHorizontal: Metrics.baseMargin
   }
 })

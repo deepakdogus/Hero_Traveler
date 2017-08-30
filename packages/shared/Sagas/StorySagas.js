@@ -113,7 +113,13 @@ export function * publishDraft (api, action) {
     const {data: story} = response
     yield put(StoryCreateActions.publishDraftSuccess(draft))
   } else {
-    yield put(StoryCreateActions.publishDraftFailure(new Error('Failed to publish story')))
+    let err = new Error('Failed to publish story')
+    // TODO: I tried {...response, ...err} but that seemed to strip the Error instance of it's
+    //       methods, maybe Object.assign(err, response) is better?
+    err.status = response.status
+    err.problem = response.problem
+    console.log(`Err ${response.problem} with status ${response.status}`)
+    yield put(StoryCreateActions.publishDraftFailure(err))
   }
 }
 
@@ -217,6 +223,25 @@ export function * loadStory(api, {storyId}) {
   }
 }
 
+
+export function * getStory (api , {storyId}) {
+  const response = yield call(api.getStory, storyId)
+
+  if (response.ok) {
+    const {entities} = response.data
+    yield [
+      put(StoryActions.receiveStories(entities.stories)),
+      put(UserActions.receiveUsers(entities.users))
+    ]
+  } else {
+    const errorObj = {}
+    errorObj[storyId] = {
+      error: 'Story not found'
+    }
+    yield put(StoryActions.receiveStories(errorObj))
+  }
+}
+
 export function * loadDrafts(api) {
   const response = yield call(
     api.getDrafts
@@ -242,5 +267,5 @@ export function * deleteStory(api, {userId, storyId}){
 
   if (response.ok) {
     yield put(StoryActions.deleteStorySuccess(userId, storyId))
-  } 
+  }
 }

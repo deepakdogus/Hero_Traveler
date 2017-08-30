@@ -38,6 +38,7 @@ class TagScreen extends Component {
       text: '',
       searching: false,
       searchResults: null,
+      isInputFocused: false,
     }
   }
 
@@ -65,10 +66,6 @@ class TagScreen extends Component {
 
   componentWillUnmount() {
     this.removeSearchListeners()
-  }
-
-  componentDidMount() {
-    this.refs.input.focus()
   }
 
   _done = () => {
@@ -163,6 +160,14 @@ class TagScreen extends Component {
     return _.get(this.state.searchResults, 'hits', [])
   }
 
+  setInputFocused = () => {
+    this.setState({isInputFocused: true})
+  }
+
+  setInputBlurred = () => {
+    this.setState({isInputFocused: false})
+  }
+
   render () {
 
     const defaultCategoriesToShow = _.filter(this.props.defaultCategories, c => {
@@ -172,12 +177,15 @@ class TagScreen extends Component {
     const searchResultsToShow = _.filter(this.getSearchHits(), c => {
       return !_.includes(_.map(this.state.selectedCategories, '_id'), c._id)
     })
-
+    const isInputFocused = this.state.isInputFocused
     return (
       <View style={styles.root}>
         <View style={{marginTop: Metrics.baseMargin, height: 40}}>
-          <TouchableOpacity style={styles.doneBtn} onPress={this._done}>
-            <Text style={styles.doneBtnText}>Done</Text>
+          <TouchableOpacity
+            style={styles.doneBtn}
+            onPress={isInputFocused ? this.setInputBlurred : this._done}
+          >
+            <Text style={styles.doneBtnText}>{isInputFocused ? 'Cancel' : 'Done'}</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.content}>
@@ -190,6 +198,8 @@ class TagScreen extends Component {
                 placeholder='Add Tags'
                 onChangeText={text => this._inputChanged(text)}
                 onSubmitEditing={this._addNewCategory}
+                onFocus={this.setInputFocused}
+                onBlur={this.setInputBlurred}
               />
             </View>
           </View>

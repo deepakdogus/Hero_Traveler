@@ -224,7 +224,7 @@ const create = () => {
     return api.delete(`story/${storyId}`)
   }
 
-  const getStory = (storyId) => {
+const getStory = (storyId) => {
     return api.get(`story/${storyId}`)
       .then(response => {
         return  Object.assign({}, response, {

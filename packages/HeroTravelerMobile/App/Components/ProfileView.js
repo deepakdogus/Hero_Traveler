@@ -11,7 +11,6 @@ import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import LinearGradient from 'react-native-linear-gradient'
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 
 import { Colors, Metrics } from '../Shared/Themes'
 import Loader from './Loader'
@@ -25,6 +24,7 @@ import HeroAPI from '../Shared/Services/HeroAPI'
 import pathAsFileObject from '../Shared/Lib/pathAsFileObject'
 import TabIcon from './TabIcon'
 import Image from './Image'
+import ShadowButton from './ShadowButton'
 
 // @TODO UserActions shouldn't be in a component
 import UserActions from '../Shared/Redux/Entities/Users'
@@ -98,14 +98,26 @@ class ProfileView extends React.Component {
   _handleUpdateAvatarPhoto = (data) => {
     api.uploadAvatarImage(this.props.user.id, pathAsFileObject(data))
     .then(({ data }) => {
-      this.props.updateUserSuccess({
-        id: data.id,
-        profile: {
-          tempAvatar: data.profile.avatar,
-        }
-      })
+      // if there is a message it means there was an error
+      if (data.message) {
+        return Promise.reject(new Error(data.message))
+      }
+      else {
+        this.props.updateUserSuccess({
+          id: data.id,
+          profile: {
+            tempAvatar: data.profile.avatar,
+          }
+        })
+      }
     })
-    .then(() => NavActions.pop())
+    .then(() => {
+      NavActions.pop()
+    })
+    .catch(() => {
+      NavActions.pop()
+      this.setState({error: 'There was an error updating your profile photo. Please try again'})
+    })
   }
 
   _handleUpdateCoverPhoto = (data) => {
@@ -206,6 +218,7 @@ class ProfileView extends React.Component {
         titleStyle={styles.storyTitleStyle}
         subtitleStyle={styles.subtitleStyle}
         showLike={this.props.showLike}
+        showPlayButton
         key={storyId}
         height={this.props.hasTabbar ? storyPreviewHeight : storyPreviewHeight + Metrics.tabBarHeight}
         storyId={storyId}
@@ -216,9 +229,11 @@ class ProfileView extends React.Component {
   }
 
   selectTab = (tab) => {
-    this.setState({selectedTab: tab}, () => {
-      this.props.onSelectTab(tab)
-    })
+    if (this.state.selectedTab !== tab) {
+      this.setState({selectedTab: tab}, () => {
+        this.props.onSelectTab(tab)
+      })
+    }
   }
 
   _setText = (usernameText) => {
@@ -228,10 +243,13 @@ class ProfileView extends React.Component {
   _selectAvatar = () => {
     NavActions.mediaSelectorScreen({
       mediaType: 'photo',
-      title: 'Edit Avatar Image',
+      title: 'Edit Avatar',
+      titleStyle: {color: Colors.white},
       leftTitle: 'Cancel',
+      leftTextStyle: {color: Colors.white},
       onLeft: () => NavActions.pop(),
-      rightTitle: 'Next',
+      rightTitle: 'Done',
+      rightIcon: 'none',
       onSelectMedia: this._handleUpdateAvatarPhoto
     })
   }
@@ -239,10 +257,13 @@ class ProfileView extends React.Component {
   _selectCover = () => {
     NavActions.mediaSelectorScreen({
       mediaType: 'photo',
-      title: 'Edit Cover Image',
+      title: 'Edit Cover',
+      titleStyle: {color: Colors.white},
       leftTitle: 'Cancel',
+      leftTextStyle: {color: Colors.white},
       onLeft: () => NavActions.pop(),
-      rightTitle: 'Next',
+      rightTitle: 'Done',
+      rightIcon: 'none',
       onSelectMedia: this._handleUpdateCoverPhoto
     })
   }
@@ -279,11 +300,28 @@ class ProfileView extends React.Component {
     })
   }
 
+  _clearError = () => {
+    this.setState({error: null})
+  }
+
   _getTextInputRefs = () => [this.bioInput]
 
   _setBioText = (bioText) => this.setState({bioText})
 
   _bioRef = c => this.bioInput = c
+
+  areNoStories() {
+    if (
+      (this.state.selectedTab === TabTypes.stories && this.props.fetchStatus.loaded && this.props.stories.length === 0) ||
+      (this.state.selectedTab === TabTypes.drafts && this.props.fetchStatus.loaded && this.props.drafts.length === 0) ||
+      (this.state.selectedTab === TabTypes.bookmarks && this.props.fetchStatus.loaded && this.props.bookmarks.length === 0)
+    ) return true
+    return false
+  }
+
+  isFetching(fetchStatus) {
+    return fetchStatus && fetchStatus.fetching
+  }
 
   render() {
     const { user, stories, drafts, editable, isEditing, profileImage, bookmarks } = this.props
@@ -333,7 +371,7 @@ class ProfileView extends React.Component {
               placeholder={user.username}
               value={this.state.usernameText}
               autoCapitalize='none'
-              style={styles.titleText}
+              style={[styles.titleText, styles.editTitle]}
               onChangeText={this._setText}
               maxLength={20}
               returnKeyType={'done'}
@@ -345,14 +383,16 @@ class ProfileView extends React.Component {
       )
 
       avatarCamera = (
-        <View style={{position: 'relative'}}>
-            <TouchableOpacity
-              style={styles.addAvatarPhotoButton}
-              onPress={this._selectAvatar}
-            >
-              <Icon name='camera' size={35} color={Colors.whiteAlphaPt80} style={styles.updateAvatorIcon} />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={styles.addAvatarPhotoButton}
+          onPress={this._selectAvatar}
+        >
+          <Icon
+            name='camera'
+            size={32.5}
+            color={Colors.whiteAlphaPt80}
+            style={styles.updateAvatorIcon} />
+        </TouchableOpacity>
       )
 
       buttons = (
@@ -360,7 +400,7 @@ class ProfileView extends React.Component {
           style={styles.addCoverPhotoButton}
           onPress={this._selectCover}
         >
-          <Icon name='camera' size={35} color={Colors.whiteAlphaPt80} style={styles.cameraIcon} />
+          <Icon name='camera' size={32.5} color={Colors.whiteAlphaPt80} style={styles.cameraIcon} />
           <Text style={styles.editCoverText}>EDIT COVER IMAGE</Text>
         </TouchableOpacity>
       )
@@ -439,8 +479,66 @@ class ProfileView extends React.Component {
       )
       avatarCamera = null;
     }
-
-    const gradientStyle = profileImage ? ['rgba(0,0,0,.6)', 'transparent', 'rgba(0,0,0,.6)'] : ['transparent', 'rgba(0,0,0,.6)']
+    const gradientStyle = profileImage ? ['rgba(0,0,0,.5)', 'transparent', 'rgba(0,0,0,.5)'] : ['transparent', 'rgba(0,0,0,.5)']
+    const profileInfo = (
+      <Image
+        cached={true}
+        style={[styles.coverImage, profileImage ? null : styles.noCoverImage]}
+        source={{uri: profileImage || undefined}}
+        resizeMode={'cover'}
+      >
+        <LinearGradient colors={gradientStyle} style={styles.gradient}>
+          {this.state.error &&
+            <ShadowButton
+              style={styles.errorButton}
+              onPress={this._clearError}
+              text={this.state.error}
+            />
+          }
+          <View style={styles.coverInner}>
+            {cog}
+            {name}
+          <View style={{position: 'relative', marginTop: 20}}>
+            <Avatar
+              style={{alignItems: 'center'}}
+              size='extraLarge'
+              avatarUrl={(isEditing && user.profile.tempAvatar) ? getImageUrl(user.profile.tempAvatar) : getImageUrl(user.profile.avatar)} />
+            {avatarCamera}
+          </View>
+          {!isEditing &&
+           <TouchableOpacity onPress={this._navToViewBio}>
+              <Text style={styles.italicText}>Read Bio</Text>
+            </TouchableOpacity>
+          }
+          {!isEditing &&
+            <View style={styles.followersWrapper}>
+              <View style={styles.firstFollowerColumn}>
+                <TouchableOpacity
+                  onPress={this._navToFollowers}
+                  style={[styles.followersColumn]}>
+                  <Text style={styles.followerNumber}>{formatCount(user.counts.followers)}</Text>
+                  <Text style={styles.followerLabel}>Followers</Text>
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+                onPress={this._navToFollowing}
+                style={styles.followersColumn}>
+                <Text style={styles.followerNumber}>{formatCount(user.counts.following)}</Text>
+                <Text style={styles.followerLabel}>Following</Text>
+              </TouchableOpacity>
+            </View>
+          }
+            {buttons}
+          </View>
+          {!isEditing && false &&
+            <Text style={styles.contributor}>
+              <Icon name='star' color={Colors.red} size={15} style={styles.contributorIcon} />
+              <Text style={styles.contributorText}>&nbsp;&nbsp;&nbsp;CONTRIBUTOR</Text>
+            </Text>
+          }
+        </LinearGradient>
+      </Image>
+    )
 
     return (
       <View style={{flex: 1}}>
@@ -451,96 +549,71 @@ class ProfileView extends React.Component {
             onLeft={this._onLeft}
             rightTitle='Save'
             onRight={this._onRight}
+            style={{paddingTop: 15}}
           />
         }
-        <KeyboardAwareScrollView getTextInputRefs={this._getTextInputRefs} style={[
+        <ScrollView style={[
           this.props.hasTabbar ? styles.containerWithTabbar : null,
           styles.root,
           this.props.style,
         ]}>
         <View style={styles.gradientWrapper}>
-          <Image
-            cached={true}
-            style={[styles.coverImage, profileImage ? null : styles.noCoverImage]}
-            source={{uri: profileImage || undefined}}
-          >
-            <LinearGradient colors={gradientStyle} style={styles.gradient}>
-              <View style={styles.coverInner}>
-                {cog}
-                {name}
-              <View >
-                <Avatar style={{alignItems: 'center', marginTop: 20 }} size='medium' avatarUrl={(isEditing && user.profile.tempAvatar) ? getImageUrl(user.profile.tempAvatar) : getImageUrl(user.profile.avatar)} />
-                {avatarCamera}
-              </View>
-              {!isEditing &&
-               <TouchableOpacity onPress={this._navToViewBio}>
-                  <Text style={styles.italicText}>Read Bio</Text>
-                </TouchableOpacity>
-              }
-              {!isEditing &&
-                <View style={styles.followersWrapper}>
-                  <View style={styles.firstFollowerColumn}>
-                    <TouchableOpacity
-                      onPress={this._navToFollowers}
-                      style={[styles.followersColumn]}>
-                      <Text style={styles.followerNumber}>{formatCount(user.counts.followers)}</Text>
-                      <Text style={styles.followerLabel}>Followers</Text>
-                    </TouchableOpacity>
-                  </View>
-                  <TouchableOpacity
-                    onPress={this._navToFollowing}
-                    style={styles.followersColumn}>
-                    <Text style={styles.followerNumber}>{formatCount(user.counts.following)}</Text>
-                    <Text style={styles.followerLabel}>Following</Text>
-                  </TouchableOpacity>
-                </View>
-              }
-                {buttons}
-              </View>
-              {!isEditing && false &&
-                <Text style={styles.contributor}>
-                  <Icon name='star' color={Colors.red} size={15} style={styles.contributorIcon} />
-                  <Text style={styles.contributorText}>&nbsp;&nbsp;&nbsp;CONTRIBUTOR</Text>
-                </Text>
-              }
-            </LinearGradient>
-          </Image>
           {isEditing &&
-           <View style={{margin: Metrics.section}}>
-             <Text style={styles.editBio}>Edit Bio</Text>
-             <TextInput
-               ref={this._bioRef}
-               style={[styles.bioText, {height: 150}]}
-               multiline={true}
-               editable={true}
-               onChangeText={this._setBioText}
-               value={this.state.bioText}
-               maxLength={500}
-               placeholder={'Tell us about yourself!'}
-             />
-           </View>
+            <View style={{flex: 1}}>
+              {profileInfo}
+              <View style={{margin: Metrics.section}}>
+                <Text style={styles.editBio}>Edit Bio</Text>
+                <TextInput
+                  ref={this._bioRef}
+                  style={[styles.bioText, {height: 150}]}
+                  multiline={true}
+                  editable={true}
+                  onChangeText={this._setBioText}
+                  value={this.state.bioText}
+                  maxLength={500}
+                  placeholder={'Tell us about yourself!'}
+                />
+              </View>
+            </View>
           }
           {!isEditing && <View style={styles.tabs}>
-            {tabs}
+            {(this.areNoStories() || this.isFetching(fetchStatus)) &&
+              <View>
+                {profileInfo}
+                {tabs}
+              </View>
+            }
             {this.state.selectedTab === TabTypes.stories && stories.length > 0 &&
               <StoryList
+                style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
                 storiesById={stories}
                 refreshing={false}
+                renderHeaderContent={profileInfo}
+                renderSectionHeader={tabs}
                 renderStory={this.renderStory}
+                pagingIsDisabled
               />
             }
             {this.state.selectedTab === TabTypes.drafts && drafts.length > 0 &&
               <StoryList
+                style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
                 storiesById={drafts}
                 refreshing={false}
+                renderHeaderContent={profileInfo}
+                renderSectionHeader={tabs}
                 renderStory={this.renderStory}
+                pagingIsDisabled
               />
             }
             {this.state.selectedTab === TabTypes.bookmarks && bookmarks.length > 0 &&
               <StoryList
+                style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
                 storiesById={bookmarks}
                 refreshing={false}
+                renderHeaderContent={profileInfo}
+                renderSectionHeader={tabs}
                 renderStory={this.renderStory}
+                pagingIsDisabled
               />
             }
             {this.state.selectedTab === TabTypes.stories && fetchStatus.loaded && stories.length === 0 &&
@@ -568,7 +641,7 @@ class ProfileView extends React.Component {
           </View>
         }
         </View>
-        </KeyboardAwareScrollView>
+        </ScrollView>
         {showTooltip && this.renderTooltip()}
       </View>
     )

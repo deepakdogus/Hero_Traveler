@@ -17,8 +17,8 @@ test('component structure', (t) => {
   t.is(wrapper.children().first().name(), 'Text') // that child is Text
 })
 
-test('the text is set properly - uppercase', (t) => {
-  t.is(wrapper.children().first().props().children, 'HOWDY')
+test('the text is set properly', (t) => {
+  t.is(wrapper.children().first().props().children, 'howdy')
 })
 
 test('onPress', (t) => {

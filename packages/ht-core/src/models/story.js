@@ -5,7 +5,7 @@ import slug from 'mongoose-slug-generator'
 import {ModelName as CategoryRef} from './category'
 import {ModelName as UserRef} from './user'
 import {ModelName as UploadRef} from './upload'
-import {Constants, getGoogleLatLng} from '@rwoody/ht-util'
+import {Constants, getGoogleLatLng} from '@hero/ht-util'
 export const ModelName = 'Story'
 
 const StorySchema = new Schema({
@@ -24,7 +24,6 @@ const StorySchema = new Schema({
       Constants.STORY_TYPE_STAY_VALUE,
       Constants.STORY_TYPE_DO_VALUE,
     ],
-    default: Constants.STORY_TYPE_EAT_VALUE,
   },
   draft: {
     type: Boolean,

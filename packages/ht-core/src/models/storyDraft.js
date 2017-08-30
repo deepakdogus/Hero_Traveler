@@ -3,7 +3,7 @@ import softDelete from 'mongoose-delete'
 import {ModelName as CategoryRef} from './category'
 import {ModelName as UserRef} from './user'
 import {ModelName as UploadRef} from './upload'
-import {Constants, getGoogleLatLng} from '@rwoody/ht-util'
+import {Constants, getGoogleLatLng} from '@hero/ht-util'
 
 export const ModelName = 'StoryDraft'
 

@@ -15,10 +15,9 @@ import {AutoGrowingTextInput} from '@hero/react-native-autogrow-textinput';
 import {DraftOffsetKey} from './draft-js/reexports'
 import Image from '../Image'
 import Video from '../Video'
-import {Colors, Metrics} from '../../Themes'
-import {getVideoUrlBase} from "../../Lib/getVideoUrl"
-import {getImageUrlBase} from "../../Lib/getImageUrl"
-import Fonts from '../../Themes/Fonts'
+import {Colors, Metrics} from '../../Shared/Themes'
+import {getVideoUrlBase} from "../../Shared/Lib/getVideoUrl"
+import {getImageUrlBase} from "../../Shared/Lib/getImageUrl"
 
 const AutoGrowTextInputManager = NativeModules.AutoGrowTextInputManager;
 

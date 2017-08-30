@@ -5,7 +5,7 @@ import {
   StyleSheet,
   View
 } from 'react-native'
-import {Colors, Metrics} from '../../Themes/'
+import {Colors, Metrics} from '../../Shared/Themes/'
 import {Actions as NavActions} from 'react-native-router-flux'
 import {connect} from 'react-redux'
 

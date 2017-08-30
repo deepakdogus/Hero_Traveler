@@ -21,8 +21,8 @@ import Loader from '../Components/Loader'
 import {styles, rendererStyles} from './Styles/StoryReadingScreenStyles'
 import Video from '../Components/Video'
 import Immutable from 'seamless-immutable'
-import {getVideoUrlBase} from '../Lib/getVideoUrl'
-import {getImageUrlBase} from '../Lib/getImageUrl'
+import {getVideoUrlBase} from '../Shared/Lib/getVideoUrl'
+import {getImageUrlBase} from '../Shared/Lib/getImageUrl'
 import {CategoryFeedNavActionStyles} from './Styles/ExploreScreenStyles'
 
 const enhanceStoryVideo = compose(

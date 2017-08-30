@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import Config from '../Config/AppConfig'
+import Config from '../../Config/AppConfig'
 import {Metrics} from '../Themes'
 import {PixelRatio} from 'react-native'
 

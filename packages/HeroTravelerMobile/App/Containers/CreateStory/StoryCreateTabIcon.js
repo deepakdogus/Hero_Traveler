@@ -3,7 +3,7 @@ import { TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 
 import TabIcon from '../../Components/TabIcon'
-import StoryEditActions from '../../Redux/StoryCreateRedux'
+import StoryEditActions from '../../Shared/Redux/StoryCreateRedux'
 
 class StoryCreateTabIcon extends React.Component {
   render() {

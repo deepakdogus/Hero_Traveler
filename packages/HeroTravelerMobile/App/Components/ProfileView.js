@@ -2,6 +2,7 @@ import React from 'react'
 import styles, { storyPreviewHeight } from './Styles/ProfileViewStyles'
 import {
   View,
+  ScrollView,
   Text,
   TextInput,
   TouchableWithoutFeedback,

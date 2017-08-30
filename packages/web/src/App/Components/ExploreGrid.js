@@ -56,7 +56,7 @@ export default class ExploreGrid extends React.Component {
 
     const renderedCategories = categories.map((category) => {
       return (
-        <Col key={category.id} xs={6} sm={4} md={3} lg={2} >
+        <Col key={category.id} xs={6} sm={4} md={3} lg={3} >
           <Wrapper>
             <CategoryTile
               imageSource={getImageUrl(category.image, 'versions.thumbnail240.path')}

@@ -1,7 +1,4 @@
 import _ from 'lodash'
-import Config from '../../Config/AppConfig'
-import {Metrics} from '../Themes'
-import {PixelRatio} from 'react-native'
 
 const baseUrl = 'https://d13na0u3ury9av.cloudfront.net/'
 

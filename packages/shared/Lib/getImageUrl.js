@@ -1,9 +1,8 @@
 import _ from 'lodash'
-import Config from '../../Config/AppConfig'
-// import Env from '../../Config/Env'
+import Env from '../../Config/Env'
 
 export function getImageUrlBase() {
-  return Config.cdnBaseUrl + 'image/upload'
+  return Env.cdnBaseUrl + 'image/upload'
 }
 
 export default function getImageUrl(image: object): ?string {

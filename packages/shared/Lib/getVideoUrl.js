@@ -1,9 +1,8 @@
 import _ from 'lodash'
-import Config from '../../Config/AppConfig'
-// import Env from '../../Config/Env'
+import Env from '../../Config/Env'
 
 export function getVideoUrlBase() {
-  return Config.cdnBaseUrl + 'video/upload'
+  return Env.cdnBaseUrl + 'video/upload'
 }
 
 export default function getVideoUrl(video: object): ?string {

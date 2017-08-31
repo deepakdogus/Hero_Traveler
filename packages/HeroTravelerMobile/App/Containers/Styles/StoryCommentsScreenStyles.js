@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { ApplicationStyles, Colors, Metrics, Fonts } from '../../Themes/'
+import { ApplicationStyles, Colors, Metrics, Fonts } from '../../Shared/Themes/'
 
 export const listHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight - Metrics.doubleSection;
 

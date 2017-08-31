@@ -7,7 +7,7 @@ import {
 } from 'react-native'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import {Colors, Metrics} from '../../Themes'
+import {Colors, Metrics} from '../../Shared/Themes'
 import * as DJSConsts from './draft-js/constants'
 
 const ToolbarIcon = ({name, color, extraStyle = {}}) => {

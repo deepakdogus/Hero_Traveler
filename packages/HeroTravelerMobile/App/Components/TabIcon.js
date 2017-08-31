@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {View, Image} from 'react-native'
 import _ from 'lodash'
 import {connect} from 'react-redux'
-import {Images} from '../Themes'
+import {Images} from '../Shared/Themes'
 
 import NotificationBadge from './NotificationBadge'
 

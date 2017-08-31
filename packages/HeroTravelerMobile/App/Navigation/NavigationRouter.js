@@ -34,7 +34,6 @@ import StoryReadingScreen from '../Containers/StoryReadingScreen'
 import StoryCommentsScreen from '../Containers/StoryCommentsScreen'
 import StoryCreateScreen from '../Containers/CreateStory/1_CreateStoryScreen'
 import StoryCoverScreen from '../Containers/CreateStory/2_StoryCoverScreen'
-import FullScreenEditor from '../Containers/CreateStory/3_FullScreenEditor'
 import CreateStoryDetailScreen from '../Containers/CreateStory/4_CreateStoryDetailScreen'
 import TagScreen from '../Containers/CreateStory/TagScreen'
 import MediaSelectorScreen from '../Containers/MediaSelectorScreen'
@@ -50,7 +49,7 @@ import SignupTopics from '../Containers/Signup/SignupTopics'
 import SignupSocial from '../Containers/Signup/SignupSocial'
 import NavButton from './NavButton'
 
-import {Images} from '../Themes'
+import {Images} from '../Shared/Themes'
 
 const darkNavBarProps = {
   navigationBarStyle: Styles.navBar,
@@ -332,12 +331,6 @@ export default NavActions.create(
           component={StoryCoverScreen}
           panHandlers={null}
           direction="horizontal"
-        />
-        <Scene
-          key='createStory_content'
-          component={FullScreenEditor}
-          panHandlers={null}
-          direction='horizontal'
         />
         <Scene
           key='createStory_details'

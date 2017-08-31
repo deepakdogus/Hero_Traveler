@@ -6,12 +6,12 @@ import { Router } from 'react-native-router-flux'
 
 // import PerfMonitor from 'react-native/Libraries/Performance/RCTRenderingPerf'
 
-import OpenScreenActions from '../Redux/OpenScreenRedux'
+import OpenScreenActions from '../Shared/Redux/OpenScreenRedux'
 import NavigationScenes from '../Navigation/NavigationRouter'
-import StartupActions from '../Redux/StartupRedux'
-import LoginActions from '../Redux/LoginRedux'
+import StartupActions from '../Shared/Redux/StartupRedux'
+import LoginActions from '../Shared/Redux/LoginRedux'
 import styles from './Styles/RootContainerStyles'
-import deeplinkToAction from '../Lib/deeplinkToAction'
+import deeplinkToAction from '../Shared/Lib/deeplinkToAction'
 
 const ConnectedRouter = connect()(Router)
 

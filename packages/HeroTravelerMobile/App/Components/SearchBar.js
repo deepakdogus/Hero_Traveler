@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, TextInput, TouchableOpacity } from 'react-native'
 import styles from './Styles/SearchBarStyles'
-import { Colors, Metrics } from '../Themes/'
+import { Colors, Metrics } from '../Shared/Themes/'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 export default class SearchBar extends React.Component {

@@ -15,16 +15,15 @@ import {
 } from 'react-native-router-flux'
 import {AccessToken, GraphRequest, GraphRequestManager, LoginManager} from 'react-native-fbsdk'
 
-import {Images, Colors} from '../Themes'
+import {Images, Colors} from '../Shared/Themes'
 import Loader from '../Components/Loader'
 import RoundedButton from '../Components/RoundedButton'
 import TextButton from '../Components/TextButton'
-import TOS from '../Components/TosFooter'
 import styles from './Styles/LoginScreenStyles'
 // pulling launchStyles so that buttons are styled the same as launchScreen
 import launchStyles from './Styles/LaunchScreenStyles'
-import LoginActions from '../Redux/LoginRedux'
-import SignupActions from '../Redux/SignupRedux'
+import LoginActions from '../Shared/Redux/LoginRedux'
+import SignupActions from '../Shared/Redux/SignupRedux'
 
 class Input extends React.Component {
   render() {

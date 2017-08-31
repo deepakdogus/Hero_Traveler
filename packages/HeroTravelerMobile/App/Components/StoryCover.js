@@ -10,10 +10,10 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 import Image from './Image'
 import Video, {MuteButton, PlayButton} from './Video'
-import getImageUrl from '../Lib/getImageUrl'
-import {Metrics} from '../Themes'
-import Colors from '../Themes/Colors'
-import getVideoUrl from '../Lib/getVideoUrl'
+import getImageUrl from '../Shared/Lib/getImageUrl'
+import {Metrics} from '../Shared/Themes'
+import Colors from '../Shared/Themes/Colors'
+import getVideoUrl from '../Shared/Lib/getVideoUrl'
 
 export default class StoryCover extends Component {
 

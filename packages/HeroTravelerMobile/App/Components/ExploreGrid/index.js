@@ -8,7 +8,7 @@ import {
 import TabIcon from '../TabIcon'
 import Image from '../Image'
 import styles from './ExploreGridStyles'
-import getS3ImageUrl from "../../Lib/getS3ImageUrl";
+import getS3ImageUrl from '../../Shared/Lib/getS3ImageUrl'
 
 export default class ExploreGrid extends Component {
 

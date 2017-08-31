@@ -1,11 +1,9 @@
 import React, {PropTypes, Component} from 'react'
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
-import LinearGradient from 'react-native-linear-gradient'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import moment from 'moment'
 
-import { Colors, Metrics, Fonts } from '../Themes/'
-import getImageUrl from '../Lib/getImageUrl'
+import { Colors, Metrics } from '../Shared/Themes/'
+import getImageUrl from '../Shared/Lib/getImageUrl'
 import Avatar from '../Components/Avatar'
 
 export const ThreadListItemProps = {

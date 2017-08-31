@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react'
 import {View, TouchableWithoutFeedback, StyleSheet} from 'react-native'
-import {Metrics, Colors} from '../Themes/'
+import {Metrics, Colors} from '../Shared/Themes/'
 
 const S = StyleSheet.create({
   root: {

@@ -5,7 +5,7 @@ import {
   Text
 } from 'react-native'
 
-import {Colors} from '../Themes'
+import {Colors} from '../Shared/Themes'
 import styles from './Styles/FAQScreenStyles'
 
 export default class FAQScreen extends React.Component {

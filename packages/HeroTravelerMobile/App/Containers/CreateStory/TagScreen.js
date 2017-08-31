@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import {
   ScrollView,
   View,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity
@@ -18,8 +17,8 @@ import env from '../../Config/Env'
 const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
 const CATEGORY_INDEX = env.SEARCH_CATEGORIES_INDEX
 
-import CategoryActions from '../../Redux/Entities/Categories'
-import {Metrics, Fonts, Colors} from '../../Themes/'
+import CategoryActions from '../../Shared/Redux/Entities/Categories'
+import { Metrics, Colors } from '../../Shared/Themes/'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Loader from '../../Components/Loader'
 import styles from './TagScreenStyles'

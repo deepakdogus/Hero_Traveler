@@ -3,7 +3,7 @@ import {View, Text, StyleSheet} from 'react-native'
 
 import TextButton from '../../Components/TextButton'
 import TabIcon from '../../Components/TabIcon'
-import {Metrics, Colors, Fonts} from '../../Themes'
+import {Metrics, Colors, Fonts} from '../../Shared/Themes'
 import NavButtonStyles from '../../Navigation/Styles/NavButtonStyles'
 
 const styles = StyleSheet.create({

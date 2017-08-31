@@ -13,9 +13,9 @@ import PhotoTaker from '../Components/PhotoTaker'
 import Video from '../Components/Video'
 import Image from '../Components/Image'
 import styles from './Styles/MediaSelectorScreenStyles'
-import isTooltipComplete, {Types as TooltipTypes} from '../Lib/firstTimeTooltips'
-import UserActions from '../Redux/Entities/Users'
-import { Colors } from '../Themes'
+import isTooltipComplete, {Types as TooltipTypes} from '../Shared/Lib/firstTimeTooltips'
+import UserActions from '../Shared/Redux/Entities/Users'
+import { Colors } from '../Shared/Themes'
 
 class MediaSelectorScreen extends React.Component {
 

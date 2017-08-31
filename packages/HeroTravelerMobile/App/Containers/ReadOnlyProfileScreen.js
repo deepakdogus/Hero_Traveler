@@ -2,12 +2,12 @@ import _ from 'lodash'
 import React, {PropTypes, Component} from 'react'
 import { connect } from 'react-redux'
 
-import {Colors} from '../Themes'
-import UserActions, {getFollowers} from '../Redux/Entities/Users'
-import StoryActions, {getByUser, getUserFetchStatus} from '../Redux/Entities/Stories'
+import {Colors} from '../Shared/Themes'
+import UserActions, {getFollowers} from '../Shared/Redux/Entities/Users'
+import StoryActions, {getByUser, getUserFetchStatus} from '../Shared/Redux/Entities/Stories'
 import ProfileView from '../Components/ProfileView'
 import Loader from '../Components/Loader'
-import getImageUrl from '../Lib/getImageUrl'
+import getImageUrl from '../Shared/Lib/getImageUrl'
 import styles from './Styles/ProfileScreenStyles'
 
 

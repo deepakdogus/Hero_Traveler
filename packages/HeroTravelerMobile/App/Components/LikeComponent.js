@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {View, Text, TouchableOpacity} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import {Colors} from '../Themes'
+import {Colors} from '../Shared/Themes'
 import styles from './Styles/LikeComponentStyles'
 
 export default class LikeComponent extends Component {

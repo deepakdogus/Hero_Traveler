@@ -9,10 +9,10 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 
-import {Images} from '../Themes'
+import {Images} from '../Shared/Themes'
 import RoundedButton from '../Components/RoundedButton'
 import styles from './Styles/ResetPasswordRequestScreenStyles'
-import LoginActions from '../Redux/LoginRedux'
+import LoginActions from '../Shared/Redux/LoginRedux'
 
 
 class Input extends React.Component {

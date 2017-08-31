@@ -1,4 +1,4 @@
-import { Colors, Metrics } from '../../Themes/'
+import { Colors, Metrics } from '../../Shared/Themes/'
 
 export default {
   container: {

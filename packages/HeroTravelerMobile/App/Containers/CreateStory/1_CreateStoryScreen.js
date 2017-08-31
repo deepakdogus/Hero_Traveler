@@ -9,10 +9,11 @@ import {
 import { Actions as NavActions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
 
-import API from '../../Services/HeroAPI'
-import StoryEditActions, {hasDraft} from '../../Redux/StoryCreateRedux'
+import API from '../../Shared/Services/HeroAPI'
+import StoryEditActions, {hasDraft} from '../../Shared/Redux/StoryCreateRedux'
+
 import styles from './1_CreateStoryScreenStyles'
-import pathAsFileObject from '../../Lib/pathAsFileObject'
+import pathAsFileObject from '../../Shared/Lib/pathAsFileObject'
 import Loader from '../../Components/Loader'
 import TabIcon from '../../Components/TabIcon'
 

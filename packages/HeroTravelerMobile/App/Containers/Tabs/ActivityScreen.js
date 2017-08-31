@@ -2,16 +2,15 @@ import _ from 'lodash'
 import React from 'react'
 import { ScrollView, Text, View, TouchableOpacity } from 'react-native'
 import moment from 'moment'
-import PushNotification from 'react-native-push-notification'
 
 import { connect } from 'react-redux'
-import UserActions from '../../Redux/Entities/Users'
+import UserActions from '../../Shared/Redux/Entities/Users'
 import Loader from '../../Components/Loader'
 import styles from '../Styles/NotificationScreenStyles'
 import ActivityList from '../../Components/ActivityList'
 import Activity from '../../Components/Activity'
 import ThreadList from '../../Components/ThreadList'
-import Colors from '../../Themes/Colors'
+import Colors from '../../Shared/Themes/Colors'
 import NotificationBadge from '../../Components/NotificationBadge'
 
 const ActivityTypes = {

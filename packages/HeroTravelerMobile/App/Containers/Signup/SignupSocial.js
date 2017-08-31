@@ -1,7 +1,6 @@
 import React from 'react'
 import {
   ScrollView,
-  Image,
   View,
   Text
 } from 'react-native'
@@ -9,14 +8,14 @@ import {connect} from 'react-redux'
 import _ from 'lodash'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import SignupActions from '../../Redux/SignupRedux'
-import UserActions from '../../Redux/Entities/Users'
+import SignupActions from '../../Shared/Redux/SignupRedux'
+import UserActions from '../../Shared/Redux/Entities/Users'
 
 import RoundedButton from '../../Components/RoundedButton'
 import TabIcon from '../../Components/TabIcon'
 import Avatar from '../../Components/Avatar'
-import getImageUrl from '../../Lib/getImageUrl'
-import {Colors} from '../../Themes'
+import getImageUrl from '../../Shared/Lib/getImageUrl'
+import {Colors} from '../../Shared/Themes'
 import styles from './SignupSocialStyles'
 
 class SignupSocialScreen extends React.Component {

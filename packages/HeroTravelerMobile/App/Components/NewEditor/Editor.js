@@ -20,7 +20,7 @@ import {
 import {SelectionState, EditorState, DraftOffsetKey, Modifier, keyCommandInsertNewline, keyCommandPlainBackspace} from './draft-js/reexports'
 
 import * as DJSConsts from './draft-js/constants'
-import Metrics from '../../Themes/Metrics'
+import Metrics from '../../Shared/Themes/Metrics'
 import ContentBlock from './ContentBlock'
 
 // const logSelection = (msg, selection) => {

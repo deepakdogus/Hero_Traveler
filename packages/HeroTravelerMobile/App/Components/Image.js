@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {Image as RNImage} from 'react-native'
 import {CachedImage} from 'react-native-img-cache'
-import getResizeMode from '../Lib/getResizeMode'
+import getResizeMode from '../Shared/Lib/getResizeMode'
 import Metrics from '../Themes/Metrics'
 
 export default class Image extends Component {

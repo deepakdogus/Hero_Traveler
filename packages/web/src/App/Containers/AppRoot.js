@@ -5,6 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 import themes from '../Shared/Themes'
 
+import Category from './Category'
 import Explore from './Explore'
 import Feed from './Feed'
 import Story from './Story'
@@ -20,6 +21,7 @@ class AppRoot extends Component {
           <ThemeProvider theme={themes}>
             <div>
               <Route exact path='/' component={Explore} />
+              <Route exact path='/category/:categoryId' component={Category} />
               <Route exact path='/feed' component={Feed} />
               <Route path='/signup/social' component={SignupSocial} />
               <Route path='/signup/topics' component={SignupTopics} />

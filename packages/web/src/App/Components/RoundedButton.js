@@ -29,6 +29,8 @@ function getBackgroundColor (type, colors) {
       return colors.facebook
     case 'twitterSignup':
       return colors.twitterBlue
+    case 'categoryFollow':
+      return colors.redLight
     case 'blackWhite':
     case 'facebook':
     case 'twitter':
@@ -59,6 +61,8 @@ const StyledButton = styled.button`
         return props.theme.Colors.btnGreyBackground
       case 'opaque':
       case 'opaqueWhite':
+        return props.theme.Colors.snow
+      case 'categoryFollow':
         return props.theme.Colors.snow
       case 'blackWhite':
         return props.theme.Colors.photoOverlay

@@ -26,12 +26,10 @@ const ContentWrapper = styled.div`
   text-align: center;
 `
 
-const More = styled(CenteredText)`
-  font-size: 15px;
-  letter-spacing: 1.2px;
-`
-
 class Explore extends Component {
+
+
+
   render() {
     return (
       <Wrapper>

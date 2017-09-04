@@ -3,3 +3,86 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+
+/* Crimson Text Normal Fonstyle */
+@font-face {
+  font-family: 'Crimson Text';
+  src: url('./App/Fonts/CrimsonText-Roman.ttf');
+}
+@font-face {
+  font-family: 'Crimson Text';
+  src: url('./App/Fonts/CrimsonText-Italic.ttf');
+  font-style: 'italic';
+}
+
+/* Montserrat Normal Fontstyle */
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./App/Fonts/Montserrat-Light.ttf');
+  font-weight: 300;
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./App/Fonts/Montserrat-Regular.ttf');
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./App/Fonts/Montserrat-Medium.ttf');
+  font-weight: 600;
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./App/Fonts/Montserrat-Bold.ttf');
+  font-weight: 700;
+}
+
+/* Source Sans Pro Normal Fontstyle*/
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('./App/Fonts/SourceSansPro-Light.ttf');
+  font-weight: 300;
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('./App/Fonts/SourceSansPro-Regular.ttf');
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('./App/Fonts/SourceSansPro-SemiBold.ttf');
+  font-weight: 600;
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('./App/Fonts/SourceSansPro-Bold.ttf');
+  font-weight: 700;
+}
+
+/* Source Sans Pro Italic Fontstyle*/
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('./App/Fonts/SourceSansPro-LightItalic.ttf');
+  font-weight: 300;
+  font-style: 'italic';
+
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('./App/Fonts/SourceSansPro-Italic.ttf');
+  font-weight: 400;
+  font-style: 'italic';
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('./App/Fonts/SourceSansPro-SemiBoldItalic.ttf');
+  font-weight: 600;
+  font-style: 'italic';
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('./App/Fonts/SourceSansPro-BoldItalic.ttf');
+  font-weight: 700;
+  font-style: 'italic';
+}

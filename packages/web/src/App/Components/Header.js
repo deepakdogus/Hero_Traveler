@@ -130,21 +130,25 @@ const MenuLink = (props) => {
 export default class Header extends React.Component {
   static propTypes = {
     isLoggedIn: PropTypes.bool,
+    blackHeader: PropTypes.bool,
   }
 
   constructor(props) {
     super(props)
     this.state = {
       modal: undefined,
-      fixedHeader: false,
-      blackHeader: false,
+      fixedHeader: this.props.blackHeader || false,
+      blackHeader: this.props.blackHeader || false,
     }
   }
 
-  handleScroll = (e) => {
-    return e.srcElement.body.scrollTop > 65 
+  handleScroll = (event) => {
+    if(!this.props.blackHeader){
+    return event.srcElement.body.scrollTop > 65 
               ? this.setState({ fixedHeader: true, blackHeader: true})
-              : this.setState({ fixedHeader: false, blackHeader: false}) 
+              : this.setState({ fixedHeader: false, blackHeader: false})       
+    }
+    return
   }
 
   componentDidMount = () => {
@@ -192,7 +196,7 @@ export default class Header extends React.Component {
           <Col lg={5}>
             <Row middle="xs">
               <MenuLink to='/' exact>
-                Explore
+                `Explore`
               </MenuLink>
               <Divider>&nbsp;</Divider>          
               <MenuLink to='/signup/topics'>
@@ -212,15 +216,19 @@ export default class Header extends React.Component {
           {isLoggedIn &&
           <Col xsOffset={2} lg={5}>
             <Row end='xs' middle='xs'>
-              <StyledRoundedButton 
-                type='headerButton' 
-                height='32px' 
-                width='32px'
-              >
-                <SearchIcon 
-                  name='explore'
-                />
-              </StyledRoundedButton>
+              <NavLink 
+                to='/search'
+              >                
+                <StyledRoundedButton 
+                  type='headerButton' 
+                  height='32px' 
+                  width='32px'
+                >
+                  <SearchIcon 
+                    name='explore'
+                  />
+                </StyledRoundedButton>
+              </NavLink>                
               <Divider>&nbsp;</Divider>
               <StyledRoundedButton text='Create'/>
               <StyledRoundedButton 

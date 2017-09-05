@@ -9,6 +9,7 @@ import Category from './Category'
 import Explore from './Explore'
 import Feed from './Feed'
 import Story from './Story'
+import Search from './Search'
 import SignupSocial from './Signup/SignupSocial';
 import SignupTopics from './Signup/SignupTopics';
 import Profile from './Profile'
@@ -27,6 +28,7 @@ class AppRoot extends Component {
               <Route path='/signup/topics' component={SignupTopics} />
               <Route path='/story/:storyId' component={Story} />
               <Route path='/profile/:userId' component={Profile} />
+              <Route path='/search' component={Search} />
             </div>
           </ThemeProvider>
         </MuiThemeProvider>

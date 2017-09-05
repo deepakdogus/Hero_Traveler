@@ -31,16 +31,15 @@ const More = styled(CenteredText)`
 
 class Feed extends Component {
   render() {
-    const user = usersExample['596cd072fc3f8110a6f18342']
+    const user = usersExample['590b9b0a4990800011537924']
     const usersStories = Object.keys(feedExample).reduce((matchingStories, key) => {
       const story = feedExample[key]
       if (story.author === user.id) matchingStories[key] = story;
       return matchingStories
     }, {})
-    const isContributor = Object.keys(usersStories).length > 0    
     return (
       <Wrapper>
-        <FeedHeader user={user} isContributor={isContributor}/>      
+        <FeedHeader stories={usersStories} author={user}/>      
         <ContentWrapper>
           <FeedText>MY FEED</FeedText>
           <StoryList

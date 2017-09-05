@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import {feedExample} from '../../Containers/Feed_TEST_DATA'
-import AddToBoardRow from '../AddToBoardRow'
+import StorySelectRow from '../StorySelectRow'
 import SpaceBetweenRowWithButton from '../SpaceBetweenRowWithButton'
 import VerticalCenter from '../VerticalCenter'
 import {RightTitle, StyledVerticalCenter, RightModalCloseX} from './Shared'
@@ -22,8 +22,8 @@ const CreateIconContainer = styled(VerticalCenter)`
   border-color: ${props => props.theme.Colors.redLight};
   border-style: dashed;
   border-width: 1px;
-  height: 108px;
-  width: 78px;
+  height: 103px;
+  width: 73px;
 `
 
 const StyledIcon = styled(Icon)`
@@ -38,12 +38,9 @@ const CreateText = styled.p`
   margin: 0;
 `
 
-//test board images
-const categoriesExample = feedExample[Object.keys(feedExample)[0]].categories
-let categoriesExampleSliced = {};
-for (var i=0; i<3; i++)
-    categoriesExampleSliced[i] = categoriesExample[i];
-
+const storyKeys = Object.keys(feedExample).filter((key, index) => {
+  return index <= 2
+})
 
 export default class AddToBoard extends React.Component {
   static PropTypes = {
@@ -78,13 +75,14 @@ export default class AddToBoard extends React.Component {
   }
 
   renderCategoryRows(categoryKeys) {
-    return categoryKeys.map((key, index) => {
+    return storyKeys.map((key, index) => {
       return (
-        <AddToBoardRow
+        <StorySelectRow
           key={key}
           index={index}
-          category={categoriesExampleSliced[key]}
-          margin='0 0 25px'
+          story={feedExample[key]}
+          isSelected={index === 0}
+          isAddToBoard={true}
           closeModal={this.props.closeModal}
         />
       )
@@ -92,8 +90,6 @@ export default class AddToBoard extends React.Component {
   }
 
   render() {
-    const categoryKeys = Object.keys(categoriesExampleSliced)
-
     return (
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
@@ -106,7 +102,7 @@ export default class AddToBoard extends React.Component {
           />
         </CreateContainer>
         <CategoryRowsContainer>
-          {this.renderCategoryRows(categoryKeys)}
+          {this.renderCategoryRows(storyKeys)}
         </CategoryRowsContainer>
 
       </Container>

@@ -14,15 +14,22 @@ const StyledImage = styled.img`
 const Container = styled.div`
   border: ${props => `1px solid ${props.theme.Colors.dividerGrey}`};
   border-width: ${props => props.index === 0 ? '1px 0' : '0 0 1px'};
-  padding: 5px 5px 0;
+  padding: 8px 30px 8px 30px;
 `
+
+const InteractiveContainer = styled.div`
+  &:hover ${Container} {
+    background-color: ${props => props.theme.Colors.onHoverGrey};
+  }
+`
+
 const Text = styled.p`
-  font-weight: 400;
-  font-size: 16px;
+  font-weight: 600;
+  font-size: 18px;
   letter-spacing: .7px;
   color: ${props => props.theme.Colors.background};
   margin: 0;
-  padding-left: 15px;
+  padding-left: 25px;
 `
 
 const StyledVerticalCenter = styled(VerticalCenter)`
@@ -33,6 +40,8 @@ export default class StorySelectRow extends Component {
   static propTypes = {
     isSelected: PropTypes.bool,
     story: PropTypes.object,
+    index: PropTypes.number,
+    closeModal: PropTypes.func,
   }
 
   renderImage = () => {
@@ -51,7 +60,9 @@ export default class StorySelectRow extends Component {
   }
 
   renderButton = () => {
-    const iconName = this.props.isSelected ? 'redCheck' : 'createStory'
+    const unSelectedIconName = this.props.isAddToBoard ? 'redCheck' : 'createStory'
+    const iconName = this.props.isSelected ? 'redCheck' : unSelectedIconName;
+    
     return (
       <VerticalCenter>
         <Icon name={iconName} />
@@ -59,15 +70,37 @@ export default class StorySelectRow extends Component {
     )
   }
 
+  renderNormalContainer = () => {
+    return(
+        <Container index={this.props.index}>
+          <SpaceBetweenRowWithButton
+            renderImage={this.renderImage}
+            renderText={this.renderText}
+            renderButton={this.renderButton}
+          />
+        </Container>        
+      )
+  }
+
+  renderInteractiveContainer = () => {
+    return(
+        <InteractiveContainer>
+          <Container index={this.props.index}>
+            <SpaceBetweenRowWithButton
+              renderImage={this.renderImage}
+              renderText={this.renderText}
+              renderButton={this.renderButton}
+            />
+          </Container>        
+        </InteractiveContainer>        
+      )
+  }
+
   render() {
     return (
-      <Container index={this.props.index}>
-        <SpaceBetweenRowWithButton
-          renderImage={this.renderImage}
-          renderText={this.renderText}
-          renderButton={this.renderButton}
-        />
-      </Container>
+      <div>
+        {this.props.isAddToBoard ? this.renderInteractiveContainer () : this.renderNormalContainer()}  
+      </div>        
     )
   }
 }

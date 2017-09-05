@@ -132,7 +132,7 @@ const ContributorText = styled.p`
   line-height: 25px;
 `
 
-export default class StoryHeader extends React.Component {
+export default class ProfilejHeader extends React.Component {
   static propTypes = {
     user: PropTypes.object,
     isContributor: PropTypes.bool,
@@ -140,7 +140,7 @@ export default class StoryHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'followedBy' }
+    this.state = {modal: 'addToBoard' }
   }
 
   closeModal = () => {

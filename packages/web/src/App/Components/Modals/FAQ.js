@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import {RightModalCloseX} from './Shared'
-import FAQScreen from '../FAQScreen'
+import FAQContent from '../FAQContent'
 import ModalTogglebar from '../ModalTogglebar'
 import HorizontalDivider from '../HorizontalDivider'
 
@@ -28,7 +28,7 @@ export default class FAQ extends React.Component {
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <ModalTogglebar toggleModal={this.props.toggleModal} tabs={toggleBarTabs}/>
         <HorizontalDivider color='light-grey'/>
-        <FAQScreen/>
+        <FAQContent/>
       </Container>
     )
   }

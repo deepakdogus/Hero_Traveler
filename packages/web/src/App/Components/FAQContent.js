@@ -31,7 +31,7 @@ const FAQs = [
 {q: 'How do I post a story?', a: 'Contributors are the cream of the crop, representing our most passionate users. To be labeled with the “Contributor” star on your profile, you must first publish 200 stories or more. To learn about other eligibility requirements, click here/ send us an email at contributors@herotraveler.com'},
 ]
 
-export default class FAQScreen extends React.Component {
+export default class FAQContent extends React.Component {
 
   renderFAQs(FAQs) {
     return FAQs.map((FAQ, index) => {

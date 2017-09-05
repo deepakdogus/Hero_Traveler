@@ -39,7 +39,6 @@ export default class SettingsNotificationRow extends Component {
     text: PropTypes.string,
     index: PropTypes.num,
     toggleNotificationSwitch: PropTypes.func,
-    logOnChange: PropTypes.func,
   }
 
   renderText = () => {

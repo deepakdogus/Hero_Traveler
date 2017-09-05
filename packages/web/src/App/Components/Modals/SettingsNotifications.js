@@ -32,9 +32,7 @@ export default class SettingsNotifications extends React.Component {
     closeModal: PropTypes.func,
   }
 
-  toggleNotificationSwitch = (e, f) => {console.log("toggleNotificationSwitch: ", e, f)}
-
-  logOnChange = (e) => {console.log("logOnChange: ", e)}
+  toggleNotificationSwitch = () => {}
 
   renderSettingsNotificationRows(notificationTypes) {
     return notificationTypes.map((el,index) => {

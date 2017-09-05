@@ -46,8 +46,6 @@ export default class Notifications extends React.Component {
 
   renderNotificationRows(userKeys) {
     return userKeys.map((key, index) => {
-      console.log("key: ", key)
-
       return (
         <NotificationRow
           key={key}

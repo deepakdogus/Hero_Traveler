@@ -125,7 +125,7 @@ export const NotificationContent = styled.p`
 
 export const Timestamp = styled.p`
   font-weight: 400;
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: .7px;
   margin: 0;
   color: ${props => props.theme.Colors.grey};

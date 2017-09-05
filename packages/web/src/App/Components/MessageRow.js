@@ -33,15 +33,11 @@ const InteractiveContainer = styled.div`
     background-color: ${props => props.theme.Colors.onHoverGrey};
   }
 `
-const StyledHorizontalDivider = styled(HorizontalDivider)`
-  margin: 0;
-`
 
 export default class MessageRow extends Component {
   static propTypes = {
     message: PropTypes.string,
     user: PropTypes.object,
-    key: PropTypes.string,
     timestamp: PropTypes.object,
     isComment: PropTypes.bool,
   }
@@ -70,7 +66,7 @@ export default class MessageRow extends Component {
   renderTimestamp = () => {
     return (
       <TimestampContainer>
-        <Timestamp margin='none' width='50px' >{moment(this.props.timestamp).fromNow()}</Timestamp>
+        <Timestamp>{moment(this.props.timestamp).fromNow()}</Timestamp>
       </TimestampContainer>
     )
   }

@@ -44,8 +44,6 @@ export default class FAQScreen extends React.Component {
     })
   }
 
-
-
   render () {
     return (
       <Container>

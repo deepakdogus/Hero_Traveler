@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import SpaceBetweenRowWithInputAndButton from './SpaceBetweenRowWithInputAndButton'
 import VerticalCenter from './VerticalCenter'
 import RoundedButton from './RoundedButton'
 import HorizontalDivider from './HorizontalDivider'
+import {Row} from './FlexboxGrid'
 
 const Container = styled.div`
   margin: ${props => props.margin ? props.margin : '0'};
@@ -36,41 +36,27 @@ export const StyledFooterInput = styled.input`
   padding: 6px 12px;
   font-size: 18px;
   outline: none;
+  margin-right: 2%;
 `
 
 
 export default class InputRow extends Component {
-
-  renderInput = () => {
-    return (
-      <VerticalCenter>
-          <StyledFooterInput placeholder='Add a comment...'/>      
-      </VerticalCenter>
-    )
-  }
-
-  renderButton = () => {
-    return (
-      <VerticalCenter>
-        <RoundedButton
-          text='Send'
-          margin='none'
-          width='94px'
-          padding='mediumDefault'
-        />
-      </VerticalCenter>
-    )
-  }
-
   render() {
     return (
       <Container margin={this.props.margin}>
         <StyledHorizontalDivider color='light-grey'/>
         <InputFooter>
-          <SpaceBetweenRowWithInputAndButton
-            renderInput={this.renderInput}
-            renderButton={this.renderButton}
-          />
+          <VerticalCenter>
+            <Row>
+              <StyledFooterInput placeholder='Add a comment...'/>      
+              <RoundedButton
+                text='Send'
+                margin='none'
+                width='94px'
+                padding='mediumDefault'
+              />              
+            </Row>
+          </VerticalCenter>          
         </InputFooter>
       </Container>
     )

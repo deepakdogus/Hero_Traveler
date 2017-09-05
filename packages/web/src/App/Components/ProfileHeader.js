@@ -140,7 +140,7 @@ export default class ProfilejHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'addToBoard' }
+    this.state = {modal: 'account' }
   }
 
   closeModal = () => {

@@ -31,7 +31,6 @@ export const RightTitle = styled.p`
   padding: 20px;
 `
 
-
 export const CenterTitle = styled.p`
   font-weight: 400;
   font-size: 20px;
@@ -71,18 +70,6 @@ export const StyledInput = styled.input`
   border-width: 0 0 1px;
   border-color: ${props => props.theme.Colors.dividerGrey};
   margin-bottom: 25px;
-`
-
-export const SettingsStyledInput = styled.input`
-  border-color: ${props => props.theme.Colors.dividerGrey};
-  border-width: 0 0 1px;
-  color: ${props => props.theme.Colors.background};
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: .7px;
-  outline: none;
-  padding-bottom: 8px;
-  width: 100%;
 `
 
 //RightModal Styles
@@ -137,14 +124,6 @@ export const ProfileDetail = styled.p`
   letter-spacing: .7px;
   margin: 0;
   color: ${props => props.theme.Colors.grey};
-`
-
-export const StyledInputLabel = styled.label`
-  display: block;
-  ${basicTextStyle};
-  color: ${props => props.theme.Colors.navBarText};
-  font-size: 14px;
-  margin-bottom: 10px;
 `
 
 export const RightModalCloseX = styled(Icon)`

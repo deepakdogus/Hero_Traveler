@@ -2,8 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import {RightTitle, SettingsStyledInput, StyledInputLabel, RightModalCloseX} from './Shared'
+import {RightTitle, RightModalCloseX} from './Shared'
 import SpaceBetweenRowWithLeftRightButtons from '../SpaceBetweenRowWithLeftRightButtons'
+import InputWithLabel from '../InputWithLabel'
 import VerticalCenter from '../VerticalCenter'
 import RoundedButton from '../RoundedButton'
 import ModalTogglebar from '../ModalTogglebar'
@@ -61,12 +62,20 @@ export default class Settings extends React.Component {
         <RightTitle>SETTINGS</RightTitle>
         <ModalTogglebar toggleModal={this.props.toggleModal} tabs={toggleBarTabs}/>
         <InputContainer>
-          <StyledInputLabel for='name'>Name</StyledInputLabel>
-          <SettingsStyledInput id='name'/>          
+          <InputWithLabel 
+            id='name'
+            name='name'
+            placeholder='John Doe'
+            label='Name'
+          />
         </InputContainer>
         <InputContainer>
-          <StyledInputLabel for='email'>Email</StyledInputLabel>
-          <SettingsStyledInput id='email'/>
+          <InputWithLabel 
+            id='email'
+            name='email'
+            placeholder='jdoe@gmail.com'
+            label='Email'
+          />          
         </InputContainer>
         <SpaceBetweenRowWithLeftRightButtons
           renderButtonLeft={this.renderButtonLeft}

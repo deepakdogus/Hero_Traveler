@@ -41,7 +41,9 @@ export default class MessageRow extends Component {
   static propTypes = {
     message: PropTypes.string,
     user: PropTypes.object,
+    key: PropTypes.string,
     timestamp: PropTypes.object,
+    isComment: PropTypes.bool,
   }
 
   renderImage = () => {
@@ -76,14 +78,15 @@ export default class MessageRow extends Component {
   render() {
     return (
       <InteractiveContainer>
-        <Container>
-          <SpaceBetweenRowWithTimeStamp
-            renderImage={this.renderImage}
-            renderText={this.renderText}
-            renderTimestamp={this.renderTimestamp}
-          />
-        </Container>        
-        <StyledHorizontalDivider color='light-grey'/>
+        {this.props.index > 0 ? <HorizontalDivider color='light-grey'/> : null}
+          <Container>
+            <SpaceBetweenRowWithTimeStamp
+              renderImage={this.renderImage}
+              renderText={this.renderText}
+              renderTimestamp={this.renderTimestamp}
+            />
+          </Container>        
+        {!this.props.isComment ? <HorizontalDivider color='light-grey'/> : null}
       </InteractiveContainer>
     )
   }

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import {usersExample} from '../../Containers/Feed_TEST_DATA'
-import CommentRow from '../CommentRow'
+import MessageRow from '../MessageRow'
 import InputRow from '../InputRow'
 import {RightTitle, RightModalCloseX} from './Shared'
 import {randomDate} from './Shared/RandomDate'
@@ -22,16 +22,17 @@ export default class UserComments extends React.Component {
     closeModal: PropTypes.func,
   }
 
-  renderUserCommentRows(userKeys) {
+  renderUserMessageRows(userKeys) {
     return userKeys.map((key, index) => {
       return (
-        <CommentRow
+        <MessageRow
           key={key}
           index={index}
           user={usersExample[key]}
-          comment=''
+          message=''
           timestamp={randomDate(new Date(2017,7,1), new Date())}
           padding='10px 30px'
+          isComment={true}
         />
       )
     })
@@ -48,7 +49,7 @@ export default class UserComments extends React.Component {
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>COMMENTS</RightTitle>
         <CommentContainer>
-          {this.renderUserCommentRows(userKeys)}
+          {this.renderUserMessageRows(userKeys)}
         </CommentContainer>
         <InputRow/>
       </Container>

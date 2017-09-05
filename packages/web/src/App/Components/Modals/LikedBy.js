@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import {usersExample} from '../../Containers/Feed_TEST_DATA'
-import LikedByRow from '../LikedByRow'
+import FollowFollowingRow from '../FollowFollowingRow'
 import {RightTitle, RightModalCloseX} from './Shared'
 
 const Container = styled.div``
@@ -22,7 +22,7 @@ export default class LikedBy extends React.Component {
   renderUserRows(userKeys) {
     return userKeys.map((key, index) => {
       return (
-        <LikedByRow
+        <FollowFollowingRow
           key={key}
           user={usersExample[key]}
           isFollowing={index === 0}

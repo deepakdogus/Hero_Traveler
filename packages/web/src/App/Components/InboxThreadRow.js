@@ -3,8 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
-import SpaceBetweenRowWithLeftAvatar from './SpaceBetweenRowWithLeftAvatar'
-import SpaceBetweenRowWithRightAvatar from './SpaceBetweenRowWithRightAvatar'
+import SpaceBetweenRowWithAvatar from './SpaceBetweenRowWithAvatar'
 import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Avatar from './Avatar'
@@ -36,7 +35,6 @@ export default class InboxThreadRow extends Component {
   }
 
   renderText = () => {
-    // const {user} = this.props
     const messageText = this.props.message ? this.props.message : 'Lorum Ipsum'
     return (
       <StyledVerticalCenter>
@@ -44,7 +42,6 @@ export default class InboxThreadRow extends Component {
       </StyledVerticalCenter>
     )
   }
-
 
   renderTimestamp = () => {
     return (
@@ -57,19 +54,12 @@ export default class InboxThreadRow extends Component {
   render() {
     return (
       <Container margin={this.props.margin}>
-      {this.props.isSender ?
-        <SpaceBetweenRowWithLeftAvatar
+        <SpaceBetweenRowWithAvatar
           renderImage={this.renderImage}
           renderText={this.renderText}
           renderTimestamp={this.renderTimestamp}
+          isSender={this.props.isSender}
         />
-        :
-        <SpaceBetweenRowWithRightAvatar
-          renderImage={this.renderImage}
-          renderText={this.renderText}
-          renderTimestamp={this.renderTimestamp}
-        />
-      }
       </Container>
     )
   }

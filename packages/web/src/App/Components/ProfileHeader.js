@@ -136,7 +136,7 @@ export default class ProfileHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'settings' }
+    this.state = {modal: 'inboxThread' }
   }
 
   closeModal = () => {
@@ -285,7 +285,7 @@ export default class ProfileHeader extends React.Component {
           <Inbox closeModal={this.closeModal} profile={user}/>
         </RightModal>
         <RightModal
-          isOpen={this.state.modal === 'messageThread'}
+          isOpen={this.state.modal === 'inboxThread'}
           contentLabel='Message Thread'
           onRequestClose={this.closeModal}
         >

@@ -7,17 +7,17 @@ import InboxThreadRow from '../InboxThreadRow'
 import {RightTitle} from './Shared'
 import {randomDate} from './Shared/RandomDate'
 import InputRow from '../InputRow'
-import TextButton from '../TextButton'
+import VerticalCenter from '../VerticalCenter'
 
 const Container = styled.div``
 
 const InboxThreadRowsContainer = styled.div`
   padding: 25px;
 `
-export const StyledTextButton = styled(TextButton)`
+const StyledTextButtonContainer = styled(VerticalCenter)`
   position: absolute;
-  top: 17px;
-  left: 4px;
+  top: 22px;
+  left: 18px;
   cursor: pointer;
 `
 
@@ -53,13 +53,10 @@ export default class InboxThread extends React.Component {
 
     return (
       <Container>
-        <StyledTextButton 
-          type='blackWhite'
-          textAlign='left'
-          margin='none'
+        <StyledTextButtonContainer 
           onClick={this.props.closeModal}
-          text='< Inbox'
-          />
+        >{'<'}&nbsp;&nbsp;Inbox
+        </StyledTextButtonContainer>
         <RightTitle>{seedSender}</RightTitle>
         <InboxThreadRowsContainer>
           {this.renderInboxThreadRows(userKeys)}

@@ -1,18 +1,16 @@
 import _ from 'lodash'
-import Config from '../../Config/AppConfig'
+import Env from '../../Config/Env'
 
-export default function getImageUrl(image, path) {
-  const baseUrl = Config.cdnBaseUrl
-  const original = _.get(image, 'original.path', undefined)
-  const mobile = _.get(image, path ? path : 'versions.mobile.path', undefined)
+export function getImageUrlBase() {
+  return Env.cdnBaseUrl + 'image/upload'
+}
 
-  if (mobile) {
-    return baseUrl + mobile
-  }
-
-  if (original) {
-    return baseUrl + original
-  }
-
-  return undefined
+export default function getImageUrl(image: object): ?string {
+  if (!_.has(image, 'original')) return undefined
+  const {path, folders} = image.original
+  const filename = _.last(path.split('/'))
+  // hot fix to avoid search crashing. Need to bulk update algolia
+  const folderPath = folders ? folders.join('/') : 'files'
+  const url = `${getImageUrlBase()}/${folderPath}/${filename}`
+  return url
 }

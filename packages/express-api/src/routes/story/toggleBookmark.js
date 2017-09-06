@@ -1,4 +1,4 @@
-import {Story} from '@rwoody/ht-core'
+import {Story} from '@hero/ht-core'
 
 export default function toggleBookmark(req, res) {
   const userId = req.user._id

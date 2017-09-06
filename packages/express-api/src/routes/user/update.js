@@ -1,5 +1,5 @@
-import {User, Models} from '@rwoody/ht-core'
-import {Constants} from '@rwoody/ht-util'
+import {User, Models} from '@hero/ht-core'
+import {Constants} from '@hero/ht-util'
 import algoliasearchModule  from 'algoliasearch'
 
 const client = algoliasearchModule(process.env.ALGOLIA_ACCT_KEY, process.env.ALGOLIA_API_KEY)

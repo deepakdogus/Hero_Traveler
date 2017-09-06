@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import {NavLink} from 'react-router-dom';
 
 import { Grid, Row, Col } from './FlexboxGrid';
-import getImageUrl from '../Shared/Lib/getImageUrl'
+import getS3ImageUrl from '../Shared/Lib/getS3ImageUrl'
 import Icon from './Icon'
 import {VerticalCenterStyles} from './VerticalCenter'
 import Overlay from './Overlay'
@@ -68,7 +68,6 @@ export default class ExploreGrid extends React.Component {
               <CategoryTile
                 imageSource={getImageUrl(category.image, 'versions.thumbnail240.path')}
               />
-                     
             <TitleContainer selected={category.selected}>
               <Title>{category.title}</Title>
             </TitleContainer>

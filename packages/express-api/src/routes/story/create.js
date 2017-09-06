@@ -1,4 +1,4 @@
-import {Story} from '@rwoody/ht-core'
+import {Story} from '@hero/ht-core'
 
 export default function createStory(req, res) {
   const {story: storyAttrs} = req.body

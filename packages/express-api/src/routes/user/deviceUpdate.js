@@ -1,4 +1,4 @@
-import {Models} from '@rwoody/ht-core'
+import {Models} from '@hero/ht-core'
 
 export default function updateDevice(req, res) {
   const {device} = req.body

@@ -24,7 +24,8 @@ const { Types, Creators } = createActions({
   uploadCoverImageSuccess: ['draft'],
   uploadCoverImageFailure: ['error'],
   updateCategories: ['categories'],
-  resetCreateStore: null
+  resetCreateStore: null,
+  toggleCreateModal: null
 })
 
 export const StoryCreateTypes = Types
@@ -33,6 +34,7 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
+  isShowCreateModal: false,
   draft: null,
   publishing: false,
   error: null,
@@ -45,6 +47,12 @@ export const INITIAL_STATE = Immutable({
 
 /* ------------- Reducers ------------- */
 export const reset = () => INITIAL_STATE
+
+export const toggleCreateModal = (state) => {
+  return state.merge({
+    isShowCreateModal: !state.isShowCreateModal,
+  })
+}
 
 export const publish = (state, { userId }) => {
   return state.merge({
@@ -139,7 +147,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.EDIT_STORY]: editStory,
   [Types.EDIT_STORY_SUCCESS]: editStorySuccess,
   [Types.EDIT_STORY_FAILURE]: editStoryFailure,
-  [Types.RESET_CREATE_STORE]: reset
+  [Types.RESET_CREATE_STORE]: reset,
+  [Types.TOGGLE_CREATE_MODAL]: toggleCreateModal
 })
 
 export const hasDraft = (state) => !!_.get(state.draft, 'id')

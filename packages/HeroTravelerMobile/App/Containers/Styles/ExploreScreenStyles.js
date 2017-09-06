@@ -99,7 +99,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: Colors.whiteAlphaPt15,
-    marginTop: 12, 
+    marginTop: 12,
   },
   tab: {
     justifyContent: 'center',
@@ -133,5 +133,34 @@ export default StyleSheet.create({
   thumbnailImage: {
     height: 40,
     width: 30,
+  },
+  InputXPosition: {
+    position: 'absolute',
+    top: 0,
+    right: 5,
+  },
+  InputXView: {
+    backgroundColor: '#616161',
+    borderRadius: 100,
+    justifyContent: 'center',
+    height: 15,
+    width: 15,
+    paddingLeft: 2.5,
+    marginVertical: 7.5,
+  },
+  InputXIcon: {
+    width: 10,
+    height: 10,
+    paddingLeft: 5,
   }
+})
+
+export const CategoryFeedNavActionStyles = StyleSheet.create({
+  leftButtonIconStyle: {tintColor: Colors.navBarText},
+  navigationBarStyle: {
+    paddingTop: 5,
+    borderBottomWidth: 0,
+    height: Metrics.navBarHeight - 10,
+    backgroundColor: Colors.background,
+  },
 })

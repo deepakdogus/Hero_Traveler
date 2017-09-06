@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     textAlign: 'center',
-    color: Colors.navBarText,
+    color: Colors.white,
   },
   left: {
     flex: 1/3,
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   leftText: {
     textAlign: 'left',
     paddingLeft: Metrics.doubleBaseMargin,
-    color: Colors.navBarText
+    color: Colors.white,
   },
   right: {
     flex: 1/3,
@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     paddingRight: Metrics.doubleBaseMargin,
   },
-  leftGreyBtn: {
-    tintColor: Colors.navBarText
+  leftBtn: {
+    tintColor: Colors.white
   },
   inactiveText: {
     opacity: .5,
@@ -68,15 +68,15 @@ const styles = StyleSheet.create({
 export default class NavBar extends Component {
 
   render() {
-    const { style, 
+    const { style,
         leftTitle, leftIcon, leftTextStyle, onLeft,
-        title, titleStyle,
+        title, titleStyle, onTitle,
         rightTitle, rightIcon, rightTextStyle, onRight, isRightValid = true } = this.props
     return (
       <View style={[styles.root, style]}>
         {leftTitle &&
           <View style={styles.left}>
-            {leftIcon && <TabIcon style={{ image: [styles.leftIconStyle, styles.leftGreyBtn] }} name={leftIcon}/>}
+            {leftIcon && <TabIcon style={{ image: [styles.leftIconStyle, styles.leftBtn] }} name={leftIcon}/>}
             <TextButton
               style={[styles.text, styles.leftText, leftTextStyle]}
               onPress={onLeft}
@@ -87,7 +87,13 @@ export default class NavBar extends Component {
         }
         {title &&
           <View style={styles.title}>
-            <Text style={[styles.text, styles.titleText, titleStyle || {}]}>{title}</Text>
+            {!onTitle && <Text style={[styles.text, styles.titleText, titleStyle || {}]}>{title}</Text>}
+            {onTitle && <TextButton
+              style={[styles.text, styles.titleText, titleStyle || {}, isRightValid ? {} : styles.inactiveText]}
+              onPress={onTitle}
+            >
+              {title}
+            </TextButton>}
           </View>
         }
         {rightTitle &&
@@ -98,7 +104,7 @@ export default class NavBar extends Component {
             >
               {rightTitle}
             </TextButton>
-            {rightIcon && <TabIcon style={{image: [styles.rightIconStyle, isRightValid ? {} : styles.inactiveBtn]}} name={rightIcon}/>}
+            {rightIcon && rightIcon !== 'none' && <TabIcon style={{image: [styles.rightIconStyle, isRightValid ? {} : styles.inactiveBtn]}} name={rightIcon}/>}
           </View>
         }
       </View>

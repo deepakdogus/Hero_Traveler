@@ -7,7 +7,7 @@ import Core, {
   Story,
   Category,
   Models
-} from '@rwoody/ht-core'
+} from '@hero/ht-core'
 import generateUserSeedData from './data/userData'
 import generateStorySeedData from './data/storyData'
 import generateCategorySeedData from './data/categoryData'

@@ -1,4 +1,5 @@
-import React, {PropTypes, Component} from 'react'
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {View, Text, TouchableOpacity} from 'react-native'
 
 import styles from './Styles/StoryReadingToolbarStyles'
@@ -23,7 +24,6 @@ export default class StoryReadingToolbarComponent extends Component {
         rootCommentComponent,
         rootBookmarkComponent,
         rootShareComponent
-
     const likeContainer = (
       <View style={styles.wrapper}>
         <Text
@@ -31,7 +31,10 @@ export default class StoryReadingToolbarComponent extends Component {
         >
           {this.props.likeCount || 0}
         </Text>
-        <TabIcon name={this.props.isLiked ? 'like-active' : 'like'}/>
+        <TabIcon
+          name={this.props.isLiked ? 'like-active' : 'like'}
+          style={{image: styles.heartIcon}}
+        />
       </View>
     )
 
@@ -59,7 +62,14 @@ export default class StoryReadingToolbarComponent extends Component {
 
     const shareContainer = (
       <View style={styles.wrapper}>
-        <TabIcon name={'share'}/>
+        <TabIcon
+          name={'share'}
+          style={{
+            image: {
+              marginBottom: 2,
+            }
+          }}
+        />
       </View>
     )
 

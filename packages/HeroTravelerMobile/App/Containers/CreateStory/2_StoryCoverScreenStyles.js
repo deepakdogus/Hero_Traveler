@@ -1,12 +1,13 @@
 import { StyleSheet } from 'react-native'
 import { ApplicationStyles, Colors, Metrics, Fonts } from '../../Shared/Themes/'
 
-const third = (1 / 3) * (Metrics.screenHeight - Metrics.navBarHeight * 2)
 
 export const placeholderColor = Colors.background
 
+const third = (1 / 3) * (Metrics.screenHeight - Metrics.navBarHeight * 2)
+
 export default StyleSheet.create({
-  mainContainer: {
+  root: {
     flex: 1,
     backgroundColor: Colors.lightGreyAreas,
   },
@@ -28,17 +29,7 @@ export default StyleSheet.create({
   spaceView: {
     height: third
   },
-  keyboardMargin: {
-    marginBottom: 50,
-  },
-  loading: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0
-  },
-  loadingText: {
+  loaderText: {
     color: 'white',
     fontSize: 18,
     fontFamily: Fonts.type.montserrat
@@ -48,9 +39,9 @@ export default StyleSheet.create({
     color: Colors.snow,
     marginTop: 20,
     marginLeft: 20,
-    height: 34,
     fontSize: 28,
     fontFamily: 'Arial',
+    fontWeight: '500',
   },
   subTitleInput: {
     color: Colors.snow,
@@ -135,5 +126,59 @@ export default StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
+  },
+  coverWrapper: {
+    height: Metrics.screenHeight - Metrics.navBarHeight - 30,
+  },
+  videoCoverWrapper: {
+    height: Metrics.screenHeight - Metrics.navBarHeight
+  },
+  angleDownIcon: {
+    height: 20,
+    alignItems: 'center',
+    marginVertical: Metrics.baseMargin / 2
+  },
+  editorWrapper: {
+    backgroundColor: Colors.snow
+  },
+  loadingText: {
+    color: Colors.white
+  },
+  loading: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  trackingToolbarContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    width: Metrics.screenWidth,
+  },
+  toolbarAvoiding: {
+    height: Metrics.editorToolbarHeight
+  },
+})
+
+export const customStyles = StyleSheet.create({
+  unstyled: {
+    fontSize: 18,
+    color: '#757575'
+  },
+  atomic: {
+    fontSize: 15,
+    color: '#757575'
+  },
+  link: {
+    color: '#c4170c',
+    fontWeight: '600',
+    textDecorationLine: 'none',
+  },
+  'header-one': {
+    fontSize: 21,
+    fontWeight: '400',
+    color: '#1a1c21'
   }
 })

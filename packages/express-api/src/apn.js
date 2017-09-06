@@ -2,7 +2,7 @@ import apn from 'apn'
 import path from 'path'
 import util from 'util'
 import _ from 'lodash'
-import {Models} from '@rwoody/ht-core'
+import {Models} from '@hero/ht-core'
 const sound = 'chime.caf'
 const badge = 1
 

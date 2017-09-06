@@ -2,11 +2,11 @@
 # yarn lockfile v1
 
 
-"@rwoody/ht-core@*":
-  version "0.0.21"
-  resolved "https://registry.yarnpkg.com/@rwoody/ht-core/-/ht-core-0.0.21.tgz#7305350fdac7527bf7f2455f526b57311a1e299b"
+"@hero/ht-core@*":
+  version "0.0.26"
+  resolved "https://npm.abeck.io:443/@hero%2fht-core/-/ht-core-0.0.26.tgz#1972077159448f2791c485d110ae5f1332ea9595"
   dependencies:
-    "@rwoody/ht-util" "*"
+    "@hero/ht-util" "^0.0.10"
     algoliasearch "^3.22.1"
     babel-preset-flow "^6.23.0"
     babel-register "^6.23.0"
@@ -26,9 +26,9 @@
     rand-token "^0.3.0"
     standard-error "^1.1.0"
 
-"@rwoody/ht-util@*":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@rwoody/ht-util/-/ht-util-0.0.9.tgz#3cddbf704927ada11b60b3a42babff42cfb15474"
+"@hero/ht-util@^0.0.10":
+  version "0.0.10"
+  resolved "https://npm.abeck.io:443/@hero%2fht-util/-/ht-util-0.0.10.tgz#25657f61214b8e9bf69a2222c6fbb0b9ae0819b6"
   dependencies:
     request "^2.81.0"
     request-promise "^4.2.1"

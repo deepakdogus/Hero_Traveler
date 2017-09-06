@@ -3,84 +3,54 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import {RightTitle, RightModalCloseX} from './Shared'
-import CenteredLeftRightButtons from '../CenteredLeftRightButtons'
-import InputWithLabel from '../InputWithLabel'
-import VerticalCenter from '../VerticalCenter'
-import RoundedButton from '../RoundedButton'
 import ModalTogglebar from '../ModalTogglebar'
 
-const toggleBarTabs = [
-  { text: 'Account', isActive: true, isLast: false },
-  { text: 'Services', isActive: false, isLast: false },
-  { text: 'Notifications', isActive: false, isLast: false },
-  { text: 'Password', isActive: false, isLast: true },
-]
+import EditAccount from './EditAccount'
+import EditNotifications from './EditNotifications'
+import EditPassword from './EditPassword'
+import EditServices from './EditServices'
 
 const Container = styled.div``
 
-const InputContainer = styled.div`
-  padding: 25px;
-`
-
 export default class Settings extends React.Component {
   static propTypes = {
-    toggleModal: PropTypes.func,
     closeModal: PropTypes.func,
   }
 
-  renderButtonLeft = () => {
-    return (
-      <VerticalCenter>
-        <RoundedButton
-          text={'Cancel'}
-          margin='none'
-          width='116px'
-          type='blackWhite'
-          padding='mediumEven'
-        />
-      </VerticalCenter>
-    )
-  }
+  constructor(props) {
+    super(props)
+    this.state = {
+      modalContent: 'account',
+      toggleBarTabs: [
+        { text: 'Account', isActive: true, isLast: false },
+        { text: 'Services', isActive: false, isLast: false },
+        { text: 'Notifications', isActive: false, isLast: false },
+        { text: 'Password', isActive: false, isLast: true },
+      ],
+    }
+  }  
 
-  renderButtonRight = () => {
-    return (
-      <VerticalCenter>
-        <RoundedButton
-          text={'Save Changes'}
-          margin='none'
-          width='180px'
-          padding='mediumEven'
-        />
-      </VerticalCenter>
-    )
+  toggleModal = (event) => {
+    let target = event.target.innerHTML.split(' ')[0];
+    let newTabs = [];
+    this.state.toggleBarTabs.forEach(function(tab){
+      let newTab = Object.assign({}, tab)
+      newTab.isActive = tab.text === target ? true : false;
+      newTabs.push(newTab)
+    })
+    this.setState({ modalContent: target.toLowerCase(), toggleBarTabs: newTabs })
   }
-
+ 
   render() {
     return (
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>SETTINGS</RightTitle>
-        <ModalTogglebar toggleModal={this.props.toggleModal} tabs={toggleBarTabs}/>
-        <InputContainer>
-          <InputWithLabel 
-            id='name'
-            name='name'
-            placeholder='John Doe'
-            label='Name'
-          />
-        </InputContainer>
-        <InputContainer>
-          <InputWithLabel 
-            id='email'
-            name='email'
-            placeholder='jdoe@gmail.com'
-            label='Email'
-          />          
-        </InputContainer>
-        <CenteredLeftRightButtons
-          renderButtonLeft={this.renderButtonLeft}
-          renderButtonRight={this.renderButtonRight}
-        />
+        <ModalTogglebar toggleModal={this.toggleModal} tabs={this.state.toggleBarTabs}/>
+        {this.state.modalContent === 'account' ? <EditAccount/> : null }
+        {this.state.modalContent === 'services' ? <EditServices/> : null }
+        {this.state.modalContent === 'notifications' ? <EditNotifications/> : null }
+        {this.state.modalContent === 'password' ? <EditPassword/> : null }
       </Container>
     )
   }

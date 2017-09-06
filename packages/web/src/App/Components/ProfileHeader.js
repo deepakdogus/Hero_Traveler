@@ -21,9 +21,6 @@ import SendTo from './Modals/SendTo'
 import AddToBoard from './Modals/AddToBoard'
 import CreateBoard from './Modals/CreateBoard'
 import Settings from './Modals/Settings'
-import SettingsPassword from './Modals/SettingsPassword'
-import SettingsServices from './Modals/SettingsServices'
-import EditNotifications from './Modals/EditNotifications'
 import Inbox from './Modals/Inbox'
 import InboxThread from './Modals/InboxThread'
 import NotificationsThread from './Modals/NotificationsThread'
@@ -140,7 +137,7 @@ export default class ProfileHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'notificationsThread' }
+    this.state = {modal: 'settings' }
   }
 
   closeModal = () => {
@@ -151,10 +148,6 @@ export default class ProfileHeader extends React.Component {
     this.setState({ modal: 'followedBy' })
   }
 
-  toggleModal = (e) => {
-    let target = e.target.innerHTML.toLowerCase().split(' ')[0];
-    this.setState({ modal: target })
-  }
 
   render () {
     const {user, isContributor} = this.props
@@ -272,32 +265,11 @@ export default class ProfileHeader extends React.Component {
           <CreateBoard closeModal={this.closeModal} profile={user}/>
         </RightModal>             
         <RightModal
-          isOpen={this.state.modal === 'account'}
-          contentLabel='Edit Settings'
+          isOpen={this.state.modal === 'settings'}
+          contentLabel='Settings'
           onRequestClose={this.closeModal}
         >
           <Settings closeModal={this.closeModal} toggleModal={this.toggleModal} profile={user}/>
-        </RightModal>
-        <RightModal
-          isOpen={this.state.modal === 'password'}
-          contentLabel='Edit Password'
-          onRequestClose={this.closeModal}
-        >
-          <SettingsPassword  closeModal={this.closeModal} toggleModal={this.toggleModal} profile={user}/>
-        </RightModal>
-        <RightModal
-          isOpen={this.state.modal === 'services'}
-          contentLabel='Edit Services'
-          onRequestClose={this.closeModal}
-        >
-          <SettingsServices  closeModal={this.closeModal} toggleModal={this.toggleModal} profile={user}/>
-        </RightModal>                       
-        <RightModal
-          isOpen={this.state.modal === 'editNotifications'}
-          contentLabel='Edit Notifications'
-          onRequestClose={this.closeModal}
-        >
-          <EditNotifications closeModal={this.closeModal} toggleModal={this.toggleModal} profile={user}/>
         </RightModal>
         <RightModal
           isOpen={this.state.modal === 'notificationsThread'}

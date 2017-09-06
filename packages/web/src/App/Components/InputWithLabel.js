@@ -26,7 +26,7 @@ export const StyledInput = styled.input`
   width: 100%;
 `
 
-export default class Settings extends React.Component {
+export default class InputWithLabel extends React.Component {
   static propTypes = {
     label: PropTypes.string,
     placeholder: PropTypes.string,

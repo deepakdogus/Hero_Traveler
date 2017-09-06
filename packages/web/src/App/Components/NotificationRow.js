@@ -43,7 +43,7 @@ const StyledImage = styled.img`
   height: 60px;
 `
 
-export default class MessageRow extends Component {
+export default class NotificationRow extends Component {
   static propTypes = {
     notification: PropTypes.string,
     comment: PropTypes.string,

@@ -132,7 +132,7 @@ const ContributorText = styled.p`
   line-height: 25px;
 `
 
-export default class ProfilejHeader extends React.Component {
+export default class ProfileHeader extends React.Component {
   static propTypes = {
     user: PropTypes.object,
     isContributor: PropTypes.bool,

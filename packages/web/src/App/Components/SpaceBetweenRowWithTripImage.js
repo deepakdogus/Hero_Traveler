@@ -13,7 +13,7 @@ const StyledCol = styled(Col)`
 `
 
 // this Component should only be used for horizontal placement
-export default class SpaceBetweenRowWithTimeStamp extends Component {
+export default class SpaceBetweenRowWithTripImage extends Component {
   static propTypes = {
     renderImage: PropTypes.func,
     renderText: PropTypes.func,

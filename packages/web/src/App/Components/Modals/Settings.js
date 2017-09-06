@@ -12,6 +12,8 @@ import EditServices from './EditServices'
 
 const Container = styled.div``
 
+const tabs = ['Account', 'Services', 'Notifications', 'Password']
+
 export default class Settings extends React.Component {
   static propTypes = {
     closeModal: PropTypes.func,
@@ -38,7 +40,9 @@ export default class Settings extends React.Component {
       newTab.isActive = tab.text === target ? true : false;
       newTabs.push(newTab)
     })
-    this.setState({ modalContent: target.toLowerCase(), toggleBarTabs: newTabs })
+    if(tabs.indexOf(target) > -1){
+      this.setState({ modalContent: target.toLowerCase(), toggleBarTabs: newTabs })  
+    }
   }
  
   render() {

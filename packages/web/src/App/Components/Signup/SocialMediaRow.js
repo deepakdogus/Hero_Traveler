@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 import Icon from '../Icon'
 
 function getMargin(props) {
-  console.log("props.margin: ", props.margin)
   switch(props.margin) {
     case 'modal':
       return '20px 0px'

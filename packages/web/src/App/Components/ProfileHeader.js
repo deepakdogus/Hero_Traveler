@@ -24,8 +24,7 @@ import Settings from './Modals/Settings'
 import Inbox from './Modals/Inbox'
 import InboxThread from './Modals/InboxThread'
 import NotificationsThread from './Modals/NotificationsThread'
-import FAQ from './Modals/FAQ'
-import TermsAndConditions from './Modals/TermsAndConditions'
+import FAQTermsAndConditions from './Modals/FAQTermsAndConditions'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   &:after {
@@ -269,7 +268,7 @@ export default class ProfileHeader extends React.Component {
           contentLabel='Settings'
           onRequestClose={this.closeModal}
         >
-          <Settings closeModal={this.closeModal} toggleModal={this.toggleModal} profile={user}/>
+          <Settings closeModal={this.closeModal} profile={user}/>
         </RightModal>
         <RightModal
           isOpen={this.state.modal === 'notificationsThread'}
@@ -293,18 +292,11 @@ export default class ProfileHeader extends React.Component {
           <InboxThread closeModal={this.closeModal} profile={user}/>
         </RightModal>
         <CenterModal
-          isOpen={this.state.modal === 'faq'}
-          contentLabel='FAQ'
+          isOpen={this.state.modal === 'faqtermsandconditions'}
+          contentLabel='FAQ Terms & Conditions'
           onRequestClose={this.closeModal}
         >
-          <FAQ closeModal={this.closeModal} toggleModal={this.toggleModal}/>
-        </CenterModal>
-        <CenterModal
-          isOpen={this.state.modal === 'terms'}
-          contentLabel='Terms & Conditions'
-          onRequestClose={this.closeModal}
-        >
-          <TermsAndConditions closeModal={this.closeModal} toggleModal={this.toggleModal}/>
+          <FAQTermsAndConditions closeModal={this.closeModal}/>
         </CenterModal>                        
 
       </ImageWrapper>

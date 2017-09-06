@@ -38,6 +38,11 @@ const StyledHorizontalDivider = styled(HorizontalDivider)`
   margin: 0;
 `
 
+const StyledImage = styled.img`
+  width: 60px;
+  height: 60px;
+`
+
 export default class MessageRow extends Component {
   static propTypes = {
     notification: PropTypes.string,
@@ -81,10 +86,8 @@ export default class MessageRow extends Component {
 
   renderTripImage = () => {
     return (
-      <Avatar
-        avatarUrl={getImageUrl(this.props.trip.image)}
-        size='large'
-        square={true}
+      <StyledImage
+        src={getImageUrl(this.props.trip.image)}
       />
     )
   }

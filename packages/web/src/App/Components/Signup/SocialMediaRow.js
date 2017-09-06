@@ -4,6 +4,16 @@ import PropTypes from 'prop-types'
 
 import Icon from '../Icon'
 
+function getMargin(props) {
+  console.log("props.margin: ", props.margin)
+  switch(props.margin) {
+    case 'modal':
+      return '20px 0px'
+    default:
+      return '0 3%'
+  }
+}
+
 const StyledIcon = styled(Icon)`
   height: 25px;
 `
@@ -25,7 +35,7 @@ const InstagramIcon = styled(StyledIcon)`
 const SocialMediaItemContainer = styled.div`
   position: relative;
   vertical-align: middle;
-  margin: 0 3%;
+  margin: ${props => getMargin};
 `
 
 const StyledSpan = styled.span`
@@ -69,7 +79,7 @@ export default class SocialMediaRow extends Component {
   render() {
     const {text, isConnected} = this.props
     return (
-      <SocialMediaItemContainer>
+      <SocialMediaItemContainer {...this.props}>
         {this.getIcon(text)}
         <LeftSpan>{text}</LeftSpan>
         <RightSpan isConnected={isConnected}>{isConnected ? 'Connected' : 'Connect'}</RightSpan>

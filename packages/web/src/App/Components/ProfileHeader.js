@@ -15,7 +15,7 @@ import Icon from './Icon'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import FollowFollowing from './Modals/FollowFollowing'
 import ProfileStats from './Modals/ProfileStats'
-import UserComments from './Modals/UserComments'
+import Comments from './Modals/Comments'
 import LikedBy from './Modals/LikedBy'
 import SendTo from './Modals/SendTo'
 import AddToBoard from './Modals/AddToBoard'
@@ -23,10 +23,10 @@ import CreateBoard from './Modals/CreateBoard'
 import Settings from './Modals/Settings'
 import SettingsPassword from './Modals/SettingsPassword'
 import SettingsServices from './Modals/SettingsServices'
-import SettingsNotifications from './Modals/SettingsNotifications'
+import EditNotifications from './Modals/EditNotifications'
 import Inbox from './Modals/Inbox'
-import MessageThread from './Modals/MessageThread'
-import Notifications from './Modals/Notifications'
+import InboxThread from './Modals/InboxThread'
+import NotificationsThread from './Modals/NotificationsThread'
 import FAQ from './Modals/FAQ'
 import TermsAndConditions from './Modals/TermsAndConditions'
 
@@ -140,7 +140,7 @@ export default class ProfilejHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'account' }
+    this.state = {modal: 'notificationsThread' }
   }
 
   closeModal = () => {
@@ -237,11 +237,11 @@ export default class ProfilejHeader extends React.Component {
           <ProfileStats closeModal={this.closeModal} profile={user}/>
         </RightModal>
         <RightModal
-          isOpen={this.state.modal === 'userComments'}
-          contentLabel='User Comments Modal'
+          isOpen={this.state.modal === 'comments'}
+          contentLabel='Comments Modal'
           onRequestClose={this.closeModal}
         >
-          <UserComments closeModal={this.closeModal} profile={user}/>
+          <Comments closeModal={this.closeModal} profile={user}/>
         </RightModal>
         <RightModal
           isOpen={this.state.modal === 'likedBy'}
@@ -293,12 +293,19 @@ export default class ProfilejHeader extends React.Component {
           <SettingsServices  closeModal={this.closeModal} toggleModal={this.toggleModal} profile={user}/>
         </RightModal>                       
         <RightModal
-          isOpen={this.state.modal === 'notifications'}
+          isOpen={this.state.modal === 'editNotifications'}
           contentLabel='Edit Notifications'
           onRequestClose={this.closeModal}
         >
-          <SettingsNotifications closeModal={this.closeModal} toggleModal={this.toggleModal} profile={user}/>
+          <EditNotifications closeModal={this.closeModal} toggleModal={this.toggleModal} profile={user}/>
         </RightModal>
+        <RightModal
+          isOpen={this.state.modal === 'notificationsThread'}
+          contentLabel='Notifications Thread'
+          onRequestClose={this.closeModal}
+        >
+          <NotificationsThread closeModal={this.closeModal} profile={user}/>
+        </RightModal>        
         <RightModal
           isOpen={this.state.modal === 'inbox'}
           contentLabel='Inbox'
@@ -311,16 +318,8 @@ export default class ProfilejHeader extends React.Component {
           contentLabel='Message Thread'
           onRequestClose={this.closeModal}
         >
-          <MessageThread closeModal={this.closeModal} profile={user}/>
+          <InboxThread closeModal={this.closeModal} profile={user}/>
         </RightModal>
-        <RightModal
-          isOpen={this.state.modal === 'notificationsThread'}
-          contentLabel='Notifications'
-          onRequestClose={this.closeModal}
-        >
-          <Notifications closeModal={this.closeModal} profile={user}/>
-        </RightModal>
-
         <CenterModal
           isOpen={this.state.modal === 'faq'}
           contentLabel='FAQ'

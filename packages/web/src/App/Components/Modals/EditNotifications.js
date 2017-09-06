@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import {RightTitle, RightModalCloseX} from './Shared'
-import SettingsNotificationRow from '../SettingsNotificationRow'
+import EditNotificationRow from '../EditNotificationRow'
 import ModalTogglebar from '../ModalTogglebar'
 
 const toggleBarTabs = [
@@ -26,7 +26,7 @@ const Container = styled.div``
 const NotificationContainer = styled.div`
   padding: 25px;
 `
-export default class SettingsNotifications extends React.Component {
+export default class EditNotifications extends React.Component {
     static propTypes = {
     toggleModal: PropTypes.func,
     closeModal: PropTypes.func,
@@ -34,14 +34,14 @@ export default class SettingsNotifications extends React.Component {
 
   toggleNotificationSwitch = () => {}
 
-  renderSettingsNotificationRows(notificationTypes) {
-    return notificationTypes.map((el,index) => {
+  renderEditNotificationRows(notificationTypes) {
+    return notificationTypes.map((element,index) => {
       return (
-        <SettingsNotificationRow
+        <EditNotificationRow
           index={index}
-          key={el.text}
-          text={el.text}
-          isNotifying={el.isNotifying}
+          key={element.text}
+          text={element.text}
+          isNotifying={element.isNotifying}
           toggleNotificationSwitch={this.toggleNotificationSwitch}
           logOnChange={this.logOnChange}
         />
@@ -56,7 +56,7 @@ export default class SettingsNotifications extends React.Component {
         <RightTitle>SETTINGS</RightTitle>
         <ModalTogglebar toggleModal={this.props.toggleModal} tabs={toggleBarTabs}/>
         <NotificationContainer>
-          {this.renderSettingsNotificationRows(notificationTypes)}
+          {this.renderEditNotificationRows(notificationTypes)}
         </NotificationContainer>
       </Container>
     )

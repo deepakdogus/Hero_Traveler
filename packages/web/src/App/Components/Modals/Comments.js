@@ -15,7 +15,7 @@ const CommentContainer = styled(Container)`
   margin-top: 15px;
 `
 
-export default class UserComments extends React.Component {
+export default class Comments extends React.Component {
   static PropTypes = {
     profile: PropTypes.object,
     users: PropTypes.object,

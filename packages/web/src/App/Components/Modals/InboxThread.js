@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import {usersExample} from '../../Containers/Feed_TEST_DATA'
-import MessageThreadRow from '../MessageThreadRow'
+import InboxThreadRow from '../InboxThreadRow'
 import {RightTitle} from './Shared'
 import {randomDate} from './Shared/RandomDate'
 import InputRow from '../InputRow'
@@ -11,7 +11,7 @@ import TextButton from '../TextButton'
 
 const Container = styled.div``
 
-const MessageThreadRowsContainer = styled.div`
+const InboxThreadRowsContainer = styled.div`
   padding: 25px;
 `
 export const StyledTextButton = styled(TextButton)`
@@ -21,17 +21,17 @@ export const StyledTextButton = styled(TextButton)`
   cursor: pointer;
 `
 
-export default class UserComments extends React.Component {
+export default class InboxThread extends React.Component {
   static PropTypes = {
     profile: PropTypes.object,
     users: PropTypes.object,
     closeModal: PropTypes.func,
   }
 
-  renderMessageThreadRows(userKeys) {
+  renderInboxThreadRows(userKeys) {
     return userKeys.map((key, index) => {
       return (
-        <MessageThreadRow
+        <InboxThreadRow
           key={key}
           user={usersExample[key]}
           message=''
@@ -61,9 +61,9 @@ export default class UserComments extends React.Component {
           text='< Inbox'
           />
         <RightTitle>{seedSender}</RightTitle>
-        <MessageThreadRowsContainer>
-          {this.renderMessageThreadRows(userKeys)}
-        </MessageThreadRowsContainer>
+        <InboxThreadRowsContainer>
+          {this.renderInboxThreadRows(userKeys)}
+        </InboxThreadRowsContainer>
         <InputRow/>
       </Container>
     )

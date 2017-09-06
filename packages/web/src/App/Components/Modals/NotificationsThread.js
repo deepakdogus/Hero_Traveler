@@ -37,7 +37,7 @@ let tripsExampleSliced = {};
 for (var i=0; i<3; i++)
     tripsExampleSliced[i] = tripsExample[i];
 
-export default class Notifications extends React.Component {
+export default class NotificationsThread extends React.Component {
   static PropTypes = {
     profile: PropTypes.object,
     users: PropTypes.object,

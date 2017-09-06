@@ -25,7 +25,7 @@ const RowSpacer = styled.div`
   padding: 6px 0px;
 `
 
-export default class SettingsNotificationRow extends Component {
+export default class EditNotificationRow extends Component {
     constructor(props) {
     super(props);
     

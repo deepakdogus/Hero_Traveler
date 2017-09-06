@@ -18,7 +18,7 @@ const Container = styled.div`
   margin: ${props => props.margin ? props.margin : '0'};
 `
 
-export default class MessageThreadRow extends Component {
+export default class InboxThreadRow extends Component {
   static propTypes = {
     message: PropTypes.string,
     user: PropTypes.object,

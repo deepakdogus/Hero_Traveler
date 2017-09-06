@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {ThemeProvider} from 'styled-components'
 import {Route, BrowserRouter as Router} from 'react-router-dom'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 import themes from '../Shared/Themes'
 import background from '../Shared/Images/BG.png'
@@ -18,7 +17,7 @@ class AppRoot extends Component {
   render() {
     return (
       <Router>
-        <MuiThemeProvider>
+      
           <ThemeProvider theme={themes}>
             <div>
               <HeaderImageWrapper backgroundImage={background}>
@@ -31,7 +30,7 @@ class AppRoot extends Component {
               <Route path='/profile/:userId' component={Profile} />
             </div>
           </ThemeProvider>
-        </MuiThemeProvider>
+      
       </Router>
     )
   }

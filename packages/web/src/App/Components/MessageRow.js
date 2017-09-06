@@ -15,8 +15,12 @@ import {
 } from './Modals/Shared'
 
 const Container = styled.div`
+`
+
+const MessageContainer = styled(Container)`
   padding: 20px 30px;
 `
+
 const TimestampContainer = styled(VerticalCenter)`
   justify-content: flex-start;
   margin-top: 10px;
@@ -32,6 +36,10 @@ const InteractiveContainer = styled.div`
   &:hover ${Container} {
     background-color: ${props => props.theme.Colors.onHoverGrey};
   }
+`
+
+const StyledHorizontalDivider = styled(HorizontalDivider)`
+  margin: 0;
 `
 
 export default class MessageRow extends Component {
@@ -71,19 +79,43 @@ export default class MessageRow extends Component {
     )
   }
 
-  render() {
-    return (
-      <InteractiveContainer>
-        {this.props.index > 0 ? <HorizontalDivider color='light-grey'/> : null}
-          <Container>
+  renderNormalContainer = () => {
+    return(
+      <Container>
+        {this.props.index > 0 ? <StyledHorizontalDivider color='light-grey'/> : null}
+          <MessageContainer>
             <SpaceBetweenRowWithTimeStamp
               renderImage={this.renderImage}
               renderText={this.renderText}
               renderTimestamp={this.renderTimestamp}
             />
-          </Container>        
-        {!this.props.isComment ? <HorizontalDivider color='light-grey'/> : null}
+          </MessageContainer>        
+        {!this.props.isComment ? <StyledHorizontalDivider color='light-grey'/> : null}
+      </Container>
+      )
+  }
+
+  renderInteractiveContainer = () => {
+    return(
+      <InteractiveContainer>
+        {this.props.index > 0 ? <StyledHorizontalDivider color='light-grey'/> : null}
+          <MessageContainer>
+            <SpaceBetweenRowWithTimeStamp
+              renderImage={this.renderImage}
+              renderText={this.renderText}
+              renderTimestamp={this.renderTimestamp}
+            />
+          </MessageContainer>        
+        {!this.props.isComment ? <StyledHorizontalDivider color='light-grey'/> : null}
       </InteractiveContainer>
+      )
+  }
+
+  render() {
+    return (
+      <div>
+        {!this.props.isComment ? this.renderInteractiveContainer () : this.renderNormalContainer()}  
+      </div>        
     )
   }
 }

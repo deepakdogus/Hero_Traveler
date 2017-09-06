@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import {RightTitle, RightModalCloseX} from './Shared'
-import SpaceBetweenRowWithLeftRightButtons from '../SpaceBetweenRowWithLeftRightButtons'
+import CenteredLeftRightButtons from '../CenteredLeftRightButtons'
 import InputWithLabel from '../InputWithLabel'
 import VerticalCenter from '../VerticalCenter'
 import RoundedButton from '../RoundedButton'
@@ -77,7 +77,7 @@ export default class Settings extends React.Component {
             label='Email'
           />          
         </InputContainer>
-        <SpaceBetweenRowWithLeftRightButtons
+        <CenteredLeftRightButtons
           renderButtonLeft={this.renderButtonLeft}
           renderButtonRight={this.renderButtonRight}
         />

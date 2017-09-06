@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import {RightTitle, RightModalCloseX} from './Shared'
 import InputWithLabel from '../InputWithLabel'
-import SpaceBetweenRowWithLeftRightButtons from '../SpaceBetweenRowWithLeftRightButtons'
+import CenteredLeftRightButtons from '../CenteredLeftRightButtons'
 import VerticalCenter from '../VerticalCenter'
 import RoundedButton from '../RoundedButton'
 import ModalTogglebar from '../ModalTogglebar'
@@ -88,7 +88,7 @@ export default class SettingsPassword extends React.Component {
             type='password'
           />                              
         </InputContainer>
-        <SpaceBetweenRowWithLeftRightButtons
+        <CenteredLeftRightButtons
           renderButtonLeft={this.renderButtonLeft}
           renderButtonRight={this.renderButtonRight}
         />

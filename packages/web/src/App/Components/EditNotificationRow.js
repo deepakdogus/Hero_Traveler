@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import SpaceBetweenRowWithTextAndSwitch from './SpaceBetweenRowWithTextAndSwitch'
 import VerticalCenter from './VerticalCenter'
 import HorizontalDivider from './HorizontalDivider'
+import {Row} from './FlexboxGrid'
 
 import 'react-ios-switch/build/bundle.css';
 import Switch from 'react-ios-switch';
@@ -69,10 +69,14 @@ export default class EditNotificationRow extends Component {
       <Container margin={this.props.margin}>
         {this.props.index > 0 ? null : <HorizontalDivider color='light-grey'/>}
         <RowSpacer>
-          <SpaceBetweenRowWithTextAndSwitch
-            renderText={this.renderText}
-            renderSwitch={this.renderSwitch}
-          />
+          <Row between='xs'>
+            <Row>
+              {this.renderText()}              
+            </Row>
+            <Row>
+              {this.renderSwitch()}                          
+            </Row>  
+          </Row>
         </RowSpacer>
           <HorizontalDivider color='light-grey'/>
       </Container>

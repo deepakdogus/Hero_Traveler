@@ -1,4 +1,4 @@
-import {Story} from '@rwoody/ht-core'
+import {Story} from '@hero/ht-core'
 
 // Detailed story for reading, etc.
 export default function getStory(req, res) {

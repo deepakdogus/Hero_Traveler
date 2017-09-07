@@ -62,7 +62,7 @@ class SettingsScreen extends React.Component {
     this.props.logout(this.props.user.id)
   }
 
-  _tapFacebook = () => alert('facebook!')
+  _tapFacebook = () => null
   // _tapTwitter = () => alert('twitter!')
 
   render () {

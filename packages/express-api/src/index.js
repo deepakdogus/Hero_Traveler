@@ -1,12 +1,9 @@
 import 'babel-polyfill'
-import dotenv from 'dotenv'
-dotenv.config()
-import path from 'path'
 import express from 'express'
 import bodyParser from 'body-parser'
 import morgan from 'morgan'
 import nodeCleanup from 'node-cleanup'
-import initCore from '@rwoody/ht-core'
+import initCore from '@hero/ht-core'
 import routes from './routes'
 import passport from './passport'
 import {cleanup as apnCleanup} from './apn'

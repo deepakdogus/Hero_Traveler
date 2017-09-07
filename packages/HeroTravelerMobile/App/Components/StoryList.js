@@ -1,16 +1,26 @@
 import _ from 'lodash'
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import {
   ListView,
   RefreshControl
 } from 'react-native'
 import styles from './Styles/StoryListStyle'
 
+import StoryPreview from '../Components/StoryPreview'
+
+/*
+add pagingIsDisabled instead of pagingEnabled as a prop so that paging is default
+and so we do not need to add the property to (almost) every StoryList call we make
+*/
 export default class StoryList extends React.Component {
   static propTypes = {
     storiesById: PropTypes.arrayOf(PropTypes.string).isRequired,
     onRefresh: PropTypes.func,
+    pagingIsDisabled: PropTypes.bool,
     refreshing: PropTypes.bool,
+    renderHeaderContent: PropTypes.object,
+    renderSectionHeader: PropTypes.object,
   }
 
   static defaultProps = {
@@ -25,14 +35,25 @@ export default class StoryList extends React.Component {
     }
   }
 
+  _renderHeader = () => {
+    return this.props.renderHeaderContent || null
+  }
+
+  _renderSectionHeader = () => {
+    return this.props.renderSectionHeader || null
+  }
+
   render () {
     return (
       <ListView
         key={this.props.storiesById}
         dataSource={this.state.dataSource}
-        pagingEnabled={true}
+        pagingEnabled={!this.props.pagingIsDisabled}
         initialListSize={1}
         renderRow={this.props.renderStory}
+        renderHeader={this._renderHeader}
+        renderSectionHeader={this._renderSectionHeader}
+        stickySectionHeadersEnabled={true}
         refreshControl={
           <RefreshControl
             refreshing={this.props.refreshing}

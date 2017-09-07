@@ -1,12 +1,18 @@
 import _ from 'lodash'
 import Promise from 'bluebird'
 import algoliasearchModule from 'algoliasearch'
-import {Constants} from '@rwoody/ht-util'
+import {Constants} from '@hero/ht-util'
 import {User, UserDevice} from '../models'
 import {welcomeEmail} from '../utils/emailService'
 
 const client = algoliasearchModule(process.env.ALGOLIA_ACCT_KEY, process.env.ALGOLIA_API_KEY)
 const userIndex = client.initIndex(process.env.ALGOLIA_USER_INDEX)
+userIndex.setSettings({
+  searchableAttributes: [
+    'username',
+    'profile.fullName',
+  ]
+})
 
 // converting algoliasearch callback api to promise
 const addUserToIndex = (user) => {

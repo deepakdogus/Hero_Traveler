@@ -7,36 +7,44 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.snow,
   },
+  darkRoot: {
+    flex: 1,
+    backgroundColor: Colors.background,
+    justifyContent: 'center',
+  },
   scrollView: {
     flex: 1
   },
   content: {
-    paddingTop: Metrics.section,
-    paddingBottom: Metrics.tabBarHeight,
+    flex: 1,
+    marginTop: Metrics.section,
+    marginBottom: Metrics.tabBarHeight
   },
   locationWrapper: {
-    marginVertical: Metrics.section
+    marginTop: Metrics.section,
+    marginBottom: 100,
   },
   locationText: {
     fontSize: 14,
-    // letterSpacing: .35,
-    // marginTop: Metrics.baseMargin,
     color: '#757575'
   },
   locationLabel: {
     fontSize: 14,
-    // letterSpacing: .35,
     color: Colors.background
   },
-  locationIcon: {
+  locationIconWrapper: {
     marginRight: Metrics.section,
     alignItems: 'center',
     justifyContent: 'center'
   },
+  locationIcon: {
+    width: 16.5,
+    height: 26.5,
+  },
   locationMap: {
     flex: 1,
     height: 200,
-    marginBottom: 100
+    marginBottom: 70,
   },
   toolBar: {
     flex: 1,
@@ -45,7 +53,6 @@ export const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
-
   // StoryContent component
   storyContentWrapper: {
     backgroundColor: Colors.snow,
@@ -54,11 +61,10 @@ export const styles = StyleSheet.create({
   storyContentImage: {
     marginBottom: Metrics.section
   },
-  videoButton: {
-    marginTop: 60,
+  videoWrapper: {
     position: 'relative',
     width: Metrics.screenWidth,
-    height: 200,
+    height: Metrics.screenWidth * 9 / 16,
   },
   video: {
     position: 'absolute',
@@ -67,7 +73,12 @@ export const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     width: Metrics.screenWidth,
-    height: 200,
+    height: Metrics.screenWidth * 9 / 16,
+  },
+  videoExpand: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10
   },
   videoDescription: {
     flex: 1,
@@ -75,7 +86,10 @@ export const styles = StyleSheet.create({
     marginVertical: Metrics.doubleSection,
   },
   videoDescriptionText: {
-    color: '#757575'
+    fontWeight: '300',
+    fontSize: 18,
+    fontFamily: Fonts.type.base,
+    color: Colors.grey,
   },
   caption: {
     textAlign: 'center',
@@ -84,10 +98,30 @@ export const styles = StyleSheet.create({
     letterSpacing: .7,
     fontSize: 15,
     fontFamily: Fonts.type.base,
+    color: Colors.grey,
+    marginTop: Metrics.baseMargin
   },
   mediaViewWrapper: {
     flex: 1,
-    marginVertical: 60
+    marginVertical: 25
+  },
+  tag: {
+    fontWeight: '300',
+    fontSize: 15,
+    color: Colors.redHighlights,
+    fontFamily: Fonts.type.base,
+    letterSpacing: .7,
+    height: 19,
+    lineHeight: 17,
+  },
+  marginedRow: {
+    marginHorizontal: Metrics.section,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  tagRow: {
+    marginTop: 0,
+    marginBottom: 20,
   }
 })
 
@@ -100,7 +134,8 @@ export const rendererStyles = StyleSheet.flatten({
     fontFamily: Fonts.type.base,
     color: Colors.grey,
     letterSpacing: .7,
-    paddingHorizontal: 25,
+    paddingHorizontal: Metrics.section,
+    marginBottom: Metrics.section
   },
   'header-one': {
     fontSize: Fonts.size.h5,
@@ -108,6 +143,8 @@ export const rendererStyles = StyleSheet.flatten({
     fontFamily: Fonts.type.base,
     color: Colors.background,
     letterSpacing: .7,
-    paddingHorizontal: 25,
+    paddingHorizontal: Metrics.section,
+    marginTop: Metrics.baseMargin,
+    marginBottom: 0,
   },
 });

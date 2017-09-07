@@ -92,8 +92,11 @@ export default StyleSheet.create({
     fontSize: 21,
     letterSpacing: 3,
     color: Colors.snow,
-    width: '50%',
+    width: '100%',
     height: 30
+  },
+  editTitle: {
+    width: '50%',
   },
   inputUnderLine: {
     width: '50%',
@@ -140,8 +143,8 @@ export default StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     backgroundColor: 'transparent',
-    top: -43,
-    left: 6,
+    top: 31,
+    left: 30,
   },
   contributor: {
     marginLeft: Metrics.baseMargin
@@ -158,7 +161,8 @@ export default StyleSheet.create({
   tabnavEdit: {
     height: tabNavEditHeight,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    backgroundColor: Colors.white,
   },
   tab: {
     justifyContent: 'center',
@@ -195,6 +199,7 @@ export default StyleSheet.create({
   editCoverText: {
     color: Colors.snow,
     fontFamily: Fonts.type.montserrat,
+    fontSize: 11,
   },
   editBio: {
     fontWeight: '600',
@@ -218,5 +223,14 @@ export default StyleSheet.create({
     color: '#757575',
     textAlign: 'center',
     fontFamily: Fonts.type.montserrat
-  }
+  },
+  errorButton: {
+    position: 'absolute',
+    top: 125,
+    left: 0,
+    right: 0,
+    marginVertical: Metrics.baseMargin,
+    marginHorizontal: Metrics.section,
+    zIndex: 100,
+  },
 })

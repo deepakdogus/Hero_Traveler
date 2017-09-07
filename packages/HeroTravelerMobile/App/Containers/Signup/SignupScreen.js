@@ -6,7 +6,6 @@ import {
   Image,
   View,
   TextInput,
-  KeyboardAvoidingView,
 } from 'react-native'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
@@ -126,7 +125,6 @@ class SignupScreen extends React.Component {
         blurRadius={20}
       >
         <ScrollView style={styles.container}>
-          <KeyboardAvoidingView behavior='position'>
             <View style={styles.section}>
               <Text style={styles.title}>SIGN UP</Text>
               <Text style={styles.instructions}>
@@ -171,13 +169,11 @@ class SignupScreen extends React.Component {
                 text='Sign Up'
                 capitalize={true}
                 style={styles.submitButton}
+                textStyle={styles.submitText}
                 onPress={handleSubmit(this._signup)}
               />
-
-
               <TOS styles={[styles.section, styles.tos]} />
             </View>
-          </KeyboardAvoidingView>
         </ScrollView>
         {this.props.fetching &&
           <Loader

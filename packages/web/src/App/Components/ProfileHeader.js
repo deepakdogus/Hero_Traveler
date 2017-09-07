@@ -25,6 +25,7 @@ import Inbox from './Modals/Inbox'
 import InboxThread from './Modals/InboxThread'
 import NotificationsThread from './Modals/NotificationsThread'
 import FAQTermsAndConditions from './Modals/FAQTermsAndConditions'
+import ProfileBio from './Modals/ProfileBio'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   &:after {
@@ -137,7 +138,7 @@ export default class ProfileHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'faqtermsandconditions' }
+    this.state = {modal: 'profileBio' }
   }
 
   closeModal = () => {
@@ -292,6 +293,13 @@ export default class ProfileHeader extends React.Component {
         >
           <InboxThread closeModal={this.closeModal} profile={user}/>
         </RightModal>
+        <RightModal
+          isOpen={this.state.modal === 'profileBio'}
+          contentLabel='Profile Bio'
+          onRequestClose={this.closeModal}
+        >
+          <ProfileBio closeModal={this.closeModal} profile={user}/>
+        </RightModal>        
         <CenterModal
           isOpen={this.state.modal === 'faqtermsandconditions'}
           contentLabel='FAQ Terms & Conditions'

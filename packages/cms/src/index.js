@@ -7,10 +7,10 @@ if (process.env.NODE_ENV === 'development') {
 
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
-const Models = require('@rwoody/ht-core').Models
+const Models = require('@hero/ht-core').Models
 const _ = require('lodash')
 
-const initCore = require('@rwoody/ht-core').default
+const initCore = require('@hero/ht-core').default
 const PORT = process.env.PORT || 3000
 const path = require('path')
 

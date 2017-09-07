@@ -1,6 +1,6 @@
 const morgan = require('morgan')
 const jwt = require('jsonwebtoken')
-const User = require('@rwoody/ht-core').Models.User
+const User = require('@hero/ht-core').Models.User
 const PORT = process.env.PORT || 3000
 const path = require('path')
 

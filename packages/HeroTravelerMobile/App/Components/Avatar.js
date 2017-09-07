@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react'
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {
   View,
   StyleSheet,
@@ -16,12 +17,13 @@ const SIZES = {
   small: 36,
   medium: 50,
   large: 83,
+  extraLarge: 95,
 }
 
 export default class Avatar extends Component {
 
   static propTypes = {
-    size: PropTypes.oneOf(['small', 'medium', 'large']),
+    size: PropTypes.oneOf(['small', 'medium', 'large', 'extraLarge']),
     avatarUrl: PropTypes.string,
     iconColor: PropTypes.string,
   }
@@ -65,6 +67,7 @@ export default class Avatar extends Component {
             height: SIZES[size],
             borderRadius: SIZES[size] / 2,
           }}
+          resizeMode={'cover'}
         />
       </View>
     )

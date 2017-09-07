@@ -94,10 +94,10 @@ class ChangePasswordScreen extends React.Component {
               style={styles.submitButton}
               onPress={this._handleSubmit}
             />
-            <Text>
-              {this.state.validationError && <Text style={[styles.section, styles.error]}>{this.state.validationError}</Text>}
-            </Text>
           </View>
+          <Text style={styles.errorWrapper}>
+            {this.state.validationError && <Text style={[styles.section, styles.error]}>{this.state.validationError}</Text>}
+          </Text>
         </View>
         {this.state.updating &&
           <Loader tintColor={Colors.blackoutTint} style={{

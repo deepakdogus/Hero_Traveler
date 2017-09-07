@@ -1,5 +1,6 @@
 import express from 'express'
-import {hasValidOauth, hasClientId, multer} from '../../middleware'
+import {hasValidOauth, hasClientId} from '../../middleware'
+import {multerAvatar, multerCover} from '../../middleware/multer-cloudinary'
 import endpointWrapper from '../../utils/endpointWrapper'
 import getMe from './getMe'
 import getUser from './getUser'
@@ -53,7 +54,7 @@ router.post('/resetPasswordRequest',
 router.put('/resetPassword',
   hasClientId,
   endpointWrapper(resetPassword)
-          )
+)
 
 router.put('/changePassword',
   hasValidOauth,
@@ -156,13 +157,13 @@ router.put('/:id',
 
 router.put('/:id/avatar',
   hasValidOauth,
-  multer.single('image'),
+  multerAvatar.single('image'),
   endpointWrapper(updateAvatar)
 )
 
 router.put('/:id/cover',
   hasValidOauth,
-  multer.single('image'),
+  multerCover.single('image'),
   endpointWrapper(updateCover)
 )
 

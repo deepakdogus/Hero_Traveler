@@ -62,7 +62,7 @@ class MyFeedScreen extends React.Component {
       this.props.error !== nextProps.error,
       this.props.user && !this.props.user.introTooltips.length && nextProps.user.introTooltips,
     ])
-    
+
     return shouldUpdate
   }
 
@@ -160,6 +160,7 @@ class MyFeedScreen extends React.Component {
         onPressUser={this._touchUser}
         userId={this.props.user.id}
         toggleLike={this.props.toggleLike}
+        showPlayButton
       />
     )
   }

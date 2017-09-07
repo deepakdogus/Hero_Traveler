@@ -1,5 +1,5 @@
 
-import {User} from '@rwoody/ht-core'
+import {User} from '@hero/ht-core'
 
 // Create the user and generate auth tokens
 export default function changePassword (req) {

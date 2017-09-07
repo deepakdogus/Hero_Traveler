@@ -6,7 +6,7 @@ import uuid from 'uuid'
 import mongoose, {Schema} from 'mongoose'
 import softDelete from 'mongoose-delete'
 import uniqueValidator from 'mongoose-unique-validator'
-import {Constants} from '@rwoody/ht-util'
+import {Constants} from '@hero/ht-util'
 
 import CoreError from '../utils/error'
 import {ModelName as UploadRef} from './upload'

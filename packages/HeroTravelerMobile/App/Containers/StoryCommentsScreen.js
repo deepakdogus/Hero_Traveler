@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import React from 'react'
-import { Text, View, ScrollView, Image, TextInput, KeyboardAvoidingView } from 'react-native'
+import { Text, View, ScrollView, Image, TextInput } from 'react-native'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -139,40 +139,35 @@ class StoryCommentsScreen extends React.Component {
                 />
                 )})}
             </ScrollView>
-            <KeyboardAvoidingView
-              behavior='padding'
-              contentContainerStyle={{}}
-              style={[styles.root]}>
-              <View>
-                <View style={styles.inputGroupWrapper}>
-                  <View style={styles.inputWrapper}>
-                    <TextInput
-                      autoFocus
-                      placeholder='Add a comment'
-                      style={styles.input}
-                      value={this.state.text}
-                      autoCapitalize='none'
-                      onSubmitEditing={this.handleSend}
-                      onFocus={this.setFocusedTrue}
-                      onBlur={this.setFocusedFalse}
-                      onChangeText={this.setChangedText}
-                      autoCorrect={false}
-                      returnKeyType={'send'}
-                      ref={this.setInputRef}
-                    />
-                  </View>
-                  <RoundedButton
-                    style={[
-                      styles.inputButton,
-                      {backgroundColor: this.isValid() ? Colors.red : Colors.inactiveRed},
-                    ]}
-                    onPress={this.handleSend}
-                  >
-                    Send
-                  </RoundedButton>
+            <View>
+              <View style={styles.inputGroupWrapper}>
+                <View style={styles.inputWrapper}>
+                  <TextInput
+                    autoFocus
+                    placeholder='Add a comment'
+                    style={styles.input}
+                    value={this.state.text}
+                    autoCapitalize='none'
+                    onSubmitEditing={this.handleSend}
+                    onFocus={this.setFocusedTrue}
+                    onBlur={this.setFocusedFalse}
+                    onChangeText={this.setChangedText}
+                    autoCorrect={false}
+                    returnKeyType={'send'}
+                    ref={this.setInputRef}
+                  />
                 </View>
+                <RoundedButton
+                  style={[
+                    styles.inputButton,
+                    {backgroundColor: this.isValid() ? Colors.red : Colors.inactiveRed},
+                  ]}
+                  onPress={this.handleSend}
+                >
+                  Send
+                </RoundedButton>
               </View>
-            </KeyboardAvoidingView>
+            </View>
           </View>
     )
   }

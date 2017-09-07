@@ -17,6 +17,7 @@ import LikesComponent from './LikeComponent'
 import TrashCan from '../Components/TrashCan'
 import Avatar from './Avatar'
 import StoryCover from './StoryCover'
+import FadeInOut from './FadeInOut'
 
 export default class StoryPreview extends Component {
   // is showLike now always true? MBT - 12/07
@@ -31,31 +32,14 @@ export default class StoryPreview extends Component {
     autoPlayVideo: PropTypes.bool,
     allowVideoPlay: PropTypes.bool,
     showReadMessage: PropTypes.bool,
-    gradientColors: PropTypes.arrayOf(PropTypes.string)
+    gradientColors: PropTypes.arrayOf(PropTypes.string),
+    isContentVisible: PropTypes.bool,
   }
 
   static defaultProps = {
+    isContentVisible: true,
     showLike: true,
-    showReadMessage: false
-  }
-
-  wrap(content) {
-    if (this.props.onPress) {
-      return (
-        <TouchableHighlight
-          onPress={this._onPress}
-          children={content}
-          style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}
-        />
-      )
-    }
-
-    return (
-      <View
-        children={content}
-        style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}
-      />
-    )
+    showReadMessage: false,
   }
 
   _touchEdit = () => {
@@ -161,7 +145,7 @@ export default class StoryPreview extends Component {
   }
 
   render () {
-    const {story} = this.props
+    const {story, isContentVisible} = this.props
     if (!story) return null
 
     return (
@@ -177,11 +161,15 @@ export default class StoryPreview extends Component {
             coverType={story.coverImage ? 'image' : 'video'}
             onPress={this.props.onPress}
             gradientColors={this.props.gradientColors}
+            gradientLocations={this.props.gradientLocations}
+            showPlayButton={this.props.showPlayButton}
           >
-            <View style={styles.contentWrapper}>
-              {this.props.forProfile && this.renderProfileTitleSection()}
-              {!this.props.forProfile && this.renderTitleSection()}
-            </View>
+            <FadeInOut
+              isVisible={isContentVisible}
+              style={styles.contentWrapper}
+            >
+              {this.props.forProfile ? this.renderProfileTitleSection() : this.renderTitleSection()}
+            </FadeInOut>
           </StoryCover>
         </View>
       </View>

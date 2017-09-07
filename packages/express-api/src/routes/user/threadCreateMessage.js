@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import {Models} from '@rwoody/ht-core'
+import {Models} from '@hero/ht-core'
 
 export default function createMessage(req) {
   const {content} = req.body

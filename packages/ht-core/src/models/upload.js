@@ -9,12 +9,16 @@ const UploadSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: StoryRef
   },
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: UserRef
-  },
   purpose: {
-    type: String
+    type: String,
+    enum: [
+      'avatar',
+      'userCover',
+      'coverImage',
+      'coverVideo',
+      'storyImage',
+      'storyVideo',
+    ]
   }
 }, {
   timestamps: true,

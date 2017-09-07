@@ -14,6 +14,7 @@ const metrics = {
   searchBarHeight: 30,
   mainNavHeight: 42,
   tabBarHeight: 50,
+  editorToolbarHeight: 50,
   buttonRadius: 4,
   icons: {
     tiny: 15,

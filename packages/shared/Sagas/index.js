@@ -51,6 +51,7 @@ import {
 } from './UserSagas'
 
 import {
+  getStory,
   getUserFeed,
   registerDraft,
   publishDraft,
@@ -126,6 +127,7 @@ export default function * root () {
     takeLatest(StoryCreateTypes.UPLOAD_COVER_IMAGE, uploadCoverImage, heroAPI),
     takeLatest(StoryCreateTypes.EDIT_STORY, loadStory, heroAPI),
 
+    takeLatest(StoryTypes.STORY_REQUEST, getStory, heroAPI),
     takeLatest(StoryTypes.FEED_REQUEST, getUserFeed, heroAPI),
     takeLatest(StoryTypes.FROM_USER_REQUEST, getUserStories, heroAPI),
     takeLatest(StoryTypes.FROM_CATEGORY_REQUEST, getCategoryStories, heroAPI),

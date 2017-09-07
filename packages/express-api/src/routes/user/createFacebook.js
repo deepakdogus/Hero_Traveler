@@ -1,4 +1,4 @@
-import {User, Models} from '@rwoody/ht-core'
+import {User, Models} from '@hero/ht-core'
 
 // FACEBOOK Signup
 // Create the user and generate auth tokens

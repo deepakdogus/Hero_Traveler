@@ -1,4 +1,4 @@
-import {Models} from '@rwoody/ht-core'
+import {Models} from '@hero/ht-core'
 import Promise from 'bluebird'
 
 // check for unique properties of signup

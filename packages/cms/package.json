@@ -1,6 +1,6 @@
 {
   "name": "cms",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Content Management System for the Herotraveller App",
   "main": "index.js",
   "scripts": {
@@ -14,8 +14,8 @@
     "nodemon": "^1.11.0"
   },
   "dependencies": {
-    "@rwoody/ht-core": "~0.0.3",
-    "@rwoody/ht-util": "0.0.4",
+    "@hero/ht-core": "0.0.27",
+    "@hero/ht-util": "0.0.11",
     "aws-sdk": "^2.46.0",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-polyfill": "^6.23.0",

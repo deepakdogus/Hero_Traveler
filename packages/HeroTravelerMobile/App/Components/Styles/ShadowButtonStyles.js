@@ -21,5 +21,9 @@ export default StyleSheet.create({
     fontSize: Fonts.size.medium,
     fontWeight: '400',
     marginVertical: Metrics.baseMargin
+  },
+  bold: {
+    fontWeight: '600',
+    marginBottom: 0,
   }
 })

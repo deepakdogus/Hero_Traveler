@@ -17,10 +17,17 @@ $ pod install
 
 ### 2. Node & NPM
 
+We are hosting several dependencies on our own private npm server, located at https://npm.abeck.io/
+
+First you'll need to contact `andrew at rehashstudio dot com` to enable user registration.
+Next create a user with `npm adduser --registry  https://npm.abeck.io`
+After registration, we will close any future registrations, as our private npm will be accessible to anyone registered
+
 This project has only been tested on v7.7.2):
 
 ```bash
 nvm use 7.7.2
+npm set registry https://npm.abeck.io
 npm i -g react-native-cli
 npm i
 npm run bootstrap
@@ -59,6 +66,24 @@ To run the application in development mode on your phone, open xcode with the fo
 ```bash
 $ open packages/HeroTravelerMobile/ios/HeroTravelerMobile.xcworkspace
 ```
+
+### 3. Docker, express-api and deployment
+
+Make sure to set env var `NPM_TOKEN` to the _authToken value you find in `~/.npmrc` after running `npm adduser --registry https://npm.abeck.io` before running `docker-compose build`
+
+These notes from Ryan are presented as is:
+
+```
+1. You need access to the npm packages mentioned above (use "npm login" ...)
+2. Copy the .env (usually posted in slack channel) to repo root
+3. Build with docker-compose
+4. Push image to dockerhub
+5. Connect to swarm through docker app
+6. Deploy with the "docker stack deploy" command (e.g. docker stack deploy --with-registry-auth --compose-file=docker-compose.yaml api)
+7. Verify the nodes are starting the app with "docker service ls" and "docker service ps service_name"
+```
+
+We currently use docker swarm on AWS with 3 workers running t3.medium and 1 controller running on t3.micro
 
 ## Development troubleshooting tips (please read)
 

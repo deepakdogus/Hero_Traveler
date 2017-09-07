@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import Promise from 'bluebird'
-import {Constants} from '@rwoody/ht-util'
+import {Constants} from '@hero/ht-util'
 
 export default function encryptPassword(password) {
   if (password.length > Constants.PASSWORD_MAX_LENGTH) {

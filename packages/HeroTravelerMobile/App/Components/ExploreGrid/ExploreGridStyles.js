@@ -31,7 +31,7 @@ export default StyleSheet.create({
     bottom: 0,
     right: 0,
     textAlign: 'center',
-    lineHeight: 100
+    lineHeight: (Metrics.screenWidth) / 3 - 4,
   },
   selectedIcon: {
     position: 'absolute',

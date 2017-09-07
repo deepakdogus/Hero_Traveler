@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native'
 
 import {Fonts, Colors, Metrics} from '../Shared/Themes'

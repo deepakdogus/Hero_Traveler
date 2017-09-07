@@ -59,11 +59,32 @@ export default StyleSheet.create({
     justifyContent: 'center',
     marginBottom: Metrics.baseMargin,
   },
+  radioBtnOuter: {
+    borderRadius: 100,
+    width: 15,
+    height: 15,
+    backgroundColor: Colors.white,
+    borderWidth: 1.5,
+    borderColor: Colors.navBarText,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  radioBtnInner: {
+    borderRadius: 100,
+    width: 7,
+    height: 7,
+    backgroundColor: Colors.white,
+  },
+  radioBtnActiveBorder: {
+    borderColor: Colors.redHighlights,
+  },
+  radioBtnActiveBackground: {
+    backgroundColor: Colors.redHighlights,
+  },
   radioText: {
     marginLeft: Metrics.baseMargin,
     fontWeight: '500',
     fontSize: 16,
-
   },
   finishButtons: {
     flexDirection: 'row',
@@ -98,5 +119,14 @@ export default StyleSheet.create({
     height: 100,
     color: Colors.background,
     fontSize: 16,
-  }
+  },
+  errorButton: {
+    position: 'absolute',
+    top: 100,
+    left: 0,
+    right: 0,
+    marginVertical: Metrics.baseMargin,
+    marginHorizontal: Metrics.section,
+    zIndex: 100,
+  },
 })

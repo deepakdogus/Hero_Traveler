@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import React from 'react'
+import {PixelRatio} from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
@@ -40,8 +41,10 @@ class ProfileScreen extends React.Component {
   }
 
   _touchEdit = (storyId) => {
-    NavActions.createStoryFlow({type: 'reset', navigatedFromProfile: true})
-    NavActions.createStory_cover({storyId, navigatedFromProfile: true})
+    // Future: see if we can refactor this into 1 call
+    // Note: We will idealy refactor navigator completely so not top priority
+    NavActions.createStoryFlow({storyId, type: 'reset', navigatedFromProfile: true, shouldLoadStory: false})
+    NavActions.createStory_cover({storyId, navigatedFromProfile: true, shouldLoadStory: false})
   }
 
   _touchTrash = (storyId) => {

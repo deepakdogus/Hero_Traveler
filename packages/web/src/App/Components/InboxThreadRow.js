@@ -17,6 +17,10 @@ const Container = styled.div`
   margin: ${props => props.margin ? props.margin : '0'};
 `
 
+const StyledTimestamp = styled(Timestamp)`
+  align-self: center;
+`
+
 export default class InboxThreadRow extends Component {
   static propTypes = {
     message: PropTypes.string,
@@ -46,7 +50,7 @@ export default class InboxThreadRow extends Component {
   renderTimestamp = () => {
     return (
       <VerticalCenter>
-        <Timestamp margin='none' width='50px' >{moment(this.props.timestamp).fromNow()}</Timestamp>
+        <StyledTimestamp margin='none' width='50px' >{moment(this.props.timestamp).fromNow()}</StyledTimestamp>
       </VerticalCenter>
     )
   }

@@ -6,23 +6,32 @@ import {Row, Col} from './FlexboxGrid'
 
 const TextBox = styled.div`
   background-color: ${props => props.isSender ? props.theme.Colors.blueBubble : props.theme.Colors.lightGreyAreas};
-  border-radius: 3px;
+  border-radius: 6px;
   padding: 25px;
   margin-top: 10px;
+  width: 200px;
+`
+
+const StyledRow = styled(Row)`
+  padding-top: 20px;
+`
+
+const StyledCol = styled(Col)`
+  transform: ${props => props.isSender ? 'translateX(-70px)' : 'translateX(70px)'};
 `
 
 const TextBoxArrow = styled.div`
   width: 0; 
   height: 0; 
-  border-top: 8px solid transparent;
-  border-bottom: 8px solid transparent;
-  border-right-width: ${props => props.isSender ? '8px' : '0px'};
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right-width: ${props => props.isSender ? '9px' : '0px'};
   border-right-style: ${props => props.isSender ? 'solid' : 'none'};  
   border-right-color: ${props => props.isSender ? props.theme.Colors.blueBubble : 'none'};
-  border-left-width: ${props => props.isSender ? '0px' : '8px'};
+  border-left-width: ${props => props.isSender ? '0px' : '9px'};
   border-left-style: ${props => props.isSender ? 'none' : 'solid'};  
   border-left-color: ${props => props.isSender ? 'none' : props.theme.Colors.lightGreyAreas};  
-  transform: translate(0px,35px)
+  transform: translate(0px,37px)
 `
 
 // this Component should only be used for horizontal placement
@@ -38,10 +47,10 @@ export default class SpaceBetweenRowWithLeftAvatar extends Component {
     const {renderImage, renderText, renderTimestamp, isSender} = this.props
     return (
       <Row between='xs'>
-          <Col>
+          <StyledRow bottom='xs'>
             {isSender ? renderImage() : ''}
-          </Col>
-          <Col>
+          </StyledRow>
+          <StyledCol {...this.props}>
             {renderTimestamp()}
             <Row>
               {isSender ? <TextBoxArrow {...this.props}/> : null}
@@ -50,10 +59,10 @@ export default class SpaceBetweenRowWithLeftAvatar extends Component {
               </TextBox>
               {isSender ? null : <TextBoxArrow {...this.props}/>}
             </Row>
-          </Col>
-          <Col>
+          </StyledCol>
+          <StyledRow bottom='xs'>
             {isSender ? '' : renderImage()}
-          </Col>
+          </StyledRow>
       </Row>
     )
   }

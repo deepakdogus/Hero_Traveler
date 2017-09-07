@@ -105,7 +105,7 @@ export default class Icon extends React.Component {
       case 'close':
         return Images.iconContentXWhite
       case 'closeDark':
-        return Images.iconContentPlus
+        return Images.iconContentXDark
       case 'add':
         return Images.iconContentPlusWhite
       case 'cameraReverse':

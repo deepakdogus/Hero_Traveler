@@ -3,6 +3,7 @@ import VerticalCenter from '../../VerticalCenter'
 import Icon from '../../Icon'
 
 const basicTextStyle = `
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 16px;
   letter-spacing: .7px;
@@ -21,6 +22,7 @@ export const Title = styled.p`
 `
 
 export const RightTitle = styled.p`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 400;
   font-size: 20px;
   color: ${props => props.theme.Colors.background};
@@ -80,6 +82,7 @@ export const StyledVerticalCenter = styled(VerticalCenter)`
 `
 
 export const UserName = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 600;
   font-size: 18px;
   color: ${props => props.theme.Colors.background};
@@ -88,6 +91,7 @@ export const UserName = styled.p`
 `
 
 export const CommentContent = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 16px;
   letter-spacing: .7px;
@@ -95,6 +99,7 @@ export const CommentContent = styled.p`
   color: ${props => props.theme.Colors.grey};
 `
 export const MessageContent = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 16px;
   letter-spacing: .7px;
@@ -103,6 +108,7 @@ export const MessageContent = styled.p`
 `
 
 export const NotificationContent = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 16px;
   letter-spacing: .7px;
@@ -111,6 +117,7 @@ export const NotificationContent = styled.p`
 `
 
 export const Timestamp = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 14px;
   letter-spacing: .7px;
@@ -119,6 +126,7 @@ export const Timestamp = styled.p`
 `
 
 export const ProfileDetail = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 16px;
   letter-spacing: .7px;

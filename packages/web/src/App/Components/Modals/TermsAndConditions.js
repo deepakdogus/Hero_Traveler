@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import TermsAndConditionsScreen from '../TermsAndConditionsScreen'
+import TermsAndConditionsContent from '../TermsAndConditionsContent'
 import HorizontalDivider from '../HorizontalDivider'
 
 const Container = styled.div`
@@ -13,7 +13,7 @@ export default class TermsAndConditions extends React.Component {
     return (
       <Container>
         <HorizontalDivider color='light-grey'/>
-        <TermsAndConditionsScreen/>
+        <TermsAndConditionsContent/>
       </Container>
     )
   }

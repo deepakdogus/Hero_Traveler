@@ -9,6 +9,8 @@ import RoundedButton from '../RoundedButton'
 const Container = styled.div``
 
 const InputContainer = styled.div`
+  font-family: ${props => props.theme.Fonts.type.base};
+  font-style: none;
   padding: 25px;
 `
 

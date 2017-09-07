@@ -128,6 +128,7 @@ const ContributorText = styled.p`
   line-height: 25px;
 `
 
+
 export default class ProfileHeader extends React.Component {
   static propTypes = {
     user: PropTypes.object,
@@ -136,7 +137,7 @@ export default class ProfileHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'inboxThread' }
+    this.state = {modal: 'faqtermsandconditions' }
   }
 
   closeModal = () => {

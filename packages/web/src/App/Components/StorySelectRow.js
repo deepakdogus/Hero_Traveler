@@ -4,7 +4,8 @@ import PropTypes from 'prop-types'
 
 import SpaceBetweenRowWithButton from './SpaceBetweenRowWithButton'
 import VerticalCenter from './VerticalCenter'
-import getImageUrl from '../Shared/Lib/getImageUrl'
+import HorizontalDivider from './HorizontalDivider'
+import getS3ImageUrl from '../Shared/Lib/getS3ImageUrl'
 import Icon from './Icon'
 
 const StyledImage = styled.img`
@@ -12,8 +13,6 @@ const StyledImage = styled.img`
 `
 
 const Container = styled.div`
-  border: ${props => `1px solid ${props.theme.Colors.dividerGrey}`};
-  border-width: ${props => props.index === 0 ? '1px 0' : '0 0 1px'};
   padding: 8px 30px 8px 30px;
 `
 
@@ -24,6 +23,7 @@ const InteractiveContainer = styled.div`
 `
 
 const Text = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 600;
   font-size: 18px;
   letter-spacing: .7px;
@@ -36,6 +36,10 @@ const StyledVerticalCenter = styled(VerticalCenter)`
   height: 100%;
 `
 
+const StyledHorizontalDivider = styled(HorizontalDivider)`
+  margin: 0;
+`
+
 export default class StorySelectRow extends Component {
   static propTypes = {
     isSelected: PropTypes.bool,
@@ -45,7 +49,7 @@ export default class StorySelectRow extends Component {
   }
 
   renderImage = () => {
-    const src = getImageUrl(this.props.story.coverImage)
+    const src = getS3ImageUrl(this.props.story.coverImage)
     return (
       <StyledImage src={src} alt='ADD ALT TEXT'/>
     )
@@ -72,13 +76,16 @@ export default class StorySelectRow extends Component {
 
   renderNormalContainer = () => {
     return(
-        <Container index={this.props.index}>
-          <SpaceBetweenRowWithButton
-            renderImage={this.renderImage}
-            renderText={this.renderText}
-            renderButton={this.renderButton}
-          />
-        </Container>        
+        <div>
+          <Container index={this.props.index}>
+            <SpaceBetweenRowWithButton
+              renderImage={this.renderImage}
+              renderText={this.renderText}
+              renderButton={this.renderButton}
+            />
+          </Container>
+          <StyledHorizontalDivider color='light-grey'/>          
+        </div>        
       )
   }
 
@@ -91,7 +98,8 @@ export default class StorySelectRow extends Component {
               renderText={this.renderText}
               renderButton={this.renderButton}
             />
-          </Container>        
+          </Container>
+          <StyledHorizontalDivider color='light-grey'/>           
         </InteractiveContainer>        
       )
   }

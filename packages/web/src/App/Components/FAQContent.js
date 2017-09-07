@@ -6,6 +6,7 @@ const Container = styled.div``
 const FAQContainer = styled.div``
 
 const Question = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 600;
   font-size: 16px;
   color: ${props => props.theme.Colors.background};
@@ -13,6 +14,7 @@ const Question = styled.p`
 `
 
 const Answer = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 16px;
   color: ${props => props.theme.Colors.bioGrey};

@@ -4,6 +4,7 @@ import styled from 'styled-components'
 const Container = styled.div``
 
 const Title = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 600;
   font-size: 16px;
   color: ${props => props.theme.Colors.background};
@@ -11,6 +12,7 @@ const Title = styled.p`
 `
 
 const Subtitle = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 600;
   font-size: 14px;
   color: ${props => props.theme.Colors.background};
@@ -18,6 +20,7 @@ const Subtitle = styled.p`
 `
 
 const Body = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 14px;
   color: ${props => props.theme.Colors.background};
@@ -25,6 +28,7 @@ const Body = styled.p`
 `
 
 const Header = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 600;
   font-size: 14px;
   color: ${props => props.theme.Colors.background};
@@ -32,6 +36,7 @@ const Header = styled.p`
 `
 
 const OLBody = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 14px;
   color: ${props => props.theme.Colors.background};
@@ -39,13 +44,14 @@ const OLBody = styled.p`
 `
 
 const BodyNumber = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 600;
   font-size: 14px;
   color: ${props => props.theme.Colors.background};
   letter-spacing: .7px;
 `
 
-export default class TermsAndConditionsScreen extends React.Component {
+export default class TermsAndConditionsContent extends React.Component {
   render () {
     return (
       <Container>

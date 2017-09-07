@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import SpaceBetweenRowWithButton from './SpaceBetweenRowWithButton'
 import VerticalCenter from './VerticalCenter'
-import getImageUrl from '../Shared/Lib/getImageUrl'
+import getS3ImageUrl from '../Shared/Lib/getS3ImageUrl'
 import Avatar from './Avatar'
 import RoundedButton from './RoundedButton'
 
@@ -13,11 +13,12 @@ const Container = styled.div`
 `
 
 const StyledVerticalCenter = styled(VerticalCenter)`
-  height: 100%;
+  height: 90%;
   padding-left: 25px;
 `
 
 const UserName = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 600;
   font-size: 18px;
   color: ${props => props.theme.Colors.background};
@@ -26,6 +27,7 @@ const UserName = styled.p`
 `
 
 const ProfileDetail = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 16px;
   letter-spacing: .7px;
@@ -43,7 +45,7 @@ export default class FollowFollowingRow extends Component {
   renderImage = () => {
     return (
       <Avatar
-        avatarUrl={getImageUrl(this.props.user.profile.avatar)}
+        avatarUrl={getS3ImageUrl(this.props.user.profile.avatar)}
         size='larger'
       />
     )

@@ -6,6 +6,7 @@ import {feedExample} from '../../Containers/Feed_TEST_DATA'
 import StorySelectRow from '../StorySelectRow'
 import SpaceBetweenRowWithButton from '../SpaceBetweenRowWithButton'
 import VerticalCenter from '../VerticalCenter'
+import HorizontalDivider from '../HorizontalDivider'
 import {RightTitle, StyledVerticalCenter, RightModalCloseX} from './Shared'
 import Icon from '../Icon'
 
@@ -31,10 +32,15 @@ const StyledIcon = styled(Icon)`
 `
 
 const CreateText = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 600;
   font-size: 18px;
   color: ${props => props.theme.Colors.redLight};
   letter-spacing: .7px;
+  margin: 0;
+`
+
+const StyledHorizontalDivider = styled(HorizontalDivider)`
   margin: 0;
 `
 
@@ -101,6 +107,7 @@ export default class AddToBoard extends React.Component {
             renderButton={this.renderButton}
           />
         </CreateContainer>
+        <StyledHorizontalDivider color='light-grey'/>
         <CategoryRowsContainer>
           {this.renderCategoryRows(storyKeys)}
         </CategoryRowsContainer>

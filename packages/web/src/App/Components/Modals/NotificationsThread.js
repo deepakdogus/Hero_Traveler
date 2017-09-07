@@ -37,6 +37,8 @@ let tripsExampleSliced = {};
 for (var i=0; i<3; i++)
     tripsExampleSliced[i] = tripsExample[i];
 
+  console.log("tripsExampleSliced: ", tripsExampleSliced)
+
 export default class NotificationsThread extends React.Component {
   static PropTypes = {
     profile: PropTypes.object,

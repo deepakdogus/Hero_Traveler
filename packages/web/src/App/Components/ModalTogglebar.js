@@ -13,6 +13,7 @@ const TabContainer = styled.div`
 `
 
 const TabText = styled(Text)`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
   color: ${props => props.isActive ? props.theme.Colors.background : props.theme.Colors.navBarText};
   border-width: ${props => props.isLast ? '0 0 0 0' : '0 1px 0 0' };
   border-style: solid;

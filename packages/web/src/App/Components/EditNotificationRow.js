@@ -14,6 +14,7 @@ const Container = styled.div`
 `
 
 const NotificationTitle = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 16px;
   letter-spacing: .7px;

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 const Container = styled.div``
 
 const StyledInputLabel = styled.label`
+  font-family: ${props => props.theme.Fonts.type.base};
   display: block;
   font-size: 14px;
   font-weight: 400;
@@ -14,6 +15,7 @@ const StyledInputLabel = styled.label`
 `
 
 export const StyledInput = styled.input`
+  font-family: ${props => props.theme.Fonts.type.base};
   border-color: ${props => props.theme.Colors.dividerGrey};
   border-width: 0 0 1px;
   color: ${props => props.theme.Colors.background};

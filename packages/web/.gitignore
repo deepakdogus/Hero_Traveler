@@ -20,6 +20,4 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-src/App/Config/Env.js
-
 src/App/shared

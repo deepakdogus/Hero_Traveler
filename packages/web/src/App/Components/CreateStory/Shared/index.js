@@ -50,3 +50,17 @@ export const CloseXContainer = styled.div`
   margin: 10px;
   z-index: 100;
 `
+
+export const StyledCaptionInput = styled.input`
+  font-family: ${props => props.theme.Fonts.type.base};
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: .7px;
+  width: 100%;
+  text-align: center;
+  color: ${props => props.theme.Colors.grey};
+  border: none;
+  padding-top: 20px;
+  font-size: 18px;
+  outline: none;
+`

@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import Icon from '../Icon'
 import CloseX from '../CloseX'
 import OverlayStatic from '../OverlayStatic'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
@@ -42,13 +41,6 @@ const TitleContainer = styled.div`
   width: 100%;
 `
 
-const CloseImage = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 10px;
-  z-index: 100;
-`
 const StyledSubTitle = styled(SubTitle)`
   color: ${props => props.theme.Colors.snow};
 `

@@ -36,14 +36,18 @@ function getBackgroundColor (type, colors) {
     case 'twitter':
     case 'lightGrey':
       return colors.snow
+    case 'opaqueGrey':
+      return colors.snow        
     default:
       return colors.red
   }
 }
 
 const StyledButton = styled.button`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
   height: ${props => props.height || 'auto'};
   border-radius: 30px;
+  outline: none;
   border: 1px solid;
   border-color: ${props => {
     switch(props.type) {
@@ -62,6 +66,8 @@ const StyledButton = styled.button`
         return props.theme.Colors.snow
       case 'blackWhite':
         return props.theme.Colors.photoOverlay
+    case 'opaqueGrey':
+      return props.theme.Colors.grey
       default:
         return props.theme.Colors.red
     }

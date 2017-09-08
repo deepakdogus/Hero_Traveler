@@ -4,19 +4,24 @@ import PropTypes from 'prop-types'
 
 import Icon from '../Icon'
 import RoundedButton from '../RoundedButton'
-import Overlay from '../Overlay'
+import OverlayStatic from '../OverlayStatic'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
+import {SubTitle} from './Shared'
 
+const Container = styled.div`
+  position: relative;
+`
 
-const StoryOverlayContainer = styled(Overlay)`
+const StoryOverlayContainer = styled(OverlayStatic)`
   margin-top: 40px;
-  padding: 175px 0px;
-  height: 100%;
+  padding-top: 151%;
+  width: 100%;
   max-width: 900px;
   max-height: 505px;
   background-image: ${props => `url(${getImageUrl(props.image)})`};
   background-size: cover;
   position: relative;
+  z-index: -100;
 `
 
 const CenteredText = styled.p`
@@ -30,10 +35,10 @@ const Title = styled(CenteredText)`
   letter-spacing: 1.5px;
 `
 
-const SubTitle = styled(CenteredText)`
-  font-weigth: 400;
-  font-size: 20px;
-  letter-spacing: .7px;
+const TitleContainer = styled.div`
+  position: absolute;
+  top: 30%;
+  width: 100%;
 `
 
 const CloseImage = styled.div`
@@ -42,6 +47,9 @@ const CloseImage = styled.div`
   right: 0;
   margin: 10px;
   z-index: 100;
+`
+const StyledSubTitle = styled(SubTitle)`
+  color: ${props => props.theme.Colors.snow};
 `
 
 export default class CoverPhotoBox extends React.Component {
@@ -54,22 +62,23 @@ export default class CoverPhotoBox extends React.Component {
 
   render() {
     return (
-      <StoryOverlayContainer image={this.props.coverImage} overlayColor='black'>
-          <CloseImage>
-            <RoundedButton 
-              type='grey'
-              padding='even' 
-              margin='small'
-              onClick={this.props.closeImage}
-            >
-              <Icon name='close'/>
-            </RoundedButton>                  
-          </CloseImage>         
-
-          <Title>{this.props.title}</Title>
-          <SubTitle>{this.props.description}</SubTitle>        
-      </StoryOverlayContainer>
-
+      <Container>
+        <StoryOverlayContainer image={this.props.coverImage} overlayColor='black'/>
+            <CloseImage>
+              <RoundedButton 
+                type='grey'
+                padding='even' 
+                margin='small'
+                onClick={this.props.closeImage}
+              >
+                <Icon name='close'/>
+              </RoundedButton>                  
+            </CloseImage>         
+            <TitleContainer>
+              <Title>{this.props.title}</Title>
+              <StyledSubTitle>{this.props.description}</StyledSubTitle>              
+            </TitleContainer>
+      </Container>
       )
   }
 }

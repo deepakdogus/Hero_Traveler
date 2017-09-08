@@ -5,6 +5,9 @@ const basicTextStyle = `
   font-size: 16px;
   letter-spacing: .7px;
 `
+export const CenteredText = styled.p`
+  text-align: center;
+`
 
 export const Container = styled.div`
   padding: 0 10px;
@@ -24,7 +27,6 @@ export const Text = styled.p`
   text-align: center;
 `
 
-
 export const StyledInput = styled.input`
   ${basicTextStyle};
   width: 100%;
@@ -33,4 +35,10 @@ export const StyledInput = styled.input`
   border-width: 0 0 1px;
   border-color: ${props => props.theme.Colors.dividerGrey};
   margin-bottom: 25px;
+`
+
+export const SubTitle = styled(CenteredText)`
+  font-weigth: 400;
+  font-size: 20px;
+  letter-spacing: .7px;
 `

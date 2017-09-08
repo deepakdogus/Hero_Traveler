@@ -123,6 +123,8 @@ export default class Icon extends React.Component {
         return Images.components
       case 'trash':
         return Images.iconEditImageTrash
+      case 'addCoverCamera':
+        return Images.iconAddCoverCamera
       case 'profile':
       default:
         return Images.iconNavProfile

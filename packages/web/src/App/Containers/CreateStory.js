@@ -36,6 +36,7 @@ const Container = styled.div``
 
 const PlaceholderText = styled(Text)`
   font-size: 18px;
+  line-height: 35px;
   color: ${props => props.theme.Colors.navBarText}
 `
 
@@ -45,6 +46,10 @@ const ContentWrapper = styled.div`
 
 const ItemContainer = styled.div`
   margin: 40px 0;
+`
+
+const StyledIcon = styled(Icon)`
+  align-self: center;
 `
 
 class CreateStory extends Component {
@@ -78,16 +83,20 @@ class CreateStory extends Component {
           <RoundedButton 
             type='grey'
             padding='even' 
-            margin='small'
+            margin='medium'
+            width='50px'
+            height='50px'
           >
-            <Icon name='trash'/>
+            <StyledIcon name='trash'/>
           </RoundedButton>
           <RoundedButton 
             type='grey'
             padding='even' 
-            margin='small'
+            margin='medium'
+            width='50px'
+            height='50px'            
           >
-            <Icon name='save'/>
+            <StyledIcon name='save'/>
           </RoundedButton>        
       </Container>
     )
@@ -98,14 +107,16 @@ class CreateStory extends Component {
       <Container>
           <RoundedButton
             text={'Preview'}
-            margin='small'
-            width='100px'
+            margin='medium'
+            padding='even' 
+            width='120px'
             type='grey'
           />
           <RoundedButton
-            text={'Next  >'}
-            margin='small'
-            width='100px'
+            text={'Next >'}
+            margin='medium'
+            padding='even' 
+            width='120px'
           />      
       </Container>
     )
@@ -113,7 +124,7 @@ class CreateStory extends Component {
 
   renderFullToolbar() {
     const buttonTypes = [
-        {iconName: 'photo', action: this.addPhoto},
+        {iconName: 'addCoverCamera', action: this.addPhoto},
         {iconName: 'video', action: this.addVideo},
         {iconName: 'story', action: this.addText},
         {iconName: '', action: this.addDetails},
@@ -122,12 +133,14 @@ class CreateStory extends Component {
       return (
           <RoundedButton 
             key={index}
-            type='lightGrey'
-            padding='evenMedium'
+            type='opaqueGrey'
+            padding='even' 
             margin='medium'
+            width='50px'
+            height='50px'                   
             onClick={buttonType.action}
           >
-            <Icon name={buttonType.iconName}/>          
+            <StyledIcon name={buttonType.iconName}/>          
           </RoundedButton>
       )
     })
@@ -137,15 +150,15 @@ class CreateStory extends Component {
     return (
       <Row>
           <RoundedButton 
-            type='lightGrey'
+            type='opaqueGrey'
             padding='evenMedium' 
             margin='medium'
             onClick={this.toggleToolbar}
           >
             <Icon name='createStory'/>          
           </RoundedButton>
-          {this.state.toolBarOpen ? null : <PlaceholderText>Tell Your Story</PlaceholderText> }
-          {this.state.toolBarOpen ? this.renderFullToolbar() : null }
+          {!this.state.toolBarOpen && <PlaceholderText>Tell Your Story</PlaceholderText> }
+          {this.state.toolBarOpen && this.renderFullToolbar()}
       </Row>
     )
   }

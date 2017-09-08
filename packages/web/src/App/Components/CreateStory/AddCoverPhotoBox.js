@@ -3,11 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import Icon from '../Icon'
-
-const CenteredText = styled.p`
-  text-align: center;
-  color: ${props => props.theme.Colors.background}
-`
+import {SubTitle, CenteredText} from './Shared'
 
 const Container = styled.div`
   max-width: 900px;
@@ -18,7 +14,7 @@ const Container = styled.div`
 `
 
 const IconSubTitle = styled(CenteredText)`
-  font-weigth: 400;
+  font-weight: 400;
   font-size: 13px;
   letter-spacing: 1.5px;
   color: ${props => props.theme.Colors.redHighlights}
@@ -33,17 +29,11 @@ const IconContainer = styled.div`
   text-align: center;
 `
 
-const SubTitle = styled(CenteredText)`
-  font-weigth: 400;
-  font-size: 20px;
-  letter-spacing: .7px;
-`
-
-
 const Title = styled(CenteredText)`
   font-weigth: 400;
   font-size: 50px;
   letter-spacing: 1.5px;
+  color: ${props => props.theme.Colors.background}
 `
 
 export default class AddCoverPhotoBox extends React.Component {

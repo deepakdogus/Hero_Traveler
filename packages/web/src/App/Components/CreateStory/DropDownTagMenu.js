@@ -68,7 +68,6 @@ static propTypes = {
           listStyle={styles.listStyles}
           underlineStyle={{display: 'none'}}
           labelStyle={{visibility: 'hidden'}}
-          listStyle={styles.listStyles}
           autoWidth={false}
           iconButton={null}
           maxHeight={400}

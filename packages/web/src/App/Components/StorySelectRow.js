@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import SpaceBetweenRowWithButton from './SpaceBetweenRowWithButton'
 import VerticalCenter from './VerticalCenter'
 import HorizontalDivider from './HorizontalDivider'
-import getS3ImageUrl from '../Shared/Lib/getS3ImageUrl'
+import getImageUrl from '../Shared/Lib/getImageUrl'
 import Icon from './Icon'
 
 const StyledImage = styled.img`
@@ -49,7 +49,7 @@ export default class StorySelectRow extends Component {
   }
 
   renderImage = () => {
-    const src = getS3ImageUrl(this.props.story.coverImage)
+    const src = getImageUrl(this.props.story.coverImage)
     return (
       <StyledImage src={src} alt='ADD ALT TEXT'/>
     )

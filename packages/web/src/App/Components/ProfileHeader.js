@@ -138,7 +138,7 @@ export default class ProfileHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'profileBio' }
+    this.state = {modal: 'settings' }
   }
 
   closeModal = () => {
@@ -301,7 +301,7 @@ export default class ProfileHeader extends React.Component {
           <ProfileBio closeModal={this.closeModal} profile={user}/>
         </RightModal>        
         <CenterModal
-          isOpen={this.state.modal === 'faqtermsandconditions'}
+          isOpen={this.state.modal === 'faqTermsAndConditions'}
           contentLabel='FAQ Terms & Conditions'
           onRequestClose={this.closeModal}
         >

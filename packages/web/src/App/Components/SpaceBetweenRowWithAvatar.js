@@ -48,20 +48,20 @@ export default class SpaceBetweenRowWithLeftAvatar extends Component {
     return (
       <Row between='xs'>
           <StyledRow bottom='xs'>
-            {isSender ? renderImage() : ''}
+            {isSender && renderImage()}
           </StyledRow>
           <StyledCol {...this.props}>
             {renderTimestamp()}
             <Row>
-              {isSender ? <TextBoxArrow {...this.props}/> : null}
+              {isSender && <TextBoxArrow {...this.props}/>}
               <TextBox {...this.props}>
                 {renderText()}
               </TextBox>
-              {isSender ? null : <TextBoxArrow {...this.props}/>}
+              {!isSender && <TextBoxArrow {...this.props}/>}
             </Row>
           </StyledCol>
           <StyledRow bottom='xs'>
-            {isSender ? '' : renderImage()}
+            {!isSender && renderImage()}
           </StyledRow>
       </Row>
     )

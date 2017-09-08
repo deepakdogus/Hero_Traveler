@@ -12,7 +12,7 @@ import EditServices from './EditServices'
 
 const Container = styled.div``
 
-const tabs = ['Account', 'Services', 'Notifications', 'Password']
+const toggleBarTabs = ['Account', 'Services', 'Notifications', 'Password']
 
 export default class Settings extends React.Component {
   static propTypes = {
@@ -22,26 +22,14 @@ export default class Settings extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      modalContent: 'account',
-      toggleBarTabs: [
-        { text: 'Account', isActive: true, isLast: false },
-        { text: 'Services', isActive: false, isLast: false },
-        { text: 'Notifications', isActive: false, isLast: false },
-        { text: 'Password', isActive: false, isLast: true },
-      ],
+      activeTab: 'Account'
     }
   }  
 
   toggleModal = (event) => {
     let target = event.target.innerHTML.split(' ')[0];
-    let newTabs = [];
-    this.state.toggleBarTabs.forEach(function(tab){
-      let newTab = Object.assign({}, tab)
-      newTab.isActive = tab.text === target ? true : false;
-      newTabs.push(newTab)
-    })
-    if(tabs.indexOf(target) > -1){
-      this.setState({ modalContent: target.toLowerCase(), toggleBarTabs: newTabs })  
+    if(toggleBarTabs.indexOf(target) > -1){
+      this.setState({ activeTab: target })  
     }
   }
  
@@ -50,11 +38,11 @@ export default class Settings extends React.Component {
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>SETTINGS</RightTitle>
-        <ModalTogglebar toggleModal={this.toggleModal} tabs={this.state.toggleBarTabs}/>
-        {this.state.modalContent === 'account' ? <EditAccount/> : null }
-        {this.state.modalContent === 'services' ? <EditServices/> : null }
-        {this.state.modalContent === 'notifications' ? <EditNotifications/> : null }
-        {this.state.modalContent === 'password' ? <EditPassword/> : null }
+        <ModalTogglebar toggleModal={this.toggleModal} isActive={this.state.activeTab} tabs={toggleBarTabs}/>
+        {this.state.activeTab === 'Account' && <EditAccount/>}
+        {this.state.activeTab === 'Services' && <EditServices/>}
+        {this.state.activeTab === 'Notifications' && <EditNotifications/>}
+        {this.state.activeTab === 'Password' && <EditPassword/>}
       </Container>
     )
   }

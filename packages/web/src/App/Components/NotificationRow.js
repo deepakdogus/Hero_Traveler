@@ -67,7 +67,7 @@ export default class NotificationRow extends Component {
     return (
       <VerticalCenter>
         <Row>
-          <StyledUserName>{user.username}</StyledUserName>&nbsp;
+          <StyledUserName>{user.username}&nbsp;</StyledUserName>
           <NotificationContent>{this.props.notification}</NotificationContent>          
         </Row>
         {this.props.comment ? <CommentContent>{this.props.comment}</CommentContent> : null }

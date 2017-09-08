@@ -17,20 +17,18 @@ class AppRoot extends Component {
   render() {
     return (
       <Router>
-      
-          <ThemeProvider theme={themes}>
-            <div>
-              <HeaderImageWrapper backgroundImage={background}>
-                <Header />
-              </HeaderImageWrapper>
-              <Route exact path='/' component={Feed} />
-              <Route path='/signup/social' component={SignupSocial} />
-              <Route path='/signup/topics' component={SignupTopics} />
-              <Route path='/story/:storyId' component={Story} />
-              <Route path='/profile/:userId' component={Profile} />
-            </div>
-          </ThemeProvider>
-      
+        <ThemeProvider theme={themes}>
+          <div>
+            <HeaderImageWrapper backgroundImage={background}>
+              <Header />
+            </HeaderImageWrapper>
+            <Route exact path='/' component={Feed} />
+            <Route path='/signup/social' component={SignupSocial} />
+            <Route path='/signup/topics' component={SignupTopics} />
+            <Route path='/story/:storyId' component={Story} />
+            <Route path='/profile/:userId' component={Profile} />
+          </div>
+        </ThemeProvider>
       </Router>
     )
   }

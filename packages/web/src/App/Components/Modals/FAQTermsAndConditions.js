@@ -10,7 +10,10 @@ import TermsAndConditions from './TermsAndConditions'
 
 const Container = styled.div``
 
-export default class Settings extends React.Component {
+const toggleBarTabs = ['FAQ', 'Terms & Conditions']
+const toggleBarTabsCheck = ['FAQ', 'Terms']
+
+export default class FAQTermsAndConditions extends React.Component {
   static propTypes = {
     closeModal: PropTypes.func,
   }
@@ -18,24 +21,14 @@ export default class Settings extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      modalContent: 'faq',
-      toggleBarTabs: [
-        { text: 'FAQ', isActive: true, isLast: false },
-        { text: 'Terms & Conditions', isActive: false, isLast: true },
-      ],
+      activeTab: 'FAQ'
     }
   }  
 
   toggleModal = (event) => {
     let target = event.target.innerHTML.split(' ')[0];
-    let newTabs = [];
-    this.state.toggleBarTabs.forEach(function(tab){
-      let newTab = Object.assign({}, tab)
-      newTab.isActive = tab.text.split(' ')[0] === target ? true : false;
-      newTabs.push(newTab)
-    })
-    if(target === 'FAQ' || target === 'Terms'){
-      this.setState({ modalContent: target.toLowerCase(), toggleBarTabs: newTabs })
+    if(toggleBarTabsCheck.indexOf(target) > -1){
+      this.setState({ activeTab: target })  
     }
   }
  
@@ -43,10 +36,13 @@ export default class Settings extends React.Component {
     return (
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
-        <ModalTogglebar toggleModal={this.toggleModal} tabs={this.state.toggleBarTabs}/>
-        {this.state.modalContent === 'faq' ? <FAQ/> : null }
-        {this.state.modalContent === 'terms' ? <TermsAndConditions/> : null }
+        <ModalTogglebar toggleModal={this.toggleModal} isActive={this.state.activeTab} tabs={toggleBarTabs}/>
+        {this.state.activeTab === 'FAQ' && <FAQ/>}
+        {this.state.activeTab === 'Terms' && <TermsAndConditions/>}
       </Container>
     )
   }
 }
+
+
+

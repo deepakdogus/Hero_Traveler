@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import {usersExample} from '../../Containers/Feed_TEST_DATA'
 import {RightTitle, RightModalCloseX, Text} from './Shared'
 import {Row} from '../FlexboxGrid'
 import Icon from '../Icon'
@@ -56,9 +55,6 @@ export default class ProfileBio extends React.Component {
 
   render() {
     const {profile} = this.props
-    const userKeys = Object.keys(usersExample).filter((key, index) => {
-      return key !== profile.id
-    })
 
     return (
       <Container>

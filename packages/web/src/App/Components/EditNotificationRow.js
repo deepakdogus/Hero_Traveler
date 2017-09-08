@@ -50,6 +50,8 @@ export default class EditNotificationRow extends Component {
     )
   }
 
+  toggleSwitchState = checked => this.setState({ checked })
+
   renderSwitch = () => {
     const { checked } = this.state;
     return (
@@ -58,7 +60,7 @@ export default class EditNotificationRow extends Component {
           checked={checked}
           index={this.props.index}
           disabled={null}
-          onChange={checked => this.setState({ checked })}
+          onChange={this.toggleSwitchState}
           onColor={'#d60000'}
         />
       </VerticalCenter>

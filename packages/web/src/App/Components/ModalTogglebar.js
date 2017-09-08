@@ -25,13 +25,8 @@ const TabText = styled(Text)`
 
 export default class ModalToggleBar extends React.Component {
   static propTypes = {
-    tabs: PropTypes.arrayOf(
-      PropTypes.shape({
-        text: PropTypes.string,
-        isActive: PropTypes.bool,
-        isLast: PropTypes.bool,
-      }),
-    ),
+    tabs: PropTypes.arrayOf(PropTypes.string),
+    isActive: PropTypes.string,
     toggleModal: PropTypes.func,
   }
 
@@ -40,7 +35,12 @@ export default class ModalToggleBar extends React.Component {
     return tabs.map((tab, index) => {
       return (
         <TabContainer onClick={this.props.toggleModal} key={index}>
-          <TabText isLast={tab.isLast} isActive={tab.isActive}>{tab.text}</TabText>
+          <TabText 
+            isLast={index === tabs.length - 1} 
+            isActive={tab.split(' ')[0] === this.props.isActive}
+          >
+            {tab}
+          </TabText>
         </TabContainer>
       )
     })

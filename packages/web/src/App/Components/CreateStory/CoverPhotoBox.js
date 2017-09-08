@@ -6,7 +6,7 @@ import Icon from '../Icon'
 import CloseX from '../CloseX'
 import OverlayStatic from '../OverlayStatic'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
-import {SubTitle} from './Shared'
+import {CloseXContainer, SubTitle} from './Shared'
 
 const Container = styled.div`
   position: relative;
@@ -62,17 +62,18 @@ export default class CoverPhotoBox extends React.Component {
   }
 
   render() {
+    const {coverImage, closeImage, title, description} = this.props;
     return (
       <Container>
-        <StoryOverlayContainer image={this.props.coverImage} overlayColor='lightBlack'/>
-        <CloseImage>
-          <CloseX onClick={this.props.closeImage}/>
-        </CloseImage>         
+        <StoryOverlayContainer image={coverImage} overlayColor='lightBlack'/>
+        <CloseXContainer>
+          <CloseX onClick={closeImage}/>
+        </CloseXContainer>         
         <TitleContainer>
-          <Title>{this.props.title}</Title>
-          <StyledSubTitle>{this.props.description}</StyledSubTitle>              
+          <Title>{title}</Title>
+          <StyledSubTitle>{description}</StyledSubTitle>              
         </TitleContainer>
       </Container>
-      )
+    )
   }
 }

@@ -42,3 +42,11 @@ export const SubTitle = styled(CenteredText)`
   font-size: 20px;
   letter-spacing: .7px;
 `
+
+export const CloseXContainer = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+  z-index: 100;
+`

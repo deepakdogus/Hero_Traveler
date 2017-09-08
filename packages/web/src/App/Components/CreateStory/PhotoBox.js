@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import Icon from '../Icon'
-import Image from '../Image'
 import CloseX from '../CloseX'
+import {CloseXContainer} from './Shared'
 
 const Container = styled.div`
 `
@@ -15,7 +15,7 @@ const ImageContainer = styled(Container)`
   position: relative;
 `
 
-const StyledImage = styled(Image)`
+const StyledImage = styled.img`
   width: 100%;
 `
 
@@ -29,14 +29,6 @@ const Caption = styled.p`
   margin-top: 0;
 `
 
-const CloseImage = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 10px;
-  z-index: 100;
-`
-
 export default class PhotoBox extends React.Component {
   static propTypes = {
     imageURL: PropTypes.string,
@@ -45,17 +37,18 @@ export default class PhotoBox extends React.Component {
   }
 
   render() {
-      return (
-        <Container>
-          <ImageContainer>
-            <StyledImage src={this.props.imageURL}/>
-             <CloseImage>
-              <CloseX onClick={this.props.closeImage}/>
-            </CloseImage>                              
-          </ImageContainer>
-          {this.props.caption && <Caption>{this.props.caption}</Caption>}
-        </Container>
-      )
+    const {imageURL, closeImage, caption} = this.props
+    return (
+      <Container>
+        <ImageContainer>
+          <StyledImage src={imageURL}/>
+           <CloseXContainer>
+            <CloseX onClick={closeImage}/>
+          </CloseXContainer>                              
+        </ImageContainer>
+        {this.props.caption && <Caption>{caption}</Caption>}
+      </Container>
+    )
   }
 }
 

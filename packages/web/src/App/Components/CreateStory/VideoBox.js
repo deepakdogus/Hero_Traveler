@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import Icon from '../Icon'
 import Video from '../Video'
 import CloseX from '../CloseX'
+import {CloseXContainer} from './Shared'
 
 const Container = styled.div`
 `
@@ -41,17 +42,18 @@ export default class VideoBox extends React.Component {
   }
 
   render() {
-      return (
-        <Container>
-          <VideoContainer>
-            <Video src={this.props.videoURL}/>
-             <CloseVideo>
-              <CloseX onClick={this.props.closeVideo}/>
-            </CloseVideo>                              
-          </VideoContainer>
-          {this.props.caption && <Caption>{this.props.caption}</Caption>}
-        </Container>
-      )
+    const {videoURL, closeVideo, caption} = this.props;
+    return (
+      <Container>
+        <VideoContainer>
+          <Video src={videoURL}/>
+           <CloseXContainer>
+            <CloseX onClick={closeVideo}/>
+          </CloseXContainer>                              
+        </VideoContainer>
+        {this.props.caption && <Caption>{caption}</Caption>}
+      </Container>
+    )
   }
 }
 

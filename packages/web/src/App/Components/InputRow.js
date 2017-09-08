@@ -17,7 +17,7 @@ const StyledHorizontalDivider = styled(HorizontalDivider)`
   margin: 0;
 `
 
-export const InputFooter = styled.div`
+const InputFooter = styled.div`
   background-color: ${props => props.theme.Colors.lightGreyAreas};
   margin: 0;
   width: 510px;
@@ -26,7 +26,7 @@ export const InputFooter = styled.div`
   position: relative;
 `
 
-export const StyledFooterInput = styled.input`
+const StyledFooterInput = styled.input`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   letter-spacing: .7px;

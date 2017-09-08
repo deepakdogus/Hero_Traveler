@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import Icon from '../Icon'
 import Video from '../Video'
-import RoundedButton from '../RoundedButton'
+import CloseX from '../CloseX'
 
 const Container = styled.div`
 `
@@ -14,10 +14,6 @@ const VideoContainer = styled(Container)`
   max-width: 900px;
   position: relative;
 `
-
-// const StyledImage = styled(Image)`
-//   width: 100%;
-// `
 
 const Caption = styled.p`
   font-weight: 400;
@@ -50,14 +46,7 @@ export default class VideoBox extends React.Component {
           <VideoContainer>
             <Video src={this.props.videoURL}/>
              <CloseVideo>
-              <RoundedButton 
-                type='grey'
-                padding='even' 
-                margin='small'
-                onClick={this.props.closeVideo}
-              >
-                <Icon name='close'/>
-              </RoundedButton>                  
+              <CloseX onClick={this.props.closeVideo}/>
             </CloseVideo>                              
           </VideoContainer>
           {this.props.caption && <Caption>{this.props.caption}</Caption>}

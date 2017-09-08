@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import Icon from '../Icon'
 import Image from '../Image'
-import RoundedButton from '../RoundedButton'
+import CloseX from '../CloseX'
 
 const Container = styled.div`
 `
@@ -50,14 +50,7 @@ export default class PhotoBox extends React.Component {
           <ImageContainer>
             <StyledImage src={this.props.imageURL}/>
              <CloseImage>
-              <RoundedButton 
-                type='grey'
-                padding='even' 
-                margin='small'
-                onClick={this.props.closeImage}
-              >
-                <Icon name='close'/>
-              </RoundedButton>                  
+              <CloseX onClick={this.props.closeImage}/>
             </CloseImage>                              
           </ImageContainer>
           {this.props.caption && <Caption>{this.props.caption}</Caption>}

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import Icon from '../Icon'
-import RoundedButton from '../RoundedButton'
+import CloseX from '../CloseX'
 import OverlayStatic from '../OverlayStatic'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import {SubTitle} from './Shared'
@@ -14,7 +14,7 @@ const Container = styled.div`
 
 const StoryOverlayContainer = styled(OverlayStatic)`
   margin-top: 40px;
-  padding-top: 151%;
+  padding-top: 505px;
   width: 100%;
   max-width: 900px;
   max-height: 505px;
@@ -33,11 +33,12 @@ const Title = styled(CenteredText)`
   font-weigth: 400;
   font-size: 50px;
   letter-spacing: 1.5px;
+  margin: 0px;
 `
 
 const TitleContainer = styled.div`
   position: absolute;
-  top: 30%;
+  top: 50%;
   width: 100%;
 `
 
@@ -63,21 +64,14 @@ export default class CoverPhotoBox extends React.Component {
   render() {
     return (
       <Container>
-        <StoryOverlayContainer image={this.props.coverImage} overlayColor='black'/>
-            <CloseImage>
-              <RoundedButton 
-                type='grey'
-                padding='even' 
-                margin='small'
-                onClick={this.props.closeImage}
-              >
-                <Icon name='close'/>
-              </RoundedButton>                  
-            </CloseImage>         
-            <TitleContainer>
-              <Title>{this.props.title}</Title>
-              <StyledSubTitle>{this.props.description}</StyledSubTitle>              
-            </TitleContainer>
+        <StoryOverlayContainer image={this.props.coverImage} overlayColor='lightBlack'/>
+        <CloseImage>
+          <CloseX onClick={this.props.closeImage}/>
+        </CloseImage>         
+        <TitleContainer>
+          <Title>{this.props.title}</Title>
+          <StyledSubTitle>{this.props.description}</StyledSubTitle>              
+        </TitleContainer>
       </Container>
       )
   }

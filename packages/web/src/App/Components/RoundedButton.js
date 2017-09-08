@@ -37,7 +37,9 @@ function getBackgroundColor (type, colors) {
     case 'lightGrey':
       return colors.snow
     case 'opaqueGrey':
-      return colors.snow        
+      return colors.snow
+    case 'backgroundOpaque':
+      return colors.backgroundOpaque       
     default:
       return colors.red
   }
@@ -66,8 +68,10 @@ const StyledButton = styled.button`
         return props.theme.Colors.snow
       case 'blackWhite':
         return props.theme.Colors.photoOverlay
-    case 'opaqueGrey':
-      return props.theme.Colors.grey
+      case 'opaqueGrey':
+        return props.theme.Colors.grey
+      case 'backgroundOpaque':
+        return props.theme.Colors.closeXBorder 
       default:
         return props.theme.Colors.red
     }

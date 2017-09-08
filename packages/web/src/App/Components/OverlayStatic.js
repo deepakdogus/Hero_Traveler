@@ -14,6 +14,8 @@ export default styled.div`
       switch (props.overlayColor) {
         case 'black':
           return 'rgba(0, 0, 0, 0.4)'
+        case 'lightBlack':
+          return 'rgba(0, 0, 0, 0.25)'
         default:
           return 'rgba(256, 256, 256, 0.4)'
       }

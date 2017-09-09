@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import Icon from '../Icon'
-import {Text} from './Shared'
-
 import {Row} from '../FlexboxGrid'
 import RoundedButton from '../RoundedButton'
 import {Input} from './Shared'

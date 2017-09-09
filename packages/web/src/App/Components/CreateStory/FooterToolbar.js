@@ -32,26 +32,26 @@ export default class FooterToolbar extends Component {
 
   renderIcons = () => {
     return (
-      <Container>
-          <RoundedButton 
-            type='grey'
-            padding='even' 
-            margin='medium'
-            width='50px'
-            height='50px'
-          >
-            <StyledIcon name='trash'/>
-          </RoundedButton>
-          <RoundedButton 
-            type='grey'
-            padding='even' 
-            margin='medium'
-            width='50px'
-            height='50px'            
-          >
-            <StyledIcon name='save'/>
-          </RoundedButton>        
-      </Container>
+      <Row middle='xs'>
+        <RoundedButton 
+          type='grey'
+          padding='even' 
+          margin='medium'
+          width='50px'
+          height='50px'
+        >
+          <StyledIcon name='trash'/>
+        </RoundedButton>
+        <RoundedButton 
+          type='grey'
+          padding='even' 
+          margin='medium'
+          width='50px'
+          height='50px'            
+        >
+          <StyledIcon name='save'/>
+        </RoundedButton>        
+      </Row>
     )
   }
 
@@ -60,7 +60,7 @@ export default class FooterToolbar extends Component {
     return (
       <Container>
         {!isDetailsView &&
-          <div>
+          <Row middle='xs'>
             <RoundedButton
               text={'Preview'}
               margin='medium'
@@ -74,10 +74,10 @@ export default class FooterToolbar extends Component {
               padding='even' 
               width='120px'
             />            
-          </div>
+          </Row>
         }
         {isDetailsView &&
-          <div>
+          <Row middle='xs'>
             <RoundedButton
               text={'< Back'}
               margin='medium'
@@ -91,7 +91,7 @@ export default class FooterToolbar extends Component {
               padding='even' 
               width='120px'
             />            
-          </div>
+          </Row>
         }        
       </Container>
     )
@@ -100,17 +100,9 @@ export default class FooterToolbar extends Component {
   render() {
     return (
       <Container>
-        <Row>
-          <Left>
-            <Row>
-              {this.renderIcons()}
-            </Row>
-          </Left>
-          <Right>
-            <Row>
-              {this.renderButtons()}
-            </Row>
-          </Right>
+        <Row between='xs'>
+          {this.renderIcons()}
+          {this.renderButtons()}
         </Row>
       </Container>
     )

@@ -29,6 +29,7 @@ const CenteredText = styled.p`
 `
 
 const Title = styled(CenteredText)`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weigth: 400;
   font-size: 50px;
   letter-spacing: 1.5px;

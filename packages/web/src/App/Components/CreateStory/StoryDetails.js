@@ -6,12 +6,9 @@ import {Row} from '../FlexboxGrid'
 import Icon from '../Icon'
 import HorizontalDivider from '../HorizontalDivider'
 import GoogleLocator from './GoogleLocator'
-
 import ReactDayPicker from './ReactDayPicker'
-
 import MultiTabSelect from './MultiTabSelect'
 import {Title} from './Shared'
-
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unchecked';
 import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checked';

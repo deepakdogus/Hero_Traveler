@@ -3,7 +3,6 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import PropTypes from 'prop-types';
 
-
 import {feedExample} from '../../Containers/Feed_TEST_DATA'
 
 let tagNames = [];

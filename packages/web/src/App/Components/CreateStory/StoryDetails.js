@@ -10,12 +10,11 @@ import GoogleLocator from './GoogleLocator'
 import ReactDayPicker from './ReactDayPicker'
 
 import MultiTabSelect from './MultiTabSelect'
+import {Title} from './Shared'
 
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unchecked';
 import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checked';
-import ActionFavorite from 'material-ui/svg-icons/action/favorite';
-import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
 
 const Container = styled.div`
 `
@@ -25,12 +24,9 @@ const InputRowContainer = styled(Container)`
   position: relative;
 `
 
-const Title = styled.p`
-  font-weight: 400;
+const StyledTitle = styled(Title)`
   font-size: 28px;
-  color: ${props => props.theme.Colors.background};
   letter-spacing: 1.5px;
-  text-align: center;
   text-transform: uppercase;
 `
 
@@ -109,7 +105,7 @@ export default class PhotoBox extends React.Component {
   render() {
       return (
         <Container>
-          <Title>{this.props.title} DETAILS</Title>
+          <StyledTitle>{this.props.title} DETAILS</StyledTitle>
           <br/>
           <br/>
             <InputRowContainer>

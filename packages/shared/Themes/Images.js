@@ -76,6 +76,7 @@ const images = {
   iconCreateMenuVideo: require('../Images/ht-icons/icon_create-menu-video@2x.png'),
   iconCreateMenuStory: require('../Images/ht-icons/icon_create-menu-story@2x.png'),
   iconProfileBadge: require('../Images/ht-icons/icon_profile-badge@2x.png'),
+  iconAddCoverCamera: require('../Images/ht-icons/icon_add-cover-camera@2x.png'),
 }
 
 export default images

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 import {feedExample} from '../../Containers/Feed_TEST_DATA'
 
-const tagNames = [];
+let tagNames = [];
 
 //test tags
 const categoriesExample = feedExample[Object.keys(feedExample)[0]].categories

@@ -12,6 +12,10 @@ import ReactDayPicker from './ReactDayPicker'
 import MultiTabSelect from './MultiTabSelect'
 
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unchecked';
+import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checked';
+import ActionFavorite from 'material-ui/svg-icons/action/favorite';
+import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
 
 const Container = styled.div`
 `
@@ -73,11 +77,11 @@ const styles = {
   radioButtonLabel: {
     fontWeight: 600,
     fontSize: 18,
-    color: `${props => props.theme.Colors.background}`,
+    color: '#1a1c21',
     letterSpacing: .7,
   },
   radioIcon: {
-    fill: `${props => props.theme.Colors.background}`,
+    fill: '#ed1e2e',
   },
   radioButtonGroup: {
     marginLeft: 40,
@@ -98,8 +102,8 @@ export default class PhotoBox extends React.Component {
     };
   }
    
-  togglePlaceholder = (chipDataLength) => {
-      this.setState({hidePlaceholder: chipDataLength})
+  togglePlaceholder = (areChips) => {
+      this.setState({hidePlaceholder: areChips})
   }
 
   render() {
@@ -109,43 +113,48 @@ export default class PhotoBox extends React.Component {
           <br/>
           <br/>
             <InputRowContainer>
-                <LocationIcon name='location'/><GoogleLocator/>              
+              <LocationIcon name='location'/>
+              <GoogleLocator/>              
             </InputRowContainer>
             <HorizontalDivider color='lighter-grey'/>            
             <InputRowContainer>
-                <DateIcon name='date'/><ReactDayPicker/>              
+              <DateIcon name='date'/>
+              <ReactDayPicker/>              
             </InputRowContainer>
             <HorizontalDivider color='lighter-grey'/>
             <InputRowContainer>
-                <TagIcon name='tag'/>
-                <StyledInput type='text' placeholder={this.state.hidePlaceholder ? '' : 'Add tags'}/>
-                <MultiTabSelect togglePlaceholder={this.togglePlaceholder}/>
+              <TagIcon name='tag'/>
+              <StyledInput type='text' placeholder={!this.state.hidePlaceholder && 'Add tags'}/>
+              <MultiTabSelect togglePlaceholder={this.togglePlaceholder}/>
             </InputRowContainer>
             <HorizontalDivider color='lighter-grey'/>                                     
             <InputRowContainer>
               <ActivitySelectRow>
-                  <label>Activity: </label>
+                <label>Activity: </label>
                   <RadioButtonGroup name="activity" defaultSelected="eat" style={styles.radioButtonGroup}>
                     <RadioButton
                       value="eat"
                       label="EAT"
                       style={styles.radioButton}
                       labelStyle={styles.radioButtonLabel}
-                      iconStyle={styles.radioIcon}
+                      checkedIcon={<RadioButtonChecked style={{fill: '#ed1e2e'}} />}
+                      uncheckedIcon={<RadioButtonUnchecked/>}
                     />
                     <RadioButton
                       value="stay"
                       label="STAY"
                       style={styles.radioButton}
                       labelStyle={styles.radioButtonLabel}
-                      iconStyle={styles.radioIcon}
+                      checkedIcon={<RadioButtonChecked style={{fill: '#ed1e2e'}} />}
+                      uncheckedIcon={<RadioButtonUnchecked/>}
                     />
                     <RadioButton
                       value="do"
                       label="DO"
                       style={styles.radioButton}
                       labelStyle={styles.radioButtonLabel}
-                      iconStyle={styles.radioIcon}
+                      checkedIcon={<RadioButtonChecked style={{fill: '#ed1e2e'}} />}
+                      uncheckedIcon={<RadioButtonUnchecked/>}
                     />
                   </RadioButtonGroup>                
               </ActivitySelectRow>                           

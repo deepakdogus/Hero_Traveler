@@ -18,7 +18,7 @@ const StyledLocation = styled.p`
 
 const StyledAddress = styled.p`
   font-weight: 400;
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: .7px;
   color: ${props => props.theme.Colors.grey};
   margin: 0px;
@@ -38,7 +38,7 @@ const styles = {
     fontWeight: '400',
     fontSize: '18px',
     letterSpacing: '.7px',
-    color: `${props => props.theme.Colors.navBarText}`
+    color: '#1a1c21',
   },
   autocompleteContainer: {
     position: 'absolute',
@@ -70,7 +70,6 @@ class GoogleLocator extends React.Component {
   constructor(props) {
     super(props)
     this.state = { address: '' }
-    this.onChange = (address) => this.setState({ address })
   }
  
   handleFormSubmit = (event) => {
@@ -81,7 +80,9 @@ class GoogleLocator extends React.Component {
       .then(latLng => console.log('Success', latLng))
       .catch(error => console.error('Error', error))
   }
- 
+  
+  onChange = (address) => this.setState({ address })
+
   render() {
     const inputProps = {
       value: this.state.address,

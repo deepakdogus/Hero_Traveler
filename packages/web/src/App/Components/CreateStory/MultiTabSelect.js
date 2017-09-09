@@ -48,10 +48,11 @@ export default class MultiTabSelect extends React.Component {
     const chipToDelete = this.chipData.map((chip) => chip.key).indexOf(key);
     this.chipData.splice(chipToDelete, 1);
     this.setState({chipData: this.chipData});
-    this.props.togglePlaceholder(this.state.chipData.length)
+    this.props.togglePlaceholder(!!this.state.chipData.length)
   };
 
   handleTagAdd = (event, index, value) => {
+    event.preventDefault()
     this.chipData = this.state.chipData;
     const currentChipKeys = this.chipData.map((chip) => chip.key);
 

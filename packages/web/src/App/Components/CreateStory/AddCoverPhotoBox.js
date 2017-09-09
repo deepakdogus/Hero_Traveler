@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import Icon from '../Icon'
-import {Title, SubTitle, CenteredText, CenteredInput} from './Shared'
+import {SubTitle, CenteredInput} from './Shared'
 
 const Container = styled.div`
   max-width: 900px;
@@ -83,10 +83,11 @@ export default class AddCoverPhotoBox extends React.Component {
   }
 
   render() {
+    const { action } = this.props
     return (
       <Container>
-        <IconContainer onClick={this.props.action}><StyledIcon name='components'/></IconContainer>
-          <IconSubTitle onClick={this.props.action}>+ ADD A COVER PHOTO</IconSubTitle>
+        <IconContainer onClick={action}><StyledIcon name='components'/></IconContainer>
+          <IconSubTitle onClick={action}>+ ADD A COVER PHOTO</IconSubTitle>
           <TitleInputsContainer>
             <StyledTitleInput placeholder='ADD TITLE'/>
             <StyledSubTitleInput placeholder='Add a subtitle'/>            

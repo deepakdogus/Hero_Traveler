@@ -52,15 +52,15 @@ export default class MultiTabSelect extends React.Component {
   };
 
   handleTagAdd = (event, index, value) => {
-    event.preventDefault()
     this.chipData = this.state.chipData;
     const currentChipKeys = this.chipData.map((chip) => chip.key);
 
     //check if tag already selected
     if(currentChipKeys.indexOf(value) < 0){
       this.chipData.push({ key: value, label: value })
+      
       this.setState({chipData: this.chipData});
-      this.props.togglePlaceholder(this.state.chipData.length)
+      this.props.togglePlaceholder(!!this.state.chipData.length)
     }
   }
 

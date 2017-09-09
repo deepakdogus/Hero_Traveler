@@ -71,7 +71,8 @@ static propTypes = {
           autoWidth={false}
           iconButton={null}
           maxHeight={400}
-          anchorOrigin= {{vertical: 'bottom', horizontal: 'left',}}          
+          anchorOrigin= {{vertical: 'bottom', horizontal: 'left',}} 
+          targetOrigin= {{vertical: 'bottom', horizontal: 'left',}}          
           >
           {this.menuItems(tagNames)}
         </DropDownMenu>

@@ -6,12 +6,9 @@ const basicTextStyle = `
   font-size: 16px;
   letter-spacing: .7px;
 `
-export const CenteredText = styled.p`
-  text-align: center;
-`
 
-export const Container = styled.div`
-  padding: 0 10px;
+const CenteredText = styled.p`
+  text-align: center;
 `
 
 export const Title = styled.p`
@@ -19,13 +16,6 @@ export const Title = styled.p`
   font-size: 25px;
   color: ${props => props.theme.Colors.background};
   letter-spacing: 1.2px;
-  text-align: center;
-`
-
-export const Text = styled.p`
-  ${basicTextStyle};
-  font-family: ${props => props.theme.Fonts.type.base};
-  color: ${props => props.theme.Colors.grey};
   text-align: center;
 `
 
@@ -52,6 +42,17 @@ export const CloseXContainer = styled.div`
   right: 0;
   margin: 10px;
   z-index: 100;
+`
+
+export const Input = styled.input`
+  font-family: ${props => props.theme.Fonts.type.base};
+  font-weight: 400;
+  color: ${props => props.theme.Colors.background};
+  letter-spacing: .7px;
+  width: 80%;
+  text-align: center;
+  border: none;
+  outline: none;
 `
 
 export const CenteredInput = styled.input`

@@ -113,6 +113,10 @@
   outline: none;
 }
 
+.DayPicker-Day:hover {
+  background-color: #f6f6f6;
+}
+
 .DayPicker-WeekNumber {
   display: table-cell;
   padding: .5rem;
@@ -177,38 +181,3 @@
   color: #FFF;
   background-color: #4A90E2;
 }
-
-/* DayPickerInput */
-
-.DayPickerInput {
-  display: inline-block;
-
-}
-
-.DayPickerInput input {
-  outline: none;
-  border: none;
-  font-weight: 400;
-  font-size: 18px;
-  letter-spacing: .7px;
-  color: #1a1c21;
-}
-
-
-.DayPickerInput-OverlayWrapper {
-  position: absolute;
-  top: 60px;
-  z-index: 100;
-}
-
-.DayPickerInput-Overlay {
-  left: 0;
-  height: 340px;
-  width: 320px;
-  position: absolute;
-  background: white;
-  -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-          box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-}
-
-

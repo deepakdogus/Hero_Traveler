@@ -11,9 +11,9 @@ const Container = styled.div``
 
 const DayPickerContainer = styled.div`
   position: absolute;
-  left: 0;
-  top: 340;
-  z-index: 1000;
+  z-index: 100;
+  left: 50px;
+  top: 56px;
   height: 340px;
   width: 320px;
   padding: auto;
@@ -41,11 +41,8 @@ function Navbar({
   onPreviousClick,
   onNextClick,
   className,
-  localeUtils,
 }) {
-  const months = localeUtils.getMonths();
-  const prev = months[previousMonth.getMonth()];
-  const next = months[nextMonth.getMonth()];
+
   const styleLeft = {
     float: 'left',
   };

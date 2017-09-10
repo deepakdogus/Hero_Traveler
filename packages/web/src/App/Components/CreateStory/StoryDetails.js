@@ -40,9 +40,10 @@ const StyledInput = styled.input`
   font-weight: 400;
   font-size: 18px;
   letter-spacing: .7px;
-  color: ${props => props.theme.Colors.navBarText};
+  color: ${props => props.theme.Colors.background};
   border-width: 0;
   margin-left: 25px;
+  outline: none;
 `
 
 const LocationIcon = styled(Icon)`
@@ -64,7 +65,7 @@ const TagIcon = styled(Icon)`
 `
 
 const StyledReactDayPicker = styled(ReactDayPicker)`
-  z-index: 1000;
+  position: absolute;
 `
 
 const styles = {
@@ -97,15 +98,19 @@ export default class PhotoBox extends React.Component {
     super(props);
     this.state = {
       hidePlaceholder: false,
-      day: null,
+      showDayPicker: false,
+      day: '',
     };
   }
 
   handleDayClick = (day) => {
-    console.log("day: ", Moment(day).format('MM-DD-YYYY'))
-
-    this.setState({day: Moment(day).format('MM-DD-YYYY')})
+    this.setState({
+                    day: Moment(day).format('MM-DD-YYYY'),
+                    showDayPicker: !this.state.showDayPicker,
+                  })
   }
+
+  toggleDayPicker = () => this.setState({ showDayPicker: !this.state.showDayPicker })
 
   togglePlaceholder = (areChips) => {
       this.setState({hidePlaceholder: areChips})
@@ -128,8 +133,13 @@ export default class PhotoBox extends React.Component {
                 type='text'
                 placeholder={'MM-DD-YYYY'}
                 value={this.state.day}
+                onClick={this.toggleDayPicker}
               />
-              <StyledReactDayPicker handleDayClick={this.handleDayClick}/>
+              {this.state.showDayPicker &&
+                <StyledReactDayPicker 
+                  handleDayClick={this.handleDayClick}
+                />
+              }
             </InputRowContainer>
             <HorizontalDivider color='lighter-grey'/>
             <InputRowContainer>

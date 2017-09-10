@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import Moment from 'moment'
 
 import {Row} from '../FlexboxGrid'
 import Icon from '../Icon'
@@ -62,6 +63,10 @@ const TagIcon = styled(Icon)`
   margin-left: 2px;
 `
 
+const StyledReactDayPicker = styled(ReactDayPicker)`
+  z-index: 1000;
+`
+
 const styles = {
   radioButton: {
     display: 'inline-block',
@@ -91,10 +96,17 @@ export default class PhotoBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      hidePlaceholder: false
+      hidePlaceholder: false,
+      day: null,
     };
   }
-   
+
+  handleDayClick = (day) => {
+    console.log("day: ", Moment(day).format('MM-DD-YYYY'))
+
+    this.setState({day: Moment(day).format('MM-DD-YYYY')})
+  }
+
   togglePlaceholder = (areChips) => {
       this.setState({hidePlaceholder: areChips})
   }
@@ -112,7 +124,12 @@ export default class PhotoBox extends React.Component {
             <HorizontalDivider color='lighter-grey'/>            
             <InputRowContainer>
               <DateIcon name='date'/>
-              <ReactDayPicker/>              
+              <StyledInput 
+                type='text'
+                placeholder={'MM-DD-YYYY'}
+                value={this.state.day}
+              />
+              <StyledReactDayPicker handleDayClick={this.handleDayClick}/>
             </InputRowContainer>
             <HorizontalDivider color='lighter-grey'/>
             <InputRowContainer>

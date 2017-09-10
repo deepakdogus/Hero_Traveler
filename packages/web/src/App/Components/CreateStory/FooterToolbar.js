@@ -11,16 +11,6 @@ const Container = styled.div`
   margin: 20px;
 `
 
-const Left = styled(Row)`
-  position: absolute;
-  left: 0;
-`
-
-const Right = styled(Row)`
-  position: absolute;
-  right: 0;
-`
-
 const StyledIcon = styled(Icon)`
   align-self: center;
 `

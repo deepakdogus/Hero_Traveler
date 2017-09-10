@@ -1,22 +1,39 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
 import DayPicker from 'react-day-picker';
 import './Styles/ReactDayPickerStyles.css';
 
 import Icon from '../Icon'
 
-const InputContainer = styled.div`
-  display: inline-block;
-  margin-left: 22px;
-  z-index: 100;
+const Container = styled.div``
+
+const DayPickerContainer = styled.div`
+  position: absolute;
+  left: 0;
+  top: 340;
+  z-index: 1000;
+  height: 340px;
+  width: 320px;
+  padding: auto;
+  background-color: white;
+  outline: none;
+  -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 `
 
-const StyledIcon = styled(Icon)`
-  height: 15px;
+const StyledIconLeft = styled(Icon)`
+  height: 18px;
   width: 10px;
+  margin-left: 36px;
 `
 
+const StyledIconRight = styled(Icon)`
+  height: 18px;
+  width: 10px;
+  margin-right: 26px;
+`
 
 function Navbar({
   nextMonth,
@@ -37,11 +54,11 @@ function Navbar({
   };
   return (
     <div className={className}>
-      <StyledIcon 
+      <StyledIconLeft 
         name='arrowLeftRed'
         style={styleLeft} 
         onClick={() => onPreviousClick()}/>
-      <StyledIcon 
+      <StyledIconRight
         name='arrowRightRed'
         style={styleRight} 
         onClick={() => onNextClick()}/>
@@ -50,13 +67,21 @@ function Navbar({
 }
 
 export default class ReactDayPicker extends React.Component {
+  static propTypes = {
+    handleDayClick: PropTypes.func,
+  }  
+
+
   render() {
     return (
-      <InputContainer>
-        <DayPicker 
-          navbarElement={<Navbar />} 
-        />
-      </InputContainer>
+      <Container>
+        <DayPickerContainer>
+          <DayPicker 
+            navbarElement={<Navbar />} 
+            onDayClick={this.props.handleDayClick}
+          />
+        </DayPickerContainer>        
+      </Container>
     )
   }
 }

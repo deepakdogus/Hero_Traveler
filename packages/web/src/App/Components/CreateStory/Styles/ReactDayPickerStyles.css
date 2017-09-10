@@ -2,6 +2,7 @@
 
 .DayPicker {
   display: inline-block;
+  outline: none;
 }
 
 .DayPicker-wrapper {
@@ -24,6 +25,7 @@
           flex-direction: row;
   padding: 1rem 1.25rem;
   margin-top: 1.5rem;
+  outline: none;
 }
 
 .DayPicker-Month {
@@ -43,6 +45,7 @@
   right: 0;
   padding: 0rem .5rem 1rem 0rem;
   top: 1rem;
+  outline: none;
 }
 
 .DayPicker-NavButton {
@@ -53,6 +56,7 @@
   background-position: center;
   background-size: contain;
   cursor: pointer;
+  outline: none;
 }
 
 .DayPicker-NavButton--prev {
@@ -106,6 +110,7 @@
   text-align: center;
   cursor: pointer;
   vertical-align: middle;
+  outline: none;
 }
 
 .DayPicker-WeekNumber {

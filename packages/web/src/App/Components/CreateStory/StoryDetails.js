@@ -40,6 +40,7 @@ const StyledInput = styled.input`
   font-weight: 400;
   font-size: 18px;
   letter-spacing: .7px;
+  width: 80%;
   color: ${props => props.theme.Colors.background};
   border-width: 0;
   margin-left: 25px;

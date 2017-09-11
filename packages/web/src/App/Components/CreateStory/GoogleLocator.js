@@ -70,7 +70,7 @@ const styles = {
     cursor: 'pointer',
   },
   autocompleteItemActive: {
-    backgroundColor: '#f6f6f6'
+    backgroundColor: '#ffffff'
   },
 }
 

@@ -6,7 +6,7 @@ import HorizontalDivider from '../HorizontalDivider'
 
 const StyledForm = styled.form`
   display: inline-block;
-  margin-left: 14px;
+  margin-left: 20px;
   width: 80%;
 `
 
@@ -83,7 +83,7 @@ class GoogleLocator extends React.Component {
  
   handleFormSubmit = (event) => {
     event.preventDefault()
- 
+
     geocodeByAddress(this.state.address)
       .then(results => getLatLng(results[0]))
       .then(latLng => console.log('Success', latLng))

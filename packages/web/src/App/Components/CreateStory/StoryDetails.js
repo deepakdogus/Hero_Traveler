@@ -2,17 +2,26 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import Moment from 'moment'
+import _ from 'lodash'
 
 import {Row} from '../FlexboxGrid'
 import Icon from '../Icon'
 import HorizontalDivider from '../HorizontalDivider'
 import GoogleLocator from './GoogleLocator'
 import ReactDayPicker from './ReactDayPicker'
-import MultiTabSelect from './MultiTabSelect'
+import MultiTagPicker from './MultiTagPicker'
+import TagTileGrid from './TagTileGrid'
 import {Title} from './Shared'
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unchecked';
 import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checked';
+import {feedExample} from '../../Containers/Feed_TEST_DATA'
+
+//test tags
+let testTagNames = [];
+const categoriesExample = feedExample[Object.keys(feedExample)[0]].categories
+for (var i=0; i<categoriesExample.length; i++)
+    testTagNames.push(categoriesExample[i].title)
 
 const Container = styled.div`
 `
@@ -88,7 +97,9 @@ const styles = {
   },
 }
 
-export default class PhotoBox extends React.Component {
+
+
+export default class StoryDetails extends React.Component {
   static propTypes = {
     title: PropTypes.string,
     closeImage: PropTypes.func,
@@ -98,9 +109,11 @@ export default class PhotoBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      hidePlaceholder: false,
+      showTagPicker: false,
       showDayPicker: false,
       day: '',
+      tileTags: [],
+      listTags: testTagNames,
     };
   }
 
@@ -111,10 +124,23 @@ export default class PhotoBox extends React.Component {
                   })
   }
 
+  handleTagClick = (event) => {
+    let clickedTag = event.target.innerHTML;
+    this.setState({
+                    listTags: _.pull(this.state.listTags, clickedTag),
+                    tileTags: this.state.tileTags.concat([clickedTag])
+                  })
+  }
+
+  handleTileClick = (event) => {
+    console.log("event.target: ", event.target)
+  }
+
   toggleDayPicker = () => this.setState({ showDayPicker: !this.state.showDayPicker })
 
-  togglePlaceholder = (areChips) => {
-      this.setState({hidePlaceholder: areChips})
+  toggleTagPicker = () => {
+    console.log("testTagNames: ", testTagNames)
+    this.setState({ showTagPicker: !this.state.showTagPicker })
   }
 
   render() {
@@ -127,7 +153,7 @@ export default class PhotoBox extends React.Component {
               <LocationIcon name='location'/>
               <GoogleLocator/>              
             </InputRowContainer>
-            <HorizontalDivider color='lighter-grey'/>            
+            <HorizontalDivider color='lighter-grey' opaque/>            
             <InputRowContainer>
               <DateIcon name='date'/>
               <StyledInput 
@@ -142,13 +168,27 @@ export default class PhotoBox extends React.Component {
                 />
               }
             </InputRowContainer>
-            <HorizontalDivider color='lighter-grey'/>
+            <HorizontalDivider color='lighter-grey' opaque/>
             <InputRowContainer>
               <TagIcon name='tag'/>
-              <StyledInput type='text' placeholder={!this.state.hidePlaceholder && 'Add tags'}/>
-              <MultiTabSelect togglePlaceholder={this.togglePlaceholder}/>
+              <StyledInput 
+                type='text'
+                placeholder={!this.state.tileTags && 'Add tags'}
+                value={''}
+                onClick={this.toggleTagPicker}
+              />
+              <TagTileGrid 
+                tileTags={this.state.tileTags}
+                handleTileClick={this.handleTileClick}
+              />
+              {this.state.showTagPicker &&
+                <MultiTagPicker
+                  handleTagClick={this.handleTagClick}
+                  listTags={this.state.listTags}
+                />
+              }
             </InputRowContainer>
-            <HorizontalDivider color='lighter-grey'/>                                     
+            <HorizontalDivider color='lighter-grey' opaque/>                                     
             <InputRowContainer>
               <ActivitySelectRow>
                 <label>Activity: </label>
@@ -180,7 +220,7 @@ export default class PhotoBox extends React.Component {
                   </RadioButtonGroup>                
               </ActivitySelectRow>                           
             </InputRowContainer>
-            <HorizontalDivider color='lighter-grey'/>             
+            <HorizontalDivider color='lighter-grey' opaque/>             
         </Container>
       )
   }

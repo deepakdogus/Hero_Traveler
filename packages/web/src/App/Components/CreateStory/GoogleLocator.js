@@ -2,6 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 
+import HorizontalDivider from '../HorizontalDivider'
+
 const StyledForm = styled.form`
   display: inline-block;
   margin-left: 14px;
@@ -9,6 +11,7 @@ const StyledForm = styled.form`
 `
 
 const StyledLocation = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 600;
   font-size: 14px;
   letter-spacing: .7px;
@@ -17,11 +20,18 @@ const StyledLocation = styled.p`
 `
 
 const StyledAddress = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
-  font-size: 18px;
+  font-size: 14px;
   letter-spacing: .7px;
   color: ${props => props.theme.Colors.grey};
   margin: 0px;
+  padding-bottom: 10px;
+`
+
+const StyledHorizontalDivider = styled(HorizontalDivider)`
+  margin: 0;
+  border-width: 1px;
 `
 
 const styles = {
@@ -55,13 +65,12 @@ const styles = {
   },
   autocompleteItem: {
     backgroundColor: '#ffffff',
-    padding: '10px',
+    padding: '10px 10px 0px 10px',
     color: '#555555',
     cursor: 'pointer',
-    borderBottom: '1px solid #eeeeee',
   },
   autocompleteItemActive: {
-    backgroundColor: '#fafafa'
+    backgroundColor: '#f6f6f6'
   },
 }
 
@@ -94,6 +103,7 @@ class GoogleLocator extends React.Component {
       <div>
         <StyledLocation>{ formattedSuggestion.mainText }</StyledLocation>
         <StyledAddress>{ formattedSuggestion.secondaryText }</StyledAddress>
+        <StyledHorizontalDivider color='lighter-grey' opaque/>   
       </div>
       )
 

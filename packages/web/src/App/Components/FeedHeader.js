@@ -30,8 +30,9 @@ const HeaderTopGradient = styled.div`
 `
 
 const Title = styled.p`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 400;
-  font-size: ${props => props.mediaType === 'video' ? '30px' : '65px'};
+  font-size: 59px;
   color: ${props => props.theme.Colors.snow};
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -39,26 +40,38 @@ const Title = styled.p`
 `
 
 const Subtitle = styled.p`
+  font-family: ${props => props.theme.Fonts.type.crimsonText};
   font-weight: 400;
   font-size: 23px;
   color: ${props => props.theme.Colors.snow};
   letter-spacing: .5px;
   font-style: italic;
-  margin: 0 0 10px 0;
+  margin: 6px 0 10px 0;
 `
 
 const BottomContainer = styled(Row)`
   position: absolute;
-  bottom: 0;
+  bottom: 12px;
   width: 100%;
   z-index: 1;
 `
 
-const AuthorTime = styled.div`
+const Author = styled.span`
+  color: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 18px;
   color: ${props => props.theme.Colors.snow};
   letter-spacing: .7px;
+  display: inline-block;
+`
+
+const Time = styled.span`
+  color: ${props => props.theme.Fonts.type.base};
+  font-weight: 400;
+  font-size: 18px;
+  color: ${props => props.theme.Colors.snow};
+  letter-spacing: .7px;
+  display: inline-block;
 `
 
 const Centered = styled(VerticalCenter)`
@@ -70,9 +83,14 @@ const Centered = styled(VerticalCenter)`
   z-index: 100;
 `
 
+const StyledVerticalCenter = styled(VerticalCenter)`
+  margin-top: -60px;
+`
+
 const StyledHorizontalDivider = styled(HorizontalDivider)`
-  width: 65px;
+  width: 72px;
   border-width: 1px 0 0 0;
+  border-color: ${props => props.theme.Colors.whiteAlphaPt4};
 `
 
 const StyledRoundedButton = styled(RoundedButton)`
@@ -91,6 +109,14 @@ const StyledVideo = styled(Video)`
   height: 570px;
   position: relative;
   z-index: -1;
+`
+
+const Divider = styled.div`
+  display: inline-block;
+  width: 1px;
+  background-color: ${props => props.theme.Colors.snow};
+  margin-left: 10px;
+  margin-right: 10px;
 `
 
 export default class FeedHeader extends React.Component {
@@ -119,7 +145,7 @@ export default class FeedHeader extends React.Component {
           noControls={true}
           />
           <Centered>
-            <VerticalCenter>
+            <StyledVerticalCenter>
               <Title mediaType='video'>{story.title}</Title>
               <StyledHorizontalDivider />
               <Subtitle>{story.description}</Subtitle>
@@ -130,7 +156,7 @@ export default class FeedHeader extends React.Component {
                 width='168px'
                 height='50px'
               />              
-            </VerticalCenter>
+            </StyledVerticalCenter>
           </Centered>          
         </div>
           )
@@ -144,10 +170,10 @@ export default class FeedHeader extends React.Component {
             width='100%'
           />
           <Centered>
-            <VerticalCenter>
+            <StyledVerticalCenter>
               <Title mediaType='image'>{story.title}</Title>
               <StyledHorizontalDivider />
-              <Subtitle>{story.description}</Subtitle>
+              <Subtitle>{story.description || 'Best Trip Ever'}</Subtitle>
               <StyledRoundedButton
                 type='myFeedHeaderButton'
                 padding='even'
@@ -155,7 +181,7 @@ export default class FeedHeader extends React.Component {
                 width='168px'
                 height='50px'
               />              
-            </VerticalCenter>
+            </StyledVerticalCenter>
           </Centered>          
         </div>  
         )
@@ -184,7 +210,11 @@ export default class FeedHeader extends React.Component {
             />
           </ProfileLink>
           <VerticalCenter>
-            <AuthorTime>&nbsp;By {author.username} | {moment(story.createdAt).format('MMMM Do YYYY')}</AuthorTime>
+            <Row middle='xs'>
+              <Author>&nbsp;&nbsp;By {author.username}</Author>
+              <Divider>&nbsp;</Divider>
+              <Time>{moment(story.createdAt).format('MMMM Do YYYY')}</Time>              
+            </Row>
           </VerticalCenter>
         </BottomContainer>
       </StyledHeaderImageWrapper>

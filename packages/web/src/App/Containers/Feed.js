@@ -10,13 +10,15 @@ import Icon from '../Components/Icon'
 
 const CenteredText = styled.p`
   text-align: center;
-  color: ${props => props.theme.Colors.background}
 `
 
 const FeedText = styled(CenteredText)`
-  font-weigth: 400;
+  color: ${props => props.theme.Colors.background}
+  font-family: ${props => props.theme.Fonts.type.montserrat};
+  font-weight: 400;
   font-size: 23px;
   letter-spacing: 1.5px;
+  padding: 50px 0 0 0;
 `
 
 const Wrapper = styled.div``

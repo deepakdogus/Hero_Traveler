@@ -11,7 +11,11 @@ const Wrapper = styled.div`
 `
 
 const Tile = styled(Row)`
-  
+  background-color: ${props => props.theme.Colors.lightGreyAreas}; 
+  border-radius: 4px;
+  max-width: 116px;
+  height: 34px;
+  z-index: 90;
 `
 
 const TagText = styled.p`
@@ -19,14 +23,19 @@ const TagText = styled.p`
   font-weight: 600;
   font-size: 15px;
   letter-spacing: .7px;
-  background-color: ${props => props.theme.Colors.lightGreyAreas}; 
-  border-radius: 4px;
+  margin: auto 0px;
 `
 
 const StyledIcon = styled(Icon)`
   align-self: center;
-  height: 5px;
-  width: 5px;
+  height: 12px;
+  width: 12px;
+`
+const StyledGrid = styled(Grid)`
+  margin-left: 46px;
+  width: 54%;
+  transform: translateY(-33.5px);
+  margin-bottom: -40px;
 `
 
 export default class TagTileGrid extends React.Component {
@@ -40,13 +49,13 @@ export default class TagTileGrid extends React.Component {
 
     const renderedTiles = tileTags.map((tag) => {
       return (
-        <Col key={tag} xs={6} sm={4} md={3} lg={2} >
+        <Col key={tag} xs={12} sm={6} md={4} lg={3} >
           <Wrapper>
-            <Tile>
+            <Tile around='xs'>
               <TagText>{tag}</TagText>
               <StyledIcon 
                 data-tagName={tag}
-                name='close'
+                name='closeDark'
                 onClick={handleTileClick}
               />              
             </Tile>
@@ -56,11 +65,11 @@ export default class TagTileGrid extends React.Component {
     })
 
     return (
-      <Grid fluid>
+      <StyledGrid fluid>
         <Row>
           {renderedTiles}
         </Row>
-      </Grid>
+      </StyledGrid>
     )
   }
 }

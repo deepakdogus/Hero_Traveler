@@ -32,6 +32,10 @@ const ContentWrapper = styled.div`
   margin: 0 17.057101%;
 `
 
+const StyledContentWrapper = styled(ContentWrapper)`
+  margin-bottom: 400px;
+`
+
 const ItemContainer = styled.div`
   margin: 40px 0;
 `
@@ -75,11 +79,11 @@ export default class CreateStory extends Component {
           <br/>
           <br/>
           <br/>
-        <ContentWrapper>
+        <StyledContentWrapper>
           <StoryDetails
             title={testStory.title}
           />          
-        </ContentWrapper>
+        </StyledContentWrapper>
           <FooterToolbar isDetailsView={true}/>        
       </Container>
     )

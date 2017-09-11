@@ -97,8 +97,6 @@ const styles = {
   },
 }
 
-
-
 export default class StoryDetails extends React.Component {
   static propTypes = {
     title: PropTypes.string,
@@ -113,7 +111,7 @@ export default class StoryDetails extends React.Component {
       showDayPicker: false,
       day: '',
       tileTags: [],
-      listTags: testTagNames,
+      listTags: testTagNames.sort(),
     };
   }
 
@@ -128,12 +126,19 @@ export default class StoryDetails extends React.Component {
     let clickedTag = event.target.innerHTML;
     this.setState({
                     listTags: _.pull(this.state.listTags, clickedTag),
-                    tileTags: this.state.tileTags.concat([clickedTag])
+                    tileTags: this.state.tileTags.concat([clickedTag]),
+                    showTagPicker: !this.state.showTagPicker,
                   })
   }
 
   handleTileClick = (event) => {
-    console.log("event.target: ", event.target)
+    event.stopPropagation();
+    let clickedTile = event.target.attributes.getNamedItem('data-tagName').value;
+    this.setState({
+                    tileTags: _.pull(this.state.tileTags, clickedTile),
+                    listTags: this.state.listTags.concat([clickedTile]).sort(),
+                    showTagPicker: false,
+                  })
   }
 
   toggleDayPicker = () => this.setState({ showDayPicker: !this.state.showDayPicker })
@@ -154,13 +159,12 @@ export default class StoryDetails extends React.Component {
               <GoogleLocator/>              
             </InputRowContainer>
             <HorizontalDivider color='lighter-grey' opaque/>            
-            <InputRowContainer>
+            <InputRowContainer onClick={this.toggleDayPicker}>
               <DateIcon name='date'/>
               <StyledInput 
                 type='text'
                 placeholder={'MM-DD-YYYY'}
                 value={this.state.day}
-                onClick={this.toggleDayPicker}
               />
               {this.state.showDayPicker &&
                 <StyledReactDayPicker 
@@ -169,18 +173,19 @@ export default class StoryDetails extends React.Component {
               }
             </InputRowContainer>
             <HorizontalDivider color='lighter-grey' opaque/>
-            <InputRowContainer>
+            <InputRowContainer onClick={this.toggleTagPicker}>
               <TagIcon name='tag'/>
               <StyledInput 
                 type='text'
-                placeholder={!this.state.tileTags && 'Add tags'}
+                placeholder={!this.state.tileTags.length ? 'Add tags' : ''}
                 value={''}
-                onClick={this.toggleTagPicker}
               />
-              <TagTileGrid 
-                tileTags={this.state.tileTags}
-                handleTileClick={this.handleTileClick}
-              />
+              {!!this.state.tileTags.length &&
+                <TagTileGrid 
+                  tileTags={this.state.tileTags}
+                  handleTileClick={this.handleTileClick}
+                />
+              }
               {this.state.showTagPicker &&
                 <MultiTagPicker
                   handleTagClick={this.handleTagClick}

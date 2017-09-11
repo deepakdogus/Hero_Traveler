@@ -20,15 +20,24 @@ const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   }
 `
 
+const HeaderTopGradient = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 180px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.4), rgba(0,0,0,0));
+`
+
 const Tagline = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 300;
   font-size: 40px;
   color: ${props => props.theme.Colors.snow};
   letter-spacing: .9px;
-  margin: 0;
+  margin: 0 0 24px 0;
 `
 
 const ItalicText = styled.p`
+  font-family: ${props => props.theme.Fonts.type.crimsonText};
   font-weight: 400;
   font-size: 17px;
   color: ${props => props.theme.Colors.snow};
@@ -46,9 +55,6 @@ const Centered = styled(VerticalCenter)`
   z-index: 2;
 `
 
-const Spacer = styled.div`
-  height: 30px;
-`
 const BadgeSpacer = styled.div`
   width: 20px;
   display: inline-block;
@@ -59,6 +65,7 @@ const GooglePlayIcon = styled(Icon)`
   width: 232px;
   padding: 0px;
   margin: -14px;
+  overflow: hidden;
   display: inline-block;
 `
 
@@ -88,10 +95,10 @@ export default class ExploreHeader extends React.Component {
         size='large'
         type='profile'
       >
-        <Header isLoggedIn></Header>
+        <HeaderTopGradient/>
+        <Header isLoggedIn/>
         <Centered>
           <Tagline>For Travelers By Travelers</Tagline>
-          <Spacer/>
           <ItalicText>Available on</ItalicText>
             <BadgeWrapper>
               <GooglePlayIcon

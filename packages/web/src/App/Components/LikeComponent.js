@@ -3,13 +3,16 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 import Icon from './Icon'
-
-const Inline = styled.div`
-  display: inline-block;
-`
+import {Row} from './FlexboxGrid'
+import VerticalCenter from './VerticalCenter'
 
 const Likes = styled.span`
-  margin: 0 5px;
+  color: ${props => props.theme.Colors.snow};
+  font-family: ${props => props.theme.Fonts.type.montserrat};
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  margin: auto 5px;
 `
 
 export default class LikeComponent extends React.Component {
@@ -22,13 +25,13 @@ export default class LikeComponent extends React.Component {
   render() {
     let rootComponent
     const container = (
-      <Inline>
+      <Row middle='xs'>
         <Likes>{this.props.likes}</Likes>
         <Icon
           name={this.props.isLiked ? 'like-active' : 'like'}
           size={'small'}
         />
-      </Inline>
+      </Row>
     )
 
     if(this.props.onPress) {

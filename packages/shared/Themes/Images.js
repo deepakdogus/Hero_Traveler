@@ -75,6 +75,8 @@ const images = {
   iconCreateMenuVideo: require('../Images/ht-icons/icon_create-menu-video@2x.png'),
   iconCreateMenuStory: require('../Images/ht-icons/icon_create-menu-story@2x.png'),
   iconProfileBadge: require('../Images/ht-icons/icon_profile-badge@2x.png'),
+  googlePlayBadge: require('../Images/ht-icons/google-play-badge.png'),
+  appleAppStoreBadge: require('../Images/ht-icons/apple-app-store-badge.svg'),
 }
 
 export default images

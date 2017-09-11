@@ -23,7 +23,15 @@ const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   }
 `
 
+const HeaderTopGradient = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 180px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.4), rgba(0,0,0,0));
+`
+
 const CategoryTitle = styled.p`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 400;
   font-size: 59px;
   color: ${props => props.theme.Colors.snow};
@@ -52,6 +60,7 @@ const ButtonWrapper = styled.div`
 `
 
 const StyledRoundedButton = styled(RoundedButton)`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
   font-size: 14px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -84,6 +93,7 @@ export default class FeedHeader extends React.Component {
         size='large'
         type='profile'
       >
+        <HeaderTopGradient/>
         <Header isLoggedIn></Header>
         <Centered>
           <CategoryTitle>JAPAN</CategoryTitle>

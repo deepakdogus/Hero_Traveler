@@ -1,28 +1,31 @@
 import React from 'react'
 import styled from 'styled-components'
+import {NavLink} from 'react-router-dom';
 
 import Icon from './Icon'
-import {NavLink} from 'react-router-dom';
+import {Row} from './FlexboxGrid'
 
 const Container = styled.div`
   width: 100%;
-  margin-top: 25px;
+  margin: 25px 0;
 `
 
-const SizedDiv = styled.div`
+const SizedRow = styled(Row)`
   position: relative;
   margin: 0 auto 20px;
-  padding-top: 10px;
+  padding-right: 16px;
   border-top: ${props => `2px solid ${props.theme.Colors.background}`};
 `
 
 const StyledLink = styled(NavLink)`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 400;
   font-size: 16px;
   color: ${props => props.theme.Colors.background};
   letter-spacing: 1.2px;
   text-decoration: none;
   margin-right: 25px;
+  margin-bottom: 0;
 `
 
 const Right = styled.div`
@@ -33,29 +36,33 @@ const Right = styled.div`
 
 const Divider = styled.div`
   display: inline-block;
-  width: 2px;
+  width: 1px;
   background-color: ${props => props.theme.Colors.background};
   height: 35px;
-  margin: 0 10px;
+  margin: 0 16px;
 `
 
 const StyledIcon = styled(Icon)`
-  height: 25px;
-  margin-top: 10px;
+  align-self: center;
+  margin-top: 6px;
 `
 
 const FacebookIcon = styled(StyledIcon)`
-  width: 12.5px;
-  padding: 0 9px;
+  width: 12px;
+  height: 19px;
+  padding: 0;
 `
 
 const TwitterIcon = styled(StyledIcon)`
-  width: 30.5px;
+  padding: 0;
+  width: 20px;
+  height: 16px;
 `
 
 const InstagramIcon = styled(StyledIcon)`
-  width: 25px;
-  padding: 0 2.5px;
+  width: 20px;
+  height: 20px;
+  padding: 0px;
 `
 
 /*
@@ -66,18 +73,20 @@ export default class Footer extends React.Component {
   render () {
     return (
       <Container fluid>
-        <SizedDiv>
-          <StyledLink to='/'>About Us</StyledLink>
-          <StyledLink to='/'>Terms of Service</StyledLink>
-          <StyledLink to='/'>Contact Us</StyledLink>
-          <Right>
+        <SizedRow between='xs'>
+          <Row bottom='xs'>
+            <StyledLink to='/'>About Us</StyledLink>
+            <StyledLink to='/'>Terms of Service</StyledLink>
+            <StyledLink to='/'>Contact Us</StyledLink>            
+          </Row>
+          <Row middle='xs'>
             <FacebookIcon name='facebook-blue'/>
             <Divider></Divider>
             <TwitterIcon name='twitter-blue'/>
             <Divider></Divider>
             <InstagramIcon name='instagram'/>
-          </Right>
-        </SizedDiv>
+          </Row>
+        </SizedRow>
       </Container>
     )
   }

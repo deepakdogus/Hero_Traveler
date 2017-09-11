@@ -46,6 +46,7 @@ const colors = {
   btnGreyBackground: '#949292',
   btnDarkGreyBackground: '#5d5b5f',
   dividerGrey: '#dedede',
+  headerButtonBackgroundTint: 'rgba(26,28,33,0.6)'
 }
 
 export default colors

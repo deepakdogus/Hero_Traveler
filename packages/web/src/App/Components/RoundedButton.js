@@ -49,6 +49,7 @@ const StyledButton = styled.button`
   height: ${props => props.height || 'auto'};
   border-radius: 30px;
   border: 1px solid;
+  outline: none;
   border-color: ${props => {
     switch(props.type) {
       case 'lightGrey':

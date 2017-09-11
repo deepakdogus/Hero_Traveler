@@ -22,6 +22,13 @@ const ProfileLink = styled(NavLink)`
   color: inherit;
 `
 
+const HeaderTopGradient = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 180px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.4), rgba(0,0,0,0));
+`
+
 const Title = styled.p`
   font-weight: 400;
   font-size: ${props => props.mediaType === 'video' ? '30px' : '65px'};
@@ -107,7 +114,7 @@ export default class FeedHeader extends React.Component {
         return (
         <div key={key}>
           <StyledVideo 
-          src={getVideoUrl(story.coverVideo)}
+          // src={getVideoUrl(story.coverVideo)}
           type='preview'
           noControls={true}
           />
@@ -164,6 +171,7 @@ export default class FeedHeader extends React.Component {
         size='fullScreen'
         type='story'
       >
+        <HeaderTopGradient/>
         <Header isLoggedIn></Header>
         <FeedCarousel>
           {this.renderSlides(this.props.stories)}

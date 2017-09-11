@@ -113,6 +113,9 @@ const MenuLink = (props) => {
         marginRight: 10,
         display: 'flex',
         color: 'white',
+        fontFamily: 'montserrat',
+        fontSize: '15px',
+        letterSpacing: '1.2px',
         borderBottomWidth: '3px',
         borderBottomColor: 'transparent',
         borderBottomStyle: 'solid'
@@ -186,6 +189,7 @@ export default class Header extends React.Component {
                 My Feed
               </MenuLink>
               <Divider>&nbsp;</Divider>
+              <span>&nbsp;</span>
               <MenuLink to='/' exact>
                 Explore
               </MenuLink>              

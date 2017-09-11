@@ -17,6 +17,7 @@ const TabContainer = styled.div`
 `
 
 const TabText = styled.p`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
   font-size: 18px;
   color: ${props => props.isActive ? props.theme.Colors.background : props.theme.Colors.navBarText};
   letter-spacing: 1.2px;

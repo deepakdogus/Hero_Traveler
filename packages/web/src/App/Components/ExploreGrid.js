@@ -34,8 +34,9 @@ const TitleContainer = styled(Overlay)`
 `
 
 const Title = styled.div`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 400;
-  font-size: 17px;
+  font-size: 18px;
   color: ${props => props.theme.Colors.snow};
   letter-spacing: 1.2px;
   margin: 0;

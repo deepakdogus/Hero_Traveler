@@ -9,6 +9,7 @@ import LikeComponent from './LikeComponent'
 import HorizontalDivider from './HorizontalDivider'
 import VerticalCenter from './VerticalCenter'
 import Overlay from './Overlay'
+import {Row} from './FlexboxGrid'
 
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import formatCount from '../Shared/Lib/formatCount'
@@ -16,6 +17,10 @@ import formatCount from '../Shared/Lib/formatCount'
 const StoryLink = styled(NavLink)`
   text-decoration: none;
   color: inherit;
+`
+
+const FlexStoryLink = styled(StoryLink)`
+  display: flex;
 `
 
 const ProfileLink = styled(StoryLink)`
@@ -44,13 +49,17 @@ const StoryInfoContainer = styled.div`
 `
 
 const Username = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
+  color: ${props => props.theme.Colors.lightGrey};
   letter-spacing: .7px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
   margin-left: 10px;
 `
 
 const CreatedAt = styled.span`
+  font-family: ${props => props.theme.Fonts.type.crimsonText};
+  color: ${props => props.theme.Colors.lightGrey};
   font-weight: 400
   letter-spacing: .5px;
   font-size: 12px;
@@ -59,6 +68,7 @@ const CreatedAt = styled.span`
 `
 
 const Title = styled.h3`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 400;
   letter-spacing: 1.5px;
   font-size: 20px;
@@ -68,7 +78,9 @@ const Title = styled.h3`
 `
 
 const Description = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400px;
+  color: ${props => props.theme.Colors.lightGrey};
   letter-spacing: .7px;
   font-size: 14px;
   margin: 0;
@@ -80,9 +92,17 @@ const Right = styled(VerticalCenter)`
   height: 100%;
 `
 
-const DetailsContainer = styled.div`
+const DetailsContainer = styled(Row)`
   display: flex;
   position: relative;
+`
+
+const ContainerBottomGradient = styled.div`
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 220px;
+  background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.6));
 `
 
 export default class StoryPreview extends React.Component {
@@ -102,6 +122,7 @@ export default class StoryPreview extends React.Component {
             overlayColor='black'
           />
         </StoryLink>
+        <ContainerBottomGradient/>
         <StoryInfoContainer>
           <StoryLink to={`/story/${story.id}`}>
             <Title>{story.title}</Title>
@@ -113,24 +134,22 @@ export default class StoryPreview extends React.Component {
             }
           </StoryLink>
           { type !== 'suggestions' &&
-            <DetailsContainer>
+            <DetailsContainer between='xs'>
               <ProfileLink to={`/profile/${author.id}`}>
-                <Avatar avatarUrl={getImageUrl(author.profile.avatar)} size='large'/>
-                <VerticalCenter>
-                  <Username>{author.username}</Username>
-                </VerticalCenter>
+                <Row middle='xs'>
+                  <Avatar avatarUrl={getImageUrl(author.profile.avatar)} size='large'/>
+                  <Username>{author.username}</Username>                  
+                </Row>
               </ProfileLink>
-              <StoryLink to={`/story/${story.id}`}>
-                <Right>
-                  <div>
-                    <CreatedAt>{moment(story.createdAt).fromNow()}</CreatedAt>
-                    <LikeComponent
-                      likes={formatCount(story.counts.likes)}
-                      isLiked={this.props.isLiked}
-                    />
-                  </div>
-                </Right>
-              </StoryLink>
+              <FlexStoryLink to={`/story/${story.id}`}>
+                <Row between='xs' middle='xs'>
+                  <CreatedAt>{moment(story.createdAt).fromNow()}</CreatedAt>
+                  <LikeComponent
+                    likes={formatCount(story.counts.likes)}
+                    isLiked={this.props.isLiked}
+                  />
+                </Row>
+              </FlexStoryLink>
             </DetailsContainer>
           }
         </StoryInfoContainer>

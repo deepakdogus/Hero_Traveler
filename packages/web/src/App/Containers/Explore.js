@@ -13,7 +13,8 @@ const CenteredText = styled.p`
 `
 
 const ExploreText = styled(CenteredText)`
-  font-weigth: 600;
+  font-family: ${props => props.theme.Fonts.type.montserrat};
+  font-weight: 600;
   font-size: 30px;
   letter-spacing: 1.2px;
   padding: 50px 0px;

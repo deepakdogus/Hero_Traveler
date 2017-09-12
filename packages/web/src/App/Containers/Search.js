@@ -11,10 +11,11 @@ import {feedExample, usersExample} from './Feed_TEST_DATA'
 const Container = styled.div``
 
 const HeaderInputContainer = styled(Container)`
-  background-color: ${props => props.theme.Colors.lightGreyAreas}
+  background-color: ${props => props.theme.Colors.lightGreyAreas};
 `
 
 const HeaderInput = styled.input`
+  font-family: ${props => props.theme.Fonts.type.base};
   height: 120px;
   width: 80%;
   background-color: transparent;
@@ -25,7 +26,19 @@ const HeaderInput = styled.input`
   border: none;
   outline: none;
   letter-spacing: .7px;
-  color: ${props => props.theme.Colors.signupGrey} 
+  color: ${props => props.theme.Colors.signupGrey};
+  &::placeholder{
+    color: ${props => props.theme.Colors.signupGrey};
+  };
+  &::-moz-placeholder{
+    color: ${props => props.theme.Colors.signupGrey};
+  };
+  &:-ms-input-placeholder{
+    color: ${props => props.theme.Colors.signupGrey};
+  };
+  &:-moz-placeholder{
+    color: ${props => props.theme.Colors.signupGrey};
+  };
 `
 
 const ContentWrapper = styled.div`
@@ -36,7 +49,7 @@ const ContentWrapper = styled.div`
 const StyledTextButton = styled(TextButton)`
   position: absolute;
   right: 40px;
-  top: 227px;
+  top: 113px;
   outline: none;
 `
 
@@ -49,7 +62,6 @@ export default class Search extends Component {
   toggleSearchResultTabs = () => {
     this.setState({showPeopleResults: !this.state.showPeopleResults})
   }
-
 
   render() {
     return (

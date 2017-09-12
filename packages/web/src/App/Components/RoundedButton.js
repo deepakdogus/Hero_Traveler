@@ -93,6 +93,7 @@ const StyledButton = styled.button`
   }
 `
 const Text = styled.p`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
   color: ${props => {
     switch(props.type) {
       case 'blackWhite':

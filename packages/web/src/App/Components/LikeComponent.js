@@ -4,7 +4,6 @@ import styled from 'styled-components'
 
 import Icon from './Icon'
 import {Row} from './FlexboxGrid'
-import VerticalCenter from './VerticalCenter'
 
 const Likes = styled.span`
   color: ${props => props.theme.Colors.snow};

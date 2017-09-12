@@ -27,6 +27,7 @@ export const StyledVerticalCenter = styled(VerticalCenter)`
 `
 
 export const UserName = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 600;
   font-size: 18px;
   color: ${props => props.theme.Colors.background};
@@ -35,6 +36,7 @@ export const UserName = styled.p`
 `
 
 const Name = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 14px;
   letter-spacing: .7px;

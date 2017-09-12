@@ -7,7 +7,6 @@ import {NavLink} from 'react-router-dom';
 import Avatar from './Avatar'
 import LikeComponent from './LikeComponent'
 import HorizontalDivider from './HorizontalDivider'
-import VerticalCenter from './VerticalCenter'
 import Overlay from './Overlay'
 import {Row} from './FlexboxGrid'
 
@@ -86,12 +85,6 @@ const Description = styled.p`
   margin: 0;
 `
 
-const Right = styled(VerticalCenter)`
-  position: absolute;
-  right: 0;
-  height: 100%;
-`
-
 const DetailsContainer = styled(Row)`
   display: flex;
   position: relative;
@@ -128,7 +121,7 @@ export default class StoryPreview extends React.Component {
             <Title>{story.title}</Title>
             { type !== 'suggestions' &&
               <div>
-                <Description>{story.description}</Description>
+                <Description>{story.description || 'Best Trip Ever'}</Description>
                 <HorizontalDivider opaque />
               </div>
             }

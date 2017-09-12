@@ -28,12 +28,6 @@ const StyledLink = styled(NavLink)`
   margin-bottom: 0;
 `
 
-const Right = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-`
-
 const Divider = styled.div`
   display: inline-block;
   width: 1px;

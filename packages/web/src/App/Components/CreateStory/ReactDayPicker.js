@@ -41,8 +41,11 @@ function Navbar({
   onPreviousClick,
   onNextClick,
   className,
+  localeUtils,
 }) {
-
+  const months = localeUtils.getMonths();
+  const prev = months[previousMonth.getMonth()];
+  const next = months[nextMonth.getMonth()];
   const styleLeft = {
     float: 'left',
   };

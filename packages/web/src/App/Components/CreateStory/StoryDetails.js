@@ -32,12 +32,14 @@ const InputRowContainer = styled(Container)`
 `
 
 const StyledTitle = styled(Title)`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
   font-size: 28px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
 `
 
 const ActivitySelectRow = styled(Row)`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 600;
   font-size: 18px;
   color: ${props => props.theme.Colors.background};
@@ -46,6 +48,7 @@ const ActivitySelectRow = styled(Row)`
 `
 
 const StyledInput = styled.input`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 18px;
   letter-spacing: .7px;
@@ -54,6 +57,22 @@ const StyledInput = styled.input`
   border-width: 0;
   margin-left: 25px;
   outline: none;
+  &::placeholder{
+    font-family: ${props => props.theme.Fonts.type.base};
+    color: ${props => props.theme.Colors.navBarText};
+  };
+  &::-moz-placeholder{
+    font-family: ${props => props.theme.Fonts.type.base};
+    color: ${props => props.theme.Colors.navBarText};
+  };
+  &:-ms-input-placeholder{
+    font-family: ${props => props.theme.Fonts.type.base};
+    color: ${props => props.theme.Colors.navBarText};
+  };
+  &:-moz-placeholder{
+    font-family: ${props => props.theme.Fonts.type.base};
+    color: ${props => props.theme.Colors.navBarText};
+  };
 `
 
 const LocationIcon = styled(Icon)`
@@ -158,12 +177,13 @@ export default class StoryDetails extends React.Component {
               <GoogleLocator/>              
             </InputRowContainer>
             <HorizontalDivider color='lighter-grey' opaque/>            
-            <InputRowContainer onClick={this.toggleDayPicker}>
+            <InputRowContainer>
               <DateIcon name='date'/>
               <StyledInput 
                 type='text'
                 placeholder={'MM-DD-YYYY'}
                 value={this.state.day}
+                onClick={this.toggleDayPicker}
               />
               {this.state.showDayPicker &&
                 <StyledReactDayPicker 

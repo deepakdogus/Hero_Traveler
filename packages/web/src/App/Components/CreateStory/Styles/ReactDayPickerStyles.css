@@ -3,6 +3,7 @@
 .DayPicker {
   display: inline-block;
   outline: none;
+  width: 320px;
 }
 
 .DayPicker-wrapper {
@@ -77,10 +78,12 @@
   display: table-caption;
   height: 1.5rem;
   text-align: center;
+  font-family: montserrat;
 }
 
 .DayPicker-Weekdays {
   display: table-header-group;
+  font-family: montserrat;
 }
 
 .DayPicker-WeekdaysRow {
@@ -93,10 +96,17 @@
   font-size: .875em;
   text-align: center;
   color: #8b9898;
+  font-family: montserrat;
+}
+
+abbr {
+  text-decoration: none !important;
 }
 
 .DayPicker-Body {
   display: table-row-group;
+  font-family: montserrat;
+  font-size: 15px;
 }
 
 .DayPicker-Week {

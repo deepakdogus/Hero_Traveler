@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 
 import HorizontalDivider from '../HorizontalDivider'
+import './Styles/GoogleLocatorStyles.css';
 
 const StyledForm = styled.form`
   display: inline-block;
@@ -49,6 +50,7 @@ const styles = {
     fontSize: '18px',
     letterSpacing: '.7px',
     color: '#1a1c21',
+    fontFamily: 'source sans pro',
   },
   autocompleteContainer: {
     position: 'absolute',

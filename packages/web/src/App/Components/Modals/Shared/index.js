@@ -1,6 +1,9 @@
 import styled from 'styled-components'
+import VerticalCenter from '../../VerticalCenter'
+import Icon from '../../Icon'
 
 const basicTextStyle = `
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 16px;
   letter-spacing: .7px;
@@ -19,12 +22,24 @@ export const Title = styled.p`
 `
 
 export const RightTitle = styled.p`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 400;
   font-size: 20px;
   color: ${props => props.theme.Colors.background};
   letter-spacing: 1.5px;
   text-align: center;
   background-color: ${props => props.theme.Colors.lightGreyAreas};
+  margin: 0;
+  padding: 20px;
+`
+
+export const CenterTitle = styled.p`
+  font-weight: 400;
+  font-size: 20px;
+  color: ${props => props.theme.Colors.background};
+  letter-spacing: 1.5px;
+  text-align: center;
+  background-color: ${props => props.theme.Colors.white};
   margin: 0;
   padding: 20px;
 `
@@ -57,4 +72,73 @@ export const StyledInput = styled.input`
   border-width: 0 0 1px;
   border-color: ${props => props.theme.Colors.dividerGrey};
   margin-bottom: 25px;
+`
+
+//RightModal Styles
+
+export const StyledVerticalCenter = styled(VerticalCenter)`
+  height: 100%;
+  padding-left: 25px;
+`
+
+export const UserName = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
+  font-weight: 600;
+  font-size: 18px;
+  color: ${props => props.theme.Colors.background};
+  letter-spacing: .7px;
+  margin: 0;
+`
+
+export const CommentContent = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: .7px;
+  margin: 0;
+  color: ${props => props.theme.Colors.grey};
+`
+export const MessageContent = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: .7px;
+  margin: 0;
+  color: ${props => props.theme.Colors.grey};
+`
+
+export const NotificationContent = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: .7px;
+  margin: 0;
+  color: ${props => props.theme.Colors.background};
+`
+
+export const Timestamp = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: .7px;
+  margin: 0;
+  color: ${props => props.theme.Colors.grey};
+`
+
+export const ProfileDetail = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: .7px;
+  margin: 0;
+  color: ${props => props.theme.Colors.grey};
+`
+
+export const RightModalCloseX = styled(Icon)`
+  position: absolute;
+  top: 20px;
+  left: 25px;
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
 `

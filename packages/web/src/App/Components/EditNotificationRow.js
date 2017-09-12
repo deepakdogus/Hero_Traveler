@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import VerticalCenter from './VerticalCenter'
 import HorizontalDivider from './HorizontalDivider'
 import {Row} from './FlexboxGrid'
+import {Colors} from '../Shared/Themes'
 
 import 'react-ios-switch/build/bundle.css';
 import Switch from 'react-ios-switch';
@@ -29,7 +30,7 @@ const RowSpacer = styled.div`
 export default class EditNotificationRow extends Component {
     constructor(props) {
     super(props);
-    
+
     this.state = {
       checked: true,
     };
@@ -61,7 +62,7 @@ export default class EditNotificationRow extends Component {
           index={this.props.index}
           disabled={null}
           onChange={this.toggleSwitchState}
-          onColor={'#d60000'}
+          onColor={Colors.red}
         />
       </VerticalCenter>
     )
@@ -74,11 +75,11 @@ export default class EditNotificationRow extends Component {
         <RowSpacer>
           <Row between='xs'>
             <Row>
-              {this.renderText()}              
+              {this.renderText()}
             </Row>
             <Row>
-              {this.renderSwitch()}                          
-            </Row>  
+              {this.renderSwitch()}
+            </Row>
           </Row>
         </RowSpacer>
           <HorizontalDivider color='light-grey'/>

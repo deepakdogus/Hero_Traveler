@@ -138,7 +138,7 @@ export default class ProfileHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: 'settings' }
+    this.state = {modal: undefined }
   }
 
   closeModal = () => {
@@ -250,21 +250,21 @@ export default class ProfileHeader extends React.Component {
           onRequestClose={this.closeModal}
         >
           <SendTo closeModal={this.closeModal} profile={user}/>
-        </RightModal>                        
+        </RightModal>
         <RightModal
           isOpen={this.state.modal === 'addToBoard'}
           contentLabel='Add To Board Modal'
           onRequestClose={this.closeModal}
         >
           <AddToBoard closeModal={this.closeModal} profile={user}/>
-        </RightModal>             
+        </RightModal>
         <RightModal
           isOpen={this.state.modal === 'createBoard'}
           contentLabel='Create Board'
           onRequestClose={this.closeModal}
         >
           <CreateBoard closeModal={this.closeModal} profile={user}/>
-        </RightModal>             
+        </RightModal>
         <RightModal
           isOpen={this.state.modal === 'settings'}
           contentLabel='Settings'
@@ -278,7 +278,7 @@ export default class ProfileHeader extends React.Component {
           onRequestClose={this.closeModal}
         >
           <NotificationsThread closeModal={this.closeModal} profile={user}/>
-        </RightModal>        
+        </RightModal>
         <RightModal
           isOpen={this.state.modal === 'inbox'}
           contentLabel='Inbox'
@@ -299,14 +299,14 @@ export default class ProfileHeader extends React.Component {
           onRequestClose={this.closeModal}
         >
           <ProfileBio closeModal={this.closeModal} profile={user}/>
-        </RightModal>        
+        </RightModal>
         <CenterModal
           isOpen={this.state.modal === 'faqTermsAndConditions'}
           contentLabel='FAQ Terms & Conditions'
           onRequestClose={this.closeModal}
         >
           <FAQTermsAndConditions closeModal={this.closeModal}/>
-        </CenterModal>                        
+        </CenterModal>
 
       </ImageWrapper>
     )

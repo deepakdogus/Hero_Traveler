@@ -46,6 +46,9 @@ const colors = {
   btnGreyBackground: '#949292',
   btnDarkGreyBackground: '#5d5b5f',
   dividerGrey: '#dedede',
+  blueBubble: '#e3f2fd',
+  pink: '#fde8ea',
+  onHoverGrey: '#f6f6f6',
 }
 
 export default colors

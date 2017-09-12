@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import styled, {ThemeProvider} from 'styled-components'
+import styled from 'styled-components'
 
-import themes from '../../Shared/Themes'
 import Header from '../../Components/Signup/Header'
 import RoundedButton from '../../Components/RoundedButton'
 import ExploreGrid from '../../Components/ExploreGrid'
@@ -35,7 +34,6 @@ const SizedDiv = styled.div`
 class SignupTopics extends Component {
   render() {
     return (
-      <ThemeProvider theme={themes}>
         <div>
           <Header>
             <RoundedButton text='Next >'></RoundedButton>
@@ -48,7 +46,6 @@ class SignupTopics extends Component {
             </SizedDiv>
           </Container>
         </div>
-      </ThemeProvider>
     )
   }
 }

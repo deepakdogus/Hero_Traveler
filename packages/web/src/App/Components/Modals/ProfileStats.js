@@ -8,6 +8,7 @@ import ProfileStatsCountsCol from '../ProfileStatsCountsCol'
 import {
   RightTitle,
   Text,
+  RightModalCloseX,
 } from './Shared'
 
 const Container = styled.div``
@@ -60,6 +61,7 @@ const HowText =  styled(Text)`
 export default class ProfileStats extends React.Component {
   static PropTypes = {
     profile: PropTypes.object,
+    closeModal: PropTypes.func,
   }
 
   constructor(props) {
@@ -79,6 +81,7 @@ export default class ProfileStats extends React.Component {
     const {profile} = this.props
     return (
       <Container>
+        <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>{profile.username.toUpperCase()} STATS</RightTitle>
           <ContentContainer>
             <StatsTabBar center='xs'>

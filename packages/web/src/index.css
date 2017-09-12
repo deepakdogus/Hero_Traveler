@@ -38,27 +38,6 @@ body {
   font-weight: 700;
 }
 
-/* Source Sans Pro Normal Fontstyle*/
-@font-face {
-  font-family: 'Source Sans Pro';
-  src: url('./App/Fonts/SourceSansPro-Light.ttf');
-  font-weight: 300;
-}
-@font-face {
-  font-family: 'Source Sans Pro';
-  src: url('./App/Fonts/SourceSansPro-Regular.ttf');
-  font-weight: 400;
-}
-@font-face {
-  font-family: 'Source Sans Pro';
-  src: url('./App/Fonts/SourceSansPro-SemiBold.ttf');
-  font-weight: 600;
-}
-@font-face {
-  font-family: 'Source Sans Pro';
-  src: url('./App/Fonts/SourceSansPro-Bold.ttf');
-  font-weight: 700;
-}
 
 /* Source Sans Pro Italic Fontstyle*/
 @font-face {
@@ -85,4 +64,26 @@ body {
   src: url('./App/Fonts/SourceSansPro-BoldItalic.ttf');
   font-weight: 700;
   font-style: 'italic';
+}
+
+/* Source Sans Pro Normal Fontstyle*/
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('./App/Fonts/SourceSansPro-Light.ttf');
+  font-weight: 300;
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('./App/Fonts/SourceSansPro-Regular.ttf');
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('./App/Fonts/SourceSansPro-SemiBold.ttf');
+  font-weight: 600;
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('./App/Fonts/SourceSansPro-Bold.ttf');
+  font-weight: 700;
 }

@@ -3,30 +3,36 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import {usersExample} from '../../Containers/Feed_TEST_DATA'
-import FollowFollowingRow from '../FollowFollowingRow'
+import MessageRow from '../MessageRow'
+import InputRow from '../InputRow'
 import {RightTitle, RightModalCloseX} from './Shared'
+import {randomDate} from './Shared/RandomDate'
+
 
 const Container = styled.div``
 
-const UserRowsContainer = styled.div`
-  padding: 25px;
+const CommentContainer = styled(Container)`
+  margin-top: 15px;
 `
 
-export default class FollowFollowing extends React.Component {
+export default class Comments extends React.Component {
   static PropTypes = {
     profile: PropTypes.object,
     users: PropTypes.object,
     closeModal: PropTypes.func,
   }
 
-  renderUserRows(userKeys) {
+  renderUserMessageRows(userKeys) {
     return userKeys.map((key, index) => {
       return (
-        <FollowFollowingRow
+        <MessageRow
           key={key}
+          index={index}
           user={usersExample[key]}
-          isFollowing={index === 0}
-          margin='0 0 25px'
+          message=''
+          timestamp={randomDate(new Date(2017,7,1), new Date())}
+          padding='10px 30px'
+          isComment={true}
         />
       )
     })
@@ -41,10 +47,11 @@ export default class FollowFollowing extends React.Component {
     return (
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
-        <RightTitle>{profile.username.toUpperCase()} IS FOLLOWED BY</RightTitle>
-        <UserRowsContainer>
-          {this.renderUserRows(userKeys)}
-        </UserRowsContainer>
+        <RightTitle>COMMENTS</RightTitle>
+        <CommentContainer>
+          {this.renderUserMessageRows(userKeys)}
+        </CommentContainer>
+        <InputRow/>
       </Container>
     )
   }

@@ -12,7 +12,7 @@ const UserRowsContainer = styled.div`
   padding: 25px;
 `
 
-export default class FollowFollowing extends React.Component {
+export default class LikedBy extends React.Component {
   static PropTypes = {
     profile: PropTypes.object,
     users: PropTypes.object,
@@ -41,7 +41,7 @@ export default class FollowFollowing extends React.Component {
     return (
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
-        <RightTitle>{profile.username.toUpperCase()} IS FOLLOWED BY</RightTitle>
+        <RightTitle>LIKED BY</RightTitle>
         <UserRowsContainer>
           {this.renderUserRows(userKeys)}
         </UserRowsContainer>

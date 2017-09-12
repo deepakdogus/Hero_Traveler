@@ -14,6 +14,8 @@ function getMargin(props) {
 // 2px 6px 3px is default react padding.
 function getPadding(props) {
   if (props.padding ==='even') return '5px';
+  if (props.padding ==='mediumEven') return '8px';
+  if (props.padding ==='mediumDefault') return '4px 8px 5px';
   return '2px 6px 3px'
 }
 
@@ -43,6 +45,7 @@ const StyledButton = styled.button`
   height: ${props => props.height || 'auto'};
   border-radius: 30px;
   border: 1px solid;
+  outline: none;
   border-color: ${props => {
     switch(props.type) {
       case 'lightGrey':
@@ -80,6 +83,7 @@ const StyledButton = styled.button`
   }
 `
 const Text = styled.p`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
   color: ${props => {
     switch(props.type) {
       case 'blackWhite':

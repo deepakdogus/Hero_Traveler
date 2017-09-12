@@ -14,18 +14,18 @@ const NotificationRowsContainer = styled.div`
 `
 
 const notificationTypes = [
-  { 
-    notificationText: 'commented on your trip to Africa.', 
+  {
+    notificationText: 'commented on your trip to Africa.',
     commentText: 'lorem ipsum',
     isTrip: true,
   },
-  { 
-    notificationText: 'is now following you.', 
+  {
+    notificationText: 'is now following you.',
     commentText: 'lorem ipsum',
     isTrip: false,
   },
-  { 
-    notificationText: 'earned 100pts for creating a story. Keep up the good work!', 
+  {
+    notificationText: 'earned 100pts for creating a story. Keep up the good work!',
     commentText: 'lorem ipsum',
     isTrip: false,
   },
@@ -36,8 +36,6 @@ const tripsExample = feedExample[Object.keys(feedExample)[0]].categories
 let tripsExampleSliced = {};
 for (var i=0; i<3; i++)
     tripsExampleSliced[i] = tripsExample[i];
-
-  console.log("tripsExampleSliced: ", tripsExampleSliced)
 
 export default class NotificationsThread extends React.Component {
   static PropTypes = {

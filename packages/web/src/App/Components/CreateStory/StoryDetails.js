@@ -144,7 +144,6 @@ export default class StoryDetails extends React.Component {
   toggleDayPicker = () => this.setState({ showDayPicker: !this.state.showDayPicker })
 
   toggleTagPicker = () => {
-    console.log("testTagNames: ", testTagNames)
     this.setState({ showTagPicker: !this.state.showTagPicker })
   }
 

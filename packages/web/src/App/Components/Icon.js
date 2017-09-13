@@ -105,6 +105,8 @@ export default class Icon extends React.Component {
         return Images.iconNavCreate
       case 'close':
         return Images.iconContentXWhite
+      case 'closeDark':
+        return Images.iconContentXDark
       case 'add':
         return Images.iconContentPlusWhite
       case 'cameraReverse':
@@ -123,6 +125,8 @@ export default class Icon extends React.Component {
         return Images.components
       case 'trash':
         return Images.iconEditImageTrash
+      case 'addCoverCamera':
+        return Images.iconAddCoverCamera
       case 'profile':
       default:
         return Images.iconNavProfile

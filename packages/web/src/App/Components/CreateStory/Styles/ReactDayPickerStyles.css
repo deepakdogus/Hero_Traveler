@@ -2,6 +2,8 @@
 
 .DayPicker {
   display: inline-block;
+  outline: none;
+  width: 320px;
 }
 
 .DayPicker-wrapper {
@@ -24,6 +26,7 @@
           flex-direction: row;
   padding: 1rem 1.25rem;
   margin-top: 1.5rem;
+  outline: none;
 }
 
 .DayPicker-Month {
@@ -43,6 +46,7 @@
   right: 0;
   padding: 0rem .5rem 1rem 0rem;
   top: 1rem;
+  outline: none;
 }
 
 .DayPicker-NavButton {
@@ -53,6 +57,7 @@
   background-position: center;
   background-size: contain;
   cursor: pointer;
+  outline: none;
 }
 
 .DayPicker-NavButton--prev {
@@ -73,10 +78,12 @@
   display: table-caption;
   height: 1.5rem;
   text-align: center;
+  font-family: montserrat;
 }
 
 .DayPicker-Weekdays {
   display: table-header-group;
+  font-family: montserrat;
 }
 
 .DayPicker-WeekdaysRow {
@@ -89,10 +96,17 @@
   font-size: .875em;
   text-align: center;
   color: #8b9898;
+  font-family: montserrat;
+}
+
+abbr {
+  text-decoration: none !important;
 }
 
 .DayPicker-Body {
   display: table-row-group;
+  font-family: montserrat;
+  font-size: 15px;
 }
 
 .DayPicker-Week {
@@ -106,6 +120,11 @@
   text-align: center;
   cursor: pointer;
   vertical-align: middle;
+  outline: none;
+}
+
+.DayPicker-Day:hover {
+  background-color: #f6f6f6;
 }
 
 .DayPicker-WeekNumber {
@@ -172,38 +191,3 @@
   color: #FFF;
   background-color: #4A90E2;
 }
-
-/* DayPickerInput */
-
-.DayPickerInput {
-  display: inline-block;
-
-}
-
-.DayPickerInput input {
-  outline: none;
-  border: none;
-  font-weight: 400;
-  font-size: 18px;
-  letter-spacing: .7px;
-  color: #1a1c21;
-}
-
-
-.DayPickerInput-OverlayWrapper {
-  position: absolute;
-  top: 60px;
-  z-index: 100;
-}
-
-.DayPickerInput-Overlay {
-  left: 0;
-  height: 340px;
-  width: 320px;
-  position: absolute;
-  background: white;
-  -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-          box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-}
-
-

@@ -30,7 +30,7 @@ const CenteredText = styled.p`
 
 const Title = styled(CenteredText)`
   font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-weigth: 400;
+  font-weight: 400;
   font-size: 50px;
   letter-spacing: 1.5px;
   margin: 0px;
@@ -61,10 +61,10 @@ export default class CoverPhotoBox extends React.Component {
         <StoryOverlayContainer image={coverImage} overlayColor='lightBlack'/>
         <CloseXContainer>
           <CloseX onClick={closeImage}/>
-        </CloseXContainer>         
+        </CloseXContainer>
         <TitleContainer>
           <Title>{title}</Title>
-          <StyledSubTitle>{description}</StyledSubTitle>              
+          <StyledSubTitle>{description}</StyledSubTitle>
         </TitleContainer>
       </Container>
     )

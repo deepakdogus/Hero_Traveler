@@ -18,29 +18,29 @@ const StyledIcon = styled(Icon)`
 export default class FooterToolbar extends Component {
   static propTypes = {
     isDetailsView: PropTypes.bool,
-  }  
+  }
 
   renderIcons = () => {
     return (
       <Row middle='xs'>
-        <RoundedButton 
+        <RoundedButton
           type='grey'
-          padding='even' 
+          padding='even'
           margin='medium'
           width='50px'
           height='50px'
         >
           <StyledIcon name='trash'/>
         </RoundedButton>
-        <RoundedButton 
+        <RoundedButton
           type='grey'
-          padding='even' 
+          padding='even'
           margin='medium'
           width='50px'
-          height='50px'            
+          height='50px'
         >
           <StyledIcon name='save'/>
-        </RoundedButton>        
+        </RoundedButton>
       </Row>
     )
   }
@@ -49,40 +49,21 @@ export default class FooterToolbar extends Component {
     const {isDetailsView} = this.props
     return (
       <Container>
-        {!isDetailsView &&
-          <Row middle='xs'>
-            <RoundedButton
-              text={'Preview'}
-              margin='medium'
-              padding='even' 
-              width='120px'
-              type='grey'
-            />
-            <RoundedButton
-              text={'Next >'}
-              margin='medium'
-              padding='even' 
-              width='120px'
-            />            
-          </Row>
-        }
-        {isDetailsView &&
-          <Row middle='xs'>
-            <RoundedButton
-              text={'< Back'}
-              margin='medium'
-              padding='even' 
-              width='120px'
-              type='grey'
-            />
-            <RoundedButton
-              text={'Publish'}
-              margin='medium'
-              padding='even' 
-              width='120px'
-            />            
-          </Row>
-        }        
+        <Row middle='xs'>
+          <RoundedButton
+            text={isDetailsView ? '< Back' : 'Preview'}
+            margin='medium'
+            padding='even'
+            width='120px'
+            type='grey'
+          />
+          <RoundedButton
+            text={isDetailsView ? 'Publish' : 'Next >'}
+            margin='medium'
+            padding='even'
+            width='120px'
+          />
+        </Row>
       </Container>
     )
   }

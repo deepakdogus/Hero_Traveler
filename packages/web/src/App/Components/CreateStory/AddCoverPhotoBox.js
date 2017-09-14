@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import Icon from '../Icon'
-import {SubTitle, CenteredInput} from './Shared'
+import {SubTitle, Input} from './Shared'
 
 const Container = styled.div`
   max-width: 900px;
@@ -14,6 +14,7 @@ const Container = styled.div`
 `
 
 const IconSubTitle = styled(SubTitle)`
+  font-weight: 400;
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-size: 13px;
   letter-spacing: 1.5px;
@@ -32,7 +33,7 @@ const IconContainer = styled.div`
   width: 100%;
 `
 
-const StyledTitleInput = styled(CenteredInput)`
+const StyledTitleInput = styled(Input)`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   background-color: ${props => props.theme.Colors.pink};
   font-size: 50px;
@@ -54,7 +55,7 @@ const StyledTitleInput = styled(CenteredInput)`
   }
 `
 
-const StyledSubTitleInput = styled(CenteredInput)`
+const StyledSubTitleInput = styled(Input)`
   background-color: ${props => props.theme.Colors.pink};
   font-size: 20px;
   ::-webkit-input-placeholder {
@@ -70,7 +71,7 @@ const StyledSubTitleInput = styled(CenteredInput)`
   :-moz-placeholder {
     color: ${props => props.theme.Colors.background};
     opacity: 1;
-  }  
+  }
 `
 
 const TitleInputsContainer = styled.div`
@@ -90,8 +91,8 @@ export default class AddCoverPhotoBox extends React.Component {
           <IconSubTitle onClick={action}>+ ADD A COVER PHOTO</IconSubTitle>
           <TitleInputsContainer>
             <StyledTitleInput placeholder='ADD TITLE'/>
-            <StyledSubTitleInput placeholder='Add a subtitle'/>            
-          </TitleInputsContainer>  
+            <StyledSubTitleInput placeholder='Add a subtitle'/>
+          </TitleInputsContainer>
       </Container>
 
       )

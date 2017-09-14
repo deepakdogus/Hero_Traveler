@@ -29,7 +29,7 @@ const testVideoCaption = testStory.draftjsContent.blocks[8].text
 const Container = styled.div``
 
 const ContentWrapper = styled.div`
-  margin: 0 17.057101%;
+  margin: 0 17%;
 `
 
 const StyledContentWrapper = styled(ContentWrapper)`
@@ -53,10 +53,10 @@ export default class CreateStory extends Component {
       <Container>
         <ContentWrapper>
           <ItemContainer>
-            <AddCoverPhotoBox 
+            <AddCoverPhotoBox
               action={this.addCover}
             />
-            <CoverPhotoBox 
+            <CoverPhotoBox
               coverImage={testCoverImage}
               title={testStory.title}
               description={testStory.description}
@@ -82,9 +82,9 @@ export default class CreateStory extends Component {
         <StyledContentWrapper>
           <StoryDetails
             title={testStory.title}
-          />          
+          />
         </StyledContentWrapper>
-          <FooterToolbar isDetailsView={true}/>        
+          <FooterToolbar isDetailsView={true}/>
       </Container>
     )
   }

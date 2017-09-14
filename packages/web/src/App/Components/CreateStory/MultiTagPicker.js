@@ -16,7 +16,7 @@ const TagPickerContainer = styled.div`
   background-color: white;
   outline: none;
   -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 `
 
 const Tag = styled.p`
@@ -46,11 +46,11 @@ static propTypes = {
         return (
           <div key={tag}>
             <Tag onClick={this.props.handleTagClick}>{tag}</Tag>
-            <StyledHorizontalDivider color='lighter-grey' opaque/>          
-          </div>      
+            <StyledHorizontalDivider color='lighter-grey' opaque/>
+          </div>
         )
       })
-    );
+    )
   }
 
   render() {
@@ -59,6 +59,6 @@ static propTypes = {
       <TagPickerContainer>
         {this.renderList(listTags)}
       </TagPickerContainer>
-    );
+    )
   }
 }

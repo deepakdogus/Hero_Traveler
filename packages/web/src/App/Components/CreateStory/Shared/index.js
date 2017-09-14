@@ -1,16 +1,5 @@
 import styled from 'styled-components'
 
-const basicTextStyle = `
-  font-family: ${props => props.theme.Fonts.type.base};
-  font-weight: 400;
-  font-size: 16px;
-  letter-spacing: .7px;
-`
-
-const CenteredText = styled.p`
-  text-align: center;
-`
-
 export const Title = styled.p`
   font-weight: 400;
   font-size: 25px;
@@ -19,19 +8,10 @@ export const Title = styled.p`
   text-align: center;
 `
 
-export const StyledInput = styled.input`
-  ${basicTextStyle};
-  width: 100%;
-  color: ${props => props.theme.Colors.grey};
-  padding-bottom: 5px;
-  border-width: 0 0 1px;
-  border-color: ${props => props.theme.Colors.dividerGrey};
-  margin-bottom: 25px;
-`
-
-export const SubTitle = styled(CenteredText)`
+export const SubTitle = styled.p`
+  text-align: center;
   font-family: ${props => props.theme.Fonts.type.base};
-  font-weigth: 400;
+  font-weight: 400;
   font-size: 20px;
   letter-spacing: .7px;
 `
@@ -55,18 +35,7 @@ export const Input = styled.input`
   outline: none;
 `
 
-export const CenteredInput = styled.input`
-  font-family: ${props => props.theme.Fonts.type.base};
-  font-weight: 400;
-  color: ${props => props.theme.Colors.background};
-  letter-spacing: .7px;
-  width: 80%;
-  text-align: center;
-  border: none;
-  outline: none;
-`
-
-export const StyledCaptionInput = styled(CenteredInput)`
+export const StyledCaptionInput = styled(Input)`
   font-style: italic;
   width: 100%;
   color: ${props => props.theme.Colors.grey};

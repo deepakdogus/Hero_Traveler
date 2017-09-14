@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3000
 // Middleware
 app.use(bodyParser.json({}))
 app.use(bodyParser.urlencoded({extended: false}))
-app.use(morgan('dev')) 
+app.use(morgan('dev'))
 app.use(passport.initialize())
 
 if (process.env.NODE_ENV !== 'development') {

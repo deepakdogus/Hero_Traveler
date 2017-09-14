@@ -84,7 +84,7 @@ const LocationIcon = styled(Icon)`
 
 const DateIcon = styled(Icon)`
   height: 26px;
-  width: 30px;  
+  width: 30px;
   margin-bottom: -8px;
 `
 const TagIcon = styled(Icon)`
@@ -136,28 +136,28 @@ export default class StoryDetails extends React.Component {
 
   handleDayClick = (day) => {
     this.setState({
-                    day: Moment(day).format('MM-DD-YYYY'),
-                    showDayPicker: !this.state.showDayPicker,
-                  })
+      day: Moment(day).format('MM-DD-YYYY'),
+      showDayPicker: !this.state.showDayPicker,
+    })
   }
 
   handleTagClick = (event) => {
     let clickedTag = event.target.innerHTML;
     this.setState({
-                    listTags: _.pull(this.state.listTags, clickedTag),
-                    tileTags: this.state.tileTags.concat([clickedTag]),
-                    showTagPicker: !this.state.showTagPicker,
-                  })
+      listTags: _.pull(this.state.listTags, clickedTag),
+      tileTags: this.state.tileTags.concat([clickedTag]),
+      showTagPicker: !this.state.showTagPicker,
+    })
   }
 
   handleTileClick = (event) => {
     event.stopPropagation();
     let clickedTile = event.target.attributes.getNamedItem('data-tagName').value;
     this.setState({
-                    tileTags: _.pull(this.state.tileTags, clickedTile),
-                    listTags: this.state.listTags.concat([clickedTile]).sort(),
-                    showTagPicker: false,
-                  })
+      listTags: this.state.listTags.concat([clickedTile]).sort(),
+      tileTags: _.pull(this.state.tileTags, clickedTile),
+      showTagPicker: false,
+    })
   }
 
   toggleDayPicker = () => this.setState({ showDayPicker: !this.state.showDayPicker })
@@ -167,95 +167,85 @@ export default class StoryDetails extends React.Component {
   }
 
   render() {
-      return (
-        <Container>
-          <StyledTitle>{this.props.title} DETAILS</StyledTitle>
-          <br/>
-          <br/>
-            <InputRowContainer>
-              <LocationIcon name='location'/>
-              <GoogleLocator/>              
-            </InputRowContainer>
-            <HorizontalDivider color='lighter-grey' opaque/>            
-            <InputRowContainer>
-              <DateIcon name='date'/>
-              <StyledInput 
-                type='text'
-                placeholder={'MM-DD-YYYY'}
-                value={this.state.day}
-                onClick={this.toggleDayPicker}
-              />
-              {this.state.showDayPicker &&
-                <StyledReactDayPicker 
-                  handleDayClick={this.handleDayClick}
+    return (
+      <Container>
+        <StyledTitle>{this.props.title} DETAILS</StyledTitle>
+        <br/>
+        <br/>
+        <InputRowContainer>
+          <LocationIcon name='location'/>
+          <GoogleLocator/>
+        </InputRowContainer>
+        <HorizontalDivider color='lighter-grey' opaque/>
+        <InputRowContainer>
+          <DateIcon name='date'/>
+          <StyledInput
+            type='text'
+            placeholder={'MM-DD-YYYY'}
+            value={this.state.day}
+            onClick={this.toggleDayPicker}
+          />
+          {this.state.showDayPicker &&
+            <StyledReactDayPicker
+              handleDayClick={this.handleDayClick}
+            />
+          }
+        </InputRowContainer>
+        <HorizontalDivider color='lighter-grey' opaque/>
+        <InputRowContainer onClick={this.toggleTagPicker}>
+          <TagIcon name='tag'/>
+          <StyledInput
+            type='text'
+            placeholder={!this.state.tileTags.length ? 'Add tags' : ''}
+            value={''}
+          />
+          {!!this.state.tileTags.length &&
+            <TagTileGrid
+              tileTags={this.state.tileTags}
+              handleTileClick={this.handleTileClick}
+            />
+          }
+          {this.state.showTagPicker &&
+            <MultiTagPicker
+              handleTagClick={this.handleTagClick}
+              listTags={this.state.listTags}
+            />
+          }
+        </InputRowContainer>
+        <HorizontalDivider color='lighter-grey' opaque/>
+        <InputRowContainer>
+          <ActivitySelectRow>
+            <label>Activity: </label>
+              <RadioButtonGroup name="activity" defaultSelected="eat" style={styles.radioButtonGroup}>
+                <RadioButton
+                  value="eat"
+                  label="EAT"
+                  style={styles.radioButton}
+                  labelStyle={styles.radioButtonLabel}
+                  checkedIcon={<RadioButtonChecked style={{fill: '#ed1e2e'}} />}
+                  uncheckedIcon={<RadioButtonUnchecked/>}
                 />
-              }
-            </InputRowContainer>
-            <HorizontalDivider color='lighter-grey' opaque/>
-            <InputRowContainer onClick={this.toggleTagPicker}>
-              <TagIcon name='tag'/>
-              <StyledInput 
-                type='text'
-                placeholder={!this.state.tileTags.length ? 'Add tags' : ''}
-                value={''}
-              />
-              {!!this.state.tileTags.length &&
-                <TagTileGrid 
-                  tileTags={this.state.tileTags}
-                  handleTileClick={this.handleTileClick}
+                <RadioButton
+                  value="stay"
+                  label="STAY"
+                  style={styles.radioButton}
+                  labelStyle={styles.radioButtonLabel}
+                  checkedIcon={<RadioButtonChecked style={{fill: '#ed1e2e'}} />}
+                  uncheckedIcon={<RadioButtonUnchecked/>}
                 />
-              }
-              {this.state.showTagPicker &&
-                <MultiTagPicker
-                  handleTagClick={this.handleTagClick}
-                  listTags={this.state.listTags}
+                <RadioButton
+                  value="do"
+                  label="DO"
+                  style={styles.radioButton}
+                  labelStyle={styles.radioButtonLabel}
+                  checkedIcon={<RadioButtonChecked style={{fill: '#ed1e2e'}} />}
+                  uncheckedIcon={<RadioButtonUnchecked/>}
                 />
-              }
-            </InputRowContainer>
-            <HorizontalDivider color='lighter-grey' opaque/>                                     
-            <InputRowContainer>
-              <ActivitySelectRow>
-                <label>Activity: </label>
-                  <RadioButtonGroup name="activity" defaultSelected="eat" style={styles.radioButtonGroup}>
-                    <RadioButton
-                      value="eat"
-                      label="EAT"
-                      style={styles.radioButton}
-                      labelStyle={styles.radioButtonLabel}
-                      checkedIcon={<RadioButtonChecked style={{fill: '#ed1e2e'}} />}
-                      uncheckedIcon={<RadioButtonUnchecked/>}
-                    />
-                    <RadioButton
-                      value="stay"
-                      label="STAY"
-                      style={styles.radioButton}
-                      labelStyle={styles.radioButtonLabel}
-                      checkedIcon={<RadioButtonChecked style={{fill: '#ed1e2e'}} />}
-                      uncheckedIcon={<RadioButtonUnchecked/>}
-                    />
-                    <RadioButton
-                      value="do"
-                      label="DO"
-                      style={styles.radioButton}
-                      labelStyle={styles.radioButtonLabel}
-                      checkedIcon={<RadioButtonChecked style={{fill: '#ed1e2e'}} />}
-                      uncheckedIcon={<RadioButtonUnchecked/>}
-                    />
-                  </RadioButtonGroup>                
-              </ActivitySelectRow>                           
-            </InputRowContainer>
-            <HorizontalDivider color='lighter-grey' opaque/>             
-        </Container>
-      )
+              </RadioButtonGroup>
+          </ActivitySelectRow>
+        </InputRowContainer>
+        <HorizontalDivider color='lighter-grey' opaque/>
+      </Container>
+    )
   }
 }
-
-
-
-
-
-
-
-
-
-

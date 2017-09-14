@@ -20,7 +20,7 @@ const DayPickerContainer = styled.div`
   background-color: white;
   outline: none;
   -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 `
 
 const StyledIconLeft = styled(Icon)`
@@ -43,9 +43,6 @@ function Navbar({
   className,
   localeUtils,
 }) {
-  const months = localeUtils.getMonths();
-  const prev = months[previousMonth.getMonth()];
-  const next = months[nextMonth.getMonth()];
   const styleLeft = {
     float: 'left',
   };
@@ -54,14 +51,14 @@ function Navbar({
   };
   return (
     <div className={className}>
-      <StyledIconLeft 
+      <StyledIconLeft
         name='arrowLeftRed'
-        style={styleLeft} 
-        onClick={() => onPreviousClick()}/>
+        style={styleLeft}
+        onClick={onPreviousClick}/>
       <StyledIconRight
         name='arrowRightRed'
-        style={styleRight} 
-        onClick={() => onNextClick()}/>
+        style={styleRight}
+        onClick={onNextClick}/>
     </div>
   );
 }
@@ -69,18 +66,18 @@ function Navbar({
 export default class ReactDayPicker extends React.Component {
   static propTypes = {
     handleDayClick: PropTypes.func,
-  }  
+  }
 
 
   render() {
     return (
       <Container>
         <DayPickerContainer>
-          <DayPicker 
-            navbarElement={<Navbar />} 
+          <DayPicker
+            navbarElement={<Navbar />}
             onDayClick={this.props.handleDayClick}
           />
-        </DayPickerContainer>        
+        </DayPickerContainer>
       </Container>
     )
   }

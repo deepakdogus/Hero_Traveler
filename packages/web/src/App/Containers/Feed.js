@@ -12,7 +12,7 @@ const CenteredText = styled.p`
 `
 
 const FeedText = styled(CenteredText)`
-  font-weigth: 400;
+  font-weight: 400;
   font-size: 23px;
   letter-spacing: 1.5px;
 `

@@ -46,8 +46,10 @@ const colors = {
   btnGreyBackground: '#949292',
   btnDarkGreyBackground: '#5d5b5f',
   dividerGrey: '#dedede',
-  blueBubble: '#e3f2fd',
   pink: '#fde8ea',
+  backgroundOpaque: 'rgba(26,28,33,0.6)',
+  closeXBorder: '#6d6a6d',
+  blueBubble: '#e3f2fd',
   onHoverGrey: '#f6f6f6',
 }
 

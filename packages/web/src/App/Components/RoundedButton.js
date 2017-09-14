@@ -7,6 +7,7 @@ import VerticalCenter from './VerticalCenter'
 function getMargin(props) {
   if (props.margin === 'none') return 0;
   else if (props.margin === 'small') return '3px'
+  else if (props.margin === 'medium') return '11px'
   else if (props.margin === 'vertical') return '5px 0'
   return `${props.theme.Metrics.baseMargin}px ${props.theme.Metrics.section}px`
 }
@@ -14,8 +15,9 @@ function getMargin(props) {
 // 2px 6px 3px is default react padding.
 function getPadding(props) {
   if (props.padding ==='even') return '5px';
+  if (props.padding ==='evenMedium') return '11px';
   if (props.padding ==='mediumEven') return '8px';
-  if (props.padding ==='mediumDefault') return '4px 8px 5px';
+  if (props.padding ==='medium') return '4px 8px 5px';
   return '2px 6px 3px'
 }
 
@@ -36,14 +38,20 @@ function getBackgroundColor (type, colors) {
     case 'twitter':
     case 'lightGrey':
       return colors.snow
+    case 'opaqueGrey':
+      return colors.snow
+    case 'backgroundOpaque':
+      return colors.backgroundOpaque
     default:
       return colors.red
   }
 }
 
 const StyledButton = styled.button`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
   height: ${props => props.height || 'auto'};
   border-radius: 30px;
+  outline: none;
   border: 1px solid;
   outline: none;
   border-color: ${props => {
@@ -63,6 +71,10 @@ const StyledButton = styled.button`
         return props.theme.Colors.snow
       case 'blackWhite':
         return props.theme.Colors.photoOverlay
+      case 'opaqueGrey':
+        return props.theme.Colors.grey
+      case 'backgroundOpaque':
+        return props.theme.Colors.closeXBorder
       default:
         return props.theme.Colors.red
     }

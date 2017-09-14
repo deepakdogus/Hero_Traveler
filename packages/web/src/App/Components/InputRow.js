@@ -49,15 +49,15 @@ export default class InputRow extends Component {
         <InputFooter>
           <VerticalCenter>
             <Row>
-              <StyledFooterInput placeholder='Add a comment...'/>      
+              <StyledFooterInput placeholder='Add a comment...'/>
               <RoundedButton
                 text='Send'
                 margin='none'
                 width='94px'
-                padding='mediumDefault'
-              />              
+                padding='medium'
+              />
             </Row>
-          </VerticalCenter>          
+          </VerticalCenter>
         </InputFooter>
       </Container>
     )

@@ -30,6 +30,7 @@ const StyledIcon = styled.img`
 export default class Icon extends React.Component {
 	static propTypes = {
     name: PropTypes.string,
+    color: PropTypes.string,
   }
 
 	getIconName(navKey) {
@@ -114,12 +115,18 @@ export default class Icon extends React.Component {
         return Images.iconFlashCamera
       case 'video':
         return Images.iconCreateMenuVideo
+      case 'photo':
+        return Images.iconCreateMenuPhoto
       case 'profileBadge':
         return Images.iconProfileBadge
       case 'defaultProfile':
         return Images.iconDefaultProfile
       case 'components':
         return Images.components
+      case 'trash':
+        return Images.iconEditImageTrash
+      case 'addCoverCamera':
+        return Images.iconAddCoverCamera
       case 'profile':
       default:
         return Images.iconNavProfile

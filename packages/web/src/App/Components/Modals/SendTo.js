@@ -3,16 +3,19 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import {usersExample} from '../../Containers/Feed_TEST_DATA'
-import FollowFollowingRow from '../FollowFollowingRow'
-import {RightTitle, RightModalCloseX} from './Shared'
+import SendToRow from '../SendToRow'
+import {RightTitle, StyledInput, RightModalCloseX} from './Shared'
 
 const Container = styled.div``
 
 const UserRowsContainer = styled.div`
   padding: 25px;
 `
+const InputContainer = styled.div`
+  padding: 25px;
+`
 
-export default class FollowFollowing extends React.Component {
+export default class SendTo extends React.Component {
   static PropTypes = {
     profile: PropTypes.object,
     users: PropTypes.object,
@@ -22,10 +25,9 @@ export default class FollowFollowing extends React.Component {
   renderUserRows(userKeys) {
     return userKeys.map((key, index) => {
       return (
-        <FollowFollowingRow
+        <SendToRow
           key={key}
           user={usersExample[key]}
-          isFollowing={index === 0}
           margin='0 0 25px'
         />
       )
@@ -41,10 +43,14 @@ export default class FollowFollowing extends React.Component {
     return (
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
-        <RightTitle>{profile.username.toUpperCase()} IS FOLLOWED BY</RightTitle>
+        <RightTitle>SEND TO</RightTitle>
+        <InputContainer>
+          <StyledInput placeholder='Search by name or email'/>
+        </InputContainer>
         <UserRowsContainer>
           {this.renderUserRows(userKeys)}
         </UserRowsContainer>
+
       </Container>
     )
   }

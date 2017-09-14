@@ -43,7 +43,7 @@ const Badge = styled(StyledImage)`
   margin: 40px auto;
 `
 
-export default class Login extends React.Component {
+export default class Contributor extends React.Component {
 
   render() {
     return (

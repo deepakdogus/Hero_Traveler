@@ -4,13 +4,13 @@ import Modal from 'react-modal'
 
 const customModalStyles = {
   content: {
-    width: 570,
+    maxWidth: 750,
+    maxHeight: 600,
     top: 0,
     bottom: 0,
+    left: 0,
     right: 0,
-    left: 'auto',
-    padding: 0,
-    borderRadius: 0,
+    margin: 'auto',
   },
   overlay: {
     backgroundColor: 'rgba(0,0,0, .5)',
@@ -18,7 +18,7 @@ const customModalStyles = {
   }
 }
 
-export default class RightModal extends React.Component {
+export default class CenterModal extends React.Component {
   static propTypes = {
     isOpen: PropTypes.bool,
     contentLabel: PropTypes.string,

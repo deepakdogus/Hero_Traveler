@@ -16,6 +16,8 @@ function getMargin(props) {
 function getPadding(props) {
   if (props.padding ==='even') return '5px';
   if (props.padding ==='evenMedium') return '11px';
+  if (props.padding ==='mediumEven') return '8px';
+  if (props.padding ==='medium') return '4px 8px 5px';
   return '2px 6px 3px'
 }
 
@@ -39,7 +41,7 @@ function getBackgroundColor (type, colors) {
     case 'opaqueGrey':
       return colors.snow
     case 'backgroundOpaque':
-      return colors.backgroundOpaque       
+      return colors.backgroundOpaque
     default:
       return colors.red
   }
@@ -51,6 +53,7 @@ const StyledButton = styled.button`
   border-radius: 30px;
   outline: none;
   border: 1px solid;
+  outline: none;
   border-color: ${props => {
     switch(props.type) {
       case 'lightGrey':
@@ -71,7 +74,7 @@ const StyledButton = styled.button`
       case 'opaqueGrey':
         return props.theme.Colors.grey
       case 'backgroundOpaque':
-        return props.theme.Colors.closeXBorder 
+        return props.theme.Colors.closeXBorder
       default:
         return props.theme.Colors.red
     }
@@ -92,6 +95,7 @@ const StyledButton = styled.button`
   }
 `
 const Text = styled.p`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
   color: ${props => {
     switch(props.type) {
       case 'blackWhite':

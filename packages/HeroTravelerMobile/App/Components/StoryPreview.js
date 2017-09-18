@@ -127,7 +127,7 @@ export default class StoryPreview extends Component {
       <View style={styles.userContent}>
         <Avatar
           style={styles.avatar}
-          avatarUrl={getImageUrl(user.profile.avatar)}
+          avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
         />
         <Text style={styles.username}>{user.username}</Text>
       </View>

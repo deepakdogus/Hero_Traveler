@@ -115,7 +115,7 @@ export default class StoryPreview extends React.Component {
           { type !== 'suggestions' &&
             <DetailsContainer>
               <ProfileLink to={`/profile/${author.id}`}>
-                <Avatar avatarUrl={getImageUrl(author.profile.avatar)} size='large'/>
+                <Avatar avatarUrl={getImageUrl(author.profile.avatar, 'avatar')} size='large'/>
                 <VerticalCenter>
                   <Username>{author.username}</Username>
                 </VerticalCenter>

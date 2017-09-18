@@ -85,7 +85,7 @@ class SignupSocialScreen extends React.Component {
                 <View style={[styles.row, styles.followers]}>
                   <Avatar
                     style={styles.avatar}
-                    avatarUrl={getImageUrl(u.profile.avatar)}
+                    avatarUrl={getImageUrl(u.profile.avatar, 'avatar')}
                   />
                   <View style={styles.nameWrapper}>
                     <Text style={styles.name}>{u.profile.fullName}</Text>

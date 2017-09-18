@@ -31,7 +31,7 @@ export default class ThreadListItem extends Component {
           <View style={styles.innerButton}>
             <Avatar
               style={styles.avatar}
-              avatarUrl={getImageUrl(fromUser.profile.avatar)}
+              avatarUrl={getImageUrl(fromUser.profile.avatar, 'avatar')}
             />
             <View style={[styles.middle]}>
               <Text style={styles.usernameText}>

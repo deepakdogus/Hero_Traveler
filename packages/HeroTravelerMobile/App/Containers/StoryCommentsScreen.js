@@ -131,7 +131,7 @@ class StoryCommentsScreen extends React.Component {
             {this.state.comments.map(comment => {
               return(
                 <Comment
-                  avatar={getImageUrl(comment.user.profile.avatar)}
+                  avatar={getImageUrl(comment.user.profile.avatar, 'avatar')}
                   name={comment.user.profile.fullName}
                   comment={comment.content}
                   timestamp={moment(comment.createdAt).fromNow()}

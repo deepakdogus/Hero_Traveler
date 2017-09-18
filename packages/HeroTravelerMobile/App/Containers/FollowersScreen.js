@@ -95,7 +95,7 @@ class FollowersScreen extends React.Component {
                   <TouchableOpacity onPress={() => NavActions.readOnlyProfile({userId: u.id})}>
                   <Avatar
                     style={styles.avatar}
-                    avatarUrl={getImageUrl(u.profile.avatar)}
+                    avatarUrl={getImageUrl(u.profile.avatar, 'avatar')}
                   />
                   </TouchableOpacity>
                   <View style={styles.nameWrapper}>

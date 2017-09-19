@@ -33,6 +33,8 @@
     "babel-plugin-transform-remove-console": "^6.8.4",
     "babel-preset-env": "^1.5.2",
     "babel-preset-stage-0": "^6.24.1",
+    "concurrently": "^3.5.0",
+    "cpx": "^1.5.0",
     "draft-js": "0.10.1",
     "eslint-plugin-react-native": "^2.3.2",
     "format-json": "^1.0.3",
@@ -80,6 +82,7 @@
     "redux-persist": "^4.1.0",
     "redux-saga": "^0.14.3",
     "reduxsauce": "0.4.1",
+    "rimraf": "^2.6.2",
     "seamless-immutable": "^7.0.1"
   },
   "devDependencies": {

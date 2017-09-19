@@ -65,6 +65,14 @@ export default class Editor extends Component {
     }
   }
 
+  // resetting editorState when we create a new story or edit a story with no content
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.value && this.props.value) {
+      const editorState = EditorState.createEmpty()
+      this.setState({editorState})
+    }
+  }
+
   setStateDebug = (state) => {
     this.setState(state)
   }

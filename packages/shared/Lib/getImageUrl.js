@@ -6,6 +6,11 @@ export function getImageUrlBase() {
   return Env.cdnBaseUrl + 'image/upload'
 }
 
+export function getContentBlockImage(urlSuffix) {
+  const url = `${getImageUrlBase()}/q_auto:best,f_auto/${urlSuffix}`
+  return url
+}
+
 export default function getImageUrl(image: object, type = 'cover'): ?string {
   if (!_.has(image, 'original')) return undefined
   const {path, folders} = image.original

@@ -88,9 +88,12 @@ const atomicHandler = (item: Object): any => {
           </View>
         );
       case 'video':
+        let videoUrl
+        if (item.data.HLSUrl) videoUrl = item.data.HLSUrl
+        else videoUrl = `${getVideoUrlBase()}/${item.data.url}`
         return (
           <View key={item.key} style={styles.mediaViewWrapper}>
-            <StoryVideo src={`${getVideoUrlBase()}/${item.data.url}`}/>
+            <StoryVideo src={videoUrl}/>
             {!!item.text && <Text style={styles.caption}>{item.text}</Text>}
           </View>
         )

@@ -816,10 +816,7 @@ class StoryCoverScreen extends Component {
             }}
           />
           <KeyboardAvoidingView behavior='position'>
-            <View style={[
-              styles.coverWrapper,
-              !this.isPhotoType() && styles.videoCoverWrapper
-            ]}>
+            <View style={this.isPhotoType() ? styles.coverWrapper : styles.videoCoverWrapper}>
               {this.state.error &&
                 <ShadowButton
                   style={styles.errorButton}

@@ -22,7 +22,7 @@ import {styles, rendererStyles} from './Styles/StoryReadingScreenStyles'
 import Video from '../Components/Video'
 import Immutable from 'seamless-immutable'
 import {getVideoUrlBase} from '../Shared/Lib/getVideoUrl'
-import {getImageUrlBase} from '../Shared/Lib/getImageUrl'
+import {getContentBlockImage} from '../Shared/Lib/getImageUrl'
 import {CategoryFeedNavActionStyles} from './Styles/ExploreScreenStyles'
 
 const enhanceStoryVideo = compose(
@@ -82,7 +82,7 @@ const atomicHandler = (item: Object): any => {
           <View key={item.key} style={styles.mediaViewWrapper}>
             <Image
               fullWidth={true}
-              source={{uri: `${getImageUrlBase()}/${item.data.url}`}}
+              source={{uri: `${getContentBlockImage(item.data.url)}`}}
             />
             {!!item.text && <Text style={styles.caption}>{item.text}</Text>}
           </View>

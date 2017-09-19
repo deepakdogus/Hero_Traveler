@@ -1,12 +1,8 @@
 import {StoryDraft, Models} from '@hero/ht-core'
-import formatUploadObject from '../../../utils/formatUploadObject';
 
 export default function uploadDraftMedia(req, res, next) {
   const draftId = req.params.id
   const path = `${req.body.public_id}.mov`
-  const searchObject = {
-    original: { path }
-  }
   Models.Video.findOne({'original.path': path})
   .then(video => {
     if (video) {
@@ -17,5 +13,6 @@ export default function uploadDraftMedia(req, res, next) {
       })
       return video.save()
     }
+    return video
   })
 }

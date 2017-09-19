@@ -11,7 +11,17 @@ const VideoSchema = Schema({
     width: Number,
     height: Number,
     meta: Schema.Types.Mixed
-  }
+  },
+  streamingFormats: {
+    HLS: {
+      type: String,
+      default: undefined,
+    },
+    DASH: {
+      type: String,
+      default: undefined,
+    }
+  },
 })
 
 export default Upload.discriminator('Video', VideoSchema)

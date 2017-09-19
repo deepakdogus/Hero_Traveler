@@ -21,7 +21,7 @@ const ActivityTypes = {
 
 const Tab = ({text, onPress, selected, notificationCount}) => {
   return (
-    <TouchableOpacity style={[styles.tab, selected ? styles.tabSelected : null]} onPress={onPress}>
+    <TouchableOpacity style={[styles.tab, selected ? styles.tabSelected : null, {width: '100%'}]} onPress={onPress}>
       <Text style={[styles.tabText, selected ? styles.tabTextSelected : null]}>{text}</Text>
       {notificationCount > 0 &&
         <NotificationBadge
@@ -142,12 +142,14 @@ class NotificationScreen extends React.Component {
               onPress={() => this.setState({selectedTab: 0})}
               text='ACTIVITY'
             />
-            <Tab
-              notificationCount={0}
-              selected={this.state.selectedTab === 1}
-              onPress={() => this.setState({selectedTab: 1})}
-              text='INBOX'
-            />
+          {
+            // <Tab
+            //   notificationCount={0}
+            //   selected={this.state.selectedTab === 1}
+            //   onPress={() => this.setState({selectedTab: 1})}
+            //   text='INBOX'
+            // />
+          }
           </View>
           <View style={styles.tabContent}>
             {content}

@@ -7,8 +7,7 @@ export function getImageUrlBase() {
 }
 
 export function getContentBlockImage(urlSuffix) {
-  const url = `${getImageUrlBase()}/q_auto:best,f_auto/${urlSuffix}`
-  return url
+  return `${getImageUrlBase()}/q_auto:best,f_auto/${urlSuffix}`
 }
 
 export default function getImageUrl(image: object, type = 'cover'): ?string {

@@ -216,9 +216,12 @@ class StoryReadingScreen extends React.Component {
   }
 
   renderTags = () => {
+    const lastIndex = this.props.story.categories.length - 1
     return this.props.story.categories.map((category, index) => {
       return (
-        <Text key={index} style={styles.tag}>#{category.title} </Text>
+        <Text key={index} style={styles.tag}>
+          {category.title}{index !== lastIndex ? ', ': ''}
+        </Text>
       )
     })
   }
@@ -281,6 +284,7 @@ class StoryReadingScreen extends React.Component {
             }
             {!!story.categories.length &&
               <View style={[styles.marginedRow, styles.tagRow]}>
+                <Text style={styles.tagLabel}>Tags: </Text>
                 {this.renderTags()}
               </View>
             }

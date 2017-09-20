@@ -299,9 +299,9 @@ class StoryCoverScreen extends Component {
   renderTextColor = (baseStyle) => {
     return R.ifElse(
       R.identity,
-      R.always([baseStyle, { color: 'white' }]),
+      R.always([baseStyle, { color: Colors.snow }]),
       R.always(baseStyle),
-    )(!!this.state.coverImage)
+    )(!!(this.state.coverImage || this.state.coverVideo))
   }
 
   renderPlaceholderColor = (baseColor) => {
@@ -887,13 +887,14 @@ const third = (1 / 3) * (Metrics.screenHeight - Metrics.navBarHeight * 2)
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.lightGreyAreas,
+    backgroundColor: 'white',
   },
   containerWithNavbar: {
     ...ApplicationStyles.screen.containerWithNavbar
   },
   lightGreyAreasBG: {
-    backgroundColor: Colors.transparent,
+    flex: 1,
+    backgroundColor: Colors.lightGreyAreas,
   },
   errorButton: {
     position: 'absolute',
@@ -914,7 +915,7 @@ const styles = StyleSheet.create({
   },
   titleInput: {
     ...Fonts.style.title,
-    color: Colors.snow,
+    color: Colors.background,
     marginTop: 20,
     marginLeft: 20,
     fontSize: 28,
@@ -922,7 +923,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   subTitleInput: {
-    color: Colors.snow,
+    color: Colors.background,
     height: 28,
     fontSize: 14,
     marginLeft: 20
@@ -1043,7 +1044,8 @@ const styles = StyleSheet.create({
 const customStyles = {
   unstyled: {
     fontSize: 18,
-    color: '#757575'
+    color: '#757575',
+    fontWeight: '400',
   },
   atomic: {
     fontSize: 15,
@@ -1056,7 +1058,7 @@ const customStyles = {
   },
   'header-one': {
     fontSize: 21,
-    fontWeight: '400',
+    fontWeight: '600',
     color: '#1a1c21'
   }
 }

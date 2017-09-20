@@ -1043,7 +1043,8 @@ const styles = StyleSheet.create({
 const customStyles = {
   unstyled: {
     fontSize: 18,
-    color: '#757575'
+    color: '#757575',
+    fontWeight: '400',
   },
   atomic: {
     fontSize: 15,
@@ -1056,7 +1057,7 @@ const customStyles = {
   },
   'header-one': {
     fontSize: 21,
-    fontWeight: '400',
+    fontWeight: '600',
     color: '#1a1c21'
   }
 }

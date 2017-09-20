@@ -130,7 +130,7 @@ export const styles = StyleSheet.create({
 export const rendererStyles = StyleSheet.flatten({
   unstyled: {
     fontSize: 18,
-    fontWeight: '300',
+    fontWeight: '400',
     fontFamily: Fonts.type.base,
     color: Colors.grey,
     letterSpacing: .7,
@@ -139,7 +139,7 @@ export const rendererStyles = StyleSheet.flatten({
   },
   'header-one': {
     fontSize: Fonts.size.h5,
-    fontWeight: '400',
+    fontWeight: '600',
     fontFamily: Fonts.type.base,
     color: Colors.background,
     letterSpacing: .7,

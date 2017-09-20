@@ -299,9 +299,9 @@ class StoryCoverScreen extends Component {
   renderTextColor = (baseStyle) => {
     return R.ifElse(
       R.identity,
-      R.always([baseStyle, { color: 'white' }]),
+      R.always([baseStyle, { color: Colors.snow }]),
       R.always(baseStyle),
-    )(!!this.state.coverImage)
+    )(!!(this.state.coverImage || this.state.coverVideo))
   }
 
   renderPlaceholderColor = (baseColor) => {
@@ -914,7 +914,7 @@ const styles = StyleSheet.create({
   },
   titleInput: {
     ...Fonts.style.title,
-    color: Colors.snow,
+    color: Colors.background,
     marginTop: 20,
     marginLeft: 20,
     fontSize: 28,
@@ -922,7 +922,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   subTitleInput: {
-    color: Colors.snow,
+    color: Colors.background,
     height: 28,
     fontSize: 14,
     marginLeft: 20

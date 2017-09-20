@@ -105,6 +105,15 @@ export const styles = StyleSheet.create({
     flex: 1,
     marginVertical: 25
   },
+  tagLabel: {
+    fontWeight: '800',
+    fontSize: 15,
+    color: Colors.background,
+    fontFamily: Fonts.type.base,
+    letterSpacing: .7,
+    height: 19,
+    lineHeight: 17,
+  },
   tag: {
     fontWeight: '300',
     fontSize: 15,

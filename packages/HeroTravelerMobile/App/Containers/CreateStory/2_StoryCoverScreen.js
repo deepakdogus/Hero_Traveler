@@ -887,13 +887,14 @@ const third = (1 / 3) * (Metrics.screenHeight - Metrics.navBarHeight * 2)
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.lightGreyAreas,
+    backgroundColor: 'white',
   },
   containerWithNavbar: {
     ...ApplicationStyles.screen.containerWithNavbar
   },
   lightGreyAreasBG: {
-    backgroundColor: Colors.transparent,
+    flex: 1,
+    backgroundColor: Colors.lightGreyAreas,
   },
   errorButton: {
     position: 'absolute',

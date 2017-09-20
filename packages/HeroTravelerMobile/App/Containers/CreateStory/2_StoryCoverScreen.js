@@ -587,11 +587,6 @@ class StoryCoverScreen extends Component {
                     style={styles.iconButton}>
                     <Icon name={icon} color={Colors.snow} size={30} />
                   </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={this._touchTrash}
-                    style={styles.iconButton}>
-                    <Icon name='trash' color={Colors.snow} size={30} />
-                  </TouchableOpacity>
                 </Animated.View>
               </View>
             </TouchableWithoutFeedback>

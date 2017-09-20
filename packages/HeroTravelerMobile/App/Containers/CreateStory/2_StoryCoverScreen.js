@@ -610,6 +610,7 @@ class StoryCoverScreen extends Component {
             returnKeyType='done'
             maxLength={40}
             multiline={true}
+            blurOnSubmit
             onContentSizeChange={this.setTitleHeight}
           />
           <TextInput
@@ -619,7 +620,7 @@ class StoryCoverScreen extends Component {
             onChangeText={this.setDescription}
             value={this.state.description}
             returnKeyType='done'
-            maxLength={32}
+            maxLength={50}
           />
         </View>
       </View>

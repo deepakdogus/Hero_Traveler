@@ -1,21 +1,19 @@
 import { StyleSheet } from 'react-native'
 import { ApplicationStyles, Colors, Metrics, Fonts } from '../../Shared/Themes/'
 
-
-export const placeholderColor = Colors.background
-
 const third = (1 / 3) * (Metrics.screenHeight - Metrics.navBarHeight * 2)
 
 export default StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.lightGreyAreas,
+    backgroundColor: 'white',
   },
   containerWithNavbar: {
     ...ApplicationStyles.screen.containerWithNavbar
   },
   lightGreyAreasBG: {
-    backgroundColor: Colors.transparent,
+    flex: 1,
+    backgroundColor: Colors.lightGreyAreas,
   },
   errorButton: {
     position: 'absolute',
@@ -36,7 +34,7 @@ export default StyleSheet.create({
   },
   titleInput: {
     ...Fonts.style.title,
-    color: Colors.snow,
+    color: Colors.background,
     marginTop: 20,
     marginLeft: 20,
     fontSize: 28,
@@ -44,7 +42,7 @@ export default StyleSheet.create({
     fontWeight: '500',
   },
   subTitleInput: {
-    color: Colors.snow,
+    color: Colors.background,
     height: 28,
     fontSize: 14,
     marginLeft: 20
@@ -160,12 +158,48 @@ export default StyleSheet.create({
   toolbarAvoiding: {
     height: Metrics.editorToolbarHeight
   },
+  closeModalTitle: {
+    textAlign: 'center',
+    fontSize: 19,
+    fontWeight: '600',
+    paddingTop: 17.5,
+  },
+  closeModalMessage: {
+    textAlign: 'center',
+    paddingHorizontal: 17.5,
+    paddingBottom: 10,
+  },
+  closeModalBtnWrapper: {
+    flexDirection: 'row',
+    height: 50,
+    alignItems: 'center',
+    borderTopWidth: .5,
+    borderTopColor: Colors.lightGrey,
+  },
+  closeModalBtn: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 50,
+  },
+  closeModalBtnLeft: {
+    borderRightWidth: .5,
+    borderRightColor: Colors.lightGrey,
+  },
+  closeModalBtnText: {
+    textAlign: 'center',
+    fontSize: 20,
+    color: '#007AFF',
+    lineHeight: 50,
+    width: 100,
+  }
 })
 
 export const customStyles = StyleSheet.create({
   unstyled: {
     fontSize: 18,
-    color: '#757575'
+    color: '#757575',
+    fontWeight: '400',
   },
   atomic: {
     fontSize: 15,
@@ -178,7 +212,18 @@ export const customStyles = StyleSheet.create({
   },
   'header-one': {
     fontSize: 21,
-    fontWeight: '400',
+    fontWeight: '600',
     color: '#1a1c21'
   }
 })
+
+export const closeModalBackgroundStyles = {
+  top: -180,
+}
+
+export const closeModalWrapperStyles = {
+  height: 140,
+  width: 270,
+  borderRadius: 15,
+  padding: 0,
+}

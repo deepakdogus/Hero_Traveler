@@ -103,7 +103,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
   
 //  if ([myUrl containsString:@])
   
-  if ([myUrl containsString:@"com.rehashstudio.herotraveler"]) {
+  if ([myUrl containsString:@"com.herotraveler.herotraveler-beta"]) {
     return [RCTLinkingManager application:application
                               openURL:url
                               sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]

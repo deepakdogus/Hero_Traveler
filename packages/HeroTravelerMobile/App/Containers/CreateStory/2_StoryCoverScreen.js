@@ -12,7 +12,6 @@ import {
   Alert,
   TextInput,
   ScrollView,
-  StyleSheet
 } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
@@ -25,7 +24,8 @@ import API from '../../Shared/Services/HeroAPI'
 import StoryEditActions from '../../Shared/Redux/StoryCreateRedux'
 import ShadowButton from '../../Components/ShadowButton'
 import Loader from '../../Components/Loader'
-import {Colors, Metrics, ApplicationStyles, Fonts} from '../../Shared/Themes'
+import {Colors, Metrics} from '../../Shared/Themes'
+import styles, {customStyles, closeModalBackgroundStyles, closeModalWrapperStyles} from './2_StoryCoverScreenStyles'
 import NavBar from './NavBar'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import getVideoUrl from '../../Shared/Lib/getVideoUrl'
@@ -35,6 +35,7 @@ import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTi
 import RoundedButton from '../../Components/RoundedButton'
 import UserActions from '../../Shared/Redux/Entities/Users'
 import TabIcon from '../../Components/TabIcon'
+import Modal from '../../Components/Modal'
 
 import Editor from '../../Components/NewEditor/Editor'
 import Toolbar from '../../Components/NewEditor/Toolbar'
@@ -86,6 +87,7 @@ class StoryCoverScreen extends Component {
       videoUploading: false,
       isScrollDown: !!coverImage,
       titleHeight: 34,
+      showCloseModal: false,
     }
   }
 
@@ -324,37 +326,63 @@ class StoryCoverScreen extends Component {
       this.state.originalStory.id === this.props.story.id
   }
 
+  _onLeftYes = () => {
+    if (!this.isValid() && this.isPhotoType()) {
+      this.setState({
+        error: 'Please add a cover and a title to continue',
+        showCloseModal: false
+      })
+    } else {
+      this.saveStory().then(() => {
+        this.navBack()
+      })
+    }
+  }
+
+  _onLeftNo = () => {
+    if (!this.isSavedDraft()) {
+      this.props.discardDraft(this.props.story.id)
+    } else {
+      this.props.update(this.props.story.id, this.state.originalStory, true)
+    }
+    this.navBack()
+  }
+
   _onLeft = () => {
+    this.setState({showCloseModal: true})
+  }
+
+  closeModal = () => {
+    this.setState({showCloseModal: false})
+  }
+
+  renderClose = () => {
     const isDraft = this.props.story.draft === true
     const title = isDraft ? 'Save Draft' : 'Save Edits'
     const message = this.isSavedDraft() ? 'Do you want to save these edits before you go?' : 'Do you want to save this story draft before you go?'
-
-    // When a user cancels the draft flow, remove the draft
-    Alert.alert(
-      title,
-      message,
-      [{
-        text: 'Yes',
-        onPress: () => {
-          if (!this.isValid() && this.isPhotoType()) {
-            this.setState({error: 'Please add a cover and a title to continue'})
-          } else {
-            this.saveStory().then(() => {
-              this.navBack()
-            })
-          }
-        }
-      }, {
-        text: 'No',
-        onPress: () => {
-          if (!this.isSavedDraft()) {
-            this.props.discardDraft(this.props.story.id)
-          } else {
-            this.props.update(this.props.story.id, this.state.originalStory, true)
-          }
-          this.navBack()
-        }
-      }]
+    return (
+      <Modal
+        closeModal={this.closeModal}
+        backgroundStyle={closeModalBackgroundStyles}
+        modalStyle={closeModalWrapperStyles}
+      >
+        <Text style={styles.closeModalTitle}>{title}</Text>
+        <Text style={styles.closeModalMessage}>{message}</Text>
+        <View style={styles.closeModalBtnWrapper}>
+          <TouchableOpacity
+            style={[styles.closeModalBtn, styles.closeModalBtnLeft]}
+            onPress={this._onLeftYes}
+          >
+            <Text style={styles.closeModalBtnText}>Yes</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.closeModalBtn}
+            onPress={this._onLeftNo}
+          >
+            <Text style={styles.closeModalBtnText}>No</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     )
   }
 
@@ -817,6 +845,7 @@ class StoryCoverScreen extends Component {
             }}
           />
           <KeyboardAvoidingView behavior='position'>
+            {this.state.showCloseModal && this.renderClose()}
             <View style={this.isPhotoType() ? styles.coverWrapper : styles.videoCoverWrapper}>
               {this.state.error &&
                 <ShadowButton
@@ -880,187 +909,6 @@ class StoryCoverScreen extends Component {
     this.setState(updatedState, () => {
       NavActions.pop()
     })
-  }
-}
-
-const third = (1 / 3) * (Metrics.screenHeight - Metrics.navBarHeight * 2)
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  containerWithNavbar: {
-    ...ApplicationStyles.screen.containerWithNavbar
-  },
-  lightGreyAreasBG: {
-    flex: 1,
-    backgroundColor: Colors.lightGreyAreas,
-  },
-  errorButton: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    marginVertical: Metrics.baseMargin,
-    marginHorizontal: Metrics.section,
-    zIndex: 100,
-  },
-  spaceView: {
-    height: third
-  },
-  loaderText: {
-    color: 'white',
-    fontSize: 18,
-    fontFamily: Fonts.type.montserrat
-  },
-  titleInput: {
-    ...Fonts.style.title,
-    color: Colors.background,
-    marginTop: 20,
-    marginLeft: 20,
-    fontSize: 28,
-    fontFamily: 'Arial',
-    fontWeight: '500',
-  },
-  subTitleInput: {
-    color: Colors.background,
-    height: 28,
-    fontSize: 14,
-    marginLeft: 20
-  },
-  cameraIcon: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: Metrics.baseMargin,
-  },
-  cameraIconImage: {
-    tintColor: 'gray',
-    height: 32,
-    width: 40,
-  },
-  videoIconImage: {
-    tintColor: 'gray',
-    height: 31,
-    width: 51,
-  },
-  colorOverLay: {
-    backgroundColor: Colors.windowTint,
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
-  addPhotoView: {
-    height: third,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  addTitleView: {
-    height: third,
-    justifyContent: 'center'
-  },
-  imageMenuView: {
-    height: third,
-    justifyContent: 'space-around',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  addPhotoButton: {
-    padding: 50,
-    justifyContent: 'center',
-    backgroundColor: 'transparent'
-  },
-  baseTextColor: {
-    color: Colors.background
-  },
-  coverPhoto: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    flex: 1,
-  },
-  coverVideo: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    flex: 1,
-  },
-  coverPhotoText: {
-    fontFamily: Fonts.type.montserrat,
-    fontSize: 13,
-  },
-  iconButton: {
-    backgroundColor: Colors.clear
-  },
-  navBarStyle: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
-  coverWrapper: {
-    height: Metrics.screenHeight - Metrics.navBarHeight - 30,
-  },
-  videoCoverWrapper: {
-    height: Metrics.screenHeight - Metrics.navBarHeight
-  },
-  angleDownIcon: {
-    height: 20,
-    alignItems: 'center',
-    marginVertical: Metrics.baseMargin / 2
-  },
-  editorWrapper: {
-    backgroundColor: Colors.snow
-  },
-  loadingText: {
-    color: Colors.white
-  },
-  loading: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  trackingToolbarContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    width: Metrics.screenWidth,
-  },
-  toolbarAvoiding: {
-    height: Metrics.editorToolbarHeight
-  },
-})
-
-const customStyles = {
-  unstyled: {
-    fontSize: 18,
-    color: '#757575',
-    fontWeight: '400',
-  },
-  atomic: {
-    fontSize: 15,
-    color: '#757575'
-  },
-  link: {
-    color: '#c4170c',
-    fontWeight: '600',
-    textDecorationLine: 'none',
-  },
-  'header-one': {
-    fontSize: 21,
-    fontWeight: '600',
-    color: '#1a1c21'
   }
 }
 

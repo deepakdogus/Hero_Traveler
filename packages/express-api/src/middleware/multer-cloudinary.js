@@ -17,6 +17,15 @@ function makeFilename(file) {
   return `${uuid()}-${nameWithoutExt}`
 }
 
+/*
+to debug streaming locally you need to `ngrok http 3000` and
+change .env's API_HOST to the address they give you
+
+doing an eager transformation to get the video in suitable streaming formats
+m3u8 is used for HLS (Apple devices, Safari, and the latest Chrome and Android browsers)
+mpd is used for DASH (Chrome/Android 4.0+, IE11 for Windoes 8.1, SmartTVs)
+see https://cloudinary.com/documentation/video_manipulation_and_delivery#step_3_deliver_the_video
+*/
 const videoStorage = cloudinaryStorage({
   cloudinary: Cloudinary,
   filename(req, file, cb) {
@@ -24,7 +33,13 @@ const videoStorage = cloudinaryStorage({
   },
   params: {
     resource_type: 'video',
-    folder: process.env.ASSETS_VIDEOS_FOLDER
+    folder: process.env.ASSETS_VIDEOS_FOLDER,
+    eager: [
+      { streaming_profile: '4k', format: 'm3u8'},
+      { streaming_profile: '4k', format: 'mpd'},
+    ],
+    eager_async: true,
+    eager_notification_url: `${process.env.API_HOST}/story/draft/cover-video`
   }
 })
 

@@ -99,7 +99,6 @@ export default StyleSheet.create({
     height: 300,
     backgroundColor: Colors.background,
     position: 'absolute',
-    top: -250,
     left:  Metrics.screenWidth * -.8,
     bottom: 0,
     width: Metrics.screenWidth,

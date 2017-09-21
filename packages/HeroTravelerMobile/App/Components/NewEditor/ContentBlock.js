@@ -241,7 +241,7 @@ export default class NewTextBlock extends PureComponent {
 
   getPlaceholder() {
     if (this.isCaptionable()) return 'Add a caption...'
-    else if (this.props.index === 0) return 'Tell your story here...'
+    else if (this.props.index === 0) return 'Tap here to start telling your story...'
     return ''
   }
 

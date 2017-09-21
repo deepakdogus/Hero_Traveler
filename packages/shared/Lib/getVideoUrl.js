@@ -7,9 +7,14 @@ export function getVideoUrlBase() {
 
 export default function getVideoUrl(video: object): ?string {
   if (!_.has(video, 'original')) return undefined
-
-  const {path, folders} = video.original
-  const filename = _.last(path.split('/'))
-  const url = `${getVideoUrlBase()}/${folders.join('/')}/${filename}`
+  let url
+  if (video.streamingFormats && video.streamingFormats.HLS) {
+    url = video.streamingFormats.HLS
+  }
+  else {
+    const {path, folders} = video.original
+    const filename = _.last(path.split('/'))
+    url = `${getVideoUrlBase()}/${folders.join('/')}/${filename}`
+  }
   return url
 }

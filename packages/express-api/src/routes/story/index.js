@@ -24,6 +24,7 @@ import removeDraft from './draft/remove'
 import updateDraft from './draft/update'
 import uploadDraftCoverImage from './draft/upload'
 import uploadDraftCoverVideo from './draft/upload_video'
+import uploadDraftCoverVideoWebhook from './draft/upload_video_webhook'
 import uploadDraftImage from './draft/upload_story_image'
 import uploadDraftVideo from './draft/upload_story_video'
 
@@ -35,6 +36,9 @@ router.get('/user/:userId/feed', hasValidOauth, getUserFeed);
 router.get('/user/:userId/like', hasValidOauth, endpointWrapper(getUserLikes));
 router.get('/category/:categoryId', endpointWrapper(getCategoryStories));
 router.get('/user/:userId/bookmark', hasValidOauth, endpointWrapper(getBookmarks))
+
+// webhook for uploading a video
+router.post('/draft/cover-video', endpointWrapper(uploadDraftCoverVideoWebhook))
 
 // Story draft related routes
 router.get('/draft', hasValidOauth, endpointWrapper(findDrafts))
@@ -51,6 +55,7 @@ router.put('/draft/:id/cover-video',
   multerVideo.single('video'),
   endpointWrapper(uploadDraftCoverVideo)
 )
+
 router.put('/draft/:id/video',
   hasValidOauth,
   multerVideo.single('video'),

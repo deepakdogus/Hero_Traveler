@@ -22,7 +22,7 @@ import {styles, rendererStyles} from './Styles/StoryReadingScreenStyles'
 import Video from '../Components/Video'
 import Immutable from 'seamless-immutable'
 import {getVideoUrlBase} from '../Shared/Lib/getVideoUrl'
-import {getImageUrlBase} from '../Shared/Lib/getImageUrl'
+import {getContentBlockImage} from '../Shared/Lib/getImageUrl'
 import {CategoryFeedNavActionStyles} from './Styles/ExploreScreenStyles'
 
 const enhanceStoryVideo = compose(
@@ -82,15 +82,18 @@ const atomicHandler = (item: Object): any => {
           <View key={item.key} style={styles.mediaViewWrapper}>
             <Image
               fullWidth={true}
-              source={{uri: `${getImageUrlBase()}/${item.data.url}`}}
+              source={{uri: `${getContentBlockImage(item.data.url)}`}}
             />
             {!!item.text && <Text style={styles.caption}>{item.text}</Text>}
           </View>
         );
       case 'video':
+        let videoUrl
+        if (item.data.HLSUrl) videoUrl = item.data.HLSUrl
+        else videoUrl = `${getVideoUrlBase()}/${item.data.url}`
         return (
           <View key={item.key} style={styles.mediaViewWrapper}>
-            <StoryVideo src={`${getVideoUrlBase()}/${item.data.url}`}/>
+            <StoryVideo src={videoUrl}/>
             {!!item.text && <Text style={styles.caption}>{item.text}</Text>}
           </View>
         )
@@ -213,9 +216,12 @@ class StoryReadingScreen extends React.Component {
   }
 
   renderTags = () => {
+    const lastIndex = this.props.story.categories.length - 1
     return this.props.story.categories.map((category, index) => {
       return (
-        <Text key={index} style={styles.tag}>#{category.title} </Text>
+        <Text key={index} style={styles.tag}>
+          {category.title}{index !== lastIndex ? ', ': ''}
+        </Text>
       )
     })
   }
@@ -278,6 +284,7 @@ class StoryReadingScreen extends React.Component {
             }
             {!!story.categories.length &&
               <View style={[styles.marginedRow, styles.tagRow]}>
+                <Text style={styles.tagLabel}>Tags: </Text>
                 {this.renderTags()}
               </View>
             }

@@ -349,7 +349,40 @@ class StoryCoverScreen extends Component {
   }
 
   _onLeft = () => {
-    this.setState({showCloseModal: true})
+    if (!this.isPhotoType()) {
+      const isDraft = this.props.story.draft === true
+      const title = isDraft ? 'Save Draft' : 'Save Edits'
+      const message = this.isSavedDraft() ? 'Do you want to save these edits before you go?' : 'Do you want to save this story draft before you go?'
+
+      // When a user cancels the draft flow, remove the draft
+      Alert.alert(
+        title,
+        message,
+        [{
+          text: 'Yes',
+          onPress: () => {
+            if (!this.isValid() && this.isPhotoType()) {
+              this.setState({error: 'Please add a cover and a title to continue'})
+            } else {
+              this.saveStory().then(() => {
+                this.navBack()
+              })
+            }
+          }
+        }, {
+          text: 'No',
+          onPress: () => {
+            if (!this.isSavedDraft()) {
+              this.props.discardDraft(this.props.story.id)
+            } else {
+              this.props.update(this.props.story.id, this.state.originalStory, true)
+            }
+            this.navBack()
+          }
+        }]
+      )
+    }
+    else this.setState({showCloseModal: true})
   }
 
   closeModal = () => {

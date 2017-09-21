@@ -660,12 +660,11 @@ class StoryCoverScreen extends Component {
           <View style={{
             height: 50,
             width: 120,
-            justifyContent: 'space-between',
+            justifyContent: 'center',
             flexDirection: 'row',
-            alignItems: 'center'
+            alignItems: 'center',
           }}>
             <Icon name='camera' size={18} />
-            <Icon name='trash' size={18} />
           </View>
             <Icon name='bullseye' style={{marginBottom: -10}} size={18} />
             <Icon name='hand-pointer-o' style={{backgroundColor: 'transparent', marginRight: -8}} size={30} />

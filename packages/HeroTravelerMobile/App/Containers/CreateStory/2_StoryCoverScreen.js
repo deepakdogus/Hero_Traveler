@@ -615,11 +615,6 @@ class StoryCoverScreen extends Component {
                     style={styles.iconButton}>
                     <Icon name={icon} color={Colors.snow} size={30} />
                   </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={this._touchTrash}
-                    style={styles.iconButton}>
-                    <Icon name='trash' color={Colors.snow} size={30} />
-                  </TouchableOpacity>
                 </Animated.View>
               </View>
             </TouchableWithoutFeedback>
@@ -694,12 +689,11 @@ class StoryCoverScreen extends Component {
           <View style={{
             height: 50,
             width: 120,
-            justifyContent: 'space-between',
+            justifyContent: 'center',
             flexDirection: 'row',
-            alignItems: 'center'
+            alignItems: 'center',
           }}>
             <Icon name='camera' size={18} />
-            <Icon name='trash' size={18} />
           </View>
             <Icon name='bullseye' style={{marginBottom: -10}} size={18} />
             <Icon name='hand-pointer-o' style={{backgroundColor: 'transparent', marginRight: -8}} size={30} />

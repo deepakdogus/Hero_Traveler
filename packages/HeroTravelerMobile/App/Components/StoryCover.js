@@ -117,6 +117,7 @@ export default class StoryCover extends Component {
       <View style={{flex: 1}}>
         <Video
           path={getVideoUrl(this.props.cover)}
+          imgUrl={getImageUrl(this.props.cover, 'video')}
           ref={this._makeRef}
           allowVideoPlay={this.props.allowVideoPlay}
           autoPlayVideo={this.props.autoPlayVideo}

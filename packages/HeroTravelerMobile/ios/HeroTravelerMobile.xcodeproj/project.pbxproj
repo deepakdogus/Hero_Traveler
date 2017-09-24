@@ -1919,8 +1919,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rehashstudio.herotraveler;
 				PRODUCT_NAME = HeroTravelerMobile;
-				PROVISIONING_PROFILE = "39dfcdde-206e-48c0-8085-fba573719a13";
-				PROVISIONING_PROFILE_SPECIFIER = "Hero Traveler Ad Hoc - PushNotif";
+				PROVISIONING_PROFILE = "7023479a-d9e4-42bb-92a1-2b3b11b1f58a";
+				PROVISIONING_PROFILE_SPECIFIER = "XC iOS Ad Hoc: com.rehashstudio.herotraveler";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1964,8 +1964,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rehashstudio.herotraveler;
 				PRODUCT_NAME = HeroTravelerMobile;
-				PROVISIONING_PROFILE = "39dfcdde-206e-48c0-8085-fba573719a13";
-				PROVISIONING_PROFILE_SPECIFIER = "Hero Traveler Ad Hoc - PushNotif";
+				PROVISIONING_PROFILE = "7023479a-d9e4-42bb-92a1-2b3b11b1f58a";
+				PROVISIONING_PROFILE_SPECIFIER = "XC iOS Ad Hoc: com.rehashstudio.herotraveler";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

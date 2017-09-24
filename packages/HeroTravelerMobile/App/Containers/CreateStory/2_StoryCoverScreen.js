@@ -396,7 +396,6 @@ class StoryCoverScreen extends Component {
     return (
       <Modal
         closeModal={this.closeModal}
-        backgroundStyle={closeModalBackgroundStyles}
         modalStyle={closeModalWrapperStyles}
       >
         <Text style={styles.closeModalTitle}>{title}</Text>
@@ -872,7 +871,6 @@ class StoryCoverScreen extends Component {
             }}
           />
           <KeyboardAvoidingView behavior='position'>
-            {this.state.showCloseModal && this.renderClose()}
             <View style={this.isPhotoType() ? styles.coverWrapper : styles.videoCoverWrapper}>
               {this.state.error &&
                 <ShadowButton
@@ -891,20 +889,6 @@ class StoryCoverScreen extends Component {
                 {this.renderEditor()}
               </View>
             }
-          {this.isUploading() &&
-            <Loader
-              style={styles.loading}
-              text={this.state.imageUploading ? 'Saving image...' : 'Saving video...'}
-              textStyle={styles.loadingText}
-              tintColor='rgba(0,0,0,.9)' />
-          }
-          {this.state.updating &&
-            <Loader
-              style={styles.loading}
-              text='Saving progress...'
-              textStyle={styles.loaderText}
-              tintColor='rgba(0,0,0,.9)' />
-          }
           {showTooltip && this.renderTooltip()}
           <View style={styles.toolbarAvoiding}></View>
           </KeyboardAvoidingView>
@@ -920,6 +904,21 @@ class StoryCoverScreen extends Component {
             />
           }
         </KeyboardTrackingView>
+        {this.state.showCloseModal && this.renderClose()}
+        {this.isUploading() &&
+          <Loader
+            style={styles.loading}
+            text={this.state.imageUploading ? 'Saving image...' : 'Saving video...'}
+            textStyle={styles.loadingText}
+            tintColor='rgba(0,0,0,.9)' />
+        }
+        {this.state.updating &&
+          <Loader
+            style={styles.loading}
+            text='Saving progress...'
+            textStyle={styles.loaderText}
+            tintColor='rgba(0,0,0,.9)' />
+        }
       </View>
     )
   }

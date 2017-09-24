@@ -14,7 +14,7 @@ export default function getVideoUrl(video: object): ?string {
   else {
     const {path, folders} = video.original
     const filename = _.last(path.split('/'))
-    url = `${getVideoUrlBase()}/${folders.join('/')}/${filename}`
+    url = `${getVideoUrlBase()}/vc_auto/${folders.join('/')}/${filename}`
   }
   return url
 }

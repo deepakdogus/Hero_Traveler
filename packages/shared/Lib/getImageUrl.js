@@ -24,7 +24,7 @@ export default function getImageUrl(image: object, type = 'cover'): ?string {
     filename = filename.split('.')
     filename[filename.length-1] = 'jpg'
     filename = filename.join('.')
-    url = `${getVideoUrlBase()}/${folderPath}/${filename}`
+    url = `${getVideoUrlBase()}/so_0/${folderPath}/${filename}`
   }
   else url = `${getImageUrlBase()}/q_auto:best,f_auto/${folderPath}/${filename}`
   return url

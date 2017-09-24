@@ -227,7 +227,7 @@ export default class VideoPlayer extends React.Component {
         this.props.videoFillSpace && styles.full,
         this.props.style
       ]}>
-        { !this.state.hasStarted &&
+        { this.props.imgUrl && !this.state.hasStarted &&
           <Image
             cached={true}
             resizeMode='cover'

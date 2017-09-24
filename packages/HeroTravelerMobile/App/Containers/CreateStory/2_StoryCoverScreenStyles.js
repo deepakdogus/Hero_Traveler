@@ -217,10 +217,6 @@ export const customStyles = StyleSheet.create({
   }
 })
 
-export const closeModalBackgroundStyles = {
-  top: -180,
-}
-
 export const closeModalWrapperStyles = {
   height: 140,
   width: 270,

@@ -1,9 +1,9 @@
 import {StoryDraft, Models} from '@hero/ht-core'
 import formatUploadObject from '../../../utils/formatUploadObject'
 
-export default function uploadDraftMedia(req, res, next) {
+export default function uploadDraftImage(req, res, next) {
   const draftId = req.params.id
-  const file = req.file
+  const file = JSON.parse(req.body.file)
   const folder = process.env.ASSETS_IMAGES_FOLDER
 
   return Models.Image.create(

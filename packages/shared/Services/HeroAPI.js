@@ -4,6 +4,7 @@ import _, {get, isArray} from 'lodash'
 import {normalize, schema} from 'normalizr'
 import {getToken as getPushToken} from '../../Config/PushConfig'
 import env from '../../Config/Env'
+import {uploadImageFile} from './CloudinaryAPI'
 
 const User = new schema.Entity('users')
 const Category = new schema.Entity('categories')
@@ -334,10 +335,13 @@ const getStory = (storyId) => {
   }
 
   const uploadCoverImage = (draftId, pathToFile) => {
-    const data = new FormData()
-    data.append('image', pathToFile)
-    return api.put(`story/draft/${draftId}/cover-image`, data, {
-      timeout: 45 * 1000
+    return uploadImageFile(pathToFile)
+    .then(response => {
+      return api.put(`story/draft/${draftId}/cover-image`, {
+        file: response.data
+      }, {
+        timeout: 45 * 1000
+      })
     })
   }
 

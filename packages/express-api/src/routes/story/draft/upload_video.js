@@ -3,7 +3,7 @@ import formatUploadObject from '../../../utils/formatUploadObject';
 
 export default function uploadDraftMedia(req, res, next) {
   const draftId = req.params.id
-  const file = req.file
+  const file = JSON.parse(req.body.file)
   const folder = process.env.ASSETS_VIDEOS_FOLDER
   return Models.Video.create(
     formatUploadObject(

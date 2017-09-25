@@ -4,7 +4,7 @@ import _, {get, isArray} from 'lodash'
 import {normalize, schema} from 'normalizr'
 import {getToken as getPushToken} from '../../Config/PushConfig'
 import env from '../../Config/Env'
-import {uploadImageFile} from './CloudinaryAPI'
+import {uploadImageFile, uploadVideoFile} from './CloudinaryAPI'
 
 const User = new schema.Entity('users')
 const Category = new schema.Entity('categories')
@@ -346,10 +346,13 @@ const getStory = (storyId) => {
   }
 
   const uploadCoverVideo = (draftId, pathToFile) => {
-    const data = new FormData()
-    data.append('video', pathToFile)
-    return api.put(`story/draft/${draftId}/cover-video`, data, {
-      timeout: 120 * 1000
+    return uploadVideoFile(pathToFile)
+    .then(response => {
+      return api.put(`story/draft/${draftId}/cover-video`, {
+        file: response.data
+      }, {
+        timeout: 120 * 1000
+      })
     })
   }
 
@@ -387,10 +390,13 @@ const getStory = (storyId) => {
   }
 
   const uploadStoryVideo = (draftId, pathToFile) => {
-    const data = new FormData()
-    data.append('video', pathToFile)
-    return api.put(`story/draft/${draftId}/video`, data, {
-      timeout: 120 * 1000
+    return uploadVideoFile(pathToFile)
+    .then(response => {
+      return api.put(`story/draft/${draftId}/video`, {
+        file: response.data
+      }, {
+        timeout: 120 * 1000
+      })
     })
   }
 

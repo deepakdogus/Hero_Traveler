@@ -53,13 +53,11 @@ router.put('/draft/:id/cover-image',
 
 router.put('/draft/:id/cover-video',
   hasValidOauth,
-  multerVideo.single('video'),
   endpointWrapper(uploadDraftCoverVideo)
 )
 
 router.put('/draft/:id/video',
   hasValidOauth,
-  multerVideo.single('video'),
   endpointWrapper(uploadDraftVideo)
 )
 

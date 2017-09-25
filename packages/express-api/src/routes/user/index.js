@@ -1,6 +1,5 @@
 import express from 'express'
 import {hasValidOauth, hasClientId} from '../../middleware'
-import {multerAvatar, multerCover} from '../../middleware/multer-cloudinary'
 import endpointWrapper from '../../utils/endpointWrapper'
 import getMe from './getMe'
 import getUser from './getUser'

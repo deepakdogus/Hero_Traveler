@@ -3,7 +3,7 @@ import Env from '../../Config/Env'
 import {getVideoUrlBase} from './getVideoUrl'
 
 export function getImageUrlBase() {
-  return Env.cdnBaseUrl + 'image/upload'
+  return `https://res.cloudinary.com/${Env.cloudName}/image/upload`
 }
 
 export function getContentBlockImage(urlSuffix) {

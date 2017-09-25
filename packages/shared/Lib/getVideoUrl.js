@@ -16,5 +16,6 @@ export default function getVideoUrl(video: object): ?string {
     const filename = _.last(path.split('/'))
     url = `${getVideoUrlBase()}/vc_auto/${folders.join('/')}/${filename}`
   }
+  console.log("video Url is", url)
   return url
 }

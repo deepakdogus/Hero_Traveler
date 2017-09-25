@@ -1,7 +1,6 @@
 import express from 'express'
 import endpointWrapper from '../../utils/endpointWrapper'
 import {hasValidOauth} from '../../middleware'
-import {multerVideo} from '../../middleware/multer-cloudinary'
 
 // route functions
 import getStory from './getStory'

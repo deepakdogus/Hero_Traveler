@@ -4,7 +4,7 @@ import _, {get, isArray} from 'lodash'
 import {normalize, schema} from 'normalizr'
 import {getToken as getPushToken} from '../../Config/PushConfig'
 import env from '../../Config/Env'
-import {uploadImageFile, uploadVideoFile} from './CloudinaryAPI'
+import {uploadMediaFile} from './CloudinaryAPI'
 
 const User = new schema.Entity('users')
 const Category = new schema.Entity('categories')
@@ -24,6 +24,17 @@ const Activity = new schema.Entity('activities', {
   fromUser: User,
   story: Story
 })
+
+const videoTimeout = 120 * 100
+const imageTimeout = 45 * 100
+
+function putMediaResponse(api, url, response, timeout){
+  return api.put(url, {
+    file: response.data
+  }, {
+    timeout
+  })
+}
 
 // our "constructor"
 const create = () => {
@@ -335,69 +346,40 @@ const getStory = (storyId) => {
   }
 
   const uploadCoverImage = (draftId, pathToFile) => {
-    return uploadImageFile(pathToFile)
-    .then(response => {
-      return api.put(`story/draft/${draftId}/cover-image`, {
-        file: response.data
-      }, {
-        timeout: 45 * 1000
-      })
-    })
+    const url = `story/draft/${draftId}/cover-image`
+    return uploadMediaFile(pathToFile, 'image')
+    .then(response => putMediaResponse(api, url, response, imageTimeout))
   }
 
   const uploadCoverVideo = (draftId, pathToFile) => {
-    return uploadVideoFile(pathToFile)
-    .then(response => {
-      return api.put(`story/draft/${draftId}/cover-video`, {
-        file: response.data
-      }, {
-        timeout: 120 * 1000
-      })
-    })
+    const url = `story/draft/${draftId}/cover-video`
+    return uploadMediaFile(pathToFile, 'video')
+    .then(response => putMediaResponse(api, url, response, videoTimeout))
   }
 
   const uploadAvatarImage = (userId, pathToFile) => {
-    return uploadImageFile(pathToFile)
-    .then(response => {
-      return api.put(`user/${userId}/avatar`, {
-        file: response.data
-      }, {
-        timeout: 45 * 1000
-      })
-    })
+    const url = `user/${userId}/avatar`
+    return uploadMediaFile(pathToFile, 'image')
+    .then(response => putMediaResponse(api, url, response, imageTimeout))
   }
 
   const uploadUserCoverImage = (userId, pathToFile) => {
-    return uploadImageFile(pathToFile)
-    .then(response => {
-      return api.put(`user/${userId}/cover`, {
-        file: response.data
-      }, {
-        timeout: 45 * 1000
-      })
-    })
+    const url = `user/${userId}/cover`
+    return uploadMediaFile(pathToFile, 'image')
+    .then(response => putMediaResponse(api, url, response, imageTimeout))
+
   }
 
   const uploadStoryImage = (draftId, pathToFile) => {
-    return uploadImageFile(pathToFile)
-    .then(response => {
-      return api.put(`story/draft/${draftId}/image`, {
-        file: response.data
-      }, {
-        timeout: 45 * 1000
-      })
-    })
+    const url = `story/draft/${draftId}/image`
+    return uploadMediaFile(pathToFile, 'image')
+    .then(response => putMediaResponse(api, url, response, imageTimeout))
   }
 
   const uploadStoryVideo = (draftId, pathToFile) => {
-    return uploadVideoFile(pathToFile)
-    .then(response => {
-      return api.put(`story/draft/${draftId}/video`, {
-        file: response.data
-      }, {
-        timeout: 120 * 1000
-      })
-    })
+    const url = `story/draft/${draftId}/video`
+    return uploadMediaFile(pathToFile, 'video')
+    .then(response => putMediaResponse(api, url, response, videoTimeout))
   }
 
   const getActivity = () => {

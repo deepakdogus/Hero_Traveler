@@ -24,11 +24,9 @@ const addAvatarToIndex = (avatarImage, user) => new Promise((resolve, reject) =>
 export default async function updateAvatar(req, res, next) {
   const user = req.user
   const file = JSON.parse(req.body.file)
-  const folder = process.env.ASSETS_AVATARS_FOLDER
   const avatarImage = await Models.Image.create(
     formatUploadObject(
       file,
-      folder,
       {purpose: 'avatar'}
     )
   )

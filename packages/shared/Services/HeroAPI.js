@@ -354,25 +354,35 @@ const getStory = (storyId) => {
   }
 
   const uploadAvatarImage = (userId, pathToFile) => {
-    const data = new FormData()
-    data.append('image', pathToFile)
-    return api.put(`user/${userId}/avatar`, data, {
-      timeout: 45 * 1000
+    return uploadImageFile(pathToFile)
+    .then(response => {
+      return api.put(`user/${userId}/avatar`, {
+        file: response.data
+      }, {
+        timeout: 45 * 1000
+      })
     })
   }
+
   const uploadUserCoverImage = (userId, pathToFile) => {
-    const data = new FormData()
-    data.append('image', pathToFile)
-    return api.put(`user/${userId}/cover`, data, {
-      timeout: 45 * 1000
+    return uploadImageFile(pathToFile)
+    .then(response => {
+      return api.put(`user/${userId}/cover`, {
+        file: response.data
+      }, {
+        timeout: 45 * 1000
+      })
     })
   }
 
   const uploadStoryImage = (draftId, pathToFile) => {
-    const data = new FormData()
-    data.append('image', pathToFile)
-    return api.put(`story/draft/${draftId}/image`, data, {
-      timeout: 45 * 1000
+    return uploadImageFile(pathToFile)
+    .then(response => {
+      return api.put(`story/draft/${draftId}/image`, {
+        file: response.data
+      }, {
+        timeout: 45 * 1000
+      })
     })
   }
 

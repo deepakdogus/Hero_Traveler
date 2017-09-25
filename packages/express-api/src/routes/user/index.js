@@ -157,13 +157,11 @@ router.put('/:id',
 
 router.put('/:id/avatar',
   hasValidOauth,
-  multerAvatar.single('image'),
   endpointWrapper(updateAvatar)
 )
 
 router.put('/:id/cover',
   hasValidOauth,
-  multerCover.single('image'),
   endpointWrapper(updateCover)
 )
 

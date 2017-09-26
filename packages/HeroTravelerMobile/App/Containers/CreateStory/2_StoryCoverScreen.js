@@ -848,7 +848,7 @@ class StoryCoverScreen extends Component {
     }
     if (this.scrollViewRef && this.state.isScrollDown) {
       this.setState({isScrollDown: false})
-      this.scrollViewRef.scrollTo({x: 0, y: 100, animated: true})
+      this.scrollViewRef.scrollTo({x: 0, y: 200, animated: true})
     }
     return (
       <View style={styles.root}>

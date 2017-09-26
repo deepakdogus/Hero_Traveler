@@ -554,7 +554,8 @@ class StoryCoverScreen extends Component {
         file: null,
         updating: false,
         coverImage: story.coverImage ? getImageUrl(story.coverImage) : null,
-        coverVideo: story.coverVideo ? getVideoUrl(story.coverVideo) : null
+        coverVideo: story.coverVideo ? getVideoUrl(story.coverVideo) : null,
+        originalStory: story
       })
     })
   }

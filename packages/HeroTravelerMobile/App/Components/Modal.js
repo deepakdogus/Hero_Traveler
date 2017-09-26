@@ -37,7 +37,7 @@ export default class FadeInOut extends Component {
           style={{
             height: modalStyle.height || 175,
             width: modalStyle.width || 200,
-            padding: Number.isInteger(modalStyle.padding) || 20,
+            padding: Number.isInteger(modalStyle.padding) ? modalStyle.padding : 20,
             borderRadius: modalStyle.borderRadius || 20,
             backgroundColor: 'white',
             justifyContent: 'space-between',

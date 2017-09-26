@@ -1,6 +1,6 @@
 import cloudinaryStorage from 'multer-storage-cloudinary'
 import Cloudinary from 'cloudinary'
-import {StoryDraft, Models} from '../../ht-core'
+import {Models} from '../../ht-core'
 
 Cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,

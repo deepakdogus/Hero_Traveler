@@ -1,6 +1,5 @@
 import express from 'express'
 import {hasValidOauth, hasClientId} from '../../middleware'
-import {multerAvatar, multerCover} from '../../middleware/multer-cloudinary'
 import endpointWrapper from '../../utils/endpointWrapper'
 import getMe from './getMe'
 import getUser from './getUser'
@@ -157,13 +156,11 @@ router.put('/:id',
 
 router.put('/:id/avatar',
   hasValidOauth,
-  multerAvatar.single('image'),
   endpointWrapper(updateAvatar)
 )
 
 router.put('/:id/cover',
   hasValidOauth,
-  multerCover.single('image'),
   endpointWrapper(updateCover)
 )
 

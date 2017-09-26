@@ -859,6 +859,7 @@ class StoryCoverScreen extends Component {
           onScroll={this.onScroll}
           scrollEventThrottle={16}
           onContentSizeChange={this.onContentSizeChange}
+          refreshControl={false}
         >
           <NavBar
             title='Save'

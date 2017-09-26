@@ -1,17 +1,13 @@
 import {StoryBookmark} from '../models'
-import findStories from './_find'
+import * as _ from 'lodash'
 
 export default function findBookmarks(userId) {
-  return StoryBookmark.find({
+  return StoryBookmark.getUserBookmarks({
     user: userId
   })
-  .lean()
-  .distinct('story')
-  .then(bookmarkIds => {
-    return findStories({
-      _id: {
-        $in: bookmarkIds
-      }
+    .then(bookmarks => {
+      return bookmarks.map(bookmark => {
+        if (!bookmark.story.draft) return bookmark.story
+      })
     })
-  })
 }

@@ -88,6 +88,7 @@ class StoryCoverScreen extends Component {
       isScrollDown: !!coverImage,
       titleHeight: 34,
       showCloseModal: false,
+      toolbarDisplay: false,
     }
   }
 
@@ -606,13 +607,15 @@ class StoryCoverScreen extends Component {
 
   renderContent () {
     const icon = this.getIcon()
+    // offset so that the buttons are visible when the keyboard + toolbar are open
+    const buttonsOffset = (this.toolbar && this.state.toolbarDisplay) ? {top: 75} : null
     return (
       <View style={this.hasNoCover() ? styles.lightGreyAreasBG : null}>
         {this.hasNoCover() && <View style={styles.spaceView} />}
         {this.hasNoCover() &&
           <View style={[styles.spaceView, styles.addPhotoView]}>
             <TouchableOpacity
-              style={styles.addPhotoButton}
+              style={[styles.addPhotoButton, buttonsOffset]}
               onPress={this._contentAddCover}
             >
               <TabIcon name={icon} style={{
@@ -644,7 +647,7 @@ class StoryCoverScreen extends Component {
                 ]}>
                   <TouchableOpacity
                     onPress={this._touchChangeCover}
-                    style={styles.iconButton}>
+                    style={[styles.iconButton, buttonsOffset]}>
                     <Icon name={icon} color={Colors.snow} size={30} />
                   </TouchableOpacity>
                 </Animated.View>
@@ -790,9 +793,9 @@ class StoryCoverScreen extends Component {
     NavActions.pop()
   }
 
-  setToolbarDisplay = (display) => {
-    if (this.toolbar && this.toolbar.state !== display) {
-      this.toolbar.setState({display})
+  setToolbarDisplay = (toolbarDisplay) => {
+    if (this.toolbar && this.state.toolbarDisplay !== toolbarDisplay) {
+      this.setState({toolbarDisplay})
     }
   }
 
@@ -846,7 +849,6 @@ class StoryCoverScreen extends Component {
       this.setState({isScrollDown: false})
       this.scrollViewRef.scrollTo({x: 0, y: 100, animated: true})
     }
-
     return (
       <View style={styles.root}>
         <ScrollView
@@ -900,6 +902,7 @@ class StoryCoverScreen extends Component {
           { this.editor &&
             <Toolbar
               ref={i => this.toolbar = i}
+              display={this.state.toolbarDisplay}
               onPress={this.editor.onToolbarPress}
             />
           }

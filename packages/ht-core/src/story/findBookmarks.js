@@ -1,5 +1,4 @@
 import {StoryBookmark} from '../models'
-import * as _ from 'lodash'
 
 export default function findBookmarks(userId) {
   return StoryBookmark.getUserBookmarks({

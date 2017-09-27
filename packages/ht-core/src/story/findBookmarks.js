@@ -6,7 +6,7 @@ export default function findBookmarks(userId) {
   })
     .then(bookmarks => {
       return bookmarks.map(bookmark => {
-        if (!bookmark.story.draft) return bookmark.story
+        if (!bookmark.story.draft) return {...bookmark.story, id: bookmark.story._id}
       })
     })
 }

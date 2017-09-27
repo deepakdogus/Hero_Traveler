@@ -15,9 +15,10 @@ import {
   removeBlock,
   rawToEditorState,
   editorStateToRaw,
+  keyCommandInsertNewline,
 } from './draft-js'
 
-import {SelectionState, EditorState, DraftOffsetKey, Modifier, keyCommandInsertNewline, keyCommandPlainBackspace} from './draft-js/reexports'
+import {SelectionState, EditorState, DraftOffsetKey, Modifier, keyCommandPlainBackspace} from './draft-js/reexports'
 
 import * as DJSConsts from './draft-js/constants'
 import Metrics from '../../Shared/Themes/Metrics'

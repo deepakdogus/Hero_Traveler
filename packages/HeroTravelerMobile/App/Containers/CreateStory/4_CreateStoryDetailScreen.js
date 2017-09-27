@@ -262,7 +262,7 @@ class CreateStoryDetailScreen extends React.Component {
               >
                 <View>
                   {_.size(this.state.categories) > 0 && <Text style={styles.tagStyleText}>{_.map(this.state.categories, 'title').join(', ')}</Text>}
-                  {_.size(this.state.categories) === 0 && <Text style={[styles.tagStyleText, {color: '#bdbdbd'}]}>Add tags...</Text>}
+                  {_.size(this.state.categories) === 0 && <Text style={[styles.tagStyleText, {color: '#bdbdbd'}]}>Add categories...</Text>}
                 </View>
               </TouchableWithoutFeedback>
             </View>

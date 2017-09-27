@@ -7,17 +7,26 @@ import {
 } from 'react-native'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import TabIcon from '../TabIcon'
 import {Colors, Metrics} from '../../Shared/Themes'
 import * as DJSConsts from './draft-js/constants'
 
-const ToolbarIcon = ({name, color, extraStyle = {}}) => {
+const ToolbarIcon = ({name, color, isTabIcon, extraStyle = {}}) => {
   return (
     <View style={[styles.toolbarIcon, extraStyle]}>
+      { !isTabIcon &&
       <Icon
         name={name}
         color={color || Colors.background}
         size={20}
       />
+      }
+      { isTabIcon &&
+        <TabIcon
+          name={name}
+          style={{image: styles.textIcon}}
+        />
+      }
     </View>
   )
 }
@@ -55,6 +64,7 @@ export default class Toolbar extends React.Component {
     this.state = {
       showTextMenu: false,
       display: false,
+      isNormalText: true,
     }
 
     this.toggleTextMenu = () =>
@@ -66,20 +76,26 @@ export default class Toolbar extends React.Component {
     this.setState({showTextMenu: false})
   }
 
+  toggleText = () => {
+    if (this.state.isNormalText) {
+      this.pressHeader()
+      this.setState({isNormalText: false})
+    }
+    else {
+      this.pressNormal()
+      this.setState({isNormalText: true})
+    }
+  }
+
   renderMainToolbar() {
+    const textIconName = this.state.isNormalText ? 'normalText' : 'headerText'
     return (
       <View style={styles.list}>
         <Btn
-          onPress={this.pressHeader}
+          onPress={this.toggleText}
           style={styles.borderRight}
         >
-          <Text style={{fontSize: 21, fontWeight: 'bold'}}>Title</Text>
-        </Btn>
-        <Btn
-          onPress={this.pressNormal}
-          style={styles.borderRight}
-        >
-          <Text>Normal</Text>
+          <ToolbarIcon name={textIconName} isTabIcon/>
         </Btn>
         <Btn onPress={this.pressImage} style={styles.borderRight}>
           <ToolbarIcon name='image' />
@@ -127,5 +143,9 @@ const styles = StyleSheet.create({
   borderRight: {
     borderRightWidth: 1,
     borderRightColor: '#dedede'
-  }
+  },
+  textIcon: {
+    width: 30,
+    height: 20,
+  },
 })

@@ -79,7 +79,6 @@ export function * getBookmarks(api, {userId}) {
 
   if (response.ok) {
     const {entities, result} = response.data
-    console.log("response.data is", response.data)
     yield [
       put(UserActions.receiveUsers(entities.users)),
       put(CategoryActions.receiveCategories(entities.categories)),

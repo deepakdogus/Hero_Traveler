@@ -80,17 +80,19 @@ class FollowersScreen extends React.Component {
             const u = this.props.users[uid]
             const selected = this.userIsFollowed(u.id)
             let followingText
-
+            let NavToProfileFunction = NavActions.readOnlyProfile
             if (selected) {
               followingText = 'FOLLOWING'
             } else if (uid !== this.props.user.id) {
               followingText = 'FOLLOW'
+            } else if (uid === this.props.user.id) {
+              NavToProfileFunction = NavActions.profile
             }
 
             return (
               <View style={[styles.rowWrapper]} key={u.id}>
                 <View style={[styles.row, styles.followers]}>
-                  <TouchableOpacity onPress={() => NavActions.readOnlyProfile({userId: u.id})}>
+                  <TouchableOpacity onPress={() => NavToProfileFunction({userId: u.id})}>
                   <Avatar
                     style={styles.avatar}
                     avatarUrl={getImageUrl(u.profile.avatar, 'avatar')}

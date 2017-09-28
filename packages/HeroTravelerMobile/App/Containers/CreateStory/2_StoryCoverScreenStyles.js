@@ -158,40 +158,43 @@ export default StyleSheet.create({
   toolbarAvoiding: {
     height: Metrics.editorToolbarHeight
   },
-  closeModalTitle: {
+  modalTitle: {
     textAlign: 'center',
     fontSize: 19,
     fontWeight: '600',
     paddingTop: 17.5,
   },
-  closeModalMessage: {
+  modalMessage: {
     textAlign: 'center',
     paddingHorizontal: 17.5,
     paddingBottom: 10,
   },
-  closeModalBtnWrapper: {
+  modalBtnWrapper: {
     flexDirection: 'row',
     height: 50,
     alignItems: 'center',
     borderTopWidth: .5,
     borderTopColor: Colors.lightGrey,
   },
-  closeModalBtn: {
+  modalBtn: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     height: 50,
   },
-  closeModalBtnLeft: {
+  modalBtnLeft: {
     borderRightWidth: .5,
     borderRightColor: Colors.lightGrey,
   },
-  closeModalBtnText: {
+  modalBtnText: {
     textAlign: 'center',
     fontSize: 20,
     color: '#007AFF',
     lineHeight: 50,
     width: 100,
+  },
+  failModalMessage: {
+    marginBottom: 40,
   }
 })
 
@@ -217,7 +220,7 @@ export const customStyles = StyleSheet.create({
   }
 })
 
-export const closeModalWrapperStyles = {
+export const modalWrapperStyles = {
   height: 140,
   width: 270,
   borderRadius: 15,

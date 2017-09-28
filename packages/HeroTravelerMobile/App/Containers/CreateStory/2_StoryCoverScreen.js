@@ -25,7 +25,7 @@ import StoryEditActions from '../../Shared/Redux/StoryCreateRedux'
 import ShadowButton from '../../Components/ShadowButton'
 import Loader from '../../Components/Loader'
 import {Colors, Metrics} from '../../Shared/Themes'
-import styles, {customStyles, closeModalBackgroundStyles, closeModalWrapperStyles} from './2_StoryCoverScreenStyles'
+import styles, {customStyles, modalBackgroundStyles, modalWrapperStyles} from './2_StoryCoverScreenStyles'
 import NavBar from './NavBar'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import getVideoUrl from '../../Shared/Lib/getVideoUrl'
@@ -87,7 +87,7 @@ class StoryCoverScreen extends Component {
       videoUploading: false,
       isScrollDown: !!coverImage,
       titleHeight: 34,
-      showCloseModal: false,
+      activeModal: undefined,
       toolbarDisplay: false,
     }
   }
@@ -331,7 +331,7 @@ class StoryCoverScreen extends Component {
     if (!this.isValid() && this.isPhotoType()) {
       this.setState({
         error: 'Please add a cover and a title to continue',
-        showCloseModal: false
+        activeModal: undefined,
       })
     } else {
       this.saveStory().then(() => {
@@ -383,36 +383,36 @@ class StoryCoverScreen extends Component {
         }]
       )
     }
-    else this.setState({showCloseModal: true})
+    else this.setState({activeModal: 'cancel'})
   }
 
   closeModal = () => {
-    this.setState({showCloseModal: false})
+    this.setState({ activeModal: undefined})
   }
 
-  renderClose = () => {
+  renderCancel = () => {
     const isDraft = this.props.story.draft === true
     const title = isDraft ? 'Save Draft' : 'Save Edits'
     const message = this.isSavedDraft() ? 'Do you want to save these edits before you go?' : 'Do you want to save this story draft before you go?'
     return (
       <Modal
         closeModal={this.closeModal}
-        modalStyle={closeModalWrapperStyles}
+        modalStyle={modalWrapperStyles}
       >
-        <Text style={styles.closeModalTitle}>{title}</Text>
-        <Text style={styles.closeModalMessage}>{message}</Text>
-        <View style={styles.closeModalBtnWrapper}>
+        <Text style={styles.modalTitle}>{title}</Text>
+        <Text style={styles.modalMessage}>{message}</Text>
+        <View style={styles.modalBtnWrapper}>
           <TouchableOpacity
-            style={[styles.closeModalBtn, styles.closeModalBtnLeft]}
+            style={[styles.modalBtn, styles.modalBtnLeft]}
             onPress={this._onLeftYes}
           >
-            <Text style={styles.closeModalBtnText}>Yes</Text>
+            <Text style={styles.modalBtnText}>Yes</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.closeModalBtn}
+            style={styles.modalBtn}
             onPress={this._onLeftNo}
           >
-            <Text style={styles.closeModalBtnText}>No</Text>
+            <Text style={styles.modalBtnText}>No</Text>
           </TouchableOpacity>
         </View>
       </Modal>
@@ -559,6 +559,31 @@ class StoryCoverScreen extends Component {
         originalStory: story
       })
     })
+    .catch((err) => {
+      this.saveFailed()
+      return Promise.reject(err)
+    })
+  }
+
+  saveFailed = () => {
+    this.setState({
+      updating: false,
+      imageUploading: false,
+      videoUploading: false,
+      activeModal: 'saveFail',
+    })
+  }
+
+  renderFailModal = () => {
+    return (
+      <Modal
+        closeModal={this.closeModal}
+        modalStyle={modalWrapperStyles}
+      >
+        <Text style={styles.modalTitle}>Save Error</Text>
+        <Text style={[styles.modalMessage, styles.failModalMessage]}>We experienced an error while trying to save your story. Please try again</Text>
+      </Modal>
+    )
   }
 
   hasNoPhoto() {
@@ -781,6 +806,7 @@ class StoryCoverScreen extends Component {
         this.editor.insertImage(_.get(imageUpload, 'original.path'))
         this.setState({imageUploading: false})
       })
+      .catch(this.saveFailed)
     NavActions.pop()
   }
 
@@ -791,6 +817,7 @@ class StoryCoverScreen extends Component {
         this.editor.insertVideo(_.get(videoUpload, 'original.path'))
         this.setState({videoUploading: false})
       })
+      .catch(this.saveFailed)
     NavActions.pop()
   }
 
@@ -909,7 +936,8 @@ class StoryCoverScreen extends Component {
             />
           }
         </KeyboardTrackingView>
-        {this.state.showCloseModal && this.renderClose()}
+        {this.state.activeModal === 'cancel' && this.renderCancel()}
+        {this.state.activeModal === 'saveFail' && this.renderFailModal()}
         {this.isUploading() &&
           <Loader
             style={styles.loading}

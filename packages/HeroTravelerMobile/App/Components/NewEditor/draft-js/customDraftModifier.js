@@ -27,11 +27,11 @@ var customSplitBlockInContentState = require('./customSplitBlockInContentState')
  */
 
 var customDraftModifier = {
-  splitBlock: function splitBlock(contentState, selectionState) {
+  splitBlock: function splitBlock(contentState, selectionState, textType) {
     var withoutEntities = removeEntitiesAtEdges(contentState, selectionState);
     var withoutText = removeRangeFromContentState(withoutEntities, selectionState);
 
-    return customSplitBlockInContentState(withoutText, withoutText.getSelectionAfter());
+    return customSplitBlockInContentState(withoutText, withoutText.getSelectionAfter(), textType);
   },
 };
 

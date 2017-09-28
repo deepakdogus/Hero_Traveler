@@ -15,8 +15,8 @@
 import {EditorState} from './reexports'
 import customDraftModifier from './customDraftModifier'
 
-export default function customKeyCommandInsertNewline(editorState) {
-  var contentState = customDraftModifier.splitBlock(editorState.getCurrentContent(), editorState.getSelection());
+export default function customKeyCommandInsertNewline(editorState, textType) {
+  var contentState = customDraftModifier.splitBlock(editorState.getCurrentContent(), editorState.getSelection(), textType);
   return EditorState.push(editorState, contentState, 'split-block');
 }
 

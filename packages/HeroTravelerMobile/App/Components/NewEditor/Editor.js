@@ -62,7 +62,8 @@ export default class Editor extends Component {
     }
 
     this.state = {
-      editorState
+      editorState,
+      toggledTextType: 'unstyled'
     }
   }
 
@@ -88,7 +89,7 @@ export default class Editor extends Component {
     const {replaceRange, text} = src
 
     if (text == '\n') {
-      const editorState = customKeyCommandInsertNewline(this.state.editorState)
+      const editorState = customKeyCommandInsertNewline(this.state.editorState, this.state.toggledTextType)
       this.setIsNewBlock(editorState.getSelection().getAnchorKey())
       this.setStateDebug({editorState})
     } else if (text == '' && replaceRange.start == 0 && replaceRange.end == 0) {
@@ -148,12 +149,18 @@ export default class Editor extends Component {
 
   toggleHeader() {
     const editorState = toggleStyle(this.state.editorState, DJSConsts.HeaderOne)
-    this.setStateDebug({editorState})
+    this.setStateDebug({
+      editorState,
+      toggledTextType: 'header-one'
+    })
   }
 
   toggleNormal() {
     const editorState = toggleStyle(this.state.editorState, DJSConsts.Unstyled)
-    this.setStateDebug({editorState})
+    this.setStateDebug({
+      editorState,
+      toggledTextType: 'unstyled'
+    })
   }
 
   toggleStyle(styleType) {

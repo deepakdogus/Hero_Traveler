@@ -25,8 +25,8 @@ const Activity = new schema.Entity('activities', {
   story: Story
 })
 
-const videoTimeout = 120 * 100
-const imageTimeout = 45 * 100
+const videoTimeout = 120 * 1000
+const imageTimeout = 45 * 1000
 
 function putMediaResponse(api, url, response, timeout){
   return api.put(url, {

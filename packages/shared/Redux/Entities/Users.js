@@ -166,7 +166,7 @@ export const toggleBookmark = (state, {userId, storyId}) => {
   } else {
     return state.setIn(
       ['usersBookmarksById', userId],
-      likes.concat(storyId)
+      [storyId, ...likes]
     )
   }
 }

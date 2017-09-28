@@ -2,8 +2,9 @@ import React from 'react'
 import {View, Animated, StyleSheet, TouchableWithoutFeedback, Text} from 'react-native'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import TabIcon from './TabIcon'
 import Video from 'react-native-video'
+import TabIcon from './TabIcon'
+import Image from './Image'
 import MediaSelectorStyles from '../Containers/Styles/MediaSelectorScreenStyles'
 
 import Colors from '../Shared/Themes/Colors'
@@ -162,7 +163,8 @@ export default class VideoPlayer extends React.Component {
       this.fadeOutVideoUI()
       return this.setState({
         videoPlaying: true,
-        videoEnded: false
+        videoEnded: false,
+        hasStarted: false,
       })
     }
 
@@ -212,6 +214,11 @@ export default class VideoPlayer extends React.Component {
 
   _bindRef = (i) => this.player = i
 
+  // using hasStarted to know when we should toggle from pending loading image to playable video
+  setStarted = () => {
+    if (!this.state.hasStarted) this.setState({hasStarted: true})
+  }
+
   render() {
     const playButtonSize = this.props.playButtonSize
     return (
@@ -220,6 +227,14 @@ export default class VideoPlayer extends React.Component {
         this.props.videoFillSpace && styles.full,
         this.props.style
       ]}>
+        { this.props.imgUrl && !this.state.hasStarted &&
+          <Image
+            cached={true}
+            resizeMode='cover'
+            source={{uri: this.props.imgUrl}}
+            style={[styles.video, {zIndex: 1}]}
+          />
+        }
         <Video
           source={{uri: this.props.path}}
           ref={this._bindRef}
@@ -230,6 +245,7 @@ export default class VideoPlayer extends React.Component {
             this.props.videoFillSpace && styles.full,
           ]}
           repeat={true}
+          onProgress={this.setStarted}
           resizeMode={this.props.resizeMode}
         />
         {this.props.showPlayButton &&

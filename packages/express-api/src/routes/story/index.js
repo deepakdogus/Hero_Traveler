@@ -1,7 +1,6 @@
 import express from 'express'
 import endpointWrapper from '../../utils/endpointWrapper'
 import {hasValidOauth} from '../../middleware'
-import {multerImage, multerVideo} from '../../middleware/multer-cloudinary'
 
 // route functions
 import getStory from './getStory'
@@ -45,25 +44,24 @@ router.get('/draft', hasValidOauth, endpointWrapper(findDrafts))
 router.get('/draft/:id', hasValidOauth, endpointWrapper(getDraft))
 router.delete('/draft/:id', hasValidOauth, endpointWrapper(removeDraft))
 router.put('/draft/:id', hasValidOauth, endpointWrapper(updateDraft))
+
 router.put('/draft/:id/cover-image',
   hasValidOauth,
-  multerImage.single('image'),
   endpointWrapper(uploadDraftCoverImage)
 )
+
 router.put('/draft/:id/cover-video',
   hasValidOauth,
-  multerVideo.single('video'),
   endpointWrapper(uploadDraftCoverVideo)
 )
 
 router.put('/draft/:id/video',
   hasValidOauth,
-  multerVideo.single('video'),
   endpointWrapper(uploadDraftVideo)
 )
+
 router.put('/draft/:id/image',
-  // hasValidOauth,
-  multerImage.single('image'),
+  hasValidOauth,
   endpointWrapper(uploadDraftImage)
 )
 router.post('/draft', hasValidOauth, endpointWrapper(createDraft))

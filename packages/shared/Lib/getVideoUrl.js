@@ -2,7 +2,7 @@ import _ from 'lodash'
 import Env from '../../Config/Env'
 
 export function getVideoUrlBase() {
-  return Env.cdnBaseUrl + 'video/upload'
+  return `https://res.cloudinary.com/${Env.cloudName}/video/upload`
 }
 
 export default function getVideoUrl(video: object): ?string {
@@ -14,7 +14,7 @@ export default function getVideoUrl(video: object): ?string {
   else {
     const {path, folders} = video.original
     const filename = _.last(path.split('/'))
-    url = `${getVideoUrlBase()}/${folders.join('/')}/${filename}`
+    url = `${getVideoUrlBase()}/vc_auto/${folders.join('/')}/${filename}`
   }
   return url
 }

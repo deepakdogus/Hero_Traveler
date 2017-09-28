@@ -1,13 +1,13 @@
 import _ from 'lodash'
 import path from 'path'
 
-export default function formatUploadObject(file, folder, options = {}) {
+export default function formatUploadObject(file, options = {}) {
 
   // Build the unique filename from the file object
   // since Cloudinary doesnt give it to us
   const ext = path.extname(file.url)
   const storedFilename = _.last(file.public_id.split('/')) + ext
-
+  const folder = file.public_id.split('/')[0]
   return _.merge({
     altText: file.originalname,
     original: {

@@ -15,7 +15,7 @@ import {
   removeBlock,
   rawToEditorState,
   editorStateToRaw,
-  keyCommandInsertNewline,
+  customKeyCommandInsertNewline,
 } from './draft-js'
 
 import {SelectionState, EditorState, DraftOffsetKey, Modifier, keyCommandPlainBackspace} from './draft-js/reexports'
@@ -88,7 +88,7 @@ export default class Editor extends Component {
     const {replaceRange, text} = src
 
     if (text == '\n') {
-      const editorState = keyCommandInsertNewline(this.state.editorState)
+      const editorState = customKeyCommandInsertNewline(this.state.editorState)
       this.setIsNewBlock(editorState.getSelection().getAnchorKey())
       this.setStateDebug({editorState})
     } else if (text == '' && replaceRange.start == 0 && replaceRange.end == 0) {

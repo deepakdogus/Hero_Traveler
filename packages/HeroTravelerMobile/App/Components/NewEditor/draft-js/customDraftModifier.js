@@ -13,7 +13,7 @@
 
 'use strict';
 import {removeEntitiesAtEdges, removeRangeFromContentState} from './reexports'
-var splitBlockInContentState = require('./splitBlockInContentState');
+var customSplitBlockInContentState = require('./customSplitBlockInContentState');
 
 /**
  * `DraftModifier` provides a set of convenience methods that apply
@@ -26,13 +26,13 @@ var splitBlockInContentState = require('./splitBlockInContentState');
  * These functions encapsulate some of the most common transaction sequences.
  */
 
-var DraftModifier = {
+var customDraftModifier = {
   splitBlock: function splitBlock(contentState, selectionState) {
     var withoutEntities = removeEntitiesAtEdges(contentState, selectionState);
     var withoutText = removeRangeFromContentState(withoutEntities, selectionState);
 
-    return splitBlockInContentState(withoutText, withoutText.getSelectionAfter());
+    return customSplitBlockInContentState(withoutText, withoutText.getSelectionAfter());
   },
 };
 
-module.exports = DraftModifier;
+module.exports = customDraftModifier;

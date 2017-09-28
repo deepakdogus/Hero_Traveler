@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule splitBlockInContentState
+ * @providesModule customSplitBlockInContentState
  * @typechecks
  *
  */
@@ -21,7 +21,7 @@ var invariant = require('fbjs/lib/invariant');
 var Map = Immutable.Map;
 
 
-function splitBlockInContentState(contentState, selectionState) {
+function customSplitBlockInContentState(contentState, selectionState) {
   !selectionState.isCollapsed() ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Selection range must be collapsed.') : invariant(false) : void 0;
 
   var key = selectionState.getAnchorKey();
@@ -38,8 +38,13 @@ function splitBlockInContentState(contentState, selectionState) {
   });
 
   var keyBelow = genKey();
+
+  // we do not want to inherit the type if the above block is atomic
+  var blockAboveType = blockAbove.get('type')
+  var blockBelowType = blockAboveType === 'atomic' ? 'unstyled' : blockAboveType
+
   var blockBelow = blockAbove.merge({
-    type: 'unstyled',
+    type: blockBelowType,
     key: keyBelow,
     text: text.slice(offset),
     characterList: chars.slice(offset),
@@ -67,4 +72,4 @@ function splitBlockInContentState(contentState, selectionState) {
   });
 }
 
-module.exports = splitBlockInContentState;
+module.exports = customSplitBlockInContentState;

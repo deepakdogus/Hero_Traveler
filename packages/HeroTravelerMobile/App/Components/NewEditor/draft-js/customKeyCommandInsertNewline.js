@@ -6,18 +6,18 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule keyCommandInsertNewline
+ * @providesModule customKeyCommandInsertNewline
  *
  */
 
 'use strict';
 
 import {EditorState} from './reexports'
-import DraftModifier from './DraftModifier'
+import customDraftModifier from './customDraftModifier'
 
-export default function keyCommandInsertNewline(editorState) {
-  var contentState = DraftModifier.splitBlock(editorState.getCurrentContent(), editorState.getSelection());
+export default function customKeyCommandInsertNewline(editorState) {
+  var contentState = customDraftModifier.splitBlock(editorState.getCurrentContent(), editorState.getSelection());
   return EditorState.push(editorState, contentState, 'split-block');
 }
 
-module.exports = keyCommandInsertNewline;
+module.exports = customKeyCommandInsertNewline;

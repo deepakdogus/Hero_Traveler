@@ -250,7 +250,7 @@ class StoryCoverScreen extends Component {
       this.resetAnimation()
     })
     NavActions.mediaSelectorScreen({
-      mediaType: this.props.mediaType,
+      mediaType: this.getMediaType(),
       title: 'Change Cover',
       leftTitle: 'Cancel',
       onLeft: () => NavActions.pop(),

@@ -28,5 +28,12 @@ export default StyleSheet.create({
   heartIcon: {
     width: 26,
     height: 23,
+  },
+  flagIcon: {
+    width: 19,
+    height: 23,
+  },
+  shareIcon: {
+    marginBottom: 2,
   }
 })

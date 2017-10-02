@@ -322,6 +322,10 @@ const getStory = (storyId) => {
     return api.get(`story/${storyId}/like`)
   }
 
+  const flagStory = (storyId) => {
+    return api.put(`story/${storyId}/flag`)
+  }
+
   const bookmarkStory = (storyId) => {
     return api.get(`story/${storyId}/bookmark`)
   }
@@ -467,6 +471,7 @@ const getStory = (storyId) => {
     deleteStory,
     changePassword,
     signupCheck,
+    flagStory,
   }
 }
 

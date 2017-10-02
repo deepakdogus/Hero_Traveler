@@ -1,10 +1,8 @@
 'use strict';
 import React, {PropTypes, Component} from 'react'
-import {View, TouchableOpacity, TouchableWithoutFeedback, Text} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'
-import RoundedButton from './RoundedButton'
+import {TouchableOpacity} from 'react-native';
 
-export default class FadeInOut extends Component {
+export default class Modal extends Component {
   static propTypes = {
     backgroundProps: PropTypes.object,
     modalProps: PropTypes.object,

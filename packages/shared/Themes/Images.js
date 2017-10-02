@@ -79,6 +79,7 @@ const images = {
   iconAddCoverCamera: require('../Images/ht-icons/icon_add-cover-camera@2x.png'),
   iconNormalText: require('../Images/ht-icons/Aa.png'),
   iconHeaderText: require('../Images/ht-icons/Aa_toggled_on.png'),
+  iconFlag: require('../Images/ht-icons/icon_flag.png'),
 }
 
 export default images

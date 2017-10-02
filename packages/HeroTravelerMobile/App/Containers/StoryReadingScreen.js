@@ -18,6 +18,7 @@ import StoryReadingToolbar from '../Components/StoryReadingToolbar'
 import TabIcon from '../Components/TabIcon'
 import Image from '../Components/Image'
 import Loader from '../Components/Loader'
+import FlagModal from '../Components/FlagModal'
 import {styles, rendererStyles} from './Styles/StoryReadingScreenStyles'
 import Video from '../Components/Video'
 import Immutable from 'seamless-immutable'
@@ -133,6 +134,7 @@ class StoryReadingScreen extends React.Component {
       toolbarHeight: new Animated.Value(0),
       newYPos: -1,
       oldYPos: 0,
+      showFlagModal: false,
     }
     if (!this.props.story) {
       this.props.requestStory(this.props.storyId)
@@ -177,6 +179,10 @@ class StoryReadingScreen extends React.Component {
 
   _toggleLike = () => {
     this.props.toggleLike(this.props.user.id, this.props.story.id)
+  }
+
+  _toggleFlag = () => {
+    this.setState({showFlagModal: !this.state.showFlagModal})
   }
 
   _pressUser = (userId) => {
@@ -330,9 +336,16 @@ class StoryReadingScreen extends React.Component {
             userId={this.props.user.id}
             storyId={story.id}
             onPressLike={this._toggleLike}
+            onPressFlag={this._toggleFlag}
             toggleBookmark={this.props.toggleBookmark}
           />
         </Animated.View>
+        {
+          <FlagModal
+            closeModal={this._toggleFlag}
+            showModal={this.state.showFlagModal}
+          />
+        }
       </View>
     )
   }

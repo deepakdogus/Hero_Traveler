@@ -12,6 +12,7 @@ export default class StoryReadingToolbarComponent extends Component {
     onPressComment: PropTypes.func,
     onPressBookmark: PropTypes.func,
     onPressShare: PropTypes.func,
+    onPressFlag: PropTypes.func,
     isLiked: PropTypes.bool,
     isBookmarked: PropTypes.bool,
     likeCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -20,10 +21,11 @@ export default class StoryReadingToolbarComponent extends Component {
   }
 
   render() {
-    let rootLikeComponent,
-        rootCommentComponent,
-        rootBookmarkComponent,
-        rootShareComponent
+    let likeComponent,
+        commentComponent,
+        bookmarkComponent,
+        shareComponent,
+        flagButton
     const likeContainer = (
       <View style={styles.wrapper}>
         <Text
@@ -64,11 +66,16 @@ export default class StoryReadingToolbarComponent extends Component {
       <View style={styles.wrapper}>
         <TabIcon
           name={'share'}
-          style={{
-            image: {
-              marginBottom: 2,
-            }
-          }}
+          style={{image: styles.shareIcon}}
+        />
+      </View>
+    )
+
+    const flagComponent = (
+      <View style={styles.wrapper}>
+        <TabIcon
+          name={'flag'}
+          style={{image: styles.flagIcon}}
         />
       </View>
     )
@@ -130,12 +137,27 @@ export default class StoryReadingToolbarComponent extends Component {
       )
     }
 
+    if (this.props.onPressFlag) {
+      flagButton = (
+        <TouchableOpacity
+          style={styles.shareTool}
+          onPress={this.props.onPressFlag}
+          children={flagComponent}
+        />
+      )
+    } else {
+      flagButton = (
+        <View style={styles.shareTool} children={flagComponent} />
+      )
+    }
+
     return (
       <View style={[styles.root, this.props.style]}>
         {likeComponent}
         {commentComponent}
         {bookmarkComponent}
         {shareComponent}
+        {flagButton}
       </View>
     )
   }

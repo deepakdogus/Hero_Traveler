@@ -1,7 +1,13 @@
 'use strict';
 import React, {PropTypes, Component} from 'react'
-import {TouchableOpacity, View, Text, Animated} from 'react-native';
+import {TouchableOpacity, Text, Animated} from 'react-native';
 import {Colors, Metrics } from '../Shared/Themes/'
+
+const visibleButtonHeight = 50
+const marginBottom = 10
+const maxOffSet = Metrics.tabBarHeight + 2*visibleButtonHeight + 2*marginBottom
+const hiddenView = -Metrics.screenHeight
+const visibleView = -(Metrics.screenHeight - maxOffSet)
 
 export default class FlagModal extends Component {
 
@@ -9,35 +15,36 @@ export default class FlagModal extends Component {
     super(props)
     this.state = {
       showModal: false,
-      buttonHeight: new Animated.Value(0),
+      viewHeight: new Animated.Value(hiddenView),
     }
   }
 
   static propTypes = {
     flagStory: PropTypes.func,
     closeModal: PropTypes.func,
+    showModal: PropTypes.bool,
   }
 
 
   componentWillReceiveProps(nextProps) {
     if (!this.props.showModal && nextProps.showModal) {
       this.setState({showModal: true})
-      this.setButtonHeight(visibleButtonHeight)
+      this.setViewHeight(visibleView)
     }
     else if (this.props.showModal && !nextProps.showModal) {
-      this.setButtonHeight(0)
+      this.setViewHeight(hiddenView)
       setTimeout(() => {
         this.setState({showModal: false})
       }, 200)
     }
   }
 
-  setButtonHeight(height) {
+  setViewHeight(height) {
     Animated.timing(
-      this.state.buttonHeight ,
+      this.state.viewHeight,
       {
         toValue: height,
-        duration: 1000,
+        duration: 200,
       },
     ).start()
   }
@@ -48,15 +55,17 @@ export default class FlagModal extends Component {
 
   render() {
     const {closeModal, flagStory} = this.props
+    const {viewHeight} = this.state
+
     if (!this.state.showModal) return null
     return (
       <TouchableOpacity
         style={styles.background}
         onPress={closeModal}
       >
-        <View style={styles.wrapper}>
+        <Animated.View style={{bottom: viewHeight}}>
           <TouchableOpacity
-            style={styles.button}
+            style={[styles.button]}
             onPress={flagStory}
           >
             <Text style={[styles.text, styles.reportText]}>
@@ -64,21 +73,18 @@ export default class FlagModal extends Component {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.button}
+            style={[styles.button]}
             onPress={closeModal}
           >
             <Text style={styles.text}>
               Cancel
             </Text>
           </TouchableOpacity>
-        </View>
+        </Animated.View>
       </TouchableOpacity>
     )
   }
 }
-
-const visibleButtonHeight = 50
-const marginBottom = 10
 
 const styles = {
   background: {
@@ -103,7 +109,6 @@ const styles = {
     shadowColor: 'black',
     shadowOpacity: .2,
     shadowRadius: 30,
-    bottom: -(Metrics.screenHeight - Metrics.tabBarHeight - 2*visibleButtonHeight - 2*marginBottom),
   },
   text: {
     color: Colors.background,

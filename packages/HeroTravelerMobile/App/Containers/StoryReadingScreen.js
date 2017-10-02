@@ -344,6 +344,7 @@ class StoryReadingScreen extends React.Component {
           <FlagModal
             closeModal={this._toggleFlag}
             showModal={this.state.showFlagModal}
+            flagStory={this._flagStory}
           />
         }
       </View>

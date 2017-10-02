@@ -63,6 +63,10 @@ const StorySchema = new Schema({
   tripDate: {
     type: Date
   },
+  flagged: {
+    type: Boolean,
+    default: false,
+  },
   counts: {
     likes: {
       type: Number,

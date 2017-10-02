@@ -232,6 +232,11 @@ class StoryReadingScreen extends React.Component {
     })
   }
 
+  _flagStory = () => {
+    this.props.flagStory(this.props.user.id, this.props.story.id)
+    NavActions.pop()
+  }
+
   render () {
     const { story, author } = this.props;
     if (!story || !author) {
@@ -372,6 +377,7 @@ const mapDispatchToProps = (dispatch) => {
     toggleLike: (userId, storyId) => dispatch(StoryActions.storyLike(userId, storyId)),
     toggleBookmark: (userId, storyId) => dispatch(StoryActions.storyBookmark(userId, storyId)),
     requestStory: (storyId) => dispatch(StoryActions.storyRequest(storyId)),
+    flagStory: (userId, storyId) => dispatch(StoryActions.flagStory(userId, storyId)),
   }
 }
 

@@ -142,6 +142,7 @@ StorySchema.statics = {
     return this
       .list({
         draft: false,
+        flagged: false,
         $or: [
           {author: userId},
           {author: {$in: followingIds}},

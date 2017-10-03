@@ -1,17 +1,18 @@
 {
   "name": "@hero/ht-core",
-  "version": "0.0.29",
+  "version": "0.0.33",
   "description": "HERO Traveler core server functions",
   "main": "index.js",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "babel src -d dist && mkdir dist/utils/emailService/templates && cp -a src/utils/emailService/templates/. dist/utils/emailService/templates"
+    "build": "babel src -d dist && mkdir dist/utils/emailService/templates && cp -a src/utils/emailService/templates/. dist/utils/emailService/templates",
+    "publish:abeck": "yarn install && npm run clean && npm run build && npm publish --registry https://npm.abeck.io"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@hero/ht-util": "^0.0.12",
+    "@hero/ht-util": "^0.0.32",
     "algoliasearch": "^3.22.1",
     "babel-preset-flow": "^6.23.0",
     "babel-register": "^6.23.0",

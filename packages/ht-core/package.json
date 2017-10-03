@@ -1,6 +1,6 @@
 {
   "name": "@hero/ht-core",
-  "version": "0.0.33",
+  "version": "0.0.34",
   "description": "HERO Traveler core server functions",
   "main": "index.js",
   "scripts": {

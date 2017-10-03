@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@hero/ht-core@0.0.33":
-  version "0.0.33"
-  resolved "https://npm.abeck.io:443/@hero%2fht-core/-/ht-core-0.0.33.tgz#ec6943672d9cf891b830cda487453cb3927ee317"
+"@hero/ht-core@0.0.34":
+  version "0.0.34"
+  resolved "https://npm.abeck.io:443/@hero%2fht-core/-/ht-core-0.0.34.tgz#7b1af87b058d0df50b90ee8ce063f37392d96b5d"
   dependencies:
     "@hero/ht-util" "^0.0.32"
     algoliasearch "^3.22.1"

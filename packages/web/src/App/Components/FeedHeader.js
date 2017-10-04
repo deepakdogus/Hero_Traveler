@@ -19,17 +19,13 @@ export default class FeedHeader extends React.Component {
 
   }
 
-  getMediaType(story) {
-    if (story.coverImage) return 'image'
-    else if (story.coverVideo)return 'video'
-    return undefined
-  }
-
   renderSlides(stories, author) {
     const storyKeys = Object.keys(stories);
+
     return storyKeys.map((key, index) => {
       const story = stories[key]
       const author = this.props.users[story.author]
+
       return (
         <CarouselSlide
           key={key}

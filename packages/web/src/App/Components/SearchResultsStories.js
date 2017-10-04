@@ -2,9 +2,19 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import StorySearchResultRow from './StorySearchResultRow'
+import StorySelectRow, {DefaultContainer} from './StorySelectRow'
 
 const Container = styled.div``
+
+const StyledContainer = styled(DefaultContainer)`
+  border-width: ${props => props.index !== 0 ? '2px 0 0' : '0'};
+  padding: 10px 0px 6px;
+`
+
+const textStyles = `
+  font-weight: 600;
+  font-size: 18px;
+`
 
 export default class SearchResultsStories extends Component {
   static PropTypes = {
@@ -28,12 +38,14 @@ export default class SearchResultsStories extends Component {
       const story = stories[key]
       if (index >= 4) return null
       return (
-        <StorySearchResultRow
+        <StorySelectRow
           story={story}
-          author={users[story.author].username}
+          username={users[story.author].username}
           key={index}
           index={index}
-          margin='0 0 25px'
+          textStyles={textStyles}
+          container={StyledContainer}
+          ReplacementContainer={StyledContainer}
         />
       )
     })

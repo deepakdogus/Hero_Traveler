@@ -70,7 +70,7 @@ const StyledButton = styled.button`
       case 'blackWhite':
         return props.theme.Colors.photoOverlay
       case 'headerButton':
-        return props.theme.Colors.navBarText 
+        return props.theme.Colors.navBarText
       case 'myFeedHeaderButton':
         return props.theme.Colors.snow
       default:
@@ -122,12 +122,19 @@ export default class RoundedButton extends React.Component {
     margin: PropTypes.string,
     padding: PropTypes.string,
     height: PropTypes.string,
+    textProps: PropTypes.object,
   }
 
   renderContent() {
-    const {text, children, type} = this.props
+    const {text, children, type, textProps} = this.props
+    let RenderText = Text
+    if (textProps) {
+      RenderText = styled(Text)`
+        ${textProps}
+      `
+    }
     if (children) return children
-    else return (<Text type={type}>{text}</Text>)
+    else return (<RenderText type={type} {...this.textProps}>{text}</RenderText>)
   }
 
   render() {

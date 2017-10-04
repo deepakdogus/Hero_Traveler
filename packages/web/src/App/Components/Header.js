@@ -52,11 +52,15 @@ const StyledGrid = styled(Grid)`
   width: 100%;
   top: 0;
   padding-right: 10px;
+  background-color: ${props => props.blackBackground ? '#1a1c21' : 'rgba(0,0,0,0)'};
+`
+
+const StyledGridBlack = styled(StyledGrid)`
+  background-color: ${props => props.theme.Colors.background}
 `
 
 const StyledRow = styled(Row)`
   height: 65px;
-  background-color: ${props => props.blackBackground ? '#1a1c21' : 'rgba(0,0,0,0)'};
 `
 
 const Logo = styled.img`
@@ -140,26 +144,7 @@ export default class Header extends React.Component {
     super(props)
     this.state = {
       modal: undefined,
-      fixedHeader: this.props.blackHeader || false,
-      blackHeader: this.props.blackHeader || false,
     }
-  }
-
-  handleScroll = (event) => {
-    if(!this.props.blackHeader){
-    return event.srcElement.body.scrollTop > 65 
-              ? this.setState({ fixedHeader: true, blackHeader: true})
-              : this.setState({ fixedHeader: false, blackHeader: false})       
-    }
-    return
-  }
-
-  componentDidMount = () => {
-    window.addEventListener('scroll', this.handleScroll);
-  }
-
-  componentWillUnmount = () => {
-    window.removeEventListener('scroll', this.handleScroll);
   }
 
   openLoginModal = () => {
@@ -176,9 +161,11 @@ export default class Header extends React.Component {
 
   render () {
     const {isLoggedIn} = this.props
+    // quick fix to get this merge in - need to refactor accordingly (part of header refactor)
+    const SelectedGrid = this.props.blackHeader ? StyledGridBlack : StyledGrid
     return (
-      <StyledGrid fixed={this.state.fixedHeader} fluid> 
-        <StyledRow blackBackground={this.state.blackHeader} center="xs" middle="xs"> 
+      <SelectedGrid fluid>
+        <StyledRow center="xs" middle="xs">
           <Col xs={12} md={2} lg={2} >
             <Logo src={logo} alt={'Hero Traveler Logo'}/>
           </Col>
@@ -192,7 +179,7 @@ export default class Header extends React.Component {
               <span>&nbsp;</span>
               <MenuLink to='/' exact>
                 Explore
-              </MenuLink>              
+              </MenuLink>
             </Row>
           </Col>
           }
@@ -202,7 +189,7 @@ export default class Header extends React.Component {
               <MenuLink to='/' exact>
                 `Explore`
               </MenuLink>
-              <Divider>&nbsp;</Divider>          
+              <Divider>&nbsp;</Divider>
               <MenuLink to='/signup/topics'>
                 Signup (topics)
               </MenuLink>
@@ -213,45 +200,45 @@ export default class Header extends React.Component {
               <Divider>&nbsp;</Divider>
               <MenuLink to='/story/596775b90d4bb70010e2a5f8'>
                 Story
-              </MenuLink>           
-            </Row>          
-          </Col>            
+              </MenuLink>
+            </Row>
+          </Col>
           }
           {isLoggedIn &&
           <Col xsOffset={2} lg={5}>
             <Row end='xs' middle='xs'>
-              <NavLink 
+              <NavLink
                 to='/search'
-              >                
-                <StyledRoundedButton 
-                  type='headerButton' 
-                  height='32px' 
+              >
+                <StyledRoundedButton
+                  type='headerButton'
+                  height='32px'
                   width='32px'
                 >
-                  <SearchIcon 
+                  <SearchIcon
                     name='explore'
                   />
                 </StyledRoundedButton>
-              </NavLink>                
+              </NavLink>
               <Divider>&nbsp;</Divider>
               <StyledRoundedButton text='Create'/>
-              <StyledRoundedButton 
-                type='headerButton' 
-                height='32px' 
+              <StyledRoundedButton
+                type='headerButton'
+                height='32px'
                 width='32px'
               >
-                <MailIcon 
+                <MailIcon
                   name='loginEmail'
                 />
               </StyledRoundedButton>
-              <StyledRoundedButton 
+              <StyledRoundedButton
                 type='headerButton'
                 height='32px'
                 width='32px'
               >
                 <NotificationsIcon name='cameraFlash' />
               </StyledRoundedButton>
-              <StyledRoundedAvatarButton 
+              <StyledRoundedAvatarButton
                 type='headerButton'
                 height='32px'
                 width='32px'
@@ -264,9 +251,9 @@ export default class Header extends React.Component {
           {!isLoggedIn &&
           <Col xsOffset={3} lg={2}>
             <Row end='xs' middle='xs'>
-              <StyledRoundedButton 
-                type='headerButton' 
-                height='32px' 
+              <StyledRoundedButton
+                type='headerButton'
+                height='32px'
                 width='32px'
               >
                 <SearchIcon name='explore' />
@@ -274,7 +261,7 @@ export default class Header extends React.Component {
               <Divider>&nbsp;</Divider>
               <StyledRoundedLoginButton
                 text='Login'
-                onClick={this.openLoginModal}        
+                onClick={this.openLoginModal}
               />
             </Row>
           </Col>
@@ -321,7 +308,7 @@ export default class Header extends React.Component {
         >
           <AddToItinerary/>
         </Modal>
-      </StyledGrid>
+      </SelectedGrid>
     )
   }
 }

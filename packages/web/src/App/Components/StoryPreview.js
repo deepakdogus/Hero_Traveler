@@ -2,21 +2,18 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import {NavLink} from 'react-router-dom';
 
 import Avatar from './Avatar'
 import LikeComponent from './LikeComponent'
 import HorizontalDivider from './HorizontalDivider'
-import Overlay from './Overlay'
+import OverlayHover from './OverlayHover'
 import {Row} from './FlexboxGrid'
+import NavLinkStyled from './NavLinkStyled'
 
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import formatCount from '../Shared/Lib/formatCount'
 
-const StoryLink = styled(NavLink)`
-  text-decoration: none;
-  color: inherit;
-`
+const StoryLink = styled(NavLinkStyled)``
 
 const FlexStoryLink = styled(StoryLink)`
   display: flex;
@@ -32,7 +29,7 @@ const MarginWrapper = styled.div`
   color: ${props => props.theme.Colors.lightGrey};
 `
 
-const StoryOverlayContainer = styled(Overlay)`
+const StoryOverlayContainer = styled(OverlayHover)`
   padding-top: 151%;
   width: 100%;
   background-image: ${props => `url(${getImageUrl(props.image)})`};
@@ -121,7 +118,7 @@ export default class StoryPreview extends React.Component {
             <Title>{story.title}</Title>
             { type !== 'suggestions' &&
               <div>
-                <Description>{story.description || 'Best Trip Ever'}</Description>
+                <Description>{story.description}</Description>
                 <HorizontalDivider opaque />
               </div>
             }
@@ -131,7 +128,7 @@ export default class StoryPreview extends React.Component {
               <ProfileLink to={`/profile/${author.id}`}>
                 <Row middle='xs'>
                   <Avatar avatarUrl={getImageUrl(author.profile.avatar)} size='large'/>
-                  <Username>{author.username}</Username>                  
+                  <Username>{author.username}</Username>
                 </Row>
               </ProfileLink>
               <FlexStoryLink to={`/story/${story.id}`}>

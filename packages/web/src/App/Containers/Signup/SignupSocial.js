@@ -50,6 +50,7 @@ const SectionText = styled.h4`
 `
 
 class SignupSocial extends Component {
+
   renderSuggestedUsers(suggestedUsers) {
     const renderedSuggestions = Object.keys(suggestedUsers).reduce((suggestions, key, index) => {
       const user = suggestedUsers[key]
@@ -57,7 +58,7 @@ class SignupSocial extends Component {
       if (index !== 0) suggestions.push((<HorizontalDivider key={`${key}-HR`} color='grey'/>))
       suggestions.push((
         <FollowFollowingRow
-          key={`${key}1`}
+          key={key}
           user={user}
           isFollowing={isSelected}
           margin='0 3%'

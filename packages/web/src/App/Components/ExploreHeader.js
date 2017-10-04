@@ -6,25 +6,11 @@ import background from '../Shared/Images/create-story.png'
 import HeaderImageWrapper from './HeaderImageWrapper'
 import VerticalCenter from './VerticalCenter'
 import Icon from './Icon'
+import {OverlayStyles} from './Overlay'
+import HeaderTopGradient from './Headers/Shared/HeaderTopGradient'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
-  &:after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    opacity: 1;
-    background: rgba(0, 0, 0, .3);
-  }
-`
-
-const HeaderTopGradient = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 180px;
-  background: linear-gradient(180deg, rgba(0,0,0,0.4), rgba(0,0,0,0));
+  ${OverlayStyles}
 `
 
 const Tagline = styled.p`
@@ -107,9 +93,9 @@ export default class ExploreHeader extends React.Component {
               <BadgeSpacer/>
               <AppleAppStoreIcon
                 name='appleAppStoreBadge'
-              />              
+              />
             </BadgeWrapper>
-        </Centered>        
+        </Centered>
       </OpaqueHeaderImageWrapper>
     )
   }

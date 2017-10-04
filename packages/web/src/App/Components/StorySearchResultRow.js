@@ -40,8 +40,8 @@ export const UserName = styled.p`
 `
 
 const StyledImage = styled.img`
-  width: 80px;
-  height: 110px;
+  width: 77px;
+  height: 98px;
 `
 
 const CategoriesContainer = styled(Container)`
@@ -56,17 +56,16 @@ export default class StorySearchResultRow extends Component {
   static propTypes = {
     story: PropTypes.object,
     author: PropTypes.string,
-    title: PropTypes.string,
     margin: PropTypes.string,
-    image: PropTypes.object,
     index: PropTypes.number,
   }
 
 
   renderImage = () => {
+    const cover = this.props.story.coverImage || this.props.story.coverVideo
     return (
       <StyledImage
-        src={getImageUrl(this.props.image)}
+        src={getImageUrl(cover)}
       />
     )
   }
@@ -74,7 +73,7 @@ export default class StorySearchResultRow extends Component {
   renderText = () => {
     return (
       <StyledVerticalCenter>
-        <StoryName>{this.props.title}</StoryName>
+        <StoryName>{this.props.story.title}</StoryName>
         <UserName>{this.props.author}</UserName>
       </StyledVerticalCenter>
     )
@@ -94,7 +93,7 @@ export default class StorySearchResultRow extends Component {
             renderText={this.renderText}
             renderButton={this.renderButton}
           />
-        </CategoriesContainer>      
+        </CategoriesContainer>
       </Container>
     )
   }

@@ -8,7 +8,7 @@ import {Row} from './FlexboxGrid'
 const Likes = styled.span`
   color: ${props => props.theme.Colors.snow};
   font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-size: 20px;
+  font-size: 12px;
   font-weight: 400;
   letter-spacing: 1.5px;
   margin: auto 5px;

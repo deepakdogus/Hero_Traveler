@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import Avatar from './Avatar'
 import Header from './Header'
 import {Row} from './FlexboxGrid'
-import HeaderImageWrapper from './HeaderImageWrapper'
+import HeaderImageWrapper from './Headers/Shared/HeaderImageWrapper'
 import VerticalCenter from './VerticalCenter'
 import HorizontalDivider from './HorizontalDivider'
 import RoundedButton from './RoundedButton'
@@ -14,18 +14,10 @@ import Icon from './Icon'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import FollowFollowing from './Modals/FollowFollowing'
 import ProfileStats from './Modals/ProfileStats'
+import {OverlayStyles} from './Overlay'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
-  &:after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    opacity: 1;
-    background: rgba(0, 0, 0, .3);
-  }
+  ${OverlayStyles}
 `
 
 const Username = styled.p`

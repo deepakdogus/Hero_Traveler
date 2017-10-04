@@ -27,8 +27,6 @@ const StyledButton = styled.button`
 `
 const Text = styled.p`
   color: ${props => {
-    console.log("props: ", props)
-
     switch(props.type) {
       case 'blackWhite':
         return props.theme.Colors.photoOverlay
@@ -41,7 +39,7 @@ const Text = styled.p`
       case 'right':
         return 'right'
       case 'left':
-        return 'left'        
+        return 'left'
       default:
         return 'center'
     }

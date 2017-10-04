@@ -7,10 +7,6 @@ const Container = styled.div`
   background-color: ${props => props.isClear ? props.theme.Colors.clear : props.theme.Colors.lightGreyAreas};
 `
 
-const StyledRow = styled(Row)`
-  
-`
-
 const TabContainer = styled.div`
   padding: 0px 10px;
   cursor: pointer;
@@ -38,13 +34,19 @@ export default class ToggleBar extends React.Component {
       })
     ),
     isClear: PropTypes.bool,
+    onClickTab: PropTypes.func,
+  }
+
+  nullFunc(){
+    return null
   }
 
   renderTabs(){
     const tabs = this.props.tabs || {}
+    const onClickFunction = this.props.onClickTab || this.nullFunc
     return tabs.map((tab, index) => {
       return (
-        <TabContainer key={index}>
+        <TabContainer key={index} onClick={onClickFunction}>
           <TabText isActive={tab.isActive}>{tab.text}</TabText>
         </TabContainer>
       )
@@ -54,9 +56,9 @@ export default class ToggleBar extends React.Component {
   render() {
     return (
       <Container {...this.props}>
-        <StyledRow center='xs'>
+        <Row center='xs'>
           {this.renderTabs()}
-        </StyledRow>        
+        </Row>
       </Container>
     )
   }

@@ -51,7 +51,6 @@ const TopSpacer = styled.div`
 export default class UserSearchResultRow extends Component {
   static propTypes = {
     user: PropTypes.object,
-    key: PropTypes.number,
     margin: PropTypes.string,
     index: PropTypes.number,
   }
@@ -98,7 +97,7 @@ export default class UserSearchResultRow extends Component {
             renderText={this.renderText}
             renderButton={this.renderButton}
           />
-        </UserContainer>  
+        </UserContainer>
       </Container>
     )
   }

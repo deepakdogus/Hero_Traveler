@@ -6,7 +6,7 @@ import CategoryHeader from '../Components/CategoryHeader'
 import Togglebar from '../Components/Togglebar'
 import StoryList from '../Components/StoryList'
 import Footer from '../Components/Footer'
-import Icon from '../Components/Icon'
+import ShowMore from '../Components/ShowMore'
 
 const toggleBarTabs = [
   { text: 'all', isActive: false },
@@ -19,33 +19,6 @@ const ContentWrapper = styled.div``
 
 const StoryListWrapper = styled.div`
   margin: 50px 7% 0;
-`
-
-const CenteredText = styled.p`
-  text-align: center;
-  color: ${props => props.theme.Colors.background}
-`
-
-const More = styled(CenteredText)`
-  font-family: ${props => props.theme.Fonts.type.montserrat};
-  color: ${props => props.theme.Colors.background};
-  font-size: 15px;
-  letter-spacing: 1.2px;
-  margin: 100px 0 8px 0;
-`
-
-const IconContainer = styled.div`
-  text-align: center;
-  margin-bottom: 220px;
-`
-
-const StyledIcon = styled(Icon)`
-  text-align: center;
-  height: 24px;
-  width: 12px;
-  -ms-transform: rotate(90deg);
-  -webkit-transform: rotate(90deg); 
-  transform: rotate(90deg);
 `
 
 class Category extends Component {
@@ -63,15 +36,9 @@ class Category extends Component {
         <Togglebar tabs={toggleBarTabs}/>
         <StoryListWrapper>
           <StoryList stories={usersStories} users={usersExample}/>
-          <More>SHOW MORE</More>
-          <IconContainer>
-            <StyledIcon 
-              name='arrowRightRed'
-              size='mediumSmall'
-            />            
-          </IconContainer>
+          <ShowMore/>
           <Footer />
-        </StoryListWrapper>     
+        </StoryListWrapper>
       </ContentWrapper>
     )
   }

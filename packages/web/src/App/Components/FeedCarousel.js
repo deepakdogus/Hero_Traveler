@@ -6,70 +6,57 @@ import Carousel from 'nuka-carousel'
 import RoundedButton from './RoundedButton'
 import Icon from './Icon'
 
-
 const StyledRoundedButton = styled(RoundedButton)`
 	border: 0px;
 	background-color: rgba(26,28,33,0.1);
 	outline: none;
 `
 
-const StyledArrowIconLeft = styled(Icon)`
+const StyledArrowIcon = styled(Icon)`
 	width: 12px;
 	height: 20px;
 	align-self: center;
-	margin-right: 4px;
+  margin-left: ${props => props.name === 'arrowLeft' ? '4px' : '0'};
+  margin-right: ${props => props.name === 'arrowLeft' ? '4px' : '0'};
 `
 
-const StyledArrowIconRight = styled(Icon)`
-	width: 12px;
-	height: 20px;
-	align-self: center;
-	margin-left: 4px;
-`
-
-class ArrowLeft extends React.Component {
+class Arrow extends React.Component {
   static propTypes = {
     previousSlide: PropTypes.func,
-  }  			
-  		render() {
-  			return (
-  				<StyledRoundedButton
-  					width='48px'
-  					height='48px'
-  					type='headerButton'
-  					onClick={this.props.previousSlide}
-  				>
-  					<StyledArrowIconLeft
-  						name='arrowLeft'
-  						size='medium'
-  					/>
-  				</StyledRoundedButton>
-  			)
-  		}
-}
-
-
-class ArrowRight extends React.Component {
-  static propTypes = {
     nextSlide: PropTypes.func,
-  }  		
-  		render() {
-  			return (
-  				<StyledRoundedButton
-  					width='48px'
-  					height='48px'
-  					type='headerButton'
-  					onClick={this.props.nextSlide}
-  				>
-  					<StyledArrowIconRight
-  						name='arrowRight'
-  						size='medium'
-  					/>
-  				</StyledRoundedButton>
-  			)
-  		}
+    name: PropTypes.string,
+  }
+
+  render() {
+    const {name, previousSlide, nextSlide} = this.props
+    const onClickFunction = name === 'arrowLeft' ? previousSlide : nextSlide
+    return (
+      <StyledRoundedButton
+        width='48px'
+        height='48px'
+        type='headerButton'
+        onClick={onClickFunction}
+      >
+        <StyledArrowIcon
+          name={name}
+          size='medium'
+        />
+      </StyledRoundedButton>
+    )
+  }
 }
 
+const ArrowRight = (props) => {
+  return (
+    <Arrow {...props} name='arrowRight'/>
+  )
+}
+
+const ArrowLeft = (props) => {
+  return (
+    <Arrow {...props} name='arrowLeft'/>
+  )
+}
 
 export default class FeedCarousel extends React.Component {
   static propTypes = {
@@ -78,21 +65,21 @@ export default class FeedCarousel extends React.Component {
   }
 
   Decorators = [{
-  	component: ArrowLeft,
-  	position: 'CenterLeft',
-  	style: {outline: 'none'},
+    component: ArrowLeft,
+    position: 'CenterLeft',
+    style: {outline: 'none'},
   },
   {
-		component: ArrowRight,
-  	position: 'CenterRight',
-  	style: {outline: 'none'},
-  },];
+    component: ArrowRight,
+    position: 'CenterRight',
+    style: {outline: 'none'},
+  }]
 
 
   render () {
     return (
       <Carousel
-      	decorators={this.Decorators}
+        decorators={this.Decorators}
       >
         {this.props.children}
       </Carousel>

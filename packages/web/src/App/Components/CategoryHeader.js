@@ -7,27 +7,13 @@ import HeaderImageWrapper from './HeaderImageWrapper'
 import VerticalCenter from './VerticalCenter'
 import HorizontalDivider from './HorizontalDivider'
 import RoundedButton from './RoundedButton'
+import {OverlayStyles} from './Overlay'
+import HeaderTopGradient from './Headers/Shared/HeaderTopGradient'
 
 import background from '../Shared/Images/create-story.png'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
-  &:after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    opacity: 1;
-    background: rgba(0, 0, 0, .3);
-  }
-`
-
-const HeaderTopGradient = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 180px;
-  background: linear-gradient(180deg, rgba(0,0,0,0.4), rgba(0,0,0,0));
+  ${OverlayStyles}
 `
 
 const CategoryTitle = styled.p`
@@ -61,32 +47,26 @@ const ButtonWrapper = styled.div`
 
 const StyledRoundedButton = styled(RoundedButton)`
   font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-size: 14px;
-  letter-spacing: 1.5px;
   text-transform: uppercase;
   width: 160px;
   padding: 9px;
 `
 
-export default class FeedHeader extends React.Component {
+const textProps = `
+  font-size: 14px;
+  letter-spacing: 1.5px;
+`
+
+export default class CategoryHeader extends React.Component {
   static propTypes = {
     user: PropTypes.object,
     isContributor: PropTypes.bool,
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {modal: undefined}
-  }
-
-  closeModal = () => {
-    this.setState({ modal: undefined })
-  }
-
   render () {
     const backgroundImage = background
     const ImageWrapper = backgroundImage ? OpaqueHeaderImageWrapper : HeaderImageWrapper
-  
+
     return (
       <ImageWrapper
         backgroundImage={backgroundImage}
@@ -99,7 +79,11 @@ export default class FeedHeader extends React.Component {
           <CategoryTitle>JAPAN</CategoryTitle>
           <StyledHorizontalDivider />
           <ButtonWrapper>
-            <StyledRoundedButton type='categoryFollow' text='Follow'/>
+            <StyledRoundedButton
+              type='categoryFollow'
+              text='Follow'
+              textProps={textProps}
+            />
           </ButtonWrapper>
         </Centered>
       </ImageWrapper>

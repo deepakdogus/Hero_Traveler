@@ -44,19 +44,16 @@ const StyledIcon = styled(Icon)`
 const FacebookIcon = styled(StyledIcon)`
   width: 12px;
   height: 19px;
-  padding: 0;
 `
 
 const TwitterIcon = styled(StyledIcon)`
-  padding: 0;
-  width: 20px;
-  height: 16px;
+  width: 22.5px;
+  height: 18.5px;
 `
 
 const InstagramIcon = styled(StyledIcon)`
   width: 20px;
   height: 20px;
-  padding: 0px;
 `
 
 /*
@@ -71,7 +68,7 @@ export default class Footer extends React.Component {
           <Row bottom='xs'>
             <StyledLink to='/'>About Us</StyledLink>
             <StyledLink to='/'>Terms of Service</StyledLink>
-            <StyledLink to='/'>Contact Us</StyledLink>            
+            <StyledLink to='/'>Contact Us</StyledLink>
           </Row>
           <Row middle='xs'>
             <FacebookIcon name='facebook-blue'/>

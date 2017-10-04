@@ -128,11 +128,7 @@ export default class RoundedButton extends React.Component {
   renderContent() {
     const {text, children, type, textProps} = this.props
     let RenderText = Text
-    if (textProps) {
-      RenderText = styled(Text)`
-        ${textProps}
-      `
-    }
+    if (textProps) RenderText = styled(Text)`${textProps}`
     if (children) return children
     else return (<RenderText type={type} {...this.textProps}>{text}</RenderText>)
   }

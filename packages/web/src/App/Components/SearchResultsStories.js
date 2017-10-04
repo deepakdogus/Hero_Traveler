@@ -44,7 +44,6 @@ export default class SearchResultsStories extends Component {
           key={index}
           index={index}
           textStyles={textStyles}
-          container={StyledContainer}
           ReplacementContainer={StyledContainer}
         />
       )

@@ -17,6 +17,7 @@ export const DefaultContainer = styled.div`
   border-width: ${props => props.index === 0 ? '1px 0' : '0 0 1px'};
   padding: 5px 5px 0;
 `
+
 const DefaultText = styled.p`
   color: ${props => props.theme.Colors.background};
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
@@ -59,11 +60,7 @@ export default class StorySelectRow extends Component {
     const {username, story, textStyles} = this.props
 
     let Text = DefaultText
-    if (textStyles) {
-      Text = styled(DefaultText)`
-        ${textStyles}
-      `
-    }
+    if (textStyles) Text = styled(DefaultText)`${textStyles}`
 
     return (
       <StyledVerticalCenter>

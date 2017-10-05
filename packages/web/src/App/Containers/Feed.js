@@ -28,10 +28,9 @@ const ContentWrapper = styled.div`
 
 class Feed extends Component {
   render() {
-    const user = usersExample['590b9b0a4990800011537924']
     const usersStories = Object.keys(feedExample).reduce((matchingStories, key) => {
       const story = feedExample[key]
-      if (story.author === user.id) matchingStories[key] = story;
+      matchingStories[key] = story;
       return matchingStories
     }, {})
     return (

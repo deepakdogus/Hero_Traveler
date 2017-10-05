@@ -24,7 +24,7 @@ const StoryListWrapper = styled.div`
 class Category extends Component {
   render() {
 
-    const user = usersExample['590b9b0a4990800011537924']
+    const user = usersExample['59d64ca84722340010b12c98']
     const usersStories = Object.keys(feedExample).reduce((matchingStories, key) => {
       const story = feedExample[key]
       if (story.author === user.id) matchingStories[key] = story;

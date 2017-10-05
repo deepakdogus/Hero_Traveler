@@ -144,10 +144,10 @@ export default class ProfileHeader extends React.Component {
 
   render () {
     const {user, isContributor} = this.props
-    const isUsersProfile = user.id === '596cd072fc3f8110a6f18342'
+    const isUsersProfile = user.id === '59d64ca84722340010b12c98'
     const backgroundImage = getImageUrl(user.profile.cover)
     const ImageWrapper = backgroundImage ? OpaqueHeaderImageWrapper : HeaderImageWrapper
-    const isFollowing = user.id === '590b9b0a4990800011537924'
+    const isFollowing = user.id === '59d508c56ed1d9001008780b'
     return (
       <ImageWrapper
         backgroundImage={backgroundImage}

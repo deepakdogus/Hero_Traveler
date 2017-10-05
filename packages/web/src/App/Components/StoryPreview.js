@@ -32,7 +32,7 @@ const MarginWrapper = styled.div`
 const StoryOverlayContainer = styled(OverlayHover)`
   padding-top: 151%;
   width: 100%;
-  background-image: ${props => `url(${getImageUrl(props.image)})`};
+  background-image: ${props => `url(${props.imageUrl})`};
   background-size: cover;
   position: relative;
 `
@@ -104,11 +104,14 @@ export default class StoryPreview extends React.Component {
   render() {
     const {story, author, type} = this.props
     const image = story.coverImage || story.coverVideo
+    let imageUrl;
+    if (story.coverImage) imageUrl = getImageUrl(story.coverImage)
+    else if (story.coverVideo) imageUrl = getImageUrl(story.coverVideo, 'video')
     return (
       <MarginWrapper>
         <StoryLink to={`/story/${story.id}`}>
           <StoryOverlayContainer
-            image={image}
+            imageUrl={imageUrl}
             overlayColor='black'
           />
         </StoryLink>

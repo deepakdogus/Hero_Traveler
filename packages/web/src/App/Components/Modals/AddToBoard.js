@@ -3,21 +3,20 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import {feedExample} from '../../Containers/Feed_TEST_DATA'
-import StorySelectRow from '../StorySelectRow'
+import StorySelectRow, {DefaultContainer} from '../StorySelectRow'
 import SpaceBetweenRowWithButton from '../SpaceBetweenRowWithButton'
 import VerticalCenter from '../VerticalCenter'
-import HorizontalDivider from '../HorizontalDivider'
 import {RightTitle, StyledVerticalCenter, RightModalCloseX} from './Shared'
 import Icon from '../Icon'
 
 const Container = styled.div``
 
-const CategoryRowsContainer = styled.div`
+const CategoryRowsContainer = styled.div``
 
-`
 const CreateContainer = styled.div`
-  padding: 9px 30px 8px 30px;
+  padding: 8px 30px;
 `
+
 const CreateIconContainer = styled(VerticalCenter)`
   background-color: ${props => props.theme.Colors.pink};
   border-color: ${props => props.theme.Colors.redLight};
@@ -40,12 +39,13 @@ const CreateText = styled.p`
   margin: 0;
 `
 
-const StyledHorizontalDivider = styled(HorizontalDivider)`
-  margin: 0;
+const ReplacementContainer = styled(DefaultContainer)`
+  padding: 5px 30px 0;
 `
 
 const storyKeys = Object.keys(feedExample).filter((key, index) => {
-  return index <= 2
+  const story = feedExample[key]
+  return story.coverImage
 })
 
 export default class AddToBoard extends React.Component {
@@ -66,7 +66,7 @@ export default class AddToBoard extends React.Component {
           />
       </CreateIconContainer>
     )
-  }  
+  }
 
   renderText = () => {
     return (
@@ -89,7 +89,8 @@ export default class AddToBoard extends React.Component {
           story={feedExample[key]}
           isSelected={index === 0}
           isAddToBoard={true}
-          closeModal={this.props.closeModal}
+          renderButton
+          ReplacementContainer={ReplacementContainer}
         />
       )
     })
@@ -107,7 +108,6 @@ export default class AddToBoard extends React.Component {
             renderButton={this.renderButton}
           />
         </CreateContainer>
-        <StyledHorizontalDivider color='light-grey'/>
         <CategoryRowsContainer>
           {this.renderCategoryRows(storyKeys)}
         </CategoryRowsContainer>

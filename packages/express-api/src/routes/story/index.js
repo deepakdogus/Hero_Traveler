@@ -15,6 +15,7 @@ import getBookmarks from './getBookmarks'
 import getComments from './getComments'
 import createComment from './createComment'
 import deleteStory from './deleteStory'
+import flagStory from './flagStory'
 
 import getDraft from './draft/get'
 import findDrafts from './draft/find'
@@ -74,6 +75,7 @@ router.post('/:id/comment', hasValidOauth, endpointWrapper(createComment))
 router.get('/:id', endpointWrapper(getStory))
 router.get('/:id/like', hasValidOauth, endpointWrapper(toggleLike))
 router.get('/:id/bookmark', hasValidOauth, endpointWrapper(toggleBookmark))
+router.put('/:id/flag', hasValidOauth, endpointWrapper(flagStory))
 router.post('/', hasValidOauth, endpointWrapper(create))
 
 export default router

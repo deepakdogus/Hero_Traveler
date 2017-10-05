@@ -187,6 +187,18 @@ export function * likeStory(api, {userId, storyId}) {
   }
 }
 
+export function * flagStory(api, {userId, storyId}) {
+  const response = yield call(
+    api.flagStory,
+    storyId,
+  )
+  if (response.ok) {
+    yield [
+      put(StoryActions.deleteStorySuccess(userId, storyId))
+    ]
+  }
+}
+
 export function * bookmarkStory(api, {userId, storyId}) {
   const [wasLiked, response] = yield [
     select(isStoryBookmarkedSelector, userId, storyId),

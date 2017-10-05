@@ -26,7 +26,8 @@ const StyledContainer = styled(Container)`
 `
 
 const storyKeys = Object.keys(feedExample).filter((key, index) => {
-  return index <= 2
+  const story = feedExample[key]
+  return story.coverImage
 })
 
 export default class AddToItinerary extends React.Component {
@@ -43,6 +44,7 @@ export default class AddToItinerary extends React.Component {
           index={index}
           story={feedExample[key]}
           isSelected={index === 0}
+          renderButton
         />
       )
     })

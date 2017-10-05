@@ -1,16 +1,17 @@
 import {StoryBookmark} from '../models'
-import findStories from './_find'
 
 export default function findBookmarks(userId) {
-  return StoryBookmark.find({
+  return StoryBookmark.getUserBookmarks({
     user: userId
   })
-  .lean()
-  .distinct('story')
-  .then(bookmarkIds => {
-    return findStories({
-      _id: {
-        $in: bookmarkIds
+  .then(bookmarks => {
+    return bookmarks.map(bookmark => {
+      if (!bookmark.story.draft) {
+        const bookmarkStory = {...bookmark.story, id: bookmark.story._id}
+        // replacing the story id that gets stripped by the .lean call
+        // necessary for normalizer to work properly on front-end
+        bookmarkStory.author.id = bookmarkStory.author._id
+        return bookmarkStory
       }
     })
   })

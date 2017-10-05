@@ -3,15 +3,17 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import {Row} from './FlexboxGrid'
 
-const StyledRow = styled(Row)`
-  background-color: ${props => props.theme.Colors.lightGreyAreas}
+const Container = styled.div`
+  background-color: ${props => props.isClear ? props.theme.Colors.clear : props.theme.Colors.lightGreyAreas};
 `
 
 const TabContainer = styled.div`
   padding: 0px 10px;
+  cursor: pointer;
 `
 
 const TabText = styled.p`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
   font-size: 18px;
   color: ${props => props.isActive ? props.theme.Colors.background : props.theme.Colors.navBarText};
   letter-spacing: 1.2px;
@@ -30,14 +32,21 @@ export default class ToggleBar extends React.Component {
         text: PropTypes.string,
         isActive: PropTypes.bool,
       })
-    )
+    ),
+    isClear: PropTypes.bool,
+    onClickTab: PropTypes.func,
+  }
+
+  nullFunc(){
+    return null
   }
 
   renderTabs(){
     const tabs = this.props.tabs || {}
+    const onClickFunction = this.props.onClickTab || this.nullFunc
     return tabs.map((tab, index) => {
       return (
-        <TabContainer key={index}>
+        <TabContainer key={index} onClick={onClickFunction}>
           <TabText isActive={tab.isActive}>{tab.text}</TabText>
         </TabContainer>
       )
@@ -46,9 +55,11 @@ export default class ToggleBar extends React.Component {
 
   render() {
     return (
-      <StyledRow center='xs'>
-        {this.renderTabs()}
-      </StyledRow>
+      <Container {...this.props}>
+        <Row center='xs'>
+          {this.renderTabs()}
+        </Row>
+      </Container>
     )
   }
 }

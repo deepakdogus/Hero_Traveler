@@ -322,17 +322,21 @@ const getStory = (storyId) => {
     return api.get(`story/${storyId}/like`)
   }
 
+  const flagStory = (storyId) => {
+    return api.put(`story/${storyId}/flag`)
+  }
+
   const bookmarkStory = (storyId) => {
     return api.get(`story/${storyId}/bookmark`)
   }
 
   const getBookmarks = (userId) => {
     return api.get(`story/user/${userId}/bookmark`)
-      .then(response => {
-        return  Object.assign({}, response, {
-          data: normalize(response.data, [Story])
-        })
+    .then(response => {
+      return  Object.assign({}, response, {
+        data: normalize(response.data, [Story])
       })
+    })
   }
 
   const getComments = (storyId) => {
@@ -467,6 +471,7 @@ const getStory = (storyId) => {
     deleteStory,
     changePassword,
     signupCheck,
+    flagStory,
   }
 }
 

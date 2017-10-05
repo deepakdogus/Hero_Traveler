@@ -33,13 +33,17 @@ function getBackgroundColor (type, colors) {
       return colors.facebook
     case 'twitterSignup':
       return colors.twitterBlue
+    case 'categoryFollow':
+      return colors.redLight
     case 'blackWhite':
     case 'facebook':
     case 'twitter':
     case 'lightGrey':
-      return colors.snow
     case 'opaqueGrey':
       return colors.snow
+    case 'myFeedHeaderButton':
+      return colors.backgroundTint
+    case 'headerButton':
     case 'backgroundOpaque':
       return colors.backgroundOpaque
     default:
@@ -68,9 +72,13 @@ const StyledButton = styled.button`
         return props.theme.Colors.btnGreyBackground
       case 'opaque':
       case 'opaqueWhite':
+      case 'categoryFollow':
+      case 'myFeedHeaderButton':
         return props.theme.Colors.snow
       case 'blackWhite':
         return props.theme.Colors.photoOverlay
+      case 'headerButton':
+        return props.theme.Colors.navBarText
       case 'opaqueGrey':
         return props.theme.Colors.grey
       case 'backgroundOpaque':
@@ -124,12 +132,15 @@ export default class RoundedButton extends React.Component {
     margin: PropTypes.string,
     padding: PropTypes.string,
     height: PropTypes.string,
+    textProps: PropTypes.object,
   }
 
   renderContent() {
-    const {text, children, type} = this.props
+    const {text, children, type, textProps} = this.props
+    let RenderText = Text
+    if (textProps) RenderText = styled(Text)`${textProps}`
     if (children) return children
-    else return (<Text type={type}>{text}</Text>)
+    else return (<RenderText type={type} {...this.textProps}>{text}</RenderText>)
   }
 
   render() {

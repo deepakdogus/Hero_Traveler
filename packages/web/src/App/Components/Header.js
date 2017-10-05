@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import {NavLink} from 'react-router-dom';
+import {NavLink} from 'react-router-dom'
 import Modal from 'react-modal'
 
-import { Grid, Row, Col } from './FlexboxGrid';
+import { Grid, Row, Col } from './FlexboxGrid'
 import logo from '../Shared/Images/ht-logo-white.png'
 import RoundedButton from './RoundedButton'
 import Icon from './Icon'
@@ -49,13 +49,25 @@ const addToItineraryModalStyles = {
 const StyledGrid = styled(Grid)`
   padding: 15px;
   z-index: 3;
-  position: absolute;
+  position: ${props => props.fixed ? 'fixed' : 'absolute'};
   width: 100%;
   top: 0;
+  padding-right: 10px;
+  background-color: ${props => props.blackBackground ? '#1a1c21' : 'rgba(0,0,0,0)'};
+`
+
+const StyledGridBlack = styled(StyledGrid)`
+  background-color: ${props => props.theme.Colors.background}
+`
+
+const StyledRow = styled(Row)`
+  height: 65px;
 `
 
 const Logo = styled.img`
   height: 30px;
+  margin-left: -35px;
+  margin-top: 6px;
 `
 
 // Likely refactor this out into its own component later with &nbsp; included
@@ -63,21 +75,37 @@ const Divider = styled.div`
   display: inline-block;
   width: 1px;
   background-color: ${props => props.theme.Colors.snow};
+  margin-left: 10px;
+  margin-right: 10px;
+`
+const SearchIcon = styled(Icon)`
+  height: 17px;
+  width: 17px;
+`
+const MailIcon = styled(Icon)`
+  height: 12px;
+  width: 18px;
+  padding-top: 2px;
 `
 
-const MenuLinkContainer = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: 'row';
+const NotificationsIcon = styled(Icon)`
+  height: 18px;
+  width: 18px;
 `
 
-const RoundedButtonText = styled.p`
-  color: ${props => props.theme.Colors.snow };
-  text-align: center;
-  font-size: 16px;
-  margin: 2.5px 10px;
-  letter-spacing: 1.2px;
-  text-decoration: none;
+const StyledRoundedButton = styled(RoundedButton)`
+  margin-left: 10px;
+  margin-right: 10px;
+`
+
+const StyledRoundedAvatarButton = styled(RoundedButton)`
+  margin-left: 10px;
+  margin-right: 20px;
+`
+
+const StyledRoundedLoginButton = styled(RoundedButton)`
+  margin-left: 10px;
+  margin-right: 20px;
 `
 
 const MenuLink = (props) => {
@@ -90,6 +118,9 @@ const MenuLink = (props) => {
         marginRight: 10,
         display: 'flex',
         color: 'white',
+        fontFamily: 'montserrat',
+        fontSize: '15px',
+        letterSpacing: '1.2px',
         borderBottomWidth: '3px',
         borderBottomColor: 'transparent',
         borderBottomStyle: 'solid'
@@ -107,11 +138,14 @@ const MenuLink = (props) => {
 export default class Header extends React.Component {
   static propTypes = {
     isLoggedIn: PropTypes.bool,
+    blackHeader: PropTypes.bool,
   }
 
   constructor(props) {
     super(props)
-    this.state = {modal: undefined}
+    this.state = {
+      modal: undefined,
+    }
   }
 
   openLoginModal = () => {
@@ -128,64 +162,112 @@ export default class Header extends React.Component {
 
   render () {
     const {isLoggedIn} = this.props
+    // quick fix to get this merge in - need to refactor accordingly (part of header refactor)
+    const SelectedGrid = this.props.blackHeader ? StyledGridBlack : StyledGrid
     return (
-      <StyledGrid fluid>
-        <Row start="xs">
-          <Col xs={12} md={2} >
+      <SelectedGrid fluid>
+        <StyledRow center="xs" middle="xs">
+          <Col xs={12} md={2} lg={2} >
             <Logo src={logo} alt={'Hero Traveler Logo'}/>
           </Col>
-          <Col xs>
-            <MenuLinkContainer>
+          {isLoggedIn &&
+          <Col xsOffset={1} lg={2}>
+            <Row middle="xs">
+              <MenuLink to='/feed' exact>
+                My Feed
+              </MenuLink>
+              <Divider>&nbsp;</Divider>
+              <span>&nbsp;</span>
               <MenuLink to='/' exact>
                 Explore
               </MenuLink>
+            </Row>
+          </Col>
+          }
+          {!isLoggedIn &&
+          <Col lg={5}>
+            <Row middle="xs">
+              <MenuLink to='/' exact>
+                `Explore`
+              </MenuLink>
+              <Divider>&nbsp;</Divider>
               <MenuLink to='/signup/topics'>
                 Signup (topics)
               </MenuLink>
+              <Divider>&nbsp;</Divider>
               <MenuLink to='/signup/social'>
                 Signup (social)
               </MenuLink>
+              <Divider>&nbsp;</Divider>
               <MenuLink to='/story/596775b90d4bb70010e2a5f8'>
                 Story
               </MenuLink>
-            </MenuLinkContainer>
-          </Col>
-          <Col xs>
-            <Row end='xs'>
-              <RoundedButton type={'opaque'}>
-                <Icon name='explore' />
-              </RoundedButton>
-              <Divider>&nbsp;</Divider>
-              {!isLoggedIn &&
-                <RoundedButton
-                  text='Login'
-                  onClick={this.openLoginModal}
-                />
-              }
-              {isLoggedIn &&
-                <div>
-                  <RoundedButton>
-                    <NavLink 
-                      to='/createStory'
-                      style={{textDecoration: 'none'}}
-                    >
-                      <RoundedButtonText>Create</RoundedButtonText>
-                    </NavLink>
-                  </RoundedButton>
-                  <RoundedButton type={'opaque'}>
-                    <Icon name='loginEmail' />
-                  </RoundedButton>
-                  <RoundedButton type={'opaque'}>
-                    <Icon name='cameraFlash' />
-                  </RoundedButton>
-                  <RoundedButton type={'opaque'}>
-                    <Avatar />
-                  </RoundedButton>
-                </div>
-              }
             </Row>
           </Col>
-        </Row>
+          }
+          {isLoggedIn &&
+          <Col xsOffset={2} lg={5}>
+            <Row end='xs' middle='xs'>
+              <NavLink
+                to='/search'
+              >
+                <StyledRoundedButton
+                  type='headerButton'
+                  height='32px'
+                  width='32px'
+                >
+                  <SearchIcon
+                    name='explore'
+                  />
+                </StyledRoundedButton>
+              </NavLink>
+              <Divider>&nbsp;</Divider>
+              <StyledRoundedButton text='Create'/>
+              <StyledRoundedButton
+                type='headerButton'
+                height='32px'
+                width='32px'
+              >
+                <MailIcon
+                  name='loginEmail'
+                />
+              </StyledRoundedButton>
+              <StyledRoundedButton
+                type='headerButton'
+                height='32px'
+                width='32px'
+              >
+                <NotificationsIcon name='cameraFlash' />
+              </StyledRoundedButton>
+              <StyledRoundedAvatarButton
+                type='headerButton'
+                height='32px'
+                width='32px'
+              >
+                <Avatar size='mediumSmall'/>
+              </StyledRoundedAvatarButton>
+            </Row>
+          </Col>
+          }
+          {!isLoggedIn &&
+          <Col xsOffset={3} lg={2}>
+            <Row end='xs' middle='xs'>
+              <StyledRoundedButton
+                type='headerButton'
+                height='32px'
+                width='32px'
+              >
+                <SearchIcon name='explore' />
+              </StyledRoundedButton>
+              <Divider>&nbsp;</Divider>
+              <StyledRoundedLoginButton
+                text='Login'
+                onClick={this.openLoginModal}
+              />
+            </Row>
+          </Col>
+          }
+        </StyledRow>
 
         <Modal
           isOpen={this.state.modal === 'login'}
@@ -227,7 +309,7 @@ export default class Header extends React.Component {
         >
           <AddToItinerary/>
         </Modal>
-      </StyledGrid>
+      </SelectedGrid>
     )
   }
 }

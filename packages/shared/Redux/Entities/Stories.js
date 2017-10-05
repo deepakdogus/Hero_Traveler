@@ -20,6 +20,7 @@ const { Types, Creators } = createActions({
   loadDraftsFailure: ['error'],
   toggleLike: ['storyId', 'wasLiked'],
   storyLike: ['userId', 'storyId'],
+  flagStory: ['userId', 'storyId'],
   // storyLikeFailure: ['storyId', 'wasLiked'],
   toggleBookmark: ['storyId', 'wasLiked'],
   storyBookmark: ['userId', 'storyId'],

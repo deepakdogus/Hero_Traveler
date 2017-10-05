@@ -36,7 +36,7 @@ export default class SearchResultsStories extends Component {
     */
     const renderedStories = Object.keys(stories).map((key, index) => {
       const story = stories[key]
-      if (index >= 4) return null
+      if (story.coverVideo) return null
       return (
         <StorySelectRow
           story={story}

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 
 import SpaceBetweenRowWithButton from './SpaceBetweenRowWithButton'
 import VerticalCenter from './VerticalCenter'
-import HorizontalDivider from './HorizontalDivider'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Icon from './Icon'
 
@@ -15,15 +14,17 @@ const StyledImage = styled.img`
 
 export const DefaultContainer = styled.div`
   border: ${props => `1px solid ${props.theme.Colors.dividerGrey}`};
-  border-width: ${props => props.index === 0 ? '1px 0' : '0 0 1px'};
+  border-width: ${props => props.index === 0 ? '1px 0 1px' : '0 0 1px'};
   padding: 5px 5px 0;
 `
 
 const DefaultText = styled.p`
   color: ${props => props.theme.Colors.background};
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
-  font-size: 16px;
-  font-weight: 400;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: .7px;
+  margin: 0;
 `
 
 const Container = styled.div`
@@ -36,30 +37,17 @@ const InteractiveContainer = styled.div`
   }
 `
 
-// const Text = styled.p`
-//   font-family: ${props => props.theme.Fonts.type.base};
-//   font-weight: 600;
-//   font-size: 18px;
-//   letter-spacing: .7px;
-//   margin: 0;
-// `
-
 const UserName = styled(DefaultText)`
   color: ${props => props.theme.Colors.grey};
   font-weight: 400;
   font-size: 14px;
   font-style: italic;
-  padding-left: 25px;
 `
 
 const StyledVerticalCenter = styled(VerticalCenter)`
   height: 100%;
   padding-left: 25px;
 
-`
-
-const StyledHorizontalDivider = styled(HorizontalDivider)`
-  margin: 0;
 `
 
 const DefaultWrapper = styled.div``
@@ -72,7 +60,6 @@ export default class StorySelectRow extends Component {
     renderButton: PropTypes.bool,
     styles: PropTypes.object,
     index: PropTypes.number,
-    closeModal: PropTypes.func,
   }
 
   renderImage = () => {
@@ -107,36 +94,6 @@ export default class StorySelectRow extends Component {
         <Icon name={iconName} />
       </VerticalCenter>
     )
-  }
-
-  renderNormalContainer = () => {
-    return(
-        <div>
-          <Container index={this.props.index}>
-            <SpaceBetweenRowWithButton
-              renderImage={this.renderImage}
-              renderText={this.renderText}
-              renderButton={this.renderButton}
-            />
-          </Container>
-          <StyledHorizontalDivider color='light-grey'/>
-        </div>
-      )
-  }
-
-  renderInteractiveContainer = () => {
-    return(
-        <InteractiveContainer>
-          <Container index={this.props.index}>
-            <SpaceBetweenRowWithButton
-              renderImage={this.renderImage}
-              renderText={this.renderText}
-              renderButton={this.renderButton}
-            />
-          </Container>
-          <StyledHorizontalDivider color='light-grey'/>
-        </InteractiveContainer>
-      )
   }
 
   render() {

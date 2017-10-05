@@ -103,10 +103,10 @@ export default class StoryPreview extends React.Component {
 
   render() {
     const {story, author, type} = this.props
-    const image = story.coverImage || story.coverVideo
     let imageUrl;
     if (story.coverImage) imageUrl = getImageUrl(story.coverImage)
     else if (story.coverVideo) imageUrl = getImageUrl(story.coverVideo, 'video')
+
     return (
       <MarginWrapper>
         <StoryLink to={`/story/${story.id}`}>

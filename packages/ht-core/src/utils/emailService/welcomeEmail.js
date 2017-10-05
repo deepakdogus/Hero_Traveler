@@ -26,7 +26,7 @@ export default function sendWelcomeEmail(user) {
 
   const context = {
     subject: 'Welcome to HERO Traveler!',
-    // confirmationUrl: `com.rehashstudio.herotraveler://emailverify/${user.emailConfirmationToken}`,
+    // confirmationUrl: `com.herotraveler.herotraveler-beta://emailverify/${user.emailConfirmationToken}`,
     confirmationUrl: `${process.env.API_HOST}/user/redirect-verify-email/${user.emailConfirmationToken}`,
     logoUrl: 'https://s3.amazonaws.com/hero-traveler/assets/ht-logo-white-small.png',
     logoHeight: '50px',

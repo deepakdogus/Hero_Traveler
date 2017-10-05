@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>HERO Traveler</string>
+	<string>Hero Traveler Beta</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -26,7 +26,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>fb1589340484457361</string>
-				<string>com.rehashstudio.herotraveler</string>
+				<string>com.herotraveler.herotraveler-beta</string>
 			</array>
 		</dict>
 	</array>
@@ -140,6 +140,7 @@
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
+		<string>gamekit</string>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>

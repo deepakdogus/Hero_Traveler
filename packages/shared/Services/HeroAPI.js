@@ -316,11 +316,11 @@ const getStory = (storyId) => {
 
   const getBookmarks = (userId) => {
     return api.get(`story/user/${userId}/bookmark`)
-      .then(response => {
-        return  Object.assign({}, response, {
-          data: normalize(response.data, [Story])
-        })
+    .then(response => {
+      return  Object.assign({}, response, {
+        data: normalize(response.data, [Story])
       })
+    })
   }
 
   const getComments = (storyId) => {

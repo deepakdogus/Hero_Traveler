@@ -11,11 +11,6 @@ const StyledContainer = styled(DefaultContainer)`
   padding: 10px 0px 6px;
 `
 
-const textStyles = `
-  font-weight: 600;
-  font-size: 18px;
-`
-
 export default class SearchResultsStories extends Component {
   static PropTypes = {
     storySearchResults: PropTypes.object,
@@ -43,7 +38,6 @@ export default class SearchResultsStories extends Component {
           username={users[story.author].username}
           key={index}
           index={index}
-          textStyles={textStyles}
           ReplacementContainer={StyledContainer}
         />
       )

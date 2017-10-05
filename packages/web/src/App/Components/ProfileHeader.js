@@ -5,14 +5,16 @@ import styled from 'styled-components'
 import Avatar from './Avatar'
 import Header from './Header'
 import {Row} from './FlexboxGrid'
-import HeaderImageWrapper from './HeaderImageWrapper'
+import HeaderImageWrapper from './Headers/Shared/HeaderImageWrapper'
 import VerticalCenter from './VerticalCenter'
 import HorizontalDivider from './HorizontalDivider'
 import RoundedButton from './RoundedButton'
 import RightModal from './RightModal'
 import CenterModal from './CenterModal'
 import Icon from './Icon'
+import {OverlayStyles} from './Overlay'
 import getImageUrl from '../Shared/Lib/getImageUrl'
+
 import FollowFollowing from './Modals/FollowFollowing'
 import ProfileStats from './Modals/ProfileStats'
 import Comments from './Modals/Comments'
@@ -28,16 +30,7 @@ import FAQTermsAndConditions from './Modals/FAQTermsAndConditions'
 import ProfileBio from './Modals/ProfileBio'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
-  &:after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    opacity: 1;
-    background: rgba(0, 0, 0, .3);
-  }
+  ${OverlayStyles}
 `
 
 const Username = styled.p`
@@ -129,7 +122,6 @@ const ContributorText = styled.p`
   line-height: 25px;
 `
 
-
 export default class ProfileHeader extends React.Component {
   static propTypes = {
     user: PropTypes.object,
@@ -152,10 +144,10 @@ export default class ProfileHeader extends React.Component {
 
   render () {
     const {user, isContributor} = this.props
-    const isUsersProfile = user.id === '596cd072fc3f8110a6f18342'
+    const isUsersProfile = user.id === '59d64ca84722340010b12c98'
     const backgroundImage = getImageUrl(user.profile.cover)
     const ImageWrapper = backgroundImage ? OpaqueHeaderImageWrapper : HeaderImageWrapper
-    const isFollowing = user.id === '590b9b0a4990800011537924'
+    const isFollowing = user.id === '59d508c56ed1d9001008780b'
     return (
       <ImageWrapper
         backgroundImage={backgroundImage}

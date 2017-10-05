@@ -18,13 +18,14 @@ export default class Video extends React.Component {
   static propTypes = {
     src: PropTypes.string,
     type: PropTypes.oneOf(['cover', 'preview']),
+    noControls: PropTypes.bool,
   }
 
   render() {
     const {src, type} = this.props
     return (
       <VideoWrapper>
-        <StyledVideo src={src} type={type} controls/>
+        <StyledVideo src={src} type={type} controls={!this.props.noControls || null}/>
       </VideoWrapper>
     )
   }

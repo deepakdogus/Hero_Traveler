@@ -80,6 +80,8 @@ const images = {
   iconNormalText: require('../Images/ht-icons/Aa.png'),
   iconHeaderText: require('../Images/ht-icons/Aa_toggled_on.png'),
   iconFlag: require('../Images/ht-icons/icon_flag.png'),
+  googlePlayBadge: require('../Images/ht-icons/google-play-badge.png'),
+  appleAppStoreBadge: require('../Images/ht-icons/apple-app-store-badge.svg'),
 }
 
 export default images

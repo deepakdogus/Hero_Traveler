@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import moment from 'moment'
-import {NavLink} from 'react-router-dom';
 
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import getVideoUrl from '../Shared/Lib/getVideoUrl'
@@ -14,11 +13,9 @@ import VerticalCenter from './VerticalCenter'
 import {Row} from './FlexboxGrid';
 import HorizontalDivider from './HorizontalDivider'
 import Video from './Video'
+import NavLinkStyled from './NavLinkStyled'
 
-const ProfileLink = styled(NavLink)`
-  text-decoration: none;
-  color: inherit;
-`
+const ProfileLink = styled(NavLinkStyled)``
 
 const Title = styled.p`
   font-weight: 400;

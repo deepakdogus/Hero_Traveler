@@ -8,6 +8,8 @@ function getSize(props) {
   switch(props.size) {
     case 'small':
       return '15px'
+    case 'mediumSmall':
+      return '18px'
     case 'medium':
       return '50px'
     case 'large':
@@ -30,6 +32,7 @@ const StyledIcon = styled.img`
 export default class Icon extends React.Component {
 	static propTypes = {
     name: PropTypes.string,
+    size: PropTypes.string,
     color: PropTypes.string,
   }
 
@@ -121,6 +124,10 @@ export default class Icon extends React.Component {
         return Images.iconProfileBadge
       case 'defaultProfile':
         return Images.iconDefaultProfile
+      case 'googlePlayBadge':
+        return Images.googlePlayBadge
+      case 'appleAppStoreBadge':
+        return Images.appleAppStoreBadge
       case 'components':
         return Images.components
       case 'trash':

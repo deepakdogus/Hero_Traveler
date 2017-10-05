@@ -80,34 +80,36 @@ class FollowersScreen extends React.Component {
             const u = this.props.users[uid]
             const selected = this.userIsFollowed(u.id)
             let followingText
-
-            if (uid === this.props.user.id) {
-              followingText = 'YOU'
-            } else if (selected) {
+            let NavToProfileFunction = NavActions.readOnlyProfile
+            if (selected) {
               followingText = 'FOLLOWING'
-            } else {
+            } else if (uid !== this.props.user.id) {
               followingText = 'FOLLOW'
+            } else if (uid === this.props.user.id) {
+              NavToProfileFunction = NavActions.profile
             }
 
             return (
               <View style={[styles.rowWrapper]} key={u.id}>
                 <View style={[styles.row, styles.followers]}>
-                  <TouchableOpacity onPress={() => NavActions.readOnlyProfile({userId: u.id})}>
+                  <TouchableOpacity onPress={() => NavToProfileFunction({userId: u.id})}>
                   <Avatar
                     style={styles.avatar}
-                    avatarUrl={getImageUrl(u.profile.avatar)}
+                    avatarUrl={getImageUrl(u.profile.avatar, 'avatar')}
                   />
                   </TouchableOpacity>
                   <View style={styles.nameWrapper}>
                     <Text style={styles.name}>{u.profile.fullName}</Text>
                     <Text style={styles.followerCount}>{u.counts.followers} followers</Text>
                   </View>
+                  {followingText &&
                   <RoundedButton
                     style={selected ? styles.selectedFollowersButton : styles.followersButton}
                     textStyle={selected ? styles.selectedFollowersButtonText : styles.followersButtonText}
                     text={followingText}
                     onPress={() => this.toggleFollow(u)}
                   />
+                  }
                 </View>
               </View>
             )

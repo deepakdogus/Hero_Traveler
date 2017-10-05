@@ -1,0 +1,21 @@
+/* Google Locator styles */
+
+
+input[placeholder="Add location"]::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  font-family: source sans pro;
+  color: #bdbdbd;
+}
+input[placeholder="Add location"]::-moz-placeholder { /* Firefox 19+ */
+  font-family: source sans pro;
+  color: #bdbdbd;
+}
+input[placeholder="Add location"]:-ms-input-placeholder { /* IE 10+ */
+  font-family: source sans pro;
+  color: #bdbdbd;
+}
+input[placeholder="Add location"]:-moz-placeholder { /* Firefox 18- */
+  font-family: source sans pro;
+  color: #bdbdbd;
+}
+
+

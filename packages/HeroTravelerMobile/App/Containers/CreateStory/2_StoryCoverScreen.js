@@ -12,7 +12,6 @@ import {
   Alert,
   TextInput,
   ScrollView,
-  StyleSheet
 } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
@@ -25,7 +24,8 @@ import API from '../../Shared/Services/HeroAPI'
 import StoryEditActions from '../../Shared/Redux/StoryCreateRedux'
 import ShadowButton from '../../Components/ShadowButton'
 import Loader from '../../Components/Loader'
-import {Colors, Metrics, ApplicationStyles, Fonts} from '../../Shared/Themes'
+import {Colors, Metrics} from '../../Shared/Themes'
+import styles, {customStyles, modalBackgroundStyles, modalWrapperStyles} from './2_StoryCoverScreenStyles'
 import NavBar from './NavBar'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import getVideoUrl from '../../Shared/Lib/getVideoUrl'
@@ -35,6 +35,7 @@ import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTi
 import RoundedButton from '../../Components/RoundedButton'
 import UserActions from '../../Shared/Redux/Entities/Users'
 import TabIcon from '../../Components/TabIcon'
+import Modal from '../../Components/Modal'
 
 import Editor from '../../Components/NewEditor/Editor'
 import Toolbar from '../../Components/NewEditor/Toolbar'
@@ -86,6 +87,8 @@ class StoryCoverScreen extends Component {
       videoUploading: false,
       isScrollDown: !!coverImage,
       titleHeight: 34,
+      activeModal: undefined,
+      toolbarDisplay: false,
     }
   }
 
@@ -247,7 +250,7 @@ class StoryCoverScreen extends Component {
       this.resetAnimation()
     })
     NavActions.mediaSelectorScreen({
-      mediaType: this.props.mediaType,
+      mediaType: this.getMediaType(),
       title: 'Change Cover',
       leftTitle: 'Cancel',
       onLeft: () => NavActions.pop(),
@@ -299,9 +302,9 @@ class StoryCoverScreen extends Component {
   renderTextColor = (baseStyle) => {
     return R.ifElse(
       R.identity,
-      R.always([baseStyle, { color: 'white' }]),
+      R.always([baseStyle, { color: Colors.snow }]),
       R.always(baseStyle),
-    )(!!this.state.coverImage)
+    )(!!(this.state.coverImage || this.state.coverVideo))
   }
 
   renderPlaceholderColor = (baseColor) => {
@@ -324,37 +327,95 @@ class StoryCoverScreen extends Component {
       this.state.originalStory.id === this.props.story.id
   }
 
+  _onLeftYes = () => {
+    if (!this.isValid() && this.isPhotoType()) {
+      this.setState({
+        error: 'Please add a cover and a title to continue',
+        activeModal: undefined,
+      })
+    } else {
+      this.saveStory().then(() => {
+        this.navBack()
+      })
+    }
+  }
+
+  _onLeftNo = () => {
+    if (!this.isSavedDraft()) {
+      this.props.discardDraft(this.props.story.id)
+    } else {
+      this.props.update(this.props.story.id, this.state.originalStory, true)
+    }
+    this.navBack()
+  }
+
   _onLeft = () => {
+    if (!this.isPhotoType()) {
+      const isDraft = this.props.story.draft === true
+      const title = isDraft ? 'Save Draft' : 'Save Edits'
+      const message = this.isSavedDraft() ? 'Do you want to save these edits before you go?' : 'Do you want to save this story draft before you go?'
+
+      // When a user cancels the draft flow, remove the draft
+      Alert.alert(
+        title,
+        message,
+        [{
+          text: 'Yes',
+          onPress: () => {
+            if (!this.isValid() && this.isPhotoType()) {
+              this.setState({error: 'Please add a cover and a title to continue'})
+            } else {
+              this.saveStory().then(() => {
+                this.navBack()
+              })
+            }
+          }
+        }, {
+          text: 'No',
+          onPress: () => {
+            if (!this.isSavedDraft()) {
+              this.props.discardDraft(this.props.story.id)
+            } else {
+              this.props.update(this.props.story.id, this.state.originalStory, true)
+            }
+            this.navBack()
+          }
+        }]
+      )
+    }
+    else this.setState({activeModal: 'cancel'})
+  }
+
+  closeModal = () => {
+    this.setState({ activeModal: undefined})
+  }
+
+  renderCancel = () => {
     const isDraft = this.props.story.draft === true
     const title = isDraft ? 'Save Draft' : 'Save Edits'
     const message = this.isSavedDraft() ? 'Do you want to save these edits before you go?' : 'Do you want to save this story draft before you go?'
-
-    // When a user cancels the draft flow, remove the draft
-    Alert.alert(
-      title,
-      message,
-      [{
-        text: 'Yes',
-        onPress: () => {
-          if (!this.isValid() && this.isPhotoType()) {
-            this.setState({error: 'Please add a cover and a title to continue'})
-          } else {
-            this.saveStory().then(() => {
-              this.navBack()
-            })
-          }
-        }
-      }, {
-        text: 'No',
-        onPress: () => {
-          if (!this.isSavedDraft()) {
-            this.props.discardDraft(this.props.story.id)
-          } else {
-            this.props.update(this.props.story.id, this.state.originalStory, true)
-          }
-          this.navBack()
-        }
-      }]
+    return (
+      <Modal
+        closeModal={this.closeModal}
+        modalStyle={modalWrapperStyles}
+      >
+        <Text style={styles.modalTitle}>{title}</Text>
+        <Text style={styles.modalMessage}>{message}</Text>
+        <View style={styles.modalBtnWrapper}>
+          <TouchableOpacity
+            style={[styles.modalBtn, styles.modalBtnLeft]}
+            onPress={this._onLeftYes}
+          >
+            <Text style={styles.modalBtnText}>Yes</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.modalBtn}
+            onPress={this._onLeftNo}
+          >
+            <Text style={styles.modalBtnText}>No</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     )
   }
 
@@ -494,9 +555,35 @@ class StoryCoverScreen extends Component {
         file: null,
         updating: false,
         coverImage: story.coverImage ? getImageUrl(story.coverImage) : null,
-        coverVideo: story.coverVideo ? getVideoUrl(story.coverVideo) : null
+        coverVideo: story.coverVideo ? getVideoUrl(story.coverVideo) : null,
+        originalStory: story
       })
     })
+    .catch((err) => {
+      this.saveFailed()
+      return Promise.reject(err)
+    })
+  }
+
+  saveFailed = () => {
+    this.setState({
+      updating: false,
+      imageUploading: false,
+      videoUploading: false,
+      activeModal: 'saveFail',
+    })
+  }
+
+  renderFailModal = () => {
+    return (
+      <Modal
+        closeModal={this.closeModal}
+        modalStyle={modalWrapperStyles}
+      >
+        <Text style={styles.modalTitle}>Save Error</Text>
+        <Text style={[styles.modalMessage, styles.failModalMessage]}>We experienced an error while trying to save your story. Please try again</Text>
+      </Modal>
+    )
   }
 
   hasNoPhoto() {
@@ -546,13 +633,15 @@ class StoryCoverScreen extends Component {
 
   renderContent () {
     const icon = this.getIcon()
+    // offset so that the buttons are visible when the keyboard + toolbar are open
+    const buttonsOffset = (this.toolbar && this.state.toolbarDisplay) ? {top: 75} : null
     return (
       <View style={this.hasNoCover() ? styles.lightGreyAreasBG : null}>
         {this.hasNoCover() && <View style={styles.spaceView} />}
         {this.hasNoCover() &&
           <View style={[styles.spaceView, styles.addPhotoView]}>
             <TouchableOpacity
-              style={styles.addPhotoButton}
+              style={[styles.addPhotoButton, buttonsOffset]}
               onPress={this._contentAddCover}
             >
               <TabIcon name={icon} style={{
@@ -584,13 +673,8 @@ class StoryCoverScreen extends Component {
                 ]}>
                   <TouchableOpacity
                     onPress={this._touchChangeCover}
-                    style={styles.iconButton}>
+                    style={[styles.iconButton, buttonsOffset]}>
                     <Icon name={icon} color={Colors.snow} size={30} />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={this._touchTrash}
-                    style={styles.iconButton}>
-                    <Icon name='trash' color={Colors.snow} size={30} />
                   </TouchableOpacity>
                 </Animated.View>
               </View>
@@ -610,6 +694,7 @@ class StoryCoverScreen extends Component {
             returnKeyType='done'
             maxLength={40}
             multiline={true}
+            blurOnSubmit
             onContentSizeChange={this.setTitleHeight}
           />
           <TextInput
@@ -619,7 +704,7 @@ class StoryCoverScreen extends Component {
             onChangeText={this.setDescription}
             value={this.state.description}
             returnKeyType='done'
-            maxLength={32}
+            maxLength={50}
           />
         </View>
       </View>
@@ -665,12 +750,11 @@ class StoryCoverScreen extends Component {
           <View style={{
             height: 50,
             width: 120,
-            justifyContent: 'space-between',
+            justifyContent: 'center',
             flexDirection: 'row',
-            alignItems: 'center'
+            alignItems: 'center',
           }}>
             <Icon name='camera' size={18} />
-            <Icon name='trash' size={18} />
           </View>
             <Icon name='bullseye' style={{marginBottom: -10}} size={18} />
             <Icon name='hand-pointer-o' style={{backgroundColor: 'transparent', marginRight: -8}} size={30} />
@@ -722,6 +806,7 @@ class StoryCoverScreen extends Component {
         this.editor.insertImage(_.get(imageUpload, 'original.path'))
         this.setState({imageUploading: false})
       })
+      .catch(this.saveFailed)
     NavActions.pop()
   }
 
@@ -732,12 +817,13 @@ class StoryCoverScreen extends Component {
         this.editor.insertVideo(_.get(videoUpload, 'original.path'))
         this.setState({videoUploading: false})
       })
+      .catch(this.saveFailed)
     NavActions.pop()
   }
 
-  setToolbarDisplay = (display) => {
-    if (this.toolbar && this.toolbar.state !== display) {
-      this.toolbar.setState({display})
+  setToolbarDisplay = (toolbarDisplay) => {
+    if (this.toolbar && this.state.toolbarDisplay !== toolbarDisplay) {
+      this.setState({toolbarDisplay})
     }
   }
 
@@ -789,9 +875,8 @@ class StoryCoverScreen extends Component {
     }
     if (this.scrollViewRef && this.state.isScrollDown) {
       this.setState({isScrollDown: false})
-      this.scrollViewRef.scrollTo({x: 0, y: 100, animated: true})
+      this.scrollViewRef.scrollTo({x: 0, y: 200, animated: true})
     }
-
     return (
       <View style={styles.root}>
         <ScrollView
@@ -801,6 +886,7 @@ class StoryCoverScreen extends Component {
           onScroll={this.onScroll}
           scrollEventThrottle={16}
           onContentSizeChange={this.onContentSizeChange}
+          bounces={false}
         >
           <NavBar
             title='Save'
@@ -816,10 +902,7 @@ class StoryCoverScreen extends Component {
             }}
           />
           <KeyboardAvoidingView behavior='position'>
-            <View style={[
-              styles.coverWrapper,
-              !this.isPhotoType() && styles.videoCoverWrapper
-            ]}>
+            <View style={this.isPhotoType() ? styles.coverWrapper : styles.videoCoverWrapper}>
               {this.state.error &&
                 <ShadowButton
                   style={styles.errorButton}
@@ -837,20 +920,6 @@ class StoryCoverScreen extends Component {
                 {this.renderEditor()}
               </View>
             }
-          {this.isUploading() &&
-            <Loader
-              style={styles.loading}
-              text={this.state.imageUploading ? 'Saving image...' : 'Saving video...'}
-              textStyle={styles.loadingText}
-              tintColor='rgba(0,0,0,.9)' />
-          }
-          {this.state.updating &&
-            <Loader
-              style={styles.loading}
-              text='Saving progress...'
-              textStyle={styles.loaderText}
-              tintColor='rgba(0,0,0,.9)' />
-          }
           {showTooltip && this.renderTooltip()}
           <View style={styles.toolbarAvoiding}></View>
           </KeyboardAvoidingView>
@@ -862,10 +931,27 @@ class StoryCoverScreen extends Component {
           { this.editor &&
             <Toolbar
               ref={i => this.toolbar = i}
+              display={this.state.toolbarDisplay}
               onPress={this.editor.onToolbarPress}
             />
           }
         </KeyboardTrackingView>
+        {this.state.activeModal === 'cancel' && this.renderCancel()}
+        {this.state.activeModal === 'saveFail' && this.renderFailModal()}
+        {this.isUploading() &&
+          <Loader
+            style={styles.loading}
+            text={this.state.imageUploading ? 'Saving image...' : 'Saving video...'}
+            textStyle={styles.loadingText}
+            tintColor='rgba(0,0,0,.9)' />
+        }
+        {this.state.updating &&
+          <Loader
+            style={styles.loading}
+            text='Saving progress...'
+            textStyle={styles.loaderText}
+            tintColor='rgba(0,0,0,.9)' />
+        }
       </View>
     )
   }
@@ -882,185 +968,6 @@ class StoryCoverScreen extends Component {
     this.setState(updatedState, () => {
       NavActions.pop()
     })
-  }
-}
-
-const third = (1 / 3) * (Metrics.screenHeight - Metrics.navBarHeight * 2)
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: Colors.lightGreyAreas,
-  },
-  containerWithNavbar: {
-    ...ApplicationStyles.screen.containerWithNavbar
-  },
-  lightGreyAreasBG: {
-    backgroundColor: Colors.transparent,
-  },
-  errorButton: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    marginVertical: Metrics.baseMargin,
-    marginHorizontal: Metrics.section,
-    zIndex: 100,
-  },
-  spaceView: {
-    height: third
-  },
-  loaderText: {
-    color: 'white',
-    fontSize: 18,
-    fontFamily: Fonts.type.montserrat
-  },
-  titleInput: {
-    ...Fonts.style.title,
-    color: Colors.snow,
-    marginTop: 20,
-    marginLeft: 20,
-    fontSize: 28,
-    fontFamily: 'Arial',
-    fontWeight: '500',
-  },
-  subTitleInput: {
-    color: Colors.snow,
-    height: 28,
-    fontSize: 14,
-    marginLeft: 20
-  },
-  cameraIcon: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: Metrics.baseMargin,
-  },
-  cameraIconImage: {
-    tintColor: 'gray',
-    height: 32,
-    width: 40,
-  },
-  videoIconImage: {
-    tintColor: 'gray',
-    height: 31,
-    width: 51,
-  },
-  colorOverLay: {
-    backgroundColor: Colors.windowTint,
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
-  addPhotoView: {
-    height: third,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  addTitleView: {
-    height: third,
-    justifyContent: 'center'
-  },
-  imageMenuView: {
-    height: third,
-    justifyContent: 'space-around',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  addPhotoButton: {
-    padding: 50,
-    justifyContent: 'center',
-    backgroundColor: 'transparent'
-  },
-  baseTextColor: {
-    color: Colors.background
-  },
-  coverPhoto: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    flex: 1,
-  },
-  coverVideo: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    flex: 1,
-  },
-  coverPhotoText: {
-    fontFamily: Fonts.type.montserrat,
-    fontSize: 13,
-  },
-  iconButton: {
-    backgroundColor: Colors.clear
-  },
-  navBarStyle: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
-  coverWrapper: {
-    height: Metrics.screenHeight - Metrics.navBarHeight - 30,
-  },
-  videoCoverWrapper: {
-    height: Metrics.screenHeight - Metrics.navBarHeight
-  },
-  angleDownIcon: {
-    height: 20,
-    alignItems: 'center',
-    marginVertical: Metrics.baseMargin / 2
-  },
-  editorWrapper: {
-    backgroundColor: Colors.snow
-  },
-  loadingText: {
-    color: Colors.white
-  },
-  loading: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  trackingToolbarContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    width: Metrics.screenWidth,
-  },
-  toolbarAvoiding: {
-    height: Metrics.editorToolbarHeight
-  },
-})
-
-const customStyles = {
-  unstyled: {
-    fontSize: 18,
-    color: '#757575'
-  },
-  atomic: {
-    fontSize: 15,
-    color: '#757575'
-  },
-  link: {
-    color: '#c4170c',
-    fontWeight: '600',
-    textDecorationLine: 'none',
-  },
-  'header-one': {
-    fontSize: 21,
-    fontWeight: '400',
-    color: '#1a1c21'
   }
 }
 

@@ -7,6 +7,7 @@ import VerticalCenter from './VerticalCenter'
 function getMargin(props) {
   if (props.margin === 'none') return 0;
   else if (props.margin === 'small') return '3px'
+  else if (props.margin === 'medium') return '11px'
   else if (props.margin === 'vertical') return '5px 0'
   return `${props.theme.Metrics.baseMargin}px ${props.theme.Metrics.section}px`
 }
@@ -14,6 +15,9 @@ function getMargin(props) {
 // 2px 6px 3px is default react padding.
 function getPadding(props) {
   if (props.padding ==='even') return '5px';
+  if (props.padding ==='evenMedium') return '11px';
+  if (props.padding ==='mediumEven') return '8px';
+  if (props.padding ==='medium') return '4px 8px 5px';
   return '2px 6px 3px'
 }
 
@@ -35,19 +39,23 @@ function getBackgroundColor (type, colors) {
     case 'facebook':
     case 'twitter':
     case 'lightGrey':
+    case 'opaqueGrey':
       return colors.snow
-    case 'headerButton':
-      return colors.headerButtonBackgroundTint
     case 'myFeedHeaderButton':
-      return colors.myFeedButtonBackgroundTint
+      return colors.backgroundTint
+    case 'headerButton':
+    case 'backgroundOpaque':
+      return colors.backgroundOpaque
     default:
       return colors.red
   }
 }
 
 const StyledButton = styled.button`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
   height: ${props => props.height || 'auto'};
   border-radius: 30px;
+  outline: none;
   border: 1px solid;
   outline: none;
   border-color: ${props => {
@@ -64,15 +72,17 @@ const StyledButton = styled.button`
         return props.theme.Colors.btnGreyBackground
       case 'opaque':
       case 'opaqueWhite':
-        return props.theme.Colors.snow
       case 'categoryFollow':
+      case 'myFeedHeaderButton':
         return props.theme.Colors.snow
       case 'blackWhite':
         return props.theme.Colors.photoOverlay
       case 'headerButton':
         return props.theme.Colors.navBarText
-      case 'myFeedHeaderButton':
-        return props.theme.Colors.snow
+      case 'opaqueGrey':
+        return props.theme.Colors.grey
+      case 'backgroundOpaque':
+        return props.theme.Colors.closeXBorder
       default:
         return props.theme.Colors.red
     }

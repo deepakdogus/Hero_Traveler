@@ -127,7 +127,7 @@ export default class StoryPreview extends React.Component {
             <DetailsContainer between='xs'>
               <ProfileLink to={`/profile/${author.id}`}>
                 <Row middle='xs'>
-                  <Avatar avatarUrl={getImageUrl(author.profile.avatar)} size='large'/>
+                  <Avatar avatarUrl={getImageUrl(author.profile.avatar, 'avatar')} size='large'/>
                   <Username>{author.username}</Username>
                 </Row>
               </ProfileLink>

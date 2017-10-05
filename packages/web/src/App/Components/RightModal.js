@@ -10,13 +10,15 @@ const customModalStyles = {
     right: 0,
     left: 'auto',
     padding: 0,
+    borderRadius: 0,
   },
   overlay: {
-    backgroundColor: 'rgba(0,0,0, .5)'
+    backgroundColor: 'rgba(0,0,0, .5)',
+    zIndex: 100,
   }
 }
 
-export default class Header extends React.Component {
+export default class RightModal extends React.Component {
   static propTypes = {
     isOpen: PropTypes.bool,
     contentLabel: PropTypes.string,

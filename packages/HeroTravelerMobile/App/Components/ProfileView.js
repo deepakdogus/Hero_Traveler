@@ -221,7 +221,7 @@ class ProfileView extends React.Component {
         showLike={this.props.showLike}
         showPlayButton
         key={storyId}
-        height={this.props.hasTabbar ? storyPreviewHeight : storyPreviewHeight + Metrics.tabBarHeight}
+        height={storyPreviewHeight}
         storyId={storyId}
         userId={this.props.user.id}
         onLike={this.props.toggleLike}
@@ -503,7 +503,7 @@ class ProfileView extends React.Component {
             <Avatar
               style={{alignItems: 'center'}}
               size='extraLarge'
-              avatarUrl={(isEditing && user.profile.tempAvatar) ? getImageUrl(user.profile.tempAvatar) : getImageUrl(user.profile.avatar)} />
+              avatarUrl={(isEditing && user.profile.tempAvatar) ? getImageUrl(user.profile.tempAvatar, 'avatar') : getImageUrl(user.profile.avatar, 'avatar')} />
             {avatarCamera}
           </View>
           {!isEditing &&

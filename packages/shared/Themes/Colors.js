@@ -46,8 +46,12 @@ const colors = {
   btnGreyBackground: '#949292',
   btnDarkGreyBackground: '#5d5b5f',
   dividerGrey: '#dedede',
-  headerButtonBackgroundTint: 'rgba(26,28,33,0.6)',
-  myFeedButtonBackgroundTint: 'rgba(26,28,33,0.4)',
+  backgroundOpaque: 'rgba(26,28,33,0.6)',
+  backgroundTint: 'rgba(26,28,33,0.4)',
+  pink: '#fde8ea',
+  closeXBorder: '#6d6a6d',
+  blueBubble: '#e3f2fd',
+  onHoverGrey: '#f6f6f6',
 }
 
 export default colors

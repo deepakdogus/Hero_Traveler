@@ -33,7 +33,7 @@ export default class Activity extends Component {
           <View style={styles.innerButton}>
             <Avatar
               style={styles.avatar}
-              avatarUrl={getImageUrl(user.profile.avatar)}
+              avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
             />
             <View style={styles.middle}>
               <Text style={styles.description}>

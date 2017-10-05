@@ -4,6 +4,7 @@ import _, {get, isArray} from 'lodash'
 import {normalize, schema} from 'normalizr'
 import {getToken as getPushToken} from '../../Config/PushConfig'
 import env from '../../Config/Env'
+import {uploadMediaFile} from './CloudinaryAPI'
 
 const User = new schema.Entity('users')
 const Category = new schema.Entity('categories')
@@ -23,6 +24,17 @@ const Activity = new schema.Entity('activities', {
   fromUser: User,
   story: Story
 })
+
+const videoTimeout = 120 * 1000
+const imageTimeout = 45 * 1000
+
+function putMediaResponse(api, url, response, timeout){
+  return api.put(url, {
+    file: response.data
+  }, {
+    timeout
+  })
+}
 
 // our "constructor"
 const create = () => {
@@ -310,6 +322,10 @@ const getStory = (storyId) => {
     return api.get(`story/${storyId}/like`)
   }
 
+  const flagStory = (storyId) => {
+    return api.put(`story/${storyId}/flag`)
+  }
+
   const bookmarkStory = (storyId) => {
     return api.get(`story/${storyId}/bookmark`)
   }
@@ -334,50 +350,40 @@ const getStory = (storyId) => {
   }
 
   const uploadCoverImage = (draftId, pathToFile) => {
-    const data = new FormData()
-    data.append('image', pathToFile)
-    return api.put(`story/draft/${draftId}/cover-image`, data, {
-      timeout: 45 * 1000
-    })
+    const url = `story/draft/${draftId}/cover-image`
+    return uploadMediaFile(pathToFile, 'image')
+    .then(response => putMediaResponse(api, url, response, imageTimeout))
   }
 
   const uploadCoverVideo = (draftId, pathToFile) => {
-    const data = new FormData()
-    data.append('video', pathToFile)
-    return api.put(`story/draft/${draftId}/cover-video`, data, {
-      timeout: 120 * 1000
-    })
+    const url = `story/draft/${draftId}/cover-video`
+    return uploadMediaFile(pathToFile, 'video')
+    .then(response => putMediaResponse(api, url, response, videoTimeout))
   }
 
   const uploadAvatarImage = (userId, pathToFile) => {
-    const data = new FormData()
-    data.append('image', pathToFile)
-    return api.put(`user/${userId}/avatar`, data, {
-      timeout: 45 * 1000
-    })
+    const url = `user/${userId}/avatar`
+    return uploadMediaFile(pathToFile, 'image')
+    .then(response => putMediaResponse(api, url, response, imageTimeout))
   }
+
   const uploadUserCoverImage = (userId, pathToFile) => {
-    const data = new FormData()
-    data.append('image', pathToFile)
-    return api.put(`user/${userId}/cover`, data, {
-      timeout: 45 * 1000
-    })
+    const url = `user/${userId}/cover`
+    return uploadMediaFile(pathToFile, 'image')
+    .then(response => putMediaResponse(api, url, response, imageTimeout))
+
   }
 
   const uploadStoryImage = (draftId, pathToFile) => {
-    const data = new FormData()
-    data.append('image', pathToFile)
-    return api.put(`story/draft/${draftId}/image`, data, {
-      timeout: 45 * 1000
-    })
+    const url = `story/draft/${draftId}/image`
+    return uploadMediaFile(pathToFile, 'image')
+    .then(response => putMediaResponse(api, url, response, imageTimeout))
   }
 
   const uploadStoryVideo = (draftId, pathToFile) => {
-    const data = new FormData()
-    data.append('video', pathToFile)
-    return api.put(`story/draft/${draftId}/video`, data, {
-      timeout: 120 * 1000
-    })
+    const url = `story/draft/${draftId}/video`
+    return uploadMediaFile(pathToFile, 'video')
+    .then(response => putMediaResponse(api, url, response, videoTimeout))
   }
 
   const getActivity = () => {
@@ -465,6 +471,7 @@ const getStory = (storyId) => {
     deleteStory,
     changePassword,
     signupCheck,
+    flagStory,
   }
 }
 

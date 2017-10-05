@@ -1,6 +1,6 @@
 {
   "name": "@hero/ht-util",
-  "version": "0.0.12",
+  "version": "0.0.32",
   "description": "Common server/client javascript functions",
   "main": "index.js",
   "keywords": [],
@@ -8,7 +8,8 @@
   "license": "© Rehash Studio",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "babel src -d dist"
+    "build": "babel src -d dist",
+    "publish:abeck": "npm run clean && npm run build && npm publish --registry https://npm.abeck.io"
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",

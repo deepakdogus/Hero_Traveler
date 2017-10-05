@@ -29,7 +29,7 @@ const storyKeys = Object.keys(feedExample).filter((key, index) => {
   return index <= 2
 })
 
-export default class Login extends React.Component {
+export default class AddToItinerary extends React.Component {
   static PropTypes = {
     onAddClick: PropTypes.func,
     stories: PropTypes.object,

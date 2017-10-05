@@ -18,11 +18,12 @@ import StoryReadingToolbar from '../Components/StoryReadingToolbar'
 import TabIcon from '../Components/TabIcon'
 import Image from '../Components/Image'
 import Loader from '../Components/Loader'
+import FlagModal from '../Components/FlagModal'
 import {styles, rendererStyles} from './Styles/StoryReadingScreenStyles'
 import Video from '../Components/Video'
 import Immutable from 'seamless-immutable'
 import {getVideoUrlBase} from '../Shared/Lib/getVideoUrl'
-import {getImageUrlBase} from '../Shared/Lib/getImageUrl'
+import {getContentBlockImage} from '../Shared/Lib/getImageUrl'
 import {CategoryFeedNavActionStyles} from './Styles/ExploreScreenStyles'
 
 const enhanceStoryVideo = compose(
@@ -82,15 +83,18 @@ const atomicHandler = (item: Object): any => {
           <View key={item.key} style={styles.mediaViewWrapper}>
             <Image
               fullWidth={true}
-              source={{uri: `${getImageUrlBase()}/${item.data.url}`}}
+              source={{uri: `${getContentBlockImage(item.data.url)}`}}
             />
             {!!item.text && <Text style={styles.caption}>{item.text}</Text>}
           </View>
         );
       case 'video':
+        let videoUrl
+        if (item.data.HLSUrl) videoUrl = item.data.HLSUrl
+        else videoUrl = `${getVideoUrlBase()}/${item.data.url}`
         return (
           <View key={item.key} style={styles.mediaViewWrapper}>
-            <StoryVideo src={`${getVideoUrlBase()}/${item.data.url}`}/>
+            <StoryVideo src={videoUrl}/>
             {!!item.text && <Text style={styles.caption}>{item.text}</Text>}
           </View>
         )
@@ -130,6 +134,7 @@ class StoryReadingScreen extends React.Component {
       toolbarHeight: new Animated.Value(0),
       newYPos: -1,
       oldYPos: 0,
+      showFlagModal: false,
     }
     if (!this.props.story) {
       this.props.requestStory(this.props.storyId)
@@ -176,6 +181,10 @@ class StoryReadingScreen extends React.Component {
     this.props.toggleLike(this.props.user.id, this.props.story.id)
   }
 
+  _toggleFlag = () => {
+    this.setState({showFlagModal: !this.state.showFlagModal})
+  }
+
   _pressUser = (userId) => {
     if (this.props.user.id === userId) {
       NavActions.profile({type: 'jump'})
@@ -213,11 +222,19 @@ class StoryReadingScreen extends React.Component {
   }
 
   renderTags = () => {
+    const lastIndex = this.props.story.categories.length - 1
     return this.props.story.categories.map((category, index) => {
       return (
-        <Text key={index} style={styles.tag}>#{category.title} </Text>
+        <Text key={index} style={styles.tag}>
+          {category.title}{index !== lastIndex ? ', ': ''}
+        </Text>
       )
     })
+  }
+
+  _flagStory = () => {
+    this.props.flagStory(this.props.user.id, this.props.story.id)
+    NavActions.pop()
   }
 
   render () {
@@ -278,6 +295,7 @@ class StoryReadingScreen extends React.Component {
             }
             {!!story.categories.length &&
               <View style={[styles.marginedRow, styles.tagRow]}>
+                <Text style={styles.tagLabel}>Categories: </Text>
                 {this.renderTags()}
               </View>
             }
@@ -323,9 +341,17 @@ class StoryReadingScreen extends React.Component {
             userId={this.props.user.id}
             storyId={story.id}
             onPressLike={this._toggleLike}
+            onPressFlag={this._toggleFlag}
             toggleBookmark={this.props.toggleBookmark}
           />
         </Animated.View>
+        {
+          <FlagModal
+            closeModal={this._toggleFlag}
+            showModal={this.state.showFlagModal}
+            flagStory={this._flagStory}
+          />
+        }
       </View>
     )
   }
@@ -351,6 +377,7 @@ const mapDispatchToProps = (dispatch) => {
     toggleLike: (userId, storyId) => dispatch(StoryActions.storyLike(userId, storyId)),
     toggleBookmark: (userId, storyId) => dispatch(StoryActions.storyBookmark(userId, storyId)),
     requestStory: (storyId) => dispatch(StoryActions.storyRequest(storyId)),
+    flagStory: (userId, storyId) => dispatch(StoryActions.flagStory(userId, storyId)),
   }
 }
 

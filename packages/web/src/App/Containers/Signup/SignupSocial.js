@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import styled, {ThemeProvider} from 'styled-components'
+import styled from 'styled-components'
 
-import themes from '../../Shared/Themes'
 import Header from '../../Components/Signup/Header'
 import RoundedButton from '../../Components/RoundedButton'
 import HorizontalDivider from '../../Components/HorizontalDivider'
@@ -73,7 +72,6 @@ class SignupSocial extends Component {
 
   render() {
     return (
-      <ThemeProvider theme={themes}>
         <div>
          <Header>
             <RoundedButton text='< Back' type="blackWhite"></RoundedButton>
@@ -96,7 +94,6 @@ class SignupSocial extends Component {
             </Section>
           </Container>
         </div>
-      </ThemeProvider>
     )
   }
 }

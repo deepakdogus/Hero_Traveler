@@ -45,14 +45,16 @@ export default class StoryCover extends Component {
   }
 
   hasVideo() {
-    return this.props.coverType === 'video' && !! this.props.cover
+    return this.props.coverType === 'video' && !!this.props.cover
   }
 
   hasImage() {
-    return this.props.coverType === 'image' && !! this.props.cover
+    return this.props.coverType === 'image' && !!this.props.cover
   }
 
   renderImage() {
+    const isVideo = this.hasVideo()
+    const imageUrl = isVideo ? getImageUrl(this.props.cover, 'video') : getImageUrl(this.props.cover)
     return (
       <TouchableWithoutFeedback
         style={{flex: 1}}
@@ -61,7 +63,7 @@ export default class StoryCover extends Component {
         <Image
           cached={true}
           resizeMode='cover'
-          source={{uri: getImageUrl(this.props.cover)}}
+          source={{uri: imageUrl}}
           style={[styles.image]}
         >
           <LinearGradient
@@ -71,6 +73,13 @@ export default class StoryCover extends Component {
           >
             {this.props.children}
           </LinearGradient>
+        {this.props.showPlayButton && isVideo &&
+          <PlayButton
+            onPress={this._tapVideoWrapper}
+            style={[styles.playButton, styles.smallPlayButton]}
+            size='small'
+          />
+         }
         </Image>
       </TouchableWithoutFeedback>
     )
@@ -79,8 +88,9 @@ export default class StoryCover extends Component {
   _tapVideoWrapper() {
     const {onPress} = this.props
 
+
     // If the video is not playing, invoke the usual callback
-    if (!this.player.getIsPlaying() && onPress) {
+    if ((!this.player || !this.player.getIsPlaying()) && onPress) {
       return this.props.onPress()
     }
 
@@ -107,6 +117,7 @@ export default class StoryCover extends Component {
       <View style={{flex: 1}}>
         <Video
           path={getVideoUrl(this.props.cover)}
+          imgUrl={getImageUrl(this.props.cover, 'video')}
           ref={this._makeRef}
           allowVideoPlay={this.props.allowVideoPlay}
           autoPlayVideo={this.props.autoPlayVideo}
@@ -150,11 +161,18 @@ export default class StoryCover extends Component {
   }
 
   render() {
+    let coverType;
+    if (this.hasImage()) coverType = 'image'
+    else if (this.hasVideo()) {
+      if (this.props.allowVideoPlay && this.props.autoPlayVideo) coverType = 'video'
+      else if (this.hasVideo()) coverType = 'videoThumbnail'
+    }
+
     return (
       <View style={[styles.root, this.props.style]}>
-        {this.hasVideo() && this.renderVideo()}
-        {this.hasImage() && this.renderImage()}
-        {!this.props.cover &&
+        {this.hasVideo() && coverType === 'video' && this.renderVideo()}
+        {(coverType === 'image' || coverType === 'videoThumbnail') && this.renderImage()}
+        {!coverType &&
           <TouchableWithoutFeedback onPress={this.props.onPress}>
             <View style={styles.noCover}>
               <Icon

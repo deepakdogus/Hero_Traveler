@@ -13,11 +13,12 @@ const Container = styled.div`
 `
 
 const StyledVerticalCenter = styled(VerticalCenter)`
-  height: 100%;
+  height: 90%;
   padding-left: 25px;
 `
 
 const UserName = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 600;
   font-size: 18px;
   color: ${props => props.theme.Colors.background};
@@ -26,6 +27,7 @@ const UserName = styled.p`
 `
 
 const ProfileDetail = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 16px;
   letter-spacing: .7px;
@@ -67,7 +69,8 @@ export default class FollowFollowingRow extends Component {
           text={this.props.isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
           type={this.props.isFollowing ? undefined : 'blackWhite'}
           margin='none'
-          width='138px'
+          width='154px'
+          padding='even'
         />
       </VerticalCenter>
     )

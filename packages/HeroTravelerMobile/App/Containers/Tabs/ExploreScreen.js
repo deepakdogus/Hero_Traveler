@@ -246,7 +246,7 @@ class ExploreScreen extends Component {
                     }}
                     leftElement={
                       <Avatar
-                        avatarUrl={getImageUrl(user.profile.avatar)}
+                        avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
                         iconColor={Colors.lightGreyAreas}
                       />
                     }

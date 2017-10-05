@@ -85,6 +85,12 @@ class TabIcon extends React.Component {
         return Images.iconCreateMenuVideo
       case 'trash':
         return Images.iconTrash
+      case 'normalText':
+        return Images.iconNormalText
+      case 'headerText':
+        return Images.iconHeaderText
+      case 'flag':
+        return Images.iconFlag
       case 'profile':
       default:
         return Images.iconNavProfile

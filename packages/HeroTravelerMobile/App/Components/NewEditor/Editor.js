@@ -15,9 +15,10 @@ import {
   removeBlock,
   rawToEditorState,
   editorStateToRaw,
+  customKeyCommandInsertNewline,
 } from './draft-js'
 
-import {SelectionState, EditorState, DraftOffsetKey, Modifier, keyCommandInsertNewline, keyCommandPlainBackspace} from './draft-js/reexports'
+import {SelectionState, EditorState, DraftOffsetKey, Modifier, keyCommandPlainBackspace} from './draft-js/reexports'
 
 import * as DJSConsts from './draft-js/constants'
 import Metrics from '../../Shared/Themes/Metrics'
@@ -61,7 +62,16 @@ export default class Editor extends Component {
     }
 
     this.state = {
-      editorState
+      editorState,
+      toggledTextType: 'unstyled'
+    }
+  }
+
+  // resetting editorState when we create a new story or edit a story with no content
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.value && this.props.value) {
+      const editorState = EditorState.createEmpty()
+      this.setState({editorState})
     }
   }
 
@@ -79,7 +89,7 @@ export default class Editor extends Component {
     const {replaceRange, text} = src
 
     if (text == '\n') {
-      const editorState = keyCommandInsertNewline(this.state.editorState)
+      const editorState = customKeyCommandInsertNewline(this.state.editorState, this.state.toggledTextType)
       this.setIsNewBlock(editorState.getSelection().getAnchorKey())
       this.setStateDebug({editorState})
     } else if (text == '' && replaceRange.start == 0 && replaceRange.end == 0) {
@@ -139,12 +149,18 @@ export default class Editor extends Component {
 
   toggleHeader() {
     const editorState = toggleStyle(this.state.editorState, DJSConsts.HeaderOne)
-    this.setStateDebug({editorState})
+    this.setStateDebug({
+      editorState,
+      toggledTextType: 'header-one'
+    })
   }
 
   toggleNormal() {
     const editorState = toggleStyle(this.state.editorState, DJSConsts.Unstyled)
-    this.setStateDebug({editorState})
+    this.setStateDebug({
+      editorState,
+      toggledTextType: 'unstyled'
+    })
   }
 
   toggleStyle(styleType) {

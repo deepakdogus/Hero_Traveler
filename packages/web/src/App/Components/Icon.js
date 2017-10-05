@@ -33,6 +33,7 @@ export default class Icon extends React.Component {
 	static propTypes = {
     name: PropTypes.string,
     size: PropTypes.string,
+    color: PropTypes.string,
   }
 
 	getIconName(navKey) {
@@ -107,6 +108,8 @@ export default class Icon extends React.Component {
         return Images.iconNavCreate
       case 'close':
         return Images.iconContentXWhite
+      case 'closeDark':
+        return Images.iconContentXDark
       case 'add':
         return Images.iconContentPlusWhite
       case 'cameraReverse':
@@ -115,6 +118,8 @@ export default class Icon extends React.Component {
         return Images.iconFlashCamera
       case 'video':
         return Images.iconCreateMenuVideo
+      case 'photo':
+        return Images.iconCreateMenuPhoto
       case 'profileBadge':
         return Images.iconProfileBadge
       case 'defaultProfile':
@@ -122,7 +127,13 @@ export default class Icon extends React.Component {
       case 'googlePlayBadge':
         return Images.googlePlayBadge
       case 'appleAppStoreBadge':
-        return Images.appleAppStoreBadge  
+        return Images.appleAppStoreBadge
+      case 'components':
+        return Images.components
+      case 'trash':
+        return Images.iconEditImageTrash
+      case 'addCoverCamera':
+        return Images.iconAddCoverCamera
       case 'profile':
       default:
         return Images.iconNavProfile

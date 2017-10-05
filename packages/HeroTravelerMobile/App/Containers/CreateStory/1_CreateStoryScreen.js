@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Animated
 } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
@@ -17,6 +18,9 @@ import pathAsFileObject from '../../Shared/Lib/pathAsFileObject'
 import Loader from '../../Components/Loader'
 import TabIcon from '../../Components/TabIcon'
 
+const hiddenHeight = 50
+const visibleHeight = -250
+
 class CreateStoryScreen extends Component {
 
   constructor(props) {
@@ -26,7 +30,8 @@ class CreateStoryScreen extends Component {
     this.state = {
       uploading: false,
       video: false,
-      videoSelected: false
+      videoSelected: false,
+      createViewHeight: new Animated.Value(hiddenHeight),
     }
   }
 
@@ -54,6 +59,13 @@ class CreateStoryScreen extends Component {
       retrigger this if statement when we go back from video Story Cover Screen
       */
       this.setState({video: false})
+    }
+
+    if (!this.props.isShowCreateModal && nextProps.isShowCreateModal) {
+      this.setCreateViewHeight(visibleHeight)
+    }
+    if (this.props.isShowCreateModal && !nextProps.isShowCreateModal) {
+      this.setCreateViewHeight(hiddenHeight)
     }
   }
 
@@ -99,8 +111,17 @@ class CreateStoryScreen extends Component {
     })
   }
 
+  setCreateViewHeight(height) {
+    Animated.timing(
+      this.state.createViewHeight,
+      {
+        toValue: height,
+        duration: 200,
+      },
+    ).start()
+  }
+
   render () {
-    const {isShowCreateModal} = this.props
     /*
       hacky solution to get the story create modal to show up properly
       we need the modal to be on the last Icon or else the icons on the right
@@ -108,8 +129,8 @@ class CreateStoryScreen extends Component {
       So since the last icon is profile we display profile when the modal
       showCreateModal is not active
     */
-    if (!isShowCreateModal) {
-      return (
+    return (
+      <View>
         <TouchableOpacity
           style={{
             width: '100%',
@@ -121,11 +142,7 @@ class CreateStoryScreen extends Component {
         >
           <TabIcon name='profile' />
         </TouchableOpacity>
-      )
-    }
-    else {
-      return (
-        <View style={styles.wrapper}>
+        <Animated.View style={[styles.wrapper, {top: this.state.createViewHeight}]}>
           <View style={styles.buttonGroup}>
             <TouchableOpacity
               style={[styles.button, styles.storyButton]}
@@ -156,9 +173,9 @@ class CreateStoryScreen extends Component {
               textStyle={styles.loadingText}
               tintColor='rgba(0,0,0,.9)' />
           }
-        </View>
-      )
-    }
+        </Animated.View>
+      </View>
+    )
   }
 }
 

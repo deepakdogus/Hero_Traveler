@@ -152,7 +152,13 @@ export default StyleSheet.create({
     width: 10,
     height: 10,
     paddingLeft: 5,
-  }
+  },
+  PlayButton: {
+    position: 'absolute',
+    marginHorizontal: 5,
+    marginTop: 10,
+  },
+
 })
 
 export const CategoryFeedNavActionStyles = StyleSheet.create({

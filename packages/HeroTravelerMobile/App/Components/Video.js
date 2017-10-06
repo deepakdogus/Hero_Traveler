@@ -11,8 +11,12 @@ import Colors from '../Shared/Themes/Colors'
 
 const buttonLarge = 80
 const buttonSmall = 40
+const buttonTiny = 20
 const VideoButton = ({size, icon, onPress, style = {}, text}) => {
-  const sizeUnits = size !== 'small' ? buttonLarge : buttonSmall
+  let sizeUnits = buttonLarge
+  if (size === 'small') sizeUnits = buttonSmall
+  if (size === 'tiny') sizeUnits = buttonTiny
+
   return (
     <TouchableWithoutFeedback
       style={style}

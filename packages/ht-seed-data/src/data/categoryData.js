@@ -10,11 +10,11 @@ const imagesPath = path.resolve(__dirname, '../../resources/categories')
 const categoryImages = fs.readdirSync(imagesPath)
 
 function create(imageName) {
+  const dashSpacedImageName = imageName.split(' ').join('-')
   const imagePath = path.resolve(imagesPath, imageName)
   const baseName = path.basename(imagePath)
   const title = string(baseName.replace(path.extname(baseName), '')).titleCase().s
   const dimensions = sizeOf(imagePath)
-
   return Promise.all([
     sharp(imagePath)
       .resize(240, 240)
@@ -28,7 +28,7 @@ function create(imageName) {
         "altText": title,
         "original": {
           "filename": imageName,
-          "path": `category/${imageName}`,
+          "path": `category/${dashSpacedImageName}`,
           "width": dimensions.width,
           "height": dimensions.height,
           "meta": {
@@ -38,7 +38,7 @@ function create(imageName) {
         "versions": {
           "thumbnail240": {
             "filename": imageName,
-            "path": `category/thumbnail240/${imageName}`,
+            "path": `category/thumbnail240/${dashSpacedImageName}`,
             "width": 240,
             "height": 240,
             "meta": {

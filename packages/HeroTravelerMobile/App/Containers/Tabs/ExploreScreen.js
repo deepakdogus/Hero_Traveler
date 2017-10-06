@@ -26,6 +26,7 @@ import ListItem from '../../Components/ListItem'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import Avatar from '../../Components/Avatar'
 import Image from '../../Components/Image'
+import {PlayButton} from '../../Components/Video'
 import TabIcon from '../../Components/TabIcon'
 
 const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
@@ -198,15 +199,17 @@ class ExploreScreen extends Component {
                   )
                 } else {
                   leftEl = (
-                    <View style={[styles.thumbnailImage, {
-                      width: 30,
-                      height: 50,
-                      backgroundColor: Colors.backgroundDark,
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }]}>
-                      <Icon name='play' size={15} color={Colors.charcoal} style={{left: 1}} />
-                    </View>
+                    <Image
+                      cached={true}
+                      resizeMode='cover'
+                      source={{uri: getImageUrl(story.coverVideo, 'video') }}
+                      style={styles.thumbnailImage}
+                    >
+                      <PlayButton
+                        size='tiny'
+                        style={styles.PlayButton}
+                      />
+                    </Image>
                   )
                 }
                 return (

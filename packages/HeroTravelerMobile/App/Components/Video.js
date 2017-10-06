@@ -9,7 +9,7 @@ import MediaSelectorStyles from '../Containers/Styles/MediaSelectorScreenStyles'
 
 import Colors from '../Shared/Themes/Colors'
 
-const buttonLarge = 80
+const buttonLarge = 60
 const buttonSmall = 40
 const buttonTiny = 20
 const VideoButton = ({size, icon, onPress, style = {}, text}) => {

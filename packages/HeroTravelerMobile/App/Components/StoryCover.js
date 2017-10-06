@@ -53,12 +53,14 @@ export default class StoryCover extends Component {
   }
 
   renderImage() {
+    const {cover, onPress, gradientLocations, gradientColors, children, showPlayButton, playButtonSize} = this.props
     const isVideo = this.hasVideo()
-    const imageUrl = isVideo ? getImageUrl(this.props.cover, 'video') : getImageUrl(this.props.cover)
+    const imageUrl = isVideo ? getImageUrl(cover, 'video') : getImageUrl(cover)
+
     return (
       <TouchableWithoutFeedback
         style={{flex: 1}}
-        onPress={this.props.onPress}
+        onPress={onPress}
       >
         <Image
           cached={true}
@@ -67,17 +69,20 @@ export default class StoryCover extends Component {
           style={[styles.image]}
         >
           <LinearGradient
-            locations={this.props.gradientLocations}
-            colors={this.props.gradientColors}
+            locations={gradientLocations}
+            colors={gradientColors}
             style={styles.gradient}
           >
-            {this.props.children}
+            {children}
           </LinearGradient>
-        {this.props.showPlayButton && isVideo &&
+        {showPlayButton && isVideo &&
           <PlayButton
             onPress={this._tapVideoWrapper}
-            style={[styles.playButton, styles.smallPlayButton]}
-            size='small'
+            style={[
+              styles.playButton,
+              playButtonSize === 'small' ? styles.smallPlayButton : {}
+            ]}
+            size={playButtonSize || 'small'}
           />
          }
         </Image>
@@ -225,8 +230,8 @@ const styles = StyleSheet.create({
     height: 100,
     top: '50%',
     left: '50%',
-    marginTop: -40,
-    marginLeft: -40,
+    marginTop: -30,
+    marginLeft: -30,
   },
   smallPlayButton: {
     marginTop: -20,

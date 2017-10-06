@@ -147,9 +147,12 @@ export default class StoryPreview extends Component {
   render () {
     const {story, isContentVisible} = this.props
     if (!story) return null
+    // using StoryPreview height as proxy for StoryCover playbutton size
+    const height = this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20
+    const playButtonSize = height > 250 ? 'large' : 'small'
 
     return (
-        <View style={{height: this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20}}>
+      <View style={{height}}>
         <View style={styles.contentContainer}>
           {this.props.forProfile && this.props.editable &&
             <TrashCan touchTrash={this._touchTrash} touchEdit={this._touchEdit} />
@@ -163,6 +166,7 @@ export default class StoryPreview extends Component {
             gradientColors={this.props.gradientColors}
             gradientLocations={this.props.gradientLocations}
             showPlayButton={this.props.showPlayButton}
+            playButtonSize={playButtonSize}
           >
             <FadeInOut
               isVisible={isContentVisible}

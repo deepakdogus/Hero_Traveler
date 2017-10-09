@@ -11,18 +11,18 @@ import FooterToolbar from '../Components/CreateStory/FooterToolbar'
 
 import {feedExample} from './Feed_TEST_DATA'
 
-//test data - Havana Story
-// const testStory = feedExample[Object.keys(feedExample)[8]];
+// Demo Story
+const testStory = feedExample['59dbd82b4722340010b12cc1'];
 
-// const testCoverImage = testStory.coverImage || testStory.coverVideo
+const testCoverImage = testStory.coverImage || testStory.coverVideo
 
-// const testImageURL = testStory.draftjsContent.blocks[4].data.url
+const testImageURL = testStory.draftjsContent.blocks[1].data.url
 
-// const testVideoURL = testStory.draftjsContent.blocks[8].data.url
+const testVideoURL = testStory.draftjsContent.blocks[3].data.url
 
-// const testImageCaption = testStory.draftjsContent.blocks[4].text
+const testImageCaption = testStory.draftjsContent.blocks[1].text
 
-// const testVideoCaption = testStory.draftjsContent.blocks[8].text
+const testVideoCaption = testStory.draftjsContent.blocks[3].text
 
 //----------------
 
@@ -56,24 +56,22 @@ export default class CreateStory extends Component {
             <AddCoverPhotoBox
               action={this.addCover}
             />
-            {
-            // <CoverPhotoBox
-            //   coverImage={testCoverImage}
-            //   title={testStory.title}
-            //   description={testStory.description}
-            //   closeImage={this.closeImage}
-            // />
-            // <PhotoBox
-            //   closeImage={this.closeImage}
-            //   imageURL={testImageURL}
-            //   caption={testImageCaption}
-            // />
-            // <VideoBox
-            //   closeImage={this.closeVideo}
-            //   videoURL={testVideoURL}
-            //   caption={testVideoCaption}
-            // />
-            }
+            <CoverPhotoBox
+              coverImage={testCoverImage}
+              title={testStory.title}
+              description={testStory.description}
+              closeImage={this.closeImage}
+            />
+            <PhotoBox
+              closeImage={this.closeImage}
+              imageURL={testImageURL}
+              caption={testImageCaption}
+            />
+            <VideoBox
+              closeImage={this.closeVideo}
+              videoURL={testVideoURL}
+              caption={testVideoCaption}
+            />
             <AddContentToolbar/>
           </ItemContainer>
         </ContentWrapper>
@@ -82,11 +80,9 @@ export default class CreateStory extends Component {
           <br/>
           <br/>
         <StyledContentWrapper>
-          {
-          // <StoryDetails
-          //   title={testStory.title}
-          // />
-          }
+          <StoryDetails
+            title={testStory.title}
+          />
         </StyledContentWrapper>
           <FooterToolbar isDetailsView={true}/>
       </Container>

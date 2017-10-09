@@ -5,6 +5,8 @@ import redraft from 'redraft'
 
 import Image from './Image'
 import Video from './Video'
+import {getContentBlockImage} from '../Shared/Lib/getImageUrl'
+import {getVideoUrlBase} from '../Shared/Lib/getVideoUrl'
 
 const ContentContainer = styled.div`
   margin: 100px 0;
@@ -60,14 +62,15 @@ const getAtomic = (children, { data, keys }) => {
     case 'image':
       return (
         <div key={keys[0]}>
-          <StyledImage src={data[0].url} />
+          <StyledImage src={getContentBlockImage(data[0].url)} />
           {text && <Caption>{text}</Caption>}
         </div>
       )
     case 'video':
+      const videoUrl = `${getVideoUrlBase()}/${data[0].url}`
       return (
         <div key={keys[0]}>
-          <Video src={data[0].url} />
+          <Video src={videoUrl} />
           {text && <Caption>{text}</Caption>}
         </div>
       )
@@ -76,14 +79,11 @@ const getAtomic = (children, { data, keys }) => {
   }
 }
 
-/**
- * Note that children can be maped to render a list or do other cool stuff
- */
+// only actually using unstyled - atomic - header-one
 const blocks = {
   unstyled: (children, { keys }) => <Text key={keys[0]}>{children}</Text>,
   atomic: getAtomic,
-  blockquote:
-    (children, { keys }) => <blockquote key={keys[0]} >{children}</blockquote>,
+  blockquote: (children, { keys }) => <blockquote key={keys[0]} >{children}</blockquote>,
   'header-one': (children, { keys }) => children.map((child, i) => <HeaderOne key={keys[i]}>{child}</HeaderOne>),
   'header-two': (children, { keys }) => children.map((child, i) => <h2 key={keys[i]}>{child}</h2>),
   'header-three': (children, { keys }) => children.map((child, i) => <h3 key={keys[i]}>{child}</h3>),

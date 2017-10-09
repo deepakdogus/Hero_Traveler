@@ -57,9 +57,9 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
   [IQKeyboardManager sharedManager].enable = YES;
   [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
-  
+
   NSURL *jsCodeLocation;
-  
+
   [[FBSDKApplicationDelegate sharedInstance] application:application
                            didFinishLaunchingWithOptions:launchOptions];
 
@@ -82,32 +82,33 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
-            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-  
+            sourceApplication:(NSString *)sourceApplication
+            annotation:(id)annotation {
+
   NSString *myUrl = url.absoluteString;
 
-  
+
 //  BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
 //                                                                openURL:url
 //                                                      sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
 //                                                             annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
 //                  ];
-  
+
 //  if(!handled) {
 //    return [RCTLinkingManager application:application openURL:url
 //                        sourceApplication:sourceApplication annotation:annotation];
 //  }
 
 //  return handled;
-  
-  
+
+
 //  if ([myUrl containsString:@])
-  
+
   if ([myUrl containsString:@"com.herotraveler.herotraveler-beta"]) {
     return [RCTLinkingManager application:application
                               openURL:url
-                              sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
-                              annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
+                              sourceApplication:sourceApplication
+                              annotation:annotation];
   } else {
     return [[FBSDKApplicationDelegate sharedInstance] application:application
                                                       openURL:url
@@ -119,7 +120,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 //- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
 //  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 //{
-//  
+//
 //}
 
 @end

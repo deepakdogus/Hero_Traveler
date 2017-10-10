@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import {feedExample} from '../../Containers/Feed_TEST_DATA'
 import StorySelectRow, {DefaultContainer} from '../StorySelectRow'
-import SpaceBetweenRowWithButton from '../SpaceBetweenRowWithButton'
+import SpaceBetweenRow from '../SpaceBetweenRow'
 import VerticalCenter from '../VerticalCenter'
 import {RightTitle, StyledVerticalCenter, RightModalCloseX} from './Shared'
 import Icon from '../Icon'
@@ -76,7 +76,7 @@ export default class AddToBoard extends React.Component {
     )
   }
 
-  renderButton = () => {
+  renderRight = () => {
     return null;
   }
 
@@ -89,7 +89,7 @@ export default class AddToBoard extends React.Component {
           story={feedExample[key]}
           isSelected={index === 0}
           isAddToBoard={true}
-          renderButton
+          renderRight
           ReplacementContainer={ReplacementContainer}
         />
       )
@@ -102,10 +102,10 @@ export default class AddToBoard extends React.Component {
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>ADD TO COLLECTION</RightTitle>
         <CreateContainer>
-          <SpaceBetweenRowWithButton
+          <SpaceBetweenRow
             renderImage={this.renderImage}
             renderText={this.renderText}
-            renderButton={this.renderButton}
+            renderRight={this.renderRight}
           />
         </CreateContainer>
         <CategoryRowsContainer>

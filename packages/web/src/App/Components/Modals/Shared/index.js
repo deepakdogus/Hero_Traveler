@@ -81,13 +81,17 @@ export const StyledVerticalCenter = styled(VerticalCenter)`
   padding-left: 25px;
 `
 
-export const UserName = styled.p`
+export const UserNameStyles = `
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 600;
   font-size: 18px;
   color: ${props => props.theme.Colors.background};
   letter-spacing: .7px;
   margin: 0;
+`
+
+export const UserName = styled.p`
+  ${UserNameStyles}
 `
 
 export const CommentContent = styled.p`
@@ -98,6 +102,7 @@ export const CommentContent = styled.p`
   margin: 0;
   color: ${props => props.theme.Colors.grey};
 `
+
 export const MessageContent = styled.p`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;

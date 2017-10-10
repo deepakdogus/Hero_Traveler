@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import SpaceBetweenRowWithButton from './SpaceBetweenRowWithButton'
+import SpaceBetweenRow from './SpaceBetweenRow'
 import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Avatar from './Avatar'
@@ -62,7 +62,7 @@ export default class FollowFollowingRow extends Component {
     )
   }
 
-  renderButton = () => {
+  renderRight = () => {
     return (
       <VerticalCenter>
         <RoundedButton
@@ -79,10 +79,10 @@ export default class FollowFollowingRow extends Component {
   render() {
     return (
       <Container margin={this.props.margin}>
-        <SpaceBetweenRowWithButton
+        <SpaceBetweenRow
           renderImage={this.renderImage}
           renderText={this.renderText}
-          renderButton={this.renderButton}
+          renderRight={this.renderRight}
         />
       </Container>
     )

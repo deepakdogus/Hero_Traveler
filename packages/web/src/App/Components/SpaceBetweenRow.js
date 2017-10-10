@@ -8,15 +8,16 @@ const Left = styled(Row)``
 const Right = styled(Row)``
 
 // this Component should only be used for horizontal placement
-export default class SpaceBetweenRowWithTimeStamp extends Component {
+// it is the rough scaffolding of a number of rows
+export default class SpaceBetweenRow extends Component {
   static propTypes = {
     renderImage: PropTypes.func,
     renderText: PropTypes.func,
-    renderTimestamp: PropTypes.func,
+    renderRight: PropTypes.func,
   }
 
   render() {
-    const {renderImage, renderText, renderTimestamp} = this.props
+    const {renderImage, renderText, renderRight} = this.props
     return (
       <Row between='xs'>
         <Left>
@@ -28,7 +29,7 @@ export default class SpaceBetweenRowWithTimeStamp extends Component {
           </Col>
         </Left>
         <Right>
-          {renderTimestamp()}
+          {renderRight()}
         </Right>
       </Row>
     )

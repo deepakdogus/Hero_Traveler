@@ -213,7 +213,7 @@ export default class ProfileHeader extends React.Component {
           contentLabel='Followed By Modal'
           onRequestClose={this.closeModal}
         >
-          <FollowFollowing closeModal={this.closeModal}profile={user}/>
+          <FollowFollowing closeModal={this.closeModal} profile={user}/>
         </RightModal>
         <RightModal
           isOpen={this.state.modal === 'stats'}

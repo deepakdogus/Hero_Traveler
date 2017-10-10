@@ -32,7 +32,7 @@ const notificationTypes = [
 ]
 
 //test trip images
-const tripsExample = feedExample[Object.keys(feedExample)[0]].categories
+const tripsExample = feedExample['59d59ac574b3840010a1d6f3'].categories
 let tripsExampleSliced = {};
 for (var i=0; i<3; i++)
     tripsExampleSliced[i] = tripsExample[i];

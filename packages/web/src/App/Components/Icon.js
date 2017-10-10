@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import {Images} from '../Shared/Themes'
 
-function getSize(props) {
+export function getSize(props) {
   switch(props.size) {
     case 'small':
       return '15px'
@@ -24,19 +24,20 @@ function getSize(props) {
 }
 
 const StyledIcon = styled.img`
-	width: ${props => getSize};
-	height: ${props => getSize};
+  width: ${props => getSize};
+  height: ${props => getSize};
   margin: ${props => props.center ? 'auto' : 0};
 `
 
+
 export default class Icon extends React.Component {
-	static propTypes = {
+  static propTypes = {
     name: PropTypes.string,
     size: PropTypes.string,
     color: PropTypes.string,
   }
 
-	getIconName(navKey) {
+  getIconName(navKey) {
     switch (navKey) {
       case 'pencil':
         return Images.iconPencil

@@ -89,7 +89,7 @@ export default class AddToBoard extends React.Component {
           story={feedExample[key]}
           isSelected={index === 0}
           isAddToBoard={true}
-          renderButton
+          renderRight
           ReplacementContainer={ReplacementContainer}
         />
       )

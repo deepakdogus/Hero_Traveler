@@ -44,7 +44,7 @@ export default class AddToItinerary extends React.Component {
           index={index}
           story={feedExample[key]}
           isSelected={index === 0}
-          renderButton
+          renderRight
         />
       )
     })

@@ -5,10 +5,10 @@ export function getVideoUrlBase() {
   return `https://res.cloudinary.com/${Env.cloudName}/video/upload`
 }
 
-export default function getVideoUrl(video: object): ?string {
+export default function getVideoUrl(video: object, stream = true): ?string {
   if (!_.has(video, 'original')) return undefined
   let url
-  if (video.streamingFormats && video.streamingFormats.HLS) {
+  if (stream && video.streamingFormats && video.streamingFormats.HLS) {
     url = video.streamingFormats.HLS
   }
   else {

@@ -6,6 +6,7 @@ import SpaceBetweenRow from './SpaceBetweenRow'
 import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Icon from './Icon'
+import {StyledVerticalCenter} from './Modals/Shared'
 
 const StyledImage = styled.img`
   width: 77px;
@@ -42,12 +43,6 @@ const UserName = styled(DefaultText)`
   font-weight: 400;
   font-size: 14px;
   font-style: italic;
-`
-
-const StyledVerticalCenter = styled(VerticalCenter)`
-  height: 100%;
-  padding-left: 25px;
-
 `
 
 const DefaultWrapper = styled.div``

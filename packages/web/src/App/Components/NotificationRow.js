@@ -11,8 +11,6 @@ import {getSize} from './Icon'
 import HorizontalDivider from './HorizontalDivider'
 import {
   UserNameStyles,
-  CommentContent,
-  NotificationContent,
   Timestamp,
 } from './Modals/Shared'
 import SpaceBetweenRow from './SpaceBetweenRow'
@@ -61,6 +59,24 @@ const StyledVerticalCenter = styled(VerticalCenter)`
   padding-left: ${relevantMetrics.leftPadding}px;
 `
 
+const CommentContent = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: .7px;
+  margin: 0;
+  color: ${props => props.theme.Colors.grey};
+`
+
+const NotificationContent = styled.p`
+  font-family: ${props => props.theme.Fonts.type.base};
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: .7px;
+  margin: 0;
+  color: ${props => props.theme.Colors.background};
+`
+
 const notificationContentWidth = metrics.rightModalWidth -
   (2 * relevantMetrics.containerPadding +
   relevantMetrics.avatarWidth +
@@ -70,7 +86,6 @@ const notificationContentWidth = metrics.rightModalWidth -
 const StyledNotificationContent = styled(NotificationContent)`
   max-width: ${notificationContentWidth}px;
 `
-
 
 export default class NotificationRow extends Component {
   static propTypes = {

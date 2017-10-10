@@ -11,9 +11,6 @@ import {randomDate} from './Shared/RandomDate'
 
 const Container = styled.div``
 
-const CommentContainer = styled(Container)`
-`
-
 export default class Comments extends React.Component {
   static PropTypes = {
     profile: PropTypes.object,
@@ -47,9 +44,7 @@ export default class Comments extends React.Component {
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>COMMENTS</RightTitle>
-        <CommentContainer>
-          {this.renderUserMessageRows(userKeys)}
-        </CommentContainer>
+        {this.renderUserMessageRows(userKeys)}
         <InputRow/>
       </Container>
     )

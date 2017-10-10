@@ -9,6 +9,7 @@ import HorizontalDivider from './HorizontalDivider'
 import OverlayHover from './OverlayHover'
 import {Row} from './FlexboxGrid'
 import NavLinkStyled from './NavLinkStyled'
+import PlayButton from './PlayButton'
 
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import formatCount from '../Shared/Lib/formatCount'
@@ -113,9 +114,11 @@ export default class StoryPreview extends React.Component {
           <StoryOverlayContainer
             imageUrl={imageUrl}
             overlayColor='black'
-          />
+          >
+            {story.coverVideo && <PlayButton/>}
+            <ContainerBottomGradient/>
+          </StoryOverlayContainer>
         </StoryLink>
-        <ContainerBottomGradient/>
         <StoryInfoContainer>
           <StoryLink to={`/story/${story.id}`}>
             <Title>{story.title}</Title>

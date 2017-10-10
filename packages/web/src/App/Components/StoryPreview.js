@@ -115,7 +115,7 @@ export default class StoryPreview extends React.Component {
             imageUrl={imageUrl}
             overlayColor='black'
           >
-            {story.coverVideo && <PlayButton/>}
+            {story.coverVideo && !story.coverImage && <PlayButton/>}
             <ContainerBottomGradient/>
           </StoryOverlayContainer>
         </StoryLink>

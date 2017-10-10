@@ -89,7 +89,7 @@ export default class StoryHeader extends React.Component {
             <Title mediaType={this.getMediaType()}>{story.title}</Title>
             <StyledHorizontalDivider />
             <Subtitle>{story.description}</Subtitle>
-            {story.coverVideo &&
+            {story.coverVideo && !story.coverImage &&
               <Video src={getVideoUrl(story.coverVideo, false)} type='cover'/>
             }
           </VerticalCenter>

@@ -165,7 +165,9 @@ class TagScreen extends Component {
   }
 
   setInputBlurred = () => {
-    this.setState({isInputFocused: false})
+    this.setState({isInputFocused: false, text: ''}, () => {
+      this.refs.input.blur()
+    })
   }
 
   render () {

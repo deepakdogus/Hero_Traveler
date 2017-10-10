@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import SpaceBetweenRowWithButton from './SpaceBetweenRowWithButton'
+import SpaceBetweenRow from './SpaceBetweenRow'
 import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Icon from './Icon'
@@ -57,7 +57,7 @@ export default class StorySelectRow extends Component {
     isSelected: PropTypes.bool,
     story: PropTypes.object,
     username: PropTypes.string,
-    renderButton: PropTypes.bool,
+    renderRight: PropTypes.bool,
     styles: PropTypes.object,
     index: PropTypes.number,
   }
@@ -83,9 +83,9 @@ export default class StorySelectRow extends Component {
     )
   }
 
-  renderButton = () => {
-    const {isSelected, renderButton, isAddToBoard} = this.props
-    if (!renderButton) return null
+  renderRight = () => {
+    const {isSelected, renderRight, isAddToBoard} = this.props
+    if (!renderRight) return null
     const unSelectedIconName = isAddToBoard ? 'redCheck' : 'createStory'
     const iconName = isSelected ? 'redCheck' : unSelectedIconName;
 
@@ -105,10 +105,10 @@ export default class StorySelectRow extends Component {
     return (
       <Wrapper>
         <Container index={index}>
-          <SpaceBetweenRowWithButton
+          <SpaceBetweenRow
             renderImage={this.renderImage}
             renderText={this.renderText}
-            renderButton={this.renderButton}
+            renderRight={this.renderRight}
           />
         </Container>
       </Wrapper>

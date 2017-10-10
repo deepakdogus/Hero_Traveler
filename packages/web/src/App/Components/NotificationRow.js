@@ -15,7 +15,7 @@ import {
   NotificationContent,
   Timestamp,
 } from './Modals/Shared'
-import SpaceBetweenRowWithButton from './SpaceBetweenRowWithButton'
+import SpaceBetweenRow from './SpaceBetweenRow'
 import metrics from '../Shared/Themes/Metrics'
 
 let avatarWidth = getSize({size: 'larger'})
@@ -129,10 +129,10 @@ export default class NotificationRow extends Component {
     return (
       <InteractiveContainer>
         <Container margin={this.props.margin}>
-          <SpaceBetweenRowWithButton
+          <SpaceBetweenRow
             renderImage={this.renderImage}
             renderText={this.renderText}
-            renderButton={this.renderTripImage}
+            renderRight={this.renderTripImage}
           />
         </Container>
         <StyledHorizontalDivider color='light-grey'/>

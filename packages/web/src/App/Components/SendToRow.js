@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import SpaceBetweenRowWithButton from './SpaceBetweenRowWithButton'
+import SpaceBetweenRow from './SpaceBetweenRow'
 import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Avatar from './Avatar'
@@ -39,7 +39,7 @@ export default class SendToRow extends Component {
     )
   }
 
-  renderButton = () => {
+  renderRight = () => {
     return (
       <VerticalCenter>
         <input
@@ -52,10 +52,10 @@ export default class SendToRow extends Component {
   render() {
     return (
       <Container margin={this.props.margin}>
-        <SpaceBetweenRowWithButton
+        <SpaceBetweenRow
           renderImage={this.renderImage}
           renderText={this.renderText}
-          renderButton={this.renderButton}
+          renderRight={this.renderRight}
         />
         <HorizontalDivider color='light-grey'/>
       </Container>

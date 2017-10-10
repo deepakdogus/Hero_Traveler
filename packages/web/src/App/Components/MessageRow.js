@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
-import SpaceBetweenRowWithButton from './SpaceBetweenRowWithButton'
+import SpaceBetweenRow from './SpaceBetweenRow'
 import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Avatar from './Avatar'
@@ -71,7 +71,7 @@ export default class MessageRow extends Component {
   }
 
 
-  renderButton = () => {
+  renderRight = () => {
     return (
       <TimestampContainer>
         <Timestamp>{moment(this.props.timestamp).fromNow()}</Timestamp>
@@ -84,10 +84,10 @@ export default class MessageRow extends Component {
       <Container>
         {this.props.index > 0 ? <StyledHorizontalDivider color='light-grey'/> : null}
           <MessageContainer>
-            <SpaceBetweenRowWithButton
+            <SpaceBetweenRow
               renderImage={this.renderImage}
               renderText={this.renderText}
-              renderButton={this.renderButton}
+              renderRight={this.renderRight}
             />
           </MessageContainer>
         {!this.props.isComment ? <StyledHorizontalDivider color='light-grey'/> : null}
@@ -100,10 +100,10 @@ export default class MessageRow extends Component {
       <InteractiveContainer>
         {this.props.index > 0 ? <StyledHorizontalDivider color='light-grey'/> : null}
           <MessageContainer>
-            <SpaceBetweenRowWithButton
+            <SpaceBetweenRow
               renderImage={this.renderImage}
               renderText={this.renderText}
-              renderButton={this.renderButton}
+              renderRight={this.renderRight}
             />
           </MessageContainer>
         {!this.props.isComment ? <StyledHorizontalDivider color='light-grey'/> : null}

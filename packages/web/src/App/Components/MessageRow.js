@@ -14,10 +14,7 @@ import {
   Timestamp,
 } from './Modals/Shared'
 
-const Container = styled.div`
-`
-
-const MessageContainer = styled(Container)`
+const MessageContainer = styled.div`
   padding: 20px 30px;
 `
 
@@ -33,7 +30,7 @@ const TextContainer = styled(VerticalCenter)`
 `
 
 const InteractiveContainer = styled.div`
-  &:hover ${Container} {
+  &:hover {
     background-color: ${props => props.theme.Colors.onHoverGrey};
   }
 `
@@ -79,24 +76,8 @@ export default class MessageRow extends Component {
     )
   }
 
-  renderNormalContainer = () => {
-    return(
-      <Container>
-        {this.props.index > 0 ? <StyledHorizontalDivider color='light-grey'/> : null}
-          <MessageContainer>
-            <SpaceBetweenRow
-              renderImage={this.renderImage}
-              renderText={this.renderText}
-              renderRight={this.renderRight}
-            />
-          </MessageContainer>
-        {!this.props.isComment ? <StyledHorizontalDivider color='light-grey'/> : null}
-      </Container>
-      )
-  }
-
-  renderInteractiveContainer = () => {
-    return(
+  render() {
+    return (
       <InteractiveContainer>
         {this.props.index > 0 ? <StyledHorizontalDivider color='light-grey'/> : null}
           <MessageContainer>
@@ -108,14 +89,6 @@ export default class MessageRow extends Component {
           </MessageContainer>
         {!this.props.isComment ? <StyledHorizontalDivider color='light-grey'/> : null}
       </InteractiveContainer>
-      )
-  }
-
-  render() {
-    return (
-      <div>
-        {!this.props.isComment ? this.renderInteractiveContainer () : this.renderNormalContainer()}
-      </div>
     )
   }
 }

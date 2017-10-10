@@ -12,7 +12,6 @@ import {randomDate} from './Shared/RandomDate'
 const Container = styled.div``
 
 const CommentContainer = styled(Container)`
-  margin-top: 15px;
 `
 
 export default class Comments extends React.Component {

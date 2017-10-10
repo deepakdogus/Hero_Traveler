@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import CloseX from '../CloseX'
-import OverlayStatic from '../OverlayStatic'
+import Overlay from '../Overlay'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import {CloseXContainer, SubTitle} from './Shared'
 
@@ -11,7 +11,7 @@ const Container = styled.div`
   position: relative;
 `
 
-const StoryOverlayContainer = styled(OverlayStatic)`
+const StoryOverlayContainer = styled(Overlay)`
   margin-top: 40px;
   padding-top: 505px;
   width: 100%;
@@ -58,7 +58,7 @@ export default class CoverPhotoBox extends React.Component {
     const {coverImage, closeImage, title, description} = this.props;
     return (
       <Container>
-        <StoryOverlayContainer image={coverImage} overlayColor='lightBlack'/>
+        <StoryOverlayContainer image={coverImage}/>
         <CloseXContainer>
           <CloseX onClick={closeImage}/>
         </CloseXContainer>

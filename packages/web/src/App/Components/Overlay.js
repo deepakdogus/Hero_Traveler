@@ -8,7 +8,6 @@ export const OverlayStyles = `
     height: 100%;
     top: 0;
     left: 0;
-    opacity: 1;
     background: rgba(0, 0, 0, .3);
   }
 `

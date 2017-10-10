@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
-import SpaceBetweenRowWithTimeStamp from './SpaceBetweenRowWithTimeStamp'
+import SpaceBetweenRowWithButton from './SpaceBetweenRowWithButton'
 import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Avatar from './Avatar'
@@ -71,7 +71,7 @@ export default class MessageRow extends Component {
   }
 
 
-  renderTimestamp = () => {
+  renderButton = () => {
     return (
       <TimestampContainer>
         <Timestamp>{moment(this.props.timestamp).fromNow()}</Timestamp>
@@ -84,12 +84,12 @@ export default class MessageRow extends Component {
       <Container>
         {this.props.index > 0 ? <StyledHorizontalDivider color='light-grey'/> : null}
           <MessageContainer>
-            <SpaceBetweenRowWithTimeStamp
+            <SpaceBetweenRowWithButton
               renderImage={this.renderImage}
               renderText={this.renderText}
-              renderTimestamp={this.renderTimestamp}
+              renderButton={this.renderButton}
             />
-          </MessageContainer>        
+          </MessageContainer>
         {!this.props.isComment ? <StyledHorizontalDivider color='light-grey'/> : null}
       </Container>
       )
@@ -100,12 +100,12 @@ export default class MessageRow extends Component {
       <InteractiveContainer>
         {this.props.index > 0 ? <StyledHorizontalDivider color='light-grey'/> : null}
           <MessageContainer>
-            <SpaceBetweenRowWithTimeStamp
+            <SpaceBetweenRowWithButton
               renderImage={this.renderImage}
               renderText={this.renderText}
-              renderTimestamp={this.renderTimestamp}
+              renderButton={this.renderButton}
             />
-          </MessageContainer>        
+          </MessageContainer>
         {!this.props.isComment ? <StyledHorizontalDivider color='light-grey'/> : null}
       </InteractiveContainer>
       )
@@ -114,8 +114,8 @@ export default class MessageRow extends Component {
   render() {
     return (
       <div>
-        {!this.props.isComment ? this.renderInteractiveContainer () : this.renderNormalContainer()}  
-      </div>        
+        {!this.props.isComment ? this.renderInteractiveContainer () : this.renderNormalContainer()}
+      </div>
     )
   }
 }

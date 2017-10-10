@@ -3,30 +3,43 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
-import SpaceBetweenRowWithTripImage from './SpaceBetweenRowWithTripImage'
 import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
+import getS3ImageUrl from '../Shared/Lib/getS3ImageUrl'
 import Avatar from './Avatar'
+import {getSize} from './Icon'
 import HorizontalDivider from './HorizontalDivider'
 import {
-  UserName,
+  UserNameStyles,
   CommentContent,
   NotificationContent,
   Timestamp,
 } from './Modals/Shared'
-import {Row} from './FlexboxGrid'
+import SpaceBetweenRowWithButton from './SpaceBetweenRowWithButton'
+import metrics from '../Shared/Themes/Metrics'
+
+let avatarWidth = getSize({size: 'larger'})
+avatarWidth = Number(avatarWidth.substring(0, avatarWidth.length - 2))
+
+const relevantMetrics  = {
+  containerPadding: 25,
+  imageWidth: 60,
+  avatarWidth,
+  leftPadding: 14,
+}
 
 const Container = styled.div`
-  padding: 25px;
+  padding: ${relevantMetrics.containerPadding}px;
 `
 
-const StyledUserName = styled(UserName)`
+const StyledUserName = styled.span`
+  ${UserNameStyles},
   font-size: 16px;
 `
 
 const StyledTimestamp = styled(Timestamp)`
   font-size: 12px;
-  margin-top: -8px;
+  margin-top: 8px;
 `
 
 const InteractiveContainer = styled.div`
@@ -39,9 +52,25 @@ const StyledHorizontalDivider = styled(HorizontalDivider)`
 `
 
 const StyledImage = styled.img`
-  width: 60px;
-  height: 60px;
+  width: ${relevantMetrics.imageWidth}px;
+  height: ${relevantMetrics.imageWidth}px;
 `
+
+const StyledVerticalCenter = styled(VerticalCenter)`
+  height: 100%;
+  padding-left: ${relevantMetrics.leftPadding}px;
+`
+
+const notificationContentWidth = metrics.rightModalWidth -
+  (2 * relevantMetrics.containerPadding +
+  relevantMetrics.avatarWidth +
+  relevantMetrics.imageWidth +
+  relevantMetrics.leftPadding + 1)
+
+const StyledNotificationContent = styled(NotificationContent)`
+  max-width: ${notificationContentWidth}px;
+`
+
 
 export default class NotificationRow extends Component {
   static propTypes = {
@@ -56,7 +85,7 @@ export default class NotificationRow extends Component {
   renderImage = () => {
     return (
       <Avatar
-        avatarUrl={getImageUrl(this.props.user.profile.avatar)}
+        avatarUrl={getImageUrl(this.props.user.profile.avatar, 'avatar')}
         size='larger'
       />
     )
@@ -65,30 +94,34 @@ export default class NotificationRow extends Component {
   renderText = () => {
     const {user} = this.props
     return (
-      <VerticalCenter>
-        <Row>
+      <StyledVerticalCenter>
+        <StyledNotificationContent>
           <StyledUserName>{user.username}&nbsp;</StyledUserName>
-          <NotificationContent>{this.props.notification}</NotificationContent>          
-        </Row>
-        {this.props.comment ? <CommentContent>{this.props.comment}</CommentContent> : null }
-      </VerticalCenter>
-    )
-  }
-
-
-  renderTimestamp = () => {
-    return (
-      <VerticalCenter>
-        <StyledTimestamp margin='none' width='50px' >{moment(this.props.timestamp).fromNow()}</StyledTimestamp>
-      </VerticalCenter>
+          {this.props.notification}
+        </StyledNotificationContent>
+        {this.props.comment &&
+          <CommentContent>
+            {this.props.comment}
+          </CommentContent>
+        }
+        <StyledTimestamp
+          margin='none'
+          width='50px' >
+          {moment(this.props.timestamp).fromNow()}
+        </StyledTimestamp>
+      </StyledVerticalCenter>
     )
   }
 
   renderTripImage = () => {
+    // temp fix until we get actual data
+    this.props.trip.image.versions.thumbnail240.path = this.props.trip.image.versions.thumbnail240.path.split(" ").join("-")
     return (
-      <StyledImage
-        src={getImageUrl(this.props.trip.image)}
-      />
+      <VerticalCenter>
+        <StyledImage
+          src={getS3ImageUrl(this.props.trip.image, 'versions.thumbnail240.path')}
+        />
+      </VerticalCenter>
     )
   }
 
@@ -96,14 +129,13 @@ export default class NotificationRow extends Component {
     return (
       <InteractiveContainer>
         <Container margin={this.props.margin}>
-          <SpaceBetweenRowWithTripImage
+          <SpaceBetweenRowWithButton
             renderImage={this.renderImage}
             renderText={this.renderText}
-            renderTimestamp={this.renderTimestamp}
-            renderTripImage={this.renderTripImage}
+            renderButton={this.renderTripImage}
           />
         </Container>
-        <StyledHorizontalDivider color='light-grey'/>        
+        <StyledHorizontalDivider color='light-grey'/>
       </InteractiveContainer>
     )
   }

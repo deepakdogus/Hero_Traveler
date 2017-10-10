@@ -111,6 +111,7 @@ export default class StoryContentRenderer extends React.Component {
 
   render () {
     const {story} = this.props
+    if (!story.draftjsContent) return null
     return (
       <ContentContainer>
         {redraft(story.draftjsContent, { inline, blocks, entities }, options)}

@@ -90,7 +90,7 @@ export default class StoryHeader extends React.Component {
             <StyledHorizontalDivider />
             <Subtitle>{story.description}</Subtitle>
             {story.coverVideo &&
-              <Video src={getVideoUrl(story.coverVideo)} type='cover'/>
+              <Video src={getVideoUrl(story.coverVideo, false)} type='cover'/>
             }
           </VerticalCenter>
         </Centered>

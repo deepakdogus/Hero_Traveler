@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React from 'react'
-import Icon from './Icon'
+import RotatedArrow from './RotatedArrow'
 
 const Container = styled.div``
 
@@ -18,21 +18,12 @@ const ArrowContainer = styled.div`
   margin-bottom: 220px;
 `
 
-const ArrowIcon = styled(Icon)`
-  text-align: center;
-  height: 24px;
-  width: 12px;
-  -ms-transform: rotate(90deg);
-  -webkit-transform: rotate(90deg);
-  transform: rotate(90deg);
-`
-
 const ShowMore = props => {
   return (
     <Container>
       <More>SHOW MORE</More>
       <ArrowContainer>
-        <ArrowIcon
+        <RotatedArrow
           name='arrowRightRed'
           size='mediumSmall'
         />

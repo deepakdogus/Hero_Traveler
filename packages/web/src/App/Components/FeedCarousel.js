@@ -16,7 +16,7 @@ const StyledArrowIcon = styled(Icon)`
 	width: 12px;
 	height: 20px;
 	align-self: center;
-  margin-left: ${props => props.name === 'arrowLeft' ? '4px' : '0'};
+  margin-left: ${props => props.name === 'arrowLeft' ? '0' : '4px'};
   margin-right: ${props => props.name === 'arrowLeft' ? '4px' : '0'};
 `
 

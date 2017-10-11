@@ -7,19 +7,26 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import getVideoUrl from '../Shared/Lib/getVideoUrl'
 
 import Avatar from './Avatar'
-import Header from './Header'
 import HeaderImageWrapper from './HeaderImageWrapper'
-import VerticalCenter from './VerticalCenter'
+import VerticalCenter, {VerticalCenterStyles} from './VerticalCenter'
 import {Row} from './FlexboxGrid';
 import HorizontalDivider from './HorizontalDivider'
 import Video from './Video'
 import NavLinkStyled from './NavLinkStyled'
+import RotatedArrow from './RotatedArrow'
+import RoundedButton from './RoundedButton'
 
-const ProfileLink = styled(NavLinkStyled)``
+const ProfileLink = styled(NavLinkStyled)`
+  ${VerticalCenterStyles}
+`
 
 const Title = styled.p`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 400;
-  font-size: ${props => props.mediaType === 'video' ? '30px' : '65px'};
+  font-size: ${props => {
+    if (props.isPreview) return '59px'
+    return props.mediaType === 'video' ? '30px' : '65px'
+  }};
   color: ${props => props.theme.Colors.snow};
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -27,6 +34,7 @@ const Title = styled.p`
 `
 
 const Subtitle = styled.p`
+  font-family: ${props => props.theme.Fonts.type.crimsonText};
   font-weight: 400;
   font-size: 23px;
   color: ${props => props.theme.Colors.snow};
@@ -35,18 +43,11 @@ const Subtitle = styled.p`
   margin: 0 0 10px 0;
 `
 
-const BottomContainer = styled(Row)`
+const BottomContainer = styled.div`
   position: absolute;
-  bottom: 0;
+  bottom: 10px;
   width: 100%;
   z-index: 1;
-`
-
-const AuthorTime = styled.div`
-  font-weight: 400;
-  font-size: 18px;
-  color: ${props => props.theme.Colors.snow};
-  letter-spacing: .7px;
 `
 
 const Centered = styled(VerticalCenter)`
@@ -61,6 +62,37 @@ const Centered = styled(VerticalCenter)`
 const StyledHorizontalDivider = styled(HorizontalDivider)`
   width: 65px;
   border-width: 1px 0 0 0;
+  border-color: ${props => props.theme.Colors.whiteAlphaPt4};
+`
+
+const DownArrow = styled(RotatedArrow)``
+
+const StyledRoundedButton = styled(RoundedButton)`
+  align-self: center;
+  border: 2px solid white;
+`
+
+const StoryInfo = styled.span`
+  font-family: ${props => props.theme.Fonts.type.base};
+  font-weight: 400;
+  font-size: 18px;
+  color: ${props => props.theme.Colors.snow};
+  letter-spacing: .7px;
+  display: inline-block;
+`
+
+const Divider = styled.div`
+  display: inline-block;
+  width: 1px;
+  background-color: ${props => props.theme.Colors.snow};
+  margin-left: 7.5px;
+  margin-right: 7.5px;
+  margin-top: 1.5px;
+  height: 20px;
+`
+
+const StoryInfoRow = styled(Row)`
+  padding-left: 5px;
 `
 
 export default class StoryHeader extends React.Component {
@@ -70,41 +102,67 @@ export default class StoryHeader extends React.Component {
   }
 
   getMediaType() {
-    if (this.props.story.coverImage) return 'image'
-    else if (this.props.story.coverVideo)return 'video'
+    const {story} = this.props
+    if (story.coverVideo && !story.coverImage) return 'video'
+    if (story.coverImage) return 'image'
     return undefined
   }
 
+  getCoverImage() {
+    const {story, isPreview} = this.props
+    if (isPreview && this.getMediaType() === 'video') {
+      return getImageUrl(story.coverVideo, 'video')
+    }
+    return getImageUrl(story.coverImage)
+  }
+
   render () {
-    const {story, author} = this.props
+    const {story, author, isPreview} = this.props
+    const mediaType = this.getMediaType()
     return (
       <HeaderImageWrapper
-        backgroundImage={getImageUrl(story.coverImage)}
-        size='fullScreen'
+        backgroundImage={this.getCoverImage()}
+        size={isPreview ? 'preview' : 'fullScreen'}
         type='story'
       >
-        <Header isLoggedIn></Header>
         <Centered>
-          <VerticalCenter>
-            <Title mediaType={this.getMediaType()}>{story.title}</Title>
-            <StyledHorizontalDivider />
-            <Subtitle>{story.description}</Subtitle>
-            {story.coverVideo && !story.coverImage &&
-              <Video src={getVideoUrl(story.coverVideo, false)} type='cover'/>
-            }
-          </VerticalCenter>
-        </Centered>
-        <BottomContainer center="xs">
-          <ProfileLink to={`/profile/${author.id}`}>
-            <Avatar
-              avatarUrl={getImageUrl(author.profile.avatar)}
-              size='medium'
+          <Title mediaType={mediaType} isPreview={isPreview}>{story.title}</Title>
+          <StyledHorizontalDivider />
+          <Subtitle>{story.description}</Subtitle>
+          {isPreview &&
+            <StyledRoundedButton
+              type='storyHeader'
+              padding='even'
+              text='READ MORE'
+              width='168px'
+              height='50px'
             />
-          </ProfileLink>
-          <VerticalCenter>
-            <AuthorTime>By {author.username} | {moment(story.createdAt).format('MMMM Do YYYY')}</AuthorTime>
-            <p style={{color: 'white'}}>DOWN ARROW</p>
-          </VerticalCenter>
+          }
+          {!isPreview && mediaType === 'video' &&
+            <Video src={getVideoUrl(story.coverVideo, false)} type='cover'/>
+          }
+        </Centered>
+        <BottomContainer>
+          <Row center='xs'>
+            <ProfileLink to={`/profile/${author.id}`}>
+              <Avatar
+                avatarUrl={getImageUrl(author.profile.avatar)}
+                size='medium'
+              />
+            </ProfileLink>
+            <VerticalCenter>
+              <StoryInfoRow>
+                <StoryInfo>By {author.username}</StoryInfo>
+                <Divider>&nbsp;</Divider>
+                <StoryInfo>{moment(story.createdAt).format('MMMM Do YYYY')}</StoryInfo>
+              </StoryInfoRow>
+            </VerticalCenter>
+          </Row>
+          {!isPreview &&
+            <Row center='xs'>
+              <DownArrow name='arrowRight'/>
+            </Row>
+          }
         </BottomContainer>
       </HeaderImageWrapper>
     )

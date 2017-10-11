@@ -6,7 +6,7 @@ import Header from './Header'
 import HeaderImageWrapper from './HeaderImageWrapper'
 import FeedCarousel from './FeedCarousel'
 import HeaderTopGradient from './Headers/Shared/HeaderTopGradient'
-import CarouselSlide from './CarouselSlide'
+import StoryHeader from './StoryHeader'
 
 const StyledHeaderImageWrapper = styled(HeaderImageWrapper)`
   max-height: 570px;
@@ -27,10 +27,11 @@ export default class FeedHeader extends React.Component {
       const author = this.props.users[story.author]
 
       return (
-        <CarouselSlide
+        <StoryHeader
           key={key}
           story={story}
           author={author}
+          isPreview
         />
       )
     })

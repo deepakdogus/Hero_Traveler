@@ -9,6 +9,8 @@ export default styled.div`
     switch (props.size) {
       case 'fullScreen':
         return '100vh'
+      case 'preview':
+        return '570px'
       case 'large':
         return '630px'
       default:

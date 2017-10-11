@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import {feedExample, usersExample} from './Feed_TEST_DATA'
+import Header from '../Components/Header'
 import StoryHeader from '../Components/StoryHeader'
 import StoryContentRenderer from '../Components/StoryContentRenderer'
 import GMap from '../Components/GoogleMap'
@@ -29,6 +30,7 @@ class Story extends Component {
     const author = usersExample[story.author]
     return (
       <ContentWrapper>
+        <Header isLoggedIn></Header>
         <StoryHeader story={story} author={author}/>
         <LimitedWidthContainer>
           <StoryContentRenderer story={story} />

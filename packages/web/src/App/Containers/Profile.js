@@ -3,15 +3,11 @@ import styled from 'styled-components'
 
 import {feedExample, usersExample} from './Feed_TEST_DATA'
 import ProfileHeader from '../Components/ProfileHeader'
-import Togglebar from '../Components/Togglebar'
+import TabBar from '../Components/TabBar'
 import StoryList from '../Components/StoryList'
 import Footer from '../Components/Footer'
 
-const toggleBarTabs = [
-  { text: 'stories', isActive: true },
-  { text: 'drafts', isActive: false },
-  { text: 'collections', isActive: false },
-]
+const taBbarTabs = ['STORIES', 'DRAFTS', 'COLLECTIONS']
 
 const ContentWrapper = styled.div``
 
@@ -20,6 +16,18 @@ const StoryListWrapper = styled.div`
 `
 
 class Profile extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      activeTab: 'STORIES'
+    }
+  }
+
+  onClickTab = (event) => {
+    let tab = event.target.innerHTML
+    if (this.state.activeTab !== tab) this.setState({ activeTab: tab })
+  }
+
   render() {
     const {match} = this.props
     const user = usersExample[match.params.userId] || usersExample['596cd072fc3f8110a6f18342']
@@ -32,7 +40,11 @@ class Profile extends Component {
     return (
       <ContentWrapper>
         <ProfileHeader user={user} isContributor={isContributor}/>
-        <Togglebar tabs={toggleBarTabs}/>
+        <TabBar
+          tabs={taBbarTabs}
+          activeTab={this.state.activeTab}
+          onClickTab={this.onClickTab}
+        />
         <StoryListWrapper>
           <StoryList stories={usersStories} users={usersExample}/>
           <Footer />

@@ -3,14 +3,14 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import {RightModalCloseX} from './Shared'
-import ModalTogglebar from '../ModalTogglebar'
+import TabBar from '../TabBar'
 
 import FAQ from './FAQ'
 import TermsAndConditions from './TermsAndConditions'
 
 const Container = styled.div``
 
-const toggleBarTabs = ['FAQ', 'Terms & Conditions']
+const tabBarTabs = ['FAQ', 'Terms & Conditions']
 
 export default class FAQTermsAndConditions extends React.Component {
   static propTypes = {
@@ -24,7 +24,7 @@ export default class FAQTermsAndConditions extends React.Component {
     }
   }
 
-  toggleModal = (event) => {
+  onClickTab = (event) => {
     let tab = event.target.innerHTML.split("&amp;").join("&")
     if (this.state.activeTab !== tab) this.setState({ activeTab: tab })
   }
@@ -33,7 +33,13 @@ export default class FAQTermsAndConditions extends React.Component {
     return (
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
-        <ModalTogglebar toggleModal={this.toggleModal} isActive={this.state.activeTab} tabs={toggleBarTabs}/>
+        <TabBar
+          activeTab={this.state.activeTab}
+          onClickTab={this.onClickTab}
+          tabs={tabBarTabs}
+          isModal
+          whiteBG
+        />
         {this.state.activeTab === 'FAQ' && <FAQ/>}
         {this.state.activeTab === 'Terms & Conditions' && <TermsAndConditions/>}
       </Container>

@@ -11,7 +11,6 @@ import TermsAndConditions from './TermsAndConditions'
 const Container = styled.div``
 
 const toggleBarTabs = ['FAQ', 'Terms & Conditions']
-const toggleBarTabsCheck = ['FAQ', 'Terms']
 
 export default class FAQTermsAndConditions extends React.Component {
   static propTypes = {
@@ -23,22 +22,20 @@ export default class FAQTermsAndConditions extends React.Component {
     this.state = {
       activeTab: 'FAQ'
     }
-  }  
+  }
 
   toggleModal = (event) => {
-    let target = event.target.innerHTML.split(' ')[0];
-    if(toggleBarTabsCheck.indexOf(target) > -1){
-      this.setState({ activeTab: target })  
-    }
+    let tab = event.target.innerHTML.split("&amp;").join("&")
+    if (this.state.activeTab !== tab) this.setState({ activeTab: tab })
   }
- 
+
   render() {
     return (
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <ModalTogglebar toggleModal={this.toggleModal} isActive={this.state.activeTab} tabs={toggleBarTabs}/>
         {this.state.activeTab === 'FAQ' && <FAQ/>}
-        {this.state.activeTab === 'Terms' && <TermsAndConditions/>}
+        {this.state.activeTab === 'Terms & Conditions' && <TermsAndConditions/>}
       </Container>
     )
   }

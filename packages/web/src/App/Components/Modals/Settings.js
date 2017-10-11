@@ -24,15 +24,13 @@ export default class Settings extends React.Component {
     this.state = {
       activeTab: 'Account'
     }
-  }  
+  }
 
   toggleModal = (event) => {
-    let target = event.target.innerHTML.split(' ')[0];
-    if(toggleBarTabs.indexOf(target) > -1){
-      this.setState({ activeTab: target })  
-    }
+    let tab = event.target.innerHTML
+    if (this.state.activeTab !== tab) this.setState({ activeTab: tab })
   }
- 
+
   render() {
     return (
       <Container>

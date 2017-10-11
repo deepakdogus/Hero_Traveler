@@ -4,9 +4,7 @@ import PropTypes from 'prop-types'
 import {Row} from './FlexboxGrid'
 import {Text} from './Modals/Shared'
 
-const StyledRow = styled(Row)`
-  
-`
+const StyledRow = styled(Row)``
 
 const TabContainer = styled.div`
   cursor: pointer;
@@ -35,9 +33,9 @@ export default class ModalToggleBar extends React.Component {
     return tabs.map((tab, index) => {
       return (
         <TabContainer onClick={this.props.toggleModal} key={index}>
-          <TabText 
-            isLast={index === tabs.length - 1} 
-            isActive={tab.split(' ')[0] === this.props.isActive}
+          <TabText
+            isLast={index === tabs.length - 1}
+            isActive={tab === this.props.isActive}
           >
             {tab}
           </TabText>

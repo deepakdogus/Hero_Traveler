@@ -39,26 +39,21 @@ const DefaultText = styled.p`
 
 export default class TabBar extends React.Component {
   static propTypes = {
-    tabs: PropTypes.arrayOf(PropTypes.string),
-    activeTab: PropTypes.string,
-    onClickTab: PropTypes.func,
+    tabs: PropTypes.arrayOf(PropTypes.string).isRequired,
+    activeTab: PropTypes.string.isRequired,
+    onClickTab: PropTypes.func.isRequired,
     whiteBG: PropTypes.bool,
     isModal: PropTypes.bool,
   }
 
-  nullFunc(){
-    return null
-  }
-
   renderTabs(){
     const {activeTab, tabs = [], onClickTab, isModal} = this.props
-    const onClickFunction = onClickTab || this.nullFunc
     const Text = isModal ? ModalText : DefaultText
     return tabs.map((tab, index) => {
       return (
         <TabContainer
           key={index}
-          onClick={onClickFunction}
+          onClick={onClickTab}
           isModal={isModal}
         >
           <Text

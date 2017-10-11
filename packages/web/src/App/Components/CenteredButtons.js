@@ -18,25 +18,28 @@ const Centered = styled(VerticalCenter)`
   padding: 40px 0px;
 `
 
-export default class CenteredLeftRightButtons extends Component {
+export default class CenteredButtons extends Component {
   static propTypes = {
-    renderButtonLeft: PropTypes.func,
-    renderButtonRight: PropTypes.func,
+    buttonsToRender: PropTypes.arrayOf(PropTypes.func),
+  }
+
+  renderButtons() {
+    return this.props.buttonsToRender.map((renderButton, index) => {
+      return (
+        <ButtonContainer key={index}>
+          {renderButton()}
+        </ButtonContainer>
+      )
+    })
   }
 
   render() {
-    const {renderButtonLeft, renderButtonRight} = this.props
     return (
       <Centered>
-        <StyledRow >
-          <ButtonContainer>
-            {renderButtonLeft()}            
-          </ButtonContainer>
-          <ButtonContainer>
-            {renderButtonRight()}
-          </ButtonContainer>
-        </StyledRow>        
-      </Centered>    
+        <StyledRow>
+          {this.renderButtons()}
+        </StyledRow>
+      </Centered>
     )
   }
 }

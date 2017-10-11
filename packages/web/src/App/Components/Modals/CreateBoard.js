@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import {RightTitle, StyledInput, RightModalCloseX} from './Shared'
-import CenteredLeftRightButtons from '../CenteredLeftRightButtons'
+import CenteredButtons from '../CenteredButtons'
 import VerticalCenter from '../VerticalCenter'
 import RoundedButton from '../RoundedButton'
 
@@ -61,9 +61,11 @@ export default class CreateBoard extends React.Component {
         <InputContainer>
           <CreateBoardStyledInput placeholder='Enter a title for your collection'/>
         </InputContainer>
-        <CenteredLeftRightButtons
-          renderButtonLeft={this.renderButtonLeft}
-          renderButtonRight={this.renderButtonRight}
+        <CenteredButtons
+          buttonsToRender={[
+            this.renderButtonLeft,
+            this.renderButtonRight,
+          ]}
         />
       </Container>
     )

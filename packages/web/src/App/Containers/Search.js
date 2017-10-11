@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import SearchResultsPeople from '../Components/SearchResultsPeople'
 import SearchResultsStories from '../Components/SearchResultsStories'
 import Header from '../Components/Header'
-import Togglebar from '../Components/Togglebar'
+import TabBar from '../Components/TabBar'
 import {Row} from '../Components/FlexboxGrid'
 
 import {feedExample, usersExample} from './Feed_TEST_DATA'
@@ -48,10 +48,6 @@ const ContentWrapper = styled.div`
   margin: 0 auto;
 `
 
-const StyledTogglebar = styled(Togglebar)`
-  background-color: ${props => props.theme.Colors.clear}
-`
-
 const Text = styled.p`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   color: ${props => props.theme.Colors.redHighlights};
@@ -64,24 +60,23 @@ const Text = styled.p`
   letter-spacing: .7px;
 `
 
+const tabBarTabs = ['STORIES', 'PEOPLE']
+
 export default class Search extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      activeTab: 'stories',
+      activeTab: 'STORIES',
     }
   }
 
-  // sloppy fix for onClick - need to create more abstract version
-  toggleSearchResultTabs = () => {
-    let tabToActivate
-    if (this.state.activeTab === 'stories') tabToActivate = 'people'
-    else tabToActivate = 'stories'
-    this.setState({activeTab: tabToActivate})
+  onClickTab = (event) => {
+    let tab = event.target.innerHTML
+    if (this.state.activeTab !== tab) this.setState({ activeTab: tab })
   }
 
   renderActiveTab = () => {
-    if (this.state.activeTab === 'people') {
+    if (this.state.activeTab === 'PEOPLE') {
       return (
         <SearchResultsPeople
           userSearchResults={usersExample}
@@ -99,10 +94,6 @@ export default class Search extends Component {
   }
 
   render() {
-    const togglebarTabs = [
-      { text: 'stories', isActive: this.state.activeTab === 'stories' },
-      { text: 'people', isActive: this.state.activeTab === 'people' },
-    ]
     return (
       <Container>
         <Header blackHeader={true} isLoggedIn></Header>
@@ -111,10 +102,11 @@ export default class Search extends Component {
           <Text>Cancel</Text>
         </HeaderInputContainer>
         <ContentWrapper>
-          <StyledTogglebar
-            tabs={togglebarTabs}
-            isClear={true}
-            onClickTab={this.toggleSearchResultTabs}
+          <TabBar
+            tabs={tabBarTabs}
+            activeTab={this.state.activeTab}
+            onClickTab={this.onClickTab}
+            whiteBG
           />
           {this.renderActiveTab()}
         </ContentWrapper>

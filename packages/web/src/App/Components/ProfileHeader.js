@@ -130,7 +130,9 @@ export default class ProfileHeader extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {modal: undefined }
+    this.state = {
+      modal: undefined,
+    }
   }
 
   closeModal = () => {

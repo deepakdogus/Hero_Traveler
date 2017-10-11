@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import {RightTitle, RightModalCloseX} from './Shared'
-import ModalTogglebar from '../ModalTogglebar'
+import TabBar from '../TabBar'
 
 import EditAccount from './EditAccount'
 import EditNotifications from './EditNotifications'
@@ -12,7 +12,7 @@ import EditServices from './EditServices'
 
 const Container = styled.div``
 
-const toggleBarTabs = ['Account', 'Services', 'Notifications', 'Password']
+const tabBarTabs = ['Account', 'Services', 'Notifications', 'Password']
 
 export default class Settings extends React.Component {
   static propTypes = {
@@ -24,21 +24,25 @@ export default class Settings extends React.Component {
     this.state = {
       activeTab: 'Account'
     }
-  }  
-
-  toggleModal = (event) => {
-    let target = event.target.innerHTML.split(' ')[0];
-    if(toggleBarTabs.indexOf(target) > -1){
-      this.setState({ activeTab: target })  
-    }
   }
- 
+
+  onClickTab = (event) => {
+    let tab = event.target.innerHTML
+    if (this.state.activeTab !== tab) this.setState({ activeTab: tab })
+  }
+
   render() {
     return (
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>SETTINGS</RightTitle>
-        <ModalTogglebar toggleModal={this.toggleModal} isActive={this.state.activeTab} tabs={toggleBarTabs}/>
+        <TabBar
+          activeTab={this.state.activeTab}
+          onClickTab={this.onClickTab}
+          tabs={tabBarTabs}
+          isModal
+          whiteBG
+        />
         {this.state.activeTab === 'Account' && <EditAccount/>}
         {this.state.activeTab === 'Services' && <EditServices/>}
         {this.state.activeTab === 'Notifications' && <EditNotifications/>}

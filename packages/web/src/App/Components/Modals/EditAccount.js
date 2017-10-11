@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import CenteredLeftRightButtons from '../CenteredLeftRightButtons'
 import InputWithLabel from '../InputWithLabel'
 import VerticalCenter from '../VerticalCenter'
 import RoundedButton from '../RoundedButton'
+import CenteredButtons from '../CenteredButtons'
 
 const Container = styled.div``
 
@@ -47,7 +47,7 @@ export default class EditAccount extends React.Component {
     return (
       <Container>
         <InputContainer>
-          <InputWithLabel 
+          <InputWithLabel
             id='name'
             name='name'
             placeholder='John Doe'
@@ -55,16 +55,18 @@ export default class EditAccount extends React.Component {
           />
         </InputContainer>
         <InputContainer>
-          <InputWithLabel 
+          <InputWithLabel
             id='email'
             name='email'
             placeholder='jdoe@gmail.com'
             label='Email'
-          />          
+          />
         </InputContainer>
-        <CenteredLeftRightButtons
-          renderButtonLeft={this.renderButtonLeft}
-          renderButtonRight={this.renderButtonRight}
+        <CenteredButtons
+          buttonsToRender={[
+            this.renderButtonLeft,
+            this.renderButtonRight,
+          ]}
         />
       </Container>
     )

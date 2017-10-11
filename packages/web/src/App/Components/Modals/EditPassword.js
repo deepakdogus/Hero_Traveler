@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import InputWithLabel from '../InputWithLabel'
-import CenteredLeftRightButtons from '../CenteredLeftRightButtons'
+import CenteredButtons from '../CenteredButtons'
 import VerticalCenter from '../VerticalCenter'
 import RoundedButton from '../RoundedButton'
 
@@ -13,6 +13,7 @@ const InputContainer = styled.div`
 `
 
 export default class EditPassword extends React.Component {
+
   renderButtonLeft = () => {
     return (
       <VerticalCenter>
@@ -44,35 +45,37 @@ export default class EditPassword extends React.Component {
     return (
       <Container>
         <InputContainer>
-          <InputWithLabel 
+          <InputWithLabel
             id='oldPassword'
             name='oldPassword'
             placeholder=''
             label='Old Password'
             type='password'
-          />          
+          />
         </InputContainer>
         <InputContainer>
-          <InputWithLabel 
+          <InputWithLabel
             id='newPassword'
             name='newPassword'
             placeholder=''
             label='New Password'
             type='password'
-          />                    
+          />
         </InputContainer>
         <InputContainer>
-          <InputWithLabel 
+          <InputWithLabel
             id='retypePassword'
             name='retypePassword'
             placeholder=''
             label='Retype Password'
             type='password'
-          />                              
+          />
         </InputContainer>
-        <CenteredLeftRightButtons
-          renderButtonLeft={this.renderButtonLeft}
-          renderButtonRight={this.renderButtonRight}
+        <CenteredButtons
+          buttonsToRender={[
+            this.renderButtonLeft,
+            this.renderButtonRight,
+          ]}
         />
       </Container>
     )

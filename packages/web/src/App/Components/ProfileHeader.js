@@ -143,7 +143,6 @@ export default class ProfileHeader extends React.Component {
     this.setState({ modal: 'followedBy' })
   }
 
-
   render () {
     const {user, isContributor} = this.props
     const isUsersProfile = user.id === '59d64ca84722340010b12c98'

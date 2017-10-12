@@ -5,9 +5,9 @@ import Header from './Header'
 import background from '../Shared/Images/create-story.png'
 import HeaderImageWrapper from './HeaderImageWrapper'
 import VerticalCenter from './VerticalCenter'
-import Icon from './Icon'
 import {OverlayStyles} from './Overlay'
 import HeaderTopGradient from './Headers/Shared/HeaderTopGradient'
+import {Images} from '../Shared/Themes'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   ${OverlayStyles}
@@ -46,7 +46,11 @@ const BadgeSpacer = styled.div`
   display: inline-block;
 `
 
-const GooglePlayIcon = styled(Icon)`
+const BadgeWrapper = styled.div`
+  margin-top: 20px;
+`
+
+const GooglePlayImage = styled.img`
   height: 90px;
   width: 232px;
   padding: 0px;
@@ -55,20 +59,13 @@ const GooglePlayIcon = styled(Icon)`
   display: inline-block;
 `
 
-const AppleAppStoreIcon = styled(Icon)`
+const AppleAppStoreImage = styled.img`
   height: 60px;
   width: 202px;
   display: inline-block;
 `
-const BadgeWrapper = styled.div`
-  margin-top: 20px;
-`
 
 export default class ExploreHeader extends React.Component {
-  static propTypes = {
-
-  }
-
   constructor(props) {
     super(props)
     this.state = {modal: undefined}
@@ -87,13 +84,9 @@ export default class ExploreHeader extends React.Component {
           <Tagline>For Travelers By Travelers</Tagline>
           <ItalicText>Available on</ItalicText>
             <BadgeWrapper>
-              <GooglePlayIcon
-                name='googlePlayBadge'
-              />
+              <GooglePlayImage src={Images.googlePlayBadge}/>
               <BadgeSpacer/>
-              <AppleAppStoreIcon
-                name='appleAppStoreBadge'
-              />
+              <AppleAppStoreImage src={Images.appleAppStoreBadge}/>
             </BadgeWrapper>
         </Centered>
       </OpaqueHeaderImageWrapper>

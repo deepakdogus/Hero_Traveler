@@ -7,7 +7,7 @@ import TabBar from '../Components/TabBar'
 import StoryList from '../Components/StoryList'
 import Footer from '../Components/Footer'
 
-const taBbarTabs = ['STORIES', 'DRAFTS', 'COLLECTIONS']
+const tabBarTabs = ['STORIES', 'DRAFTS', 'COLLECTIONS']
 
 const ContentWrapper = styled.div``
 
@@ -41,7 +41,7 @@ class Profile extends Component {
       <ContentWrapper>
         <ProfileHeader user={user} isContributor={isContributor}/>
         <TabBar
-          tabs={taBbarTabs}
+          tabs={tabBarTabs}
           activeTab={this.state.activeTab}
           onClickTab={this.onClickTab}
         />

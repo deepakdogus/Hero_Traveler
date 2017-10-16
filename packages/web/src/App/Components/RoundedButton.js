@@ -47,7 +47,7 @@ function getBackgroundColor (type, colors) {
     case 'backgroundOpaque':
       return colors.backgroundOpaque
     default:
-      return colors.red
+      return colors.redHighlights
   }
 }
 
@@ -84,7 +84,7 @@ const StyledButton = styled.button`
       case 'backgroundOpaque':
         return props.theme.Colors.closeXBorder
       default:
-        return props.theme.Colors.red
+        return props.theme.Colors.redHighlights
     }
   }};
   margin: ${props => getMargin};

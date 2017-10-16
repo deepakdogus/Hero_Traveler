@@ -14,6 +14,7 @@ import Signup from './Modals/Signup'
 import ResetPassword from './Modals/ResetPassword'
 import Contributor from './Modals/Contributor'
 import AddToItinerary from './Modals/AddToItinerary'
+import Inbox from './Modals/Inbox'
 import RightModal from './RightModal'
 import NotificationsThread from './Modals/NotificationsThread'
 import {usersExample} from '../Containers/Feed_TEST_DATA'
@@ -163,6 +164,10 @@ export default class Header extends React.Component {
     this.setState({ modal: 'notificationsThread' })
   }
 
+  openInboxModal = () => {
+    this.setState({ modal: 'inbox' })
+  }
+
   closeModal = () => {
     this.setState({ modal: undefined })
   }
@@ -239,6 +244,7 @@ export default class Header extends React.Component {
                 type='headerButton'
                 height='32px'
                 width='32px'
+                onClick={this.openInboxModal}
               >
                 <MailIcon
                   name='loginEmail'
@@ -332,6 +338,13 @@ export default class Header extends React.Component {
           onRequestClose={this.closeModal}
         >
           <NotificationsThread closeModal={this.closeModal} profile={user}/>
+        </RightModal>
+        <RightModal
+          isOpen={this.state.modal === 'inbox'}
+          contentLabel='Inbox'
+          onRequestClose={this.closeModal}
+        >
+          <Inbox closeModal={this.closeModal} profile={user}/>
         </RightModal>
       </SelectedGrid>
     )

@@ -23,9 +23,7 @@ import SendTo from './Modals/SendTo'
 import AddToBoard from './Modals/AddToBoard'
 import CreateBoard from './Modals/CreateBoard'
 import Settings from './Modals/Settings'
-import Inbox from './Modals/Inbox'
 import InboxThread from './Modals/InboxThread'
-import NotificationsThread from './Modals/NotificationsThread'
 import FAQTermsAndConditions from './Modals/FAQTermsAndConditions'
 import ProfileBio from './Modals/ProfileBio'
 
@@ -265,20 +263,6 @@ export default class ProfileHeader extends React.Component {
           onRequestClose={this.closeModal}
         >
           <Settings closeModal={this.closeModal} profile={user}/>
-        </RightModal>
-        <RightModal
-          isOpen={this.state.modal === 'notificationsThread'}
-          contentLabel='Notifications Thread'
-          onRequestClose={this.closeModal}
-        >
-          <NotificationsThread closeModal={this.closeModal} profile={user}/>
-        </RightModal>
-        <RightModal
-          isOpen={this.state.modal === 'inbox'}
-          contentLabel='Inbox'
-          onRequestClose={this.closeModal}
-        >
-          <Inbox closeModal={this.closeModal} profile={user}/>
         </RightModal>
         <RightModal
           isOpen={this.state.modal === 'inboxThread'}

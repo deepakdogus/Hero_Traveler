@@ -15,7 +15,7 @@ export default (rootReducer, rootSaga) => {
 
   /* ------------- Saga Middleware ------------- */
 
-  const sagaMonitor = __DEV__ ? console.tron.createSagaMonitor() : null
+  const sagaMonitor = process.env.NODE_ENV === 'development' ? console.tron.createSagaMonitor() : null
   const sagaMiddleware = createSagaMiddleware({ sagaMonitor })
   middleware.push(sagaMiddleware)
 
@@ -34,7 +34,7 @@ export default (rootReducer, rootSaga) => {
     enhancers.push(autoRehydrate())
   }
 
-  // if Reactotron is enabled (default for __DEV__), we'll create the store through Reactotron
+  // if Reactotron is enabled (default for process.env.NODE_ENV === 'development'), we'll create the store through Reactotron
   const createAppropriateStore = Config.useReactotron ? console.tron.createStore : createStore
   const store = createAppropriateStore(rootReducer, compose(...enhancers))
 

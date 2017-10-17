@@ -19,7 +19,7 @@ import {
   AvatarWrapper,
   ButtonWrapper,
   BottomLeft,
-  ContributorText,
+  BottomLeftText,
   Container
 } from './ProfileHeaderShared'
 
@@ -70,7 +70,7 @@ export default class ProfileHeaderEdit extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      bioText: 'Here is some random text',
+      bioText: undefined,
       modal: undefined,
       photoType: undefined,
       loadedImage: undefined
@@ -179,7 +179,7 @@ export default class ProfileHeaderEdit extends React.Component {
           <BottomLeft>
             <Row onClick={this.openCoverOptions}>
               <CameraIcon name='camera' type='cover'/>
-              <ContributorText>EDIT COVER IMAGE</ContributorText>
+              <BottomLeftText>EDIT COVER IMAGE</BottomLeftText>
             </Row>
           </BottomLeft>
         </Centered>

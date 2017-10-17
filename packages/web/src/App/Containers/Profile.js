@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import {feedExample, usersExample} from './Feed_TEST_DATA'
-import ProfileHeader from '../Components/ProfileHeader/index'
+import ProfileHeader from '../Components/ProfileHeader/ProfileHeader'
 import TabBar from '../Components/TabBar'
 import StoryList from '../Components/StoryList'
 import Footer from '../Components/Footer'

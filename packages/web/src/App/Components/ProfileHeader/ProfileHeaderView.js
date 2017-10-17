@@ -5,23 +5,23 @@ import styled from 'styled-components'
 import {Row} from '../FlexboxGrid'
 import RoundedButton from '../RoundedButton'
 import Icon from '../Icon'
+import HorizontalDivider from '../HorizontalDivider'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import {
   Username,
   ItalicText,
   Centered,
-  StyledHorizontalDivider,
   StyledAvatar,
   AvatarWrapper,
   ButtonWrapper,
   BottomLeft,
-  ContributorText,
+  BottomLeftText,
   Container
 } from './ProfileHeaderShared'
 import NavLinkStyled from '../NavLinkStyled'
 
 
-export const Count = styled.p`
+const Count = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat}};
   margin: 0;
   font-weight: 400;
@@ -30,7 +30,7 @@ export const Count = styled.p`
   letter-spacing: 1.5px;
 `
 
-export const CountLabel = styled.p`
+const CountLabel = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat}};
   margin: 0;
   font-weight: 400;
@@ -39,17 +39,23 @@ export const CountLabel = styled.p`
   letter-spacing: 1.5px;
 `
 
-export const Divider = styled.div`
+const Divider = styled.div`
   width: 1px;
   background-color: ${props => props.theme.Colors.snow};
   margin: 0 20px;
 `
 
-export const CountWrapper = styled(Row)`
+const CountWrapper = styled(Row)`
   margin-top: 25px !important;
 `
 
-export const CountItemWrapper = styled.div``
+const CountItemWrapper = styled.div``
+
+
+const StyledHorizontalDivider = styled(HorizontalDivider)`
+  width: 72px;
+  border-width: 1px 0 0 0;
+`
 
 export default class ProfileHeaderView extends React.Component {
   static propTypes = {
@@ -121,7 +127,7 @@ export default class ProfileHeaderView extends React.Component {
           {isContributor &&
             <Row>
               <Icon name='profileBadge'/>
-              <ContributorText>CONTRIBUTOR</ContributorText>
+              <BottomLeftText>CONTRIBUTOR</BottomLeftText>
             </Row>
           }
         </BottomLeft>

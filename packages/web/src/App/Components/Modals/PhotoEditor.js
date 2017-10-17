@@ -47,7 +47,6 @@ export default class PhotoEditor extends React.Component {
     loadedImage: PropTypes.string,
   }
 
-
   handleImageLoaded = () => {
     this.setState({srcLoaded: true})
   }

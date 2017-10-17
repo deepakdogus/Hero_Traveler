@@ -2,7 +2,6 @@ import styled from 'styled-components'
 
 import Avatar from '../Avatar'
 import VerticalCenter from '../VerticalCenter'
-import HorizontalDivider from '../HorizontalDivider'
 
 export const Username = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat}};
@@ -33,11 +32,6 @@ export const Centered = styled(VerticalCenter)`
   z-index: 2;
 `
 
-export const StyledHorizontalDivider = styled(HorizontalDivider)`
-  width: 72px;
-  border-width: 1px 0 0 0;
-`
-
 export const StyledAvatar = styled(Avatar)`
   margin: 0 auto;
 `
@@ -58,7 +52,7 @@ export const BottomLeft = styled.div`
   z-index: 1;
 `
 
-export const ContributorText = styled.p`
+export const BottomLeftText = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat}};
   font-weight: 400;
   font-size: 12px;

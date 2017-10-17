@@ -57,7 +57,6 @@ const images = {
   iconPencilOutline: require('../Images/ht-icons/icon_profile-edit-story@2x.png'),
   iconGear: require('../Images/ht-icons/icon_profile-gear@2x.png'),
   iconTrash: require('../Images/ht-icons/icon_profile-trash-story@2x.png'),
-  iconTrashBlack: require('../Images/ht-icons/icon_tip-trash@2x.png'),
   iconLocation: require('../Images/ht-icons/icon_details-location@2x.png'),
   iconLike: require('../Images/ht-icons/icon_action-like@2x.png'),
   iconLikeWhite: require('../Images/ht-icons/icon_feed-small-heart@2x.png'),

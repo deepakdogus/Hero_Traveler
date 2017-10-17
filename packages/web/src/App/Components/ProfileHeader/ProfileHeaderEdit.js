@@ -70,29 +70,33 @@ export default class ProfileHeaderEdit extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      modal: 'photoEditor',
       bioText: 'Here is some random text',
-      targetedPhoto: 'avatar',
+      modal: undefined,
+      photoType: undefined,
+      loadedImage: undefined
     }
   }
 
   closeModal = () => {
-    this.setState({ modal: undefined })
+    this.setState({
+      modal: undefined,
+      loadedImage: undefined,
+    })
+  }
+
+  setOptionsState = (type) => {
+    this.setState({
+      modal: 'editPhotoOptions',
+      photoType: type
+    })
   }
 
   openCoverOptions = () => {
-    this.setState({
-      modal: 'editPhotoOptions',
-      targetedPhoto: 'cover'
-
-    })
+    this.setOptionsState('cover')
   }
 
   openAvatarOptions = () => {
-    this.setState({
-      modal: 'editPhotoOptions',
-      targetedPhoto: 'avatar'
-    })
+    this.setOptionsState('avatar')
   }
 
   onChangeText = (event) => {
@@ -103,9 +107,40 @@ export default class ProfileHeaderEdit extends React.Component {
     this.setState({ modal: 'photoEditor'})
   }
 
+  // add backend logic later
+  saveCroppedImage = (croppedImage) => {
+    const stateUpdates = { modal: undefined }
+    stateUpdates[this.state.photoType] = croppedImage
+    this.setState(stateUpdates)
+  }
+
+  uploadImage = (e) => {
+    e.preventDefault()
+    let files
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.setState({
+        loadedImage: reader.result,
+        modal: 'photoEditor',
+      });
+    }
+    reader.readAsDataURL(files[0]);
+  }
+
   render () {
     const {user} = this.props
-    const {modal, targetedPhoto, bioText} = this.state
+    const {bioText, loadedImage, modal, photoType} = this.state
+    const avatarUrl = getImageUrl(user.profile.avatar, 'avatar')
+
+    let targetedImage
+    if (photoType === 'avatar') targetedImage = avatarUrl
+    else if (photoType === 'cover') targetedImage = getImageUrl(user.profile.cover)
+
     return (
       <Container>
         <Centered>
@@ -119,7 +154,7 @@ export default class ProfileHeaderEdit extends React.Component {
               />
             </EditAvatarWrapper>
             <StyledAvatar
-              avatarUrl={getImageUrl(user.profile.avatar)}
+              avatarUrl={avatarUrl}
               type='profile'
               size='x-large'
             />
@@ -156,7 +191,9 @@ export default class ProfileHeaderEdit extends React.Component {
           style={customModalStyles}
         >
           <EditPhotoOptions
-            onClickCrop={this.openCrop}
+            onCrop={this.openCrop}
+            onUpload={this.uploadImage}
+            hasImage={!!targetedImage}
           />
         </Modal>
         <Modal
@@ -165,8 +202,10 @@ export default class ProfileHeaderEdit extends React.Component {
           style={customModalStyles}
         >
           <PhotoEditor
-            isAvatar={targetedPhoto === 'avatar'}
+            isAvatar={photoType === 'avatar'}
             closeModal={this.closeModal}
+            saveCroppedImage={this.saveCroppedImage}
+            src={loadedImage || targetedImage}
           />
         </Modal>
       </Container>

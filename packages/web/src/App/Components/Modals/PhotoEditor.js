@@ -1,11 +1,27 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import {Cropper} from 'react-image-cropper'
 
 import {Row} from '../FlexboxGrid'
 import RoundedButton from '../RoundedButton'
-import Cropper from '../Cropper'
 import {Title} from './Shared'
+
+const avataStyles = {
+  clone: {
+    borderRadius: '100%',
+    border: '1px dashed #88f',
+  },
+  dotInnerNE: { display: 'none' },
+  dotInnerNW: { display: 'none' },
+  dotInnerSE: { display: 'none' },
+  dotInnerSW: { display: 'none' },
+  dotNE: { display: 'none' },
+  dotNW: { display: 'none' },
+  dotSE: { display: 'none' },
+  dotSW: { display: 'none' },
+  move: { outline: 'none' },
+}
 
 const Container = styled.div``
 
@@ -23,20 +39,36 @@ const ButtonRow = styled(Row)`
 
 export default class PhotoEditor extends React.Component {
   static PropTypes = {
+    isAvatar: PropTypes.bool,
     profile: PropTypes.object,
     users: PropTypes.object,
     closeModal: PropTypes.func,
+    saveCroppedImage: PropTypes.func,
+    loadedImage: PropTypes.string,
+  }
+
+
+  handleImageLoaded = () => {
+    this.setState({srcLoaded: true})
+  }
+
+  onSave = () => {
+    if (!this.refs.cropper) return
+    const cropperNode = this.refs.cropper
+    const croppedImg = cropperNode.crop()
+    this.props.saveCroppedImage(croppedImg)
   }
 
   render() {
-    const src='https://res.cloudinary.com/rehash-studio/image/upload/files/obsh1fnba0lfmqwfigdh.jpg'
-    const {isAvatar, closeModal} = this.props
+    const {isAvatar, closeModal, src} = this.props
     return (
       <Container>
-        <StyledTitle>Edit Cover Image</StyledTitle>
+        <StyledTitle>Edit {isAvatar ? 'Profile' : 'Cover'} Image</StyledTitle>
         <Cropper
           src={src}
-          isAvatar={isAvatar}
+          ref='cropper'
+          onImgLoad={this.handleImageLoaded}
+          styles={isAvatar ? avataStyles : {}}
         />
         <ButtonRow center='xs'>
           <RoundedButton
@@ -48,7 +80,9 @@ export default class PhotoEditor extends React.Component {
           <RoundedButton
             width={'107px'}
             margin='small'
-            text='SAVE'/>
+            text='SAVE'
+            onClick={this.onSave}
+          />
         </ButtonRow>
       </Container>
     )

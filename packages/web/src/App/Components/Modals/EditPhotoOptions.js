@@ -25,42 +25,47 @@ const ModalRow = styled(Row)`
 const ShareIcon = styled(Icon)`
   width: 21px;
   height: 27px;
-  margin: 0 2px;
+  margin: 0 2px 3px;
 `
 
-const TrashIcon = styled(Icon)`
-  width: 17px;
-  margin: 0 4px;
-  height: 23px;
+const HiddenInput = styled.input`
+  opacity: 0;
+  width: 0;
+  height: 0;
 `
 
 export default class EditPhotoOptions extends React.Component {
   static propTypes = {
-    onClickCrop: PropTypes.func,
+    onCrop: PropTypes.func,
+    onUpload: PropTypes.func,
+    hasImage: PropTypes.bool,
   }
 
   render() {
-    const {onClickCrop} = this.props
+    const {onCrop, onUpload, hasImage} = this.props
     return (
       <Container>
-        <ModalRow>
-          <ShareIcon name='share' />
-          <VerticalCenter>
-            <EditModalText>Upload Photo</EditModalText>
-          </VerticalCenter>
-        </ModalRow>
-        <ModalRow onClick={onClickCrop}>
-          <Icon name='createStory' />
-          <VerticalCenter>
-            <EditModalText>Reposition</EditModalText>
-          </VerticalCenter>
-        </ModalRow>
-        <ModalRow>
-          <TrashIcon name='trashBlack' />
-          <VerticalCenter>
-            <EditModalText>Remove</EditModalText>
-          </VerticalCenter>
-        </ModalRow>
+        <label htmlFor='image_upload'>
+          <ModalRow>
+            <ShareIcon name='share'/>
+            <VerticalCenter>
+              <EditModalText>Upload Photo</EditModalText>
+            </VerticalCenter>
+            <HiddenInput
+              type='file'
+              id='image_upload'
+              onChange={onUpload}
+            />
+          </ModalRow>
+        </label>
+        { hasImage &&
+          <ModalRow onClick={onCrop}>
+            <Icon name='createStory' />
+            <VerticalCenter>
+              <EditModalText>Reposition</EditModalText>
+            </VerticalCenter>
+          </ModalRow>
+        }
       </Container>
     )
   }

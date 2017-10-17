@@ -14,6 +14,10 @@ import Signup from './Modals/Signup'
 import ResetPassword from './Modals/ResetPassword'
 import Contributor from './Modals/Contributor'
 import AddToItinerary from './Modals/AddToItinerary'
+import Inbox from './Modals/Inbox'
+import RightModal from './RightModal'
+import NotificationsThread from './Modals/NotificationsThread'
+import {usersExample} from '../Containers/Feed_TEST_DATA'
 
 const customModalStyles = {
   content: {
@@ -156,6 +160,15 @@ export default class Header extends React.Component {
     this.setState({ modal: 'signup' })
   }
 
+  // name correspond to icon name and button name
+  openModal = (event) => {
+    const name = event.target.name
+    let modalToOpen;
+    if (name === 'inbox' || name === 'loginEmail') modalToOpen = 'inbox'
+    else if (name === 'notifications' || name === 'cameraFlash') modalToOpen = 'notificationsThread'
+    this.setState({ modal: modalToOpen })
+  }
+
   closeModal = () => {
     this.setState({ modal: undefined })
   }
@@ -164,6 +177,7 @@ export default class Header extends React.Component {
     const {isLoggedIn} = this.props
     // quick fix to get this merge in - need to refactor accordingly (part of header refactor)
     const SelectedGrid = this.props.blackHeader ? StyledGridBlack : StyledGrid
+    const user = usersExample['59d50b1c33aaac0010ef4b3f']
     return (
       <SelectedGrid fluid>
         <StyledRow center="xs" middle="xs">
@@ -222,11 +236,17 @@ export default class Header extends React.Component {
                 </StyledRoundedButton>
               </NavLink>
               <Divider>&nbsp;</Divider>
-              <StyledRoundedButton text='Create'/>
+              <NavLink
+                to='/createStory'
+              >
+                <StyledRoundedButton text='Create'/>
+              </NavLink>
               <StyledRoundedButton
                 type='headerButton'
                 height='32px'
                 width='32px'
+                name='inbox'
+                onClick={this.openModal}
               >
                 <MailIcon
                   name='loginEmail'
@@ -236,16 +256,22 @@ export default class Header extends React.Component {
                 type='headerButton'
                 height='32px'
                 width='32px'
+                name='notifications'
+                onClick={this.openModal}
               >
                 <NotificationsIcon name='cameraFlash' />
               </StyledRoundedButton>
-              <StyledRoundedAvatarButton
-                type='headerButton'
-                height='32px'
-                width='32px'
+              <NavLink
+                to='/profile/59d50b1c33aaac0010ef4b3f/view'
               >
-                <Avatar size='mediumSmall'/>
-              </StyledRoundedAvatarButton>
+                <StyledRoundedAvatarButton
+                  type='headerButton'
+                  height='32px'
+                  width='32px'
+                >
+                  <Avatar size='mediumSmall'/>
+                </StyledRoundedAvatarButton>
+              </NavLink>
             </Row>
           </Col>
           }
@@ -309,6 +335,20 @@ export default class Header extends React.Component {
         >
           <AddToItinerary/>
         </Modal>
+        <RightModal
+          isOpen={this.state.modal === 'notificationsThread'}
+          contentLabel='Notifications Thread'
+          onRequestClose={this.closeModal}
+        >
+          <NotificationsThread closeModal={this.closeModal} profile={user}/>
+        </RightModal>
+        <RightModal
+          isOpen={this.state.modal === 'inbox'}
+          contentLabel='Inbox'
+          onRequestClose={this.closeModal}
+        >
+          <Inbox closeModal={this.closeModal} profile={user}/>
+        </RightModal>
       </SelectedGrid>
     )
   }

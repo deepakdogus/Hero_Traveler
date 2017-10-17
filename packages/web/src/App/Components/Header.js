@@ -160,12 +160,13 @@ export default class Header extends React.Component {
     this.setState({ modal: 'signup' })
   }
 
-  openNotificationsModal = () => {
-    this.setState({ modal: 'notificationsThread' })
-  }
-
-  openInboxModal = () => {
-    this.setState({ modal: 'inbox' })
+  // name correspond to icon name and button name
+  openModal = (event) => {
+    const name = event.target.name
+    let modalToOpen;
+    if (name === 'inbox' || name === 'loginEmail') modalToOpen = 'inbox'
+    else if (name === 'notifications' || name === 'cameraFlash') modalToOpen = 'notificationsThread'
+    this.setState({ modal: modalToOpen })
   }
 
   closeModal = () => {
@@ -244,7 +245,8 @@ export default class Header extends React.Component {
                 type='headerButton'
                 height='32px'
                 width='32px'
-                onClick={this.openInboxModal}
+                name='inbox'
+                onClick={this.openModal}
               >
                 <MailIcon
                   name='loginEmail'
@@ -254,7 +256,8 @@ export default class Header extends React.Component {
                 type='headerButton'
                 height='32px'
                 width='32px'
-                onClick={this.openNotificationsModal}
+                name='notifications'
+                onClick={this.openModal}
               >
                 <NotificationsIcon name='cameraFlash' />
               </StyledRoundedButton>

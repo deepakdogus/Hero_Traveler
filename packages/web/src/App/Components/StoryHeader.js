@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import moment from 'moment'
+import {NavLink} from 'react-router-dom'
 
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import getVideoUrl from '../Shared/Lib/getVideoUrl'
@@ -130,6 +131,9 @@ export default class StoryHeader extends React.Component {
           <StyledHorizontalDivider />
           <Subtitle>{story.description}</Subtitle>
           {isPreview &&
+           <NavLink
+               to={`/story/${story.id}`}
+           >
             <StyledRoundedButton
               type='storyHeader'
               padding='even'
@@ -137,6 +141,7 @@ export default class StoryHeader extends React.Component {
               width='168px'
               height='50px'
             />
+           </NavLink>
           }
           {!isPreview && mediaType === 'video' &&
             <Video src={getVideoUrl(story.coverVideo, false)} type='cover'/>

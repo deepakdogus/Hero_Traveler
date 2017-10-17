@@ -9,6 +9,7 @@ import getImageUrl from '../../Shared/Lib/getImageUrl'
 import VerticalCenter from '../VerticalCenter'
 import Modal from 'react-modal'
 import EditPhotoOptions from '../Modals/EditPhotoOptions'
+import PhotoEditor from '../Modals/PhotoEditor'
 
 import {
   Username,
@@ -69,8 +70,9 @@ export default class ProfileHeaderEdit extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      modal: 'editPhoto',
+      modal: 'photoEditor',
       bioText: 'Here is some random text',
+      targetedPhoto: 'avatar',
     }
   }
 
@@ -78,16 +80,32 @@ export default class ProfileHeaderEdit extends React.Component {
     this.setState({ modal: undefined })
   }
 
-  openModal = () => {
-    this.setState({ modal: 'editPhoto'})
+  openCoverOptions = () => {
+    this.setState({
+      modal: 'editPhotoOptions',
+      targetedPhoto: 'cover'
+
+    })
+  }
+
+  openAvatarOptions = () => {
+    this.setState({
+      modal: 'editPhotoOptions',
+      targetedPhoto: 'avatar'
+    })
   }
 
   onChangeText = (event) => {
-    this.setState({bioText: event.target.value})
+    this.setState({ bioText: event.target.value })
+  }
+
+  openCrop = () => {
+    this.setState({ modal: 'photoEditor'})
   }
 
   render () {
     const {user} = this.props
+    const {modal, targetedPhoto, bioText} = this.state
     return (
       <Container>
         <Centered>
@@ -95,8 +113,9 @@ export default class ProfileHeaderEdit extends React.Component {
           <AvatarWrapper>
             <EditAvatarWrapper>
               <CameraIcon
+                type='avatar'
                 name='camera'
-                onClick={this.openModal}
+                onClick={this.openAvatarOptions}
               />
             </EditAvatarWrapper>
             <StyledAvatar
@@ -108,7 +127,7 @@ export default class ProfileHeaderEdit extends React.Component {
           <ItalicText>Edit Bio</ItalicText>
           <BioInput
             type='text'
-            value={this.state.bioText}
+            value={bioText}
             placeholder='Enter your bio'
             onChange={this.onChangeText}
           />
@@ -123,18 +142,32 @@ export default class ProfileHeaderEdit extends React.Component {
               text='SAVE CHANGES'/>
           </ButtonWrapper>
           <BottomLeft>
-            <Row>
-              <CameraIcon name='camera'/>
+            <Row onClick={this.openCoverOptions}>
+              <CameraIcon name='camera' type='cover'/>
               <ContributorText>EDIT COVER IMAGE</ContributorText>
             </Row>
           </BottomLeft>
         </Centered>
+
         <Modal
-          isOpen={this.state.modal === 'editPhoto'}
+          contentLabel='Edit Photo Options'
+          isOpen={modal === 'editPhotoOptions'}
           onRequestClose={this.closeModal}
           style={customModalStyles}
         >
-          <EditPhotoOptions/>
+          <EditPhotoOptions
+            onClickCrop={this.openCrop}
+          />
+        </Modal>
+        <Modal
+          contentLabel='Photo Editor'
+          isOpen={modal === 'photoEditor'}
+          style={customModalStyles}
+        >
+          <PhotoEditor
+            isAvatar={targetedPhoto === 'avatar'}
+            closeModal={this.closeModal}
+          />
         </Modal>
       </Container>
     )

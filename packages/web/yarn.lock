@@ -1855,7 +1855,7 @@ deep-equal@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/deep-equal/-/deep-equal-1.0.1.tgz#f5d260292b660e084eff4cdbc9f08ad3247448b5"
 
-deep-extend@~0.4.0:
+deep-extend@^0.4.1, deep-extend@~0.4.0:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.4.2.tgz#48b699c27e334bf89f10892be432f6e4c7d34a7f"
 
@@ -5264,6 +5264,13 @@ react-google-maps@next:
     react-prop-types-element-of-type "^2.2.0"
     scriptjs "^2.5.8"
     warning "^3.0.0"
+
+react-image-cropper@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-image-cropper/-/react-image-cropper-1.1.1.tgz#83599a8cd3b47499695257b2adf9b209afe25cee"
+  dependencies:
+    deep-extend "^0.4.1"
+    prop-types "^15.5.10"
 
 react-ios-switch@^0.1.12:
   version "0.1.12"

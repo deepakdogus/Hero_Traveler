@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
 import Icon from '../Icon'
 import {Row} from '../FlexboxGrid'
@@ -33,12 +34,13 @@ const TrashIcon = styled(Icon)`
   height: 23px;
 `
 
-export default class FAQTermsAndConditions extends React.Component {
+export default class EditPhotoOptions extends React.Component {
   static propTypes = {
-
+    onClickCrop: PropTypes.func,
   }
 
   render() {
+    const {onClickCrop} = this.props
     return (
       <Container>
         <ModalRow>
@@ -47,7 +49,7 @@ export default class FAQTermsAndConditions extends React.Component {
             <EditModalText>Upload Photo</EditModalText>
           </VerticalCenter>
         </ModalRow>
-        <ModalRow>
+        <ModalRow onClick={onClickCrop}>
           <Icon name='createStory' />
           <VerticalCenter>
             <EditModalText>Reposition</EditModalText>

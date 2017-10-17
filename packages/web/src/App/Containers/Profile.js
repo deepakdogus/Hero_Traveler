@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import {feedExample, usersExample} from './Feed_TEST_DATA'
-import ProfileHeader from '../Components/ProfileHeader'
+import ProfileHeader from '../Components/ProfileHeader/ProfileHeader'
 import TabBar from '../Components/TabBar'
 import StoryList from '../Components/StoryList'
 import Footer from '../Components/Footer'
@@ -30,6 +30,8 @@ class Profile extends Component {
 
   render() {
     const {match} = this.props
+    let path = match.path.split("/")
+    const isEdit = path[path.length-1] === 'edit'
     const user = usersExample[match.params.userId] || usersExample['596cd072fc3f8110a6f18342']
     const usersStories = Object.keys(feedExample).reduce((matchingStories, key) => {
       const story = feedExample[key]
@@ -39,7 +41,7 @@ class Profile extends Component {
     const isContributor = Object.keys(usersStories).length > 0
     return (
       <ContentWrapper>
-        <ProfileHeader user={user} isContributor={isContributor}/>
+        <ProfileHeader user={user} isContributor={isContributor} isEdit={isEdit}/>
         <TabBar
           tabs={tabBarTabs}
           activeTab={this.state.activeTab}

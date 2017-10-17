@@ -149,7 +149,7 @@ export default class StoryHeader extends React.Component {
         </Centered>
         <BottomContainer>
           <Row center='xs'>
-            <ProfileLink to={`/profile/${author.id}`}>
+            <ProfileLink to={`/profile/${author.id}/view`}>
               <Avatar
                 avatarUrl={getImageUrl(author.profile.avatar)}
                 size='medium'

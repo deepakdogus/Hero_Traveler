@@ -29,7 +29,8 @@ class AppRoot extends Component {
               <Route path='/signup/topics' component={SignupTopics} />
               <Route path='/story/:storyId' component={Story} />
               <Route path='/createStory' component={CreateStory} />
-              <Route path='/profile/:userId' component={Profile} />
+              <Route path='/profile/:userId/view' component={Profile} />
+              <Route path='/profile/:userId/edit' component={Profile}/>
               <Route path='/search' component={Search} />
             </div>
           </ThemeProvider>

@@ -262,7 +262,7 @@ export default class Header extends React.Component {
                 <NotificationsIcon name='cameraFlash' />
               </StyledRoundedButton>
               <NavLink
-                to='/profile/59d50b1c33aaac0010ef4b3f'
+                to='/profile/59d50b1c33aaac0010ef4b3f/view'
               >
                 <StyledRoundedAvatarButton
                   type='headerButton'

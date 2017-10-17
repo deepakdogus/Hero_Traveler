@@ -14,7 +14,7 @@ const ButtonContainer = styled.div`
 `
 
 const Centered = styled(VerticalCenter)`
-  text-align:center;
+  text-align: center;
   padding: 40px 0px;
 `
 

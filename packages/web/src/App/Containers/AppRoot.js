@@ -10,6 +10,7 @@ import {history} from '../Redux/Routes'
 
 import themes from '../Shared/Themes'
 
+import AuthRoute from './AuthRoute'
 import Category from './Category'
 import Explore from './Explore'
 import Feed from './Feed'
@@ -32,13 +33,13 @@ class AppRoot extends Component {
               <div>
                 <Route exact path='/' component={Explore} />
                 <Route exact path='/category/:categoryId' component={Category} />
-                <Route exact path='/feed' component={Feed} />
-                <Route path='/signup/social' component={SignupSocial} />
-                <Route path='/signup/topics' component={SignupTopics} />
+                <AuthRoute exact path='/feed' component={Feed} />
+                <AuthRoute path='/signup/social' component={SignupSocial} />
+                <AuthRoute path='/signup/topics' component={SignupTopics} />
                 <Route path='/story/:storyId' component={Story} />
-                <Route path='/createStory' component={CreateStory} />
+                <AuthRoute path='/createStory' component={CreateStory} />
                 <Route path='/profile/:userId/view' component={Profile} />
-                <Route path='/profile/:userId/edit' component={Profile}/>
+                <AuthRoute path='/profile/:userId/edit' component={Profile}/>
                 <Route path='/search' component={Search} />
               </div>
             </ThemeProvider>

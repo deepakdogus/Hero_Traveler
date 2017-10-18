@@ -1,6 +1,6 @@
 import RNFetchBlob from 'react-native-fetch-blob'
 
-import env from '../../Config/Env'
+import env from '../Config/Env'
 
 function getCloudinaryUploadUrl(resourceType){
   return `https://api.cloudinary.com/v1_1/${env.cloudName}/${resourceType}/upload`
@@ -15,7 +15,6 @@ export function uploadMediaFile(fileData, type){
   const uploadURL = getCloudinaryUploadUrl(type)
   const preset = type === 'image' ? env.imagePreset : env.videoPreset
   if (fileData.uri.startsWith('file://')) fileData.uri = fileData.uri.substr(7)
-
   return RNFetchBlob.fetch(
     'POST',
     uploadURL,

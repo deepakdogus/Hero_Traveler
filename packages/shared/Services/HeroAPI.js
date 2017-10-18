@@ -1,24 +1,16 @@
 // a library to wrap and simplify api calls
 import apisauce from 'apisauce'
-import _, {get, isArray} from 'lodash'
+import {isArray} from 'lodash'
 import {normalize, schema} from 'normalizr'
 import {getToken as getPushToken} from '../../Config/PushConfig'
 import env from '../../Config/Env'
-import {uploadMediaFile} from './CloudinaryAPI'
+import {uploadMediaFile} from '../../Services/CloudinaryAPI'
 
 const User = new schema.Entity('users')
 const Category = new schema.Entity('categories')
 const Story = new schema.Entity('stories', {
   author: User,
   category: Category
-})
-const Followers = new schema.Entity('follows', {
-  follower: User,
-  followee: User
-})
-const Bookmarks = new schema.Entity('bookmarks', {
-  user: User,
-  story: Story
 })
 const Activity = new schema.Entity('activities', {
   fromUser: User,
@@ -49,9 +41,9 @@ const create = () => {
   })
 
   // Wrap api's addMonitor to allow the calling code to attach
-  // additional monitors in the future.  But only in __DEV__ and only
+  // additional monitors in the future.  But only in process.env.NODE_ENV === 'development' and only
   // if we've attached Reactotron to console (it isn't during unit tests).
-  if (__DEV__ && console.tron) {
+  if (process.env.NODE_ENV === 'development' && console.tron) {
     api.addMonitor(console.tron.apisauce)
   }
 

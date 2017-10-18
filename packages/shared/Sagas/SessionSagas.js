@@ -57,7 +57,7 @@ export function * resumeSession (api) {
     api.getMe,
     userId
   )
-  
+
   if (response.ok) {
     const {users} = response.data.entities
     const user = users[userId]
@@ -70,7 +70,8 @@ export function * resumeSession (api) {
     ]
     yield put(SessionActions.initializeSession(user.id, tokens))
   } else {
-    yield put(SessionActions.resumeSessionFailure(new Error('You have been logged out.'))),
+    const errorMessage = new Error('You have been logged out.')
+    yield put(SessionActions.resumeSessionFailure(errorMessage))
     yield put(SessionActions.resetRootStore())
     yield put(ScreenActions.openScreen('launchScreen'))
     yield put(StartupActions.hideSplash())

@@ -2,9 +2,10 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import { autoRehydrate } from 'redux-persist'
 import Config from '../../Config/DebugConfig'
 import createSagaMiddleware from 'redux-saga'
-import RehydrationServices from '../Services/RehydrationServices'
+import RehydrationServices from '../../Services/RehydrationServices'
 import CreateLogger from 'redux-logger'
 import ReduxPersist from '../../Config/ReduxPersist'
+import {middleware as routerMiddleware} from '../../Redux/Routes'
 
 // creates the store
 export default (rootReducer, rootSaga) => {
@@ -15,13 +16,16 @@ export default (rootReducer, rootSaga) => {
 
   /* ------------- Saga Middleware ------------- */
 
-  const sagaMonitor = __DEV__ ? console.tron.createSagaMonitor() : null
+  const sagaMonitor = process.env.NODE_ENV === 'development' ? console.tron.createSagaMonitor() : null
   const sagaMiddleware = createSagaMiddleware({ sagaMonitor })
   middleware.push(sagaMiddleware)
 
   if (Config.reduxLogging) {
     middleware.push(CreateLogger({collapsed: true}))
   }
+
+  /* ------------- Navigation Middleware ------------- */
+  if (routerMiddleware) middleware.push(routerMiddleware)
 
   /* ------------- Assemble Middleware ------------- */
 
@@ -34,7 +38,7 @@ export default (rootReducer, rootSaga) => {
     enhancers.push(autoRehydrate())
   }
 
-  // if Reactotron is enabled (default for __DEV__), we'll create the store through Reactotron
+  // if Reactotron is enabled (default for process.env.NODE_ENV === 'development'), we'll create the store through Reactotron
   const createAppropriateStore = Config.useReactotron ? console.tron.createStore : createStore
   const store = createAppropriateStore(rootReducer, compose(...enhancers))
 

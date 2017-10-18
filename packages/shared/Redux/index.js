@@ -4,7 +4,8 @@ import rootSaga from '../Sagas/'
 import { reducer as formReducer } from 'redux-form'
 import entities from './Entities'
 import {SessionTypes} from './SessionRedux'
-import routes from './Routes'
+// related to nav which is device specific so not located in shared folder
+import routes from '../../Redux/Routes'
 
 export default () => {
   /* ------------- Assemble The Reducers ------------- */

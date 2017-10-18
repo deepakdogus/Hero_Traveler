@@ -5,6 +5,7 @@ import createSagaMiddleware from 'redux-saga'
 import RehydrationServices from '../../Services/RehydrationServices'
 import CreateLogger from 'redux-logger'
 import ReduxPersist from '../../Config/ReduxPersist'
+import {middleware as routerMiddleware} from '../../Redux/Routes'
 
 // creates the store
 export default (rootReducer, rootSaga) => {
@@ -22,6 +23,9 @@ export default (rootReducer, rootSaga) => {
   if (Config.reduxLogging) {
     middleware.push(CreateLogger({collapsed: true}))
   }
+
+  /* ------------- Navigation Middleware ------------- */
+  if (routerMiddleware) middleware.push(routerMiddleware)
 
   /* ------------- Assemble Middleware ------------- */
 

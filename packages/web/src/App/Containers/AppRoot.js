@@ -1,10 +1,12 @@
 import React, {Component} from 'react'
 import {ThemeProvider} from 'styled-components'
 import { Provider } from 'react-redux'
-import {Route, BrowserRouter as Router} from 'react-router-dom'
+import {Route} from 'react-router-dom'
+import {ConnectedRouter} from 'react-router-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 import createStore from '../Shared/Redux'
+import {history} from '../Redux/Routes'
 
 import themes from '../Shared/Themes'
 
@@ -24,7 +26,7 @@ class AppRoot extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Router>
+        <ConnectedRouter history={history}>
           <MuiThemeProvider>
             <ThemeProvider theme={themes}>
               <div>
@@ -41,7 +43,7 @@ class AppRoot extends Component {
               </div>
             </ThemeProvider>
           </MuiThemeProvider>
-        </Router>
+        </ConnectedRouter>
       </Provider>
     )
   }

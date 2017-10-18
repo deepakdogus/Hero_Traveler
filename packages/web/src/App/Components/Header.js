@@ -181,11 +181,11 @@ export default class Header extends React.Component {
     return (
       <SelectedGrid fluid>
         <StyledRow center="xs" middle="xs">
-          <Col xs={12} md={2} lg={2} >
+          <Col xs={12} md={2}>
             <Logo src={logo} alt={'Hero Traveler Logo'}/>
           </Col>
           {isLoggedIn &&
-          <Col xsOffset={1} lg={2}>
+          <Col lgOffset={1} lg={2}>
             <Row middle="xs">
               <MenuLink to='/feed' exact>
                 My Feed
@@ -200,27 +200,10 @@ export default class Header extends React.Component {
           }
           {!isLoggedIn &&
           <Col lg={5}>
-            <Row middle="xs">
-              <MenuLink to='/' exact>
-                `Explore`
-              </MenuLink>
-              <Divider>&nbsp;</Divider>
-              <MenuLink to='/signup/topics'>
-                Signup (topics)
-              </MenuLink>
-              <Divider>&nbsp;</Divider>
-              <MenuLink to='/signup/social'>
-                Signup (social)
-              </MenuLink>
-              <Divider>&nbsp;</Divider>
-              <MenuLink to='/story/596775b90d4bb70010e2a5f8'>
-                Story
-              </MenuLink>
-            </Row>
           </Col>
           }
           {isLoggedIn &&
-          <Col xsOffset={2} lg={5}>
+          <Col smOffset={2} lg={5}>
             <Row end='xs' middle='xs'>
               <NavLink
                 to='/search'
@@ -276,7 +259,7 @@ export default class Header extends React.Component {
           </Col>
           }
           {!isLoggedIn &&
-          <Col xsOffset={3} lg={2}>
+          <Col mdOffset={3} lg={2}>
             <Row end='xs' middle='xs'>
               <StyledRoundedButton
                 type='headerButton'

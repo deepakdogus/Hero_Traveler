@@ -87,7 +87,7 @@ export function * getBookmarks(api, {userId}) {
       put(StoryActions.getBookmarksSuccess(userId, result)),
     ]
   } else {
-    yield put(StoryActions.getBookmarksFailure(new Error('Failed to get bookmarks')))
+    yield put(StoryActions.getBookmarksFailure(userId, new Error('Failed to get bookmarks')))
   }
 }
 
@@ -102,7 +102,7 @@ export function * getCategoryStories (api, {categoryId, storyType}) {
       put(StoryActions.fromCategorySuccess(categoryId, result)),
     ]
   } else {
-    yield put(StoryActions.fromCategoryFailure(new Error('Failed to get stories for category')))
+    yield put(StoryActions.fromCategoryFailure(categoryId, new Error('Failed to get stories for category')))
   }
 }
 

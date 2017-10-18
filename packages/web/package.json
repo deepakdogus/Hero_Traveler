@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "apisauce": "^0.14.1",
     "lodash": "^4.17.4",
     "material-ui": "^0.19.1",
     "moment": "^2.18.1",
+    "normalizr": "^3.2.4",
     "nuka-carousel": "^2.3.0",
     "numeral": "^2.0.6",
     "prop-types": "^15.5.10",
@@ -23,6 +25,12 @@
     "react-scripts": "1.0.10",
     "redraft": "^0.8.0",
     "redux": "^3.7.2",
+    "redux-form": "^7.1.1",
+    "redux-logger": "^3.0.6",
+    "redux-persist": "^4.10.1",
+    "redux-saga": "^0.16.0",
+    "reduxsauce": "^0.7.0",
+    "seamless-immutable": "^7.1.2",
     "styled-components": "^2.1.1"
   },
   "scripts": {
@@ -36,6 +44,9 @@
   "devDependencies": {
     "concurrently": "^3.5.0",
     "cpx": "^1.5.0",
+    "reactotron-apisauce": "^1.12.2",
+    "reactotron-redux": "^1.12.2",
+    "reactotron-redux-saga": "^1.12.2",
     "rimraf": "^2.6.1"
   }
 }

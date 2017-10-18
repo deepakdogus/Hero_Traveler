@@ -4,7 +4,7 @@ import _, {get, isArray} from 'lodash'
 import {normalize, schema} from 'normalizr'
 import {getToken as getPushToken} from '../../Config/PushConfig'
 import env from '../../Config/Env'
-import {uploadMediaFile} from './CloudinaryAPI'
+import {uploadMediaFile} from '../../Services/CloudinaryAPI'
 
 const User = new schema.Entity('users')
 const Category = new schema.Entity('categories')

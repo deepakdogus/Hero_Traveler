@@ -41,7 +41,9 @@ import {
   resumeSession,
   refreshSession
 } from './SessionSagas'
-import { openScreen } from './OpenScreenSagas'
+// related to nav which is device specific so not located in shared folder
+import { openScreen } from '../../Sagas/OpenScreenSagas'
+
 import { getCategories } from './CategorySagas'
 import {
   getSuggestedUsers,

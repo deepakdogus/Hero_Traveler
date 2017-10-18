@@ -14,7 +14,7 @@ const { Types, Creators } = createActions({
   fromUserFailure: ['userId', 'error'],
   fromCategoryRequest: ['categoryId', 'storyType'],
   fromCategorySuccess: ['categoryId', 'categoryStoriesById'],
-  fromCategoryFailure: ['error'],
+  fromCategoryFailure: ['categoryId', 'error'],
   loadDrafts: null,
   loadDraftsSuccess: ['draftsById'],
   loadDraftsFailure: ['error'],
@@ -150,7 +150,7 @@ export const categorySuccess = (state, {categoryId, categoryStoriesById}) => {
   )
 }
 
-export const categoryFailure = (state, {error}) => {
+export const categoryFailure = (state, {categoryId, error}) => {
   return state.setIn(
     ['storiesByCategoryAndId', categoryId, 'fetchStatus'],
     {fetching: false, loaded: false, error}
@@ -248,7 +248,6 @@ export const loadDraftsFailure = (state, {error}) => {
 
 
 export const deleteStory = (state, {userId, storyId}) => {
-  const story = state.entities[storyId]
   return state
 }
 

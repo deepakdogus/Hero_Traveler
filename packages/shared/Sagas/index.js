@@ -64,7 +64,7 @@ import {
   likeStory,
   bookmarkStory,
   getBookmarks,
-  uploadCoverImage, loadStory, resetCreateStore, loadDrafts, deleteStory,
+  uploadCoverImage, loadStory, loadDrafts, deleteStory,
   flagStory,
 } from './StorySagas'
 

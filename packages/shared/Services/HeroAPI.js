@@ -1,6 +1,6 @@
 // a library to wrap and simplify api calls
 import apisauce from 'apisauce'
-import _, {get, isArray} from 'lodash'
+import {isArray} from 'lodash'
 import {normalize, schema} from 'normalizr'
 import {getToken as getPushToken} from '../../Config/PushConfig'
 import env from '../../Config/Env'
@@ -11,14 +11,6 @@ const Category = new schema.Entity('categories')
 const Story = new schema.Entity('stories', {
   author: User,
   category: Category
-})
-const Followers = new schema.Entity('follows', {
-  follower: User,
-  followee: User
-})
-const Bookmarks = new schema.Entity('bookmarks', {
-  user: User,
-  story: Story
 })
 const Activity = new schema.Entity('activities', {
   fromUser: User,

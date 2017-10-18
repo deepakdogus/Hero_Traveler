@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import { call, put, select } from 'redux-saga/effects'
 import StoryActions from '../Redux/Entities/Stories'
 import UserActions, {isInitialAppDataLoaded, isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
@@ -110,7 +109,6 @@ export function * publishDraft (api, action) {
   const {draft} = action
   const response = yield call(api.createStory, draft)
   if (response.ok) {
-    const {data: story} = response
     yield put(StoryCreateActions.publishDraftSuccess(draft))
   } else {
     let err = new Error('Failed to publish story')

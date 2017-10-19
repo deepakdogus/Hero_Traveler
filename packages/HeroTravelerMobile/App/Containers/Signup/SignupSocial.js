@@ -35,47 +35,49 @@ class SignupSocialScreen extends React.Component {
     if (_.values(this.props.users).length) {
       content = (
         <View style={styles.lightBG}>
-          <Text style={styles.sectionHeader}>FIND FRIENDS</Text>
-          <View style={styles.rowWrapper}>
-            <View style={styles.row}>
-              <TabIcon
-                name='facebook'
-                style={{
-                  image: {tintColor: Colors.facebookBlue},
-                  view: {paddingHorizontal: 5.5},
-                }}
-              />
-              <Text style={styles.connectSocialText}>Facebook</Text>
-              <View style={styles.connectWrapper}>
-                {user && user.isFacebookConnected && <Text style={styles.isConnectedText}>Connected</Text>}
-                <Icon name='angle-right' size={15} color={'#757575'} />
-              </View>
-            </View>
-          </View>
-          <View style={styles.rowWrapper}>
-            <View style={styles.row}>
-              <TabIcon
-                name='twitter'
-                style={{
-                  image: {tintColor: Colors.twitterBlue},
-                  view: {paddingHorizontal: 1},
-                }}
-              />
-              <Text style={styles.connectSocialText}>Twitter</Text>
-              <View style={styles.connectWrapper}>
-                <Icon name='angle-right' size={15} color={'#757575'} />
-              </View>
-            </View>
-          </View>
-          <View style={styles.rowWrapper}>
-            <View style={styles.row}>
-              <Icon name='instagram' size={25} color={Colors.twitterBlue} style={{paddingLeft: .5}} />
-              <Text style={styles.connectSocialText}>Instagram</Text>
-              <View style={styles.connectWrapper}>
-                <Icon name='angle-right' size={15} color='#757575' />
-              </View>
-            </View>
-          </View>
+        {
+          // <Text style={styles.sectionHeader}>FIND FRIENDS</Text>
+          // <View style={styles.rowWrapper}>
+          //   <View style={styles.row}>
+          //     <TabIcon
+          //       name='facebook'
+          //       style={{
+          //         image: {tintColor: Colors.facebookBlue},
+          //         view: {paddingHorizontal: 5.5},
+          //       }}
+          //     />
+          //     <Text style={styles.connectSocialText}>Facebook</Text>
+          //     <View style={styles.connectWrapper}>
+          //       {user && user.isFacebookConnected && <Text style={styles.isConnectedText}>Connected</Text>}
+          //       <Icon name='angle-right' size={15} color={'#757575'} />
+          //     </View>
+          //   </View>
+          // </View>
+          // <View style={styles.rowWrapper}>
+          //   <View style={styles.row}>
+          //     <TabIcon
+          //       name='twitter'
+          //       style={{
+          //         image: {tintColor: Colors.twitterBlue},
+          //         view: {paddingHorizontal: 1},
+          //       }}
+          //     />
+          //     <Text style={styles.connectSocialText}>Twitter</Text>
+          //     <View style={styles.connectWrapper}>
+          //       <Icon name='angle-right' size={15} color={'#757575'} />
+          //     </View>
+          //   </View>
+          // </View>
+          // <View style={styles.rowWrapper}>
+          //   <View style={styles.row}>
+          //     <Icon name='instagram' size={25} color={Colors.twitterBlue} style={{paddingLeft: .5}} />
+          //     <Text style={styles.connectSocialText}>Instagram</Text>
+          //     <View style={styles.connectWrapper}>
+          //       <Icon name='angle-right' size={15} color='#757575' />
+          //     </View>
+          //   </View>
+          // </View>
+        }
           <Text style={styles.sectionHeader}>SUGGESTED PEOPLE</Text>
           {_.map(this.props.suggestedUsersById).map(uid => {
             const u = this.props.users[uid]

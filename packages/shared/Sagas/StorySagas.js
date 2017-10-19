@@ -146,10 +146,11 @@ export function * updateDraft (api, action) {
   const response = yield call(api.updateDraft, draftId, draft)
   if (response.ok) {
     const {entities, result} = response.data
-    if (updateStoryEntity) {
+    const story = entities.stories[result]
+    if (updateStoryEntity || !story.draft) {
       yield put(StoryActions.receiveStories(entities.stories))
     }
-    yield put(StoryCreateActions.updateDraftSuccess(entities.stories[result]))
+    yield put(StoryCreateActions.updateDraftSuccess(story))
   } else {
     yield put(StoryCreateActions.updateDraftFailure(new Error('Failed to update draft')))
   }

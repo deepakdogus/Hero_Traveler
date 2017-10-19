@@ -4,6 +4,7 @@ import bodyParser from 'body-parser'
 import morgan from 'morgan'
 import nodeCleanup from 'node-cleanup'
 import initCore from '@hero/ht-core'
+import cors from 'cors'
 import routes from './routes'
 import passport from './passport'
 import {cleanup as apnCleanup} from './apn'
@@ -22,6 +23,12 @@ if (process.env.NODE_ENV !== 'development') {
     apnCleanup()
   })
 }
+
+
+app.use(cors({
+  origin: process.env.CORS_ORIGIN,
+  optionsSuccessStatus: 200,
+}))
 
 routes(app)
 

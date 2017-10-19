@@ -921,21 +921,21 @@ class StoryCoverScreen extends Component {
               </View>
             }
           {showTooltip && this.renderTooltip()}
-          <View style={styles.toolbarAvoiding}></View>
+          {this.isPhotoType() && <View style={styles.toolbarAvoiding}></View>}
           </KeyboardAvoidingView>
         </ScrollView>
-        <KeyboardTrackingView
-          style={styles.trackingToolbarContainer}
-          trackInteractive={true}
-        >
-          { this.editor &&
+        {this.isPhotoType() && this.editor &&
+          <KeyboardTrackingView
+            style={styles.trackingToolbarContainer}
+            trackInteractive={true}
+          >
             <Toolbar
               ref={i => this.toolbar = i}
               display={this.state.toolbarDisplay}
               onPress={this.editor.onToolbarPress}
             />
-          }
-        </KeyboardTrackingView>
+          </KeyboardTrackingView>
+        }
         {this.state.activeModal === 'cancel' && this.renderCancel()}
         {this.state.activeModal === 'saveFail' && this.renderFailModal()}
         {this.isUploading() &&

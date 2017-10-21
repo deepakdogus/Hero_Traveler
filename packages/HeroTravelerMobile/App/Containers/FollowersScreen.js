@@ -54,9 +54,7 @@ class FollowersScreen extends React.Component {
     return (
       <View style={styles.emptyMessage}>
         <Text style={styles.emptyMessageText}>{msg}</Text>
-        <RoundedButton
-          style={styles.emptyMessageBtn}
-          onPress={this.props.onLeft}>Back</RoundedButton>
+
       </View>
     )
   }
@@ -99,8 +97,10 @@ class FollowersScreen extends React.Component {
                   />
                   </TouchableOpacity>
                   <View style={styles.nameWrapper}>
+                  <TouchableOpacity onPress={() => NavToProfileFunction({userId: u.id})}>
                     <Text style={styles.name}>{u.profile.fullName}</Text>
                     <Text style={styles.followerCount}>{u.counts.followers} followers</Text>
+                  </TouchableOpacity>
                   </View>
                   {followingText &&
                   <RoundedButton

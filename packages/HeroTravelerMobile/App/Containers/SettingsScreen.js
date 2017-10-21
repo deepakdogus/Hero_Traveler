@@ -71,7 +71,7 @@ class SettingsScreen extends React.Component {
     return (
       <View style={[styles.containerWithNavbar, styles.root]}>
         <ScrollView style={{flex: 1}}>
-          <View style={styles.separator} />
+          {/*<View style={styles.separator} />
           <NavList>
             <Row
               icon={<Icon name='facebook' size={22} color={Colors.facebookBlue} />}
@@ -84,8 +84,8 @@ class SettingsScreen extends React.Component {
               text='Twitter'
               connected={user.isTwitterConnected}
               onPress={this._tapTwitter}
-            />*/}
-          </NavList>
+            />
+          </NavList>*/}
           <View style={styles.separator} />
           <NavList>
             <Row

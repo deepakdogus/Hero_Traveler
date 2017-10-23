@@ -50,9 +50,11 @@ export function * resumeSession (api, action) {
     select(currentUserId),
     select(currentUserTokens)
   ]
+  if (action.retrievedTokens) tokens = action.retrievedTokens
   // accessToken is set as a cookie for web - part of store on mobile
-  const accessTokenValue = action.accessToken || _.find(tokens, {type: 'access'})
-  yield call(api.setAuth, accessTokenValue)
+  const accessToken = _.find(tokens, {type: 'access'})
+  if (!accessToken) return
+  yield call(api.setAuth, accessToken.value)
 
   const response = yield call(
     api.getMe,
@@ -71,6 +73,7 @@ export function * resumeSession (api, action) {
       put(UserActions.fetchActivities()),
     ]
     yield put(SessionActions.initializeSession(user.id, tokens))
+    yield put(SessionActions.refreshSessionSuccess(tokens))
   } else {
     const errorMessage = new Error('You have been logged out.')
     yield put(SessionActions.resumeSessionFailure(errorMessage))
@@ -98,7 +101,7 @@ export function * refreshSession(api) {
     const newAccessToken = _.find(newTokens, {type: 'access'})
     return yield [
       call(api.setAuth, newAccessToken.value),
-      put(SessionActions.refreshSessionSuccess(tokens))
+      put(SessionActions.refreshSessionSuccess(newTokens))
     ]
   } else {
     return yield put(SessionActions.refreshSessionSuccess(tokens))

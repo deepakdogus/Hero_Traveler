@@ -8,9 +8,9 @@ const { Types, Creators } = createActions({
   logout: ['tokens'],
   logoutSuccess: null,
   resetRootStore: null,
-  resumeSession: ['userId', 'accessToken'],
+  resumeSession: ['userId', 'retrievedTokens'],
   resumeSessionFailure: ['error'],
-  refreshSession: null,
+  refreshSession: ['tokens'],
   refreshSessionSuccess: ['tokens']
 })
 

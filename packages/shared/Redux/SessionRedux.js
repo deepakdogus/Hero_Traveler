@@ -24,7 +24,7 @@ export const INITIAL_STATE = Immutable({
   userId: null,
   isLoggingOut: false,
   isLoggedOut: true,
-  isResumingSession: false,
+  isResumingSession: true,
 })
 
 /* ------------- Reducers ------------- */
@@ -51,7 +51,7 @@ export const logoutSuccess = (state) => state.merge({
 })
 
 export const setIsResuming = (state, {isResuming}) => state.merge({
-  isResumingSession: isResuming
+  isResumingSession: true
 })
 
 export const refreshSessionSuccess = (state, {tokens}) => {
@@ -79,4 +79,3 @@ export const hasAuthData: boolean = (sessionState) => {
   return !!sessionState.tokens && !!sessionState.userId
 }
 export const getUserId: string = (sessionState) => sessionState.userId
-

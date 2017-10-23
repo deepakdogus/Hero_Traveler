@@ -143,7 +143,7 @@ class StoryCoverScreen extends Component {
       NavActions.mediaSelectorScreen({
         mediaType: this.props.mediaType,
         title: 'Add Video',
-        leftTitle: 'Cancel',
+        leftTitle: 'Close',
         onLeft: this._onLeft,
         rightTitle: 'Next',
         onSelectMedia: this._handleSelectCover
@@ -892,7 +892,7 @@ class StoryCoverScreen extends Component {
             title='Save'
             onTitle={this._onTitle}
             onLeft={this._onLeft}
-            leftTitle='Cancel'
+            leftTitle='Close'
             onRight={this._onRight}
             rightIcon={'arrowRightRed'}
             isRightValid={this.isValid()}

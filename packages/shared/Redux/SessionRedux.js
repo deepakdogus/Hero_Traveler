@@ -8,7 +8,7 @@ const { Types, Creators } = createActions({
   logout: ['tokens'],
   logoutSuccess: null,
   resetRootStore: null,
-  resumeSession: null,
+  resumeSession: ['userId', 'accessToken'],
   resumeSessionFailure: ['error'],
   refreshSession: null,
   refreshSessionSuccess: ['tokens']
@@ -31,6 +31,7 @@ export const INITIAL_STATE = Immutable({
 
 // we're attempting to login
 export const initializeSession = (state, {userId, tokens}) => {
+
   return state.merge({
     userId,
     tokens,

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import {NavLink} from 'react-router-dom'
 import Modal from 'react-modal'
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 
 import { Grid, Row, Col } from './FlexboxGrid'
 import logo from '../Shared/Images/ht-logo-white.png'

@@ -45,13 +45,14 @@ export function * updateUser (api, action) {
   }
 }
 
-export function * resumeSession (api) {
-  const [userId, tokens]= yield [
+export function * resumeSession (api, action) {
+  let [userId, tokens]= yield [
     select(currentUserId),
     select(currentUserTokens)
   ]
-  const accessToken = _.find(tokens, {type: 'access'})
-  yield call(api.setAuth, accessToken.value)
+  // accessToken is set as a cookie for web - part of store on mobile
+  const accessTokenValue = action.accessToken || _.find(tokens, {type: 'access'})
+  yield call(api.setAuth, accessTokenValue)
 
   const response = yield call(
     api.getMe,
@@ -60,6 +61,7 @@ export function * resumeSession (api) {
 
   if (response.ok) {
     const {users} = response.data.entities
+    if (!userId) userId = Object.keys(users)[0]
     const user = users[userId]
     yield [
       // @TODO test me

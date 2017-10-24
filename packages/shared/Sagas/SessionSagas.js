@@ -46,12 +46,13 @@ export function * updateUser (api, action) {
 }
 
 export function * resumeSession (api, action) {
+  // I believe the userId here is redundant. Added task to remove
   let [userId, tokens]= yield [
     select(currentUserId),
     select(currentUserTokens)
   ]
+  // for web we use retrieved tokens (cookies) since store does not persist
   if (action.retrievedTokens) tokens = action.retrievedTokens
-  // accessToken is set as a cookie for web - part of store on mobile
   const accessToken = _.find(tokens, {type: 'access'})
   if (!accessToken) return
   yield call(api.setAuth, accessToken.value)

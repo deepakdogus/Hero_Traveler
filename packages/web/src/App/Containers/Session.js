@@ -13,8 +13,13 @@ function addToken(key, cookies, tokens){
     value: token,
     type: name,
   }
+  // unable to retrieve expire date from cookie so setting it short so it'll refresh automatically
   if (name === 'access') formattedToken.expiresIn = 500
   tokens.push(formattedToken)
+}
+
+function isNewToken(oldTokenOfType, token) {
+  return !oldTokenOfType || (oldTokenOfType && oldTokenOfType.value !== token.value)
 }
 
 class Session extends Component {
@@ -27,7 +32,6 @@ class Session extends Component {
     const tokens = []
     addToken('session_access', retrievedCookies, tokens)
     addToken('session_refresh', retrievedCookies, tokens)
-    // unable to retrieve expire date from cookie so setting so short it'll refresh automatically
     this.props.resumeSession(userId, tokens)
   }
 
@@ -45,12 +49,14 @@ class Session extends Component {
     if (nextProps.tokens) {
       nextProps.tokens.forEach(token => {
         const oldTokenOfType = oldTokensObject[token.type]
-        if (!oldTokenOfType || (oldTokenOfType && oldTokenOfType.value !== token.value)){
+        // checking if we have a new token
+        if (isNewToken(oldTokenOfType, token)){
           const name = `session_${token.type}`
           const currentDate = new Date()
           const expiresIn = token.expiresIn || 100000
           const expires = new Date(currentDate.valueOf() + expiresIn)
-          const options = { expires }
+          // refresh token should not expire
+          const options = token.type === 'refresh' ? { } : { expires }
           cookies.set(name, token.value, options)
         }
       })

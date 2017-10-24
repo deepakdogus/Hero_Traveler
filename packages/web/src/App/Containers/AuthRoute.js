@@ -9,6 +9,7 @@ const AuthRoute = ({ component: Component, userId, isResumingSession, ...rest })
       <Component {...props} /> :
       <Redirect to={{ pathname: '/' }}/>
   }
+
   return (<Route {...rest} render={renderFunction}/>)
 };
 

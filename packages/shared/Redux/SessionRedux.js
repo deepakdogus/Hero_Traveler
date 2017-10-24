@@ -58,7 +58,7 @@ export const refreshSessionSuccess = (state, {tokens}) => {
   return state.merge({tokens})
 }
 
-export const resumeError = (state, {error}) => state.merge({isResuming: false, error})
+export const resumeError = (state, {error}) => state.merge({isResumingSession: false, error})
 
 /* ------------- Hookup Reducers To Types ------------- */
 

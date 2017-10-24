@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import {NavLink} from 'react-router-dom'
 import Modal from 'react-modal'
+import { mediaMax, mediaMin } from './ContentLayout.component'
 
 import { Grid, Row, Col } from './FlexboxGrid'
 import logo from '../Shared/Images/ht-logo-white.png'
@@ -70,11 +71,17 @@ const StyledRow = styled(Row)`
 
 const Logo = styled.img`
   height: 30px;
-  margin-left: -35px;
   margin-top: 6px;
 `
 
 // Likely refactor this out into its own component later with &nbsp; included
+const LoggedInDesktopContainer = styled.div`
+  ${mediaMax.desktop`display: none;`}
+`
+const LoggedInTabletContainer = styled.div`
+  ${mediaMin.desktop`display: none;`}
+  ${mediaMax.phone`display: none;`}
+`
 const Divider = styled.div`
   display: inline-block;
   width: 1px;
@@ -97,6 +104,14 @@ const NotificationsIcon = styled(Icon)`
   width: 18px;
 `
 
+const HamburgerIcon = styled(Icon)`
+  height: 30px;
+  width: 30px;
+  margin: 8px;
+  display: none;
+  ${mediaMax.desktop`display: inline;`}
+`
+
 const StyledRoundedButton = styled(RoundedButton)`
   margin-left: 10px;
   margin-right: 10px;
@@ -110,6 +125,17 @@ const StyledRoundedAvatarButton = styled(RoundedButton)`
 const StyledRoundedLoginButton = styled(RoundedButton)`
   margin-left: 10px;
   margin-right: 20px;
+  display: inline;
+  ${mediaMax.phone`display: none;`}
+`
+
+const LoginLink = styled.a`
+  font-family: 'montserrat';
+  color: #ffffff;
+  letter-spacing: 1.5px;
+  font-size: 13px;
+  display: none;
+  ${mediaMax.phone`display: inline;`}
 `
 
 const MenuLink = (props) => {
@@ -180,23 +206,25 @@ export default class Header extends React.Component {
     const user = usersExample['59d50b1c33aaac0010ef4b3f']
     return (
       <SelectedGrid fluid>
-        <StyledRow center="xs" middle="xs">
-          <Col xs={12} md={2}>
+        <StyledRow around="xs" middle="xs">
+          <Col>
             <Logo src={logo} alt={'Hero Traveler Logo'}/>
           </Col>
           {isLoggedIn &&
-          <Col lgOffset={1} lg={2}>
-            <Row middle="xs">
-              <MenuLink to='/feed' exact>
-                My Feed
-              </MenuLink>
-              <Divider>&nbsp;</Divider>
-              <span>&nbsp;</span>
-              <MenuLink to='/' exact>
-                Explore
-              </MenuLink>
-            </Row>
-          </Col>
+          <LoggedInDesktopContainer>
+            <Col>
+              <Row middle="xs">
+                <MenuLink to='/feed' exact>
+                  My Feed
+                </MenuLink>
+                <Divider>&nbsp;</Divider>
+                <span>&nbsp;</span>
+                <MenuLink to='/' exact>
+                  Explore
+                </MenuLink>
+              </Row>
+            </Col>
+          </LoggedInDesktopContainer>
           }
           {!isLoggedIn &&
           <Col lg={5}>
@@ -219,59 +247,84 @@ export default class Header extends React.Component {
                 </StyledRoundedButton>
               </NavLink>
               <Divider>&nbsp;</Divider>
-              <NavLink
-                to='/createStory'
-              >
-                <StyledRoundedButton text='Create'/>
-              </NavLink>
-              <StyledRoundedButton
-                type='headerButton'
-                height='32px'
-                width='32px'
-                name='inbox'
-                onClick={this.openModal}
-              >
-                <MailIcon
-                  name='loginEmail'
-                />
-              </StyledRoundedButton>
-              <StyledRoundedButton
-                type='headerButton'
-                height='32px'
-                width='32px'
-                name='notifications'
-                onClick={this.openModal}
-              >
-                <NotificationsIcon name='cameraFlash' />
-              </StyledRoundedButton>
-              <NavLink
-                to='/profile/59d50b1c33aaac0010ef4b3f'
-              >
-                <StyledRoundedAvatarButton
+              <LoggedInDesktopContainer>
+                <NavLink
+                  to='/createStory'
+                >
+                  <StyledRoundedButton text='Create'/>
+                </NavLink>
+                <StyledRoundedButton
                   type='headerButton'
                   height='32px'
                   width='32px'
+                  name='inbox'
+                  onClick={this.openModal}
                 >
-                  <Avatar size='mediumSmall'/>
-                </StyledRoundedAvatarButton>
-              </NavLink>
+                  <MailIcon
+                    name='loginEmail'
+                  />
+                </StyledRoundedButton>
+                <StyledRoundedButton
+                  type='headerButton'
+                  height='32px'
+                  width='32px'
+                  name='notifications'
+                  onClick={this.openModal}
+                >
+                  <NotificationsIcon name='cameraFlash' />
+                </StyledRoundedButton>
+                <NavLink
+                  to='/profile/59d50b1c33aaac0010ef4b3f'
+                >
+                  <StyledRoundedAvatarButton
+                    type='headerButton'
+                    height='32px'
+                    width='32px'
+                  >
+                    <Avatar size='mediumSmall'/>
+                  </StyledRoundedAvatarButton>
+                </NavLink>
+              </LoggedInDesktopContainer>
+              <LoggedInTabletContainer>
+                <NavLink
+                  to='/createStory'
+                >
+                  <StyledRoundedButton text='Create'/>
+                </NavLink>
+              </LoggedInTabletContainer>
+              <HamburgerIcon
+                  name='hamburger'
+                  onClick={this.openModal}
+              />
             </Row>
           </Col>
           }
           {!isLoggedIn &&
-          <Col mdOffset={3} lg={2}>
-            <Row end='xs' middle='xs'>
-              <StyledRoundedButton
-                type='headerButton'
-                height='32px'
-                width='32px'
+          <Col>
+            <Row around='xs' middle='xs'>
+              <NavLink
+                to='/search'
               >
-                <SearchIcon name='explore' />
-              </StyledRoundedButton>
+                <StyledRoundedButton
+                  type='headerButton'
+                  height='32px'
+                  width='32px'
+                >
+                  <SearchIcon
+                    name='explore'
+                  />
+                </StyledRoundedButton>
+              </NavLink>
               <Divider>&nbsp;</Divider>
+              <LoginLink
+                  onClick={this.openLoginModal}
+              >Log In</LoginLink>
               <StyledRoundedLoginButton
                 text='Login'
                 onClick={this.openLoginModal}
+              />
+              <HamburgerIcon
+                  name='hamburger'
               />
             </Row>
           </Col>

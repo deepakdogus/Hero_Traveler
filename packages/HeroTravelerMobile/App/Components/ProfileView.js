@@ -67,6 +67,11 @@ const enhanceStoryPreview = withHandlers({
   }
 })
 
+const usernameContansts = {
+  maxLength: 20,
+  minLength: 2,
+}
+
 const StoryPreviewEnhanced = enhanceStoryPreview(ConnectedStoryPreview)
 
 // @TOOO make this smaller
@@ -135,6 +140,10 @@ class ProfileView extends React.Component {
   }
 
   _onRight = () => {
+    if (this.state.usernameText.length <= 1) {
+      this.setState({error: `Usernames must be between ${usernameContansts.minLength} and ${usernameContansts.maxLength} characters`})
+      return
+    }
     this.props.updateUser({bio: this.state.bioText, username: this.state.usernameText})
     NavActions.pop()
   }
@@ -374,7 +383,8 @@ class ProfileView extends React.Component {
               autoCapitalize='none'
               style={[styles.titleText, styles.editTitle]}
               onChangeText={this._setText}
-              maxLength={20}
+              maxLength={usernameContansts.maxLength}
+              minLength={usernameContansts.minLength}
               returnKeyType={'done'}
             />
           <TabIcon name='pencil'/>

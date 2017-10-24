@@ -19,7 +19,30 @@ const ForgotPasswordText = styled(Text)`
 
 export default class Login extends React.Component {
   static PropTypes = {
+    onAttemptLogin: PropTypes.func,
     onSignupClick: PropTypes.func,
+  }
+
+  constructor(props){
+    super(props)
+    this.state = {
+      username: '',
+      password: '',
+    }
+  }
+
+  _onAttemptLogin = () => {
+    const {onAttemptLogin} = this.props
+    const {password, username} = this.state
+    onAttemptLogin(username, password)
+  }
+
+  setUsername = (event) => {
+    this.setState({username: event.target.value})
+  }
+
+  setPassword =(event) => {
+    this.setState({password: event.target.value})
   }
 
   render() {
@@ -38,14 +61,15 @@ export default class Login extends React.Component {
           page='login'
         />
         <Text>Or</Text>
-        <StyledInput placeholder='Username'/>
-        <StyledInput placeholder='Password' type='password'/>
+        <StyledInput placeholder='Username' onChange={this.setUsername}/>
+        <StyledInput placeholder='Password' onChange={this.setPassword} type='password'/>
         <ForgotPasswordText>Forgot Password?</ForgotPasswordText>
         <RoundedButton
           text='LOGIN'
           width='100%'
           margin='none'
           height='39px'
+          onClick={this._onAttemptLogin}
         />
 
         <HasAccount>Don't have an account? <SignupText onClick={onSignupClick}>Sign up</SignupText></HasAccount>

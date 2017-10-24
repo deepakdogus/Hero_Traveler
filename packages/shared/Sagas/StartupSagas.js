@@ -1,7 +1,6 @@
 import { put, select, call } from 'redux-saga/effects'
 import StartupActions from '../Redux/StartupRedux'
 import SessionActions, {hasAuthData} from '../Redux/SessionRedux'
-import LoginActions from '../Redux/LoginRedux'
 import ScreenActions from '../Redux/OpenScreenRedux'
 
 // exported to make available for tests

@@ -45,21 +45,26 @@ export function * updateUser (api, action) {
   }
 }
 
-export function * resumeSession (api) {
-  const [userId, tokens]= yield [
+export function * resumeSession (api, action) {
+  // I believe the userId here is redundant. Added task to remove
+  let [userId, tokens]= yield [
     select(currentUserId),
     select(currentUserTokens)
   ]
+  // for web we use retrieved tokens (cookies) since store does not persist
+  if (action.retrievedTokens) tokens = action.retrievedTokens
   const accessToken = _.find(tokens, {type: 'access'})
+  if (!accessToken) return
   yield call(api.setAuth, accessToken.value)
 
   const response = yield call(
     api.getMe,
     userId
   )
-  
+
   if (response.ok) {
     const {users} = response.data.entities
+    if (!userId) userId = Object.keys(users)[0]
     const user = users[userId]
     yield [
       // @TODO test me
@@ -69,8 +74,10 @@ export function * resumeSession (api) {
       put(UserActions.fetchActivities()),
     ]
     yield put(SessionActions.initializeSession(user.id, tokens))
+    yield put(SessionActions.refreshSessionSuccess(tokens))
   } else {
-    yield put(SessionActions.resumeSessionFailure(new Error('You have been logged out.'))),
+    const errorMessage = new Error('You have been logged out.')
+    yield put(SessionActions.resumeSessionFailure(errorMessage))
     yield put(SessionActions.resetRootStore())
     yield put(ScreenActions.openScreen('launchScreen'))
     yield put(StartupActions.hideSplash())
@@ -95,7 +102,7 @@ export function * refreshSession(api) {
     const newAccessToken = _.find(newTokens, {type: 'access'})
     return yield [
       call(api.setAuth, newAccessToken.value),
-      put(SessionActions.refreshSessionSuccess(tokens))
+      put(SessionActions.refreshSessionSuccess(newTokens))
     ]
   } else {
     return yield put(SessionActions.refreshSessionSuccess(tokens))

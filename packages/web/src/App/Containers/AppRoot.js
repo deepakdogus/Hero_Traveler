@@ -1,40 +1,32 @@
 import React, {Component} from 'react'
 import {ThemeProvider} from 'styled-components'
-import {Route, BrowserRouter as Router} from 'react-router-dom'
+import { Provider } from 'react-redux'
+import {ConnectedRouter} from 'react-router-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import { CookiesProvider } from 'react-cookie'
 
+import createStore from '../Shared/Redux'
+import {history} from '../Redux/Routes'
 import themes from '../Shared/Themes'
 
-import Category from './Category'
-import Explore from './Explore'
-import Feed from './Feed'
-import Story from './Story'
-import Search from './Search'
-import CreateStory from './CreateStory'
-import SignupSocial from './Signup/SignupSocial';
-import SignupTopics from './Signup/SignupTopics';
-import Profile from './Profile'
+import Routes from './Routes'
+
+const store = createStore()
 
 class AppRoot extends Component {
   render() {
     return (
-      <Router>
-        <MuiThemeProvider>
-          <ThemeProvider theme={themes}>
-            <div>
-              <Route exact path='/' component={Explore} />
-              <Route exact path='/category/:categoryId' component={Category} />
-              <Route exact path='/feed' component={Feed} />
-              <Route path='/signup/social' component={SignupSocial} />
-              <Route path='/signup/topics' component={SignupTopics} />
-              <Route path='/story/:storyId' component={Story} />
-              <Route path='/createStory' component={CreateStory} />
-              <Route path='/profile/:userId' component={Profile} />
-              <Route path='/search' component={Search} />
-            </div>
-          </ThemeProvider>
-        </MuiThemeProvider>
-      </Router>
+      <Provider store={store}>
+        <ConnectedRouter history={history}>
+          <MuiThemeProvider>
+            <ThemeProvider theme={themes}>
+              <CookiesProvider>
+                <Routes />
+              </CookiesProvider>
+            </ThemeProvider>
+          </MuiThemeProvider>
+        </ConnectedRouter>
+      </Provider>
     )
   }
 }

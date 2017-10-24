@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import {NavLink} from 'react-router-dom'
 import Modal from 'react-modal'
 import { mediaMax, mediaMin } from './ContentLayout.component'
+import { connect } from 'react-redux'
 
 import { Grid, Row, Col } from './FlexboxGrid'
 import logo from '../Shared/Images/ht-logo-white.png'
@@ -19,6 +20,7 @@ import Inbox from './Modals/Inbox'
 import RightModal from './RightModal'
 import NotificationsThread from './Modals/NotificationsThread'
 import {usersExample} from '../Containers/Feed_TEST_DATA'
+import LoginActions from '../Shared/Redux/LoginRedux'
 
 const customModalStyles = {
   content: {
@@ -165,10 +167,11 @@ const MenuLink = (props) => {
   )
 }
 
-export default class Header extends React.Component {
+class Header extends React.Component {
   static propTypes = {
     isLoggedIn: PropTypes.bool,
     blackHeader: PropTypes.bool,
+    attemptLogin: PropTypes.func,
   }
 
   constructor(props) {
@@ -186,6 +189,10 @@ export default class Header extends React.Component {
     this.setState({ modal: 'signup' })
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.isLoggedIn && nextProps.isLoggedIn) this.closeModal()
+  }
+
   // name correspond to icon name and button name
   openModal = (event) => {
     const name = event.target.name
@@ -200,7 +207,7 @@ export default class Header extends React.Component {
   }
 
   render () {
-    const {isLoggedIn} = this.props
+    const {isLoggedIn, attemptLogin} = this.props
     // quick fix to get this merge in - need to refactor accordingly (part of header refactor)
     const SelectedGrid = this.props.blackHeader ? StyledGridBlack : StyledGrid
     const user = usersExample['59d50b1c33aaac0010ef4b3f']
@@ -337,7 +344,10 @@ export default class Header extends React.Component {
           onRequestClose={this.closeModal}
           style={customModalStyles}
         >
-          <Login onSignupClick={this.openSignupModal}/>
+          <Login
+            onSignupClick={this.openSignupModal}
+            onAttemptLogin={attemptLogin}
+          />
         </Modal>
         <Modal
           isOpen={this.state.modal === 'signup'}
@@ -389,3 +399,18 @@ export default class Header extends React.Component {
     )
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    isLoggedIn: state.login.isLoggedIn,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    attemptLogin: (username, password) => dispatch(LoginActions.loginRequest(username, password)),
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header)

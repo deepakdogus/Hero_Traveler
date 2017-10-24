@@ -3,23 +3,37 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "apisauce": "^0.14.1",
+    "history": "^4.7.2",
     "lodash": "^4.17.4",
     "material-ui": "^0.19.1",
     "moment": "^2.18.1",
+    "normalizr": "^3.2.4",
     "nuka-carousel": "^2.3.0",
     "numeral": "^2.0.6",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
+    "react-cookie": "^2.1.1",
     "react-day-picker": "^6.1.0",
     "react-dom": "^15.6.1",
     "react-flexbox-grid": "^1.1.3",
     "react-google-maps": "next",
+    "react-image-cropper": "^1.1.1",
     "react-ios-switch": "^0.1.12",
     "react-modal": "^2.2.2",
     "react-places-autocomplete": "^5.4.3",
+    "react-redux": "^5.0.2",
     "react-router-dom": "^4.1.1",
+    "react-router-redux": "next",
     "react-scripts": "1.0.10",
     "redraft": "^0.8.0",
+    "redux": "^3.6.0",
+    "redux-form": "^6.5.0",
+    "redux-logger": "^2.8.2",
+    "redux-persist": "^4.1.0",
+    "redux-saga": "^0.14.3",
+    "reduxsauce": "^0.4.1",
+    "seamless-immutable": "^7.1.2",
     "styled-components": "^2.1.1"
   },
   "scripts": {
@@ -33,6 +47,10 @@
   "devDependencies": {
     "concurrently": "^3.5.0",
     "cpx": "^1.5.0",
+    "reactotron-apisauce": "^1.12.2",
+    "reactotron-react-js": "^1.12.2",
+    "reactotron-redux": "^1.12.2",
+    "reactotron-redux-saga": "^1.12.2",
     "rimraf": "^2.6.1"
   }
 }

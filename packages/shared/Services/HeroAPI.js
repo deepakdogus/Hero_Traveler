@@ -116,6 +116,7 @@ const create = () => {
   }
 
   const updateDevice = (userId) => {
+    if (!getPushToken) return
     return api.put(`user/${userId}/device`, {
       device: getPushToken()
     })

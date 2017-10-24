@@ -28,13 +28,10 @@ const ContentWrapper = styled.div`
 `
 
 class Explore extends Component {
-
-
-
   render() {
     return (
       <Wrapper>
-        <ExploreHeader/>      
+        <ExploreHeader/>
         <ContentWrapper>
           <ExploreText>EXPLORE</ExploreText>
             <ExploreGrid categories={categories}/>

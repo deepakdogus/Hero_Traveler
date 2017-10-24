@@ -8,9 +8,9 @@ const { Types, Creators } = createActions({
   logout: ['tokens'],
   logoutSuccess: null,
   resetRootStore: null,
-  resumeSession: null,
+  resumeSession: ['userId', 'retrievedTokens'],
   resumeSessionFailure: ['error'],
-  refreshSession: null,
+  refreshSession: ['tokens'],
   refreshSessionSuccess: ['tokens']
 })
 
@@ -24,13 +24,14 @@ export const INITIAL_STATE = Immutable({
   userId: null,
   isLoggingOut: false,
   isLoggedOut: true,
-  isResumingSession: false,
+  isResumingSession: true,
 })
 
 /* ------------- Reducers ------------- */
 
 // we're attempting to login
 export const initializeSession = (state, {userId, tokens}) => {
+
   return state.merge({
     userId,
     tokens,
@@ -50,7 +51,7 @@ export const logoutSuccess = (state) => state.merge({
 })
 
 export const setIsResuming = (state, {isResuming}) => state.merge({
-  isResumingSession: isResuming
+  isResumingSession: true
 })
 
 export const refreshSessionSuccess = (state, {tokens}) => {
@@ -78,4 +79,3 @@ export const hasAuthData: boolean = (sessionState) => {
   return !!sessionState.tokens && !!sessionState.userId
 }
 export const getUserId: string = (sessionState) => sessionState.userId
-

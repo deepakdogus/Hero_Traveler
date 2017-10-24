@@ -8,6 +8,8 @@ import VerticalCenter from './VerticalCenter'
 import {OverlayStyles} from './Overlay'
 import HeaderTopGradient from './Headers/Shared/HeaderTopGradient'
 import {Images} from '../Shared/Themes'
+import {NavLink} from 'react-router-dom';
+
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   ${OverlayStyles}
@@ -41,29 +43,30 @@ const Centered = styled(VerticalCenter)`
   z-index: 2;
 `
 
-const BadgeSpacer = styled.div`
-  width: 20px;
-  display: inline-block;
-`
+// const BadgeSpacer = styled.div`
+//   width: 20px;
+//   display: inline-block;
+// `
 
 const BadgeWrapper = styled.div`
   margin-top: 20px;
 `
 
-const GooglePlayImage = styled.img`
-  height: 90px;
-  width: 232px;
-  padding: 0px;
-  margin: -14px;
-  overflow: hidden;
-  display: inline-block;
-`
+// const GooglePlayImage = styled.img`
+//   height: 90px;
+//   width: 232px;
+//   padding: 0px;
+//   margin: -14px;
+//   overflow: hidden;
+//   display: inline-block;
+// `
 
 const AppleAppStoreImage = styled.img`
   height: 60px;
   width: 202px;
   display: inline-block;
 `
+
 
 export default class ExploreHeader extends React.Component {
   constructor(props) {
@@ -84,9 +87,11 @@ export default class ExploreHeader extends React.Component {
           <Tagline>For Travelers By Travelers</Tagline>
           <ItalicText>Available on</ItalicText>
             <BadgeWrapper>
-              <GooglePlayImage src={Images.googlePlayBadge}/>
-              <BadgeSpacer/>
-              <AppleAppStoreImage src={Images.appleAppStoreBadge}/>
+              {/*<GooglePlayImage src={Images.googlePlayBadge}/>
+              <BadgeSpacer/>*/}
+              <NavLink to='https://itunes.apple.com/us/genre/ios/id36?mt=8'>
+                <AppleAppStoreImage src={Images.appleAppStoreBadge}/>
+              </NavLink>
             </BadgeWrapper>
         </Centered>
       </OpaqueHeaderImageWrapper>

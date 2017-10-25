@@ -18,6 +18,7 @@ const { Types, Creators } = createActions({
   discardDraftSuccess: ['draft'],
   discardDraftFailure: ['error'],
   updateDraft: ['draftId', 'draft', 'updateStoryEntity'],
+  updateWorkingDraft: ['workingDraft'],
   updateDraftSuccess: ['draft'],
   updateDraftFailure: ['error'],
   uploadCoverImage: ['draftId', 'path'],
@@ -36,6 +37,7 @@ export default Creators
 export const INITIAL_STATE = Immutable({
   isShowCreateModal: false,
   draft: null,
+  workingDraft: null,
   publishing: false,
   error: null,
   isPublished: false,
@@ -78,11 +80,24 @@ export const failure = (state, {error}) =>
 export const registerDraft = () => INITIAL_STATE
 
 export const registerDraftSuccess = (state, {draft}) => {
-  return state.merge({draft})
+  return state.merge({
+    draft,
+    workingDraft: draft,
+  })
 }
 
+// updateDraft called after save. Making sure to sync up workingDraft + draft
 export const updateDraft = (state, {draft}) => {
-  return state.merge({draft}, {deep: true})
+  return state.merge({
+    draft,
+    workingDraft: draft,
+  },
+  {deep: true})
+}
+
+// updateWorkingDraft only updates local draft
+export const updateWorkingDraft = (state, {workingDraft}) => {
+  return state.merge({workingDraft}, {deep: true})
 }
 
 export const uploadCoverImageSuccess = (state, {draft}) => {
@@ -136,6 +151,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.PUBLISH_DRAFT_FAILURE]: failure,
   [Types.DISCARD_DRAFT_SUCCESS]: reset,
   [Types.DISCARD_DRAFT_FAILURE]: failure,
+  [Types.UPDATE_WORKING_DRAFT]: updateWorkingDraft,
   [Types.UPDATE_DRAFT_SUCCESS]: updateDraft,
   [Types.UPDATE_DRAFT_FAILURE]: failure,
   [Types.REGISTER_DRAFT]: registerDraft,

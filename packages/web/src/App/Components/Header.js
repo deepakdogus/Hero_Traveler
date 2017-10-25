@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import {NavLink} from 'react-router-dom'
 import Modal from 'react-modal'
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 
-import { Grid, Row, Col } from './FlexboxGrid'
+import {Grid, Row, Col} from './FlexboxGrid'
 import logo from '../Shared/Images/ht-logo-white.png'
 import RoundedButton from './RoundedButton'
 import Icon from './Icon'
@@ -248,6 +248,11 @@ class Header extends React.Component {
               >
                 <StyledRoundedButton text='Create'/>
               </NavLink>
+              <NavLink
+                to='/createStoryNew/new'
+              >
+                <StyledRoundedButton text='Create'/>
+              </NavLink>
               <StyledRoundedButton
                 type='headerButton'
                 height='32px'
@@ -375,6 +380,5 @@ function mapDispatchToProps(dispatch) {
     attemptLogin: (username, password) => dispatch(LoginActions.loginRequest(username, password)),
   }
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header)

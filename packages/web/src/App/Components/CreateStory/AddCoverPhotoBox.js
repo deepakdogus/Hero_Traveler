@@ -33,6 +33,12 @@ const IconContainer = styled.div`
   width: 100%;
 `
 
+const HiddenInput = styled.input`
+  opacity: 0;
+  width: 0;
+  height: 0;
+`
+
 const StyledTitleInput = styled(Input)`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   background-color: ${props => props.theme.Colors.pink};
@@ -80,21 +86,55 @@ const TitleInputsContainer = styled.div`
 
 export default class AddCoverPhotoBox extends React.Component {
   static propTypes = {
-    action: PropTypes.func,
+    onInputChange: PropTypes.func,
+    workingDraft: PropTypes.object,
+  }
+
+  _onCoverChange = (event) => {
+    const { onInputChange } = this.props
+    onInputChange(event)
+    // refactor later to differentiate between image and video
+    onInputChange({
+      target: {
+        value: 'image',
+        name: 'coverType'
+      }
+    })
   }
 
   render() {
-    const { action } = this.props
+    const {workingDraft, onInputChange} = this.props
+
     return (
       <Container>
-        <IconContainer onClick={action}><StyledIcon name='components'/></IconContainer>
-          <IconSubTitle onClick={action}>+ ADD A COVER PHOTO</IconSubTitle>
-          <TitleInputsContainer>
-            <StyledTitleInput placeholder='ADD TITLE'/>
-            <StyledSubTitleInput placeholder='Add a subtitle'/>
-          </TitleInputsContainer>
-      </Container>
+        <label htmlFor='cover_upload'>
+          <IconContainer>
+            <StyledIcon name='components'/>
+          </IconContainer>
+          <IconSubTitle>+ ADD A COVER PHOTO</IconSubTitle>
+          <HiddenInput
+            type='file'
+            id='cover_upload'
+            name='tempCover'
+            onChange={onInputChange}
+          />
+        </label>
+        <TitleInputsContainer>
+          <StyledTitleInput
+            placeholder='ADD TITLE'
+            name='title'
+            onChange={onInputChange}
+            value={workingDraft.title}
 
+          />
+          <StyledSubTitleInput
+            placeholder='Add a subtitle'
+            name='description'
+            onChange={onInputChange}
+            value={workingDraft.description}
+          />
+        </TitleInputsContainer>
+      </Container>
       )
   }
 }

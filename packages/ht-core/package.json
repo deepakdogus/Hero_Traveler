@@ -1,6 +1,6 @@
 {
   "name": "@hero/ht-core",
-  "version": "0.0.34",
+  "version": "0.0.35",
   "description": "HERO Traveler core server functions",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@hero/ht-util": "^0.0.32",
+    "@hero/ht-util": "^0.0.33",
     "algoliasearch": "^3.22.1",
     "babel-preset-flow": "^6.23.0",
     "babel-register": "^6.23.0",

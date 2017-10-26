@@ -168,7 +168,7 @@ export default class AddCoverPhotoBox extends React.Component {
 
   render() {
     const {workingDraft} = this.props
-    const coverImage = workingDraft.tempCover || getImageUrl(workingDraft.coverImage)
+    const coverImage = workingDraft.tempCover ? workingDraft.tempCover.url : getImageUrl(workingDraft.coverImage)
     return (
       <RelativeContainer>
         <StoryOverlayContainer image={coverImage}/>

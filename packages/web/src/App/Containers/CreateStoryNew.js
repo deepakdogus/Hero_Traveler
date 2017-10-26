@@ -54,6 +54,12 @@ class CreateStory extends Component {
   _updateDraft = () => {
     const draft = this.props.draft
     const workingDraft = this.props.workingDraft
+    let coverPromise;
+    if (workingDraft.tempCover) {
+      coverPromise = api.uploadCoverImage(workingDraft.id, workingDraft.tempCover)
+      .then(response => response.data)
+    }
+    else coverPromise = Promise.resolve(workingDraft)
     this.props.updateDraft(draft.id, workingDraft)
   }
 

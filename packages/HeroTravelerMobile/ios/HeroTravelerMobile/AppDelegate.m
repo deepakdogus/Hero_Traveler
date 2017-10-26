@@ -112,8 +112,8 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
   } else {
     return [[FBSDKApplicationDelegate sharedInstance] application:application
                                                       openURL:url
-                                                      sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
-                                                      annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
+                                                      sourceApplication:sourceApplication
+                                                      annotation:annotation];
   }
 }
 

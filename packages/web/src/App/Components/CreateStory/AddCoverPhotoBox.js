@@ -104,44 +104,29 @@ export default class AddCoverPhotoBox extends React.Component {
   }
 
   _onCoverChange = (event) => {
-    const { onInputChange } = this.props
     uploadFile(event, this, (file) => {
-      onInputChange({
-        target: {
-          value: file,
-          name: 'tempCover'
-        }
-      })
       // refactor later to differentiate between image and video
-      onInputChange({
-        target: {
-          value: 'image',
-          name: 'coverType'
-        }
+      this.props.onInputChange({
+        'tempCover': file,
+        'coverType': 'image',
       })
     })
   }
 
   _onCoverRemove = (event) => {
     this.props.onInputChange({
-      target: {
-        value: undefined,
-        name: 'tempCover'
-      }
-    })
-    this.props.onInputChange({
-      target: {
-        value: undefined,
-        name: 'coverImage'
-      }
+      'tempCover': undefined,
+      'coverImage': undefined
     })
   }
 
   _onTextChange = (event) => {
-    this.props.onInputChange(event)
+    this.props.onInputChange({
+      [event.target.name]: event.target.value,
+    })
     /*
-    React was angry at us setting input value to workingDraft.title so we are
-    no having simultaneous local object. Will try to revise later
+    React was angry at us setting input value to workingDraft.title so we now
+    have an identical local state. Will try to revise later
     */
     this.setState({
       [event.target.name]: event.target.value

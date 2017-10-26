@@ -5,10 +5,7 @@ import AddCoverPhotoBox from '../../Components/CreateStory/AddCoverPhotoBox'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 
 class CreateStoryCoverContent extends Component {
-  onInputChange = (event) => {
-    const update = {
-      [event.target.name]: event.target.value
-    }
+  onInputChange = (update) => {
     this.props.updateWorkingDraft(update)
   }
 

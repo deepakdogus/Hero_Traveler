@@ -27,7 +27,7 @@ class AppRoot extends Component {
         <AuthRoute path='/signup/social' component={SignupSocial} />
         <AuthRoute path='/signup/topics' component={SignupTopics} />
         <Route path='/story/:storyId' component={Story} />
-        <AuthRoute exact path='/createStory' component={CreateStory} />
+        <Route exact path='/createStory' component={CreateStory} />
         <AuthRoute path='/createStoryNew/:draftId' component={CreateStoryNew} />
         <Route path='/profile/:userId/view' component={Profile} />
         <AuthRoute path='/profile/:userId/edit' component={Profile}/>

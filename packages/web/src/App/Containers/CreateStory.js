@@ -55,6 +55,7 @@ export default class CreateStory extends Component {
           <ItemContainer>
             <AddCoverPhotoBox
               action={this.addCover}
+              workingDraft={testStory}
             />
             <CoverPhotoBox
               coverImage={testCoverImage}

@@ -2,9 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
+import CloseX from '../CloseX'
 import Overlay from '../Overlay'
 import Icon from '../Icon'
-import {SubTitle, Input} from './Shared'
+import {SubTitle, Input, CloseXContainer} from './Shared'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import uploadFile from '../../Utils/uploadFile'
 
@@ -143,6 +144,21 @@ export default class AddCoverPhotoBox extends React.Component {
     })
   }
 
+  _onCoverRemove = (event) => {
+    this.props.onInputChange({
+      target: {
+        value: undefined,
+        name: 'tempCover'
+      }
+    })
+    this.props.onInputChange({
+      target: {
+        value: undefined,
+        name: 'coverImage'
+      }
+    })
+  }
+
   _onTextChange = (event) => {
     this.props.onInputChange(event)
     /*
@@ -173,6 +189,11 @@ export default class AddCoverPhotoBox extends React.Component {
       <RelativeContainer>
         <StoryOverlayContainer image={coverImage}/>
         <Container hasImage={!!coverImage}>
+          {!!coverImage &&
+          <CloseXContainer>
+            <CloseX onClick={this._onCoverRemove}/>
+          </CloseXContainer>
+          }
           {!coverImage &&
             <label htmlFor='cover_upload'>
               <IconContainer>

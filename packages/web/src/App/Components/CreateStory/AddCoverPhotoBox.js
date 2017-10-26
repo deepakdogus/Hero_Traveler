@@ -59,45 +59,23 @@ const HiddenInput = styled.input`
   height: 0;
 `
 
-const StyledTitleInput = styled(Input)`
-  font-family: ${props => props.theme.Fonts.type.montserrat};
+const StyledInput = styled(Input)`
   background-color: ${props => props.hasImage ? props.theme.Colors.transparent : props.theme.Colors.pink};
-  font-size: 50px;
-  margin-top: ${props => `${props.hasImage ? 158 : 46}px`};
-  letter-spacing: 1.5px;
-  ::-webkit-input-placeholder {
+  ::placeholder {
     color: ${props => props.theme.Colors.background};
-  }
-  :-ms-input-placeholder {
-    color: ${props => props.theme.Colors.background};
-  }
-  ::-moz-placeholder {
-    color: ${props => props.theme.Colors.background};
-    opacity: 1;
-  }
-  :-moz-placeholder {
-    color: ${props => props.theme.Colors.background};
-    opacity: 1;
   }
 `
 
-const StyledSubTitleInput = styled(Input)`
-  background-color: ${props => props.hasImage ? props.theme.Colors.transparent : props.theme.Colors.pink};
+const StyledTitleInput = styled(StyledInput)`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
+  font-size: 50px;
+  margin-top: ${props => `${props.hasImage ? 158 : 46}px`};
+  letter-spacing: 1.5px;
+`
+
+const StyledSubTitleInput = styled(StyledInput)`
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-size: 20px;
-  ::-webkit-input-placeholder {
-    color: ${props => props.theme.Colors.background};
-  }
-  :-ms-input-placeholder {
-    color: ${props => props.theme.Colors.background};
-  }
-  ::-moz-placeholder {
-    color: ${props => props.theme.Colors.background};
-    opacity: 1;
-  }
-  :-moz-placeholder {
-    color: ${props => props.theme.Colors.background};
-    opacity: 1;
-  }
 `
 
 const TitleInputsContainer = styled.div`

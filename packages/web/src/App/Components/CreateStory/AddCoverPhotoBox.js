@@ -2,15 +2,34 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
+import Overlay from '../Overlay'
 import Icon from '../Icon'
 import {SubTitle, Input} from './Shared'
+import getImageUrl from '../../Shared/Lib/getImageUrl'
+import uploadFile from '../../Utils/uploadFile'
 
 const Container = styled.div`
+  position: absolute;
+  top: 0;
+  padding: 127.5px;
+  background-color: ${props => props.hasImage ? props.theme.Colors.transparent : props.theme.Colors.pink};
+  border: 1px dashed ${props => props.hasImage ? 'none' : `1px dashed ${props.theme.Colors.redHighlights}`}
+`
+
+const RelativeContainer = styled.div`
+  position: relative;
+`
+
+const StoryOverlayContainer = styled(Overlay)`
+  margin-top: 40px;
+  padding-top: 505px;
+  width: 100%;
   max-width: 900px;
   max-height: 505px;
-  padding: 100px 0px 120px 0px;
-  background-color: ${props => props.theme.Colors.pink};
-  border: 1px dashed ${props => props.theme.Colors.redHighlights}
+  background-image: ${props => `url(${props.image})`};
+  background-size: cover;
+  position: relative;
+  z-index: -100;
 `
 
 const IconSubTitle = styled(SubTitle)`
@@ -41,9 +60,9 @@ const HiddenInput = styled.input`
 
 const StyledTitleInput = styled(Input)`
   font-family: ${props => props.theme.Fonts.type.montserrat};
-  background-color: ${props => props.theme.Colors.pink};
+  background-color: ${props => props.hasImage ? props.theme.Colors.transparent : props.theme.Colors.pink};
   font-size: 50px;
-  margin-top: 46px;
+  margin-top: ${props => `${props.hasImage ? 158 : 46}px`};
   letter-spacing: 1.5px;
   ::-webkit-input-placeholder {
     color: ${props => props.theme.Colors.background};
@@ -62,7 +81,7 @@ const StyledTitleInput = styled(Input)`
 `
 
 const StyledSubTitleInput = styled(Input)`
-  background-color: ${props => props.theme.Colors.pink};
+  background-color: ${props => props.hasImage ? props.theme.Colors.transparent : props.theme.Colors.pink};
   font-size: 20px;
   ::-webkit-input-placeholder {
     color: ${props => props.theme.Colors.background};
@@ -81,8 +100,15 @@ const StyledSubTitleInput = styled(Input)`
 `
 
 const TitleInputsContainer = styled.div`
-    text-align: center;
+  text-align: center;
+  background-color: inherit;
 `
+
+function isNewStory(props, nextProps) {
+  return (!props.workingDraft && nextProps.workingDraft) ||
+  (props.workingDraft.id !== nextProps.workingDraft.id)
+
+}
 
 export default class AddCoverPhotoBox extends React.Component {
   static propTypes = {
@@ -90,51 +116,99 @@ export default class AddCoverPhotoBox extends React.Component {
     workingDraft: PropTypes.object,
   }
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      title: props.workingDraft.title || '',
+      description: props.workingDraft.description || '',
+    }
+  }
+
   _onCoverChange = (event) => {
     const { onInputChange } = this.props
-    onInputChange(event)
-    // refactor later to differentiate between image and video
-    onInputChange({
-      target: {
-        value: 'image',
-        name: 'coverType'
-      }
+    uploadFile(event, this, (file) => {
+      onInputChange({
+        target: {
+          value: file,
+          name: 'tempCover'
+        }
+      })
+      // refactor later to differentiate between image and video
+      onInputChange({
+        target: {
+          value: 'image',
+          name: 'coverType'
+        }
+      })
     })
   }
 
+  _onTextChange = (event) => {
+    this.props.onInputChange(event)
+    /*
+    React was angry at us setting input value to workingDraft.title so we are
+    no having simultaneous local object. Will try to revise later
+    */
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+  }
+
+  // add this to properly set the value of the titleInput
+  componentWillReceiveProps(nextProps) {
+    const workingDraft = {nextProps}
+    if (isNewStory(this.props, nextProps)){
+      this.setState({
+        title: workingDraft.title,
+        description: workingDraft.title,
+      })
+    }
+  }
+
+
   render() {
-    const {workingDraft, onInputChange} = this.props
-
+    const {workingDraft} = this.props
+    const coverImage = workingDraft.tempCover || getImageUrl(workingDraft.coverImage)
     return (
-      <Container>
-        <label htmlFor='cover_upload'>
-          <IconContainer>
-            <StyledIcon name='components'/>
-          </IconContainer>
-          <IconSubTitle>+ ADD A COVER PHOTO</IconSubTitle>
-          <HiddenInput
-            type='file'
-            id='cover_upload'
-            name='tempCover'
-            onChange={onInputChange}
-          />
-        </label>
-        <TitleInputsContainer>
-          <StyledTitleInput
-            placeholder='ADD TITLE'
-            name='title'
-            onChange={onInputChange}
-            value={workingDraft.title}
-
-          />
-          <StyledSubTitleInput
-            placeholder='Add a subtitle'
-            name='description'
-            onChange={onInputChange}
-            value={workingDraft.description}
-          />
-        </TitleInputsContainer>
-      </Container>
-      )
+      <RelativeContainer>
+        <StoryOverlayContainer image={coverImage}/>
+        <Container hasImage={!!coverImage}>
+          {!coverImage &&
+            <label htmlFor='cover_upload'>
+              <IconContainer>
+                <StyledIcon name='components'/>
+              </IconContainer>
+              <IconSubTitle>+ ADD A COVER PHOTO</IconSubTitle>
+              <HiddenInput
+                type='file'
+                id='cover_upload'
+                name='tempCover'
+                onChange={this._onCoverChange}
+              />
+            </label>
+          }
+          <TitleInputsContainer>
+            <StyledTitleInput
+              type='text'
+              placeholder='ADD TITLE'
+              name='title'
+              onChange={this._onTextChange}
+              value={this.state.title}
+              maxLength={40}
+              hasImage={!!coverImage}
+            />
+            <StyledSubTitleInput
+              type='text'
+              placeholder='Add a subtitle'
+              name='description'
+              onChange={this._onTextChange}
+              value={this.state.description}
+              maxLength={50}
+              hasImage={!!coverImage}
+            />
+          </TitleInputsContainer>
+        </Container>
+      </RelativeContainer>
+    )
   }
 }

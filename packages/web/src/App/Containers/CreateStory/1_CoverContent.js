@@ -6,8 +6,9 @@ import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 
 class CreateStoryCoverContent extends Component {
   onInputChange = (event) => {
-    const update = {}
-    update[event.target.name] = event.target.value
+    const update = {
+      [event.target.name]: event.target.value
+    }
     this.props.updateWorkingDraft(update)
   }
 

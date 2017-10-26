@@ -127,7 +127,8 @@ export const editStorySuccess = (state, {story}) => {
       loaded: true,
       fetching: false
     },
-    draft: story
+    draft: story,
+    workingDraft: story,
   })
 }
 

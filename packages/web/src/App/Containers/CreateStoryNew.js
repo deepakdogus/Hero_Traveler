@@ -5,13 +5,12 @@ import {connect} from 'react-redux'
 import {push} from 'react-router-redux';
 
 import StoryCreateActions from '../Shared/Redux/StoryCreateRedux'
+import API from '../Shared/Services/HeroAPI'
 
 import CreateStoryCoverContent from './CreateStory/1_CoverContent'
 import FooterToolbar from '../Components/CreateStory/FooterToolbar'
 
-// Demo Story
-
-//----------------
+const api = API.create()
 
 const Container = styled.div``
 
@@ -38,17 +37,17 @@ class CreateStory extends Component {
     if (isNew(this.props)) {
       this.props.registerDraft()
     }
-    else if (this.props.match.isExact) {
+    else if (draftId && !this.props.draft) {
       this.props.loadDraft(draftId)
     }
     // if draftId and no draft - load story
   }
 
   componentWillReceiveProps(nextProps) {
-    const {match, reroute} = nextProps
+    const {match, reroute, draft} = nextProps
     // once our draft is loaded be sure to reroute
-    if (isNew(nextProps) && match.isExact) {
-      reroute(`/createStoryNew/${nextProps.draft.id}/cover`)
+    if (draft.id && match.isExact) {
+      reroute(`/createStoryNew/${draft.id}/cover`)
     }
   }
 

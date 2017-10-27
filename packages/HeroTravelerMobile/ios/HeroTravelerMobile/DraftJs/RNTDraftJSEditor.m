@@ -369,30 +369,6 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
       }
     }];
   }];
-  
-  
-  [layoutManager.textStorage enumerateAttribute:RNDJDraftJsIndexAttributeName inRange:characterRange options:0 usingBlock:^(RNDJDraftJsIndex *draftJsIndex, NSRange range, BOOL *_) {
-    if (!draftJsIndex) {
-      return;
-    }
-    
-    [layoutManager enumerateEnclosingRectsForGlyphRange:range withinSelectedGlyphRange:range inTextContainer:textContainer usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
-      if (range.location % 10 != 0) {
-        return;
-      }
-      
-      
-      UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:enclosingRect
-                                                      cornerRadius:3];
-      if (highlightPath) {
-        [highlightPath appendPath:path];
-      } else {
-        highlightPath = path;
-      }
-
-    }];
-  }];
-
 
   CGFloat selectionOpacity = isnan(_selectionOpacity) ? 0.25 : _selectionOpacity;
 
@@ -404,9 +380,7 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
   if (highlightPath) {
     if (!_highlightLayer) {
       _highlightLayer = [CAShapeLayer layer];
-      _highlightLayer.strokeColor = selectionColor.CGColor;
-      _highlightLayer.fillColor = nil;
-      // _highlightLayer.fillColor = selectionColor.CGColor;
+      _highlightLayer.fillColor = selectionColor.CGColor;
       [self.layer addSublayer:_highlightLayer];
     }
     _highlightLayer.position = (CGPoint){_contentInset.left, _contentInset.top};

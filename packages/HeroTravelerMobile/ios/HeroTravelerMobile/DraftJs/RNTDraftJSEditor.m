@@ -39,17 +39,14 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
     _textStorage = [NSTextStorage new];
     self.isAccessibilityElement = YES;
     self.accessibilityTraits |= UIAccessibilityTraitStaticText;
-    
+
     self.opaque = NO;
     self.contentMode = UIViewContentModeRedraw;
-    
+
     self.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.autocorrectionType = UITextAutocorrectionTypeNo;
     self.spellCheckingType = UITextSpellCheckingTypeNo;
-    self.smartQuotesType = UITextSmartQuotesTypeNo;
-    self.smartDashesType = UITextSmartDashesTypeNo;
-    self.smartInsertDeleteType = UITextSmartInsertDeleteTypeNo;
-    
+
     UITapGestureRecognizer* gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
     [self addGestureRecognizer:gesture];
   }
@@ -77,9 +74,9 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
   if (_selectable == selectable) {
     return;
   }
-  
+
   _selectable = selectable;
-  
+
   if (_selectable) {
     [self enableContextMenu];
   }
@@ -111,7 +108,7 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
 {
   if (_textStorage != textStorage) {
     _textStorage = textStorage;
-    
+
     // Update subviews
     NSMutableArray *nonTextDescendants = [NSMutableArray new];
     collectNonTextDescendants(self, nonTextDescendants);
@@ -126,7 +123,7 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
         [self addSubview:child];
       }
     }
-    
+
     [self setNeedsDisplay];
   }
 }
@@ -135,19 +132,19 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
 {
   NSLayoutManager *layoutManager = [_textStorage.layoutManagers firstObject];
   NSTextContainer *textContainer = [layoutManager.textContainers firstObject];
-  
+
   NSRange glyphRange = [layoutManager glyphRangeForTextContainer:textContainer];
   CGRect textFrame = self.textFrame;
   [layoutManager drawBackgroundForGlyphRange:glyphRange atPoint:textFrame.origin];
   [layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:textFrame.origin];
-  
+
   __block UIBezierPath *highlightPath = nil;
   NSRange characterRange = [layoutManager characterRangeForGlyphRange:glyphRange actualGlyphRange:NULL];
   [layoutManager.textStorage enumerateAttribute:RCTIsHighlightedAttributeName inRange:characterRange options:0 usingBlock:^(NSNumber *value, NSRange range, BOOL *_) {
     if (!value.boolValue) {
       return;
     }
-    
+
     [layoutManager enumerateEnclosingRectsForGlyphRange:range withinSelectedGlyphRange:range inTextContainer:textContainer usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
       UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectInset(enclosingRect, -2, -2) cornerRadius:2];
       if (highlightPath) {
@@ -164,7 +161,7 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
   if (_selectionColor) {
     selectionColor = [_selectionColor colorWithAlphaComponent:CGColorGetAlpha(_selectionColor.CGColor) * selectionOpacity];
   }
-  
+
   if (highlightPath) {
     if (!_highlightLayer) {
       _highlightLayer = [CAShapeLayer layer];
@@ -182,14 +179,14 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
 - (NSNumber *)reactTagAtPoint:(CGPoint)point
 {
   NSNumber *reactTag = self.reactTag;
-  
+
   CGFloat fraction;
   NSLayoutManager *layoutManager = _textStorage.layoutManagers.firstObject;
   NSTextContainer *textContainer = layoutManager.textContainers.firstObject;
   NSUInteger characterIndex = [layoutManager characterIndexForPoint:point
                                                     inTextContainer:textContainer
                            fractionOfDistanceBetweenInsertionPoints:&fraction];
-  
+
   // If the point is not before (fraction == 0.0) the first character and not
   // after (fraction == 1.0) the last character, then the attribute is valid.
   if (_textStorage.length > 0 && (fraction > 0 || characterIndex > 0) && (fraction < 1 || characterIndex < _textStorage.length - 1)) {
@@ -201,7 +198,7 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
 - (void)didMoveToWindow
 {
   [super didMoveToWindow];
-  
+
   if (!self.window) {
     self.layer.contents = nil;
     if (_highlightLayer) {
@@ -239,15 +236,15 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
 {
 #if !TARGET_OS_TV
   UIMenuController *menuController = [UIMenuController sharedMenuController];
-  
+
   if (menuController.isMenuVisible) {
     return;
   }
-  
+
   if (!self.isFirstResponder) {
     [self becomeFirstResponder];
   }
-  
+
   [menuController setTargetRect:self.bounds inView:self];
   [menuController setMenuVisible:YES animated:YES];
 #endif
@@ -263,7 +260,7 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
   if (action == @selector(copy:)) {
     return YES;
   }
-  
+
   return [super canPerformAction:action withSender:sender];
 }
 
@@ -271,19 +268,19 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
 {
 #if !TARGET_OS_TV
   NSAttributedString *attributedString = _textStorage;
-  
+
   NSMutableDictionary *item = [NSMutableDictionary new];
-  
+
   NSData *rtf = [attributedString dataFromRange:NSMakeRange(0, attributedString.length)
                              documentAttributes:@{NSDocumentTypeDocumentAttribute: NSRTFDTextDocumentType}
                                           error:nil];
-  
+
   if (rtf) {
     [item setObject:rtf forKey:(id)kUTTypeFlatRTFD];
   }
-  
+
   [item setObject:attributedString.string forKey:(id)kUTTypeUTF8PlainText];
-  
+
   UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
   pasteboard.items = @[item];
 #endif
@@ -307,14 +304,14 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
   NSUInteger numComponents = textComponents.count;
   for (int i=0; i<numComponents; i++) {
     NSString* textComponent = textComponents[i];
-    
+
     if (textComponent.length > 0) {
       if (onInsertTextRequest)
       {
         onInsertTextRequest(@{@"text": textComponent});
       }
     }
-    
+
     if (i < numComponents-1) {
       if (onNewlineRequest) {
         onNewlineRequest(@{});

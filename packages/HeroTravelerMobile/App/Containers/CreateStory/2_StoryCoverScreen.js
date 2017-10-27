@@ -37,6 +37,7 @@ import UserActions from '../../Shared/Redux/Entities/Users'
 import TabIcon from '../../Components/TabIcon'
 import Modal from '../../Components/Modal'
 
+import NativeEditor from '../../Components/NativeEditor/Editor'
 import Editor from '../../Components/NewEditor/Editor'
 import Toolbar from '../../Components/NewEditor/Toolbar'
 import NavButtonStyles from '../../Navigation/Styles/NavButtonStyles'
@@ -830,18 +831,33 @@ class StoryCoverScreen extends Component {
   renderEditor() {
     return (
       <View style={[styles.editor]}>
-        <Editor
-          ref={i => this.editor = i}
-          style={{
-            flex: 1,
-            minWidth: Metrics.screenWidth
-          }}
-          onPressImage={this.handlePressAddImage}
-          onPressVideo={this.handlePressAddVideo}
-          customStyleMap={customStyles}
-          setToolbarDisplay={this.setToolbarDisplay}
-          {...this.getContent()}
-        />
+        {
+        // <Editor
+        //   ref={i => this.editor = i}
+        //   style={{
+        //     flex: 1,
+        //     minWidth: Metrics.screenWidth
+        //   }}
+        //   onPressImage={this.handlePressAddImage}
+        //   onPressVideo={this.handlePressAddVideo}
+        //   customStyleMap={customStyles}
+        //   setToolbarDisplay={this.setToolbarDisplay}
+        //   {...this.getContent()}
+        // />
+        }
+        {
+          <NativeEditor
+            ref={i => this.editor = i}
+            style={{
+              flex: 1,
+              minWidth: Metrics.screenWidth
+            }}
+            customStyleMap={customStyles}
+            onPressImage={this.handlePressAddImage}
+            onPressVideo={this.handlePressAddVideo}
+            {...this.getContent()}
+          />
+        }
       </View>
     )
   }
@@ -929,11 +945,14 @@ class StoryCoverScreen extends Component {
             style={styles.trackingToolbarContainer}
             trackInteractive={true}
           >
+            {
             <Toolbar
               ref={i => this.toolbar = i}
-              display={this.state.toolbarDisplay}
+              // display={this.state.toolbarDisplay}
+              display={true}
               onPress={this.editor.onToolbarPress}
             />
+            }
           </KeyboardTrackingView>
         }
         {this.state.activeModal === 'cancel' && this.renderCancel()}

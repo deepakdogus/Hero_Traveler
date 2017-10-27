@@ -16,8 +16,6 @@
 #import "RNTShadowDraftJSEditor.h"
 #import "RNDJDraftJsIndex.h"
 
-#define DEBUG_TOUCHES
-
 static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *nonTextDescendants)
 {
   for (UIView *child in view.reactSubviews) {
@@ -35,7 +33,10 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
   CAShapeLayer *_highlightLayer;
   UILongPressGestureRecognizer *_longPressGestureRecognizer;
 
-#ifdef DEBUG_TOUCHES
+#if DEBUG_TOUCHES
+  UIView* debugTouchesView;
+  UILabel* positionLabel;
+
   NSLayoutConstraint* debugTouchesToTop;
   NSLayoutConstraint* debugTouchesToLeft;
 #endif
@@ -65,8 +66,8 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
     [self addGestureRecognizer:panGesture];
 //    [longPressGesture requireGestureRecognizerToFail:tapGesture];
     
-#ifdef DEBUG_TOUCHES
-    UIView* debugTouchesView = [UIView new];
+#if DEBUG_TOUCHES
+    debugTouchesView = [UIView new];
     debugTouchesView.backgroundColor = [UIColor redColor];
     debugTouchesView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:debugTouchesView];
@@ -95,6 +96,22 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
                                                                  relatedBy:NSLayoutRelationEqual
                                                                     toItem:nil
                                                                  attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:2]];
+    
+    positionLabel = [UILabel new];
+    positionLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:positionLabel];
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:positionLabel
+                                                     attribute:NSLayoutAttributeBottom
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:debugTouchesView
+                                                     attribute:NSLayoutAttributeTop
+                                                    multiplier:1 constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:positionLabel
+                                                     attribute:NSLayoutAttributeCenterX
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:debugTouchesView
+                                                     attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
 
 #endif
 
@@ -104,67 +121,74 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
 
 - (RNDJDraftJsIndex*) draftJsIndexForPointInView:(CGPoint)point
 {
-#ifdef DEBUG_TOUCHES
+#if DEBUG_TOUCHES
   debugTouchesToLeft.constant = point.x;
   debugTouchesToTop.constant = point.y;
 #endif
 
-//  RNDJDraftJsIndex* closestDraftJsIndex = nil;
+  RNDJDraftJsIndex* closestDraftJsIndex = nil;
+
+  CGFloat fraction;
+  NSLayoutManager *layoutManager = _textStorage.layoutManagers.firstObject;
+  NSTextContainer *textContainer = layoutManager.textContainers.firstObject;
+  NSUInteger characterIndex = [layoutManager characterIndexForPoint:point
+                                                    inTextContainer:textContainer
+                           fractionOfDistanceBetweenInsertionPoints:&fraction];
+
+  // If the point is not before (fraction == 0.0) the first character and not
+  // after (fraction == 1.0) the last character, then the attribute is valid.
+  characterIndex = MIN(_textStorage.length, characterIndex);
+  characterIndex = MAX(0, characterIndex);
+
+  return _textStorage.length > 0 ? [_textStorage attribute:RNDJDraftJsIndexAttributeName atIndex:characterIndex effectiveRange:NULL] : nil;
+
+//  NSLayoutManager *layoutManager = [_textStorage.layoutManagers firstObject];
+//  NSTextContainer *textContainer = [layoutManager.textContainers firstObject];
 //
-//  CGFloat fraction;
-//  NSLayoutManager *layoutManager = _textStorage.layoutManagers.firstObject;
-//  NSTextContainer *textContainer = layoutManager.textContainers.firstObject;
-//  NSUInteger characterIndex = [layoutManager characterIndexForPoint:point
-//                                                    inTextContainer:textContainer
-//                           fractionOfDistanceBetweenInsertionPoints:&fraction];
+//  NSRange glyphRange = [layoutManager glyphRangeForTextContainer:textContainer];
 //
-//  // If the point is not before (fraction == 0.0) the first character and not
-//  // after (fraction == 1.0) the last character, then the attribute is valid.
-//  characterIndex = MIN(_textStorage.length, characterIndex);
-//  characterIndex = MAX(0, characterIndex);
+//  NSRange characterRange = [layoutManager characterRangeForGlyphRange:glyphRange actualGlyphRange:NULL];
 //
-//  return _textStorage.length > 0 ? [_textStorage attribute:RNDJDraftJsIndexAttributeName atIndex:characterIndex effectiveRange:NULL] : nil;
-
-  NSLayoutManager *layoutManager = [_textStorage.layoutManagers firstObject];
-  NSTextContainer *textContainer = [layoutManager.textContainers firstObject];
-
-  NSRange glyphRange = [layoutManager glyphRangeForTextContainer:textContainer];
-
-  NSRange characterRange = [layoutManager characterRangeForGlyphRange:glyphRange actualGlyphRange:NULL];
-
-  __block CGFloat closestSquaredDistance = CGFLOAT_MAX;
-  __block RNDJDraftJsIndex* closestDraftJsIndex = nil;
-  [layoutManager.textStorage enumerateAttribute:RNDJDraftJsIndexAttributeName inRange:characterRange options:0 usingBlock:^(RNDJDraftJsIndex *draftJsIndex, NSRange range, BOOL *_) {
-    if (!draftJsIndex) {
-      return;
-    }
-
-    [layoutManager enumerateEnclosingRectsForGlyphRange:range withinSelectedGlyphRange:range inTextContainer:textContainer usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
-      CGFloat xDiff = 0;
-      CGFloat yDiff = 0;
-
-      CGPoint topLeft = enclosingRect.origin;
-      CGPoint bottomRight = CGPointMake(enclosingRect.origin.x + enclosingRect.size.width, enclosingRect.origin.y + enclosingRect.size.height);
-
-      if (point.x < topLeft.x) {
-        xDiff = topLeft.x - point.x;
-      } else if (point.x > bottomRight.x) {
-        xDiff = point.x - bottomRight.x;
-      }
-
-      if (point.y < topLeft.y) {
-        yDiff = topLeft.y - point.y;
-      } else if (point.y > bottomRight.y) {
-        yDiff = point.y - bottomRight.y;
-      }
-
-      CGFloat squaredDistance = (xDiff*xDiff) + (yDiff*yDiff);
-      if (squaredDistance < closestSquaredDistance) {
-        closestSquaredDistance = squaredDistance;
-        closestDraftJsIndex = draftJsIndex;
-      }
-    }];
-  }];
+//  __block CGFloat closestSquaredDistance = CGFLOAT_MAX;
+//  __block RNDJDraftJsIndex* closestDraftJsIndex = nil;
+//  [layoutManager.textStorage enumerateAttribute:RNDJDraftJsIndexAttributeName inRange:characterRange options:0 usingBlock:^(RNDJDraftJsIndex *draftJsIndex, NSRange range, BOOL *_) {
+//    if (!draftJsIndex) {
+//      return;
+//    }
+//
+//    [layoutManager enumerateEnclosingRectsForGlyphRange:range withinSelectedGlyphRange:range inTextContainer:textContainer usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
+//      CGFloat xDiff = 0;
+//      CGFloat yDiff = 0;
+//
+//      CGPoint topLeft = enclosingRect.origin;
+//      CGPoint bottomRight = CGPointMake(enclosingRect.origin.x + enclosingRect.size.width, enclosingRect.origin.y + enclosingRect.size.height);
+//
+//      if (point.x < topLeft.x) {
+//        xDiff = topLeft.x - point.x;
+//      } else if (point.x > bottomRight.x) {
+//        xDiff = point.x - bottomRight.x;
+//      }
+//
+//      if (point.y < topLeft.y) {
+//        yDiff = topLeft.y - point.y;
+//      } else if (point.y > bottomRight.y) {
+//        yDiff = point.y - bottomRight.y;
+//      }
+//
+//      CGFloat squaredDistance = (xDiff*xDiff) + (yDiff*yDiff);
+//      if (squaredDistance < closestSquaredDistance) {
+//        closestSquaredDistance = squaredDistance;
+//        closestDraftJsIndex = draftJsIndex;
+//      }
+//    }];
+//  }];
+#if DEBUG_TOUCHES
+  if (closestDraftJsIndex) {
+    positionLabel.text = [NSString stringWithFormat:@"%@: %@", closestDraftJsIndex.key, @(closestDraftJsIndex.offset)];
+  } else {
+    positionLabel.text = @"x";
+  }
+#endif
 
   return closestDraftJsIndex;
 }
@@ -283,16 +307,20 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
     NSMutableArray *nonTextDescendants = [NSMutableArray new];
     collectNonTextDescendants(self, nonTextDescendants);
     NSArray *subviews = self.subviews;
-//    if (![subviews isEqualToArray:nonTextDescendants]) {
-//      for (UIView *child in subviews) {
-//        if (![nonTextDescendants containsObject:child]) {
-//          [child removeFromSuperview];
-//        }
-//      }
-//      for (UIView *child in nonTextDescendants) {
-//        [self addSubview:child];
-//      }
-//    }
+    if (![subviews isEqualToArray:nonTextDescendants]) {
+      for (UIView *child in subviews) {
+#if DEBUG_TOUCHES
+        if (child != positionLabel && child != debugTouchesView && ![nonTextDescendants containsObject:child]) {
+#else
+        if (![nonTextDescendants containsObject:child]) {
+#endif
+          [child removeFromSuperview];
+        }
+      }
+      for (UIView *child in nonTextDescendants) {
+        [self addSubview:child];
+      }
+    }
     
     [self setNeedsDisplay];
   }

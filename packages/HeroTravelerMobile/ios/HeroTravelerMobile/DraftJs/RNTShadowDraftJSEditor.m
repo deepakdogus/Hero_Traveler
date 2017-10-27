@@ -292,7 +292,7 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
       placeholderStyle = [placeholderStyle applyStyle:[blockTypeStyles objectForKey:@"placeholder"]];
       
       NSString *placeholderText = _placeholderText ? _placeholderText : @"";
-      [self _appendText:placeholderText toAttributedString:contentAttributedString withStyle:placeholderStyle shouldAppendLineBreak:NO];
+      [self _appendText:placeholderText toAttributedString:contentAttributedString withStyle:placeholderStyle];
     }
   } else {
     for (RNDJBlockModel* block in contentModel.blocks) {
@@ -323,13 +323,11 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
         NSMutableSet* currentInlineStyles = [NSMutableSet new];
         BOOL shouldUpdate = NO;
         BOOL shouldBreak = NO;
-        BOOL shouldAppendLineBreak = NO;
         
         if (endPosition >= text.length) {
           if (startPosition != endPosition) {
             shouldUpdate = YES;
           }
-          shouldAppendLineBreak = YES;
           shouldBreak = YES;
         } else {
           for (RNDJInlineStyleRangeModel* inlineStyleRange in block.inlineStyleRanges) {
@@ -360,7 +358,7 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
             }
           }
           
-          [self _appendText:substring toAttributedString:blockAttributedString withStyle:currentStyle shouldAppendLineBreak:shouldAppendLineBreak];
+          [self _appendText:substring toAttributedString:blockAttributedString withStyle:currentStyle];
           startPosition = endPosition;
         }
         
@@ -370,6 +368,13 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
         
         endPosition += 1;
       }
+      
+      if (!block.isLastBlock) {
+        [self _appendText:@" \n" toAttributedString:blockAttributedString withStyle:blockStyle];
+      } else {
+        [self _appendText:@" " toAttributedString:blockAttributedString withStyle:blockStyle];
+      }
+
       
       if (selectionModel.hasFocus) {
         if ([selectionModel.startKey isEqualToString:selectionModel.startKey] && [selectionModel.startKey isEqualToString:selectionModel.endKey] && selectionModel.startOffset == selectionModel.endOffset) {
@@ -388,13 +393,13 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
         }
       }
       
-      [contentAttributedString appendAttributedString:blockAttributedString];
-      
-      for (NSUInteger i = 0; i<contentAttributedString.length; i++) {
-        [contentAttributedString addAttribute:RNDJDraftJsIndexAttributeName
-                                        value:[[RNDJDraftJsIndex alloc] initWithKey:block.key offset:MIN(i, block.text.length)]
-                                        range:NSMakeRange(i, 1)];
+      for (NSUInteger i = 0; i<blockAttributedString.length; i++) {
+        [blockAttributedString addAttribute:RNDJDraftJsIndexAttributeName
+                                      value:[[RNDJDraftJsIndex alloc] initWithKey:block.key offset:MIN(i, block.text.length)]
+                                      range:NSMakeRange(i, 1)];
       }
+
+      [contentAttributedString appendAttributedString:blockAttributedString];
     }
   }
   
@@ -414,7 +419,7 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
   return _cachedAttributedString;
 }
 
-- (void) _appendText:(NSString*)text toAttributedString:(NSMutableAttributedString*)outAttributedString withStyle:(RNDJStyle*)style shouldAppendLineBreak:(BOOL)shouldAppendLineBreak
+- (void) _appendText:(NSString*)text toAttributedString:(NSMutableAttributedString*)outAttributedString withStyle:(RNDJStyle*)style
 {
   _effectiveLetterSpacing = [style.letterSpacing floatValue];
   
@@ -475,22 +480,12 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
     attributes[NSShadowAttributeName] = shadow;
   }
   
-  text = text.length == 0 ? @" " : text;
-  text = shouldAppendLineBreak ? [NSString stringWithFormat:@"%@ \n", text] : text;
-
   NSMutableAttributedString* attributedString = [[NSMutableAttributedString alloc] initWithString:text attributes:attributes];
 
   [self _setParagraphStyleOnAttributedString:attributedString
                               fontLineHeight:font.lineHeight
                       heightOfTallestSubview:heightOfTallestSubview
                                    withStyle:style];
-  
-  if (shouldAppendLineBreak) {
-    NSLog(@"Break");
-  }
-
-//  - (void) _appendText:(NSString*)text toAttributedString:(NSMutableAttributedString*)attributedString withStyle:(RNDJStyle*)style shouldAppendLineBreak:(BOOL)shouldAppendLineBreak
-
   
   //  for (RCTShadowView *child in [self reactSubviews]) {
   //    if ([child isKindOfClass:[RCTShadowText class]]) {

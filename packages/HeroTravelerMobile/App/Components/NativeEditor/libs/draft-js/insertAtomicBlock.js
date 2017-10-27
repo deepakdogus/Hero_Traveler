@@ -2,11 +2,8 @@ import insertBlock from './insertBlock'
 
 export default function insertAtomicBlock(editorState, type, url, convertToRaw) {
   let insertAfterKey
-  console.log("getting selectedBlockKey")
   const selectedBlockKey = editorState.getSelection().getAnchorKey()
-  console.log("selectedBlockKey is", selectedBlockKey)
   let lastBlockKey = editorState.getCurrentContent().getLastBlock().getKey()
-  console.log("lastBlockKey is", lastBlockKey)
 
   // If no input has yet been focused, insert image at the end of the content state
   // need to get focusedBlock - for now doing aribtrary boolean
@@ -16,10 +13,6 @@ export default function insertAtomicBlock(editorState, type, url, convertToRaw) 
   } else {
     insertAfterKey = selectedBlockKey
   }
-  console.log("insertAfterKey is", insertAfterKey)
-  console.log("type is", type)
-  console.log("url is", url)
-  console.log("insertAfterKey is", insertAfterKey)
   let newEditorState = insertBlock(
     editorState,
     insertAfterKey,
@@ -32,8 +25,6 @@ export default function insertAtomicBlock(editorState, type, url, convertToRaw) 
       focusNewBlock: true
     }
   )
-  console.log("editorState before is", convertToRaw(editorState.getCurrentContent()))
-  console.log("newEditorState is", convertToRaw(newEditorState.getCurrentContent()))
   // Get the key of the new block
   // const newFocusedBlock = editorState.getCurrentContent().getBlockAfter(insertAfterKey).getKey()
   // console.log("newFocusedBlock is", newFocusedBlock)

@@ -14,6 +14,7 @@
 #import <React/UIView+React.h>
 
 #import "RNTShadowDraftJSEditor.h"
+#import "RNDJDraftJsIndex.h"
 
 static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *nonTextDescendants)
 {
@@ -39,26 +40,140 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
     _textStorage = [NSTextStorage new];
     self.isAccessibilityElement = YES;
     self.accessibilityTraits |= UIAccessibilityTraitStaticText;
-
+    
     self.opaque = NO;
     self.contentMode = UIViewContentModeRedraw;
-
+    
     self.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.autocorrectionType = UITextAutocorrectionTypeNo;
     self.spellCheckingType = UITextSpellCheckingTypeNo;
-
-    UITapGestureRecognizer* gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
-    [self addGestureRecognizer:gesture];
+    
+    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+    [self addGestureRecognizer:tapGesture];
+    
+    UILongPressGestureRecognizer* longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    [self addGestureRecognizer:longPressGesture];
+    
+    UIPanGestureRecognizer* panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
+    [self addGestureRecognizer:panGesture];
+//    [longPressGesture requireGestureRecognizerToFail:tapGesture];
   }
   return self;
 }
 
+- (RNDJDraftJsIndex*) draftJsIndexForPointInView:(CGPoint)point
+{
+  NSLayoutManager *layoutManager = [_textStorage.layoutManagers firstObject];
+  NSTextContainer *textContainer = [layoutManager.textContainers firstObject];
+  
+  NSRange glyphRange = [layoutManager glyphRangeForTextContainer:textContainer];
+
+  NSRange characterRange = [layoutManager characterRangeForGlyphRange:glyphRange actualGlyphRange:NULL];
+  
+  __block CGFloat closestSquaredDistance = CGFLOAT_MAX;
+  __block RNDJDraftJsIndex* closestDraftJsIndex = nil;
+  [layoutManager.textStorage enumerateAttribute:RNDJDraftJsIndexAttributeName inRange:characterRange options:0 usingBlock:^(RNDJDraftJsIndex *draftJsIndex, NSRange range, BOOL *_) {
+    if (!draftJsIndex) {
+      return;
+    }
+    
+    [layoutManager enumerateEnclosingRectsForGlyphRange:range withinSelectedGlyphRange:range inTextContainer:textContainer usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
+      CGFloat xDiff = 0;
+      CGFloat yDiff = 0;
+      
+      CGPoint topLeft = enclosingRect.origin;
+      CGPoint bottomRight = CGPointMake(enclosingRect.origin.x + enclosingRect.size.width, enclosingRect.origin.y + enclosingRect.size.height);
+      
+      if (point.x < topLeft.x) {
+        xDiff = topLeft.x - point.x;
+      } else if (point.x > bottomRight.x) {
+        xDiff = point.x - bottomRight.x;
+      }
+      
+      if (point.y < topLeft.y) {
+        yDiff = topLeft.y - point.y;
+      } else if (point.y > bottomRight.y) {
+        yDiff = point.y - bottomRight.y;
+      }
+      
+      CGFloat squaredDistance = (xDiff*xDiff) + (yDiff*yDiff);
+      if (squaredDistance < closestSquaredDistance) {
+        closestSquaredDistance = squaredDistance;
+        closestDraftJsIndex = draftJsIndex;
+      }
+    }];
+  }];
+
+  return closestDraftJsIndex;
+}
+
 - (void) tap:(UIGestureRecognizer*)gesture
 {
-  if ([self canBecomeFirstResponder])
-  {
-    [self becomeFirstResponder];
+  CGPoint tapPostion = [gesture locationInView:self];
+  tapPostion.x -= _contentInset.left;
+  tapPostion.y -= _contentInset.top;
+  
+  if (!_hasFocus) {
+    switch (gesture.state) {
+      case UIGestureRecognizerStateRecognized:
+      {
+        RNDJDraftJsIndex* selectedIndex = [self draftJsIndexForPointInView:tapPostion];
+        if (selectedIndex) {
+          [self requestSetSelection:selectedIndex];
+        } else {
+          [self requestHasFocus:YES];
+        }
+      }
+      default:
+        break;
+    }
+  } else {
+    RNDJDraftJsIndex* selectedIndex = [self draftJsIndexForPointInView:tapPostion];
+    [self requestSetSelection:selectedIndex];
   }
+}
+
+- (void)pan:(UILongPressGestureRecognizer *)gesture
+{
+  CGPoint tapPostion = [gesture locationInView:self];
+  tapPostion.x -= _contentInset.left;
+  tapPostion.y -= _contentInset.top;
+  
+  if (_hasFocus) {
+    RNDJDraftJsIndex* selectedIndex = [self draftJsIndexForPointInView:tapPostion];
+    [self requestSetSelection:selectedIndex];
+  }
+}
+
+- (void)handleLongPress:(UILongPressGestureRecognizer *)gesture
+{
+  CGPoint tapPostion = [gesture locationInView:self];
+  tapPostion.x -= _contentInset.left;
+  tapPostion.y -= _contentInset.top;
+
+  if (_hasFocus) {
+    RNDJDraftJsIndex* selectedIndex = [self draftJsIndexForPointInView:tapPostion];
+    [self requestSetSelection:selectedIndex];
+  }
+  
+  //  if (self.isFirstResponder) {
+  //
+  //  } else {
+  //#if !TARGET_OS_TV
+  //    UIMenuController *menuController = [UIMenuController sharedMenuController];
+  //
+  //    if (menuController.isMenuVisible) {
+  //      return;
+  //    }
+  //
+  //    if (!self.isFirstResponder) {
+  //      [self becomeFirstResponder];
+  //    }
+  //
+  //    [menuController setTargetRect:self.bounds inView:self];
+  //    [menuController setMenuVisible:YES animated:YES];
+  //#endif
+  //  }
 }
 
 - (NSString *)description
@@ -74,15 +189,8 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
   if (_selectable == selectable) {
     return;
   }
-
+  
   _selectable = selectable;
-
-  if (_selectable) {
-    [self enableContextMenu];
-  }
-  else {
-    [self disableContextMenu];
-  }
 }
 
 - (void)reactSetFrame:(CGRect)frame
@@ -108,7 +216,7 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
 {
   if (_textStorage != textStorage) {
     _textStorage = textStorage;
-
+    
     // Update subviews
     NSMutableArray *nonTextDescendants = [NSMutableArray new];
     collectNonTextDescendants(self, nonTextDescendants);
@@ -123,7 +231,7 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
         [self addSubview:child];
       }
     }
-
+    
     [self setNeedsDisplay];
   }
 }
@@ -132,21 +240,38 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
 {
   NSLayoutManager *layoutManager = [_textStorage.layoutManagers firstObject];
   NSTextContainer *textContainer = [layoutManager.textContainers firstObject];
-
+  
   NSRange glyphRange = [layoutManager glyphRangeForTextContainer:textContainer];
   CGRect textFrame = self.textFrame;
   [layoutManager drawBackgroundForGlyphRange:glyphRange atPoint:textFrame.origin];
   [layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:textFrame.origin];
-
+  
   __block UIBezierPath *highlightPath = nil;
   NSRange characterRange = [layoutManager characterRangeForGlyphRange:glyphRange actualGlyphRange:NULL];
   [layoutManager.textStorage enumerateAttribute:RCTIsHighlightedAttributeName inRange:characterRange options:0 usingBlock:^(NSNumber *value, NSRange range, BOOL *_) {
     if (!value.boolValue) {
       return;
     }
-
+    
     [layoutManager enumerateEnclosingRectsForGlyphRange:range withinSelectedGlyphRange:range inTextContainer:textContainer usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
       UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectInset(enclosingRect, -2, -2) cornerRadius:2];
+      if (highlightPath) {
+        [highlightPath appendPath:path];
+      } else {
+        highlightPath = path;
+      }
+    }];
+  }];
+  
+  [layoutManager.textStorage enumerateAttribute:RNDJSingleCursorPositionAttributeName inRange:characterRange options:0 usingBlock:^(NSNumber *value, NSRange range, BOOL *_) {
+    if (!value.boolValue) {
+      return;
+    }
+    
+    [layoutManager enumerateEnclosingRectsForGlyphRange:range withinSelectedGlyphRange:range inTextContainer:textContainer usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
+      CGRect cursorRect = CGRectMake(enclosingRect.origin.x, enclosingRect.origin.y, 2, enclosingRect.size.height);
+      UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:cursorRect
+                                                      cornerRadius:1];
       if (highlightPath) {
         [highlightPath appendPath:path];
       } else {
@@ -161,7 +286,7 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
   if (_selectionColor) {
     selectionColor = [_selectionColor colorWithAlphaComponent:CGColorGetAlpha(_selectionColor.CGColor) * selectionOpacity];
   }
-
+  
   if (highlightPath) {
     if (!_highlightLayer) {
       _highlightLayer = [CAShapeLayer layer];
@@ -179,14 +304,14 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
 - (NSNumber *)reactTagAtPoint:(CGPoint)point
 {
   NSNumber *reactTag = self.reactTag;
-
+  
   CGFloat fraction;
   NSLayoutManager *layoutManager = _textStorage.layoutManagers.firstObject;
   NSTextContainer *textContainer = layoutManager.textContainers.firstObject;
   NSUInteger characterIndex = [layoutManager characterIndexForPoint:point
                                                     inTextContainer:textContainer
                            fractionOfDistanceBetweenInsertionPoints:&fraction];
-
+  
   // If the point is not before (fraction == 0.0) the first character and not
   // after (fraction == 1.0) the last character, then the attribute is valid.
   if (_textStorage.length > 0 && (fraction > 0 || characterIndex > 0) && (fraction < 1 || characterIndex < _textStorage.length - 1)) {
@@ -198,7 +323,7 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
 - (void)didMoveToWindow
 {
   [super didMoveToWindow];
-
+  
   if (!self.window) {
     self.layer.contents = nil;
     if (_highlightLayer) {
@@ -220,39 +345,75 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
 
 #pragma mark - Context Menu
 
-- (void)enableContextMenu
-{
-  _longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
-  [self addGestureRecognizer:_longPressGestureRecognizer];
-}
-
-- (void)disableContextMenu
-{
-  [self removeGestureRecognizer:_longPressGestureRecognizer];
-  _longPressGestureRecognizer = nil;
-}
-
-- (void)handleLongPress:(UILongPressGestureRecognizer *)gesture
-{
-#if !TARGET_OS_TV
-  UIMenuController *menuController = [UIMenuController sharedMenuController];
-
-  if (menuController.isMenuVisible) {
-    return;
-  }
-
-  if (!self.isFirstResponder) {
-    [self becomeFirstResponder];
-  }
-
-  [menuController setTargetRect:self.bounds inView:self];
-  [menuController setMenuVisible:YES animated:YES];
-#endif
-}
-
 - (BOOL)canBecomeFirstResponder
 {
   return YES;
+}
+
+- (void) requestHasFocus:(BOOL)hasFocus
+{
+  RCTDirectEventBlock onSelectionChangeRequest = _onSelectionChangeRequest;
+  if (onSelectionChangeRequest) {
+    onSelectionChangeRequest(@{@"hasFocus": @(hasFocus)});
+  }
+}
+
+- (void) requestSetSelection:(RNDJDraftJsIndex*)index
+{
+  NSString* blockKey = _lastIndex.key;
+  NSUInteger offset = _lastIndex.offset;
+  
+  if (index) {
+    blockKey = index.key;
+    offset = index.offset + 1;
+  }
+  
+  if (blockKey.length > 0) {
+    RCTDirectEventBlock onSelectionChangeRequest = _onSelectionChangeRequest;
+    if (onSelectionChangeRequest) {
+      onSelectionChangeRequest(@{
+                                 @"startKey": blockKey,
+                                 @"startOffset": @(offset),
+                                 @"endKey": blockKey,
+                                 @"endOffset": @(offset),
+                                 });
+    }
+  }
+}
+
+- (BOOL)becomeFirstResponder
+{
+  BOOL result = [super becomeFirstResponder];
+  if (_hasFocus) {
+    return result;
+  }
+  [self requestHasFocus:YES];
+  return result;
+}
+
+- (BOOL)resignFirstResponder
+{
+  BOOL result = [super resignFirstResponder];
+  
+  if (!_hasFocus) {
+    return result;
+  }
+  [self requestHasFocus:NO];
+  return result;
+}
+
+- (void) setHasFocus:(BOOL)hasFocus {
+  _hasFocus = hasFocus;
+  
+  if (hasFocus && !self.isFirstResponder) {
+    if (![self becomeFirstResponder]) {
+      [self requestHasFocus:NO];
+    }
+  } else if (!hasFocus && self.isFirstResponder) {
+    if (![self resignFirstResponder]) {
+      [self requestHasFocus:YES];
+    }
+  }
 }
 
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender
@@ -260,7 +421,7 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
   if (action == @selector(copy:)) {
     return YES;
   }
-
+  
   return [super canPerformAction:action withSender:sender];
 }
 
@@ -268,19 +429,19 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
 {
 #if !TARGET_OS_TV
   NSAttributedString *attributedString = _textStorage;
-
+  
   NSMutableDictionary *item = [NSMutableDictionary new];
-
+  
   NSData *rtf = [attributedString dataFromRange:NSMakeRange(0, attributedString.length)
                              documentAttributes:@{NSDocumentTypeDocumentAttribute: NSRTFDTextDocumentType}
                                           error:nil];
-
+  
   if (rtf) {
     [item setObject:rtf forKey:(id)kUTTypeFlatRTFD];
   }
-
+  
   [item setObject:attributedString.string forKey:(id)kUTTypeUTF8PlainText];
-
+  
   UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
   pasteboard.items = @[item];
 #endif
@@ -291,10 +452,6 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
   return _textStorage.length > 0;
 }
 
-//@property (nonatomic, copy) RCTDirectEventBlock onInsertTextRequest;
-//@property (nonatomic, copy) RCTDirectEventBlock onBackspaceRequest;
-//@property (nonatomic, copy) RCTDirectEventBlock onNewlineRequest;
-
 - (void)insertText:(NSString *)text
 {
   RCTDirectEventBlock onInsertTextRequest = self.onInsertTextRequest;
@@ -304,14 +461,14 @@ static void collectNonTextDescendants(RNTDraftJSEditor *view, NSMutableArray *no
   NSUInteger numComponents = textComponents.count;
   for (int i=0; i<numComponents; i++) {
     NSString* textComponent = textComponents[i];
-
+    
     if (textComponent.length > 0) {
       if (onInsertTextRequest)
       {
         onInsertTextRequest(@{@"text": textComponent});
       }
     }
-
+    
     if (i < numComponents-1) {
       if (onNewlineRequest) {
         onNewlineRequest(@{});

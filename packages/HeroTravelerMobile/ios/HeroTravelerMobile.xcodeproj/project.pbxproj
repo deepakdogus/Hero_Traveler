@@ -46,18 +46,19 @@
 		8FF857911AAE4CCAB29A20A9 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 88CAD8C48AFD46F7B7845066 /* Zocial.ttf */; };
 		911D144D1F361EBB00F47BF8 /* libAutoGrowTextInput.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 911D144C1F361E8300F47BF8 /* libAutoGrowTextInput.a */; };
 		913C4EF45111427B8D830D3F /* Montserrat-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A0687633F8D24E28B8519A35 /* Montserrat-Light.ttf */; };
-		91F265001FA2701800A8B943 /* RNDJBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F264B41FA26FE300A8B943 /* RNDJBaseModel.m */; };
-		91F265011FA2701800A8B943 /* RNDJBlockModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F264B61FA26FE300A8B943 /* RNDJBlockModel.m */; };
-		91F265021FA2701800A8B943 /* RNDJContentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F264B81FA26FE300A8B943 /* RNDJContentModel.m */; };
-		91F265031FA2701800A8B943 /* RNDJEntityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F264BA1FA26FE300A8B943 /* RNDJEntityModel.m */; };
-		91F265041FA2701800A8B943 /* RNDJEntityRangeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F264BC1FA26FE300A8B943 /* RNDJEntityRangeModel.m */; };
-		91F265051FA2701800A8B943 /* RNDJInlineStyleRangeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F264BE1FA26FE300A8B943 /* RNDJInlineStyleRangeModel.m */; };
-		91F265061FA2701800A8B943 /* RNDJSelectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F264C01FA26FE300A8B943 /* RNDJSelectionModel.m */; };
-		91F265071FA2701800A8B943 /* RCTShadowView+DraftJSDirty.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F264C21FA26FE300A8B943 /* RCTShadowView+DraftJSDirty.m */; };
-		91F265081FA2701800A8B943 /* RNTDraftJSEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F264C41FA26FE300A8B943 /* RNTDraftJSEditor.m */; };
-		91F265091FA2701800A8B943 /* RNTDraftJSEditorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F264C61FA26FE300A8B943 /* RNTDraftJSEditorManager.m */; };
-		91F2650A1FA2701800A8B943 /* RNTShadowDraftJSEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F264C81FA26FE300A8B943 /* RNTShadowDraftJSEditor.m */; };
-		91F2650B1FA2701800A8B943 /* RNDJStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F264CB1FA26FE300A8B943 /* RNDJStyle.m */; };
+		91973CAC1FA39B64006DE932 /* RNDJBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973C911FA39B52006DE932 /* RNDJBaseModel.m */; };
+		91973CAD1FA39B64006DE932 /* RNDJBlockModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973C931FA39B52006DE932 /* RNDJBlockModel.m */; };
+		91973CAE1FA39B64006DE932 /* RNDJContentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973C951FA39B52006DE932 /* RNDJContentModel.m */; };
+		91973CAF1FA39B64006DE932 /* RNDJEntityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973C971FA39B52006DE932 /* RNDJEntityModel.m */; };
+		91973CB01FA39B64006DE932 /* RNDJEntityRangeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973C991FA39B52006DE932 /* RNDJEntityRangeModel.m */; };
+		91973CB11FA39B64006DE932 /* RNDJInlineStyleRangeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973C9B1FA39B52006DE932 /* RNDJInlineStyleRangeModel.m */; };
+		91973CB21FA39B64006DE932 /* RNDJSelectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973C9D1FA39B52006DE932 /* RNDJSelectionModel.m */; };
+		91973CB31FA39B64006DE932 /* RCTShadowView+DraftJSDirty.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973C9F1FA39B52006DE932 /* RCTShadowView+DraftJSDirty.m */; };
+		91973CB41FA39B64006DE932 /* RNTDraftJSEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973CA11FA39B52006DE932 /* RNTDraftJSEditor.m */; };
+		91973CB51FA39B64006DE932 /* RNTDraftJSEditorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973CA31FA39B52006DE932 /* RNTDraftJSEditorManager.m */; };
+		91973CB61FA39B64006DE932 /* RNTShadowDraftJSEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973CA51FA39B52006DE932 /* RNTShadowDraftJSEditor.m */; };
+		91973CB71FA39B64006DE932 /* RNDJDraftJsIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973CA81FA39B52006DE932 /* RNDJDraftJsIndex.m */; };
+		91973CB81FA39B64006DE932 /* RNDJStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973CAA1FA39B52006DE932 /* RNDJStyle.m */; };
 		942D124B1EB395B200A0CFE5 /* RNHockeyApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 942D124A1EB395B200A0CFE5 /* RNHockeyApp.m */; };
 		9465AAA71EB0FDC7003109B0 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9465AAA61EB0FDC7003109B0 /* GameKit.framework */; };
 		9465AAA91EB0FDCC003109B0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9465AAA81EB0FDCC003109B0 /* StoreKit.framework */; };
@@ -512,32 +513,34 @@
 		88CAD8C48AFD46F7B7845066 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		8E7E3F32C97249F1B23E8A2E /* libRNFetchBlob.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFetchBlob.a; sourceTree = "<group>"; };
 		911D14471F361E8300F47BF8 /* AutoGrowTextInput.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AutoGrowTextInput.xcodeproj; path = "../node_modules/@hero/react-native-autogrow-textinput/ios/AutoGrowTextInput.xcodeproj"; sourceTree = "<group>"; };
+		91973C901FA39B52006DE932 /* RNDJBaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJBaseModel.h; sourceTree = "<group>"; };
+		91973C911FA39B52006DE932 /* RNDJBaseModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJBaseModel.m; sourceTree = "<group>"; };
+		91973C921FA39B52006DE932 /* RNDJBlockModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJBlockModel.h; sourceTree = "<group>"; };
+		91973C931FA39B52006DE932 /* RNDJBlockModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJBlockModel.m; sourceTree = "<group>"; };
+		91973C941FA39B52006DE932 /* RNDJContentModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJContentModel.h; sourceTree = "<group>"; };
+		91973C951FA39B52006DE932 /* RNDJContentModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJContentModel.m; sourceTree = "<group>"; };
+		91973C961FA39B52006DE932 /* RNDJEntityModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJEntityModel.h; sourceTree = "<group>"; };
+		91973C971FA39B52006DE932 /* RNDJEntityModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJEntityModel.m; sourceTree = "<group>"; };
+		91973C981FA39B52006DE932 /* RNDJEntityRangeModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJEntityRangeModel.h; sourceTree = "<group>"; };
+		91973C991FA39B52006DE932 /* RNDJEntityRangeModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJEntityRangeModel.m; sourceTree = "<group>"; };
+		91973C9A1FA39B52006DE932 /* RNDJInlineStyleRangeModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJInlineStyleRangeModel.h; sourceTree = "<group>"; };
+		91973C9B1FA39B52006DE932 /* RNDJInlineStyleRangeModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJInlineStyleRangeModel.m; sourceTree = "<group>"; };
+		91973C9C1FA39B52006DE932 /* RNDJSelectionModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJSelectionModel.h; sourceTree = "<group>"; };
+		91973C9D1FA39B52006DE932 /* RNDJSelectionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJSelectionModel.m; sourceTree = "<group>"; };
+		91973C9E1FA39B52006DE932 /* RCTShadowView+DraftJSDirty.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTShadowView+DraftJSDirty.h"; sourceTree = "<group>"; };
+		91973C9F1FA39B52006DE932 /* RCTShadowView+DraftJSDirty.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTShadowView+DraftJSDirty.m"; sourceTree = "<group>"; };
+		91973CA01FA39B52006DE932 /* RNTDraftJSEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNTDraftJSEditor.h; sourceTree = "<group>"; };
+		91973CA11FA39B52006DE932 /* RNTDraftJSEditor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNTDraftJSEditor.m; sourceTree = "<group>"; };
+		91973CA21FA39B52006DE932 /* RNTDraftJSEditorManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNTDraftJSEditorManager.h; sourceTree = "<group>"; };
+		91973CA31FA39B52006DE932 /* RNTDraftJSEditorManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNTDraftJSEditorManager.m; sourceTree = "<group>"; };
+		91973CA41FA39B52006DE932 /* RNTShadowDraftJSEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNTShadowDraftJSEditor.h; sourceTree = "<group>"; };
+		91973CA51FA39B52006DE932 /* RNTShadowDraftJSEditor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNTShadowDraftJSEditor.m; sourceTree = "<group>"; };
+		91973CA71FA39B52006DE932 /* RNDJDraftJsIndex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJDraftJsIndex.h; sourceTree = "<group>"; };
+		91973CA81FA39B52006DE932 /* RNDJDraftJsIndex.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJDraftJsIndex.m; sourceTree = "<group>"; };
+		91973CA91FA39B52006DE932 /* RNDJStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJStyle.h; sourceTree = "<group>"; };
+		91973CAA1FA39B52006DE932 /* RNDJStyle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJStyle.m; sourceTree = "<group>"; };
+		91973CAB1FA39B52006DE932 /* RNDJUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJUtil.h; sourceTree = "<group>"; };
 		91D9DE9C94834C7EA1B431DA /* libSplashScreen.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSplashScreen.a; sourceTree = "<group>"; };
-		91F264B31FA26FE300A8B943 /* RNDJBaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJBaseModel.h; sourceTree = "<group>"; };
-		91F264B41FA26FE300A8B943 /* RNDJBaseModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJBaseModel.m; sourceTree = "<group>"; };
-		91F264B51FA26FE300A8B943 /* RNDJBlockModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJBlockModel.h; sourceTree = "<group>"; };
-		91F264B61FA26FE300A8B943 /* RNDJBlockModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJBlockModel.m; sourceTree = "<group>"; };
-		91F264B71FA26FE300A8B943 /* RNDJContentModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJContentModel.h; sourceTree = "<group>"; };
-		91F264B81FA26FE300A8B943 /* RNDJContentModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJContentModel.m; sourceTree = "<group>"; };
-		91F264B91FA26FE300A8B943 /* RNDJEntityModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJEntityModel.h; sourceTree = "<group>"; };
-		91F264BA1FA26FE300A8B943 /* RNDJEntityModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJEntityModel.m; sourceTree = "<group>"; };
-		91F264BB1FA26FE300A8B943 /* RNDJEntityRangeModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJEntityRangeModel.h; sourceTree = "<group>"; };
-		91F264BC1FA26FE300A8B943 /* RNDJEntityRangeModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJEntityRangeModel.m; sourceTree = "<group>"; };
-		91F264BD1FA26FE300A8B943 /* RNDJInlineStyleRangeModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJInlineStyleRangeModel.h; sourceTree = "<group>"; };
-		91F264BE1FA26FE300A8B943 /* RNDJInlineStyleRangeModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJInlineStyleRangeModel.m; sourceTree = "<group>"; };
-		91F264BF1FA26FE300A8B943 /* RNDJSelectionModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJSelectionModel.h; sourceTree = "<group>"; };
-		91F264C01FA26FE300A8B943 /* RNDJSelectionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJSelectionModel.m; sourceTree = "<group>"; };
-		91F264C11FA26FE300A8B943 /* RCTShadowView+DraftJSDirty.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTShadowView+DraftJSDirty.h"; sourceTree = "<group>"; };
-		91F264C21FA26FE300A8B943 /* RCTShadowView+DraftJSDirty.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTShadowView+DraftJSDirty.m"; sourceTree = "<group>"; };
-		91F264C31FA26FE300A8B943 /* RNTDraftJSEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNTDraftJSEditor.h; sourceTree = "<group>"; };
-		91F264C41FA26FE300A8B943 /* RNTDraftJSEditor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNTDraftJSEditor.m; sourceTree = "<group>"; };
-		91F264C51FA26FE300A8B943 /* RNTDraftJSEditorManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNTDraftJSEditorManager.h; sourceTree = "<group>"; };
-		91F264C61FA26FE300A8B943 /* RNTDraftJSEditorManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNTDraftJSEditorManager.m; sourceTree = "<group>"; };
-		91F264C71FA26FE300A8B943 /* RNTShadowDraftJSEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNTShadowDraftJSEditor.h; sourceTree = "<group>"; };
-		91F264C81FA26FE300A8B943 /* RNTShadowDraftJSEditor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNTShadowDraftJSEditor.m; sourceTree = "<group>"; };
-		91F264CA1FA26FE300A8B943 /* RNDJStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJStyle.h; sourceTree = "<group>"; };
-		91F264CB1FA26FE300A8B943 /* RNDJStyle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJStyle.m; sourceTree = "<group>"; };
-		91F264CC1FA26FE300A8B943 /* RNDJUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJUtil.h; sourceTree = "<group>"; };
 		942D12171EB3956400A0CFE5 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
 		942D12491EB395B200A0CFE5 /* RNHockeyApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNHockeyApp.h; sourceTree = "<group>"; };
 		942D124A1EB395B200A0CFE5 /* RNHockeyApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNHockeyApp.m; sourceTree = "<group>"; };
@@ -839,7 +842,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				91F264B01FA26FE300A8B943 /* DraftJs */,
+				91973C8D1FA39B52006DE932 /* DraftJs */,
 				949A3A621E9EB6FC00815C53 /* Frameworks */,
 				13B07FAE1A68108700A75B9A /* HeroTravelerMobile */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -870,59 +873,61 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		91F264B01FA26FE300A8B943 /* DraftJs */ = {
+		91973C8D1FA39B52006DE932 /* DraftJs */ = {
 			isa = PBXGroup;
 			children = (
-				91F264B11FA26FE300A8B943 /* Models */,
-				91F264C11FA26FE300A8B943 /* RCTShadowView+DraftJSDirty.h */,
-				91F264C21FA26FE300A8B943 /* RCTShadowView+DraftJSDirty.m */,
-				91F264C31FA26FE300A8B943 /* RNTDraftJSEditor.h */,
-				91F264C41FA26FE300A8B943 /* RNTDraftJSEditor.m */,
-				91F264C51FA26FE300A8B943 /* RNTDraftJSEditorManager.h */,
-				91F264C61FA26FE300A8B943 /* RNTDraftJSEditorManager.m */,
-				91F264C71FA26FE300A8B943 /* RNTShadowDraftJSEditor.h */,
-				91F264C81FA26FE300A8B943 /* RNTShadowDraftJSEditor.m */,
-				91F264C91FA26FE300A8B943 /* Utils */,
+				91973C8E1FA39B52006DE932 /* Models */,
+				91973C9E1FA39B52006DE932 /* RCTShadowView+DraftJSDirty.h */,
+				91973C9F1FA39B52006DE932 /* RCTShadowView+DraftJSDirty.m */,
+				91973CA01FA39B52006DE932 /* RNTDraftJSEditor.h */,
+				91973CA11FA39B52006DE932 /* RNTDraftJSEditor.m */,
+				91973CA21FA39B52006DE932 /* RNTDraftJSEditorManager.h */,
+				91973CA31FA39B52006DE932 /* RNTDraftJSEditorManager.m */,
+				91973CA41FA39B52006DE932 /* RNTShadowDraftJSEditor.h */,
+				91973CA51FA39B52006DE932 /* RNTShadowDraftJSEditor.m */,
+				91973CA61FA39B52006DE932 /* Utils */,
 			);
 			name = DraftJs;
 			path = HeroTravelerMobile/DraftJs;
 			sourceTree = "<group>";
 		};
-		91F264B11FA26FE300A8B943 /* Models */ = {
+		91973C8E1FA39B52006DE932 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				91F264B21FA26FE300A8B943 /* Base */,
-				91F264B51FA26FE300A8B943 /* RNDJBlockModel.h */,
-				91F264B61FA26FE300A8B943 /* RNDJBlockModel.m */,
-				91F264B71FA26FE300A8B943 /* RNDJContentModel.h */,
-				91F264B81FA26FE300A8B943 /* RNDJContentModel.m */,
-				91F264B91FA26FE300A8B943 /* RNDJEntityModel.h */,
-				91F264BA1FA26FE300A8B943 /* RNDJEntityModel.m */,
-				91F264BB1FA26FE300A8B943 /* RNDJEntityRangeModel.h */,
-				91F264BC1FA26FE300A8B943 /* RNDJEntityRangeModel.m */,
-				91F264BD1FA26FE300A8B943 /* RNDJInlineStyleRangeModel.h */,
-				91F264BE1FA26FE300A8B943 /* RNDJInlineStyleRangeModel.m */,
-				91F264BF1FA26FE300A8B943 /* RNDJSelectionModel.h */,
-				91F264C01FA26FE300A8B943 /* RNDJSelectionModel.m */,
+				91973C8F1FA39B52006DE932 /* Base */,
+				91973C921FA39B52006DE932 /* RNDJBlockModel.h */,
+				91973C931FA39B52006DE932 /* RNDJBlockModel.m */,
+				91973C941FA39B52006DE932 /* RNDJContentModel.h */,
+				91973C951FA39B52006DE932 /* RNDJContentModel.m */,
+				91973C961FA39B52006DE932 /* RNDJEntityModel.h */,
+				91973C971FA39B52006DE932 /* RNDJEntityModel.m */,
+				91973C981FA39B52006DE932 /* RNDJEntityRangeModel.h */,
+				91973C991FA39B52006DE932 /* RNDJEntityRangeModel.m */,
+				91973C9A1FA39B52006DE932 /* RNDJInlineStyleRangeModel.h */,
+				91973C9B1FA39B52006DE932 /* RNDJInlineStyleRangeModel.m */,
+				91973C9C1FA39B52006DE932 /* RNDJSelectionModel.h */,
+				91973C9D1FA39B52006DE932 /* RNDJSelectionModel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
 		};
-		91F264B21FA26FE300A8B943 /* Base */ = {
+		91973C8F1FA39B52006DE932 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				91F264B31FA26FE300A8B943 /* RNDJBaseModel.h */,
-				91F264B41FA26FE300A8B943 /* RNDJBaseModel.m */,
+				91973C901FA39B52006DE932 /* RNDJBaseModel.h */,
+				91973C911FA39B52006DE932 /* RNDJBaseModel.m */,
 			);
 			path = Base;
 			sourceTree = "<group>";
 		};
-		91F264C91FA26FE300A8B943 /* Utils */ = {
+		91973CA61FA39B52006DE932 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				91F264CA1FA26FE300A8B943 /* RNDJStyle.h */,
-				91F264CB1FA26FE300A8B943 /* RNDJStyle.m */,
-				91F264CC1FA26FE300A8B943 /* RNDJUtil.h */,
+				91973CA71FA39B52006DE932 /* RNDJDraftJsIndex.h */,
+				91973CA81FA39B52006DE932 /* RNDJDraftJsIndex.m */,
+				91973CA91FA39B52006DE932 /* RNDJStyle.h */,
+				91973CAA1FA39B52006DE932 /* RNDJStyle.m */,
+				91973CAB1FA39B52006DE932 /* RNDJUtil.h */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1861,18 +1866,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91F265001FA2701800A8B943 /* RNDJBaseModel.m in Sources */,
-				91F265011FA2701800A8B943 /* RNDJBlockModel.m in Sources */,
-				91F265021FA2701800A8B943 /* RNDJContentModel.m in Sources */,
-				91F265031FA2701800A8B943 /* RNDJEntityModel.m in Sources */,
-				91F265041FA2701800A8B943 /* RNDJEntityRangeModel.m in Sources */,
-				91F265051FA2701800A8B943 /* RNDJInlineStyleRangeModel.m in Sources */,
-				91F265061FA2701800A8B943 /* RNDJSelectionModel.m in Sources */,
-				91F265071FA2701800A8B943 /* RCTShadowView+DraftJSDirty.m in Sources */,
-				91F265081FA2701800A8B943 /* RNTDraftJSEditor.m in Sources */,
-				91F265091FA2701800A8B943 /* RNTDraftJSEditorManager.m in Sources */,
-				91F2650A1FA2701800A8B943 /* RNTShadowDraftJSEditor.m in Sources */,
-				91F2650B1FA2701800A8B943 /* RNDJStyle.m in Sources */,
+				91973CAC1FA39B64006DE932 /* RNDJBaseModel.m in Sources */,
+				91973CAD1FA39B64006DE932 /* RNDJBlockModel.m in Sources */,
+				91973CAE1FA39B64006DE932 /* RNDJContentModel.m in Sources */,
+				91973CAF1FA39B64006DE932 /* RNDJEntityModel.m in Sources */,
+				91973CB01FA39B64006DE932 /* RNDJEntityRangeModel.m in Sources */,
+				91973CB11FA39B64006DE932 /* RNDJInlineStyleRangeModel.m in Sources */,
+				91973CB21FA39B64006DE932 /* RNDJSelectionModel.m in Sources */,
+				91973CB31FA39B64006DE932 /* RCTShadowView+DraftJSDirty.m in Sources */,
+				91973CB41FA39B64006DE932 /* RNTDraftJSEditor.m in Sources */,
+				91973CB51FA39B64006DE932 /* RNTDraftJSEditorManager.m in Sources */,
+				91973CB61FA39B64006DE932 /* RNTShadowDraftJSEditor.m in Sources */,
+				91973CB71FA39B64006DE932 /* RNDJDraftJsIndex.m in Sources */,
+				91973CB81FA39B64006DE932 /* RNDJStyle.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				942D124B1EB395B200A0CFE5 /* RNHockeyApp.m in Sources */,

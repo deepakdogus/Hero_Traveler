@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <React/RCTComponent.h>
+#import "RNDJDraftJsIndex.h"
 
 @interface RNTDraftJSEditor : UIView<UIKeyInput>
 
@@ -19,14 +20,13 @@
 @property (nonatomic, copy) RCTDirectEventBlock onInsertTextRequest;
 @property (nonatomic, copy) RCTDirectEventBlock onBackspaceRequest;
 @property (nonatomic, copy) RCTDirectEventBlock onNewlineRequest;
-@property (nonatomic, copy) RCTDirectEventBlock onFocusChanged;
 @property (nonatomic, copy) RCTDirectEventBlock onSelectionChangeRequest;
 
 @property (nonatomic, copy) UIColor* selectionColor;
 @property (nonatomic, assign) CGFloat selectionOpacity;
 
-@property (nonatomic, copy) NSString* selectionKey;
-@property (nonatomic, assign) NSUInteger selectionOffset;
+@property (nonatomic, assign) BOOL hasFocus;
+@property (nonatomic, strong) RNDJDraftJsIndex* lastIndex;
 
 @property(nonatomic) UITextAutocapitalizationType autocapitalizationType; // default is UITextAutocapitalizationTypeSentences
 @property(nonatomic) UITextAutocorrectionType autocorrectionType;         // default is UITextAutocorrectionTypeDefault

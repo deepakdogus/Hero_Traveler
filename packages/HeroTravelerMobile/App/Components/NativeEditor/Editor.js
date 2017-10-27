@@ -11,12 +11,14 @@ import {
   StyleSheet,
   Text,
   View,
-  requireNativeComponent
+  requireNativeComponent,
+  processColor,
 } from 'react-native'
 
 import {
   EditorState,
   RichUtils,
+  applyStyle,
   convertToRaw,
   insertText,
   insertTextAtPosition,
@@ -24,8 +26,12 @@ import {
   insertNewline,
   insertAtomicBlock,
   rawToEditorState,
+  updateSelectionHasFocus,
+  updateSelectionAnchorAndFocus,
 } from './libs/draft-js'
-import {PressTypes} from '../NewEditor/Toolbar'
+import * as DJSConsts from './libs/draft-js/constants'
+
+import { PressTypes } from '../NewEditor/Toolbar'
 import Metrics from '../../Shared/Themes/Metrics'
 
 const DraftJSEditor = requireNativeComponent('RNTDraftJSEditor', null)
@@ -76,21 +82,32 @@ export default class RNDraftJs extends Component {
     this.onChange(insertNewline(this.state.editorState))
   }
 
-  _onFocusChanged = (event) => {
-    let { editorState } = this.state
-    let { hasFocus } = event
-
-    // Set hasFocus on editorState selectionState
-  }
-
   _onSelectionChangeRequest = (event) => {
-    let { startKey, startOffset, endKey, endOffset } = event
+    let { editorState } = this.state
+    let { hasFocus } = event.nativeEvent
 
-    // Set selection range on editorState selectionState
-  }
+    var currentState = editorState
+    var stateChanged = false
+    if (hasFocus != undefined) {
+      let newState = updateSelectionHasFocus(this.state.editorState, hasFocus)
+      if (newState) {
+        currentState = newState
+        stateChanged = true
+      }
+    }
 
-  getEditorStateAsObject =() => {
-    return convertToRaw(this.state.editorState.getCurrentContent())
+    let { startKey, startOffset, endKey, endOffset } = event.nativeEvent
+    if (startKey && endKey && startOffset != undefined && endOffset != undefined) {
+      let newState = updateSelectionAnchorAndFocus(this.state.editorState, startKey, startOffset, endKey, endOffset)
+      if (newState) {
+        currentState = newState
+        stateChanged = true
+      }
+    }
+
+    if (stateChanged) {
+      this.onChange(currentState)
+    }
   }
 
   // will refactor later - for now mirroring NewEditor flow
@@ -106,6 +123,13 @@ export default class RNDraftJs extends Component {
     this.onChange(insertAtomicBlock(this.state.editorState, type, url, convertToRaw))
   }
 
+  toggleHeader() {
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, DJSConsts.HeaderOne))
+  }
+
+  toggleNormal() {
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, DJSConsts.Unstyled))
+  }
 
   onToolbarPress = (pressType) => {
     switch (pressType) {
@@ -124,31 +148,34 @@ export default class RNDraftJs extends Component {
   render() {
     let { editorState } = this.state
 
-    let content = editorState.getCurrentContent()
-    let selection = editorState.getSelection()
-    let selectionState = {
-      hasFocus: selection.getHasFocus(),
-      startKey: selection.getStartKey(),
-      startOffset: selection.getStartOffset(),
-      endKey: selection.getEndKey(),
-      endOffset: selection.getEndOffset(),
+    let contentState = editorState.getCurrentContent()
+    let selectionState = editorState.getSelection()
+
+    let selection = {
+      hasFocus: selectionState.getHasFocus(),
+      startKey: selectionState.getStartKey(),
+      startOffset: selectionState.getStartOffset(),
+      endKey: selectionState.getEndKey(),
+      endOffset: selectionState.getEndOffset(),
     }
 
-    let rawContent = convertToRaw(content)
+    let content = convertToRaw(contentState)
     return (
       <View style={[styles.root, this.props.style]}>
         <View style={styles.innerScroll}>
           <DraftJSEditor
-            content={rawContent}
-            style={styles.draftTest}
-            blockFontTypes={blockFontTypes}
-            inlineStyleFontTypes={inlineStyleFontTypes}
-            onInsertTextRequest={this._onInsertTextRequest}
-            onBackspaceRequest={this._onBackspaceRequest}
-            onNewlineRequest={this._onNewlineRequest}
-            onFocusChanged={this._onFocusChanged}
-            onSelectionChangeRequest={this._onSelectionChangeRequest}
-            selectionState={selectionState}>
+          content={content}
+          style={styles.draftTest}
+          blockFontTypes={blockFontTypes}
+          inlineStyleFontTypes={inlineStyleFontTypes} 
+          onInsertTextRequest={this._onInsertTextRequest}
+          onBackspaceRequest={this._onBackspaceRequest}
+          onNewlineRequest={this._onNewlineRequest}
+          onSelectionChangeRequest={this._onSelectionChangeRequest}
+          selection={selection}
+          placeholderText="Enter text here"
+          selectionColor={'#000000'}
+          selectionOpacity={1}>
           </DraftJSEditor>
         </View>
       </View>
@@ -160,11 +187,14 @@ export default class RNDraftJs extends Component {
 // List items not supported
 // Styles property is treated as the base and more specific types are applied on top of that
 // Can add other types as needed
+// Must call 'processColor' on any colors used here
 const blockFontTypes = {
   unstyled: { // No real need to use since values from styles are already used
   },
   headerOne: {
-    fontSize: 22
+    fontSize: 30,
+    fontWeight: '600',
+    color: processColor('#1a1c21'),
   },
   headerTwo: {
     fontSize: 22
@@ -186,6 +216,8 @@ const blockFontTypes = {
   codeBlock: {
   },
   atomic: {
+    fontSize: 15,
+    color: processColor('#757575'),
   },
 }
 
@@ -194,6 +226,7 @@ const blockFontTypes = {
 // Keep in mind that inline styles can possibly overlap, so
 //    if they override the same value it is undefined which one it will use
 //    (for example UNDERLINE and STRIKETHROUGH)
+// Must call 'processColor' on any colors used here
 const inlineStyleFontTypes = {
   ITALIC: {
     fontStyle: 'italic',
@@ -250,28 +283,9 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
     minHeight: 35,
-  }
-
-});
-
-const customStyles = StyleSheet.create({
-  unstyled: {
     fontSize: 18,
     color: '#757575',
     fontWeight: '400',
-  },
-  atomic: {
-    fontSize: 15,
-    color: '#757575'
-  },
-  link: {
-    color: '#c4170c',
-    fontWeight: '600',
-    textDecorationLine: 'none',
-  },
-  'header-one': {
-    fontSize: 21,
-    fontWeight: '600',
-    color: '#1a1c21'
   }
-})
+
+});

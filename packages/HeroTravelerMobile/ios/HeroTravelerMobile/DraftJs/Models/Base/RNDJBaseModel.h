@@ -31,7 +31,7 @@ return default; \
 NSString* stringFromString(NSString* inString);
 NSUInteger unsignedIntegerFromNSNumber(NSNumber* inNumber);
 CGFloat floatFromNSNumber(NSNumber* inNumber);
-UIColor* colorFromColor(UIColor* inColor);
+UIColor* colorFromString(UIColor* inColor);
 NSDictionary* dictionaryFromDictionary(NSDictionary* inDict);
 bool boolFromNSNumber(NSNumber* inNumber);
 

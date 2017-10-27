@@ -122,7 +122,7 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
   CGRect textFrame = [self calculateTextFrame:textStorage];
   
   NSString* lastBlockKey = ((RNDJBlockModel*) contentModel.blocks.lastObject).key;
-  NSUInteger lastBlockIndex = ((RNDJBlockModel*) contentModel.blocks.lastObject).text.length;
+  NSUInteger lastBlockIndex = ((RNDJBlockModel*) contentModel.blocks.lastObject).text.length - 1;
   RNDJDraftJsIndex* lastIndex = lastBlockKey.length > 0 ? [[RNDJDraftJsIndex alloc] initWithKey:lastBlockKey offset:lastBlockIndex] : nil;
   
   BOOL selectable = _selectable;
@@ -399,8 +399,9 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
   }
   
   if (singleSelectionIndex > -1) {
-    if (singleSelectionIndex == contentAttributedString.length) {
+    while (singleSelectionIndex >= contentAttributedString.length) {
       [contentAttributedString appendAttributedString:[[NSAttributedString alloc] initWithString:@" "]];
+      NSLog(@"Adding a space to accommodate for selection too long!");
     }
     
     [contentAttributedString addAttribute:RNDJSingleCursorPositionAttributeName value:@YES range:NSMakeRange(singleSelectionIndex, 1)];
@@ -703,13 +704,13 @@ NSDictionary* blockTypesMap = nil;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     blockTypesMap = @{
-                      @"headerOne": @"header-one",
-                      @"headerTwo": @"header-two",
-                      @"headerThree": @"header-three",
-                      @"headerFour": @"header-four",
-                      @"headerFive": @"header-five",
-                      @"headerSix": @"header-six",
-                      @"codeBlock": @"code-block",
+                      @"header-one": @"headerOne",
+                      @"header-two": @"headerTwo",
+                      @"header-three": @"headerThree",
+                      @"header-four": @"headerFour",
+                      @"header-five": @"headerFive",
+                      @"header-six": @"headerSix",
+                      @"code-block": @"codeBlock",
                       };
   });
   

@@ -1,5 +1,5 @@
 //
-//  RNTDraftJSEditor.h
+//  RNDJDraftJSEditor.h
 //  RNDraftJs
 //
 //  Created by Andrew Beck on 10/22/17.
@@ -10,7 +10,7 @@
 #import <React/RCTComponent.h>
 #import "RNDJDraftJsIndex.h"
 
-@interface RNTDraftJSEditor : UIView<UIKeyInput>
+@interface RNDJDraftJSEditor : UIView<UIKeyInput>
 
 @property (nonatomic, assign) UIEdgeInsets contentInset;
 @property (nonatomic, strong) NSTextStorage *textStorage;

@@ -1,5 +1,5 @@
 //
-//  RNTDraftJSEditorManager.h
+//  RNDJDraftJSEditorManager.h
 //  RNDraftJs
 //
 //  Created by Andrew Beck on 10/22/17.
@@ -8,6 +8,6 @@
 
 #import <React/RCTViewManager.h>
 
-@interface RNTDraftJSEditorManager : RCTViewManager
+@interface RNDJDraftJSEditorManager : RCTViewManager
 
 @end

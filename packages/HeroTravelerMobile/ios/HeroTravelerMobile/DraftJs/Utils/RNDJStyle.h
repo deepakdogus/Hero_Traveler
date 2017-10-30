@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RNTShadowDraftJSEditor.h"
+#import "RNDJShadowDraftJSEditor.h"
 #import <React/RCTTextDecorationLineType.h>
 
 @interface RNDJStyle : NSObject
@@ -42,7 +42,7 @@
 
 - (instancetype) initWithStyle:(RNDJStyle *)style;
 - (instancetype) initWithDictionary:(NSDictionary *)dictionary;
-- (instancetype) initWithShadowView:(RNTShadowDraftJSEditor *)shadowView;
+- (instancetype) initWithShadowView:(RNDJShadowDraftJSEditor *)shadowView;
 
 - (RNDJStyle *) applyStyle:(RNDJStyle *)otherStyle;
 

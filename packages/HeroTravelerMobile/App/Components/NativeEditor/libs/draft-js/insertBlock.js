@@ -11,7 +11,7 @@ export default function insertBlock(editorState, blockKey, options = {}) {
     text: ' ',
     data: {},
     selection: editorState.getSelection(),
-    focusNewBlock: false
+    selectNewBlock: false
   })
   const contentState = editorState.getCurrentContent()
   const currentBlock = contentState.getBlockForKey(blockKey)
@@ -38,7 +38,7 @@ export default function insertBlock(editorState, blockKey, options = {}) {
 
   let nextSelection
 
-  if (options.focusNewBlock === true) {
+  if (options.selectNewBlock === true) {
     nextSelection = makeSelectionState(newBlockKey, newBlockKey, 0, 0)
   } else {
     nextSelection = options.selection
@@ -51,6 +51,6 @@ export default function insertBlock(editorState, blockKey, options = {}) {
     selectionAfter: nextSelection,
   })
   let newState = EditorState.push(editorState, newContentState, 'insert-fragment')
-  newState = EditorState.acceptSelection(newState, nextSelection)
+  newState = EditorState.forceSelection(newState, nextSelection)
   return newState
 }

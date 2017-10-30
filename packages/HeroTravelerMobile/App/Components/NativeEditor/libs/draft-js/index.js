@@ -1,3 +1,9 @@
+// Native views
+import {
+  requireNativeComponent
+} from 'react-native'
+export const NativeEditor = requireNativeComponent('RNDJDraftJSEditor', null)
+
 // DraftJS Exports
 export {default as EditorState} from 'draft-js/lib/EditorState'
 export {default as convertFromRaw} from 'draft-js/lib/convertFromRawToDraftState'
@@ -18,13 +24,9 @@ export {default as removeRangeFromContentState} from 'draft-js/lib/removeRangeFr
 // Custom Commands
 export {default as insertText} from './insertText'
 export {default as customKeyCommandInsertNewline} from './customKeyCommandInsertNewline'
-
-// Custom Commands 2
 export {default as insertTextAtPosition} from './insertTextAtPosition'
 export {default as backspace} from './backspace'
 export {default as insertNewline} from './insertNewline'
 export {default as updateSelectionHasFocus} from './updateSelectionHasFocus'
 export {default as updateSelectionAnchorAndFocus} from './updateSelectionAnchorAndFocus'
-
-// use to insert video and image
 export {default as insertAtomicBlock} from './insertAtomicBlock'

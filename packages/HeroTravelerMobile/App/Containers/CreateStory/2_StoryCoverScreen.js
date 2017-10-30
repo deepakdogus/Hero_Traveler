@@ -38,8 +38,7 @@ import TabIcon from '../../Components/TabIcon'
 import Modal from '../../Components/Modal'
 
 import NativeEditor from '../../Components/NativeEditor/Editor'
-import Editor from '../../Components/NewEditor/Editor'
-import Toolbar from '../../Components/NewEditor/Toolbar'
+import Toolbar from '../../Components/NativeEditor/Toolbar'
 import NavButtonStyles from '../../Navigation/Styles/NavButtonStyles'
 import {KeyboardTrackingView} from 'react-native-keyboard-tracking-view';
 
@@ -562,6 +561,7 @@ class StoryCoverScreen extends Component {
     })
     .catch((err) => {
       this.saveFailed()
+      console.log(`Failed saving story: ${err}`)  
       return Promise.reject(err)
     })
   }
@@ -801,50 +801,50 @@ class StoryCoverScreen extends Component {
   }
 
   handleAddImage = (data) => {
+    this.editor.updateSelectionState({hasFocus: false})
     this.setState({imageUploading: true})
     api.uploadStoryImage(this.props.story.id, pathAsFileObject(data))
       .then(({data: imageUpload}) => {
         this.editor.insertImage(_.get(imageUpload, 'original.path'))
         this.setState({imageUploading: false})
       })
-      .catch(this.saveFailed)
+      .catch((err) => {
+        console.log(`Failed adding image ${err}`)
+        this.saveFailed()
+      })
     NavActions.pop()
   }
 
   handleAddVideo = (data) => {
+    this.editor.updateSelectionState({hasFocus: false})
     this.setState({videoUploading: true})
     api.uploadStoryVideo(this.props.story.id, pathAsFileObject(data))
       .then(({data: videoUpload}) => {
         this.editor.insertVideo(_.get(videoUpload, 'original.path'))
         this.setState({videoUploading: false})
       })
-      .catch(this.saveFailed)
+      .catch((err) => {
+        console.log(`Failed adding video ${err}`)
+        this.saveFailed()
+      })
     NavActions.pop()
   }
 
-  setToolbarDisplay = (toolbarDisplay) => {
+  setHasFocus = (toolbarDisplay) => {
     if (this.toolbar && this.state.toolbarDisplay !== toolbarDisplay) {
       this.setState({toolbarDisplay})
+    }
+  }
+
+  setBlockType = (blockType) => {
+    if (this.toolbar) {
+      this.toolbar.setBlockType(blockType)
     }
   }
 
   renderEditor() {
     return (
       <View style={[styles.editor]}>
-        {
-        // <Editor
-        //   ref={i => this.editor = i}
-        //   style={{
-        //     flex: 1,
-        //     minWidth: Metrics.screenWidth
-        //   }}
-        //   onPressImage={this.handlePressAddImage}
-        //   onPressVideo={this.handlePressAddVideo}
-        //   customStyleMap={customStyles}
-        //   setToolbarDisplay={this.setToolbarDisplay}
-        //   {...this.getContent()}
-        // />
-        }
         {
           <NativeEditor
             ref={i => this.editor = i}
@@ -856,6 +856,8 @@ class StoryCoverScreen extends Component {
             onPressImage={this.handlePressAddImage}
             onPressVideo={this.handlePressAddVideo}
             {...this.getContent()}
+            setHasFocus={this.setHasFocus}
+            setBlockType={this.setBlockType}
           />
         }
       </View>
@@ -948,8 +950,7 @@ class StoryCoverScreen extends Component {
             {
             <Toolbar
               ref={i => this.toolbar = i}
-              // display={this.state.toolbarDisplay}
-              display={true}
+              display={this.state.toolbarDisplay}
               onPress={this.editor.onToolbarPress}
             />
             }

@@ -1,12 +1,12 @@
 //
-//  RNTDraftJSEditorManager.m
+//  RNDJDraftJSEditorManager.m
 //  RNDraftJs
 //
 //  Created by Andrew Beck on 10/22/17.
 //  Copyright © 2017 Facebook. All rights reserved.
 //
 
-#import "RNTDraftJSEditorManager.h"
+#import "RNDJDraftJSEditorManager.h"
 
 #import <yoga/Yoga.h>
 #import <React/RCTAccessibilityManager.h>
@@ -15,40 +15,40 @@
 #import <React/RCTLog.h>
 #import <React/UIView+React.h>
 
-#import "RNTShadowDraftJSEditor.h"
-#import "RNTDraftJSEditor.h"
+#import "RNDJShadowDraftJSEditor.h"
+#import "RNDJDraftJSEditor.h"
 
 #import "RCTShadowView+DraftJSDirty.h"
 
-//static void collectDirtyNonTextDescendants(RNTShadowDraftJSEditor *shadowView, NSMutableArray *nonTextDescendants) {
+//static void collectDirtyNonTextDescendants(RNDJShadowDraftJSEditor *shadowView, NSMutableArray *nonTextDescendants) {
 //  for (RCTShadowView *child in shadowView.reactSubviews) {
-//    if ([child isKindOfClass:[RNTShadowDraftJSEditor class]]) {
-//      collectDirtyNonTextDescendants((RNTShadowDraftJSEditor *)child, nonTextDescendants);
+//    if ([child isKindOfClass:[RNDJShadowDraftJSEditor class]]) {
+//      collectDirtyNonTextDescendants((RNDJShadowDraftJSEditor *)child, nonTextDescendants);
 //    } else if ([child isTextDirty]) {
 //      [nonTextDescendants addObject:child];
 //    }
 //  }
 //}
 
-@interface RNTShadowDraftJSEditor (Private)
+@interface RNDJShadowDraftJSEditor (Private)
 
 - (NSTextStorage *)buildTextStorageForWidth:(CGFloat)width widthMode:(YGMeasureMode)widthMode;
 
 @end
 
 
-@implementation RNTDraftJSEditorManager
+@implementation RNDJDraftJSEditorManager
 
 RCT_EXPORT_MODULE()
 
 - (UIView *)view
 {
-  return [RNTDraftJSEditor new];
+  return [RNDJDraftJSEditor new];
 }
 
 - (RCTShadowView *)shadowView
 {
-  return [RNTShadowDraftJSEditor new];
+  return [RNDJShadowDraftJSEditor new];
 }
 
 #pragma mark - View properties
@@ -62,6 +62,9 @@ RCT_EXPORT_VIEW_PROPERTY(selectionColor, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(selectionOpacity, CGFloat)
 
 #pragma mark - Shadow properties
+
+RCT_EXPORT_SHADOW_PROPERTY(defaultAtomicWidth, CGFloat)
+RCT_EXPORT_SHADOW_PROPERTY(defaultAtomicHeight, CGFloat)
 
 RCT_EXPORT_SHADOW_PROPERTY(content, NSDictionary)
 RCT_EXPORT_SHADOW_PROPERTY(blockFontTypes, NSDictionary)
@@ -90,6 +93,16 @@ RCT_EXPORT_SHADOW_PROPERTY(placeholderText, NSString)
 RCT_EXPORT_SHADOW_PROPERTY(selectable, BOOL)
 RCT_EXPORT_SHADOW_PROPERTY(allowFontScaling, BOOL)
 
+static void collectDraftJsDirtyNonTextDescendants(RNDJShadowDraftJSEditor *shadowView, NSMutableArray *nonTextDescendants) {
+  for (RCTShadowView *child in shadowView.reactSubviews) {
+    if ([child isKindOfClass:[RNDJShadowDraftJSEditor class]]) {
+      collectDraftJsDirtyNonTextDescendants((RNDJShadowDraftJSEditor *)child, nonTextDescendants);
+    } else if ([child isDraftJsTextDirty]) {
+      [nonTextDescendants addObject:child];
+    }
+  }
+}
+
 - (RCTViewManagerUIBlock)uiBlockToAmendWithShadowViewRegistry:(NSDictionary<NSNumber *, RCTShadowView *> *)shadowViewRegistry
 {
   for (RCTShadowView *rootView in shadowViewRegistry.allValues) {
@@ -108,9 +121,10 @@ RCT_EXPORT_SHADOW_PROPERTY(allowFontScaling, BOOL)
       RCTShadowView *shadowView = queue[i];
       RCTAssert([shadowView isDraftJsTextDirty], @"Don't process any nodes that don't have dirty text");
       
-      if ([shadowView isKindOfClass:[RNTShadowDraftJSEditor class]]) {
-        ((RNTShadowDraftJSEditor *)shadowView).fontSizeMultiplier = self.bridge.accessibilityManager.multiplier;
-        [(RNTShadowDraftJSEditor *)shadowView recomputeText];
+      if ([shadowView isKindOfClass:[RNDJShadowDraftJSEditor class]]) {
+        ((RNDJShadowDraftJSEditor *)shadowView).fontSizeMultiplier = self.bridge.accessibilityManager.multiplier;
+        [(RNDJShadowDraftJSEditor *)shadowView recomputeText];
+        collectDraftJsDirtyNonTextDescendants((RNDJShadowDraftJSEditor *)shadowView, queue);
       } else {
         for (RCTShadowView *child in [shadowView reactSubviews]) {
           if ([child isDraftJsTextDirty]) {
@@ -126,13 +140,13 @@ RCT_EXPORT_SHADOW_PROPERTY(allowFontScaling, BOOL)
   return nil;
 }
 
-- (RCTViewManagerUIBlock)uiBlockToAmendWithShadowView:(RNTShadowDraftJSEditor *)shadowView
+- (RCTViewManagerUIBlock)uiBlockToAmendWithShadowView:(RNDJShadowDraftJSEditor *)shadowView
 {
   NSNumber *reactTag = shadowView.reactTag;
   UIEdgeInsets padding = shadowView.paddingAsInsets;
   
-  return ^(RCTUIManager *uiManager, NSDictionary<NSNumber *, RNTDraftJSEditor *> *viewRegistry) {
-    RNTDraftJSEditor *text = viewRegistry[reactTag];
+  return ^(RCTUIManager *uiManager, NSDictionary<NSNumber *, RNDJDraftJSEditor *> *viewRegistry) {
+    RNDJDraftJSEditor *text = viewRegistry[reactTag];
     text.contentInset = padding;
   };
 }

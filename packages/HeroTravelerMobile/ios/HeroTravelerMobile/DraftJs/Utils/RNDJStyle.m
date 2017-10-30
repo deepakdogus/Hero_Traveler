@@ -112,7 +112,7 @@
   _wasTextAlignSet = YES;
 }
 
-- (instancetype) initWithShadowView:(RNTShadowDraftJSEditor *)shadowView {
+- (instancetype) initWithShadowView:(RNDJShadowDraftJSEditor *)shadowView {
   if (self = [super init]) {
     GET_SV(fontFamily)
     GET_SV(fontWeight)

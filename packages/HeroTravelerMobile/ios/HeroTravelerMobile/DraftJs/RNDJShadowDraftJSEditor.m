@@ -1,12 +1,12 @@
 //
-//  RNTShadowDraftJSEditor.m
+//  RNDJShadowDraftJSEditor.m
 //  RNDraftJs
 //
 //  Created by Andrew Beck on 10/23/17.
 //  Copyright © 2017 Facebook. All rights reserved.
 //
 
-#import "RNTShadowDraftJSEditor.h"
+#import "RNDJShadowDraftJSEditor.h"
 
 #import <React/RCTAccessibilityManager.h>
 #import <React/RCTBridge.h>
@@ -16,7 +16,7 @@
 #import <React/RCTUIManager.h>
 #import <React/RCTUtils.h>
 
-#import "RNTDraftJSEditor.h"
+#import "RNDJDraftJSEditor.h"
 #import "RCTShadowView+DraftJSDirty.h"
 #import "RNDJStyle.h"
 
@@ -37,7 +37,7 @@ NSString *const RNDJDraftJsIndexAttributeName = @"DraftJsIndexAttributeName";
 
 @end
 
-@implementation RNTShadowDraftJSEditor
+@implementation RNDJShadowDraftJSEditor
 {
   NSTextStorage *_cachedTextStorage;
   CGFloat _cachedTextStorageWidth;
@@ -48,7 +48,7 @@ NSString *const RNDJDraftJsIndexAttributeName = @"DraftJsIndexAttributeName";
 
 static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, float height, YGMeasureMode heightMode)
 {
-  RNTShadowDraftJSEditor *shadowText = (__bridge RNTShadowDraftJSEditor *)YGNodeGetContext(node);
+  RNDJShadowDraftJSEditor *shadowText = (__bridge RNDJShadowDraftJSEditor *)YGNodeGetContext(node);
   NSTextStorage *textStorage = [shadowText buildTextStorageForWidth:width widthMode:widthMode];
   [shadowText calculateTextFrame:textStorage];
   NSLayoutManager *layoutManager = textStorage.layoutManagers.firstObject;
@@ -108,7 +108,7 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
 - (NSDictionary<NSString *, id> *)processUpdatedProperties:(NSMutableSet<RCTApplierBlock> *)applierBlocks
                                           parentProperties:(NSDictionary<NSString *, id> *)parentProperties
 {
-  if ([[self reactSuperview] isKindOfClass:[RNTShadowDraftJSEditor class]]) {
+  if ([[self reactSuperview] isKindOfClass:[RNDJShadowDraftJSEditor class]]) {
     return parentProperties;
   }
   
@@ -127,7 +127,7 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
   
   BOOL selectable = _selectable;
   [applierBlocks addObject:^(NSDictionary<NSNumber *, UIView *> *viewRegistry) {
-    RNTDraftJSEditor *view = (RNTDraftJSEditor *)viewRegistry[self.reactTag];
+    RNDJDraftJSEditor *view = (RNDJDraftJSEditor *)viewRegistry[self.reactTag];
     view.textFrame = textFrame;
     view.textStorage = textStorage;
     view.selectable = selectable;
@@ -161,9 +161,16 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
       YGNodeRef childNode = child.cssNode;
       float width = YGNodeStyleGetWidth(childNode).value;
       float height = YGNodeStyleGetHeight(childNode).value;
-      if (YGFloatIsUndefined(width) || YGFloatIsUndefined(height)) {
-        RCTLogError(@"Views nested within a <Text> must have a width and height");
+      if (YGFloatIsUndefined(width)) {
+        width = self.defaultAtomicWidth;
       }
+      if (YGFloatIsUndefined(height)) {
+        height = self.defaultAtomicHeight;
+      }
+
+//      if (YGFloatIsUndefined(width) || YGFloatIsUndefined(height)) {
+//        RCTLogError(@"Views nested within a <RNDJShadowDraftJsEditor> must have a width and height");
+//      }
       UIFont *font = [textStorage attribute:NSFontAttributeName atIndex:range.location effectiveRange:nil];
       CGRect glyphRect = [layoutManager boundingRectForGlyphRange:range inTextContainer:textContainer];
       CGRect childFrame = {{
@@ -271,7 +278,7 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
   
   BOOL isEmpty = YES;
   for (RNDJBlockModel* block in contentModel.blocks) {
-    if (!isInHighlightedState && [block.key isEqualToString:selectionModel.startKey]) {
+    if (!isInHighlightedState && [block.key isEqualToString:selectionModel.startKey] && ![block.key isEqualToString:selectionModel.endKey]) {
       isInHighlightedState = YES;
     } else if (isInHighlightedState && [block.key isEqualToString:selectionModel.endKey]) {
       isInHighlightedState = NO;
@@ -295,12 +302,17 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
       [self _appendText:placeholderText toAttributedString:contentAttributedString withStyle:placeholderStyle];
     }
   } else {
+    NSUInteger atomicBlockIndex = 0;
+    
     for (RNDJBlockModel* block in contentModel.blocks) {
       RNDJStyle* blockStyle = rootStyle;
       
       NSString* blockType = block.type;
       if ([blockType isEqualToString:@"atomic"]) {
-        // Skip for now
+        [self _attachAtomicBlock:block toAttributedString:contentAttributedString withViewIndex:atomicBlockIndex];
+        
+        atomicBlockIndex++;
+        // TODO: Selection rendering
         continue;
       }
       
@@ -377,7 +389,7 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
 
       
       if (selectionModel.hasFocus) {
-        if ([selectionModel.startKey isEqualToString:selectionModel.startKey] && [selectionModel.startKey isEqualToString:selectionModel.endKey] && selectionModel.startOffset == selectionModel.endOffset) {
+        if ([selectionModel.startKey isEqualToString:block.key] && [selectionModel.startKey isEqualToString:selectionModel.endKey] && selectionModel.startOffset == selectionModel.endOffset) {
           singleSelectionIndex = contentAttributedString.length + selectionModel.startOffset;
         } else {
           if (blockAttributedString.length > 0) {
@@ -487,45 +499,102 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
                       heightOfTallestSubview:heightOfTallestSubview
                                    withStyle:style];
   
-  //  for (RCTShadowView *child in [self reactSubviews]) {
-  //    if ([child isKindOfClass:[RCTShadowText class]]) {
-  //      RCTShadowText *shadowText = (RCTShadowText *)child;
-  //      [attributedString appendAttributedString:
-  //       [shadowText _attributedStringWithFontFamily:fontFamily
-  //                                          fontSize:fontSize
-  //                                        fontWeight:fontWeight
-  //                                         fontStyle:fontStyle
-  //                                     letterSpacing:letterSpacing
-  //                                useBackgroundColor:YES
-  //                                   foregroundColor:shadowText.color ?: foregroundColor
-  //                                   backgroundColor:shadowText.backgroundColor ?: backgroundColor
-  //                                           opacity:opacity * shadowText.opacity]];
-  //      [child setTextComputed];
-  //    } else if ([child isKindOfClass:[RCTShadowRawText class]]) {
-  //      RCTShadowRawText *shadowRawText = (RCTShadowRawText *)child;
-  //      [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:shadowRawText.text ?: @""]];
-  //      [child setTextComputed];
-  //    } else {
-  //      float width = YGNodeStyleGetWidth(child.cssNode).value;
-  //      float height = YGNodeStyleGetHeight(child.cssNode).value;
-  //      if (YGFloatIsUndefined(width) || YGFloatIsUndefined(height)) {
-  //        RCTLogError(@"Views nested within a <Text> must have a width and height");
-  //      }
-  //      NSTextAttachment *attachment = [NSTextAttachment new];
-  //      attachment.bounds = (CGRect){CGPointZero, {width, height}};
-  //      NSMutableAttributedString *attachmentString = [NSMutableAttributedString new];
-  //      [attachmentString appendAttributedString:[NSAttributedString attributedStringWithAttachment:attachment]];
-  //      [attachmentString addAttribute:RCTShadowViewAttributeName value:child range:(NSRange){0, attachmentString.length}];
-  //      [attributedString appendAttributedString:attachmentString];
-  //      if (height > heightOfTallestSubview) {
-  //        heightOfTallestSubview = height;
-  //      }
-  //      // Don't call setTextComputed on this child. RCTTextManager takes care of
-  //      // processing inline UIViews.
-  //    }
-  //  }
-  
   [outAttributedString appendAttributedString:attributedString];
+}
+
+- (void) _attachAtomicBlock:(RNDJBlockModel*)block toAttributedString:(NSMutableAttributedString*)outAttributedString withViewIndex:(NSUInteger)viewIndex
+{
+  NSArray* subviews = [self reactSubviews];
+  if (viewIndex >= subviews.count) {
+    return;
+  }
+  
+  RCTShadowView* child = [subviews objectAtIndex:viewIndex];
+  
+  float width = YGNodeStyleGetWidth(child.cssNode).value;
+  float height = YGNodeStyleGetHeight(child.cssNode).value;
+  if (YGFloatIsUndefined(width)) {
+    width = self.defaultAtomicWidth;
+  }
+  if (YGFloatIsUndefined(height)) {
+    height = self.defaultAtomicHeight;
+  }
+
+  NSTextAttachment *attachment = [NSTextAttachment new];
+  attachment.bounds = (CGRect){CGPointZero, {width, height}};
+  NSMutableAttributedString *attachmentString = [NSMutableAttributedString new];
+  [attachmentString appendAttributedString:[NSAttributedString attributedStringWithAttachment:attachment]];
+  [attachmentString addAttribute:RCTShadowViewAttributeName
+                           value:child
+                           range:NSMakeRange(0, attachmentString.length)];
+  [attachmentString addAttribute:RNDJDraftJsIndexAttributeName
+                           value:[[RNDJDraftJsIndex alloc] initWithKey:block.key offset:0]
+                           range:NSMakeRange(0, attachmentString.length)];
+  [outAttributedString appendAttributedString:attachmentString];
+
+//  for (RCTShadowView* child in [self reactSubviews]) {
+//    if ([child isKindOfClass:[RNDJShadowAtomicBaseView class]]) {
+//      RNDJShadowAtomicBaseView* wrapper = (RNDJShadowAtomicBaseView*)child;
+//
+//      if ([wrapper.blockKey isEqualToString:block.key]) {
+//        float width = YGNodeStyleGetWidth(child.cssNode).value;
+//        float height = YGNodeStyleGetHeight(child.cssNode).value;
+//        if (YGFloatIsUndefined(width) || YGFloatIsUndefined(height)) {
+//          RCTLogError(@"Views nested within a <Text> must have a width and height");
+//        }
+//        NSTextAttachment *attachment = [NSTextAttachment new];
+//        attachment.bounds = (CGRect){CGPointZero, {width, height}};
+//        NSMutableAttributedString *attachmentString = [NSMutableAttributedString new];
+//        [attachmentString appendAttributedString:[NSAttributedString attributedStringWithAttachment:attachment]];
+//        [attachmentString addAttribute:RCTShadowViewAttributeName value:child range:(NSRange){0, attachmentString.length}];
+//        [outAttributedString appendAttributedString:attachmentString];
+//
+////        if (height > heightOfTallestSubview) {
+////          heightOfTallestSubview = height;
+////        }
+//        // Don't call setTextComputed on this child. RCTTextManager takes care of
+//        // processing inline UIViews.
+//      }
+//    }
+//  }
+  
+//  for (RCTShadowView *child in [self reactSubviews]) {
+//    if ([child isKindOfClass:[RCTShadowText class]]) {
+//      RCTShadowText *shadowText = (RCTShadowText *)child;
+//      [attributedString appendAttributedString:
+//       [shadowText _attributedStringWithFontFamily:fontFamily
+//                                          fontSize:fontSize
+//                                        fontWeight:fontWeight
+//                                         fontStyle:fontStyle
+//                                     letterSpacing:letterSpacing
+//                                useBackgroundColor:YES
+//                                   foregroundColor:shadowText.color ?: foregroundColor
+//                                   backgroundColor:shadowText.backgroundColor ?: backgroundColor
+//                                           opacity:opacity * shadowText.opacity]];
+//      [child setTextComputed];
+//    } else if ([child isKindOfClass:[RCTShadowRawText class]]) {
+//      RCTShadowRawText *shadowRawText = (RCTShadowRawText *)child;
+//      [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:shadowRawText.text ?: @""]];
+//      [child setTextComputed];
+//    } else {
+//      float width = YGNodeStyleGetWidth(child.cssNode).value;
+//      float height = YGNodeStyleGetHeight(child.cssNode).value;
+//      if (YGFloatIsUndefined(width) || YGFloatIsUndefined(height)) {
+//        RCTLogError(@"Views nested within a <Text> must have a width and height");
+//      }
+//      NSTextAttachment *attachment = [NSTextAttachment new];
+//      attachment.bounds = (CGRect){CGPointZero, {width, height}};
+//      NSMutableAttributedString *attachmentString = [NSMutableAttributedString new];
+//      [attachmentString appendAttributedString:[NSAttributedString attributedStringWithAttachment:attachment]];
+//      [attachmentString addAttribute:RCTShadowViewAttributeName value:child range:(NSRange){0, attachmentString.length}];
+//      [attributedString appendAttributedString:attachmentString];
+//      if (height > heightOfTallestSubview) {
+//        heightOfTallestSubview = height;
+//      }
+//      // Don't call setTextComputed on this child. RCTTextManager takes care of
+//      // processing inline UIViews.
+//    }
+//  }
 }
 
 // TODO: Move this to run after the block so there can be no conflicting paragraph styles set from inline styles
@@ -667,8 +736,8 @@ RCT_TEXT_PROPERTY(TextShadowColor, _textShadowColor, UIColor *);
 {
   _allowFontScaling = allowFontScaling;
   for (RCTShadowView *child in [self reactSubviews]) {
-    if ([child isKindOfClass:[RNTShadowDraftJSEditor class]]) {
-      ((RNTShadowDraftJSEditor *)child).allowFontScaling = allowFontScaling;
+    if ([child isKindOfClass:[RNDJShadowDraftJSEditor class]]) {
+      ((RNDJShadowDraftJSEditor *)child).allowFontScaling = allowFontScaling;
     }
   }
   [self dirtyDraftJsText];
@@ -682,8 +751,8 @@ RCT_TEXT_PROPERTY(TextShadowColor, _textShadowColor, UIColor *);
     _fontSizeMultiplier = 1.0;
   }
   for (RCTShadowView *child in [self reactSubviews]) {
-    if ([child isKindOfClass:[RNTShadowDraftJSEditor class]]) {
-      ((RNTShadowDraftJSEditor *)child).fontSizeMultiplier = fontSizeMultiplier;
+    if ([child isKindOfClass:[RNDJShadowDraftJSEditor class]]) {
+      ((RNDJShadowDraftJSEditor *)child).fontSizeMultiplier = fontSizeMultiplier;
     }
   }
   [self dirtyDraftJsText];

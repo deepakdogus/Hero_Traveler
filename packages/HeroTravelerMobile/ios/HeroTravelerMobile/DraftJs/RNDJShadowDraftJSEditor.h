@@ -1,5 +1,5 @@
 //
-//  RNTShadowDraftJSEditor.h
+//  RNDJShadowDraftJSEditor.h
 //  RNDraftJs
 //
 //  Created by Andrew Beck on 10/23/17.
@@ -24,7 +24,7 @@ extern NSString *const RCTReactTagAttributeName;
 extern NSString *const RNDJSingleCursorPositionAttributeName;
 extern NSString *const RNDJDraftJsIndexAttributeName;
 
-@interface RNTShadowDraftJSEditor : RCTShadowView
+@interface RNDJShadowDraftJSEditor : RCTShadowView
 {
   RNDJContentModel* contentModel;
   RNDJSelectionModel* selectionModel;
@@ -35,6 +35,10 @@ extern NSString *const RNDJDraftJsIndexAttributeName;
 @property (nonatomic, copy) NSDictionary *selection;
 @property (nonatomic, copy) NSDictionary *blockFontTypes;
 @property (nonatomic, copy) NSDictionary *inlineStyleFontTypes;
+
+@property (nonatomic, assign) CGFloat defaultAtomicWidth;
+@property (nonatomic, assign) CGFloat defaultAtomicHeight;
+
 
 @property (nonatomic, copy) NSString *fontFamily;
 @property (nonatomic, assign) CGFloat fontSize;

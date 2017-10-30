@@ -11,11 +11,11 @@ import {
   StyleSheet,
   Text,
   View,
-  requireNativeComponent,
   processColor,
 } from 'react-native'
 
 import {
+  NativeEditor,
   EditorState,
   RichUtils,
   applyStyle,
@@ -31,10 +31,17 @@ import {
 } from './libs/draft-js'
 import * as DJSConsts from './libs/draft-js/constants'
 
-import { PressTypes } from '../NewEditor/Toolbar'
+import { PressTypes } from './Toolbar'
 import Metrics from '../../Shared/Themes/Metrics'
 
-const DraftJSEditor = requireNativeComponent('RNTDraftJSEditor', null)
+import {
+  DraftJsImage,
+  DraftJsVideo,
+} from './Components'
+
+import Image from '../Image'
+import { getImageUrlBase } from "../../Shared/Lib/getImageUrl"
+
 const { width } = Dimensions.get('window')
 
 export default class RNDraftJs extends Component {
@@ -47,14 +54,40 @@ export default class RNDraftJs extends Component {
       editorState = EditorState.createEmpty()
     }
 
+    const {hasFocus, blockType} = this.getToolbarInfo(editorState)
+    setTimeout(() => {
+      this.props.setHasFocus(hasFocus)
+      this.props.setBlockType(blockType)
+    }, 1)
+
     this.state = {
       editorState,
     }
   }
 
+  getToolbarInfo = (editorState) => {
+    const contentState = editorState.getCurrentContent()
+    const selectionState = editorState.getSelection()
+
+    const hasFocus = selectionState.getHasFocus()
+    const blockType = contentState.getBlockForKey(selectionState.getAnchorKey()).getType()
+
+    return {hasFocus, blockType}
+  }
+
   onChange = (editorState) => {
     if (editorState) {
-      this.setState({...this.state, editorState})
+      const previous = this.getToolbarInfo(this.state.editorState)
+      this.setState({editorState})
+      const current = this.getToolbarInfo(editorState)
+
+      if (previous.hasFocus != current.hasFocus) {
+        this.props.setHasFocus(current.hasFocus)
+      }
+
+      if (previous.blockType != current.blockType) {
+        this.props.setBlockType(current.blockType)
+      }
     }
   }
 
@@ -83,8 +116,12 @@ export default class RNDraftJs extends Component {
   }
 
   _onSelectionChangeRequest = (event) => {
+    this.updateSelectionState(event.nativeEvent)
+  }
+
+  updateSelectionState = (newSelectionState) => {
     let { editorState } = this.state
-    let { hasFocus } = event.nativeEvent
+    let { hasFocus } = newSelectionState
 
     var currentState = editorState
     var stateChanged = false
@@ -96,7 +133,7 @@ export default class RNDraftJs extends Component {
       }
     }
 
-    let { startKey, startOffset, endKey, endOffset } = event.nativeEvent
+    let { startKey, startOffset, endKey, endOffset } = newSelectionState
     if (startKey && endKey && startOffset != undefined && endOffset != undefined) {
       let newState = updateSelectionAnchorAndFocus(this.state.editorState, startKey, startOffset, endKey, endOffset)
       if (newState) {
@@ -120,15 +157,86 @@ export default class RNDraftJs extends Component {
   }
 
   insertAtomicBlock = (type, url) => {
-    this.onChange(insertAtomicBlock(this.state.editorState, type, url, convertToRaw))
+    this.onChange(insertAtomicBlock(this.state.editorState, type, url))
   }
 
-  toggleHeader() {
+  toggleHeader = () => {
     this.onChange(RichUtils.toggleBlockType(this.state.editorState, DJSConsts.HeaderOne))
   }
 
-  toggleNormal() {
+  toggleNormal = () => {
     this.onChange(RichUtils.toggleBlockType(this.state.editorState, DJSConsts.Unstyled))
+  }
+
+  shouldUnfocus = true
+
+  // Editor Toolbar should only render when a block is focused
+  onFocus = (blockKey) => {
+    if (!this.state.focusedBlock && blockKey) {
+      this.shouldUnfocus = false
+      this.props.setToolbarDisplay(true)
+    }
+    else if (this.state.focusedBlock && !blockKey) {
+      this.shouldUnfocus = true
+      /*
+      adding slight timeout to avoid the flicker caused by the split amount of time between
+      contentBlock focus change. This would hide the toolbar for a split second
+      */
+      setTimeout(() => {
+        if (this.shouldUnfocus) {
+          this.props.setToolbarDisplay(false)
+        }
+      }, 50);
+    }
+    this.setState({focusedBlock: blockKey})
+  }
+
+  deleteAtomicBlock = (blockKey) => {
+    var newState = updateSelectionAnchorAndFocus(this.state.editorState, blockKey, 0, blockKey, 0)
+    if (!newState) {
+      return
+    }
+    
+    newState = backspace(newState, 'backspace')
+    if (!newState) {
+      return
+    }
+
+    this.onChange(newState)
+  } 
+
+  atomicHandler = (block) => {
+    const editorState = this.state.editorState
+    const selection = editorState.getSelection()
+    const selectedKey = selection.getStartKey()
+
+    // TODO: Range: When range selection is added, this will need to take range into account
+    const isSelected = block.key == selectedKey
+
+    switch (block.data.type) {
+      case 'image':
+        return (
+          <DraftJsImage
+            style={styles.imageView}
+            key={block.key}
+            url={block.data.url}
+            isSelected={isSelected} 
+            onPress={()=>this.updateSelectionState({startKey: block.key, endKey: block.key, startOffset: 0, endOffset: 0})}
+            onDelete={()=>this.deleteAtomicBlock(block.key)}
+            />
+          )
+      case 'video':
+        return (
+          <DraftJsVideo
+            style={styles.videoView}
+            key={block.key}
+            url={block.data.url}
+            isSelected={isSelected} 
+            onPress={()=>this.updateSelectionState({startKey: block.key, endKey: block.key, startOffset: 0, endOffset: 0})}
+            onDelete={()=>this.deleteAtomicBlock(block.key)}
+            />
+        )
+    }
   }
 
   onToolbarPress = (pressType) => {
@@ -145,7 +253,7 @@ export default class RNDraftJs extends Component {
     }
   }
 
-  render() {
+  render = () => {
     let { editorState } = this.state
 
     let contentState = editorState.getCurrentContent()
@@ -160,23 +268,33 @@ export default class RNDraftJs extends Component {
     }
 
     let content = convertToRaw(contentState)
+    let blocks = content.blocks || []
+    let blockViews = blocks
+              .filter(block => block.type == 'atomic')
+              .map(block => this.atomicHandler(block))
+
     return (
       <View style={[styles.root, this.props.style]}>
         <View style={styles.innerScroll}>
-          <DraftJSEditor
-          content={content}
+          <NativeEditor
           style={styles.draftTest}
+          content={content}
+          selection={selection}
           blockFontTypes={blockFontTypes}
           inlineStyleFontTypes={inlineStyleFontTypes} 
           onInsertTextRequest={this._onInsertTextRequest}
           onBackspaceRequest={this._onBackspaceRequest}
           onNewlineRequest={this._onNewlineRequest}
           onSelectionChangeRequest={this._onSelectionChangeRequest}
-          selection={selection}
           placeholderText="Enter text here"
           selectionColor={'#000000'}
-          selectionOpacity={1}>
-          </DraftJSEditor>
+          selectionOpacity={1}
+          defaultAtomicWidth={Metrics.screenWidth}
+          defaultAtomicHeight={200}>
+          {
+            blockViews
+          }
+          </NativeEditor>
         </View>
       </View>
     );
@@ -286,6 +404,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#757575',
     fontWeight: '400',
+  },
+  imageView: {
+    width: Metrics.screenWidth,
+    height: 200,
+  },
+  videoView: {
+    width: Metrics.screenWidth,
+    height: 200,
   }
-
 });

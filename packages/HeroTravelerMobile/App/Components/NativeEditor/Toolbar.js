@@ -9,7 +9,7 @@ import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import TabIcon from '../TabIcon'
 import {Colors, Metrics} from '../../Shared/Themes'
-import * as DJSConsts from './draft-js/constants'
+import * as DJSConsts from './libs/draft-js/constants'
 
 const ToolbarIcon = ({name, color, isTabIcon, extraStyle = {}}) => {
   return (
@@ -64,7 +64,7 @@ export default class Toolbar extends React.Component {
     this.state = {
       showTextMenu: false,
       display: false,
-      isNormalText: true,
+      blockType: null,
     }
 
     this.toggleTextMenu = () =>
@@ -76,26 +76,35 @@ export default class Toolbar extends React.Component {
     this.setState({showTextMenu: false})
   }
 
+  setBlockType = (blockType) => {
+    this.setState({blockType})
+  }
+
   toggleText = () => {
-    if (this.state.isNormalText) {
+    if (this.state.blockType == 'unstyled') {
       this.pressHeader()
-      this.setState({isNormalText: false})
     }
     else {
       this.pressNormal()
-      this.setState({isNormalText: true})
     }
   }
 
   renderMainToolbar() {
-    const textIconName = this.state.isNormalText ? 'normalText' : 'headerText'
+    var textIconName = null
+    if (this.state.blockType == 'unstyled') {
+      textIconName = 'normalText'
+    } else if (this.state.blockType == 'header-one') {
+      textIconName = 'headerText'
+    }
+
     return (
       <View style={styles.list}>
         <Btn
+          opacity={0.5}
           onPress={this.toggleText}
           style={styles.borderRight}
         >
-          <ToolbarIcon name={textIconName} isTabIcon/>
+          {!!this.state.blockType && <ToolbarIcon opacity={0.5} name={textIconName} isTabIcon/>}
         </Btn>
         <Btn onPress={this.pressImage} style={styles.borderRight}>
           <ToolbarIcon name='image' />

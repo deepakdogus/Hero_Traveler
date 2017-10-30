@@ -124,9 +124,15 @@ export default class StoryDetails extends React.Component {
 
   handleDayClick = (day) => {
     this.setState({
-      day: Moment(day).format('MM-DD-YYYY'),
-      showDayPicker: !this.state.showDayPicker,
+      showPicker: undefined,
     })
+    this.props.onInputChange({
+      tripDate: day,
+    })
+  }
+
+  handleRadioChange = (event, value) => {
+    this.props.onInputChange({type: value})
   }
 
   handleTagClick = (event) => {
@@ -144,14 +150,22 @@ export default class StoryDetails extends React.Component {
     this.setState({
       listTags: this.state.listTags.concat([clickedTile]).sort(),
       tileTags: _.pull(this.state.tileTags, clickedTile),
-      showTagPicker: false,
+      showPicker: undefined,
     })
   }
 
-  toggleDayPicker = () => this.setState({ showDayPicker: !this.state.showDayPicker })
+  togglePicker = (name) => {
+    let nextPickerState = name
+    if (this.state.showPicker === name) nextPickerState = undefined
+    this.setState({ showPicker: nextPickerState })
+ }
 
-  toggleTagPicker = () => {
-    this.setState({ showTagPicker: !this.state.showTagPicker })
+  toggleDayPicker = () => this.togglePicker('day')
+  toggleTagPicker = () => this.togglePicker('tag')
+
+  formatTripDate = (day) => {
+    if (!day) return undefined
+    else return Moment(day).format('MM-DD-YYYY')
   }
 
   render() {
@@ -174,22 +188,23 @@ export default class StoryDetails extends React.Component {
           <StyledInput
             type='text'
             placeholder={'MM-DD-YYYY'}
-            value={this.state.day}
+            value={this.formatTripDate(workingDraft.tripDate)}
             onClick={this.toggleDayPicker}
           />
-          {this.state.showDayPicker &&
+          {this.state.showPicker === 'day' &&
             <StyledReactDayPicker
               handleDayClick={this.handleDayClick}
             />
           }
         </InputRowContainer>
         <HorizontalDivider color='lighter-grey' opaque/>
-        <InputRowContainer onClick={this.toggleTagPicker}>
+        <InputRowContainer>
           <TagIcon name='tag'/>
           <StyledInput
             type='text'
             placeholder={!this.state.tileTags.length ? 'Add tags' : ''}
             value={''}
+            onClick={this.toggleTagPicker}
           />
           {!!this.state.tileTags.length &&
             <TagTileGrid
@@ -197,7 +212,7 @@ export default class StoryDetails extends React.Component {
               handleTileClick={this.handleTileClick}
             />
           }
-          {this.state.showTagPicker &&
+          {this.state.showPicker === 'tag' &&
             <MultiTagPicker
               handleTagClick={this.handleTagClick}
               listTags={this.state.listTags}
@@ -208,7 +223,12 @@ export default class StoryDetails extends React.Component {
         <InputRowContainer>
           <ActivitySelectRow>
             <label>Activity: </label>
-              <RadioButtonGroup name="activity" defaultSelected="eat" style={styles.radioButtonGroup}>
+              <RadioButtonGroup
+                valueSelected={workingDraft.type}
+                name="activity"
+                style={styles.radioButtonGroup}
+                onChange={this.handleRadioChange}
+              >
                 <RadioButton
                   value="eat"
                   label="EAT"

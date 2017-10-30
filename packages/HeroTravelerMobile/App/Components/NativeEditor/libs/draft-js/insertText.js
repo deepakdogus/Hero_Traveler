@@ -23,14 +23,14 @@ export default function insertText(editorState, text) {
   }
 
   const newContentState = Modifier.replaceText(
-    editorState.getCurrentContent(),
-    editorState.getSelection(),
+    newEditorState.getCurrentContent(),
+    newEditorState.getSelection(),
     text,
-    editorState.getCurrentInlineStyle()
+    newEditorState.getCurrentInlineStyle()
   )
 
   return EditorState.push(
-    editorState,
+    newEditorState,
     newContentState,
     'insert-characters'
   )

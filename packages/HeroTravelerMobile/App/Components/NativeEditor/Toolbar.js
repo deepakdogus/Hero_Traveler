@@ -100,11 +100,10 @@ export default class Toolbar extends React.Component {
     return (
       <View style={styles.list}>
         <Btn
-          opacity={0.5}
           onPress={this.toggleText}
           style={styles.borderRight}
         >
-          {!!this.state.blockType && <ToolbarIcon opacity={0.5} name={textIconName} isTabIcon/>}
+          {!!this.state.blockType && <ToolbarIcon name={textIconName} isTabIcon/>}
         </Btn>
         <Btn onPress={this.pressImage} style={styles.borderRight}>
           <ToolbarIcon name='image' />

@@ -8,7 +8,7 @@ export default function insertBlock(editorState, blockKey, options = {}) {
   _.defaults(options, {
     type: 'unstyled',
     direction: 'after',
-    text: ' ',
+    text: '',
     data: {},
     selection: editorState.getSelection(),
     selectNewBlock: false

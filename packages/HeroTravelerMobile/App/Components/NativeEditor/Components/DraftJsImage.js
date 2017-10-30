@@ -19,11 +19,11 @@ export default class DraftJsImage extends Component {
     const onDelete = this.props.onDelete
 
     const imageEditOverlay = (
-        <View style={styles.assetEditOverlay}>
-          <TouchableOpacity onPress={onDelete}>
-            <Icon name='trash' color={Colors.snow} size={30} />
-          </TouchableOpacity>
-        </View>
+      <View style={styles.assetEditOverlay}>
+        <TouchableOpacity onPress={onDelete}>
+          <Icon name='trash' color={Colors.snow} size={30} />
+        </TouchableOpacity>
+      </View>
     )
   
     return (

@@ -127,8 +127,7 @@ export default class RNDraftJs extends Component {
     var currentState = editorState
     var stateChanged = false
     if (hasFocus != undefined) {
-      let newState = updateSelectionHasFocus(this.state.editorState, hasFocus)
-      // this.props.setHasFocus(hasFocus)
+      let newState = updateSelectionHasFocus(currentState, hasFocus)
       if (newState) {
         currentState = newState
         stateChanged = true
@@ -137,7 +136,7 @@ export default class RNDraftJs extends Component {
 
     let { startKey, startOffset, endKey, endOffset } = newSelectionState
     if (startKey && endKey && startOffset != undefined && endOffset != undefined) {
-      let newState = updateSelectionAnchorAndFocus(this.state.editorState, startKey, startOffset, endKey, endOffset)
+      let newState = updateSelectionAnchorAndFocus(currentState, startKey, startOffset, endKey, endOffset)
       if (newState) {
         currentState = newState
         stateChanged = true

@@ -90,10 +90,11 @@ export default class Toolbar extends React.Component {
   }
 
   renderMainToolbar() {
+    const {blockType} = this.state
     var textIconName = null
-    if (this.state.blockType == 'unstyled') {
+    if (blockType === 'unstyled' || blockType === 'atomic') {
       textIconName = 'normalText'
-    } else if (this.state.blockType == 'header-one') {
+    } else if (blockType === 'header-one') {
       textIconName = 'headerText'
     }
 

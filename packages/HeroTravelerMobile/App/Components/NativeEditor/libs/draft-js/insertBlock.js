@@ -39,7 +39,7 @@ export default function insertBlock(editorState, blockKey, options = {}) {
   let nextSelection
 
   if (options.selectNewBlock === true) {
-    nextSelection = makeSelectionState(newBlockKey, newBlockKey, 0, 0)
+    nextSelection = makeSelectionState(newBlockKey, newBlockKey, 0, 0, true)
   } else {
     nextSelection = options.selection
   }

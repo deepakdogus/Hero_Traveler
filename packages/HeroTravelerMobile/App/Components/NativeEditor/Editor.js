@@ -313,9 +313,10 @@ const blockFontTypes = {
 //    allowFontScaling: boolean
 //  },
   unstyled: { // No real need to use since values from styles are already used
+    fontSize: 18,
   },
   headerOne: {
-    fontSize: 30,
+    fontSize: 21,
     fontWeight: '600',
     color: processColor('#1a1c21'),
   },
@@ -343,6 +344,7 @@ const blockFontTypes = {
     fontSize: 15,
     color: processColor('#757575'),
     fontStyle: 'italic',
+    textAlign: 'center'
   },
 }
 

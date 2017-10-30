@@ -561,7 +561,7 @@ class StoryCoverScreen extends Component {
     })
     .catch((err) => {
       this.saveFailed()
-      console.log(`Failed saving story: ${err}`)  
+      console.log(`Failed saving story: ${err}`)
       return Promise.reject(err)
     })
   }

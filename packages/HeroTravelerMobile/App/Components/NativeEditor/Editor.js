@@ -33,6 +33,7 @@ import * as DJSConsts from './libs/draft-js/constants'
 
 import { PressTypes } from './Toolbar'
 import Metrics from '../../Shared/Themes/Metrics'
+import Colors from '../../Shared/Themes/Colors'
 
 import {
   DraftJsImage,
@@ -127,6 +128,7 @@ export default class RNDraftJs extends Component {
     var stateChanged = false
     if (hasFocus != undefined) {
       let newState = updateSelectionHasFocus(this.state.editorState, hasFocus)
+      // this.props.setHasFocus(hasFocus)
       if (newState) {
         currentState = newState
         stateChanged = true
@@ -173,14 +175,14 @@ export default class RNDraftJs extends Component {
     if (!newState) {
       return
     }
-    
+
     newState = backspace(newState, 'backspace')
     if (!newState) {
       return
     }
 
     this.onChange(newState)
-  } 
+  }
 
   atomicHandler = (block) => {
     const editorState = this.state.editorState
@@ -197,7 +199,7 @@ export default class RNDraftJs extends Component {
             style={styles.imageView}
             key={block.key}
             url={block.data.url}
-            isSelected={isSelected} 
+            isSelected={isSelected}
             onPress={()=>this.updateSelectionState({startKey: block.key, endKey: block.key, startOffset: 0, endOffset: 0})}
             onDelete={()=>this.deleteAtomicBlock(block.key)}
             />
@@ -208,7 +210,7 @@ export default class RNDraftJs extends Component {
             style={styles.videoView}
             key={block.key}
             url={block.data.url}
-            isSelected={isSelected} 
+            isSelected={isSelected}
             onPress={()=>this.updateSelectionState({startKey: block.key, endKey: block.key, startOffset: 0, endOffset: 0})}
             onDelete={()=>this.deleteAtomicBlock(block.key)}
             />
@@ -228,6 +230,11 @@ export default class RNDraftJs extends Component {
       default:
         return this.toggleNormal()
     }
+  }
+
+
+  getEditorStateAsObject() {
+    return convertToRaw(this.state.editorState.getCurrentContent())
   }
 
   render = () => {
@@ -258,7 +265,7 @@ export default class RNDraftJs extends Component {
           content={content}
           selection={selection}
           blockFontTypes={blockFontTypes}
-          inlineStyleFontTypes={inlineStyleFontTypes} 
+          inlineStyleFontTypes={inlineStyleFontTypes}
           onInsertTextRequest={this._onInsertTextRequest}
           onBackspaceRequest={this._onBackspaceRequest}
           onNewlineRequest={this._onNewlineRequest}
@@ -268,7 +275,8 @@ export default class RNDraftJs extends Component {
           selectionOpacity={1}
           defaultAtomicWidth={Metrics.screenWidth}
           defaultAtomicHeight={200}
-          paragraphSpacing={25}>
+          paragraphSpacing={25}
+          >
           {
             blockViews
           }
@@ -398,15 +406,14 @@ const styles = StyleSheet.create({
   draftTest: {
     width: width,
     textAlign: 'left',
-    color: '#333333',
     minHeight: 38,
     fontSize: 18,
-    color: '#757575',
+    color: Colors.grey,
     fontWeight: '400',
 
     paddingTop: 10,
-    paddingRight: 10,
-    paddingLeft: 10,
+    paddingRight: 20,
+    paddingLeft: 20,
 
     paddingBottom: 100,
   },

@@ -25,7 +25,7 @@ export default class DraftJsImage extends Component {
         </TouchableOpacity>
       </View>
     )
-  
+
     return (
       <TouchableWithoutFeedback
        style={this.props.style}

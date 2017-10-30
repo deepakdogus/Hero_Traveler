@@ -51,6 +51,6 @@ export default function insertBlock(editorState, blockKey, options = {}) {
     selectionAfter: nextSelection,
   })
   let newState = EditorState.push(editorState, newContentState, 'insert-fragment')
-  newState = EditorState.forceSelection(newState, nextSelection)
+  newState = EditorState.acceptSelection(newState, nextSelection)
   return newState
 }

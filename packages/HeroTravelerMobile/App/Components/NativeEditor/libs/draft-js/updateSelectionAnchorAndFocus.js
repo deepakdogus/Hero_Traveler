@@ -5,7 +5,7 @@ export default function updateSelectionAnchorAndFocus(editorState, anchorKey, an
     .getSelection()
     .merge({anchorKey, anchorOffset, focusKey, focusOffset})
 
-  return EditorState.forceSelection(
+  return EditorState.acceptSelection(
     editorState,
     selectionState
     )

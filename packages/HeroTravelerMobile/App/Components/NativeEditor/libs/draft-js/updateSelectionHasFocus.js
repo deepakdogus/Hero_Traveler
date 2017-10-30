@@ -5,7 +5,7 @@ export default function updateSelectionHasFocus(editorState, hasFocus) {
     .getSelection()
     .merge({hasFocus})
 
-  return EditorState.forceSelection(
+  return EditorState.acceptSelection(
     editorState,
     selectionState
     )

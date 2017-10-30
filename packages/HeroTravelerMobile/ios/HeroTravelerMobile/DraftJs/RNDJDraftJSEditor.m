@@ -427,6 +427,7 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
                                  @"startOffset": @(offset),
                                  @"endKey": blockKey,
                                  @"endOffset": @(offset),
+                                 @"hasFocus": @YES,
                                  });
     }
   }

@@ -7,18 +7,15 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native'
-import Image from '../../Image'
+import Video from '../../Video'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { getVideoUrlBase } from "../../../Shared/Lib/getVideoUrl"
 
 export default class DraftJsVideo extends Component {
   render = () => {
-    const url = data.get('url')
-    const videoUrl = `${getVideoUrlBase()}/${url}`
+    const {url, isSelected, onPress, onDelete, style} = this.props
 
-    const isSelected = this.props.isSelected
-    const onPress = this.props.onPress
-    const onDelete = this.props.onDelete
+    const videoUrl = `${getVideoUrlBase()}/${url}`
 
     const imageEditOverlay = (
       <View style={styles.assetEditOverlay}>
@@ -30,7 +27,7 @@ export default class DraftJsVideo extends Component {
   
     return (
       <TouchableWithoutFeedback
-       style={this.props.style}
+       style={style}
        onPress={onPress}>
         <View style={styles.abs}>
           <Video

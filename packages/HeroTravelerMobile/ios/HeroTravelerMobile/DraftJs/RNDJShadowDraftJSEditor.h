@@ -63,6 +63,8 @@ extern NSString *const RNDJDraftJsIndexAttributeName;
 
 @property (nonatomic, copy) NSString *placeholderText;
 
+@property (nonatomic, assign) CGFloat paragraphSpacing;
+
 - (void)recomputeText;
 
 @end

@@ -21,27 +21,9 @@ export default function insertAtomicBlock(editorState, type, url) {
         type: type,
         url: url
       },
+      selectNewBlock: true,
     }
   )
-
-  // If new atomic block is the last block, create a text block at the end
-  const newAtomicBlockKey = newEditorState.getCurrentContent().getBlockAfter(insertAfterKey).getKey()
-  const newLastBlockKey = newEditorState.getCurrentContent().getLastBlock().getKey()
-
-  if (newAtomicBlockKey == newLastBlockKey) {
-    newEditorState = insertBlock(
-      newEditorState,
-      newLastBlockKey,
-      {
-        type: 'unstyled'
-      }
-    )
-  }
-
-  // Take focus and move cursor after the image
-  const blockToSelect = newEditorState.getCurrentContent().getBlockAfter(newAtomicBlockKey).getKey()
-  newEditorState = updateSelectionHasFocus(newEditorState, true)
-  newEditorState = updateSelectionAnchorAndFocus(newEditorState, blockToSelect, 0, blockToSelect, 0)
 
   return newEditorState
 }

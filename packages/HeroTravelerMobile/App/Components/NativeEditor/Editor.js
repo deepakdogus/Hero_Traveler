@@ -168,29 +168,6 @@ export default class RNDraftJs extends Component {
     this.onChange(RichUtils.toggleBlockType(this.state.editorState, DJSConsts.Unstyled))
   }
 
-  shouldUnfocus = true
-
-  // Editor Toolbar should only render when a block is focused
-  onFocus = (blockKey) => {
-    if (!this.state.focusedBlock && blockKey) {
-      this.shouldUnfocus = false
-      this.props.setToolbarDisplay(true)
-    }
-    else if (this.state.focusedBlock && !blockKey) {
-      this.shouldUnfocus = true
-      /*
-      adding slight timeout to avoid the flicker caused by the split amount of time between
-      contentBlock focus change. This would hide the toolbar for a split second
-      */
-      setTimeout(() => {
-        if (this.shouldUnfocus) {
-          this.props.setToolbarDisplay(false)
-        }
-      }, 50);
-    }
-    this.setState({focusedBlock: blockKey})
-  }
-
   deleteAtomicBlock = (blockKey) => {
     var newState = updateSelectionAnchorAndFocus(this.state.editorState, blockKey, 0, blockKey, 0)
     if (!newState) {
@@ -290,7 +267,8 @@ export default class RNDraftJs extends Component {
           selectionColor={'#000000'}
           selectionOpacity={1}
           defaultAtomicWidth={Metrics.screenWidth}
-          defaultAtomicHeight={200}>
+          defaultAtomicHeight={200}
+          paragraphSpacing={25}>
           {
             blockViews
           }
@@ -307,6 +285,26 @@ export default class RNDraftJs extends Component {
 // Can add other types as needed
 // Must call 'processColor' on any colors used here
 const blockFontTypes = {
+//  supportedValues: { // see https://facebook.github.io/react-native/docs/text.html
+//          fontFamily: string
+//            fontSize: number
+//          fontWeight: enum('normal', 'bold', '100', '200', '300', '400', '500', '600', '700', '800', '900')
+//           fontStyle: enum('normal', 'italic')
+//         fontVariant: [enum('small-caps', 'oldstyle-nums', 'lining-nums', 'tabular-nums', 'proportional-nums')]
+//       letterSpacing: number
+//               color: color
+//     backgroundColor: color
+//             opacity: number
+//           textAlign: enum('auto', 'left', 'right', 'center', 'justify')
+//          lineHeight: number
+//  textDecorationLine: enum('none', 'underline', 'line-through', 'underline line-through')
+// textDecorationStyle: enum('solid', 'double', 'dotted', 'dashed')
+// textDecorationColor: color
+//    textShadowOffset: {width: number, height: number}
+//    textShadowRadius: number
+//     textShadowColor: color
+//    allowFontScaling: boolean
+//  },
   unstyled: { // No real need to use since values from styles are already used
   },
   headerOne: {
@@ -334,8 +332,10 @@ const blockFontTypes = {
   codeBlock: {
   },
   atomic: {
+    backgroundColor: processColor('#000000'),
     fontSize: 15,
     color: processColor('#757575'),
+    fontStyle: 'italic',
   },
 }
 

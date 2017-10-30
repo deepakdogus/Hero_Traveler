@@ -312,8 +312,6 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
         [self _attachAtomicBlock:block toAttributedString:contentAttributedString withViewIndex:atomicBlockIndex];
         
         atomicBlockIndex++;
-        // TODO: Selection rendering
-        continue;
       }
       
       NSMutableAttributedString* blockAttributedString = [NSMutableAttributedString new];
@@ -652,7 +650,7 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
   }
 
   // if we found anything, set it :D
-  if (hasParagraphStyle) {
+  if (hasParagraphStyle || _paragraphSpacing > 0) {
     NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
     paragraphStyle.alignment = style.textAlign;
     paragraphStyle.baseWritingDirection = NSWritingDirectionNatural;
@@ -662,6 +660,7 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
     }
     paragraphStyle.minimumLineHeight = lineHeight;
     paragraphStyle.maximumLineHeight = lineHeight;
+    paragraphStyle.paragraphSpacing = _paragraphSpacing;
     [attributedString addAttribute:NSParagraphStyleAttributeName
                              value:paragraphStyle
                              range:fullRange];

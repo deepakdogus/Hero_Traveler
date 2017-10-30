@@ -11,7 +11,7 @@ export default function backspace(editorState, command) {
 
   var atomicBlockKeyToDelete = null
 
-  if (contentState.getBlockForKey(selectedKey).getType() == 'atomic') {
+  if (contentState.getBlockForKey(selectedKey).getType() == 'atomic' && selectedOffset == 0) {
     atomicBlockKeyToDelete = selectedKey
   } else if (selectedOffset == 0) {
     const blockBeforeSelection = contentState.getBlockBefore(selectedKey)

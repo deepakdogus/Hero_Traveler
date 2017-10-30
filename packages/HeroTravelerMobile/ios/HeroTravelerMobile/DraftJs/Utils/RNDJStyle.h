@@ -17,15 +17,15 @@
 @property (nonatomic, copy) NSString *fontWeight;
 @property (nonatomic, copy) NSString *fontStyle;
 @property (nonatomic, copy) NSArray *fontVariant;
-@property (nonatomic, assign) NSNumber *letterSpacing;
+@property (nonatomic, copy) NSNumber *letterSpacing;
 @property (nonatomic, strong) UIColor *color;
 @property (nonatomic, strong) UIColor *backgroundColor;
-@property (nonatomic, assign) NSNumber *opacity;
+@property (nonatomic, copy) NSNumber *opacity;
 
 @property (nonatomic, assign) BOOL wasTextAlignSet;
 @property (nonatomic, assign) NSTextAlignment textAlign;
 
-@property (nonatomic, assign) NSNumber *lineHeight;
+@property (nonatomic, copy) NSNumber *lineHeight;
 
 @property (nonatomic, assign) BOOL wasTextDecorationStyleSet;
 @property (nonatomic, assign) NSUnderlineStyle textDecorationStyle;

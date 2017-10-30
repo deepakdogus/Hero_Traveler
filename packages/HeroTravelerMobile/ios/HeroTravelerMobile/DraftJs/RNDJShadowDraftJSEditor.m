@@ -175,7 +175,7 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
       CGRect glyphRect = [layoutManager boundingRectForGlyphRange:range inTextContainer:textContainer];
       CGRect childFrame = {{
         RCTRoundPixelValue(glyphRect.origin.x),
-        RCTRoundPixelValue(glyphRect.origin.y + glyphRect.size.height - height + font.descender)
+        RCTRoundPixelValue(glyphRect.origin.y + self.paddingAsInsets.top + glyphRect.size.height - height + font.descender)
       }, {
         RCTRoundPixelValue(width),
         RCTRoundPixelValue(height)
@@ -524,6 +524,7 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
   attachment.bounds = (CGRect){CGPointZero, {width, height}};
   NSMutableAttributedString *attachmentString = [NSMutableAttributedString new];
   [attachmentString appendAttributedString:[NSAttributedString attributedStringWithAttachment:attachment]];
+  [attachmentString appendAttributedString:[[NSAttributedString alloc] initWithString:@" \n"]];
   [attachmentString addAttribute:RCTShadowViewAttributeName
                            value:child
                            range:NSMakeRange(0, attachmentString.length)];

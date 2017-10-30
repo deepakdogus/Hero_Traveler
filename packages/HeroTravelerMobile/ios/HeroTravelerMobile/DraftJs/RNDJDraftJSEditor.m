@@ -121,6 +121,9 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
 
 - (RNDJDraftJsIndex*) draftJsIndexForPointInView:(CGPoint)point
 {
+  point.y -= _contentInset.top;
+  point.x -= _contentInset.left;
+  
 #if DEBUG_TOUCHES
   debugTouchesToLeft.constant = point.x;
   debugTouchesToTop.constant = point.y;

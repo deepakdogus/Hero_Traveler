@@ -399,11 +399,16 @@ const styles = StyleSheet.create({
     width: width,
     textAlign: 'left',
     color: '#333333',
-    marginBottom: 5,
-    minHeight: 35,
+    minHeight: 38,
     fontSize: 18,
     color: '#757575',
     fontWeight: '400',
+
+    paddingTop: 10,
+    paddingRight: 10,
+    paddingLeft: 10,
+
+    paddingBottom: 100,
   },
   imageView: {
     width: Metrics.screenWidth,

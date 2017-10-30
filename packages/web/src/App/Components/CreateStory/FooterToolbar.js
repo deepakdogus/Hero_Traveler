@@ -20,6 +20,7 @@ export default class FooterToolbar extends Component {
     isDetailsView: PropTypes.bool,
     discardDraft: PropTypes.func,
     updateDraft: PropTypes.func,
+    onRight: PropTypes.func,
   }
 
   renderIcons = () => {
@@ -51,7 +52,7 @@ export default class FooterToolbar extends Component {
   }
 
   renderButtons = () => {
-    const {isDetailsView} = this.props
+    const {isDetailsView, onRight} = this.props
     return (
       <Container>
         <Row middle='xs'>
@@ -67,6 +68,7 @@ export default class FooterToolbar extends Component {
             margin='medium'
             padding='even'
             width='120px'
+            onClick={onRight}
           />
         </Row>
       </Container>

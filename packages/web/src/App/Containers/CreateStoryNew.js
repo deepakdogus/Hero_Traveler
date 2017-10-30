@@ -8,6 +8,7 @@ import StoryCreateActions from '../Shared/Redux/StoryCreateRedux'
 import API from '../Shared/Services/HeroAPI'
 
 import CreateStoryCoverContent from './CreateStory/1_CoverContent'
+import CreateStoryDetails from './CreateStory/2_Details'
 import FooterToolbar from '../Components/CreateStory/FooterToolbar'
 
 const api = API.create()
@@ -67,6 +68,12 @@ class CreateStory extends Component {
     this.props.discardDraft(this.props.draft.id)
   }
 
+  onRight = () => {
+    // add some saving logic
+    const {reroute, draft} = this.props
+    reroute(`/createStoryNew/${draft.id}/details`)
+  }
+
   render() {
     const {workingDraft, match} = this.props
     return (
@@ -78,6 +85,10 @@ class CreateStory extends Component {
                 path={`${match.url}/cover`}
                 component={CreateStoryCoverContent}
               />
+              <Route
+                path={`${match.url}/details`}
+                component={CreateStoryDetails}
+              />
             </ItemContainer>
           }
         </ContentWrapper>
@@ -85,6 +96,7 @@ class CreateStory extends Component {
           discardDraft={this._discardDraft}
           updateDraft={this._updateDraft}
           isDetailsView={false}
+          onRight={this.onRight}
         />
       </Container>
     )

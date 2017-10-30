@@ -57,22 +57,10 @@ const StyledInput = styled.input`
   border-width: 0;
   margin-left: 25px;
   outline: none;
-  &::placeholder{
+  ::placeholder {
     font-family: ${props => props.theme.Fonts.type.base};
     color: ${props => props.theme.Colors.navBarText};
-  };
-  &::-moz-placeholder{
-    font-family: ${props => props.theme.Fonts.type.base};
-    color: ${props => props.theme.Colors.navBarText};
-  };
-  &:-ms-input-placeholder{
-    font-family: ${props => props.theme.Fonts.type.base};
-    color: ${props => props.theme.Colors.navBarText};
-  };
-  &:-moz-placeholder{
-    font-family: ${props => props.theme.Fonts.type.base};
-    color: ${props => props.theme.Colors.navBarText};
-  };
+  }
 `
 
 const LocationIcon = styled(Icon)`
@@ -119,8 +107,8 @@ const styles = {
 export default class StoryDetails extends React.Component {
   static propTypes = {
     title: PropTypes.string,
-    closeImage: PropTypes.func,
-    caption: PropTypes.string,
+    workingDraft: PropTypes.object,
+    onInputChange: PropTypes.func,
   }
 
   constructor(props) {
@@ -167,14 +155,18 @@ export default class StoryDetails extends React.Component {
   }
 
   render() {
+    const {workingDraft, onInputChange} = this.props
     return (
       <Container>
-        <StyledTitle>{this.props.title} DETAILS</StyledTitle>
+        <StyledTitle>{workingDraft.title} DETAILS</StyledTitle>
         <br/>
         <br/>
         <InputRowContainer>
           <LocationIcon name='location'/>
-          <GoogleLocator/>
+          <GoogleLocator
+            onChange={onInputChange}
+            address={workingDraft.location}
+          />
         </InputRowContainer>
         <HorizontalDivider color='lighter-grey' opaque/>
         <InputRowContainer>

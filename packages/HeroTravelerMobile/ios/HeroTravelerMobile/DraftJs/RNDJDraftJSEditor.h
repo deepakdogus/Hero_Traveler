@@ -28,6 +28,8 @@
 @property (nonatomic, assign) BOOL hasFocus;
 @property (nonatomic, strong) RNDJDraftJsIndex* lastIndex;
 
+@property (nonatomic, assign) CGRect lastCursorRect;
+
 @property(nonatomic) UITextAutocapitalizationType autocapitalizationType; // default is UITextAutocapitalizationTypeSentences
 @property(nonatomic) UITextAutocorrectionType autocorrectionType;         // default is UITextAutocorrectionTypeDefault
 @property(nonatomic) UITextSpellCheckingType spellCheckingType NS_AVAILABLE_IOS(5_0); // default is UITextSpellCheckingTypeDefault;

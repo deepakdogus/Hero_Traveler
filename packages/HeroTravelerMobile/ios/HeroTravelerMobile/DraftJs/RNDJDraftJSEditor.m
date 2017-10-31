@@ -66,6 +66,11 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
 //    [self addGestureRecognizer:panGesture];
 //    [longPressGesture requireGestureRecognizerToFail:tapGesture];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+
 #if DEBUG_TOUCHES
     debugTouchesView = [UIView new];
     debugTouchesView.backgroundColor = [UIColor redColor];
@@ -117,6 +122,106 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
 
   }
   return self;
+}
+
+- (void) dealloc
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (UIView*) getViewJustInsideScrollViewFor:(UIView*)view
+{
+  UIView* superview = [view superview];
+  
+  if (!superview) {
+    return nil;
+  }
+  
+  if ([superview isKindOfClass:[UIScrollView class]]) {
+    return view;
+  }
+  
+  return [self getViewJustInsideScrollViewFor:superview];
+}
+
+- (void) scrollToCursorIfNeeded
+{
+  if (!_hasFocus) {
+    return;
+  }
+
+  UIView* view = [self getViewJustInsideScrollViewFor:self];
+  if (!view) {
+    return;
+  }
+  
+  UIScrollView* scrollView = (UIScrollView*) [view superview];
+  if (![scrollView isKindOfClass:[UIScrollView class]]) {
+    NSLog(@"Something wrong with the scroll view finding logic...");
+    return;
+  }
+
+  NSLayoutManager *layoutManager = [_textStorage.layoutManagers firstObject];
+  NSTextContainer *textContainer = [layoutManager.textContainers firstObject];
+  NSRange glyphRange = [layoutManager glyphRangeForTextContainer:textContainer];
+  NSRange characterRange = [layoutManager characterRangeForGlyphRange:glyphRange actualGlyphRange:NULL];
+
+  __block BOOL didFind = false;
+  
+  [layoutManager.textStorage enumerateAttribute:RNDJSingleCursorPositionAttributeName inRange:characterRange options:0 usingBlock:^(NSNumber *value, NSRange range, BOOL *_) {
+    if (!value.boolValue) {
+      return;
+    }
+    
+    [layoutManager enumerateEnclosingRectsForGlyphRange:range withinSelectedGlyphRange:range inTextContainer:textContainer usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
+      
+      if (didFind) {
+        NSLog(@"Somehow found two things that match!");
+        return;
+      }
+      CGRect cursorRect = CGRectMake(
+                                     enclosingRect.origin.x + _contentInset.left,
+                                     enclosingRect.origin.y + _contentInset.top - 30,
+                                     2,
+                                     enclosingRect.size.height + _contentInset.top + _contentInset.bottom - 60);
+      
+      CGRect cursorInScrollView = [view convertRect:cursorRect fromView:self];
+      CGFloat cursorInScrollViewBottom = cursorInScrollView.origin.y + cursorInScrollView.size.height;
+      
+      CGFloat scrollViewHeight = scrollView.bounds.size.height - 182 - 50 - 80;
+
+      CGFloat currentYOffset = scrollView.contentOffset.y + 80;
+      CGFloat currentYMax = currentYOffset + scrollViewHeight;
+      
+      if (cursorInScrollView.origin.y < currentYOffset) {
+        [scrollView setContentOffset:CGPointMake(0, cursorInScrollView.origin.y - 80) animated:YES];
+      } else if (cursorInScrollViewBottom > currentYMax) {
+        [scrollView setContentOffset:CGPointMake(0, cursorInScrollViewBottom - scrollViewHeight) animated:YES];
+      }
+
+      didFind = true;
+    }];
+  }];
+}
+
+- (void)keyboardWillShow:(NSNotification*)aNotification
+{
+  
+}
+
+- (void)keyboardDidShow:(NSNotification*)aNotification
+{
+  [self scrollToCursorIfNeeded];
+}
+
+- (void)keyboardWillHide:(NSNotification*)aNotification
+{
+  
+}
+
+- (void)keyboardDidHide:(NSNotification*)aNotification
+{
+  
 }
 
 - (RNDJDraftJsIndex*) draftJsIndexForPointInView:(CGPoint)point
@@ -320,7 +425,14 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     }
     
     [layoutManager enumerateEnclosingRectsForGlyphRange:range withinSelectedGlyphRange:range inTextContainer:textContainer usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
+      
       CGRect cursorRect = CGRectMake(enclosingRect.origin.x, enclosingRect.origin.y, 2, enclosingRect.size.height);
+
+      if (fabs(_lastCursorRect.origin.x - cursorRect.origin.x) > 1 || fabs(_lastCursorRect.origin.y - cursorRect.origin.y) > 1) {
+        [self scrollToCursorIfNeeded];
+      }
+      _lastCursorRect = cursorRect;
+      
       UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:cursorRect
                                                       cornerRadius:1];
       if (highlightPath) {

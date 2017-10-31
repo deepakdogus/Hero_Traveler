@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
 
 import StoryList from '../Components/StoryList'
 import FeedHeader from '../Components/FeedHeader'
-import {feedExample, usersExample} from './Feed_TEST_DATA'
 import Footer from '../Components/Footer'
 import ShowMore from '../Components/ShowMore'
+import StoryActions from '../Shared/Redux/Entities/Stories'
 
 const CenteredText = styled.p`
   text-align: center;
@@ -27,20 +28,25 @@ const ContentWrapper = styled.div`
 `
 
 class Feed extends Component {
+
+  componentDidMount() {
+    this.props.attemptGetUserFeed(this.props.userId)
+  }
+
   render() {
-    const usersStories = Object.keys(feedExample).reduce((matchingStories, key) => {
-      const story = feedExample[key]
-      matchingStories[key] = story;
-      return matchingStories
+    const {stories, users, storiesById} = this.props
+    const feedStories = storiesById.reduce((feed, id) => {
+      feed[id] = stories[id]
+      return feed
     }, {})
     return (
       <Wrapper>
-        <FeedHeader stories={usersStories} users={usersExample}/>
+        <FeedHeader stories={feedStories} users={users}/>
         <ContentWrapper>
           <FeedText>MY FEED</FeedText>
           <StoryList
-            stories={feedExample}
-            users={usersExample}
+            stories={feedStories}
+            users={users}
           />
           <ShowMore/>
           <Footer />
@@ -50,4 +56,21 @@ class Feed extends Component {
   }
 }
 
-export default Feed
+
+function mapStateToProps(state, ownProps) {
+  let { userFeedById, entities: stories } = state.entities.stories
+  return {
+    userId: state.session.userId,
+    storiesById: userFeedById,
+    stories,
+    users: state.entities.users.entities,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    attemptGetUserFeed: (userId) => dispatch(StoryActions.feedRequest(userId)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feed)

@@ -322,6 +322,12 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
       }
       
       NSString* text = block.text;
+      
+      if (text.length == 0) {
+        text = blockStyle.placeholderText;
+        blockStyle = [blockStyle applyStyle:blockStyle.placeholderStyle];
+      }
+      
       NSUInteger startPosition = 0;
       NSUInteger endPosition = 0;
       

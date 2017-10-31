@@ -311,6 +311,8 @@ const blockFontTypes = {
 //    textShadowRadius: number
 //     textShadowColor: color
 //    allowFontScaling: boolean
+//     placeholderText: string
+//    placeholderStyle: object (using all these values, applied on top of block type style)
 //  },
   unstyled: { // No real need to use since values from styles are already used
     fontSize: 18,
@@ -340,11 +342,14 @@ const blockFontTypes = {
   codeBlock: {
   },
   atomic: {
-    backgroundColor: processColor('#000000'),
     fontSize: 15,
     color: processColor('#757575'),
     fontStyle: 'italic',
-    textAlign: 'center'
+    textAlign: 'center',
+    placeholderText: 'Enter a caption',
+    placeholderStyle: {
+      opacity: 0.5,
+    },
   },
 }
 

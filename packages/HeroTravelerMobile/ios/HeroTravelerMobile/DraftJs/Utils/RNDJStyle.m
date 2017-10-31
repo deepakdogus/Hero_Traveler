@@ -36,6 +36,12 @@
     _textShadowRadius = GET(textShadowRadius, NSNumber);
     _textShadowColor = GET(textShadowColor, NSString);
     _allowFontScaling = GET(allowFontScaling, NSString);
+    _placeholderText = GET(placeholderText, NSString);
+    
+    NSDictionary* placeholderStyle = dictionary[@"placeholderStyle"];
+    if ([placeholderStyle isKindOfClass:[NSDictionary class]]) {
+      _placeholderStyle = [[RNDJStyle alloc] initWithDictionary:placeholderStyle];
+    }
 
     NSValue* textShadowOffset = dictionary[@"textShadowOffset"];
     if ([textShadowOffset isKindOfClass:[NSValue class]]) {
@@ -171,6 +177,8 @@
     COPY(textShadowRadius)
     COPY(textShadowColor)
     COPY(allowFontScaling)
+    COPY(placeholderText)
+    COPY(placeholderStyle)
   }
   
   return self;
@@ -200,6 +208,8 @@
   COPY_IF_NOT_SET(textShadowRadius)
   COPY_IF_NOT_SET(textShadowColor)
   COPY_IF_NOT_SET(allowFontScaling)
+  COPY_IF_NOT_SET(placeholderText)
+  COPY_IF_NOT_SET(placeholderStyle)
   
   COPY_IF_NOT_SET_BOOL(textAlign, wasTextAlignSet)
   COPY_IF_NOT_SET_BOOL(textDecorationStyle, wasTextDecorationStyleSet)

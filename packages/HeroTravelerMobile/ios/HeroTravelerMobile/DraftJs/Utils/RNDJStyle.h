@@ -33,12 +33,15 @@
 @property (nonatomic, assign) RCTTextDecorationLineType textDecorationLine;
 @property (nonatomic, strong) UIColor *textDecorationColor;
 
-@property (nonatomic, assign) NSNumber *textShadowOffsetWidth;
-@property (nonatomic, assign) NSNumber *textShadowOffsetHeight;
-@property (nonatomic, assign) NSNumber *textShadowRadius;
+@property (nonatomic, copy) NSNumber *textShadowOffsetWidth;
+@property (nonatomic, copy) NSNumber *textShadowOffsetHeight;
+@property (nonatomic, copy) NSNumber *textShadowRadius;
 @property (nonatomic, strong) UIColor *textShadowColor;
 
-@property (nonatomic, assign) NSNumber *allowFontScaling;
+@property (nonatomic, copy) NSNumber *allowFontScaling;
+
+@property (nonatomic, copy) NSString *placeholderText;
+@property (nonatomic, strong) RNDJStyle *placeholderStyle;
 
 - (instancetype) initWithStyle:(RNDJStyle *)style;
 - (instancetype) initWithDictionary:(NSDictionary *)dictionary;

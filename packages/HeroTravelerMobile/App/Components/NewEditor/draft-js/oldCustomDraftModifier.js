@@ -6,14 +6,14 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftModifier
+ * @providesModule OldDraftModifier
  * @typechecks
  *
  */
 
 'use strict';
 import {removeEntitiesAtEdges, removeRangeFromContentState} from './reexports'
-var customSplitBlockInContentState = require('./customSplitBlockInContentState');
+var oldCustomSplitBlockInContentState = require('./oldCustomSplitBlockInContentState');
 
 /**
  * `DraftModifier` provides a set of convenience methods that apply
@@ -26,13 +26,13 @@ var customSplitBlockInContentState = require('./customSplitBlockInContentState')
  * These functions encapsulate some of the most common transaction sequences.
  */
 
-var customDraftModifier = {
+var oldCustomDraftModifier = {
   splitBlock: function splitBlock(contentState, selectionState, textType) {
     var withoutEntities = removeEntitiesAtEdges(contentState, selectionState);
     var withoutText = removeRangeFromContentState(withoutEntities, selectionState);
 
-    return customSplitBlockInContentState(withoutText, withoutText.getSelectionAfter(), textType);
+    return oldCustomSplitBlockInContentState(withoutText, withoutText.getSelectionAfter(), textType);
   },
 };
 
-module.exports = customDraftModifier;
+module.exports = oldCustomDraftModifier;

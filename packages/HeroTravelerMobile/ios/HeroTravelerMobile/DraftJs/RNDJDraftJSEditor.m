@@ -266,6 +266,9 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
 //  tapPostion.y -= _contentInset.top;
   
   if (!_hasFocus) {
+    _hasFocus = YES;
+    [self becomeFirstResponder];
+
     switch (gesture.state) {
       case UIGestureRecognizerStateRecognized:
       {
@@ -510,7 +513,7 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
 
 - (BOOL)canBecomeFirstResponder
 {
-  return YES;
+  return _hasFocus;
 }
 
 - (void) requestHasFocus:(BOOL)hasFocus
@@ -547,12 +550,11 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
 
 - (BOOL)becomeFirstResponder
 {
-  BOOL result = [super becomeFirstResponder];
-  if (_hasFocus) {
-    return result;
+  if (!_hasFocus) {
+    return NO;
   }
-  [self requestHasFocus:YES];
-  return result;
+  
+  return [super becomeFirstResponder];
 }
 
 - (BOOL)resignFirstResponder

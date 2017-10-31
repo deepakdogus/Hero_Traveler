@@ -16,6 +16,8 @@
 #import "RNDJShadowDraftJSEditor.h"
 #import "RNDJDraftJsIndex.h"
 
+#import <IQKeyboardManager/IQKeyboardManager.h>
+
 static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *nonTextDescendants)
 {
   for (UIView *child in view.reactSubviews) {
@@ -40,6 +42,8 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
   NSLayoutConstraint* debugTouchesToTop;
   NSLayoutConstraint* debugTouchesToLeft;
 #endif
+  
+  BOOL wasInView;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -122,6 +126,31 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
 
   }
   return self;
+}
+
+- (void) didMoveToSuperview
+{
+  [super didMoveToSuperview];
+  
+  static int numEditorsOpen = 0;
+  
+  if (wasInView && [self superview] == nil) {
+    numEditorsOpen--;
+
+    if (numEditorsOpen <= 0) {
+      [IQKeyboardManager sharedManager].enable = YES;
+      numEditorsOpen = 0;
+    }
+    wasInView = NO;
+  } else if (!wasInView && [self superview] != nil) {
+    if (numEditorsOpen <= 0) {
+      [IQKeyboardManager sharedManager].enable = NO;
+      numEditorsOpen = 1;
+    } else {
+      numEditorsOpen++;
+    }
+    wasInView = YES;
+  }
 }
 
 - (void) dealloc

@@ -628,8 +628,22 @@ class StoryCoverScreen extends Component {
     this.setState({title})
   }
 
+  setTitleAndFocus = (title) => {
+    this.setTitle(title)
+    this.jumpToTitle()
+  }
+
   setDescription = (description) => {
     this.setState({description})
+  }
+
+  setDescriptionAndFocus = (description) => {
+    this.setDescription(description)
+    this.jumpToTitle()
+  }
+
+  jumpToTitle = () => {
+    this.scrollViewRef.scrollTo({x:0, y: -30, amimated: true})
   }
 
   renderContent () {
@@ -691,7 +705,8 @@ class StoryCoverScreen extends Component {
             placeholder='ADD A TITLE'
             placeholderTextColor={this.renderPlaceholderColor(Colors.background)}
             value={this.state.title}
-            onChangeText={this.setTitle}
+            onChangeText={this.setTitleAndFocus}
+            onFocus={this.jumpToTitle}
             returnKeyType='done'
             maxLength={40}
             multiline={true}
@@ -702,7 +717,8 @@ class StoryCoverScreen extends Component {
             style={this.renderTextColor(styles.subTitleInput)}
             placeholder='Add a subtitle'
             placeholderTextColor={this.renderPlaceholderColor(Colors.background)}
-            onChangeText={this.setDescription}
+            onChangeText={this.setDescriptionAndFocus}
+            onFocus={this.jumpToTitle}
             value={this.state.description}
             returnKeyType='done'
             maxLength={50}
@@ -891,10 +907,10 @@ class StoryCoverScreen extends Component {
         this.props.user.introTooltips
       )
     }
-    if (this.scrollViewRef && this.state.isScrollDown) {
-      this.setState({isScrollDown: false})
-      this.scrollViewRef.scrollTo({x: 0, y: 200, animated: true})
-    }
+    //if (this.scrollViewRef && this.state.isScrollDown) {
+    //  this.setState({isScrollDown: false})
+    //  this.scrollViewRef.scrollTo({x: 0, y: 200, animated: true})
+    //}
     return (
       <View style={styles.root}>
         <ScrollView

@@ -22,7 +22,6 @@ const create = () => {
   }
 
   const uploadMediaFile = (fileObject, type) => {
-    console.log("uploadMediaFile did not get pinged")
     const uploadURL = getCloudinaryUploadUrl(type)
     const preset = type === 'image' ? env.imagePreset : env.videoPreset
     const data = new FormData()

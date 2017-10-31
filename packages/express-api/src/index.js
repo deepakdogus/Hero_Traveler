@@ -24,11 +24,10 @@ if (process.env.NODE_ENV !== 'development') {
   })
 }
 
-
 app.use(cors({
   origin: process.env.CORS_ORIGIN,
-  optionsSuccessStatus: 200,
 }))
+app.options('*', cors())
 
 routes(app)
 

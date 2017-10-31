@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import {Route} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {push} from 'react-router-redux';
+import _ from 'lodash'
 
 import StoryCreateActions from '../Shared/Redux/StoryCreateRedux'
 import API from '../Shared/Services/HeroAPI'
@@ -53,15 +54,18 @@ class CreateStory extends Component {
   }
 
   _updateDraft = () => {
-    const draft = this.props.draft
-    const workingDraft = this.props.workingDraft
+    const {draft, workingDraft, accessToken} = this.props
     let coverPromise;
     if (workingDraft.tempCover) {
+      api.setAuth(accessToken)
       coverPromise = api.uploadCoverImage(workingDraft.id, workingDraft.tempCover)
       .then(response => response.data)
     }
     else coverPromise = Promise.resolve(workingDraft)
-    this.props.updateDraft(draft.id, workingDraft)
+    coverPromise.then(response => {
+      const cleanedWorkingDraft = _.omit(workingDraft, 'tempCover')
+      this.props.updateDraft(draft.id, cleanedWorkingDraft)
+    })
   }
 
   _discardDraft = () => {
@@ -104,8 +108,14 @@ class CreateStory extends Component {
 }
 
 
+function isAccessToken(token){
+  return token.type === 'access'
+}
+
 function mapStateToProps(state) {
+  const accessToken = state.session.tokens.find(isAccessToken) || {}
   return {
+    accessToken: accessToken.value,
     draft: state.storyCreate.draft,
     workingDraft: state.storyCreate.workingDraft,
   }

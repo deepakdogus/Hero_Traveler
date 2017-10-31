@@ -7,9 +7,7 @@
 import React, { Component } from 'react';
 import {
   Dimensions,
-  AppRegistry,
   StyleSheet,
-  Text,
   View,
   processColor,
 } from 'react-native'
@@ -18,7 +16,6 @@ import {
   NativeEditor,
   EditorState,
   RichUtils,
-  applyStyle,
   convertToRaw,
   insertText,
   insertTextAtPosition,
@@ -39,9 +36,6 @@ import {
   DraftJsImage,
   DraftJsVideo,
 } from './Components'
-
-import Image from '../Image'
-import { getImageUrlBase } from "../../Shared/Lib/getImageUrl"
 
 const { width } = Dimensions.get('window')
 
@@ -269,7 +263,7 @@ export default class RNDraftJs extends Component {
           onBackspaceRequest={this._onBackspaceRequest}
           onNewlineRequest={this._onNewlineRequest}
           onSelectionChangeRequest={this._onSelectionChangeRequest}
-          placeholderText="Enter text here"
+          placeholderText='Tap here to start telling your story...'
           selectionColor={'#000000'}
           selectionOpacity={1}
           defaultAtomicWidth={Metrics.screenWidth}
@@ -346,7 +340,7 @@ const blockFontTypes = {
     color: processColor('#757575'),
     fontStyle: 'italic',
     textAlign: 'center',
-    placeholderText: 'Enter a caption',
+    placeholderText: 'Add a caption...',
     placeholderStyle: {
       opacity: 0.5,
     },

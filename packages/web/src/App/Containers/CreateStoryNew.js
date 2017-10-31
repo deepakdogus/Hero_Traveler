@@ -92,15 +92,15 @@ class CreateStory extends Component {
     this.props.discardDraft(this.props.draft.id)
   }
 
-  onRight = () => {
-    const subPath = this.getSubPath(this.props.location)
-    if (subPath === 'cover') this.coverContentOnRight()
-    else if (subPath === 'details') this.detailsOnRight()
+  onLeft = () => {
+    const {subPath, reroute, draft} = this.props
+    if (subPath === 'details') reroute(`/createStoryNew/${draft.id}/cover`)
   }
 
-  getSubPath(location) {
-    const splitPath = location.pathname.split('/')
-    return splitPath[splitPath.length - 1]
+  onRight = () => {
+    const {subPath} = this.props
+    if (subPath === 'cover') this.coverContentOnRight()
+    else if (subPath === 'details') this.detailsOnRight()
   }
 
   setValidationErrorState = (text) => {
@@ -139,7 +139,7 @@ class CreateStory extends Component {
   }
 
   render() {
-    const {workingDraft, match} = this.props
+    const {workingDraft, match, subPath} = this.props
     const error = this.state.error
     return (
       <Container>
@@ -160,8 +160,9 @@ class CreateStory extends Component {
         <FooterToolbar
           discardDraft={this._discardDraft}
           updateDraft={this._updateDraft}
-          isDetailsView={false}
+          isDetailsView={subPath === 'details'}
           onRight={this.onRight}
+          onLeft={this.onLeft}
         />
         <Modal
           isOpen={!!error.title}
@@ -178,6 +179,11 @@ class CreateStory extends Component {
 }
 
 
+function getSubPath(location) {
+  const splitPath = location.pathname.split('/')
+  return splitPath[splitPath.length - 1]
+}
+
 function isAccessToken(token){
   return token.type === 'access'
 }
@@ -185,7 +191,7 @@ function isAccessToken(token){
 function mapStateToProps(state) {
   const accessToken = state.session.tokens.find(isAccessToken) || {}
   return {
-    location: state.routes.location,
+    subPath: getSubPath(state.routes.location),
     accessToken: accessToken.value,
     draft: state.storyCreate.draft,
     workingDraft: state.storyCreate.workingDraft,

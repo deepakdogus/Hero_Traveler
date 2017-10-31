@@ -17,6 +17,7 @@ import {
   EditorState,
   RichUtils,
   convertToRaw,
+  convertFromRaw,
   insertText,
   insertTextAtPosition,
   backspace,
@@ -44,7 +45,7 @@ export default class RNDraftJs extends Component {
     super(props);
     let editorState
     if (props.value) {
-      editorState = rawToEditorState(props.value)
+      editorState = EditorState.createWithContent(convertFromRaw(props.value))
     } else {
       editorState = EditorState.createEmpty()
     }

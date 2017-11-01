@@ -9,19 +9,12 @@ import Icon from '../Icon'
 import HorizontalDivider from '../HorizontalDivider'
 import GoogleLocator from './GoogleLocator'
 import ReactDayPicker from './ReactDayPicker'
-import MultiTagPicker from './MultiTagPicker'
-import TagTileGrid from './TagTileGrid'
+import CategoryPicker from './CategoryPicker'
+import CategoryTileGrid from './CategoryTileGrid'
 import {Title} from './Shared'
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unchecked';
 import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checked';
-import {feedExample} from '../../Containers/Feed_TEST_DATA'
-
-//test tags
-let testTagNames = [];
-const categoriesExample = feedExample[Object.keys(feedExample)[0]].categories
-for (var i=0; i<categoriesExample.length; i++)
-    testTagNames.push(categoriesExample[i].title)
 
 const Container = styled.div``
 
@@ -140,16 +133,17 @@ export default class StoryDetails extends React.Component {
       showTagPicker: false,
       showDayPicker: false,
       day: '',
-      selectedCategories: [],
       categoriesList: [],
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    if (Object.keys(this.props.categories).length !== Object.keys(nextProps).length){
+    if (Object.keys(this.props.categories).length !== Object.keys(nextProps.categories).length && nextProps.workingDraft){
       const {categoriesList, titleToCategory} = formatCategories(nextProps.categories)
       this.titleToCategory = titleToCategory
-      this.setState({categoriesList})
+      this.setState({
+        categoriesList: _.differenceWith(categoriesList, nextProps.workingDraft.categories, isSameTag)
+      })
     }
   }
 
@@ -170,26 +164,23 @@ export default class StoryDetails extends React.Component {
     event.stopPropagation()
     const categoryTitle = event.target.innerHTML
     const clickedCategory = this.titleToCategory[categoryTitle]
-    _.pullAllWith(this.state.categoriesList, [clickedCategory], isSameTag)
-    const selectedCategories = this.state.selectedCategories.concat([clickedCategory])
+    const categories = this.props.workingDraft.categories.concat([clickedCategory])
     this.setState({
-      categoriesList: _.pullAllWith(this.state.categoriesList, [clickedCategory], isSameTag),
-      selectedCategories,
-      showPicker: 'tag',
+      categoriesList: _.differenceWith(this.state.categoriesList, [clickedCategory], isSameTag),
+      showPicker: 'category',
     })
-    this.props.onInputChange({categories: selectedCategories})
+    this.props.onInputChange({categories})
   }
 
   handleCategoryRemove = (event) => {
     event.stopPropagation()
     const clickedCategoryId = event.target.attributes.getNamedItem('data-tagName').value
     const clickedCategory = this.props.categories[clickedCategoryId]
-    const selectedCategories = _.pullAllWith(this.state.selectedCategories, [clickedCategory], isSameTag)
+    const categories = _.differenceWith(this.props.workingDraft.categories, [clickedCategory], isSameTag)
     this.setState({
       categoriesList: sortCategories(this.state.categoriesList.concat([clickedCategory])),
-      selectedCategories,
     })
-    this.props.onInputChange({categories: selectedCategories})
+    this.props.onInputChange({categories})
   }
 
   togglePicker = (name) => {
@@ -199,7 +190,7 @@ export default class StoryDetails extends React.Component {
  }
 
   toggleDayPicker = () => this.togglePicker('day')
-  toggleTagPicker = () => this.togglePicker('tag')
+  toggleTagPicker = () => this.togglePicker('category')
 
   formatTripDate = (day) => {
     if (!day) return undefined
@@ -208,6 +199,7 @@ export default class StoryDetails extends React.Component {
 
   render() {
     const {workingDraft, onInputChange} = this.props
+    const {showPicker, categoriesList} = this.state
     return (
       <Container>
         <StyledTitle>{workingDraft.title} DETAILS</StyledTitle>
@@ -229,7 +221,7 @@ export default class StoryDetails extends React.Component {
             value={this.formatTripDate(workingDraft.tripDate)}
             onClick={this.toggleDayPicker}
           />
-          {this.state.showPicker === 'day' &&
+          {showPicker === 'day' &&
             <StyledReactDayPicker
               handleDayClick={this.handleDayClick}
             />
@@ -244,17 +236,17 @@ export default class StoryDetails extends React.Component {
             value={''}
             onClick={this.toggleTagPicker}
           />
-          {!!this.state.selectedCategories.length &&
-            <TagTileGrid
-              selectedCategories={this.state.selectedCategories}
+          {!!this.props.workingDraft.categories.length &&
+            <CategoryTileGrid
+              selectedCategories={this.props.workingDraft.categories}
               handleCategoryRemove={this.handleCategoryRemove}
             />
           }
-          {this.state.showPicker === 'tag' &&
-            <MultiTagPicker
+          {showPicker === 'category' &&
+            <CategoryPicker
               closePicker={this.togglePicker}
               handleCategorySelect={this.handleCategorySelect}
-              categoriesList={this.state.categoriesList}
+              categoriesList={categoriesList}
             />
           }
         </InputRowContainer>

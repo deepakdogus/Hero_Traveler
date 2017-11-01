@@ -33,7 +33,7 @@ const StyledHorizontalDivider = styled(HorizontalDivider)`
   border-width: 1px;
 `
 
-export default class MultiTagPicker extends React.Component {
+export default class CategoryPicker extends React.Component {
 
 static propTypes = {
     closePicker: PropTypes.func,

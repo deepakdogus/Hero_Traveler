@@ -38,7 +38,7 @@ const StyledGrid = styled(Grid)`
   margin-bottom: -40px;
 `
 
-export default class TagTileGrid extends React.Component {
+export default class CategoryTileGrid extends React.Component {
   static propTypes = {
     selectedCategories: PropTypes.arrayOf(PropTypes.object),
     handleCategoryRemove: PropTypes.func,

@@ -42,11 +42,14 @@ const customModalStyles = {
   }
 }
 
+function cleanDraft(draft){
+  return _.omit(draft, 'tempCover')
+}
 /*
 this container is in charge of creating/loading the appropriate draft
 and dealing with update logic
 */
-class CreateStory extends Component {
+class CreateStoryNew extends Component {
   constructor(props){
     super(props)
     this.state = {
@@ -62,19 +65,32 @@ class CreateStory extends Component {
     else if (draftId && !this.props.draft) {
       this.props.loadDraft(draftId)
     }
-    // if draftId and no draft - load story
   }
 
   componentWillReceiveProps(nextProps) {
     const {match, reroute, draft} = nextProps
+    if (this.hasPublished(nextProps)){
+      this.next()
+      return
+    }
     // once our draft is loaded be sure to reroute
     if (draft.id && match.isExact) {
       reroute(`/createStoryNew/${draft.id}/cover`)
     }
   }
 
+  hasPublished(nextProps){
+    return (!this.props.isPublished && nextProps.isPublished) ||
+    (!this.props.isRepublished && nextProps.isRepublished)
+  }
+
+  next() {
+    this.props.resetCreateStore()
+    this.props.reroute('/')
+  }
+
   _updateDraft = () => {
-    const {draft, workingDraft, accessToken} = this.props
+    const {draft, workingDraft, accessToken, subPath} = this.props
     let coverPromise;
     if (workingDraft.tempCover) {
       api.setAuth(accessToken)
@@ -83,8 +99,8 @@ class CreateStory extends Component {
     }
     else coverPromise = Promise.resolve(workingDraft)
     return coverPromise.then(response => {
-      const cleanedWorkingDraft = _.omit(workingDraft, 'tempCover')
-      this.props.updateDraft(draft.id, cleanedWorkingDraft)
+      const isRepublishing = !workingDraft.draft && subPath === 'details'
+      this.props.updateDraft(draft.id, cleanDraft(workingDraft), null, isRepublishing)
     })
   }
 
@@ -124,8 +140,17 @@ class CreateStory extends Component {
   }
 
   detailsOnRight = () => {
-    if (!this.props.workingDraft.type) {
+    const {workingDraft, publish} = this.props
+    if (!workingDraft.type) {
       this.setValidationErrorState('Please include an activity')
+    }
+    else {
+      if (workingDraft.draft){
+        publish(cleanDraft(workingDraft))
+      }
+      else {
+        this._updateDraft()
+      }
     }
   }
 
@@ -191,6 +216,8 @@ function isAccessToken(token){
 function mapStateToProps(state) {
   const accessToken = state.session.tokens.find(isAccessToken) || {}
   return {
+    isPublished: state.storyCreate.isPublished,
+    isRepublished: state.storyCreate.isRepublished,
     subPath: getSubPath(state.routes.location),
     accessToken: accessToken.value,
     draft: state.storyCreate.draft,
@@ -202,12 +229,15 @@ function mapDispatchToProps(dispatch) {
   return {
     registerDraft: () => dispatch(StoryCreateActions.registerDraft()),
     loadDraft: (draftId) => dispatch(StoryCreateActions.editStory(draftId)),
-    reroute: (path) => dispatch(push(path)),
     discardDraft: (draftId) => dispatch(StoryCreateActions.discardDraft(draftId)),
-    updateDraft: (draftId, attrs, doReset) =>
-      dispatch(StoryCreateActions.updateDraft(draftId, attrs, doReset)),
+    updateDraft: (draftId, attrs, doReset, isRepublishing) =>
+      dispatch(StoryCreateActions.updateDraft(draftId, attrs, doReset, isRepublishing)),
+    publish: (draft) => dispatch(StoryCreateActions.publishDraft(draft)),
+    resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
+    reroute: (path) => dispatch(push(path)),
+
   }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateStory)
+export default connect(mapStateToProps, mapDispatchToProps)(CreateStoryNew)

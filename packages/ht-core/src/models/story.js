@@ -107,6 +107,12 @@ StorySchema.pre('save', function(next) {
       this.longitude = latlng.longitude
       next()
     })
+    .catch(() => {
+      // basic error handling until we also get googlePlacesAPI on mobile too
+      this.latitude = null
+      this.longitude = null
+      next()
+    })
   }
   else next();
 })

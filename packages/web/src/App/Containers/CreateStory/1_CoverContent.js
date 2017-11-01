@@ -1,17 +1,23 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
+import PropTypes from 'prop-types'
 
-import AddCoverPhotoBox from '../../Components/CreateStory/AddCoverPhotoBox'
+import AddCoverTitles from '../../Components/CreateStory/AddCoverTitles'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 
 class CreateStoryCoverContent extends Component {
+  static propTypes = {
+    workingDraft: PropTypes.object,
+    updateWorkingDraft: PropTypes.func,
+  }
+
   onInputChange = (update) => {
     this.props.updateWorkingDraft(update)
   }
 
   render() {
     return (
-      <AddCoverPhotoBox
+      <AddCoverTitles
         onInputChange={this.onInputChange}
         workingDraft={this.props.workingDraft}
       />

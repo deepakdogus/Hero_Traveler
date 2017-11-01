@@ -1,11 +1,19 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
+import PropTypes from 'prop-types'
 
 import StoryDetails from '../../Components/CreateStory/StoryDetails'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import CategoryActions from '../../Shared/Redux/Entities/Categories'
 
 class CreateStoryCoverContent extends Component {
+  static propTypes = {
+    categories: PropTypes.object,
+    workingDraft: PropTypes.object,
+    loadDefaultCategories: PropTypes.func,
+    updateWorkingDraft: PropTypes.func,
+  }
+
   onInputChange = (update) => {
     this.props.updateWorkingDraft(update)
   }

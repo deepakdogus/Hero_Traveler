@@ -12,9 +12,9 @@ import ReactDayPicker from './ReactDayPicker'
 import CategoryPicker from './CategoryPicker'
 import CategoryTileGrid from './CategoryTileGrid'
 import {Title} from './Shared'
-import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
-import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unchecked';
-import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checked';
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton'
+import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unchecked'
+import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checked'
 
 const Container = styled.div``
 

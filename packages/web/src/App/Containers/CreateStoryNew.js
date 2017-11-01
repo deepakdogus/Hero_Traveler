@@ -5,9 +5,11 @@ import {connect} from 'react-redux'
 import {push} from 'react-router-redux';
 import _ from 'lodash'
 import Modal from 'react-modal'
+import PropTypes from 'prop-types'
 
 import StoryCreateActions from '../Shared/Redux/StoryCreateRedux'
 import API from '../Shared/Services/HeroAPI'
+import AuthRoute from './AuthRoute'
 
 import CreateStoryCoverContent from './CreateStory/1_CoverContent'
 import CreateStoryDetails from './CreateStory/2_Details'
@@ -45,11 +47,31 @@ const customModalStyles = {
 function cleanDraft(draft){
   return _.omit(draft, 'tempCover')
 }
+
 /*
 this container is in charge of creating/loading the appropriate draft
-and dealing with update logic
+and dealing with save and publish logic
 */
 class CreateStoryNew extends Component {
+  static propTypes = {
+    match: PropTypes.object,
+    // mapped from state
+    isPublished: PropTypes.bool,
+    isRepublished: PropTypes.bool,
+    subPath: PropTypes.string,
+    accessToken: PropTypes.string,
+    draft: PropTypes.object,
+    workingDraft: PropTypes.object,
+    // dispatch methods
+    registerDraft: PropTypes.func,
+    loadDraft: PropTypes.func,
+    discardDraft: PropTypes.func,
+    updateDraft: PropTypes.func,
+    publish: PropTypes.func,
+    resetCreateStore: PropTypes.func,
+    reroute: PropTypes.func,
+  }
+
   constructor(props){
     super(props)
     this.state = {
@@ -171,11 +193,11 @@ class CreateStoryNew extends Component {
         <ContentWrapper>
           { workingDraft &&
             <ItemContainer>
-              <Route
+              <AuthRoute
                 path={`${match.url}/cover`}
                 component={CreateStoryCoverContent}
               />
-              <Route
+              <AuthRoute
                 path={`${match.url}/details`}
                 component={CreateStoryDetails}
               />
@@ -235,7 +257,6 @@ function mapDispatchToProps(dispatch) {
     publish: (draft) => dispatch(StoryCreateActions.publishDraft(draft)),
     resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
     reroute: (path) => dispatch(push(path)),
-
   }
 }
 

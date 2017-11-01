@@ -244,11 +244,6 @@ class Header extends React.Component {
               </NavLink>
               <Divider>&nbsp;</Divider>
               <NavLink
-                to='/createStory'
-              >
-                <StyledRoundedButton text='Create'/>
-              </NavLink>
-              <NavLink
                 to='/createStoryNew/new'
               >
                 <StyledRoundedButton text='Create'/>

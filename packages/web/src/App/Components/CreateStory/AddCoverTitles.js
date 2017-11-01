@@ -89,7 +89,7 @@ function isNewStory(props, nextProps) {
 
 }
 
-export default class AddCoverPhotoBox extends React.Component {
+export default class AddCoverTitles extends React.Component {
   static propTypes = {
     onInputChange: PropTypes.func,
     workingDraft: PropTypes.object,

@@ -14,7 +14,7 @@
 'use strict';
 
 var Immutable = require('immutable');
-import {genKey} from './reexports'
+import {genKey} from '.'
 
 var invariant = require('fbjs/lib/invariant');
 

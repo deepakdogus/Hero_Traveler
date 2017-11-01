@@ -37,8 +37,8 @@ import UserActions from '../../Shared/Redux/Entities/Users'
 import TabIcon from '../../Components/TabIcon'
 import Modal from '../../Components/Modal'
 
-import Editor from '../../Components/NewEditor/Editor'
-import Toolbar from '../../Components/NewEditor/Toolbar'
+import NativeEditor from '../../Components/NativeEditor/Editor'
+import Toolbar from '../../Components/NativeEditor/Toolbar'
 import NavButtonStyles from '../../Navigation/Styles/NavButtonStyles'
 import {KeyboardTrackingView} from 'react-native-keyboard-tracking-view';
 
@@ -561,6 +561,7 @@ class StoryCoverScreen extends Component {
     })
     .catch((err) => {
       this.saveFailed()
+      console.log(`Failed saving story: ${err}`)
       return Promise.reject(err)
     })
   }
@@ -627,8 +628,22 @@ class StoryCoverScreen extends Component {
     this.setState({title})
   }
 
+  setTitleAndFocus = (title) => {
+    this.setTitle(title)
+    this.jumpToTitle()
+  }
+
   setDescription = (description) => {
     this.setState({description})
+  }
+
+  setDescriptionAndFocus = (description) => {
+    this.setDescription(description)
+    this.jumpToTitle()
+  }
+
+  jumpToTitle = () => {
+    this.scrollViewRef.scrollTo({x:0, y: -30, amimated: true})
   }
 
   renderContent () {
@@ -690,7 +705,8 @@ class StoryCoverScreen extends Component {
             placeholder='ADD A TITLE'
             placeholderTextColor={this.renderPlaceholderColor(Colors.background)}
             value={this.state.title}
-            onChangeText={this.setTitle}
+            onChangeText={this.setTitleAndFocus}
+            onFocus={this.jumpToTitle}
             returnKeyType='done'
             maxLength={40}
             multiline={true}
@@ -701,7 +717,8 @@ class StoryCoverScreen extends Component {
             style={this.renderTextColor(styles.subTitleInput)}
             placeholder='Add a subtitle'
             placeholderTextColor={this.renderPlaceholderColor(Colors.background)}
-            onChangeText={this.setDescription}
+            onChangeText={this.setDescriptionAndFocus}
+            onFocus={this.jumpToTitle}
             value={this.state.description}
             returnKeyType='done'
             maxLength={50}
@@ -800,48 +817,65 @@ class StoryCoverScreen extends Component {
   }
 
   handleAddImage = (data) => {
+    this.editor.updateSelectionState({hasFocus: false})
     this.setState({imageUploading: true})
     api.uploadStoryImage(this.props.story.id, pathAsFileObject(data))
       .then(({data: imageUpload}) => {
         this.editor.insertImage(_.get(imageUpload, 'original.path'))
         this.setState({imageUploading: false})
       })
-      .catch(this.saveFailed)
+      .catch((err) => {
+        console.log(`Failed adding image ${err}`)
+        this.saveFailed()
+      })
     NavActions.pop()
   }
 
   handleAddVideo = (data) => {
+    this.editor.updateSelectionState({hasFocus: false})
     this.setState({videoUploading: true})
     api.uploadStoryVideo(this.props.story.id, pathAsFileObject(data))
       .then(({data: videoUpload}) => {
         this.editor.insertVideo(_.get(videoUpload, 'original.path'))
         this.setState({videoUploading: false})
       })
-      .catch(this.saveFailed)
+      .catch((err) => {
+        console.log(`Failed adding video ${err}`)
+        this.saveFailed()
+      })
     NavActions.pop()
   }
 
-  setToolbarDisplay = (toolbarDisplay) => {
+  setHasFocus = (toolbarDisplay) => {
     if (this.toolbar && this.state.toolbarDisplay !== toolbarDisplay) {
       this.setState({toolbarDisplay})
+    }
+  }
+
+  setBlockType = (blockType) => {
+    if (this.toolbar) {
+      this.toolbar.setBlockType(blockType)
     }
   }
 
   renderEditor() {
     return (
       <View style={[styles.editor]}>
-        <Editor
-          ref={i => this.editor = i}
-          style={{
-            flex: 1,
-            minWidth: Metrics.screenWidth
-          }}
-          onPressImage={this.handlePressAddImage}
-          onPressVideo={this.handlePressAddVideo}
-          customStyleMap={customStyles}
-          setToolbarDisplay={this.setToolbarDisplay}
-          {...this.getContent()}
-        />
+        {
+          <NativeEditor
+            ref={i => this.editor = i}
+            style={{
+              flex: 1,
+              minWidth: Metrics.screenWidth
+            }}
+            customStyleMap={customStyles}
+            onPressImage={this.handlePressAddImage}
+            onPressVideo={this.handlePressAddVideo}
+            {...this.getContent()}
+            setHasFocus={this.setHasFocus}
+            setBlockType={this.setBlockType}
+          />
+        }
       </View>
     )
   }
@@ -873,10 +907,10 @@ class StoryCoverScreen extends Component {
         this.props.user.introTooltips
       )
     }
-    if (this.scrollViewRef && this.state.isScrollDown) {
-      this.setState({isScrollDown: false})
-      this.scrollViewRef.scrollTo({x: 0, y: 200, animated: true})
-    }
+    //if (this.scrollViewRef && this.state.isScrollDown) {
+    //  this.setState({isScrollDown: false})
+    //  this.scrollViewRef.scrollTo({x: 0, y: 200, animated: true})
+    //}
     return (
       <View style={styles.root}>
         <ScrollView
@@ -929,11 +963,13 @@ class StoryCoverScreen extends Component {
             style={styles.trackingToolbarContainer}
             trackInteractive={true}
           >
+            {
             <Toolbar
               ref={i => this.toolbar = i}
               display={this.state.toolbarDisplay}
               onPress={this.editor.onToolbarPress}
             />
+            }
           </KeyboardTrackingView>
         }
         {this.state.activeModal === 'cancel' && this.renderCancel()}

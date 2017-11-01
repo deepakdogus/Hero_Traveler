@@ -9,7 +9,7 @@
     "material-ui": "^0.19.1",
     "moment": "^2.18.1",
     "normalizr": "^3.2.4",
-    "nuka-carousel": "^2.3.0",
+    "nuka-carousel": "^3.0.0",
     "numeral": "^2.0.6",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",

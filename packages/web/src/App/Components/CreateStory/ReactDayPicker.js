@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import DayPicker from 'react-day-picker';
-import './Styles/ReactDayPickerStyles.css';
+import DayPicker from 'react-day-picker'
+import './Styles/ReactDayPickerStyles.css'
 
 import Icon from '../Icon'
 
@@ -82,18 +82,3 @@ export default class ReactDayPicker extends React.Component {
     )
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -10,6 +10,7 @@ import VerticalCenter from '../VerticalCenter'
 import Modal from 'react-modal'
 import EditPhotoOptions from '../Modals/EditPhotoOptions'
 import PhotoEditor from '../Modals/PhotoEditor'
+import uploadFile from '../../Utils/uploadFile'
 
 import {
   Username,
@@ -114,22 +115,13 @@ export default class ProfileHeaderEdit extends React.Component {
     this.setState(stateUpdates)
   }
 
-  uploadImage = (e) => {
-    e.preventDefault()
-    let files
-    if (e.dataTransfer) {
-      files = e.dataTransfer.files;
-    } else if (e.target) {
-      files = e.target.files;
-    }
-    const reader = new FileReader();
-    reader.onload = () => {
+  uploadImage = (event) => {
+    uploadFile(event, this, (file) => {
       this.setState({
-        loadedImage: reader.result,
+        loadedImage: file,
         modal: 'photoEditor',
-      });
-    }
-    reader.readAsDataURL(files[0]);
+      })
+    })
   }
 
   render () {

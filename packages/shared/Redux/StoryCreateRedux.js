@@ -17,8 +17,9 @@ const { Types, Creators } = createActions({
   discardDraft: ['draftId'],
   discardDraftSuccess: ['draft'],
   discardDraftFailure: ['error'],
-  updateDraft: ['draftId', 'draft', 'updateStoryEntity'],
-  updateDraftSuccess: ['draft'],
+  updateDraft: ['draftId', 'draft', 'updateStoryEntity', 'isRepublishing'],
+  updateWorkingDraft: ['workingDraft'],
+  updateDraftSuccess: ['draft', 'isRepublished'],
   updateDraftFailure: ['error'],
   uploadCoverImage: ['draftId', 'path'],
   uploadCoverImageSuccess: ['draft'],
@@ -36,9 +37,11 @@ export default Creators
 export const INITIAL_STATE = Immutable({
   isShowCreateModal: false,
   draft: null,
+  workingDraft: null,
   publishing: false,
   error: null,
   isPublished: false,
+  isRepublished: false,
   fetchStatus: {
     loaded: false,
     fetching: false
@@ -78,11 +81,25 @@ export const failure = (state, {error}) =>
 export const registerDraft = () => INITIAL_STATE
 
 export const registerDraftSuccess = (state, {draft}) => {
-  return state.merge({draft})
+  return state.merge({
+    draft,
+    workingDraft: draft,
+  })
 }
 
-export const updateDraft = (state, {draft}) => {
-  return state.merge({draft}, {deep: true})
+// updateDraft called after save. Making sure to sync up workingDraft + draft
+export const updateDraftSuccess = (state, {draft, isRepublished}) => {
+  return state.merge({
+    draft,
+    workingDraft: draft,
+    isRepublished: !!isRepublished,
+  },
+  {deep: true})
+}
+
+// updateWorkingDraft only updates local draft
+export const updateWorkingDraft = (state, {workingDraft}) => {
+  return state.merge({workingDraft}, {deep: true})
 }
 
 export const uploadCoverImageSuccess = (state, {draft}) => {
@@ -112,7 +129,8 @@ export const editStorySuccess = (state, {story}) => {
       loaded: true,
       fetching: false
     },
-    draft: story
+    draft: story,
+    workingDraft: story,
   })
 }
 
@@ -136,7 +154,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.PUBLISH_DRAFT_FAILURE]: failure,
   [Types.DISCARD_DRAFT_SUCCESS]: reset,
   [Types.DISCARD_DRAFT_FAILURE]: failure,
-  [Types.UPDATE_DRAFT_SUCCESS]: updateDraft,
+  [Types.UPDATE_WORKING_DRAFT]: updateWorkingDraft,
+  [Types.UPDATE_DRAFT_SUCCESS]: updateDraftSuccess,
   [Types.UPDATE_DRAFT_FAILURE]: failure,
   [Types.REGISTER_DRAFT]: registerDraft,
   [Types.REGISTER_DRAFT_SUCCESS]: registerDraftSuccess,

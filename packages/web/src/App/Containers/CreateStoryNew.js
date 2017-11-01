@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import {Route} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {push} from 'react-router-redux';
 import _ from 'lodash'

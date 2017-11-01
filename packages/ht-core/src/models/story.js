@@ -108,9 +108,7 @@ StorySchema.pre('save', function(next) {
       next()
     })
     .catch(() => {
-      // basic error handling until we also get googlePlacesAPI on mobile too
-      this.latitude = null
-      this.longitude = null
+      // ignoring error until we also get googlePlacesAPI on mobile too
       next()
     })
   }

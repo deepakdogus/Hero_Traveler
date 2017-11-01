@@ -11,7 +11,7 @@ const Wrapper = styled.div`
 `
 
 const Tile = styled(Row)`
-  background-color: ${props => props.theme.Colors.lightGreyAreas}; 
+  background-color: ${props => props.theme.Colors.lightGreyAreas};
   border-radius: 4px;
   max-width: 116px;
   height: 34px;
@@ -40,24 +40,24 @@ const StyledGrid = styled(Grid)`
 
 export default class TagTileGrid extends React.Component {
   static propTypes = {
-    tileTags: PropTypes.arrayOf(PropTypes.string),
-    handleTileClick: PropTypes.func,
+    selectedCategories: PropTypes.arrayOf(PropTypes.object),
+    handleCategoryRemove: PropTypes.func,
   }
 
   render() {
-    const {tileTags, handleTileClick} = this.props
+    const {selectedCategories, handleCategoryRemove} = this.props
 
-    const renderedTiles = tileTags.map((tag) => {
+    const renderedTiles = selectedCategories.map((tag) => {
       return (
-        <Col key={tag} xs={12} sm={6} md={4} lg={3} >
+        <Col key={tag.id} xs={12} sm={6} md={4} lg={3} >
           <Wrapper>
             <Tile around='xs'>
-              <TagText>{tag}</TagText>
-              <StyledIcon 
-                data-tagName={tag}
+              <TagText>{tag.title}</TagText>
+              <StyledIcon
+                data-tagName={tag.id}
                 name='closeDark'
-                onClick={handleTileClick}
-              />              
+                onClick={handleCategoryRemove}
+              />
             </Tile>
           </Wrapper>
         </Col>

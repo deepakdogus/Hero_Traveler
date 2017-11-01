@@ -36,16 +36,18 @@ const StyledHorizontalDivider = styled(HorizontalDivider)`
 export default class MultiTagPicker extends React.Component {
 
 static propTypes = {
-    handleTagClick: PropTypes.func,
+    closePicker: PropTypes.func,
+    handleCategorySelect: PropTypes.func,
     listTags: PropTypes.arrayOf(PropTypes.string),
+    categoriesList: PropTypes.arrayOf(PropTypes.object),
   }
 
-  renderList(listTags) {
+  renderList(categoriesList) {
     return (
-      listTags.map((tag) => {
+      categoriesList.map((tag) => {
         return (
-          <div key={tag}>
-            <Tag onClick={this.props.handleTagClick}>{tag}</Tag>
+          <div key={tag.id}>
+            <Tag onClick={this.props.handleCategorySelect}>{tag.title}</Tag>
             <StyledHorizontalDivider color='lighter-grey' opaque/>
           </div>
         )
@@ -54,10 +56,10 @@ static propTypes = {
   }
 
   render() {
-    const {listTags} = this.props;
+    const {categoriesList, closePicker} = this.props;
     return (
-      <TagPickerContainer>
-        {this.renderList(listTags)}
+      <TagPickerContainer onClick={closePicker}>
+        {this.renderList(categoriesList)}
       </TagPickerContainer>
     )
   }

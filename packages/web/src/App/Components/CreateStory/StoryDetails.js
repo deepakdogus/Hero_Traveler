@@ -23,8 +23,7 @@ const categoriesExample = feedExample[Object.keys(feedExample)[0]].categories
 for (var i=0; i<categoriesExample.length; i++)
     testTagNames.push(categoriesExample[i].title)
 
-const Container = styled.div`
-`
+const Container = styled.div``
 
 const InputRowContainer = styled(Container)`
   padding: 20px 0px 14px 0px;
@@ -104,11 +103,35 @@ const styles = {
   },
 }
 
+function sortCategories(categories) {
+  return categories.sort((a,b) => {
+    if (a.title < b.title) return -1
+    else return 1
+  })
+}
+
+function formatCategories(categories) {
+  const titleToCategory = {}
+  const categoriesList = sortCategories(Object.keys(categories).map(key => {
+    const category = categories[key]
+    titleToCategory[category.title] = category
+    return category
+  }))
+  return {
+    titleToCategory,
+    categoriesList,
+  }
+}
+
+function isSameTag(a, b){
+  return a.id === b.id && a.title === b.title
+}
+
 export default class StoryDetails extends React.Component {
   static propTypes = {
-    title: PropTypes.string,
     workingDraft: PropTypes.object,
     onInputChange: PropTypes.func,
+    categories: PropTypes.object,
   }
 
   constructor(props) {
@@ -117,9 +140,17 @@ export default class StoryDetails extends React.Component {
       showTagPicker: false,
       showDayPicker: false,
       day: '',
-      tileTags: [],
-      listTags: testTagNames.sort(),
+      selectedCategories: [],
+      categoriesList: [],
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (Object.keys(this.props.categories).length !== Object.keys(nextProps).length){
+      const {categoriesList, titleToCategory} = formatCategories(nextProps.categories)
+      this.titleToCategory = titleToCategory
+      this.setState({categoriesList})
+    }
   }
 
   handleDayClick = (day) => {
@@ -135,23 +166,30 @@ export default class StoryDetails extends React.Component {
     this.props.onInputChange({type: value})
   }
 
-  handleTagClick = (event) => {
-    let clickedTag = event.target.innerHTML;
+  handleCategorySelect = (event) => {
+    event.stopPropagation()
+    const categoryTitle = event.target.innerHTML
+    const clickedCategory = this.titleToCategory[categoryTitle]
+    _.pullAllWith(this.state.categoriesList, [clickedCategory], isSameTag)
+    const selectedCategories = this.state.selectedCategories.concat([clickedCategory])
     this.setState({
-      listTags: _.pull(this.state.listTags, clickedTag),
-      tileTags: this.state.tileTags.concat([clickedTag]),
-      showTagPicker: !this.state.showTagPicker,
+      categoriesList: _.pullAllWith(this.state.categoriesList, [clickedCategory], isSameTag),
+      selectedCategories,
+      showPicker: 'tag',
     })
+    this.props.onInputChange({categories: selectedCategories})
   }
 
-  handleTileClick = (event) => {
-    event.stopPropagation();
-    let clickedTile = event.target.attributes.getNamedItem('data-tagName').value;
+  handleCategoryRemove = (event) => {
+    event.stopPropagation()
+    const clickedCategoryId = event.target.attributes.getNamedItem('data-tagName').value
+    const clickedCategory = this.props.categories[clickedCategoryId]
+    const selectedCategories = _.pullAllWith(this.state.selectedCategories, [clickedCategory], isSameTag)
     this.setState({
-      listTags: this.state.listTags.concat([clickedTile]).sort(),
-      tileTags: _.pull(this.state.tileTags, clickedTile),
-      showPicker: undefined,
+      categoriesList: sortCategories(this.state.categoriesList.concat([clickedCategory])),
+      selectedCategories,
     })
+    this.props.onInputChange({categories: selectedCategories})
   }
 
   togglePicker = (name) => {
@@ -202,20 +240,21 @@ export default class StoryDetails extends React.Component {
           <TagIcon name='tag'/>
           <StyledInput
             type='text'
-            placeholder={!this.state.tileTags.length ? 'Add tags' : ''}
+            placeholder={'Add tags'}
             value={''}
             onClick={this.toggleTagPicker}
           />
-          {!!this.state.tileTags.length &&
+          {!!this.state.selectedCategories.length &&
             <TagTileGrid
-              tileTags={this.state.tileTags}
-              handleTileClick={this.handleTileClick}
+              selectedCategories={this.state.selectedCategories}
+              handleCategoryRemove={this.handleCategoryRemove}
             />
           }
           {this.state.showPicker === 'tag' &&
             <MultiTagPicker
-              handleTagClick={this.handleTagClick}
-              listTags={this.state.listTags}
+              closePicker={this.togglePicker}
+              handleCategorySelect={this.handleCategorySelect}
+              categoriesList={this.state.categoriesList}
             />
           }
         </InputRowContainer>

@@ -49,7 +49,7 @@ export const BottomLeft = styled.div`
   position: absolute;
   left: 20px;
   bottom: 20px;
-  z-index: 1;
+  z-index: 2;
 `
 
 export const BottomLeftText = styled.p`

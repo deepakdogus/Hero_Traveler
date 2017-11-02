@@ -39,7 +39,9 @@ export default class FollowFollowingRow extends Component {
   static propTypes = {
     isFollowing: PropTypes.bool,
     user: PropTypes.object,
-    type: PropTypes.oneOf(['count', 'follow'])
+    type: PropTypes.oneOf(['count', 'follow']),
+    margin: PropTypes.string,
+    onClickHandler: PropTypes.func,
   }
 
   renderImage = () => {
@@ -71,9 +73,15 @@ export default class FollowFollowingRow extends Component {
           margin='none'
           width='154px'
           padding='even'
+          onClick={this._onClickHandler}
         />
       </VerticalCenter>
     )
+  }
+
+  _onClickHandler = () => {
+    const {user, onClickHandler} = this.props
+    onClickHandler(user.id)
   }
 
   render() {

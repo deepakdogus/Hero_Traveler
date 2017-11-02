@@ -13,7 +13,6 @@ import Avatar from './Avatar'
 import Login from './Modals/Login'
 import Signup from './Modals/Signup'
 import ResetPassword from './Modals/ResetPassword'
-import Contributor from './Modals/Contributor'
 import AddToItinerary from './Modals/AddToItinerary'
 import Inbox from './Modals/Inbox'
 import RightModal from './RightModal'
@@ -29,16 +28,6 @@ const customModalStyles = {
   overlay: {
     backgroundColor: 'rgba(0,0,0, .5)',
     zIndex: 100,
-  }
-}
-
-const contributorModalStyles = {
-  content: {
-    width: 380,
-    margin: 'auto',
-  },
-  overlay: {
-    backgroundColor: 'rgba(0,0,0, .5)'
   }
 }
 
@@ -329,14 +318,6 @@ class Header extends React.Component {
           style={customModalStyles}
         >
           <ResetPassword/>
-        </Modal>
-        <Modal
-          isOpen={this.state.modal === 'contributor'}
-          contentLabel="Reset Password Modal"
-          onRequestClose={this.closeModal}
-          style={contributorModalStyles}
-        >
-          <Contributor/>
         </Modal>
         <Modal
           isOpen={this.state.modal === 'addToItinerary'}

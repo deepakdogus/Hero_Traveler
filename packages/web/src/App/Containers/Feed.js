@@ -35,9 +35,8 @@ class Feed extends Component {
 
   render() {
     const {stories, users, storiesById} = this.props
-    const feedStories = storiesById.reduce((feed, id) => {
-      feed[id] = stories[id]
-      return feed
+    const feedStories = storiesById.map((id) => {
+      return stories[id]
     }, {})
     return (
       <Wrapper>

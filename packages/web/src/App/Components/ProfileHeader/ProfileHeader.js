@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import Modal from 'react-modal'
 
 import Header from '../Header'
 import HeaderImageWrapper from '../Headers/Shared/HeaderImageWrapper'
@@ -24,10 +25,22 @@ import InboxThread from '../Modals/InboxThread'
 import NotificationsThread from '../Modals/NotificationsThread'
 import FAQTermsAndConditions from '../Modals/FAQTermsAndConditions'
 import ProfileBio from '../Modals/ProfileBio'
+import Contributor from '../Modals/Contributor'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   ${OverlayStyles}
 `
+
+const contributorModalStyles = {
+  content: {
+    width: 380,
+    margin: 'auto',
+  },
+  overlay: {
+    backgroundColor: 'rgba(0,0,0, .5)',
+    zIndex: 3,
+  }
+}
 
 export default class ProfileHeader extends React.Component {
   static propTypes = {
@@ -48,9 +61,11 @@ export default class ProfileHeader extends React.Component {
     this.setState({ modal: undefined })
   }
 
-  openFollowedByModal = () => {
-    this.setState({ modal: 'followedBy' })
-  }
+  openFollowedByModal = () => this.setState({ modal: 'followedBy' })
+  openFollowingModal = () => this.setState({ modal: 'following' })
+  openBioModal = () => this.setState({modal: 'profileBio'})
+  openContributorModal = () => this.setState({modal: 'contributor'})
+  openInboxModal = () => this.setState({modal: 'inbox'})
 
   render () {
     const {user, isEdit} = this.props
@@ -64,14 +79,25 @@ export default class ProfileHeader extends React.Component {
       >
         <Header isLoggedIn></Header>
         {isEdit && <ProfileHeaderEdit {...this.props}/>}
-        {!isEdit && <ProfileHeaderView {...this.props}/>}
+        {!isEdit &&
+          <ProfileHeaderView
+            {...this.props}
+            openBio={this.openBioModal}
+            openContributor={this.openContributorModal}
+            openFollowedBy={this.openFollowedByModal}
+            openFollowing={this.openFollowingModal}
+          />}
 
         <RightModal
-          isOpen={this.state.modal === 'followedBy'}
+          isOpen={this.state.modal === 'followedBy' || this.state.modal === 'following'}
           contentLabel='Followed By Modal'
           onRequestClose={this.closeModal}
         >
-          <FollowFollowing closeModal={this.closeModal} profile={user}/>
+          <FollowFollowing
+            closeModal={this.closeModal}
+            followersType={this.state.modal === 'following' ? 'following' : 'followers'}
+            profile={user}
+          />
         </RightModal>
         <RightModal
           isOpen={this.state.modal === 'stats'}
@@ -157,6 +183,14 @@ export default class ProfileHeader extends React.Component {
         >
           <FAQTermsAndConditions closeModal={this.closeModal}/>
         </CenterModal>
+        <Modal
+          isOpen={this.state.modal === 'contributor'}
+          contentLabel='Contributor'
+          onRequestClose={this.closeModal}
+          style={contributorModalStyles}
+        >
+          <Contributor/>
+        </Modal>
 
       </ImageWrapper>
     )

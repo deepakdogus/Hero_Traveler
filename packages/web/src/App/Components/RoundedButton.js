@@ -52,6 +52,7 @@ function getBackgroundColor (type, colors) {
 }
 
 const StyledButton = styled.button`
+  cursor: pointer;
   font-family: ${props => props.theme.Fonts.type.montserrat};
   height: ${props => props.height || 'auto'};
   border-radius: 30px;

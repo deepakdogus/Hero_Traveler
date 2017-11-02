@@ -34,6 +34,7 @@ export default class ProfileHeader extends React.Component {
     user: PropTypes.object,
     isContributor: PropTypes.bool,
     isEdit: PropTypes.bool,
+    isUsersProfile: PropTypes.bool,
   }
 
   constructor(props) {

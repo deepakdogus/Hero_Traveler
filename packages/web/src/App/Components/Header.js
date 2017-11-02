@@ -146,6 +146,7 @@ class Header extends React.Component {
     isLoggedIn: PropTypes.bool,
     blackHeader: PropTypes.bool,
     attemptLogin: PropTypes.func,
+    userId: PropTypes.string,
   }
 
   constructor(props) {
@@ -181,7 +182,7 @@ class Header extends React.Component {
   }
 
   render () {
-    const {isLoggedIn, attemptLogin} = this.props
+    const {isLoggedIn, attemptLogin, userId} = this.props
     // quick fix to get this merge in - need to refactor accordingly (part of header refactor)
     const SelectedGrid = this.props.blackHeader ? StyledGridBlack : StyledGrid
     const user = usersExample['59d50b1c33aaac0010ef4b3f']
@@ -269,7 +270,7 @@ class Header extends React.Component {
                 <NotificationsIcon name='cameraFlash' />
               </StyledRoundedButton>
               <NavLink
-                to='/profile/59d50b1c33aaac0010ef4b3f/view'
+                to={`/profile/${userId}/view`}
               >
                 <StyledRoundedAvatarButton
                   type='headerButton'
@@ -365,7 +366,9 @@ class Header extends React.Component {
 }
 
 function mapStateToProps(state) {
+
   return {
+    userId: state.session.userId,
     isLoggedIn: state.login.isLoggedIn,
   }
 }

@@ -17,24 +17,25 @@ const suggestedStoriesAttributes = {
 
 export default class StoryList extends React.Component {
   static propTypes = {
-    stories: PropTypes.object,
+    stories: PropTypes.arrayOf(PropTypes.object),
     users: PropTypes.object,
+    type: PropTypes.string,
   }
 
   render() {
     const {stories, users = {}, type} = this.props
     const colAttributes = type === 'suggestions' ? suggestedStoriesAttributes : defaultAttributes
-    const renderedStories = Object.keys(stories).map((key, index) => {
+    const renderedStories = stories.map((story, index) => {
       /*
         We only need the first 4 elements for suggestions
         We will improve this check to allow 'pagination' will carousel scroll
       */
       if (type === 'suggestions' && index >= 4) return null
       return (
-        <Col key={key} {...colAttributes}>
+        <Col key={story.id} {...colAttributes}>
           <StoryPreview
-            story={stories[key]}
-            author={users[stories[key].author]}
+            story={story}
+            author={users[story.author]}
             type={type}
           />
         </Col>

@@ -61,6 +61,8 @@ export default class ProfileHeaderView extends React.Component {
   static propTypes = {
     user: PropTypes.object,
     isContributor: PropTypes.bool,
+    isUsersProfile: PropTypes.bool,
+
   }
 
   constructor(props) {
@@ -71,8 +73,7 @@ export default class ProfileHeaderView extends React.Component {
   }
 
   render () {
-    const {user, isContributor} = this.props
-    const isUsersProfile = user.id === '59d64ca84722340010b12c98'
+    const {user, isContributor, isUsersProfile} = this.props
     const isFollowing = user.id === '59d508c56ed1d9001008780b'
     return (
       <Container>

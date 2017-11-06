@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import {push} from 'react-router-redux'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
@@ -46,6 +47,7 @@ class Profile extends Component {
     loadUserFollowing: PropTypes.func,
     followUser: PropTypes.func,
     unfollowUser: PropTypes.func,
+    reroute: PropTypes.func,
   }
 
   constructor(props) {
@@ -129,8 +131,12 @@ class Profile extends Component {
     this.props.unfollowUser(this.props.sessionUserId, this.props.profilesUser.id)
   }
 
+  _toProfileReroute = () => {
+    this.props.reroute(`/profile/${this.props.profilesUser.id}/view`)
+  }
+
   render() {
-    const {match, profilesUser, users, sessionUserId, myFollowedUsers} = this.props
+    const {match, profilesUser, users, sessionUserId, myFollowedUsers, updateUser} = this.props
     if (!profilesUser) return null
 
     let path = match.path.split("/")
@@ -149,6 +155,8 @@ class Profile extends Component {
           isFollowing={isFollowing}
           followUser={this._followUser}
           unfollowUser={this._unfollowUser}
+          toProfileView={this._toProfileReroute}
+          updateUser={updateUser}
         />
         <TabBar
           tabs={tabBarTabs}
@@ -206,6 +214,7 @@ function mapDispatchToProps(dispatch) {
     loadUserFollowing: (userId) => dispatch(UserActions.loadUserFollowing(userId)),
     followUser: (sessionUserID, userIdToFollow) => dispatch(UserActions.followUser(sessionUserID, userIdToFollow)),
     unfollowUser: (sessionUserID, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserID, userIdToUnfollow)),
+    reroute: (path) => dispatch(push(path)),
   }
 }
 

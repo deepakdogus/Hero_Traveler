@@ -62,19 +62,33 @@ const BioInput = styled.textarea`
   resize: none;
 `
 
+function getInitialState(user = {}){
+  return {
+    bio: user.bio,
+    modal: undefined,
+    photoType: undefined,
+    loadedImage: undefined,
+  }
+}
+
 export default class ProfileHeaderEdit extends React.Component {
   static propTypes = {
     user: PropTypes.object,
     isContributor: PropTypes.bool,
+    bio: PropTypes.string,
+
+    updateUser: PropTypes.func,
+    toProfileView: PropTypes.func,
   }
 
   constructor(props) {
     super(props)
-    this.state = {
-      bioText: undefined,
-      modal: undefined,
-      photoType: undefined,
-      loadedImage: undefined
+    this.state = getInitialState()
+  }
+
+  componentWillReceiveProps(nextProps){
+    if (nextProps.user && this.state.bio !== nextProps.user.bio) {
+      this.setState({bio: nextProps.user.bio})
     }
   }
 
@@ -101,7 +115,7 @@ export default class ProfileHeaderEdit extends React.Component {
   }
 
   onChangeText = (event) => {
-    this.setState({ bioText: event.target.value })
+    this.setState({ bio: event.target.value })
   }
 
   openCrop = () => {
@@ -124,15 +138,26 @@ export default class ProfileHeaderEdit extends React.Component {
     })
   }
 
+  onCancel = () => {
+    this.setState(getInitialState(), () => {
+      this.props.toProfileView()
+    })
+  }
+
+  onSave = () => {
+    this.props.updateUser({
+      bio: this.state.bio
+    })
+  }
+
   render () {
     const {user} = this.props
-    const {bioText, loadedImage, modal, photoType} = this.state
+    const {bio, loadedImage, modal, photoType} = this.state
     const avatarUrl = getImageUrl(user.profile.avatar, 'avatar')
 
     let targetedImage
     if (photoType === 'avatar') targetedImage = avatarUrl
     else if (photoType === 'cover') targetedImage = getImageUrl(user.profile.cover)
-
     return (
       <Container>
         <Centered>
@@ -154,7 +179,7 @@ export default class ProfileHeaderEdit extends React.Component {
           <ItalicText>Edit Bio</ItalicText>
           <BioInput
             type='text'
-            value={bioText}
+            value={bio}
             placeholder='Enter your bio'
             onChange={this.onChangeText}
           />
@@ -163,10 +188,13 @@ export default class ProfileHeaderEdit extends React.Component {
               margin='small'
               type={'opaque'}
               text={'CANCEL'}
+              onClick={this.onCancel}
             />
             <RoundedButton
               margin='small'
-              text='SAVE CHANGES'/>
+              text='SAVE CHANGES'
+              onClick={this.onSave}
+            />
           </ButtonWrapper>
           <BottomLeft>
             <Row onClick={this.openCoverOptions}>
@@ -197,7 +225,7 @@ export default class ProfileHeaderEdit extends React.Component {
             isAvatar={photoType === 'avatar'}
             closeModal={this.closeModal}
             saveCroppedImage={this.saveCroppedImage}
-            src={loadedImage || targetedImage}
+            src={loadedImage ? loadedImage.url : targetedImage}
           />
         </Modal>
       </Container>

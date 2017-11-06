@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import _ from 'lodash'
 
 import UserActions, {getByBookmarks} from '../Shared/Redux/Entities/Users'
 import StoryActions, {getByUser, getUserFetchStatus, getBookmarksFetchStatus} from '../Shared/Redux/Entities/Stories'
@@ -34,6 +35,7 @@ class Profile extends Component {
     userBookmarksFetchStatus: PropTypes.object,
     userBookmarksById: PropTypes.arrayOf(PropTypes.string),
     error: PropTypes.bool,
+    myFollowedUsers: PropTypes.arrayOf(PropTypes.string),
 
     getStories: PropTypes.func,
     getDrafts: PropTypes.func,
@@ -41,6 +43,9 @@ class Profile extends Component {
     getUser: PropTypes.func,
     deleteStory: PropTypes.func,
     loadBookmarks: PropTypes.func,
+    loadUserFollowing: PropTypes.func,
+    followUser: PropTypes.func,
+    unfollowUser: PropTypes.func,
   }
 
   constructor(props) {
@@ -69,6 +74,11 @@ class Profile extends Component {
       default:
         return this.props.getStories(this.props.profilesUser.id)
     }
+  }
+
+  componentWillMount() {
+    const {loadUserFollowing, myFollowedUsers, sessionUserId} = this.props
+    if (!myFollowedUsers) loadUserFollowing(sessionUserId)
   }
 
   componentDidMount() {
@@ -111,15 +121,23 @@ class Profile extends Component {
     }
   }
 
+  _followUser = () => {
+    this.props.followUser(this.props.sessionUserId, this.props.profilesUser.id)
+  }
+
+  _unfollowUser = () => {
+    this.props.unfollowUser(this.props.sessionUserId, this.props.profilesUser.id)
+  }
+
   render() {
-    const {match, profilesUser, users, sessionUserId} = this.props
+    const {match, profilesUser, users, sessionUserId, myFollowedUsers} = this.props
     if (!profilesUser) return null
 
     let path = match.path.split("/")
     const isEdit = path[path.length-1] === 'edit'
     const isContributor = profilesUser.role === 'contributor'
     const isUsersProfile = profilesUser.id === sessionUserId
-
+    const isFollowing = _.includes(myFollowedUsers, profilesUser.id)
     const {selectedStories} = this.getSelectedStories()
     return (
       <ContentWrapper>
@@ -128,6 +146,9 @@ class Profile extends Component {
           isContributor={isContributor}
           isEdit={isEdit}
           isUsersProfile={isUsersProfile}
+          isFollowing={isFollowing}
+          followUser={this._followUser}
+          unfollowUser={this._unfollowUser}
         />
         <TabBar
           tabs={tabBarTabs}
@@ -154,8 +175,12 @@ function mapStateToProps(state, ownProps) {
   const userId = ownProps.match.params.userId
   let {stories, users} = state.entities
   const profilesUser =  users.entities[userId]
+  const sessionUserId = state.session.userId
+  const myFollowedUsersObject = users.userFollowingByUserIdAndId[sessionUserId]
+  const myFollowedUsers = myFollowedUsersObject ? myFollowedUsersObject.byId : undefined
+
   return {
-    sessionUserId: state.session.userId,
+    sessionUserId,
     profilesUser,
     users: users.entities,
     stories: stories.entities,
@@ -165,7 +190,8 @@ function mapStateToProps(state, ownProps) {
     draftsById: stories.drafts.byId,
     userBookmarksFetchStatus: getBookmarksFetchStatus(stories, userId),
     userBookmarksById: getByBookmarks(users, userId),
-    error: stories.error
+    error: stories.error,
+    myFollowedUsers,
   }
 }
 
@@ -177,6 +203,9 @@ function mapDispatchToProps(dispatch) {
     getUser: (userId) => dispatch(UserActions.loadUser(userId)),
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
     loadBookmarks: (userId) => dispatch(StoryActions.getBookmarks(userId)),
+    loadUserFollowing: (userId) => dispatch(UserActions.loadUserFollowing(userId)),
+    followUser: (sessionUserID, userIdToFollow) => dispatch(UserActions.followUser(sessionUserID, userIdToFollow)),
+    unfollowUser: (sessionUserID, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserID, userIdToUnfollow)),
   }
 }
 

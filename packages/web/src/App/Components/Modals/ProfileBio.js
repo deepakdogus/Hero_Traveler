@@ -61,17 +61,16 @@ export default class ProfileBio extends React.Component {
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>{profile.username.toUpperCase()}</RightTitle>
         <BioContainer>
-          <BioText>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sagittis nisl ac leo elementum eleifend. Etiam sit amet tempor odio. Sed ultricies faucibus interdum. Phasellus eu euismod dolor. Nam fringilla lorem at consectetur posuere. Nam laoreet arcu nulla, vitae vulputate lectus volutpat ac. Maecenas quis auctor libero, sed commodo leo.</BioText>
-          <BioText>Aenean convallis metus vitae bibendum aliquet. Aenean tempus ex at ex pretium sagittis. In faucibus magna vel dolor ultrices vestibulum. Fusce metus velit, aliquam dapibus hendrerit vitae, scelerisque et orci. Sed blandit, enim eget condimentum eleifend, elit felis consectetur velit, vitae sagittis sapien massa eget velit.</BioText>
+          <BioText>{profile.bio}</BioText>
         </BioContainer>
         <SocialFooterContainer>
           <SocialFooterText>Follow me on:</SocialFooterText>
           <Row between='xs'>
             <FacebookIcon name='facebook-blue'/>
             <TwitterIcon name='twitter-blue'/>
-            <InstagramIcon name='instagram'/>            
+            <InstagramIcon name='instagram'/>
           </Row>
-        </SocialFooterContainer>        
+        </SocialFooterContainer>
       </Container>
     )
   }

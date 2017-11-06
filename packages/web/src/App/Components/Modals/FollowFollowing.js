@@ -52,15 +52,18 @@ class FollowFollowing extends Component {
   }
 
   renderUserRows = (ids) => {
-    const {myFollowedUsers} = this.props
+    const {myFollowedUsers, closeModal, sessionUserId} = this.props
     return ids.map((id, index) => {
       const isFollowing = _.includes(myFollowedUsers, id)
+      const isYou = id === sessionUserId
       return (
         <FollowFollowingRow
           key={id}
           user={this.props.users[id]}
           isFollowing={isFollowing}
-          onClickHandler={isFollowing ? this._unfollowUser : this._followUser}
+          isYou={isYou}
+          onFollowClick={isFollowing ? this._unfollowUser : this._followUser}
+          onProfileClick={closeModal}
           margin='0 0 25px'
         />
       )

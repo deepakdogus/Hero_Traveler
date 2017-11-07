@@ -11,6 +11,8 @@ const { Types, Creators } = createActions({
   signupFacebook: ['fbid', 'email', 'name', 'pictureUrl'],
   signupFacebookSuccess: null,
   signupFacebookFailure: ['error'],
+  signupGetUsersCategories: [],
+  signupGetUsersCategoriesSuccess: ['categoryIds'],
   signupFollowCategory: ['categoryId'],
   signupFollowCategorySuccess: ['categoryId'],
   signupFollowCategoryFailure: ['categoryId', 'error'],
@@ -58,6 +60,9 @@ export const followCategory = (state, {categoryId}) =>
 export const followCategoryFailure = (state, {categoryId}) =>
   state.merge({selectedCategories: _.without(state.selectedCategories, categoryId), error: 'Failed to add category'})
 
+export const getUsersCategoriesSuccess = (state, {categoryIds}) =>
+  state.merge({selectedCategories: categoryIds})
+
 export const followCategorySuccess = (state, {categoryId}) =>
   state.merge({error: null})
 
@@ -96,6 +101,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SIGNUP_FACEBOOK]: signupFacebook,
   [Types.SIGNUP_FACEBOOK_SUCCESS]: signupFacebookSuccess,
   [Types.SIGNUP_FACEBOOK_FAILURE]: failure,
+  [Types.SIGNUP_GET_USERS_CATEGORIES_SUCCESS]: getUsersCategoriesSuccess,
   [Types.SIGNUP_FOLLOW_CATEGORY]: followCategory,
   [Types.SIGNUP_FOLLOW_CATEGORY_SUCCESS]: followCategorySuccess,
   [Types.SIGNUP_FOLLOW_CATEGORY_FAILURE]: followCategoryFailure,

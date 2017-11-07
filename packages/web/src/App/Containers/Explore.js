@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import {push} from 'react-router-redux'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
@@ -33,10 +34,15 @@ class Explore extends Component {
     categories: PropTypes.object,
     fetchStatus: PropTypes.bool,
     loadCategories: PropTypes.func,
+    reroute: PropTypes.func,
   }
 
   componentDidMount() {
     this.props.loadCategories()
+  }
+
+  _navToCategory = (categoryId) => {
+    this.props.reroute(`/category/${categoryId}`)
   }
 
   render() {
@@ -45,7 +51,10 @@ class Explore extends Component {
         <ExploreHeader/>
         <ContentWrapper>
           <ExploreText>EXPLORE</ExploreText>
-            <ExploreGrid categories={this.props.categories}/>
+            <ExploreGrid
+              categories={this.props.categories}
+              onClickCategory={this._navToCategory}
+            />
           <Footer />
         </ContentWrapper>
       </Wrapper>
@@ -67,7 +76,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest())
+    loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
+    reroute: (path) => dispatch(push(path)),
   }
 }
 

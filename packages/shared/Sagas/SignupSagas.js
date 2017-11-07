@@ -58,6 +58,21 @@ export function * signupFacebook(api, action) {
   }
 }
 
+export function * getUsersCategories(api) {
+  const response = yield call(
+    api.getUsersCategories
+  )
+
+  if (response.ok) {
+    const categoryIds = response.data.map(category => category.followee)
+    yield [
+      put(SignupActions.signupGetUsersCategoriesSuccess(categoryIds))
+    ]
+  } else {
+    // add error handler
+  }
+}
+
 export function * followCategory(api, {categoryId}) {
   const response = yield call(
     api.followCategory,

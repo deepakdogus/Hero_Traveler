@@ -51,13 +51,14 @@ const CategoryLink = styled(NavLinkStyled)``
 
 export default class ExploreGrid extends React.Component {
   static propTypes = {
-    categories: PropTypes.arrayOf(PropTypes.object),
+    categories: PropTypes.object,
   }
 
   render() {
     const {categories} = this.props
 
-    const renderedCategories = categories.map((category) => {
+    const renderedCategories = Object.keys(categories).map((key) => {
+      const category = categories[key]
       return (
         <Col key={category.id} xs={6} sm={4} md={3} lg={2} >
           <Wrapper>

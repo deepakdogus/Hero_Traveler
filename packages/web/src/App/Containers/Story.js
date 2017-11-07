@@ -35,7 +35,7 @@ class Story extends Component {
     match: PropTypes.object,
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (!this.props.story) {
       this.props.getStory(this.props.match.params.storyId)
     }
@@ -44,7 +44,9 @@ class Story extends Component {
   render() {
     const {story, author} = this.props
     if (!story || !author) return null
-
+    const suggestStories = Object.keys(feedExample).map(key => {
+      return feedExample[key]
+    })
     return (
       <ContentWrapper>
         <Header isLoggedIn></Header>
@@ -66,7 +68,7 @@ class Story extends Component {
         </LimitedWidthContainer>
         <GreyWrapper>
           <LimitedWidthContainer>
-            <StorySuggestions suggestedStories={feedExample}/>
+            <StorySuggestions suggestedStories={suggestStories}/>
           </LimitedWidthContainer>
         </GreyWrapper>
       </ContentWrapper>

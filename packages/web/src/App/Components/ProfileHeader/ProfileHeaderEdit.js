@@ -78,6 +78,7 @@ export default class ProfileHeaderEdit extends React.Component {
     bio: PropTypes.string,
 
     updateUser: PropTypes.func,
+    uploadMedia: PropTypes.func,
     toProfileView: PropTypes.func,
   }
 
@@ -107,7 +108,7 @@ export default class ProfileHeaderEdit extends React.Component {
   }
 
   openCoverOptions = () => {
-    this.setOptionsState('cover')
+    this.setOptionsState('userCover')
   }
 
   openAvatarOptions = () => {
@@ -123,13 +124,23 @@ export default class ProfileHeaderEdit extends React.Component {
   }
 
   // add backend logic later
-  saveCroppedImage = (croppedImage) => {
-    const stateUpdates = { modal: undefined }
-    stateUpdates[this.state.photoType] = croppedImage
-    this.setState(stateUpdates)
+  saveCroppedImage = (croppedImageUrl) => {
+    // formatting into blob for upload
+    fetch(croppedImageUrl)
+    .then(res => res.blob())
+    .then(blob => {
+      this.props.uploadMedia(
+        this.props.user.id,
+        blob,
+        this.state.photoType,
+      )
+      const stateUpdates = { modal: undefined }
+      stateUpdates[this.state.photoType] = croppedImageUrl
+      this.setState(stateUpdates)
+    })
   }
 
-  uploadImage = (event) => {
+  uploadImageToBrowser = (event) => {
     uploadFile(event, this, (file) => {
       this.setState({
         loadedImage: file,
@@ -157,7 +168,7 @@ export default class ProfileHeaderEdit extends React.Component {
 
     let targetedImage
     if (photoType === 'avatar') targetedImage = avatarUrl
-    else if (photoType === 'cover') targetedImage = getImageUrl(user.profile.cover)
+    else if (photoType === 'userCover') targetedImage = getImageUrl(user.profile.cover)
     return (
       <Container>
         <Centered>
@@ -212,7 +223,7 @@ export default class ProfileHeaderEdit extends React.Component {
         >
           <EditPhotoOptions
             onCrop={this.openCrop}
-            onUpload={this.uploadImage}
+            onUpload={this.uploadImageToBrowser}
             hasImage={!!targetedImage}
           />
         </Modal>

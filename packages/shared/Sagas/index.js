@@ -11,6 +11,7 @@ import { LoginTypes } from '../Redux/LoginRedux'
 import { SignupTypes } from '../Redux/SignupRedux'
 import SessionActions, { SessionTypes } from '../Redux/SessionRedux'
 import { StoryCreateTypes } from '../Redux/StoryCreateRedux'
+import { MediaUploadTypes } from '../Redux/MediaUploadRedux'
 // Entities
 import { StoryTypes } from '../Redux/Entities/Stories'
 import { CategoryTypes } from '../Redux/Entities/Categories'
@@ -67,6 +68,10 @@ import {
   uploadCoverImage, loadStory, loadDrafts, deleteStory,
   flagStory,
 } from './StorySagas'
+
+import {
+  uploadMedia,
+} from './MediaUploadSagas'
 
 /* ------------- API ------------- */
 
@@ -152,5 +157,8 @@ export default function * root () {
     takeLatest(UserTypes.UNFOLLOW_USER, userUnfollowUser, heroAPI),
     takeLatest(UserTypes.FETCH_ACTIVITIES, getActivities, heroAPI),
     takeLatest(UserTypes.ACTIVITY_SEEN, seenActivity, heroAPI),
+
+    // Media Upload
+    takeLatest(MediaUploadTypes.UPLOAD_REQUEST, uploadMedia, heroAPI)
   ]
 }

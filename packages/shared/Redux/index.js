@@ -16,6 +16,7 @@ export default () => {
     storyCreate: require('./StoryCreateRedux').reducer,
     form: formReducer,
     startup: require('./StartupRedux').reducer,
+    mediaUpload: require('./MediaUploadRedux').reducer,
     routes,
     entities,
   })

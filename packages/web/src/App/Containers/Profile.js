@@ -7,6 +7,7 @@ import _ from 'lodash'
 
 import UserActions, {getByBookmarks} from '../Shared/Redux/Entities/Users'
 import StoryActions, {getByUser, getUserFetchStatus, getBookmarksFetchStatus} from '../Shared/Redux/Entities/Stories'
+import MediaUploadActions from '../Shared/Redux/MediaUploadRedux'
 
 import ProfileHeader from '../Components/ProfileHeader/ProfileHeader'
 import TabBar from '../Components/TabBar'
@@ -24,7 +25,7 @@ const StoryListWrapper = styled.div`
 class Profile extends Component {
   static propTypes = {
     match: PropTypes.object,
-
+    // mapStateToProps properties
     sessionUserId: PropTypes.string,
     profilesUser: PropTypes.object,
     users: PropTypes.object,
@@ -37,7 +38,7 @@ class Profile extends Component {
     userBookmarksById: PropTypes.arrayOf(PropTypes.string),
     error: PropTypes.bool,
     myFollowedUsers: PropTypes.arrayOf(PropTypes.string),
-
+    // mapDispatchToProps functions
     getStories: PropTypes.func,
     getDrafts: PropTypes.func,
     updateUser: PropTypes.func,
@@ -48,6 +49,7 @@ class Profile extends Component {
     followUser: PropTypes.func,
     unfollowUser: PropTypes.func,
     reroute: PropTypes.func,
+    uploadMedia: PropTypes.func,
   }
 
   constructor(props) {
@@ -136,7 +138,11 @@ class Profile extends Component {
   }
 
   render() {
-    const {match, profilesUser, users, sessionUserId, myFollowedUsers, updateUser} = this.props
+    const {
+      match, profilesUser, sessionUserId,
+      users, myFollowedUsers,
+      updateUser, uploadMedia
+    } = this.props
     if (!profilesUser) return null
 
     let path = match.path.split("/")
@@ -157,6 +163,7 @@ class Profile extends Component {
           unfollowUser={this._unfollowUser}
           toProfileView={this._toProfileReroute}
           updateUser={updateUser}
+          uploadMedia={uploadMedia}
         />
         <TabBar
           tabs={tabBarTabs}
@@ -215,6 +222,7 @@ function mapDispatchToProps(dispatch) {
     followUser: (sessionUserID, userIdToFollow) => dispatch(UserActions.followUser(sessionUserID, userIdToFollow)),
     unfollowUser: (sessionUserID, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserID, userIdToUnfollow)),
     reroute: (path) => dispatch(push(path)),
+    uploadMedia: (userId, file, uploadType) => dispatch(MediaUploadActions.uploadRequest(userId, file, uploadType)),
   }
 }
 

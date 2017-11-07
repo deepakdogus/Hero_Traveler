@@ -23,7 +23,8 @@ const addAvatarToIndex = (avatarImage, user) => new Promise((resolve, reject) =>
 
 export default async function updateAvatar(req, res, next) {
   const user = req.user
-  const file = JSON.parse(req.body.file)
+  let file = req.body.file
+  if (typeof file === 'string') file = JSON.parse(req.body.file)
   const avatarImage = await Models.Image.create(
     formatUploadObject(
       file,

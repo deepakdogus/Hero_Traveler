@@ -44,7 +44,7 @@ class Story extends Component {
   render() {
     const {story, author} = this.props
     if (!story || !author) return null
-    const suggestStories = Object.keys(feedExample).map(key => {
+    const suggestedStories = Object.keys(feedExample).map(key => {
       return feedExample[key]
     })
     return (
@@ -68,7 +68,7 @@ class Story extends Component {
         </LimitedWidthContainer>
         <GreyWrapper>
           <LimitedWidthContainer>
-            <StorySuggestions suggestedStories={suggestStories}/>
+            <StorySuggestions suggestedStories={suggestedStories}/>
           </LimitedWidthContainer>
         </GreyWrapper>
       </ContentWrapper>

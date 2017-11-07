@@ -128,12 +128,16 @@ export default class StoryDetails extends React.Component {
   }
   constructor(props) {
     super(props)
+
+    // may need to refactor the positioning of this logic
     let categoriesList = []
     if (props.categories && props.workingDraft) {
       const formatedCategories = formatCategories(props.categories)
       categoriesList = _.differenceWith(formatedCategories.categoriesList, props.workingDraft.categories, isSameTag)
       this.titleToCategory = formatedCategories.titleToCategory
     }
+    //
+
     this.state = {
       showTagPicker: false,
       showDayPicker: false,

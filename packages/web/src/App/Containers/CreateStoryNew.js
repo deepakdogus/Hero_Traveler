@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import {connect} from 'react-redux'
-import {push} from 'react-router-redux';
+import {push} from 'react-router-redux'
 import _ from 'lodash'
 import Modal from 'react-modal'
 import PropTypes from 'prop-types'

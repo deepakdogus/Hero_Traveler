@@ -37,7 +37,7 @@ class Feed extends Component {
     const {stories, users, storiesById} = this.props
     const feedStories = storiesById.map((id) => {
       return stories[id]
-    }, {})
+    })
     return (
       <Wrapper>
         <FeedHeader stories={feedStories} users={users}/>

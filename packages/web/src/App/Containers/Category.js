@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
-import {feedExample, usersExample} from './Feed_TEST_DATA'
+import StoryActions, {getByCategory, getFetchStatus} from '../Shared/Redux/Entities/Stories'
+import CategoryActions from '../Shared/Redux/Entities/Categories'
+
 import CategoryHeader from '../Components/CategoryHeader'
 import TabBar from '../Components/TabBar'
 import StoryList from '../Components/StoryList'
@@ -17,6 +21,16 @@ const StoryListWrapper = styled.div`
 `
 
 class Category extends Component {
+  static propTypes = {
+    stories: PropTypes.object,
+    users: PropTypes.object,
+    storiesById: PropTypes.arrayOf(PropTypes.string),
+    categoryId: PropTypes.string,
+    category: PropTypes.object,
+    loadCategories: PropTypes.func,
+    loadCategoryStories: PropTypes.func,
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -24,29 +38,42 @@ class Category extends Component {
     }
   }
 
+  loadData() {
+    const {categoryId, loadCategoryStories, category, loadCategories} = this.props
+    let storyType = null
+    if (this.state.activeTab !== 'ALL') storyType = this.state.activeTab.toLowerCase()
+    loadCategoryStories(categoryId, storyType)
+    if (!category) loadCategories()
+  }
+
+  componentDidMount() {
+    this.loadData()
+  }
+
   onClickTab = (event) => {
     let tab = event.target.innerHTML
-    if (this.state.activeTab !== tab) this.setState({ activeTab: tab })
+    if (this.state.activeTab !== tab) {
+      this.setState({ activeTab: tab}, () => {
+        this.loadData()
+      })
+    }
   }
 
   render() {
-    const user = usersExample['59d64ca84722340010b12c98']
-    const usersStories = Object.keys(feedExample).reduce((matchingStories, key) => {
-      const story = feedExample[key]
-      if (story.author === user.id) matchingStories[key] = story;
-      return matchingStories
-    }, {})
-
+    const {storiesById, stories, category, users} = this.props
+    const categoryStories = storiesById.map((id) => {
+      return stories[id]
+    })
     return (
       <ContentWrapper>
-        <CategoryHeader/>
+        <CategoryHeader category={category}/>
         <TabBar
           tabs={tabBarTabs}
           activeTab={this.state.activeTab}
           onClickTab={this.onClickTab}
         />
         <StoryListWrapper>
-          <StoryList stories={usersStories} users={usersExample}/>
+          <StoryList stories={categoryStories} users={users}/>
           <ShowMore/>
           <Footer />
         </StoryListWrapper>
@@ -55,4 +82,23 @@ class Category extends Component {
   }
 }
 
-export default Category
+function mapStateToProps(state, ownProps) {
+  const categoryId = ownProps.match.params.categoryId
+  return {
+    categoryId,
+    category: state.entities.categories.entities[categoryId],
+    fetchStatus: getFetchStatus(state.entities.stories, categoryId),
+    storiesById: getByCategory(state.entities.stories, categoryId),
+    stories: state.entities.stories.entities,
+    users: state.entities.users.entities,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    loadCategoryStories: (categoryId, storyType) => dispatch(StoryActions.fromCategoryRequest(categoryId, storyType)),
+    loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Category)

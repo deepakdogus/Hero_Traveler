@@ -13,6 +13,7 @@ import ProfileHeader from '../Components/ProfileHeader/ProfileHeader'
 import TabBar from '../Components/TabBar'
 import StoryList from '../Components/StoryList'
 import Footer from '../Components/Footer'
+import Overlay from '../Components/Overlay'
 
 const tabBarTabs = ['STORIES', 'DRAFTS', 'BOOKMARKS']
 
@@ -21,6 +22,16 @@ const ContentWrapper = styled.div``
 const StoryListWrapper = styled.div`
   margin: 50px 7% 0;
 `
+
+const ListWrapper = styled.div`
+  position: relative;
+`
+const OpaqueCover = styled(Overlay)`
+  &:after {
+    background: rgba(256, 256, 256, .8);
+  }
+`
+
 
 class Profile extends Component {
   static propTypes = {
@@ -165,21 +176,24 @@ class Profile extends Component {
           updateUser={updateUser}
           uploadMedia={uploadMedia}
         />
-        <TabBar
-          tabs={tabBarTabs}
-          activeTab={this.state.activeTab}
-          onClickTab={this.onClickTab}
-        />
-
-      { selectedStories.length &&
-        <StoryListWrapper>
-          <StoryList
-            stories={selectedStories}
-            users={users}
+        <ListWrapper>
+          <TabBar
+            tabs={tabBarTabs}
+            activeTab={this.state.activeTab}
+            onClickTab={this.onClickTab}
           />
-          <Footer />
-        </StoryListWrapper>
-      }
+
+          { selectedStories.length &&
+          <StoryListWrapper>
+            <StoryList
+              stories={selectedStories}
+              users={users}
+            />
+            <Footer />
+          </StoryListWrapper>
+          }
+          {isEdit && <OpaqueCover/>}
+        </ListWrapper>
       </ContentWrapper>
     )
   }

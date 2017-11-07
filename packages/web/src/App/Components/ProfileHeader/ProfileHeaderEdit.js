@@ -203,7 +203,7 @@ export default class ProfileHeaderEdit extends React.Component {
             />
             <RoundedButton
               margin='small'
-              text='SAVE CHANGES'
+              text='SAVE BIO'
               onClick={this.onSave}
             />
           </ButtonWrapper>

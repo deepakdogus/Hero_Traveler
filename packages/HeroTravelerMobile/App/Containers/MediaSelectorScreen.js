@@ -185,7 +185,6 @@ class MediaSelectorScreen extends React.Component {
         this.props.user.introTooltips
       )
     }
-
     if (this.state.captureOpen && !this.state.media) {
       content = (
         <PhotoTaker

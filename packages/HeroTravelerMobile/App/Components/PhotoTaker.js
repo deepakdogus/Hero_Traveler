@@ -15,8 +15,9 @@ class PhotoTaker extends Component {
     captureOptions: PropTypes.object,
     onCapture: PropTypes.func.isRequired,
     onError: PropTypes.func,
-    mediaType: PropTypes.oneOf(['photo', 'video']).isRequired,
+    mediaType: PropTypes.oneOf(['photo', 'video']),
     maxVideoLength: PropTypes.number
+
   }
 
   static defaultProps = {
@@ -31,7 +32,8 @@ class PhotoTaker extends Component {
       isRecording: false,
       hasFlash: false,
       videoAnim: new Animated.Value(0),
-      time: 0
+      time: 0,
+      isPhotoType: true,
     }
   }
 
@@ -39,7 +41,10 @@ class PhotoTaker extends Component {
     if (this.cameraRef) {
       this.cameraRef.hasFlash()
       .then((result) => {
-        this.setState({hasFlash: result})
+        this.setState({
+          hasFlash: result,
+          isPhotoType: this.props.mediaType === 'photo',
+        })
       })
     }
   }
@@ -111,7 +116,7 @@ class PhotoTaker extends Component {
   }
 
   isVideo() {
-    return this.props.mediaType === 'video'
+    return !this.state.isPhotoType
   }
 
   displayTime() {
@@ -119,7 +124,7 @@ class PhotoTaker extends Component {
   }
 
   getCaptureMode() {
-    return this.props.mediaType === 'photo' ?
+    return this.state.isPhotoType ?
       Camera.constants.CaptureMode.still : Camera.constants.CaptureMode.video
   }
 
@@ -127,42 +132,63 @@ class PhotoTaker extends Component {
 
   _cameraRef = camera => this.cameraRef = camera
 
-  render () {
+  toggleIsPhotoType = () => this.setState({isPhotoType: !this.state.isPhotoType})
 
+  renderCaptureButton = () => {
+    const {isPhotoType, isRecording} = this.state
+    let onPress = this._handleTakePhoto
+    if (!isPhotoType) onPress = !isRecording ? this._startRecordVideo : this._stopRecordVideo
+    return (
+      <View style={styles.cameraShutterButton}>
+        <TouchableOpacity
+          touchableOpacity={0.2}
+          onPress={onPress}
+        >
+          <MediaCaptureButton
+            isVideo={!isPhotoType}
+            isRecording={isRecording}
+          />
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
+  render () {
+    const {isPhotoType, isRecording, backCamera, time, hasFlash, videoAnim} = this.state
     return (
       <Camera
         ref={this._cameraRef}
         captureMode={this.getCaptureMode()}
-        captureAudio={this.props.mediaType === 'video'}
+        captureAudio={!isPhotoType}
         orientation={Camera.constants.Orientation.auto}
         captureTarget={Camera.constants.CaptureTarget.disk}
         keepAwake={true}
-        type={this.state.backCamera ? Camera.constants.Type.back : Camera.constants.Type.front}
+        type={backCamera ? Camera.constants.Type.back : Camera.constants.Type.front}
         aspect={Camera.constants.Aspect.fill}
         style={styles.camera}
        >
         {this.isVideo() &&
           <View style={styles.videoProgressWrapper}>
             <Animated.View style={{
-              width: this.state.videoAnim,
+              width: videoAnim,
               height: 18
             }}>
               <View style={styles.videoProgressBar} />
             </Animated.View>
             { this.displayTime() &&
               <View style={styles.videoProgressTextWrapper}>
-                <Text style={styles.videoProgressText}>{this.state.time}s</Text>
+                <Text style={styles.videoProgressText}>{time}s</Text>
               </View>
             }
           </View>
         }
-        <View style={styles.cameraControls}>
-          {this.props.mediaType === 'photo' && this.state.hasFlash &&
+        <View style={styles.leftCameraControls}>
+          {isPhotoType && hasFlash &&
             <View style={[styles.cameraControl, styles.flash]}>
               <TabIcon name='cameraFlash' />
             </View>
           }
-          {!this.state.isRecording &&
+          {!isRecording && !time &&
             <TouchableOpacity onPress={this._flipCamera}>
               <View
                 style={[styles.cameraControl, styles.flipCamera]}>
@@ -171,28 +197,22 @@ class PhotoTaker extends Component {
             </TouchableOpacity>
           }
         </View>
-        <View style={{flex: 1}} />
-        {this.props.mediaType === 'photo' &&
-          <View style={styles.cameraShutterButton}>
-            <TouchableOpacity
-              touchableOpacity={0.2}
-              onPress={this._handleTakePhoto}
-            >
-              <MediaCaptureButton />
-            </TouchableOpacity>
-          </View>
-        }
-        {this.props.mediaType === 'video' &&
-          <View style={styles.cameraShutterButton}>
-            <TouchableOpacity
-              touchableOpacity={0.2}
-              onPress={!this.state.isRecording ? this._startRecordVideo : this._stopRecordVideo}
-            >
-              <MediaCaptureButton isVideo isRecording={this.state.isRecording}/>
 
+        {
+        <View style={styles.rightCameraControls}>
+          {!isRecording && !time &&
+            <TouchableOpacity onPress={this.toggleIsPhotoType}>
+              <TabIcon
+                name={isPhotoType ? 'videoWhite': 'cameraWhite'}
+                style={{
+                  image: isPhotoType ? styles.videoWhite : styles.cameraWhite
+                }}/>
             </TouchableOpacity>
-          </View>
+          }
+        </View>
         }
+        <View style={{flex: 1}} />
+        {this.renderCaptureButton()}
       </Camera>
     )
   }

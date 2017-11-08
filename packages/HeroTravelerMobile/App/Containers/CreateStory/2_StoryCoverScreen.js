@@ -25,7 +25,7 @@ import StoryEditActions from '../../Shared/Redux/StoryCreateRedux'
 import ShadowButton from '../../Components/ShadowButton'
 import Loader from '../../Components/Loader'
 import {Colors, Metrics} from '../../Shared/Themes'
-import styles, {customStyles, modalBackgroundStyles, modalWrapperStyles} from './2_StoryCoverScreenStyles'
+import styles, {customStyles, modalWrapperStyles} from './2_StoryCoverScreenStyles'
 import NavBar from './NavBar'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import getVideoUrl from '../../Shared/Lib/getVideoUrl'
@@ -39,7 +39,6 @@ import Modal from '../../Components/Modal'
 
 import NativeEditor from '../../Components/NativeEditor/Editor'
 import Toolbar from '../../Components/NativeEditor/Toolbar'
-import NavButtonStyles from '../../Navigation/Styles/NavButtonStyles'
 import {KeyboardTrackingView} from 'react-native-keyboard-tracking-view';
 
 const api = API.create()
@@ -53,10 +52,17 @@ class StoryCoverScreen extends Component {
 
   static propTypes = {
     mediaType: PropTypes.oneOf([MediaTypes.video, MediaTypes.photo]),
+    accessToken: PropTypes.object,
     user: PropTypes.object,
+    story: PropTypes.object,
+    storyId: PropTypes.string,
     navigatedFromProfile: PropTypes.bool,
+    shouldLoadStory: PropTypes.bool,
     loadStory: PropTypes.func,
-    shouldLoadStory: PropTypes.bool
+    registerDraft: PropTypes.func,
+    update: PropTypes.func,
+    discardDraft: PropTypes.func,
+    completeTooltip: PropTypes.func,
   }
 
   static defaultProps = {
@@ -164,11 +170,9 @@ class StoryCoverScreen extends Component {
     if (this.props.story.coverVideo || this.state.coverVideo) {
       return MediaTypes.video
     }
-
     if (this.props.story.coverImage || this.state.coverPhoto) {
       return MediaTypes.photo
     }
-    return this.props.mediaType
   }
 
   _toggleImageMenu = () => {
@@ -232,7 +236,6 @@ class StoryCoverScreen extends Component {
       this.resetAnimation()
     })
     NavActions.mediaSelectorScreen({
-      mediaType: this.getMediaType(),
       title: 'Change Cover',
       leftTitle: 'Cancel',
       onLeft: () => NavActions.pop(),
@@ -576,15 +579,10 @@ class StoryCoverScreen extends Component {
     return this.hasNoPhoto() && this.hasNoVideo()
   }
 
-  getIcon() {
-    return this.isPhotoType() ? 'camera' : 'video-camera'
-  }
-
   _contentAddCover = () => {
     this.setState({error: null})
-    const mediaType = this.getMediaType()
     NavActions.mediaSelectorScreen({
-      mediaType: mediaType,
+      mediaType: 'photo',
       title: 'Add Cover',
       leftTitle: 'Cancel',
       onLeft: () => NavActions.pop(),
@@ -624,7 +622,6 @@ class StoryCoverScreen extends Component {
   }
 
   renderContent () {
-    const icon = this.getIcon()
     // offset so that the buttons are visible when the keyboard + toolbar are open
     const buttonsOffset = (this.toolbar && this.state.toolbarDisplay) ? {top: 75} : null
     return (
@@ -636,12 +633,12 @@ class StoryCoverScreen extends Component {
               style={[styles.addPhotoButton, buttonsOffset]}
               onPress={this._contentAddCover}
             >
-              <TabIcon name={icon} style={{
+              <TabIcon name={'camera'} style={{
                 view: styles.cameraIcon,
-                image: icon === 'camera' ? styles.cameraIconImage : styles.videoIconImage,
+                image: styles.cameraIconImage,
               }} />
               <Text style={this.renderTextColor([styles.baseTextColor, styles.coverPhotoText])}>
-                {this.isPhotoType() ? '+ ADD COVER PHOTO' : '+ ADD COVER VIDEO'}
+                + ADD COVER
               </Text>
             </TouchableOpacity>
           </View>
@@ -666,7 +663,7 @@ class StoryCoverScreen extends Component {
                   <TouchableOpacity
                     onPress={this._touchChangeCover}
                     style={[styles.iconButton, buttonsOffset]}>
-                    <Icon name={icon} color={Colors.snow} size={30} />
+                    <Icon name={'camera'} color={Colors.snow} size={30} />
                   </TouchableOpacity>
                 </Animated.View>
               </View>

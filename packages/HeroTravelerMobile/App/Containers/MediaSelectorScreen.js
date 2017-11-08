@@ -20,7 +20,6 @@ import { Colors } from '../Shared/Themes'
 class MediaSelectorScreen extends React.Component {
 
   static propTypes = {
-    mediaType: PropTypes.oneOf(['photo', 'video']).isRequired,
     onSelectMedia: PropTypes.func,
     user: PropTypes.object,
   }
@@ -42,7 +41,7 @@ class MediaSelectorScreen extends React.Component {
     this.setState({captureOpen: false})
     ImagePicker.launchImageLibrary({
       videoQuality: 'high',
-      mediaType: this.props.mediaType
+      mediaType: 'mixed'
     }, this._handleMediaSelector)
   }
 
@@ -160,11 +159,19 @@ class MediaSelectorScreen extends React.Component {
     this.setState({media: null})
   }
 
+  getMediaType = () => {
+    if (!this.state.media) return undefined
+    const media = this.state.media.split('.')
+    const extension = media[media.length-1]
+    if (extension === 'MOV') return 'video'
+    else return 'photo'
+  }
+
   render () {
     let content
-
     let showPhotoTooltip = false;
     let showNextTooltip = false;
+    const mediaType = this.getMediaType()
     if (this.props.user) {
       showPhotoTooltip = !isTooltipComplete(
         TooltipTypes.STORY_PHOTO_TAKE,
@@ -186,7 +193,7 @@ class MediaSelectorScreen extends React.Component {
           onCapture={this._handleCaptureMedia}
         />
       )
-    } else if (this.state.media && this.props.mediaType === 'photo') {
+    } else if (this.state.media && mediaType === 'photo') {
       content = (
         <View style={styles.imageWrapper}>
           <Image
@@ -204,7 +211,7 @@ class MediaSelectorScreen extends React.Component {
           }
         </View>
       )
-    } else if (this.state.media && this.props.mediaType === 'video') {
+    } else if (this.state.media && mediaType === 'video') {
       content = (
         <View style={styles.imageWrapper}>
           <Video
@@ -262,7 +269,7 @@ class MediaSelectorScreen extends React.Component {
               <Text style={[
                 styles.tabbarText,
                 this.isCaptureInUse() ? {} : { color: Colors.grey }
-              ]}>{this.props.mediaType === 'photo' ? 'Photo' : 'Video'}</Text>
+              ]}>Capture</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -298,7 +305,8 @@ class MediaSelectorScreen extends React.Component {
 
   _onNext = () => {
     if (this.state.media) {
-      this.props.onSelectMedia(this.state.media)
+      const isPhotoType = this.getMediaType() === 'photo'
+      this.props.onSelectMedia(this.state.media, isPhotoType)
     }
   }
 }

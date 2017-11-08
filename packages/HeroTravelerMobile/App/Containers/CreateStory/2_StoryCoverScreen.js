@@ -134,23 +134,6 @@ class StoryCoverScreen extends Component {
     this.setState(nextState)
   }
 
-  componentWillUpdate(){
-    if (this.props.story &&
-      !this.isPhotoType() &&
-      !this.props.story.coverVideo &&
-      !this.state.coverVideo
-    ) {
-      NavActions.mediaSelectorScreen({
-        mediaType: this.props.mediaType,
-        title: 'Add Video',
-        leftTitle: 'Cancel',
-        onLeft: this._onLeft,
-        rightTitle: 'Next',
-        onSelectMedia: this._handleSelectCover
-      })
-    }
-  }
-
   isUploading() {
     return this.state.imageUploading || this.state.videoUploading
   }
@@ -178,14 +161,13 @@ class StoryCoverScreen extends Component {
   }
 
   getMediaType() {
-    if (this.props.story.coverVideo) {
+    if (this.props.story.coverVideo || this.state.coverVideo) {
       return MediaTypes.video
     }
 
-    if (this.props.story.coverImage) {
+    if (this.props.story.coverImage || this.state.coverPhoto) {
       return MediaTypes.photo
     }
-
     return this.props.mediaType
   }
 
@@ -328,7 +310,7 @@ class StoryCoverScreen extends Component {
   }
 
   _onLeftYes = () => {
-    if (!this.isValid() && this.isPhotoType()) {
+    if (!this.isValid()) {
       this.setState({
         error: 'Please add a cover and a title to continue',
         activeModal: undefined,
@@ -350,40 +332,37 @@ class StoryCoverScreen extends Component {
   }
 
   _onLeft = () => {
-    if (!this.isPhotoType()) {
-      const isDraft = this.props.story.draft === true
-      const title = isDraft ? 'Save Draft' : 'Save Edits'
-      const message = this.isSavedDraft() ? 'Do you want to save these edits before you go?' : 'Do you want to save this story draft before you go?'
+    const isDraft = this.props.story.draft === true
+    const title = isDraft ? 'Save Draft' : 'Save Edits'
+    const message = this.isSavedDraft() ? 'Do you want to save these edits before you go?' : 'Do you want to save this story draft before you go?'
 
-      // When a user cancels the draft flow, remove the draft
-      Alert.alert(
-        title,
-        message,
-        [{
-          text: 'Yes',
-          onPress: () => {
-            if (!this.isValid() && this.isPhotoType()) {
-              this.setState({error: 'Please add a cover and a title to continue'})
-            } else {
-              this.saveStory().then(() => {
-                this.navBack()
-              })
-            }
+    // When a user cancels the draft flow, remove the draft
+    Alert.alert(
+      title,
+      message,
+      [{
+        text: 'Yes',
+        onPress: () => {
+          if (!this.isValid()) {
+            this.setState({error: 'Please add a cover and a title to continue'})
+          } else {
+            this.saveStory().then(() => {
+              this.navBack()
+            })
           }
-        }, {
-          text: 'No',
-          onPress: () => {
-            if (!this.isSavedDraft()) {
-              this.props.discardDraft(this.props.story.id)
-            } else {
-              this.props.update(this.props.story.id, this.state.originalStory, true)
-            }
-            this.navBack()
+        }
+      }, {
+        text: 'No',
+        onPress: () => {
+          if (!this.isSavedDraft()) {
+            this.props.discardDraft(this.props.story.id)
+          } else {
+            this.props.update(this.props.story.id, this.state.originalStory, true)
           }
-        }]
-      )
-    }
-    else this.setState({activeModal: 'cancel'})
+          this.navBack()
+        }
+      }]
+    )
   }
 
   closeModal = () => {
@@ -432,7 +411,7 @@ class StoryCoverScreen extends Component {
       [{
         text: 'Yes',
         onPress: () => {
-          if (!this.isValid() && this.isPhotoType()) {
+          if (!this.isValid()) {
             this.setState({error: 'Please add a cover and a title to save'})
           } else {
             this.saveStory()
@@ -545,9 +524,7 @@ class StoryCoverScreen extends Component {
         story.description = _.trim(this.state.description)
       }
 
-      if (this.isPhotoType()) {
-        story.draftjsContent = this.editor.getEditorStateAsObject()
-      }
+      story.draftjsContent = this.editor.getEditorStateAsObject()
 
       this.props.update(story.id, story)
 
@@ -608,7 +585,7 @@ class StoryCoverScreen extends Component {
     const mediaType = this.getMediaType()
     NavActions.mediaSelectorScreen({
       mediaType: mediaType,
-      title: `Add ${mediaType === 'video' ? 'Video' : 'Image'}`,
+      title: 'Add Cover',
       leftTitle: 'Cancel',
       onLeft: () => NavActions.pop(),
       rightTitle: 'Next',
@@ -911,6 +888,8 @@ class StoryCoverScreen extends Component {
     //  this.setState({isScrollDown: false})
     //  this.scrollViewRef.scrollTo({x: 0, y: 200, animated: true})
     //}
+    console.log("inside the render this.isPhotoType is", this.isPhotoType())
+    console.log("this.state inside render is", this.state)
     return (
       <View style={styles.root}>
         <ScrollView
@@ -936,7 +915,7 @@ class StoryCoverScreen extends Component {
             }}
           />
           <KeyboardAvoidingView behavior='position'>
-            <View style={this.isPhotoType() ? styles.coverWrapper : styles.videoCoverWrapper}>
+            <View style={styles.coverWrapper}>
               {this.state.error &&
                 <ShadowButton
                   style={styles.errorButton}
@@ -946,19 +925,17 @@ class StoryCoverScreen extends Component {
               {this.isPhotoType() && this.renderCoverPhoto(this.state.coverImage)}
               {!this.isPhotoType() && this.renderCoverVideo(this.state.coverVideo)}
             </View>
-            {this.isPhotoType() &&
-              <View style={styles.editorWrapper}>
-                <View style={styles.angleDownIcon}>
-                  <Icon name='angle-down' size={20} color='#9e9e9e' />
-                </View>
-                {this.renderEditor()}
+            <View style={styles.editorWrapper}>
+              <View style={styles.angleDownIcon}>
+                <Icon name='angle-down' size={20} color='#9e9e9e' />
               </View>
-            }
+              {this.renderEditor()}
+            </View>
           {showTooltip && this.renderTooltip()}
-          {this.isPhotoType() && <View style={styles.toolbarAvoiding}></View>}
+          {<View style={styles.toolbarAvoiding}></View>}
           </KeyboardAvoidingView>
         </ScrollView>
-        {this.isPhotoType() && this.editor &&
+        {this.editor &&
           <KeyboardTrackingView
             style={styles.trackingToolbarContainer}
             trackInteractive={true}
@@ -992,10 +969,10 @@ class StoryCoverScreen extends Component {
     )
   }
 
-  _handleSelectCover = (path) => {
+  _handleSelectCover = (path, isPhotoType) => {
     const file = pathAsFileObject(path)
     const updatedState = {file}
-    if (this.isPhotoType()) {
+    if (isPhotoType) {
       updatedState.isScrollDown = true
       updatedState.coverImage = path
     } else {

@@ -170,9 +170,7 @@ class StoryCoverScreen extends Component {
     if (this.props.story.coverVideo || this.state.coverVideo) {
       return MediaTypes.video
     }
-    if (this.props.story.coverImage || this.state.coverPhoto) {
-      return MediaTypes.photo
-    }
+    else return MediaTypes.photo
   }
 
   _toggleImageMenu = () => {
@@ -885,8 +883,6 @@ class StoryCoverScreen extends Component {
     //  this.setState({isScrollDown: false})
     //  this.scrollViewRef.scrollTo({x: 0, y: 200, animated: true})
     //}
-    console.log("inside the render this.isPhotoType is", this.isPhotoType())
-    console.log("this.state inside render is", this.state)
     return (
       <View style={styles.root}>
         <ScrollView

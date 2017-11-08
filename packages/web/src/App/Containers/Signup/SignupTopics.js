@@ -40,8 +40,11 @@ class SignupTopics extends Component {
   static propTypes = {
     categories: PropTypes.object,
     fetchStatus: PropTypes.bool,
+    selectedCategories: PropTypes.arrayOf(PropTypes.string),
     loadCategories: PropTypes.func,
     getSelectedCategories: PropTypes.func,
+    selectCategory: PropTypes.func,
+    unselectCategory: PropTypes.func,
   }
 
   componentDidMount() {

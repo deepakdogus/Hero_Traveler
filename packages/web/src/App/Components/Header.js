@@ -157,7 +157,6 @@ class Header extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.props.isSignedUp && nextProps.isSignedUp) nextProps.reroute('/signup/topics')
     if (!this.props.isLoggedIn && nextProps.isLoggedIn) {
       this.closeModal()
       if (nextProps.isSignedUp) nextProps.reroute('/signup/topics')

@@ -15,7 +15,7 @@ class PhotoTaker extends Component {
     captureOptions: PropTypes.object,
     onCapture: PropTypes.func.isRequired,
     onError: PropTypes.func,
-    mediaType: PropTypes.oneOf(['photo', 'video']),
+    mediaType: PropTypes.oneOf(['photo', 'video']), // if mediaType we limit the photo taker abilities
     maxVideoLength: PropTypes.number
 
   }
@@ -43,7 +43,7 @@ class PhotoTaker extends Component {
       .then((result) => {
         this.setState({
           hasFlash: result,
-          isPhotoType: this.props.mediaType === 'photo',
+          isPhotoType: this.props.mediaType !== 'video',
         })
       })
     }
@@ -198,18 +198,18 @@ class PhotoTaker extends Component {
           }
         </View>
 
-        {
-        <View style={styles.rightCameraControls}>
-          {!isRecording && !time &&
-            <TouchableOpacity onPress={this.toggleIsPhotoType}>
-              <TabIcon
-                name={isPhotoType ? 'videoWhite': 'cameraWhite'}
-                style={{
-                  image: isPhotoType ? styles.videoWhite : styles.cameraWhite
-                }}/>
-            </TouchableOpacity>
-          }
-        </View>
+        { !this.props.mediaType &&
+          <View style={styles.rightCameraControls}>
+            {!isRecording && !time &&
+              <TouchableOpacity onPress={this.toggleIsPhotoType}>
+                <TabIcon
+                  name={isPhotoType ? 'videoWhite': 'cameraWhite'}
+                  style={{
+                    image: isPhotoType ? styles.videoWhite : styles.cameraWhite
+                  }}/>
+              </TouchableOpacity>
+            }
+          </View>
         }
         <View style={{flex: 1}} />
         {this.renderCaptureButton()}

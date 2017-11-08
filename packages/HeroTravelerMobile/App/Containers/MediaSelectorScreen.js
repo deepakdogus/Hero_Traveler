@@ -22,6 +22,7 @@ class MediaSelectorScreen extends React.Component {
   static propTypes = {
     onSelectMedia: PropTypes.func,
     user: PropTypes.object,
+    mediaType: PropTypes.oneOf(['photo', 'video']), // if mediaType we limit the image picker abilities
   }
 
   constructor(props) {
@@ -41,7 +42,7 @@ class MediaSelectorScreen extends React.Component {
     this.setState({captureOpen: false})
     ImagePicker.launchImageLibrary({
       videoQuality: 'high',
-      mediaType: 'mixed'
+      mediaType: this.props.mediaType || 'mixed'
     }, this._handleMediaSelector)
   }
 

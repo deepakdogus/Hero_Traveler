@@ -580,7 +580,6 @@ class StoryCoverScreen extends Component {
   _contentAddCover = () => {
     this.setState({error: null})
     NavActions.mediaSelectorScreen({
-      mediaType: 'photo',
       title: 'Add Cover',
       leftTitle: 'Cancel',
       onLeft: () => NavActions.pop(),

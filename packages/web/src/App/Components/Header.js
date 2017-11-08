@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import {NavLink} from 'react-router-dom'
 import Modal from 'react-modal'
 import {connect} from 'react-redux'
+import {push} from 'react-router-redux'
 
 import {Grid, Row, Col} from './FlexboxGrid'
 import logo from '../Shared/Images/ht-logo-white.png'
@@ -132,10 +133,12 @@ const MenuLink = (props) => {
 
 class Header extends React.Component {
   static propTypes = {
+    isSignedUp: PropTypes.bool,
     isLoggedIn: PropTypes.bool,
     blackHeader: PropTypes.bool,
-    attemptLogin: PropTypes.func,
     userId: PropTypes.string,
+    attemptLogin: PropTypes.func,
+    reroute: PropTypes.func,
   }
 
   constructor(props) {
@@ -154,7 +157,10 @@ class Header extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.props.isLoggedIn && nextProps.isLoggedIn) this.closeModal()
+    if (!this.props.isLoggedIn && nextProps.isLoggedIn) {
+      this.closeModal()
+      if (nextProps.isSignedUp) nextProps.reroute('/signup/topics')
+    }
   }
 
   // name correspond to icon name and button name
@@ -351,12 +357,14 @@ function mapStateToProps(state) {
   return {
     userId: state.session.userId,
     isLoggedIn: state.login.isLoggedIn,
+    isSignedUp: state.signup.signedUp,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     attemptLogin: (username, password) => dispatch(LoginActions.loginRequest(username, password)),
+    reroute: (path) => dispatch(push(path)),
   }
 }
 

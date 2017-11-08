@@ -31,10 +31,11 @@ import {
 import {
   signupEmail,
   signupFacebook,
+  getUsersCategories,
   followCategory,
   unfollowCategory,
   followUser,
-  unfollowUser
+  unfollowUser,
 } from './SignupSagas'
 import {
   logout,
@@ -119,6 +120,7 @@ export default function * root () {
 
     takeLatest(SignupTypes.SIGNUP_EMAIL, signupEmail, heroAPI),
     takeLatest(SignupTypes.SIGNUP_FACEBOOK, signupFacebook, heroAPI),
+    takeLatest(SignupTypes.SIGNUP_GET_USERS_CATEGORIES, getUsersCategories, heroAPI),
     takeLatest(SignupTypes.SIGNUP_FOLLOW_CATEGORY, followCategory, heroAPI),
     takeLatest(SignupTypes.SIGNUP_UNFOLLOW_CATEGORY, unfollowCategory, heroAPI),
     takeLatest(SignupTypes.SIGNUP_FOLLOW_USER, followUser, heroAPI),

@@ -36,6 +36,12 @@ const ProfileDetail = styled.p`
   color: ${props => props.theme.Colors.grey};
 `
 
+// For SignupSocial we want to disable navigation to Profile
+const ConditionalNavLink = (props) => {
+  if (!props.onClick) return <div {...props}/>
+  return ( <NavLink {...props} /> )
+}
+
 export default class FollowFollowingRow extends Component {
   static propTypes = {
     isFollowing: PropTypes.bool,
@@ -48,30 +54,31 @@ export default class FollowFollowingRow extends Component {
   }
 
   renderImage = () => {
+    const {onProfileClick, user} = this.props
     return (
-      <NavLink
-        to={`/profile/${this.props.user.id}/view`}
-        onClick={this.props.onProfileClick}
+      <ConditionalNavLink
+        to={`/profile/${user.id}/view`}
+        onClick={onProfileClick}
       >
         <Avatar
-          avatarUrl={getImageUrl(this.props.user.profile.avatar)}
+          avatarUrl={getImageUrl(user.profile.avatar)}
           size='larger'
         />
-      </NavLink>
+      </ConditionalNavLink>
     )
   }
 
   renderText = () => {
-    const {user} = this.props
-    const detailsText = this.props.type === 'count' ? `${user.counts.followers} followers` : 'Lorum Ipsum'
+    const {user, onProfileClick, type} = this.props
+    const detailsText = type === 'count' ? `${user.counts.followers} followers` : 'Lorum Ipsum'
     return (
       <StyledVerticalCenter>
-        <NavLink
-          to={`/profile/${this.props.user.id}/view`}
-          onClick={this.props.onProfileClick}
+        <ConditionalNavLink
+          to={`/profile/${user.id}/view`}
+          onClick={onProfileClick}
         >
           <UserName>{user.username}</UserName>
-        </NavLink>
+        </ConditionalNavLink>
         <ProfileDetail>{detailsText}</ProfileDetail>
       </StyledVerticalCenter>
     )

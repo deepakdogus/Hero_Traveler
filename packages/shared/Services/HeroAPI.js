@@ -275,6 +275,10 @@ const getStory = (storyId) => {
     return api.put(`user/unfollow/user/${userId}`)
   }
 
+  const getUsersCategories = () => {
+    return api.get('user/categories')
+  }
+
   const followCategory = (categoryIds) => {
     const categories = isArray(categoryIds) ? categoryIds : [categoryIds]
     return api.post(`user/follow/category`, {
@@ -437,6 +441,7 @@ const getStory = (storyId) => {
     getUserFollowing,
     followUser,
     unfollowUser,
+    getUsersCategories,
     followCategory,
     unfollowCategory,
     getUserLikes,

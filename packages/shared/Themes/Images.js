@@ -26,6 +26,7 @@ const images = {
   createStory: require('../Images/create-story.png'),
   profile: require('../Images/profile.png'),
   // ht-icons
+  iconWhiteVideo: require('../Images/ht-icons/icon_content-video@2x.png'),
   iconEditImageCamera: require('../Images/ht-icons/icon_edit-image-camera.png'),
   iconEditImageCameraLarge: require('../Images/ht-icons/icon_edit-image-camera@2x.png'),
   iconEditVideo: require('../Images/ht-icons/icon_create-menu-video@2x.png'),
@@ -77,6 +78,7 @@ const images = {
   iconCreateMenuStory: require('../Images/ht-icons/icon_create-menu-story@2x.png'),
   iconProfileBadge: require('../Images/ht-icons/icon_profile-badge@2x.png'),
   iconAddCoverCamera: require('../Images/ht-icons/icon_add-cover-camera@2x.png'),
+  iconAddCoverCameraWhite: require('../Images/ht-icons/icon_add-cover-camera-white@2x.png'),
   iconNormalText: require('../Images/ht-icons/Aa.png'),
   iconHeaderText: require('../Images/ht-icons/Aa_toggled_on.png'),
   iconFlag: require('../Images/ht-icons/icon_flag.png'),

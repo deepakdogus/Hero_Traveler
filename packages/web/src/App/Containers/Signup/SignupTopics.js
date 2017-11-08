@@ -10,6 +10,7 @@ import SignupActions from '../../Shared/Redux/SignupRedux'
 import Header from '../../Components/Signup/Header'
 import RoundedButton from '../../Components/RoundedButton'
 import ExploreGrid from '../../Components/ExploreGrid'
+import NavLinkStyled from '../../Components/NavLinkStyled'
 
 const Container = styled.div`
   margin: 0 7.5%;
@@ -62,7 +63,9 @@ class SignupTopics extends Component {
     return (
         <div>
           <Header>
-            <RoundedButton text='Next >'></RoundedButton>
+            <NavLinkStyled to='/signup/social'>
+              <RoundedButton text='Next >'></RoundedButton>
+            </NavLinkStyled>
           </Header>
           <Container>
             <SizedDiv>

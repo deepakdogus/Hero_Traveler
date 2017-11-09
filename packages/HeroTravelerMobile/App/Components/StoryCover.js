@@ -14,15 +14,21 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import {Metrics} from '../Shared/Themes'
 import Colors from '../Shared/Themes/Colors'
 import getVideoUrl from '../Shared/Lib/getVideoUrl'
+import getRelativeHeight from '../Shared/Lib/getRelativeHeight'
 
 export default class StoryCover extends Component {
 
   static propTypes = {
     // cover: PropTypes.object.isRequired,
     coverType: PropTypes.oneOf(['image', 'video']).isRequired,
+    cover: PropTypes.object,
     onPress: PropTypes.func,
+    style: PropTypes.object,
+    children: PropTypes.object,
+    playButtonSize: PropTypes.string,
     autoPlayVideo: PropTypes.bool.isRequired,
     allowVideoPlay: PropTypes.bool.isRequired,
+    showPlayButton: PropTypes.bool,
     gradientColors: PropTypes.arrayOf(PropTypes.string),
     gradientLocations: PropTypes.arrayOf(PropTypes.number)
   }
@@ -52,6 +58,13 @@ export default class StoryCover extends Component {
     return this.props.coverType === 'image' && !!this.props.cover
   }
 
+  _getWidthHeight(){
+    return {
+      width: Metrics.screenWidth,
+      height: getRelativeHeight(Metrics.screenWidth, this.props.cover)
+    }
+  }
+
   renderImage() {
     const {cover, onPress, gradientLocations, gradientColors, children, showPlayButton, playButtonSize} = this.props
     const isVideo = this.hasVideo()
@@ -66,7 +79,10 @@ export default class StoryCover extends Component {
           cached={true}
           resizeMode='cover'
           source={{uri: imageUrl}}
-          style={[styles.image]}
+          style={{
+            ...imageStyle,
+            ...this._getWidthHeight(),
+          }}
         >
           <LinearGradient
             locations={gradientLocations}
@@ -119,7 +135,7 @@ export default class StoryCover extends Component {
   */
   renderVideo() {
     return (
-      <View style={{flex: 1}}>
+      <View style={this._getWidthHeight()}>
         <Video
           path={getVideoUrl(this.props.cover)}
           imgUrl={getImageUrl(this.props.cover, 'video')}
@@ -193,16 +209,18 @@ export default class StoryCover extends Component {
   }
 }
 
+// Image needs to be able to mutate it so we need to give it the raw object
+const imageStyle = {
+  width: Metrics.screenWidth,
+  flexDirection: "column",
+  justifyContent: "flex-end",
+  position: 'relative'
+}
+
 const styles = StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: Colors.clear
-  },
-  image: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "flex-end",
-    position: 'relative'
   },
   videoWrapper: {
     flex: 1,

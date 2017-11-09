@@ -9,7 +9,11 @@ export default StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    flexDirection: "row"
+    flexDirection: 'column'
+  },
+  readingBuffer: {
+    height: Metrics.navBarHeight -10 ,
+    backgroundColor: Colors.background,
   },
   title: {
     fontSize: 28,
@@ -17,6 +21,10 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.montserrat,
     color: Colors.white,
     letterSpacing: 1.5,
+  },
+  bottomTitle: {
+    fontSize: 20,
+    color: Colors.backgrond,
   },
   subtitle: {
     fontSize: 16,
@@ -45,6 +53,9 @@ export default StyleSheet.create({
   userContent: {
     flexDirection: 'row',
   },
+  topContent: {
+    flexDirection: 'row',
+  },
   avatar: {
     marginRight: Metrics.baseMargin
   },
@@ -55,10 +66,34 @@ export default StyleSheet.create({
     fontSize: 15,
     fontFamily: Fonts.type.sourceSansPro
   },
+  topUsername: {
+    color: Colors.redHighlights,
+    fontWeight: '500',
+    fontSize: 15,
+    fontFamily: Fonts.type.sourceSansPro
+  },
+  topContainer: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    height: 70,
+  },
+  storyInfoContaier: {
+    paddingHorizontal: 15,
+    backgroundColor: Colors.snow,
+  },
+  bottomContainer: {
+    paddingVertical: 10,
+  },
   dateText: {
-    color: "#e0e0e0",
+    color: Colors.lightGrey,
     marginRight: 5,
     lineHeight: 36,
+    fontFamily: Fonts.type.crimsonText,
+    fontStyle: 'italic',
+  },
+  topDateText: {
+    color: Colors.signupGrey,
+    marginRight: 5,
     fontFamily: Fonts.type.crimsonText,
     fontStyle: 'italic',
   },
@@ -77,5 +112,16 @@ export default StyleSheet.create({
     fontSize: 11,
     fontFamily: Fonts.type.montserrat,
     color: Colors.white
+  },
+  rightRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
+  },
+  bookmarkContainer: {
+    marginRight: 10,
+  },
+  bookmark: {
+    width: 12,
+    height: 16,
   }
 })

@@ -18,7 +18,7 @@ const Title = styled.p`
 
 export default class StorySuggestions extends React.Component {
   static propTypes = {
-    suggestedStories: PropTypes.object,
+    suggestedStories: PropTypes.array,
     users: PropTypes.object,
   }
 

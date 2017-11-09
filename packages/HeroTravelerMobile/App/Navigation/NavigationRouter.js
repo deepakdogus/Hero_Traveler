@@ -117,7 +117,10 @@ const alwaysNull = () => null
 
 const popVertical = () => NavActions.pop({direction: 'horizontal'})
 
-const navToCreateFlow = () => NavActions.createStoryFlow()
+const navToCreateFlow = () => NavActions.createStoryFlow({
+  type: 'reset',
+  shouldLoadStory: true,
+})
 
 const navToSignupSocial = () => NavActions.signupFlow_social()
 
@@ -294,8 +297,8 @@ export default NavActions.create(
         <Scene
           key='createStory'
           title='Create Story'
-          icon={StoryCreateTabIcon}
-          onPress={alwaysNull}
+          icon={TabIcon}
+          onPress={navToCreateFlow}
           style={Styles.createStory}
         />
         <Scene
@@ -308,7 +311,7 @@ export default NavActions.create(
         />
         <Scene
           key='profile'
-          icon={StoryCreateScreen}
+          icon={TabIcon}
           component={ProfileScreen}
           hideNavBar
         />

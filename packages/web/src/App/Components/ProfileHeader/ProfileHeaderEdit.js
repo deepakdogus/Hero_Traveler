@@ -10,6 +10,7 @@ import VerticalCenter from '../VerticalCenter'
 import Modal from 'react-modal'
 import EditPhotoOptions from '../Modals/EditPhotoOptions'
 import PhotoEditor from '../Modals/PhotoEditor'
+import uploadFile from '../../Utils/uploadFile'
 
 import {
   Username,
@@ -61,19 +62,34 @@ const BioInput = styled.textarea`
   resize: none;
 `
 
+function getInitialState(user = {}){
+  return {
+    bio: user.bio,
+    modal: undefined,
+    photoType: undefined,
+    loadedImage: undefined,
+  }
+}
+
 export default class ProfileHeaderEdit extends React.Component {
   static propTypes = {
     user: PropTypes.object,
     isContributor: PropTypes.bool,
+    bio: PropTypes.string,
+
+    updateUser: PropTypes.func,
+    uploadMedia: PropTypes.func,
+    toProfileView: PropTypes.func,
   }
 
   constructor(props) {
     super(props)
-    this.state = {
-      bioText: undefined,
-      modal: undefined,
-      photoType: undefined,
-      loadedImage: undefined
+    this.state = getInitialState()
+  }
+
+  componentWillReceiveProps(nextProps){
+    if (nextProps.user && this.state.bio !== nextProps.user.bio) {
+      this.setState({bio: nextProps.user.bio})
     }
   }
 
@@ -92,7 +108,7 @@ export default class ProfileHeaderEdit extends React.Component {
   }
 
   openCoverOptions = () => {
-    this.setOptionsState('cover')
+    this.setOptionsState('userCover')
   }
 
   openAvatarOptions = () => {
@@ -100,7 +116,7 @@ export default class ProfileHeaderEdit extends React.Component {
   }
 
   onChangeText = (event) => {
-    this.setState({ bioText: event.target.value })
+    this.setState({ bio: event.target.value })
   }
 
   openCrop = () => {
@@ -108,39 +124,51 @@ export default class ProfileHeaderEdit extends React.Component {
   }
 
   // add backend logic later
-  saveCroppedImage = (croppedImage) => {
-    const stateUpdates = { modal: undefined }
-    stateUpdates[this.state.photoType] = croppedImage
-    this.setState(stateUpdates)
+  saveCroppedImage = (croppedImageUrl) => {
+    // formatting into blob for upload
+    fetch(croppedImageUrl)
+    .then(res => res.blob())
+    .then(blob => {
+      this.props.uploadMedia(
+        this.props.user.id,
+        blob,
+        this.state.photoType,
+      )
+      const stateUpdates = { modal: undefined }
+      stateUpdates[this.state.photoType] = croppedImageUrl
+      this.setState(stateUpdates)
+    })
   }
 
-  uploadImage = (e) => {
-    e.preventDefault()
-    let files
-    if (e.dataTransfer) {
-      files = e.dataTransfer.files;
-    } else if (e.target) {
-      files = e.target.files;
-    }
-    const reader = new FileReader();
-    reader.onload = () => {
+  uploadImageToBrowser = (event) => {
+    uploadFile(event, this, (file) => {
       this.setState({
-        loadedImage: reader.result,
+        loadedImage: file,
         modal: 'photoEditor',
-      });
-    }
-    reader.readAsDataURL(files[0]);
+      })
+    })
+  }
+
+  onCancel = () => {
+    this.setState(getInitialState(), () => {
+      this.props.toProfileView()
+    })
+  }
+
+  onSave = () => {
+    this.props.updateUser({
+      bio: this.state.bio
+    })
   }
 
   render () {
     const {user} = this.props
-    const {bioText, loadedImage, modal, photoType} = this.state
+    const {bio, loadedImage, modal, photoType} = this.state
     const avatarUrl = getImageUrl(user.profile.avatar, 'avatar')
 
     let targetedImage
     if (photoType === 'avatar') targetedImage = avatarUrl
-    else if (photoType === 'cover') targetedImage = getImageUrl(user.profile.cover)
-
+    else if (photoType === 'userCover') targetedImage = getImageUrl(user.profile.cover)
     return (
       <Container>
         <Centered>
@@ -162,7 +190,7 @@ export default class ProfileHeaderEdit extends React.Component {
           <ItalicText>Edit Bio</ItalicText>
           <BioInput
             type='text'
-            value={bioText}
+            value={bio}
             placeholder='Enter your bio'
             onChange={this.onChangeText}
           />
@@ -171,10 +199,13 @@ export default class ProfileHeaderEdit extends React.Component {
               margin='small'
               type={'opaque'}
               text={'CANCEL'}
+              onClick={this.onCancel}
             />
             <RoundedButton
               margin='small'
-              text='SAVE CHANGES'/>
+              text='SAVE BIO'
+              onClick={this.onSave}
+            />
           </ButtonWrapper>
           <BottomLeft>
             <Row onClick={this.openCoverOptions}>
@@ -192,7 +223,7 @@ export default class ProfileHeaderEdit extends React.Component {
         >
           <EditPhotoOptions
             onCrop={this.openCrop}
-            onUpload={this.uploadImage}
+            onUpload={this.uploadImageToBrowser}
             hasImage={!!targetedImage}
           />
         </Modal>
@@ -205,7 +236,7 @@ export default class ProfileHeaderEdit extends React.Component {
             isAvatar={photoType === 'avatar'}
             closeModal={this.closeModal}
             saveCroppedImage={this.saveCroppedImage}
-            src={loadedImage || targetedImage}
+            src={loadedImage ? loadedImage.url : targetedImage}
           />
         </Modal>
       </Container>

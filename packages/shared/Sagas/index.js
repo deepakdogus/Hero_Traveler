@@ -11,6 +11,7 @@ import { LoginTypes } from '../Redux/LoginRedux'
 import { SignupTypes } from '../Redux/SignupRedux'
 import SessionActions, { SessionTypes } from '../Redux/SessionRedux'
 import { StoryCreateTypes } from '../Redux/StoryCreateRedux'
+import { MediaUploadTypes } from '../Redux/MediaUploadRedux'
 // Entities
 import { StoryTypes } from '../Redux/Entities/Stories'
 import { CategoryTypes } from '../Redux/Entities/Categories'
@@ -30,10 +31,11 @@ import {
 import {
   signupEmail,
   signupFacebook,
+  getUsersCategories,
   followCategory,
   unfollowCategory,
   followUser,
-  unfollowUser
+  unfollowUser,
 } from './SignupSagas'
 import {
   logout,
@@ -67,6 +69,10 @@ import {
   uploadCoverImage, loadStory, loadDrafts, deleteStory,
   flagStory,
 } from './StorySagas'
+
+import {
+  uploadMedia,
+} from './MediaUploadSagas'
 
 /* ------------- API ------------- */
 
@@ -114,6 +120,7 @@ export default function * root () {
 
     takeLatest(SignupTypes.SIGNUP_EMAIL, signupEmail, heroAPI),
     takeLatest(SignupTypes.SIGNUP_FACEBOOK, signupFacebook, heroAPI),
+    takeLatest(SignupTypes.SIGNUP_GET_USERS_CATEGORIES, getUsersCategories, heroAPI),
     takeLatest(SignupTypes.SIGNUP_FOLLOW_CATEGORY, followCategory, heroAPI),
     takeLatest(SignupTypes.SIGNUP_UNFOLLOW_CATEGORY, unfollowCategory, heroAPI),
     takeLatest(SignupTypes.SIGNUP_FOLLOW_USER, followUser, heroAPI),
@@ -152,5 +159,8 @@ export default function * root () {
     takeLatest(UserTypes.UNFOLLOW_USER, userUnfollowUser, heroAPI),
     takeLatest(UserTypes.FETCH_ACTIVITIES, getActivities, heroAPI),
     takeLatest(UserTypes.ACTIVITY_SEEN, seenActivity, heroAPI),
+
+    // Media Upload
+    takeLatest(MediaUploadTypes.UPLOAD_REQUEST, uploadMedia, heroAPI)
   ]
 }

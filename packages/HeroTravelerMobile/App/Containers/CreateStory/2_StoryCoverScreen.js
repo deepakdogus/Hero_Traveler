@@ -25,7 +25,7 @@ import StoryEditActions from '../../Shared/Redux/StoryCreateRedux'
 import ShadowButton from '../../Components/ShadowButton'
 import Loader from '../../Components/Loader'
 import {Colors, Metrics} from '../../Shared/Themes'
-import styles, {customStyles, modalBackgroundStyles, modalWrapperStyles} from './2_StoryCoverScreenStyles'
+import styles, {customStyles, modalWrapperStyles} from './2_StoryCoverScreenStyles'
 import NavBar from './NavBar'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import getVideoUrl from '../../Shared/Lib/getVideoUrl'
@@ -37,9 +37,8 @@ import UserActions from '../../Shared/Redux/Entities/Users'
 import TabIcon from '../../Components/TabIcon'
 import Modal from '../../Components/Modal'
 
-import Editor from '../../Components/NewEditor/Editor'
-import Toolbar from '../../Components/NewEditor/Toolbar'
-import NavButtonStyles from '../../Navigation/Styles/NavButtonStyles'
+import NativeEditor from '../../Components/NativeEditor/Editor'
+import Toolbar from '../../Components/NativeEditor/Toolbar'
 import {KeyboardTrackingView} from 'react-native-keyboard-tracking-view';
 
 const api = API.create()
@@ -53,10 +52,17 @@ class StoryCoverScreen extends Component {
 
   static propTypes = {
     mediaType: PropTypes.oneOf([MediaTypes.video, MediaTypes.photo]),
+    accessToken: PropTypes.object,
     user: PropTypes.object,
+    story: PropTypes.object,
+    storyId: PropTypes.string,
     navigatedFromProfile: PropTypes.bool,
+    shouldLoadStory: PropTypes.bool,
     loadStory: PropTypes.func,
-    shouldLoadStory: PropTypes.bool
+    registerDraft: PropTypes.func,
+    update: PropTypes.func,
+    discardDraft: PropTypes.func,
+    completeTooltip: PropTypes.func,
   }
 
   static defaultProps = {
@@ -134,23 +140,6 @@ class StoryCoverScreen extends Component {
     this.setState(nextState)
   }
 
-  componentWillUpdate(){
-    if (this.props.story &&
-      !this.isPhotoType() &&
-      !this.props.story.coverVideo &&
-      !this.state.coverVideo
-    ) {
-      NavActions.mediaSelectorScreen({
-        mediaType: this.props.mediaType,
-        title: 'Add Video',
-        leftTitle: 'Cancel',
-        onLeft: this._onLeft,
-        rightTitle: 'Next',
-        onSelectMedia: this._handleSelectCover
-      })
-    }
-  }
-
   isUploading() {
     return this.state.imageUploading || this.state.videoUploading
   }
@@ -178,15 +167,10 @@ class StoryCoverScreen extends Component {
   }
 
   getMediaType() {
-    if (this.props.story.coverVideo) {
+    if (this.props.story.coverVideo || this.state.coverVideo) {
       return MediaTypes.video
     }
-
-    if (this.props.story.coverImage) {
-      return MediaTypes.photo
-    }
-
-    return this.props.mediaType
+    else return MediaTypes.photo
   }
 
   _toggleImageMenu = () => {
@@ -250,7 +234,6 @@ class StoryCoverScreen extends Component {
       this.resetAnimation()
     })
     NavActions.mediaSelectorScreen({
-      mediaType: this.getMediaType(),
       title: 'Change Cover',
       leftTitle: 'Cancel',
       onLeft: () => NavActions.pop(),
@@ -328,7 +311,7 @@ class StoryCoverScreen extends Component {
   }
 
   _onLeftYes = () => {
-    if (!this.isValid() && this.isPhotoType()) {
+    if (!this.isValid()) {
       this.setState({
         error: 'Please add a cover and a title to continue',
         activeModal: undefined,
@@ -350,40 +333,37 @@ class StoryCoverScreen extends Component {
   }
 
   _onLeft = () => {
-    if (!this.isPhotoType()) {
-      const isDraft = this.props.story.draft === true
-      const title = isDraft ? 'Save Draft' : 'Save Edits'
-      const message = this.isSavedDraft() ? 'Do you want to save these edits before you go?' : 'Do you want to save this story draft before you go?'
+    const isDraft = this.props.story.draft === true
+    const title = isDraft ? 'Save Draft' : 'Save Edits'
+    const message = this.isSavedDraft() ? 'Do you want to save these edits before you go?' : 'Do you want to save this story draft before you go?'
 
-      // When a user cancels the draft flow, remove the draft
-      Alert.alert(
-        title,
-        message,
-        [{
-          text: 'Yes',
-          onPress: () => {
-            if (!this.isValid() && this.isPhotoType()) {
-              this.setState({error: 'Please add a cover and a title to continue'})
-            } else {
-              this.saveStory().then(() => {
-                this.navBack()
-              })
-            }
+    // When a user cancels the draft flow, remove the draft
+    Alert.alert(
+      title,
+      message,
+      [{
+        text: 'Yes',
+        onPress: () => {
+          if (!this.isValid()) {
+            this.setState({error: 'Please add a cover and a title to continue'})
+          } else {
+            this.saveStory().then(() => {
+              this.navBack()
+            })
           }
-        }, {
-          text: 'No',
-          onPress: () => {
-            if (!this.isSavedDraft()) {
-              this.props.discardDraft(this.props.story.id)
-            } else {
-              this.props.update(this.props.story.id, this.state.originalStory, true)
-            }
-            this.navBack()
+        }
+      }, {
+        text: 'No',
+        onPress: () => {
+          if (!this.isSavedDraft()) {
+            this.props.discardDraft(this.props.story.id)
+          } else {
+            this.props.update(this.props.story.id, this.state.originalStory, true)
           }
-        }]
-      )
-    }
-    else this.setState({activeModal: 'cancel'})
+          this.navBack()
+        }
+      }]
+    )
   }
 
   closeModal = () => {
@@ -432,7 +412,7 @@ class StoryCoverScreen extends Component {
       [{
         text: 'Yes',
         onPress: () => {
-          if (!this.isValid() && this.isPhotoType()) {
+          if (!this.isValid()) {
             this.setState({error: 'Please add a cover and a title to save'})
           } else {
             this.saveStory()
@@ -545,9 +525,7 @@ class StoryCoverScreen extends Component {
         story.description = _.trim(this.state.description)
       }
 
-      if (this.isPhotoType()) {
-        story.draftjsContent = this.editor.getEditorStateAsObject()
-      }
+      story.draftjsContent = this.editor.getEditorStateAsObject()
 
       this.props.update(story.id, story)
 
@@ -561,6 +539,7 @@ class StoryCoverScreen extends Component {
     })
     .catch((err) => {
       this.saveFailed()
+      console.log(`Failed saving story: ${err}`)
       return Promise.reject(err)
     })
   }
@@ -598,16 +577,10 @@ class StoryCoverScreen extends Component {
     return this.hasNoPhoto() && this.hasNoVideo()
   }
 
-  getIcon() {
-    return this.isPhotoType() ? 'camera' : 'video-camera'
-  }
-
   _contentAddCover = () => {
     this.setState({error: null})
-    const mediaType = this.getMediaType()
     NavActions.mediaSelectorScreen({
-      mediaType: mediaType,
-      title: `Add ${mediaType === 'video' ? 'Video' : 'Image'}`,
+      title: 'Add Cover',
       leftTitle: 'Cancel',
       onLeft: () => NavActions.pop(),
       rightTitle: 'Next',
@@ -627,12 +600,25 @@ class StoryCoverScreen extends Component {
     this.setState({title})
   }
 
+  setTitleAndFocus = (title) => {
+    this.setTitle(title)
+    this.jumpToTitle()
+  }
+
   setDescription = (description) => {
     this.setState({description})
   }
 
+  setDescriptionAndFocus = (description) => {
+    this.setDescription(description)
+    this.jumpToTitle()
+  }
+
+  jumpToTitle = () => {
+    this.scrollViewRef.scrollTo({x:0, y: -30, amimated: true})
+  }
+
   renderContent () {
-    const icon = this.getIcon()
     // offset so that the buttons are visible when the keyboard + toolbar are open
     const buttonsOffset = (this.toolbar && this.state.toolbarDisplay) ? {top: 75} : null
     return (
@@ -644,12 +630,12 @@ class StoryCoverScreen extends Component {
               style={[styles.addPhotoButton, buttonsOffset]}
               onPress={this._contentAddCover}
             >
-              <TabIcon name={icon} style={{
+              <TabIcon name={'camera'} style={{
                 view: styles.cameraIcon,
-                image: icon === 'camera' ? styles.cameraIconImage : styles.videoIconImage,
+                image: styles.cameraIconImage,
               }} />
               <Text style={this.renderTextColor([styles.baseTextColor, styles.coverPhotoText])}>
-                {this.isPhotoType() ? '+ ADD COVER PHOTO' : '+ ADD COVER VIDEO'}
+                + ADD COVER
               </Text>
             </TouchableOpacity>
           </View>
@@ -674,7 +660,7 @@ class StoryCoverScreen extends Component {
                   <TouchableOpacity
                     onPress={this._touchChangeCover}
                     style={[styles.iconButton, buttonsOffset]}>
-                    <Icon name={icon} color={Colors.snow} size={30} />
+                    <Icon name={'camera'} color={Colors.snow} size={30} />
                   </TouchableOpacity>
                 </Animated.View>
               </View>
@@ -690,7 +676,8 @@ class StoryCoverScreen extends Component {
             placeholder='ADD A TITLE'
             placeholderTextColor={this.renderPlaceholderColor(Colors.background)}
             value={this.state.title}
-            onChangeText={this.setTitle}
+            onChangeText={this.setTitleAndFocus}
+            onFocus={this.jumpToTitle}
             returnKeyType='done'
             maxLength={40}
             multiline={true}
@@ -701,7 +688,8 @@ class StoryCoverScreen extends Component {
             style={this.renderTextColor(styles.subTitleInput)}
             placeholder='Add a subtitle'
             placeholderTextColor={this.renderPlaceholderColor(Colors.background)}
-            onChangeText={this.setDescription}
+            onChangeText={this.setDescriptionAndFocus}
+            onFocus={this.jumpToTitle}
             value={this.state.description}
             returnKeyType='done'
             maxLength={50}
@@ -800,48 +788,65 @@ class StoryCoverScreen extends Component {
   }
 
   handleAddImage = (data) => {
+    this.editor.updateSelectionState({hasFocus: false})
     this.setState({imageUploading: true})
     api.uploadStoryImage(this.props.story.id, pathAsFileObject(data))
       .then(({data: imageUpload}) => {
         this.editor.insertImage(_.get(imageUpload, 'original.path'))
         this.setState({imageUploading: false})
       })
-      .catch(this.saveFailed)
+      .catch((err) => {
+        console.log(`Failed adding image ${err}`)
+        this.saveFailed()
+      })
     NavActions.pop()
   }
 
   handleAddVideo = (data) => {
+    this.editor.updateSelectionState({hasFocus: false})
     this.setState({videoUploading: true})
     api.uploadStoryVideo(this.props.story.id, pathAsFileObject(data))
       .then(({data: videoUpload}) => {
         this.editor.insertVideo(_.get(videoUpload, 'original.path'))
         this.setState({videoUploading: false})
       })
-      .catch(this.saveFailed)
+      .catch((err) => {
+        console.log(`Failed adding video ${err}`)
+        this.saveFailed()
+      })
     NavActions.pop()
   }
 
-  setToolbarDisplay = (toolbarDisplay) => {
+  setHasFocus = (toolbarDisplay) => {
     if (this.toolbar && this.state.toolbarDisplay !== toolbarDisplay) {
       this.setState({toolbarDisplay})
+    }
+  }
+
+  setBlockType = (blockType) => {
+    if (this.toolbar) {
+      this.toolbar.setBlockType(blockType)
     }
   }
 
   renderEditor() {
     return (
       <View style={[styles.editor]}>
-        <Editor
-          ref={i => this.editor = i}
-          style={{
-            flex: 1,
-            minWidth: Metrics.screenWidth
-          }}
-          onPressImage={this.handlePressAddImage}
-          onPressVideo={this.handlePressAddVideo}
-          customStyleMap={customStyles}
-          setToolbarDisplay={this.setToolbarDisplay}
-          {...this.getContent()}
-        />
+        {
+          <NativeEditor
+            ref={i => this.editor = i}
+            style={{
+              flex: 1,
+              minWidth: Metrics.screenWidth
+            }}
+            customStyleMap={customStyles}
+            onPressImage={this.handlePressAddImage}
+            onPressVideo={this.handlePressAddVideo}
+            {...this.getContent()}
+            setHasFocus={this.setHasFocus}
+            setBlockType={this.setBlockType}
+          />
+        }
       </View>
     )
   }
@@ -873,10 +878,10 @@ class StoryCoverScreen extends Component {
         this.props.user.introTooltips
       )
     }
-    if (this.scrollViewRef && this.state.isScrollDown) {
-      this.setState({isScrollDown: false})
-      this.scrollViewRef.scrollTo({x: 0, y: 200, animated: true})
-    }
+    //if (this.scrollViewRef && this.state.isScrollDown) {
+    //  this.setState({isScrollDown: false})
+    //  this.scrollViewRef.scrollTo({x: 0, y: 200, animated: true})
+    //}
     return (
       <View style={styles.root}>
         <ScrollView
@@ -902,7 +907,7 @@ class StoryCoverScreen extends Component {
             }}
           />
           <KeyboardAvoidingView behavior='position'>
-            <View style={this.isPhotoType() ? styles.coverWrapper : styles.videoCoverWrapper}>
+            <View style={styles.coverWrapper}>
               {this.state.error &&
                 <ShadowButton
                   style={styles.errorButton}
@@ -912,28 +917,28 @@ class StoryCoverScreen extends Component {
               {this.isPhotoType() && this.renderCoverPhoto(this.state.coverImage)}
               {!this.isPhotoType() && this.renderCoverVideo(this.state.coverVideo)}
             </View>
-            {this.isPhotoType() &&
-              <View style={styles.editorWrapper}>
-                <View style={styles.angleDownIcon}>
-                  <Icon name='angle-down' size={20} color='#9e9e9e' />
-                </View>
-                {this.renderEditor()}
+            <View style={styles.editorWrapper}>
+              <View style={styles.angleDownIcon}>
+                <Icon name='angle-down' size={20} color='#9e9e9e' />
               </View>
-            }
+              {this.renderEditor()}
+            </View>
           {showTooltip && this.renderTooltip()}
-          {this.isPhotoType() && <View style={styles.toolbarAvoiding}></View>}
+          {<View style={styles.toolbarAvoiding}></View>}
           </KeyboardAvoidingView>
         </ScrollView>
-        {this.isPhotoType() && this.editor &&
+        {this.editor &&
           <KeyboardTrackingView
             style={styles.trackingToolbarContainer}
             trackInteractive={true}
           >
+            {
             <Toolbar
               ref={i => this.toolbar = i}
               display={this.state.toolbarDisplay}
               onPress={this.editor.onToolbarPress}
             />
+            }
           </KeyboardTrackingView>
         }
         {this.state.activeModal === 'cancel' && this.renderCancel()}
@@ -956,10 +961,10 @@ class StoryCoverScreen extends Component {
     )
   }
 
-  _handleSelectCover = (path) => {
+  _handleSelectCover = (path, isPhotoType) => {
     const file = pathAsFileObject(path)
     const updatedState = {file}
-    if (this.isPhotoType()) {
+    if (isPhotoType) {
       updatedState.isScrollDown = true
       updatedState.coverImage = path
     } else {

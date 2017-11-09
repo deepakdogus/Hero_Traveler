@@ -18,9 +18,14 @@ const StyledIcon = styled(Icon)`
 export default class FooterToolbar extends Component {
   static propTypes = {
     isDetailsView: PropTypes.bool,
+    discardDraft: PropTypes.func,
+    updateDraft: PropTypes.func,
+    onRight: PropTypes.func,
+    onLeft: PropTypes.func,
   }
 
   renderIcons = () => {
+    const {discardDraft, updateDraft} = this.props
     return (
       <Row middle='xs'>
         <RoundedButton
@@ -29,6 +34,7 @@ export default class FooterToolbar extends Component {
           margin='medium'
           width='50px'
           height='50px'
+          onClick={discardDraft}
         >
           <StyledIcon name='trash'/>
         </RoundedButton>
@@ -38,6 +44,7 @@ export default class FooterToolbar extends Component {
           margin='medium'
           width='50px'
           height='50px'
+          onClick={updateDraft}
         >
           <StyledIcon name='save'/>
         </RoundedButton>
@@ -46,7 +53,7 @@ export default class FooterToolbar extends Component {
   }
 
   renderButtons = () => {
-    const {isDetailsView} = this.props
+    const {isDetailsView, onRight, onLeft} = this.props
     return (
       <Container>
         <Row middle='xs'>
@@ -56,12 +63,14 @@ export default class FooterToolbar extends Component {
             padding='even'
             width='120px'
             type='grey'
+            onClick={onLeft}
           />
           <RoundedButton
             text={isDetailsView ? 'Publish' : 'Next >'}
             margin='medium'
             padding='even'
             width='120px'
+            onClick={onRight}
           />
         </Row>
       </Container>

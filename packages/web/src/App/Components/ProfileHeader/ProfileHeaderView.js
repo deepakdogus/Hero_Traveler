@@ -49,18 +49,35 @@ const CountWrapper = styled(Row)`
   margin-top: 25px !important;
 `
 
-const CountItemWrapper = styled.div``
-
+const CountItemWrapper = styled.div`
+  cursor: pointer;
+`
 
 const StyledHorizontalDivider = styled(HorizontalDivider)`
   width: 72px;
   border-width: 1px 0 0 0;
 `
 
+const BioText = styled(ItalicText)`
+  cursor: pointer;
+`
+
+const ClickRow = styled(Row)`
+  cursor: pointer;
+`
+
 export default class ProfileHeaderView extends React.Component {
   static propTypes = {
     user: PropTypes.object,
     isContributor: PropTypes.bool,
+    isFollowing: PropTypes.bool,
+    isUsersProfile: PropTypes.bool,
+    openBio: PropTypes.func,
+    openContributor: PropTypes.func,
+    openFollowedBy: PropTypes.func,
+    openFollowing: PropTypes.func,
+    followUser: PropTypes.func,
+    unfollowUser: PropTypes.func,
   }
 
   constructor(props) {
@@ -71,9 +88,14 @@ export default class ProfileHeaderView extends React.Component {
   }
 
   render () {
-    const {user, isContributor} = this.props
-    const isUsersProfile = user.id === '59d64ca84722340010b12c98'
-    const isFollowing = user.id === '59d508c56ed1d9001008780b'
+    const {
+      user,
+      isContributor, isUsersProfile, isFollowing,
+      openBio, openContributor,
+      openFollowedBy, openFollowing,
+      followUser, unfollowUser,
+    } = this.props
+
     return (
       <Container>
         <Centered>
@@ -87,14 +109,14 @@ export default class ProfileHeaderView extends React.Component {
               size='x-large'
             />
           </AvatarWrapper>
-          <ItalicText>Read Bio</ItalicText>
+          <BioText onClick={openBio}>Read Bio</BioText>
           <CountWrapper center='xs'>
-            <CountItemWrapper>
+            <CountItemWrapper onClick={openFollowedBy}>
               <Count>{user.counts.followers}</Count>
               <CountLabel>Followers</CountLabel>
             </CountItemWrapper>
             <Divider/>
-            <CountItemWrapper>
+            <CountItemWrapper onClick={openFollowing}>
               <Count>{user.counts.following}</Count>
               <CountLabel>Following</CountLabel>
             </CountItemWrapper>
@@ -108,27 +130,29 @@ export default class ProfileHeaderView extends React.Component {
             {
               !isUsersProfile &&
               <div>
-
                 <RoundedButton
                   margin='small'
-                  onClick={this.openFollowedByModal}
+                  onClick={isFollowing ? unfollowUser : followUser}
                   type={isFollowing ? 'opaqueWhite' : 'opaque'}
                   text={isFollowing ? 'FOLLOWING' : 'FOLLOW'}
                 />
-                <RoundedButton
-                  margin='small'
-                  type='opaque'
-                  text='MESSAGE'/>
+                {
+                // disabled until proper implementation
+                // <RoundedButton
+                //   margin='small'
+                //   type='opaque'
+                //   text='MESSAGE'/>
+                }
               </div>
             }
           </ButtonWrapper>
         </Centered>
         <BottomLeft>
           {isContributor &&
-            <Row>
+            <ClickRow onClick={openContributor}>
               <Icon name='profileBadge'/>
               <BottomLeftText>CONTRIBUTOR</BottomLeftText>
-            </Row>
+            </ClickRow>
           }
         </BottomLeft>
       </Container>

@@ -51,12 +51,13 @@ export function * resumeSession (api, action) {
     select(currentUserId),
     select(currentUserTokens)
   ]
+
   // for web we use retrieved tokens (cookies) since store does not persist
   if (action.retrievedTokens) tokens = action.retrievedTokens
   const accessToken = _.find(tokens, {type: 'access'})
-  if (!accessToken) return
-  yield call(api.setAuth, accessToken.value)
+  if (!accessToken) return yield put(SessionActions.resumeSessionFailure())
 
+  yield call(api.setAuth, accessToken.value)
   const response = yield call(
     api.getMe,
     userId

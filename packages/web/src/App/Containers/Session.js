@@ -5,6 +5,8 @@ import { instanceOf } from 'prop-types'
 
 import SessionActions from '../Shared/Redux/SessionRedux'
 
+const defaultExpiration = 500
+
 function addToken(key, cookies, tokens){
   const token = cookies[key]
   if (!token) return
@@ -14,12 +16,12 @@ function addToken(key, cookies, tokens){
     type: name,
   }
   // unable to retrieve expire date from cookie so setting it short so it'll refresh automatically
-  if (name === 'access') formattedToken.expiresIn = 500
+  if (name === 'access') formattedToken.expiresIn = defaultExpiration
   tokens.push(formattedToken)
 }
 
 function isNewToken(oldTokenOfType, token) {
-  return !oldTokenOfType || (oldTokenOfType && oldTokenOfType.value !== token.value)
+  return !oldTokenOfType || (oldTokenOfType && oldTokenOfType.value !== token.value && token.expiresIn !== defaultExpiration)
 }
 
 class Session extends Component {

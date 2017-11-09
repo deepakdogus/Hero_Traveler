@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import _ from 'lodash'
+import { Actions as NavActions } from 'react-native-router-flux'
 
 import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
 import StoryPreview from '../Components/StoryPreview'
@@ -25,9 +26,13 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, props) => {
+  const {userId, storyId} = props
   return {
-    deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId))
+    onPress: () => NavActions.story({storyId}),
+    deleteStory: () => dispatch(StoryActions.deleteStory(userId, storyId)),
+    onPressLike: () => dispatch(StoryActions.storyLike(userId, storyId)),
+    onPressBookmark: () => dispatch(StoryActions.storyBookmark(userId, storyId)),
   }
 }
 

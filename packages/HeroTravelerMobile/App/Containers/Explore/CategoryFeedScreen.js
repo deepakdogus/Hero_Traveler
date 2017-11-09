@@ -106,6 +106,19 @@ class CategoryFeedScreen extends React.Component {
     }
   }
 
+  renderStory = (storyId) => {
+    return (
+      <ConnectedStoryPreview
+        key={storyId}
+        storyId={storyId}
+        height={imageHeight}
+        onPressUser={this._touchUser}
+        userId={this.props.user.id}
+        showPlayButton
+      />
+    )
+  }
+
   render () {
     let { storiesById, fetchStatus, error } = this.props;
 
@@ -125,20 +138,7 @@ class CategoryFeedScreen extends React.Component {
           <StoryList
             style={styles.storyList}
             storiesById={storiesById}
-            renderStory={(storyId) => {
-              return (
-                <ConnectedStoryPreview
-                  key={storyId}
-                  storyId={storyId}
-                  height={imageHeight}
-                  onPress={() => NavActions.story({storyId})}
-                  onPressUser={this._touchUser}
-                  onPressLike={story => this.props.toggleLike(this.props.user.id, story.id)}
-                  onPressBookmark={story => this.props.toggleBookmark(this.props.user.id, story.id)}
-                  showPlayButton
-                />
-              )
-            }}
+            renderStory={this.renderStory}
             onRefresh={this._onRefresh}
             refreshing={this.state.refreshing}
           />
@@ -191,11 +191,6 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     loadCategory: (categoryId, storyType) => dispatch(StoryActions.fromCategoryRequest(categoryId, storyType)),
-    toggleLike: (userId, storyId) => dispatch(StoryActions.storyLike(
-      userId,
-      storyId
-    )),
-    toggleBookmark: (userId, storyId) => dispatch(StoryActions.storyBookmark(userId, storyId)),
   }
 }
 

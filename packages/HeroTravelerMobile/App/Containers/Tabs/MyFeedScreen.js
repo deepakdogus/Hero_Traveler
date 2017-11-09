@@ -16,22 +16,8 @@ import ConnectedStoryPreview from '../ConnectedStoryPreview'
 import RoundedButton from '../../Components/RoundedButton'
 import styles from '../Styles/MyFeedScreenStyles'
 import NoStoriesMessage from '../../Components/NoStoriesMessage'
-import {withHandlers} from 'recompose'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
-
-const enhanceStoryPreview = withHandlers({
-  onPressLike: props => () => {
-    props.toggleLike(props.userId, props.storyId)
-  },
-  onPress: props => () => {
-    NavActions.story({storyId: props.storyId})
-  },
-  onPressBookmark: props => () => {
-    props.toggleBookmark(props.userId, props.storyId)
-  }
-})
-const EnhancedStoryPreview = enhanceStoryPreview(ConnectedStoryPreview)
 
 class MyFeedScreen extends React.Component {
   static propTypes = {
@@ -154,7 +140,7 @@ class MyFeedScreen extends React.Component {
 
   renderStory = (storyId) => {
     return (
-      <EnhancedStoryPreview
+      <ConnectedStoryPreview
         key={storyId}
         storyId={storyId}
         height={imageHeight}
@@ -162,8 +148,6 @@ class MyFeedScreen extends React.Component {
         showUserInfo={true}
         onPressUser={this._touchUser}
         userId={this.props.user.id}
-        toggleLike={this.props.toggleLike}
-        toggleBookmark={this.props.toggleBookmark}
         showPlayButton
       />
     )
@@ -234,8 +218,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     attemptGetUserFeed: (userId) => dispatch(StoryActions.feedRequest(userId)),
-    toggleLike: (userId, storyId) => dispatch(StoryActions.storyLike(userId, storyId)),
-    toggleBookmark: (userId, storyId) => dispatch(StoryActions.storyBookmark(userId, storyId)),
     completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips}))
   }
 }

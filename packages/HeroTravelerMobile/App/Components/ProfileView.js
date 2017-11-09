@@ -29,7 +29,6 @@ import ShadowButton from './ShadowButton'
 
 // @TODO UserActions shouldn't be in a component
 import UserActions from '../Shared/Redux/Entities/Users'
-import StoryActions from '../Shared/Redux/Entities/Stories'
 import isTooltipComplete, {Types as TooltipTypes} from '../Shared/Lib/firstTimeTooltips'
 import {withHandlers} from 'recompose'
 
@@ -58,24 +57,10 @@ const Tab = enhancedTab(({text, _onPress, selected}) => {
   )
 })
 
-const enhanceStoryPreview = withHandlers({
-  onPress: props => () => {
-    NavActions.story({storyId: props.storyId})
-  },
-  onPressLike: props => () => {
-    props.onLike(props.userId, props.storyId)
-  },
-  onPressBookmark: props => () => {
-    props.toggleBookmark(props.userId, props.storyId)
-  }
-})
-
 const usernameContansts = {
   maxLength: 20,
   minLength: 2,
 }
-
-const StoryPreviewEnhanced = enhanceStoryPreview(ConnectedStoryPreview)
 
 // @TOOO make this smaller
 class ProfileView extends React.Component {
@@ -223,7 +208,7 @@ class ProfileView extends React.Component {
 
   renderStory = (storyId) => {
     return (
-      <StoryPreviewEnhanced
+      <ConnectedStoryPreview
         forProfile={true}
         editable={this.props.editable && this.state.selectedTab !== TabTypes.bookmarks}
         touchTrash={this.props.touchTrash}
@@ -236,8 +221,6 @@ class ProfileView extends React.Component {
         height={storyPreviewHeight}
         storyId={storyId}
         userId={this.props.user.id}
-        onLike={this.props.toggleLike}
-        toggleBookmark={this.props.toggleBookmark}
       />
     )
   }
@@ -663,7 +646,7 @@ class ProfileView extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = () => {
   return {
   }
 }
@@ -671,11 +654,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips})),
-    toggleLike: (userId, storyId) => dispatch(StoryActions.storyLike(
-      userId,
-      storyId
-    )),
-    toggleBookmark: (userId, storyId) => dispatch(StoryActions.storyBookmark(userId, storyId)),
     updateUserSuccess: (user) => dispatch(UserActions.updateUserSuccess(user)),
   }
 }

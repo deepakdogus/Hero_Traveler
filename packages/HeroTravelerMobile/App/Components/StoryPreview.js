@@ -176,7 +176,7 @@ export default class StoryPreview extends Component {
       else string += `, ${category.title}`
       return string
     }, "")
-    console.log("isBookmarked is", this.props.isBookmarked)
+
     return (
       <View style={[styles.storyInfoContaier, styles.bottomContainer]}>
         <Text style={storyReadingStyles.tag}>{storyCategories}</Text>

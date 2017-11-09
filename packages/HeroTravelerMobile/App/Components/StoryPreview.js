@@ -5,7 +5,7 @@ import {
   Text,
   Alert,
   TouchableOpacity,
-  TouchableHighlight } from 'react-native'
+} from 'react-native'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -13,11 +13,13 @@ import formatCount from '../Shared/Lib/formatCount'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import { Metrics } from '../Shared/Themes'
 import styles from './Styles/StoryPreviewStyle'
+import {styles as storyReadingStyles} from '../Containers/Styles/StoryReadingScreenStyles'
 import LikesComponent from './LikeComponent'
 import TrashCan from '../Components/TrashCan'
 import Avatar from './Avatar'
 import StoryCover from './StoryCover'
 import FadeInOut from './FadeInOut'
+import TabIcon from './TabIcon'
 
 export default class StoryPreview extends Component {
   // is showLike now always true? MBT - 12/07
@@ -144,38 +146,104 @@ export default class StoryPreview extends Component {
     return userContent
   }
 
+  renderTopSection() {
+    const {user, story} = this.props
+
+    return (
+      <View style={[styles.storyInfoContaier, styles.topContainer]}>
+        <View style={styles.topContent}>
+          <TouchableOpacity onPress={this._touchUser}>
+            <Avatar
+              style={styles.avatar}
+              avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
+            />
+          </TouchableOpacity>
+          <View>
+            <TouchableOpacity onPress={this._touchUser}>
+              <Text style={styles.topUsername}>{user.username}</Text>
+            </TouchableOpacity>
+            <Text style={styles.topDateText}>{moment(story.createdAt).format('LL')}</Text>
+          </View>
+        </View>
+      </View>
+    )
+  }
+
+  renderBottomSection() {
+    const {categories, title, counts} = this.props.story
+    const storyCategories = categories.reduce((string, category, index) => {
+      if (index === 0) string += category.title
+      else string += `, ${category.title}`
+      return string
+    }, "")
+    console.log("isBookmarked is", this.props.isBookmarked)
+    return (
+      <View style={[styles.storyInfoContaier, styles.bottomContainer]}>
+        <Text style={storyReadingStyles.tag}>{storyCategories}</Text>
+        <Text style={[styles.title, styles.bottomTitle, this.props.titleStyle]}>{title}</Text>
+        <View style={styles.rightRow}>
+          {this.props.showLike && this.props.onPressBookmark &&
+            <View style={styles.bookmarkContainer}>
+              <TouchableOpacity
+                onPress={this.props.onPressBookmark}
+              >
+                <TabIcon
+                  name={this.props.isBookmarked ? 'bookmark-active' : 'bookmark'}
+                  style={{
+                    image: styles.bookmark
+                  }}
+                />
+              </TouchableOpacity>
+            </View>
+          }
+          {this.props.showLike &&
+            <LikesComponent
+              onPress={this._onPressLike}
+              likes={formatCount(counts.likes)}
+              isLiked={this.props.isLiked}
+              isRightText
+            />
+          }
+        </View>
+      </View>
+    )
+  }
+
   render () {
     const {story, isContentVisible} = this.props
     if (!story) return null
     // using StoryPreview height as proxy for StoryCover playbutton size
     const height = this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20
     const playButtonSize = height > 250 ? 'large' : 'small'
-
     return (
-      <View style={{height}}>
-        <View style={styles.contentContainer}>
-          {this.props.forProfile && this.props.editable &&
-            <TrashCan touchTrash={this._touchTrash} touchEdit={this._touchEdit} />
+      <View style={styles.contentContainer}>
+        {this.props.showReadMessage && <View style={styles.readingBuffer}/>}
+        {this.props.forProfile && this.props.editable &&
+          <TrashCan touchTrash={this._touchTrash} touchEdit={this._touchEdit} />
+        }
+        {this.renderTopSection()}
+        <StoryCover
+          autoPlayVideo={this.props.autoPlayVideo}
+          allowVideoPlay={this.props.allowVideoPlay}
+          cover={story.coverImage ? story.coverImage : story.coverVideo}
+          coverType={story.coverImage ? 'image' : 'video'}
+          onPress={this.props.onPress}
+          gradientColors={this.props.gradientColors}
+          gradientLocations={this.props.gradientLocations}
+          showPlayButton={this.props.showPlayButton}
+          playButtonSize={playButtonSize}
+        >
+          {
+          // pending approval to remove all of this and related methods + styles
+          // <FadeInOut
+          //   isVisible={isContentVisible}
+          //   style={styles.contentWrapper}
+          // >
+          //   {this.props.forProfile ? this.renderProfileTitleSection() : this.renderTitleSection()}
+          // </FadeInOut>
           }
-          <StoryCover
-            autoPlayVideo={this.props.autoPlayVideo}
-            allowVideoPlay={this.props.allowVideoPlay}
-            cover={story.coverImage ? story.coverImage : story.coverVideo}
-            coverType={story.coverImage ? 'image' : 'video'}
-            onPress={this.props.onPress}
-            gradientColors={this.props.gradientColors}
-            gradientLocations={this.props.gradientLocations}
-            showPlayButton={this.props.showPlayButton}
-            playButtonSize={playButtonSize}
-          >
-            <FadeInOut
-              isVisible={isContentVisible}
-              style={styles.contentWrapper}
-            >
-              {this.props.forProfile ? this.renderProfileTitleSection() : this.renderTitleSection()}
-            </FadeInOut>
-          </StoryCover>
-        </View>
+        </StoryCover>
+        {this.renderBottomSection()}
       </View>
     )
   }

@@ -2,12 +2,11 @@ import _ from 'lodash'
 import React from 'react'
 import PropTypes from 'prop-types'
 import {
+  View,
   ListView,
   RefreshControl
 } from 'react-native'
 import styles from './Styles/StoryListStyle'
-
-import StoryPreview from '../Components/StoryPreview'
 
 /*
 add pagingIsDisabled instead of pagingEnabled as a prop so that paging is default
@@ -43,17 +42,24 @@ export default class StoryList extends React.Component {
     return this.props.renderSectionHeader || null
   }
 
+  _renderSeparator = (sectionId, rowId) => {
+    const key = sectionId + rowId
+    return (
+      <View key={key} style={styles.separator}/>
+    )
+  }
+
   render () {
     return (
       <ListView
         key={this.props.storiesById}
         dataSource={this.state.dataSource}
-        pagingEnabled={!this.props.pagingIsDisabled}
         initialListSize={1}
         renderRow={this.props.renderStory}
         renderHeader={this._renderHeader}
         renderSectionHeader={this._renderSectionHeader}
         stickySectionHeadersEnabled={true}
+        renderSeparator={this._renderSeparator}
         refreshControl={
           <RefreshControl
             refreshing={this.props.refreshing}

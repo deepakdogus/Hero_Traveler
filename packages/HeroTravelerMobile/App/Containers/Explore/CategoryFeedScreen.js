@@ -134,6 +134,7 @@ class CategoryFeedScreen extends React.Component {
                   onPress={() => NavActions.story({storyId})}
                   onPressUser={this._touchUser}
                   onPressLike={story => this.props.toggleLike(this.props.user.id, story.id)}
+                  onPressBookmark={story => this.props.toggleBookmark(this.props.user.id, story.id)}
                   showPlayButton
                 />
               )
@@ -187,13 +188,14 @@ const mapStateToProps = (state, props) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, props) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     loadCategory: (categoryId, storyType) => dispatch(StoryActions.fromCategoryRequest(categoryId, storyType)),
     toggleLike: (userId, storyId) => dispatch(StoryActions.storyLike(
       userId,
       storyId
-    ))
+    )),
+    toggleBookmark: (userId, storyId) => dispatch(StoryActions.storyBookmark(userId, storyId)),
   }
 }
 

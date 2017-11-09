@@ -26,6 +26,9 @@ const enhanceStoryPreview = withHandlers({
   },
   onPress: props => () => {
     NavActions.story({storyId: props.storyId})
+  },
+  onPressBookmark: props => () => {
+    props.toggleBookmark(props.userId, props.storyId)
   }
 })
 const EnhancedStoryPreview = enhanceStoryPreview(ConnectedStoryPreview)
@@ -160,6 +163,7 @@ class MyFeedScreen extends React.Component {
         onPressUser={this._touchUser}
         userId={this.props.user.id}
         toggleLike={this.props.toggleLike}
+        toggleBookmark={this.props.toggleBookmark}
         showPlayButton
       />
     )
@@ -231,6 +235,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     attemptGetUserFeed: (userId) => dispatch(StoryActions.feedRequest(userId)),
     toggleLike: (userId, storyId) => dispatch(StoryActions.storyLike(userId, storyId)),
+    toggleBookmark: (userId, storyId) => dispatch(StoryActions.storyBookmark(userId, storyId)),
     completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips}))
   }
 }

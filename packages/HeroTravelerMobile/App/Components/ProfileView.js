@@ -64,6 +64,9 @@ const enhanceStoryPreview = withHandlers({
   },
   onPressLike: props => () => {
     props.onLike(props.userId, props.storyId)
+  },
+  onPressBookmark: props => () => {
+    props.toggleBookmark(props.userId, props.storyId)
   }
 })
 
@@ -234,6 +237,7 @@ class ProfileView extends React.Component {
         storyId={storyId}
         userId={this.props.user.id}
         onLike={this.props.toggleLike}
+        toggleBookmark={this.props.toggleBookmark}
       />
     )
   }
@@ -671,6 +675,7 @@ const mapDispatchToProps = (dispatch) => {
       userId,
       storyId
     )),
+    toggleBookmark: (userId, storyId) => dispatch(StoryActions.storyBookmark(userId, storyId)),
     updateUserSuccess: (user) => dispatch(UserActions.updateUserSuccess(user)),
   }
 }

@@ -11,10 +11,6 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'column'
   },
-  readingBuffer: {
-    height: Metrics.navBarHeight -10 ,
-    backgroundColor: Colors.background,
-  },
   title: {
     fontSize: 28,
     fontWeight: '500',
@@ -83,8 +79,8 @@ export default StyleSheet.create({
   topContainer: {
     height: 70,
   },
-  storyInfoContaier: {
-    paddingHorizontal: 15,
+  storyInfoContainer: {
+    paddingHorizontal: Metrics.section,
     backgroundColor: Colors.snow,
   },
   bottomContainer: {

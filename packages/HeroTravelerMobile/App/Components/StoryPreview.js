@@ -7,22 +7,19 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import moment from 'moment'
-import Icon from 'react-native-vector-icons/FontAwesome'
 
 import formatCount from '../Shared/Lib/formatCount'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import { Metrics } from '../Shared/Themes'
 import styles from './Styles/StoryPreviewStyle'
-import {styles as storyReadingStyles} from '../Containers/Styles/StoryReadingScreenStyles'
 import LikesComponent from './LikeComponent'
 import TrashCan from '../Components/TrashCan'
 import Avatar from './Avatar'
 import StoryCover from './StoryCover'
-import FadeInOut from './FadeInOut'
 import TabIcon from './TabIcon'
 
 export default class StoryPreview extends Component {
-  // is showLike now always true? MBT - 12/07
+  // is showLike now always true? MBT - 12/07/17
   static propTypes = {
     onPressLike: PropTypes.func,
     onPress: PropTypes.func,
@@ -33,6 +30,7 @@ export default class StoryPreview extends Component {
     showLike: PropTypes.bool,
     autoPlayVideo: PropTypes.bool,
     allowVideoPlay: PropTypes.bool,
+    // using showReadMessage as proxy for story reading page
     showReadMessage: PropTypes.bool,
     gradientColors: PropTypes.arrayOf(PropTypes.string),
     isContentVisible: PropTypes.bool,
@@ -71,86 +69,11 @@ export default class StoryPreview extends Component {
     }
   }
 
-  renderProfileTitleSection() {
-    const {story} = this.props
-    return (
-      <View>
-        <Text style={[styles.title, this.props.titleStyle]}>{_.upperCase(story.title)}</Text>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text style={[styles.subtitle, this.props.subtitleStyle]}>{story.description}</Text>
-          <LikesComponent
-            onPress={this._onPressLike}
-            likes={formatCount(story.counts.likes)}
-            isLiked={this.props.isLiked}
-          />
-        </View>
-      </View>
-    )
-  }
-
-  renderTitleSection() {
-    const {story} = this.props
-    return (
-      <View>
-        <Text style={[styles.title, this.props.titleStyle]}>{_.upperCase(story.title)}</Text>
-        <Text style={[styles.subtitle, this.props.subtitleStyle]}>{story.description}</Text>
-        <View style={styles.divider} />
-        <View style={styles.detailsContainer}>
-          {this.renderUserContent()}
-          <View style={styles.detailsRight}>
-            <Text style={[
-              styles.dateText,
-              this.props.showLike && {marginRight: Metrics.section}
-            ]}>
-              {moment(story.createdAt).fromNow()}
-            </Text>
-            {this.props.showLike &&
-              <LikesComponent
-                onPress={this._onPressLike}
-                likes={formatCount(story.counts.likes)}
-                isLiked={this.props.isLiked}
-              />
-            }
-          </View>
-        </View>
-        {this.props.showReadMessage &&
-          <View style={styles.readMore}>
-            <Text style={styles.readMoreText}>READ <Icon name='angle-up' size={16} /></Text>
-          </View>
-        }
-      </View>
-    )
-  }
-
-  renderUserContent() {
-    const {user} = this.props
-
-    const userContent = (
-      <View style={styles.userContent}>
-        <Avatar
-          style={styles.avatar}
-          avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
-        />
-        <Text style={styles.username}>{user.username}</Text>
-      </View>
-    )
-
-    if (this.props.onPressUser) {
-      return (
-        <TouchableOpacity onPress={this._touchUser}>
-          {userContent}
-        </TouchableOpacity>
-      )
-    }
-
-    return userContent
-  }
-
   renderTopSection() {
     const {user, story} = this.props
 
     return (
-      <View style={[styles.storyInfoContaier, styles.verticalCenter, styles.topContainer]}>
+      <View style={[styles.storyInfoContainer, styles.verticalCenter, styles.topContainer]}>
         <View style={styles.topContent}>
           <TouchableOpacity onPress={this._touchUser}>
             <Avatar
@@ -171,18 +94,10 @@ export default class StoryPreview extends Component {
   }
 
   renderBottomSection() {
-    const {categories, title, counts} = this.props.story
-    const storyCategories = categories.reduce((string, category, index) => {
-      if (index === 0) string += category.title
-      else string += `, ${category.title}`
-      return string
-    }, "")
+    const {title, counts} = this.props.story
 
     return (
-      <View style={[styles.storyInfoContaier, styles.bottomContainer]}>
-        {
-          // <Text style={storyReadingStyles.tag}>{storyCategories}</Text>
-        }
+      <View style={[styles.storyInfoContainer, styles.bottomContainer]}>
         <Text style={[styles.title, styles.bottomTitle, this.props.titleStyle]}>{title}</Text>
         <View style={styles.rightRow}>
           {this.props.showLike && this.props.onPressBookmark &&
@@ -220,11 +135,10 @@ export default class StoryPreview extends Component {
     const playButtonSize = height > 250 ? 'large' : 'small'
     return (
       <View style={styles.contentContainer}>
-        {this.props.showReadMessage && <View style={styles.readingBuffer}/>}
         {this.props.forProfile && this.props.editable &&
           <TrashCan touchTrash={this._touchTrash} touchEdit={this._touchEdit} />
         }
-        {this.renderTopSection()}
+        {!this.props.showReadMessage && this.renderTopSection()}
         <StoryCover
           autoPlayVideo={this.props.autoPlayVideo}
           allowVideoPlay={this.props.allowVideoPlay}
@@ -236,6 +150,7 @@ export default class StoryPreview extends Component {
           showPlayButton={this.props.showPlayButton}
           playButtonSize={playButtonSize}
         />
+        {this.props.showReadMessage && this.renderTopSection()}
         {this.renderBottomSection()}
       </View>
     )

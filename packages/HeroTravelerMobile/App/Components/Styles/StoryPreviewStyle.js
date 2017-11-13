@@ -24,6 +24,9 @@ export default StyleSheet.create({
   },
   bottomTitle: {
     fontSize: 20,
+    lineHeight: 23,
+    fontFamily: Fonts.montserrat,
+    fontWeight: '600',
     color: Colors.backgrond,
   },
   subtitle: {
@@ -56,6 +59,10 @@ export default StyleSheet.create({
   topContent: {
     flexDirection: 'row',
   },
+  verticalCenter: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
   avatar: {
     marginRight: Metrics.baseMargin
   },
@@ -68,13 +75,12 @@ export default StyleSheet.create({
   },
   topUsername: {
     color: Colors.redHighlights,
-    fontWeight: '500',
-    fontSize: 15,
+    fontWeight: '400',
+    fontSize: 11,
+    letterSpacing: .7,
     fontFamily: Fonts.type.sourceSansPro
   },
   topContainer: {
-    flexDirection: 'column',
-    justifyContent: 'center',
     height: 70,
   },
   storyInfoContaier: {
@@ -92,7 +98,9 @@ export default StyleSheet.create({
     fontStyle: 'italic',
   },
   topDateText: {
-    color: Colors.signupGrey,
+    fontSize: 12,
+    letterSpacing: .5,
+    color: Colors.grey,
     marginRight: 5,
     fontFamily: Fonts.type.crimsonText,
     fontStyle: 'italic',

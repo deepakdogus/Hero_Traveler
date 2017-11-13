@@ -150,15 +150,16 @@ export default class StoryPreview extends Component {
     const {user, story} = this.props
 
     return (
-      <View style={[styles.storyInfoContaier, styles.topContainer]}>
+      <View style={[styles.storyInfoContaier, styles.verticalCenter, styles.topContainer]}>
         <View style={styles.topContent}>
           <TouchableOpacity onPress={this._touchUser}>
             <Avatar
+              size={'extraSmall'}
               style={styles.avatar}
               avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
             />
           </TouchableOpacity>
-          <View>
+          <View style={styles.verticalCenter}>
             <TouchableOpacity onPress={this._touchUser}>
               <Text style={styles.topUsername}>{user.username}</Text>
             </TouchableOpacity>
@@ -179,7 +180,9 @@ export default class StoryPreview extends Component {
 
     return (
       <View style={[styles.storyInfoContaier, styles.bottomContainer]}>
-        <Text style={storyReadingStyles.tag}>{storyCategories}</Text>
+        {
+          // <Text style={storyReadingStyles.tag}>{storyCategories}</Text>
+        }
         <Text style={[styles.title, styles.bottomTitle, this.props.titleStyle]}>{title}</Text>
         <View style={styles.rightRow}>
           {this.props.showLike && this.props.onPressBookmark &&

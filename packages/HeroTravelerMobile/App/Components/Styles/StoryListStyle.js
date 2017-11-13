@@ -8,6 +8,6 @@ export default StyleSheet.create({
   },
   separator: {
     height: 10,
-    backgroundColor: Colors.dividerGrey,
+    backgroundColor: Colors.feedDividerGrey,
   }
 })

@@ -238,7 +238,7 @@ class StoryReadingScreen extends React.Component {
   }
 
   render () {
-    const { story, author } = this.props;
+    const { story, author, user } = this.props;
     if (!story || !author) {
       return (
         <View style={[styles.darkRoot]}>
@@ -275,9 +275,10 @@ class StoryReadingScreen extends React.Component {
             key={story.id}
             height={Metrics.screenHeight}
             storyId={story.id}
+            userId={user.id}
             autoPlayVideo={true}
             allowVideoPlay={true}
-            showReadMessage={true}
+            isStoryReadingScreen={true}
             isContentVisible={this.isShowContent()}
           />
           <View style={styles.content}>

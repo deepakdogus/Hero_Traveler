@@ -41,6 +41,8 @@ class TabIcon extends React.Component {
         return Images.iconEditImageCameraLarge
       case 'cameraWhite':
         return Images.iconAddCoverCameraWhite
+      case 'cameraDark':
+        return Images.iconAddCoverCamera
       case 'video-camera':
         return Images.iconEditVideo
       case 'arrowRight':

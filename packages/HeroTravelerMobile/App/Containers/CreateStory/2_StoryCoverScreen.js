@@ -622,10 +622,9 @@ class StoryCoverScreen extends Component {
     // offset so that the buttons are visible when the keyboard + toolbar are open
     const buttonsOffset = (this.toolbar && this.state.toolbarDisplay) ? {top: 75} : null
     return (
-      <View style={this.hasNoCover() ? styles.lightGreyAreasBG : null}>
-        {this.hasNoCover() && <View style={styles.spaceView} />}
+      <View style={this.hasNoCover() ? styles.lightGreyAreasBG : styles.contentWrapper}>
         {this.hasNoCover() &&
-          <View style={[styles.spaceView, styles.addPhotoView]}>
+          <View style={[styles.addPhotoView]}>
             <TouchableOpacity
               style={[styles.addPhotoButton, buttonsOffset]}
               onPress={this._contentAddCover}
@@ -642,30 +641,22 @@ class StoryCoverScreen extends Component {
         }
         {!this.hasNoCover() && !this.state.imageMenuOpen &&
           <TouchableWithoutFeedback onPress={this._toggleImageMenu}>
-            <View>
-              <View style={styles.spaceView} />
-              <View style={styles.spaceView} />
-            </View>
+            <View style={styles.coverWrapperHeight}/>
           </TouchableWithoutFeedback>
         }
         {!this.hasNoCover() && this.state.imageMenuOpen &&
-          <View>
             <TouchableWithoutFeedback onPress={this._toggleImageMenu}>
-              <View>
-                <View style={styles.spaceView} />
-                <Animated.View style={[
-                  styles.imageMenuView,
-                  {opacity: this.state.toolbarOpacity}
-                ]}>
-                  <TouchableOpacity
-                    onPress={this._touchChangeCover}
-                    style={[styles.iconButton, buttonsOffset]}>
-                    <Icon name={'camera'} color={Colors.snow} size={30} />
-                  </TouchableOpacity>
-                </Animated.View>
-              </View>
+              <Animated.View style={[
+                styles.imageMenuView,
+                {opacity: this.state.toolbarOpacity}
+              ]}>
+                <TouchableOpacity
+                  onPress={this._touchChangeCover}
+                  style={[styles.iconButton, buttonsOffset]}>
+                  <Icon name={'camera'} color={Colors.snow} size={30} />
+                </TouchableOpacity>
+              </Animated.View>
             </TouchableWithoutFeedback>
-          </View>
         }
       </View>
     )
@@ -854,6 +845,8 @@ class StoryCoverScreen extends Component {
     //  this.setState({isScrollDown: false})
     //  this.scrollViewRef.scrollTo({x: 0, y: 200, animated: true})
     //}
+
+    console.log("this.state is", this.state)
     return (
       <View style={styles.root}>
         <ScrollView
@@ -879,7 +872,7 @@ class StoryCoverScreen extends Component {
             }}
           />
           <KeyboardAvoidingView behavior='position'>
-            <View style={styles.coverWrapper}>
+            <View style={styles.coverWrapperHeight}>
               {this.state.error &&
                 <ShadowButton
                   style={styles.errorButton}

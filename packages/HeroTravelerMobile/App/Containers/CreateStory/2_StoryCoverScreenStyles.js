@@ -37,9 +37,9 @@ export default StyleSheet.create({
     color: Colors.background,
     marginTop: 20,
     marginLeft: 20,
-    fontSize: 28,
-    fontFamily: 'Arial',
-    fontWeight: '500',
+    fontSize: 30,
+    fontFamily: Fonts.type.montserrat,
+    fontWeight: '600',
   },
   subTitleInput: {
     color: Colors.background,
@@ -51,12 +51,12 @@ export default StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: Metrics.baseMargin,
+    marginBottom: Metrics.doubleBaseMargin,
   },
   cameraIconImage: {
     tintColor: 'gray',
-    height: 32,
-    width: 40,
+    height: 43,
+    width: 58,
   },
   videoIconImage: {
     tintColor: 'gray',
@@ -114,6 +114,7 @@ export default StyleSheet.create({
   coverPhotoText: {
     fontFamily: Fonts.type.montserrat,
     fontSize: 13,
+    fontWeight: '700',
   },
   iconButton: {
     backgroundColor: Colors.clear

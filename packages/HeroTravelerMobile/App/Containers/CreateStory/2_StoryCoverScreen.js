@@ -630,12 +630,12 @@ class StoryCoverScreen extends Component {
               style={[styles.addPhotoButton, buttonsOffset]}
               onPress={this._contentAddCover}
             >
-              <TabIcon name={'camera'} style={{
+              <TabIcon name='cameraDark' style={{
                 view: styles.cameraIcon,
                 image: styles.cameraIconImage,
               }} />
               <Text style={this.renderTextColor([styles.baseTextColor, styles.coverPhotoText])}>
-                + ADD COVER
+                + ADD COVER PHOTO OR VIDEO
               </Text>
             </TouchableOpacity>
           </View>
@@ -891,7 +891,7 @@ class StoryCoverScreen extends Component {
             </View>
             <TextInput
               style={[
-                this.renderTextColor(styles.titleInput),
+                styles.titleInput,
                 {height: this.state.titleHeight},
               ]}
               placeholder='ADD A TITLE'

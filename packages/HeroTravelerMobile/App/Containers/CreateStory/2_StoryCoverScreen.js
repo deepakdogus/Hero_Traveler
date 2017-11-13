@@ -667,34 +667,6 @@ class StoryCoverScreen extends Component {
             </TouchableWithoutFeedback>
           </View>
         }
-        <View style={styles.addTitleView}>
-          <TextInput
-            style={[
-              this.renderTextColor(styles.titleInput),
-              {height: this.state.titleHeight},
-            ]}
-            placeholder='ADD A TITLE'
-            placeholderTextColor={this.renderPlaceholderColor(Colors.background)}
-            value={this.state.title}
-            onChangeText={this.setTitleAndFocus}
-            onFocus={this.jumpToTitle}
-            returnKeyType='done'
-            maxLength={40}
-            multiline={true}
-            blurOnSubmit
-            onContentSizeChange={this.setTitleHeight}
-          />
-          <TextInput
-            style={this.renderTextColor(styles.subTitleInput)}
-            placeholder='Add a subtitle'
-            placeholderTextColor={this.renderPlaceholderColor(Colors.background)}
-            onChangeText={this.setDescriptionAndFocus}
-            onFocus={this.jumpToTitle}
-            value={this.state.description}
-            returnKeyType='done'
-            maxLength={50}
-          />
-        </View>
       </View>
     )
   }
@@ -917,10 +889,23 @@ class StoryCoverScreen extends Component {
               {this.isPhotoType() && this.renderCoverPhoto(this.state.coverImage)}
               {!this.isPhotoType() && this.renderCoverVideo(this.state.coverVideo)}
             </View>
+            <TextInput
+              style={[
+                this.renderTextColor(styles.titleInput),
+                {height: this.state.titleHeight},
+              ]}
+              placeholder='ADD A TITLE'
+              placeholderTextColor={Colors.background}
+              value={this.state.title}
+              onChangeText={this.setTitleAndFocus}
+              onFocus={this.jumpToTitle}
+              returnKeyType='done'
+              maxLength={40}
+              multiline={true}
+              blurOnSubmit
+              onContentSizeChange={this.setTitleHeight}
+            />
             <View style={styles.editorWrapper}>
-              <View style={styles.angleDownIcon}>
-                <Icon name='angle-down' size={20} color='#9e9e9e' />
-              </View>
               {this.renderEditor()}
             </View>
           {showTooltip && this.renderTooltip()}

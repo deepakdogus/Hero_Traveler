@@ -458,7 +458,7 @@ class ProfileView extends React.Component {
             style={[
               styles.buttons,
               styles.followButton,
-              this.props.isFollowing && styles.isFollowed
+              this.props.isFollowing && styles.unfollowButton
             ]}
             onPress={this.props.isFollowing ? this.props.onPressUnfollow : this.props.onPressFollow}>
             <Text style={styles.buttonsText}>{this.props.isFollowing ? 'FOLLOWING' : '+ FOLLOW'}</Text>

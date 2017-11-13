@@ -114,10 +114,13 @@ export default StyleSheet.create({
   },
   followButton: {
     width: 110,
-    marginRight: Metrics.baseMargin
+    borderColor: Colors.redHighlights,
+    backgroundColor: Colors.snow,
+    marginBottom: 0,
   },
-  isFollowed: {
-    backgroundColor: 'rgba(255,255,255,.4)'
+  unfollowButton: {
+    backgroundColor: 'rgba(255,255,255,.4)',
+    borderColor: Colors.background,
   },
   messageButton: {
     width: 110,
@@ -129,6 +132,14 @@ export default StyleSheet.create({
     color: Colors.snow,
     lineHeight: 28,
     textAlign: 'center'
+  },
+  followText: {
+    fontWeight: '600',
+    fontSize: 13,
+    color: Colors.redHighlights,
+  },
+  unfollowText: {
+    color: Colors.background
   },
   cameraIcon: {
     textAlign: 'center',

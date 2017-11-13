@@ -12,6 +12,7 @@ import formatCount from '../Shared/Lib/formatCount'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import { Metrics } from '../Shared/Themes'
 import styles from './Styles/StoryPreviewStyle'
+import profileViewStyles from './Styles/ProfileViewStyles'
 import LikesComponent from './LikeComponent'
 import TrashCan from '../Components/TrashCan'
 import Avatar from './Avatar'
@@ -30,8 +31,7 @@ export default class StoryPreview extends Component {
     showLike: PropTypes.bool,
     autoPlayVideo: PropTypes.bool,
     allowVideoPlay: PropTypes.bool,
-    // using showReadMessage as proxy for story reading page
-    showReadMessage: PropTypes.bool,
+    isStoryReadingScreen: PropTypes.bool,
     gradientColors: PropTypes.arrayOf(PropTypes.string),
     isContentVisible: PropTypes.bool,
   }
@@ -39,7 +39,7 @@ export default class StoryPreview extends Component {
   static defaultProps = {
     isContentVisible: true,
     showLike: true,
-    showReadMessage: false,
+    isStoryReadingScreen: false,
   }
 
   _touchEdit = () => {
@@ -69,25 +69,53 @@ export default class StoryPreview extends Component {
     }
   }
 
-  renderTopSection() {
-    const {user, story} = this.props
+  _onPressFollow = () => {
+    this.props.onPressFollow(this.props.user.id)
+  }
 
+  _onPressUnfollow = () => {
+    this.props.onPressUnfollow(this.props.user.id)
+  }
+
+  renderUserSection() {
+    const {user, story, isStoryReadingScreen} = this.props
+    const isFollowing = _.includes(this.props.myFollowedUsers, user.id)
     return (
       <View style={[styles.storyInfoContainer, styles.verticalCenter, styles.topContainer]}>
-        <View style={styles.topContent}>
-          <TouchableOpacity onPress={this._touchUser}>
-            <Avatar
-              size={'extraSmall'}
-              style={styles.avatar}
-              avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
-            />
-          </TouchableOpacity>
-          <View style={styles.verticalCenter}>
+        <View style={styles.userContent}>
+
+          <View style={styles.leftUserContent}>
             <TouchableOpacity onPress={this._touchUser}>
-              <Text style={styles.topUsername}>{user.username}</Text>
+              <Avatar
+                size={'extraSmall'}
+                style={styles.avatar}
+                avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
+              />
             </TouchableOpacity>
-            <Text style={styles.topDateText}>{moment(story.createdAt).format('LL')}</Text>
+            <View style={styles.verticalCenter}>
+              <TouchableOpacity onPress={this._touchUser}>
+                <Text style={styles.topUsername}>{user.username}</Text>
+              </TouchableOpacity>
+              <Text style={styles.topDateText}>{moment(story.createdAt).format('LL')}</Text>
+            </View>
           </View>
+          { isStoryReadingScreen &&
+          <TouchableOpacity
+            style={[
+              profileViewStyles.buttons,
+              profileViewStyles.followButton,
+              isFollowing && profileViewStyles.unfollowButton
+            ]}
+            onPress={isFollowing ? this._onPressUnfollow : this._onPressFollow}>
+            <Text style={[
+                profileViewStyles.buttonsText,
+                isFollowing ? profileViewStyles.unfollowText: profileViewStyles.followText
+              ]}
+            >
+              {isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
+            </Text>
+          </TouchableOpacity>
+          }
         </View>
       </View>
     )
@@ -138,7 +166,7 @@ export default class StoryPreview extends Component {
         {this.props.forProfile && this.props.editable &&
           <TrashCan touchTrash={this._touchTrash} touchEdit={this._touchEdit} />
         }
-        {!this.props.showReadMessage && this.renderTopSection()}
+        {!this.props.isStoryReadingScreen && this.renderUserSection()}
         <StoryCover
           autoPlayVideo={this.props.autoPlayVideo}
           allowVideoPlay={this.props.allowVideoPlay}
@@ -150,7 +178,7 @@ export default class StoryPreview extends Component {
           showPlayButton={this.props.showPlayButton}
           playButtonSize={playButtonSize}
         />
-        {this.props.showReadMessage && this.renderTopSection()}
+        {this.props.isStoryReadingScreen && this.renderUserSection()}
         {this.renderBottomSection()}
       </View>
     )

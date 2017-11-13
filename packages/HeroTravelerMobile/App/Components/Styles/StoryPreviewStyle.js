@@ -51,8 +51,9 @@ export default StyleSheet.create({
   },
   userContent: {
     flexDirection: 'row',
+    justifyContent: 'space-between'
   },
-  topContent: {
+  leftUserContent: {
     flexDirection: 'row',
   },
   verticalCenter: {

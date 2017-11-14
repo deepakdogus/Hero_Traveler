@@ -1,3 +1,4 @@
-export default function(targetWidth, cover){
-  return targetWidth / cover.original.meta.width * cover.original.meta.height
+export default function(targetWidth, imageMetrics){
+  if (!targetWidth || !imageMetrics.width || !imageMetrics.height) return
+  return targetWidth / imageMetrics.width * imageMetrics.height
 }

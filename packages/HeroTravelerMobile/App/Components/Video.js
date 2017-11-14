@@ -223,6 +223,12 @@ export default class VideoPlayer extends React.Component {
     if (!this.state.hasStarted) this.setState({hasStarted: true})
   }
 
+  // currently only need for new cover videos
+  _onLoad = (event) => {
+    if (!this.props.onLoad) return
+    this.props.onLoad(event.naturalSize)
+  }
+
   render() {
     const playButtonSize = this.props.playButtonSize
     return (
@@ -250,6 +256,7 @@ export default class VideoPlayer extends React.Component {
           ]}
           repeat={true}
           onProgress={this.setStarted}
+          onLoad={this._onLoad}
           resizeMode={this.props.resizeMode}
         />
         {this.props.showPlayButton &&

@@ -61,7 +61,7 @@ export default class StoryCover extends Component {
   _getWidthHeight(){
     return {
       width: Metrics.screenWidth,
-      height: getRelativeHeight(Metrics.screenWidth, this.props.cover)
+      height: getRelativeHeight(Metrics.screenWidth, this.props.cover.original.meta)
     }
   }
 

@@ -278,7 +278,6 @@ class StoryCoverScreen extends Component {
         <View style={styles.coverVideo}>
           <Video
             path={coverVideo}
-            resizeMode='cover'
             allowVideoPlay={false}
             autoPlayVideo={false}
             showPlayButton={false}
@@ -852,10 +851,11 @@ class StoryCoverScreen extends Component {
         this.props.user.introTooltips
       )
     }
-    if (this.scrollViewRef && this.state.isScrollDown) {
-     this.setState({isScrollDown: false})
-     this.scrollViewRef.scrollTo({x: 0, y: 0, animated: true})
-    }
+    // if (this.scrollViewRef && this.state.isScrollDown) {
+    //  this.setState({isScrollDown: false})
+    //  this.scrollViewRef.scrollTo({x: 0, y: 0, animated: true})
+    // }
+
     const {coverImage, coverVideo, coverHeight, error} = this.state
     console.log("this.state.coverHeight")
     return (

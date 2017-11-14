@@ -69,13 +69,8 @@ class Header extends React.Component {
     const user = usersExample['59d50b1c33aaac0010ef4b3f']
     return (
       <SelectedGrid fluid>
-        {isLoggedIn? <HeaderLoggedIn
-                         openModal={this.openModal}
-                     /> :
-                     <HeaderAnonymous
-                         openLoginModal={this.openLoginModal}
-                     />
-        }
+        {isLoggedIn && <HeaderLoggedIn openModal={this.openModal}/>}
+        {!isLoggedIn && <HeaderAnonymous openLoginModal={this.openLoginModal}/>}
         <HeaderModals
             closeModal={this.closeModal}
             openSignupModal={this.openSignupModal}
@@ -90,7 +85,7 @@ class Header extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const pathname = state.routes.location.pathname
+  const pathname = state.routes.location ? state.routes.location.pathname : ''
   return {
     isLoggedIn: state.login.isLoggedIn,
     blackHeader: (pathname === '/' || pathname === '/feed') ? false : true

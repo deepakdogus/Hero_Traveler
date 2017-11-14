@@ -18,6 +18,12 @@ export default class Image extends Component {
     if (!this.hasStyleMetrics()) this._setImageSize(this.props.source.uri)
   }
 
+  componentWillReceiveProps(nextProps){
+    if (!this.hasStyleMetrics() && this.props.source.uri !== nextProps.source.uri) {
+      this._setImageSize(nextProps.source.uri)
+    }
+  }
+
   hasStyleMetrics(){
     const {style} = this.props
     return style && style.height && style.width
@@ -43,7 +49,7 @@ export default class Image extends Component {
   }
 
   render () {
-    const {cached, fullWidth, ...imageProps} = this.props
+    const {cached, fullWidth, setCoverHeight, ...imageProps} = this.props
     const BaseComponent = cached ? CachedImage : RNImage
 
     if (this.props.resizeMode) {
@@ -57,6 +63,7 @@ export default class Image extends Component {
       imageProps.style.width = Metrics.screenWidth
       imageProps.style.height = getRelativeHeight(Metrics.screenWidth, this.state)
     }
+    if (setCoverHeight && this.state.width && this.state.width) setCoverHeight(this.state)
 
     return (
       <BaseComponent {...imageProps} />

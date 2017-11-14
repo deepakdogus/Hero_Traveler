@@ -8,7 +8,6 @@ import {
   Animated,
   View,
   KeyboardAvoidingView,
-  Image,
   Alert,
   TextInput,
   ScrollView,
@@ -30,6 +29,7 @@ import NavBar from './NavBar'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import getVideoUrl from '../../Shared/Lib/getVideoUrl'
 import getRelativeHeight from '../../Shared/Lib/getRelativeHeight'
+import Image from '../../Components/Image'
 import Video from '../../Components/Video'
 import pathAsFileObject from '../../Shared/Lib/pathAsFileObject'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTimeTooltips'
@@ -258,6 +258,7 @@ class StoryCoverScreen extends Component {
           source={{uri: coverPhoto}}
           style={styles.coverPhoto}
           resizeMode='cover'
+          setCoverHeight={this.setCoverHeight}
         >
           <LinearGradient
             colors={['rgba(0,0,0,.4)', 'rgba(0,0,0,.4)']}
@@ -281,7 +282,7 @@ class StoryCoverScreen extends Component {
             allowVideoPlay={false}
             autoPlayVideo={false}
             showPlayButton={false}
-            onLoad={this.setVideoCoverHeight}
+            onLoad={this.setCoverHeight}
           />
           {this.renderContent()}
         </View>
@@ -951,8 +952,9 @@ class StoryCoverScreen extends Component {
     )
   }
 
-  setVideoCoverHeight = (videoMetrics) => {
-    const newCoverHeight = getRelativeHeight(Metrics.screenWidth, videoMetrics)
+  // used to setCoverHeight for video addition + photo capture
+  setCoverHeight = (coverMetrics) => {
+    const newCoverHeight = getRelativeHeight(Metrics.screenWidth, coverMetrics)
     if (newCoverHeight !== this.state.coverHeight) this.setState({coverHeight: newCoverHeight})
   }
 

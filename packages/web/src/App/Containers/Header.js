@@ -1,53 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import Modal from 'react-modal'
 import { connect } from 'react-redux'
 
 import { Grid } from '../Components/FlexboxGrid'
 import HeaderAnonymous from '../Components/Headers/HeaderAnonymous'
 import HeaderLoggedIn from '../Components/Headers/HeaderLoggedIn'
-import Login from '../Components/Modals/HeaderModals/Login'
-import Signup from '../Components/Modals/HeaderModals/Signup'
-import ResetPassword from '../Components/Modals/HeaderModals/ResetPassword'
-import Contributor from '../Components/Modals/HeaderModals/Contributor'
-import AddToItinerary from '../Components/Modals/HeaderModals/AddToItinerary'
-import Inbox from '../Components/Modals/Inbox'
-import RightModal from '../Components/RightModal'
-import NotificationsThread from '../Components/Modals/NotificationsThread'
-import {usersExample} from './Feed_TEST_DATA'
 import LoginActions from '../Shared/Redux/LoginRedux'
-
-const customModalStyles = {
-  content: {
-    width: 420,
-    margin: 'auto',
-  },
-  overlay: {
-    backgroundColor: 'rgba(0,0,0, .5)',
-    zIndex: 100,
-  }
-}
-
-const contributorModalStyles = {
-  content: {
-    width: 380,
-    margin: 'auto',
-  },
-  overlay: {
-    backgroundColor: 'rgba(0,0,0, .5)'
-  }
-}
-
-const addToItineraryModalStyles = {
-  content: {
-    width: 600,
-    margin: 'auto',
-  },
-  overlay: {
-    backgroundColor: 'rgba(0,0,0, .5)'
-  }
-}
+import HeaderModals from '../Components/HeaderModals'
+import {usersExample} from './Feed_TEST_DATA'
 
 const StyledGrid = styled(Grid)`
   padding: 15px;
@@ -62,8 +23,6 @@ const StyledGrid = styled(Grid)`
 const StyledGridBlack = styled(StyledGrid)`
   background-color: ${props => props.theme.Colors.background}
 `
-// Likely refactor this out into its own component later with &nbsp; included
-
 
 class Header extends React.Component {
   static propTypes = {
@@ -106,7 +65,6 @@ class Header extends React.Component {
 
   render () {
     const {isLoggedIn, attemptLogin} = this.props
-    // quick fix to get this merge in - need to refactor accordingly (part of header refactor)
     const SelectedGrid = this.props.blackHeader ? StyledGridBlack : StyledGrid
     const user = usersExample['59d50b1c33aaac0010ef4b3f']
     return (
@@ -118,65 +76,16 @@ class Header extends React.Component {
                          openLoginModal={this.openLoginModal}
                      />
         }
-        <Modal
-          isOpen={this.state.modal === 'login'}
-          contentLabel="Login Modal"
-          onRequestClose={this.closeModal}
-          style={customModalStyles}
-        >
-          <Login
-            onSignupClick={this.openSignupModal}
-            onAttemptLogin={attemptLogin}
-          />
-        </Modal>
-        <Modal
-          isOpen={this.state.modal === 'signup'}
-          contentLabel="Signup Modal"
-          onRequestClose={this.closeModal}
-          style={customModalStyles}
-        >
-          <Signup onLoginClick={this.openLoginModal}/>
-        </Modal>
-        <Modal
-          isOpen={this.state.modal === 'resetPassword'}
-          contentLabel="Reset Password Modal"
-          onRequestClose={this.closeModal}
-          style={customModalStyles}
-        >
-          <ResetPassword/>
-        </Modal>
-        <Modal
-          isOpen={this.state.modal === 'contributor'}
-          contentLabel="Reset Password Modal"
-          onRequestClose={this.closeModal}
-          style={contributorModalStyles}
-        >
-          <Contributor/>
-        </Modal>
-        <Modal
-          isOpen={this.state.modal === 'addToItinerary'}
-          contentLabel="Add To Itinerary Modal"
-          onRequestClose={this.closeModal}
-          style={addToItineraryModalStyles}
-        >
-          <AddToItinerary/>
-        </Modal>
-        <RightModal
-          isOpen={this.state.modal === 'notificationsThread'}
-          contentLabel='Notifications Thread'
-          onRequestClose={this.closeModal}
-        >
-          <NotificationsThread closeModal={this.closeModal} profile={user}/>
-        </RightModal>
-        <RightModal
-          isOpen={this.state.modal === 'inbox'}
-          contentLabel='Inbox'
-          onRequestClose={this.closeModal}
-        >
-          <Inbox closeModal={this.closeModal} profile={user}/>
-        </RightModal>
-      </SelectedGrid>
-    )
+        <HeaderModals
+            closeModal={this.closeModal}
+            openSignupModal={this.openSignupModal}
+            attemptLogin={attemptLogin}
+            openLoginModal={this.openLoginModal}
+            user={user}
+            modal={this.state.modal}
+        />
+    </SelectedGrid>
+  )
   }
 }
 

@@ -6,7 +6,7 @@ import { mediaMax, mediaMin } from '../ContentLayout.component'
 import Avatar from '../Avatar'
 import RoundedButton from '../RoundedButton'
 import Icon from '../Icon'
-import { StyledRow, StyledRoundedButton, SearchIcon, Logo, Divider, HamburgerIcon, MenuLink, SearchNav } from './Shared'
+import { StyledRow, StyledRoundedButton, Logo, Divider, HamburgerIcon, MenuLink, SearchNav } from './Shared'
 import logo from '../../Shared/Images/ht-logo-white.png'
 
 const LoggedInDesktopContainer = styled.div`

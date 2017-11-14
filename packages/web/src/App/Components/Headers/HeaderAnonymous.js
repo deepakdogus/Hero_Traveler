@@ -1,8 +1,7 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
 import logo from '../../Shared/Images/ht-logo-white.png'
 import { Row, Col } from '../FlexboxGrid'
-import { StyledRow, StyledRoundedButton, StyledRoundedLoginButton, SearchIcon, LoginLink, Logo, Divider, HamburgerIcon, SearchNav } from './Shared'
+import { StyledRow, StyledRoundedLoginButton, LoginLink, Logo, Divider, HamburgerIcon, SearchNav } from './Shared'
 
 export default class LoggedInHeader extends React.Component {
   render () {

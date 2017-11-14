@@ -4,17 +4,23 @@ import {Image as RNImage} from 'react-native'
 import {CachedImage} from 'react-native-img-cache'
 import getResizeMode from '../Shared/Lib/getResizeMode'
 import Metrics from '../Themes/Metrics'
+import getRelativeHeight from '../Shared/Lib/getRelativeHeight'
 
 export default class Image extends Component {
   constructor(props){
     super(props)
     this.state = {
-      imageUrl: this.props.source,
+      imageUrl: props.source,
     }
   }
 
   componentWillMount(){
-    this._setImageSize(this.props.source.uri)
+    if (!this.hasStyleMetrics()) this._setImageSize(this.props.source.uri)
+  }
+
+  hasStyleMetrics(){
+    const {style} = this.props
+    return style && style.height && style.width
   }
 
   _setImageSize(imageUrl) {
@@ -46,10 +52,10 @@ export default class Image extends Component {
       imageProps.resizeMode = getResizeMode(this.state)
     }
 
-    if (fullWidth) {
+    if (fullWidth && !this.hasStyleMetrics()) {
       imageProps.style = imageProps.style || {}
       imageProps.style.width = Metrics.screenWidth
-      imageProps.style.height = Metrics.screenWidth / this.state.width * this.state.height
+      imageProps.style.height = getRelativeHeight(Metrics.screenWidth, this.state)
     }
     return (
       <BaseComponent {...imageProps} />

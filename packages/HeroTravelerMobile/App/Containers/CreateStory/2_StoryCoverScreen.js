@@ -846,7 +846,6 @@ class StoryCoverScreen extends Component {
     //  this.scrollViewRef.scrollTo({x: 0, y: 200, animated: true})
     //}
 
-    console.log("this.state is", this.state)
     return (
       <View style={styles.root}>
         <ScrollView

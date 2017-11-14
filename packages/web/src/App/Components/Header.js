@@ -181,8 +181,10 @@ class Header extends React.Component {
 }
 
 function mapStateToProps(state) {
+  const pathname = state.routes.location.pathname
   return {
     isLoggedIn: state.login.isLoggedIn,
+    blackHeader: (pathname === '/' || pathname === '/feed') ? false : true
   }
 }
 

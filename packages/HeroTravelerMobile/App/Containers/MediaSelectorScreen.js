@@ -292,7 +292,11 @@ class MediaSelectorScreen extends React.Component {
 
     this.setState({
       mediaCaptured: false,
-      media: data.uri
+      media: data.uri,
+      mediaMetrics: {
+        height: data.height,
+        width: data.width,
+      }
     })
   }
 
@@ -306,7 +310,7 @@ class MediaSelectorScreen extends React.Component {
   _onNext = () => {
     if (this.state.media) {
       const isPhotoType = this.getMediaType() === 'photo'
-      this.props.onSelectMedia(this.state.media, isPhotoType)
+      this.props.onSelectMedia(this.state.media, isPhotoType, this.state.mediaMetrics)
     }
   }
 }

@@ -130,9 +130,6 @@ export default StyleSheet.create({
     left: 0,
     right: 0,
   },
-  coverWrapperHeight: {
-    height: Metrics.screenHeight / 2,
-  },
   angleDownIcon: {
     height: 20,
     alignItems: 'center',

@@ -29,6 +29,7 @@ import styles, {customStyles, modalWrapperStyles} from './2_StoryCoverScreenStyl
 import NavBar from './NavBar'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import getVideoUrl from '../../Shared/Lib/getVideoUrl'
+import getRelativeHeight from '../../Shared/Lib/getRelativeHeight'
 import Video from '../../Components/Video'
 import pathAsFileObject from '../../Shared/Lib/pathAsFileObject'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTimeTooltips'
@@ -47,6 +48,8 @@ const MediaTypes = {
   video: 'video',
   photo: 'photo',
 }
+
+const defaultCoverHeight = Metrics.screenHeight / 2
 
 class StoryCoverScreen extends Component {
 
@@ -69,7 +72,7 @@ class StoryCoverScreen extends Component {
     mediaType: MediaTypes.photo,
     story: {},
     navigatedFromProfile: false,
-    shouldLoadStory: true
+    shouldLoadStory: true,
   }
 
   constructor(props) {
@@ -77,6 +80,10 @@ class StoryCoverScreen extends Component {
     this.timeout = null
     const coverImage = getImageUrl(props.story.coverImage)
     const coverVideo = getVideoUrl(props.story.coverVideo)
+    let coverHeight
+    const cover = props.story.coverImage || props.story.coverVideo
+    if (cover) coverHeight = getRelativeHeight(Metrics.screenWidth, cover.original.meta)
+
     this.state = {
       imageMenuOpen: false,
       file: null,
@@ -88,6 +95,7 @@ class StoryCoverScreen extends Component {
       coverImage,
       // Local file path to the video
       coverVideo,
+      coverHeight: coverHeight || defaultCoverHeight,
       toolbarOpacity: new Animated.Value(1),
       imageUploading: false,
       videoUploading: false,
@@ -619,6 +627,7 @@ class StoryCoverScreen extends Component {
   }
 
   renderContent () {
+    const {coverHeight, imageMenuOpen, toolbarOpacity} = this.state
     // offset so that the buttons are visible when the keyboard + toolbar are open
     const buttonsOffset = (this.toolbar && this.state.toolbarDisplay) ? {top: 75} : null
     return (
@@ -639,16 +648,16 @@ class StoryCoverScreen extends Component {
             </TouchableOpacity>
           </View>
         }
-        {!this.hasNoCover() && !this.state.imageMenuOpen &&
+        {!this.hasNoCover() && !imageMenuOpen &&
           <TouchableWithoutFeedback onPress={this._toggleImageMenu}>
-            <View style={styles.coverWrapperHeight}/>
+            <View style={{height: coverHeight }}/>
           </TouchableWithoutFeedback>
         }
-        {!this.hasNoCover() && this.state.imageMenuOpen &&
+        {!this.hasNoCover() && imageMenuOpen &&
             <TouchableWithoutFeedback onPress={this._toggleImageMenu}>
               <Animated.View style={[
                 styles.imageMenuView,
-                {opacity: this.state.toolbarOpacity}
+                {opacity: toolbarOpacity}
               ]}>
                 <TouchableOpacity
                   onPress={this._touchChangeCover}
@@ -828,7 +837,9 @@ class StoryCoverScreen extends Component {
   onContentSizeChange = (contentWidth, contentHeight) => {
     const diff = contentHeight - this.contentHeight
     if (this.scrollViewRef) {
-      this.scrollViewRef.scrollTo({x:0, y: this.YOffset + diff, amimated: true})
+      // adding the math.max to account for sizeChange when we add a coverPhoto that is less
+      // tall than default size. This prevents scrolling to negative and displaying white
+      this.scrollViewRef.scrollTo({x:0, y: Math.max(this.YOffset + diff, 5), amimated: true})
     }
     this.contentHeight = contentHeight
   }
@@ -841,11 +852,12 @@ class StoryCoverScreen extends Component {
         this.props.user.introTooltips
       )
     }
-    //if (this.scrollViewRef && this.state.isScrollDown) {
-    //  this.setState({isScrollDown: false})
-    //  this.scrollViewRef.scrollTo({x: 0, y: 200, animated: true})
-    //}
-
+    if (this.scrollViewRef && this.state.isScrollDown) {
+     this.setState({isScrollDown: false})
+     this.scrollViewRef.scrollTo({x: 0, y: 0, animated: true})
+    }
+    const {coverImage, coverVideo, coverHeight, error} = this.state
+    console.log("this.state.coverHeight")
     return (
       <View style={styles.root}>
         <ScrollView
@@ -871,15 +883,15 @@ class StoryCoverScreen extends Component {
             }}
           />
           <KeyboardAvoidingView behavior='position'>
-            <View style={styles.coverWrapperHeight}>
-              {this.state.error &&
+            <View style={{height: coverHeight }}>
+              {error &&
                 <ShadowButton
                   style={styles.errorButton}
                   onPress={this._touchError}
-                  text={this.state.error} />
+                  text={error} />
               }
-              {this.isPhotoType() && this.renderCoverPhoto(this.state.coverImage)}
-              {!this.isPhotoType() && this.renderCoverVideo(this.state.coverVideo)}
+              {this.isPhotoType() && this.renderCoverPhoto(coverImage)}
+              {!this.isPhotoType() && this.renderCoverVideo(coverVideo)}
             </View>
             <TextInput
               style={[
@@ -938,15 +950,18 @@ class StoryCoverScreen extends Component {
     )
   }
 
-  _handleSelectCover = (path, isPhotoType) => {
+  _handleSelectCover = (path, isPhotoType, coverMetrics = {}) => {
     const file = pathAsFileObject(path)
     const updatedState = {file}
+
     if (isPhotoType) {
       updatedState.isScrollDown = true
       updatedState.coverImage = path
     } else {
       updatedState.coverVideo = path
     }
+
+    updatedState.coverHeight = getRelativeHeight(Metrics.screenWidth, coverMetrics) || defaultCoverHeight
     this.setState(updatedState, () => {
       NavActions.pop()
     })

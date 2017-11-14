@@ -57,6 +57,7 @@ export default class Image extends Component {
       imageProps.style.width = Metrics.screenWidth
       imageProps.style.height = getRelativeHeight(Metrics.screenWidth, this.state)
     }
+
     return (
       <BaseComponent {...imageProps} />
     )

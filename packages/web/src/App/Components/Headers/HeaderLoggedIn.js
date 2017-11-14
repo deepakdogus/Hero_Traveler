@@ -36,6 +36,7 @@ const StyledRoundedAvatarButton = styled(RoundedButton)`
 
 export default class HeaderLoggedIn extends React.Component {
   render () {
+    const { openModal, user } = this.props
     return (
         <StyledRow around="xs" middle="xs">
           <Col>
@@ -70,7 +71,7 @@ export default class HeaderLoggedIn extends React.Component {
                   height='32px'
                   width='32px'
                   name='inbox'
-                  onClick={this.props.openModal}
+                  onClick={openModal}
                 >
                   <MailIcon
                     name='loginEmail'
@@ -81,12 +82,12 @@ export default class HeaderLoggedIn extends React.Component {
                   height='32px'
                   width='32px'
                   name='notifications'
-                  onClick={this.props.openModal}
+                  onClick={openModal}
                 >
                   <NotificationsIcon name='cameraFlash' />
                 </StyledRoundedButton>
                 <NavLink
-                  to='/profile/59d50b1c33aaac0010ef4b3f'
+                  to={`/profile/${user}`}
                 >
                   <StyledRoundedAvatarButton
                     type='headerButton'
@@ -106,7 +107,7 @@ export default class HeaderLoggedIn extends React.Component {
               </LoggedInTabletContainer>
               <HamburgerIcon
                   name='hamburger'
-                  onClick={this.props.openModal}
+                  onClick={openModal}
               />
             </Row>
           </Col>

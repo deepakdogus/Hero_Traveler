@@ -8,7 +8,6 @@ import HeaderAnonymous from '../Components/Headers/HeaderAnonymous'
 import HeaderLoggedIn from '../Components/Headers/HeaderLoggedIn'
 import LoginActions from '../Shared/Redux/LoginRedux'
 import HeaderModals from '../Components/HeaderModals'
-import {usersExample} from './Feed_TEST_DATA'
 
 const StyledGrid = styled(Grid)`
   padding: 15px;
@@ -64,19 +63,25 @@ class Header extends React.Component {
   }
 
   render () {
-    const {isLoggedIn, attemptLogin} = this.props
+    const {isLoggedIn, attemptLogin, currentUser} = this.props
     const SelectedGrid = this.props.blackHeader ? StyledGridBlack : StyledGrid
-    const user = usersExample['59d50b1c33aaac0010ef4b3f']
     return (
       <SelectedGrid fluid>
-        {isLoggedIn && <HeaderLoggedIn openModal={this.openModal}/>}
-        {!isLoggedIn && <HeaderAnonymous openLoginModal={this.openLoginModal}/>}
+        {isLoggedIn && <HeaderLoggedIn
+                           user={currentUser}
+                           openModal={this.openModal}
+                       />
+        }
+        {!isLoggedIn && <HeaderAnonymous
+                           openLoginModal={this.openLoginModal}
+                        />
+        }
         <HeaderModals
             closeModal={this.closeModal}
             openSignupModal={this.openSignupModal}
             attemptLogin={attemptLogin}
             openLoginModal={this.openLoginModal}
-            user={user}
+            user={currentUser}
             modal={this.state.modal}
         />
     </SelectedGrid>
@@ -88,7 +93,8 @@ function mapStateToProps(state) {
   const pathname = state.routes.location ? state.routes.location.pathname : ''
   return {
     isLoggedIn: state.login.isLoggedIn,
-    blackHeader: (pathname === '/' || pathname === '/feed') ? false : true
+    blackHeader: (pathname === '/' || pathname === '/feed') ? false : true,
+    currentUser: state.session.userId
   }
 }
 

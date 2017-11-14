@@ -15,7 +15,7 @@ import AddToItinerary from '../Components/Headers/HeaderModals/AddToItinerary'
 import Inbox from '../Components/Modals/Inbox'
 import RightModal from '../Components/RightModal'
 import NotificationsThread from '../Components/Modals/NotificationsThread'
-import {usersExample} from '.Feed_TEST_DATA'
+import {usersExample} from './Feed_TEST_DATA'
 import LoginActions from '../Shared/Redux/LoginRedux'
 
 const customModalStyles = {

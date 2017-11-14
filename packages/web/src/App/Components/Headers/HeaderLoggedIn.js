@@ -6,7 +6,7 @@ import { mediaMax, mediaMin } from '../ContentLayout.component'
 import Avatar from '../Avatar'
 import RoundedButton from '../RoundedButton'
 import Icon from '../Icon'
-import { StyledRow, StyledRoundedButton, SearchIcon, Logo, Divider, HamburgerIcon, MenuLink } from './Shared'
+import { StyledRow, StyledRoundedButton, SearchIcon, Logo, Divider, HamburgerIcon, MenuLink, SearchNav } from './Shared'
 import logo from '../../Shared/Images/ht-logo-white.png'
 
 const LoggedInDesktopContainer = styled.div`
@@ -57,19 +57,7 @@ export default class HeaderLoggedIn extends React.Component {
           </LoggedInDesktopContainer>
           <Col smOffset={2} lg={5}>
             <Row end='xs' middle='xs'>
-              <NavLink
-                to='/search'
-              >
-                <StyledRoundedButton
-                  type='headerButton'
-                  height='32px'
-                  width='32px'
-                >
-                  <SearchIcon
-                    name='explore'
-                  />
-                </StyledRoundedButton>
-              </NavLink>
+              <SearchNav />
               <Divider>&nbsp;</Divider>
               <LoggedInDesktopContainer>
                 <NavLink

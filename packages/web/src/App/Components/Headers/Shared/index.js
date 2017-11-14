@@ -83,3 +83,21 @@ export const MenuLink = (props) => {
       </NavLink>
   )
 }
+
+export const SearchNav = () => {
+  return (
+    <NavLink
+      to='/search'
+    >
+      <StyledRoundedButton
+        type='headerButton'
+        height='32px'
+        width='32px'
+      >
+      <SearchIcon
+        name='explore'
+      />
+      </StyledRoundedButton>
+    </NavLink>
+  )
+}

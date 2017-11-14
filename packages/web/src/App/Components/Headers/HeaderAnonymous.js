@@ -2,7 +2,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import logo from '../../Shared/Images/ht-logo-white.png'
 import { Row, Col } from '../FlexboxGrid'
-import { StyledRow, StyledRoundedButton, StyledRoundedLoginButton, SearchIcon, LoginLink, Logo, Divider, HamburgerIcon } from './Shared'
+import { StyledRow, StyledRoundedButton, StyledRoundedLoginButton, SearchIcon, LoginLink, Logo, Divider, HamburgerIcon, SearchNav } from './Shared'
 
 export default class LoggedInHeader extends React.Component {
   render () {
@@ -15,19 +15,7 @@ export default class LoggedInHeader extends React.Component {
           </Col>
           <Col>
             <Row around='xs' middle='xs'>
-              <NavLink
-                to='/search'
-              >
-                <StyledRoundedButton
-                  type='headerButton'
-                  height='32px'
-                  width='32px'
-                >
-                  <SearchIcon
-                    name='explore'
-                  />
-                </StyledRoundedButton>
-              </NavLink>
+              <SearchNav />
               <Divider>&nbsp;</Divider>
               <LoginLink
                   onClick={this.props.openLoginModal}

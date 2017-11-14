@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import Header from './Header'
 import HeaderImageWrapper from './HeaderImageWrapper'
 import VerticalCenter from './VerticalCenter'
 import HorizontalDivider from './HorizontalDivider'
@@ -71,7 +70,6 @@ export default class CategoryHeader extends React.Component {
         size='large'
       >
         <HeaderTopGradient/>
-        <Header isLoggedIn></Header>
         <Centered>
           <CategoryTitle>{category.title}</CategoryTitle>
           <StyledHorizontalDivider />

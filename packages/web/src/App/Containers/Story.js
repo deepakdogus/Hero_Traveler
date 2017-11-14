@@ -6,7 +6,6 @@ import PropTypes from 'prop-types'
 import {feedExample} from './Feed_TEST_DATA'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 
-import Header from '../Components/Header'
 import StoryHeader from '../Components/StoryHeader'
 import StoryContentRenderer from '../Components/StoryContentRenderer'
 import GMap from '../Components/GoogleMap'
@@ -49,7 +48,6 @@ class Story extends Component {
     })
     return (
       <ContentWrapper>
-        <Header isLoggedIn></Header>
         <StoryHeader story={story} author={author}/>
         <LimitedWidthContainer>
           <StoryContentRenderer story={story} />

@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import Header from './Header'
 import HeaderImageWrapper from './HeaderImageWrapper'
 import FeedCarousel from './FeedCarousel'
 import HeaderTopGradient from './Headers/Shared/HeaderTopGradient'
@@ -44,7 +43,6 @@ export default class FeedHeader extends React.Component {
         type='story'
       >
         <HeaderTopGradient/>
-        <Header isLoggedIn></Header>
         <FeedCarousel>
           {this.renderSlides(this.props.stories)}
         </FeedCarousel>

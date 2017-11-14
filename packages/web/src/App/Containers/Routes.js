@@ -14,12 +14,13 @@ import CreateStoryNew from './CreateStoryNew'
 import SignupSocial from './Signup/SignupSocial'
 import SignupTopics from './Signup/SignupTopics'
 import Profile from './Profile'
-
+import Header from '../Components/Header'
 
 class AppRoot extends Component {
   render() {
     return (
       <div>
+        <Header />
         <Session />
         <Route exact path='/' component={Explore} />
         <Route exact path='/category/:categoryId' component={Category} />

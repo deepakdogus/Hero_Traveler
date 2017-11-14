@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Modal from 'react-modal'
 
-import Header from '../Header'
 import HeaderImageWrapper from '../Headers/Shared/HeaderImageWrapper'
 import RightModal from '../RightModal'
 import CenterModal from '../CenterModal'
@@ -77,7 +76,6 @@ export default class ProfileHeader extends React.Component {
         size='large'
         type='profile'
       >
-        <Header isLoggedIn></Header>
         {isEdit && <ProfileHeaderEdit {...this.props}/>}
         {!isEdit &&
           <ProfileHeaderView

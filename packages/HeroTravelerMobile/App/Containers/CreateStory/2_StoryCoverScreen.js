@@ -281,6 +281,7 @@ class StoryCoverScreen extends Component {
             allowVideoPlay={false}
             autoPlayVideo={false}
             showPlayButton={false}
+            onLoad={this.setVideoCoverHeight}
           />
           {this.renderContent()}
         </View>
@@ -844,6 +845,8 @@ class StoryCoverScreen extends Component {
   }
 
   render () {
+    const {coverImage, coverVideo, coverHeight, error} = this.state
+
     let showTooltip = false;
     if (this.props.user && this.state.file) {
       showTooltip = !isTooltipComplete(
@@ -856,8 +859,6 @@ class StoryCoverScreen extends Component {
     //  this.scrollViewRef.scrollTo({x: 0, y: 0, animated: true})
     // }
 
-    const {coverImage, coverVideo, coverHeight, error} = this.state
-    console.log("this.state.coverHeight")
     return (
       <View style={styles.root}>
         <ScrollView
@@ -948,6 +949,11 @@ class StoryCoverScreen extends Component {
         }
       </View>
     )
+  }
+
+  setVideoCoverHeight = (videoMetrics) => {
+    const newCoverHeight = getRelativeHeight(Metrics.screenWidth, videoMetrics)
+    if (newCoverHeight !== this.state.coverHeight) this.setState({coverHeight: newCoverHeight})
   }
 
   _handleSelectCover = (path, isPhotoType, coverMetrics = {}) => {

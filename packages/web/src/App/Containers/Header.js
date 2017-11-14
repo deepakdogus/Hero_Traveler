@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-
+import * as _ from 'lodash'
 import { Grid } from '../Components/FlexboxGrid'
 import HeaderAnonymous from '../Components/Headers/HeaderAnonymous'
 import HeaderLoggedIn from '../Components/Headers/HeaderLoggedIn'
@@ -93,7 +93,7 @@ function mapStateToProps(state) {
   const pathname = state.routes.location ? state.routes.location.pathname : ''
   return {
     isLoggedIn: state.login.isLoggedIn,
-    blackHeader: (pathname === '/' || pathname === '/feed') ? false : true,
+    blackHeader: _.includes(['/', '/feed', ''], pathname) ? false : true,
     currentUser: state.session.userId
   }
 }

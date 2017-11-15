@@ -108,7 +108,7 @@ export default class Icon extends React.Component {
       case 'createStory':
         return Images.iconNavCreate
       case 'hamburger':
-        return Images.iconNavHamburger
+        return Images.hamburger
       case 'close':
         return Images.iconContentXWhite
       case 'closeDark':

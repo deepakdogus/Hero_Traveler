@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
 import StoryActions, {getByCategory, getFetchStatus} from '../../Shared/Redux/Entities/Stories'
+import SignupActions from '../../Shared/Redux/SignupRedux'
 
 import ConnectedStoryPreview from '../ConnectedStoryPreview'
 import StoryList from '../../Components/StoryList'
@@ -14,6 +15,7 @@ import Loader from '../../Components/Loader'
 import {Metrics} from '../../Shared/Themes'
 import styles from '../Styles/CategoryFeedScreenStyles'
 import NoStoriesMessage from '../../Components/NoStoriesMessage'
+import NavBar from '../CreateStory/NavBar'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight - 40
 
@@ -69,6 +71,7 @@ class CategoryFeedScreen extends React.Component {
 
   componentDidMount() {
     this.loadData()
+    this.props.getSelectedCategories()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -119,8 +122,22 @@ class CategoryFeedScreen extends React.Component {
     )
   }
 
+  _onLeft = () => NavActions.pop()
+
+  _onRight = () => {
+    const shouldUnfollow = this.getIsFollowingCategory()
+    if (shouldUnfollow) this.props.unfollowCategory()
+    else this.props.followCategory()
+  }
+
+  getIsFollowingCategory = () => {
+    const {categoryId, selectedCategories} = this.props
+    return _.includes(selectedCategories, categoryId)
+  }
+
   render () {
-    let { storiesById, fetchStatus, error } = this.props;
+    let { storiesById, fetchStatus, error, title} = this.props;
+    const isFollowingCategory = this.getIsFollowingCategory()
 
     let content;
 
@@ -147,7 +164,18 @@ class CategoryFeedScreen extends React.Component {
     }
 
     return (
-      <View style={[styles.containerWithNavbarAndTabbar, styles.root]}>
+      <View style={[styles.containerWithTabbar, styles.root]}>
+          <NavBar
+            title={title}
+            titleStyle={styles.navbarTitleStyle}
+            onLeft={this._onLeft}
+            leftIcon='arrowLeft'
+            leftIconStyle={styles.navbarLeftIconStyle}
+            onRight={this._onRight}
+            rightTextStyle={styles.navbarRightTextStyle}
+            rightTitle={isFollowingCategory ? 'Following' : '+ Follow'}
+            style={styles.navbarContainer}
+          />
           <View style={styles.tabs}>
             <View style={styles.tabnav}>
               <Tab
@@ -184,13 +212,17 @@ const mapStateToProps = (state, props) => {
     user: state.entities.users.entities[state.session.userId],
     fetchStatus: getFetchStatus(state.entities.stories, props.categoryId),
     storiesById: getByCategory(state.entities.stories, props.categoryId),
-    error: state.entities.stories.error
+    error: state.entities.stories.error,
+    selectedCategories: state.signup.selectedCategories,
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     loadCategory: (categoryId, storyType) => dispatch(StoryActions.fromCategoryRequest(categoryId, storyType)),
+    getSelectedCategories: () => dispatch(SignupActions.signupGetUsersCategories()),
+    followCategory: (categoryId) => dispatch(SignupActions.signupFollowCategory(ownProps.categoryId)),
+    unfollowCategory: (categoryId) => dispatch(SignupActions.signupUnfollowCategory(ownProps.categoryId)),
   }
 }
 

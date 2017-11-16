@@ -290,7 +290,7 @@ export default NavActions.create(
             onLeft={NavActions.pop}
             backButtonImage={Images.iconArrowLeft}
             title='Category Feed'
-            hideNavBar={false}
+            hideNavBar={true}
             {...darkNavBarProps}
           />
         </Scene>

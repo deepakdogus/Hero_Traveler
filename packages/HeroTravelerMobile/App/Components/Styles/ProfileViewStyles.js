@@ -30,6 +30,16 @@ export default StyleSheet.create({
   noCoverImage: {
     backgroundColor: Colors.redLight
   },
+  cogContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    margin: Metrics.baseMargin,
+  },
+  cogImageIcon: {
+    height: 23,
+    width: 23,
+    tintColor: Colors.grey,
+  },
   coverInner: {
     paddingTop: Metrics.section,
     height: coverInnerHeight,
@@ -49,6 +59,16 @@ export default StyleSheet.create({
     borderBottomColor: Colors.snow,
     width: 36,
   },
+  userInfoMargin: {
+    marginLeft: Metrics.baseMargin,
+  },
+  userInfoWrapper: {
+    marginLeft: 5,
+    height: 95,
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    marginBottom: 5,
+  },
   italicText: {
     fontFamily: Fonts.type.crimsonText,
     letterSpacing: .5,
@@ -56,8 +76,16 @@ export default StyleSheet.create({
     color: Colors.snow,
     fontStyle: 'italic'
   },
+  newItalicText: {
+    fontFamily: Fonts.type.sourceSansPro,
+    fontSize: 11,
+    fontWeight: '400',
+    letterSpacing: .7,
+    fontStyle: 'italic',
+    color: Colors.grey
+  },
   followersWrapper: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   followersColumn: {
     paddingHorizontal: Metrics.baseMargin
@@ -65,6 +93,12 @@ export default StyleSheet.create({
   firstFollowerColumn: {
     borderRightWidth: 1,
     borderRightColor: 'rgba(255,255,255,.5)'
+  },
+  followingColumn: {
+    borderLeftWidth: 1,
+    borderLeftColor: Colors.grey,
+    paddingLeft: 20,
+    marginLeft: 20,
   },
   followerNumber: {
     fontFamily: Fonts.type.montserrat,
@@ -74,12 +108,24 @@ export default StyleSheet.create({
     textAlign: 'center',
     paddingBottom: Metrics.baseMargin/2
   },
+  newFollowerNumber: {
+    fontFamily: Fonts.type.montserrat,
+    fontSize: 15,
+    fontWeight: '600',
+    color: Colors.background,
+  },
   followerLabel: {
     fontFamily: Fonts.type.montserrat,
     fontSize: 10,
     letterSpacing: 1,
     color: '#e0e0e0',
     textAlign: 'center',
+  },
+  newFollowerLabel: {
+    fontFamily: Fonts.type.montserrat,
+    fontSize: 10,
+    fontWeight: '600',
+    color: Colors.grey,
   },
   avatarImage: {
     width: avatarImageSize,
@@ -94,6 +140,12 @@ export default StyleSheet.create({
     color: Colors.snow,
     width: '100%',
     height: 30
+  },
+  newTitleText: {
+    fontFamily: Fonts.type.montserrat,
+    fontSize: 20,
+    fontWeight: '600',
+    color: Colors.background,
   },
   editTitle: {
     width: '50%',
@@ -111,6 +163,21 @@ export default StyleSheet.create({
     paddingHorizontal: 20,
     height: 32,
     marginBottom: 30,
+  },
+  blackButton: {
+    borderWidth: 1,
+    borderColor: Colors.background,
+    borderRadius: 20,
+    width: 120,
+  },
+  blackButtonText: {
+    fontFamily: Fonts.type.montserrat,
+    fontSize: 13,
+    fontWeight: '600',
+    letterSpacing: .7,
+    lineHeight: 26,
+    textAlign: 'center',
+    color: Colors.background,
   },
   followButton: {
     width: 110,
@@ -173,7 +240,7 @@ export default StyleSheet.create({
     height: tabNavEditHeight,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.feedDividerGrey,
   },
   tab: {
     justifyContent: 'center',
@@ -224,6 +291,15 @@ export default StyleSheet.create({
     color: Colors.bioGrey,
     fontWeight: '300',
   },
+  bioButton: {
+    marginTop: 10,
+  },
+  newBioText: {
+    fontFamily: Fonts.type.montserrat,
+    fontSize: 11,
+    color: Colors.background,
+    textAlign: 'center',
+  },
   spinnerWrapper: {
     marginTop: Metrics.doubleSection
   },
@@ -243,5 +319,22 @@ export default StyleSheet.create({
     marginVertical: Metrics.baseMargin,
     marginHorizontal: Metrics.section,
     zIndex: 100,
+  },
+  newErrorButton: {
+    position: 'absolute',
+    top: 125,
+    left: 0,
+    right: 0,
+    marginVertical: Metrics.baseMargin,
+    marginHorizontal: Metrics.section,
+    zIndex: 100,
+  },
+  profileInfoContainer: {
+    marginTop: Metrics.baseMargin,
+    height: 200,
+  },
+  profileWrapper: {
+    flexDirection: 'row',
+    marginHorizontal: Metrics.section,
   },
 })

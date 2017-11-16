@@ -337,6 +337,7 @@ class ProfileView extends React.Component {
 
     let cog
     let buttons
+    let buttons2
     let tabs
     let avatarCamera
     let name = (
@@ -424,6 +425,13 @@ class ProfileView extends React.Component {
           style={styles.buttons}
           onPress={this._navToEditProfile}>
           <Text style={styles.buttonsText}>EDIT PROFILE</Text>
+        </TouchableOpacity>
+      )
+      buttons2 = (
+        <TouchableOpacity
+          style={styles.blackButton}
+          onPress={this._navToEditProfile}>
+          <Text style={styles.blackButtonText}>EDIT PROFILE</Text>
         </TouchableOpacity>
       )
 
@@ -538,6 +546,71 @@ class ProfileView extends React.Component {
       </Image>
     )
 
+    const avatarUrl = (isEditing && user.profile.tempAvatar) ?
+      getImageUrl(user.profile.tempAvatar, 'avatar') :
+      getImageUrl(user.profile.avatar, 'avatar')
+
+    const profileInfo2 = (
+      <View style={styles.profileInfoContainer}>
+        {editable && !isEditing &&
+        <View>
+          <TouchableOpacity style={styles.cogContainer} onPress={this._navToSettings}>
+            <TabIcon
+              name='gear'
+              style={{ image: styles.cogImageIcon }}></TabIcon>
+            </TouchableOpacity>
+          </View>
+        }
+        <View style={styles.profileWrapper}>
+          {this.state.error &&
+            <ShadowButton
+              style={styles.newErrorButton}
+              onPress={this._clearError}
+              text={this.state.error}
+            />
+          }
+          <View>
+            <View style={{position: 'relative'}}>
+              <Avatar
+                size='extraLarge'
+                avatarUrl={avatarUrl}
+              />
+              {avatarCamera}
+            </View>
+            {!isEditing &&
+            <TouchableOpacity onPress={this._navToViewBio} style={styles.bioButton}>
+              <Text style={styles.newBioText}>Bio</Text>
+            </TouchableOpacity>}
+          </View>
+          <View style={styles.userInfoMargin}>
+            <View style={styles.userInfoWrapper}>
+              <View>
+                <Text style={styles.newTitleText}>{user.username}</Text>
+                <Text style={styles.newItalicText}>{user.profile.fullName}</Text>
+              </View>
+              {!isEditing &&
+              <View style={styles.followersWrapper}>
+                <View style={styles.firstFollowerColumn}>
+                  <TouchableOpacity onPress={this._navToFollowers}>
+                    <Text style={styles.newFollowerNumber}>{formatCount(user.counts.followers)}</Text>
+                    <Text style={styles.newFollowerLabel}>Followers</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.followingColumn}>
+                  <TouchableOpacity onPress={this._navToFollowing}>
+                    <Text style={styles.newFollowerNumber}>{formatCount(user.counts.following)}</Text>
+                    <Text style={styles.newFollowerLabel}>Following</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              }
+            </View>
+            {buttons2}
+          </View>
+        </View>
+      </View>
+    )
+
     return (
       <View style={{flex: 1}}>
         {isEditing &&
@@ -577,7 +650,7 @@ class ProfileView extends React.Component {
           {!isEditing && <View style={styles.tabs}>
             {(this.areNoStories() || this.isFetching(fetchStatus)) &&
               <View>
-                {profileInfo}
+                {profileInfo2}
                 {tabs}
               </View>
             }

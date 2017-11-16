@@ -45,6 +45,7 @@ export default class NotificationsThread extends React.Component {
   }
 
   renderNotificationRows(userKeys) {
+    userKeys.pop()
     return userKeys.map((key, index) => {
       return (
         <NotificationRow

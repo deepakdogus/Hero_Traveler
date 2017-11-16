@@ -376,7 +376,7 @@ class ProfileView extends React.Component {
               minLength={usernameContansts.minLength}
               returnKeyType={'done'}
             />
-          <TabIcon name='pencil'/>
+            <TabIcon name='pencil'/>
           </View>
           <View style={styles.inputUnderLine}/>
         </View>
@@ -567,7 +567,7 @@ class ProfileView extends React.Component {
       getImageUrl(user.profile.avatar, 'avatar')
 
     const profileInfo2 = (
-      <View style={styles.profileInfoContainer}>
+      <View style={isEditing ? styles.profileEditInfoContainer : styles.profileInfoContainer}>
         {top}
         <View style={styles.profileWrapper}>
           {this.state.error &&
@@ -591,12 +591,34 @@ class ProfileView extends React.Component {
             </TouchableOpacity>}
           </View>
           <View style={styles.userInfoMargin}>
+            {isEditing &&
+            <View style={styles.userInfoWrapper}>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                <TextInput
+                  placeholder={user.username}
+                  value={this.state.usernameText}
+                  autoCapitalize='none'
+                  style={[styles.titleText, styles.editTitle]}
+                  onChangeText={this._setText}
+                  maxLength={usernameContansts.maxLength}
+                  minLength={usernameContansts.minLength}
+                  returnKeyType={'done'}
+                />
+                <TabIcon
+                  name='pencil'
+                  style={{
+                    image: {tintColor: 'grey'},
+                  }}
+                />
+              </View>
+            </View>
+            }
+            {!isEditing &&
             <View style={styles.userInfoWrapper}>
               <View>
                 <Text style={styles.newTitleText}>{user.username}</Text>
                 <Text style={styles.newItalicText}>{user.profile.fullName}</Text>
               </View>
-              {!isEditing &&
               <View style={styles.followersWrapper}>
                 <View style={styles.firstFollowerColumn}>
                   <TouchableOpacity onPress={this._navToFollowers}>
@@ -611,8 +633,8 @@ class ProfileView extends React.Component {
                   </TouchableOpacity>
                 </View>
               </View>
-              }
             </View>
+            }
             {buttons2}
           </View>
         </View>
@@ -639,12 +661,12 @@ class ProfileView extends React.Component {
         <View style={styles.gradientWrapper}>
           {isEditing &&
             <View style={{flex: 1}}>
-              {profileInfo}
-              <View style={{margin: Metrics.section}}>
+              {profileInfo2}
+              <View style={styles.bioWrapper}>
                 <Text style={styles.editBio}>Edit Bio</Text>
                 <TextInput
                   ref={this._bioRef}
-                  style={[styles.bioText, {height: 150}]}
+                  style={[styles.bioText, styles.editBioText]}
                   multiline={true}
                   editable={true}
                   onChangeText={this._setBioText}

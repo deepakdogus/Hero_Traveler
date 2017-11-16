@@ -4,6 +4,8 @@ import { ApplicationStyles, Fonts, Colors, Metrics } from '../../Shared/Themes/'
 const avatarImageSize = 95
 const coverInnerHeight = 370
 const tabNavEditHeight = 50
+const profileEditHeight = 150
+
 export const storyPreviewHeight = Metrics.screenHeight - coverInnerHeight - tabNavEditHeight - Metrics.tabBarHeight
 
 export default StyleSheet.create({
@@ -140,7 +142,7 @@ export default StyleSheet.create({
     textAlign: 'center',
     fontSize: 21,
     letterSpacing: 3,
-    color: Colors.snow,
+    color: Colors.backgroundColor,
     width: '100%',
     height: 30
   },
@@ -151,7 +153,8 @@ export default StyleSheet.create({
     color: Colors.background,
   },
   editTitle: {
-    width: '50%',
+    width: Metrics.screenWidth - avatarImageSize - 2 * Metrics.section - 10 - 5 - 14,
+    textAlign: 'left',
   },
   inputUnderLine: {
     width: '50%',
@@ -340,11 +343,26 @@ export default StyleSheet.create({
     zIndex: 100,
   },
   profileInfoContainer: {
-    marginTop: Metrics.baseMargin,
+    paddingTop: Metrics.baseMargin,
     height: 200,
+  },
+  profileEditInfoContainer: {
+    height: profileEditHeight,
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
   profileWrapper: {
     flexDirection: 'row',
     marginHorizontal: Metrics.section,
   },
+  editBioText: {
+    minHeight: profileEditHeight,
+  },
+  bioWrapper: {
+    borderTopColor: Colors.lightGrey,
+    borderTopWidth: 1,
+    padding: Metrics.section,
+    backgroundColor: Colors.feedDividerGrey,
+    minHeight: Metrics.screenHeight - Metrics.navBarHeight - profileEditHeight,
+  }
 })

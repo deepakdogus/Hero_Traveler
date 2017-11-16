@@ -47,6 +47,9 @@ export default StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center'
   },
+  readingViewTop: {
+    height: 43,
+  },
   nameWrapper: {
     flexDirection: 'column',
     justifyContent: 'center',
@@ -170,6 +173,9 @@ export default StyleSheet.create({
     borderRadius: 20,
     width: 120,
   },
+  followButton2: {
+    borderColor: Colors.redHighlights,
+  },
   blackButtonText: {
     fontFamily: Fonts.type.montserrat,
     fontSize: 13,
@@ -178,6 +184,9 @@ export default StyleSheet.create({
     lineHeight: 26,
     textAlign: 'center',
     color: Colors.background,
+  },
+  followButtonText: {
+    color: Colors.redHighlights,
   },
   followButton: {
     width: 110,
@@ -247,21 +256,22 @@ export default StyleSheet.create({
     alignItems: 'center',
     flex: .33,
     borderBottomWidth: 3,
-    borderBottomColor: Colors.snow,
+    borderBottomColor: Colors.feedDividerGrey,
   },
   tabText: {
     fontFamily: Fonts.type.montserrat,
-    color: '#bdbdbd',
+    color: Colors.navBarText,
     fontSize: 13,
     letterSpacing: 1.2,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontWeight: '600',
   },
   tabSelected: {
     borderBottomColor: Colors.red
   },
   tabTextSelected: {
     fontFamily: Fonts.type.montserrat,
-    color: '#757575',
+    color: Colors.background,
     fontSize: 13,
     letterSpacing: 1.2,
   },

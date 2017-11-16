@@ -47,10 +47,10 @@ const enhancedTab = withHandlers({
     }
   }
 })
-const Tab = enhancedTab(({text, _onPress, selected}) => {
+const Tab = enhancedTab(({text, _onPress, selected, isProfileView}) => {
   return (
     <TouchableWithoutFeedback onPress={_onPress}>
-      <View style={[styles.tab, selected ? styles.tabSelected : null]}>
+      <View style={[styles.tab, (selected && !isProfileView) ? styles.tabSelected : null]}>
       <Text style={[styles.tabText, selected ? styles.tabTextSelected : null]}>{text}</Text>
       </View>
     </TouchableWithoutFeedback>
@@ -336,6 +336,7 @@ class ProfileView extends React.Component {
     }
 
     let cog
+    let top
     let buttons
     let buttons2
     let tabs
@@ -359,7 +360,7 @@ class ProfileView extends React.Component {
      */
 
     if(isEditing === true){
-      cog = null;
+      top = null;
       tabs = null;
       // buttons = null;
       name = (
@@ -406,18 +407,15 @@ class ProfileView extends React.Component {
 
 
     } else if (editable === true) {
-      cog = (
-        <TouchableOpacity style={styles.settingsCog} onPress={this._navToSettings}>
-          <TabIcon
-            name='gear'
-            style={{
-              image: {
-                height: 23,
-                width: 23,
-                tintColor: 'white',
-              }
-            }}></TabIcon>
-        </TouchableOpacity>
+      top = (
+        <View style={styles.cogContainer}>
+          <TouchableOpacity onPress={this._navToSettings}>
+            <TabIcon
+              name='gear'
+              style={{ image: styles.cogImageIcon }}
+            />
+          </TouchableOpacity>
+        </View>
       )
 
       buttons = (
@@ -458,7 +456,7 @@ class ProfileView extends React.Component {
       avatarCamera = null;
 
     } else {
-      cog = null
+      top = <View style={styles.readingViewTop}></View>
 
       buttons = (
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -480,8 +478,26 @@ class ProfileView extends React.Component {
 
       tabs = (
         <View style={styles.tabnavEdit}>
-          <Tab selected={false} text='STORIES' />
+          <Tab selected isProfileView text='STORIES' />
         </View>
+      )
+
+      buttons2 = (
+        <TouchableOpacity
+          style={[
+            styles.blackButton,
+            this.props.isFollowing ? null : styles.followButton2
+          ]}
+          onPress={this.props.isFollowing ? this.props.onPressUnfollow : this.props.onPressFollow}>
+          <Text
+            style={[
+              styles.blackButtonText,
+              this.props.isFollowing ? null : styles.followButtonText
+            ]}
+          >
+            {this.props.isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
+          </Text>
+        </TouchableOpacity>
       )
       avatarCamera = null;
     }
@@ -552,15 +568,7 @@ class ProfileView extends React.Component {
 
     const profileInfo2 = (
       <View style={styles.profileInfoContainer}>
-        {editable && !isEditing &&
-        <View>
-          <TouchableOpacity style={styles.cogContainer} onPress={this._navToSettings}>
-            <TabIcon
-              name='gear'
-              style={{ image: styles.cogImageIcon }}></TabIcon>
-            </TouchableOpacity>
-          </View>
-        }
+        {top}
         <View style={styles.profileWrapper}>
           {this.state.error &&
             <ShadowButton
@@ -659,7 +667,7 @@ class ProfileView extends React.Component {
                 style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
                 storiesById={stories}
                 refreshing={false}
-                renderHeaderContent={profileInfo}
+                renderHeaderContent={profileInfo2}
                 renderSectionHeader={tabs}
                 renderStory={this.renderStory}
                 pagingIsDisabled
@@ -670,7 +678,7 @@ class ProfileView extends React.Component {
                 style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
                 storiesById={drafts}
                 refreshing={false}
-                renderHeaderContent={profileInfo}
+                renderHeaderContent={profileInfo2}
                 renderSectionHeader={tabs}
                 renderStory={this.renderStory}
                 pagingIsDisabled
@@ -681,7 +689,7 @@ class ProfileView extends React.Component {
                 style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
                 storiesById={bookmarks}
                 refreshing={false}
-                renderHeaderContent={profileInfo}
+                renderHeaderContent={profileInfo2}
                 renderSectionHeader={tabs}
                 renderStory={this.renderStory}
                 pagingIsDisabled

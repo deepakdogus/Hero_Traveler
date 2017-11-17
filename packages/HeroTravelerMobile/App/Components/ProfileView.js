@@ -11,7 +11,6 @@ import {
 import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import LinearGradient from 'react-native-linear-gradient'
 
 import { Colors, Metrics } from '../Shared/Themes'
 import Loader from './Loader'
@@ -24,7 +23,6 @@ import NavBar from '../Containers/CreateStory/NavBar'
 import HeroAPI from '../Shared/Services/HeroAPI'
 import pathAsFileObject from '../Shared/Lib/pathAsFileObject'
 import TabIcon from './TabIcon'
-import Image from './Image'
 import ShadowButton from './ShadowButton'
 
 // @TODO UserActions shouldn't be in a component
@@ -112,19 +110,6 @@ class ProfileView extends React.Component {
       NavActions.pop()
       this.setState({error: 'There was an error updating your profile photo. Please try again'})
     })
-  }
-
-  _handleUpdateCoverPhoto = (data) => {
-    api.uploadUserCoverImage(this.props.user.id, pathAsFileObject(data))
-    .then(({ data }) => {
-      return this.props.updateUserSuccess({
-        id: data.id,
-        profile: {
-          tempCover: data.profile.cover,
-        }
-      })
-    })
-    .then(() => NavActions.pop())
   }
 
   _onRight = () => {
@@ -251,20 +236,6 @@ class ProfileView extends React.Component {
     })
   }
 
-  _selectCover = () => {
-    NavActions.mediaSelectorScreen({
-      mediaType: 'photo',
-      title: 'Edit Cover',
-      titleStyle: {color: Colors.white},
-      leftTitle: 'Cancel',
-      leftTextStyle: {color: Colors.white},
-      onLeft: () => NavActions.pop(),
-      rightTitle: 'Done',
-      rightIcon: 'none',
-      onSelectMedia: this._handleUpdateCoverPhoto
-    })
-  }
-
   _navToSettings = () => {
     NavActions.settings({type: 'push'})
   }
@@ -321,7 +292,7 @@ class ProfileView extends React.Component {
   }
 
   render() {
-    const { user, stories, drafts, editable, isEditing, profileImage, bookmarks } = this.props
+    const { user, stories, drafts, editable, isEditing, bookmarks } = this.props
     let fetchStatus
     switch (this.state.selectedTab) {
       case TabTypes.stories:
@@ -335,19 +306,10 @@ class ProfileView extends React.Component {
         break
     }
 
-    let cog
     let top
     let buttons
-    let buttons2
     let tabs
     let avatarCamera
-    let name = (
-      <View style={styles.nameWrapper}>
-        <Text style={styles.titleText}>{user.username}</Text>
-        <View style={styles.nameSeparator} />
-        <Text style={styles.italicText}>{user.profile.fullName}</Text>
-      </View>
-    )
 
     let showTooltip = !isEditing && editable && !isTooltipComplete(
         TooltipTypes.PROFILE_NO_STORIES,
@@ -362,25 +324,6 @@ class ProfileView extends React.Component {
     if(isEditing === true){
       top = null;
       tabs = null;
-      // buttons = null;
-      name = (
-        <View style={styles.nameWrapper}>
-          <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-            <TextInput
-              placeholder={user.username}
-              value={this.state.usernameText}
-              autoCapitalize='none'
-              style={[styles.titleText, styles.editTitle]}
-              onChangeText={this._setText}
-              maxLength={usernameContansts.maxLength}
-              minLength={usernameContansts.minLength}
-              returnKeyType={'done'}
-            />
-            <TabIcon name='pencil'/>
-          </View>
-          <View style={styles.inputUnderLine}/>
-        </View>
-      )
 
       avatarCamera = (
         <TouchableOpacity
@@ -395,17 +338,6 @@ class ProfileView extends React.Component {
         </TouchableOpacity>
       )
 
-      buttons = (
-        <TouchableOpacity
-          style={styles.addCoverPhotoButton}
-          onPress={this._selectCover}
-        >
-          <Icon name='camera' size={32.5} color={Colors.whiteAlphaPt80} style={styles.cameraIcon} />
-          <Text style={styles.editCoverText}>EDIT COVER IMAGE</Text>
-        </TouchableOpacity>
-      )
-
-
     } else if (editable === true) {
       top = (
         <View style={styles.cogContainer}>
@@ -419,13 +351,6 @@ class ProfileView extends React.Component {
       )
 
       buttons = (
-        <TouchableOpacity
-          style={styles.buttons}
-          onPress={this._navToEditProfile}>
-          <Text style={styles.buttonsText}>EDIT PROFILE</Text>
-        </TouchableOpacity>
-      )
-      buttons2 = (
         <TouchableOpacity
           style={styles.blackButton}
           onPress={this._navToEditProfile}>
@@ -458,35 +383,17 @@ class ProfileView extends React.Component {
     } else {
       top = <View style={styles.readingViewTop}></View>
 
-      buttons = (
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <TouchableOpacity
-            style={[
-              styles.buttons,
-              styles.followButton,
-              this.props.isFollowing && styles.unfollowButton
-            ]}
-            onPress={this.props.isFollowing ? this.props.onPressUnfollow : this.props.onPressFollow}>
-            <Text style={styles.buttonsText}>{this.props.isFollowing ? 'FOLLOWING' : '+ FOLLOW'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.buttons, styles.messageButton]}>
-            <Text style={styles.buttonsText}>MESSAGE</Text>
-          </TouchableOpacity>
-        </View>
-      )
-
       tabs = (
         <View style={styles.tabnavEdit}>
           <Tab selected isProfileView text='STORIES' />
         </View>
       )
 
-      buttons2 = (
+      buttons = (
         <TouchableOpacity
           style={[
             styles.blackButton,
-            this.props.isFollowing ? null : styles.followButton2
+            this.props.isFollowing ? null : styles.followButton
           ]}
           onPress={this.props.isFollowing ? this.props.onPressUnfollow : this.props.onPressFollow}>
           <Text
@@ -501,78 +408,18 @@ class ProfileView extends React.Component {
       )
       avatarCamera = null;
     }
-    const gradientStyle = profileImage ? ['rgba(0,0,0,.5)', 'transparent', 'rgba(0,0,0,.5)'] : ['transparent', 'rgba(0,0,0,.5)']
-    const profileInfo = (
-      <Image
-        cached={true}
-        style={[styles.coverImage, profileImage ? null : styles.noCoverImage]}
-        source={{uri: profileImage || undefined}}
-        resizeMode={'cover'}
-      >
-        <LinearGradient colors={gradientStyle} style={styles.gradient}>
-          {this.state.error &&
-            <ShadowButton
-              style={styles.errorButton}
-              onPress={this._clearError}
-              text={this.state.error}
-            />
-          }
-          <View style={styles.coverInner}>
-            {cog}
-            {name}
-          <View style={{position: 'relative', marginTop: 20}}>
-            <Avatar
-              style={{alignItems: 'center'}}
-              size='extraLarge'
-              avatarUrl={(isEditing && user.profile.tempAvatar) ? getImageUrl(user.profile.tempAvatar, 'avatar') : getImageUrl(user.profile.avatar, 'avatar')} />
-            {avatarCamera}
-          </View>
-          {!isEditing &&
-           <TouchableOpacity onPress={this._navToViewBio}>
-              <Text style={styles.italicText}>Read Bio</Text>
-            </TouchableOpacity>
-          }
-          {!isEditing &&
-            <View style={styles.followersWrapper}>
-              <View style={styles.firstFollowerColumn}>
-                <TouchableOpacity
-                  onPress={this._navToFollowers}
-                  style={[styles.followersColumn]}>
-                  <Text style={styles.followerNumber}>{formatCount(user.counts.followers)}</Text>
-                  <Text style={styles.followerLabel}>Followers</Text>
-                </TouchableOpacity>
-              </View>
-              <TouchableOpacity
-                onPress={this._navToFollowing}
-                style={styles.followersColumn}>
-                <Text style={styles.followerNumber}>{formatCount(user.counts.following)}</Text>
-                <Text style={styles.followerLabel}>Following</Text>
-              </TouchableOpacity>
-            </View>
-          }
-            {buttons}
-          </View>
-          {!isEditing && false &&
-            <Text style={styles.contributor}>
-              <Icon name='star' color={Colors.red} size={15} style={styles.contributorIcon} />
-              <Text style={styles.contributorText}>&nbsp;&nbsp;&nbsp;CONTRIBUTOR</Text>
-            </Text>
-          }
-        </LinearGradient>
-      </Image>
-    )
 
     const avatarUrl = (isEditing && user.profile.tempAvatar) ?
       getImageUrl(user.profile.tempAvatar, 'avatar') :
       getImageUrl(user.profile.avatar, 'avatar')
 
-    const profileInfo2 = (
+    const profileInfo = (
       <View style={isEditing ? styles.profileEditInfoContainer : styles.profileInfoContainer}>
         {top}
         <View style={styles.profileWrapper}>
           {this.state.error &&
             <ShadowButton
-              style={styles.newErrorButton}
+              style={styles.errorButton}
               onPress={this._clearError}
               text={this.state.error}
             />
@@ -587,7 +434,7 @@ class ProfileView extends React.Component {
             </View>
             {!isEditing &&
             <TouchableOpacity onPress={this._navToViewBio} style={styles.bioButton}>
-              <Text style={styles.newBioText}>Bio</Text>
+              <Text style={styles.bioText}>Bio</Text>
             </TouchableOpacity>}
           </View>
           <View style={styles.userInfoMargin}>
@@ -616,26 +463,26 @@ class ProfileView extends React.Component {
             {!isEditing &&
             <View style={styles.userInfoWrapper}>
               <View>
-                <Text style={styles.newTitleText}>{user.username}</Text>
-                <Text style={styles.newItalicText}>{user.profile.fullName}</Text>
+                <Text style={styles.titleText}>{user.username}</Text>
+                <Text style={styles.italicText}>{user.profile.fullName}</Text>
               </View>
               <View style={styles.followersWrapper}>
-                <View style={styles.firstFollowerColumn}>
+                <View>
                   <TouchableOpacity onPress={this._navToFollowers}>
-                    <Text style={styles.newFollowerNumber}>{formatCount(user.counts.followers)}</Text>
-                    <Text style={styles.newFollowerLabel}>Followers</Text>
+                    <Text style={styles.followerNumber}>{formatCount(user.counts.followers)}</Text>
+                    <Text style={styles.followerLabel}>Followers</Text>
                   </TouchableOpacity>
                 </View>
                 <View style={styles.followingColumn}>
                   <TouchableOpacity onPress={this._navToFollowing}>
-                    <Text style={styles.newFollowerNumber}>{formatCount(user.counts.following)}</Text>
-                    <Text style={styles.newFollowerLabel}>Following</Text>
+                    <Text style={styles.followerNumber}>{formatCount(user.counts.following)}</Text>
+                    <Text style={styles.followerLabel}>Following</Text>
                   </TouchableOpacity>
                 </View>
               </View>
             </View>
             }
-            {buttons2}
+            {buttons}
           </View>
         </View>
       </View>
@@ -661,7 +508,7 @@ class ProfileView extends React.Component {
         <View style={styles.gradientWrapper}>
           {isEditing &&
             <View style={{flex: 1}}>
-              {profileInfo2}
+              {profileInfo}
               <View style={styles.bioWrapper}>
                 <Text style={styles.editBio}>Edit Bio</Text>
                 <TextInput
@@ -680,7 +527,7 @@ class ProfileView extends React.Component {
           {!isEditing && <View style={styles.tabs}>
             {(this.areNoStories() || this.isFetching(fetchStatus)) &&
               <View>
-                {profileInfo2}
+                {profileInfo}
                 {tabs}
               </View>
             }
@@ -689,7 +536,7 @@ class ProfileView extends React.Component {
                 style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
                 storiesById={stories}
                 refreshing={false}
-                renderHeaderContent={profileInfo2}
+                renderHeaderContent={profileInfo}
                 renderSectionHeader={tabs}
                 renderStory={this.renderStory}
                 pagingIsDisabled
@@ -700,7 +547,7 @@ class ProfileView extends React.Component {
                 style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
                 storiesById={drafts}
                 refreshing={false}
-                renderHeaderContent={profileInfo2}
+                renderHeaderContent={profileInfo}
                 renderSectionHeader={tabs}
                 renderStory={this.renderStory}
                 pagingIsDisabled
@@ -711,7 +558,7 @@ class ProfileView extends React.Component {
                 style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
                 storiesById={bookmarks}
                 refreshing={false}
-                renderHeaderContent={profileInfo2}
+                renderHeaderContent={profileInfo}
                 renderSectionHeader={tabs}
                 renderStory={this.renderStory}
                 pagingIsDisabled

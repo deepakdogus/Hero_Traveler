@@ -64,5 +64,9 @@ export default StyleSheet.create({
   bookmark: {
     width: 12,
     height: 16,
+  },
+  followFollowingButton: {
+    flexDirection: 'column',
+    justifyContent: 'center'
   }
 })

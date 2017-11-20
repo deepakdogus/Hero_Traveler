@@ -16,7 +16,6 @@ import formatCount from '../Shared/Lib/formatCount'
 import UserActions from '../Shared/Redux/Entities/Users'
 
 import TabIcon from './TabIcon'
-import ShadowButton from './ShadowButton'
 import Avatar from './Avatar'
 
 const usernameContansts = {
@@ -35,8 +34,6 @@ export default class ProfileUserInfo extends Component {
     handleUpdateAvatarPhoto: PropTypes.func,
     usernameText: PropTypes.string,
     setUsername: PropTypes.func,
-    error: PropTypes.string,
-    clearError: PropTypes.func,
   }
 
   _navToSettings = () => NavActions.settings({type: 'push'})
@@ -220,22 +217,12 @@ export default class ProfileUserInfo extends Component {
   }
 
   render() {
-    const {
-      isEditing,
-      error, clearError
-    } = this.props
+    const {isEditing} = this.props
 
     return (
       <View style={isEditing ? styles.profileEditInfoContainer : styles.profileInfoContainer}>
         {this.renderTop()}
         <View style={styles.profileWrapper}>
-          {error &&
-            <ShadowButton
-              style={styles.errorButton}
-              onPress={clearError}
-              text={error}
-            />
-          }
           {this.renderLeftColumn()}
           {this.renderRightColumn()}
         </View>

@@ -15,6 +15,7 @@ import HeroAPI from '../Shared/Services/HeroAPI'
 import pathAsFileObject from '../Shared/Lib/pathAsFileObject'
 import ProfileUserInfo from './ProfileUserInfo'
 import ProfileTabsAndStories from './ProfileTabsAndStories'
+import ShadowButton from './ShadowButton'
 
 // @TODO UserActions shouldn't be in a component
 import UserActions from '../Shared/Redux/Entities/Users'
@@ -52,7 +53,7 @@ class ProfileView extends React.Component {
       imageMenuOpen: false,
       file: null,
       bioText: props.user.bio || '',
-      usernameText: props.user.username || 'Enter a username'
+      usernameText: props.user.username || 'Enter a username',
     }
   }
 
@@ -112,7 +113,7 @@ class ProfileView extends React.Component {
     NavActions.pop()
   }
 
-    _completeTooltip = () => {
+  _completeTooltip = () => {
     const tooltips = this.props.user.introTooltips.concat({
       name: TooltipTypes.PROFILE_NO_STORIES,
       seen: true,
@@ -172,11 +173,9 @@ class ProfileView extends React.Component {
     }
   }
 
-  _setText = (usernameText) => {
-    this.setState({usernameText})
-  }
-
+  _setText = (usernameText) => this.setState({usernameText})
   _setBioText = (bioText) => this.setState({bioText})
+  _clearError = () => this.setState({error: null})
 
   _bioRef = c => this.bioInput = c
 
@@ -209,8 +208,6 @@ class ProfileView extends React.Component {
         onPressFollow={onPressFollow}
         usernameText={this.state.usernameText}
         setUsername={this._setText}
-        error={this.state.error}
-        clearError={this._clearError}
         handleUpdateAvatarPhoto={this._handleUpdateAvatarPhoto}
       />
     )
@@ -278,6 +275,13 @@ class ProfileView extends React.Component {
           }
         </View>
         </ScrollView>
+        {this.state.error &&
+          <ShadowButton
+            style={styles.errorButton}
+            onPress={this._clearError}
+            text={this.state.error}
+          />
+        }
         {showTooltip && this.renderTooltip()}
       </View>
     )

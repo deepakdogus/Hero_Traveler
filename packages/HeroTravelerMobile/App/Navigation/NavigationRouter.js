@@ -349,6 +349,7 @@ export default NavActions.create(
       <Scene
         key='readOnlyProfile'
         component={ReadOnlyProfileScreen}
+        leftButtonIconStyle={Styles.redHighlightTint}
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
       />

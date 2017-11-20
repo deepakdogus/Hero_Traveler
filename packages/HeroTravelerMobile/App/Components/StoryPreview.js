@@ -102,14 +102,15 @@ export default class StoryPreview extends Component {
           { isStoryReadingScreen &&
           <TouchableOpacity
             style={[
-              profileViewStyles.buttons,
-              profileViewStyles.followButton,
-              isFollowing && profileViewStyles.unfollowButton
+              profileViewStyles.blackButton,
+              isFollowing ? null : profileViewStyles.followButton,
+              styles.followFollowingButton
             ]}
             onPress={isFollowing ? this._onPressUnfollow : this._onPressFollow}>
             <Text style={[
-                profileViewStyles.buttonsText,
-                isFollowing ? profileViewStyles.unfollowText: profileViewStyles.followText
+                profileViewStyles.blackButtonText,
+                isFollowing ? null : profileViewStyles.followButtonText,
+                {width: 100, marginHorizontal: 10}
               ]}
             >
               {isFollowing ? 'FOLLOWING' : '+ FOLLOW'}

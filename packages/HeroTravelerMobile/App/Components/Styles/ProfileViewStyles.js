@@ -84,6 +84,12 @@ export default StyleSheet.create({
     width: Metrics.screenWidth - avatarImageSize - 2 * Metrics.section - 10 - 5 - 14,
     textAlign: 'left',
   },
+  editPencilImage: {
+    tintColor: 'grey'
+  },
+  editPencilView: {
+    paddingVertical: 3,
+  },
   blackButton: {
     borderWidth: 1,
     borderColor: Colors.background,
@@ -159,11 +165,18 @@ export default StyleSheet.create({
     fontSize: 16,
     marginVertical: Metrics.baseMargin
   },
-  bioText: {
+  readBioText: {
     fontFamily: Fonts.type.montserrat,
     fontSize: 11,
     color: Colors.background,
     textAlign: 'center',
+  },
+  bioText: {
+    fontFamily: Fonts.type.sourceSansPro,
+    letterSpacing: .7,
+    fontSize: 16,
+    color: Colors.bioGrey,
+    fontWeight: '300',
   },
   bioButton: {
     marginTop: 10,

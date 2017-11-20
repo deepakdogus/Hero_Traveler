@@ -1,34 +1,24 @@
 import React from 'react'
-import styles, { storyPreviewHeight } from './Styles/ProfileViewStyles'
+import styles from './Styles/ProfileViewStyles'
 import {
   View,
   ScrollView,
   Text,
   TextInput,
-  TouchableWithoutFeedback,
   TouchableOpacity,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
-import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { Colors, Metrics } from '../Shared/Themes'
-import Loader from './Loader'
-import StoryList from './StoryList'
-import ConnectedStoryPreview from '../Containers/ConnectedStoryPreview'
-import formatCount from '../Shared/Lib/formatCount'
-import getImageUrl from '../Shared/Lib/getImageUrl'
-import Avatar from './Avatar'
 import NavBar from '../Containers/CreateStory/NavBar'
 import HeroAPI from '../Shared/Services/HeroAPI'
 import pathAsFileObject from '../Shared/Lib/pathAsFileObject'
-import TabIcon from './TabIcon'
-import ShadowButton from './ShadowButton'
+import ProfileUserInfo from './ProfileUserInfo'
+import ProfileTabsAndStories from './ProfileTabsAndStories'
 
 // @TODO UserActions shouldn't be in a component
 import UserActions from '../Shared/Redux/Entities/Users'
 import isTooltipComplete, {Types as TooltipTypes} from '../Shared/Lib/firstTimeTooltips'
-import {withHandlers} from 'recompose'
 
 const api = HeroAPI.create()
 
@@ -37,23 +27,6 @@ export const TabTypes = {
   drafts: 'TAB_DRAFTS',
   bookmarks: 'TAB_BOOKMARKS',
 }
-
-const enhancedTab = withHandlers({
-  _onPress: props => () => {
-    if (props.onPress) {
-      props.onPress(props.type)
-    }
-  }
-})
-const Tab = enhancedTab(({text, _onPress, selected, isProfileView}) => {
-  return (
-    <TouchableWithoutFeedback onPress={_onPress}>
-      <View style={[styles.tab, (selected && !isProfileView) ? styles.tabSelected : null]}>
-      <Text style={[styles.tabText, selected ? styles.tabTextSelected : null]}>{text}</Text>
-      </View>
-    </TouchableWithoutFeedback>
-  )
-})
 
 const usernameContansts = {
   maxLength: 20,
@@ -191,25 +164,6 @@ class ProfileView extends React.Component {
     )
   }
 
-  renderStory = (storyId) => {
-    return (
-      <ConnectedStoryPreview
-        forProfile={true}
-        editable={this.props.editable && this.state.selectedTab !== TabTypes.bookmarks}
-        touchTrash={this.props.touchTrash}
-        touchEdit={this.props.touchEdit}
-        titleStyle={styles.storyTitleStyle}
-        subtitleStyle={styles.subtitleStyle}
-        showLike={this.props.showLike}
-        showPlayButton
-        key={storyId}
-        height={storyPreviewHeight}
-        storyId={storyId}
-        userId={this.props.user.id}
-      />
-    )
-  }
-
   selectTab = (tab) => {
     if (this.state.selectedTab !== tab) {
       this.setState({selectedTab: tab}, () => {
@@ -222,271 +176,53 @@ class ProfileView extends React.Component {
     this.setState({usernameText})
   }
 
-  _selectAvatar = () => {
-    NavActions.mediaSelectorScreen({
-      mediaType: 'photo',
-      title: 'Edit Avatar',
-      titleStyle: {color: Colors.white},
-      leftTitle: 'Cancel',
-      leftTextStyle: {color: Colors.white},
-      onLeft: () => NavActions.pop(),
-      rightTitle: 'Done',
-      rightIcon: 'none',
-      onSelectMedia: this._handleUpdateAvatarPhoto
-    })
-  }
-
-  _navToSettings = () => {
-    NavActions.settings({type: 'push'})
-  }
-
-  _navToEditProfile = () => {
-    NavActions.edit_profile()
-  }
-
-  _navToViewBio = () => {
-    NavActions.viewBioScreen({
-      user: this.props.user
-    })
-  }
-
-  _navToFollowers = () => {
-    NavActions.followersScreen({
-      title: 'Followers',
-      followersType: 'followers',
-      loadDataAction: UserActions.loadUserFollowers,
-      userId: this.props.user.id
-    })
-  }
-
-  _navToFollowing = () => {
-    NavActions.followersScreen({
-      title: 'Following',
-      followersType: 'following',
-      loadDataAction: UserActions.loadUserFollowing,
-      userId: this.props.user.id
-    })
-  }
-
-  _clearError = () => {
-    this.setState({error: null})
-  }
-
-  _getTextInputRefs = () => [this.bioInput]
-
   _setBioText = (bioText) => this.setState({bioText})
 
   _bioRef = c => this.bioInput = c
 
-  areNoStories() {
-    if (
-      (this.state.selectedTab === TabTypes.stories && this.props.fetchStatus.loaded && this.props.stories.length === 0) ||
-      (this.state.selectedTab === TabTypes.drafts && this.props.fetchStatus.loaded && this.props.drafts.length === 0) ||
-      (this.state.selectedTab === TabTypes.bookmarks && this.props.fetchStatus.loaded && this.props.bookmarks.length === 0)
-    ) return true
-    return false
+  getStoriesById() {
+    const {drafts, bookmarks, stories} = this.props
+    if (this.state.selectedTab === TabTypes.stories) return stories
+    else if (this.state.selectedTab === TabTypes.drafts) return drafts
+    else if (this.state.selectedTab === TabTypes.bookmarks) return bookmarks
   }
 
-  isFetching(fetchStatus) {
-    return fetchStatus && fetchStatus.fetching
+  getFetchStatus(){
+    const {selectedTab} = this.state
+    if (selectedTab === TabTypes.stories) return this.props.fetchStatus
+    else if (selectedTab === TabTypes.drafts) return this.props.draftsFetchStatus
+    else if (selectedTab === TabTypes.bookmarks) return this.props.bookmarksFetchStatus
+  }
+
+  renderProfileInfo = () => {
+    const {
+      user, editable, isEditing,
+      isFollowing, onPressFollow, onPressUnfollow
+    } = this.props
+    return (
+      <ProfileUserInfo
+        user={user}
+        editable={editable}
+        isEditing={isEditing}
+        isFollowing={isFollowing}
+        onPressUnfollow={onPressUnfollow}
+        onPressFollow={onPressFollow}
+        usernameText={this.state.usernameText}
+        setUsername={this._setText}
+        error={this.state.error}
+        clearError={this._clearError}
+        handleUpdateAvatarPhoto={this._handleUpdateAvatarPhoto}
+      />
+    )
   }
 
   render() {
-    const { user, stories, drafts, editable, isEditing, bookmarks } = this.props
-    let fetchStatus
-    switch (this.state.selectedTab) {
-      case TabTypes.stories:
-        fetchStatus = this.props.fetchStatus
-        break
-      case TabTypes.drafts:
-        fetchStatus = this.props.draftsFetchStatus
-        break
-      case TabTypes.bookmarks:
-        fetchStatus = this.props.bookmarksFetchStatus
-        break
-    }
-
-    let top
-    let buttons
-    let tabs
-    let avatarCamera
+    const { user, editable, isEditing} = this.props
 
     let showTooltip = !isEditing && editable && !isTooltipComplete(
         TooltipTypes.PROFILE_NO_STORIES,
         user.introTooltips
       )
-
-    /* If the isEditing flag === true then the component will display the user's edit profile view,
-       editable === true shows the user's profile view,
-       otherwise it will show the view that the user sees when looking at another user's profile
-     */
-
-    if(isEditing === true){
-      top = null;
-      tabs = null;
-
-      avatarCamera = (
-        <TouchableOpacity
-          style={styles.addAvatarPhotoButton}
-          onPress={this._selectAvatar}
-        >
-          <Icon
-            name='camera'
-            size={32.5}
-            color={Colors.whiteAlphaPt80}
-            style={styles.updateAvatorIcon} />
-        </TouchableOpacity>
-      )
-
-    } else if (editable === true) {
-      top = (
-        <View style={styles.cogContainer}>
-          <TouchableOpacity onPress={this._navToSettings}>
-            <TabIcon
-              name='gear'
-              style={{ image: styles.cogImageIcon }}
-            />
-          </TouchableOpacity>
-        </View>
-      )
-
-      buttons = (
-        <TouchableOpacity
-          style={styles.blackButton}
-          onPress={this._navToEditProfile}>
-          <Text style={styles.blackButtonText}>EDIT PROFILE</Text>
-        </TouchableOpacity>
-      )
-
-      tabs = (
-        <View style={styles.tabnavEdit}>
-          <Tab
-            selected={TabTypes.stories === this.state.selectedTab}
-            type={TabTypes.stories}
-            onPress={this.selectTab}
-            text='STORIES' />
-          <Tab
-            selected={TabTypes.drafts === this.state.selectedTab}
-            type={TabTypes.drafts}
-            onPress={this.selectTab}
-            text='DRAFTS' />
-          <Tab
-            selected={TabTypes.bookmarks === this.state.selectedTab}
-            type={TabTypes.bookmarks}
-            onPress={this.selectTab}
-            text='BOOKMARKS' />
-        </View>
-      )
-
-      avatarCamera = null;
-
-    } else {
-      top = <View style={styles.readingViewTop}></View>
-
-      tabs = (
-        <View style={styles.tabnavEdit}>
-          <Tab selected isProfileView text='STORIES' />
-        </View>
-      )
-
-      buttons = (
-        <TouchableOpacity
-          style={[
-            styles.blackButton,
-            this.props.isFollowing ? null : styles.followButton
-          ]}
-          onPress={this.props.isFollowing ? this.props.onPressUnfollow : this.props.onPressFollow}>
-          <Text
-            style={[
-              styles.blackButtonText,
-              this.props.isFollowing ? null : styles.followButtonText
-            ]}
-          >
-            {this.props.isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
-          </Text>
-        </TouchableOpacity>
-      )
-      avatarCamera = null;
-    }
-
-    const avatarUrl = (isEditing && user.profile.tempAvatar) ?
-      getImageUrl(user.profile.tempAvatar, 'avatar') :
-      getImageUrl(user.profile.avatar, 'avatar')
-
-    const profileInfo = (
-      <View style={isEditing ? styles.profileEditInfoContainer : styles.profileInfoContainer}>
-        {top}
-        <View style={styles.profileWrapper}>
-          {this.state.error &&
-            <ShadowButton
-              style={styles.errorButton}
-              onPress={this._clearError}
-              text={this.state.error}
-            />
-          }
-          <View>
-            <View style={{position: 'relative'}}>
-              <Avatar
-                size='extraLarge'
-                avatarUrl={avatarUrl}
-              />
-              {avatarCamera}
-            </View>
-            {!isEditing &&
-            <TouchableOpacity onPress={this._navToViewBio} style={styles.bioButton}>
-              <Text style={styles.bioText}>Bio</Text>
-            </TouchableOpacity>}
-          </View>
-          <View style={styles.userInfoMargin}>
-            {isEditing &&
-            <View style={styles.userInfoWrapper}>
-              <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                <TextInput
-                  placeholder={user.username}
-                  value={this.state.usernameText}
-                  autoCapitalize='none'
-                  style={[styles.titleText, styles.editTitle]}
-                  onChangeText={this._setText}
-                  maxLength={usernameContansts.maxLength}
-                  minLength={usernameContansts.minLength}
-                  returnKeyType={'done'}
-                />
-                <TabIcon
-                  name='pencil'
-                  style={{
-                    image: {tintColor: 'grey'},
-                  }}
-                />
-              </View>
-            </View>
-            }
-            {!isEditing &&
-            <View style={styles.userInfoWrapper}>
-              <View>
-                <Text style={styles.titleText}>{user.username}</Text>
-                <Text style={styles.italicText}>{user.profile.fullName}</Text>
-              </View>
-              <View style={styles.followersWrapper}>
-                <View>
-                  <TouchableOpacity onPress={this._navToFollowers}>
-                    <Text style={styles.followerNumber}>{formatCount(user.counts.followers)}</Text>
-                    <Text style={styles.followerLabel}>Followers</Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.followingColumn}>
-                  <TouchableOpacity onPress={this._navToFollowing}>
-                    <Text style={styles.followerNumber}>{formatCount(user.counts.following)}</Text>
-                    <Text style={styles.followerLabel}>Following</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-            }
-            {buttons}
-          </View>
-        </View>
-      </View>
-    )
 
     return (
       <View style={{flex: 1}}>
@@ -508,7 +244,7 @@ class ProfileView extends React.Component {
         <View style={styles.gradientWrapper}>
           {isEditing &&
             <View style={{flex: 1}}>
-              {profileInfo}
+              {this.renderProfileInfo()}
               <View style={styles.bioWrapper}>
                 <Text style={styles.editBio}>Edit Bio</Text>
                 <TextInput
@@ -524,70 +260,22 @@ class ProfileView extends React.Component {
               </View>
             </View>
           }
-          {!isEditing && <View style={styles.tabs}>
-            {(this.areNoStories() || this.isFetching(fetchStatus)) &&
-              <View>
-                {profileInfo}
-                {tabs}
-              </View>
-            }
-            {this.state.selectedTab === TabTypes.stories && stories.length > 0 &&
-              <StoryList
-                style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
-                storiesById={stories}
-                refreshing={false}
-                renderHeaderContent={profileInfo}
-                renderSectionHeader={tabs}
-                renderStory={this.renderStory}
-                pagingIsDisabled
-              />
-            }
-            {this.state.selectedTab === TabTypes.drafts && drafts.length > 0 &&
-              <StoryList
-                style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
-                storiesById={drafts}
-                refreshing={false}
-                renderHeaderContent={profileInfo}
-                renderSectionHeader={tabs}
-                renderStory={this.renderStory}
-                pagingIsDisabled
-              />
-            }
-            {this.state.selectedTab === TabTypes.bookmarks && bookmarks.length > 0 &&
-              <StoryList
-                style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
-                storiesById={bookmarks}
-                refreshing={false}
-                renderHeaderContent={profileInfo}
-                renderSectionHeader={tabs}
-                renderStory={this.renderStory}
-                pagingIsDisabled
-              />
-            }
-            {this.state.selectedTab === TabTypes.stories && fetchStatus.loaded && stories.length === 0 &&
-              <View style={styles.noStories}>
-                <Text style={styles.noStoriesText}>{this.props.editable ? showTooltip ? '' : 'There are no stories here' : 'This user has no stories published'}</Text>
-              </View>
-            }
-            {this.state.selectedTab === TabTypes.drafts && fetchStatus.loaded && drafts.length === 0 &&
-              <View style={styles.noStories}>
-                <Text style={styles.noStoriesText}>{this.props.editable ? showTooltip ? '' : 'There are no stories here' : 'This user has no stories published'}</Text>
-              </View>
-            }
-            {this.state.selectedTab === TabTypes.bookmarks && fetchStatus.loaded && bookmarks.length === 0 &&
-              <View style={styles.noStories}>
-                <Text style={styles.noStoriesText}>{this.props.editable ? showTooltip ? '' : 'There are no bookmarked stories here' : 'This user has no bookmarked stories'}</Text>
-              </View>
-            }
-            {!fetchStatus.loaded && fetchStatus.fetching &&
-              <View style={styles.spinnerWrapper}>
-                <Loader
-                  style={styles.spinner}
-                  spinnerColor={Colors.background} />
-              </View>
-            }
-          </View>
-        }
+          {!isEditing &&
+            <ProfileTabsAndStories
+              editable={editable}
+              renderProfileInfo={this.renderProfileInfo}
+              storiesById={this.getStoriesById()}
+              fetchStatus={this.getFetchStatus()}
+              tabTypes={TabTypes}
+              selectTab={this.selectTab}
+              selectedTab={this.state.selectedTab}
+              touchTrash={this.props.touchTrash}
+              touchEdit={this.props.touchEdit}
+              showLike={this.props.showLike}
+              user={this.props.user}
+              showTooltip={showTooltip}
+            />
+          }
         </View>
         </ScrollView>
         {showTooltip && this.renderTooltip()}

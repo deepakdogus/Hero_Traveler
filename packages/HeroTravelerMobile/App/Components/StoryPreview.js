@@ -183,8 +183,9 @@ export default class StoryPreview extends Component {
           onPress={this.props.onPress}
           gradientColors={this.props.gradientColors}
           gradientLocations={this.props.gradientLocations}
-          showPlayButton={this.props.showPlayButton || this.props.isVisible === false}
+          showPlayButton={this.props.showPlayButton}
           playButtonSize={playButtonSize}
+          isFeed={this.props.isVisible !== undefined}
         />
         {this.props.isStoryReadingScreen && this.renderUserSection()}
         {this.renderBottomSection()}

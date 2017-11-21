@@ -175,7 +175,7 @@ export default class StoryCover extends Component {
           videoFadeAnim={this.player && this.player.getAnimationState()}
           style={styles.playButton}
         />}
-        {this.props.allowVideoPlay && this.state.isPlaying &&
+        {this.props.allowVideoPlay && this.state.isPlaying && !this.props.isFeed &&
           <MuteButton
             onPress={this._togglePlayerRefMuted}
             isMuted={this.state.isMuted}

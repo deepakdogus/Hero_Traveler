@@ -126,8 +126,8 @@ class CategoryFeedScreen extends React.Component {
         userId={this.props.user.id}
         autoPlayVideo
         allowVideoPlay
-        isVisible={storyInfo.isVisible}
         renderLocation={this.props.location}
+        index={storyInfo.index}
       />
     )
   }

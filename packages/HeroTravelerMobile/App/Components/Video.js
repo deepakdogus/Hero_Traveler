@@ -112,6 +112,7 @@ export default class VideoPlayer extends React.Component {
       videoFadeAnim: props.allowVideoPlay ? new Animated.Value(1) : new Animated.Value(0),
       // Sound is muted in __DEV__ because it gets annoying
       muted: __DEV__,
+      imageOverlayOpacity: new Animated.Value(1)
     }
   }
 
@@ -220,7 +221,16 @@ export default class VideoPlayer extends React.Component {
 
   // using hasStarted to know when we should toggle from pending loading image to playable video
   setStarted = () => {
-    if (!this.state.hasStarted) this.setState({hasStarted: true})
+    if (!this.state.hasStarted) {
+      this.setState({hasStarted: true})
+      Animated.timing(
+      this.state.imageOverlayOpacity,
+        {
+          toValue: 0,
+          duration: 250,
+        },
+      ).start()
+    }
   }
 
   // currently only need for new cover videos
@@ -237,13 +247,22 @@ export default class VideoPlayer extends React.Component {
         this.props.videoFillSpace && styles.full,
         this.props.style
       ]}>
-        { this.props.imgUrl && !this.state.hasStarted &&
-          <Image
-            cached={true}
-            resizeMode='cover'
-            source={{uri: this.props.imgUrl}}
-            style={[styles.video, {zIndex: 1}]}
-          />
+        {
+          this.props.imgUrl &&
+          <Animated.View style={[
+            styles.video,
+            {
+              zIndex: 1,
+              opacity: this.state.imageOverlayOpacity,
+            }
+          ]}>
+            <Image
+              cached={true}
+              resizeMode='cover'
+              source={{uri: this.props.imgUrl}}
+              style={styles.image}
+            />
+          </Animated.View>
         }
         <Video
           source={{uri: this.props.path}}
@@ -299,6 +318,9 @@ const styles = StyleSheet.create({
     // left: 0,
     // right: 0,
     // bottom: 0
+  },
+  image: {
+    flex: 1,
   },
   video: {
     // flex: 1,

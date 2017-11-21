@@ -156,12 +156,19 @@ export default class StoryPreview extends Component {
     )
   }
 
+  shouldAutoPlayVideo(){
+    return this.props.autoPlayVideo &&
+    this.props.isVisible !== false &&
+    this.props.areInRenderLocation
+  }
+
   render () {
     const {story} = this.props
     if (!story) return null
     // using StoryPreview height as proxy for StoryCover playbutton size
     const height = this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20
     const playButtonSize = height > 250 ? 'large' : 'small'
+
     return (
       <View style={styles.contentContainer}>
         {this.props.forProfile && this.props.editable &&
@@ -169,14 +176,14 @@ export default class StoryPreview extends Component {
         }
         {!this.props.isStoryReadingScreen && this.renderUserSection()}
         <StoryCover
-          autoPlayVideo={this.props.autoPlayVideo}
+          autoPlayVideo={this.shouldAutoPlayVideo()}
           allowVideoPlay={this.props.allowVideoPlay}
           cover={story.coverImage ? story.coverImage : story.coverVideo}
           coverType={story.coverImage ? 'image' : 'video'}
           onPress={this.props.onPress}
           gradientColors={this.props.gradientColors}
           gradientLocations={this.props.gradientLocations}
-          showPlayButton={this.props.showPlayButton}
+          showPlayButton={this.props.showPlayButton || this.props.isVisible === false}
           playButtonSize={playButtonSize}
         />
         {this.props.isStoryReadingScreen && this.renderUserSection()}

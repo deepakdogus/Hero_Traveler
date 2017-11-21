@@ -128,6 +128,18 @@ export default class StoryCover extends Component {
 
   _makeRef = (i) => this.player = i
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.autoPlayVideo && !this.props.autoPlayVideo && !this.state.isPlaying) {
+      this.setState({isPlaying: true})
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.autoPlayVideo !== this.props.autoPlayVideo ||
+    nextState.isPlaying !== this.state.isPlaying ||
+    nextState.isMuted !== this.state.isMuted
+  }
+
   /*
   Nota bene. We have two different ways to display the play button. One through the Video
   component and a second through the conditional renders we have below. This should be

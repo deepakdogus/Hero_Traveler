@@ -28,7 +28,7 @@ export default class StoryList extends React.Component {
 
   constructor(props) {
     super(props)
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => _.isEqual(r1, r2)})
+    const ds = new ListView.DataSource({rowHasChanged: this.checkEqual})
     const initialDataSource = props.storiesById.map((id, index) => {
       return {
         id,
@@ -39,6 +39,10 @@ export default class StoryList extends React.Component {
       dataSource: ds.cloneWithRows(initialDataSource),
       visibleRows: {'s1': {0: true}},
     }
+  }
+
+  checkEqual(r1,r2) {
+    return r1.id !== r2.id || r1.isVisible !== r2.isVisible
   }
 
   _renderHeader = () => {
@@ -57,10 +61,14 @@ export default class StoryList extends React.Component {
   }
 
   updateDataSource = (visibleRows) => {
+    // helper so that we only have the first row play
+    let hasVisibleRow = false
     const updatedDataSource = this.props.storiesById.map((id, index) => {
+      let isVisible = !!visibleRows.s1[index] && !hasVisibleRow
+      if (isVisible) hasVisibleRow = true
       return {
         id,
-        isVisible: !!visibleRows.s1[index]
+        isVisible: isVisible
       }
     })
     this.setState({

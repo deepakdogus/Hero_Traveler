@@ -138,17 +138,19 @@ class MyFeedScreen extends React.Component {
     }
   }
 
-  renderStory = (storyId) => {
+  renderStory = (storyInfo) => {
     return (
       <ConnectedStoryPreview
-        key={storyId}
-        storyId={storyId}
+        key={storyInfo.id}
+        storyId={storyInfo.id}
         height={imageHeight}
         showLike={true}
         showUserInfo={true}
         onPressUser={this._touchUser}
         userId={this.props.user.id}
-        showPlayButton
+        autoPlayVideo
+        allowVideoPlay
+        isVisible={storyInfo.isVisible}
       />
     )
   }
@@ -211,7 +213,7 @@ const mapStateToProps = (state) => {
     user: state.entities.users.entities[state.session.userId],
     fetchStatus,
     storiesById: userFeedById,
-    error
+    error,
   }
 }
 

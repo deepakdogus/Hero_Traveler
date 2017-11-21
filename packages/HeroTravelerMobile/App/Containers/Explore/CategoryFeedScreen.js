@@ -109,15 +109,17 @@ class CategoryFeedScreen extends React.Component {
     }
   }
 
-  renderStory = (storyId) => {
+  renderStory = (storyInfo) => {
     return (
       <ConnectedStoryPreview
-        key={storyId}
-        storyId={storyId}
+        key={storyInfo.id}
+        storyId={storyInfo.id}
         height={imageHeight}
         onPressUser={this._touchUser}
         userId={this.props.user.id}
-        showPlayButton
+        autoPlayVideo
+        allowVideoPlay
+        isVisible={storyInfo.isVisible}
       />
     )
   }

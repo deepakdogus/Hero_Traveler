@@ -156,6 +156,12 @@ export default class StoryPreview extends Component {
     )
   }
 
+  shouldAutoPlayVideo(){
+    return this.props.autoPlayVideo &&
+    this.props.isVisible !== false &&
+    this.props.areInRenderLocation
+  }
+
   render () {
     const {story} = this.props
     if (!story) return null
@@ -170,7 +176,7 @@ export default class StoryPreview extends Component {
         }
         {!this.props.isStoryReadingScreen && this.renderUserSection()}
         <StoryCover
-          autoPlayVideo={this.props.autoPlayVideo && this.props.isVisible !== false}
+          autoPlayVideo={this.shouldAutoPlayVideo()}
           allowVideoPlay={this.props.allowVideoPlay}
           cover={story.coverImage ? story.coverImage : story.coverVideo}
           coverType={story.coverImage ? 'image' : 'video'}

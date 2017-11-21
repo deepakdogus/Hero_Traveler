@@ -151,6 +151,7 @@ class MyFeedScreen extends React.Component {
         autoPlayVideo
         allowVideoPlay
         isVisible={storyInfo.isVisible}
+        renderLocation={this.props.location}
       />
     )
   }
@@ -214,6 +215,7 @@ const mapStateToProps = (state) => {
     fetchStatus,
     storiesById: userFeedById,
     error,
+    location: state.routes.scene.name
   }
 }
 

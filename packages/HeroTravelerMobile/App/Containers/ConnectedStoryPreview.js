@@ -19,7 +19,9 @@ const mapStateToProps = (state, ownProps) => {
       user: entities.users.entities[story.author],
       isLiked: isStoryLiked(entities.users, sessionUserId, story.id),
       isBookmarked: isStoryBookmarked(entities.users, sessionUserId, story.id),
-      myFollowedUsers: getFollowers(entities.users, 'following', sessionUserId)
+      myFollowedUsers: getFollowers(entities.users, 'following', sessionUserId),
+      areInRenderLocation: ownProps.renderLocation ?
+        ownProps.renderLocation  === state.routes.scene.name : true
     }
   }
 

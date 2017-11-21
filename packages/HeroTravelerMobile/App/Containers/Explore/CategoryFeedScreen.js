@@ -37,7 +37,14 @@ class CategoryFeedScreen extends React.Component {
     user: PropTypes.object,
     storiesById: PropTypes.array,
     fetchStatus: PropTypes.object,
-    error: PropTypes.string
+    error: PropTypes.string,
+    title: PropTypes.string,
+    loadCategory: PropTypes.func,
+    getSelectedCategories: PropTypes.func,
+    unfollowCategory: PropTypes.func,
+    followCategory: PropTypes.func,
+    selectedCategories: PropTypes.arrayOf(PropTypes.string),
+    location: PropTypes.string,
   }
 
   constructor(props) {
@@ -120,6 +127,7 @@ class CategoryFeedScreen extends React.Component {
         autoPlayVideo
         allowVideoPlay
         isVisible={storyInfo.isVisible}
+        renderLocation={this.props.location}
       />
     )
   }
@@ -216,6 +224,7 @@ const mapStateToProps = (state, props) => {
     storiesById: getByCategory(state.entities.stories, props.categoryId),
     error: state.entities.stories.error,
     selectedCategories: state.signup.selectedCategories,
+    location: state.routes.scene.name
   }
 }
 
@@ -223,8 +232,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     loadCategory: (categoryId, storyType) => dispatch(StoryActions.fromCategoryRequest(categoryId, storyType)),
     getSelectedCategories: () => dispatch(SignupActions.signupGetUsersCategories()),
-    followCategory: (categoryId) => dispatch(SignupActions.signupFollowCategory(ownProps.categoryId)),
-    unfollowCategory: (categoryId) => dispatch(SignupActions.signupUnfollowCategory(ownProps.categoryId)),
+    followCategory: () => dispatch(SignupActions.signupFollowCategory(ownProps.categoryId)),
+    unfollowCategory: () => dispatch(SignupActions.signupUnfollowCategory(ownProps.categoryId)),
   }
 }
 

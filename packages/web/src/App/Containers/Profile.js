@@ -16,6 +16,7 @@ import Footer from '../Components/Footer'
 import Overlay from '../Components/Overlay'
 
 const tabBarTabs = ['STORIES', 'DRAFTS', 'BOOKMARKS']
+const readOnlyTabBarTabs = ['STORIES']
 
 const ContentWrapper = styled.div``
 
@@ -178,7 +179,7 @@ class Profile extends Component {
         />
         <ListWrapper>
           <TabBar
-            tabs={tabBarTabs}
+            tabs={isUsersProfile ? tabBarTabs : readOnlyTabBarTabs}
             activeTab={this.state.activeTab}
             onClickTab={this.onClickTab}
           />

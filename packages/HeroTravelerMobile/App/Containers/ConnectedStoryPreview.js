@@ -7,6 +7,15 @@ import UserActions, {getFollowers} from '../Shared/Redux/Entities/Users'
 import StoryPreview from '../Components/StoryPreview'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 
+function getAreInRenderLocation(state, ownProps){
+  if (!ownProps.renderLocation) return true
+  else if (ownProps.renderLocation === 'myFeed') {
+    // myFeed is also the initial state so there are actually two valid matches
+    return ownProps.renderLocation  === state.routes.scene.name || state.routes.scene.name === 'tabbar'
+  }
+  else return ownProps.renderLocation  === state.routes.scene.name
+}
+
 const mapStateToProps = (state, ownProps) => {
   const {session, entities} = state
   const sessionUserId = session.userId
@@ -20,10 +29,10 @@ const mapStateToProps = (state, ownProps) => {
       isLiked: isStoryLiked(entities.users, sessionUserId, story.id),
       isBookmarked: isStoryBookmarked(entities.users, sessionUserId, story.id),
       myFollowedUsers: getFollowers(entities.users, 'following', sessionUserId),
-      areInRenderLocation: ownProps.renderLocation ?
-        ownProps.renderLocation  === state.routes.scene.name : true
+      areInRenderLocation: getAreInRenderLocation(state, ownProps)
     }
   }
+
   const isVisible = ownProps.index !== undefined ?
     state.ux.storyListVisibleRow == ownProps.index : undefined
   return {

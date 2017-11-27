@@ -31,7 +31,7 @@ const DefaultText = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-size: 18px;
   letter-spacing: 1.2px;
-  border-width: ${props => props.isActive ? '0 0 5px 0' : '0' };
+  border-width: ${props => !props.isOnlyTab && props.isActive ? '0 0 5px 0' : '0' };
   border-color:  ${props => props.theme.Colors.redHighlights};
   margin: 0;
   padding: 12.5px 10px 12.5px;
@@ -57,6 +57,7 @@ export default class TabBar extends React.Component {
           isModal={isModal}
         >
           <Text
+            isOnlyTab={tabs.length === 1}
             isActive={tab === activeTab}
             isLast={index === tabs.length - 1}
           >

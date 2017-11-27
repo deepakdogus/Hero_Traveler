@@ -30,7 +30,8 @@ export default class StoryCover extends Component {
     allowVideoPlay: PropTypes.bool.isRequired,
     showPlayButton: PropTypes.bool,
     gradientColors: PropTypes.arrayOf(PropTypes.string),
-    gradientLocations: PropTypes.arrayOf(PropTypes.number)
+    gradientLocations: PropTypes.arrayOf(PropTypes.number),
+    shouldEnableAutoplay: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -43,7 +44,7 @@ export default class StoryCover extends Component {
   constructor(props) {
     super(props)
     this._tapVideoWrapper = this._tapVideoWrapper.bind(this)
-    const startVideoImmediately = props.allowVideoPlay && props.autoPlayVideo
+    const startVideoImmediately = props.allowVideoPlay && props.autoPlayVideo && props.shouldEnableAutoplay
     this.state = {
       isPlaying: startVideoImmediately,
       isMuted: __DEV__,
@@ -137,7 +138,8 @@ export default class StoryCover extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return nextProps.autoPlayVideo !== this.props.autoPlayVideo ||
     nextState.isPlaying !== this.state.isPlaying ||
-    nextState.isMuted !== this.state.isMuted
+    nextState.isMuted !== this.state.isMuted ||
+    nextState.shouldEnableAutoplay !== this.props.shouldEnableAutoplay
   }
 
   /*
@@ -152,7 +154,8 @@ export default class StoryCover extends Component {
           path={getVideoUrl(this.props.cover)}
           imgUrl={getImageUrl(this.props.cover, 'video')}
           ref={this._makeRef}
-          allowVideoPlay={this.props.allowVideoPlay}
+          allowVideoPlay={this.props.allowVideoPlay && this.props.autoPlayVideo}
+          shouldEnableAutoplay={this.props.shouldEnableAutoplay}
           autoPlayVideo={this.props.autoPlayVideo}
           showPlayButton={false}
           onIsPlayingChange={this._setIsPlaying}
@@ -169,7 +172,8 @@ export default class StoryCover extends Component {
             {this.props.children}
           </LinearGradient>
         </TouchableWithoutFeedback>
-        {this.props.allowVideoPlay && !this.state.isPlaying && <PlayButton
+        {this.props.allowVideoPlay && !this.state.isPlaying && this.props.shouldEnableAutoplay &&
+        <PlayButton
           onPress={this._togglePlayerRef}
           isPlaying={this.state.isPlaying}
           videoFadeAnim={this.player && this.player.getAnimationState()}
@@ -196,15 +200,12 @@ export default class StoryCover extends Component {
   render() {
     let coverType;
     if (this.hasImage()) coverType = 'image'
-    else if (this.hasVideo()) {
-      if (this.props.allowVideoPlay && this.props.autoPlayVideo) coverType = 'video'
-      else if (this.hasVideo()) coverType = 'videoThumbnail'
-    }
+    else if (this.hasVideo()) coverType = 'video'
 
     return (
       <View style={[styles.root, this.props.style]}>
         {this.hasVideo() && coverType === 'video' && this.renderVideo()}
-        {(coverType === 'image' || coverType === 'videoThumbnail') && this.renderImage()}
+        {coverType === 'image' && this.renderImage()}
         {!coverType &&
           <TouchableWithoutFeedback onPress={this.props.onPress}>
             <View style={styles.noCover}>

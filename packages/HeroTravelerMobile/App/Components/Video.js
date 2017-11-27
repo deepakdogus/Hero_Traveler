@@ -103,12 +103,11 @@ export default class VideoPlayer extends React.Component {
     super(props)
 
     this._togglePlayVideo = this._togglePlayVideo.bind(this)
-    const startVideoImmediately = props.allowVideoPlay && props.autoPlayVideo
+    const startVideoImmediately = props.allowVideoPlay && props.autoPlayVideo && props.shouldEnableAutoplay !== undefined
 
     this.state = {
       videoPlaying: startVideoImmediately,
       videoStarted: startVideoImmediately,
-      videoEnded: false,
       videoFadeAnim: props.allowVideoPlay ? new Animated.Value(1) : new Animated.Value(0),
       // Sound is muted in __DEV__ because it gets annoying
       muted: __DEV__,
@@ -142,36 +141,12 @@ export default class VideoPlayer extends React.Component {
     ).start()
   }
 
-  // warning, setting videoPlaying: false here will
-  // probably prevent the repeat functionality of <Video />
-  _onVideoEnd = () => {
-    this.fadeInVideoUI()
-    this._onIsPlaying(false)
-    this.setState({
-      videoPlaying: false,
-      videoEnded: true
-    })
-  }
-
   _togglePlayVideo() {
     if (!this.props.allowVideoPlay) {
       return
     }
 
     const newPlayingState = !this.state.videoPlaying
-
-    // If the video ended, go to the beginning
-    // of the video and play again
-    if (this.state.videoEnded) {
-      this._onIsPlaying(true)
-      this.player.seek(0)
-      this.fadeOutVideoUI()
-      return this.setState({
-        videoPlaying: true,
-        videoEnded: false,
-        hasStarted: false,
-      })
-    }
 
     this._onIsPlaying(newPlayingState)
 
@@ -239,8 +214,14 @@ export default class VideoPlayer extends React.Component {
     this.props.onLoad(event.naturalSize)
   }
 
+  _getShouldEnableAutoplay(){
+    if (this.props.shouldEnableAutoplay === undefined) return true
+    else return this.props.shouldEnableAutoplay
+  }
+
   render() {
     const playButtonSize = this.props.playButtonSize
+
     return (
       <View style={[
         styles.root,
@@ -267,7 +248,7 @@ export default class VideoPlayer extends React.Component {
         <Video
           source={{uri: this.props.path}}
           ref={this._bindRef}
-          paused={!this.state.videoPlaying}
+          paused={!this.state.videoPlaying || !this._getShouldEnableAutoplay()}
           muted={this.state.muted}
           style={[
             styles.video,
@@ -289,7 +270,7 @@ export default class VideoPlayer extends React.Component {
         {this.props.showMuteButton && this.props.showPlayButton &&
           <MuteButton
             style={styles.mute}
-            onPress={() => this.toggleMute()}
+            onPress={this.toggleMute}
             isMuted={this.state.muted}
           />
         }
@@ -298,7 +279,7 @@ export default class VideoPlayer extends React.Component {
           <View style={styles.changeBtn}>
             <VideoButton
               text='CHANGE'
-              onPress={() => this.props.changeBtnOnPress()}
+              onPress={this.props.changeBtnOnPress}
             />
           </View>
         }

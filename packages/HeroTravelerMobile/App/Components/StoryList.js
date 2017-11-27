@@ -6,13 +6,15 @@ import {
   ListView,
   RefreshControl
 } from 'react-native'
+import { connect } from 'react-redux'
 import styles from './Styles/StoryListStyle'
+import UXActions from '../Shared/Redux/UXRedux'
 
 /*
 add pagingIsDisabled instead of pagingEnabled as a prop so that paging is default
 and so we do not need to add the property to (almost) every StoryList call we make
 */
-export default class StoryList extends React.Component {
+class StoryList extends React.Component {
   static propTypes = {
     storiesById: PropTypes.arrayOf(PropTypes.string).isRequired,
     onRefresh: PropTypes.func,
@@ -32,7 +34,7 @@ export default class StoryList extends React.Component {
     const initialDataSource = props.storiesById.map((id, index) => {
       return {
         id,
-        isVisible: index === 0,
+        index,
       }
     })
     this.state = {
@@ -42,7 +44,7 @@ export default class StoryList extends React.Component {
   }
 
   checkEqual(r1,r2) {
-    return r1.id !== r2.id || r1.isVisible !== r2.isVisible
+    return r1.id !== r2.id
   }
 
   _renderHeader = () => {
@@ -61,19 +63,10 @@ export default class StoryList extends React.Component {
   }
 
   updateDataSource = (visibleRows) => {
-    // helper so that we only have the first row play
-    let hasVisibleRow = false
-    const updatedDataSource = this.props.storiesById.map((id, index) => {
-      let isVisible = !!visibleRows.s1[index] && !hasVisibleRow
-      if (isVisible) hasVisibleRow = true
-      return {
-        id,
-        isVisible: isVisible
-      }
+    const firstVisibleRow = Object.keys(visibleRows.s1).reduce((min, row) =>{
+      return Math.min(min, row)
     })
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(updatedDataSource)
-    })
+    this.props.setVisibleRow(firstVisibleRow)
   }
 
   render () {
@@ -99,3 +92,16 @@ export default class StoryList extends React.Component {
     )
   }
 }
+
+const mapStateToProps = () => {
+  return {}
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setVisibleRow: (row) => dispatch(UXActions.setStoryListVisibleRow(row)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(StoryList)
+

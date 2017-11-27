@@ -24,11 +24,13 @@ const mapStateToProps = (state, ownProps) => {
         ownProps.renderLocation  === state.routes.scene.name : true
     }
   }
-
+  const isVisible = ownProps.index !== undefined ?
+    state.ux.storyListVisibleRow == ownProps.index : undefined
   return {
     ...storyProps,
     story,
     accessToken: _.find(session.tokens, {type: 'access'}).value,
+    isVisible,
   }
 }
 

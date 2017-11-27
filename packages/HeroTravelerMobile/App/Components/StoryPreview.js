@@ -33,11 +33,12 @@ export default class StoryPreview extends Component {
     allowVideoPlay: PropTypes.bool,
     isStoryReadingScreen: PropTypes.bool,
     gradientColors: PropTypes.arrayOf(PropTypes.string),
-    isContentVisible: PropTypes.bool,
+    isVisible: PropTypes.bool,
+    areInRenderLocation: PropTypes.bool,
+
   }
 
   static defaultProps = {
-    isContentVisible: true,
     showLike: true,
     isStoryReadingScreen: false,
   }
@@ -156,10 +157,8 @@ export default class StoryPreview extends Component {
     )
   }
 
-  shouldAutoPlayVideo(){
-    return this.props.autoPlayVideo &&
-    this.props.isVisible !== false &&
-    this.props.areInRenderLocation
+  shouldEnableAutoplay(){
+    return this.props.isVisible !== false && this.props.areInRenderLocation
   }
 
   render () {
@@ -176,15 +175,17 @@ export default class StoryPreview extends Component {
         }
         {!this.props.isStoryReadingScreen && this.renderUserSection()}
         <StoryCover
-          autoPlayVideo={this.shouldAutoPlayVideo()}
+          autoPlayVideo={this.props.autoPlayVideo}
           allowVideoPlay={this.props.allowVideoPlay}
           cover={story.coverImage ? story.coverImage : story.coverVideo}
           coverType={story.coverImage ? 'image' : 'video'}
           onPress={this.props.onPress}
           gradientColors={this.props.gradientColors}
           gradientLocations={this.props.gradientLocations}
-          showPlayButton={this.props.showPlayButton || this.props.isVisible === false}
+          showPlayButton={this.props.showPlayButton}
           playButtonSize={playButtonSize}
+          isFeed={this.props.isVisible !== undefined}
+          shouldEnableAutoplay={this.shouldEnableAutoplay()}
         />
         {this.props.isStoryReadingScreen && this.renderUserSection()}
         {this.renderBottomSection()}

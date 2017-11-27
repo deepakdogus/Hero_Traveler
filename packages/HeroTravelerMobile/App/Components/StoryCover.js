@@ -47,7 +47,7 @@ export default class StoryCover extends Component {
     const startVideoImmediately = props.allowVideoPlay && props.autoPlayVideo && props.shouldEnableAutoplay
     this.state = {
       isPlaying: startVideoImmediately,
-      isMuted: __DEV__,
+      isMuted: props.isFeed,
     }
   }
 
@@ -110,13 +110,12 @@ export default class StoryCover extends Component {
   _tapVideoWrapper() {
     const {onPress} = this.props
 
-
     // If the video is not playing, invoke the usual callback
-    if ((!this.player || !this.player.getIsPlaying()) && onPress) {
+    if ((!this.player || !this.player.getIsPlaying() || this.props.isFeed) && onPress) {
       return this.props.onPress()
     }
 
-    this.player.toggle()
+    if (!this.props.isFeed) this.player.toggle()
   }
 
   _setIsPlaying = (value) => this.setState({isPlaying: value})
@@ -160,6 +159,7 @@ export default class StoryCover extends Component {
           showPlayButton={false}
           onIsPlayingChange={this._setIsPlaying}
           onMuteChange={this._changeMute}
+          isMuted={this.props.isFeed}
           resizeMode='cover'
         />
         <TouchableWithoutFeedback
@@ -172,7 +172,7 @@ export default class StoryCover extends Component {
             {this.props.children}
           </LinearGradient>
         </TouchableWithoutFeedback>
-        {this.props.allowVideoPlay && !this.state.isPlaying && this.props.shouldEnableAutoplay &&
+        {this.props.allowVideoPlay && !this.state.isPlaying && this.props.shouldEnableAutoplay && !this.props.isFeed &&
         <PlayButton
           onPress={this._togglePlayerRef}
           isPlaying={this.state.isPlaying}

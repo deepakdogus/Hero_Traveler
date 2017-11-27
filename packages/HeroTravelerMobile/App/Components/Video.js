@@ -90,6 +90,8 @@ export default class VideoPlayer extends React.Component {
   static propTypes = {
     autoPlayVideo: PropTypes.bool,
     allowVideoPlay: PropTypes.bool,
+    isMuted: PropTypes.bool,
+    shouldEnableAutoplay: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -110,7 +112,7 @@ export default class VideoPlayer extends React.Component {
       videoStarted: startVideoImmediately,
       videoFadeAnim: props.allowVideoPlay ? new Animated.Value(1) : new Animated.Value(0),
       // Sound is muted in __DEV__ because it gets annoying
-      muted: __DEV__,
+      muted: props.isMuted,
     }
   }
 
@@ -211,6 +213,14 @@ export default class VideoPlayer extends React.Component {
     else return this.props.shouldEnableAutoplay
   }
 
+  isPaused(){
+    // "if" means we are viewing a story directly
+    if (this.props.shouldEnableAutoplay === undefined) {
+      return !this.state.videoPlaying
+    }
+    else return !this.props.shouldEnableAutoplay
+  }
+
   render() {
     const playButtonSize = this.props.playButtonSize
 
@@ -233,7 +243,7 @@ export default class VideoPlayer extends React.Component {
         <Video
           source={{uri: this.props.path}}
           ref={this._bindRef}
-          paused={!this.state.videoPlaying || !this._getShouldEnableAutoplay()}
+          paused={this.isPaused()}
           muted={this.state.muted}
           style={[
             styles.video,

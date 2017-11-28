@@ -3,13 +3,17 @@ import styled from 'styled-components'
 import Avatar from '../Avatar'
 import VerticalCenter from '../VerticalCenter'
 
-export const Username = styled.p`
-  font-family: ${props => props.theme.Fonts.type.montserrat}};
+export const UsernameBaseStyles = `
   font-weight: 600;
   font-size: 40px;
-  color: ${props => props.theme.Colors.background};
-  margin: 0;
+  margin: 0 0 0 -2px;
   text-align: left;
+`
+
+export const Username = styled.p`
+  ${UsernameBaseStyles};
+  font-family: ${props => props.theme.Fonts.type.montserrat}};
+  color: ${props => props.theme.Colors.background};
 `
 
 export const Name = styled.p`
@@ -40,12 +44,13 @@ export const Centered = styled(VerticalCenter)`
 export const StyledAvatar = styled(Avatar)``
 
 export const AvatarWrapper = styled(VerticalCenter)`
+  position: relative;
   height: 131px;
 `
 
 export const ButtonWrapper = styled.div`
   margin-top: 10px;
-  margin-left: -10px;
+  text-align: left;
 `
 
 export const BottomLeft = styled.div`

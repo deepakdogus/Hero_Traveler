@@ -18,8 +18,6 @@ import {
 } from './ProfileHeaderShared'
 import NavLinkStyled from '../NavLinkStyled'
 
-const avatarSize = 'x-large'
-
 const Count = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat}};
   margin: 0;
@@ -92,15 +90,13 @@ export default class ProfileHeaderView extends React.Component {
   }
 
   render () {
-    let {
+    const {
       user,
       isContributor, isUsersProfile, isFollowing,
       openBio, openContributor,
       openFollowedBy, openFollowing,
       followUser, unfollowUser,
     } = this.props
-
-    isContributor = true
 
     return (
       <Centered>
@@ -110,7 +106,7 @@ export default class ProfileHeaderView extends React.Component {
               <StyledAvatar
                 avatarUrl={getImageUrl(user.profile.avatar)}
                 type='profile'
-                size={avatarSize}
+                size='x-large'
               />
             </AvatarWrapper>
             <BioText onClick={openBio}>Read Bio</BioText>
@@ -139,28 +135,18 @@ export default class ProfileHeaderView extends React.Component {
                   />
                 </NavLinkStyled>
               }
-              {
-                !isUsersProfile &&
-                <div>
-                  <RoundedButton
-                    margin='none'
-                    onClick={isFollowing ? unfollowUser : followUser}
-                    type={isFollowing ? 'opaqueWhite' : 'opaque'}
-                    text={isFollowing ? 'FOLLOWING' : 'FOLLOW'}
-                  />
-                  {
-                  // disabled until proper implementation
-                  // <RoundedButton
-                  //   margin='small'
-                  //   type='opaque'
-                  //   text='MESSAGE'/>
-                  }
-                </div>
+              { !isUsersProfile &&
+                <RoundedButton
+                  margin='none'
+                  onClick={isFollowing ? unfollowUser : followUser}
+                  type={isFollowing ? 'blackWhite' : ''}
+                  text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
+                />
               }
             </ButtonWrapper>
           </SecondCol>
         </Row>
-        {isContributor &&
+        { isContributor &&
         <BottomLeft>
             <ClickRow onClick={openContributor}>
               <Icon name='profileBadge'/>

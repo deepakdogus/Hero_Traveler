@@ -27,6 +27,8 @@ import FAQTermsAndConditions from '../Modals/FAQTermsAndConditions'
 import ProfileBio from '../Modals/ProfileBio'
 import Contributor from '../Modals/Contributor'
 
+const Container = styled.div``
+
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   ${OverlayStyles}
 `
@@ -70,14 +72,9 @@ export default class ProfileHeader extends React.Component {
   render () {
     const {user, isEdit} = this.props
     const backgroundImage = getImageUrl(user.profile.cover)
-    const ImageWrapper = backgroundImage ? OpaqueHeaderImageWrapper : HeaderImageWrapper
     return (
-      <ImageWrapper
-        backgroundImage={backgroundImage}
-        size='large'
-        type='profile'
-      >
-        <Header isLoggedIn></Header>
+      <Container>
+        <Header isLoggedIn blackHeader></Header>
         {isEdit && <ProfileHeaderEdit {...this.props}/>}
         {!isEdit &&
           <ProfileHeaderView
@@ -191,8 +188,7 @@ export default class ProfileHeader extends React.Component {
         >
           <Contributor/>
         </Modal>
-
-      </ImageWrapper>
+      </Container>
     )
   }
 }

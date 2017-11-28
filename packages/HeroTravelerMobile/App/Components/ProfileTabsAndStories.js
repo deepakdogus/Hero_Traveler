@@ -76,7 +76,10 @@ export default class ProfileTabsAndStories extends Component {
   }
 
   renderStory = (storyInfo) => {
-    const {touchTrash, touchEdit, tabTypes, selectedTab, editable, showLike, user} = this.props
+    const {
+      touchTrash, touchEdit, tabTypes, selectedTab,
+      editable, showLike, user, location
+    } = this.props
     return (
       <ConnectedStoryPreview
         forProfile={true}
@@ -86,11 +89,14 @@ export default class ProfileTabsAndStories extends Component {
         titleStyle={styles.storyTitleStyle}
         subtitleStyle={styles.subtitleStyle}
         showLike={showLike}
-        showPlayButton
         key={storyInfo.id}
         storyId={storyInfo.id}
         userId={user.id}
         height={storyPreviewHeight}
+        autoPlayVideo
+        allowVideoPlay
+        renderLocation={this.props.location}
+        index={storyInfo.index}
       />
     )
   }

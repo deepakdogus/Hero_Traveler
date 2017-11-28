@@ -214,7 +214,7 @@ class ProfileView extends React.Component {
   }
 
   render() {
-    const { user, editable, isEditing} = this.props
+    const { user, editable, isEditing, location} = this.props
 
     let showTooltip = !isEditing && editable && !isTooltipComplete(
         TooltipTypes.PROFILE_NO_STORIES,
@@ -271,6 +271,7 @@ class ProfileView extends React.Component {
               showLike={this.props.showLike}
               user={this.props.user}
               showTooltip={showTooltip}
+              location={location}
             />
           }
         </View>
@@ -288,8 +289,9 @@ class ProfileView extends React.Component {
   }
 }
 
-const mapStateToProps = () => {
+const mapStateToProps = (state) => {
   return {
+    location: state.routes.scene.name
   }
 }
 

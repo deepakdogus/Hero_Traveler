@@ -26,16 +26,6 @@ export const Name = styled.p`
   text-align: left;
 `
 
-export const ItalicText = styled.p`
-  font-family: ${props => props.theme.Fonts.type.crimsonText}};
-  font-weight: 400;
-  font-size: 18px;
-  color: ${props => props.theme.Colors.grey};
-  letter-spacing: .5px;
-  font-style: italic;
-  margin: 0;
-`
-
 export const Centered = styled(VerticalCenter)`
   margin-top: 65px;
   height: 365px;
@@ -69,9 +59,4 @@ export const BottomLeftText = styled.p`
   margin: 0;
   padding-left: 10px;
   line-height: 25px;
-`
-
-export const Container = styled.div`
-  margin-top: 65px;
-  position: relative;
 `

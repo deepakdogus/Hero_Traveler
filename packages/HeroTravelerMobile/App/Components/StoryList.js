@@ -39,7 +39,7 @@ class StoryList extends React.Component {
     })
     this.state = {
       dataSource: ds.cloneWithRows(initialDataSource),
-      visibleRows: {'s1': {0: true}},
+      visibleRows: {'s1': {'-1': true}},
     }
   }
 

@@ -55,6 +55,7 @@ const images = {
   iconArrowRightRed: require('../Images/ht-icons/icon_arrow_right_red.png'),
   iconArrowLeftRed: require('../Images/ht-icons/icon_arrow_left_red.png'),
   iconPencil: require('../Images/ht-icons/icon_profile-edit-username@2x.png'),
+  iconPencilBlack: require('../Images/ht-icons/edit-story.png'),
   iconPencilOutline: require('../Images/ht-icons/icon_profile-edit-story@2x.png'),
   iconGear: require('../Images/ht-icons/icon_profile-gear@2x.png'),
   iconTrash: require('../Images/ht-icons/icon_profile-trash-story@2x.png'),

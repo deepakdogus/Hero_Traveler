@@ -35,7 +35,7 @@ const api = HeroAPI.create()
 
 // These should be in ht-util
 // but there appears to be a symlink bug with RN/lerna
-const Constants = {
+export const Constants = {
   PASSWORD_MIN_LENGTH: 8,
   PASSWORD_MAX_LENGTH: 64,
   USERNAME_MIN_LENGTH: 2,

@@ -49,6 +49,7 @@ class Profile extends Component {
     userBookmarksFetchStatus: PropTypes.object,
     userBookmarksById: PropTypes.arrayOf(PropTypes.string),
     error: PropTypes.bool,
+    userError: PropTypes.string,
     myFollowedUsers: PropTypes.arrayOf(PropTypes.string),
     // mapDispatchToProps functions
     getStories: PropTypes.func,
@@ -152,7 +153,7 @@ class Profile extends Component {
   render() {
     const {
       match, profilesUser, sessionUserId,
-      users, myFollowedUsers,
+      users, myFollowedUsers, userError,
       updateUser, uploadMedia
     } = this.props
     if (!profilesUser) return null
@@ -167,6 +168,7 @@ class Profile extends Component {
       <ContentWrapper>
         <ProfileHeader
           user={profilesUser}
+          error={userError}
           isContributor={isContributor}
           isEdit={isEdit}
           isUsersProfile={isUsersProfile}
@@ -221,6 +223,7 @@ function mapStateToProps(state, ownProps) {
     userBookmarksFetchStatus: getBookmarksFetchStatus(stories, userId),
     userBookmarksById: getByBookmarks(users, userId),
     error: stories.error,
+    userError: users.error,
     myFollowedUsers,
   }
 }

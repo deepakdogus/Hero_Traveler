@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import {Row} from '../FlexboxGrid'
+import {Row, Col} from '../FlexboxGrid'
 import RoundedButton from '../RoundedButton'
 import Icon from '../Icon'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
@@ -11,17 +11,14 @@ import Modal from 'react-modal'
 import EditPhotoOptions from '../Modals/EditPhotoOptions'
 import PhotoEditor from '../Modals/PhotoEditor'
 import uploadFile from '../../Utils/uploadFile'
+import {Constants as SignupConstants} from '../Modals/Signup'
 
 import {
-  Username,
-  ItalicText,
+  UsernameBaseStyles,
   Centered,
   StyledAvatar,
   AvatarWrapper,
   ButtonWrapper,
-  BottomLeft,
-  BottomLeftText,
-  Container
 } from './ProfileHeaderShared'
 
 const customModalStyles = {
@@ -40,6 +37,12 @@ const CameraIcon = styled(Icon)`
   height: 24px;
 `
 
+const PencilIcon = styled(Icon)`
+  width: 35px;
+  height: 35px;
+  margin: 10px 0;
+`
+
 const EditAvatarWrapper = styled(VerticalCenter)`
   position: absolute;
   align-items: center;
@@ -48,23 +51,67 @@ const EditAvatarWrapper = styled(VerticalCenter)`
 `
 
 const BioInput = styled.textarea`
-  color: ${props => props.theme.Colors.snow};
+  color: ${props => props.theme.Colors.grey};
   font-size: 16px;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
   letter-spacing: .7px;
+  width: 100%;
   height: 160px;
-  width: 450px;
-  background-color: ${props => props.theme.Colors.backgroundOpaque};
-  border: ${props => `1px solid ${props.theme.Colors.snow}`};
-  margin: 10px auto 0;
-  padding: 30px 20px;
   resize: none;
+  background-color: ${props => props.theme.Colors.lightGreyAreas};
+  border-width: 0px;
+  padding: 0;
+`
+
+const Container = styled.div``
+
+const SecondCol = styled(Col)`
+  margin-left: 20px;
+`
+
+const UsernameWrapper = styled(VerticalCenter)`
+  height: 131px;
+`
+
+const EditBioText = styled.p`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
+  font-weight: 700;
+  color: ${props => props.theme.Colors.background};
+  padding: 30px 0 10px;
+  margin: 0;
+`
+
+const BioWrapper = styled.div`
+  background-color: ${props => props.theme.Colors.lightGreyAreas};
+`
+
+const BioContainer = styled.div`
+  max-width: 800px;
+  margin: auto;
+`
+
+const UsernameInput = styled.input`
+  ${UsernameBaseStyles};
+  font-family: ${props => props.theme.Fonts.type.montserrat}};
+  color: ${props => props.theme.Colors.background};
+  width: 250px;
+  border-width: 0;
+`
+
+const ErrorText = styled.p`
+  margin: 0;
+  font-size: 12px;
+  color: ${props => props.theme.Colors.redHighlights};
+  text-align: left;
+  padding-left: 1px;
+  padding-top: 2px;
 `
 
 function getInitialState(user = {}){
   return {
     bio: user.bio,
+    username: user.username,
     modal: undefined,
     photoType: undefined,
     loadedImage: undefined,
@@ -76,7 +123,7 @@ export default class ProfileHeaderEdit extends React.Component {
     user: PropTypes.object,
     isContributor: PropTypes.bool,
     bio: PropTypes.string,
-
+    error: PropTypes.string,
     updateUser: PropTypes.func,
     uploadMedia: PropTypes.func,
     toProfileView: PropTypes.func,
@@ -84,12 +131,15 @@ export default class ProfileHeaderEdit extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = getInitialState()
+    this.state = getInitialState(props.user)
   }
 
   componentWillReceiveProps(nextProps){
-    if (nextProps.user && this.state.bio !== nextProps.user.bio) {
-      this.setState({bio: nextProps.user.bio})
+    if (nextProps.user.id !== this.props.user.id) {
+      this.setState({
+        bio: nextProps.user.bio,
+        username: nextProps.user.username
+      })
     }
   }
 
@@ -116,7 +166,7 @@ export default class ProfileHeaderEdit extends React.Component {
   }
 
   onChangeText = (event) => {
-    this.setState({ bio: event.target.value })
+    this.setState({ [event.target.name]: event.target.value })
   }
 
   openCrop = () => {
@@ -157,13 +207,14 @@ export default class ProfileHeaderEdit extends React.Component {
 
   onSave = () => {
     this.props.updateUser({
-      bio: this.state.bio
+      bio: this.state.bio,
+      username: this.state.username
     })
   }
 
   render () {
-    const {user} = this.props
-    const {bio, loadedImage, modal, photoType} = this.state
+    const {user, error} = this.props
+    const {bio, loadedImage, modal, photoType, username} = this.state
     const avatarUrl = getImageUrl(user.profile.avatar, 'avatar')
 
     let targetedImage
@@ -172,48 +223,73 @@ export default class ProfileHeaderEdit extends React.Component {
     return (
       <Container>
         <Centered>
-          <Username>{user.username}</Username>
-          <AvatarWrapper>
-            <EditAvatarWrapper>
-              <CameraIcon
-                type='avatar'
-                name='camera'
-                onClick={this.openAvatarOptions}
-              />
-            </EditAvatarWrapper>
-            <StyledAvatar
-              avatarUrl={avatarUrl}
-              type='profile'
-              size='x-large'
-            />
-          </AvatarWrapper>
-          <ItalicText>Edit Bio</ItalicText>
-          <BioInput
-            type='text'
-            value={bio}
-            placeholder='Enter your bio'
-            onChange={this.onChangeText}
-          />
-          <ButtonWrapper>
-            <RoundedButton
-              margin='small'
-              type={'opaque'}
-              text={'CANCEL'}
-              onClick={this.onCancel}
-            />
-            <RoundedButton
-              margin='small'
-              text='SAVE BIO'
-              onClick={this.onSave}
-            />
-          </ButtonWrapper>
-          <BottomLeft>
-            <Row onClick={this.openCoverOptions}>
-              <CameraIcon name='camera' type='cover'/>
-              <BottomLeftText>EDIT COVER IMAGE</BottomLeftText>
-            </Row>
-          </BottomLeft>
+          <Row center='xs'>
+            <Col>
+              <AvatarWrapper>
+                <EditAvatarWrapper>
+                  <CameraIcon
+                    type='avatar'
+                    name='camera'
+                    onClick={this.openAvatarOptions}
+                  />
+                </EditAvatarWrapper>
+                <StyledAvatar
+                  avatarUrl={avatarUrl}
+                  type='profile'
+                  size='x-large'
+                />
+              </AvatarWrapper>
+            </Col>
+            <SecondCol>
+              <UsernameWrapper>
+                <Row>
+                  <Col>
+                    <UsernameInput
+                      value={username}
+                      name='username'
+                      onChange={this.onChangeText}
+                      maxLength={SignupConstants.USERNAME_MAX_LENGTH}
+                    />
+                    { username && username.length < SignupConstants.USERNAME_MIN_LENGTH &&
+                      <ErrorText>Username must be at least 2 characters long</ErrorText>
+                    }
+                    { error &&
+                      <ErrorText>Sorry, that username is already in use</ErrorText>
+                    }
+                  </Col>
+                  <PencilIcon
+                    name='pencilBlack'
+                  />
+                </Row>
+              </UsernameWrapper>
+              <ButtonWrapper>
+                <RoundedButton
+                  margin='small'
+                  type={'blackWhite'}
+                  text={'CANCEL'}
+                  onClick={this.onCancel}
+                />
+                <RoundedButton
+                  margin='small'
+                  text='SAVE CHANGES'
+                  onClick={this.onSave}
+                />
+              </ButtonWrapper>
+            </SecondCol>
+          </Row>
         </Centered>
+
+        <BioWrapper>
+          <BioContainer>
+            <EditBioText>Edit Bio</EditBioText>
+            <BioInput
+              value={bio}
+              name='bio'
+              placeholder='Enter your bio'
+              onChange={this.onChangeText}
+            />
+          </BioContainer>
+        </BioWrapper>
 
         <Modal
           contentLabel='Edit Photo Options'

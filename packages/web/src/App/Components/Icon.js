@@ -41,6 +41,8 @@ export default class Icon extends React.Component {
     switch (navKey) {
       case 'pencil':
         return Images.iconPencil
+      case 'pencilBlack':
+        return Images.iconPencilBlack
       case 'gear':
         return Images.iconGear
       case 'date':

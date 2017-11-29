@@ -57,6 +57,7 @@ import {
 import {
   getStory,
   getUserFeed,
+  getLikesAndBookmarks,
   registerDraft,
   publishDraft,
   discardDraft,
@@ -139,6 +140,7 @@ export default function * root () {
 
     takeLatest(StoryTypes.STORY_REQUEST, getStory, heroAPI),
     takeLatest(StoryTypes.FEED_REQUEST, getUserFeed, heroAPI),
+    takeLatest(StoryTypes.LIKES_AND_BOOKMARKS_REQUEST, getLikesAndBookmarks, heroAPI),
     takeLatest(StoryTypes.FROM_USER_REQUEST, getUserStories, heroAPI),
     takeLatest(StoryTypes.FROM_CATEGORY_REQUEST, getCategoryStories, heroAPI),
     takeLatest(StoryTypes.STORY_LIKE, likeStory, heroAPI),

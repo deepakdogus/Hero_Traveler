@@ -1,8 +1,13 @@
 import React from 'react'
+import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import Icon from './Icon'
 import Image from './Image'
+
+const StyledImage = styled(Image)`
+  cursor: ${props => props.onClick ? 'pointer' : undefined}
+`
 
 export default class Avatar extends React.Component {
   static propTypes = {
@@ -10,7 +15,7 @@ export default class Avatar extends React.Component {
   }
 
   render() {
-    const {avatarUrl, size, type} = this.props
+    const {avatarUrl, size, type, onClick} = this.props
     if (!avatarUrl) {
       return (
         <Icon
@@ -21,9 +26,10 @@ export default class Avatar extends React.Component {
     }
     else {
       return (
-        <Image
+        <StyledImage
           src={avatarUrl}
           type={size || 'avatar'}
+          onClick={onClick}
         />
       )
     }

@@ -6,6 +6,8 @@ import {Images} from '../Shared/Themes'
 
 export function getSize(props) {
   switch(props.size) {
+    case 'avatar':
+      return '30px'
     case 'small':
       return '15px'
     case 'mediumSmall':
@@ -27,6 +29,7 @@ const StyledIcon = styled.img`
   width: ${props => getSize};
   height: ${props => getSize};
   margin: ${props => props.center ? 'auto' : 0};
+  cursor: ${props => props.onClick ? 'pointer' : 'auto'}
 `
 
 

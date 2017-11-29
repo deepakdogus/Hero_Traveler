@@ -230,15 +230,16 @@ export default class VideoPlayer extends React.Component {
         this.props.videoFillSpace && styles.full,
         this.props.style
       ]}>
-        {this.props.imgUrl && !this.state.hasStarted &&
-          <View style={styles.video}>
-            <Image
-              cached={true}
-              resizeMode='cover'
-              source={{uri: this.props.imgUrl}}
-              style={styles.image}
-            />
-          </View>
+        {this.props.imgUrl &&
+        <Image
+          cached={true}
+          resizeMode='cover'
+          source={{uri: this.props.imgUrl}}
+          style={[
+            styles.video,
+            {zIndex: this.state.hasStarted ? -1 : 1}
+          ]}
+        />
         }
         <Video
           source={{uri: this.props.path}}
@@ -290,10 +291,6 @@ const styles = StyleSheet.create({
     position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  image: {
-    flex: 1,
-    zIndex: 1,
   },
   video: {
     position: 'absolute',

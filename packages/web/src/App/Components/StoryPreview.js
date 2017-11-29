@@ -6,25 +6,17 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 
 import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
-import UserActions, {getFollowers} from '../Shared/Redux/Entities/Users'
+import getImageUrl from '../Shared/Lib/getImageUrl'
+import formatCount from '../Shared/Lib/formatCount'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 
 import Avatar from './Avatar'
 import LikeComponent from './LikeComponent'
 import {Row} from './FlexboxGrid'
-import NavLinkStyled from './NavLinkStyled'
 import VerticalCenter from './VerticalCenter'
-
-import getImageUrl from '../Shared/Lib/getImageUrl'
-import formatCount from '../Shared/Lib/formatCount'
+import Icon from './Icon'
 
 const coverHeight = '257px'
-
-const StoryLink = styled(NavLinkStyled)``
-
-const ProfileLink = styled(StoryLink)`
-  display: flex;
-`
 
 const MarginWrapper = styled.div`
   position: relative;
@@ -79,16 +71,23 @@ const Username = styled(Text)`
 
 `
 
-const BottomLeft = styled.div`
+const BottomLeft = styled(Row)`
   position: absolute;
   bottom: 0;
   left: 0;
+`
+
+const BookmarkIcon = styled(Icon)`
+  width: 12px;
+  height: 16px;
+  margin: 1.5px 10px;
 `
 
 class StoryPreview extends Component {
   static propTypes = {
     story: PropTypes.object,
     author: PropTypes.object,
+    sessionUserId: PropTypes.string,
     isLiked: PropTypes.bool,
     isBookmarked: PropTypes.bool,
     reroute: PropTypes.func,
@@ -102,23 +101,27 @@ class StoryPreview extends Component {
     this.props.reroute(`/profile/${this.props.author.id}/view`)
   }
 
-  _onPressLike = () => {
-    const {sessionUserId, onPressLike} = this.props
-    onPressLike(sessionUserId)
+  _onClickLike = () => {
+    const {sessionUserId, onClickLike} = this.props
+    onClickLike(sessionUserId)
   }
 
-  _onPressBookmark = () => {
-    const {sessionUserId, onPressBookmark} = this.props
-    onPressBookmark(sessionUserId)
+  _onClickBookmark = () => {
+    const {sessionUserId, onClickBookmark} = this.props
+    onClickBookmark(sessionUserId)
   }
 
   render() {
-    const {story, author} = this.props
+    const {
+      story, author, sessionUserId,
+      isLiked, isBookmarked,
+    } = this.props
+
+    if (!story || !author) return
+
     let imageUrl;
     if (story.coverImage) imageUrl = getImageUrl(story.coverImage)
     else if (story.coverVideo) imageUrl = getImageUrl(story.coverVideo, 'video')
-
-    if (!story || !author) return
 
     return (
       <MarginWrapper>
@@ -144,8 +147,13 @@ class StoryPreview extends Component {
             <BottomLeft>
               <LikeComponent
                 likes={formatCount(story.counts.likes)}
-                isLiked={this.props.isLiked}
+                isLiked={isLiked}
+                onClick={sessionUserId ? this._onClickLike : undefined}
                 horizontal
+              />
+              <BookmarkIcon
+                name={isBookmarked ? 'bookmark-active' : 'bookmark'}
+                onClick={sessionUserId ? this._onClickBookmark : undefined}
               />
             </BottomLeft>
           </StoryInfoContainer>
@@ -179,8 +187,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, props) => {
   const {story} = props
   return {
-    onPressLike: (sessionUserId) => dispatch(StoryActions.storyLike(sessionUserId, story.id)),
-    onPressBookmark: (sessionUserId) => dispatch(StoryActions.storyBookmark(sessionUserId, story.id)),
+    onClickLike: (sessionUserId) => dispatch(StoryActions.storyLike(sessionUserId, story.id)),
+    onClickBookmark: (sessionUserId) => dispatch(StoryActions.storyBookmark(sessionUserId, story.id)),
     reroute: (path) => dispatch(push(path)),
   }
 }

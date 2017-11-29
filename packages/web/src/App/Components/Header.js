@@ -20,6 +20,7 @@ import RightModal from './RightModal'
 import NotificationsThread from './Modals/NotificationsThread'
 import {usersExample} from '../Containers/Feed_TEST_DATA'
 import LoginActions from '../Shared/Redux/LoginRedux'
+import StoryActions from '../Shared/Redux/Entities/Stories'
 
 const customModalStyles = {
   content: {
@@ -139,6 +140,7 @@ class Header extends React.Component {
     userId: PropTypes.string,
     attemptLogin: PropTypes.func,
     reroute: PropTypes.func,
+    getLikesAndBookmarks: PropTypes.func,
   }
 
   constructor(props) {
@@ -158,6 +160,7 @@ class Header extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (!this.props.isLoggedIn && nextProps.isLoggedIn) {
+      this.props.getLikesAndBookmarks(this.props.userId)
       this.closeModal()
       if (nextProps.isSignedUp) nextProps.reroute('/signup/topics')
     }
@@ -363,6 +366,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    getLikesAndBookmarks: (userId) => dispatch(StoryActions.likesAndBookmarksRequest(userId)),
     attemptLogin: (username, password) => dispatch(LoginActions.loginRequest(username, password)),
     reroute: (path) => dispatch(push(path)),
   }

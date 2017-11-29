@@ -8,10 +8,7 @@ const hasInitialAppDataLoaded = ({entities}, userId) => isInitialAppDataLoaded(e
 const isStoryLikedSelector = ({entities}, userId, storyId) => isStoryLiked(entities.users, userId, storyId)
 const isStoryBookmarkedSelector = ({entities}, userId, storyId) => isStoryBookmarked(entities.users, userId, storyId)
 
-export function * getUserFeed (api, action) {
-  const { userId } = action
-
-  // See if we need to load likes and bookmark info
+function * getInitalData(api, userId) {
   const initialAppDataLoaded = yield select(hasInitialAppDataLoaded, userId)
   if (!initialAppDataLoaded) {
     const [
@@ -39,6 +36,14 @@ export function * getUserFeed (api, action) {
       ]
     }
   }
+}
+
+export function * getUserFeed (api, action) {
+  const { userId } = action
+
+  // See if we need to load likes and bookmark info
+
+  yield getInitalData(api, userId)
 
   const response = yield call(api.getUserFeed, userId)
 
@@ -53,6 +58,10 @@ export function * getUserFeed (api, action) {
   } else {
     yield put(StoryActions.feedFailure())
   }
+}
+
+export function * getLikesAndBookmarks (api, {userId}){
+  yield getInitalData(api, userId)
 }
 
 export function * getUserStories (api, {userId}) {

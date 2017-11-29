@@ -18,36 +18,20 @@ export default class LikeComponent extends React.Component {
   static propTypes = {
     likes: PropTypes.string,
     isLiked: PropTypes.bool,
-    onPress: PropTypes.func,
+    onClick: PropTypes.func,
     horizontal: PropTypes.bool,
   }
 
   render() {
-    let rootComponent
-    const container = (
+    return (
       <Row middle='xs'>
         <Likes horizontal={this.props.horizontal}>{this.props.likes}</Likes>
         <Icon
           name={this.props.isLiked ? 'like-active' : 'like'}
           size={'small'}
+          onClick={this.props.onClick}
         />
       </Row>
-    )
-
-    if(this.props.onPress) {
-      rootComponent = (
-        <button
-          onPress={this.props.onPress}
-        >
-          {container}
-        </button>
-      )
-    } else {
-      rootComponent = container
-    }
-
-    return (
-      rootComponent
     )
   }
 }

@@ -2,104 +2,79 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import moment from 'moment'
-import {NavLink} from 'react-router-dom'
 
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import getVideoUrl from '../Shared/Lib/getVideoUrl'
 
 import Avatar from './Avatar'
-import HeaderImageWrapper from './HeaderImageWrapper'
-import VerticalCenter, {VerticalCenterStyles} from './VerticalCenter'
+import VerticalCenter from './VerticalCenter'
 import {Row} from './FlexboxGrid';
-import HorizontalDivider from './HorizontalDivider'
 import Video from './Video'
-import NavLinkStyled from './NavLinkStyled'
-import RotatedArrow from './RotatedArrow'
 import RoundedButton from './RoundedButton'
-
-const ProfileLink = styled(NavLinkStyled)`
-  ${VerticalCenterStyles}
-`
+import Icon from './Icon'
 
 const Title = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat};
+  font-weight: 700;
+  font-size: 38px;
+  line-height: 50px;
+  color: ${props => props.theme.Colors.background};
+`
+
+const RedText = styled.span`
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
-  font-size: ${props => {
-    if (props.isPreview) return '59px'
-    return props.mediaType === 'video' ? '30px' : '65px'
-  }};
-  color: ${props => props.theme.Colors.snow};
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  margin: 0;
-`
-
-const Subtitle = styled.p`
-  font-family: ${props => props.theme.Fonts.type.crimsonText};
-  font-weight: 400;
-  font-size: 23px;
-  color: ${props => props.theme.Colors.snow};
-  letter-spacing: .5px;
-  font-style: italic;
-  margin: 0 0 10px 0;
-`
-
-const BottomContainer = styled.div`
-  position: absolute;
-  bottom: 10px;
-  width: 100%;
-  z-index: 1;
-`
-
-const Centered = styled(VerticalCenter)`
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  top:0;
-  text-align:center;
-  z-index: 1;
-`
-
-const StyledHorizontalDivider = styled(HorizontalDivider)`
-  width: 65px;
-  border-width: 1px 0 0 0;
-  border-color: ${props => props.theme.Colors.whiteAlphaPt4};
-`
-
-const DownArrow = styled(RotatedArrow)``
-
-const StyledRoundedButton = styled(RoundedButton)`
-  align-self: center;
-  border: 2px solid white;
-`
-
-const StoryInfo = styled.span`
-  font-family: ${props => props.theme.Fonts.type.base};
-  font-weight: 400;
-  font-size: 18px;
-  color: ${props => props.theme.Colors.snow};
+  font-size: 16px;
+  color: ${props => props.theme.Colors.redHighlights};
   letter-spacing: .7px;
-  display: inline-block;
 `
 
-const Divider = styled.div`
-  display: inline-block;
-  width: 1px;
-  background-color: ${props => props.theme.Colors.snow};
-  margin-left: 7.5px;
-  margin-right: 7.5px;
-  margin-top: 1.5px;
-  height: 20px;
+const Username = styled(RedText)`
+  cursor: pointer;
 `
 
-const StoryInfoRow = styled(Row)`
-  padding-left: 5px;
+const TimeStamp = styled(RedText)`
+  font-style: italic;
+  font-size: 14px;
+  color: ${props => props.theme.Colors.background}
+`
+
+const CoverImage = styled.img`
+  width: 100%;
+`
+
+const Container = styled.div`
+  margin: 65px auto 0;
+  max-width: 800px;
+`
+
+const TopRow = styled(Row)`
+  margin-bottom: 35px !important;
+`
+
+const PencilIcon = styled(Icon)`
+  width: 18px;
+  height: 18px;
+  margin-right: 5px;
+`
+
+const SpacedVerticalCenter = styled(VerticalCenter)`
+  margin-left: 15px;
+`
+
+const ClickableRow = styled(Row)`
+  cursor: pointer;
 `
 
 export default class StoryHeader extends React.Component {
   static propTypes = {
     story: PropTypes.object,
     author: PropTypes.object,
+    sessionUserId: PropTypes.string,
+    isFollowing: PropTypes.bool,
+    unfollowUser: PropTypes.func,
+    followUser: PropTypes.func,
+    reroute: PropTypes.func,
   }
 
   getMediaType() {
@@ -110,66 +85,75 @@ export default class StoryHeader extends React.Component {
   }
 
   getCoverImage() {
-    const {story, isPreview} = this.props
-    if (isPreview && this.getMediaType() === 'video') {
+    const {story} = this.props
+    if (this.getMediaType() === 'video') {
       return getImageUrl(story.coverVideo, 'video')
     }
     return getImageUrl(story.coverImage)
   }
 
+  _profileReroute = () => {
+    this.props.reroute(`/profile/${this.props.author.id}/view`)
+  }
+
+  _editReroute = () => {
+    this.props.reroute(`/createStoryNew/${this.props.story.id}`)
+  }
+
   render () {
-    const {story, author, isPreview} = this.props
+    const {
+      story, author, sessionUserId,
+      isFollowing, unfollowUser, followUser
+    } = this.props
+
     const mediaType = this.getMediaType()
+    const isUsersStory = author.id === sessionUserId
     return (
-      <HeaderImageWrapper
-        backgroundImage={this.getCoverImage()}
-        size={isPreview ? 'preview' : 'fullScreen'}
-        type='story'
-      >
-        <Centered>
-          <Title mediaType={mediaType} isPreview={isPreview}>{story.title}</Title>
-          <StyledHorizontalDivider />
-          <Subtitle>{story.description}</Subtitle>
-          {isPreview &&
-           <NavLink
-               to={`/story/${story.id}`}
-           >
-            <StyledRoundedButton
-              type='storyHeader'
-              padding='even'
-              text='READ MORE'
-              width='168px'
-              height='50px'
+      <Container>
+        <TopRow between="xs">
+          <Row>
+            <Avatar
+              avatarUrl={getImageUrl(author.profile.avatar)}
+              size='medium'
+              onClick={this._profileReroute}
             />
-           </NavLink>
-          }
-          {!isPreview && mediaType === 'video' &&
-            <Video src={getVideoUrl(story.coverVideo, false)} type='cover'/>
-          }
-        </Centered>
-        <BottomContainer>
-          <Row center='xs'>
-            <ProfileLink to={`/profile/${author.id}/view`}>
-              <Avatar
-                avatarUrl={getImageUrl(author.profile.avatar)}
-                size='medium'
-              />
-            </ProfileLink>
-            <VerticalCenter>
-              <StoryInfoRow>
-                <StoryInfo>By {author.username}</StoryInfo>
-                <Divider>&nbsp;</Divider>
-                <StoryInfo>{moment(story.createdAt).format('MMMM Do YYYY')}</StoryInfo>
-              </StoryInfoRow>
-            </VerticalCenter>
+            <SpacedVerticalCenter>
+              <Username onClick={this._profileReroute}>{author.username}</Username>
+              <TimeStamp>{moment(story.createdAt).fromNow()}</TimeStamp>
+            </SpacedVerticalCenter>
+            {!isUsersStory && sessionUserId &&
+              <SpacedVerticalCenter>
+                <RoundedButton
+                  margin='none'
+                  onClick={isFollowing ? unfollowUser : followUser}
+                  type={isFollowing ? 'blackWhite' : ''}
+                  text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
+                />
+              </SpacedVerticalCenter>
+            }
           </Row>
-          {!isPreview &&
-            <Row center='xs'>
-              <DownArrow name='arrowRight'/>
-            </Row>
+          {isUsersStory &&
+            <VerticalCenter>
+              <ClickableRow onClick={this._editReroute}>
+                <PencilIcon
+                  name='pencilBlack'
+                />
+                <RedText>Edit Story</RedText>
+              </ClickableRow>
+            </VerticalCenter>
           }
-        </BottomContainer>
-      </HeaderImageWrapper>
+        </TopRow>
+        {mediaType === 'image' &&
+          <CoverImage
+            src={this.getCoverImage()}
+          />
+        }
+        {mediaType === 'video' &&
+          <Video src={getVideoUrl(story.coverVideo, false)} type='cover'/>
+        }
+        <Title mediaType={mediaType}>{story.title}</Title>
+
+      </Container>
     )
   }
 }

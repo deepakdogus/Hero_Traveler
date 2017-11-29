@@ -4,11 +4,8 @@ import styled from 'styled-components'
 import Modal from 'react-modal'
 
 import Header from '../Header'
-import HeaderImageWrapper from '../Headers/Shared/HeaderImageWrapper'
 import RightModal from '../RightModal'
 import CenterModal from '../CenterModal'
-import {OverlayStyles} from '../Overlay'
-import getImageUrl from '../../Shared/Lib/getImageUrl'
 import ProfileHeaderView from './ProfileHeaderView'
 import ProfileHeaderEdit from './ProfileHeaderEdit'
 
@@ -28,10 +25,6 @@ import ProfileBio from '../Modals/ProfileBio'
 import Contributor from '../Modals/Contributor'
 
 const Container = styled.div``
-
-const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
-  ${OverlayStyles}
-`
 
 const contributorModalStyles = {
   content: {
@@ -71,7 +64,6 @@ export default class ProfileHeader extends React.Component {
 
   render () {
     const {user, isEdit} = this.props
-    const backgroundImage = getImageUrl(user.profile.cover)
     return (
       <Container>
         <Header isLoggedIn blackHeader></Header>

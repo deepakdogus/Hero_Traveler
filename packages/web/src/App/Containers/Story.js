@@ -8,7 +8,7 @@ import _ from 'lodash'
 import {feedExample} from './Feed_TEST_DATA'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import UserActions from '../Shared/Redux/Entities/Users'
-import {middleware} from '../Redux/Routes'
+import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
 
 import Header from '../Components/Header'
 import StoryHeader from '../Components/StoryHeader'
@@ -41,6 +41,10 @@ class Story extends Component {
     followUser: PropTypes.func,
     getStory: PropTypes.func,
     reroute: PropTypes.func,
+    isLiked: PropTypes.bool,
+    onClickLike: PropTypes.func,
+    isBookmarked: PropTypes.bool,
+    onClickBookmark: PropTypes.func,
     match: PropTypes.object,
   }
 
@@ -60,8 +64,21 @@ class Story extends Component {
     unfollowUser(sessionUserId, author.id)
   }
 
+  _onClickLike = () => {
+    if (!this.props.sessionUserId) return
+    this.props.onClickLike(this.props.sessionUserId)
+  }
+
+  _onClickBookmark = () => {
+    if (!this.props.sessionUserId) return
+    this.props.onClickBookmark(this.props.sessionUserId)
+  }
+
   render() {
-    const {story, author, reroute, sessionUserId, isFollowing} = this.props
+    const {
+      story, author, reroute, sessionUserId,
+      isFollowing, isBookmarked, isLiked,
+    } = this.props
     if (!story || !author) return null
     const suggestedStories = Object.keys(feedExample).map(key => {
       return feedExample[key]
@@ -69,35 +86,39 @@ class Story extends Component {
     return (
       <ContentWrapper>
         <Header isLoggedIn></Header>
-        <StoryHeader
-          story={story}
-          author={author}
-          reroute={reroute}
-          sessionUserId={sessionUserId}
-          isFollowing={isFollowing}
-          followUser={this._followUser}
-          unfollowUser={this._unfollowUser}
-        />
         <LimitedWidthContainer>
-          <StoryContentRenderer story={story} />
-        </LimitedWidthContainer>
-        <p style={{paddingLeft: '10px'}}>Are they trying to do fixed map and/or hidden buttons on the map?</p>
-        {story.latitude && story.longitude &&
-          <GMap
-            lat={story.latitude}
-            lng={story.longitude}
-            location={story.location}
+          <StoryHeader
+            story={story}
+            author={author}
+            reroute={reroute}
+            sessionUserId={sessionUserId}
+            isFollowing={isFollowing}
+            followUser={this._followUser}
+            unfollowUser={this._unfollowUser}
           />
-        }
-        <LimitedWidthContainer>
+          <StoryContentRenderer story={story} />
+          <p style={{paddingLeft: '10px'}}>Are they trying to do fixed map and/or hidden buttons on the map?</p>
+          {story.latitude && story.longitude &&
+            <GMap
+              lat={story.latitude}
+              lng={story.longitude}
+              location={story.location}
+            />
+          }
           <StoryMetaInfo story={story}/>
-          <StoryActionBar story={story}/>
         </LimitedWidthContainer>
         <GreyWrapper>
           <LimitedWidthContainer>
             <StorySuggestions suggestedStories={suggestedStories}/>
           </LimitedWidthContainer>
         </GreyWrapper>
+        <StoryActionBar
+          story={story}
+          isLiked={isLiked}
+          onClickLike={this._onClickLike}
+          isBookmarked={isBookmarked}
+          onClickBookmark={this._onClickBookmark}
+        />
       </ContentWrapper>
     )
   }
@@ -121,15 +142,20 @@ function mapStateToProps(state, ownProps) {
     author,
     isFollowing,
     sessionUserId,
+    isLiked: isStoryLiked(state.entities.users, sessionUserId, storyId),
+    isBookmarked: isStoryBookmarked(state.entities.users, sessionUserId, storyId),
   }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch, ownProps) {
+  const storyId = ownProps.match.params.storyId
   return {
     getStory: (storyId, tokens) => dispatch(StoryActions.storyRequest(storyId)),
     reroute: (path) => dispatch(push(path)),
     followUser: (sessionUserId, userIdToFollow) => dispatch(UserActions.followUser(sessionUserId, userIdToFollow)),
     unfollowUser: (sessionUserId, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserId, userIdToUnfollow)),
+    onClickLike: (sessionUserId) => dispatch(StoryActions.storyLike(sessionUserId, storyId)),
+    onClickBookmark: (sessionUserId) => dispatch(StoryActions.storyBookmark(sessionUserId, storyId)),
   }
 }
 

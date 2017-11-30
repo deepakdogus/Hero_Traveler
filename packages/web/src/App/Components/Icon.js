@@ -60,12 +60,22 @@ export default class Icon extends React.Component {
         return Images.iconLikeActive
       case 'likeActiveWhite':
         return Images.iconLikeWhite
+      case 'squareLike':
+        return Images.iconSquareLikeInactive
+      case 'squareLikeActive':
+        return Images.iconSquareLikeActive
       case 'comment':
         return Images.iconComment
+      case 'squareComment':
+        return Images.iconSquareComment
       case 'bookmark':
         return Images.iconBookmark
       case 'bookmark-active':
         return Images.iconBookmarkActive
+      case 'squareBookmark':
+        return Images.iconSquareBookmark
+      case 'squareBookmarkActive':
+        return Images.iconSquareBookmarkActive
       case 'share':
         return Images.iconShare
       case 'location':
@@ -90,12 +100,16 @@ export default class Icon extends React.Component {
         return Images.iconLoginFacebookLarge
       case 'facebook-blue':
         return Images.iconFacebook
+      case 'squareFacebookOutline':
+        return Images.iconSquareFacebookOutline
       case 'twitter':
         return Images.iconTwitter
       case 'twitterLarge':
         return Images.iconTwitterLarge
       case 'twitter-blue':
         return Images.iconTwitterBlue
+      case 'squareTwitterOutline':
+        return Images.iconSquareTwitterOutline
       case 'instagram':
         return Images.iconInstagram
       case 'loginEmail':
@@ -136,6 +150,18 @@ export default class Icon extends React.Component {
         return Images.iconEditImageTrash
       case 'addCoverCamera':
         return Images.iconAddCoverCamera
+      case 'google':
+        return Images.iconSquareGoogleShare
+      case 'dots':
+        return Images.iconSquareDots
+      case 'tumblr':
+        return Images.iconSquareTumblr
+      case 'pinterest':
+        return Images.iconSquarePinterest
+      case 'email':
+        return Images.iconSquareEmail
+      case 'report':
+        return Images.iconSquareFlag
       case 'profile':
       default:
         return Images.iconNavProfile

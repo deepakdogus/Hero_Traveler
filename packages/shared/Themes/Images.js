@@ -96,6 +96,8 @@ const images = {
   iconSquarePinterest: require('../Images/ht-icons/share-menu-pinterest.png'),
   iconSquareEmail: require('../Images/ht-icons/share-menu-email.png'),
   iconSquareFlag: require('../Images/ht-icons/share-menu-flag.png'),
+  googlePlayBadge: require('../Images/ht-icons/google-play-badge.png'),
+  appleAppStoreBadge: require('../Images/ht-icons/apple-app-store-badge.svg'),
 }
 
 export default images

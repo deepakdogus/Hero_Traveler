@@ -1,32 +1,54 @@
-import React from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 
-import {usersExample} from '../../Containers/Feed_TEST_DATA'
+import StoryCommentsActions from '../../Shared/Redux/Entities/StoryComments'
+
 import MessageRow from '../MessageRow'
 import InputRow from '../InputRow'
 import {RightTitle, RightModalCloseX} from './Shared'
-import {randomDate} from './Shared/RandomDate'
 
+const Container = styled.div`
+  position: relative;
+  padding-bottom: 92px;
+`
 
-const Container = styled.div``
-
-export default class Comments extends React.Component {
+class Comments extends Component {
   static PropTypes = {
-    profile: PropTypes.object,
-    users: PropTypes.object,
     closeModal: PropTypes.func,
+    sessionUserId: PropTypes.string,
+    users: PropTypes.object,
+    comments: PropTypes.arrayOf(PropTypes.object),
+    getCommentsStatus: PropTypes.object,
+    createCommentStatus: PropTypes.object,
+    error: PropTypes.string,
+    getComments: PropTypes.func,
+    createComment: PropTypes.func,
   }
 
-  renderUserMessageRows(userKeys) {
-    return userKeys.map((key, index) => {
+  componentDidMount() {
+    this.props.getComments()
+  }
+
+  _createComment = (text) => {
+    this.props.createComment(text)
+  }
+
+  setBottomDivRef = (ref) => this.BottomDiv = ref
+
+  renderUserMessageRows(comments) {
+    return comments.map((comment, index) => {
+      let user
+      if (typeof comment.user === 'string') user = this.props.users[comment.user]
+      else user = comment.user
       return (
         <MessageRow
-          key={key}
+          key={comment.id}
           index={index}
-          user={usersExample[key]}
-          message=''
-          timestamp={randomDate(new Date(2017,7,1), new Date())}
+          user={user}
+          message={comment.content}
+          timestamp={new Date(comment.createdAt)}
           padding='10px 30px'
           isComment={true}
         />
@@ -34,19 +56,46 @@ export default class Comments extends React.Component {
     })
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.comments.length - this.props.comments.length === 0 && this.BottomDiv) {
+      this.BottomDiv.scrollIntoView({ behavior: "smooth" })
+    }
+  }
+
   render() {
-    const {profile} = this.props
-    const userKeys = Object.keys(usersExample).filter((key, index) => {
-      return key !== profile.id
-    })
+    const {comments} = this.props
 
     return (
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>COMMENTS</RightTitle>
-        {this.renderUserMessageRows(userKeys)}
-        <InputRow/>
+        {this.renderUserMessageRows(comments)}
+        {this.props.sessionUserId &&
+          <InputRow
+            onClick={this._createComment}
+            handlingSubmit={this.props.createCommentStatus.creating && !this.props.error}
+          />
+        }
+        <div ref={this.setBottomDivRef}/>
       </Container>
     )
   }
 }
+
+function mapStateToProps(state, ownProps) {
+  const sessionUserId = state.session.userId
+  return {
+    ...state.entities.storyComments,
+    sessionUserId,
+    users: state.entities.users.entities,
+  }
+}
+
+function mapDispatchToProps(dispatch, ownProps) {
+  return {
+    getComments: () => dispatch(StoryCommentsActions.getCommentsRequest(ownProps.storyId)),
+    createComment: (text) => dispatch(StoryCommentsActions.createCommentRequest(ownProps.storyId, text)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Comments)

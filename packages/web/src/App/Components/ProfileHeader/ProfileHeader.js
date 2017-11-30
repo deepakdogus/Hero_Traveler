@@ -100,7 +100,10 @@ export default class ProfileHeader extends React.Component {
           contentLabel='Comments Modal'
           onRequestClose={this.closeModal}
         >
-          <Comments closeModal={this.closeModal} profile={user}/>
+          <Comments
+            closeModal={this.closeModal}
+            storyId={'5a04bdfd0420ae05a656c57c'}
+          />
         </RightModal>
         <RightModal
           isOpen={this.state.modal === 'likedBy'}

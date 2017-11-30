@@ -87,7 +87,7 @@ export default class HeaderLoggedIn extends React.Component {
                   <NotificationsIcon name='cameraFlash' />
                 </StyledRoundedButton>
                 <NavLink
-                  to={`/profile/${user}`}
+                  to={`/profile/${user}/view`}
                 >
                   <StyledRoundedAvatarButton
                     type='headerButton'

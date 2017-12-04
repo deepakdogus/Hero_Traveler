@@ -38,20 +38,31 @@ export default StyleSheet.create({
     fontSize: 18,
     fontFamily: Fonts.type.montserrat
   },
+  titlesWrapper: {
+    marginHorizontal: 20,
+  },
   titleInput: {
     ...Fonts.style.title,
     color: Colors.background,
-    marginTop: 20,
-    marginLeft: 20,
     fontSize: 30,
     fontFamily: Fonts.type.montserrat,
     fontWeight: '600',
   },
-  subTitleInput: {
+  description: {
+    fontFamily: Fonts.type.sourceSansPro,
+    fontWeight: '400',
+    letterSpacing: .7,
     color: Colors.background,
+    fontSize: 18,
+    marginTop: 0,
+    lineHeight: 28,
     height: 28,
-    fontSize: 14,
-    marginLeft: 20
+  },
+  divider: {
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: Colors.dividerGrey,
+    marginTop: 10,
   },
   cameraIcon: {
     alignItems: 'center',

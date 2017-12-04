@@ -34,6 +34,8 @@ export default class ProfileUserInfo extends Component {
     handleUpdateAvatarPhoto: PropTypes.func,
     usernameText: PropTypes.string,
     setUsername: PropTypes.func,
+    aboutText: PropTypes.string,
+    setAbout: PropTypes.func,
   }
 
   _navToSettings = () => NavActions.settings({type: 'push'})
@@ -97,7 +99,7 @@ export default class ProfileUserInfo extends Component {
   }
 
   renderNames() {
-    const {isEditing, user, usernameText, setUsername} = this.props
+    const {isEditing, user, usernameText, setUsername, aboutText, setAbout} = this.props
     if (isEditing) return (
       <View style={styles.userInfoWrapper}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -119,25 +121,35 @@ export default class ProfileUserInfo extends Component {
             }}
           />
         </View>
+        <Text style={styles.aboutTitle}>About</Text>
+        <TextInput
+          placeholder='Tell us about yourself'
+          value={aboutText}
+          autoCapitalize='none'
+          style={[styles.aboutText, styles.aboutTextEdit]}
+          onChangeText={setAbout}
+          maxLength={100}
+          multiline
+          returnKeyType={'done'}
+        />
       </View>
     )
 
     return (
       <View style={styles.userInfoWrapper}>
-        <View>
-          <Text style={styles.titleText}>{user.username}</Text>
-          <Text style={styles.italicText}>{user.profile.fullName}</Text>
-          <TouchableOpacity onPress={this._navToViewBio}>
-            <Text style={styles.readBioText}>Read Bio</Text>
-          </TouchableOpacity>
-        </View>
+        <Text style={styles.titleText}>{user.username}</Text>
+        <Text style={styles.italicText}>{user.profile.fullName}</Text>
+        {user.about && <Text style={styles.aboutText}>{user.about}</Text>}
+        <TouchableOpacity onPress={this._navToViewBio}>
+          <Text style={styles.readBioText}>Read Bio</Text>
+        </TouchableOpacity>
       </View>
     )
   }
 
   renderButtons() {
-    const {isEditing, editable, isFollowing, onPressUnfollow, onPressFollow} = this.props
-    if (isEditing || editable) return null
+    const {editable, isFollowing, onPressUnfollow, onPressFollow} = this.props
+    if (editable) return null
     else return (
       <TouchableOpacity
         style={[
@@ -265,7 +277,7 @@ export default class ProfileUserInfo extends Component {
       <View style={isEditing ? styles.profileEditInfoContainer : styles.profileInfoContainer}>
         {this.renderTop()}
         {this.renderFirstRow()}
-        {this.renderSecondRow()}
+        {!isEditing && this.renderSecondRow()}
       </View>
     )
   }

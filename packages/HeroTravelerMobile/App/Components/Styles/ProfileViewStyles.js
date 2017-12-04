@@ -65,12 +65,6 @@ export default StyleSheet.create({
     fontWeight: '600',
     color: Colors.background,
   },
-  newFollowerNumber: {
-    fontFamily: Fonts.type.montserrat,
-    fontSize: 15,
-    fontWeight: '600',
-    color: Colors.background,
-  },
   followerLabel: {
     fontFamily: Fonts.type.montserrat,
     fontSize: 10,
@@ -82,6 +76,26 @@ export default StyleSheet.create({
     fontSize: 20,
     fontWeight: '600',
     color: Colors.background,
+  },
+  aboutTitle: {
+    fontFamily: Fonts.type.montserrat,
+    fontSize: 14,
+    fontWeight: '600',
+    color: Colors.background,
+    marginTop: 10,
+  },
+  aboutText: {
+    fontFamily: Fonts.type.sourceSansPro,
+    fontSize: 13,
+    fontWeight: '400',
+    letterSpacing: .7,
+    color: Colors.background,
+    maxWidth: Metrics.screenWidth - 2 * Metrics.section - 15 - avatarImageSize,
+    marginVertical: 7.5,
+  },
+  aboutTextEdit: {
+    height: 55,
+    marginVertical: 0,
   },
   editTitle: {
     width: Metrics.screenWidth - avatarImageSize - 2 * Metrics.section - 10 - 5 - 14,

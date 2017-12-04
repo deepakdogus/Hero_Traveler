@@ -108,6 +108,10 @@ class SettingsScreen extends React.Component {
             onPress={NavActions.terms}
           />
           <Row
+            text='Privacy Policy'
+            onPress={NavActions.privacy}
+          />
+          <Row
             text='Sign Out'
             hideAngleRight={true}
             onPress={this._logOut}

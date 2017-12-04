@@ -97,6 +97,11 @@ export default StyleSheet.create({
     height: 55,
     marginVertical: 0,
   },
+  editTitleWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
   editTitle: {
     width: Metrics.screenWidth - avatarImageSize - 2 * Metrics.section - 10 - 5 - 14,
     textAlign: 'left',

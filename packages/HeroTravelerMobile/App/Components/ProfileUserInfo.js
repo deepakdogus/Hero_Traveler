@@ -98,11 +98,11 @@ export default class ProfileUserInfo extends Component {
     else return (<View style={styles.readingViewTop}></View>)
   }
 
-  renderNames() {
+  renderUserInfo() {
     const {isEditing, user, usernameText, setUsername, aboutText, setAbout} = this.props
     if (isEditing) return (
       <View style={styles.userInfoWrapper}>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+        <View style={styles.editTitleWrapper}>
           <TextInput
             placeholder={user.username}
             value={usernameText}
@@ -169,44 +169,6 @@ export default class ProfileUserInfo extends Component {
     )
   }
 
-  renderLeftColumn() {
-    const {isEditing, user} = this.props
-
-    const avatarOverlay = isEditing ? (
-      <TouchableOpacity
-        style={styles.addAvatarPhotoButton}
-        onPress={this._selectAvatar}
-      >
-        <Icon
-          name='camera'
-          size={32.5}
-          color={Colors.whiteAlphaPt80}
-          style={styles.updateAvatorIcon} />
-      </TouchableOpacity>
-    ) : null
-
-    const avatarUrl = (isEditing && user.profile.tempAvatar) ?
-      getImageUrl(user.profile.tempAvatar, 'avatar') :
-      getImageUrl(user.profile.avatar, 'avatar')
-
-    return (
-      <View>
-        <View style={{position: 'relative'}}>
-          <Avatar
-            size='extraLarge'
-            avatarUrl={avatarUrl}
-          />
-          {avatarOverlay}
-        </View>
-        {!isEditing &&
-          <TouchableOpacity onPress={this._navToViewBio} style={styles.bioButton}>
-            <Text style={styles.readBioText}>Bio</Text>
-          </TouchableOpacity>
-        }
-      </View>
-    )
-  }
-
   renderFirstRow() {
     const {isEditing, user} = this.props
 
@@ -230,7 +192,7 @@ export default class ProfileUserInfo extends Component {
     return (
       <View style={styles.profileWrapper}>
         <View>
-          <View style={{position: 'relative'}}>
+          <View style={styles.avatarWrapper}>
             <Avatar
               size='extraLarge'
               avatarUrl={avatarUrl}
@@ -239,7 +201,7 @@ export default class ProfileUserInfo extends Component {
           </View>
         </View>
         <View style={styles.userInfoMargin}>
-          {this.renderNames()}
+          {this.renderUserInfo()}
         </View>
       </View>
     )

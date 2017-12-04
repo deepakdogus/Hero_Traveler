@@ -45,6 +45,7 @@ export default class ProfileTabsAndStories extends Component {
     touchTrash: PropTypes.func,
     showLike: PropTypes.bool,
     user: PropTypes.object,
+    location: PropTypes.string,
   }
 
   renderTabs(){
@@ -95,7 +96,7 @@ export default class ProfileTabsAndStories extends Component {
         height={storyPreviewHeight}
         autoPlayVideo
         allowVideoPlay
-        renderLocation={this.props.location}
+        renderLocation={location}
         index={storyInfo.index}
       />
     )

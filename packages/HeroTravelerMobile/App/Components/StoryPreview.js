@@ -49,7 +49,6 @@ export default class StoryPreview extends Component {
     }
   }
 
-
   _touchTrash = () => {
     const storyId = this.props.story.id
     const userId = this.props.user.id
@@ -171,7 +170,7 @@ export default class StoryPreview extends Component {
 
     return (
       <View style={styles.contentContainer}>
-        {this.props.forProfile && this.props.editable &&
+        {false &&
           <TrashCan touchTrash={this._touchTrash} touchEdit={this._touchEdit} />
         }
         {!this.props.isStoryReadingScreen && this.renderUserSection()}

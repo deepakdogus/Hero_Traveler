@@ -78,7 +78,13 @@ export default class ProfileUserInfo extends Component {
     const {isEditing, editable} = this.props
     if (isEditing) return null
     else if (editable) return (
-      <View style={styles.cogContainer}>
+      <View style={styles.topRightContainer}>
+        <TouchableOpacity onPress={this._navToEditProfile} style={styles.editButton}>
+          <TabIcon
+            name='pencil'
+            style={{ image: styles.cogImageIcon }}
+          />
+        </TouchableOpacity>
         <TouchableOpacity onPress={this._navToSettings}>
           <TabIcon
             name='gear'
@@ -121,20 +127,9 @@ export default class ProfileUserInfo extends Component {
         <View>
           <Text style={styles.titleText}>{user.username}</Text>
           <Text style={styles.italicText}>{user.profile.fullName}</Text>
-        </View>
-        <View style={styles.followersWrapper}>
-          <View>
-            <TouchableOpacity onPress={this._navToFollowers}>
-              <Text style={styles.followerNumber}>{formatCount(user.counts.followers)}</Text>
-              <Text style={styles.followerLabel}>Followers</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.followingColumn}>
-            <TouchableOpacity onPress={this._navToFollowing}>
-              <Text style={styles.followerNumber}>{formatCount(user.counts.following)}</Text>
-              <Text style={styles.followerLabel}>Following</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity onPress={this._navToViewBio}>
+            <Text style={styles.readBioText}>Read Bio</Text>
+          </TouchableOpacity>
         </View>
       </View>
     )
@@ -142,14 +137,7 @@ export default class ProfileUserInfo extends Component {
 
   renderButtons() {
     const {isEditing, editable, isFollowing, onPressUnfollow, onPressFollow} = this.props
-    if (isEditing) return null
-    else if (editable) return (
-      <TouchableOpacity
-        style={styles.blackButton}
-        onPress={this._navToEditProfile}>
-        <Text style={styles.blackButtonText}>EDIT PROFILE</Text>
-      </TouchableOpacity>
-    )
+    if (isEditing || editable) return null
     else return (
       <TouchableOpacity
         style={[
@@ -207,11 +195,65 @@ export default class ProfileUserInfo extends Component {
     )
   }
 
-  renderRightColumn() {
+  renderFirstRow() {
+    const {isEditing, user} = this.props
+
+    const avatarOverlay = isEditing ? (
+      <TouchableOpacity
+        style={styles.addAvatarPhotoButton}
+        onPress={this._selectAvatar}
+      >
+        <Icon
+          name='camera'
+          size={32.5}
+          color={Colors.whiteAlphaPt80}
+          style={styles.updateAvatorIcon} />
+      </TouchableOpacity>
+    ) : null
+
+    const avatarUrl = (isEditing && user.profile.tempAvatar) ?
+      getImageUrl(user.profile.tempAvatar, 'avatar') :
+      getImageUrl(user.profile.avatar, 'avatar')
+
     return (
-      <View style={styles.userInfoMargin}>
-        {this.renderNames()}
-        {this.renderButtons()}
+      <View style={styles.profileWrapper}>
+        <View>
+          <View style={{position: 'relative'}}>
+            <Avatar
+              size='extraLarge'
+              avatarUrl={avatarUrl}
+            />
+            {avatarOverlay}
+          </View>
+        </View>
+        <View style={styles.userInfoMargin}>
+          {this.renderNames()}
+        </View>
+      </View>
+    )
+  }
+
+  renderSecondRow(){
+    const {user} = this.props
+    return (
+      <View style={[styles.profileWrapper, styles.secondRow]}>
+        <View style={styles.followersWrapper}>
+          <View>
+            <TouchableOpacity onPress={this._navToFollowers}>
+              <Text style={styles.followerNumber}>{formatCount(user.counts.followers)}</Text>
+              <Text style={styles.followerLabel}>Followers</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.followingColumn}>
+            <TouchableOpacity onPress={this._navToFollowing}>
+              <Text style={styles.followerNumber}>{formatCount(user.counts.following)}</Text>
+              <Text style={styles.followerLabel}>Following</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View>
+          {this.renderButtons()}
+        </View>
       </View>
     )
   }
@@ -222,10 +264,8 @@ export default class ProfileUserInfo extends Component {
     return (
       <View style={isEditing ? styles.profileEditInfoContainer : styles.profileInfoContainer}>
         {this.renderTop()}
-        <View style={styles.profileWrapper}>
-          {this.renderLeftColumn()}
-          {this.renderRightColumn()}
-        </View>
+        {this.renderFirstRow()}
+        {this.renderSecondRow()}
       </View>
     )
   }

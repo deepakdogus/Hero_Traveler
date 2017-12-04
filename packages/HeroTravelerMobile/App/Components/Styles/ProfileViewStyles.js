@@ -16,10 +16,13 @@ export default StyleSheet.create({
   gradientWrapper: {
     backgroundColor: Colors.clear
   },
-  cogContainer: {
+  topRightContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     margin: Metrics.baseMargin,
+  },
+  editButton: {
+    marginRight: 15,
   },
   cogImageIcon: {
     height: 23,
@@ -41,11 +44,11 @@ export default StyleSheet.create({
   },
   italicText: {
     fontFamily: Fonts.type.sourceSansPro,
-    fontSize: 11,
+    fontSize: 13,
     fontWeight: '400',
     letterSpacing: .7,
     fontStyle: 'italic',
-    color: Colors.grey,
+    color: Colors.redHighlights,
   },
   followersWrapper: {
     flexDirection: 'row',
@@ -167,9 +170,9 @@ export default StyleSheet.create({
   },
   readBioText: {
     fontFamily: Fonts.type.montserrat,
+    fontWeight: '600',
     fontSize: 11,
-    color: Colors.background,
-    textAlign: 'center',
+    color: Colors.redHighlights,
   },
   bioText: {
     fontFamily: Fonts.type.sourceSansPro,
@@ -177,9 +180,6 @@ export default StyleSheet.create({
     fontSize: 16,
     color: Colors.bioGrey,
     fontWeight: '300',
-  },
-  bioButton: {
-    marginTop: 10,
   },
   spinnerWrapper: {
     marginTop: Metrics.doubleSection
@@ -213,6 +213,9 @@ export default StyleSheet.create({
   profileWrapper: {
     flexDirection: 'row',
     marginHorizontal: Metrics.section,
+  },
+  secondRow: {
+    justifyContent: 'space-between',
   },
   editBioText: {
     minHeight: profileEditHeight,

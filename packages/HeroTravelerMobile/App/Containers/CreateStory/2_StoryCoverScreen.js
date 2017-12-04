@@ -895,23 +895,38 @@ class StoryCoverScreen extends Component {
               {this.isPhotoType() && this.renderCoverPhoto(coverImage)}
               {!this.isPhotoType() && this.renderCoverVideo(coverVideo)}
             </View>
-            <TextInput
-              style={[
-                styles.titleInput,
-                {height: this.state.titleHeight},
-              ]}
-              placeholder='ADD A TITLE'
-              placeholderTextColor={Colors.background}
-              value={this.state.title}
-              onChangeText={this.setTitleAndFocus}
-              onFocus={this.jumpToTitle}
-              returnKeyType='done'
-              maxLength={40}
-              multiline={true}
-              blurOnSubmit
-              onContentSizeChange={this.setTitleHeight}
-            />
+            <View style={styles.titlesWrapper}>
+              <TextInput
+                style={[
+                  styles.titleInput,
+                  {height: this.state.titleHeight},
+                ]}
+                placeholder='ADD A TITLE'
+                placeholderTextColor={Colors.background}
+                value={this.state.title}
+                onChangeText={this.setTitleAndFocus}
+                onFocus={this.jumpToTitle}
+                returnKeyType='done'
+                maxLength={40}
+                multiline={true}
+                blurOnSubmit
+                onContentSizeChange={this.setTitleHeight}
+              />
+              <TextInput
+                style={styles.description}
+                placeholder='Add a subtitle'
+                placeholderTextColor={Colors.grey}
+                value={this.state.description}
+                onChangeText={this.setDescriptionAndFocus}
+                onFocus={this.jumpToTitle}
+                returnKeyType='done'
+                maxLength={50}
+                blurOnSubmit
+              />
+              <View style={styles.divider}/>
+            </View>
             <View style={styles.editorWrapper}>
+
               {this.renderEditor()}
             </View>
           {showTooltip && this.renderTooltip()}

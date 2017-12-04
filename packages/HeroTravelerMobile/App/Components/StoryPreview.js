@@ -124,11 +124,12 @@ export default class StoryPreview extends Component {
   }
 
   renderBottomSection() {
-    const {title, counts} = this.props.story
+    const {title, counts, description} = this.props.story
 
     return (
       <View style={[styles.storyInfoContainer, styles.bottomContainer]}>
         <Text style={[styles.title, this.props.titleStyle]}>{title}</Text>
+        {description && <Text style={styles.description}>{description}</Text>}
         <View style={styles.rightRow}>
           {this.props.showLike && this.props.onPressBookmark &&
             <View style={styles.bookmarkContainer}>

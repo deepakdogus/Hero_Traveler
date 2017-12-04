@@ -15,6 +15,13 @@ export default StyleSheet.create({
     fontWeight: '600',
     color: Colors.backgrond,
   },
+  description: {
+    fontFamily: Fonts.type.sourceSansPro,
+    fontWeight: '400',
+    fontSize: 16,
+    letterSpacing: .7,
+    color: Colors.grey,
+  },
   userContent: {
     flexDirection: 'row',
     justifyContent: 'space-between'

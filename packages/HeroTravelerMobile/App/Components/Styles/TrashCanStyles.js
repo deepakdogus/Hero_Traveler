@@ -9,8 +9,8 @@ export default StyleSheet.create({
   iconPencil: {
     tintColor: Colors.grey,
     marginRight: 10,
-    width: 21,
-    height: 21,
+    width: 23,
+    height: 23,
   },
   iconTrash: {
     tintColor: Colors.grey,

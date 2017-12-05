@@ -39,7 +39,6 @@ export default StyleSheet.create({
     marginLeft: 5,
     height: 95,
     flexDirection: 'column',
-    justifyContent: 'space-around',
     marginBottom: 5,
   },
   italicText: {

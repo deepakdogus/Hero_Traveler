@@ -274,8 +274,6 @@ class ProfileView extends React.Component {
               tabTypes={TabTypes}
               selectTab={this.selectTab}
               selectedTab={this.state.selectedTab}
-              touchTrash={this.props.touchTrash}
-              touchEdit={this.props.touchEdit}
               showLike={this.props.showLike}
               user={this.props.user}
               showTooltip={showTooltip}

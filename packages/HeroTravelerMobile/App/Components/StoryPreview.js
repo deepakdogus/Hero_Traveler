@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import moment from 'moment'
+import {Actions as NavActions} from 'react-native-router-flux'
 
 import formatCount from '../Shared/Lib/formatCount'
 import getImageUrl from '../Shared/Lib/getImageUrl'
@@ -35,7 +36,11 @@ export default class StoryPreview extends Component {
     gradientColors: PropTypes.arrayOf(PropTypes.string),
     isVisible: PropTypes.bool,
     areInRenderLocation: PropTypes.bool,
-
+    deleteStory: PropTypes.func,
+    onPressFollow: PropTypes.func,
+    onPressUnfollow: PropTypes.func,
+    isAuthor: PropTypes.bool,
+    myFollowedUsers: PropTypes.arrayOf(PropTypes.string),
   }
 
   static defaultProps = {
@@ -44,9 +49,9 @@ export default class StoryPreview extends Component {
   }
 
   _touchEdit = () => {
-    if (this.props.touchEdit) {
-      this.props.touchEdit(this.props.story.id)
-    }
+    const storyId = this.props.story.id
+    NavActions.createStoryFlow({storyId, type: 'reset', navigatedFromProfile: true, shouldLoadStory: false})
+    NavActions.createStory_cover({storyId, navigatedFromProfile: true, shouldLoadStory: false})
   }
 
   _touchTrash = () => {
@@ -58,7 +63,14 @@ export default class StoryPreview extends Component {
       'Are you sure you want to delete this story?',
       [
         { text: 'Cancel' },
-        { text: 'Delete', onPress: () => deleteStory(userId, storyId), style: 'destructive' }
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => {
+            deleteStory(userId, storyId)
+            NavActions.pop()
+          },
+        }
       ]
    )
   }
@@ -174,7 +186,7 @@ export default class StoryPreview extends Component {
   }
 
   render () {
-    const {story, isAuthor, isStoryReadingScreen} = this.props
+    const {story, gradientLocations, showPlayButton} = this.props
     if (!story) return null
     // using StoryPreview height as proxy for StoryCover playbutton size
     const height = this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20
@@ -189,8 +201,8 @@ export default class StoryPreview extends Component {
           coverType={story.coverImage ? 'image' : 'video'}
           onPress={this.props.onPress}
           gradientColors={this.props.gradientColors}
-          gradientLocations={this.props.gradientLocations}
-          showPlayButton={this.props.showPlayButton}
+          gradientLocations={gradientLocations}
+          showPlayButton={showPlayButton}
           playButtonSize={playButtonSize}
           isFeed={this.props.isVisible !== undefined}
           shouldEnableAutoplay={this.shouldEnableAutoplay()}

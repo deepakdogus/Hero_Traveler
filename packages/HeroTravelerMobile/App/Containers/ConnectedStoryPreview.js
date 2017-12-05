@@ -40,7 +40,7 @@ const mapStateToProps = (state, ownProps) => {
     story,
     accessToken: _.find(session.tokens, {type: 'access'}).value,
     isVisible,
-    isAuthor: story.author === sessionUserId
+    isAuthor: story && story.author === sessionUserId,
   }
 }
 

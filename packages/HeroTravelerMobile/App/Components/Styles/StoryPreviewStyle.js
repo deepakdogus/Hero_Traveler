@@ -43,8 +43,19 @@ export default StyleSheet.create({
     letterSpacing: .7,
     fontFamily: Fonts.type.sourceSansPro
   },
+  about: {
+    fontFamily: Fonts.type.sourceSansPro,
+    fontWeight: '400',
+    fontSize: 13,
+    letterSpacing: .7,
+    color: Colors.background,
+    maxWidth: Metrics.screenWidth * .60,
+  },
+  previewUserContainer: {
+    minHeight: 70,
+  },
   userContainer: {
-    height: 70,
+    paddingVertical: 10,
   },
   storyInfoContainer: {
     paddingHorizontal: Metrics.section,
@@ -74,6 +85,12 @@ export default StyleSheet.create({
   },
   followFollowingButton: {
     flexDirection: 'column',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    width: 105,
+  },
+  followFollowingText: {
+    width: 80,
+    marginHorizontal: 12.5,
+    fontSize: 11,
   }
 })

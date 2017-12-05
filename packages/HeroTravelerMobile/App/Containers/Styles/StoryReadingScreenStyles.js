@@ -6,6 +6,10 @@ export const styles = StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: Colors.snow,
+    marginTop: Metrics.navBarHeight - 15,
+    borderStyle: 'solid',
+    borderTopWidth: 2,
+    borderColor: Colors.dividerGrey,
   },
   darkRoot: {
     flex: 1,

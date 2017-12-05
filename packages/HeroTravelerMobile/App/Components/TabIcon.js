@@ -91,6 +91,8 @@ class TabIcon extends React.Component {
         return Images.iconVideoWhite
       case 'trash':
         return Images.iconTrash
+      case 'trashBlack':
+        return Images.iconTrashBlack
       case 'normalText':
         return Images.iconNormalText
       case 'headerText':

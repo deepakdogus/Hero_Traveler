@@ -18,6 +18,8 @@
 
 #import <IQKeyboardManager/IQKeyboardManager.h>
 
+#import <iOS-MagnifyingGlass/ACMagnifyingGlass.h>
+
 static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *nonTextDescendants)
 {
   for (UIView *child in view.reactSubviews) {
@@ -28,6 +30,9 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     }
   }
 }
+
+#define MAGNIFYING_GLASS_SHOW_DELAY 0.5
+
 
 @implementation RNDJDraftJSEditor
 {
@@ -44,6 +49,11 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
 #endif
   
   BOOL wasInView;
+  
+  ACMagnifyingGlass *magnifyingGlass;
+  NSTimer *touchTimer;
+  
+  int magnifyingGlassRetainCount;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -74,7 +84,7 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
-
+    
 #if DEBUG_TOUCHES
     debugTouchesView = [UIView new];
     debugTouchesView.backgroundColor = [UIColor redColor];
@@ -123,6 +133,9 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
                                                      attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
 
 #endif
+
+    magnifyingGlass = [[ACMagnifyingGlass alloc] init];
+    magnifyingGlass.viewToMagnify = self;
 
   }
   return self;
@@ -315,6 +328,8 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     RNDJDraftJsIndex* selectedIndex = [self draftJsIndexForPointInView:tapPostion];
     [self requestSetSelection:selectedIndex];
   }
+  
+  [self updateMagnifierFromGesture:gesture];
 }
 
 - (void)pan:(UILongPressGestureRecognizer *)gesture
@@ -327,6 +342,7 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     RNDJDraftJsIndex* selectedIndex = [self draftJsIndexForPointInView:tapPostion];
     [self requestSetSelection:selectedIndex];
   }
+  [self updateMagnifierFromGesture:gesture];
 }
 
 - (void)handleLongPress:(UILongPressGestureRecognizer *)gesture
@@ -358,6 +374,8 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
   //    [menuController setMenuVisible:YES animated:YES];
   //#endif
   //  }
+  
+  [self updateMagnifierFromGesture:gesture];
 }
 
 - (NSString *)description
@@ -680,6 +698,77 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     onBackspaceRequest(@{});
 	}
 }
+  
+#pragma mark - touch events
+  
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+  UITouch *touch = [touches anyObject];
+  [self updateMagnifyingGlassAtPoint:[touch locationInView:self]];
+  touchTimer = [NSTimer scheduledTimerWithTimeInterval:MAGNIFYING_GLASS_SHOW_DELAY
+                                                     target:self
+                                                   selector:@selector(addMagnifyingGlassTimer:)
+                                                   userInfo:nil
+                                                    repeats:NO];
+  magnifyingGlassRetainCount++;
+}
+  
+  - (void) touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self updateMagnifyingGlassAtPoint:[[touches anyObject] locationInView:self]];
+  }
+  
+  - (void) touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self removeMagnifyingGlass];
+  }
+  
+  - (void) touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self removeMagnifyingGlass];
+  }
+
+#pragma mark - private functions
+
+- (void)addMagnifyingGlassTimer:(NSTimer*)timer {
+  [self addMagnifyingGlass];
+}
+
+#pragma mark - magnifier function
+  
+- (void) updateMagnifierFromGesture:(UIGestureRecognizer*) gesture {
+  switch (gesture.state) {
+    case UIGestureRecognizerStateBegan:
+      magnifyingGlassRetainCount++;
+    case UIGestureRecognizerStatePossible:
+    case UIGestureRecognizerStateChanged:
+      [self updateMagnifyingGlassAtPoint:[gesture locationInView:self]];
+      break;
+      
+    case UIGestureRecognizerStateEnded:
+    case UIGestureRecognizerStateFailed:
+    case UIGestureRecognizerStateCancelled:
+      [self removeMagnifyingGlass];
+      break;
+  }
+}
+- (void)addMagnifyingGlass {
+  [self.superview addSubview:magnifyingGlass];
+  [magnifyingGlass setNeedsDisplay];
+}
+
+- (void)removeMagnifyingGlass {
+  magnifyingGlassRetainCount--;
+  if (magnifyingGlassRetainCount > 0) {
+    return;
+  }
+  magnifyingGlassRetainCount = 0;
+  [touchTimer invalidate];
+  touchTimer = nil;
+  [magnifyingGlass removeFromSuperview];
+}
+
+- (void)updateMagnifyingGlassAtPoint:(CGPoint)point {
+  magnifyingGlass.touchPoint = point;
+  [magnifyingGlass setNeedsDisplay];
+}
+
 
 @end
 

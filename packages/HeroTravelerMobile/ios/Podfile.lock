@@ -12,6 +12,7 @@ PODS:
   - FBSDKShareKit (4.23.0):
     - FBSDKCoreKit
   - HockeySDK/AllFeaturesLib (4.1.4)
+  - iOS-MagnifyingGlass (0.0.2)
   - IQKeyboardManager (4.0.9)
 
 DEPENDENCIES:
@@ -20,6 +21,7 @@ DEPENDENCIES:
   - FBSDKLoginKit
   - FBSDKShareKit
   - HockeySDK/AllFeaturesLib
+  - iOS-MagnifyingGlass (~> 0.0.2)
   - IQKeyboardManager
 
 SPEC CHECKSUMS:
@@ -28,8 +30,9 @@ SPEC CHECKSUMS:
   FBSDKLoginKit: 6b92bd65f319d669d2b0730e49db495ef1660566
   FBSDKShareKit: 65751c3b9937ab9d594e6c37611ecc115ceeb448
   HockeySDK: 78a3f8bb9100277b531defc56c970369a3ca267a
+  iOS-MagnifyingGlass: b11b7d3e8be7de22c85f0edcaa75538bdf0827dc
   IQKeyboardManager: 322c7405df3eb5f7e50dede32ea937bf3d4364e0
 
-PODFILE CHECKSUM: cec2d9d58b7c8847148ffa3181fda5c8e11a1cfa
+PODFILE CHECKSUM: 578b03c7e986b3b3099fbd2546d2d5c7721d289c
 
 COCOAPODS: 1.2.1

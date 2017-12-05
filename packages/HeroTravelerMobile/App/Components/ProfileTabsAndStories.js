@@ -78,15 +78,13 @@ export default class ProfileTabsAndStories extends Component {
 
   renderStory = (storyInfo) => {
     const {
-      touchTrash, touchEdit, tabTypes, selectedTab,
+      tabTypes, selectedTab,
       editable, showLike, user, location
     } = this.props
     return (
       <ConnectedStoryPreview
         forProfile={true}
         editable={editable && selectedTab !== tabTypes.bookmarks}
-        touchTrash={touchTrash}
-        touchEdit={touchEdit}
         titleStyle={styles.storyTitleStyle}
         subtitleStyle={styles.subtitleStyle}
         showLike={showLike}

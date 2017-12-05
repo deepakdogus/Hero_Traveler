@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import moment from 'moment'
+import {Actions as NavActions} from 'react-native-router-flux'
 
 import formatCount from '../Shared/Lib/formatCount'
 import getImageUrl from '../Shared/Lib/getImageUrl'
@@ -35,7 +36,11 @@ export default class StoryPreview extends Component {
     gradientColors: PropTypes.arrayOf(PropTypes.string),
     isVisible: PropTypes.bool,
     areInRenderLocation: PropTypes.bool,
-
+    deleteStory: PropTypes.func,
+    onPressFollow: PropTypes.func,
+    onPressUnfollow: PropTypes.func,
+    isAuthor: PropTypes.bool,
+    myFollowedUsers: PropTypes.arrayOf(PropTypes.string),
   }
 
   static defaultProps = {
@@ -44,9 +49,9 @@ export default class StoryPreview extends Component {
   }
 
   _touchEdit = () => {
-    if (this.props.touchEdit) {
-      this.props.touchEdit(this.props.story.id)
-    }
+    const storyId = this.props.story.id
+    NavActions.createStoryFlow({storyId, type: 'reset', navigatedFromProfile: true, shouldLoadStory: false})
+    NavActions.createStory_cover({storyId, navigatedFromProfile: true, shouldLoadStory: false})
   }
 
   _touchTrash = () => {
@@ -58,7 +63,14 @@ export default class StoryPreview extends Component {
       'Are you sure you want to delete this story?',
       [
         { text: 'Cancel' },
-        { text: 'Delete', onPress: () => deleteStory(userId, storyId), style: 'destructive' }
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => {
+            deleteStory(userId, storyId)
+            NavActions.pop()
+          },
+        }
       ]
    )
   }
@@ -78,12 +90,14 @@ export default class StoryPreview extends Component {
   }
 
   renderUserSection() {
-    const {user, story, isStoryReadingScreen} = this.props
+    const {user, story, isStoryReadingScreen, isAuthor} = this.props
     const isFollowing = _.includes(this.props.myFollowedUsers, user.id)
     return (
-      <View style={[styles.storyInfoContainer, styles.verticalCenter, styles.userContainer]}>
+      <View style={[
+        styles.storyInfoContainer, styles.verticalCenter, styles.userContainer,
+        !isStoryReadingScreen ? styles.previewUserContainer : null
+      ]}>
         <View style={styles.userContent}>
-
           <View style={styles.leftUserContent}>
             <TouchableOpacity onPress={this._touchUser}>
               <Avatar
@@ -96,26 +110,36 @@ export default class StoryPreview extends Component {
               <TouchableOpacity onPress={this._touchUser}>
                 <Text style={styles.username}>{user.username}</Text>
               </TouchableOpacity>
-              <Text style={styles.dateText}>{moment(story.createdAt).format('LL')}</Text>
+              {isStoryReadingScreen && user.about &&
+                <Text style={styles.about}>{user.about}</Text>
+              }
+            <Text style={styles.dateText}>{moment(story.createdAt).format('LL')}</Text>
             </View>
           </View>
-          { isStoryReadingScreen &&
-          <TouchableOpacity
-            style={[
-              profileViewStyles.blackButton,
-              isFollowing ? null : profileViewStyles.followButton,
-              styles.followFollowingButton
-            ]}
-            onPress={isFollowing ? this._onPressUnfollow : this._onPressFollow}>
-            <Text style={[
-                profileViewStyles.blackButtonText,
-                isFollowing ? null : profileViewStyles.followButtonText,
-                {width: 100, marginHorizontal: 10}
-              ]}
-            >
-              {isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
-            </Text>
-          </TouchableOpacity>
+          {isStoryReadingScreen && !isAuthor &&
+            <View>
+              <TouchableOpacity
+                style={[
+                  profileViewStyles.blackButton,
+                  isFollowing ? null : profileViewStyles.followButton,
+                  styles.followFollowingButton
+                ]}
+                onPress={isFollowing ? this._onPressUnfollow : this._onPressFollow}>
+                <Text style={[
+                    profileViewStyles.blackButtonText,
+                    isFollowing ? null : profileViewStyles.followButtonText,
+                    styles.followFollowingText
+                  ]}
+                >
+                  {isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          }
+          {isStoryReadingScreen && isAuthor &&
+            <View>
+              <TrashCan touchTrash={this._touchTrash} touchEdit={this._touchEdit} />
+            </View>
           }
         </View>
       </View>
@@ -162,18 +186,14 @@ export default class StoryPreview extends Component {
   }
 
   render () {
-    const {story} = this.props
+    const {story, gradientLocations, showPlayButton} = this.props
     if (!story) return null
     // using StoryPreview height as proxy for StoryCover playbutton size
     const height = this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20
     const playButtonSize = height > 250 ? 'large' : 'small'
-
     return (
       <View style={styles.contentContainer}>
-        {false &&
-          <TrashCan touchTrash={this._touchTrash} touchEdit={this._touchEdit} />
-        }
-        {!this.props.isStoryReadingScreen && this.renderUserSection()}
+        {this.renderUserSection()}
         <StoryCover
           autoPlayVideo={this.props.autoPlayVideo}
           allowVideoPlay={this.props.allowVideoPlay}
@@ -181,13 +201,12 @@ export default class StoryPreview extends Component {
           coverType={story.coverImage ? 'image' : 'video'}
           onPress={this.props.onPress}
           gradientColors={this.props.gradientColors}
-          gradientLocations={this.props.gradientLocations}
-          showPlayButton={this.props.showPlayButton}
+          gradientLocations={gradientLocations}
+          showPlayButton={showPlayButton}
           playButtonSize={playButtonSize}
           isFeed={this.props.isVisible !== undefined}
           shouldEnableAutoplay={this.shouldEnableAutoplay()}
         />
-        {this.props.isStoryReadingScreen && this.renderUserSection()}
         {this.renderBottomSection()}
       </View>
     )

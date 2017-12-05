@@ -3,6 +3,7 @@ import {
   Scene,
   Actions as NavActions
 } from 'react-native-router-flux'
+import _ from 'lodash'
 
 import LaunchScreen from '../Containers/LaunchScreen'
 import Styles from './Styles/NavigationContainerStyles'
@@ -74,6 +75,10 @@ const clearNavBarProps = {
   rightButtonTextStyle: Styles.navText,
   leftButtonIconStyle: Styles.navBarBack,
   rightButtonIconStyle: Styles.navBarBack,
+}
+
+const redBack = {
+  leftButtonIconStyle: Styles.buttonRed
 }
 
 const tabBarProps = {
@@ -247,7 +252,7 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        {...clearNavBarProps}
+        {..._.merge({}, clearNavBarProps, redBack)}
       />
       <Scene
         key='storyComments'

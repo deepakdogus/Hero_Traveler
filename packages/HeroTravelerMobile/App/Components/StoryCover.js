@@ -19,7 +19,6 @@ import getRelativeHeight from '../Shared/Lib/getRelativeHeight'
 export default class StoryCover extends Component {
 
   static propTypes = {
-    // cover: PropTypes.object.isRequired,
     coverType: PropTypes.oneOf(['image', 'video']).isRequired,
     cover: PropTypes.object,
     onPress: PropTypes.func,
@@ -60,9 +59,12 @@ export default class StoryCover extends Component {
   }
 
   _getWidthHeight(){
-    return {
-      width: Metrics.screenWidth,
-      height: getRelativeHeight(Metrics.screenWidth, this.props.cover.original.meta)
+    if (this.props.isFeed) return { height: 375 }
+    else {
+      return {
+        width: Metrics.screenWidth,
+        height: getRelativeHeight(Metrics.screenWidth, this.props.cover.original.meta)
+      }
     }
   }
 

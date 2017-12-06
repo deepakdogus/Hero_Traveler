@@ -13,9 +13,10 @@ import formatCount from '../Shared/Lib/formatCount'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import { Metrics } from '../Shared/Themes'
 import styles from './Styles/StoryPreviewStyle'
+import {styles as StoryReadingScreenStyles} from '../Containers/Styles/StoryReadingScreenStyles'
 import profileViewStyles from './Styles/ProfileViewStyles'
 import LikesComponent from './LikeComponent'
-import TrashCan from '../Components/TrashCan'
+import TrashCan from './TrashCan'
 import Avatar from './Avatar'
 import StoryCover from './StoryCover'
 import TabIcon from './TabIcon'
@@ -147,11 +148,23 @@ export default class StoryPreview extends Component {
   }
 
   renderBottomSection() {
-    const {title, counts, description} = this.props.story
+    const {title, counts, description, coverCaption} = this.props.story
+    const {isStoryReadingScreen} = this.props
 
     return (
       <View style={[styles.storyInfoContainer, styles.bottomContainer]}>
-        <Text style={[styles.title, this.props.titleStyle]}>{title}</Text>
+        {isStoryReadingScreen &&
+          <Text style={[StoryReadingScreenStyles.caption, styles.caption]}>
+            {coverCaption}
+          </Text>
+        }
+        <Text style={[
+          styles.title,
+          isStoryReadingScreen ? styles.storyReadingTitle : {},
+          this.props.titleStyle
+        ]}>
+          {title}
+        </Text>
         {description && <Text style={styles.description}>{description}</Text>}
         <View style={styles.rightRow}>
           {this.props.showLike && this.props.onPressBookmark &&

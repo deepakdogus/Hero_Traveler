@@ -19,9 +19,15 @@ export const styles = StyleSheet.create({
   scrollView: {
     flex: 1
   },
+  divider: {
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: Colors.dividerGrey,
+    marginBottom: 10,
+    marginHorizontal: Metrics.section,
+  },
   content: {
     flex: 1,
-    marginTop: Metrics.section,
     marginBottom: Metrics.tabBarHeight
   },
   locationWrapper: {

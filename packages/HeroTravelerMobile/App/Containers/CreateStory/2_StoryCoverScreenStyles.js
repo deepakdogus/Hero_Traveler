@@ -58,6 +58,11 @@ export default StyleSheet.create({
     lineHeight: 28,
     height: 28,
   },
+  coverCaption: {
+    marginTop: 5,
+    marginBottom: 15,
+    minHeight: 20,
+  },
   divider: {
     borderWidth: 1,
     borderStyle: 'solid',

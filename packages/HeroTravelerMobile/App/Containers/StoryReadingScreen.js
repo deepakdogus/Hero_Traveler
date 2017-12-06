@@ -281,6 +281,7 @@ class StoryReadingScreen extends React.Component {
             isStoryReadingScreen={true}
             isContentVisible={this.isShowContent()}
           />
+          <View style={styles.divider}/>
           <View style={styles.content}>
             {!!story.draftjsContent &&
               <RNDraftJSRender

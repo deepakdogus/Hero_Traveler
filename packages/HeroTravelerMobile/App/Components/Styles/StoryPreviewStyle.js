@@ -7,6 +7,10 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'column'
   },
+  caption: {
+    marginTop: 0,
+    marginBottom: 15,
+  },
   title: {
     letterSpacing: 1.5,
     fontSize: 20,
@@ -14,6 +18,10 @@ export default StyleSheet.create({
     fontFamily: Fonts.montserrat,
     fontWeight: '600',
     color: Colors.backgrond,
+  },
+  storyReadingTitle: {
+    fontSize: 30,
+    lineHeight: 33,
   },
   description: {
     fontFamily: Fonts.type.sourceSansPro,

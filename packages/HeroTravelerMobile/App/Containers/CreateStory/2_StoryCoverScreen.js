@@ -22,6 +22,7 @@ import Immutable from 'seamless-immutable'
 import API from '../../Shared/Services/HeroAPI'
 import {styles as StoryReadingScreenStyles} from '../Styles/StoryReadingScreenStyles'
 import StoryEditActions from '../../Shared/Redux/StoryCreateRedux'
+import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import ShadowButton from '../../Components/ShadowButton'
 import Loader from '../../Components/Loader'
 import {Colors, Metrics} from '../../Shared/Themes'
@@ -108,55 +109,44 @@ class StoryCoverScreen extends Component {
     }
   }
 
-  componentWillMount() {
-    const {storyId} = this.props
-    api.setAuth(this.props.accessToken.value)
-    // Create a new draft to work with if one doesn't exist
-    if (!storyId) {
-      this.props.registerDraft()
-    } else if (this.props.shouldLoadStory) {
-      this.props.loadStory(storyId)
-    }
-  }
-
   componentWillReceiveProps(nextProps) {
-    let nextState = {}
+    // let nextState = {}
 
-    if (this.props.story.title != undefined && !this.props.story.title !== nextProps.story.title) {
-      nextState.title = nextProps.story.title
-      nextState.description = nextProps.story.description
-    }
+    // if (this.props.story.title != undefined && !this.props.story.title !== nextProps.story.title) {
+    //   nextState.title = nextProps.story.title
+    //   nextState.description = nextProps.story.description
+    // }
 
-    if (this.props.story.title !== nextProps.story.title) {
-      nextState.title = nextProps.story.title
-      nextState.description = nextProps.story.description
-    }
+    // if (this.props.story.title !== nextProps.story.title) {
+    //   nextState.title = nextProps.story.title
+    //   nextState.description = nextProps.story.description
+    // }
 
-    if (!this.props.story.coverVideo && nextProps.story.coverVideo) {
-      nextState.coverVideo = getVideoUrl(nextProps.story.coverVideo)
-    }
+    // if (!this.props.story.coverVideo && nextProps.story.coverVideo) {
+    //   nextState.coverVideo = getVideoUrl(nextProps.story.coverVideo)
+    // }
 
-    if (!this.props.story.coverCaption && nextProps.story.coverCaption) {
-      nextState.coverCaption = nextProps.story.coverCaption
-    }
-    // case of switching to new draft from existing story
-    if (this.state.coverVideo &&
-      (this.props.story.id !== nextProps.story.id)
-    ) {
-      nextState.coverVideo = undefined
-    }
+    // if (!this.props.story.coverCaption && nextProps.story.coverCaption) {
+    //   nextState.coverCaption = nextProps.story.coverCaption
+    // }
+    // // case of switching to new draft from existing story
+    // if (this.state.coverVideo &&
+    //   (this.props.story.id !== nextProps.story.id)
+    // ) {
+    //   nextState.coverVideo = undefined
+    // }
 
-    if (!this.props.story.coverImage && nextProps.story.coverImage) {
-      nextState.coverImage = getImageUrl(nextProps.story.coverImage)
-    }
-    // case of switching to new draft from existing story
-    if (this.state.coverImage &&
-      (this.props.story.id !== nextProps.story.id)
-    ) {
-      nextState.coverImage = undefined
-    }
+    // if (!this.props.story.coverImage && nextProps.story.coverImage) {
+    //   nextState.coverImage = getImageUrl(nextProps.story.coverImage)
+    // }
+    // // case of switching to new draft from existing story
+    // if (this.state.coverImage &&
+    //   (this.props.story.id !== nextProps.story.id)
+    // ) {
+    //   nextState.coverImage = undefined
+    // }
 
-    this.setState(nextState)
+    // this.setState(nextState)
   }
 
   isUploading() {
@@ -242,12 +232,6 @@ class StoryCoverScreen extends Component {
     })
   }
 
-  _touchTrash = () => {
-    this.setState({coverImage: null, coverVideo: null, imageMenuOpen: false}, () => {
-      this.resetAnimation()
-    })
-  }
-
   _touchChangeCover = () => {
     this.setState({imageMenuOpen: false}, () => {
       this.resetAnimation()
@@ -303,11 +287,12 @@ class StoryCoverScreen extends Component {
   }
 
   renderTextColor = (baseStyle) => {
+    this.props.workingDraft.coverImage
     return R.ifElse(
       R.identity,
       R.always([baseStyle, { color: Colors.snow }]),
       R.always(baseStyle),
-    )(!!(this.state.coverImage || this.state.coverVideo))
+    )(!!(this.props.workingDraft.coverImage || this.props.workingDraft.coverImage))
   }
 
   renderPlaceholderColor = (baseColor) => {
@@ -315,7 +300,7 @@ class StoryCoverScreen extends Component {
       R.identity,
       R.always('white'),
       R.always(baseColor)
-    )(!!(this.state.coverImage || this.state.coverVideo))
+    )(!!(this.props.workingDraft.coverImage || this.props.workingDraft.coverImage))
   }
 
   /*
@@ -447,7 +432,7 @@ class StoryCoverScreen extends Component {
 
   isValid() {
     return _.every([
-      !!this.state.coverImage || !!this.state.coverVideo,
+      !!this.props.workingDraft.coverImage || !!this.props.workingDraft.coverImage,
       !!_.trim(this.state.title)
     ])
   }
@@ -597,11 +582,11 @@ class StoryCoverScreen extends Component {
   }
 
   hasNoPhoto() {
-    return !this.state.coverImage
+    return !this.props.workingDraft.coverImage
   }
 
   hasNoVideo() {
-    return !this.state.coverVideo
+    return !this.props.workingDraft.coverVideo
   }
 
   hasNoCover() {
@@ -628,7 +613,7 @@ class StoryCoverScreen extends Component {
   }
 
   setTitle = (title) => {
-    this.setState({title})
+    this.props.updateWorkingDraft({title})
   }
 
 
@@ -638,12 +623,12 @@ class StoryCoverScreen extends Component {
   }
 
   setCoverCaption = (coverCaption) => {
-    this.setState({coverCaption})
+    this.props.updateWorkingDraft({coverCaption})
   }
 
 
   setDescription = (description) => {
-    this.setState({description})
+    this.props.updateWorkingDraft({description})
   }
 
   setDescriptionAndFocus = (description) => {
@@ -874,7 +859,11 @@ class StoryCoverScreen extends Component {
   }
 
   render () {
-    const {coverImage, coverVideo, coverHeight, error} = this.state
+    const {coverHeight, error} = this.state
+    const {
+      title, coverCaption, description,
+      coverImage, coverVideo
+    } = this.props.workingDraft
     let showTooltip = false;
     if (this.props.user && this.state.file) {
       showTooltip = !isTooltipComplete(
@@ -923,14 +912,16 @@ class StoryCoverScreen extends Component {
               {!this.isPhotoType() && this.renderCoverVideo(coverVideo)}
             </View>
             <View style={styles.titlesWrapper}>
-              <TextInput
-                style={[StoryReadingScreenStyles.caption, styles.coverCaption]}
-                placeholder='Add a caption...'
-                value={this.state.coverCaption}
-                onChangeText={this.setCoverCaption}
-                returnKeyType='done'
-                blurOnSubmit
-              />
+              {!this.hasNoCover() &&
+                <TextInput
+                  style={[StoryReadingScreenStyles.caption, styles.coverCaption]}
+                  placeholder='Add a caption...'
+                  value={coverCaption}
+                  onChangeText={this.setCoverCaption}
+                  returnKeyType='done'
+                  blurOnSubmit
+                />
+              }
               <TextInput
                 style={[
                   styles.titleInput,
@@ -938,7 +929,7 @@ class StoryCoverScreen extends Component {
                 ]}
                 placeholder='ADD A TITLE'
                 placeholderTextColor={Colors.background}
-                value={this.state.title}
+                value={title}
                 onChangeText={this.setTitleAndFocus}
                 onFocus={this.jumpToTitle}
                 returnKeyType='done'
@@ -951,7 +942,7 @@ class StoryCoverScreen extends Component {
                 style={styles.description}
                 placeholder='Add a subtitle'
                 placeholderTextColor={Colors.grey}
-                value={this.state.description}
+                value={description}
                 onChangeText={this.setDescriptionAndFocus}
                 onFocus={this.jumpToTitle}
                 returnKeyType='done'
@@ -1014,44 +1005,28 @@ class StoryCoverScreen extends Component {
     if (isPhotoType) {
       updatedState.isScrollDown = true
       updatedState.coverImage = path
+      updatedState.coverVideo = undefined
     } else {
+      updatedState.coverImage = undefined
       updatedState.coverVideo = path
     }
 
     updatedState.coverHeight = getRelativeHeight(Metrics.screenWidth, coverMetrics) || defaultCoverHeight
-    this.setState(updatedState, () => {
-      NavActions.pop()
-    })
+
+    this.props.updateWorkingDraft(updatedState)
+    NavActions.pop()
   }
 }
 
-export default connect((state, props) => {
-  let story
-  /*
-  go over logic to see if we can refactor.
-  I believe we can make it so that all new drafts have shouldLoadStory true
-  or some other such boolean.
-  If we are editing a story that means we are coming in through the profile page
-  that means we already have the story loaded so it should be entities.
-  This existing logic needs more clarity
-  */
-  if (props.shouldLoadStory) {
-    story = state.storyCreate.draft
-  }
-  else if (state.entities.stories.entities[props.storyId]) {
-    story = state.entities.stories.entities[props.storyId]
-  } else {
-    story = state.storyCreate.draft
-  }
-
+export default connect((state) => {
   return {
     accessToken: _.find(state.session.tokens, {type: 'access'}),
     user: state.entities.users.entities[state.session.userId],
-    story: {...story}
+    story: {...state.storyCreate.workingDraft},
+    workingDraft: {...state.storyCreate.workingDraft},
   }
 }, dispatch => ({
-  registerDraft: () =>
-    dispatch(StoryEditActions.registerDraft()),
+  updateWorkingDraft: (story) => dispatch(StoryCreateActions.updateWorkingDraft(story)),
   discardDraft: (draftId) =>
     dispatch(StoryEditActions.discardDraft(draftId)),
   update: (id, attrs, doReset) =>

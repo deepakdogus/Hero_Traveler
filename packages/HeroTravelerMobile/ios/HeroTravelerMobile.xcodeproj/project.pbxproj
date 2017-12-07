@@ -47,6 +47,7 @@
 		911D144D1F361EBB00F47BF8 /* libAutoGrowTextInput.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 911D144C1F361E8300F47BF8 /* libAutoGrowTextInput.a */; };
 		912E95471FA631C700399703 /* RNDJShadowDraftJSEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 912E95451FA631C600399703 /* RNDJShadowDraftJSEditor.m */; };
 		913C4EF45111427B8D830D3F /* Montserrat-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A0687633F8D24E28B8519A35 /* Montserrat-Light.ttf */; };
+		9155DE921FD9B42500DAAA7C /* RNDJAutocorrectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9155DE911FD9B42500DAAA7C /* RNDJAutocorrectView.m */; };
 		91973CAC1FA39B64006DE932 /* RNDJBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973C911FA39B52006DE932 /* RNDJBaseModel.m */; };
 		91973CAD1FA39B64006DE932 /* RNDJBlockModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973C931FA39B52006DE932 /* RNDJBlockModel.m */; };
 		91973CAE1FA39B64006DE932 /* RNDJContentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973C951FA39B52006DE932 /* RNDJContentModel.m */; };
@@ -59,6 +60,7 @@
 		91973CB51FA39B64006DE932 /* RNDJDraftJSEditorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973CA31FA39B52006DE932 /* RNDJDraftJSEditorManager.m */; };
 		91973CB71FA39B64006DE932 /* RNDJDraftJsIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973CA81FA39B52006DE932 /* RNDJDraftJsIndex.m */; };
 		91973CB81FA39B64006DE932 /* RNDJStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973CAA1FA39B52006DE932 /* RNDJStyle.m */; };
+		91AC58BD1FD83CFC0017B1E8 /* RNDJAutocompleteModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91AC58BC1FD83CFC0017B1E8 /* RNDJAutocompleteModel.m */; };
 		942D124B1EB395B200A0CFE5 /* RNHockeyApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 942D124A1EB395B200A0CFE5 /* RNHockeyApp.m */; };
 		9465AAA71EB0FDC7003109B0 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9465AAA61EB0FDC7003109B0 /* GameKit.framework */; };
 		9465AAA91EB0FDCC003109B0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9465AAA81EB0FDCC003109B0 /* StoreKit.framework */; };
@@ -294,6 +296,13 @@
 			remoteGlobalIDString = D81C36501CDB667F00777FB9;
 			remoteInfo = AutoGrowTextInput;
 		};
+		91AC58CB1FD83CFD0017B1E8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 308F7B86C9B949C6AEB5E0FBCF625772;
+			remoteInfo = "iOS-MagnifyingGlass";
+		};
 		91D044131F327BCB00FAA404 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
@@ -515,6 +524,8 @@
 		911D14471F361E8300F47BF8 /* AutoGrowTextInput.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AutoGrowTextInput.xcodeproj; path = "../node_modules/@hero/react-native-autogrow-textinput/ios/AutoGrowTextInput.xcodeproj"; sourceTree = "<group>"; };
 		912E95451FA631C600399703 /* RNDJShadowDraftJSEditor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJShadowDraftJSEditor.m; sourceTree = "<group>"; };
 		912E95461FA631C700399703 /* RNDJShadowDraftJSEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJShadowDraftJSEditor.h; sourceTree = "<group>"; };
+		9155DE901FD9B42500DAAA7C /* RNDJAutocorrectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJAutocorrectView.h; sourceTree = "<group>"; };
+		9155DE911FD9B42500DAAA7C /* RNDJAutocorrectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJAutocorrectView.m; sourceTree = "<group>"; };
 		91973C901FA39B52006DE932 /* RNDJBaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJBaseModel.h; sourceTree = "<group>"; };
 		91973C911FA39B52006DE932 /* RNDJBaseModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJBaseModel.m; sourceTree = "<group>"; };
 		91973C921FA39B52006DE932 /* RNDJBlockModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJBlockModel.h; sourceTree = "<group>"; };
@@ -540,6 +551,8 @@
 		91973CA91FA39B52006DE932 /* RNDJStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJStyle.h; sourceTree = "<group>"; };
 		91973CAA1FA39B52006DE932 /* RNDJStyle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJStyle.m; sourceTree = "<group>"; };
 		91973CAB1FA39B52006DE932 /* RNDJUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJUtil.h; sourceTree = "<group>"; };
+		91AC58BB1FD83CFC0017B1E8 /* RNDJAutocompleteModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJAutocompleteModel.h; sourceTree = "<group>"; };
+		91AC58BC1FD83CFC0017B1E8 /* RNDJAutocompleteModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJAutocompleteModel.m; sourceTree = "<group>"; };
 		91D9DE9C94834C7EA1B431DA /* libSplashScreen.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSplashScreen.a; sourceTree = "<group>"; };
 		942D12171EB3956400A0CFE5 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
 		942D12491EB395B200A0CFE5 /* RNHockeyApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNHockeyApp.h; sourceTree = "<group>"; };
@@ -879,6 +892,8 @@
 				91973C8E1FA39B52006DE932 /* Models */,
 				91973C9E1FA39B52006DE932 /* RCTShadowView+DraftJSDirty.h */,
 				91973C9F1FA39B52006DE932 /* RCTShadowView+DraftJSDirty.m */,
+				9155DE901FD9B42500DAAA7C /* RNDJAutocorrectView.h */,
+				9155DE911FD9B42500DAAA7C /* RNDJAutocorrectView.m */,
 				91973CA01FA39B52006DE932 /* RNDJDraftJSEditor.h */,
 				91973CA11FA39B52006DE932 /* RNDJDraftJSEditor.m */,
 				91973CA21FA39B52006DE932 /* RNDJDraftJSEditorManager.h */,
@@ -907,6 +922,8 @@
 				91973C9B1FA39B52006DE932 /* RNDJInlineStyleRangeModel.m */,
 				91973C9C1FA39B52006DE932 /* RNDJSelectionModel.h */,
 				91973C9D1FA39B52006DE932 /* RNDJSelectionModel.m */,
+				91AC58BB1FD83CFC0017B1E8 /* RNDJAutocompleteModel.h */,
+				91AC58BC1FD83CFC0017B1E8 /* RNDJAutocompleteModel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -980,6 +997,7 @@
 				91D044181F327BCB00FAA404 /* libFBSDKLoginKit.a */,
 				91D0441A1F327BCB00FAA404 /* libFBSDKShareKit.a */,
 				942D12201EB3956400A0CFE5 /* HockeySDKResources.bundle */,
+				91AC58CC1FD83CFD0017B1E8 /* libiOS-MagnifyingGlass.a */,
 				EFE44EEA1F3CF4BF00003CBA /* libIQKeyboardManager.a */,
 				942D12221EB3956400A0CFE5 /* libPods-HeroTravelerMobile.a */,
 				942D12241EB3956400A0CFE5 /* libPods-HeroTravelerMobileTests.a */,
@@ -1541,6 +1559,13 @@
 			remoteRef = 911D144B1F361E8300F47BF8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		91AC58CC1FD83CFD0017B1E8 /* libiOS-MagnifyingGlass.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libiOS-MagnifyingGlass.a";
+			remoteRef = 91AC58CB1FD83CFD0017B1E8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		91D044141F327BCB00FAA404 /* libBolts.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1874,7 +1899,9 @@
 				91973CB11FA39B64006DE932 /* RNDJInlineStyleRangeModel.m in Sources */,
 				91973CB21FA39B64006DE932 /* RNDJSelectionModel.m in Sources */,
 				91973CB31FA39B64006DE932 /* RCTShadowView+DraftJSDirty.m in Sources */,
+				91AC58BD1FD83CFC0017B1E8 /* RNDJAutocompleteModel.m in Sources */,
 				91973CB41FA39B64006DE932 /* RNDJDraftJSEditor.m in Sources */,
+				9155DE921FD9B42500DAAA7C /* RNDJAutocorrectView.m in Sources */,
 				912E95471FA631C700399703 /* RNDJShadowDraftJSEditor.m in Sources */,
 				91973CB51FA39B64006DE932 /* RNDJDraftJSEditorManager.m in Sources */,
 				91973CB71FA39B64006DE932 /* RNDJDraftJsIndex.m in Sources */,

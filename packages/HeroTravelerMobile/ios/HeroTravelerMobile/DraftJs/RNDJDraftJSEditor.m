@@ -38,6 +38,7 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
 {
   NSTextStorage *_textStorage;
   CAShapeLayer *_highlightLayer;
+  CAShapeLayer *_autocompleteLayer;
   UILongPressGestureRecognizer *_longPressGestureRecognizer;
 
 #if DEBUG_TOUCHES
@@ -49,11 +50,16 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
 #endif
   
   BOOL wasInView;
+  BOOL shouldShowAutocomplete;
   
   ACMagnifyingGlass *magnifyingGlass;
   NSTimer *touchTimer;
   
   int magnifyingGlassRetainCount;
+  
+  NSDictionary* existingAutocompleteViews;
+  
+  NSSet* closedAutocorrects;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -70,11 +76,15 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     self.autocorrectionType = UITextAutocorrectionTypeNo;
     self.spellCheckingType = UITextSpellCheckingTypeNo;
     
+    existingAutocompleteViews = @{};
+    
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
     [self addGestureRecognizer:tapGesture];
     
     UILongPressGestureRecognizer* longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
     [self addGestureRecognizer:longPressGesture];
+    
+    closedAutocorrects = [NSSet set];
     
 //    UIPanGestureRecognizer* panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
 //    [self addGestureRecognizer:panGesture];
@@ -244,6 +254,65 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
       didFind = true;
     }];
   }];
+}
+
+- (void) cancelAutocorrect:(NSString*)autocorrectKey
+{
+  NSMutableSet* mutableClosedAutocorrects = [NSMutableSet setWithSet:closedAutocorrects];
+  [mutableClosedAutocorrects addObject:autocorrectKey];
+  closedAutocorrects = [NSSet setWithSet:mutableClosedAutocorrects];
+  [self setNeedsDisplay];
+}
+
+- (void) updateAutocompletes:(NSArray*)autocompletes
+{
+  NSMutableDictionary* oldAutocompleteViews = [NSMutableDictionary dictionaryWithDictionary:existingAutocompleteViews];
+  
+  NSMutableDictionary* newAutocompleteViews = [@{} mutableCopy];
+  
+  for (AutocompleteViewInfo* info in autocompletes) {
+    NSString* infoString = [info stringRepresentation];
+    
+    if ([closedAutocorrects containsObject:infoString]) {
+      continue;
+    }
+    
+    UIView* view = [oldAutocompleteViews objectForKey:infoString];
+    if (view) {
+      [oldAutocompleteViews removeObjectForKey:infoString];
+      [newAutocompleteViews setObject:view forKey:infoString];
+    } else {
+      __weak RNDJDraftJSEditor* weakSelf = self;
+      
+      RNDJAutocorrectView* autocorrectView =
+      [RNDJAutocorrectView make:info
+                                inside:self.superview
+                            cancelBlock:^(NSString* key) {
+                              [weakSelf cancelAutocorrect:key];
+                            }
+                     withContentOffset:_contentInset];
+      
+      autocorrectView.onReplaceRangeRequest = _onReplaceRangeRequest;
+      
+      view = autocorrectView;
+      if (view) {
+        [newAutocompleteViews setObject:view forKey:infoString];
+      }
+    }
+  }
+  
+  for (UIView* oldView in [oldAutocompleteViews allValues]) {
+    [oldView removeFromSuperview];
+  }
+  
+  existingAutocompleteViews = [NSDictionary dictionaryWithDictionary:newAutocompleteViews];
+
+  NSMutableSet* mutableClosedAutocorrects = [NSMutableSet set];
+  for (NSString* closedAutocorrectKey in closedAutocorrects) {
+    if ([[existingAutocompleteViews allKeys] containsObject:closedAutocorrectKey]) {
+      [mutableClosedAutocorrects addObject:closedAutocorrectKey];
+    }
+  }
 }
 
 - (void)keyboardWillShow:(NSNotification*)aNotification
@@ -419,25 +488,30 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
   if (_textStorage != textStorage) {
     _textStorage = textStorage;
     
+    NSMutableArray* viewsToNotRemove = [NSMutableArray arrayWithArray:[existingAutocompleteViews allValues]];
+    
+    [viewsToNotRemove addObject:magnifyingGlass];
+
+#if DEBUG_TOUCHES
+    [viewsToNotRemove addObject:positionLabel];
+    [viewsToNotRemove addObject:debugTouchesView];
+#endif
+    
     // Update subviews
     NSMutableArray *nonTextDescendants = [NSMutableArray new];
     collectNonTextDescendants(self, nonTextDescendants);
-    NSArray *subviews = self.subviews;
-    if (![subviews isEqualToArray:nonTextDescendants]) {
-      for (UIView *child in subviews) {
-#if DEBUG_TOUCHES
-        if (child != positionLabel && child != debugTouchesView && ![nonTextDescendants containsObject:child]) {
-#else
-        if (![nonTextDescendants containsObject:child]) {
-#endif
-          [child removeFromSuperview];
-        }
+    [viewsToNotRemove addObjectsFromArray:nonTextDescendants];
+
+    for (UIView *child in self.subviews) {
+      if (![viewsToNotRemove containsObject:child]) {
+        [child removeFromSuperview];
       }
-      for (UIView *child in nonTextDescendants) {
+    }
+    for (UIView *child in nonTextDescendants) {
+      if (![self.subviews containsObject:child]) {
         [self addSubview:child];
       }
     }
-    
     [self setNeedsDisplay];
   }
 }
@@ -468,7 +542,64 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
       }
     }];
   }];
-  
+
+  NSMutableArray* autocompleteViewInfos = [@[] mutableCopy];
+  __block UIBezierPath *autocompleteHighlightPath = nil;
+  [layoutManager.textStorage enumerateAttribute:RNDJDraftJsAutocompleteAttributeName
+                                        inRange:characterRange
+                                        options:0
+                                     usingBlock:^(SimpleAutocorrectInfo *info, NSRange range, BOOL *_)
+   {
+     if (info.existingText.length == 0 || !info.start || !info.end || info.textSuggestion.length == 0) {
+       return;
+     }
+
+     __block CGPoint lastPoint = CGPointMake(-100, -100);
+     
+     __block UIBezierPath* newPath = nil;
+     [layoutManager enumerateEnclosingRectsForGlyphRange:range withinSelectedGlyphRange:range inTextContainer:textContainer usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
+       CGRect highlightRect = CGRectInset(enclosingRect, -2, -2);
+       
+       lastPoint = CGPointMake(highlightRect.origin.x, highlightRect.origin.y+highlightRect.size.height);
+       
+       newPath = [UIBezierPath bezierPathWithRoundedRect:highlightRect cornerRadius:0];
+     }];
+     
+     if (lastPoint.x < -50 || lastPoint.y < -50) {
+       return;
+     }
+     
+     AutocompleteViewInfo* newInfo = [[AutocompleteViewInfo alloc]
+                                      initWithPoint:lastPoint
+                                      existingText:info.existingText
+                                      inRange:range
+                                      start:info.start
+                                      end:info.end
+                                      textSuggestion:info.textSuggestion];
+     
+     if ([closedAutocorrects containsObject:[newInfo stringRepresentation]]) {
+       newInfo = nil;
+       newPath = nil;
+     }
+     
+     if (newInfo) {
+       [autocompleteViewInfos addObject:newInfo];
+     }
+     
+     if (newPath) {
+       if (autocompleteHighlightPath) {
+         [autocompleteHighlightPath appendPath:newPath];
+       } else {
+         autocompleteHighlightPath = newPath;
+       }
+     }
+   }];
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self updateAutocompletes:autocompleteViewInfos];
+  });
+
+
   [layoutManager.textStorage enumerateAttribute:RNDJSingleCursorPositionAttributeName inRange:characterRange options:0 usingBlock:^(NSNumber *value, NSRange range, BOOL *_) {
     if (!value.boolValue) {
       return;
@@ -512,6 +643,19 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     [_highlightLayer removeFromSuperlayer];
     _highlightLayer = nil;
   }
+  
+  if (autocompleteHighlightPath) {
+    if (!_autocompleteLayer) {
+      _autocompleteLayer = [CAShapeLayer layer];
+      _autocompleteLayer.fillColor = [[UIColor alloc] initWithRed:0.11764 green:0.5647 blue:1 alpha:0.4f].CGColor;
+      [self.layer addSublayer:_autocompleteLayer];
+    }
+    _autocompleteLayer.position = (CGPoint){_contentInset.left, _contentInset.top};
+    _autocompleteLayer.path = autocompleteHighlightPath.CGPath;
+  } else {
+    [_autocompleteLayer removeFromSuperlayer];
+    _autocompleteLayer = nil;
+  }
 }
 
 - (NSNumber *)reactTagAtPoint:(CGPoint)point
@@ -543,6 +687,8 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
       [_highlightLayer removeFromSuperlayer];
       _highlightLayer = nil;
     }
+    [_autocompleteLayer removeFromSuperlayer];
+    _autocompleteLayer = nil;
   } else if (_textStorage.length) {
     [self setNeedsDisplay];
   }
@@ -621,10 +767,12 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
   if (hasFocus && !self.isFirstResponder) {
     if (![self becomeFirstResponder]) {
       [self requestHasFocus:NO];
+      shouldShowAutocomplete = NO;
     }
   } else if (!hasFocus && self.isFirstResponder) {
     if (![self resignFirstResponder]) {
       [self requestHasFocus:YES];
+      shouldShowAutocomplete = NO;
     }
   }
 }
@@ -667,11 +815,30 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
 
 - (void)insertText:(NSString *)text
 {
+  if ([text isEqualToString:@" "] && [existingAutocompleteViews count]) {
+    for (NSString* autocompleteKey in existingAutocompleteViews) {
+      if (![closedAutocorrects containsObject:autocompleteKey]) {
+        RNDJAutocorrectView* autocompleteView = existingAutocompleteViews[autocompleteKey];
+        if ([autocompleteView isKindOfClass:[RNDJAutocorrectView class]]) {
+          [autocompleteView dispatch];
+        }
+      }
+    }
+  }
+  
+  
   RCTDirectEventBlock onInsertTextRequest = self.onInsertTextRequest;
   RCTDirectEventBlock onNewlineRequest = self.onNewlineRequest;
 
   NSArray* textComponents = [text componentsSeparatedByString:@"\n"];
   NSUInteger numComponents = textComponents.count;
+  
+  if (numComponents == 1 && ((NSString*)textComponents[0]).length == 1 && ![textComponents[0] isEqualToString:@" "]) {
+    shouldShowAutocomplete = YES;
+  } else {
+    shouldShowAutocomplete = NO;
+  }
+  
   for (int i=0; i<numComponents; i++) {
     NSString* textComponent = textComponents[i];
     
@@ -680,6 +847,10 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
       {
         onInsertTextRequest(@{@"text": textComponent});
       }
+    }
+    
+    if (textComponent.length == 1 && ![textComponent isEqualToString:@" "]) {
+      
     }
     
     if (i < numComponents-1) {
@@ -697,6 +868,7 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
   {
     onBackspaceRequest(@{});
 	}
+  shouldShowAutocomplete = NO;
 }
   
 #pragma mark - touch events
@@ -739,7 +911,7 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     case UIGestureRecognizerStatePossible:
     case UIGestureRecognizerStateChanged:
       [self updateMagnifyingGlassAtPoint:[gesture locationInView:self]];
-      break;
+      break;  
       
     case UIGestureRecognizerStateEnded:
     case UIGestureRecognizerStateFailed:
@@ -769,6 +941,22 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
   [magnifyingGlass setNeedsDisplay];
 }
 
+
+@end
+
+@implementation SimpleAutocorrectInfo
+
+- (instancetype) initWithExistingText:(NSString*)existingText start:(RNDJDraftJsIndex*)start end:(RNDJDraftJsIndex*)end textSuggestion:(NSString *)textSuggestion
+{
+  if (self = [super init])
+  {
+    _existingText = existingText;
+    _start = start;
+    _end = end;
+    _textSuggestion = textSuggestion;
+  }
+  return self;
+}
 
 @end
 

@@ -20,14 +20,15 @@ import {
   RichUtils,
   applyStyle,
   convertToRaw,
+  convertFromRaw,
   insertText,
   insertTextAtPosition,
   backspace,
   insertNewline,
   insertAtomicBlock,
-  rawToEditorState,
   updateSelectionHasFocus,
   updateSelectionAnchorAndFocus,
+  makeSelectionState,
 } from './libs/draft-js'
 import * as DJSConsts from './libs/draft-js/constants'
 
@@ -45,12 +46,14 @@ import { getImageUrlBase } from "../../Shared/Lib/getImageUrl"
 
 const { width } = Dimensions.get('window')
 
+const matchLastWordRegex = /[a-zA-Z]*$/
+
 export default class RNDraftJs extends Component {
   constructor(props) {
     super(props);
     let editorState
     if (props.value) {
-      editorState = rawToEditorState(props.value)
+      editorState = EditorState.createWithContent(convertFromRaw(props.value))
     } else {
       editorState = EditorState.createEmpty()
     }
@@ -76,10 +79,10 @@ export default class RNDraftJs extends Component {
     return {hasFocus, blockType}
   }
 
-  onChange = (editorState) => {
+  onChange = (editorState, autocompleteInfo) => {
     if (editorState) {
       const previous = this.getToolbarInfo(this.state.editorState)
-      this.setState({editorState})
+      this.setState({editorState, autocompleteInfo})
       const current = this.getToolbarInfo(editorState)
 
       if (previous.hasFocus != current.hasFocus) {
@@ -104,6 +107,34 @@ export default class RNDraftJs extends Component {
     if (position) {
       this.onChange(insertTextAtPosition(editorState, text, position))
     } else {
+      const currentEditorState = insertText(editorState, text)
+
+      const currentSelectionState = currentEditorState.getSelection()
+      const currentKey = currentSelectionState.getStartKey()
+      const currentOffset = currentSelectionState.getStartOffset()
+      const currentContentState = currentEditorState.getCurrentContent()
+      const currentContentBlock = currentContentState.getBlockForKey(currentKey)
+
+      const currentText = currentContentBlock.getText()
+
+      const textBeforeSelection = currentText.substring(0, currentOffset)
+      const lastWordMatch = textBeforeSelection.match(matchLastWordRegex)
+
+      if (lastWordMatch.length > 0) {
+        const matchLength = lastWordMatch[0].length
+        if (matchLength > 0) {
+          const autocompleteInfo = {
+            enabled: true,
+            blockKey: currentKey,
+            startOffset: lastWordMatch.index,
+            endOffset: lastWordMatch.index + matchLength,
+          }
+
+          this.onChange(insertText(editorState, text), autocompleteInfo)
+          return
+        }
+      }
+
       this.onChange(insertText(editorState, text))
     }
   }
@@ -118,6 +149,17 @@ export default class RNDraftJs extends Component {
 
   _onSelectionChangeRequest = (event) => {
     this.updateSelectionState(event.nativeEvent)
+  }
+
+  _onReplaceRangeRequest = (incomingEvent) => {
+    const { editorState } = this.state
+    const event = incomingEvent.nativeEvent
+    const word = event.word
+    const selection = makeSelectionState(event.startKey, event.endKey, event.startOffset, event.endOffset, true)
+
+    //const editorState = insertTextAtPosition(editorState, word, selection)
+
+    this.onChange(insertTextAtPosition(editorState, word, selection))
   }
 
   updateSelectionState = (newSelectionState) => {
@@ -237,7 +279,7 @@ export default class RNDraftJs extends Component {
   }
 
   render = () => {
-    let { editorState } = this.state
+    let { editorState, autocompleteInfo } = this.state
 
     let contentState = editorState.getCurrentContent()
     let selectionState = editorState.getSelection()
@@ -269,12 +311,14 @@ export default class RNDraftJs extends Component {
           onBackspaceRequest={this._onBackspaceRequest}
           onNewlineRequest={this._onNewlineRequest}
           onSelectionChangeRequest={this._onSelectionChangeRequest}
+          onReplaceRangeRequest={this._onReplaceRangeRequest}
           placeholderText="Enter text here"
           selectionColor={'#000000'}
           selectionOpacity={1}
           defaultAtomicWidth={Metrics.screenWidth}
           defaultAtomicHeight={200}
           paragraphSpacing={25}
+          autocomplete={autocompleteInfo}
           >
           {
             blockViews

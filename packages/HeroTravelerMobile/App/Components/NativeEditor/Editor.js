@@ -7,9 +7,7 @@
 import React, { Component } from 'react';
 import {
   Dimensions,
-  AppRegistry,
   StyleSheet,
-  Text,
   View,
   processColor,
 } from 'react-native'
@@ -18,7 +16,6 @@ import {
   NativeEditor,
   EditorState,
   RichUtils,
-  applyStyle,
   convertToRaw,
   convertFromRaw,
   insertText,
@@ -40,9 +37,6 @@ import {
   DraftJsImage,
   DraftJsVideo,
 } from './Components'
-
-import Image from '../Image'
-import { getImageUrlBase } from "../../Shared/Lib/getImageUrl"
 
 const { width } = Dimensions.get('window')
 
@@ -390,7 +384,7 @@ const blockFontTypes = {
     color: processColor('#757575'),
     fontStyle: 'italic',
     textAlign: 'center',
-    placeholderText: 'Enter a caption',
+    placeholderText: 'Add a caption...',
     placeholderStyle: {
       opacity: 0.5,
     },

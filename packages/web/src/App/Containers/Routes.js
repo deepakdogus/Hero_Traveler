@@ -10,8 +10,9 @@ import Feed from './Feed'
 import Story from './Story'
 import Search from './Search'
 import CreateStory from './CreateStory'
-import SignupSocial from './Signup/SignupSocial';
-import SignupTopics from './Signup/SignupTopics';
+import CreateStoryNew from './CreateStoryNew'
+import SignupSocial from './Signup/SignupSocial'
+import SignupTopics from './Signup/SignupTopics'
 import Profile from './Profile'
 
 
@@ -26,7 +27,8 @@ class AppRoot extends Component {
         <AuthRoute path='/signup/social' component={SignupSocial} />
         <AuthRoute path='/signup/topics' component={SignupTopics} />
         <Route path='/story/:storyId' component={Story} />
-        <AuthRoute path='/createStory' component={CreateStory} />
+        <Route exact path='/createStory' component={CreateStory} />
+        <AuthRoute path='/createStoryNew/:draftId' component={CreateStoryNew} />
         <Route path='/profile/:userId/view' component={Profile} />
         <AuthRoute path='/profile/:userId/edit' component={Profile}/>
         <Route path='/search' component={Search} />

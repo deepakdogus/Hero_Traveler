@@ -4,7 +4,7 @@ import {isArray} from 'lodash'
 import {normalize, schema} from 'normalizr'
 import {getToken as getPushToken} from '../../Config/PushConfig'
 import env from '../../Config/Env'
-import {uploadMediaFile} from '../../Services/CloudinaryAPI'
+import CloudinaryAPI from '../../Services/CloudinaryAPI'
 
 const User = new schema.Entity('users')
 const Category = new schema.Entity('categories')
@@ -35,7 +35,7 @@ const create = () => {
     headers: {
       // @TODO client-id
       'client-id': 'xzy',
-      'Cache-Control': 'no-cache'
+      'Cache-Control': 'no-cache',
     },
     timeout: 15000
   })
@@ -275,6 +275,10 @@ const getStory = (storyId) => {
     return api.put(`user/unfollow/user/${userId}`)
   }
 
+  const getUsersCategories = () => {
+    return api.get('user/categories')
+  }
+
   const followCategory = (categoryIds) => {
     const categories = isArray(categoryIds) ? categoryIds : [categoryIds]
     return api.post(`user/follow/category`, {
@@ -344,38 +348,38 @@ const getStory = (storyId) => {
 
   const uploadCoverImage = (draftId, pathToFile) => {
     const url = `story/draft/${draftId}/cover-image`
-    return uploadMediaFile(pathToFile, 'image')
+    return CloudinaryAPI.uploadMediaFile(pathToFile, 'image')
     .then(response => putMediaResponse(api, url, response, imageTimeout))
   }
 
   const uploadCoverVideo = (draftId, pathToFile) => {
     const url = `story/draft/${draftId}/cover-video`
-    return uploadMediaFile(pathToFile, 'video')
+    return CloudinaryAPI.uploadMediaFile(pathToFile, 'video')
     .then(response => putMediaResponse(api, url, response, videoTimeout))
   }
 
   const uploadAvatarImage = (userId, pathToFile) => {
     const url = `user/${userId}/avatar`
-    return uploadMediaFile(pathToFile, 'image')
+    return CloudinaryAPI.uploadMediaFile(pathToFile, 'image')
     .then(response => putMediaResponse(api, url, response, imageTimeout))
   }
 
   const uploadUserCoverImage = (userId, pathToFile) => {
     const url = `user/${userId}/cover`
-    return uploadMediaFile(pathToFile, 'image')
+    return CloudinaryAPI.uploadMediaFile(pathToFile, 'image')
     .then(response => putMediaResponse(api, url, response, imageTimeout))
 
   }
 
   const uploadStoryImage = (draftId, pathToFile) => {
     const url = `story/draft/${draftId}/image`
-    return uploadMediaFile(pathToFile, 'image')
+    return CloudinaryAPI.uploadMediaFile(pathToFile, 'image')
     .then(response => putMediaResponse(api, url, response, imageTimeout))
   }
 
   const uploadStoryVideo = (draftId, pathToFile) => {
     const url = `story/draft/${draftId}/video`
-    return uploadMediaFile(pathToFile, 'video')
+    return CloudinaryAPI.uploadMediaFile(pathToFile, 'video')
     .then(response => putMediaResponse(api, url, response, videoTimeout))
   }
 
@@ -437,6 +441,7 @@ const getStory = (storyId) => {
     getUserFollowing,
     followUser,
     unfollowUser,
+    getUsersCategories,
     followCategory,
     unfollowCategory,
     getUserLikes,

@@ -1,51 +1,48 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
 
-import { Grid, Row, Col } from './FlexboxGrid';
 import StoryPreview from './StoryPreview'
+import HorizontalDivider from './HorizontalDivider'
 
-const defaultAttributes = {
-  xs: 12,
-  sm: 6,
-  md: 4,
-  lg: 3,
-}
-
-const suggestedStoriesAttributes = {
-  xs: 3
-}
+const StyledDivider = styled(HorizontalDivider)`
+  max-width: 960px;
+  margin: 20px auto;
+`
 
 export default class StoryList extends React.Component {
   static propTypes = {
-    stories: PropTypes.object,
-    users: PropTypes.object,
+    stories: PropTypes.arrayOf(PropTypes.object),
+    type: PropTypes.string,
   }
 
   render() {
-    const {stories, users = {}, type} = this.props
-    const colAttributes = type === 'suggestions' ? suggestedStoriesAttributes : defaultAttributes
-    const renderedStories = Object.keys(stories).map((key, index) => {
+    const {stories, type} = this.props
+    const renderedStories = stories.reduce((rows, story, index) => {
       /*
         We only need the first 4 elements for suggestions
         We will improve this check to allow 'pagination' will carousel scroll
       */
       if (type === 'suggestions' && index >= 4) return null
-      return (
-        <Col key={key} {...colAttributes}>
-          <StoryPreview
-            story={stories[key]}
-            author={users[stories[key].author]}
-            type={type}
-          />
-        </Col>
-      )
-    })
+      if (!story) return rows
+      if (index !== 0) {
+        rows.push((
+          <StyledDivider key={`hr-${story.id}`} color='lighter-grey'/>
+        ))
+      }
+      rows.push((
+        <StoryPreview
+          key={story.id}
+          story={story}
+          type={type}
+        />
+      ))
+      return rows
+    }, [])
     return (
-      <Grid fluid>
-        <Row>
-          {renderedStories}
-        </Row>
-      </Grid>
+      <div>
+        {renderedStories}
+      </div>
     )
   }
 }

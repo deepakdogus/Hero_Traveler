@@ -19,16 +19,16 @@ export default class CloseX extends React.Component {
   render() {
     return (
       <Container>
-        <RoundedButton 
+        <RoundedButton
           type='backgroundOpaque'
-          padding='even' 
+          padding='even'
           margin='small'
           height='30px'
           width='30px'
-          onClick={this.props.closeImage}
+          onClick={this.props.onClick}
         >
           <StyledIcon size='small' name='close'/>
-        </RoundedButton>                
+        </RoundedButton>
       </Container>
       )
   }

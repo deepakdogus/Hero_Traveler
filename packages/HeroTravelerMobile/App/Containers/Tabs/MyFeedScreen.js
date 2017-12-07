@@ -16,19 +16,8 @@ import ConnectedStoryPreview from '../ConnectedStoryPreview'
 import RoundedButton from '../../Components/RoundedButton'
 import styles from '../Styles/MyFeedScreenStyles'
 import NoStoriesMessage from '../../Components/NoStoriesMessage'
-import {withHandlers} from 'recompose'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
-
-const enhanceStoryPreview = withHandlers({
-  onPressLike: props => () => {
-    props.toggleLike(props.userId, props.storyId)
-  },
-  onPress: props => () => {
-    NavActions.story({storyId: props.storyId})
-  }
-})
-const EnhancedStoryPreview = enhanceStoryPreview(ConnectedStoryPreview)
 
 class MyFeedScreen extends React.Component {
   static propTypes = {
@@ -149,18 +138,20 @@ class MyFeedScreen extends React.Component {
     }
   }
 
-  renderStory = (storyId) => {
+  renderStory = (storyInfo) => {
     return (
-      <EnhancedStoryPreview
-        key={storyId}
-        storyId={storyId}
+      <ConnectedStoryPreview
+        key={storyInfo.id}
+        storyId={storyInfo.id}
         height={imageHeight}
         showLike={true}
         showUserInfo={true}
         onPressUser={this._touchUser}
         userId={this.props.user.id}
-        toggleLike={this.props.toggleLike}
-        showPlayButton
+        autoPlayVideo
+        allowVideoPlay
+        renderLocation={this.props.location}
+        index={storyInfo.index}
       />
     )
   }
@@ -223,14 +214,14 @@ const mapStateToProps = (state) => {
     user: state.entities.users.entities[state.session.userId],
     fetchStatus,
     storiesById: userFeedById,
-    error
+    error,
+    location: state.routes.scene.name
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     attemptGetUserFeed: (userId) => dispatch(StoryActions.feedRequest(userId)),
-    toggleLike: (userId, storyId) => dispatch(StoryActions.storyLike(userId, storyId)),
     completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips}))
   }
 }

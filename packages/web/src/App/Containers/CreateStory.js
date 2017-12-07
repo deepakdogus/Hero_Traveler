@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import AddCoverPhotoBox from '../Components/CreateStory/AddCoverPhotoBox'
+import AddCoverTitles from '../Components/CreateStory/AddCoverTitles'
 import CoverPhotoBox from '../Components/CreateStory/CoverPhotoBox'
 import PhotoBox from '../Components/CreateStory/PhotoBox'
 import VideoBox from '../Components/CreateStory/VideoBox'
@@ -53,8 +53,9 @@ export default class CreateStory extends Component {
       <Container>
         <ContentWrapper>
           <ItemContainer>
-            <AddCoverPhotoBox
+            <AddCoverTitles
               action={this.addCover}
+              workingDraft={testStory}
             />
             <CoverPhotoBox
               coverImage={testCoverImage}

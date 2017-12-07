@@ -1,12 +1,17 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
+import _ from 'lodash'
 
+import UserActions, {getFollowers} from '../../Shared/Redux/Entities/Users'
+
+import NavLinkStyled from '../../Components/NavLinkStyled'
 import Header from '../../Components/Signup/Header'
 import RoundedButton from '../../Components/RoundedButton'
 import HorizontalDivider from '../../Components/HorizontalDivider'
-import SocialMediaRow from '../../Components/Signup/SocialMediaRow'
+// import SocialMediaRow from '../../Components/Signup/SocialMediaRow'
 import FollowFollowingRow from '../../Components/FollowFollowingRow'
-import {usersExample} from '../Feed_TEST_DATA'
 
 const Container = styled.div`
   margin: 0 7.5%;
@@ -48,17 +53,48 @@ const SectionText = styled.h4`
 `
 
 class SignupSocial extends Component {
+  static propTypes = {
+    user: PropTypes.object,
+    users: PropTypes.object,
+    suggestedUsersById: PropTypes.arrayOf(PropTypes.string),
+    selectedUsersById: PropTypes.arrayOf(PropTypes.string),
 
-  renderSuggestedUsers(suggestedUsers) {
-    const renderedSuggestions = Object.keys(suggestedUsers).reduce((suggestions, key, index) => {
-      const user = suggestedUsers[key]
-      const isSelected = index % 2 === 0
+    loadSuggestedPeople: PropTypes.func,
+    loadUserFollowing: PropTypes.func,
+    followUser: PropTypes.func,
+    unfollowUser: PropTypes.func,
+  }
+
+  componentDidMount() {
+    this.props.loadSuggestedPeople()
+    this.props.loadUserFollowing(this.props.user.id)
+  }
+
+  userIsSelected(user) {
+    return _.includes(this.props.selectedUsersById, user.id)
+  }
+
+  _followUser = (userIdToFollow) => {
+    this.props.followUser(this.props.user.id, userIdToFollow)
+  }
+
+  _unfollowUser = (userIdToUnfollow) => {
+    this.props.unfollowUser(this.props.user.id, userIdToUnfollow)
+  }
+
+  renderSuggestedUsers() {
+    const {suggestedUsersById, users} = this.props
+    if (!suggestedUsersById || !users) return null
+    const renderedSuggestions = suggestedUsersById.reduce((suggestions, key, index) => {
+      const user = users[key]
+      const isFollowing = this.userIsSelected(user)
       if (index !== 0) suggestions.push((<HorizontalDivider key={`${key}-HR`} color='grey'/>))
       suggestions.push((
         <FollowFollowingRow
           key={key}
           user={user}
-          isFollowing={isSelected}
+          isFollowing={isFollowing}
+          onFollowClick={isFollowing ? this._unfollowUser : this._followUser}
           margin='0 3%'
           type='count'
         />
@@ -71,30 +107,57 @@ class SignupSocial extends Component {
 
   render() {
     return (
-        <div>
-         <Header>
+      <div>
+       <Header>
+          <NavLinkStyled to='/signup/topics'>
             <RoundedButton text='< Back' type="blackWhite"></RoundedButton>
+          </NavLinkStyled>
+          <NavLinkStyled to='/feed'>
             <RoundedButton text='Finish'></RoundedButton>
-          </Header>
-          <Container>
-          <Title>FOLLOW</Title>
-            <Subtitle>We'll add stories by people you follow to your custom reading list</Subtitle>
-            <Section>
-            <SectionText>FIND FRIENDS</SectionText>
-              <SocialMediaRow text={'Facebook'} isConnected={true} />
-              <HorizontalDivider color='grey'/>
-              <SocialMediaRow text={'Twitter'} isConnected={false} />
-              <HorizontalDivider color='grey'/>
-              <SocialMediaRow text={'Instagram'} isConnected={false} />
-            </Section>
-            <Section>
-              <SectionText>SUGGESTED PEOPLE</SectionText>
-              {this.renderSuggestedUsers(usersExample)}
-            </Section>
-          </Container>
-        </div>
+          </NavLinkStyled>
+        </Header>
+        <Container>
+        <Title>FOLLOW</Title>
+          <Subtitle>We'll add stories by people you follow to your custom reading list</Subtitle>
+          {
+          // disabled until further notice
+          // <Section>
+          //   <SectionText>FIND FRIENDS</SectionText>
+          //   <SocialMediaRow text={'Facebook'} isConnected={true} />
+          //   <HorizontalDivider color='grey'/>
+          //   <SocialMediaRow text={'Twitter'} isConnected={false} />
+          //   <HorizontalDivider color='grey'/>
+          //   <SocialMediaRow text={'Instagram'} isConnected={false} />
+          // </Section>
+          }
+          <Section>
+            <SectionText>SUGGESTED PEOPLE</SectionText>
+            {this.renderSuggestedUsers()}
+          </Section>
+        </Container>
+      </div>
     )
   }
 }
 
-export default SignupSocial
+function mapStateToProps(state, ownProps) {
+  const users = state.entities.users.entities
+  const user = users[state.session.userId]
+  return {
+    user,
+    users,
+    suggestedUsersById: state.entities.users.suggestedUsersById,
+    selectedUsersById: getFollowers(state.entities.users, 'following', user.id),
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    loadSuggestedPeople: () => dispatch(UserActions.loadUserSuggestionsRequest()),
+    loadUserFollowing: (userId) => dispatch(UserActions.loadUserFollowing(userId)),
+    followUser: (sessionUserID, userIdToFollow) => dispatch(UserActions.followUser(sessionUserID, userIdToFollow)),
+    unfollowUser: (sessionUserID, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserID, userIdToUnfollow)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignupSocial)

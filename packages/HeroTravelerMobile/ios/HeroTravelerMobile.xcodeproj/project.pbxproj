@@ -464,6 +464,13 @@
 			remoteGlobalIDString = D834CED81CC64F2400FA5668;
 			remoteInfo = KeyboardTrackingView;
 		};
+		EF692F931FBF5A40006B6BEE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 035E5819C0324C81AB897963 /* BVLinearGradient.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 64AA15081EF7F30100718508;
+			remoteInfo = "BVLinearGradient-tvOS";
+		};
 		EFE44EE91F3CF4BF00003CBA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
@@ -1090,6 +1097,7 @@
 			isa = PBXGroup;
 			children = (
 				94F381E11E7CB88A00B0B727 /* libBVLinearGradient.a */,
+				EF692F941FBF5A40006B6BEE /* libBVLinearGradient.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1718,6 +1726,13 @@
 			fileType = archive.ar;
 			path = libKeyboardTrackingView.a;
 			remoteRef = EF21696C1F4E0111008B3B0A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		EF692F941FBF5A40006B6BEE /* libBVLinearGradient.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBVLinearGradient.a;
+			remoteRef = EF692F931FBF5A40006B6BEE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		EFE44EEA1F3CF4BF00003CBA /* libIQKeyboardManager.a */ = {

@@ -3,6 +3,7 @@ import {
   Scene,
   Actions as NavActions
 } from 'react-native-router-flux'
+import _ from 'lodash'
 
 import LaunchScreen from '../Containers/LaunchScreen'
 import Styles from './Styles/NavigationContainerStyles'
@@ -76,6 +77,10 @@ const clearNavBarProps = {
   rightButtonIconStyle: Styles.navBarBack,
 }
 
+const redBack = {
+  leftButtonIconStyle: Styles.buttonRed
+}
+
 const tabBarProps = {
   tabs: true,
   tabBarStyle: Styles.tabBar,
@@ -117,7 +122,10 @@ const alwaysNull = () => null
 
 const popVertical = () => NavActions.pop({direction: 'horizontal'})
 
-const navToCreateFlow = () => NavActions.createStoryFlow()
+const navToCreateFlow = () => NavActions.createStoryFlow({
+  type: 'reset',
+  shouldLoadStory: true,
+})
 
 const navToSignupSocial = () => NavActions.signupFlow_social()
 
@@ -244,7 +252,7 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        {...clearNavBarProps}
+        {..._.merge({}, clearNavBarProps, redBack)}
       />
       <Scene
         key='storyComments'
@@ -287,15 +295,15 @@ export default NavActions.create(
             onLeft={NavActions.pop}
             backButtonImage={Images.iconArrowLeft}
             title='Category Feed'
-            hideNavBar={false}
+            hideNavBar={true}
             {...darkNavBarProps}
           />
         </Scene>
         <Scene
           key='createStory'
           title='Create Story'
-          icon={StoryCreateTabIcon}
-          onPress={alwaysNull}
+          icon={TabIcon}
+          onPress={navToCreateFlow}
           style={Styles.createStory}
         />
         <Scene
@@ -308,7 +316,7 @@ export default NavActions.create(
         />
         <Scene
           key='profile'
-          icon={StoryCreateScreen}
+          icon={TabIcon}
           component={ProfileScreen}
           hideNavBar
         />
@@ -346,6 +354,7 @@ export default NavActions.create(
       <Scene
         key='readOnlyProfile'
         component={ReadOnlyProfileScreen}
+        leftButtonIconStyle={Styles.redHighlightTint}
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
       />

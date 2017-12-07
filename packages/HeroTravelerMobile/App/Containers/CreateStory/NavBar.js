@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet} from 'react-native'
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native'
 
 import TextButton from '../../Components/TextButton'
 import TabIcon from '../../Components/TabIcon'
@@ -25,6 +25,9 @@ const styles = StyleSheet.create({
   titleText: {
     textAlign: 'center',
     color: Colors.white,
+  },
+  row: {
+    flexDirection: 'row'
   },
   left: {
     flex: 1/3,
@@ -69,22 +72,27 @@ export default class NavBar extends Component {
 
   render() {
     const { style,
-        leftTitle, leftIcon, leftTextStyle, onLeft,
+        leftTitle, leftIcon, leftTextStyle, leftIconStyle, onLeft,
         title, titleStyle, onTitle,
         rightTitle, rightIcon, rightTextStyle, onRight, isRightValid = true } = this.props
     return (
       <View style={[styles.root, style]}>
-        {leftTitle &&
+        {(leftTitle || leftIcon) &&
           <View style={styles.left}>
-            {leftIcon && <TabIcon style={{ image: [styles.leftIconStyle, styles.leftBtn] }} name={leftIcon}/>}
-            <TextButton
-              style={[styles.text, styles.leftText, leftTextStyle]}
-              onPress={onLeft}
-            >
-              {leftTitle}
-            </TextButton>
+            <TouchableOpacity onPress={onLeft} style={styles.row}>
+              {leftIcon &&
+                <TabIcon
+                  style={{ image: [styles.leftIconStyle, styles.leftBtn, leftIconStyle] }}
+                  name={leftIcon}/>
+              }
+              {leftTitle &&
+                <Text style={[styles.text, styles.leftText, leftTextStyle]}>
+                  {leftTitle
+                }</Text>}
+            </TouchableOpacity>
           </View>
         }
+
         {title &&
           <View style={styles.title}>
             {!onTitle && <Text style={[styles.text, styles.titleText, titleStyle || {}]}>{title}</Text>}
@@ -96,15 +104,20 @@ export default class NavBar extends Component {
             </TextButton>}
           </View>
         }
+
         {rightTitle &&
           <View style={styles.right}>
-            <TextButton
-              style={[styles.text, styles.rightText, rightTextStyle, isRightValid ? {} : styles.inactiveText]}
-              onPress={onRight}
-            >
-              {rightTitle}
-            </TextButton>
-            {rightIcon && rightIcon !== 'none' && <TabIcon style={{image: [styles.rightIconStyle, isRightValid ? {} : styles.inactiveBtn]}} name={rightIcon}/>}
+            <TouchableOpacity onPress={onRight} style={styles.row}>
+              <Text style={[styles.text, styles.rightText, rightTextStyle, isRightValid ? {} : styles.inactiveText]}>
+                {rightTitle}
+              </Text>
+              {rightIcon && rightIcon !== 'none' &&
+                <TabIcon
+                  style={{image: [styles.rightIconStyle, isRightValid ? {} : styles.inactiveBtn]}}
+                  name={rightIcon}
+                />
+              }
+            </TouchableOpacity>
           </View>
         }
       </View>

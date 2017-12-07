@@ -16,8 +16,10 @@ export default () => {
     storyCreate: require('./StoryCreateRedux').reducer,
     form: formReducer,
     startup: require('./StartupRedux').reducer,
+    mediaUpload: require('./MediaUploadRedux').reducer,
     routes,
     entities,
+    ux: require('./UXRedux').reducer
   })
 
   const rootReducer = (state, action) => {

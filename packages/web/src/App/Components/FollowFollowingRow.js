@@ -7,6 +7,7 @@ import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Avatar from './Avatar'
 import RoundedButton from './RoundedButton'
+import NavLink from './NavLinkStyled'
 
 const Container = styled.div`
   margin: ${props => props.margin ? props.margin : '0'};
@@ -35,45 +36,74 @@ const ProfileDetail = styled.p`
   color: ${props => props.theme.Colors.grey};
 `
 
+// For SignupSocial we want to disable navigation to Profile
+const ConditionalNavLink = (props) => {
+  if (!props.onClick) return <div {...props}/>
+  return ( <NavLink {...props} /> )
+}
+
 export default class FollowFollowingRow extends Component {
   static propTypes = {
     isFollowing: PropTypes.bool,
+    isYou: PropTypes.bool,
     user: PropTypes.object,
-    type: PropTypes.oneOf(['count', 'follow'])
+    type: PropTypes.oneOf(['count', 'follow']),
+    margin: PropTypes.string,
+    onFollowClick: PropTypes.func,
+    onProfileClick: PropTypes.func,
   }
 
   renderImage = () => {
+    const {onProfileClick, user} = this.props
     return (
-      <Avatar
-        avatarUrl={getImageUrl(this.props.user.profile.avatar)}
-        size='larger'
-      />
+      <ConditionalNavLink
+        to={`/profile/${user.id}/view`}
+        onClick={onProfileClick}
+      >
+        <Avatar
+          avatarUrl={getImageUrl(user.profile.avatar)}
+          size='larger'
+        />
+      </ConditionalNavLink>
     )
   }
 
   renderText = () => {
-    const {user} = this.props
-    const detailsText = this.props.type === 'count' ? `${user.counts.followers} followers` : 'Lorum Ipsum'
+    const {user, onProfileClick, type} = this.props
+    const detailsText = type === 'count' ? `${user.counts.followers} followers` : 'Lorum Ipsum'
     return (
       <StyledVerticalCenter>
-        <UserName>{user.username}</UserName>
+        <ConditionalNavLink
+          to={`/profile/${user.id}/view`}
+          onClick={onProfileClick}
+        >
+          <UserName>{user.username}</UserName>
+        </ConditionalNavLink>
         <ProfileDetail>{detailsText}</ProfileDetail>
       </StyledVerticalCenter>
     )
   }
 
   renderRight = () => {
+    const {isFollowing, isYou} = this.props
+    if (isYou) return null
     return (
       <VerticalCenter>
         <RoundedButton
-          text={this.props.isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
-          type={this.props.isFollowing ? undefined : 'blackWhite'}
+          text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
+          type={isFollowing ? undefined : 'blackWhite'}
           margin='none'
           width='154px'
           padding='even'
+          onClick={this._onFollowClick}
         />
       </VerticalCenter>
     )
+  }
+
+  _onFollowClick = () => {
+    const {user, onFollowClick} = this.props
+    onFollowClick(user.id)
   }
 
   render() {

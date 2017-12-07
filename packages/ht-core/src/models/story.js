@@ -88,6 +88,9 @@ const StorySchema = new Schema({
   coverVideo: {
     type: Schema.ObjectId,
     ref: UploadRef,
+  },
+  coverCaption: {
+    type: String,
   }
 }, {
   timestamps: true,
@@ -105,6 +108,10 @@ StorySchema.pre('save', function(next) {
     .then(latlng => {
       this.latitude = latlng.latitude
       this.longitude = latlng.longitude
+      next()
+    })
+    .catch(() => {
+      // ignoring error until we also get googlePlacesAPI on mobile too
       next()
     })
   }

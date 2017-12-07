@@ -190,10 +190,6 @@ class CreateStoryDetailScreen extends React.Component {
     return this.props.story.draft || false
   }
 
-  isVideo() {
-    return _.has(this.props.story, 'coverVideo')
-  }
-
   render () {
     const err = this.props.error
     const errText = (__DEV__ && err && err.problem && err.status) ? `${err.status}: ${err.problem}` : ""
@@ -219,17 +215,6 @@ class CreateStoryDetailScreen extends React.Component {
           />
           <ScrollView style={styles.root}>
             <Text style={styles.title}>{this.props.story.title} Details </Text>
-            {this.isVideo() &&
-              <View style={styles.videoDescriptionWrapper}>
-                <TextInput
-                  style={styles.videoDescription}
-                  value={this.state.videoDescription}
-                  onChangeText={this._changeVideoDescText}
-                  placeholder='Add a description'
-                  multiline={true}
-                />
-              </View>
-            }
             <View style={styles.fieldWrapper}>
               <TabIcon name='location' style={locationIconStyle} />
               <TextInput

@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
 
 import StoryList from '../Components/StoryList'
 import FeedHeader from '../Components/FeedHeader'
-import {feedExample, usersExample} from './Feed_TEST_DATA'
 import Footer from '../Components/Footer'
 import ShowMore from '../Components/ShowMore'
+import StoryActions from '../Shared/Redux/Entities/Stories'
+import HorizontalDivider from '../Components/HorizontalDivider'
 
 const CenteredText = styled.p`
   text-align: center;
@@ -17,7 +19,7 @@ const FeedText = styled(CenteredText)`
   font-weight: 400;
   font-size: 23px;
   letter-spacing: 1.5px;
-  padding: 50px 0 0 0;
+  padding: 30px 0 0 0;
 `
 
 const Wrapper = styled.div``
@@ -26,21 +28,31 @@ const ContentWrapper = styled.div`
   margin: 0 7%;
 `
 
+const StyledDivider = styled(HorizontalDivider)`
+  border-color: ${props => props.theme.Colors.background};
+  margin-bottom: 23px;
+`
+
 class Feed extends Component {
+
+  componentDidMount() {
+    this.props.attemptGetUserFeed(this.props.userId)
+  }
+
   render() {
-    const usersStories = Object.keys(feedExample).reduce((matchingStories, key) => {
-      const story = feedExample[key]
-      matchingStories[key] = story;
-      return matchingStories
-    }, {})
+    const {stories, users, storiesById} = this.props
+    const feedStories = storiesById.map((id) => {
+      return stories[id]
+    })
     return (
       <Wrapper>
-        <FeedHeader stories={usersStories} users={usersExample}/>
+        <FeedHeader stories={feedStories} users={users}/>
         <ContentWrapper>
           <FeedText>MY FEED</FeedText>
+          <StyledDivider />
           <StoryList
-            stories={feedExample}
-            users={usersExample}
+            stories={feedStories}
+            users={users}
           />
           <ShowMore/>
           <Footer />
@@ -50,4 +62,21 @@ class Feed extends Component {
   }
 }
 
-export default Feed
+
+function mapStateToProps(state, ownProps) {
+  let { userFeedById, entities: stories } = state.entities.stories
+  return {
+    userId: state.session.userId,
+    storiesById: userFeedById,
+    stories,
+    users: state.entities.users.entities,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    attemptGetUserFeed: (userId) => dispatch(StoryActions.feedRequest(userId)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feed)

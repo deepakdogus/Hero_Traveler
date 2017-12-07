@@ -9,8 +9,7 @@ import HorizontalDivider from './HorizontalDivider'
 import RoundedButton from './RoundedButton'
 import {OverlayStyles} from './Overlay'
 import HeaderTopGradient from './Headers/Shared/HeaderTopGradient'
-
-import background from '../Shared/Images/create-story.png'
+import getS3ImageUrl from '../Shared/Lib/getS3ImageUrl'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   ${OverlayStyles}
@@ -59,24 +58,22 @@ const textProps = `
 
 export default class CategoryHeader extends React.Component {
   static propTypes = {
-    user: PropTypes.object,
-    isContributor: PropTypes.bool,
+    category: PropTypes.object,
   }
 
   render () {
-    const backgroundImage = background
-    const ImageWrapper = backgroundImage ? OpaqueHeaderImageWrapper : HeaderImageWrapper
-
+    const {category} = this.props
+    if (!category) return null
+    const categoryImageUrl = getS3ImageUrl(category.image, 'versions.thumbnail240.path')
     return (
-      <ImageWrapper
-        backgroundImage={backgroundImage}
+      <OpaqueHeaderImageWrapper
+        backgroundImage={categoryImageUrl}
         size='large'
-        type='profile'
       >
         <HeaderTopGradient/>
         <Header isLoggedIn></Header>
         <Centered>
-          <CategoryTitle>JAPAN</CategoryTitle>
+          <CategoryTitle>{category.title}</CategoryTitle>
           <StyledHorizontalDivider />
           <ButtonWrapper>
             <StyledRoundedButton
@@ -86,7 +83,7 @@ export default class CategoryHeader extends React.Component {
             />
           </ButtonWrapper>
         </Centered>
-      </ImageWrapper>
+      </OpaqueHeaderImageWrapper>
     )
   }
 }

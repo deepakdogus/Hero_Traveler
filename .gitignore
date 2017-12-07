@@ -64,4 +64,7 @@ typings/
 # dotenv environment variables file
 .env
 
+# App Config
+packages/web/src/App/Config/Env.js
+
 v8-compile-cache-0

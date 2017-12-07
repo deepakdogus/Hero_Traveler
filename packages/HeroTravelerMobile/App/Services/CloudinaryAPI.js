@@ -11,7 +11,7 @@ we expect type to be a string of either 'image' or 'video'
 this directly uploads the file to Cloudinary
 To modify the presets go to the relevant Cloudinary account
 */
-export function uploadMediaFile(fileData, type){
+function uploadMediaFile(fileData, type){
   const uploadURL = getCloudinaryUploadUrl(type)
   const preset = type === 'image' ? env.imagePreset : env.videoPreset
   if (fileData.uri.startsWith('file://')) fileData.uri = fileData.uri.substr(7)
@@ -31,4 +31,8 @@ export function uploadMediaFile(fileData, type){
       data: preset,
     }]
   )
+}
+
+export default {
+  uploadMediaFile
 }

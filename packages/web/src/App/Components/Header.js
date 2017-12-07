@@ -3,9 +3,10 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import {NavLink} from 'react-router-dom'
 import Modal from 'react-modal'
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
+import {push} from 'react-router-redux'
 
-import { Grid, Row, Col } from './FlexboxGrid'
+import {Grid, Row, Col} from './FlexboxGrid'
 import logo from '../Shared/Images/ht-logo-white.png'
 import RoundedButton from './RoundedButton'
 import Icon from './Icon'
@@ -13,13 +14,13 @@ import Avatar from './Avatar'
 import Login from './Modals/Login'
 import Signup from './Modals/Signup'
 import ResetPassword from './Modals/ResetPassword'
-import Contributor from './Modals/Contributor'
 import AddToItinerary from './Modals/AddToItinerary'
 import Inbox from './Modals/Inbox'
 import RightModal from './RightModal'
 import NotificationsThread from './Modals/NotificationsThread'
 import {usersExample} from '../Containers/Feed_TEST_DATA'
 import LoginActions from '../Shared/Redux/LoginRedux'
+import StoryActions from '../Shared/Redux/Entities/Stories'
 
 const customModalStyles = {
   content: {
@@ -29,16 +30,6 @@ const customModalStyles = {
   overlay: {
     backgroundColor: 'rgba(0,0,0, .5)',
     zIndex: 100,
-  }
-}
-
-const contributorModalStyles = {
-  content: {
-    width: 380,
-    margin: 'auto',
-  },
-  overlay: {
-    backgroundColor: 'rgba(0,0,0, .5)'
   }
 }
 
@@ -143,9 +134,13 @@ const MenuLink = (props) => {
 
 class Header extends React.Component {
   static propTypes = {
+    isSignedUp: PropTypes.bool,
     isLoggedIn: PropTypes.bool,
     blackHeader: PropTypes.bool,
+    userId: PropTypes.string,
     attemptLogin: PropTypes.func,
+    reroute: PropTypes.func,
+    getLikesAndBookmarks: PropTypes.func,
   }
 
   constructor(props) {
@@ -164,7 +159,11 @@ class Header extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.props.isLoggedIn && nextProps.isLoggedIn) this.closeModal()
+    if (!this.props.isLoggedIn && nextProps.isLoggedIn) {
+      this.props.getLikesAndBookmarks(this.props.userId)
+      this.closeModal()
+      if (nextProps.isSignedUp) nextProps.reroute('/signup/topics')
+    }
   }
 
   // name correspond to icon name and button name
@@ -181,7 +180,7 @@ class Header extends React.Component {
   }
 
   render () {
-    const {isLoggedIn, attemptLogin} = this.props
+    const {isLoggedIn, attemptLogin, userId} = this.props
     // quick fix to get this merge in - need to refactor accordingly (part of header refactor)
     const SelectedGrid = this.props.blackHeader ? StyledGridBlack : StyledGrid
     const user = usersExample['59d50b1c33aaac0010ef4b3f']
@@ -244,7 +243,7 @@ class Header extends React.Component {
               </NavLink>
               <Divider>&nbsp;</Divider>
               <NavLink
-                to='/createStory'
+                to='/createStoryNew/new'
               >
                 <StyledRoundedButton text='Create'/>
               </NavLink>
@@ -269,7 +268,7 @@ class Header extends React.Component {
                 <NotificationsIcon name='cameraFlash' />
               </StyledRoundedButton>
               <NavLink
-                to='/profile/59d50b1c33aaac0010ef4b3f/view'
+                to={`/profile/${userId}/view`}
               >
                 <StyledRoundedAvatarButton
                   type='headerButton'
@@ -330,14 +329,6 @@ class Header extends React.Component {
           <ResetPassword/>
         </Modal>
         <Modal
-          isOpen={this.state.modal === 'contributor'}
-          contentLabel="Reset Password Modal"
-          onRequestClose={this.closeModal}
-          style={contributorModalStyles}
-        >
-          <Contributor/>
-        </Modal>
-        <Modal
           isOpen={this.state.modal === 'addToItinerary'}
           contentLabel="Add To Itinerary Modal"
           onRequestClose={this.closeModal}
@@ -365,16 +356,20 @@ class Header extends React.Component {
 }
 
 function mapStateToProps(state) {
+
   return {
+    userId: state.session.userId,
     isLoggedIn: state.login.isLoggedIn,
+    isSignedUp: state.signup.signedUp,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
+    getLikesAndBookmarks: (userId) => dispatch(StoryActions.likesAndBookmarksRequest(userId)),
     attemptLogin: (username, password) => dispatch(LoginActions.loginRequest(username, password)),
+    reroute: (path) => dispatch(push(path)),
   }
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header)

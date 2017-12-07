@@ -39,6 +39,10 @@ class TabIcon extends React.Component {
         return Images.iconLocation
       case 'camera':
         return Images.iconEditImageCameraLarge
+      case 'cameraWhite':
+        return Images.iconAddCoverCameraWhite
+      case 'cameraDark':
+        return Images.iconAddCoverCamera
       case 'video-camera':
         return Images.iconEditVideo
       case 'arrowRight':
@@ -83,8 +87,12 @@ class TabIcon extends React.Component {
         return Images.iconFlashCamera
       case 'video':
         return Images.iconCreateMenuVideo
+      case 'videoWhite':
+        return Images.iconVideoWhite
       case 'trash':
         return Images.iconTrash
+      case 'trashBlack':
+        return Images.iconTrashBlack
       case 'normalText':
         return Images.iconNormalText
       case 'headerText':

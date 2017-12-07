@@ -9,6 +9,7 @@ const { Types, Creators } = createActions({
   feedRequest: ['userId'],
   feedSuccess: ['userFeedById'],
   feedFailure: ['error'],
+  likesAndBookmarksRequest: ['userId'],
   fromUserRequest: ['userId'],
   fromUserSuccess: ['userId', 'userStoriesById'],
   fromUserFailure: ['userId', 'error'],

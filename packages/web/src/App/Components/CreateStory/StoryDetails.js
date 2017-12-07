@@ -9,22 +9,14 @@ import Icon from '../Icon'
 import HorizontalDivider from '../HorizontalDivider'
 import GoogleLocator from './GoogleLocator'
 import ReactDayPicker from './ReactDayPicker'
-import MultiTagPicker from './MultiTagPicker'
-import TagTileGrid from './TagTileGrid'
+import CategoryPicker from './CategoryPicker'
+import CategoryTileGrid from './CategoryTileGrid'
 import {Title} from './Shared'
-import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
-import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unchecked';
-import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checked';
-import {feedExample} from '../../Containers/Feed_TEST_DATA'
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton'
+import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unchecked'
+import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checked'
 
-//test tags
-let testTagNames = [];
-const categoriesExample = feedExample[Object.keys(feedExample)[0]].categories
-for (var i=0; i<categoriesExample.length; i++)
-    testTagNames.push(categoriesExample[i].title)
-
-const Container = styled.div`
-`
+const Container = styled.div``
 
 const InputRowContainer = styled(Container)`
   padding: 20px 0px 14px 0px;
@@ -57,22 +49,10 @@ const StyledInput = styled.input`
   border-width: 0;
   margin-left: 25px;
   outline: none;
-  &::placeholder{
+  ::placeholder {
     font-family: ${props => props.theme.Fonts.type.base};
     color: ${props => props.theme.Colors.navBarText};
-  };
-  &::-moz-placeholder{
-    font-family: ${props => props.theme.Fonts.type.base};
-    color: ${props => props.theme.Colors.navBarText};
-  };
-  &:-ms-input-placeholder{
-    font-family: ${props => props.theme.Fonts.type.base};
-    color: ${props => props.theme.Colors.navBarText};
-  };
-  &:-moz-placeholder{
-    font-family: ${props => props.theme.Fonts.type.base};
-    color: ${props => props.theme.Colors.navBarText};
-  };
+  }
 `
 
 const LocationIcon = styled(Icon)`
@@ -116,65 +96,132 @@ const styles = {
   },
 }
 
+function sortCategories(categories) {
+  return categories.sort((a,b) => {
+    if (a.title < b.title) return -1
+    else return 1
+  })
+}
+
+function formatCategories(categories) {
+  const titleToCategory = {}
+  const categoriesList = sortCategories(Object.keys(categories).map(key => {
+    const category = categories[key]
+    titleToCategory[category.title] = category
+    return category
+  }))
+  return {
+    titleToCategory,
+    categoriesList,
+  }
+}
+
+function isSameTag(a, b){
+  return a.id === b.id && a.title === b.title
+}
+
 export default class StoryDetails extends React.Component {
   static propTypes = {
-    title: PropTypes.string,
-    closeImage: PropTypes.func,
-    caption: PropTypes.string,
+    workingDraft: PropTypes.object,
+    onInputChange: PropTypes.func,
+    categories: PropTypes.object,
   }
-
   constructor(props) {
-    super(props);
+    super(props)
+
+    // may need to refactor the positioning of this logic
+    let categoriesList = []
+    if (props.categories && props.workingDraft) {
+      const formatedCategories = formatCategories(props.categories)
+      categoriesList = _.differenceWith(formatedCategories.categoriesList, props.workingDraft.categories, isSameTag)
+      this.titleToCategory = formatedCategories.titleToCategory
+    }
+    //
+
     this.state = {
       showTagPicker: false,
       showDayPicker: false,
       day: '',
-      tileTags: [],
-      listTags: testTagNames.sort(),
+      categoriesList,
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (Object.keys(this.props.categories).length !== Object.keys(nextProps.categories).length && nextProps.workingDraft){
+      const {categoriesList, titleToCategory} = formatCategories(nextProps.categories)
+      this.titleToCategory = titleToCategory
+      this.setState({
+        categoriesList: _.differenceWith(categoriesList, nextProps.workingDraft.categories, isSameTag)
+      })
+    }
   }
 
   handleDayClick = (day) => {
     this.setState({
-      day: Moment(day).format('MM-DD-YYYY'),
-      showDayPicker: !this.state.showDayPicker,
+      showPicker: undefined,
+    })
+    this.props.onInputChange({
+      tripDate: day,
     })
   }
 
-  handleTagClick = (event) => {
-    let clickedTag = event.target.innerHTML;
+  handleRadioChange = (event, value) => {
+    this.props.onInputChange({type: value})
+  }
+
+  handleCategorySelect = (event) => {
+    event.stopPropagation()
+    const categoryTitle = event.target.innerHTML
+    const clickedCategory = this.titleToCategory[categoryTitle]
+    const categories = this.props.workingDraft.categories.concat([clickedCategory])
     this.setState({
-      listTags: _.pull(this.state.listTags, clickedTag),
-      tileTags: this.state.tileTags.concat([clickedTag]),
-      showTagPicker: !this.state.showTagPicker,
+      categoriesList: _.differenceWith(this.state.categoriesList, [clickedCategory], isSameTag),
+      showPicker: 'category',
     })
+    this.props.onInputChange({categories})
   }
 
-  handleTileClick = (event) => {
-    event.stopPropagation();
-    let clickedTile = event.target.attributes.getNamedItem('data-tagName').value;
+  handleCategoryRemove = (event) => {
+    event.stopPropagation()
+    const clickedCategoryId = event.target.attributes.getNamedItem('data-tagName').value
+    const clickedCategory = this.props.categories[clickedCategoryId]
+    const categories = _.differenceWith(this.props.workingDraft.categories, [clickedCategory], isSameTag)
     this.setState({
-      listTags: this.state.listTags.concat([clickedTile]).sort(),
-      tileTags: _.pull(this.state.tileTags, clickedTile),
-      showTagPicker: false,
+      categoriesList: sortCategories(this.state.categoriesList.concat([clickedCategory])),
     })
+    this.props.onInputChange({categories})
   }
 
-  toggleDayPicker = () => this.setState({ showDayPicker: !this.state.showDayPicker })
+  togglePicker = (name) => {
+    let nextPickerState = name
+    if (this.state.showPicker === name) nextPickerState = undefined
+    this.setState({ showPicker: nextPickerState })
+ }
 
-  toggleTagPicker = () => {
-    this.setState({ showTagPicker: !this.state.showTagPicker })
+  toggleDayPicker = () => this.togglePicker('day')
+  toggleTagPicker = () => this.togglePicker('category')
+
+  formatTripDate = (day) => {
+    if (!day) return undefined
+    else return Moment(day).format('MM-DD-YYYY')
   }
 
   render() {
+    const {workingDraft, onInputChange} = this.props
+    const {showPicker, categoriesList} = this.state
+    // normally this only happens when you just published a draft
+    if (!workingDraft) return null
     return (
       <Container>
-        <StyledTitle>{this.props.title} DETAILS</StyledTitle>
+        <StyledTitle>{workingDraft.title} DETAILS</StyledTitle>
         <br/>
         <br/>
         <InputRowContainer>
           <LocationIcon name='location'/>
-          <GoogleLocator/>
+          <GoogleLocator
+            onChange={onInputChange}
+            address={workingDraft.location}
+          />
         </InputRowContainer>
         <HorizontalDivider color='lighter-grey' opaque/>
         <InputRowContainer>
@@ -182,33 +229,35 @@ export default class StoryDetails extends React.Component {
           <StyledInput
             type='text'
             placeholder={'MM-DD-YYYY'}
-            value={this.state.day}
+            value={this.formatTripDate(workingDraft.tripDate)}
             onClick={this.toggleDayPicker}
           />
-          {this.state.showDayPicker &&
+          {showPicker === 'day' &&
             <StyledReactDayPicker
               handleDayClick={this.handleDayClick}
             />
           }
         </InputRowContainer>
         <HorizontalDivider color='lighter-grey' opaque/>
-        <InputRowContainer onClick={this.toggleTagPicker}>
+        <InputRowContainer>
           <TagIcon name='tag'/>
           <StyledInput
             type='text'
-            placeholder={!this.state.tileTags.length ? 'Add tags' : ''}
+            placeholder={'Add tags'}
             value={''}
+            onClick={this.toggleTagPicker}
           />
-          {!!this.state.tileTags.length &&
-            <TagTileGrid
-              tileTags={this.state.tileTags}
-              handleTileClick={this.handleTileClick}
+          {!!this.props.workingDraft.categories.length &&
+            <CategoryTileGrid
+              selectedCategories={this.props.workingDraft.categories}
+              handleCategoryRemove={this.handleCategoryRemove}
             />
           }
-          {this.state.showTagPicker &&
-            <MultiTagPicker
-              handleTagClick={this.handleTagClick}
-              listTags={this.state.listTags}
+          {showPicker === 'category' &&
+            <CategoryPicker
+              closePicker={this.togglePicker}
+              handleCategorySelect={this.handleCategorySelect}
+              categoriesList={categoriesList}
             />
           }
         </InputRowContainer>
@@ -216,7 +265,12 @@ export default class StoryDetails extends React.Component {
         <InputRowContainer>
           <ActivitySelectRow>
             <label>Activity: </label>
-              <RadioButtonGroup name="activity" defaultSelected="eat" style={styles.radioButtonGroup}>
+              <RadioButtonGroup
+                valueSelected={workingDraft.type}
+                name="activity"
+                style={styles.radioButtonGroup}
+                onChange={this.handleRadioChange}
+              >
                 <RadioButton
                   value="eat"
                   label="EAT"

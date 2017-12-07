@@ -1,11 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
+import PropTypes from 'prop-types'
 
 import HorizontalDivider from '../HorizontalDivider'
 import './Styles/GoogleLocatorStyles.css';
 
-const StyledForm = styled.form`
+const Container = styled.div`
   display: inline-block;
   margin-left: 20px;
   width: 80%;
@@ -78,48 +79,54 @@ const styles = {
 
 
 class GoogleLocator extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = { address: '' }
+  static propTypes = {
+    address: PropTypes.string,
+    onChange: PropTypes.func,
   }
- 
-  handleFormSubmit = (event) => {
-    event.preventDefault()
 
-    geocodeByAddress(this.state.address)
-      .then(results => getLatLng(results[0]))
-      .then(latLng => console.log('Success', latLng))
-      .catch(error => console.error('Error', error))
+  handleSelect = (event) => {
+    const locationUpdate = {
+      location: event.split(',')[0]
+    }
+    geocodeByAddress(event)
+    .then(results => getLatLng(results[0]))
+    .then(latLng => {
+      locationUpdate.latitude = latLng.lat
+      locationUpdate.longitude = latLng.lng
+      this.props.onChange(locationUpdate)
+    })
+    .catch(error => console.error('Error', error))
   }
-  
-  onChange = (address) => this.setState({ address })
+
+  onChange = (address) => this.props.onChange({ location: address })
 
   render() {
     const inputProps = {
-      value: this.state.address,
+      value: this.props.address,
       onChange: this.onChange,
       placeholder: 'Add location',
     }
-  
+
     const AutocompleteItem = ({ formattedSuggestion }) => (
       <div>
         <StyledLocation>{ formattedSuggestion.mainText }</StyledLocation>
         <StyledAddress>{ formattedSuggestion.secondaryText }</StyledAddress>
-        <StyledHorizontalDivider color='lighter-grey' opaque/>   
+        <StyledHorizontalDivider color='lighter-grey' opaque/>
       </div>
       )
 
     return (
-      <StyledForm onSubmit={this.handleFormSubmit}>
-        <PlacesAutocomplete 
+      <Container>
+        <PlacesAutocomplete
           inputProps={inputProps}
           autocompleteItem={AutocompleteItem}
           styles={styles}
+          onSelect={this.handleSelect}
           googleLogo={false}
         />
-      </StyledForm>
+      </Container>
     )
   }
 }
- 
+
 export default GoogleLocator

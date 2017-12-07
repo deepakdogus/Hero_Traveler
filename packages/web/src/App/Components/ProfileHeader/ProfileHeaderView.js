@@ -98,6 +98,7 @@ export default class ProfileHeaderView extends React.Component {
       followUser, unfollowUser,
     } = this.props
 
+    console.log('USER', user)
     return (
       <Centered>
         <Row center='xs'>
@@ -114,6 +115,7 @@ export default class ProfileHeaderView extends React.Component {
           <SecondCol>
             <Username>{user.username}</Username>
             <Name>{user.profile.fullName}</Name>
+            <Name>{user.about}</Name>
             <CountWrapper>
               <CountItemWrapper onClick={openFollowedBy}>
                 <Count>{user.counts.followers}</Count>

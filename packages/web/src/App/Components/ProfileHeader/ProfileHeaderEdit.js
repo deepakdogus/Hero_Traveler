@@ -81,6 +81,31 @@ const EditBioText = styled.p`
   padding: 30px 0 10px;
   margin: 0;
 `
+const AboutMeWrapper = styled(VerticalCenter)``
+
+const EditAboutText = styled.text`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
+  font-weight: 600;
+  color: ${props => props.theme.Colors.background};
+  padding: 30px 0 10px;
+  margin: 0;
+  font-size: 18px;
+  text-align: left;
+`
+const AboutInput = styled.textarea`
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  font-weight: 400;
+  color: ${props => props.theme.Colors.grey};
+  padding: 0;
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: .7px;
+  text-align: left;
+  background-color: transparent;
+  border-width: 0px;
+  resize: none;
+`
+
 
 const BioWrapper = styled.div`
   background-color: ${props => props.theme.Colors.lightGreyAreas};
@@ -208,13 +233,14 @@ export default class ProfileHeaderEdit extends React.Component {
   onSave = () => {
     this.props.updateUser({
       bio: this.state.bio,
-      username: this.state.username
+      username: this.state.username,
+      about: this.state.about,
     })
   }
 
   render () {
     const {user, error} = this.props
-    const {bio, loadedImage, modal, photoType, username} = this.state
+    const {bio, loadedImage, modal, photoType, username, about} = this.state
     const avatarUrl = getImageUrl(user.profile.avatar, 'avatar')
 
     let targetedImage
@@ -262,6 +288,15 @@ export default class ProfileHeaderEdit extends React.Component {
                   />
                 </Row>
               </UsernameWrapper>
+              <AboutMeWrapper>
+                <EditAboutText>Edit About</EditAboutText>
+                  <AboutInput
+                    value={about}
+                    name='about'
+                    placeholder='Click to add About Me'
+                    onChange={this.onChangeText}
+                  />
+              </AboutMeWrapper>
               <ButtonWrapper>
                 <RoundedButton
                   margin='small'

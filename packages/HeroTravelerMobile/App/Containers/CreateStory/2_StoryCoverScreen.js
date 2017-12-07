@@ -233,7 +233,10 @@ class StoryCoverScreen extends Component {
   }
 
   renderCoverPhoto(coverPhoto) {
-    if (typeof coverPhoto === 'object') coverPhoto = getImageUrl(coverPhoto)
+    if (coverPhoto){
+      if (coverPhoto.uri) coverPhoto = coverPhoto.uri
+      else coverPhoto = getImageUrl(coverPhoto)
+    }
     return R.ifElse(
       R.identity,
       R.always((
@@ -499,6 +502,19 @@ class StoryCoverScreen extends Component {
     NavActions.createStory_details()
   }
 
+  getNewCover() {
+    const {coverImage, coverVideo} = this.props.workingDraft
+    if ((coverImage && coverImage.name) || (coverVideo && coverVideo.name)) {
+      const cover = coverImage || coverVideo
+      return {
+        uri: cover.uri,
+        name: cover.name,
+        tyep: cover.type,
+      }
+    }
+    return undefined
+  }
+
   saveStory() {
     let promise
 
@@ -506,10 +522,11 @@ class StoryCoverScreen extends Component {
       updating: true
     })
 
-    if (this.state.file) {
+    const newCover = this.getNewCover()
+    if (newCover) {
       promise = this.isPhotoType() ?
-        api.uploadCoverImage(this.props.workingDraft.id, this.state.file) :
-        api.uploadCoverVideo(this.props.workingDraft.id, this.state.file)
+        api.uploadCoverImage(this.props.workingDraft.id, newCover) :
+        api.uploadCoverVideo(this.props.workingDraft.id, newCover)
 
       promise = promise
       .then(resp => resp.data)
@@ -997,11 +1014,11 @@ class StoryCoverScreen extends Component {
     const draftUpdates = {}
 
     if (isPhotoType) {
-      draftUpdates.coverImage = path
+      draftUpdates.coverImage = file
       draftUpdates.coverVideo = undefined
     } else {
       draftUpdates.coverImage = undefined
-      draftUpdates.coverVideo = path
+      draftUpdates.coverVideo = file
     }
 
     this.setState({

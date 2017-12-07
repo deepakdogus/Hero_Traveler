@@ -80,33 +80,28 @@ class StoryCoverScreen extends Component {
   constructor(props) {
     super(props)
     this.timeout = null
-    const coverImage = getImageUrl(props.story.coverImage)
-    const coverVideo = getVideoUrl(props.story.coverVideo)
     let coverHeight
-    const cover = props.story.coverImage || props.story.coverVideo
+    const cover = props.workingDraft.coverImage || props.workingDraft.coverVideo
     if (cover) coverHeight = getRelativeHeight(Metrics.screenWidth, cover.original.meta)
 
     this.state = {
       imageMenuOpen: false,
       file: null,
       updating: false,
-      originalStory: props.story,
-      title: props.story.title || '',
-      description: props.story.description || '',
-      // Local file path to the image
-      coverImage,
-      // Local file path to the video
-      coverVideo,
-      coverCaption: props.story.coverCaption,
+      originalStory: props.workingDraft,
       coverHeight: coverHeight || defaultCoverHeight,
       toolbarOpacity: new Animated.Value(1),
       imageUploading: false,
       videoUploading: false,
-      isScrollDown: !!coverImage,
+      isScrollDown: !!props.workingDraft.coverImage | !!props.workingDraft.coverVideo,
       titleHeight: 34,
       activeModal: undefined,
       toolbarDisplay: false,
     }
+  }
+
+  componentWillMount() {
+    api.setAuth(this.props.accessToken.value)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -153,17 +148,9 @@ class StoryCoverScreen extends Component {
     return this.state.imageUploading || this.state.videoUploading
   }
 
-  saveContent() {
-    return Promise.resolve(this.editor.getEditorStateAsObject())
-      .then(draftjsObject => {
-        const story = {...this.props.story, draftjsContent: draftjsObject}
-        this.props.update(this.props.story.id, story)
-      })
-  }
-
   getContent() {
-    if (_.keys(this.props.story.draftjsContent).length) {
-      const content = Immutable.asMutable(this.props.story.draftjsContent, {deep: true})
+    if (_.keys(this.props.workingDraft.draftjsContent).length) {
+      const content = Immutable.asMutable(this.props.workingDraft.draftjsContent, {deep: true})
       if (!content.entityMap) content.entityMap = {}
       return {value: content}
     } else {
@@ -176,7 +163,7 @@ class StoryCoverScreen extends Component {
   }
 
   getMediaType() {
-    if (this.props.story.coverVideo || this.state.coverVideo) {
+    if (this.props.workingDraft.coverVideo) {
       return MediaTypes.video
     }
     else return MediaTypes.photo
@@ -246,6 +233,7 @@ class StoryCoverScreen extends Component {
   }
 
   renderCoverPhoto(coverPhoto) {
+    if (typeof coverPhoto === 'object') coverPhoto = getImageUrl(coverPhoto)
     return R.ifElse(
       R.identity,
       R.always((
@@ -268,6 +256,8 @@ class StoryCoverScreen extends Component {
   }
 
   renderCoverVideo(coverVideo) {
+    if (typeof coverVideo === 'object') coverVideo = getVideoUrl(coverVideo)
+
     return R.ifElse(
       R.identity,
       R.always((
@@ -330,15 +320,15 @@ class StoryCoverScreen extends Component {
 
   _onLeftNo = () => {
     if (!this.isSavedDraft()) {
-      this.props.discardDraft(this.props.story.id)
+      this.props.discardDraft(this.props.workingDraft.id)
     } else {
-      this.props.update(this.props.story.id, this.state.originalStory, true)
+      this.props.update(this.props.workingDraft.id, this.state.originalDraft, true)
     }
     this.navBack()
   }
 
   _onLeft = () => {
-    const isDraft = this.props.story.draft === true
+    const isDraft = this.props.workingDraft.draft === true
     const title = isDraft ? 'Save Draft' : 'Save Edits'
     const message = this.isSavedDraft() ? 'Do you want to save these edits before you go?' : 'Do you want to save this story draft before you go?'
 
@@ -361,9 +351,9 @@ class StoryCoverScreen extends Component {
         text: 'No',
         onPress: () => {
           if (!this.isSavedDraft()) {
-            this.props.discardDraft(this.props.story.id)
+            this.props.discardDraft(this.props.workingDraft.id)
           } else {
-            this.props.update(this.props.story.id, this.state.originalStory, true)
+            this.props.update(this.props.workingDraft.id, this.props.originalDraft, true)
           }
           this.navBack()
         }
@@ -376,7 +366,7 @@ class StoryCoverScreen extends Component {
   }
 
   renderCancel = () => {
-    const isDraft = this.props.story.draft === true
+    const isDraft = this.props.workingDraft.draft === true
     const title = isDraft ? 'Save Draft' : 'Save Edits'
     const message = this.isSavedDraft() ? 'Do you want to save these edits before you go?' : 'Do you want to save this story draft before you go?'
     return (
@@ -432,8 +422,8 @@ class StoryCoverScreen extends Component {
 
   isValid() {
     return _.every([
-      !!this.props.workingDraft.coverImage || !!this.props.workingDraft.coverImage,
-      !!_.trim(this.state.title)
+      !!this.props.workingDraft.coverImage || !!this.props.workingDraft.coverVideo,
+      !!_.trim(this.props.workingDraft.title)
     ])
   }
 
@@ -448,23 +438,23 @@ class StoryCoverScreen extends Component {
   }
 
   hasTitleChanged() {
-    return !!this.state.title && this.state.title !== this.props.story.title
+    return !!this.props.workingDraft.title && this.props.workingDraft.title !== this.props.originalDraft.title
   }
 
   hasDescriptionChanged() {
-    return !!this.state.description && this.state.description !== this.props.story.description
+    return !!this.props.workingDraft.description && this.props.workingDraft.description !== this.props.originalDraft.description
   }
 
   hasImageChanged() {
-    return !!this.state.coverImage && this.state.coverImage !== getImageUrl(this.props.story.coverImage)
+    return !!this.props.workingDraft.coverImage && this.props.workingDraft.coverImage !== getImageUrl(this.props.originalDraft.coverImage)
   }
 
   hasVideoChanged() {
-    return !!this.state.coverVideo && this.state.coverVideo !== getVideoUrl(this.props.story.coverVideo)
+    return !!this.props.workingDraft.coverVideo && this.props.workingDraft.coverVideo !== getVideoUrl(this.props.originalDraft.coverVideo)
   }
 
   hasCoverCaptionChanged() {
-    return !!this.state.coverCaption && this.state.coverCaption !== this.props.story.coverCaption
+    return !!this.props.workingDraft.coverCaption && this.props.workingDraft.coverCaption !== this.props.originalDraft.coverCaption
   }
 
   // TODO
@@ -518,39 +508,35 @@ class StoryCoverScreen extends Component {
 
     if (this.state.file) {
       promise = this.isPhotoType() ?
-        api.uploadCoverImage(this.props.story.id, this.state.file) :
-        api.uploadCoverVideo(this.props.story.id, this.state.file)
+        api.uploadCoverImage(this.props.workingDraft.id, this.state.file) :
+        api.uploadCoverVideo(this.props.workingDraft.id, this.state.file)
 
       promise = promise.then(resp => resp.data)
     } else {
-      promise = Promise.resolve(this.props.story)
+      promise = Promise.resolve(this.props.workingDraft)
     }
 
-    return promise.then(story => {
+    return promise.then(draft => {
 
       if (this.hasTitleChanged()) {
-        story.title = _.trim(this.state.title)
+        draft.title = _.trim(draft.title)
       }
 
       if (this.hasDescriptionChanged()) {
-        story.description = _.trim(this.state.description)
+        draft.description = _.trim(draft.description)
       }
 
       if (this.hasCoverCaptionChanged()) {
-        story.coverCaption = _.trim(this.state.coverCaption)
+        draft.coverCaption = _.trim(draft.coverCaption)
       }
 
-      story.draftjsContent = this.editor.getEditorStateAsObject()
+      draft.draftjsContent = this.editor.getEditorStateAsObject()
 
-      this.props.update(story.id, story)
+      this.props.updateWorkingDraft(draft)
 
       this.setState({
         file: null,
         updating: false,
-        coverImage: story.coverImage ? getImageUrl(story.coverImage) : null,
-        coverVideo: story.coverVideo ? getVideoUrl(story.coverVideo) : null,
-        coverCaption: story.coverCaption,
-        originalStory: story
       })
     })
     .catch((err) => {
@@ -776,7 +762,7 @@ class StoryCoverScreen extends Component {
   handleAddImage = (data) => {
     this.editor.updateSelectionState({hasFocus: false})
     this.setState({imageUploading: true})
-    api.uploadStoryImage(this.props.story.id, pathAsFileObject(data))
+    api.uploadStoryImage(this.props.workingDraft.id, pathAsFileObject(data))
       .then(({data: imageUpload}) => {
         this.editor.insertImage(_.get(imageUpload, 'original.path'))
         this.setState({imageUploading: false})
@@ -791,7 +777,7 @@ class StoryCoverScreen extends Component {
   handleAddVideo = (data) => {
     this.editor.updateSelectionState({hasFocus: false})
     this.setState({videoUploading: true})
-    api.uploadStoryVideo(this.props.story.id, pathAsFileObject(data))
+    api.uploadStoryVideo(this.props.workingDraft.id, pathAsFileObject(data))
       .then(({data: videoUpload}) => {
         this.editor.insertVideo(_.get(videoUpload, 'original.path'))
         this.setState({videoUploading: false})
@@ -1000,20 +986,22 @@ class StoryCoverScreen extends Component {
 
   _handleSelectCover = (path, isPhotoType, coverMetrics = {}) => {
     const file = pathAsFileObject(path)
-    const updatedState = {file}
+    const draftUpdates = {}
 
     if (isPhotoType) {
-      updatedState.isScrollDown = true
-      updatedState.coverImage = path
-      updatedState.coverVideo = undefined
+      draftUpdates.coverImage = path
+      draftUpdates.coverVideo = undefined
     } else {
-      updatedState.coverImage = undefined
-      updatedState.coverVideo = path
+      draftUpdates.coverImage = undefined
+      draftUpdates.coverVideo = path
     }
 
-    updatedState.coverHeight = getRelativeHeight(Metrics.screenWidth, coverMetrics) || defaultCoverHeight
-
-    this.props.updateWorkingDraft(updatedState)
+    this.setState({
+      file,
+      isScrollDown: true,
+      coverHeight: getRelativeHeight(Metrics.screenWidth, coverMetrics) || defaultCoverHeight,
+    })
+    this.props.updateWorkingDraft(draftUpdates)
     NavActions.pop()
   }
 }
@@ -1023,20 +1011,15 @@ export default connect((state) => {
     accessToken: _.find(state.session.tokens, {type: 'access'}),
     user: state.entities.users.entities[state.session.userId],
     story: {...state.storyCreate.workingDraft},
+    originalDraft: {...state.storyCreate.draft},
     workingDraft: {...state.storyCreate.workingDraft},
   }
 }, dispatch => ({
-  updateWorkingDraft: (story) => dispatch(StoryCreateActions.updateWorkingDraft(story)),
+  updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),
   discardDraft: (draftId) =>
     dispatch(StoryEditActions.discardDraft(draftId)),
   update: (id, attrs, doReset) =>
     dispatch(StoryEditActions.updateDraft(id, attrs, doReset)),
-  uploadCoverImage: (id, path) =>
-    dispatch(StoryEditActions.uploadCoverImage(id, path)),
-  uploadCoverVideo: (id, path) =>
-    dispatch(StoryEditActions.uploadCoverVideo(id, path)),
-  loadStory: (storyId) =>
-    dispatch(StoryEditActions.editStory(storyId)),
   completeTooltip: (introTooltips) =>
     dispatch(UserActions.updateUser({introTooltips})),
 })

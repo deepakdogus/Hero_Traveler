@@ -35,6 +35,11 @@ const StyledRoundedAvatarButton = styled(RoundedButton)`
 `
 
 export default class HeaderLoggedIn extends React.Component {
+  static PropTypes = {
+    openModal: PropTypes.func,
+    user: PropTypes.object,
+  }
+
   render () {
     const { openModal, user } = this.props
     return (

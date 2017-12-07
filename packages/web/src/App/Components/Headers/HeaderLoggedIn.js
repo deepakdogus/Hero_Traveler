@@ -38,7 +38,7 @@ export default class HeaderLoggedIn extends React.Component {
   render () {
     const { openModal, user } = this.props
     return (
-        <StyledRow around="xs" middle="xs">
+        <StyledRow between="xs" middle="xs">
           <Col>
             <Logo src={logo} alt={'Hero Traveler Logo'}/>
           </Col>

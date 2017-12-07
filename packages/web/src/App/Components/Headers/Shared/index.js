@@ -32,6 +32,7 @@ export const LoginLink = styled.a`
 export const Logo = styled.img`
   height: 30px;
   margin-top: 6px;
+  margin-left: 20px;
 `
 
 export const Divider = styled.div`

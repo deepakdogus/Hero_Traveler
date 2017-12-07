@@ -6,7 +6,7 @@ import { StyledRow, StyledRoundedLoginButton, LoginLink, Logo, Divider, Hamburge
 export default class LoggedInHeader extends React.Component {
   render () {
     return (
-        <StyledRow around="xs" middle="xs">
+        <StyledRow between="xs" middle="xs">
           <Col>
             <Logo src={logo} alt={'Hero Traveler Logo'}/>
           </Col>

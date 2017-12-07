@@ -27,11 +27,71 @@ This project has only been tested on v7.7.2):
 
 ```bash
 nvm use 7.7.2
-npm set registry https://npm.abeck.io
 npm i -g react-native-cli
-npm i
+npm set registry https://npm.abeck.io/
+npm login
+npm config set always-auth true
+yarn config set registry https://npm.abeck.io
+yarn login
+yarn install
 npm run bootstrap
 ```
+
+
+## Setting up various 3rd parties
+### 1. M Lab (Set up a dev database)
+* Make an account on [mlab](https://mlab.com) & verify email address
+* Set up a MongoDB deployment - Click 'Create new'
+* Follow the steps, choosing 'Sandbox' and appropriate settings
+* Open up your newly created DB
+* Click on the `Users` tabs and Create a new user (this will be the DB owner) 
+* Copy the MongoDB uri, (looks something like `mongodb://<dbuser>:<dbpassword>@ds033186.mlab.com:33186/kat_herotraveler`), fill in the username + pw for your DB owner. Set aside--you will use it later in [ENV set-up](#setting-up-your-env)
+
+### 2. Cloudinary (Image + video storage + management)
+* Make an account on [cloudinary](https://cloudinary.com/) & verify email address
+* On main page, click gear icon to go to Settings
+* Click on the `Uploads` tab + scroll down to `Upload presets` section
+* Add an upload preset with these fields set:
+```
+mode: Unsigned
+folder: test
+format: jpg
+```
+* Add another upload preset with these fields set:
+```
+mode: Unsigned
+folder: testVideo
+Eager transformations setting --> Add eager transformation --> scroll down to Fetch Format and select M3U8
+		--> Add [another] eager transformation --> scroll down to Fetch Format and select MPEG-DASH
+Eager Notification URL: `https://06859835.ngrok.io/story/draft/cover-video`(just an example, will need to edit if/when you actually use this)
+```
+* Once you save your upload presets, you will see their 'names'.  Note these for [ENV set-up](#setting-up-your-env)
+
+
+## Setting up your ENV
+### 1. Shell profile
+* First, get your NPM auth token, which you will have after logging into NPM registry, by opening up `~/.npmrc` and copying whatever follows authToken=	
+* Add `export NPM_TOKEN="{^that}"` to your `.bash_profile`, `.zshrc`, or equivalent for you shell.
+* Close and reopen your shell to allow this change to take effect
+
+### 2. packages/express-api .env
+* Add a .env file to root of `packages/express-api` and copy over the contents of .env.example
+* Fill in MONGODB_URL with the uri we set up earlier
+* Fill in CLOUDINARY_NAME, CLOUDINARY_KEY, CLOUDINARY_SECRET, which you can get from your [Cloudinary console](https://cloudinary.com/console)
+* See a dev to fill in remaining variables
+
+### 3. packages/ht-seed-data
+* Add a .env file to the root of this package
+* copy over your .env file contents from `packages/express-api`
+
+### 4. packages/web
+* open up `src/App/Config/Env.js`
+* We will be editing devSettings, NOT prodSettings
+* Fill in the cloudinary related fields (`cloudname`, `imagePreset`, `videoPreset`) which we got above and add cloudname to cdnBaseUrl too
+* Replace anything that says `matthew` with your name
+* See a dev for additional fields
+
+
 
 ## Running the project locally
 
@@ -40,6 +100,12 @@ Start the API project:
 ```bash
 cd packages/express-api
 npm run dev
+```
+
+To seed
+```bash
+cd packages/ht-seed-data
+npm run seed
 ```
 
 To run the mobile app, start react-native in a simulator:

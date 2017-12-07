@@ -6,29 +6,29 @@ import { StyledRow, StyledRoundedLoginButton, LoginLink, Logo, Divider, Hamburge
 export default class LoggedInHeader extends React.Component {
   render () {
     return (
-        <StyledRow between="xs" middle="xs">
-          <Col>
-            <Logo src={logo} alt={'Hero Traveler Logo'}/>
-          </Col>
-          <Col lg={5}>
-          </Col>
-          <Col>
-            <Row around='xs' middle='xs'>
-              <SearchNav />
-              <Divider>&nbsp;</Divider>
-              <LoginLink
-                  onClick={this.props.openLoginModal}
-              >Log In</LoginLink>
-              <StyledRoundedLoginButton
-                text='Login'
-                  onClick={this.props.openLoginModal}
-              />
-              <HamburgerIcon
-                  name='hamburger'
-              />
-            </Row>
-          </Col>
-        </StyledRow>
+      <StyledRow between="xs" middle="xs">
+        <Col>
+          <Logo src={logo} alt={'Hero Traveler Logo'}/>
+        </Col>
+        <Col lg={5}>
+        </Col>
+        <Col>
+          <Row around='xs' middle='xs'>
+            <SearchNav />
+            <Divider>&nbsp;</Divider>
+            <LoginLink
+                onClick={this.props.openLoginModal}
+            >Log In</LoginLink>
+            <StyledRoundedLoginButton
+              text='Login'
+                onClick={this.props.openLoginModal}
+            />
+            <HamburgerIcon
+                name='hamburger'
+            />
+          </Row>
+        </Col>
+      </StyledRow>
     )
   }
 }

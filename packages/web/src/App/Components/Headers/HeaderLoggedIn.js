@@ -100,7 +100,7 @@ export default class HeaderLoggedIn extends React.Component {
               </LoggedInDesktopContainer>
               <LoggedInTabletContainer>
                 <NavLink
-                  to='/createStory'
+                  to='/createStoryNew/new'
                 >
                   <StyledRoundedButton text='Create'/>
                 </NavLink>

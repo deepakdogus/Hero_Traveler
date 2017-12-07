@@ -67,14 +67,16 @@ class Header extends React.Component {
     const SelectedGrid = this.props.blackHeader ? StyledGridBlack : StyledGrid
     return (
       <SelectedGrid fluid>
-        {isLoggedIn && <HeaderLoggedIn
-                           user={currentUser}
-                           openModal={this.openModal}
-                       />
+        {isLoggedIn &&
+         <HeaderLoggedIn
+            user={currentUser}
+            openModal={this.openModal}
+        />
         }
-        {!isLoggedIn && <HeaderAnonymous
-                           openLoginModal={this.openLoginModal}
-                        />
+        {!isLoggedIn &&
+         <HeaderAnonymous
+            openLoginModal={this.openLoginModal}
+        />
         }
         <HeaderModals
             closeModal={this.closeModal}

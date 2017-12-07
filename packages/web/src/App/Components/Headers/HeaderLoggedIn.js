@@ -45,7 +45,7 @@ export default class HeaderLoggedIn extends React.Component {
           <LoggedInDesktopContainer>
             <Col>
               <Row middle="xs">
-                <MenuLink to='/feed' exact>
+                <MenuLink to='/feed/' exact>
                   My Feed
                 </MenuLink>
                 <Divider>&nbsp;</Divider>

@@ -306,7 +306,7 @@ export default class RNDraftJs extends Component {
           onNewlineRequest={this._onNewlineRequest}
           onSelectionChangeRequest={this._onSelectionChangeRequest}
           onReplaceRangeRequest={this._onReplaceRangeRequest}
-          placeholderText="Enter text here"
+          placeholderText="Tap here to start telling your story..."
           selectionColor={'#000000'}
           selectionOpacity={1}
           defaultAtomicWidth={Metrics.screenWidth}

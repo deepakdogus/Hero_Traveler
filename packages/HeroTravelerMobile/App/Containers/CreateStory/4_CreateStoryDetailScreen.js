@@ -13,6 +13,7 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import {Actions as NavActions} from 'react-native-router-flux'
 
+import {getNewCover, saveCover} from './shared'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import StoryEditActions, {isCreated, isPublishing} from '../../Shared/Redux/StoryCreateRedux'
 import {Colors, Metrics} from '../../Shared/Themes'
@@ -120,12 +121,20 @@ class CreateStoryDetailScreen extends React.Component {
 
   _onRight = () => {
     const {workingDraft} = this.props
-    if (workingDraft.draft) {
-      this.props.publish(_.merge({}, workingDraft, _.trim(workingDraft.location)))
-      this.setState({showError: true})
-    } else {
-      this._update()
-    }
+
+    const newCover = getNewCover(workingDraft.coverImage, workingDraft.coverVideo)
+    let promise
+    if (newCover) promise = saveCover(api, workingDraft, newCover)
+    else promise = Promise.resolve(workingDraft)
+
+    return promise.then(draft => {
+      if (draft.draft) {
+        this.props.publish(_.merge({}, draft, _.trim(draft.location)))
+        this.setState({showError: true})
+      } else {
+        this._update()
+      }
+    })
   }
 
   _onLeft = () => {
@@ -152,7 +161,7 @@ class CreateStoryDetailScreen extends React.Component {
     const {workingDraft} = this.props
     const story = _.merge({}, workingDraft, {location: _.trim(workingDraft.location)})
     this.props.update(
-      this.props.story.id,
+      workingDraft.id,
       story
     )
   }

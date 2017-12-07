@@ -491,26 +491,15 @@ class StoryCoverScreen extends Component {
   // this does a hard save to the DB
   saveStory() {
     let promise
-    const {coverImage, coverVideo, id} = this.props.workingDraft
+    const {coverImage, coverVideo} = this.props.workingDraft
 
     this.setState({
       updating: true
     })
 
     const newCover = getNewCover(coverImage, coverVideo)
-    if (newCover) {
-      promise = saveCover(api, id, newCover, this.isPhotoType())
-      promise = promise
-      .then(resp => {
-        return _.merge(
-          {}, this.props.workingDraft, {
-          coverImage: resp.data.coverImage,
-          coverVideo: resp.data.coverVideo,
-        })
-      })
-    } else {
-      promise = Promise.resolve(this.props.workingDraft)
-    }
+    if (newCover) promise = saveCover(api, this.props.workingDraft, newCover)
+    else promise = Promise.resolve(this.props.workingDraft)
 
     return promise.then(draft => {
       this.cleanDraft(draft)

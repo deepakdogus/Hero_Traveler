@@ -28,6 +28,7 @@ import Loader from '../../Components/Loader'
 import {Colors, Metrics} from '../../Shared/Themes'
 import styles, {customStyles, modalWrapperStyles} from './2_StoryCoverScreenStyles'
 import NavBar from './NavBar'
+import {getNewCover, saveCover} from './shared'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import getVideoUrl from '../../Shared/Lib/getVideoUrl'
 import getRelativeHeight from '../../Shared/Lib/getRelativeHeight'
@@ -68,6 +69,7 @@ class StoryCoverScreen extends Component {
     update: PropTypes.func,
     discardDraft: PropTypes.func,
     completeTooltip: PropTypes.func,
+    resetCreateStore: PropTypes.func,
   }
 
   static defaultProps = {
@@ -303,9 +305,9 @@ class StoryCoverScreen extends Component {
   merely revert the values
   */
   isSavedDraft = () => {
-    return this.state.originalStory &&
-      this.state.originalStory.id &&
-      this.state.originalStory.id === this.props.story.id
+    return this.props.originalDraft &&
+      this.props.originalDraft.id &&
+      this.props.originalDraft.id === this.props.story.id
   }
 
   _onLeftYes = () => {
@@ -325,43 +327,13 @@ class StoryCoverScreen extends Component {
     if (!this.isSavedDraft()) {
       this.props.discardDraft(this.props.workingDraft.id)
     } else {
-      this.props.update(this.props.workingDraft.id, this.state.originalDraft, true)
+      this.props.resetCreateStore()
     }
     this.navBack()
   }
 
   _onLeft = () => {
-    const isDraft = this.props.workingDraft.draft === true
-    const title = isDraft ? 'Save Draft' : 'Save Edits'
-    const message = this.isSavedDraft() ? 'Do you want to save these edits before you go?' : 'Do you want to save this story draft before you go?'
-
-    // When a user cancels the draft flow, remove the draft
-    Alert.alert(
-      title,
-      message,
-      [{
-        text: 'Yes',
-        onPress: () => {
-          if (!this.isValid()) {
-            this.setState({error: 'Please add a cover and a title to continue'})
-          } else {
-            this.saveStory().then(() => {
-              this.navBack()
-            })
-          }
-        }
-      }, {
-        text: 'No',
-        onPress: () => {
-          if (!this.isSavedDraft()) {
-            this.props.discardDraft(this.props.workingDraft.id)
-          } else {
-            this.props.update(this.props.workingDraft.id, this.props.originalDraft, true)
-          }
-          this.navBack()
-        }
-      }]
-    )
+    this.setState({ activeModal: 'cancel' })
   }
 
   closeModal = () => {
@@ -479,7 +451,7 @@ class StoryCoverScreen extends Component {
     ])
     // If nothing has changed, let the user go forward if they navigated back
     if (nothingHasChanged) {
-      this.saveStory()
+      this.softSaveDraft()
         .then(() => {
           this.nextScreen()
         })
@@ -492,7 +464,7 @@ class StoryCoverScreen extends Component {
       this.setState({error: 'Sorry, could not process file. Please try another file.'})
       return
     }
-    this.saveStory()
+    this.softSaveDraft()
       .then(() => {
         this.nextScreen()
       })
@@ -502,39 +474,38 @@ class StoryCoverScreen extends Component {
     NavActions.createStory_details()
   }
 
-  getNewCover() {
-    const {coverImage, coverVideo} = this.props.workingDraft
-    if ((coverImage && coverImage.name) || (coverVideo && coverVideo.name)) {
-      const cover = coverImage || coverVideo
-      return {
-        uri: cover.uri,
-        name: cover.name,
-        tyep: cover.type,
-      }
-    }
-    return undefined
+  cleanDraft(draft){
+    if (this.hasTitleChanged()) draft.title = _.trim(draft.title)
+    if (this.hasDescriptionChanged()) draft.description = _.trim(draft.description)
+    if (this.hasCoverCaptionChanged()) draft.coverCaption = _.trim(draft.coverCaption)
+    draft.draftjsContent = this.editor.getEditorStateAsObject()
   }
 
+  // this only saves it at the redux level
+  softSaveDraft() {
+    const copy = _.merge({}, this.props.workingDraft)
+    this.cleanDraft(copy)
+    return Promise.resolve(this.props.updateWorkingDraft(copy))
+  }
+
+  // this does a hard save to the DB
   saveStory() {
     let promise
+    const {coverImage, coverVideo, id} = this.props.workingDraft
 
     this.setState({
       updating: true
     })
 
-    const newCover = this.getNewCover()
+    const newCover = getNewCover(coverImage, coverVideo)
     if (newCover) {
-      promise = this.isPhotoType() ?
-        api.uploadCoverImage(this.props.workingDraft.id, newCover) :
-        api.uploadCoverVideo(this.props.workingDraft.id, newCover)
-
+      promise = saveCover(api, id, newCover, this.isPhotoType())
       promise = promise
-      .then(resp => resp.data)
-      .then(data => {
+      .then(resp => {
         return _.merge(
           {}, this.props.workingDraft, {
-          coverImage: data.coverImage,
-          coverVideo: data.coverVideo,
+          coverImage: resp.data.coverImage,
+          coverVideo: resp.data.coverVideo,
         })
       })
     } else {
@@ -542,22 +513,9 @@ class StoryCoverScreen extends Component {
     }
 
     return promise.then(draft => {
+      this.cleanDraft(draft)
 
-      if (this.hasTitleChanged()) {
-        draft.title = _.trim(draft.title)
-      }
-
-      if (this.hasDescriptionChanged()) {
-        draft.description = _.trim(draft.description)
-      }
-
-      if (this.hasCoverCaptionChanged()) {
-        draft.coverCaption = _.trim(draft.coverCaption)
-      }
-
-      draft.draftjsContent = this.editor.getEditorStateAsObject()
-
-      this.props.updateWorkingDraft(draft)
+      this.props.update(draft.id, draft)
 
       this.setState({
         file: null,
@@ -1042,10 +1000,11 @@ export default connect((state) => {
 }, dispatch => ({
   updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),
   discardDraft: (draftId) =>
-    dispatch(StoryEditActions.discardDraft(draftId)),
+    dispatch(StoryCreateActions.discardDraft(draftId)),
   update: (id, attrs, doReset) =>
     dispatch(StoryEditActions.updateDraft(id, attrs, doReset)),
   completeTooltip: (introTooltips) =>
     dispatch(UserActions.updateUser({introTooltips})),
+  resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
 })
 )(StoryCoverScreen)

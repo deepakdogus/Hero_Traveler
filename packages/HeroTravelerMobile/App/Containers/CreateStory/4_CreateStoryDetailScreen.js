@@ -23,6 +23,8 @@ import RoundedButton from '../../Components/RoundedButton'
 import RenderTextInput from '../../Components/RenderTextInput'
 import NavBar from './NavBar'
 import styles from './4_CreateStoryDetailScreenStyles'
+import API from '../../Shared/Services/HeroAPI'
+const api = API.create()
 
 const Radio = ({text, onPress, name, selected}) => {
   return (
@@ -81,6 +83,10 @@ class CreateStoryDetailScreen extends React.Component {
     }
   }
 
+  componentWillMount() {
+    api.setAuth(this.props.accessToken.value)
+  }
+
   componentWillReceiveProps(newProps) {
     // making sure we properly display each of these properties
     // const updates = {}
@@ -123,7 +129,9 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   _onLeft = () => {
-    this.saveDraft()
+    const location = this.props.workingDraft.location
+    const cleanedLocation = _.trim(location)
+    if (cleanedLocation !== location) this.props.updateWorkingDraft({location})
     NavActions.pop()
   }
 
@@ -297,6 +305,7 @@ class CreateStoryDetailScreen extends React.Component {
 export default connect(
   (state) => {
     return {
+      accessToken: _.find(state.session.tokens, {type: 'access'}),
       publishing: isPublishing(state.storyCreate),
       isCreated: isCreated(state.storyCreate),
       story: {...state.storyCreate.workingDraft},

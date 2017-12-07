@@ -24,7 +24,7 @@ import InboxThread from '../Modals/InboxThread'
 import NotificationsThread from '../Modals/NotificationsThread'
 import FAQTermsAndConditions from '../Modals/FAQTermsAndConditions'
 import ProfileBio from '../Modals/ProfileBio'
-import Contributor from '../Modals/Contributor'
+import Contributor from '../Modals/HeaderModals/Contributor'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   ${OverlayStyles}

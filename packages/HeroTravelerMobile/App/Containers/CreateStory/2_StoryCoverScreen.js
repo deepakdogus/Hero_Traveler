@@ -511,7 +511,15 @@ class StoryCoverScreen extends Component {
         api.uploadCoverImage(this.props.workingDraft.id, this.state.file) :
         api.uploadCoverVideo(this.props.workingDraft.id, this.state.file)
 
-      promise = promise.then(resp => resp.data)
+      promise = promise
+      .then(resp => resp.data)
+      .then(data => {
+        return _.merge(
+          {}, this.props.workingDraft, {
+          coverImage: data.coverImage,
+          coverVideo: data.coverVideo,
+        })
+      })
     } else {
       promise = Promise.resolve(this.props.workingDraft)
     }

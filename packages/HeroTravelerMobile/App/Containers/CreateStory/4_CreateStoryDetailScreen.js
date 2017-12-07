@@ -73,7 +73,7 @@ class CreateStoryDetailScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      date: props.workingDraft.tripDate ? moment(props.workingDraft.tripDate).toDate() : new Date(),
+      tripDate: props.workingDraft.tripDate ? moment(props.workingDraft.tripDate).toDate() : new Date(),
       location: props.workingDraft.location || '',
       categories: props.workingDraft.categories || [],
       type: props.workingDraft.type,
@@ -83,17 +83,17 @@ class CreateStoryDetailScreen extends React.Component {
 
   componentWillReceiveProps(newProps) {
     // making sure we properly display each of these properties
-    const updates = {}
-    // resetting values for a new story
-    if (this.props.story.id !== newProps.story.id) {
-      updates.categories = newProps.story.categories || []
-      updates.location = undefined
-      updates.type = ''
-    }
-    // setting the values when they are updated
-    if (newProps.story.location) updates.location = newProps.story.location
-    if (newProps.story.type) updates.type = newProps.story.type
-    if (Object.keys(updates).length) this.setState(updates)
+    // const updates = {}
+    // // resetting values for a new story
+    // if (this.props.story.id !== newProps.story.id) {
+    //   updates.categories = newProps.story.categories || []
+    //   updates.location = undefined
+    //   updates.type = ''
+    // }
+    // // setting the values when they are updated
+    // if (newProps.story.location) updates.location = newProps.story.location
+    // if (newProps.story.type) updates.type = newProps.story.type
+    // if (Object.keys(updates).length) this.setState(updates)
 
     if (!newProps.publishing && newProps.isCreated) {
       this.next()
@@ -108,8 +108,8 @@ class CreateStoryDetailScreen extends React.Component {
     this.props.updateWorkingDraft({location})
   }
 
-  _onDateChange = (date) => {
-    this.props.updateWorkingDraft({date})
+  _onDateChange = (tripDate) => {
+    this.props.updateWorkingDraft({tripDate})
   }
 
   _onRight = () => {
@@ -142,8 +142,7 @@ class CreateStoryDetailScreen extends React.Component {
 
   saveDraft = () => {
     const {workingDraft} = this.props
-    const story = _.merge({}, workingDraft, _.trim(workingDraft.location))
-
+    const story = _.merge({}, workingDraft, {location: _.trim(workingDraft.location)})
     this.props.update(
       this.props.story.id,
       story
@@ -165,12 +164,17 @@ class CreateStoryDetailScreen extends React.Component {
     return this.props.story.draft || false
   }
 
-
+  getDateString(date){
+    if (!date) return 'Add Date'
+    if (typeof date === 'string') date = new Date(date)
+    return date.toDateString()
+  }
 
   render () {
     const {workingDraft} = this.props
     const err = this.props.error
     const errText = (__DEV__ && err && err.problem && err.status) ? `${err.status}: ${err.problem}` : ""
+
     return (
       <View style={{flex: 1, position: 'relative'}}>
           { this.state.showError && err &&
@@ -212,7 +216,7 @@ class CreateStoryDetailScreen extends React.Component {
                 onPress={() => this._setModalVisible(true)}
               >
                 <Text style={styles.inputStyle}>
-                  {workingDraft.date ? workingDraft.date.toDateString() : 'Add Date'}
+                  {this.getDateString(workingDraft.tripDate)}
                 </Text>
               </TouchableHighlight>
             </View>
@@ -274,7 +278,7 @@ class CreateStoryDetailScreen extends React.Component {
           <View
             style={{ backgroundColor: 'white', height: 300, width: 300 }}>
             <DatePickerIOS
-              date={workingDraft.date || this.state.date}
+              date={workingDraft.tripDate || this.state.tripDate}
               mode="date"
               onDateChange={this._onDateChange}
             />

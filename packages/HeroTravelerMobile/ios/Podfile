@@ -9,6 +9,7 @@ target 'HeroTravelerMobile' do
   pod "FBSDKShareKit"
   pod "Bolts"
   pod "IQKeyboardManager"
+  pod 'iOS-MagnifyingGlass', '~> 0.0.2'
 
   # Pods for HeroTravelerMobile
   pod "HockeySDK", :subspecs => ['AllFeaturesLib']

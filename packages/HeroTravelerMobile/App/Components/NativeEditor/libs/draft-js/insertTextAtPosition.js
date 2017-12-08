@@ -1,7 +1,7 @@
 import {EditorState, Modifier} from '.'
 
 export default function insertTextAtPosition(editorState, text, position) {
-  const newContentState = Modifier.insertText(
+  const newContentState = Modifier.replaceText(
   	editorState.getCurrentContent(),
   	position,
   	text,

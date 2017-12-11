@@ -74,7 +74,6 @@ class StoryCoverScreen extends Component {
 
   static defaultProps = {
     mediaType: MediaTypes.photo,
-    story: {},
     navigatedFromProfile: false,
     shouldLoadStory: true,
   }
@@ -267,7 +266,7 @@ class StoryCoverScreen extends Component {
   isSavedDraft = () => {
     return this.props.originalDraft &&
       this.props.originalDraft.id &&
-      this.props.originalDraft.id === this.props.story.id
+      this.props.originalDraft.id === this.props.workingDraft.id
   }
 
   _onLeftYes = () => {
@@ -979,7 +978,6 @@ export default connect((state) => {
   return {
     accessToken: _.find(state.session.tokens, {type: 'access'}),
     user: state.entities.users.entities[state.session.userId],
-    story: {...state.storyCreate.workingDraft},
     originalDraft: {...state.storyCreate.draft},
     workingDraft: {...state.storyCreate.workingDraft},
     error: state.storyCreate.error

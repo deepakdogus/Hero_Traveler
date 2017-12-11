@@ -3,7 +3,7 @@ import logo from '../../Shared/Images/ht-logo-white.png'
 import { Row, Col } from '../FlexboxGrid'
 import { StyledRow, StyledRoundedLoginButton, LoginLink, Logo, Divider, HamburgerIcon, SearchNav } from './Shared'
 
-export default class LoggedInHeader extends React.Component {
+export default class HeaderAnonymous extends React.Component {
   render () {
     return (
       <StyledRow between="xs" middle="xs">
@@ -17,14 +17,14 @@ export default class LoggedInHeader extends React.Component {
             <SearchNav />
             <Divider>&nbsp;</Divider>
             <LoginLink
-                onClick={this.props.openLoginModal}
+              onClick={this.props.openLoginModal}
             >Log In</LoginLink>
             <StyledRoundedLoginButton
               text='Login'
-                onClick={this.props.openLoginModal}
+              onClick={this.props.openLoginModal}
             />
             <HamburgerIcon
-                name='hamburger'
+              name='hamburger'
             />
           </Row>
         </Col>

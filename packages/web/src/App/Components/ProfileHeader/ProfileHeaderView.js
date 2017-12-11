@@ -108,7 +108,6 @@ export default class ProfileHeaderView extends React.Component {
       followUser, unfollowUser,
     } = this.props
 
-    console.log('USER', user)
     return (
       <Centered>
         <Row center='xs'>

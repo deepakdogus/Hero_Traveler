@@ -91,9 +91,11 @@ export function * refreshSession(api) {
   const accessToken = _.find(tokens, {type: 'access'})
   const refreshToken = _.find(tokens, {type: 'refresh'})
   const refreshWindow = 24 * 3600
+
   if (accessToken.expiresIn > refreshWindow) {
     return yield put(SessionActions.refreshSessionSuccess(tokens))
   }
+  
   const response = yield call(api.refreshTokens, refreshToken.value)
 
   if (response.ok) {

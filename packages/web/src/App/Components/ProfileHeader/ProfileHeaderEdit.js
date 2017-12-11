@@ -1,13 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-
 import {Row, Col} from '../FlexboxGrid'
 import RoundedButton from '../RoundedButton'
 import Icon from '../Icon'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import VerticalCenter from '../VerticalCenter'
-import NavLinkStyled from '../NavLinkStyled'
 import Modal from 'react-modal'
 import EditPhotoOptions from '../Modals/EditPhotoOptions'
 import PhotoEditor from '../Modals/PhotoEditor'

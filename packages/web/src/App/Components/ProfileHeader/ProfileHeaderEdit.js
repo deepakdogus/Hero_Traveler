@@ -65,6 +65,10 @@ const BioInput = styled.textarea`
 
 const Container = styled.div``
 
+const ProfileEditCentered = styled(Centered)`
+  height: 320px;
+`
+
 const SecondCol = styled(Col)`
   margin-left: 20px;
 `
@@ -84,7 +88,7 @@ const EditAboutText = styled.text`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 600;
   color: ${props => props.theme.Colors.background};
-  padding: 10px 0 10px;
+  padding: 10px 0 10px 5px;
   margin: 0;
   font-size: 18px;
   text-align: left;
@@ -101,6 +105,7 @@ const AboutInput = styled.textarea`
   background-color: transparent;
   border-width: 0px;
   resize: none;
+  width: 450px;
 `
 
 const BioWrapper = styled.div`
@@ -118,6 +123,7 @@ const UsernameInput = styled.input`
   color: ${props => props.theme.Colors.background};
   width: 250px;
   border-width: 0;
+  padding-left: 5px;
 `
 
 const ErrorText = styled.p`
@@ -255,7 +261,7 @@ export default class ProfileHeaderEdit extends React.Component {
     else if (photoType === 'userCover') targetedImage = getImageUrl(user.profile.cover)
     return (
       <Container>
-        <Centered>
+        <ProfileEditCentered>
           <Row center='xs'>
             <Col>
               <AvatarWrapper>
@@ -308,7 +314,7 @@ export default class ProfileHeaderEdit extends React.Component {
               </AboutWrapper>
             </SecondCol>
           </Row>
-        </Centered>
+        </ProfileEditCentered>
 
         <BioWrapper>
           <BioContainer>

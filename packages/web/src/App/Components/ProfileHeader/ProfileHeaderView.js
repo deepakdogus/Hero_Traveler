@@ -17,10 +17,12 @@ import {
   BottomLeftText,
 } from './ProfileHeaderShared'
 import NavLinkStyled from '../NavLinkStyled'
+import VerticalCenter from '../VerticalCenter'
 
 const About = styled(Name)`
  font-style: normal;
  color: ${props => props.theme.Colors.grey};
+ width: 450px;
 `
 
 const Count = styled.p`
@@ -46,7 +48,7 @@ const Divider = styled.div`
 `
 
 const CountWrapper = styled(Row)`
-  margin-top: 15px !important;
+  margin-top: 10px !important;
   text-align: left;
 `
 
@@ -55,12 +57,12 @@ const CountItemWrapper = styled.div`
 `
 
 const BioText = styled.p`
-  font-family: ${props => props.theme.Fonts.type.crimsonText}};
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro}};
   font-style: normal;
   font-weight: 400;
   letter-spacing: .5px;
   text-align: left;
-  font-size: 18px;
+  font-size: 16px;
   color: ${props => props.theme.Colors.redHighlights};
   cursor: pointer;
   margin: 10px 0 0;
@@ -76,6 +78,10 @@ const ClickRow = styled(Row)`
 
 const SecondCol = styled(Col)`
   margin-left: 20px;
+`
+
+const Spacer = styled.div`
+  height: 30px;
 `
 
 export default class ProfileHeaderView extends React.Component {
@@ -136,6 +142,7 @@ export default class ProfileHeaderView extends React.Component {
             <Name>{user.profile.fullName}</Name>
             <About>{user.about}</About>
             <BioText onClick={openBio}>Read Bio</BioText>
+            <VerticalCenter>
             <ProfileButtonWrapper>
               { isUsersProfile &&
                 <NavLinkStyled to={`/profile/${user.id}/edit`}>
@@ -155,8 +162,10 @@ export default class ProfileHeaderView extends React.Component {
                 />
               }
             </ProfileButtonWrapper>
+            </VerticalCenter>
           </SecondCol>
         </Row>
+        <Spacer/>
         { isContributor &&
         <BottomLeft>
             <ClickRow onClick={openContributor}>

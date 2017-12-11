@@ -5,7 +5,7 @@ import VerticalCenter from '../VerticalCenter'
 
 export const UsernameBaseStyles = `
   font-weight: 600;
-  font-size: 40px;
+  font-size: 35px;
   margin: 0 0 0 -2px;
   text-align: left;
 `
@@ -29,14 +29,14 @@ export const Name = styled.p`
 
 export const Centered = styled(VerticalCenter)`
   margin-top: 65px;
-  height: 320px;
+  height: 365px;
 `
 
 export const StyledAvatar = styled(Avatar)``
 
 export const AvatarWrapper = styled(VerticalCenter)`
   position: relative;
-  height: 131px;
+  height: 160px;
 `
 
 export const ButtonWrapper = styled.div`

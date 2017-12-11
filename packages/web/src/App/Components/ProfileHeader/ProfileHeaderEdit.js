@@ -142,6 +142,7 @@ function getInitialState(user = {}){
   return {
     bio: user.bio,
     username: user.username,
+    about: user.about,
     modal: undefined,
     photoType: undefined,
     loadedImage: undefined,
@@ -249,7 +250,6 @@ export default class ProfileHeaderEdit extends React.Component {
     const {user, error} = this.props
     const {bio, loadedImage, modal, photoType, username, about} = this.state
     const avatarUrl = getImageUrl(user.profile.avatar, 'avatar')
-
     let targetedImage
     if (photoType === 'avatar') targetedImage = avatarUrl
     else if (photoType === 'userCover') targetedImage = getImageUrl(user.profile.cover)

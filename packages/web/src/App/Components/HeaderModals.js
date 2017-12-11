@@ -44,65 +44,65 @@ const addToItineraryModalStyles = {
 export default class HeaderModals extends React.Component {
   render() {
     return (
-        <div>
-          <Modal
-            isOpen={this.props.modal === 'login'}
-            contentLabel="Login Modal"
-            onRequestClose={this.props.closeModal}
-            style={customModalStyles}
-          >
-            <Login
-              onSignupClick={this.props.openSignupModal}
-              onAttemptLogin={this.props.attemptLogin}
-            />
-          </Modal>
-          <Modal
-            isOpen={this.props.modal === 'signup'}
-            contentLabel="Signup Modal"
-            onRequestClose={this.props.closeModal}
-            style={customModalStyles}
-          >
-            <Signup onLoginClick={this.props.openLoginModal}/>
-          </Modal>
-          <Modal
-            isOpen={this.props.modal === 'resetPassword'}
-            contentLabel="Reset Password Modal"
-            onRequestClose={this.props.closeModal}
-            style={customModalStyles}
-          >
-            <ResetPassword/>
-          </Modal>
-          <Modal
-            isOpen={this.props.modal === 'contributor'}
-            contentLabel="Reset Password Modal"
-            onRequestClose={this.props.closeModal}
-            style={contributorModalStyles}
-          >
-            <Contributor/>
-          </Modal>
-          <Modal
-            isOpen={this.props.modal === 'addToItinerary'}
-            contentLabel="Add To Itinerary Modal"
-            onRequestClose={this.props.closeModal}
-            style={addToItineraryModalStyles}
-          >
-            <AddToItinerary/>
-          </Modal>
-          <RightModal
-            isOpen={this.props.modal === 'notificationsThread'}
-            contentLabel='Notifications Thread'
-            onRequestClose={this.props.closeModal}
-          >
-            <NotificationsThread closeModal={this.props.closeModal} profile={this.props.user}/>
-          </RightModal>
-          <RightModal
-            isOpen={this.props.modal === 'inbox'}
-            contentLabel='Inbox'
-            onRequestClose={this.props.closeModal}
-          >
-            <Inbox closeModal={this.props.closeModal} profile={this.props.user}/>
-          </RightModal>
-        </div>
+      <div>
+        <Modal
+          isOpen={this.props.modal === 'login'}
+          contentLabel="Login Modal"
+          onRequestClose={this.props.closeModal}
+          style={customModalStyles}
+        >
+          <Login
+            onSignupClick={this.props.openSignupModal}
+            onAttemptLogin={this.props.attemptLogin}
+          />
+        </Modal>
+        <Modal
+          isOpen={this.props.modal === 'signup'}
+          contentLabel="Signup Modal"
+          onRequestClose={this.props.closeModal}
+          style={customModalStyles}
+        >
+          <Signup onLoginClick={this.props.openLoginModal}/>
+        </Modal>
+        <Modal
+          isOpen={this.props.modal === 'resetPassword'}
+          contentLabel="Reset Password Modal"
+          onRequestClose={this.props.closeModal}
+          style={customModalStyles}
+        >
+          <ResetPassword/>
+        </Modal>
+        <Modal
+          isOpen={this.props.modal === 'contributor'}
+          contentLabel="Reset Password Modal"
+          onRequestClose={this.props.closeModal}
+          style={contributorModalStyles}
+        >
+          <Contributor/>
+        </Modal>
+        <Modal
+          isOpen={this.props.modal === 'addToItinerary'}
+          contentLabel="Add To Itinerary Modal"
+          onRequestClose={this.props.closeModal}
+          style={addToItineraryModalStyles}
+        >
+          <AddToItinerary/>
+        </Modal>
+        <RightModal
+          isOpen={this.props.modal === 'notificationsThread'}
+          contentLabel='Notifications Thread'
+          onRequestClose={this.props.closeModal}
+        >
+          <NotificationsThread closeModal={this.props.closeModal} profile={this.props.user}/>
+        </RightModal>
+        <RightModal
+          isOpen={this.props.modal === 'inbox'}
+          contentLabel='Inbox'
+          onRequestClose={this.props.closeModal}
+        >
+          <Inbox closeModal={this.props.closeModal} profile={this.props.user}/>
+        </RightModal>
+      </div>
     )
   }
 }

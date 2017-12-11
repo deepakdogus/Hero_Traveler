@@ -23,6 +23,10 @@ const StyledGridBlack = styled(StyledGrid)`
   background-color: ${props => props.theme.Colors.background}
 `
 
+const HeaderSpacer = styled.div`
+  height: ${props => props.spacerSize};
+`
+
 class Header extends React.Component {
   static propTypes = {
     isLoggedIn: PropTypes.bool,
@@ -65,28 +69,34 @@ class Header extends React.Component {
   render () {
     const {isLoggedIn, attemptLogin, currentUser} = this.props
     const SelectedGrid = this.props.blackHeader ? StyledGridBlack : StyledGrid
+    const spacerSize = this.props.blackHeader ? '65px' : '0px'
     return (
-      <SelectedGrid fluid>
-        {isLoggedIn &&
-         <HeaderLoggedIn
-            user={currentUser}
-            openModal={this.openModal}
-        />
-        }
-        {!isLoggedIn &&
-         <HeaderAnonymous
-            openLoginModal={this.openLoginModal}
-        />
-        }
-        <HeaderModals
-            closeModal={this.closeModal}
-            openSignupModal={this.openSignupModal}
-            attemptLogin={attemptLogin}
-            openLoginModal={this.openLoginModal}
-            user={currentUser}
-            modal={this.state.modal}
-        />
-    </SelectedGrid>
+      <div>
+        <SelectedGrid fluid>
+          {isLoggedIn &&
+          <HeaderLoggedIn
+              user={currentUser}
+              openModal={this.openModal}
+          />
+          }
+          {!isLoggedIn &&
+          <HeaderAnonymous
+              openLoginModal={this.openLoginModal}
+          />
+          }
+          <HeaderModals
+              closeModal={this.closeModal}
+              openSignupModal={this.openSignupModal}
+              attemptLogin={attemptLogin}
+              openLoginModal={this.openLoginModal}
+              user={currentUser}
+              modal={this.state.modal}
+          />
+      </SelectedGrid>
+      <HeaderSpacer
+          spacerSize={spacerSize}
+      />
+    </div>
   )
   }
 }

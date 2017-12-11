@@ -11,13 +11,12 @@ const Container = styled.div`
 export default class HamburgerModal extends React.Component {
   render() {
     const user = usersExample['59d50b1c33aaac0010ef4b3f']
-    console.log('hey this is the user :', user)
-  return (
-    <Container>
-      <RightModalCloseXonRight name='closeDark' onClick={this.props.closeModal}/>
-      <Avatar size='medium'/>
-      <HamburgerTitle>{user.username}</HamburgerTitle>
-    </Container>
-  )
+    return (
+      <Container>
+        <RightModalCloseXonRight name='closeDark' onClick={this.props.closeModal}/>
+        <Avatar size='medium'/>
+        <HamburgerTitle>{user.username}</HamburgerTitle>
+      </Container>
+    )
   }
 }

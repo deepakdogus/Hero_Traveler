@@ -112,8 +112,8 @@ export default class HeaderLoggedIn extends React.Component {
               </NavLink>
             </LoggedInTabletContainer>
             <HamburgerIcon
-                name='hamburger'
-                onClick={openModal}
+              name='hamburger'
+              onClick={openModal}
             />
           </Row>
         </Col>

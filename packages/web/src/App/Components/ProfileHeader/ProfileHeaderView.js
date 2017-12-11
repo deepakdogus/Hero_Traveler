@@ -19,10 +19,19 @@ import {
 import NavLinkStyled from '../NavLinkStyled'
 import VerticalCenter from '../VerticalCenter'
 
+const LimitedWidthRow = styled(Row)`
+  align-self: center;
+  width: 650px;
+`
+
+const NarrowCol = styled(Col)`
+  width: 200px;
+`
+
 const About = styled(Name)`
  font-style: normal;
  color: ${props => props.theme.Colors.grey};
- width: 450px;
+ width: 430px;
 `
 
 const Count = styled.p`
@@ -48,7 +57,7 @@ const Divider = styled.div`
 `
 
 const CountWrapper = styled(Row)`
-  margin-top: 10px !important;
+  margin-top: 0px;
   text-align: left;
 `
 
@@ -68,20 +77,17 @@ const BioText = styled.p`
   margin: 10px 0 0;
 `
 
-const ProfileButtonWrapper = styled(ButtonWrapper)`
-  margin-top: 20px;
-`
-
 const ClickRow = styled(Row)`
   cursor: pointer;
 `
 
 const SecondCol = styled(Col)`
   margin-left: 20px;
+  width: 430px;
 `
 
 const Spacer = styled.div`
-  height: 30px;
+  height: 15px;
 `
 
 export default class ProfileHeaderView extends React.Component {
@@ -116,8 +122,8 @@ export default class ProfileHeaderView extends React.Component {
 
     return (
       <Centered>
-        <Row center='xs'>
-          <Col>
+        <LimitedWidthRow center='xs'>
+          <NarrowCol>
             <AvatarWrapper>
               <StyledAvatar
                 avatarUrl={getImageUrl(user.profile.avatar)}
@@ -125,6 +131,17 @@ export default class ProfileHeaderView extends React.Component {
                 size='x-large'
               />
             </AvatarWrapper>
+          </NarrowCol>
+          <SecondCol>
+            <Username>{user.username}</Username>
+            <Name>{user.profile.fullName}</Name>
+            <About>{user.about}</About>
+            <BioText onClick={openBio}>Read Bio</BioText>
+          </SecondCol>
+        </LimitedWidthRow>
+        <Spacer/>
+        <LimitedWidthRow center='xs'>
+          <NarrowCol>
             <CountWrapper>
               <CountItemWrapper onClick={openFollowedBy}>
                 <Count>{user.counts.followers}</Count>
@@ -136,14 +153,10 @@ export default class ProfileHeaderView extends React.Component {
                 <CountLabel>Following</CountLabel>
               </CountItemWrapper>
             </CountWrapper>
-          </Col>
+          </NarrowCol>
           <SecondCol>
-            <Username>{user.username}</Username>
-            <Name>{user.profile.fullName}</Name>
-            <About>{user.about}</About>
-            <BioText onClick={openBio}>Read Bio</BioText>
             <VerticalCenter>
-            <ProfileButtonWrapper>
+            <ButtonWrapper>
               { isUsersProfile &&
                 <NavLinkStyled to={`/profile/${user.id}/edit`}>
                   <RoundedButton
@@ -161,11 +174,10 @@ export default class ProfileHeaderView extends React.Component {
                   text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
                 />
               }
-            </ProfileButtonWrapper>
+            </ButtonWrapper>
             </VerticalCenter>
           </SecondCol>
-        </Row>
-        <Spacer/>
+        </LimitedWidthRow>
         { isContributor &&
         <BottomLeft>
             <ClickRow onClick={openContributor}>

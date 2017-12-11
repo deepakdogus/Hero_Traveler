@@ -131,7 +131,7 @@ const ErrorText = styled.p`
   font-size: 12px;
   color: ${props => props.theme.Colors.redHighlights};
   text-align: left;
-  padding-left: 1px;
+  padding-left: 5px;
   padding-top: 2px;
 `
 
@@ -309,7 +309,7 @@ export default class ProfileHeaderEdit extends React.Component {
                     placeholder='Click to add About Me'
                     onChange={this.onChangeText}
                     rows={2}
-                    maxLength={100}
+                    maxLength={63}
                   />
               </AboutWrapper>
             </SecondCol>

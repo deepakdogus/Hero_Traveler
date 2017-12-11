@@ -11,7 +11,7 @@ body {
   src: url('./App/Fonts/CrimsonText-Roman.ttf');
 }
 @font-face {
-  font-family: 'Crimson Text Italic';
+  font-family: 'Crimson Text';
   src: url('./App/Fonts/CrimsonText-Italic.ttf');
   font-style: 'italic';
 }

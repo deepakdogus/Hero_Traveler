@@ -128,7 +128,7 @@ export default class ProfileUserInfo extends Component {
           autoCapitalize='none'
           style={[styles.aboutText, styles.aboutTextEdit]}
           onChangeText={setAbout}
-          maxLength={100}
+          maxLength={63}
           multiline
           returnKeyType={'done'}
         />

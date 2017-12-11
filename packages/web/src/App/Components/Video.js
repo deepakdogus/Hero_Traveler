@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import { DefaultPlayer as VideoWithControls } from 'react-html5video'
+import '../../video-styles.css'
 
 const VideoWrapper = styled.figure`
   text-align: center;
@@ -16,7 +18,7 @@ const StyledVideo = styled.video`
 
 export default class Video extends React.Component {
   static propTypes = {
-    src: PropTypes.string6
+    src: PropTypes.string6,
     type: PropTypes.oneOf(['cover', 'preview']),
     noControls: PropTypes.bool,
   }
@@ -24,9 +26,18 @@ export default class Video extends React.Component {
   render() {
     const {src, type} = this.props
     return (
-      <VideoWrapper>
-        <StyledVideo src={src} type={type} controls={!this.props.noControls || null}/>
-      </VideoWrapper>
+      <VideoWithControls
+        autoPlay
+        controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
+        poster="http://sourceposter.jpg"
+        onCanPlayThrough={() => {
+            // Do stuff
+        }}
+      >
+        <source src={src} type="video/webm" />
+        
+    </VideoWithControls>
     )
   }
 }
+

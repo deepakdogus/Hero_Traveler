@@ -42,6 +42,9 @@ export default {
   doneFollow: {
     color: Colors.red,
   },
+  redHighlightTint: {
+    tintColor: Colors.redHighlights,
+  },
   signupTopicsRight: {
     color: Colors.red,
     paddingRight: 20,

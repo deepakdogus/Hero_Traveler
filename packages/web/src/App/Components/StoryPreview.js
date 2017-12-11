@@ -1,86 +1,44 @@
-import React from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
+import {push} from 'react-router-redux'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
-import Avatar from './Avatar'
-import LikeComponent from './LikeComponent'
-import HorizontalDivider from './HorizontalDivider'
-import OverlayHover from './OverlayHover'
-import {Row} from './FlexboxGrid'
-import NavLinkStyled from './NavLinkStyled'
-import PlayButton from './PlayButton'
-
+import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import formatCount from '../Shared/Lib/formatCount'
+import StoryActions from '../Shared/Redux/Entities/Stories'
 
-const StoryLink = styled(NavLinkStyled)``
+import Avatar from './Avatar'
+import LikeComponent from './LikeComponent'
+import {Row} from './FlexboxGrid'
+import VerticalCenter from './VerticalCenter'
+import Icon from './Icon'
 
-const FlexStoryLink = styled(StoryLink)`
-  display: flex;
-`
-
-const ProfileLink = styled(StoryLink)`
-  display: flex;
-`
+const coverHeight = '257px'
 
 const MarginWrapper = styled.div`
-  margin: 2px;
   position: relative;
+  max-width: 960px;
+  margin: auto;
   color: ${props => props.theme.Colors.lightGrey};
 `
 
-const StoryOverlayContainer = styled(OverlayHover)`
-  padding-top: 151%;
-  width: 100%;
-  background-image: ${props => `url(${props.imageUrl})`};
-  background-size: cover;
+const StoryInfoContainer = styled(VerticalCenter)`
   position: relative;
-`
-
-const StoryInfoContainer = styled.div`
-  position: absolute;
-  bottom: 0;
-  width: 90%;
-  margin: 0 5% 2.5%;
-`
-
-const Username = styled.p`
-  font-family: ${props => props.theme.Fonts.type.base};
-  color: ${props => props.theme.Colors.lightGrey};
-  letter-spacing: .7px;
-  font-size: 12px;
-  font-weight: 400;
-  margin-left: 10px;
-`
-
-const CreatedAt = styled.span`
-  font-family: ${props => props.theme.Fonts.type.crimsonText};
-  color: ${props => props.theme.Colors.lightGrey};
-  font-weight: 400
-  letter-spacing: .5px;
-  font-size: 12px;
-  font-style: italic;
-  margin-right: 5px;
+  height: ${coverHeight};
+  margin-left: 20px;
 `
 
 const Title = styled.h3`
   font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-weight: 400;
-  letter-spacing: 1.5px;
-  font-size: 20px;
-  color: ${props => props.theme.Colors.snow};
-  text-transform: uppercase;
-  margin: 0 0 5px;
-`
-
-const Description = styled.p`
-  font-family: ${props => props.theme.Fonts.type.base};
-  font-weight: 400px;
-  color: ${props => props.theme.Colors.lightGrey};
-  letter-spacing: .7px;
-  font-size: 14px;
-  margin: 0;
+  font-weight: 600;
+  font-size: 23px;
+  color: ${props => props.theme.Colors.background};
+  display: inline-block;
+  margin: 0 0 10px;
+  cursor: pointer;
 `
 
 const DetailsContainer = styled(Row)`
@@ -88,68 +46,155 @@ const DetailsContainer = styled(Row)`
   position: relative;
 `
 
-const ContainerBottomGradient = styled.div`
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 220px;
-  background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.6));
+const CoverImage = styled.img`
+  width: 385.5px;
+  height: ${coverHeight};
+  object-fit: cover;
+  cursor: pointer;
 `
 
-export default class StoryPreview extends React.Component {
+const Text = styled.span`
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  font-weight: 400;
+  letter-spacing: .7px;
+  font-size: 15px;
+  color: ${props => props.theme.Colors.grey};
+`
+
+const ByText = styled(Text)`
+  margin-left: 7.5px;
+`
+
+const Username = styled(Text)`
+  color: ${props => props.theme.Colors.redHighlights};
+  cursor: pointer;
+
+`
+
+const BottomLeft = styled(Row)`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+`
+
+const BookmarkIcon = styled(Icon)`
+  width: 12px;
+  height: 16px;
+  margin: 1.5px 10px;
+`
+
+class StoryPreview extends Component {
   static propTypes = {
     story: PropTypes.object,
     author: PropTypes.object,
+    sessionUserId: PropTypes.string,
+    isLiked: PropTypes.bool,
+    isBookmarked: PropTypes.bool,
+    reroute: PropTypes.func,
+  }
+
+  navToStory = () => {
+    this.props.reroute(`/story/${this.props.story.id}`)
+  }
+
+  navToUserProfile = () => {
+    this.props.reroute(`/profile/${this.props.author.id}/view`)
+  }
+
+  _onClickLike = () => {
+    const {sessionUserId, onClickLike} = this.props
+    onClickLike(sessionUserId)
+  }
+
+  _onClickBookmark = () => {
+    const {sessionUserId, onClickBookmark} = this.props
+    onClickBookmark(sessionUserId)
   }
 
   render() {
-    const {story, author, type} = this.props
+    const {
+      story, author, sessionUserId,
+      isLiked, isBookmarked,
+    } = this.props
+
+    if (!story || !author) return
+
     let imageUrl;
     if (story.coverImage) imageUrl = getImageUrl(story.coverImage)
     else if (story.coverVideo) imageUrl = getImageUrl(story.coverVideo, 'video')
 
     return (
       <MarginWrapper>
-        <StoryLink to={`/story/${story.id}`}>
-          <StoryOverlayContainer
-            imageUrl={imageUrl}
-            overlayColor='black'
-          >
-            {story.coverVideo && !story.coverImage && <PlayButton/>}
-            <ContainerBottomGradient/>
-          </StoryOverlayContainer>
-        </StoryLink>
-        <StoryInfoContainer>
-          <StoryLink to={`/story/${story.id}`}>
-            <Title>{story.title}</Title>
-            { type !== 'suggestions' &&
-              <div>
-                <Description>{story.description}</Description>
-                <HorizontalDivider opaque />
-              </div>
-            }
-          </StoryLink>
-          { type !== 'suggestions' &&
+        <Row>
+          <CoverImage
+            src={imageUrl}
+            onClick={this.navToStory}
+          />
+          <StoryInfoContainer>
+            <Title onClick={this.navToStory}>{story.title}</Title>
             <DetailsContainer between='xs'>
-              <ProfileLink to={`/profile/${author.id}/view`}>
-                <Row middle='xs'>
-                  <Avatar avatarUrl={getImageUrl(author.profile.avatar, 'avatar')} size='large'/>
-                  <Username>{author.username}</Username>
-                </Row>
-              </ProfileLink>
-              <FlexStoryLink to={`/story/${story.id}`}>
-                <Row between='xs' middle='xs'>
-                  <CreatedAt>{moment(story.createdAt).fromNow()}</CreatedAt>
-                  <LikeComponent
-                    likes={formatCount(story.counts.likes)}
-                    isLiked={this.props.isLiked}
-                  />
-                </Row>
-              </FlexStoryLink>
+              <Row middle='xs'>
+                <Avatar
+                  avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
+                  size='avatar'
+                  onClick={this.navToUserProfile}
+                />
+                <ByText>By&nbsp;</ByText>
+                <Username onClick={this.navToUserProfile}>{author.username}</Username>
+                <Text>, {moment(story.createdAt).fromNow()}</Text>
+              </Row>
             </DetailsContainer>
-          }
-        </StoryInfoContainer>
+            <BottomLeft>
+              <LikeComponent
+                likes={formatCount(story.counts.likes)}
+                isLiked={isLiked}
+                onClick={sessionUserId ? this._onClickLike : undefined}
+                horizontal
+              />
+              <BookmarkIcon
+                name={isBookmarked ? 'bookmark-active' : 'bookmark'}
+                onClick={sessionUserId ? this._onClickBookmark : undefined}
+              />
+            </BottomLeft>
+          </StoryInfoContainer>
+        </Row>
       </MarginWrapper>
     )
   }
 }
+
+
+const mapStateToProps = (state, ownProps) => {
+  const {session, entities} = state
+  const sessionUserId = session.userId
+  const {story} = ownProps
+
+  let storyProps = null
+  if (story) {
+    storyProps = {
+      author: entities.users.entities[story.author],
+      isLiked: isStoryLiked(entities.users, sessionUserId, story.id),
+      isBookmarked: isStoryBookmarked(entities.users, sessionUserId, story.id),
+    }
+  }
+
+  return {
+    sessionUserId: state.session.userId,
+    ...storyProps,
+  }
+}
+
+const mapDispatchToProps = (dispatch, props) => {
+  const {story} = props
+  return {
+    onClickLike: (sessionUserId) => dispatch(StoryActions.storyLike(sessionUserId, story.id)),
+    onClickBookmark: (sessionUserId) => dispatch(StoryActions.storyBookmark(sessionUserId, story.id)),
+    reroute: (path) => dispatch(push(path)),
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(StoryPreview)
+

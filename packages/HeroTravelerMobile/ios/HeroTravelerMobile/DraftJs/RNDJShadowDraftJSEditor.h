@@ -11,6 +11,7 @@
 #import "RNDJContentModel.h"
 #import "RNDJSelectionModel.h"
 #import "RNDJDraftJsIndex.h"
+#import "RNDJAutocompleteModel.h"
 
 typedef NS_ENUM(NSInteger, RCTSizeComparison)
 {
@@ -23,11 +24,13 @@ extern NSString *const RCTIsHighlightedAttributeName;
 extern NSString *const RCTReactTagAttributeName;
 extern NSString *const RNDJSingleCursorPositionAttributeName;
 extern NSString *const RNDJDraftJsIndexAttributeName;
+extern NSString *const RNDJDraftJsAutocompleteAttributeName;
 
 @interface RNDJShadowDraftJSEditor : RCTShadowView
 {
   RNDJContentModel* contentModel;
   RNDJSelectionModel* selectionModel;
+  RNDJAutocompleteModel* autocompleteModel;
   NSDictionary* _content;
 }
 
@@ -35,6 +38,7 @@ extern NSString *const RNDJDraftJsIndexAttributeName;
 @property (nonatomic, copy) NSDictionary *selection;
 @property (nonatomic, copy) NSDictionary *blockFontTypes;
 @property (nonatomic, copy) NSDictionary *inlineStyleFontTypes;
+@property (nonatomic, copy) NSDictionary *autocomplete;
 
 @property (nonatomic, assign) CGFloat defaultAtomicWidth;
 @property (nonatomic, assign) CGFloat defaultAtomicHeight;
@@ -56,6 +60,10 @@ extern NSString *const RNDJDraftJsIndexAttributeName;
 @property (nonatomic, assign) CGSize textShadowOffset;
 @property (nonatomic, assign) CGFloat textShadowRadius;
 @property (nonatomic, strong) UIColor *textShadowColor;
+
+@property (nonatomic, assign) BOOL showAutocomplete;
+@property (nonatomic, assign) int autocompleteStart;
+@property (nonatomic, assign) int autoCompleteEnd;
 
 @property (nonatomic, assign) BOOL selectable;
 @property (nonatomic, assign) CGFloat fontSizeMultiplier;

@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import React from 'react'
-import {PixelRatio} from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
@@ -38,17 +37,6 @@ class ProfileScreen extends React.Component {
     this.props.getUser(this.props.user.id)
     this.props.getStories(this.props.user.id)
     this.props.loadBookmarks(this.props.user.id)
-  }
-
-  _touchEdit = (storyId) => {
-    // Future: see if we can refactor this into 1 call
-    // Note: We will idealy refactor navigator completely so not top priority
-    NavActions.createStoryFlow({storyId, type: 'reset', navigatedFromProfile: true, shouldLoadStory: false})
-    NavActions.createStory_cover({storyId, navigatedFromProfile: true, shouldLoadStory: false})
-  }
-
-  _touchTrash = (storyId) => {
-    this.props.deleteStory(this.props.user.id, storyId)
   }
 
   _selectTab = (tab) => {
@@ -92,8 +80,6 @@ class ProfileScreen extends React.Component {
         bookmarks={userBookmarksById}
         onSelectTab={this._selectTab}
         editable={true}
-        touchTrash={this._touchTrash}
-        touchEdit={this._touchEdit}
         isEditing={this.props.isEditing}
         updateUser={updateUser}
         showLike={true}

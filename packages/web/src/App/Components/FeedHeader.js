@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import HeaderImageWrapper from './HeaderImageWrapper'
 import FeedCarousel from './FeedCarousel'
 import HeaderTopGradient from './Headers/Shared/HeaderTopGradient'
-import StoryHeader from './StoryHeader'
+import StoryHeaderOld from './StoryHeaderOld'
 
 const StyledHeaderImageWrapper = styled(HeaderImageWrapper)`
   max-height: 570px;
@@ -26,7 +26,7 @@ export default class FeedHeader extends React.Component {
       const author = this.props.users[story.author]
 
       return (
-        <StoryHeader
+        <StoryHeaderOld
           key={key}
           story={story}
           author={author}

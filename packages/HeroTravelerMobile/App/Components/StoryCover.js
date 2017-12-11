@@ -14,17 +14,23 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import {Metrics} from '../Shared/Themes'
 import Colors from '../Shared/Themes/Colors'
 import getVideoUrl from '../Shared/Lib/getVideoUrl'
+import getRelativeHeight from '../Shared/Lib/getRelativeHeight'
 
 export default class StoryCover extends Component {
 
   static propTypes = {
-    // cover: PropTypes.object.isRequired,
     coverType: PropTypes.oneOf(['image', 'video']).isRequired,
+    cover: PropTypes.object,
     onPress: PropTypes.func,
+    style: PropTypes.object,
+    children: PropTypes.object,
+    playButtonSize: PropTypes.string,
     autoPlayVideo: PropTypes.bool.isRequired,
     allowVideoPlay: PropTypes.bool.isRequired,
+    showPlayButton: PropTypes.bool,
     gradientColors: PropTypes.arrayOf(PropTypes.string),
-    gradientLocations: PropTypes.arrayOf(PropTypes.number)
+    gradientLocations: PropTypes.arrayOf(PropTypes.number),
+    shouldEnableAutoplay: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -37,10 +43,10 @@ export default class StoryCover extends Component {
   constructor(props) {
     super(props)
     this._tapVideoWrapper = this._tapVideoWrapper.bind(this)
-    const startVideoImmediately = props.allowVideoPlay && props.autoPlayVideo
+    const startVideoImmediately = props.allowVideoPlay && props.autoPlayVideo && props.shouldEnableAutoplay
     this.state = {
       isPlaying: startVideoImmediately,
-      isMuted: __DEV__,
+      isMuted: props.isFeed,
     }
   }
 
@@ -50,6 +56,16 @@ export default class StoryCover extends Component {
 
   hasImage() {
     return this.props.coverType === 'image' && !!this.props.cover
+  }
+
+  _getWidthHeight(){
+    if (this.props.isFeed) return { height: 375 }
+    else {
+      return {
+        width: Metrics.screenWidth,
+        height: getRelativeHeight(Metrics.screenWidth, this.props.cover.original.meta)
+      }
+    }
   }
 
   renderImage() {
@@ -66,7 +82,10 @@ export default class StoryCover extends Component {
           cached={true}
           resizeMode='cover'
           source={{uri: imageUrl}}
-          style={[styles.image]}
+          style={{
+            ...imageStyle,
+            ...this._getWidthHeight(),
+          }}
         >
           <LinearGradient
             locations={gradientLocations}
@@ -93,13 +112,12 @@ export default class StoryCover extends Component {
   _tapVideoWrapper() {
     const {onPress} = this.props
 
-
     // If the video is not playing, invoke the usual callback
-    if ((!this.player || !this.player.getIsPlaying()) && onPress) {
+    if ((!this.player || !this.player.getIsPlaying() || this.props.isFeed) && onPress) {
       return this.props.onPress()
     }
 
-    this.player.toggle()
+    if (!this.props.isFeed) this.player.toggle()
   }
 
   _setIsPlaying = (value) => this.setState({isPlaying: value})
@@ -112,6 +130,19 @@ export default class StoryCover extends Component {
 
   _makeRef = (i) => this.player = i
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.autoPlayVideo && !this.props.autoPlayVideo && !this.state.isPlaying) {
+      this.setState({isPlaying: true})
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.autoPlayVideo !== this.props.autoPlayVideo ||
+    nextState.isPlaying !== this.state.isPlaying ||
+    nextState.isMuted !== this.state.isMuted ||
+    nextState.shouldEnableAutoplay !== this.props.shouldEnableAutoplay
+  }
+
   /*
   Nota bene. We have two different ways to display the play button. One through the Video
   component and a second through the conditional renders we have below. This should be
@@ -119,16 +150,18 @@ export default class StoryCover extends Component {
   */
   renderVideo() {
     return (
-      <View style={{flex: 1}}>
+      <View style={this._getWidthHeight()}>
         <Video
           path={getVideoUrl(this.props.cover)}
           imgUrl={getImageUrl(this.props.cover, 'video')}
           ref={this._makeRef}
-          allowVideoPlay={this.props.allowVideoPlay}
+          allowVideoPlay={this.props.allowVideoPlay && this.props.autoPlayVideo}
+          shouldEnableAutoplay={this.props.shouldEnableAutoplay}
           autoPlayVideo={this.props.autoPlayVideo}
           showPlayButton={false}
           onIsPlayingChange={this._setIsPlaying}
           onMuteChange={this._changeMute}
+          isMuted={this.props.isFeed}
           resizeMode='cover'
         />
         <TouchableWithoutFeedback
@@ -141,13 +174,14 @@ export default class StoryCover extends Component {
             {this.props.children}
           </LinearGradient>
         </TouchableWithoutFeedback>
-        {this.props.allowVideoPlay && !this.state.isPlaying && <PlayButton
+        {this.props.allowVideoPlay && !this.state.isPlaying && this.props.shouldEnableAutoplay && !this.props.isFeed &&
+        <PlayButton
           onPress={this._togglePlayerRef}
           isPlaying={this.state.isPlaying}
           videoFadeAnim={this.player && this.player.getAnimationState()}
           style={styles.playButton}
         />}
-        {this.props.allowVideoPlay && this.state.isPlaying &&
+        {this.props.allowVideoPlay && this.state.isPlaying && !this.props.isFeed &&
           <MuteButton
             onPress={this._togglePlayerRefMuted}
             isMuted={this.state.isMuted}
@@ -168,15 +202,12 @@ export default class StoryCover extends Component {
   render() {
     let coverType;
     if (this.hasImage()) coverType = 'image'
-    else if (this.hasVideo()) {
-      if (this.props.allowVideoPlay && this.props.autoPlayVideo) coverType = 'video'
-      else if (this.hasVideo()) coverType = 'videoThumbnail'
-    }
+    else if (this.hasVideo()) coverType = 'video'
 
     return (
       <View style={[styles.root, this.props.style]}>
         {this.hasVideo() && coverType === 'video' && this.renderVideo()}
-        {(coverType === 'image' || coverType === 'videoThumbnail') && this.renderImage()}
+        {coverType === 'image' && this.renderImage()}
         {!coverType &&
           <TouchableWithoutFeedback onPress={this.props.onPress}>
             <View style={styles.noCover}>
@@ -193,16 +224,18 @@ export default class StoryCover extends Component {
   }
 }
 
+// Image needs to be able to mutate it so we need to give it the raw object
+const imageStyle = {
+  width: Metrics.screenWidth,
+  flexDirection: "column",
+  justifyContent: "flex-end",
+  position: 'relative'
+}
+
 const styles = StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: Colors.clear
-  },
-  image: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "flex-end",
-    position: 'relative'
   },
   videoWrapper: {
     flex: 1,

@@ -24,7 +24,7 @@ export default class DraftJsVideo extends Component {
         </TouchableOpacity>
       </View>
     )
-  
+
     return (
       <TouchableWithoutFeedback
        style={style}

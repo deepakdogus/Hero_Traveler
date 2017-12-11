@@ -3,11 +3,8 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Modal from 'react-modal'
 
-import HeaderImageWrapper from '../Headers/Shared/HeaderImageWrapper'
 import RightModal from '../RightModal'
 import CenterModal from '../CenterModal'
-import {OverlayStyles} from '../Overlay'
-import getImageUrl from '../../Shared/Lib/getImageUrl'
 import ProfileHeaderView from './ProfileHeaderView'
 import ProfileHeaderEdit from './ProfileHeaderEdit'
 
@@ -26,9 +23,7 @@ import FAQTermsAndConditions from '../Modals/FAQTermsAndConditions'
 import ProfileBio from '../Modals/ProfileBio'
 import Contributor from '../Modals/HeaderModals/Contributor'
 
-const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
-  ${OverlayStyles}
-`
+const Container = styled.div``
 
 const contributorModalStyles = {
   content: {
@@ -68,14 +63,8 @@ export default class ProfileHeader extends React.Component {
 
   render () {
     const {user, isEdit} = this.props
-    const backgroundImage = getImageUrl(user.profile.cover)
-    const ImageWrapper = backgroundImage ? OpaqueHeaderImageWrapper : HeaderImageWrapper
     return (
-      <ImageWrapper
-        backgroundImage={backgroundImage}
-        size='large'
-        type='profile'
-      >
+      <Container>
         {isEdit && <ProfileHeaderEdit {...this.props}/>}
         {!isEdit &&
           <ProfileHeaderView
@@ -189,8 +178,7 @@ export default class ProfileHeader extends React.Component {
         >
           <Contributor/>
         </Modal>
-
-      </ImageWrapper>
+      </Container>
     )
   }
 }

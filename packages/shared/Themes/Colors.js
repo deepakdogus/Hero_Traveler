@@ -46,6 +46,7 @@ const colors = {
   btnGreyBackground: '#949292',
   btnDarkGreyBackground: '#5d5b5f',
   dividerGrey: '#dedede',
+  feedDividerGrey: '#ededed',
   backgroundOpaque: 'rgba(26,28,33,0.6)',
   backgroundTint: 'rgba(26,28,33,0.4)',
   pink: '#fde8ea',

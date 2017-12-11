@@ -3,79 +3,102 @@ import { Colors, Metrics, ApplicationStyles, Fonts } from '../../Shared/Themes/'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
-  scrollView: {
-    flex: 1,
-    // paddingTop: Metrics.titlePadding
-  },
   contentContainer: {
     flex: 1,
-    flexDirection: "row"
+    flexDirection: 'column'
+  },
+  caption: {
+    marginTop: 0,
+    marginBottom: 15,
   },
   title: {
-    fontSize: 28,
-    fontWeight: '500',
-    fontFamily: Fonts.type.montserrat,
-    color: Colors.white,
     letterSpacing: 1.5,
+    fontSize: 20,
+    lineHeight: 23,
+    fontFamily: Fonts.montserrat,
+    fontWeight: '600',
+    color: Colors.backgrond,
   },
-  subtitle: {
-    fontSize: 16,
-    color: "#e0e0e0",
-    fontWeight: '300',
+  storyReadingTitle: {
+    fontSize: 30,
+    lineHeight: 33,
+  },
+  description: {
     fontFamily: Fonts.type.sourceSansPro,
-    letterSpacing:0.7,
-    marginTop: Metrics.baseMargin / 2,
-    marginBottom: Metrics.baseMargin / 2 + 10,
-  },
-  divider: {
-    height: 1,
-    // width: 300,
-    backgroundColor: "#fff",
-    opacity: 0.5
-  },
-  contentWrapper: {
-    flexDirection: 'column',
-    justifyContent: 'flex-end'
-  },
-  detailsContainer: {
-    marginTop: 10,
-    flexDirection: "row",
-    justifyContent: "space-between"
+    fontWeight: '400',
+    fontSize: 16,
+    letterSpacing: .7,
+    color: Colors.grey,
   },
   userContent: {
     flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  leftUserContent: {
+    flexDirection: 'row',
+  },
+  verticalCenter: {
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
   avatar: {
     marginRight: Metrics.baseMargin
   },
   username: {
-    color: "#e0e0e0",
-    fontWeight: "300",
-    lineHeight: 36,
-    fontSize: 15,
+    color: Colors.redHighlights,
+    fontWeight: '400',
+    fontSize: 11,
+    letterSpacing: .7,
     fontFamily: Fonts.type.sourceSansPro
   },
+  about: {
+    fontFamily: Fonts.type.sourceSansPro,
+    fontWeight: '400',
+    fontSize: 13,
+    letterSpacing: .7,
+    color: Colors.background,
+    maxWidth: Metrics.screenWidth * .60,
+  },
+  previewUserContainer: {
+    minHeight: 70,
+  },
+  userContainer: {
+    paddingVertical: 10,
+  },
+  storyInfoContainer: {
+    paddingHorizontal: Metrics.section,
+    backgroundColor: Colors.snow,
+  },
+  bottomContainer: {
+    paddingVertical: 10,
+  },
   dateText: {
-    color: "#e0e0e0",
+    fontSize: 12,
+    letterSpacing: .5,
+    color: Colors.grey,
     marginRight: 5,
-    lineHeight: 36,
     fontFamily: Fonts.type.crimsonText,
     fontStyle: 'italic',
   },
-  detailsRight: {
-    flexDirection: 'row'
+  rightRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
   },
-  tagline: {
-    ...Fonts.style.h1,
-    color: Colors.steel
+  bookmarkContainer: {
+    marginRight: 10,
   },
-  readMore: {
-    marginTop: Metrics.baseMargin,
+  bookmark: {
+    width: 12,
+    height: 16,
   },
-  readMoreText: {
-    textAlign: 'center',
+  followFollowingButton: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    width: 105,
+  },
+  followFollowingText: {
+    width: 80,
+    marginHorizontal: 12.5,
     fontSize: 11,
-    fontFamily: Fonts.type.montserrat,
-    color: Colors.white
   }
 })

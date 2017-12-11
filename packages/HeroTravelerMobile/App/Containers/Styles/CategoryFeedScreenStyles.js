@@ -33,7 +33,7 @@ export default StyleSheet.create({
   },
   tabText: {
     fontFamily: Fonts.type.montserrat,
-    color: '#757575',
+    color: Colors.grey,
     fontSize: 13,
     letterSpacing: 1.2,
     textAlign: 'center'
@@ -47,4 +47,20 @@ export default StyleSheet.create({
     fontSize: 13,
     letterSpacing: 1.2,
   },
+  navbarRightTextStyle: {
+    fontFamily: Fonts.type.montserrat,
+    fontSize: 11,
+    fontWeight: '600',
+    color: Colors.snow,
+  },
+  navbarContainer: {
+    marginTop: 10,
+  },
+  navbarLeftIconStyle: {
+    tintColor: Colors.navBarText
+  },
+  navbarTitleStyle: {
+    fontSize: 18,
+    letterSpacing: 1,
+  }
 })

@@ -11,5 +11,14 @@ export default StyleSheet.create({
     color: Colors.snow,
     marginRight: Metrics.baseMargin / 2,
     fontSize: 13
+  },
+  isRightText: {
+    color: Colors.signupGrey,
+    marginRight: 0,
+    marginLeft: Metrics.baseMargin / 2,
+  },
+  heartIcon: {
+    width: 19,
+    height: 16,
   }
 })

@@ -11,6 +11,9 @@ export default StyleSheet.create({
   containerWithNavbar: {
     ...ApplicationStyles.screen.containerWithNavbar
   },
+  contentWrapper: {
+    flex: 1,
+  },
   lightGreyAreasBG: {
     flex: 1,
     backgroundColor: Colors.lightGreyAreas,
@@ -24,6 +27,9 @@ export default StyleSheet.create({
     marginHorizontal: Metrics.section,
     zIndex: 100,
   },
+  imageMenuToggleButton: {
+    flex: 1,
+  },
   spaceView: {
     height: third
   },
@@ -32,31 +38,46 @@ export default StyleSheet.create({
     fontSize: 18,
     fontFamily: Fonts.type.montserrat
   },
+  titlesWrapper: {
+    marginHorizontal: 20,
+  },
   titleInput: {
     ...Fonts.style.title,
     color: Colors.background,
-    marginTop: 20,
-    marginLeft: 20,
-    fontSize: 28,
-    fontFamily: 'Arial',
-    fontWeight: '500',
+    fontSize: 30,
+    fontFamily: Fonts.type.montserrat,
+    fontWeight: '600',
   },
-  subTitleInput: {
+  description: {
+    fontFamily: Fonts.type.sourceSansPro,
+    fontWeight: '400',
+    letterSpacing: .7,
     color: Colors.background,
+    fontSize: 18,
+    marginTop: 0,
+    lineHeight: 28,
     height: 28,
-    fontSize: 14,
-    marginLeft: 20
+  },
+  coverCaption: {
+    marginTop: 5,
+    marginBottom: 15,
+    minHeight: 20,
+  },
+  divider: {
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: Colors.dividerGrey,
+    marginTop: 10,
   },
   cameraIcon: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: Metrics.baseMargin,
+    marginBottom: Metrics.doubleBaseMargin,
   },
   cameraIconImage: {
     tintColor: 'gray',
-    height: 32,
-    width: 40,
+    height: 43,
+    width: 58,
   },
   videoIconImage: {
     tintColor: 'gray',
@@ -72,7 +93,7 @@ export default StyleSheet.create({
     right: 0,
   },
   addPhotoView: {
-    height: third,
+    flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center'
@@ -82,13 +103,12 @@ export default StyleSheet.create({
     justifyContent: 'center'
   },
   imageMenuView: {
-    height: third,
+    flex: 1,
     justifyContent: 'space-around',
     flexDirection: 'row',
     alignItems: 'center'
   },
   addPhotoButton: {
-    padding: 50,
     justifyContent: 'center',
     backgroundColor: 'transparent'
   },
@@ -114,6 +134,7 @@ export default StyleSheet.create({
   coverPhotoText: {
     fontFamily: Fonts.type.montserrat,
     fontSize: 13,
+    fontWeight: '700',
   },
   iconButton: {
     backgroundColor: Colors.clear
@@ -124,12 +145,6 @@ export default StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-  },
-  coverWrapper: {
-    height: Metrics.screenHeight - Metrics.navBarHeight - 30,
-  },
-  videoCoverWrapper: {
-    height: Metrics.screenHeight - Metrics.navBarHeight
   },
   angleDownIcon: {
     height: 20,

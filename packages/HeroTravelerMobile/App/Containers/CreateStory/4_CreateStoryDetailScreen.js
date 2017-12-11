@@ -111,7 +111,14 @@ class CreateStoryDetailScreen extends React.Component {
 
     const newCover = getNewCover(workingDraft.coverImage, workingDraft.coverVideo)
     let promise
-    if (newCover) promise = saveCover(api, workingDraft, newCover)
+    if (newCover) {
+      this.setState({isSavingCover: true})
+      promise = saveCover(api, workingDraft, newCover)
+      .then(draft => {
+        this.setState({isSavingCover: false})
+        return draft
+      })
+    }
     else promise = Promise.resolve(workingDraft)
 
     return promise.then(draft => {
@@ -175,13 +182,14 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   render () {
-    const {workingDraft} = this.props
+    const {workingDraft, publishing} = this.props
+    const {isSavingCover, categories, modalVisible, showError, tripDate} = this.state
     const err = this.props.error
     const errText = (__DEV__ && err && err.problem && err.status) ? `${err.status}: ${err.problem}` : ""
 
     return (
       <View style={{flex: 1, position: 'relative'}}>
-          { this.state.showError && err &&
+          { showError && err &&
           <ShadowButton
             style={styles.errorButton}
             onPress={this._closeError}
@@ -229,7 +237,7 @@ class CreateStoryDetailScreen extends React.Component {
               <TouchableWithoutFeedback
                 onPress={() => NavActions.createStory_tags({
                   onDone: this._receiveCategories,
-                  categories: workingDraft.categories || this.state.categories
+                  categories: workingDraft.categories || categories
                 })}
                 style={styles.tagStyle}
               >
@@ -271,8 +279,10 @@ class CreateStoryDetailScreen extends React.Component {
               </View>
             }
           </ScrollView>
-          {this.props.publishing && <Loader style={styles.loader} tintColor={Colors.blackoutTint} />}
-      { this.state.modalVisible &&
+          {(publishing || isSavingCover) &&
+            <Loader style={styles.loader} tintColor={Colors.blackoutTint} />
+          }
+        {modalVisible &&
         <View
           style={{position: 'absolute', top: 250, left: 40, elevation: 100}}
           shadowColor='black'
@@ -282,13 +292,13 @@ class CreateStoryDetailScreen extends React.Component {
           <View
             style={{ backgroundColor: 'white', height: 300, width: 300 }}>
             <DatePickerIOS
-              date={workingDraft.tripDate || this.state.tripDate}
+              date={workingDraft.tripDate || tripDate}
               mode="date"
               onDateChange={this._onDateChange}
             />
             <RoundedButton
               text='Confirm'
-              onPress={() => this._setModalVisible(!this.state.modalVisible)}
+              onPress={() => this._setModalVisible(!modalVisible)}
             />
           </View>
         </View> }

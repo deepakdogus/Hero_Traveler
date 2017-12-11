@@ -235,7 +235,12 @@ class StoryCoverScreen extends Component {
   }
 
   renderCoverVideo(coverVideo) {
-    if (typeof coverVideo === 'object') coverVideo = getVideoUrl(coverVideo)
+    if (coverVideo){
+      if (coverVideo.uri) {
+        coverVideo = coverVideo.uri
+      }
+      else coverVideo = getVideoUrl(coverVideo)
+    }
 
     return R.ifElse(
       R.identity,

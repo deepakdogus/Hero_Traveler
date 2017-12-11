@@ -29,7 +29,7 @@ export const Name = styled.p`
 
 export const Centered = styled(VerticalCenter)`
   margin-top: 65px;
-  height: 365px;
+  height: 320px;
 `
 
 export const StyledAvatar = styled(Avatar)``

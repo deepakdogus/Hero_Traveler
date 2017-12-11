@@ -114,7 +114,7 @@ export default class StoryPreview extends Component {
               {isStoryReadingScreen && user.about &&
                 <Text style={styles.about}>{user.about}</Text>
               }
-            <Text style={styles.dateText}>{moment(story.createdAt).format('LL')}</Text>
+            <Text style={styles.dateText}>{moment(story.tripDate).format('LL')}</Text>
             </View>
           </View>
           {isStoryReadingScreen && !isAuthor &&

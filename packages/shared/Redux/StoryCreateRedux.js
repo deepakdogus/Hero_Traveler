@@ -7,7 +7,7 @@ import Immutable from 'seamless-immutable'
 const { Types, Creators } = createActions({
   registerDraft: null,
   registerDraftSuccess: ['draft'],
-  registerDraftFailure: null,
+  registerDraftFailure: ['error'],
   editStory: ['storyId'],
   editStorySuccess: ['story'],
   editStoryFailure: ['error'],

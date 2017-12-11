@@ -106,46 +106,6 @@ class StoryCoverScreen extends Component {
     api.setAuth(this.props.accessToken.value)
   }
 
-  componentWillReceiveProps(nextProps) {
-    // let nextState = {}
-
-    // if (this.props.story.title != undefined && !this.props.story.title !== nextProps.story.title) {
-    //   nextState.title = nextProps.story.title
-    //   nextState.description = nextProps.story.description
-    // }
-
-    // if (this.props.story.title !== nextProps.story.title) {
-    //   nextState.title = nextProps.story.title
-    //   nextState.description = nextProps.story.description
-    // }
-
-    // if (!this.props.story.coverVideo && nextProps.story.coverVideo) {
-    //   nextState.coverVideo = getVideoUrl(nextProps.story.coverVideo)
-    // }
-
-    // if (!this.props.story.coverCaption && nextProps.story.coverCaption) {
-    //   nextState.coverCaption = nextProps.story.coverCaption
-    // }
-    // // case of switching to new draft from existing story
-    // if (this.state.coverVideo &&
-    //   (this.props.story.id !== nextProps.story.id)
-    // ) {
-    //   nextState.coverVideo = undefined
-    // }
-
-    // if (!this.props.story.coverImage && nextProps.story.coverImage) {
-    //   nextState.coverImage = getImageUrl(nextProps.story.coverImage)
-    // }
-    // // case of switching to new draft from existing story
-    // if (this.state.coverImage &&
-    //   (this.props.story.id !== nextProps.story.id)
-    // ) {
-    //   nextState.coverImage = undefined
-    // }
-
-    // this.setState(nextState)
-  }
-
   isUploading() {
     return this.state.imageUploading || this.state.videoUploading
   }
@@ -402,7 +362,7 @@ class StoryCoverScreen extends Component {
     ])
   }
 
-  navBack() {
+  navBack = () => {
     this.props.dispatch(StoryEditActions.resetCreateStore())
     if (this.props.navigatedFromProfile) {
       NavActions.tabbar({type: 'reset'})
@@ -528,13 +488,37 @@ class StoryCoverScreen extends Component {
   }
 
   renderFailModal = () => {
+    let renderProps = this.state.activeModal === 'saveFail' ? {
+      closeModal: this.closeModal,
+      title: 'Save Error',
+      message: 'We experienced an error while trying to save your story. Please try again.',
+      renderButtton: false,
+    } : {
+      closeModal: this.navBack,
+      title: 'Draft Initialization Error',
+      message: 'We experienced an error while trying to initialize your draft. Please try again.',
+      renderButtton: true,
+    }
     return (
       <Modal
-        closeModal={this.closeModal}
+        closeModal={renderProps.closeModal}
         modalStyle={modalWrapperStyles}
       >
-        <Text style={styles.modalTitle}>Save Error</Text>
-        <Text style={[styles.modalMessage, styles.failModalMessage]}>We experienced an error while trying to save your story. Please try again</Text>
+        <Text style={styles.modalTitle}>{renderProps.title}</Text>
+        <Text style={[
+          styles.modalMessage,
+          renderProps.renderButtton ? {} : styles.failModalMessage,
+        ]}>
+          {renderProps.message}
+        </Text>
+        { renderProps.renderButtton &&
+          <TouchableOpacity
+            style={styles.modalBtn}
+            onPress={renderProps.closeModal}
+          >
+            <Text style={styles.modalBtnText}>Close</Text>
+          </TouchableOpacity>
+        }
       </Modal>
     )
   }
@@ -816,6 +800,10 @@ class StoryCoverScreen extends Component {
     this.contentHeight = contentHeight
   }
 
+  hasNoDraft(){
+    return !this.props.workingDraft || !this.props.workingDraft.id
+  }
+
   render () {
     const {coverHeight, error} = this.state
     const {
@@ -931,7 +919,9 @@ class StoryCoverScreen extends Component {
           </KeyboardTrackingView>
         }
         {this.state.activeModal === 'cancel' && this.renderCancel()}
-        {this.state.activeModal === 'saveFail' && this.renderFailModal()}
+        {this.state.activeModal === 'saveFail' || (this.hasNoDraft && this.props.error)
+          && this.renderFailModal()
+        }
         {this.isUploading() &&
           <Loader
             style={styles.loading}
@@ -943,6 +933,13 @@ class StoryCoverScreen extends Component {
           <Loader
             style={styles.loading}
             text='Saving progress...'
+            textStyle={styles.loaderText}
+            tintColor='rgba(0,0,0,.9)' />
+        }
+        {this.hasNoDraft() && !this.props.error &&
+          <Loader
+            style={styles.loading}
+            text='Initializing Draft'
             textStyle={styles.loaderText}
             tintColor='rgba(0,0,0,.9)' />
         }
@@ -985,6 +982,7 @@ export default connect((state) => {
     story: {...state.storyCreate.workingDraft},
     originalDraft: {...state.storyCreate.draft},
     workingDraft: {...state.storyCreate.workingDraft},
+    error: state.storyCreate.error
   }
 }, dispatch => ({
   updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),

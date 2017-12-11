@@ -56,13 +56,18 @@ const CountItemWrapper = styled.div`
 
 const BioText = styled.p`
   font-family: ${props => props.theme.Fonts.type.crimsonText}};
+  font-style: normal;
   font-weight: 400;
   letter-spacing: .5px;
+  text-align: left;
   font-size: 18px;
   color: ${props => props.theme.Colors.redHighlights};
   cursor: pointer;
-  text-align: center;
   margin: 10px 0 0;
+`
+
+const ProfileButtonWrapper = styled(ButtonWrapper)`
+  margin-top: 20px;
 `
 
 const ClickRow = styled(Row)`
@@ -115,12 +120,6 @@ export default class ProfileHeaderView extends React.Component {
                 size='x-large'
               />
             </AvatarWrapper>
-            <BioText onClick={openBio}>Read Bio</BioText>
-          </Col>
-          <SecondCol>
-            <Username>{user.username}</Username>
-            <Name>{user.profile.fullName}</Name>
-            <About>{user.about}</About>
             <CountWrapper>
               <CountItemWrapper onClick={openFollowedBy}>
                 <Count>{user.counts.followers}</Count>
@@ -132,7 +131,13 @@ export default class ProfileHeaderView extends React.Component {
                 <CountLabel>Following</CountLabel>
               </CountItemWrapper>
             </CountWrapper>
-            <ButtonWrapper>
+          </Col>
+          <SecondCol>
+            <Username>{user.username}</Username>
+            <Name>{user.profile.fullName}</Name>
+            <About>{user.about}</About>
+            <BioText onClick={openBio}>Read Bio</BioText>
+            <ProfileButtonWrapper>
               { isUsersProfile &&
                 <NavLinkStyled to={`/profile/${user.id}/edit`}>
                   <RoundedButton
@@ -150,7 +155,7 @@ export default class ProfileHeaderView extends React.Component {
                   text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
                 />
               }
-            </ButtonWrapper>
+            </ProfileButtonWrapper>
           </SecondCol>
         </Row>
         { isContributor &&

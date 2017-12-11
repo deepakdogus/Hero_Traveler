@@ -7,6 +7,7 @@ import RoundedButton from '../RoundedButton'
 import Icon from '../Icon'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import VerticalCenter from '../VerticalCenter'
+import NavLinkStyled from '../NavLinkStyled'
 import Modal from 'react-modal'
 import EditPhotoOptions from '../Modals/EditPhotoOptions'
 import PhotoEditor from '../Modals/PhotoEditor'
@@ -104,7 +105,6 @@ const AboutInput = styled.textarea`
   resize: none;
 `
 
-
 const BioWrapper = styled.div`
   background-color: ${props => props.theme.Colors.lightGreyAreas};
 `
@@ -131,6 +131,15 @@ const ErrorText = styled.p`
   padding-top: 2px;
 `
 
+const SaveCancelButtonWrapper = styled(ButtonWrapper)`
+  display: flex;
+  justify-content: center;
+  padding-bottom: 20px;
+`
+
+const SaveCancelButton = styled(RoundedButton)`
+  margin: 0px 10px;
+`
 function getInitialState(user = {}){
   return {
     bio: user.bio,
@@ -234,6 +243,7 @@ export default class ProfileHeaderEdit extends React.Component {
       username: this.state.username,
       about: this.state.about,
     })
+    
   }
 
   render () {
@@ -297,19 +307,6 @@ export default class ProfileHeaderEdit extends React.Component {
                     maxLength={100}
                   />
               </AboutWrapper>
-              <ButtonWrapper>
-                <RoundedButton
-                  margin='small'
-                  type={'blackWhite'}
-                  text={'CANCEL'}
-                  onClick={this.onCancel}
-                />
-                <RoundedButton
-                  margin='small'
-                  text='SAVE CHANGES'
-                  onClick={this.onSave}
-                />
-              </ButtonWrapper>
             </SecondCol>
           </Row>
         </Centered>
@@ -323,6 +320,19 @@ export default class ProfileHeaderEdit extends React.Component {
               placeholder='Enter your bio'
               onChange={this.onChangeText}
             />
+            <SaveCancelButtonWrapper>
+                <SaveCancelButton
+                  margin='small'
+                  type={'blackWhite'}
+                  text={'CANCEL'}
+                  onClick={this.onCancel}
+                />
+                <SaveCancelButton
+                  margin='small'
+                  text='SAVE CHANGES'
+                  onClick={this.onSave}
+                />
+            </SaveCancelButtonWrapper>
           </BioContainer>
         </BioWrapper>
 

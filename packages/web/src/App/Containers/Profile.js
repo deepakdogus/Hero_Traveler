@@ -186,7 +186,7 @@ class Profile extends Component {
             onClickTab={this.onClickTab}
           />
 
-          { selectedStories.length &&
+          { (!!selectedStories.length) &&
           <StoryListWrapper>
             <StoryList
               stories={selectedStories}

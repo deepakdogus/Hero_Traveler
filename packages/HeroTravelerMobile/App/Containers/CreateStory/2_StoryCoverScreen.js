@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   Animated,
   View,
+  Keyboard,
   KeyboardAvoidingView,
   Alert,
   TextInput,
@@ -98,11 +99,25 @@ class StoryCoverScreen extends Component {
       titleHeight: 34,
       activeModal: undefined,
       toolbarDisplay: false,
+      keyboardHeight: 216,
     }
   }
 
   componentWillMount() {
     api.setAuth(this.props.accessToken.value)
+    this.keyboardListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow)
+  }
+
+  componentWillUnmount() {
+    this.keyboardListener = Keyboard.removeListener('keyboardDidShow')
+  }
+
+  _keyboardDidShow = (event) => {
+    if (this.state.keyboardHeight !== event.endCoordinates.height) {
+      this.setState({
+        keyboardHeight: event.endCoordinates.height,
+      })
+    }
   }
 
   isUploading() {
@@ -578,19 +593,17 @@ class StoryCoverScreen extends Component {
   }
 
   jumpToTitle = () => {
-    this.scrollViewRef.scrollTo({x:0, y: -30, amimated: true})
+    this.scrollViewRef.scrollTo({x:0, y: this.state.coverHeight - 30, amimated: true})
   }
 
   renderContent () {
     const {coverHeight, imageMenuOpen, toolbarOpacity} = this.state
-    // offset so that the buttons are visible when the keyboard + toolbar are open
-    const buttonsOffset = (this.toolbar && this.state.toolbarDisplay) ? {top: 75} : null
     return (
       <View style={this.hasNoCover() ? styles.lightGreyAreasBG : styles.contentWrapper}>
         {this.hasNoCover() &&
           <View style={[styles.addPhotoView]}>
             <TouchableOpacity
-              style={[styles.addPhotoButton, buttonsOffset]}
+              style={[styles.addPhotoButton]}
               onPress={this._contentAddCover}
             >
               <TabIcon name='cameraDark' style={{
@@ -616,7 +629,8 @@ class StoryCoverScreen extends Component {
               ]}>
                 <TouchableOpacity
                   onPress={this._touchChangeCover}
-                  style={[styles.iconButton, buttonsOffset]}>
+                  style={[styles.iconButton]}
+                >
                   <Icon name={'camera'} color={Colors.snow} size={30} />
                 </TouchableOpacity>
               </Animated.View>
@@ -845,7 +859,7 @@ class StoryCoverScreen extends Component {
               paddingRight: 10,
             }}
           />
-          <KeyboardAvoidingView behavior='position'>
+          <KeyboardAvoidingView behavior='padding'>
             <View style={{height: coverHeight }}>
               {error &&
                 <ShadowButton

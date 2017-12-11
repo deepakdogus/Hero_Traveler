@@ -238,12 +238,13 @@ export default class ProfileHeaderEdit extends React.Component {
   }
 
   onSave = () => {
+    this.props.toProfileView()
     this.props.updateUser({
       bio: this.state.bio,
       username: this.state.username,
       about: this.state.about,
     })
-    
+
   }
 
   render () {

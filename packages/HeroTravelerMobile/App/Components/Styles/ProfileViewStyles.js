@@ -24,6 +24,10 @@ export default StyleSheet.create({
   editButton: {
     marginRight: 15,
   },
+  avatarWrapper: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
   cogImageIcon: {
     height: 23,
     width: 23,
@@ -37,7 +41,6 @@ export default StyleSheet.create({
   },
   userInfoWrapper: {
     marginLeft: 5,
-    height: 95,
     flexDirection: 'column',
     marginBottom: 5,
   },
@@ -220,8 +223,7 @@ export default StyleSheet.create({
     zIndex: 100,
   },
   profileInfoContainer: {
-    paddingTop: Metrics.baseMargin,
-    height: 200,
+    paddingTop: Metrics.doubleBaseMargin,
   },
   profileEditInfoContainer: {
     height: profileEditHeight,
@@ -234,6 +236,7 @@ export default StyleSheet.create({
   },
   secondRow: {
     justifyContent: 'space-between',
+    marginBottom: 10,
   },
   editBioText: {
     minHeight: profileEditHeight,

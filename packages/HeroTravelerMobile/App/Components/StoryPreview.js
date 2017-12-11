@@ -111,9 +111,6 @@ export default class StoryPreview extends Component {
               <TouchableOpacity onPress={this._touchUser}>
                 <Text style={styles.username}>{user.username}</Text>
               </TouchableOpacity>
-              {isStoryReadingScreen && user.about &&
-                <Text style={styles.about}>{user.about}</Text>
-              }
             <Text style={styles.dateText}>{moment(story.tripDate).format('LL')}</Text>
             </View>
           </View>

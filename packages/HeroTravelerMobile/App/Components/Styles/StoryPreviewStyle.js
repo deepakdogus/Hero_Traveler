@@ -51,14 +51,6 @@ export default StyleSheet.create({
     letterSpacing: .7,
     fontFamily: Fonts.type.sourceSansPro
   },
-  about: {
-    fontFamily: Fonts.type.sourceSansPro,
-    fontWeight: '400',
-    fontSize: 13,
-    letterSpacing: .7,
-    color: Colors.background,
-    maxWidth: Metrics.screenWidth * .60,
-  },
   previewUserContainer: {
     minHeight: 70,
   },

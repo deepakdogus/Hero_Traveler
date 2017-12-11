@@ -191,14 +191,12 @@ export default class ProfileUserInfo extends Component {
 
     return (
       <View style={styles.profileWrapper}>
-        <View>
-          <View style={styles.avatarWrapper}>
-            <Avatar
-              size='extraLarge'
-              avatarUrl={avatarUrl}
-            />
-            {avatarOverlay}
-          </View>
+        <View style={styles.avatarWrapper}>
+          <Avatar
+            size='extraLarge'
+            avatarUrl={avatarUrl}
+          />
+          {avatarOverlay}
         </View>
         <View style={styles.userInfoMargin}>
           {this.renderUserInfo()}

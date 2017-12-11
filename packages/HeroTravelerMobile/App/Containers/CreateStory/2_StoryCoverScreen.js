@@ -99,25 +99,11 @@ class StoryCoverScreen extends Component {
       titleHeight: 34,
       activeModal: undefined,
       toolbarDisplay: false,
-      keyboardHeight: 216,
     }
   }
 
   componentWillMount() {
     api.setAuth(this.props.accessToken.value)
-    this.keyboardListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow)
-  }
-
-  componentWillUnmount() {
-    this.keyboardListener = Keyboard.removeListener('keyboardDidShow')
-  }
-
-  _keyboardDidShow = (event) => {
-    if (this.state.keyboardHeight !== event.endCoordinates.height) {
-      this.setState({
-        keyboardHeight: event.endCoordinates.height,
-      })
-    }
   }
 
   isUploading() {
@@ -608,7 +594,7 @@ class StoryCoverScreen extends Component {
         {this.hasNoCover() &&
           <View style={[styles.addPhotoView]}>
             <TouchableOpacity
-              style={[styles.addPhotoButton]}
+              style={styles.addPhotoButton}
               onPress={this._contentAddCover}
             >
               <TabIcon name='cameraDark' style={{
@@ -634,7 +620,7 @@ class StoryCoverScreen extends Component {
               ]}>
                 <TouchableOpacity
                   onPress={this._touchChangeCover}
-                  style={[styles.iconButton]}
+                  style={styles.iconButton}
                 >
                   <Icon name={'camera'} color={Colors.snow} size={30} />
                 </TouchableOpacity>

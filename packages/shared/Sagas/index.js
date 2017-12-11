@@ -82,7 +82,7 @@ const heroAPI = HeroAPI.create()
 /* ------------- Connect Types To Sagas ------------- */
 
 // function delay(millis) {
-//   const promise = new Promise(resolve => {q
+//   const promise = new Promise(resolve => {
 //     setTimeout(() => resolve(true), millis)
 //   });
 //   return promise;

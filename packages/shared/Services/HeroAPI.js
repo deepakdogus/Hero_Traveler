@@ -48,6 +48,7 @@ const create = () => {
   }
 
   const setAuth = (accessToken) => {
+    console.log('setting accessToken', accessToken)
     api.setHeader('Authorization', `Bearer ${accessToken}`)
     return Promise.resolve()
   }

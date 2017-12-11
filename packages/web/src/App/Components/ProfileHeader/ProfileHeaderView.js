@@ -18,6 +18,11 @@ import {
 } from './ProfileHeaderShared'
 import NavLinkStyled from '../NavLinkStyled'
 
+const About = styled(Name)`
+ font-style: normal;
+ color: ${props => props.theme.Colors.grey};
+`
+
 const Count = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat}};
   margin: 0;
@@ -115,7 +120,7 @@ export default class ProfileHeaderView extends React.Component {
           <SecondCol>
             <Username>{user.username}</Username>
             <Name>{user.profile.fullName}</Name>
-            <Name>{user.about}</Name>
+            <About>{user.about}</About>
             <CountWrapper>
               <CountItemWrapper onClick={openFollowedBy}>
                 <Count>{user.counts.followers}</Count>

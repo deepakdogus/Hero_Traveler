@@ -70,9 +70,7 @@ const SecondCol = styled(Col)`
   margin-left: 20px;
 `
 
-const UsernameWrapper = styled(VerticalCenter)`
-  height: 131px;
-`
+const UsernameWrapper = styled(VerticalCenter)``
 
 const EditBioText = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat};
@@ -81,13 +79,13 @@ const EditBioText = styled.p`
   padding: 30px 0 10px;
   margin: 0;
 `
-const AboutMeWrapper = styled(VerticalCenter)``
+const AboutWrapper = styled(VerticalCenter)``
 
 const EditAboutText = styled.text`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 600;
   color: ${props => props.theme.Colors.background};
-  padding: 30px 0 10px;
+  padding: 10px 0 10px;
   margin: 0;
   font-size: 18px;
   text-align: left;
@@ -96,7 +94,7 @@ const AboutInput = styled.textarea`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
   color: ${props => props.theme.Colors.grey};
-  padding: 0;
+  padding: 5px;
   margin: 0;
   font-size: 18px;
   letter-spacing: .7px;
@@ -288,15 +286,17 @@ export default class ProfileHeaderEdit extends React.Component {
                   />
                 </Row>
               </UsernameWrapper>
-              <AboutMeWrapper>
+              <AboutWrapper>
                 <EditAboutText>Edit About</EditAboutText>
                   <AboutInput
                     value={about}
                     name='about'
                     placeholder='Click to add About Me'
                     onChange={this.onChangeText}
+                    rows={2}
+                    maxLength={100}
                   />
-              </AboutMeWrapper>
+              </AboutWrapper>
               <ButtonWrapper>
                 <RoundedButton
                   margin='small'

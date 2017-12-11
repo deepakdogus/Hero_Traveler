@@ -20,10 +20,11 @@ export const Name = styled.p`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro}};
   font-weight: 400;
   font-size: 18px;
-  color: ${props => props.theme.Colors.grey};
+  color: ${props => props.theme.Colors.background};
   letter-spacing: .7px;
-  margin: 0;
+  margin: 8px 0px;
   text-align: left;
+  font-style: italic;
 `
 
 export const Centered = styled(VerticalCenter)`

@@ -177,6 +177,10 @@ export default class ProfileHeaderEdit extends React.Component {
         bio: nextProps.user.bio,
         username: nextProps.user.username
       })
+    } 
+    // If save was successful, reroute
+    if (!!this.props.updating && !nextProps.updating && !nextProps.error) {
+      this.props.toProfileView()
     }
   }
 
@@ -243,7 +247,6 @@ export default class ProfileHeaderEdit extends React.Component {
   }
 
   onSave = () => {
-    this.props.toProfileView()
     this.props.updateUser({
       bio: this.state.bio,
       username: this.state.username,
@@ -336,6 +339,7 @@ export default class ProfileHeaderEdit extends React.Component {
                   margin='small'
                   text='SAVE CHANGES'
                   onClick={this.onSave}
+                  disabled={!username || (username.length < SignupConstants.USERNAME_MIN_LENGTH)}
                 />
             </SaveCancelButtonWrapper>
           </BioContainer>

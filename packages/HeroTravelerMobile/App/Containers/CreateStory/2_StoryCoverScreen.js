@@ -52,7 +52,7 @@ const MediaTypes = {
   photo: 'photo',
 }
 
-const defaultCoverHeight = Metrics.screenHeight / 2
+const defaultCoverHeight = 282
 
 class StoryCoverScreen extends Component {
 

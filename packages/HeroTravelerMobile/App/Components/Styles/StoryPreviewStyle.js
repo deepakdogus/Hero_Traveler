@@ -53,11 +53,7 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.sourceSansPro
   },
   usernameReading: {
-    color: Colors.redHighlights,
-    fontWeight: '400',
     fontSize: 13,
-    letterSpacing: .7,
-    fontFamily: Fonts.type.sourceSansPro
   },
   previewUserContainer: {
     minHeight: 60,
@@ -71,7 +67,7 @@ export default StyleSheet.create({
   },
   bottomContainer: {
     paddingTop: 25,
-    paddingBottom: 15,
+    paddingBottom: 10,
   },
   dateText: {
     fontSize: 12,
@@ -83,11 +79,6 @@ export default StyleSheet.create({
   },
   dateTextReading: {
     fontSize: 15,
-    letterSpacing: .5,
-    color: Colors.grey,
-    marginRight: 5,
-    fontFamily: Fonts.type.crimsonText,
-    fontStyle: 'italic',
   },
   rightRow: {
     flexDirection: 'row',

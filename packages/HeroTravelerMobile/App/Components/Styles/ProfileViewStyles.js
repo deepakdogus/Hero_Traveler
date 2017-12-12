@@ -31,12 +31,12 @@ export default StyleSheet.create({
   cogImageIcon: {
     height: 23,
     width: 23,
-    tintColor: '#9e9e9e',
+    tintColor: Colors.signupGrey,
   },
   pencilImageIcon: {
     height: 22,
     width: 22,
-    tintColor: '#9e9e9e',
+    tintColor: Colors.signupGrey,
   },
   readingViewTop: {
     height: 43,

@@ -96,15 +96,13 @@ export default class StoryPreview extends Component {
     return (
       <View style={[
         styles.storyInfoContainer, styles.verticalCenter, styles.userContainer,
-        !isStoryReadingScreen ? styles.previewUserContainer : null
+        !isStoryReadingScreen && styles.previewUserContainer,
       ]}>
         <View style={styles.userContent}>
           <View style={styles.leftUserContent}>
             <TouchableOpacity onPress={this._touchUser}>
               <Avatar
-                size={[
-                  !isStoryReadingScreen ? 'extraSmall' : 'small'
-                  ]}
+                size={isStoryReadingScreen ? 'small' : 'extraSmall'}
                 style={styles.avatar}
                 avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
               />
@@ -112,10 +110,18 @@ export default class StoryPreview extends Component {
             <View style={styles.verticalCenter}>
               <TouchableOpacity onPress={this._touchUser}>
                 <Text style={[
-                  !isStoryReadingScreen ? styles.username : styles.usernameReading
-                  ]}>{user.username}</Text>
+                  styles.username,
+                  isStoryReadingScreen && styles.usernameReading,
+                ]}>
+                  {user.username}
+                </Text>
               </TouchableOpacity>
-            <Text style={styles.dateText}>{moment(story.tripDate).format('LL')}</Text>
+            <Text style={[
+              styles.dateText,
+              isStoryReadingScreen && styles.dateTextReading
+            ]}>
+              {moment(story.tripDate).format('LL')}
+            </Text>
             </View>
           </View>
           {isStoryReadingScreen && !isAuthor &&
@@ -154,7 +160,7 @@ export default class StoryPreview extends Component {
 
     return (
       <View style={[styles.storyInfoContainer, styles.bottomContainer]}>
-        {isStoryReadingScreen &&
+        {isStoryReadingScreen && coverCaption &&
           <Text style={[StoryReadingScreenStyles.caption, styles.caption]}>
             {coverCaption}
           </Text>

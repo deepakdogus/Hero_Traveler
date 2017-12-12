@@ -20,10 +20,9 @@ export const styles = StyleSheet.create({
     flex: 1
   },
   divider: {
-    borderWidth: 1,
+    borderWidth: .5,
     borderStyle: 'solid',
     borderColor: Colors.dividerGrey,
-    marginTop: -10,
     marginBottom: 40,
     marginHorizontal: 15,
   },

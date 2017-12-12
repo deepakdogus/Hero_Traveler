@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { DefaultPlayer as VideoWithControls } from 'react-html5video'
+import { browserIs } from '../Shared/Lib/browserIs'
 import '../../video-styles.css'
 
 const VideoWrapper = styled.figure`
@@ -26,8 +27,9 @@ export default class Video extends React.Component {
 
   render() {
     const {src, type, withPrettyControls } = this.props
+    const usingChrome = browserIs('Chrome')
     return (
-      withPrettyControls 
+      withPrettyControls && usingChrome
       ?
       <VideoWithControls
         autoPlay={type==='cover'}
@@ -38,7 +40,12 @@ export default class Video extends React.Component {
     </VideoWithControls>
     : 
      <VideoWrapper>
-        <StyledVideo src={src} type={type} controls={!this.props.noControls || null}/>
+        <StyledVideo
+          autoplay
+          src={src}
+          type={type}
+          controls={!this.props.noControls}
+        />
       </VideoWrapper>
     )
   }

@@ -23,7 +23,7 @@ class StoryList extends React.Component {
     renderHeaderContent: PropTypes.object,
     renderSectionHeader: PropTypes.object,
     setVisibleRow: PropTypes.func,
-    visibleRow: PropTypes.number,
+    visibleRow: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   }
 
   static defaultProps = {

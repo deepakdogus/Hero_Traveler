@@ -93,6 +93,7 @@ export default class StoryPreview extends Component {
   renderUserSection() {
     const {user, story, isStoryReadingScreen, isAuthor} = this.props
     const isFollowing = _.includes(this.props.myFollowedUsers, user.id)
+
     return (
       <View style={[
         styles.storyInfoContainer, styles.verticalCenter, styles.userContainer,
@@ -120,7 +121,7 @@ export default class StoryPreview extends Component {
               styles.dateText,
               isStoryReadingScreen && styles.dateTextReading
             ]}>
-              {moment(story.tripDate).format('LL')}
+              {moment(story.tripDate || story.createdAt).format('LL')}
             </Text>
             </View>
           </View>
@@ -156,7 +157,7 @@ export default class StoryPreview extends Component {
 
   renderBottomSection() {
     const {title, counts, description, coverCaption} = this.props.story
-    const {isStoryReadingScreen} = this.props
+    const {isStoryReadingScreen, onPress} = this.props
 
     return (
       <View style={[styles.storyInfoContainer, styles.bottomContainer]}>
@@ -165,14 +166,16 @@ export default class StoryPreview extends Component {
             {coverCaption}
           </Text>
         }
-        <Text style={[
-          styles.title,
-          isStoryReadingScreen ? styles.storyReadingTitle : {},
-          this.props.titleStyle
-        ]}>
-          {title}
-        </Text>
-        {description && <Text style={styles.description}>{description}</Text>}
+        <TouchableOpacity onPress={onPress}>
+          <Text style={[
+            styles.title,
+            isStoryReadingScreen ? styles.storyReadingTitle : {},
+            this.props.titleStyle
+          ]}>
+            {title}
+          </Text>
+          {description && <Text style={styles.description}>{description}</Text>}
+        </TouchableOpacity>
         <View style={styles.rightRow}>
           {this.props.showLike && this.props.onPressBookmark &&
             <View style={styles.bookmarkContainer}>

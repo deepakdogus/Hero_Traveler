@@ -23,9 +23,9 @@ import {
   backspace,
   insertNewline,
   insertAtomicBlock,
-  rawToEditorState,
   updateSelectionHasFocus,
   updateSelectionAnchorAndFocus,
+  makeSelectionState,
 } from './libs/draft-js'
 import * as DJSConsts from './libs/draft-js/constants'
 
@@ -39,6 +39,8 @@ import {
 } from './Components'
 
 const { width } = Dimensions.get('window')
+
+const matchLastWordRegex = /[a-zA-Z]*$/
 
 export default class RNDraftJs extends Component {
   constructor(props) {
@@ -61,6 +63,16 @@ export default class RNDraftJs extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps){
+    if ((!this.props.value && nextProps.value) ||
+      (nextProps.value && nextProps.storyId !== this.props.storyId)
+    ){
+      this.setState({
+        editorState: EditorState.createWithContent(convertFromRaw(nextProps.value))
+      })
+    }
+  }
+
   getToolbarInfo = (editorState) => {
     const contentState = editorState.getCurrentContent()
     const selectionState = editorState.getSelection()
@@ -71,10 +83,10 @@ export default class RNDraftJs extends Component {
     return {hasFocus, blockType}
   }
 
-  onChange = (editorState) => {
+  onChange = (editorState, autocompleteInfo) => {
     if (editorState) {
       const previous = this.getToolbarInfo(this.state.editorState)
-      this.setState({editorState})
+      this.setState({editorState, autocompleteInfo})
       const current = this.getToolbarInfo(editorState)
 
       if (previous.hasFocus != current.hasFocus) {
@@ -99,6 +111,34 @@ export default class RNDraftJs extends Component {
     if (position) {
       this.onChange(insertTextAtPosition(editorState, text, position))
     } else {
+      const currentEditorState = insertText(editorState, text)
+
+      const currentSelectionState = currentEditorState.getSelection()
+      const currentKey = currentSelectionState.getStartKey()
+      const currentOffset = currentSelectionState.getStartOffset()
+      const currentContentState = currentEditorState.getCurrentContent()
+      const currentContentBlock = currentContentState.getBlockForKey(currentKey)
+
+      const currentText = currentContentBlock.getText()
+
+      const textBeforeSelection = currentText.substring(0, currentOffset)
+      const lastWordMatch = textBeforeSelection.match(matchLastWordRegex)
+
+      if (lastWordMatch.length > 0) {
+        const matchLength = lastWordMatch[0].length
+        if (matchLength > 0) {
+          const autocompleteInfo = {
+            enabled: true,
+            blockKey: currentKey,
+            startOffset: lastWordMatch.index,
+            endOffset: lastWordMatch.index + matchLength,
+          }
+
+          this.onChange(insertText(editorState, text), autocompleteInfo)
+          return
+        }
+      }
+
       this.onChange(insertText(editorState, text))
     }
   }
@@ -113,6 +153,17 @@ export default class RNDraftJs extends Component {
 
   _onSelectionChangeRequest = (event) => {
     this.updateSelectionState(event.nativeEvent)
+  }
+
+  _onReplaceRangeRequest = (incomingEvent) => {
+    const { editorState } = this.state
+    const event = incomingEvent.nativeEvent
+    const word = event.word
+    const selection = makeSelectionState(event.startKey, event.endKey, event.startOffset, event.endOffset, true)
+
+    //const editorState = insertTextAtPosition(editorState, word, selection)
+
+    this.onChange(insertTextAtPosition(editorState, word, selection))
   }
 
   updateSelectionState = (newSelectionState) => {
@@ -232,8 +283,7 @@ export default class RNDraftJs extends Component {
   }
 
   render = () => {
-    let { editorState } = this.state
-
+    let { editorState, autocompleteInfo } = this.state
     let contentState = editorState.getCurrentContent()
     let selectionState = editorState.getSelection()
 
@@ -264,12 +314,14 @@ export default class RNDraftJs extends Component {
           onBackspaceRequest={this._onBackspaceRequest}
           onNewlineRequest={this._onNewlineRequest}
           onSelectionChangeRequest={this._onSelectionChangeRequest}
-          placeholderText='Tap here to start telling your story...'
+          onReplaceRangeRequest={this._onReplaceRangeRequest}
+          placeholderText="Tap here to start telling your story..."
           selectionColor={'#000000'}
           selectionOpacity={1}
           defaultAtomicWidth={Metrics.screenWidth}
           defaultAtomicHeight={200}
           paragraphSpacing={25}
+          autocomplete={autocompleteInfo}
           >
           {
             blockViews
@@ -287,28 +339,6 @@ export default class RNDraftJs extends Component {
 // Can add other types as needed
 // Must call 'processColor' on any colors used here
 const blockFontTypes = {
-//  supportedValues: { // see https://facebook.github.io/react-native/docs/text.html
-//          fontFamily: string
-//            fontSize: number
-//          fontWeight: enum('normal', 'bold', '100', '200', '300', '400', '500', '600', '700', '800', '900')
-//           fontStyle: enum('normal', 'italic')
-//         fontVariant: [enum('small-caps', 'oldstyle-nums', 'lining-nums', 'tabular-nums', 'proportional-nums')]
-//       letterSpacing: number
-//               color: color
-//     backgroundColor: color
-//             opacity: number
-//           textAlign: enum('auto', 'left', 'right', 'center', 'justify')
-//          lineHeight: number
-//  textDecorationLine: enum('none', 'underline', 'line-through', 'underline line-through')
-// textDecorationStyle: enum('solid', 'double', 'dotted', 'dashed')
-// textDecorationColor: color
-//    textShadowOffset: {width: number, height: number}
-//    textShadowRadius: number
-//     textShadowColor: color
-//    allowFontScaling: boolean
-//     placeholderText: string
-//    placeholderStyle: object (using all these values, applied on top of block type style)
-//  },
   unstyled: { // No real need to use since values from styles are already used
     fontSize: 18,
   },
@@ -377,13 +407,11 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
     flexDirection: 'column',
-    // marginHorizontal: Metrics.baseMargin
   },
   innerScroll: {
     marginBottom: Metrics.doubleBaseMargin,
   },
   accessibilitySpacer: {
-    // backgroundColor: 'pink',
     alignItems: 'stretch',
     minHeight: 50,
     flex: 1,

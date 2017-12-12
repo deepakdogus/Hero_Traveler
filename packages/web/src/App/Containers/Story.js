@@ -8,7 +8,6 @@ import _ from 'lodash'
 import {feedExample} from './Feed_TEST_DATA'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import UserActions from '../Shared/Redux/Entities/Users'
-import {middleware} from '../Redux/Routes'
 
 import Header from '../Components/Header'
 import StoryHeader from '../Components/StoryHeader'

@@ -18,7 +18,7 @@ export default StyleSheet.create({
     marginLeft: Metrics.baseMargin / 2,
   },
   heartIcon: {
-    width: 19,
-    height: 16,
+    width: 22,
+    height: 19,
   }
 })

@@ -36,7 +36,7 @@ authRouter.post('/', (req, res) => {
 const isAuthenticated = (req, res, next) => {
   let token
   if ( req.cookies.user ) token = req.cookies.user.token
-
+    
   jwt.verify(token, process.env.SECRET,
              (err, decoded) => {
                if (err) res.status(403).send(err.message)

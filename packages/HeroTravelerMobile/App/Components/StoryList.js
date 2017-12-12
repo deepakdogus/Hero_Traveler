@@ -22,6 +22,8 @@ class StoryList extends React.Component {
     refreshing: PropTypes.bool,
     renderHeaderContent: PropTypes.object,
     renderSectionHeader: PropTypes.object,
+    setVisibleRow: PropTypes.func,
+    visibleRow: PropTypes.number,
   }
 
   static defaultProps = {
@@ -63,10 +65,13 @@ class StoryList extends React.Component {
   }
 
   updateDataSource = (visibleRows) => {
-    const firstVisibleRow = Object.keys(visibleRows.s1).reduce((min, row) =>{
-      return Math.min(min, row)
-    })
-    this.props.setVisibleRow(firstVisibleRow)
+    const {setVisibleRow, visibleRow} = this.props
+
+    let targetRow;
+    const visibleRowsKeys = Object.keys(visibleRows.s1)
+    if (visibleRowsKeys.length === 3) targetRow = visibleRowsKeys[1]
+    else targetRow = visibleRowsKeys[0]
+    if (targetRow !== visibleRow) setVisibleRow(targetRow)
   }
 
   render () {
@@ -93,8 +98,10 @@ class StoryList extends React.Component {
   }
 }
 
-const mapStateToProps = () => {
-  return {}
+const mapStateToProps = (state) => {
+  return {
+    visibleRow: state.ux.storyListVisibleRow
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {

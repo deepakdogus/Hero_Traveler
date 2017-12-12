@@ -96,29 +96,36 @@ export default class StoryPreview extends Component {
     return (
       <View style={[
         styles.storyInfoContainer, styles.verticalCenter, styles.userContainer,
-        !isStoryReadingScreen ? styles.previewUserContainer : null
+        !isStoryReadingScreen && styles.previewUserContainer,
       ]}>
         <View style={styles.userContent}>
           <View style={styles.leftUserContent}>
             <TouchableOpacity onPress={this._touchUser}>
               <Avatar
-                size={'extraSmall'}
+                size={isStoryReadingScreen ? 'small' : 'extraSmall'}
                 style={styles.avatar}
                 avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
               />
             </TouchableOpacity>
             <View style={styles.verticalCenter}>
               <TouchableOpacity onPress={this._touchUser}>
-                <Text style={styles.username}>{user.username}</Text>
+                <Text style={[
+                  styles.username,
+                  isStoryReadingScreen && styles.usernameReading,
+                ]}>
+                  {user.username}
+                </Text>
               </TouchableOpacity>
-              {isStoryReadingScreen && user.about &&
-                <Text style={styles.about}>{user.about}</Text>
-              }
-            <Text style={styles.dateText}>{moment(story.createdAt).format('LL')}</Text>
+            <Text style={[
+              styles.dateText,
+              isStoryReadingScreen && styles.dateTextReading
+            ]}>
+              {moment(story.tripDate).format('LL')}
+            </Text>
             </View>
           </View>
           {isStoryReadingScreen && !isAuthor &&
-            <View>
+            <View style={styles.verticalCenter}>
               <TouchableOpacity
                 style={[
                   profileViewStyles.blackButton,
@@ -153,7 +160,7 @@ export default class StoryPreview extends Component {
 
     return (
       <View style={[styles.storyInfoContainer, styles.bottomContainer]}>
-        {isStoryReadingScreen &&
+        {isStoryReadingScreen && coverCaption &&
           <Text style={[StoryReadingScreenStyles.caption, styles.caption]}>
             {coverCaption}
           </Text>

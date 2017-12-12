@@ -13,10 +13,12 @@ export default StyleSheet.create({
   },
   contentWrapper: {
     flex: 1,
+    maxHeight: 282,
   },
   lightGreyAreasBG: {
     flex: 1,
     backgroundColor: Colors.lightGreyAreas,
+    maxHeight: 282,
   },
   errorButton: {
     position: 'absolute',
@@ -47,6 +49,7 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.montserrat,
     fontWeight: '600',
     lineHeight: 33,
+    marginTop: 25,
   },
   description: {
     fontFamily: Fonts.type.sourceSansPro,
@@ -54,7 +57,7 @@ export default StyleSheet.create({
     letterSpacing: .7,
     color: Colors.background,
     fontSize: 18,
-    marginTop: 0,
+    marginTop: 5,
     lineHeight: 28,
     height: 28,
   },
@@ -68,6 +71,7 @@ export default StyleSheet.create({
     borderStyle: 'solid',
     borderColor: Colors.dividerGrey,
     marginTop: 10,
+    marginBottom: 15,
   },
   cameraIcon: {
     alignItems: 'center',
@@ -96,7 +100,7 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   addTitleView: {
     height: third,
@@ -110,7 +114,9 @@ export default StyleSheet.create({
   },
   addPhotoButton: {
     justifyContent: 'center',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    height: 282,
+    width: Metrics.screenWidth,
   },
   baseTextColor: {
     color: Colors.background
@@ -135,6 +141,8 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.montserrat,
     fontSize: 13,
     fontWeight: '700',
+    textAlign: 'center',
+    color: Colors.background,
   },
   iconButton: {
     backgroundColor: Colors.clear

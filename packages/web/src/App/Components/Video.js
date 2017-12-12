@@ -18,26 +18,28 @@ const StyledVideo = styled.video`
 
 export default class Video extends React.Component {
   static propTypes = {
-    src: PropTypes.string6,
+    src: PropTypes.string,
     type: PropTypes.oneOf(['cover', 'preview']),
     noControls: PropTypes.bool,
+    withPrettyControls: PropTypes.bool,
   }
 
   render() {
-    const {src, type} = this.props
+    const {src, type, withPrettyControls } = this.props
     return (
+      withPrettyControls 
+      ?
       <VideoWithControls
-        autoPlay
+        autoPlay={type==='cover'}
         controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
-        poster="http://sourceposter.jpg"
-        onCanPlayThrough={() => {
-            // Do stuff
-        }}
+        onCanPlayThrough={console.log('Video can play through')} // eslint-disable-line no-console
       >
-        <source src={src} type="video/webm" />
-        
+        <source src={src} type="video/webm" /> 
     </VideoWithControls>
+    : 
+     <VideoWrapper>
+        <StyledVideo src={src} type={type} controls={!this.props.noControls || null}/>
+      </VideoWrapper>
     )
   }
 }
-

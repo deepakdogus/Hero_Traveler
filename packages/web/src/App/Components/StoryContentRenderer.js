@@ -70,7 +70,10 @@ const getAtomic = (children, { data, keys }) => {
       const videoUrl = `${getVideoUrlBase()}/${data[0].url}`
       return (
         <div key={keys[0]}>
-          <Video src={videoUrl} />
+          <Video
+            src={videoUrl}
+            withPrettyControls
+          />
           {text && <Caption>{text}</Caption>}
         </div>
       )

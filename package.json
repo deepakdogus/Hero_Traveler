@@ -10,7 +10,5 @@
     "build": "docker-compose build",
     "deploy": "docker stack deploy --with-registry-auth --compose-file=docker-compose.yaml api"
   },
-  "dependencies": {
-    "react-html5video": "^2.5.1"
-  }
+  "dependencies": {}
 }

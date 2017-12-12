@@ -29,6 +29,7 @@ export default StyleSheet.create({
     fontSize: 16,
     letterSpacing: .7,
     color: Colors.grey,
+    marginTop: 10,
   },
   userContent: {
     flexDirection: 'row',
@@ -51,6 +52,13 @@ export default StyleSheet.create({
     letterSpacing: .7,
     fontFamily: Fonts.type.sourceSansPro
   },
+  usernameReading: {
+    color: Colors.redHighlights,
+    fontWeight: '400',
+    fontSize: 13,
+    letterSpacing: .7,
+    fontFamily: Fonts.type.sourceSansPro
+  },
   previewUserContainer: {
     minHeight: 60,
   },
@@ -67,6 +75,14 @@ export default StyleSheet.create({
   },
   dateText: {
     fontSize: 12,
+    letterSpacing: .5,
+    color: Colors.grey,
+    marginRight: 5,
+    fontFamily: Fonts.type.crimsonText,
+    fontStyle: 'italic',
+  },
+  dateTextReading: {
+    fontSize: 15,
     letterSpacing: .5,
     color: Colors.grey,
     marginRight: 5,

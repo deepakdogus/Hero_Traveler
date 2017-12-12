@@ -8,23 +8,35 @@ export default StyleSheet.create({
     borderTopWidth: 1,
     borderColor: Colors.navBarText,
     backgroundColor: Colors.snow,
-    justifyContent: 'space-around',
-    alignItems: 'center',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
   },
   wrapper: {
-    flex: 1,
+    flexGrow: 1,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   text: {
     color: Colors.navBarText,
     marginLeft: Metrics.baseMargin/2,
     marginRight: Metrics.baseMargin,
   },
-  likeTool: {},
-  commentTool: {},
-  bookmarkTool: {},
-  shareTool: {},
+  likeTool: {
+    width: '20%',
+    alignItems: 'center',
+  },
+  commentTool: {
+    width: '20%',
+    alignItems: 'center',
+  },
+  bookmarkTool: {
+    width: '20%',
+    alignItems: 'center',
+  },
+  shareTool: {
+    width: '20%',
+    alignItems: 'center',
+  },
   heartIcon: {
     width: 26,
     height: 23,

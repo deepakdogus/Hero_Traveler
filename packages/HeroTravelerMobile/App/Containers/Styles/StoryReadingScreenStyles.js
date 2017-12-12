@@ -23,8 +23,9 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: 'solid',
     borderColor: Colors.dividerGrey,
-    marginBottom: 10,
-    marginHorizontal: Metrics.section,
+    marginTop: -10,
+    marginBottom: 40,
+    marginHorizontal: 15,
   },
   content: {
     flex: 1,
@@ -153,7 +154,7 @@ export const rendererStyles = StyleSheet.flatten({
     fontFamily: Fonts.type.base,
     color: Colors.grey,
     letterSpacing: .7,
-    paddingHorizontal: Metrics.section,
+    paddingHorizontal: 15,
     marginBottom: Metrics.section
   },
   'header-one': {
@@ -162,7 +163,7 @@ export const rendererStyles = StyleSheet.flatten({
     fontFamily: Fonts.type.base,
     color: Colors.background,
     letterSpacing: .7,
-    paddingHorizontal: Metrics.section,
+    paddingHorizontal: 15,
     marginTop: Metrics.baseMargin,
     marginBottom: 0,
   },

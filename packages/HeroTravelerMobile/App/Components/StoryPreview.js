@@ -102,20 +102,24 @@ export default class StoryPreview extends Component {
           <View style={styles.leftUserContent}>
             <TouchableOpacity onPress={this._touchUser}>
               <Avatar
-                size={'extraSmall'}
+                size={[
+                  !isStoryReadingScreen ? 'extraSmall' : 'small'
+                  ]}
                 style={styles.avatar}
                 avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
               />
             </TouchableOpacity>
             <View style={styles.verticalCenter}>
               <TouchableOpacity onPress={this._touchUser}>
-                <Text style={styles.username}>{user.username}</Text>
+                <Text style={[
+                  !isStoryReadingScreen ? styles.username : styles.usernameReading
+                  ]}>{user.username}</Text>
               </TouchableOpacity>
             <Text style={styles.dateText}>{moment(story.tripDate).format('LL')}</Text>
             </View>
           </View>
           {isStoryReadingScreen && !isAuthor &&
-            <View>
+            <View style={styles.verticalCenter}>
               <TouchableOpacity
                 style={[
                   profileViewStyles.blackButton,

@@ -37,8 +37,17 @@ const Title = styled.h3`
   font-size: 23px;
   color: ${props => props.theme.Colors.background};
   display: inline-block;
-  margin: 0 0 10px;
+  margin: 0 0;
   cursor: pointer;
+`
+
+const Description = styled.h2`
+  font-size: 16px;
+  letter-spacing: .7px;
+  color : ${props => props.theme.Colors.grey};
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  font-weight: 400;
+  margin-bottom: 30px;
 `
 
 const DetailsContainer = styled(Row)`
@@ -132,6 +141,7 @@ class StoryPreview extends Component {
           />
           <StoryInfoContainer>
             <Title onClick={this.navToStory}>{story.title}</Title>
+            <Description>{story.description}</Description>
             <DetailsContainer between='xs'>
               <Row middle='xs'>
                 <Avatar

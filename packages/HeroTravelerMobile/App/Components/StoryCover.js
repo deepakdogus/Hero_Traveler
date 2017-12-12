@@ -59,11 +59,11 @@ export default class StoryCover extends Component {
   }
 
   _getWidthHeight(){
-    if (this.props.isFeed) return { height: 375 }
+    if (this.props.isFeed) return { height: 282 }
     else {
       return {
         width: Metrics.screenWidth,
-        height: getRelativeHeight(Metrics.screenWidth, this.props.cover.original.meta)
+        height: 415
       }
     }
   }
@@ -85,6 +85,7 @@ export default class StoryCover extends Component {
           style={{
             ...imageStyle,
             ...this._getWidthHeight(),
+            maxHeight: 415,
           }}
         >
           <LinearGradient

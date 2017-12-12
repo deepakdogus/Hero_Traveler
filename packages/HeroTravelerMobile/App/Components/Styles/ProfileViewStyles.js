@@ -24,10 +24,19 @@ export default StyleSheet.create({
   editButton: {
     marginRight: 15,
   },
+  avatarWrapper: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
   cogImageIcon: {
     height: 23,
     width: 23,
-    tintColor: Colors.grey,
+    tintColor: Colors.signupGrey,
+  },
+  pencilImageIcon: {
+    height: 22,
+    width: 22,
+    tintColor: Colors.signupGrey,
   },
   readingViewTop: {
     height: 43,
@@ -37,7 +46,6 @@ export default StyleSheet.create({
   },
   userInfoWrapper: {
     marginLeft: 5,
-    height: 95,
     flexDirection: 'column',
     marginBottom: 5,
   },
@@ -147,6 +155,9 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: Colors.feedDividerGrey,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: Colors.dividerGrey,
   },
   tab: {
     justifyContent: 'center',
@@ -197,7 +208,7 @@ export default StyleSheet.create({
     letterSpacing: .7,
     fontSize: 16,
     color: Colors.bioGrey,
-    fontWeight: '300',
+    fontWeight: '400',
   },
   spinnerWrapper: {
     marginTop: Metrics.doubleSection
@@ -220,8 +231,7 @@ export default StyleSheet.create({
     zIndex: 100,
   },
   profileInfoContainer: {
-    paddingTop: Metrics.baseMargin,
-    height: 200,
+    paddingTop: Metrics.doubleBaseMargin,
   },
   profileEditInfoContainer: {
     height: profileEditHeight,
@@ -230,10 +240,12 @@ export default StyleSheet.create({
   },
   profileWrapper: {
     flexDirection: 'row',
-    marginHorizontal: Metrics.section,
+    marginHorizontal: 20,
   },
   secondRow: {
     justifyContent: 'space-between',
+    marginBottom: 15,
+    marginTop: 20,
   },
   editBioText: {
     minHeight: profileEditHeight,

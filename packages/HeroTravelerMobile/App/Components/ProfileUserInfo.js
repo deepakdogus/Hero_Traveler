@@ -84,7 +84,7 @@ export default class ProfileUserInfo extends Component {
         <TouchableOpacity onPress={this._navToEditProfile} style={styles.editButton}>
           <TabIcon
             name='pencil'
-            style={{ image: styles.cogImageIcon }}
+            style={{ image: styles.pencilImageIcon }}
           />
         </TouchableOpacity>
         <TouchableOpacity onPress={this._navToSettings}>
@@ -191,14 +191,12 @@ export default class ProfileUserInfo extends Component {
 
     return (
       <View style={styles.profileWrapper}>
-        <View>
-          <View style={styles.avatarWrapper}>
-            <Avatar
-              size='extraLarge'
-              avatarUrl={avatarUrl}
-            />
-            {avatarOverlay}
-          </View>
+        <View style={styles.avatarWrapper}>
+          <Avatar
+            size='extraLarge'
+            avatarUrl={avatarUrl}
+          />
+          {avatarOverlay}
         </View>
         <View style={styles.userInfoMargin}>
           {this.renderUserInfo()}

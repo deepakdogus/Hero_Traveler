@@ -200,7 +200,6 @@ export default class StoryDetails extends React.Component {
 
   toggleDayPicker = () => this.togglePicker('day')
   toggleTagPicker = () => this.togglePicker('category')
-  
 
   formatTripDate = (day) => {
     if (!day) return undefined
@@ -209,7 +208,7 @@ export default class StoryDetails extends React.Component {
 
   render() {
     const {workingDraft, onInputChange} = this.props
-    const {showPicker, categoriesList, showTagPicker } = this.state
+    const {showPicker, categoriesList } = this.state
     // normally this only happens when you just published a draft
     if (!workingDraft) return null
     return (

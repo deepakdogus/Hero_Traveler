@@ -32,7 +32,7 @@ export default StyleSheet.create({
   },
   userContent: {
     flexDirection: 'row',
-    justifyContent: 'flex-start'
+    justifyContent: 'space-between'
   },
   leftUserContent: {
     flexDirection: 'row',
@@ -55,7 +55,7 @@ export default StyleSheet.create({
     minHeight: 60,
   },
   userContainer: {
-    paddingVertical: 0,
+    paddingVertical: 10,
   },
   storyInfoContainer: {
     paddingHorizontal: 15,
@@ -89,6 +89,7 @@ export default StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     width: 105,
+    alignSelf: 'flex-end',
   },
   followFollowingText: {
     width: 80,

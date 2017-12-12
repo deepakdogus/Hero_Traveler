@@ -7,7 +7,6 @@ import {
   TouchableWithoutFeedback,
   Animated,
   View,
-  Keyboard,
   KeyboardAvoidingView,
   Alert,
   TextInput,
@@ -114,6 +113,7 @@ class StoryCoverScreen extends Component {
     if (_.keys(this.props.workingDraft.draftjsContent).length) {
       const content = Immutable.asMutable(this.props.workingDraft.draftjsContent, {deep: true})
       if (!content.entityMap) content.entityMap = {}
+      const returnValue = {value: content}
       return {value: content}
     } else {
       return {}
@@ -774,6 +774,7 @@ class StoryCoverScreen extends Component {
             customStyleMap={customStyles}
             onPressImage={this.handlePressAddImage}
             onPressVideo={this.handlePressAddVideo}
+            storyId={this.props.workingDraft.id}
             {...this.getContent()}
             setHasFocus={this.setHasFocus}
             setBlockType={this.setBlockType}

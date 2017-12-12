@@ -155,6 +155,9 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: Colors.feedDividerGrey,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: Colors.dividerGrey,
   },
   tab: {
     justifyContent: 'center',
@@ -205,7 +208,7 @@ export default StyleSheet.create({
     letterSpacing: .7,
     fontSize: 16,
     color: Colors.bioGrey,
-    fontWeight: '300',
+    fontWeight: '400',
   },
   spinnerWrapper: {
     marginTop: Metrics.doubleSection

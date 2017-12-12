@@ -42,11 +42,11 @@ export default StyleSheet.create({
     marginHorizontal: 20,
   },
   titleInput: {
-    ...Fonts.style.title,
     color: Colors.background,
     fontSize: 30,
     fontFamily: Fonts.type.montserrat,
     fontWeight: '600',
+    lineHeight: 33,
   },
   description: {
     fontFamily: Fonts.type.sourceSansPro,
@@ -59,7 +59,7 @@ export default StyleSheet.create({
     height: 28,
   },
   coverCaption: {
-    marginTop: 5,
+    marginTop: 10,
     marginBottom: 15,
     minHeight: 20,
   },

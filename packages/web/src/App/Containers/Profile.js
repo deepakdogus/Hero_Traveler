@@ -49,7 +49,7 @@ class Profile extends Component {
     userBookmarksFetchStatus: PropTypes.object,
     userBookmarksById: PropTypes.arrayOf(PropTypes.string),
     error: PropTypes.bool,
-    userError: PropTypes.string,
+    userError: PropTypes.object,
     myFollowedUsers: PropTypes.arrayOf(PropTypes.string),
     // mapDispatchToProps functions
     getStories: PropTypes.func,

@@ -3,6 +3,7 @@ import {
   View,
   Text,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 import styles from './Styles/ViewBioScreenStyle'
@@ -28,9 +29,9 @@ const viewBioScreen = (props) => {
       <View style={styles.usernameContainer}>
         <Text style={styles.username}>{username.toUpperCase()}</Text>
         <View style={styles.divider} />
-        <View style={styles.bioContainer}>
+        <ScrollView style={styles.bioContainer}>
           <Text style={styles.bio}>{bio}</Text>
-        </View>
+        </ScrollView>
       </View>
     </View>
   )

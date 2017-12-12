@@ -84,7 +84,7 @@ export default class ProfileUserInfo extends Component {
         <TouchableOpacity onPress={this._navToEditProfile} style={styles.editButton}>
           <TabIcon
             name='pencil'
-            style={{ image: styles.cogImageIcon }}
+            style={{ image: styles.pencilImageIcon }}
           />
         </TouchableOpacity>
         <TouchableOpacity onPress={this._navToSettings}>
@@ -128,7 +128,7 @@ export default class ProfileUserInfo extends Component {
           autoCapitalize='none'
           style={[styles.aboutText, styles.aboutTextEdit]}
           onChangeText={setAbout}
-          maxLength={100}
+          maxLength={50}
           multiline
           returnKeyType={'done'}
         />

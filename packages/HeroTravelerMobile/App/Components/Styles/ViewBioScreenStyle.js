@@ -32,6 +32,7 @@ export default StyleSheet.create({
   bioContainer: {
     marginVertical: Metrics.section,
     marginHorizontal: 30,
+    width: '100%'
   },
   bio: {
     fontWeight: '300',
@@ -39,5 +40,7 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.sourceSansPro,
     letterSpacing: .7,
     color: Colors.grey,
+    marginHorizontal: 30,
+
   },
 })

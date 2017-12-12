@@ -31,7 +31,12 @@ export default StyleSheet.create({
   cogImageIcon: {
     height: 23,
     width: 23,
-    tintColor: Colors.grey,
+    tintColor: '#9e9e9e',
+  },
+  pencilImageIcon: {
+    height: 22,
+    width: 22,
+    tintColor: '#9e9e9e',
   },
   readingViewTop: {
     height: 43,
@@ -232,11 +237,12 @@ export default StyleSheet.create({
   },
   profileWrapper: {
     flexDirection: 'row',
-    marginHorizontal: Metrics.section,
+    marginHorizontal: 20,
   },
   secondRow: {
     justifyContent: 'space-between',
-    marginBottom: 10,
+    marginBottom: 15,
+    marginTop: 20,
   },
   editBioText: {
     minHeight: profileEditHeight,

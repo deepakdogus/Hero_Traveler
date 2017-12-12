@@ -59,7 +59,7 @@ export default class StoryCover extends Component {
   }
 
   _getWidthHeight(){
-    if (this.props.isFeed) return { height: 375 }
+    if (this.props.isFeed) return { height: 282 }
     else {
       return {
         width: Metrics.screenWidth,

@@ -15,9 +15,9 @@ export default StyleSheet.create({
     letterSpacing: 1.5,
     fontSize: 20,
     lineHeight: 23,
-    fontFamily: Fonts.montserrat,
+    fontFamily: Fonts.type.montserrat,
     fontWeight: '600',
-    color: Colors.backgrond,
+    color: Colors.background,
   },
   storyReadingTitle: {
     fontSize: 30,
@@ -32,7 +32,7 @@ export default StyleSheet.create({
   },
   userContent: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'flex-start'
   },
   leftUserContent: {
     flexDirection: 'row',
@@ -58,11 +58,12 @@ export default StyleSheet.create({
     paddingVertical: 10,
   },
   storyInfoContainer: {
-    paddingHorizontal: Metrics.section,
+    paddingHorizontal: 15,
     backgroundColor: Colors.snow,
   },
   bottomContainer: {
-    paddingVertical: 10,
+    paddingTop: 25,
+    paddingBottom: 15,
   },
   dateText: {
     fontSize: 12,
@@ -74,14 +75,15 @@ export default StyleSheet.create({
   },
   rightRow: {
     flexDirection: 'row',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    marginTop: 15
   },
   bookmarkContainer: {
     marginRight: 10,
   },
   bookmark: {
-    width: 12,
-    height: 16,
+    width: 14,
+    height: 19,
   },
   followFollowingButton: {
     flexDirection: 'column',

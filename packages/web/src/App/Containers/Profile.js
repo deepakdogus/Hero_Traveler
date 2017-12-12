@@ -49,7 +49,7 @@ class Profile extends Component {
     userBookmarksFetchStatus: PropTypes.object,
     userBookmarksById: PropTypes.arrayOf(PropTypes.string),
     error: PropTypes.bool,
-    userError: PropTypes.string,
+    userError: PropTypes.object,
     myFollowedUsers: PropTypes.arrayOf(PropTypes.string),
     // mapDispatchToProps functions
     getStories: PropTypes.func,
@@ -154,13 +154,13 @@ class Profile extends Component {
     const {
       match, profilesUser, sessionUserId,
       users, myFollowedUsers, userError,
-      updateUser, uploadMedia
+      userUpdating, updateUser, uploadMedia
     } = this.props
     if (!profilesUser) return null
 
     let path = match.path.split("/")
     const isEdit = path[path.length-1] === 'edit'
-    const isContributor = profilesUser.role === 'contributor'
+    const isContributor  = profilesUser.role === 'contributor'
     const isUsersProfile = profilesUser.id === sessionUserId
     const isFollowing = _.includes(myFollowedUsers, profilesUser.id)
     const {selectedStories} = this.getSelectedStories()
@@ -169,6 +169,7 @@ class Profile extends Component {
         <ProfileHeader
           user={profilesUser}
           error={userError}
+          updating={userUpdating}
           isContributor={isContributor}
           isEdit={isEdit}
           isUsersProfile={isUsersProfile}
@@ -224,6 +225,7 @@ function mapStateToProps(state, ownProps) {
     userBookmarksById: getByBookmarks(users, userId),
     error: stories.error,
     userError: users.error,
+    userUpdating: users.updating,
     myFollowedUsers,
   }
 }

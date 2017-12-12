@@ -11,7 +11,6 @@ export function getContentBlockImage(urlSuffix) {
 }
 
 export default function getImageUrl(image: object, type = 'cover'): ?string {
-  console.log('IMAGE', image)
   if (!_.has(image, 'original')) return undefined
   const {path, folders} = image.original
   let filename = _.last(path.split('/'))
@@ -28,6 +27,5 @@ export default function getImageUrl(image: object, type = 'cover'): ?string {
     url = `${getVideoUrlBase()}/so_0/${folderPath}/${filename}`
   }
   else url = `${getImageUrlBase()}/q_auto:best,f_auto/${folderPath}/${filename}`
-    console.log('url', url)
   return url
 }

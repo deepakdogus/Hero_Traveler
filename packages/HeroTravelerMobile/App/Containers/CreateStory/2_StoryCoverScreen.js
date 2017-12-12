@@ -113,7 +113,6 @@ class StoryCoverScreen extends Component {
     if (_.keys(this.props.workingDraft.draftjsContent).length) {
       const content = Immutable.asMutable(this.props.workingDraft.draftjsContent, {deep: true})
       if (!content.entityMap) content.entityMap = {}
-      const returnValue = {value: content}
       return {value: content}
     } else {
       return {}

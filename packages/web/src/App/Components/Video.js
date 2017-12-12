@@ -28,6 +28,7 @@ export default class Video extends React.Component {
   render() {
     const {src, type, withPrettyControls } = this.props
     const usingChrome = browserIs('Chrome')
+
     return (
       withPrettyControls && usingChrome
       ?

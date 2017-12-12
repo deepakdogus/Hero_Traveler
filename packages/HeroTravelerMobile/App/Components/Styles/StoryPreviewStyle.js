@@ -12,7 +12,7 @@ export default StyleSheet.create({
     marginBottom: 15,
   },
   title: {
-    letterSpacing: 1.5,
+    letterSpacing: 0,
     fontSize: 20,
     lineHeight: 23,
     fontFamily: Fonts.type.montserrat,
@@ -52,10 +52,10 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.sourceSansPro
   },
   previewUserContainer: {
-    minHeight: 70,
+    minHeight: 60,
   },
   userContainer: {
-    paddingVertical: 10,
+    paddingVertical: 0,
   },
   storyInfoContainer: {
     paddingHorizontal: 15,

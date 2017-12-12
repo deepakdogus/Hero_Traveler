@@ -7,7 +7,6 @@ import {
   TouchableWithoutFeedback,
   Animated,
   View,
-  Keyboard,
   KeyboardAvoidingView,
   Alert,
   TextInput,
@@ -774,6 +773,7 @@ class StoryCoverScreen extends Component {
             customStyleMap={customStyles}
             onPressImage={this.handlePressAddImage}
             onPressVideo={this.handlePressAddVideo}
+            storyId={this.props.workingDraft.id}
             {...this.getContent()}
             setHasFocus={this.setHasFocus}
             setBlockType={this.setBlockType}

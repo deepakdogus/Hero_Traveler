@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     backgroundColor: Colors.snow,
     marginTop: Metrics.navBarHeight - 15,
     borderStyle: 'solid',
-    borderTopWidth: 2,
+    borderTopWidth: 1,
     borderColor: Colors.dividerGrey,
   },
   darkRoot: {
@@ -20,11 +20,11 @@ export const styles = StyleSheet.create({
     flex: 1
   },
   divider: {
-    borderWidth: 1,
+    borderWidth: .5,
     borderStyle: 'solid',
     borderColor: Colors.dividerGrey,
-    marginBottom: 10,
-    marginHorizontal: Metrics.section,
+    marginBottom: 40,
+    marginHorizontal: 15,
   },
   content: {
     flex: 1,
@@ -153,7 +153,7 @@ export const rendererStyles = StyleSheet.flatten({
     fontFamily: Fonts.type.base,
     color: Colors.grey,
     letterSpacing: .7,
-    paddingHorizontal: Metrics.section,
+    paddingHorizontal: 15,
     marginBottom: Metrics.section
   },
   'header-one': {
@@ -162,7 +162,7 @@ export const rendererStyles = StyleSheet.flatten({
     fontFamily: Fonts.type.base,
     color: Colors.background,
     letterSpacing: .7,
-    paddingHorizontal: Metrics.section,
+    paddingHorizontal: 15,
     marginTop: Metrics.baseMargin,
     marginBottom: 0,
   },

@@ -841,7 +841,7 @@ class StoryCoverScreen extends Component {
             title='Save'
             onTitle={this._onTitle}
             onLeft={this._onLeft}
-            leftTitle='Cancel'
+            leftTitle='Close'
             onRight={this._onRight}
             rightIcon={'arrowRightRed'}
             isRightValid={this.isValid()}
@@ -877,7 +877,7 @@ class StoryCoverScreen extends Component {
                   styles.titleInput,
                   {height: this.state.titleHeight},
                 ]}
-                placeholder='ADD A TITLE'
+                placeholder='Add a title'
                 placeholderTextColor={Colors.background}
                 value={title}
                 onChangeText={this.setTitleAndFocus}

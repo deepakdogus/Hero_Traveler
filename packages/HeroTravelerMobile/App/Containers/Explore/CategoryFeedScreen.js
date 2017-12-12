@@ -183,7 +183,7 @@ class CategoryFeedScreen extends React.Component {
             leftIconStyle={styles.navbarLeftIconStyle}
             onRight={this._onRight}
             rightTextStyle={styles.navbarRightTextStyle}
-            rightTitle={isFollowingCategory ? 'Following' : '+ Follow'}
+            rightTitle={isFollowingCategory ? 'FOLLOWING' : '+ FOLLOW'}
             style={styles.navbarContainer}
           />
           <View style={styles.tabs}>

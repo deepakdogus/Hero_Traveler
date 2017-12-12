@@ -21,29 +21,31 @@ export default StyleSheet.create({
   tabnav: {
     height: 50,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'center'
   },
   tab: {
     justifyContent: 'center',
     alignItems: 'center',
     width: '25%',
-    backgroundColor: Colors.background,
-    borderBottomWidth: 3,
-    borderBottomColor: Colors.background,
+    backgroundColor: Colors.feedDividerGrey,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.navBarText,
   },
   tabText: {
     fontFamily: Fonts.type.montserrat,
-    color: Colors.grey,
+    color: Colors.navBarText,
     fontSize: 13,
     letterSpacing: 1.2,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontWeight: '600',
   },
   tabSelected: {
-    borderBottomColor: Colors.red
+    borderBottomColor: Colors.red,
+    borderBottomWidth: 3
   },
   tabTextSelected: {
     fontFamily: Fonts.type.montserrat,
-    color: '#bdbdbd',
+    color: Colors.background,
     fontSize: 13,
     letterSpacing: 1.2,
   },

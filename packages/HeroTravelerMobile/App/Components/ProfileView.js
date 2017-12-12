@@ -251,7 +251,7 @@ class ProfileView extends React.Component {
             <View style={{flex: 1}}>
               {this.renderProfileInfo()}
               <View style={styles.bioWrapper}>
-                <Text style={styles.editBio}>Edit Bio</Text>
+                <Text style={styles.editBio}>Bio</Text>
                 <TextInput
                   ref={this._bioRef}
                   style={[styles.bioText, styles.editBioText]}

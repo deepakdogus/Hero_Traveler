@@ -66,7 +66,7 @@ class Tile extends React.Component {
           <CategoryTile
             imageSource={getS3ImageUrl(category.image, 'versions.thumbnail240.path')}
           />
-          <TitleContainer selected={category.selected}>
+          <TitleContainer selected={category.selected} overlayColor="black">
             <Title>{category.title}</Title>
           </TitleContainer>
           {isSelected &&

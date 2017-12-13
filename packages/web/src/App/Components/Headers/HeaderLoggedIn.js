@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
@@ -9,6 +10,7 @@ import RoundedButton from '../RoundedButton'
 import Icon from '../Icon'
 import { StyledRow, StyledRoundedButton, Logo, Divider, HamburgerIcon, MenuLink, SearchNav } from './Shared'
 import logo from '../../Shared/Images/ht-logo-white.png'
+import getImageUrl from '../../Shared/Lib/getImageUrl'
 
 const LoggedInDesktopContainer = styled.div`
   ${mediaMax.desktop`display: none;`}
@@ -33,16 +35,18 @@ const NotificationsIcon = styled(Icon)`
 const StyledRoundedAvatarButton = styled(RoundedButton)`
   margin-left: 10px;
   margin-right: 20px;
+  position: relative;
+  top: ${props => props.profileAvatar ? '8px' : '0px'};
 `
 
-export default class HeaderLoggedIn extends React.Component {
+class HeaderLoggedIn extends React.Component {
   static PropTypes = {
     openModal: PropTypes.func,
     user: PropTypes.object,
   }
 
   render () {
-    const { openModal, user } = this.props
+    const { openModal, user, profileAvatar } = this.props
     return (
       <StyledRow between="xs" middle="xs">
         <Col>
@@ -126,3 +130,13 @@ export default class HeaderLoggedIn extends React.Component {
     )
   }
 }
+
+function mapStateToProps(state, ownProps) {
+  let {users} = state.entities
+  const profileAvatar =  users.entities[ownProps.user].profile.avatar
+  return {
+    profileAvatar
+  }
+}
+
+export default connect(mapStateToProps)(HeaderLoggedIn)

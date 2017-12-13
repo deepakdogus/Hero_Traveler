@@ -158,7 +158,12 @@ export default class StoryCover extends Component {
   refactored
   */
   renderVideo() {
-    const videoThumbnailUrl = getImageUrl(this.props.cover, 'loading', {video: true, width: 'screen', height: Metrics.storyCover.fullScreen.height})
+    const videoThumbnailOptions = {
+      video: true,
+      width: 'screen',
+      height: Metrics.storyCover.fullScreen.height,
+    }
+    const videoThumbnailUrl = getImageUrl(this.props.cover, 'loading', videoThumbnailOptions)
 
     return (
       <View style={this._getWidthHeight()}>

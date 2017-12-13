@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-
+import {sizes} from '../Themes/Metrics'
 import Icon from './Icon'
 import {Col} from './FlexboxGrid'
 
@@ -9,6 +9,8 @@ const StyledIcon = styled(Icon)`
   display: block;
   margin: auto;
   margin-bottom: 15px;
+  margin-left: 5px;
+  margin-right: 5px;
   height: 20px;
   width: 20px;
 `
@@ -16,6 +18,8 @@ const StyledIcon = styled(Icon)`
 const HandMadeIcon = styled.div`display: block;
   margin: auto;
   margin-bottom: 15px;
+  margin-left: 5px;
+  margin-right: 5px;
   height: 14px;
   width: 14px;
   border-radius: 14px;
@@ -25,9 +29,11 @@ const HandMadeIcon = styled.div`display: block;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 `
 
-const HandMadeIconMinus = styled.div`display: block;
+const HandMadeIconMinus = styled.div`
+  display: block;
   height: 1px;
   width: 10px;
   background-color: ${props => props.theme.Colors.grey};
@@ -39,7 +45,12 @@ const FacebookIocn = styled(StyledIcon)``
 const TwitterIcon = styled(StyledIcon)``
 const DotsIcon = styled(StyledIcon)``
 
-const ActionBarContainer = styled(Col)``
+const ActionBarContainer = styled(Col)`
+  @media (max-width: ${sizes.tablet}px) {
+    display: flex;
+    flex-direction: row;
+  }
+`
 
 const Count = styled.p`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
@@ -52,9 +63,17 @@ const Count = styled.p`
 `
 
 const AbsoluteWrapper = styled.div`
-  position: absolute;
+  position: fixed;
   top: 150px;
   left: 85%;
+  @media (max-width: ${sizes.tablet}px) {
+    display: flex;
+    flex-direction: row;
+    bottom: 50px;
+    right: 10px;
+    top: auto;
+    left: auto;
+  }
 `
 
 const ClickableWrapper = styled.div`

@@ -161,7 +161,7 @@ function mapDispatchToProps(dispatch, ownProps) {
     unfollowUser: (sessionUserId, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserId, userIdToUnfollow)),
     onClickLike: (sessionUserId) => dispatch(StoryActions.storyLike(sessionUserId, storyId)),
     onClickBookmark: (sessionUserId) => dispatch(StoryActions.storyBookmark(sessionUserId, storyId)),
-    onClickComments: () => dispatch(UXActions.openModal('comments'))
+    onClickComments: () => dispatch(UXActions.openGlobalModal('comments', { storyId }))
   }
 }
 

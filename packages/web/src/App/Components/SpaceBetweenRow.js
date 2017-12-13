@@ -4,7 +4,10 @@ import PropTypes from 'prop-types'
 
 import {Row, Col} from './FlexboxGrid'
 
-const Left = styled(Row)``
+const Left = styled(Row)`
+  flex-wrap: nowrap;
+  max-width: 75%;
+`
 const Right = styled(Row)``
 
 // this Component should only be used for horizontal placement

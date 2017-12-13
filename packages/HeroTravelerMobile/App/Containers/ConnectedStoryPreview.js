@@ -35,6 +35,7 @@ const mapStateToProps = (state, ownProps) => {
 
   const isVisible = ownProps.index !== undefined ?
     state.ux.storyListVisibleRow == ownProps.index : undefined
+
   return {
     ...storyProps,
     story,

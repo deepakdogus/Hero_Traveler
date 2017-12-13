@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import Image from '../../Image'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { getImageUrlBase } from "../../../Shared/Lib/getImageUrl"
+import getImageUrl from "../../../Shared/Lib/getImageUrl"
 
 export default class DraftJsImage extends Component {
   render = () => {
@@ -32,7 +32,7 @@ export default class DraftJsImage extends Component {
        onPress={onPress}>
         <Image
          fullWidth={true}
-         source={{ uri: `${getImageUrlBase()}/${url}` }}>
+         source={{ uri: getImageUrl(url, 'basic') }}>
           {isSelected && imageEditOverlay}
         </Image>
       </TouchableWithoutFeedback>

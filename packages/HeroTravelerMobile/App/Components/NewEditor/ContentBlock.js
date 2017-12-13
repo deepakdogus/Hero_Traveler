@@ -17,7 +17,7 @@ import Image from '../Image'
 import Video from '../Video'
 import {Colors, Metrics} from '../../Shared/Themes'
 import {getVideoUrlBase} from "../../Shared/Lib/getVideoUrl"
-import {getImageUrlBase} from "../../Shared/Lib/getImageUrl"
+import getImageUrl from "../../Shared/Lib/getImageUrl"
 
 const AutoGrowTextInputManager = NativeModules.AutoGrowTextInputManager;
 
@@ -139,7 +139,7 @@ export default class NewTextBlock extends PureComponent {
           >
             <Image
               fullWidth={true}
-              source={{ uri: `${getImageUrlBase()}/${url}` }}
+              source={{ uri: getImageUrl(url, 'basic') }}
             >
               {this.state.isImageFocused && imageEditOverlay}
             </Image>

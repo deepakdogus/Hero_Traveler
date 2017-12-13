@@ -47,7 +47,7 @@ class ReadOnlyProfileScreen extends Component {
         stories={storiesById}
         editable={false}
         hasTabbar={false}
-        profileImage={getImageUrl(user.profile.cover)}
+        profileImage={getImageUrl(user.profile.cover, 'basic')}
         fetchStatus={storiesFetchStatus}
         onPressFollow={this.follow}
         onPressUnfollow={this.unfollow}

@@ -196,7 +196,7 @@ class StoryCoverScreen extends Component {
   renderCoverPhoto(coverPhoto) {
     if (coverPhoto){
       if (coverPhoto.uri) coverPhoto = coverPhoto.uri
-      else coverPhoto = getImageUrl(coverPhoto)
+      else coverPhoto = getImageUrl(coverPhoto, 'basic')
     }
     return R.ifElse(
       R.identity,
@@ -385,7 +385,7 @@ class StoryCoverScreen extends Component {
   }
 
   hasImageChanged() {
-    return !!this.props.workingDraft.coverImage && this.props.workingDraft.coverImage !== getImageUrl(this.props.originalDraft.coverImage)
+    return !!this.props.workingDraft.coverImage && this.props.workingDraft.coverImage !== getImageUrl(this.props.originalDraft.coverImage, 'basic')
   }
 
   hasVideoChanged() {

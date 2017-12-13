@@ -59,35 +59,43 @@ export default class StoryCover extends Component {
   }
 
   _getWidthHeight(){
-    if (this.props.isFeed) return { height: 282 }
-    else {
+    if (this.props.isFeed) {
+      return { height: Metrics.storyCover.feed.height }
+    } else {
       return {
         width: Metrics.screenWidth,
-        height: 415
+        height: Metrics.storyCover.fullScreen.height,
       }
     }
   }
 
   renderImage() {
     const {cover, onPress, gradientLocations, gradientColors, children, showPlayButton, playButtonSize} = this.props
-    const isVideo = this.hasVideo()
-    const imageUrl = isVideo ? getImageUrl(cover, 'video') : getImageUrl(cover)
+    const imageThumbnailUrl = getImageUrl(cover, 'loading', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
+    const imageUrl = getImageUrl(cover, 'optimized', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
 
     return (
       <TouchableWithoutFeedback
         style={{flex: 1}}
         onPress={onPress}
       >
-        <Image
-          cached={true}
-          resizeMode='cover'
-          source={{uri: imageUrl}}
-          style={{
-            ...imageStyle,
-            ...this._getWidthHeight(),
-            maxHeight: 415,
-          }}
-        >
+        <View style={{
+          ...imageStyle,
+          ...this._getWidthHeight(),
+          maxHeight: Metrics.storyCover.fullScreen.height,
+        }}>
+          <Image
+            cached={true}
+            resizeMode='cover'
+            source={{uri: imageThumbnailUrl}}
+            style={embeddedImageStyle}
+          />
+          <Image
+            cached={true}
+            resizeMode='cover'
+            source={{uri: imageUrl}}
+            style={embeddedImageStyle}
+          />
           <LinearGradient
             locations={gradientLocations}
             colors={gradientColors}
@@ -105,7 +113,7 @@ export default class StoryCover extends Component {
             size={playButtonSize || 'small'}
           />
          }
-        </Image>
+        </View>
       </TouchableWithoutFeedback>
     )
   }
@@ -231,6 +239,14 @@ const imageStyle = {
   flexDirection: "column",
   justifyContent: "flex-end",
   position: 'relative'
+}
+
+const embeddedImageStyle = {
+  position: 'absolute',
+  top: 0,
+  bottom: 0,
+  left: 0,
+  right: 0,
 }
 
 const styles = StyleSheet.create({

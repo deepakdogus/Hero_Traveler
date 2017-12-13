@@ -43,6 +43,7 @@ export default class ProfileHeader extends React.Component {
     isContributor: PropTypes.bool,
     isEdit: PropTypes.bool,
     isUsersProfile: PropTypes.bool,
+    openModal: PropTypes.string,
   }
 
   constructor(props) {
@@ -63,7 +64,8 @@ export default class ProfileHeader extends React.Component {
   openInboxModal = () => this.setState({modal: 'inbox'})
 
   render () {
-    const {user, isEdit} = this.props
+    const {user, isEdit, openModal } = this.props
+    console.log('open modal', openModal)
     return (
       <Container>
         <Header isLoggedIn blackHeader></Header>
@@ -96,7 +98,7 @@ export default class ProfileHeader extends React.Component {
           <ProfileStats closeModal={this.closeModal} profile={user}/>
         </RightModal>
         <RightModal
-          isOpen={this.state.modal === 'comments'}
+          isOpen={openModal === 'comments'}
           contentLabel='Comments Modal'
           onRequestClose={this.closeModal}
         >

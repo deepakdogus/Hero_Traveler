@@ -9,6 +9,7 @@ import {feedExample} from './Feed_TEST_DATA'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import UserActions from '../Shared/Redux/Entities/Users'
 import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
+import UXActions from '../Redux/UXRedux'
 
 import Header from '../Components/Header'
 import StoryHeader from '../Components/StoryHeader'
@@ -46,6 +47,7 @@ class Story extends Component {
     isBookmarked: PropTypes.bool,
     onClickBookmark: PropTypes.func,
     match: PropTypes.object,
+    onClickComments: PropTypes.func,
   }
 
   componentDidMount() {
@@ -72,6 +74,10 @@ class Story extends Component {
   _onClickBookmark = () => {
     if (!this.props.sessionUserId) return
     this.props.onClickBookmark(this.props.sessionUserId)
+  }
+
+  _onClickComments= () => {
+    this.props.onClickComments()
   }
 
   render() {
@@ -118,6 +124,7 @@ class Story extends Component {
           onClickLike={this._onClickLike}
           isBookmarked={isBookmarked}
           onClickBookmark={this._onClickBookmark}
+          onClickComments={this._onClickComments}
         />
       </ContentWrapper>
     )
@@ -156,6 +163,7 @@ function mapDispatchToProps(dispatch, ownProps) {
     unfollowUser: (sessionUserId, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserId, userIdToUnfollow)),
     onClickLike: (sessionUserId) => dispatch(StoryActions.storyLike(sessionUserId, storyId)),
     onClickBookmark: (sessionUserId) => dispatch(StoryActions.storyBookmark(sessionUserId, storyId)),
+    onClickComments: () => dispatch(UXActions.openModal('comments'))
   }
 }
 

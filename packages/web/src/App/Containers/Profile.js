@@ -51,6 +51,7 @@ class Profile extends Component {
     error: PropTypes.bool,
     userError: PropTypes.string,
     myFollowedUsers: PropTypes.arrayOf(PropTypes.string),
+    openModal: PropTypes.string,
     // mapDispatchToProps functions
     getStories: PropTypes.func,
     getDrafts: PropTypes.func,
@@ -154,7 +155,7 @@ class Profile extends Component {
     const {
       match, profilesUser, sessionUserId,
       users, myFollowedUsers, userError,
-      updateUser, uploadMedia
+      openModal, updateUser, uploadMedia,
     } = this.props
     if (!profilesUser) return null
 
@@ -178,6 +179,7 @@ class Profile extends Component {
           toProfileView={this._toProfileReroute}
           updateUser={updateUser}
           uploadMedia={uploadMedia}
+          openModal={openModal}
         />
         <ListWrapper>
           <TabBar
@@ -225,6 +227,7 @@ function mapStateToProps(state, ownProps) {
     error: stories.error,
     userError: users.error,
     myFollowedUsers,
+    openModal: state.ux.openModal,
   }
 }
 

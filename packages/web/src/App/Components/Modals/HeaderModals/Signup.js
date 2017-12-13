@@ -8,19 +8,19 @@ import _ from 'lodash'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import R from 'ramda'
 
-import SignupActions, {hasSignedUp} from '../../Shared/Redux/SignupRedux'
-import HeroAPI from '../../Shared/Services/HeroAPI'
+import SignupActions, {hasSignedUp} from '../../../Shared/Redux/SignupRedux'
+import HeroAPI from '../../..//Shared/Services/HeroAPI'
 
-import RoundedButton from '../RoundedButton'
-import FormInput from '../FormInput'
-import SocialMediaButton from './Shared/SocialMediaButton'
+import RoundedButton from '../../RoundedButton'
+import FormInput from '../../FormInput'
+import SocialMediaButton from '../Shared/SocialMediaButton'
 import {
   Container,
   Title,
   Text,
   HasAccount,
   SignupText,
-} from './Shared'
+} from '../Shared'
 
 const SmallBold = styled.strong`
   font-weight: 600;

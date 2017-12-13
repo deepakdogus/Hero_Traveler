@@ -29,6 +29,7 @@ extern CGFloat const RCTTextAutoSizeGranularity;
 
 NSString *const RNDJSingleCursorPositionAttributeName = @"SingleCursorPositionAttributeName";
 NSString *const RNDJDraftJsIndexAttributeName = @"DraftJsIndexAttributeName";
+NSString *const RNDJDraftJsAutocompleteAttributeName = @"RNDJDraftJsAutocompleteAttributeName";
 
 
 @interface NSString(DraftJsBlockTypesMap)
@@ -265,6 +266,10 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
     selectionModel = [RNDJSelectionModel fromDictionary:_selection];
   }
   
+  if (!autocompleteModel && _autocomplete) {
+    autocompleteModel = [RNDJAutocompleteModel fromDictionary:_autocomplete];
+  }
+  
   RNDJStyle* rootStyle = [[RNDJStyle alloc] initWithShadowView:self];
   NSDictionary* blockTypeStyles = [self mapStyles:_blockFontTypes];
   NSDictionary* inlineStyles = [self mapStyles:_inlineStyleFontTypes];
@@ -290,7 +295,7 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
       isEmpty = NO;
     }
   }
-  
+
   if (isEmpty) {
     if (selectionModel.hasFocus) {
       singleSelectionIndex = 0;
@@ -409,10 +414,44 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
         }
       }
       
-      for (NSUInteger i = 0; i<blockAttributedString.length; i++) {
+       for (NSUInteger i = 0; i<blockAttributedString.length; i++) {
         [blockAttributedString addAttribute:RNDJDraftJsIndexAttributeName
                                       value:[[RNDJDraftJsIndex alloc] initWithKey:block.key offset:MIN(i, block.text.length)]
                                       range:NSMakeRange(i, 1)];
+        
+        
+      }
+      
+      NSUInteger textLength = block.text.length;
+      if (autocompleteModel.enabled && [autocompleteModel.blockKey isEqualToString:block.key]) {
+        NSUInteger startIndex = MIN(textLength, autocompleteModel.startOffset);
+        NSUInteger endIndex = MIN(textLength, autocompleteModel.endOffset);
+        
+        RNDJDraftJsIndex* start = [[RNDJDraftJsIndex alloc]
+                                   initWithKey:block.key offset:startIndex];
+        RNDJDraftJsIndex* end = [[RNDJDraftJsIndex alloc]
+                                 initWithKey:block.key offset:endIndex];
+        
+        if (startIndex < endIndex) {
+          NSRange textRange = NSMakeRange(startIndex, endIndex-startIndex);
+          NSString* text = [block.text substringWithRange:textRange];
+
+          if (text.length > 0)
+          {
+            NSString* suggestedText = [self suggestionFor:text];
+            if (suggestedText.length > 0) {
+              SimpleAutocorrectInfo* info = [[SimpleAutocorrectInfo alloc]
+                                             initWithExistingText:text
+                                             start:start
+                                             end:end
+                                             textSuggestion:suggestedText];
+              
+              [blockAttributedString addAttribute:RNDJDraftJsAutocompleteAttributeName
+                                            value:info
+                                            range:NSMakeRange(startIndex, endIndex-startIndex)];
+            }
+          }
+        }
       }
 
       [contentAttributedString appendAttributedString:blockAttributedString];
@@ -433,6 +472,29 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
   YGNodeMarkDirty(self.cssNode);
   
   return _cachedAttributedString;
+}
+
+- (NSString*) suggestionFor:(NSString*)text
+{
+  NSString* lang = @"en_US";
+  
+  UITextChecker* textCheck = [[UITextChecker alloc] init];
+  
+  NSArray* allWords = [textCheck completionsForPartialWordRange:NSMakeRange(0, text.length)
+                                                       inString:text
+                                                       language:lang];
+  
+  if (allWords.count == 0) {
+    return nil;
+  }
+  
+  NSString* word = allWords[0];
+  
+  if ([word isEqualToString:text]) {
+    return nil;
+  }
+  
+  return word.length > 0 ? word : nil;
 }
 
 - (void) _appendText:(NSString*)text toAttributedString:(NSMutableAttributedString*)outAttributedString withStyle:(RNDJStyle*)style
@@ -713,6 +775,13 @@ ivar = value;                                \
 {
   selectionModel = nil;
   _selection = selection;
+  [self dirtyDraftJsText];
+}
+
+- (void) setAutocomplete:(NSDictionary *)autocomplete
+{
+  autocompleteModel = nil;
+  _autocomplete = autocomplete;
   [self dirtyDraftJsText];
 }
 

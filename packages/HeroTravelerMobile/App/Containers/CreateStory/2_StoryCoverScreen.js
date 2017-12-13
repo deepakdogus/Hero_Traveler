@@ -20,6 +20,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import Immutable from 'seamless-immutable'
 
 import API from '../../Shared/Services/HeroAPI'
+import {styles as StoryReadingScreenStyles} from '../Styles/StoryReadingScreenStyles'
 import StoryEditActions from '../../Shared/Redux/StoryCreateRedux'
 import ShadowButton from '../../Components/ShadowButton'
 import Loader from '../../Components/Loader'
@@ -95,6 +96,7 @@ class StoryCoverScreen extends Component {
       coverImage,
       // Local file path to the video
       coverVideo,
+      coverCaption: props.story.coverCaption,
       coverHeight: coverHeight || defaultCoverHeight,
       toolbarOpacity: new Animated.Value(1),
       imageUploading: false,
@@ -125,8 +127,17 @@ class StoryCoverScreen extends Component {
       nextState.description = nextProps.story.description
     }
 
+    if (this.props.story.title !== nextProps.story.title) {
+      nextState.title = nextProps.story.title
+      nextState.description = nextProps.story.description
+    }
+
     if (!this.props.story.coverVideo && nextProps.story.coverVideo) {
       nextState.coverVideo = getVideoUrl(nextProps.story.coverVideo)
+    }
+
+    if (!this.props.story.coverCaption && nextProps.story.coverCaption) {
+      nextState.coverCaption = nextProps.story.coverCaption
     }
     // case of switching to new draft from existing story
     if (this.state.coverVideo &&
@@ -467,6 +478,10 @@ class StoryCoverScreen extends Component {
     return !!this.state.coverVideo && this.state.coverVideo !== getVideoUrl(this.props.story.coverVideo)
   }
 
+  hasCoverCaptionChanged() {
+    return !!this.state.coverCaption && this.state.coverCaption !== this.props.story.coverCaption
+  }
+
   // TODO
   _onRight = () => {
     const hasImageChanged = this.hasImageChanged()
@@ -475,12 +490,14 @@ class StoryCoverScreen extends Component {
     const hasImageSelected = !!this.state.coverImage
     const hasTitleChanged = this.hasTitleChanged()
     const hasDescriptionChanged = this.hasDescriptionChanged()
+    const hasCoverCaptionChanged = this.hasCoverCaptionChanged()
     const nothingHasChanged = _.every([
       hasVideoSelected || hasImageSelected,
       !hasImageChanged,
       !hasVideoChanged,
       !hasTitleChanged,
-      !hasDescriptionChanged
+      !hasDescriptionChanged,
+      !hasCoverCaptionChanged
     ])
     // If nothing has changed, let the user go forward if they navigated back
     if (nothingHasChanged) {
@@ -534,6 +551,10 @@ class StoryCoverScreen extends Component {
         story.description = _.trim(this.state.description)
       }
 
+      if (this.hasCoverCaptionChanged()) {
+        story.coverCaption = _.trim(this.state.coverCaption)
+      }
+
       story.draftjsContent = this.editor.getEditorStateAsObject()
 
       this.props.update(story.id, story)
@@ -543,6 +564,7 @@ class StoryCoverScreen extends Component {
         updating: false,
         coverImage: story.coverImage ? getImageUrl(story.coverImage) : null,
         coverVideo: story.coverVideo ? getVideoUrl(story.coverVideo) : null,
+        coverCaption: story.coverCaption,
         originalStory: story
       })
     })
@@ -609,10 +631,16 @@ class StoryCoverScreen extends Component {
     this.setState({title})
   }
 
+
   setTitleAndFocus = (title) => {
     this.setTitle(title)
     this.jumpToTitle()
   }
+
+  setCoverCaption = (coverCaption) => {
+    this.setState({coverCaption})
+  }
+
 
   setDescription = (description) => {
     this.setState({description})
@@ -847,7 +875,6 @@ class StoryCoverScreen extends Component {
 
   render () {
     const {coverImage, coverVideo, coverHeight, error} = this.state
-
     let showTooltip = false;
     if (this.props.user && this.state.file) {
       showTooltip = !isTooltipComplete(
@@ -895,22 +922,44 @@ class StoryCoverScreen extends Component {
               {this.isPhotoType() && this.renderCoverPhoto(coverImage)}
               {!this.isPhotoType() && this.renderCoverVideo(coverVideo)}
             </View>
-            <TextInput
-              style={[
-                styles.titleInput,
-                {height: this.state.titleHeight},
-              ]}
-              placeholder='ADD A TITLE'
-              placeholderTextColor={Colors.background}
-              value={this.state.title}
-              onChangeText={this.setTitleAndFocus}
-              onFocus={this.jumpToTitle}
-              returnKeyType='done'
-              maxLength={40}
-              multiline={true}
-              blurOnSubmit
-              onContentSizeChange={this.setTitleHeight}
-            />
+            <View style={styles.titlesWrapper}>
+              <TextInput
+                style={[StoryReadingScreenStyles.caption, styles.coverCaption]}
+                placeholder='Add a caption...'
+                value={this.state.coverCaption}
+                onChangeText={this.setCoverCaption}
+                returnKeyType='done'
+                blurOnSubmit
+              />
+              <TextInput
+                style={[
+                  styles.titleInput,
+                  {height: this.state.titleHeight},
+                ]}
+                placeholder='ADD A TITLE'
+                placeholderTextColor={Colors.background}
+                value={this.state.title}
+                onChangeText={this.setTitleAndFocus}
+                onFocus={this.jumpToTitle}
+                returnKeyType='done'
+                maxLength={40}
+                multiline={true}
+                blurOnSubmit
+                onContentSizeChange={this.setTitleHeight}
+              />
+              <TextInput
+                style={styles.description}
+                placeholder='Add a subtitle'
+                placeholderTextColor={Colors.grey}
+                value={this.state.description}
+                onChangeText={this.setDescriptionAndFocus}
+                onFocus={this.jumpToTitle}
+                returnKeyType='done'
+                maxLength={50}
+                blurOnSubmit
+              />
+              <View style={styles.divider}/>
+            </View>
             <View style={styles.editorWrapper}>
               {this.renderEditor()}
             </View>

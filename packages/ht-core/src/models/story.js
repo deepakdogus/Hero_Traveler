@@ -88,6 +88,9 @@ const StorySchema = new Schema({
   coverVideo: {
     type: Schema.ObjectId,
     ref: UploadRef,
+  },
+  coverCaption: {
+    type: String,
   }
 }, {
   timestamps: true,

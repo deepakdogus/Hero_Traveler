@@ -9,6 +9,18 @@
 #import <UIKit/UIKit.h>
 #import <React/RCTComponent.h>
 #import "RNDJDraftJsIndex.h"
+#import "RNDJAutocorrectView.h"
+
+@interface SimpleAutocorrectInfo : NSObject
+
+@property (readonly, strong) NSString* existingText;
+@property (readonly, strong) NSString* textSuggestion;
+@property (readonly, strong) RNDJDraftJsIndex* start;
+@property (readonly, strong) RNDJDraftJsIndex* end;
+
+- (instancetype) initWithExistingText:(NSString*)existingText start:(RNDJDraftJsIndex*)start end:(RNDJDraftJsIndex*)end textSuggestion:(NSString*)textSuggestion;
+
+@end
 
 @interface RNDJDraftJSEditor : UIView<UIKeyInput>
 
@@ -21,6 +33,7 @@
 @property (nonatomic, copy) RCTDirectEventBlock onBackspaceRequest;
 @property (nonatomic, copy) RCTDirectEventBlock onNewlineRequest;
 @property (nonatomic, copy) RCTDirectEventBlock onSelectionChangeRequest;
+@property (nonatomic, copy) RCTDirectEventBlock onReplaceRangeRequest;
 
 @property (nonatomic, copy) UIColor* selectionColor;
 @property (nonatomic, assign) CGFloat selectionOpacity;

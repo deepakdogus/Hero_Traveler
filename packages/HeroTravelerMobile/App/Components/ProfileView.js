@@ -54,6 +54,7 @@ class ProfileView extends React.Component {
       file: null,
       bioText: props.user.bio || '',
       usernameText: props.user.username || 'Enter a username',
+      aboutText: props.user.about || '',
     }
   }
 
@@ -91,7 +92,11 @@ class ProfileView extends React.Component {
       this.setState({error: `Usernames must be between ${usernameContansts.minLength} and ${usernameContansts.maxLength} characters`})
       return
     }
-    this.props.updateUser({bio: this.state.bioText, username: this.state.usernameText})
+    this.props.updateUser({
+      bio: this.state.bioText,
+      username: this.state.usernameText,
+      about: this.state.aboutText,
+    })
     NavActions.pop()
   }
 
@@ -174,6 +179,7 @@ class ProfileView extends React.Component {
   }
 
   _setText = (usernameText) => this.setState({usernameText})
+  _setAbout = (aboutText) => this.setState({aboutText})
   _setBioText = (bioText) => this.setState({bioText})
   _clearError = () => this.setState({error: null})
 
@@ -208,6 +214,8 @@ class ProfileView extends React.Component {
         onPressFollow={onPressFollow}
         usernameText={this.state.usernameText}
         setUsername={this._setText}
+        aboutText={this.state.aboutText}
+        setAbout={this._setAbout}
         handleUpdateAvatarPhoto={this._handleUpdateAvatarPhoto}
       />
     )
@@ -266,8 +274,6 @@ class ProfileView extends React.Component {
               tabTypes={TabTypes}
               selectTab={this.selectTab}
               selectedTab={this.state.selectedTab}
-              touchTrash={this.props.touchTrash}
-              touchEdit={this.props.touchEdit}
               showLike={this.props.showLike}
               user={this.props.user}
               showTooltip={showTooltip}

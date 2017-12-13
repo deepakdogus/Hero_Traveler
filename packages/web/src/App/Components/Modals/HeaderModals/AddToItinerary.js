@@ -2,14 +2,14 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import RoundedButton from '../RoundedButton'
-import {feedExample} from '../../Containers/Feed_TEST_DATA'
+import RoundedButton from '../../RoundedButton'
+import {feedExample} from '../../../Containers/Feed_TEST_DATA'
 import {
   Container,
   Title,
-} from './Shared'
-import StorySelectRow from '../StorySelectRow'
-import {Row} from '../FlexboxGrid'
+} from '../../Modals/Shared'
+import StorySelectRow from '../../StorySelectRow'
+import {Row} from '../../FlexboxGrid'
 
 const StoriesContainer = styled.div`
   padding-bottom: 50px;

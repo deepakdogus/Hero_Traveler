@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import logo from '../../Shared/Images/ht-icons/icon_contributor-popup-logo@2x.png'
-import contributorSrc from '../../Shared/Images/ht-icons/icon_contibutor-popup-badge@2x.png'
+import logo from '../../../Shared/Images/ht-icons/icon_contributor-popup-logo@2x.png'
+import contributorSrc from '../../../Shared/Images/ht-icons/icon_contibutor-popup-badge@2x.png'
 import {
   Title,
   Text
-} from './Shared'
+} from '../../Modals/Shared'
 
 const Container = styled.div`
   background-color: ${props => props.theme.Colors.lightGreyAreas};

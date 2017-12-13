@@ -11,7 +11,6 @@ import UserActions from '../Shared/Redux/Entities/Users'
 import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
 import UXActions from '../Redux/UXRedux'
 
-import Header from '../Components/Header'
 import StoryHeader from '../Components/StoryHeader'
 import StoryContentRenderer from '../Components/StoryContentRenderer'
 import GMap from '../Components/GoogleMap'
@@ -91,17 +90,16 @@ class Story extends Component {
     })
     return (
       <ContentWrapper>
-        <Header isLoggedIn></Header>
+        <StoryHeader
+          story={story}
+          author={author}
+          reroute={reroute}
+          sessionUserId={sessionUserId}
+          isFollowing={isFollowing}
+          followUser={this._followUser}
+          unfollowUser={this._unfollowUser}
+        />
         <LimitedWidthContainer>
-          <StoryHeader
-            story={story}
-            author={author}
-            reroute={reroute}
-            sessionUserId={sessionUserId}
-            isFollowing={isFollowing}
-            followUser={this._followUser}
-            unfollowUser={this._unfollowUser}
-          />
           <StoryContentRenderer story={story} />
           <p style={{paddingLeft: '10px'}}>Are they trying to do fixed map and/or hidden buttons on the map?</p>
           {story.latitude && story.longitude &&

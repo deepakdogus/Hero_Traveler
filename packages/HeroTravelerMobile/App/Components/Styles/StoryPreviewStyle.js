@@ -7,6 +7,10 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'column'
   },
+  caption: {
+    marginTop: 0,
+    marginBottom: 15,
+  },
   title: {
     letterSpacing: 1.5,
     fontSize: 20,
@@ -14,6 +18,17 @@ export default StyleSheet.create({
     fontFamily: Fonts.montserrat,
     fontWeight: '600',
     color: Colors.backgrond,
+  },
+  storyReadingTitle: {
+    fontSize: 30,
+    lineHeight: 33,
+  },
+  description: {
+    fontFamily: Fonts.type.sourceSansPro,
+    fontWeight: '400',
+    fontSize: 16,
+    letterSpacing: .7,
+    color: Colors.grey,
   },
   userContent: {
     flexDirection: 'row',
@@ -36,8 +51,19 @@ export default StyleSheet.create({
     letterSpacing: .7,
     fontFamily: Fonts.type.sourceSansPro
   },
+  about: {
+    fontFamily: Fonts.type.sourceSansPro,
+    fontWeight: '400',
+    fontSize: 13,
+    letterSpacing: .7,
+    color: Colors.background,
+    maxWidth: Metrics.screenWidth * .60,
+  },
+  previewUserContainer: {
+    minHeight: 70,
+  },
   userContainer: {
-    height: 70,
+    paddingVertical: 10,
   },
   storyInfoContainer: {
     paddingHorizontal: Metrics.section,
@@ -67,6 +93,12 @@ export default StyleSheet.create({
   },
   followFollowingButton: {
     flexDirection: 'column',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    width: 105,
+  },
+  followFollowingText: {
+    width: 80,
+    marginHorizontal: 12.5,
+    fontSize: 11,
   }
 })

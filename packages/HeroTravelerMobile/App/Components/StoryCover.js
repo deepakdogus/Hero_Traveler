@@ -158,11 +158,13 @@ export default class StoryCover extends Component {
   refactored
   */
   renderVideo() {
+    const videoThumbnailUrl = getImageUrl(this.props.cover, 'loading', {video: true, width: 'screen', height: Metrics.storyCover.fullScreen.height})
+
     return (
       <View style={this._getWidthHeight()}>
         <Video
           path={getVideoUrl(this.props.cover)}
-          imgUrl={getImageUrl(this.props.cover, 'video')}
+          imgUrl={videoThumbnailUrl}
           ref={this._makeRef}
           allowVideoPlay={this.props.allowVideoPlay && this.props.autoPlayVideo}
           shouldEnableAutoplay={this.props.shouldEnableAutoplay}

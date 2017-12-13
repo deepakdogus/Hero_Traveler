@@ -1,22 +1,23 @@
 import _ from 'lodash'
 import Env from '../../Config/Env'
+import {getVideoUrlBase} from './getVideoUrl'
 import metrics from '../Themes/Metrics'
 
 function getImageUrlBase() {
   return `https://res.cloudinary.com/${Env.cloudName}/image/upload`
 }
 
-function buildUrl(uri: string, urlParameters: object, base: string): string {
+function buildUrl(base: string, uri: string, urlParameters: object): string {
   const parameters = _.map(_.toPairs(urlParameters || {}), function(pair) {
     return `${pair[0]}_${pair[1]}`
   })
 
   if (parameters.length > 0) {
     const parameterString = parameters.join(',')
-    return `${getImageUrlBase()}/${parameterString}/${uri}`
+    return `${base}/${parameterString}/${uri}`
   }
 
-  return `${getImageUrlBase()}/${uri}`
+  return `${base}/${uri}`
 }
 
 function ensureJpgExtension(uri: string): string {
@@ -68,66 +69,68 @@ function getBasicOptimizedUrlParameters(size: object) {
   return urlParameters
 }
 
-function getContentBlockImage(uri: string, size: object): string {
-  return buildUrl(uri, {q: 'auto:best', f: 'auto'})
+function getContentBlockImageParameters(uri: string, size: object): string {
+  return {q: 'auto:best', f: 'auto'}
 }
 
-function getBasicImageUrl(uri: string, size: object): string {
-  return buildUrl(uri)
+function getBasicImageUrlParameters(uri: string, size: object): string {
+  return {}
 }
 
-function getAvatarImageUrl(uri: string, size: object): string {
-  return buildUrl(uri)
+function getAvatarImageUrlParameters(uri: string, size: object): string {
+  return {}
 }
 
-function getLoadingPreviewImageUrl(uri: string, size: object): string {
+function getLoadingPreviewImageUrlParameters(uri: string, size: object): string {
+  if (size.width) {
+    size.width = Math.round(size.width/4)
+  }
+  if (size.height) {
+    size.height = Math.round(size.height/4)
+  }
+
   const urlParameters = getBasicOptimizedUrlParameters(size)
   urlParameters.q = 'auto:low'
   urlParameters.e = 'blur:5000'
-  return buildUrl(uri, urlParameters)
+  return urlParameters
 }
 
-function getOptimizedImageUrl(uri: string, size: object): string {
+function getOptimizedImageUrlParameters(uri: string, size: object): string {
   const urlParameters = getBasicOptimizedUrlParameters(size)
   urlParameters.q = 'auto:best'
-  return buildUrl(uri, urlParameters)
+  return urlParameters
 }
 
-const imageUrlFactories = {
-  basic: getBasicImageUrl,
-  contentBlock: getContentBlockImage,
-  avatar: getAvatarImageUrl,
-  loading: getLoadingPreviewImageUrl,
-  optimized: getOptimizedImageUrl,
+const imageUrlParametersFactories = {
+  basic: getBasicImageUrlParameters,
+  contentBlock: getContentBlockImageParameters,
+  avatar: getAvatarImageUrlParameters,
+  loading: getLoadingPreviewImageUrlParameters,
+  optimized: getOptimizedImageUrlParameters,
 }
 
-export default function getImageUrl(image: object|string, type: string, size: object = {}): ?string {
-  // TODO: If this is a video url, then the extension will be video and it has a different base (IE getVideoUrlBase)
-  //    But not sure this case exists anymore?
+export default function getImageUrl(image: object|string, type: string, options: object = {}): ?string {
   const uri = getUri(image)
   if (!uri) {
     return undefined
   }
 
-  const imageSize = size || {}
+  const imageSize = {}
 
-  if (imageSize.width == 'screen') {
-    imageSize.width = metrics.screenWidth
+  if (options.width == 'screen') {
+    imageSize.width = Math.round(metrics.screenWidth * metrics.pixelRatio)
+  } else if (options.width) {
+    imageSize.width = Math.round(options.width * metrics.pixelRatio)
   }
 
-  if (imageSize.height == 'screen') {
-    imageSize.height = metrics.screenHeight
-  }
+  if (options.height == 'screen') {
+    imageSize.height = Math.round(metrics.screenHeight * metrics.pixelRatio)
+  } else if (options.height) {
+    imageSize.height = Math.round(options.height * metrics.pixelRatio)
+  } 
 
-  // TODO: Round to nearest number
-  if (imageSize.width) {
-    imageSize.width *= metrics.pixelRatio
-  }
-
-  if (imageSize.height) {
-    imageSize.height *= metrics.pixelRatio
-  }
-
-  const urlFactory = imageUrlFactories[type] || getOptimizedImageUrl
-  return urlFactory(uri, imageSize)
+  const base = options.video ? getVideoUrlBase() : getImageUrlBase()
+  const urlParametersFactory = imageUrlParametersFactories[type] || getOptimizedImageUrl
+  const urlParameters = urlParametersFactory(imageSize)
+  return buildUrl(base, uri, urlParameters)
 }

@@ -141,6 +141,8 @@ class Header extends React.Component {
     attemptLogin: PropTypes.func,
     reroute: PropTypes.func,
     getLikesAndBookmarks: PropTypes.func,
+    loginError: PropTypes.object,
+    loginFetching: PropTypes.bool,
   }
 
   constructor(props) {
@@ -156,6 +158,10 @@ class Header extends React.Component {
 
   openSignupModal = () => {
     this.setState({ modal: 'signup' })
+  }
+
+  openResetPasswordModel = () => {
+    this.setState({ modal: 'resetPassword' })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -180,7 +186,7 @@ class Header extends React.Component {
   }
 
   render () {
-    const {isLoggedIn, attemptLogin, userId} = this.props
+    const {isLoggedIn, attemptLogin, userId, loginFetching, loginError} = this.props
     // quick fix to get this merge in - need to refactor accordingly (part of header refactor)
     const SelectedGrid = this.props.blackHeader ? StyledGridBlack : StyledGrid
     const user = usersExample['59d50b1c33aaac0010ef4b3f']
@@ -310,6 +316,7 @@ class Header extends React.Component {
           <Login
             onSignupClick={this.openSignupModal}
             onAttemptLogin={attemptLogin}
+            onForgotPasswordClick={this.openResetPasswordModel}
           />
         </Modal>
         <Modal
@@ -326,7 +333,10 @@ class Header extends React.Component {
           onRequestClose={this.closeModal}
           style={customModalStyles}
         >
-          <ResetPassword/>
+          <ResetPassword
+            error={loginError}
+            fetching={loginFetching}
+          />
         </Modal>
         <Modal
           isOpen={this.state.modal === 'addToItinerary'}
@@ -361,6 +371,8 @@ function mapStateToProps(state) {
     userId: state.session.userId,
     isLoggedIn: state.login.isLoggedIn,
     isSignedUp: state.signup.signedUp,
+    loginError: state.login.error,
+    loginFetching: state.login.fetching,
   }
 }
 

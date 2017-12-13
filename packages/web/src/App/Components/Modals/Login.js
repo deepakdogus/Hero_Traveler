@@ -15,12 +15,14 @@ import {
 const ForgotPasswordText = styled(Text)`
   font-size: 14px;
   margin-bottom: 39px;
+  cursor: pointer;
 `
 
 export default class Login extends React.Component {
   static PropTypes = {
     onAttemptLogin: PropTypes.func,
     onSignupClick: PropTypes.func,
+    onForgotPasswordClick: PropTypes.func,
   }
 
   constructor(props){
@@ -46,7 +48,7 @@ export default class Login extends React.Component {
   }
 
   render() {
-    const {onSignupClick} = this.props
+    const {onSignupClick, onForgotPasswordClick} = this.props
     return (
       <Container>
         <Title>Login</Title>
@@ -63,7 +65,7 @@ export default class Login extends React.Component {
         <Text>Or</Text>
         <StyledInput placeholder='Username' onChange={this.setUsername}/>
         <StyledInput placeholder='Password' onChange={this.setPassword} type='password'/>
-        <ForgotPasswordText>Forgot Password?</ForgotPasswordText>
+        <ForgotPasswordText onClick={onForgotPasswordClick}>Forgot Password?</ForgotPasswordText>
         <RoundedButton
           text='LOGIN'
           width='100%'

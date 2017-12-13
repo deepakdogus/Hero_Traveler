@@ -10,7 +10,6 @@ import {
 import Video from '../../Video'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { getVideoUrlBase } from "../../../Shared/Lib/getVideoUrl"
-import getImageUrl from "../../../Shared/Lib/getImageUrl"
 
 export default class DraftJsVideo extends Component {
   render = () => {
@@ -26,12 +25,6 @@ export default class DraftJsVideo extends Component {
       </View>
     )
 
-    const imageSize = {
-      video: true,
-      width: this.props.style.width,
-      height: this.props.style.height,
-    }
-
     return (
       <TouchableWithoutFeedback
        style={style}
@@ -39,7 +32,6 @@ export default class DraftJsVideo extends Component {
         <View style={styles.abs}>
           <Video
             path={videoUrl}
-            imgUrl={getImageUrl(url, 'loading', imageSize)}
             allowVideoPlay={true}
             autoPlayVideo={false}
             showMuteButton={false}

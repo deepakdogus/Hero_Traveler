@@ -26,14 +26,26 @@ export default class DraftJsImage extends Component {
       </View>
     )
 
+    const imageSize = {
+      width: this.props.style.width,
+      height: this.props.style.height,
+    }
+
     return (
       <TouchableWithoutFeedback
        style={this.props.style}
        onPress={onPress}>
+        <Image 
+          cached={true}
+          resizeMode='cover'
+          style={absStretch}
+          source={{ uri: getImageUrl(url, 'loading', imageSize) }}/>
         <Image
-         fullWidth={true}
-         source={{ uri: getImageUrl(url, 'basic') }}>
-          {isSelected && imageEditOverlay}
+          cached={true}
+          resizeMode='cover'
+          fullWidth={true}
+          source={{ uri: getImageUrl(url, 'optimized', imageSize) }}>
+            {isSelected && imageEditOverlay}
         </Image>
       </TouchableWithoutFeedback>
     )

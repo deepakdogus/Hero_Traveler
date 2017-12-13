@@ -69,19 +69,19 @@ function getBasicOptimizedUrlParameters(size: object) {
   return urlParameters
 }
 
-function getContentBlockImageParameters(uri: string, size: object): string {
+function getContentBlockImageParameters(size: object): string {
   return {q: 'auto:best', f: 'auto'}
 }
 
-function getBasicImageUrlParameters(uri: string, size: object): string {
+function getBasicImageUrlParameters(size: object): string {
   return {}
 }
 
-function getAvatarImageUrlParameters(uri: string, size: object): string {
+function getAvatarImageUrlParameters(size: object): string {
   return {}
 }
 
-function getLoadingPreviewImageUrlParameters(uri: string, size: object): string {
+function getLoadingPreviewImageUrlParameters(size: object): string {
   if (size.width) {
     size.width = Math.round(size.width/4)
   }
@@ -95,7 +95,7 @@ function getLoadingPreviewImageUrlParameters(uri: string, size: object): string 
   return urlParameters
 }
 
-function getOptimizedImageUrlParameters(uri: string, size: object): string {
+function getOptimizedImageUrlParameters(size: object): string {
   const urlParameters = getBasicOptimizedUrlParameters(size)
   urlParameters.q = 'auto:best'
   return urlParameters

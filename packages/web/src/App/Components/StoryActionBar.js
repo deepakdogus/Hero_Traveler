@@ -13,6 +13,26 @@ const StyledIcon = styled(Icon)`
   width: 20px;
 `
 
+const HandMadeIcon = styled.div`display: block;
+  margin: auto;
+  margin-bottom: 15px;
+  height: 14px;
+  width: 14px;
+  border-radius: 14px;
+  border-style: solid;
+  border-color: ${props => props.theme.Colors.grey};
+  border-width: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const HandMadeIconMinus = styled.div`display: block;
+  height: 1px;
+  width: 10px;
+  background-color: ${props => props.theme.Colors.grey};
+`
+
 const LeftActionBarIcon = styled(StyledIcon)``
 const BookmarkIcon = styled(StyledIcon)``
 const FacebookIocn = styled(StyledIcon)``
@@ -48,6 +68,7 @@ export default class StoryActionBar extends React.Component {
     onClickLike: PropTypes.func,
     isBookmarked: PropTypes.bool,
     onClickBookmark: PropTypes.func,
+    onClickComments: PropTypes.func,
   }
 
   constructor(props){
@@ -64,7 +85,7 @@ export default class StoryActionBar extends React.Component {
   }
 
   render () {
-    const {story, isLiked, isBookmarked, onClickBookmark, onClickLike} = this.props
+    const {story, isLiked, isBookmarked, onClickBookmark, onClickLike, onClickComments} = this.props
 
     return (
       <AbsoluteWrapper>
@@ -82,7 +103,10 @@ export default class StoryActionBar extends React.Component {
           </ClickableWrapper>
           <ClickableWrapper>
             <Count>{story.counts.comments}</Count>
-            <LeftActionBarIcon name='squareComment'/>
+            <LeftActionBarIcon
+              name='squareComment'
+              onClick={onClickComments}
+            />
           </ClickableWrapper>
           <FacebookIocn name='squareFacebookOutline'/>
           <TwitterIcon name='squareTwitterOutline'/>
@@ -99,7 +123,9 @@ export default class StoryActionBar extends React.Component {
             <StyledIcon name='pinterest'/>
             <StyledIcon name='email'/>
             <StyledIcon name='report'/>
-            <StyledIcon name='profile' onClick={this.toggleShowMore}/>
+            <HandMadeIcon onClick={this.toggleShowMore}>
+              <HandMadeIconMinus />
+            </HandMadeIcon>
           </ActionBarContainer>
         }
       </AbsoluteWrapper>

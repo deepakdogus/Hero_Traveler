@@ -13,6 +13,9 @@ const StyledIcon = styled(Icon)`
   margin-right: 5px;
   height: 20px;
   width: 20px;
+  @media (max-width: ${sizes.tablet}px) {
+    
+  }
 `
 
 const HandMadeIcon = styled.div`display: block;
@@ -49,6 +52,8 @@ const ActionBarContainer = styled(Col)`
   @media (max-width: ${sizes.tablet}px) {
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
   }
 `
 
@@ -63,21 +68,28 @@ const Count = styled.p`
 `
 
 const AbsoluteWrapper = styled.div`
+  background-color: white;
   position: fixed;
   top: 150px;
   left: 85%;
   @media (max-width: ${sizes.tablet}px) {
     display: flex;
     flex-direction: row;
-    bottom: 50px;
-    right: 10px;
+    bottom: 0px;
+    right: 0px;
     top: auto;
     left: auto;
+    width: 100%;
+    justify-content: space-around;
   }
 `
 
 const ClickableWrapper = styled.div`
-
+  @media (max-width: ${sizes.tablet}px) {
+    display: flex;
+    flex-direction: row;
+    margin-top: 15px;
+  }
 `
 
 export default class StoryActionBar extends React.Component {

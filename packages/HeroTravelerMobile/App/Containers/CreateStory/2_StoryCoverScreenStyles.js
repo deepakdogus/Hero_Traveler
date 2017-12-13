@@ -13,7 +13,6 @@ export default StyleSheet.create({
   },
   contentWrapper: {
     flex: 1,
-    maxHeight: 282,
   },
   lightGreyAreasBG: {
     flex: 1,

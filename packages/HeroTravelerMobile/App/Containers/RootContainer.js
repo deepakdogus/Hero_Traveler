@@ -75,7 +75,8 @@ class RootContainer extends Component {
 
   isDarkProfile() {
     const location = this.props.location
-    return location === 'profile' || location === 'readOnlyProfile'
+    return location === 'profile' || location === 'readOnlyProfile' ||
+    location === 'story'
   }
 
   render () {

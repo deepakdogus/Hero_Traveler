@@ -76,7 +76,6 @@ class CreateStoryDetailScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      tripDate: props.workingDraft.tripDate ? moment(props.workingDraft.tripDate).toDate() : new Date(),
       location: props.workingDraft.location || '',
       categories: props.workingDraft.categories || [],
       type: props.workingDraft.type,
@@ -104,6 +103,13 @@ class CreateStoryDetailScreen extends React.Component {
 
   _onDateChange = (tripDate) => {
     this.props.updateWorkingDraft({tripDate})
+  }
+
+  confirmDate = () => {
+    this._setModalVisible(!this.state.modalVisible)
+    if (!this.props.workingDraft.tripDate) {
+      this._onDateChange(new Date())
+    }
   }
 
   _onRight = () => {
@@ -183,7 +189,7 @@ class CreateStoryDetailScreen extends React.Component {
 
   render () {
     const {workingDraft, publishing} = this.props
-    const {isSavingCover, categories, modalVisible, showError, tripDate} = this.state
+    const {isSavingCover, categories, modalVisible, showError} = this.state
     const err = this.props.error
     const errText = (__DEV__ && err && err.problem && err.status) ? `${err.status}: ${err.problem}` : ""
 
@@ -292,13 +298,13 @@ class CreateStoryDetailScreen extends React.Component {
           <View
             style={{ backgroundColor: 'white', height: 300, width: 300 }}>
             <DatePickerIOS
-              date={workingDraft.tripDate || tripDate}
+              date={workingDraft.tripDate || new Date()}
               mode="date"
               onDateChange={this._onDateChange}
             />
             <RoundedButton
               text='Confirm'
-              onPress={() => this._setModalVisible(!modalVisible)}
+              onPress={this.confirmDate}
             />
           </View>
         </View> }

@@ -63,6 +63,9 @@ class StoryCommentsScreen extends React.Component {
 
   handleSend = () => {
     // blur to hide keyboard
+
+    if (this.state.text.trim().length=== 0) return
+
     this.input.blur()
     const newComment = {
       user: this.props.user,

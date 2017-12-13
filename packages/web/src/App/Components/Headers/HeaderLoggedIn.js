@@ -36,7 +36,22 @@ const StyledRoundedAvatarButton = styled(RoundedButton)`
   margin-left: 10px;
   margin-right: 20px;
   position: relative;
-  top: ${props => props.profileAvatar ? '8px' : '0px'};
+  top: ${props => props.profileAvatar ? '4px' : '-3px'};
+`
+
+const StyledRoundedCreateButton = styled(RoundedButton)`
+    position: relative;
+    bottom: 5px;
+`
+
+const StyledRoundedMailButton = styled(StyledRoundedButton)`
+    position: relative;
+    bottom: 5px;
+`
+
+const StyledRoundedNotificationButton = styled(StyledRoundedButton)`
+    position: relative;
+    bottom: 3px;
 `
 
 class HeaderLoggedIn extends React.Component {
@@ -74,9 +89,9 @@ class HeaderLoggedIn extends React.Component {
               <NavLink
                 to='/createStory'
               >
-                <StyledRoundedButton text='Create'/>
+                <StyledRoundedCreateButton text='Create'/>
               </NavLink>
-              <StyledRoundedButton
+              <StyledRoundedMailButton
                 type='headerButton'
                 height='32px'
                 width='32px'
@@ -86,8 +101,8 @@ class HeaderLoggedIn extends React.Component {
                 <MailIcon
                   name='loginEmail'
                 />
-              </StyledRoundedButton>
-              <StyledRoundedButton
+              </StyledRoundedMailButton>
+              <StyledRoundedNotificationButton
                 type='headerButton'
                 height='32px'
                 width='32px'
@@ -95,7 +110,7 @@ class HeaderLoggedIn extends React.Component {
                 onClick={openModal}
               >
                 <NotificationsIcon name='cameraFlash' />
-              </StyledRoundedButton>
+              </StyledRoundedNotificationButton>
               <NavLink
                 to={`/profile/${user}/view`}
               >

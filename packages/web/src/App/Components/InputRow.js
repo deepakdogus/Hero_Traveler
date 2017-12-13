@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 
 import VerticalCenter from './VerticalCenter'
 import RoundedButton from './RoundedButton'
-import HorizontalDivider from './HorizontalDivider'
 import {Row} from './FlexboxGrid'
 
 const Container = styled.div`

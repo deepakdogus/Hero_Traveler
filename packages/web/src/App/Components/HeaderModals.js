@@ -45,7 +45,7 @@ const addToItineraryModalStyles = {
 
 export default class HeaderModals extends React.Component {
   static propTypes = {
-    modalThatIsOpen: PropTypes.string,
+    globalModalThatIsOpen: PropTypes.string,
     globalModalParams: PropTypes.object,
     modal: PropTypes.string,
     closeModal: PropTypes.func,
@@ -59,7 +59,7 @@ export default class HeaderModals extends React.Component {
     this.props.closeGlobalModal()
   }
   render() {
-    const { modalThatIsOpen, closeModal, modal, globalModalParams } = this.props
+    const { globalModalThatIsOpen, closeModal, modal, globalModalParams } = this.props
     return (
       <div>
         <Modal
@@ -113,7 +113,7 @@ export default class HeaderModals extends React.Component {
           <NotificationsThread closeModal={closeModal} profile={this.props.user}/>
         </RightModal>
         <RightModal
-          isOpen={modalThatIsOpen === 'comments'}
+          isOpen={globalModalThatIsOpen === 'comments'}
           contentLabel='Comments Modal'
           onRequestClose={this.closeGlobalModal}
         >

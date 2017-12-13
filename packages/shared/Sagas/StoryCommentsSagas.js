@@ -1,7 +1,6 @@
 import { call, put } from 'redux-saga/effects'
 import StoryCommentsActions from '../Redux/Entities/StoryComments'
 
-// attempts to signup with email
 export function * getComments(api, {storyId}) {
   const response = yield call(api.getComments, storyId)
 

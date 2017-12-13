@@ -34,7 +34,7 @@ class Header extends React.Component {
     blackHeader: PropTypes.bool,
     attemptLogin: PropTypes.func,
     closeGlobalModal: PropTypes.func,
-    modalThatIsOpen: PropTypes.string,
+    globalModalThatIsOpen: PropTypes.string,
     globalModalParams: PropTypes.object,
   }
 
@@ -71,7 +71,7 @@ class Header extends React.Component {
   }
 
   render () {
-    const {isLoggedIn, attemptLogin, closeGlobalModal, currentUser, modalThatIsOpen, globalModalParams } = this.props
+    const {isLoggedIn, attemptLogin, closeGlobalModal, currentUser, globalModalThatIsOpen, globalModalParams } = this.props
     const SelectedGrid = this.props.blackHeader ? StyledGridBlack : StyledGrid
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
     return (
@@ -96,7 +96,7 @@ class Header extends React.Component {
               openLoginModal={this.openLoginModal}
               user={currentUser}
               modal={this.state.modal}
-              modalThatIsOpen={modalThatIsOpen}
+              globalModalThatIsOpen={globalModalThatIsOpen}
               globalModalParams={globalModalParams}
           />
       </SelectedGrid>
@@ -114,7 +114,7 @@ function mapStateToProps(state) {
     isLoggedIn: state.login.isLoggedIn,
     blackHeader: _.includes(['/', '/feed', ''], pathname) ? false : true,
     currentUser: state.session.userId,
-    modalThatIsOpen: state.ux.modalName,
+    globalModalThatIsOpen: state.ux.modalName,
     globalModalParams: state.ux.params,
   }
 }

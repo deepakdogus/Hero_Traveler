@@ -9,10 +9,10 @@ const { Types, Creators } = createActions({
 export const StartupTypes = Types
 
 const INITIAL_STATE = Immutable({
-  openModal: '',
+  modalName: '',
 })
 
-export const openModal = (state, {modalName}) => state.merge({openModal: modalName})
+export const openModal = (state, {modalName}) => state.merge({modalName})
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.OPEN_MODAL]: openModal

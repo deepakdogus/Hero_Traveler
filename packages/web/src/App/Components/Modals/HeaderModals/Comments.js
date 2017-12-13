@@ -3,11 +3,11 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import StoryCommentsActions from '../../Shared/Redux/Entities/StoryComments'
+import StoryCommentsActions from '../../../Shared/Redux/Entities/StoryComments'
 
-import MessageRow from '../MessageRow'
-import InputRow from '../InputRow'
-import {RightTitle, RightModalCloseX} from './Shared'
+import MessageRow from '../../MessageRow'
+import InputRow from '../../InputRow'
+import {RightTitle, RightModalCloseX} from '../Shared'
 
 const Container = styled.div`
   position: relative;

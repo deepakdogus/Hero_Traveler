@@ -32,6 +32,7 @@ class Header extends React.Component {
     isLoggedIn: PropTypes.bool,
     blackHeader: PropTypes.bool,
     attemptLogin: PropTypes.func,
+    modalThatIsOpen: PropTypes.string,
   }
 
   constructor(props) {
@@ -67,7 +68,7 @@ class Header extends React.Component {
   }
 
   render () {
-    const {isLoggedIn, attemptLogin, currentUser} = this.props
+    const {isLoggedIn, attemptLogin, currentUser, modalThatIsOpen } = this.props
     const SelectedGrid = this.props.blackHeader ? StyledGridBlack : StyledGrid
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
     return (
@@ -91,6 +92,7 @@ class Header extends React.Component {
               openLoginModal={this.openLoginModal}
               user={currentUser}
               modal={this.state.modal}
+              modalThatIsOpen={modalThatIsOpen}
           />
       </SelectedGrid>
       <HeaderSpacer
@@ -106,7 +108,8 @@ function mapStateToProps(state) {
   return {
     isLoggedIn: state.login.isLoggedIn,
     blackHeader: _.includes(['/', '/feed', ''], pathname) ? false : true,
-    currentUser: state.session.userId
+    currentUser: state.session.userId,
+    modalThatIsOpen: state.ux.modalName,
   }
 }
 

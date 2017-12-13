@@ -97,6 +97,7 @@ class ProfileScreen extends React.Component {
 const mapStateToProps = (state) => {
   const {userId} = state.session
   let {stories, users} = state.entities
+
   return {
     user: state.entities.users.entities[userId],
     accessToken: _.find(state.session.tokens, {type: 'access'}).value,

@@ -193,7 +193,7 @@ class ExploreScreen extends Component {
                     <Image
                       cached={true}
                       resizeMode='cover'
-                      source={{uri: getImageUrl(story.coverImage)}}
+                      source={{uri: getImageUrl(story.coverImage, 'basic')}}
                       style={styles.thumbnailImage}
                     />
                   )

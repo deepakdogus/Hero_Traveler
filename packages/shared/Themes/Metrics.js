@@ -30,6 +30,7 @@ const metrics = {
     logo: 200
   },
   rightModalWidth: 570,
+  pixelRatio: 1,
 }
 
 _.assign(metrics, platformSpecificMetrics)

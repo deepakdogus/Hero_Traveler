@@ -31,6 +31,14 @@ const metrics = {
   },
   rightModalWidth: 570,
   pixelRatio: 1,
+  storyCover: {
+    fullScreen: {
+      height: 415,
+    },
+    feed: {
+      height: 282,
+    }
+  },
 }
 
 _.assign(metrics, platformSpecificMetrics)

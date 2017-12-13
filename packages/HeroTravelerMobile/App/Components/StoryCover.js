@@ -58,29 +58,21 @@ export default class StoryCover extends Component {
     return this.props.coverType === 'image' && !!this.props.cover
   }
 
-  _getFullHeight() {
-    return 415
-  }
-
-  _getFeedHeight() {
-    return 282
-  }
-
   _getWidthHeight(){
     if (this.props.isFeed) {
-      return { height: this._getFeedHeight() }
+      return { height: Metrics.storyCover.feed.height }
     } else {
       return {
         width: Metrics.screenWidth,
-        height: this._getFullHeight()
+        height: Metrics.storyCover.fullScreen.height,
       }
     }
   }
 
   renderImage() {
     const {cover, onPress, gradientLocations, gradientColors, children, showPlayButton, playButtonSize} = this.props
-    const imageThumbnailUrl = getImageUrl(cover, 'loading', {width: 'screen', height: this._getFullHeight()})
-    const imageUrl = getImageUrl(cover, 'optimized', {width: 'screen', height: this._getFullHeight()})
+    const imageThumbnailUrl = getImageUrl(cover, 'loading', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
+    const imageUrl = getImageUrl(cover, 'optimized', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
 
     return (
       <TouchableWithoutFeedback
@@ -90,7 +82,7 @@ export default class StoryCover extends Component {
         <View style={{
           ...imageStyle,
           ...this._getWidthHeight(),
-          maxHeight: 415,
+          maxHeight: Metrics.storyCover.fullScreen.height,
         }}>
           <Image
             cached={true}

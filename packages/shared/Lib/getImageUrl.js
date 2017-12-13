@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import Env from '../../Config/Env'
-// import {getVideoUrlBase} from './getVideoUrl'
 import metrics from '../Themes/Metrics'
 
 function getImageUrlBase() {

@@ -99,8 +99,13 @@ export default class HeaderLoggedIn extends React.Component {
                   type='headerButton'
                   height='32px'
                   width='32px'
+                  profileAvatar={profileAvatar} 
                 >
-                  <Avatar size='mediumSmall'/>
+                  <Avatar
+                    type='avatar'
+                    size={profileAvatar ? 'avatar' : 'mediumSmall'}
+                    avatarUrl={getImageUrl(profileAvatar)}
+                  />
                 </StyledRoundedAvatarButton>
               </NavLink>
             </LoggedInDesktopContainer>

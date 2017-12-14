@@ -28,7 +28,7 @@ const TitleContainer = styled(OverlayHover)`
   width: 100%;
   height: 100%;
   top: 0;
-  background: ${props => props.selected ? 'rgba(256, 256, 256, 0.4)' : 'rgba(0, 0, 0, 0.3)'};
+
 `
 
 const Title = styled.div`

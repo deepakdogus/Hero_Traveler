@@ -437,13 +437,10 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     minHeight: 38,
     fontSize: 18,
-    color: Colors.grey,
+    color: Colors.background,
     fontWeight: '400',
-
     paddingTop: 10,
-    paddingRight: 20,
-    paddingLeft: 20,
-
+    paddingHorizontal: 20,
     paddingBottom: 100,
   },
   imageView: {

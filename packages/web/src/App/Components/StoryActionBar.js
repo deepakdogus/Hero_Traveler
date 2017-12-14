@@ -71,7 +71,10 @@ const AbsoluteWrapper = styled.div`
   background-color: white;
   position: fixed;
   top: 150px;
-  left: 85%;
+  left: 90%;
+  @media (max-width: ${sizes.desktopLarge}px) {
+    left: 95%;
+  }
   @media (max-width: ${sizes.tablet}px) {
     display: flex;
     flex-direction: row;

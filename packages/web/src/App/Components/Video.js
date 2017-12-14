@@ -35,7 +35,6 @@ export default class Video extends React.Component {
       <VideoWithControls
         autoPlay={type==='cover'}
         controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
-        onCanPlayThrough={console.log('Video can play through')} // eslint-disable-line no-console
       >
         <source src={src} type="video/webm" /> 
     </VideoWithControls>

@@ -7,7 +7,6 @@ import _ from 'lodash'
 import UserActions, {getFollowers} from '../../Shared/Redux/Entities/Users'
 
 import NavLinkStyled from '../../Components/NavLinkStyled'
-import Header from '../../Components/Signup/Header'
 import RoundedButton from '../../Components/RoundedButton'
 import HorizontalDivider from '../../Components/HorizontalDivider'
 // import SocialMediaRow from '../../Components/Signup/SocialMediaRow'
@@ -108,14 +107,12 @@ class SignupSocial extends Component {
   render() {
     return (
       <div>
-       <Header>
-          <NavLinkStyled to='/signup/topics'>
-            <RoundedButton text='< Back' type="blackWhite"></RoundedButton>
-          </NavLinkStyled>
-          <NavLinkStyled to='/feed'>
-            <RoundedButton text='Finish'></RoundedButton>
-          </NavLinkStyled>
-        </Header>
+        <NavLinkStyled to='/signup/topics'>
+          <RoundedButton text='< Back' type="blackWhite"></RoundedButton>
+        </NavLinkStyled>
+        <NavLinkStyled to='/feed'>
+          <RoundedButton text='Finish'></RoundedButton>
+        </NavLinkStyled>
         <Container>
         <Title>FOLLOW</Title>
           <Subtitle>We'll add stories by people you follow to your custom reading list</Subtitle>

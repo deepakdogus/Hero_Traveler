@@ -7,7 +7,6 @@ import _ from 'lodash'
 import CategoryActions from '../../Shared/Redux/Entities/Categories'
 import SignupActions from '../../Shared/Redux/SignupRedux'
 
-import Header from '../../Components/Signup/Header'
 import RoundedButton from '../../Components/RoundedButton'
 import ExploreGrid from '../../Components/ExploreGrid'
 import NavLinkStyled from '../../Components/NavLinkStyled'
@@ -65,11 +64,9 @@ class SignupTopics extends Component {
   render() {
     return (
         <div>
-          <Header>
-            <NavLinkStyled to='/signup/social'>
-              <RoundedButton text='Next >'></RoundedButton>
-            </NavLinkStyled>
-          </Header>
+          <NavLinkStyled to='/signup/social'>
+            <RoundedButton text='Next >'></RoundedButton>
+          </NavLinkStyled>
           <Container>
             <SizedDiv>
               <Title>WELCOME!</Title>

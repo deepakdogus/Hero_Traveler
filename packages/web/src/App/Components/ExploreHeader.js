@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Header from './Header'
 import background from '../Shared/Images/create-story.png'
 import HeaderImageWrapper from './HeaderImageWrapper'
 import VerticalCenter from './VerticalCenter'
@@ -79,7 +78,6 @@ export default class ExploreHeader extends React.Component {
         type='profile'
       >
         <HeaderTopGradient/>
-        <Header isLoggedIn/>
         <Centered>
           <Tagline>For Travelers By Travelers</Tagline>
           <ItalicText>Available on</ItalicText>

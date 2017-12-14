@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import RoundedButton from '../RoundedButton'
-import SocialMediaButton from './Shared/SocialMediaButton'
+import RoundedButton from '../../RoundedButton'
+import SocialMediaButton from '../../Modals/Shared/SocialMediaButton'
+
 import {
   Container,
   Title,
@@ -10,7 +11,7 @@ import {
   HasAccount,
   SignupText,
   StyledInput,
-} from './Shared'
+} from '../../Modals/Shared'
 
 const ForgotPasswordText = styled(Text)`
   font-size: 14px;

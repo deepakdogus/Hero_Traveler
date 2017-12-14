@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import RoundedButton from '../RoundedButton'
+import RoundedButton from '../../RoundedButton'
 import {
   Container,
   Title,
   StyledInput,
-} from './Shared'
+} from '../../Modals/Shared'
 
 const RestyledInput = styled(StyledInput)`
   margin: 120px 0 50px;

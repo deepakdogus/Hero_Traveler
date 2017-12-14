@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Modal from 'react-modal'
 
-import Header from '../Header'
 import RightModal from '../RightModal'
 import CenterModal from '../CenterModal'
 import ProfileHeaderView from './ProfileHeaderView'
@@ -22,7 +21,7 @@ import InboxThread from '../Modals/InboxThread'
 import NotificationsThread from '../Modals/NotificationsThread'
 import FAQTermsAndConditions from '../Modals/FAQTermsAndConditions'
 import ProfileBio from '../Modals/ProfileBio'
-import Contributor from '../Modals/Contributor'
+import Contributor from '../Modals/HeaderModals/Contributor'
 
 const Container = styled.div``
 
@@ -66,7 +65,6 @@ export default class ProfileHeader extends React.Component {
     const {user, isEdit} = this.props
     return (
       <Container>
-        <Header isLoggedIn blackHeader></Header>
         {isEdit && <ProfileHeaderEdit {...this.props}/>}
         {!isEdit &&
           <ProfileHeaderView

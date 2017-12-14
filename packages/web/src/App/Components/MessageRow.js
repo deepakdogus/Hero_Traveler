@@ -29,10 +29,6 @@ const TextContainer = styled(VerticalCenter)`
   margin-top: 10px;
 `
 
-const StyledSpaceBetweenRow = styled(SpaceBetweenRow)`
-  flex-wrap: nowrap;
-`
-
 const InteractiveContainer = styled.div`
   &:hover {
     background-color: ${props => props.theme.Colors.onHoverGrey};
@@ -85,10 +81,11 @@ export default class MessageRow extends Component {
       <InteractiveContainer>
         {this.props.index > 0 ? <StyledHorizontalDivider color='light-grey'/> : null}
           <MessageContainer>
-            <StyledSpaceBetweenRow
+            <SpaceBetweenRow
               renderImage={this.renderImage}
               renderText={this.renderText}
               renderRight={this.renderRight}
+              leftProps={{ 'max-width': `75%`, 'flex-wrap': `nowrap` }}
             />
           </MessageContainer>
         {!this.props.isComment ? <StyledHorizontalDivider color='light-grey'/> : null}

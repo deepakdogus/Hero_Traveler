@@ -204,6 +204,7 @@ export default class VideoPlayer extends React.Component {
 
   // currently only need for new cover videos
   _onLoad = (event) => {
+    this.setStarted()
     if (!this.props.onLoad) return
     this.props.onLoad(event.naturalSize)
   }

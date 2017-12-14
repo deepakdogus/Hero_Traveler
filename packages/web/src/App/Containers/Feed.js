@@ -14,10 +14,10 @@ const CenteredText = styled.p`
 `
 
 const FeedText = styled(CenteredText)`
-  color: ${props => props.theme.Colors.background}
+  color: ${props => props.theme.Colors.background};
   font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-weight: 400;
-  font-size: 23px;
+  font-weight: 600;
+  font-size: 30px;
   letter-spacing: 1.5px;
   padding: 30px 0 0 0;
 `
@@ -30,6 +30,7 @@ const ContentWrapper = styled.div`
 
 const StyledDivider = styled(HorizontalDivider)`
   border-color: ${props => props.theme.Colors.background};
+  border-width: 1px;
   margin-bottom: 23px;
 `
 

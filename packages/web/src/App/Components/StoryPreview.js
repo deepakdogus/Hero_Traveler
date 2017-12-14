@@ -37,7 +37,7 @@ const Title = styled.h3`
   font-size: 23px;
   color: ${props => props.theme.Colors.background};
   display: inline-block;
-  margin: 0 0;
+  margin: 0;
   cursor: pointer;
 `
 
@@ -48,6 +48,7 @@ const Description = styled.h2`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
   margin-bottom: 30px;
+  margin-top: 7.5px;
 `
 
 const DetailsContainer = styled(Row)`

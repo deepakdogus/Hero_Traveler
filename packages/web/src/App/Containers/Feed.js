@@ -30,7 +30,7 @@ const ContentWrapper = styled.div`
 
 const StyledDivider = styled(HorizontalDivider)`
   border-color: ${props => props.theme.Colors.background};
-  border-width: 2px;
+  border-width: 1px;
   margin-bottom: 23px;
 `
 

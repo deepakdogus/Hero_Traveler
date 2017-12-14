@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import onClickOutside from "react-onclickoutside"
 
 import HorizontalDivider from '../HorizontalDivider'
 
@@ -33,7 +34,7 @@ const StyledHorizontalDivider = styled(HorizontalDivider)`
   border-width: 1px;
 `
 
-export default class CategoryPicker extends React.Component {
+class CategoryPicker extends React.Component {
 
 static propTypes = {
     closePicker: PropTypes.func,
@@ -42,6 +43,10 @@ static propTypes = {
     categoriesList: PropTypes.arrayOf(PropTypes.object),
   }
 
+  handleClickOutside() {
+    console.log('closing')
+    this.props.closePicker()
+  }
   renderList(categoriesList) {
     return (
       categoriesList.map((tag) => {
@@ -58,9 +63,11 @@ static propTypes = {
   render() {
     const {categoriesList, closePicker} = this.props;
     return (
-      <TagPickerContainer onClick={closePicker}>
+      <TagPickerContainer>
         {this.renderList(categoriesList)}
       </TagPickerContainer>
     )
   }
 }
+
+export default onClickOutside(CategoryPicker)

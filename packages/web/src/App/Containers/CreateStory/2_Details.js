@@ -19,6 +19,7 @@ class CreateStoryCoverContent extends Component {
   }
 
   componentWillMount(){
+    console.log('MOUNTED 2 DEtails')
     this.props.loadDefaultCategories()
   }
 

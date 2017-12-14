@@ -143,10 +143,12 @@ export default class StoryDetails extends React.Component {
       showDayPicker: false,
       day: '',
       categoriesList,
+      categoryTextInput: ''
     };
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log('MOUNTED normal details')
     if (Object.keys(this.props.categories).length !== Object.keys(nextProps.categories).length && nextProps.workingDraft){
       const {categoriesList, titleToCategory} = formatCategories(nextProps.categories)
       this.titleToCategory = titleToCategory
@@ -167,6 +169,13 @@ export default class StoryDetails extends React.Component {
 
   handleRadioChange = (event, value) => {
     this.props.onInputChange({type: value})
+  }
+
+  onCategoryInput = (event) => {
+    console.log('Even', event.target.value)
+    this.setState({
+      categoryTextInput: event.target.value
+    })
   }
 
   handleCategorySelect = (event) => {
@@ -243,8 +252,9 @@ export default class StoryDetails extends React.Component {
           <TagIcon name='tag'/>
           <StyledInput
             type='text'
-            placeholder={'Add tags'}
-            value={''}
+            placeholder={'Add categories'}
+            value={this.state.categoryTextInput}
+            onChange={this.onCategoryInput}
             onClick={this.toggleTagPicker}
           />
           {!!this.props.workingDraft.categories.length &&

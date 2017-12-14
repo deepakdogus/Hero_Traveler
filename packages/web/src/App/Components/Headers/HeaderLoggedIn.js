@@ -87,7 +87,7 @@ class HeaderLoggedIn extends React.Component {
             <Divider>&nbsp;</Divider>
             <LoggedInDesktopContainer>
               <NavLink
-                to='/createStory'
+                to='/createStoryNew/new'
               >
                 <StyledRoundedCreateButton text='Create'/>
               </NavLink>
@@ -118,7 +118,7 @@ class HeaderLoggedIn extends React.Component {
                   type='headerButton'
                   height='32px'
                   width='32px'
-                  profileAvatar={profileAvatar} 
+                  profileAvatar={profileAvatar}
                 >
                   <Avatar
                     type='avatar'

@@ -10,7 +10,6 @@ import ProfileHeaderEdit from './ProfileHeaderEdit'
 
 import FollowFollowing from '../Modals/FollowFollowing'
 import ProfileStats from '../Modals/ProfileStats'
-import Comments from '../Modals/Comments'
 import LikedBy from '../Modals/LikedBy'
 import SendTo from '../Modals/SendTo'
 import AddToBoard from '../Modals/AddToBoard'
@@ -62,7 +61,7 @@ export default class ProfileHeader extends React.Component {
   openInboxModal = () => this.setState({modal: 'inbox'})
 
   render () {
-    const {user, isEdit} = this.props
+    const {user, isEdit } = this.props
     return (
       <Container>
         {isEdit && <ProfileHeaderEdit {...this.props}/>}
@@ -92,13 +91,6 @@ export default class ProfileHeader extends React.Component {
           onRequestClose={this.closeModal}
         >
           <ProfileStats closeModal={this.closeModal} profile={user}/>
-        </RightModal>
-        <RightModal
-          isOpen={this.state.modal === 'comments'}
-          contentLabel='Comments Modal'
-          onRequestClose={this.closeModal}
-        >
-          <Comments closeModal={this.closeModal} profile={user}/>
         </RightModal>
         <RightModal
           isOpen={this.state.modal === 'likedBy'}

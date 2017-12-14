@@ -95,7 +95,7 @@ class Profile extends Component {
 
   componentWillMount() {
     const {loadUserFollowing, myFollowedUsers, sessionUserId} = this.props
-    if (!myFollowedUsers) loadUserFollowing(sessionUserId)
+    if (!myFollowedUsers && sessionUserId) loadUserFollowing(sessionUserId)
   }
 
   componentDidMount() {
@@ -154,7 +154,7 @@ class Profile extends Component {
     const {
       match, profilesUser, sessionUserId,
       users, myFollowedUsers, userError,
-      updateUser, uploadMedia
+      updateUser, uploadMedia,
     } = this.props
     if (!profilesUser) return null
 
@@ -237,8 +237,8 @@ function mapDispatchToProps(dispatch) {
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
     loadBookmarks: (userId) => dispatch(StoryActions.getBookmarks(userId)),
     loadUserFollowing: (userId) => dispatch(UserActions.loadUserFollowing(userId)),
-    followUser: (sessionUserID, userIdToFollow) => dispatch(UserActions.followUser(sessionUserID, userIdToFollow)),
-    unfollowUser: (sessionUserID, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserID, userIdToUnfollow)),
+    followUser: (sessionUserId, userIdToFollow) => dispatch(UserActions.followUser(sessionUserId, userIdToFollow)),
+    unfollowUser: (sessionUserId, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserId, userIdToUnfollow)),
     reroute: (path) => dispatch(push(path)),
     uploadMedia: (userId, file, uploadType) => dispatch(MediaUploadActions.uploadRequest(userId, file, uploadType)),
   }

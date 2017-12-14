@@ -8,4 +8,11 @@ const webMetrics = {
   navBarHeight: 79,
 }
 
+export const sizes = {
+  desktopLarge: 1200,
+  desktop: 992,
+  tablet: 768,
+  phone: 376
+}
+
 export default webMetrics

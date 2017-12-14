@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Modal from 'react-modal'
 
 import Login from './Modals/HeaderModals/Login'
@@ -6,6 +7,7 @@ import Signup from './Modals/HeaderModals/Signup'
 import ResetPassword from './Modals/HeaderModals/ResetPassword'
 import Contributor from './Modals/HeaderModals/Contributor'
 import AddToItinerary from './Modals/HeaderModals/AddToItinerary'
+import Comments from './Modals/HeaderModals/Comments'
 import Inbox from './Modals/Inbox'
 import RightModal from './RightModal'
 import NotificationsThread from './Modals/NotificationsThread'
@@ -42,13 +44,28 @@ const addToItineraryModalStyles = {
 }
 
 export default class HeaderModals extends React.Component {
+  static propTypes = {
+    globalModalThatIsOpen: PropTypes.string,
+    globalModalParams: PropTypes.object,
+    modal: PropTypes.string,
+    closeModal: PropTypes.func,
+    closeGlobalModal: PropTypes.func,
+    openSignupModal: PropTypes.func,
+    attemptLogin: PropTypes.func,
+    openLoginModal: PropTypes.func,
+    user: PropTypes.string, // actually just a userId
+  }
+  closeGlobalModal = () => {
+    this.props.closeGlobalModal()
+  }
   render() {
+    const { globalModalThatIsOpen, closeModal, modal, globalModalParams } = this.props
     return (
       <div>
         <Modal
-          isOpen={this.props.modal === 'login'}
+          isOpen={modal === 'login'}
           contentLabel="Login Modal"
-          onRequestClose={this.props.closeModal}
+          onRequestClose={closeModal}
           style={customModalStyles}
         >
           <Login
@@ -57,50 +74,60 @@ export default class HeaderModals extends React.Component {
           />
         </Modal>
         <Modal
-          isOpen={this.props.modal === 'signup'}
+          isOpen={modal === 'signup'}
           contentLabel="Signup Modal"
-          onRequestClose={this.props.closeModal}
+          onRequestClose={closeModal}
           style={customModalStyles}
         >
           <Signup onLoginClick={this.props.openLoginModal}/>
         </Modal>
         <Modal
-          isOpen={this.props.modal === 'resetPassword'}
+          isOpen={modal === 'resetPassword'}
           contentLabel="Reset Password Modal"
-          onRequestClose={this.props.closeModal}
+          onRequestClose={closeModal}
           style={customModalStyles}
         >
           <ResetPassword/>
         </Modal>
         <Modal
-          isOpen={this.props.modal === 'contributor'}
+          isOpen={modal === 'contributor'}
           contentLabel="Reset Password Modal"
-          onRequestClose={this.props.closeModal}
+          onRequestClose={closeModal}
           style={contributorModalStyles}
         >
           <Contributor/>
         </Modal>
         <Modal
-          isOpen={this.props.modal === 'addToItinerary'}
+          isOpen={modal === 'addToItinerary'}
           contentLabel="Add To Itinerary Modal"
-          onRequestClose={this.props.closeModal}
+          onRequestClose={closeModal}
           style={addToItineraryModalStyles}
         >
           <AddToItinerary/>
         </Modal>
         <RightModal
-          isOpen={this.props.modal === 'notificationsThread'}
+          isOpen={modal === 'notificationsThread'}
           contentLabel='Notifications Thread'
-          onRequestClose={this.props.closeModal}
+          onRequestClose={closeModal}
         >
-          <NotificationsThread closeModal={this.props.closeModal} profile={this.props.user}/>
+          <NotificationsThread closeModal={closeModal} profile={this.props.user}/>
         </RightModal>
         <RightModal
-          isOpen={this.props.modal === 'inbox'}
-          contentLabel='Inbox'
-          onRequestClose={this.props.closeModal}
+          isOpen={globalModalThatIsOpen === 'comments'}
+          contentLabel='Comments Modal'
+          onRequestClose={this.closeGlobalModal}
         >
-          <Inbox closeModal={this.props.closeModal} profile={this.props.user}/>
+          <Comments
+            closeModal={this.closeGlobalModal}
+            storyId={globalModalParams.storyId}
+          />
+        </RightModal>
+        <RightModal
+          isOpen={modal === 'inbox'}
+          contentLabel='Inbox'
+          onRequestClose={closeModal}
+        >
+          <Inbox closeModal={closeModal} profile={this.props.user}/>
         </RightModal>
       </div>
     )

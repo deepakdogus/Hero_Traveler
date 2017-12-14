@@ -9,9 +9,10 @@ export default function getVideoUrl(video: object, stream = true): ?string {
   if (!_.has(video, 'original')) return undefined
   let url
   if (stream && video.streamingFormats && video.streamingFormats.HLS) {
-    url = video.streamingFormats.HLS
-  }
-  else {
+    const {folders} = video.original
+    const filename = _.last(video.streamingFormats.HLS.split('/'))
+    url = `${getVideoUrlBase()}/sp_4k/${folders.join('/')}/${filename}`
+  } else {
     const {path, folders} = video.original
     const filename = _.last(path.split('/'))
     url = `${getVideoUrlBase()}/vc_auto/${folders.join('/')}/${filename}`

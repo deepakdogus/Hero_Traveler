@@ -21,10 +21,8 @@ export default class SpaceBetweenRow extends Component {
   }
 
   render() {
-    const {renderImage, renderText, renderRight, leftProps } = this.props
+    const {renderImage, renderText, renderRight, leftProps = {} } = this.props
 
-    // Note to Matthew: I'm putting these extra props into 'data' toa void this console warning
-    // Unknown props `max-width`, `flex-wrap` on <div> tag
     return (
       <Row between='xs'>
         <Left data={leftProps}> 

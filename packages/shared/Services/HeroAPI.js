@@ -177,6 +177,7 @@ const create = () => {
         params
       })
       .then(response => {
+         if (!response.ok) return response
         return Object.assign({}, response, {
           data: normalize(response.data, [Story])
         })
@@ -305,6 +306,7 @@ const getStory = (storyId) => {
   const getUserFollowing = (userId) => {
     return api.get(`user/${userId}/following`)
       .then(response => {
+        if (!response.ok) return response
         return  Object.assign({}, response, {
           data: normalize(response.data, [User])
         })
@@ -330,7 +332,8 @@ const getStory = (storyId) => {
   const getBookmarks = (userId) => {
     return api.get(`story/user/${userId}/bookmark`)
     .then(response => {
-      return  Object.assign({}, response, {
+      if (!response.ok) return response
+     return  Object.assign({}, response, {
         data: normalize(response.data, [Story])
       })
     })

@@ -41,6 +41,11 @@ class MyFeedScreen extends React.Component {
     if (this.state.refreshing && nextProps.fetchStatus.loaded) {
       this.setState({refreshing: false})
     }
+    if (this.state.refreshing && nextProps.error &&
+      this.props.fetchStatus.fetching && !nextProps.fetchStatus.fetching
+    ) {
+      this.setState({refreshing: false})
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -172,7 +177,7 @@ class MyFeedScreen extends React.Component {
       content = (
         <Loader />
       )
-    } else if (error) {
+    } else if (error && (!storiesById || !storiesById.length)) {
       content = this._wrapElt(this._showError())
     } else if (!storiesById || !storiesById.length) {
       let innerContent = this._showNoStories();

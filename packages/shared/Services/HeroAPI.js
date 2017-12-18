@@ -28,6 +28,13 @@ function putMediaResponse(api, url, response, timeout){
   })
 }
 
+function safeNormalize(response, schema){
+  if (!response.ok) return response
+  return Object.assign({}, response, {
+    data: normalize(response.data, schema)
+  })
+}
+
 // our "constructor"
 const create = () => {
   const api = apisauce.create({
@@ -152,12 +159,7 @@ const create = () => {
 
   const getMe = () => {
     return api.get('user')
-      .then(response => {
-        if (!response.ok) return response
-        return Object.assign({}, response, {
-          data: normalize(response.data, User)
-        })
-      })
+    .then(response => safeNormalize(response, User))
   }
 
   const getUser = (userId) => {
@@ -175,14 +177,9 @@ const create = () => {
 
   const getUserFeed = (userId, params) => {
     return api.get(`story/user/${userId}/feed`, {
-        params
-      })
-      .then(response => {
-        if (!response.ok) return response
-        return Object.assign({}, response, {
-          data: normalize(response.data, [Story])
-        })
-      })
+      params
+    })
+    .then(response => safeNormalize(response, [Story]))
   }
 
   const getUserStories = (userId, params) => {
@@ -306,12 +303,7 @@ const getStory = (storyId) => {
 
   const getUserFollowing = (userId) => {
     return api.get(`user/${userId}/following`)
-      .then(response => {
-        if (!response.ok) return response
-        return  Object.assign({}, response, {
-          data: normalize(response.data, [User])
-        })
-      })
+    .then(response => safeNormalize(response, [User]))
   }
 
   const getUserLikes = (userId) => {
@@ -332,12 +324,7 @@ const getStory = (storyId) => {
 
   const getBookmarks = (userId) => {
     return api.get(`story/user/${userId}/bookmark`)
-    .then(response => {
-      if (!response.ok) return response
-      return  Object.assign({}, response, {
-        data: normalize(response.data, [Story])
-      })
-    })
+    .then(response => safeNormalize(response, [Story]))
   }
 
   const getComments = (storyId) => {

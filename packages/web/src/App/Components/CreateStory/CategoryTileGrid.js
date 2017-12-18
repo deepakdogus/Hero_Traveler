@@ -4,18 +4,25 @@ import styled from 'styled-components'
 
 import { Grid, Row, Col } from '../FlexboxGrid';
 import Icon from '../Icon'
+import { StyledInput } from './StoryDetails'
 
-const Wrapper = styled.div`
-  margin: 5px;
-  position: relative;
+const WrapperCol = styled(Col)`
+  max-width: 140px;
+  margin: 10px;
+`
+
+const InputWrapper = styled(Col)`
+  display: flex;
+  flex-direction: 'column';
+  justify-content: 'center';
 `
 
 const Tile = styled(Row)`
   background-color: ${props => props.theme.Colors.lightGreyAreas};
   border-radius: 4px;
-  max-width: 116px;
   height: 34px;
   z-index: 90;
+  padding: 5px;
 `
 
 const TagText = styled.p`
@@ -30,18 +37,24 @@ const StyledIcon = styled(Icon)`
   align-self: center;
   height: 12px;
   width: 12px;
+  margin-left: 10px;
 `
 const StyledGrid = styled(Grid)`
   margin-left: 46px;
-  width: 54%;
+  width: 90%;
   transform: translateY(-33.5px);
   margin-bottom: -40px;
 `
+
 
 export default class CategoryTileGrid extends React.Component {
   static propTypes = {
     selectedCategories: PropTypes.arrayOf(PropTypes.object),
     handleCategoryRemove: PropTypes.func,
+    placeholder: PropTypes.string,
+    inputValue: PropTypes.string,
+    inputOnChange: PropTypes.func,
+    inputOnClick: PropTypes.func,
   }
 
   render() {
@@ -49,8 +62,8 @@ export default class CategoryTileGrid extends React.Component {
 
     const renderedTiles = selectedCategories.map((tag) => {
       return (
-        <Col key={tag.id} xs={12} sm={6} md={4} lg={3} >
-          <Wrapper>
+        <WrapperCol key={tag.id}>
+    
             <Tile around='xs'>
               <TagText>{tag.title}</TagText>
               <StyledIcon
@@ -59,15 +72,25 @@ export default class CategoryTileGrid extends React.Component {
                 onClick={handleCategoryRemove}
               />
             </Tile>
-          </Wrapper>
-        </Col>
+
+        </WrapperCol>
       )
     })
 
     return (
-      <StyledGrid fluid>
+      <StyledGrid>
         <Row>
           {renderedTiles}
+          <InputWrapper
+          >
+          <StyledInput
+              type='text'
+              placeholder={this.props.placeholder}
+              value={this.props.inputValue}
+              onChange={this.props.inputOnChange}
+              onClick={this.props.inputOnClick}
+            />
+            </InputWrapper>
         </Row>
       </StyledGrid>
     )

@@ -39,7 +39,7 @@ const ActivitySelectRow = styled(Row)`
   margin: 8px;
 `
 
-const StyledInput = styled.input`
+export const StyledInput = styled.input`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 18px;
@@ -249,20 +249,15 @@ export default class StoryDetails extends React.Component {
         </InputRowContainer>
         <HorizontalDivider color='lighter-grey' opaque/>
         <InputRowContainer>
-          <TagIcon name='tag'/>
-          <StyledInput
-            type='text'
-            placeholder={'Add categories'}
-            value={this.state.categoryTextInput}
-            onChange={this.onCategoryInput}
-            onClick={this.toggleTagPicker}
+          <TagIcon name='tag'/>        
+          <CategoryTileGrid
+            selectedCategories={this.props.workingDraft.categories}
+            handleCategoryRemove={this.handleCategoryRemove}
+            placeholder={(this.props.workingDraft.categories && this.props.workingDraft.categories.length) ? '' : 'Add categories'}
+            inputValue={this.state.categoryTextInput}
+            inputOnChange={this.onCategoryInput}
+            inputOnClick={this.toggleTagPicker}
           />
-          {!!this.props.workingDraft.categories.length &&
-            <CategoryTileGrid
-              selectedCategories={this.props.workingDraft.categories}
-              handleCategoryRemove={this.handleCategoryRemove}
-            />
-          }
           {showPicker === 'category' &&
             <CategoryPicker
               closePicker={this.togglePicker}

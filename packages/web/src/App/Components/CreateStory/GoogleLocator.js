@@ -2,7 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 import PropTypes from 'prop-types'
-
+import _ from 'lodash'
+import onClickOutside from 'react-onclickoutside'
 import HorizontalDivider from '../HorizontalDivider'
 import './Styles/GoogleLocatorStyles.css';
 
@@ -83,17 +84,71 @@ class GoogleLocator extends React.Component {
     address: PropTypes.string,
     onChange: PropTypes.func,
   }
-
-  handleSelect = (event) => {
-    const locationUpdate = {
-      location: event.split(',')[0]
+  constructor() {
+    super()
+    this.state = {
+      items: [],
+      address: '',
     }
+  }
+  componentDidMount = () => {
+    if (this.props.address) {
+      this.setState({
+        address: this.props.address,
+      })
+    }
+  }
+
+  handleClickOutside = () => {
+    console.log('Does it match', this.state.address, this.props.address)
+    if (!this.props.address && this.state.items[0] || (this.state.address !== this.props.address)) {
+      console.log('Going oto autifill', this.state.items)
+      this.handleSelect(undefined, true)
+    }
+  }
+
+
+  handleInputChange = (text) => {
+    this.setState({
+      address: text,
+    })
+    console.log(this.refs.places.state)
+    const { autocompleteItems } = this.refs.places.state
+    if (!_.isEqual(autocompleteItems, this.state.items)) {
+      this.setState({
+        items: autocompleteItems,
+      })
+    }
+  }
+
+  handleSelect = (event, autofill = false) => {
+    let locationUpdate
+
+    if (autofill && this.state.items[0]) {
+
+      locationUpdate = {
+        location: this.state.items[0].suggestion.split(',')[0]
+      } 
+      console.log('LCOATION UD', locationUpdate)
+    }
+    else {
+      locationUpdate = {
+        location: event.split(',')[0]
+      }
+    }
+    console.log('LOCATION UODA', locationUpdate)
     geocodeByAddress(event)
-    .then(results => getLatLng(results[0]))
+    .then(results => {
+      console.log("results are", results)
+      return getLatLng(results[0])
+    })
     .then(latLng => {
       locationUpdate.latitude = latLng.lat
       locationUpdate.longitude = latLng.lng
       this.props.onChange(locationUpdate)
+      this.setState({
+        address: locationUpdate.location,
+      })
     })
     .catch(error => console.error('Error', error))
   }
@@ -102,22 +157,25 @@ class GoogleLocator extends React.Component {
 
   render() {
     const inputProps = {
-      value: this.props.address,
-      onChange: this.onChange,
+      value: this.state.address,
+      onChange: this.handleInputChange,
       placeholder: 'Add location',
     }
 
-    const AutocompleteItem = ({ formattedSuggestion }) => (
+    const AutocompleteItem = ({ formattedSuggestion, ...rest }) => {
+      return (
       <div>
         <StyledLocation>{ formattedSuggestion.mainText }</StyledLocation>
         <StyledAddress>{ formattedSuggestion.secondaryText }</StyledAddress>
         <StyledHorizontalDivider color='lighter-grey' opaque/>
       </div>
       )
-
+    }
+    console.log('STATE', this.state)
     return (
       <Container>
         <PlacesAutocomplete
+          ref='places'
           inputProps={inputProps}
           autocompleteItem={AutocompleteItem}
           styles={styles}
@@ -129,4 +187,4 @@ class GoogleLocator extends React.Component {
   }
 }
 
-export default GoogleLocator
+export default onClickOutside(GoogleLocator)

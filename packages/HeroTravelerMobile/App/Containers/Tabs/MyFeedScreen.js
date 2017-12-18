@@ -22,7 +22,7 @@ const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBar
 class MyFeedScreen extends React.Component {
   static propTypes = {
     user: PropTypes.object,
-    error: PropTypes.bool,
+    error: PropTypes.string,
   };
 
   constructor(props) {

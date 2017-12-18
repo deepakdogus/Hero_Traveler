@@ -37,8 +37,17 @@ class MyFeedScreen extends React.Component {
     SplashScreen.hide()
   }
 
+  isSuccessfulLoad(nextProps){
+    return this.state.refreshing && nextProps.fetchStatus.loaded
+  }
+
+  isFailedLoad(nextProps){
+    return this.state.refreshing && nextProps.error &&
+    this.props.fetchStatus.fetching && !nextProps.fetchStatus.fetching
+  }
+
   componentWillReceiveProps(nextProps) {
-    if (this.state.refreshing && nextProps.fetchStatus.loaded) {
+    if (this.isSuccessfulLoad(nextProps) || this.isFailedLoad(nextProps)) {
       this.setState({refreshing: false})
     }
   }
@@ -172,7 +181,7 @@ class MyFeedScreen extends React.Component {
       content = (
         <Loader />
       )
-    } else if (error) {
+    } else if (error && (!storiesById || !storiesById.length)) {
       content = this._wrapElt(this._showError())
     } else if (!storiesById || !storiesById.length) {
       let innerContent = this._showNoStories();

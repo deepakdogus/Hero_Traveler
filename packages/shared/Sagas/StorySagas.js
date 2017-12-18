@@ -20,10 +20,11 @@ function * getInitalData(api, userId) {
       call(api.getBookmarks, userId),
       call(api.getUserFollowing, userId),
     ]
+
     if (likesResponse.ok && bookmarksResponse.ok && followingResponse.ok) {
       const {result: followingById, entities: followingEntities} = followingResponse.data
       const {result: bookmarksById, entities: bookmarkEntities} = bookmarksResponse.data
-      yield [
+      return yield [
         put(UserActions.receiveUsers({
           ...bookmarkEntities.users,
           ...followingEntities.users

@@ -22,7 +22,7 @@ const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBar
 class MyFeedScreen extends React.Component {
   static propTypes = {
     user: PropTypes.object,
-    error: PropTypes.string,
+    error: PropTypes.bool,
   };
 
   constructor(props) {
@@ -37,13 +37,17 @@ class MyFeedScreen extends React.Component {
     SplashScreen.hide()
   }
 
+  isSuccessfulLoad(nextProps){
+    return this.state.refreshing && nextProps.fetchStatus.loaded
+  }
+
+  isFailedLoad(nextProps){
+    return this.state.refreshing && nextProps.error &&
+    this.props.fetchStatus.fetching && !nextProps.fetchStatus.fetching
+  }
+
   componentWillReceiveProps(nextProps) {
-    if (this.state.refreshing && nextProps.fetchStatus.loaded) {
-      this.setState({refreshing: false})
-    }
-    if (this.state.refreshing && nextProps.error &&
-      this.props.fetchStatus.fetching && !nextProps.fetchStatus.fetching
-    ) {
+    if (this.isSuccessfulLoad(nextProps) || this.isFailedLoad(nextProps)) {
       this.setState({refreshing: false})
     }
   }

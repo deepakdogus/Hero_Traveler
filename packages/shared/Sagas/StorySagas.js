@@ -57,7 +57,7 @@ export function * getUserFeed (api, action) {
       put(StoryActions.feedSuccess(result)),
     ]
   } else {
-    yield put(StoryActions.feedFailure('Failed to get userfeed. Please try again'))
+    yield put(StoryActions.feedFailure())
   }
 }
 

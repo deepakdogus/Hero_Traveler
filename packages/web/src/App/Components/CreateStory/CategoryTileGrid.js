@@ -1,10 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-
+import algoliasearch from 'algoliasearch'
+import _ from 'lodash'
 import { Grid, Row, Col } from '../FlexboxGrid';
 import Icon from '../Icon'
 import { StyledInput } from './StoryDetails'
+import config from '../../Config/Env'
+
+const { SEARCH_APP_NAME, SEARCH_API_KEY, SEARCH_CATEGORIES_INDEX } = config
+console.log(SEARCH_APP_NAME, SEARCH_API_KEY, SEARCH_CATEGORIES_INDEX)
+
+const client = algoliasearch(SEARCH_APP_NAME, SEARCH_API_KEY, { protocol: 'https:'})
+const index = client.initIndex(SEARCH_CATEGORIES_INDEX)
 
 const WrapperCol = styled(Col)`
   max-width: 140px;
@@ -50,29 +58,45 @@ const StyledGrid = styled(Grid)`
 export default class CategoryTileGrid extends React.Component {
   static propTypes = {
     selectedCategories: PropTypes.arrayOf(PropTypes.object),
+    categories: PropTypes.arrayOf(PropTypes.object),
     handleCategoryRemove: PropTypes.func,
     placeholder: PropTypes.string,
     inputValue: PropTypes.string,
     inputOnChange: PropTypes.func,
     inputOnClick: PropTypes.func,
   }
-
+  constructor() {
+    super()
+    this.state = {
+      inputText: '',
+    }
+  }
+  addCategory = () => {
+    this.props.addCategory(this.state.inputText)
+  }
+  handleTextInput = (event) => {
+    const text = event.target.value
+    this.setState({
+      inputText: text,
+    })
+    index.search(text, (err, content) => {
+      console.log('SEARCH', err, content)
+    })
+  }
   render() {
     const {selectedCategories, handleCategoryRemove} = this.props
 
     const renderedTiles = selectedCategories.map((tag) => {
       return (
         <WrapperCol key={tag.id}>
-    
-            <Tile around='xs'>
-              <TagText>{tag.title}</TagText>
-              <StyledIcon
-                data-tagName={tag.id}
-                name='closeDark'
-                onClick={handleCategoryRemove}
-              />
-            </Tile>
-
+          <Tile around='xs'>
+            <TagText>{tag.title}</TagText>
+            <StyledIcon
+              data-tagName={tag.id}
+              name='closeDark'
+              onClick={handleCategoryRemove}
+            />
+          </Tile>
         </WrapperCol>
       )
     })
@@ -85,10 +109,14 @@ export default class CategoryTileGrid extends React.Component {
           >
           <StyledInput
               type='text'
-              placeholder={this.props.placeholder}
-              value={this.props.inputValue}
-              onChange={this.props.inputOnChange}
+              placeholder='Add Categories'
+              value={this.state.inputText}
+              onChange={this.handleTextInput}
               onClick={this.props.inputOnClick}
+              onKeyPress={(e) => { 
+                if (e.key === 'Enter') {
+                  this.addCategory()
+              }}}
             />
             </InputWrapper>
         </Row>

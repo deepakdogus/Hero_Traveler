@@ -117,7 +117,7 @@ function formatCategories(categories) {
 }
 
 function isSameTag(a, b){
-  return a.id === b.id && a.title === b.title
+  return a.title === b.title
 }
 
 export default class StoryDetails extends React.Component {
@@ -143,7 +143,6 @@ export default class StoryDetails extends React.Component {
       showDayPicker: false,
       day: '',
       categoriesList,
-      categoryTextInput: ''
     };
   }
 
@@ -171,17 +170,17 @@ export default class StoryDetails extends React.Component {
     this.props.onInputChange({type: value})
   }
 
-  onCategoryInput = (event) => {
-    console.log('Even', event.target.value)
+  handleCategoryAdd = (categoryName) => { 
     this.setState({
-      categoryTextInput: event.target.value
+      categoriesList: [...this.state.categoriesList, {title: categoryName} ]
     })
   }
+
 
   handleCategorySelect = (event) => {
     event.stopPropagation()
     const categoryTitle = event.target.innerHTML
-    const clickedCategory = this.titleToCategory[categoryTitle]
+    const clickedCategory = this.titleToCategory[categoryTitle] || { title: categoryTitle }
     const categories = this.props.workingDraft.categories.concat([clickedCategory])
     this.setState({
       categoriesList: _.differenceWith(this.state.categoriesList, [clickedCategory], isSameTag),
@@ -216,7 +215,7 @@ export default class StoryDetails extends React.Component {
   }
 
   render() {
-    const {workingDraft, onInputChange} = this.props
+    const {workingDraft, onInputChange, } = this.props
     const {showPicker, categoriesList} = this.state
     // normally this only happens when you just published a draft
     if (!workingDraft) return null
@@ -253,10 +252,9 @@ export default class StoryDetails extends React.Component {
           <CategoryTileGrid
             selectedCategories={this.props.workingDraft.categories}
             handleCategoryRemove={this.handleCategoryRemove}
-            placeholder={(this.props.workingDraft.categories && this.props.workingDraft.categories.length) ? '' : 'Add categories'}
-            inputValue={this.state.categoryTextInput}
-            inputOnChange={this.onCategoryInput}
             inputOnClick={this.toggleTagPicker}
+            categories={categoriesList}
+            addCategory={this.handleCategoryAdd}
           />
           {showPicker === 'category' &&
             <CategoryPicker

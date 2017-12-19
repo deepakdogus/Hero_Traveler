@@ -151,9 +151,7 @@ export default class StoryDetails extends React.Component {
     if (Object.keys(this.props.categories).length !== Object.keys(nextProps.categories).length && nextProps.workingDraft){
       const {categoriesList, titleToCategory} = formatCategories(nextProps.categories)
       this.titleToCategory = titleToCategory
-      this.setState({
-        categoriesList: _.differenceWith(categoriesList, nextProps.workingDraft.categories, isSameTag)
-      })
+      this.updateCategoriesList(_.differenceWith(categoriesList, nextProps.workingDraft.categories, isSameTag))
     }
   }
 
@@ -171,9 +169,7 @@ export default class StoryDetails extends React.Component {
   }
 
   handleCategoryAdd = (categoryName) => { 
-    this.setState({
-      categoriesList: [...this.state.categoriesList, {title: categoryName} ]
-    })
+    this.updateCategoriesList([ {title: categoryName}, ...this.state.categoriesList ])
   }
 
 
@@ -182,8 +178,8 @@ export default class StoryDetails extends React.Component {
     const categoryTitle = event.target.innerHTML
     const clickedCategory = this.titleToCategory[categoryTitle] || { title: categoryTitle }
     const categories = this.props.workingDraft.categories.concat([clickedCategory])
+    this.updateCategoriesList(_.differenceWith(this.state.categoriesList, [clickedCategory], isSameTag))
     this.setState({
-      categoriesList: _.differenceWith(this.state.categoriesList, [clickedCategory], isSameTag),
       showPicker: 'category',
     })
     this.props.onInputChange({categories})
@@ -194,9 +190,7 @@ export default class StoryDetails extends React.Component {
     const clickedCategoryId = event.target.attributes.getNamedItem('data-tagName').value
     const clickedCategory = this.props.categories[clickedCategoryId]
     const categories = _.differenceWith(this.props.workingDraft.categories, [clickedCategory], isSameTag)
-    this.setState({
-      categoriesList: sortCategories(this.state.categoriesList.concat([clickedCategory])),
-    })
+    this.updateCategoriesList(sortCategories(this.state.categoriesList.concat([clickedCategory])))
     this.props.onInputChange({categories})
   }
 
@@ -212,6 +206,12 @@ export default class StoryDetails extends React.Component {
   formatTripDate = (day) => {
     if (!day) return undefined
     else return Moment(day).format('MM-DD-YYYY')
+  }
+
+  updateCategoriesList = (newCategoriesList) => {
+    this.setState({
+      categoriesList: newCategoriesList
+    })
   }
 
   render() {
@@ -255,6 +255,7 @@ export default class StoryDetails extends React.Component {
             inputOnClick={this.toggleTagPicker}
             categories={categoriesList}
             addCategory={this.handleCategoryAdd}
+            updateCategoriesList={this.updateCategoriesList}
           />
           {showPicker === 'category' &&
             <CategoryPicker

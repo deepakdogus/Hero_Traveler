@@ -60,6 +60,7 @@ export default class CategoryTileGrid extends React.Component {
     selectedCategories: PropTypes.arrayOf(PropTypes.object),
     categories: PropTypes.arrayOf(PropTypes.object),
     handleCategoryRemove: PropTypes.func,
+    updateCategoriesList: PropTypes.func,
     placeholder: PropTypes.string,
     inputValue: PropTypes.string,
     inputOnChange: PropTypes.func,
@@ -81,6 +82,13 @@ export default class CategoryTileGrid extends React.Component {
     })
     index.search(text, (err, content) => {
       console.log('SEARCH', err, content)
+      if (!err) {
+        const newList = content.hits.map(hit => {
+          const alreadyExists = _.find(this.props.categories, cat => cat.title === hit.title)
+          return alreadyExists || hit
+        })
+        this.props.updateCategoriesList(newList)
+      }
     })
   }
   render() {

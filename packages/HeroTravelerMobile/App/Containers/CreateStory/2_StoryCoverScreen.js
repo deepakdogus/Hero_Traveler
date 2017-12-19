@@ -959,7 +959,7 @@ class StoryCoverScreen extends Component {
 
   _handleSelectCover = (path, isPhotoType, coverMetrics = {}) => {
     const file = pathAsFileObject(path)
-    const draftUpdates = {}
+    const draftUpdates = { coverCaption: '' }
 
     if (isPhotoType) {
       draftUpdates.coverImage = file

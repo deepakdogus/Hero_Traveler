@@ -161,7 +161,7 @@ export default class StoryPreview extends Component {
 
     return (
       <View style={[styles.storyInfoContainer, styles.bottomContainer]}>
-        {isStoryReadingScreen && coverCaption &&
+        {isStoryReadingScreen && !!coverCaption &&
           <Text style={[StoryReadingScreenStyles.caption, styles.caption]}>
             {coverCaption}
           </Text>

@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "algoliasearch": "^3.24.8",
+    "algoliasearch-helper": "^2.23.2",
     "apisauce": "^0.14.1",
     "history": "^4.7.2",
     "lodash": "^4.17.4",

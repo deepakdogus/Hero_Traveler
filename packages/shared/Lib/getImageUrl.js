@@ -24,12 +24,12 @@ function ensureJpgExtension(uri: string): string {
     uri = uri.split('.')
     uri[uri.length-1] = 'jpg'
     uri = uri.join('.')
-    return uri 
+    return uri
 }
 
 function getUri(image: object|string): ?string {
   if (!image) {
-    return undefined 
+    return undefined
   }
 
   if (typeof(image) == 'string') {
@@ -46,7 +46,7 @@ function getUri(image: object|string): ?string {
     return `${folderPath}/${filename}`
   }
 
-  return undefined 
+  return undefined
 }
 
 function getBasicOptimizedUrlParameters(size: object) {
@@ -127,7 +127,7 @@ export default function getImageUrl(image: object|string, type: string, options:
     imageSize.height = Math.round(metrics.screenHeight * metrics.pixelRatio)
   } else if (options.height) {
     imageSize.height = Math.round(options.height * metrics.pixelRatio)
-  } 
+  }
 
   const base = options.video ? getVideoUrlBase() : getImageUrlBase()
   const urlParametersFactory = imageUrlParametersFactories[type] || getOptimizedImageUrlParameters

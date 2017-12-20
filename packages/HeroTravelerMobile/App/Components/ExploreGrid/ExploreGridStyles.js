@@ -4,7 +4,7 @@ import { Metrics, Colors, Fonts } from '../../Shared/Themes/'
 export default StyleSheet.create({
   grid: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginLeft: 0,

@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import algoliasearch from 'algoliasearch'
+import algoliasearch_module from 'algoliasearch'
+import algoliasearch_helper from 'algoliasearch_helper'
 import _ from 'lodash'
 import { Grid, Row, Col } from '../FlexboxGrid';
 import Icon from '../Icon'
@@ -9,10 +10,8 @@ import { StyledInput } from './StoryDetails'
 import config from '../../Config/Env'
 
 const { SEARCH_APP_NAME, SEARCH_API_KEY, SEARCH_CATEGORIES_INDEX } = config
-console.log(SEARCH_APP_NAME, SEARCH_API_KEY, SEARCH_CATEGORIES_INDEX)
+const algoliasearch = algoliasearch_module(SEARCH_APP_NAME, SEARCH_API_KEY, { protocol: 'https:'})
 
-const client = algoliasearch(SEARCH_APP_NAME, SEARCH_API_KEY, { protocol: 'https:'})
-const index = client.initIndex(SEARCH_CATEGORIES_INDEX)
 
 const WrapperCol = styled(Col)`
   max-width: 140px;
@@ -66,11 +65,31 @@ export default class CategoryTileGrid extends React.Component {
     inputOnChange: PropTypes.func,
     inputOnClick: PropTypes.func,
   }
+
   constructor() {
     super()
     this.state = {
       inputText: '',
     }
+  }
+  componentWillMount() {
+    this.helper = algoliasearch_helper(algoliasearch, SEARCH_CATEGORIES_INDEX)
+    this.setUpSearchListeners(this.helper)
+  }
+  componentWillUnmount() {
+    this.removeSearchListeners(this.helper)
+  }
+  setUpSearchListeners = (helper) => {
+    helper.on('result', res => {
+      // do something?
+    })
+    helper.on('search', () => {
+      // do something?
+    })
+  }
+  removeSearchListeners(helper) {
+    helper.removeAllListeners('result')
+    helper.removeAllListeners('search')
   }
   addCategory = () => {
     this.props.addCategory(this.state.inputText)
@@ -80,16 +99,24 @@ export default class CategoryTileGrid extends React.Component {
     this.setState({
       inputText: text,
     })
-    index.search(text, (err, content) => {
-      console.log('SEARCH', err, content)
-      if (!err) {
-        const newList = content.hits.map(hit => {
-          const alreadyExists = _.find(this.props.categories, cat => cat.title === hit.title)
-          return alreadyExists || hit
-        })
-        this.props.updateCategoriesList(newList)
-      }
-    })
+    // if text > 3 chars
+    this.helper
+    .setQuery(text)
+    .search()
+
+    // I might want to use debounce from lodash to delay call
+//https://css-tricks.com/debouncing-throttling-explained-examples/
+
+    // index.search(text, (err, content) => {
+    //   console.log('SEARCH', err, content)
+    //   if (!err) {
+    //     const newList = content.hits.map(hit => {
+    //       const alreadyExists = _.find(this.props.categories, cat => cat.title === hit.title)
+    //       return alreadyExists || hit
+    //     })
+    //     this.props.updateCategoriesList(newList)
+    //   }
+    // })
   }
   render() {
     const {selectedCategories, handleCategoryRemove} = this.props

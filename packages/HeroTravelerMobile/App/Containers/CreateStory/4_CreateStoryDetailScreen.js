@@ -132,7 +132,7 @@ class CreateStoryDetailScreen extends React.Component {
         this.props.publish(_.merge({}, draft, _.trim(draft.location)))
         this.setState({showError: true})
       } else {
-        this._update()
+        this._update(draft)
       }
     })
   }
@@ -148,8 +148,8 @@ class CreateStoryDetailScreen extends React.Component {
     this.props.updateWorkingDraft({type})
   }
 
-  _update = () => {
-    this.saveDraft()
+  _update = (draft) => {
+    this.saveDraft(draft)
     this.next()
   }
 
@@ -157,9 +157,8 @@ class CreateStoryDetailScreen extends React.Component {
     this.setState({showError: false})
   }
 
-  saveDraft = () => {
-    const {workingDraft} = this.props
-    const story = _.merge({}, workingDraft, {location: _.trim(workingDraft.location)})
+  saveDraft = (draft) => {
+    const story = _.merge({}, draft, {location: _.trim(workingDraft.location)})
     this.props.update(
       workingDraft.id,
       story
@@ -279,7 +278,7 @@ class CreateStoryDetailScreen extends React.Component {
               <View style={styles.finishButtons}>
                 <RoundedButton
                   style={styles.finishButton}
-                  onPress={this._update}
+                  onPress={this._onRight}
                   text='Save Story'
                 />
               </View>

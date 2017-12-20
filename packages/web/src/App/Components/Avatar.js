@@ -6,7 +6,10 @@ import Icon from './Icon'
 import Image from './Image'
 
 const StyledImage = styled(Image)`
-  cursor: ${props => props.onClick ? 'pointer' : undefined}
+  cursor: ${props => props.onClick ? 'pointer' : undefined};
+  position: relative;
+  right: 6px;
+  bottom: 2px;
 `
 
 export default class Avatar extends React.Component {

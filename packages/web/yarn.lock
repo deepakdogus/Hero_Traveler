@@ -5573,6 +5573,10 @@ react-google-maps@next:
     scriptjs "^2.5.8"
     warning "^3.0.0"
 
+react-html5video@^2.5.1:
+  version "2.5.1"
+  resolved "https://npm.abeck.io:443/react-html5video/-/react-html5video-2.5.1.tgz#bbc4314be1d583cb991a11ca3480e70a3c964caf"
+
 react-image-cropper@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-image-cropper/-/react-image-cropper-1.1.1.tgz#83599a8cd3b47499695257b2adf9b209afe25cee"

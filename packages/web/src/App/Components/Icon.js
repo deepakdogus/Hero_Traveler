@@ -112,6 +112,8 @@ export default class Icon extends React.Component {
         return Images.iconCreateMenuStory
       case 'createStory':
         return Images.iconNavCreate
+      case 'hamburger':
+        return Images.hamburger
       case 'close':
         return Images.iconContentXWhite
       case 'closeDark':
@@ -130,6 +132,10 @@ export default class Icon extends React.Component {
         return Images.iconProfileBadge
       case 'defaultProfile':
         return Images.iconDefaultProfile
+      case 'googlePlayBadge':
+        return Images.googlePlayBadge
+      case 'appleAppStoreBadge':
+        return Images.appleAppStoreBadge
       case 'components':
         return Images.components
       case 'trash':

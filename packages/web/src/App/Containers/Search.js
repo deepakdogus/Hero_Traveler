@@ -3,7 +3,6 @@ import styled from 'styled-components'
 
 import SearchResultsPeople from '../Components/SearchResultsPeople'
 import SearchResultsStories from '../Components/SearchResultsStories'
-import Header from '../Components/Header'
 import TabBar from '../Components/TabBar'
 import {Row} from '../Components/FlexboxGrid'
 
@@ -96,7 +95,6 @@ export default class Search extends Component {
   render() {
     return (
       <Container>
-        <Header blackHeader={true} isLoggedIn></Header>
         <HeaderInputContainer between='xs'>
           <HeaderInput placeholder='Type to search' />
           <Text>Cancel</Text>

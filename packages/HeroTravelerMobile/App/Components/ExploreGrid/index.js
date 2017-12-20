@@ -8,7 +8,8 @@ import {
 import TabIcon from '../TabIcon'
 import Image from '../Image'
 import styles from './ExploreGridStyles'
-import getS3ImageUrl from '../../Shared/Lib/getS3ImageUrl'
+import getImageUrl from '../../Shared/Lib/getImageUrl'
+import {Metrics} from '../../Shared/Themes'
 
 export default class ExploreGrid extends Component {
 
@@ -23,6 +24,11 @@ export default class ExploreGrid extends Component {
   }
 
   renderRow = (category) => {
+    const categoryUrl = getImageUrl(category.image, 'optimized', {
+      width: Metrics.screenWidth/3 - 4,
+      height: Metrics.screenWidth/3 - 4,
+    })
+
     return (
       <View key={category.id} style={styles.gridRow}>
         <TouchableWithoutFeedback
@@ -30,7 +36,7 @@ export default class ExploreGrid extends Component {
         >
           <Image
             cached={true}
-            source={{uri: getS3ImageUrl(category.image, 'versions.thumbnail240.path')}}
+            source={{uri: categoryUrl}}
             style={styles.gridImage}
           >
             <Text style={styles.gridRowText}>{category.title}</Text>

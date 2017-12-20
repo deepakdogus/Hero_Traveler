@@ -3,6 +3,8 @@ import { ApplicationStyles, Colors, Metrics, Fonts } from '../../Shared/Themes/'
 
 const third = (1 / 3) * (Metrics.screenHeight - Metrics.navBarHeight * 2)
 
+export const coverHeight = 415
+
 export default StyleSheet.create({
   root: {
     flex: 1,
@@ -17,7 +19,7 @@ export default StyleSheet.create({
   lightGreyAreasBG: {
     flex: 1,
     backgroundColor: Colors.lightGreyAreas,
-    maxHeight: 282,
+    maxHeight: coverHeight,
   },
   errorButton: {
     position: 'absolute',
@@ -120,6 +122,9 @@ export default StyleSheet.create({
   baseTextColor: {
     color: Colors.background
   },
+  coverHeight: {
+    height: coverHeight
+  },
   coverPhoto: {
     position: 'absolute',
     top: 0,
@@ -135,6 +140,7 @@ export default StyleSheet.create({
     left: 0,
     right: 0,
     flex: 1,
+    backgroundColor: 'black'
   },
   coverPhotoText: {
     fontFamily: Fonts.type.montserrat,

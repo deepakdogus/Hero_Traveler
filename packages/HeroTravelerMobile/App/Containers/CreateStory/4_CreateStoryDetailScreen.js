@@ -158,9 +158,9 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   saveDraft = (draft) => {
-    const story = _.merge({}, draft, {location: _.trim(workingDraft.location)})
+    const story = _.merge({}, draft, {location: _.trim(draft.location)})
     this.props.update(
-      workingDraft.id,
+      draft.id,
       story
     )
   }

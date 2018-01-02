@@ -10,7 +10,7 @@ import { StyledInput } from './StoryDetails'
 import config from '../../Config/Env'
 
 const { SEARCH_APP_NAME, SEARCH_API_KEY, SEARCH_CATEGORIES_INDEX } = config
-const algoliasearch = algoliasearch_module(SEARCH_APP_NAME, SEARCH_API_KEY, { protocol: 'https:'})
+const algoliasearch = algoliasearch_module(SEARCH_APP_NAME, SEARCH_API_KEY, { protocol: 'https:' })
 
 
 const WrapperCol = styled(Col)`
@@ -65,11 +65,9 @@ export default class CategoryTileGrid extends React.Component {
     inputOnClick: PropTypes.func,
     categoryInputText: PropTypes.string,
     handleTextInput: PropTypes.func,
+    addCategory: PropTypes.func,
   }
 
-  constructor() {
-    super()
-  }
   componentWillMount() {
     this.helper = algoliasearch_helper(algoliasearch, SEARCH_CATEGORIES_INDEX)
     this.setUpSearchListeners(this.helper)
@@ -79,19 +77,13 @@ export default class CategoryTileGrid extends React.Component {
   }
   setUpSearchListeners = (helper) => {
     helper.on('result', res => {
-      console.log('Here are my results', res)
-      // do something?
       if (res.hits && res.hits.length){
         this.props.updateCategoriesList(res.hits)
       }
     })
-    helper.on('search', () => {
-      // do something?
-    })
   }
   removeSearchListeners(helper) {
     helper.removeAllListeners('result')
-    helper.removeAllListeners('search')
   }
   addCategory = () => {
     this.props.addCategory(this.props.categoryInputText)
@@ -99,7 +91,6 @@ export default class CategoryTileGrid extends React.Component {
   handleTextInput = (event) => {
     const text = event.target.value
     this.props.handleTextInput(text)
-    console.log('TEXT', text)
     if (text.length >= 3) {
       _.debounce(() => {
         this.helper
@@ -107,21 +98,13 @@ export default class CategoryTileGrid extends React.Component {
         .search()
       }, 300)()
     }
-    //  _.debounce(() => {
-    //   helper
-    //     .setQuery(q)
-    //     .search()
-    // }, 300)()
-    // I might want to use debounce from lodash to delay call
-//https://css-tricks.com/debouncing-throttling-explained-examples/
-
   }
   render() {
     const {selectedCategories, handleCategoryRemove} = this.props
 
     const renderedTiles = selectedCategories.map((tag) => {
       return (
-        <WrapperCol key={tag.id ? tag.id : tag.title}>
+        <WrapperCol key={tag.id ? tag.id : tag.title}> {/* Tags do not yet have ids if they have just been entered by user*/}
           <Tile around='xs'>
             <TagText>{tag.title}</TagText>
             <StyledIcon

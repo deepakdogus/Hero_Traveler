@@ -102,18 +102,7 @@ function sortCategories(categories) {
   })
 }
 
-function formatCategories(categories) {
-  const titleToCategory = {}
-  const categoriesList = sortCategories(Object.keys(categories).map(key => {
-    const category = categories[key]
-    titleToCategory[category.title] = category
-    return category
-  }))
-  return {
-    titleToCategory,
-    categoriesList,
-  }
-}
+const formatCategories = (categories) => sortCategories(_.values(categories))
 
 function isSameTag(a, b){
   return a.title === b.title
@@ -131,11 +120,9 @@ export default class StoryDetails extends React.Component {
     // may need to refactor the positioning of this logic
     let categoriesList = []
     if (props.categories && props.workingDraft) {
-      const formatedCategories = formatCategories(props.categories)
-      categoriesList = _.differenceWith(formatedCategories.categoriesList, props.workingDraft.categories, isSameTag)
-      this.titleToCategory = formatedCategories.titleToCategory
+      const formattedCategoriesList = formatCategories(props.categories)
+      categoriesList = _.differenceWith(formattedCategoriesList, props.workingDraft.categories, isSameTag)
     }
-    //
 
     this.state = {
       showTagPicker: false,
@@ -147,21 +134,12 @@ export default class StoryDetails extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('MOUNTED normal details')
     if (Object.keys(this.props.categories).length !== Object.keys(nextProps.categories).length && nextProps.workingDraft){
-      const {categoriesList, titleToCategory} = formatCategories(nextProps.categories)
-      this.titleToCategory = titleToCategory
+      const categoriesList = formatCategories(nextProps.categories)
       this.updateCategoriesList(_.differenceWith(categoriesList, nextProps.workingDraft.categories, isSameTag))
     }
   }
 
-  loadDefaultCategories = () => {
-    if (this.props.categories && this.props.workingDraft) {
-      const { titleToCategory, categoriesList } = formatCategories(this.props.categories)
-      this.titleToCategory = titleToCategory
-      this.updateCategoriesList(_.differenceWith(categoriesList, this.props.workingDraft.categories, isSameTag))
-    }
-  }
 
   handleDayClick = (day) => {
     this.setState({
@@ -174,34 +152,6 @@ export default class StoryDetails extends React.Component {
 
   handleRadioChange = (event, value) => {
     this.props.onInputChange({type: value})
-  }
-
-  handleCategoryAdd = (categoryName) => { 
-    this.updateCategoriesList([ {title: categoryName}, ...this.state.categoriesList ])
-  }
-
-
-  handleCategorySelect = (event) => {
-    event.stopPropagation()
-    const categoryTitle = event.target.innerHTML
-    const clickedCategory = this.titleToCategory[categoryTitle] || { title: categoryTitle }
-    const categories = this.props.workingDraft.categories.concat([clickedCategory])
-    this.updateCategoriesList(_.differenceWith(this.state.categoriesList, [clickedCategory], isSameTag))
-    this.setState({
-      showPicker: 'category',
-      categoryInputText: '',
-    })
-    this.props.onInputChange({categories})
-  }
-
-  handleCategoryRemove = (event, tagId) => {
-    event.stopPropagation()
-    const clickedCategoryId = tagId
-    const clickedCategory = this.props.categories[clickedCategoryId] || _.find(this.props.workingDraft.categories, cat => cat.id === clickedCategoryId)
-    console.log(this.props.workingDraft.categories, [clickedCategory], this.props.categories)
-    const categories = _.differenceWith(this.props.workingDraft.categories, [clickedCategory], isSameTag)
-    this.updateCategoriesList(sortCategories(this.state.categoriesList.concat([clickedCategory])))
-    this.props.onInputChange({categories})
   }
 
   togglePicker = (name) => {
@@ -218,6 +168,32 @@ export default class StoryDetails extends React.Component {
     else return Moment(day).format('MM-DD-YYYY')
   }
 
+  handleCategoryAdd = (categoryName) => { 
+    this.updateCategoriesList([ {title: categoryName}, ...this.state.categoriesList ])
+  }
+
+  handleCategorySelect = (event, category) => {
+    event.stopPropagation()
+    const categoryTitle = event.target.innerHTML
+    const clickedCategory = category || { title: categoryTitle }
+    const categories = this.props.workingDraft.categories.concat([clickedCategory])
+    this.updateCategoriesList(_.differenceWith(this.state.categoriesList, [clickedCategory], isSameTag))
+    this.setState({
+      showPicker: 'category',
+      categoryInputText: '',
+    })
+    this.props.onInputChange({categories})
+  }
+
+  handleCategoryRemove = (event, tagId) => {
+    event.stopPropagation()
+    const clickedCategoryId = tagId
+    const clickedCategory = this.props.categories[clickedCategoryId] || _.find(this.props.workingDraft.categories, cat => cat.id === clickedCategoryId)
+    const categories = _.differenceWith(this.props.workingDraft.categories, [clickedCategory], isSameTag)
+    this.updateCategoriesList(sortCategories(this.state.categoriesList.concat([clickedCategory])))
+    this.props.onInputChange({categories})
+  }
+
   updateCategoriesList = (newCategoriesList) => {
     this.setState({
       categoriesList: newCategoriesList
@@ -228,6 +204,13 @@ export default class StoryDetails extends React.Component {
     this.setState({
       categoryInputText: text,
     })
+  }
+
+  loadDefaultCategories = () => {
+    if (this.props.categories && this.props.workingDraft) {
+      const categoriesList = formatCategories(this.props.categories)
+      this.updateCategoriesList(_.differenceWith(categoriesList, this.props.workingDraft.categories, isSameTag))
+    }
   }
 
   render() {
@@ -256,6 +239,7 @@ export default class StoryDetails extends React.Component {
             placeholder={'MM-DD-YYYY'}
             value={this.formatTripDate(workingDraft.tripDate)}
             onClick={this.toggleDayPicker}
+            readOnly
           />
           {showPicker === 'day' &&
             <StyledReactDayPicker

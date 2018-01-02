@@ -186,6 +186,30 @@ class CreateStoryDetailScreen extends React.Component {
     return date.toDateString()
   }
 
+  navToTags = () => {
+    NavActions.createStory_tags({
+      onDone: this._receiveCategories,
+      categories: this.props.workingDraft.categories || this.state.categories
+    })
+  }
+
+  receiveLocation = (place) => {
+    this.props.updateWorkingDraft({
+      location: place.name,
+      latitude: place.latitude,
+      longitude: place.longitude,
+    })
+    NavActions.pop()
+  }
+
+  navToLocation = () => {
+    NavActions.createStory_location({
+      navBack: NavActions.pop,
+      onSelectLocation: this.receiveLocation,
+      location: this.props.workingDraft.location,
+    })
+  }
+
   render () {
     const {workingDraft, publishing} = this.props
     const {isSavingCover, categories, modalVisible, showError} = this.state
@@ -216,16 +240,22 @@ class CreateStoryDetailScreen extends React.Component {
             <Text style={styles.title}>{this.props.story.title} Details </Text>
             <View style={styles.fieldWrapper}>
               <TabIcon name='location' style={locationIconStyle} />
-              <TextInput
-                name='location'
-                component={RenderTextInput}
-                style={styles.inputStyle}
-                placeholder='Location'
-                placeholderTextColor={Colors.navBarText}
-                value={workingDraft.location}
-                onChangeText={this.onLocationChange}
-                returnKeyType='done'
-              />
+              <TouchableWithoutFeedback onPress={this.navToLocation}>
+                <View>
+                  <Text
+                    style={[
+                      styles.inputStyle,
+                      workingDraft.location ? null : {color: Colors.navBarText}
+                    ]}
+                    placeholder='Location'
+                    placeholderTextColor={Colors.navBarText}
+                    value={workingDraft.location}
+
+                  >
+                    {workingDraft.location || 'Location'}
+                  </Text>
+                </View>
+              </TouchableWithoutFeedback>
             </View>
             <View style={styles.fieldWrapper} >
               <TabIcon name='date' style={dateIconStyle} />
@@ -240,10 +270,7 @@ class CreateStoryDetailScreen extends React.Component {
             <View style={styles.fieldWrapper}>
               <TabIcon name='tag' style={tabIconStyle} />
               <TouchableWithoutFeedback
-                onPress={() => NavActions.createStory_tags({
-                  onDone: this._receiveCategories,
-                  categories: workingDraft.categories || categories
-                })}
+                onPress={this.navToTags}
                 style={styles.tagStyle}
               >
                 <View>

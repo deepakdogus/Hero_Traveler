@@ -11,6 +11,16 @@ PODS:
     - FBSDKCoreKit
   - FBSDKShareKit (4.23.0):
     - FBSDKCoreKit
+  - GoogleMaps (2.4.0):
+    - GoogleMaps/Maps (= 2.4.0)
+  - GoogleMaps/Base (2.4.0)
+  - GoogleMaps/Maps (2.4.0):
+    - GoogleMaps/Base
+  - GooglePlacePicker (2.4.0):
+    - GoogleMaps (= 2.4.0)
+    - GooglePlaces (= 2.4.0)
+  - GooglePlaces (2.4.0):
+    - GoogleMaps/Base (= 2.4.0)
   - HockeySDK/AllFeaturesLib (4.1.4)
   - iOS-MagnifyingGlass (0.0.2)
   - IQKeyboardManager (4.0.9)
@@ -20,6 +30,9 @@ DEPENDENCIES:
   - FBSDKCoreKit
   - FBSDKLoginKit
   - FBSDKShareKit
+  - GoogleMaps
+  - GooglePlacePicker
+  - GooglePlaces
   - HockeySDK/AllFeaturesLib
   - iOS-MagnifyingGlass (~> 0.0.2)
   - IQKeyboardManager
@@ -29,10 +42,13 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: d7829f5a69901cd7296105328e4c3c3fc7da6518
   FBSDKLoginKit: 6b92bd65f319d669d2b0730e49db495ef1660566
   FBSDKShareKit: 65751c3b9937ab9d594e6c37611ecc115ceeb448
+  GoogleMaps: 8436ab5d1c25e36915b2f7416d0c8e3fa2e76c61
+  GooglePlacePicker: 755f10343d71280c7b016823e73fbae9625dfa8a
+  GooglePlaces: aafe5990fa7951e98e078761bbdaaf236d7e0c65
   HockeySDK: 78a3f8bb9100277b531defc56c970369a3ca267a
   iOS-MagnifyingGlass: b11b7d3e8be7de22c85f0edcaa75538bdf0827dc
   IQKeyboardManager: 322c7405df3eb5f7e50dede32ea937bf3d4364e0
 
-PODFILE CHECKSUM: 578b03c7e986b3b3099fbd2546d2d5c7721d289c
+PODFILE CHECKSUM: 61c147a58571e23919d40b09460b4aecbde5a711
 
 COCOAPODS: 1.2.1

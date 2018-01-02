@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import algoliasearch_module from 'algoliasearch'
-import algoliasearch_helper from 'algoliasearch_helper'
+import algoliasearch_helper from 'algoliasearch-helper'
 import _ from 'lodash'
 import { Grid, Row, Col } from '../FlexboxGrid';
 import Icon from '../Icon'

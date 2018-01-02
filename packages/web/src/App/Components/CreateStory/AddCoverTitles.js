@@ -208,7 +208,6 @@ export default class AddCoverTitles extends React.Component {
             onChange={this._onTextChange}
             value={this.state.coverCaption}
             maxLength={100}
-            hasImage={!!coverImage}
           />
         }
       </RelativeContainer>

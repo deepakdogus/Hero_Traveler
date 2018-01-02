@@ -69,7 +69,6 @@ const DateIcon = styled(Icon)`
 `
 const TagIcon = styled(Icon)`
   height: 26px;
-  margin-bottom: -8px;
   margin-left: 2px;
 `
 
@@ -142,6 +141,7 @@ export default class StoryDetails extends React.Component {
       showTagPicker: false,
       showDayPicker: false,
       day: '',
+      categoryInputText: '',
       categoriesList,
     };
   }
@@ -152,6 +152,14 @@ export default class StoryDetails extends React.Component {
       const {categoriesList, titleToCategory} = formatCategories(nextProps.categories)
       this.titleToCategory = titleToCategory
       this.updateCategoriesList(_.differenceWith(categoriesList, nextProps.workingDraft.categories, isSameTag))
+    }
+  }
+
+  loadDefaultCategories = () => {
+    if (this.props.categories && this.props.workingDraft) {
+      const { titleToCategory, categoriesList } = formatCategories(this.props.categories)
+      this.titleToCategory = titleToCategory
+      this.updateCategoriesList(_.differenceWith(categoriesList, this.props.workingDraft.categories, isSameTag))
     }
   }
 
@@ -181,14 +189,16 @@ export default class StoryDetails extends React.Component {
     this.updateCategoriesList(_.differenceWith(this.state.categoriesList, [clickedCategory], isSameTag))
     this.setState({
       showPicker: 'category',
+      categoryInputText: '',
     })
     this.props.onInputChange({categories})
   }
 
-  handleCategoryRemove = (event) => {
+  handleCategoryRemove = (event, tagId) => {
     event.stopPropagation()
-    const clickedCategoryId = event.target.attributes.getNamedItem('data-tagName').value
-    const clickedCategory = this.props.categories[clickedCategoryId]
+    const clickedCategoryId = tagId
+    const clickedCategory = this.props.categories[clickedCategoryId] || _.find(this.props.workingDraft.categories, cat => cat.id === clickedCategoryId)
+    console.log(this.props.workingDraft.categories, [clickedCategory], this.props.categories)
     const categories = _.differenceWith(this.props.workingDraft.categories, [clickedCategory], isSameTag)
     this.updateCategoriesList(sortCategories(this.state.categoriesList.concat([clickedCategory])))
     this.props.onInputChange({categories})
@@ -211,6 +221,12 @@ export default class StoryDetails extends React.Component {
   updateCategoriesList = (newCategoriesList) => {
     this.setState({
       categoriesList: newCategoriesList
+    })
+  }
+
+  handleCategoryInputTextChange = (text) => {
+    this.setState({
+      categoryInputText: text,
     })
   }
 
@@ -257,12 +273,15 @@ export default class StoryDetails extends React.Component {
             categories={categoriesList}
             addCategory={this.handleCategoryAdd}
             updateCategoriesList={this.updateCategoriesList}
+            categoryInputText={this.state.categoryInputText}
+            handleTextInput={this.handleCategoryInputTextChange}
           />
           {showPicker === 'category' &&
             <CategoryPicker
               closePicker={this.togglePicker}
               handleCategorySelect={this.handleCategorySelect}
               categoriesList={categoriesList}
+              loadDefaultCategories={this.loadDefaultCategories}
             />
           }
         </InputRowContainer>

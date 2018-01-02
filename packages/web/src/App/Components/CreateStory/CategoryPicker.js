@@ -11,7 +11,6 @@ const TagPickerContainer = styled.div`
   left: 50px;
   top: 56px;
   padding: 30px 15px;
-  height: 340px;
   width: 290px;
   overflow: auto;
   background-color: white;
@@ -44,14 +43,14 @@ static propTypes = {
   }
 
   handleClickOutside() {
-    console.log('closing')
     this.props.closePicker()
+    this.props.loadDefaultCategories()
   }
   renderList(categoriesList) {
     return (
       categoriesList.map((tag) => {
         return (
-          <div key={tag.id}>
+          <div key={tag.id ? tag.id : tag.title}>
             <Tag onClick={this.props.handleCategorySelect}>{tag.title}</Tag>
             <StyledHorizontalDivider color='lighter-grey' opaque/>
           </div>

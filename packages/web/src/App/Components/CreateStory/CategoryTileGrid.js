@@ -14,7 +14,6 @@ const algoliasearch = algoliasearch_module(SEARCH_APP_NAME, SEARCH_API_KEY, { pr
 
 
 const WrapperCol = styled(Col)`
-  max-width: 140px;
   margin: 10px;
 `
 
@@ -64,13 +63,12 @@ export default class CategoryTileGrid extends React.Component {
     inputValue: PropTypes.string,
     inputOnChange: PropTypes.func,
     inputOnClick: PropTypes.func,
+    categoryInputText: PropTypes.string,
+    handleTextInput: PropTypes.func,
   }
 
   constructor() {
     super()
-    this.state = {
-      inputText: '',
-    }
   }
   componentWillMount() {
     this.helper = algoliasearch_helper(algoliasearch, SEARCH_CATEGORIES_INDEX)
@@ -81,7 +79,11 @@ export default class CategoryTileGrid extends React.Component {
   }
   setUpSearchListeners = (helper) => {
     helper.on('result', res => {
+      console.log('Here are my results', res)
       // do something?
+      if (res.hits && res.hits.length){
+        this.props.updateCategoriesList(res.hits)
+      }
     })
     helper.on('search', () => {
       // do something?
@@ -92,44 +94,40 @@ export default class CategoryTileGrid extends React.Component {
     helper.removeAllListeners('search')
   }
   addCategory = () => {
-    this.props.addCategory(this.state.inputText)
+    this.props.addCategory(this.props.categoryInputText)
   }
   handleTextInput = (event) => {
     const text = event.target.value
-    this.setState({
-      inputText: text,
-    })
-    // if text > 3 chars
-    this.helper
-    .setQuery(text)
-    .search()
-
+    this.props.handleTextInput(text)
+    console.log('TEXT', text)
+    if (text.length >= 3) {
+      _.debounce(() => {
+        this.helper
+        .setQuery(text)
+        .search()
+      }, 300)()
+    }
+    //  _.debounce(() => {
+    //   helper
+    //     .setQuery(q)
+    //     .search()
+    // }, 300)()
     // I might want to use debounce from lodash to delay call
 //https://css-tricks.com/debouncing-throttling-explained-examples/
 
-    // index.search(text, (err, content) => {
-    //   console.log('SEARCH', err, content)
-    //   if (!err) {
-    //     const newList = content.hits.map(hit => {
-    //       const alreadyExists = _.find(this.props.categories, cat => cat.title === hit.title)
-    //       return alreadyExists || hit
-    //     })
-    //     this.props.updateCategoriesList(newList)
-    //   }
-    // })
   }
   render() {
     const {selectedCategories, handleCategoryRemove} = this.props
 
     const renderedTiles = selectedCategories.map((tag) => {
       return (
-        <WrapperCol key={tag.id}>
+        <WrapperCol key={tag.id ? tag.id : tag.title}>
           <Tile around='xs'>
             <TagText>{tag.title}</TagText>
             <StyledIcon
               data-tagName={tag.id}
               name='closeDark'
-              onClick={handleCategoryRemove}
+              onClick={(e) => handleCategoryRemove(e, tag.id)}
             />
           </Tile>
         </WrapperCol>
@@ -145,7 +143,7 @@ export default class CategoryTileGrid extends React.Component {
           <StyledInput
               type='text'
               placeholder='Add Categories'
-              value={this.state.inputText}
+              value={this.props.categoryInputText}
               onChange={this.handleTextInput}
               onClick={this.props.inputOnClick}
               onKeyPress={(e) => { 

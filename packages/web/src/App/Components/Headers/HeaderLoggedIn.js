@@ -54,6 +54,18 @@ const StyledRoundedNotificationButton = styled(StyledRoundedButton)`
     bottom: 3px;
 `
 
+const Sidebar = styled.div`
+  position: absolute;
+  top: 70; 
+`
+const SidebarDemiLink = styled.p`
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  color: ${props => props.theme.Colors.background};
+  font-weight: 400;
+  letter-spacing: .7px;
+  font-size: 16px;
+`
+
 class HeaderLoggedIn extends React.Component {
   static PropTypes = {
     openModal: PropTypes.func,
@@ -114,6 +126,7 @@ class HeaderLoggedIn extends React.Component {
               <NavLink
                 to={`/profile/${user}/view`}
               >
+              
                 <StyledRoundedAvatarButton
                   type='headerButton'
                   height='32px'
@@ -126,6 +139,15 @@ class HeaderLoggedIn extends React.Component {
                     avatarUrl={getImageUrl(profileAvatar)}
                   />
                 </StyledRoundedAvatarButton>
+              <Sidebar>
+                <SidebarDemiLink style={{paddingLeft: 20, textAlign: 'start'}}>My Profile</SidebarDemiLink>
+                <SidebarDemiLink style={{paddingLeft: 20, textAlign: 'start'}}>Settings</SidebarDemiLink>
+                <SidebarDemiLink style={{paddingLeft: 20, textAlign: 'start'}}>Customize Interests</SidebarDemiLink>
+                <SidebarDemiLink style={{paddingLeft: 20, textAlign: 'start'}}>FAQ</SidebarDemiLink>
+                <SidebarDemiLink style={{paddingLeft: 20, textAlign: 'start'}}> Logout</SidebarDemiLink>
+              </Sidebar>
+
+              
               </NavLink>
             </LoggedInDesktopContainer>
             <LoggedInTabletContainer>

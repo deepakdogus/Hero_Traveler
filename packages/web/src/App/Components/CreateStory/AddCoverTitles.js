@@ -78,6 +78,14 @@ const StyledSubTitleInput = styled(StyledInput)`
   font-size: 20px;
 `
 
+const StyledCoverCaptionInput = styled(StyledInput)`
+  background-color: transparent;
+  font-size: 14px;
+  font-style: italic;
+  margin-top: 7px;
+  width: 100%;
+`
+
 const TitleInputsContainer = styled.div`
   text-align: center;
   background-color: inherit;
@@ -100,6 +108,7 @@ export default class AddCoverTitles extends React.Component {
     this.state = {
       title: props.workingDraft.title || '',
       description: props.workingDraft.description || '',
+      coverCaption: props.workingDraft.coverCaption || '',
     }
   }
 
@@ -192,6 +201,16 @@ export default class AddCoverTitles extends React.Component {
             />
           </TitleInputsContainer>
         </Container>
+        { !!coverImage && <StyledCoverCaptionInput
+            type='text'
+            placeholder='Add Cover Caption'
+            name='coverCaption'
+            onChange={this._onTextChange}
+            value={this.state.coverCaption}
+            maxLength={100}
+            hasImage={!!coverImage}
+          />
+        }
       </RelativeContainer>
     )
   }

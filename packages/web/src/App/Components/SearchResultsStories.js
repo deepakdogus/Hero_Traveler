@@ -22,7 +22,7 @@ export default class SearchResultsStories extends Component {
   }
 
   render() {
-    const stories = this.props.storySearchResults;
+    const stories = this.props.userSearchResults;
     const users = this.props.userSearchResults;
 
     /*
@@ -35,7 +35,7 @@ export default class SearchResultsStories extends Component {
       return (
         <StorySelectRow
           story={story}
-          username={users[story.author].username}
+          username={story.username}
           key={index}
           index={index}
           ReplacementContainer={StyledContainer}

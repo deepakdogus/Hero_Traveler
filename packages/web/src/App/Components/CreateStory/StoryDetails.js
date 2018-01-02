@@ -250,7 +250,7 @@ export default class StoryDetails extends React.Component {
         <HorizontalDivider color='lighter-grey' opaque/>
         <InputRowContainer>
           <TagIcon name='tag'/>        
-          <CategoryTileGrid
+          <CategoryTileGridAndInput
             selectedCategories={this.props.workingDraft.categories}
             handleCategoryRemove={this.handleCategoryRemove}
             inputOnClick={this.toggleTagPicker}

@@ -53,7 +53,7 @@ const StyledGrid = styled(Grid)`
 `
 
 
-export default class CategoryTileGrid extends React.Component {
+export default class CategoryTileGridAndInput extends React.Component {
   static propTypes = {
     selectedCategories: PropTypes.arrayOf(PropTypes.object),
     categories: PropTypes.arrayOf(PropTypes.object),

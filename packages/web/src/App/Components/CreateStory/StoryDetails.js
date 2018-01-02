@@ -10,7 +10,7 @@ import HorizontalDivider from '../HorizontalDivider'
 import GoogleLocator from './GoogleLocator'
 import ReactDayPicker from './ReactDayPicker'
 import CategoryPicker from './CategoryPicker'
-import CategoryTileGrid from './CategoryTileGrid'
+import CategoryTileGridAndInput from './CategoryTileGridAndInput'
 import {Title} from './Shared'
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton'
 import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unchecked'
@@ -214,7 +214,7 @@ export default class StoryDetails extends React.Component {
   }
 
   render() {
-    const {workingDraft, onInputChange, } = this.props
+    const {workingDraft, onInputChange } = this.props
     const {showPicker, categoriesList} = this.state
 
     // normally this only happens when you just published a draft

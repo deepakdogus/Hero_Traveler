@@ -12,7 +12,7 @@ export default StyleSheet.create({
     marginHorizontal: Metrics.doubleBaseMargin,
     flexDirection: 'column'
   },
-  doneBtn: {
+  cancelBtn: {
     flex: 1,
     height: Metrics.navBarHeight,
     flexDirection: 'row',
@@ -20,7 +20,7 @@ export default StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center'
   },
-  doneBtnText: {
+  cancelBtnText: {
     fontFamily: Fonts.type.montserrat,
     color: Colors.red,
     fontWeight: '600',
@@ -30,10 +30,6 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: Colors.lightGreyAreas,
     paddingVertical: 5,
-  },
-  selectedCategoryRow: {
-    backgroundColor: Colors.lightGreyAreas,
-    marginBottom: Metrics.baseMargin / 5,
   },
   text: {
     fontWeight: '300',
@@ -46,10 +42,6 @@ export default StyleSheet.create({
     letterSpacing: .7,
     fontSize: 16,
     color: Colors.background,
-  },
-  removeCategoryIcon: {
-    marginTop: 2,
-    color: Colors.background
   },
   formWrapper: {
     flex: .2,
@@ -67,18 +59,6 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: Colors.lightGreyAreas,
     marginVertical: Metrics.baseMargin / 2
-  },
-  addBtn: {
-    width: 60,
-    height: 40,
-    position: 'absolute',
-    left: -60,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  addText: {
-    flex: 1,
-    textAlign: 'center'
   },
   spinner: {
     margin: Metrics.section

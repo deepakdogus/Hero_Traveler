@@ -50,9 +50,12 @@ class LocationScreen extends Component {
   }
 
   selectLocation = (placeID) => {
+    this.setState({searching: true})
     RNGooglePlaces.lookUpPlaceByID(placeID)
     .then((results) => {
-      this.props.onSelectLocation(results)
+      this.setState({searching: false}, () => {
+        this.props.onSelectLocation(results)
+      })
     })
   }
 
@@ -76,10 +79,10 @@ class LocationScreen extends Component {
       <View style={styles.root}>
         <View style={{marginTop: Metrics.baseMargin, height: 40}}>
           <TouchableOpacity
-            style={styles.doneBtn}
+            style={styles.cancelBtn}
             onPress={this.props.navBack}
           >
-            <Text style={styles.doneBtnText}>Cancel</Text>
+            <Text style={styles.cancelBtnText}>Cancel</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.content}>

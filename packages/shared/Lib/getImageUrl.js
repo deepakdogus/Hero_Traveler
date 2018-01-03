@@ -1,31 +1,136 @@
 import _ from 'lodash'
 import Env from '../../Config/Env'
 import {getVideoUrlBase} from './getVideoUrl'
+import metrics from '../Themes/Metrics'
 
-export function getImageUrlBase() {
+function getImageUrlBase() {
   return `https://res.cloudinary.com/${Env.cloudName}/image/upload`
 }
 
-export function getContentBlockImage(urlSuffix) {
-  return `${getImageUrlBase()}/q_auto:best,f_auto/${urlSuffix}`
+function buildUrl(base: string, uri: string, urlParameters: object): string {
+  const parameters = _.map(_.toPairs(urlParameters || {}), function(pair) {
+    return `${pair[0]}_${pair[1]}`
+  })
+
+  if (parameters.length > 0) {
+    const parameterString = parameters.join(',')
+    return `${base}/${parameterString}/${uri}`
+  }
+
+  return `${base}/${uri}`
 }
 
-export default function getImageUrl(image: object, type = 'cover'): ?string {
-  if (!_.has(image, 'original')) return undefined
-  const {path, folders} = image.original
-  let filename = _.last(path.split('/'))
-  // hot fix to avoid search crashing. Need to bulk update algolia
-  const folderPath = folders ? folders.join('/') : 'files'
-  let url
-  // for now we are only optimizing cover photos. Will look into possible Avatar optimizations later
-  if (type === 'avatar') url = `${getImageUrlBase()}/${folderPath}/${filename}`
-  else if (type === 'video') {
-    // replacing video format with jpg to get thumbnail
-    filename = filename.split('.')
-    filename[filename.length-1] = 'jpg'
-    filename = filename.join('.')
-    url = `${getVideoUrlBase()}/so_0/${folderPath}/${filename}`
+function ensureJpgExtension(uri: string): string {
+    uri = uri.split('.')
+    uri[uri.length-1] = 'jpg'
+    uri = uri.join('.')
+    return uri
+}
+
+function getUri(image: object|string): ?string {
+  if (!image) {
+    return undefined
   }
-  else url = `${getImageUrlBase()}/q_auto:best,f_auto/${folderPath}/${filename}`
-  return url
+
+  if (typeof(image) == 'string') {
+    return ensureJpgExtension(image)
+  } else if (typeof(image) == 'object' && _.has(image, 'original')) {
+    const {path, folders} = image.original
+    if (!path) {
+      return undefined
+    }
+
+    const filename = ensureJpgExtension(_.last(path.split('/')))
+    // hot fix to avoid search crashing. Need to bulk update algolia
+    const folderPath = folders ? folders.join('/') : 'files'
+    return `${folderPath}/${filename}`
+  }
+
+  return undefined
+}
+
+function getBasicOptimizedUrlParameters(size: object) {
+  const urlParameters = {
+    f: 'auto',
+  }
+
+  if (size.width) {
+    urlParameters.w = `${size.width}`
+  }
+
+  if (size.height) {
+    urlParameters.h = `${size.height}`
+  }
+
+  if (size.width && size.height) {
+    urlParameters.c = 'fill'
+  }
+
+  return urlParameters
+}
+
+function getContentBlockImageParameters(size: object): string {
+  return {q: 'auto:best', f: 'auto'}
+}
+
+function getBasicImageUrlParameters(size: object): string {
+  return {}
+}
+
+function getAvatarImageUrlParameters(size: object): string {
+  return {}
+}
+
+function getLoadingPreviewImageUrlParameters(size: object): string {
+  if (size.width) {
+    size.width = Math.round(size.width/4)
+  }
+  if (size.height) {
+    size.height = Math.round(size.height/4)
+  }
+
+  const urlParameters = getBasicOptimizedUrlParameters(size)
+  urlParameters.q = 'auto:low'
+  urlParameters.e = 'blur:5000'
+  return urlParameters
+}
+
+function getOptimizedImageUrlParameters(size: object): string {
+  const urlParameters = getBasicOptimizedUrlParameters(size)
+  urlParameters.q = 'auto:best'
+  return urlParameters
+}
+
+const imageUrlParametersFactories = {
+  basic: getBasicImageUrlParameters,
+  contentBlock: getContentBlockImageParameters,
+  avatar: getAvatarImageUrlParameters,
+  loading: getLoadingPreviewImageUrlParameters,
+  optimized: getOptimizedImageUrlParameters,
+}
+
+export default function getImageUrl(image: object|string, type: string, options: object = {}): ?string {
+  const uri = getUri(image)
+  if (!uri) {
+    return undefined
+  }
+
+  const imageSize = {}
+
+  if (options.width == 'screen') {
+    imageSize.width = Math.round(metrics.screenWidth * metrics.pixelRatio)
+  } else if (options.width) {
+    imageSize.width = Math.round(options.width * metrics.pixelRatio)
+  }
+
+  if (options.height == 'screen') {
+    imageSize.height = Math.round(metrics.screenHeight * metrics.pixelRatio)
+  } else if (options.height) {
+    imageSize.height = Math.round(options.height * metrics.pixelRatio)
+  }
+
+  const base = options.video ? getVideoUrlBase() : getImageUrlBase()
+  const urlParametersFactory = imageUrlParametersFactories[type] || getOptimizedImageUrlParameters
+  const urlParameters = urlParametersFactory(imageSize)
+  return buildUrl(base, uri, urlParameters)
 }

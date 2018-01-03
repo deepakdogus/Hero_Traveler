@@ -120,8 +120,12 @@ export default class ProfileTabsAndStories extends Component {
     return ''
   }
 
+  isGettingStories() {
+    return !this.props.fetchStatus.loaded && this.props.fetchStatus.fetching
+  }
+
   render() {
-    const {renderProfileInfo, storiesById, fetchStatus} = this.props
+    const {renderProfileInfo, storiesById, fetchStatus, editable} = this.props
 
     return (
       <View>
@@ -136,7 +140,7 @@ export default class ProfileTabsAndStories extends Component {
             <Text style={styles.noStoriesText}>{this.getNoStoriesText()}</Text>
           </View>
         }
-        {!fetchStatus.loaded && fetchStatus.fetching &&
+        {this.isGettingStories() &&
           <View style={styles.spinnerWrapper}>
             <Loader
               style={styles.spinner}
@@ -144,9 +148,9 @@ export default class ProfileTabsAndStories extends Component {
           </View>
         }
 
-        {storiesById.length !== 0 &&
+        {storiesById.length !== 0 && !this.isGettingStories() &&
           <StoryList
-            style={{height:  Metrics.screenHeight - Metrics.tabBarHeight}}
+            style={editable && {height:  Metrics.screenHeight - Metrics.tabBarHeight}}
             storiesById={storiesById}
             refreshing={false}
             renderHeaderContent={renderProfileInfo()}

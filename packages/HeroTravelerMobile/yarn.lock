@@ -49,8 +49,8 @@
   resolved "https://npm.abeck.io:443/@hero%2freact-native-autogrow-textinput/-/react-native-autogrow-textinput-3.0.5.tgz#a39ab3b12264e5893a0eec4ac77af78bcccf39b5"
 
 abbrev@1:
-  version "1.1.0"
-  resolved "https://npm.abeck.io:443/abbrev/-/abbrev-1.1.0.tgz#d0554c2256636e2f56e7c2e5ad183f859428d81f"
+  version "1.1.1"
+  resolved "https://npm.abeck.io:443/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
 
 absolute-path@^0.0.0:
   version "0.0.0"
@@ -64,13 +64,13 @@ accepts@~1.2.12, accepts@~1.2.13:
     negotiator "0.5.3"
 
 accepts@~1.3.0:
-  version "1.3.3"
-  resolved "https://npm.abeck.io:443/accepts/-/accepts-1.3.3.tgz#c3ca7434938648c3e0d9c1e328dd68b622c284ca"
+  version "1.3.4"
+  resolved "https://npm.abeck.io:443/accepts/-/accepts-1.3.4.tgz#86246758c7dd6d21a6474ff084a4740ec05eb21f"
   dependencies:
-    mime-types "~2.1.11"
+    mime-types "~2.1.16"
     negotiator "0.6.1"
 
-acorn-jsx@^3.0.0, acorn-jsx@^3.0.1:
+acorn-jsx@^3.0.0:
   version "3.0.1"
   resolved "https://npm.abeck.io:443/acorn-jsx/-/acorn-jsx-3.0.1.tgz#afdf9488fb1ecefc8348f6fb22f464e32a58b36b"
   dependencies:
@@ -80,9 +80,13 @@ acorn@^3.0.4:
   version "3.3.0"
   resolved "https://npm.abeck.io:443/acorn/-/acorn-3.3.0.tgz#45e37fb39e8da3f25baee3ff5369e2bb5f22017a"
 
-acorn@^5.1.1:
-  version "5.1.1"
-  resolved "https://npm.abeck.io:443/acorn/-/acorn-5.1.1.tgz#53fe161111f912ab999ee887a90a0bc52822fd75"
+acorn@^5.2.1:
+  version "5.2.1"
+  resolved "https://npm.abeck.io:443/acorn/-/acorn-5.2.1.tgz#317ac7821826c22c702d66189ab8359675f135d7"
+
+adm-zip@^0.4.7:
+  version "0.4.7"
+  resolved "https://npm.abeck.io:443/adm-zip/-/adm-zip-0.4.7.tgz#8606c2cbf1c426ce8c8ec00174447fd49b6eafc1"
 
 after@0.8.2:
   version "0.8.2"
@@ -96,6 +100,10 @@ ajv-keywords@^1.0.0:
   version "1.5.1"
   resolved "https://npm.abeck.io:443/ajv-keywords/-/ajv-keywords-1.5.1.tgz#314dd0a4b3368fad3dfcdc54ede6171b886daf3c"
 
+ajv-keywords@^2.1.0:
+  version "2.1.1"
+  resolved "https://npm.abeck.io:443/ajv-keywords/-/ajv-keywords-2.1.1.tgz#617997fc5f60576894c435f940d819e135b80762"
+
 ajv@^4.7.0, ajv@^4.9.1:
   version "4.11.8"
   resolved "https://npm.abeck.io:443/ajv/-/ajv-4.11.8.tgz#82ffb02b29e662ae53bdc20af15947706739c536"
@@ -103,18 +111,18 @@ ajv@^4.7.0, ajv@^4.9.1:
     co "^4.6.0"
     json-stable-stringify "^1.0.1"
 
-ajv@^5.2.0:
-  version "5.2.2"
-  resolved "https://npm.abeck.io:443/ajv/-/ajv-5.2.2.tgz#47c68d69e86f5d953103b0074a9430dc63da5e39"
+ajv@^5.1.0, ajv@^5.2.3, ajv@^5.3.0:
+  version "5.5.1"
+  resolved "https://npm.abeck.io:443/ajv/-/ajv-5.5.1.tgz#b38bb8876d9e86bee994956a04e721e88b248eb2"
   dependencies:
     co "^4.6.0"
     fast-deep-equal "^1.0.0"
+    fast-json-stable-stringify "^2.0.0"
     json-schema-traverse "^0.3.0"
-    json-stable-stringify "^1.0.1"
 
 algoliasearch-helper@^2.20.1:
-  version "2.21.2"
-  resolved "https://npm.abeck.io:443/algoliasearch-helper/-/algoliasearch-helper-2.21.2.tgz#73a1f9a9e60be0ed04ce93d5f63fc7105e599f5b"
+  version "2.23.1"
+  resolved "https://npm.abeck.io:443/algoliasearch-helper/-/algoliasearch-helper-2.23.1.tgz#6dfddcbb9a6bd7ffe1d77607e6ed59d5bb5a9f30"
   dependencies:
     events "^1.1.0"
     lodash "^4.13.1"
@@ -122,8 +130,8 @@ algoliasearch-helper@^2.20.1:
     util "^0.10.3"
 
 algoliasearch@^3.22.1:
-  version "3.24.3"
-  resolved "https://npm.abeck.io:443/algoliasearch/-/algoliasearch-3.24.3.tgz#0b5da4242baa2e4bf9359bd20c47266ec0e501f4"
+  version "3.24.7"
+  resolved "https://npm.abeck.io:443/algoliasearch/-/algoliasearch-3.24.7.tgz#7ba6c41c9c87b3d36c3181e1d93d482b2ae1a660"
   dependencies:
     agentkeepalive "^2.2.0"
     debug "^2.6.8"
@@ -167,6 +175,16 @@ ansi-escapes@^2.0.0:
   version "2.0.0"
   resolved "https://npm.abeck.io:443/ansi-escapes/-/ansi-escapes-2.0.0.tgz#5bae52be424878dd9783e8910e3fc2922e83c81b"
 
+ansi-escapes@^3.0.0:
+  version "3.0.0"
+  resolved "https://npm.abeck.io:443/ansi-escapes/-/ansi-escapes-3.0.0.tgz#ec3e8b4e9f8064fc02c3ac9b65f1c275bda8ef92"
+
+ansi-gray@^0.1.1:
+  version "0.1.1"
+  resolved "https://npm.abeck.io:443/ansi-gray/-/ansi-gray-0.1.1.tgz#2962cf54ec9792c48510a3deb524436861ef7251"
+  dependencies:
+    ansi-wrap "0.1.0"
+
 ansi-regex@^0.2.0, ansi-regex@^0.2.1:
   version "0.2.1"
   resolved "https://npm.abeck.io:443/ansi-regex/-/ansi-regex-0.2.1.tgz#0d8e946967a3d8143f93e24e298525fc1b2235f9"
@@ -197,6 +215,10 @@ ansi-styles@~1.0.0:
   version "1.0.0"
   resolved "https://npm.abeck.io:443/ansi-styles/-/ansi-styles-1.0.0.tgz#cb102df1c56f5123eab8b67cd7b98027a0279178"
 
+ansi-wrap@0.1.0:
+  version "0.1.0"
+  resolved "https://npm.abeck.io:443/ansi-wrap/-/ansi-wrap-0.1.0.tgz#a82250ddb0015e9a27ca82e82ea603bbfa45efaf"
+
 ansi@^0.3.0, ansi@~0.3.1:
   version "0.3.1"
   resolved "https://npm.abeck.io:443/ansi/-/ansi-0.3.1.tgz#0c42d4fb17160d5a9af1e484bace1c66922c1b21"
@@ -218,8 +240,8 @@ apisauce@^0.10.0:
     ramdasauce "^1.1.1"
 
 apisauce@^0.14.0:
-  version "0.14.0"
-  resolved "https://npm.abeck.io:443/apisauce/-/apisauce-0.14.0.tgz#6d32ba9a4a2cdd34e4ae81e89f887db3e6d23fbc"
+  version "0.14.2"
+  resolved "https://npm.abeck.io:443/apisauce/-/apisauce-0.14.2.tgz#ee1b5961b5b9e5fb4a53e7409b454a41c703bb86"
   dependencies:
     axios "^0.16.2"
     ramda "^0.24.1"
@@ -231,14 +253,8 @@ append-transform@^0.4.0:
     default-require-extensions "^1.0.0"
 
 aproba@^1.0.3:
-  version "1.1.2"
-  resolved "https://npm.abeck.io:443/aproba/-/aproba-1.1.2.tgz#45c6629094de4e96f693ef7eab74ae079c240fc1"
-
-archive-type@^3.0.0:
-  version "3.2.0"
-  resolved "https://npm.abeck.io:443/archive-type/-/archive-type-3.2.0.tgz#9cd9c006957ebe95fadad5bd6098942a813737f6"
-  dependencies:
-    file-type "^3.1.0"
+  version "1.2.0"
+  resolved "https://npm.abeck.io:443/aproba/-/aproba-1.2.0.tgz#6802e6264efd18c790a1b0d517f0f2627bf2c94a"
 
 archy@^1.0.0:
   version "1.0.0"
@@ -283,6 +299,13 @@ array-find-index@^1.0.1:
   version "1.0.2"
   resolved "https://npm.abeck.io:443/array-find-index/-/array-find-index-1.0.2.tgz#df010aa1287e164bbda6f9723b0a96a1ec4187a1"
 
+array-includes@^3.0.3:
+  version "3.0.3"
+  resolved "https://npm.abeck.io:443/array-includes/-/array-includes-3.0.3.tgz#184b48f62d92d7452bb31b323165c7f8bd02266d"
+  dependencies:
+    define-properties "^1.1.2"
+    es-abstract "^1.7.0"
+
 array-map@~0.0.0:
   version "0.0.0"
   resolved "https://npm.abeck.io:443/array-map/-/array-map-0.0.0.tgz#88a2bab73d1cf7bcd5c1b118a003f66f665fa662"
@@ -304,6 +327,13 @@ array-uniq@^1.0.1, array-uniq@^1.0.2:
 array-unique@^0.2.1:
   version "0.2.1"
   resolved "https://npm.abeck.io:443/array-unique/-/array-unique-0.2.1.tgz#a1d97ccafcbc2625cc70fadceb36a50c58b01a53"
+
+array.prototype.find@^2.0.1:
+  version "2.0.4"
+  resolved "https://npm.abeck.io:443/array.prototype.find/-/array.prototype.find-2.0.4.tgz#556a5c5362c08648323ddaeb9de9d14bc1864c90"
+  dependencies:
+    define-properties "^1.1.2"
+    es-abstract "^1.7.0"
 
 arraybuffer.slice@0.0.6:
   version "0.0.6"
@@ -333,27 +363,17 @@ assert-plus@^0.2.0:
   version "0.2.0"
   resolved "https://npm.abeck.io:443/assert-plus/-/assert-plus-0.2.0.tgz#d74e1b87e7affc0db8aadb7021f3fe48101ab234"
 
-ast-query@^2.0.0:
-  version "2.0.0"
-  resolved "https://npm.abeck.io:443/ast-query/-/ast-query-2.0.0.tgz#3588e79ad8de07ce50df1e781cc2bda1fd69a453"
-  dependencies:
-    acorn-jsx "^3.0.1"
-    class-extend "^0.1.1"
-    escodegen-wallaby "^1.6.7"
-    lodash "^4.6.1"
-    traverse "^0.6.6"
-
 async-each@^1.0.0:
   version "1.0.1"
   resolved "https://npm.abeck.io:443/async-each/-/async-each-1.0.1.tgz#19d386a1d9edc6e7c1c85d388aedbcc56d33602d"
 
-async@^1.4.0, async@^1.4.2:
+async@^1.4.0:
   version "1.5.2"
   resolved "https://npm.abeck.io:443/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
 
 async@^2.0.1:
-  version "2.5.0"
-  resolved "https://npm.abeck.io:443/async/-/async-2.5.0.tgz#843190fd6b7357a0b9e1c956edddd5ec8462b54d"
+  version "2.6.0"
+  resolved "https://npm.abeck.io:443/async/-/async-2.6.0.tgz#61a29abb6fcc026fea77e56d1c6ec53a795951f4"
   dependencies:
     lodash "^4.14.0"
 
@@ -464,7 +484,11 @@ aws-sign2@~0.6.0:
   version "0.6.0"
   resolved "https://npm.abeck.io:443/aws-sign2/-/aws-sign2-0.6.0.tgz#14342dd38dbcc94d0e5b87d763cd63612c0e794f"
 
-aws4@^1.2.1:
+aws-sign2@~0.7.0:
+  version "0.7.0"
+  resolved "https://npm.abeck.io:443/aws-sign2/-/aws-sign2-0.7.0.tgz#b46e890934a9591f2d2f6f86d7e6a9f1b3fe76a8"
+
+aws4@^1.2.1, aws4@^1.6.0:
   version "1.6.0"
   resolved "https://npm.abeck.io:443/aws4/-/aws4-1.6.0.tgz#83ef5ca860b2b32e4a0deedee8c771b9db57471e"
 
@@ -481,37 +505,37 @@ axios@^0.16.2:
     follow-redirects "^1.2.3"
     is-buffer "^1.1.5"
 
-babel-code-frame@^6.16.0, babel-code-frame@^6.22.0:
-  version "6.22.0"
-  resolved "https://npm.abeck.io:443/babel-code-frame/-/babel-code-frame-6.22.0.tgz#027620bee567a88c32561574e7fd0801d33118e4"
+babel-code-frame@^6.16.0, babel-code-frame@^6.22.0, babel-code-frame@^6.26.0:
+  version "6.26.0"
+  resolved "https://npm.abeck.io:443/babel-code-frame/-/babel-code-frame-6.26.0.tgz#63fd43f7dc1e3bb7ce35947db8fe369a3f58c74b"
   dependencies:
-    chalk "^1.1.0"
+    chalk "^1.1.3"
     esutils "^2.0.2"
-    js-tokens "^3.0.0"
+    js-tokens "^3.0.2"
 
-babel-core@^6.17.0, babel-core@^6.21.0, babel-core@^6.24.1, babel-core@^6.7.2:
-  version "6.25.0"
-  resolved "https://npm.abeck.io:443/babel-core/-/babel-core-6.25.0.tgz#7dd42b0463c742e9d5296deb3ec67a9322dad729"
+babel-core@^6.17.0, babel-core@^6.21.0, babel-core@^6.26.0, babel-core@^6.7.2:
+  version "6.26.0"
+  resolved "https://npm.abeck.io:443/babel-core/-/babel-core-6.26.0.tgz#af32f78b31a6fcef119c87b0fd8d9753f03a0bb8"
   dependencies:
-    babel-code-frame "^6.22.0"
-    babel-generator "^6.25.0"
+    babel-code-frame "^6.26.0"
+    babel-generator "^6.26.0"
     babel-helpers "^6.24.1"
     babel-messages "^6.23.0"
-    babel-register "^6.24.1"
-    babel-runtime "^6.22.0"
-    babel-template "^6.25.0"
-    babel-traverse "^6.25.0"
-    babel-types "^6.25.0"
-    babylon "^6.17.2"
-    convert-source-map "^1.1.0"
-    debug "^2.1.1"
-    json5 "^0.5.0"
-    lodash "^4.2.0"
-    minimatch "^3.0.2"
-    path-is-absolute "^1.0.0"
-    private "^0.1.6"
+    babel-register "^6.26.0"
+    babel-runtime "^6.26.0"
+    babel-template "^6.26.0"
+    babel-traverse "^6.26.0"
+    babel-types "^6.26.0"
+    babylon "^6.18.0"
+    convert-source-map "^1.5.0"
+    debug "^2.6.8"
+    json5 "^0.5.1"
+    lodash "^4.17.4"
+    minimatch "^3.0.4"
+    path-is-absolute "^1.0.1"
+    private "^0.1.7"
     slash "^1.0.0"
-    source-map "^0.5.0"
+    source-map "^0.5.6"
 
 babel-eslint@^7.2.3:
   version "7.2.3"
@@ -522,17 +546,17 @@ babel-eslint@^7.2.3:
     babel-types "^6.23.0"
     babylon "^6.17.0"
 
-babel-generator@^6.1.0, babel-generator@^6.18.0, babel-generator@^6.21.0, babel-generator@^6.25.0:
-  version "6.25.0"
-  resolved "https://npm.abeck.io:443/babel-generator/-/babel-generator-6.25.0.tgz#33a1af70d5f2890aeb465a4a7793c1df6a9ea9fc"
+babel-generator@^6.1.0, babel-generator@^6.18.0, babel-generator@^6.21.0, babel-generator@^6.26.0:
+  version "6.26.0"
+  resolved "https://npm.abeck.io:443/babel-generator/-/babel-generator-6.26.0.tgz#ac1ae20070b79f6e3ca1d3269613053774f20dc5"
   dependencies:
     babel-messages "^6.23.0"
-    babel-runtime "^6.22.0"
-    babel-types "^6.25.0"
+    babel-runtime "^6.26.0"
+    babel-types "^6.26.0"
     detect-indent "^4.0.0"
     jsesc "^1.3.0"
-    lodash "^4.2.0"
-    source-map "^0.5.0"
+    lodash "^4.17.4"
+    source-map "^0.5.6"
     trim-right "^1.0.1"
 
 babel-helper-bindify-decorators@^6.24.1:
@@ -552,12 +576,12 @@ babel-helper-builder-binary-assignment-operator-visitor@^6.24.1:
     babel-types "^6.24.1"
 
 babel-helper-builder-react-jsx@^6.24.1:
-  version "6.24.1"
-  resolved "https://npm.abeck.io:443/babel-helper-builder-react-jsx/-/babel-helper-builder-react-jsx-6.24.1.tgz#0ad7917e33c8d751e646daca4e77cc19377d2cbc"
+  version "6.26.0"
+  resolved "https://npm.abeck.io:443/babel-helper-builder-react-jsx/-/babel-helper-builder-react-jsx-6.26.0.tgz#39ff8313b75c8b65dceff1f31d383e0ff2a408a0"
   dependencies:
-    babel-runtime "^6.22.0"
-    babel-types "^6.24.1"
-    esutils "^2.0.0"
+    babel-runtime "^6.26.0"
+    babel-types "^6.26.0"
+    esutils "^2.0.2"
 
 babel-helper-call-delegate@^6.24.1:
   version "6.24.1"
@@ -569,13 +593,13 @@ babel-helper-call-delegate@^6.24.1:
     babel-types "^6.24.1"
 
 babel-helper-define-map@^6.24.1:
-  version "6.24.1"
-  resolved "https://npm.abeck.io:443/babel-helper-define-map/-/babel-helper-define-map-6.24.1.tgz#7a9747f258d8947d32d515f6aa1c7bd02204a080"
+  version "6.26.0"
+  resolved "https://npm.abeck.io:443/babel-helper-define-map/-/babel-helper-define-map-6.26.0.tgz#a5f56dab41a25f97ecb498c7ebaca9819f95be5f"
   dependencies:
     babel-helper-function-name "^6.24.1"
-    babel-runtime "^6.22.0"
-    babel-types "^6.24.1"
-    lodash "^4.2.0"
+    babel-runtime "^6.26.0"
+    babel-types "^6.26.0"
+    lodash "^4.17.4"
 
 babel-helper-explode-assignable-expression@^6.24.1:
   version "6.24.1"
@@ -626,12 +650,12 @@ babel-helper-optimise-call-expression@^6.24.1:
     babel-types "^6.24.1"
 
 babel-helper-regex@^6.24.1:
-  version "6.24.1"
-  resolved "https://npm.abeck.io:443/babel-helper-regex/-/babel-helper-regex-6.24.1.tgz#d36e22fab1008d79d88648e32116868128456ce8"
+  version "6.26.0"
+  resolved "https://npm.abeck.io:443/babel-helper-regex/-/babel-helper-regex-6.26.0.tgz#325c59f902f82f24b74faceed0363954f6495e72"
   dependencies:
-    babel-runtime "^6.22.0"
-    babel-types "^6.24.1"
-    lodash "^4.2.0"
+    babel-runtime "^6.26.0"
+    babel-types "^6.26.0"
+    lodash "^4.17.4"
 
 babel-helper-remap-async-to-generator@^6.24.1:
   version "6.24.1"
@@ -824,14 +848,14 @@ babel-plugin-transform-es2015-block-scoped-functions@^6.22.0, babel-plugin-trans
     babel-runtime "^6.22.0"
 
 babel-plugin-transform-es2015-block-scoping@^6.23.0, babel-plugin-transform-es2015-block-scoping@^6.24.1, babel-plugin-transform-es2015-block-scoping@^6.5.0, babel-plugin-transform-es2015-block-scoping@^6.7.1, babel-plugin-transform-es2015-block-scoping@^6.8.0:
-  version "6.24.1"
-  resolved "https://npm.abeck.io:443/babel-plugin-transform-es2015-block-scoping/-/babel-plugin-transform-es2015-block-scoping-6.24.1.tgz#76c295dc3a4741b1665adfd3167215dcff32a576"
+  version "6.26.0"
+  resolved "https://npm.abeck.io:443/babel-plugin-transform-es2015-block-scoping/-/babel-plugin-transform-es2015-block-scoping-6.26.0.tgz#d70f5299c1308d05c12f463813b0a09e73b1895f"
   dependencies:
-    babel-runtime "^6.22.0"
-    babel-template "^6.24.1"
-    babel-traverse "^6.24.1"
-    babel-types "^6.24.1"
-    lodash "^4.2.0"
+    babel-runtime "^6.26.0"
+    babel-template "^6.26.0"
+    babel-traverse "^6.26.0"
+    babel-types "^6.26.0"
+    lodash "^4.17.4"
 
 babel-plugin-transform-es2015-classes@^6.23.0, babel-plugin-transform-es2015-classes@^6.24.1, babel-plugin-transform-es2015-classes@^6.5.0, babel-plugin-transform-es2015-classes@^6.6.5, babel-plugin-transform-es2015-classes@^6.8.0:
   version "6.24.1"
@@ -896,13 +920,13 @@ babel-plugin-transform-es2015-modules-amd@^6.22.0, babel-plugin-transform-es2015
     babel-template "^6.24.1"
 
 babel-plugin-transform-es2015-modules-commonjs@6.x, babel-plugin-transform-es2015-modules-commonjs@^6.18.0, babel-plugin-transform-es2015-modules-commonjs@^6.23.0, babel-plugin-transform-es2015-modules-commonjs@^6.24.1, babel-plugin-transform-es2015-modules-commonjs@^6.5.0, babel-plugin-transform-es2015-modules-commonjs@^6.7.0, babel-plugin-transform-es2015-modules-commonjs@^6.8.0:
-  version "6.24.1"
-  resolved "https://npm.abeck.io:443/babel-plugin-transform-es2015-modules-commonjs/-/babel-plugin-transform-es2015-modules-commonjs-6.24.1.tgz#d3e310b40ef664a36622200097c6d440298f2bfe"
+  version "6.26.0"
+  resolved "https://npm.abeck.io:443/babel-plugin-transform-es2015-modules-commonjs/-/babel-plugin-transform-es2015-modules-commonjs-6.26.0.tgz#0d8394029b7dc6abe1a97ef181e00758dd2e5d8a"
   dependencies:
     babel-plugin-transform-strict-mode "^6.24.1"
-    babel-runtime "^6.22.0"
-    babel-template "^6.24.1"
-    babel-types "^6.24.1"
+    babel-runtime "^6.26.0"
+    babel-template "^6.26.0"
+    babel-types "^6.26.0"
 
 babel-plugin-transform-es2015-modules-systemjs@^6.23.0, babel-plugin-transform-es2015-modules-systemjs@^6.24.1:
   version "6.24.1"
@@ -1027,11 +1051,11 @@ babel-plugin-transform-object-assign@^6.5.0:
     babel-runtime "^6.22.0"
 
 babel-plugin-transform-object-rest-spread@^6.20.2, babel-plugin-transform-object-rest-spread@^6.22.0, babel-plugin-transform-object-rest-spread@^6.5.0, babel-plugin-transform-object-rest-spread@^6.6.5, babel-plugin-transform-object-rest-spread@^6.8.0:
-  version "6.23.0"
-  resolved "https://npm.abeck.io:443/babel-plugin-transform-object-rest-spread/-/babel-plugin-transform-object-rest-spread-6.23.0.tgz#875d6bc9be761c58a2ae3feee5dc4895d8c7f921"
+  version "6.26.0"
+  resolved "https://npm.abeck.io:443/babel-plugin-transform-object-rest-spread/-/babel-plugin-transform-object-rest-spread-6.26.0.tgz#0f36692d50fef6b7e2d4b3ac1478137a963b7b06"
   dependencies:
     babel-plugin-syntax-object-rest-spread "^6.8.0"
-    babel-runtime "^6.22.0"
+    babel-runtime "^6.26.0"
 
 babel-plugin-transform-react-display-name@^6.5.0, babel-plugin-transform-react-display-name@^6.8.0:
   version "6.25.0"
@@ -1055,14 +1079,14 @@ babel-plugin-transform-react-jsx@^6.5.0, babel-plugin-transform-react-jsx@^6.8.0
     babel-runtime "^6.22.0"
 
 babel-plugin-transform-regenerator@^6.22.0, babel-plugin-transform-regenerator@^6.24.1, babel-plugin-transform-regenerator@^6.5.0:
-  version "6.24.1"
-  resolved "https://npm.abeck.io:443/babel-plugin-transform-regenerator/-/babel-plugin-transform-regenerator-6.24.1.tgz#b8da305ad43c3c99b4848e4fe4037b770d23c418"
+  version "6.26.0"
+  resolved "https://npm.abeck.io:443/babel-plugin-transform-regenerator/-/babel-plugin-transform-regenerator-6.26.0.tgz#e0703696fbde27f0a3efcacf8b4dca2f7b3a8f2f"
   dependencies:
-    regenerator-transform "0.9.11"
+    regenerator-transform "^0.10.0"
 
 babel-plugin-transform-remove-console@^6.8.4:
-  version "6.8.4"
-  resolved "https://npm.abeck.io:443/babel-plugin-transform-remove-console/-/babel-plugin-transform-remove-console-6.8.4.tgz#41fddac19a729a4c3dd7ef2964eac07b096f9a8f"
+  version "6.8.5"
+  resolved "https://npm.abeck.io:443/babel-plugin-transform-remove-console/-/babel-plugin-transform-remove-console-6.8.5.tgz#fde9d2d3d725530b0fadd8d31078402410386810"
 
 babel-plugin-transform-strict-mode@^6.24.1:
   version "6.24.1"
@@ -1072,16 +1096,16 @@ babel-plugin-transform-strict-mode@^6.24.1:
     babel-types "^6.24.1"
 
 babel-polyfill@^6.20.0:
-  version "6.23.0"
-  resolved "https://npm.abeck.io:443/babel-polyfill/-/babel-polyfill-6.23.0.tgz#8364ca62df8eafb830499f699177466c3b03499d"
+  version "6.26.0"
+  resolved "https://npm.abeck.io:443/babel-polyfill/-/babel-polyfill-6.26.0.tgz#379937abc67d7895970adc621f284cd966cf2153"
   dependencies:
-    babel-runtime "^6.22.0"
-    core-js "^2.4.0"
-    regenerator-runtime "^0.10.0"
+    babel-runtime "^6.26.0"
+    core-js "^2.5.0"
+    regenerator-runtime "^0.10.5"
 
 babel-preset-env@^1.5.2:
-  version "1.6.0"
-  resolved "https://npm.abeck.io:443/babel-preset-env/-/babel-preset-env-1.6.0.tgz#2de1c782a780a0a5d605d199c957596da43c44e4"
+  version "1.6.1"
+  resolved "https://npm.abeck.io:443/babel-preset-env/-/babel-preset-env-1.6.1.tgz#a18b564cc9b9afdf4aae57ae3c1b0d99188e6f48"
   dependencies:
     babel-plugin-check-es2015-constants "^6.22.0"
     babel-plugin-syntax-trailing-function-commas "^6.22.0"
@@ -1288,61 +1312,61 @@ babel-preset-stage-3@^6.24.1:
     babel-plugin-transform-exponentiation-operator "^6.24.1"
     babel-plugin-transform-object-rest-spread "^6.22.0"
 
-babel-register@^6.18.0, babel-register@^6.24.1:
-  version "6.24.1"
-  resolved "https://npm.abeck.io:443/babel-register/-/babel-register-6.24.1.tgz#7e10e13a2f71065bdfad5a1787ba45bca6ded75f"
+babel-register@^6.18.0, babel-register@^6.26.0:
+  version "6.26.0"
+  resolved "https://npm.abeck.io:443/babel-register/-/babel-register-6.26.0.tgz#6ed021173e2fcb486d7acb45c6009a856f647071"
   dependencies:
-    babel-core "^6.24.1"
-    babel-runtime "^6.22.0"
-    core-js "^2.4.0"
+    babel-core "^6.26.0"
+    babel-runtime "^6.26.0"
+    core-js "^2.5.0"
     home-or-tmp "^2.0.0"
-    lodash "^4.2.0"
+    lodash "^4.17.4"
     mkdirp "^0.5.1"
-    source-map-support "^0.4.2"
+    source-map-support "^0.4.15"
 
-babel-runtime@^6.18.0, babel-runtime@^6.20.0, babel-runtime@^6.22.0, babel-runtime@^6.9.2:
-  version "6.25.0"
-  resolved "https://npm.abeck.io:443/babel-runtime/-/babel-runtime-6.25.0.tgz#33b98eaa5d482bb01a8d1aa6b437ad2b01aec41c"
+babel-runtime@^6.18.0, babel-runtime@^6.20.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0, babel-runtime@^6.9.2:
+  version "6.26.0"
+  resolved "https://npm.abeck.io:443/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   dependencies:
     core-js "^2.4.0"
-    regenerator-runtime "^0.10.0"
+    regenerator-runtime "^0.11.0"
 
-babel-template@^6.16.0, babel-template@^6.24.1, babel-template@^6.25.0:
-  version "6.25.0"
-  resolved "https://npm.abeck.io:443/babel-template/-/babel-template-6.25.0.tgz#665241166b7c2aa4c619d71e192969552b10c071"
+babel-template@^6.16.0, babel-template@^6.24.1, babel-template@^6.26.0:
+  version "6.26.0"
+  resolved "https://npm.abeck.io:443/babel-template/-/babel-template-6.26.0.tgz#de03e2d16396b069f46dd9fff8521fb1a0e35e02"
   dependencies:
-    babel-runtime "^6.22.0"
-    babel-traverse "^6.25.0"
-    babel-types "^6.25.0"
-    babylon "^6.17.2"
-    lodash "^4.2.0"
+    babel-runtime "^6.26.0"
+    babel-traverse "^6.26.0"
+    babel-types "^6.26.0"
+    babylon "^6.18.0"
+    lodash "^4.17.4"
 
-babel-traverse@^6.18.0, babel-traverse@^6.21.0, babel-traverse@^6.23.1, babel-traverse@^6.24.1, babel-traverse@^6.25.0:
-  version "6.25.0"
-  resolved "https://npm.abeck.io:443/babel-traverse/-/babel-traverse-6.25.0.tgz#2257497e2fcd19b89edc13c4c91381f9512496f1"
+babel-traverse@^6.18.0, babel-traverse@^6.21.0, babel-traverse@^6.23.1, babel-traverse@^6.24.1, babel-traverse@^6.26.0:
+  version "6.26.0"
+  resolved "https://npm.abeck.io:443/babel-traverse/-/babel-traverse-6.26.0.tgz#46a9cbd7edcc62c8e5c064e2d2d8d0f4035766ee"
   dependencies:
-    babel-code-frame "^6.22.0"
+    babel-code-frame "^6.26.0"
     babel-messages "^6.23.0"
-    babel-runtime "^6.22.0"
-    babel-types "^6.25.0"
-    babylon "^6.17.2"
-    debug "^2.2.0"
-    globals "^9.0.0"
-    invariant "^2.2.0"
-    lodash "^4.2.0"
+    babel-runtime "^6.26.0"
+    babel-types "^6.26.0"
+    babylon "^6.18.0"
+    debug "^2.6.8"
+    globals "^9.18.0"
+    invariant "^2.2.2"
+    lodash "^4.17.4"
 
-babel-types@^6.18.0, babel-types@^6.19.0, babel-types@^6.21.0, babel-types@^6.23.0, babel-types@^6.24.1, babel-types@^6.25.0:
-  version "6.25.0"
-  resolved "https://npm.abeck.io:443/babel-types/-/babel-types-6.25.0.tgz#70afb248d5660e5d18f811d91c8303b54134a18e"
+babel-types@^6.18.0, babel-types@^6.19.0, babel-types@^6.21.0, babel-types@^6.23.0, babel-types@^6.24.1, babel-types@^6.26.0:
+  version "6.26.0"
+  resolved "https://npm.abeck.io:443/babel-types/-/babel-types-6.26.0.tgz#a3b073f94ab49eb6fa55cd65227a334380632497"
   dependencies:
-    babel-runtime "^6.22.0"
+    babel-runtime "^6.26.0"
     esutils "^2.0.2"
-    lodash "^4.2.0"
-    to-fast-properties "^1.0.1"
+    lodash "^4.17.4"
+    to-fast-properties "^1.0.3"
 
-babylon@^6.1.0, babylon@^6.14.1, babylon@^6.17.0, babylon@^6.17.2, babylon@^6.17.4:
-  version "6.17.4"
-  resolved "https://npm.abeck.io:443/babylon/-/babylon-6.17.4.tgz#3e8b7402b88d22c3423e137a1577883b15ff869a"
+babylon@^6.1.0, babylon@^6.14.1, babylon@^6.17.0, babylon@^6.18.0:
+  version "6.18.0"
+  resolved "https://npm.abeck.io:443/babylon/-/babylon-6.18.0.tgz#af2f3b88fa6f5c1e4c634d1a0f8eac4f55b395e3"
 
 backo2@1.0.2:
   version "1.0.2"
@@ -1363,6 +1387,14 @@ base64-arraybuffer@0.1.5:
 base64-js@0.0.8:
   version "0.0.8"
   resolved "https://npm.abeck.io:443/base64-js/-/base64-js-0.0.8.tgz#1101e9544f4a76b1bc3b26d452ca96d7a35e7978"
+
+base64-js@1.1.2:
+  version "1.1.2"
+  resolved "https://npm.abeck.io:443/base64-js/-/base64-js-1.1.2.tgz#d6400cac1c4c660976d90d07a04351d89395f5e8"
+
+base64-js@1.2.0:
+  version "1.2.0"
+  resolved "https://npm.abeck.io:443/base64-js/-/base64-js-1.2.0.tgz#a39992d723584811982be5e290bb6a53d86700f1"
 
 base64-js@^1.1.2:
   version "1.2.1"
@@ -1400,19 +1432,13 @@ better-assert@~1.0.0:
   dependencies:
     callsite "1.0.0"
 
+big-integer@^1.6.7:
+  version "1.6.26"
+  resolved "https://npm.abeck.io:443/big-integer/-/big-integer-1.6.26.tgz#3af1672fa62daf2d5ecafacf6e5aa0d25e02c1c8"
+
 binary-extensions@^1.0.0:
-  version "1.9.0"
-  resolved "https://npm.abeck.io:443/binary-extensions/-/binary-extensions-1.9.0.tgz#66506c16ce6f4d6928a5b3cd6a33ca41e941e37b"
-
-binaryextensions@~1.0.0:
-  version "1.0.1"
-  resolved "https://npm.abeck.io:443/binaryextensions/-/binaryextensions-1.0.1.tgz#1e637488b35b58bda5f4774bf96a5212a8c90755"
-
-bl@^1.0.0:
-  version "1.2.1"
-  resolved "https://npm.abeck.io:443/bl/-/bl-1.2.1.tgz#cac328f7bee45730d404b692203fcb590e172d5e"
-  dependencies:
-    readable-stream "^2.0.5"
+  version "1.11.0"
+  resolved "https://npm.abeck.io:443/binary-extensions/-/binary-extensions-1.11.0.tgz#46aa1751fb6a2f93ee5e689bb1087d4b14c6c205"
 
 blob@0.0.4:
   version "0.0.4"
@@ -1425,8 +1451,8 @@ block-stream@*:
     inherits "~2.0.0"
 
 bluebird@^3.0.0:
-  version "3.5.0"
-  resolved "https://npm.abeck.io:443/bluebird/-/bluebird-3.5.0.tgz#791420d7f551eea2897453a8a77653f96606d67c"
+  version "3.5.1"
+  resolved "https://npm.abeck.io:443/bluebird/-/bluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
 
 body-parser@~1.13.3:
   version "1.13.3"
@@ -1453,9 +1479,21 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
-boxen@^1.0.0:
-  version "1.2.1"
-  resolved "https://npm.abeck.io:443/boxen/-/boxen-1.2.1.tgz#0f11e7fe344edb9397977fc13ede7f64d956481d"
+boom@4.x.x:
+  version "4.3.1"
+  resolved "https://npm.abeck.io:443/boom/-/boom-4.3.1.tgz#4f8a3005cb4a7e3889f749030fd25b96e01d2e31"
+  dependencies:
+    hoek "4.x.x"
+
+boom@5.x.x:
+  version "5.2.0"
+  resolved "https://npm.abeck.io:443/boom/-/boom-5.2.0.tgz#5dd9da6ee3a5f302077436290cb717d3f4a54e02"
+  dependencies:
+    hoek "4.x.x"
+
+boxen@^1.2.1:
+  version "1.3.0"
+  resolved "https://npm.abeck.io:443/boxen/-/boxen-1.3.0.tgz#55c6c39a8ba58d9c61ad22cd877532deb665a20b"
   dependencies:
     ansi-align "^2.0.0"
     camelcase "^4.0.0"
@@ -1463,7 +1501,7 @@ boxen@^1.0.0:
     cli-boxes "^1.0.0"
     string-width "^2.0.0"
     term-size "^1.2.0"
-    widest-line "^1.0.0"
+    widest-line "^2.0.0"
 
 bplist-creator@0.0.4:
   version "0.0.4"
@@ -1471,9 +1509,21 @@ bplist-creator@0.0.4:
   dependencies:
     stream-buffers "~0.2.3"
 
+bplist-creator@0.0.7:
+  version "0.0.7"
+  resolved "https://npm.abeck.io:443/bplist-creator/-/bplist-creator-0.0.7.tgz#37df1536092824b87c42f957b01344117372ae45"
+  dependencies:
+    stream-buffers "~2.2.0"
+
 bplist-parser@0.0.6:
   version "0.0.6"
   resolved "https://npm.abeck.io:443/bplist-parser/-/bplist-parser-0.0.6.tgz#38da3471817df9d44ab3892e27707bbbd75a11b9"
+
+bplist-parser@0.1.1:
+  version "0.1.1"
+  resolved "https://npm.abeck.io:443/bplist-parser/-/bplist-parser-0.1.1.tgz#d60d5dcc20cba6dc7e1f299b35d3e1f95dafbae6"
+  dependencies:
+    big-integer "^1.6.7"
 
 brace-expansion@^1.1.7:
   version "1.1.8"
@@ -1491,11 +1541,11 @@ braces@^1.8.2:
     repeat-element "^1.1.2"
 
 browserslist@^2.1.2:
-  version "2.3.0"
-  resolved "https://npm.abeck.io:443/browserslist/-/browserslist-2.3.0.tgz#b2aa76415c71643fe2368f6243b43bbbb4211752"
+  version "2.10.0"
+  resolved "https://npm.abeck.io:443/browserslist/-/browserslist-2.10.0.tgz#bac5ee1cc69ca9d96403ffb8a3abdc5b6aed6346"
   dependencies:
-    caniuse-lite "^1.0.30000710"
-    electron-to-chromium "^1.3.17"
+    caniuse-lite "^1.0.30000780"
+    electron-to-chromium "^1.3.28"
 
 bser@1.0.2:
   version "1.0.2"
@@ -1513,20 +1563,7 @@ buf-compare@^1.0.0:
   version "1.0.1"
   resolved "https://npm.abeck.io:443/buf-compare/-/buf-compare-1.0.1.tgz#fef28da8b8113a0a0db4430b0b6467b69730b34a"
 
-buffer-crc32@~0.2.3:
-  version "0.2.13"
-  resolved "https://npm.abeck.io:443/buffer-crc32/-/buffer-crc32-0.2.13.tgz#0d333e3f00eac50aa1454abd30ef8c2a5d9a7242"
-
-buffer-to-vinyl@^1.0.0:
-  version "1.1.0"
-  resolved "https://npm.abeck.io:443/buffer-to-vinyl/-/buffer-to-vinyl-1.1.0.tgz#00f15faee3ab7a1dda2cde6d9121bffdd07b2262"
-  dependencies:
-    file-type "^3.1.0"
-    readable-stream "^2.0.2"
-    uuid "^2.0.1"
-    vinyl "^1.0.0"
-
-builtin-modules@^1.0.0:
+builtin-modules@^1.0.0, builtin-modules@^1.1.1:
   version "1.1.1"
   resolved "https://npm.abeck.io:443/builtin-modules/-/builtin-modules-1.1.1.tgz#270f076c5a72c02f5b65a47df94c5fe3a278892f"
 
@@ -1596,9 +1633,9 @@ camelcase@^4.0.0, camelcase@^4.1.0:
   version "4.1.0"
   resolved "https://npm.abeck.io:443/camelcase/-/camelcase-4.1.0.tgz#d545635be1e33c542649c69173e5de6acfae34dd"
 
-caniuse-lite@^1.0.30000710:
-  version "1.0.30000712"
-  resolved "https://npm.abeck.io:443/caniuse-lite/-/caniuse-lite-1.0.30000712.tgz#b4732def2459224f3f78c6a9ba103abfcc705670"
+caniuse-lite@^1.0.30000780:
+  version "1.0.30000782"
+  resolved "https://npm.abeck.io:443/caniuse-lite/-/caniuse-lite-1.0.30000782.tgz#5b82b8c385f25348745c471ca51320afb1b7f254"
 
 capture-stack-trace@^1.0.0:
   version "1.0.0"
@@ -1607,15 +1644,6 @@ capture-stack-trace@^1.0.0:
 caseless@~0.12.0:
   version "0.12.0"
   resolved "https://npm.abeck.io:443/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
-
-caw@^1.0.1:
-  version "1.2.0"
-  resolved "https://npm.abeck.io:443/caw/-/caw-1.2.0.tgz#ffb226fe7efc547288dc62ee3e97073c212d1034"
-  dependencies:
-    get-proxy "^1.0.1"
-    is-obj "^1.0.0"
-    object-assign "^3.0.0"
-    tunnel-agent "^0.4.0"
 
 center-align@^0.1.1:
   version "0.1.3"
@@ -1652,9 +1680,9 @@ chalk@^1.0.0, chalk@^1.1.0, chalk@^1.1.1, chalk@^1.1.3:
     strip-ansi "^3.0.0"
     supports-color "^2.0.0"
 
-chalk@^2.0.0, chalk@^2.0.1:
-  version "2.1.0"
-  resolved "https://npm.abeck.io:443/chalk/-/chalk-2.1.0.tgz#ac5becf14fa21b99c6c92ca7a7d7cfd5b17e743e"
+chalk@^2.0.0, chalk@^2.0.1, chalk@^2.1.0:
+  version "2.3.0"
+  resolved "https://npm.abeck.io:443/chalk/-/chalk-2.3.0.tgz#b5ea48efc9c1793dccc9b4767c93914d3f2d52ba"
   dependencies:
     ansi-styles "^3.1.0"
     escape-string-regexp "^1.0.5"
@@ -1664,15 +1692,9 @@ change-emitter@^0.1.2:
   version "0.1.6"
   resolved "https://npm.abeck.io:443/change-emitter/-/change-emitter-0.1.6.tgz#e8b2fe3d7f1ab7d69a32199aff91ea6931409515"
 
-cheerio@^0.19.0:
-  version "0.19.0"
-  resolved "https://npm.abeck.io:443/cheerio/-/cheerio-0.19.0.tgz#772e7015f2ee29965096d71ea4175b75ab354925"
-  dependencies:
-    css-select "~1.0.0"
-    dom-serializer "~0.1.0"
-    entities "~1.1.1"
-    htmlparser2 "~3.8.1"
-    lodash "^3.2.0"
+chardet@^0.4.0:
+  version "0.4.2"
+  resolved "https://npm.abeck.io:443/chardet/-/chardet-0.4.2.tgz#b5473b33dc97c424e5d98dc87d55d4d8a29c8bf2"
 
 cheerio@^0.22.0:
   version "0.22.0"
@@ -1711,8 +1733,8 @@ chokidar@^1.4.2, chokidar@^1.6.0:
     fsevents "^1.0.0"
 
 ci-info@^1.0.0:
-  version "1.0.0"
-  resolved "https://npm.abeck.io:443/ci-info/-/ci-info-1.0.0.tgz#dc5285f2b4e251821683681c381c3388f46ec534"
+  version "1.1.2"
+  resolved "https://npm.abeck.io:443/ci-info/-/ci-info-1.1.2.tgz#03561259db48d0474c8bdc90f5b47b068b6bbfb4"
 
 circular-json@^0.3.1:
   version "0.3.3"
@@ -1721,12 +1743,6 @@ circular-json@^0.3.1:
 clamp@^1.0.1:
   version "1.0.1"
   resolved "https://npm.abeck.io:443/clamp/-/clamp-1.0.1.tgz#66a0e64011816e37196828fdc8c8c147312c8634"
-
-class-extend@^0.1.0, class-extend@^0.1.1:
-  version "0.1.2"
-  resolved "https://npm.abeck.io:443/class-extend/-/class-extend-0.1.2.tgz#8057a82b00f53f82a5d62c50ef8cffdec6fabc34"
-  dependencies:
-    object-assign "^2.0.0"
 
 clean-stack@^1.1.1:
   version "1.3.0"
@@ -1753,14 +1769,8 @@ cli-cursor@^2.1.0:
     restore-cursor "^2.0.0"
 
 cli-spinners@^1.0.0:
-  version "1.0.0"
-  resolved "https://npm.abeck.io:443/cli-spinners/-/cli-spinners-1.0.0.tgz#ef987ed3d48391ac3dab9180b406a742180d6e6a"
-
-cli-table@^0.3.1:
-  version "0.3.1"
-  resolved "https://npm.abeck.io:443/cli-table/-/cli-table-0.3.1.tgz#f53b05266a8b1a0b934b3d0821e6e2dc5914ae23"
-  dependencies:
-    colors "1.0.3"
+  version "1.1.0"
+  resolved "https://npm.abeck.io:443/cli-spinners/-/cli-spinners-1.1.0.tgz#f1847b168844d917a671eb9d147e3df497c90d06"
 
 cli-truncate@^1.0.0:
   version "1.1.0"
@@ -1769,13 +1779,9 @@ cli-truncate@^1.0.0:
     slice-ansi "^1.0.0"
     string-width "^2.0.0"
 
-cli-width@^1.0.1:
-  version "1.1.1"
-  resolved "https://npm.abeck.io:443/cli-width/-/cli-width-1.1.1.tgz#a4d293ef67ebb7b88d4a4d42c0ccf00c4d1e366d"
-
 cli-width@^2.0.0:
-  version "2.1.0"
-  resolved "https://npm.abeck.io:443/cli-width/-/cli-width-2.1.0.tgz#b234ca209b29ef66fc518d9b98d5847b00edf00a"
+  version "2.2.0"
+  resolved "https://npm.abeck.io:443/cli-width/-/cli-width-2.2.0.tgz#ff19ede8a9a5e579324147b0c11f0fbcbabed639"
 
 cliui@^2.1.0:
   version "2.1.0"
@@ -1797,23 +1803,15 @@ clone-stats@^0.0.1:
   version "0.0.1"
   resolved "https://npm.abeck.io:443/clone-stats/-/clone-stats-0.0.1.tgz#b88f94a82cf38b8791d58046ea4029ad88ca99d1"
 
-clone@^0.2.0:
-  version "0.2.0"
-  resolved "https://npm.abeck.io:443/clone/-/clone-0.2.0.tgz#c6126a90ad4f72dbf5acdb243cc37724fe93fc1f"
-
 clone@^1.0.0:
-  version "1.0.2"
-  resolved "https://npm.abeck.io:443/clone/-/clone-1.0.2.tgz#260b7a99ebb1edfe247538175f783243cb19d149"
+  version "1.0.3"
+  resolved "https://npm.abeck.io:443/clone/-/clone-1.0.3.tgz#298d7e2231660f40c003c2ed3140decf3f53085f"
 
 co-with-promise@^4.6.0:
   version "4.6.0"
   resolved "https://npm.abeck.io:443/co-with-promise/-/co-with-promise-4.6.0.tgz#413e7db6f5893a60b942cf492c4bec93db415ab7"
   dependencies:
     pinkie-promise "^1.0.0"
-
-co@3.1.0:
-  version "3.1.0"
-  resolved "https://npm.abeck.io:443/co/-/co-3.1.0.tgz#4ea54ea5a08938153185e15210c68d9092bc1b78"
 
 co@^4.6.0:
   version "4.6.0"
@@ -1830,18 +1828,14 @@ code-point-at@^1.0.0:
   resolved "https://npm.abeck.io:443/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
 
 color-convert@^1.9.0:
-  version "1.9.0"
-  resolved "https://npm.abeck.io:443/color-convert/-/color-convert-1.9.0.tgz#1accf97dd739b983bf994d56fec8f95853641b7a"
+  version "1.9.1"
+  resolved "https://npm.abeck.io:443/color-convert/-/color-convert-1.9.1.tgz#c1261107aeb2f294ebffec9ed9ecad529a6097ed"
   dependencies:
     color-name "^1.1.1"
 
 color-name@^1.1.1:
   version "1.1.3"
   resolved "https://npm.abeck.io:443/color-name/-/color-name-1.1.3.tgz#a7d0558bd89c42f795dd42328f740831ca53bc25"
-
-colors@1.0.3:
-  version "1.0.3"
-  resolved "https://npm.abeck.io:443/colors/-/colors-1.0.3.tgz#0433f44d809680fdeb60ed260f1b0c262e82a40b"
 
 combined-stream@^1.0.5, combined-stream@~1.0.5:
   version "1.0.5"
@@ -1854,14 +1848,8 @@ commander@2.6.0:
   resolved "https://npm.abeck.io:443/commander/-/commander-2.6.0.tgz#9df7e52fb2a0cb0fb89058ee80c3104225f37e1d"
 
 commander@^2.9.0:
-  version "2.11.0"
-  resolved "https://npm.abeck.io:443/commander/-/commander-2.11.0.tgz#157152fd1e7a6c8d98a5b715cf376df928004563"
-
-commander@~2.8.1:
-  version "2.8.1"
-  resolved "https://npm.abeck.io:443/commander/-/commander-2.8.1.tgz#06be367febfda0c330aa1e2a072d3dc9762425d4"
-  dependencies:
-    graceful-readlink ">= 1.0.0"
+  version "2.12.2"
+  resolved "https://npm.abeck.io:443/commander/-/commander-2.12.2.tgz#0f5946c427ed9ec0d91a46bb9def53e54650e555"
 
 common-path-prefix@^1.0.0:
   version "1.0.0"
@@ -1888,10 +1876,10 @@ component-inherit@0.0.3:
   resolved "https://npm.abeck.io:443/component-inherit/-/component-inherit-0.0.3.tgz#645fc4adf58b72b649d5cae65135619db26ff143"
 
 compressible@~2.0.5:
-  version "2.0.11"
-  resolved "https://npm.abeck.io:443/compressible/-/compressible-2.0.11.tgz#16718a75de283ed8e604041625a2064586797d8a"
+  version "2.0.12"
+  resolved "https://npm.abeck.io:443/compressible/-/compressible-2.0.12.tgz#c59a5c99db76767e9876500e271ef63b3493bd66"
   dependencies:
-    mime-db ">= 1.29.0 < 2"
+    mime-db ">= 1.30.0 < 2"
 
 compression@~1.5.2:
   version "1.5.2"
@@ -1908,7 +1896,7 @@ concat-map@0.0.1:
   version "0.0.1"
   resolved "https://npm.abeck.io:443/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
 
-concat-stream@^1.4.6, concat-stream@^1.4.7, concat-stream@^1.5.0, concat-stream@^1.6.0:
+concat-stream@^1.4.6, concat-stream@^1.5.0, concat-stream@^1.5.2, concat-stream@^1.6.0:
   version "1.6.0"
   resolved "https://npm.abeck.io:443/concat-stream/-/concat-stream-1.6.0.tgz#0aac662fd52be78964d5532f694784e70110acf7"
   dependencies:
@@ -1933,8 +1921,8 @@ concordance@^3.0.0:
     well-known-symbols "^1.0.0"
 
 concurrently@^3.5.0:
-  version "3.5.0"
-  resolved "https://npm.abeck.io:443/concurrently/-/concurrently-3.5.0.tgz#8cf1b7707a6916a78a4ff5b77bb04dec54b379b2"
+  version "3.5.1"
+  resolved "https://npm.abeck.io:443/concurrently/-/concurrently-3.5.1.tgz#ee8b60018bbe86b02df13e5249453c6ececd2521"
   dependencies:
     chalk "0.5.1"
     commander "2.6.0"
@@ -2005,13 +1993,17 @@ console-control-strings@^1.0.0, console-control-strings@~1.1.0:
   version "1.1.0"
   resolved "https://npm.abeck.io:443/console-control-strings/-/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"
 
-content-type@~1.0.1:
-  version "1.0.2"
-  resolved "https://npm.abeck.io:443/content-type/-/content-type-1.0.2.tgz#b7d113aee7a8dd27bd21133c4dc2529df1721eed"
+contains-path@^0.1.0:
+  version "0.1.0"
+  resolved "https://npm.abeck.io:443/contains-path/-/contains-path-0.1.0.tgz#fe8cf184ff6670b6baef01a9d4861a5cbec4120a"
 
-convert-source-map@^1.1.0, convert-source-map@^1.1.1, convert-source-map@^1.2.0, convert-source-map@^1.3.0:
-  version "1.5.0"
-  resolved "https://npm.abeck.io:443/convert-source-map/-/convert-source-map-1.5.0.tgz#9acd70851c6d5dfdd93d9282e5edf94a03ff46b5"
+content-type@~1.0.1:
+  version "1.0.4"
+  resolved "https://npm.abeck.io:443/content-type/-/content-type-1.0.4.tgz#e138cc75e040c727b1966fe5e5f8c9aee256fe3b"
+
+convert-source-map@^1.2.0, convert-source-map@^1.3.0, convert-source-map@^1.5.0:
+  version "1.5.1"
+  resolved "https://npm.abeck.io:443/convert-source-map/-/convert-source-map-1.5.1.tgz#b8278097b9bc229365de5c62cf5fcaed8b5599e5"
 
 convert-to-spaces@^1.0.1:
   version "1.0.2"
@@ -2043,9 +2035,9 @@ core-js@^1.0.0:
   version "1.2.7"
   resolved "https://npm.abeck.io:443/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
 
-core-js@^2.0.0, core-js@^2.2.2, core-js@^2.4.0:
-  version "2.5.0"
-  resolved "https://npm.abeck.io:443/core-js/-/core-js-2.5.0.tgz#569c050918be6486b3837552028ae0466b717086"
+core-js@^2.0.0, core-js@^2.2.2, core-js@^2.4.0, core-js@^2.5.0:
+  version "2.5.3"
+  resolved "https://npm.abeck.io:443/core-js/-/core-js-2.5.3.tgz#8acc38345824f16d8365b7c9b4259168e8ed603e"
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -2071,33 +2063,19 @@ crc@3.3.0:
   version "3.3.0"
   resolved "https://npm.abeck.io:443/crc/-/crc-3.3.0.tgz#fa622e1bc388bf257309082d6b65200ce67090ba"
 
-create-error-class@^3.0.0, create-error-class@^3.0.1:
+create-error-class@^3.0.0:
   version "3.0.2"
   resolved "https://npm.abeck.io:443/create-error-class/-/create-error-class-3.0.2.tgz#06be7abef947a3f14a30fd610671d401bca8b7b6"
   dependencies:
     capture-stack-trace "^1.0.0"
 
-create-react-class@^15.5.3, create-react-class@^15.6.0:
-  version "15.6.0"
-  resolved "https://npm.abeck.io:443/create-react-class/-/create-react-class-15.6.0.tgz#ab448497c26566e1e29413e883207d57cfe7bed4"
+create-react-class@^15.6.0:
+  version "15.6.2"
+  resolved "https://npm.abeck.io:443/create-react-class/-/create-react-class-15.6.2.tgz#cf1ed15f12aad7f14ef5f2dfe05e6c42f91ef02a"
   dependencies:
     fbjs "^0.8.9"
     loose-envify "^1.3.1"
     object-assign "^4.1.1"
-
-cross-spawn-async@^2.2.2:
-  version "2.2.5"
-  resolved "https://npm.abeck.io:443/cross-spawn-async/-/cross-spawn-async-2.2.5.tgz#845ff0c0834a3ded9d160daca6d390906bb288cc"
-  dependencies:
-    lru-cache "^4.0.0"
-    which "^1.2.8"
-
-cross-spawn@^2.0.0:
-  version "2.2.3"
-  resolved "https://npm.abeck.io:443/cross-spawn/-/cross-spawn-2.2.3.tgz#fac56202dfd3d0dd861778f2da203bf434bb821c"
-  dependencies:
-    cross-spawn-async "^2.2.2"
-    spawn-sync "^1.0.15"
 
 cross-spawn@^3.0.1:
   version "3.0.1"
@@ -2127,6 +2105,12 @@ cryptiles@2.x.x:
   dependencies:
     boom "2.x.x"
 
+cryptiles@3.x.x:
+  version "3.1.2"
+  resolved "https://npm.abeck.io:443/cryptiles/-/cryptiles-3.1.2.tgz#a89fbb220f5ce25ec56e8c4aa8a4fd7b5b0d29fe"
+  dependencies:
+    boom "5.x.x"
+
 crypto-js@^3.1.9-1:
   version "3.1.9-1"
   resolved "https://npm.abeck.io:443/crypto-js/-/crypto-js-3.1.9-1.tgz#fda19e761fc077e01ffbfdc6e9fdfc59e8806cd8"
@@ -2143,15 +2127,6 @@ csrf@~3.0.0:
     tsscmp "1.0.5"
     uid-safe "2.1.4"
 
-css-select@~1.0.0:
-  version "1.0.0"
-  resolved "https://npm.abeck.io:443/css-select/-/css-select-1.0.0.tgz#b1121ca51848dd264e2244d058cee254deeb44b0"
-  dependencies:
-    boolbase "~1.0.0"
-    css-what "1.0"
-    domutils "1.4"
-    nth-check "~1.0.0"
-
 css-select@~1.2.0:
   version "1.2.0"
   resolved "https://npm.abeck.io:443/css-select/-/css-select-1.2.0.tgz#2b3a110539c5355f1cd8d314623e870b121ec858"
@@ -2160,10 +2135,6 @@ css-select@~1.2.0:
     css-what "2.1"
     domutils "1.5.1"
     nth-check "~1.0.1"
-
-css-what@1.0:
-  version "1.0.0"
-  resolved "https://npm.abeck.io:443/css-what/-/css-what-1.0.0.tgz#d7cc2df45180666f99d2b14462639469e00f736c"
 
 css-what@2.1:
   version "2.1.0"
@@ -2194,12 +2165,6 @@ d@1:
   dependencies:
     es5-ext "^0.10.9"
 
-dargs@^4.0.0:
-  version "4.1.0"
-  resolved "https://npm.abeck.io:443/dargs/-/dargs-4.1.0.tgz#03a9dbb4b5c2f139bf14ae53f0b8a2a6a86f4e17"
-  dependencies:
-    number-is-nan "^1.0.0"
-
 dashdash@^1.12.0:
   version "1.14.1"
   resolved "https://npm.abeck.io:443/dashdash/-/dashdash-1.14.1.tgz#853cfa0f7cbe2fed5de20326b8dd581035f6e2f0"
@@ -2207,8 +2172,8 @@ dashdash@^1.12.0:
     assert-plus "^1.0.0"
 
 date-fns@^1.23.0:
-  version "1.28.5"
-  resolved "https://npm.abeck.io:443/date-fns/-/date-fns-1.28.5.tgz#257cfc45d322df45ef5658665967ee841cd73faf"
+  version "1.29.0"
+  resolved "https://npm.abeck.io:443/date-fns/-/date-fns-1.29.0.tgz#12e609cdcb935127311d04d33334e2960a2a54e6"
 
 date-time@^0.1.1:
   version "0.1.1"
@@ -2220,16 +2185,9 @@ date-time@^2.1.0:
   dependencies:
     time-zone "^1.0.0"
 
-dateformat@^1.0.11:
-  version "1.0.12"
-  resolved "https://npm.abeck.io:443/dateformat/-/dateformat-1.0.12.tgz#9f124b67594c937ff706932e4a642cca8dbbfee9"
-  dependencies:
-    get-stdin "^4.0.1"
-    meow "^3.3.0"
-
 dateformat@^2.0.0:
-  version "2.0.0"
-  resolved "https://npm.abeck.io:443/dateformat/-/dateformat-2.0.0.tgz#2743e3abb5c3fc2462e527dca445e04e9f4dee17"
+  version "2.2.0"
+  resolved "https://npm.abeck.io:443/dateformat/-/dateformat-2.2.0.tgz#4065e2013cf9fb916ddfd82efb506ad4c6769062"
 
 debug-log@^1.0.0, debug-log@^1.0.1:
   version "1.0.1"
@@ -2247,9 +2205,15 @@ debug@2.3.3:
   dependencies:
     ms "0.7.2"
 
-debug@2.6.8, debug@^2.0.0, debug@^2.1.0, debug@^2.1.1, debug@^2.2.0, debug@^2.4.5, debug@^2.6.3, debug@^2.6.8:
-  version "2.6.8"
-  resolved "https://npm.abeck.io:443/debug/-/debug-2.6.8.tgz#e731531ca2ede27d188222427da17821d68ff4fc"
+debug@2.6.9, debug@^2.1.1, debug@^2.2.0, debug@^2.6.8:
+  version "2.6.9"
+  resolved "https://npm.abeck.io:443/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
+  dependencies:
+    ms "2.0.0"
+
+debug@^3.0.1, debug@^3.1.0:
+  version "3.1.0"
+  resolved "https://npm.abeck.io:443/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
   dependencies:
     ms "2.0.0"
 
@@ -2257,65 +2221,11 @@ decamelize@^1.0.0, decamelize@^1.1.1, decamelize@^1.1.2:
   version "1.2.0"
   resolved "https://npm.abeck.io:443/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
 
-decompress-tar@^3.0.0:
-  version "3.1.0"
-  resolved "https://npm.abeck.io:443/decompress-tar/-/decompress-tar-3.1.0.tgz#217c789f9b94450efaadc5c5e537978fc333c466"
+decompress-response@^3.2.0:
+  version "3.3.0"
+  resolved "https://npm.abeck.io:443/decompress-response/-/decompress-response-3.3.0.tgz#80a4dd323748384bfa248083622aedec982adff3"
   dependencies:
-    is-tar "^1.0.0"
-    object-assign "^2.0.0"
-    strip-dirs "^1.0.0"
-    tar-stream "^1.1.1"
-    through2 "^0.6.1"
-    vinyl "^0.4.3"
-
-decompress-tarbz2@^3.0.0:
-  version "3.1.0"
-  resolved "https://npm.abeck.io:443/decompress-tarbz2/-/decompress-tarbz2-3.1.0.tgz#8b23935681355f9f189d87256a0f8bdd96d9666d"
-  dependencies:
-    is-bzip2 "^1.0.0"
-    object-assign "^2.0.0"
-    seek-bzip "^1.0.3"
-    strip-dirs "^1.0.0"
-    tar-stream "^1.1.1"
-    through2 "^0.6.1"
-    vinyl "^0.4.3"
-
-decompress-targz@^3.0.0:
-  version "3.1.0"
-  resolved "https://npm.abeck.io:443/decompress-targz/-/decompress-targz-3.1.0.tgz#b2c13df98166268991b715d6447f642e9696f5a0"
-  dependencies:
-    is-gzip "^1.0.0"
-    object-assign "^2.0.0"
-    strip-dirs "^1.0.0"
-    tar-stream "^1.1.1"
-    through2 "^0.6.1"
-    vinyl "^0.4.3"
-
-decompress-unzip@^3.0.0:
-  version "3.4.0"
-  resolved "https://npm.abeck.io:443/decompress-unzip/-/decompress-unzip-3.4.0.tgz#61475b4152066bbe3fee12f9d629d15fe6478eeb"
-  dependencies:
-    is-zip "^1.0.0"
-    read-all-stream "^3.0.0"
-    stat-mode "^0.2.0"
-    strip-dirs "^1.0.0"
-    through2 "^2.0.0"
-    vinyl "^1.0.0"
-    yauzl "^2.2.1"
-
-decompress@^3.0.0:
-  version "3.0.0"
-  resolved "https://npm.abeck.io:443/decompress/-/decompress-3.0.0.tgz#af1dd50d06e3bfc432461d37de11b38c0d991bed"
-  dependencies:
-    buffer-to-vinyl "^1.0.0"
-    concat-stream "^1.4.6"
-    decompress-tar "^3.0.0"
-    decompress-tarbz2 "^3.0.0"
-    decompress-targz "^3.0.0"
-    decompress-unzip "^3.0.0"
-    stream-combiner2 "^1.1.1"
-    vinyl-assign "^1.0.1"
-    vinyl-fs "^2.2.0"
+    mimic-response "^1.0.0"
 
 deep-diff@0.3.4:
   version "0.3.4"
@@ -2325,7 +2235,7 @@ deep-equal@^1.0.0, deep-equal@^1.0.1:
   version "1.0.1"
   resolved "https://npm.abeck.io:443/deep-equal/-/deep-equal-1.0.1.tgz#f5d260292b660e084eff4cdbc9f08ad3247448b5"
 
-deep-extend@^0.4.0, deep-extend@~0.4.0:
+deep-extend@~0.4.0:
   version "0.4.2"
   resolved "https://npm.abeck.io:443/deep-extend/-/deep-extend-0.4.2.tgz#48b699c27e334bf89f10892be432f6e4c7d34a7f"
 
@@ -2346,7 +2256,7 @@ define-properties@^1.1.2:
     foreach "^2.0.5"
     object-keys "^1.0.8"
 
-deglob@^2.0.0:
+deglob@^2.0.0, deglob@^2.1.0:
   version "2.1.0"
   resolved "https://npm.abeck.io:443/deglob/-/deglob-2.1.0.tgz#4d44abe16ef32c779b4972bd141a80325029a14a"
   dependencies:
@@ -2393,10 +2303,6 @@ destroy@~1.0.4:
   version "1.0.4"
   resolved "https://npm.abeck.io:443/destroy/-/destroy-1.0.4.tgz#978857442c44749e4206613e37946205826abd80"
 
-detect-conflict@^1.0.0:
-  version "1.0.1"
-  resolved "https://npm.abeck.io:443/detect-conflict/-/detect-conflict-1.0.1.tgz#088657a66a961c05019db7c4230883b1c6b4176e"
-
 detect-indent@^4.0.0:
   version "4.0.0"
   resolved "https://npm.abeck.io:443/detect-indent/-/detect-indent-4.0.0.tgz#f76d064352cdf43a1cb6ce619c4ee3a9475de208"
@@ -2407,30 +2313,22 @@ detect-indent@^5.0.0:
   version "5.0.0"
   resolved "https://npm.abeck.io:443/detect-indent/-/detect-indent-5.0.0.tgz#3871cc0a6a002e8c3e5b3cf7f336264675f06b9d"
 
-detect-newline@^1.0.3:
+detect-libc@^1.0.2:
   version "1.0.3"
-  resolved "https://npm.abeck.io:443/detect-newline/-/detect-newline-1.0.3.tgz#e97b1003877d70c09af1af35bfadff168de4920d"
-  dependencies:
-    get-stdin "^4.0.1"
-    minimist "^1.1.0"
+  resolved "https://npm.abeck.io:443/detect-libc/-/detect-libc-1.0.3.tgz#fa137c4bd698edf55cd5cd02ac559f91a4c4ba9b"
 
-diff@^2.1.2:
-  version "2.2.3"
-  resolved "https://npm.abeck.io:443/diff/-/diff-2.2.3.tgz#60eafd0d28ee906e4e8ff0a52c1229521033bf99"
-
-doctrine@^1.2.2:
+doctrine@1.5.0, doctrine@^1.2.2:
   version "1.5.0"
   resolved "https://npm.abeck.io:443/doctrine/-/doctrine-1.5.0.tgz#379dce730f6166f76cefa4e6707a159b02c5a6fa"
   dependencies:
     esutils "^2.0.2"
     isarray "^1.0.0"
 
-doctrine@^2.0.0:
-  version "2.0.0"
-  resolved "https://npm.abeck.io:443/doctrine/-/doctrine-2.0.0.tgz#c73d8d2909d22291e1a007a395804da8b665fe63"
+doctrine@^2.0.0, doctrine@^2.0.2:
+  version "2.0.2"
+  resolved "https://npm.abeck.io:443/doctrine/-/doctrine-2.0.2.tgz#68f96ce8efc56cc42651f1faadb4f175273b0075"
   dependencies:
     esutils "^2.0.2"
-    isarray "^1.0.0"
 
 dom-serializer@0, dom-serializer@~0.1.0:
   version "0.1.0"
@@ -2451,25 +2349,13 @@ domelementtype@~1.1.1:
   version "1.1.3"
   resolved "https://npm.abeck.io:443/domelementtype/-/domelementtype-1.1.3.tgz#bd28773e2642881aec51544924299c5cd822185b"
 
-domhandler@2.3:
-  version "2.3.0"
-  resolved "https://npm.abeck.io:443/domhandler/-/domhandler-2.3.0.tgz#2de59a0822d5027fabff6f032c2b25a2a8abe738"
-  dependencies:
-    domelementtype "1"
-
 domhandler@^2.3.0:
   version "2.4.1"
   resolved "https://npm.abeck.io:443/domhandler/-/domhandler-2.4.1.tgz#892e47000a99be55bbf3774ffea0561d8879c259"
   dependencies:
     domelementtype "1"
 
-domutils@1.4:
-  version "1.4.3"
-  resolved "https://npm.abeck.io:443/domutils/-/domutils-1.4.3.tgz#0865513796c6b306031850e175516baf80b72a6f"
-  dependencies:
-    domelementtype "1"
-
-domutils@1.5, domutils@1.5.1:
+domutils@1.5.1:
   version "1.5.1"
   resolved "https://npm.abeck.io:443/domutils/-/domutils-1.5.1.tgz#dcd8488a26f563d61079e48c9f7b7e32373682cf"
   dependencies:
@@ -2489,26 +2375,6 @@ dot-prop@^4.1.0:
   dependencies:
     is-obj "^1.0.0"
 
-download@^4.1.2:
-  version "4.4.3"
-  resolved "https://npm.abeck.io:443/download/-/download-4.4.3.tgz#aa55fdad392d95d4b68e8c2be03e0c2aa21ba9ac"
-  dependencies:
-    caw "^1.0.1"
-    concat-stream "^1.4.7"
-    each-async "^1.0.0"
-    filenamify "^1.0.1"
-    got "^5.0.0"
-    gulp-decompress "^1.2.0"
-    gulp-rename "^1.2.0"
-    is-url "^1.2.0"
-    object-assign "^4.0.1"
-    read-all-stream "^3.0.0"
-    readable-stream "^2.0.2"
-    stream-combiner2 "^1.1.1"
-    vinyl "^1.0.0"
-    vinyl-fs "^2.2.0"
-    ware "^1.2.0"
-
 draft-js@0.10.1:
   version "0.10.1"
   resolved "https://npm.abeck.io:443/draft-js/-/draft-js-0.10.1.tgz#6f1219d8095729691429ca6fd7a58d2a8be5cb67"
@@ -2523,12 +2389,6 @@ duplexer2@0.0.2:
   dependencies:
     readable-stream "~1.1.9"
 
-duplexer2@^0.1.4, duplexer2@~0.1.0:
-  version "0.1.4"
-  resolved "https://npm.abeck.io:443/duplexer2/-/duplexer2-0.1.4.tgz#8b12dab878c0d69e3e7891051662a32fc6bddcc1"
-  dependencies:
-    readable-stream "^2.0.2"
-
 duplexer3@^0.1.4:
   version "0.1.4"
   resolved "https://npm.abeck.io:443/duplexer3/-/duplexer3-0.1.4.tgz#ee01dd1cac0ed3cbc7fdbea37dc0a8f1ce002ce2"
@@ -2536,22 +2396,6 @@ duplexer3@^0.1.4:
 duplexer@^0.1.1:
   version "0.1.1"
   resolved "https://npm.abeck.io:443/duplexer/-/duplexer-0.1.1.tgz#ace6ff808c1ce66b57d1ebf97977acb02334cfc1"
-
-duplexify@^3.2.0:
-  version "3.5.1"
-  resolved "https://npm.abeck.io:443/duplexify/-/duplexify-3.5.1.tgz#4e1516be68838bc90a49994f0b39a6e5960befcd"
-  dependencies:
-    end-of-stream "^1.0.0"
-    inherits "^2.0.1"
-    readable-stream "^2.0.0"
-    stream-shift "^1.0.0"
-
-each-async@^1.0.0:
-  version "1.1.1"
-  resolved "https://npm.abeck.io:443/each-async/-/each-async-1.1.1.tgz#dee5229bdf0ab6ba2012a395e1b869abf8813473"
-  dependencies:
-    onetime "^1.0.0"
-    set-immediate-shim "^1.0.0"
 
 ecc-jsbn@~0.1.1:
   version "0.1.1"
@@ -2563,13 +2407,9 @@ ee-first@1.1.1:
   version "1.1.1"
   resolved "https://npm.abeck.io:443/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
 
-ejs@^2.3.1:
-  version "2.5.7"
-  resolved "https://npm.abeck.io:443/ejs/-/ejs-2.5.7.tgz#cc872c168880ae3c7189762fd5ffc00896c9518a"
-
-electron-to-chromium@^1.3.17:
-  version "1.3.17"
-  resolved "https://npm.abeck.io:443/electron-to-chromium/-/electron-to-chromium-1.3.17.tgz#41c13457cc7166c5c15e767ae61d86a8cacdee5d"
+electron-to-chromium@^1.3.28:
+  version "1.3.28"
+  resolved "https://npm.abeck.io:443/electron-to-chromium/-/electron-to-chromium-1.3.28.tgz#8dd4e6458086644e9f9f0a1cf32e2a1f9dffd9ee"
 
 empower-core@^0.6.1:
   version "0.6.2"
@@ -2584,7 +2424,7 @@ encoding@^0.1.11:
   dependencies:
     iconv-lite "~0.4.13"
 
-end-of-stream@^1.0.0:
+end-of-stream@^1.1.0:
   version "1.4.0"
   resolved "https://npm.abeck.io:443/end-of-stream/-/end-of-stream-1.4.0.tgz#7a90d833efda6cfa6eac0f4949dbb0fad3a63206"
   dependencies:
@@ -2618,10 +2458,6 @@ engine.io-parser@1.3.2:
     has-binary "0.1.7"
     wtf-8 "1.0.0"
 
-entities@1.0:
-  version "1.0.0"
-  resolved "https://npm.abeck.io:443/entities/-/entities-1.0.0.tgz#b2987aa3821347fcde642b24fdfc9e4fb712bf26"
-
 entities@^1.1.1, entities@~1.1.1:
   version "1.1.1"
   resolved "https://npm.abeck.io:443/entities/-/entities-1.1.1.tgz#6e5c2d0a5621b5dadaecef80b90edfb5cd7772f0"
@@ -2653,10 +2489,10 @@ equal-length@^1.0.0:
   resolved "https://npm.abeck.io:443/equal-length/-/equal-length-1.0.1.tgz#21ca112d48ab24b4e1e7ffc0e5339d31fdfc274c"
 
 errno@^0.1.4:
-  version "0.1.4"
-  resolved "https://npm.abeck.io:443/errno/-/errno-0.1.4.tgz#b896e23a9e5e8ba33871fc996abd3635fc9a1c7d"
+  version "0.1.6"
+  resolved "https://npm.abeck.io:443/errno/-/errno-0.1.6.tgz#c386ce8a6283f14fc09563b71560908c9bf53026"
   dependencies:
-    prr "~0.0.0"
+    prr "~1.0.1"
 
 error-ex@^1.2.0:
   version "1.3.1"
@@ -2671,12 +2507,12 @@ errorhandler@~1.4.2:
     accepts "~1.3.0"
     escape-html "~1.0.3"
 
-es-abstract@^1.6.1:
-  version "1.8.0"
-  resolved "https://npm.abeck.io:443/es-abstract/-/es-abstract-1.8.0.tgz#3b00385e85729932beffa9163bbea1234e932914"
+es-abstract@^1.6.1, es-abstract@^1.7.0:
+  version "1.10.0"
+  resolved "https://npm.abeck.io:443/es-abstract/-/es-abstract-1.10.0.tgz#1ecb36c197842a00d8ee4c2dfd8646bb97d60864"
   dependencies:
     es-to-primitive "^1.1.1"
-    function-bind "^1.1.0"
+    function-bind "^1.1.1"
     has "^1.0.1"
     is-callable "^1.1.3"
     is-regex "^1.0.4"
@@ -2689,24 +2525,24 @@ es-to-primitive@^1.1.1:
     is-date-object "^1.0.1"
     is-symbol "^1.0.1"
 
-es5-ext@^0.10.14, es5-ext@^0.10.9, es5-ext@~0.10.14:
-  version "0.10.26"
-  resolved "https://npm.abeck.io:443/es5-ext/-/es5-ext-0.10.26.tgz#51b2128a531b70c4f6764093a73cbebb82186372"
+es5-ext@^0.10.14, es5-ext@^0.10.35, es5-ext@^0.10.9, es5-ext@~0.10.14:
+  version "0.10.37"
+  resolved "https://npm.abeck.io:443/es5-ext/-/es5-ext-0.10.37.tgz#0ee741d148b80069ba27d020393756af257defc3"
   dependencies:
-    es6-iterator "2"
-    es6-symbol "~3.1"
+    es6-iterator "~2.0.1"
+    es6-symbol "~3.1.1"
 
 es6-error@^4.0.0, es6-error@^4.0.1, es6-error@^4.0.2:
   version "4.0.2"
   resolved "https://npm.abeck.io:443/es6-error/-/es6-error-4.0.2.tgz#eec5c726eacef51b7f6b73c20db6e1b13b069c98"
 
-es6-iterator@2, es6-iterator@^2.0.1, es6-iterator@~2.0.1:
-  version "2.0.1"
-  resolved "https://npm.abeck.io:443/es6-iterator/-/es6-iterator-2.0.1.tgz#8e319c9f0453bf575d374940a655920e59ca5512"
+es6-iterator@^2.0.1, es6-iterator@~2.0.1:
+  version "2.0.3"
+  resolved "https://npm.abeck.io:443/es6-iterator/-/es6-iterator-2.0.3.tgz#a7de889141a05a94b0854403b2d0a0fbfa98f3b7"
   dependencies:
     d "1"
-    es5-ext "^0.10.14"
-    es6-symbol "^3.1"
+    es5-ext "^0.10.35"
+    es6-symbol "^3.1.1"
 
 es6-map@^0.1.3:
   version "0.1.5"
@@ -2733,7 +2569,7 @@ es6-set@~0.1.5:
     es6-symbol "3.1.1"
     event-emitter "~0.3.5"
 
-es6-symbol@3.1.1, es6-symbol@^3.1, es6-symbol@^3.1.1, es6-symbol@~3.1, es6-symbol@~3.1.1:
+es6-symbol@3.1.1, es6-symbol@^3.1.1, es6-symbol@~3.1.1:
   version "3.1.1"
   resolved "https://npm.abeck.io:443/es6-symbol/-/es6-symbol-3.1.1.tgz#bf00ef4fdab6ba1b46ecb7b629b4c7ed5715cc77"
   dependencies:
@@ -2761,17 +2597,6 @@ escape-string-regexp@^1.0.0, escape-string-regexp@^1.0.2, escape-string-regexp@^
   version "1.0.5"
   resolved "https://npm.abeck.io:443/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
 
-escodegen-wallaby@^1.6.7:
-  version "1.6.12"
-  resolved "https://npm.abeck.io:443/escodegen-wallaby/-/escodegen-wallaby-1.6.12.tgz#dac2ed380daca6c7a2c9e8496d50c091239fe26f"
-  dependencies:
-    esprima "^2.7.1"
-    estraverse "^1.9.1"
-    esutils "^2.0.2"
-    optionator "^0.8.1"
-  optionalDependencies:
-    source-map "~0.2.0"
-
 escope@^3.6.0:
   version "3.6.0"
   resolved "https://npm.abeck.io:443/escope/-/escope-3.6.0.tgz#e01975e812781a163a6dadfdd80398dc64c889c3"
@@ -2785,25 +2610,88 @@ eslint-config-standard-jsx@3.2.0:
   version "3.2.0"
   resolved "https://npm.abeck.io:443/eslint-config-standard-jsx/-/eslint-config-standard-jsx-3.2.0.tgz#c240e26ed919a11a42aa4de8059472b38268d620"
 
+eslint-config-standard-jsx@4.0.2:
+  version "4.0.2"
+  resolved "https://npm.abeck.io:443/eslint-config-standard-jsx/-/eslint-config-standard-jsx-4.0.2.tgz#009e53c4ddb1e9ee70b4650ffe63a7f39f8836e1"
+
+eslint-config-standard@10.2.1:
+  version "10.2.1"
+  resolved "https://npm.abeck.io:443/eslint-config-standard/-/eslint-config-standard-10.2.1.tgz#c061e4d066f379dc17cd562c64e819b4dd454591"
+
 eslint-config-standard@6.2.1:
   version "6.2.1"
   resolved "https://npm.abeck.io:443/eslint-config-standard/-/eslint-config-standard-6.2.1.tgz#d3a68aafc7191639e7ee441e7348739026354292"
 
+eslint-import-resolver-node@^0.2.0:
+  version "0.2.3"
+  resolved "https://npm.abeck.io:443/eslint-import-resolver-node/-/eslint-import-resolver-node-0.2.3.tgz#5add8106e8c928db2cba232bcd9efa846e3da16c"
+  dependencies:
+    debug "^2.2.0"
+    object-assign "^4.0.1"
+    resolve "^1.1.6"
+
+eslint-module-utils@^2.0.0:
+  version "2.1.1"
+  resolved "https://npm.abeck.io:443/eslint-module-utils/-/eslint-module-utils-2.1.1.tgz#abaec824177613b8a95b299639e1b6facf473449"
+  dependencies:
+    debug "^2.6.8"
+    pkg-dir "^1.0.0"
+
+eslint-plugin-import@~2.2.0:
+  version "2.2.0"
+  resolved "https://npm.abeck.io:443/eslint-plugin-import/-/eslint-plugin-import-2.2.0.tgz#72ba306fad305d67c4816348a4699a4229ac8b4e"
+  dependencies:
+    builtin-modules "^1.1.1"
+    contains-path "^0.1.0"
+    debug "^2.2.0"
+    doctrine "1.5.0"
+    eslint-import-resolver-node "^0.2.0"
+    eslint-module-utils "^2.0.0"
+    has "^1.0.1"
+    lodash.cond "^4.3.0"
+    minimatch "^3.0.3"
+    pkg-up "^1.0.0"
+
+eslint-plugin-node@~4.2.2:
+  version "4.2.3"
+  resolved "https://npm.abeck.io:443/eslint-plugin-node/-/eslint-plugin-node-4.2.3.tgz#c04390ab8dbcbb6887174023d6f3a72769e63b97"
+  dependencies:
+    ignore "^3.0.11"
+    minimatch "^3.0.2"
+    object-assign "^4.0.1"
+    resolve "^1.1.7"
+    semver "5.3.0"
+
 eslint-plugin-promise@~3.4.0:
   version "3.4.2"
   resolved "https://npm.abeck.io:443/eslint-plugin-promise/-/eslint-plugin-promise-3.4.2.tgz#1be2793eafe2d18b5b123b8136c269f804fe7122"
+
+eslint-plugin-promise@~3.5.0:
+  version "3.5.0"
+  resolved "https://npm.abeck.io:443/eslint-plugin-promise/-/eslint-plugin-promise-3.5.0.tgz#78fbb6ffe047201627569e85a6c5373af2a68fca"
 
 eslint-plugin-react-native@^2.3.2:
   version "2.3.2"
   resolved "https://npm.abeck.io:443/eslint-plugin-react-native/-/eslint-plugin-react-native-2.3.2.tgz#e1b2ba2d97fb46b16fe2dbb5bd4d0f47419f2859"
 
 eslint-plugin-react@^7.1.0:
-  version "7.1.0"
-  resolved "https://npm.abeck.io:443/eslint-plugin-react/-/eslint-plugin-react-7.1.0.tgz#27770acf39f5fd49cd0af4083ce58104eb390d4c"
+  version "7.5.1"
+  resolved "https://npm.abeck.io:443/eslint-plugin-react/-/eslint-plugin-react-7.5.1.tgz#52e56e8d80c810de158859ef07b880d2f56ee30b"
   dependencies:
     doctrine "^2.0.0"
     has "^1.0.1"
-    jsx-ast-utils "^1.4.1"
+    jsx-ast-utils "^2.0.0"
+    prop-types "^15.6.0"
+
+eslint-plugin-react@~6.10.0:
+  version "6.10.3"
+  resolved "https://npm.abeck.io:443/eslint-plugin-react/-/eslint-plugin-react-6.10.3.tgz#c5435beb06774e12c7db2f6abaddcbf900cd3f78"
+  dependencies:
+    array.prototype.find "^2.0.1"
+    doctrine "^1.2.2"
+    has "^1.0.1"
+    jsx-ast-utils "^1.3.4"
+    object.assign "^4.0.4"
 
 eslint-plugin-react@~6.7.1:
   version "6.7.1"
@@ -2816,6 +2704,10 @@ eslint-plugin-standard@~2.0.1:
   version "2.0.1"
   resolved "https://npm.abeck.io:443/eslint-plugin-standard/-/eslint-plugin-standard-2.0.1.tgz#3589699ff9c917f2c25f76a916687f641c369ff3"
 
+eslint-plugin-standard@~3.0.1:
+  version "3.0.1"
+  resolved "https://npm.abeck.io:443/eslint-plugin-standard/-/eslint-plugin-standard-3.0.1.tgz#34d0c915b45edc6f010393c7eef3823b08565cf2"
+
 eslint-scope@^3.7.1:
   version "3.7.1"
   resolved "https://npm.abeck.io:443/eslint-scope/-/eslint-scope-3.7.1.tgz#3d63c3edfda02e06e01a452ad88caacc7cdcb6e8"
@@ -2824,31 +2716,31 @@ eslint-scope@^3.7.1:
     estraverse "^4.1.1"
 
 eslint@^4.0.0:
-  version "4.4.1"
-  resolved "https://npm.abeck.io:443/eslint/-/eslint-4.4.1.tgz#99cd7eafcffca2ff99a5c8f5f2a474d6364b4bd3"
+  version "4.13.1"
+  resolved "https://npm.abeck.io:443/eslint/-/eslint-4.13.1.tgz#0055e0014464c7eb7878caf549ef2941992b444f"
   dependencies:
-    ajv "^5.2.0"
+    ajv "^5.3.0"
     babel-code-frame "^6.22.0"
-    chalk "^1.1.3"
+    chalk "^2.1.0"
     concat-stream "^1.6.0"
     cross-spawn "^5.1.0"
-    debug "^2.6.8"
-    doctrine "^2.0.0"
+    debug "^3.0.1"
+    doctrine "^2.0.2"
     eslint-scope "^3.7.1"
-    espree "^3.5.0"
+    espree "^3.5.2"
     esquery "^1.0.0"
     estraverse "^4.2.0"
     esutils "^2.0.2"
     file-entry-cache "^2.0.0"
     functional-red-black-tree "^1.0.1"
     glob "^7.1.2"
-    globals "^9.17.0"
+    globals "^11.0.1"
     ignore "^3.3.3"
     imurmurhash "^0.1.4"
     inquirer "^3.0.6"
     is-resolvable "^1.0.0"
     js-yaml "^3.9.1"
-    json-stable-stringify "^1.0.1"
+    json-stable-stringify-without-jsonify "^1.0.1"
     levn "^0.3.0"
     lodash "^4.17.4"
     minimatch "^3.0.2"
@@ -2856,10 +2748,11 @@ eslint@^4.0.0:
     natural-compare "^1.4.0"
     optionator "^0.8.2"
     path-is-inside "^1.0.2"
-    pluralize "^4.0.0"
+    pluralize "^7.0.0"
     progress "^2.0.0"
     require-uncached "^1.0.3"
     semver "^5.3.0"
+    strip-ansi "^4.0.0"
     strip-json-comments "~2.0.1"
     table "^4.0.1"
     text-table "~0.2.0"
@@ -2903,6 +2796,46 @@ eslint@~3.10.2:
     text-table "~0.2.0"
     user-home "^2.0.0"
 
+eslint@~3.19.0:
+  version "3.19.0"
+  resolved "https://npm.abeck.io:443/eslint/-/eslint-3.19.0.tgz#c8fc6201c7f40dd08941b87c085767386a679acc"
+  dependencies:
+    babel-code-frame "^6.16.0"
+    chalk "^1.1.3"
+    concat-stream "^1.5.2"
+    debug "^2.1.1"
+    doctrine "^2.0.0"
+    escope "^3.6.0"
+    espree "^3.4.0"
+    esquery "^1.0.0"
+    estraverse "^4.2.0"
+    esutils "^2.0.2"
+    file-entry-cache "^2.0.0"
+    glob "^7.0.3"
+    globals "^9.14.0"
+    ignore "^3.2.0"
+    imurmurhash "^0.1.4"
+    inquirer "^0.12.0"
+    is-my-json-valid "^2.10.0"
+    is-resolvable "^1.0.0"
+    js-yaml "^3.5.1"
+    json-stable-stringify "^1.0.0"
+    levn "^0.3.0"
+    lodash "^4.0.0"
+    mkdirp "^0.5.0"
+    natural-compare "^1.4.0"
+    optionator "^0.8.2"
+    path-is-inside "^1.0.1"
+    pluralize "^1.2.1"
+    progress "^1.1.8"
+    require-uncached "^1.0.2"
+    shelljs "^0.7.5"
+    strip-bom "^3.0.0"
+    strip-json-comments "~2.0.1"
+    table "^3.7.8"
+    text-table "~0.2.0"
+    user-home "^2.0.0"
+
 espower-location-detector@^1.0.0:
   version "1.0.0"
   resolved "https://npm.abeck.io:443/espower-location-detector/-/espower-location-detector-1.0.0.tgz#a17b7ecc59d30e179e2bef73fb4137704cb331b5"
@@ -2912,16 +2845,12 @@ espower-location-detector@^1.0.0:
     source-map "^0.5.0"
     xtend "^4.0.0"
 
-espree@^3.3.1, espree@^3.5.0:
-  version "3.5.0"
-  resolved "https://npm.abeck.io:443/espree/-/espree-3.5.0.tgz#98358625bdd055861ea27e2867ea729faf463d8d"
+espree@^3.3.1, espree@^3.4.0, espree@^3.5.2:
+  version "3.5.2"
+  resolved "https://npm.abeck.io:443/espree/-/espree-3.5.2.tgz#756ada8b979e9dcfcdb30aad8d1a9304a905e1ca"
   dependencies:
-    acorn "^5.1.1"
+    acorn "^5.2.1"
     acorn-jsx "^3.0.0"
-
-esprima@^2.7.1:
-  version "2.7.3"
-  resolved "https://npm.abeck.io:443/esprima/-/esprima-2.7.3.tgz#96e3b70d5779f6ad49cd032673d1c312767ba581"
 
 esprima@^4.0.0:
   version "4.0.0"
@@ -2946,15 +2875,11 @@ esrecurse@^4.1.0:
     estraverse "^4.1.0"
     object-assign "^4.0.1"
 
-estraverse@^1.9.1:
-  version "1.9.3"
-  resolved "https://npm.abeck.io:443/estraverse/-/estraverse-1.9.3.tgz#af67f2dc922582415950926091a4005d29c9bb44"
-
 estraverse@^4.0.0, estraverse@^4.1.0, estraverse@^4.1.1, estraverse@^4.2.0:
   version "4.2.0"
   resolved "https://npm.abeck.io:443/estraverse/-/estraverse-4.2.0.tgz#0dee3fed31fcd469618ce7342099fc1afa0bdb13"
 
-esutils@^2.0.0, esutils@^2.0.2:
+esutils@^2.0.2:
   version "2.0.2"
   resolved "https://npm.abeck.io:443/esutils/-/esutils-2.0.2.tgz#0abf4f1caa5bcb1f7a9d8acc6dea4faaa04bac9b"
 
@@ -2982,8 +2907,8 @@ events@^1.1.0:
   resolved "https://npm.abeck.io:443/events/-/events-1.1.1.tgz#9ebdb7635ad099c70dcc4c2a1f5004288e8bd924"
 
 exec-sh@^0.2.0:
-  version "0.2.0"
-  resolved "https://npm.abeck.io:443/exec-sh/-/exec-sh-0.2.0.tgz#14f75de3f20d286ef933099b2ce50a90359cef10"
+  version "0.2.1"
+  resolved "https://npm.abeck.io:443/exec-sh/-/exec-sh-0.2.1.tgz#163b98a6e89e6b65b47c2a28d215bc1f63989c38"
   dependencies:
     merge "^1.1.3"
 
@@ -3029,31 +2954,17 @@ express-session@~1.11.3:
     uid-safe "~2.0.0"
     utils-merge "1.0.0"
 
-extend-shallow@^2.0.1:
-  version "2.0.1"
-  resolved "https://npm.abeck.io:443/extend-shallow/-/extend-shallow-2.0.1.tgz#51af7d614ad9a9f610ea1bafbb989d6b1c56890f"
-  dependencies:
-    is-extendable "^0.1.0"
-
-extend@^3.0.0, extend@~3.0.0:
+extend@~3.0.0, extend@~3.0.1:
   version "3.0.1"
   resolved "https://npm.abeck.io:443/extend/-/extend-3.0.1.tgz#a755ea7bc1adfcc5a31ce7e762dbaadc5e636444"
 
-external-editor@^1.1.0:
-  version "1.1.1"
-  resolved "https://npm.abeck.io:443/external-editor/-/external-editor-1.1.1.tgz#12d7b0db850f7ff7e7081baf4005700060c4600b"
-  dependencies:
-    extend "^3.0.0"
-    spawn-sync "^1.0.15"
-    tmp "^0.0.29"
-
 external-editor@^2.0.4:
-  version "2.0.4"
-  resolved "https://npm.abeck.io:443/external-editor/-/external-editor-2.0.4.tgz#1ed9199da9cbfe2ef2f7a31b2fde8b0d12368972"
+  version "2.1.0"
+  resolved "https://npm.abeck.io:443/external-editor/-/external-editor-2.1.0.tgz#3d026a21b7f95b5726387d4200ac160d372c3b48"
   dependencies:
+    chardet "^0.4.0"
     iconv-lite "^0.4.17"
-    jschardet "^1.4.2"
-    tmp "^0.0.31"
+    tmp "^0.0.33"
 
 extglob@^0.3.1:
   version "0.3.2"
@@ -3061,15 +2972,19 @@ extglob@^0.3.1:
   dependencies:
     is-extglob "^1.0.0"
 
-extsprintf@1.3.0, extsprintf@^1.2.0:
+extsprintf@1.3.0:
   version "1.3.0"
   resolved "https://npm.abeck.io:443/extsprintf/-/extsprintf-1.3.0.tgz#96918440e3041a7a414f8c52e3c574eb3c3e1e05"
 
+extsprintf@^1.2.0:
+  version "1.4.0"
+  resolved "https://npm.abeck.io:443/extsprintf/-/extsprintf-1.4.0.tgz#e2689f8f356fad62cca65a3a91c5df5f9551692f"
+
 fancy-log@^1.1.0:
-  version "1.3.0"
-  resolved "https://npm.abeck.io:443/fancy-log/-/fancy-log-1.3.0.tgz#45be17d02bb9917d60ccffd4995c999e6c8c9948"
+  version "1.3.1"
+  resolved "https://npm.abeck.io:443/fancy-log/-/fancy-log-1.3.1.tgz#c4a3462ba14adf5dfbab79731fd3844a2069cbbb"
   dependencies:
-    chalk "^1.1.1"
+    ansi-gray "^0.1.1"
     time-stamp "^1.0.0"
 
 fast-deep-equal@^1.0.0:
@@ -3077,12 +2992,22 @@ fast-deep-equal@^1.0.0:
   resolved "https://npm.abeck.io:443/fast-deep-equal/-/fast-deep-equal-1.0.0.tgz#96256a3bc975595eb36d82e9929d060d893439ff"
 
 fast-diff@^1.1.1:
-  version "1.1.1"
-  resolved "https://npm.abeck.io:443/fast-diff/-/fast-diff-1.1.1.tgz#0aea0e4e605b6a2189f0e936d4b7fbaf1b7cfd9b"
+  version "1.1.2"
+  resolved "https://npm.abeck.io:443/fast-diff/-/fast-diff-1.1.2.tgz#4b62c42b8e03de3f848460b639079920695d0154"
+
+fast-json-stable-stringify@^2.0.0:
+  version "2.0.0"
+  resolved "https://npm.abeck.io:443/fast-json-stable-stringify/-/fast-json-stable-stringify-2.0.0.tgz#d5142c0caee6b1189f87d3a76111064f86c8bbf2"
 
 fast-levenshtein@~2.0.4:
   version "2.0.6"
   resolved "https://npm.abeck.io:443/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
+
+fastfall@^1.5.1:
+  version "1.5.1"
+  resolved "https://npm.abeck.io:443/fastfall/-/fastfall-1.5.1.tgz#3fee03331a49d1d39b3cdf7a5e9cd66f475e7b94"
+  dependencies:
+    reusify "^1.0.0"
 
 fb-watchman@^1.8.0, fb-watchman@^1.9.0:
   version "1.9.2"
@@ -3103,9 +3028,9 @@ fbjs-scripts@^0.7.0:
     semver "^5.1.0"
     through2 "^2.0.0"
 
-fbjs@^0.8.1, fbjs@^0.8.4, fbjs@^0.8.5, fbjs@^0.8.7, fbjs@^0.8.9:
-  version "0.8.14"
-  resolved "https://npm.abeck.io:443/fbjs/-/fbjs-0.8.14.tgz#d1dbe2be254c35a91e09f31f9cd50a40b2a0ed1c"
+fbjs@^0.8.1, fbjs@^0.8.16, fbjs@^0.8.4, fbjs@^0.8.5, fbjs@^0.8.7, fbjs@^0.8.9:
+  version "0.8.16"
+  resolved "https://npm.abeck.io:443/fbjs/-/fbjs-0.8.16.tgz#5e67432f550dc41b572bf55847b8aca64e5337db"
   dependencies:
     core-js "^1.0.0"
     isomorphic-fetch "^2.1.1"
@@ -3114,12 +3039,6 @@ fbjs@^0.8.1, fbjs@^0.8.4, fbjs@^0.8.5, fbjs@^0.8.7, fbjs@^0.8.9:
     promise "^7.1.1"
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.9"
-
-fd-slicer@~1.0.1:
-  version "1.0.1"
-  resolved "https://npm.abeck.io:443/fd-slicer/-/fd-slicer-1.0.1.tgz#8b5bcbd9ec327c5041bf9ab023fd6750f1177e65"
-  dependencies:
-    pend "~1.2.0"
 
 figures@^1.3.5:
   version "1.7.0"
@@ -3141,25 +3060,9 @@ file-entry-cache@^2.0.0:
     flat-cache "^1.2.1"
     object-assign "^4.0.1"
 
-file-type@^3.1.0:
-  version "3.9.0"
-  resolved "https://npm.abeck.io:443/file-type/-/file-type-3.9.0.tgz#257a078384d1db8087bc449d107d52a52672b9e9"
-
 filename-regex@^2.0.0:
   version "2.0.1"
   resolved "https://npm.abeck.io:443/filename-regex/-/filename-regex-2.0.1.tgz#c1c4b9bee3e09725ddb106b75c1e301fe2f18b26"
-
-filename-reserved-regex@^1.0.0:
-  version "1.0.0"
-  resolved "https://npm.abeck.io:443/filename-reserved-regex/-/filename-reserved-regex-1.0.0.tgz#e61cf805f0de1c984567d0386dc5df50ee5af7e4"
-
-filenamify@^1.0.1:
-  version "1.2.1"
-  resolved "https://npm.abeck.io:443/filenamify/-/filenamify-1.2.1.tgz#a9f2ffd11c503bed300015029272378f1f1365a5"
-  dependencies:
-    filename-reserved-regex "^1.0.0"
-    strip-outer "^1.0.0"
-    trim-repeated "^1.0.0"
 
 fill-range@^2.1.0:
   version "2.2.3"
@@ -3228,19 +3131,9 @@ find-up@^2.0.0, find-up@^2.1.0:
   dependencies:
     locate-path "^2.0.0"
 
-first-chunk-stream@^1.0.0:
-  version "1.0.0"
-  resolved "https://npm.abeck.io:443/first-chunk-stream/-/first-chunk-stream-1.0.0.tgz#59bfb50cd905f60d7c394cd3d9acaab4e6ad934e"
-
-first-chunk-stream@^2.0.0:
-  version "2.0.0"
-  resolved "https://npm.abeck.io:443/first-chunk-stream/-/first-chunk-stream-2.0.0.tgz#1bdecdb8e083c0664b91945581577a43a9f31d70"
-  dependencies:
-    readable-stream "^2.0.2"
-
 flat-cache@^1.2.1:
-  version "1.2.2"
-  resolved "https://npm.abeck.io:443/flat-cache/-/flat-cache-1.2.2.tgz#fa86714e72c21db88601761ecf2f555d1abc6b96"
+  version "1.3.0"
+  resolved "https://npm.abeck.io:443/flat-cache/-/flat-cache-1.3.0.tgz#d3030b32b38154f4e3b7e9c709f490f7ef97c481"
   dependencies:
     circular-json "^0.3.1"
     del "^2.0.2"
@@ -3258,10 +3151,10 @@ follow-redirects@1.0.0:
     debug "^2.2.0"
 
 follow-redirects@^1.2.3:
-  version "1.2.4"
-  resolved "https://npm.abeck.io:443/follow-redirects/-/follow-redirects-1.2.4.tgz#355e8f4d16876b43f577b0d5ce2668b9723214ea"
+  version "1.2.6"
+  resolved "https://npm.abeck.io:443/follow-redirects/-/follow-redirects-1.2.6.tgz#4dcdc7e4ab3dd6765a97ff89c3b4c258117c79bf"
   dependencies:
-    debug "^2.4.5"
+    debug "^3.1.0"
 
 for-in@^1.0.1:
   version "1.0.2"
@@ -3296,15 +3189,17 @@ form-data@~2.1.1:
     combined-stream "^1.0.5"
     mime-types "^2.1.12"
 
+form-data@~2.3.1:
+  version "2.3.1"
+  resolved "https://npm.abeck.io:443/form-data/-/form-data-2.3.1.tgz#6fb94fbd71885306d73d15cc497fe4cc4ecd44bf"
+  dependencies:
+    asynckit "^0.4.0"
+    combined-stream "^1.0.5"
+    mime-types "^2.1.12"
+
 format-json@^1.0.3:
   version "1.0.3"
   resolved "https://npm.abeck.io:443/format-json/-/format-json-1.0.3.tgz#268e3d3e169792ff49bb5b030f22c87ca1c2cd9f"
-
-formatio@1.1.1:
-  version "1.1.1"
-  resolved "https://npm.abeck.io:443/formatio/-/formatio-1.1.1.tgz#5ed3ccd636551097383465d996199100e86161e9"
-  dependencies:
-    samsam "~1.1"
 
 fresh@0.3.0:
   version "0.3.0"
@@ -3325,11 +3220,11 @@ fs.realpath@^1.0.0:
   resolved "https://npm.abeck.io:443/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
 
 fsevents@^1.0.0:
-  version "1.1.2"
-  resolved "https://npm.abeck.io:443/fsevents/-/fsevents-1.1.2.tgz#3282b713fb3ad80ede0e9fcf4611b5aa6fc033f4"
+  version "1.1.3"
+  resolved "https://npm.abeck.io:443/fsevents/-/fsevents-1.1.3.tgz#11f82318f5fe7bb2cd22965a108e9306208216d8"
   dependencies:
     nan "^2.3.0"
-    node-pre-gyp "^0.6.36"
+    node-pre-gyp "^0.6.39"
 
 fstream-ignore@^1.0.5:
   version "1.0.5"
@@ -3348,9 +3243,9 @@ fstream@^1.0.0, fstream@^1.0.10, fstream@^1.0.2:
     mkdirp ">=0.5 0"
     rimraf "2"
 
-function-bind@^1.0.2, function-bind@^1.1.0:
-  version "1.1.0"
-  resolved "https://npm.abeck.io:443/function-bind/-/function-bind-1.1.0.tgz#16176714c801798e4e8f2cf7f7529467bb4a5771"
+function-bind@^1.0.2, function-bind@^1.1.0, function-bind@^1.1.1:
+  version "1.1.1"
+  resolved "https://npm.abeck.io:443/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
 
 function-name-support@^0.2.0:
   version "0.2.0"
@@ -3406,14 +3301,8 @@ get-caller-file@^1.0.1:
   resolved "https://npm.abeck.io:443/get-caller-file/-/get-caller-file-1.0.2.tgz#f702e63127e7e231c160a80c1554acb70d5047e5"
 
 get-port@^3.0.0:
-  version "3.1.0"
-  resolved "https://npm.abeck.io:443/get-port/-/get-port-3.1.0.tgz#ef01b18a84ca6486970ff99e54446141a73ffd3e"
-
-get-proxy@^1.0.1:
-  version "1.1.0"
-  resolved "https://npm.abeck.io:443/get-proxy/-/get-proxy-1.1.0.tgz#894854491bc591b0f147d7ae570f5c678b7256eb"
-  dependencies:
-    rc "^1.1.2"
+  version "3.2.0"
+  resolved "https://npm.abeck.io:443/get-port/-/get-port-3.2.0.tgz#dd7ce7de187c06c8bf353796ac71e099f0980ebc"
 
 get-stdin@^4.0.1:
   version "4.0.1"
@@ -3433,21 +3322,6 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-gh-got@^2.2.0:
-  version "2.4.0"
-  resolved "https://npm.abeck.io:443/gh-got/-/gh-got-2.4.0.tgz#aa51418911ca5e4f92437114cd1209383a4aa019"
-  dependencies:
-    got "^5.2.0"
-    object-assign "^4.0.1"
-    pinkie-promise "^2.0.0"
-
-github-username@^2.0.0:
-  version "2.1.0"
-  resolved "https://npm.abeck.io:443/github-username/-/github-username-2.1.0.tgz#200e5a104af42ba08a54096c708d4b6ec2fa256b"
-  dependencies:
-    gh-got "^2.2.0"
-    meow "^3.5.0"
-
 glob-base@^0.3.0:
   version "0.3.0"
   resolved "https://npm.abeck.io:443/glob-base/-/glob-base-0.3.0.tgz#dbb164f6221b1c0b1ccf82aea328b497df0ea3c4"
@@ -3460,26 +3334,6 @@ glob-parent@^2.0.0:
   resolved "https://npm.abeck.io:443/glob-parent/-/glob-parent-2.0.0.tgz#81383d72db054fcccf5336daa902f182f6edbb28"
   dependencies:
     is-glob "^2.0.0"
-
-glob-parent@^3.0.0:
-  version "3.1.0"
-  resolved "https://npm.abeck.io:443/glob-parent/-/glob-parent-3.1.0.tgz#9e6af6299d8d3bd2bd40430832bd113df906c5ae"
-  dependencies:
-    is-glob "^3.1.0"
-    path-dirname "^1.0.0"
-
-glob-stream@^5.3.2:
-  version "5.3.5"
-  resolved "https://npm.abeck.io:443/glob-stream/-/glob-stream-5.3.5.tgz#a55665a9a8ccdc41915a87c701e32d4e016fad22"
-  dependencies:
-    extend "^3.0.0"
-    glob "^5.0.3"
-    glob-parent "^3.0.0"
-    micromatch "^2.3.7"
-    ordered-read-streams "^0.3.0"
-    through2 "^0.6.0"
-    to-absolute-glob "^0.1.1"
-    unique-stream "^2.0.2"
 
 glob2base@^0.0.12:
   version "0.0.12"
@@ -3498,19 +3352,9 @@ glob@7.0.6:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-glob@^5.0.15, glob@^5.0.3:
+glob@^5.0.15:
   version "5.0.15"
   resolved "https://npm.abeck.io:443/glob/-/glob-5.0.15.tgz#1bc936b9e02f4a603fcc222ecf7633d30b8b93b1"
-  dependencies:
-    inflight "^1.0.4"
-    inherits "2"
-    minimatch "2 || 3"
-    once "^1.3.0"
-    path-is-absolute "^1.0.0"
-
-glob@^6.0.1:
-  version "6.0.4"
-  resolved "https://npm.abeck.io:443/glob/-/glob-6.0.4.tgz#0f08860f6a155127b2fadd4f9ce24b1aab6e4d22"
   dependencies:
     inflight "^1.0.4"
     inherits "2"
@@ -3529,6 +3373,12 @@ glob@^7.0.0, glob@^7.0.3, glob@^7.0.5, glob@^7.0.6, glob@^7.1.1, glob@^7.1.2:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
+global-dirs@^0.1.0:
+  version "0.1.1"
+  resolved "https://npm.abeck.io:443/global-dirs/-/global-dirs-0.1.1.tgz#b319c0dd4607f353f3be9cca4c72fc148c49f445"
+  dependencies:
+    ini "^1.3.4"
+
 global@^4.3.0, global@^4.3.2:
   version "4.3.2"
   resolved "https://npm.abeck.io:443/global/-/global-4.3.2.tgz#e76989268a6c74c38908b1305b10fc0e394e9d0f"
@@ -3536,20 +3386,13 @@ global@^4.3.0, global@^4.3.2:
     min-document "^2.19.0"
     process "~0.5.1"
 
-globals@^9.0.0, globals@^9.17.0, globals@^9.2.0:
+globals@^11.0.1:
+  version "11.1.0"
+  resolved "https://npm.abeck.io:443/globals/-/globals-11.1.0.tgz#632644457f5f0e3ae711807183700ebf2e4633e4"
+
+globals@^9.14.0, globals@^9.18.0, globals@^9.2.0:
   version "9.18.0"
   resolved "https://npm.abeck.io:443/globals/-/globals-9.18.0.tgz#aa3896b3e69b487f17e31ed2143d69a8e30c2d8a"
-
-globby@^4.0.0:
-  version "4.1.0"
-  resolved "https://npm.abeck.io:443/globby/-/globby-4.1.0.tgz#080f54549ec1b82a6c60e631fc82e1211dbe95f8"
-  dependencies:
-    array-union "^1.0.1"
-    arrify "^1.0.0"
-    glob "^6.0.1"
-    object-assign "^4.0.1"
-    pify "^2.0.0"
-    pinkie-promise "^2.0.0"
 
 globby@^5.0.0:
   version "5.0.0"
@@ -3578,26 +3421,6 @@ glogg@^1.0.0:
   dependencies:
     sparkles "^1.0.0"
 
-got@^5.0.0, got@^5.2.0:
-  version "5.7.1"
-  resolved "https://npm.abeck.io:443/got/-/got-5.7.1.tgz#5f81635a61e4a6589f180569ea4e381680a51f35"
-  dependencies:
-    create-error-class "^3.0.1"
-    duplexer2 "^0.1.4"
-    is-redirect "^1.0.0"
-    is-retry-allowed "^1.0.0"
-    is-stream "^1.0.0"
-    lowercase-keys "^1.0.0"
-    node-status-codes "^1.0.0"
-    object-assign "^4.0.1"
-    parse-json "^2.1.0"
-    pinkie-promise "^2.0.0"
-    read-all-stream "^3.0.0"
-    readable-stream "^2.0.5"
-    timed-out "^3.0.0"
-    unzip-response "^1.0.2"
-    url-parse-lax "^1.0.0"
-
 got@^6.7.1:
   version "6.7.1"
   resolved "https://npm.abeck.io:443/got/-/got-6.7.1.tgz#240cd05785a9a18e561dc1b44b41c763ef1e8db0"
@@ -3614,51 +3437,30 @@ got@^6.7.1:
     unzip-response "^2.0.1"
     url-parse-lax "^1.0.0"
 
-graceful-fs@^4.0.0, graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.3, graceful-fs@^4.1.6, graceful-fs@^4.1.9:
+got@^7.0.0:
+  version "7.1.0"
+  resolved "https://npm.abeck.io:443/got/-/got-7.1.0.tgz#05450fd84094e6bbea56f451a43a9c289166385a"
+  dependencies:
+    decompress-response "^3.2.0"
+    duplexer3 "^0.1.4"
+    get-stream "^3.0.0"
+    is-plain-obj "^1.1.0"
+    is-retry-allowed "^1.0.0"
+    is-stream "^1.0.0"
+    isurl "^1.0.0-alpha5"
+    lowercase-keys "^1.0.0"
+    p-cancelable "^0.3.0"
+    p-timeout "^1.1.1"
+    safe-buffer "^5.0.1"
+    timed-out "^4.0.0"
+    url-parse-lax "^1.0.0"
+    url-to-options "^1.0.1"
+
+graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.3, graceful-fs@^4.1.6, graceful-fs@^4.1.9:
   version "4.1.11"
   resolved "https://npm.abeck.io:443/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
 
-"graceful-readlink@>= 1.0.0":
-  version "1.0.1"
-  resolved "https://npm.abeck.io:443/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
-
-grouped-queue@^0.3.0:
-  version "0.3.3"
-  resolved "https://npm.abeck.io:443/grouped-queue/-/grouped-queue-0.3.3.tgz#c167d2a5319c5a0e0964ef6a25b7c2df8996c85c"
-  dependencies:
-    lodash "^4.17.2"
-
-gruntfile-editor@^1.0.0:
-  version "1.2.1"
-  resolved "https://npm.abeck.io:443/gruntfile-editor/-/gruntfile-editor-1.2.1.tgz#366fc1f93cbf045813e1448aef1da9f18289d5eb"
-  dependencies:
-    ast-query "^2.0.0"
-    lodash "^4.6.1"
-
-gulp-decompress@^1.2.0:
-  version "1.2.0"
-  resolved "https://npm.abeck.io:443/gulp-decompress/-/gulp-decompress-1.2.0.tgz#8eeb65a5e015f8ed8532cafe28454960626f0dc7"
-  dependencies:
-    archive-type "^3.0.0"
-    decompress "^3.0.0"
-    gulp-util "^3.0.1"
-    readable-stream "^2.0.2"
-
-gulp-rename@^1.2.0:
-  version "1.2.2"
-  resolved "https://npm.abeck.io:443/gulp-rename/-/gulp-rename-1.2.2.tgz#3ad4428763f05e2764dec1c67d868db275687817"
-
-gulp-sourcemaps@1.6.0:
-  version "1.6.0"
-  resolved "https://npm.abeck.io:443/gulp-sourcemaps/-/gulp-sourcemaps-1.6.0.tgz#b86ff349d801ceb56e1d9e7dc7bbcb4b7dee600c"
-  dependencies:
-    convert-source-map "^1.1.1"
-    graceful-fs "^4.1.2"
-    strip-bom "^2.0.0"
-    through2 "^2.0.0"
-    vinyl "^1.0.0"
-
-gulp-util@^3.0.1, gulp-util@^3.0.4:
+gulp-util@^3.0.4:
   version "3.0.8"
   resolved "https://npm.abeck.io:443/gulp-util/-/gulp-util-3.0.8.tgz#0054e1e744502e27c04c187c3ecc505dd54bbb4f"
   dependencies:
@@ -3688,8 +3490,8 @@ gulplog@^1.0.0:
     glogg "^1.0.0"
 
 handlebars@^4.0.3:
-  version "4.0.10"
-  resolved "https://npm.abeck.io:443/handlebars/-/handlebars-4.0.10.tgz#3d30c718b09a3d96f23ea4cc1f403c4d3ba9ff4f"
+  version "4.0.11"
+  resolved "https://npm.abeck.io:443/handlebars/-/handlebars-4.0.11.tgz#630a35dfe0294bc281edae6ffc5d329fc7982dcc"
   dependencies:
     async "^1.4.0"
     optimist "^0.6.1"
@@ -3701,12 +3503,23 @@ har-schema@^1.0.5:
   version "1.0.5"
   resolved "https://npm.abeck.io:443/har-schema/-/har-schema-1.0.5.tgz#d263135f43307c02c602afc8fe95970c0151369e"
 
+har-schema@^2.0.0:
+  version "2.0.0"
+  resolved "https://npm.abeck.io:443/har-schema/-/har-schema-2.0.0.tgz#a94c2224ebcac04782a0d9035521f24735b7ec92"
+
 har-validator@~4.2.1:
   version "4.2.1"
   resolved "https://npm.abeck.io:443/har-validator/-/har-validator-4.2.1.tgz#33481d0f1bbff600dd203d75812a6a5fba002e2a"
   dependencies:
     ajv "^4.9.1"
     har-schema "^1.0.5"
+
+har-validator@~5.0.3:
+  version "5.0.3"
+  resolved "https://npm.abeck.io:443/har-validator/-/har-validator-5.0.3.tgz#ba402c266194f15956ef15e0fcf242993f6a7dfd"
+  dependencies:
+    ajv "^5.1.0"
+    har-schema "^2.0.0"
 
 has-ansi@^0.1.0:
   version "0.1.0"
@@ -3748,6 +3561,16 @@ has-gulplog@^0.1.0:
   dependencies:
     sparkles "^1.0.0"
 
+has-symbol-support-x@^1.4.1:
+  version "1.4.1"
+  resolved "https://npm.abeck.io:443/has-symbol-support-x/-/has-symbol-support-x-1.4.1.tgz#66ec2e377e0c7d7ccedb07a3a84d77510ff1bc4c"
+
+has-to-string-tag-x@^1.2.0:
+  version "1.4.1"
+  resolved "https://npm.abeck.io:443/has-to-string-tag-x/-/has-to-string-tag-x-1.4.1.tgz#a045ab383d7b4b2012a00148ab0aa5f290044d4d"
+  dependencies:
+    has-symbol-support-x "^1.4.1"
+
 has-unicode@^2.0.0:
   version "2.0.1"
   resolved "https://npm.abeck.io:443/has-unicode/-/has-unicode-2.0.1.tgz#e0e6fe6a28cf51138855e086d1691e771de2a8b9"
@@ -3762,7 +3585,7 @@ has@^1.0.1:
   dependencies:
     function-bind "^1.0.2"
 
-hawk@~3.1.3:
+hawk@3.1.3, hawk@~3.1.3:
   version "3.1.3"
   resolved "https://npm.abeck.io:443/hawk/-/hawk-3.1.3.tgz#078444bd7c1640b0fe540d2c9b73d59678e8e1c4"
   dependencies:
@@ -3771,13 +3594,30 @@ hawk@~3.1.3:
     hoek "2.x.x"
     sntp "1.x.x"
 
+hawk@~6.0.2:
+  version "6.0.2"
+  resolved "https://npm.abeck.io:443/hawk/-/hawk-6.0.2.tgz#af4d914eb065f9b5ce4d9d11c1cb2126eecc3038"
+  dependencies:
+    boom "4.x.x"
+    cryptiles "3.x.x"
+    hoek "4.x.x"
+    sntp "2.x.x"
+
 hoek@2.x.x:
   version "2.16.3"
   resolved "https://npm.abeck.io:443/hoek/-/hoek-2.16.3.tgz#20bb7403d3cea398e91dc4710a8ff1b8274a25ed"
 
-hoist-non-react-statics@^1.0.0, hoist-non-react-statics@^1.0.3, hoist-non-react-statics@^1.2.0:
+hoek@4.x.x:
+  version "4.2.0"
+  resolved "https://npm.abeck.io:443/hoek/-/hoek-4.2.0.tgz#72d9d0754f7fe25ca2d01ad8f8f9a9449a89526d"
+
+hoist-non-react-statics@^1.0.0, hoist-non-react-statics@^1.2.0:
   version "1.2.0"
   resolved "https://npm.abeck.io:443/hoist-non-react-statics/-/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
+
+hoist-non-react-statics@^2.2.1:
+  version "2.3.1"
+  resolved "https://npm.abeck.io:443/hoist-non-react-statics/-/hoist-non-react-statics-2.3.1.tgz#343db84c6018c650778898240135a1420ee22ce0"
 
 home-or-tmp@^2.0.0:
   version "2.0.0"
@@ -3790,16 +3630,9 @@ hosted-git-info@^2.1.4:
   version "2.5.0"
   resolved "https://npm.abeck.io:443/hosted-git-info/-/hosted-git-info-2.5.0.tgz#6d60e34b3abbc8313062c3b798ef8d901a07af3c"
 
-html-wiring@^1.0.0:
-  version "1.2.0"
-  resolved "https://npm.abeck.io:443/html-wiring/-/html-wiring-1.2.0.tgz#c5f90a776e0a27241dc6df9022c37186d0270f9e"
-  dependencies:
-    cheerio "^0.19.0"
-    detect-newline "^1.0.3"
-
 htmlparser2-without-node-native@^3.9.0:
-  version "3.9.0"
-  resolved "https://npm.abeck.io:443/htmlparser2-without-node-native/-/htmlparser2-without-node-native-3.9.0.tgz#7594357386e43be3d9ec4264df9d7ec60f81a7df"
+  version "3.9.2"
+  resolved "https://npm.abeck.io:443/htmlparser2-without-node-native/-/htmlparser2-without-node-native-3.9.2.tgz#b3ed050d877d0ff3465969e339877b7f9f6631f6"
   dependencies:
     domelementtype "^1.3.0"
     domhandler "^2.3.0"
@@ -3820,16 +3653,6 @@ htmlparser2@^3.9.1:
     inherits "^2.0.1"
     readable-stream "^2.0.2"
 
-htmlparser2@~3.8.1:
-  version "3.8.3"
-  resolved "https://npm.abeck.io:443/htmlparser2/-/htmlparser2-3.8.3.tgz#996c28b191516a8be86501a7d79757e5c70c1068"
-  dependencies:
-    domelementtype "1"
-    domhandler "2.3"
-    domutils "1.5"
-    entities "1.0"
-    readable-stream "1.1"
-
 http-errors@~1.3.1:
   version "1.3.1"
   resolved "https://npm.abeck.io:443/http-errors/-/http-errors-1.3.1.tgz#197e22cdebd4198585e8694ef6786197b91ed942"
@@ -3842,6 +3665,14 @@ http-signature@~1.1.0:
   resolved "https://npm.abeck.io:443/http-signature/-/http-signature-1.1.1.tgz#df72e267066cd0ac67fb76adf8e134a8fbcf91bf"
   dependencies:
     assert-plus "^0.2.0"
+    jsprim "^1.2.2"
+    sshpk "^1.7.0"
+
+http-signature@~1.2.0:
+  version "1.2.0"
+  resolved "https://npm.abeck.io:443/http-signature/-/http-signature-1.2.0.tgz#9aecd925114772f3d95b65a60abb8f7c18fbace1"
+  dependencies:
+    assert-plus "^1.0.0"
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
@@ -3882,8 +3713,8 @@ iconv-lite@0.4.13:
   resolved "https://npm.abeck.io:443/iconv-lite/-/iconv-lite-0.4.13.tgz#1f88aba4ab0b1508e8312acc39345f36e992e2f2"
 
 iconv-lite@^0.4.17, iconv-lite@~0.4.13:
-  version "0.4.18"
-  resolved "https://npm.abeck.io:443/iconv-lite/-/iconv-lite-0.4.18.tgz#23d8656b16aae6742ac29732ea8f0336a4789cf2"
+  version "0.4.19"
+  resolved "https://npm.abeck.io:443/iconv-lite/-/iconv-lite-0.4.19.tgz#f7468f60135f5e5dad3399c0a81be9a1603a082b"
 
 ignite-animatable@^0.3.1:
   version "0.3.1"
@@ -3909,9 +3740,9 @@ ignore-by-default@^1.0.0:
   version "1.0.1"
   resolved "https://npm.abeck.io:443/ignore-by-default/-/ignore-by-default-1.0.1.tgz#48ca6d72f6c6a3af00a9ad4ae6876be3889e2b09"
 
-ignore@^3.0.9, ignore@^3.2.0, ignore@^3.3.3:
-  version "3.3.3"
-  resolved "https://npm.abeck.io:443/ignore/-/ignore-3.3.3.tgz#432352e57accd87ab3110e82d3fea0e47812156d"
+ignore@^3.0.11, ignore@^3.0.9, ignore@^3.2.0, ignore@^3.3.3:
+  version "3.3.7"
+  resolved "https://npm.abeck.io:443/ignore/-/ignore-3.3.7.tgz#612289bfb3c220e186a58118618d5be8c1bab021"
 
 image-size@^0.3.5:
   version "0.3.5"
@@ -3965,27 +3796,9 @@ inherits@2.0.1:
   version "2.0.1"
   resolved "https://npm.abeck.io:443/inherits/-/inherits-2.0.1.tgz#b17d08d326b4423e568eff719f91b0b1cbdf69f1"
 
-ini@~1.3.0:
-  version "1.3.4"
-  resolved "https://npm.abeck.io:443/ini/-/ini-1.3.4.tgz#0537cb79daf59b59a1a517dff706c86ec039162e"
-
-inquirer@^0.11.0:
-  version "0.11.4"
-  resolved "https://npm.abeck.io:443/inquirer/-/inquirer-0.11.4.tgz#81e3374e8361beaff2d97016206d359d0b32fa4d"
-  dependencies:
-    ansi-escapes "^1.1.0"
-    ansi-regex "^2.0.0"
-    chalk "^1.0.0"
-    cli-cursor "^1.0.1"
-    cli-width "^1.0.1"
-    figures "^1.3.5"
-    lodash "^3.3.1"
-    readline2 "^1.0.1"
-    run-async "^0.1.0"
-    rx-lite "^3.1.2"
-    string-width "^1.0.1"
-    strip-ansi "^3.0.0"
-    through "^2.3.6"
+ini@^1.3.4, ini@~1.3.0:
+  version "1.3.5"
+  resolved "https://npm.abeck.io:443/ini/-/ini-1.3.5.tgz#eee25f56db1c9ec6085e0c22778083f596abf927"
 
 inquirer@^0.12.0:
   version "0.12.0"
@@ -4005,30 +3818,11 @@ inquirer@^0.12.0:
     strip-ansi "^3.0.0"
     through "^2.3.6"
 
-inquirer@^1.0.2:
-  version "1.2.3"
-  resolved "https://npm.abeck.io:443/inquirer/-/inquirer-1.2.3.tgz#4dec6f32f37ef7bb0b2ed3f1d1a5c3f545074918"
-  dependencies:
-    ansi-escapes "^1.1.0"
-    chalk "^1.0.0"
-    cli-cursor "^1.0.1"
-    cli-width "^2.0.0"
-    external-editor "^1.1.0"
-    figures "^1.3.5"
-    lodash "^4.3.0"
-    mute-stream "0.0.6"
-    pinkie-promise "^2.0.0"
-    run-async "^2.2.0"
-    rx "^4.1.0"
-    string-width "^1.0.1"
-    strip-ansi "^3.0.0"
-    through "^2.3.6"
-
 inquirer@^3.0.6:
-  version "3.2.1"
-  resolved "https://npm.abeck.io:443/inquirer/-/inquirer-3.2.1.tgz#06ceb0f540f45ca548c17d6840959878265fa175"
+  version "3.3.0"
+  resolved "https://npm.abeck.io:443/inquirer/-/inquirer-3.3.0.tgz#9dd2f2ad765dcab1ff0443b491442a20ba227dc9"
   dependencies:
-    ansi-escapes "^2.0.0"
+    ansi-escapes "^3.0.0"
     chalk "^2.0.0"
     cli-cursor "^2.1.0"
     cli-width "^2.0.0"
@@ -4044,8 +3838,8 @@ inquirer@^3.0.6:
     through "^2.3.6"
 
 interpret@^1.0.0:
-  version "1.0.3"
-  resolved "https://npm.abeck.io:443/interpret/-/interpret-1.0.3.tgz#cbc35c62eeee73f19ab7b10a801511401afc0f90"
+  version "1.1.0"
+  resolved "https://npm.abeck.io:443/interpret/-/interpret-1.1.0.tgz#7ed1b1410c6a0e0f78cf95d3b8440c63f78b8614"
 
 invariant@2.2.0:
   version "2.2.0"
@@ -4053,7 +3847,7 @@ invariant@2.2.0:
   dependencies:
     loose-envify "^1.0.0"
 
-invariant@^2.0.0, invariant@^2.2.0, invariant@^2.2.1, invariant@^2.2.2:
+invariant@^2.0.0, invariant@^2.2.1, invariant@^2.2.2:
   version "2.2.2"
   resolved "https://npm.abeck.io:443/invariant/-/invariant-2.2.2.tgz#9e1f56ac0acdb6bf303306f338be3b204ae60360"
   dependencies:
@@ -4064,14 +3858,8 @@ invert-kv@^1.0.0:
   resolved "https://npm.abeck.io:443/invert-kv/-/invert-kv-1.0.0.tgz#104a8e4aaca6d3d8cd157a8ef8bfab2d7a3ffdb6"
 
 irregular-plurals@^1.0.0:
-  version "1.3.0"
-  resolved "https://npm.abeck.io:443/irregular-plurals/-/irregular-plurals-1.3.0.tgz#7af06931bdf74be33dcf585a13e06fccc16caecf"
-
-is-absolute@^0.1.5:
-  version "0.1.7"
-  resolved "https://npm.abeck.io:443/is-absolute/-/is-absolute-0.1.7.tgz#847491119fccb5fb436217cc737f7faad50f603f"
-  dependencies:
-    is-relative "^0.1.0"
+  version "1.4.0"
+  resolved "https://npm.abeck.io:443/irregular-plurals/-/irregular-plurals-1.4.0.tgz#2ca9b033651111855412f16be5d77c62a458a766"
 
 is-arrayish@^0.2.1:
   version "0.2.1"
@@ -4084,18 +3872,14 @@ is-binary-path@^1.0.0:
     binary-extensions "^1.0.0"
 
 is-buffer@^1.1.5:
-  version "1.1.5"
-  resolved "https://npm.abeck.io:443/is-buffer/-/is-buffer-1.1.5.tgz#1f3b26ef613b214b88cbca23cc6c01d87961eecc"
+  version "1.1.6"
+  resolved "https://npm.abeck.io:443/is-buffer/-/is-buffer-1.1.6.tgz#efaa2ea9daa0d7ab2ea13a97b2b8ad51fefbe8be"
 
 is-builtin-module@^1.0.0:
   version "1.0.0"
   resolved "https://npm.abeck.io:443/is-builtin-module/-/is-builtin-module-1.0.0.tgz#540572d34f7ac3119f8f76c30cbc1b1e037affbe"
   dependencies:
     builtin-modules "^1.0.0"
-
-is-bzip2@^1.0.0:
-  version "1.0.0"
-  resolved "https://npm.abeck.io:443/is-bzip2/-/is-bzip2-1.0.0.tgz#5ee58eaa5a2e9c80e21407bedf23ae5ac091b3fc"
 
 is-callable@^1.1.1, is-callable@^1.1.3:
   version "1.1.3"
@@ -4125,17 +3909,13 @@ is-error@^2.2.0:
   version "2.2.1"
   resolved "https://npm.abeck.io:443/is-error/-/is-error-2.2.1.tgz#684a96d84076577c98f4cdb40c6d26a5123bf19c"
 
-is-extendable@^0.1.0, is-extendable@^0.1.1:
+is-extendable@^0.1.1:
   version "0.1.1"
   resolved "https://npm.abeck.io:443/is-extendable/-/is-extendable-0.1.1.tgz#62b110e289a471418e3ec36a617d472e301dfc89"
 
 is-extglob@^1.0.0:
   version "1.0.0"
   resolved "https://npm.abeck.io:443/is-extglob/-/is-extglob-1.0.0.tgz#ac468177c4943405a092fc8f29760c6ffc6206c0"
-
-is-extglob@^2.1.0:
-  version "2.1.1"
-  resolved "https://npm.abeck.io:443/is-extglob/-/is-extglob-2.1.1.tgz#a88c02535791f02ed37c76a1b9ea9773c833f8c2"
 
 is-finite@^1.0.0, is-finite@^1.0.1:
   version "1.0.2"
@@ -4163,28 +3943,21 @@ is-glob@^2.0.0, is-glob@^2.0.1:
   dependencies:
     is-extglob "^1.0.0"
 
-is-glob@^3.1.0:
-  version "3.1.0"
-  resolved "https://npm.abeck.io:443/is-glob/-/is-glob-3.1.0.tgz#7ba5ae24217804ac70707b96922567486cc3e84a"
+is-installed-globally@^0.1.0:
+  version "0.1.0"
+  resolved "https://npm.abeck.io:443/is-installed-globally/-/is-installed-globally-0.1.0.tgz#0dfd98f5a9111716dd535dda6492f67bf3d25a80"
   dependencies:
-    is-extglob "^2.1.0"
-
-is-gzip@^1.0.0:
-  version "1.0.0"
-  resolved "https://npm.abeck.io:443/is-gzip/-/is-gzip-1.0.0.tgz#6ca8b07b99c77998025900e555ced8ed80879a83"
+    global-dirs "^0.1.0"
+    is-path-inside "^1.0.0"
 
 is-my-json-valid@^2.10.0:
-  version "2.16.0"
-  resolved "https://npm.abeck.io:443/is-my-json-valid/-/is-my-json-valid-2.16.0.tgz#f079dd9bfdae65ee2038aae8acbc86ab109e3693"
+  version "2.16.1"
+  resolved "https://npm.abeck.io:443/is-my-json-valid/-/is-my-json-valid-2.16.1.tgz#5a846777e2c2620d1e69104e5d3a03b1f6088f11"
   dependencies:
     generate-function "^2.0.0"
     generate-object-property "^1.1.0"
     jsonpointer "^4.0.0"
     xtend "^4.0.0"
-
-is-natural-number@^2.0.0:
-  version "2.1.1"
-  resolved "https://npm.abeck.io:443/is-natural-number/-/is-natural-number-2.1.1.tgz#7d4c5728377ef386c3e194a9911bf57c6dc335e7"
 
 is-npm@^1.0.0:
   version "1.0.0"
@@ -4206,6 +3979,10 @@ is-obj@^1.0.0:
   version "1.0.1"
   resolved "https://npm.abeck.io:443/is-obj/-/is-obj-1.0.1.tgz#3e4729ac1f5fde025cd7d83a896dab9f4f67db0f"
 
+is-object@^1.0.1:
+  version "1.0.1"
+  resolved "https://npm.abeck.io:443/is-object/-/is-object-1.0.1.tgz#8952688c5ec2ffd6b03ecc85e769e02903083470"
+
 is-observable@^0.2.0:
   version "0.2.0"
   resolved "https://npm.abeck.io:443/is-observable/-/is-observable-0.2.0.tgz#b361311d83c6e5d726cabf5e250b0237106f5ae2"
@@ -4223,12 +4000,12 @@ is-path-in-cwd@^1.0.0:
     is-path-inside "^1.0.0"
 
 is-path-inside@^1.0.0:
-  version "1.0.0"
-  resolved "https://npm.abeck.io:443/is-path-inside/-/is-path-inside-1.0.0.tgz#fc06e5a1683fbda13de667aff717bbc10a48f37f"
+  version "1.0.1"
+  resolved "https://npm.abeck.io:443/is-path-inside/-/is-path-inside-1.0.1.tgz#8ef5b7de50437a3fdca6b4e865ef7aa55cb48036"
   dependencies:
     path-is-inside "^1.0.1"
 
-is-plain-obj@^1.0.0:
+is-plain-obj@^1.0.0, is-plain-obj@^1.1.0:
   version "1.1.0"
   resolved "https://npm.abeck.io:443/is-plain-obj/-/is-plain-obj-1.1.0.tgz#71a50c8429dfca773c92a390a4a03b39fcd51d3e"
 
@@ -4258,10 +4035,6 @@ is-regex@^1.0.4:
   dependencies:
     has "^1.0.1"
 
-is-relative@^0.1.0:
-  version "0.1.3"
-  resolved "https://npm.abeck.io:443/is-relative/-/is-relative-0.1.3.tgz#905fee8ae86f45b3ec614bc3c15c869df0876e82"
-
 is-resolvable@^1.0.0:
   version "1.0.0"
   resolved "https://npm.abeck.io:443/is-resolvable/-/is-resolvable-1.0.0.tgz#8df57c61ea2e3c501408d100fb013cf8d6e0cc62"
@@ -4284,29 +4057,17 @@ is-symbol@^1.0.1:
   version "1.0.1"
   resolved "https://npm.abeck.io:443/is-symbol/-/is-symbol-1.0.1.tgz#3cc59f00025194b6ab2e38dbae6689256b660572"
 
-is-tar@^1.0.0:
-  version "1.0.0"
-  resolved "https://npm.abeck.io:443/is-tar/-/is-tar-1.0.0.tgz#2f6b2e1792c1f5bb36519acaa9d65c0d26fe853d"
-
 is-typedarray@~1.0.0:
   version "1.0.0"
   resolved "https://npm.abeck.io:443/is-typedarray/-/is-typedarray-1.0.0.tgz#e479c80858df0c1b11ddda6940f96011fcda4a9a"
 
-is-url@^1.2.0, is-url@^1.2.1:
+is-url@^1.2.1:
   version "1.2.2"
   resolved "https://npm.abeck.io:443/is-url/-/is-url-1.2.2.tgz#498905a593bf47cc2d9e7f738372bbf7696c7f26"
 
 is-utf8@^0.2.0, is-utf8@^0.2.1:
   version "0.2.1"
   resolved "https://npm.abeck.io:443/is-utf8/-/is-utf8-0.2.1.tgz#4b0da1442104d1b336340e80797e865cf39f7d72"
-
-is-valid-glob@^0.3.0:
-  version "0.3.0"
-  resolved "https://npm.abeck.io:443/is-valid-glob/-/is-valid-glob-0.3.0.tgz#d4b55c69f51886f9b65c70d6c2622d37e29f48fe"
-
-is-zip@^1.0.0:
-  version "1.0.0"
-  resolved "https://npm.abeck.io:443/is-zip/-/is-zip-1.0.0.tgz#47b0a8ff4d38a76431ccfd99a8e15a4c86ba2325"
 
 isarray@0.0.1:
   version "0.0.1"
@@ -4350,26 +4111,26 @@ istanbul-lib-coverage@^1.1.0, istanbul-lib-coverage@^1.1.1:
   resolved "https://npm.abeck.io:443/istanbul-lib-coverage/-/istanbul-lib-coverage-1.1.1.tgz#73bfb998885299415c93d38a3e9adf784a77a9da"
 
 istanbul-lib-hook@^1.0.6:
-  version "1.0.7"
-  resolved "https://npm.abeck.io:443/istanbul-lib-hook/-/istanbul-lib-hook-1.0.7.tgz#dd6607f03076578fe7d6f2a630cf143b49bacddc"
+  version "1.1.0"
+  resolved "https://npm.abeck.io:443/istanbul-lib-hook/-/istanbul-lib-hook-1.1.0.tgz#8538d970372cb3716d53e55523dd54b557a8d89b"
   dependencies:
     append-transform "^0.4.0"
 
 istanbul-lib-instrument@^1.7.1:
-  version "1.7.4"
-  resolved "https://npm.abeck.io:443/istanbul-lib-instrument/-/istanbul-lib-instrument-1.7.4.tgz#e9fd920e4767f3d19edc765e2d6b3f5ccbd0eea8"
+  version "1.9.1"
+  resolved "https://npm.abeck.io:443/istanbul-lib-instrument/-/istanbul-lib-instrument-1.9.1.tgz#250b30b3531e5d3251299fdd64b0b2c9db6b558e"
   dependencies:
     babel-generator "^6.18.0"
     babel-template "^6.16.0"
     babel-traverse "^6.18.0"
     babel-types "^6.18.0"
-    babylon "^6.17.4"
+    babylon "^6.18.0"
     istanbul-lib-coverage "^1.1.1"
     semver "^5.3.0"
 
 istanbul-lib-report@^1.1.0:
-  version "1.1.1"
-  resolved "https://npm.abeck.io:443/istanbul-lib-report/-/istanbul-lib-report-1.1.1.tgz#f0e55f56655ffa34222080b7a0cd4760e1405fc9"
+  version "1.1.2"
+  resolved "https://npm.abeck.io:443/istanbul-lib-report/-/istanbul-lib-report-1.1.2.tgz#922be27c13b9511b979bd1587359f69798c1d425"
   dependencies:
     istanbul-lib-coverage "^1.1.1"
     mkdirp "^0.5.1"
@@ -4377,27 +4138,27 @@ istanbul-lib-report@^1.1.0:
     supports-color "^3.1.2"
 
 istanbul-lib-source-maps@^1.2.0:
-  version "1.2.1"
-  resolved "https://npm.abeck.io:443/istanbul-lib-source-maps/-/istanbul-lib-source-maps-1.2.1.tgz#a6fe1acba8ce08eebc638e572e294d267008aa0c"
+  version "1.2.2"
+  resolved "https://npm.abeck.io:443/istanbul-lib-source-maps/-/istanbul-lib-source-maps-1.2.2.tgz#750578602435f28a0c04ee6d7d9e0f2960e62c1c"
   dependencies:
-    debug "^2.6.3"
+    debug "^3.1.0"
     istanbul-lib-coverage "^1.1.1"
     mkdirp "^0.5.1"
     rimraf "^2.6.1"
     source-map "^0.5.3"
 
 istanbul-reports@^1.1.0:
-  version "1.1.1"
-  resolved "https://npm.abeck.io:443/istanbul-reports/-/istanbul-reports-1.1.1.tgz#042be5c89e175bc3f86523caab29c014e77fee4e"
+  version "1.1.3"
+  resolved "https://npm.abeck.io:443/istanbul-reports/-/istanbul-reports-1.1.3.tgz#3b9e1e8defb6d18b1d425da8e8b32c5a163f2d10"
   dependencies:
     handlebars "^4.0.3"
 
-istextorbinary@^1.0.2:
-  version "1.0.2"
-  resolved "https://npm.abeck.io:443/istextorbinary/-/istextorbinary-1.0.2.tgz#ace19354d1a9a0173efeb1084ce0f87b0ad7decf"
+isurl@^1.0.0-alpha5:
+  version "1.0.0"
+  resolved "https://npm.abeck.io:443/isurl/-/isurl-1.0.0.tgz#b27f4f49f3cdaa3ea44a0a5b7f3462e6edc39d67"
   dependencies:
-    binaryextensions "~1.0.0"
-    textextensions "~1.0.0"
+    has-to-string-tag-x "^1.2.0"
+    is-object "^1.0.1"
 
 jest-haste-map@18.0.0:
   version "18.0.0"
@@ -4422,13 +4183,13 @@ js-string-escape@^1.0.1:
   version "1.0.1"
   resolved "https://npm.abeck.io:443/js-string-escape/-/js-string-escape-1.0.1.tgz#e2625badbc0d67c7533e9edc1068c587ae4137ef"
 
-js-tokens@^3.0.0:
+js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"
   resolved "https://npm.abeck.io:443/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
 
 js-yaml@^3.5.1, js-yaml@^3.8.2, js-yaml@^3.9.1:
-  version "3.9.1"
-  resolved "https://npm.abeck.io:443/js-yaml/-/js-yaml-3.9.1.tgz#08775cebdfdd359209f0d2acd383c8f86a6904a0"
+  version "3.10.0"
+  resolved "https://npm.abeck.io:443/js-yaml/-/js-yaml-3.10.0.tgz#2e78441646bd4682e963f22b6e92823c309c62dc"
   dependencies:
     argparse "^1.0.7"
     esprima "^4.0.0"
@@ -4436,10 +4197,6 @@ js-yaml@^3.5.1, js-yaml@^3.8.2, js-yaml@^3.9.1:
 jsbn@~0.1.0:
   version "0.1.1"
   resolved "https://npm.abeck.io:443/jsbn/-/jsbn-0.1.1.tgz#a5e654c2e5a2deb5f201d96cefbca80c0ef2f513"
-
-jschardet@^1.4.2:
-  version "1.5.1"
-  resolved "https://npm.abeck.io:443/jschardet/-/jschardet-1.5.1.tgz#c519f629f86b3a5bedba58a88d311309eec097f9"
 
 jsesc@^1.3.0:
   version "1.3.0"
@@ -4456,6 +4213,10 @@ json-schema-traverse@^0.3.0:
 json-schema@0.2.3:
   version "0.2.3"
   resolved "https://npm.abeck.io:443/json-schema/-/json-schema-0.2.3.tgz#b480c892e59a2f05954ce727bd3f2a4e882f9e13"
+
+json-stable-stringify-without-jsonify@^1.0.1:
+  version "1.0.1"
+  resolved "https://npm.abeck.io:443/json-stable-stringify-without-jsonify/-/json-stable-stringify-without-jsonify-1.0.1.tgz#9db7b59496ad3f3cfef30a75142d2d930ad72651"
 
 json-stable-stringify@^1.0.0, json-stable-stringify@^1.0.1:
   version "1.0.1"
@@ -4475,7 +4236,7 @@ json5@^0.4.0:
   version "0.4.0"
   resolved "https://npm.abeck.io:443/json5/-/json5-0.4.0.tgz#054352e4c4c80c86c0923877d449de176a732c8d"
 
-json5@^0.5.0, json5@^0.5.1:
+json5@^0.5.1:
   version "0.5.1"
   resolved "https://npm.abeck.io:443/json5/-/json5-0.5.1.tgz#1eade7acc012034ad84e2396767ead9fa5495821"
 
@@ -4502,9 +4263,15 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-jsx-ast-utils@^1.3.3, jsx-ast-utils@^1.4.1:
+jsx-ast-utils@^1.3.3, jsx-ast-utils@^1.3.4:
   version "1.4.1"
   resolved "https://npm.abeck.io:443/jsx-ast-utils/-/jsx-ast-utils-1.4.1.tgz#3867213e8dd79bf1e8f2300c0cfc1efb182c0df1"
+
+jsx-ast-utils@^2.0.0:
+  version "2.0.1"
+  resolved "https://npm.abeck.io:443/jsx-ast-utils/-/jsx-ast-utils-2.0.1.tgz#e801b1b39985e20fffc87b40e3748080e2dcac7f"
+  dependencies:
+    array-includes "^3.0.3"
 
 keymirror@0.1.1, keymirror@^0.1.1:
   version "0.1.1"
@@ -4544,12 +4311,6 @@ lazy-cache@^1.0.3:
   version "1.0.4"
   resolved "https://npm.abeck.io:443/lazy-cache/-/lazy-cache-1.0.4.tgz#a1d78fc3a50474cb80845d3b3b6e1da49a446e8e"
 
-lazystream@^1.0.0:
-  version "1.0.0"
-  resolved "https://npm.abeck.io:443/lazystream/-/lazystream-1.0.0.tgz#f6995fe0f820392f61396be89462407bb77168e4"
-  dependencies:
-    readable-stream "^2.0.5"
-
 lcid@^1.0.0:
   version "1.0.0"
   resolved "https://npm.abeck.io:443/lcid/-/lcid-1.0.0.tgz#308accafa0bc483a3867b4b6f2b9506251d1b835"
@@ -4557,8 +4318,8 @@ lcid@^1.0.0:
     invert-kv "^1.0.0"
 
 left-pad@^1.1.3:
-  version "1.1.3"
-  resolved "https://npm.abeck.io:443/left-pad/-/left-pad-1.1.3.tgz#612f61c033f3a9e08e939f1caebeea41b6f3199a"
+  version "1.2.0"
+  resolved "https://npm.abeck.io:443/left-pad/-/left-pad-1.2.0.tgz#d30a73c6b8201d8f7d8e7956ba9616087a68e0ee"
 
 levn@^0.3.0, levn@~0.3.0:
   version "0.3.0"
@@ -4653,6 +4414,10 @@ lodash.clonedeepwith@^4.5.0:
   version "4.5.0"
   resolved "https://npm.abeck.io:443/lodash.clonedeepwith/-/lodash.clonedeepwith-4.5.0.tgz#6ee30573a03a1a60d670a62ef33c10cf1afdbdd4"
 
+lodash.cond@^4.3.0:
+  version "4.5.2"
+  resolved "https://npm.abeck.io:443/lodash.cond/-/lodash.cond-4.5.2.tgz#f471a1da486be60f6ab955d17115523dd1d255d5"
+
 lodash.debounce@^4.0.3:
   version "4.0.8"
   resolved "https://npm.abeck.io:443/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
@@ -4695,7 +4460,7 @@ lodash.isarray@^3.0.0:
   version "3.0.4"
   resolved "https://npm.abeck.io:443/lodash.isarray/-/lodash.isarray-3.0.4.tgz#79e4eb88c36a8122af86f844aa9bcd851b5fbb55"
 
-lodash.isequal@^4.0.0, lodash.isequal@^4.5.0:
+lodash.isequal@^4.5.0:
   version "4.5.0"
   resolved "https://npm.abeck.io:443/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
 
@@ -4768,23 +4533,13 @@ lodash.templatesettings@^3.0.0:
     lodash._reinterpolate "^3.0.0"
     lodash.escape "^3.0.0"
 
-lodash@^3.1.0, lodash@^3.2.0, lodash@^3.3.1, lodash@^3.5.0:
+lodash@^3.5.0:
   version "3.10.1"
   resolved "https://npm.abeck.io:443/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
-lodash@^4.0.0, lodash@^4.11.1, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.16.6, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.5.1, lodash@^4.6.1:
+lodash@^4.0.0, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.16.6, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.5.1, lodash@^4.6.1:
   version "4.17.4"
   resolved "https://npm.abeck.io:443/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
-
-log-symbols@^1.0.1:
-  version "1.0.2"
-  resolved "https://npm.abeck.io:443/log-symbols/-/log-symbols-1.0.2.tgz#376ff7b58ea3086a0f09facc74617eca501e1a18"
-  dependencies:
-    chalk "^1.0.0"
-
-lolex@1.3.2:
-  version "1.3.2"
-  resolved "https://npm.abeck.io:443/lolex/-/lolex-1.3.2.tgz#7c3da62ffcb30f0f5a80a2566ca24e45d8a01f31"
 
 longest@^1.0.1:
   version "1.0.1"
@@ -4807,7 +4562,7 @@ lowercase-keys@^1.0.0:
   version "1.0.0"
   resolved "https://npm.abeck.io:443/lowercase-keys/-/lowercase-keys-1.0.0.tgz#4e3366b39e7f5457e35f1324bdf6f88d0bfc7306"
 
-lru-cache@^4.0.0, lru-cache@^4.0.1:
+lru-cache@^4.0.1:
   version "4.1.1"
   resolved "https://npm.abeck.io:443/lru-cache/-/lru-cache-4.1.1.tgz#622e32e82488b49279114a4f9ecf45e7cd6bba55"
   dependencies:
@@ -4815,10 +4570,10 @@ lru-cache@^4.0.0, lru-cache@^4.0.1:
     yallist "^2.1.2"
 
 make-dir@^1.0.0:
-  version "1.0.0"
-  resolved "https://npm.abeck.io:443/make-dir/-/make-dir-1.0.0.tgz#97a011751e91dd87cfadef58832ebb04936de978"
+  version "1.1.0"
+  resolved "https://npm.abeck.io:443/make-dir/-/make-dir-1.1.0.tgz#19b4369fe48c116f53c2af95ad102c0e39e85d51"
   dependencies:
-    pify "^2.3.0"
+    pify "^3.0.0"
 
 makeerror@1.0.x:
   version "1.0.11"
@@ -4856,36 +4611,13 @@ media-typer@0.3.0:
   version "0.3.0"
   resolved "https://npm.abeck.io:443/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
 
-mem-fs-editor@^2.0.0:
-  version "2.3.0"
-  resolved "https://npm.abeck.io:443/mem-fs-editor/-/mem-fs-editor-2.3.0.tgz#42a0ae1f55e76fd03f09e7c7b15b6307bdf5cb13"
-  dependencies:
-    commondir "^1.0.1"
-    deep-extend "^0.4.0"
-    ejs "^2.3.1"
-    glob "^7.0.3"
-    globby "^4.0.0"
-    mkdirp "^0.5.0"
-    multimatch "^2.0.0"
-    rimraf "^2.2.8"
-    through2 "^2.0.0"
-    vinyl "^1.1.0"
-
-mem-fs@^1.1.0:
-  version "1.1.3"
-  resolved "https://npm.abeck.io:443/mem-fs/-/mem-fs-1.1.3.tgz#b8ae8d2e3fcb6f5d3f9165c12d4551a065d989cc"
-  dependencies:
-    through2 "^2.0.0"
-    vinyl "^1.1.0"
-    vinyl-file "^2.0.0"
-
 mem@^1.1.0:
   version "1.1.0"
   resolved "https://npm.abeck.io:443/mem/-/mem-1.1.0.tgz#5edd52b485ca1d900fe64895505399a0dfa45f76"
   dependencies:
     mimic-fn "^1.0.0"
 
-meow@^3.1.0, meow@^3.3.0, meow@^3.5.0, meow@^3.7.0:
+meow@^3.7.0:
   version "3.7.0"
   resolved "https://npm.abeck.io:443/meow/-/meow-3.7.0.tgz#72cb668b425228290abbfa856892587308a801fb"
   dependencies:
@@ -4906,30 +4638,24 @@ merge-source-map@^1.0.2:
   dependencies:
     source-map "^0.5.6"
 
-merge-stream@^1.0.0:
-  version "1.0.1"
-  resolved "https://npm.abeck.io:443/merge-stream/-/merge-stream-1.0.1.tgz#4041202d508a342ba00174008df0c251b8c135e1"
-  dependencies:
-    readable-stream "^2.0.1"
-
 merge@^1.1.3:
   version "1.2.0"
   resolved "https://npm.abeck.io:443/merge/-/merge-1.2.0.tgz#7531e39d4949c281a66b8c5a6e0265e8b05894da"
 
 method-override@~2.3.5:
-  version "2.3.9"
-  resolved "https://npm.abeck.io:443/method-override/-/method-override-2.3.9.tgz#bd151f2ce34cf01a76ca400ab95c012b102d8f71"
+  version "2.3.10"
+  resolved "https://npm.abeck.io:443/method-override/-/method-override-2.3.10.tgz#e3daf8d5dee10dd2dce7d4ae88d62bbee77476b4"
   dependencies:
-    debug "2.6.8"
+    debug "2.6.9"
     methods "~1.1.2"
-    parseurl "~1.3.1"
-    vary "~1.1.1"
+    parseurl "~1.3.2"
+    vary "~1.1.2"
 
 methods@~1.1.2:
   version "1.1.2"
   resolved "https://npm.abeck.io:443/methods/-/methods-1.1.2.tgz#5529a4d67654134edcc5266656835b0f851afcee"
 
-micromatch@^2.1.5, micromatch@^2.3.11, micromatch@^2.3.7:
+micromatch@^2.1.5, micromatch@^2.3.11:
   version "2.3.11"
   resolved "https://npm.abeck.io:443/micromatch/-/micromatch-2.3.11.tgz#86677c97d1720b363431d04d0d15293bd38c1565"
   dependencies:
@@ -4947,37 +4673,45 @@ micromatch@^2.1.5, micromatch@^2.3.11, micromatch@^2.3.7:
     parse-glob "^3.0.4"
     regex-cache "^0.4.2"
 
-"mime-db@>= 1.29.0 < 2", mime-db@~1.29.0:
-  version "1.29.0"
-  resolved "https://npm.abeck.io:443/mime-db/-/mime-db-1.29.0.tgz#48d26d235589651704ac5916ca06001914266878"
+"mime-db@>= 1.30.0 < 2":
+  version "1.32.0"
+  resolved "https://npm.abeck.io:443/mime-db/-/mime-db-1.32.0.tgz#485b3848b01a3cda5f968b4882c0771e58e09414"
 
 mime-db@~1.23.0:
   version "1.23.0"
   resolved "https://npm.abeck.io:443/mime-db/-/mime-db-1.23.0.tgz#a31b4070adaea27d732ea333740a64d0ec9a6659"
 
-mime-types@2.1.11, mime-types@~2.1.7, mime-types@~2.1.9:
+mime-db@~1.30.0:
+  version "1.30.0"
+  resolved "https://npm.abeck.io:443/mime-db/-/mime-db-1.30.0.tgz#74c643da2dd9d6a45399963465b26d5ca7d71f01"
+
+mime-types@2.1.11:
   version "2.1.11"
   resolved "https://npm.abeck.io:443/mime-types/-/mime-types-2.1.11.tgz#c259c471bda808a85d6cd193b430a5fae4473b3c"
   dependencies:
     mime-db "~1.23.0"
 
-mime-types@^2.1.12, mime-types@~2.1.11, mime-types@~2.1.15, mime-types@~2.1.6:
-  version "2.1.16"
-  resolved "https://npm.abeck.io:443/mime-types/-/mime-types-2.1.16.tgz#2b858a52e5ecd516db897ac2be87487830698e23"
+mime-types@^2.1.12, mime-types@~2.1.15, mime-types@~2.1.16, mime-types@~2.1.17, mime-types@~2.1.6, mime-types@~2.1.7, mime-types@~2.1.9:
+  version "2.1.17"
+  resolved "https://npm.abeck.io:443/mime-types/-/mime-types-2.1.17.tgz#09d7a393f03e995a79f8af857b70a9e0ab16557a"
   dependencies:
-    mime-db "~1.29.0"
+    mime-db "~1.30.0"
 
 mime@1.3.4:
   version "1.3.4"
   resolved "https://npm.abeck.io:443/mime/-/mime-1.3.4.tgz#115f9e3b6b3daf2959983cb38f149a2d40eb5d53"
 
 mime@^1.3.4:
-  version "1.3.6"
-  resolved "https://npm.abeck.io:443/mime/-/mime-1.3.6.tgz#591d84d3653a6b0b4a3b9df8de5aa8108e72e5e0"
+  version "1.6.0"
+  resolved "https://npm.abeck.io:443/mime/-/mime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
 
 mimic-fn@^1.0.0:
   version "1.1.0"
   resolved "https://npm.abeck.io:443/mimic-fn/-/mimic-fn-1.1.0.tgz#e667783d92e89dbd342818b5230b9d62a672ad18"
+
+mimic-response@^1.0.0:
+  version "1.0.0"
+  resolved "https://npm.abeck.io:443/mimic-response/-/mimic-response-1.0.0.tgz#df3d3652a73fded6b9b0b24146e6fd052353458e"
 
 min-document@^2.19.0:
   version "2.19.0"
@@ -4985,13 +4719,13 @@ min-document@^2.19.0:
   dependencies:
     dom-walk "^0.1.0"
 
-"minimatch@2 || 3", minimatch@^3.0.0, minimatch@^3.0.2, minimatch@^3.0.4:
+"minimatch@2 || 3", minimatch@^3.0.0, minimatch@^3.0.2, minimatch@^3.0.3, minimatch@^3.0.4:
   version "3.0.4"
   resolved "https://npm.abeck.io:443/minimatch/-/minimatch-3.0.4.tgz#5166e286457f03306064be5497e8dbb0c3d32083"
   dependencies:
     brace-expansion "^1.1.7"
 
-minimist@0.0.8, minimist@~0.0.1:
+minimist@0.0.8:
   version "0.0.8"
   resolved "https://npm.abeck.io:443/minimist/-/minimist-0.0.8.tgz#857fcabfc3397d2625b8228262e86aa7a011b05d"
 
@@ -4999,9 +4733,13 @@ minimist@^1.1.0, minimist@^1.1.1, minimist@^1.1.3, minimist@^1.2.0:
   version "1.2.0"
   resolved "https://npm.abeck.io:443/minimist/-/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
 
+minimist@~0.0.1:
+  version "0.0.10"
+  resolved "https://npm.abeck.io:443/minimist/-/minimist-0.0.10.tgz#de3f98543dbf96082be48ad1a0c7cda836301dcf"
+
 mitt@^1.1.2:
-  version "1.1.2"
-  resolved "https://npm.abeck.io:443/mitt/-/mitt-1.1.2.tgz#380e61480d6a615b660f07abb60d51e0a4e4bed6"
+  version "1.1.3"
+  resolved "https://npm.abeck.io:443/mitt/-/mitt-1.1.3.tgz#528c506238a05dce11cd914a741ea2cc332da9b8"
 
 "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1:
   version "0.5.1"
@@ -5014,8 +4752,8 @@ mockery@^2.0.0:
   resolved "https://npm.abeck.io:443/mockery/-/mockery-2.1.0.tgz#5b0aef1ff564f0f8139445e165536c7909713470"
 
 moment@2.x.x, moment@^2.18.1:
-  version "2.18.1"
-  resolved "https://npm.abeck.io:443/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
+  version "2.19.4"
+  resolved "https://npm.abeck.io:443/moment/-/moment-2.19.4.tgz#17e5e2c6ead8819c8ecfad83a0acccb312e94682"
 
 morgan@~1.6.1:
   version "1.6.1"
@@ -5035,11 +4773,15 @@ ms@0.7.2:
   version "0.7.2"
   resolved "https://npm.abeck.io:443/ms/-/ms-0.7.2.tgz#ae25cf2512b3885a1d95d7f037868d8431124765"
 
-ms@2.0.0, ms@^2.0.0:
+ms@2.0.0:
   version "2.0.0"
   resolved "https://npm.abeck.io:443/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
 
-multimatch@^2.0.0, multimatch@^2.1.0:
+ms@^2.0.0:
+  version "2.1.1"
+  resolved "https://npm.abeck.io:443/ms/-/ms-2.1.1.tgz#30a5864eb3ebb0a66f2ebe6d727af06a09d86e0a"
+
+multimatch@^2.1.0:
   version "2.1.0"
   resolved "https://npm.abeck.io:443/multimatch/-/multimatch-2.1.0.tgz#9c7906a22fb4c02919e2f5f75161b4cdbd4b2a2b"
   dependencies:
@@ -5065,17 +4807,13 @@ mute-stream@0.0.5:
   version "0.0.5"
   resolved "https://npm.abeck.io:443/mute-stream/-/mute-stream-0.0.5.tgz#8fbfabb0a98a253d3184331f9e8deb7372fac6c0"
 
-mute-stream@0.0.6:
-  version "0.0.6"
-  resolved "https://npm.abeck.io:443/mute-stream/-/mute-stream-0.0.6.tgz#48962b19e169fd1dfc240b3f1e7317627bbc47db"
-
 mute-stream@0.0.7:
   version "0.0.7"
   resolved "https://npm.abeck.io:443/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
 
 nan@^2.3.0:
-  version "2.6.2"
-  resolved "https://npm.abeck.io:443/nan/-/nan-2.6.2.tgz#e4ff34e6c95fdfb5aecc08de6596f43605a7db45"
+  version "2.8.0"
+  resolved "https://npm.abeck.io:443/nan/-/nan-2.8.0.tgz#ed715f3fe9de02b57a5e6252d90a96675e1f085a"
 
 natural-compare@^1.4.0:
   version "1.4.0"
@@ -5090,8 +4828,8 @@ negotiator@0.6.1:
   resolved "https://npm.abeck.io:443/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
 node-fetch@^1.0.1, node-fetch@^1.3.3:
-  version "1.7.2"
-  resolved "https://npm.abeck.io:443/node-fetch/-/node-fetch-1.7.2.tgz#c54e9aac57e432875233525f3c891c4159ffefd7"
+  version "1.7.3"
+  resolved "https://npm.abeck.io:443/node-fetch/-/node-fetch-1.7.3.tgz#980f6f72d85211a5347c6b2bc18c5b84c3eb47ef"
   dependencies:
     encoding "^0.1.11"
     is-stream "^1.0.1"
@@ -5100,33 +4838,25 @@ node-int64@^0.4.0:
   version "0.4.0"
   resolved "https://npm.abeck.io:443/node-int64/-/node-int64-0.4.0.tgz#87a9065cdb355d3182d8f94ce11188b825c68a3b"
 
-node-pre-gyp@^0.6.36:
-  version "0.6.36"
-  resolved "https://npm.abeck.io:443/node-pre-gyp/-/node-pre-gyp-0.6.36.tgz#db604112cb74e0d477554e9b505b17abddfab786"
+node-pre-gyp@^0.6.39:
+  version "0.6.39"
+  resolved "https://npm.abeck.io:443/node-pre-gyp/-/node-pre-gyp-0.6.39.tgz#c00e96860b23c0e1420ac7befc5044e1d78d8649"
   dependencies:
+    detect-libc "^1.0.2"
+    hawk "3.1.3"
     mkdirp "^0.5.1"
     nopt "^4.0.1"
     npmlog "^4.0.2"
     rc "^1.1.7"
-    request "^2.81.0"
+    request "2.81.0"
     rimraf "^2.6.1"
     semver "^5.3.0"
     tar "^2.2.1"
     tar-pack "^3.4.0"
 
-node-status-codes@^1.0.0:
-  version "1.0.0"
-  resolved "https://npm.abeck.io:443/node-status-codes/-/node-status-codes-1.0.0.tgz#5ae5541d024645d32a58fcddc9ceecea7ae3ac2f"
-
 node-uuid@1.4.7:
   version "1.4.7"
   resolved "https://npm.abeck.io:443/node-uuid/-/node-uuid-1.4.7.tgz#6da5a17668c4b3dd59623bda11cf7fa4c1f60a6f"
-
-nopt@^3.0.0:
-  version "3.0.6"
-  resolved "https://npm.abeck.io:443/nopt/-/nopt-3.0.6.tgz#c6465dbf08abcd4db359317f79ac68a646b28ff9"
-  dependencies:
-    abbrev "1"
 
 nopt@^4.0.1:
   version "4.0.1"
@@ -5155,8 +4885,8 @@ normalize-path@^2.0.0, normalize-path@^2.0.1:
     remove-trailing-separator "^1.0.1"
 
 normalizr@^3.2.2:
-  version "3.2.3"
-  resolved "https://npm.abeck.io:443/normalizr/-/normalizr-3.2.3.tgz#88755c64de418b040fa6ad1329b2de5c3250ac49"
+  version "3.2.4"
+  resolved "https://npm.abeck.io:443/normalizr/-/normalizr-3.2.4.tgz#16aafc540ca99dc1060ceaa1933556322eac4429"
 
 npm-run-path@^2.0.0:
   version "2.0.2"
@@ -5181,7 +4911,7 @@ npmlog@^4.0.2:
     gauge "~2.7.3"
     set-blocking "~2.0.0"
 
-nth-check@~1.0.0, nth-check@~1.0.1:
+nth-check@~1.0.1:
   version "1.0.1"
   resolved "https://npm.abeck.io:443/nth-check/-/nth-check-1.0.1.tgz#9929acdf628fc2c41098deab82ac580cf149aae4"
   dependencies:
@@ -5227,19 +4957,15 @@ nyc@^10.1.2:
     yargs "^7.1.0"
     yargs-parser "^5.0.0"
 
-oauth-sign@~0.8.1:
+oauth-sign@~0.8.1, oauth-sign@~0.8.2:
   version "0.8.2"
   resolved "https://npm.abeck.io:443/oauth-sign/-/oauth-sign-0.8.2.tgz#46a6ab7f0aead8deae9ec0565780b7d4efeb9d43"
-
-object-assign@^2.0.0:
-  version "2.1.1"
-  resolved "https://npm.abeck.io:443/object-assign/-/object-assign-2.1.1.tgz#43c36e5d569ff8e4816c4efa8be02d26967c18aa"
 
 object-assign@^3.0.0:
   version "3.0.0"
   resolved "https://npm.abeck.io:443/object-assign/-/object-assign-3.0.0.tgz#9bedd5ca0897949bca47e7ff408062d549f587f2"
 
-object-assign@^4.0.0, object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
+object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://npm.abeck.io:443/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
 
@@ -5305,7 +5031,7 @@ on-headers@~1.0.0, on-headers@~1.0.1:
   version "1.0.1"
   resolved "https://npm.abeck.io:443/on-headers/-/on-headers-1.0.1.tgz#928f5d0f470d49342651ea6794b0857c100693f7"
 
-once@^1.3.0, once@^1.3.3, once@^1.4.0:
+once@^1.3.0, once@^1.3.1, once@^1.3.3, once@^1.4.0:
   version "1.4.0"
   resolved "https://npm.abeck.io:443/once/-/once-1.4.0.tgz#583b1aa775961d4b113ac17d9c50baef9dd76bd1"
   dependencies:
@@ -5338,7 +5064,7 @@ option-chain@^1.0.0:
   version "1.0.0"
   resolved "https://npm.abeck.io:443/option-chain/-/option-chain-1.0.0.tgz#938d73bd4e1783f948d34023644ada23669e30f2"
 
-optionator@^0.8.1, optionator@^0.8.2:
+optionator@^0.8.2:
   version "0.8.2"
   resolved "https://npm.abeck.io:443/optionator/-/optionator-0.8.2.tgz#364c5e409d3f4d6301d6c0b4c05bba50180aeb64"
   dependencies:
@@ -5352,13 +5078,6 @@ optionator@^0.8.1, optionator@^0.8.2:
 options@>=0.0.5:
   version "0.0.6"
   resolved "https://npm.abeck.io:443/options/-/options-0.0.6.tgz#ec22d312806bb53e731773e7cdaefcf1c643128f"
-
-ordered-read-streams@^0.3.0:
-  version "0.3.0"
-  resolved "https://npm.abeck.io:443/ordered-read-streams/-/ordered-read-streams-0.3.0.tgz#7137e69b3298bb342247a1bbee3881c80e2fd78b"
-  dependencies:
-    is-stream "^1.0.1"
-    readable-stream "^2.0.1"
 
 os-homedir@^1.0.0, os-homedir@^1.0.1:
   version "1.0.2"
@@ -5378,11 +5097,7 @@ os-locale@^2.0.0:
     lcid "^1.0.0"
     mem "^1.1.0"
 
-os-shim@^0.1.2:
-  version "0.1.3"
-  resolved "https://npm.abeck.io:443/os-shim/-/os-shim-0.1.3.tgz#6b62c3791cf7909ea35ed46e17658bb417cb3917"
-
-os-tmpdir@^1.0.0, os-tmpdir@^1.0.1, os-tmpdir@~1.0.1:
+os-tmpdir@^1.0.0, os-tmpdir@^1.0.1, os-tmpdir@~1.0.2:
   version "1.0.2"
   resolved "https://npm.abeck.io:443/os-tmpdir/-/os-tmpdir-1.0.2.tgz#bbe67406c79aa85c5cfec766fe5734555dfa1274"
 
@@ -5392,6 +5107,10 @@ osenv@^0.1.4:
   dependencies:
     os-homedir "^1.0.0"
     os-tmpdir "^1.0.0"
+
+p-cancelable@^0.3.0:
+  version "0.3.0"
+  resolved "https://npm.abeck.io:443/p-cancelable/-/p-cancelable-0.3.0.tgz#b9e123800bcebb7ac13a479be195b507b98d30fa"
 
 p-finally@^1.0.0:
   version "1.0.0"
@@ -5406,6 +5125,12 @@ p-locate@^2.0.0:
   resolved "https://npm.abeck.io:443/p-locate/-/p-locate-2.0.0.tgz#20a0103b222a70c8fd39cc2e580680f3dde5ec43"
   dependencies:
     p-limit "^1.1.0"
+
+p-timeout@^1.1.1:
+  version "1.2.1"
+  resolved "https://npm.abeck.io:443/p-timeout/-/p-timeout-1.2.1.tgz#5eb3b353b7fce99f101a1038880bb054ebbea386"
+  dependencies:
+    p-finally "^1.0.0"
 
 package-hash@^1.2.0:
   version "1.2.0"
@@ -5440,7 +5165,7 @@ parse-glob@^3.0.4:
     is-extglob "^1.0.0"
     is-glob "^2.0.0"
 
-parse-json@^2.1.0, parse-json@^2.2.0:
+parse-json@^2.2.0:
   version "2.2.0"
   resolved "https://npm.abeck.io:443/parse-json/-/parse-json-2.2.0.tgz#f480f40434ef80741f8469099f8dea18f55a4dc9"
   dependencies:
@@ -5472,13 +5197,9 @@ parseuri@0.0.5:
   dependencies:
     better-assert "~1.0.0"
 
-parseurl@~1.3.0, parseurl@~1.3.1:
-  version "1.3.1"
-  resolved "https://npm.abeck.io:443/parseurl/-/parseurl-1.3.1.tgz#c8ab8c9223ba34888aa64a297b28853bec18da56"
-
-path-dirname@^1.0.0:
-  version "1.0.2"
-  resolved "https://npm.abeck.io:443/path-dirname/-/path-dirname-1.0.2.tgz#cc33d24d525e099a5388c0336c6e32b9160609e0"
+parseurl@~1.3.0, parseurl@~1.3.1, parseurl@~1.3.2:
+  version "1.3.2"
+  resolved "https://npm.abeck.io:443/parseurl/-/parseurl-1.3.2.tgz#fc289d4ed8993119460c156253262cdc8de65bf3"
 
 path-exists@^2.0.0:
   version "2.1.0"
@@ -5490,7 +5211,7 @@ path-exists@^3.0.0:
   version "3.0.0"
   resolved "https://npm.abeck.io:443/path-exists/-/path-exists-3.0.0.tgz#ce0ebeaa5f78cb18925ea7d810d7b59b010fd515"
 
-path-is-absolute@^1.0.0:
+path-is-absolute@^1.0.0, path-is-absolute@^1.0.1:
   version "1.0.1"
   resolved "https://npm.abeck.io:443/path-is-absolute/-/path-is-absolute-1.0.1.tgz#174b9268735534ffbc7ace6bf53a5a9e1b5c5f5f"
 
@@ -5528,9 +5249,9 @@ pegjs@0.9.0:
   version "0.9.0"
   resolved "https://npm.abeck.io:443/pegjs/-/pegjs-0.9.0.tgz#f6aefa2e3ce56169208e52179dfe41f89141a369"
 
-pend@~1.2.0:
-  version "1.2.0"
-  resolved "https://npm.abeck.io:443/pend/-/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
+pegjs@^0.10.0:
+  version "0.10.0"
+  resolved "https://npm.abeck.io:443/pegjs/-/pegjs-0.10.0.tgz#cf8bafae6eddff4b5a7efb185269eaaf4610ddbd"
 
 performance-now@^0.2.0:
   version "0.2.0"
@@ -5540,9 +5261,13 @@ performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://npm.abeck.io:443/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
 
-pify@^2.0.0, pify@^2.3.0:
+pify@^2.0.0:
   version "2.3.0"
   resolved "https://npm.abeck.io:443/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"
+
+pify@^3.0.0:
+  version "3.0.0"
+  resolved "https://npm.abeck.io:443/pify/-/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
 
 pinkie-promise@^1.0.0:
   version "1.0.0"
@@ -5591,6 +5316,12 @@ pkg-dir@^2.0.0:
   dependencies:
     find-up "^2.1.0"
 
+pkg-up@^1.0.0:
+  version "1.0.0"
+  resolved "https://npm.abeck.io:443/pkg-up/-/pkg-up-1.0.0.tgz#3e08fb461525c4421624a33b9f7e6d0af5b05a26"
+  dependencies:
+    find-up "^1.0.0"
+
 plist@1.2.0, plist@^1.2.0:
   version "1.2.0"
   resolved "https://npm.abeck.io:443/plist/-/plist-1.2.0.tgz#084b5093ddc92506e259f874b8d9b1afb8c79593"
@@ -5598,6 +5329,22 @@ plist@1.2.0, plist@^1.2.0:
     base64-js "0.0.8"
     util-deprecate "1.0.2"
     xmlbuilder "4.0.0"
+    xmldom "0.1.x"
+
+plist@2.0.1:
+  version "2.0.1"
+  resolved "https://npm.abeck.io:443/plist/-/plist-2.0.1.tgz#0a32ca9481b1c364e92e18dc55c876de9d01da8b"
+  dependencies:
+    base64-js "1.1.2"
+    xmlbuilder "8.2.2"
+    xmldom "0.1.x"
+
+plist@^2.1.0:
+  version "2.1.0"
+  resolved "https://npm.abeck.io:443/plist/-/plist-2.1.0.tgz#57ccdb7a0821df21831217a3cad54e3e146a1025"
+  dependencies:
+    base64-js "1.2.0"
+    xmlbuilder "8.2.2"
     xmldom "0.1.x"
 
 plur@^1.0.0:
@@ -5614,9 +5361,9 @@ pluralize@^1.2.1:
   version "1.2.1"
   resolved "https://npm.abeck.io:443/pluralize/-/pluralize-1.2.1.tgz#d1a21483fd22bb41e58a12fa3421823140897c45"
 
-pluralize@^4.0.0:
-  version "4.0.0"
-  resolved "https://npm.abeck.io:443/pluralize/-/pluralize-4.0.0.tgz#59b708c1c0190a2f692f1c7618c446b052fd1762"
+pluralize@^7.0.0:
+  version "7.0.0"
+  resolved "https://npm.abeck.io:443/pluralize/-/pluralize-7.0.0.tgz#298b89df8b93b0221dbf421ad2b1b1ea23fc6777"
 
 prelude-ls@~1.1.2:
   version "1.1.2"
@@ -5629,14 +5376,6 @@ prepend-http@^1.0.1:
 preserve@^0.2.0:
   version "0.2.0"
   resolved "https://npm.abeck.io:443/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
-
-pretty-bytes@^2.0.1:
-  version "2.0.1"
-  resolved "https://npm.abeck.io:443/pretty-bytes/-/pretty-bytes-2.0.1.tgz#155ec4d0036f41391e7045d6dbe4963d525d264f"
-  dependencies:
-    get-stdin "^4.0.1"
-    meow "^3.1.0"
-    number-is-nan "^1.0.0"
 
 pretty-ms@^0.2.1:
   version "0.2.2"
@@ -5652,9 +5391,9 @@ pretty-ms@^2.0.0:
     parse-ms "^1.0.0"
     plur "^1.0.0"
 
-private@^0.1.6:
-  version "0.1.7"
-  resolved "https://npm.abeck.io:443/private/-/private-0.1.7.tgz#68ce5e8a1ef0a23bb570cc28537b5332aba63ef1"
+private@^0.1.6, private@^0.1.7:
+  version "0.1.8"
+  resolved "https://npm.abeck.io:443/private/-/private-0.1.8.tgz#2381edb3689f7a53d653190060fcf822d2f368ff"
 
 process-nextick-args@~1.0.6:
   version "1.0.7"
@@ -5678,20 +5417,28 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.10, prop-types@^15.5.9:
-  version "15.5.10"
-  resolved "https://npm.abeck.io:443/prop-types/-/prop-types-15.5.10.tgz#2797dfc3126182e3a95e3dfbb2e893ddd7456154"
+prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.5.9, prop-types@^15.6.0:
+  version "15.6.0"
+  resolved "https://npm.abeck.io:443/prop-types/-/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
   dependencies:
-    fbjs "^0.8.9"
+    fbjs "^0.8.16"
     loose-envify "^1.3.1"
+    object-assign "^4.1.1"
 
-prr@~0.0.0:
-  version "0.0.0"
-  resolved "https://npm.abeck.io:443/prr/-/prr-0.0.0.tgz#1a84b85908325501411853d0081ee3fa86e2926a"
+prr@~1.0.1:
+  version "1.0.1"
+  resolved "https://npm.abeck.io:443/prr/-/prr-1.0.1.tgz#d3fc114ba06995a45ec6893f484ceb1d78f5f476"
 
 pseudomap@^1.0.2:
   version "1.0.2"
   resolved "https://npm.abeck.io:443/pseudomap/-/pseudomap-1.0.2.tgz#f052a28da70e618917ef0a8ac34c1ae5a68286b3"
+
+pump@^1.0.2:
+  version "1.0.3"
+  resolved "https://npm.abeck.io:443/pump/-/pump-1.0.3.tgz#5dfe8311c33bbf6fc18261f9f34702c47c08a954"
+  dependencies:
+    end-of-stream "^1.1.0"
+    once "^1.3.1"
 
 punycode@^1.4.1:
   version "1.4.1"
@@ -5701,9 +5448,9 @@ qs@4.0.0:
   version "4.0.0"
   resolved "https://npm.abeck.io:443/qs/-/qs-4.0.0.tgz#c31d9b74ec27df75e543a86c78728ed8d4623607"
 
-qs@^6.2.1:
-  version "6.5.0"
-  resolved "https://npm.abeck.io:443/qs/-/qs-6.5.0.tgz#8d04954d364def3efc55b5a0793e1e2c8b1e6e49"
+qs@^6.2.1, qs@~6.5.1:
+  version "6.5.1"
+  resolved "https://npm.abeck.io:443/qs/-/qs-6.5.1.tgz#349cdf6eef89ec45c12d7d5eb3fc0c870343a6d8"
 
 qs@~6.4.0:
   version "6.4.0"
@@ -5718,8 +5465,8 @@ querystringify@0.0.4:
   resolved "https://npm.abeck.io:443/querystringify/-/querystringify-0.0.4.tgz#0cf7f84f9463ff0ae51c4c4b142d95be37724d9c"
 
 raf@^3.2.0:
-  version "3.3.2"
-  resolved "https://npm.abeck.io:443/raf/-/raf-3.3.2.tgz#0c13be0b5b49b46f76d6669248d527cf2b02fe27"
+  version "3.4.0"
+  resolved "https://npm.abeck.io:443/raf/-/raf-3.4.0.tgz#a28876881b4bc2ca9117d4138163ddb80f781575"
   dependencies:
     performance-now "^2.1.0"
 
@@ -5731,7 +5478,7 @@ ramda@^0.23.0:
   version "0.23.0"
   resolved "https://npm.abeck.io:443/ramda/-/ramda-0.23.0.tgz#ccd13fff73497a93974e3e86327bfd87bd6e8e2b"
 
-ramda@^0.24.0, ramda@^0.24.1:
+ramda@^0.24.1:
   version "0.24.1"
   resolved "https://npm.abeck.io:443/ramda/-/ramda-0.24.1.tgz#c3b7755197f35b8dc3502228262c4c91ddb6b857"
 
@@ -5742,10 +5489,10 @@ ramdasauce@^1.1.1, ramdasauce@^1.2.0:
     ramda "^0.23.0"
 
 ramdasauce@^2.0.0:
-  version "2.0.0"
-  resolved "https://npm.abeck.io:443/ramdasauce/-/ramdasauce-2.0.0.tgz#d60d5f6424d16ab44028efaf0f4af1427b9cc3d3"
+  version "2.1.0"
+  resolved "https://npm.abeck.io:443/ramdasauce/-/ramdasauce-2.1.0.tgz#65ea157a9cfc17841a7dd6499d3f9f421dc2eb36"
   dependencies:
-    ramda "^0.24.0"
+    ramda "^0.24.1"
 
 random-bytes@~1.0.0:
   version "1.0.0"
@@ -5770,9 +5517,9 @@ raw-body@~2.1.2:
     iconv-lite "0.4.13"
     unpipe "1.0.0"
 
-rc@^1.0.1, rc@^1.1.2, rc@^1.1.6, rc@^1.1.7:
-  version "1.2.1"
-  resolved "https://npm.abeck.io:443/rc/-/rc-1.2.1.tgz#2e03e8e42ee450b8cb3dce65be1bf8974e1dfd95"
+rc@^1.0.1, rc@^1.1.6, rc@^1.1.7:
+  version "1.2.2"
+  resolved "https://npm.abeck.io:443/rc/-/rc-1.2.2.tgz#d8ce9cb57e8d64d9c7badd9876c7c34cbe3c7077"
   dependencies:
     deep-extend "~0.4.0"
     ini "~1.3.0"
@@ -5780,8 +5527,8 @@ rc@^1.0.1, rc@^1.1.2, rc@^1.1.6, rc@^1.1.7:
     strip-json-comments "~2.0.1"
 
 react-addons-create-fragment@^15.4.0:
-  version "15.6.0"
-  resolved "https://npm.abeck.io:443/react-addons-create-fragment/-/react-addons-create-fragment-15.6.0.tgz#af91a22b1fb095dd01f1afba43bfd0ef589d8b20"
+  version "15.6.2"
+  resolved "https://npm.abeck.io:443/react-addons-create-fragment/-/react-addons-create-fragment-15.6.2.tgz#a394de7c2c7becd6b5475ba1b97ac472ce7c74f8"
   dependencies:
     fbjs "^0.8.4"
     loose-envify "^1.3.1"
@@ -5795,19 +5542,19 @@ react-addons-perf@^15.4.0:
     object-assign "^4.1.0"
 
 react-addons-pure-render-mixin@^15.0.2, react-addons-pure-render-mixin@^15.4.0, react-addons-pure-render-mixin@^15.4.2:
-  version "15.6.0"
-  resolved "https://npm.abeck.io:443/react-addons-pure-render-mixin/-/react-addons-pure-render-mixin-15.6.0.tgz#84ba028630cdf89239d16f1bb4d98fe865651813"
+  version "15.6.2"
+  resolved "https://npm.abeck.io:443/react-addons-pure-render-mixin/-/react-addons-pure-render-mixin-15.6.2.tgz#6b83f40b6b36ee40735cbd6125eb3f13ce1cddc9"
   dependencies:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
 react-addons-test-utils@^15.3.1, react-addons-test-utils@^15.4.0:
-  version "15.6.0"
-  resolved "https://npm.abeck.io:443/react-addons-test-utils/-/react-addons-test-utils-15.6.0.tgz#062d36117fe8d18f3ba5e06eb33383b0b85ea5b9"
+  version "15.6.2"
+  resolved "https://npm.abeck.io:443/react-addons-test-utils/-/react-addons-test-utils-15.6.2.tgz#c12b6efdc2247c10da7b8770d185080a7b047156"
 
 react-addons-update@^15.4.0:
-  version "15.6.0"
-  resolved "https://npm.abeck.io:443/react-addons-update/-/react-addons-update-15.6.0.tgz#67f8d5a3d3d8ac7ccfa452565a8310065178e748"
+  version "15.6.2"
+  resolved "https://npm.abeck.io:443/react-addons-update/-/react-addons-update-15.6.2.tgz#e53753c5b34887974510c882d7fb075851d5e504"
   dependencies:
     fbjs "^0.8.9"
     object-assign "^4.1.0"
@@ -5817,12 +5564,12 @@ react-clone-referenced-element@^1.0.1:
   resolved "https://npm.abeck.io:443/react-clone-referenced-element/-/react-clone-referenced-element-1.0.1.tgz#2bba8c69404c5e4a944398600bcc4c941f860682"
 
 react-deep-force-update@^1.0.0:
-  version "1.0.1"
-  resolved "https://npm.abeck.io:443/react-deep-force-update/-/react-deep-force-update-1.0.1.tgz#f911b5be1d2a6fe387507dd6e9a767aa2924b4c7"
+  version "1.1.1"
+  resolved "https://npm.abeck.io:443/react-deep-force-update/-/react-deep-force-update-1.1.1.tgz#bcd31478027b64b3339f108921ab520b4313dc2c"
 
 react-dom@^15.4.0, react-dom@^15.4.2:
-  version "15.6.1"
-  resolved "https://npm.abeck.io:443/react-dom/-/react-dom-15.6.1.tgz#2cb0ed4191038e53c209eb3a79a23e2a4cf99470"
+  version "15.6.2"
+  resolved "https://npm.abeck.io:443/react-dom/-/react-dom-15.6.2.tgz#41cfadf693b757faf2708443a1d1fd5a02bef730"
   dependencies:
     fbjs "^0.8.9"
     loose-envify "^1.1.0"
@@ -5830,15 +5577,15 @@ react-dom@^15.4.0, react-dom@^15.4.2:
     prop-types "^15.5.10"
 
 react-mixin@^3.0.5:
-  version "3.0.5"
-  resolved "https://npm.abeck.io:443/react-mixin/-/react-mixin-3.0.5.tgz#e0b7b6713fdc9ddc429267df808b6ac5184c6706"
+  version "3.1.1"
+  resolved "https://npm.abeck.io:443/react-mixin/-/react-mixin-3.1.1.tgz#68749756bfe32699e561372a4aeecb926db72b7f"
   dependencies:
     object-assign "^4.0.1"
     smart-mixin "^2.0.0"
 
 react-native-animatable@^1.1.0:
-  version "1.2.3"
-  resolved "https://npm.abeck.io:443/react-native-animatable/-/react-native-animatable-1.2.3.tgz#d0f0bd694833b934f3aaa1275739228b786ecb4b"
+  version "1.2.4"
+  resolved "https://npm.abeck.io:443/react-native-animatable/-/react-native-animatable-1.2.4.tgz#b5fb7657e8f6edadbc26697057a327fb920b3039"
   dependencies:
     prop-types "^15.5.10"
 
@@ -5851,13 +5598,14 @@ react-native-device-info@^0.10.0:
   resolved "https://npm.abeck.io:443/react-native-device-info/-/react-native-device-info-0.10.2.tgz#350cd68ed43839022ddea0a3a423439f16fa4fba"
 
 react-native-draftjs-render@^1.0.3:
-  version "1.0.3"
-  resolved "https://npm.abeck.io:443/react-native-draftjs-render/-/react-native-draftjs-render-1.0.3.tgz#cb416a42efe9cb30fc2ae2a08d44f83774779c89"
+  version "1.1.0"
+  resolved "https://npm.abeck.io:443/react-native-draftjs-render/-/react-native-draftjs-render-1.1.0.tgz#55e7e06c4d3ca2992260afd4e67998f03f811e73"
 
 react-native-drawer@^2.3.0:
-  version "2.3.0"
-  resolved "https://npm.abeck.io:443/react-native-drawer/-/react-native-drawer-2.3.0.tgz#a0369ec80ff0b61c9f152dbdea91fe76c843113a"
+  version "2.5.0"
+  resolved "https://npm.abeck.io:443/react-native-drawer/-/react-native-drawer-2.5.0.tgz#022cba5c0516126a9fc9cce3185cb46c644b51c4"
   dependencies:
+    prop-types "^15.5.8"
     tween-functions "^1.0.1"
 
 react-native-experimental-navigation@0.26.x:
@@ -5872,8 +5620,16 @@ react-native-experimental-navigation@0.26.x:
     react-addons-pure-render-mixin "^15.0.2"
 
 react-native-fbsdk@^0.6.0:
-  version "0.6.1"
-  resolved "https://npm.abeck.io:443/react-native-fbsdk/-/react-native-fbsdk-0.6.1.tgz#268bdbda5a16f5341ca43e3fa1beb88801e35a92"
+  version "0.6.3"
+  resolved "https://npm.abeck.io:443/react-native-fbsdk/-/react-native-fbsdk-0.6.3.tgz#ab115264756d4060b8ec2a881194d9775fa8ee11"
+  dependencies:
+    adm-zip "^0.4.7"
+    fastfall "^1.5.1"
+    got "^7.0.0"
+    plist "^2.1.0"
+    progress "^2.0.0"
+    pump "^1.0.2"
+    xcode "^0.9.3"
 
 react-native-fetch-blob@^0.10.5:
   version "0.10.8"
@@ -5883,8 +5639,8 @@ react-native-fetch-blob@^0.10.5:
     glob "7.0.6"
 
 react-native-global-props@^1.1.1:
-  version "1.1.1"
-  resolved "https://npm.abeck.io:443/react-native-global-props/-/react-native-global-props-1.1.1.tgz#7d254a18b57a027e1006fe20c2502cddb646d9e5"
+  version "1.1.3"
+  resolved "https://npm.abeck.io:443/react-native-global-props/-/react-native-global-props-1.1.3.tgz#4ea66136b03e42ff93a4fed544576e1993be0d70"
 
 react-native-hockeyapp@^0.5.1:
   version "0.5.1"
@@ -5898,12 +5654,12 @@ react-native-htmlview@^0.9.0:
     htmlparser2-without-node-native "^3.9.0"
 
 react-native-image-picker@^0.26.2:
-  version "0.26.3"
-  resolved "https://npm.abeck.io:443/react-native-image-picker/-/react-native-image-picker-0.26.3.tgz#0ad2eede49501a7046d8046a73813696539c3dcd"
+  version "0.26.7"
+  resolved "https://npm.abeck.io:443/react-native-image-picker/-/react-native-image-picker-0.26.7.tgz#ad2ee957f7f6cc01396893ea03d84cb2adb2e376"
 
 react-native-img-cache@^1.4.0:
-  version "1.4.0"
-  resolved "https://npm.abeck.io:443/react-native-img-cache/-/react-native-img-cache-1.4.0.tgz#b0a2495aa0289a35b15f7ff24c5769bb4a2b991f"
+  version "1.5.3"
+  resolved "https://npm.abeck.io:443/react-native-img-cache/-/react-native-img-cache-1.5.3.tgz#ccffba86603077d0be4f9dc08aff59e3f551090b"
   dependencies:
     crypto-js "^3.1.9-1"
 
@@ -5912,12 +5668,12 @@ react-native-keyboard-spacer@^0.3.1:
   resolved "https://npm.abeck.io:443/react-native-keyboard-spacer/-/react-native-keyboard-spacer-0.3.1.tgz#9580297ebfd078202dc4c65303d29cda35de67f1"
 
 react-native-keyboard-tracking-view@^3.0.13:
-  version "3.0.13"
-  resolved "https://registry.yarnpkg.com/react-native-keyboard-tracking-view/-/react-native-keyboard-tracking-view-3.0.13.tgz#a1eafebbed8300211ee89c19d4c3ca3f75039bc5"
+  version "3.0.14"
+  resolved "https://npm.abeck.io:443/react-native-keyboard-tracking-view/-/react-native-keyboard-tracking-view-3.0.14.tgz#46acbe6074db7eb1bea0fd2edc2ebc0e5964ff58"
 
 react-native-linear-gradient@^2.0.0:
-  version "2.2.0"
-  resolved "https://npm.abeck.io:443/react-native-linear-gradient/-/react-native-linear-gradient-2.2.0.tgz#7d9ff9fc3e413079cf3c7354873eaf923145364d"
+  version "2.3.0"
+  resolved "https://npm.abeck.io:443/react-native-linear-gradient/-/react-native-linear-gradient-2.3.0.tgz#757997197e35edf52e290891a11566e462845da1"
   dependencies:
     prop-types "^15.5.10"
 
@@ -5966,24 +5722,23 @@ react-native-tabs@^1.0.9:
   resolved "https://npm.abeck.io:443/react-native-tabs/-/react-native-tabs-1.0.9.tgz#75d3c35e8b5b6970869eab282372cb32e2a782cd"
 
 react-native-vector-icons@^4.0.0:
-  version "4.3.0"
-  resolved "https://npm.abeck.io:443/react-native-vector-icons/-/react-native-vector-icons-4.3.0.tgz#49eab845fbcde6354cb3dbcb62c1abd1f6abc866"
+  version "4.4.2"
+  resolved "https://npm.abeck.io:443/react-native-vector-icons/-/react-native-vector-icons-4.4.2.tgz#090f42ee0396c4cc4eae0ddaa518028ba8df40c7"
   dependencies:
     lodash "^4.0.0"
     prop-types "^15.5.10"
     yargs "^8.0.2"
 
 react-native-version-number@^0.1.2:
-  version "0.1.2"
-  resolved "https://npm.abeck.io:443/react-native-version-number/-/react-native-version-number-0.1.2.tgz#03605e52f30d15a94884fee17fd0559c01b337d0"
+  version "0.1.3"
+  resolved "https://npm.abeck.io:443/react-native-version-number/-/react-native-version-number-0.1.3.tgz#deff9e9ffe0c327e00535a35f084b3df2457649a"
 
 "react-native-video@https://github.com/react-native-community/react-native-video":
-  version "1.1.0"
-  resolved "https://github.com/react-native-community/react-native-video#961baedb26716b0227f08e9cb94b42853910053c"
+  version "2.0.0"
+  resolved "https://github.com/react-native-community/react-native-video#ebe138fa8dad21a4fd786b41a1e541d44c511c9b"
   dependencies:
     keymirror "0.1.1"
     prop-types "^15.5.10"
-    react-native-windows "0.41.0-rc.0"
 
 "react-native-webview-bridge-updated@git://github.com/rwoody/react-native-webview-bridge.git":
   version "1.0.7"
@@ -5998,18 +5753,6 @@ react-native-version-number@^0.1.2:
   dependencies:
     invariant "2.2.0"
     keymirror "0.1.1"
-
-react-native-windows@0.41.0-rc.0:
-  version "0.41.0-rc.0"
-  resolved "https://npm.abeck.io:443/react-native-windows/-/react-native-windows-0.41.0-rc.0.tgz#d70a36f546d8d448d875a9d69bd2c42fc671065c"
-  dependencies:
-    chalk "^1.1.3"
-    glob "^7.0.3"
-    shelljs "^0.7.0"
-    uuid "^2.0.1"
-    xml-parser "^1.2.1"
-    yeoman-environment "^1.5.3"
-    yeoman-generator "^0.21.2"
 
 "react-native-zss-rich-text-editor@https://github.com/rwoody/react-native-zss-rich-text-editor#insert-video":
   version "1.0.2"
@@ -6105,11 +5848,10 @@ react-proxy@^1.1.7:
     react-deep-force-update "^1.0.0"
 
 react-redux@^5.0.2:
-  version "5.0.5"
-  resolved "https://npm.abeck.io:443/react-redux/-/react-redux-5.0.5.tgz#f8e8c7b239422576e52d6b7db06439469be9846a"
+  version "5.0.6"
+  resolved "https://npm.abeck.io:443/react-redux/-/react-redux-5.0.6.tgz#23ed3a4f986359d68b5212eaaa681e60d6574946"
   dependencies:
-    create-react-class "^15.5.3"
-    hoist-non-react-statics "^1.0.3"
+    hoist-non-react-statics "^2.2.1"
     invariant "^2.0.0"
     lodash "^4.2.0"
     lodash-es "^4.2.0"
@@ -6132,8 +5874,8 @@ react-transform-hmr@^1.0.4:
     react-proxy "^1.1.7"
 
 react@^15.5.4:
-  version "15.6.1"
-  resolved "https://npm.abeck.io:443/react/-/react-15.6.1.tgz#baa8434ec6780bde997cdc380b79cd33b96393df"
+  version "15.6.2"
+  resolved "https://npm.abeck.io:443/react/-/react-15.6.2.tgz#dba0434ab439cfe82f108f0f511663908179aa72"
   dependencies:
     create-react-class "^15.6.0"
     fbjs "^0.8.9"
@@ -6142,64 +5884,53 @@ react@^15.5.4:
     prop-types "^15.5.10"
 
 reactotron-apisauce@^1.7.0:
-  version "1.12.2"
-  resolved "https://npm.abeck.io:443/reactotron-apisauce/-/reactotron-apisauce-1.12.2.tgz#ad4a2d931bcdd216fcbce172599814248399db82"
+  version "1.13.0"
+  resolved "https://npm.abeck.io:443/reactotron-apisauce/-/reactotron-apisauce-1.13.0.tgz#cdc4c8ad90cfa55ed95e761d50705464068fd953"
   dependencies:
     apisauce "^0.14.0"
     ramda "^0.23.0"
     ramdasauce "^1.2.0"
-    reactotron-core-client "^1.12.2"
+    reactotron-core-client "^1.13.0"
 
-reactotron-core-client@^1.12.2:
-  version "1.12.2"
-  resolved "https://npm.abeck.io:443/reactotron-core-client/-/reactotron-core-client-1.12.2.tgz#fbd20b7f18f4b4bca2458316f3b0a2f20bb68244"
+reactotron-core-client@^1.13.0:
+  version "1.13.0"
+  resolved "https://npm.abeck.io:443/reactotron-core-client/-/reactotron-core-client-1.13.0.tgz#7f82f6c902756c326b9c8a0baf5085d2a0b0f445"
   dependencies:
     json-stringify-safe "^5.0.1"
     ramda "^0.24.1"
     ramdasauce "^2.0.0"
 
 reactotron-react-native@^1.7.0:
-  version "1.12.2"
-  resolved "https://npm.abeck.io:443/reactotron-react-native/-/reactotron-react-native-1.12.2.tgz#5fc7f9d651a39ec91ee2810a7d3e2f49c81e0243"
+  version "1.13.2"
+  resolved "https://npm.abeck.io:443/reactotron-react-native/-/reactotron-react-native-1.13.2.tgz#4a41a615886c0c71c9184b72b689f930eebc7e77"
   dependencies:
     json-stringify-safe "^5.0.1"
     mitt "^1.1.2"
     prop-types "^15.5.10"
     ramda "^0.24.1"
     ramdasauce "^2.0.0"
-    reactotron-core-client "^1.12.2"
+    reactotron-core-client "^1.13.0"
     rn-host-detect "^1.1.3"
     socket.io-client "~1.7.3"
 
 reactotron-redux-saga@^1.7.0:
-  version "1.12.2"
-  resolved "https://npm.abeck.io:443/reactotron-redux-saga/-/reactotron-redux-saga-1.12.2.tgz#12a3969e9928d83b861b15246d8ccc75e79b2cc8"
+  version "1.13.0"
+  resolved "https://npm.abeck.io:443/reactotron-redux-saga/-/reactotron-redux-saga-1.13.0.tgz#f6bb75c16806f2cc09be97e4973743f41a157a18"
   dependencies:
     ramda "^0.24.1"
     ramdasauce "^2.0.0"
-    reactotron-core-client "^1.12.2"
+    reactotron-core-client "^1.13.0"
     redux "^3.7.1"
     redux-saga "^0.15.3"
 
 reactotron-redux@^1.7.0:
-  version "1.12.2"
-  resolved "https://npm.abeck.io:443/reactotron-redux/-/reactotron-redux-1.12.2.tgz#8a10f3804dce1940d4bb8b8cfc551a0d7af85164"
+  version "1.13.0"
+  resolved "https://npm.abeck.io:443/reactotron-redux/-/reactotron-redux-1.13.0.tgz#20f8ce98cbb5e310e041dc85fc4dc4f904aa5dcc"
   dependencies:
     ramda "^0.24.1"
     ramdasauce "^2.0.0"
-    reactotron-core-client "^1.12.2"
+    reactotron-core-client "^1.13.0"
     redux "^3.7.1"
-
-read-all-stream@^3.0.0:
-  version "3.1.0"
-  resolved "https://npm.abeck.io:443/read-all-stream/-/read-all-stream-3.1.0.tgz#35c3e177f2078ef789ee4bfafa4373074eaef4fa"
-  dependencies:
-    pinkie-promise "^2.0.0"
-    readable-stream "^2.0.0"
-
-read-chunk@^1.0.1:
-  version "1.0.1"
-  resolved "https://npm.abeck.io:443/read-chunk/-/read-chunk-1.0.1.tgz#5f68cab307e663f19993527d9b589cace4661194"
 
 read-pkg-up@^1.0.1:
   version "1.0.1"
@@ -6231,25 +5962,7 @@ read-pkg@^2.0.0:
     normalize-package-data "^2.3.2"
     path-type "^2.0.0"
 
-readable-stream@1.1, readable-stream@~1.1.8, readable-stream@~1.1.9:
-  version "1.1.14"
-  resolved "https://npm.abeck.io:443/readable-stream/-/readable-stream-1.1.14.tgz#7cf4c54ef648e3813084c636dd2079e166c081d9"
-  dependencies:
-    core-util-is "~1.0.0"
-    inherits "~2.0.1"
-    isarray "0.0.1"
-    string_decoder "~0.10.x"
-
-"readable-stream@>=1.0.33-1 <1.1.0-0":
-  version "1.0.34"
-  resolved "https://npm.abeck.io:443/readable-stream/-/readable-stream-1.0.34.tgz#125820e34bc842d2f2aaafafe4c2916ee32c157c"
-  dependencies:
-    core-util-is "~1.0.0"
-    inherits "~2.0.1"
-    isarray "0.0.1"
-    string_decoder "~0.10.x"
-
-readable-stream@^2.0.0, readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.4, readable-stream@^2.0.5, readable-stream@^2.0.6, readable-stream@^2.1.4, readable-stream@^2.1.5, readable-stream@^2.2.2:
+readable-stream@^2.0.2, readable-stream@^2.0.6, readable-stream@^2.1.4, readable-stream@^2.1.5, readable-stream@^2.2.2:
   version "2.3.3"
   resolved "https://npm.abeck.io:443/readable-stream/-/readable-stream-2.3.3.tgz#368f2512d79f9d46fdfc71349ae7878bbc1eb95c"
   dependencies:
@@ -6260,6 +5973,15 @@ readable-stream@^2.0.0, readable-stream@^2.0.1, readable-stream@^2.0.2, readable
     safe-buffer "~5.1.1"
     string_decoder "~1.0.3"
     util-deprecate "~1.0.1"
+
+readable-stream@~1.1.8, readable-stream@~1.1.9:
+  version "1.1.14"
+  resolved "https://npm.abeck.io:443/readable-stream/-/readable-stream-1.1.14.tgz#7cf4c54ef648e3813084c636dd2079e166c081d9"
+  dependencies:
+    core-util-is "~1.0.0"
+    inherits "~2.0.1"
+    isarray "0.0.1"
+    string_decoder "~0.10.x"
 
 readdirp@^2.0.0:
   version "2.1.0"
@@ -6330,8 +6052,8 @@ redux-logger@^2.8.2:
     deep-diff "0.3.4"
 
 redux-persist@^4.1.0:
-  version "4.8.3"
-  resolved "https://npm.abeck.io:443/redux-persist/-/redux-persist-4.8.3.tgz#fbad95e7582483635c91a3dd83da4789e7a09107"
+  version "4.10.2"
+  resolved "https://npm.abeck.io:443/redux-persist/-/redux-persist-4.10.2.tgz#8efdb16cfe882c521a78a6d0bfdfef2437f49f96"
   dependencies:
     json-stringify-safe "^5.0.1"
     lodash "^4.17.4"
@@ -6363,31 +6085,34 @@ reduxsauce@0.4.1:
     redux "^3.6.0"
 
 regenerate@^1.2.1:
-  version "1.3.2"
-  resolved "https://npm.abeck.io:443/regenerate/-/regenerate-1.3.2.tgz#d1941c67bad437e1be76433add5b385f95b19260"
+  version "1.3.3"
+  resolved "https://npm.abeck.io:443/regenerate/-/regenerate-1.3.3.tgz#0c336d3980553d755c39b586ae3b20aa49c82b7f"
 
-regenerator-runtime@^0.10.0:
+regenerator-runtime@^0.10.5:
   version "0.10.5"
   resolved "https://npm.abeck.io:443/regenerator-runtime/-/regenerator-runtime-0.10.5.tgz#336c3efc1220adcedda2c9fab67b5a7955a33658"
+
+regenerator-runtime@^0.11.0:
+  version "0.11.1"
+  resolved "https://npm.abeck.io:443/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
 
 regenerator-runtime@^0.9.5:
   version "0.9.6"
   resolved "https://npm.abeck.io:443/regenerator-runtime/-/regenerator-runtime-0.9.6.tgz#d33eb95d0d2001a4be39659707c51b0cb71ce029"
 
-regenerator-transform@0.9.11:
-  version "0.9.11"
-  resolved "https://npm.abeck.io:443/regenerator-transform/-/regenerator-transform-0.9.11.tgz#3a7d067520cb7b7176769eb5ff868691befe1283"
+regenerator-transform@^0.10.0:
+  version "0.10.1"
+  resolved "https://npm.abeck.io:443/regenerator-transform/-/regenerator-transform-0.10.1.tgz#1e4996837231da8b7f3cf4114d71b5691a0680dd"
   dependencies:
     babel-runtime "^6.18.0"
     babel-types "^6.19.0"
     private "^0.1.6"
 
 regex-cache@^0.4.2:
-  version "0.4.3"
-  resolved "https://npm.abeck.io:443/regex-cache/-/regex-cache-0.4.3.tgz#9b1a6c35d4d0dfcef5711ae651e8e9d3d7114145"
+  version "0.4.4"
+  resolved "https://npm.abeck.io:443/regex-cache/-/regex-cache-0.4.4.tgz#75bdc58a2a1496cec48a12835bc54c8d562336dd"
   dependencies:
     is-equal-shallow "^0.1.3"
-    is-primitive "^2.0.0"
 
 regexpu-core@^2.0.0:
   version "2.0.0"
@@ -6427,8 +6152,8 @@ release-zalgo@^1.0.0:
     es6-error "^4.0.1"
 
 remove-trailing-separator@^1.0.1:
-  version "1.0.2"
-  resolved "https://npm.abeck.io:443/remove-trailing-separator/-/remove-trailing-separator-1.0.2.tgz#69b062d978727ad14dc6b56ba4ab772fd8d70511"
+  version "1.1.0"
+  resolved "https://npm.abeck.io:443/remove-trailing-separator/-/remove-trailing-separator-1.1.0.tgz#c24bce2a283adad5bc3f58e0d48249b92379d8ef"
 
 repeat-element@^1.1.2:
   version "1.1.2"
@@ -6448,7 +6173,7 @@ replace-ext@0.0.1:
   version "0.0.1"
   resolved "https://npm.abeck.io:443/replace-ext/-/replace-ext-0.0.1.tgz#29bbd92078a739f0bcce2b4ee41e837953522924"
 
-request@^2.79.0, request@^2.81.0:
+request@2.81.0:
   version "2.81.0"
   resolved "https://npm.abeck.io:443/request/-/request-2.81.0.tgz#c6928946a0e06c5f8d6f8a9333469ffda46298a0"
   dependencies:
@@ -6474,6 +6199,33 @@ request@^2.79.0, request@^2.81.0:
     tough-cookie "~2.3.0"
     tunnel-agent "^0.6.0"
     uuid "^3.0.0"
+
+request@^2.79.0:
+  version "2.83.0"
+  resolved "https://npm.abeck.io:443/request/-/request-2.83.0.tgz#ca0b65da02ed62935887808e6f510381034e3356"
+  dependencies:
+    aws-sign2 "~0.7.0"
+    aws4 "^1.6.0"
+    caseless "~0.12.0"
+    combined-stream "~1.0.5"
+    extend "~3.0.1"
+    forever-agent "~0.6.1"
+    form-data "~2.3.1"
+    har-validator "~5.0.3"
+    hawk "~6.0.2"
+    http-signature "~1.2.0"
+    is-typedarray "~1.0.0"
+    isstream "~0.1.2"
+    json-stringify-safe "~5.0.1"
+    mime-types "~2.1.17"
+    oauth-sign "~0.8.2"
+    performance-now "^2.1.0"
+    qs "~6.5.1"
+    safe-buffer "^5.1.1"
+    stringstream "~0.0.5"
+    tough-cookie "~2.3.3"
+    tunnel-agent "^0.6.0"
+    uuid "^3.1.0"
 
 require-directory@^2.1.1:
   version "2.1.1"
@@ -6513,8 +6265,8 @@ resolve-from@^3.0.0:
   resolved "https://npm.abeck.io:443/resolve-from/-/resolve-from-3.0.0.tgz#b22c7af7d9d6881bc8b6e653335eebcb0a188748"
 
 resolve@^1.1.6, resolve@^1.1.7, resolve@^1.2.0:
-  version "1.4.0"
-  resolved "https://npm.abeck.io:443/resolve/-/resolve-1.4.0.tgz#a75be01c53da25d934a98ebd0e4c4a7312f92a86"
+  version "1.5.0"
+  resolved "https://npm.abeck.io:443/resolve/-/resolve-1.5.0.tgz#1f09acce796c9a762579f31b2c1cc4c3cddf9f36"
   dependencies:
     path-parse "^1.0.5"
 
@@ -6539,13 +6291,17 @@ restore-cursor@^2.0.0:
     onetime "^2.0.0"
     signal-exit "^3.0.2"
 
+reusify@^1.0.0:
+  version "1.0.3"
+  resolved "https://npm.abeck.io:443/reusify/-/reusify-1.0.3.tgz#9da7fc786f39400fd6809e3d694b3b28ecd0f38e"
+
 right-align@^0.1.1:
   version "0.1.3"
   resolved "https://npm.abeck.io:443/right-align/-/right-align-0.1.3.tgz#61339b722fe6a3515689210d24e14c96148613ef"
   dependencies:
     align-text "^0.1.1"
 
-rimraf@2, rimraf@^2.2.0, rimraf@^2.2.8, rimraf@^2.3.3, rimraf@^2.5.1, rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.6.2:
+rimraf@2, rimraf@^2.2.8, rimraf@^2.3.3, rimraf@^2.5.1, rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.6.2:
   version "2.6.2"
   resolved "https://npm.abeck.io:443/rimraf/-/rimraf-2.6.2.tgz#2ed8150d24a16ea8651e6d6ef0f47c4158ce7a36"
   dependencies:
@@ -6597,17 +6353,9 @@ rx@2.3.24:
   version "2.3.24"
   resolved "https://npm.abeck.io:443/rx/-/rx-2.3.24.tgz#14f950a4217d7e35daa71bbcbe58eff68ea4b2b7"
 
-rx@^4.1.0:
-  version "4.1.0"
-  resolved "https://npm.abeck.io:443/rx/-/rx-4.1.0.tgz#a5f13ff79ef3b740fe30aa803fb09f98805d4782"
-
 safe-buffer@^5.0.1, safe-buffer@^5.1.1, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.1"
   resolved "https://npm.abeck.io:443/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
-
-samsam@1.1.2, samsam@~1.1:
-  version "1.1.2"
-  resolved "https://npm.abeck.io:443/samsam/-/samsam-1.1.2.tgz#bec11fdc83a9fda063401210e40176c3024d1567"
 
 sane@~1.4.1:
   version "1.4.1"
@@ -6628,12 +6376,6 @@ seamless-immutable@^7.0.1:
   version "7.1.2"
   resolved "https://npm.abeck.io:443/seamless-immutable/-/seamless-immutable-7.1.2.tgz#c87a1eba6767a32455311d76600ac5eddeafbb69"
 
-seek-bzip@^1.0.3:
-  version "1.0.5"
-  resolved "https://npm.abeck.io:443/seek-bzip/-/seek-bzip-1.0.5.tgz#cfe917cb3d274bcffac792758af53173eb1fabdc"
-  dependencies:
-    commander "~2.8.1"
-
 semver-diff@^2.0.0:
   version "2.1.0"
   resolved "https://npm.abeck.io:443/semver-diff/-/semver-diff-2.1.0.tgz#4bbb8437c8d37e4b0cf1a68fd726ec6d645d6d36"
@@ -6643,6 +6385,10 @@ semver-diff@^2.0.0:
 "semver@2 || 3 || 4 || 5", semver@5.x, semver@^5.0.3, semver@^5.1.0, semver@^5.3.0:
   version "5.4.1"
   resolved "https://npm.abeck.io:443/semver/-/semver-5.4.1.tgz#e059c09d8571f0540823733433505d3a2f00b18e"
+
+semver@5.3.0:
+  version "5.3.0"
+  resolved "https://npm.abeck.io:443/semver/-/semver-5.3.0.tgz#9b2ce5d3de02d17c6012ad326aa6b4d0cf54f94f"
 
 send@0.13.2:
   version "0.13.2"
@@ -6694,7 +6440,7 @@ set-blocking@^2.0.0, set-blocking@~2.0.0:
   version "2.0.0"
   resolved "https://npm.abeck.io:443/set-blocking/-/set-blocking-2.0.0.tgz#045f9782d011ae9a6803ddd382b24392b3d890f7"
 
-set-immediate-shim@^1.0.0, set-immediate-shim@^1.0.1:
+set-immediate-shim@^1.0.1:
   version "1.0.1"
   resolved "https://npm.abeck.io:443/set-immediate-shim/-/set-immediate-shim-1.0.1.tgz#4b2b1b27eb808a9f8dcc481a58e5e56f599f3f61"
 
@@ -6721,11 +6467,7 @@ shell-quote@1.6.1, shell-quote@^1.6.1:
     array-reduce "~0.0.0"
     jsonify "~0.0.0"
 
-shelljs@^0.5.0:
-  version "0.5.3"
-  resolved "https://npm.abeck.io:443/shelljs/-/shelljs-0.5.3.tgz#c54982b996c76ef0c1e6b59fbdc5825f5b713113"
-
-shelljs@^0.7.0, shelljs@^0.7.5:
+shelljs@^0.7.5:
   version "0.7.8"
   resolved "https://npm.abeck.io:443/shelljs/-/shelljs-0.7.8.tgz#decbcf874b0d1e5fb72e14b164a9683048e9acb3"
   dependencies:
@@ -6749,14 +6491,13 @@ simple-plist@0.1.4:
     bplist-parser "0.0.6"
     plist "1.2.0"
 
-sinon@^1.9.1:
-  version "1.17.7"
-  resolved "https://npm.abeck.io:443/sinon/-/sinon-1.17.7.tgz#4542a4f49ba0c45c05eb2e9dd9d203e2b8efe0bf"
+simple-plist@^0.2.1:
+  version "0.2.1"
+  resolved "https://npm.abeck.io:443/simple-plist/-/simple-plist-0.2.1.tgz#71766db352326928cf3a807242ba762322636723"
   dependencies:
-    formatio "1.1.1"
-    lolex "1.3.2"
-    samsam "1.1.2"
-    util ">=0.10.3 <1"
+    bplist-creator "0.0.7"
+    bplist-parser "0.1.1"
+    plist "2.0.1"
 
 slash@^1.0.0:
   version "1.0.0"
@@ -6766,7 +6507,7 @@ slice-ansi@0.0.4:
   version "0.0.4"
   resolved "https://npm.abeck.io:443/slice-ansi/-/slice-ansi-0.0.4.tgz#edbf8903f66f7ce2f8eafd6ceed65e264c831b35"
 
-slice-ansi@^1.0.0:
+slice-ansi@1.0.0, slice-ansi@^1.0.0:
   version "1.0.0"
   resolved "https://npm.abeck.io:443/slice-ansi/-/slice-ansi-1.0.0.tgz#044f1a49d8842ff307aad6b505ed178bd950134d"
   dependencies:
@@ -6798,6 +6539,12 @@ sntp@1.x.x:
   dependencies:
     hoek "2.x.x"
 
+sntp@2.x.x:
+  version "2.1.0"
+  resolved "https://npm.abeck.io:443/sntp/-/sntp-2.1.0.tgz#2c6cec14fedc2222739caf9b5c3d85d1cc5a2cc8"
+  dependencies:
+    hoek "4.x.x"
+
 socket.io-client@~1.7.3:
   version "1.7.4"
   resolved "https://npm.abeck.io:443/socket.io-client/-/socket.io-client-1.7.4.tgz#ec9f820356ed99ef6d357f0756d648717bdd4281"
@@ -6823,21 +6570,15 @@ socket.io-parser@2.3.1:
     isarray "0.0.1"
     json3 "3.3.2"
 
-sort-keys@^1.1.1:
-  version "1.1.2"
-  resolved "https://npm.abeck.io:443/sort-keys/-/sort-keys-1.1.2.tgz#441b6d4d346798f1b4e49e8920adfba0e543f9ad"
-  dependencies:
-    is-plain-obj "^1.0.0"
-
 sort-keys@^2.0.0:
   version "2.0.0"
   resolved "https://npm.abeck.io:443/sort-keys/-/sort-keys-2.0.0.tgz#658535584861ec97d730d6cf41822e1f56684128"
   dependencies:
     is-plain-obj "^1.0.0"
 
-source-map-support@^0.4.0, source-map-support@^0.4.2:
-  version "0.4.15"
-  resolved "https://npm.abeck.io:443/source-map-support/-/source-map-support-0.4.15.tgz#03202df65c06d2bd8c7ec2362a193056fef8d3b1"
+source-map-support@^0.4.0, source-map-support@^0.4.15:
+  version "0.4.18"
+  resolved "https://npm.abeck.io:443/source-map-support/-/source-map-support-0.4.18.tgz#0286a6de8be42641338594e97ccea75f0a2c585f"
   dependencies:
     source-map "^0.5.6"
 
@@ -6848,29 +6589,16 @@ source-map@^0.4.4:
     amdefine ">=0.0.4"
 
 source-map@^0.5.0, source-map@^0.5.3, source-map@^0.5.6, source-map@~0.5.1:
-  version "0.5.6"
-  resolved "https://npm.abeck.io:443/source-map/-/source-map-0.5.6.tgz#75ce38f52bf0733c5a7f0c118d81334a2bb5f412"
-
-source-map@~0.2.0:
-  version "0.2.0"
-  resolved "https://npm.abeck.io:443/source-map/-/source-map-0.2.0.tgz#dab73fbcfc2ba819b4de03bd6f6eaa48164b3f9d"
-  dependencies:
-    amdefine ">=0.0.4"
+  version "0.5.7"
+  resolved "https://npm.abeck.io:443/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
 
 sparkles@^1.0.0:
   version "1.0.0"
   resolved "https://npm.abeck.io:443/sparkles/-/sparkles-1.0.0.tgz#1acbbfb592436d10bbe8f785b7cc6f82815012c3"
 
 spawn-command@^0.0.2-1:
-  version "0.0.2"
-  resolved "https://npm.abeck.io:443/spawn-command/-/spawn-command-0.0.2.tgz#9544e1a43ca045f8531aac1a48cb29bdae62338e"
-
-spawn-sync@^1.0.15:
-  version "1.0.15"
-  resolved "https://npm.abeck.io:443/spawn-sync/-/spawn-sync-1.0.15.tgz#b00799557eb7fb0c8376c29d44e8a1ea67e57476"
-  dependencies:
-    concat-stream "^1.4.7"
-    os-shim "^0.1.2"
+  version "0.0.2-1"
+  resolved "https://npm.abeck.io:443/spawn-command/-/spawn-command-0.0.2-1.tgz#62f5e9466981c1b796dc5929937e11c9c6921bd0"
 
 spawn-wrap@1.2.4:
   version "1.2.4"
@@ -6897,7 +6625,7 @@ spdx-license-ids@^1.0.2:
   version "1.2.2"
   resolved "https://npm.abeck.io:443/spdx-license-ids/-/spdx-license-ids-1.2.2.tgz#c9df7a3424594ade6bd11900d596696dc06bac57"
 
-sprintf-js@^1.0.3, sprintf-js@~1.0.2:
+sprintf-js@~1.0.2:
   version "1.0.3"
   resolved "https://npm.abeck.io:443/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
 
@@ -6934,13 +6662,36 @@ standard-engine@~5.2.0:
     minimist "^1.1.0"
     pkg-config "^1.0.1"
 
+standard-engine@~7.0.0:
+  version "7.0.0"
+  resolved "https://npm.abeck.io:443/standard-engine/-/standard-engine-7.0.0.tgz#ebb77b9c8fc2c8165ffa353bd91ba0dff41af690"
+  dependencies:
+    deglob "^2.1.0"
+    get-stdin "^5.0.1"
+    minimist "^1.1.0"
+    pkg-conf "^2.0.0"
+
 standard-json@^1.0.0:
   version "1.0.2"
   resolved "https://npm.abeck.io:443/standard-json/-/standard-json-1.0.2.tgz#82dea4a14c78cd9e35d38cde4b88ac6b62596a23"
   dependencies:
     concat-stream "^1.5.0"
 
-standard@*, standard@8.6.0:
+standard@*:
+  version "10.0.3"
+  resolved "https://npm.abeck.io:443/standard/-/standard-10.0.3.tgz#7869bcbf422bdeeaab689a1ffb1fea9677dd50ea"
+  dependencies:
+    eslint "~3.19.0"
+    eslint-config-standard "10.2.1"
+    eslint-config-standard-jsx "4.0.2"
+    eslint-plugin-import "~2.2.0"
+    eslint-plugin-node "~4.2.2"
+    eslint-plugin-promise "~3.5.0"
+    eslint-plugin-react "~6.10.0"
+    eslint-plugin-standard "~3.0.1"
+    standard-engine "~7.0.0"
+
+standard@8.6.0:
   version "8.6.0"
   resolved "https://npm.abeck.io:443/standard/-/standard-8.6.0.tgz#635132be7bfb567c2921005f30f9e350e4752aad"
   dependencies:
@@ -6952,13 +6703,9 @@ standard@*, standard@8.6.0:
     eslint-plugin-standard "~2.0.1"
     standard-engine "~5.2.0"
 
-stat-mode@^0.2.0:
-  version "0.2.2"
-  resolved "https://npm.abeck.io:443/stat-mode/-/stat-mode-0.2.2.tgz#e6c80b623123d7d80cf132ce538f346289072502"
-
 statuses@1:
-  version "1.3.1"
-  resolved "https://npm.abeck.io:443/statuses/-/statuses-1.3.1.tgz#faf51b9eb74aaef3b3acf4ad5f61abf24cb7b93e"
+  version "1.4.0"
+  resolved "https://npm.abeck.io:443/statuses/-/statuses-1.4.0.tgz#bb73d446da2796106efcc1b601a253d6c46bd087"
 
 statuses@~1.2.1:
   version "1.2.1"
@@ -6968,22 +6715,15 @@ stream-buffers@~0.2.3:
   version "0.2.6"
   resolved "https://npm.abeck.io:443/stream-buffers/-/stream-buffers-0.2.6.tgz#181c08d5bb3690045f69401b9ae6a7a0cf3313fc"
 
-stream-combiner2@^1.1.1:
-  version "1.1.1"
-  resolved "https://npm.abeck.io:443/stream-combiner2/-/stream-combiner2-1.1.1.tgz#fb4d8a1420ea362764e21ad4780397bebcb41cbe"
-  dependencies:
-    duplexer2 "~0.1.0"
-    readable-stream "^2.0.2"
+stream-buffers@~2.2.0:
+  version "2.2.0"
+  resolved "https://npm.abeck.io:443/stream-buffers/-/stream-buffers-2.2.0.tgz#91d5f5130d1cef96dcfa7f726945188741d09ee4"
 
 stream-counter@~0.2.0:
   version "0.2.0"
   resolved "https://npm.abeck.io:443/stream-counter/-/stream-counter-0.2.0.tgz#ded266556319c8b0e222812b9cf3b26fa7d947de"
   dependencies:
     readable-stream "~1.1.8"
-
-stream-shift@^1.0.0:
-  version "1.0.0"
-  resolved "https://npm.abeck.io:443/stream-shift/-/stream-shift-1.0.0.tgz#d5c752825e5367e786f78e18e445ea223a155952"
 
 string-width@^1.0.1, string-width@^1.0.2:
   version "1.0.2"
@@ -6993,7 +6733,7 @@ string-width@^1.0.1, string-width@^1.0.2:
     is-fullwidth-code-point "^1.0.0"
     strip-ansi "^3.0.0"
 
-string-width@^2.0.0, string-width@^2.1.0:
+string-width@^2.0.0, string-width@^2.1.0, string-width@^2.1.1:
   version "2.1.1"
   resolved "https://npm.abeck.io:443/string-width/-/string-width-2.1.1.tgz#ab93f27a8dc13d28cac815c462143a6d9012ae9e"
   dependencies:
@@ -7010,7 +6750,7 @@ string_decoder@~1.0.3:
   dependencies:
     safe-buffer "~5.1.0"
 
-stringstream@~0.0.4:
+stringstream@~0.0.4, stringstream@~0.0.5:
   version "0.0.5"
   resolved "https://npm.abeck.io:443/stringstream/-/stringstream-0.0.5.tgz#4e484cd4de5a0bbbee18e46307710a8a81621878"
 
@@ -7042,20 +6782,6 @@ strip-bom-buf@^1.0.0:
   dependencies:
     is-utf8 "^0.2.1"
 
-strip-bom-stream@^1.0.0:
-  version "1.0.0"
-  resolved "https://npm.abeck.io:443/strip-bom-stream/-/strip-bom-stream-1.0.0.tgz#e7144398577d51a6bed0fa1994fa05f43fd988ee"
-  dependencies:
-    first-chunk-stream "^1.0.0"
-    strip-bom "^2.0.0"
-
-strip-bom-stream@^2.0.0:
-  version "2.0.0"
-  resolved "https://npm.abeck.io:443/strip-bom-stream/-/strip-bom-stream-2.0.0.tgz#f87db5ef2613f6968aa545abfe1ec728b6a829ca"
-  dependencies:
-    first-chunk-stream "^2.0.0"
-    strip-bom "^2.0.0"
-
 strip-bom@^2.0.0:
   version "2.0.0"
   resolved "https://npm.abeck.io:443/strip-bom/-/strip-bom-2.0.0.tgz#6219a85616520491f35788bdbf1447a99c7e6b0e"
@@ -7065,17 +6791,6 @@ strip-bom@^2.0.0:
 strip-bom@^3.0.0:
   version "3.0.0"
   resolved "https://npm.abeck.io:443/strip-bom/-/strip-bom-3.0.0.tgz#2334c18e9c759f7bdd56fdef7e9ae3d588e68ed3"
-
-strip-dirs@^1.0.0:
-  version "1.1.1"
-  resolved "https://npm.abeck.io:443/strip-dirs/-/strip-dirs-1.1.1.tgz#960bbd1287844f3975a4558aa103a8255e2456a0"
-  dependencies:
-    chalk "^1.0.0"
-    get-stdin "^4.0.1"
-    is-absolute "^0.1.5"
-    is-natural-number "^2.0.0"
-    minimist "^1.1.0"
-    sum-up "^1.0.1"
 
 strip-eof@^1.0.0:
   version "1.0.0"
@@ -7095,23 +6810,11 @@ strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://npm.abeck.io:443/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-strip-outer@^1.0.0:
-  version "1.0.0"
-  resolved "https://npm.abeck.io:443/strip-outer/-/strip-outer-1.0.0.tgz#aac0ba60d2e90c5d4f275fd8869fd9a2d310ffb8"
-  dependencies:
-    escape-string-regexp "^1.0.2"
-
 subarg@^1.0.0:
   version "1.0.0"
   resolved "https://npm.abeck.io:443/subarg/-/subarg-1.0.0.tgz#f62cf17581e996b48fc965699f54c06ae268b8d2"
   dependencies:
     minimist "^1.1.0"
-
-sum-up@^1.0.1:
-  version "1.0.3"
-  resolved "https://npm.abeck.io:443/sum-up/-/sum-up-1.0.3.tgz#1c661f667057f63bcb7875aa1438bc162525156e"
-  dependencies:
-    chalk "^1.0.0"
 
 supports-color@^0.2.0:
   version "0.2.0"
@@ -7128,8 +6831,8 @@ supports-color@^3.1.2, supports-color@^3.2.3:
     has-flag "^1.0.0"
 
 supports-color@^4.0.0:
-  version "4.2.1"
-  resolved "https://npm.abeck.io:443/supports-color/-/supports-color-4.2.1.tgz#65a4bb2631e90e02420dba5554c375a4754bb836"
+  version "4.5.0"
+  resolved "https://npm.abeck.io:443/supports-color/-/supports-color-4.5.0.tgz#be7a0de484dec5c5cddf8b3d59125044912f635b"
   dependencies:
     has-flag "^2.0.0"
 
@@ -7138,8 +6841,8 @@ symbol-observable@^0.2.2:
   resolved "https://npm.abeck.io:443/symbol-observable/-/symbol-observable-0.2.4.tgz#95a83db26186d6af7e7a18dbd9760a2f86d08f40"
 
 symbol-observable@^1.0.3, symbol-observable@^1.0.4:
-  version "1.0.4"
-  resolved "https://npm.abeck.io:443/symbol-observable/-/symbol-observable-1.0.4.tgz#29bf615d4aa7121bdd898b22d4b3f9bc4e2aa03d"
+  version "1.1.0"
+  resolved "https://npm.abeck.io:443/symbol-observable/-/symbol-observable-1.1.0.tgz#5c68fd8d54115d9dfb72a84720549222e8db9b32"
 
 table@^3.7.8:
   version "3.8.3"
@@ -7153,19 +6856,19 @@ table@^3.7.8:
     string-width "^2.0.0"
 
 table@^4.0.1:
-  version "4.0.1"
-  resolved "https://npm.abeck.io:443/table/-/table-4.0.1.tgz#a8116c133fac2c61f4a420ab6cdf5c4d61f0e435"
+  version "4.0.2"
+  resolved "https://npm.abeck.io:443/table/-/table-4.0.2.tgz#a33447375391e766ad34d3486e6e2aedc84d2e36"
   dependencies:
-    ajv "^4.7.0"
-    ajv-keywords "^1.0.0"
-    chalk "^1.1.1"
-    lodash "^4.0.0"
-    slice-ansi "0.0.4"
-    string-width "^2.0.0"
+    ajv "^5.2.3"
+    ajv-keywords "^2.1.0"
+    chalk "^2.1.0"
+    lodash "^4.17.4"
+    slice-ansi "1.0.0"
+    string-width "^2.1.1"
 
 tar-pack@^3.4.0:
-  version "3.4.0"
-  resolved "https://npm.abeck.io:443/tar-pack/-/tar-pack-3.4.0.tgz#23be2d7f671a8339376cbdb0b8fe3fdebf317984"
+  version "3.4.1"
+  resolved "https://npm.abeck.io:443/tar-pack/-/tar-pack-3.4.1.tgz#e1dbc03a9b9d3ba07e896ad027317eb679a10a1f"
   dependencies:
     debug "^2.2.0"
     fstream "^1.0.10"
@@ -7175,15 +6878,6 @@ tar-pack@^3.4.0:
     rimraf "^2.5.1"
     tar "^2.2.1"
     uid-number "^0.0.6"
-
-tar-stream@^1.1.1:
-  version "1.5.4"
-  resolved "https://npm.abeck.io:443/tar-stream/-/tar-stream-1.5.4.tgz#36549cf04ed1aee9b2a30c0143252238daf94016"
-  dependencies:
-    bl "^1.0.0"
-    end-of-stream "^1.0.0"
-    readable-stream "^2.0.0"
-    xtend "^4.0.0"
 
 tar@^2.2.1:
   version "2.2.1"
@@ -7220,29 +6914,11 @@ text-table@^0.2.0, text-table@~0.2.0:
   version "0.2.0"
   resolved "https://npm.abeck.io:443/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
 
-textextensions@~1.0.0:
-  version "1.0.2"
-  resolved "https://npm.abeck.io:443/textextensions/-/textextensions-1.0.2.tgz#65486393ee1f2bb039a60cbba05b0b68bd9501d2"
-
 throat@^3.0.0:
   version "3.2.0"
   resolved "https://npm.abeck.io:443/throat/-/throat-3.2.0.tgz#50cb0670edbc40237b9e347d7e1f88e4620af836"
 
-through2-filter@^2.0.0:
-  version "2.0.0"
-  resolved "https://npm.abeck.io:443/through2-filter/-/through2-filter-2.0.0.tgz#60bc55a0dacb76085db1f9dae99ab43f83d622ec"
-  dependencies:
-    through2 "~2.0.0"
-    xtend "~4.0.0"
-
-through2@^0.6.0, through2@^0.6.1:
-  version "0.6.5"
-  resolved "https://npm.abeck.io:443/through2/-/through2-0.6.5.tgz#41ab9c67b29d57209071410e1d7a7a968cd3ad48"
-  dependencies:
-    readable-stream ">=1.0.33-1 <1.1.0-0"
-    xtend ">=4.0.0 <4.1.0-0"
-
-through2@^2.0.0, through2@~2.0.0:
+through2@^2.0.0:
   version "2.0.3"
   resolved "https://npm.abeck.io:443/through2/-/through2-2.0.3.tgz#0004569b37c7c74ba39c43f3ced78d1ad94140be"
   dependencies:
@@ -7270,41 +6946,25 @@ time-zone@^1.0.0:
   version "1.0.0"
   resolved "https://npm.abeck.io:443/time-zone/-/time-zone-1.0.0.tgz#99c5bf55958966af6d06d83bdf3800dc82faec5d"
 
-timed-out@^3.0.0:
-  version "3.1.3"
-  resolved "https://npm.abeck.io:443/timed-out/-/timed-out-3.1.3.tgz#95860bfcc5c76c277f8f8326fd0f5b2e20eba217"
-
 timed-out@^4.0.0:
   version "4.0.1"
   resolved "https://npm.abeck.io:443/timed-out/-/timed-out-4.0.1.tgz#f32eacac5a175bea25d7fab565ab3ed8741ef56f"
 
-tmp@^0.0.29:
-  version "0.0.29"
-  resolved "https://npm.abeck.io:443/tmp/-/tmp-0.0.29.tgz#f25125ff0dd9da3ccb0c2dd371ee1288bb9128c0"
+tmp@^0.0.33:
+  version "0.0.33"
+  resolved "https://npm.abeck.io:443/tmp/-/tmp-0.0.33.tgz#6d34335889768d21b2bcda0aa277ced3b1bfadf9"
   dependencies:
-    os-tmpdir "~1.0.1"
-
-tmp@^0.0.31:
-  version "0.0.31"
-  resolved "https://npm.abeck.io:443/tmp/-/tmp-0.0.31.tgz#8f38ab9438e17315e5dbd8b3657e8bfb277ae4a7"
-  dependencies:
-    os-tmpdir "~1.0.1"
+    os-tmpdir "~1.0.2"
 
 tmpl@1.0.x:
   version "1.0.4"
   resolved "https://npm.abeck.io:443/tmpl/-/tmpl-1.0.4.tgz#23640dd7b42d00433911140820e5cf440e521dd1"
 
-to-absolute-glob@^0.1.1:
-  version "0.1.1"
-  resolved "https://npm.abeck.io:443/to-absolute-glob/-/to-absolute-glob-0.1.1.tgz#1cdfa472a9ef50c239ee66999b662ca0eb39937f"
-  dependencies:
-    extend-shallow "^2.0.1"
-
 to-array@0.1.4:
   version "0.1.4"
   resolved "https://npm.abeck.io:443/to-array/-/to-array-0.1.4.tgz#17e6c11f73dd4f3d74cda7a4ff3238e9ad9bf890"
 
-to-fast-properties@^1.0.1:
+to-fast-properties@^1.0.3:
   version "1.0.3"
   resolved "https://npm.abeck.io:443/to-fast-properties/-/to-fast-properties-1.0.3.tgz#b83571fa4d8c25b82e231b06e3a3055de4ca1a47"
 
@@ -7314,19 +6974,15 @@ topo@1.x.x:
   dependencies:
     hoek "2.x.x"
 
-tough-cookie@~2.3.0:
-  version "2.3.2"
-  resolved "https://npm.abeck.io:443/tough-cookie/-/tough-cookie-2.3.2.tgz#f081f76e4c85720e6c37a5faced737150d84072a"
+tough-cookie@~2.3.0, tough-cookie@~2.3.3:
+  version "2.3.3"
+  resolved "https://npm.abeck.io:443/tough-cookie/-/tough-cookie-2.3.3.tgz#0b618a5565b6dea90bf3425d04d55edc475a7561"
   dependencies:
     punycode "^1.4.1"
 
-traverse@^0.6.6:
-  version "0.6.6"
-  resolved "https://npm.abeck.io:443/traverse/-/traverse-0.6.6.tgz#cbdf560fd7b9af632502fed40f918c157ea97137"
-
 tree-kill@^1.1.0:
-  version "1.1.0"
-  resolved "https://npm.abeck.io:443/tree-kill/-/tree-kill-1.1.0.tgz#c963dcf03722892ec59cba569e940b71954d1729"
+  version "1.2.0"
+  resolved "https://npm.abeck.io:443/tree-kill/-/tree-kill-1.2.0.tgz#5846786237b4239014f05db156b643212d4c6f36"
 
 trim-newlines@^1.0.0:
   version "1.0.0"
@@ -7335,12 +6991,6 @@ trim-newlines@^1.0.0:
 trim-off-newlines@^1.0.1:
   version "1.0.1"
   resolved "https://npm.abeck.io:443/trim-off-newlines/-/trim-off-newlines-1.0.1.tgz#9f9ba9d9efa8764c387698bcbfeb2c848f11adb3"
-
-trim-repeated@^1.0.0:
-  version "1.0.0"
-  resolved "https://npm.abeck.io:443/trim-repeated/-/trim-repeated-1.0.0.tgz#e3646a2ea4e891312bf7eace6cfb05380bc01c21"
-  dependencies:
-    escape-string-regexp "^1.0.2"
 
 trim-right@^1.0.1:
   version "1.0.1"
@@ -7353,10 +7003,6 @@ tryit@^1.0.1:
 tsscmp@1.0.5:
   version "1.0.5"
   resolved "https://npm.abeck.io:443/tsscmp/-/tsscmp-1.0.5.tgz#7dc4a33af71581ab4337da91d85ca5427ebd9a97"
-
-tunnel-agent@^0.4.0:
-  version "0.4.3"
-  resolved "https://npm.abeck.io:443/tunnel-agent/-/tunnel-agent-0.4.3.tgz#6373db76909fe570e08d73583365ed828a74eeeb"
 
 tunnel-agent@^0.6.0:
   version "0.6.0"
@@ -7390,8 +7036,8 @@ typedarray@^0.0.6:
   resolved "https://npm.abeck.io:443/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
 ua-parser-js@^0.7.9:
-  version "0.7.14"
-  resolved "https://npm.abeck.io:443/ua-parser-js/-/ua-parser-js-0.7.14.tgz#110d53fa4c3f326c121292bbeac904d2e03387ca"
+  version "0.7.17"
+  resolved "https://npm.abeck.io:443/ua-parser-js/-/ua-parser-js-0.7.17.tgz#e9ec5f9498b9ec910e7ae3ac626a805c4d09ecac"
 
 uglify-js@^2.6, uglify-js@^2.6.2:
   version "2.8.29"
@@ -7430,23 +7076,9 @@ ultron@1.0.x:
   version "1.0.2"
   resolved "https://npm.abeck.io:443/ultron/-/ultron-1.0.2.tgz#ace116ab557cd197386a4e88f4685378c8b2e4fa"
 
-underscore.string@^3.0.3:
-  version "3.3.4"
-  resolved "https://npm.abeck.io:443/underscore.string/-/underscore.string-3.3.4.tgz#2c2a3f9f83e64762fdc45e6ceac65142864213db"
-  dependencies:
-    sprintf-js "^1.0.3"
-    util-deprecate "^1.0.2"
-
 uniq@^1.0.1:
   version "1.0.1"
   resolved "https://npm.abeck.io:443/uniq/-/uniq-1.0.1.tgz#b31c5ae8254844a3a8281541ce2b04b865a734ff"
-
-unique-stream@^2.0.2:
-  version "2.2.1"
-  resolved "https://npm.abeck.io:443/unique-stream/-/unique-stream-2.2.1.tgz#5aa003cfbe94c5ff866c4e7d668bb1c4dbadb369"
-  dependencies:
-    json-stable-stringify "^1.0.0"
-    through2-filter "^2.0.0"
 
 unique-string@^1.0.0:
   version "1.0.0"
@@ -7466,28 +7098,19 @@ unpipe@1.0.0, unpipe@~1.0.0:
   version "1.0.0"
   resolved "https://npm.abeck.io:443/unpipe/-/unpipe-1.0.0.tgz#b2bf4ee8514aae6165b4817829d21b2ef49904ec"
 
-untildify@^2.0.0:
-  version "2.1.0"
-  resolved "https://npm.abeck.io:443/untildify/-/untildify-2.1.0.tgz#17eb2807987f76952e9c0485fc311d06a826a2e0"
-  dependencies:
-    os-homedir "^1.0.0"
-
-unzip-response@^1.0.2:
-  version "1.0.2"
-  resolved "https://npm.abeck.io:443/unzip-response/-/unzip-response-1.0.2.tgz#b984f0877fc0a89c2c773cc1ef7b5b232b5b06fe"
-
 unzip-response@^2.0.1:
   version "2.0.1"
   resolved "https://npm.abeck.io:443/unzip-response/-/unzip-response-2.0.1.tgz#d2f0f737d16b0615e72a6935ed04214572d56f97"
 
 update-notifier@^2.1.0:
-  version "2.2.0"
-  resolved "https://npm.abeck.io:443/update-notifier/-/update-notifier-2.2.0.tgz#1b5837cf90c0736d88627732b661c138f86de72f"
+  version "2.3.0"
+  resolved "https://npm.abeck.io:443/update-notifier/-/update-notifier-2.3.0.tgz#4e8827a6bb915140ab093559d7014e3ebb837451"
   dependencies:
-    boxen "^1.0.0"
-    chalk "^1.0.0"
+    boxen "^1.2.1"
+    chalk "^2.0.1"
     configstore "^3.0.0"
     import-lazy "^2.1.0"
+    is-installed-globally "^0.1.0"
     is-npm "^1.0.0"
     latest-version "^3.0.0"
     semver-diff "^2.0.0"
@@ -7499,17 +7122,21 @@ url-parse-lax@^1.0.0:
   dependencies:
     prepend-http "^1.0.1"
 
+url-to-options@^1.0.1:
+  version "1.0.1"
+  resolved "https://npm.abeck.io:443/url-to-options/-/url-to-options-1.0.1.tgz#1505a03a289a48cbd7a434efbaeec5055f5633a9"
+
 user-home@^2.0.0:
   version "2.0.0"
   resolved "https://npm.abeck.io:443/user-home/-/user-home-2.0.0.tgz#9c70bfd8169bc1dcbf48604e0f04b8b49cde9e9f"
   dependencies:
     os-homedir "^1.0.0"
 
-util-deprecate@1.0.2, util-deprecate@^1.0.2, util-deprecate@~1.0.1:
+util-deprecate@1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://npm.abeck.io:443/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
 
-"util@>=0.10.3 <1", util@^0.10.3:
+util@^0.10.3:
   version "0.10.3"
   resolved "https://npm.abeck.io:443/util/-/util-0.10.3.tgz#7afb1afe50805246489e3db7fe0ed379336ac0f9"
   dependencies:
@@ -7519,17 +7146,13 @@ utils-merge@1.0.0:
   version "1.0.0"
   resolved "https://npm.abeck.io:443/utils-merge/-/utils-merge-1.0.0.tgz#0294fb922bb9375153541c4f7096231f287c8af8"
 
-uuid@^2.0.1:
-  version "2.0.3"
-  resolved "https://npm.abeck.io:443/uuid/-/uuid-2.0.3.tgz#67e2e863797215530dff318e5bf9dcebfd47b21a"
+uuid@3.0.1:
+  version "3.0.1"
+  resolved "https://npm.abeck.io:443/uuid/-/uuid-3.0.1.tgz#6544bba2dfda8c1cf17e629a3a305e2bb1fee6c1"
 
-uuid@^3.0.0, uuid@^3.0.1:
+uuid@^3.0.0, uuid@^3.0.1, uuid@^3.1.0:
   version "3.1.0"
   resolved "https://npm.abeck.io:443/uuid/-/uuid-3.1.0.tgz#3dd3d3e790abc24d7b0d3a034ffababe28ebbc04"
-
-vali-date@^1.0.0:
-  version "1.0.0"
-  resolved "https://npm.abeck.io:443/vali-date/-/vali-date-1.0.0.tgz#1b904a59609fb328ef078138420934f6b86709a6"
 
 validate-npm-package-license@^3.0.1:
   version "3.0.1"
@@ -7542,9 +7165,9 @@ vary@~1.0.1:
   version "1.0.1"
   resolved "https://npm.abeck.io:443/vary/-/vary-1.0.1.tgz#99e4981566a286118dfb2b817357df7993376d10"
 
-vary@~1.1.1:
-  version "1.1.1"
-  resolved "https://npm.abeck.io:443/vary/-/vary-1.1.1.tgz#67535ebb694c1d52257457984665323f587e8d37"
+vary@~1.1.2:
+  version "1.1.2"
+  resolved "https://npm.abeck.io:443/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
 
 verror@1.10.0:
   version "1.10.0"
@@ -7558,64 +7181,9 @@ vhost@~3.0.1:
   version "3.0.2"
   resolved "https://npm.abeck.io:443/vhost/-/vhost-3.0.2.tgz#2fb1decd4c466aa88b0f9341af33dc1aff2478d5"
 
-vinyl-assign@^1.0.1:
-  version "1.2.1"
-  resolved "https://npm.abeck.io:443/vinyl-assign/-/vinyl-assign-1.2.1.tgz#4d198891b5515911d771a8cd9c5480a46a074a45"
-  dependencies:
-    object-assign "^4.0.1"
-    readable-stream "^2.0.0"
-
-vinyl-file@^2.0.0:
-  version "2.0.0"
-  resolved "https://npm.abeck.io:443/vinyl-file/-/vinyl-file-2.0.0.tgz#a7ebf5ffbefda1b7d18d140fcb07b223efb6751a"
-  dependencies:
-    graceful-fs "^4.1.2"
-    pify "^2.3.0"
-    pinkie-promise "^2.0.0"
-    strip-bom "^2.0.0"
-    strip-bom-stream "^2.0.0"
-    vinyl "^1.1.0"
-
-vinyl-fs@^2.2.0:
-  version "2.4.4"
-  resolved "https://npm.abeck.io:443/vinyl-fs/-/vinyl-fs-2.4.4.tgz#be6ff3270cb55dfd7d3063640de81f25d7532239"
-  dependencies:
-    duplexify "^3.2.0"
-    glob-stream "^5.3.2"
-    graceful-fs "^4.0.0"
-    gulp-sourcemaps "1.6.0"
-    is-valid-glob "^0.3.0"
-    lazystream "^1.0.0"
-    lodash.isequal "^4.0.0"
-    merge-stream "^1.0.0"
-    mkdirp "^0.5.0"
-    object-assign "^4.0.0"
-    readable-stream "^2.0.4"
-    strip-bom "^2.0.0"
-    strip-bom-stream "^1.0.0"
-    through2 "^2.0.0"
-    through2-filter "^2.0.0"
-    vali-date "^1.0.0"
-    vinyl "^1.0.0"
-
-vinyl@^0.4.3:
-  version "0.4.6"
-  resolved "https://npm.abeck.io:443/vinyl/-/vinyl-0.4.6.tgz#2f356c87a550a255461f36bbeb2a5ba8bf784847"
-  dependencies:
-    clone "^0.2.0"
-    clone-stats "^0.0.1"
-
 vinyl@^0.5.0:
   version "0.5.3"
   resolved "https://npm.abeck.io:443/vinyl/-/vinyl-0.5.3.tgz#b0455b38fc5e0cf30d4325132e461970c2091cde"
-  dependencies:
-    clone "^1.0.0"
-    clone-stats "^0.0.1"
-    replace-ext "0.0.1"
-
-vinyl@^1.0.0, vinyl@^1.1.0:
-  version "1.2.0"
-  resolved "https://npm.abeck.io:443/vinyl/-/vinyl-1.2.0.tgz#5c88036cf565e5df05558bfc911f8656df218884"
   dependencies:
     clone "^1.0.0"
     clone-stats "^0.0.1"
@@ -7626,12 +7194,6 @@ walker@~1.0.5:
   resolved "https://npm.abeck.io:443/walker/-/walker-1.0.7.tgz#2f7f9b8fd10d677262b18a884e28d19618e028fb"
   dependencies:
     makeerror "1.0.x"
-
-ware@^1.2.0:
-  version "1.3.0"
-  resolved "https://npm.abeck.io:443/ware/-/ware-1.3.0.tgz#d1b14f39d2e2cb4ab8c4098f756fe4b164e473d4"
-  dependencies:
-    wrap-fn "^0.1.0"
 
 warning@^2.1.0:
   version "2.1.0"
@@ -7647,7 +7209,11 @@ well-known-symbols@^1.0.0:
   version "1.0.0"
   resolved "https://npm.abeck.io:443/well-known-symbols/-/well-known-symbols-1.0.0.tgz#73c78ae81a7726a8fa598e2880801c8b16225518"
 
-whatwg-fetch@>=0.10.0, whatwg-fetch@^1.0.0:
+whatwg-fetch@>=0.10.0:
+  version "2.0.3"
+  resolved "https://npm.abeck.io:443/whatwg-fetch/-/whatwg-fetch-2.0.3.tgz#9c84ec2dcf68187ff00bc64e1274b442176e1c84"
+
+whatwg-fetch@^1.0.0:
   version "1.1.1"
   resolved "https://npm.abeck.io:443/whatwg-fetch/-/whatwg-fetch-1.1.1.tgz#ac3c9d39f320c6dce5339969d054ef43dd333319"
 
@@ -7659,7 +7225,7 @@ which-module@^2.0.0:
   version "2.0.0"
   resolved "https://npm.abeck.io:443/which-module/-/which-module-2.0.0.tgz#d9ef07dce77b9902b8a3a8fa4b31c3e3f7e6e87a"
 
-which@^1.2.4, which@^1.2.8, which@^1.2.9:
+which@^1.2.4, which@^1.2.9:
   version "1.3.0"
   resolved "https://npm.abeck.io:443/which/-/which-1.3.0.tgz#ff04bdfc010ee547d780bec38e1ac1c2777d253a"
   dependencies:
@@ -7671,11 +7237,11 @@ wide-align@^1.1.0:
   dependencies:
     string-width "^1.0.2"
 
-widest-line@^1.0.0:
-  version "1.0.0"
-  resolved "https://npm.abeck.io:443/widest-line/-/widest-line-1.0.0.tgz#0c09c85c2a94683d0d7eaf8ee097d564bf0e105c"
+widest-line@^2.0.0:
+  version "2.0.0"
+  resolved "https://npm.abeck.io:443/widest-line/-/widest-line-2.0.0.tgz#0142a4e8a243f8882c0233aa0e0281aa76152273"
   dependencies:
-    string-width "^1.0.1"
+    string-width "^2.1.1"
 
 window-size@0.1.0:
   version "0.1.0"
@@ -7694,8 +7260,8 @@ wordwrap@~0.0.2:
   resolved "https://npm.abeck.io:443/wordwrap/-/wordwrap-0.0.3.tgz#a3d5da6cd5c0bc0008d37234bbaf1bed63059107"
 
 worker-farm@^1.3.1:
-  version "1.4.1"
-  resolved "https://npm.abeck.io:443/worker-farm/-/worker-farm-1.4.1.tgz#a438bc993a7a7d133bcb6547c95eca7cff4897d8"
+  version "1.5.2"
+  resolved "https://npm.abeck.io:443/worker-farm/-/worker-farm-1.5.2.tgz#32b312e5dc3d5d45d79ef44acc2587491cd729ae"
   dependencies:
     errno "^0.1.4"
     xtend "^4.0.1"
@@ -7706,12 +7272,6 @@ wrap-ansi@^2.0.0:
   dependencies:
     string-width "^1.0.1"
     strip-ansi "^3.0.1"
-
-wrap-fn@^0.1.0:
-  version "0.1.5"
-  resolved "https://npm.abeck.io:443/wrap-fn/-/wrap-fn-0.1.5.tgz#f21b6e41016ff4a7e31720dbc63a09016bdf9845"
-  dependencies:
-    co "3.1.0"
 
 wrappy@1:
   version "1.0.2"
@@ -7726,22 +7286,22 @@ write-file-atomic@^1.1.4, write-file-atomic@^1.2.0:
     slide "^1.1.5"
 
 write-file-atomic@^2.0.0:
-  version "2.1.0"
-  resolved "https://npm.abeck.io:443/write-file-atomic/-/write-file-atomic-2.1.0.tgz#1769f4b551eedce419f0505deae2e26763542d37"
+  version "2.3.0"
+  resolved "https://npm.abeck.io:443/write-file-atomic/-/write-file-atomic-2.3.0.tgz#1ff61575c2e2a4e8e510d6fa4e243cce183999ab"
   dependencies:
     graceful-fs "^4.1.11"
     imurmurhash "^0.1.4"
-    slide "^1.1.5"
+    signal-exit "^3.0.2"
 
 write-json-file@^2.2.0:
-  version "2.2.0"
-  resolved "https://npm.abeck.io:443/write-json-file/-/write-json-file-2.2.0.tgz#51862506bbb3b619eefab7859f1fd6c6d0530876"
+  version "2.3.0"
+  resolved "https://npm.abeck.io:443/write-json-file/-/write-json-file-2.3.0.tgz#2b64c8a33004d54b8698c76d585a77ceb61da32f"
   dependencies:
     detect-indent "^5.0.0"
     graceful-fs "^4.1.2"
     make-dir "^1.0.0"
-    pify "^2.0.0"
-    sort-keys "^1.1.1"
+    pify "^3.0.0"
+    sort-keys "^2.0.0"
     write-file-atomic "^2.0.0"
 
 write-pkg@^3.1.0:
@@ -7765,8 +7325,8 @@ ws@1.1.2:
     ultron "1.0.x"
 
 ws@^1.1.0:
-  version "1.1.4"
-  resolved "https://npm.abeck.io:443/ws/-/ws-1.1.4.tgz#57f40d036832e5f5055662a397c4de76ed66bf61"
+  version "1.1.5"
+  resolved "https://npm.abeck.io:443/ws/-/ws-1.1.5.tgz#cbd9e6e75e09fc5d2c90015f21f0c40875e0dd51"
   dependencies:
     options ">=0.0.5"
     ultron "1.0.x"
@@ -7783,27 +7343,27 @@ xcode@^0.8.9:
     pegjs "0.9.0"
     simple-plist "0.1.4"
 
-xdg-basedir@^2.0.0:
-  version "2.0.0"
-  resolved "https://npm.abeck.io:443/xdg-basedir/-/xdg-basedir-2.0.0.tgz#edbc903cc385fc04523d966a335504b5504d1bd2"
+xcode@^0.9.3:
+  version "0.9.3"
+  resolved "https://npm.abeck.io:443/xcode/-/xcode-0.9.3.tgz#910a89c16aee6cc0b42ca805a6d0b4cf87211cf3"
   dependencies:
-    os-homedir "^1.0.0"
+    pegjs "^0.10.0"
+    simple-plist "^0.2.1"
+    uuid "3.0.1"
 
 xdg-basedir@^3.0.0:
   version "3.0.0"
   resolved "https://npm.abeck.io:443/xdg-basedir/-/xdg-basedir-3.0.0.tgz#496b2cc109eca8dbacfe2dc72b603c17c5870ad4"
-
-xml-parser@^1.2.1:
-  version "1.2.1"
-  resolved "https://npm.abeck.io:443/xml-parser/-/xml-parser-1.2.1.tgz#c31f4c34f2975db82ad013222120592736156fcd"
-  dependencies:
-    debug "^2.2.0"
 
 xmlbuilder@4.0.0:
   version "4.0.0"
   resolved "https://npm.abeck.io:443/xmlbuilder/-/xmlbuilder-4.0.0.tgz#98b8f651ca30aa624036f127d11cc66dc7b907a3"
   dependencies:
     lodash "^3.5.0"
+
+xmlbuilder@8.2.2:
+  version "8.2.2"
+  resolved "https://npm.abeck.io:443/xmlbuilder/-/xmlbuilder-8.2.2.tgz#69248673410b4ba42e1a6136551d2922335aa773"
 
 xmldoc@^0.4.0:
   version "0.4.0"
@@ -7819,7 +7379,7 @@ xmlhttprequest-ssl@1.5.3:
   version "1.5.3"
   resolved "https://npm.abeck.io:443/xmlhttprequest-ssl/-/xmlhttprequest-ssl-1.5.3.tgz#185a888c04eca46c3e4070d99f7b49de3528992d"
 
-"xtend@>=4.0.0 <4.1.0-0", xtend@^4.0.0, xtend@^4.0.1, xtend@~4.0.0, xtend@~4.0.1:
+xtend@^4.0.0, xtend@^4.0.1, xtend@~4.0.1:
   version "4.0.1"
   resolved "https://npm.abeck.io:443/xtend/-/xtend-4.0.1.tgz#a5c6d532be656e23db820efb943a1f04998d63af"
 
@@ -7912,99 +7472,6 @@ yargs@~3.10.0:
     decamelize "^1.0.0"
     window-size "0.1.0"
 
-yauzl@^2.2.1:
-  version "2.8.0"
-  resolved "https://npm.abeck.io:443/yauzl/-/yauzl-2.8.0.tgz#79450aff22b2a9c5a41ef54e02db907ccfbf9ee2"
-  dependencies:
-    buffer-crc32 "~0.2.3"
-    fd-slicer "~1.0.1"
-
 yeast@0.1.2:
   version "0.1.2"
   resolved "https://npm.abeck.io:443/yeast/-/yeast-0.1.2.tgz#008e06d8094320c372dbc2f8ed76a0ca6c8ac419"
-
-yeoman-assert@^2.0.0:
-  version "2.2.3"
-  resolved "https://npm.abeck.io:443/yeoman-assert/-/yeoman-assert-2.2.3.tgz#a5682a83632c50ac0ee84173a5a10fd6f3206474"
-
-yeoman-environment@1.5.3:
-  version "1.5.3"
-  resolved "https://npm.abeck.io:443/yeoman-environment/-/yeoman-environment-1.5.3.tgz#76f0d14bd2529ca912bd6d20bcb717f8cd1a9ce7"
-  dependencies:
-    chalk "^1.0.0"
-    debug "^2.0.0"
-    diff "^2.1.2"
-    escape-string-regexp "^1.0.2"
-    globby "^4.0.0"
-    grouped-queue "^0.3.0"
-    inquirer "^0.11.0"
-    lodash "^3.1.0"
-    log-symbols "^1.0.1"
-    mem-fs "^1.1.0"
-    text-table "^0.2.0"
-    untildify "^2.0.0"
-
-yeoman-environment@^1.5.3:
-  version "1.6.6"
-  resolved "https://npm.abeck.io:443/yeoman-environment/-/yeoman-environment-1.6.6.tgz#cd85fa67d156060e440d7807d7ef7cf0d2d1d671"
-  dependencies:
-    chalk "^1.0.0"
-    debug "^2.0.0"
-    diff "^2.1.2"
-    escape-string-regexp "^1.0.2"
-    globby "^4.0.0"
-    grouped-queue "^0.3.0"
-    inquirer "^1.0.2"
-    lodash "^4.11.1"
-    log-symbols "^1.0.1"
-    mem-fs "^1.1.0"
-    text-table "^0.2.0"
-    untildify "^2.0.0"
-
-yeoman-generator@^0.21.2:
-  version "0.21.2"
-  resolved "https://npm.abeck.io:443/yeoman-generator/-/yeoman-generator-0.21.2.tgz#3e2e32fe59442ddab33924e16f4cb621f0bd1d06"
-  dependencies:
-    async "^1.4.2"
-    chalk "^1.0.0"
-    class-extend "^0.1.0"
-    cli-table "^0.3.1"
-    cross-spawn "^2.0.0"
-    dargs "^4.0.0"
-    dateformat "^1.0.11"
-    debug "^2.1.0"
-    detect-conflict "^1.0.0"
-    download "^4.1.2"
-    find-up "^1.0.0"
-    github-username "^2.0.0"
-    glob "^5.0.3"
-    gruntfile-editor "^1.0.0"
-    html-wiring "^1.0.0"
-    inquirer "^0.11.0"
-    istextorbinary "^1.0.2"
-    lodash "^3.5.0"
-    mem-fs-editor "^2.0.0"
-    mkdirp "^0.5.0"
-    nopt "^3.0.0"
-    path-exists "^2.0.0"
-    path-is-absolute "^1.0.0"
-    pretty-bytes "^2.0.1"
-    read-chunk "^1.0.1"
-    read-pkg-up "^1.0.1"
-    rimraf "^2.2.0"
-    shelljs "^0.5.0"
-    sinon "^1.9.1"
-    text-table "^0.2.0"
-    through2 "^2.0.0"
-    underscore.string "^3.0.3"
-    user-home "^2.0.0"
-    xdg-basedir "^2.0.0"
-    yeoman-assert "^2.0.0"
-    yeoman-environment "1.5.3"
-    yeoman-welcome "^1.0.0"
-
-yeoman-welcome@^1.0.0:
-  version "1.0.1"
-  resolved "https://npm.abeck.io:443/yeoman-welcome/-/yeoman-welcome-1.0.1.tgz#f6cf198fd4fba8a771672c26cdfb8a64795c84ec"
-  dependencies:
-    chalk "^1.0.0"

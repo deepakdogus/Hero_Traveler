@@ -5,7 +5,7 @@ import redraft from 'redraft'
 
 import Image from './Image'
 import Video from './Video'
-import {getContentBlockImage} from '../Shared/Lib/getImageUrl'
+import getImageUrl from '../Shared/Lib/getImageUrl'
 import {getVideoUrlBase} from '../Shared/Lib/getVideoUrl'
 
 const ContentContainer = styled.div`
@@ -62,7 +62,7 @@ const getAtomic = (children, { data, keys }) => {
     case 'image':
       return (
         <div key={keys[0]}>
-          <StyledImage src={getContentBlockImage(data[0].url)} />
+          <StyledImage src={getImageUrl(data[0].url, 'contentBlock')} />
           {text && <Caption>{text}</Caption>}
         </div>
       )
@@ -70,7 +70,10 @@ const getAtomic = (children, { data, keys }) => {
       const videoUrl = `${getVideoUrlBase()}/${data[0].url}`
       return (
         <div key={keys[0]}>
-          <Video src={videoUrl} />
+          <Video
+            src={videoUrl}
+            withPrettyControls
+          />
           {text && <Caption>{text}</Caption>}
         </div>
       )

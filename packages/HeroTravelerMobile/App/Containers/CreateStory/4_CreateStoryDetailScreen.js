@@ -12,8 +12,9 @@ import {
 import { connect } from 'react-redux'
 import moment from 'moment'
 import {Actions as NavActions} from 'react-native-router-flux'
-import Icon from 'react-native-vector-icons/FontAwesome'
 
+import {getNewCover, saveCover} from './shared'
+import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import StoryEditActions, {isCreated, isPublishing} from '../../Shared/Redux/StoryCreateRedux'
 import {Colors, Metrics} from '../../Shared/Themes'
 import Loader from '../../Components/Loader'
@@ -23,6 +24,8 @@ import RoundedButton from '../../Components/RoundedButton'
 import RenderTextInput from '../../Components/RenderTextInput'
 import NavBar from './NavBar'
 import styles from './4_CreateStoryDetailScreenStyles'
+import API from '../../Shared/Services/HeroAPI'
+const api = API.create()
 
 const Radio = ({text, onPress, name, selected}) => {
   return (
@@ -73,32 +76,18 @@ class CreateStoryDetailScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      date: props.story.tripDate ? moment(props.story.tripDate).toDate() : new Date(),
-      location: props.story.location || '',
-      categories: props.story.categories || [],
-      type: props.story.type,
-      videoDescription: props.story.videoDescription || '',
-      videoDescHeight: 0,
+      location: props.workingDraft.location || '',
+      categories: props.workingDraft.categories || [],
+      type: props.workingDraft.type,
       showError: false,
     }
   }
 
-  componentWillReceiveProps(newProps) {
-    // making sure we properly display each of these properties
-    const updates = {}
-    // resetting values for a new story
-    if (this.props.story.id !== newProps.story.id) {
-      updates.categories = newProps.story.categories || []
-      updates.videoDescription = ''
-      updates.location = undefined
-      updates.type = ''
-    }
-    // setting the values when they are updated
-    if (newProps.story.location) updates.location = newProps.story.location
-    if (newProps.story.type) updates.type = newProps.story.type
-    if (newProps.story.videoDescription) updates.videoDescription = newProps.story.videoDescription
-    if (Object.keys(updates).length) this.setState(updates)
+  componentWillMount() {
+    api.setAuth(this.props.accessToken.value)
+  }
 
+  componentWillReceiveProps(newProps) {
     if (!newProps.publishing && newProps.isCreated) {
       this.next()
     }
@@ -108,37 +97,59 @@ class CreateStoryDetailScreen extends React.Component {
     this.setState({ modalVisible: visible })
   }
 
-  _onDateChange = (date) => {
-    this.setState({date: date})
+  onLocationChange = (location) => {
+    this.props.updateWorkingDraft({location})
   }
 
-  _onRight = () => {
-    if (this.props.story.draft) {
-      this.props.publish({
-        ...this.props.story,
-        location: _.trim(this.state.location),
-        categories: this.state.categories,
-        date: this.state.date,
-        type: this.state.type,
-        videoDescription: _.trim(this.state.videoDescription).slice(0, 500)
-      })
-      this.state.showError = true
-    } else {
-      this._update()
+  _onDateChange = (tripDate) => {
+    this.props.updateWorkingDraft({tripDate})
+  }
+
+  confirmDate = () => {
+    this._setModalVisible(!this.state.modalVisible)
+    if (!this.props.workingDraft.tripDate) {
+      this._onDateChange(new Date())
     }
   }
 
+  _onRight = () => {
+    const {workingDraft} = this.props
+
+    const newCover = getNewCover(workingDraft.coverImage, workingDraft.coverVideo)
+    let promise
+    if (newCover) {
+      this.setState({isSavingCover: true})
+      promise = saveCover(api, workingDraft, newCover)
+      .then(draft => {
+        this.setState({isSavingCover: false})
+        return draft
+      })
+    }
+    else promise = Promise.resolve(workingDraft)
+
+    return promise.then(draft => {
+      if (draft.draft) {
+        this.props.publish(_.merge({}, draft, _.trim(draft.location)))
+        this.setState({showError: true})
+      } else {
+        this._update(draft)
+      }
+    })
+  }
+
   _onLeft = () => {
-    this.saveDraft()
+    const location = this.props.workingDraft.location
+    const cleanedLocation = _.trim(location)
+    if (cleanedLocation !== location) this.props.updateWorkingDraft({location})
     NavActions.pop()
   }
 
   _updateType = (type) => {
-    this.setState({type})
+    this.props.updateWorkingDraft({type})
   }
 
-  _update = () => {
-    this.saveDraft()
+  _update = (draft) => {
+    this.saveDraft(draft)
     this.next()
   }
 
@@ -146,19 +157,10 @@ class CreateStoryDetailScreen extends React.Component {
     this.setState({showError: false})
   }
 
-  saveDraft = () => {
-
-    const story = {
-      ...this.props.story,
-      location: _.trim(this.state.location),
-      categories: this.state.categories,
-      date: this.state.date,
-      type: this.state.type,
-      videoDescription: _.trim(this.state.videoDescription).slice(0, 500)
-    }
-
+  saveDraft = (draft) => {
+    const story = _.merge({}, draft, {location: _.trim(draft.location)})
     this.props.update(
-      this.props.story.id,
+      draft.id,
       story
     )
   }
@@ -170,32 +172,29 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   _receiveCategories = (selectedCategories) => {
-    // this.props.updateCategories(selectedCategories)
-    this.setState({categories: selectedCategories})
+    this.props.updateWorkingDraft({categories: selectedCategories})
     NavActions.pop()
-  }
-
-  // _changeVideoDesc = (event) => {
-  //   this.setState({
-  //     videoDescription: event.nativeEvent.text,
-  //     videoDescHeight: event.nativeEvent.contentSize.height
-  //   })
-  // }
-
-  _changeVideoDescText = (videoDescription) => {
-    this.setState({videoDescription})
   }
 
   isDraft() {
     return this.props.story.draft || false
   }
 
+  getDateString(date){
+    if (!date) return 'Add Date'
+    if (typeof date === 'string') date = new Date(date)
+    return date.toDateString()
+  }
+
   render () {
+    const {workingDraft, publishing} = this.props
+    const {isSavingCover, categories, modalVisible, showError} = this.state
     const err = this.props.error
     const errText = (__DEV__ && err && err.problem && err.status) ? `${err.status}: ${err.problem}` : ""
+
     return (
       <View style={{flex: 1, position: 'relative'}}>
-          { this.state.showError && err &&
+          { showError && err &&
           <ShadowButton
             style={styles.errorButton}
             onPress={this._closeError}
@@ -223,8 +222,8 @@ class CreateStoryDetailScreen extends React.Component {
                 style={styles.inputStyle}
                 placeholder='Location'
                 placeholderTextColor={Colors.navBarText}
-                value={this.state.location}
-                onChangeText={location => this.setState({location})}
+                value={workingDraft.location}
+                onChangeText={this.onLocationChange}
                 returnKeyType='done'
               />
             </View>
@@ -233,7 +232,9 @@ class CreateStoryDetailScreen extends React.Component {
               <TouchableHighlight
                 onPress={() => this._setModalVisible(true)}
               >
-                <Text style={styles.inputStyle}>{this.state.date ? this.state.date.toDateString() : 'Add Date'}</Text>
+                <Text style={styles.inputStyle}>
+                  {this.getDateString(workingDraft.tripDate)}
+                </Text>
               </TouchableHighlight>
             </View>
             <View style={styles.fieldWrapper}>
@@ -241,13 +242,13 @@ class CreateStoryDetailScreen extends React.Component {
               <TouchableWithoutFeedback
                 onPress={() => NavActions.createStory_tags({
                   onDone: this._receiveCategories,
-                  categories: this.state.categories
+                  categories: workingDraft.categories || categories
                 })}
                 style={styles.tagStyle}
               >
                 <View>
-                  {_.size(this.state.categories) > 0 && <Text style={styles.tagStyleText}>{_.map(this.state.categories, 'title').join(', ')}</Text>}
-                  {_.size(this.state.categories) === 0 && <Text style={[styles.tagStyleText, {color: '#bdbdbd'}]}>Add categories...</Text>}
+                  {_.size(workingDraft.categories) > 0 && <Text style={styles.tagStyleText}>{_.map(workingDraft.categories, 'title').join(', ')}</Text>}
+                  {_.size(workingDraft.categories) === 0 && <Text style={[styles.tagStyleText, {color: '#bdbdbd'}]}>Add categories...</Text>}
                 </View>
               </TouchableWithoutFeedback>
             </View>
@@ -255,19 +256,19 @@ class CreateStoryDetailScreen extends React.Component {
               <Text style={styles.fieldLabel}>Activity: </Text>
               <View style={styles.radioGroup}>
                 <Radio
-                  selected={this.state.type === 'eat'}
+                  selected={workingDraft.type === 'eat'}
                   onPress={() => this._updateType('eat')}
                   text='EAT'
                 />
                 <Radio
                   style={{marginLeft: Metrics.baseMargin}}
-                  selected={this.state.type === 'stay'}
+                  selected={workingDraft.type === 'stay'}
                   onPress={() => this._updateType('stay')}
                   text='STAY'
                 />
                 <Radio
                   style={{marginLeft: Metrics.baseMargin}}
-                  selected={this.state.type === 'do'}
+                  selected={workingDraft.type === 'do'}
                   onPress={() => this._updateType('do')}
                   text='DO'
                 />
@@ -277,14 +278,16 @@ class CreateStoryDetailScreen extends React.Component {
               <View style={styles.finishButtons}>
                 <RoundedButton
                   style={styles.finishButton}
-                  onPress={this._update}
+                  onPress={this._onRight}
                   text='Save Story'
                 />
               </View>
             }
           </ScrollView>
-          {this.props.publishing && <Loader style={styles.loader} tintColor={Colors.blackoutTint} />}
-      { this.state.modalVisible &&
+          {(publishing || isSavingCover) &&
+            <Loader style={styles.loader} tintColor={Colors.blackoutTint} />
+          }
+        {modalVisible &&
         <View
           style={{position: 'absolute', top: 250, left: 40, elevation: 100}}
           shadowColor='black'
@@ -294,13 +297,13 @@ class CreateStoryDetailScreen extends React.Component {
           <View
             style={{ backgroundColor: 'white', height: 300, width: 300 }}>
             <DatePickerIOS
-              date={this.state.date}
+              date={workingDraft.tripDate || new Date()}
               mode="date"
               onDateChange={this._onDateChange}
             />
             <RoundedButton
               text='Confirm'
-              onPress={() => this._setModalVisible(!this.state.modalVisible)}
+              onPress={this.confirmDate}
             />
           </View>
         </View> }
@@ -313,16 +316,18 @@ class CreateStoryDetailScreen extends React.Component {
 export default connect(
   (state) => {
     return {
+      accessToken: _.find(state.session.tokens, {type: 'access'}),
       publishing: isPublishing(state.storyCreate),
       isCreated: isCreated(state.storyCreate),
-      story: {...state.storyCreate.draft},
+      story: {...state.storyCreate.workingDraft},
+      workingDraft: {...state.storyCreate.workingDraft},
       error: state.storyCreate.error,
     }
   },
   dispatch => ({
+    updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),
     publish: (story) => dispatch(StoryEditActions.publishDraft(story)),
     update: (id, attrs) => dispatch(StoryEditActions.updateDraft(id, attrs, true)),
-    updateCategories: (cats) => dispatch(StoryEditActions.updateCategories(cats)),
     resetCreateStore: () => dispatch(StoryEditActions.resetCreateStore())
   })
 )(CreateStoryDetailScreen)

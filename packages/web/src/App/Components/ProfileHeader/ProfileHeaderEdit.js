@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-
 import {Row, Col} from '../FlexboxGrid'
 import RoundedButton from '../RoundedButton'
 import Icon from '../Icon'
@@ -66,13 +65,15 @@ const BioInput = styled.textarea`
 
 const Container = styled.div``
 
+const ProfileEditCentered = styled(Centered)`
+  height: 320px;
+`
+
 const SecondCol = styled(Col)`
   margin-left: 20px;
 `
 
-const UsernameWrapper = styled(VerticalCenter)`
-  height: 131px;
-`
+const UsernameWrapper = styled(VerticalCenter)``
 
 const EditBioText = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat};
@@ -80,6 +81,31 @@ const EditBioText = styled.p`
   color: ${props => props.theme.Colors.background};
   padding: 30px 0 10px;
   margin: 0;
+`
+const AboutWrapper = styled(VerticalCenter)``
+
+const EditAboutText = styled.text`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
+  font-weight: 600;
+  color: ${props => props.theme.Colors.background};
+  padding: 10px 0 10px 5px;
+  margin: 0;
+  font-size: 18px;
+  text-align: left;
+`
+const AboutInput = styled.textarea`
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  font-weight: 400;
+  color: ${props => props.theme.Colors.grey};
+  padding: 5px;
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: .7px;
+  text-align: left;
+  background-color: transparent;
+  border-width: 0px;
+  resize: none;
+  width: 450px;
 `
 
 const BioWrapper = styled.div`
@@ -97,6 +123,7 @@ const UsernameInput = styled.input`
   color: ${props => props.theme.Colors.background};
   width: 250px;
   border-width: 0;
+  padding-left: 5px;
 `
 
 const ErrorText = styled.p`
@@ -104,14 +131,24 @@ const ErrorText = styled.p`
   font-size: 12px;
   color: ${props => props.theme.Colors.redHighlights};
   text-align: left;
-  padding-left: 1px;
+  padding-left: 5px;
   padding-top: 2px;
 `
 
+const SaveCancelButtonWrapper = styled(ButtonWrapper)`
+  display: flex;
+  justify-content: center;
+  padding-bottom: 20px;
+`
+
+const SaveCancelButton = styled(RoundedButton)`
+  margin: 0px 10px;
+`
 function getInitialState(user = {}){
   return {
     bio: user.bio,
     username: user.username,
+    about: user.about,
     modal: undefined,
     photoType: undefined,
     loadedImage: undefined,
@@ -123,7 +160,7 @@ export default class ProfileHeaderEdit extends React.Component {
     user: PropTypes.object,
     isContributor: PropTypes.bool,
     bio: PropTypes.string,
-    error: PropTypes.string,
+    error: PropTypes.object,
     updateUser: PropTypes.func,
     uploadMedia: PropTypes.func,
     toProfileView: PropTypes.func,
@@ -140,6 +177,10 @@ export default class ProfileHeaderEdit extends React.Component {
         bio: nextProps.user.bio,
         username: nextProps.user.username
       })
+    } 
+    // If save was successful, reroute
+    if (!!this.props.updating && !nextProps.updating && !nextProps.error) {
+      this.props.toProfileView()
     }
   }
 
@@ -208,21 +249,22 @@ export default class ProfileHeaderEdit extends React.Component {
   onSave = () => {
     this.props.updateUser({
       bio: this.state.bio,
-      username: this.state.username
+      username: this.state.username,
+      about: this.state.about,
     })
+
   }
 
   render () {
     const {user, error} = this.props
-    const {bio, loadedImage, modal, photoType, username} = this.state
+    const {bio, loadedImage, modal, photoType, username, about} = this.state
     const avatarUrl = getImageUrl(user.profile.avatar, 'avatar')
-
     let targetedImage
     if (photoType === 'avatar') targetedImage = avatarUrl
     else if (photoType === 'userCover') targetedImage = getImageUrl(user.profile.cover)
     return (
       <Container>
-        <Centered>
+        <ProfileEditCentered>
           <Row center='xs'>
             <Col>
               <AvatarWrapper>
@@ -262,22 +304,20 @@ export default class ProfileHeaderEdit extends React.Component {
                   />
                 </Row>
               </UsernameWrapper>
-              <ButtonWrapper>
-                <RoundedButton
-                  margin='small'
-                  type={'blackWhite'}
-                  text={'CANCEL'}
-                  onClick={this.onCancel}
-                />
-                <RoundedButton
-                  margin='small'
-                  text='SAVE CHANGES'
-                  onClick={this.onSave}
-                />
-              </ButtonWrapper>
+              <AboutWrapper>
+                <EditAboutText>Edit About</EditAboutText>
+                  <AboutInput
+                    value={about}
+                    name='about'
+                    placeholder='Click to add About Me'
+                    onChange={this.onChangeText}
+                    rows={2}
+                    maxLength={63}
+                  />
+              </AboutWrapper>
             </SecondCol>
           </Row>
-        </Centered>
+        </ProfileEditCentered>
 
         <BioWrapper>
           <BioContainer>
@@ -288,6 +328,20 @@ export default class ProfileHeaderEdit extends React.Component {
               placeholder='Enter your bio'
               onChange={this.onChangeText}
             />
+            <SaveCancelButtonWrapper>
+                <SaveCancelButton
+                  margin='small'
+                  type={'blackWhite'}
+                  text={'CANCEL'}
+                  onClick={this.onCancel}
+                />
+                <SaveCancelButton
+                  margin='small'
+                  text='SAVE CHANGES'
+                  onClick={this.onSave}
+                  disabled={!username || (username.length < SignupConstants.USERNAME_MIN_LENGTH)}
+                />
+            </SaveCancelButtonWrapper>
           </BioContainer>
         </BioWrapper>
 

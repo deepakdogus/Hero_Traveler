@@ -93,32 +93,40 @@ export default class StoryPreview extends Component {
   renderUserSection() {
     const {user, story, isStoryReadingScreen, isAuthor} = this.props
     const isFollowing = _.includes(this.props.myFollowedUsers, user.id)
+
     return (
       <View style={[
         styles.storyInfoContainer, styles.verticalCenter, styles.userContainer,
-        !isStoryReadingScreen ? styles.previewUserContainer : null
+        !isStoryReadingScreen && styles.previewUserContainer,
       ]}>
         <View style={styles.userContent}>
           <View style={styles.leftUserContent}>
             <TouchableOpacity onPress={this._touchUser}>
               <Avatar
-                size={'extraSmall'}
+                size={isStoryReadingScreen ? 'small' : 'extraSmall'}
                 style={styles.avatar}
                 avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
               />
             </TouchableOpacity>
             <View style={styles.verticalCenter}>
               <TouchableOpacity onPress={this._touchUser}>
-                <Text style={styles.username}>{user.username}</Text>
+                <Text style={[
+                  styles.username,
+                  isStoryReadingScreen && styles.usernameReading,
+                ]}>
+                  {user.username}
+                </Text>
               </TouchableOpacity>
-              {isStoryReadingScreen && user.about &&
-                <Text style={styles.about}>{user.about}</Text>
-              }
-            <Text style={styles.dateText}>{moment(story.createdAt).format('LL')}</Text>
+            <Text style={[
+              styles.dateText,
+              isStoryReadingScreen && styles.dateTextReading
+            ]}>
+              {moment(story.tripDate || story.createdAt).format('LL')}
+            </Text>
             </View>
           </View>
           {isStoryReadingScreen && !isAuthor &&
-            <View>
+            <View style={styles.verticalCenter}>
               <TouchableOpacity
                 style={[
                   profileViewStyles.blackButton,
@@ -149,23 +157,25 @@ export default class StoryPreview extends Component {
 
   renderBottomSection() {
     const {title, counts, description, coverCaption} = this.props.story
-    const {isStoryReadingScreen} = this.props
+    const {isStoryReadingScreen, onPress} = this.props
 
     return (
       <View style={[styles.storyInfoContainer, styles.bottomContainer]}>
-        {isStoryReadingScreen &&
+        {isStoryReadingScreen && !!coverCaption &&
           <Text style={[StoryReadingScreenStyles.caption, styles.caption]}>
             {coverCaption}
           </Text>
         }
-        <Text style={[
-          styles.title,
-          isStoryReadingScreen ? styles.storyReadingTitle : {},
-          this.props.titleStyle
-        ]}>
-          {title}
-        </Text>
-        {description && <Text style={styles.description}>{description}</Text>}
+        <TouchableOpacity onPress={onPress} disabled={!!isStoryReadingScreen}>
+          <Text style={[
+            styles.title,
+            isStoryReadingScreen ? styles.storyReadingTitle : {},
+            this.props.titleStyle
+          ]}>
+            {title}
+          </Text>
+          {description && <Text style={styles.description}>{description}</Text>}
+        </TouchableOpacity>
         <View style={styles.rightRow}>
           {this.props.showLike && this.props.onPressBookmark &&
             <View style={styles.bookmarkContainer}>
@@ -204,6 +214,7 @@ export default class StoryPreview extends Component {
     // using StoryPreview height as proxy for StoryCover playbutton size
     const height = this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20
     const playButtonSize = height > 250 ? 'large' : 'small'
+
     return (
       <View style={styles.contentContainer}>
         {this.renderUserSection()}

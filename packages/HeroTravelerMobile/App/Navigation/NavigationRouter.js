@@ -30,7 +30,6 @@ import ChangePasswordScreen from '../Containers/ChangePasswordScreen'
 
 
 // Story reading & creating
-import StoryCreateTabIcon from '../Containers/CreateStory/StoryCreateTabIcon'
 import StoryReadingScreen from '../Containers/StoryReadingScreen'
 import StoryCommentsScreen from '../Containers/StoryCommentsScreen'
 import StoryCreateScreen from '../Containers/CreateStory/1_CreateStoryScreen'
@@ -336,7 +335,7 @@ export default NavActions.create(
       >
         <Scene
           key='createStory_cover'
-          component={StoryCoverScreen}
+          component={StoryCreateScreen}
           panHandlers={null}
           direction="horizontal"
         />

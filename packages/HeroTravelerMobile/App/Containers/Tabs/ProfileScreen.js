@@ -84,7 +84,7 @@ class ProfileScreen extends React.Component {
         updateUser={updateUser}
         showLike={true}
         accessToken={accessToken}
-        profileImage={this._isTempImage() ? getImageUrl(user.profile.tempCover) : getImageUrl(user.profile.cover)}
+        profileImage={this._isTempImage() ? getImageUrl(user.profile.tempCover, 'basic') : getImageUrl(user.profile.cover, 'basic')}
         fetchStatus={userStoriesFetchStatus}
         draftsFetchStatus={this.props.draftsFetchStatus}
         bookmarksFetchStatus={userBookmarksFetchStatus}
@@ -97,6 +97,7 @@ class ProfileScreen extends React.Component {
 const mapStateToProps = (state) => {
   const {userId} = state.session
   let {stories, users} = state.entities
+
   return {
     user: state.entities.users.entities[userId],
     accessToken: _.find(state.session.tokens, {type: 'access'}).value,

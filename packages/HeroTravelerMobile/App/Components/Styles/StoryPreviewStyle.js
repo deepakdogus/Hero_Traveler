@@ -12,12 +12,12 @@ export default StyleSheet.create({
     marginBottom: 15,
   },
   title: {
-    letterSpacing: 1.5,
+    letterSpacing: 0,
     fontSize: 20,
     lineHeight: 23,
-    fontFamily: Fonts.montserrat,
+    fontFamily: Fonts.type.montserrat,
     fontWeight: '600',
-    color: Colors.backgrond,
+    color: Colors.background,
   },
   storyReadingTitle: {
     fontSize: 30,
@@ -29,6 +29,7 @@ export default StyleSheet.create({
     fontSize: 16,
     letterSpacing: .7,
     color: Colors.grey,
+    marginTop: 10,
   },
   userContent: {
     flexDirection: 'row',
@@ -51,26 +52,22 @@ export default StyleSheet.create({
     letterSpacing: .7,
     fontFamily: Fonts.type.sourceSansPro
   },
-  about: {
-    fontFamily: Fonts.type.sourceSansPro,
-    fontWeight: '400',
+  usernameReading: {
     fontSize: 13,
-    letterSpacing: .7,
-    color: Colors.background,
-    maxWidth: Metrics.screenWidth * .60,
   },
   previewUserContainer: {
-    minHeight: 70,
+    minHeight: 60,
   },
   userContainer: {
     paddingVertical: 10,
   },
   storyInfoContainer: {
-    paddingHorizontal: Metrics.section,
+    paddingHorizontal: 15,
     backgroundColor: Colors.snow,
   },
   bottomContainer: {
-    paddingVertical: 10,
+    paddingTop: 25,
+    paddingBottom: 10,
   },
   dateText: {
     fontSize: 12,
@@ -80,21 +77,26 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.crimsonText,
     fontStyle: 'italic',
   },
+  dateTextReading: {
+    fontSize: 15,
+  },
   rightRow: {
     flexDirection: 'row',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    marginTop: 15
   },
   bookmarkContainer: {
     marginRight: 10,
   },
   bookmark: {
-    width: 12,
-    height: 16,
+    width: 14,
+    height: 19,
   },
   followFollowingButton: {
     flexDirection: 'column',
     justifyContent: 'center',
     width: 105,
+    alignSelf: 'flex-end',
   },
   followFollowingText: {
     width: 80,

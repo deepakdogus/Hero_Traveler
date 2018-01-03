@@ -73,10 +73,16 @@ class RootContainer extends Component {
     }
   }
 
+  isDarkProfile() {
+    const location = this.props.location
+    return location === 'profile' || location === 'readOnlyProfile' ||
+    location === 'story'
+  }
+
   render () {
     return (
       <View style={styles.applicationView}>
-        <StatusBar barStyle='light-content' />
+        <StatusBar barStyle={this.isDarkProfile() ? 'dark-content' : 'light-content'} />
         <ConnectedRouter scenes={NavigationScenes} />
       </View>
     )
@@ -86,7 +92,8 @@ class RootContainer extends Component {
 const mapStateToProps = (state) => {
   return {
     started: state.startup.started,
-    isLoggedIn: state.login.isLoggedIn
+    isLoggedIn: state.login.isLoggedIn,
+    location: state.routes.scene.name,
   }
 }
 

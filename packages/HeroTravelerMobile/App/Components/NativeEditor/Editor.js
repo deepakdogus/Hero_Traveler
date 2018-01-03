@@ -63,6 +63,16 @@ export default class RNDraftJs extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps){
+    if ((!this.props.value && nextProps.value) ||
+      (nextProps.value && nextProps.storyId !== this.props.storyId)
+    ){
+      this.setState({
+        editorState: EditorState.createWithContent(convertFromRaw(nextProps.value))
+      })
+    }
+  }
+
   getToolbarInfo = (editorState) => {
     const contentState = editorState.getCurrentContent()
     const selectionState = editorState.getSelection()
@@ -274,7 +284,6 @@ export default class RNDraftJs extends Component {
 
   render = () => {
     let { editorState, autocompleteInfo } = this.state
-
     let contentState = editorState.getCurrentContent()
     let selectionState = editorState.getSelection()
 
@@ -330,28 +339,6 @@ export default class RNDraftJs extends Component {
 // Can add other types as needed
 // Must call 'processColor' on any colors used here
 const blockFontTypes = {
-//  supportedValues: { // see https://facebook.github.io/react-native/docs/text.html
-//          fontFamily: string
-//            fontSize: number
-//          fontWeight: enum('normal', 'bold', '100', '200', '300', '400', '500', '600', '700', '800', '900')
-//           fontStyle: enum('normal', 'italic')
-//         fontVariant: [enum('small-caps', 'oldstyle-nums', 'lining-nums', 'tabular-nums', 'proportional-nums')]
-//       letterSpacing: number
-//               color: color
-//     backgroundColor: color
-//             opacity: number
-//           textAlign: enum('auto', 'left', 'right', 'center', 'justify')
-//          lineHeight: number
-//  textDecorationLine: enum('none', 'underline', 'line-through', 'underline line-through')
-// textDecorationStyle: enum('solid', 'double', 'dotted', 'dashed')
-// textDecorationColor: color
-//    textShadowOffset: {width: number, height: number}
-//    textShadowRadius: number
-//     textShadowColor: color
-//    allowFontScaling: boolean
-//     placeholderText: string
-//    placeholderStyle: object (using all these values, applied on top of block type style)
-//  },
   unstyled: { // No real need to use since values from styles are already used
     fontSize: 18,
   },
@@ -420,13 +407,11 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
     flexDirection: 'column',
-    // marginHorizontal: Metrics.baseMargin
   },
   innerScroll: {
     marginBottom: Metrics.doubleBaseMargin,
   },
   accessibilitySpacer: {
-    // backgroundColor: 'pink',
     alignItems: 'stretch',
     minHeight: 50,
     flex: 1,
@@ -452,13 +437,10 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     minHeight: 38,
     fontSize: 18,
-    color: Colors.grey,
+    color: Colors.background,
     fontWeight: '400',
-
     paddingTop: 10,
-    paddingRight: 20,
-    paddingLeft: 20,
-
+    paddingHorizontal: 20,
     paddingBottom: 100,
   },
   imageView: {

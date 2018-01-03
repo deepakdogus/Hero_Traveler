@@ -3,6 +3,8 @@ import { ApplicationStyles, Colors, Metrics, Fonts } from '../../Shared/Themes/'
 
 const third = (1 / 3) * (Metrics.screenHeight - Metrics.navBarHeight * 2)
 
+export const coverHeight = 415
+
 export default StyleSheet.create({
   root: {
     flex: 1,
@@ -17,6 +19,7 @@ export default StyleSheet.create({
   lightGreyAreasBG: {
     flex: 1,
     backgroundColor: Colors.lightGreyAreas,
+    maxHeight: coverHeight,
   },
   errorButton: {
     position: 'absolute',
@@ -42,11 +45,12 @@ export default StyleSheet.create({
     marginHorizontal: 20,
   },
   titleInput: {
-    ...Fonts.style.title,
     color: Colors.background,
     fontSize: 30,
     fontFamily: Fonts.type.montserrat,
     fontWeight: '600',
+    lineHeight: 33,
+    marginTop: 25,
   },
   description: {
     fontFamily: Fonts.type.sourceSansPro,
@@ -54,12 +58,12 @@ export default StyleSheet.create({
     letterSpacing: .7,
     color: Colors.background,
     fontSize: 18,
-    marginTop: 0,
+    marginTop: 5,
     lineHeight: 28,
     height: 28,
   },
   coverCaption: {
-    marginTop: 5,
+    marginTop: 10,
     marginBottom: 15,
     minHeight: 20,
   },
@@ -68,6 +72,7 @@ export default StyleSheet.create({
     borderStyle: 'solid',
     borderColor: Colors.dividerGrey,
     marginTop: 10,
+    marginBottom: 15,
   },
   cameraIcon: {
     alignItems: 'center',
@@ -96,7 +101,7 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   addTitleView: {
     height: third,
@@ -110,10 +115,15 @@ export default StyleSheet.create({
   },
   addPhotoButton: {
     justifyContent: 'center',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    height: 282,
+    width: Metrics.screenWidth,
   },
   baseTextColor: {
     color: Colors.background
+  },
+  coverHeight: {
+    height: coverHeight
   },
   coverPhoto: {
     position: 'absolute',
@@ -130,11 +140,14 @@ export default StyleSheet.create({
     left: 0,
     right: 0,
     flex: 1,
+    backgroundColor: 'black'
   },
   coverPhotoText: {
     fontFamily: Fonts.type.montserrat,
     fontSize: 13,
     fontWeight: '700',
+    textAlign: 'center',
+    color: Colors.background,
   },
   iconButton: {
     backgroundColor: Colors.clear

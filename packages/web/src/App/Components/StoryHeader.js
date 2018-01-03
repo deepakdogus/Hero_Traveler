@@ -151,7 +151,11 @@ export default class StoryHeader extends React.Component {
           />
         }
         {mediaType === 'video' &&
-          <Video src={getVideoUrl(story.coverVideo, false)} type='cover'/>
+          <Video
+            src={getVideoUrl(story.coverVideo, false)}
+            type='cover'
+            withPrettyControls
+          />
         }
         <Title mediaType={mediaType}>{story.title}</Title>
 

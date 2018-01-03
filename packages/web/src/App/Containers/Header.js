@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import { push } from 'react-router-redux'
 import * as _ from 'lodash'
 import { Grid } from '../Components/FlexboxGrid'
 import HeaderAnonymous from '../Components/Headers/HeaderAnonymous'
@@ -34,8 +35,10 @@ class Header extends React.Component {
     blackHeader: PropTypes.bool,
     attemptLogin: PropTypes.func,
     closeGlobalModal: PropTypes.func,
+    openGlobalModal: PropTypes.func,
     globalModalThatIsOpen: PropTypes.string,
     globalModalParams: PropTypes.object,
+    reroute: PropTypes.func,
   }
 
   constructor(props) {
@@ -75,7 +78,8 @@ class Header extends React.Component {
   }
 
   render () {
-    const {isLoggedIn, attemptLogin, closeGlobalModal, currentUser, globalModalThatIsOpen, globalModalParams } = this.props
+    const {isLoggedIn, attemptLogin, closeGlobalModal, openGlobalModal, currentUser, 
+      globalModalThatIsOpen, globalModalParams, reroute } = this.props
     const SelectedGrid = this.props.blackHeader ? StyledGridBlack : StyledGrid
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
     return (
@@ -85,6 +89,8 @@ class Header extends React.Component {
           <HeaderLoggedIn
               user={currentUser}
               openModal={this.openModal}
+              openGlobalModal={openGlobalModal}
+              reroute={reroute}
           />
           }
           {!isLoggedIn &&
@@ -127,6 +133,8 @@ function mapDispatchToProps(dispatch) {
   return {
     attemptLogin: (username, password) => dispatch(LoginActions.loginRequest(username, password)),
     closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
+    openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
+    reroute: (route) => dispatch(push(route))
   }
 }
 

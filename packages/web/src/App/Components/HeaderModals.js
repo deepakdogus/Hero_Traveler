@@ -8,6 +8,7 @@ import ResetPassword from './Modals/HeaderModals/ResetPassword'
 import Contributor from './Modals/HeaderModals/Contributor'
 import AddToItinerary from './Modals/HeaderModals/AddToItinerary'
 import Comments from './Modals/HeaderModals/Comments'
+import Settings from './Modals/Settings'
 import Inbox from './Modals/Inbox'
 import RightModal from './RightModal'
 import NotificationsThread from './Modals/NotificationsThread'
@@ -120,6 +121,15 @@ export default class HeaderModals extends React.Component {
           <Comments
             closeModal={this.closeGlobalModal}
             storyId={globalModalParams.storyId}
+          />
+        </RightModal>
+        <RightModal
+          isOpen={globalModalThatIsOpen === 'settings'}
+          contentLabel='Settings Modal'
+          onRequestClose={this.closeGlobalModal}
+        >
+          <Settings
+            closeModal={this.closeGlobalModal}
           />
         </RightModal>
         <RightModal

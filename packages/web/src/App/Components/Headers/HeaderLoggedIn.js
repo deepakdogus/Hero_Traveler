@@ -56,9 +56,11 @@ const StyledRoundedNotificationButton = styled(StyledRoundedButton)`
 `
 
 class HeaderLoggedIn extends React.Component {
-  static PropTypes = {
+  static propTypes = {
+    reroute: PropTypes.func,
     openModal: PropTypes.func,
-    user: PropTypes.object,
+    openGlobalModal: PropTypes.func,
+    user: PropTypes.string,
   }
   constructor() {
     super()
@@ -70,7 +72,7 @@ class HeaderLoggedIn extends React.Component {
   toggleProfileMenu = () => this.setState({ profileMenuIsOpen: !this.state.profileMenuIsOpen })
 
   render () {
-    const { openModal, user, profileAvatar } = this.props
+    const { openModal, openGlobalModal, user, profileAvatar, reroute } = this.props
     return (
       <StyledRow between="xs" middle="xs">
         <Col>
@@ -140,6 +142,9 @@ class HeaderLoggedIn extends React.Component {
                   <ProfileMenu
                     closeMyself={this.toggleProfileMenu}
                     openModal={openModal}
+                    openGlobalModal={openGlobalModal}
+                    user={user}
+                    reroute={reroute}
                   />
                 }
             </LoggedInDesktopContainer>

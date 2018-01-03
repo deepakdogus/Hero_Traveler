@@ -14,7 +14,6 @@ import LikedBy from '../Modals/LikedBy'
 import SendTo from '../Modals/SendTo'
 import AddToBoard from '../Modals/AddToBoard'
 import CreateBoard from '../Modals/CreateBoard'
-import Settings from '../Modals/Settings'
 import Inbox from '../Modals/Inbox'
 import InboxThread from '../Modals/InboxThread'
 import NotificationsThread from '../Modals/NotificationsThread'
@@ -121,13 +120,6 @@ export default class ProfileHeader extends React.Component {
           <CreateBoard closeModal={this.closeModal} profile={user}/>
         </RightModal>
         <RightModal
-          isOpen={this.state.modal === 'settings'}
-          contentLabel='Settings'
-          onRequestClose={this.closeModal}
-        >
-          <Settings closeModal={this.closeModal} profile={user}/>
-        </RightModal>
-        <RightModal
           isOpen={this.state.modal === 'notificationsThread'}
           contentLabel='Notifications Thread'
           onRequestClose={this.closeModal}
@@ -155,6 +147,8 @@ export default class ProfileHeader extends React.Component {
         >
           <ProfileBio closeModal={this.closeModal} profile={user}/>
         </RightModal>
+
+      {/* Should take this out too? */}
         <CenterModal
           isOpen={this.state.modal === 'faqTermsAndConditions'}
           contentLabel='FAQ Terms & Conditions'

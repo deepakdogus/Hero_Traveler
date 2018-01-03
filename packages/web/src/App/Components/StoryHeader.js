@@ -160,26 +160,22 @@ export default class StoryHeader extends React.Component {
             </VerticalCenter>
           }
         </TopRow>
-        {mediaType === 'image' &&
-          <CoverContainer>
-            <CoverImage
-              src={this.getCoverImage()}
-            />
-            <CoverCaption>{story.coverCaption}</CoverCaption>
-          </CoverContainer>
+        { 
+          mediaType === 'image' &&
+          <CoverImage
+            src={this.getCoverImage()}
+          />
         }
-        {mediaType === 'video' &&
-          <CoverContainer>
-            <Video
-              src={getVideoUrl(story.coverVideo, false)}
-              type='cover'
-              withPrettyControls
-            />
-            <CoverCaption/>
-          </CoverContainer>
+        {
+          mediaType === 'video' &&
+          <Video
+            src={getVideoUrl(story.coverVideo, false)}
+            type='cover'
+            withPrettyControls
+          />
         }
+         <CoverCaption>{story.coverCaption}</CoverCaption>
         <Title mediaType={mediaType}>{story.title}</Title>
-
       </Container>
     )
   }

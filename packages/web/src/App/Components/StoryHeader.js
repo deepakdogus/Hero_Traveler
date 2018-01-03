@@ -39,10 +39,6 @@ const TimeStamp = styled(RedText)`
   color: ${props => props.theme.Colors.background}
 `
 
-const CoverContainer = styled.div`
-  width: 100%;
-`
-
 const CoverImage = styled.img`
   width: 100%;
   text-align: center;

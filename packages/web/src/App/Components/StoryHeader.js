@@ -41,6 +41,19 @@ const TimeStamp = styled(RedText)`
 
 const CoverImage = styled.img`
   width: 100%;
+  text-align: center;
+  font-style: italic;
+`
+
+const CoverCaption = styled.p`
+  width: 100%;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  font-style: italic;
+  text-align: center;
+  font-weight: 400;
+  font-size: 14px;
+  color: ${props => props.theme.Colors.bioGrey};
+  letter-spacing: .7px;
 `
 
 const Container = styled.div`
@@ -145,20 +158,22 @@ export default class StoryHeader extends React.Component {
             </VerticalCenter>
           }
         </TopRow>
-        {mediaType === 'image' &&
+        { 
+          mediaType === 'image' &&
           <CoverImage
             src={this.getCoverImage()}
           />
         }
-        {mediaType === 'video' &&
+        {
+          mediaType === 'video' &&
           <Video
             src={getVideoUrl(story.coverVideo, false)}
             type='cover'
             withPrettyControls
           />
         }
+        <CoverCaption>{story.coverCaption}</CoverCaption>
         <Title mediaType={mediaType}>{story.title}</Title>
-
       </Container>
     )
   }

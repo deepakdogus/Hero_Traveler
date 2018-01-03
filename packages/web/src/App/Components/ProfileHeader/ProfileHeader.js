@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import Modal from 'react-modal'
 
 import RightModal from '../RightModal'
-import CenterModal from '../CenterModal'
 import ProfileHeaderView from './ProfileHeaderView'
 import ProfileHeaderEdit from './ProfileHeaderEdit'
 
@@ -17,7 +16,6 @@ import CreateBoard from '../Modals/CreateBoard'
 import Inbox from '../Modals/Inbox'
 import InboxThread from '../Modals/InboxThread'
 import NotificationsThread from '../Modals/NotificationsThread'
-import FAQTermsAndConditions from '../Modals/FAQTermsAndConditions'
 import ProfileBio from '../Modals/ProfileBio'
 import Contributor from '../Modals/HeaderModals/Contributor'
 
@@ -147,15 +145,6 @@ export default class ProfileHeader extends React.Component {
         >
           <ProfileBio closeModal={this.closeModal} profile={user}/>
         </RightModal>
-
-      {/* Should take this out too? */}
-        <CenterModal
-          isOpen={this.state.modal === 'faqTermsAndConditions'}
-          contentLabel='FAQ Terms & Conditions'
-          onRequestClose={this.closeModal}
-        >
-          <FAQTermsAndConditions closeModal={this.closeModal}/>
-        </CenterModal>
         <Modal
           isOpen={this.state.modal === 'contributor'}
           contentLabel='Contributor'

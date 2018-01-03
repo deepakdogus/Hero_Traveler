@@ -34,15 +34,24 @@ class ProfileMenu extends React.Component {
 	handleClickOutside = evt => {
 		this.props.closeMyself()
 	}
+
+	rerouteAndClose = (routePath) => {
+		this.props.closeMyself()
+		this.props.reroute(routePath)
+	}
+	openGlobalModalAndClose = (modalName) => {
+		this.props.closeMyself()
+		this.props.openGlobalModal(modalName)
+	}
 	render() {
-		const  { reroute, openGlobalModal, user } = this.props
+		const  { user } = this.props
 		console.log('PROPS', this.props)
 		return (
 			<Sidebar>
-				<SidebarDemiLink onClick={() => reroute(`/profile/${user}/view`)}>My Profile</SidebarDemiLink> 
-				<SidebarDemiLink onClick={() => openGlobalModal('settings')}>Settings</SidebarDemiLink>
-				<SidebarDemiLink>Customize Interests</SidebarDemiLink>
-				<SidebarDemiLink>FAQ</SidebarDemiLink>
+				<SidebarDemiLink onClick={() => this.rerouteAndClose(`/profile/${user}/view`)}>My Profile</SidebarDemiLink> 
+				<SidebarDemiLink onClick={() => this.openGlobalModalAndClose('settings')}>Settings</SidebarDemiLink>
+				<SidebarDemiLink onClick={() => this.rerouteAndClose('/signup/topics')}>Customize Interests</SidebarDemiLink>
+				<SidebarDemiLink onClick={() => this.openGlobalModalAndClose('faqTermsAndConditions')}>FAQ</SidebarDemiLink>
 				<SidebarDemiLink>Logout</SidebarDemiLink>
 			</Sidebar>
 		)

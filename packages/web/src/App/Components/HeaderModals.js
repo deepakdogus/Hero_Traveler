@@ -9,8 +9,10 @@ import Contributor from './Modals/HeaderModals/Contributor'
 import AddToItinerary from './Modals/HeaderModals/AddToItinerary'
 import Comments from './Modals/HeaderModals/Comments'
 import Settings from './Modals/Settings'
+import FAQTermsAndConditions from './Modals/FAQTermsAndConditions'
 import Inbox from './Modals/Inbox'
 import RightModal from './RightModal'
+import CenterModal from './CenterModal'
 import NotificationsThread from './Modals/NotificationsThread'
 
 const customModalStyles = {
@@ -132,6 +134,13 @@ export default class HeaderModals extends React.Component {
             closeModal={this.closeGlobalModal}
           />
         </RightModal>
+        <CenterModal
+          isOpen={globalModalThatIsOpen === 'faqTermsAndConditions'}
+          contentLabel='FAQ Terms & Conditions'
+          onRequestClose={this.closeGlobalModal}
+        >
+          <FAQTermsAndConditions closeModal={this.closeGlobalModal}/>
+        </CenterModal>
         <RightModal
           isOpen={modal === 'inbox'}
           contentLabel='Inbox'

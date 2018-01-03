@@ -250,7 +250,6 @@ class CreateStoryDetailScreen extends React.Component {
                     placeholder='Location'
                     placeholderTextColor={Colors.navBarText}
                     value={workingDraft.location}
-
                   >
                     {workingDraft.location || 'Location'}
                   </Text>

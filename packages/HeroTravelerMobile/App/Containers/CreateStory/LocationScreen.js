@@ -30,7 +30,6 @@ class LocationScreen extends Component {
       searching: false,
       predictions: [],
     }
-
   }
 
   componentDidMount(){
@@ -97,15 +96,15 @@ class LocationScreen extends Component {
                 onSubmitEditing={this._addNewCategory}
                 onFocus={this.setInputFocused}
                 onBlur={this.setInputBlurred}
+                returnKeyType='search'
               />
             </View>
           </View>
           <ScrollView style={{flexGrow: 3}}>
-
-          {searching  &&
-            <Loader style={styles.spinner} spinnerColor={Colors.blackoutTint} />
-          }
-          {!searching && !!predictions.length && this.renderPlaces()}
+            {searching  &&
+              <Loader style={styles.spinner} spinnerColor={Colors.blackoutTint} />
+            }
+            {!searching && !!predictions.length && this.renderPlaces()}
           </ScrollView>
         </View>
       </View>

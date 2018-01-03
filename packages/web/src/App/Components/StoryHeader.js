@@ -170,7 +170,7 @@ export default class StoryHeader extends React.Component {
             withPrettyControls
           />
         }
-         <CoverCaption>{story.coverCaption}</CoverCaption>
+        <CoverCaption>{story.coverCaption}</CoverCaption>
         <Title mediaType={mediaType}>{story.title}</Title>
       </Container>
     )

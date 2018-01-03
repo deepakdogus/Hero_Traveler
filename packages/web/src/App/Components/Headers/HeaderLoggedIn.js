@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 import { Row, Col } from '../FlexboxGrid'
+import ProfileMenu from './ProfileMenu'
 import { mediaMax, mediaMin } from '../ContentLayout.component'
 import Avatar from '../Avatar'
 import RoundedButton from '../RoundedButton'
@@ -54,23 +55,19 @@ const StyledRoundedNotificationButton = styled(StyledRoundedButton)`
     bottom: 3px;
 `
 
-const Sidebar = styled.div`
-  position: absolute;
-  top: 70; 
-`
-const SidebarDemiLink = styled.p`
-  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
-  color: ${props => props.theme.Colors.background};
-  font-weight: 400;
-  letter-spacing: .7px;
-  font-size: 16px;
-`
-
 class HeaderLoggedIn extends React.Component {
   static PropTypes = {
     openModal: PropTypes.func,
     user: PropTypes.object,
   }
+  constructor() {
+    super()
+    this.state = {
+      profileMenuIsOpen: false,
+    }
+  }
+
+  toggleProfileMenu = () => this.setState({ profileMenuIsOpen: !this.state.profileMenuIsOpen })
 
   render () {
     const { openModal, user, profileAvatar } = this.props
@@ -123,15 +120,14 @@ class HeaderLoggedIn extends React.Component {
               >
                 <NotificationsIcon name='cameraFlash' />
               </StyledRoundedNotificationButton>
-              <NavLink
-                to={`/profile/${user}/view`}
-              >
+
               
                 <StyledRoundedAvatarButton
                   type='headerButton'
                   height='32px'
                   width='32px'
                   profileAvatar={profileAvatar}
+                  onClick={this.toggleProfileMenu}
                 >
                   <Avatar
                     type='avatar'
@@ -139,16 +135,13 @@ class HeaderLoggedIn extends React.Component {
                     avatarUrl={getImageUrl(profileAvatar)}
                   />
                 </StyledRoundedAvatarButton>
-              <Sidebar>
-                <SidebarDemiLink style={{paddingLeft: 20, textAlign: 'start'}}>My Profile</SidebarDemiLink>
-                <SidebarDemiLink style={{paddingLeft: 20, textAlign: 'start'}}>Settings</SidebarDemiLink>
-                <SidebarDemiLink style={{paddingLeft: 20, textAlign: 'start'}}>Customize Interests</SidebarDemiLink>
-                <SidebarDemiLink style={{paddingLeft: 20, textAlign: 'start'}}>FAQ</SidebarDemiLink>
-                <SidebarDemiLink style={{paddingLeft: 20, textAlign: 'start'}}> Logout</SidebarDemiLink>
-              </Sidebar>
 
-              
-              </NavLink>
+                { this.state.profileMenuIsOpen && 
+                  <ProfileMenu
+                    closeMyself={this.toggleProfileMenu}
+                    openModal={openModal}
+                  />
+                }
             </LoggedInDesktopContainer>
             <LoggedInTabletContainer>
               <NavLink

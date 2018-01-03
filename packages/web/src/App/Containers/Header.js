@@ -54,11 +54,15 @@ class Header extends React.Component {
   }
 
   // name correspond to icon name and button name
-  openModal = (event) => {
+  openModal = (event, modalName) => {
+    console.log('modalName', modalName)
     const name = event.target.name
+    console.log('name', name, event.target)
     let modalToOpen;
-    if (name === 'inbox' || name === 'loginEmail') modalToOpen = 'inbox'
+    if (modalName) modalToOpen = modalName
+    else if (name === 'inbox' || name === 'loginEmail') modalToOpen = 'inbox'
     else if (name === 'notifications' || name === 'cameraFlash') modalToOpen = 'notificationsThread'
+    else modalToOpen = name
     this.setState({ modal: modalToOpen })
   }
 

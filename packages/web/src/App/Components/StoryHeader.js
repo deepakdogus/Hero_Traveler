@@ -46,6 +46,8 @@ const CoverImage = styled.img`
 const Container = styled.div`
   margin: 65px auto 0;
   max-width: 800px;
+  padding-left: 45px;
+  padding-right: 45px;
 `
 
 const TopRow = styled(Row)`

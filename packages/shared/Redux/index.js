@@ -19,7 +19,7 @@ export default () => {
     mediaUpload: require('./MediaUploadRedux').reducer,
     routes,
     entities,
-    ux: require('./UXRedux').reducer
+    ux: require('../../Redux/UXRedux').reducer
   })
 
   const rootReducer = (state, action) => {

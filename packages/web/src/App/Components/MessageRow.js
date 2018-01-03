@@ -85,6 +85,7 @@ export default class MessageRow extends Component {
               renderImage={this.renderImage}
               renderText={this.renderText}
               renderRight={this.renderRight}
+              leftProps={{ 'max-width': `75%`, 'flex-wrap': `nowrap` }}
             />
           </MessageContainer>
         {!this.props.isComment ? <StyledHorizontalDivider color='light-grey'/> : null}

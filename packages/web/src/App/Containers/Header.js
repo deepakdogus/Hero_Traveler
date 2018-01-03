@@ -7,6 +7,7 @@ import { Grid } from '../Components/FlexboxGrid'
 import HeaderAnonymous from '../Components/Headers/HeaderAnonymous'
 import HeaderLoggedIn from '../Components/Headers/HeaderLoggedIn'
 import LoginActions from '../Shared/Redux/LoginRedux'
+import UXActions from '../Redux/UXRedux'
 import HeaderModals from '../Components/HeaderModals'
 
 const StyledGrid = styled(Grid)`
@@ -32,6 +33,9 @@ class Header extends React.Component {
     isLoggedIn: PropTypes.bool,
     blackHeader: PropTypes.bool,
     attemptLogin: PropTypes.func,
+    closeGlobalModal: PropTypes.func,
+    globalModalThatIsOpen: PropTypes.string,
+    globalModalParams: PropTypes.object,
   }
 
   constructor(props) {
@@ -71,7 +75,7 @@ class Header extends React.Component {
   }
 
   render () {
-    const {isLoggedIn, attemptLogin, currentUser} = this.props
+    const {isLoggedIn, attemptLogin, closeGlobalModal, currentUser, globalModalThatIsOpen, globalModalParams } = this.props
     const SelectedGrid = this.props.blackHeader ? StyledGridBlack : StyledGrid
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
     return (
@@ -90,11 +94,14 @@ class Header extends React.Component {
           }
           <HeaderModals
               closeModal={this.closeModal}
+              closeGlobalModal={closeGlobalModal}
               openSignupModal={this.openSignupModal}
               attemptLogin={attemptLogin}
               openLoginModal={this.openLoginModal}
               user={currentUser}
               modal={this.state.modal}
+              globalModalThatIsOpen={globalModalThatIsOpen}
+              globalModalParams={globalModalParams}
           />
       </SelectedGrid>
       <HeaderSpacer
@@ -110,13 +117,16 @@ function mapStateToProps(state) {
   return {
     isLoggedIn: state.login.isLoggedIn,
     blackHeader: _.includes(['/', '/feed', ''], pathname) ? false : true,
-    currentUser: state.session.userId
+    currentUser: state.session.userId,
+    globalModalThatIsOpen: state.ux.modalName,
+    globalModalParams: state.ux.params,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     attemptLogin: (username, password) => dispatch(LoginActions.loginRequest(username, password)),
+    closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
   }
 }
 

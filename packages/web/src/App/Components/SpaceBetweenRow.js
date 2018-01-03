@@ -4,7 +4,10 @@ import PropTypes from 'prop-types'
 
 import {Row, Col} from './FlexboxGrid'
 
-const Left = styled(Row)``
+const Left = styled(Row)`
+  max-width: ${props => props.data['max-width']};
+  flex-wrap: ${props => props.data['flex-wrap']};
+`
 const Right = styled(Row)``
 
 // this Component should only be used for horizontal placement
@@ -14,13 +17,15 @@ export default class SpaceBetweenRow extends Component {
     renderImage: PropTypes.func,
     renderText: PropTypes.func,
     renderRight: PropTypes.func,
+    leftProps: PropTypes.object,
   }
 
   render() {
-    const {renderImage, renderText, renderRight} = this.props
+    const {renderImage, renderText, renderRight, leftProps = {} } = this.props
+
     return (
       <Row between='xs'>
-        <Left>
+        <Left data={leftProps}> 
           <Col>
             {renderImage()}
           </Col>

@@ -1,15 +1,6 @@
 import React from 'react';
-
 import styled, {css} from 'styled-components'
-
-// TODO make sizes match
-// TODO make avaiable for other components
-const sizes = {
-  desktopLarge: 1200,
-  desktop: 992,
-  tablet: 768,
-  phone: 376
-}
+import {sizes} from '../Themes/Metrics'
 
 // Iterate through the sizes and create a media template
 export const mediaMax = Object.keys(sizes).reduce((acc, label) => {

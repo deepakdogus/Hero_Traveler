@@ -1,113 +1,168 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-
+import {sizes} from '../Themes/Metrics'
 import Icon from './Icon'
-import {Row} from './FlexboxGrid'
-import RoundedButton from './RoundedButton'
-import VerticalCenter from './VerticalCenter'
-import HorizontalDivider from './HorizontalDivider'
+import {Col} from './FlexboxGrid'
 
-const LeftActionBarIcon = styled(Icon)`
-  height: 16px;
-  width: 21px;
-  padding: 6.5px 4px;
-`
-
-const FacebookIocn = styled(Icon)`
-  height: 16px;
-  width: 8px;
-  padding: 2px 6px;
-`
-
-const TwitterIcon = styled(Icon)`
-  height: 16px;
+const StyledIcon = styled(Icon)`
+  display: block;
+  margin: auto;
+  margin-bottom: 15px;
+  margin-left: 5px;
+  margin-right: 5px;
+  height: 20px;
   width: 20px;
-  padding: 2px 0;
-`
-const AddIcon = styled(Icon)`
-  height: 16px;
-  width: 16px;
-  padding: 2px 0;
+  @media (max-width: ${sizes.tablet}px) {
+    
+  }
 `
 
-const ActionBarContainer = styled(Row)`
-  border-width: 1px 0;
+const HandMadeIcon = styled.div`display: block;
+  margin: auto;
+  margin-bottom: 15px;
+  margin-left: 5px;
+  margin-right: 5px;
+  height: 14px;
+  width: 14px;
+  border-radius: 14px;
   border-style: solid;
-  border-color: ${props => props.theme.Colors.dividerGrey};
-  padding: 20px 0;
+  border-color: ${props => props.theme.Colors.grey};
+  border-width: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`
+
+const HandMadeIconMinus = styled.div`
+  display: block;
+  height: 1px;
+  width: 10px;
+  background-color: ${props => props.theme.Colors.grey};
+`
+
+const LeftActionBarIcon = styled(StyledIcon)``
+const BookmarkIcon = styled(StyledIcon)``
+const FacebookIocn = styled(StyledIcon)``
+const TwitterIcon = styled(StyledIcon)``
+const DotsIcon = styled(StyledIcon)``
+
+const ActionBarContainer = styled(Col)`
+  @media (max-width: ${sizes.tablet}px) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+  }
 `
 
 const Count = styled.p`
-  font-weight: 400;
-  font-size: 20px;
-  color: ${props => props.theme.Colors.background};
-  letter-spacing: 1.5px;
-  margin: 0;
-  padding: 0 10px 0 5px;
-`
-
-const ActionButtonText = styled.span`
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
   font-size: 14px;
-  color: ${props => props.theme.Colors.signupGrey};
-  line-height: 20px;
-  padding-left: 5px;
+  color: ${props => props.theme.Colors.grey};
+  letter-spacing: .7px;
+  margin: 0;
+  text-align: center;
 `
 
-const Left = styled.div``
-const Right = styled.div``
+const AbsoluteWrapper = styled.div`
+  background-color: white;
+  position: fixed;
+  top: 150px;
+  left: 90%;
+  @media (max-width: ${sizes.desktopLarge}px) {
+    left: 95%;
+  }
+  @media (max-width: ${sizes.tablet}px) {
+    display: flex;
+    flex-direction: row;
+    bottom: 0px;
+    right: 0px;
+    top: auto;
+    left: auto;
+    width: 100%;
+    justify-content: space-around;
+  }
+`
+
+const ClickableWrapper = styled.div`
+  @media (max-width: ${sizes.tablet}px) {
+    display: flex;
+    flex-direction: row;
+    margin-top: 15px;
+  }
+`
 
 export default class StoryActionBar extends React.Component {
   static propTypes = {
     story: PropTypes.object,
     isLiked: PropTypes.bool,
+    onClickLike: PropTypes.func,
+    isBookmarked: PropTypes.bool,
+    onClickBookmark: PropTypes.func,
+    onClickComments: PropTypes.func,
+  }
+
+  constructor(props){
+    super(props)
+    this.state = {
+      showMore: false
+    }
+  }
+
+  toggleShowMore = () => {
+    this.setState({
+      showMore: !this.state.showMore
+    })
   }
 
   render () {
-    const {story, isLiked} = this.props
+    const {story, isLiked, isBookmarked, onClickBookmark, onClickLike, onClickComments} = this.props
+
     return (
-      <div>
-        <HorizontalDivider color='lightGrey'/>
-        <ActionBarContainer between='xs'>
-          <Left>
-            <Row>
-              <RoundedButton type='grey' padding='even' margin='none'>
-                <LeftActionBarIcon name={isLiked ? 'likeActiveWhite' : 'like'}/>
-              </RoundedButton>
-              <VerticalCenter>
-                <Count>{story.counts.likes}</Count>
-              </VerticalCenter>
-              <RoundedButton type='grey' padding='even' margin='none'>
-                <LeftActionBarIcon name='comment'/>
-              </RoundedButton>
-              <VerticalCenter>
-                <Count>{story.counts.comments}</Count>
-              </VerticalCenter>
-            </Row>
-          </Left>
-          <Right>
-            <Row>
-              <RoundedButton type='lightGrey' margin='small'>
-                <Row>
-                  <AddIcon name='createStory'></AddIcon>
-                  <ActionButtonText>Add to Collection</ActionButtonText>
-                </Row>
-              </RoundedButton>
-              <RoundedButton type='facebook' padding='even' margin='small'>
-                <FacebookIocn name='facebook-blue'></FacebookIocn>
-              </RoundedButton>
-              <RoundedButton type='twitter' padding='even' margin='small'>
-                <TwitterIcon name='twitter-blue'></TwitterIcon>
-              </RoundedButton>
-              <RoundedButton type='lightGrey' padding='even' margin='small'>
-                <TwitterIcon name='twitter-blue'></TwitterIcon>
-              </RoundedButton>
-            </Row>
-          </Right>
+      <AbsoluteWrapper>
+        <ActionBarContainer>
+          <BookmarkIcon
+            name={isBookmarked ? 'squareBookmarkActive' : 'squareBookmark'}
+            onClick={onClickBookmark}
+          />
+          <ClickableWrapper>
+            <Count>{story.counts.likes}</Count>
+            <LeftActionBarIcon
+              name={isLiked ? 'squareLikeActive' : 'squareLike'}
+              onClick={onClickLike}
+            />
+          </ClickableWrapper>
+          <ClickableWrapper>
+            <Count>{story.counts.comments}</Count>
+            <LeftActionBarIcon
+              name='squareComment'
+              onClick={onClickComments}
+            />
+          </ClickableWrapper>
+          <FacebookIocn name='squareFacebookOutline'/>
+          <TwitterIcon name='squareTwitterOutline'/>
+          {!this.state.showMore &&
+            <DotsIcon
+              name='dots'
+              onClick={this.toggleShowMore}
+            />}
         </ActionBarContainer>
-        <HorizontalDivider color='lightGrey'/>
-      </div>
+        { this.state.showMore &&
+          <ActionBarContainer>
+            <StyledIcon name='google'/>
+            <StyledIcon name='tumblr'/>
+            <StyledIcon name='pinterest'/>
+            <StyledIcon name='email'/>
+            <StyledIcon name='report'/>
+            <HandMadeIcon onClick={this.toggleShowMore}>
+              <HandMadeIconMinus />
+            </HandMadeIcon>
+          </ActionBarContainer>
+        }
+      </AbsoluteWrapper>
     )
   }
 }

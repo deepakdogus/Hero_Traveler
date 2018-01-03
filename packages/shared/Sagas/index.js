@@ -16,6 +16,7 @@ import { MediaUploadTypes } from '../Redux/MediaUploadRedux'
 import { StoryTypes } from '../Redux/Entities/Stories'
 import { CategoryTypes } from '../Redux/Entities/Categories'
 import { UserTypes } from '../Redux/Entities/Users'
+import { StoryCommentsTypes } from '../Redux/Entities/StoryComments'
 
 /* ------------- Sagas ------------- */
 
@@ -74,6 +75,11 @@ import {
 import {
   uploadMedia,
 } from './MediaUploadSagas'
+
+import {
+  getComments,
+  createCommment,
+} from './StoryCommentsSagas'
 
 /* ------------- API ------------- */
 
@@ -163,6 +169,10 @@ export default function * root () {
     takeLatest(UserTypes.ACTIVITY_SEEN, seenActivity, heroAPI),
 
     // Media Upload
-    takeLatest(MediaUploadTypes.UPLOAD_REQUEST, uploadMedia, heroAPI)
+    takeLatest(MediaUploadTypes.UPLOAD_REQUEST, uploadMedia, heroAPI),
+
+    //Story Comments
+    takeLatest(StoryCommentsTypes.GET_COMMENTS_REQUEST, getComments, heroAPI),
+    takeLatest(StoryCommentsTypes.CREATE_COMMENT_REQUEST, createCommment, heroAPI),
   ]
 }

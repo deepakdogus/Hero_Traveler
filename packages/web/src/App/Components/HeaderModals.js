@@ -57,12 +57,16 @@ export default class HeaderModals extends React.Component {
     attemptLogin: PropTypes.func,
     openLoginModal: PropTypes.func,
     user: PropTypes.string, // actually just a userId
+    attemptChangePassword: PropTypes.func,     
+    loginReduxFetching: PropTypes.bool,
+    loginReduxError: PropTypes.object,
   }
   closeGlobalModal = () => {
     this.props.closeGlobalModal()
   }
   render() {
-    const { globalModalThatIsOpen, closeModal, modal, globalModalParams } = this.props
+    const { globalModalThatIsOpen, loginReduxFetching, loginReduxError,
+      closeModal, modal, globalModalParams, attemptChangePassword, user } = this.props
     return (
       <div>
         <Modal
@@ -132,6 +136,10 @@ export default class HeaderModals extends React.Component {
         >
           <Settings
             closeModal={this.closeGlobalModal}
+            attemptChangePassword={attemptChangePassword}
+            loginReduxFetching={loginReduxFetching}
+            loginReduxError={loginReduxError}
+            userId={user}
           />
         </RightModal>
         <CenterModal

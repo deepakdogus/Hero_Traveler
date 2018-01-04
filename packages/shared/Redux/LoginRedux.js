@@ -19,6 +19,9 @@ const { Types, Creators } = createActions({
   setIsLoggedIn: ['isLoggedIn'],
   verifyEmail: ['token'],
   verifyEmailFailure: ['error'],
+  changePasswordRequest: ['userId', 'oldPassword', 'newPassword'],
+  changePasswordSuccess: [],
+  changePasswordFailure: ['error'],
 })
 
 export const LoginTypes = Types
@@ -74,4 +77,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.RESET_PASSWORD_REQUEST_FAILURE]: failureRequestReset,
   [Types.SET_IS_LOGGED_IN]: setIsLoggedIn,
   [Types.VERIFY_EMAIL_FAILURE]: failure,
+  [Types.CHANGE_PASSWORD_REQUEST]: request,
+  [Types.CHANGE_PASSWORD_SUCCESS]: success,
+  [Types.CHANGE_PASSWORD_FAILURE]: failure,
 })

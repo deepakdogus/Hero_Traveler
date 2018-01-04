@@ -32,8 +32,11 @@ const HeaderSpacer = styled.div`
 class Header extends React.Component {
   static propTypes = {
     isLoggedIn: PropTypes.bool,
+    loginReduxFetching: PropTypes.bool, 
+    loginReduxError: PropTypes.object, 
     blackHeader: PropTypes.bool,
     attemptLogin: PropTypes.func,
+    attemptChangePassword: PropTypes.func,
     closeGlobalModal: PropTypes.func,
     openGlobalModal: PropTypes.func,
     globalModalThatIsOpen: PropTypes.string,
@@ -78,8 +81,8 @@ class Header extends React.Component {
   }
 
   render () {
-    const {isLoggedIn, attemptLogin, closeGlobalModal, openGlobalModal, currentUser, 
-      globalModalThatIsOpen, globalModalParams, reroute } = this.props
+    const {isLoggedIn, loginReduxFetching, loginReduxError, attemptLogin, attemptChangePassword, closeGlobalModal, openGlobalModal, 
+      currentUser, globalModalThatIsOpen, globalModalParams, reroute } = this.props
     const SelectedGrid = this.props.blackHeader ? StyledGridBlack : StyledGrid
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
     return (
@@ -108,6 +111,9 @@ class Header extends React.Component {
               modal={this.state.modal}
               globalModalThatIsOpen={globalModalThatIsOpen}
               globalModalParams={globalModalParams}
+              attemptChangePassword={attemptChangePassword}
+              loginReduxFetching={loginReduxFetching}
+              loginReduxError={loginReduxError}
           />
       </SelectedGrid>
       <HeaderSpacer
@@ -122,6 +128,8 @@ function mapStateToProps(state) {
   const pathname = state.routes.location ? state.routes.location.pathname : ''
   return {
     isLoggedIn: state.login.isLoggedIn,
+    loginReduxFetching: state.login.fetching,
+    loginReduxError: state.login.error,
     blackHeader: _.includes(['/', '/feed', ''], pathname) ? false : true,
     currentUser: state.session.userId,
     globalModalThatIsOpen: state.ux.modalName,
@@ -132,6 +140,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     attemptLogin: (username, password) => dispatch(LoginActions.loginRequest(username, password)),
+    attemptChangePassword: (userId, oldPassword, newPassword) => dispatch(LoginActions.changePasswordRequest(userId, oldPassword, newPassword)),
     closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
     reroute: (route) => dispatch(push(route))

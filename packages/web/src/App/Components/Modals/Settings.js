@@ -17,6 +17,10 @@ const tabBarTabs = ['Account', 'Services', 'Notifications', 'Password']
 export default class Settings extends React.Component {
   static propTypes = {
     closeModal: PropTypes.func,
+    attemptChangePassword: PropTypes.func,
+    loginReduxFetching: PropTypes.bool,
+    loginReduxError: PropTypes.object,
+    userId: PropTypes.string,
   }
 
   constructor(props) {
@@ -32,6 +36,7 @@ export default class Settings extends React.Component {
   }
 
   render() {
+    const { loginReduxError, loginReduxFetching, attemptChangePassword, userId } = this.props
     return (
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
@@ -46,7 +51,14 @@ export default class Settings extends React.Component {
         {this.state.activeTab === 'Account' && <EditAccount/>}
         {this.state.activeTab === 'Services' && <EditServices/>}
         {this.state.activeTab === 'Notifications' && <EditNotifications/>}
-        {this.state.activeTab === 'Password' && <EditPassword/>}
+        {this.state.activeTab === 'Password' && 
+          <EditPassword
+            attemptChangePassword={attemptChangePassword}
+            loginReduxFetching={loginReduxFetching}
+            loginReduxError={loginReduxError}
+            userId={userId}
+          />
+        }
       </Container>
     )
   }

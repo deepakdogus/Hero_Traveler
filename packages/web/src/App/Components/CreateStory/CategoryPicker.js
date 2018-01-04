@@ -8,10 +8,9 @@ const TagPickerContainer = styled.div`
   position: absolute;
   z-index: 100;
   max-height: 250px;
-  right: 50px;
-  top: 56px;
+  top: 20px;
   padding: 30px 15px;
-  width: 290px;
+  width: 250px;
   overflow: scroll;
   background-color: white;
   outline: none;

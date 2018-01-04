@@ -14,7 +14,7 @@ const algoliasearch = algoliasearch_module(SEARCH_APP_NAME, SEARCH_API_KEY, { pr
 
 
 const WrapperCol = styled(Col)`
-  margin: 0px 10px;
+  margin: 5px 10px;
 `
 
 const InputWrapper = styled(Col)`
@@ -75,9 +75,11 @@ export default class CategoryTileGridAndInput extends React.Component {
     this.helper = algoliasearch_helper(algoliasearch, SEARCH_CATEGORIES_INDEX)
     this.setUpSearchListeners(this.helper)
   }
+
   componentWillUnmount() {
     this.removeSearchListeners(this.helper)
   }
+
   setUpSearchListeners = (helper) => {
     helper.on('result', res => {
       if (res.hits){
@@ -85,6 +87,7 @@ export default class CategoryTileGridAndInput extends React.Component {
       }
     })
   }
+
   removeSearchListeners(helper) {
     helper.removeAllListeners('result')
   }
@@ -100,11 +103,13 @@ export default class CategoryTileGridAndInput extends React.Component {
       }, 300)()
     }
   }
+
   handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       this.props.addCategory(e, this.props.categoryInputText)
     }
   }
+
   render() {
     const {selectedCategories, handleCategoryRemove} = this.props
 
@@ -137,6 +142,9 @@ export default class CategoryTileGridAndInput extends React.Component {
               onKeyPress={this.handleKeyPress}
             />
           </InputWrapper>
+          {
+            this.props.children
+          }
         </VerticallyCenterRow>
       </StyledGrid>
     )

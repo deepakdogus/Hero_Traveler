@@ -76,6 +76,11 @@ const StyledReactDayPicker = styled(ReactDayPicker)`
   position: absolute;
 `
 
+const RelativePositionAncestor = styled.div`
+  position: relative;
+  width: 100px;
+`
+
 const styles = {
   radioButton: {
     display: 'inline-block',
@@ -260,15 +265,22 @@ export default class StoryDetails extends React.Component {
             updateCategoriesList={this.updateCategoriesList}
             categoryInputText={this.state.categoryInputText}
             handleTextInput={this.handleCategoryInputTextChange}
-          />
-          {showPicker === 'category' &&
+          >
+        {/* Making the Category Picker a child so we can position it absolutely, relative
+          to where the last category tile is
+        */}
+          {
+            showPicker === 'category' &&
+            <RelativePositionAncestor>
             <CategoryPicker
               closePicker={this.togglePicker}
               handleCategorySelect={this.handleCategorySelect}
               categoriesList={categoriesList}
               loadDefaultCategories={this.loadDefaultCategories}
             />
+            </RelativePositionAncestor>
           }
+          </CategoryTileGridAndInput>
         </InputRowContainer>
         <HorizontalDivider color='lighter-grey' opaque/>
         <InputRowContainer>

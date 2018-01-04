@@ -14,13 +14,14 @@ const algoliasearch = algoliasearch_module(SEARCH_APP_NAME, SEARCH_API_KEY, { pr
 
 
 const WrapperCol = styled(Col)`
-  margin: 10px;
+  margin: 0px 10px;
 `
 
 const InputWrapper = styled(Col)`
   display: flex;
   flex-direction: 'column';
   justify-content: 'center';
+  margin: 10px 0px;
 `
 
 const Tile = styled(Row)`
@@ -46,10 +47,12 @@ const StyledIcon = styled(Icon)`
   margin-left: 10px;
 `
 const StyledGrid = styled(Grid)`
-  margin-left: 46px;
+  margin-left: 25px;
   width: 90%;
-  transform: translateY(-33.5px);
-  margin-bottom: -40px;
+`
+
+const VerticallyCenterRow = styled(Row)`
+  align-items: center;
 `
 
 
@@ -77,7 +80,7 @@ export default class CategoryTileGridAndInput extends React.Component {
   }
   setUpSearchListeners = (helper) => {
     helper.on('result', res => {
-      if (res.hits && res.hits.length){
+      if (res.hits){
         this.props.updateCategoriesList(res.hits)
       }
     })
@@ -85,18 +88,21 @@ export default class CategoryTileGridAndInput extends React.Component {
   removeSearchListeners(helper) {
     helper.removeAllListeners('result')
   }
-  addCategory = () => {
-    this.props.addCategory(this.props.categoryInputText)
-  }
+
   handleTextInput = (event) => {
     const text = event.target.value
     this.props.handleTextInput(text)
-    if (text.length >= 3) {
+    if (text.length) {
       _.debounce(() => {
         this.helper
         .setQuery(text)
         .search()
       }, 300)()
+    }
+  }
+  handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      this.props.addCategory(e, this.props.categoryInputText)
     }
   }
   render() {
@@ -119,23 +125,19 @@ export default class CategoryTileGridAndInput extends React.Component {
 
     return (
       <StyledGrid>
-        <Row>
+        <VerticallyCenterRow>
           {renderedTiles}
-          <InputWrapper
-          >
-          <StyledInput
+          <InputWrapper>
+            <StyledInput
               type='text'
               placeholder='Add Categories'
               value={this.props.categoryInputText}
               onChange={this.handleTextInput}
               onClick={this.props.inputOnClick}
-              onKeyPress={(e) => { 
-                if (e.key === 'Enter') {
-                  this.addCategory()
-              }}}
+              onKeyPress={this.handleKeyPress}
             />
-            </InputWrapper>
-        </Row>
+          </InputWrapper>
+        </VerticallyCenterRow>
       </StyledGrid>
     )
   }

@@ -7,11 +7,12 @@ import HorizontalDivider from '../HorizontalDivider'
 const TagPickerContainer = styled.div`
   position: absolute;
   z-index: 100;
-  left: 50px;
+  max-height: 250px;
+  right: 50px;
   top: 56px;
   padding: 30px 15px;
   width: 290px;
-  overflow: auto;
+  overflow: scroll;
   background-color: white;
   outline: none;
   -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);

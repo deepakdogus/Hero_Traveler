@@ -19,8 +19,10 @@ import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checke
 const Container = styled.div``
 
 const InputRowContainer = styled(Container)`
-  padding: 20px 0px 14px 0px;
+  padding: 14px 0px 14px 0px;
   position: relative;
+  display: flex;
+  align-items: center;
 `
 
 const StyledTitle = styled(Title)`
@@ -36,7 +38,7 @@ const ActivitySelectRow = styled(Row)`
   font-size: 18px;
   color: ${props => props.theme.Colors.background};
   letter-spacing: .7px;
-  margin: 8px;
+  padding-left: 2px;
 `
 
 export const StyledInput = styled.input`
@@ -54,22 +56,20 @@ export const StyledInput = styled.input`
     color: ${props => props.theme.Colors.navBarText};
   }
 `
-
-const LocationIcon = styled(Icon)`
+const IconWithMargin = styled(Icon)`
+  margin-left: 2px;
+`
+const LocationIcon = styled(IconWithMargin)`
   height: 34px;
   width: 23px;
-  margin-bottom: -12px;
-  margin-left: 2px;
 `
 
-const DateIcon = styled(Icon)`
+const DateIcon = styled(IconWithMargin)`
   height: 26px;
   width: 30px;
-  margin-bottom: -8px;
 `
-const TagIcon = styled(Icon)`
+const TagIcon = styled(IconWithMargin)`
   height: 26px;
-  margin-left: 2px;
 `
 
 const StyledReactDayPicker = styled(ReactDayPicker)`
@@ -92,6 +92,8 @@ const styles = {
   },
   radioButtonGroup: {
     marginLeft: 40,
+    display: 'flex',
+    alignItems: 'center',
   },
 }
 
@@ -140,7 +142,6 @@ export default class StoryDetails extends React.Component {
     }
   }
 
-
   handleDayClick = (day) => {
     this.setState({
       showPicker: undefined,
@@ -161,6 +162,7 @@ export default class StoryDetails extends React.Component {
  }
 
   toggleDayPicker = () => this.togglePicker('day')
+
   toggleTagPicker = () => this.togglePicker('category')
 
   formatTripDate = (day) => {
@@ -168,14 +170,10 @@ export default class StoryDetails extends React.Component {
     else return Moment(day).format('MM-DD-YYYY')
   }
 
-  handleCategoryAdd = (categoryName) => { 
-    this.updateCategoriesList([ {title: categoryName}, ...this.state.categoriesList ])
-  }
-
   handleCategorySelect = (event, category) => {
     event.stopPropagation()
-    const categoryTitle = event.target.innerHTML
-    const clickedCategory = category || { title: categoryTitle }
+    const categoryTitle = event.target.innerHTML || category
+    const clickedCategory = { title: categoryTitle }
     const categories = this.props.workingDraft.categories.concat([clickedCategory])
     this.updateCategoriesList(_.differenceWith(this.state.categoriesList, [clickedCategory], isSameTag))
     this.setState({
@@ -204,6 +202,9 @@ export default class StoryDetails extends React.Component {
     this.setState({
       categoryInputText: text,
     })
+    if (!text.length) {
+      this.loadDefaultCategories()
+    }
   }
 
   loadDefaultCategories = () => {
@@ -255,7 +256,7 @@ export default class StoryDetails extends React.Component {
             handleCategoryRemove={this.handleCategoryRemove}
             inputOnClick={this.toggleTagPicker}
             categories={categoriesList}
-            addCategory={this.handleCategoryAdd}
+            addCategory={this.handleCategorySelect}
             updateCategoriesList={this.updateCategoriesList}
             categoryInputText={this.state.categoryInputText}
             handleTextInput={this.handleCategoryInputTextChange}

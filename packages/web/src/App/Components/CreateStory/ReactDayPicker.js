@@ -49,6 +49,7 @@ function Navbar({
   const styleRight = {
     float: 'right',
   };
+  console.log('onPreviousClick', onPreviousClick)
   return (
     <div className={className}>
       <StyledIconLeft
@@ -74,8 +75,10 @@ export default class ReactDayPicker extends React.Component {
       <Container>
         <DayPickerContainer>
           <DayPicker
-            navbarElement={<Navbar />}
+            canChangeMonth
+            navbarElement={<Navbar/>}
             onDayClick={this.props.handleDayClick}
+            onMonthChange={() => { console.log('Hello?')}}
           />
         </DayPickerContainer>
       </Container>

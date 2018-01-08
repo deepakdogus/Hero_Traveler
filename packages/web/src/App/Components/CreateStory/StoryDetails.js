@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import Moment from 'moment'
 import _ from 'lodash'
-
 import {Row} from '../FlexboxGrid'
 import Icon from '../Icon'
 import HorizontalDivider from '../HorizontalDivider'
@@ -132,7 +131,7 @@ export default class StoryDetails extends React.Component {
     }
 
     this.state = {
-      showTagPicker: false,
+      showCategoryPicker: false,
       showDayPicker: false,
       day: '',
       categoryInputText: '',
@@ -148,9 +147,7 @@ export default class StoryDetails extends React.Component {
   }
 
   handleDayClick = (day) => {
-    this.setState({
-      showPicker: undefined,
-    })
+    this.toggleDayPicker()
     this.props.onInputChange({
       tripDate: day,
     })
@@ -161,14 +158,14 @@ export default class StoryDetails extends React.Component {
   }
 
   togglePicker = (name) => {
-    let nextPickerState = name
-    if (this.state.showPicker === name) nextPickerState = undefined
-    this.setState({ showPicker: nextPickerState })
+    const stateKey = `show${name}Picker`
+    const currentVal = this.state[stateKey]
+    this.setState({ [stateKey]: !currentVal})
  }
 
-  toggleDayPicker = () => this.togglePicker('day')
+  toggleDayPicker = () => this.togglePicker('Day')
 
-  toggleTagPicker = () => this.togglePicker('category')
+  toggleCategoryPicker = () => this.togglePicker('Category')
 
   formatTripDate = (day) => {
     if (!day) return undefined
@@ -181,8 +178,8 @@ export default class StoryDetails extends React.Component {
     const clickedCategory = { title: categoryTitle }
     const categories = this.props.workingDraft.categories.concat([clickedCategory])
     this.updateCategoriesList(_.differenceWith(this.state.categoriesList, [clickedCategory], isSameTag))
+    this.toggleCategoryPicker()
     this.setState({
-      showPicker: 'category',
       categoryInputText: '',
     })
     this.props.onInputChange({categories})
@@ -221,7 +218,7 @@ export default class StoryDetails extends React.Component {
 
   render() {
     const {workingDraft, onInputChange } = this.props
-    const {showPicker, categoriesList} = this.state
+    const {showDayPicker, showCategoryPicker, categoriesList} = this.state
 
     // normally this only happens when you just published a draft
     if (!workingDraft) return null
@@ -247,9 +244,10 @@ export default class StoryDetails extends React.Component {
             onClick={this.toggleDayPicker}
             readOnly
           />
-          {showPicker === 'day' &&
+          {showDayPicker &&
             <StyledReactDayPicker
               handleDayClick={this.handleDayClick}
+              togglePicker={this.toggleDayPicker}
             />
           }
         </InputRowContainer>
@@ -259,7 +257,7 @@ export default class StoryDetails extends React.Component {
           <CategoryTileGridAndInput
             selectedCategories={this.props.workingDraft.categories}
             handleCategoryRemove={this.handleCategoryRemove}
-            inputOnClick={this.toggleTagPicker}
+            inputOnClick={this.toggleCategoryPicker}
             categories={categoriesList}
             addCategory={this.handleCategorySelect}
             updateCategoriesList={this.updateCategoriesList}
@@ -270,10 +268,10 @@ export default class StoryDetails extends React.Component {
           to where the last category tile is
         */}
           {
-            showPicker === 'category' &&
+            showCategoryPicker &&
             <RelativePositionAncestor>
             <CategoryPicker
-              closePicker={this.togglePicker}
+              closePicker={this.toggleCategoryPicker}
               handleCategorySelect={this.handleCategorySelect}
               categoriesList={categoriesList}
               loadDefaultCategories={this.loadDefaultCategories}

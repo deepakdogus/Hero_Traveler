@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-
+import onClickOutside from 'react-onclickoutside'
 import DayPicker from 'react-day-picker'
 import './Styles/ReactDayPickerStyles.css'
 
@@ -62,11 +62,15 @@ function Navbar({
   );
 }
 
-export default class ReactDayPicker extends React.Component {
+class ReactDayPicker extends React.Component {
   static propTypes = {
     handleDayClick: PropTypes.func,
+    togglePicker: PropTypes.func,
   }
 
+  handleClickOutside() {
+    this.props.togglePicker()
+  }
   render() {
     return (
       <Container>
@@ -80,3 +84,5 @@ export default class ReactDayPicker extends React.Component {
     )
   }
 }
+  
+export default onClickOutside(ReactDayPicker)

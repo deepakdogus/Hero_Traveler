@@ -5495,12 +5495,12 @@ react-cookie@^2.1.1:
     prop-types "^15.0.0"
     universal-cookie "^2.1.0"
 
-react-day-picker@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/react-day-picker/-/react-day-picker-6.1.0.tgz#81122c34bfb4eeec288ec31709e8aa6d4bc161cc"
+react-day-picker@^7.0.6:
+  version "7.0.6"
+  resolved "https://registry.npmjs.org/react-day-picker/-/react-day-picker-7.0.6.tgz#9c912707922f149b7f804b33258f25a771758da1"
   dependencies:
     object-assign "^4.1.1"
-    prop-types "^15.5.10"
+    prop-types "^15.6.0"
 
 react-dev-utils@^3.0.2:
   version "3.0.2"

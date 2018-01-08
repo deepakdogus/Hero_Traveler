@@ -36,12 +36,9 @@ const StyledIconRight = styled(Icon)`
 `
 
 function Navbar({
-  nextMonth,
-  previousMonth,
   onPreviousClick,
   onNextClick,
   className,
-  localeUtils,
 }) {
   const styleLeft = {
     float: 'left',
@@ -49,17 +46,18 @@ function Navbar({
   const styleRight = {
     float: 'right',
   };
-  console.log('onPreviousClick', onPreviousClick)
   return (
     <div className={className}>
       <StyledIconLeft
         name='arrowLeftRed'
         style={styleLeft}
-        onClick={onPreviousClick}/>
+        onClick={() => onPreviousClick()}
+      />
       <StyledIconRight
         name='arrowRightRed'
         style={styleRight}
-        onClick={onNextClick}/>
+        onClick={() => onNextClick()}
+      />
     </div>
   );
 }
@@ -69,17 +67,14 @@ export default class ReactDayPicker extends React.Component {
     handleDayClick: PropTypes.func,
   }
 
-
   render() {
     return (
       <Container>
         <DayPickerContainer>
-          <DayPicker
-            canChangeMonth
-            navbarElement={<Navbar/>}
-            onDayClick={this.props.handleDayClick}
-            onMonthChange={() => { console.log('Hello?')}}
-          />
+            <DayPicker
+              navbarElement={<Navbar/>}
+              onDayClick={this.props.handleDayClick}
+            />
         </DayPickerContainer>
       </Container>
     )

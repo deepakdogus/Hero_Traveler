@@ -55,7 +55,6 @@ const VerticallyCenterRow = styled(Row)`
   align-items: center;
 `
 
-
 export default class CategoryTileGridAndInput extends React.Component {
   static propTypes = {
     selectedCategories: PropTypes.arrayOf(PropTypes.object),

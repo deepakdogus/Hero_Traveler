@@ -270,12 +270,12 @@ export default class StoryDetails extends React.Component {
           {
             showCategoryPicker &&
             <RelativePositionAncestor>
-            <CategoryPicker
-              closePicker={this.toggleCategoryPicker}
-              handleCategorySelect={this.handleCategorySelect}
-              categoriesList={categoriesList}
-              loadDefaultCategories={this.loadDefaultCategories}
-            />
+              <CategoryPicker
+                closePicker={this.toggleCategoryPicker}
+                handleCategorySelect={this.handleCategorySelect}
+                categoriesList={categoriesList}
+                loadDefaultCategories={this.loadDefaultCategories}
+              />
             </RelativePositionAncestor>
           }
           </CategoryTileGridAndInput>

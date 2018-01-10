@@ -173,11 +173,24 @@ export default class StoryDetails extends React.Component {
   }
 
   handleCategorySelect = (event, category) => {
+    // Need to fetch entire category if it exits
     event.stopPropagation()
     const categoryTitle = event.target.innerHTML || category
-    const clickedCategory = { title: categoryTitle }
+    const clickedCategory = _.find(this.state.categoriesList, cat => cat.title === categoryTitle) || { title: categoryTitle }
+    console.log('clickedCategory', clickedCategory)
     const categories = this.props.workingDraft.categories.concat([clickedCategory])
-    this.updateCategoriesList(_.differenceWith(this.state.categoriesList, [clickedCategory], isSameTag))
+
+    // Need to find a way to prevent user from addinng duplicate categories (loading deault shou;ld filter out anything already in working draft)
+
+
+
+
+
+
+
+    
+    // this.updateCategoriesList(_.differenceWith(this.state.categoriesList, [clickedCategory], isSameTag))
+    this.loadDefaultCategories()
     this.toggleCategoryPicker()
     this.setState({
       categoryInputText: '',

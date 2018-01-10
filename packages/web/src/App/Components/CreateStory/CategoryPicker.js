@@ -9,7 +9,7 @@ const TagPickerContainer = styled.div`
   z-index: 100;
   max-height: 250px;
   top: 20px;
-  padding: 30px 15px;
+  padding: 8px 15px 0px 15px;
   width: 250px;
   overflow: scroll;
   background-color: white;
@@ -49,7 +49,7 @@ static propTypes = {
   }
   renderList(categoriesList) {
     return (
-      categoriesList.map((tag) => {
+      categoriesList.map((tag, idx) => {
         return (
           <div key={tag.id ? tag.id : tag.title}> {/* Tags do not yet have ids if they have just been entered by user*/}
             <Tag onClick={(e) => this.props.handleCategorySelect(e, { ...tag })}>{tag.title}</Tag>

@@ -185,10 +185,10 @@ export default class StoryDetails extends React.Component {
     this.props.onInputChange({categories})
   }
 
-  handleCategoryRemove = (event, tagId) => {
+  handleCategoryRemove = (event, tagTitle) => {
     event.stopPropagation()
-    const clickedCategoryId = tagId
-    const clickedCategory = this.props.categories[clickedCategoryId] || _.find(this.props.workingDraft.categories, cat => cat.id === clickedCategoryId)
+    const clickedCategoryTitle = tagTitle
+    const clickedCategory = _.find(this.props.workingDraft.categories, cat => cat.title === clickedCategoryTitle)
     const categories = _.differenceWith(this.props.workingDraft.categories, [clickedCategory], isSameTag)
     this.updateCategoriesList(sortCategories(this.state.categoriesList.concat([clickedCategory])))
     this.props.onInputChange({categories})

@@ -120,7 +120,7 @@ export default class CategoryTileGridAndInput extends React.Component {
             <StyledIcon
               data-tagName={tag.id}
               name='closeDark'
-              onClick={(e) => handleCategoryRemove(e, tag.id)}
+              onClick={(e) => handleCategoryRemove(e, tag.title)}
             />
           </Tile>
         </WrapperCol>

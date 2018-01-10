@@ -75,10 +75,10 @@ class ReactDayPicker extends React.Component {
     return (
       <Container>
         <DayPickerContainer>
-            <DayPicker
-              navbarElement={<Navbar/>}
-              onDayClick={this.props.handleDayClick}
-            />
+          <DayPicker
+            navbarElement={<Navbar/>}
+            onDayClick={this.props.handleDayClick}
+          />
         </DayPickerContainer>
       </Container>
     )

@@ -45,6 +45,16 @@
 		912E95471FA631C700399703 /* RNDJShadowDraftJSEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 912E95451FA631C600399703 /* RNDJShadowDraftJSEditor.m */; };
 		913C4EF45111427B8D830D3F /* Montserrat-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A0687633F8D24E28B8519A35 /* Montserrat-Light.ttf */; };
 		9155DE921FD9B42500DAAA7C /* RNDJAutocorrectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9155DE911FD9B42500DAAA7C /* RNDJAutocorrectView.m */; };
+		915D976D20081218005EF687 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 915D976820081217005EF687 /* FBSDKCoreKit.framework */; };
+		915D976E20081218005EF687 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 915D976920081217005EF687 /* Bolts.framework */; };
+		915D976F20081218005EF687 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 915D976A20081217005EF687 /* FBSDKShareKit.framework */; };
+		915D977020081218005EF687 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 915D976B20081218005EF687 /* FBSDKLoginKit.framework */; };
+		915D977120081218005EF687 /* FBSDKPlacesKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 915D976C20081218005EF687 /* FBSDKPlacesKit.framework */; };
+		915D977320081820005EF687 /* Bolts.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 915D976920081217005EF687 /* Bolts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		915D977420081820005EF687 /* FBSDKCoreKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 915D976820081217005EF687 /* FBSDKCoreKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		915D977520081820005EF687 /* FBSDKLoginKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 915D976B20081218005EF687 /* FBSDKLoginKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		915D977620081820005EF687 /* FBSDKPlacesKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 915D976C20081218005EF687 /* FBSDKPlacesKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		915D977720081820005EF687 /* FBSDKShareKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 915D976A20081217005EF687 /* FBSDKShareKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		91973CAC1FA39B64006DE932 /* RNDJBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973C911FA39B52006DE932 /* RNDJBaseModel.m */; };
 		91973CAD1FA39B64006DE932 /* RNDJBlockModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973C931FA39B52006DE932 /* RNDJBlockModel.m */; };
 		91973CAE1FA39B64006DE932 /* RNDJContentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973C951FA39B52006DE932 /* RNDJContentModel.m */; };
@@ -301,34 +311,6 @@
 			remoteGlobalIDString = 308F7B86C9B949C6AEB5E0FBCF625772;
 			remoteInfo = "iOS-MagnifyingGlass";
 		};
-		91D044131F327BCB00FAA404 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 45954CBAA7B692A31AAE60A485ACBCEB;
-			remoteInfo = Bolts;
-		};
-		91D044151F327BCB00FAA404 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = EFCD714B66300CE3401E1DBFFBD5154A;
-			remoteInfo = FBSDKCoreKit;
-		};
-		91D044171F327BCB00FAA404 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E6B6631B9F548C86B55549FEBFEDC61C;
-			remoteInfo = FBSDKLoginKit;
-		};
-		91D044191F327BCB00FAA404 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 12F7B2CD57A1EF44F848AA244D172280;
-			remoteInfo = FBSDKShareKit;
-		};
 		9404AF3A1E745B230054289E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 656DC182365C4CFC8F7AF2AD /* RNDeviceInfo.xcodeproj */;
@@ -471,6 +453,23 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		915D977220081808005EF687 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				915D977320081820005EF687 /* Bolts.framework in CopyFiles */,
+				915D977420081820005EF687 /* FBSDKCoreKit.framework in CopyFiles */,
+				915D977520081820005EF687 /* FBSDKLoginKit.framework in CopyFiles */,
+				915D977620081820005EF687 /* FBSDKPlacesKit.framework in CopyFiles */,
+				915D977720081820005EF687 /* FBSDKShareKit.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTActionSheet.xcodeproj; path = "../node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheet.xcodeproj"; sourceTree = "<group>"; };
 		00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTGeolocation.xcodeproj; path = "../node_modules/react-native/Libraries/Geolocation/RCTGeolocation.xcodeproj"; sourceTree = "<group>"; };
@@ -524,6 +523,11 @@
 		912E95461FA631C700399703 /* RNDJShadowDraftJSEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJShadowDraftJSEditor.h; sourceTree = "<group>"; };
 		9155DE901FD9B42500DAAA7C /* RNDJAutocorrectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJAutocorrectView.h; sourceTree = "<group>"; };
 		9155DE911FD9B42500DAAA7C /* RNDJAutocorrectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJAutocorrectView.m; sourceTree = "<group>"; };
+		915D976820081217005EF687 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = Frameworks/FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		915D976920081217005EF687 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = Frameworks/Bolts.framework; sourceTree = "<group>"; };
+		915D976A20081217005EF687 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = Frameworks/FBSDKShareKit.framework; sourceTree = "<group>"; };
+		915D976B20081218005EF687 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = Frameworks/FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		915D976C20081218005EF687 /* FBSDKPlacesKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKPlacesKit.framework; path = Frameworks/FBSDKPlacesKit.framework; sourceTree = "<group>"; };
 		91973C901FA39B52006DE932 /* RNDJBaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJBaseModel.h; sourceTree = "<group>"; };
 		91973C911FA39B52006DE932 /* RNDJBaseModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJBaseModel.m; sourceTree = "<group>"; };
 		91973C921FA39B52006DE932 /* RNDJBlockModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJBlockModel.h; sourceTree = "<group>"; };
@@ -558,7 +562,6 @@
 		945C658A1EB63EAF0032BBEC /* HeroTravelerMobile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = HeroTravelerMobile.entitlements; path = HeroTravelerMobile/HeroTravelerMobile.entitlements; sourceTree = "<group>"; };
 		9465AAA61EB0FDC7003109B0 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		9465AAA81EB0FDCC003109B0 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		949A3A631E9EB74600815C53 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = ../../../../../../Documents/FacebookSDK/Bolts.framework; sourceTree = "<group>"; };
 		94A4BD3F1EB77CC7003B75DD /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		94AE1C091EA7BFE500B88515 /* React-Native-Webview-Bridge.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "React-Native-Webview-Bridge.xcodeproj"; path = "../node_modules/react-native-webview-bridge-updated/ios/React-Native-Webview-Bridge.xcodeproj"; sourceTree = "<group>"; };
 		94CE749F1ECDE05300E0619D /* AirMaps.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
@@ -599,6 +602,7 @@
 			files = (
 				EF21699D1F4E0147008B3B0A /* libKeyboardTrackingView.a in Frameworks */,
 				911D144D1F361EBB00F47BF8 /* libAutoGrowTextInput.a in Frameworks */,
+				915D976F20081218005EF687 /* FBSDKShareKit.framework in Frameworks */,
 				94A4BD701EB77CFA003B75DD /* libRCTPushNotification.a in Frameworks */,
 				9465AAA71EB0FDC7003109B0 /* GameKit.framework in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -610,6 +614,7 @@
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
+				915D976D20081218005EF687 /* FBSDKCoreKit.framework in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				AF011CBE1DE74E9DB1FF4182 /* libRNDeviceInfo.a in Frameworks */,
@@ -625,7 +630,10 @@
 				998A514A1E3C4CEF89CF51BC /* libRCTFBSDK.a in Frameworks */,
 				C33BE7F70ED74FE3AADD46D7 /* libRCTVideo.a in Frameworks */,
 				592083ACE0994749571D40E1 /* libPods-HeroTravelerMobile.a in Frameworks */,
+				915D977120081218005EF687 /* FBSDKPlacesKit.framework in Frameworks */,
 				EB0DAD70D1AA43E3B8361B75 /* libRNFetchBlob.a in Frameworks */,
+				915D976E20081218005EF687 /* Bolts.framework in Frameworks */,
+				915D977020081218005EF687 /* FBSDKLoginKit.framework in Frameworks */,
 				4BEA59345F7041AF89A399AA /* libRNVersionNumber.a in Frameworks */,
 				F7E2F9F88E9E407D98765459 /* libRNGooglePlaces.a in Frameworks */,
 			);
@@ -991,10 +999,6 @@
 		942D12181EB3956400A0CFE5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				91D044141F327BCB00FAA404 /* libBolts.a */,
-				91D044161F327BCB00FAA404 /* libFBSDKCoreKit.a */,
-				91D044181F327BCB00FAA404 /* libFBSDKLoginKit.a */,
-				91D0441A1F327BCB00FAA404 /* libFBSDKShareKit.a */,
 				942D12201EB3956400A0CFE5 /* HockeySDKResources.bundle */,
 				91AC58CC1FD83CFD0017B1E8 /* libiOS-MagnifyingGlass.a */,
 				EFE44EEA1F3CF4BF00003CBA /* libIQKeyboardManager.a */,
@@ -1045,7 +1049,11 @@
 			children = (
 				9465AAA81EB0FDCC003109B0 /* StoreKit.framework */,
 				9465AAA61EB0FDC7003109B0 /* GameKit.framework */,
-				949A3A631E9EB74600815C53 /* Bolts.framework */,
+				915D976920081217005EF687 /* Bolts.framework */,
+				915D976820081217005EF687 /* FBSDKCoreKit.framework */,
+				915D976B20081218005EF687 /* FBSDKLoginKit.framework */,
+				915D976C20081218005EF687 /* FBSDKPlacesKit.framework */,
+				915D976A20081217005EF687 /* FBSDKShareKit.framework */,
 				03188FC3316AA2C99BA54850 /* libPods-HeroTravelerMobile.a */,
 				BE25BBEB7BFE7D18CC219357 /* libPods-HeroTravelerMobileTests.a */,
 			);
@@ -1148,6 +1156,7 @@
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
+				915D977220081808005EF687 /* CopyFiles */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				014482B1285095E8F3676463 /* [CP] Embed Pods Frameworks */,
 				5E59E24373337F1AFBED62F1 /* [CP] Copy Pods Resources */,
@@ -1549,34 +1558,6 @@
 			remoteRef = 91AC58CB1FD83CFD0017B1E8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		91D044141F327BCB00FAA404 /* libBolts.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libBolts.a;
-			remoteRef = 91D044131F327BCB00FAA404 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		91D044161F327BCB00FAA404 /* libFBSDKCoreKit.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libFBSDKCoreKit.a;
-			remoteRef = 91D044151F327BCB00FAA404 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		91D044181F327BCB00FAA404 /* libFBSDKLoginKit.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libFBSDKLoginKit.a;
-			remoteRef = 91D044171F327BCB00FAA404 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		91D0441A1F327BCB00FAA404 /* libFBSDKShareKit.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libFBSDKShareKit.a;
-			remoteRef = 91D044191F327BCB00FAA404 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		9404AF3B1E745B230054289E /* libRNDeviceInfo.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1805,7 +1786,7 @@
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
 				"${PODS_ROOT}/GooglePlacePicker/Frameworks/GooglePlacePicker.framework/Resources/GooglePlacePicker.bundle",
 				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
 				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
 				"${PODS_ROOT}/iOS-MagnifyingGlass/MagnifyingGlass/Resources/kb-loupe-hi_6.png",
 				"${PODS_ROOT}/iOS-MagnifyingGlass/MagnifyingGlass/Resources/kb-loupe-hi_7.png",
@@ -1869,7 +1850,11 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = UMT32797WT;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -1924,7 +1909,11 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = UMT32797WT;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",

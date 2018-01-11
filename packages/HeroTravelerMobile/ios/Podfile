@@ -7,7 +7,6 @@ target 'HeroTravelerMobile' do
   pod "FBSDKCoreKit"
   pod "FBSDKLoginKit"
   pod "FBSDKShareKit"
-  pod "Bolts"
   pod "IQKeyboardManager"
   pod 'iOS-MagnifyingGlass', '~> 0.0.2'
   pod 'GooglePlaces'
@@ -16,10 +15,4 @@ target 'HeroTravelerMobile' do
 
   # Pods for HeroTravelerMobile
   pod "HockeySDK", :subspecs => ['AllFeaturesLib']
-
-  target 'HeroTravelerMobileTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
 end

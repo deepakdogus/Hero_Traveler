@@ -48,7 +48,6 @@ class ProfileMenu extends React.Component {
 	}
 	render() {
 		const  { user } = this.props
-		console.log('PROPS', this.props)
 		return (
 			<Sidebar>
 				<SidebarDemiLink onClick={() => this.rerouteAndClose(`/profile/${user}/view`)}>My Profile</SidebarDemiLink> 

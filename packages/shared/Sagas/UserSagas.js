@@ -1,6 +1,8 @@
-import { call, put } from 'redux-saga/effects'
+import { call, put, select } from 'redux-saga/effects'
 import UserActions from '../Redux/Entities/Users'
 import StoryActions from '../Redux/Entities/Stories'
+
+const currentUserId = ({session}) => session.userId
 
 export function * getSuggestedUsers (api, action) {
   const response = yield call(api.getSuggestedUsers)
@@ -23,6 +25,21 @@ export function * loadUser (api, {userId}) {
     yield put(UserActions.loadUserSuccess())
   } else {
     yield put(UserActions.loadUserFailure(new Error('Failed to load user')))
+  }
+}
+
+export function * updateUser (api, action) {
+  const {attrs} = action
+  const userId = yield select(currentUserId)
+  const response = yield call(
+    api.updateUser,
+    userId,
+    attrs
+  )
+  if (response.ok) {
+    yield put(UserActions.updateUserSuccess(response.data))
+  } else {
+    yield put(UserActions.updateUserFailure(new Error('Failed to update user')))
   }
 }
 

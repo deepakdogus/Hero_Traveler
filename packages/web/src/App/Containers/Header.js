@@ -8,6 +8,7 @@ import { Grid } from '../Components/FlexboxGrid'
 import HeaderAnonymous from '../Components/Headers/HeaderAnonymous'
 import HeaderLoggedIn from '../Components/Headers/HeaderLoggedIn'
 import LoginActions from '../Shared/Redux/LoginRedux'
+import UserActions from '../Shared/Redux/Entities/Users'
 import UXActions from '../Redux/UXRedux'
 import HeaderModals from '../Components/HeaderModals'
 
@@ -31,6 +32,9 @@ const HeaderSpacer = styled.div`
 
 class Header extends React.Component {
   static propTypes = {
+    currentUserId: PropTypes.string,
+    currentUserProfile: PropTypes.object,
+    currentUserEmail: PropTypes.string, 
     isLoggedIn: PropTypes.bool,
     loginReduxFetching: PropTypes.bool, 
     loginReduxError: PropTypes.object, 
@@ -42,6 +46,9 @@ class Header extends React.Component {
     globalModalThatIsOpen: PropTypes.string,
     globalModalParams: PropTypes.object,
     reroute: PropTypes.func,
+    attemptUpdateUser: PropTypes.func,
+    userEntitiesUpdating: PropTypes.bool,
+    userEntitiesError: PropTypes.object,
   }
 
   constructor(props) {
@@ -81,8 +88,8 @@ class Header extends React.Component {
   }
 
   render () {
-    const {isLoggedIn, loginReduxFetching, loginReduxError, attemptLogin, attemptChangePassword, closeGlobalModal, openGlobalModal, 
-      currentUser, globalModalThatIsOpen, globalModalParams, reroute } = this.props
+    const { isLoggedIn, loginReduxFetching, loginReduxError, attemptLogin, attemptChangePassword, closeGlobalModal, openGlobalModal, 
+      currentUserId, currentUserProfile, currentUserEmail, globalModalThatIsOpen, globalModalParams, reroute, attemptUpdateUser, userEntitiesUpdating, userEntitiesError } = this.props
     const SelectedGrid = this.props.blackHeader ? StyledGridBlack : StyledGrid
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
     return (
@@ -90,7 +97,7 @@ class Header extends React.Component {
         <SelectedGrid fluid>
           {isLoggedIn &&
           <HeaderLoggedIn
-              user={currentUser}
+              user={currentUserId}
               openModal={this.openModal}
               openGlobalModal={openGlobalModal}
               reroute={reroute}
@@ -107,13 +114,18 @@ class Header extends React.Component {
               openSignupModal={this.openSignupModal}
               attemptLogin={attemptLogin}
               openLoginModal={this.openLoginModal}
-              user={currentUser}
+              userId={currentUserId}
+              currentUserProfile={currentUserProfile}
+              currentUserEmail={currentUserEmail}
               modal={this.state.modal}
               globalModalThatIsOpen={globalModalThatIsOpen}
               globalModalParams={globalModalParams}
               attemptChangePassword={attemptChangePassword}
               loginReduxFetching={loginReduxFetching}
               loginReduxError={loginReduxError}
+              attemptUpdateUser={attemptUpdateUser}
+              userEntitiesUpdating={userEntitiesUpdating}
+              userEntitiesError={userEntitiesError}
           />
       </SelectedGrid>
       <HeaderSpacer
@@ -126,14 +138,21 @@ class Header extends React.Component {
 
 function mapStateToProps(state) {
   const pathname = state.routes.location ? state.routes.location.pathname : ''
+  const users = state.entities.users.entities
+  const currentUserId = state.session.userId
+  const currentUser = users[currentUserId]
   return {
     isLoggedIn: state.login.isLoggedIn,
     loginReduxFetching: state.login.fetching,
     loginReduxError: state.login.error,
     blackHeader: _.includes(['/', '/feed', ''], pathname) ? false : true,
-    currentUser: state.session.userId,
+    currentUserId: currentUserId,
     globalModalThatIsOpen: state.ux.modalName,
     globalModalParams: state.ux.params,
+    userEntitiesUpdating: state.entities.users.updating,
+    userEntitiesError: state.entities.users.error,
+    currentUserProfile: (currentUser) && currentUser.profile,
+    currentUserEmail: (currentUser) && currentUser.email,
   }
 }
 
@@ -143,7 +162,8 @@ function mapDispatchToProps(dispatch) {
     attemptChangePassword: (userId, oldPassword, newPassword) => dispatch(LoginActions.changePasswordRequest(userId, oldPassword, newPassword)),
     closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
-    reroute: (route) => dispatch(push(route))
+    reroute: (route) => dispatch(push(route)),
+    attemptUpdateUser: (updates) => dispatch(UserActions.updateUser(updates))
   }
 }
 

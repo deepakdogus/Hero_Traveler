@@ -21,6 +21,11 @@ export default class Settings extends React.Component {
     loginReduxFetching: PropTypes.bool,
     loginReduxError: PropTypes.object,
     userId: PropTypes.string,
+    userProfile: PropTypes.object,
+    userEmail: PropTypes.string, 
+    attemptUpdateUser: PropTypes.func,
+    userEntitiesUpdating: PropTypes.bool,
+    userEntitiesError: PropTypes.object,
   }
 
   constructor(props) {
@@ -36,7 +41,8 @@ export default class Settings extends React.Component {
   }
 
   render() {
-    const { loginReduxError, loginReduxFetching, attemptChangePassword, userId } = this.props
+    const { loginReduxError, loginReduxFetching, attemptChangePassword, userId,
+      userProfile, userEmail, attemptUpdateUser, userEntitiesUpdating, userEntitiesError } = this.props
     return (
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
@@ -48,7 +54,15 @@ export default class Settings extends React.Component {
           isModal
           whiteBG
         />
-        {this.state.activeTab === 'Account' && <EditAccount/>}
+        {this.state.activeTab === 'Account' && 
+          <EditAccount
+            attemptUpdateUser={attemptUpdateUser}
+            userEntitiesUpdating={userEntitiesUpdating}
+            userEntitiesError={userEntitiesError}
+            userProfile={userProfile}
+            userEmail={userEmail}
+          />
+        }
         {this.state.activeTab === 'Services' && <EditServices/>}
         {this.state.activeTab === 'Notifications' && <EditNotifications/>}
         {this.state.activeTab === 'Password' && 

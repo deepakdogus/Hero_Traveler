@@ -56,17 +56,24 @@ export default class HeaderModals extends React.Component {
     openSignupModal: PropTypes.func,
     attemptLogin: PropTypes.func,
     openLoginModal: PropTypes.func,
-    user: PropTypes.string, // actually just a userId
+    userId: PropTypes.string,
+    currentUserProfile: PropTypes.object,
+    currentUserEmail: PropTypes.string, 
     attemptChangePassword: PropTypes.func,     
     loginReduxFetching: PropTypes.bool,
     loginReduxError: PropTypes.object,
+    attemptUpdateUser: PropTypes.func,
+    userEntitiesUpdating: PropTypes.bool,
+    userEntitiesError: PropTypes.object,
   }
   closeGlobalModal = () => {
     this.props.closeGlobalModal()
   }
   render() {
     const { globalModalThatIsOpen, loginReduxFetching, loginReduxError,
-      closeModal, modal, globalModalParams, attemptChangePassword, user } = this.props
+      closeModal, modal, globalModalParams, attemptChangePassword, userId,
+      attemptUpdateUser, userEntitiesUpdating, userEntitiesError, 
+      currentUserEmail, currentUserProfile, } = this.props
     return (
       <div>
         <Modal
@@ -117,7 +124,7 @@ export default class HeaderModals extends React.Component {
           contentLabel='Notifications Thread'
           onRequestClose={closeModal}
         >
-          <NotificationsThread closeModal={closeModal} profile={this.props.user}/>
+          <NotificationsThread closeModal={closeModal} profile={this.props.userId}/>
         </RightModal>
         <RightModal
           isOpen={globalModalThatIsOpen === 'comments'}
@@ -139,7 +146,12 @@ export default class HeaderModals extends React.Component {
             attemptChangePassword={attemptChangePassword}
             loginReduxFetching={loginReduxFetching}
             loginReduxError={loginReduxError}
-            userId={user}
+            attemptUpdateUser={attemptUpdateUser}
+            userEntitiesUpdating={userEntitiesUpdating}
+            userEntitiesError={userEntitiesError}
+            userId={userId}
+            userProfile={currentUserProfile}
+            userEmail={currentUserEmail}
           />
         </RightModal>
         <CenterModal
@@ -154,7 +166,7 @@ export default class HeaderModals extends React.Component {
           contentLabel='Inbox'
           onRequestClose={closeModal}
         >
-          <Inbox closeModal={closeModal} profile={this.props.user}/>
+          <Inbox closeModal={closeModal} profile={this.props.userId}/>
         </RightModal>
       </div>
     )

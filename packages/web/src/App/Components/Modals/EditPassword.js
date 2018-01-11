@@ -6,23 +6,13 @@ import InputWithLabel from '../InputWithLabel'
 import CenteredButtons from '../CenteredButtons'
 import VerticalCenter from '../VerticalCenter'
 import RoundedButton from '../RoundedButton'
+import { ErrorMessage, FetchingMessage } from './Shared/'
 
 const Container = styled.div``
 
 const InputContainer = styled.div`
   padding: 25px;
 `
-
-const ErrorMessage = styled.p`
-  padding-left: 25px;
-  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
-  color: ${props => props.theme.Colors.redHighlights};
-`
-
-const FetchingMessage = styled(ErrorMessage)`
-  color: ${props => props.theme.Colors.background};
-`
-
 export default class EditPassword extends React.Component {
   static propTypes = {
     attemptChangePassword: PropTypes.func, 
@@ -37,15 +27,22 @@ export default class EditPassword extends React.Component {
       oldPassword: '',
       newPassword: '',
       retypePassword: '',
-      localError: ''
+      localError: '',
+      success: false,
     }
   }
 
+  componentWillReceiveProps(newProps) {
+    if (this.props.loginReduxFetching && !newProps.loginReduxFetching && !newProps.loginReduxError) {
+      this.setState({
+        success: true,
+      })
+    }
+  } 
+
   onChangeText = (e) => {
-    console.log("on change text")
     const text = e.target.value
     const field = e.target.id
-    console.log(text, field)
     this.setState({
       [field]: text
     })
@@ -72,6 +69,16 @@ export default class EditPassword extends React.Component {
       this.props.attemptChangePassword(this.props.userId, this.state.oldPassword, this.state.newPassword)
     }
   }
+
+  clearFields = () => {
+    this.setState({
+      oldPassword: '',
+      newPassword: '',
+      retypePassword: '',
+      localError: '',
+      success: false,    
+    })
+  }
   renderButtonLeft = () => {
     return (
       <VerticalCenter>
@@ -81,6 +88,7 @@ export default class EditPassword extends React.Component {
           width='116px'
           type='blackWhite'
           padding='mediumEven'
+          onClick={this.clearFields}
         />
       </VerticalCenter>
     )
@@ -138,9 +146,8 @@ export default class EditPassword extends React.Component {
         </InputContainer>
           { this.state.localError && <ErrorMessage> {this.state.localError} </ErrorMessage> }
           { !!(loginReduxError) && <ErrorMessage> {loginReduxError.toString()} </ErrorMessage> }
-          { loginReduxFetching ? <FetchingMessage>  Fetching... </FetchingMessage>
-          : null
-        }
+          { loginReduxFetching ? <FetchingMessage>  Fetching... </FetchingMessage> : null}
+          { this.state.success && <FetchingMessage>  You have successfully changed your info. </FetchingMessage>}
         <CenteredButtons
           buttonsToRender={[
             this.renderButtonLeft,

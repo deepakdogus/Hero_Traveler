@@ -41,7 +41,6 @@ import {
 } from './SignupSagas'
 import {
   logout,
-  updateUser,
   resumeSession,
   refreshSession
 } from './SessionSagas'
@@ -51,6 +50,7 @@ import { openScreen } from '../../Sagas/OpenScreenSagas'
 import { getCategories } from './CategorySagas'
 import {
   getSuggestedUsers,
+  updateUser,
   loadUser,
   loadUserFollowing,
   loadUserFollowers, userFollowUser, userUnfollowUser, getActivities, seenActivity

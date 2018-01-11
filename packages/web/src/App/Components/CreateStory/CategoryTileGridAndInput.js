@@ -68,6 +68,7 @@ export default class CategoryTileGridAndInput extends React.Component {
     categoryInputText: PropTypes.string,
     handleTextInput: PropTypes.func,
     addCategory: PropTypes.func,
+    isSameTag: PropTypes.func
   }
 
   componentWillMount() {
@@ -82,7 +83,7 @@ export default class CategoryTileGridAndInput extends React.Component {
   setUpSearchListeners = (helper) => {
     helper.on('result', res => {
       if (res.hits){
-        this.props.updateCategoriesList(res.hits)
+        this.props.updateCategoriesList(_.differenceWith(res.hits, this.props.selectedCategories, this.props.isSameTag))
       }
     })
   }

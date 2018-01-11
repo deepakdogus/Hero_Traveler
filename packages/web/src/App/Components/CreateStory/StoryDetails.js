@@ -173,28 +173,13 @@ export default class StoryDetails extends React.Component {
   }
 
   handleCategorySelect = (event, category) => {
-    // Need to fetch entire category if it exits
     event.stopPropagation()
     const categoryTitle = event.target.innerHTML || category
+    // If it is already a category in DB, we need to fetch the whole object
     const clickedCategory = _.find(this.state.categoriesList, cat => cat.title === categoryTitle) || { title: categoryTitle }
-    console.log('clickedCategory', clickedCategory)
     const categories = this.props.workingDraft.categories.concat([clickedCategory])
-
-    // Need to find a way to prevent user from addinng duplicate categories (loading deault shou;ld filter out anything already in working draft)
-
-
-
-
-
-
-
-    
-    // this.updateCategoriesList(_.differenceWith(this.state.categoriesList, [clickedCategory], isSameTag))
-    this.loadDefaultCategories()
-    this.toggleCategoryPicker()
-    this.setState({
-      categoryInputText: '',
-    })
+    this.loadDefaultCategories([clickedCategory])
+    this.setState({categoryInputText: ''})
     this.props.onInputChange({categories})
   }
 
@@ -222,10 +207,10 @@ export default class StoryDetails extends React.Component {
     }
   }
 
-  loadDefaultCategories = () => {
+  loadDefaultCategories = (excludeThese = []) => {
     if (this.props.categories && this.props.workingDraft) {
       const categoriesList = formatCategories(this.props.categories)
-      this.updateCategoriesList(_.differenceWith(categoriesList, this.props.workingDraft.categories, isSameTag))
+      this.updateCategoriesList(_.differenceWith(categoriesList, [...this.props.workingDraft.categories, ...excludeThese], isSameTag))
     }
   }
 
@@ -276,6 +261,7 @@ export default class StoryDetails extends React.Component {
             updateCategoriesList={this.updateCategoriesList}
             categoryInputText={this.state.categoryInputText}
             handleTextInput={this.handleCategoryInputTextChange}
+            isSameTag={isSameTag}
           >
         {/* Making the Category Picker a child so we can position it absolutely, relative
           to where the last category tile is

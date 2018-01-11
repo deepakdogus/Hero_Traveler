@@ -1,16 +1,4 @@
 PODS:
-  - Bolts (1.9.0):
-    - Bolts/AppLinks (= 1.9.0)
-    - Bolts/Tasks (= 1.9.0)
-  - Bolts/AppLinks (1.9.0):
-    - Bolts/Tasks
-  - Bolts/Tasks (1.9.0)
-  - FBSDKCoreKit (4.23.0):
-    - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.23.0):
-    - FBSDKCoreKit
-  - FBSDKShareKit (4.23.0):
-    - FBSDKCoreKit
   - GoogleMaps (2.4.0):
     - GoogleMaps/Maps (= 2.4.0)
   - GoogleMaps/Base (2.4.0)
@@ -26,9 +14,6 @@ PODS:
   - IQKeyboardManager (4.0.9)
 
 DEPENDENCIES:
-  - FBSDKCoreKit
-  - FBSDKLoginKit
-  - FBSDKShareKit
   - GoogleMaps
   - GooglePlacePicker
   - GooglePlaces
@@ -37,10 +22,6 @@ DEPENDENCIES:
   - IQKeyboardManager
 
 SPEC CHECKSUMS:
-  Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
-  FBSDKCoreKit: d7829f5a69901cd7296105328e4c3c3fc7da6518
-  FBSDKLoginKit: 6b92bd65f319d669d2b0730e49db495ef1660566
-  FBSDKShareKit: 65751c3b9937ab9d594e6c37611ecc115ceeb448
   GoogleMaps: 8436ab5d1c25e36915b2f7416d0c8e3fa2e76c61
   GooglePlacePicker: 755f10343d71280c7b016823e73fbae9625dfa8a
   GooglePlaces: aafe5990fa7951e98e078761bbdaaf236d7e0c65
@@ -48,6 +29,6 @@ SPEC CHECKSUMS:
   iOS-MagnifyingGlass: b11b7d3e8be7de22c85f0edcaa75538bdf0827dc
   IQKeyboardManager: 322c7405df3eb5f7e50dede32ea937bf3d4364e0
 
-PODFILE CHECKSUM: a48ffd65fb4e80de9f4355b26910b447935c18c8
+PODFILE CHECKSUM: a81d9728e4dfb1e6f273e0c4a1b51bc1093395f9
 
 COCOAPODS: 1.3.1

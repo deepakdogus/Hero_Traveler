@@ -10,6 +10,9 @@ const Sidebar = styled.div`
 	background-color: ${props => props.theme.Colors.white};
 	box-shadow: 3px 3px 5px -1px ${props => props.theme.Colors.background};
 	padding: 20px 0px 20px 40px;
+	animation-name: fadeIn;
+	animation-duration: 1s;
+	overflow: hidden;
 `
 const SidebarDemiLink = styled.p`
 	font-family: ${props => props.theme.Fonts.type.sourceSansPro};

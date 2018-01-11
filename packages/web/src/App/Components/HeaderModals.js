@@ -58,7 +58,8 @@ export default class HeaderModals extends React.Component {
     openLoginModal: PropTypes.func,
     userId: PropTypes.string,
     currentUserProfile: PropTypes.object,
-    currentUserEmail: PropTypes.string, 
+    currentUserEmail: PropTypes.string,
+    currentUserNotificationTypes: PropTypes.arrayOf(PropTypes.string),
     attemptChangePassword: PropTypes.func,     
     loginReduxFetching: PropTypes.bool,
     loginReduxError: PropTypes.object,
@@ -73,7 +74,7 @@ export default class HeaderModals extends React.Component {
     const { globalModalThatIsOpen, loginReduxFetching, loginReduxError,
       closeModal, modal, globalModalParams, attemptChangePassword, userId,
       attemptUpdateUser, userEntitiesUpdating, userEntitiesError, 
-      currentUserEmail, currentUserProfile, } = this.props
+      currentUserEmail, currentUserProfile, currentUserNotificationTypes, } = this.props
     return (
       <div>
         <Modal
@@ -152,6 +153,7 @@ export default class HeaderModals extends React.Component {
             userId={userId}
             userProfile={currentUserProfile}
             userEmail={currentUserEmail}
+            userNotificationTypes={currentUserNotificationTypes}
           />
         </RightModal>
         <CenterModal

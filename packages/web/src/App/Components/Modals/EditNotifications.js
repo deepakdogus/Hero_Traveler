@@ -1,33 +1,90 @@
 import React from 'react'
 import styled from 'styled-components'
-
+import PropTypes from 'prop-types'
 import EditNotificationRow from '../EditNotificationRow'
 
 const notificationTypes = [
-  { text: 'New Followers', isNotifying: true },
-  { text: 'Story Published', isNotifying: false },
-  { text: 'Newsletter', isNotifying: true },
-  { text: 'Suggested Authors', isNotifying: false },
-  { text: 'Story of the Day', isNotifying: true },
+  { text: 'New Followers', value: 'user_new_follower' },
+  { text: 'Story Liked', value: 'story_like' },
+  { text: 'New Comments', value: 'story_comment' },
 ]
 
 const Container = styled.div`
   padding: 25px;
 `
 export default class EditNotifications extends React.Component {
+  static propTypes = {
+    attemptUpdateUser: PropTypes.func,
+    userEntitiesUpdating: PropTypes.bool,
+    userEntitiesError: PropTypes.object,
+    userNotificationTypes: PropTypes.arrayOf(PropTypes.string)
+  }
 
-  toggleNotificationSwitch = () => {}
+  constructor(props) {
+    super(props)
+    this.state = {
+      typesMap: [],
+    }
+  }
+
+  componentDidMount() {
+    console.log('ths orios', this.props)
+    this.updateTypesMap(this.props)
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.userNotificationTypes) {
+      this.updateTypesMap(newProps)
+    } 
+  }
+
+  updateTypesMap = (propsToUse) => {
+    this.setState({
+      typesMap: notificationTypes.map(type => {
+        if (propsToUse.userNotificationTypes.includes(type.value)) {
+          return { ...type, isNotifying: true }
+        } else {
+          return { ...type, isNotifying: false }
+        }
+      })
+    })
+  }
+
+  toggleNotificationSwitch = (identifier) => {
+
+    const newTypesMap = this.state.typesMap.map(type => { 
+        if (type.value === identifier) {
+          return { ...type, isNotifying: !type.isNotifying }
+        } else {
+          return { ...type }
+        }
+      })
+    console.log('STATE', this.state)
+    // this.setState({
+    //   typesMap: this.state.typesMap.map(type => { 
+    //     if (type.value === identifier) {
+    //       return { ...type, isNotifying: !type.isNotifying }
+    //     } else {
+    //       return { ...type }
+    //     }
+    //   })
+    // })
+    this.props.attemptUpdateUser({
+      notificationTypes: newTypesMap.filter(type => (!!type.isNotifying)).map(type => type.value)
+    })
+  }
 
   renderEditNotificationRows(notificationTypes) {
-    return notificationTypes.map((element,index) => {
+    console.log('state', this.state)
+    return this.state.typesMap.map((element, index) => {
       return (
         <EditNotificationRow
           index={index}
           key={element.text}
           text={element.text}
-          isNotifying={element.isNotifying}
-          toggleNotificationSwitch={this.toggleNotificationSwitch}
+          toggleNotificationSwitch={() => this.toggleNotificationSwitch(element.value)}
           logOnChange={this.logOnChange}
+          checked={element.isNotifying}
         />
       )
     })

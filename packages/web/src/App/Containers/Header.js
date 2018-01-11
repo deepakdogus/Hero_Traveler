@@ -35,6 +35,7 @@ class Header extends React.Component {
     currentUserId: PropTypes.string,
     currentUserProfile: PropTypes.object,
     currentUserEmail: PropTypes.string, 
+    currentUserNotificationTypes: PropTypes.arrayOf(PropTypes.string),
     isLoggedIn: PropTypes.bool,
     loginReduxFetching: PropTypes.bool, 
     loginReduxError: PropTypes.object, 
@@ -89,7 +90,8 @@ class Header extends React.Component {
 
   render () {
     const { isLoggedIn, loginReduxFetching, loginReduxError, attemptLogin, attemptChangePassword, closeGlobalModal, openGlobalModal, 
-      currentUserId, currentUserProfile, currentUserEmail, globalModalThatIsOpen, globalModalParams, reroute, attemptUpdateUser, userEntitiesUpdating, userEntitiesError } = this.props
+      currentUserId, currentUserProfile, currentUserEmail, currentUserNotificationTypes, globalModalThatIsOpen, globalModalParams,
+       reroute, attemptUpdateUser, userEntitiesUpdating, userEntitiesError } = this.props
     const SelectedGrid = this.props.blackHeader ? StyledGridBlack : StyledGrid
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
     return (
@@ -117,6 +119,7 @@ class Header extends React.Component {
               userId={currentUserId}
               currentUserProfile={currentUserProfile}
               currentUserEmail={currentUserEmail}
+              currentUserNotificationTypes={currentUserNotificationTypes}
               modal={this.state.modal}
               globalModalThatIsOpen={globalModalThatIsOpen}
               globalModalParams={globalModalParams}
@@ -153,6 +156,7 @@ function mapStateToProps(state) {
     userEntitiesError: state.entities.users.error,
     currentUserProfile: (currentUser) && currentUser.profile,
     currentUserEmail: (currentUser) && currentUser.email,
+    currentUserNotificationTypes: (currentUser) && currentUser.notificationTypes,
   }
 }
 

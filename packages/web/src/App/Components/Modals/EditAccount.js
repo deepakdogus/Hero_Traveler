@@ -24,11 +24,11 @@ export default class EditAccount extends React.Component {
     userEmail: PropTypes.string,
   }
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      name: '',
-      email: '',
+      name: this.props.userProfile.fullName,
+      email: this.props.userEmail,
       success: false,
       localError: '',
     }

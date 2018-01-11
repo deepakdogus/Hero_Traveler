@@ -26,6 +26,7 @@ export default class Settings extends React.Component {
     attemptUpdateUser: PropTypes.func,
     userEntitiesUpdating: PropTypes.bool,
     userEntitiesError: PropTypes.object,
+    userNotificationTypes: PropTypes.arrayOf(PropTypes.string),
   }
 
   constructor(props) {
@@ -42,7 +43,8 @@ export default class Settings extends React.Component {
 
   render() {
     const { loginReduxError, loginReduxFetching, attemptChangePassword, userId,
-      userProfile, userEmail, attemptUpdateUser, userEntitiesUpdating, userEntitiesError } = this.props
+      userProfile, userEmail, userNotificationTypes = [], attemptUpdateUser, userEntitiesUpdating,
+      userEntitiesError } = this.props
     return (
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
@@ -64,7 +66,14 @@ export default class Settings extends React.Component {
           />
         }
         {this.state.activeTab === 'Services' && <EditServices/>}
-        {this.state.activeTab === 'Notifications' && <EditNotifications/>}
+        {this.state.activeTab === 'Notifications' && 
+          <EditNotifications
+            attemptUpdateUser={attemptUpdateUser}
+            userEntitiesUpdating={userEntitiesUpdating}
+            userEntitiesError={userEntitiesError}
+            userNotificationTypes={userNotificationTypes}
+          />
+        }
         {this.state.activeTab === 'Password' && 
           <EditPassword
             attemptChangePassword={attemptChangePassword}

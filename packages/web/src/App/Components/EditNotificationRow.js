@@ -59,7 +59,6 @@ export default class EditNotificationRow extends Component {
   }
 
   render() {
-    console.log('INDEX', this.props.index)
     return (
       <Container>
         {this.props.index > 0 ? null : <HorizontalDivider color='light-grey'/>}

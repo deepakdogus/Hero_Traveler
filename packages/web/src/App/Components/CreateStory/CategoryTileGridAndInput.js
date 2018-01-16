@@ -131,12 +131,12 @@ export default class CategoryTileGridAndInput extends React.Component {
     return (
       <StyledGrid>
         <VerticallyCenterRow>
-          {!!renderedTiles.length && <div style={{marginLeft: '15px', flexDirection: 'row', alignItems: 'center', display: 'flex'}}>
-          {renderedTiles}
-          </div>
-        }
+          {!!renderedTiles.length &&
+            <div style={{marginLeft: '15px', flexDirection: 'row', alignItems: 'center', display: 'flex'}}>
+              {renderedTiles}
+            </div>
+          }
           <InputWrapper>
-
             <StyledInput
               type='text'
               placeholder='Add Categories'

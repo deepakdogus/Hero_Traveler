@@ -47,7 +47,7 @@ static propTypes = {
   }
 
   handleClickOutside() {
-    // If user clicks outside Picker, it is closed and default categories are reloaded so that if 
+    // If user clicks outside Picker, it is closed and default categories are reloaded so that if
     // user reopens Picker, there are guaranteed to be options
     this.props.closePicker()
     this.props.loadDefaultCategories()
@@ -58,9 +58,8 @@ static propTypes = {
         return (
           <div key={tag.id ? tag.id : tag.title}> {/* Tags do not yet have ids if they have just been entered by user*/}
             <Tag onClick={(e) => this.props.handleCategorySelect(e, { ...tag })}>{tag.title}</Tag>
-            {/* Get rid of bottom divider*/} 
-            { (idx !== (arr.length - 1)) 
-              ? <StyledHorizontalDivider color='lighter-grey' opaque/> 
+            { (idx !== (arr.length - 1))
+              ? <StyledHorizontalDivider color='lighter-grey' opaque/>
               : <BottomSpacer />
             }
           </div>

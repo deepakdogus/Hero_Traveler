@@ -91,7 +91,6 @@ export default class EditAccount extends React.Component {
   }
 
   renderButtonLeft = () => {
-    // should make this close the modal or something or empty field
     return (
       <VerticalCenter>
         <RoundedButton

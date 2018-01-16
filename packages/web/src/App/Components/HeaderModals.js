@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Modal from 'react-modal'
-
+import styled from 'styled-components'
 import Login from './Modals/HeaderModals/Login'
 import Signup from './Modals/HeaderModals/Signup'
 import ResetPassword from './Modals/HeaderModals/ResetPassword'
@@ -14,6 +14,8 @@ import Inbox from './Modals/Inbox'
 import RightModal from './RightModal'
 import CenterModal from './CenterModal'
 import NotificationsThread from './Modals/NotificationsThread'
+
+const Container = styled.div``
 
 const customModalStyles = {
   content: {
@@ -76,7 +78,7 @@ export default class HeaderModals extends React.Component {
       attemptUpdateUser, userEntitiesUpdating, userEntitiesError, 
       currentUserEmail, currentUserProfile, currentUserNotificationTypes, } = this.props
     return (
-      <div>
+      <Container>
         <Modal
           isOpen={modal === 'login'}
           contentLabel="Login Modal"
@@ -170,7 +172,7 @@ export default class HeaderModals extends React.Component {
         >
           <Inbox closeModal={closeModal} profile={this.props.userId}/>
         </RightModal>
-      </div>
+      </Container>
     )
   }
 }

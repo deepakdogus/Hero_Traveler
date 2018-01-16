@@ -50,7 +50,6 @@ export default class EditNotifications extends React.Component {
   }
 
   toggleNotificationSwitch = (identifier) => {
-
     const newTypesMap = this.state.typesMap.map(type => { 
         if (type.value === identifier) {
           return { ...type, isNotifying: !type.isNotifying }
@@ -58,14 +57,13 @@ export default class EditNotifications extends React.Component {
           return { ...type }
         }
       })
-    
+
     this.props.attemptUpdateUser({
       notificationTypes: newTypesMap.filter(type => (!!type.isNotifying)).map(type => type.value)
     })
   }
 
   renderEditNotificationRows(notificationTypes) {
-    console.log('state', this.state)
     return this.state.typesMap.map((element, index) => {
       return (
         <EditNotificationRow

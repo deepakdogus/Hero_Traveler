@@ -76,7 +76,7 @@ class Header extends React.Component {
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
     return (
       <div>
-        <SelectedGrid fluid>
+        <SelectedGrid fluid fixed>
           {isLoggedIn &&
           <HeaderLoggedIn
               user={currentUser}

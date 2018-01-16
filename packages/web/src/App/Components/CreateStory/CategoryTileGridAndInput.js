@@ -47,7 +47,7 @@ const StyledIcon = styled(Icon)`
   margin-left: 10px;
 `
 const StyledGrid = styled(Grid)`
-  margin-left: 25px;
+  margin-left: 0px;
   width: 90%;
 `
 
@@ -131,8 +131,12 @@ export default class CategoryTileGridAndInput extends React.Component {
     return (
       <StyledGrid>
         <VerticallyCenterRow>
+          {!!renderedTiles.length && <div style={{marginLeft: '15px', flexDirection: 'row', alignItems: 'center', display: 'flex'}}>
           {renderedTiles}
+          </div>
+        }
           <InputWrapper>
+
             <StyledInput
               type='text'
               placeholder='Add Categories'

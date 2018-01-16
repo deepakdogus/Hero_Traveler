@@ -32,6 +32,11 @@ const StyledHorizontalDivider = styled(HorizontalDivider)`
   border-width: 1px;
 `
 
+const BottomSpacer = styled.div`
+  width: 100%;
+  margin-top: 8px;
+`
+
 class CategoryPicker extends React.Component {
 
 static propTypes = {
@@ -49,11 +54,15 @@ static propTypes = {
   }
   renderList(categoriesList) {
     return (
-      categoriesList.map((tag, idx) => {
+      categoriesList.map((tag, idx, arr) => {
         return (
           <div key={tag.id ? tag.id : tag.title}> {/* Tags do not yet have ids if they have just been entered by user*/}
             <Tag onClick={(e) => this.props.handleCategorySelect(e, { ...tag })}>{tag.title}</Tag>
-            <StyledHorizontalDivider color='lighter-grey' opaque/>
+            {/* Get rid of bottom divider*/} 
+            { (idx !== (arr.length - 1)) 
+              ? <StyledHorizontalDivider color='lighter-grey' opaque/> 
+              : <BottomSpacer />
+            }
           </div>
         )
       })

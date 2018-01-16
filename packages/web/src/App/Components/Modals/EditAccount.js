@@ -74,7 +74,6 @@ export default class EditAccount extends React.Component {
     const updates = {}
     if (this.state.name !== this.props.userProfile.fullName){
       updates.profile = { ...this.props.userProfile, fullName: this.state.name }
-      console.log('profile', updates)
     }
     if (this.state.email !== this.props.userEmail){
       updates.email = this.state.email
@@ -123,7 +122,6 @@ export default class EditAccount extends React.Component {
 
   render() {
     const { userEntitiesUpdating, userEntitiesError } = this.props
-    console.log('STATE', this.state)
     return (
       <Container>
         <InputContainer>

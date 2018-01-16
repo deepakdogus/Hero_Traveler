@@ -28,7 +28,6 @@ export default class EditNotifications extends React.Component {
   }
 
   componentDidMount() {
-    console.log('ths orios', this.props)
     this.updateTypesMap(this.props)
   }
 
@@ -59,16 +58,7 @@ export default class EditNotifications extends React.Component {
           return { ...type }
         }
       })
-    console.log('STATE', this.state)
-    // this.setState({
-    //   typesMap: this.state.typesMap.map(type => { 
-    //     if (type.value === identifier) {
-    //       return { ...type, isNotifying: !type.isNotifying }
-    //     } else {
-    //       return { ...type }
-    //     }
-    //   })
-    // })
+    
     this.props.attemptUpdateUser({
       notificationTypes: newTypesMap.filter(type => (!!type.isNotifying)).map(type => type.value)
     })

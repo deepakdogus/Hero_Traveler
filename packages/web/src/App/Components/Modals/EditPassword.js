@@ -110,7 +110,6 @@ export default class EditPassword extends React.Component {
 
   render() {
     const { loginReduxFetching, loginReduxError } = this.props
-    console.log('this props', loginReduxError, JSON.stringify(loginReduxError), !!(loginReduxError))
     return (
       <Container>
         <InputContainer>

@@ -85,7 +85,6 @@ export default class RNDraftJs extends Component {
 
   onChange = (editorState, autocompleteInfo) => {
     if (editorState) {
-      console.log('editorState', editorState)
       const previous = this.getToolbarInfo(this.state.editorState)
       this.setState({editorState, autocompleteInfo})
       const current = this.getToolbarInfo(editorState)

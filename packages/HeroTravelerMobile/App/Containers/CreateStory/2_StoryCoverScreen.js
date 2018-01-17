@@ -85,6 +85,8 @@ class StoryCoverScreen extends Component {
     discardDraft: PropTypes.func,
     completeTooltip: PropTypes.func,
     resetCreateStore: PropTypes.func,
+    workingDraft: PropTypes.object,
+    originalDraft: PropTypes.object,
   }
 
   static defaultProps = {
@@ -298,9 +300,7 @@ class StoryCoverScreen extends Component {
   }
 
   _onLeftNo = () => {
-    console.log('on Left no')
     if (!this.isSavedDraft()) {
-      console.log('WORKING DRAFT', this.props.workingDraft)
       this.props.discardDraft(this.props.workingDraft.id)
     } else {
       this.props.resetCreateStore()
@@ -308,24 +308,13 @@ class StoryCoverScreen extends Component {
     this.navBack()
   }
 
-  _onLeft = () => {
-    console.log('_onLeft')
-
-    const workingDraft = this.props.workingDraft
-    const originalDraft = this.props.originalDraft
-
- 
-    if (isEqual(workingDraft.title, originalDraft.title) && isEqual(workingDraft.description, originalDraft.description) && 
-      isEqual(workingDraft.coverCaption, originalDraft.coverCaption)  && isEqual((workingDraft.coverImage 
-        && workingDraft.coverImage.name), (originalDraft.coverImage && originalDraft.coverImage.name)) && !this.state.contentTouched){
-      console.log('NUTTIN BUT NUTTIN changed')
-      this._onLeftNo()
-
-    } else {
-
+  _onLeft = () => { 
+    if (this.draftHasChanged()){
       this.setState({ activeModal: 'cancel' })
+    } else {
+      // If there are no changes, just close without opening the modal
+      this._onLeftNo()
     }
-
   }
 
   closeModal = () => {
@@ -336,11 +325,11 @@ class StoryCoverScreen extends Component {
     const workingDraft = this.props.workingDraft
     const originalDraft = this.props.originalDraft
 
- 
     if (isEqual(workingDraft.title, originalDraft.title) 
       && isEqual(workingDraft.description, originalDraft.description)
       && isEqual(workingDraft.coverCaption, originalDraft.coverCaption)
       && isEqual((workingDraft.coverImage && workingDraft.coverImage.name), (originalDraft.coverImage && originalDraft.coverImage.name))
+      && isEqual((workingDraft.coverVideo && workingDraft.coverVideo.name), (originalDraft.coverVideo && originalDraft.coverVideo.name))
       && !this.state.contentTouched && 
       isEqual(workingDraft.tripDate, originalDraft.tripDate)
       && isEqual(workingDraft.location, originalDraft.location)
@@ -811,7 +800,6 @@ class StoryCoverScreen extends Component {
   }
 
   reportContentTouched = () => {
-    console.log('report content touched')
     this.setState({
       contentTouched: true
     })

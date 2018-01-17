@@ -8,7 +8,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import styles from './Styles/StoryListStyle'
-import UXActions from '../Shared/Redux/UXRedux'
+import UXActions from '../Redux/UXRedux'
 
 /*
 add pagingIsDisabled instead of pagingEnabled as a prop so that paging is default

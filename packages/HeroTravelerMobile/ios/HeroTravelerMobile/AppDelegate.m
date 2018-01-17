@@ -16,6 +16,8 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import "SplashScreen.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
+@import GooglePlaces;
+@import GoogleMaps;
 
 @implementation AppDelegate
 
@@ -57,6 +59,8 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
   [IQKeyboardManager sharedManager].enable = YES;
   [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
+  [GMSPlacesClient provideAPIKey:@"AIzaSyCwX6XPRPYobXzotl-P7k3iiA2mNedMz1g"];
+  [GMSServices provideAPIKey:@"AIzaSyCwX6XPRPYobXzotl-P7k3iiA2mNedMz1g"];
 
   NSURL *jsCodeLocation;
 

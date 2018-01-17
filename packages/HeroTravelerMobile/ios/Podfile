@@ -10,6 +10,9 @@ target 'HeroTravelerMobile' do
   pod "Bolts"
   pod "IQKeyboardManager"
   pod 'iOS-MagnifyingGlass', '~> 0.0.2'
+  pod 'GooglePlaces'
+  pod 'GoogleMaps'
+  pod 'GooglePlacePicker'
 
   # Pods for HeroTravelerMobile
   pod "HockeySDK", :subspecs => ['AllFeaturesLib']

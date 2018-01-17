@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-
+import onClickOutside from 'react-onclickoutside'
 import DayPicker from 'react-day-picker'
 import './Styles/ReactDayPickerStyles.css'
 
@@ -36,12 +36,9 @@ const StyledIconRight = styled(Icon)`
 `
 
 function Navbar({
-  nextMonth,
-  previousMonth,
   onPreviousClick,
   onNextClick,
   className,
-  localeUtils,
 }) {
   const styleLeft = {
     float: 'left',
@@ -54,27 +51,32 @@ function Navbar({
       <StyledIconLeft
         name='arrowLeftRed'
         style={styleLeft}
-        onClick={onPreviousClick}/>
+        onClick={() => onPreviousClick()}
+      />
       <StyledIconRight
         name='arrowRightRed'
         style={styleRight}
-        onClick={onNextClick}/>
+        onClick={() => onNextClick()}
+      />
     </div>
   );
 }
 
-export default class ReactDayPicker extends React.Component {
+class ReactDayPicker extends React.Component {
   static propTypes = {
     handleDayClick: PropTypes.func,
+    togglePicker: PropTypes.func,
   }
 
-
+  handleClickOutside() {
+    this.props.togglePicker()
+  }
   render() {
     return (
       <Container>
         <DayPickerContainer>
           <DayPicker
-            navbarElement={<Navbar />}
+            navbarElement={<Navbar/>}
             onDayClick={this.props.handleDayClick}
           />
         </DayPickerContainer>
@@ -82,3 +84,5 @@ export default class ReactDayPicker extends React.Component {
     )
   }
 }
+  
+export default onClickOutside(ReactDayPicker)

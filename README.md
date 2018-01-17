@@ -91,6 +91,10 @@ Eager Notification URL: `https://06859835.ngrok.io/story/draft/cover-video`(just
 * Replace anything that says `matthew` with your name
 * See a dev for additional fields
 
+### 5. packages/HeroTravelerMobile
+* Create `App/Config/Env.js` and copy contents from the `packages/web` equivalent
+
+
 
 
 ## Running the project locally

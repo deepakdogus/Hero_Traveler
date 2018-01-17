@@ -317,11 +317,11 @@ class StoryCoverScreen extends Component {
 
     console.log(this.isEqual(workingDraft.title, originalDraft.title), this.isEqual(workingDraft.description, originalDraft.description), 
       this.isEqual(workingDraft.coverCaption, originalDraft.coverCaption) , this.isEqual((workingDraft.coverImage 
-        && workingDraft.coverImage.id), (originalDraft.coverImage && originalDraft.coverImage.id)), !this.state.contentTouched)
+        && workingDraft.coverImage.name), (originalDraft.coverImage && originalDraft.coverImage.name)), !this.state.contentTouched)
  
     if (this.isEqual(workingDraft.title, originalDraft.title) && this.isEqual(workingDraft.description, originalDraft.description) && 
       this.isEqual(workingDraft.coverCaption, originalDraft.coverCaption)  && this.isEqual((workingDraft.coverImage 
-        && workingDraft.coverImage.id), (originalDraft.coverImage && originalDraft.coverImage.id)) && !this.state.contentTouched){
+        && workingDraft.coverImage.name), (originalDraft.coverImage && originalDraft.coverImage.name)) && !this.state.contentTouched){
       console.log('NUTTIN BUT NUTTIN changed')
       this._onLeftNo()
 

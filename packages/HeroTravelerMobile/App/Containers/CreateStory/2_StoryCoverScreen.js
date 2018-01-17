@@ -322,24 +322,19 @@ class StoryCoverScreen extends Component {
   }
 
   draftHasChanged = () => {
-    const workingDraft = this.props.workingDraft
-    const originalDraft = this.props.originalDraft
-
-    if (isEqual(workingDraft.title, originalDraft.title) 
-      && isEqual(workingDraft.description, originalDraft.description)
-      && isEqual(workingDraft.coverCaption, originalDraft.coverCaption)
-      && isEqual((workingDraft.coverImage && workingDraft.coverImage.name), (originalDraft.coverImage && originalDraft.coverImage.name))
-      && isEqual((workingDraft.coverVideo && workingDraft.coverVideo.name), (originalDraft.coverVideo && originalDraft.coverVideo.name))
-      && !this.state.contentTouched && 
-      isEqual(workingDraft.tripDate, originalDraft.tripDate)
-      && isEqual(workingDraft.location, originalDraft.location)
-      && isEqual(workingDraft.type, originalDraft.type)
-      && isEqual(workingDraft.categories, originalDraft.categories)
-    ){
-      return false
-    } else {
-      return true
-    }
+    return !_.every([
+      !this.hasTitleChanged(),
+      !this.hasDescriptionChanged(),
+      !this.hasCoverCaptionChanged(),
+      !this.hasImageChanged(),
+      !this.hasVideoChanged(),
+      !this.state.contentTouched ,
+      !this.hasTripDateChanged(),
+      !this.hasLocationChanged(),
+      !this.hasTypeChanged(),
+      !this.hasCategoriesChanged()
+      ]
+    )
   }
 
   renderCancel = () => {
@@ -416,23 +411,39 @@ class StoryCoverScreen extends Component {
   }
 
   hasTitleChanged() {
-    return !!this.props.workingDraft.title && this.props.workingDraft.title !== this.props.originalDraft.title
+    return !isEqual(this.props.workingDraft.title, this.props.originalDraft.title)
   }
 
   hasDescriptionChanged() {
-    return !!this.props.workingDraft.description && this.props.workingDraft.description !== this.props.originalDraft.description
+    return !isEqual(this.props.workingDraft.description, this.props.originalDraft.description)
   }
 
   hasImageChanged() {
-    return !!this.props.workingDraft.coverImage && this.props.workingDraft.coverImage !== getImageUrl(this.props.originalDraft.coverImage, 'basic')
+    return !isEqual(this.props.workingDraft.coverImage, this.props.originalDraft.coverImage)
   }
 
   hasVideoChanged() {
-    return !!this.props.workingDraft.coverVideo && this.props.workingDraft.coverVideo !== getVideoUrl(this.props.originalDraft.coverVideo)
+    return !isEqual(this.props.workingDraft.coverVideo, this.props.originalDraft.coverVideo)
   }
 
   hasCoverCaptionChanged() {
-    return !!this.props.workingDraft.coverCaption && this.props.workingDraft.coverCaption !== this.props.originalDraft.coverCaption
+    return !isEqual(this.props.workingDraft.coverCaption, this.props.originalDraft.coverCaption)
+  }
+
+  hasTripDateChanged() {
+    return !isEqual(this.props.workingDraft.tripDate, this.props.originalDraft.tripDate) 
+  }
+
+  hasLocationChanged(){
+    return !isEqual(this.props.workingDraft.location, this.props.originalDraft.location)
+  }
+
+  hasTypeChanged() {
+    return !isEqual(this.props.workingDraft.type, this.props.originalDraft.type)
+  }
+
+  hasCategoriesChanged() {
+    return !isEqual(this.props.workingDraft.categories, this.props.originalDraft.categories)
   }
 
   // TODO

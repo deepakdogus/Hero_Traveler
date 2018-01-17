@@ -16,17 +16,12 @@ export default class Video extends Component {
     super(props);
 
     this.state = {
-      showPoster: true,
     };
   }
 
   setNativeProps(nativeProps) {
     this._root.setNativeProps(nativeProps);
   }
-
-  seek = (time) => {
-    this.setNativeProps({ seek: time });
-  };
 
   presentFullscreenPlayer = () => {
     this.setNativeProps({ fullscreen: true });
@@ -40,12 +35,6 @@ export default class Video extends Component {
     this._root = component;
   };
 
-  _onLoadStart = (event) => {
-    if (this.props.onLoadStart) {
-      this.props.onLoadStart(event.nativeEvent);
-    }
-  };
-
   _onLoad = (event) => {
     if (this.props.onLoad) {
       this.props.onLoad(event.nativeEvent);
@@ -55,22 +44,6 @@ export default class Video extends Component {
   _onError = (event) => {
     if (this.props.onError) {
       this.props.onError(event.nativeEvent);
-    }
-  };
-
-  _onProgress = (event) => {
-    if (this.props.onProgress) {
-      this.props.onProgress(event.nativeEvent);
-    }
-  };
-
-  _onSeek = (event) => {
-    if (this.state.showPoster) {
-      this.setState({showPoster: false});
-    }
-
-    if (this.props.onSeek) {
-      this.props.onSeek(event.nativeEvent);
     }
   };
 
@@ -129,10 +102,6 @@ export default class Video extends Component {
   };
 
   _onPlaybackRateChange = (event) => {
-    if (this.state.showPoster && (event.nativeEvent.playbackRate !== 0)) {
-      this.setState({showPoster: false});
-    }
-
     if (this.props.onPlaybackRateChange) {
       this.props.onPlaybackRateChange(event.nativeEvent);
     }
@@ -191,11 +160,8 @@ export default class Video extends Component {
         mainVer: source.mainVer || 0,
         patchVer: source.patchVer || 0,
       },
-      onVideoLoadStart: this._onLoadStart,
       onVideoLoad: this._onLoad,
       onVideoError: this._onError,
-      onVideoProgress: this._onProgress,
-      onVideoSeek: this._onSeek,
       onVideoEnd: this._onEnd,
       onVideoBuffer: this._onBuffer,
       onTimedMetadata: this._onTimedMetadata,
@@ -211,30 +177,6 @@ export default class Video extends Component {
       onAudioBecomingNoisy: this._onAudioBecomingNoisy,
     });
 
-    if (this.props.poster && this.state.showPoster) {
-      const posterStyle = {
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        right: 0,
-        bottom: 0,
-        resizeMode: 'contain',
-      };
-
-      return (
-        <View style={nativeProps.style}>
-          <RCTVideo
-            ref={this._assignRoot}
-            {...nativeProps}
-          />
-          <Image
-            style={posterStyle}
-            source={{uri: this.props.poster}}
-          />
-        </View>
-      );
-    }
-
     return (
       <RCTVideo
         ref={this._assignRoot}
@@ -247,14 +189,10 @@ export default class Video extends Component {
 Video.propTypes = {
   /* Native only */
   src: PropTypes.object,
-  seek: PropTypes.number,
   fullscreen: PropTypes.bool,
-  onVideoLoadStart: PropTypes.func,
   onVideoLoad: PropTypes.func,
   onVideoBuffer: PropTypes.func,
   onVideoError: PropTypes.func,
-  onVideoProgress: PropTypes.func,
-  onVideoSeek: PropTypes.func,
   onVideoEnd: PropTypes.func,
   onTimedMetadata: PropTypes.func,
   onVideoFullscreenPlayerWillPresent: PropTypes.func,
@@ -271,7 +209,6 @@ Video.propTypes = {
     PropTypes.number
   ]),
   resizeMode: PropTypes.string,
-  poster: PropTypes.string,
   repeat: PropTypes.bool,
   paused: PropTypes.bool,
   muted: PropTypes.bool,
@@ -281,15 +218,9 @@ Video.propTypes = {
   playWhenInactive: PropTypes.bool,
   ignoreSilentSwitch: PropTypes.oneOf(['ignore', 'obey']),
   disableFocus: PropTypes.bool,
-  controls: PropTypes.bool,
-  currentTime: PropTypes.number,
-  progressUpdateInterval: PropTypes.number,
-  onLoadStart: PropTypes.func,
   onLoad: PropTypes.func,
   onBuffer: PropTypes.func,
   onError: PropTypes.func,
-  onProgress: PropTypes.func,
-  onSeek: PropTypes.func,
   onEnd: PropTypes.func,
   onFullscreenPlayerWillPresent: PropTypes.func,
   onFullscreenPlayerDidPresent: PropTypes.func,
@@ -314,7 +245,6 @@ Video.propTypes = {
 const RCTVideo = requireNativeComponent('RCTVideo', Video, {
   nativeOnly: {
     src: true,
-    seek: true,
     fullscreen: true,
   },
 });

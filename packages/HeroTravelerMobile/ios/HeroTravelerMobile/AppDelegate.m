@@ -16,8 +16,15 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import "SplashScreen.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
+#import "RCTVideoCache.h"
 @import GooglePlaces;
 @import GoogleMaps;
+
+void myExceptionHandler(NSException *exception)
+{
+  NSArray *stack = [exception callStackReturnAddresses];
+  NSLog(@"Stack trace: %@", stack);
+}
 
 @implementation AppDelegate
 
@@ -61,6 +68,10 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
   [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
   [GMSPlacesClient provideAPIKey:@"AIzaSyCwX6XPRPYobXzotl-P7k3iiA2mNedMz1g"];
   [GMSServices provideAPIKey:@"AIzaSyCwX6XPRPYobXzotl-P7k3iiA2mNedMz1g"];
+  
+//  [[RCTVideoCache get] handleAppOpen];
+
+  NSSetUncaughtExceptionHandler(&myExceptionHandler);
 
   NSURL *jsCodeLocation;
 
@@ -119,6 +130,16 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
                                                       sourceApplication:sourceApplication
                                                       annotation:annotation];
   }
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application
+{
+  [[RCTVideoCache get] handleAppClose];
+}
+
+- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
+{
+  [[RCTVideoCache get] handleMemoryWarning];
 }
 
 //- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url

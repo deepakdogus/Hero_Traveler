@@ -85,6 +85,7 @@ export default class RNDraftJs extends Component {
 
   onChange = (editorState, autocompleteInfo) => {
     if (editorState) {
+      console.log('editorState', editorState)
       const previous = this.getToolbarInfo(this.state.editorState)
       this.setState({editorState, autocompleteInfo})
       const current = this.getToolbarInfo(editorState)
@@ -100,6 +101,7 @@ export default class RNDraftJs extends Component {
   }
 
   _onInsertTextRequest = (event) => {
+    this.props.reportContentTouched()
     let { editorState } = this.state
     let text = event.nativeEvent.text
     let position = event.nativeEvent.position
@@ -144,6 +146,7 @@ export default class RNDraftJs extends Component {
   }
 
   _onBackspaceRequest = () => {
+    this.props.reportContentTouched()
     this.onChange(backspace(this.state.editorState))
   }
 

@@ -91,6 +91,7 @@ class StoryCoverScreen extends Component {
       titleHeight: 34,
       activeModal: undefined,
       toolbarDisplay: false,
+      contentTouched: false
     }
   }
 
@@ -279,6 +280,7 @@ class StoryCoverScreen extends Component {
   }
 
   _onLeftNo = () => {
+    console.log('on Left no')
     if (!this.isSavedDraft()) {
       this.props.discardDraft(this.props.workingDraft.id)
     } else {
@@ -288,6 +290,7 @@ class StoryCoverScreen extends Component {
   }
 
   _onLeft = () => {
+    console.log('_onLeft')
     this.setState({ activeModal: 'cancel' })
   }
 
@@ -295,8 +298,36 @@ class StoryCoverScreen extends Component {
     this.setState({ activeModal: undefined})
   }
 
+  isEqual = (firstItem, secondItem) => {
+    if (!!firstItem && !secondItem || !firstItem && !!secondItem) {
+      return false
+    } else if (!!firstItem && !!secondItem) {
+      return firstItem === secondItem
+    } else { 
+      return true
+    }
+  }
+
   renderCancel = () => {
+
     const isDraft = this.props.workingDraft.draft === true
+
+    const workingDraft = this.props.workingDraft
+    const originalDraft = this.props.originalDraft
+
+    console.log(this.isEqual(workingDraft.title, originalDraft.title), this.isEqual(workingDraft.description, originalDraft.description), 
+      this.isEqual(workingDraft.coverCaption, originalDraft.coverCaption) , this.isEqual((workingDraft.coverImage 
+        && workingDraft.coverImage.id), (originalDraft.coverImage && originalDraft.coverImage.id)), !this.state.contentTouched)
+ 
+    if (this.isEqual(workingDraft.title, originalDraft.title) && this.isEqual(workingDraft.description, originalDraft.description) && 
+      this.isEqual(workingDraft.coverCaption, originalDraft.coverCaption)  && this.isEqual((workingDraft.coverImage 
+        && workingDraft.coverImage.id), (originalDraft.coverImage && originalDraft.coverImage.id)) && !this.state.contentTouched){
+      console.log('NUTTIN BUT NUTTIN changed')
+      this._onLeftNo()
+
+    }
+ 
+    
     const title = isDraft ? 'Save Draft' : 'Save Edits'
     const message = this.isSavedDraft() ? 'Do you want to save these edits before you go?' : 'Do you want to save this story draft before you go?'
     return (
@@ -751,6 +782,13 @@ class StoryCoverScreen extends Component {
     }
   }
 
+  reportContentTouched = () => {
+    console.log('report content touched')
+    this.setState({
+      contentTouched: true
+    })
+  }
+
   renderEditor() {
     return (
       <View style={[styles.editor]}>
@@ -768,6 +806,7 @@ class StoryCoverScreen extends Component {
             {...this.getContent()}
             setHasFocus={this.setHasFocus}
             setBlockType={this.setBlockType}
+            reportContentTouched={this.reportContentTouched}
           />
         }
       </View>

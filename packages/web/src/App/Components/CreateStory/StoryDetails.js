@@ -3,14 +3,13 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import Moment from 'moment'
 import _ from 'lodash'
-
 import {Row} from '../FlexboxGrid'
 import Icon from '../Icon'
 import HorizontalDivider from '../HorizontalDivider'
 import GoogleLocator from './GoogleLocator'
 import ReactDayPicker from './ReactDayPicker'
 import CategoryPicker from './CategoryPicker'
-import CategoryTileGrid from './CategoryTileGrid'
+import CategoryTileGridAndInput from './CategoryTileGridAndInput'
 import {Title} from './Shared'
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton'
 import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unchecked'
@@ -19,8 +18,10 @@ import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checke
 const Container = styled.div``
 
 const InputRowContainer = styled(Container)`
-  padding: 20px 0px 14px 0px;
+  padding: 14px 0px 14px 0px;
   position: relative;
+  display: flex;
+  align-items: center;
 `
 
 const StyledTitle = styled(Title)`
@@ -36,10 +37,10 @@ const ActivitySelectRow = styled(Row)`
   font-size: 18px;
   color: ${props => props.theme.Colors.background};
   letter-spacing: .7px;
-  margin: 8px;
+  padding-left: 2px;
 `
 
-const StyledInput = styled.input`
+export const StyledInput = styled.input`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 18px;
@@ -54,27 +55,29 @@ const StyledInput = styled.input`
     color: ${props => props.theme.Colors.navBarText};
   }
 `
-
-const LocationIcon = styled(Icon)`
+const IconWithMargin = styled(Icon)`
+  margin-left: 2px;
+`
+const LocationIcon = styled(IconWithMargin)`
   height: 34px;
   width: 23px;
-  margin-bottom: -12px;
-  margin-left: 2px;
 `
 
-const DateIcon = styled(Icon)`
+const DateIcon = styled(IconWithMargin)`
   height: 26px;
   width: 30px;
-  margin-bottom: -8px;
 `
-const TagIcon = styled(Icon)`
+const TagIcon = styled(IconWithMargin)`
   height: 26px;
-  margin-bottom: -8px;
-  margin-left: 2px;
 `
 
 const StyledReactDayPicker = styled(ReactDayPicker)`
   position: absolute;
+`
+
+const RelativePositionAncestor = styled.div`
+  position: relative;
+  width: 100px;
 `
 
 const styles = {
@@ -93,6 +96,8 @@ const styles = {
   },
   radioButtonGroup: {
     marginLeft: 40,
+    display: 'flex',
+    alignItems: 'center',
   },
 }
 
@@ -103,21 +108,10 @@ function sortCategories(categories) {
   })
 }
 
-function formatCategories(categories) {
-  const titleToCategory = {}
-  const categoriesList = sortCategories(Object.keys(categories).map(key => {
-    const category = categories[key]
-    titleToCategory[category.title] = category
-    return category
-  }))
-  return {
-    titleToCategory,
-    categoriesList,
-  }
-}
+const formatCategories = (categories) => sortCategories(_.values(categories))
 
 function isSameTag(a, b){
-  return a.id === b.id && a.title === b.title
+  return a.title === b.title
 }
 
 export default class StoryDetails extends React.Component {
@@ -132,34 +126,28 @@ export default class StoryDetails extends React.Component {
     // may need to refactor the positioning of this logic
     let categoriesList = []
     if (props.categories && props.workingDraft) {
-      const formatedCategories = formatCategories(props.categories)
-      categoriesList = _.differenceWith(formatedCategories.categoriesList, props.workingDraft.categories, isSameTag)
-      this.titleToCategory = formatedCategories.titleToCategory
+      const formattedCategoriesList = formatCategories(props.categories)
+      categoriesList = _.differenceWith(formattedCategoriesList, props.workingDraft.categories, isSameTag)
     }
-    //
 
     this.state = {
-      showTagPicker: false,
+      showCategoryPicker: false,
       showDayPicker: false,
       day: '',
+      categoryInputText: '',
       categoriesList,
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (Object.keys(this.props.categories).length !== Object.keys(nextProps.categories).length && nextProps.workingDraft){
-      const {categoriesList, titleToCategory} = formatCategories(nextProps.categories)
-      this.titleToCategory = titleToCategory
-      this.setState({
-        categoriesList: _.differenceWith(categoriesList, nextProps.workingDraft.categories, isSameTag)
-      })
+      const categoriesList = formatCategories(nextProps.categories)
+      this.updateCategoriesList(_.differenceWith(categoriesList, nextProps.workingDraft.categories, isSameTag))
     }
   }
 
   handleDayClick = (day) => {
-    this.setState({
-      showPicker: undefined,
-    })
+    this.toggleDayPicker()
     this.props.onInputChange({
       tripDate: day,
     })
@@ -169,46 +157,67 @@ export default class StoryDetails extends React.Component {
     this.props.onInputChange({type: value})
   }
 
-  handleCategorySelect = (event) => {
-    event.stopPropagation()
-    const categoryTitle = event.target.innerHTML
-    const clickedCategory = this.titleToCategory[categoryTitle]
-    const categories = this.props.workingDraft.categories.concat([clickedCategory])
-    this.setState({
-      categoriesList: _.differenceWith(this.state.categoriesList, [clickedCategory], isSameTag),
-      showPicker: 'category',
-    })
-    this.props.onInputChange({categories})
-  }
-
-  handleCategoryRemove = (event) => {
-    event.stopPropagation()
-    const clickedCategoryId = event.target.attributes.getNamedItem('data-tagName').value
-    const clickedCategory = this.props.categories[clickedCategoryId]
-    const categories = _.differenceWith(this.props.workingDraft.categories, [clickedCategory], isSameTag)
-    this.setState({
-      categoriesList: sortCategories(this.state.categoriesList.concat([clickedCategory])),
-    })
-    this.props.onInputChange({categories})
-  }
-
   togglePicker = (name) => {
-    let nextPickerState = name
-    if (this.state.showPicker === name) nextPickerState = undefined
-    this.setState({ showPicker: nextPickerState })
+    const stateKey = `show${name}Picker`
+    const currentVal = this.state[stateKey]
+    this.setState({ [stateKey]: !currentVal})
  }
 
-  toggleDayPicker = () => this.togglePicker('day')
-  toggleTagPicker = () => this.togglePicker('category')
+  toggleDayPicker = () => this.togglePicker('Day')
+
+  toggleCategoryPicker = () => this.togglePicker('Category')
 
   formatTripDate = (day) => {
     if (!day) return undefined
     else return Moment(day).format('MM-DD-YYYY')
   }
 
+  handleCategorySelect = (event, category) => {
+    event.stopPropagation()
+    const categoryTitle = event.target.innerHTML || category
+    // If it is already a category in DB, we need to fetch the whole object
+    const clickedCategory = _.find(this.state.categoriesList, cat => cat.title === categoryTitle) || { title: categoryTitle }
+    const categories = this.props.workingDraft.categories.concat([clickedCategory])
+    this.loadDefaultCategories([clickedCategory])
+    this.setState({categoryInputText: ''})
+    this.props.onInputChange({categories})
+  }
+
+  handleCategoryRemove = (event, tagTitle) => {
+    event.stopPropagation()
+    const clickedCategoryTitle = tagTitle
+    const clickedCategory = _.find(this.props.workingDraft.categories, cat => cat.title === clickedCategoryTitle)
+    const categories = _.differenceWith(this.props.workingDraft.categories, [clickedCategory], isSameTag)
+    this.updateCategoriesList(sortCategories(this.state.categoriesList.concat([clickedCategory])))
+    this.props.onInputChange({categories})
+  }
+
+  updateCategoriesList = (newCategoriesList) => {
+    this.setState({
+      categoriesList: newCategoriesList
+    })
+  }
+
+  handleCategoryInputTextChange = (text) => {
+    this.setState({
+      categoryInputText: text,
+    })
+    if (!text.length) {
+      this.loadDefaultCategories()
+    }
+  }
+
+  loadDefaultCategories = (excludeThese = []) => {
+    if (this.props.categories && this.props.workingDraft) {
+      const categoriesList = formatCategories(this.props.categories)
+      this.updateCategoriesList(_.differenceWith(categoriesList, [...this.props.workingDraft.categories, ...excludeThese], isSameTag))
+    }
+  }
+
   render() {
-    const {workingDraft, onInputChange} = this.props
-    const {showPicker, categoriesList } = this.state
+    const {workingDraft, onInputChange } = this.props
+    const {showDayPicker, showCategoryPicker, categoriesList} = this.state
+
     // normally this only happens when you just published a draft
     if (!workingDraft) return null
     return (
@@ -231,35 +240,44 @@ export default class StoryDetails extends React.Component {
             placeholder={'MM-DD-YYYY'}
             value={this.formatTripDate(workingDraft.tripDate)}
             onClick={this.toggleDayPicker}
+            readOnly
           />
-          {showPicker === 'day' &&
+          {showDayPicker &&
             <StyledReactDayPicker
               handleDayClick={this.handleDayClick}
+              togglePicker={this.toggleDayPicker}
             />
           }
         </InputRowContainer>
         <HorizontalDivider color='lighter-grey' opaque/>
         <InputRowContainer>
-          <TagIcon name='tag'/>
-          <StyledInput
-            type='text'
-            placeholder={'Add tags'}
-            value={''}
-            onClick={this.toggleTagPicker}
-          />
-          {!!this.props.workingDraft.categories.length &&
-            <CategoryTileGrid
-              selectedCategories={this.props.workingDraft.categories}
-              handleCategoryRemove={this.handleCategoryRemove}
-            />
+          <TagIcon name='tag'/>        
+          <CategoryTileGridAndInput
+            selectedCategories={this.props.workingDraft.categories}
+            handleCategoryRemove={this.handleCategoryRemove}
+            inputOnClick={this.toggleCategoryPicker}
+            categories={categoriesList}
+            addCategory={this.handleCategorySelect}
+            updateCategoriesList={this.updateCategoriesList}
+            categoryInputText={this.state.categoryInputText}
+            handleTextInput={this.handleCategoryInputTextChange}
+            isSameTag={isSameTag}
+          >
+        {/* Making the Category Picker a child so we can position it absolutely, relative
+          to where the last category tile is
+        */}
+          {
+            showCategoryPicker &&
+            <RelativePositionAncestor>
+              <CategoryPicker
+                closePicker={this.toggleCategoryPicker}
+                handleCategorySelect={this.handleCategorySelect}
+                categoriesList={categoriesList}
+                loadDefaultCategories={this.loadDefaultCategories}
+              />
+            </RelativePositionAncestor>
           }
-          {showPicker === 'category' &&
-            <CategoryPicker
-              closePicker={this.togglePicker}
-              handleCategorySelect={this.handleCategorySelect}
-              categoriesList={categoriesList}
-            />
-          }
+          </CategoryTileGridAndInput>
         </InputRowContainer>
         <HorizontalDivider color='lighter-grey' opaque/>
         <InputRowContainer>

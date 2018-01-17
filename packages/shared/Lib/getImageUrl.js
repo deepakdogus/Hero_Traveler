@@ -32,9 +32,9 @@ function getUri(image: object|string): ?string {
     return undefined
   }
 
-  if (typeof(image) == 'string') {
+  if (typeof(image) === 'string') {
     return ensureJpgExtension(image)
-  } else if (typeof(image) == 'object' && _.has(image, 'original')) {
+  } else if (typeof(image) === 'object' && _.has(image, 'original')) {
     const {path, folders} = image.original
     if (!path) {
       return undefined
@@ -117,13 +117,13 @@ export default function getImageUrl(image: object|string, type: string, options:
 
   const imageSize = {}
 
-  if (options.width == 'screen') {
+  if (options.width === 'screen') {
     imageSize.width = Math.round(metrics.screenWidth * metrics.pixelRatio)
   } else if (options.width) {
     imageSize.width = Math.round(options.width * metrics.pixelRatio)
   }
 
-  if (options.height == 'screen') {
+  if (options.height === 'screen') {
     imageSize.height = Math.round(metrics.screenHeight * metrics.pixelRatio)
   } else if (options.height) {
     imageSize.height = Math.round(options.height * metrics.pixelRatio)

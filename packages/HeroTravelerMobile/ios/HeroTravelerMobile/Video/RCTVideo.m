@@ -35,6 +35,8 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   
   BOOL _isInBackground;
   BOOL _isResigningActive;
+  
+  NSString* _uri;
 }
 
 - (instancetype) initWithEventDispatcher:(RCTEventDispatcher*)eventDispatcher
@@ -136,9 +138,33 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
 {
   NSString* uri = [source objectForKey:@"uri"];
   
+  _uri = uri;
+  
   [self removeAllPlayerViews];
-  playingVideoItem = [[RCTVideoCache get] assetForUrl:uri forVideoView:self];
+  if (_uri.length == 0)
+  {
+    playingVideoItem = nil;
+  }
+  else
+  {
+    playingVideoItem = [[RCTVideoCache get] assetForUrl:uri forVideoView:self];
+  }
   [self applyModifiers];
+}
+
+- (void) purgePlayingVideo
+{
+  playingVideoItem = nil;
+}
+
+- (void) restorePlayingVideo
+{
+  if (playingVideoItem || _uri.length == 0)
+  {
+    return;
+  }
+  
+  playingVideoItem = [[RCTVideoCache get] assetForUrl:_uri forVideoView:self];
 }
 
 #pragma mark - Prop setters
@@ -236,10 +262,20 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
 - (void) layoutSubviews
 {
   [super layoutSubviews];
+  [self restorePlayingVideo];
   [CATransaction begin];
   [CATransaction setAnimationDuration:0];
   _playerLayer.frame = self.bounds;
   [CATransaction commit];
+}
+
+- (void) didMoveToWindow
+{
+  [super didMoveToWindow];
+  if (self.window)
+  {
+    [self restorePlayingVideo];
+  }
 }
 
 - (void) didMoveToSuperview
@@ -247,6 +283,7 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   if (self.superview)
   {
     _showPlayer = YES;
+    [self restorePlayingVideo];
     [self applyModifiers];
   }
 

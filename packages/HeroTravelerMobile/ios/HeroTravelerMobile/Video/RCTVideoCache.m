@@ -13,6 +13,9 @@
 #define DATE_LAST_OPENED_FILE @"lastOpened"
 
 @implementation RCTVideoCache
+{
+  NSTimer* cleanupTimer;
+}
 
 + (instancetype) get
 {
@@ -39,8 +42,18 @@
     currentPrecacheList = @[];
     loadedVideos = @[];
     currentlyDownloadedFiles = @[];
+    
+    __weak RCTVideoCache* weakCache = self;
+    cleanupTimer = [NSTimer timerWithTimeInterval:2 repeats:YES block:^(NSTimer* _){
+      [weakCache cleanupCacheInstances];
+    }];
   }
   return self;
+}
+
+- (void) cleanupCacheInstances
+{
+  
 }
 
 + (NSString*) urlToKey:(NSString*)url
@@ -97,15 +110,15 @@
 
 - (void) dispatchDownloads
 {
-  // TODO: Restrict this to N downloads
-  
-  for (VideoCacheItem* existingCacheItem in loadedVideos)
-  {
-    if (existingCacheItem.needsDownload)
-    {
-      [existingCacheItem startDownload];
-    }
-  }
+//  // TODO: Restrict this to N downloads
+//  
+//  for (VideoCacheItem* existingCacheItem in loadedVideos)
+//  {
+//    if (existingCacheItem.needsDownload)
+//    {
+//      [existingCacheItem startDownload];
+//    }
+//  }
 }
 
 - (void) addAssetKeyToCurrentlyDownloadedFiles:(NSString*)assetKey
@@ -197,6 +210,42 @@
   }
   
   [cacheItem touch];
+  
+  if (loadedVideos.count > 4)
+  {
+    NSMutableArray* mLoadedVideos = [@[] mutableCopy];
+    
+    NSArray* oldestVideosFirst = [loadedVideos sortedArrayUsingComparator:^(VideoCacheItem* a, VideoCacheItem* b){
+      return [a.lastTouched compare:b.lastTouched];
+    }];
+    
+    NSUInteger num = 0;
+    for (VideoCacheItem* existingCacheItem in oldestVideosFirst)
+    {
+      if (num > 2)
+      {
+        break;
+      }
+      num++;
+      if (existingCacheItem == cacheItem)
+      {
+        [mLoadedVideos addObject:existingCacheItem];
+      }
+      else
+      {
+        if (![existingCacheItem purge])
+        {
+          [mLoadedVideos addObject:existingCacheItem];
+        }
+        else
+        {
+          NSLog(@"Video purged");
+        }
+      }
+    }
+    
+    loadedVideos = [NSArray arrayWithArray:mLoadedVideos];
+  }
   
   return cacheItem;
 }

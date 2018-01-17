@@ -263,7 +263,7 @@ export default class VideoPlayer extends React.Component {
           onPlaybackResume={this._onPlaybackResume}
           resizeMode={this.props.resizeMode}
         />
-        {this.props.videoThumbnailUrl && isNotReadyForDisplay &&
+        {this.props.imgUrl && isNotReadyForDisplay &&
         <Image
           cached={true}
           resizeMode='cover'

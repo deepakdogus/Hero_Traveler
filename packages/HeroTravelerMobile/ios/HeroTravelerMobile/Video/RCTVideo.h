@@ -32,4 +32,7 @@
 - (void) displayWithPlayer:(AVPlayer*)player playerItem:(AVPlayerItem*)playerItem;
 - (void) applyModifiersOnPlayer:(AVPlayer*)player playerItem:(AVPlayerItem*)playerItem;
 
+- (void) purgePlayingVideo;
+- (void) restorePlayingVideo;
+
 @end

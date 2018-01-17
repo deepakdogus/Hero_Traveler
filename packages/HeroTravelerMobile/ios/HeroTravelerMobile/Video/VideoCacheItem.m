@@ -250,7 +250,7 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   {
     return [self isViewVisible:view.superview];
   }
-  return YES;
+  return [view isKindOfClass:[UIWindow class]];
 }
 
 - (PlayingVideoItem*) getControllingVideoView
@@ -361,6 +361,8 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
 
 - (void) dealloc
 {
+  [_player pause];
+  [_player setRate:0.0];
   [self removeListeners];
   [self removePlayerObservers];
   [self removePlayerItemObservers];
@@ -524,6 +526,7 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
         [self applyModifiers];
       } else if (_playerItem.status == AVPlayerItemStatusFailed) {
         NSError* videoError = _playerItem.error;
+        NSLog(@"Error loading video: %@", videoError);
         if (videoError && videoError.domain)
         {
           errorDict = @{
@@ -555,6 +558,28 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   } else {
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
   }
+}
+
+- (BOOL) purge
+{
+  for (WeakPlayingVideoItem* weakPlayingVideoItem in currentPlayingVideoItems)
+  {
+    RCTVideo* video = weakPlayingVideoItem.playingVideoItem.videoView;
+    if (!video)
+    {
+      
+    }
+    else if ([self isViewVisible:video])
+    {
+      return NO;
+    }
+    else
+    {
+      [video purgePlayingVideo];
+    }
+  }
+  
+  return YES;
 }
 
 @end

@@ -51,6 +51,24 @@ const MediaTypes = {
   photo: 'photo',
 }
 
+/* 
+
+Utility functions
+
+*/
+
+const isEqual = (firstItem, secondItem) => {
+  if (!!firstItem && !secondItem || !firstItem && !!secondItem) {
+    return false
+  } else if (!!firstItem && !!secondItem) {
+    // lodash will take of equality check for all objects
+    return _.isEqual(firstItem, secondItem)
+  } else { 
+    return true
+  }
+}
+
+
 class StoryCoverScreen extends Component {
 
   static propTypes = {
@@ -282,6 +300,7 @@ class StoryCoverScreen extends Component {
   _onLeftNo = () => {
     console.log('on Left no')
     if (!this.isSavedDraft()) {
+      console.log('WORKING DRAFT', this.props.workingDraft)
       this.props.discardDraft(this.props.workingDraft.id)
     } else {
       this.props.resetCreateStore()
@@ -291,19 +310,45 @@ class StoryCoverScreen extends Component {
 
   _onLeft = () => {
     console.log('_onLeft')
-    this.setState({ activeModal: 'cancel' })
+
+    const workingDraft = this.props.workingDraft
+    const originalDraft = this.props.originalDraft
+
+ 
+    if (isEqual(workingDraft.title, originalDraft.title) && isEqual(workingDraft.description, originalDraft.description) && 
+      isEqual(workingDraft.coverCaption, originalDraft.coverCaption)  && isEqual((workingDraft.coverImage 
+        && workingDraft.coverImage.name), (originalDraft.coverImage && originalDraft.coverImage.name)) && !this.state.contentTouched){
+      console.log('NUTTIN BUT NUTTIN changed')
+      this._onLeftNo()
+
+    } else {
+
+      this.setState({ activeModal: 'cancel' })
+    }
+
   }
 
   closeModal = () => {
     this.setState({ activeModal: undefined})
   }
 
-  isEqual = (firstItem, secondItem) => {
-    if (!!firstItem && !secondItem || !firstItem && !!secondItem) {
+  draftHasChanged = () => {
+    const workingDraft = this.props.workingDraft
+    const originalDraft = this.props.originalDraft
+
+ 
+    if (isEqual(workingDraft.title, originalDraft.title) 
+      && isEqual(workingDraft.description, originalDraft.description)
+      && isEqual(workingDraft.coverCaption, originalDraft.coverCaption)
+      && isEqual((workingDraft.coverImage && workingDraft.coverImage.name), (originalDraft.coverImage && originalDraft.coverImage.name))
+      && !this.state.contentTouched && 
+      isEqual(workingDraft.tripDate, originalDraft.tripDate)
+      && isEqual(workingDraft.location, originalDraft.location)
+      && isEqual(workingDraft.type, originalDraft.type)
+      && isEqual(workingDraft.categories, originalDraft.categories)
+    ){
       return false
-    } else if (!!firstItem && !!secondItem) {
-      return firstItem === secondItem
-    } else { 
+    } else {
       return true
     }
   }
@@ -311,23 +356,6 @@ class StoryCoverScreen extends Component {
   renderCancel = () => {
 
     const isDraft = this.props.workingDraft.draft === true
-
-    const workingDraft = this.props.workingDraft
-    const originalDraft = this.props.originalDraft
-
-    console.log(this.isEqual(workingDraft.title, originalDraft.title), this.isEqual(workingDraft.description, originalDraft.description), 
-      this.isEqual(workingDraft.coverCaption, originalDraft.coverCaption) , this.isEqual((workingDraft.coverImage 
-        && workingDraft.coverImage.name), (originalDraft.coverImage && originalDraft.coverImage.name)), !this.state.contentTouched)
- 
-    if (this.isEqual(workingDraft.title, originalDraft.title) && this.isEqual(workingDraft.description, originalDraft.description) && 
-      this.isEqual(workingDraft.coverCaption, originalDraft.coverCaption)  && this.isEqual((workingDraft.coverImage 
-        && workingDraft.coverImage.name), (originalDraft.coverImage && originalDraft.coverImage.name)) && !this.state.contentTouched){
-      console.log('NUTTIN BUT NUTTIN changed')
-      this._onLeftNo()
-
-    }
- 
-    
     const title = isDraft ? 'Save Draft' : 'Save Edits'
     const message = this.isSavedDraft() ? 'Do you want to save these edits before you go?' : 'Do you want to save this story draft before you go?'
     return (

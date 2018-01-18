@@ -1,8 +1,6 @@
 import _ from 'lodash'
 import React from 'react'
 import { connect } from 'react-redux'
-import {Actions as NavActions} from 'react-native-router-flux'
-
 import UserActions, {getByBookmarks} from '../../Shared/Redux/Entities/Users'
 import StoryActions, {getByUser, getUserFetchStatus, getBookmarksFetchStatus} from '../../Shared/Redux/Entities/Stories'
 import ProfileView, {TabTypes} from '../../Components/ProfileView'

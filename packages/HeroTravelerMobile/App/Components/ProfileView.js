@@ -43,7 +43,7 @@ class ProfileView extends React.Component {
     onSelectTab: () => {},
     bookmarksFetchStatus: {},
     draftsFetchStatus: {},
-    storiesFetchStatus: {},
+    storiesFetchStatus: {}
   }
 
   static propTypes = {

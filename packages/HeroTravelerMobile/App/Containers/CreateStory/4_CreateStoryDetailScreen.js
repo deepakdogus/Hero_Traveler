@@ -27,17 +27,6 @@ import styles from './4_CreateStoryDetailScreenStyles'
 import API from '../../Shared/Services/HeroAPI'
 const api = API.create()
 
-/***
-
- Helper functions 
-
-***/
-
-const dateLikeItemAsDate = (dateLikeItem) => {
-  const timeStamp = Date.parse(dateLikeItem)
-  return isNaN(timeStamp) ? new Date() : new Date(timeStamp)  
-}
-
 const Radio = ({text, onPress, name, selected}) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -334,7 +323,7 @@ class CreateStoryDetailScreen extends React.Component {
           <View
             style={{ backgroundColor: 'white', height: 300, width: 300 }}>
             <DatePickerIOS
-              date={dateLikeItemAsDate(workingDraft.tripDate)}
+              date={workingDraft.tripDate || new Date()}
               mode="date"
               onDateChange={this._onDateChange}
             />

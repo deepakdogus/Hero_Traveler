@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styles from './Styles/ProfileViewStyles'
 import {
   View,
@@ -38,18 +39,22 @@ const usernameContansts = {
 class ProfileView extends React.Component {
 
   static defaultProps = {
-    selectedTab: TabTypes.stories,
     onPressFollow: () => {},
     onSelectTab: () => {},
     bookmarksFetchStatus: {},
     draftsFetchStatus: {},
-    storiesFetchStatus: {}
+    storiesFetchStatus: {},
   }
+
+  static propTypes = {
+    location: PropTypes.string,
+  }
+  
 
   constructor(props) {
     super(props)
     this.state = {
-      selectedTab: this.props.selectedTab,
+      selectedTab: TabTypes.stories,
       imageMenuOpen: false,
       file: null,
       bioText: props.user.bio || '',
@@ -62,6 +67,13 @@ class ProfileView extends React.Component {
     api.setAuth(this.props.accessToken)
   }
 
+  componentWillReceiveProps(newProps) {
+    if ((this.props.location !== newProps.location) && (this.state.selectedTab !== TabTypes.stories)) {
+      this.setState({
+        selectedTab: TabTypes.stories
+      })
+    }
+  }
   _handleUpdateAvatarPhoto = (data) => {
     api.uploadAvatarImage(this.props.user.id, pathAsFileObject(data))
     .then(({ data }) => {

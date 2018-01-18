@@ -11,17 +11,8 @@ import getImageUrl from '../../Shared/Lib/getImageUrl'
 
 class ProfileScreen extends React.Component {
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      selectTabIndex: 0
-    }
-  }
-
   shouldComponentUpdate(nextProps, nextState) {
     const shouldUpdate = _.some([
-      this.state.selectedTab !== nextState.selectedTab,
       this.props.user !== nextProps.user,
       this.props.draftsById !== nextProps.draftsById,
       this.props.userStoriesById !== nextProps.userStoriesById,
@@ -32,7 +23,7 @@ class ProfileScreen extends React.Component {
 
     return shouldUpdate
   }
-
+  
   componentDidMount() {
     this.props.getUser(this.props.user.id)
     this.props.getStories(this.props.user.id)

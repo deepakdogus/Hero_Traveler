@@ -88,7 +88,7 @@ class TabIcon extends React.Component {
       case 'video':
         return Images.iconCreateMenuVideo
       case 'videoWhite':
-        return Images.iconVideoWhite
+        return Images.iconWhiteVideo
       case 'trash':
         return Images.iconTrash
       case 'trashBlack':

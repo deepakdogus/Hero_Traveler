@@ -155,6 +155,11 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
 - (void) purgePlayingVideo
 {
   playingVideoItem = nil;
+  if (self.onReadyForDisplay)
+  {
+    self.onReadyForDisplay(@{@"ready": @NO, @"target": self.reactTag});
+  }
+  [self removeAllPlayerViews];
 }
 
 - (void) restorePlayingVideo
@@ -329,7 +334,7 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
       dispatch_async(dispatch_get_main_queue(), ^{
         if (self.onReadyForDisplay)
         {
-          self.onReadyForDisplay(@{@"target": self.reactTag});
+          self.onReadyForDisplay(@{@"ready": @YES, @"target": self.reactTag});
         }
       });
     }
@@ -452,7 +457,7 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
       if ([change objectForKey:NSKeyValueChangeNewKey]) {
         if (self.onReadyForDisplay)
         {
-          self.onReadyForDisplay(@{@"target": self.reactTag});
+          self.onReadyForDisplay(@{@"ready": @YES, @"target": self.reactTag});
         }
       }
     }

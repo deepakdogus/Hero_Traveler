@@ -211,7 +211,7 @@
   
   [cacheItem touch];
   
-  if (loadedVideos.count > 4)
+  if (loadedVideos.count > 3)
   {
     NSMutableArray* mLoadedVideos = [@[] mutableCopy];
     
@@ -219,14 +219,8 @@
       return [a.lastTouched compare:b.lastTouched];
     }];
     
-    NSUInteger num = 0;
     for (VideoCacheItem* existingCacheItem in oldestVideosFirst)
     {
-      if (num > 2)
-      {
-        break;
-      }
-      num++;
       if (existingCacheItem == cacheItem)
       {
         [mLoadedVideos addObject:existingCacheItem];

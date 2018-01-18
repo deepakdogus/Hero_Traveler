@@ -366,6 +366,7 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   [self removeListeners];
   [self removePlayerObservers];
   [self removePlayerItemObservers];
+  NSLog(@"Cache item dealloced");
 }
 
 - (void) addPlayerItemObservers

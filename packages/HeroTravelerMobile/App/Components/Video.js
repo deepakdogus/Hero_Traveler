@@ -213,7 +213,7 @@ export default class VideoPlayer extends React.Component {
   }
 
   _onReadyForDisplay = (event) => {
-    this.setState({isReadyForDisplay: true})
+    this.setState({isReadyForDisplay: event.ready})
   }
 
   _onPlaybackStalled = (event) => {

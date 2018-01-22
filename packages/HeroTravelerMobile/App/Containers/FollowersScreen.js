@@ -91,7 +91,7 @@ class FollowersScreen extends React.Component {
 
             return (
               <View style={[styles.rowWrapper]} key={u.id}>
-                <View style={[styles.row, styles.pink]}>
+                <View style={styles.row}>
                   <TouchableOpacity onPress={() => NavToProfileFunction({userId: u.id})} style={styles.avatarAndName}>
                     <Avatar
                       style={styles.avatar}

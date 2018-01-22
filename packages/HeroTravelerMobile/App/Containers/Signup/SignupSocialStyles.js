@@ -49,6 +49,13 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: Colors.lightGreyAreas,
   },
+  avatarAndName: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    maxWidth: '60%',
+    height: 40,
+  },
   row: {
     marginVertical: Metrics.baseMargin,
     marginHorizontal: Metrics.doubleBaseMargin,

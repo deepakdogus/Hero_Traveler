@@ -70,7 +70,7 @@ const StoryVideo = enhanceStoryVideo((props) => {
             }}
             size={20} />
         </TouchableOpacity>
-      </Video>
+      </VideoPlayer>
     </View>
   )
 })

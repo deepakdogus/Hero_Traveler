@@ -1,8 +1,15 @@
 import React from 'react'
-import {View, Animated, StyleSheet, TouchableWithoutFeedback, Text} from 'react-native'
+import {
+    View, 
+    Animated,
+    StyleSheet,
+    TouchableWithoutFeedback,
+    Text,
+    ActivityIndicator
+  } from 'react-native'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import Video from 'react-native-video'
+import Video from './Video/Video'
 import TabIcon from './TabIcon'
 import Image from './Image'
 import MediaSelectorStyles from '../Containers/Styles/MediaSelectorScreenStyles'
@@ -113,6 +120,9 @@ export default class VideoPlayer extends React.Component {
       videoFadeAnim: props.allowVideoPlay ? new Animated.Value(1) : new Animated.Value(0),
       // Sound is muted in __DEV__ because it gets annoying
       muted: props.isMuted,
+      isLoaded: false,
+      isReadyForDisplay: false,
+      isStalled: false,
     }
   }
 
@@ -195,18 +205,23 @@ export default class VideoPlayer extends React.Component {
 
   _bindRef = (i) => this.player = i
 
-  // using hasStarted to know when we should toggle from pending loading image to playable video
-  setStarted = () => {
-    if (!this.state.hasStarted) {
-      this.setState({hasStarted: true})
-    }
-  }
-
   // currently only need for new cover videos
   _onLoad = (event) => {
-    this.setStarted()
+    this.setState({isLoaded: true})
     if (!this.props.onLoad) return
     this.props.onLoad(event.naturalSize)
+  }
+
+  _onReadyForDisplay = (event) => {
+    this.setState({isReadyForDisplay: event.ready})
+  }
+
+  _onPlaybackStalled = (event) => {
+    this.setState({isStalled: true})
+  }
+
+  _onPlaybackResume = (event) => {
+    this.setState({isStalled: false})
   }
 
   _getShouldEnableAutoplay(){
@@ -224,6 +239,7 @@ export default class VideoPlayer extends React.Component {
 
   render() {
     const playButtonSize = this.props.playButtonSize
+    const isNotReadyForDisplay = !this.state.isLoaded || !this.state.isReadyForDisplay
 
     return (
       <View style={[
@@ -231,17 +247,6 @@ export default class VideoPlayer extends React.Component {
         this.props.videoFillSpace && styles.full,
         this.props.style
       ]}>
-        {this.props.imgUrl &&
-        <Image
-          cached={true}
-          resizeMode='cover'
-          source={{uri: this.props.imgUrl}}
-          style={[
-            styles.video,
-            {zIndex: this.state.hasStarted ? -1 : 1}
-          ]}
-        />
-        }
         <Video
           source={{uri: this.props.path}}
           ref={this._bindRef}
@@ -252,10 +257,26 @@ export default class VideoPlayer extends React.Component {
             this.props.videoFillSpace && styles.full,
           ]}
           repeat={true}
-          onProgress={this.setStarted}
-          onLoad={this._onLoad}
+          onLoad={this._onLoad} 
+          onReadyForDisplay={this._onReadyForDisplay}
+          onPlaybackStalled={this._onPlaybackStalled}
+          onPlaybackResume={this._onPlaybackResume}
           resizeMode={this.props.resizeMode}
         />
+        {this.props.imgUrl && isNotReadyForDisplay &&
+        <Image
+          cached={true}
+          resizeMode='cover'
+          source={{uri: this.props.imgUrl}}
+          style={[
+            styles.video,
+            {zIndex: 1}
+          ]}
+        />
+        }
+        {(this.state.isStalled || isNotReadyForDisplay) &&
+         <ActivityIndicator size="small" color="#ffffff" />
+        }
         {this.props.showPlayButton &&
           <PlayButton
             style={[this.props.videoFillSpace ? styles.fullButtons : styles.buttons, playButtonSize === 'small' ? styles.smallButton : {}]}

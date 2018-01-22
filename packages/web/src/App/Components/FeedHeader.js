@@ -13,7 +13,7 @@ const StyledHeaderImageWrapper = styled(HeaderImageWrapper)`
 
 export default class FeedHeader extends React.Component {
   static propTypes = {
-    stories: PropTypes.object,
+    stories: PropTypes.arrayOf(PropTypes.object),
     author: PropTypes.object,
 
   }

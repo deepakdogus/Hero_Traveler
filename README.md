@@ -91,6 +91,10 @@ Eager Notification URL: `https://06859835.ngrok.io/story/draft/cover-video`(just
 * Replace anything that says `matthew` with your name
 * See a dev for additional fields
 
+### 5. packages/HeroTravelerMobile
+* Create `App/Config/Env.js` and copy contents from the `packages/web` equivalent
+
+
 
 
 ## Running the project locally
@@ -132,8 +136,12 @@ To run the application in development mode on your phone, open xcode with the fo
 ```bash
 $ open packages/HeroTravelerMobile/ios/HeroTravelerMobile.xcworkspace
 ```
+## Building app on device
+#### Dev Mode
+1. xcode --> Edit Scheme --> Make sure it's in debug mode not release mode so that you can access Dev Menu via shake gesture
+2. Make sure using ngrok if testing on device because localhost is disabled.  And make sure you use the https version of the ngrok url
 
-### 3. Docker, express-api and deployment
+## Docker, express-api and deployment
 
 Make sure to set env var `NPM_TOKEN` to the _authToken value you find in `~/.npmrc` after running `npm adduser --registry https://npm.abeck.io` before running `docker-compose build`
 

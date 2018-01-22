@@ -9,7 +9,7 @@ import {
   } from 'react-native'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import Video from './Video/Video'
+import NativeCachingVideo from './NativeCachingVideo/NativeCachingVideo'
 import TabIcon from './TabIcon'
 import Image from './Image'
 import MediaSelectorStyles from '../Containers/Styles/MediaSelectorScreenStyles'
@@ -247,7 +247,7 @@ export default class VideoPlayer extends React.Component {
         this.props.videoFillSpace && styles.full,
         this.props.style
       ]}>
-        <Video
+        <NativeCachingVideo
           source={{uri: this.props.path}}
           ref={this._bindRef}
           paused={this.isPaused()}

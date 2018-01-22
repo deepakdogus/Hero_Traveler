@@ -26,7 +26,7 @@ import ListItem from '../../Components/ListItem'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import Avatar from '../../Components/Avatar'
 import Image from '../../Components/Image'
-import {PlayButton} from '../../Components/Video'
+import {PlayButton} from '../../Components/VideoPlayer'
 import TabIcon from '../../Components/TabIcon'
 
 const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)

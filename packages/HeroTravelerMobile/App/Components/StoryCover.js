@@ -9,7 +9,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import Image from './Image'
-import Video, {MuteButton, PlayButton} from './Video'
+import VideoPlayer, {MuteButton, PlayButton} from './VideoPlayer'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import {Metrics} from '../Shared/Themes'
 import Colors from '../Shared/Themes/Colors'
@@ -167,7 +167,7 @@ export default class StoryCover extends Component {
 
     return (
       <View style={this._getWidthHeight()}>
-        <Video
+        <VideoPlayer
           path={getVideoUrl(this.props.cover)}
           imgUrl={videoThumbnailUrl}
           ref={this._makeRef}

@@ -14,7 +14,7 @@ import {AutoGrowingTextInput} from '@hero/react-native-autogrow-textinput';
 
 import {DraftOffsetKey} from './draft-js/reexports'
 import Image from '../Image'
-import Video from '../Video'
+import VideoPlayer from '../VideoPlayer'
 import {Colors, Metrics} from '../../Shared/Themes'
 import {getVideoUrlBase} from "../../Shared/Lib/getVideoUrl"
 import getImageUrl from "../../Shared/Lib/getImageUrl"
@@ -172,7 +172,7 @@ export default class NewTextBlock extends PureComponent {
             onPress={this.toggleImageFocus}
           >
             <View style={styles.abs}>
-              <Video
+              <VideoPlayer
                 path={videoUrl}
                 allowVideoPlay={true}
                 autoPlayVideo={false}

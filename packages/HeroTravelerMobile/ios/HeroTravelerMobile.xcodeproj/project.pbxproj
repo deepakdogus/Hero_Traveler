@@ -45,6 +45,7 @@
 		912E95471FA631C700399703 /* RNDJShadowDraftJSEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 912E95451FA631C600399703 /* RNDJShadowDraftJSEditor.m */; };
 		913C4EF45111427B8D830D3F /* Montserrat-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A0687633F8D24E28B8519A35 /* Montserrat-Light.ttf */; };
 		9155DE921FD9B42500DAAA7C /* RNDJAutocorrectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9155DE911FD9B42500DAAA7C /* RNDJAutocorrectView.m */; };
+		91589B40200BE48F000B84E6 /* VideoCacheItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 91589B3F200BE48F000B84E6 /* VideoCacheItem.m */; };
 		915D976D20081218005EF687 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 915D976820081217005EF687 /* FBSDKCoreKit.framework */; };
 		915D976E20081218005EF687 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 915D976920081217005EF687 /* Bolts.framework */; };
 		915D976F20081218005EF687 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 915D976A20081217005EF687 /* FBSDKShareKit.framework */; };
@@ -55,7 +56,6 @@
 		915D977520081820005EF687 /* FBSDKLoginKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 915D976B20081218005EF687 /* FBSDKLoginKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		915D977620081820005EF687 /* FBSDKPlacesKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 915D976C20081218005EF687 /* FBSDKPlacesKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		915D977720081820005EF687 /* FBSDKShareKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 915D976A20081217005EF687 /* FBSDKShareKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		91589B40200BE48F000B84E6 /* VideoCacheItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 91589B3F200BE48F000B84E6 /* VideoCacheItem.m */; };
 		91973CAC1FA39B64006DE932 /* RNDJBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973C911FA39B52006DE932 /* RNDJBaseModel.m */; };
 		91973CAD1FA39B64006DE932 /* RNDJBlockModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973C931FA39B52006DE932 /* RNDJBlockModel.m */; };
 		91973CAE1FA39B64006DE932 /* RNDJContentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973C951FA39B52006DE932 /* RNDJContentModel.m */; };
@@ -310,13 +310,6 @@
 			remoteGlobalIDString = 308F7B86C9B949C6AEB5E0FBCF625772;
 			remoteInfo = "iOS-MagnifyingGlass";
 		};
-		91F037B5200356BD000BA406 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 426CF4B206424918BE1AE5F3 /* RNGooglePlaces.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = RNGooglePlaces;
-		};
 		9404AF3A1E745B230054289E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 656DC182365C4CFC8F7AF2AD /* RNDeviceInfo.xcodeproj */;
@@ -522,13 +515,13 @@
 		912E95461FA631C700399703 /* RNDJShadowDraftJSEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJShadowDraftJSEditor.h; sourceTree = "<group>"; };
 		9155DE901FD9B42500DAAA7C /* RNDJAutocorrectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJAutocorrectView.h; sourceTree = "<group>"; };
 		9155DE911FD9B42500DAAA7C /* RNDJAutocorrectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJAutocorrectView.m; sourceTree = "<group>"; };
+		91589B3E200BE48F000B84E6 /* VideoCacheItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoCacheItem.h; sourceTree = "<group>"; };
+		91589B3F200BE48F000B84E6 /* VideoCacheItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoCacheItem.m; sourceTree = "<group>"; };
 		915D976820081217005EF687 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = Frameworks/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		915D976920081217005EF687 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = Frameworks/Bolts.framework; sourceTree = "<group>"; };
 		915D976A20081217005EF687 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = Frameworks/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		915D976B20081218005EF687 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = Frameworks/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		915D976C20081218005EF687 /* FBSDKPlacesKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKPlacesKit.framework; path = Frameworks/FBSDKPlacesKit.framework; sourceTree = "<group>"; };
-		91589B3E200BE48F000B84E6 /* VideoCacheItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoCacheItem.h; sourceTree = "<group>"; };
-		91589B3F200BE48F000B84E6 /* VideoCacheItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoCacheItem.m; sourceTree = "<group>"; };
 		91973C901FA39B52006DE932 /* RNDJBaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJBaseModel.h; sourceTree = "<group>"; };
 		91973C911FA39B52006DE932 /* RNDJBaseModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJBaseModel.m; sourceTree = "<group>"; };
 		91973C921FA39B52006DE932 /* RNDJBlockModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJBlockModel.h; sourceTree = "<group>"; };
@@ -966,14 +959,6 @@
 				91973CAB1FA39B52006DE932 /* RNDJUtil.h */,
 			);
 			path = Utils;
-			sourceTree = "<group>";
-		};
-		91F037B2200356BD000BA406 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				91F037B6200356BD000BA406 /* libRNGooglePlaces.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		91F037B920035941000BA406 /* Video */ = {
@@ -1577,13 +1562,6 @@
 			fileType = archive.ar;
 			path = "libiOS-MagnifyingGlass.a";
 			remoteRef = 91AC58CB1FD83CFD0017B1E8 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		91F037B6200356BD000BA406 /* libRNGooglePlaces.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNGooglePlaces.a;
-			remoteRef = 91F037B5200356BD000BA406 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		9404AF3B1E745B230054289E /* libRNDeviceInfo.a */ = {

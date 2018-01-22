@@ -32,7 +32,7 @@ export default class DraftJsImage extends Component {
        onPress={onPress}>
         <Image
          fullWidth={true}
-         source={{ uri: getImageUrl(url, 'basic') }}>
+         source={{ uri: getImageUrl(url, 'optimized') }}>
           {isSelected && imageEditOverlay}
         </Image>
       </TouchableWithoutFeedback>

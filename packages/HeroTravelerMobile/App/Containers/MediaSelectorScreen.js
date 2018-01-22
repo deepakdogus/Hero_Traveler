@@ -10,7 +10,7 @@ import ImagePicker from 'react-native-image-picker'
 
 import NavBar from './CreateStory/NavBar'
 import PhotoTaker from '../Components/PhotoTaker'
-import Video from '../Components/Video'
+import VideoPlayer from '../Components/VideoPlayer'
 import Image from '../Components/Image'
 import styles from './Styles/MediaSelectorScreenStyles'
 import isTooltipComplete, {Types as TooltipTypes} from '../Shared/Lib/firstTimeTooltips'
@@ -214,7 +214,7 @@ class MediaSelectorScreen extends React.Component {
     } else if (this.state.media && mediaType === 'video') {
       content = (
         <View style={styles.imageWrapper}>
-          <Video
+          <VideoPlayer
             path={this.state.media}
             showMuteButton={false}
             autoPlayVideo={true}

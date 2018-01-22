@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class Video extends Component {
+export default class NativeCachingVideo extends Component {
 
   constructor(props) {
     super(props);
@@ -242,7 +242,7 @@ Video.propTypes = {
   ...ViewPropTypes,
 };
 
-const RCTVideo = requireNativeComponent('RCTVideo', Video, {
+const RCTVideo = requireNativeComponent('RCTVideo', NativeCachingVideo, {
   nativeOnly: {
     src: true,
     fullscreen: true,

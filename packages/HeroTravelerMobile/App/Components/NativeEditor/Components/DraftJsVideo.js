@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native'
-import Video from '../../Video'
+import VideoPlayer from '../../VideoPlayer'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { getVideoUrlBase } from "../../../Shared/Lib/getVideoUrl"
 
@@ -30,7 +30,7 @@ export default class DraftJsVideo extends Component {
        style={style}
        onPress={onPress}>
         <View style={styles.abs}>
-          <Video
+          <VideoPlayer
             path={videoUrl}
             allowVideoPlay={true}
             autoPlayVideo={false}

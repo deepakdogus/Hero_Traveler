@@ -32,7 +32,7 @@ import {getNewCover, saveCover} from './shared'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import getVideoUrl from '../../Shared/Lib/getVideoUrl'
 import Image from '../../Components/Image'
-import Video from '../../Components/Video'
+import VideoPlayer from '../../Components/VideoPlayer'
 import pathAsFileObject from '../../Shared/Lib/pathAsFileObject'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTimeTooltips'
 import RoundedButton from '../../Components/RoundedButton'
@@ -223,7 +223,7 @@ class StoryCoverScreen extends Component {
       R.identity,
       R.always((
         <View style={styles.coverVideo}>
-          <Video
+          <VideoPlayer
             path={coverVideo}
             allowVideoPlay={false}
             autoPlayVideo={false}

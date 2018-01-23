@@ -114,7 +114,6 @@ class CreateStoryDetailScreen extends React.Component {
 
   _onRight = () => {
     const {workingDraft} = this.props
-
     const newCover = getNewCover(workingDraft.coverImage, workingDraft.coverVideo)
     let promise
     if (newCover) {

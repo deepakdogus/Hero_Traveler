@@ -451,8 +451,8 @@ class StoryCoverScreen extends Component {
     this.setState({
       updating: true
     })
-
     const newCover = getNewCover(coverImage, coverVideo)
+
     if (newCover) promise = saveCover(api, this.props.workingDraft, newCover)
     else promise = Promise.resolve(this.props.workingDraft)
 

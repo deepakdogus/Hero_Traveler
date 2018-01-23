@@ -13,7 +13,8 @@ export default function uploadDraftMedia(req, res, next) {
   )
   .then(video => {
     return StoryDraft.update(draftId, {
-      coverVideo: video._id
+      coverVideo: video._id,
+      coverImage: null
     })
   })
 }

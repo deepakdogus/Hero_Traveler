@@ -422,6 +422,13 @@
 			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
 			remoteInfo = RCTCamera;
 		};
+		D1FF94F7201139360044D68F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 426CF4B206424918BE1AE5F3 /* RNGooglePlaces.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNGooglePlaces;
+		};
 		EF21696C1F4E0111008B3B0A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EF2169651F4E0111008B3B0A /* KeyboardTrackingView.xcodeproj */;
@@ -1143,6 +1150,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		D1FF94F4201139360044D68F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D1FF94F8201139360044D68F /* libRNGooglePlaces.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		EF2169661F4E0111008B3B0A /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1667,6 +1682,13 @@
 			fileType = archive.ar;
 			path = libRCTCamera.a;
 			remoteRef = 95F7E9541E79D5C8006344FE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D1FF94F8201139360044D68F /* libRNGooglePlaces.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNGooglePlaces.a;
+			remoteRef = D1FF94F7201139360044D68F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		EF21696D1F4E0111008B3B0A /* libKeyboardTrackingView.a */ = {

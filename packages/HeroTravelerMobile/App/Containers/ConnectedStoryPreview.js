@@ -34,13 +34,17 @@ const mapStateToProps = (state, ownProps) => {
   }
 
   const isVisible = ownProps.index !== undefined ?
-    state.ux.storyListVisibleRow == ownProps.index : undefined
+    state.ux.storyListPlayingRow == ownProps.index : undefined
+
+  const shouldHideCover = ownProps.index !== undefined ?
+    _.includes(state.ux.storyListVisibleRows, ownProps.index) : false
 
   return {
     ...storyProps,
     story,
     accessToken: _.find(session.tokens, {type: 'access'}).value,
     isVisible,
+    shouldHideCover,
     isAuthor: story && story.author === sessionUserId,
   }
 }

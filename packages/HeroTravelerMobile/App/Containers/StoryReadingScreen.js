@@ -20,7 +20,7 @@ import Image from '../Components/Image'
 import Loader from '../Components/Loader'
 import FlagModal from '../Components/FlagModal'
 import {styles, rendererStyles} from './Styles/StoryReadingScreenStyles'
-import Video from '../Components/Video'
+import VideoPlayer from '../Components/VideoPlayer'
 import Immutable from 'seamless-immutable'
 import {getVideoUrlBase} from '../Shared/Lib/getVideoUrl'
 import getImageUrl from '../Shared/Lib/getImageUrl'
@@ -45,7 +45,7 @@ const StoryVideo = enhanceStoryVideo((props) => {
     <View
       style={styles.videoWrapper}
     >
-      <Video
+      <VideoPlayer
         ref={props.registerRef}
         path={props.src}
         style={styles.video}
@@ -70,7 +70,7 @@ const StoryVideo = enhanceStoryVideo((props) => {
             }}
             size={20} />
         </TouchableOpacity>
-      </Video>
+      </VideoPlayer>
     </View>
   )
 })

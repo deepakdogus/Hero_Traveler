@@ -31,6 +31,7 @@ export default class StoryPreview extends Component {
     height: PropTypes.number,
     isLiked: PropTypes.bool,
     showLike: PropTypes.bool,
+    shouldHideCover: PropTypes.bool,
     autoPlayVideo: PropTypes.bool,
     allowVideoPlay: PropTypes.bool,
     isStoryReadingScreen: PropTypes.bool,
@@ -209,7 +210,7 @@ export default class StoryPreview extends Component {
   }
 
   render () {
-    const {story, gradientLocations, showPlayButton} = this.props
+    const {story, gradientLocations, showPlayButton, shouldHideCover} = this.props
     if (!story) return null
     // using StoryPreview height as proxy for StoryCover playbutton size
     const height = this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20
@@ -218,19 +219,21 @@ export default class StoryPreview extends Component {
     return (
       <View style={styles.contentContainer}>
         {this.renderUserSection()}
-        <StoryCover
-          autoPlayVideo={this.props.autoPlayVideo}
-          allowVideoPlay={this.props.allowVideoPlay}
-          cover={story.coverImage ? story.coverImage : story.coverVideo}
-          coverType={story.coverImage ? 'image' : 'video'}
-          onPress={this.props.onPress}
-          gradientColors={this.props.gradientColors}
-          gradientLocations={gradientLocations}
-          showPlayButton={showPlayButton}
-          playButtonSize={playButtonSize}
-          isFeed={this.props.isVisible !== undefined}
-          shouldEnableAutoplay={this.shouldEnableAutoplay()}
-        />
+        {!shouldHideCover && 
+          <StoryCover
+            autoPlayVideo={this.props.autoPlayVideo}
+            allowVideoPlay={this.props.allowVideoPlay}
+            cover={story.coverImage ? story.coverImage : story.coverVideo}
+            coverType={story.coverImage ? 'image' : 'video'}
+            onPress={this.props.onPress}
+            gradientColors={this.props.gradientColors}
+            gradientLocations={gradientLocations}
+            showPlayButton={showPlayButton}
+            playButtonSize={playButtonSize}
+            isFeed={this.props.isVisible !== undefined}
+            shouldEnableAutoplay={this.shouldEnableAutoplay()}
+          />
+        }
         {this.renderBottomSection()}
       </View>
     )

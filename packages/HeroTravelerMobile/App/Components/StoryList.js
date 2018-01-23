@@ -22,8 +22,9 @@ class StoryList extends React.Component {
     refreshing: PropTypes.bool,
     renderHeaderContent: PropTypes.object,
     renderSectionHeader: PropTypes.object,
-    setVisibleRow: PropTypes.func,
-    visibleRow: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    setPlayingRow: PropTypes.func,
+    setVisibleRows: PropTypes.func,
+    playingRow: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   }
 
   static defaultProps = {
@@ -65,13 +66,19 @@ class StoryList extends React.Component {
   }
 
   updateDataSource = (visibleRows) => {
-    const {setVisibleRow, visibleRow} = this.props
+    const {setPlayingRow, playingRow, setVisibleRows} = this.props
+
+    if (!visibleRows || !visibleRows.s1)
+    {
+      return;
+    }
 
     let targetRow;
     const visibleRowsKeys = Object.keys(visibleRows.s1)
     if (visibleRowsKeys.length === 3) targetRow = visibleRowsKeys[1]
     else targetRow = visibleRowsKeys[0]
-    if (targetRow !== visibleRow) setVisibleRow(targetRow)
+    if (targetRow !== playingRow) setPlayingRow(targetRow)
+    setVisibleRows(visibleRowsKeys)
   }
 
   render () {
@@ -100,13 +107,14 @@ class StoryList extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    visibleRow: state.ux.storyListVisibleRow
+    playingRow: state.ux.storyListPlayingRow
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setVisibleRow: (row) => dispatch(UXActions.setStoryListVisibleRow(row)),
+    setPlayingRow: (row) => dispatch(UXActions.setStoryListPlayingRow(row)),
+    setVisibleRows: (rows) => dispatch(UXActions.setStoryListVisibleRows(rows)),
   }
 }
 

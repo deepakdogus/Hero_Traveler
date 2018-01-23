@@ -321,20 +321,17 @@ class StoryCoverScreen extends Component {
     this.setState({ activeModal: undefined})
   }
 
+
+  hasFieldChanged(field) {
+    return !isEqual(this.props.workingDraft[field], this.props.originalDraft[field])
+  }
+
   draftHasChanged = () => {
+    const fieldsToCheck = ['title', 'description', 'coverCaption', 'coverImage', 'coverVideo', 'tripDate', 'location', 'type', 'categories']
     return !_.every([
-      !this.hasTitleChanged(),
-      !this.hasDescriptionChanged(),
-      !this.hasCoverCaptionChanged(),
-      !this.hasImageChanged(),
-      !this.hasVideoChanged(),
+      ...fieldsToCheck.map(field => !this.hasFieldChanged(field)),
       !this.state.contentTouched ,
-      !this.hasTripDateChanged(),
-      !this.hasLocationChanged(),
-      !this.hasTypeChanged(),
-      !this.hasCategoriesChanged()
-      ]
-    )
+    ])
   }
 
   renderCancel = () => {
@@ -410,51 +407,16 @@ class StoryCoverScreen extends Component {
     }
   }
 
-  hasTitleChanged() {
-    return !isEqual(this.props.workingDraft.title, this.props.originalDraft.title)
-  }
-
-  hasDescriptionChanged() {
-    return !isEqual(this.props.workingDraft.description, this.props.originalDraft.description)
-  }
-
-  hasImageChanged() {
-    return !isEqual(this.props.workingDraft.coverImage, this.props.originalDraft.coverImage)
-  }
-
-  hasVideoChanged() {
-    return !isEqual(this.props.workingDraft.coverVideo, this.props.originalDraft.coverVideo)
-  }
-
-  hasCoverCaptionChanged() {
-    return !isEqual(this.props.workingDraft.coverCaption, this.props.originalDraft.coverCaption)
-  }
-
-  hasTripDateChanged() {
-    return !isEqual(this.props.workingDraft.tripDate, this.props.originalDraft.tripDate) 
-  }
-
-  hasLocationChanged(){
-    return !isEqual(this.props.workingDraft.location, this.props.originalDraft.location)
-  }
-
-  hasTypeChanged() {
-    return !isEqual(this.props.workingDraft.type, this.props.originalDraft.type)
-  }
-
-  hasCategoriesChanged() {
-    return !isEqual(this.props.workingDraft.categories, this.props.originalDraft.categories)
-  }
 
   // TODO
   _onRight = () => {
-    const hasImageChanged = this.hasImageChanged()
-    const hasVideoChanged = this.hasVideoChanged()
     const hasVideoSelected = !!this.state.coverVideo
     const hasImageSelected = !!this.state.coverImage
-    const hasTitleChanged = this.hasTitleChanged()
-    const hasDescriptionChanged = this.hasDescriptionChanged()
-    const hasCoverCaptionChanged = this.hasCoverCaptionChanged()
+    const hasImageChanged = this.hasFieldChanged('coverImage')
+    const hasVideoChanged = this.hasFieldChanged('coverVideo')
+    const hasTitleChanged = this.hasFieldChanged('title')
+    const hasDescriptionChanged = this.hasFieldChanged('description')
+    const hasCoverCaptionChanged = this.hasFieldChanged('coverCaption')
     const nothingHasChanged = _.every([
       hasVideoSelected || hasImageSelected,
       !hasImageChanged,
@@ -489,9 +451,9 @@ class StoryCoverScreen extends Component {
   }
 
   cleanDraft(draft){
-    if (this.hasTitleChanged()) draft.title = _.trim(draft.title)
-    if (this.hasDescriptionChanged()) draft.description = _.trim(draft.description)
-    if (this.hasCoverCaptionChanged()) draft.coverCaption = _.trim(draft.coverCaption)
+    if (this.hasFieldChanged('title')) draft.title = _.trim(draft.title)
+    if (this.hasFieldChanged('description')) draft.description = _.trim(draft.description)
+    if (this.hasFieldChanged('coverCaption')) draft.coverCaption = _.trim(draft.coverCaption)
     draft.draftjsContent = this.editor.getEditorStateAsObject()
   }
 

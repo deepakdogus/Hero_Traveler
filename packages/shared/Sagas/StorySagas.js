@@ -42,8 +42,6 @@ function * getInitalData(api, userId) {
 export function * getUserFeed (api, action) {
   const { userId } = action
 
-  console.log('getting user feed, including receiveing stories')
-
   // See if we need to load likes and bookmark info
 
   yield getInitalData(api, userId)

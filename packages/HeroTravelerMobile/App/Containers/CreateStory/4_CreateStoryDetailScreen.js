@@ -7,12 +7,9 @@ import {
   TouchableWithoutFeedback,
   TouchableHighlight,
   DatePickerIOS,
-  TextInput,
 } from 'react-native'
 import { connect } from 'react-redux'
-import moment from 'moment'
 import {Actions as NavActions} from 'react-native-router-flux'
-
 import {getNewCover, saveCover} from './shared'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import StoryEditActions, {isCreated, isPublishing} from '../../Shared/Redux/StoryCreateRedux'
@@ -21,7 +18,6 @@ import Loader from '../../Components/Loader'
 import ShadowButton from '../../Components/ShadowButton'
 import TabIcon from '../../Components/TabIcon'
 import RoundedButton from '../../Components/RoundedButton'
-import RenderTextInput from '../../Components/RenderTextInput'
 import NavBar from './NavBar'
 import styles from './4_CreateStoryDetailScreenStyles'
 import API from '../../Shared/Services/HeroAPI'
@@ -93,7 +89,6 @@ class CreateStoryDetailScreen extends React.Component {
     }
 
     if (this.props.isRepublishing && !newProps.isRepublishing){
-      console.log('MOVING ON NOW')
       this.next()
     }
   }
@@ -154,10 +149,9 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   _update = (draft) => {
-    console.log('IS REPUBLSIIGN', this.props.isRepublishing)
     this.saveDraft(draft)
-    console.log('IS REPUBLSHING 2', this.props.isRepublishing)
-    //this.next()
+    // rather than calling this.next() now, we will let componentWillReceiveProps handle that
+    // so that we do not run into race condition on backend
   }
 
   _closeError = () => {

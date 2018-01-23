@@ -65,8 +65,8 @@ export default StyleSheet.create({
     height: 40,
   },
   avatar: {
-    width: 36,
-    height: 36,
+    width: 40,
+    height: 40,
     borderRadius: 18,
     marginRight: Metrics.baseMargin
   },

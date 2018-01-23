@@ -28,7 +28,43 @@
     _fontStyle = GET(fontStyle, NSString);
     _fontVariant = GET(fontVariant, NSArray);
     _letterSpacing = GET(letterSpacing, NSNumber);
-    _color = GET(color, NSString);
+    
+    _color = nil;
+    id rawColor = [dictionary objectForKey:@"color"];
+    if ([rawColor isKindOfClass:[NSString class]])
+    {
+      NSString* stringColor = (NSString*)rawColor;
+      if ([stringColor hasPrefix:@"#"] && stringColor.length > 1)
+      {
+        stringColor = [stringColor substringFromIndex:1];
+      }
+      
+      if (stringColor.length == 8)
+      {
+        unsigned long color = [stringColor longLongValue];
+        CGFloat b = ((color >> 0) & 0xff) / ((CGFloat)0xff);
+        CGFloat g = ((color >> 8) & 0xff) / ((CGFloat)0xff);
+        CGFloat r = ((color >> 16) & 0xff) / ((CGFloat)0xff);
+        CGFloat a = ((color >> 24) & 0xff) / ((CGFloat)0xff);
+        
+        _color = [UIColor colorWithRed:r green:g blue:b alpha:a];
+      }
+    }
+    else if ([rawColor isKindOfClass:[NSNumber class]])
+    {
+      unsigned long color = [(NSNumber*)rawColor unsignedLongValue];
+      CGFloat b = ((color >> 0) & 0xff) / ((CGFloat)0xff);
+      CGFloat g = ((color >> 8) & 0xff) / ((CGFloat)0xff);
+      CGFloat r = ((color >> 16) & 0xff) / ((CGFloat)0xff);
+      CGFloat a = ((color >> 24) & 0xff) / ((CGFloat)0xff);
+      
+      _color = [UIColor colorWithRed:r green:g blue:b alpha:a];
+    }
+    else if ([rawColor isKindOfClass:[UIColor class]])
+    {
+      _color = (UIColor*) rawColor;
+    }
+    
     _backgroundColor = GET(backgroundColor, NSString);
     _opacity = GET(opacity, NSNumber);
     _lineHeight = GET(lineHeight, NSNumber);

@@ -49,7 +49,6 @@ class ProfileView extends React.Component {
   static propTypes = {
     location: PropTypes.string,
   }
-  
 
   constructor(props) {
     super(props)
@@ -72,6 +71,9 @@ class ProfileView extends React.Component {
       this.setState({
         selectedTab: TabTypes.stories
       })
+    }
+    if (!this.hasCompletedNoStoriesTooltip() && newProps.stories.length){
+      this._completeTooltip()
     }
   }
   _handleUpdateAvatarPhoto = (data) => {
@@ -233,13 +235,18 @@ class ProfileView extends React.Component {
     )
   }
 
-  render() {
-    const { user, editable, isEditing, location} = this.props
+  hasCompletedNoStoriesTooltip() {
+    return isTooltipComplete(
+      TooltipTypes.PROFILE_NO_STORIES,
+      this.props.user.introTooltips
+    )
+  }
 
-    let showTooltip = !isEditing && editable && !isTooltipComplete(
-        TooltipTypes.PROFILE_NO_STORIES,
-        user.introTooltips
-      )
+  render() {
+    const {editable, isEditing, location, stories} = this.props
+
+    let showTooltip = !isEditing && editable &&
+      !stories.length && !this.hasCompletedNoStoriesTooltip()
 
     return (
       <View style={{flex: 1}}>

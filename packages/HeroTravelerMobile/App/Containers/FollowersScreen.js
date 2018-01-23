@@ -91,17 +91,17 @@ class FollowersScreen extends React.Component {
 
             return (
               <View style={[styles.rowWrapper]} key={u.id}>
-                <View style={[styles.row, styles.followers]}>
-                  <TouchableOpacity onPress={() => NavToProfileFunction({userId: u.id})}>
-                  <Avatar
-                    style={styles.avatar}
-                    avatarUrl={getImageUrl(u.profile.avatar, 'avatar')}
-                  />
+                <View style={styles.row}>
+                  <TouchableOpacity onPress={() => NavToProfileFunction({userId: u.id})} style={styles.avatarAndName}>
+                    <Avatar
+                      style={styles.avatar}
+                      avatarUrl={getImageUrl(u.profile.avatar, 'avatar')}
+                    />
+                    <View style={styles.nameWrapper}>
+                      <Text style={styles.name}>{u.profile.fullName}</Text>
+                      <Text style={styles.followerCount}>{u.counts.followers} followers</Text>
+                    </View>
                   </TouchableOpacity>
-                  <View style={styles.nameWrapper}>
-                    <Text style={styles.name}>{u.profile.fullName}</Text>
-                    <Text style={styles.followerCount}>{u.counts.followers} followers</Text>
-                  </View>
                   {followingText &&
                   <RoundedButton
                     style={selected ? styles.selectedFollowersButton : styles.followersButton}

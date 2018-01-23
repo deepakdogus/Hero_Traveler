@@ -49,6 +49,13 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: Colors.lightGreyAreas,
   },
+  avatarAndName: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    maxWidth: '60%',
+    height: 40,
+  },
   row: {
     marginVertical: Metrics.baseMargin,
     marginHorizontal: Metrics.doubleBaseMargin,
@@ -58,8 +65,8 @@ export default StyleSheet.create({
     height: 40,
   },
   avatar: {
-    width: 36,
-    height: 36,
+    width: 40,
+    height: 40,
     borderRadius: 18,
     marginRight: Metrics.baseMargin
   },

@@ -160,11 +160,47 @@ class MediaSelectorScreen extends React.Component {
     this.setState({media: null})
   }
 
+
+  _handleMediaSelector = (data) => {
+    if (data.didCancel) {
+      this.setState({captureOpen: true})
+      return;
+    }
+
+    if (data.error) {
+      this.setState({captureOpen: true})
+      return
+    }
+
+    this.setState({
+      mediaCaptured: false,
+      media: data.uri,
+      mediaMetrics: {
+        height: data.height,
+        width: data.width,
+      }
+    })
+  }
+
+  _handleCaptureMedia = (data) => {
+    this.setState({
+      mediaCaptured: true,
+      media: data.path
+    })
+  }
+
+  _onNext = () => {
+    if (this.state.media) {
+      const isPhotoType = this.getMediaType() === 'photo'
+      this.props.onSelectMedia(this.state.media, isPhotoType, this.state.mediaMetrics)
+    }
+  }
+
   getMediaType = () => {
     if (!this.state.media) return undefined
     const media = this.state.media.split('.')
     const extension = media[media.length-1]
-    if (extension === 'MOV') return 'video'
+    if (extension.toUpperCase() === 'MOV') return 'video'
     else return 'photo'
   }
 
@@ -279,40 +315,6 @@ class MediaSelectorScreen extends React.Component {
     )
   }
 
-  _handleMediaSelector = (data) => {
-    if (data.didCancel) {
-      this.setState({captureOpen: true})
-      return;
-    }
-
-    if (data.error) {
-      this.setState({captureOpen: true})
-      return
-    }
-
-    this.setState({
-      mediaCaptured: false,
-      media: data.uri,
-      mediaMetrics: {
-        height: data.height,
-        width: data.width,
-      }
-    })
-  }
-
-  _handleCaptureMedia = (data) => {
-    this.setState({
-      mediaCaptured: true,
-      media: data.path
-    })
-  }
-
-  _onNext = () => {
-    if (this.state.media) {
-      const isPhotoType = this.getMediaType() === 'photo'
-      this.props.onSelectMedia(this.state.media, isPhotoType, this.state.mediaMetrics)
-    }
-  }
 }
 
 

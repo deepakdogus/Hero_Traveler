@@ -15,7 +15,8 @@ export default function uploadDraftImage(req, res, next) {
   )
   .then(image => {
     return StoryDraft.update(draftId, {
-      coverImage: image._id
+      coverImage: image._id,
+      coverVideo: null,
     })
   })
 }

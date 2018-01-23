@@ -3,6 +3,7 @@ import UserActions from '../Redux/Entities/Users'
 import MediaUploadActions from '../Redux/MediaUploadRedux'
 
 function getUploadMethod(api, uploadType){
+
   switch(uploadType){
     case 'avatar':
       return api.uploadAvatarImage

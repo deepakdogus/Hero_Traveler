@@ -91,6 +91,11 @@ class CreateStoryDetailScreen extends React.Component {
     if (!newProps.publishing && newProps.isCreated) {
       this.next()
     }
+
+    if (this.props.isRepublishing && !newProps.isRepublishing){
+      console.log('MOVING ON NOW')
+      this.next()
+    }
   }
 
   _setModalVisible = (visible) => {
@@ -149,8 +154,10 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   _update = (draft) => {
+    console.log('IS REPUBLSIIGN', this.props.isRepublishing)
     this.saveDraft(draft)
-    this.next()
+    console.log('IS REPUBLSHING 2', this.props.isRepublishing)
+    //this.next()
   }
 
   _closeError = () => {
@@ -348,12 +355,13 @@ export default connect(
       story: {...state.storyCreate.workingDraft},
       workingDraft: {...state.storyCreate.workingDraft},
       error: state.storyCreate.error,
+      isRepublishing: state.storyCreate.isRepublishing,
     }
   },
   dispatch => ({
     updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),
     publish: (story) => dispatch(StoryEditActions.publishDraft(story)),
-    update: (id, attrs) => dispatch(StoryEditActions.updateDraft(id, attrs, true)),
+    update: (id, attrs) => dispatch(StoryEditActions.updateDraft(id, attrs, true, true)),
     resetCreateStore: () => dispatch(StoryEditActions.resetCreateStore())
   })
 )(CreateStoryDetailScreen)

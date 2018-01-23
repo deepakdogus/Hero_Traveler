@@ -17,9 +17,9 @@ const { Types, Creators } = createActions({
   discardDraft: ['draftId'],
   discardDraftSuccess: ['draft'],
   discardDraftFailure: ['error'],
-  updateDraft: ['draftId', 'draft', 'updateStoryEntity', 'isRepublishing'],
+  updateDraft: ['draftId', 'draft', 'updateStoryEntity'],
   updateWorkingDraft: ['workingDraft'],
-  updateDraftSuccess: ['draft', 'isRepublished'],
+  updateDraftSuccess: ['draft'],
   updateDraftFailure: ['error'],
   uploadCoverImage: ['draftId', 'path'],
   uploadCoverImageSuccess: ['draft'],
@@ -42,6 +42,7 @@ export const INITIAL_STATE = Immutable({
   error: null,
   isPublished: false,
   isRepublished: false,
+  isRepublishing: false,
   fetchStatus: {
     loaded: false,
     fetching: false
@@ -87,12 +88,19 @@ export const registerDraftSuccess = (state, {draft}) => {
   })
 }
 
+export const updateDraft = (state) => {
+  return state.merge({
+    isRepublishing: true,
+  })
+}
+
 // updateDraft called after save. Making sure to sync up workingDraft + draft
-export const updateDraftSuccess = (state, {draft, isRepublished}) => {
+export const updateDraftSuccess = (state, {draft}) => {
   return state.merge({
     draft,
     workingDraft: draft,
-    isRepublished: !!isRepublished,
+    isRepublished: true,
+    isRepublishing: false,
   },
   {deep: true})
 }
@@ -155,6 +163,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.DISCARD_DRAFT_SUCCESS]: reset,
   [Types.DISCARD_DRAFT_FAILURE]: failure,
   [Types.UPDATE_WORKING_DRAFT]: updateWorkingDraft,
+  [Types.UPDATE_DRAFT]: updateDraft,
   [Types.UPDATE_DRAFT_SUCCESS]: updateDraftSuccess,
   [Types.UPDATE_DRAFT_FAILURE]: failure,
   [Types.REGISTER_DRAFT]: registerDraft,

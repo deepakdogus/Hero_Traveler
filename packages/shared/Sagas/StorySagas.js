@@ -42,6 +42,8 @@ function * getInitalData(api, userId) {
 export function * getUserFeed (api, action) {
   const { userId } = action
 
+  console.log('getting user feed, including receiveing stories')
+
   // See if we need to load likes and bookmark info
 
   yield getInitalData(api, userId)
@@ -152,7 +154,7 @@ export function * discardDraft (api, action) {
 }
 
 export function * updateDraft (api, action) {
-  const {draftId, draft, updateStoryEntity, isRepublishing} = action
+  const {draftId, draft, updateStoryEntity} = action
   const response = yield call(api.updateDraft, draftId, draft)
   if (response.ok) {
     const {entities, result} = response.data
@@ -160,7 +162,7 @@ export function * updateDraft (api, action) {
     if (updateStoryEntity || !story.draft) {
       yield put(StoryActions.receiveStories(entities.stories))
     }
-    yield put(StoryCreateActions.updateDraftSuccess(story, isRepublishing))
+    yield put(StoryCreateActions.updateDraftSuccess(story))
   } else {
     yield put(StoryCreateActions.updateDraftFailure(new Error('Failed to update draft')))
   }

@@ -100,6 +100,7 @@ export default class RNDraftJs extends Component {
   }
 
   _onInsertTextRequest = (event) => {
+    this.props.reportContentTouched()
     let { editorState } = this.state
     let text = event.nativeEvent.text
     let position = event.nativeEvent.position
@@ -144,6 +145,7 @@ export default class RNDraftJs extends Component {
   }
 
   _onBackspaceRequest = () => {
+    this.props.reportContentTouched()
     this.onChange(backspace(this.state.editorState))
   }
 

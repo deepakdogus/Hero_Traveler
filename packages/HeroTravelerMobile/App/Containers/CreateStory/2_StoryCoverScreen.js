@@ -51,6 +51,24 @@ const MediaTypes = {
   photo: 'photo',
 }
 
+/* 
+
+Utility functions
+
+*/
+
+const isEqual = (firstItem, secondItem) => {
+  if (!!firstItem && !secondItem || !firstItem && !!secondItem) {
+    return false
+  } else if (!!firstItem && !!secondItem) {
+    // lodash will take of equality check for all objects
+    return _.isEqual(firstItem, secondItem)
+  } else { 
+    return true
+  }
+}
+
+
 class StoryCoverScreen extends Component {
 
   static propTypes = {
@@ -67,6 +85,8 @@ class StoryCoverScreen extends Component {
     discardDraft: PropTypes.func,
     completeTooltip: PropTypes.func,
     resetCreateStore: PropTypes.func,
+    workingDraft: PropTypes.object,
+    originalDraft: PropTypes.object,
   }
 
   static defaultProps = {
@@ -91,6 +111,7 @@ class StoryCoverScreen extends Component {
       titleHeight: 34,
       activeModal: undefined,
       toolbarDisplay: false,
+      contentTouched: false
     }
   }
 
@@ -287,15 +308,34 @@ class StoryCoverScreen extends Component {
     this.navBack()
   }
 
-  _onLeft = () => {
-    this.setState({ activeModal: 'cancel' })
+  _onLeft = () => { 
+    if (this.draftHasChanged()){
+      this.setState({ activeModal: 'cancel' })
+    } else {
+      // If there are no changes, just close without opening the modal
+      this._onLeftNo()
+    }
   }
 
   closeModal = () => {
     this.setState({ activeModal: undefined})
   }
 
+
+  hasFieldChanged(field) {
+    return !isEqual(this.props.workingDraft[field], this.props.originalDraft[field])
+  }
+
+  draftHasChanged = () => {
+    const fieldsToCheck = ['title', 'description', 'coverCaption', 'coverImage', 'coverVideo', 'tripDate', 'location', 'type', 'categories']
+    return !_.every([
+      ...fieldsToCheck.map(field => !this.hasFieldChanged(field)),
+      !this.state.contentTouched ,
+    ])
+  }
+
   renderCancel = () => {
+
     const isDraft = this.props.workingDraft.draft === true
     const title = isDraft ? 'Save Draft' : 'Save Edits'
     const message = this.isSavedDraft() ? 'Do you want to save these edits before you go?' : 'Do you want to save this story draft before you go?'
@@ -367,35 +407,16 @@ class StoryCoverScreen extends Component {
     }
   }
 
-  hasTitleChanged() {
-    return !!this.props.workingDraft.title && this.props.workingDraft.title !== this.props.originalDraft.title
-  }
-
-  hasDescriptionChanged() {
-    return !!this.props.workingDraft.description && this.props.workingDraft.description !== this.props.originalDraft.description
-  }
-
-  hasImageChanged() {
-    return !!this.props.workingDraft.coverImage && this.props.workingDraft.coverImage !== getImageUrl(this.props.originalDraft.coverImage, 'basic')
-  }
-
-  hasVideoChanged() {
-    return !!this.props.workingDraft.coverVideo && this.props.workingDraft.coverVideo !== getVideoUrl(this.props.originalDraft.coverVideo)
-  }
-
-  hasCoverCaptionChanged() {
-    return !!this.props.workingDraft.coverCaption && this.props.workingDraft.coverCaption !== this.props.originalDraft.coverCaption
-  }
 
   // TODO
   _onRight = () => {
-    const hasImageChanged = this.hasImageChanged()
-    const hasVideoChanged = this.hasVideoChanged()
     const hasVideoSelected = !!this.state.coverVideo
     const hasImageSelected = !!this.state.coverImage
-    const hasTitleChanged = this.hasTitleChanged()
-    const hasDescriptionChanged = this.hasDescriptionChanged()
-    const hasCoverCaptionChanged = this.hasCoverCaptionChanged()
+    const hasImageChanged = this.hasFieldChanged('coverImage')
+    const hasVideoChanged = this.hasFieldChanged('coverVideo')
+    const hasTitleChanged = this.hasFieldChanged('title')
+    const hasDescriptionChanged = this.hasFieldChanged('description')
+    const hasCoverCaptionChanged = this.hasFieldChanged('coverCaption')
     const nothingHasChanged = _.every([
       hasVideoSelected || hasImageSelected,
       !hasImageChanged,
@@ -430,9 +451,9 @@ class StoryCoverScreen extends Component {
   }
 
   cleanDraft(draft){
-    if (this.hasTitleChanged()) draft.title = _.trim(draft.title)
-    if (this.hasDescriptionChanged()) draft.description = _.trim(draft.description)
-    if (this.hasCoverCaptionChanged()) draft.coverCaption = _.trim(draft.coverCaption)
+    if (this.hasFieldChanged('title')) draft.title = _.trim(draft.title)
+    if (this.hasFieldChanged('description')) draft.description = _.trim(draft.description)
+    if (this.hasFieldChanged('coverCaption')) draft.coverCaption = _.trim(draft.coverCaption)
     draft.draftjsContent = this.editor.getEditorStateAsObject()
   }
 
@@ -751,6 +772,12 @@ class StoryCoverScreen extends Component {
     }
   }
 
+  reportContentTouched = () => {
+    this.setState({
+      contentTouched: true
+    })
+  }
+
   renderEditor() {
     return (
       <View style={[styles.editor]}>
@@ -768,6 +795,7 @@ class StoryCoverScreen extends Component {
             {...this.getContent()}
             setHasFocus={this.setHasFocus}
             setBlockType={this.setBlockType}
+            reportContentTouched={this.reportContentTouched}
           />
         }
       </View>

@@ -24,7 +24,7 @@ import VideoPlayer from '../Components/VideoPlayer'
 import Immutable from 'seamless-immutable'
 import {getVideoUrlBase} from '../Shared/Lib/getVideoUrl'
 import getImageUrl from '../Shared/Lib/getImageUrl'
-import {CategoryFeedNavActionStyles} from './Styles/ExploreScreenStyles'
+import getRelativeHeight from '../Shared/Lib/getRelativeHeight'
 
 const enhanceStoryVideo = compose(
   withHandlers(() => {
@@ -41,9 +41,10 @@ const enhanceStoryVideo = compose(
 )
 
 const StoryVideo = enhanceStoryVideo((props) => {
+  const height = props.height || Metrics.screenWidth * 9 / 16
   return (
     <View
-      style={styles.videoWrapper}
+      style={[styles.videoWrapper, {height}]}
     >
       <VideoPlayer
         ref={props.registerRef}
@@ -55,6 +56,7 @@ const StoryVideo = enhanceStoryVideo((props) => {
         showPlayButton={true}
         playButtonSize={'small'}
         videoFillSpace={true}
+        resizeMode='cover'
       >
         <TouchableOpacity
           style={styles.videoExpand}
@@ -90,11 +92,12 @@ const atomicHandler = (item: Object): any => {
         );
       case 'video':
         let videoUrl
+        const height = getRelativeHeight(Metrics.screenWidth, item.data)
         if (item.data.HLSUrl) videoUrl = item.data.HLSUrl
         else videoUrl = `${getVideoUrlBase()}/${item.data.url}`
         return (
           <View key={item.key} style={styles.mediaViewWrapper}>
-            <StoryVideo src={videoUrl}/>
+            <StoryVideo src={videoUrl} height={height}/>
             {!!item.text && <Text style={styles.caption}>{item.text}</Text>}
           </View>
         )

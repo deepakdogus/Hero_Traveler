@@ -51,7 +51,7 @@ const MediaTypes = {
   photo: 'photo',
 }
 
-/* 
+/*
 
 Utility functions
 
@@ -63,7 +63,7 @@ const isEqual = (firstItem, secondItem) => {
   } else if (!!firstItem && !!secondItem) {
     // lodash will take of equality check for all objects
     return _.isEqual(firstItem, secondItem)
-  } else { 
+  } else {
     return true
   }
 }
@@ -249,6 +249,7 @@ class StoryCoverScreen extends Component {
             allowVideoPlay={false}
             autoPlayVideo={false}
             showPlayButton={false}
+            resizeMode='cover'
           />
           {this.renderContent()}
         </View>
@@ -308,7 +309,7 @@ class StoryCoverScreen extends Component {
     this.navBack()
   }
 
-  _onLeft = () => { 
+  _onLeft = () => {
     if (this.draftHasChanged()){
       this.setState({ activeModal: 'cancel' })
     } else {
@@ -750,7 +751,10 @@ class StoryCoverScreen extends Component {
     this.setState({videoUploading: true})
     api.uploadStoryVideo(this.props.workingDraft.id, pathAsFileObject(data))
       .then(({data: videoUpload}) => {
-        this.editor.insertVideo(_.get(videoUpload, 'original.path'))
+        const url = _.get(videoUpload, 'original.path')
+        const height = _.get(videoUpload, 'original.meta.height')
+        const width = _.get(videoUpload, 'original.meta.width')
+        this.editor.insertVideo(url, height, width)
         this.setState({videoUploading: false})
       })
       .catch((err) => {

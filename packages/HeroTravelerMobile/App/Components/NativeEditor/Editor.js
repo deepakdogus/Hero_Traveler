@@ -344,6 +344,10 @@ const blockFontTypes = {
   unstyled: { // No real need to use since values from styles are already used
     fontSize: 18,
   },
+  placeholder: {
+   color: processColor(Colors.redHighlights),
+   opacity: 0.8,
+  },
   headerOne: {
     fontSize: 21,
     fontWeight: '600',

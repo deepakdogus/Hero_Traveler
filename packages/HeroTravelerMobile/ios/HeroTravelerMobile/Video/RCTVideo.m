@@ -121,13 +121,16 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   
   if (_playerViewController)
   {
-    [self videoPlayerViewControllerWillDismiss:_playerViewController];
     AVPlayerViewController* playerViewController = _playerViewController;
-    [_presentingViewController dismissViewControllerAnimated:true completion:^{
-      [self videoPlayerViewControllerDidDismiss:playerViewController];
-    }];
+    UIViewController* presentingViewController = _presentingViewController;
+    __weak RCTVideo* weakSelf = self;
+
     _playerViewController = nil;
     _presentingViewController = nil;
+    [self videoPlayerViewControllerWillDismiss:playerViewController];
+    [presentingViewController dismissViewControllerAnimated:true completion:^{
+      [weakSelf videoPlayerViewControllerDidDismiss:playerViewController];
+    }];
   }
 }
 
@@ -250,6 +253,14 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
 
 - (void) videoPlayerViewControllerWillDismiss:(AVPlayerViewController*)playerViewController
 {
+  if (_fullscreen)
+  {
+    _playerViewController = nil;
+    _presentingViewController = nil;
+    
+    [self setFullscreen:NO];
+  }
+
   if (self.onVideoFullscreenPlayerWillDismiss)
   {
     self.onVideoFullscreenPlayerWillDismiss(@{@"target": self.reactTag});
@@ -395,13 +406,16 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   }
   else if (!fullscreenVisible && _playerViewController)
   {
-    [self videoPlayerViewControllerWillDismiss:_playerViewController];
     AVPlayerViewController* playerViewController = _playerViewController;
-    [_presentingViewController dismissViewControllerAnimated:true completion:^{
-      [self videoPlayerViewControllerDidDismiss:playerViewController];
-    }];
+    UIViewController* presentingViewController = _presentingViewController;
+    __weak RCTVideo* weakSelf = self;
+    
     _playerViewController = nil;
     _presentingViewController = nil;
+    [self videoPlayerViewControllerWillDismiss:playerViewController];
+    [presentingViewController dismissViewControllerAnimated:true completion:^{
+      [weakSelf videoPlayerViewControllerDidDismiss:playerViewController];
+    }];
   }
 }
 

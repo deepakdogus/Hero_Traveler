@@ -3,11 +3,9 @@ import React from 'react'
 import { Text, View, ScrollView, Image, TextInput } from 'react-native'
 import { connect } from 'react-redux'
 import moment from 'moment'
-import Icon from 'react-native-vector-icons/FontAwesome'
-
 import RoundedButton from '../Components/RoundedButton'
 import getImageUrl from '../Shared/Lib/getImageUrl'
-import {Colors} from '../Shared/Themes'
+import {Colors, Images} from '../Shared/Themes'
 import API from '../Shared/Services/HeroAPI'
 import styles, { listHeight } from './Styles/StoryCommentsScreenStyles'
 import StoryActions from '../Shared/Redux/Entities/Stories'
@@ -19,7 +17,7 @@ const Comment = ({avatar, name, comment, timestamp}) => {
     <View style={styles.commentWrapper}>
       <View style={styles.comment}>
         {avatar && <Image style={styles.avatar} source={{uri: avatar }} />}
-        {!avatar && <Icon name='user-circle-o' style={styles.iconAvatar} size={36} />}
+        {!avatar && <Image source={Images.iconDefaultProfile} style={styles.iconAvatar} resizeMode="contain" />}
         <View style={styles.commentTextWrapper}>
           <View style={styles.nameAndTimeStamp}>
             <Text style={styles.commentName}>{name}</Text>

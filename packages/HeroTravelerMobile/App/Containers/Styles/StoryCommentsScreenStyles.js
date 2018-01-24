@@ -50,6 +50,8 @@ export default StyleSheet.create({
   },
   iconAvatar: {
     marginRight: Metrics.baseMargin / 2,
+    width: 36,
+    height: 36,
   },
   nameAndTimeStamp: {
     flexDirection: 'row',

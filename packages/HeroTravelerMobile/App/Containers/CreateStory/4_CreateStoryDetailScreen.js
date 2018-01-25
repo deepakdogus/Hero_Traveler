@@ -84,16 +84,13 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-
     if (newProps.error){
-      this.setState({ showError: true})
+      this.setState({ showError: true })
       return 
     }
-
     if (!newProps.publishing && newProps.isCreated) {
       this.next()
     }
-
     if (this.props.isRepublishing && !newProps.isRepublishing){
       this.next()
     }
@@ -362,7 +359,7 @@ export default connect(
   dispatch => ({
     updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),
     publish: (story) => dispatch(StoryEditActions.publishDraft(story)),
-    update: (id, attrs) => dispatch(StoryEditActions.updateDraft(id, attrs, true, true)),
+    update: (id, attrs) => dispatch(StoryEditActions.updateDraft(id, attrs, true)),
     resetCreateStore: () => dispatch(StoryEditActions.resetCreateStore())
   })
 )(CreateStoryDetailScreen)

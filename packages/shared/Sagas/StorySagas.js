@@ -152,7 +152,6 @@ export function * discardDraft (api, action) {
 }
 
 export function * updateDraft (api, action) {
-
   const {draftId, draft, updateStoryEntity} = action
   const response = yield call(api.updateDraft, draftId, draft)
   if (response.ok) {

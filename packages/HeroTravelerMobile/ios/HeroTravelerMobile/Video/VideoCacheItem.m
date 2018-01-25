@@ -35,6 +35,7 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
     _playerItem = [AVPlayerItem playerItemWithAsset:_asset];
     [self addPlayerItemObservers];
     _player = [AVPlayer playerWithPlayerItem:_playerItem];
+    _player.automaticallyWaitsToMinimizeStalling = NO;
     _player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
     [self addPlayerObservers];
     

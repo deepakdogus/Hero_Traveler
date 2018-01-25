@@ -119,7 +119,7 @@ export default class VideoPlayer extends React.Component {
       videoStarted: startVideoImmediately,
       videoFadeAnim: props.allowVideoPlay ? new Animated.Value(1) : new Animated.Value(0),
       // Sound is muted in __DEV__ because it gets annoying
-      muted: false,//false,props.isMuted,
+      muted: props.isMuted,
       isLoaded: false,
       isReadyForDisplay: false,
       isStalled: false,
@@ -230,7 +230,7 @@ export default class VideoPlayer extends React.Component {
   }
 
   isPaused(){
-    return !this.state.videoPlaying || !this.props.shouldEnableAutoplay
+    return !this.state.videoPlaying || !this._getShouldEnableAutoplay()
   }
 
   render() {

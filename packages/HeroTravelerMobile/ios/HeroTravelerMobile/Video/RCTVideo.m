@@ -121,15 +121,10 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   
   if (_playerViewController)
   {
-    AVPlayerViewController* playerViewController = _playerViewController;
     UIViewController* presentingViewController = _presentingViewController;
-    __weak RCTVideo* weakSelf = self;
-
     _playerViewController = nil;
     _presentingViewController = nil;
-    [self videoPlayerViewControllerWillDismiss:playerViewController];
     [presentingViewController dismissViewControllerAnimated:true completion:^{
-      [weakSelf videoPlayerViewControllerDidDismiss:playerViewController];
     }];
   }
 }
@@ -250,6 +245,11 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
 }
 
 #pragma mark - RCTVideoPlayerViewControllerDelegate
+
+- (BOOL) isDisplayingFullscreen
+{
+  return _playerViewController != nil && _presentingViewController != nil;
+}
 
 - (void) videoPlayerViewControllerWillDismiss:(AVPlayerViewController*)playerViewController
 {

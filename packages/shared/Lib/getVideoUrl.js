@@ -11,7 +11,7 @@ export default function getVideoUrl(video: object, stream = true): ?string {
   if (stream && video.streamingFormats && video.streamingFormats.HLS) {
     const {folders} = video.original
     const filename = _.last(video.streamingFormats.HLS.split('/'))
-    url = `${getVideoUrlBase()}/sp_4k/${folders.join('/')}/${filename}`
+    url = `${getVideoUrlBase()}/sp_full_hd/${folders.join('/')}/${filename}`
   } else {
     const {path, folders} = video.original
     const filename = _.last(path.split('/'))

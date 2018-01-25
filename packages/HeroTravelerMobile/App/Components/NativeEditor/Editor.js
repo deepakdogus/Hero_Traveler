@@ -201,12 +201,12 @@ export default class RNDraftJs extends Component {
     this.insertAtomicBlock('image', url)
   }
 
-  insertVideo = (url) => {
-    this.insertAtomicBlock('video', url)
+  insertVideo = (url, height, width) => {
+    this.insertAtomicBlock('video', url, height, width)
   }
 
-  insertAtomicBlock = (type, url) => {
-    this.onChange(insertAtomicBlock(this.state.editorState, type, url))
+  insertAtomicBlock = (type, url, height, width) => {
+    this.onChange(insertAtomicBlock(this.state.editorState, type, url, height, width))
   }
 
   toggleHeader = () => {
@@ -238,7 +238,6 @@ export default class RNDraftJs extends Component {
 
     // TODO: Range: When range selection is added, this will need to take range into account
     const isSelected = block.key == selectedKey
-
     switch (block.data.type) {
       case 'image':
         return (
@@ -260,6 +259,10 @@ export default class RNDraftJs extends Component {
             isSelected={isSelected}
             onPress={()=>this.updateSelectionState({startKey: block.key, endKey: block.key, startOffset: 0, endOffset: 0})}
             onDelete={()=>this.deleteAtomicBlock(block.key)}
+            sizeMetrics={{
+              height: block.data.height,
+              width: block.data.width,
+            }}
             />
         )
     }
@@ -343,6 +346,10 @@ export default class RNDraftJs extends Component {
 const blockFontTypes = {
   unstyled: { // No real need to use since values from styles are already used
     fontSize: 18,
+  },
+  placeholder: {
+   color: processColor(Colors.redHighlights),
+   opacity: 0.8,
   },
   headerOne: {
     fontSize: 21,

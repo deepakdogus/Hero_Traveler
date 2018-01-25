@@ -9,6 +9,8 @@ export default StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: 'white',
+    borderTopWidth: 20,
+    borderTopColor: Colors.background
   },
   containerWithNavbar: {
     ...ApplicationStyles.screen.containerWithNavbar
@@ -153,11 +155,11 @@ export default StyleSheet.create({
     backgroundColor: Colors.clear
   },
   navBarStyle: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
+    height: Metrics.navBarHeight - 10,
+    paddingTop: 0
+  },
+  navBarRightTextStyle: {
+    paddingRight: 10,
   },
   angleDownIcon: {
     height: 20,

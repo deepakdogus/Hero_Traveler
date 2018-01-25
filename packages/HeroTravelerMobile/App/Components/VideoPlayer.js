@@ -230,11 +230,7 @@ export default class VideoPlayer extends React.Component {
   }
 
   isPaused(){
-    // "if" means we are viewing a story directly
-    if (this.props.shouldEnableAutoplay === undefined) {
-      return !this.state.videoPlaying
-    }
-    else return !this.props.shouldEnableAutoplay
+    return !this.state.videoPlaying || !this._getShouldEnableAutoplay()
   }
 
   render() {

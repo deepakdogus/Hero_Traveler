@@ -1,6 +1,6 @@
 import React, { Component }  from 'react'
 
-import { Colors } from '../../../Shared/Themes'
+import { Colors, Metrics } from '../../../Shared/Themes'
 import {
   View,
   StyleSheet,
@@ -10,10 +10,11 @@ import {
 import VideoPlayer from '../../VideoPlayer'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { getVideoUrlBase } from "../../../Shared/Lib/getVideoUrl"
+import getRelativeHeight from "../../../Shared/Lib/getRelativeHeight"
 
 export default class DraftJsVideo extends Component {
   render = () => {
-    const {url, isSelected, onPress, onDelete, style} = this.props
+    const {url, isSelected, onPress, onDelete, style, sizeMetrics = undefined} = this.props
 
     const videoUrl = `${getVideoUrlBase()}/${url}`
 
@@ -24,12 +25,13 @@ export default class DraftJsVideo extends Component {
         </TouchableOpacity>
       </View>
     )
+    const height = (sizeMetrics) && getRelativeHeight(Metrics.screenWidth, sizeMetrics)
 
     return (
       <TouchableWithoutFeedback
        style={style}
        onPress={onPress}>
-        <View style={styles.abs}>
+        <View style={[styles.abs, {height}]}>
           <VideoPlayer
             path={videoUrl}
             allowVideoPlay={true}
@@ -38,6 +40,7 @@ export default class DraftJsVideo extends Component {
             showPlayButton={true}
             playButtonSize={'small'}
             videoFillSpace={true}
+            resizeMode='cover'
           />
           {isSelected && imageEditOverlay}
         </View>

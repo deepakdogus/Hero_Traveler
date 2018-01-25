@@ -16,7 +16,6 @@ import { Actions as NavActions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
 import R from 'ramda'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import LinearGradient from 'react-native-linear-gradient'
 import Immutable from 'seamless-immutable'
 
 import API from '../../Shared/Services/HeroAPI'
@@ -220,12 +219,11 @@ class StoryCoverScreen extends Component {
           style={styles.coverPhoto}
           resizeMode='cover'
         >
-          <LinearGradient
-            colors={['rgba(0,0,0,.4)', 'rgba(0,0,0,.4)']}
+          <View
             style={{flex: 1}}
           >
             {this.renderContent()}
-          </LinearGradient>
+          </View>
         </Image>
       )),
       R.always(this.renderContent(coverPhoto))

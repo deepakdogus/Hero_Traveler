@@ -58,7 +58,7 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.sourceSansPro,
     fontWeight: '400',
     letterSpacing: .7,
-    color: Colors.background,
+    color: Colors.grey,
     fontSize: 18,
     marginTop: 5,
     lineHeight: 28,
@@ -231,12 +231,12 @@ export default StyleSheet.create({
 export const customStyles = StyleSheet.create({
   unstyled: {
     fontSize: 18,
-    color: '#757575',
+    color: Colors.grey,
     fontWeight: '400',
   },
   atomic: {
     fontSize: 15,
-    color: '#757575'
+    color: Colors.grey,
   },
   link: {
     color: '#c4170c',

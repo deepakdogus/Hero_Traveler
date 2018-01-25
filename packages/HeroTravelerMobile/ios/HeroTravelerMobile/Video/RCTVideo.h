@@ -35,4 +35,6 @@
 - (void) purgePlayingVideo;
 - (void) restorePlayingVideo;
 
+- (BOOL) isDisplayingFullscreen;
+
 @end

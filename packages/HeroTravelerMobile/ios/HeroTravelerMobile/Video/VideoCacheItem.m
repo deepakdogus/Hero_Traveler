@@ -261,7 +261,7 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   {
     PlayingVideoItem* playingVidoItem = weakPlayingVideoItem.playingVideoItem;
 
-    if ([self isViewVisible:playingVidoItem.videoView])
+    if ([playingVidoItem.videoView isDisplayingFullscreen] || [self isViewVisible:playingVidoItem.videoView])
     {
       [visiblePlayers addObject:playingVidoItem];
     }

@@ -79,6 +79,12 @@ export const failure = (state, {error}) =>
     error
   })
 
+export const failureUpdating = (state, {error}) => 
+  state.merge({
+      isRepublishing: false,
+      error,
+  })
+
 export const registerDraft = () => INITIAL_STATE
 
 export const registerDraftSuccess = (state, {draft}) => {
@@ -165,7 +171,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_WORKING_DRAFT]: updateWorkingDraft,
   [Types.UPDATE_DRAFT]: updateDraft,
   [Types.UPDATE_DRAFT_SUCCESS]: updateDraftSuccess,
-  [Types.UPDATE_DRAFT_FAILURE]: failure,
+  [Types.UPDATE_DRAFT_FAILURE]: failureUpdating,
   [Types.REGISTER_DRAFT]: registerDraft,
   [Types.REGISTER_DRAFT_SUCCESS]: registerDraftSuccess,
   [Types.REGISTER_DRAFT_FAILURE]: failure,

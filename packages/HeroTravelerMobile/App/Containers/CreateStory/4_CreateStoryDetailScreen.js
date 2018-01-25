@@ -84,6 +84,12 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
+
+    if (newProps.error){
+      this.setState({ showError: true})
+      return 
+    }
+
     if (!newProps.publishing && newProps.isCreated) {
       this.next()
     }
@@ -91,6 +97,7 @@ class CreateStoryDetailScreen extends React.Component {
     if (this.props.isRepublishing && !newProps.isRepublishing){
       this.next()
     }
+
   }
 
   _setModalVisible = (visible) => {

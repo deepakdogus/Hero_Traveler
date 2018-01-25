@@ -25,8 +25,7 @@ export default class DraftJsVideo extends Component {
         </TouchableOpacity>
       </View>
     )
-    let height;
-    if (sizeMetrics) height = getRelativeHeight(Metrics.screenWidth, sizeMetrics)
+    const height = (sizeMetrics) && getRelativeHeight(Metrics.screenWidth, sizeMetrics)
 
     return (
       <TouchableWithoutFeedback

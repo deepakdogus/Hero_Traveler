@@ -91,10 +91,8 @@ const atomicHandler = (item: Object): any => {
           </View>
         );
       case 'video':
-        let videoUrl
         const height = getRelativeHeight(Metrics.screenWidth, item.data)
-        if (item.data.HLSUrl) videoUrl = item.data.HLSUrl
-        else videoUrl = `${getVideoUrlBase()}/${item.data.url}`
+        const videoUrl = (item.data.HLSUrl)  || `${getVideoUrlBase()}/${item.data.url}`  
         return (
           <View key={item.key} style={styles.mediaViewWrapper}>
             <StoryVideo src={videoUrl} height={height}/>

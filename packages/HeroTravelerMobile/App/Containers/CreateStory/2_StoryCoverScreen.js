@@ -51,7 +51,7 @@ const MediaTypes = {
   photo: 'photo',
 }
 
-/* 
+/*
 
 Utility functions
 
@@ -63,7 +63,7 @@ const isEqual = (firstItem, secondItem) => {
   } else if (!!firstItem && !!secondItem) {
     // lodash will take of equality check for all objects
     return _.isEqual(firstItem, secondItem)
-  } else { 
+  } else {
     return true
   }
 }
@@ -111,7 +111,7 @@ class StoryCoverScreen extends Component {
       titleHeight: 34,
       activeModal: undefined,
       toolbarDisplay: false,
-      contentTouched: false
+      contentTouched: false,
     }
   }
 
@@ -308,7 +308,7 @@ class StoryCoverScreen extends Component {
     this.navBack()
   }
 
-  _onLeft = () => { 
+  _onLeft = () => {
     if (this.draftHasChanged()){
       this.setState({ activeModal: 'cancel' })
     } else {
@@ -865,9 +865,8 @@ class StoryCoverScreen extends Component {
             rightIcon={'arrowRightRed'}
             isRightValid={this.isValid()}
             rightTitle='Next'
-            rightTextStyle={{
-              paddingRight: 10,
-            }}
+            rightTextStyle={styles.navBarRightTextStyle}
+            style={styles.navBarStyle}
           />
           <KeyboardAvoidingView behavior='padding'>
             <View style={styles.coverHeight}>

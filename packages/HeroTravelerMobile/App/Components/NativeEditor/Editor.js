@@ -345,7 +345,8 @@ export default class RNDraftJs extends Component {
 // Must call 'processColor' on any colors used here
 const blockFontTypes = {
   unstyled: { // No real need to use since values from styles are already used
-    fontSize: 18,
+    fontSize: 16,
+    color: Colors.grey,
   },
   placeholder: {
    color: processColor(Colors.redHighlights),
@@ -377,7 +378,7 @@ const blockFontTypes = {
   },
   atomic: {
     fontSize: 15,
-    color: processColor('#757575'),
+    color: processColor(Colors.grey),
     fontStyle: 'italic',
     textAlign: 'center',
     placeholderText: 'Add a caption...',
@@ -446,7 +447,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     minHeight: 38,
     fontSize: 18,
-    color: Colors.background,
+    color: Colors.grey,
     fontWeight: '400',
     paddingTop: 10,
     paddingHorizontal: 20,

@@ -17,10 +17,10 @@ export default StyleSheet.create({
     alignItems: 'center'
   },
   username: {
-    fontSize: 21,
+    fontSize: 20,
+    fontWeight: '600',
     fontFamily: Fonts.type.montserrat,
     color: Colors.background,
-    letterSpacing: 1.5,
     textAlign: 'center',
   },
   divider: {
@@ -35,8 +35,8 @@ export default StyleSheet.create({
     width: '100%'
   },
   bio: {
-    fontWeight: '300',
-    fontSize: 18,
+    fontWeight: '400',
+    fontSize: 16,
     fontFamily: Fonts.type.sourceSansPro,
     letterSpacing: .7,
     color: Colors.grey,

@@ -96,7 +96,7 @@ export default StyleSheet.create({
     fontSize: 13,
     fontWeight: '400',
     letterSpacing: .7,
-    color: Colors.background,
+    color: Colors.grey,
     maxWidth: Metrics.screenWidth - 2 * Metrics.section - 15 - avatarImageSize,
     marginVertical: 7.5,
   },
@@ -185,7 +185,7 @@ export default StyleSheet.create({
   },
   storyTitleStyle: {
     fontSize: 18,
-    letterSpacing: 1.5,
+    letterSpacing: 0,
   },
   subtitleStyle: {
     fontSize: 13,

@@ -12,7 +12,9 @@ import UserActions from '../Shared/Redux/Entities/Users'
 import UXActions from '../Redux/UXRedux'
 import HeaderModals from '../Components/HeaderModals'
 
-const StyledGrid = styled(Grid)`
+// If we don't explicity prevent 'fixed' from being passed to Grid, we get an error about unknown prop on div element
+// because apparently react-flexbox-grid passes all props down to underlying React elements
+const StyledGrid = styled(({ fixed, ...rest }) => <Grid {...rest} />)`
   padding: 15px;
   z-index: 3;
   position: ${props => props.fixed ? 'fixed' : 'absolute'};
@@ -56,6 +58,26 @@ class Header extends React.Component {
     super(props)
     this.state = {
       modal: undefined,
+      navbarEngaged: false,
+    }
+  }
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll)
+  }
+
+  handleScroll = (event) => {
+    // If header is transparent, it should mark itself as "engaged" so we know to style it differently (aka black background)
+    if (!this.props.blackHeader){
+      if (window.scrollY > 65 && !this.state.navbarEngaged){
+        this.setState({ navbarEngaged: true })
+      } else if (window.scrollY < 65 && this.state.navbarEngaged) {
+        this.setState({ navbarEngaged: false })
+      }
     }
   }
 
@@ -92,11 +114,11 @@ class Header extends React.Component {
     const { isLoggedIn, loginReduxFetching, loginReduxError, attemptLogin, attemptChangePassword, closeGlobalModal, openGlobalModal, 
       currentUserId, currentUserProfile, currentUserEmail, currentUserNotificationTypes, globalModalThatIsOpen, globalModalParams,
        reroute, attemptUpdateUser, userEntitiesUpdating, userEntitiesError } = this.props
-    const SelectedGrid = this.props.blackHeader ? StyledGridBlack : StyledGrid
+    const SelectedGrid = (this.props.blackHeader || this.state.navbarEngaged) ? StyledGridBlack : StyledGrid
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
     return (
       <div>
-        <SelectedGrid fluid>
+        <SelectedGrid fluid fixed>
           {isLoggedIn &&
           <HeaderLoggedIn
               user={currentUserId}

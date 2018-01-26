@@ -109,3 +109,13 @@ export const RightModalCloseX = styled(Icon)`
   width: 20px;
   cursor: pointer;
 `
+
+export const ErrorMessage = styled.p`
+  padding-left: 25px;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  color: ${props => props.theme.Colors.redHighlights};
+`
+
+export const FetchingMessage = styled(ErrorMessage)`
+  color: ${props => props.theme.Colors.background};
+`

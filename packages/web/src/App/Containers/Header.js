@@ -2,11 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import { push } from 'react-router-redux'
 import * as _ from 'lodash'
 import { Grid } from '../Components/FlexboxGrid'
 import HeaderAnonymous from '../Components/Headers/HeaderAnonymous'
 import HeaderLoggedIn from '../Components/Headers/HeaderLoggedIn'
 import LoginActions from '../Shared/Redux/LoginRedux'
+import UserActions from '../Shared/Redux/Entities/Users'
 import UXActions from '../Redux/UXRedux'
 import HeaderModals from '../Components/HeaderModals'
 
@@ -30,12 +32,24 @@ const HeaderSpacer = styled.div`
 
 class Header extends React.Component {
   static propTypes = {
+    currentUserId: PropTypes.string,
+    currentUserProfile: PropTypes.object,
+    currentUserEmail: PropTypes.string, 
+    currentUserNotificationTypes: PropTypes.arrayOf(PropTypes.string),
     isLoggedIn: PropTypes.bool,
+    loginReduxFetching: PropTypes.bool, 
+    loginReduxError: PropTypes.object, 
     blackHeader: PropTypes.bool,
     attemptLogin: PropTypes.func,
+    attemptChangePassword: PropTypes.func,
     closeGlobalModal: PropTypes.func,
+    openGlobalModal: PropTypes.func,
     globalModalThatIsOpen: PropTypes.string,
     globalModalParams: PropTypes.object,
+    reroute: PropTypes.func,
+    attemptUpdateUser: PropTypes.func,
+    userEntitiesUpdating: PropTypes.bool,
+    userEntitiesError: PropTypes.object,
   }
 
   constructor(props) {
@@ -59,10 +73,14 @@ class Header extends React.Component {
 
   // name correspond to icon name and button name
   openModal = (event) => {
+ 
     const name = event.target.name
+ 
     let modalToOpen;
+    
     if (name === 'inbox' || name === 'loginEmail') modalToOpen = 'inbox'
     else if (name === 'notifications' || name === 'cameraFlash') modalToOpen = 'notificationsThread'
+ 
     this.setState({ modal: modalToOpen })
   }
 
@@ -71,7 +89,9 @@ class Header extends React.Component {
   }
 
   render () {
-    const {isLoggedIn, attemptLogin, closeGlobalModal, currentUser, globalModalThatIsOpen, globalModalParams } = this.props
+    const { isLoggedIn, loginReduxFetching, loginReduxError, attemptLogin, attemptChangePassword, closeGlobalModal, openGlobalModal, 
+      currentUserId, currentUserProfile, currentUserEmail, currentUserNotificationTypes, globalModalThatIsOpen, globalModalParams,
+       reroute, attemptUpdateUser, userEntitiesUpdating, userEntitiesError } = this.props
     const SelectedGrid = this.props.blackHeader ? StyledGridBlack : StyledGrid
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
     return (
@@ -79,8 +99,10 @@ class Header extends React.Component {
         <SelectedGrid fluid>
           {isLoggedIn &&
           <HeaderLoggedIn
-              user={currentUser}
+              user={currentUserId}
               openModal={this.openModal}
+              openGlobalModal={openGlobalModal}
+              reroute={reroute}
           />
           }
           {!isLoggedIn &&
@@ -94,10 +116,19 @@ class Header extends React.Component {
               openSignupModal={this.openSignupModal}
               attemptLogin={attemptLogin}
               openLoginModal={this.openLoginModal}
-              user={currentUser}
+              userId={currentUserId}
+              currentUserProfile={currentUserProfile}
+              currentUserEmail={currentUserEmail}
+              currentUserNotificationTypes={currentUserNotificationTypes}
               modal={this.state.modal}
               globalModalThatIsOpen={globalModalThatIsOpen}
               globalModalParams={globalModalParams}
+              attemptChangePassword={attemptChangePassword}
+              loginReduxFetching={loginReduxFetching}
+              loginReduxError={loginReduxError}
+              attemptUpdateUser={attemptUpdateUser}
+              userEntitiesUpdating={userEntitiesUpdating}
+              userEntitiesError={userEntitiesError}
           />
       </SelectedGrid>
       <HeaderSpacer
@@ -110,19 +141,33 @@ class Header extends React.Component {
 
 function mapStateToProps(state) {
   const pathname = state.routes.location ? state.routes.location.pathname : ''
+  const users = state.entities.users.entities
+  const currentUserId = state.session.userId
+  const currentUser = users[currentUserId]
   return {
     isLoggedIn: state.login.isLoggedIn,
+    loginReduxFetching: state.login.fetching,
+    loginReduxError: state.login.error,
     blackHeader: _.includes(['/', '/feed', ''], pathname) ? false : true,
-    currentUser: state.session.userId,
+    currentUserId: currentUserId,
     globalModalThatIsOpen: state.ux.modalName,
     globalModalParams: state.ux.params,
+    userEntitiesUpdating: state.entities.users.updating,
+    userEntitiesError: state.entities.users.error,
+    currentUserProfile: (currentUser) && currentUser.profile,
+    currentUserEmail: (currentUser) && currentUser.email,
+    currentUserNotificationTypes: (currentUser) && currentUser.notificationTypes,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     attemptLogin: (username, password) => dispatch(LoginActions.loginRequest(username, password)),
+    attemptChangePassword: (userId, oldPassword, newPassword) => dispatch(LoginActions.changePasswordRequest(userId, oldPassword, newPassword)),
     closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
+    openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
+    reroute: (route) => dispatch(push(route)),
+    attemptUpdateUser: (updates) => dispatch(UserActions.updateUser(updates))
   }
 }
 

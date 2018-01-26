@@ -29,22 +29,6 @@ export function * logout (api, action) {
   }
 }
 
-// @TODO move me to user sagas
-export function * updateUser (api, action) {
-  const {attrs} = action
-  const userId = yield select(currentUserId)
-  const response = yield call(
-    api.updateUser,
-    userId,
-    attrs
-  )
-  if (response.ok) {
-    yield put(UserActions.updateUserSuccess(response.data))
-  } else {
-    yield put(UserActions.updateUserFailure(new Error('Failed to update user')))
-  }
-}
-
 export function * resumeSession (api, action) {
   // I believe the userId here is redundant. Added task to remove
   let [userId, tokens]= yield [

@@ -28,19 +28,12 @@ const RowSpacer = styled.div`
 `
 
 export default class EditNotificationRow extends Component {
-    constructor(props) {
-    super(props);
 
-    this.state = {
-      checked: true,
-    };
-  }
-
-  static PropTypes = {
-    isNotifying: PropTypes.bool,
+  static propTypes = {
     text: PropTypes.string,
-    index: PropTypes.num,
+    index: PropTypes.number,
     toggleNotificationSwitch: PropTypes.func,
+    checked: PropTypes.bool,
   }
 
   renderText = () => {
@@ -51,17 +44,14 @@ export default class EditNotificationRow extends Component {
     )
   }
 
-  toggleSwitchState = checked => this.setState({ checked })
-
   renderSwitch = () => {
-    const { checked } = this.state;
     return (
       <VerticalCenter>
         <Switch
-          checked={checked}
+          checked={this.props.checked}
           index={this.props.index}
           disabled={null}
-          onChange={this.toggleSwitchState}
+          onChange={this.props.toggleNotificationSwitch}
           onColor={Colors.red}
         />
       </VerticalCenter>
@@ -70,7 +60,7 @@ export default class EditNotificationRow extends Component {
 
   render() {
     return (
-      <Container margin={this.props.margin}>
+      <Container>
         {this.props.index > 0 ? null : <HorizontalDivider color='light-grey'/>}
         <RowSpacer>
           <Row between='xs'>

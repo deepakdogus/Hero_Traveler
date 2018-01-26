@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.0.86</string>
+	<string>0.0.89</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -31,7 +31,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>55</string>
+	<string>58</string>
 	<key>FacebookAppID</key>
 	<string>1589340484457361</string>
 	<key>FacebookDisplayName</key>
@@ -70,6 +70,8 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Unused but App Store requires it</string>
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) to capture media for stories</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

@@ -51,11 +51,6 @@
 		915D976F20081218005EF687 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 915D976A20081217005EF687 /* FBSDKShareKit.framework */; };
 		915D977020081218005EF687 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 915D976B20081218005EF687 /* FBSDKLoginKit.framework */; };
 		915D977120081218005EF687 /* FBSDKPlacesKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 915D976C20081218005EF687 /* FBSDKPlacesKit.framework */; };
-		915D977320081820005EF687 /* Bolts.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 915D976920081217005EF687 /* Bolts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		915D977420081820005EF687 /* FBSDKCoreKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 915D976820081217005EF687 /* FBSDKCoreKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		915D977520081820005EF687 /* FBSDKLoginKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 915D976B20081218005EF687 /* FBSDKLoginKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		915D977620081820005EF687 /* FBSDKPlacesKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 915D976C20081218005EF687 /* FBSDKPlacesKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		915D977720081820005EF687 /* FBSDKShareKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 915D976A20081217005EF687 /* FBSDKShareKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		91973CAC1FA39B64006DE932 /* RNDJBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973C911FA39B52006DE932 /* RNDJBaseModel.m */; };
 		91973CAD1FA39B64006DE932 /* RNDJBlockModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973C931FA39B52006DE932 /* RNDJBlockModel.m */; };
 		91973CAE1FA39B64006DE932 /* RNDJContentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973C951FA39B52006DE932 /* RNDJContentModel.m */; };
@@ -422,13 +417,6 @@
 			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
 			remoteInfo = RCTCamera;
 		};
-		D1FF94F7201139360044D68F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 426CF4B206424918BE1AE5F3 /* RNGooglePlaces.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = RNGooglePlaces;
-		};
 		EF21696C1F4E0111008B3B0A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EF2169651F4E0111008B3B0A /* KeyboardTrackingView.xcodeproj */;
@@ -451,23 +439,6 @@
 			remoteInfo = IQKeyboardManager;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		915D977220081808005EF687 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				915D977320081820005EF687 /* Bolts.framework in CopyFiles */,
-				915D977420081820005EF687 /* FBSDKCoreKit.framework in CopyFiles */,
-				915D977520081820005EF687 /* FBSDKLoginKit.framework in CopyFiles */,
-				915D977620081820005EF687 /* FBSDKPlacesKit.framework in CopyFiles */,
-				915D977720081820005EF687 /* FBSDKShareKit.framework in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTActionSheet.xcodeproj; path = "../node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheet.xcodeproj"; sourceTree = "<group>"; };
@@ -1150,14 +1121,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D1FF94F4201139360044D68F /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				D1FF94F8201139360044D68F /* libRNGooglePlaces.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		EF2169661F4E0111008B3B0A /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1188,10 +1151,10 @@
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
-				915D977220081808005EF687 /* CopyFiles */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				014482B1285095E8F3676463 /* [CP] Embed Pods Frameworks */,
 				5E59E24373337F1AFBED62F1 /* [CP] Copy Pods Resources */,
+				9150BC42201AC4CC00697D90 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1684,13 +1647,6 @@
 			remoteRef = 95F7E9541E79D5C8006344FE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		D1FF94F8201139360044D68F /* libRNGooglePlaces.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNGooglePlaces.a;
-			remoteRef = D1FF94F7201139360044D68F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		EF21696D1F4E0111008B3B0A /* libKeyboardTrackingView.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1821,6 +1777,29 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HeroTravelerMobile/Pods-HeroTravelerMobile-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		9150BC42201AC4CC00697D90 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Frameworks/Bolts.framework",
+				"$(SRCROOT)/Frameworks/FBSDKCoreKit.framework",
+				"$(SRCROOT)/Frameworks/FBSDKLoginKit.framework",
+				"$(SRCROOT)/Frameworks/FBSDKPlacesKit.framework",
+				"$(SRCROOT)/Frameworks/FBSDKShareKit.framework",
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Bolts.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/FBSDKCoreKit.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/FBSDKLoginKit.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/FBSDKPlacesKit.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/FBSDKShareKit.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
 		};
 /* End PBXShellScriptBuildPhase section */
 

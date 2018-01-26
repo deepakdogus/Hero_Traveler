@@ -4,10 +4,8 @@ import {
   View,
   StyleSheet,
 } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
-
 import Image from './Image'
-import {Colors} from '../Shared/Themes'
+import {Images} from '../Shared/Themes'
 
 const styles = StyleSheet.create({
   root: {}
@@ -26,19 +24,16 @@ export default class Avatar extends Component {
   static propTypes = {
     size: PropTypes.oneOf(['extraSmall', 'small', 'medium', 'large', 'extraLarge']),
     avatarUrl: PropTypes.string,
-    iconColor: PropTypes.string,
   }
 
   static defaultProps = {
     size: 'small',
-    iconColor: Colors.background
   }
 
   render() {
     const {
       avatarUrl,
       size,
-      iconColor
     } = this.props
 
     const rootStyles = [
@@ -49,10 +44,15 @@ export default class Avatar extends Component {
     if (!avatarUrl) {
       return (
         <View style={rootStyles}>
-          <Icon
-            name='user-circle-o'
-            size={SIZES[size]}
-            color={iconColor}
+          <Image
+            cached={true}
+            source={Images.iconDefaultProfile}
+            style={{
+              width: SIZES[size],
+              height: SIZES[size],
+              borderRadius: SIZES[size] / 2,
+            }}
+            resizeMode={'cover'}
           />
         </View>
       )

@@ -10,7 +10,6 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
-
 import {getNewCover, saveCover} from './shared'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import StoryEditActions, {isCreated, isPublishing} from '../../Shared/Redux/StoryCreateRedux'
@@ -85,9 +84,17 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
+    if (newProps.error){
+      this.setState({ showError: true })
+      return 
+    }
     if (!newProps.publishing && newProps.isCreated) {
       this.next()
     }
+    if (this.props.isRepublishing && !newProps.isRepublishing){
+      this.next()
+    }
+
   }
 
   _setModalVisible = (visible) => {
@@ -146,7 +153,8 @@ class CreateStoryDetailScreen extends React.Component {
 
   _update = (draft) => {
     this.saveDraft(draft)
-    this.next()
+    // rather than calling this.next() now, we will let componentWillReceiveProps handle that
+    // so that we do not run into race condition on backend
   }
 
   _closeError = () => {
@@ -335,6 +343,7 @@ export default connect(
       story: {...state.storyCreate.workingDraft},
       workingDraft: {...state.storyCreate.workingDraft},
       error: state.storyCreate.error,
+      isRepublishing: state.storyCreate.isRepublishing,
     }
   },
   dispatch => ({

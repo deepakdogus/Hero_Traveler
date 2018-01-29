@@ -6,7 +6,6 @@ import {
   View
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
-
 import Image from './Image'
 import VideoPlayer, {MuteButton, PlayButton} from './VideoPlayer'
 import getImageUrl from '../Shared/Lib/getImageUrl'
@@ -95,7 +94,9 @@ export default class StoryCover extends Component {
             source={{uri: imageUrl}}
             style={embeddedImageStyle}
           />
-          <View>
+          <View  
+            style={styles.gradient}   
+          >
             {children}
           </View>
         {showPlayButton && isVideo &&
@@ -176,8 +177,11 @@ export default class StoryCover extends Component {
           resizeMode='cover'
         />
         <TouchableWithoutFeedback
-          onPress={this._tapVideoWrapper}>
-          <View>
+          onPress={this._tapVideoWrapper}
+        >
+          <View
+            style={[styles.gradient, styles.videoGradient]}
+          >
             {this.props.children}
           </View>
         </TouchableWithoutFeedback>

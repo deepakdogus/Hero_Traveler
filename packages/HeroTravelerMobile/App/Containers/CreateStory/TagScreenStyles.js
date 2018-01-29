@@ -71,5 +71,29 @@ export default StyleSheet.create({
   },
   spinner: {
     margin: Metrics.section
+  },
+  tooltipWrapper: {
+    position: 'absolute',
+    zIndex: 5,
+    top: 50,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'transparent',
+    flex: 1,
+    justifyContent: 'flex-start',
+  },
+  tooltipTextView: {
+    height: 38,
+    width: 150,
+    padding: 0,
+    borderRadius: 5,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    shadowColor: 'black',
+    shadowOpacity: .2,
+    shadowRadius: 30,
+    left: 20,
+    top: 30,
   }
 })

@@ -22,6 +22,8 @@ import { Metrics, Colors } from '../../Shared/Themes/'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Loader from '../../Components/Loader'
 import styles from './TagScreenStyles'
+import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTimeTooltips'
+import UserActions from '../../Shared/Redux/Entities/Users'
 
 class TagScreen extends Component {
 
@@ -135,7 +137,7 @@ class TagScreen extends Component {
   }
 
   _inputChanged = (text) => {
-    helper = this.helper
+    const helper = this.helper
 
     this.setState({text}, () => {
       if (_.isString(text) && text.length === 0) {
@@ -170,11 +172,40 @@ class TagScreen extends Component {
     })
   }
 
+  _completeTooltip = () => {
+    const tooltips = this.props.user.introTooltips.concat({
+      name: TooltipTypes.STORY_CREATE_CATEGORIES,
+      seen: true,
+    })
+    this.props.completeTooltip(tooltips)
+  }
+
+  renderTooltip() {
+    return (
+      <TouchableOpacity
+        style={styles.tooltipWrapper}
+        onPress={this._completeTooltip}
+      >
+        <View style={styles.tooltipTextView}>
+          <Text>Enter your own category or pick from below</Text>
+        </View>
+      </TouchableOpacity>
+    )
+  }
+
   render () {
 
     const defaultCategoriesToShow = _.filter(this.props.defaultCategories, c => {
       return !_.includes(_.map(this.state.selectedCategories, '_id'), c._id)
     })
+
+    let showTooltip = false
+    if (this.props.user) {
+      showTooltip = !isTooltipComplete(
+        TooltipTypes.STORY_CREATE_CATEGORIES,
+        this.props.user.introTooltips
+      )
+    }
 
     const searchResultsToShow = _.filter(this.getSearchHits(), c => {
       return !_.includes(_.map(this.state.selectedCategories, '_id'), c._id)
@@ -182,6 +213,7 @@ class TagScreen extends Component {
     const isInputFocused = this.state.isInputFocused
     return (
       <View style={styles.root}>
+        {showTooltip && this.renderTooltip()}
         <View style={{marginTop: Metrics.baseMargin, height: 40}}>
           <TouchableOpacity
             style={styles.doneBtn}
@@ -266,10 +298,13 @@ class TagScreen extends Component {
 
 export default connect(
   state => ({
+    user: state.entities.users.entities[state.session.userId],
     defaultCategories: state.entities.categories.entities,
     categoriesFetchStatus: state.entities.categories.fetchStatus
   }),
   dispatch => ({
-    loadDefaultCategories: () => dispatch(CategoryActions.loadCategoriesRequest())
+    loadDefaultCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
+    completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips}))
+
   })
 )(TagScreen)

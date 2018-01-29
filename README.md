@@ -161,6 +161,7 @@ We currently use docker swarm on AWS with 3 workers running t3.medium and 1 cont
 
 ## Development troubleshooting tips (please read)
 
+* **Uninstalling packages** If you need to uninstall a package with native components, make sure you do `react-native unlink {packageName}` and _then_ `yarn remove {packageName}`
 * Always keep the React Native **debug browser window visible and in its own tab**. Otherwise, the application will sometimes not startup (it'll get stuck on the splash screen) or it will get stuck on the launch screen's picture (the night sky image). If this happens, close the app or refresh the window (respectively) after moving the debug window to the foreground
 * Always close xcode, react-native packager, and simulator before moving to a new branch, or updating an existing branch
 * If you are on a clean branch and the application crashes before getting to the launch screen, use xcode to debug the problem

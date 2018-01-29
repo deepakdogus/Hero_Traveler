@@ -72,12 +72,14 @@ export default class NativeCachingVideo extends Component {
   };
 
   _onFullscreenPlayerWillDismiss = (event) => {
+    this.setNativeProps({ fullscreen: false });
     if (this.props.onFullscreenPlayerWillDismiss) {
       this.props.onFullscreenPlayerWillDismiss(event.nativeEvent);
     }
   };
 
   _onFullscreenPlayerDidDismiss = (event) => {
+    this.setNativeProps({ fullscreen: false });
     if (this.props.onFullscreenPlayerDidDismiss) {
       this.props.onFullscreenPlayerDidDismiss(event.nativeEvent);
     }

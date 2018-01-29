@@ -54,9 +54,6 @@ class FollowersScreen extends React.Component {
     return (
       <View style={styles.emptyMessage}>
         <Text style={styles.emptyMessageText}>{msg}</Text>
-        <RoundedButton
-          style={styles.emptyMessageBtn}
-          onPress={this.props.onLeft}>Back</RoundedButton>
       </View>
     )
   }

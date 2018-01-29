@@ -14,14 +14,9 @@ export default StyleSheet.create({
   emptyMessage: {
     marginTop: Metrics.doubleSection
   },
-  emptyMessageBtn: {
-    marginTop: Metrics.section,
-    marginHorizontal: Metrics.doubleSection,
-    backgroundColor: Colors.steel,
-  },
   emptyMessageText: {
     textAlign: 'center',
-    fontSize: Fonts.size.h3,
+    fontSize: 16,
     color: Colors.steel
   },
   header: {

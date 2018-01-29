@@ -26,7 +26,7 @@ export default StyleSheet.create({
   description: {
     fontFamily: Fonts.type.sourceSansPro,
     fontWeight: '400',
-    fontSize: 16,
+    fontSize: 18,
     letterSpacing: .7,
     color: Colors.grey,
     marginTop: 10,
@@ -66,8 +66,8 @@ export default StyleSheet.create({
     backgroundColor: Colors.snow,
   },
   bottomContainer: {
-    paddingTop: 25,
-    paddingBottom: 10,
+    paddingTop: 10,
+    paddingBottom: 5,
   },
   dateText: {
     fontSize: 12,
@@ -83,7 +83,7 @@ export default StyleSheet.create({
   rightRow: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    marginTop: 15
+    marginVertical: 15,
   },
   bookmarkContainer: {
     marginRight: 10,

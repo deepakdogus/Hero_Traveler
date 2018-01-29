@@ -9,6 +9,8 @@ export default StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: 'white',
+    borderTopWidth: 20,
+    borderTopColor: Colors.background
   },
   containerWithNavbar: {
     ...ApplicationStyles.screen.containerWithNavbar
@@ -56,7 +58,7 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.sourceSansPro,
     fontWeight: '400',
     letterSpacing: .7,
-    color: Colors.background,
+    color: Colors.grey,
     fontSize: 18,
     marginTop: 5,
     lineHeight: 28,
@@ -153,11 +155,11 @@ export default StyleSheet.create({
     backgroundColor: Colors.clear
   },
   navBarStyle: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
+    height: Metrics.navBarHeight - 10,
+    paddingTop: 0
+  },
+  navBarRightTextStyle: {
+    paddingRight: 10,
   },
   angleDownIcon: {
     height: 20,
@@ -229,12 +231,12 @@ export default StyleSheet.create({
 export const customStyles = StyleSheet.create({
   unstyled: {
     fontSize: 18,
-    color: '#757575',
+    color: Colors.grey,
     fontWeight: '400',
   },
   atomic: {
     fontSize: 15,
-    color: '#757575'
+    color: Colors.grey,
   },
   link: {
     color: '#c4170c',

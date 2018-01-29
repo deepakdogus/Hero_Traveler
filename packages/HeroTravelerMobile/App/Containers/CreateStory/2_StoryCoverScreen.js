@@ -16,7 +16,6 @@ import { Actions as NavActions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
 import R from 'ramda'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import LinearGradient from 'react-native-linear-gradient'
 import Immutable from 'seamless-immutable'
 
 import API from '../../Shared/Services/HeroAPI'
@@ -51,7 +50,7 @@ const MediaTypes = {
   photo: 'photo',
 }
 
-/* 
+/*
 
 Utility functions
 
@@ -63,7 +62,7 @@ const isEqual = (firstItem, secondItem) => {
   } else if (!!firstItem && !!secondItem) {
     // lodash will take of equality check for all objects
     return _.isEqual(firstItem, secondItem)
-  } else { 
+  } else {
     return true
   }
 }
@@ -111,7 +110,7 @@ class StoryCoverScreen extends Component {
       titleHeight: 34,
       activeModal: undefined,
       toolbarDisplay: false,
-      contentTouched: false
+      contentTouched: false,
     }
   }
 
@@ -220,12 +219,11 @@ class StoryCoverScreen extends Component {
           style={styles.coverPhoto}
           resizeMode='cover'
         >
-          <LinearGradient
-            colors={['rgba(0,0,0,.4)', 'rgba(0,0,0,.4)']}
+          <View
             style={{flex: 1}}
           >
             {this.renderContent()}
-          </LinearGradient>
+          </View>
         </Image>
       )),
       R.always(this.renderContent(coverPhoto))
@@ -249,6 +247,7 @@ class StoryCoverScreen extends Component {
             allowVideoPlay={false}
             autoPlayVideo={false}
             showPlayButton={false}
+            resizeMode='cover'
           />
           {this.renderContent()}
         </View>
@@ -308,7 +307,7 @@ class StoryCoverScreen extends Component {
     this.navBack()
   }
 
-  _onLeft = () => { 
+  _onLeft = () => {
     if (this.draftHasChanged()){
       this.setState({ activeModal: 'cancel' })
     } else {
@@ -750,7 +749,10 @@ class StoryCoverScreen extends Component {
     this.setState({videoUploading: true})
     api.uploadStoryVideo(this.props.workingDraft.id, pathAsFileObject(data))
       .then(({data: videoUpload}) => {
-        this.editor.insertVideo(_.get(videoUpload, 'original.path'))
+        const url = _.get(videoUpload, 'original.path')
+        const height = _.get(videoUpload, 'original.meta.height')
+        const width = _.get(videoUpload, 'original.meta.width')
+        this.editor.insertVideo(url, height, width)
         this.setState({videoUploading: false})
       })
       .catch((err) => {
@@ -865,9 +867,8 @@ class StoryCoverScreen extends Component {
             rightIcon={'arrowRightRed'}
             isRightValid={this.isValid()}
             rightTitle='Next'
-            rightTextStyle={{
-              paddingRight: 10,
-            }}
+            rightTextStyle={styles.navBarRightTextStyle}
+            style={styles.navBarStyle}
           />
           <KeyboardAvoidingView behavior='padding'>
             <View style={styles.coverHeight}>

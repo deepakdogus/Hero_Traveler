@@ -86,14 +86,6 @@ export default StyleSheet.create({
     fontWeight: '500',
     fontSize: 16,
   },
-  finishButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  finishButton: {
-    flex: .45,
-    marginHorizontal: 0
-  },
   draftButton: {
     borderColor: Colors.red,
     borderWidth: 1,

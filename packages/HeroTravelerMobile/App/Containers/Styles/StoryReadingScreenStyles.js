@@ -74,7 +74,6 @@ export const styles = StyleSheet.create({
   videoWrapper: {
     position: 'relative',
     width: Metrics.screenWidth,
-    height: Metrics.screenWidth * 9 / 16,
   },
   video: {
     position: 'absolute',
@@ -82,8 +81,6 @@ export const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    width: Metrics.screenWidth,
-    height: Metrics.screenWidth * 9 / 16,
   },
   videoExpand: {
     position: 'absolute',

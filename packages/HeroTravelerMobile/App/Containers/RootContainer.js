@@ -90,10 +90,13 @@ class RootContainer extends Component {
 }
 
 const mapStateToProps = (state) => {
+  let location = state.routes.scene.name
+  if (location === 'tabbar' && state.routes.scene.index === 4) location = 'profile'
+
   return {
     started: state.startup.started,
     isLoggedIn: state.login.isLoggedIn,
-    location: state.routes.scene.name,
+    location: location,
   }
 }
 
@@ -105,7 +108,6 @@ const mapDispatchToProps = (dispatch) => ({
   heroStartup: (linkAction) => dispatch(StartupActions.heroStartup(linkAction)),
   openScreen: (...args) => dispatch(OpenScreenActions.openScreen(...args)),
   verifyEmail: (token) => dispatch(LoginActions.verifyEmail(token)),
-  setOrientation: (orientation) => dispatch(OrientationActions.setOrientation(orientation))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RootContainer)

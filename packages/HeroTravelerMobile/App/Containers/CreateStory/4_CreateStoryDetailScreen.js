@@ -86,7 +86,7 @@ class CreateStoryDetailScreen extends React.Component {
   componentWillReceiveProps(newProps) {
     if (newProps.error){
       this.setState({ showError: true })
-      return 
+      return
     }
     if (!newProps.publishing && newProps.isCreated) {
       this.next()

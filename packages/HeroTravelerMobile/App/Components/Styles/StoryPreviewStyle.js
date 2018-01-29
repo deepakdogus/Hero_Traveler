@@ -29,7 +29,7 @@ export default StyleSheet.create({
     fontSize: 16,
     letterSpacing: .7,
     color: Colors.grey,
-    marginTop: 10,
+    marginTop: 5,
   },
   userContent: {
     flexDirection: 'row',

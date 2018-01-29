@@ -256,5 +256,21 @@ export default StyleSheet.create({
     padding: Metrics.section,
     backgroundColor: Colors.feedDividerGrey,
     minHeight: Metrics.screenHeight - Metrics.navBarHeight - profileEditHeight,
-  }
+  },
+  badgeRow: {
+    alignItems: 'center',
+    marginTop: 5,
+  },
+  badgeImage: {
+    width: 16,
+    height: 16,
+  },
+  badgeText: {
+    marginLeft: 5,
+    fontFamily: Fonts.type.montserrat,
+    fontWeight: '600',
+    fontSize: 8,
+    color: Colors.background,
+    textAlign: 'center'
+  },
 })

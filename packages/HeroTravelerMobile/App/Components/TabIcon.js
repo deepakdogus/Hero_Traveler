@@ -99,6 +99,10 @@ class TabIcon extends React.Component {
         return Images.iconHeaderText
       case 'flag':
         return Images.iconFlag
+      case 'contributor':
+        return Images.iconContributorBadage
+      case 'founder':
+        return Images.iconFounderBadge
       case 'profile':
       default:
         return Images.iconNavProfile

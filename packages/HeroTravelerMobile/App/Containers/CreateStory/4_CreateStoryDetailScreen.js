@@ -7,10 +7,8 @@ import {
   TouchableWithoutFeedback,
   TouchableHighlight,
   DatePickerIOS,
-  TextInput,
 } from 'react-native'
 import { connect } from 'react-redux'
-import moment from 'moment'
 import {Actions as NavActions} from 'react-native-router-flux'
 
 import {getNewCover, saveCover} from './shared'
@@ -21,7 +19,6 @@ import Loader from '../../Components/Loader'
 import ShadowButton from '../../Components/ShadowButton'
 import TabIcon from '../../Components/TabIcon'
 import RoundedButton from '../../Components/RoundedButton'
-import RenderTextInput from '../../Components/RenderTextInput'
 import NavBar from './NavBar'
 import styles from './4_CreateStoryDetailScreenStyles'
 import API from '../../Shared/Services/HeroAPI'
@@ -299,15 +296,6 @@ class CreateStoryDetailScreen extends React.Component {
                 />
               </View>
             </View>
-            {!this.isDraft() &&
-              <View style={styles.finishButtons}>
-                <RoundedButton
-                  style={styles.finishButton}
-                  onPress={this._onRight}
-                  text='Save Story'
-                />
-              </View>
-            }
           </ScrollView>
           {(publishing || isSavingCover) &&
             <Loader style={styles.loader} tintColor={Colors.blackoutTint} />

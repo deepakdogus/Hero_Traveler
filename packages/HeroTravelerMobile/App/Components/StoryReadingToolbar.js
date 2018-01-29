@@ -156,7 +156,7 @@ export default class StoryReadingToolbarComponent extends Component {
         {likeComponent}
         {commentComponent}
         {bookmarkComponent}
-        {shareComponent}
+        {/**shareComponent**/}
         {flagButton}
       </View>
     )

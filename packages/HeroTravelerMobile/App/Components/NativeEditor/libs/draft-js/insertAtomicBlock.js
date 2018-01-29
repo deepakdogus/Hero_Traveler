@@ -2,7 +2,7 @@ import insertBlock from './insertBlock'
 import updateSelectionAnchorAndFocus from './updateSelectionAnchorAndFocus'
 import updateSelectionHasFocus from './updateSelectionHasFocus'
 
-export default function insertAtomicBlock(editorState, type, url) {
+export default function insertAtomicBlock(editorState, type, url, height, width) {
   const selectionState = editorState.getSelection()
   const selectedBlockKey = selectionState.getAnchorKey()
 
@@ -14,7 +14,9 @@ export default function insertAtomicBlock(editorState, type, url) {
       type: 'atomic',
       data: {
         type: type,
-        url: url
+        url: url,
+        height: height,
+        width: width,
       },
       selectNewBlock: true,
     }

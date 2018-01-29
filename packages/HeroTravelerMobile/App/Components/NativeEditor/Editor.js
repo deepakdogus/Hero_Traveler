@@ -201,12 +201,12 @@ export default class RNDraftJs extends Component {
     this.insertAtomicBlock('image', url)
   }
 
-  insertVideo = (url) => {
-    this.insertAtomicBlock('video', url)
+  insertVideo = (url, height, width) => {
+    this.insertAtomicBlock('video', url, height, width)
   }
 
-  insertAtomicBlock = (type, url) => {
-    this.onChange(insertAtomicBlock(this.state.editorState, type, url))
+  insertAtomicBlock = (type, url, height, width) => {
+    this.onChange(insertAtomicBlock(this.state.editorState, type, url, height, width))
   }
 
   toggleHeader = () => {
@@ -238,7 +238,6 @@ export default class RNDraftJs extends Component {
 
     // TODO: Range: When range selection is added, this will need to take range into account
     const isSelected = block.key == selectedKey
-
     switch (block.data.type) {
       case 'image':
         return (
@@ -260,6 +259,10 @@ export default class RNDraftJs extends Component {
             isSelected={isSelected}
             onPress={()=>this.updateSelectionState({startKey: block.key, endKey: block.key, startOffset: 0, endOffset: 0})}
             onDelete={()=>this.deleteAtomicBlock(block.key)}
+            sizeMetrics={{
+              height: block.data.height,
+              width: block.data.width,
+            }}
             />
         )
     }
@@ -342,7 +345,12 @@ export default class RNDraftJs extends Component {
 // Must call 'processColor' on any colors used here
 const blockFontTypes = {
   unstyled: { // No real need to use since values from styles are already used
-    fontSize: 18,
+    fontSize: 16,
+    color: Colors.grey,
+  },
+  placeholder: {
+   color: processColor(Colors.redHighlights),
+   opacity: 0.8,
   },
   headerOne: {
     fontSize: 21,
@@ -370,7 +378,7 @@ const blockFontTypes = {
   },
   atomic: {
     fontSize: 15,
-    color: processColor('#757575'),
+    color: processColor(Colors.grey),
     fontStyle: 'italic',
     textAlign: 'center',
     placeholderText: 'Add a caption...',
@@ -439,7 +447,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     minHeight: 38,
     fontSize: 18,
-    color: Colors.background,
+    color: Colors.grey,
     fontWeight: '400',
     paddingTop: 10,
     paddingHorizontal: 20,

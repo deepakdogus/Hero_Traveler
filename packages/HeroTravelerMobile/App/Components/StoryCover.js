@@ -5,7 +5,6 @@ import {
   TouchableWithoutFeedback,
   View
 } from 'react-native'
-import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import Image from './Image'
@@ -96,13 +95,9 @@ export default class StoryCover extends Component {
             source={{uri: imageUrl}}
             style={embeddedImageStyle}
           />
-          <LinearGradient
-            locations={gradientLocations}
-            colors={gradientColors}
-            style={styles.gradient}
-          >
+          <View>
             {children}
-          </LinearGradient>
+          </View>
         {showPlayButton && isVideo &&
           <PlayButton
             onPress={this._tapVideoWrapper}
@@ -183,13 +178,9 @@ export default class StoryCover extends Component {
         />
         <TouchableWithoutFeedback
           onPress={this._tapVideoWrapper}>
-          <LinearGradient
-            locations={this.props.gradientLocations}
-            colors={this.props.gradientColors}
-            style={[styles.gradient, styles.videoGradient]}
-          >
+          <View>
             {this.props.children}
-          </LinearGradient>
+          </View>
         </TouchableWithoutFeedback>
         {this.props.allowVideoPlay && !this.state.isPlaying && this.props.shouldEnableAutoplay && !this.props.isFeed &&
         <PlayButton

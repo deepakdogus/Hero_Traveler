@@ -1,11 +1,12 @@
 import _ from 'lodash'
 import React from 'react'
-import { Text, View, ScrollView, Image, TextInput } from 'react-native'
+import { Text, View, ScrollView, TextInput } from 'react-native'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import RoundedButton from '../Components/RoundedButton'
+import Avatar from '../Components/Avatar'
 import getImageUrl from '../Shared/Lib/getImageUrl'
-import {Colors, Images} from '../Shared/Themes'
+import {Colors} from '../Shared/Themes'
 import API from '../Shared/Services/HeroAPI'
 import styles, { listHeight } from './Styles/StoryCommentsScreenStyles'
 import StoryActions from '../Shared/Redux/Entities/Stories'
@@ -16,8 +17,7 @@ const Comment = ({avatar, name, comment, timestamp}) => {
   return (
     <View style={styles.commentWrapper}>
       <View style={styles.comment}>
-        {avatar && <Image style={styles.avatar} source={{uri: avatar }} />}
-        {!avatar && <Image source={Images.iconDefaultProfile} style={styles.iconAvatar} resizeMode="contain" />}
+        <Avatar avatarUrl={avatar} size='almostExtraSmall' />
         <View style={styles.commentTextWrapper}>
           <View style={styles.nameAndTimeStamp}>
             <Text style={styles.commentName}>{name}</Text>

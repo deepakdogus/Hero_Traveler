@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
 
 const SIZES = {
   extraSmall: 32,
+  almostExtraSmall: 36,
   small: 40,
   medium: 50,
   large: 83,
@@ -22,7 +23,7 @@ const SIZES = {
 export default class Avatar extends Component {
 
   static propTypes = {
-    size: PropTypes.oneOf(['extraSmall', 'small', 'medium', 'large', 'extraLarge']),
+    size: PropTypes.oneOf(['extraSmall', 'almostExtraSmall', 'small', 'medium', 'large', 'extraLarge']),
     avatarUrl: PropTypes.string,
   }
 

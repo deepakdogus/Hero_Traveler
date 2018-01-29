@@ -152,7 +152,7 @@ export function * discardDraft (api, action) {
 }
 
 export function * updateDraft (api, action) {
-  const {draftId, draft, updateStoryEntity, isRepublishing} = action
+  const {draftId, draft, updateStoryEntity} = action
   const response = yield call(api.updateDraft, draftId, draft)
   if (response.ok) {
     const {entities, result} = response.data
@@ -160,9 +160,12 @@ export function * updateDraft (api, action) {
     if (updateStoryEntity || !story.draft) {
       yield put(StoryActions.receiveStories(entities.stories))
     }
-    yield put(StoryCreateActions.updateDraftSuccess(story, isRepublishing))
+    yield put(StoryCreateActions.updateDraftSuccess(story))
   } else {
-    yield put(StoryCreateActions.updateDraftFailure(new Error('Failed to update draft')))
+    const err = new Error('Failed to update draft')
+    err.status = response.status
+    err.problem = response.problem
+    yield put(StoryCreateActions.updateDraftFailure(err))
   }
 }
 

@@ -91,6 +91,11 @@ export default class StoryPreview extends Component {
     this.props.onPressUnfollow(this.props.user.id)
   }
 
+  hasBadge(){
+    const {user} = this.props
+    return user.role === 'contributor' || user.role === 'founding member'
+  }
+
   renderUserSection() {
     const {user, story, isStoryReadingScreen, isAuthor} = this.props
     const isFollowing = _.includes(this.props.myFollowedUsers, user.id)
@@ -110,7 +115,16 @@ export default class StoryPreview extends Component {
               />
             </TouchableOpacity>
             <View style={styles.verticalCenter}>
-              <TouchableOpacity onPress={this._touchUser}>
+              <TouchableOpacity onPress={this._touchUser} style={styles.profileButton}>
+                {this.hasBadge() &&
+                  <TabIcon
+                    name={this.props.user.role === 'contributor' ? 'contributor' : 'founder'}
+                    style={{
+                      image: styles.badgeImage,
+                      view: styles.badgeView,
+                    }}
+                 />
+                }
                 <Text style={[
                   styles.username,
                   isStoryReadingScreen && styles.usernameReading,
@@ -219,7 +233,7 @@ export default class StoryPreview extends Component {
     return (
       <View style={styles.contentContainer}>
         {this.renderUserSection()}
-        {!shouldHideCover && 
+        {!shouldHideCover &&
           <StoryCover
             autoPlayVideo={this.props.autoPlayVideo}
             allowVideoPlay={this.props.allowVideoPlay}

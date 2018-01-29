@@ -104,6 +104,7 @@ const UserSchema = new Schema({
       Constants.USER_ROLES_ADMIN_VALUE,
       Constants.USER_ROLES_BRAND_VALUE,
       Constants.USER_ROLES_CONTRIBUTOR_VALUE,
+      Constants.USER_ROLES_FOUNDING_MEMBER_VALUE,
     ],
     default: Constants.USER_ROLES_USER_VALUE
   },
@@ -221,7 +222,7 @@ UserSchema.methods = {
         return Promise.reject(new Error('Incorrect password'))
       }
       return this
-    })  
+    })
   },
 
   receivesCommentNotifications() {

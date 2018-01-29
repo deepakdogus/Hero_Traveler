@@ -230,6 +230,25 @@ export default class ProfileUserInfo extends Component {
     )
   }
 
+  renderBadgeRow(){
+    return (
+      <View style={[styles.profileWrapper, styles.badgeRow]}>
+        <TabIcon
+          name={this.props.user.role === 'contributor' ? 'contributor' : 'founder'}
+          style={{ image: styles.badgeImage }}
+        />
+        <Text style={styles.badgeText}>
+          {this.props.user.role.toUpperCase()}
+        </Text>
+      </View>
+    )
+  }
+
+  hasBadge(){
+    const {user} = this.props
+    return user.role === 'contributor' || user.role === 'founding member'
+  }
+
   render() {
     const {isEditing} = this.props
 
@@ -237,6 +256,7 @@ export default class ProfileUserInfo extends Component {
       <View style={isEditing ? styles.profileEditInfoContainer : styles.profileInfoContainer}>
         {this.renderTop()}
         {this.renderFirstRow()}
+        {this.hasBadge() && this.renderBadgeRow()}
         {!isEditing && this.renderSecondRow()}
       </View>
     )

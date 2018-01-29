@@ -29,7 +29,7 @@ export default StyleSheet.create({
     fontSize: 18,
     letterSpacing: .7,
     color: Colors.grey,
-    marginTop: 10,
+    marginTop: 5,
   },
   userContent: {
     flexDirection: 'row',
@@ -102,5 +102,16 @@ export default StyleSheet.create({
     width: 80,
     marginHorizontal: 12.5,
     fontSize: 11,
-  }
+  },
+  profileButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  badgeImage: {
+    width: 12,
+    height: 12,
+  },
+  badgeView: {
+    marginRight: 5
+  },
 })

@@ -230,6 +230,7 @@ export default class VideoPlayer extends React.Component {
   }
 
   isPaused(){
+    console.log('is Paused', this.state.videoPlaying, this._getShouldEnableAutoplay())
     return !this.state.videoPlaying || !this._getShouldEnableAutoplay()
   }
 

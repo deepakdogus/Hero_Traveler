@@ -120,6 +120,7 @@ export default class StoryCover extends Component {
 
   _tapVideoWrapper() {
     const {onPress} = this.props
+    console.log('tap video wrapper')
 
     // If the video is not playing, invoke the usual callback
     if ((!this.player || !this.player.getIsPlaying() || this.props.isFeed) && onPress) {

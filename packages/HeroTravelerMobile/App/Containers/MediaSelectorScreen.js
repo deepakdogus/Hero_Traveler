@@ -46,14 +46,6 @@ class MediaSelectorScreen extends React.Component {
     }, this._handleMediaSelector)
   }
 
-  _completePhotoTooltip = () => {
-    const tooltips = this.props.user.introTooltips.concat({
-      name: TooltipTypes.STORY_PHOTO_TAKE,
-      seen: true,
-    })
-    this.props.completeTooltip(tooltips)
-  }
-
   _completeNextTooltip = () => {
     const tooltips = this.props.user.introTooltips.concat({
       name: TooltipTypes.STORY_PHOTO_NEXT,
@@ -66,51 +58,7 @@ class MediaSelectorScreen extends React.Component {
     return this.state.captureOpen || this.state.mediaCaptured
   }
 
-    renderPhotoTooltip() {
-    return (
-      <TouchableOpacity
-        style={{
-          position: 'absolute',
-          top: 540,
-          bottom: 0,
-          left: 190,
-          right: 0,
-          backgroundColor: 'transparent',
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-        onPress={this._completePhotoTooltip}
-      >
-          <View style={{
-            height: 38,
-            width: 144,
-            padding: 0,
-            borderRadius: 5,
-            backgroundColor: 'white',
-            alignItems: 'center',
-            shadowColor: 'black',
-            shadowOpacity: .2,
-            shadowRadius: 30
-          }}>
-            <Text style={{marginTop: 10}}>Tap to take a photo</Text>
-          </View>
-          <View style={{
-            height: 0,
-            width: 0,
-            borderLeftWidth: 6,
-            borderLeftColor: 'transparent',
-            borderRightWidth: 6,
-            borderRightColor: 'transparent',
-            borderTopWidth: 6,
-            borderTopColor: 'white',
-          }}>
-          </View>
-      </TouchableOpacity>
-    )
-  }
-
-    renderNextTooltip() {
+  renderNextTooltip() {
     return (
       <TouchableOpacity
         style={{
@@ -206,15 +154,8 @@ class MediaSelectorScreen extends React.Component {
 
   render () {
     let content
-    let showPhotoTooltip = false;
     let showNextTooltip = false;
     const mediaType = this.getMediaType()
-    if (this.props.user) {
-      showPhotoTooltip = !isTooltipComplete(
-        TooltipTypes.STORY_PHOTO_TAKE,
-        this.props.user.introTooltips
-      )
-    }
 
     if (this.props.user && this.state.media) {
       showNextTooltip = !isTooltipComplete(
@@ -309,7 +250,6 @@ class MediaSelectorScreen extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
-        {showPhotoTooltip && this.renderPhotoTooltip()}
         {showNextTooltip && this.renderNextTooltip()}
       </View>
     )

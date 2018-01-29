@@ -178,7 +178,7 @@ export default class StoryCover extends Component {
         />
         <TouchableWithoutFeedback
           onPress={this._tapVideoWrapper}
-          >
+        >
           <View
             style={[styles.gradient, styles.videoGradient]}
           >

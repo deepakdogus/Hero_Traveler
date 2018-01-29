@@ -225,11 +225,7 @@ export default class StoryPreview extends Component {
             allowVideoPlay={this.props.allowVideoPlay}
             cover={story.coverImage ? story.coverImage : story.coverVideo}
             coverType={story.coverImage ? 'image' : 'video'}
-            onPress={() => 
-              {
-                console.log('I have pressed the story')
-                this.props.onPress()
-              }}
+            onPress={this.props.onPress}
             gradientColors={this.props.gradientColors}
             gradientLocations={gradientLocations}
             showPlayButton={showPlayButton}

@@ -100,7 +100,7 @@ const images = {
   googlePlayBadge: require('../Images/ht-icons/google-play-badge.png'),
   appleAppStoreBadge: require('../Images/ht-icons/apple-app-store-badge.svg'),
   iconContributorBadage: require('../Images/ht-icons/contributor-badge.png'),
-  iconFounderBadage: require('../Images/ht-icons/founder-badge.png'),
+  iconFounderBadge: require('../Images/ht-icons/founder-badge.png'),
 }
 
 export default images

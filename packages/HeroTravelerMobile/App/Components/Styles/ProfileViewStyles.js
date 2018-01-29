@@ -13,6 +13,9 @@ export default StyleSheet.create({
   root: {
     backgroundColor: Colors.clear
   },
+  profileTabsAndStoriesRoot: {
+    marginTop: 20,
+  },
   gradientWrapper: {
     backgroundColor: Colors.clear
   },
@@ -230,9 +233,7 @@ export default StyleSheet.create({
     marginHorizontal: Metrics.section,
     zIndex: 100,
   },
-  profileInfoContainer: {
-    paddingTop: Metrics.doubleBaseMargin,
-  },
+  profileInfoContainer: {},
   profileEditInfoContainer: {
     height: profileEditHeight,
     flexDirection: 'column',

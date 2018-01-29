@@ -1,7 +1,6 @@
 import _ from 'lodash'
 
 export const Types = {
-  MY_FEED: 'my_feed',
   STORY_CREATE: 'story_create',
   STORY_PHOTO_TAKE: 'story_photo_take',
   STORY_PHOTO_NEXT: 'story_photo_next',

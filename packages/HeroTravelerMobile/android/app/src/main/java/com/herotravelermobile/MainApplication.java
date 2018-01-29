@@ -13,7 +13,6 @@ import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.cboy.rn.splashscreen.SplashScreenReactPackage;
-import com.BV.LinearGradient.LinearGradientPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -48,7 +47,6 @@ public class MainApplication extends Application implements ReactApplication {
             new ReactVideoPackage(),
             new FBSDKPackage(),
             new SplashScreenReactPackage(),
-            new LinearGradientPackage(),
             new ImagePickerPackage(),
             new RCTCameraPackage(),
             new VectorIconsPackage(),

@@ -1,11 +1,10 @@
 import _ from 'lodash'
 import React from 'react'
-import { Text, View, ScrollView, Image, TextInput } from 'react-native'
+import { Text, View, ScrollView, TextInput } from 'react-native'
 import { connect } from 'react-redux'
 import moment from 'moment'
-import Icon from 'react-native-vector-icons/FontAwesome'
-
 import RoundedButton from '../Components/RoundedButton'
+import Avatar from '../Components/Avatar'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import {Colors} from '../Shared/Themes'
 import API from '../Shared/Services/HeroAPI'
@@ -18,8 +17,7 @@ const Comment = ({avatar, name, comment, timestamp}) => {
   return (
     <View style={styles.commentWrapper}>
       <View style={styles.comment}>
-        {avatar && <Image style={styles.avatar} source={{uri: avatar }} />}
-        {!avatar && <Icon name='user-circle-o' style={styles.iconAvatar} size={36} />}
+        <Avatar avatarUrl={avatar} size='almostExtraSmall' />
         <View style={styles.commentTextWrapper}>
           <View style={styles.nameAndTimeStamp}>
             <Text style={styles.commentName}>{name}</Text>

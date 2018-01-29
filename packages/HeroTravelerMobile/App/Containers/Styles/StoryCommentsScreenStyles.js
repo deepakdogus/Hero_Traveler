@@ -42,15 +42,6 @@ export default StyleSheet.create({
     fontWeight: '400',
     letterSpacing: .7,
   },
-  avatar: {
-    height: 36,
-    width: 36,
-    borderRadius: 18,
-    marginRight: Metrics.baseMargin / 2,
-  },
-  iconAvatar: {
-    marginRight: Metrics.baseMargin / 2,
-  },
   nameAndTimeStamp: {
     flexDirection: 'row',
     justifyContent: 'space-between'

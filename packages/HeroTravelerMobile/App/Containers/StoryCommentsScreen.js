@@ -144,17 +144,16 @@ class StoryCommentsScreen extends React.Component {
               <View style={styles.inputGroupWrapper}>
                 <View style={styles.inputWrapper}>
                   <TextInput
-                    autoFocus
                     placeholder='Add a comment'
                     style={styles.input}
                     value={this.state.text}
                     autoCapitalize='none'
-                    onSubmitEditing={this.handleSend}
+                    onSubmitEditing={this.setFocusedFalse}
                     onFocus={this.setFocusedTrue}
                     onBlur={this.setFocusedFalse}
                     onChangeText={this.setChangedText}
                     autoCorrect={false}
-                    returnKeyType={'send'}
+                    returnKeyType={'done'}
                     ref={this.setInputRef}
                   />
                 </View>

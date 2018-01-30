@@ -1,33 +1,23 @@
-const dotenv = require('dotenv')
-dotenv.config()
-if (process.env.NODE_ENV === 'development') {
-  require('babel-register')
-  require('babel-polyfill')
-}
+import 'babel-polyfill'
+import express from 'express'
+import bodyParser from 'body-parser'
+import morgan from 'morgan'
+import initCore, {Models} from '@hero/ht-core'
+import path from 'path'
+import nunjucks from 'nunjucks'
+import flash from 'connect-flash'
+import cookieParser from 'cookie-parser'
+import session from 'express-session'
 
-const bodyParser = require('body-parser')
-const morgan = require('morgan')
-const Models = require('@hero/ht-core').Models
-const _ = require('lodash')
-
-const initCore = require('@hero/ht-core').default
-const PORT = process.env.PORT || 3000
-const path = require('path')
-
-/* Nunjucks config */
-const express = require('express')
-const nunjucks = require('nunjucks')
 const app = express()
-const flash = require('connect-flash')
-const cookieParser = require('cookie-parser')
-const session = require('express-session')
+const PORT = process.env.PORT || 3000
 
 /* settings for template rendering */
 
 const pathToTemplates = path.resolve(__dirname, 'templates/')
 const resultsPerPage = 15
-const multer = require('./multer.js')
-const auth = require('./auth.js')
+import multer from './multer'
+import auth from './auth'
 const makeDateReadable = (dataArray) => {
   return dataArray.map(element => {
     if (element.createdAt) {
@@ -46,15 +36,11 @@ const parseTable = (tableUrl) => {
   throw new Error('The table url doesn\'t match any collection in the DB!')
 }
 
-
 app.use(bodyParser.json({}))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(cookieParser())
 app.use(morgan('dev'))
 app.use('/authenticate', auth.authRouter)
-
-
-
 
 nunjucks.configure(pathToTemplates, {
   autoescape: true,
@@ -73,22 +59,22 @@ app.get('/:table', auth.isAuthenticated, (req, res) => {
   const { direction, sortby } = req.query
   const page = Math.max(0, req.query.page || 0) // Defaults to zero in case query is undefined
   Models[dbTable].find()
-    .limit(resultsPerPage)
-    .skip(page * resultsPerPage)
-    .populate('author')
-    .sort({[sortby]: direction || 1}) // Defaults to one in case query is undefined
-    .then((data) => {
-      data = makeDateReadable(data)
-      res.render(`${req.params.table}.njk`, { data, table, sortby, page, direction }
-      )
-    })
+  .limit(resultsPerPage)
+  .skip(page * resultsPerPage)
+  .populate('author')
+  .sort({[sortby]: direction || 1}) // Defaults to one in case query is undefined
+  .then((data) => {
+    data = makeDateReadable(data)
+    res.render(`${req.params.table}.njk`, { data, table, sortby, page, direction }
+    )
+  })
 })
 
 app.get('/:table/edit', auth.isAuthenticated, (req, res) => {
   const { id } = req.query
   const dbTable = parseTable(req.params.table)
   Models[dbTable].findById(id)
-    .then((data) => res.render(`edit-${req.params.table}.njk`, { data }))
+  .then((data) => res.render(`edit-${req.params.table}.njk`, { data }))
 })
 
 app.get('/:table/create', auth.isAuthenticated, (req, res) => {
@@ -100,22 +86,22 @@ app.post('/:table/edit', auth.isAuthenticated, multer.single('image'), (req, res
   const { id } = req.query
   const dbTable = parseTable(req.params.table)
   Models[dbTable].findOneAndUpdate(id, req.body, { upsert: true })
-    .then(data => {
-      res.render('message.njk', { message: `${dbTable} saved successfully` })
-    }
-         )
-    .catch(error => res.render('message.njk', {message: `an error occurred: ${error}` }))
+  .then(data => {
+    res.render('message.njk', { message: `${dbTable} saved successfully` })
+  }
+       )
+  .catch(error => res.render('message.njk', {message: `an error occurred: ${error}` }))
 })
 
 app.get('/:table/delete', auth.isAuthenticated, (req, res) => {
   const { id } = req.query
   const dbTable = parseTable(req.params.table)
   Models[dbTable].delete({_id: id})
-    .then(deleted => {
-          console.log('deleted: ', deleted)
-          res.render('message.njk', { message: `Successfully deleted: ${deleted}` })
-    })
-    .catch(error => res.render('message.njk', {message: `an error occurred: ${error}`}))
+  .then(deleted => {
+        console.log('deleted: ', deleted)
+        res.render('message.njk', { message: `Successfully deleted: ${deleted}` })
+  })
+  .catch(error => res.render('message.njk', {message: `an error occurred: ${error}`}))
 })
 
 app.get('/', (req, res) => {
@@ -136,4 +122,3 @@ initCore({
     }
   })
 })
-

@@ -1,10 +1,10 @@
-const morgan = require('morgan')
-const jwt = require('jsonwebtoken')
-const User = require('@hero/ht-core').Models.User
-const PORT = process.env.PORT || 3000
-const path = require('path')
+import morgan from 'morgan'
+import jwt from 'jsonwebtoken'
+import {Models} from '@hero/ht-core'
+const User = Models.User
+import express from 'express'
 
-const authRouter = require('express').Router()
+const authRouter = express.Router()
 if ( process.env.NODE_ENV === 'development') {
 }
 
@@ -36,21 +36,14 @@ authRouter.post('/', (req, res) => {
 const isAuthenticated = (req, res, next) => {
   let token
   if ( req.cookies.user ) token = req.cookies.user.token
-    
-  jwt.verify(token, process.env.SECRET,
-             (err, decoded) => {
-               if (err) res.status(403).send(err.message)
-               if (decoded) next()
-             }
-            )
+
+  jwt.verify(token, process.env.SECRET,(err, decoded) => {
+    if (err) res.status(403).send(err.message)
+    if (decoded) next()
+  })
 }
 
 module.exports = {
   authRouter,
   isAuthenticated
 }
-
-
-
-
-

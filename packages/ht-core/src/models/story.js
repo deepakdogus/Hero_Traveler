@@ -145,7 +145,8 @@ StorySchema.statics = {
       .sort({createdAt: -1})
   },
 
-  getUserFeed(userId: string, followingIds: string[]) {
+  getUserFeed(userId: string, followingIds: string[], categoryIds: string[]) {
+    console.log('get user feed', followingIds, categoryIds)
     return this
       .list({
         draft: false,
@@ -153,7 +154,7 @@ StorySchema.statics = {
         $or: [
           {author: userId},
           {author: {$in: followingIds}},
-          {category: {$in: followingIds}},
+          {category: {$in: categoryIds}},
         ]
       })
       .exec()

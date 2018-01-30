@@ -72,6 +72,7 @@ FollowerSchema.statics = {
       follower: userId,
       type: CategoryModelRef,
     })
+
   },
 
   getUserFollowingIds(userId: string): Promise<mongoose.Types.ObjectId[]> {
@@ -82,7 +83,7 @@ FollowerSchema.statics = {
       }
     })
     .lean()
-    .distinct('followee')
+    //.distinct('followee')
   }
 }
 

@@ -14,7 +14,7 @@ export default StyleSheet.create({
     backgroundColor: Colors.clear
   },
   profileTabsAndStoriesRoot: {
-    marginTop: 20,
+    marginTop: Metrics.navBarHeight - 15,
   },
   gradientWrapper: {
     backgroundColor: Colors.clear

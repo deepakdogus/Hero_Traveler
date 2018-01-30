@@ -19,18 +19,16 @@ function renderTemplate(templateName, context) {
 }
 
 export default function sendWelcomeEmail(user) {
-
   if (process.env.DISABLE_EMAIL) {
     return Promise.resolve({})
   }
 
-  // disabled until web setup + add universal linking
-  return
 
+  // TO-DO: Add universal linking
   const context = {
     subject: 'Welcome to HERO Traveler!',
-    confirmationUrl: `com.herotraveler.herotraveler-beta://emailverify/${user.emailConfirmationToken}`,
-    // confirmationUrl: `${process.env.API_HOST}/user/redirect-verify-email/${user.emailConfirmationToken}`,
+    //confirmationUrl: `com.herotraveler.herotraveler-beta://emailverify/${user.emailConfirmationToken}`,
+    confirmationUrl: `${process.env.API_HOST}/user/redirect-verify-email/${user.emailConfirmationToken}`,
     logoUrl: 'https://s3.amazonaws.com/hero-traveler/assets/ht-logo-white-small.png',
     logoHeight: '50px',
     logoWidth: '246px',

@@ -21,7 +21,7 @@ export default {
     backgroundColor: Colors.snow,
     borderStyle: 'solid',
     borderBottomWidth: 1,
-    borderColor: Colors.dividerGrey,
+    borderBottomColor: Colors.dividerGrey,
   },
   tabBar: {
     backgroundColor: Colors.background

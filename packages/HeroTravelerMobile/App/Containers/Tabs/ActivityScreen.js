@@ -116,6 +116,12 @@ class NotificationScreen extends React.Component {
               ]
             }
 
+            // quick fix to solve for notifications crash
+            if (activity.kind === "ActivityStoryLike" && !activity.story) {
+              if (!activity.seen) this._pressActivity(activity.id, false)
+              return null
+            }
+
             return (
               <ConnectedActivity
                 key={activityId}

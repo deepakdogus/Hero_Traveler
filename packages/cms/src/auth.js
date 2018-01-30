@@ -1,12 +1,10 @@
 import morgan from 'morgan'
 import jwt from 'jsonwebtoken'
-import {Models} from '@hero/ht-core'
-const User = Models.User
+import {User} from '@hero/ht-core'
 import express from 'express'
 
 const authRouter = express.Router()
-if ( process.env.NODE_ENV === 'development') {
-}
+if ( process.env.NODE_ENV === 'development') {}
 
 // jwt configuration
 
@@ -16,21 +14,20 @@ const jwtConfig = {
 
 authRouter.post('/', (req, res) => {
   User.validateCredentials(req.body.username, req.body.password)
-    .then(validatedUser => {
+  .then(validatedUser => {
 
-      console.log('validated User', validatedUser)
-      // if (user.role !== 'admin') return Promise.reject(new Error('User is not an administrator!'))
+    if (validatedUser.role !== 'admin') return Promise.reject(new Error('User is not an administrator!'))
 
-      const token = jwt.sign(validatedUser, process.env.SECRET, jwtConfig)
-
-      res.cookie('user', {
-        username: validatedUser.username,
-        success: true,
-        message: 'User Authenticated',
-        token
-      }).status(200).redirect('/')
-    })
-    .catch(err => console.error('An error occurred: ', err))
+    const token = jwt.sign(validatedUser, process.env.SECRET, jwtConfig)
+    console.log("token is", token)
+    res.cookie('user', {
+      username: validatedUser.username,
+      success: true,
+      message: 'User Authenticated',
+      token
+    }).status(200).redirect('/')
+  })
+  .catch(err => console.error('An error occurred: ', err))
 })
 
 const isAuthenticated = (req, res, next) => {

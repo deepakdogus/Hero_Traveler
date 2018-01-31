@@ -48,7 +48,7 @@ class LocationScreen extends Component {
     .catch(() => this.setState({searching: false}))
   }
 
-  selectLocation = (placeID) => {
+  selectLocation = (placeID) => () => {
     this.setState({searching: true})
     RNGooglePlaces.lookUpPlaceByID(placeID)
     .then((results) => {
@@ -62,7 +62,7 @@ class LocationScreen extends Component {
     return this.state.predictions.map(place => {
       return (
         <View key={place.placeID} style={styles.rowWrapper}>
-          <TouchableOpacity onPress={() => this.selectLocation(place.placeID)}>
+          <TouchableOpacity onPress={this.selectLocation(place.placeID)}>
             <Text style={styles.boldText}>{place.primaryText}</Text>
             <Text style={[styles.boldText, styles.text]}>{place.secondaryText}</Text>
           </TouchableOpacity>
@@ -100,7 +100,7 @@ class LocationScreen extends Component {
               />
             </View>
           </View>
-          <ScrollView style={{flexGrow: 3}}>
+          <ScrollView style={{flexGrow: 3}} keyboardShouldPersistTaps='always'>
             {searching  &&
               <Loader style={styles.spinner} spinnerColor={Colors.blackoutTint} />
             }

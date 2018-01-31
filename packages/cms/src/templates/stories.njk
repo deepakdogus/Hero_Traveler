@@ -18,6 +18,7 @@
         <th><a href="/stories?sortby=createdAt&direction={{ '1' if direction === '-1' else '-1' }}">Date Published</a></th>
         <th><a href="/stories?sortby=author.username&direction={{ '1' if direction === '-1' else '-1' }}">Author</a></th>
         <th>Deleted</th>
+        <th>Flagged</th>
         <th>Edit</th>
       </tr>
       </thead>
@@ -28,6 +29,7 @@
             <td>{{story.createdAt}}</td>
             <td>{{story.author.username}}</td>
             <td>{{story.deleted}}</td>
+            <td>{{story.flagged}}</td>
             <td> <a href="/stories/edit?id={{story._id}}"><i class="fa fa-pencil"></i></a></td>
           </tr>
         {%  endfor %}

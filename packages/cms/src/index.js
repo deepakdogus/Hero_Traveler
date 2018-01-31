@@ -8,6 +8,7 @@ import nunjucks from 'nunjucks'
 import flash from 'connect-flash'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
+import favicon from 'serve-favicon'
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -41,6 +42,10 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(cookieParser())
 app.use(morgan('dev'))
 app.use('/authenticate', auth.authRouter)
+
+// setting up favicon
+const faviconPath = path.resolve(__dirname, './public/favicon.ico');
+app.use(favicon(faviconPath))
 
 nunjucks.configure(pathToTemplates, {
   autoescape: true,

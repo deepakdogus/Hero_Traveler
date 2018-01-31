@@ -1,15 +1,22 @@
-FROM rwoody/ht-api-base
-
+FROM rehashstudio2017/ht-api-base
+ARG NPM_TOKEN
 RUN mkdir /app
 WORKDIR /app
 
-ARG NPM_TOKEN
+RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 
 COPY .npmrc /app/.npmrc
 COPY package.json /app/package.json
-RUN npm install --production
+COPY yarn.lock /app/yarn.lock
+RUN $HOME/.yarn/bin/yarn install
 RUN rm -f /app/.npmrc
-COPY dist/ /app/dist
+COPY src/ /app/src
+COPY .babelrc /app/.babelrc
+RUN npm run build
+RUN rm -rf /app/src
+RUN rm -rf /app/.babelrc
+COPY src/public/favicon.ico /app/dist/public/favicon.ico
+COPY src/templates /app/dist/templates
 
-EXPOSE 3000
+EXPOSE 3002
 CMD npm start

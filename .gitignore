@@ -63,6 +63,7 @@ typings/
 
 # dotenv environment variables file
 .env
+.cmsEnv
 
 # App Config
 packages/web/src/App/Config/Env.js

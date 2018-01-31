@@ -13,7 +13,27 @@ services:
     networks:
       - frontend
     deploy:
-      replicas: 6
+      replicas: 4
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints: [node.role == worker]
+  cms:
+    image: rehashstudio2017/ht-cms
+    build:
+      context: packages/cms
+      args:
+        NPM_TOKEN: ${NPM_TOKEN}
+    ports:
+      - 8080:3002
+    env_file: .cmsEnv
+    networks:
+      - frontend
+    deploy:
+      replicas: 2
       update_config:
         parallelism: 1
         delay: 10s

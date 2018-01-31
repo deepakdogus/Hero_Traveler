@@ -11,7 +11,7 @@ import session from 'express-session'
 import favicon from 'serve-favicon'
 
 const app = express()
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3002
 
 /* settings for template rendering */
 

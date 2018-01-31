@@ -1,4 +1,4 @@
-FROM rwoody/ht-api-base
+FROM rehashstudio2017/ht-api-base
 ARG NPM_TOKEN
 RUN mkdir /app
 WORKDIR /app

@@ -44,7 +44,7 @@ const StoryVideo = enhanceStoryVideo((props) => {
   const height = props.height || Metrics.screenWidth * 9 / 16
   return (
     <View
-      style={[styles.videoWrapper, {height}]}
+      style={[styles.videoWrapper, {height }]}
     >
       <VideoPlayer
         ref={props.registerRef}
@@ -86,6 +86,7 @@ const atomicHandler = (item: Object): any => {
             <Image
               fullWidth={true}
               source={{uri: `${getImageUrl(item.data.url, 'contentBlock')}`}}
+              style={{maxHeight: Metrics.screenHeight - Metrics.editorToolbarHeight - Metrics.mainNavHeight - Metrics.statusBarHeight - 40}}
             />
             {!!item.text && <Text style={styles.caption}>{item.text}</Text>}
           </View>

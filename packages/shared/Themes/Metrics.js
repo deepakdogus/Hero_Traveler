@@ -12,6 +12,7 @@ const metrics = {
   doubleSection: 50,
   horizontalLineHeight: 1,
   searchBarHeight: 30,
+  statusBarHeight: 20,
   mainNavHeight: 42,
   tabBarHeight: 50,
   editorToolbarHeight: 50,

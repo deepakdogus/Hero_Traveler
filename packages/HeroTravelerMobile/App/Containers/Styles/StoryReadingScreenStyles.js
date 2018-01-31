@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    marginBottom: Metrics.tabBarHeight
+    marginBottom: Metrics.tabBarHeight,
   },
   locationWrapper: {
     marginTop: Metrics.section,
@@ -63,17 +63,10 @@ export const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
-  // StoryContent component
-  storyContentWrapper: {
-    backgroundColor: Colors.snow,
-    paddingBottom: Metrics.tabBarHeight + Metrics.section
-  },
-  storyContentImage: {
-    marginBottom: Metrics.section
-  },
   videoWrapper: {
     position: 'relative',
     width: Metrics.screenWidth,
+    maxHeight: Metrics.screenHeight - Metrics.editorToolbarHeight - Metrics.mainNavHeight - Metrics.statusBarHeight - 40,
   },
   video: {
     position: 'absolute',
@@ -110,7 +103,7 @@ export const styles = StyleSheet.create({
   },
   mediaViewWrapper: {
     flex: 1,
-    marginVertical: 25
+    marginVertical: 25,
   },
   tagLabel: {
     fontWeight: '800',

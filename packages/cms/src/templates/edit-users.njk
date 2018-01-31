@@ -1,5 +1,12 @@
 {% extends 'index.njk' %}
 
+{% macro optionTag(value, userRole) %}
+  {% if value === userRole %} <option selected>
+  {% else %} <option>
+  {% endif %}
+  {{ value }}</option>
+{% endmacro %}
+
 {% block main %}
   <form enctype="application/json" action="/users/edit?id={{data._id if data._id else 'new'}}" method="post" class="sm-col-4 m3">
     <label>Email Address</label>
@@ -7,11 +14,12 @@
     <label>Username</label>
     <input name="username" type="text" value="{{data.username}}" class="block col-12 mb1 field">
     <label>Role</label>
-    <select name="role" value="{{data.role}}" class="block col-12 mb1 field">
-      <option>user</option>
-      <option>admin</option>
-      <option>contributor</option>
-      <option>brand</option>
+    <select name="role" value="{{data.username}}" class="block col-12 mb1 field">
+      {{ optionTag('user', data.role)}}
+      {{ optionTag('admin', data.role)}}
+      {{ optionTag('contributor', data.role)}}
+      {{ optionTag('brand', data.role)}}
+      {{ optionTag('founding member', data.role)}}
     </select>
     <label class="block col-12 mb2">
       <input name="featured" type="checkbox" checked>

@@ -1,15 +1,14 @@
-const path = require('path')
-const AWS = require('aws-sdk')
-const multer = require('multer')
-const multerS3 = require('multer-s3')
-const uuid = require('uuid')
+import path from 'path'
+import AWS from 'aws-sdk'
+import multer from 'multer'
+import multerS3 from 'multer-s3'
 
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY,
   secretAccessKey: process.env.AWS_SECRET_KEY
 })
 
-module.exports = multer({
+export default multer({
   storage: multerS3({
     s3: s3,
     bucket: process.env.AWS_S3_BUCKET,

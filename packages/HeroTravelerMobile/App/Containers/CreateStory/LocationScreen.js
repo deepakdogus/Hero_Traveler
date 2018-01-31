@@ -73,7 +73,7 @@ class LocationScreen extends Component {
 
   render () {
     const {searching, predictions} = this.state
-
+    const { location } = this.props
     return (
       <View style={styles.root}>
         <View style={{marginTop: Metrics.baseMargin, height: 40}}>
@@ -91,12 +91,14 @@ class LocationScreen extends Component {
                 ref='input'
                 style={[styles.textInput, styles.boldText]}
                 value={this.state.text}
-                placeholder='Location'
+                placeholder='Enter a Location'
+                placeholderTextColor={Colors.navBarText}
                 onChangeText={this._onChangeText}
                 onSubmitEditing={this._addNewCategory}
                 onFocus={this.setInputFocused}
                 onBlur={this.setInputBlurred}
                 returnKeyType='search'
+                autoFocus={!location}
               />
             </View>
           </View>

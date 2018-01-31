@@ -28,7 +28,7 @@ export default StyleSheet.create({
   },
   rowWrapper: {
     borderBottomWidth: 1,
-    borderBottomColor: Colors.lightGreyAreas,
+    borderBottomColor: Colors.navBarText,
     paddingVertical: 5,
   },
   text: {
@@ -57,7 +57,7 @@ export default StyleSheet.create({
     flexGrow: .7,
     height: 35,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.lightGreyAreas,
+    borderBottomColor: Colors.navBarText,
     marginVertical: Metrics.baseMargin / 2
   },
   spinner: {

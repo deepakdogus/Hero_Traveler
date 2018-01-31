@@ -16,6 +16,9 @@ export default StyleSheet.create({
   profileTabsAndStoriesRoot: {
     marginTop: 20,
   },
+  profileTabsAndStoriesRootWithMarginForNavbar: {
+    marginTop: Metrics.navBarHeight - 15,
+  },
   gradientWrapper: {
     backgroundColor: Colors.clear
   },
@@ -42,7 +45,7 @@ export default StyleSheet.create({
     tintColor: Colors.signupGrey,
   },
   readingViewTop: {
-    height: 43,
+    height: 20,
   },
   userInfoMargin: {
     marginLeft: Metrics.baseMargin,

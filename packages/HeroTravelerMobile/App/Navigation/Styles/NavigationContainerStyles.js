@@ -16,6 +16,13 @@ export default {
     backgroundColor: Colors.clear,
     borderBottomWidth: 0
   },
+  navBarWhite: {
+    height: Metrics.navBarHeight - 15,
+    backgroundColor: Colors.snow,
+    borderStyle: 'solid',
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.dividerGrey,
+  },
   tabBar: {
     backgroundColor: Colors.background
   },

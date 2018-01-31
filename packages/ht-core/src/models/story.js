@@ -153,7 +153,7 @@ StorySchema.statics = {
         $or: [
           {author: userId},
           {author: {$in: followingIds}},
-          {category: {$in: followingIds}},
+          {categories: {$in: followingIds}},
         ]
       })
       .exec()

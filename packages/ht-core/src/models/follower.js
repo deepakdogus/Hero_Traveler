@@ -83,7 +83,7 @@ FollowerSchema.statics = {
       }
     })
     .lean()
-    //.distinct('followee')
+    .distinct('followee')
   }
 }
 

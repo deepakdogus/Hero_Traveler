@@ -1,13 +1,11 @@
 {% extends 'index.njk' %}
 
 {% block main %}
-  <form enctype="application/json" action="/users/edit?id={{data._id if data._id else 'new'}}" method="post" class="sm-col-4 m3">
+  <form enctype="application/json" action="/stories/edit?id={{data._id if data._id else 'new'}}" method="post" class="sm-col-4 m3">
     <label>Title</label>
     <input name="title" type="text" value="{{data.title}}" class="block col-12 mb1 field">
     <label>Sponsored By</label>
     <input name="sponsoredBy" type="text" value="{{data.sponsoredBy}}" class="block col-12 mb1 field">
-    <label>Author</label>
-    <input name="author" type="text" value="{{data.author.username}}" class="block col-12 mb1 field">
     <label class="block col-12 mb2">
       <input name="feature" type="checkbox" checked>
       Feature

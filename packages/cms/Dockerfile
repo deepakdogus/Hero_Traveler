@@ -11,8 +11,12 @@ COPY yarn.lock /app/yarn.lock
 RUN $HOME/.yarn/bin/yarn install
 RUN rm -f /app/.npmrc
 COPY src/ /app/src
+COPY .babelrc /app/.babelrc
 RUN npm run build
 RUN rm -rf /app/src
+RUN rm -rf /app/.babelrc
+COPY src/public/favicon.ico /app/dist/public/favicon.ico
+COPY src/templates /app/dist/templates
 
-EXPOSE 3000
+EXPOSE 3002
 CMD npm start

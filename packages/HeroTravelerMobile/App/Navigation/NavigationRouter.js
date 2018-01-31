@@ -87,22 +87,22 @@ const tabBarProps = {
   tabBarSelectedItemStyle: Styles.tabBarActive
 }
 
-const launchNavButton = (props) => {
-  return (<NavButton
-    onRight={props.onRight}
-    text='Browse as a Guest'
-    iconName='arrowRight'
-    style={{
-      text: Styles.browseGuest,
-      icon: {
-        height: 14,
-        width: 7,
-        marginTop: 1.5,
-      }
-    }}/>)
-}
+// const launchNavButton = (props) => {
+//   return (<NavButton
+//     onRight={props.onRight}
+//     text='Browse as a Guest'
+//     iconName='arrowRight'
+//     style={{
+//       text: Styles.browseGuest,
+//       icon: {
+//         height: 14,
+//         width: 7,
+//         marginTop: 1.5,
+//       }
+//     }}/>)
+// }
 
-const launchOnRight = () => __DEV__ ? NavActions.guestExplore() : alert('Browse as guest')
+// const launchOnRight = () => __DEV__ ? NavActions.guestExplore() : alert('Browse as guest')
 
 const topicsRightBtn = (props) => {
   return (<NavButton
@@ -139,11 +139,13 @@ export default NavActions.create(
       key='root'
       {...clearNavBarProps}
     >
+        {/* Add this back when we have "Browse as a guest" functionality
+            renderRightButton={launchNavButton}. 
+            onRight={launchOnRight}
+        */}
       <Scene
         key='launchScreen'
         component={LaunchScreen}
-        renderRightButton={launchNavButton}
-        onRight={launchOnRight}
         hideNavBar={false}
       />
       <Scene

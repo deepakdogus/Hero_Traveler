@@ -145,7 +145,6 @@ StorySchema.statics = {
       .sort({createdAt: -1})
   },
 
-
   getUserFeed(userId: string, followingIds: string[]) {
     return this
       .list({

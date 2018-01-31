@@ -72,7 +72,6 @@ FollowerSchema.statics = {
       follower: userId,
       type: CategoryModelRef,
     })
-
   },
 
   getUserFollowingIds(userId: string): Promise<mongoose.Types.ObjectId[]> {

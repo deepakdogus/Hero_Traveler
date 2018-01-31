@@ -90,11 +90,10 @@ app.get('/:table/create', auth.isAuthenticated, (req, res) => {
 app.post('/:table/edit', auth.isAuthenticated, multer.single('image'), (req, res, next) => {
   const { id } = req.query
   const dbTable = parseTable(req.params.table)
-  Models[dbTable].findOneAndUpdate(id, req.body, { upsert: true })
+  Models[dbTable].findByIdAndUpdate(id, req.body, { upsert: true })
   .then(data => {
     res.render('message.njk', { message: `${dbTable} saved successfully` })
-  }
-       )
+  })
   .catch(error => res.render('message.njk', {message: `an error occurred: ${error}` }))
 })
 
@@ -102,10 +101,7 @@ app.get('/:table/delete', auth.isAuthenticated, (req, res) => {
   const { id } = req.query
   const dbTable = parseTable(req.params.table)
   Models[dbTable].delete({_id: id})
-  .then(deleted => {
-        console.log('deleted: ', deleted)
-        res.render('message.njk', { message: `Successfully deleted: ${deleted}` })
-  })
+  .then(deleted => res.render('message.njk', { message: `Successfully deleted: ${deleted}`}))
   .catch(error => res.render('message.njk', {message: `an error occurred: ${error}`}))
 })
 
@@ -118,7 +114,8 @@ app.get('/', (req, res) => {
 initCore({
   mongoDB: process.env.MONGODB_URL,
   seedDB: process.env.SEED_DB,
-}).then(() => {
+})
+.then(() => {
   app.listen(PORT, err => {
     if (err) {
       console.error(err)

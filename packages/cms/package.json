@@ -1,9 +1,8 @@
 {
-  "name": "@hero/ht-express-api",
+  "name": "@hero/cms",
   "private": true,
-  "version": "0.0.6-beta",
-  "description": "HERO Traveler application API",
-  "main": "index.js",
+  "version": "1.0.5",
+  "description": "Content Management System for the Herotraveller App",  "main": "index.js",
   "scripts": {
     "build": "babel src -d dist",
     "clean": "rimraf dist",

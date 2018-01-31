@@ -19,7 +19,6 @@ authRouter.post('/', (req, res) => {
     if (validatedUser.role !== 'admin') return Promise.reject(new Error('User is not an administrator!'))
 
     const token = jwt.sign(validatedUser, process.env.SECRET, jwtConfig)
-    console.log("token is", token)
     res.cookie('user', {
       username: validatedUser.username,
       success: true,

@@ -66,6 +66,7 @@
     "react-native-keyboard-spacer": "^0.3.1",
     "react-native-keyboard-tracking-view": "^3.0.13",
     "react-native-maps": "~0.13.0",
+    "react-native-media-meta": "^0.0.10",
     "react-native-push-notification": "^2.2.1",
     "react-native-router-flux": "https://github.com/rwoody/react-native-router-flux",
     "react-native-splash-screen": "^2.0.0",

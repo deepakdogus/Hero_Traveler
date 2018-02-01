@@ -3,6 +3,7 @@ package com.herotravelermobile;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.mybigday.rnmediameta.RNMediaMetaPackage;
 import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
 import com.apsl.versionnumber.RNVersionNumberPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
@@ -37,6 +38,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNMediaMetaPackage(),
             new RNGooglePlacesPackage(),
             new RNVersionNumberPackage(),
             new RNFetchBlobPackage(),

@@ -7,15 +7,18 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import ImagePicker from 'react-native-image-picker'
+import mediaMeta from 'react-native-media-meta'
 
 import NavBar from './CreateStory/NavBar'
 import PhotoTaker from '../Components/PhotoTaker'
 import VideoPlayer from '../Components/VideoPlayer'
 import Image from '../Components/Image'
+import ShadowButton from '../Components/ShadowButton'
 import styles from './Styles/MediaSelectorScreenStyles'
 import isTooltipComplete, {Types as TooltipTypes} from '../Shared/Lib/firstTimeTooltips'
 import UserActions from '../Shared/Redux/Entities/Users'
 import { Colors } from '../Shared/Themes'
+import detailsStyles from './CreateStory/4_CreateStoryDetailScreenStyles'
 
 class MediaSelectorScreen extends React.Component {
 
@@ -42,8 +45,20 @@ class MediaSelectorScreen extends React.Component {
     this.setState({captureOpen: false})
     ImagePicker.launchImageLibrary({
       videoQuality: 'high',
-      mediaType: this.props.mediaType || 'mixed'
-    }, this._handleMediaSelector)
+      mediaType: this.props.mediaType || 'mixed',
+    }, this.handleUploadedMedia)
+  }
+
+  handleUploadedMedia = (data) => {
+    const maxLength = 60 * 1000
+    mediaMeta.get(data.uri.substring(7))
+    .then(metaData => {
+      if (metaData.duration < maxLength) this._handleMediaSelector(data)
+      else return Promise.reject(new Error("Max length of 60 seconds exceeded"))
+    })
+    .catch(error => {
+      this.setState({error})
+    })
   }
 
   _completeNextTooltip = () => {
@@ -108,7 +123,6 @@ class MediaSelectorScreen extends React.Component {
     this.setState({media: null})
   }
 
-
   _handleMediaSelector = (data) => {
     if (data.didCancel) {
       this.setState({captureOpen: true})
@@ -152,7 +166,12 @@ class MediaSelectorScreen extends React.Component {
     else return 'photo'
   }
 
+  _closeError = () => {
+    this.setState({error: undefined})
+  }
+
   render () {
+    const {error} = this.state
     let content
     let showNextTooltip = false;
     const mediaType = this.getMediaType()
@@ -228,6 +247,14 @@ class MediaSelectorScreen extends React.Component {
           rightTextStyle={{paddingRight: this.props.rightIcon === 'none' ? 20 : 10}}
         />
         <View style={styles.root}>
+          {error &&
+            <ShadowButton
+              style={detailsStyles.errorButton}
+              onPress={this._closeError}
+              text={error.toString().substring(7)}
+              title={'Media Load Failure'}
+            />
+          }
           {content}
           <View style={styles.tabbar}>
             <TouchableOpacity

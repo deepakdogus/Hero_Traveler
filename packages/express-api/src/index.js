@@ -8,8 +8,6 @@ import cors from 'cors'
 import routes from './routes'
 import passport from './passport'
 import {cleanup as apnCleanup} from './apn'
-import createNewCategories from '../patches/newCategories'
-
 
 const app = express()
 const PORT = process.env.PORT || 3000

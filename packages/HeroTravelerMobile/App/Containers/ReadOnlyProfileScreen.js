@@ -19,6 +19,10 @@ class ReadOnlyProfileScreen extends Component {
 
   constructor(props) {
     super(props)
+    this.initializeData()
+  }
+
+  initializeData = () => {
     this.props.attemptRefreshUser(this.props.userId)
     this.props.attemptGetUserStories(this.props.userId)
   }
@@ -53,6 +57,7 @@ class ReadOnlyProfileScreen extends Component {
         onPressUnfollow={this.unfollow}
         isFollowing={_.includes(this.props.myFollowedUsers, user.id)}
         style={styles.root}
+        refresh={this.initializeData}
       />
     )
   }

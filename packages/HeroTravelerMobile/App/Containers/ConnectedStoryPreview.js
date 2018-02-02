@@ -8,12 +8,20 @@ import StoryPreview from '../Components/StoryPreview'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 
 function getAreInRenderLocation(state, ownProps){
+  console.log("state.routes is", state.routes)
+  console.log("ownProps.renderLocation",ownProps.renderLocation)
   if (!ownProps.renderLocation) return true
-  else if (ownProps.renderLocation === 'myFeed') {
+  else if (ownProps.renderLocation === 'myFeed' || ownProps.renderLocation === 'tabbar') {
     // myFeed is also the initial state so there are actually two valid matches
-    return ownProps.renderLocation  === state.routes.scene.name || state.routes.scene.name === 'tabbar'
+    console.log("bool1", ownProps.renderLocation  === state.routes.scene.name)
+    console.log("bool2", state.routes.scene.name === 'tabbar' && state.routes.scene.index === 0)
+    console.log("bool3", ownProps.renderLocation === 'tabbar' && state.routes.scene.name === 'myFeed')
+    return ownProps.renderLocation  === state.routes.scene.name ||
+    (state.routes.scene.name === 'tabbar' && state.routes.scene.index === 0) ||
+    (ownProps.renderLocation === 'tabbar' && state.routes.scene.name === 'myFeed')
   }
-  else return ownProps.renderLocation  === state.routes.scene.name
+  else return ownProps.renderLocation  === state.routes.scene.name ||
+    (state.routes.scene.name === 'tabbar' && state.routes.scene.index === 4)
 }
 
 const mapStateToProps = (state, ownProps) => {

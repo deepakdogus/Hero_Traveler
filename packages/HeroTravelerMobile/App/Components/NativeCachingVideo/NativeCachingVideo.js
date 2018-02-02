@@ -42,7 +42,7 @@ export default class NativeCachingVideo extends Component {
   };
 
   _onError = (event) => {
-      console.log("_onError", event.nativeEvent)
+      // console.log("_onError", event.nativeEvent)
     if (this.props.onError) {
       this.props.onError(event.nativeEvent);
     }
@@ -93,14 +93,14 @@ export default class NativeCachingVideo extends Component {
   };
 
   _onPlaybackStalled = (event) => {
-      console.log("_onPlaybackStalled", event.nativeEvent)
+      // console.log("_onPlaybackStalled", event.nativeEvent)
     if (this.props.onPlaybackStalled) {
       this.props.onPlaybackStalled(event.nativeEvent);
     }
   };
 
   _onPlaybackResume = (event) => {
-      console.log("_onPlaybackResume", event.nativeEvent)
+      // console.log("_onPlaybackResume", event.nativeEvent)
     if (this.props.onPlaybackResume) {
       this.props.onPlaybackResume(event.nativeEvent);
     }

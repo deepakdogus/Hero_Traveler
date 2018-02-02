@@ -82,7 +82,7 @@ class StoryList extends React.Component {
   }
 
   render () {
-    console.log("this.props.playingRow",this.props.playingRow)
+    // console.log("this.props.playingRow",this.props.playingRow)
    return (
       <ListView
         key={this.props.storiesById}

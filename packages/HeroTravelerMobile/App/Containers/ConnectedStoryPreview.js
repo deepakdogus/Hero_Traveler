@@ -8,14 +8,17 @@ import StoryPreview from '../Components/StoryPreview'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 
 function getAreInRenderLocation(state, ownProps){
-  console.log("state.routes is", state.routes)
-  console.log("ownProps.renderLocation",ownProps.renderLocation)
+  // console.log("state.routes is", state.routes)
+  // console.log("ownProps.renderLocation",ownProps.renderLocation)
   if (!ownProps.renderLocation) return true
   else if (ownProps.renderLocation === 'myFeed' || ownProps.renderLocation === 'tabbar') {
     // myFeed is also the initial state so there are actually two valid matches
-    console.log("bool1", ownProps.renderLocation  === state.routes.scene.name)
-    console.log("bool2", state.routes.scene.name === 'tabbar' && state.routes.scene.index === 0)
-    console.log("bool3", ownProps.renderLocation === 'tabbar' && state.routes.scene.name === 'myFeed')
+    // console.log("render bool1", ownProps.renderLocation  === state.routes.scene.name)
+    // console.log("render bool2", state.routes.scene.name === 'tabbar' && state.routes.scene.index === 0)
+    // console.log("render bool3", ownProps.renderLocation === 'tabbar' && state.routes.scene.name === 'myFeed')
+    // console.log("render combined", ownProps.renderLocation  === state.routes.scene.name ||
+    // (state.routes.scene.name === 'tabbar' && state.routes.scene.index === 0) ||
+    // (ownProps.renderLocation === 'tabbar' && state.routes.scene.name === 'myFeed'))
     return ownProps.renderLocation  === state.routes.scene.name ||
     (state.routes.scene.name === 'tabbar' && state.routes.scene.index === 0) ||
     (ownProps.renderLocation === 'tabbar' && state.routes.scene.name === 'myFeed')
@@ -31,6 +34,7 @@ const mapStateToProps = (state, ownProps) => {
 
   // the storyProps conditional is necessary because without it, the below configuration will throw errors when the user deletes a story
   let storyProps = null
+  // console.log("\nownProps.index", ownProps.index)
   if (story) {
     storyProps = {
       user: entities.users.entities[story.author],
@@ -46,7 +50,7 @@ const mapStateToProps = (state, ownProps) => {
 
   const shouldHideCover = ownProps.index !== undefined ?
     _.includes(state.ux.storyListVisibleRows, ownProps.index) : false
-
+  // console.log("isVisible", isVisible)
   return {
     ...storyProps,
     story,

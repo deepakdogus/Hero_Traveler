@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-    View, 
+    View,
     Animated,
     StyleSheet,
     TouchableWithoutFeedback,
@@ -207,7 +207,7 @@ export default class VideoPlayer extends React.Component {
 
   // currently only need for new cover videos
   _onLoad = (event) => {
-    this.setState({isLoaded: true})
+    if (!this.state.isLoaded) this.setState({isLoaded: true})
     if (!this.props.onLoad) return
     this.props.onLoad(event.naturalSize)
   }
@@ -236,7 +236,7 @@ export default class VideoPlayer extends React.Component {
   render() {
     const playButtonSize = this.props.playButtonSize
     const isNotReadyForDisplay = !this.state.isLoaded || !this.state.isReadyForDisplay
-
+    // console.log('isPaused', this.isPaused())
     return (
       <View style={[
         styles.root,
@@ -253,12 +253,13 @@ export default class VideoPlayer extends React.Component {
             this.props.videoFillSpace && styles.full,
           ]}
           repeat={true}
-          onLoad={this._onLoad} 
+          onLoad={this._onLoad}
           onReadyForDisplay={this._onReadyForDisplay}
           onPlaybackStalled={this._onPlaybackStalled}
           onPlaybackResume={this._onPlaybackResume}
           resizeMode={this.props.resizeMode}
         />
+
         {this.props.imgUrl && isNotReadyForDisplay &&
         <Image
           cached={true}
@@ -273,6 +274,8 @@ export default class VideoPlayer extends React.Component {
         {(this.state.isStalled || isNotReadyForDisplay) &&
          <ActivityIndicator size="small" color="#ffffff" />
         }
+        {this.isPaused() && <Text>PAUSED!</Text>}
+       {!this.isPaused() && <Text>not paused</Text>}
         {this.props.showPlayButton &&
           <PlayButton
             style={[this.props.videoFillSpace ? styles.fullButtons : styles.buttons, playButtonSize === 'small' ? styles.smallButton : {}]}

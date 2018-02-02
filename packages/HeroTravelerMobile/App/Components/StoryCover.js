@@ -94,8 +94,8 @@ export default class StoryCover extends Component {
             source={{uri: imageUrl}}
             style={embeddedImageStyle}
           />
-          <View  
-            style={styles.gradient}   
+          <View
+            style={styles.gradient}
           >
             {children}
           </View>
@@ -160,7 +160,10 @@ export default class StoryCover extends Component {
       height: Metrics.storyCover.fullScreen.height,
     }
     const videoThumbnailUrl = getImageUrl(this.props.cover, 'loading', videoThumbnailOptions)
-
+    // console.log("allowVideoPlay", this.props.allowVideoPlay && this.props.autoPlayVideo)
+    // console.log("allowVideoPlay bool1", this.props.allowVideoPlay)
+    // console.log("allowVideoPlay bool2", this.props.autoPlayVideo)
+    // console.log("this.props.autoPlayVideo", this.props.autoPlayVideo)
     return (
       <View style={this._getWidthHeight()}>
         <VideoPlayer

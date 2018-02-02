@@ -220,6 +220,10 @@ export default class StoryPreview extends Component {
   }
 
   shouldEnableAutoplay(){
+    // console.log("\nthis.props.index", this.props.index, this.props.renderLocation)
+    // console.log("preview bool combined", this.props.isVisible !== false && this.props.areInRenderLocation)
+    // console.log("preview bool 1", this.props.isVisible !== false)
+    // console.log("preview bool 2", this.props.areInRenderLocation)
     return this.props.isVisible !== false && this.props.areInRenderLocation
   }
 

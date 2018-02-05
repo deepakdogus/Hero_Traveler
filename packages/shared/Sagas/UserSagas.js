@@ -16,16 +16,12 @@ export function * getSuggestedUsers (api, action) {
 }
 
 export function * loadUser (api, {userId}) {
-  console.log("we are doing load user")
   const response = yield call(api.getUser, userId)
-  console.log("response at load user is", response)
   if (response.ok) {
-    console.log("we are succeeding at load user")
     const { entities } = response.data;
     yield put(UserActions.receiveUsers(entities.users))
     yield put(UserActions.loadUserSuccess())
   } else {
-    console.log("we are failing at load user")
     yield put(UserActions.loadUserFailure(new Error('Failed to load user')))
   }
 }

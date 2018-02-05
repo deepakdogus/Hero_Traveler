@@ -29,6 +29,7 @@ export default class StoryCover extends Component {
     gradientColors: PropTypes.arrayOf(PropTypes.string),
     gradientLocations: PropTypes.arrayOf(PropTypes.number),
     shouldEnableAutoplay: PropTypes.bool,
+    areInRenderLocation: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -36,6 +37,7 @@ export default class StoryCover extends Component {
     allowVideoPlay: false,
     gradientColors: ['transparent', 'rgba(0,0,0,.65)'],
     gradientLocations: [.5, 1],
+    areInRenderLocation: true,
   }
 
   constructor(props) {
@@ -167,6 +169,7 @@ export default class StoryCover extends Component {
     return (
       <View style={this._getWidthHeight()}>
         <VideoPlayer
+          areInRenderLocation={this.props.areInRenderLocation}
           path={getVideoUrl(this.props.cover)}
           imgUrl={videoThumbnailUrl}
           ref={this._makeRef}

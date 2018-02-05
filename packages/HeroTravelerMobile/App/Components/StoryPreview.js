@@ -235,6 +235,7 @@ export default class StoryPreview extends Component {
         {this.renderUserSection()}
         {!shouldHideCover &&
           <StoryCover
+            areInRenderLocation={this.props.areInRenderLocation}
             autoPlayVideo={this.props.autoPlayVideo}
             allowVideoPlay={this.props.allowVideoPlay}
             cover={story.coverImage ? story.coverImage : story.coverVideo}

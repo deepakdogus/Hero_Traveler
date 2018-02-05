@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-    View, 
+    View,
     Animated,
     StyleSheet,
     TouchableWithoutFeedback,
@@ -99,13 +99,15 @@ export default class VideoPlayer extends React.Component {
     allowVideoPlay: PropTypes.bool,
     isMuted: PropTypes.bool,
     shouldEnableAutoplay: PropTypes.bool,
+    areInRenderLocation: PropTypes.bool,
   }
 
   static defaultProps = {
     showMuteButton: true,
     showPlayButton: true,
     videoFillSpace: true,
-    resizeMode: 'contain'
+    resizeMode: 'contain',
+    areInRenderLocation: true,
   }
 
   constructor(props) {
@@ -207,7 +209,7 @@ export default class VideoPlayer extends React.Component {
 
   // currently only need for new cover videos
   _onLoad = (event) => {
-    this.setState({isLoaded: true})
+    if (!this.state.isLoaded) this.setState({isLoaded: true})
     if (!this.props.onLoad) return
     this.props.onLoad(event.naturalSize)
   }
@@ -236,29 +238,31 @@ export default class VideoPlayer extends React.Component {
   render() {
     const playButtonSize = this.props.playButtonSize
     const isNotReadyForDisplay = !this.state.isLoaded || !this.state.isReadyForDisplay
-
     return (
       <View style={[
         styles.root,
         this.props.videoFillSpace && styles.full,
         this.props.style
       ]}>
-        <NativeCachingVideo
-          source={{uri: this.props.path}}
-          ref={this._bindRef}
-          paused={this.isPaused()}
-          muted={this.state.muted}
-          style={[
-            styles.video,
-            this.props.videoFillSpace && styles.full,
-          ]}
-          repeat={true}
-          onLoad={this._onLoad} 
-          onReadyForDisplay={this._onReadyForDisplay}
-          onPlaybackStalled={this._onPlaybackStalled}
-          onPlaybackResume={this._onPlaybackResume}
-          resizeMode={this.props.resizeMode}
-        />
+        {this.props.areInRenderLocation &&
+          <NativeCachingVideo
+            source={{uri: this.props.path}}
+            ref={this._bindRef}
+            paused={this.isPaused()}
+            muted={this.state.muted}
+            style={[
+              styles.video,
+              this.props.videoFillSpace && styles.full,
+            ]}
+            repeat={true}
+            onLoad={this._onLoad}
+            onReadyForDisplay={this._onReadyForDisplay}
+            onPlaybackStalled={this._onPlaybackStalled}
+            onPlaybackResume={this._onPlaybackResume}
+            resizeMode={this.props.resizeMode}
+          />
+        }
+
         {this.props.imgUrl && isNotReadyForDisplay &&
         <Image
           cached={true}

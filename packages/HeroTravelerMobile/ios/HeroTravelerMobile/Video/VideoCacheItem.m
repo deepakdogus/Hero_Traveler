@@ -243,7 +243,7 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
 
 - (BOOL) isViewVisible:(UIView*)view
 {
-  if (view.hidden)
+  if (view.hidden || view.alpha <= 0.00001f)
   {
     return NO;
   }

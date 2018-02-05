@@ -1,13 +1,12 @@
-import _ from 'lodash'
 import React from 'react'
 import PropTypes from 'prop-types'
 import {
   View,
-  ListView,
   RefreshControl
 } from 'react-native'
 import { connect } from 'react-redux'
 import styles from './Styles/StoryListStyle'
+import ModifiedListView from './ModifiedListView'
 import UXActions from '../Redux/UXRedux'
 
 /*
@@ -33,7 +32,7 @@ class StoryList extends React.Component {
 
   constructor(props) {
     super(props)
-    const ds = new ListView.DataSource({rowHasChanged: this.checkEqual})
+    const ds = new ModifiedListView.DataSource({rowHasChanged: this.checkEqual})
     const initialDataSource = props.storiesById.map((id, index) => {
       return {
         id,
@@ -82,8 +81,8 @@ class StoryList extends React.Component {
   }
 
   render () {
-   return (
-      <ListView
+    return (
+      <ModifiedListView
         key={this.props.storiesById}
         dataSource={this.state.dataSource}
         initialListSize={1}

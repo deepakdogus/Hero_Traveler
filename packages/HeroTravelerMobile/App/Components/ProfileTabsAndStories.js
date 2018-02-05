@@ -126,6 +126,7 @@ export default class ProfileTabsAndStories extends Component {
 
   render() {
     const {renderProfileInfo, storiesById, fetchStatus, editable} = this.props
+
     return (
       <View style={editable ? styles.profileTabsAndStoriesRoot : styles.profileTabsAndStoriesRootWithMarginForNavbar}>
         {(this.areNoStories() || this.isFetching()) &&

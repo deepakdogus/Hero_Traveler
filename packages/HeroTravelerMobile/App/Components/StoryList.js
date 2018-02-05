@@ -81,8 +81,7 @@ class StoryList extends React.Component {
   }
 
   render () {
-    // console.log("this.props.playingRow",this.props.playingRow)
-   return (
+    return (
       <ModifiedListView
         key={this.props.storiesById}
         dataSource={this.state.dataSource}

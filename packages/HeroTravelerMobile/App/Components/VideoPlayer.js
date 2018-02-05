@@ -238,7 +238,6 @@ export default class VideoPlayer extends React.Component {
   render() {
     const playButtonSize = this.props.playButtonSize
     const isNotReadyForDisplay = !this.state.isLoaded || !this.state.isReadyForDisplay
-    // console.log('isPaused', this.isPaused())
     return (
       <View style={[
         styles.root,

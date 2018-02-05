@@ -278,8 +278,6 @@ export default class VideoPlayer extends React.Component {
         {(this.state.isStalled || isNotReadyForDisplay) &&
          <ActivityIndicator size="small" color="#ffffff" />
         }
-        {this.isPaused() && <Text>PAUSED!</Text>}
-       {!this.isPaused() && <Text>not paused</Text>}
         {this.props.showPlayButton &&
           <PlayButton
             style={[this.props.videoFillSpace ? styles.fullButtons : styles.buttons, playButtonSize === 'small' ? styles.smallButton : {}]}

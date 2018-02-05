@@ -48,6 +48,8 @@ class ProfileView extends React.Component {
 
   static propTypes = {
     location: PropTypes.string,
+    error: PropTypes.object,
+    refresh: PropTypes.func,
   }
 
   constructor(props) {
@@ -243,7 +245,7 @@ class ProfileView extends React.Component {
   }
 
   render() {
-    const {editable, isEditing, location, stories} = this.props
+    const {editable, isEditing, location, stories, error, refresh} = this.props
 
     let showTooltip = !isEditing && editable &&
       !stories.length && !this.hasCompletedNoStoriesTooltip()
@@ -297,6 +299,8 @@ class ProfileView extends React.Component {
               user={this.props.user}
               showTooltip={showTooltip}
               location={location}
+              error={error}
+              refresh={refresh}
             />
           }
         </View>
@@ -316,7 +320,8 @@ class ProfileView extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    location: state.routes.scene.name
+    location: state.routes.scene.name,
+    error: state.entities.users.error,
   }
 }
 

@@ -127,6 +127,21 @@ const navToCreateFlow = () => NavActions.createStoryFlow({
   shouldLoadStory: true,
 })
 
+const navToMyFeed = () => {
+  NavActions.tabbar({type: 'reset'})
+  NavActions.myFeed()
+}
+
+const navToProfile = () => {
+  NavActions.tabbar({type: 'reset'})
+  NavActions.profile()
+}
+
+const navToExplore = () => {
+  NavActions.tabbar({type: 'reset'})
+  NavActions.explore()
+}
+
 const navToSignupSocial = () => NavActions.signupFlow_social()
 
 const navToTabbar = () => NavActions.tabbar()
@@ -140,7 +155,7 @@ export default NavActions.create(
       {...clearNavBarProps}
     >
         {/* Add this back when we have "Browse as a guest" functionality
-            renderRightButton={launchNavButton}. 
+            renderRightButton={launchNavButton}.
             onRight={launchOnRight}
         */}
       <Scene
@@ -268,6 +283,7 @@ export default NavActions.create(
       />
       <Scene
         key='tabbar'
+        type='reset'
         {...tabBarProps}
       >
         <Scene
@@ -278,11 +294,13 @@ export default NavActions.create(
           title='Feed'
           renderBackButton={alwaysNull}
           hideNavBar={true}
+          onPress={navToMyFeed}
         />
         <Scene
           key='explore'
           icon={TabIcon}
           hideNavBar={false}
+          onPress={navToExplore}
         >
           <Scene
             key='explore_grid'
@@ -321,6 +339,7 @@ export default NavActions.create(
           icon={TabIcon}
           component={ProfileScreen}
           hideNavBar
+          onPress={navToProfile}
         />
       </Scene>
       <Scene

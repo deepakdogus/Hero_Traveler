@@ -10,7 +10,7 @@ import StoryActions from '../Shared/Redux/Entities/Stories'
 function getAreInRenderLocation(state, ownProps){
   // console.log("state.routes is", state.routes)
   // console.log("ownProps.renderLocation",ownProps.renderLocation)
-  if (!ownProps.renderLocation) return true
+  if (!ownProps.renderLocation || ownProps.renderLocation  === state.routes.scene.name) return true
   else if (ownProps.renderLocation === 'myFeed' || ownProps.renderLocation === 'tabbar') {
     // myFeed is also the initial state so there are actually two valid matches
     // console.log("render bool1", ownProps.renderLocation  === state.routes.scene.name)
@@ -19,12 +19,15 @@ function getAreInRenderLocation(state, ownProps){
     // console.log("render combined", ownProps.renderLocation  === state.routes.scene.name ||
     // (state.routes.scene.name === 'tabbar' && state.routes.scene.index === 0) ||
     // (ownProps.renderLocation === 'tabbar' && state.routes.scene.name === 'myFeed'))
-    return ownProps.renderLocation  === state.routes.scene.name ||
-    (state.routes.scene.name === 'tabbar' && state.routes.scene.index === 0) ||
-    (ownProps.renderLocation === 'tabbar' && state.routes.scene.name === 'myFeed')
+    return (state.routes.scene.name === 'tabbar' && state.routes.scene.index === 0) ||
+      (ownProps.renderLocation === 'tabbar' && state.routes.scene.name === 'myFeed')
   }
-  else return ownProps.renderLocation  === state.routes.scene.name ||
-    (state.routes.scene.name === 'tabbar' && state.routes.scene.index === 4)
+  else if (ownProps.renderLocation === 'explore_categoryFeed') {
+    return state.routes.scene.name === 'tabbar' && state.routes.scene.index === 1
+  }
+  else if (ownProps.renderLocation === 'profile') {
+    return state.routes.scene.name === 'tabbar' && state.routes.scene.index === 4
+  }
 }
 
 const mapStateToProps = (state, ownProps) => {

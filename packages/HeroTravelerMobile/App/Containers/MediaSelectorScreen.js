@@ -50,11 +50,13 @@ class MediaSelectorScreen extends React.Component {
   }
 
   handleUploadedMedia = (data) => {
-    const maxLength = 60 * 1000
+    // const maxLength = 60 * 1000
     mediaMeta.get(data.uri.substring(7))
     .then(metaData => {
-      if (metaData.duration < maxLength) this._handleMediaSelector(data)
-      else return Promise.reject(new Error("Max length of 60 seconds exceeded"))
+      this._handleMediaSelector(data)
+      // disabling limit media length for now
+      // if (!metaData.duration || metaData.duration < maxLength) this._handleMediaSelector(data)
+      // else return Promise.reject(new Error("Max length of 60 seconds exceeded"))
     })
     .catch(error => {
       this.setState({error})

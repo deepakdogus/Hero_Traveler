@@ -164,11 +164,7 @@ const create = () => {
 
   const getUser = (userId) => {
     return api.get(`user/${userId}`)
-    .then(response => {
-      return Object.assign({}, response, {
-        data: normalize(response.data, User)
-      })
-    })
+    .then(response => safeNormalize(response, User))
   }
 
   const updateUser = (userId, attrs) => {
@@ -184,11 +180,7 @@ const create = () => {
 
   const getUserStories = (userId, params) => {
     return api.get(`story/user/${userId}`, params)
-      .then(response => {
-        return Object.assign({}, response, {
-          data: normalize(response.data, [Story])
-        })
-      })
+    .then(response => safeNormalize(response, [Story]))
   }
 
   const getCategoryStories = (categoryId, params = {}) => {

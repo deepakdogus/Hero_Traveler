@@ -120,7 +120,7 @@ class MyFeedScreen extends React.Component {
         <Loader />
       )
     }
-    if (error && (!storiesById || !storiesById.length)) {
+    else if (error && (!storiesById || !storiesById.length)) {
       content = this._wrapElt(this._showError())
     } else if (!storiesById || !storiesById.length) {
       let innerContent = this._showNoStories();

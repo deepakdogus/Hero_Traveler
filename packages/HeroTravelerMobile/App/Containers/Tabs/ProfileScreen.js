@@ -21,8 +21,12 @@ class ProfileScreen extends React.Component {
 
     return shouldUpdate
   }
-  
+
   componentDidMount() {
+    this.initializeData()
+  }
+
+  initializeData = () => {
     this.props.getUser(this.props.user.id)
     this.props.getStories(this.props.user.id)
     this.props.loadBookmarks(this.props.user.id)
@@ -78,6 +82,7 @@ class ProfileScreen extends React.Component {
         draftsFetchStatus={this.props.draftsFetchStatus}
         bookmarksFetchStatus={userBookmarksFetchStatus}
         hasTabbar={!this.props.isEditing}
+        refresh={this.initializeData}
       />
     )
   }

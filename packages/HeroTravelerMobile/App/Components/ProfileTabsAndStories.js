@@ -11,6 +11,7 @@ import styles, { storyPreviewHeight } from './Styles/ProfileViewStyles'
 import { Colors, Metrics } from '../Shared/Themes'
 import StoryList from './StoryList'
 import Loader from './Loader'
+import RoundedButton from './RoundedButton'
 import ConnectedStoryPreview from '../Containers/ConnectedStoryPreview'
 
 const enhancedTab = withHandlers({
@@ -46,6 +47,8 @@ export default class ProfileTabsAndStories extends Component {
     showLike: PropTypes.bool,
     user: PropTypes.object,
     location: PropTypes.string,
+    error: PropTypes.object,
+    refresh: PropTypes.func,
   }
 
   renderTabs(){
@@ -125,10 +128,12 @@ export default class ProfileTabsAndStories extends Component {
   }
 
   render() {
-    const {renderProfileInfo, storiesById, fetchStatus, editable} = this.props
+    const {renderProfileInfo, storiesById, fetchStatus, editable, error, refresh} = this.props
+    const isGettingStories = this.isGettingStories()
+
     return (
       <View style={editable ? styles.profileTabsAndStoriesRoot : styles.profileTabsAndStoriesRootWithMarginForNavbar}>
-        {(this.areNoStories() || this.isFetching()) &&
+        {(this.areNoStories() || this.isFetching() || !!error) &&
           <View>
             {renderProfileInfo && renderProfileInfo()}
             {this.renderTabs()}
@@ -139,15 +144,24 @@ export default class ProfileTabsAndStories extends Component {
             <Text style={styles.noStoriesText}>{this.getNoStoriesText()}</Text>
           </View>
         }
-        {this.isGettingStories() &&
+        {isGettingStories &&
           <View style={styles.spinnerWrapper}>
             <Loader
               style={styles.spinner}
               spinnerColor={Colors.background} />
           </View>
         }
+        {!!error && !isGettingStories &&
+          <View style={styles.noStories}>
+            <Text style={styles.noStoriesText}>Error: Failed to fully load user or story data</Text>
+            <RoundedButton
+              text='Try Again'
+              onPress={refresh}
+            />
+          </View>
+        }
 
-        {storiesById.length !== 0 && !this.isGettingStories() &&
+        {storiesById.length !== 0 && !isGettingStories &&
           <StoryList
             style={editable && {height:  Metrics.screenHeight - Metrics.tabBarHeight}}
             storiesById={storiesById}

@@ -14,10 +14,10 @@ import PhotoTaker from '../Components/PhotoTaker'
 import VideoPlayer from '../Components/VideoPlayer'
 import Image from '../Components/Image'
 import ShadowButton from '../Components/ShadowButton'
+import TabbarButton from '../Components/MediaSelectorTabbarButton'
 import styles from './Styles/MediaSelectorScreenStyles'
 import isTooltipComplete, {Types as TooltipTypes} from '../Shared/Lib/firstTimeTooltips'
 import UserActions from '../Shared/Redux/Entities/Users'
-import { Colors } from '../Shared/Themes'
 import detailsStyles from './CreateStory/4_CreateStoryDetailScreenStyles'
 
 class MediaSelectorScreen extends React.Component {
@@ -34,11 +34,12 @@ class MediaSelectorScreen extends React.Component {
       captureOpen: true,
       media: null,
       mediaCaptured: false,
+      selectedMediaType: 'Photo',
     }
   }
 
-  launchMediaCapture = () => {
-    this.setState({captureOpen: true, media: null})
+  launchMediaCapture = (selectedMediaType) => {
+    this.setState({captureOpen: true, media: null, selectedMediaType})
   }
 
   launchMediaSelector = () => {
@@ -50,11 +51,14 @@ class MediaSelectorScreen extends React.Component {
   }
 
   handleUploadedMedia = (data) => {
-    const maxLength = 60 * 1000
+    // const maxLength = 60 * 1000
+    if (data.didCancel) return this.launchMediaCapture('Photo')
     mediaMeta.get(data.uri.substring(7))
     .then(metaData => {
-      if (metaData.duration < maxLength) this._handleMediaSelector(data)
-      else return Promise.reject(new Error("Max length of 60 seconds exceeded"))
+      this._handleMediaSelector(data)
+      // disabling limit media length for now
+      // if (!metaData.duration || metaData.duration < maxLength) this._handleMediaSelector(data)
+      // else return Promise.reject(new Error("Max length of 60 seconds exceeded"))
     })
     .catch(error => {
       this.setState({error})
@@ -69,8 +73,9 @@ class MediaSelectorScreen extends React.Component {
     this.props.completeTooltip(tooltips)
   }
 
-  isCaptureInUse = () => {
-    return this.state.captureOpen || this.state.mediaCaptured
+  isCaptureInUse = (mediaType) => {
+    return (this.state.captureOpen || this.state.mediaCaptured) &&
+    (!mediaType || mediaType === this.state.selectedMediaType)
   }
 
   renderNextTooltip() {
@@ -170,12 +175,16 @@ class MediaSelectorScreen extends React.Component {
     this.setState({error: undefined})
   }
 
+  getIsPhotoType() {
+    if (this.props.mediaType) return this.props.mediaType === 'photo'
+    else return this.state.selectedMediaType === 'Photo'
+  }
+
   render () {
     const {error} = this.state
     let content
     let showNextTooltip = false;
     const mediaType = this.getMediaType()
-
     if (this.props.user && this.state.media) {
       showNextTooltip = !isTooltipComplete(
         TooltipTypes.STORY_PHOTO_NEXT,
@@ -186,7 +195,9 @@ class MediaSelectorScreen extends React.Component {
       content = (
         <PhotoTaker
           mediaType={this.props.mediaType}
+          isPhotoType={this.getIsPhotoType()}
           onCapture={this._handleCaptureMedia}
+          ref={this.setPhotoTakerRef}
         />
       )
     } else if (this.state.media && mediaType === 'photo') {
@@ -257,33 +268,39 @@ class MediaSelectorScreen extends React.Component {
           }
           {content}
           <View style={styles.tabbar}>
-            <TouchableOpacity
-              style={styles.tabbarButton}
+            <TabbarButton
               onPress={this.launchMediaSelector}
-            >
-              <Text style={[
-                styles.tabbarText,
-                this.isCaptureInUse() ? { color: Colors.grey } : {}
-              ]}>Library</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.tabbarButton}
-              onPress={this.launchMediaCapture}
-            >
-              <Text style={[
-                styles.tabbarText,
-                this.isCaptureInUse() ? {} : { color: Colors.grey }
-              ]}>Capture</Text>
-            </TouchableOpacity>
+              isActive={!this.isCaptureInUse()}
+              text={'Library'}
+            />
+            {!this.props.mediaType &&
+              <TabbarButton
+                onPress={this.launchMediaCapture}
+                isActive={this.isCaptureInUse('Photo')}
+                text={'Photo'}
+              />
+            }
+            {!this.props.mediaType &&
+              <TabbarButton
+                onPress={this.launchMediaCapture}
+                isActive={this.isCaptureInUse('Video')}
+                text={'Video'}
+              />
+            }
+            {this.props.mediaType &&
+              <TabbarButton
+                onPress={this.launchMediaCapture}
+                isActive={this.isCaptureInUse()}
+                text={'Capture'}
+              />
+            }
           </View>
         </View>
         {showNextTooltip && this.renderNextTooltip()}
       </View>
     )
   }
-
 }
-
 
 const mapStateToProps = (state) => {
   return {

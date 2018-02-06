@@ -42,6 +42,14 @@ const { width } = Dimensions.get('window')
 
 const matchLastWordRegex = /[a-zA-Z]*$/
 
+const getScaledWidthHeight = (blockData) => {
+  const scale = Metrics.screenWidth / blockData.width
+  return {
+    width: Metrics.screenWidth,
+    height: blockData.height * scale,
+  }
+}
+
 export default class RNDraftJs extends Component {
   constructor(props) {
     super(props);
@@ -251,6 +259,7 @@ export default class RNDraftJs extends Component {
             />
           )
       case 'video':
+        const scaledWidthHeight = getScaledWidthHeight(block.data)
         return (
           <DraftJsVideo
             style={styles.videoView}
@@ -260,10 +269,10 @@ export default class RNDraftJs extends Component {
             onPress={()=>this.updateSelectionState({startKey: block.key, endKey: block.key, startOffset: 0, endOffset: 0})}
             onDelete={()=>this.deleteAtomicBlock(block.key)}
             sizeMetrics={{
-              height: block.data.height,
-              width: block.data.width,
+              height: Math.min(scaledWidthHeight.height, Metrics.maxContentHeight),
+              width: scaledWidthHeight.width,
             }}
-            />
+          />
         )
     }
   }

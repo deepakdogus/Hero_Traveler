@@ -15,7 +15,6 @@ class PhotoTaker extends Component {
     captureOptions: PropTypes.object,
     onCapture: PropTypes.func.isRequired,
     onError: PropTypes.func,
-    mediaType: PropTypes.oneOf(['photo', 'video']), // if mediaType we limit the photo taker abilities
     maxVideoLength: PropTypes.number
   }
 

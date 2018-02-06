@@ -229,7 +229,7 @@ class TagScreen extends Component {
                 ref='input'
                 style={styles.textInput}
                 value={this.state.text}
-                placeholder='Add Tags'
+                placeholder='Add Categories'
                 onChangeText={text => this._inputChanged(text)}
                 onSubmitEditing={this._addNewCategory}
                 onFocus={this.setInputFocused}

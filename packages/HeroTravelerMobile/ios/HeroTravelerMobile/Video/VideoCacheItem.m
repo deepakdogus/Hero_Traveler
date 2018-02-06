@@ -8,6 +8,7 @@
 
 #import "VideoCacheItem.h"
 #import "RCTVideo.h"
+#import "RCTVideoCache.h"
 #import <React/UIView+React.h>
 
 static NSString *const statusKeyPath = @"status";
@@ -587,6 +588,11 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
 @end
 
 @implementation PlayingVideoItem
+
+- (VideoCacheItem*) videoCacheItem
+{
+  return videoCacheItem;
+}
 
 - (AVPlayerItem*) playerItem
 {

@@ -52,6 +52,7 @@ class MediaSelectorScreen extends React.Component {
 
   handleUploadedMedia = (data) => {
     // const maxLength = 60 * 1000
+    if (data.didCancel) return this.launchMediaCapture('Photo')
     mediaMeta.get(data.uri.substring(7))
     .then(metaData => {
       this._handleMediaSelector(data)

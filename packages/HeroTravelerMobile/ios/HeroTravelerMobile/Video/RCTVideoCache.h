@@ -17,6 +17,10 @@
   NSArray* currentPrecacheList; // [assetKeys]
   NSArray* loadedVideos; // [VideoCacheItem]
   NSArray* currentlyDownloadedFiles; // [assetKeys]
+  
+  NSMutableDictionary* videoMuteStates;
+  
+  BOOL isPendingMutedUpdate;
 }
 
 + (instancetype) get;
@@ -31,5 +35,8 @@
 
 - (void) handleAppOpen;
 - (void) handleAppClose;
+
+- (void) handleMutedStatus;
+- (void) setAsset:(NSString*)assetKey isMuted:(BOOL)isMuted;
 
 @end

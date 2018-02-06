@@ -503,16 +503,25 @@ class StoryCoverScreen extends Component {
   }
 
   renderFailModal = () => {
-    let renderProps = this.state.activeModal === 'saveFail' ? {
-      closeModal: this.closeModal,
-      title: 'Save Error',
-      message: 'We experienced an error while trying to save your story. Please try again.',
-      renderButtton: false,
-    } : {
-      closeModal: this.navBack,
-      title: 'Draft Initialization Error',
-      message: 'We experienced an error while trying to initialize your draft. Please try again.',
-      renderButtton: true,
+    const {activeModal} = this.state
+    let renderProps;
+    if (activeModal === 'saveFail') {
+      renderProps = {
+        closeModal: this.closeModal,
+        title: 'Save Error',
+        message: 'We experienced an error while trying to save your story. Please try again.',
+        renderButtton: false,
+      }
+      modalWrapperStyles.height = 140
+    }
+    else {
+      renderProps = {
+        closeModal: this.navBack,
+        title: 'Oops!',
+        message: 'We were note able to create a story at this time. Please check your internet connection and try again.',
+        renderButtton: true,
+      }
+      modalWrapperStyles.height = 160
     }
     return (
       <Modal

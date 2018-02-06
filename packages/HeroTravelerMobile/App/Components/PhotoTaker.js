@@ -32,7 +32,6 @@ class PhotoTaker extends Component {
       hasFlash: false,
       videoAnim: new Animated.Value(0),
       time: 0,
-      isPhotoType: true,
     }
   }
 
@@ -42,7 +41,6 @@ class PhotoTaker extends Component {
       .then((result) => {
         this.setState({
           hasFlash: result,
-          isPhotoType: this.props.mediaType !== 'video',
         })
       })
     }
@@ -115,7 +113,7 @@ class PhotoTaker extends Component {
   }
 
   isVideo() {
-    return !this.state.isPhotoType
+    return !this.props.isPhotoType
   }
 
   displayTime() {
@@ -123,7 +121,7 @@ class PhotoTaker extends Component {
   }
 
   getCaptureMode() {
-    return this.state.isPhotoType ?
+    return this.props.isPhotoType ?
       Camera.constants.CaptureMode.still : Camera.constants.CaptureMode.video
   }
 
@@ -131,10 +129,11 @@ class PhotoTaker extends Component {
 
   _cameraRef = camera => this.cameraRef = camera
 
-  toggleIsPhotoType = () => this.setState({isPhotoType: !this.state.isPhotoType})
+  toggleIsPhotoType = () => this.setState({isPhotoType: !this.props.isPhotoType})
 
   renderCaptureButton = () => {
-    const {isPhotoType, isRecording} = this.state
+    const {isRecording} = this.state
+    const {isPhotoType} = this.props
     let onPress = this._handleTakePhoto
     if (!isPhotoType) onPress = !isRecording ? this._startRecordVideo : this._stopRecordVideo
     return (
@@ -153,7 +152,8 @@ class PhotoTaker extends Component {
   }
 
   render () {
-    const {isPhotoType, isRecording, backCamera, time, hasFlash, videoAnim} = this.state
+    const {isRecording, backCamera, time, hasFlash, videoAnim} = this.state
+    const {isPhotoType} = this.props
     return (
       <Camera
         ref={this._cameraRef}
@@ -196,20 +196,6 @@ class PhotoTaker extends Component {
             </TouchableOpacity>
           }
         </View>
-
-        { !this.props.mediaType &&
-          <View style={styles.rightCameraControls}>
-            {!isRecording && !time &&
-              <TouchableOpacity onPress={this.toggleIsPhotoType}>
-                <TabIcon
-                  name={isPhotoType ? 'videoWhite': 'cameraWhite'}
-                  style={{
-                    image: isPhotoType ? styles.videoWhite : styles.cameraWhite
-                  }}/>
-              </TouchableOpacity>
-            }
-          </View>
-        }
         <View style={{flex: 1}} />
         {this.renderCaptureButton()}
       </Camera>

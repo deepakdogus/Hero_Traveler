@@ -67,6 +67,13 @@ const isEqual = (firstItem, secondItem) => {
   }
 }
 
+const extraUploadData = (uploadData) => {
+  const url = _.get(uploadData, 'original.path')
+  const height = _.get(uploadData, 'original.meta.height')
+  const width = _.get(uploadData, 'original.meta.width')
+  return [url, height, width]
+}
+
 
 class StoryCoverScreen extends Component {
 
@@ -743,7 +750,7 @@ class StoryCoverScreen extends Component {
     this.setState({imageUploading: true})
     api.uploadStoryImage(this.props.workingDraft.id, pathAsFileObject(data))
       .then(({data: imageUpload}) => {
-        this.editor.insertImage(_.get(imageUpload, 'original.path'))
+        this.editor.insertImage(...extraUploadData(imageUpload))
         this.setState({imageUploading: false})
       })
       .catch((err) => {
@@ -758,10 +765,7 @@ class StoryCoverScreen extends Component {
     this.setState({videoUploading: true})
     api.uploadStoryVideo(this.props.workingDraft.id, pathAsFileObject(data))
       .then(({data: videoUpload}) => {
-        const url = _.get(videoUpload, 'original.path')
-        const height = _.get(videoUpload, 'original.meta.height')
-        const width = _.get(videoUpload, 'original.meta.width')
-        this.editor.insertVideo(url, height, width)
+        this.editor.insertVideo(...extraUploadData(videoUpload))
         this.setState({videoUploading: false})
       })
       .catch((err) => {

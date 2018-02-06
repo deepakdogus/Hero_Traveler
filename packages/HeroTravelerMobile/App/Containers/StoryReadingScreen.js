@@ -85,7 +85,10 @@ const atomicHandler = (item: Object): any => {
           <View key={item.key} style={styles.mediaViewWrapper}>
             <Image
               fullWidth={true}
-              source={{uri: `${getImageUrl(item.data.url, 'contentBlock')}`}}
+              source={{uri: `${getImageUrl(item.data.url, 'optimized', {
+                width: Metrics.screenWidth,
+                height: Math.min(getRelativeHeight(Metrics.screenWidth, item.data), Metrics.maxContentHeight)
+              })}`}}
             />
             {!!item.text && <Text style={styles.caption}>{item.text}</Text>}
           </View>

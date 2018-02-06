@@ -205,8 +205,8 @@ export default class RNDraftJs extends Component {
   }
 
   // will refactor later - for now mirroring NewEditor flow
-  insertImage = (url) => {
-    this.insertAtomicBlock('image', url)
+  insertImage = (url, height, width) => {
+    this.insertAtomicBlock('image', url, height, width)
   }
 
   insertVideo = (url, height, width) => {
@@ -246,11 +246,15 @@ export default class RNDraftJs extends Component {
 
     // TODO: Range: When range selection is added, this will need to take range into account
     const isSelected = block.key == selectedKey
+    const scaledWidthHeight = getScaledWidthHeight(block.data)
+    scaledWidthHeight.height = Math.min(scaledWidthHeight.height, Metrics.maxContentHeight)
     switch (block.data.type) {
       case 'image':
         return (
           <DraftJsImage
             style={styles.imageView}
+            height={scaledWidthHeight.height}
+            width={scaledWidthHeight.width}
             key={block.key}
             url={block.data.url}
             isSelected={isSelected}
@@ -259,7 +263,6 @@ export default class RNDraftJs extends Component {
             />
           )
       case 'video':
-        const scaledWidthHeight = getScaledWidthHeight(block.data)
         return (
           <DraftJsVideo
             style={styles.videoView}
@@ -268,10 +271,7 @@ export default class RNDraftJs extends Component {
             isSelected={isSelected}
             onPress={()=>this.updateSelectionState({startKey: block.key, endKey: block.key, startOffset: 0, endOffset: 0})}
             onDelete={()=>this.deleteAtomicBlock(block.key)}
-            sizeMetrics={{
-              height: Math.min(scaledWidthHeight.height, Metrics.maxContentHeight),
-              width: scaledWidthHeight.width,
-            }}
+            sizeMetrics={scaledWidthHeight}
           />
         )
     }

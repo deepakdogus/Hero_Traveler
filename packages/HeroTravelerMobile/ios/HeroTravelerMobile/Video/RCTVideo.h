@@ -36,5 +36,6 @@
 - (void) restorePlayingVideo;
 
 - (BOOL) isDisplayingFullscreen;
+- (BOOL) isPlaying;
 
 @end

@@ -16,6 +16,8 @@
 
 typedef void (^FinishedDownloadBlock)(NSURL* location, VideoCacheItem* videoCacheItem);
 
+@class PlayingVideoItem;
+
 @interface VideoCacheItem : NSObject <AVAssetDownloadDelegate>
 {
 //  _repeat, _paused should live here on video cache item??????
@@ -62,6 +64,8 @@ typedef void (^FinishedDownloadBlock)(NSURL* location, VideoCacheItem* videoCach
 @property(readonly, strong) AVAssetDownloadTask* downloadTask;
 @property(readonly, strong) NSURL* localFileLocation;
 
+- (PlayingVideoItem*) getControllingVideoView;
+
 - (void) applyModifiers;
 
 - (BOOL) purge;
@@ -78,6 +82,7 @@ typedef void (^FinishedDownloadBlock)(NSURL* location, VideoCacheItem* videoCach
 - (instancetype) initWithVideoCacheItem:(VideoCacheItem*)videoCacheItem videoView:(RCTVideo*)videoView;
 
 - (void) requestApplyModifiers;
+- (VideoCacheItem*) videoCacheItem;
 
 @end
 

@@ -8,6 +8,7 @@
 
 #import "RCTVideoCache.h"
 #import <AVFoundation/AVFoundation.h>
+#import "RCTVideo.h"
 
 #define VIDEO_FILE @"video"
 #define DATE_LAST_OPENED_FILE @"lastOpened"
@@ -42,6 +43,7 @@
     currentPrecacheList = @[];
     loadedVideos = @[];
     currentlyDownloadedFiles = @[];
+    videoMuteStates = [@{} mutableCopy];
     
     __weak RCTVideoCache* weakCache = self;
     cleanupTimer = [NSTimer timerWithTimeInterval:2 repeats:YES block:^(NSTimer* _){
@@ -106,6 +108,140 @@
   NSURL* dateLastOpenedLocation = [assetDirectory URLByAppendingPathComponent:DATE_LAST_OPENED_FILE];
   NSDictionary* dateInfo = @{@"date": [NSDate date]};
   [dateInfo writeToURL:dateLastOpenedLocation atomically:YES];
+}
+
+- (void) handleMutedStatus
+{
+  isPendingMutedUpdate = YES;
+  dispatch_async(dispatch_get_main_queue(), ^{
+    isPendingMutedUpdate = NO;
+    
+    NSMutableArray* unmutedPlayers = [@[] mutableCopy];
+    
+    for (VideoCacheItem* existingCacheItem in loadedVideos)
+    {
+      if (!existingCacheItem.assetKey)
+      {
+        continue;
+      }
+      
+      NSNumber* isMuted = videoMuteStates[existingCacheItem.assetKey];
+      
+      if ([isMuted boolValue])
+      {
+        if (existingCacheItem.player.status == AVPlayerStatusReadyToPlay)
+        {
+          [existingCacheItem.player setVolume:0];
+          [existingCacheItem.player setMuted:YES];
+        }
+        continue;
+      }
+      
+      PlayingVideoItem* playingVideo = [existingCacheItem getControllingVideoView];
+      if (!playingVideo || ![playingVideo.videoView isPlaying])
+      {
+        if (existingCacheItem.player.status == AVPlayerStatusReadyToPlay)
+        {
+          [existingCacheItem.player setVolume:0];
+          [existingCacheItem.player setMuted:YES];
+        }
+        continue;
+      }
+      
+      [unmutedPlayers addObject:playingVideo];
+    }
+    
+    if ([unmutedPlayers count] == 1)
+    {
+      PlayingVideoItem* playingVideo = [unmutedPlayers objectAtIndex:0];
+      if ([playingVideo videoCacheItem].player.status == AVPlayerStatusReadyToPlay)
+      {
+        [[playingVideo videoCacheItem].player setVolume:1];
+        [[playingVideo videoCacheItem].player setMuted:NO];
+      }
+    }
+    else if ([unmutedPlayers count] > 1)
+    {
+      // First see if any player is full screen
+      PlayingVideoItem* fullscreenPlayer = nil;
+      for (PlayingVideoItem* playingVideo in unmutedPlayers)
+      {
+        if ([playingVideo.videoView isDisplayingFullscreen])
+        {
+          fullscreenPlayer = playingVideo;
+        }
+      }
+      
+      if (fullscreenPlayer)
+      {
+        for (PlayingVideoItem* playingVideo in unmutedPlayers)
+        {
+          if (playingVideo == fullscreenPlayer)
+          {
+            if ([playingVideo videoCacheItem].player.status == AVPlayerStatusReadyToPlay)
+            {
+              [[playingVideo videoCacheItem].player setVolume:1];
+              [[playingVideo videoCacheItem].player setMuted:NO];
+            }
+          }
+          else
+          {
+            if ([playingVideo videoCacheItem].player.status == AVPlayerStatusReadyToPlay)
+            {
+              [[playingVideo videoCacheItem].player setVolume:0];
+              [[playingVideo videoCacheItem].player setMuted:YES];
+            }
+          }
+        }
+        
+        return;
+      }
+      
+      // If multiple players are currently playing, then calculate who is taking up most of the visible screen
+      CGFloat maxArea = 0.f;
+      PlayingVideoItem* maxAreaVideoItem = nil;
+      
+      for (PlayingVideoItem* playingVideo in unmutedPlayers)
+      {
+        UIView* rootView = [playingVideo.videoView.window.subviews objectAtIndex:0];
+        if (!rootView)
+        {
+          NSLog(@"No root view found for playing video");
+          continue;
+        }
+        
+        CGRect videoViewRectInWindow = [rootView convertRect:playingVideo.videoView.bounds fromView:playingVideo.videoView];
+        CGRect videoViewVisibleRectInWindow = CGRectIntersection(rootView.bounds, videoViewRectInWindow);
+        CGFloat videoViewArea = videoViewVisibleRectInWindow.size.width * videoViewVisibleRectInWindow.size.height;
+        
+        if (videoViewArea > maxArea)
+        {
+          maxArea = videoViewArea;
+          maxAreaVideoItem = playingVideo;
+        }
+      }
+      
+      for (PlayingVideoItem* playingVideo in unmutedPlayers)
+      {
+        if (playingVideo == maxAreaVideoItem)
+        {
+          [[playingVideo videoCacheItem].player setVolume:1];
+          [[playingVideo videoCacheItem].player setMuted:NO];
+        }
+        else
+        {
+          [[playingVideo videoCacheItem].player setVolume:0];
+          [[playingVideo videoCacheItem].player setMuted:YES];
+        }
+      }
+    }
+  });
+}
+
+- (void) setAsset:(NSString*)assetKey isMuted:(BOOL)isMuted
+{
+  videoMuteStates[assetKey] = @(isMuted);
+  [self handleMutedStatus];
 }
 
 - (void) dispatchDownloads

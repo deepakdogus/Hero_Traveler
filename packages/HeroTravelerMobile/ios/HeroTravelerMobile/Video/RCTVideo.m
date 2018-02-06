@@ -421,7 +421,7 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
 
 - (void) applyModifiersOnPlayer:(AVPlayer*)player playerItem:(AVPlayerItem*)playerItem
 {
-  if ((_isResigningActive && !_playInBackground && !_playWhenInactive) || _paused)
+  if (![self isPlaying])
   {
     [player pause];
     [player setRate:0.0];
@@ -450,18 +450,14 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
     [_playerLayer setPlayer:nil];
   }
   
-  if (_muted)
-  {
-    [player setVolume:0];
-    [player setMuted:YES];
-  }
-  else
-  {
-    [player setVolume:_volume];
-    [player setMuted:NO];
-  }
-  
+  [[RCTVideoCache get] setAsset:[playingVideoItem videoCacheItem].assetKey isMuted:_muted];
+
   [self setResizeMode:_resizeMode];
+}
+
+- (BOOL) isPlaying
+{
+  return !((_isResigningActive && !_playInBackground && !_playWhenInactive) || _paused);
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context

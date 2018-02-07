@@ -13,10 +13,7 @@ import getImageUrl from "../../../Shared/Lib/getImageUrl"
 
 export default class DraftJsImage extends Component {
   render = () => {
-    const url = this.props.url
-    const isSelected = this.props.isSelected
-    const onPress = this.props.onPress
-    const onDelete = this.props.onDelete
+    const {height, width, url, isSelected, onPress, onDelete} = this.props
 
     const imageEditOverlay = (
       <View style={styles.assetEditOverlay}>
@@ -32,7 +29,7 @@ export default class DraftJsImage extends Component {
        onPress={onPress}>
         <Image
          fullWidth={true}
-         source={{ uri: getImageUrl(url, 'optimized') }}>
+         source={{ uri: getImageUrl(url, 'optimized', {height, width}) }}>
           {isSelected && imageEditOverlay}
         </Image>
       </TouchableWithoutFeedback>

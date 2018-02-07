@@ -23,6 +23,8 @@
 @property (nonatomic, copy) RCTBubblingEventBlock onPlaybackResume;
 @property (nonatomic, copy) RCTBubblingEventBlock onPlaybackRateChange;
 
+@property (nonatomic, assign) BOOL needsVideoLoaded;
+
 - (BOOL) shouldRepeat;
 
 - (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher NS_DESIGNATED_INITIALIZER;

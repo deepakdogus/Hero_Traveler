@@ -79,6 +79,7 @@ const StoryVideo = enhanceStoryVideo((props) => {
 
 const atomicHandler = (item: Object): any => {
   if (_.get(item, 'data.type')) {
+    const height = Math.min(getRelativeHeight(Metrics.screenWidth, item.data), Metrics.maxContentHeight)
     switch (item.data.type) {
       case 'image':
         return (
@@ -87,14 +88,13 @@ const atomicHandler = (item: Object): any => {
               fullWidth={true}
               source={{uri: `${getImageUrl(item.data.url, 'optimized', {
                 width: Metrics.screenWidth,
-                height: Math.min(getRelativeHeight(Metrics.screenWidth, item.data), Metrics.maxContentHeight)
+                height
               })}`}}
             />
             {!!item.text && <Text style={styles.caption}>{item.text}</Text>}
           </View>
         );
       case 'video':
-        const height = Math.min(getRelativeHeight(Metrics.screenWidth, item.data), Metrics.maxContentHeight)
         const videoUrl = (item.data.HLSUrl) || `${getVideoUrlBase()}/${item.data.url}`
         return (
           <View key={item.key} style={styles.mediaViewWrapper}>

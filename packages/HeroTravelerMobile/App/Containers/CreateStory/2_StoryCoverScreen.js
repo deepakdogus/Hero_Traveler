@@ -67,7 +67,7 @@ const isEqual = (firstItem, secondItem) => {
   }
 }
 
-const extraUploadData = (uploadData) => {
+const extractUploadData = (uploadData) => {
   const url = _.get(uploadData, 'original.path')
   const height = _.get(uploadData, 'original.meta.height')
   const width = _.get(uploadData, 'original.meta.width')
@@ -750,7 +750,7 @@ class StoryCoverScreen extends Component {
     this.setState({imageUploading: true})
     api.uploadStoryImage(this.props.workingDraft.id, pathAsFileObject(data))
       .then(({data: imageUpload}) => {
-        this.editor.insertImage(...extraUploadData(imageUpload))
+        this.editor.insertImage(...extractUploadData(imageUpload))
         this.setState({imageUploading: false})
       })
       .catch((err) => {
@@ -765,7 +765,7 @@ class StoryCoverScreen extends Component {
     this.setState({videoUploading: true})
     api.uploadStoryVideo(this.props.workingDraft.id, pathAsFileObject(data))
       .then(({data: videoUpload}) => {
-        this.editor.insertVideo(...extraUploadData(videoUpload))
+        this.editor.insertVideo(...extractUploadData(videoUpload))
         this.setState({videoUploading: false})
       })
       .catch((err) => {

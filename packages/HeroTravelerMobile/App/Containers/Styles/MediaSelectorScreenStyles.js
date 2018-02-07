@@ -37,6 +37,7 @@ export default StyleSheet.create({
     color: Colors.grey
   },
   imageWrapper: {
+    maxHeight: 600,
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',

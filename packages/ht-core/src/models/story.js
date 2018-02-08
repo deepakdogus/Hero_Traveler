@@ -51,6 +51,26 @@ const StorySchema = new Schema({
     type: Schema.Types.Mixed,
     default: {}
   },
+  locationInfo: {
+    name: {
+      type: String,
+    },
+    locality: {
+      type: String,
+    },
+    state: {
+      tyep: String,
+    },
+    country: {
+      type: String,
+    },
+    latitude: {
+      type: Number
+    },
+    longitude: {
+      type: Number
+    },
+  },
   location: {
     type: String
   },

@@ -42,6 +42,6 @@ const metrics = {
   },
 }
 _.assign(metrics, platformSpecificMetrics)
-metrics.maxContentHeight = metrics.screenHeight - metrics.editorToolbarHeight - metrics.mainNavHeight - metrics.statusBarHeight - 40
+metrics.maxContentHeight = metrics.screenHeight - metrics.editorToolbarHeight - metrics.mainNavHeight - metrics.statusBarHeight - 90
 
 export default metrics

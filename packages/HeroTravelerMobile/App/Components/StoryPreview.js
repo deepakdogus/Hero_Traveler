@@ -11,6 +11,7 @@ import {Actions as NavActions} from 'react-native-router-flux'
 
 import formatCount from '../Shared/Lib/formatCount'
 import getImageUrl from '../Shared/Lib/getImageUrl'
+import {displayLocation} from '../Shared/Lib/locationHelpers'
 import { Metrics } from '../Shared/Themes'
 import styles from './Styles/StoryPreviewStyle'
 import {styles as StoryReadingScreenStyles} from '../Containers/Styles/StoryReadingScreenStyles'
@@ -96,6 +97,18 @@ export default class StoryPreview extends Component {
     return user.role === 'contributor' || user.role === 'founding member'
   }
 
+  renderDate(){
+    const {isStoryReadingScreen, story} = this.props
+    return (
+      <Text style={[
+        styles.dateText,
+        isStoryReadingScreen && styles.dateTextReading
+      ]}>
+        {moment(story.tripDate || story.createdAt).format('LL')}
+      </Text>
+    )
+  }
+
   renderUserSection() {
     const {user, story, isStoryReadingScreen, isAuthor} = this.props
     const isFollowing = _.includes(this.props.myFollowedUsers, user.id)
@@ -132,12 +145,12 @@ export default class StoryPreview extends Component {
                   {user.username}
                 </Text>
               </TouchableOpacity>
-            <Text style={[
-              styles.dateText,
-              isStoryReadingScreen && styles.dateTextReading
-            ]}>
-              {moment(story.tripDate || story.createdAt).format('LL')}
-            </Text>
+              {isStoryReadingScreen && this.renderDate()}
+              {!isStoryReadingScreen && !!story.locationInfo &&
+                <Text style={styles.locationText}>
+                  {displayLocation(story.locationInfo)}
+                </Text>
+              }
             </View>
           </View>
           {isStoryReadingScreen && !isAuthor &&
@@ -191,29 +204,37 @@ export default class StoryPreview extends Component {
           </Text>
           {description && <Text style={styles.description}>{description}</Text>}
         </TouchableOpacity>
-        <View style={styles.rightRow}>
-          {this.props.showLike && this.props.onPressBookmark &&
-            <View style={styles.bookmarkContainer}>
-              <TouchableOpacity
-                onPress={this.props.onPressBookmark}
-              >
-                <TabIcon
-                  name={this.props.isBookmarked ? 'bookmark-active' : 'bookmark'}
-                  style={{
-                    image: styles.bookmark
-                  }}
-                />
-              </TouchableOpacity>
+        <View style={styles.lastRow}>
+          {!isStoryReadingScreen &&
+            <View style={styles.leftRow}>
+              {this.renderDate()}
             </View>
           }
-          {this.props.showLike &&
-            <LikesComponent
-              onPress={this._onPressLike}
-              likes={formatCount(counts.likes)}
-              isLiked={this.props.isLiked}
-              isRightText
-            />
-          }
+
+          <View style={styles.rightRow}>
+            {this.props.showLike && this.props.onPressBookmark &&
+              <View style={styles.bookmarkContainer}>
+                <TouchableOpacity
+                  onPress={this.props.onPressBookmark}
+                >
+                  <TabIcon
+                    name={this.props.isBookmarked ? 'bookmark-active' : 'bookmark'}
+                    style={{
+                      image: styles.bookmark
+                    }}
+                  />
+                </TouchableOpacity>
+              </View>
+            }
+            {this.props.showLike &&
+              <LikesComponent
+                onPress={this._onPressLike}
+                likes={formatCount(counts.likes)}
+                isLiked={this.props.isLiked}
+                isRightText
+              />
+            }
+          </View>
         </View>
       </View>
     )

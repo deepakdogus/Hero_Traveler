@@ -59,7 +59,7 @@ const StorySchema = new Schema({
       type: String,
     },
     state: {
-      tyep: String,
+      type: String,
     },
     country: {
       type: String,

@@ -572,7 +572,7 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
     {
       
     }
-    else if ([self isViewVisible:video])
+    else if (video.needsVideoLoaded && [self isViewVisible:video])
     {
       return NO;
     }

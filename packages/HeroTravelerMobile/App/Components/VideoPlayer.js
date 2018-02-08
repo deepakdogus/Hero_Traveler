@@ -244,24 +244,23 @@ export default class VideoPlayer extends React.Component {
         this.props.videoFillSpace && styles.full,
         this.props.style
       ]}>
-        {this.props.areInRenderLocation &&
-          <NativeCachingVideo
-            source={{uri: this.props.path}}
-            ref={this._bindRef}
-            paused={this.isPaused()}
-            muted={this.state.muted}
-            style={[
-              styles.video,
-              this.props.videoFillSpace && styles.full,
-            ]}
-            repeat={true}
-            onLoad={this._onLoad}
-            onReadyForDisplay={this._onReadyForDisplay}
-            onPlaybackStalled={this._onPlaybackStalled}
-            onPlaybackResume={this._onPlaybackResume}
-            resizeMode={this.props.resizeMode}
-          />
-        }
+        <NativeCachingVideo
+          needsVideoLoaded={this.props.areInRenderLocation}
+          source={{uri: this.props.path}}
+          ref={this._bindRef}
+          paused={this.isPaused()}
+          muted={this.state.muted}
+          style={[
+            styles.video,
+            this.props.videoFillSpace && styles.full,
+          ]}
+          repeat={true}
+          onLoad={this._onLoad}
+          onReadyForDisplay={this._onReadyForDisplay}
+          onPlaybackStalled={this._onPlaybackStalled}
+          onPlaybackResume={this._onPlaybackResume}
+          resizeMode={this.props.resizeMode}
+        />
 
         {this.props.imgUrl && isNotReadyForDisplay &&
         <Image

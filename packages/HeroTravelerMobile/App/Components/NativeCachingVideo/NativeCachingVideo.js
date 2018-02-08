@@ -191,6 +191,7 @@ export default class NativeCachingVideo extends Component {
 NativeCachingVideo.propTypes = {
   /* Native only */
   src: PropTypes.object,
+  needsVideoLoaded: PropTypes.bool,
   fullscreen: PropTypes.bool,
   onVideoLoad: PropTypes.func,
   onVideoBuffer: PropTypes.func,

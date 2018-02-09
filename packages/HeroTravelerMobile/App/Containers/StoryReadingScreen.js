@@ -25,6 +25,7 @@ import Immutable from 'seamless-immutable'
 import {getVideoUrlBase} from '../Shared/Lib/getVideoUrl'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import getRelativeHeight from '../Shared/Lib/getRelativeHeight'
+import {displayLocationDetails} from '../Shared/Lib/locationHelpers'
 
 const enhanceStoryVideo = compose(
   withHandlers(() => {
@@ -330,8 +331,11 @@ class StoryReadingScreen extends React.Component {
                     />
                   </View>
                   <View style={{flexDirection: 'column', alignItems: 'flex-start'}}>
-                    <Text style={[styles.locationLabel]}>Location:</Text>
-                    <Text style={[styles.locationText]}>{story.locationInfo.name}</Text>
+                    <Text style={[styles.locationText, styles.locationLabel]}>Location:</Text>
+                    <Text style={styles.locationText}>{story.locationInfo.name}</Text>
+                    <Text style={[styles.locationText, styles.locationDetails]}>
+                      {displayLocationDetails(story.locationInfo)}
+                    </Text>
                   </View>
                 </View>
               </View>

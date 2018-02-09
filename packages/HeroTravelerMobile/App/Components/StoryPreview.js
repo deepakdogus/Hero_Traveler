@@ -268,6 +268,7 @@ export default class StoryPreview extends Component {
             playButtonSize={playButtonSize}
             isFeed={this.props.isVisible !== undefined}
             shouldEnableAutoplay={this.shouldEnableAutoplay()}
+            storyTitle={displayLocation(story.locationInfo)}
           />
         }
         {this.renderBottomSection()}

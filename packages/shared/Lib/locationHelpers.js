@@ -1,7 +1,8 @@
-export function displayLocation(locationInfo) {
+export function displayLocation(locationInfo = {}) {
   const {name, state, country} = locationInfo
   console.log("locationInfo is", locationInfo)
   const locationArray = []
+
   if (locationInfo.name) locationArray.push(name)
   if (locationInfo.country === 'United States') {
     if (locationInfo.state) locationArray.push(locationInfo.state)

@@ -86,14 +86,14 @@ class GoogleLocator extends React.Component {
 
   handleSelect = (event) => {
     const locationUpdate = {
-      location: event.split(',')[0]
+      name: event.split(',')[0]
     }
     geocodeByAddress(event)
     .then(results => getLatLng(results[0]))
     .then(latLng => {
       locationUpdate.latitude = latLng.lat
       locationUpdate.longitude = latLng.lng
-      this.props.onChange(locationUpdate)
+      this.props.onChange({locationInfo: locationUpdate})
     })
     .catch(error => console.error('Error', error))
   }

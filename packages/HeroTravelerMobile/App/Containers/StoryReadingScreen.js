@@ -25,6 +25,7 @@ import Immutable from 'seamless-immutable'
 import {getVideoUrlBase} from '../Shared/Lib/getVideoUrl'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import getRelativeHeight from '../Shared/Lib/getRelativeHeight'
+import {displayLocationDetails} from '../Shared/Lib/locationHelpers'
 
 const enhanceStoryVideo = compose(
   withHandlers(() => {
@@ -263,6 +264,7 @@ class StoryReadingScreen extends React.Component {
         </View>
       )
     }
+
     return (
       <View style={[styles.root]}>
         <ScrollView
@@ -305,20 +307,20 @@ class StoryReadingScreen extends React.Component {
                 {this.renderTags()}
               </View>
             }
-            {!!story.location &&
+            {!!story.locationInfo &&
               <View style={styles.locationWrapper}>
                 <MapView
                   style={styles.locationMap}
                   initialRegion={{
-                    latitude: story.latitude,
-                    longitude: story.longitude,
+                    latitude: story.locationInfo.latitude,
+                    longitude: story.locationInfo.longitude,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                   }}
                 >
                   <MapView.Marker coordinate={{
-                    latitude: story.latitude,
-                    longitude: story.longitude
+                    latitude: story.locationInfo.latitude,
+                    longitude: story.locationInfo.longitude
                   }} />
                 </MapView>
                 <View style={styles.marginedRow}>
@@ -329,8 +331,11 @@ class StoryReadingScreen extends React.Component {
                     />
                   </View>
                   <View style={{flexDirection: 'column', alignItems: 'flex-start'}}>
-                    <Text style={[styles.locationLabel]}>Location:</Text>
-                    <Text style={[styles.locationText]}>{story.location}</Text>
+                    <Text style={[styles.locationText, styles.locationLabel]}>Location:</Text>
+                    <Text style={styles.locationText}>{story.locationInfo.name}</Text>
+                    <Text style={[styles.locationText, styles.locationDetails]}>
+                      {displayLocationDetails(story.locationInfo)}
+                    </Text>
                   </View>
                 </View>
               </View>

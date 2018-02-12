@@ -12,7 +12,6 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import {Metrics} from '../Shared/Themes'
 import Colors from '../Shared/Themes/Colors'
 import getVideoUrl from '../Shared/Lib/getVideoUrl'
-import getRelativeHeight from '../Shared/Lib/getRelativeHeight'
 
 export default class StoryCover extends Component {
 
@@ -30,6 +29,7 @@ export default class StoryCover extends Component {
     gradientLocations: PropTypes.arrayOf(PropTypes.number),
     shouldEnableAutoplay: PropTypes.bool,
     areInRenderLocation: PropTypes.bool,
+    storyTitle: PropTypes.string,
   }
 
   static defaultProps = {
@@ -77,7 +77,7 @@ export default class StoryCover extends Component {
     return (
       <TouchableWithoutFeedback
         style={{flex: 1}}
-        onPress={onPress}
+        onPress={this._onPress}
       >
         <View style={{
           ...imageStyle,
@@ -114,12 +114,16 @@ export default class StoryCover extends Component {
     )
   }
 
+  _onPress = () => {
+    return this.props.onPress(this.props.storyTitle)
+  }
+
   _tapVideoWrapper() {
     const {onPress} = this.props
 
     // If the video is not playing, invoke the usual callback
     if ((!this.player || !this.player.getIsPlaying() || this.props.isFeed) && onPress) {
-      return this.props.onPress()
+      return this._onPress()
     }
 
     if (!this.props.isFeed) this.player.toggle()
@@ -221,7 +225,7 @@ export default class StoryCover extends Component {
         {this.hasVideo() && coverType === 'video' && this.renderVideo()}
         {coverType === 'image' && this.renderImage()}
         {!coverType &&
-          <TouchableWithoutFeedback onPress={this.props.onPress}>
+          <TouchableWithoutFeedback onPress={this._onPress}>
             <View style={styles.noCover}>
               <Icon
                 name='image'

@@ -70,5 +70,12 @@ export default {
       justifyContent: 'center',
       alignItems: 'center',
     }
-  }
+  },
+  storyTitle: {
+    fontFamily: Fonts.type.sourceSansPro,
+    fontWeight: '600',
+    letterSpacing: .7,
+    fontSize: 15,
+    color: Colors.background,
+  },
 }

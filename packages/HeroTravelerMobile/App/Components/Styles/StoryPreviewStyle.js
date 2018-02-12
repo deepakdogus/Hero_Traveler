@@ -80,10 +80,25 @@ export default StyleSheet.create({
   dateTextReading: {
     fontSize: 15,
   },
+  locationText: {
+    fontFamily: Fonts.type.sourceSansPro,
+    fontWeight: '600',
+    letterSpacing: .7,
+    fontSize: 12,
+    color: Colors.background,
+  },
+  lastRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 15,
+  },
+  leftRow: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
   rightRow: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    marginVertical: 15,
   },
   bookmarkContainer: {
     marginRight: 10,

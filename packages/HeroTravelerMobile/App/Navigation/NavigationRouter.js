@@ -149,6 +149,7 @@ const navToTabbar = () => NavActions.tabbar()
 /* **************************
 * Documentation: https://github.com/aksonov/react-native-router-flux
 ***************************/
+
 export default NavActions.create(
     <Scene
       key='root'
@@ -270,6 +271,7 @@ export default NavActions.create(
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
         {..._.merge({}, clearNavBarProps, redBack)}
+        titleStyle={Styles.storyTitle}
       />
       <Scene
         key='storyComments'

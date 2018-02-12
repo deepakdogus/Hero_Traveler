@@ -5,7 +5,7 @@ function splitAndJoin(originalString ,splitString = ' ', joinString = '-') {
 }
 
 // patch used to properly set the paths of the default categories
-export default function setFlag() {
+export default function defaultCategoriesPaths() {
   Models.Category.find({isDefault: true})
   .then(categories => {
     return categories.map(category => {

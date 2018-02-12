@@ -215,7 +215,8 @@ class ExploreScreen extends Component {
                 return (
                   <ListItem
                     onPress={() => NavActions.story({
-                      storyId: story._id
+                      storyId: story._id,
+                      title: this.helper.state.query,
                     })}
                     leftElement={leftEl}
                     text={<Text style={{fontSize: 15, color: Colors.snow}}>{story.title}</Text>}

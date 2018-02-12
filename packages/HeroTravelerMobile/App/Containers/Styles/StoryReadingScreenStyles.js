@@ -35,17 +35,23 @@ export const styles = StyleSheet.create({
     marginBottom: 100,
   },
   locationText: {
-    fontSize: 14,
-    color: '#757575'
+    fontFamily: Fonts.type.sourceSansPro,
+    fontWeight: '600',
+    letterSpacing: .7,
+    fontSize: 16,
+    color: Colors.grey,
+  },
+  locationDetails: {
+    fontSize: 13,
+    fontWeight: '400'
   },
   locationLabel: {
-    fontSize: 14,
     color: Colors.background
   },
   locationIconWrapper: {
     marginRight: Metrics.section,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'flex-start'
   },
   locationIcon: {
     width: 16.5,

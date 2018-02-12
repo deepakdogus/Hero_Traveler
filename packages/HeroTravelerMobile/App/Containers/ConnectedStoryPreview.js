@@ -34,7 +34,7 @@ const mapStateToProps = (state, ownProps) => {
       isLiked: isStoryLiked(entities.users, sessionUserId, story.id),
       isBookmarked: isStoryBookmarked(entities.users, sessionUserId, story.id),
       myFollowedUsers: getFollowers(entities.users, 'following', sessionUserId),
-      areInRenderLocation: getAreInRenderLocation(state, ownProps)
+      areInRenderLocation: getAreInRenderLocation(state, ownProps),
     }
   }
 
@@ -57,7 +57,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, props) => {
   const {userId, storyId} = props
   return {
-    onPress: () => NavActions.story({storyId}),
+    onPress: (title) => NavActions.story({storyId, title}),
     deleteStory: () => dispatch(StoryActions.deleteStory(userId, storyId)),
     onPressLike: () => dispatch(StoryActions.storyLike(userId, storyId)),
     onPressBookmark: () => dispatch(StoryActions.storyBookmark(userId, storyId)),

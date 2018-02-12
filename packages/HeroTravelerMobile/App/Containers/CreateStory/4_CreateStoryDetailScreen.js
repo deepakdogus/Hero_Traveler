@@ -23,22 +23,22 @@ import styles from './4_CreateStoryDetailScreenStyles'
 import API from '../../Shared/Services/HeroAPI'
 const api = API.create()
 
-/*** 
- 
- Helper functions  
- 
-***/ 
- 
-const dateLikeItemAsDate = (dateLikeItem) => { 
-  const timeStamp = Date.parse(dateLikeItem) 
-  return isNaN(timeStamp) ? new Date() : new Date(timeStamp)   
-}  
+/***
 
-const dateLikeItemAsDateString = (dateLikeItem) => { 
+ Helper functions
+
+***/
+
+const dateLikeItemAsDate = (dateLikeItem) => {
+  const timeStamp = Date.parse(dateLikeItem)
+  return isNaN(timeStamp) ? new Date() : new Date(timeStamp)
+}
+
+const dateLikeItemAsDateString = (dateLikeItem) => {
   const date = dateLikeItemAsDate(dateLikeItem)
-  const dateString = date.toDateString() 
+  const dateString = date.toDateString()
   return dateString.replace(/\s/, ', ')
-}   
+}
 
 
 const Radio = ({text, onPress, name, selected}) => {
@@ -90,7 +90,7 @@ class CreateStoryDetailScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      location: props.workingDraft.location || '',
+      location: props.workingDraft.locationInfo ? props.workingDraft.locationInfo.name : '',
       categories: props.workingDraft.categories || [],
       type: props.workingDraft.type,
       showError: false,
@@ -150,7 +150,7 @@ class CreateStoryDetailScreen extends React.Component {
 
     return promise.then(draft => {
       if (draft.draft) {
-        this.props.publish(_.merge({}, draft, _.trim(draft.location)))
+        this.props.publish(draft)
         this.setState({showError: true})
       } else {
         this._update(draft)
@@ -159,9 +159,6 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   _onLeft = () => {
-    const location = this.props.workingDraft.location
-    const cleanedLocation = _.trim(location)
-    if (cleanedLocation !== location) this.props.updateWorkingDraft({location})
     NavActions.pop()
   }
 
@@ -180,10 +177,9 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   saveDraft = (draft) => {
-    const story = _.merge({}, draft, {location: _.trim(draft.location)})
     this.props.update(
       draft.id,
-      story
+      draft,
     )
   }
 
@@ -211,9 +207,14 @@ class CreateStoryDetailScreen extends React.Component {
 
   receiveLocation = (place) => {
     this.props.updateWorkingDraft({
-      location: place.name,
-      latitude: place.latitude,
-      longitude: place.longitude,
+      locationInfo: {
+        name: place.name,
+        locality: place.addressComponents.sublocality_level_1 || place.addressComponents.locality,
+        state: place.addressComponents.administrative_area_level_1,
+        country: place.addressComponents.country,
+        latitude: place.latitude,
+        longitude: place.longitude,
+      }
     })
     NavActions.pop()
   }
@@ -222,7 +223,8 @@ class CreateStoryDetailScreen extends React.Component {
     NavActions.createStory_location({
       navBack: NavActions.pop,
       onSelectLocation: this.receiveLocation,
-      location: this.props.workingDraft.location,
+      // replace this with short name?
+      location: this.props.workingDraft.locationInfo ? this.props.workingDraft.locationInfo.name : '',
     })
   }
 
@@ -261,13 +263,17 @@ class CreateStoryDetailScreen extends React.Component {
                   <Text
                     style={[
                       styles.inputStyle,
-                      workingDraft.location ? null : {color: Colors.navBarText}
+                      workingDraft.locationInfo ? null : {color: Colors.navBarText}
                     ]}
                     placeholder='Location'
                     placeholderTextColor={Colors.navBarText}
-                    value={workingDraft.location}
+                    value={workingDraft.locationInfo ? workingDraft.locationInfo.name : ''}
                   >
-                    {workingDraft.location || 'Location'}
+                    {
+                      workingDraft.locationInfo ?
+                      workingDraft.locationInfo.name :
+                      'Location'
+                    }
                   </Text>
                 </View>
               </TouchableWithoutFeedback>

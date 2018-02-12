@@ -20,6 +20,7 @@ function renderTemplate(templateName, context) {
   })
 }
 
+// TO-DO: Add universal linking
 export default function resetPasswordEmail(user) {
   const context = {
     subject: 'Link to Reset Your HERO Traveler Password',

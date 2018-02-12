@@ -21,24 +21,25 @@ import RoundedButton from '../../Components/RoundedButton'
 import NavBar from './NavBar'
 import styles from './4_CreateStoryDetailScreenStyles'
 import API from '../../Shared/Services/HeroAPI'
+import {displayLocation} from '../../Shared/Lib/locationHelpers'
 const api = API.create()
 
-/*** 
- 
- Helper functions  
- 
-***/ 
- 
-const dateLikeItemAsDate = (dateLikeItem) => { 
-  const timeStamp = Date.parse(dateLikeItem) 
-  return isNaN(timeStamp) ? new Date() : new Date(timeStamp)   
-}  
+/***
 
-const dateLikeItemAsDateString = (dateLikeItem) => { 
+ Helper functions
+
+***/
+
+const dateLikeItemAsDate = (dateLikeItem) => {
+  const timeStamp = Date.parse(dateLikeItem)
+  return isNaN(timeStamp) ? new Date() : new Date(timeStamp)
+}
+
+const dateLikeItemAsDateString = (dateLikeItem) => {
   const date = dateLikeItemAsDate(dateLikeItem)
-  const dateString = date.toDateString() 
+  const dateString = date.toDateString()
   return dateString.replace(/\s/, ', ')
-}   
+}
 
 
 const Radio = ({text, onPress, name, selected}) => {
@@ -90,7 +91,6 @@ class CreateStoryDetailScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      location: props.workingDraft.location || '',
       categories: props.workingDraft.categories || [],
       type: props.workingDraft.type,
       showError: false,
@@ -265,9 +265,13 @@ class CreateStoryDetailScreen extends React.Component {
                     ]}
                     placeholder='Location'
                     placeholderTextColor={Colors.navBarText}
-                    value={workingDraft.location}
+                    value={workingDraft.locationInfo ? displayLocation(workingDraft.locationInfo) : ''}
                   >
-                    {workingDraft.location || 'Location'}
+                    {
+                      workingDraft.locationInfo ?
+                      displayLocation(workingDraft.locationInfo) :
+                      'Location'
+                    }
                   </Text>
                 </View>
               </TouchableWithoutFeedback>

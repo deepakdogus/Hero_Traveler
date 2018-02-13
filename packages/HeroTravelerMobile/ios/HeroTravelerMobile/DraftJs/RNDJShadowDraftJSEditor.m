@@ -13,6 +13,7 @@
 #import <React/RCTConvert.h>
 #import <React/RCTFont.h>
 #import <React/RCTLog.h>
+#import <React/RCTShadowView+Layout.h>
 #import <React/RCTUIManager.h>
 #import <React/RCTUtils.h>
 
@@ -20,12 +21,15 @@
 #import "RCTShadowView+DraftJSDirty.h"
 #import "RNDJStyle.h"
 
-extern NSString *const RCTShadowViewAttributeName;
+extern NSString *const RCTIsHighlightedAttributeName;
+extern NSString *const RCTReactTagAttributeName;
 
-extern CGFloat const RCTTextAutoSizeDefaultMinimumFontScale;
-extern CGFloat const RCTTextAutoSizeWidthErrorMargin;
-extern CGFloat const RCTTextAutoSizeHeightErrorMargin;
-extern CGFloat const RCTTextAutoSizeGranularity;
+static NSString *const kShadowViewAttributeName = @"RCTShadowViewAttributeName";
+
+extern CGFloat const kAutoSizeWidthErrorMargin;
+extern CGFloat const kAutoSizeHeightErrorMargin;
+extern CGFloat const kAutoSizeGranularity;
+
 
 NSString *const RNDJSingleCursorPositionAttributeName = @"SingleCursorPositionAttributeName";
 NSString *const RNDJDraftJsIndexAttributeName = @"DraftJsIndexAttributeName";
@@ -45,6 +49,7 @@ NSString *const RNDJDraftJsAutocompleteAttributeName = @"RNDJDraftJsAutocomplete
   CGFloat _cachedTextStorageWidthMode;
   NSAttributedString *_cachedAttributedString;
   CGFloat _effectiveLetterSpacing;
+  UIUserInterfaceLayoutDirection _cachedLayoutDirection;
 }
 
 static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, float height, YGMeasureMode heightMode)
@@ -75,7 +80,11 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
     _cachedTextStorageWidth = -1;
     _cachedTextStorageWidthMode = -1;
     _fontSizeMultiplier = 1.0;
-    YGNodeSetMeasureFunc(self.cssNode, RCTMeasure);
+    _textAlign = NSTextAlignmentNatural;
+    _cachedLayoutDirection = UIUserInterfaceLayoutDirectionLeftToRight;
+
+    YGNodeSetMeasureFunc(self.yogaNode, RCTMeasure);
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(contentSizeMultiplierDidChange:)
                                                  name:RCTUIManagerWillUpdateViewsDueToContentSizeMultiplierChangeNotification
@@ -95,14 +104,14 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
   return [[superDescription substringToIndex:superDescription.length - 1] stringByAppendingFormat:@"; text: %@>", [self attributedString].string];
 }
 
-- (BOOL)isCSSLeafNode
+- (BOOL)isYogaLeafNode
 {
   return YES;
 }
 
 - (void)contentSizeMultiplierDidChange:(NSNotification *)note
 {
-  YGNodeMarkDirty(self.cssNode);
+  YGNodeMarkDirty(self.yogaNode);
   [self dirtyDraftJsText];
 }
 
@@ -116,10 +125,9 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
   parentProperties = [super processUpdatedProperties:applierBlocks
                                     parentProperties:parentProperties];
   
-  UIEdgeInsets padding = self.paddingAsInsets;
-  CGFloat width = self.frame.size.width - (padding.left + padding.right);
-  
-  NSTextStorage *textStorage = [self buildTextStorageForWidth:width widthMode:YGMeasureModeExactly];
+  CGFloat availableWidth = self.availableSize.width;
+
+  NSTextStorage *textStorage = [self buildTextStorageForWidth:availableWidth widthMode:YGMeasureModeExactly];
   CGRect textFrame = [self calculateTextFrame:textStorage];
   
   NSString* lastBlockKey = ((RNDJBlockModel*) contentModel.blocks.lastObject).key;
@@ -152,14 +160,15 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
              absolutePosition:(CGPoint)absolutePosition
 {
   // Run layout on subviews.
-  NSTextStorage *textStorage = [self buildTextStorageForWidth:self.frame.size.width widthMode:YGMeasureModeExactly];
+  CGFloat availableWidth = self.availableSize.width;
+  NSTextStorage *textStorage = [self buildTextStorageForWidth:availableWidth widthMode:YGMeasureModeExactly];
   NSLayoutManager *layoutManager = textStorage.layoutManagers.firstObject;
   NSTextContainer *textContainer = layoutManager.textContainers.firstObject;
   NSRange glyphRange = [layoutManager glyphRangeForTextContainer:textContainer];
   NSRange characterRange = [layoutManager characterRangeForGlyphRange:glyphRange actualGlyphRange:NULL];
-  [layoutManager.textStorage enumerateAttribute:RCTShadowViewAttributeName inRange:characterRange options:0 usingBlock:^(RCTShadowView *child, NSRange range, BOOL *_) {
+  [layoutManager.textStorage enumerateAttribute:kShadowViewAttributeName inRange:characterRange options:0 usingBlock:^(RCTShadowView *child, NSRange range, BOOL *_) {
     if (child) {
-      YGNodeRef childNode = child.cssNode;
+      YGNodeRef childNode = child.yogaNode;
       float width = YGNodeStyleGetWidth(childNode).value;
       float height = YGNodeStyleGetHeight(childNode).value;
       if (YGFloatIsUndefined(width)) {
@@ -195,7 +204,12 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
 
 - (NSTextStorage *)buildTextStorageForWidth:(CGFloat)width widthMode:(YGMeasureMode)widthMode
 {
-  if (_cachedTextStorage && width == _cachedTextStorageWidth && widthMode == _cachedTextStorageWidthMode) {
+  if (
+      _cachedTextStorage &&
+      (width == _cachedTextStorageWidth || (isnan(width) && isnan(_cachedTextStorageWidth))) &&
+      widthMode == _cachedTextStorageWidthMode &&
+      _cachedLayoutDirection == self.layoutDirection
+      ) {
     return _cachedTextStorage;
   }
   
@@ -208,8 +222,11 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
   textContainer.lineFragmentPadding = 0.0;
   
   textContainer.maximumNumberOfLines = 0;
-  textContainer.size = (CGSize){widthMode == YGMeasureModeUndefined ? CGFLOAT_MAX : width, CGFLOAT_MAX};
-  
+  textContainer.size = (CGSize){
+    widthMode == YGMeasureModeUndefined || isnan(width) ? CGFLOAT_MAX : width,
+    CGFLOAT_MAX
+  };
+
   [layoutManager addTextContainer:textContainer];
   [layoutManager ensureLayoutForTextContainer:textContainer];
   
@@ -469,7 +486,7 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
 
   // create a non-mutable attributedString for use by the Text system which avoids copies down the line
   _cachedAttributedString = [[NSAttributedString alloc] initWithAttributedString:contentAttributedString];
-  YGNodeMarkDirty(self.cssNode);
+  YGNodeMarkDirty(self.yogaNode);
   
   return _cachedAttributedString;
 }
@@ -577,8 +594,8 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
   
   RCTShadowView* child = [subviews objectAtIndex:viewIndex];
   
-  float width = YGNodeStyleGetWidth(child.cssNode).value;
-  float height = YGNodeStyleGetHeight(child.cssNode).value;
+  float width = YGNodeStyleGetWidth(child.yogaNode).value;
+  float height = YGNodeStyleGetHeight(child.yogaNode).value;
   if (YGFloatIsUndefined(width)) {
     width = self.defaultAtomicWidth;
   }
@@ -591,7 +608,7 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
   NSMutableAttributedString *attachmentString = [NSMutableAttributedString new];
   [attachmentString appendAttributedString:[NSAttributedString attributedStringWithAttachment:attachment]];
   [attachmentString appendAttributedString:[[NSAttributedString alloc] initWithString:@" \n"]];
-  [attachmentString addAttribute:RCTShadowViewAttributeName
+  [attachmentString addAttribute:kShadowViewAttributeName
                            value:child
                            range:NSMakeRange(0, attachmentString.length)];
   [attachmentString addAttribute:RNDJDraftJsIndexAttributeName
@@ -705,10 +722,10 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
   // We will climb up to the first node which style has been setted as non-inherit
   if (newTextAlign == NSTextAlignmentRight || newTextAlign == NSTextAlignmentLeft) {
     RCTShadowView *view = self;
-    while (view != nil && YGNodeStyleGetDirection(view.cssNode) == YGDirectionInherit) {
+    while (view != nil && YGNodeStyleGetDirection(view.yogaNode) == YGDirectionInherit) {
       view = [view reactSuperview];
     }
-    if (view != nil && YGNodeStyleGetDirection(view.cssNode) == YGDirectionRTL) {
+    if (view != nil && YGNodeStyleGetDirection(view.yogaNode) == YGDirectionRTL) {
       if (newTextAlign == NSTextAlignmentRight) {
         newTextAlign = NSTextAlignmentLeft;
       } else if (newTextAlign == NSTextAlignmentLeft) {
@@ -746,15 +763,9 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
 - (CGRect)calculateTextFrame:(NSTextStorage *)textStorage
 {
   CGRect textFrame = UIEdgeInsetsInsetRect((CGRect){CGPointZero, self.frame.size},
-                                           self.paddingAsInsets);
+                                           self.compoundInsets);
   
   return textFrame;
-}
-
-- (void)setBackgroundColor:(UIColor *)backgroundColor
-{
-  super.backgroundColor = backgroundColor;
-  [self dirtyDraftJsText];
 }
 
 #define RCT_TEXT_PROPERTY(setProp, ivar, type) \

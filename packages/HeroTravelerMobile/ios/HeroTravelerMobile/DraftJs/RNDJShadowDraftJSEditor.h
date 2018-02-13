@@ -51,6 +51,7 @@ extern NSString *const RNDJDraftJsAutocompleteAttributeName;
 @property (nonatomic, copy) NSArray *fontVariant;
 @property (nonatomic, assign) CGFloat letterSpacing;
 @property (nonatomic, strong) UIColor *color;
+@property (nonatomic, strong) UIColor *backgroundColor;
 @property (nonatomic, assign) CGFloat opacity;
 @property (nonatomic, assign) NSTextAlignment textAlign;
 @property (nonatomic, assign) CGFloat lineHeight;

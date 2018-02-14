@@ -26,7 +26,7 @@ export default {
     // Another equal terrifying option would be to try to pass their other check
     // which is lodash isPlainObject.
     // --- END HACKZORZ ---
-    state.mergeDeep = R.identity
+    if (!state.categories) state.mergeDeep = R.identity
     return toImmutable(state)
   },
   in: (raw) => {

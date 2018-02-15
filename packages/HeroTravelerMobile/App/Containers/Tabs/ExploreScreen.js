@@ -278,8 +278,9 @@ class ExploreScreen extends Component {
     let content
 
     const showSearch = this.state.lastSearchResults || this.state.selectedTabIndex !== null
+    const catagoriesArray = _.values(categories)
 
-    if (categoriesFetchStatus.fetching && !_.values(categories).length) {
+    if (categoriesFetchStatus.fetching && !catagoriesArray.length) {
       content = (
         <Loader style={styles.loader} />
       )
@@ -296,7 +297,7 @@ class ExploreScreen extends Component {
               navigationBarStyle: CategoryFeedNavActionStyles.navigationBarStyle,
             })
           }}
-          categories={_.values(categories)}
+          categories={catagoriesArray}
         />
       )
     }

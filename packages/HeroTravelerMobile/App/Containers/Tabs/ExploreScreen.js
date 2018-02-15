@@ -274,11 +274,12 @@ class ExploreScreen extends Component {
   }
 
   render () {
+    const {categories = {}, categoriesFetchStatus} = this.props
     let content
 
     const showSearch = this.state.lastSearchResults || this.state.selectedTabIndex !== null
 
-    if (this.props.categoriesFetchStatus.fetching) {
+    if (categoriesFetchStatus.fetching && !_.values(categories).length) {
       content = (
         <Loader style={styles.loader} />
       )
@@ -295,7 +296,7 @@ class ExploreScreen extends Component {
               navigationBarStyle: CategoryFeedNavActionStyles.navigationBarStyle,
             })
           }}
-          categories={_.values(this.props.categories)}
+          categories={_.values(categories)}
         />
       )
     }

@@ -11,7 +11,6 @@ import styles, { storyPreviewHeight } from './Styles/ProfileViewStyles'
 import { Colors, Metrics } from '../Shared/Themes'
 import StoryList from './StoryList'
 import Loader from './Loader'
-import RoundedButton from './RoundedButton'
 import ConnectedStoryPreview from '../Containers/ConnectedStoryPreview'
 
 const enhancedTab = withHandlers({
@@ -48,7 +47,6 @@ export default class ProfileTabsAndStories extends Component {
     user: PropTypes.object,
     location: PropTypes.string,
     error: PropTypes.object,
-    refresh: PropTypes.func,
   }
 
   renderTabs(){
@@ -108,8 +106,7 @@ export default class ProfileTabsAndStories extends Component {
   }
 
   areNoStories(){
-    const { fetchStatus, storiesById} = this.props
-    return fetchStatus.loaded && storiesById.length === 0
+    return this.props.storiesById.length === 0
   }
 
   getNoStoriesText() {
@@ -127,15 +124,28 @@ export default class ProfileTabsAndStories extends Component {
     return !this.props.fetchStatus.loaded && this.props.fetchStatus.fetching
   }
 
+  _renderProfileInfo = () => {
+    const {renderProfileInfo, error} = this.props
+    return (
+      <View>
+        {renderProfileInfo()}
+        {!!error &&
+          <Text style={styles.errorText}>Unable to fully load user data. Please try again.</Text>
+        }
+      </View>
+    )
+
+  }
+
   render() {
-    const {renderProfileInfo, storiesById, fetchStatus, editable, error, refresh} = this.props
+    const {renderProfileInfo, storiesById, fetchStatus, editable} = this.props
     const isGettingStories = this.isGettingStories()
 
     return (
       <View style={editable ? styles.profileTabsAndStoriesRoot : styles.profileTabsAndStoriesRootWithMarginForNavbar}>
-        {(this.areNoStories() || this.isFetching() || !!error) &&
+        {(this.areNoStories() || this.isFetching()) &&
           <View>
-            {renderProfileInfo && renderProfileInfo()}
+            {renderProfileInfo && this._renderProfileInfo()}
             {this.renderTabs()}
           </View>
         }
@@ -151,22 +161,14 @@ export default class ProfileTabsAndStories extends Component {
               spinnerColor={Colors.background} />
           </View>
         }
-        {!!error && !isGettingStories &&
-          <View style={styles.noStories}>
-            <Text style={styles.noStoriesText}>Error: Failed to fully load user or story data</Text>
-            <RoundedButton
-              text='Try Again'
-              onPress={refresh}
-            />
-          </View>
-        }
+
 
         {storiesById.length !== 0 && !isGettingStories &&
           <StoryList
             style={editable && {height:  Metrics.screenHeight - Metrics.tabBarHeight}}
             storiesById={storiesById}
             refreshing={false}
-            renderHeaderContent={renderProfileInfo()}
+            renderHeaderContent={this._renderProfileInfo()}
             renderSectionHeader={this.renderTabs()}
             renderStory={this.renderStory}
             pagingIsDisabled

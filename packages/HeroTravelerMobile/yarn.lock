@@ -717,7 +717,7 @@ babel-plugin-external-helpers@^6.18.0:
   dependencies:
     babel-runtime "^6.22.0"
 
-babel-plugin-module-resolver@^2.7.0:
+babel-plugin-module-resolver@^2.3.0, babel-plugin-module-resolver@^2.7.0:
   version "2.7.1"
   resolved "https://npm.abeck.io:443/babel-plugin-module-resolver/-/babel-plugin-module-resolver-2.7.1.tgz#18be3c42ddf59f7a456c9e0512cd91394f6e4be1"
   dependencies:
@@ -1104,6 +1104,10 @@ babel-plugin-transform-remove-console@^6.8.4:
   version "6.8.5"
   resolved "https://npm.abeck.io:443/babel-plugin-transform-remove-console/-/babel-plugin-transform-remove-console-6.8.5.tgz#fde9d2d3d725530b0fadd8d31078402410386810"
 
+babel-plugin-transform-remove-console@^6.8.5:
+  version "6.9.0"
+  resolved "https://npm.abeck.io:443/babel-plugin-transform-remove-console/-/babel-plugin-transform-remove-console-6.9.0.tgz#a7b671aab050dd30ef7cf2142b61a7d10efb327f"
+
 babel-plugin-transform-strict-mode@^6.24.1:
   version "6.24.1"
   resolved "https://npm.abeck.io:443/babel-plugin-transform-strict-mode/-/babel-plugin-transform-strict-mode-6.24.1.tgz#d5faf7aa578a65bbe591cf5edae04a0c67020758"
@@ -1221,6 +1225,40 @@ babel-preset-fbjs@^2.1.2, babel-preset-fbjs@^2.1.4:
     babel-plugin-transform-object-rest-spread "^6.8.0"
     babel-plugin-transform-react-display-name "^6.8.0"
     babel-plugin-transform-react-jsx "^6.8.0"
+
+babel-preset-react-native@1.9.0:
+  version "1.9.0"
+  resolved "https://npm.abeck.io:443/babel-preset-react-native/-/babel-preset-react-native-1.9.0.tgz#035fc06c65f4f2a02d0336a100b2da142f36dab1"
+  dependencies:
+    babel-plugin-check-es2015-constants "^6.5.0"
+    babel-plugin-react-transform "2.0.2"
+    babel-plugin-syntax-async-functions "^6.5.0"
+    babel-plugin-syntax-class-properties "^6.5.0"
+    babel-plugin-syntax-flow "^6.5.0"
+    babel-plugin-syntax-jsx "^6.5.0"
+    babel-plugin-syntax-trailing-function-commas "^6.5.0"
+    babel-plugin-transform-class-properties "^6.5.0"
+    babel-plugin-transform-es2015-arrow-functions "^6.5.0"
+    babel-plugin-transform-es2015-block-scoping "^6.5.0"
+    babel-plugin-transform-es2015-classes "^6.5.0"
+    babel-plugin-transform-es2015-computed-properties "^6.5.0"
+    babel-plugin-transform-es2015-destructuring "^6.5.0"
+    babel-plugin-transform-es2015-for-of "^6.5.0"
+    babel-plugin-transform-es2015-function-name "^6.5.0"
+    babel-plugin-transform-es2015-literals "^6.5.0"
+    babel-plugin-transform-es2015-modules-commonjs "^6.5.0"
+    babel-plugin-transform-es2015-parameters "^6.5.0"
+    babel-plugin-transform-es2015-shorthand-properties "^6.5.0"
+    babel-plugin-transform-es2015-spread "^6.5.0"
+    babel-plugin-transform-es2015-template-literals "^6.5.0"
+    babel-plugin-transform-flow-strip-types "^6.5.0"
+    babel-plugin-transform-object-assign "^6.5.0"
+    babel-plugin-transform-object-rest-spread "^6.5.0"
+    babel-plugin-transform-react-display-name "^6.5.0"
+    babel-plugin-transform-react-jsx "^6.5.0"
+    babel-plugin-transform-react-jsx-source "^6.5.0"
+    babel-plugin-transform-regenerator "^6.5.0"
+    react-transform-hmr "^1.0.4"
 
 babel-preset-react-native@^1.9.0:
   version "1.9.2"
@@ -2084,7 +2122,7 @@ create-error-class@^3.0.0:
   dependencies:
     capture-stack-trace "^1.0.0"
 
-create-react-class@^15.5.2:
+create-react-class@^15.5.2, create-react-class@^15.6.3:
   version "15.6.3"
   resolved "https://npm.abeck.io:443/create-react-class/-/create-react-class-15.6.3.tgz#2d73237fb3f970ae6ebe011a9e66f46dbca80036"
   dependencies:
@@ -3565,7 +3603,7 @@ hosted-git-info@^2.1.4:
   version "2.5.0"
   resolved "https://npm.abeck.io:443/hosted-git-info/-/hosted-git-info-2.5.0.tgz#6d60e34b3abbc8313062c3b798ef8d901a07af3c"
 
-htmlparser2-without-node-native@^3.9.0:
+htmlparser2-without-node-native@^3.9.2:
   version "3.9.2"
   resolved "https://npm.abeck.io:443/htmlparser2-without-node-native/-/htmlparser2-without-node-native-3.9.2.tgz#b3ed050d877d0ff3465969e339877b7f9f6631f6"
   dependencies:
@@ -5450,7 +5488,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.5.9, prop-types@^15.6.0:
+prop-types@15.6, prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.5.9, prop-types@^15.6.0:
   version "15.6.0"
   resolved "https://npm.abeck.io:443/prop-types/-/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
   dependencies:
@@ -5570,7 +5608,7 @@ react-addons-perf@^15.4.0:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
-react-addons-pure-render-mixin@^15.0.2, react-addons-pure-render-mixin@^15.4.0, react-addons-pure-render-mixin@^15.4.2:
+react-addons-pure-render-mixin@^15.4.0:
   version "15.6.2"
   resolved "https://npm.abeck.io:443/react-addons-pure-render-mixin/-/react-addons-pure-render-mixin-15.6.2.tgz#6b83f40b6b36ee40735cbd6125eb3f13ce1cddc9"
   dependencies:
@@ -5603,7 +5641,7 @@ react-devtools-core@3.0.0:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
-react-dom@^15.4.0, react-dom@^15.4.2:
+react-dom@^15.4.0:
   version "15.6.2"
   resolved "https://npm.abeck.io:443/react-dom/-/react-dom-15.6.2.tgz#41cfadf693b757faf2708443a1d1fd5a02bef730"
   dependencies:
@@ -5629,9 +5667,12 @@ react-native-autogrow-textinput@5.1.1:
   version "5.1.1"
   resolved "https://npm.abeck.io:443/react-native-autogrow-textinput/-/react-native-autogrow-textinput-5.1.1.tgz#e6c85077f2a7c3371f382ab3224808b88f385819"
 
-react-native-camera@0.6:
-  version "0.6.0"
-  resolved "https://npm.abeck.io:443/react-native-camera/-/react-native-camera-0.6.0.tgz#dd2760b7857d660761c78f2da575b494fdc8dcb5"
+react-native-camera@1.0.1:
+  version "1.0.1"
+  resolved "https://npm.abeck.io:443/react-native-camera/-/react-native-camera-1.0.1.tgz#ebb131226394b4ee3ec6692979a257522b3ac0c1"
+  dependencies:
+    lodash "^4.17.4"
+    prop-types "^15.5.10"
 
 react-native-device-info@^0.10.0:
   version "0.10.2"
@@ -5650,16 +5691,16 @@ react-native-drawer@^2.3.0:
     prop-types "^15.5.8"
     tween-functions "^1.0.1"
 
-react-native-experimental-navigation@0.26.x:
-  version "0.26.12"
-  resolved "https://npm.abeck.io:443/react-native-experimental-navigation/-/react-native-experimental-navigation-0.26.12.tgz#8b458757178b06908b3e8fe7042458332e8e4825"
+react-native-experimental-navigation@^0.29.1:
+  version "0.29.1"
+  resolved "https://npm.abeck.io:443/react-native-experimental-navigation/-/react-native-experimental-navigation-0.29.1.tgz#fa14ec95ee5471cfb37f917316073b300f884e48"
   dependencies:
     babel-plugin-syntax-flow "^6.8.0"
     babel-plugin-transform-flow-strip-types "^6.8.0"
     babel-preset-react-native "^1.9.0"
     clamp "^1.0.1"
     fbjs "^0.8.1"
-    react-addons-pure-render-mixin "^15.0.2"
+    prop-types "^15.5.10"
 
 react-native-fbsdk@^0.6.0:
   version "0.6.3"
@@ -5692,12 +5733,12 @@ react-native-hockeyapp@^0.5.1:
   version "0.5.1"
   resolved "https://npm.abeck.io:443/react-native-hockeyapp/-/react-native-hockeyapp-0.5.1.tgz#409fddd7f0252feeb9ca5546a916aa51a06c5fca"
 
-react-native-htmlview@^0.9.0:
-  version "0.9.0"
-  resolved "https://npm.abeck.io:443/react-native-htmlview/-/react-native-htmlview-0.9.0.tgz#2e146877a0e5d5ddde2dbfb2364ee8a3265f74b0"
+react-native-htmlview@0.12.1:
+  version "0.12.1"
+  resolved "https://npm.abeck.io:443/react-native-htmlview/-/react-native-htmlview-0.12.1.tgz#4b987f1f34fae89f7bbd3c478f8f20d601019639"
   dependencies:
     entities "^1.1.1"
-    htmlparser2-without-node-native "^3.9.0"
+    htmlparser2-without-node-native "^3.9.2"
 
 react-native-image-picker@^0.26.2:
   version "0.26.7"
@@ -5709,17 +5750,20 @@ react-native-img-cache@^1.4.0:
   dependencies:
     crypto-js "^3.1.9-1"
 
-react-native-keyboard-spacer@^0.3.1:
-  version "0.3.1"
-  resolved "https://npm.abeck.io:443/react-native-keyboard-spacer/-/react-native-keyboard-spacer-0.3.1.tgz#9580297ebfd078202dc4c65303d29cda35de67f1"
+react-native-keyboard-spacer@0.4.1:
+  version "0.4.1"
+  resolved "https://npm.abeck.io:443/react-native-keyboard-spacer/-/react-native-keyboard-spacer-0.4.1.tgz#46f18a320432098a25ea9fa89f5143dd254d332d"
 
 react-native-keyboard-tracking-view@5.1.3:
   version "5.1.3"
   resolved "https://npm.abeck.io:443/react-native-keyboard-tracking-view/-/react-native-keyboard-tracking-view-5.1.3.tgz#31a35f04ed6fcd10d47f3213f41b91dd0788b579"
 
-react-native-maps@~0.13.0:
-  version "0.13.1"
-  resolved "https://npm.abeck.io:443/react-native-maps/-/react-native-maps-0.13.1.tgz#ed2a7e62f155a51f43c49742eba5bc313eaf2f1e"
+react-native-maps@0.20.1:
+  version "0.20.1"
+  resolved "https://npm.abeck.io:443/react-native-maps/-/react-native-maps-0.20.1.tgz#b5247a9a26446b2e1ffc3f680db8ba6ccc960096"
+  dependencies:
+    babel-plugin-module-resolver "^2.3.0"
+    babel-preset-react-native "1.9.0"
 
 react-native-media-meta@^0.0.10:
   version "0.0.10"
@@ -5746,16 +5790,16 @@ react-native-push-notification@^2.2.1:
   version "2.2.1"
   resolved "https://npm.abeck.io:443/react-native-push-notification/-/react-native-push-notification-2.2.1.tgz#9b392cee8f5223a1e1772c9a88c95742549fcfc3"
 
-"react-native-router-flux@https://github.com/rwoody/react-native-router-flux":
-  version "3.38.1"
-  resolved "https://github.com/rwoody/react-native-router-flux#10c842eaea79b0e74d70e2b7998979b63feb2ba3"
+react-native-router-flux@3.43:
+  version "3.43.0"
+  resolved "https://npm.abeck.io:443/react-native-router-flux/-/react-native-router-flux-3.43.0.tgz#a784f467e457fc247458081365904d01b61ae76d"
   dependencies:
+    babel-plugin-transform-remove-console "^6.8.5"
     lodash.isequal "^4.5.0"
-    react-addons-pure-render-mixin "^15.4.2"
-    react-dom "^15.4.2"
-    react-native-experimental-navigation "0.26.x"
+    prop-types "^15.6.0"
+    react-native-experimental-navigation "^0.29.1"
     react-native-tabs "^1.0.9"
-    react-static-container "1.0.1"
+    react-static-container "^1.0.2"
 
 react-native-splash-screen@^2.0.0:
   version "2.1.0"
@@ -5777,9 +5821,9 @@ react-native-version-number@^0.1.2:
   version "0.1.3"
   resolved "https://npm.abeck.io:443/react-native-version-number/-/react-native-version-number-0.1.3.tgz#deff9e9ffe0c327e00535a35f084b3df2457649a"
 
-"react-native-webview-bridge-updated@git://github.com/rwoody/react-native-webview-bridge.git":
-  version "1.0.7"
-  resolved "git://github.com/rwoody/react-native-webview-bridge.git#9c81b1acd62972d4c6441398cb93ad3c54365054"
+react-native-webview-bridge-updated@^1.0.0:
+  version "1.0.9"
+  resolved "https://npm.abeck.io:443/react-native-webview-bridge-updated/-/react-native-webview-bridge-updated-1.0.9.tgz#930b4e6444f4a2b5f3151607c6eb6eba8deda08f"
   dependencies:
     invariant "2.2.0"
     keymirror "0.1.1"
@@ -5791,11 +5835,11 @@ react-native-version-number@^0.1.2:
     invariant "2.2.0"
     keymirror "0.1.1"
 
-"react-native-zss-rich-text-editor@https://github.com/rwoody/react-native-zss-rich-text-editor#insert-video":
-  version "1.0.2"
-  resolved "https://github.com/rwoody/react-native-zss-rich-text-editor#e7d760e315c25fb4d1820304ee5d17f6436808ef"
+react-native-zss-rich-text-editor@1.1:
+  version "1.1.0"
+  resolved "https://npm.abeck.io:443/react-native-zss-rich-text-editor/-/react-native-zss-rich-text-editor-1.1.0.tgz#c197d797a8ca65e46e2ccbe36e73fa2624d07c1c"
   dependencies:
-    react-native-webview-bridge-updated "git://github.com/rwoody/react-native-webview-bridge.git"
+    react-native-webview-bridge-updated "^1.0.0"
 
 react-native@0.53:
   version "0.53.0"
@@ -5874,9 +5918,9 @@ react-redux@^5.0.2:
     loose-envify "^1.1.0"
     prop-types "^15.5.10"
 
-react-static-container@1.0.1:
-  version "1.0.1"
-  resolved "https://npm.abeck.io:443/react-static-container/-/react-static-container-1.0.1.tgz#694c0dd68a896b879519afb548399cc1989c9ab0"
+react-static-container@^1.0.2:
+  version "1.0.2"
+  resolved "https://npm.abeck.io:443/react-static-container/-/react-static-container-1.0.2.tgz#30a4f7548860be1d55d5eb4c20645b835c2bdf34"
 
 react-timer-mixin@^0.13.2, react-timer-mixin@^0.13.3:
   version "0.13.3"

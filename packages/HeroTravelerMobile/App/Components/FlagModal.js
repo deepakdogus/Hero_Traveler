@@ -1,5 +1,6 @@
 'use strict';
-import React, {PropTypes, Component} from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import {TouchableOpacity, Text, Animated} from 'react-native';
 import {Colors, Metrics } from '../Shared/Themes/'
 

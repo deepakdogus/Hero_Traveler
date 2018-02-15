@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, Image, View, Animated } from 'react-native'
+import { Text, Image, ImageBackground, View, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import {
   Actions as NavigationActions,
@@ -114,7 +114,7 @@ class LaunchScreen extends React.Component {
 
   render () {
     return (
-      <Image
+      <ImageBackground
         source={Images.launchBackground}
         style={[styles.backgroundImage]}
       >
@@ -166,7 +166,7 @@ class LaunchScreen extends React.Component {
           />
         </View>
         </Animated.View>
-      </Image>
+      </ImageBackground>
     )
   }
 }

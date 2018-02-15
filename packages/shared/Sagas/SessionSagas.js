@@ -77,11 +77,12 @@ export function * resumeSession (api, action) {
     yield put(SessionActions.initializeSession(user.id, tokens))
     yield put(SessionActions.refreshSessionSuccess(tokens))
   } else {
-    const errorMessage = new Error('You have been logged out.')
-    yield put(SessionActions.resumeSessionFailure(errorMessage))
-    yield put(SessionActions.resetRootStore())
-    yield put(ScreenActions.openScreen('launchScreen'))
-    yield put(StartupActions.hideSplash())
+    // simply not logging them out if we have their token info
+    // const errorMessage = new Error('You have been logged out.')
+    // yield put(SessionActions.resumeSessionFailure(errorMessage))
+    // yield put(SessionActions.resetRootStore())
+    // yield put(ScreenActions.openScreen('launchScreen'))
+    // yield put(StartupActions.hideSplash())
   }
 }
 

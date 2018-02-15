@@ -106,9 +106,17 @@ export const userSuccess = (state, {userId, userStoriesById}) => {
 }
 
 export const userFailure = (state, {userId, error}) => {
+  const derivedById = _.values(state.entities).filter(story => {
+    return !story.draft && story.author === userId
+  }).map(story => story.id)
+
   return state.setIn(
     ['storiesByUserAndId', userId, 'fetchStatus'],
     {fetching: false, loaded: false, error}
+  )
+  .setIn(
+    ['storiesByUserAndId', userId, 'byId'],
+    derivedById
   )
 }
 
@@ -152,9 +160,19 @@ export const categorySuccess = (state, {categoryId, categoryStoriesById}) => {
 }
 
 export const categoryFailure = (state, {categoryId, error}) => {
+  const derivedStoriesById = _.values(state.entities).filter(story => {
+    return story.categories.some(category => {
+      return category.id === categoryId
+    })
+  }).map(story => story.id)
+
   return state.setIn(
     ['storiesByCategoryAndId', categoryId, 'fetchStatus'],
     {fetching: false, loaded: false, error}
+  )
+  .setIn(
+    ['storiesByCategoryAndId', categoryId, 'byId'],
+    derivedStoriesById
   )
 }
 
@@ -235,6 +253,9 @@ export const loadDraftsSuccess = (state, {draftsById}) => {
 }
 
 export const loadDraftsFailure = (state, {error}) => {
+  const derivedById = _.values(state.entities).filter(story => {
+    return story.draft
+  }).map(story => story.id)
   return state.merge({
     drafts: {
       error,
@@ -242,7 +263,7 @@ export const loadDraftsFailure = (state, {error}) => {
         fetching: false,
         loaded: false
       },
-      byId: []
+      byId: derivedById
     }
   })
 }

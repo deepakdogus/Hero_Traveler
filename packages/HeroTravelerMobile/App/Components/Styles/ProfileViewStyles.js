@@ -222,10 +222,11 @@ export default StyleSheet.create({
   noStories: {
     marginTop: Metrics.doubleSection,
   },
-  noStoriesText: {
+  errorText: {
     color: '#757575',
     textAlign: 'center',
-    fontFamily: Fonts.type.montserrat
+    fontFamily: Fonts.type.montserrat,
+    marginBottom: 10,
   },
   errorButton: {
     position: 'absolute',

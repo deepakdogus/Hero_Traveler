@@ -9,7 +9,7 @@ import getImageUrl from '../../Shared/Lib/getImageUrl'
 
 class ProfileScreen extends React.Component {
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps) {
     const shouldUpdate = _.some([
       this.props.user !== nextProps.user,
       this.props.draftsById !== nextProps.draftsById,
@@ -82,7 +82,6 @@ class ProfileScreen extends React.Component {
         draftsFetchStatus={this.props.draftsFetchStatus}
         bookmarksFetchStatus={userBookmarksFetchStatus}
         hasTabbar={!this.props.isEditing}
-        refresh={this.initializeData}
       />
     )
   }

@@ -244,8 +244,15 @@ class ProfileView extends React.Component {
     )
   }
 
+  getProfileTabsAndStoriesError(){
+    const {selectedTab} = this.state
+    const {error, bookmarksError} = this.props
+    if (selectedTab === TabTypes.bookmarks) return bookmarksError || error
+    else return error
+  }
+
   render() {
-    const {editable, isEditing, location, stories, error, refresh} = this.props
+    const {editable, isEditing, location, stories} = this.props
 
     let showTooltip = !isEditing && editable &&
       !stories.length && !this.hasCompletedNoStoriesTooltip()
@@ -299,8 +306,7 @@ class ProfileView extends React.Component {
               user={this.props.user}
               showTooltip={showTooltip}
               location={location}
-              error={error}
-              refresh={refresh}
+              error={this.getProfileTabsAndStoriesError()}
             />
           }
         </View>
@@ -319,9 +325,11 @@ class ProfileView extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  const userId = state.session.userId
   return {
     location: state.routes.scene.name,
     error: state.entities.users.error,
+    bookmarksError: state.entities.stories.bookmarks[userId].fetchStatus.error
   }
 }
 

@@ -326,10 +326,11 @@ class ProfileView extends React.Component {
 
 const mapStateToProps = (state) => {
   const userId = state.session.userId
+  const hasBookmarks = !!state.entities.stories.bookmarks
   return {
     location: state.routes.scene.name,
     error: state.entities.users.error,
-    bookmarksError: state.entities.stories.bookmarks[userId].fetchStatus.error
+    bookmarksError: hasBookmarks ? state.entities.stories.bookmarks[userId].fetchStatus.error : undefined
   }
 }
 

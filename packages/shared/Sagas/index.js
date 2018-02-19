@@ -95,7 +95,7 @@ const heroAPI = HeroAPI.create()
 // }
 
 function * pollRefreshTokens() {
-  yield call(delay, 60 * 1000)
+  yield call(delay, 60 * 60 * 1000) // 1h delay
   yield put(SessionActions.refreshSession())
 }
 

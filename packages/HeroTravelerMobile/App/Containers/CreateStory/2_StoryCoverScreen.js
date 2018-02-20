@@ -30,7 +30,7 @@ import NavBar from './NavBar'
 import {getNewCover, saveCover} from './shared'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import getVideoUrl from '../../Shared/Lib/getVideoUrl'
-import Image from '../../Components/Image'
+import ImageWrapper from '../../Components/ImageWrapper'
 import VideoPlayer from '../../Components/VideoPlayer'
 import pathAsFileObject from '../../Shared/Lib/pathAsFileObject'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTimeTooltips'
@@ -221,7 +221,8 @@ class StoryCoverScreen extends Component {
     return R.ifElse(
       R.identity,
       R.always((
-        <Image
+        <ImageWrapper
+          background={true}
           source={{uri: coverPhoto}}
           style={styles.coverPhoto}
           resizeMode='cover'
@@ -231,7 +232,7 @@ class StoryCoverScreen extends Component {
           >
             {this.renderContent()}
           </View>
-        </Image>
+        </ImageWrapper>
       )),
       R.always(this.renderContent(coverPhoto))
     )(!!coverPhoto)

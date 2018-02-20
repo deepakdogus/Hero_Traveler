@@ -47,25 +47,11 @@
 
 + (RNDJAutocorrectView*) make:(AutocompleteViewInfo*)info inside:(UIView*)view cancelBlock:(CancelAutoCorrectBlock)cancelAutocorrectBlock withContentOffset:(UIEdgeInsets)contentInset
 {
-  if (!info || !view) {
+  NSString* word = info.textSuggestion;
+
+  if (!info || !view || word.length == 0 || [info.existingText isEqualToString:word]) {
     return nil;
   }
-  
-  NSString* lang = @"en_US";
-  
-  UITextChecker* textCheck = [[UITextChecker alloc] init];
-  
-  NSString* text = info.existingText;
-  
-  NSArray* allWords = [textCheck completionsForPartialWordRange:NSMakeRange(0, text.length)
-                                                       inString:text
-                                                       language:lang];
-  
-  if (allWords.count == 0 || [allWords containsObject:text]) {
-    return nil;
-  }
-  
-  NSString* word = allWords[0];
   
   RNDJAutocorrectView* autocompleteView = [[RNDJAutocorrectView alloc]
                                            initWithInfo:info

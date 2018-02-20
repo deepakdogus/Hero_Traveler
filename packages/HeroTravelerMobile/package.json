@@ -23,7 +23,8 @@
     "dev-test-link-reset": "xcrun simctl openurl booted \"com.herotraveler.herotraveler-beta://resetpassword/a6671bb4-73df-4110-8a7b-c1f1dd579707\"",
     "dev-test-link-email": "xcrun simctl openurl booted \"com.herotraveler.herotraveler-beta://emailverify/dc24a446-3a76-477a-8f17-255dfbaf0892\"",
     "share": "rimraf App/Shared && mkdir App/Shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png,svg}\" App/Shared",
-    "share:watch": "rimraf App/Shared && mkdir App/Shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png,svg}\" App/Shared --watch"
+    "share:watch": "rimraf App/Shared && mkdir App/Shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png,svg}\" App/Shared --watch",
+    "postinstall": "./scripts/post.sh"
   },
   "dependencies": {
     "algoliasearch": "^3.22.1",
@@ -52,7 +53,7 @@
     "react-native": "0.53",
     "react-native-animatable": "^1.1.0",
     "react-native-autogrow-textinput": "5.1.1",
-    "react-native-camera": "1.0.1",
+    "react-native-camera": "1.0",
     "react-native-device-info": "^0.10.0",
     "react-native-draftjs-render": "2.4.0",
     "react-native-drawer": "^2.3.0",
@@ -63,10 +64,10 @@
     "react-native-hockeyapp": "^0.5.1",
     "react-native-htmlview": "0.12.1",
     "react-native-image-picker": "^0.26.2",
-    "react-native-img-cache": "^1.4.0",
+    "react-native-img-cache": "1.5.3",
     "react-native-keyboard-spacer": "0.4.1",
-    "react-native-keyboard-tracking-view": "5.1.3",
-    "react-native-maps": "0.20.1",
+    "react-native-keyboard-tracking-view": "https://github.com/rehashstudio/react-native-keyboard-tracking-view.git#v5.1.3.2",
+    "react-native-maps": "0.20",
     "react-native-media-meta": "^0.0.10",
     "react-native-push-notification": "^2.2.1",
     "react-native-router-flux": "3.43",

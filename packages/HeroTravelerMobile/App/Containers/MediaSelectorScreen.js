@@ -12,7 +12,7 @@ import mediaMeta from 'react-native-media-meta'
 import NavBar from './CreateStory/NavBar'
 import PhotoTaker from '../Components/PhotoTaker'
 import VideoPlayer from '../Components/VideoPlayer'
-import Image from '../Components/Image'
+import ImageWrapper from '../Components/ImageWrapper'
 import ShadowButton from '../Components/ShadowButton'
 import TabbarButton from '../Components/MediaSelectorTabbarButton'
 import styles from './Styles/MediaSelectorScreenStyles'
@@ -203,7 +203,7 @@ class MediaSelectorScreen extends React.Component {
     } else if (this.state.media && mediaType === 'photo') {
       content = (
         <View style={styles.imageWrapper}>
-          <Image
+          <ImageWrapper
             source={{uri: this.state.media}}
             style={styles.image}
           />

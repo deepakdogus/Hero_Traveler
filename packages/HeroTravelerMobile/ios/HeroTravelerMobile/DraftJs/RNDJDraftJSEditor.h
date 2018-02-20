@@ -52,6 +52,8 @@
 @property(nonatomic) BOOL enablesReturnKeyAutomatically;                  // default is NO (when YES, will automatically disable return key when text widget has zero-length contents, and will automatically enable when text widget has non-zero-length contents)
 @property(nonatomic,getter=isSecureTextEntry) BOOL secureTextEntry;       // default is NO
 
+@property (nullable, readwrite, strong) UIView *inputAccessoryView;
+
 // The textContentType property is to provide the keyboard with extra information about the semantic intent of the text document.
 @property(nonatomic,copy) UITextContentType textContentType NS_AVAILABLE_IOS(10_0); // default is nil
 

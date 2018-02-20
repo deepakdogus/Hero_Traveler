@@ -6,7 +6,7 @@ import {
 } from 'react-native'
 
 import TabIcon from '../TabIcon'
-import Image from '../Image'
+import ImageWrapper from '../ImageWrapper'
 import styles from './ExploreGridStyles'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import {Metrics} from '../../Shared/Themes'
@@ -34,8 +34,9 @@ export default class ExploreGrid extends Component {
         <TouchableWithoutFeedback
           onPress={() => this._onPress(category)}
         >
-          <Image
+          <ImageWrapper
             cached={true}
+            background={true}
             source={{uri: categoryUrl}}
             style={styles.gridImage}
           >
@@ -46,7 +47,7 @@ export default class ExploreGrid extends Component {
                 style={{view: styles.selectedIcon}}
               />
             }
-          </Image>
+          </ImageWrapper>
         </TouchableWithoutFeedback>
       </View>
     )

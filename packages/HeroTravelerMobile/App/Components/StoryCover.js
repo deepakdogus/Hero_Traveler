@@ -6,7 +6,7 @@ import {
   View
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import Image from './Image'
+import ImageWrapper from './ImageWrapper'
 import VideoPlayer, {MuteButton, PlayButton} from './VideoPlayer'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import {Metrics} from '../Shared/Themes'
@@ -84,13 +84,13 @@ export default class StoryCover extends Component {
           ...this._getWidthHeight(),
           maxHeight: Metrics.storyCover.fullScreen.height,
         }}>
-          <Image
+          <ImageWrapper
             cached={true}
             resizeMode='cover'
             source={{uri: imageThumbnailUrl}}
             style={embeddedImageStyle}
           />
-          <Image
+          <ImageWrapper
             cached={true}
             resizeMode='cover'
             source={{uri: imageUrl}}

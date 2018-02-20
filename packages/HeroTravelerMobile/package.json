@@ -84,7 +84,8 @@
     "redux-saga": "^0.14.3",
     "reduxsauce": "0.4.1",
     "rimraf": "^2.6.2",
-    "seamless-immutable": "^7.0.1"
+    "seamless-immutable": "^7.0.1",
+    "uuid": "^3.2.1"
   },
   "devDependencies": {
     "ava": "^0.21.0",

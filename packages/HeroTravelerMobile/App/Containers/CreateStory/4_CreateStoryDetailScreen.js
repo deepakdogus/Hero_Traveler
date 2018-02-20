@@ -10,7 +10,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
-import {getNewCover, saveCover} from './shared'
+import {getNewCover, saveCover} from '../../Shared/Redux/helpers/coverUpload'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import StoryEditActions, {isCreated, isPublishing} from '../../Shared/Redux/StoryCreateRedux'
 import {Colors, Metrics} from '../../Shared/Themes'
@@ -136,20 +136,24 @@ class CreateStoryDetailScreen extends React.Component {
 
   _onRight = () => {
     const {workingDraft} = this.props
-    const newCover = getNewCover(workingDraft.coverImage, workingDraft.coverVideo)
-    let promise
-    if (newCover) {
-      this.setState({isSavingCover: true})
-      promise = saveCover(api, workingDraft, newCover)
-      .then(draft => {
-        this.setState({isSavingCover: false})
-        return draft
-      })
-    }
-    else promise = Promise.resolve(workingDraft)
+    // const newCover = getNewCover(workingDraft.coverImage, workingDraft.coverVideo)
+    let promise = Promise.resolve(workingDraft)
+    // will need to refactor here before final commit
+    // if (newCover) {
+    //   this.setState({isSavingCover: true})
+    //   promise = saveCover(api, workingDraft, newCover)
+    //   .then(draft => {
+    //     this.setState({isSavingCover: false})
+    //     return draft
+    //   })
+    // }
+    // else promise = Promise.resolve(workingDraft)
 
     return promise.then(draft => {
       if (draft.draft) {
+        draft.id = undefined
+        // if (workingDraft.coverImage) workingDraft.coverImage = newCover
+        // else workingDraft.coverVideo = workingDraft.coverVideo
         this.props.publish(draft)
         this.setState({showError: true})
       } else {
@@ -366,7 +370,7 @@ export default connect(
   },
   dispatch => ({
     updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),
-    publish: (story) => dispatch(StoryEditActions.publishDraft(story)),
+    publish: (story) => dispatch(StoryEditActions.publishLocalDraft(story)),
     update: (id, attrs) => dispatch(StoryEditActions.updateDraft(id, attrs, true)),
     resetCreateStore: () => dispatch(StoryEditActions.resetCreateStore())
   })

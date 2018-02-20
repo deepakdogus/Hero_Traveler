@@ -11,6 +11,7 @@ const { Types, Creators } = createActions({
   editStory: ['storyId'],
   editStorySuccess: ['story'],
   editStoryFailure: ['error'],
+  publishLocalDraft: ['draft'],
   publishDraft: ['draft'],
   publishDraftSuccess: ['draft'],
   publishDraftFailure: ['error'],
@@ -79,7 +80,7 @@ export const failure = (state, {error}) =>
     error
   })
 
-export const failureUpdating = (state, {error}) => 
+export const failureUpdating = (state, {error}) =>
   state.merge({
       isRepublishing: false,
       error,
@@ -164,6 +165,7 @@ export const editStoryFailure = (state, {error}) => {
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.PUBLISH_DRAFT]: publish,
+  [Types.PUBLISH_LOCAL_DRAFT]: publish,
   [Types.PUBLISH_DRAFT_SUCCESS]: publishSuccess,
   [Types.PUBLISH_DRAFT_FAILURE]: failure,
   [Types.DISCARD_DRAFT_SUCCESS]: reset,

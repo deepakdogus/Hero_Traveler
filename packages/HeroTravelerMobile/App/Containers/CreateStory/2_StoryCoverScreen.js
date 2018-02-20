@@ -27,7 +27,7 @@ import Loader from '../../Components/Loader'
 import {Colors, Metrics} from '../../Shared/Themes'
 import styles, {customStyles, modalWrapperStyles, coverHeight} from './2_StoryCoverScreenStyles'
 import NavBar from './NavBar'
-import {getNewCover, saveCover} from './shared'
+import {getNewCover, saveCover} from '../../Shared/Redux/helpers/coverUpload'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import getVideoUrl from '../../Shared/Lib/getVideoUrl'
 import Image from '../../Components/Image'
@@ -85,8 +85,6 @@ class StoryCoverScreen extends Component {
     storyId: PropTypes.string,
     navigatedFromProfile: PropTypes.bool,
     shouldLoadStory: PropTypes.bool,
-    loadStory: PropTypes.func,
-    registerDraft: PropTypes.func,
     update: PropTypes.func,
     discardDraft: PropTypes.func,
     completeTooltip: PropTypes.func,

@@ -152,8 +152,6 @@ class CreateStoryDetailScreen extends React.Component {
     return promise.then(draft => {
       if (draft.draft) {
         draft.id = undefined
-        // if (workingDraft.coverImage) workingDraft.coverImage = newCover
-        // else workingDraft.coverVideo = workingDraft.coverVideo
         this.props.publish(draft)
         this.setState({showError: true})
       } else {

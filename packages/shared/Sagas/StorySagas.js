@@ -3,8 +3,8 @@ import StoryActions from '../Redux/Entities/Stories'
 import UserActions, {isInitialAppDataLoaded, isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
 import CategoryActions from '../Redux/Entities/Categories'
 import StoryCreateActions from '../Redux/StoryCreateRedux'
-import {getNewCover, saveCover} from '../Redux/Helpers/coverUpload'
-import CloudinaryApi from '../../Services/CloudinaryApi'
+import {getNewCover, saveCover} from '../Redux/helpers/coverUpload'
+import CloudinaryApi from '../../Services/CloudinaryAPI'
 
 const hasInitialAppDataLoaded = ({entities}, userId) => isInitialAppDataLoaded(entities.users, userId)
 const isStoryLikedSelector = ({entities}, userId, storyId) => isStoryLiked(entities.users, userId, storyId)
@@ -122,8 +122,8 @@ export function * publishLocalDraft (api, action) {
   const isImageCover = draft.coverImage
   const cover = getNewCover(draft.coverImage, draft.coverVideo)
   const cloudinaryCover = yield CloudinaryApi.uploadMediaFile(cover, isImageCover ? 'image' : 'video')
-  if (isImageCover) draft.coverImage = cloudinaryCover
-  else draft.coverVideo = cloudinaryCover
+  if (isImageCover) draft.coverImage = cloudinaryCover.data
+  else draft.coverVideo = cloudinaryCover.data
   const story = yield put(StoryCreateActions.publishDraft(draft))
 }
 

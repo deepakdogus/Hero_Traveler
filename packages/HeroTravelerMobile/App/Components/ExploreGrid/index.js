@@ -31,24 +31,26 @@ export default class ExploreGrid extends Component {
 
     return (
       <View key={category.id} style={styles.gridRow}>
-        <TouchableWithoutFeedback
-          onPress={() => this._onPress(category)}
+        <ImageWrapper
+          cached={false}
+          background={true}
+          source={{uri: categoryUrl}}
+          style={styles.gridImage}
         >
-          <ImageWrapper
-            cached={true}
-            background={true}
-            source={{uri: categoryUrl}}
-            style={styles.gridImage}
-          >
-            <Text style={styles.gridRowText}>{category.title}</Text>
-            {category.selected &&
-              <TabIcon
-                name='redCheck'
-                style={{view: styles.selectedIcon}}
-              />
-            }
-          </ImageWrapper>
-        </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={() => this._onPress(category)}
+            >
+            <View style={styles.gridImage}>
+              <Text style={styles.gridRowText}>{category.title}</Text>
+              {category.selected &&
+                <TabIcon
+                  name='redCheck'
+                  style={{view: styles.selectedIcon}}
+                />
+              }
+            </View>
+          </TouchableWithoutFeedback>
+        </ImageWrapper>
       </View>
     )
   }

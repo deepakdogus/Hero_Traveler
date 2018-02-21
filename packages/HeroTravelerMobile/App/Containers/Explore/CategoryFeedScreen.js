@@ -37,7 +37,7 @@ class CategoryFeedScreen extends React.Component {
     user: PropTypes.object,
     storiesById: PropTypes.array,
     fetchStatus: PropTypes.object,
-    error: PropTypes.string,
+    error: PropTypes.object,
     title: PropTypes.string,
     loadCategory: PropTypes.func,
     getSelectedCategories: PropTypes.func,
@@ -149,18 +149,20 @@ class CategoryFeedScreen extends React.Component {
     let { storiesById, fetchStatus, error, title} = this.props;
     const isFollowingCategory = this.getIsFollowingCategory()
 
-    let content;
+    let topContent, bottomContent
 
     if (fetchStatus.fetching && !this.state.refreshing) {
-      content = (
+      topContent = (
         <Loader />
       )
     } else if (error) {
-      content = this._wrapElt(<Text style={styles.message}>Error</Text>);
-    } else if (_.size(storiesById) === 0) {
-      content = <NoStoriesMessage />
-    } else {
-      content = (
+      topContent = this._wrapElt(<Text style={styles.message}>Unable to find new content. Pull down to refresh.</Text>);
+    }
+    if (_.size(storiesById) === 0) {
+      bottomContent = <NoStoriesMessage />
+    }
+    else {
+      bottomContent = (
         <View style={{height: imageHeight}}>
           <StoryList
             style={styles.storyList}
@@ -210,7 +212,8 @@ class CategoryFeedScreen extends React.Component {
               />
             </View>
           </View>
-        { content }
+        { topContent }
+        { bottomContent }
       </View>
     )
   }

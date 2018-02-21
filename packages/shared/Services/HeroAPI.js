@@ -185,11 +185,7 @@ const create = () => {
 
   const getCategoryStories = (categoryId, params = {}) => {
     return api.get(`story/category/${categoryId}`, params)
-      .then(response => {
-        return Object.assign({}, response, {
-          data: normalize(response.data, [Story])
-        })
-      })
+    .then(response => safeNormalize(response, [Story]))
   }
 
   // publishes a draft
@@ -205,11 +201,8 @@ const create = () => {
     return api.put(`story/draft/${id}`, {
       story: attrs
     })
-    .then(response => {
-      return  Object.assign({}, response, {
-        data: normalize(response.data, Story)
-      })
-    })
+    .then(response => safeNormalize(response, [Story]))
+
   }
 
   const removeDraft = (draftId) => {
@@ -222,40 +215,26 @@ const create = () => {
 
 const getStory = (storyId) => {
     return api.get(`story/${storyId}`)
-      .then(response => {
-        return  Object.assign({}, response, {
-          data: normalize(response.data, Story)
-        })
-      })
+    .then(response => safeNormalize(response, [Story]))
   }
 
   const getDrafts = () => {
     return api.get(`story/draft`)
-      .then(response => {
-        return  Object.assign({}, response, {
-          data: normalize(response.data, [Story])
-        })
-      })
+    .then(response => safeNormalize(response, [Story]))
+
   }
 
   const getCategories = () => {
     return api.get('category')
-      .then(response => {
-        return  Object.assign({}, response, {
-          data: normalize(response.data, [Category])
-        })
-      })
+    .then(response => safeNormalize(response, [Category]))
+
   }
 
   const getSuggestedUsers = (params) => {
     return api.get('user/suggestFollowers', {
-        params
-      })
-      .then(response => {
-        return  Object.assign({}, response, {
-          data: normalize(response.data, [User])
-        })
-      })
+      params
+    })
+    .then(response => safeNormalize(response, [User]))
   }
 
   const followUser = (userId) => {
@@ -286,11 +265,7 @@ const getStory = (storyId) => {
 
   const getUserFollowers = (userId) => {
     return api.get(`user/${userId}/followers`)
-      .then(response => {
-        return  Object.assign({}, response, {
-          data: normalize(response.data, [User])
-        })
-      })
+    .then(response => safeNormalize(response, [User]))
   }
 
   const getUserFollowing = (userId) => {
@@ -368,12 +343,7 @@ const getStory = (storyId) => {
 
   const getActivity = () => {
     return api.get(`user/activity`)
-      .then(response => {
-        return {
-          ...response,
-          data: normalize(response.data, [Activity])
-        }
-      })
+    .then(response => safeNormalize(response, [Activity]))
   }
 
   const setActivityRead = (activityId) => {

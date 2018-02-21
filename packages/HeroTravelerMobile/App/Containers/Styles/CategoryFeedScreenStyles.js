@@ -15,8 +15,10 @@ export default StyleSheet.create({
     alignItems: 'center'
   },
   message: {
-    fontSize: 24,
-    color: '#fff'
+    fontSize: 16,
+    color: '#fff',
+    paddingVertical: 7,
+    textAlign: 'center',
   },
   tabnav: {
     height: 50,

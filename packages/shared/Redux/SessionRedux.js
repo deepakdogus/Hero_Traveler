@@ -55,7 +55,10 @@ export const setIsResuming = (state, {isResuming}) => state.merge({
 })
 
 export const refreshSessionSuccess = (state, {tokens}) => {
-  return state.merge({tokens})
+  return state.merge({
+    tokens,
+    isLoggingOut: false,
+  })
 }
 
 export const resumeError = (state, {error}) => state.merge({isResumingSession: false, error})

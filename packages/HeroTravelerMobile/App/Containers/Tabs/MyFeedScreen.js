@@ -19,7 +19,7 @@ const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBar
 class MyFeedScreen extends React.Component {
   static propTypes = {
     user: PropTypes.object,
-    error: PropTypes.bool,
+    error: PropTypes.object,
   };
 
   constructor(props) {
@@ -70,7 +70,7 @@ class MyFeedScreen extends React.Component {
 
   _showError(){
     return (
-      <Text style={styles.message}>Error</Text>
+      <Text style={styles.message}>Failed to update feed. Please try again.</Text>
     )
   }
 
@@ -113,26 +113,22 @@ class MyFeedScreen extends React.Component {
 
   render () {
     let {storiesById, fetchStatus, error} = this.props;
-    let content
+    let topContent, bottomContent
 
-    if (fetchStatus.fetching || this.state.refreshing) {
-      content = (
-        <Loader />
-      )
+    if (error) {
+      topContent = this._showError()
     }
-    else if (error && (!storiesById || !storiesById.length)) {
-      content = this._wrapElt(this._showError())
-    } else if (!storiesById || !storiesById.length) {
+    if (!storiesById || !storiesById.length) {
       let innerContent = this._showNoStories();
-      content = this._wrapElt(innerContent);
+      bottomContent = this._wrapElt(innerContent);
     } else {
-      content = (
+      bottomContent = (
         <StoryList
           style={styles.storyList}
           storiesById={storiesById}
           renderStory={this.renderStory}
           onRefresh={this._onRefresh}
-          refreshing={this.state.refreshing}
+          refreshing={fetchStatus.fetching}
         />
       );
     }
@@ -142,7 +138,8 @@ class MyFeedScreen extends React.Component {
         <View style={styles.fakeNavBar}>
           <Image source={Images.whiteLogo} style={styles.logo} />
         </View>
-        { content }
+        { topContent }
+        { bottomContent }
       </View>
     )
   }

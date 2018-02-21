@@ -39,6 +39,7 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8BA419D9187244E6B9C41535 /* SourceSansPro-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B9B2346795F4127B08055A6 /* SourceSansPro-SemiBoldItalic.ttf */; };
 		8FF857911AAE4CCAB29A20A9 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 88CAD8C48AFD46F7B7845066 /* Zocial.ttf */; };
+		9115FA93203D681200547516 /* VideoDownloadItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9115FA92203D681200547516 /* VideoDownloadItem.m */; };
 		912E95471FA631C700399703 /* RNDJShadowDraftJSEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 912E95451FA631C600399703 /* RNDJShadowDraftJSEditor.m */; };
 		913C4EF45111427B8D830D3F /* Montserrat-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A0687633F8D24E28B8519A35 /* Montserrat-Light.ttf */; };
 		9155DE921FD9B42500DAAA7C /* RNDJAutocorrectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9155DE911FD9B42500DAAA7C /* RNDJAutocorrectView.m */; };
@@ -578,6 +579,8 @@
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		88CAD8C48AFD46F7B7845066 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		8E7E3F32C97249F1B23E8A2E /* libRNFetchBlob.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFetchBlob.a; sourceTree = "<group>"; };
+		9115FA91203D681200547516 /* VideoDownloadItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoDownloadItem.h; sourceTree = "<group>"; };
+		9115FA92203D681200547516 /* VideoDownloadItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoDownloadItem.m; sourceTree = "<group>"; };
 		912E95451FA631C600399703 /* RNDJShadowDraftJSEditor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJShadowDraftJSEditor.m; sourceTree = "<group>"; };
 		912E95461FA631C700399703 /* RNDJShadowDraftJSEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJShadowDraftJSEditor.h; sourceTree = "<group>"; };
 		9155DE901FD9B42500DAAA7C /* RNDJAutocorrectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJAutocorrectView.h; sourceTree = "<group>"; };
@@ -1052,6 +1055,8 @@
 				91F037C820038398000BA406 /* RCTVideoCache.m */,
 				91589B3E200BE48F000B84E6 /* VideoCacheItem.h */,
 				91589B3F200BE48F000B84E6 /* VideoCacheItem.m */,
+				9115FA91203D681200547516 /* VideoDownloadItem.h */,
+				9115FA92203D681200547516 /* VideoDownloadItem.m */,
 			);
 			name = Video;
 			path = HeroTravelerMobile/Video;
@@ -1988,6 +1993,7 @@
 				91973CB41FA39B64006DE932 /* RNDJDraftJSEditor.m in Sources */,
 				9155DE921FD9B42500DAAA7C /* RNDJAutocorrectView.m in Sources */,
 				91589B40200BE48F000B84E6 /* VideoCacheItem.m in Sources */,
+				9115FA93203D681200547516 /* VideoDownloadItem.m in Sources */,
 				91F037C620035941000BA406 /* RCTVideoPlayerViewController.m in Sources */,
 				912E95471FA631C700399703 /* RNDJShadowDraftJSEditor.m in Sources */,
 				91973CB51FA39B64006DE932 /* RNDJDraftJSEditorManager.m in Sources */,

@@ -18,7 +18,7 @@ typedef void (^FinishedDownloadBlock)(NSURL* location, VideoCacheItem* videoCach
 
 @class PlayingVideoItem;
 
-@interface VideoCacheItem : NSObject <AVAssetDownloadDelegate>
+@interface VideoCacheItem : NSObject
 {
 //  _repeat, _paused should live here on video cache item??????
 //  but are defined by the "topmost"
@@ -41,8 +41,6 @@ typedef void (^FinishedDownloadBlock)(NSURL* location, VideoCacheItem* videoCach
 @property(readonly, strong) NSString* assetKey;
 @property(readonly, strong) AVURLAsset* asset;
 
-@property(readonly) BOOL needsDownload;
-
 @property(readonly, strong) AVPlayerItem* playerItem;
 @property(readonly, strong) AVPlayer* player;
 
@@ -50,19 +48,9 @@ typedef void (^FinishedDownloadBlock)(NSURL* location, VideoCacheItem* videoCach
 
 @property(readonly) NSInteger numPlayingInstances;
 
-@property(readonly, strong) FinishedDownloadBlock finishedDownloadBlock;
-
-- (instancetype) initWithAssetKey:(NSString*)assetKey uri:(NSString*)uri finishedDownloadBlock:(FinishedDownloadBlock)finishedDownloadBlock;
+- (instancetype) initWithAssetKey:(NSString*)assetKey uri:(NSString*)uri;
 - (instancetype) initWithAssetKey:(NSString*)assetKey cachedLocation:(NSURL*)url;
 - (void) touch;
-
-- (void) startDownload;
-- (void) stopDownload;
-
-@property(readonly, strong) AVAssetDownloadURLSession* downloadSession;
-
-@property(readonly, strong) AVAssetDownloadTask* downloadTask;
-@property(readonly, strong) NSURL* localFileLocation;
 
 - (PlayingVideoItem*) getControllingVideoView;
 
@@ -93,4 +81,3 @@ typedef void (^FinishedDownloadBlock)(NSURL* location, VideoCacheItem* videoCach
 - (instancetype) initWithPlayingVideoItem:(PlayingVideoItem*)playingVideoItem;
 
 @end
-

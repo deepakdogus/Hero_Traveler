@@ -248,13 +248,13 @@
 {
 //  // TODO: Restrict this to N downloads
 //  
-//  for (VideoCacheItem* existingCacheItem in loadedVideos)
-//  {
-//    if (existingCacheItem.needsDownload)
-//    {
-//      [existingCacheItem startDownload];
-//    }
-//  }
+  for (VideoCacheItem* existingCacheItem in loadedVideos)
+  {
+    if (existingCacheItem.needsDownload)
+    {
+      [existingCacheItem startDownload];
+    }
+  }
 }
 
 - (void) addAssetKeyToCurrentlyDownloadedFiles:(NSString*)assetKey
@@ -264,9 +264,9 @@
   currentlyDownloadedFiles = [NSArray arrayWithArray:mCurrentlyDownloadedFiles];
 }
 
-- (VideoCacheItem*) videoCacheItemForUri:(NSString*)uri
+- (VideoCacheItem*) videoCacheItemForUrl:(NSString*)url
 {
-  NSString* assetKey = [RCTVideoCache urlToKey:uri];
+  NSString* assetKey = [RCTVideoCache urlToKey:url];
   
   VideoCacheItem* cacheItem = nil;
   
@@ -311,7 +311,7 @@
     
     __weak RCTVideoCache* weakCache = self;
     cacheItem = [[VideoCacheItem alloc] initWithAssetKey:assetKey
-                                                     uri:uri
+                                                     uri:url
                                    finishedDownloadBlock:^(NSURL* location, VideoCacheItem* finishedItem)
                  {
                    RCTVideoCache* cache = weakCache;
@@ -329,7 +329,7 @@
                    
                    if (error)
                    {
-                     NSLog(@"Failed to move video %@ after download", uri);
+                     NSLog(@"Failed to move video %@ after download", url);
                    }
                    else
                    {
@@ -391,9 +391,9 @@
   [self dispatchDownloads];
 }
 
-- (PlayingVideoItem*) assetForUrl:(NSString*)url forVideoView:(RCTVideo*)videoView
+- (PlayingVideoItem*) assetForUrl:(NSString*)url withOriginalUrl:(NSString*)originalUrl forVideoView:(RCTVideo*)videoView
 {
-  VideoCacheItem* cacheItem = [self videoCacheItemForUri:url];
+  VideoCacheItem* cacheItem = [self videoCacheItemForUri:url originalUri:originalUrl];
   [self dispatchDownloads];
   return [[PlayingVideoItem alloc] initWithVideoCacheItem:cacheItem videoView:videoView];
 }

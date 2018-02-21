@@ -26,7 +26,6 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   if (self = [super init])
   {
     _assetKey = assetKey;
-    _needsDownload = YES;
     
     currentPlayingVideoItems = @[];
     
@@ -39,13 +38,6 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
     _player.automaticallyWaitsToMinimizeStalling = NO;
     _player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
     [self addPlayerObservers];
-    
-//    NSURLSessionConfiguration* sessionConfiguration = [self sessionConfiguration];
-//    _downloadSession = [AVAssetDownloadURLSession
-//                        sessionWithConfiguration:sessionConfiguration
-//                        assetDownloadDelegate:self
-//                        delegateQueue:[NSOperationQueue mainQueue]];
-    
   }
   
   return self;
@@ -56,7 +48,6 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   if (self = [super init])
   {
     _assetKey = assetKey;
-    _needsDownload = NO;
     
     _playerItem = [AVPlayerItem playerItemWithURL:url];
     _player = [AVPlayer playerWithPlayerItem:_playerItem];
@@ -64,41 +55,6 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   }
   
   return self;
-}
-
-- (NSURLSessionConfiguration*) sessionConfiguration
-{
-  return [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:[NSString stringWithFormat:@"%@-%@", DOWNLOAD_IDENTIFIER, _assetKey]];
-}
-
-- (void) startDownload
-{
-  if (!_downloadSession || !_needsDownload || !_asset || _downloadTask)
-  {
-    return;
-  }
-  
-  _localFileLocation = [[NSURL fileURLWithPath:NSTemporaryDirectory()] URLByAppendingPathComponent:_assetKey];
-  
-  
-  _downloadTask = [_downloadSession assetDownloadTaskWithURLAsset:_asset
-                                                       assetTitle:_assetKey
-                                                 assetArtworkData:nil
-                                                          options:@{
-                                                                    AVAssetDownloadTaskMinimumRequiredMediaBitrateKey: @(0),
-                                                                    }];
-  [_downloadTask resume];
-}
-
-- (void) stopDownload
-{
-  if (!_downloadTask)
-  {
-    return;
-  }
-  
-  [_downloadTask cancel];
-  _downloadTask = nil;
 }
 
 - (void) touch
@@ -211,35 +167,6 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   }
 
   currentPlayingVideoItems = [NSArray arrayWithArray:mCurrentPlayingVideoItems];
-}
-
-- (void)URLSession:(NSURLSession *)session assetDownloadTask:(AVAssetDownloadTask *)assetDownloadTask didResolveMediaSelection:(AVMediaSelection *)resolvedMediaSelection
-{
-  NSLog(@"Download resolved");
-}
-
-- (void) URLSession:(NSURLSession*)session assetDownloadTask:(AVAssetDownloadTask*)assetDownloadTask didFinishDownloadingToURL:(NSURL*)location
-{
-  NSLog(@"Download finished");
-}
-
-- (void) URLSession:(NSURLSession*)session task:(NSURLSessionTask*)task didCompleteWithError:(nullable NSError*)error
-{
-  if (error)
-  {
-    NSLog(@"Downloading video to cache failed because %@", error);
-    _needsDownload = NO;
-    return;
-  }
-  
-  if (_finishedDownloadBlock)
-  {
-    _finishedDownloadBlock(_localFileLocation, self);
-  }
-  
-  _downloadTask = nil;
-  _needsDownload = NO;
-  _finishedDownloadBlock = nil;
 }
 
 - (BOOL) isViewVisible:(UIView*)view
@@ -411,7 +338,7 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   }
 }
 
-- (void)attachListeners
+- (void) attachListeners
 {
   // listen for end of file
   [[NSNotificationCenter defaultCenter] addObserver:self

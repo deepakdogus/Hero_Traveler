@@ -29,7 +29,7 @@
 
 - (void) precacheAssets:(NSArray*)precacheAssets; // set as array of urls
 
-- (PlayingVideoItem*) assetForUrl:(NSString*)url forVideoView:(RCTVideo*)videoView;
+- (PlayingVideoItem*) assetForUrl:(NSString*)url withOriginalUrl:(NSString*)originalUrl forVideoView:(RCTVideo*)videoView;
 
 - (void) handleMemoryWarning;
 

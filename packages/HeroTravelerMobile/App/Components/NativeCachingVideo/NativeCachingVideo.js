@@ -156,6 +156,7 @@ export default class NativeCachingVideo extends Component {
       resizeMode: nativeResizeMode,
       src: {
         uri,
+        originalUri,
         isNetwork,
         isAsset,
         type: source.type || '',
@@ -206,7 +207,8 @@ NativeCachingVideo.propTypes = {
   /* Wrapper component */
   source: PropTypes.oneOfType([
     PropTypes.shape({
-      uri: PropTypes.string
+      uri: PropTypes.string,
+      originalUri: PropTypes.string,
     }),
     // Opaque type returned by require('./video.mp4')
     PropTypes.number

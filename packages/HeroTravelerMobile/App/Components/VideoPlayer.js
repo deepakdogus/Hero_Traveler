@@ -100,6 +100,8 @@ export default class VideoPlayer extends React.Component {
     isMuted: PropTypes.bool,
     shouldEnableAutoplay: PropTypes.bool,
     areInRenderLocation: PropTypes.bool,
+    path: PropTypes.string,
+    originalPath: PropTypes.string,
   }
 
   static defaultProps = {
@@ -246,7 +248,7 @@ export default class VideoPlayer extends React.Component {
       ]}>
         <NativeCachingVideo
           needsVideoLoaded={this.props.areInRenderLocation}
-          source={{uri: this.props.path}}
+          source={{uri: this.props.path, originalUri: this.props.originalPath}}
           ref={this._bindRef}
           paused={this.isPaused()}
           muted={this.state.muted}

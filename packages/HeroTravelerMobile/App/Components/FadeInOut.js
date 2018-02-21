@@ -1,6 +1,7 @@
 'use strict';
-import React, {PropTypes, Component} from 'react'
-import {View, Animated,} from 'react-native';
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
+import {View, Animated,} from 'react-native'
 
 export default class FadeInOut extends Component {
   static propTypes = {

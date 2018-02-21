@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native'
-import Image from '../../Image'
+import ImageWrapper from '../../ImageWrapper'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import getImageUrl from "../../../Shared/Lib/getImageUrl"
 
@@ -27,11 +27,12 @@ export default class DraftJsImage extends Component {
       <TouchableWithoutFeedback
        style={this.props.style}
        onPress={onPress}>
-        <Image
+       <ImageWrapper
+         background={true}
          fullWidth={true}
          source={{ uri: getImageUrl(url, 'optimized', {height, width}) }}>
           {isSelected && imageEditOverlay}
-        </Image>
+        </ImageWrapper>
       </TouchableWithoutFeedback>
     )
   }

@@ -11,7 +11,7 @@ import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import NativeCachingVideo from './NativeCachingVideo/NativeCachingVideo'
 import TabIcon from './TabIcon'
-import Image from './Image'
+import ImageWrapper from './ImageWrapper'
 import MediaSelectorStyles from '../Containers/Styles/MediaSelectorScreenStyles'
 
 import Colors from '../Shared/Themes/Colors'
@@ -263,7 +263,7 @@ export default class VideoPlayer extends React.Component {
         />
 
         {this.props.imgUrl && isNotReadyForDisplay &&
-        <Image
+        <ImageWrapper
           cached={true}
           resizeMode='cover'
           source={{uri: this.props.imgUrl}}

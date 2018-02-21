@@ -7,6 +7,7 @@ import {
   Text,
   TextInput,
   Image,
+  ImageBackground,
 } from 'react-native'
 import { connect } from 'react-redux'
 import {
@@ -153,7 +154,7 @@ class LoginScreen extends React.Component {
     const editable = !fetching
     const textInputStyle = editable ? styles.input : styles.textInputReadonly
     return (
-      <Image
+      <ImageBackground
         source={Images.launchBackground}
         style={styles.backgroundImage}
         blurRadius={25}
@@ -235,7 +236,7 @@ class LoginScreen extends React.Component {
             spinnerColor={Colors.snow}
           />
         }
-      </Image>
+      </ImageBackground>
     )
   }
 

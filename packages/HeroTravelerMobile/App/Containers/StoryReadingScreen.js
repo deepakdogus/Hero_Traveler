@@ -16,7 +16,7 @@ import ConnectedStoryPreview from './ConnectedStoryPreview'
 import {Metrics} from '../Shared/Themes'
 import StoryReadingToolbar from '../Components/StoryReadingToolbar'
 import TabIcon from '../Components/TabIcon'
-import Image from '../Components/Image'
+import ImageWrapper from '../Components/ImageWrapper'
 import Loader from '../Components/Loader'
 import FlagModal from '../Components/FlagModal'
 import {styles, rendererStyles} from './Styles/StoryReadingScreenStyles'
@@ -85,7 +85,7 @@ const atomicHandler = (item: Object): any => {
       case 'image':
         return (
           <View key={item.key} style={styles.mediaViewWrapper}>
-            <Image
+            <ImageWrapper
               fullWidth={true}
               source={{uri: `${getImageUrl(item.data.url, 'optimized', {
                 width: Metrics.screenWidth,

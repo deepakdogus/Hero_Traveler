@@ -4,7 +4,7 @@ import {
   View,
   StyleSheet,
 } from 'react-native'
-import Image from './Image'
+import ImageWrapper from './ImageWrapper'
 import {Images} from '../Shared/Themes'
 
 const styles = StyleSheet.create({
@@ -45,7 +45,7 @@ export default class Avatar extends Component {
     if (!avatarUrl) {
       return (
         <View style={rootStyles}>
-          <Image
+          <ImageWrapper
             cached={true}
             source={Images.iconDefaultProfile}
             style={{
@@ -61,7 +61,7 @@ export default class Avatar extends Component {
 
     return (
       <View style={rootStyles}>
-        <Image
+        <ImageWrapper
           cached={true}
           source={{uri: avatarUrl}}
           style={{

@@ -13,6 +13,7 @@
 #import <React/RCTAssert.h>
 #import <React/RCTConvert.h>
 #import <React/RCTLog.h>
+#import <React/RCTShadowView+Layout.h>
 #import <React/UIView+React.h>
 
 #import "RNDJShadowDraftJSEditor.h"
@@ -80,6 +81,7 @@ RCT_EXPORT_SHADOW_PROPERTY(fontStyle, NSString)
 RCT_EXPORT_SHADOW_PROPERTY(fontVariant, NSArray)
 RCT_EXPORT_SHADOW_PROPERTY(letterSpacing, CGFloat)
 RCT_EXPORT_SHADOW_PROPERTY(color, UIColor)
+RCT_EXPORT_SHADOW_PROPERTY(backgroundColor, UIColor)
 RCT_EXPORT_SHADOW_PROPERTY(opacity, CGFloat)
 RCT_EXPORT_SHADOW_PROPERTY(textAlign, NSTextAlignment)
 RCT_EXPORT_SHADOW_PROPERTY(lineHeight, CGFloat)

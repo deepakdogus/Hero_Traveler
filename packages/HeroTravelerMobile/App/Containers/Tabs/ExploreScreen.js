@@ -25,7 +25,7 @@ import List from '../../Components/List'
 import ListItem from '../../Components/ListItem'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import Avatar from '../../Components/Avatar'
-import Image from '../../Components/Image'
+import ImageWrapper from '../../Components/ImageWrapper'
 import {PlayButton} from '../../Components/VideoPlayer'
 import TabIcon from '../../Components/TabIcon'
 
@@ -190,7 +190,7 @@ class ExploreScreen extends Component {
 
                 if (story.coverImage) {
                   leftEl = (
-                    <Image
+                    <ImageWrapper
                       cached={true}
                       resizeMode='cover'
                       source={{uri: getImageUrl(story.coverImage, 'basic')}}
@@ -199,8 +199,9 @@ class ExploreScreen extends Component {
                   )
                 } else {
                   leftEl = (
-                    <Image
+                    <ImageWrapper
                       cached={true}
+                      background={true}
                       resizeMode='cover'
                       source={{uri: getImageUrl(story.coverVideo, 'video') }}
                       style={styles.thumbnailImage}
@@ -209,7 +210,7 @@ class ExploreScreen extends Component {
                         size='tiny'
                         style={styles.PlayButton}
                       />
-                    </Image>
+                    </ImageWrapper>
                   )
                 }
                 return (

@@ -6,7 +6,7 @@ import {
 } from 'react-native'
 
 import TabIcon from '../TabIcon'
-import Image from '../Image'
+import ImageWrapper from '../ImageWrapper'
 import styles from './ExploreGridStyles'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import {Metrics} from '../../Shared/Themes'
@@ -31,23 +31,26 @@ export default class ExploreGrid extends Component {
 
     return (
       <View key={category.id} style={styles.gridRow}>
-        <TouchableWithoutFeedback
-          onPress={() => this._onPress(category)}
+        <ImageWrapper
+          cached={false}
+          background={true}
+          source={{uri: categoryUrl}}
+          style={styles.gridImage}
         >
-          <Image
-            cached={true}
-            source={{uri: categoryUrl}}
-            style={styles.gridImage}
-          >
-            <Text style={styles.gridRowText}>{category.title}</Text>
-            {category.selected &&
-              <TabIcon
-                name='redCheck'
-                style={{view: styles.selectedIcon}}
-              />
-            }
-          </Image>
-        </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={() => this._onPress(category)}
+            >
+            <View style={styles.gridImage}>
+              <Text style={styles.gridRowText}>{category.title}</Text>
+              {category.selected &&
+                <TabIcon
+                  name='redCheck'
+                  style={{view: styles.selectedIcon}}
+                />
+              }
+            </View>
+          </TouchableWithoutFeedback>
+        </ImageWrapper>
       </View>
     )
   }

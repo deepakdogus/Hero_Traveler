@@ -13,7 +13,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import {AutoGrowingTextInput} from '@hero/react-native-autogrow-textinput';
 
 import {DraftOffsetKey} from './draft-js/reexports'
-import Image from '../Image'
+import ImageWrapper from '../ImageWrapper'
 import VideoPlayer from '../VideoPlayer'
 import {Colors, Metrics} from '../../Shared/Themes'
 import {getVideoUrlBase} from "../../Shared/Lib/getVideoUrl"
@@ -137,12 +137,13 @@ export default class NewTextBlock extends PureComponent {
             style={{flex: 1}}
             onPress={this.toggleImageFocus}
           >
-            <Image
+           <ImageWrapper
+              background={true}
               fullWidth={true}
               source={{ uri: getImageUrl(url, 'basic') }}
             >
               {this.state.isImageFocused && imageEditOverlay}
-            </Image>
+            </ImageWrapper>
           </TouchableWithoutFeedback>
         </View>
       )

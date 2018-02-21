@@ -745,16 +745,20 @@ class StoryCoverScreen extends Component {
 
   handleAddImage = (data) => {
     this.editor.updateSelectionState({hasFocus: false})
-    this.setState({imageUploading: true})
-    api.uploadStoryImage(this.props.workingDraft.id, pathAsFileObject(data))
-      .then(({data: imageUpload}) => {
-        this.editor.insertImage(...extractUploadData(imageUpload))
-        this.setState({imageUploading: false})
-      })
-      .catch((err) => {
-        console.log(`Failed adding image ${err}`)
-        this.saveFailed()
-      })
+    // this.setState({imageUploading: true})
+    this.editor.insertImage(data)
+    // will remove later - keeping for reference until ready to merge
+    // api.uploadStoryImage(this.props.workingDraft.id, pathAsFileObject(data))
+    //   .then(({data: imageUpload}) => {
+    //     console.log("imageUpload is", imageUpload)
+    //     this.editor.insertImage(...extractUploadData(imageUpload))
+    //     // this.editor.insertImage(...extractUploadData(imageUpload))
+    //     this.setState({imageUploading: false})
+    //   })
+    //   .catch((err) => {
+    //     console.log(`Failed adding image ${err}`)
+    //     this.saveFailed()
+    //   })
     NavActions.pop()
   }
 

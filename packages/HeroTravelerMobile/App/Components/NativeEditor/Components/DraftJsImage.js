@@ -22,14 +22,16 @@ export default class DraftJsImage extends Component {
         </TouchableOpacity>
       </View>
     )
-
+    let uri
+    if (url.substring(0,4) === 'file') uri = url
+    else uri = getImageUrl(url, 'optimized', {height, width})
     return (
       <TouchableWithoutFeedback
        style={this.props.style}
        onPress={onPress}>
         <Image
          fullWidth={true}
-         source={{ uri: getImageUrl(url, 'optimized', {height, width}) }}>
+         source={{ uri }}>
           {isSelected && imageEditOverlay}
         </Image>
       </TouchableWithoutFeedback>

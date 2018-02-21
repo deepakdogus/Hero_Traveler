@@ -4,7 +4,10 @@ import UserActions, {isInitialAppDataLoaded, isStoryLiked, isStoryBookmarked} fr
 import CategoryActions from '../Redux/Entities/Categories'
 import StoryCreateActions from '../Redux/StoryCreateRedux'
 import {getNewCover, saveCover} from '../Redux/helpers/coverUpload'
-import CloudinaryApi from '../../Services/CloudinaryAPI'
+import CloudinaryAPI from '../../Services/CloudinaryAPI'
+import pathAsFileObject from '../Lib/pathAsFileObject'
+import _ from 'lodash'
+import Immutable from 'seamless-immutable'
 
 const hasInitialAppDataLoaded = ({entities}, userId) => isInitialAppDataLoaded(entities.users, userId)
 const isStoryLikedSelector = ({entities}, userId, storyId) => isStoryLiked(entities.users, userId, storyId)
@@ -117,13 +120,39 @@ export function * getCategoryStories (api, {categoryId, storyType}) {
   }
 }
 
+const extractUploadData = (uploadData) => {
+  if (typeof uploadData === 'string') uploadData = JSON.parse(uploadData)
+  return {
+    url: `${uploadData.public_id}.${uploadData.format}`,
+    height: uploadData.height,
+    width: uploadData.width,
+  }
+}
+
 export function * publishLocalDraft (api, action) {
   const {draft} = action
+
+  // saving cover
   const isImageCover = draft.coverImage
   const cover = getNewCover(draft.coverImage, draft.coverVideo)
-  const cloudinaryCover = yield CloudinaryApi.uploadMediaFile(cover, isImageCover ? 'image' : 'video')
+  const cloudinaryCover = yield CloudinaryAPI.uploadMediaFile(cover, isImageCover ? 'image' : 'video')
   if (isImageCover) draft.coverImage = cloudinaryCover.data
   else draft.coverVideo = cloudinaryCover.data
+
+  // saving draftAssets
+  draft.draftjsContent = Immutable.asMutable(draft.draftjsContent, {deep: true})
+  const updatedBlocks = yield Promise.all(draft.draftjsContent.blocks.map((block, index) => {
+    if (block.type === 'atomic') {
+      const {url, type} = block.data
+      if (url.substring(0,4) === 'file') {
+        return CloudinaryAPI.uploadMediaFile(pathAsFileObject(url), type)
+        .then(({data: imageUpload}) => {
+          return _.merge(block.data, extractUploadData(imageUpload))
+        })
+      }
+    }
+    else return
+  }))
   const story = yield put(StoryCreateActions.publishDraft(draft))
 }
 

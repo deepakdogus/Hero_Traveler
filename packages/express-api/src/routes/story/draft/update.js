@@ -1,4 +1,5 @@
 import {StoryDraft, Models} from '@hero/ht-core'
+import formatUploadObject from '../../../utils/formatUploadObject'
 
 function isVideoBlock(block) {
   return block.type === 'atomic' && block.data && block.data.type === 'video'
@@ -20,6 +21,7 @@ export default function updateDraft(req, res) {
       if (isVideoBlock(block) && !block.data.HLSUrl) {
         return Models.Video.findOne({'original.path': block.data.url})
         .then(video => {
+          if (!video) return
           const formats = video.streamingFormats
           if (formats) {
             if (formats.HLS) block.data.HLSUrl = formats.HLS
@@ -30,8 +32,8 @@ export default function updateDraft(req, res) {
       return
     }))
     .then(() => {
-      return StoryDraft.update(draftId, attrs)
+      return StoryDraft.update(draftId, attrs, formatUploadObject)
     })
   }
-  return StoryDraft.update(draftId, attrs)
+  return StoryDraft.update(draftId, attrs, formatUploadObject)
 }

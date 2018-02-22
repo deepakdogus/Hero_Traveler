@@ -40,9 +40,21 @@ export async function parseAndInsertStoryCategories(categories) {
   })
 }
 
+export async function addCover(draft, assetFormater){
+  const {coverImage, coverVideo} = draft
+  const isCoverImage = !!coverImage
+  const cover = await createCover(
+    coverImage || coverVideo,
+    assetFormater,
+    !!coverImage ? 'coverImage' : 'coverVideo'
+  )
+  draft.coverImage = isCoverImage ? cover._id : undefined
+  draft.coverVideo = isCoverImage ? undefined : cover._id
+}
 
 export default async function createStory(storyData, assetFormater) {
   const {coverImage, coverVideo} = storyData
+
   // lets us know which Story method to follow and how to handle media assets
   const isLocalStory = !storyData.id
   let newStory
@@ -53,15 +65,7 @@ export default async function createStory(storyData, assetFormater) {
     categories: await parseAndInsertStoryCategories(storyData.categories)
   }
   if (isLocalStory) {
-    const isCoverImage = !!coverImage
-    const isImageCover = !!storyObject.coverImage
-    const cover = await createDraft(
-      coverImage || coverVideo,
-      assetFormater,
-      !!coverImage ? 'coverImage' : 'coverVideo'
-    )
-    storyObject.coverImage = isImageCover ? cover._id : undefined
-    storyObject.coverVideo = isImageCover ? undefined : cover._id
+    await addCover(storyObject, assetFormater)
     newStory = await Story.create(storyObject)
   }
   else newStory = await updateDraft(storyData.id, storyObject)
@@ -80,7 +84,7 @@ export default async function createStory(storyData, assetFormater) {
   }
 }
 
-function createDraft(cover, assetFormater, purpose) {
+function createCover(cover, assetFormater, purpose) {
   if (typeof cover === 'string') cover = JSON.parse(cover)
   const createMethod = purpose === 'coverImage' ? Image : Video
   return createMethod.create(

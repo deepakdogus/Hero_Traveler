@@ -470,32 +470,10 @@ class StoryCoverScreen extends Component {
 
   // this does a hard save to the DB
   saveStory() {
-    let promise
-    const {coverImage, coverVideo} = this.props.workingDraft
-
-    this.setState({
-      updating: true
-    })
-    const newCover = getNewCover(coverImage, coverVideo)
-
-    if (newCover) promise = saveCover(api, this.props.workingDraft, newCover)
-    else promise = Promise.resolve(this.props.workingDraft)
-
-    return promise.then(draft => {
-      this.cleanDraft(draft)
-
-      this.props.update(draft.id, draft)
-
-      this.setState({
-        file: null,
-        updating: false,
-      })
-    })
-    .catch((err) => {
-      this.saveFailed()
-      console.log(`Failed saving story: ${err}`)
-      return Promise.reject(err)
-    })
+    const draft = this.props.workingDraft
+    this.cleanDraft(draft)
+    this.props.update(draft.id, draft)
+    return Promise.resolve({})
   }
 
   saveFailed = () => {
@@ -764,16 +742,18 @@ class StoryCoverScreen extends Component {
 
   handleAddVideo = (data) => {
     this.editor.updateSelectionState({hasFocus: false})
-    this.setState({videoUploading: true})
-    api.uploadStoryVideo(this.props.workingDraft.id, pathAsFileObject(data))
-      .then(({data: videoUpload}) => {
-        this.editor.insertVideo(...extractUploadData(videoUpload))
-        this.setState({videoUploading: false})
-      })
-      .catch((err) => {
-        console.log(`Failed adding video ${err}`)
-        this.saveFailed()
-      })
+    this.editor.insertVideo(data)
+    // will remove later - keeping for reference until ready to merge
+    // this.setState({videoUploading: true})
+    // api.uploadStoryVideo(this.props.workingDraft.id, pathAsFileObject(data))
+    //   .then(({data: videoUpload}) => {
+    //     this.editor.insertVideo(...extractUploadData(videoUpload))
+    //     this.setState({videoUploading: false})
+    //   })
+    //   .catch((err) => {
+    //     console.log(`Failed adding video ${err}`)
+    //     this.saveFailed()
+    //   })
     NavActions.pop()
   }
 

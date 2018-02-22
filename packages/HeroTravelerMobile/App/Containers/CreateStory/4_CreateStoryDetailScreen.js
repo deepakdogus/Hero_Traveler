@@ -10,7 +10,6 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
-import {getNewCover, saveCover} from '../../Shared/Redux/helpers/coverUpload'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import StoryEditActions, {isCreated, isPublishing} from '../../Shared/Redux/StoryCreateRedux'
 import {Colors, Metrics} from '../../Shared/Themes'
@@ -21,7 +20,6 @@ import RoundedButton from '../../Components/RoundedButton'
 import NavBar from './NavBar'
 import styles from './4_CreateStoryDetailScreenStyles'
 import API from '../../Shared/Services/HeroAPI'
-import {displayLocation} from '../../Shared/Lib/locationHelpers'
 const api = API.create()
 
 /***
@@ -136,26 +134,15 @@ class CreateStoryDetailScreen extends React.Component {
 
   _onRight = () => {
     const {workingDraft} = this.props
-    // const newCover = getNewCover(workingDraft.coverImage, workingDraft.coverVideo)
     let promise = Promise.resolve(workingDraft)
-    // will need to refactor here before final commit
-    // if (newCover) {
-    //   this.setState({isSavingCover: true})
-    //   promise = saveCover(api, workingDraft, newCover)
-    //   .then(draft => {
-    //     this.setState({isSavingCover: false})
-    //     return draft
-    //   })
-    // }
-    // else promise = Promise.resolve(workingDraft)
-
+    this.next()
     return promise.then(draft => {
       if (draft.draft) {
         draft.id = undefined
         this.props.publish(draft)
         this.setState({showError: true})
       } else {
-        this._update(draft)
+        this.saveDraft(draft)
       }
     })
   }
@@ -166,12 +153,6 @@ class CreateStoryDetailScreen extends React.Component {
 
   _updateType = (type) => {
     this.props.updateWorkingDraft({type})
-  }
-
-  _update = (draft) => {
-    this.saveDraft(draft)
-    // rather than calling this.next() now, we will let componentWillReceiveProps handle that
-    // so that we do not run into race condition on backend
   }
 
   _closeError = () => {
@@ -232,7 +213,7 @@ class CreateStoryDetailScreen extends React.Component {
 
   render () {
     const {workingDraft, publishing} = this.props
-    const {isSavingCover, categories, modalVisible, showError} = this.state
+    const {isSavingCover, modalVisible, showError} = this.state
     const err = this.props.error
     const errText = (__DEV__ && err && err.problem && err.status) ? `${err.status}: ${err.problem}` : ""
 
@@ -252,7 +233,7 @@ class CreateStoryDetailScreen extends React.Component {
             leftTitle='Back'
             onLeft={this._onLeft}
             leftTextStyle={{paddingLeft: 10}}
-            onRight={() => this._onRight()}
+            onRight={this._onRight}
             rightTitle={this.isDraft() ? 'Publish' : 'Save'}
             rightTextStyle={{color: Colors.red}}
           />

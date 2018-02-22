@@ -129,19 +129,20 @@ const extractUploadData = (uploadData) => {
   }
 }
 
-export function * publishLocalDraft (api, action) {
-  const {draft} = action
-
-  // saving cover
+function * createCover(api, draft){
   const isImageCover = draft.coverImage
   const cover = getNewCover(draft.coverImage, draft.coverVideo)
+  if (!cover) return
   const cloudinaryCover = yield CloudinaryAPI.uploadMediaFile(cover, isImageCover ? 'image' : 'video')
   if (isImageCover) draft.coverImage = cloudinaryCover.data
   else draft.coverVideo = cloudinaryCover.data
+}
 
-  // saving draftAssets
+function * uploadAtomicAssets(draft){
+  if (!draft.draftjsContent) return
   draft.draftjsContent = Immutable.asMutable(draft.draftjsContent, {deep: true})
-  const updatedBlocks = yield Promise.all(draft.draftjsContent.blocks.map((block, index) => {
+
+  yield Promise.all(draft.draftjsContent.blocks.map((block, index) => {
     if (block.type === 'atomic') {
       const {url, type} = block.data
       if (url.substring(0,4) === 'file') {
@@ -153,7 +154,13 @@ export function * publishLocalDraft (api, action) {
     }
     else return
   }))
-  const story = yield put(StoryCreateActions.publishDraft(draft))
+}
+
+export function * publishLocalDraft (api, action) {
+  const {draft} = action
+  yield createCover(api, draft)
+  yield uploadAtomicAssets(draft)
+  yield put(StoryCreateActions.publishDraft(draft))
 }
 
 export function * publishDraft (api, action) {
@@ -194,6 +201,8 @@ export function * discardDraft (api, action) {
 
 export function * updateDraft (api, action) {
   const {draftId, draft, updateStoryEntity} = action
+  yield createCover(api, draft)
+  yield uploadAtomicAssets(draft)
   const response = yield call(api.updateDraft, draftId, draft)
   if (response.ok) {
     const {entities, result} = response.data

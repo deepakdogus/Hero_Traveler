@@ -69,11 +69,20 @@ export default class StoryCover extends Component {
     }
   }
 
+  // if it is a local URL there is no need to cache since it is directly on phone
+  isLocalUrl(cover){
+    return cover.uri
+  }
+
   renderImage() {
     const {cover, onPress, gradientLocations, gradientColors, children, showPlayButton, playButtonSize} = this.props
-    const imageThumbnailUrl = getImageUrl(cover, 'loading', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
-    const imageUrl = getImageUrl(cover, 'optimized', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
-
+    let imageThumbnailUrl = getImageUrl(cover, 'loading', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
+    let imageUrl = getImageUrl(cover, 'optimized', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
+    // handling for backgroundPublish failures. Covers will not be correctly formatted yet
+    if (cover.uri || cover.secure_url) {
+      imageThumbnailUrl = cover.uri || cover.secure_url
+      imageUrl = cover.uri || cover.secure_url
+    }
     return (
       <TouchableWithoutFeedback
         style={{flex: 1}}
@@ -85,13 +94,13 @@ export default class StoryCover extends Component {
           maxHeight: Metrics.storyCover.fullScreen.height,
         }}>
           <Image
-            cached={true}
+            cached={!this.isLocalUrl(cover)}
             resizeMode='cover'
             source={{uri: imageThumbnailUrl}}
             style={embeddedImageStyle}
           />
           <Image
-            cached={true}
+            cached={!this.isLocalUrl(cover)}
             resizeMode='cover'
             source={{uri: imageUrl}}
             style={embeddedImageStyle}

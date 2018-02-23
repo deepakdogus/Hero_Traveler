@@ -56,7 +56,7 @@ export default async function createStory(storyData, assetFormater) {
   const {coverImage, coverVideo} = storyData
 
   // lets us know which Story method to follow and how to handle media assets
-  const isLocalStory = !storyData.id
+  const isLocalStory = storyData.draft
   let newStory
 
   const storyObject = {
@@ -66,6 +66,7 @@ export default async function createStory(storyData, assetFormater) {
   }
   if (isLocalStory) {
     await addCover(storyObject, assetFormater)
+    storyData.id = undefined
     newStory = await Story.create(storyObject)
   }
   else newStory = await updateDraft(storyData.id, storyObject)

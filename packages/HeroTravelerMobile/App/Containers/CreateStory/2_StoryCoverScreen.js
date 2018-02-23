@@ -501,7 +501,7 @@ class StoryCoverScreen extends Component {
       renderProps = {
         closeModal: this.navBack,
         title: 'Oops!',
-        message: 'We were note able to create a story at this time. Please check your internet connection and try again.',
+        message: 'We were not able to create a story at this time. Please check your internet connection and try again.',
         renderButtton: true,
       }
       modalWrapperStyles.height = 160
@@ -938,7 +938,7 @@ class StoryCoverScreen extends Component {
           </KeyboardTrackingView>
         }
         {this.state.activeModal === 'cancel' && this.renderCancel()}
-        {this.state.activeModal === 'saveFail' || (this.hasNoDraft && this.props.error)
+        {this.state.activeModal === 'saveFail' || (this.hasNoDraft() && this.props.error)
           && this.renderFailModal()
         }
         {this.isUploading() &&

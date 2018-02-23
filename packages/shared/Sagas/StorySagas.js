@@ -134,15 +134,17 @@ function * createCover(api, draft){
   const cover = getNewCover(draft.coverImage, draft.coverVideo)
   if (!cover) return
   const cloudinaryCover = yield CloudinaryAPI.uploadMediaFile(cover, isImageCover ? 'image' : 'video')
+  if (cloudinaryCover.error) return cloudinaryCover
   if (isImageCover) draft.coverImage = cloudinaryCover.data
   else draft.coverVideo = cloudinaryCover.data
+  return draft
 }
 
 function * uploadAtomicAssets(draft){
   if (!draft.draftjsContent) return
   draft.draftjsContent = Immutable.asMutable(draft.draftjsContent, {deep: true})
 
-  yield Promise.all(draft.draftjsContent.blocks.map((block, index) => {
+  const promise = yield Promise.all(draft.draftjsContent.blocks.map((block, index) => {
     if (block.type === 'atomic') {
       const {url, type} = block.data
       if (url.substring(0,4) === 'file') {
@@ -150,16 +152,70 @@ function * uploadAtomicAssets(draft){
         .then(({data: imageUpload}) => {
           return _.merge(block.data, extractUploadData(imageUpload))
         })
+        .catch(err => {
+          return Promise.reject(err)
+        })
       }
     }
     else return
   }))
+  .catch(err => {
+    return err
+  })
+  return promise
+}
+
+function * publishDraftErrorHandling(draft, response){
+  let err = new Error('Failed to publish story')
+  // TODO: I tried {...response, ...err} but that seemed to strip the Error instance of it's
+  //       methods, maybe Object.assign(err, response) is better?
+  err.status = response.status
+  err.problem = response.problem
+
+  yield put(StoryCreateActions.publishDraftFailure(err))
+  // offline publishing handling
+  const stories = {}
+  stories[draft.id] = draft
+  yield [
+    put(StoryActions.receiveStories(stories)),
+    put(StoryActions.addDraft(draft)),
+    put(StoryActions.addBackgroundFailure(
+      draft,
+      'Failed to publish',
+      'publishLocalDraft',
+    ))
+  ]
+  return err
+}
+
+function * updateDraftErrorHandling(draft, response){
+  const err = new Error('Failed to update draft')
+  err.status = response.status
+  err.problem = response.problem
+  yield [
+    put(StoryCreateActions.updateDraftFailure(err)),
+    put(StoryActions.addBackgroundFailure(
+      draft,
+      'Failed to update',
+      'updateDraft',
+    ))
+  ]
 }
 
 export function * publishLocalDraft (api, action) {
   const {draft} = action
-  yield createCover(api, draft)
-  yield uploadAtomicAssets(draft)
+
+  const coverResponse = yield createCover(api, draft)
+  if (coverResponse.error) {
+    yield publishDraftErrorHandling(draft, coverResponse.error)
+    return
+  }
+
+  const atomicResponse = yield uploadAtomicAssets(draft)
+  if (atomicResponse.error){
+    yield publishDraftErrorHandling(draft, atomicResponse.error)
+    return
+  }
   yield put(StoryCreateActions.publishDraft(draft))
 }
 
@@ -168,15 +224,8 @@ export function * publishDraft (api, action) {
   const response = yield call(api.createStory, draft)
   if (response.ok) {
     yield put(StoryCreateActions.publishDraftSuccess(draft))
-  } else {
-    let err = new Error('Failed to publish story')
-    // TODO: I tried {...response, ...err} but that seemed to strip the Error instance of it's
-    //       methods, maybe Object.assign(err, response) is better?
-    err.status = response.status
-    err.problem = response.problem
-    console.log(`Err ${response.problem} with status ${response.status}`)
-    yield put(StoryCreateActions.publishDraftFailure(err))
-  }
+    return
+  } else yield publishDraftErrorHandling(draft, response)
 }
 
 export function * registerDraft (api, action) {
@@ -201,8 +250,18 @@ export function * discardDraft (api, action) {
 
 export function * updateDraft (api, action) {
   const {draftId, draft, updateStoryEntity} = action
-  yield createCover(api, draft)
-  yield uploadAtomicAssets(draft)
+  const coverResponse = yield createCover(api, draft)
+  if (coverResponse.error) {
+    yield updateDraftErrorHandling(draft, coverResponse.error)
+    return
+  }
+
+  const atomicResponse = yield uploadAtomicAssets(draft)
+  if (atomicResponse.error){
+    yield updateDraftErrorHandling(draft, atomicResponse.error)
+    return
+  }
+
   const response = yield call(api.updateDraft, draftId, draft)
   if (response.ok) {
     const {entities, result} = response.data
@@ -211,12 +270,7 @@ export function * updateDraft (api, action) {
       yield put(StoryActions.receiveStories(entities.stories))
     }
     yield put(StoryCreateActions.updateDraftSuccess(story))
-  } else {
-    const err = new Error('Failed to update draft')
-    err.status = response.status
-    err.problem = response.problem
-    yield put(StoryCreateActions.updateDraftFailure(err))
-  }
+  } else yield updateDraftErrorHandling(draft, response)
 }
 
 export function * uploadCoverImage(api, action) {
@@ -283,7 +337,7 @@ export function * bookmarkStory(api, {userId, storyId}) {
   }
 }
 
-export function * loadStory(api, {storyId}) {
+export function * loadStory(api, {storyId, cachedStory}) {
   const response = yield call(
     api.getStory,
     storyId
@@ -293,7 +347,7 @@ export function * loadStory(api, {storyId}) {
     const {entities, result} = response.data
     yield put(StoryCreateActions.editStorySuccess(entities.stories[result]))
   } else {
-    yield put(StoryCreateActions.editStoryFailure(new Error('Failed to load story')))
+    yield put(StoryCreateActions.editStoryFailure(new Error('Failed to load story'), cachedStory))
   }
 }
 

@@ -31,6 +31,14 @@ function uploadMediaFile(fileData, type){
       data: preset,
     }]
   )
+  .catch(error => {
+    return {
+      error: {
+        status: '',
+        problem: error.message,
+      }
+    }
+  })
 }
 
 export default {

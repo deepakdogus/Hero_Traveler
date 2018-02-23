@@ -138,9 +138,7 @@ class CreateStoryDetailScreen extends React.Component {
     this.next()
     return promise.then(draft => {
       if (draft.draft) {
-        draft.id = undefined
         this.props.publish(draft)
-        this.setState({showError: true})
       } else {
         this.saveDraft(draft)
       }

@@ -19,6 +19,8 @@ const { Types, Creators } = createActions({
   loadDrafts: null,
   loadDraftsSuccess: ['draftsById'],
   loadDraftsFailure: ['error'],
+  addDraft: ['draft'],
+  addBackgroundFailure: ['story', 'error', 'failedMethod'],
   toggleLike: ['storyId', 'wasLiked'],
   storyLike: ['userId', 'storyId'],
   flagStory: ['userId', 'storyId'],
@@ -49,6 +51,7 @@ export const INITIAL_STATE = Immutable({
   userFeedById: [],
   storiesByUserAndId: {},
   storiesByCategoryAndId: {},
+  backgroundFailures: {},
   fetchStatus: initialFetchStatus(),
   userStoriesFetchStatus: initialFetchStatus(),
   userBookmarksFetchStatus: initialFetchStatus(),
@@ -268,6 +271,29 @@ export const loadDraftsFailure = (state, {error}) => {
   })
 }
 
+export const addDraft = (state, {draft}) => {
+  let draftsById = state.drafts.byId
+  if (draftsById.indexOf(draft.id) === -1) draftsById = draftsById.concat(draft.id)
+  return state.merge({
+    drafts: {
+      fetchStatus: {
+        fetching: false,
+        loaded: true
+      },
+      byId: draftsById
+    }
+  })
+}
+
+export const addBackgroundFailure = (state, {story, error, failedMethod}) => {
+  const failureObj = {}
+  failureObj[story.id] = {
+    story,
+    error,
+    failedMethod,
+  }
+  return state.merge({backgroundFailures: failureObj}, {deep: true})
+}
 
 export const deleteStory = (state, {userId, storyId}) => {
   return state
@@ -329,6 +355,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOAD_DRAFTS]: loadDrafts,
   [Types.LOAD_DRAFTS_SUCCESS]: loadDraftsSuccess,
   [Types.LOAD_DRAFTS_FAILURE]: loadDraftsFailure,
+  [Types.ADD_DRAFT]: addDraft,
+  [Types.ADD_BACKGROUND_FAILURE]: addBackgroundFailure,
   [Types.TOGGLE_LIKE]: storyLike,
   [Types.TOGGLE_BOOKMARK]: storyBookmark,
   [Types.RECEIVE_STORIES]: updateEntities,

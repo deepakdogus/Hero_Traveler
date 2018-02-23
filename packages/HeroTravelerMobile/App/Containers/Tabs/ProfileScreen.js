@@ -37,7 +37,7 @@ class ProfileScreen extends React.Component {
       case TabTypes.stories:
         return this.props.getStories(this.props.user.id)
       case TabTypes.drafts:
-        return this.props.getDrafts(this.props.user.id)
+        return
       case TabTypes.bookmarks:
         return this.props.loadBookmarks(this.props.user.id)
     }
@@ -107,7 +107,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getStories: (userId) => dispatch(StoryActions.fromUserRequest(userId)),
-    getDrafts: () => dispatch(StoryActions.loadDrafts()),
     updateUser: (attrs) => dispatch(UserActions.updateUser(attrs)),
     getUser: (userId) => dispatch(UserActions.loadUser(userId)),
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),

@@ -8,9 +8,9 @@ const { Types, Creators } = createActions({
   registerDraft: null,
   registerDraftSuccess: ['draft'],
   registerDraftFailure: ['error'],
-  editStory: ['storyId'],
+  editStory: ['storyId', 'cachedStory'],
   editStorySuccess: ['story'],
-  editStoryFailure: ['error'],
+  editStoryFailure: ['error', 'cachedStory'],
   publishLocalDraft: ['draft'],
   publishDraft: ['draft'],
   publishDraftSuccess: ['draft'],
@@ -149,13 +149,15 @@ export const editStorySuccess = (state, {story}) => {
   })
 }
 
-export const editStoryFailure = (state, {error}) => {
+export const editStoryFailure = (state, {error, cachedStory}) => {
   return state.merge({
     fetchStatus: {
       loaded: false,
       fetching: false
     },
-    error
+    error,
+    draft: cachedStory,
+    workingDraft: cachedStory,
   })
 }
 

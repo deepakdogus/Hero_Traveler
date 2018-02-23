@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import styles from './Styles/StoryListStyle'
 import ModifiedListView from './ModifiedListView'
 import UXActions from '../Redux/UXRedux'
+import _ from 'lodash'
 
 /*
 add pagingIsDisabled instead of pagingEnabled as a prop so that paging is default
@@ -32,17 +33,21 @@ class StoryList extends React.Component {
 
   constructor(props) {
     super(props)
+    this.state = {
+      dataSource: this.setupDataSource(props.storiesById),
+      visibleRows: {'s1': {'-1': true}},
+    }
+  }
+
+  setupDataSource = (storiesById) => {
     const ds = new ModifiedListView.DataSource({rowHasChanged: this.checkEqual})
-    const initialDataSource = props.storiesById.map((id, index) => {
+    const dataSource = storiesById.map((id, index) => {
       return {
         id,
         index,
       }
     })
-    this.state = {
-      dataSource: ds.cloneWithRows(initialDataSource),
-      visibleRows: {'s1': {'-1': true}},
-    }
+    return ds.cloneWithRows(dataSource)
   }
 
   checkEqual(r1,r2) {
@@ -78,6 +83,14 @@ class StoryList extends React.Component {
     else targetRow = visibleRowsKeys[0]
     if (targetRow !== playingRow) setPlayingRow(targetRow)
     setVisibleRows(visibleRowsKeys)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (_.xor(nextProps.storiesById, this.props.storiesById).length !== 0){
+      this.setState({
+        dataSource: this.setupDataSource(nextProps.storiesById)
+      })
+    }
   }
 
   render () {

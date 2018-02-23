@@ -134,7 +134,6 @@ export default class ProfileTabsAndStories extends Component {
         }
       </View>
     )
-
   }
 
   render() {

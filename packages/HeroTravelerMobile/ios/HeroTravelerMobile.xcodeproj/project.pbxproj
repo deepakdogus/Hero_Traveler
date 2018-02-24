@@ -40,6 +40,7 @@
 		8BA419D9187244E6B9C41535 /* SourceSansPro-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B9B2346795F4127B08055A6 /* SourceSansPro-SemiBoldItalic.ttf */; };
 		8FF857911AAE4CCAB29A20A9 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 88CAD8C48AFD46F7B7845066 /* Zocial.ttf */; };
 		9115FA93203D681200547516 /* VideoDownloadItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9115FA92203D681200547516 /* VideoDownloadItem.m */; };
+		9115FB7C2041B11200547516 /* DownloadSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9115FB422041B11100547516 /* DownloadSessionManager.m */; };
 		912E95471FA631C700399703 /* RNDJShadowDraftJSEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 912E95451FA631C600399703 /* RNDJShadowDraftJSEditor.m */; };
 		913C4EF45111427B8D830D3F /* Montserrat-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A0687633F8D24E28B8519A35 /* Montserrat-Light.ttf */; };
 		9155DE921FD9B42500DAAA7C /* RNDJAutocorrectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9155DE911FD9B42500DAAA7C /* RNDJAutocorrectView.m */; };
@@ -581,6 +582,8 @@
 		8E7E3F32C97249F1B23E8A2E /* libRNFetchBlob.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFetchBlob.a; sourceTree = "<group>"; };
 		9115FA91203D681200547516 /* VideoDownloadItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoDownloadItem.h; sourceTree = "<group>"; };
 		9115FA92203D681200547516 /* VideoDownloadItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoDownloadItem.m; sourceTree = "<group>"; };
+		9115FB422041B11100547516 /* DownloadSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadSessionManager.m; sourceTree = "<group>"; };
+		9115FB7B2041B11200547516 /* DownloadSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadSessionManager.h; sourceTree = "<group>"; };
 		912E95451FA631C600399703 /* RNDJShadowDraftJSEditor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJShadowDraftJSEditor.m; sourceTree = "<group>"; };
 		912E95461FA631C700399703 /* RNDJShadowDraftJSEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJShadowDraftJSEditor.h; sourceTree = "<group>"; };
 		9155DE901FD9B42500DAAA7C /* RNDJAutocorrectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJAutocorrectView.h; sourceTree = "<group>"; };
@@ -1042,6 +1045,8 @@
 		91F037B920035941000BA406 /* Video */ = {
 			isa = PBXGroup;
 			children = (
+				9115FB7B2041B11200547516 /* DownloadSessionManager.h */,
+				9115FB422041B11100547516 /* DownloadSessionManager.m */,
 				91F037C020035941000BA406 /* RCTVideo.h */,
 				91F037BA20035941000BA406 /* RCTVideo.m */,
 				91F037BF20035941000BA406 /* RCTVideoManager.h */,
@@ -1989,6 +1994,7 @@
 				91973CB11FA39B64006DE932 /* RNDJInlineStyleRangeModel.m in Sources */,
 				91973CB21FA39B64006DE932 /* RNDJSelectionModel.m in Sources */,
 				91973CB31FA39B64006DE932 /* RCTShadowView+DraftJSDirty.m in Sources */,
+				9115FB7C2041B11200547516 /* DownloadSessionManager.m in Sources */,
 				91AC58BD1FD83CFC0017B1E8 /* RNDJAutocompleteModel.m in Sources */,
 				91973CB41FA39B64006DE932 /* RNDJDraftJSEditor.m in Sources */,
 				9155DE921FD9B42500DAAA7C /* RNDJAutocorrectView.m in Sources */,

@@ -9,14 +9,16 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 #import "VideoCacheItem.h"
+#import "VideoDownloadItem.h"
 
 @class RCTVideo;
 
-@interface RCTVideoCache : NSObject
+@interface RCTVideoCache : NSObject <DownloadItemDelegate>
 {
   NSArray* currentPrecacheList; // [assetKeys]
   NSArray* loadedVideos; // [VideoCacheItem]
   NSArray* currentlyDownloadedFiles; // [assetKeys]
+  NSArray* currentDownloads; // [VideoDownloadItem]
   
   NSMutableDictionary* videoMuteStates;
   

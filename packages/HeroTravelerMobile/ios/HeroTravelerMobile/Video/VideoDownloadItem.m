@@ -10,84 +10,155 @@
 
 @implementation VideoDownloadItem
 
-- (instancetype) initWithAssetKey:(NSString*)assetKey downloadUrl:(NSString*)url
+- (instancetype) initWithAssetKey:(NSString*)assetKey downloadUrl:(NSURL*)url
 {
   if (self == [super init])
   {
     _status = Pending;
-
-    NSURLSessionConfiguration* sessionConfiguration = [self sessionConfiguration];
-    _downloadSession = [AVAssetDownloadURLSession
-                        sessionWithConfiguration:sessionConfiguration
-                        assetDownloadDelegate:self
-                        delegateQueue:[NSOperationQueue mainQueue]];
+    _assetKey = assetKey;
+    _downloadUrl = url;
   }
-}
-
-- (NSURLSessionConfiguration*) sessionConfiguration
-{
-  return [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:[NSString stringWithFormat:@"%@-%@", DOWNLOAD_IDENTIFIER, _assetKey]];
+  
+  return self;
 }
 
 - (void) startDownload
 {
-  if (!_downloadSession || _status > Errored || !_asset || _downloadTask)
+  if (![NSThread isMainThread])
+  {
+    NSLog(@"Is not main thread!");
+  }
+
+  if (_status == Invalid)
   {
     return;
   }
   
-  _localFileLocation = [[NSURL fileURLWithPath:NSTemporaryDirectory()] URLByAppendingPathComponent:_assetKey];
+  if (_status == CancelPendingPaused || _status == CancelPendingDownload)
+  {
+    _status = CancelPendingDownload;
+    return;
+  }
   
+  if (_status > Errored || !_downloadUrl || _downloadTask)
+  {
+    return;
+  }
+
+  NSURLSession* session = [DownloadSessionManager mediaSession];
+  NSData* resumeData = _resumeData;
+  _resumeData = nil;
   
-  _downloadTask = [_downloadSession assetDownloadTaskWithURLAsset:_asset
-                                                       assetTitle:_assetKey
-                                                 assetArtworkData:nil
-                                                          options:@{
-                                                                    AVAssetDownloadTaskMinimumRequiredMediaBitrateKey: @(0),
-                                                                    }];
+  if (resumeData)
+  {
+    _downloadTask = [session downloadTaskWithResumeData:resumeData];
+  }
+  else
+  {
+    _downloadTask = [session downloadTaskWithURL:_downloadUrl];
+  }
+
+  [DownloadSessionManager registerItem:self forTask:_downloadTask];
+
   [_downloadTask resume];
   _status = Downloading;
 }
 
 - (void) stopDownload
 {
-  [_downloadTask cancel];
-  _downloadTask = nil;
+  if (![NSThread isMainThread])
+  {
+    NSLog(@"Is not main thread!");
+  }
 
-  if (status == Downloading)
+  if (_status == Invalid)
+  {
+    return;
+  }
+  
+  if (!_downloadTask && _status != CancelPendingDownload && _status != CancelPendingPaused)
   {
     _status = Paused;
+    return;
   }
+
+  _status = CancelPendingPaused;
+
+  if (!_downloadTask && (_status == CancelPendingDownload || _status == CancelPendingPaused))
+  {
+    return;
+  }
+  
+  [_downloadTask cancelByProducingResumeData:^(NSData* resumeData){
+      _resumeData = resumeData;
+
+      _status = Paused;
+      if (_status == CancelPendingDownload)
+      {
+        [self startDownload];
+      }
+  }];
+  [DownloadSessionManager unregisterItem:self forTask:_downloadTask];
+  _downloadTask = nil;
 }
 
-- (void)URLSession:(NSURLSession *)session assetDownloadTask:(AVAssetDownloadTask *)assetDownloadTask didResolveMediaSelection:(AVMediaSelection *)resolvedMediaSelection
+- (void) invalidate
 {
-  NSLog(@"Download resolved");
+  if (![NSThread isMainThread])
+  {
+    NSLog(@"Is not main thread!");
+  }
+  
+  _status = Invalid;
+
+  [_downloadTask cancel];
+  [DownloadSessionManager unregisterItem:self forTask:_downloadTask];
+  _downloadTask = nil;
 }
 
-- (void) URLSession:(NSURLSession*)session assetDownloadTask:(AVAssetDownloadTask*)assetDownloadTask didFinishDownloadingToURL:(NSURL*)location
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location
 {
-  NSLog(@"Download finished");
+  if (![NSThread isMainThread])
+  {
+    NSLog(@"Is not main thread!");
+  }
+  
+  if (_status == Invalid)
+  {
+    return;
+  }
+
+  if (downloadTask != _downloadTask)
+  {
+    NSLog(@"Got callback for another task");
+  }
+
+  _status = Finished;
+
+  [self.delegate asset:_assetKey finishedAtLocation:location];
+  _downloadTask = nil;
 }
 
 - (void) URLSession:(NSURLSession*)session task:(NSURLSessionTask*)task didCompleteWithError:(nullable NSError*)error
 {
+  if (![NSThread isMainThread])
+  {
+    NSLog(@"Is not main thread!");
+  }
+
+  if (_status == Invalid)
+  {
+    return;
+  }
+  
   if (error)
   {
     NSLog(@"Downloading video to cache failed because %@", error);
     _status = Errored;
     _error = error;
-    return;
-  }
-  
-  if (_finishedDownloadBlock)
-  {
-    _finishedDownloadBlock(_localFileLocation, self);
   }
   
   _downloadTask = nil;
-  _status = Finished;
-  _finishedDownloadBlock = nil;
 }
 
 @end

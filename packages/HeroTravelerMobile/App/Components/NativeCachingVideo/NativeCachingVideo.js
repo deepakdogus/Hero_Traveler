@@ -136,6 +136,8 @@ export default class NativeCachingVideo extends Component {
       uri = `file://${uri}`;
     }
 
+    let originalUri = source.originalUri || '';
+
     const isNetwork = !!(uri && uri.match(/^https?:/));
     const isAsset = !!(uri && uri.match(/^(assets-library|file|content|ms-appx|ms-appdata):/));
 

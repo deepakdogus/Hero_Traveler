@@ -37,6 +37,7 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   BOOL _isResigningActive;
   
   NSString* _uri;
+  NSString* _originalUri;
 }
 
 - (instancetype) initWithEventDispatcher:(RCTEventDispatcher*)eventDispatcher
@@ -135,8 +136,10 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
 - (void) setSrc:(NSDictionary*)source
 {
   NSString* uri = [source objectForKey:@"uri"];
+  NSString* originalUri = [source objectForKey:@"originalUri"];
   
   _uri = uri;
+  _originalUri = originalUri;
   
   [self removeAllPlayerViews];
   if (_uri.length == 0)
@@ -145,7 +148,7 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   }
   else
   {
-    playingVideoItem = [[RCTVideoCache get] assetForUrl:uri forVideoView:self];
+    playingVideoItem = [[RCTVideoCache get] assetForUrl:uri withOriginalUrl:originalUri forVideoView:self];
   }
   [self applyModifiers];
 }
@@ -167,7 +170,7 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
     return;
   }
   
-  playingVideoItem = [[RCTVideoCache get] assetForUrl:_uri forVideoView:self];
+  playingVideoItem = [[RCTVideoCache get] assetForUrl:_uri withOriginalUrl:_originalUri forVideoView:self];
 }
 
 #pragma mark - Prop setters

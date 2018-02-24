@@ -48,7 +48,7 @@ typedef void (^FinishedDownloadBlock)(NSURL* location, VideoCacheItem* videoCach
 
 @property(readonly) NSInteger numPlayingInstances;
 
-- (instancetype) initWithAssetKey:(NSString*)assetKey uri:(NSString*)uri;
+- (instancetype) initWithAssetKey:(NSString*)assetKey url:(NSString*)url_;
 - (instancetype) initWithAssetKey:(NSString*)assetKey cachedLocation:(NSURL*)url;
 - (void) touch;
 

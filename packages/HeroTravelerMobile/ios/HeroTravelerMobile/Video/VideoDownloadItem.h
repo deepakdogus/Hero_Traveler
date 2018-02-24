@@ -7,34 +7,43 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "DownloadSessionManager.h"
+
+@protocol DownloadItemDelegate
+
+- (void) asset:(NSString*)assetKey finishedAtLocation:(NSURL*)localFileUrl;
+
+@end
 
 typedef enum DownloadStatus {
   Pending = 0,
   Paused,
+  CancelPendingPaused,
+  CancelPendingDownload,
   Errored,
   Downloading,
   Finished,
+  Invalid,
 } DownloadStatus;
 
-@interface VideoDownloadItem : NSObject <AVAssetDownloadDelegate>
+@interface VideoDownloadItem : NSObject <NSURLSessionDownloadDelegate>
 
-- (instancetype) initWithAssetKey:(NSString*)assetKey downloadUrl:(NSString*)url;
+- (instancetype) initWithAssetKey:(NSString*)assetKey downloadUrl:(NSURL*)url;
 
-@property(readonly, strong) AVURLAsset* asset;
+@property(weak) id<DownloadItemDelegate> delegate;
+
 @property(readonly, strong) NSString* assetKey;
+@property(readonly, strong) NSURL* downloadUrl;
 
 @property(readonly) DownloadStatus status;
 @property(readonly, strong) NSError* error;
+@property(readonly, strong) NSData* resumeData;
 
+- (void) invalidate;
 - (void) startDownload;
 - (void) stopDownload;
 
-@property(readonly, strong) AVAssetDownloadURLSession* downloadSession;
-
-@property(readonly, strong) AVAssetDownloadTask* downloadTask;
-@property(readonly, strong) NSURL* localFileLocation;
-
-
-@property(readonly, strong) FinishedDownloadBlock finishedDownloadBlock;
+@property(readonly, strong) NSURLSessionDownloadTask* downloadTask;
 
 @end
+

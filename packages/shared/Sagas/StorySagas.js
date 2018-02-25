@@ -132,7 +132,7 @@ const extractUploadData = (uploadData) => {
 function * createCover(api, draft){
   const isImageCover = draft.coverImage
   const cover = getNewCover(draft.coverImage, draft.coverVideo)
-  if (!cover) return
+  if (!cover) return draft
   const cloudinaryCover = yield CloudinaryAPI.uploadMediaFile(cover, isImageCover ? 'image' : 'video')
   if (cloudinaryCover.error) return cloudinaryCover
   if (isImageCover) draft.coverImage = cloudinaryCover.data
@@ -178,7 +178,7 @@ function * publishDraftErrorHandling(draft, response){
   stories[draft.id] = draft
   yield [
     put(StoryActions.receiveStories(stories)),
-    put(StoryActions.addDraft(draft)),
+    put(StoryActions.addDraft(draft.id)),
     put(StoryActions.addBackgroundFailure(
       draft,
       'Failed to publish',
@@ -223,7 +223,14 @@ export function * publishDraft (api, action) {
   const {draft} = action
   const response = yield call(api.createStory, draft)
   if (response.ok) {
-    yield put(StoryCreateActions.publishDraftSuccess(draft))
+    const stories = {}
+    const story = response.data.story
+    story.author = story.author.id
+    stories[story.id] = story
+    yield [
+      put(StoryCreateActions.publishDraftSuccess(draft)),
+      put(StoryActions.addUserStory(stories, draft.id)),
+    ]
     return
   } else yield publishDraftErrorHandling(draft, response)
 }

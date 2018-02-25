@@ -73,14 +73,15 @@ export default async function createStory(storyData, assetFormater) {
 
   // make a query for the story with just the fields
   // we want for the search index
-  const populatedStory = await Story.getSearchStory(newStory._id)
+  const populatedStory = await Story.get({_id: newStory._id})
   await addStoryToIndex({
     ...populatedStory.toObject(),
     author: _.get(populatedStory, 'author.profile.fullName'),
     objectID: newStory.id
   })
+  console.log("populatedStory is", populatedStory)
   return {
-    ...populatedStory,
+    story: populatedStory,
     author: storyData.author // only want to pass the ID
   }
 }

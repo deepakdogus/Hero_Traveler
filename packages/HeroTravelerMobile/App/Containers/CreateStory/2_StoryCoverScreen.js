@@ -212,7 +212,13 @@ class StoryCoverScreen extends Component {
 
   renderCoverPhoto(coverPhoto) {
     if (coverPhoto){
+      // fail to upload to cloudinary case
       if (coverPhoto.uri) coverPhoto = coverPhoto.uri
+      // failed to save to DB case but have cloudinary asset
+      else if (typeof coverPhoto === 'string'){
+        coverPhoto = JSON.parse(coverPhoto).secure_url
+      }
+      // normal case
       else coverPhoto = getImageUrl(coverPhoto, 'basic')
     }
     return R.ifElse(

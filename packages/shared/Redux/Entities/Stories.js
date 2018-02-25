@@ -19,8 +19,10 @@ const { Types, Creators } = createActions({
   loadDrafts: null,
   loadDraftsSuccess: ['draftsById'],
   loadDraftsFailure: ['error'],
-  addDraft: ['draft'],
+  addDraft: ['draftId'],
+  removeDraft: ['draftId'],
   addBackgroundFailure: ['story', 'error', 'failedMethod'],
+  removeBackgroundFailure: ['storyId'],
   toggleLike: ['storyId', 'wasLiked'],
   storyLike: ['userId', 'storyId'],
   flagStory: ['userId', 'storyId'],
@@ -32,6 +34,7 @@ const { Types, Creators } = createActions({
   getBookmarksSuccess: ['userId', 'bookmarks'],
   getBookmarksFailure: ['userId', 'error'],
   receiveStories: ['stories'],
+  addUserStory: ['stories', 'draftId'],
   deleteStory: ['userId', 'storyId'],
   deleteStorySuccess: ['userId', 'storyId'],
 })
@@ -230,6 +233,21 @@ export const updateEntities = (state, {stories = {}}) => {
   return state.merge({entities: stories}, {deep: true})
 }
 
+export const addUserStory = (state, {stories = {}, draftId}) => {
+  state = updateEntities(state, {stories})
+  const story = stories[Object.keys(stories)[0]]
+  let userStoriesById = state.storiesByUserAndId[story.author].byId
+  // adding to list of user's stories
+  if (story && userStoriesById.indexOf(story.id) === -1) {
+    userStoriesById = userStoriesById.concat(story.id)
+    state = userSuccess(state, {
+      userId: story.author,
+      userStoriesById
+    })
+  }
+  return removeDraft(state, {draftId})
+}
+
 export const loadDrafts = (state) => {
   return state.merge({
     drafts: {
@@ -271,9 +289,9 @@ export const loadDraftsFailure = (state, {error}) => {
   })
 }
 
-export const addDraft = (state, {draft}) => {
+export const addDraft = (state, {draftId}) => {
   let draftsById = state.drafts.byId
-  if (draftsById.indexOf(draft.id) === -1) draftsById = draftsById.concat(draft.id)
+  if (draftsById.indexOf(draftId) === -1) draftsById = draftsById.concat(draftId)
   return state.merge({
     drafts: {
       fetchStatus: {
@@ -285,6 +303,18 @@ export const addDraft = (state, {draft}) => {
   })
 }
 
+// if local id removes from story entities if present
+// removes from drafts.byId
+export const removeDraft = (state, {draftId}) => {
+  let draftsById = state.drafts.byId
+  if (draftId.substring(0,6) === 'local-') state = state.setIn(['entities'], state.entities.without(draftId))
+  state = removeBackgroundFailure(state, {storyId: draftId})
+  const path = ['drafts', 'byId']
+  return state.setIn(path, state.getIn(path, draftId).filter(id => {
+    return id !== draftId
+  }))
+}
+
 export const addBackgroundFailure = (state, {story, error, failedMethod}) => {
   const failureObj = {}
   failureObj[story.id] = {
@@ -293,6 +323,10 @@ export const addBackgroundFailure = (state, {story, error, failedMethod}) => {
     failedMethod,
   }
   return state.merge({backgroundFailures: failureObj}, {deep: true})
+}
+
+export const removeBackgroundFailure = (state, {storyId}) => {
+  return  state.setIn(['backgroundFailures'], state.backgroundFailures.without(storyId))
 }
 
 export const deleteStory = (state, {userId, storyId}) => {
@@ -356,10 +390,12 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOAD_DRAFTS_SUCCESS]: loadDraftsSuccess,
   [Types.LOAD_DRAFTS_FAILURE]: loadDraftsFailure,
   [Types.ADD_DRAFT]: addDraft,
+  [Types.REMOVE_DRAFT]: removeDraft,
   [Types.ADD_BACKGROUND_FAILURE]: addBackgroundFailure,
   [Types.TOGGLE_LIKE]: storyLike,
   [Types.TOGGLE_BOOKMARK]: storyBookmark,
   [Types.RECEIVE_STORIES]: updateEntities,
+  [Types.ADD_USER_STORY]: addUserStory,
   [Types.DELETE_STORY]: deleteStory,
   [Types.DELETE_STORY_SUCCESS]: deleteStorySuccess,
   [Types.GET_BOOKMARKS]: getBookmarks,

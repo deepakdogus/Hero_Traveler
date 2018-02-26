@@ -128,7 +128,7 @@ class StoryReadingScreen extends React.Component {
     storyId: PropTypes.string,
     story: PropTypes.object,
     fetching: PropTypes.bool,
-    error: PropTypes.bool
+    error: PropTypes.object,
   };
 
   constructor(props) {
@@ -242,6 +242,11 @@ class StoryReadingScreen extends React.Component {
     NavActions.pop()
   }
 
+  hasLocationInfo() {
+    const {locationInfo} = this.props.story
+    return !!locationInfo && !!locationInfo.name && !!locationInfo.latitude && !!locationInfo.longitude
+  }
+
   render () {
     const { story, author, user } = this.props;
     if (!story || !author) {
@@ -258,7 +263,7 @@ class StoryReadingScreen extends React.Component {
               }}
             />
           }
-          { story && story.error &&
+          { story && !!story.error &&
             <Text>{story.error}</Text>
           }
         </View>
@@ -307,7 +312,7 @@ class StoryReadingScreen extends React.Component {
                 {this.renderTags()}
               </View>
             }
-            {!!story.locationInfo &&
+            {this.hasLocationInfo() &&
               <View style={styles.locationWrapper}>
                 <MapView
                   style={styles.locationMap}

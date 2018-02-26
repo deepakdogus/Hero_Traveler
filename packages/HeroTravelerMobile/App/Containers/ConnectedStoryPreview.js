@@ -57,7 +57,9 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, props) => {
   const {userId, storyId} = props
   return {
-    onPress: (title) => NavActions.story({storyId, title}),
+      onPress: (title) => {
+          return NavActions.story({storyId, title})
+      },
     deleteStory: () => dispatch(StoryActions.deleteStory(userId, storyId)),
     onPressLike: () => dispatch(StoryActions.storyLike(userId, storyId)),
     onPressBookmark: () => dispatch(StoryActions.storyBookmark(userId, storyId)),

@@ -50,6 +50,10 @@
 		915D976F20081218005EF687 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 915D976A20081217005EF687 /* FBSDKShareKit.framework */; };
 		915D977020081218005EF687 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 915D976B20081218005EF687 /* FBSDKLoginKit.framework */; };
 		915D977120081218005EF687 /* FBSDKPlacesKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 915D976C20081218005EF687 /* FBSDKPlacesKit.framework */; };
+		9162A11C20448F17005BA024 /* FFFastImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9162A11720448F17005BA024 /* FFFastImageView.m */; };
+		9162A11D20448F17005BA024 /* FFFastImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 9162A11820448F17005BA024 /* FFFastImageSource.m */; };
+		9162A11E20448F17005BA024 /* RCTConvert+FFFastImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9162A11920448F17005BA024 /* RCTConvert+FFFastImage.m */; };
+		9162A11F20448F17005BA024 /* FFFastImageViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9162A11A20448F17005BA024 /* FFFastImageViewManager.m */; };
 		916DBF62203C8A2B0097DE98 /* libAutoGrowTextInput.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 916DBF61203C8A1B0097DE98 /* libAutoGrowTextInput.a */; };
 		919416DC2043E854006F42BC /* RHShadowNativeFeedHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 919416DB2043E854006F42BC /* RHShadowNativeFeedHeader.m */; };
 		919416DF2043E86A006F42BC /* RHNativeFeedHeaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 919416DE2043E86A006F42BC /* RHNativeFeedHeaderManager.m */; };
@@ -369,6 +373,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNGooglePlaces;
 		};
+		9162A0E120448F09005BA024 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CE32C77CB97E62BF2A631FDE3A2B2B29;
+			remoteInfo = SDWebImage;
+		};
 		916DBF26203C89F60097DE98 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
@@ -602,6 +613,14 @@
 		915D976A20081217005EF687 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = Frameworks/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		915D976B20081218005EF687 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = Frameworks/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		915D976C20081218005EF687 /* FBSDKPlacesKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKPlacesKit.framework; path = Frameworks/FBSDKPlacesKit.framework; sourceTree = "<group>"; };
+		9162A11420448F17005BA024 /* RCTConvert+FFFastImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+FFFastImage.h"; sourceTree = "<group>"; };
+		9162A11520448F17005BA024 /* FFFastImageSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFFastImageSource.h; sourceTree = "<group>"; };
+		9162A11620448F17005BA024 /* FFFastImageViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFFastImageViewManager.h; sourceTree = "<group>"; };
+		9162A11720448F17005BA024 /* FFFastImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFFastImageView.m; sourceTree = "<group>"; };
+		9162A11820448F17005BA024 /* FFFastImageSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFFastImageSource.m; sourceTree = "<group>"; };
+		9162A11920448F17005BA024 /* RCTConvert+FFFastImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+FFFastImage.m"; sourceTree = "<group>"; };
+		9162A11A20448F17005BA024 /* FFFastImageViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFFastImageViewManager.m; sourceTree = "<group>"; };
+		9162A11B20448F17005BA024 /* FFFastImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFFastImageView.h; sourceTree = "<group>"; };
 		916DBF5C203C8A1B0097DE98 /* AutoGrowTextInput.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AutoGrowTextInput.xcodeproj; path = "../node_modules/react-native-autogrow-textinput/ios/AutoGrowTextInput.xcodeproj"; sourceTree = "<group>"; };
 		919416DA2043E854006F42BC /* RHShadowNativeFeedHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHShadowNativeFeedHeader.h; sourceTree = "<group>"; };
 		919416DB2043E854006F42BC /* RHShadowNativeFeedHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHShadowNativeFeedHeader.m; sourceTree = "<group>"; };
@@ -961,6 +980,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				9162A11320448F16005BA024 /* FastImage */,
 				91F86E4620425CDE006A9C73 /* NativeFeed */,
 				91F86E04204229C4006A9C73 /* Image */,
 				91973C8D1FA39B52006DE932 /* DraftJs */,
@@ -992,6 +1012,21 @@
 				915D96CE200801CF005EF687 /* libRNGooglePlaces.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		9162A11320448F16005BA024 /* FastImage */ = {
+			isa = PBXGroup;
+			children = (
+				9162A11520448F17005BA024 /* FFFastImageSource.h */,
+				9162A11820448F17005BA024 /* FFFastImageSource.m */,
+				9162A11420448F17005BA024 /* RCTConvert+FFFastImage.h */,
+				9162A11920448F17005BA024 /* RCTConvert+FFFastImage.m */,
+				9162A11620448F17005BA024 /* FFFastImageViewManager.h */,
+				9162A11A20448F17005BA024 /* FFFastImageViewManager.m */,
+				9162A11B20448F17005BA024 /* FFFastImageView.h */,
+				9162A11720448F17005BA024 /* FFFastImageView.m */,
+			);
+			path = FastImage;
 			sourceTree = "<group>";
 		};
 		916DBF5D203C8A1B0097DE98 /* Products */ = {
@@ -1166,6 +1201,7 @@
 				942D12221EB3956400A0CFE5 /* libPods-HeroTravelerMobile.a */,
 				916DBF27203C89F60097DE98 /* libreact-native-google-maps.a */,
 				916DBF29203C89F60097DE98 /* libreact-native-maps.a */,
+				9162A0E220448F09005BA024 /* libSDWebImage.a */,
 				916DBF2B203C89F60097DE98 /* libyoga.a */,
 			);
 			name = Products;
@@ -1748,6 +1784,13 @@
 			remoteRef = 915D96CD200801CF005EF687 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		9162A0E220448F09005BA024 /* libSDWebImage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSDWebImage.a;
+			remoteRef = 9162A0E120448F09005BA024 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		916DBF27203C89F60097DE98 /* libreact-native-google-maps.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2057,14 +2100,18 @@
 				9115FA93203D681200547516 /* VideoDownloadItem.m in Sources */,
 				91F037C620035941000BA406 /* RCTVideoPlayerViewController.m in Sources */,
 				912E95471FA631C700399703 /* RNDJShadowDraftJSEditor.m in Sources */,
+				9162A11C20448F17005BA024 /* FFFastImageView.m in Sources */,
 				91973CB51FA39B64006DE932 /* RNDJDraftJSEditorManager.m in Sources */,
 				91F037C520035941000BA406 /* UIView+FindUIViewController.m in Sources */,
 				91973CB71FA39B64006DE932 /* RNDJDraftJsIndex.m in Sources */,
 				91F86E4920425EE9006A9C73 /* RHNativeFeedManager.m in Sources */,
 				919416DF2043E86A006F42BC /* RHNativeFeedHeaderManager.m in Sources */,
 				91F037C920038398000BA406 /* RCTVideoCache.m in Sources */,
+				9162A11E20448F17005BA024 /* RCTConvert+FFFastImage.m in Sources */,
+				9162A11D20448F17005BA024 /* FFFastImageSource.m in Sources */,
 				91973CB81FA39B64006DE932 /* RNDJStyle.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				9162A11F20448F17005BA024 /* FFFastImageViewManager.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				942D124B1EB395B200A0CFE5 /* RNHockeyApp.m in Sources */,
 				919416DC2043E854006F42BC /* RHShadowNativeFeedHeader.m in Sources */,

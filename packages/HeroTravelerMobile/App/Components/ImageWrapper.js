@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {Image, ImageBackground} from 'react-native'
-import {CachedImage, CachedImageBackground} from 'react-native-img-cache'
+import FastImage from 'react-native-fast-image'
 import getResizeMode from '../Shared/Lib/getResizeMode'
 import Metrics from '../Themes/Metrics'
 import getRelativeHeight from '../Shared/Lib/getRelativeHeight'
@@ -52,14 +52,17 @@ export default class ImageWrapper extends Component {
 
   render () {
     const {background, cached, fullWidth, setCoverHeight, ...imageProps} = this.props
-    const BaseComponent = cached
-          ? (background ? CachedImageBackground : CachedImage)
-          : (background ? ImageBackground : Image)
+    const BaseComponent = background ? ImageBackground : Image
 
     if (this.props.resizeMode) {
       imageProps.resizeMode = this.props.resizeMode
     } else {
       imageProps.resizeMode = getResizeMode(this.state)
+    }
+
+    if (cached)
+    {
+      imageProps.cache = 'force-cache'
     }
 
     if (fullWidth && !this.hasStyleMetrics()) {
@@ -69,8 +72,8 @@ export default class ImageWrapper extends Component {
     }
     if (setCoverHeight && this.state.width && this.state.width) setCoverHeight(this.state)
 
-    return (
-      <BaseComponent {...imageProps} />
-    )
+      return cached
+          ? (<FastImage {...imageProps}/>)
+          : (<BaseComponent {...imageProps} />)
   }
 }

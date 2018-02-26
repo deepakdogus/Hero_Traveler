@@ -181,7 +181,7 @@ function * publishDraftErrorHandling(draft, response){
     put(StoryActions.addDraft(draft.id)),
     put(StoryActions.addBackgroundFailure(
       draft,
-      'Failed to publish',
+      'failed to publish',
       'publishLocalDraft',
     ))
   ]
@@ -196,7 +196,7 @@ function * updateDraftErrorHandling(draft, response){
     put(StoryCreateActions.updateDraftFailure(err)),
     put(StoryActions.addBackgroundFailure(
       draft,
-      'Failed to update',
+      'failed to update',
       'updateDraft',
     ))
   ]
@@ -276,8 +276,11 @@ export function * updateDraft (api, action) {
     if (updateStoryEntity || !story.draft) {
       yield put(StoryActions.receiveStories(entities.stories))
     }
-    yield put(StoryCreateActions.updateDraftSuccess(story))
-  } else yield updateDraftErrorHandling(draft, response)
+    yield [
+      put(StoryCreateActions.updateDraftSuccess(story)),
+      put(StoryActions.removeBackgroundFailure(story.id)),
+    ]
+  } else yield updateDraftErrorHandling(draft, draftId)
 }
 
 export function * uploadCoverImage(api, action) {

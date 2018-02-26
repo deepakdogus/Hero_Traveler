@@ -291,7 +291,7 @@ export const loadDraftsFailure = (state, {error}) => {
 
 export const addDraft = (state, {draftId}) => {
   let draftsById = state.drafts.byId
-  if (draftsById.indexOf(draftId) === -1) draftsById = draftsById.concat(draftId)
+  if (draftsById.indexOf(draftId) === -1) draftsById = [draftId, ...draftsById]
   return state.merge({
     drafts: {
       fetchStatus: {
@@ -321,6 +321,7 @@ export const addBackgroundFailure = (state, {story, error, failedMethod}) => {
     story,
     error,
     failedMethod,
+    status: 'failed',
   }
   return state.merge({backgroundFailures: failureObj}, {deep: true})
 }
@@ -392,6 +393,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ADD_DRAFT]: addDraft,
   [Types.REMOVE_DRAFT]: removeDraft,
   [Types.ADD_BACKGROUND_FAILURE]: addBackgroundFailure,
+  [Types.REMOVE_BACKGROUND_FAILURE]: removeBackgroundFailure,
   [Types.TOGGLE_LIKE]: storyLike,
   [Types.TOGGLE_BOOKMARK]: storyBookmark,
   [Types.RECEIVE_STORIES]: updateEntities,

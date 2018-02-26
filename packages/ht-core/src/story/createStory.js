@@ -79,7 +79,6 @@ export default async function createStory(storyData, assetFormater) {
     author: _.get(populatedStory, 'author.profile.fullName'),
     objectID: newStory.id
   })
-  console.log("populatedStory is", populatedStory)
   return {
     story: populatedStory,
     author: storyData.author // only want to pass the ID

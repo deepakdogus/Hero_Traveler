@@ -57,6 +57,8 @@
   {
     _downloadTask = [session downloadTaskWithURL:_downloadUrl];
   }
+  
+  _downloadTask.priority = NSURLSessionTaskPriorityLow;
 
   [DownloadSessionManager registerItem:self forTask:_downloadTask];
 

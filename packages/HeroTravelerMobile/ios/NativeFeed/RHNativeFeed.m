@@ -29,7 +29,8 @@
     _scrollView = [[RHCustomScrollView alloc] initWithFrame:CGRectZero];
     _scrollView.translatesAutoresizingMaskIntoConstraints = NO;
     _scrollView.delegate = self;
-    _scrollView.delaysContentTouches = YES;
+    _scrollView.delaysContentTouches = NO;
+    _scrollView.canCancelContentTouches = YES;
     
 #if defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000 /* __IPHONE_11_0 */
     // `contentInsetAdjustmentBehavior` is only available since iOS 11.

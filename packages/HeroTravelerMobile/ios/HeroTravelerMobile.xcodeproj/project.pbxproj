@@ -380,6 +380,13 @@
 			remoteGlobalIDString = CE32C77CB97E62BF2A631FDE3A2B2B29;
 			remoteInfo = SDWebImage;
 		};
+		9162A1BC2044D39B005BA024 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AC5293CD41BF345AAF51956020FA4630;
+			remoteInfo = FLAnimatedImage;
+		};
 		916DBF26203C89F60097DE98 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
@@ -1195,6 +1202,7 @@
 		942D12181EB3956400A0CFE5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				9162A1BD2044D39B005BA024 /* libFLAnimatedImage.a */,
 				942D12201EB3956400A0CFE5 /* HockeySDKResources.bundle */,
 				91AC58CC1FD83CFD0017B1E8 /* libiOS-MagnifyingGlass.a */,
 				EFE44EEA1F3CF4BF00003CBA /* libIQKeyboardManager.a */,
@@ -1789,6 +1797,13 @@
 			fileType = archive.ar;
 			path = libSDWebImage.a;
 			remoteRef = 9162A0E120448F09005BA024 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9162A1BD2044D39B005BA024 /* libFLAnimatedImage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFLAnimatedImage.a;
+			remoteRef = 9162A1BC2044D39B005BA024 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		916DBF27203C89F60097DE98 /* libreact-native-google-maps.a */ = {

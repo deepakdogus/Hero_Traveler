@@ -1,13 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {
-  View,
-  RefreshControl
+    View,
+    RefreshControl,
+    requireNativeComponent,
 } from 'react-native'
+
+import { Metrics } from '../Shared/Themes'
 import { connect } from 'react-redux'
 import styles from './Styles/StoryListStyle'
 import ModifiedListView from './ModifiedListView'
 import UXActions from '../Redux/UXRedux'
+
+const NativeFeed = requireNativeComponent('RHNativeFeed', null)
+// const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
 
 /*
 add pagingIsDisabled instead of pagingEnabled as a prop so that paging is default
@@ -31,24 +37,22 @@ class StoryList extends React.Component {
   }
 
   constructor(props) {
-    super(props)
-    const ds = new ModifiedListView.DataSource({rowHasChanged: this.checkEqual})
-    const initialDataSource = props.storiesById.map((id, index) => {
-      return {
-        id,
-        index,
-      }
-    })
+  super(props)
     this.state = {
-      dataSource: ds.cloneWithRows(initialDataSource),
-      visibleRows: {'s1': {'-1': true}},
+      visibleCells: undefined,
     }
   }
+
+  
 
   checkEqual(r1,r2) {
     return r1.id !== r2.id
   }
 
+  _handleVisibleCellsChanged = (event) => {
+    this.setState(event.nativeEvent)
+  }
+    
   _renderHeader = () => {
     return this.props.renderHeaderContent || null
   }
@@ -80,7 +84,39 @@ class StoryList extends React.Component {
     setVisibleRows(visibleRowsKeys)
   }
 
-  render () {
+    render () {
+        let storyViews = []
+        let startCell = 0
+
+        if (this.state.visibleCells)
+        {
+            const {minCell, maxCell} = this.state.visibleCells
+
+            let i = minCell - 1
+            storyViews = this.props.storiesById.slice(minCell, maxCell).map((storyId) => {
+                i = i + 1
+                return (<View key={`FeedItem:${storyId}`}>
+                        {this.props.renderStory({id: storyId, index: i})}
+                        </View>)
+            })
+            startCell = minCell
+        }
+
+        console.log(`Number of stories about to be shown: ${storyViews.length}`)
+         
+        return (
+                <NativeFeed
+            style={[styles.container, this.props.style]}
+            cellHeight={Metrics.storyCover.fullScreen.height}
+            numCells={this.props.storiesById.length}
+            startCell={startCell}
+            numPreloadBehindCells={2}
+            numPreloadAheadCells={4}
+            onVisibleCellsChanged={this._handleVisibleCellsChanged}>
+                {storyViews}
+                </NativeFeed>
+        )
+        /*
     return (
       <ModifiedListView
         key={this.props.storiesById}
@@ -101,6 +137,7 @@ class StoryList extends React.Component {
         style={[styles.container, this.props.style]}
       />
     )
+*/
   }
 }
 

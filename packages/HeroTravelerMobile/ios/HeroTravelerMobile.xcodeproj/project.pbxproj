@@ -69,6 +69,9 @@
 		91F037C520035941000BA406 /* UIView+FindUIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F037BD20035941000BA406 /* UIView+FindUIViewController.m */; };
 		91F037C620035941000BA406 /* RCTVideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F037BE20035941000BA406 /* RCTVideoPlayerViewController.m */; };
 		91F037C920038398000BA406 /* RCTVideoCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F037C820038398000BA406 /* RCTVideoCache.m */; };
+		91F86E4920425EE9006A9C73 /* RHNativeFeedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F86E4820425EE9006A9C73 /* RHNativeFeedManager.m */; };
+		91F86E4C20426037006A9C73 /* RHNativeFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F86E4B20426037006A9C73 /* RHNativeFeed.m */; };
+		91F86E4F2042E7DF006A9C73 /* RHShadowNativeFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F86E4E2042E7DF006A9C73 /* RHShadowNativeFeed.m */; };
 		91FC449B203C960600ED309A /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 91FC4492203C95EA00ED309A /* libRNCamera.a */; };
 		942D124B1EB395B200A0CFE5 /* RNHockeyApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 942D124A1EB395B200A0CFE5 /* RNHockeyApp.m */; };
 		9465AAA71EB0FDC7003109B0 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9465AAA61EB0FDC7003109B0 /* GameKit.framework */; };
@@ -635,6 +638,12 @@
 		91F037C220035941000BA406 /* UIView+FindUIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FindUIViewController.h"; sourceTree = "<group>"; };
 		91F037C720038398000BA406 /* RCTVideoCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTVideoCache.h; sourceTree = "<group>"; };
 		91F037C820038398000BA406 /* RCTVideoCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTVideoCache.m; sourceTree = "<group>"; };
+		91F86E4720425EE9006A9C73 /* RHNativeFeedManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHNativeFeedManager.h; sourceTree = "<group>"; };
+		91F86E4820425EE9006A9C73 /* RHNativeFeedManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHNativeFeedManager.m; sourceTree = "<group>"; };
+		91F86E4A20426037006A9C73 /* RHNativeFeed.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHNativeFeed.h; sourceTree = "<group>"; };
+		91F86E4B20426037006A9C73 /* RHNativeFeed.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHNativeFeed.m; sourceTree = "<group>"; };
+		91F86E4D2042E7DF006A9C73 /* RHShadowNativeFeed.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHShadowNativeFeed.h; sourceTree = "<group>"; };
+		91F86E4E2042E7DF006A9C73 /* RHShadowNativeFeed.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHShadowNativeFeed.m; sourceTree = "<group>"; };
 		91FC445D203C95EA00ED309A /* RNCamera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
 		942D12171EB3956400A0CFE5 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
 		942D12491EB395B200A0CFE5 /* RNHockeyApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNHockeyApp.h; sourceTree = "<group>"; };
@@ -940,6 +949,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				91F86E4620425CDE006A9C73 /* NativeFeed */,
+				91F86E04204229C4006A9C73 /* Image */,
 				91973C8D1FA39B52006DE932 /* DraftJs */,
 				91F037B920035941000BA406 /* Video */,
 				949A3A621E9EB6FC00815C53 /* Frameworks */,
@@ -1065,6 +1076,26 @@
 			);
 			name = Video;
 			path = HeroTravelerMobile/Video;
+			sourceTree = "<group>";
+		};
+		91F86E04204229C4006A9C73 /* Image */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Image;
+			sourceTree = "<group>";
+		};
+		91F86E4620425CDE006A9C73 /* NativeFeed */ = {
+			isa = PBXGroup;
+			children = (
+				91F86E4720425EE9006A9C73 /* RHNativeFeedManager.h */,
+				91F86E4820425EE9006A9C73 /* RHNativeFeedManager.m */,
+				91F86E4A20426037006A9C73 /* RHNativeFeed.h */,
+				91F86E4B20426037006A9C73 /* RHNativeFeed.m */,
+				91F86E4D2042E7DF006A9C73 /* RHShadowNativeFeed.h */,
+				91F86E4E2042E7DF006A9C73 /* RHShadowNativeFeed.m */,
+			);
+			path = NativeFeed;
 			sourceTree = "<group>";
 		};
 		91FC445E203C95EA00ED309A /* Products */ = {
@@ -1988,10 +2019,12 @@
 				91973CAD1FA39B64006DE932 /* RNDJBlockModel.m in Sources */,
 				91973CAE1FA39B64006DE932 /* RNDJContentModel.m in Sources */,
 				91F037C420035941000BA406 /* RCTVideoManager.m in Sources */,
+				91F86E4F2042E7DF006A9C73 /* RHShadowNativeFeed.m in Sources */,
 				91F037C320035941000BA406 /* RCTVideo.m in Sources */,
 				91973CAF1FA39B64006DE932 /* RNDJEntityModel.m in Sources */,
 				91973CB01FA39B64006DE932 /* RNDJEntityRangeModel.m in Sources */,
 				91973CB11FA39B64006DE932 /* RNDJInlineStyleRangeModel.m in Sources */,
+				91F86E4C20426037006A9C73 /* RHNativeFeed.m in Sources */,
 				91973CB21FA39B64006DE932 /* RNDJSelectionModel.m in Sources */,
 				91973CB31FA39B64006DE932 /* RCTShadowView+DraftJSDirty.m in Sources */,
 				9115FB7C2041B11200547516 /* DownloadSessionManager.m in Sources */,
@@ -2005,6 +2038,7 @@
 				91973CB51FA39B64006DE932 /* RNDJDraftJSEditorManager.m in Sources */,
 				91F037C520035941000BA406 /* UIView+FindUIViewController.m in Sources */,
 				91973CB71FA39B64006DE932 /* RNDJDraftJsIndex.m in Sources */,
+				91F86E4920425EE9006A9C73 /* RHNativeFeedManager.m in Sources */,
 				91F037C920038398000BA406 /* RCTVideoCache.m in Sources */,
 				91973CB81FA39B64006DE932 /* RNDJStyle.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,

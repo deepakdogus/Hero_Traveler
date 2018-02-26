@@ -180,6 +180,7 @@ export default class StoryPreview extends Component {
             </View>
           }
         </View>
+        <View style={styles.separator}/>
       </View>
     )
   }

@@ -51,6 +51,10 @@
 		915D977020081218005EF687 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 915D976B20081218005EF687 /* FBSDKLoginKit.framework */; };
 		915D977120081218005EF687 /* FBSDKPlacesKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 915D976C20081218005EF687 /* FBSDKPlacesKit.framework */; };
 		916DBF62203C8A2B0097DE98 /* libAutoGrowTextInput.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 916DBF61203C8A1B0097DE98 /* libAutoGrowTextInput.a */; };
+		919416DC2043E854006F42BC /* RHShadowNativeFeedHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 919416DB2043E854006F42BC /* RHShadowNativeFeedHeader.m */; };
+		919416DF2043E86A006F42BC /* RHNativeFeedHeaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 919416DE2043E86A006F42BC /* RHNativeFeedHeaderManager.m */; };
+		919416E22043F00C006F42BC /* RHNativeFeedHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 919416E12043F00C006F42BC /* RHNativeFeedHeader.m */; };
+		919416E52043F66E006F42BC /* RHCustomScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 919416E42043F66E006F42BC /* RHCustomScrollView.m */; };
 		91973CAC1FA39B64006DE932 /* RNDJBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973C911FA39B52006DE932 /* RNDJBaseModel.m */; };
 		91973CAD1FA39B64006DE932 /* RNDJBlockModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973C931FA39B52006DE932 /* RNDJBlockModel.m */; };
 		91973CAE1FA39B64006DE932 /* RNDJContentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91973C951FA39B52006DE932 /* RNDJContentModel.m */; };
@@ -599,6 +603,14 @@
 		915D976B20081218005EF687 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = Frameworks/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		915D976C20081218005EF687 /* FBSDKPlacesKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKPlacesKit.framework; path = Frameworks/FBSDKPlacesKit.framework; sourceTree = "<group>"; };
 		916DBF5C203C8A1B0097DE98 /* AutoGrowTextInput.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AutoGrowTextInput.xcodeproj; path = "../node_modules/react-native-autogrow-textinput/ios/AutoGrowTextInput.xcodeproj"; sourceTree = "<group>"; };
+		919416DA2043E854006F42BC /* RHShadowNativeFeedHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHShadowNativeFeedHeader.h; sourceTree = "<group>"; };
+		919416DB2043E854006F42BC /* RHShadowNativeFeedHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHShadowNativeFeedHeader.m; sourceTree = "<group>"; };
+		919416DD2043E86A006F42BC /* RHNativeFeedHeaderManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHNativeFeedHeaderManager.h; sourceTree = "<group>"; };
+		919416DE2043E86A006F42BC /* RHNativeFeedHeaderManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHNativeFeedHeaderManager.m; sourceTree = "<group>"; };
+		919416E02043F00C006F42BC /* RHNativeFeedHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHNativeFeedHeader.h; sourceTree = "<group>"; };
+		919416E12043F00C006F42BC /* RHNativeFeedHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHNativeFeedHeader.m; sourceTree = "<group>"; };
+		919416E32043F66E006F42BC /* RHCustomScrollView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHCustomScrollView.h; sourceTree = "<group>"; };
+		919416E42043F66E006F42BC /* RHCustomScrollView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHCustomScrollView.m; sourceTree = "<group>"; };
 		91973C901FA39B52006DE932 /* RNDJBaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJBaseModel.h; sourceTree = "<group>"; };
 		91973C911FA39B52006DE932 /* RNDJBaseModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJBaseModel.m; sourceTree = "<group>"; };
 		91973C921FA39B52006DE932 /* RNDJBlockModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJBlockModel.h; sourceTree = "<group>"; };
@@ -1094,6 +1106,14 @@
 				91F86E4B20426037006A9C73 /* RHNativeFeed.m */,
 				91F86E4D2042E7DF006A9C73 /* RHShadowNativeFeed.h */,
 				91F86E4E2042E7DF006A9C73 /* RHShadowNativeFeed.m */,
+				919416DD2043E86A006F42BC /* RHNativeFeedHeaderManager.h */,
+				919416DE2043E86A006F42BC /* RHNativeFeedHeaderManager.m */,
+				919416DA2043E854006F42BC /* RHShadowNativeFeedHeader.h */,
+				919416DB2043E854006F42BC /* RHShadowNativeFeedHeader.m */,
+				919416E02043F00C006F42BC /* RHNativeFeedHeader.h */,
+				919416E12043F00C006F42BC /* RHNativeFeedHeader.m */,
+				919416E32043F66E006F42BC /* RHCustomScrollView.h */,
+				919416E42043F66E006F42BC /* RHCustomScrollView.m */,
 			);
 			path = NativeFeed;
 			sourceTree = "<group>";
@@ -2015,6 +2035,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				919416E52043F66E006F42BC /* RHCustomScrollView.m in Sources */,
 				91973CAC1FA39B64006DE932 /* RNDJBaseModel.m in Sources */,
 				91973CAD1FA39B64006DE932 /* RNDJBlockModel.m in Sources */,
 				91973CAE1FA39B64006DE932 /* RNDJContentModel.m in Sources */,
@@ -2028,6 +2049,7 @@
 				91973CB21FA39B64006DE932 /* RNDJSelectionModel.m in Sources */,
 				91973CB31FA39B64006DE932 /* RCTShadowView+DraftJSDirty.m in Sources */,
 				9115FB7C2041B11200547516 /* DownloadSessionManager.m in Sources */,
+				919416E22043F00C006F42BC /* RHNativeFeedHeader.m in Sources */,
 				91AC58BD1FD83CFC0017B1E8 /* RNDJAutocompleteModel.m in Sources */,
 				91973CB41FA39B64006DE932 /* RNDJDraftJSEditor.m in Sources */,
 				9155DE921FD9B42500DAAA7C /* RNDJAutocorrectView.m in Sources */,
@@ -2039,11 +2061,13 @@
 				91F037C520035941000BA406 /* UIView+FindUIViewController.m in Sources */,
 				91973CB71FA39B64006DE932 /* RNDJDraftJsIndex.m in Sources */,
 				91F86E4920425EE9006A9C73 /* RHNativeFeedManager.m in Sources */,
+				919416DF2043E86A006F42BC /* RHNativeFeedHeaderManager.m in Sources */,
 				91F037C920038398000BA406 /* RCTVideoCache.m in Sources */,
 				91973CB81FA39B64006DE932 /* RNDJStyle.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				942D124B1EB395B200A0CFE5 /* RNHockeyApp.m in Sources */,
+				919416DC2043E854006F42BC /* RHShadowNativeFeedHeader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

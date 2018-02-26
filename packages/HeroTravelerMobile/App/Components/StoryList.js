@@ -13,6 +13,8 @@ import ModifiedListView from './ModifiedListView'
 import UXActions from '../Redux/UXRedux'
 
 const NativeFeed = requireNativeComponent('RHNativeFeed', null)
+const NativeFeedHeader = requireNativeComponent('RHNativeFeedHeader', null)
+
 // const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
 
 /*
@@ -53,21 +55,6 @@ class StoryList extends React.Component {
     this.setState(event.nativeEvent)
   }
     
-  _renderHeader = () => {
-    return this.props.renderHeaderContent || null
-  }
-
-  _renderSectionHeader = () => {
-    return this.props.renderSectionHeader || null
-  }
-
-  _renderSeparator = (sectionId, rowId) => {
-    const key = sectionId + rowId
-    return (
-      <View key={key} style={styles.separator}/>
-    )
-  }
-
   updateDataSource = (visibleRows) => {
     const {setPlayingRow, playingRow, setVisibleRows} = this.props
 
@@ -88,12 +75,14 @@ class StoryList extends React.Component {
         let storyViews = []
         let startCell = 0
 
+        const { storiesById, renderHeaderContent, renderSectionHeader } = this.props
+
         if (this.state.visibleCells)
         {
             const {minCell, maxCell} = this.state.visibleCells
 
             let i = minCell - 1
-            storyViews = this.props.storiesById.slice(minCell, maxCell).map((storyId) => {
+            storyViews = storiesById.slice(minCell, maxCell).map((storyId) => {
                 i = i + 1
                 return (<View key={`FeedItem:${storyId}`}>
                         {this.props.renderStory({id: storyId, index: i})}
@@ -102,17 +91,27 @@ class StoryList extends React.Component {
             startCell = minCell
         }
 
-        console.log(`Number of stories about to be shown: ${storyViews.length}`)
-         
         return (
                 <NativeFeed
             style={[styles.container, this.props.style]}
-            cellHeight={Metrics.storyCover.fullScreen.height}
-            numCells={this.props.storiesById.length}
+            cellHeight={Metrics.feedCell.height}
+            cellSeparatorHeight={Metrics.feedCell.separator}
+            numCells={storiesById.length}
             startCell={startCell}
             numPreloadBehindCells={2}
-            numPreloadAheadCells={4}
+            numPreloadAheadCells={3}
             onVisibleCellsChanged={this._handleVisibleCellsChanged}>
+                {
+                    renderHeaderContent
+                        ? (<NativeFeedHeader headerHeight={204} sticky={false}>{renderHeaderContent}</NativeFeedHeader>)
+                           : null
+                          }
+                {
+                    renderSectionHeader
+                        ? (<NativeFeedHeader headerHeight={50} sticky={true}>{renderSectionHeader}</NativeFeedHeader>)
+                           : null
+                          }
+                   
                 {storyViews}
                 </NativeFeed>
         )

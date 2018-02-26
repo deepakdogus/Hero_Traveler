@@ -1,6 +1,7 @@
 #import "RHShadowNativeFeed.h"
 #import <React/RCTUtils.h>
 #import "RHNativeFeed.h"
+#import "RHShadowNativeFeedHeader.h"
 
 @implementation RHShadowNativeFeed
 
@@ -12,10 +13,43 @@
   if (YGFloatIsUndefined(fullWidth)) {
     fullWidth = [UIScreen mainScreen].bounds.size.width;
   }
-  
-  NSInteger i = 0;
+
+  CGFloat totalHeaderHeight = 0.f;
   for (RCTShadowView* shadowView in [self reactSubviews])
   {
+    if (![shadowView isKindOfClass:[RHShadowNativeFeedHeader class]])
+    {
+      continue;
+    }
+    
+    RHShadowNativeFeedHeader* header = (RHShadowNativeFeedHeader*) shadowView;
+    
+    CGRect childFrame = {{
+      0.f,
+      RCTRoundPixelValue(totalHeaderHeight)
+    }, {
+      RCTRoundPixelValue(fullWidth),
+      RCTRoundPixelValue(header.headerHeight)
+    }};
+    
+    [shadowView collectUpdatedFrames:viewsWithNewFrame
+                           withFrame:childFrame
+                              hidden:false
+                    absolutePosition:absolutePosition];
+
+    totalHeaderHeight += header.headerHeight;
+  }
+  
+  CGFloat fullCellHeight = _cellHeight + _cellSeparatorHeight;
+  
+  NSInteger cellNum = 0;
+  for (RCTShadowView* shadowView in [self reactSubviews])
+  {
+    if ([shadowView isKindOfClass:[RHShadowNativeFeedHeader class]])
+    {
+      continue;
+    }
+
     YGNodeRef childNode = shadowView.yogaNode;
     float x = YGNodeLayoutGetLeft(childNode);
     float width = YGNodeStyleGetWidth(childNode).value;
@@ -28,25 +62,25 @@
     if (YGFloatIsUndefined(width)) {
       width = fullWidth;
     }
-
+    
     if (YGFloatIsUndefined(height)) {
       height = 100;
     }
     
     CGRect childFrame = {{
       x,
-      RCTRoundPixelValue((i+_startCell)*_cellHeight)
+      RCTRoundPixelValue(totalHeaderHeight+((cellNum+_startCell)*fullCellHeight))
     }, {
       RCTRoundPixelValue(width),
       RCTRoundPixelValue(_cellHeight)
     }};
-
+    
     [shadowView collectUpdatedFrames:viewsWithNewFrame
-                      withFrame:childFrame
-                         hidden:false
-               absolutePosition:absolutePosition];
-
-    i++;
+                           withFrame:childFrame
+                              hidden:false
+                    absolutePosition:absolutePosition];
+    
+    cellNum++;
   }
 }
 
@@ -103,6 +137,7 @@
   [applierBlocks addObject:^(NSDictionary<NSNumber *, UIView *> *viewRegistry) {
     RHNativeFeed *view = (RHNativeFeed *)viewRegistry[self.reactTag];
     view.cellHeight = self.cellHeight;
+    view.cellSeparatorHeight = self.cellSeparatorHeight;
   }];
   
   return parentProperties;

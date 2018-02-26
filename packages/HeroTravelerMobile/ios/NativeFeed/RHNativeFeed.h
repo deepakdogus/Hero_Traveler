@@ -19,6 +19,7 @@
 @property(nonatomic, assign) NSInteger maxCellIndex;
 
 @property(nonatomic, assign) CGFloat cellHeight;
+@property(nonatomic, assign) CGFloat cellSeparatorHeight;
 @property(nonatomic, assign) NSInteger numPreloadBehindCells;
 @property(nonatomic, assign) NSInteger numPreloadAheadCells;
 @property(nonatomic, assign) NSInteger numCells;

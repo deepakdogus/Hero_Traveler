@@ -14,9 +14,11 @@
 @interface RHNativeFeed : RCTView <UIScrollViewDelegate>
 
 - (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher;
+- (void) recalculateBackingView;
 
 @property(nonatomic, assign) NSInteger minCellIndex;
 @property(nonatomic, assign) NSInteger maxCellIndex;
+@property(nonatomic, assign) NSInteger playingCellIndex;
 
 @property(nonatomic, assign) CGFloat cellHeight;
 @property(nonatomic, assign) CGFloat cellSeparatorHeight;

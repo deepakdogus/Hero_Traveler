@@ -15,6 +15,8 @@
   CGFloat _cellHeight;
   CGFloat _cellSeparatorHeight;
   NSInteger _numCells;
+  
+  UIView* _cellBackingView;
 }
 
 - (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher
@@ -52,6 +54,11 @@
 //    _scrollListeners = [NSHashTable weakObjectsHashTable];
 //
     [self addSubview:_scrollView];
+    
+    _cellBackingView = [[UIView alloc] initWithFrame:CGRectZero];
+    _cellBackingView.userInteractionEnabled = YES;
+    _cellBackingView.backgroundColor = [UIColor colorWithWhite:0.929411f alpha:1.f];
+    [_scrollView addSubview:_cellBackingView];
     
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_scrollView
                                                      attribute:NSLayoutAttributeTop
@@ -162,6 +169,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 ////    RCTApplyTranformationAccordingLayoutDirection(_contentView, self.reactLayoutDirection);
 //    [_scrollView addSubview:view];
 //  }
+  [self recalculateBackingView];
 }
 
 - (void) addSubview:(UIView *)view
@@ -185,6 +193,44 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   {
     [_scrollView addSubview:view];
   }
+  [self recalculateBackingView];
+}
+
+- (void) recalculateBackingView
+{
+  CGFloat minY = CGFLOAT_MAX;
+  CGFloat maxY = CGFLOAT_MIN;
+  for (UIView* view in _scrollView.subviews)
+  {
+    if (![view isKindOfClass:[UIImageView class]])
+    {
+      if (view.frame.origin.y < minY)
+      {
+        minY = view.frame.origin.y;
+      }
+      
+      CGFloat topY = view.frame.origin.y + view.frame.size.height;
+      if (topY > maxY)
+      {
+        maxY = topY;
+      }
+    }
+  }
+  
+  if (maxY > minY)
+  {
+    _cellBackingView.frame = CGRectMake(0, minY, self.bounds.size.width, maxY-minY);
+  }
+  else
+  {
+    _cellBackingView.frame = CGRectZero;
+  }
+}
+
+- (void) setFrame:(CGRect)frame
+{
+  [super setFrame:frame];
+  [self recalculateBackingView];
 }
 
 - (void)removeReactSubview:(UIView *)subview
@@ -199,6 +245,8 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 ////    RCTAssert(_contentView == subview, @"Attempted to remove non-existent subview");
 ////    _contentView = nil;
 //  }
+  
+  [self recalculateBackingView];
 }
 
 - (void) setCellHeight:(CGFloat)cellHeight
@@ -275,16 +323,19 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 {
   NSInteger minCell = NSIntegerMax;
   NSInteger maxCell = NSIntegerMin;
+  NSInteger playingCell = 0;
 
   if (!_onVisibleCellsChanged)
   {
     minCell = -2;
     maxCell = -2;
+    playingCell = -2;
   }
   else if (_numCells <= 0)
   {
     minCell = -1;
     maxCell = -1;
+    playingCell = -1;
   }
   else
   {
@@ -293,10 +344,19 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
     CGFloat fullCellHeight = _cellHeight + _cellSeparatorHeight;
     CGFloat totalHeaderSize = [self getTotalHeaderSize];
+    
+    CGFloat maxIntersectionSize = 0;
     for (int i = 0; i < _numCells; i++)
     {
       CGRect cellFrame = CGRectMake(0, totalHeaderSize+(i*fullCellHeight), visibleBounds.size.width, fullCellHeight);
       CGRect cellIntersection = CGRectIntersection(visibleBounds, cellFrame);
+      
+      CGFloat intersectionSize = cellIntersection.size.width * cellIntersection.size.height;
+      if (intersectionSize > maxIntersectionSize)
+      {
+        maxIntersectionSize = intersectionSize;
+        playingCell = i;
+      }
       
       if (cellIntersection.size.height > 0.5f && cellIntersection.size.width > 0.5f)
       {
@@ -316,13 +376,14 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     maxCell = MIN(maxCell+1+_numPreloadAheadCells, _numCells);
   }
   
-  if (minCell != self.minCellIndex || maxCell != self.maxCellIndex)
+  if (minCell != self.minCellIndex || maxCell != self.maxCellIndex || playingCell != self.playingCellIndex)
   {
     self.minCellIndex = minCell;
     self.maxCellIndex = maxCell;
+    self.playingCellIndex = playingCell;
     if (_onVisibleCellsChanged)
     {
-      if (minCell < 0 || maxCell < 0)
+      if (minCell < 0 || maxCell < 0 || playingCell < 0)
       {
         _onVisibleCellsChanged(@{});
       }
@@ -332,7 +393,8 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
                                  @"visibleCells": @{
                                      @"minCell": @(minCell),
                                      @"maxCell": @(maxCell),
-                                     }
+                                     },
+                                 @"playingCell": @(playingCell),
                                  });
       }
     }

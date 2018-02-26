@@ -52,25 +52,27 @@ class StoryList extends React.Component {
   }
 
   _handleVisibleCellsChanged = (event) => {
-    this.setState(event.nativeEvent)
+      const {setPlayingRow, playingRow, setVisibleRows} = this.props
+        
+      this.setState(event.nativeEvent)
+
+      let visibleRowsKeys = []
+      if (event.nativeEvent.visibleCells)
+      {
+          for (let i = event.nativeEvent.minCell; i < event.nativeEvent.maxCell; i++)
+          {
+              visibleRowsKeys.push(i)
+          }
+      }
+      setVisibleRows(visibleRowsKeys)
+
+      let newPlayingRow = event.nativeEvent.playingCell
+      if (playingRow != newPlayingRow)
+      {
+          setPlayingRow(newPlayingRow)
+      }
   }
     
-  updateDataSource = (visibleRows) => {
-    const {setPlayingRow, playingRow, setVisibleRows} = this.props
-
-    if (!visibleRows || !visibleRows.s1)
-    {
-      return;
-    }
-
-    let targetRow;
-    const visibleRowsKeys = Object.keys(visibleRows.s1)
-    if (visibleRowsKeys.length === 3) targetRow = visibleRowsKeys[1]
-    else targetRow = visibleRowsKeys[0]
-    if (targetRow !== playingRow) setPlayingRow(targetRow)
-    setVisibleRows(visibleRowsKeys)
-  }
-
     render () {
         let storyViews = []
         let startCell = 0

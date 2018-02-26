@@ -138,6 +138,7 @@
     RHNativeFeed *view = (RHNativeFeed *)viewRegistry[self.reactTag];
     view.cellHeight = self.cellHeight;
     view.cellSeparatorHeight = self.cellSeparatorHeight;
+    [view recalculateBackingView];
   }];
   
   return parentProperties;

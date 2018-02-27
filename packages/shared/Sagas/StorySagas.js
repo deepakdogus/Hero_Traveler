@@ -148,7 +148,7 @@ function * uploadAtomicAssets(draft){
   const promise = yield Promise.all(draft.draftjsContent.blocks.map((block, index) => {
     if (block.type === 'atomic') {
       const {url, type} = block.data
-      if (url.substring(0,4) === 'file') {
+      if (url.substring(0,4) === 'file' || url.substring(0,6) === '/Users') {
         return CloudinaryAPI.uploadMediaFile(pathAsFileObject(url), type)
         .then(({data: imageUpload}) => {
           return _.merge(block.data, extractUploadData(imageUpload))

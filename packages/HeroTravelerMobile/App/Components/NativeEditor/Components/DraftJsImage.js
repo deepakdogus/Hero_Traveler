@@ -23,7 +23,7 @@ export default class DraftJsImage extends Component {
       </View>
     )
     let uri
-    if (url.substring(0,4) === 'file') uri = url
+    if (url.substring(0,4) === 'file' || url.substring(0,6) === '/Users') uri = url
     else uri = getImageUrl(url, 'optimized', {height, width})
     return (
       <TouchableWithoutFeedback

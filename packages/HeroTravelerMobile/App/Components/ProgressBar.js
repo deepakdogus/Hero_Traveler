@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import {Text, TouchableOpacity, ProgressViewIOS, View} from 'react-native'
 import styles from './Styles/ProgressBarStyles'
 import {Colors} from '../Shared/Themes'

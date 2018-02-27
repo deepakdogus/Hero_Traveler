@@ -212,7 +212,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   CGFloat maxY = CGFLOAT_MIN;
   for (UIView* view in _scrollView.subviews)
   {
-    if (![view isKindOfClass:[UIImageView class]])
+    if (![view isKindOfClass:[UIImageView class]] && view != _cellBackingView)
     {
       if (view.frame.origin.y < minY)
       {

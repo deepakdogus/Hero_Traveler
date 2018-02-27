@@ -44,7 +44,7 @@ class StoryList extends React.Component {
       super(props)
       
       this.addListenerOn = this.addListenerOn.bind(this)
-      this.componentDidMount = this.componentDidMount.bind(this)
+      //this.componentDidMount = this.componentDidMount.bind(this)
       this.componentWillMount = this.componentWillMount.bind(this)
       this.componentWillUnmount = this.componentWillUnmount.bind(this)
       this.scrollResponderFlashScrollIndicators = this.scrollResponderFlashScrollIndicators.bind(this)

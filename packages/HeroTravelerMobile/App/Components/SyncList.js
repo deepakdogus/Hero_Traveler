@@ -32,7 +32,7 @@ export default class ActivityList extends React.Component {
     return Object.keys(oldProps.backgroundFailures).length !== Object.keys(nextProps.backgroundFailures).length ||
     Object.keys(oldProps.backgroundFailures).some(key => {
       const oldFailure = oldProps.backgroundFailures[key]
-      const nextFailure = oldProps.backgroundFailures[key]
+      const nextFailure = nextProps.backgroundFailures[key]
       return oldFailure.status !== nextFailure.status
     })
   }

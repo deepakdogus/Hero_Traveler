@@ -95,7 +95,7 @@ class NotificationScreen extends React.Component {
     if (
       this.state.selectedTab === 2 &&
       Object.keys(nextProps.backgroundFailures).length === 0
-    ) this.setState({selectedTab: 2})
+    ) this.setState({selectedTab: 0})
   }
 
   render () {

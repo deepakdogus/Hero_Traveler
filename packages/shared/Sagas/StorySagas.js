@@ -204,7 +204,7 @@ function * updateDraftErrorHandling(draft, response){
 
 export function * publishLocalDraft (api, action) {
   const {draft} = action
-
+  yield put(StoryActions.setRetryingBackgroundFailure(draft.id))
   const coverResponse = yield createCover(api, draft)
   if (coverResponse.error) {
     yield publishDraftErrorHandling(draft, coverResponse.error)
@@ -257,6 +257,7 @@ export function * discardDraft (api, action) {
 
 export function * updateDraft (api, action) {
   const {draftId, draft, updateStoryEntity} = action
+  yield put(StoryActions.setRetryingBackgroundFailure(draftId))
   const coverResponse = yield createCover(api, draft)
   if (coverResponse.error) {
     yield updateDraftErrorHandling(draft, coverResponse.error)

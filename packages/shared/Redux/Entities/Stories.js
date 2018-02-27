@@ -23,6 +23,7 @@ const { Types, Creators } = createActions({
   removeDraft: ['draftId'],
   addBackgroundFailure: ['story', 'error', 'failedMethod'],
   removeBackgroundFailure: ['storyId'],
+  setRetryingBackgroundFailure: ['storyId'],
   toggleLike: ['storyId', 'wasLiked'],
   storyLike: ['userId', 'storyId'],
   flagStory: ['userId', 'storyId'],
@@ -330,6 +331,13 @@ export const removeBackgroundFailure = (state, {storyId}) => {
   return  state.setIn(['backgroundFailures'], state.backgroundFailures.without(storyId))
 }
 
+export const setRetryingBackgroundFailure = (state, {storyId}) => {
+  if (state.backgroundFailures[storyId]){
+    return state.setIn(['backgroundFailures', storyId, 'status'], 'retrying')
+  }
+  return state
+}
+
 export const deleteStory = (state, {userId, storyId}) => {
   return state
 }
@@ -394,6 +402,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.REMOVE_DRAFT]: removeDraft,
   [Types.ADD_BACKGROUND_FAILURE]: addBackgroundFailure,
   [Types.REMOVE_BACKGROUND_FAILURE]: removeBackgroundFailure,
+  [Types.SET_RETRYING_BACKGROUND_FAILURE]: setRetryingBackgroundFailure,
   [Types.TOGGLE_LIKE]: storyLike,
   [Types.TOGGLE_BOOKMARK]: storyBookmark,
   [Types.RECEIVE_STORIES]: updateEntities,

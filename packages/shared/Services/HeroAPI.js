@@ -202,7 +202,6 @@ const create = () => {
       story: attrs
     })
     .then(response => safeNormalize(response, Story))
-
   }
 
   const removeDraft = (draftId) => {
@@ -221,13 +220,11 @@ const create = () => {
   const getDrafts = () => {
     return api.get(`story/draft`)
     .then(response => safeNormalize(response, [Story]))
-
   }
 
   const getCategories = () => {
     return api.get('category')
     .then(response => safeNormalize(response, [Category]))
-
   }
 
   const getSuggestedUsers = (params) => {

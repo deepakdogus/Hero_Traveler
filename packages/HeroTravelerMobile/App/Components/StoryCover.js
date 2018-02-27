@@ -83,6 +83,7 @@ export default class StoryCover extends Component {
       imageThumbnailUrl = cover.uri || cover.secure_url
       imageUrl = cover.uri || cover.secure_url
     }
+
     return (
       <TouchableWithoutFeedback
         style={{flex: 1}}
@@ -173,12 +174,15 @@ export default class StoryCover extends Component {
       height: Metrics.storyCover.fullScreen.height,
     }
     const videoThumbnailUrl = getImageUrl(this.props.cover, 'loading', videoThumbnailOptions)
+    const cover = this.props.cover
+    let videoPath = getVideoUrl(this.props.cover)
+    if (cover.uri || cover.secure_url) videoPath = cover.uri || cover.secure_url
 
     return (
       <View style={this._getWidthHeight()}>
         <VideoPlayer
           areInRenderLocation={this.props.areInRenderLocation}
-          path={getVideoUrl(this.props.cover)}
+          path={videoPath}
           imgUrl={videoThumbnailUrl}
           ref={this._makeRef}
           allowVideoPlay={this.props.allowVideoPlay && this.props.autoPlayVideo}

@@ -134,15 +134,9 @@ class CreateStoryDetailScreen extends React.Component {
 
   _onRight = () => {
     const {workingDraft} = this.props
-    let promise = Promise.resolve(workingDraft)
     this.next()
-    return promise.then(draft => {
-      if (draft.draft) {
-        this.props.publish(draft)
-      } else {
-        this.saveDraft(draft)
-      }
-    })
+    if (workingDraft.draft) this.props.publish(workingDraft)
+    else this.saveDraft(workingDraft)
   }
 
   _onLeft = () => {

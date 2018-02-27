@@ -28,8 +28,17 @@ export default class ActivityList extends React.Component {
     )
   }
 
+  hasFailuresChanged(oldProps, nextProps){
+    return Object.keys(oldProps.backgroundFailures).length !== Object.keys(nextProps.backgroundFailures).length ||
+    Object.keys(oldProps.backgroundFailures).some(key => {
+      const oldFailure = oldProps.backgroundFailures[key]
+      const nextFailure = oldProps.backgroundFailures[key]
+      return oldFailure.status !== nextFailure.status
+    })
+  }
+
   componentWillReceiveProps(nextProps) {
-    if (Object.keys(this.props.backgroundFailures).length !== Object.keys(nextProps.backgroundFailures).length) {
+    if (this.hasFailuresChanged(this.props, nextProps)) {
       const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
       this.setState({
         dataSource:ds.cloneWithRows(nextProps.backgroundFailures)

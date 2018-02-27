@@ -4,13 +4,15 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  ActivityIndicator
+  ActivityIndicator,
+  Image,
 } from 'react-native'
+import Immutable from 'seamless-immutable'
 
 import { Colors, Metrics } from '../Shared/Themes/'
-import Avatar from './Avatar'
+import VideoPlayer from './VideoPlayer'
 import getImageUrl from '../Shared/Lib/getImageUrl'
-
+import getVideoUrl from '../Shared/Lib/getVideoUrl'
 export const ActivityProps = {
   story: PropTypes.object.isRequired,
   failedMethod: PropTypes.string.isRequired,
@@ -26,32 +28,57 @@ export default class Activity extends Component {
     return this.props.status === 'retrying'
   }
 
+  renderCover() {
+    const {coverImage, coverVideo} = this.props.story
+    let cover = coverImage || coverVideo
+    let coverUrl
+    if (typeof cover === 'string') cover = JSON.parse(cover)
+    if (cover.uri || cover.secure_url){
+      coverUrl = cover.uri || cover.secure_url
+    }
+    else if (coverImage) coverUrl = getImageUrl(cover, 'basic')
+    else if (coverVideo) coverUrl = getVideoUrl(cover)
+
+    if (coverImage){
+      return (
+        <Image
+          cached={false}
+          resizeMode='cover'
+          source={{uri: coverUrl}}
+          style={[styles.coverStyle, styles.coverWrapper]}
+        />
+      )
+    }
+    else return (
+      <View style={[styles.coverStyle, styles.coverWrapper]}>
+        <VideoPlayer
+          path={coverUrl}
+          allowVideoPlay={false}
+          autoPlayVideo={false}
+          showPlayButton={false}
+          resizeMode='cover'
+          videoStyle={styles.coverStyle}
+        />
+      </View>
+    )
+  }
+
   render () {
     let {
       story,
       error,
     } = this.props
 
-    let cover = story.coverImage || story.coverVideo
-    let imageUrl
-    if (typeof cover === 'string') cover = JSON.parse(cover)
-    if (cover.uri || cover.secure_url){
-      imageUrl = cover.uri || cover.secure_url
-    }
-    else imageUrl = getImageUrl(cover, 'basic')
     return (
       <View style={styles.root}>
         <TouchableOpacity
           onPress={this._onPress}
         >
           <View style={styles.innerButton}>
-            <Avatar
-              style={styles.avatar}
-              avatarUrl={imageUrl}
-            />
+            {this.renderCover()}
             <View style={styles.middle}>
               <Text style={styles.description}>
-                <Text style={styles.actionUserText}>{story.title}</Text>
+                <Text style={styles.title}>{story.title}</Text>
                 <Text> {error}</Text>
               </Text>
             </View>
@@ -69,7 +96,7 @@ export default class Activity extends Component {
 
   _onPress = () => {
     const {story, failedMethod} = this.props
-    this.props[failedMethod](story)
+    this.props[failedMethod](Immutable.asMutable(story, {deep: true}))
   }
 }
 
@@ -99,28 +126,22 @@ const styles = StyleSheet.create({
     fontWeight: '300',
     letterSpacing: 0.7,
   },
-  dateText: {
-    marginTop: Metrics.baseMargin / 2,
-    color: '#757575',
-  },
-  content: {
-    marginTop: Metrics.baseMargin / 2
-  },
-  contentText: {
-    color: '#757575',
-    fontSize: 15
-  },
   description: {
     fontSize: 16,
     color: Colors.background,
     fontWeight: '300',
     letterSpacing: 0.7,
   },
-  avatar: {
+  coverWrapper: {
     marginHorizontal: Metrics.baseMargin
   },
-  actionUserText: {
+  title: {
     fontWeight: '600',
     color: Colors.background,
+  },
+  coverStyle: {
+    width: 40,
+    height: 40,
+    borderRadius: 40/2,
   }
 })

@@ -245,6 +245,9 @@ class StoryCoverScreen extends Component {
       if (coverVideo.uri) {
         coverVideo = coverVideo.uri
       }
+      else if (typeof coverVideo === 'string'){
+        coverVideo = JSON.parse(coverVideo).secure_url
+      }
       else coverVideo = getVideoUrl(coverVideo)
     }
 

@@ -60,6 +60,7 @@ import {
   getUserFeed,
   getLikesAndBookmarks,
   registerDraft,
+  publishLocalDraft,
   publishDraft,
   discardDraft,
   updateDraft,
@@ -137,6 +138,7 @@ export default function * root () {
     takeLatest(SessionTypes.REFRESH_SESSION, refreshSession, heroAPI),
 
     // Drafts and story creation
+    takeLatest(StoryCreateTypes.PUBLISH_LOCAL_DRAFT, publishLocalDraft, heroAPI),
     takeLatest(StoryCreateTypes.PUBLISH_DRAFT, publishDraft, heroAPI),
     takeLatest(StoryCreateTypes.REGISTER_DRAFT, registerDraft, heroAPI),
     takeLatest(StoryCreateTypes.DISCARD_DRAFT, discardDraft, heroAPI),

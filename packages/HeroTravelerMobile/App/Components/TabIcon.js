@@ -103,6 +103,8 @@ class TabIcon extends React.Component {
         return Images.iconContributorBadage
       case 'founder':
         return Images.iconFounderBadge
+      case 'error':
+        return Images.iconErrorExclamation
       case 'profile':
       default:
         return Images.iconNavProfile
@@ -139,10 +141,12 @@ class TabIcon extends React.Component {
 const mapStateToProps = (state, props) => {
   if (props.name === 'activity') {
     const activities = state.entities.users.activities
+    const backgroundFailures = state.entities.stories.backgroundFailures
     const unseenActivityCount = _.keys(activities).reduce((count, key) => {
       const increment = activities[key].seen ? 0 : 1;
       return count + increment;
-    }, 0)
+    }, 0) + Object.keys(backgroundFailures).length
+
     /*
       We will need a similar logic once we add message threads.
       So notificationCount will be unseenActivityCount + unreadThreadCount

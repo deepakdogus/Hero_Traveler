@@ -27,7 +27,6 @@ import Loader from '../../Components/Loader'
 import {Colors, Metrics} from '../../Shared/Themes'
 import styles, {customStyles, modalWrapperStyles, coverHeight} from './2_StoryCoverScreenStyles'
 import NavBar from './NavBar'
-import {getNewCover, saveCover} from './shared'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import getVideoUrl from '../../Shared/Lib/getVideoUrl'
 import ImageWrapper from '../../Components/ImageWrapper'
@@ -85,8 +84,6 @@ class StoryCoverScreen extends Component {
     storyId: PropTypes.string,
     navigatedFromProfile: PropTypes.bool,
     shouldLoadStory: PropTypes.bool,
-    loadStory: PropTypes.func,
-    registerDraft: PropTypes.func,
     update: PropTypes.func,
     discardDraft: PropTypes.func,
     completeTooltip: PropTypes.func,
@@ -215,9 +212,16 @@ class StoryCoverScreen extends Component {
 
   renderCoverPhoto(coverPhoto) {
     if (coverPhoto){
+      // fail to upload to cloudinary case
       if (coverPhoto.uri) coverPhoto = coverPhoto.uri
+      // failed to save to DB case but have cloudinary asset
+      else if (typeof coverPhoto === 'string'){
+        coverPhoto = JSON.parse(coverPhoto).secure_url
+      }
+      // normal case
       else coverPhoto = getImageUrl(coverPhoto, 'basic')
     }
+
     return R.ifElse(
       R.identity,
       R.always((
@@ -242,6 +246,9 @@ class StoryCoverScreen extends Component {
     if (coverVideo){
       if (coverVideo.uri) {
         coverVideo = coverVideo.uri
+      }
+      else if (typeof coverVideo === 'string'){
+        coverVideo = JSON.parse(coverVideo).secure_url
       }
       else coverVideo = getVideoUrl(coverVideo)
     }
@@ -473,32 +480,10 @@ class StoryCoverScreen extends Component {
 
   // this does a hard save to the DB
   saveStory() {
-    let promise
-    const {coverImage, coverVideo} = this.props.workingDraft
-
-    this.setState({
-      updating: true
-    })
-    const newCover = getNewCover(coverImage, coverVideo)
-
-    if (newCover) promise = saveCover(api, this.props.workingDraft, newCover)
-    else promise = Promise.resolve(this.props.workingDraft)
-
-    return promise.then(draft => {
-      this.cleanDraft(draft)
-
-      this.props.update(draft.id, draft)
-
-      this.setState({
-        file: null,
-        updating: false,
-      })
-    })
-    .catch((err) => {
-      this.saveFailed()
-      console.log(`Failed saving story: ${err}`)
-      return Promise.reject(err)
-    })
+    const draft = this.props.workingDraft
+    this.cleanDraft(draft)
+    this.props.update(draft.id, draft)
+    return Promise.resolve({})
   }
 
   saveFailed = () => {
@@ -526,7 +511,7 @@ class StoryCoverScreen extends Component {
       renderProps = {
         closeModal: this.navBack,
         title: 'Oops!',
-        message: 'We were note able to create a story at this time. Please check your internet connection and try again.',
+        message: 'We were not able to create a story at this time. Please check your internet connection and try again.',
         renderButtton: true,
       }
       modalWrapperStyles.height = 160
@@ -748,31 +733,37 @@ class StoryCoverScreen extends Component {
 
   handleAddImage = (data) => {
     this.editor.updateSelectionState({hasFocus: false})
-    this.setState({imageUploading: true})
-    api.uploadStoryImage(this.props.workingDraft.id, pathAsFileObject(data))
-      .then(({data: imageUpload}) => {
-        this.editor.insertImage(...extractUploadData(imageUpload))
-        this.setState({imageUploading: false})
-      })
-      .catch((err) => {
-        console.log(`Failed adding image ${err}`)
-        this.saveFailed()
-      })
+    // this.setState({imageUploading: true})
+    this.editor.insertImage(data)
+    // will remove later - keeping for reference until ready to merge
+    // api.uploadStoryImage(this.props.workingDraft.id, pathAsFileObject(data))
+    //   .then(({data: imageUpload}) => {
+    //     console.log("imageUpload is", imageUpload)
+    //     this.editor.insertImage(...extractUploadData(imageUpload))
+    //     // this.editor.insertImage(...extractUploadData(imageUpload))
+    //     this.setState({imageUploading: false})
+    //   })
+    //   .catch((err) => {
+    //     console.log(`Failed adding image ${err}`)
+    //     this.saveFailed()
+    //   })
     NavActions.pop()
   }
 
   handleAddVideo = (data) => {
     this.editor.updateSelectionState({hasFocus: false})
-    this.setState({videoUploading: true})
-    api.uploadStoryVideo(this.props.workingDraft.id, pathAsFileObject(data))
-      .then(({data: videoUpload}) => {
-        this.editor.insertVideo(...extractUploadData(videoUpload))
-        this.setState({videoUploading: false})
-      })
-      .catch((err) => {
-        console.log(`Failed adding video ${err}`)
-        this.saveFailed()
-      })
+    this.editor.insertVideo(data)
+    // will remove later - keeping for reference until ready to merge
+    // this.setState({videoUploading: true})
+    // api.uploadStoryVideo(this.props.workingDraft.id, pathAsFileObject(data))
+    //   .then(({data: videoUpload}) => {
+    //     this.editor.insertVideo(...extractUploadData(videoUpload))
+    //     this.setState({videoUploading: false})
+    //   })
+    //   .catch((err) => {
+    //     console.log(`Failed adding video ${err}`)
+    //     this.saveFailed()
+    //   })
     NavActions.pop()
   }
 
@@ -957,7 +948,7 @@ class StoryCoverScreen extends Component {
           </KeyboardTrackingView>
         }
         {this.state.activeModal === 'cancel' && this.renderCancel()}
-        {this.state.activeModal === 'saveFail' || (this.hasNoDraft && this.props.error)
+        {this.state.activeModal === 'saveFail' || (this.hasNoDraft() && this.props.error)
           && this.renderFailModal()
         }
         {this.isUploading() &&

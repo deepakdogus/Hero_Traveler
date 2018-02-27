@@ -5,11 +5,13 @@ import moment from 'moment'
 
 import { connect } from 'react-redux'
 import UserActions from '../../Shared/Redux/Entities/Users'
+import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import Loader from '../../Components/Loader'
 import styles from '../Styles/NotificationScreenStyles'
 import ActivityList from '../../Components/ActivityList'
 import Activity from '../../Components/Activity'
 import ThreadList from '../../Components/ThreadList'
+import SyncList from '../../Components/SyncList'
 import Colors from '../../Shared/Themes/Colors'
 import NotificationBadge from '../../Components/NotificationBadge'
 
@@ -19,9 +21,14 @@ const ActivityTypes = {
   comment: 'ActivityStoryComment'
 }
 
-const Tab = ({text, onPress, selected, notificationCount}) => {
+const Tab = ({text, onPress, selected, notificationCount, width}) => {
   return (
-    <TouchableOpacity style={[styles.tab, selected ? styles.tabSelected : null, {width: '100%'}]} onPress={onPress}>
+    <TouchableOpacity style={[
+        styles.tab, selected ? styles.tabSelected : null,
+        {width}
+      ]}
+      onPress={onPress}
+    >
       <Text style={[styles.tabText, selected ? styles.tabTextSelected : null]}>{text}</Text>
       {notificationCount > 0 &&
         <NotificationBadge
@@ -48,13 +55,16 @@ const ConnectedActivity = connect(
 class NotificationScreen extends React.Component {
   constructor(props){
     super(props)
-
-    this.state = { selectedTab: 0 }
+    this.state = { selectedTab: this.getSyncLength() ? 2 : 0}
   }
 
 
   componentWillMount() {
     this.props.getActivity()
+  }
+
+  getSyncLength() {
+    return Object.keys(this.props.backgroundFailures).length
   }
 
   _pressActivity = (activityId, seen) => {
@@ -81,6 +91,13 @@ class NotificationScreen extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps){
+    if (
+      this.state.selectedTab === 2 &&
+      Object.keys(nextProps.backgroundFailures).length === 0
+    ) this.setState({selectedTab: 0})
+  }
+
   render () {
     let content
 
@@ -97,6 +114,14 @@ class NotificationScreen extends React.Component {
         <ThreadList
           threads={this.props.threads}
           onPress={() => alert('Navigate to thread')}
+        />
+      )
+    } else if (this.state.selectedTab === 2) {
+      content = (
+        <SyncList
+          backgroundFailures={this.props.backgroundFailures}
+          publishLocalDraft={this.props.publishLocalDraft}
+          updateDraft={this.props.updateDraft}
         />
       )
     } else {
@@ -140,15 +165,28 @@ class NotificationScreen extends React.Component {
       )
     }
 
+    const syncLength = this.getSyncLength()
+    const tabWidth = syncLength ? '50%' : '100%'
+
     return (
       <ScrollView style={styles.containerWithNavbar}>
         <View style={styles.tabs}>
           <View style={styles.tabnav}>
+            {!!syncLength &&
+              <Tab
+                notificationCount={syncLength}
+                selected={this.state.selectedTab === 2}
+                onPress={() => this.setState({selectedTab: 2})}
+                text='SYNC'
+                width={tabWidth}
+              />
+            }
             <Tab
               notificationCount={unseenActivities}
               selected={this.state.selectedTab === 0}
               onPress={() => this.setState({selectedTab: 0})}
               text='ACTIVITY'
+              width={tabWidth}
             />
           {
             // <Tab
@@ -156,6 +194,7 @@ class NotificationScreen extends React.Component {
             //   selected={this.state.selectedTab === 1}
             //   onPress={() => this.setState({selectedTab: 1})}
             //   text='INBOX'
+            //   width={tabWidth}
             // />
           }
           </View>
@@ -191,14 +230,17 @@ const mapStateToProps = (state) => {
       fromUser: user,
       message: 'This is a cool app',
       createdAt: moment().subtract(3, 'days').toDate()
-    }]
+    }],
+    backgroundFailures: state.entities.stories.backgroundFailures,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getActivity: () => dispatch(UserActions.fetchActivities()),
-    markSeen: (activityId) => dispatch(UserActions.activitySeen(activityId))
+    markSeen: (activityId) => dispatch(UserActions.activitySeen(activityId)),
+    publishLocalDraft: (story) => dispatch(StoryCreateActions.publishLocalDraft(story)),
+    updateDraft: (story) => dispatch(StoryCreateActions.updateDraft(story.id, story, true)),
   }
 }
 

@@ -13,6 +13,7 @@ import { connect } from 'react-redux'
 import styles from './Styles/StoryListStyle'
 import ModifiedListView from './ModifiedListView'
 import UXActions from '../Redux/UXRedux'
+import _ from 'lodash'
 
 const NativeFeed = requireNativeComponent('RHNativeFeed', null)
 const NativeFeedHeader = requireNativeComponent('RHNativeFeedHeader', null)
@@ -81,10 +82,9 @@ class StoryList extends React.Component {
 
     this.state = {
       visibleCells: undefined,
+      storiesById: props.storiesById,
     }
   }
-
-  
 
   checkEqual(r1,r2) {
     return r1.id !== r2.id
@@ -111,8 +111,16 @@ class StoryList extends React.Component {
           setPlayingRow(newPlayingRow)
       }
   }
-    
-    render () {
+
+  componentWillReceiveProps(nextProps) {
+    if (_.xor(nextProps.storiesById, this.props.storiesById).length !== 0){
+      this.setState({
+        storiesById: nextProps.storiesById
+      })
+    }
+  }
+
+  render () {
         let storyViews = []
         let startCell = 0
 
@@ -131,7 +139,6 @@ class StoryList extends React.Component {
             })
             startCell = minCell
         }
-
 
         return (
                 <NativeFeed
@@ -174,28 +181,6 @@ class StoryList extends React.Component {
                 {storyViews}
                 </NativeFeed>
         )
-        /*
-    return (
-      <ModifiedListView
-        key={this.props.storiesById}
-        dataSource={this.state.dataSource}
-        initialListSize={1}
-        renderRow={this.props.renderStory}
-        renderHeader={this._renderHeader}
-        renderSectionHeader={this._renderSectionHeader}
-        stickySectionHeadersEnabled={true}
-        renderSeparator={this._renderSeparator}
-        refreshControl={
-          <RefreshControl
-            refreshing={this.props.refreshing}
-            onRefresh={this.props.onRefresh}
-          />
-        }
-        onChangeVisibleRows={this.updateDataSource}
-        style={[styles.container, this.props.style]}
-      />
-    )
-*/
   }
 }
 

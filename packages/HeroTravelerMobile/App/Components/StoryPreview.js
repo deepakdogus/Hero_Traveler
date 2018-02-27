@@ -259,7 +259,8 @@ export default class StoryPreview extends Component {
     // using StoryPreview height as proxy for StoryCover playbutton size
     const height = this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20
     const playButtonSize = height > 250 ? 'large' : 'small'
-
+    let cover = story.coverImage || story.coverVideo
+    if (typeof cover === 'string') cover = JSON.parse(cover)
     return (
       <View style={styles.contentContainer}>
         {this.renderUserSection()}
@@ -268,7 +269,7 @@ export default class StoryPreview extends Component {
             areInRenderLocation={this.props.areInRenderLocation}
             autoPlayVideo={this.props.autoPlayVideo}
             allowVideoPlay={this.props.allowVideoPlay}
-            cover={story.coverImage ? story.coverImage : story.coverVideo}
+            cover={cover}
             coverType={story.coverImage ? 'image' : 'video'}
             onPress={this.props.onPress}
             gradientColors={this.props.gradientColors}

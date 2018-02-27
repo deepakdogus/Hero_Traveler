@@ -244,7 +244,7 @@ export default class VideoPlayer extends React.Component {
       <View style={[
         styles.root,
         this.props.videoFillSpace && styles.full,
-        this.props.style
+        this.props.style,
       ]}>
         <NativeCachingVideo
           needsVideoLoaded={this.props.areInRenderLocation}
@@ -255,6 +255,7 @@ export default class VideoPlayer extends React.Component {
           style={[
             styles.video,
             this.props.videoFillSpace && styles.full,
+            this.props.videoStyle,
           ]}
           repeat={true}
           onLoad={this._onLoad}

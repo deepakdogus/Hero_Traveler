@@ -16,8 +16,9 @@ export default class DraftJsVideo extends Component {
   render = () => {
     const {url, isSelected, onPress, onDelete, style, sizeMetrics = undefined} = this.props
 
-    const videoUrl = `${getVideoUrlBase()}/${url}`
-
+    let videoUrl
+    if (url.substring(0,4) === 'file') videoUrl = url
+    else videoUrl = `${getVideoUrlBase()}/${url}`
     const imageEditOverlay = (
       <View style={styles.assetEditOverlay}>
         <TouchableOpacity onPress={onDelete}>

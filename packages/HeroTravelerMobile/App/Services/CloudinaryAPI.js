@@ -14,7 +14,8 @@ To modify the presets go to the relevant Cloudinary account
 function uploadMediaFile(fileData, type){
   const uploadURL = getCloudinaryUploadUrl(type)
   const preset = type === 'image' ? env.imagePreset : env.videoPreset
-  if (fileData.uri.startsWith('file://')) fileData.uri = fileData.uri.substr(7)
+  let dataUri = fileData.uri
+  if (dataUri.startsWith('file://')) dataUri = dataUri.substr(7)
   return RNFetchBlob.fetch(
     'POST',
     uploadURL,
@@ -25,12 +26,20 @@ function uploadMediaFile(fileData, type){
       name: 'file',
       filename: fileData.name,
       type: fileData.type,
-      data: RNFetchBlob.wrap(fileData.uri)
+      data: RNFetchBlob.wrap(dataUri)
     }, {
       name: 'upload_preset',
       data: preset,
     }]
   )
+  .catch(error => {
+    return {
+      error: {
+        status: '',
+        problem: error.message,
+      }
+    }
+  })
 }
 
 export default {

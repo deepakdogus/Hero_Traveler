@@ -30,4 +30,10 @@ RCT_EXPORT_VIEW_PROPERTY(numCells, NSInteger)
 
 RCT_EXPORT_VIEW_PROPERTY(onVisibleCellsChanged, RCTDirectEventBlock)
 
+RCT_EXPORT_VIEW_PROPERTY(onScrollBeginDrag, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onScroll, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onScrollEndDrag, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onMomentumScrollBegin, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onMomentumScrollEnd, RCTDirectEventBlock)
+
 @end

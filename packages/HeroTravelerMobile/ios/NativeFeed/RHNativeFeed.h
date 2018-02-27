@@ -28,4 +28,13 @@
 
 @property(nonatomic, copy) RCTDirectEventBlock onVisibleCellsChanged;
 
+@property (nonatomic, assign) BOOL DEPRECATED_sendUpdatedChildFrames;
+@property (nonatomic, assign) NSTimeInterval scrollEventThrottle;
+
+@property (nonatomic, copy) RCTDirectEventBlock onScrollBeginDrag;
+@property (nonatomic, copy) RCTDirectEventBlock onScroll;
+@property (nonatomic, copy) RCTDirectEventBlock onScrollEndDrag;
+@property (nonatomic, copy) RCTDirectEventBlock onMomentumScrollBegin;
+@property (nonatomic, copy) RCTDirectEventBlock onMomentumScrollEnd;
+
 @end

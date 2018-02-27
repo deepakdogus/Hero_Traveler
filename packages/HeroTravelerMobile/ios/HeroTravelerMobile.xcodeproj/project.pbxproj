@@ -42,6 +42,7 @@
 		9115FA93203D681200547516 /* VideoDownloadItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9115FA92203D681200547516 /* VideoDownloadItem.m */; };
 		9115FB7C2041B11200547516 /* DownloadSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9115FB422041B11100547516 /* DownloadSessionManager.m */; };
 		912E95471FA631C700399703 /* RNDJShadowDraftJSEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 912E95451FA631C600399703 /* RNDJShadowDraftJSEditor.m */; };
+		9135C0422045B49000E6C845 /* RHScrollEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9135C0412045B49000E6C845 /* RHScrollEvent.m */; };
 		913C4EF45111427B8D830D3F /* Montserrat-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A0687633F8D24E28B8519A35 /* Montserrat-Light.ttf */; };
 		9155DE921FD9B42500DAAA7C /* RNDJAutocorrectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9155DE911FD9B42500DAAA7C /* RNDJAutocorrectView.m */; };
 		91589B40200BE48F000B84E6 /* VideoCacheItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 91589B3F200BE48F000B84E6 /* VideoCacheItem.m */; };
@@ -611,6 +612,8 @@
 		9115FB7B2041B11200547516 /* DownloadSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadSessionManager.h; sourceTree = "<group>"; };
 		912E95451FA631C600399703 /* RNDJShadowDraftJSEditor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJShadowDraftJSEditor.m; sourceTree = "<group>"; };
 		912E95461FA631C700399703 /* RNDJShadowDraftJSEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJShadowDraftJSEditor.h; sourceTree = "<group>"; };
+		9135C0402045B49000E6C845 /* RHScrollEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHScrollEvent.h; sourceTree = "<group>"; };
+		9135C0412045B49000E6C845 /* RHScrollEvent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHScrollEvent.m; sourceTree = "<group>"; };
 		9155DE901FD9B42500DAAA7C /* RNDJAutocorrectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNDJAutocorrectView.h; sourceTree = "<group>"; };
 		9155DE911FD9B42500DAAA7C /* RNDJAutocorrectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDJAutocorrectView.m; sourceTree = "<group>"; };
 		91589B3E200BE48F000B84E6 /* VideoCacheItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoCacheItem.h; sourceTree = "<group>"; };
@@ -1156,6 +1159,8 @@
 				919416E12043F00C006F42BC /* RHNativeFeedHeader.m */,
 				919416E32043F66E006F42BC /* RHCustomScrollView.h */,
 				919416E42043F66E006F42BC /* RHCustomScrollView.m */,
+				9135C0402045B49000E6C845 /* RHScrollEvent.h */,
+				9135C0412045B49000E6C845 /* RHScrollEvent.m */,
 			);
 			path = NativeFeed;
 			sourceTree = "<group>";
@@ -2114,6 +2119,7 @@
 				91589B40200BE48F000B84E6 /* VideoCacheItem.m in Sources */,
 				9115FA93203D681200547516 /* VideoDownloadItem.m in Sources */,
 				91F037C620035941000BA406 /* RCTVideoPlayerViewController.m in Sources */,
+				9135C0422045B49000E6C845 /* RHScrollEvent.m in Sources */,
 				912E95471FA631C700399703 /* RNDJShadowDraftJSEditor.m in Sources */,
 				9162A11C20448F17005BA024 /* FFFastImageView.m in Sources */,
 				91973CB51FA39B64006DE932 /* RNDJDraftJSEditorManager.m in Sources */,

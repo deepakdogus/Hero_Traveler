@@ -3,6 +3,7 @@
 #import <React/UIView+React.h>
 #import "RHNativeFeedHeader.h"
 #import "RHCustomScrollView.h"
+#import "RHScrollEvent.h"
 
 @implementation RHNativeFeed
 {
@@ -17,6 +18,13 @@
   NSInteger _numCells;
   
   UIView* _cellBackingView;
+
+  NSHashTable *_scrollListeners;
+  uint16_t _coalescingKey;
+  NSString *_lastEmittedEventName;
+  NSTimeInterval _lastScrollDispatchTime;
+  NSMutableArray<NSValue *> *_cachedChildFrames;
+  BOOL _allowNextScrollNoMatterWhat;
 }
 
 - (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher
@@ -43,17 +51,18 @@
 #endif
 //
 //    _automaticallyAdjustContentInsets = YES;
-//    _DEPRECATED_sendUpdatedChildFrames = NO;
 //    _contentInset = UIEdgeInsetsZero;
 //    _contentSize = CGSizeZero;
 //    _lastClippedToRect = CGRectNull;
-//
-//    _scrollEventThrottle = 0.0;
-//    _lastScrollDispatchTime = 0;
-//    _cachedChildFrames = [NSMutableArray new];
-//
-//    _scrollListeners = [NSHashTable weakObjectsHashTable];
-//
+
+    _DEPRECATED_sendUpdatedChildFrames = NO;
+
+    _scrollEventThrottle = 0.0;
+    _lastScrollDispatchTime = 0;
+    _cachedChildFrames = [NSMutableArray new];
+
+    _scrollListeners = [NSHashTable weakObjectsHashTable];
+
     [self addSubview:_scrollView];
     
     _cellBackingView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -234,6 +243,12 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   [self recalculateBackingView];
 }
 
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+  [super touchesEnded:touches withEvent:event];
+}
+
+
 - (void)removeReactSubview:(UIView *)subview
 {
   [super removeReactSubview:subview];
@@ -402,39 +417,206 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   }
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
 {
   [self recalculateVisibleCells];
 }
 
+- (void)sendScrollEventWithName:(NSString *)eventName
+                     scrollView:(UIScrollView *)scrollView
+                       userData:(NSDictionary *)userData
+{
+  if (![_lastEmittedEventName isEqualToString:eventName]) {
+    _coalescingKey++;
+    _lastEmittedEventName = [eventName copy];
+  }
+  RHScrollEvent *scrollEvent = [[RHScrollEvent alloc] initWithEventName:eventName
+                                                                reactTag:self.reactTag
+                                                 scrollViewContentOffset:scrollView.contentOffset
+                                                  scrollViewContentInset:scrollView.contentInset
+                                                   scrollViewContentSize:scrollView.contentSize
+                                                         scrollViewFrame:scrollView.frame
+                                                     scrollViewZoomScale:scrollView.zoomScale
+                                                                userData:userData
+                                                           coalescingKey:_coalescingKey];
+  [_eventDispatcher sendEvent:scrollEvent];
+}
+
+
+#pragma mark - ScrollView delegate
+
+#define RCT_SEND_SCROLL_EVENT(_eventName, _userData) { \
+NSString *eventName = NSStringFromSelector(@selector(_eventName)); \
+[self sendScrollEventWithName:eventName scrollView:_scrollView userData:_userData]; \
+}
+
+#define RCT_FORWARD_SCROLL_EVENT(call) \
+for (NSObject<UIScrollViewDelegate> *scrollViewListener in _scrollListeners) { \
+if ([scrollViewListener respondsToSelector:_cmd]) { \
+[scrollViewListener call]; \
+} \
+}
+
+#define RCT_SCROLL_EVENT_HANDLER(delegateMethod, eventName) \
+- (void)delegateMethod:(UIScrollView *)scrollView           \
+{                                                           \
+RCT_SEND_SCROLL_EVENT(eventName, nil);                    \
+RCT_FORWARD_SCROLL_EVENT(delegateMethod:scrollView);      \
+}
+
+RCT_SCROLL_EVENT_HANDLER(scrollViewWillBeginDecelerating, onMomentumScrollBegin)
+RCT_SCROLL_EVENT_HANDLER(scrollViewDidZoom, onScroll)
+
+- (void)addScrollListener:(NSObject<UIScrollViewDelegate> *)scrollListener
+{
+  [_scrollListeners addObject:scrollListener];
+}
+
+- (void)removeScrollListener:(NSObject<UIScrollViewDelegate> *)scrollListener
+{
+  [_scrollListeners removeObject:scrollListener];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+  [self updateClippedSubviews];
+  NSTimeInterval now = CACurrentMediaTime();
+  /**
+   * TODO: this logic looks wrong, and it may be because it is. Currently, if _scrollEventThrottle
+   * is set to zero (the default), the "didScroll" event is only sent once per scroll, instead of repeatedly
+   * while scrolling as expected. However, if you "fix" that bug, ScrollView will generate repeated
+   * warnings, and behave strangely (ListView works fine however), so don't fix it unless you fix that too!
+   */
+  if (_allowNextScrollNoMatterWhat ||
+      (_scrollEventThrottle > 0 && _scrollEventThrottle < (now - _lastScrollDispatchTime))) {
+    
+    if (_DEPRECATED_sendUpdatedChildFrames) {
+      // Calculate changed frames
+      RCT_SEND_SCROLL_EVENT(onScroll, (@{@"updatedChildFrames": [self calculateChildFramesData]}));
+    } else {
+      RCT_SEND_SCROLL_EVENT(onScroll, nil);
+    }
+    
+    // Update dispatch time
+    _lastScrollDispatchTime = now;
+    _allowNextScrollNoMatterWhat = NO;
+  }
+  
+  RCT_FORWARD_SCROLL_EVENT(scrollViewDidScroll:scrollView);
+  [self recalculateVisibleCells];
+}
+
+- (NSArray<NSDictionary *> *)calculateChildFramesData
+{
+  NSMutableArray<NSDictionary *> *updatedChildFrames = [NSMutableArray new];
+  [[self reactSubviews] enumerateObjectsUsingBlock:
+   ^(UIView *subview, NSUInteger idx, __unused BOOL *stop) {
+     
+     // Check if new or changed
+     CGRect newFrame = subview.frame;
+     BOOL frameChanged = NO;
+     if (self->_cachedChildFrames.count <= idx) {
+       frameChanged = YES;
+       [self->_cachedChildFrames addObject:[NSValue valueWithCGRect:newFrame]];
+     } else if (!CGRectEqualToRect(newFrame, [self->_cachedChildFrames[idx] CGRectValue])) {
+       frameChanged = YES;
+       self->_cachedChildFrames[idx] = [NSValue valueWithCGRect:newFrame];
+     }
+     
+     // Create JS frame object
+     if (frameChanged) {
+       [updatedChildFrames addObject: @{
+                                        @"index": @(idx),
+                                        @"x": @(newFrame.origin.x),
+                                        @"y": @(newFrame.origin.y),
+                                        @"width": @(newFrame.size.width),
+                                        @"height": @(newFrame.size.height),
+                                        }];
+     }
+   }];
+  
+  return updatedChildFrames;
+}
+
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
+  _allowNextScrollNoMatterWhat = YES; // Ensure next scroll event is recorded, regardless of throttle
+  RCT_SEND_SCROLL_EVENT(onScrollBeginDrag, nil);
+  RCT_FORWARD_SCROLL_EVENT(scrollViewWillBeginDragging:scrollView);
   [self recalculateVisibleCells];
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
+  NSDictionary *userData = @{
+                             @"velocity": @{
+                                 @"x": @(velocity.x),
+                                 @"y": @(velocity.y)
+                                 },
+                             @"targetContentOffset": @{
+                                 @"x": @(targetContentOffset->x),
+                                 @"y": @(targetContentOffset->y)
+                                 }
+                             };
+  RCT_SEND_SCROLL_EVENT(onScrollEndDrag, userData);
+  RCT_FORWARD_SCROLL_EVENT(scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset);
   [self recalculateVisibleCells];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
+  RCT_FORWARD_SCROLL_EVENT(scrollViewDidEndDragging:scrollView willDecelerate:decelerate);
+  [self recalculateVisibleCells];
+}
+
+- (void)scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(UIView *)view
+{
+  RCT_SEND_SCROLL_EVENT(onScrollBeginDrag, nil);
+  RCT_FORWARD_SCROLL_EVENT(scrollViewWillBeginZooming:scrollView withView:view);
+  [self recalculateVisibleCells];
+}
+
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
+{
+  RCT_SEND_SCROLL_EVENT(onScrollEndDrag, nil);
+  RCT_FORWARD_SCROLL_EVENT(scrollViewDidEndZooming:scrollView withView:view atScale:scale);
   [self recalculateVisibleCells];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+  // Fire a final scroll event
+  _allowNextScrollNoMatterWhat = YES;
+  [self scrollViewDidScroll:scrollView];
+  
+  // Fire the end deceleration event
+  RCT_SEND_SCROLL_EVENT(onMomentumScrollEnd, nil);
+  RCT_FORWARD_SCROLL_EVENT(scrollViewDidEndDecelerating:scrollView);
   [self recalculateVisibleCells];
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
+  // Fire a final scroll event
+  _allowNextScrollNoMatterWhat = YES;
+  [self scrollViewDidScroll:scrollView];
+  
+  // Fire the end deceleration event
+  RCT_SEND_SCROLL_EVENT(onMomentumScrollEnd, nil);
+  RCT_FORWARD_SCROLL_EVENT(scrollViewDidEndScrollingAnimation:scrollView);
   [self recalculateVisibleCells];
 }
 
-- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
 {
-  [self recalculateVisibleCells];
+  for (NSObject<UIScrollViewDelegate> *scrollListener in _scrollListeners) {
+    if ([scrollListener respondsToSelector:_cmd] &&
+        ![scrollListener scrollViewShouldScrollToTop:scrollView]) {
+      return NO;
+    }
+  }
+  return YES;
 }
+
 
 @end

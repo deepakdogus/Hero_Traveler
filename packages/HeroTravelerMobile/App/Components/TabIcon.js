@@ -142,10 +142,11 @@ const mapStateToProps = (state, props) => {
   if (props.name === 'activity') {
     const activities = state.entities.users.activities
     const backgroundFailures = state.entities.stories.backgroundFailures
+    const backgroundFailuresCount = backgroundFailures ? Object.keys(backgroundFailures).length : 0  
     const unseenActivityCount = _.keys(activities).reduce((count, key) => {
       const increment = activities[key].seen ? 0 : 1;
       return count + increment;
-    }, 0) + Object.keys(backgroundFailures).length
+    }, 0) + backgroundFailuresCount
 
     /*
       We will need a similar logic once we add message threads.

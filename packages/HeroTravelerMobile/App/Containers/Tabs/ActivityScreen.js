@@ -64,7 +64,11 @@ class NotificationScreen extends React.Component {
   }
 
   getSyncLength() {
-    return Object.keys(this.props.backgroundFailures).length
+    if (backgroundFailures)
+    {
+      return Object.keys(this.props.backgroundFailures).length
+    }
+    return 0
   }
 
   _pressActivity = (activityId, seen) => {
@@ -93,8 +97,7 @@ class NotificationScreen extends React.Component {
 
   componentWillReceiveProps(nextProps){
     if (
-      this.state.selectedTab === 2 &&
-      Object.keys(nextProps.backgroundFailures).length === 0
+        this.state.selectedTab === 2 && (!backgroundFailures || Object.keys(nextProps.backgroundFailures).length === 0)
     ) this.setState({selectedTab: 0})
   }
 
@@ -119,7 +122,7 @@ class NotificationScreen extends React.Component {
     } else if (this.state.selectedTab === 2) {
       content = (
         <SyncList
-          backgroundFailures={this.props.backgroundFailures}
+          backgroundFailures={this.props.backgroundFailures || {}}
           publishLocalDraft={this.props.publishLocalDraft}
           updateDraft={this.props.updateDraft}
         />
@@ -231,7 +234,7 @@ const mapStateToProps = (state) => {
       message: 'This is a cool app',
       createdAt: moment().subtract(3, 'days').toDate()
     }],
-    backgroundFailures: state.entities.stories.backgroundFailures,
+    backgroundFailures: state.entities.stories.backgroundFailures || {},
   }
 }
 

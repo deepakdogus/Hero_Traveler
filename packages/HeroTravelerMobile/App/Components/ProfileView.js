@@ -17,9 +17,11 @@ import pathAsFileObject from '../Shared/Lib/pathAsFileObject'
 import ProfileUserInfo from './ProfileUserInfo'
 import ProfileTabsAndStories from './ProfileTabsAndStories'
 import ShadowButton from './ShadowButton'
+import ProgressBar from './ProgressBar'
 
 // @TODO UserActions shouldn't be in a component
 import UserActions from '../Shared/Redux/Entities/Users'
+import StoryCreateActions from '../Shared/Redux/StoryCreateRedux'
 import isTooltipComplete, {Types as TooltipTypes} from '../Shared/Lib/firstTimeTooltips'
 
 const api = HeroAPI.create()
@@ -50,6 +52,8 @@ class ProfileView extends React.Component {
     location: PropTypes.string,
     error: PropTypes.object,
     refresh: PropTypes.func,
+    resetSync: PropTypes.func,
+    sync: PropTypes.object,
   }
 
   constructor(props) {
@@ -252,7 +256,7 @@ class ProfileView extends React.Component {
   }
 
   render() {
-    const {editable, isEditing, location, stories} = this.props
+    const {editable, isEditing, location, stories, sync, resetSync} = this.props
 
     let showTooltip = !isEditing && editable &&
       !stories.length && !this.hasCompletedNoStoriesTooltip()
@@ -318,6 +322,12 @@ class ProfileView extends React.Component {
             text={this.state.error}
           />
         }
+        {sync.syncProgressSteps !== 0 &&
+          <ProgressBar
+            onPress={resetSync}
+            {...sync}
+          />
+        }
         {showTooltip && this.renderTooltip()}
       </View>
     )
@@ -330,7 +340,8 @@ const mapStateToProps = (state) => {
   return {
     location: state.routes.scene.name,
     error: state.entities.users.error,
-    bookmarksError: hasBookmarks ? state.entities.stories.bookmarks[userId].fetchStatus.error : undefined
+    bookmarksError: hasBookmarks ? state.entities.stories.bookmarks[userId].fetchStatus.error : undefined,
+    sync: state.storyCreate.sync,
   }
 }
 
@@ -338,6 +349,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips})),
     updateUserSuccess: (user) => dispatch(UserActions.updateUserSuccess(user)),
+    resetSync: () => dispatch(StoryCreateActions.resetSync()),
   }
 }
 

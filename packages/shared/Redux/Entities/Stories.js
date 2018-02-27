@@ -240,7 +240,7 @@ export const addUserStory = (state, {stories = {}, draftId}) => {
   let userStoriesById = state.storiesByUserAndId[story.author].byId
   // adding to list of user's stories
   if (story && userStoriesById.indexOf(story.id) === -1) {
-    userStoriesById = userStoriesById.concat(story.id)
+    userStoriesById = [story.id, ...userStoriesById]
     state = userSuccess(state, {
       userId: story.author,
       userStoriesById

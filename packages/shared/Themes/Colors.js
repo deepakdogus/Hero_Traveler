@@ -50,6 +50,7 @@ const colors = {
   backgroundOpaque: 'rgba(26,28,33,0.6)',
   backgroundTint: 'rgba(26,28,33,0.4)',
   pink: '#fde8ea',
+  errorPink: '#fbd2d5',
   closeXBorder: '#6d6a6d',
   blueBubble: '#e3f2fd',
   onHoverGrey: '#f6f6f6',

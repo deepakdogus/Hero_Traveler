@@ -221,6 +221,7 @@ class StoryCoverScreen extends Component {
       // normal case
       else coverPhoto = getImageUrl(coverPhoto, 'basic')
     }
+
     return R.ifElse(
       R.identity,
       R.always((

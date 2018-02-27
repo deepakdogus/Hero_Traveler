@@ -101,6 +101,7 @@ const images = {
   appleAppStoreBadge: require('../Images/ht-icons/apple-app-store-badge.svg'),
   iconContributorBadage: require('../Images/ht-icons/contributor-badge.png'),
   iconFounderBadge: require('../Images/ht-icons/founder-badge.png'),
+  iconErrorExclamation: require('../Images/ht-icons/error.png')
 }
 
 export default images

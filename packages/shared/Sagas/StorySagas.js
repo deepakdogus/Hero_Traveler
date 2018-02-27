@@ -137,6 +137,7 @@ function * createCover(api, draft){
   if (cloudinaryCover.error) return cloudinaryCover
   if (isImageCover) draft.coverImage = cloudinaryCover.data
   else draft.coverVideo = cloudinaryCover.data
+  yield put(StoryCreateActions.incrementSyncProgress())
   return draft
 }
 
@@ -183,7 +184,8 @@ function * publishDraftErrorHandling(draft, response){
       draft,
       'failed to publish',
       'publishLocalDraft',
-    ))
+    )),
+    put(StoryCreateActions.syncError()),
   ]
   return err
 }
@@ -202,16 +204,35 @@ function * updateDraftErrorHandling(draft, response){
   ]
 }
 
+function getAtomicSteps(story){
+  return story.draftjsContent.blocks.reduce((count, block) => {
+    if (block.type === 'atomic' && block.data.url.substring(0,4) === 'file') return count + 1
+    return count
+  }, 0)
+}
+
+// determines amounts of API calls we need to make to publish/update draft
+function getSyncProgressSteps(story){
+  let steps = 1
+  if (getNewCover(story.coverImage, story.coverVideo)) steps++
+  steps += getAtomicSteps(story)
+  return steps
+}
+
 export function * publishLocalDraft (api, action) {
   const {draft} = action
-  yield put(StoryActions.setRetryingBackgroundFailure(draft.id))
+  yield [
+    put(StoryActions.setRetryingBackgroundFailure(draft.id)),
+    put(StoryCreateActions.initializeSyncProgress(getSyncProgressSteps(draft), 'Publishing Story'))
+  ]
   const coverResponse = yield createCover(api, draft)
   if (coverResponse.error) {
     yield publishDraftErrorHandling(draft, coverResponse.error)
     return
   }
-
+  const atomicSteps = getAtomicSteps(draft)
   const atomicResponse = yield uploadAtomicAssets(draft)
+  yield put(StoryCreateActions.incrementSyncProgress(atomicSteps))
   if (atomicResponse.error){
     yield publishDraftErrorHandling(draft, atomicResponse.error)
     return
@@ -257,7 +278,11 @@ export function * discardDraft (api, action) {
 
 export function * updateDraft (api, action) {
   const {draftId, draft, updateStoryEntity} = action
-  yield put(StoryActions.setRetryingBackgroundFailure(draftId))
+  yield [
+    put(StoryActions.setRetryingBackgroundFailure(draftId)),
+    put(StoryCreateActions.initializeSyncProgress(getSyncProgressSteps(draft), 'Updating Story')),
+  ]
+
   const coverResponse = yield createCover(api, draft)
   if (coverResponse.error) {
     yield updateDraftErrorHandling(draft, coverResponse.error)

@@ -135,6 +135,7 @@ function * createCover(api, draft){
   if (!cover) return draft
   const cloudinaryCover = yield CloudinaryAPI.uploadMediaFile(cover, isImageCover ? 'image' : 'video')
   if (cloudinaryCover.error) return cloudinaryCover
+  cloudinaryCover.data = JSON.parse(cloudinaryCover.data)
   if (isImageCover) draft.coverImage = cloudinaryCover.data
   else draft.coverVideo = cloudinaryCover.data
   yield put(StoryCreateActions.incrementSyncProgress())
@@ -174,12 +175,9 @@ function * publishDraftErrorHandling(draft, response){
   err.problem = response.problem
 
   yield put(StoryCreateActions.publishDraftFailure(err))
-  // offline publishing handling
-  const stories = {}
-  stories[draft.id] = draft
+
   yield [
-    put(StoryActions.receiveStories(stories)),
-    put(StoryActions.addDraft(draft.id)),
+    put(StoryActions.addDraft(draft)),
     put(StoryActions.addBackgroundFailure(
       draft,
       'failed to publish',

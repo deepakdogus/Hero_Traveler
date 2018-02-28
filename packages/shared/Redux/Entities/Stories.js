@@ -19,7 +19,7 @@ const { Types, Creators } = createActions({
   loadDrafts: null,
   loadDraftsSuccess: ['draftsById'],
   loadDraftsFailure: ['error'],
-  addDraft: ['draftId'],
+  addDraft: ['draft'],
   removeDraft: ['draftId'],
   addBackgroundFailure: ['story', 'error', 'failedMethod'],
   removeBackgroundFailure: ['storyId'],
@@ -290,9 +290,13 @@ export const loadDraftsFailure = (state, {error}) => {
   })
 }
 
-export const addDraft = (state, {draftId}) => {
+export const addDraft = (state, {draft}) => {
+  const stories = {}
+  stories[draft.id] = draft
+  state = updateEntities(state, {stories})
+
   let draftsById = state.drafts.byId
-  if (draftsById.indexOf(draftId) === -1) draftsById = [draftId, ...draftsById]
+  if (draftsById.indexOf(draft.id) === -1) draftsById = [draft.id, ...draftsById]
   return state.merge({
     drafts: {
       fetchStatus: {

@@ -20,7 +20,7 @@ import Immutable from 'seamless-immutable'
 
 import API from '../../Shared/Services/HeroAPI'
 import {styles as StoryReadingScreenStyles} from '../Styles/StoryReadingScreenStyles'
-import StoryEditActions from '../../Shared/Redux/StoryCreateRedux'
+import StoryActions from '../../Shared/Redux/Entities/Stories'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import ShadowButton from '../../Components/ShadowButton'
 import Loader from '../../Components/Loader'
@@ -394,7 +394,7 @@ class StoryCoverScreen extends Component {
   }
 
   navBack = () => {
-    this.props.dispatch(StoryEditActions.resetCreateStore())
+    this.props.dispatch(StoryCreateActions.resetCreateStore())
     if (this.props.navigatedFromProfile) {
       NavActions.tabbar({type: 'reset'})
       NavActions.profile()
@@ -460,11 +460,12 @@ class StoryCoverScreen extends Component {
     return Promise.resolve(this.props.updateWorkingDraft(copy))
   }
 
-  // this does a hard save to the DB
+  // this does a hard save to the DB (if published) or to cache (if draft)
   saveStory() {
     const draft = this.props.workingDraft
     this.cleanDraft(draft)
-    this.props.update(draft.id, draft)
+    if (draft.draft) this.props.saveDraftToCache(draft)
+    else this.props.update(draft.id, draft)
     return Promise.resolve({})
   }
 
@@ -968,9 +969,10 @@ export default connect((state) => {
   discardDraft: (draftId) =>
     dispatch(StoryCreateActions.discardDraft(draftId)),
   update: (id, attrs, doReset) =>
-    dispatch(StoryEditActions.updateDraft(id, attrs, doReset)),
+    dispatch(StoryCreateActions.updateDraft(id, attrs, doReset)),
   completeTooltip: (introTooltips) =>
     dispatch(UserActions.updateUser({introTooltips})),
   resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
+  saveDraftToCache: (draft) => dispatch(StoryActions.addDraft(draft)),
 })
 )(StoryCoverScreen)

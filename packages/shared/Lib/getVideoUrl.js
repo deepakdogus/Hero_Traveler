@@ -6,6 +6,14 @@ export function getVideoUrlBase() {
 }
 
 export default function getVideoUrl(video: object, stream = true): ?string {
+  // special cases where video has not been fully synced
+  if (video.uri || video.secure_url) return video.uri || video.secure_url
+  if (
+    typeof video === 'string' &&
+    (video.substring(0,4) === 'file' || video.substring(0,6) === '/Users')
+  ) return video
+
+
   if (!_.has(video, 'original')) return undefined
   let url
   if (stream && video.streamingFormats && video.streamingFormats.HLS) {

@@ -1,13 +1,24 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {
-  View,
-  RefreshControl
+    View,
+    RefreshControl,
+    requireNativeComponent,
 } from 'react-native'
+import reactMixin from 'react-mixin'
+import ScrollResponder from '../../node_modules/react-native/Libraries/Components/ScrollResponder'
+
+import { Metrics } from '../Shared/Themes'
 import { connect } from 'react-redux'
 import styles from './Styles/StoryListStyle'
 import ModifiedListView from './ModifiedListView'
 import UXActions from '../Redux/UXRedux'
+import _ from 'lodash'
+
+const NativeFeed = requireNativeComponent('RHNativeFeed', null)
+const NativeFeedHeader = requireNativeComponent('RHNativeFeedHeader', null)
+
+// const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
 
 /*
 add pagingIsDisabled instead of pagingEnabled as a prop so that paging is default
@@ -31,17 +42,47 @@ class StoryList extends React.Component {
   }
 
   constructor(props) {
-    super(props)
-    const ds = new ModifiedListView.DataSource({rowHasChanged: this.checkEqual})
-    const initialDataSource = props.storiesById.map((id, index) => {
-      return {
-        id,
-        index,
-      }
-    })
+      super(props)
+      
+      this.addListenerOn = this.addListenerOn.bind(this)
+      //this.componentDidMount = this.componentDidMount.bind(this)
+      this.componentWillMount = this.componentWillMount.bind(this)
+      this.componentWillUnmount = this.componentWillUnmount.bind(this)
+      this.scrollResponderFlashScrollIndicators = this.scrollResponderFlashScrollIndicators.bind(this)
+      this.scrollResponderGetScrollableNode = this.scrollResponderGetScrollableNode.bind(this)
+      this.scrollResponderHandleMomentumScrollBegin = this.scrollResponderHandleMomentumScrollBegin.bind(this)
+      this.scrollResponderHandleMomentumScrollEnd = this.scrollResponderHandleMomentumScrollEnd.bind(this)
+      this.scrollResponderHandleResponderGrant = this.scrollResponderHandleResponderGrant.bind(this)
+      this.scrollResponderHandleResponderReject = this.scrollResponderHandleResponderReject.bind(this)
+      this.scrollResponderHandleResponderRelease = this.scrollResponderHandleResponderRelease.bind(this)
+      this.scrollResponderHandleScroll = this.scrollResponderHandleScroll.bind(this)
+      this.scrollResponderHandleScrollBeginDrag = this.scrollResponderHandleScrollBeginDrag.bind(this)
+      this.scrollResponderHandleScrollEndDrag = this.scrollResponderHandleScrollEndDrag.bind(this)
+      this.scrollResponderHandleScrollShouldSetResponder = this.scrollResponderHandleScrollShouldSetResponder.bind(this)
+      this.scrollResponderHandleStartShouldSetResponder = this.scrollResponderHandleStartShouldSetResponder.bind(this)
+      this.scrollResponderHandleStartShouldSetResponderCapture = this.scrollResponderHandleStartShouldSetResponderCapture.bind(this)
+      this.scrollResponderHandleTerminationRequest = this.scrollResponderHandleTerminationRequest.bind(this)
+      this.scrollResponderHandleTouchCancel = this.scrollResponderHandleTouchCancel.bind(this)
+      this.scrollResponderHandleTouchEnd = this.scrollResponderHandleTouchEnd.bind(this)
+      this.scrollResponderHandleTouchMove = this.scrollResponderHandleTouchMove.bind(this)
+      this.scrollResponderHandleTouchStart = this.scrollResponderHandleTouchStart.bind(this)
+      this.scrollResponderInputMeasureAndScrollToKeyboard = this.scrollResponderInputMeasureAndScrollToKeyboard.bind(this)
+      this.scrollResponderIsAnimating = this.scrollResponderIsAnimating.bind(this)
+      this.scrollResponderKeyboardDidHide = this.scrollResponderKeyboardDidHide.bind(this)
+      this.scrollResponderKeyboardDidShow = this.scrollResponderKeyboardDidShow.bind(this)
+      this.scrollResponderKeyboardWillHide = this.scrollResponderKeyboardWillHide.bind(this)
+      this.scrollResponderKeyboardWillShow = this.scrollResponderKeyboardWillShow.bind(this)
+      this.scrollResponderMixinGetInitialState = this.scrollResponderMixinGetInitialState.bind(this)
+      this.scrollResponderScrollNativeHandleToKeyboard = this.scrollResponderScrollNativeHandleToKeyboard.bind(this)
+      this.scrollResponderScrollTo = this.scrollResponderScrollTo.bind(this)
+      this.scrollResponderScrollToEnd = this.scrollResponderScrollToEnd.bind(this)
+      this.scrollResponderScrollWithoutAnimationTo = this.scrollResponderScrollWithoutAnimationTo.bind(this)
+      this.scrollResponderTextInputFocusError = this.scrollResponderTextInputFocusError.bind(this)
+      this.scrollResponderZoomTo = this.scrollResponderZoomTo.bind(this)
+
     this.state = {
-      dataSource: ds.cloneWithRows(initialDataSource),
-      visibleRows: {'s1': {'-1': true}},
+      visibleCells: undefined,
+      storiesById: props.storiesById,
     }
   }
 
@@ -49,60 +90,102 @@ class StoryList extends React.Component {
     return r1.id !== r2.id
   }
 
-  _renderHeader = () => {
-    return this.props.renderHeaderContent || null
+  _handleVisibleCellsChanged = (event) => {
+      const {setPlayingRow, playingRow, setVisibleRows} = this.props
+        
+      this.setState(event.nativeEvent)
+
+      let visibleRowsKeys = []
+      if (event.nativeEvent.visibleCells)
+      {
+          for (let i = event.nativeEvent.minCell; i < event.nativeEvent.maxCell; i++)
+          {
+              visibleRowsKeys.push(i)
+          }
+      }
+      setVisibleRows(visibleRowsKeys)
+
+      let newPlayingRow = event.nativeEvent.playingCell
+      if (playingRow != newPlayingRow)
+      {
+          setPlayingRow(newPlayingRow)
+      }
   }
 
-  _renderSectionHeader = () => {
-    return this.props.renderSectionHeader || null
-  }
-
-  _renderSeparator = (sectionId, rowId) => {
-    const key = sectionId + rowId
-    return (
-      <View key={key} style={styles.separator}/>
-    )
-  }
-
-  updateDataSource = (visibleRows) => {
-    const {setPlayingRow, playingRow, setVisibleRows} = this.props
-
-    if (!visibleRows || !visibleRows.s1)
-    {
-      return;
+  componentWillReceiveProps(nextProps) {
+    if (_.xor(nextProps.storiesById, this.props.storiesById).length !== 0){
+      this.setState({
+        storiesById: nextProps.storiesById
+      })
     }
-
-    let targetRow;
-    const visibleRowsKeys = Object.keys(visibleRows.s1)
-    if (visibleRowsKeys.length === 3) targetRow = visibleRowsKeys[1]
-    else targetRow = visibleRowsKeys[0]
-    if (targetRow !== playingRow) setPlayingRow(targetRow)
-    setVisibleRows(visibleRowsKeys)
   }
 
   render () {
-    return (
-      <ModifiedListView
-        key={this.props.storiesById}
-        dataSource={this.state.dataSource}
-        initialListSize={1}
-        renderRow={this.props.renderStory}
-        renderHeader={this._renderHeader}
-        renderSectionHeader={this._renderSectionHeader}
-        stickySectionHeadersEnabled={true}
-        renderSeparator={this._renderSeparator}
-        refreshControl={
-          <RefreshControl
-            refreshing={this.props.refreshing}
-            onRefresh={this.props.onRefresh}
-          />
+        let storyViews = []
+        let startCell = 0
+
+        const { storiesById, renderHeaderContent, renderSectionHeader } = this.props
+
+        if (this.state.visibleCells)
+        {
+            const {minCell, maxCell} = this.state.visibleCells
+
+            let i = minCell - 1
+            storyViews = storiesById.slice(minCell, maxCell).map((storyId) => {
+                i = i + 1
+                return (<View key={`FeedItem:${storyId}`}>
+                        {this.props.renderStory({id: storyId, index: i})}
+                        </View>)
+            })
+            startCell = minCell
         }
-        onChangeVisibleRows={this.updateDataSource}
-        style={[styles.container, this.props.style]}
-      />
-    )
+
+        return (
+                <NativeFeed
+            style={[styles.container, this.props.style]}
+            cellHeight={Metrics.feedCell.height}
+            cellSeparatorHeight={Metrics.feedCell.separator}
+            numCells={storiesById.length}
+            startCell={startCell}
+            numPreloadBehindCells={2}
+            numPreloadAheadCells={3}
+            onVisibleCellsChanged={this._handleVisibleCellsChanged}
+            onMomentumScrollBegin={this.scrollResponderHandleMomentumScrollBegin}
+            onMomentumScrollEnd={this.scrollResponderHandleMomentumScrollEnd}
+            onResponderGrant={this.scrollResponderHandleResponderGrant}
+            onResponderReject={this.scrollResponderHandleResponderReject}
+            onResponderRelease={this.scrollResponderHandleResponderRelease}
+            onResponderTerminate={this.scrollResponderHandleTerminate}
+            onResponderTerminationRequest={this.scrollResponderHandleTerminationRequest}
+            onScrollBeginDrag={this.scrollResponderHandleScrollBeginDrag}
+            onScrollEndDrag={this.scrollResponderHandleScrollEndDrag}
+            onScrollShouldSetResponder={this.scrollResponderHandleScrollShouldSetResponder}
+            onStartShouldSetResponder={this.scrollResponderHandleStartShouldSetResponder}
+            onStartShouldSetResponderCapture={this.scrollResponderHandleStartShouldSetResponderCapture}
+            onTouchEnd={this.scrollResponderHandleTouchEnd}
+            onTouchMove={this.scrollResponderHandleTouchMove}
+            onTouchStart={this.scrollResponderHandleTouchStart}
+            onTouchCancel={this.scrollResponderHandleTouchCancel}
+                >
+                {
+                    renderHeaderContent
+                        ? (<NativeFeedHeader headerHeight={204} sticky={false}>{renderHeaderContent}</NativeFeedHeader>)
+                           : null
+                          }
+                {
+                    renderSectionHeader
+                        ? (<NativeFeedHeader headerHeight={50} sticky={true}>{renderSectionHeader}</NativeFeedHeader>)
+                           : null
+                          }
+                   
+                {storyViews}
+                </NativeFeed>
+        )
   }
 }
+
+reactMixin(StoryList.prototype, ScrollResponder.Mixin)
+reactMixin(StoryList.prototype, ScrollResponder.Mixin.mixins[0])
 
 const mapStateToProps = (state) => {
   return {

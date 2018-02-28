@@ -129,4 +129,11 @@ export default StyleSheet.create({
   badgeView: {
     marginRight: 5
   },
+  separator: {
+    height: 10,
+    backgroundColor: Colors.feedDividerGrey,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+  },
 })

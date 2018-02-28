@@ -34,11 +34,16 @@ const metrics = {
   pixelRatio: 1,
   storyCover: {
     fullScreen: {
-      height: 415,
+        height: 415,
     },
     feed: {
       height: 282,
-    }
+    },
+  },
+  feedCell: {
+    height: 415,
+    heightWithSeparator: 425,
+    separator: 10,
   },
 }
 _.assign(metrics, platformSpecificMetrics)

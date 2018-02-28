@@ -10,7 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "RCTVideo.h"
 
-#define VIDEO_FILE @"video"
+#define VIDEO_FILE @"video.mp4"
 #define DATE_LAST_OPENED_FILE @"lastOpened"
 
 @implementation RCTVideoCache
@@ -44,6 +44,7 @@
     loadedVideos = @[];
     currentlyDownloadedFiles = @[];
     videoMuteStates = [@{} mutableCopy];
+    currentDownloads = @[];
     
     __weak RCTVideoCache* weakCache = self;
     cleanupTimer = [NSTimer timerWithTimeInterval:2 repeats:YES block:^(NSTimer* _){
@@ -246,15 +247,10 @@
 
 - (void) dispatchDownloads
 {
-//  // TODO: Restrict this to N downloads
-//  
-//  for (VideoCacheItem* existingCacheItem in loadedVideos)
-//  {
-//    if (existingCacheItem.needsDownload)
-//    {
-//      [existingCacheItem startDownload];
-//    }
-//  }
+  for (VideoDownloadItem* download in currentDownloads)
+  {
+    [download startDownload];
+  }
 }
 
 - (void) addAssetKeyToCurrentlyDownloadedFiles:(NSString*)assetKey
@@ -264,89 +260,132 @@
   currentlyDownloadedFiles = [NSArray arrayWithArray:mCurrentlyDownloadedFiles];
 }
 
-- (VideoCacheItem*) videoCacheItemForUri:(NSString*)uri
+- (PlayingVideoItem*) assetForUrl:(NSString*)url withOriginalUrl:(NSString*)originalUrl forVideoView:(RCTVideo*)videoView
 {
-  NSString* assetKey = [RCTVideoCache urlToKey:uri];
-  
-  VideoCacheItem* cacheItem = nil;
-  
+  VideoCacheItem* cacheItem = [self videoCacheItemForUrl:url withOriginalUrl:originalUrl];
+  [self purgeExcessVideos:cacheItem];
+  [self dispatchDownloads];
+  return [[PlayingVideoItem alloc] initWithVideoCacheItem:cacheItem videoView:videoView];
+}
+
+- (VideoCacheItem*) videoCacheItemForUrl:(NSString*)url withOriginalUrl:(NSString*)originalUrl
+{
+  NSString* assetKey = [RCTVideoCache urlToKey:url];
+
+  VideoCacheItem* item = nil;
+
+  item = [self loadedAsset:assetKey];
+
+  if (item)
+  {
+    [item touch];
+    return item;
+  }
+
+  item = [self downloadedAsset:assetKey];
+
+  if (item)
+  {
+    [item touch];
+    return item;
+  }
+
+  item = [self createStreamingAsset:assetKey url:url];
+
+  if (originalUrl.length > 0)
+  {
+    VideoDownloadItem* download = [[VideoDownloadItem alloc] initWithAssetKey:assetKey downloadUrl:[NSURL URLWithString:originalUrl]];
+    download.delegate = self;
+    NSMutableArray* mCurrentDownloads = [currentDownloads mutableCopy];
+    [mCurrentDownloads addObject:download];
+    currentDownloads = [NSArray arrayWithArray:mCurrentDownloads];
+  }
+
+  [item touch];
+  return item;
+}
+
+- (VideoCacheItem*) loadedAsset:(NSString*) assetKey
+{
   for (VideoCacheItem* existingCacheItem in loadedVideos)
   {
     if ([existingCacheItem.assetKey isEqualToString:assetKey])
     {
-      cacheItem = existingCacheItem;
-      break;
+      return existingCacheItem;
     }
   }
-  
-  if (!cacheItem)
-  {
-    // First check local cache if video has been previously downloaded
-    if ([currentlyDownloadedFiles containsObject:assetKey])
-    {
-      NSURL* assetDirectory = [RCTVideoCache cachedAssetDirectoryFromAssetKey:assetKey];
-      NSURL* fileLocation = [assetDirectory URLByAppendingPathComponent:VIDEO_FILE];
-      if (![[NSFileManager defaultManager] fileExistsAtPath:[assetDirectory path]] ||
-          ![[NSFileManager defaultManager] fileExistsAtPath:[fileLocation path]])
-      {
-        NSMutableArray* mCurrentlyDownloadedFiles = [currentlyDownloadedFiles mutableCopy];
-        [mCurrentlyDownloadedFiles removeObject:assetKey];
-        currentlyDownloadedFiles = [NSArray arrayWithArray:mCurrentlyDownloadedFiles];
-      }
-      else
-      {
-        cacheItem = [[VideoCacheItem alloc] initWithAssetKey:assetKey cachedLocation:fileLocation];
-        [RCTVideoCache touchCachedAsset:assetKey];
-        
-        NSMutableArray* mLoadedVideos = [loadedVideos mutableCopy];
-        [mLoadedVideos addObject:cacheItem];
-        loadedVideos = [NSArray arrayWithArray:mLoadedVideos];
-      }
-    }
-  }
-  
-  if (!cacheItem)
-  {
-    // Finally, create cacheItem from remote url if doesn't already exist or isn't cached
-    
-    __weak RCTVideoCache* weakCache = self;
-    cacheItem = [[VideoCacheItem alloc] initWithAssetKey:assetKey
-                                                     uri:uri
-                                   finishedDownloadBlock:^(NSURL* location, VideoCacheItem* finishedItem)
-                 {
-                   RCTVideoCache* cache = weakCache;
-                   
-                   NSURL* assetDirectory = [RCTVideoCache cachedAssetDirectoryFromAssetKey:assetKey];
-                   [RCTVideoCache ensureDirectory:assetDirectory];
-                   
-                   NSURL* videoAsset = [assetDirectory URLByAppendingPathComponent:VIDEO_FILE];
-                   
-                   NSError* error = nil;
-                   
-                   [[NSFileManager defaultManager] copyItemAtURL:location
-                                                           toURL:videoAsset
-                                                           error:&error];
-                   
-                   if (error)
-                   {
-                     NSLog(@"Failed to move video %@ after download", uri);
-                   }
-                   else
-                   {
-                     [cache addAssetKeyToCurrentlyDownloadedFiles:assetKey];
-                     [RCTVideoCache touchCachedAsset:assetKey];
-                   }
-                   
-                   [cache dispatchDownloads];
-                 }];
 
-    NSMutableArray* mLoadedVideos = [loadedVideos mutableCopy];
-    [mLoadedVideos addObject:cacheItem];
-    loadedVideos = [NSArray arrayWithArray:mLoadedVideos];
+  return nil;
+}
+
+- (VideoCacheItem*) downloadedAsset:(NSString*) assetKey
+{
+  // Check local cache if video has been previously downloaded
+  if ([currentlyDownloadedFiles containsObject:assetKey])
+  {
+    NSURL* assetDirectory = [RCTVideoCache cachedAssetDirectoryFromAssetKey:assetKey];
+    NSURL* fileLocation = [assetDirectory URLByAppendingPathComponent:VIDEO_FILE];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:[assetDirectory path]] ||
+        ![[NSFileManager defaultManager] fileExistsAtPath:[fileLocation path]])
+    {
+      NSMutableArray* mCurrentlyDownloadedFiles = [currentlyDownloadedFiles mutableCopy];
+      [mCurrentlyDownloadedFiles removeObject:assetKey];
+      currentlyDownloadedFiles = [NSArray arrayWithArray:mCurrentlyDownloadedFiles];
+    }
+    else
+    {
+      VideoCacheItem* cacheItem = [[VideoCacheItem alloc] initWithAssetKey:assetKey cachedLocation:fileLocation];
+      [RCTVideoCache touchCachedAsset:assetKey];
+      
+      NSMutableArray* mLoadedVideos = [loadedVideos mutableCopy];
+      [mLoadedVideos addObject:cacheItem];
+      loadedVideos = [NSArray arrayWithArray:mLoadedVideos];
+      return cacheItem;
+    }
   }
-  
-  [cacheItem touch];
-  
+
+  return nil;
+}
+
+- (VideoCacheItem*) createStreamingAsset:(NSString*)assetKey url:(NSString*)url
+{
+  VideoCacheItem* cacheItem = [[VideoCacheItem alloc] initWithAssetKey:assetKey url:url];
+
+  NSMutableArray* mLoadedVideos = [loadedVideos mutableCopy];
+  [mLoadedVideos addObject:cacheItem];
+  loadedVideos = [NSArray arrayWithArray:mLoadedVideos];
+
+  return cacheItem;
+}
+
+- (void) asset:(NSString*)assetKey finishedAtLocation:(NSURL*)localFileUrl
+{
+  NSURL* assetDirectory = [RCTVideoCache cachedAssetDirectoryFromAssetKey:assetKey];
+  [RCTVideoCache ensureDirectory:assetDirectory];
+                   
+  NSURL* videoAsset = [assetDirectory URLByAppendingPathComponent:VIDEO_FILE];
+                   
+  NSError* error = nil;
+                   
+  [[NSFileManager defaultManager] copyItemAtURL:localFileUrl
+                                          toURL:videoAsset
+                                          error:&error];
+
+  if (error)
+  {
+    NSLog(@"Failed to move video %@ after download", localFileUrl);
+  }
+  else
+  {
+    [self addAssetKeyToCurrentlyDownloadedFiles:assetKey];
+    [RCTVideoCache touchCachedAsset:assetKey];
+  }
+
+  [self dispatchDownloads];
+}
+
+- (void) purgeExcessVideos:(VideoCacheItem*)itemToKeep
+{
   if (loadedVideos.count > 3)
   {
     NSMutableArray* mLoadedVideos = [@[] mutableCopy];
@@ -357,7 +396,7 @@
     
     for (VideoCacheItem* existingCacheItem in oldestVideosFirst)
     {
-      if (existingCacheItem == cacheItem)
+      if (existingCacheItem == itemToKeep)
       {
         [mLoadedVideos addObject:existingCacheItem];
       }
@@ -376,26 +415,17 @@
     
     loadedVideos = [NSArray arrayWithArray:mLoadedVideos];
   }
-  
-  return cacheItem;
 }
 
 - (void) precacheAssets:(NSArray*)precacheAssets
 {
-  for (NSString* uri in precacheAssets)
-  {
-    [self videoCacheItemForUri:uri];
-  }
-  
-  currentPrecacheList = [NSArray arrayWithArray:precacheAssets];
-  [self dispatchDownloads];
-}
-
-- (PlayingVideoItem*) assetForUrl:(NSString*)url forVideoView:(RCTVideo*)videoView
-{
-  VideoCacheItem* cacheItem = [self videoCacheItemForUri:url];
-  [self dispatchDownloads];
-  return [[PlayingVideoItem alloc] initWithVideoCacheItem:cacheItem videoView:videoView];
+//  for (NSString* uri in precacheAssets)
+//  {
+//    [self videoCacheItemForUri:uri];
+//  }
+//
+//  currentPrecacheList = [NSArray arrayWithArray:precacheAssets];
+//  [self dispatchDownloads];
 }
 
 - (void) handleMemoryWarning

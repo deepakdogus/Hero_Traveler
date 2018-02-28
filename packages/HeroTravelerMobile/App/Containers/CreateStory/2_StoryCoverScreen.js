@@ -20,14 +20,13 @@ import Immutable from 'seamless-immutable'
 
 import API from '../../Shared/Services/HeroAPI'
 import {styles as StoryReadingScreenStyles} from '../Styles/StoryReadingScreenStyles'
-import StoryEditActions from '../../Shared/Redux/StoryCreateRedux'
+import StoryActions from '../../Shared/Redux/Entities/Stories'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import ShadowButton from '../../Components/ShadowButton'
 import Loader from '../../Components/Loader'
 import {Colors, Metrics} from '../../Shared/Themes'
 import styles, {customStyles, modalWrapperStyles, coverHeight} from './2_StoryCoverScreenStyles'
 import NavBar from './NavBar'
-import {getNewCover, saveCover} from './shared'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import getVideoUrl from '../../Shared/Lib/getVideoUrl'
 import ImageWrapper from '../../Components/ImageWrapper'
@@ -85,8 +84,6 @@ class StoryCoverScreen extends Component {
     storyId: PropTypes.string,
     navigatedFromProfile: PropTypes.bool,
     shouldLoadStory: PropTypes.bool,
-    loadStory: PropTypes.func,
-    registerDraft: PropTypes.func,
     update: PropTypes.func,
     discardDraft: PropTypes.func,
     completeTooltip: PropTypes.func,
@@ -214,10 +211,8 @@ class StoryCoverScreen extends Component {
   }
 
   renderCoverPhoto(coverPhoto) {
-    if (coverPhoto){
-      if (coverPhoto.uri) coverPhoto = coverPhoto.uri
-      else coverPhoto = getImageUrl(coverPhoto, 'basic')
-    }
+    if (coverPhoto) coverPhoto = getImageUrl(coverPhoto, 'basic')
+
     return R.ifElse(
       R.identity,
       R.always((
@@ -239,13 +234,7 @@ class StoryCoverScreen extends Component {
   }
 
   renderCoverVideo(coverVideo) {
-    if (coverVideo){
-      if (coverVideo.uri) {
-        coverVideo = coverVideo.uri
-      }
-      else coverVideo = getVideoUrl(coverVideo)
-    }
-
+    if (coverVideo) coverVideo = getVideoUrl(coverVideo)
     return R.ifElse(
       R.identity,
       R.always((
@@ -405,7 +394,7 @@ class StoryCoverScreen extends Component {
   }
 
   navBack = () => {
-    this.props.dispatch(StoryEditActions.resetCreateStore())
+    this.props.dispatch(StoryCreateActions.resetCreateStore())
     if (this.props.navigatedFromProfile) {
       NavActions.tabbar({type: 'reset'})
       NavActions.profile()
@@ -471,34 +460,13 @@ class StoryCoverScreen extends Component {
     return Promise.resolve(this.props.updateWorkingDraft(copy))
   }
 
-  // this does a hard save to the DB
+  // this does a hard save to the DB (if published) or to cache (if draft)
   saveStory() {
-    let promise
-    const {coverImage, coverVideo} = this.props.workingDraft
-
-    this.setState({
-      updating: true
-    })
-    const newCover = getNewCover(coverImage, coverVideo)
-
-    if (newCover) promise = saveCover(api, this.props.workingDraft, newCover)
-    else promise = Promise.resolve(this.props.workingDraft)
-
-    return promise.then(draft => {
-      this.cleanDraft(draft)
-
-      this.props.update(draft.id, draft)
-
-      this.setState({
-        file: null,
-        updating: false,
-      })
-    })
-    .catch((err) => {
-      this.saveFailed()
-      console.log(`Failed saving story: ${err}`)
-      return Promise.reject(err)
-    })
+    const draft = this.props.workingDraft
+    this.cleanDraft(draft)
+    if (draft.draft) this.props.saveDraftToCache(draft)
+    else this.props.update(draft.id, draft)
+    return Promise.resolve({})
   }
 
   saveFailed = () => {
@@ -526,7 +494,7 @@ class StoryCoverScreen extends Component {
       renderProps = {
         closeModal: this.navBack,
         title: 'Oops!',
-        message: 'We were note able to create a story at this time. Please check your internet connection and try again.',
+        message: 'We were not able to create a story at this time. Please check your internet connection and try again.',
         renderButtton: true,
       }
       modalWrapperStyles.height = 160
@@ -748,31 +716,13 @@ class StoryCoverScreen extends Component {
 
   handleAddImage = (data) => {
     this.editor.updateSelectionState({hasFocus: false})
-    this.setState({imageUploading: true})
-    api.uploadStoryImage(this.props.workingDraft.id, pathAsFileObject(data))
-      .then(({data: imageUpload}) => {
-        this.editor.insertImage(...extractUploadData(imageUpload))
-        this.setState({imageUploading: false})
-      })
-      .catch((err) => {
-        console.log(`Failed adding image ${err}`)
-        this.saveFailed()
-      })
+    this.editor.insertImage(data)
     NavActions.pop()
   }
 
   handleAddVideo = (data) => {
     this.editor.updateSelectionState({hasFocus: false})
-    this.setState({videoUploading: true})
-    api.uploadStoryVideo(this.props.workingDraft.id, pathAsFileObject(data))
-      .then(({data: videoUpload}) => {
-        this.editor.insertVideo(...extractUploadData(videoUpload))
-        this.setState({videoUploading: false})
-      })
-      .catch((err) => {
-        console.log(`Failed adding video ${err}`)
-        this.saveFailed()
-      })
+    this.editor.insertVideo(data)
     NavActions.pop()
   }
 
@@ -957,7 +907,7 @@ class StoryCoverScreen extends Component {
           </KeyboardTrackingView>
         }
         {this.state.activeModal === 'cancel' && this.renderCancel()}
-        {this.state.activeModal === 'saveFail' || (this.hasNoDraft && this.props.error)
+        {this.state.activeModal === 'saveFail' || (this.hasNoDraft() && this.props.error)
           && this.renderFailModal()
         }
         {this.isUploading() &&
@@ -1019,9 +969,10 @@ export default connect((state) => {
   discardDraft: (draftId) =>
     dispatch(StoryCreateActions.discardDraft(draftId)),
   update: (id, attrs, doReset) =>
-    dispatch(StoryEditActions.updateDraft(id, attrs, doReset)),
+    dispatch(StoryCreateActions.updateDraft(id, attrs, doReset)),
   completeTooltip: (introTooltips) =>
     dispatch(UserActions.updateUser({introTooltips})),
   resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
+  saveDraftToCache: (draft) => dispatch(StoryActions.addDraft(draft)),
 })
 )(StoryCoverScreen)

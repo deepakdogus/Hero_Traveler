@@ -41,6 +41,7 @@ export default class StoryPreview extends Component {
     isVisible: PropTypes.bool,
     areInRenderLocation: PropTypes.bool,
     deleteStory: PropTypes.func,
+    removeDraft: PropTypes.func,
     onPressFollow: PropTypes.func,
     onPressUnfollow: PropTypes.func,
     isAuthor: PropTypes.bool,
@@ -59,9 +60,7 @@ export default class StoryPreview extends Component {
   }
 
   _touchTrash = () => {
-    const storyId = this.props.story.id
-    const userId = this.props.user.id
-    const { deleteStory } = this.props
+    const { deleteStory, removeDraft, story, user } = this.props
     Alert.alert(
       'Delete Story',
       'Are you sure you want to delete this story?',
@@ -71,7 +70,8 @@ export default class StoryPreview extends Component {
           text: 'Delete',
           style: 'destructive',
           onPress: () => {
-            deleteStory(userId, storyId)
+            if (story.draft) removeDraft(story.id)
+            else deleteStory(user.id, story.id)
             NavActions.pop()
           },
         }
@@ -180,6 +180,7 @@ export default class StoryPreview extends Component {
             </View>
           }
         </View>
+        <View style={styles.separator}/>
       </View>
     )
   }
@@ -195,7 +196,7 @@ export default class StoryPreview extends Component {
             {coverCaption}
           </Text>
         }
-        <TouchableOpacity onPress={onPress} disabled={!!isStoryReadingScreen}>
+            <TouchableOpacity onPress={(x)=>onPress(title)} disabled={!!isStoryReadingScreen}>
           <Text style={[
             styles.title,
             isStoryReadingScreen ? styles.storyReadingTitle : {},
@@ -258,7 +259,7 @@ export default class StoryPreview extends Component {
     // using StoryPreview height as proxy for StoryCover playbutton size
     const height = this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20
     const playButtonSize = height > 250 ? 'large' : 'small'
-
+    let cover = story.coverImage || story.coverVideo
     return (
       <View style={styles.contentContainer}>
         {this.renderUserSection()}
@@ -267,7 +268,7 @@ export default class StoryPreview extends Component {
             areInRenderLocation={this.props.areInRenderLocation}
             autoPlayVideo={this.props.autoPlayVideo}
             allowVideoPlay={this.props.allowVideoPlay}
-            cover={story.coverImage ? story.coverImage : story.coverVideo}
+            cover={cover}
             coverType={story.coverImage ? 'image' : 'video'}
             onPress={this.props.onPress}
             gradientColors={this.props.gradientColors}

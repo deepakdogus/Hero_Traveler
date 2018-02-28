@@ -69,7 +69,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
   [GMSPlacesClient provideAPIKey:@"AIzaSyCwX6XPRPYobXzotl-P7k3iiA2mNedMz1g"];
   [GMSServices provideAPIKey:@"AIzaSyCwX6XPRPYobXzotl-P7k3iiA2mNedMz1g"];
   
-//  [[RCTVideoCache get] handleAppOpen];
+  [[RCTVideoCache get] handleAppOpen];
 
   NSSetUncaughtExceptionHandler(&myExceptionHandler);
 

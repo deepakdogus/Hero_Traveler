@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Metrics.doubleBaseMargin,
   },
   middle: {
-    flex: .7,
+    width: Metrics.screenWidth - 40 * 1.5 - Metrics.doubleBaseMargin * 2 - 50,
     marginLeft: Metrics.baseMargin,
   },
   dateText: {
@@ -102,7 +102,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.background,
     fontWeight: '300',
-    // fontFamily: Fonts.type.sourceSansPro,
     letterSpacing: 0.7,
   },
   avatar: {

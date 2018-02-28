@@ -16,6 +16,7 @@ import SignupActions, {hasSignedUp} from '../../Shared/Redux/SignupRedux'
 import { Images, Colors } from '../../Shared/Themes'
 import Loader from '../../Components/Loader'
 import RoundedButton from '../../Components/RoundedButton'
+import ImageWrapper from '../../Components/ImageWrapper'
 import TOS from '../../Components/TosFooter'
 import styles from '../Styles/SignupScreenStyles'
 import HeroAPI from '../../Shared/Services/HeroAPI'
@@ -119,7 +120,8 @@ class SignupScreen extends React.Component {
   render () {
     const {handleSubmit} = this.props
     return (
-      <Image
+      <ImageWrapper
+        background={true}
         source={Images.launchBackground}
         style={styles.backgroundImage}
         blurRadius={20}
@@ -182,7 +184,7 @@ class SignupScreen extends React.Component {
             spinnerColor={Colors.snow}
           />
         }
-      </Image>
+      </ImageWrapper>
     )
   }
 }

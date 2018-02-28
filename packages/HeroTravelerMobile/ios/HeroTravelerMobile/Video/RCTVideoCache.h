@@ -9,14 +9,16 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 #import "VideoCacheItem.h"
+#import "VideoDownloadItem.h"
 
 @class RCTVideo;
 
-@interface RCTVideoCache : NSObject
+@interface RCTVideoCache : NSObject <DownloadItemDelegate>
 {
   NSArray* currentPrecacheList; // [assetKeys]
   NSArray* loadedVideos; // [VideoCacheItem]
   NSArray* currentlyDownloadedFiles; // [assetKeys]
+  NSArray* currentDownloads; // [VideoDownloadItem]
   
   NSMutableDictionary* videoMuteStates;
   
@@ -29,7 +31,7 @@
 
 - (void) precacheAssets:(NSArray*)precacheAssets; // set as array of urls
 
-- (PlayingVideoItem*) assetForUrl:(NSString*)url forVideoView:(RCTVideo*)videoView;
+- (PlayingVideoItem*) assetForUrl:(NSString*)url withOriginalUrl:(NSString*)originalUrl forVideoView:(RCTVideo*)videoView;
 
 - (void) handleMemoryWarning;
 

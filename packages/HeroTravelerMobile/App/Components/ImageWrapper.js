@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {Image, ImageBackground} from 'react-native'
-import {CachedImage, CachedImageBackground} from 'react-native-img-cache'
+import FastImage from 'react-native-fast-image'
 import getResizeMode from '../Shared/Lib/getResizeMode'
 import Metrics from '../Themes/Metrics'
 import getRelativeHeight from '../Shared/Lib/getRelativeHeight'
@@ -42,7 +42,10 @@ export default class ImageWrapper extends Component {
 
   static propTypes = {
     cached: PropTypes.bool,
-    background: PropTypes.bool
+    background: PropTypes.bool,
+    fullWidth: PropTypes.bool,
+    setCoverHeight: PropTypes.func,
+    limitedHeight: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -51,15 +54,18 @@ export default class ImageWrapper extends Component {
   }
 
   render () {
-    const {background, cached, fullWidth, setCoverHeight, ...imageProps} = this.props
-    const BaseComponent = cached
-          ? (background ? CachedImageBackground : CachedImage)
-          : (background ? ImageBackground : Image)
+    const {background, cached, fullWidth, setCoverHeight, limitedHeight, ...imageProps} = this.props
+    const BaseComponent = background ? ImageBackground : Image
 
     if (this.props.resizeMode) {
       imageProps.resizeMode = this.props.resizeMode
     } else {
       imageProps.resizeMode = getResizeMode(this.state)
+    }
+
+    if (cached)
+    {
+      imageProps.cache = 'force-cache'
     }
 
     if (fullWidth && !this.hasStyleMetrics()) {
@@ -68,9 +74,10 @@ export default class ImageWrapper extends Component {
       imageProps.style.height = getRelativeHeight(Metrics.screenWidth, this.state)
     }
     if (setCoverHeight && this.state.width && this.state.width) setCoverHeight(this.state)
+    if (limitedHeight) imageProps.style.height = Metrics.maxContentHeight
 
-    return (
-      <BaseComponent {...imageProps} />
-    )
+    return cached
+        ? (<FastImage {...imageProps}/>)
+        : (<BaseComponent {...imageProps} />)
   }
 }

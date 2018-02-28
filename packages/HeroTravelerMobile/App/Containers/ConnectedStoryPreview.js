@@ -59,6 +59,7 @@ const mapDispatchToProps = (dispatch, props) => {
   return {
     onPress: (title) => NavActions.story({storyId, title}),
     deleteStory: () => dispatch(StoryActions.deleteStory(userId, storyId)),
+    removeDraft: () => dispatch(StoryActions.removeDraft(storyId)),
     onPressLike: () => dispatch(StoryActions.storyLike(userId, storyId)),
     onPressBookmark: () => dispatch(StoryActions.storyBookmark(userId, storyId)),
     onPressFollow: (idToFollow) => {dispatch(UserActions.followUser(userId, idToFollow))},

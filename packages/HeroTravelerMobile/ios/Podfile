@@ -9,6 +9,9 @@ target 'HeroTravelerMobile' do
   pod 'GoogleMaps'
   pod 'GooglePlacePicker'
 
+  pod 'SDWebImage'
+  pod 'FLAnimatedImage'
+
   pod "HockeySDK", :subspecs => ['AllFeaturesLib']
 
   rn_path = '../node_modules/react-native'

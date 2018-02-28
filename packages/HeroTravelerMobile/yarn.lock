@@ -5667,9 +5667,9 @@ react-native-autogrow-textinput@5.1.1:
   version "5.1.1"
   resolved "https://npm.abeck.io:443/react-native-autogrow-textinput/-/react-native-autogrow-textinput-5.1.1.tgz#e6c85077f2a7c3371f382ab3224808b88f385819"
 
-react-native-camera@1.0:
+"react-native-camera@https://github.com/react-native-community/react-native-camera.git#f7f2ea5cc22e24468a36cc6bfcfeae6af69b02e0":
   version "1.0.1"
-  resolved "https://npm.abeck.io:443/react-native-camera/-/react-native-camera-1.0.1.tgz#ebb131226394b4ee3ec6692979a257522b3ac0c1"
+  resolved "https://github.com/react-native-community/react-native-camera.git#f7f2ea5cc22e24468a36cc6bfcfeae6af69b02e0"
   dependencies:
     lodash "^4.17.4"
     prop-types "^15.5.10"
@@ -5700,6 +5700,12 @@ react-native-experimental-navigation@^0.29.1:
     babel-preset-react-native "^1.9.0"
     clamp "^1.0.1"
     fbjs "^0.8.1"
+    prop-types "^15.5.10"
+
+react-native-fast-image@^2.2.5:
+  version "2.2.5"
+  resolved "https://npm.abeck.io:443/react-native-fast-image/-/react-native-fast-image-2.2.5.tgz#dd0eaee24446a9546a2edce04ddbd60b3a4c547c"
+  dependencies:
     prop-types "^15.5.10"
 
 react-native-fbsdk@^0.6.0:
@@ -7214,7 +7220,7 @@ uuid@^3.0.0, uuid@^3.0.1:
   version "3.1.0"
   resolved "https://npm.abeck.io:443/uuid/-/uuid-3.1.0.tgz#3dd3d3e790abc24d7b0d3a034ffababe28ebbc04"
 
-uuid@^3.1.0:
+uuid@^3.1.0, uuid@^3.2.1:
   version "3.2.1"
   resolved "https://npm.abeck.io:443/uuid/-/uuid-3.2.1.tgz#12c528bb9d58d0b9265d9a2f6f0fe8be17ff1f14"
 

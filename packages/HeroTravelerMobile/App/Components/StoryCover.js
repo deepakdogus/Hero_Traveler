@@ -69,10 +69,16 @@ export default class StoryCover extends Component {
     }
   }
 
+  // if it is a local URL there is no need to cache since it is directly on phone
+  isLocalUrl(cover){
+    return cover.uri || cover.secure_url
+  }
+
   renderImage() {
     const {cover, onPress, gradientLocations, gradientColors, children, showPlayButton, playButtonSize} = this.props
-    const imageThumbnailUrl = getImageUrl(cover, 'loading', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
-    const imageUrl = getImageUrl(cover, 'optimized', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
+    let imageThumbnailUrl = getImageUrl(cover, 'loading', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
+    let imageUrl = getImageUrl(cover, 'optimized', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
+    // handling for backgroundPublish failures. Covers will not be correctly formatted yet
 
     return (
       <TouchableWithoutFeedback
@@ -85,13 +91,13 @@ export default class StoryCover extends Component {
           maxHeight: Metrics.storyCover.fullScreen.height,
         }}>
           <ImageWrapper
-            cached={true}
+            cached={!this.isLocalUrl(cover)}
             resizeMode='cover'
             source={{uri: imageThumbnailUrl}}
             style={embeddedImageStyle}
           />
           <ImageWrapper
-            cached={true}
+            cached={!this.isLocalUrl(cover)}
             resizeMode='cover'
             source={{uri: imageUrl}}
             style={embeddedImageStyle}
@@ -164,12 +170,15 @@ export default class StoryCover extends Component {
       height: Metrics.storyCover.fullScreen.height,
     }
     const videoThumbnailUrl = getImageUrl(this.props.cover, 'loading', videoThumbnailOptions)
+    let videoPath = getVideoUrl(this.props.cover)
+    let nonStreamingVideoPath = getVideoUrl(this.props.cover, false)
 
     return (
       <View style={this._getWidthHeight()}>
         <VideoPlayer
           areInRenderLocation={this.props.areInRenderLocation}
-          path={getVideoUrl(this.props.cover)}
+          path={videoPath}
+          originalPath={nonStreamingVideoPath}
           imgUrl={videoThumbnailUrl}
           ref={this._makeRef}
           allowVideoPlay={this.props.allowVideoPlay && this.props.autoPlayVideo}

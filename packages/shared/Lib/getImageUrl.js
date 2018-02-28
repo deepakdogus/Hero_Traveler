@@ -110,6 +110,13 @@ const imageUrlParametersFactories = {
 }
 
 export default function getImageUrl(image: object|string, type: string, options: object = {}): ?string {
+  // special cases where image has not been fully synced
+  if (!!image && (!!image.uri || !!image.secure_url)) return image.uri || image.secure_url
+  if (
+    typeof image === 'string' &&
+    (image.substring(0,4) === 'file' || image.substring(0,6) === '/Users')
+  ) return image
+
   const uri = getUri(image)
   if (!uri) {
     return undefined

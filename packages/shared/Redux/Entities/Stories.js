@@ -19,6 +19,11 @@ const { Types, Creators } = createActions({
   loadDrafts: null,
   loadDraftsSuccess: ['draftsById'],
   loadDraftsFailure: ['error'],
+  addDraft: ['draft'],
+  removeDraft: ['draftId'],
+  addBackgroundFailure: ['story', 'error', 'failedMethod'],
+  removeBackgroundFailure: ['storyId'],
+  setRetryingBackgroundFailure: ['storyId'],
   toggleLike: ['storyId', 'wasLiked'],
   storyLike: ['userId', 'storyId'],
   flagStory: ['userId', 'storyId'],
@@ -30,6 +35,7 @@ const { Types, Creators } = createActions({
   getBookmarksSuccess: ['userId', 'bookmarks'],
   getBookmarksFailure: ['userId', 'error'],
   receiveStories: ['stories'],
+  addUserStory: ['stories', 'draftId'],
   deleteStory: ['userId', 'storyId'],
   deleteStorySuccess: ['userId', 'storyId'],
 })
@@ -49,6 +55,7 @@ export const INITIAL_STATE = Immutable({
   userFeedById: [],
   storiesByUserAndId: {},
   storiesByCategoryAndId: {},
+  backgroundFailures: {},
   fetchStatus: initialFetchStatus(),
   userStoriesFetchStatus: initialFetchStatus(),
   userBookmarksFetchStatus: initialFetchStatus(),
@@ -227,6 +234,21 @@ export const updateEntities = (state, {stories = {}}) => {
   return state.merge({entities: stories}, {deep: true})
 }
 
+export const addUserStory = (state, {stories = {}, draftId}) => {
+  state = updateEntities(state, {stories})
+  const story = stories[Object.keys(stories)[0]]
+  let userStoriesById = state.storiesByUserAndId[story.author].byId
+  // adding to list of user's stories
+  if (story && userStoriesById.indexOf(story.id) === -1) {
+    userStoriesById = [story.id, ...userStoriesById]
+    state = userSuccess(state, {
+      userId: story.author,
+      userStoriesById
+    })
+  }
+  return removeDraft(state, {draftId})
+}
+
 export const loadDrafts = (state) => {
   return state.merge({
     drafts: {
@@ -268,6 +290,57 @@ export const loadDraftsFailure = (state, {error}) => {
   })
 }
 
+export const addDraft = (state, {draft}) => {
+  const stories = {}
+  stories[draft.id] = draft
+  state = updateEntities(state, {stories})
+
+  let draftsById = state.drafts.byId
+  if (draftsById.indexOf(draft.id) === -1) draftsById = [draft.id, ...draftsById]
+  return state.merge({
+    drafts: {
+      fetchStatus: {
+        fetching: false,
+        loaded: true
+      },
+      byId: draftsById
+    }
+  })
+}
+
+// if local id removes from story entities if present
+// removes from drafts.byId
+export const removeDraft = (state, {draftId}) => {
+  let draftsById = state.drafts.byId
+  if (draftId.substring(0,6) === 'local-') state = state.setIn(['entities'], state.entities.without(draftId))
+  state = removeBackgroundFailure(state, {storyId: draftId})
+  const path = ['drafts', 'byId']
+  return state.setIn(path, state.getIn(path, draftId).filter(id => {
+    return id !== draftId
+  }))
+}
+
+export const addBackgroundFailure = (state, {story, error, failedMethod}) => {
+  const failureObj = {}
+  failureObj[story.id] = {
+    story,
+    error,
+    failedMethod,
+    status: 'failed',
+  }
+  return state.merge({backgroundFailures: failureObj}, {deep: true})
+}
+
+export const removeBackgroundFailure = (state, {storyId}) => {
+  return  state.setIn(['backgroundFailures'], state.backgroundFailures.without(storyId))
+}
+
+export const setRetryingBackgroundFailure = (state, {storyId}) => {
+  if (state.backgroundFailures[storyId]){
+    return state.setIn(['backgroundFailures', storyId, 'status'], 'retrying')
+  }
+  return state
+}
 
 export const deleteStory = (state, {userId, storyId}) => {
   return state
@@ -277,14 +350,8 @@ export const deleteStorySuccess = (state, {userId, storyId}) => {
   let newState = state.setIn(['entities'], state.entities.without(storyId))
 
   const story = state.entities[storyId]
-
-  if (story.draft) {
-    const path = ['drafts', 'byId']
-    return newState.setIn(path, _.without(state.getIn(path, storyId)))
-  } else {
-    const path = ['storiesByUserAndId', userId, 'byId']
-    return newState.setIn(path, _.without(state.getIn(path, storyId)))
-  }
+  const path = story.draft ? ['drafts', 'byId'] : ['storiesByUserAndId', userId, 'byId']
+  return newState.setIn(path, _.without(state.getIn(path), storyId))
 }
 
 /* ------------- Selectors ------------- */
@@ -329,9 +396,15 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOAD_DRAFTS]: loadDrafts,
   [Types.LOAD_DRAFTS_SUCCESS]: loadDraftsSuccess,
   [Types.LOAD_DRAFTS_FAILURE]: loadDraftsFailure,
+  [Types.ADD_DRAFT]: addDraft,
+  [Types.REMOVE_DRAFT]: removeDraft,
+  [Types.ADD_BACKGROUND_FAILURE]: addBackgroundFailure,
+  [Types.REMOVE_BACKGROUND_FAILURE]: removeBackgroundFailure,
+  [Types.SET_RETRYING_BACKGROUND_FAILURE]: setRetryingBackgroundFailure,
   [Types.TOGGLE_LIKE]: storyLike,
   [Types.TOGGLE_BOOKMARK]: storyBookmark,
   [Types.RECEIVE_STORIES]: updateEntities,
+  [Types.ADD_USER_STORY]: addUserStory,
   [Types.DELETE_STORY]: deleteStory,
   [Types.DELETE_STORY_SUCCESS]: deleteStorySuccess,
   [Types.GET_BOOKMARKS]: getBookmarks,

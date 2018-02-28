@@ -1,4 +1,5 @@
 PODS:
+  - FLAnimatedImage (1.0.12)
   - GoogleMaps (2.5.0):
     - GoogleMaps/Maps (= 2.5.0)
   - GoogleMaps/Base (2.5.0)
@@ -55,9 +56,13 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
+  - SDWebImage (4.2.3):
+    - SDWebImage/Core (= 4.2.3)
+  - SDWebImage/Core (4.2.3)
   - yoga (0.53.0.React)
 
 DEPENDENCIES:
+  - FLAnimatedImage
   - GoogleMaps
   - GooglePlacePicker
   - GooglePlaces
@@ -78,6 +83,7 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
+  - SDWebImage
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
 EXTERNAL SOURCES:
@@ -91,6 +97,7 @@ EXTERNAL SOURCES:
     :path: ../node_modules/react-native/ReactCommon/yoga/yoga.podspec
 
 SPEC CHECKSUMS:
+  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   GoogleMaps: c087b8e5dfe87ca6ebf59adb9b4894a4146bec4f
   GooglePlacePicker: 1573e644ab54564d95c2643edc0f29091609e966
   GooglePlaces: dd70d9d71ea1c7944846afe67de3712c99b30a77
@@ -100,8 +107,9 @@ SPEC CHECKSUMS:
   React: 6a94a44468604816ad2fd3bae908b2ebbab0f95d
   react-native-google-maps: 74a81c3aa24f2095fe8c8d27cb80b2b3808a5bc3
   react-native-maps: 6ab4fa4f78e88824ec300de0eb412f0556b6a84b
+  SDWebImage: 791bb72962b3492327ddcac4b1880bd1b5458431
   yoga: 36cb943786c0587f19094c593b5683074d679c46
 
-PODFILE CHECKSUM: 7aba01372094c628d8f92e826fe4169fcc8f020a
+PODFILE CHECKSUM: 80d99c75237a0b5981992f9cf6a485cd751cc553
 
 COCOAPODS: 1.3.1

@@ -100,6 +100,8 @@ export default class VideoPlayer extends React.Component {
     isMuted: PropTypes.bool,
     shouldEnableAutoplay: PropTypes.bool,
     areInRenderLocation: PropTypes.bool,
+    path: PropTypes.string,
+    originalPath: PropTypes.string,
   }
 
   static defaultProps = {
@@ -242,17 +244,18 @@ export default class VideoPlayer extends React.Component {
       <View style={[
         styles.root,
         this.props.videoFillSpace && styles.full,
-        this.props.style
+        this.props.style,
       ]}>
         <NativeCachingVideo
           needsVideoLoaded={this.props.areInRenderLocation}
-          source={{uri: this.props.path}}
+          source={{uri: this.props.path, originalUri: this.props.originalPath}}
           ref={this._bindRef}
           paused={this.isPaused()}
           muted={this.state.muted}
           style={[
             styles.video,
             this.props.videoFillSpace && styles.full,
+            this.props.videoStyle,
           ]}
           repeat={true}
           onLoad={this._onLoad}

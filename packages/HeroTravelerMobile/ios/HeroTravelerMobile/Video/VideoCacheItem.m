@@ -21,31 +21,24 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
 
 @implementation VideoCacheItem
 
-- (instancetype) initWithAssetKey:(NSString*)assetKey uri:(NSString*)uri finishedDownloadBlock:(FinishedDownloadBlock)finishedDownloadBlock
+- (instancetype) initWithAssetKey:(NSString*)assetKey url:(NSString*)url_
 {
   if (self = [super init])
   {
     _assetKey = assetKey;
-    _needsDownload = YES;
     
     currentPlayingVideoItems = @[];
     
-    NSURL* url = [NSURL URLWithString:uri];
+    NSURL* url = [NSURL URLWithString:url_];
     NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
     _asset = [AVURLAsset URLAssetWithURL:url options:@{AVURLAssetHTTPCookiesKey : cookies}];
     _playerItem = [AVPlayerItem playerItemWithAsset:_asset];
     [self addPlayerItemObservers];
+
     _player = [AVPlayer playerWithPlayerItem:_playerItem];
     _player.automaticallyWaitsToMinimizeStalling = NO;
     _player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
     [self addPlayerObservers];
-    
-//    NSURLSessionConfiguration* sessionConfiguration = [self sessionConfiguration];
-//    _downloadSession = [AVAssetDownloadURLSession
-//                        sessionWithConfiguration:sessionConfiguration
-//                        assetDownloadDelegate:self
-//                        delegateQueue:[NSOperationQueue mainQueue]];
-    
   }
   
   return self;
@@ -56,49 +49,16 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   if (self = [super init])
   {
     _assetKey = assetKey;
-    _needsDownload = NO;
     
     _playerItem = [AVPlayerItem playerItemWithURL:url];
+    [self addPlayerItemObservers];
+
     _player = [AVPlayer playerWithPlayerItem:_playerItem];
     _player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
+    [self addPlayerObservers];
   }
   
   return self;
-}
-
-- (NSURLSessionConfiguration*) sessionConfiguration
-{
-  return [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:[NSString stringWithFormat:@"%@-%@", DOWNLOAD_IDENTIFIER, _assetKey]];
-}
-
-- (void) startDownload
-{
-  if (!_downloadSession || !_needsDownload || !_asset || _downloadTask)
-  {
-    return;
-  }
-  
-  _localFileLocation = [[NSURL fileURLWithPath:NSTemporaryDirectory()] URLByAppendingPathComponent:_assetKey];
-  
-  
-  _downloadTask = [_downloadSession assetDownloadTaskWithURLAsset:_asset
-                                                       assetTitle:_assetKey
-                                                 assetArtworkData:nil
-                                                          options:@{
-                                                                    AVAssetDownloadTaskMinimumRequiredMediaBitrateKey: @(0),
-                                                                    }];
-  [_downloadTask resume];
-}
-
-- (void) stopDownload
-{
-  if (!_downloadTask)
-  {
-    return;
-  }
-  
-  [_downloadTask cancel];
-  _downloadTask = nil;
 }
 
 - (void) touch
@@ -211,35 +171,6 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   }
 
   currentPlayingVideoItems = [NSArray arrayWithArray:mCurrentPlayingVideoItems];
-}
-
-- (void)URLSession:(NSURLSession *)session assetDownloadTask:(AVAssetDownloadTask *)assetDownloadTask didResolveMediaSelection:(AVMediaSelection *)resolvedMediaSelection
-{
-  NSLog(@"Download resolved");
-}
-
-- (void) URLSession:(NSURLSession*)session assetDownloadTask:(AVAssetDownloadTask*)assetDownloadTask didFinishDownloadingToURL:(NSURL*)location
-{
-  NSLog(@"Download finished");
-}
-
-- (void) URLSession:(NSURLSession*)session task:(NSURLSessionTask*)task didCompleteWithError:(nullable NSError*)error
-{
-  if (error)
-  {
-    NSLog(@"Downloading video to cache failed because %@", error);
-    _needsDownload = NO;
-    return;
-  }
-  
-  if (_finishedDownloadBlock)
-  {
-    _finishedDownloadBlock(_localFileLocation, self);
-  }
-  
-  _downloadTask = nil;
-  _needsDownload = NO;
-  _finishedDownloadBlock = nil;
 }
 
 - (BOOL) isViewVisible:(UIView*)view
@@ -411,7 +342,7 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   }
 }
 
-- (void)attachListeners
+- (void) attachListeners
 {
   // listen for end of file
   [[NSNotificationCenter defaultCenter] addObserver:self
@@ -624,72 +555,6 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
 - (void) requestApplyModifiers
 {
   [videoCacheItem applyModifiers];
-}
-
-- (void)URLSession:(NSURLSession *)session assetDownloadTask:(AVAssetDownloadTask *)assetDownloadTask didLoadTimeRange:(CMTimeRange)timeRange totalTimeRangesLoaded:(NSArray<NSValue *> *)loadedTimeRanges timeRangeExpectedToLoad:(CMTimeRange)timeRangeExpectedToLoad
-{
-  NSLog(@"A");
-}
-
-- (void)URLSession:(NSURLSession *)session aggregateAssetDownloadTask:(AVAggregateAssetDownloadTask *)aggregateAssetDownloadTask willDownloadToURL:(NSURL *)location
-{
-  NSLog(@"A");
-}
-
-- (void)URLSession:(NSURLSession *)session aggregateAssetDownloadTask:(AVAggregateAssetDownloadTask *)aggregateAssetDownloadTask didCompleteForMediaSelection:(AVMediaSelection *)mediaSelection
-{
-  NSLog(@"A");
-}
-
-- (void)URLSession:(NSURLSession *)session aggregateAssetDownloadTask:(AVAggregateAssetDownloadTask *)aggregateAssetDownloadTask didLoadTimeRange:(CMTimeRange)timeRange totalTimeRangesLoaded:(NSArray<NSValue *> *)loadedTimeRanges timeRangeExpectedToLoad:(CMTimeRange)timeRangeExpectedToLoad forMediaSelection:(AVMediaSelection *)mediaSelection
-{
-  NSLog(@"A");
-}
-
-- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task
-willBeginDelayedRequest:(NSURLRequest *)request
- completionHandler:(void (^)(NSURLSessionDelayedRequestDisposition disposition, NSURLRequest * _Nullable newRequest))completionHandler
-{
-  NSLog(@"A");
-}
-
-- (void)URLSession:(NSURLSession *)session taskIsWaitingForConnectivity:(NSURLSessionTask *)task
-{
-  NSLog(@"A");
-}
-
-- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task
-willPerformHTTPRedirection:(NSHTTPURLResponse *)response
-        newRequest:(NSURLRequest *)request
- completionHandler:(void (^)(NSURLRequest * _Nullable))completionHandler
-{
-  NSLog(@"A");
-}
-
-- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task
-didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
- completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable credential))completionHandler
-{
-  NSLog(@"A");
-}
-
-- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task
- needNewBodyStream:(void (^)(NSInputStream * _Nullable bodyStream))completionHandler
-{
-  NSLog(@"A");
-}
-
-- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task
-   didSendBodyData:(int64_t)bytesSent
-    totalBytesSent:(int64_t)totalBytesSent
-totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
-{
-  NSLog(@"A");
-}
-
-- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didFinishCollectingMetrics:(NSURLSessionTaskMetrics *)metrics
-{
-  NSLog(@"A");
 }
 
 @end

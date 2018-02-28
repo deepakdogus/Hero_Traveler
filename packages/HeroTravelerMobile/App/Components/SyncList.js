@@ -1,5 +1,5 @@
 import React from 'react'
-import { ListView, Text } from 'react-native'
+import { ListView } from 'react-native'
 import PropTypes from 'prop-types'
 import SyncListItem from './SyncListItem'
 

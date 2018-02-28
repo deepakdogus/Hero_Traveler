@@ -29,10 +29,10 @@ export default class DraftJsImage extends Component {
       <TouchableWithoutFeedback
        style={this.props.style}
        onPress={onPress}>
-       <ImageWrapper
-         background={true}
-         fullWidth={true}
-         source={{ uri }}>
+        <ImageWrapper
+          background={true}
+          fullWidth={true}
+          source={{ uri }}>
           {isSelected && imageEditOverlay}
         </ImageWrapper>
       </TouchableWithoutFeedback>

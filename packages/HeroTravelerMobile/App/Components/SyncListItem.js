@@ -95,6 +95,7 @@ export default class Activity extends Component {
   }
 }
 
+const coverSize = 40
 const styles = StyleSheet.create({
   root: {
     flex: 1,
@@ -107,9 +108,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: Metrics.doubleBaseMargin,
   },
   middle: {
-    flex: .5,
     marginLeft: Metrics.baseMargin,
     justifyContent: 'center',
+    width: Metrics.screenWidth - coverSize * 1.5 - Metrics.doubleBaseMargin * 2 - 50,
   },
   end: {
     marginLeft: 5,
@@ -135,8 +136,8 @@ const styles = StyleSheet.create({
     color: Colors.background,
   },
   coverStyle: {
-    width: 40,
-    height: 40,
-    borderRadius: 40/2,
+    width: coverSize,
+    height: coverSize,
+    borderRadius: coverSize/2,
   }
 })

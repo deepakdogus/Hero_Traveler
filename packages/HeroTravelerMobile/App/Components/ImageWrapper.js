@@ -42,7 +42,10 @@ export default class ImageWrapper extends Component {
 
   static propTypes = {
     cached: PropTypes.bool,
-    background: PropTypes.bool
+    background: PropTypes.bool,
+    fullWidth: PropTypes.bool,
+    setCoverHeight: PropTypes.func,
+    limitedHeight: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -51,7 +54,7 @@ export default class ImageWrapper extends Component {
   }
 
   render () {
-    const {background, cached, fullWidth, setCoverHeight, ...imageProps} = this.props
+    const {background, cached, fullWidth, setCoverHeight, limitedHeight, ...imageProps} = this.props
     const BaseComponent = background ? ImageBackground : Image
 
     if (this.props.resizeMode) {
@@ -71,9 +74,10 @@ export default class ImageWrapper extends Component {
       imageProps.style.height = getRelativeHeight(Metrics.screenWidth, this.state)
     }
     if (setCoverHeight && this.state.width && this.state.width) setCoverHeight(this.state)
+    if (limitedHeight) imageProps.style.height = Metrics.maxContentHeight
 
-      return cached
-          ? (<FastImage {...imageProps}/>)
-          : (<BaseComponent {...imageProps} />)
+    return cached
+        ? (<FastImage {...imageProps}/>)
+        : (<BaseComponent {...imageProps} />)
   }
 }

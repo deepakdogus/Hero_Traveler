@@ -260,7 +260,6 @@ export default class StoryPreview extends Component {
     const height = this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20
     const playButtonSize = height > 250 ? 'large' : 'small'
     let cover = story.coverImage || story.coverVideo
-    if (typeof cover === 'string') cover = JSON.parse(cover)
     return (
       <View style={styles.contentContainer}>
         {this.renderUserSection()}

@@ -71,7 +71,7 @@ export default class StoryCover extends Component {
 
   // if it is a local URL there is no need to cache since it is directly on phone
   isLocalUrl(cover){
-    return cover.uri
+    return cover.uri || cover.secure_url
   }
 
   renderImage() {
@@ -79,10 +79,6 @@ export default class StoryCover extends Component {
     let imageThumbnailUrl = getImageUrl(cover, 'loading', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
     let imageUrl = getImageUrl(cover, 'optimized', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
     // handling for backgroundPublish failures. Covers will not be correctly formatted yet
-    if (cover.uri || cover.secure_url) {
-      imageThumbnailUrl = cover.uri || cover.secure_url
-      imageUrl = cover.uri || cover.secure_url
-    }
 
     return (
       <TouchableWithoutFeedback
@@ -176,8 +172,7 @@ export default class StoryCover extends Component {
     const videoThumbnailUrl = getImageUrl(this.props.cover, 'loading', videoThumbnailOptions)
     const cover = this.props.cover
     let videoPath = getVideoUrl(this.props.cover)
-    let nonStreamingVideoPath = getVideoUrl(this.props.cover, false)  
-    if (cover.uri || cover.secure_url) videoPath = cover.uri || cover.secure_url
+    let nonStreamingVideoPath = getVideoUrl(this.props.cover, false)
 
     return (
       <View style={this._getWidthHeight()}>

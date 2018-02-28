@@ -32,13 +32,7 @@ export default class Activity extends Component {
   renderCover() {
     const {coverImage, coverVideo} = this.props.story
     let cover = coverImage || coverVideo
-    let coverUrl
-    if (typeof cover === 'string') cover = JSON.parse(cover)
-    if (cover.uri || cover.secure_url){
-      coverUrl = cover.uri || cover.secure_url
-    }
-    else if (coverImage) coverUrl = getImageUrl(cover, 'basic')
-    else if (coverVideo) coverUrl = getVideoUrl(cover)
+    let coverUrl = coverImage ? getImageUrl(cover, 'basic') : getVideoUrl(cover)
 
     if (coverImage){
       return (

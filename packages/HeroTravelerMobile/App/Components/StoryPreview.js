@@ -41,6 +41,7 @@ export default class StoryPreview extends Component {
     isVisible: PropTypes.bool,
     areInRenderLocation: PropTypes.bool,
     deleteStory: PropTypes.func,
+    removeDraft: PropTypes.func,
     onPressFollow: PropTypes.func,
     onPressUnfollow: PropTypes.func,
     isAuthor: PropTypes.bool,
@@ -59,9 +60,7 @@ export default class StoryPreview extends Component {
   }
 
   _touchTrash = () => {
-    const storyId = this.props.story.id
-    const userId = this.props.user.id
-    const { deleteStory } = this.props
+    const { deleteStory, removeDraft, story, user } = this.props
     Alert.alert(
       'Delete Story',
       'Are you sure you want to delete this story?',
@@ -71,7 +70,8 @@ export default class StoryPreview extends Component {
           text: 'Delete',
           style: 'destructive',
           onPress: () => {
-            deleteStory(userId, storyId)
+            if (story.draft) removeDraft(story.id)
+            else deleteStory(user.id, story.id)
             NavActions.pop()
           },
         }

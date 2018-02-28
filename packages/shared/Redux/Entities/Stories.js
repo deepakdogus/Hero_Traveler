@@ -346,14 +346,8 @@ export const deleteStorySuccess = (state, {userId, storyId}) => {
   let newState = state.setIn(['entities'], state.entities.without(storyId))
 
   const story = state.entities[storyId]
-
-  if (story.draft) {
-    const path = ['drafts', 'byId']
-    return newState.setIn(path, _.without(state.getIn(path, storyId)))
-  } else {
-    const path = ['storiesByUserAndId', userId, 'byId']
-    return newState.setIn(path, _.without(state.getIn(path, storyId)))
-  }
+  const path = story.draft ? ['drafts', 'byId'] : ['storiesByUserAndId', userId, 'byId']
+  return newState.setIn(path, _.without(state.getIn(path), storyId))
 }
 
 /* ------------- Selectors ------------- */

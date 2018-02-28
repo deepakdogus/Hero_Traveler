@@ -11,7 +11,7 @@ function hasNewCover(draft){
 }
 
 export default async function updateDraft(draftId, attrs, assetFormater) {
-	let draft = await Story.findById(draftId)
+  let draft = await Story.findById(draftId)
   attrs =  _.omit(attrs, 'author')
   if (hasNewCover(attrs)) await addCover(attrs, assetFormater)
 
@@ -21,8 +21,8 @@ export default async function updateDraft(draftId, attrs, assetFormater) {
   }
 
   return draft.update(attrs)
-	  .then((draft) => {
-	    // use getDraft so we return the populated document
-		  return getDraft(draftId)
-	  })
+    .then((draft) => {
+      // use getDraft so we return the populated document
+      return getDraft(draftId)
+    })
 }

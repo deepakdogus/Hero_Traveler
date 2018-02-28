@@ -170,7 +170,6 @@ export default class StoryCover extends Component {
       height: Metrics.storyCover.fullScreen.height,
     }
     const videoThumbnailUrl = getImageUrl(this.props.cover, 'loading', videoThumbnailOptions)
-    const cover = this.props.cover
     let videoPath = getVideoUrl(this.props.cover)
     let nonStreamingVideoPath = getVideoUrl(this.props.cover, false)
 

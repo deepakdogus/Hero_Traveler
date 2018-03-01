@@ -103,7 +103,7 @@ const atomicHandler = (item: Object): any => {
       case 'video':
         const url = item.data.url
         let videoUrl = (item.data.HLSUrl) || `${getVideoUrlBase()}/${item.data.url}`
-        if (typeof url === 'string' && (url.substring(0,4) === 'file' || url.substring(0,6) === '/Users')){
+        if (typeof url === 'string' && (url.substring(0,7) === 'file://' || url.substring(0,6) === '/Users')){
           videoUrl = url
         }
         return (

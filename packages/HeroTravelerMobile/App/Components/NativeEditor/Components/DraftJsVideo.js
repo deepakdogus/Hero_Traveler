@@ -17,7 +17,7 @@ export default class DraftJsVideo extends Component {
     const {url, isSelected, onPress, onDelete, style, sizeMetrics = undefined} = this.props
 
     let videoUrl
-    if (url.substring(0,4) === 'file') videoUrl = url
+    if (url.substring(0,7) === 'file://') videoUrl = url
     else videoUrl = `${getVideoUrlBase()}/${url}`
     const imageEditOverlay = (
       <View style={styles.assetEditOverlay}>

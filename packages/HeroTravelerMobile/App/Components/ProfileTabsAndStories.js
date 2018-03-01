@@ -24,8 +24,12 @@ const enhancedTab = withHandlers({
 const Tab = enhancedTab(({text, _onPress, selected, isProfileView}) => {
   return (
     <TouchableWithoutFeedback onPress={_onPress}>
-      <View style={[styles.tab, (selected && !isProfileView) ? styles.tabSelected : null]}>
-      <Text style={[styles.tabText, selected ? styles.tabTextSelected : null]}>{text}</Text>
+      <View style={[
+        styles.tab,
+        (selected && !isProfileView) ? styles.tabSelected : null,
+        isProfileView ? styles.fullTab : null
+      ]}>
+        <Text style={[styles.tabText, selected ? styles.tabTextSelected : null]}>{text}</Text>
       </View>
     </TouchableWithoutFeedback>
   )
@@ -160,7 +164,6 @@ export default class ProfileTabsAndStories extends Component {
               spinnerColor={Colors.background} />
           </View>
         }
-
 
         {storiesById.length !== 0 && !isGettingStories &&
           <StoryList

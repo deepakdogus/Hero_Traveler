@@ -172,6 +172,9 @@ export default StyleSheet.create({
     borderBottomWidth: 3,
     borderBottomColor: Colors.feedDividerGrey,
   },
+  fullTab: {
+    flex: 1,
+  },
   tabText: {
     fontFamily: Fonts.type.montserrat,
     color: Colors.navBarText,

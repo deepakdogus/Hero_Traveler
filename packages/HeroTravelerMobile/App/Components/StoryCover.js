@@ -88,7 +88,7 @@ export default class StoryCover extends Component {
           ...this._getWidthHeight(),
           maxHeight: Metrics.storyCover.fullScreen.height,
         }}>
-        { imageThumbnailUrl && 
+        { imageThumbnailUrl &&
           <ImageWrapper
             cached={!this.isLocalUrl(cover)}
             resizeMode='cover'
@@ -175,10 +175,10 @@ export default class StoryCover extends Component {
       width: 'screen',
       height: Metrics.storyCover.fullScreen.height,
     }
-    
+
     const videoImageUrl = getImageUrl(this.props.cover, 'optimized', videoThumbnailOptions)
     const videoThumbnailUrl = getImageUrl(this.props.cover, 'loading', videoThumbnailOptions)
-    
+
     if (this.props.isFeed) {
       return this.renderImageWithUrl(true, videoImageUrl, videoThumbnailUrl)
     }
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
     height: 100,
     top: '50%',
     left: '50%',
-    marginTop: -30,
+    marginTop: -40,
     marginLeft: -30,
   },
   smallPlayButton: {

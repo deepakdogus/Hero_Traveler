@@ -94,20 +94,18 @@ class MyFeedScreen extends React.Component {
   }
 
   renderStory = (storyInfo) => {
-      return (
-              <ConnectedStoryPreview
-          key={storyInfo.id}
-          storyId={storyInfo.id}
-          height={imageHeight}
-          showLike={true}
-          showUserInfo={true}
-          onPressUser={this._touchUser}
-          userId={this.props.user.id}
-          autoPlayVideo
-          allowVideoPlay
-          renderLocation={this.props.location}
-          index={storyInfo.index}
-              />
+    return (
+      <ConnectedStoryPreview
+        key={storyInfo.id}
+        storyId={storyInfo.id}
+        height={imageHeight}
+        onPressUser={this._touchUser}
+        userId={this.props.user.id}
+        autoPlayVideo
+        allowVideoPlay
+        renderLocation={this.props.location}
+        index={storyInfo.index}
+      />
     )
   }
 

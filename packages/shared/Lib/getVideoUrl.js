@@ -10,7 +10,7 @@ export default function getVideoUrl(video: object, stream = true): ?string {
   if (video.uri || video.secure_url) return video.uri || video.secure_url
   if (
     typeof video === 'string' &&
-    (video.substring(0,4) === 'file' || video.substring(0,6) === '/Users')
+    (video.substring(0,7) === 'file://' || video.substring(0,6) === '/Users')
   ) return video
 
 

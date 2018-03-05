@@ -171,16 +171,8 @@ class ExploreScreen extends Component {
             text='PEOPLE'
           />
         </View>
-        <View style={{flex: 1, flexDirection: 'column'}}>
-        {isSearching && <Loader style={{
-          flex: 1,
-          position: 'absolute',
-          marginTop: 400,
-          top: 0,
-          bottom: 0,
-          left: 0,
-          right: 0
-        }} />}
+        <View style={styles.scrollWrapper}>
+        {isSearching && <Loader style={styles.searchLoader} />}
         {searchHits.length > 0 && this.state.selectedTabIndex === 0 &&
           <ScrollView>
             <List
@@ -199,20 +191,22 @@ class ExploreScreen extends Component {
                   )
                 } else {
                   leftEl = (
-                    <ImageWrapper
-                      cached={true}
-                      background={true}
-                      resizeMode='cover'
-                      source={{uri: getImageUrl(story.coverVideo, 'video') }}
-                      style={styles.thumbnailImage}
-                    >
+                    <View style={styles.videoCoverWrapper}>
+                      <ImageWrapper
+                        cached={true}
+                        resizeMode='cover'
+                        source={{uri: getImageUrl(story.coverVideo, 'video') }}
+                        style={styles.thumbnailImage}
+                      >
+                      </ImageWrapper>
                       <PlayButton
                         size='tiny'
                         style={styles.PlayButton}
                       />
-                    </ImageWrapper>
+                    </View>
                   )
                 }
+
                 return (
                   <ListItem
                     onPress={() => NavActions.story({
@@ -220,12 +214,8 @@ class ExploreScreen extends Component {
                       title: this.helper.state.query,
                     })}
                     leftElement={leftEl}
-                    text={<Text style={{fontSize: 15, color: Colors.snow}}>{story.title}</Text>}
-                    secondaryText={<Text style={{
-                      fontSize: 12,
-                      color: Colors.navBarText,
-                      fontStyle: 'italic'
-                    }}>{story.author}</Text>}
+                    text={<Text style={styles.listItemText}>{story.title}</Text>}
+                    secondaryText={<Text style={styles.listItemTextSecondary}>{story.author}</Text>}
                     rightElement={<Icon name='angle-right' color={Colors.whiteAlphaPt3} size={30} />}
                   />
                 )
@@ -234,7 +224,7 @@ class ExploreScreen extends Component {
           </ScrollView>
         }
         {searchHits.length > 0 && this.state.selectedTabIndex === 1 &&
-          <ScrollView style={{flex: 1, flexDirection: 'column'}}>
+          <ScrollView>
             <List
               items={searchHits}
               renderRow={(user) => {
@@ -255,7 +245,7 @@ class ExploreScreen extends Component {
                         iconColor={Colors.lightGreyAreas}
                       />
                     }
-                    text={<Text style={{fontSize: 15, color: Colors.snow}}>{user.profile.fullName}</Text>}
+                    text={<Text style={styles.listItemText}>{user.profile.fullName}</Text>}
                     rightElement={<Icon name='angle-right' color={Colors.whiteAlphaPt3} size={30} />}
                   />
                 )
@@ -264,10 +254,10 @@ class ExploreScreen extends Component {
           </ScrollView>
         }
         {!isSearching && searchHits.length === 0 && this.state.selectedTabIndex === 0 &&
-          <Text style={{color: 'white', padding: Metrics.section, textAlign: 'center'}}>No stories found</Text>
+          <Text style={styles.noFindText}>No stories found</Text>
         }
         {!isSearching && searchHits.length === 0 && this.state.selectedTabIndex === 1 &&
-          <Text style={{color: 'white', padding: Metrics.section, textAlign: 'center'}}>No users found</Text>
+          <Text style={styles.noFindText}>No users found</Text>
         }
         </View>
       </View>

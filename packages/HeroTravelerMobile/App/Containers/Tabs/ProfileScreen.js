@@ -75,7 +75,6 @@ class ProfileScreen extends React.Component {
         editable={true}
         isEditing={this.props.isEditing}
         updateUser={updateUser}
-        showLike={true}
         accessToken={accessToken}
         profileImage={this._isTempImage() ? getImageUrl(user.profile.tempCover, 'basic') : getImageUrl(user.profile.cover, 'basic')}
         fetchStatus={userStoriesFetchStatus}

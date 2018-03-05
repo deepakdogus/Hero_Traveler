@@ -103,7 +103,7 @@ const atomicHandler = (item: Object): any => {
       case 'video':
         const url = item.data.url
         let videoUrl = (item.data.HLSUrl) || `${getVideoUrlBase()}/${item.data.url}`
-        if (typeof url === 'string' && (url.substring(0,4) === 'file' || url.substring(0,6) === '/Users')){
+        if (typeof url === 'string' && (url.substring(0,7) === 'file://' || url.substring(0,6) === '/Users')){
           videoUrl = url
         }
         return (
@@ -288,7 +288,6 @@ class StoryReadingScreen extends React.Component {
           <ConnectedStoryPreview
             onPressLike={this._toggleLike}
             showLike={false}
-            showUserInfo={true}
             onPressUser={this._pressUser}
             gradientColors={['rgba(0,0,0,.65)', 'transparent', 'transparent', 'rgba(0,0,0,.65)']}
             gradientLocations={[0,.25,.5,1]}

@@ -24,8 +24,12 @@ const enhancedTab = withHandlers({
 const Tab = enhancedTab(({text, _onPress, selected, isProfileView}) => {
   return (
     <TouchableWithoutFeedback onPress={_onPress}>
-      <View style={[styles.tab, (selected && !isProfileView) ? styles.tabSelected : null]}>
-      <Text style={[styles.tabText, selected ? styles.tabTextSelected : null]}>{text}</Text>
+      <View style={[
+        styles.tab,
+        (selected && !isProfileView) ? styles.tabSelected : null,
+        isProfileView ? styles.fullTab : null
+      ]}>
+        <Text style={[styles.tabText, selected ? styles.tabTextSelected : null]}>{text}</Text>
       </View>
     </TouchableWithoutFeedback>
   )
@@ -43,7 +47,6 @@ export default class ProfileTabsAndStories extends Component {
     showTooltip: PropTypes.bool,
     touchEdit: PropTypes.func,
     touchTrash: PropTypes.func,
-    showLike: PropTypes.bool,
     user: PropTypes.object,
     location: PropTypes.string,
     error: PropTypes.object,
@@ -80,7 +83,7 @@ export default class ProfileTabsAndStories extends Component {
   renderStory = (storyInfo) => {
     const {
       tabTypes, selectedTab,
-      editable, showLike, user, location
+      editable, user, location
     } = this.props
     return (
       <ConnectedStoryPreview
@@ -88,7 +91,6 @@ export default class ProfileTabsAndStories extends Component {
         editable={editable && selectedTab !== tabTypes.bookmarks}
         titleStyle={styles.storyTitleStyle}
         subtitleStyle={styles.subtitleStyle}
-        showLike={showLike}
         key={storyInfo.id}
         storyId={storyInfo.id}
         userId={user.id}
@@ -136,6 +138,11 @@ export default class ProfileTabsAndStories extends Component {
     )
   }
 
+  hasBadge(){
+    const {user} = this.props
+    return user.role === 'contributor' || user.role === 'founding member'
+  }
+
   render() {
     const {renderProfileInfo, storiesById, fetchStatus, editable} = this.props
     const isGettingStories = this.isGettingStories()
@@ -161,12 +168,12 @@ export default class ProfileTabsAndStories extends Component {
           </View>
         }
 
-
         {storiesById.length !== 0 && !isGettingStories &&
           <StoryList
-            style={editable && {height:  Metrics.screenHeight - Metrics.tabBarHeight}}
+            style={styles.storyList}
             storiesById={storiesById}
             refreshing={false}
+            headerContentHeight={this.hasBadge() ? 225 : 204}
             renderHeaderContent={this._renderProfileInfo()}
             renderSectionHeader={this.renderTabs()}
             renderStory={this.renderStory}

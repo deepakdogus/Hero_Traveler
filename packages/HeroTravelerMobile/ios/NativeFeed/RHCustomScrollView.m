@@ -10,6 +10,10 @@
 #import <React/RCTUIManager.h>
 #import "RHNativeFeed.h"
 
+@interface RHCustomScrollView()
+
+@end
+
 @implementation RHCustomScrollView
 
 - (instancetype)initWithFrame:(CGRect)frame

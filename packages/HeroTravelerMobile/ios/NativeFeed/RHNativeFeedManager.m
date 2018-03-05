@@ -18,7 +18,6 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_SHADOW_PROPERTY(cellHeight, CGFloat)
 RCT_EXPORT_SHADOW_PROPERTY(cellSeparatorHeight, CGFloat)
-RCT_EXPORT_SHADOW_PROPERTY(startCell, NSInteger)
 
 
 //@property(nonatomic, assign) NSInteger numPreloadBehindCells;

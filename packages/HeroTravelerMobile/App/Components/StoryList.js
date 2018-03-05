@@ -138,12 +138,11 @@ class StoryList extends React.Component {
       storyViews = storiesById.slice(minCell, maxCell).map((storyId) => {
         i = i + 1
         return (
-          <View key={`FeedItem:${storyId}`}>
+          <NativeFeedItem key={`FeedItem:${storyId}`} cellNum={i}>
           {this.props.renderStory({id: storyId, index: i})}
-          </View>
+          </NativeFeedItem>
         )
       })
-      startCell = minCell
     }
 
     return (
@@ -152,7 +151,6 @@ class StoryList extends React.Component {
         cellHeight={Metrics.feedCell.height}
         cellSeparatorHeight={Metrics.feedCell.separator}
         numCells={storiesById.length}
-        startCell={startCell}
         numPreloadBehindCells={2}
         numPreloadAheadCells={3}
         onVisibleCellsChanged={this._handleVisibleCellsChanged}
@@ -172,7 +170,11 @@ class StoryList extends React.Component {
         onTouchMove={this.scrollResponderHandleTouchMove}
         onTouchStart={this.scrollResponderHandleTouchStart}
         onTouchCancel={this.scrollResponderHandleTouchCancel}
-      >
+        >
+        <RefreshControl
+          refreshing={this.props.refreshing}
+          onRefresh={this.props.onRefresh}
+        />
         {
           renderHeaderContent ?
           (<NativeFeedHeader headerHeight={headerContentHeight} sticky={false}>{

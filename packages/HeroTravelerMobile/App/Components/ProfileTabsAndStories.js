@@ -47,7 +47,6 @@ export default class ProfileTabsAndStories extends Component {
     showTooltip: PropTypes.bool,
     touchEdit: PropTypes.func,
     touchTrash: PropTypes.func,
-    showLike: PropTypes.bool,
     user: PropTypes.object,
     location: PropTypes.string,
     error: PropTypes.object,
@@ -84,7 +83,7 @@ export default class ProfileTabsAndStories extends Component {
   renderStory = (storyInfo) => {
     const {
       tabTypes, selectedTab,
-      editable, showLike, user, location
+      editable, user, location
     } = this.props
     return (
       <ConnectedStoryPreview
@@ -92,7 +91,6 @@ export default class ProfileTabsAndStories extends Component {
         editable={editable && selectedTab !== tabTypes.bookmarks}
         titleStyle={styles.storyTitleStyle}
         subtitleStyle={styles.subtitleStyle}
-        showLike={showLike}
         key={storyInfo.id}
         storyId={storyInfo.id}
         userId={user.id}

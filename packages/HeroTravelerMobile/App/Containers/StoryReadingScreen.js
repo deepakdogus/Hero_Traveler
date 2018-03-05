@@ -288,7 +288,6 @@ class StoryReadingScreen extends React.Component {
           <ConnectedStoryPreview
             onPressLike={this._toggleLike}
             showLike={false}
-            showUserInfo={true}
             onPressUser={this._pressUser}
             gradientColors={['rgba(0,0,0,.65)', 'transparent', 'transparent', 'rgba(0,0,0,.65)']}
             gradientLocations={[0,.25,.5,1]}

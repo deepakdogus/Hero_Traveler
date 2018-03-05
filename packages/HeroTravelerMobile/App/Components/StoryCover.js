@@ -122,7 +122,8 @@ export default class StoryCover extends Component {
 
   renderImage() {
     let imageUrl = getImageUrl(this.props.cover, 'optimized', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
-    return this.renderImageWithUrl(false, imageUrl)
+    let imageThumbnailUrl = getImageUrl(this.props.cover, 'loading', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
+    return this.renderImageWithUrl(false, imageUrl, imageThumbnailUrl)
   }
 
   _onPress = () => {
@@ -174,10 +175,12 @@ export default class StoryCover extends Component {
       width: 'screen',
       height: Metrics.storyCover.fullScreen.height,
     }
-    const videoThumbnailUrl = getImageUrl(this.props.cover, 'optimized', videoThumbnailOptions)
+    
+    const videoImageUrl = getImageUrl(this.props.cover, 'optimized', videoThumbnailOptions)
+    const videoThumbnailUrl = getImageUrl(this.props.cover, 'loading', videoThumbnailOptions)
     
     if (this.props.isFeed) {
-      return this.renderImageWithUrl(true, videoThumbnailUrl)
+      return this.renderImageWithUrl(true, videoImageUrl, videoThumbnailUrl)
     }
 
     let videoPath = getVideoUrl(this.props.cover)

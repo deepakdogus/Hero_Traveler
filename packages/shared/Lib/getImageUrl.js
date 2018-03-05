@@ -114,7 +114,7 @@ export default function getImageUrl(image: object|string, type: string, options:
   if (!!image && (!!image.uri || !!image.secure_url)) return image.uri || image.secure_url
   if (
     typeof image === 'string' &&
-    (image.substring(0,4) === 'file' || image.substring(0,6) === '/Users')
+    (image.substring(0,7) === 'file://' || image.substring(0,6) === '/Users')
   ) return image
 
   const uri = getUri(image)
@@ -136,7 +136,7 @@ export default function getImageUrl(image: object|string, type: string, options:
     imageSize.height = Math.round(options.height * metrics.pixelRatio)
   }
 
-  const base = options.video ? getVideoUrlBase() : getImageUrlBase()
+  const base = type === 'video' ? getVideoUrlBase() : getImageUrlBase()
   const urlParametersFactory = imageUrlParametersFactories[type] || getOptimizedImageUrlParameters
   const urlParameters = urlParametersFactory(imageSize)
   return buildUrl(base, uri, urlParameters)

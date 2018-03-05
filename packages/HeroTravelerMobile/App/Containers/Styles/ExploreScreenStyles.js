@@ -12,6 +12,15 @@ export default StyleSheet.create({
   loader: {
     height: Metrics.screenHeight - 100 - Metrics.tabBarHeight,
   },
+  searchLoader: {
+    flex: 1,
+    position: 'absolute',
+    marginTop: 400,
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
   headerSearch: {
     marginHorizontal: Metrics.baseMargin,
     // flexDirection: 'column',
@@ -28,6 +37,10 @@ export default StyleSheet.create({
     paddingLeft: Metrics.baseMargin/2,
     paddingRight: Metrics.baseMargin/2,
     borderRadius: 5,
+  },
+  scrollWrapper: {
+    flex: 1,
+    flexDirection: 'column'
   },
   searchInput: {
     flex: 1,
@@ -158,7 +171,23 @@ export default StyleSheet.create({
     marginHorizontal: 5,
     marginTop: 10,
   },
-
+  videoCoverWrapper: {
+    position: 'relative'
+  },
+  listItemText: {
+    fontSize: 15,
+    color: Colors.snow,
+  },
+  listItemTextSecondary: {
+    fontSize: 12,
+    color: Colors.navBarText,
+    fontStyle: 'italic',
+  },
+  noFindText: {
+    color: 'white',
+    padding: Metrics.section,
+    textAlign: 'center'
+  },
 })
 
 export const CategoryFeedNavActionStyles = StyleSheet.create({

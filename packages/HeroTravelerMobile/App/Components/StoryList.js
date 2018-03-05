@@ -43,7 +43,7 @@ class StoryList extends React.Component {
 
   constructor(props) {
       super(props)
-      
+
       this.addListenerOn = this.addListenerOn.bind(this)
       //this.componentDidMount = this.componentDidMount.bind(this)
       this.componentWillMount = this.componentWillMount.bind(this)
@@ -92,7 +92,7 @@ class StoryList extends React.Component {
 
   _handleVisibleCellsChanged = (event) => {
       const {setPlayingRow, playingRow, setVisibleRows} = this.props
-        
+
       this.setState(event.nativeEvent)
 
       let visibleRowsKeys = []
@@ -121,66 +121,73 @@ class StoryList extends React.Component {
   }
 
   render () {
-        let storyViews = []
-        let startCell = 0
+    let storyViews = []
+    let startCell = 0
 
-        const { storiesById, renderHeaderContent, renderSectionHeader } = this.props
+    const {
+      storiesById, renderSectionHeader,
+      renderHeaderContent, headerContentHeight,
+    } = this.props
 
-        if (this.state.visibleCells)
+    if (this.state.visibleCells){
+      const {minCell, maxCell} = this.state.visibleCells
+
+      let i = minCell - 1
+      storyViews = storiesById.slice(minCell, maxCell).map((storyId) => {
+        i = i + 1
+        return (
+          <View key={`FeedItem:${storyId}`}>
+          {this.props.renderStory({id: storyId, index: i})}
+          </View>
+        )
+      })
+      startCell = minCell
+    }
+
+    return (
+      <NativeFeed
+        style={[styles.container, this.props.style]}
+        cellHeight={Metrics.feedCell.height}
+        cellSeparatorHeight={Metrics.feedCell.separator}
+        numCells={storiesById.length}
+        startCell={startCell}
+        numPreloadBehindCells={2}
+        numPreloadAheadCells={3}
+        onVisibleCellsChanged={this._handleVisibleCellsChanged}
+        onMomentumScrollBegin={this.scrollResponderHandleMomentumScrollBegin}
+        onMomentumScrollEnd={this.scrollResponderHandleMomentumScrollEnd}
+        onResponderGrant={this.scrollResponderHandleResponderGrant}
+        onResponderReject={this.scrollResponderHandleResponderReject}
+        onResponderRelease={this.scrollResponderHandleResponderRelease}
+        onResponderTerminate={this.scrollResponderHandleTerminate}
+        onResponderTerminationRequest={this.scrollResponderHandleTerminationRequest}
+        onScrollBeginDrag={this.scrollResponderHandleScrollBeginDrag}
+        onScrollEndDrag={this.scrollResponderHandleScrollEndDrag}
+        onScrollShouldSetResponder={this.scrollResponderHandleScrollShouldSetResponder}
+        onStartShouldSetResponder={this.scrollResponderHandleStartShouldSetResponder}
+        onStartShouldSetResponderCapture={this.scrollResponderHandleStartShouldSetResponderCapture}
+        onTouchEnd={this.scrollResponderHandleTouchEnd}
+        onTouchMove={this.scrollResponderHandleTouchMove}
+        onTouchStart={this.scrollResponderHandleTouchStart}
+        onTouchCancel={this.scrollResponderHandleTouchCancel}
+      >
         {
-            const {minCell, maxCell} = this.state.visibleCells
-
-            let i = minCell - 1
-            storyViews = storiesById.slice(minCell, maxCell).map((storyId) => {
-                i = i + 1
-                return (<View key={`FeedItem:${storyId}`}>
-                        {this.props.renderStory({id: storyId, index: i})}
-                        </View>)
-            })
-            startCell = minCell
+          renderHeaderContent ?
+          (<NativeFeedHeader headerHeight={headerContentHeight} sticky={false}>{
+            renderHeaderContent}
+          </NativeFeedHeader>) :
+          null
+        }
+        { renderSectionHeader ?
+          (<NativeFeedHeader headerHeight={50} sticky={true}>
+            {renderSectionHeader}
+          </NativeFeedHeader>) :
+          null
         }
 
-        return (
-                <NativeFeed
-            style={[styles.container, this.props.style]}
-            cellHeight={Metrics.feedCell.height}
-            cellSeparatorHeight={Metrics.feedCell.separator}
-            numCells={storiesById.length}
-            startCell={startCell}
-            numPreloadBehindCells={2}
-            numPreloadAheadCells={3}
-            onVisibleCellsChanged={this._handleVisibleCellsChanged}
-            onMomentumScrollBegin={this.scrollResponderHandleMomentumScrollBegin}
-            onMomentumScrollEnd={this.scrollResponderHandleMomentumScrollEnd}
-            onResponderGrant={this.scrollResponderHandleResponderGrant}
-            onResponderReject={this.scrollResponderHandleResponderReject}
-            onResponderRelease={this.scrollResponderHandleResponderRelease}
-            onResponderTerminate={this.scrollResponderHandleTerminate}
-            onResponderTerminationRequest={this.scrollResponderHandleTerminationRequest}
-            onScrollBeginDrag={this.scrollResponderHandleScrollBeginDrag}
-            onScrollEndDrag={this.scrollResponderHandleScrollEndDrag}
-            onScrollShouldSetResponder={this.scrollResponderHandleScrollShouldSetResponder}
-            onStartShouldSetResponder={this.scrollResponderHandleStartShouldSetResponder}
-            onStartShouldSetResponderCapture={this.scrollResponderHandleStartShouldSetResponderCapture}
-            onTouchEnd={this.scrollResponderHandleTouchEnd}
-            onTouchMove={this.scrollResponderHandleTouchMove}
-            onTouchStart={this.scrollResponderHandleTouchStart}
-            onTouchCancel={this.scrollResponderHandleTouchCancel}
-                >
-                {
-                    renderHeaderContent
-                        ? (<NativeFeedHeader headerHeight={204} sticky={false}>{renderHeaderContent}</NativeFeedHeader>)
-                           : null
-                          }
-                {
-                    renderSectionHeader
-                        ? (<NativeFeedHeader headerHeight={50} sticky={true}>{renderSectionHeader}</NativeFeedHeader>)
-                           : null
-                          }
-                   
-                {storyViews}
-                </NativeFeed>
-        )
+        {storyViews}
+      </NativeFeed>
+    )
   }
 }
 

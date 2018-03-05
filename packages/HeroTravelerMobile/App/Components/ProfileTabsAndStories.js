@@ -140,6 +140,11 @@ export default class ProfileTabsAndStories extends Component {
     )
   }
 
+  hasBadge(){
+    const {user} = this.props
+    return user.role === 'contributor' || user.role === 'founding member'
+  }
+
   render() {
     const {renderProfileInfo, storiesById, fetchStatus, editable} = this.props
     const isGettingStories = this.isGettingStories()
@@ -170,6 +175,7 @@ export default class ProfileTabsAndStories extends Component {
             style={editable && {height:  Metrics.screenHeight - Metrics.tabBarHeight}}
             storiesById={storiesById}
             refreshing={false}
+            headerContentHeight={this.hasBadge ? 225 : 204}
             renderHeaderContent={this._renderProfileInfo()}
             renderSectionHeader={this.renderTabs()}
             renderStory={this.renderStory}

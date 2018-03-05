@@ -281,4 +281,7 @@ export default StyleSheet.create({
     color: Colors.background,
     textAlign: 'center'
   },
+  storyList: {
+    height: Metrics.screenHeight - Metrics.tabBarHeight,
+  }
 })

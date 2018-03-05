@@ -172,10 +172,10 @@ export default class ProfileTabsAndStories extends Component {
 
         {storiesById.length !== 0 && !isGettingStories &&
           <StoryList
-            style={editable && {height:  Metrics.screenHeight - Metrics.tabBarHeight}}
+            style={styles.storyList}
             storiesById={storiesById}
             refreshing={false}
-            headerContentHeight={this.hasBadge ? 225 : 204}
+            headerContentHeight={this.hasBadge() ? 225 : 204}
             renderHeaderContent={this._renderProfileInfo()}
             renderSectionHeader={this.renderTabs()}
             renderStory={this.renderStory}

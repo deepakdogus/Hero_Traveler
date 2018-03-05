@@ -136,7 +136,7 @@ export default function getImageUrl(image: object|string, type: string, options:
     imageSize.height = Math.round(options.height * metrics.pixelRatio)
   }
 
-  const base = type === options.video ? getVideoUrlBase() : getImageUrlBase()
+  const base = options.video ? getVideoUrlBase() : getImageUrlBase()
   const urlParametersFactory = imageUrlParametersFactories[type] || getOptimizedImageUrlParameters
   const urlParameters = urlParametersFactory(imageSize)
   return buildUrl(base, uri, urlParameters)

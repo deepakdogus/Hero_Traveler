@@ -128,6 +128,7 @@ class CategoryFeedScreen extends React.Component {
         allowVideoPlay
         renderLocation={this.props.location}
         index={storyInfo.index}
+        showPlayButton={true}
       />
     )
   }

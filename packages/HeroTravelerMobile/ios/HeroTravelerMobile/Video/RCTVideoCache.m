@@ -282,7 +282,7 @@
     return item;
   }
 
-  item = [self downloadedAsset:assetKey];
+  item = [self downloadedAsset:assetKey streamUrl:url];
 
   if (item)
   {
@@ -318,7 +318,7 @@
   return nil;
 }
 
-- (VideoCacheItem*) downloadedAsset:(NSString*) assetKey
+- (VideoCacheItem*) downloadedAsset:(NSString*) assetKey streamUrl:(NSString*)streamUrl
 {
   // Check local cache if video has been previously downloaded
   if ([currentlyDownloadedFiles containsObject:assetKey])
@@ -334,7 +334,7 @@
     }
     else
     {
-      VideoCacheItem* cacheItem = [[VideoCacheItem alloc] initWithAssetKey:assetKey cachedLocation:fileLocation];
+      VideoCacheItem* cacheItem = [[VideoCacheItem alloc] initWithAssetKey:assetKey cachedLocation:fileLocation streamLocation:streamUrl];
       [RCTVideoCache touchCachedAsset:assetKey];
       
       NSMutableArray* mLoadedVideos = [loadedVideos mutableCopy];
@@ -345,6 +345,23 @@
   }
 
   return nil;
+}
+//assetDirectory
+
+- (void) deleteSavedAsset:(NSString*)assetKey
+{
+  NSURL* assetDirectory = [RCTVideoCache cachedAssetDirectoryFromAssetKey:assetKey];
+
+  if ([[NSFileManager defaultManager] fileExistsAtPath:[assetDirectory path]])
+  {
+    NSError* err = nil;
+    [[NSFileManager defaultManager] removeItemAtURL:assetDirectory error:&err];
+    
+    if (err)
+    {
+      NSLog(@"Error deleting cached item: %@", err);
+    }
+  }
 }
 
 - (VideoCacheItem*) createStreamingAsset:(NSString*)assetKey url:(NSString*)url

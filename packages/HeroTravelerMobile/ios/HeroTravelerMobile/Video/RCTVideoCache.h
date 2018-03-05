@@ -41,4 +41,6 @@
 - (void) handleMutedStatus;
 - (void) setAsset:(NSString*)assetKey isMuted:(BOOL)isMuted;
 
+- (void) deleteSavedAsset:(NSString*)assetKey;
+
 @end

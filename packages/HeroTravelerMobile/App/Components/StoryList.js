@@ -124,7 +124,6 @@ class StoryList extends React.Component {
   // TODO: NativeFeed should probably be wrapped in another class
   render () {
     let storyViews = []
-    let startCell = 0
 
     const {
       storiesById, renderSectionHeader,

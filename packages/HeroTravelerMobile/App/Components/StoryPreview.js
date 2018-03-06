@@ -46,6 +46,7 @@ export default class StoryPreview extends Component {
     onPressUnfollow: PropTypes.func,
     isAuthor: PropTypes.bool,
     myFollowedUsers: PropTypes.arrayOf(PropTypes.string),
+    showPlayButton: PropTypes.bool,
   }
 
   static defaultProps = {

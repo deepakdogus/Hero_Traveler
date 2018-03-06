@@ -74,10 +74,8 @@ export default class StoryCover extends Component {
     return cover.uri || cover.secure_url
   }
 
-  renderImage() {
+  renderImageWithUrl(isVideo, imageUrl, imageThumbnailUrl) {
     const {cover, onPress, gradientLocations, gradientColors, children, showPlayButton, playButtonSize} = this.props
-    let imageThumbnailUrl = getImageUrl(cover, 'loading', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
-    let imageUrl = getImageUrl(cover, 'optimized', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
     // handling for backgroundPublish failures. Covers will not be correctly formatted yet
 
     return (
@@ -90,12 +88,14 @@ export default class StoryCover extends Component {
           ...this._getWidthHeight(),
           maxHeight: Metrics.storyCover.fullScreen.height,
         }}>
+        { imageThumbnailUrl &&
           <ImageWrapper
             cached={!this.isLocalUrl(cover)}
             resizeMode='cover'
             source={{uri: imageThumbnailUrl}}
             style={embeddedImageStyle}
           />
+        }
           <ImageWrapper
             cached={!this.isLocalUrl(cover)}
             resizeMode='cover'
@@ -118,6 +118,12 @@ export default class StoryCover extends Component {
         </View>
       </TouchableWithoutFeedback>
     )
+  }
+
+  renderImage() {
+    let imageUrl = getImageUrl(this.props.cover, 'optimized', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
+    let imageThumbnailUrl = getImageUrl(this.props.cover, 'loading', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
+    return this.renderImageWithUrl(false, imageUrl, imageThumbnailUrl)
   }
 
   _onPress = () => {
@@ -169,7 +175,14 @@ export default class StoryCover extends Component {
       width: 'screen',
       height: Metrics.storyCover.fullScreen.height,
     }
+
+    const videoImageUrl = getImageUrl(this.props.cover, 'optimized', videoThumbnailOptions)
     const videoThumbnailUrl = getImageUrl(this.props.cover, 'loading', videoThumbnailOptions)
+
+    if (this.props.isFeed) {
+      return this.renderImageWithUrl(true, videoImageUrl, videoThumbnailUrl)
+    }
+
     let videoPath = getVideoUrl(this.props.cover)
     let nonStreamingVideoPath = getVideoUrl(this.props.cover, false)
 
@@ -296,7 +309,7 @@ const styles = StyleSheet.create({
     height: 100,
     top: '50%',
     left: '50%',
-    marginTop: -30,
+    marginTop: -40,
     marginLeft: -30,
   },
   smallPlayButton: {

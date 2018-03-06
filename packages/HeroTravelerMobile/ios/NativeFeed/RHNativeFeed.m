@@ -1,7 +1,9 @@
 #import "RHNativeFeed.h"
 #import <React/RCTAssert.h>
+#import <React/RCTRefreshControl.h>
 #import <React/UIView+React.h>
 #import "RHNativeFeedHeader.h"
+#import "RHNativeFeedItem.h"
 #import "RHCustomScrollView.h"
 #import "RHScrollEvent.h"
 
@@ -11,7 +13,7 @@
   NSArray* visibleCells;
   NSArray* visibleViews;
   
-  UIScrollView* _scrollView;
+  RHCustomScrollView* _scrollView;
   
   CGFloat _cellHeight;
   CGFloat _cellSeparatorHeight;
@@ -167,19 +169,26 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 - (void)insertReactSubview:(UIView *)view atIndex:(NSInteger)atIndex
 {
   [super insertReactSubview:view atIndex:atIndex];
-//  [_scrollView addSubview:view];
-//#if !TARGET_OS_TV
-////  if ([view isKindOfClass:[RCTRefreshControl class]]) {
-////    [_scrollView setRctRefreshControl:(RCTRefreshControl *)view];
-////  } else
-//#endif
-//  {
-////    RCTAssert(_contentView == nil, @"RCTScrollView may only contain a single subview");
-////    _contentView = view;
-////    RCTApplyTranformationAccordingLayoutDirection(_contentView, self.reactLayoutDirection);
-//    [_scrollView addSubview:view];
-//  }
   [self recalculateBackingView];
+}
+
+- (void)layoutSubviews
+{
+  [super layoutSubviews];
+
+  for (RCTRefreshControl* refreshControl in _scrollView.subviews)
+  {
+    if (![refreshControl isKindOfClass:[RCTRefreshControl class]])
+    {
+      continue;
+    }
+    
+    if (refreshControl && refreshControl.refreshing) {
+      refreshControl.frame = (CGRect){_scrollView.contentOffset, {_scrollView.frame.size.width, refreshControl.frame.size.height}};
+    }
+  }
+
+  [self updateClippedSubviews];
 }
 
 - (void) addSubview:(UIView *)view
@@ -212,7 +221,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   CGFloat maxY = CGFLOAT_MIN;
   for (UIView* view in _scrollView.subviews)
   {
-    if (![view isKindOfClass:[UIImageView class]] && view != _cellBackingView)
+    if ([view isKindOfClass:[RHNativeFeedItem class]])
     {
       if (view.frame.origin.y < minY)
       {
@@ -252,16 +261,6 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 - (void)removeReactSubview:(UIView *)subview
 {
   [super removeReactSubview:subview];
-//#if !TARGET_OS_TV
-////  if ([subview isKindOfClass:[RCTRefreshControl class]]) {
-////    [_scrollView setRctRefreshControl:nil];
-////  } else
-//#endif
-//  {
-////    RCTAssert(_contentView == subview, @"Attempted to remove non-existent subview");
-////    _contentView = nil;
-//  }
-  
   [self recalculateBackingView];
 }
 

@@ -28,6 +28,9 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
     _assetKey = assetKey;
     
     currentPlayingVideoItems = @[];
+    streamUrl = url_;
+    
+    isStreaming = YES;
     
     NSURL* url = [NSURL URLWithString:url_];
     NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
@@ -44,12 +47,17 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   return self;
 }
 
-- (instancetype) initWithAssetKey:(NSString*)assetKey cachedLocation:(NSURL*)url
+- (instancetype) initWithAssetKey:(NSString*)assetKey cachedLocation:(NSURL*)url streamLocation:(NSString*)streamUrl_
 {
   if (self = [super init])
   {
     _assetKey = assetKey;
+
+    currentPlayingVideoItems = @[];
+    streamUrl = streamUrl_;
     
+    isStreaming = NO;
+
     _playerItem = [AVPlayerItem playerItemWithURL:url];
     [self addPlayerItemObservers];
 
@@ -59,6 +67,53 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   }
   
   return self;
+}
+
+- (void) revertToStream
+{
+  // Remove existing observers
+  [_player pause];
+  [_player setRate:0.0];
+  [self removeListeners];
+  [self removePlayerObservers];
+  [self removePlayerItemObservers];
+
+  // Reset all vars
+  isVideoLoaded = NO;
+  loadedInfo = nil;
+  isPlaybackStalled = NO;
+  isBuffering = NO;
+  errorDict = nil;
+  videoMetadata = nil;
+  
+  // Cache existing players
+  AVPlayerItem* oldItem = _playerItem;
+  AVPlayer* oldPlayer = _player;
+
+  isStreaming = YES;
+  
+  // Create stream items and add new observers
+  NSURL* url = [NSURL URLWithString:streamUrl];
+  NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+  _asset = [AVURLAsset URLAssetWithURL:url options:@{AVURLAssetHTTPCookiesKey : cookies}];
+  _playerItem = [AVPlayerItem playerItemWithAsset:_asset];
+  [self addPlayerItemObservers];
+  
+  _player = [AVPlayer playerWithPlayerItem:_playerItem];
+  _player.automaticallyWaitsToMinimizeStalling = NO;
+  _player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
+  [self addPlayerObservers];
+  
+  // dispatch new players
+  [self applyModifiers];
+   
+  // Nuke older players and files
+  oldItem = nil;
+  oldPlayer = nil;
+  
+  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    [[RCTVideoCache get] deleteSavedAsset:_assetKey];
+  }];
 }
 
 - (void) touch
@@ -386,8 +441,6 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
     // When timeMetadata is read the event onTimedMetadata is triggered
     if ([keyPath isEqualToString: timedMetadata])
     {
-      
-      
       NSArray<AVMetadataItem *> *items = [change objectForKey:@"new"];
       if (items && ![items isEqual:[NSNull null]] && items.count > 0) {
         
@@ -459,16 +512,24 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
         [self attachListeners];
         [self applyModifiers];
       } else if (_playerItem.status == AVPlayerItemStatusFailed) {
-        NSError* videoError = _playerItem.error;
-        NSLog(@"Error loading video: %@", videoError);
-        if (videoError && videoError.domain)
+        
+        if (!isStreaming)
         {
-          errorDict = @{
-                        @"code": @(videoError.code),
-                        @"domain": videoError.domain,
-                        };
-          
-          [self sendToAllViews:^(RCTVideo* videoView){return videoView.onVideoError;} info:errorDict];
+          [self revertToStream];
+        }
+        else
+        {
+          NSError* videoError = _playerItem.error;
+          NSLog(@"Error loading video: %@", videoError);
+          if (videoError && videoError.domain)
+          {
+            errorDict = @{
+                          @"code": @(videoError.code),
+                          @"domain": videoError.domain,
+                          };
+            
+            [self sendToAllViews:^(RCTVideo* videoView){return videoView.onVideoError;} info:errorDict];
+          }
         }
       }
     } else if ([keyPath isEqualToString:playbackBufferEmptyKeyPath]) {

@@ -36,6 +36,10 @@ typedef void (^FinishedDownloadBlock)(NSURL* location, VideoCacheItem* videoCach
   BOOL _playerObserversSet;
   
   BOOL pendingItemApplyModifiers;
+  
+  NSString* streamUrl;
+  
+  BOOL isStreaming;
 }
 
 @property(readonly, strong) NSString* assetKey;
@@ -49,7 +53,7 @@ typedef void (^FinishedDownloadBlock)(NSURL* location, VideoCacheItem* videoCach
 @property(readonly) NSInteger numPlayingInstances;
 
 - (instancetype) initWithAssetKey:(NSString*)assetKey url:(NSString*)url_;
-- (instancetype) initWithAssetKey:(NSString*)assetKey cachedLocation:(NSURL*)url;
+- (instancetype) initWithAssetKey:(NSString*)assetKey cachedLocation:(NSURL*)url streamLocation:(NSString*)streamUrl_;
 - (void) touch;
 
 - (PlayingVideoItem*) getControllingVideoView;

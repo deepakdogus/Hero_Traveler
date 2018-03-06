@@ -55,6 +55,9 @@
 		9162A11D20448F17005BA024 /* FFFastImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 9162A11820448F17005BA024 /* FFFastImageSource.m */; };
 		9162A11E20448F17005BA024 /* RCTConvert+FFFastImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9162A11920448F17005BA024 /* RCTConvert+FFFastImage.m */; };
 		9162A11F20448F17005BA024 /* FFFastImageViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9162A11A20448F17005BA024 /* FFFastImageViewManager.m */; };
+		916D5AFC204DC7D600FB09DF /* RHNativeFeedItemManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 916D5AFB204DC7D600FB09DF /* RHNativeFeedItemManager.m */; };
+		916D5B39204DC82300FB09DF /* RHNativeFeedItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 916D5B38204DC82300FB09DF /* RHNativeFeedItem.m */; };
+		916D5B3C204DC86400FB09DF /* RHShadowNativeFeedItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 916D5B3B204DC86400FB09DF /* RHShadowNativeFeedItem.m */; };
 		916DBF62203C8A2B0097DE98 /* libAutoGrowTextInput.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 916DBF61203C8A1B0097DE98 /* libAutoGrowTextInput.a */; };
 		919416DC2043E854006F42BC /* RHShadowNativeFeedHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 919416DB2043E854006F42BC /* RHShadowNativeFeedHeader.m */; };
 		919416DF2043E86A006F42BC /* RHNativeFeedHeaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 919416DE2043E86A006F42BC /* RHNativeFeedHeaderManager.m */; };
@@ -631,6 +634,12 @@
 		9162A11920448F17005BA024 /* RCTConvert+FFFastImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+FFFastImage.m"; sourceTree = "<group>"; };
 		9162A11A20448F17005BA024 /* FFFastImageViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFFastImageViewManager.m; sourceTree = "<group>"; };
 		9162A11B20448F17005BA024 /* FFFastImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFFastImageView.h; sourceTree = "<group>"; };
+		916D5AFA204DC7D600FB09DF /* RHNativeFeedItemManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHNativeFeedItemManager.h; sourceTree = "<group>"; };
+		916D5AFB204DC7D600FB09DF /* RHNativeFeedItemManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHNativeFeedItemManager.m; sourceTree = "<group>"; };
+		916D5B37204DC82300FB09DF /* RHNativeFeedItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHNativeFeedItem.h; sourceTree = "<group>"; };
+		916D5B38204DC82300FB09DF /* RHNativeFeedItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHNativeFeedItem.m; sourceTree = "<group>"; };
+		916D5B3A204DC86400FB09DF /* RHShadowNativeFeedItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHShadowNativeFeedItem.h; sourceTree = "<group>"; };
+		916D5B3B204DC86400FB09DF /* RHShadowNativeFeedItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHShadowNativeFeedItem.m; sourceTree = "<group>"; };
 		916DBF5C203C8A1B0097DE98 /* AutoGrowTextInput.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AutoGrowTextInput.xcodeproj; path = "../node_modules/react-native-autogrow-textinput/ios/AutoGrowTextInput.xcodeproj"; sourceTree = "<group>"; };
 		919416DA2043E854006F42BC /* RHShadowNativeFeedHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHShadowNativeFeedHeader.h; sourceTree = "<group>"; };
 		919416DB2043E854006F42BC /* RHShadowNativeFeedHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHShadowNativeFeedHeader.m; sourceTree = "<group>"; };
@@ -1161,6 +1170,12 @@
 				919416E42043F66E006F42BC /* RHCustomScrollView.m */,
 				9135C0402045B49000E6C845 /* RHScrollEvent.h */,
 				9135C0412045B49000E6C845 /* RHScrollEvent.m */,
+				916D5AFA204DC7D600FB09DF /* RHNativeFeedItemManager.h */,
+				916D5AFB204DC7D600FB09DF /* RHNativeFeedItemManager.m */,
+				916D5B37204DC82300FB09DF /* RHNativeFeedItem.h */,
+				916D5B38204DC82300FB09DF /* RHNativeFeedItem.m */,
+				916D5B3A204DC86400FB09DF /* RHShadowNativeFeedItem.h */,
+				916D5B3B204DC86400FB09DF /* RHShadowNativeFeedItem.m */,
 			);
 			path = NativeFeed;
 			sourceTree = "<group>";
@@ -2103,9 +2118,12 @@
 				91973CAD1FA39B64006DE932 /* RNDJBlockModel.m in Sources */,
 				91973CAE1FA39B64006DE932 /* RNDJContentModel.m in Sources */,
 				91F037C420035941000BA406 /* RCTVideoManager.m in Sources */,
+				916D5B3C204DC86400FB09DF /* RHShadowNativeFeedItem.m in Sources */,
 				91F86E4F2042E7DF006A9C73 /* RHShadowNativeFeed.m in Sources */,
 				91F037C320035941000BA406 /* RCTVideo.m in Sources */,
+				916D5AFC204DC7D600FB09DF /* RHNativeFeedItemManager.m in Sources */,
 				91973CAF1FA39B64006DE932 /* RNDJEntityModel.m in Sources */,
+				916D5B39204DC82300FB09DF /* RHNativeFeedItem.m in Sources */,
 				91973CB01FA39B64006DE932 /* RNDJEntityRangeModel.m in Sources */,
 				91973CB11FA39B64006DE932 /* RNDJInlineStyleRangeModel.m in Sources */,
 				91F86E4C20426037006A9C73 /* RHNativeFeed.m in Sources */,

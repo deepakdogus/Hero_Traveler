@@ -53,6 +53,7 @@ export default StyleSheet.create({
     fontWeight: '600',
     lineHeight: 33,
     marginTop: 25,
+    paddingTop: 0,
   },
   description: {
     fontFamily: Fonts.type.sourceSansPro,

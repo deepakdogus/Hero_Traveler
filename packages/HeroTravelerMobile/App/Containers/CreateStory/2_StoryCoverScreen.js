@@ -111,7 +111,7 @@ class StoryCoverScreen extends Component {
       imageUploading: false,
       videoUploading: false,
       isScrollDown: !!props.workingDraft.coverImage | !!props.workingDraft.coverVideo,
-      titleHeight: 34,
+      titleHeight: 37,
       activeModal: undefined,
       toolbarDisplay: false,
       contentTouched: false,

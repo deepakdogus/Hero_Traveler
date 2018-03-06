@@ -41,6 +41,7 @@ import Modal from '../../Components/Modal'
 import NativeEditor from '../../Components/NativeEditor/Editor'
 import Toolbar from '../../Components/NativeEditor/Toolbar'
 import {KeyboardTrackingView} from 'react-native-keyboard-tracking-view';
+import { ProcessingManager } from 'react-native-video-processing'
 
 const api = API.create()
 
@@ -71,6 +72,23 @@ const extractUploadData = (uploadData) => {
   const height = _.get(uploadData, 'original.meta.height')
   const width = _.get(uploadData, 'original.meta.width')
   return [url, height, width]
+}
+
+async function trimVideo(videoFile){
+  try {
+    const { duration } = await ProcessingManager.getVideoInfo(videoFile)
+    console.log('duration is', duration)
+    if (duration <= 60) {
+      return videoFile
+    } else {
+      const newSource = await ProcessingManager.trim(videoFile, { startTime: 0, endTime: 60 })
+      const { duration } = await ProcessingManager.getVideoInfo(newSource)
+       console.log('NEW DURATION', duration, newSource);
+       return newSource
+    }
+  } catch(e) {
+    console.log('issue trimming video', e)
+  }
 }
 
 
@@ -141,7 +159,12 @@ class StoryCoverScreen extends Component {
   }
 
   getMediaType() {
+    console.log('HERE IS VIDEO', this.props.workingDraft.coverVideo)
+    const video = this.props.workingDraft.coverVideo
+
     if (this.props.workingDraft.coverVideo) {
+      ProcessingManager.getVideoInfo(video.uri)
+      .then(({ duration, size, frameRate, bitrate }) => console.log(duration, size, frameRate, bitrate));
       return MediaTypes.video
     }
     else return MediaTypes.photo
@@ -722,6 +745,7 @@ class StoryCoverScreen extends Component {
 
   handleAddVideo = (data) => {
     this.editor.updateSelectionState({hasFocus: false})
+    console.log('data', data)
     this.editor.insertVideo(data)
     NavActions.pop()
   }
@@ -937,22 +961,33 @@ class StoryCoverScreen extends Component {
 
   _handleSelectCover = (path, isPhotoType, coverMetrics = {}) => {
     const file = pathAsFileObject(path)
+    console.log('file before', file)
     const draftUpdates = { coverCaption: '' }
+    console.log('Here we are handling select')
+    //console.log('TRIM', file, trimVideo(file.uri))
+    trimVideo(file.uri)
+    .then(newSource => {
+      const modifiedFile = {...file, uri: newSource }
+      console.log('fileafter', modifiedFile)
+      console.log('final result', newSource)
+      if (isPhotoType) {
+        draftUpdates.coverImage = modifiedFile
+        draftUpdates.coverVideo = undefined
+      } else {
+        draftUpdates.coverImage = undefined
+        draftUpdates.coverVideo = modifiedFile
+      }
 
-    if (isPhotoType) {
-      draftUpdates.coverImage = file
-      draftUpdates.coverVideo = undefined
-    } else {
-      draftUpdates.coverImage = undefined
-      draftUpdates.coverVideo = file
-    }
+      this.setState({
+        file,
+        isScrollDown: true,
+      })
+      this.props.updateWorkingDraft(draftUpdates)
+      NavActions.pop()
 
-    this.setState({
-      file,
-      isScrollDown: true,
+      
     })
-    this.props.updateWorkingDraft(draftUpdates)
-    NavActions.pop()
+
   }
 }
 

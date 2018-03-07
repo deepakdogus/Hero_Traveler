@@ -9,7 +9,7 @@ import {withHandlers} from 'recompose'
 
 import styles, { storyPreviewHeight } from './Styles/ProfileViewStyles'
 import { Colors, Metrics } from '../Shared/Themes'
-import StoryList from './StoryList'
+import StoryList from '../Containers/ConnectedStoryList'
 import Loader from './Loader'
 import ConnectedStoryPreview from '../Containers/ConnectedStoryPreview'
 
@@ -80,7 +80,7 @@ export default class ProfileTabsAndStories extends Component {
     )
   }
 
-  renderStory = (storyInfo) => {
+  renderStory = (story, index) => {
     const {
       tabTypes, selectedTab,
       editable, user, location
@@ -91,14 +91,14 @@ export default class ProfileTabsAndStories extends Component {
         editable={editable && selectedTab !== tabTypes.bookmarks}
         titleStyle={styles.storyTitleStyle}
         subtitleStyle={styles.subtitleStyle}
-        key={storyInfo.id}
-        storyId={storyInfo.id}
+        key={story.id}
+        story={story}
         userId={user.id}
         height={storyPreviewHeight}
         autoPlayVideo
         allowVideoPlay
         renderLocation={location}
-        index={storyInfo.index}
+        index={index}
       />
     )
   }

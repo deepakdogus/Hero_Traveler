@@ -14,6 +14,7 @@ import styles from './Styles/StoryListStyle'
 import ModifiedListView from './ModifiedListView'
 import UXActions from '../Redux/UXRedux'
 import _ from 'lodash'
+import getImageUrl from '../Shared/Lib/getImageUrl'
 
 const NativeFeed = requireNativeComponent('RHNativeFeed', null)
 const NativeFeedHeader = requireNativeComponent('RHNativeFeedHeader', null)
@@ -27,7 +28,7 @@ and so we do not need to add the property to (almost) every StoryList call we ma
 */
 class StoryList extends React.Component {
   static propTypes = {
-    storiesById: PropTypes.arrayOf(PropTypes.string).isRequired,
+    stories: PropTypes.arrayOf(PropTypes.object).isRequired,
     onRefresh: PropTypes.func,
     pagingIsDisabled: PropTypes.bool,
     refreshing: PropTypes.bool,
@@ -83,7 +84,7 @@ class StoryList extends React.Component {
 
     this.state = {
       visibleCells: undefined,
-      storiesById: props.storiesById,
+      stories: props.stories,
     }
   }
 
@@ -114,9 +115,9 @@ class StoryList extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (_.xor(nextProps.storiesById, this.props.storiesById).length !== 0){
+    if (_.xor(nextProps.stories, this.props.stories).length !== 0){
       this.setState({
-        storiesById: nextProps.storiesById
+        stories: nextProps.stories
       })
     }
   }
@@ -126,19 +127,39 @@ class StoryList extends React.Component {
     let storyViews = []
 
     const {
-      storiesById, renderSectionHeader,
+      stories, renderSectionHeader,
       renderHeaderContent, headerContentHeight,
     } = this.props
+
+    const imageOptions = {
+      width: 'screen',
+      height: Metrics.storyCover.fullScreen.height,
+    }
+    const videoOptions = {
+      video: true,
+      width: 'screen',
+      height: Metrics.storyCover.fullScreen.height,
+    }
+
+    console.log(stories)
+    const storyImages = stories.map((story) => {
+      console.log(`Story: ${story}`)
+      if (story.coverImage) {
+        return getImageUrl(story.coverImage, 'optimized', imageOptions)
+      } else if (story.coverVideo) {
+        return getImageUrl(story.coverVideo, 'optimized', videoOptions)
+      }
+    })
 
     if (this.state.visibleCells){
       const {minCell, maxCell} = this.state.visibleCells
 
       let i = minCell - 1
-      storyViews = storiesById.slice(minCell, maxCell).map((storyId) => {
+      storyViews = stories.slice(minCell, maxCell).map((story) => {
         i = i + 1
         return (
-          <NativeFeedItem key={`FeedItem:${storyId}`} cellNum={i}>
-          {this.props.renderStory({id: storyId, index: i})}
+          <NativeFeedItem key={`FeedItem:${story.id}`} cellNum={i}>
+            {this.props.renderStory(story, i)}
           </NativeFeedItem>
         )
       })
@@ -149,7 +170,8 @@ class StoryList extends React.Component {
         style={[styles.container, this.props.style]}
         cellHeight={Metrics.feedCell.height}
         cellSeparatorHeight={Metrics.feedCell.separator}
-        numCells={storiesById.length}
+        numCells={stories.length}
+        storyImages={storyImages}
         numPreloadBehindCells={2}
         numPreloadAheadCells={3}
         onVisibleCellsChanged={this._handleVisibleCellsChanged}

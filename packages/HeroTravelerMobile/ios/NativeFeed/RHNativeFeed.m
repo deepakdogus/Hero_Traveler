@@ -6,6 +6,7 @@
 #import "RHNativeFeedItem.h"
 #import "RHCustomScrollView.h"
 #import "RHScrollEvent.h"
+#import <SDWebImage/SDWebImageDownloader.h>
 
 @implementation RHNativeFeed
 {
@@ -27,6 +28,11 @@
   NSTimeInterval _lastScrollDispatchTime;
   NSMutableArray<NSValue *> *_cachedChildFrames;
   BOOL _allowNextScrollNoMatterWhat;
+
+  id loadImagesContext;
+  NSInteger numPendingChecks;
+  NSArray* _storyImages;
+  NSSet* loadedStoryImages;
 }
 
 - (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher
@@ -35,6 +41,8 @@
   
   if ((self = [super initWithFrame:CGRectZero])) {
     _eventDispatcher = eventDispatcher;
+
+    loadedStoryImages = [NSSet set];
 
     _scrollView = [[RHCustomScrollView alloc] initWithFrame:CGRectZero];
     _scrollView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -103,6 +111,112 @@
      options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
   }
   return self;
+}
+
+- (NSArray*) storyImages
+{
+  return _storyImages;
+}
+
+- (void) setStoryImages:(NSArray*)inStoryImages
+{
+  NSMutableArray* mStoryImages = [@[] mutableCopy];
+  NSInteger numImagesToCheck = 0;
+  
+  for (NSString* storyImage in inStoryImages)
+  {
+    if ([storyImage isKindOfClass:[NSString class]])
+    {
+      NSURL* storyImageUrl = [NSURL URLWithString:storyImage];
+      if (storyImageUrl)
+      {
+        numImagesToCheck++;
+        [mStoryImages addObject:storyImageUrl];
+      }
+      else
+      {
+        [mStoryImages addObject:[NSNull null]];
+      }
+    }
+    else if ([storyImage isKindOfClass:[NSURL class]])
+    {
+      numImagesToCheck++;
+      [mStoryImages addObject:storyImage];
+    }
+    else
+    {
+      [mStoryImages addObject:[NSNull null]];
+    }
+  }
+  
+  _storyImages = [NSArray arrayWithArray:mStoryImages];
+
+  loadedStoryImages = [NSSet set];
+  id currentLoadImagesContext = [[NSObject alloc] init];
+  loadImagesContext = currentLoadImagesContext;
+  numPendingChecks = numImagesToCheck;
+
+  __weak RHNativeFeed* weakFeed = self;
+  for (NSURL* storyImage in _storyImages)
+  {
+    if (![storyImage isKindOfClass:[NSURL class]])
+    {
+      continue;
+    }
+
+    [[SDWebImageManager sharedManager] cachedImageExistsForURL:storyImage completion:^(BOOL isInCache){
+      RHNativeFeed* strongSelf = weakFeed;
+      [strongSelf imageUrl:storyImage wasLoaded:isInCache context:currentLoadImagesContext];
+    }];
+  }
+  
+  [self recalculateVisibleCells];
+}
+
+- (void) imageUrl:(NSURL*)url wasLoaded:(BOOL)loaded context:(id)context
+{
+  if (context != loadImagesContext)
+  {
+    return;
+  }
+
+  if (loaded)
+  {
+    NSMutableSet* mLoadedStoryImages = [loadedStoryImages mutableCopy];
+    [mLoadedStoryImages addObject:url];
+    loadedStoryImages = [NSSet setWithSet:mLoadedStoryImages];
+  }
+  
+  numPendingChecks--;
+  
+  if (numPendingChecks <= 0)
+  {
+    NSMutableArray* mUrlsToFetch = [@[] mutableCopy];
+    
+    for (NSURL* storyImage in _storyImages)
+    {
+      if ([storyImage isKindOfClass:[NSURL class]] && ![loadedStoryImages containsObject:storyImage])
+      {
+        [mUrlsToFetch addObject:storyImage];
+      }
+    }
+    
+    SDWebImagePrefetcher* prefetcher = [SDWebImagePrefetcher sharedImagePrefetcher];
+    
+    prefetcher.delegate = self;
+    [prefetcher prefetchURLs:mUrlsToFetch];
+  }
+
+  [self recalculateVisibleCells];
+}
+
+- (void)imagePrefetcher:(nonnull SDWebImagePrefetcher *)imagePrefetcher didPrefetchURL:(nullable NSURL *)imageURL finishedCount:(NSUInteger)finishedCount totalCount:(NSUInteger)totalCount
+{
+  NSMutableSet* mLoadedStoryImages = [loadedStoryImages mutableCopy];
+  [mLoadedStoryImages addObject:imageURL];
+  loadedStoryImages = [NSSet setWithSet:mLoadedStoryImages];
+
+  [self recalculateBackingView];
 }
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
@@ -390,7 +504,32 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     minCell = MAX(minCell-_numPreloadAheadCells, 0);
     maxCell = MIN(maxCell+1+_numPreloadAheadCells, _numCells);
   }
+
+  /*
+   id loadImagesContext;
+   NSArray* _storyImages;
+   NSSet* loadedStoryImages;
+   */
   
+  NSInteger i = 0;
+  for (NSURL* storyImage in _storyImages)
+  {
+    if ([loadedStoryImages containsObject:storyImage])
+    {
+      i++;
+    }
+    else if (storyImage == [NSNull null])
+    {
+      i++;
+    }
+    else
+    {
+      break;
+    }
+  }
+  
+  maxCell = MIN(maxCell, i);
+
   if (minCell != self.minCellIndex || maxCell != self.maxCellIndex || playingCell != self.playingCellIndex)
   {
     self.minCellIndex = minCell;

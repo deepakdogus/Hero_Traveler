@@ -9,7 +9,7 @@ import StoryActions, {getByCategory, getFetchStatus} from '../../Shared/Redux/En
 import SignupActions from '../../Shared/Redux/SignupRedux'
 
 import ConnectedStoryPreview from '../ConnectedStoryPreview'
-import StoryList from '../../Components/StoryList'
+import StoryList from '../../Containers/ConnectedStoryList'
 import Loader from '../../Components/Loader'
 
 import {Metrics} from '../../Shared/Themes'
@@ -116,18 +116,18 @@ class CategoryFeedScreen extends React.Component {
     }
   }
 
-  renderStory = (storyInfo) => {
+  renderStory = (story, index) => {
     return (
       <ConnectedStoryPreview
-        key={storyInfo.id}
-        storyId={storyInfo.id}
+        key={story.id}
+        story={story}
         height={imageHeight}
         onPressUser={this._touchUser}
         userId={this.props.user.id}
         autoPlayVideo
         allowVideoPlay
         renderLocation={this.props.location}
-        index={storyInfo.index}
+        index={index}
         showPlayButton={true}
       />
     )

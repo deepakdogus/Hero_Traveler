@@ -980,7 +980,7 @@ class StoryCoverScreen extends Component {
         isScrollDown: true,
       })
       this.props.updateWorkingDraft(draftUpdates)
-      NavActions.pop() 
+      NavActions.pop()
     }
 
     trimVideo(file.uri, callback, this)

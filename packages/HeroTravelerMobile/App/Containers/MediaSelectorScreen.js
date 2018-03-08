@@ -7,7 +7,6 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import ImagePicker from 'react-native-image-picker'
-import mediaMeta from 'react-native-media-meta'
 
 import NavBar from './CreateStory/NavBar'
 import PhotoTaker from '../Components/PhotoTaker'
@@ -51,18 +50,8 @@ class MediaSelectorScreen extends React.Component {
   }
 
   handleUploadedMedia = (data) => {
-    // const maxLength = 60 * 1000
     if (data.didCancel) return this.launchMediaCapture('Photo')
-    mediaMeta.get(data.uri.substring(7))
-    .then(metaData => {
-      this._handleMediaSelector(data)
-      // disabling limit media length for now
-      // if (!metaData.duration || metaData.duration < maxLength) this._handleMediaSelector(data)
-      // else return Promise.reject(new Error("Max length of 60 seconds exceeded"))
-    })
-    .catch(error => {
-      this.setState({error})
-    })
+    this._handleMediaSelector(data)
   }
 
   _completeNextTooltip = () => {

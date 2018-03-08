@@ -5840,10 +5840,6 @@ react-native-maps@0.20:
     babel-plugin-module-resolver "^2.3.0"
     babel-preset-react-native "1.9.0"
 
-react-native-media-meta@^0.0.10:
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/react-native-media-meta/-/react-native-media-meta-0.0.10.tgz#097cc19d04505258e481547bcfd16db6d390e3dd"
-
 react-native-mock@^0.3.1:
   version "0.3.1"
   resolved "https://npm.abeck.io:443/react-native-mock/-/react-native-mock-0.3.1.tgz#13d22433c5351a8a7fb8aedd7862b614d087851c"

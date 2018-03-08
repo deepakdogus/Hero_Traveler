@@ -5,7 +5,6 @@ import android.app.Application;
 import com.facebook.react.ReactApplication;
 import com.wix.autogrowtextinput.AutoGrowTextInputPackage;
 import com.wix.autogrowtextinput.AutoGrowTextInputPackage;
-import com.mybigday.rnmediameta.RNMediaMetaPackage;
 import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
 import com.apsl.versionnumber.RNVersionNumberPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
@@ -42,7 +41,6 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new AutoGrowTextInputPackage(),
             new AutoGrowTextInputPackage(),
-            new RNMediaMetaPackage(),
             new RNGooglePlacesPackage(),
             new RNVersionNumberPackage(),
             new RNFetchBlobPackage(),

@@ -141,9 +141,7 @@ class StoryList extends React.Component {
       height: Metrics.storyCover.fullScreen.height,
     }
 
-    console.log(stories)
     const storyImages = stories.map((story) => {
-      console.log(`Story: ${story}`)
       if (story.coverImage) {
         return getImageUrl(story.coverImage, 'optimized', imageOptions)
       } else if (story.coverVideo) {
@@ -170,7 +168,6 @@ class StoryList extends React.Component {
         style={[styles.container, this.props.style]}
         cellHeight={Metrics.feedCell.height}
         cellSeparatorHeight={Metrics.feedCell.separator}
-        numCells={stories.length}
         storyImages={storyImages}
         numPreloadBehindCells={2}
         numPreloadAheadCells={3}

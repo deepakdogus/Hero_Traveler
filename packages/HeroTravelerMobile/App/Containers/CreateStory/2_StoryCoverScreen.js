@@ -74,18 +74,20 @@ const extractUploadData = (uploadData) => {
   return [url, height, width]
 }
 
-async function trimVideo(videoFile){
+async function trimVideo(videoFile, callback, _this){
   try {
+    let newSource = videoFile
     const { duration } = await ProcessingManager.getVideoInfo(videoFile)
-    if (duration <= 60) {
-      return videoFile
-    } else {
-      const newSource = await ProcessingManager.trim(videoFile, { startTime: 0, endTime: 60 })
-      return newSource
+    if (duration > 60) {
+      newSource = await ProcessingManager.trim(videoFile, { startTime: 0, endTime: 60 })
     }
+    callback(newSource)
   } catch(e) {
-    console.log('issue trimming video', e)
-    return videoFile
+      console.log('Issue trimming video')
+      _this.setState({error: 'There\'s an issue with the video you selected. Please try another.'})
+      NavActions.pop()
+      // jump to top to reveal error message
+      _this.jumpToTop()
   }
 }
 
@@ -594,6 +596,10 @@ class StoryCoverScreen extends Component {
     this.jumpToTitle()
   }
 
+  jumpToTop = () => {
+    this.scrollViewRef.scrollTo({x:0, y: 0, amimated: true})
+  }
+
   jumpToTitle = () => {
     this.scrollViewRef.scrollTo({x:0, y: coverHeight - 30, amimated: true})
   }
@@ -738,12 +744,11 @@ class StoryCoverScreen extends Component {
 
   handleAddVideo = (data) => {
     this.editor.updateSelectionState({hasFocus: false})
-
-    trimVideo(data)
-    .then(newSource => {
+    const callback = (newSource) => {
       this.editor.insertVideo(newSource)
       NavActions.pop()
-    })
+    }
+    trimVideo(data, callback, this)
   }
 
   setHasFocus = (toolbarDisplay) => {
@@ -959,8 +964,7 @@ class StoryCoverScreen extends Component {
     const file = pathAsFileObject(path)
     const draftUpdates = { coverCaption: '' }
 
-    trimVideo(file.uri)
-    .then(newSource => {
+    const callback = (newSource) => {
       const modifiedFile = {...file, uri: newSource }
 
       if (isPhotoType) {
@@ -976,9 +980,10 @@ class StoryCoverScreen extends Component {
         isScrollDown: true,
       })
       this.props.updateWorkingDraft(draftUpdates)
-      NavActions.pop()
-      
-    })
+      NavActions.pop() 
+    }
+
+    trimVideo(file.uri, callback, this)
   }
 }
 

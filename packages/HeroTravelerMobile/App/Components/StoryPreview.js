@@ -254,6 +254,7 @@ export default class StoryPreview extends Component {
 
   render () {
     const {story, gradientLocations, showPlayButton, shouldHideCover} = this.props
+    console.log("rendering a story", story.title)
     if (!story || this.hasNoStreams()) {
       return null
     }

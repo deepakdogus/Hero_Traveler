@@ -43,6 +43,7 @@ const mapStateToProps = (state, ownProps) => {
 
   const shouldHideCover = ownProps.index !== undefined ?
     _.includes(state.ux.storyListVisibleRows, ownProps.index) : false
+    console.log("inside connectedStoryPreview", story.author)
 
   return {
     ...storyProps,

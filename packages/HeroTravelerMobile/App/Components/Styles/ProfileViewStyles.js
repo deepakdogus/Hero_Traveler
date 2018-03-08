@@ -20,6 +20,7 @@ export default StyleSheet.create({
     marginTop: Metrics.navBarHeight - 15,
   },
   gradientWrapper: {
+    flex: 1,
     backgroundColor: Colors.clear
   },
   topRightContainer: {

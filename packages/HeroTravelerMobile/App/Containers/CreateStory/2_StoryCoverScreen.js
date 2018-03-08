@@ -41,6 +41,7 @@ import Modal from '../../Components/Modal'
 import NativeEditor from '../../Components/NativeEditor/Editor'
 import Toolbar from '../../Components/NativeEditor/Toolbar'
 import {KeyboardTrackingView} from 'react-native-keyboard-tracking-view';
+import { ProcessingManager } from 'react-native-video-processing'
 
 const api = API.create()
 
@@ -71,6 +72,23 @@ const extractUploadData = (uploadData) => {
   const height = _.get(uploadData, 'original.meta.height')
   const width = _.get(uploadData, 'original.meta.width')
   return [url, height, width]
+}
+
+async function trimVideo(videoFile, callback, _this){
+  try {
+    let newSource = videoFile
+    const { duration } = await ProcessingManager.getVideoInfo(videoFile)
+    if (duration > 60) {
+      newSource = await ProcessingManager.trim(videoFile, { startTime: 0, endTime: 60 })
+    }
+    callback(newSource)
+  } catch(e) {
+      console.log('Issue trimming video')
+      _this.setState({error: 'There\'s an issue with the video you selected. Please try another.'})
+      NavActions.pop()
+      // jump to top to reveal error message
+      _this.jumpToTop()
+  }
 }
 
 
@@ -578,6 +596,10 @@ class StoryCoverScreen extends Component {
     this.jumpToTitle()
   }
 
+  jumpToTop = () => {
+    this.scrollViewRef.scrollTo({x:0, y: 0, amimated: true})
+  }
+
   jumpToTitle = () => {
     this.scrollViewRef.scrollTo({x:0, y: coverHeight - 30, amimated: true})
   }
@@ -722,8 +744,11 @@ class StoryCoverScreen extends Component {
 
   handleAddVideo = (data) => {
     this.editor.updateSelectionState({hasFocus: false})
-    this.editor.insertVideo(data)
-    NavActions.pop()
+    const callback = (newSource) => {
+      this.editor.insertVideo(newSource)
+      NavActions.pop()
+    }
+    trimVideo(data, callback, this)
   }
 
   setHasFocus = (toolbarDisplay) => {
@@ -939,20 +964,26 @@ class StoryCoverScreen extends Component {
     const file = pathAsFileObject(path)
     const draftUpdates = { coverCaption: '' }
 
-    if (isPhotoType) {
-      draftUpdates.coverImage = file
-      draftUpdates.coverVideo = undefined
-    } else {
-      draftUpdates.coverImage = undefined
-      draftUpdates.coverVideo = file
+    const callback = (newSource) => {
+      const modifiedFile = {...file, uri: newSource }
+
+      if (isPhotoType) {
+        draftUpdates.coverImage = modifiedFile
+        draftUpdates.coverVideo = undefined
+      } else {
+        draftUpdates.coverImage = undefined
+        draftUpdates.coverVideo = modifiedFile
+      }
+
+      this.setState({
+        file,
+        isScrollDown: true,
+      })
+      this.props.updateWorkingDraft(draftUpdates)
+      NavActions.pop()
     }
 
-    this.setState({
-      file,
-      isScrollDown: true,
-    })
-    this.props.updateWorkingDraft(draftUpdates)
-    NavActions.pop()
+    trimVideo(file.uri, callback, this)
   }
 }
 

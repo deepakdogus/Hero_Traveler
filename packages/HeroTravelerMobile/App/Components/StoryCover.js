@@ -75,7 +75,10 @@ export default class StoryCover extends Component {
   }
 
   renderImageWithUrl(isVideo, imageUrl, imageThumbnailUrl) {
-    const {cover, onPress, gradientLocations, gradientColors, children, showPlayButton, playButtonSize} = this.props
+    const {
+      cover, onPress, gradientLocations, gradientColors,
+      children, showPlayButton, playButtonSize,
+    } = this.props
     // handling for backgroundPublish failures. Covers will not be correctly formatted yet
 
     return (
@@ -130,14 +133,14 @@ export default class StoryCover extends Component {
   }
 
   _tapVideoWrapper() {
-    const {onPress} = this.props
+    const {onPress, isFeed} = this.props
 
     // If the video is not playing, invoke the usual callback
-    if ((!this.player || !this.player.getIsPlaying() || this.props.isFeed) && onPress) {
+    if ((!this.player || isFeed) && onPress) {
       return this._onPress()
     }
 
-    if (!this.props.isFeed) this.player.toggle()
+    if (!isFeed) this.player.toggle()
   }
 
   _setIsPlaying = (value) => this.setState({isPlaying: value})
@@ -215,7 +218,10 @@ export default class StoryCover extends Component {
           onPress={this._togglePlayerRef}
           isPlaying={this.state.isPlaying}
           videoFadeAnim={this.player && this.player.getAnimationState()}
-          style={styles.playButton}
+          style={[
+            styles.playButton,
+            !this.props.isFeed ? styles.readPlayButton : {},
+          ]}
         />}
         {this.props.allowVideoPlay && this.state.isPlaying && !this.props.isFeed &&
           <MuteButton
@@ -309,6 +315,9 @@ const styles = StyleSheet.create({
     left: '50%',
     marginTop: -40,
     marginLeft: -30,
+  },
+  readPlayButton: {
+    marginTop: -30,
   },
   smallPlayButton: {
     marginTop: -20,

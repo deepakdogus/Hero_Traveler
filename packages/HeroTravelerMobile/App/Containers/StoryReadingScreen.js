@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {ScrollView, Text, View, Animated, TouchableOpacity} from 'react-native'
+import {ScrollView, Text, View, Animated, TouchableOpacity, TouchableWithoutFeedback} from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 import MapView from 'react-native-maps';
@@ -36,6 +36,9 @@ const enhanceStoryVideo = compose(
       },
       onPress: () => () => {
         _ref.goFullscreen()
+      },
+      togglePlay: () => () => {
+        _ref.toggle()
       }
     }
   })
@@ -73,6 +76,17 @@ const StoryVideo = enhanceStoryVideo((props) => {
             }}
             size={20} />
         </TouchableOpacity>
+        <TouchableWithoutFeedback
+          style={styles.videoToggleWrapper}
+          onPress={props.togglePlay}
+        >
+          <View
+            style={[
+              styles.videoToggleView,
+              {height},
+            ]}
+          />
+        </TouchableWithoutFeedback>
       </VideoPlayer>
     </View>
   )

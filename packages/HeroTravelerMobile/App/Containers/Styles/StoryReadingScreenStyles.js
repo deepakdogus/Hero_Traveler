@@ -91,7 +91,8 @@ export const styles = StyleSheet.create({
   videoExpand: {
     position: 'absolute',
     bottom: 10,
-    right: 10
+    right: 10,
+    zIndex: 2,
   },
   videoDescription: {
     flex: 1,
@@ -103,6 +104,12 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: Fonts.type.base,
     color: Colors.grey,
+  },
+  videoToggleWrapper: {
+    position: 'absolute',
+  },
+  videoToggleView: {
+    width: Metrics.screenWidth,
   },
   caption: {
     textAlign: 'center',

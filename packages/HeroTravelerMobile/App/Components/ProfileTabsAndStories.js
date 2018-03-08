@@ -91,7 +91,6 @@ export default class ProfileTabsAndStories extends Component {
         editable={editable && selectedTab !== tabTypes.bookmarks}
         titleStyle={styles.storyTitleStyle}
         subtitleStyle={styles.subtitleStyle}
-        key={story.id}
         story={story}
         userId={user.id}
         height={storyPreviewHeight}

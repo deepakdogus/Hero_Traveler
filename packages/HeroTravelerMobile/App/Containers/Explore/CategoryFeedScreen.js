@@ -119,7 +119,6 @@ class CategoryFeedScreen extends React.Component {
   renderStory = (story, index) => {
     return (
       <ConnectedStoryPreview
-        key={story.id}
         story={story}
         height={imageHeight}
         onPressUser={this._touchUser}

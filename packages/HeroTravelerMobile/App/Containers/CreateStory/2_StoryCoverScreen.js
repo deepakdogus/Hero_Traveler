@@ -157,9 +157,6 @@ class StoryCoverScreen extends Component {
   }
 
   getMediaType() {
-    console.log('HERE IS VIDEO', this.props.workingDraft.coverVideo)
-    const video = this.props.workingDraft.coverVideo
-
     if (this.props.workingDraft.coverVideo) {
       return MediaTypes.video
     }
@@ -813,7 +810,6 @@ class StoryCoverScreen extends Component {
   }
 
   hasNoDraft(){
-    console.log('no drfat', this.props.workingDraft)
     return !this.props.workingDraft || !this.props.workingDraft.id
   }
 
@@ -823,7 +819,6 @@ class StoryCoverScreen extends Component {
       title, coverCaption, description,
       coverImage, coverVideo
     } = this.props.workingDraft
-    console.log('PROPS', this.props.workingDraft)
     let showTooltip = false;
     if (this.props.user && this.state.file) {
       showTooltip = !isTooltipComplete(

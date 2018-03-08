@@ -77,17 +77,15 @@ const extractUploadData = (uploadData) => {
 async function trimVideo(videoFile){
   try {
     const { duration } = await ProcessingManager.getVideoInfo(videoFile)
-    console.log('duration is', duration)
     if (duration <= 60) {
       return videoFile
     } else {
       const newSource = await ProcessingManager.trim(videoFile, { startTime: 0, endTime: 60 })
-      const { duration } = await ProcessingManager.getVideoInfo(newSource)
-       console.log('NEW DURATION', duration, newSource);
-       return newSource
+      return newSource
     }
   } catch(e) {
     console.log('issue trimming video', e)
+    return videoFile
   }
 }
 
@@ -163,8 +161,6 @@ class StoryCoverScreen extends Component {
     const video = this.props.workingDraft.coverVideo
 
     if (this.props.workingDraft.coverVideo) {
-      ProcessingManager.getVideoInfo(video.uri)
-      .then(({ duration, size, frameRate, bitrate }) => console.log(duration, size, frameRate, bitrate));
       return MediaTypes.video
     }
     else return MediaTypes.photo
@@ -745,9 +741,12 @@ class StoryCoverScreen extends Component {
 
   handleAddVideo = (data) => {
     this.editor.updateSelectionState({hasFocus: false})
-    console.log('data', data)
-    this.editor.insertVideo(data)
-    NavActions.pop()
+
+    trimVideo(data)
+    .then(newSource => {
+      this.editor.insertVideo(newSource)
+      NavActions.pop()
+    })
   }
 
   setHasFocus = (toolbarDisplay) => {
@@ -814,6 +813,7 @@ class StoryCoverScreen extends Component {
   }
 
   hasNoDraft(){
+    console.log('no drfat', this.props.workingDraft)
     return !this.props.workingDraft || !this.props.workingDraft.id
   }
 
@@ -823,6 +823,7 @@ class StoryCoverScreen extends Component {
       title, coverCaption, description,
       coverImage, coverVideo
     } = this.props.workingDraft
+    console.log('PROPS', this.props.workingDraft)
     let showTooltip = false;
     if (this.props.user && this.state.file) {
       showTooltip = !isTooltipComplete(
@@ -961,15 +962,12 @@ class StoryCoverScreen extends Component {
 
   _handleSelectCover = (path, isPhotoType, coverMetrics = {}) => {
     const file = pathAsFileObject(path)
-    console.log('file before', file)
     const draftUpdates = { coverCaption: '' }
-    console.log('Here we are handling select')
-    //console.log('TRIM', file, trimVideo(file.uri))
+
     trimVideo(file.uri)
     .then(newSource => {
       const modifiedFile = {...file, uri: newSource }
-      console.log('fileafter', modifiedFile)
-      console.log('final result', newSource)
+
       if (isPhotoType) {
         draftUpdates.coverImage = modifiedFile
         draftUpdates.coverVideo = undefined
@@ -984,10 +982,8 @@ class StoryCoverScreen extends Component {
       })
       this.props.updateWorkingDraft(draftUpdates)
       NavActions.pop()
-
       
     })
-
   }
 }
 

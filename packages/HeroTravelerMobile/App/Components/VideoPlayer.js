@@ -246,6 +246,16 @@ export default class VideoPlayer extends React.Component {
         this.props.videoFillSpace && styles.full,
         this.props.style,
       ]}>
+        {this.props.imgUrl &&
+        <ImageWrapper
+          cached={true}
+          resizeMode='cover'
+          source={{uri: this.props.imgUrl}}
+          style={[
+            styles.video,
+          ]}
+        />
+        }
         <NativeCachingVideo
           needsVideoLoaded={this.props.areInRenderLocation}
           source={{uri: this.props.path, originalUri: this.props.originalPath}}
@@ -265,17 +275,6 @@ export default class VideoPlayer extends React.Component {
           resizeMode={this.props.resizeMode}
         />
 
-        {this.props.imgUrl && isNotReadyForDisplay &&
-        <ImageWrapper
-          cached={true}
-          resizeMode='cover'
-          source={{uri: this.props.imgUrl}}
-          style={[
-            styles.video,
-            {zIndex: 1}
-          ]}
-        />
-        }
         {(this.state.isStalled || isNotReadyForDisplay) &&
          <ActivityIndicator size="small" color="#ffffff" />
         }

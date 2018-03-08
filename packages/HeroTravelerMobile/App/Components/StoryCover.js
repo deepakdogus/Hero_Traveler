@@ -190,7 +190,7 @@ export default class StoryCover extends Component {
           areInRenderLocation={this.props.areInRenderLocation}
           path={videoPath}
           originalPath={nonStreamingVideoPath}
-          imgUrl={videoThumbnailUrl}
+          imgUrl={videoImageUrl}
           ref={this._makeRef}
           allowVideoPlay={this.props.allowVideoPlay && this.props.autoPlayVideo}
           shouldEnableAutoplay={this.props.shouldEnableAutoplay}

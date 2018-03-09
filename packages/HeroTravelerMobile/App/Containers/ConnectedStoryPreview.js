@@ -46,7 +46,6 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     ...storyProps,
-    story,
     accessToken: _.find(session.tokens, {type: 'access'}).value,
     isVisible,
     shouldHideCover,

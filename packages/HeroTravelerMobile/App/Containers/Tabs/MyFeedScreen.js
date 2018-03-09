@@ -9,7 +9,7 @@ import SplashScreen from 'react-native-splash-screen'
 import {Metrics, Images} from '../../Shared/Themes'
 import StoryActions from '../../Shared/Redux/Entities/Stories'
 import Loader from '../../Components/Loader'
-import StoryList from '../../Components/StoryList'
+import StoryList from '../../Containers/ConnectedStoryList'
 import ConnectedStoryPreview from '../ConnectedStoryPreview'
 import styles from '../Styles/MyFeedScreenStyles'
 import NoStoriesMessage from '../../Components/NoStoriesMessage'
@@ -93,18 +93,17 @@ class MyFeedScreen extends React.Component {
     }
   }
 
-  renderStory = (storyInfo) => {
+  renderStory = (story, index) => {
     return (
       <ConnectedStoryPreview
-        key={storyInfo.id}
-        storyId={storyInfo.id}
+        story={story}
         height={imageHeight}
         onPressUser={this._touchUser}
         userId={this.props.user.id}
         autoPlayVideo
         allowVideoPlay
         renderLocation={this.props.location}
-        index={storyInfo.index}
+        index={index}
         showPlayButton={true}
       />
     )

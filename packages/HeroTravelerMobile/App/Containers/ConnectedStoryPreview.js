@@ -23,8 +23,8 @@ function getAreInRenderLocation(state, ownProps){
 
 const mapStateToProps = (state, ownProps) => {
   const {session, entities} = state
+  const {story} = ownProps
   const sessionUserId = session.userId
-  const story = entities.stories.entities[ownProps.storyId]
 
   // the storyProps conditional is necessary because without it, the below configuration will throw errors when the user deletes a story
   let storyProps = null
@@ -46,7 +46,6 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     ...storyProps,
-    story,
     accessToken: _.find(session.tokens, {type: 'access'}).value,
     isVisible,
     shouldHideCover,
@@ -55,7 +54,8 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, props) => {
-  const {userId, storyId} = props
+  const {userId, story} = props
+  const storyId = story.id
   return {
     onPress: (title) => NavActions.story({storyId, title}),
     deleteStory: () => dispatch(StoryActions.deleteStory(userId, storyId)),

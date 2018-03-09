@@ -25,7 +25,6 @@ RCT_EXPORT_SHADOW_PROPERTY(cellSeparatorHeight, CGFloat)
 
 RCT_EXPORT_VIEW_PROPERTY(numPreloadBehindCells, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(numPreloadAheadCells, NSInteger)
-RCT_EXPORT_VIEW_PROPERTY(numCells, NSInteger)
 
 RCT_EXPORT_VIEW_PROPERTY(onVisibleCellsChanged, RCTDirectEventBlock)
 
@@ -34,5 +33,7 @@ RCT_EXPORT_VIEW_PROPERTY(onScroll, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onScrollEndDrag, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onMomentumScrollBegin, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onMomentumScrollEnd, RCTDirectEventBlock)
+
+RCT_EXPORT_VIEW_PROPERTY(storyImages, NSArray)
 
 @end

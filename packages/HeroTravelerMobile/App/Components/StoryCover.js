@@ -125,8 +125,7 @@ export default class StoryCover extends Component {
 
   renderImage() {
     let imageUrl = getImageUrl(this.props.cover, 'optimized', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
-    let imageThumbnailUrl = getImageUrl(this.props.cover, 'loading', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
-    return this.renderImageWithUrl(false, imageUrl, imageThumbnailUrl)
+    return this.renderImageWithUrl(false, imageUrl)
   }
 
   _onPress = () => {
@@ -180,10 +179,9 @@ export default class StoryCover extends Component {
     }
 
     const videoImageUrl = getImageUrl(this.props.cover, 'optimized', videoThumbnailOptions)
-    const videoThumbnailUrl = getImageUrl(this.props.cover, 'loading', videoThumbnailOptions)
 
     if (this.props.isFeed) {
-      return this.renderImageWithUrl(true, videoImageUrl, videoThumbnailUrl)
+      return this.renderImageWithUrl(true, videoImageUrl)
     }
 
     let videoPath = getVideoUrl(this.props.cover)
@@ -195,7 +193,7 @@ export default class StoryCover extends Component {
           areInRenderLocation={this.props.areInRenderLocation}
           path={videoPath}
           originalPath={nonStreamingVideoPath}
-          imgUrl={videoThumbnailUrl}
+          imgUrl={videoImageUrl}
           ref={this._makeRef}
           allowVideoPlay={this.props.allowVideoPlay && this.props.autoPlayVideo}
           shouldEnableAutoplay={this.props.shouldEnableAutoplay}

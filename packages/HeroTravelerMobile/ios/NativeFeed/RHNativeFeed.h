@@ -10,11 +10,14 @@
 #import <React/RCTEventDispatcher.h>
 #import <React/RCTComponent.h>
 #import <React/RCTView.h>
+#import <SDWebImage/SDWebImagePrefetcher.h>
 
-@interface RHNativeFeed : RCTView <UIScrollViewDelegate>
+@interface RHNativeFeed : RCTView <UIScrollViewDelegate, SDWebImagePrefetcherDelegate>
 
 - (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher;
 - (void) recalculateBackingView;
+
+@property(nonatomic, assign) NSArray* storyImages;
 
 @property(nonatomic, assign) NSInteger minCellIndex;
 @property(nonatomic, assign) NSInteger maxCellIndex;

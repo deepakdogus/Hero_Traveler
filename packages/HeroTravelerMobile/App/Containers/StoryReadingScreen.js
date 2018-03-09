@@ -307,7 +307,7 @@ class StoryReadingScreen extends React.Component {
             gradientLocations={[0,.25,.5,1]}
             key={story.id}
             height={Metrics.screenHeight}
-            storyId={story.id}
+            story={story}
             userId={user.id}
             autoPlayVideo={true}
             allowVideoPlay={true}

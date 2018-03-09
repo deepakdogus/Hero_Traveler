@@ -13,6 +13,9 @@ export default StyleSheet.create({
   root: {
     backgroundColor: Colors.clear
   },
+  profileTabsAndStoriesHeight: {
+    height: Metrics.screenHeight
+  },
   profileTabsAndStoriesRoot: {
     marginTop: 20,
   },

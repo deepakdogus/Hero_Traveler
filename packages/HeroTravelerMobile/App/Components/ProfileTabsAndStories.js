@@ -153,8 +153,7 @@ export default class ProfileTabsAndStories extends Component {
 
     return (
       <View style={[
-        // styles.containerWithTabbar,
-        // styles.root,
+        styles.profileTabsAndStoriesHeight,
         editable ? styles.profileTabsAndStoriesRoot : styles.profileTabsAndStoriesRootWithMarginForNavbar
       ]}>
         {(this.areNoStories() || this.isFetching()) &&

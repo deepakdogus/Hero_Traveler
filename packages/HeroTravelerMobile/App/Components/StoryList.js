@@ -144,8 +144,6 @@ class StoryList extends React.Component {
       })
     }
 
-    console.log("storyList is being rendered")
-    console.log("storyList style is", this.props.style)
     return (
       <NativeFeed
         style={[styles.container, this.props.style]}

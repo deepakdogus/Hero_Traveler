@@ -142,6 +142,7 @@ class StoryList extends React.Component {
     }
 
     const storyImages = stories.map((story) => {
+      if (!story) return
       if (story.coverImage) {
         return getImageUrl(story.coverImage, 'optimized', imageOptions)
       } else if (story.coverVideo) {

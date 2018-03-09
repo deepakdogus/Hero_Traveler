@@ -99,6 +99,7 @@ export default class ProfileTabsAndStories extends Component {
         allowVideoPlay
         renderLocation={location}
         index={storyInfo.index}
+        showPlayButton
       />
     )
   }

@@ -273,11 +273,7 @@ class ProfileView extends React.Component {
             style={{paddingTop: 15}}
           />
         }
-        <ScrollView style={[
-          this.props.hasTabbar ? styles.containerWithTabbar : null,
-          styles.root,
-          this.props.style,
-        ]}>
+
         <View style={styles.gradientWrapper}>
           {isEditing &&
             <View style={{flex: 1}}>
@@ -313,7 +309,6 @@ class ProfileView extends React.Component {
             />
           }
         </View>
-        </ScrollView>
         {this.state.error &&
           <ShadowButton
             style={styles.errorButton}

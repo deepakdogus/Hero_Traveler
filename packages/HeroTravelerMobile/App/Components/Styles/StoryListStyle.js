@@ -4,7 +4,7 @@ import { ApplicationStyles, Colors } from '../../Shared/Themes/'
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   container: {
-    flex: 1
+    flex: 1,
   },
   separator: {
     height: 10,

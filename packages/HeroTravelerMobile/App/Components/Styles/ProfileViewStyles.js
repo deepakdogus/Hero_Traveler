@@ -13,6 +13,9 @@ export default StyleSheet.create({
   root: {
     backgroundColor: Colors.clear
   },
+  profileTabsAndStoriesHeight: {
+    height: Metrics.screenHeight
+  },
   profileTabsAndStoriesRoot: {
     marginTop: 20,
   },
@@ -20,6 +23,7 @@ export default StyleSheet.create({
     marginTop: Metrics.navBarHeight - 15,
   },
   gradientWrapper: {
+    flex: 1,
     backgroundColor: Colors.clear
   },
   topRightContainer: {

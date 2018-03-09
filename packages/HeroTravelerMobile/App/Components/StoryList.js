@@ -44,7 +44,7 @@ class StoryList extends React.Component {
 
   constructor(props) {
     super(props)
-    
+
     this.addListenerOn = this.addListenerOn.bind(this)
     //this.componentDidMount = this.componentDidMount.bind(this)
     this.componentWillMount = this.componentWillMount.bind(this)
@@ -93,7 +93,7 @@ class StoryList extends React.Component {
 
   _handleVisibleCellsChanged = (event) => {
     const {setPlayingRow, playingRow, setVisibleRows} = this.props
-    
+
     this.setState(event.nativeEvent)
 
     let visibleRowsKeys = []
@@ -169,7 +169,7 @@ class StoryList extends React.Component {
         onTouchMove={this.scrollResponderHandleTouchMove}
         onTouchStart={this.scrollResponderHandleTouchStart}
         onTouchCancel={this.scrollResponderHandleTouchCancel}
-        >
+      >
         <RefreshControl
           refreshing={this.props.refreshing}
           onRefresh={this.props.onRefresh}

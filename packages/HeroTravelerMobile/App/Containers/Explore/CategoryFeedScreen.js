@@ -145,6 +145,33 @@ class CategoryFeedScreen extends React.Component {
     return _.includes(selectedCategories, categoryId)
   }
 
+  renderTabs(){
+    return (
+      <View style={styles.tabnav}>
+        <Tab
+          selected={this.state.selectedTabIndex === 0}
+          onPress={() => this._changeTab(0)}
+          text='ALL'
+        />
+        <Tab
+          selected={this.state.selectedTabIndex === 1}
+          onPress={() => this._changeTab(1)}
+          text='DO'
+        />
+        <Tab
+          selected={this.state.selectedTabIndex === 2}
+          onPress={() => this._changeTab(2)}
+          text='EAT'
+        />
+        <Tab
+          selected={this.state.selectedTabIndex === 3}
+          onPress={() => this._changeTab(3)}
+          text='STAY'
+        />
+      </View>
+    )
+  }
+
   render () {
     let { storiesById, fetchStatus, error, title} = this.props;
     const isFollowingCategory = this.getIsFollowingCategory()
@@ -159,59 +186,39 @@ class CategoryFeedScreen extends React.Component {
       topContent = this._wrapElt(<Text style={styles.message}>Unable to find new content. Pull down to refresh.</Text>);
     }
     if (_.size(storiesById) === 0) {
-      bottomContent = <NoStoriesMessage />
+      bottomContent = (
+        <View style={styles.noStoriesWrapper}>
+          {this.renderTabs()}
+          <NoStoriesMessage />
+        </View>
+      )
     }
     else {
       bottomContent = (
-        <View style={{height: imageHeight}}>
-          <StoryList
-            style={styles.storyList}
-            storiesById={storiesById}
-            renderStory={this.renderStory}
-            onRefresh={this._onRefresh}
-            refreshing={this.state.refreshing}
-          />
-        </View>
+        <StoryList
+          style={styles.storyList}
+          storiesById={storiesById}
+          renderSectionHeader={this.renderTabs()}
+          renderStory={this.renderStory}
+          onRefresh={this._onRefresh}
+          refreshing={this.state.refreshing}
+        />
       )
     }
 
     return (
       <View style={[styles.containerWithTabbar, styles.root]}>
-          <NavBar
-            title={title}
-            titleStyle={styles.navbarTitleStyle}
-            onLeft={this._onLeft}
-            leftIcon='arrowLeft'
-            leftIconStyle={styles.navbarLeftIconStyle}
-            onRight={this._onRight}
-            rightTextStyle={styles.navbarRightTextStyle}
-            rightTitle={isFollowingCategory ? 'FOLLOWING' : '+ FOLLOW'}
-            style={styles.navbarContainer}
-          />
-          <View style={styles.tabs}>
-            <View style={styles.tabnav}>
-              <Tab
-                selected={this.state.selectedTabIndex === 0}
-                onPress={() => this._changeTab(0)}
-                text='ALL'
-              />
-              <Tab
-                selected={this.state.selectedTabIndex === 1}
-                onPress={() => this._changeTab(1)}
-                text='DO'
-              />
-              <Tab
-                selected={this.state.selectedTabIndex === 2}
-                onPress={() => this._changeTab(2)}
-                text='EAT'
-              />
-              <Tab
-                selected={this.state.selectedTabIndex === 3}
-                onPress={() => this._changeTab(3)}
-                text='STAY'
-              />
-            </View>
-          </View>
+        <NavBar
+          title={title}
+          titleStyle={styles.navbarTitleStyle}
+          onLeft={this._onLeft}
+          leftIcon='arrowLeft'
+          leftIconStyle={styles.navbarLeftIconStyle}
+          onRight={this._onRight}
+          rightTextStyle={styles.navbarRightTextStyle}
+          rightTitle={isFollowingCategory ? 'FOLLOWING' : '+ FOLLOW'}
+          style={styles.navbarContainer, {marginTop: 0}}
+        />
         { topContent }
         { bottomContent }
       </View>

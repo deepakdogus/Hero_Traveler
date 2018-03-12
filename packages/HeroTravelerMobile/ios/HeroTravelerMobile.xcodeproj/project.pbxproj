@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -58,6 +59,7 @@
 		916D5B39204DC82300FB09DF /* RHNativeFeedItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 916D5B38204DC82300FB09DF /* RHNativeFeedItem.m */; };
 		916D5B3C204DC86400FB09DF /* RHShadowNativeFeedItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 916D5B3B204DC86400FB09DF /* RHShadowNativeFeedItem.m */; };
 		916DBF62203C8A2B0097DE98 /* libAutoGrowTextInput.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 916DBF61203C8A1B0097DE98 /* libAutoGrowTextInput.a */; };
+		917616462055D3CC007F8E40 /* RHNativeFeedBackingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 917616452055D3CC007F8E40 /* RHNativeFeedBackingView.m */; };
 		919416DC2043E854006F42BC /* RHShadowNativeFeedHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 919416DB2043E854006F42BC /* RHShadowNativeFeedHeader.m */; };
 		919416DF2043E86A006F42BC /* RHNativeFeedHeaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 919416DE2043E86A006F42BC /* RHNativeFeedHeaderManager.m */; };
 		919416E22043F00C006F42BC /* RHNativeFeedHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 919416E12043F00C006F42BC /* RHNativeFeedHeader.m */; };
@@ -679,6 +681,8 @@
 		916D5B3A204DC86400FB09DF /* RHShadowNativeFeedItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHShadowNativeFeedItem.h; sourceTree = "<group>"; };
 		916D5B3B204DC86400FB09DF /* RHShadowNativeFeedItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHShadowNativeFeedItem.m; sourceTree = "<group>"; };
 		916DBF5C203C8A1B0097DE98 /* AutoGrowTextInput.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AutoGrowTextInput.xcodeproj; path = "../node_modules/react-native-autogrow-textinput/ios/AutoGrowTextInput.xcodeproj"; sourceTree = "<group>"; };
+		917616442055D3CC007F8E40 /* RHNativeFeedBackingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHNativeFeedBackingView.h; sourceTree = "<group>"; };
+		917616452055D3CC007F8E40 /* RHNativeFeedBackingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHNativeFeedBackingView.m; sourceTree = "<group>"; };
 		919416DA2043E854006F42BC /* RHShadowNativeFeedHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHShadowNativeFeedHeader.h; sourceTree = "<group>"; };
 		919416DB2043E854006F42BC /* RHShadowNativeFeedHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHShadowNativeFeedHeader.m; sourceTree = "<group>"; };
 		919416DD2043E86A006F42BC /* RHNativeFeedHeaderManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHNativeFeedHeaderManager.h; sourceTree = "<group>"; };
@@ -1305,6 +1309,8 @@
 				916D5B38204DC82300FB09DF /* RHNativeFeedItem.m */,
 				916D5B3A204DC86400FB09DF /* RHShadowNativeFeedItem.h */,
 				916D5B3B204DC86400FB09DF /* RHShadowNativeFeedItem.m */,
+				917616442055D3CC007F8E40 /* RHNativeFeedBackingView.h */,
+				917616452055D3CC007F8E40 /* RHNativeFeedBackingView.m */,
 			);
 			path = NativeFeed;
 			sourceTree = "<group>";
@@ -1388,7 +1394,6 @@
 				8E7E3F32C97249F1B23E8A2E /* libRNFetchBlob.a */,
 				9D32BC73FC7A4076A020832C /* libRNVersionNumber.a */,
 				D90218FB9DF540B29083D707 /* libRNGooglePlaces.a */,
-				559739E496824E9F970C4403 /* libRNMediaMeta.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -2249,6 +2254,7 @@
 				91973CAD1FA39B64006DE932 /* RNDJBlockModel.m in Sources */,
 				91F19961204F29C700EC7125 /* RNVideoTrimmerBridge.m in Sources */,
 				91973CAE1FA39B64006DE932 /* RNDJContentModel.m in Sources */,
+				917616462055D3CC007F8E40 /* RHNativeFeedBackingView.m in Sources */,
 				91F037C420035941000BA406 /* RCTVideoManager.m in Sources */,
 				916D5B3C204DC86400FB09DF /* RHShadowNativeFeedItem.m in Sources */,
 				91F86E4F2042E7DF006A9C73 /* RHShadowNativeFeed.m in Sources */,
@@ -2369,9 +2375,7 @@
 				INFOPLIST_FILE = HeroTravelerMobile/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2430,9 +2434,7 @@
 				INFOPLIST_FILE = HeroTravelerMobile/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

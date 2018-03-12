@@ -19,8 +19,11 @@
 
 @property(nonatomic, assign) NSArray* storyImages;
 
-@property(nonatomic, assign) NSInteger minCellIndex;
-@property(nonatomic, assign) NSInteger maxCellIndex;
+@property(nonatomic, assign) NSInteger lastSentMinCellIndex;
+@property(nonatomic, assign) NSInteger lastSentMaxCellIndex;
+@property(nonatomic, assign) NSInteger currentMinCellIndex;
+@property(nonatomic, assign) NSInteger currentMaxCellIndex;
+
 @property(nonatomic, assign) NSInteger playingCellIndex;
 
 @property(nonatomic, assign) CGFloat cellHeight;

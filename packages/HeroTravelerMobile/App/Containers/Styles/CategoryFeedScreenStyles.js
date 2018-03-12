@@ -5,7 +5,9 @@ export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
     backgroundColor: Colors.backgroundDark,
-    top: -10,
+  },
+  noStoriesWrapper: {
+    flex: 1,
   },
   scrollItemFullScreen: {
     width: Metrics.screenWidth,
@@ -66,5 +68,8 @@ export default StyleSheet.create({
   navbarTitleStyle: {
     fontSize: 18,
     letterSpacing: 1,
+  },
+  storyList: {
+    height: Metrics.screenHeight - Metrics.tabBarHeight,
   }
 })

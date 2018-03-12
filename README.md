@@ -6,16 +6,7 @@ This is a monorepo containing all HERO Traveler project code.
 
 Install necessary global packages and install/link all projects modules:
 
-### 1. Install cocoapods & pods
-
-```bash
-# Xcode 7 + 8
-$ (sudo) gem install cocoapods
-$ cd packages/HeroTravelerMobile/ios
-$ pod install
-```
-
-### 2. Node & NPM
+### Node & NPM
 
 We are hosting several dependencies on our own private npm server, located at https://npm.abeck.io/
 

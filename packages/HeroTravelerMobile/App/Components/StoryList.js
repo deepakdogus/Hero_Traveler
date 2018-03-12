@@ -133,20 +133,28 @@ class StoryList extends React.Component {
 
     const imageOptions = {
       width: 'screen',
-      height: Metrics.storyCover.fullScreen.height,
     }
     const videoOptions = {
       video: true,
       width: 'screen',
-      height: Metrics.storyCover.fullScreen.height,
     }
 
-    const storyImages = stories.map((story) => {
-      if (!story) return
-      if (story.coverImage) {
-        return getImageUrl(story.coverImage, 'optimized', imageOptions)
-      } else if (story.coverVideo) {
-        return getImageUrl(story.coverVideo, 'optimized', videoOptions)
+    const storyInfos = stories.map((story) => {
+      if (story && story.coverImage) {
+        return {
+          headerImage: getImageUrl(story.coverImage, 'optimized', imageOptions),
+          height: Metrics.feedCell.imageCellHeight,
+        }
+      } else if (story && story.coverVideo) {
+        return {
+          headerImage: getImageUrl(story.coverVideo, 'optimized', videoOptions),
+          height: Metrics.feedCell.videoCellHeight,
+        }
+      }
+
+      return {
+        headerImage: null,
+        height: 0,
       }
     })
 
@@ -167,9 +175,8 @@ class StoryList extends React.Component {
     return (
       <NativeFeed
         style={[styles.container, this.props.style]}
-        cellHeight={Metrics.feedCell.height}
         cellSeparatorHeight={Metrics.feedCell.separator}
-        storyImages={storyImages}
+        storyInfos={storyInfos}
         numPreloadBehindCells={2}
         numPreloadAheadCells={3}
         onVisibleCellsChanged={this._handleVisibleCellsChanged}

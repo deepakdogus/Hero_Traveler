@@ -7,6 +7,17 @@
 #import "RHCustomScrollView.h"
 #import "RHScrollEvent.h"
 #import <SDWebImage/SDWebImageDownloader.h>
+#import "RHNativeFeedBackingView.h"
+
+@interface RHDisposable : NSObject
+
+@property(assign) BOOL isCancelled;
+
+@end
+
+@implementation RHDisposable
+
+@end
 
 @implementation RHNativeFeed
 {
@@ -16,10 +27,7 @@
   
   RHCustomScrollView* _scrollView;
   
-  CGFloat _cellHeight;
   CGFloat _cellSeparatorHeight;
-  
-  UIView* _cellBackingView;
 
   NSHashTable *_scrollListeners;
   uint16_t _coalescingKey;
@@ -27,13 +35,17 @@
   NSTimeInterval _lastScrollDispatchTime;
   NSMutableArray<NSValue *> *_cachedChildFrames;
   BOOL _allowNextScrollNoMatterWhat;
+  
+  RHNativeFeedBackingView* _cellTemplatesView;
 
   // TODO: instead of tracking this context I could also create an object that can be invalidated
   //    that handles prefetching
   id loadImagesContext;
   NSInteger numPendingChecks;
-  NSArray* _storyImages;
+  NSArray* _storyInfos;
   NSSet* loadedStoryImages;
+  
+  RHDisposable* dispatchCellRangeDisposable;
 }
 
 - (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher
@@ -76,11 +88,10 @@
 
     [self addSubview:_scrollView];
     
-    _cellBackingView = [[UIView alloc] initWithFrame:CGRectZero];
-    _cellBackingView.userInteractionEnabled = YES;
-    _cellBackingView.backgroundColor = [UIColor colorWithWhite:0.929411f alpha:1.f];
-    [_scrollView addSubview:_cellBackingView];
-    
+    _cellTemplatesView = [[RHNativeFeedBackingView alloc] initWithFrame:CGRectZero];
+    _cellTemplatesView.userInteractionEnabled = YES;
+    [_scrollView addSubview:_cellTemplatesView];
+
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_scrollView
                                                      attribute:NSLayoutAttributeTop
                                                      relatedBy:NSLayoutRelationEqual
@@ -114,72 +125,45 @@
   return self;
 }
 
-- (NSArray*) storyImages
+- (NSArray*) storyInfos
 {
-  return _storyImages;
+  return _storyInfos;
 }
 
-- (void) setStoryImages:(NSArray*)inStoryImages
+- (void) setStoryInfos:(NSArray*)inStoryInfos
 {
-  NSMutableArray* mStoryImages = [@[] mutableCopy];
-  NSInteger numImagesToCheck = 0;
-  
-  for (NSString* storyImage in inStoryImages)
-  {
-    if ([storyImage isKindOfClass:[NSString class]])
-    {
-      NSURL* storyImageUrl = [NSURL URLWithString:storyImage];
-      if (storyImageUrl)
-      {
-        numImagesToCheck++;
-        [mStoryImages addObject:storyImageUrl];
-      }
-      else
-      {
-        [mStoryImages addObject:[NSNull null]];
-      }
-    }
-    else if ([storyImage isKindOfClass:[NSURL class]])
-    {
-      numImagesToCheck++;
-      [mStoryImages addObject:storyImage];
-    }
-    else
-    {
-      [mStoryImages addObject:[NSNull null]];
-    }
-  }
-  
-  if (mStoryImages.count == _storyImages.count)
+  if (inStoryInfos.count == _storyInfos.count)
   {
     BOOL isEqual = YES;
-    
-    for (int i=0; i<mStoryImages.count; i++)
+
+    for (NSInteger i = 0; i < inStoryInfos.count; i++)
     {
-      NSURL* aImage = mStoryImages[i];
-      NSURL* bImage = _storyImages[i];
-      
-      if (((id)aImage) == [NSNull null] && ((id)bImage) == [NSNull null])
+      RHStoryInfo* a = inStoryInfos[i];
+      RHStoryInfo* b = _storyInfos[i];
+
+      if (![a isEqualToStoryInfo:b])
       {
-        continue;
+        isEqual = NO;
+        break;
       }
-      
-      if ([aImage isKindOfClass:[NSURL class]] && [bImage isKindOfClass:[NSURL class]] && [[aImage absoluteString] isEqualToString:[bImage absoluteString]])
-      {
-        continue;
-      }
-      
-      isEqual = NO;
-      break;
     }
-    
+
     if (isEqual)
     {
       return;
     }
   }
-  
-  _storyImages = [NSArray arrayWithArray:mStoryImages];
+
+  _storyInfos = inStoryInfos;
+
+  NSInteger numImagesToCheck = 0;
+  for (RHStoryInfo* storyInfo in _storyInfos)
+  {
+    if (storyInfo.headerImage)
+    {
+      numImagesToCheck++;
+    }
+  }
 
   loadedStoryImages = [NSSet set];
   id currentLoadImagesContext = [[NSObject alloc] init];
@@ -190,9 +174,11 @@
   [self recalculateVisibleCells];
 
   __weak RHNativeFeed* weakFeed = self;
-  for (NSURL* storyImage in _storyImages)
+  for (RHStoryInfo* storyInfo in _storyInfos)
   {
-    if (![storyImage isKindOfClass:[NSURL class]])
+    NSURL* storyImage = storyInfo.headerImage;
+    
+    if (!storyImage)
     {
       continue;
     }
@@ -237,9 +223,10 @@
   
   NSMutableArray* mUrlsToFetch = [@[] mutableCopy];
   
-  for (NSURL* storyImage in _storyImages)
+  for (RHStoryInfo* storyInfo in _storyInfos)
   {
-    if ([storyImage isKindOfClass:[NSURL class]] && ![loadedStoryImages containsObject:storyImage])
+    NSURL* storyImage = storyInfo.headerImage;
+    if (storyImage && ![loadedStoryImages containsObject:storyImage])
     {
       [mUrlsToFetch addObject:storyImage];
     }
@@ -369,46 +356,49 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   {
     [_scrollView addSubview:view];
   }
-  [self recalculateBackingView];
 }
 
 - (void) recalculateBackingView
 {
-  NSUInteger numLoadedCells = [self numLoadedCells];
-  
-  CGFloat minY = CGFLOAT_MAX;
-  CGFloat maxY = CGFLOAT_MIN;
-  for (RHNativeFeedItem* view in _scrollView.subviews)
+  if (self.currentMinCellIndex < 0 && self.currentMaxCellIndex < 0)
   {
-    if ([view isKindOfClass:[RHNativeFeedItem class]] && view.cellNum < numLoadedCells)
+    _cellTemplatesView.frame = CGRectZero;
+    [_cellTemplatesView setHeights:@[]];
+  }
+  
+  CGFloat headerHeight = [self getTotalHeaderHeight];
+  CGFloat yOffset = headerHeight;
+  CGFloat backingViewHeight = 0.f;
+  
+  NSMutableArray* cellHeights = [@[] mutableCopy];
+  for (int i = 0; i < self.currentMaxCellIndex; i++)
+  {
+    if (i >= _storyInfos.count)
     {
-      if (view.frame.origin.y < minY)
-      {
-        minY = view.frame.origin.y;
-      }
-      
-      CGFloat topY = view.frame.origin.y + view.frame.size.height;
-      if (topY > maxY)
-      {
-        maxY = topY;
-      }
+      break;
+    }
+    
+    RHStoryInfo* storyInfo = _storyInfos[i];
+    
+    CGFloat cellHeight = storyInfo.height;
+    
+    // Prep work for making dynamically sized cells
+    if (i < self.currentMinCellIndex)
+    {
+      yOffset += cellHeight + _cellSeparatorHeight;
+    }
+    else
+    {
+      [cellHeights addObject:@(cellHeight)];
+      backingViewHeight += cellHeight + _cellSeparatorHeight;
     }
   }
   
-  if (maxY > minY)
-  {
-    _cellBackingView.frame = CGRectMake(0, minY, self.bounds.size.width, maxY-minY);
-  }
-  else
-  {
-    _cellBackingView.frame = CGRectZero;
-  }
-}
-
-- (void) setFrame:(CGRect)frame
-{
-  [super setFrame:frame];
-  [self recalculateBackingView];
+  _cellTemplatesView.frame = CGRectMake(0,
+                                        yOffset,
+                                        self.bounds.size.width,
+                                        backingViewHeight);
+  [_cellTemplatesView setHeights:cellHeights];
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
@@ -416,29 +406,16 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   [super touchesEnded:touches withEvent:event];
 }
 
-
 - (void)removeReactSubview:(UIView *)subview
 {
   [super removeReactSubview:subview];
   [self recalculateBackingView];
 }
 
-- (void) setCellHeight:(CGFloat)cellHeight
-{
-  _cellHeight = cellHeight;
-  [self setContentSize];
-  [self recalculateVisibleCells];
-}
-
-- (CGFloat) cellHeight
-{
-  return _cellHeight;
-}
-
 - (void) setCellSeparatorHeight:(CGFloat)cellSeparatorHeight
 {
   _cellSeparatorHeight = cellSeparatorHeight;
-  [self setContentSize];
+  [_cellTemplatesView setSeparatorHeight:cellSeparatorHeight];
   [self recalculateVisibleCells];
 }
 
@@ -447,25 +424,37 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   return _cellSeparatorHeight;
 }
 
-- (CGFloat) getTotalHeaderSize
+- (CGFloat) getTotalHeaderHeight
 {
-  CGFloat totalHeaderSize = 0.f;
+  CGFloat totalHeaderHeight = 0.f;
 
   for (UIView* view in self.subviews)
   {
     if ([view isKindOfClass:[RHNativeFeedHeader class]])
     {
-      totalHeaderSize += view.frame.size.height;
+      totalHeaderHeight += view.frame.size.height;
     }
   }
   
-  return totalHeaderSize;
+  return totalHeaderHeight;
+}
+
+- (CGFloat) getTotalCellHeight
+{
+  CGFloat totalCellHeight = 0.f;
+  for (RHStoryInfo* storyInfo in _storyInfos)
+  {
+    totalCellHeight += storyInfo.height + _cellSeparatorHeight;
+  }
+  
+  return totalCellHeight;
 }
 
 - (void) setContentSize
 {
   NSUInteger numLoadedCells = [self numLoadedCells];
-  _scrollView.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, [self getTotalHeaderSize] + (numLoadedCells*(_cellHeight+_cellSeparatorHeight)));
+  _scrollView.contentSize = CGSizeMake(self.bounds.size.width,
+                                       [self getTotalHeaderHeight] + [self getTotalCellHeight]);
   
   for (RHNativeFeedItem* view in _scrollView.subviews)
   {
@@ -493,7 +482,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   NSInteger maxCell = NSIntegerMin;
   NSInteger playingCell = 0;
 
-  NSUInteger numCells = [self numCells];
+  NSUInteger numCells = _storyInfos.count;
   
   if (!_onVisibleCellsChanged)
   {
@@ -512,13 +501,13 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     CGRect visibleBounds = self.bounds;
     visibleBounds.origin = contentOffset;
 
-    CGFloat fullCellHeight = _cellHeight + _cellSeparatorHeight;
-    CGFloat totalHeaderSize = [self getTotalHeaderSize];
-    
     CGFloat maxIntersectionSize = 0;
+    CGFloat curY = [self getTotalHeaderHeight];
     for (int i = 0; i < numCells; i++)
     {
-      CGRect cellFrame = CGRectMake(0, totalHeaderSize+(i*fullCellHeight), visibleBounds.size.width, fullCellHeight);
+      RHStoryInfo* storyInfo = _storyInfos[i];
+      
+      CGRect cellFrame = CGRectMake(0, curY, visibleBounds.size.width, storyInfo.height);
       CGRect cellIntersection = CGRectIntersection(visibleBounds, cellFrame);
       
       CGFloat intersectionSize = cellIntersection.size.width * cellIntersection.size.height;
@@ -540,6 +529,8 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
           maxCell = i;
         }
       }
+      
+      curY += storyInfo.height + _cellSeparatorHeight;
     }
     
     minCell = MAX(minCell-_numPreloadAheadCells, 0);
@@ -550,55 +541,65 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   {
     minCell = maxCell;
   }
-
-  if (minCell != self.minCellIndex || maxCell != self.maxCellIndex || playingCell != self.playingCellIndex)
+  
+  if (minCell == self.currentMinCellIndex && maxCell == self.currentMaxCellIndex)
   {
-    self.minCellIndex = minCell;
-    self.maxCellIndex = maxCell;
-    self.playingCellIndex = playingCell;
-    if (_onVisibleCellsChanged)
-    {
-      if (minCell < 0 || maxCell < 0 || playingCell < 0)
-      {
-        _onVisibleCellsChanged(@{});
-      }
-      else
-      {
-        _onVisibleCellsChanged(@{
-                                 @"visibleCells": @{
-                                     @"minCell": @(minCell),
-                                     @"maxCell": @(maxCell),
-                                     },
-                                 @"playingCell": @(playingCell),
-                                 });
-      }
-    }
+    return;
   }
+
+  RHDisposable* disposable = [[RHDisposable alloc] init];
+  dispatchCellRangeDisposable.isCancelled = YES;
+  dispatchCellRangeDisposable = disposable;
+  
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)),
+                 dispatch_get_main_queue(), ^{
+                   if (disposable.isCancelled)
+                   {
+                     return;
+                   }
+                   
+                   if (self.currentMinCellIndex != self.lastSentMinCellIndex || self.currentMaxCellIndex != self.lastSentMaxCellIndex || playingCell != self.playingCellIndex)
+                   {
+                     self.lastSentMinCellIndex = self.currentMinCellIndex;
+                     self.lastSentMaxCellIndex = self.currentMaxCellIndex;
+                     self.playingCellIndex = playingCell;
+                     if (_onVisibleCellsChanged)
+                     {
+                       if (self.currentMinCellIndex < 0 || self.currentMaxCellIndex < 0 || playingCell < 0)
+                       {
+                         _onVisibleCellsChanged(@{});
+                       }
+                       else
+                       {
+                         _onVisibleCellsChanged(@{
+                                                  @"visibleCells": @{
+                                                      @"minCell": @(self.currentMinCellIndex),
+                                                      @"maxCell": @(self.currentMaxCellIndex),
+                                                      },
+                                                  @"playingCell": @(playingCell),
+                                                  });
+                       }
+                     }
+                   }
+                 });
+  
+  self.currentMinCellIndex = minCell;
+  self.currentMaxCellIndex = maxCell;
   
   [self setContentSize];
-}
-
-- (NSUInteger) numCells
-{
-  return _storyImages.count;
+  [self recalculateBackingView];
 }
 
 - (NSUInteger) numLoadedCells
 {
   NSInteger i = 0;
-  for (id storyImage in _storyImages)
+  for (RHStoryInfo* storyInfo in _storyInfos)
   {
-    if ([loadedStoryImages containsObject:storyImage])
+    NSURL* storyImage = storyInfo.headerImage;
+    
+    if (!storyImage || [loadedStoryImages containsObject:storyImage])
     {
       i++;
-    }
-    else if (storyImage == [NSNull null])
-    {
-      i++;
-    }
-    else
-    {
-      break;
     }
   }
   

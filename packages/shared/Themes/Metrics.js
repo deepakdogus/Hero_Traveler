@@ -37,12 +37,13 @@ const metrics = {
         height: 415,
     },
     feed: {
-      height: 282,
+      imageTypeHeight: 390,
+      videoTypeHeight: 282,
     },
   },
   feedCell: {
-    height: 415,
-    heightWithSeparator: 425,
+    imageCellHeight: 543, // Should be imageTypeHeight + 66 + 87 (the heights of the top bar and bottom bar in feed)
+    videoCellHeight: 415, // Should be videoTypeHeight + 66 + 87
     separator: 10,
   },
 }

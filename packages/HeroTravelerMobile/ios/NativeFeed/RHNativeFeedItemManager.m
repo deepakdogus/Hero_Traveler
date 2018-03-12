@@ -8,7 +8,7 @@ RCT_EXPORT_MODULE()
 
 - (UIView *)view
 {
-  return [RHNativeFeedItem new];
+  return [[RHNativeFeedItem alloc] init];
 }
 
 - (RCTShadowView *)shadowView

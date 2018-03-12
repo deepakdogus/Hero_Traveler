@@ -60,7 +60,11 @@ export default class StoryCover extends Component {
 
   _getWidthHeight(){
     if (this.props.isFeed) {
-      return { height: Metrics.storyCover.feed.height }
+      if (this.hasImage()) {
+        return { height: Metrics.storyCover.feed.imageTypeHeight }
+      } else {
+        return { height: Metrics.storyCover.feed.videoTypeHeight }
+      }
     } else {
       return {
         width: Metrics.screenWidth,

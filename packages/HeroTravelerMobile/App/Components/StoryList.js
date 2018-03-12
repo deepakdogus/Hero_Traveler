@@ -133,12 +133,10 @@ class StoryList extends React.Component {
 
     const imageOptions = {
       width: 'screen',
-      height: Metrics.storyCover.fullScreen.height,
     }
     const videoOptions = {
       video: true,
       width: 'screen',
-      height: Metrics.storyCover.fullScreen.height,
     }
 
     const storyInfos = stories.map((story) => {

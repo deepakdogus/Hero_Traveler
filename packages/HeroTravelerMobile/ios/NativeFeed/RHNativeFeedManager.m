@@ -16,9 +16,8 @@ RCT_EXPORT_MODULE()
   return [[RHShadowNativeFeed alloc] init];
 }
 
-RCT_EXPORT_SHADOW_PROPERTY(cellHeight, CGFloat)
 RCT_EXPORT_SHADOW_PROPERTY(cellSeparatorHeight, CGFloat)
-
+RCT_EXPORT_SHADOW_PROPERTY(storyInfos, NSArray)
 
 //@property(nonatomic, assign) NSInteger numPreloadBehindCells;
 //@property(nonatomic, assign) NSInteger numPreloadAheadCells;
@@ -33,7 +32,5 @@ RCT_EXPORT_VIEW_PROPERTY(onScroll, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onScrollEndDrag, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onMomentumScrollBegin, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onMomentumScrollEnd, RCTDirectEventBlock)
-
-RCT_EXPORT_VIEW_PROPERTY(storyImages, NSArray)
 
 @end

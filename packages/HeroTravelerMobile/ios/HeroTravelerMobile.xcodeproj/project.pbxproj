@@ -39,6 +39,7 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8BA419D9187244E6B9C41535 /* SourceSansPro-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B9B2346795F4127B08055A6 /* SourceSansPro-SemiBoldItalic.ttf */; };
 		8FF857911AAE4CCAB29A20A9 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 88CAD8C48AFD46F7B7845066 /* Zocial.ttf */; };
+		9101B3F42056BE96008F46F4 /* RHStoryInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9101B3F32056BE96008F46F4 /* RHStoryInfo.m */; };
 		9115FA93203D681200547516 /* VideoDownloadItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9115FA92203D681200547516 /* VideoDownloadItem.m */; };
 		9115FB7C2041B11200547516 /* DownloadSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9115FB422041B11100547516 /* DownloadSessionManager.m */; };
 		912E95471FA631C700399703 /* RNDJShadowDraftJSEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 912E95451FA631C600399703 /* RNDJShadowDraftJSEditor.m */; };
@@ -649,6 +650,8 @@
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		88CAD8C48AFD46F7B7845066 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		8E7E3F32C97249F1B23E8A2E /* libRNFetchBlob.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFetchBlob.a; sourceTree = "<group>"; };
+		9101B3F22056BE96008F46F4 /* RHStoryInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHStoryInfo.h; sourceTree = "<group>"; };
+		9101B3F32056BE96008F46F4 /* RHStoryInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHStoryInfo.m; sourceTree = "<group>"; };
 		9115FA91203D681200547516 /* VideoDownloadItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoDownloadItem.h; sourceTree = "<group>"; };
 		9115FA92203D681200547516 /* VideoDownloadItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoDownloadItem.m; sourceTree = "<group>"; };
 		9115FB422041B11100547516 /* DownloadSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadSessionManager.m; sourceTree = "<group>"; };
@@ -1311,6 +1314,8 @@
 				916D5B3B204DC86400FB09DF /* RHShadowNativeFeedItem.m */,
 				917616442055D3CC007F8E40 /* RHNativeFeedBackingView.h */,
 				917616452055D3CC007F8E40 /* RHNativeFeedBackingView.m */,
+				9101B3F22056BE96008F46F4 /* RHStoryInfo.h */,
+				9101B3F32056BE96008F46F4 /* RHStoryInfo.m */,
 			);
 			path = NativeFeed;
 			sourceTree = "<group>";
@@ -2303,6 +2308,7 @@
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				942D124B1EB395B200A0CFE5 /* RNHockeyApp.m in Sources */,
 				919416DC2043E854006F42BC /* RHShadowNativeFeedHeader.m in Sources */,
+				9101B3F42056BE96008F46F4 /* RHStoryInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

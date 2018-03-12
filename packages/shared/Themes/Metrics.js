@@ -41,8 +41,8 @@ const metrics = {
     },
   },
   feedCell: {
-    height: 415,
-    heightWithSeparator: 425,
+    imageCellHeight: 415,
+    videoCellHeight: 415,
     separator: 10,
   },
 }

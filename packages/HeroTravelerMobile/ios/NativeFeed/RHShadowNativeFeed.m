@@ -5,6 +5,9 @@
 #import "RHShadowNativeFeedItem.h"
 
 @implementation RHShadowNativeFeed
+{
+  NSArray* _storyInfos;
+}
 
 - (void)applyLayoutToChildren:(YGNodeRef)node
             viewsWithNewFrame:(NSMutableSet<RCTShadowView *> *)viewsWithNewFrame
@@ -41,9 +44,6 @@
     totalHeaderHeight += header.headerHeight;
   }
   
-  CGFloat fullCellHeight = _cellHeight + _cellSeparatorHeight;
-  
-  NSInteger cellNum = 0;
   for (RHShadowNativeFeedItem* shadowView in [self reactSubviews])
   {
     if (![shadowView isKindOfClass:[RHShadowNativeFeedItem class]])
@@ -68,12 +68,26 @@
       height = 100;
     }
     
+    CGFloat yPos = totalHeaderHeight;
+
+    for (int i = 0; i < shadowView.cellNum; i++)
+    {
+      if (i >= _storyInfos.count)
+      {
+        break;
+      }
+
+      yPos += ((RHStoryInfo*)_storyInfos[i]).height + _cellSeparatorHeight;
+    }
+    
+    height = shadowView.cellNum < _storyInfos.count ? ((RHStoryInfo*)_storyInfos[shadowView.cellNum]).height : height;
+    
     CGRect childFrame = {{
       x,
-      RCTRoundPixelValue(totalHeaderHeight+((shadowView.cellNum)*fullCellHeight))
+      RCTRoundPixelValue(yPos)
     }, {
       RCTRoundPixelValue(width),
-      RCTRoundPixelValue(_cellHeight)
+      RCTRoundPixelValue(height)
     }};
     
     [shadowView collectUpdatedFrames:viewsWithNewFrame
@@ -83,6 +97,7 @@
   }
 }
 
+
 - (NSDictionary<NSString *, id> *)processUpdatedProperties:(NSMutableSet<RCTApplierBlock> *)applierBlocks
                                           parentProperties:(NSDictionary<NSString *, id> *)parentProperties
 {
@@ -91,12 +106,29 @@
   
   [applierBlocks addObject:^(NSDictionary<NSNumber *, UIView *> *viewRegistry) {
     RHNativeFeed *view = (RHNativeFeed *)viewRegistry[self.reactTag];
-    view.cellHeight = self.cellHeight;
+    view.storyInfos = self.storyInfos;
     view.cellSeparatorHeight = self.cellSeparatorHeight;
     [view recalculateBackingView];
   }];
   
   return parentProperties;
+}
+
+- (NSArray*) storyInfos
+{
+  return _storyInfos;
+}
+
+- (void) setStoryInfos:(NSArray*)inStoryInfos
+{
+  NSMutableArray* mStoryInfos = [@[] mutableCopy];
+ 
+  for (NSDictionary* storyInfoDict in inStoryInfos)
+  {
+    RHStoryInfo* storyInfo = [[RHStoryInfo alloc] initWithDictionary:storyInfoDict];
+    [mStoryInfos addObject:storyInfo];
+  }
+  _storyInfos = [NSArray arrayWithArray:mStoryInfos];
 }
 
 @end

@@ -9,6 +9,8 @@
 
 @interface RCTVideo : UIView <RCTVideoPlayerViewControllerDelegate>
 
+@property (nonatomic, copy) RCTBubblingEventBlock onIsSoloChanged;
+
 @property (nonatomic, copy) RCTBubblingEventBlock onVideoLoad;
 @property (nonatomic, copy) RCTBubblingEventBlock onVideoBuffer;
 @property (nonatomic, copy) RCTBubblingEventBlock onVideoError;
@@ -39,5 +41,7 @@
 
 - (BOOL) isDisplayingFullscreen;
 - (BOOL) isPlaying;
+
+- (void) setIsSolo:(BOOL)isSolo;
 
 @end

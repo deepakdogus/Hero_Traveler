@@ -7,6 +7,12 @@
 
 static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
 
+typedef enum SoloStatus {
+  NeverSent,
+  Solo,
+  NotSolo,
+} SoloStatus;
+
 @implementation RCTVideo
 {
   BOOL _playerBufferEmpty;
@@ -38,6 +44,8 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   
   NSString* _uri;
   NSString* _originalUri;
+  
+  SoloStatus _soloStatus;
 }
 
 - (instancetype) initWithEventDispatcher:(RCTEventDispatcher*)eventDispatcher
@@ -46,6 +54,7 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   {
     _eventDispatcher = eventDispatcher;
 
+    _soloStatus = NeverSent;
     _showPlayer = YES;
     _fullscreen = NO;
     _rate = 1.0;
@@ -419,6 +428,22 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
     [presentingViewController dismissViewControllerAnimated:true completion:^{
       [weakSelf videoPlayerViewControllerDidDismiss:playerViewController];
     }];
+  }
+}
+
+- (void) setIsSolo:(BOOL)isSolo
+{
+  if (!_onIsSoloChanged)
+  {
+    return;
+  }
+  
+  if ((_soloStatus == NeverSent) ||
+      (_soloStatus == Solo && !isSolo) ||
+      (_soloStatus == NotSolo && isSolo))
+  {
+    _onIsSoloChanged(@{@"solo": @(isSolo)});
+    _soloStatus = isSolo ? Solo : NotSolo;
   }
 }
 

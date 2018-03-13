@@ -16,6 +16,7 @@
 @implementation RCTVideoCache
 {
   NSTimer* cleanupTimer;
+  NSTimer* muteCheckTimer;
 }
 
 + (instancetype) get
@@ -50,7 +51,12 @@
     cleanupTimer = [NSTimer timerWithTimeInterval:2 repeats:YES block:^(NSTimer* _){
       [weakCache cleanupCacheInstances];
     }];
+    
+    muteCheckTimer = [NSTimer timerWithTimeInterval:0.1 repeats:YES block:^(NSTimer* _){
+      [weakCache handleMutedStatus];
+    }];
   }
+
   return self;
 }
 
@@ -113,6 +119,11 @@
 
 - (void) handleMutedStatus
 {
+  if (isPendingMutedUpdate)
+  {
+    return;
+  }
+  
   isPendingMutedUpdate = YES;
   dispatch_async(dispatch_get_main_queue(), ^{
     isPendingMutedUpdate = NO;
@@ -226,13 +237,11 @@
       {
         if (playingVideo == maxAreaVideoItem)
         {
-          [[playingVideo videoCacheItem].player setVolume:1];
-          [[playingVideo videoCacheItem].player setMuted:NO];
+          [[playingVideo videoCacheItem] setIsSolo:YES];
         }
         else
         {
-          [[playingVideo videoCacheItem].player setVolume:0];
-          [[playingVideo videoCacheItem].player setMuted:YES];
+          [[playingVideo videoCacheItem] setIsSolo:NO];
         }
       }
     }

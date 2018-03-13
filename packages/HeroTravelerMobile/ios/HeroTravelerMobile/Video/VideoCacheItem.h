@@ -62,6 +62,8 @@ typedef void (^FinishedDownloadBlock)(NSURL* location, VideoCacheItem* videoCach
 
 - (BOOL) purge;
 
+- (void) setIsSolo:(BOOL)isSolo;
+
 @end
 
 @interface PlayingVideoItem : NSObject

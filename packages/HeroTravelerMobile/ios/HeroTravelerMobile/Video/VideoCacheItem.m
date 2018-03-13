@@ -228,6 +228,25 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   currentPlayingVideoItems = [NSArray arrayWithArray:mCurrentPlayingVideoItems];
 }
 
+- (void) setIsSolo:(BOOL)isSolo
+{
+  if (isSolo)
+  {
+    [self.player setVolume:1];
+    [self.player setMuted:NO];
+  }
+  else
+  {
+    [self.player setVolume:0];
+    [self.player setMuted:YES];
+  }
+
+  for (WeakPlayingVideoItem* weakPlayingVideoItem in currentPlayingVideoItems)
+  {
+    [weakPlayingVideoItem.playingVideoItem.videoView setIsSolo:isSolo];
+  }
+}
+
 - (BOOL) isViewVisible:(UIView*)view
 {
   if (view.hidden || view.alpha <= 0.00001f)

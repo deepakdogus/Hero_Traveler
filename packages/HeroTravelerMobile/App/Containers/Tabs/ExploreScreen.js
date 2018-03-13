@@ -195,7 +195,7 @@ class ExploreScreen extends Component {
                       <ImageWrapper
                         cached={true}
                         resizeMode='cover'
-                        source={{uri: getImageUrl(story.coverVideo, 'video') }}
+                        source={{uri: getImageUrl(story.coverVideo, 'video', {video: true})}}
                         style={styles.thumbnailImage}
                       >
                       </ImageWrapper>

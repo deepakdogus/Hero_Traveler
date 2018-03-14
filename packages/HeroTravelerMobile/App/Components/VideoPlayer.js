@@ -13,6 +13,7 @@ import NativeCachingVideo from './NativeCachingVideo/NativeCachingVideo'
 import TabIcon from './TabIcon'
 import ImageWrapper from './ImageWrapper'
 import MediaSelectorStyles from '../Containers/Styles/MediaSelectorScreenStyles'
+import FullScreenButton from './FullScreenButton'
 
 import Colors from '../Shared/Themes/Colors'
 
@@ -203,7 +204,7 @@ export default class VideoPlayer extends React.Component {
     this.setState({muted: newMuteState})
   }
 
-  goFullscreen() {
+  goFullscreen = () => {
     this.player.presentFullscreenPlayer()
   }
 
@@ -302,6 +303,7 @@ export default class VideoPlayer extends React.Component {
             />
           </View>
         }
+        <FullScreenButton onPress={this.goFullscreen} />
         {this.props.children}
       </View>
     )

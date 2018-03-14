@@ -34,9 +34,6 @@ const enhanceStoryVideo = compose(
       registerRef: () => ref => {
         _ref = ref
       },
-      onPress: () => () => {
-        _ref.goFullscreen()
-      },
       togglePlay: () => () => {
         _ref.toggle()
       }
@@ -62,20 +59,6 @@ const StoryVideo = enhanceStoryVideo((props) => {
         videoFillSpace={true}
         resizeMode='cover'
       >
-        <TouchableOpacity
-          style={styles.videoExpand}
-          onPress={props.onPress}
-        >
-          <Icon
-            name='expand'
-            color='white'
-            style={{
-              padding: 4,
-              borderRadius: 4,
-              backgroundColor: 'rgba(0,0,0,.75)'
-            }}
-            size={20} />
-        </TouchableOpacity>
         <TouchableWithoutFeedback
           style={styles.videoToggleWrapper}
           onPress={props.togglePlay}

@@ -141,8 +141,8 @@ export default class ProfileTabsAndStories extends Component {
   getHeaderHeight(){
     const {user, editable} = this.props
     const hasBadge = user.role === 'contributor' || user.role === 'founding member'
-    let baseHeight = editable ? 216.5 : 181
-    baseHeight += hasBadge ? 12.5 : 0
+    let baseHeight = editable ? 201.5 : 171
+    baseHeight += hasBadge ? 21 : 0
     return baseHeight
   }
 

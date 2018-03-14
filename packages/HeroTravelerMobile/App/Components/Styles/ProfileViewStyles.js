@@ -30,6 +30,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     margin: Metrics.baseMargin,
+    marginBottom: 5,
   },
   editButton: {
     marginRight: 15,
@@ -229,6 +230,9 @@ export default StyleSheet.create({
   noStories: {
     marginTop: Metrics.doubleSection,
   },
+  noStoriesText: {
+    textAlign: 'center',
+  },
   errorText: {
     color: '#757575',
     textAlign: 'center',
@@ -256,8 +260,8 @@ export default StyleSheet.create({
   },
   secondRow: {
     justifyContent: 'space-between',
-    marginBottom: 15,
-    marginTop: 20,
+    marginBottom: 12.5,
+    marginTop: 12.5,
   },
   editBioText: {
     minHeight: profileEditHeight,

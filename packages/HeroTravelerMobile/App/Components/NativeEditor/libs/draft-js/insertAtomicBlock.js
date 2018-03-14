@@ -22,5 +22,17 @@ export default function insertAtomicBlock(editorState, type, url, height, width)
     }
   )
 
+  const lastBlock = newEditorState.getCurrentContent().getLastBlock()
+
+  if (lastBlock.getType() == 'atomic') {
+    newEditorState = insertBlock(
+      newEditorState,
+      lastBlock.getKey(),
+      {
+        selectNewBlock: false,
+      }
+    )
+  }
+
   return newEditorState
 }

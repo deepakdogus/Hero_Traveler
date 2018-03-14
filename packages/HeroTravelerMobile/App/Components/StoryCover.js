@@ -12,6 +12,7 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import {Metrics} from '../Shared/Themes'
 import Colors from '../Shared/Themes/Colors'
 import getVideoUrl from '../Shared/Lib/getVideoUrl'
+import getRelativeHeight from '../Shared/Lib/getRelativeHeight'
 
 export default class StoryCover extends Component {
 
@@ -58,7 +59,7 @@ export default class StoryCover extends Component {
     return this.props.coverType === 'image' && !!this.props.cover
   }
 
-  _getWidthHeight(){
+  _getWidthHeight(isVideo){
     if (this.props.isFeed) {
       if (this.hasImage()) {
         return { height: Metrics.storyCover.feed.imageTypeHeight }
@@ -66,9 +67,20 @@ export default class StoryCover extends Component {
         return { height: Metrics.storyCover.feed.videoTypeHeight }
       }
     } else {
-      return {
-        width: Metrics.screenWidth,
-        height: Metrics.storyCover.fullScreen.height,
+      if (isVideo) {
+        return {
+          width: Metrics.screenWidth,
+          height: Math.min(
+            Metrics.storyCover.fullScreen.height,
+            getRelativeHeight(Metrics.screenWidth, this.props.cover.original.meta)
+          ),
+        }
+      }
+      else {
+        return {
+          width: Metrics.screenWidth,
+          height: Metrics.storyCover.fullScreen.height,
+        }
       }
     }
   }
@@ -192,7 +204,7 @@ export default class StoryCover extends Component {
     let nonStreamingVideoPath = getVideoUrl(this.props.cover, false)
 
     return (
-      <View style={this._getWidthHeight()}>
+      <View style={this._getWidthHeight(true)}>
         <VideoPlayer
           areInRenderLocation={this.props.areInRenderLocation}
           path={videoPath}

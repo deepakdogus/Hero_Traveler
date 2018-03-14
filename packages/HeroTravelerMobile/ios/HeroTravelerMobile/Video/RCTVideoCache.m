@@ -56,7 +56,7 @@
                     }];
     
     muteCheckTimer = [NSTimer
-                      scheduledTimerWithTimeInterval:0.1
+                      scheduledTimerWithTimeInterval:0.05
                       repeats:YES
                       block:^(NSTimer* _){
                         [weakCache handleMutedStatus];

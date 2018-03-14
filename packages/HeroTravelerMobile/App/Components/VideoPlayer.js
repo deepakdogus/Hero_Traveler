@@ -80,12 +80,12 @@ export const PlayButton = ({videoFadeAnim, onPress, isPlaying, style = {}, size}
   )
 }
 
-export const MuteButton = ({onPress, isMuted, style = {}}) => {
+export const MuteButton = ({onPress, isMuted, isSoloed, style = {}}) => {
   return (
     <View style={style}>
       <VideoButton
         size='small'
-        icon={isMuted ? 'audio-off' : 'audio-on'}
+        icon={(isMuted || !isSoloed) ? 'audio-off' : 'audio-on'}
         onPress={onPress}
       />
     </View>
@@ -102,6 +102,7 @@ export default class VideoPlayer extends React.Component {
     areInRenderLocation: PropTypes.bool,
     path: PropTypes.string,
     originalPath: PropTypes.string,
+    onSoloChanged: PropTypes.func,
   }
 
   static defaultProps = {
@@ -127,6 +128,7 @@ export default class VideoPlayer extends React.Component {
       isLoaded: false,
       isReadyForDisplay: false,
       isStalled: false,
+      isSoloed: true,
     }
   }
 
@@ -216,6 +218,14 @@ export default class VideoPlayer extends React.Component {
     this.props.onLoad(event.naturalSize)
   }
 
+  _onSoloChanged = (event) => {
+    this.setState({isSoloed: !!event.solo})
+
+    if (this.props.onSoloChanged) {
+      this.props.onSoloChanged(!!event.solo)
+    }
+  }
+
   _onReadyForDisplay = (event) => {
     this.setState({isReadyForDisplay: event.ready})
   }
@@ -273,6 +283,7 @@ export default class VideoPlayer extends React.Component {
           onPlaybackStalled={this._onPlaybackStalled}
           onPlaybackResume={this._onPlaybackResume}
           resizeMode={this.props.resizeMode}
+          onSoloChanged={this._onSoloChanged}
         />
 
         {(this.state.isStalled || isNotReadyForDisplay) &&
@@ -291,6 +302,7 @@ export default class VideoPlayer extends React.Component {
             style={styles.mute}
             onPress={this.toggleMute}
             isMuted={this.state.muted}
+            isSoloed={this.state.isSoloed}
           />
         }
         {

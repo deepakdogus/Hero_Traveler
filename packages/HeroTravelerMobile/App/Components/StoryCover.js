@@ -47,6 +47,7 @@ export default class StoryCover extends Component {
     this.state = {
       isPlaying: startVideoImmediately,
       isMuted: props.isFeed,
+      isSoloed: true,
     }
   }
 
@@ -147,6 +148,8 @@ export default class StoryCover extends Component {
     if (!isFeed) this.player.toggle()
   }
 
+  _onSoloChanged = (value) => this.setState({isSoloed: value})
+
   _setIsPlaying = (value) => this.setState({isPlaying: value})
 
   _togglePlayerRef = () => this.player.toggle()
@@ -207,6 +210,7 @@ export default class StoryCover extends Component {
           onMuteChange={this._changeMute}
           isMuted={this.props.isFeed}
           resizeMode='cover'
+          onSoloChanged={this._onSoloChanged}
         />
         <TouchableWithoutFeedback
           onPress={this._tapVideoWrapper}
@@ -232,6 +236,7 @@ export default class StoryCover extends Component {
             onPress={this._togglePlayerRefMuted}
             isMuted={this.state.isMuted}
             style={styles.muteButton}
+            isSoloed={this.state.isSoloed}
           />
         }
          {this.props.showPlayButton &&

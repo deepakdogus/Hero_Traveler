@@ -48,13 +48,19 @@
     currentDownloads = @[];
     
     __weak RCTVideoCache* weakCache = self;
-    cleanupTimer = [NSTimer timerWithTimeInterval:2 repeats:YES block:^(NSTimer* _){
-      [weakCache cleanupCacheInstances];
-    }];
+    cleanupTimer = [NSTimer
+                    scheduledTimerWithTimeInterval:2
+                    repeats:YES
+                    block:^(NSTimer* _){
+                      [weakCache cleanupCacheInstances];
+                    }];
     
-    muteCheckTimer = [NSTimer timerWithTimeInterval:0.1 repeats:YES block:^(NSTimer* _){
-      [weakCache handleMutedStatus];
-    }];
+    muteCheckTimer = [NSTimer
+                      scheduledTimerWithTimeInterval:0.1
+                      repeats:YES
+                      block:^(NSTimer* _){
+                        [weakCache handleMutedStatus];
+                      }];
   }
 
   return self;
@@ -143,8 +149,7 @@
       {
         if (existingCacheItem.player.status == AVPlayerStatusReadyToPlay)
         {
-          [existingCacheItem.player setVolume:0];
-          [existingCacheItem.player setMuted:YES];
+          [existingCacheItem setIsSolo:NO];
         }
         continue;
       }
@@ -154,8 +159,7 @@
       {
         if (existingCacheItem.player.status == AVPlayerStatusReadyToPlay)
         {
-          [existingCacheItem.player setVolume:0];
-          [existingCacheItem.player setMuted:YES];
+          [existingCacheItem setIsSolo:NO];
         }
         continue;
       }
@@ -168,8 +172,7 @@
       PlayingVideoItem* playingVideo = [unmutedPlayers objectAtIndex:0];
       if ([playingVideo videoCacheItem].player.status == AVPlayerStatusReadyToPlay)
       {
-        [[playingVideo videoCacheItem].player setVolume:1];
-        [[playingVideo videoCacheItem].player setMuted:NO];
+        [[playingVideo videoCacheItem] setIsSolo:YES];
       }
     }
     else if ([unmutedPlayers count] > 1)
@@ -192,16 +195,14 @@
           {
             if ([playingVideo videoCacheItem].player.status == AVPlayerStatusReadyToPlay)
             {
-              [[playingVideo videoCacheItem].player setVolume:1];
-              [[playingVideo videoCacheItem].player setMuted:NO];
+              [[playingVideo videoCacheItem] setIsSolo:YES];
             }
           }
           else
           {
             if ([playingVideo videoCacheItem].player.status == AVPlayerStatusReadyToPlay)
             {
-              [[playingVideo videoCacheItem].player setVolume:0];
-              [[playingVideo videoCacheItem].player setMuted:YES];
+              [[playingVideo videoCacheItem] setIsSolo:NO];
             }
           }
         }

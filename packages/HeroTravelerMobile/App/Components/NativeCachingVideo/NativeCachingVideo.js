@@ -127,6 +127,12 @@ export default class NativeCachingVideo extends Component {
     }
   };
 
+  _onIsSoloChanged = (event) => {
+    if (this.props.onSoloChanged) {
+      this.props.onSoloChanged(event.nativeEvent);
+    }
+  };
+
   render() {
     const resizeMode = this.props.resizeMode;
     const source = resolveAssetSource(this.props.source) || {};
@@ -180,6 +186,7 @@ export default class NativeCachingVideo extends Component {
       onPlaybackRateChange: this._onPlaybackRateChange,
       onAudioFocusChanged: this._onAudioFocusChanged,
       onAudioBecomingNoisy: this._onAudioBecomingNoisy,
+      onIsSoloChanged: this._onIsSoloChanged,
     });
 
     return (
@@ -239,6 +246,7 @@ NativeCachingVideo.propTypes = {
   onPlaybackRateChange: PropTypes.func,
   onAudioFocusChanged: PropTypes.func,
   onAudioBecomingNoisy: PropTypes.func,
+  onIsSoloChanged: PropTypes.func,
 
   /* Required by react-native */
   scaleX: PropTypes.number,

@@ -208,12 +208,8 @@ export default class StoryCover extends Component {
           isMuted={this.props.isFeed}
           resizeMode='cover'
         >
-          <TouchableWithoutFeedback
-            onPress={this._tapVideoWrapper}
-          >
-            <View
-              style={[styles.gradient, styles.videoGradient]}
-            >
+          <TouchableWithoutFeedback onPress={this._tapVideoWrapper}>
+            <View style={[styles.gradient, styles.videoGradient]}>
               {this.props.children}
             </View>
           </TouchableWithoutFeedback>

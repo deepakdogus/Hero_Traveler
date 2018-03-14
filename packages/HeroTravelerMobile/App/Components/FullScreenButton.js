@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   button: {
     position: 'absolute',
     bottom: 10,
-    left: 10,
+    right: 10,
     zIndex: 10000,
   },
   icon: {

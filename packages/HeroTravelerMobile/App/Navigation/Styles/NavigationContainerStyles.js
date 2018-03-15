@@ -24,7 +24,7 @@ export default {
     borderBottomColor: Colors.dividerGrey,
   },
   tabBar: {
-    backgroundColor: Colors.background
+    backgroundColor: Colors.tabBar,
   },
   tabBarActive: {
     backgroundColor: Colors.sectionHighlight,

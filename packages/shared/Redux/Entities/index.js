@@ -5,4 +5,5 @@ export default combineReducers({
   stories: require('./Stories').reducer,
   users: require('./Users').reducer,
   storyComments: require('./StoryComments').reducer,
+  guides: require('./Guides').reducer,
 })

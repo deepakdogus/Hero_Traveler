@@ -356,6 +356,10 @@ const create = () => {
     return api.post('user/signupCheck', {username, email})
   }
 
+  const createGuide = (guide) => {
+    return api.post('guide', {guide})
+  }
+
   // ------
   // STEP 3
   // ------
@@ -420,6 +424,7 @@ const create = () => {
     changePassword,
     signupCheck,
     flagStory,
+    createGuide,
   }
 }
 

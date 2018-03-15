@@ -22,7 +22,7 @@ const GuideSchema = new Schema({
     ref: UserRef,
     required: true,
   },
-  strories: [{
+  stories: [{
     type: Schema.ObjectId,
     ref: StoryRef,
   }],
@@ -93,3 +93,5 @@ const GuideSchema = new Schema({
     virtuals: true
   }
 })
+
+export default mongoose.model(ModelName, GuideSchema)

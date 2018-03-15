@@ -1,6 +1,8 @@
 // leave off @2x/@3x
 const images = {
   logo: require('../Images/ir.png'),
+  logoBeta: require('../Images/ht-logo-beta.png'),
+  logoFeedBeta: require('../Images/ht-logo-feed-beta.png'),
   clearLogo: require('../Images/top_logo.png'),
   launch: require('../Images/launch-icon.png'),
   launchBackground: require('../Images/launch-background.png'),

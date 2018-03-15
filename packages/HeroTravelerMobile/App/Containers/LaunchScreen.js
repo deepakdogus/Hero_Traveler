@@ -120,7 +120,7 @@ class LaunchScreen extends React.Component {
       >
         <Animated.View style={{flex: 1, opacity: this.state.animationValue}}>
         <View style={[styles.logoSection]}>
-          <Image source={Images.whiteLogo} style={styles.logo} />
+          <Image source={Images.logoBeta} style={styles.logo} />
           <Text
             style={styles.tagline}
             textAlign='center'

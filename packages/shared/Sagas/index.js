@@ -17,6 +17,7 @@ import { StoryTypes } from '../Redux/Entities/Stories'
 import { CategoryTypes } from '../Redux/Entities/Categories'
 import { UserTypes } from '../Redux/Entities/Users'
 import { StoryCommentsTypes } from '../Redux/Entities/StoryComments'
+import { GuideTypes } from '../Redux/Entities/Guides'
 
 /* ------------- Sagas ------------- */
 
@@ -81,6 +82,12 @@ import {
   getComments,
   createCommment,
 } from './StoryCommentsSagas'
+
+import {
+  createGuide,
+  updateGuide,
+  getUserGuides,
+} from './GuideSagas'
 
 /* ------------- API ------------- */
 
@@ -173,8 +180,13 @@ export default function * root () {
     // Media Upload
     takeLatest(MediaUploadTypes.UPLOAD_REQUEST, uploadMedia, heroAPI),
 
-    //Story Comments
+    // Story Comments
     takeLatest(StoryCommentsTypes.GET_COMMENTS_REQUEST, getComments, heroAPI),
     takeLatest(StoryCommentsTypes.CREATE_COMMENT_REQUEST, createCommment, heroAPI),
+
+    // Guides
+    takeLatest(GuideTypes.CREATE_GUIDE, createGuide, heroAPI),
+    takeLatest(GuideTypes.UPDATE_GUIDE, updateGuide, heroAPI),
+    takeLatest(GuideTypes.GET_USER_GUIDES, getUserGuides, heroAPI),
   ]
 }

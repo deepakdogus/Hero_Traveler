@@ -7,6 +7,8 @@ const { Types, Creators } = createActions({
   createGuide: ['guide'],
   receiveGuides: ['guides'],
   createGuideFailure: ['error'],
+  updateGuide: ['guide'],
+  getUserGuides: ['userId'],
 })
 
 export const GuideTypes = Types
@@ -45,5 +47,7 @@ export const failure = (state, {error}) =>
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.CREATE_GUIDE]: request,
   [Types.RECEIVE_GUIDES]: receiveGuides,
-  [Types.CREATE_GUIDE_FAILURE]: failure,
+  [Types.GUIDE_FAILURE]: failure,
+  [Types.UPDATE_GUIDE]: request,
+  [Types.GET_USER_GUIDES]: request,
 })

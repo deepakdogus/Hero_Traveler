@@ -2,6 +2,7 @@ import _ from 'lodash'
 import React from 'react'
 import { connect } from 'react-redux'
 import UserActions, {getByBookmarks} from '../../Shared/Redux/Entities/Users'
+import GuideActions from '../../Shared/Redux/Entities/Guides'
 import StoryActions, {getByUser, getUserFetchStatus, getBookmarksFetchStatus} from '../../Shared/Redux/Entities/Stories'
 import ProfileView, {TabTypes} from '../../Components/ProfileView'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
@@ -30,6 +31,7 @@ class ProfileScreen extends React.Component {
     this.props.getUser(this.props.user.id)
     this.props.getStories(this.props.user.id)
     this.props.loadBookmarks(this.props.user.id)
+    this.props.getGuides(this.props.user.id)
   }
 
   _selectTab = (tab) => {
@@ -110,6 +112,7 @@ const mapDispatchToProps = (dispatch) => {
     getUser: (userId) => dispatch(UserActions.loadUser(userId)),
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
     loadBookmarks: (userId) => dispatch(StoryActions.getBookmarks(userId)),
+    getGuides: (userId) => dispatch(GuideActions.getUserGuides(userId)),
   }
 }
 

@@ -94,4 +94,33 @@ const GuideSchema = new Schema({
   }
 })
 
+GuideSchema.statics = {
+
+  get(/* args */) {
+    return this.findOne(...arguments)
+    .populate({
+      path: 'author',
+      populate: {
+        path: 'profile.cover profile.avatar'
+      }
+    })
+    .populate('categories')
+    .populate('coverImage')
+  },
+
+  list(/* args */) {
+    return this.find(...arguments)
+    .populate({
+      path: 'author',
+      populate: {
+        path: 'profile.cover profile.avatar'
+      }
+    })
+    .populate('categories')
+    .populate('coverImage')
+    .sort({createdAt: -1})
+  },
+}
+
+
 export default mongoose.model(ModelName, GuideSchema)

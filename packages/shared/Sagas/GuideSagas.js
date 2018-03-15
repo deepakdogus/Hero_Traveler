@@ -33,4 +33,33 @@ export function * createGuide (api, action) {
     guides[guide.id] = guide
     yield put(GuideActions.receiveGuides(guides))
   }
+  // add error handling for fail
+}
+
+export function * updateGuide (api, action) {
+  const {guide} = action
+  const coverResponse = yield createCover(api, guide)
+  // add error handling
+  const response = yield call(api.updateGuide, guide)
+  if (response.ok) {
+    // refactor this
+    const guide = response.data.guide
+    const guides = {}
+    guides[guide.id] = guide
+    yield put(GuideActions.receiveGuides(guides))
+  }
+  // add error handling for fail
+}
+
+export function * getUserGuides (api, action) {
+  const {userId} = action
+  const response = yield call(api.getUserGuides, userId)
+  if (response.ok) {
+    const guides = response.data.reduce((guides, guide) => {
+      guides[guide.id] = guide
+      return guides
+    }, {})
+    yield put(GuideActions.receiveGuides(guides))
+  }
+  // add error handling for fail
 }

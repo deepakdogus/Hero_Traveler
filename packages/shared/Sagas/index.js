@@ -85,6 +85,8 @@ import {
 
 import {
   createGuide,
+  updateGuide,
+  getUserGuides,
 } from './GuideSagas'
 
 /* ------------- API ------------- */
@@ -183,6 +185,8 @@ export default function * root () {
     takeLatest(StoryCommentsTypes.CREATE_COMMENT_REQUEST, createCommment, heroAPI),
 
     // Guides
-    takeLatest(GuideTypes.CREATE_GUIDE, createGuide, heroAPI)
+    takeLatest(GuideTypes.CREATE_GUIDE, createGuide, heroAPI),
+    takeLatest(GuideTypes.UPDATE_GUIDE, updateGuide, heroAPI),
+    takeLatest(GuideTypes.GET_USER_GUIDES, getUserGuides, heroAPI),
   ]
 }

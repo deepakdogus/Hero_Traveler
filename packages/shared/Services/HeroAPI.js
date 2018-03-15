@@ -360,6 +360,14 @@ const create = () => {
     return api.post('guide', {guide})
   }
 
+  const updateGuide = (guide) => {
+    return api.put(`guide/${guide.id}`, {guide})
+  }
+
+  const getUserGuides = (userId) => {
+    return api.get(`guide/user/${userId}`)
+  }
+
   // ------
   // STEP 3
   // ------
@@ -425,6 +433,8 @@ const create = () => {
     signupCheck,
     flagStory,
     createGuide,
+    updateGuide,
+    getUserGuides,
   }
 }
 

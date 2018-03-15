@@ -460,7 +460,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     paddingTop: 10,
     paddingHorizontal: 20,
-    paddingBottom: 100,
+    paddingBottom: 50,
   },
   imageView: {
     width: Metrics.screenWidth,

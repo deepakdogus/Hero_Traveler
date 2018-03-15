@@ -859,7 +859,6 @@ class StoryCoverScreen extends Component {
             rightTextStyle={styles.navBarRightTextStyle}
             style={styles.navBarStyle}
           />
-          <KeyboardAvoidingView behavior='padding'>
             <View style={styles.coverHeight}>
               {error &&
                 <ShadowButton
@@ -915,7 +914,6 @@ class StoryCoverScreen extends Component {
             </View>
           {showTooltip && this.renderTooltip()}
           {<View style={styles.toolbarAvoiding}></View>}
-          </KeyboardAvoidingView>
         </ScrollView>
         {this.editor &&
           <KeyboardTrackingView

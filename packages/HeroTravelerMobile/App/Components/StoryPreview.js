@@ -200,12 +200,19 @@ export default class StoryPreview extends Component {
             <TouchableOpacity onPress={(x)=>onPress(title)} disabled={!!isStoryReadingScreen}>
           <Text style={[
             styles.title,
+            description ? styles.titleWithDescription : {},
             isStoryReadingScreen ? styles.storyReadingTitle : {},
+            isStoryReadingScreen && description ? styles.storyReadingTitleWithDescription : {},
             this.props.titleStyle
           ]}>
             {title}
           </Text>
-          {description && <Text style={styles.description}>{description}</Text>}
+          {description &&
+            <Text style={[
+              styles.description,
+              isStoryReadingScreen ? styles.storyReadingDescription : {},
+            ]}>{description}</Text>
+          }
         </TouchableOpacity>
         <View style={styles.lastRow}>
           {!isStoryReadingScreen &&

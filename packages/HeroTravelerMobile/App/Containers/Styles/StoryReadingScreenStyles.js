@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
     borderWidth: .5,
     borderStyle: 'solid',
     borderColor: Colors.dividerGrey,
-    marginBottom: 40,
+    marginBottom: 25,
     marginHorizontal: 15,
   },
   content: {
@@ -119,7 +119,6 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: Fonts.type.base,
     color: Colors.grey,
-    marginTop: Metrics.baseMargin
   },
   mediaViewWrapper: {
     flex: 1,

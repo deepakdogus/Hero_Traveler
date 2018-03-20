@@ -41,6 +41,8 @@ import MediaSelectorScreen from '../Containers/MediaSelectorScreen'
 
 import ActivityScreen from '../Containers/Tabs/ActivityScreen'
 
+import AddToGuideScreen from '../Containers/AddToGuide/'
+
 // Signup & login
 import LoginScreen from '../Containers/LoginScreen'
 import ResetPasswordRequestScreen from '../Containers/ResetPasswordRequestScreen'
@@ -282,6 +284,11 @@ export default NavActions.create(
         title='Comments'
         {...darkNavBarProps}
         navigationBarStyle={extraPaddingDarkNavBarProps}
+      />
+      <Scene
+        key='addStoryToGuide'
+        component={AddToGuideScreen}
+        hideNavBar={true}
       />
       <Scene
         key='tabbar'

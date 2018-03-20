@@ -91,7 +91,7 @@ export const styles = StyleSheet.create({
   },
   addToGuideTooltip: {
     position: 'absolute',
-    bottom: Metrics.tabBarHeight + 75,
+    bottom: Metrics.tabBarHeight + (Metrics.baseMargin * 3) + 44,
     right: 14,
     backgroundColor: Colors.backgroundOpaque,
     borderRadius: 5,

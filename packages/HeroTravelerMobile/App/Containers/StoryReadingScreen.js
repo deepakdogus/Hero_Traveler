@@ -176,6 +176,13 @@ class StoryReadingScreen extends React.Component {
     }
   }
 
+  _pressCreateGuide = () => {
+    const { storyId } = this.props
+    NavActions.addStoryToGuide({
+      storyId,
+    })
+  }
+
   /* MBT 08/08/17: Hold off on clickable tags until future notice
   // _navBackToStory = () => {
   //   NavActions.story({storyId: this.props.story.id})
@@ -196,13 +203,6 @@ class StoryReadingScreen extends React.Component {
     >
     </TouchableOpacity>
   */
-  /*
-  If the old YPos is superior the the new YPos it means we scrolled up
-  and should show the content. Otherwise we should hide it.
-  */
-  isShowContent() {
-    return this.state.oldYPos > this.state.newYPos || this.state.newYPos <= 0
-  }
 
   renderTags = () => {
     const lastIndex = this.props.story.categories.length - 1
@@ -264,7 +264,7 @@ class StoryReadingScreen extends React.Component {
       ],
       outputRange: [Metrics.tabBarHeight, Metrics.tabBarHeight, 0, 0],
     })
-    const plusButtonY = Metrics.tabBarHeight + 10
+    const plusButtonY = Metrics.tabBarHeight + Metrics.baseMargin
     const plusButtonTranslation = scrollY.interpolate({
       inputRange: [
         scrollOffset - 1,
@@ -323,7 +323,6 @@ class StoryReadingScreen extends React.Component {
             autoPlayVideo={true}
             allowVideoPlay={true}
             isStoryReadingScreen={true}
-            isContentVisible={this.isShowContent()}
           />
           <View style={styles.divider} />
           <View style={styles.content}>
@@ -425,7 +424,9 @@ class StoryReadingScreen extends React.Component {
             },
             styles.plusButton,
           ]}>
-          <TouchableOpacity style={styles.plusButtonTouchable}>
+          <TouchableOpacity
+            onPress={this._pressCreateGuide}
+            style={styles.plusButtonTouchable}>
             <Image
               source={Images.iconContentPlusWhite}
               style={styles.plusButtonIcon}
@@ -433,20 +434,18 @@ class StoryReadingScreen extends React.Component {
           </TouchableOpacity>
         </Animated.View>
         {/* Plus button tooltip */}
-        { showTooltip && (
+        {showTooltip && (
           <Animated.View
             style={[
               {
                 opacity: tooltipOpacity,
               },
-              styles.addToGuideTooltip
+              styles.addToGuideTooltip,
             ]}>
             <Text style={{ color: 'white' }}>
               {`Tap to add story\nto a travel guide`}
             </Text>
-            <View
-              style={styles.addToGuideTooltipArrow}
-            />
+            <View style={styles.addToGuideTooltipArrow} />
           </Animated.View>
         )}
         {

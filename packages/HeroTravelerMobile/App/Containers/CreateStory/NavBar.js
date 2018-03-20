@@ -1,9 +1,10 @@
-import React, {Component} from 'react'
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 
 import TextButton from '../../Components/TextButton'
 import TabIcon from '../../Components/TabIcon'
-import {Metrics, Colors, Fonts} from '../../Shared/Themes'
+import { Metrics, Colors, Fonts } from '../../Shared/Themes'
 import NavButtonStyles from '../../Navigation/Styles/NavButtonStyles'
 
 const styles = StyleSheet.create({
@@ -12,7 +13,7 @@ const styles = StyleSheet.create({
     paddingTop: Metrics.baseMargin,
     backgroundColor: Colors.background,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   text: {
     fontFamily: Fonts.type.montserrat,
@@ -20,17 +21,17 @@ const styles = StyleSheet.create({
     color: Colors.red,
   },
   title: {
-    flex: 1/3,
+    flex: 1 / 3,
   },
   titleText: {
     textAlign: 'center',
     color: Colors.white,
   },
   row: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   left: {
-    flex: 1/3,
+    flex: 1 / 3,
     flexDirection: 'row',
   },
   leftText: {
@@ -39,23 +40,23 @@ const styles = StyleSheet.create({
     color: Colors.white,
   },
   right: {
-    flex: 1/3,
+    flex: 1 / 3,
     flexDirection: 'row',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   rightText: {
     textAlign: 'right',
     paddingRight: Metrics.doubleBaseMargin,
   },
   leftBtn: {
-    tintColor: Colors.white
+    tintColor: Colors.white,
   },
   inactiveText: {
-    opacity: .5,
+    opacity: 0.5,
     color: Colors.navBarText,
   },
   inactiveBtn: {
-    opacity: .2,
+    opacity: 0.2,
     tintColor: Colors.navBarText,
   },
   leftIconStyle: {
@@ -68,59 +69,118 @@ const styles = StyleSheet.create({
   },
 })
 
-export default class NavBar extends Component {
-
+class NavBar extends Component {
+  static propTypes = {
+    style: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
+    leftTitle: PropTypes.string,
+    leftIcon: PropTypes.string,
+    rightTitle: PropTypes.string,
+    leftTextStyle: PropTypes.object,
+    leftIconStyle: PropTypes.object,
+    onLeft: PropTypes.func,
+    title: PropTypes.string,
+    titleStyle: PropTypes.object,
+    onTitle: PropTypes.func,
+    rightIcon: PropTypes.string,
+    rightTextStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
+    onRight: PropTypes.func,
+    isRightValid: PropTypes.bool,
+  }
   render() {
-    const { style,
-        leftTitle, leftIcon, leftTextStyle, leftIconStyle, onLeft,
-        title, titleStyle, onTitle,
-        rightTitle, rightIcon, rightTextStyle, onRight, isRightValid = true } = this.props
+    const {
+      style,
+      leftTitle,
+      leftIcon,
+      leftTextStyle,
+      leftIconStyle,
+      onLeft,
+      title,
+      titleStyle,
+      onTitle,
+      rightTitle,
+      rightIcon,
+      rightTextStyle,
+      onRight,
+      isRightValid = true,
+    } = this.props
     return (
       <View style={[styles.root, style]}>
-        {(leftTitle || leftIcon) &&
+        {(leftTitle || leftIcon) && (
           <View style={styles.left}>
             <TouchableOpacity onPress={onLeft} style={styles.row}>
-              {leftIcon &&
+              {leftIcon && (
                 <TabIcon
-                  style={{ image: [styles.leftIconStyle, styles.leftBtn, leftIconStyle] }}
-                  name={leftIcon}/>
-              }
-              {leftTitle &&
+                  style={{
+                    image: [
+                      styles.leftIconStyle,
+                      styles.leftBtn,
+                      leftIconStyle,
+                    ],
+                  }}
+                  name={leftIcon}
+                />
+              )}
+              {leftTitle && (
                 <Text style={[styles.text, styles.leftText, leftTextStyle]}>
-                  {leftTitle
-                }</Text>}
+                  {leftTitle}
+                </Text>
+              )}
             </TouchableOpacity>
           </View>
-        }
+        )}
 
-        {title &&
+        {title && (
           <View style={styles.title}>
-            {!onTitle && <Text style={[styles.text, styles.titleText, titleStyle || {}]}>{title}</Text>}
-            {onTitle && <TextButton
-              style={[styles.text, styles.titleText, titleStyle || {}, isRightValid ? {} : styles.inactiveText]}
-              onPress={onTitle}
-            >
-              {title}
-            </TextButton>}
+            {!onTitle && (
+              <Text style={[styles.text, styles.titleText, titleStyle || {}]}>
+                {title}
+              </Text>
+            )}
+            {onTitle && (
+              <TextButton
+                style={[
+                  styles.text,
+                  styles.titleText,
+                  titleStyle || {},
+                  isRightValid ? {} : styles.inactiveText,
+                ]}
+                onPress={onTitle}>
+                {title}
+              </TextButton>
+            )}
           </View>
-        }
+        )}
 
-        {rightTitle &&
+        {rightTitle && (
           <View style={styles.right}>
             <TouchableOpacity onPress={onRight} style={styles.row}>
-              <Text style={[styles.text, styles.rightText, rightTextStyle, isRightValid ? {} : styles.inactiveText]}>
+              <Text
+                style={[
+                  styles.text,
+                  styles.rightText,
+                  rightTextStyle,
+                  isRightValid ? {} : styles.inactiveText,
+                ]}>
                 {rightTitle}
               </Text>
-              {rightIcon && rightIcon !== 'none' &&
-                <TabIcon
-                  style={{image: [styles.rightIconStyle, isRightValid ? {} : styles.inactiveBtn]}}
-                  name={rightIcon}
-                />
-              }
+              {rightIcon &&
+                rightIcon !== 'none' && (
+                  <TabIcon
+                    style={{
+                      image: [
+                        styles.rightIconStyle,
+                        isRightValid ? {} : styles.inactiveBtn,
+                      ],
+                    }}
+                    name={rightIcon}
+                  />
+                )}
             </TouchableOpacity>
           </View>
-        }
+        )}
       </View>
     )
   }
 }
+
+export default NavBar

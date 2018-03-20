@@ -6,38 +6,61 @@ import { Colors, Metrics } from '../Shared/Themes/'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 export default class SearchBar extends React.Component {
-
   static propTypes = {
     onSearch: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
-    searchTerm: PropTypes.string
+    searchTerm: PropTypes.string,
   }
 
-  render () {
-    const { onSearch, onCancel, searchTerm } = this.props
+  static defaultProps = {
+    placeholderTextColor: Colors.snow,
+    cancelButton: true,
+    selectionColor: Colors.snow,
+    autoFocus: true,
+  }
+
+  render() {
+    const {
+      autoFocus,
+      onSearch,
+      onCancel,
+      searchTerm,
+      containerStyles,
+      cancelButton,
+      inputStyles,
+      placeholderTextColor,
+      selectionColor,
+      iconStyles,
+    } = this.props
     const onSubmitEditing = () => onSearch(searchTerm)
     return (
-      <View style={styles.container}>
-        <Icon name='search' size={Metrics.icons.tiny} style={styles.searchIcon} />
+      <View style={[styles.container, containerStyles]}>
+        <Icon
+          name="search"
+          size={Metrics.icons.tiny}
+          style={[styles.searchIcon, iconStyles]}
+        />
         <TextInput
-          ref='searchText'
-          autoFocus
-          placeholder='Search'
-          placeholderTextColor={Colors.snow}
-          underlineColorAndroid='transparent'
-          style={styles.searchInput}
-          value={this.props.searchTerm}
+          ref="searchText"
+          autoFocus={autoFocus}
+          placeholder="Search"
+          placeholderTextColor={placeholderTextColor}
+          underlineColorAndroid="transparent"
+          style={[styles.searchInput, inputStyles]}
+          value={searchTerm}
           onChangeText={onSearch}
-          autoCapitalize='none'
+          autoCapitalize="none"
           onSubmitEditing={onSubmitEditing}
           returnKeyType={'search'}
           autoCorrect={false}
-          selectionColor={Colors.snow}
-          clearButtonMode='while-editing'
+          selectionColor={selectionColor}
+          clearButtonMode="while-editing"
         />
-        <TouchableOpacity onPress={onCancel} style={styles.cancelButton}>
-          <Text style={styles.buttonLabel}>Cancel</Text>
-        </TouchableOpacity>
+        {cancelButton && (
+          <TouchableOpacity onPress={onCancel} style={styles.cancelButton}>
+            <Text style={styles.buttonLabel}>Cancel</Text>
+          </TouchableOpacity>
+        )}
       </View>
     )
   }

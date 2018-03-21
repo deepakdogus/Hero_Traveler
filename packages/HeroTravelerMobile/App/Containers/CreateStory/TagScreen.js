@@ -134,6 +134,16 @@ class TagScreen extends Component {
     }
   }
 
+  _formatTag = (title) => {
+    if (this.props.tagType == TAG_TYPE_CATEGORY) {
+      return _.map(_.words(title), _.upperFirst).join(' ');
+    } else if (this.props.tagType == TAG_TYPE_HASHTAG) {
+      return "#" + _.map(_.words(title), _.lowerCase).join('-');
+    } else {
+      throw new Error("Invalid tag type to get defaults: ", this.props.tagType);
+    }
+  }
+
   _addNewTag = () => {
 
     if (_.size(_.trim(this.state.text)) === 0) {
@@ -141,8 +151,7 @@ class TagScreen extends Component {
     }
 
     // This strips everything done into real words, no special characters, etc.
-    // TO-DO: Differentiate this for hashtags and categories, what's below is for categories.
-    const formattedTitle = _.map(_.words(this.state.text), _.upperFirst).join(' ')
+    const formattedTitle = this._formatTag(this.state.text);
 
     const existingMongoTag = _.find(this._getDefaultTags(), t => {
       return t.title === formattedTitle
@@ -233,7 +242,7 @@ class TagScreen extends Component {
         onPress={this._completeTooltip}
       >
         <View style={styles.tooltipTextView}>
-          <Text>Enter your own {this._getTagTypeText} or pick from below</Text>
+          <Text>Enter your own {this._getTagTypeText()} or pick from below</Text>
         </View>
       </TouchableOpacity>
     )
@@ -279,6 +288,7 @@ class TagScreen extends Component {
                 onChangeText={text => this._inputChanged(text)}
                 onSubmitEditing={this._addNewTag}
                 onFocus={this.setInputFocused}
+                autoCorrect={this.props.tagType == TAG_TYPE_CATEGORY}
                 // onBlur={this.setInputBlurred}
               />
             </View>

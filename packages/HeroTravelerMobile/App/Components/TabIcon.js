@@ -69,6 +69,8 @@ class TabIcon extends React.Component {
         return Images.iconNavActivity
       case 'tag':
         return Images.iconTag
+      case 'hashtag':
+        return Images.iconHashtag
       case 'explore':
         return Images.iconNavExplore
       case 'createMenuStory':

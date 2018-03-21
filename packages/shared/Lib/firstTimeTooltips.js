@@ -6,6 +6,7 @@ export const Types = {
   STORY_PHOTO_EDIT: 'story_photo_edit',
   PROFILE_NO_STORIES: 'profile_no_stories',
   STORY_CREATE_CATEGORIES: 'story_create_categories',
+  STORY_CREATE_HASHTAGS: 'story_create_hashtags',
 }
 
 export default function isTooltipComplete(tooltipType: string, userTooltipInfo: object[]) {

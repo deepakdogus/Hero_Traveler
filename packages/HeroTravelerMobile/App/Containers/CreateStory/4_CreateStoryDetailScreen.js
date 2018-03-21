@@ -90,6 +90,7 @@ class CreateStoryDetailScreen extends React.Component {
     super(props)
     this.state = {
       categories: props.workingDraft.categories || [],
+      hashtags: props.workingDraft.hashtags || [],
       type: props.workingDraft.type,
       showError: false,
     }
@@ -169,14 +170,26 @@ class CreateStoryDetailScreen extends React.Component {
     NavActions.pop()
   }
 
+  _receiveHashtags = (selectedHashtags) => {
+    this.props.updateWorkingDraft({hashtags: selectedHashtags})
+    NavActions.pop()
+  }
+
   isDraft() {
     return this.props.story.draft || false
   }
 
-  navToTags = () => {
+  navToCategories = () => {
     NavActions.createStory_tags({
       onDone: this._receiveCategories,
-      categories: this.props.workingDraft.categories || this.state.categories
+      tags: this.props.workingDraft.categories || this.state.categories
+    })
+  }
+
+  navToHashtags = () => {
+    NavActions.createStory_hashtags({
+      onDone: this._receiveHashtags,
+      tags: this.props.workingDraft.hashtags || this.state.hashtags
     })
   }
 
@@ -266,12 +279,24 @@ class CreateStoryDetailScreen extends React.Component {
             <View style={styles.fieldWrapper}>
               <TabIcon name='tag' style={tabIconStyle} />
               <TouchableWithoutFeedback
-                onPress={this.navToTags}
+                onPress={this.navToCategories}
                 style={styles.tagStyle}
               >
                 <View>
                   {_.size(workingDraft.categories) > 0 && <Text style={styles.tagStyleText}>{_.map(workingDraft.categories, 'title').join(', ')}</Text>}
                   {_.size(workingDraft.categories) === 0 && <Text style={[styles.tagStyleText, {color: '#bdbdbd'}]}>Add categories...</Text>}
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+            <View style={styles.fieldWrapper}>
+              <TabIcon name='hashtag' style={tabIconStyle} />
+              <TouchableWithoutFeedback
+                onPress={this.navToHashtags}
+                style={styles.tagStyle}
+              >
+                <View>
+                  {_.size(workingDraft.hashtags) > 0 && <Text style={styles.tagStyleText}>{_.map(workingDraft.hashtags, 'title').join(', ')}</Text>}
+                  {_.size(workingDraft.hashtags) === 0 && <Text style={[styles.tagStyleText, {color: '#bdbdbd'}]}>Add hashtags...</Text>}
                 </View>
               </TouchableWithoutFeedback>
             </View>

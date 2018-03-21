@@ -341,7 +341,7 @@ class StoryCoverScreen extends Component {
   }
 
   draftHasChanged = () => {
-    const fieldsToCheck = ['title', 'description', 'coverCaption', 'coverImage', 'coverVideo', 'tripDate', 'location', 'type', 'categories']
+    const fieldsToCheck = ['title', 'description', 'coverCaption', 'coverImage', 'coverVideo', 'tripDate', 'location', 'type', 'categories', 'hashtags']
     return !_.every([
       ...fieldsToCheck.map(field => !this.hasFieldChanged(field)),
       !this.state.contentTouched ,

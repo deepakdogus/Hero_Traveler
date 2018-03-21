@@ -372,6 +372,13 @@ export default NavActions.create(
           key='createStory_tags'
           panHandlers={null}
           component={TagScreen}
+          tagType='category'
+        />
+        <Scene
+          key='createStory_hashtags'
+          panHandlers={null}
+          component={TagScreen}
+          tagType='hashtag'
         />
         <Scene
           key='createStory_location'

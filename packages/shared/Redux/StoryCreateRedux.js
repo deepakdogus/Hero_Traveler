@@ -26,6 +26,8 @@ const { Types, Creators } = createActions({
   uploadCoverImageSuccess: ['draft'],
   uploadCoverImageFailure: ['error'],
   updateCategories: ['categories'],
+  updateHashtags: ['hashtags'],
+  updateTags: ['tags'],
   resetCreateStore: null,
   toggleCreateModal: null,
   initializeSyncProgress: ['numSteps', 'message'],
@@ -148,6 +150,14 @@ export const updateCategories = (state, {categories}) => {
   return state.setIn(['draft', 'categories'], categories)
 }
 
+export const updateHashtags = (state, {hashtags}) => {
+  return state.setIn(['draft', 'hashtags'], hashtags)
+}
+
+export const updateTags = (state, {tags}) => {
+  return state.setIn(['draft', 'tags'], tags)
+}
+
 export const initializeSyncProgress = (state, {numSteps, message}) => {
   return state.merge({
     sync: {
@@ -231,6 +241,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPLOAD_COVER_IMAGE_SUCCESS]: uploadCoverImageSuccess,
   [Types.UPLOAD_COVER_IMAGE_FAILURE]: uploadCoverImageFailure,
   [Types.UPDATE_CATEGORIES]: updateCategories,
+  [Types.UPDATE_HASHTAGS]: updateHashtags,
+  [Types.UPDATE_TAGS]: updateTags,
   [Types.EDIT_STORY]: editStory,
   [Types.EDIT_STORY_SUCCESS]: editStorySuccess,
   [Types.EDIT_STORY_FAILURE]: editStoryFailure,

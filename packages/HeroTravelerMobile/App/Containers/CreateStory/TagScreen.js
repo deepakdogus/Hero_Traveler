@@ -15,9 +15,9 @@ import AlgoliaSearchHelper from 'algoliasearch-helper';
 import env from '../../Config/Env'
 
 const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
-const CATEGORY_INDEX = env.SEARCH_CATEGORIES_INDEX
 
 import CategoryActions from '../../Shared/Redux/Entities/Categories'
+import HashTagActions from '../../Shared/Redux/Entities/Hashtags'
 import { Metrics, Colors } from '../../Shared/Themes/'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Loader from '../../Components/Loader'
@@ -25,18 +25,36 @@ import styles from './TagScreenStyles'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTimeTooltips'
 import UserActions from '../../Shared/Redux/Entities/Users'
 
+export const TAG_TYPE_CATEGORY = "category";
+export const TAG_TYPE_HASHTAG = "hashtag";
+
 class TagScreen extends Component {
 
   static propTypes = {
-    categories: PropTypes.array,
+    tagType: PropTypes.oneOf([TAG_TYPE_CATEGORY, TAG_TYPE_HASHTAG]),
+    tags: PropTypes.array,
     onDone: PropTypes.func.isRequired,
   }
 
   constructor(props) {
     super(props)
-    this.props.loadDefaultCategories()
+
+    switch(props.tagType) {
+      case TAG_TYPE_CATEGORY:
+        this.props.loadDefaultCategories()
+        this.tagIndex = env.SEARCH_CATEGORIES_INDEX;
+        break;
+      case TAG_TYPE_HASHTAG:
+        this.props.loadDefaultHashtags()
+        this.tagIndex = env.SEARCH_HASHTAGS_INDEX;
+        break;
+      default:
+        throw new Error("No tag type supplied to the TagScreen");
+        break;
+    }
+
     this.state = {
-      selectedCategories: props.categories || [],
+      selectedTags: props.tags || [],
       text: '',
       searching: false,
       searchResults: null,
@@ -45,7 +63,7 @@ class TagScreen extends Component {
   }
 
   componentWillMount() {
-    this.helper = AlgoliaSearchHelper(algoliasearch, CATEGORY_INDEX)
+    this.helper = AlgoliaSearchHelper(algoliasearch, this.tagIndex)
     this.setupSearchListeners(this.helper)
   }
 
@@ -71,63 +89,79 @@ class TagScreen extends Component {
   }
 
   _done = () => {
-    this.props.onDone(this.state.selectedCategories)
+    this.props.onDone(this.state.selectedTags)
   }
 
-  _selectDefaultCategory = (mongoCategory) => {
+  _selectDefaultTag = (mongoTag) => {
     this.setState({
-      selectedCategories: [
-        ...this.state.selectedCategories,
-        {_id: mongoCategory.id, title: mongoCategory.title}
+      selectedTags: [
+        ...this.state.selectedTags,
+        {_id: mongoTag.id, title: mongoTag.title}
       ]
     })
   }
 
-  _selectSearchCategory = (searchCategory) => {
+  _selectSearchTag = (searchTag) => {
     this.setState({
       text: '',
-      selectedCategories: [
-        ...this.state.selectedCategories,
-        {_id: searchCategory._id, title: searchCategory.title}
+      selectedTags: [
+        ...this.state.selectedTags,
+        {_id: searchTag._id, title: searchTag.title}
       ]
+    }, () => {
+      // This is a fix for search results disappearing as soon as the
+      // TextInput is blurred.
+      this.setInputBlurred();
     })
   }
 
-  _removeCategory = (category) => {
+  _removeTag = (tag) => {
     this.setState({
-      selectedCategories: _.filter(this.state.selectedCategories, c => {
-        return c._id !== category._id || c.title !== category.title
+      selectedTags: _.filter(this.state.selectedTags, t => {
+        return t._id !== tag._id || t.title !== tag.title
       })
     })
   }
 
-  _addNewCategory = () => {
+  // We can not cache these as they might change in the reducer, so we have to set up some kind of a getter.
+  _getDefaultTags = () => {
+    if (this.props.tagType == TAG_TYPE_CATEGORY) {
+      return this.props.defaultCategories;
+    } else if (this.props.tagType == TAG_TYPE_HASHTAG) {
+      return this.props.defaultHashtags;
+    } else {
+      throw new Error("Invalid tag type to get defaults: ", this.props.tagType);
+    }
+  }
+
+  _addNewTag = () => {
 
     if (_.size(_.trim(this.state.text)) === 0) {
       return
     }
 
     // This strips everything done into real words, no special characters, etc.
+    // TO-DO: Differentiate this for hashtags and categories, what's below is for categories.
     const formattedTitle = _.map(_.words(this.state.text), _.upperFirst).join(' ')
 
-    const existingMongoCategory = _.find(this.props.defaultCategories, c => {
-      return c.title === formattedTitle
+    const existingMongoTag = _.find(this._getDefaultTags(), t => {
+      return t.title === formattedTitle
     })
 
-    const existingSearchCategory = _.find(this.getSearchHits(), c => {
-      return c.title === formattedTitle
+    const existingSearchTag = _.find(this.getSearchHits(), t => {
+      return t.title === formattedTitle
     })
 
     // Use existing categories if the match one
-    if (existingMongoCategory) {
-      return this._selectDefaultCategory(existingMongoCategory)
-    } else if (existingSearchCategory) {
-      return this._selectSearchCategory(existingSearchCategory)
+    if (existingMongoTag) {
+      return this._selectDefaultTag(existingMongoTag);
+    } else if (existingSearchTag) {
+      return this._selectSearchTag(existingSearchTag);
     }
 
     this.setState({
-      selectedCategories: [
-        ...this.state.selectedCategories,
+      selectedTags: [
+        ...this.state.selectedTags,
         {title: formattedTitle}
       ],
       text: ''
@@ -174,10 +208,22 @@ class TagScreen extends Component {
 
   _completeTooltip = () => {
     const tooltips = this.props.user.introTooltips.concat({
-      name: TooltipTypes.STORY_CREATE_CATEGORIES,
+      name: this._getTagTypeTooltipType(),
       seen: true,
     })
     this.props.completeTooltip(tooltips)
+  }
+
+  _getTagTypeText = (plural) => {
+    if (plural) {
+      return (this.props.tagType == TAG_TYPE_CATEGORY) ? "categories" : "hashtags";
+    } else {
+      return (this.props.tagType == TAG_TYPE_CATEGORY) ? "category" : "hashtag";
+    }
+  }
+
+  _getTagTypeTooltipType = () => {
+    return (this.props.tagType == TAG_TYPE_CATEGORY) ? TooltipTypes.STORY_CREATE_CATEGORIES : TooltipTypes.STORY_CREATE_HASHTAGS;
   }
 
   renderTooltip() {
@@ -187,7 +233,7 @@ class TagScreen extends Component {
         onPress={this._completeTooltip}
       >
         <View style={styles.tooltipTextView}>
-          <Text>Enter your own category or pick from below</Text>
+          <Text>Enter your own {this._getTagTypeText} or pick from below</Text>
         </View>
       </TouchableOpacity>
     )
@@ -195,20 +241,20 @@ class TagScreen extends Component {
 
   render () {
 
-    const defaultCategoriesToShow = _.filter(this.props.defaultCategories, c => {
-      return !_.includes(_.map(this.state.selectedCategories, '_id'), c._id)
+    const defaultTagsToShow = _.filter(this._getDefaultTags(), t => {
+      return !_.includes(_.map(this.state.selectedTags, '_id'), t._id)
     })
 
     let showTooltip = false
     if (this.props.user) {
       showTooltip = !isTooltipComplete(
-        TooltipTypes.STORY_CREATE_CATEGORIES,
+        this._getTagTypeTooltipType(),
         this.props.user.introTooltips
       )
     }
 
-    const searchResultsToShow = _.filter(this.getSearchHits(), c => {
-      return !_.includes(_.map(this.state.selectedCategories, '_id'), c._id)
+    const searchResultsToShow = _.filter(this.getSearchHits(), t => {
+      return !_.includes(_.map(this.state.selectedTags, '_id'), t._id)
     })
     const isInputFocused = this.state.isInputFocused
     return (
@@ -229,26 +275,26 @@ class TagScreen extends Component {
                 ref='input'
                 style={styles.textInput}
                 value={this.state.text}
-                placeholder='Add Categories'
+                placeholder={'Add ' + _.upperFirst(this._getTagTypeText(true))}
                 onChangeText={text => this._inputChanged(text)}
-                onSubmitEditing={this._addNewCategory}
+                onSubmitEditing={this._addNewTag}
                 onFocus={this.setInputFocused}
-                onBlur={this.setInputBlurred}
+                // onBlur={this.setInputBlurred}
               />
             </View>
           </View>
           <ScrollView style={{flexGrow: 3}}>
           {/*
-            Render the selected categories
+            Render the selected tags
           */}
-          {_.size(this.state.selectedCategories) > 0 &&
-            <View style={styles.selectedCategories}>
-              {_.map(this.state.selectedCategories, c => {
+          {_.size(this.state.selectedTags) > 0 &&
+            <View style={styles.selectedTags}>
+              {_.map(this.state.selectedTags, t => {
                 return (
-                  <View key={c._id || c.title} style={styles.selectedCategoryRow}>
-                    <TouchableOpacity onPress={() => this._removeCategory(c)} style={[styles.row, styles.rowSelected]}>
-                      <Text>{c.title}</Text>
-                      <Icon name='close' size={15} style={styles.removeCategoryIcon} />
+                  <View key={t._id || t.title} style={styles.selectedTagRow}>
+                    <TouchableOpacity onPress={() => this._removeTag(t)} style={[styles.row, styles.rowSelected]}>
+                      <Text>{t.title}</Text>
+                      <Icon name='close' size={15} style={styles.removeTagIcon} />
                     </TouchableOpacity>
                   </View>
                 )
@@ -262,12 +308,12 @@ class TagScreen extends Component {
 
           {/* Show search results when text is present */}
           {!this.state.searching && !!this.state.text && _.size(searchResultsToShow) > 0 &&
-            <View style={styles.defaultCats}>
-              {_.map(searchResultsToShow, c => {
+            <View style={styles.defaultTags}>
+              {_.map(searchResultsToShow, t => {
                 return (
-                  <View key={c._id} style={styles.rowWrapper}>
-                    <TouchableOpacity onPress={() => this._selectSearchCategory(c)} style={styles.row}>
-                      <Text>{c.title}</Text>
+                  <View key={t._id} style={styles.rowWrapper}>
+                    <TouchableOpacity onPress={() => {this._selectSearchTag(t)}} style={styles.row}>
+                      <Text>{t.title}</Text>
                     </TouchableOpacity>
                   </View>
                 )
@@ -276,13 +322,13 @@ class TagScreen extends Component {
           }
 
           {/* Show default categories from mongo */}
-          {!this.state.text && _.size(defaultCategoriesToShow) > 0 &&
-            <View style={styles.defaultCats}>
-              {_.map(defaultCategoriesToShow, c => {
+          {!this.state.text && _.size(defaultTagsToShow) > 0 &&
+            <View style={styles.defaultTags}>
+              {_.map(defaultTagsToShow, t => {
                 return (
-                  <View key={c._id} style={styles.rowWrapper}>
-                    <TouchableOpacity onPress={() => this._selectDefaultCategory(c)} style={styles.row}>
-                      <Text>{c.title}</Text>
+                  <View key={t._id} style={styles.rowWrapper}>
+                    <TouchableOpacity onPress={() => {this._selectDefaultTag(t)}} style={styles.row}>
+                      <Text>{t.title}</Text>
                     </TouchableOpacity>
                   </View>
                 )
@@ -299,12 +345,16 @@ class TagScreen extends Component {
 export default connect(
   state => ({
     user: state.entities.users.entities[state.session.userId],
+
     defaultCategories: state.entities.categories.entities,
-    categoriesFetchStatus: state.entities.categories.fetchStatus
+    categoriesFetchStatus: state.entities.categories.fetchStatus,
+    
+    defaultHashtags: state.entities.hashtags.entities,
+    hashtagsFetchStatus: state.entities.hashtags.fetchStatus
   }),
   dispatch => ({
+    loadDefaultHashtags: () => dispatch(CategoryActions.loadCategoriesRequest()),
     loadDefaultCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
     completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips}))
-
   })
 )(TagScreen)

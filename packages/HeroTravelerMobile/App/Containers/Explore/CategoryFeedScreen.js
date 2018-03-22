@@ -1,37 +1,42 @@
 import _ from 'lodash'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Text, View, TouchableWithoutFeedback} from 'react-native'
+import { ScrollView, Text, View, TouchableWithoutFeedback } from 'react-native'
 import { connect } from 'react-redux'
-import {Actions as NavActions} from 'react-native-router-flux'
+import { Actions as NavActions } from 'react-native-router-flux'
 
-import StoryActions, {getByCategory, getFetchStatus} from '../../Shared/Redux/Entities/Stories'
+import StoryActions, {
+  getByCategory,
+  getFetchStatus,
+} from '../../Shared/Redux/Entities/Stories'
 import SignupActions from '../../Shared/Redux/SignupRedux'
 
 import ConnectedStoryPreview from '../ConnectedStoryPreview'
 import StoryList from '../../Containers/ConnectedStoryList'
 import Loader from '../../Components/Loader'
 
-import {Metrics} from '../../Shared/Themes'
+import { Metrics } from '../../Shared/Themes'
 import styles from '../Styles/CategoryFeedScreenStyles'
 import NoStoriesMessage from '../../Components/NoStoriesMessage'
 import NavBar from '../CreateStory/NavBar'
 
-const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight - 40
+const imageHeight =
+  Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight - 40
 
-const Tab = ({text, onPress, selected}) => {
+const Tab = ({ text, onPress, selected }) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={[styles.tab, selected ? styles.tabSelected : null]}>
-        <Text style={[styles.tabText, selected ? styles.tabTextSelected : null]}>{text}</Text>
+        <Text
+          style={[styles.tabText, selected ? styles.tabTextSelected : null]}>
+          {text}
+        </Text>
       </View>
     </TouchableWithoutFeedback>
   )
 }
 
-
 class CategoryFeedScreen extends React.Component {
-
   static propTypes = {
     categoryId: PropTypes.string,
     user: PropTypes.object,
@@ -51,7 +56,7 @@ class CategoryFeedScreen extends React.Component {
     super(props)
     this.state = {
       refreshing: false,
-      selectedTabIndex: 0
+      selectedTabIndex: 0,
     }
   }
 
@@ -61,16 +66,22 @@ class CategoryFeedScreen extends React.Component {
     switch (this.state.selectedTabIndex) {
       case 0:
         storyType = null
-        break;
+        break
       case 1:
-        storyType = 'do'
-        break;
+        storyType = 'see'
+        break
       case 2:
-        storyType = 'eat'
-        break;
+        storyType = 'do'
+        break
       case 3:
+        storyType = 'eat'
+        break
+      case 4:
         storyType = 'stay'
-        break;
+        break
+      case 5:
+        storyType = 'guides'
+        break
     }
 
     this.props.loadCategory(this.props.categoryId, storyType)
@@ -83,36 +94,37 @@ class CategoryFeedScreen extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.state.refreshing && nextProps.fetchStatus.loaded) {
-      this.setState({refreshing: false})
+      this.setState({ refreshing: false })
     }
   }
 
   _onRefresh = () => {
-    this.setState({refreshing: true})
+    this.setState({ refreshing: true })
     this.loadData()
   }
 
   _wrapElt(elt) {
     return (
-      <View style={[styles.scrollItemFullScreen, styles.center]}>
-        {elt}
-      </View>
+      <View style={[styles.scrollItemFullScreen, styles.center]}>{elt}</View>
     )
   }
 
-  _changeTab = (selectedTabIndex) => {
-    this.setState({
-      selectedTabIndex
-    }, () => {
-      this.loadData()
-    })
+  _changeTab = selectedTabIndex => {
+    this.setState(
+      {
+        selectedTabIndex,
+      },
+      () => {
+        this.loadData()
+      }
+    )
   }
 
-  _touchUser = (userId) => {
+  _touchUser = userId => {
     if (this.props.user.id === userId) {
-      NavActions.profile({type: 'jump'})
+      NavActions.profile({ type: 'jump' })
     } else {
-      NavActions.readOnlyProfile({userId})
+      NavActions.readOnlyProfile({ userId })
     }
   }
 
@@ -142,49 +154,67 @@ class CategoryFeedScreen extends React.Component {
   }
 
   getIsFollowingCategory = () => {
-    const {categoryId, selectedCategories} = this.props
+    const { categoryId, selectedCategories } = this.props
     return _.includes(selectedCategories, categoryId)
   }
 
-  renderTabs(){
+  renderTabs() {
     return (
       <View style={styles.tabnav}>
-        <Tab
-          selected={this.state.selectedTabIndex === 0}
-          onPress={() => this._changeTab(0)}
-          text='ALL'
-        />
-        <Tab
-          selected={this.state.selectedTabIndex === 1}
-          onPress={() => this._changeTab(1)}
-          text='DO'
-        />
-        <Tab
-          selected={this.state.selectedTabIndex === 2}
-          onPress={() => this._changeTab(2)}
-          text='EAT'
-        />
-        <Tab
-          selected={this.state.selectedTabIndex === 3}
-          onPress={() => this._changeTab(3)}
-          text='STAY'
-        />
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyles={{ flex: 1 }}
+          bounces={false}>
+          <Tab
+            selected={this.state.selectedTabIndex === 0}
+            onPress={() => this._changeTab(0)}
+            text="ALL"
+          />
+          <Tab
+            selected={this.state.selectedTabIndex === 1}
+            onPress={() => this._changeTab(1)}
+            text="SEE"
+          />
+          <Tab
+            selected={this.state.selectedTabIndex === 2}
+            onPress={() => this._changeTab(2)}
+            text="DO"
+          />
+          <Tab
+            selected={this.state.selectedTabIndex === 3}
+            onPress={() => this._changeTab(3)}
+            text="EAT"
+          />
+          <Tab
+            selected={this.state.selectedTabIndex === 4}
+            onPress={() => this._changeTab(4)}
+            text="STAY"
+          />
+          <Tab
+            selected={this.state.selectedTabIndex === 5}
+            onPress={() => this._changeTab(5)}
+            text="GUIDES"
+          />
+        </ScrollView>
       </View>
     )
   }
 
-  render () {
-    let { storiesById, fetchStatus, error, title} = this.props;
+  render() {
+    let { storiesById, fetchStatus, error, title } = this.props
     const isFollowingCategory = this.getIsFollowingCategory()
 
     let topContent, bottomContent
 
     if (fetchStatus.fetching && !this.state.refreshing) {
-      topContent = (
-        <Loader />
-      )
+      topContent = <Loader />
     } else if (error) {
-      topContent = this._wrapElt(<Text style={styles.message}>Unable to find new content. Pull down to refresh.</Text>);
+      topContent = this._wrapElt(
+        <Text style={styles.message}>
+          Unable to find new content. Pull down to refresh.
+        </Text>
+      )
     }
     if (_.size(storiesById) === 0) {
       bottomContent = (
@@ -193,8 +223,7 @@ class CategoryFeedScreen extends React.Component {
           <NoStoriesMessage />
         </View>
       )
-    }
-    else {
+    } else {
       bottomContent = (
         <StoryList
           style={styles.storyList}
@@ -213,20 +242,19 @@ class CategoryFeedScreen extends React.Component {
           title={title}
           titleStyle={styles.navbarTitleStyle}
           onLeft={this._onLeft}
-          leftIcon='arrowLeft'
+          leftIcon="arrowLeft"
           leftIconStyle={styles.navbarLeftIconStyle}
           onRight={this._onRight}
           rightTextStyle={styles.navbarRightTextStyle}
           rightTitle={isFollowingCategory ? 'FOLLOWING' : '+ FOLLOW'}
-          style={styles.navbarContainer, {marginTop: 0}}
+          style={(styles.navbarContainer, { marginTop: 0 })}
         />
-        { topContent }
-        { bottomContent }
+        {topContent}
+        {bottomContent}
       </View>
     )
   }
 }
-
 
 const mapStateToProps = (state, props) => {
   return {
@@ -235,16 +263,20 @@ const mapStateToProps = (state, props) => {
     storiesById: getByCategory(state.entities.stories, props.categoryId),
     error: state.entities.stories.error,
     selectedCategories: state.signup.selectedCategories,
-    location: state.routes.scene.name
+    location: state.routes.scene.name,
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    loadCategory: (categoryId, storyType) => dispatch(StoryActions.fromCategoryRequest(categoryId, storyType)),
-    getSelectedCategories: () => dispatch(SignupActions.signupGetUsersCategories()),
-    followCategory: () => dispatch(SignupActions.signupFollowCategory(ownProps.categoryId)),
-    unfollowCategory: () => dispatch(SignupActions.signupUnfollowCategory(ownProps.categoryId)),
+    loadCategory: (categoryId, storyType) =>
+      dispatch(StoryActions.fromCategoryRequest(categoryId, storyType)),
+    getSelectedCategories: () =>
+      dispatch(SignupActions.signupGetUsersCategories()),
+    followCategory: () =>
+      dispatch(SignupActions.signupFollowCategory(ownProps.categoryId)),
+    unfollowCategory: () =>
+      dispatch(SignupActions.signupUnfollowCategory(ownProps.categoryId)),
   }
 }
 

@@ -1,5 +1,7 @@
-import { StyleSheet } from 'react-native'
+import { Dimensions, StyleSheet } from 'react-native'
 import { ApplicationStyles, Fonts, Colors, Metrics } from '../../Shared/Themes/'
+
+const { width } = Dimensions.get('window')
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
@@ -23,14 +25,14 @@ export default StyleSheet.create({
     textAlign: 'center',
   },
   tabnav: {
+    backgroundColor: Colors.feedDividerGrey,
     height: 50,
-    flexDirection: 'row',
-    justifyContent: 'center'
   },
   tab: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: '25%',
+    flex: 1,
+    width: width * 0.18,
     backgroundColor: Colors.feedDividerGrey,
     borderBottomWidth: 1,
     borderBottomColor: Colors.navBarText,

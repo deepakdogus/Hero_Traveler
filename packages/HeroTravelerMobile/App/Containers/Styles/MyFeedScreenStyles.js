@@ -31,5 +31,9 @@ export default StyleSheet.create({
     color: '#fff',
     paddingVertical: 7,
     textAlign: 'center',
+  },
+  tabStyles: {
+    width: 100,
+    marginHorizontal: Metrics.baseMargin,
   }
 })

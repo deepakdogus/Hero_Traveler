@@ -30,6 +30,7 @@ export const TabTypes = {
   stories: 'TAB_STORIES',
   drafts: 'TAB_DRAFTS',
   bookmarks: 'TAB_BOOKMARKS',
+  guides: 'TAB_GUIDES',
 }
 
 const usernameContansts = {

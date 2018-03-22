@@ -1,20 +1,24 @@
-import { StyleSheet } from 'react-native'
+import { Dimensions, StyleSheet } from 'react-native'
 import { ApplicationStyles, Fonts, Colors, Metrics } from '../../Shared/Themes/'
 
 const avatarImageSize = 95
 const coverInnerHeight = 370
-const tabNavEditHeight = 50
 const profileEditHeight = 150
+const tabNavEditHeight = 50
+const tabWidth = Dimensions.get('window').width * 0.3
 
-export const storyPreviewHeight = Metrics.screenHeight - coverInnerHeight - tabNavEditHeight - Metrics.tabBarHeight
-
+export const storyPreviewHeight =
+  Metrics.screenHeight -
+  coverInnerHeight -
+  tabNavEditHeight -
+  Metrics.tabBarHeight
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
-    backgroundColor: Colors.clear
+    backgroundColor: Colors.clear,
   },
   profileTabsAndStoriesHeight: {
-    height: Metrics.screenHeight
+    height: Metrics.screenHeight,
   },
   profileTabsAndStoriesRoot: {
     marginTop: 20,
@@ -24,7 +28,7 @@ export default StyleSheet.create({
   },
   gradientWrapper: {
     flex: 1,
-    backgroundColor: Colors.clear
+    backgroundColor: Colors.clear,
   },
   topRightContainer: {
     flexDirection: 'row',
@@ -64,7 +68,7 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.sourceSansPro,
     fontSize: 13,
     fontWeight: '400',
-    letterSpacing: .7,
+    letterSpacing: 0.7,
     fontStyle: 'italic',
     color: Colors.redHighlights,
   },
@@ -106,7 +110,7 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.sourceSansPro,
     fontSize: 13,
     fontWeight: '400',
-    letterSpacing: .7,
+    letterSpacing: 0.7,
     color: Colors.grey,
     maxWidth: Metrics.screenWidth - 2 * Metrics.section - 15 - avatarImageSize,
     marginVertical: 7.5,
@@ -118,14 +122,15 @@ export default StyleSheet.create({
   editTitleWrapper: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   editTitle: {
-    width: Metrics.screenWidth - avatarImageSize - 2 * Metrics.section - 10 - 5 - 14,
+    width:
+      Metrics.screenWidth - avatarImageSize - 2 * Metrics.section - 10 - 5 - 14,
     textAlign: 'left',
   },
   editPencilImage: {
-    tintColor: 'grey'
+    tintColor: 'grey',
   },
   editPencilView: {
     paddingVertical: 3,
@@ -140,7 +145,7 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.montserrat,
     fontSize: 13,
     fontWeight: '600',
-    letterSpacing: .7,
+    letterSpacing: 0.7,
     lineHeight: 26,
     textAlign: 'center',
     color: Colors.background,
@@ -158,44 +163,8 @@ export default StyleSheet.create({
     top: 31,
     left: 30,
   },
-  tabs: {
-    flex: 1
-  },
-  tabnavEdit: {
-    height: tabNavEditHeight,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: Colors.feedDividerGrey,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: Colors.dividerGrey,
-  },
-  tab: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: .33,
-    borderBottomWidth: 3,
-    borderBottomColor: Colors.feedDividerGrey,
-  },
-  fullTab: {
-    flex: 1,
-  },
-  tabText: {
-    fontFamily: Fonts.type.montserrat,
-    color: Colors.navBarText,
-    fontSize: 13,
-    letterSpacing: 1.2,
-    textAlign: 'center',
-    fontWeight: '600',
-  },
-  tabSelected: {
-    borderBottomColor: Colors.red
-  },
-  tabTextSelected: {
-    fontFamily: Fonts.type.montserrat,
-    color: Colors.background,
-    fontSize: 13,
-    letterSpacing: 1.2,
+  tabStyles: {
+    width: tabWidth,
   },
   storyTitleStyle: {
     fontSize: 18,
@@ -203,13 +172,13 @@ export default StyleSheet.create({
   },
   subtitleStyle: {
     fontSize: 13,
-    letterSpacing: .7,
-    fontWeight: '300'
+    letterSpacing: 0.7,
+    fontWeight: '300',
   },
   editBio: {
     fontWeight: '600',
     fontSize: 16,
-    marginVertical: Metrics.baseMargin
+    marginVertical: Metrics.baseMargin,
   },
   readBioText: {
     fontFamily: Fonts.type.montserrat,
@@ -219,13 +188,13 @@ export default StyleSheet.create({
   },
   bioText: {
     fontFamily: Fonts.type.sourceSansPro,
-    letterSpacing: .7,
+    letterSpacing: 0.7,
     fontSize: 16,
     color: Colors.bioGrey,
     fontWeight: '400',
   },
   spinnerWrapper: {
-    marginTop: Metrics.doubleSection
+    marginTop: Metrics.doubleSection,
   },
   noStories: {
     marginTop: Metrics.doubleSection,
@@ -287,9 +256,9 @@ export default StyleSheet.create({
     fontWeight: '600',
     fontSize: 8,
     color: Colors.background,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   storyList: {
     height: Metrics.screenHeight - Metrics.tabBarHeight,
-  }
+  },
 })

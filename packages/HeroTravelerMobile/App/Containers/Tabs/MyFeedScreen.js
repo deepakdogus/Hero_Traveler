@@ -122,22 +122,18 @@ class MyFeedScreen extends React.Component {
   }
 
   renderTabs() {
-    const tabStyles = {
-      width: 100,
-      marginHorizontal: Metrics.baseMargin,
-    }
     return (
       <Tabs>
         <Tab
           selected={this.state.selectedTabIndex === 0}
           onPress={() => this.changeTab(0)}
-          tabStyles={tabStyles}
+          tabStyles={styles.tabStyles}
           text="STORIES"
         />
         <Tab
           selected={this.state.selectedTabIndex === 1}
           onPress={() => this.changeTab(1)}
-          tabStyles={tabStyles}
+          tabStyles={styles.tabStyles}
           text="GUIDES"
         />
       </Tabs>

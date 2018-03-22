@@ -3,30 +3,31 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Text, View, Image } from 'react-native'
 import { connect } from 'react-redux'
-import {Actions as NavActions} from 'react-native-router-flux'
+import { Actions as NavActions } from 'react-native-router-flux'
 import SplashScreen from 'react-native-splash-screen'
 
-import {Metrics, Images} from '../../Shared/Themes'
+import { Metrics, Images } from '../../Shared/Themes'
 import StoryActions from '../../Shared/Redux/Entities/Stories'
 import Loader from '../../Components/Loader'
 import StoryList from '../../Containers/ConnectedStoryList'
 import ConnectedStoryPreview from '../ConnectedStoryPreview'
 import styles from '../Styles/MyFeedScreenStyles'
 import NoStoriesMessage from '../../Components/NoStoriesMessage'
+import Tabs from '../../Components/Tabs'
+import Tab from '../../Components/Tab'
 
-const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
+const imageHeight =
+  Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
 
 class MyFeedScreen extends React.Component {
   static propTypes = {
     user: PropTypes.object,
     error: PropTypes.object,
-  };
+  }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      refreshing: false
-    }
+  state = {
+    refreshing: false,
+    selectedTabIndex: 0,
   }
 
   componentDidMount() {
@@ -34,18 +35,22 @@ class MyFeedScreen extends React.Component {
     SplashScreen.hide()
   }
 
-  isSuccessfulLoad(nextProps){
+  isSuccessfulLoad(nextProps) {
     return this.state.refreshing && nextProps.fetchStatus.loaded
   }
 
-  isFailedLoad(nextProps){
-    return this.state.refreshing && nextProps.error &&
-    this.props.fetchStatus.fetching && !nextProps.fetchStatus.fetching
+  isFailedLoad(nextProps) {
+    return (
+      this.state.refreshing &&
+      nextProps.error &&
+      this.props.fetchStatus.fetching &&
+      !nextProps.fetchStatus.fetching
+    )
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.isSuccessfulLoad(nextProps) || this.isFailedLoad(nextProps)) {
-      this.setState({refreshing: false})
+      this.setState({ refreshing: false })
     }
   }
 
@@ -60,36 +65,34 @@ class MyFeedScreen extends React.Component {
     return shouldUpdate
   }
 
-  _wrapElt(elt){
+  _wrapElt(elt) {
     return (
-      <View style={[styles.scrollItemFullScreen, styles.center]}>
-        {elt}
-      </View>
+      <View style={[styles.scrollItemFullScreen, styles.center]}>{elt}</View>
     )
   }
 
-  _showError(){
+  _showError() {
     return (
-      <Text style={styles.message}>Failed to update feed. Please try again.</Text>
+      <Text style={styles.message}>
+        Failed to update feed. Please try again.
+      </Text>
     )
   }
 
   _showNoStories() {
-    return (
-      <NoStoriesMessage />
-    )
+    return <NoStoriesMessage />
   }
 
   _onRefresh = () => {
-    this.setState({refreshing: true})
+    this.setState({ refreshing: true })
     this.props.attemptGetUserFeed(this.props.user.id)
   }
 
-  _touchUser = (userId) => {
+  _touchUser = userId => {
     if (this.props.userId === userId) {
-      NavActions.profile({type: 'jump'})
+      NavActions.profile({ type: 'jump' })
     } else {
-      NavActions.readOnlyProfile({userId})
+      NavActions.readOnlyProfile({ userId })
     }
   }
 
@@ -110,16 +113,47 @@ class MyFeedScreen extends React.Component {
     )
   }
 
-  render () {
-    let {storiesById, fetchStatus, error} = this.props;
+  changeTab = selectedTabIndex => {
+    this.setState({
+      selectedTabIndex,
+    }, () => {
+      // TODO: Change category of content here
+    })
+  }
+
+  renderTabs() {
+    const tabStyles = {
+      width: 100,
+      marginHorizontal: Metrics.baseMargin,
+    }
+    return (
+      <Tabs>
+        <Tab
+          selected={this.state.selectedTabIndex === 0}
+          onPress={() => this.changeTab(0)}
+          tabStyles={tabStyles}
+          text="STORIES"
+        />
+        <Tab
+          selected={this.state.selectedTabIndex === 1}
+          onPress={() => this.changeTab(1)}
+          tabStyles={tabStyles}
+          text="GUIDES"
+        />
+      </Tabs>
+    )
+  }
+
+  render() {
+    let { storiesById, fetchStatus, error } = this.props
     let topContent, bottomContent
 
     if (error) {
       topContent = this._showError()
     }
     if (!storiesById || !storiesById.length) {
-      let innerContent = this._showNoStories();
-      bottomContent = this._wrapElt(innerContent);
+      let innerContent = this._showNoStories()
+      bottomContent = this._wrapElt(innerContent)
     } else {
       bottomContent = (
         <StoryList
@@ -127,9 +161,10 @@ class MyFeedScreen extends React.Component {
           storiesById={storiesById}
           renderStory={this.renderStory}
           onRefresh={this._onRefresh}
+          renderSectionHeader={this.renderTabs()}
           refreshing={fetchStatus.fetching}
         />
-      );
+      )
     }
 
     return (
@@ -137,34 +172,33 @@ class MyFeedScreen extends React.Component {
         <View style={styles.fakeNavBar}>
           <Image source={Images.logoFeedBeta} style={styles.logo} />
         </View>
-        { topContent }
-        { bottomContent }
+        {topContent}
+        {bottomContent}
       </View>
     )
   }
 }
 
-
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   let {
     userFeedById,
     fetchStatus,
     entities: stories,
-    error
-  } = state.entities.stories;
+    error,
+  } = state.entities.stories
   return {
     userId: state.session.userId,
     user: state.entities.users.entities[state.session.userId],
     fetchStatus,
     storiesById: userFeedById,
     error,
-    location: state.routes.scene.name
+    location: state.routes.scene.name,
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    attemptGetUserFeed: (userId) => dispatch(StoryActions.feedRequest(userId)),
+    attemptGetUserFeed: userId => dispatch(StoryActions.feedRequest(userId)),
   }
 }
 

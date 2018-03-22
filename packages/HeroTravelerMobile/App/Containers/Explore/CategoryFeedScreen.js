@@ -14,6 +14,8 @@ import SignupActions from '../../Shared/Redux/SignupRedux'
 import ConnectedStoryPreview from '../ConnectedStoryPreview'
 import StoryList from '../../Containers/ConnectedStoryList'
 import Loader from '../../Components/Loader'
+import Tabs from '../../Components/Tabs'
+import Tab from '../../Components/Tab'
 
 import { Metrics } from '../../Shared/Themes'
 import styles from '../Styles/CategoryFeedScreenStyles'
@@ -22,19 +24,6 @@ import NavBar from '../CreateStory/NavBar'
 
 const imageHeight =
   Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight - 40
-
-const Tab = ({ text, onPress, selected }) => {
-  return (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <View style={[styles.tab, selected ? styles.tabSelected : null]}>
-        <Text
-          style={[styles.tabText, selected ? styles.tabTextSelected : null]}>
-          {text}
-        </Text>
-      </View>
-    </TouchableWithoutFeedback>
-  )
-}
 
 class CategoryFeedScreen extends React.Component {
   static propTypes = {
@@ -160,44 +149,38 @@ class CategoryFeedScreen extends React.Component {
 
   renderTabs() {
     return (
-      <View style={styles.tabnav}>
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyles={{ flex: 1 }}
-          bounces={false}>
-          <Tab
-            selected={this.state.selectedTabIndex === 0}
-            onPress={() => this._changeTab(0)}
-            text="ALL"
-          />
-          <Tab
-            selected={this.state.selectedTabIndex === 1}
-            onPress={() => this._changeTab(1)}
-            text="SEE"
-          />
-          <Tab
-            selected={this.state.selectedTabIndex === 2}
-            onPress={() => this._changeTab(2)}
-            text="DO"
-          />
-          <Tab
-            selected={this.state.selectedTabIndex === 3}
-            onPress={() => this._changeTab(3)}
-            text="EAT"
-          />
-          <Tab
-            selected={this.state.selectedTabIndex === 4}
-            onPress={() => this._changeTab(4)}
-            text="STAY"
-          />
-          <Tab
-            selected={this.state.selectedTabIndex === 5}
-            onPress={() => this._changeTab(5)}
-            text="GUIDES"
-          />
-        </ScrollView>
-      </View>
+      <Tabs>
+        <Tab
+          selected={this.state.selectedTabIndex === 0}
+          onPress={() => this._changeTab(0)}
+          text="ALL"
+        />
+        <Tab
+          selected={this.state.selectedTabIndex === 1}
+          onPress={() => this._changeTab(1)}
+          text="SEE"
+        />
+        <Tab
+          selected={this.state.selectedTabIndex === 2}
+          onPress={() => this._changeTab(2)}
+          text="DO"
+        />
+        <Tab
+          selected={this.state.selectedTabIndex === 3}
+          onPress={() => this._changeTab(3)}
+          text="EAT"
+        />
+        <Tab
+          selected={this.state.selectedTabIndex === 4}
+          onPress={() => this._changeTab(4)}
+          text="STAY"
+        />
+        <Tab
+          selected={this.state.selectedTabIndex === 5}
+          onPress={() => this._changeTab(5)}
+          text="GUIDES"
+        />
+      </Tabs>
     )
   }
 

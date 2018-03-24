@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   TouchableHighlight,
   DatePickerIOS,
+  TextInput,
 } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
@@ -92,6 +93,10 @@ class CreateStoryDetailScreen extends React.Component {
       categories: props.workingDraft.categories || [],
       hashtags: props.workingDraft.hashtags || [],
       type: props.workingDraft.type,
+      cost: props.workingDraft.cost || '',
+      // We will not be updating the currency right now, but
+      // it is used in constructing the placeholder text.
+      currency: props.workingDraft.currency || '',
       showError: false,
     }
   }
@@ -146,6 +151,33 @@ class CreateStoryDetailScreen extends React.Component {
 
   _updateType = (type) => {
     this.props.updateWorkingDraft({type})
+  }
+
+  _updateCost = (cost) => {
+    this.props.updateWorkingDraft({cost})
+  }
+
+  _getCostPlaceholderText = (draft) => {
+    let placeholder;
+    switch (draft.type) {
+      case 'see':
+      case 'do':
+        placeholder = 'Cost'
+        break;
+      case 'eat':
+        placeholder = 'Cost per person'
+        break;
+      case 'stay':
+        placeholder = 'Cost per night'
+        break;
+      default:
+        placeholder = ''
+        break;
+    }
+    // The currency is hardcoded for now, might want to change it later.
+    let currency = draft.currency || 'USD';
+    placeholder += ' (' + currency + ')'
+    return placeholder;
   }
 
   _closeError = () => {
@@ -222,6 +254,7 @@ class CreateStoryDetailScreen extends React.Component {
     const err = this.props.error
     const errText = (__DEV__ && err && err.problem && err.status) ? `${err.status}: ${err.problem}` : ""
 
+    console.log("!!!", this.state);
     return (
       <View style={{flex: 1, position: 'relative'}}>
           { showError && err &&
@@ -324,6 +357,21 @@ class CreateStoryDetailScreen extends React.Component {
                   selected={workingDraft.type === 'do'}
                   onPress={() => this._updateType('do')}
                   text='DO'
+                />
+              </View>
+            </View>
+            <View style={styles.fieldWrapper}>
+              <TabIcon name='cost' style={tabIconStyle} />
+              <View style={styles.longInput}>
+                {!!(this.state.cost) &&
+                  <Text style={[styles.currency]}>$</Text>
+                }
+                <TextInput 
+                  style={[styles.longInputText]} 
+                  value={this.state.cost}
+                  onChangeText={(value) => {this.setState({cost:value})}}
+                  onSubmitEditing={(value) => {this._updateCost(value)}}
+                  placeholder={this._getCostPlaceholderText(workingDraft)}
                 />
               </View>
             </View>

@@ -47,6 +47,25 @@ export default StyleSheet.create({
     color: Colors.background,
     marginBottom: 20
   },
+  longInput: {
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    flexGrow: 1,
+    minHeight: 30
+  },
+  longInputText: {
+    flexGrow: 1,
+    fontSize: 16,
+    color: Colors.background,
+    marginBottom: 20
+  },
+  currency: {
+    flexShrink: 1,
+    fontSize: 14,
+    color: Colors.background,
+    marginBottom: 20,
+    marginRight: 2,
+  },
   radioGroup: {
     marginLeft: Metrics.section,
     flexDirection: 'row',

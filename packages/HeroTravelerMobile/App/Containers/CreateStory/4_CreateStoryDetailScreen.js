@@ -304,6 +304,11 @@ class CreateStoryDetailScreen extends React.Component {
               <Text style={styles.fieldLabel}>Activity: </Text>
               <View style={styles.radioGroup}>
                 <Radio
+                  selected={workingDraft.type === 'see'}
+                  onPress={() => this._updateType('see')}
+                  text='SEE'
+                />
+                <Radio
                   selected={workingDraft.type === 'eat'}
                   onPress={() => this._updateType('eat')}
                   text='EAT'

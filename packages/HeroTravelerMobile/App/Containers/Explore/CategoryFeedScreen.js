@@ -63,12 +63,15 @@ class CategoryFeedScreen extends React.Component {
         storyType = null
         break;
       case 1:
-        storyType = 'do'
+        storyType = 'see'
         break;
       case 2:
-        storyType = 'eat'
+        storyType = 'do'
         break;
       case 3:
+        storyType = 'eat'
+        break;
+      case 4:
         storyType = 'stay'
         break;
     }
@@ -156,16 +159,21 @@ class CategoryFeedScreen extends React.Component {
         <Tab
           selected={this.state.selectedTabIndex === 1}
           onPress={() => this._changeTab(1)}
-          text='DO'
+          text='SEE'
         />
         <Tab
           selected={this.state.selectedTabIndex === 2}
           onPress={() => this._changeTab(2)}
-          text='EAT'
+          text='DO'
         />
         <Tab
           selected={this.state.selectedTabIndex === 3}
           onPress={() => this._changeTab(3)}
+          text='EAT'
+        />
+        <Tab
+          selected={this.state.selectedTabIndex === 4}
+          onPress={() => this._changeTab(4)}
           text='STAY'
         />
       </View>

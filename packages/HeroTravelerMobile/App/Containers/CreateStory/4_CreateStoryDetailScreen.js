@@ -175,7 +175,7 @@ class CreateStoryDetailScreen extends React.Component {
         break;
     }
     // The currency is hardcoded for now, might want to change it later.
-    let currency = draft.currency || 'USD';
+    let currency = draft.currency || 'USD';
     placeholder += ' (' + currency + ')'
     return placeholder;
   }

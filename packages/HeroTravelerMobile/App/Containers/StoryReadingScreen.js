@@ -253,6 +253,28 @@ class StoryReadingScreen extends React.Component {
     return !!locationInfo && !!locationInfo.name && !!locationInfo.latitude && !!locationInfo.longitude
   }
 
+  _getCostType = () => {
+    const {type, currency} = this.props.story
+    let title = '';
+    switch (type) {
+      case 'see':
+      case 'do':
+        break;
+      case 'eat':
+        title = ' per person'
+        break;
+      case 'stay':
+        title = ' per night'
+        break;
+      default:
+        break;
+    }
+    // The currency is hardcoded for now, might want to change it later.
+    let currencySign = currency || ' USD';
+    title = currencySign + title;
+    return title;
+  }
+
   render () {
     const { story, author, user } = this.props;
     if (!story || !author) {
@@ -315,6 +337,12 @@ class StoryReadingScreen extends React.Component {
               <View style={[styles.marginedRow, styles.tagRow]}>
                 <Text style={styles.tagLabel}>Categories: </Text>
                 {this.renderTags()}
+              </View>
+            }
+            {!!story.cost &&
+              <View style={[styles.marginedRow, styles.tagRow]}>
+                <Text style={styles.costLabel}>Cost: </Text>
+                <Text style={styles.cost}>{story.cost + this._getCostType()}</Text>
               </View>
             }
             {this.hasLocationInfo() &&

@@ -7,10 +7,7 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'column'
   },
-  caption: {
-    marginTop: 0,
-    marginBottom: 15,
-  },
+  caption: {},
   title: {
     letterSpacing: 0,
     fontSize: 20,
@@ -18,10 +15,19 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.montserrat,
     fontWeight: '600',
     color: Colors.background,
+    marginBottom: 15,
+  },
+  titleWithDescription: {
+    marginBottom: 10,
   },
   storyReadingTitle: {
     fontSize: 30,
     lineHeight: 33,
+    marginTop: 35,
+    marginBottom: 15,
+  },
+  storyReadingTitleWithDescription: {
+    marginBottom: 15,
   },
   description: {
     fontFamily: Fonts.type.sourceSansPro,
@@ -29,7 +35,10 @@ export default StyleSheet.create({
     fontSize: 18,
     letterSpacing: .7,
     color: Colors.grey,
-    marginTop: 5,
+    marginBottom: 15,
+  },
+  storyReadingDescription: {
+    marginBottom: 15,
   },
   userContent: {
     flexDirection: 'row',
@@ -66,19 +75,18 @@ export default StyleSheet.create({
     backgroundColor: Colors.snow,
   },
   bottomContainer: {
-    paddingTop: 10,
-    paddingBottom: 5,
+    paddingTop: 20,
+    paddingBottom: 15,
   },
   dateText: {
     fontSize: 12,
     letterSpacing: .5,
     color: Colors.grey,
     marginRight: 5,
-    fontFamily: Fonts.type.crimsonText,
-    fontStyle: 'italic',
+    fontFamily: Fonts.type.sourceSansPro,
   },
   dateTextReading: {
-    fontSize: 15,
+    fontSize: 12,
   },
   locationText: {
     fontFamily: Fonts.type.sourceSansPro,
@@ -90,7 +98,6 @@ export default StyleSheet.create({
   lastRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 15,
   },
   leftRow: {
     flexDirection: 'column',

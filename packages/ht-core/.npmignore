@@ -1,6 +1,6 @@
 node_modules
-src
+/src
 .babelrc
-index.js
-yarn.*
-.flowconfig
+/index.js
+/yarn.*
+/.flowconfig

@@ -369,7 +369,8 @@ class CreateStoryDetailScreen extends React.Component {
                   style={[styles.longInputText]} 
                   value={this.state.cost}
                   onChangeText={(value) => {this.setState({cost:value})}}
-                  onSubmitEditing={(value) => {this._updateCost(value)}}
+                  onBlur={(e) => {this._updateCost(e.nativeEvent.text)}}
+                  onSubmitEditing={(e) => {this._updateCost(e.nativeEvent.text)}}
                   placeholder={this._getCostPlaceholderText(workingDraft)}
                 />
               </View>

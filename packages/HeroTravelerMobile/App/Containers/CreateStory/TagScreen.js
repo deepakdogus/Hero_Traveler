@@ -17,7 +17,7 @@ import env from '../../Config/Env'
 const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
 
 import CategoryActions from '../../Shared/Redux/Entities/Categories'
-import HashTagActions from '../../Shared/Redux/Entities/Hashtags'
+import HashtagActions from '../../Shared/Redux/Entities/Hashtags'
 import { Metrics, Colors } from '../../Shared/Themes/'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Loader from '../../Components/Loader'
@@ -303,7 +303,7 @@ class TagScreen extends Component {
                 return (
                   <View key={t._id || t.title} style={styles.selectedTagRow}>
                     <TouchableOpacity onPress={() => this._removeTag(t)} style={[styles.row, styles.rowSelected]}>
-                      <Text>{t.title}</Text>
+                      <Text>{this.props.tagType == TAG_TYPE_HASHTAG ? "#" : ""}{t.title}</Text>
                       <Icon name='close' size={15} style={styles.removeTagIcon} />
                     </TouchableOpacity>
                   </View>
@@ -323,7 +323,7 @@ class TagScreen extends Component {
                 return (
                   <View key={t._id} style={styles.rowWrapper}>
                     <TouchableOpacity onPress={() => {this._selectSearchTag(t)}} style={styles.row}>
-                      <Text>{t.title}</Text>
+                      <Text>{this.props.tagType == TAG_TYPE_HASHTAG ? "#" : ""}{t.title}</Text>
                     </TouchableOpacity>
                   </View>
                 )
@@ -331,14 +331,14 @@ class TagScreen extends Component {
             </View>
           }
 
-          {/* Show default categories from mongo */}
+          {/* Show default tags from mongo */}
           {!this.state.text && _.size(defaultTagsToShow) > 0 &&
             <View style={styles.defaultTags}>
               {_.map(defaultTagsToShow, t => {
                 return (
                   <View key={t._id} style={styles.rowWrapper}>
                     <TouchableOpacity onPress={() => {this._selectDefaultTag(t)}} style={styles.row}>
-                      <Text>{t.title}</Text>
+                      <Text>{this.props.tagType == TAG_TYPE_HASHTAG ? "#" : ""}{t.title}</Text>
                     </TouchableOpacity>
                   </View>
                 )
@@ -363,7 +363,7 @@ export default connect(
     hashtagsFetchStatus: state.entities.hashtags.fetchStatus
   }),
   dispatch => ({
-    loadDefaultHashtags: () => dispatch(CategoryActions.loadCategoriesRequest()),
+    loadDefaultHashtags: () => dispatch(HashtagActions.loadHashtagsRequest()),
     loadDefaultCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
     completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips}))
   })

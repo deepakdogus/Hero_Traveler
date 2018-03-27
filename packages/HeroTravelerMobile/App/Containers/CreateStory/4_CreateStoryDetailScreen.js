@@ -254,7 +254,6 @@ class CreateStoryDetailScreen extends React.Component {
     const err = this.props.error
     const errText = (__DEV__ && err && err.problem && err.status) ? `${err.status}: ${err.problem}` : ""
 
-    console.log("!!!", this.state);
     return (
       <View style={{flex: 1, position: 'relative'}}>
           { showError && err &&

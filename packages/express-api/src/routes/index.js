@@ -2,6 +2,7 @@ import StoryRoutes from './story'
 import UserRoutes from './user'
 import AuthRoutes from './auth'
 import CategoryRoutes from './category'
+import HashtagRoutes from './hashtag'
 import GuideRoutes from './guide'
 
 export default function bootstrapRoutes(app) {
@@ -9,5 +10,6 @@ export default function bootstrapRoutes(app) {
   app.use('/user', UserRoutes)
   app.use('/auth', AuthRoutes)
   app.use('/category', CategoryRoutes)
+  app.use('/hashtag', HashtagRoutes)
   app.use('/guide', GuideRoutes)
 }

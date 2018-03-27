@@ -8,6 +8,7 @@ import CloudinaryAPI from '../../Services/CloudinaryAPI'
 
 const User = new schema.Entity('users')
 const Category = new schema.Entity('categories')
+const Hashtag = new schema.Entity('hashtags')
 const Story = new schema.Entity('stories', {
   author: User,
   category: Category
@@ -227,6 +228,11 @@ const create = () => {
     .then(response => safeNormalize(response, [Category]))
   }
 
+  const getHashtags = () => {
+    return api.get('hashtag')
+    .then(response => safeNormalize(response, [Hashtag]))
+  }
+
   const getSuggestedUsers = (params) => {
     return api.get('user/suggestFollowers', {
       params
@@ -396,6 +402,7 @@ const create = () => {
     getUserFeed,
     createStory,
     getCategories,
+    getHashtags,
     getUserStories,
     getCategoryStories,
     getSuggestedUsers,

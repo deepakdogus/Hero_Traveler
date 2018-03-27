@@ -6,11 +6,13 @@ import Core, {
   User,
   Story,
   Category,
+  Hashtag,
   Models
 } from '@hero/ht-core'
 import generateUserSeedData from './data/userData'
 import generateStorySeedData from './data/storyData'
 import generateCategorySeedData from './data/categoryData'
+import generateHashtagSeedData from './data/hashtagData'
 import generateFollowerSeedData from './data/followerData'
 
 function removeAllData() {
@@ -18,6 +20,7 @@ function removeAllData() {
     Models.Activity.remove({}),
     Models.User.remove({}),
     Models.Category.remove({}),
+    Models.Hashtag.remove({}),
     Models.AuthToken.remove({}),
     Models.Story.remove({}),
     Models.Follower.remove({}),
@@ -35,9 +38,10 @@ async function seedAllData() {
     // let users = await createUsers(0)
     // let followers = await createFollowers(users, 0)
 
-    // Only seeding categories for now, as that's all that is needed
+    // Only seeding categories and hashtags for now, as that's all that is needed
     // to run the app
     let categories = await createCategories()
+    let hashtags = await createHashtags()
 
     // let stories = await createStories(users, categories, 100)
     return Promise.resolve()
@@ -60,6 +64,11 @@ async function createStories(users, categories, count) {
 async function createCategories() {
   let categoryData = await generateCategorySeedData()
   return Promise.all(categoryData.map(Category.create))
+}
+
+async function createHashtags() {
+  let hashtagData = await generateHashtagSeedData()
+  return Promise.all(hashtagData.map(Hashtag.create))
 }
 
 async function createFollowers(users, count) {

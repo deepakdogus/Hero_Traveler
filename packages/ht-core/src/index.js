@@ -5,6 +5,7 @@ import * as Models from './models'
 import * as Story from './story'
 import * as StoryDraft from './storyDraft'
 import * as Category from './category'
+import * as Hashtag from './hashtag'
 import * as Comment from './comment'
 import * as Guide from './guide'
 
@@ -16,6 +17,7 @@ export {
   Story,
   StoryDraft,
   Category,
+  Hashtag,
   Models,
   Comment,
   Guide,

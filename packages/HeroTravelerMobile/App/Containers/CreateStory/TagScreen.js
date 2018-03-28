@@ -8,9 +8,13 @@ import {
   TextInput,
   TouchableOpacity
 } from 'react-native'
+import { Actions as NavActions } from 'react-native-router-flux'
 import {connect} from 'react-redux'
 import algoliasearchModule from 'algoliasearch/reactnative'
 import AlgoliaSearchHelper from 'algoliasearch-helper';
+
+import NavBar from '../CreateStory/NavBar'
+import storyCoverStyles from '../CreateStory/2_StoryCoverScreenStyles'
 
 import env from '../../Config/Env'
 
@@ -214,14 +218,16 @@ class TagScreen extends Component {
     return (
       <View style={styles.root}>
         {showTooltip && this.renderTooltip()}
-        <View style={{marginTop: Metrics.baseMargin, height: 40}}>
-          <TouchableOpacity
-            style={styles.doneBtn}
-            onPress={isInputFocused ? this.setInputBlurred : this._done}
-          >
-            <Text style={styles.doneBtnText}>{isInputFocused ? 'Cancel' : 'Done'}</Text>
-          </TouchableOpacity>
-        </View>
+        <NavBar
+          onLeft={NavActions.pop}
+          leftTitle={'Cancel'}
+          title={'ADD CATEGORIES'}
+          rightTitle={'Done'}
+          onRight={this._done}
+          isRightValid={true}
+          rightTextStyle={storyCoverStyles.navBarRightTextStyle}
+          style={storyCoverStyles.navBarStyle}
+        />
         <View style={styles.content}>
           <View style={styles.formWrapper}>
             <View style={styles.textInputWrapper}>

@@ -3,8 +3,11 @@ import { Fonts, Colors, Metrics } from '../../Shared/Themes/'
 
 export default StyleSheet.create({
   root: {
-    flex: 1,
     flexDirection: 'column',
+    flex: 1,
+    backgroundColor: 'white',
+    borderTopWidth: 20,
+    borderTopColor: Colors.background
   },
   content: {
     flex: 1,

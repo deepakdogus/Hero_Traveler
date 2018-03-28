@@ -34,7 +34,7 @@ export default class ListItem extends Component {
     leftElement: PropTypes.element,
     text: PropTypes.node.isRequired,
     secondaryText: PropTypes.node,
-    rightElement: PropTypes.element,
+    rightElement: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
   }
 
   render() {

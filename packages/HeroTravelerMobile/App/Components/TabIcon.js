@@ -105,6 +105,8 @@ class TabIcon extends React.Component {
         return Images.iconFounderBadge
       case 'error':
         return Images.iconErrorExclamation
+      case 'info':
+        return Images.iconInfoDark
       case 'profile':
       default:
         return Images.iconNavProfile
@@ -142,7 +144,7 @@ const mapStateToProps = (state, props) => {
   if (props.name === 'activity') {
     const activities = state.entities.users.activities
     const backgroundFailures = state.entities.stories.backgroundFailures
-    const backgroundFailuresCount = backgroundFailures ? Object.keys(backgroundFailures).length : 0  
+    const backgroundFailuresCount = backgroundFailures ? Object.keys(backgroundFailures).length : 0
     const unseenActivityCount = _.keys(activities).reduce((count, key) => {
       const increment = activities[key].seen ? 0 : 1;
       return count + increment;

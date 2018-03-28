@@ -38,5 +38,19 @@ export default StyleSheet.create({
   },
   coverHeight: {
     height: 415,
-  }
+  },
+  fieldWrapper: {
+    borderBottomColor: Colors.navBarText,
+    borderBottomWidth: 1,
+    marginVertical: Metrics.baseMargin,
+    flexDirection: 'row',
+    // justifyContent: 'flex-start'
+  },
+  inputStyle: {
+    flex: 1,
+    color: Colors.background,
+    fontSize: 16,
+    marginBottom: 10,
+    height: 30,
+  },
 })

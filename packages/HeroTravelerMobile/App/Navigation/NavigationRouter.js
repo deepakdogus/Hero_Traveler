@@ -296,6 +296,17 @@ export default NavActions.create(
         component={CreateGuideScreen}
         hideNavBar={true}
       />
+      {/* NOTE:: These <Scene/> should not really be duplicated */}
+      <Scene
+        key='setCategories'
+        panHandlers={null}
+        component={TagScreen}
+      />
+      <Scene
+        key='setLocation'
+        panHandlers={null}
+        component={LocationScreen}
+      />
       <Scene
         key='tabbar'
         type='reset'

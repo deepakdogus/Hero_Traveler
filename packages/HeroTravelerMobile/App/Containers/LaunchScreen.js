@@ -124,7 +124,7 @@ class LaunchScreen extends React.Component {
           <Text
             style={styles.tagline}
             textAlign='center'
-          >{'Share Your Adventures with the World'}</Text>
+          >{'Travel like a Hero'}</Text>
         </View>
         <View style={styles.spacer} />
         <View style={styles.signupButtons}>

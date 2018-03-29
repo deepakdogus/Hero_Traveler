@@ -54,23 +54,11 @@ const StoryVideo = enhanceStoryVideo((props) => {
         allowVideoPlay={true}
         autoPlayVideo={false}
         showMuteButton={false}
-        showPlayButton={true}
+        showPlayButton={false}
         playButtonSize={'small'}
         videoFillSpace={true}
         resizeMode='cover'
-      >
-        <TouchableWithoutFeedback
-          style={styles.videoToggleWrapper}
-          onPress={props.togglePlay}
-        >
-          <View
-            style={[
-              styles.videoToggleView,
-              {height},
-            ]}
-          />
-        </TouchableWithoutFeedback>
-      </VideoPlayer>
+      />
     </View>
   )
 })

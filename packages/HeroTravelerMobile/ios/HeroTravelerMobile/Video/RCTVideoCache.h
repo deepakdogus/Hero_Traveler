@@ -29,7 +29,7 @@
 
 + (NSString*) urlToKey:(NSString*)url;
 
-- (void) precacheAssets:(NSArray*)precacheAssets; // set as array of urls
+- (void) downloadVideoToCache:(NSURL*)url;
 
 - (PlayingVideoItem*) assetForUrl:(NSString*)url withOriginalUrl:(NSString*)originalUrl forVideoView:(RCTVideo*)videoView;
 

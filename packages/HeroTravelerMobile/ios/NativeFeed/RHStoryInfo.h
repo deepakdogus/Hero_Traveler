@@ -7,6 +7,7 @@
 
 @property(nonatomic, strong) NSURL* headerImage;
 @property(nonatomic, assign) CGFloat height;
+@property(nonatomic, strong) NSArray* contentMedia;
 
 @end
 

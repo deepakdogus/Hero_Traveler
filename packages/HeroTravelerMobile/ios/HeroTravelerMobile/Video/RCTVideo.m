@@ -10,8 +10,8 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
 @implementation RCTVideo
 {
   BOOL _playerBufferEmpty;
-  AVPlayerLayer *_playerLayer;
-  AVPlayerViewController *_playerViewController;
+  AVPlayerViewController* _embeddedViewController;
+  AVPlayerViewController* _playerViewController;
   NSURL *_videoURL;
   PlayingVideoItem* playingVideoItem;
 
@@ -113,11 +113,12 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
 
 - (void) removeAllPlayerViews
 {
-  if (_playerLayer)
+  if (_embeddedViewController)
   {
-    [_playerLayer removeFromSuperlayer];
-    [_playerLayer removeObserver:self forKeyPath:readyForDisplayKeyPath];
-    _playerLayer = nil;
+    [_embeddedViewController.view removeFromSuperview];
+    [_embeddedViewController removeFromParentViewController];
+    [_embeddedViewController removeObserver:self forKeyPath:readyForDisplayKeyPath];
+    _embeddedViewController = nil;
   }
   
   if (_playerViewController)
@@ -177,7 +178,8 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
 
 - (void) setResizeMode:(NSString*)mode
 {
-  _playerLayer.videoGravity = mode;
+  _embeddedViewController.videoGravity = mode;
+  _playerViewController.videoGravity = mode;
   _resizeMode = mode;
 }
 
@@ -284,7 +286,7 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   [self restorePlayingVideo];
   [CATransaction begin];
   [CATransaction setAnimationDuration:0];
-  _playerLayer.frame = self.bounds;
+  _embeddedViewController.view.frame = self.bounds;
   [CATransaction commit];
 }
 
@@ -332,18 +334,19 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   [player pause];
   [player setRate:0.f];
   
-  if (playerLayerVisible && !_playerLayer)
+  if (playerLayerVisible && !_embeddedViewController)
   {
-    _playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
-    _playerLayer.frame = self.bounds;
-    _playerLayer.needsDisplayOnBoundsChange = YES;
+    _embeddedViewController = [[AVPlayerViewController alloc] init];
+    _embeddedViewController.view.frame = self.bounds;
     
-    // to prevent video from being animated when resizeMode is 'cover'
-    // resize mode must be set before layer is added
     [self setResizeMode:_resizeMode];
-    [_playerLayer addObserver:self forKeyPath:readyForDisplayKeyPath options:NSKeyValueObservingOptionNew context:nil];
     
-    if (_playerLayer.readyForDisplay)
+    [_embeddedViewController addObserver:self
+                              forKeyPath:readyForDisplayKeyPath
+                                 options:NSKeyValueObservingOptionNew
+                                 context:nil];
+    
+    if (_embeddedViewController.readyForDisplay)
     {
       dispatch_async(dispatch_get_main_queue(), ^{
         if (self.onReadyForDisplay)
@@ -353,14 +356,14 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
       });
     }
     
-    [self.layer addSublayer:_playerLayer];
-    self.layer.needsDisplayOnBoundsChange = YES;
+    [self addSubview:_embeddedViewController.view];
   }
-  else if (!playerLayerVisible && _playerLayer)
+  else if (!playerLayerVisible && _embeddedViewController)
   {
-    [_playerLayer removeFromSuperlayer];
-    [_playerLayer removeObserver:self forKeyPath:readyForDisplayKeyPath];
-    _playerLayer = nil;
+    [_embeddedViewController removeFromParentViewController];
+    [_embeddedViewController.view removeFromSuperview];
+    [_embeddedViewController removeObserver:self forKeyPath:readyForDisplayKeyPath];
+    _embeddedViewController = nil;
   }
   
   if (fullscreenVisible && !_playerViewController)
@@ -444,13 +447,13 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
     [player setRate:_rate];
   }
 
-  if (!_isInBackground && _playerLayer.player != player)
+  if (!_isInBackground && _embeddedViewController.player != player)
   {
-    [_playerLayer setPlayer:player];
+    [_embeddedViewController setPlayer:player];
   }
-  else if (_isInBackground && _playerLayer.player != nil)
+  else if (_isInBackground && _embeddedViewController.player != nil)
   {
-    [_playerLayer setPlayer:nil];
+    [_embeddedViewController setPlayer:nil];
   }
   
   [[RCTVideoCache get] setAsset:[playingVideoItem videoCacheItem].assetKey isMuted:_muted];
@@ -465,7 +468,7 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-  if (object == _playerLayer) {
+  if (object == _embeddedViewController) {
     if([keyPath isEqualToString:readyForDisplayKeyPath] && [change objectForKey:NSKeyValueChangeNewKey]) {
       if ([change objectForKey:NSKeyValueChangeNewKey]) {
         if (self.onReadyForDisplay)

@@ -245,6 +245,11 @@
   [self handleMutedStatus];
 }
 
+- (void) downloadVideoToCache:(NSURL*)url
+{
+  
+}
+
 - (void) dispatchDownloads
 {
   for (VideoDownloadItem* download in currentDownloads)
@@ -432,17 +437,6 @@
     
     loadedVideos = [NSArray arrayWithArray:mLoadedVideos];
   }
-}
-
-- (void) precacheAssets:(NSArray*)precacheAssets
-{
-//  for (NSString* uri in precacheAssets)
-//  {
-//    [self videoCacheItemForUri:uri];
-//  }
-//
-//  currentPrecacheList = [NSArray arrayWithArray:precacheAssets];
-//  [self dispatchDownloads];
 }
 
 - (void) handleMemoryWarning

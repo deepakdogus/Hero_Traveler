@@ -219,37 +219,7 @@ export default class StoryCover extends Component {
           onMuteChange={this._changeMute}
           isMuted={this.props.isFeed}
           resizeMode='cover'
-        >
-          <TouchableWithoutFeedback onPress={this._tapVideoWrapper}>
-            <View style={[styles.gradient, styles.videoGradient]}>
-              {this.props.children}
-            </View>
-          </TouchableWithoutFeedback>
-        </VideoPlayer>
-        {this.props.allowVideoPlay && !this.state.isPlaying && this.props.shouldEnableAutoplay && !this.props.isFeed &&
-        <PlayButton
-          onPress={this._togglePlayerRef}
-          isPlaying={this.state.isPlaying}
-          videoFadeAnim={this.player && this.player.getAnimationState()}
-          style={[
-            styles.playButton,
-            !this.props.isFeed ? styles.readPlayButton : {},
-          ]}
-        />}
-        {this.props.allowVideoPlay && this.state.isPlaying && !this.props.isFeed &&
-          <MuteButton
-            onPress={this._togglePlayerRefMuted}
-            isMuted={this.state.isMuted}
-            style={styles.muteButton}
-          />
-        }
-         {this.props.showPlayButton &&
-          <PlayButton
-            onPress={this._tapVideoWrapper}
-            style={[styles.playButton, styles.smallPlayButton]}
-            size='small'
-          />
-         }
+        />
       </View>
     )
   }

@@ -2,6 +2,7 @@
 #import <React/RCTAssert.h>
 #import <React/RCTRefreshControl.h>
 #import <React/UIView+React.h>
+#import <React/UIView+Private.h>
 #import "RHNativeFeedHeader.h"
 #import "RHNativeFeedItem.h"
 #import "RHCustomScrollView.h"
@@ -36,7 +37,8 @@
   NSMutableArray<NSValue *> *_cachedChildFrames;
   BOOL _allowNextScrollNoMatterWhat;
   
-  RHNativeFeedBackingView* _cellTemplatesView;
+  CGRect _lastClippedToRect;
+  NSArray* _cellTemplatesViews;
 
   // TODO: instead of tracking this context I could also create an object that can be invalidated
   //    that handles prefetching
@@ -46,6 +48,17 @@
   NSSet* loadedStoryImages;
   
   RHDisposable* dispatchCellRangeDisposable;
+  
+  BOOL storyInfosChanged;
+  CGRect lastCalculatedBounds;
+  CGFloat lastCellSeperatorHeight;
+  NSInteger lastPreloadAheadCells;
+  NSInteger lastPreloadBehindCells;
+  NSUInteger lastNumLoadedCells;
+  
+  BOOL heightsChanged;
+  CGFloat lastTotalHeaderHeight;
+  CGFloat lastBackingViewSeperatorHeight;
 }
 
 - (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher
@@ -88,10 +101,8 @@
 
     [self addSubview:_scrollView];
     
-    _cellTemplatesView = [[RHNativeFeedBackingView alloc] initWithFrame:CGRectZero];
-    _cellTemplatesView.userInteractionEnabled = YES;
-    [_scrollView addSubview:_cellTemplatesView];
-
+    _cellTemplatesViews = @[];
+    
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_scrollView
                                                      attribute:NSLayoutAttributeTop
                                                      relatedBy:NSLayoutRelationEqual
@@ -155,6 +166,8 @@
   }
 
   _storyInfos = inStoryInfos;
+  storyInfosChanged = YES;
+  heightsChanged = YES;
 
   NSInteger numImagesToCheck = 0;
   for (RHStoryInfo* storyInfo in _storyInfos)
@@ -360,45 +373,57 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
 - (void) recalculateBackingView
 {
-  if (self.currentMinCellIndex < 0 && self.currentMaxCellIndex < 0)
+  CGFloat headerHeight = [self getTotalHeaderHeight];
+  
+  if (fabs(lastTotalHeaderHeight - headerHeight) < 1.f && !heightsChanged && fabs(lastBackingViewSeperatorHeight - _cellSeparatorHeight) < 1.f)
   {
-    _cellTemplatesView.frame = CGRectZero;
-    [_cellTemplatesView setHeights:@[]];
+    return;
   }
   
-  CGFloat headerHeight = [self getTotalHeaderHeight];
-  CGFloat yOffset = headerHeight;
-  CGFloat backingViewHeight = 0.f;
-  
-  NSMutableArray* cellHeights = [@[] mutableCopy];
-  for (int i = 0; i < self.currentMaxCellIndex; i++)
+  for (UIView* view in _cellTemplatesViews)
   {
-    if (i >= _storyInfos.count)
+    [view removeFromSuperview];
+  }
+  
+  NSMutableArray* newTemplates = [@[] mutableCopy];
+
+  heightsChanged = NO;
+  lastBackingViewSeperatorHeight = _cellSeparatorHeight;
+  lastTotalHeaderHeight = headerHeight;
+  CGFloat yOffset = headerHeight;
+  NSInteger chunkSize = 10;
+  
+  for (int i = 0; i < _storyInfos.count; i += chunkSize)
+  {
+    NSMutableArray* cellHeights = [@[] mutableCopy];
+    CGFloat backingViewHeight = 0.f;
+    for (int j = 0; j < chunkSize && (i + j) < _storyInfos.count; j++)
     {
-      break;
-    }
-    
-    RHStoryInfo* storyInfo = _storyInfos[i];
-    
-    CGFloat cellHeight = storyInfo.height;
-    
-    // Prep work for making dynamically sized cells
-    if (i < self.currentMinCellIndex)
-    {
-      yOffset += cellHeight + _cellSeparatorHeight;
-    }
-    else
-    {
+      RHStoryInfo* storyInfo = _storyInfos[i+j];
+      CGFloat cellHeight = storyInfo.height;
       [cellHeights addObject:@(cellHeight)];
       backingViewHeight += cellHeight + _cellSeparatorHeight;
     }
+    
+    if (backingViewHeight < 1.f)
+    {
+      continue;
+    }
+    
+    CGRect backingViewFrame = CGRectMake(0, yOffset, self.bounds.size.width, backingViewHeight);
+    
+    RHNativeFeedBackingView* backingView = [[RHNativeFeedBackingView alloc] initWithFrame:backingViewFrame];
+    backingView.userInteractionEnabled = YES;
+    [backingView setSeparatorHeight:_cellSeparatorHeight];
+    [backingView setHeights:cellHeights];
+    [_scrollView insertSubview:backingView atIndex:0];
+    
+    [newTemplates addObject:backingView];
+    
+    yOffset += backingViewHeight;
   }
   
-  _cellTemplatesView.frame = CGRectMake(0,
-                                        yOffset,
-                                        self.bounds.size.width,
-                                        backingViewHeight);
-  [_cellTemplatesView setHeights:cellHeights];
+  _cellTemplatesViews = [NSArray arrayWithArray:newTemplates];
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
@@ -415,8 +440,8 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 - (void) setCellSeparatorHeight:(CGFloat)cellSeparatorHeight
 {
   _cellSeparatorHeight = cellSeparatorHeight;
-  [_cellTemplatesView setSeparatorHeight:cellSeparatorHeight];
   [self recalculateVisibleCells];
+  [self recalculateBackingView];
 }
 
 - (CGFloat) cellSeparatorHeight
@@ -453,8 +478,22 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 - (void) setContentSize
 {
   NSUInteger numLoadedCells = [self numLoadedCells];
+  
+  CGFloat totalLoadedCellHeight = 0.f;
+  NSInteger cellNum = 0;
+  for (RHStoryInfo* storyInfo in _storyInfos)
+  {
+    if (cellNum >= numLoadedCells)
+    {
+      break;
+    }
+    
+    totalLoadedCellHeight += storyInfo.height + _cellSeparatorHeight;
+    cellNum += 1;
+  }
+
   _scrollView.contentSize = CGSizeMake(self.bounds.size.width,
-                                       [self getTotalHeaderHeight] + [self getTotalCellHeight]);
+                                       [self getTotalHeaderHeight] + totalLoadedCellHeight);
   
   for (RHNativeFeedItem* view in _scrollView.subviews)
   {
@@ -478,6 +517,30 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
 - (void) recalculateVisibleCells:(CGPoint)contentOffset
 {
+  CGRect visibleBounds = self.bounds;
+  visibleBounds.origin = contentOffset;
+  
+  CGRect boundsOverlapWithLastCalculation = CGRectIntersection(visibleBounds, lastCalculatedBounds);
+  
+  CGFloat boundsDiff = fabs(boundsOverlapWithLastCalculation.size.height - visibleBounds.size.height);
+
+  CGFloat heightChange = fabs(lastCellSeperatorHeight-_cellSeparatorHeight);
+  NSUInteger numLoadedCells = [self numLoadedCells];
+
+  if (!storyInfosChanged && boundsDiff < 10.f && heightChange < 1.f && lastPreloadAheadCells == _numPreloadAheadCells && lastPreloadBehindCells == _numPreloadBehindCells)
+  {
+    [self setContentSize];
+    [self recalculateBackingView];
+    return;
+  }
+  
+  storyInfosChanged = NO;
+  lastCalculatedBounds = visibleBounds;
+  lastCellSeperatorHeight = _cellSeparatorHeight;
+  lastPreloadAheadCells = _numPreloadAheadCells;
+  lastPreloadBehindCells = _numPreloadBehindCells;
+  lastNumLoadedCells = numLoadedCells;
+  
   NSInteger minCell = NSIntegerMax;
   NSInteger maxCell = NSIntegerMin;
   NSInteger playingCell = 0;
@@ -498,9 +561,6 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   }
   else
   {
-    CGRect visibleBounds = self.bounds;
-    visibleBounds.origin = contentOffset;
-
     CGFloat maxIntersectionSize = 0;
     CGFloat curY = [self getTotalHeaderHeight];
     for (int i = 0; i < numCells; i++)
@@ -533,7 +593,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
       curY += storyInfo.height + _cellSeparatorHeight;
     }
     
-    minCell = MAX(minCell-_numPreloadAheadCells, 0);
+    minCell = MAX(minCell-_numPreloadBehindCells, 0);
     maxCell = MIN(maxCell+1+_numPreloadAheadCells, numCells);
   }
   
@@ -694,6 +754,35 @@ RCT_SCROLL_EVENT_HANDLER(scrollViewDidZoom, onScroll)
   RCT_FORWARD_SCROLL_EVENT(scrollViewDidScroll:scrollView);
   [self recalculateVisibleCells];
 }
+
+- (void)updateClippedSubviews
+{
+  // Find a suitable view to use for clipping
+  UIView *clipView = [self react_findClipView];
+  if (!clipView) {
+    return;
+  }
+  
+  static const CGFloat leeway = 1.0;
+  
+  const CGSize contentSize = _scrollView.contentSize;
+  const CGRect bounds = _scrollView.bounds;
+  const BOOL scrollsHorizontally = contentSize.width > bounds.size.width;
+  const BOOL scrollsVertically = contentSize.height > bounds.size.height;
+  
+  const BOOL shouldClipAgain =
+  CGRectIsNull(_lastClippedToRect) ||
+  !CGRectEqualToRect(_lastClippedToRect, bounds) ||
+  (scrollsHorizontally && (bounds.size.width < leeway || fabs(_lastClippedToRect.origin.x - bounds.origin.x) >= leeway)) ||
+  (scrollsVertically && (bounds.size.height < leeway || fabs(_lastClippedToRect.origin.y - bounds.origin.y) >= leeway));
+  
+  if (shouldClipAgain) {
+    const CGRect clipRect = CGRectInset(clipView.bounds, -leeway, -leeway);
+    [self react_updateClippedSubviewsWithClipRect:clipRect relativeToView:clipView];
+    _lastClippedToRect = bounds;
+  }
+}
+
 
 - (NSArray<NSDictionary *> *)calculateChildFramesData
 {

@@ -303,7 +303,6 @@ export default class VideoPlayer extends React.Component {
             />
           </View>
         }
-        <FullScreenButton onPress={this.goFullscreen} />
         {this.props.children}
       </View>
     )

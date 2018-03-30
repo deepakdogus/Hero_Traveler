@@ -55,7 +55,6 @@ const StoryVideo = enhanceStoryVideo((props) => {
         autoPlayVideo={false}
         showMuteButton={false}
         showPlayButton={false}
-        playButtonSize={'small'}
         videoFillSpace={true}
         resizeMode='cover'
       />
@@ -271,6 +270,7 @@ class StoryReadingScreen extends React.Component {
           scrollEventThrottle={400}
           style={[styles.scrollView]}>
           <ConnectedStoryPreview
+            isFeed={false}
             onPressLike={this._toggleLike}
             showLike={false}
             onPressUser={this._pressUser}

@@ -87,6 +87,7 @@ export default class ProfileTabsAndStories extends Component {
     } = this.props
     return (
       <ConnectedStoryPreview
+        isFeed={true}
         forProfile={true}
         editable={editable && selectedTab !== tabTypes.bookmarks}
         titleStyle={styles.storyTitleStyle}

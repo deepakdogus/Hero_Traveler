@@ -39,6 +39,7 @@ export default class StoryPreview extends Component {
     isStoryReadingScreen: PropTypes.bool,
     gradientColors: PropTypes.arrayOf(PropTypes.string),
     isVisible: PropTypes.bool,
+    isFeed: PropTypes.bool,
     areInRenderLocation: PropTypes.bool,
     deleteStory: PropTypes.func,
     removeDraft: PropTypes.func,
@@ -52,6 +53,7 @@ export default class StoryPreview extends Component {
   static defaultProps = {
     showLike: true,
     isStoryReadingScreen: false,
+    isFeed: true,
   }
 
   _touchEdit = () => {
@@ -283,7 +285,7 @@ export default class StoryPreview extends Component {
             gradientLocations={gradientLocations}
             showPlayButton={showPlayButton}
             playButtonSize={playButtonSize}
-            isFeed={this.props.isVisible !== undefined}
+            isFeed={this.props.isFeed}
             shouldEnableAutoplay={this.shouldEnableAutoplay()}
             storyTitle={displayLocation(story.locationInfo)}
           />

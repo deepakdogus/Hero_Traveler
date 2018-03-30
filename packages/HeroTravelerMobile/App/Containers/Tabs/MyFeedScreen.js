@@ -96,6 +96,7 @@ class MyFeedScreen extends React.Component {
   renderStory = (story, index) => {
     return (
       <ConnectedStoryPreview
+        isFeed={true}
         story={story}
         height={imageHeight}
         onPressUser={this._touchUser}

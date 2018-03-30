@@ -23,6 +23,9 @@
 @property (nonatomic, copy) RCTBubblingEventBlock onPlaybackResume;
 @property (nonatomic, copy) RCTBubblingEventBlock onPlaybackRateChange;
 
+@property (nonatomic, copy) RCTBubblingEventBlock onPauseFromUI;
+@property (nonatomic, copy) RCTBubblingEventBlock onPlayFromUI;
+
 @property (nonatomic, assign) BOOL needsVideoLoaded;
 
 - (BOOL) shouldRepeat;
@@ -39,5 +42,7 @@
 
 - (BOOL) isDisplayingFullscreen;
 - (BOOL) isPlaying;
+
+- (float) rate;
 
 @end

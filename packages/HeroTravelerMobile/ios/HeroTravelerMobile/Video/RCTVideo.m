@@ -211,6 +211,11 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   [self applyModifiers];
 }
 
+- (float) rate
+{
+  return _rate;
+}
+
 - (void) setMuted:(BOOL)muted
 {
   _muted = muted;
@@ -456,7 +461,16 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
     [_embeddedViewController setPlayer:nil];
   }
   
-  [[RCTVideoCache get] setAsset:[playingVideoItem videoCacheItem].assetKey isMuted:_muted];
+  if (_muted)
+  {
+    [player setVolume:0];
+    [player setMuted:YES];
+  }
+  else
+  {
+    [player setVolume:1];
+    [player setMuted:NO];
+  }
 
   [self setResizeMode:_resizeMode];
 }

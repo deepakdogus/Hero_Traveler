@@ -123,7 +123,10 @@ const StorySchema = new Schema({
   },
   currency: {
     type: Number
-  }
+  },
+  travelTips: {
+    type: String
+  },
   
 }, {
   timestamps: true,

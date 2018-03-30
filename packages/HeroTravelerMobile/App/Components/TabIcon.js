@@ -71,6 +71,8 @@ class TabIcon extends React.Component {
         return Images.iconTag
       case 'hashtag':
         return Images.iconHashtag
+      case 'travelTips':
+        return Images.travelTips
       case 'cost':
         return Images.iconCost
       case 'explore':

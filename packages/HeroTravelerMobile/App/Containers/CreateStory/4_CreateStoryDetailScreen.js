@@ -207,6 +207,11 @@ class CreateStoryDetailScreen extends React.Component {
     NavActions.pop()
   }
 
+  _receiveTravelTips = (travelTips) => {
+    this.props.updateWorkingDraft({travelTips: travelTips})
+    NavActions.pop()
+  }
+
   isDraft() {
     return this.props.story.draft || false
   }
@@ -222,6 +227,15 @@ class CreateStoryDetailScreen extends React.Component {
     NavActions.createStory_hashtags({
       onDone: this._receiveHashtags,
       tags: this.props.workingDraft.hashtags || this.state.hashtags
+    })
+  }
+
+  navToTravelTips = () => {
+    NavActions.createStory_travelTips({
+      onDone: this._receiveTravelTips,
+      text: this.props.workingDraft.travelTips,
+      title: 'TRAVEL TIPS',
+      placeholder: 'What should your fellow travelers know?'
     })
   }
 
@@ -373,6 +387,19 @@ class CreateStoryDetailScreen extends React.Component {
                   onSubmitEditing={(e) => {this._updateCost(e.nativeEvent.text)}}
                   placeholder={this._getCostPlaceholderText(workingDraft)}
                 />
+              </View>
+            </View>
+            <View style={styles.travelTipsWrapper}>
+              <Text style={styles.fieldLabel}>Travel Tips: </Text>
+              <View style={styles.travelTipsPreview}>
+                <TouchableHighlight onPress={this.navToTravelTips}>
+                  <Text style={[
+                    styles.travelTipsPreviewText,
+                    workingDraft.travelTips ? {} : styles.travelTipsPreviewTextDimmed
+                  ]}>
+                    {workingDraft.travelTips || "What should your fellow travelers know?"}
+                  </Text>
+                </TouchableHighlight>
               </View>
             </View>
           </ScrollView>

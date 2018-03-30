@@ -23,6 +23,13 @@ export default StyleSheet.create({
   },
   fieldLabel: {
     marginBottom: Metrics.baseMargin / 2,
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  fieldLabelLong: {
+    flexGrow: 1,
+    width: "100%",
+    marginBottom: Metrics.baseMargin / 2,
     fontSize: 14
   },
   fieldIcon: {
@@ -58,6 +65,24 @@ export default StyleSheet.create({
     fontSize: 16,
     color: Colors.background,
     marginBottom: 20
+  },
+  travelTipsWrapper: {
+    marginTop: Metrics.baseMargin * 2,
+    marginBottom: Metrics.baseMargin,
+    flexDirection: 'column',
+  },
+  travelTipsPreview: {
+    flexGrow: 1,
+    width: "100%",
+  },
+  travelTipsPreviewText: {
+    borderWidth: 1,
+    borderColor: Colors.navBarText,
+    padding: Metrics.baseMargin,
+    minHeight: 90,
+  },
+  travelTipsPreviewTextDimmed: {
+    color: Colors.grey
   },
   currency: {
     flexShrink: 1,

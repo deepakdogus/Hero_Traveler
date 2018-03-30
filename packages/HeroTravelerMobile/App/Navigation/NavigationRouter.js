@@ -36,6 +36,7 @@ import StoryCreateScreen from '../Containers/CreateStory/1_CreateStoryScreen'
 import StoryCoverScreen from '../Containers/CreateStory/2_StoryCoverScreen'
 import CreateStoryDetailScreen from '../Containers/CreateStory/4_CreateStoryDetailScreen'
 import TagScreen from '../Containers/CreateStory/TagScreen'
+import TextInputScreen from '../Containers/CreateStory/TextInputScreen'
 import LocationScreen from '../Containers/CreateStory/LocationScreen'
 import MediaSelectorScreen from '../Containers/MediaSelectorScreen'
 
@@ -379,6 +380,11 @@ export default NavActions.create(
           panHandlers={null}
           component={TagScreen}
           tagType='hashtag'
+        />
+        <Scene
+          key='createStory_travelTips'
+          panHandlers={null}
+          component={TextInputScreen}
         />
         <Scene
           key='createStory_location'

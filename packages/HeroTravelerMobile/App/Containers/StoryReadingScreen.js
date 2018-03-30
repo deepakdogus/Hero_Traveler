@@ -232,15 +232,18 @@ class StoryReadingScreen extends React.Component {
     return this.state.oldYPos >  this.state.newYPos || this.state.newYPos <= 0
   }
 
-  renderTags = () => {
-    const lastIndex = this.props.story.categories.length - 1
-    return this.props.story.categories.map((category, index) => {
-      return (
-        <Text key={index} style={styles.tag}>
-          {category.title}{index !== lastIndex ? ', ': ''}
-        </Text>
-      )
+  renderCategories = () => {
+    let categories = this.props.story.categories.map((category) => {
+      return category.title;
     })
+    return <Text style={[styles.sectionText, styles.sectionTextHighlight]}>{categories.join(', ')}</Text>
+  }
+
+  renderHashtags = () => {
+    let categories = this.props.story.hashtags.map((hashtag) => {
+      return "#" + hashtag.title;
+    })
+    return <Text style={[rendererStyles.unstyled, styles.sectionTextHighlight]}>{categories.join(', ')}</Text>
   }
 
   _flagStory = () => {
@@ -328,21 +331,10 @@ class StoryReadingScreen extends React.Component {
                 atomicHandler={atomicHandler}
               />
             }
+            {this.renderHashtags()}
             {!!story.videoDescription &&
               <View style={styles.videoDescription}>
                 <Text style={styles.videoDescriptionText}>{story.videoDescription}</Text>
-              </View>
-            }
-            {!!story.categories.length &&
-              <View style={[styles.marginedRow, styles.tagRow]}>
-                <Text style={styles.tagLabel}>Categories: </Text>
-                {this.renderTags()}
-              </View>
-            }
-            {!!story.cost &&
-              <View style={[styles.marginedRow, styles.tagRow]}>
-                <Text style={styles.costLabel}>Cost: </Text>
-                <Text style={styles.cost}>{story.cost + this._getCostType()}</Text>
               </View>
             }
             {this.hasLocationInfo() &&
@@ -362,22 +354,66 @@ class StoryReadingScreen extends React.Component {
                   }} />
                 </MapView>
                 <View style={styles.marginedRow}>
-                  <View style={styles.locationIconWrapper}>
+                  <View style={styles.iconWrapper}>
                     <TabIcon
                       name='location'
-                      style={{ image: styles.locationIcon }}
+                      style={{ image: styles.icon }}
                     />
                   </View>
                   <View style={{flexDirection: 'column', alignItems: 'flex-start'}}>
-                    <Text style={[styles.locationText, styles.locationLabel]}>Location:</Text>
-                    <Text style={styles.locationText}>{story.locationInfo.name}</Text>
-                    <Text style={[styles.locationText, styles.locationDetails]}>
+                    <Text style={[styles.sectionText, styles.sectionLabel]}>Location:</Text>
+                    {story.locationInfo &&
+                    <Text style={[styles.sectionText, styles.sectionTextHighlight]}>
                       {displayLocationDetails(story.locationInfo)}
                     </Text>
+                    }
                   </View>
                 </View>
               </View>
             }
+            {!!story.categories.length &&
+              <View style={styles.sectionWrapper}>
+                <View style={styles.iconWrapper}>
+                  <TabIcon
+                    name='tag'
+                    style={{ image: styles.icon }}
+                  />
+                </View>
+                <View style={styles.iconWrapper}>
+                  <Text style={styles.sectionLabel}>Categories: </Text>
+                  {this.renderCategories()}
+                </View>
+              </View>
+            }
+            {!!story.cost &&
+              <View style={styles.sectionWrapper}>
+                <View style={styles.iconWrapper}>
+                  <TabIcon
+                    name='cost'
+                    style={{ image: styles.icon }}
+                  />
+                </View>
+                <View style={styles.sectionTextWrapper}>
+                  <Text style={styles.sectionLabel}>Cost: </Text>
+                  <Text style={styles.sectionText}>{story.cost + this._getCostType()}</Text>
+                </View>
+              </View>
+            }
+            {!!story.travelTips &&
+              <View style={styles.sectionWrapper}>
+                <View style={styles.iconWrapper}>
+                  <TabIcon
+                    name='travelTips'
+                    style={{ image: styles.icon }}
+                  />
+                </View>
+                <View style={styles.sectionTextWrapper}>
+                  <Text style={styles.sectionLabel}>Travel Tips: </Text>
+                  <Text style={styles.sectionText}>{story.travelTips}</Text>
+                </View>
+              </View>
+            }
+            
           </View>
         </ScrollView>
         <Animated.View style={[styles.toolBar, {height: this.state.toolbarHeight}]}>

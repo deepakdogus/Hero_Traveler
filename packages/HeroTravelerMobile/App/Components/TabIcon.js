@@ -72,7 +72,7 @@ class TabIcon extends React.Component {
       case 'hashtag':
         return Images.iconHashtag
       case 'travelTips':
-        return Images.travelTips
+        return Images.iconTravelTips
       case 'cost':
         return Images.iconCost
       case 'explore':

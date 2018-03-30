@@ -165,6 +165,7 @@ StorySchema.statics = {
         }
       })
       .populate('categories')
+      .populate('hashtags')
       .populate('coverImage coverVideo')
   },
 
@@ -177,6 +178,7 @@ StorySchema.statics = {
         }
       })
       .populate('categories')
+      .populate('hashtags')
       .populate('coverImage coverVideo')
       .sort({createdAt: -1})
   },
@@ -206,7 +208,7 @@ StorySchema.statics = {
       _id: storyId
     })
     .select('title description createdAt content location tripDate coverImage coverVideo author categories')
-    .populate('coverImage coverVideo author categories')
+    .populate('coverImage coverVideo author categories hashtags')
     .exec()
   }
 }

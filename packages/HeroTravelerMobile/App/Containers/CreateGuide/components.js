@@ -12,14 +12,14 @@ const {
   form,
 } = styles
 
-const MultilineInput = ({ label, placeholder, value, onContentChange }) => (
+const MultilineInput = ({ label, placeholder, value, onChangeText }) => (
   <View style={multilineContainer}>
     <Text style={multilineLabel}>{label}</Text>
     <TextInput
       multiline={true}
       placeholder={placeholder}
       value={value}
-      onContentChange={onContentChange}
+      onChangeText={onChangeText}
       style={multilineTextInput}
     />
   </View>

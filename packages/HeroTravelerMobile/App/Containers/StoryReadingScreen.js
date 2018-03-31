@@ -62,18 +62,8 @@ const StoryVideo = enhanceStoryVideo(props => {
         showMuteButton={false}
         showPlayButton={false}
         videoFillSpace={true}
-<<<<<<< HEAD
         resizeMode='cover'
       />
-=======
-        resizeMode="cover">
-        <TouchableWithoutFeedback
-          style={styles.videoToggleWrapper}
-          onPress={props.togglePlay}>
-          <View style={[styles.videoToggleView, { height }]} />
-        </TouchableWithoutFeedback>
-      </VideoPlayer>
->>>>>>> HT-265 add plus button to story for guides
     </View>
   )
 })
@@ -176,10 +166,10 @@ class StoryReadingScreen extends React.Component {
     }
   }
 
-  _pressCreateGuide = () => {
-    const { storyId } = this.props
+  _pressAddToGuide = () => {
+    const { story } = this.props
     NavActions.addStoryToGuide({
-      storyId,
+      story,
     })
   }
 
@@ -425,7 +415,7 @@ class StoryReadingScreen extends React.Component {
             styles.plusButton,
           ]}>
           <TouchableOpacity
-            onPress={this._pressCreateGuide}
+            onPress={this._pressAddToGuide}
             style={styles.plusButtonTouchable}>
             <Image
               source={Images.iconContentPlusWhite}

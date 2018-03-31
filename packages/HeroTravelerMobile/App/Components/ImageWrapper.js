@@ -19,7 +19,10 @@ export default class ImageWrapper extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    if (!this.hasStyleMetrics() && this.props.source.uri !== nextProps.source.uri) {
+    // NOTE:: This causes a React error if you unmount
+    // That scenario is likely when you upload an image but want the screen to be popped
+    // on success
+    if (this.props.source.uri !== nextProps.source.uri && !this.hasStyleMetrics()) {
       this._setImageSize(nextProps.source.uri)
     }
   }

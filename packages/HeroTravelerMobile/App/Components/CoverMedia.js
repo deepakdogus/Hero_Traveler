@@ -26,7 +26,7 @@ class CoverMedia extends Component {
     media: null,
   }
   static propTypes = {
-    media: PropTypes.string,
+    media: PropTypes.object,
     isPhoto: PropTypes.bool.isRequired,
   }
   state = {
@@ -111,6 +111,7 @@ class CoverMedia extends Component {
       }, 5000)
     }
   }
+
   touchChangeCover = () => {
     this.setState({ imageMenuOpen: false }, () => {
       this.resetAnimation()

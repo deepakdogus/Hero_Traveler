@@ -33,11 +33,13 @@ class FormInput extends Component {
     icon: Images.iconInfo,
     isDropdown: false,
     onChangeText: noop,
+    onValueChange: noop,
   }
   static propTypes = {
     icon: PropTypes.number,
     isDropdown: PropTypes.bool,
     onChangeText: PropTypes.func,
+    onValueChange: PropTypes.func,
     onPress: PropTypes.func,
     placeholder: PropTypes.string,
     value: PropTypes.string,
@@ -64,13 +66,18 @@ class FormInput extends Component {
     const {
       onChangeText,
       onPress,
+      onValueChange,
       icon: iconSource,
       isDropdown,
       options,
       placeholder,
       style,
+      value,
     } = this.props
-    const { showing, value } = this.state
+    const {
+      value: internalValue,
+    } = this.state
+    const { showing } = this.state
     return (
       <View style={[container, style]}>
         {onPress || isDropdown ? (
@@ -98,10 +105,11 @@ class FormInput extends Component {
                       </TouchableOpacity>
                     </View>
                     <Picker
-                      selectedValue={value}
-                      onValueChange={(itemValue, itemIndex) =>
+                      selectedValue={internalValue}
+                      onValueChange={(itemValue, itemIndex) => {
+                        if (onValueChange) onValueChange(itemValue)
                         this.setState({ value: itemValue })
-                      }>
+                      }}>
                       {options.map((option, idx) => (
                         <Picker.Item
                           key={`picker-item--${idx}`}

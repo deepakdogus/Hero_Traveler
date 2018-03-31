@@ -22,25 +22,24 @@ export const INITIAL_STATE = Immutable({
     fetching: false,
     loaded: false,
   },
-  error: null
+  error: null,
 })
 
 /* ------------- Reducers ------------- */
 
-export const request = (state) => {
-  return Immutable.setIn(
-    state,
-    ['fetchStatus', 'fetching'],
-    true
+export const request = state => {
+  return Immutable.setIn(state, ['fetchStatus', 'fetching'], true)
+}
+
+export const receiveGuides = (state, { guides = {} }) => {
+  return state.merge(
+    { entities: guides, fetchStatus: { fetching: false, loaded: true } },
+    { deep: true }
   )
 }
 
-export const receiveGuides = (state, {guides = {}}) => {
-  return state.merge({entities: guides}, {deep: true})
-}
-
-export const failure = (state, {error}) =>
-  state.merge({fetching: false, error})
+export const failure = (state, { error }) =>
+  state.merge({ fetching: false, error })
 
 /* ------------- Hookup Reducers To Types ------------- */
 

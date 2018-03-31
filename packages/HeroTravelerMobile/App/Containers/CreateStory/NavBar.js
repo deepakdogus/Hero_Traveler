@@ -84,7 +84,7 @@ class NavBar extends Component {
     rightIcon: PropTypes.string,
     rightTextStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
     onRight: PropTypes.func,
-    isRightValid: PropTypes.bool,
+    isRightValid: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   }
   render() {
     const {

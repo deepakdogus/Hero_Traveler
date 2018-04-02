@@ -125,9 +125,9 @@ class TagScreen extends Component {
 
   // We can not cache these as they might change in the reducer, so we have to set up some kind of a getter.
   _getDefaultTags = () => {
-    if (this.props.tagType == TAG_TYPE_CATEGORY) {
+    if (this.props.tagType === TAG_TYPE_CATEGORY) {
       return this.props.defaultCategories;
-    } else if (this.props.tagType == TAG_TYPE_HASHTAG) {
+    } else if (this.props.tagType === TAG_TYPE_HASHTAG) {
       return this.props.defaultHashtags;
     } else {
       throw new Error("Invalid tag type to get defaults: ", this.props.tagType);
@@ -135,9 +135,9 @@ class TagScreen extends Component {
   }
 
   _formatTag = (title) => {
-    if (this.props.tagType == TAG_TYPE_CATEGORY) {
+    if (this.props.tagType === TAG_TYPE_CATEGORY) {
       return _.map(_.words(title), _.upperFirst).join(' ');
-    } else if (this.props.tagType == TAG_TYPE_HASHTAG) {
+    } else if (this.props.tagType === TAG_TYPE_HASHTAG) {
       return "#" + _.map(_.words(title), _.lowerCase).join('-');
     } else {
       throw new Error("Invalid tag type to get defaults: ", this.props.tagType);
@@ -225,14 +225,14 @@ class TagScreen extends Component {
 
   _getTagTypeText = (plural) => {
     if (plural) {
-      return (this.props.tagType == TAG_TYPE_CATEGORY) ? "categories" : "hashtags";
+      return (this.props.tagType === TAG_TYPE_CATEGORY) ? "categories" : "hashtags";
     } else {
-      return (this.props.tagType == TAG_TYPE_CATEGORY) ? "category" : "hashtag";
+      return (this.props.tagType === TAG_TYPE_CATEGORY) ? "category" : "hashtag";
     }
   }
 
   _getTagTypeTooltipType = () => {
-    return (this.props.tagType == TAG_TYPE_CATEGORY) ? TooltipTypes.STORY_CREATE_CATEGORIES : TooltipTypes.STORY_CREATE_HASHTAGS;
+    return (this.props.tagType === TAG_TYPE_CATEGORY) ? TooltipTypes.STORY_CREATE_CATEGORIES : TooltipTypes.STORY_CREATE_HASHTAGS;
   }
 
   renderTooltip() {
@@ -288,7 +288,7 @@ class TagScreen extends Component {
                 onChangeText={text => this._inputChanged(text)}
                 onSubmitEditing={this._addNewTag}
                 onFocus={this.setInputFocused}
-                autoCorrect={this.props.tagType == TAG_TYPE_CATEGORY}
+                autoCorrect={this.props.tagType === TAG_TYPE_CATEGORY}
                 // onBlur={this.setInputBlurred}
               />
             </View>
@@ -303,7 +303,7 @@ class TagScreen extends Component {
                 return (
                   <View key={t._id || t.title} style={styles.selectedTagRow}>
                     <TouchableOpacity onPress={() => this._removeTag(t)} style={[styles.row, styles.rowSelected]}>
-                      <Text>{this.props.tagType == TAG_TYPE_HASHTAG ? "#" : ""}{t.title}</Text>
+                      <Text>{this.props.tagType === TAG_TYPE_HASHTAG ? "#" : ""}{t.title}</Text>
                       <Icon name='close' size={15} style={styles.removeTagIcon} />
                     </TouchableOpacity>
                   </View>
@@ -323,7 +323,7 @@ class TagScreen extends Component {
                 return (
                   <View key={t._id} style={styles.rowWrapper}>
                     <TouchableOpacity onPress={() => {this._selectSearchTag(t)}} style={styles.row}>
-                      <Text>{this.props.tagType == TAG_TYPE_HASHTAG ? "#" : ""}{t.title}</Text>
+                      <Text>{this.props.tagType === TAG_TYPE_HASHTAG ? "#" : ""}{t.title}</Text>
                     </TouchableOpacity>
                   </View>
                 )
@@ -338,7 +338,7 @@ class TagScreen extends Component {
                 return (
                   <View key={t._id} style={styles.rowWrapper}>
                     <TouchableOpacity onPress={() => {this._selectDefaultTag(t)}} style={styles.row}>
-                      <Text>{this.props.tagType == TAG_TYPE_HASHTAG ? "#" : ""}{t.title}</Text>
+                      <Text>{this.props.tagType === TAG_TYPE_HASHTAG ? "#" : ""}{t.title}</Text>
                     </TouchableOpacity>
                   </View>
                 )

@@ -54,23 +54,10 @@ const StoryVideo = enhanceStoryVideo((props) => {
         allowVideoPlay={true}
         autoPlayVideo={false}
         showMuteButton={false}
-        showPlayButton={true}
-        playButtonSize={'small'}
+        showPlayButton={false}
         videoFillSpace={true}
         resizeMode='cover'
-      >
-        <TouchableWithoutFeedback
-          style={styles.videoToggleWrapper}
-          onPress={props.togglePlay}
-        >
-          <View
-            style={[
-              styles.videoToggleView,
-              {height},
-            ]}
-          />
-        </TouchableWithoutFeedback>
-      </VideoPlayer>
+      />
     </View>
   )
 })
@@ -283,6 +270,7 @@ class StoryReadingScreen extends React.Component {
           scrollEventThrottle={400}
           style={[styles.scrollView]}>
           <ConnectedStoryPreview
+            isFeed={false}
             onPressLike={this._toggleLike}
             showLike={false}
             onPressUser={this._pressUser}

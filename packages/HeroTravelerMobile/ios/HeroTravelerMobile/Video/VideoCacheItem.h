@@ -55,6 +55,8 @@ typedef void (^FinishedDownloadBlock)(NSURL* location, VideoCacheItem* videoCach
 - (instancetype) initWithAssetKey:(NSString*)assetKey url:(NSString*)url_;
 - (instancetype) initWithAssetKey:(NSString*)assetKey cachedLocation:(NSURL*)url streamLocation:(NSString*)streamUrl_;
 - (void) touch;
+- (void) pauseFromUi;
+- (void) playFromUi;
 
 - (PlayingVideoItem*) getControllingVideoView;
 

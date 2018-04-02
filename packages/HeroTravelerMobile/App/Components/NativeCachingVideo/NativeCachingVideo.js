@@ -59,6 +59,18 @@ export default class NativeCachingVideo extends Component {
     }
   };
 
+  _onPauseFromUI = (event) => {
+    if (this.props.onPauseFromUI) {
+      this.props.onPauseFromUI(event.nativeEvent);
+    }
+  }
+
+  _onPlayFromUI = (event) => {
+    if (this.props.onPlayFromUI) {
+      this.props.onPlayFromUI(event.nativeEvent);
+    }
+  }
+
   _onFullscreenPlayerWillPresent = (event) => {
     if (this.props.onFullscreenPlayerWillPresent) {
       this.props.onFullscreenPlayerWillPresent(event.nativeEvent);
@@ -170,6 +182,8 @@ export default class NativeCachingVideo extends Component {
       onVideoEnd: this._onEnd,
       onVideoBuffer: this._onBuffer,
       onTimedMetadata: this._onTimedMetadata,
+      onPauseFromUI: this._onPauseFromUI,
+      onPlayFromUI: this._onPlayFromUI,
       onVideoFullscreenPlayerWillPresent: this._onFullscreenPlayerWillPresent,
       onVideoFullscreenPlayerDidPresent: this._onFullscreenPlayerDidPresent,
       onVideoFullscreenPlayerWillDismiss: this._onFullscreenPlayerWillDismiss,
@@ -201,6 +215,8 @@ NativeCachingVideo.propTypes = {
   onVideoError: PropTypes.func,
   onVideoEnd: PropTypes.func,
   onTimedMetadata: PropTypes.func,
+  onPauseFromUI: PropTypes.func,
+  onPlayFromUI: PropTypes.func,
   onVideoFullscreenPlayerWillPresent: PropTypes.func,
   onVideoFullscreenPlayerDidPresent: PropTypes.func,
   onVideoFullscreenPlayerWillDismiss: PropTypes.func,

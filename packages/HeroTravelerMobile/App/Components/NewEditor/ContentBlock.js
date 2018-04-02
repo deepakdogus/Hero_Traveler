@@ -178,7 +178,7 @@ export default class NewTextBlock extends PureComponent {
                 allowVideoPlay={true}
                 autoPlayVideo={false}
                 showMuteButton={false}
-                showPlayButton={true}
+                showPlayButton={false}
                 playButtonSize={'small'}
                 videoFillSpace={true}
               />

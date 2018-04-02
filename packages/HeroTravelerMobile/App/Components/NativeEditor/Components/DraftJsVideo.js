@@ -38,7 +38,7 @@ export default class DraftJsVideo extends Component {
             allowVideoPlay={true}
             autoPlayVideo={false}
             showMuteButton={false}
-            showPlayButton={true}
+            showPlayButton={false}
             playButtonSize={'small'}
             videoFillSpace={true}
             resizeMode='cover'

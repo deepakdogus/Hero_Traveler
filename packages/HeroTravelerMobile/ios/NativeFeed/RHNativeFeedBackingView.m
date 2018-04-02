@@ -62,12 +62,35 @@
 
 - (void) setHeights:(NSArray*)heights
 {
+  if (_heights.count == heights.count)
+  {
+    BOOL isEqual = YES;
+    for (int i = 0; i < _heights.count; i++)
+    {
+      if ([heights[i] floatValue] != [_heights[i] floatValue])
+      {
+        isEqual = NO;
+        break;
+      }
+    }
+
+    if (isEqual)
+    {
+      return;
+    }
+  }
+  
   _heights = heights;
   [self setNeedsDisplay];
 }
 
 - (void) setSeparatorHeight:(CGFloat)separatorHeight
 {
+  if (fabs(_separatorHeight - separatorHeight) < 1.f)
+  {
+    return;
+  }
+
   _separatorHeight = separatorHeight;
   [self setNeedsDisplay];
 }

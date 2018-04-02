@@ -107,7 +107,7 @@ export default class VideoPlayer extends React.Component {
 
   static defaultProps = {
     showMuteButton: true,
-    showPlayButton: true,
+    showPlayButton: false,
     videoFillSpace: true,
     resizeMode: 'contain',
     areInRenderLocation: true,
@@ -117,6 +117,8 @@ export default class VideoPlayer extends React.Component {
     super(props)
 
     this._togglePlayVideo = this._togglePlayVideo.bind(this)
+    this._onPauseFromUI = this._onPauseFromUI.bind(this)
+    this._onPlayFromUI = this._onPlayFromUI.bind(this)
     const startVideoImmediately = props.allowVideoPlay && props.autoPlayVideo && props.shouldEnableAutoplay !== undefined
 
     this.state = {
@@ -155,6 +157,18 @@ export default class VideoPlayer extends React.Component {
         duration
       },
     ).start()
+  }
+
+  _onPauseFromUI() {
+    if (this.state.videoPlaying) {
+      this._togglePlayVideo()
+    }
+  }
+
+  _onPlayFromUI() {
+    if (!this.state.videoPlaying) {
+      this._togglePlayVideo()
+    }
   }
 
   _togglePlayVideo() {
@@ -274,6 +288,8 @@ export default class VideoPlayer extends React.Component {
           onPlaybackStalled={this._onPlaybackStalled}
           onPlaybackResume={this._onPlaybackResume}
           resizeMode={this.props.resizeMode}
+          onPauseFromUI={this._onPauseFromUI}
+          onPlayFromUI={this._onPlayFromUI}
         />
 
         {(this.state.isStalled || isNotReadyForDisplay) &&
@@ -303,7 +319,6 @@ export default class VideoPlayer extends React.Component {
             />
           </View>
         }
-        <FullScreenButton onPress={this.goFullscreen} />
         {this.props.children}
       </View>
     )

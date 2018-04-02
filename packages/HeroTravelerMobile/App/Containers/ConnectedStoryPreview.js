@@ -38,11 +38,8 @@ const mapStateToProps = (state, ownProps) => {
     }
   }
 
-  const isVisible = ownProps.index !== undefined ?
-    state.ux.storyListPlayingRow == ownProps.index : undefined
-
-  const shouldHideCover = ownProps.index !== undefined ?
-    _.includes(state.ux.storyListVisibleRows, ownProps.index) : false
+  const isVisible = true
+  const shouldHideCover = false
 
   return {
     ...storyProps,

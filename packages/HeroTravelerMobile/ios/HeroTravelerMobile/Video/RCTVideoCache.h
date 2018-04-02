@@ -29,17 +29,16 @@
 
 + (NSString*) urlToKey:(NSString*)url;
 
-- (void) precacheAssets:(NSArray*)precacheAssets; // set as array of urls
+- (void) downloadVideoToCache:(NSURL*)url;
 
 - (PlayingVideoItem*) assetForUrl:(NSString*)url withOriginalUrl:(NSString*)originalUrl forVideoView:(RCTVideo*)videoView;
+
+- (void) pauseAllExcept:(VideoCacheItem*)item;
 
 - (void) handleMemoryWarning;
 
 - (void) handleAppOpen;
 - (void) handleAppClose;
-
-- (void) handleMutedStatus;
-- (void) setAsset:(NSString*)assetKey isMuted:(BOOL)isMuted;
 
 - (void) deleteSavedAsset:(NSString*)assetKey;
 

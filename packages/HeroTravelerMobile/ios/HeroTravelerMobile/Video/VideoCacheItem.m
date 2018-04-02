@@ -543,7 +543,12 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   } else if (object == _player) {
     if([keyPath isEqualToString:playbackRate]) {
       [self sendToAllViews:^(RCTVideo* videoView){return videoView.onPlaybackRateChange;} info:@{@"playbackRate": @(_player.rate)}];
-
+      
+      if (_player.rate > 0)
+      {
+        [[RCTVideoCache get] pauseAllExcept:self];
+      }
+      
       if (isPlaybackStalled && _player.rate > 0)
       {
         [self sendToAllViews:^(RCTVideo* videoView){return videoView.onPlaybackResume;} info:@{@"playbackRate": @(_player.rate)}];
@@ -553,6 +558,19 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   } else {
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
   }
+}
+
+- (void) pauseFromUi
+{
+  [self sendToAllViews:^(RCTVideo* videoView){return videoView.onPauseFromUI;} info:@{}];
+
+  [_player pause];
+  [_player setRate:0.0];
+}
+
+- (void) playFromUi
+{
+  [self sendToAllViews:^(RCTVideo* videoView){return videoView.onPlayFromUI;} info:@{}];
 }
 
 - (BOOL) purge

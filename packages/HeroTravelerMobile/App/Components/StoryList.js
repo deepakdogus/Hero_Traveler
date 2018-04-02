@@ -12,7 +12,6 @@ import { Metrics } from '../Shared/Themes'
 import { connect } from 'react-redux'
 import styles from './Styles/StoryListStyle'
 import ModifiedListView from './ModifiedListView'
-import UXActions from '../Redux/UXRedux'
 import _ from 'lodash'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 
@@ -34,9 +33,6 @@ class StoryList extends React.Component {
     refreshing: PropTypes.bool,
     renderHeaderContent: PropTypes.object,
     renderSectionHeader: PropTypes.object,
-    setPlayingRow: PropTypes.func,
-    setVisibleRows: PropTypes.func,
-    playingRow: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   }
 
   static defaultProps = {
@@ -93,25 +89,7 @@ class StoryList extends React.Component {
   }
 
   _handleVisibleCellsChanged = (event) => {
-    const {setPlayingRow, playingRow, setVisibleRows} = this.props
-
     this.setState(event.nativeEvent)
-
-    let visibleRowsKeys = []
-    if (event.nativeEvent.visibleCells)
-    {
-      for (let i = event.nativeEvent.minCell; i < event.nativeEvent.maxCell; i++)
-      {
-        visibleRowsKeys.push(i)
-      }
-    }
-    setVisibleRows(visibleRowsKeys)
-
-    let newPlayingRow = event.nativeEvent.playingCell
-    if (playingRow != newPlayingRow)
-    {
-      setPlayingRow(newPlayingRow)
-    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -162,10 +140,12 @@ class StoryList extends React.Component {
       const {minCell, maxCell} = this.state.visibleCells
 
       let i = minCell - 1
+      let keyIndex = -1
       storyViews = stories.slice(minCell, maxCell).map((story) => {
         i = i + 1
+        keyIndex = keyIndex + 1
         return (
-          <NativeFeedItem key={`FeedItem:${story.id}`} cellNum={i}>
+          <NativeFeedItem key={`FeedItem:${keyIndex}`} cellNum={i}>
             {this.props.renderStory(story, i)}
           </NativeFeedItem>
         )
@@ -226,14 +206,11 @@ reactMixin(StoryList.prototype, ScrollResponder.Mixin.mixins[0])
 
 const mapStateToProps = (state) => {
   return {
-    playingRow: state.ux.storyListPlayingRow
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setPlayingRow: (row) => dispatch(UXActions.setStoryListPlayingRow(row)),
-    setVisibleRows: (rows) => dispatch(UXActions.setStoryListVisibleRows(rows)),
   }
 }
 

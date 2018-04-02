@@ -5,6 +5,7 @@ export default function createLocalDraft(authorId){
     id: `local-${uuid()}`,
     author: authorId,
     categories: [],
+    hashtags: [],
     counts: {
       comments: 0,
       bookmarks: 0,

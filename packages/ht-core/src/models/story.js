@@ -119,13 +119,13 @@ const StorySchema = new Schema({
     type: String,
   },
   cost: {
-    type: Number
+    type: Number,
   },
   currency: {
-    type: Number
+    type: String,
   },
   travelTips: {
-    type: String
+    type: String,
   },
   
 }, {

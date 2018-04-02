@@ -98,6 +98,7 @@ class CreateStoryDetailScreen extends React.Component {
       // it is used in constructing the placeholder text.
       currency: props.workingDraft.currency || '',
       showError: false,
+      error: null,
     }
   }
 
@@ -106,8 +107,11 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.error){
-      this.setState({ showError: true })
+    if (newProps.storyCreateError){
+      this.setState({ 
+        showError: true,
+        error: newProps.storyCreateError,
+      })
       return
     }
     if (!newProps.publishing && newProps.isCreated) {
@@ -116,7 +120,6 @@ class CreateStoryDetailScreen extends React.Component {
     if (this.props.isRepublishing && !newProps.isRepublishing){
       this.next()
     }
-
   }
 
   _setModalVisible = (visible) => {
@@ -140,6 +143,16 @@ class CreateStoryDetailScreen extends React.Component {
 
   _onRight = () => {
     const {workingDraft} = this.props
+    if (!workingDraft.locationInfo || !workingDraft.type) {
+      this.setState({
+        showError: true,
+        error: {
+          message: "Please Fill Out Required Fields",
+          text: "You need to enter the activity type and the location for this story."
+        }
+      })
+      return;
+    }
     this.next()
     if (workingDraft.draft) this.props.publish(workingDraft)
     else this.saveDraft(workingDraft)
@@ -262,22 +275,33 @@ class CreateStoryDetailScreen extends React.Component {
     })
   }
 
+  renderErrors() {
+    if (this.state.showError) {
+      const err = this.state.error;  
+      let errText;
+      if ((__DEV__ && err && err.problem && err.status)) {
+        errText = `${err.status}: ${err.problem}`;
+      } else if (err.text) {
+        errText = err.text;
+      }
+      return (
+        <ShadowButton
+          style={styles.errorButton}
+          onPress={this._closeError}
+          text={errText}
+          title={err.message}
+        />
+      );
+    }
+  }
+
   render () {
     const {workingDraft, publishing} = this.props
-    const {isSavingCover, modalVisible, showError} = this.state
-    const err = this.props.error
-    const errText = (__DEV__ && err && err.problem && err.status) ? `${err.status}: ${err.problem}` : ""
+    const {isSavingCover, modalVisible} = this.state
 
     return (
       <View style={{flex: 1, position: 'relative'}}>
-          { showError && err &&
-          <ShadowButton
-            style={styles.errorButton}
-            onPress={this._closeError}
-            text={errText}
-            title={err.message}
-          />
-          }
+          {this.renderErrors()}
           <NavBar
             title='Story Details'
             leftIcon='arrowLeftRed'
@@ -440,7 +464,7 @@ export default connect(
       isCreated: isCreated(state.storyCreate),
       story: {...state.storyCreate.workingDraft},
       workingDraft: {...state.storyCreate.workingDraft},
-      error: state.storyCreate.error,
+      storyCreateError: state.storyCreate.error,
       isRepublishing: state.storyCreate.isRepublishing,
     }
   },

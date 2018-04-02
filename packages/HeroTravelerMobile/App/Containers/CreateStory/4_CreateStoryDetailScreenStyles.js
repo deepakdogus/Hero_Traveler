@@ -164,5 +164,6 @@ export default StyleSheet.create({
     marginVertical: Metrics.baseMargin,
     marginHorizontal: Metrics.section,
     zIndex: 100,
+    padding: Metrics.section,
   },
 })

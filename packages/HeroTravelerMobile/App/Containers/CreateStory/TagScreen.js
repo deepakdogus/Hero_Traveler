@@ -93,6 +93,10 @@ class TagScreen extends Component {
   }
 
   _selectDefaultTag = (mongoTag) => {
+    if (this._checkExistingTag(mongoTag.title)) {
+      return;
+    }
+    
     this.setState({
       selectedTags: [
         ...this.state.selectedTags,
@@ -102,6 +106,11 @@ class TagScreen extends Component {
   }
 
   _selectSearchTag = (searchTag) => {
+    if (this._checkExistingTag(searchTag.title)) {
+      this.setInputBlurred();
+      return;
+    }
+
     this.setState({
       text: '',
       selectedTags: [
@@ -138,10 +147,19 @@ class TagScreen extends Component {
     if (this.props.tagType === TAG_TYPE_CATEGORY) {
       return _.map(_.words(title), _.upperFirst).join(' ');
     } else if (this.props.tagType === TAG_TYPE_HASHTAG) {
-      return "#" + _.map(_.words(title), _.lowerCase).join('-');
+      return _.map(_.words(title.replace(/#/g, "")), _.lowerCase).join('-');
     } else {
       throw new Error("Invalid tag type to get defaults: ", this.props.tagType);
     }
+  }
+
+  _checkExistingTag(title) {
+    for (let selectedTag of this.state.selectedTags) {
+      if (selectedTag.title === title) {
+        return true;
+      }
+    }
+    return false;
   }
 
   _addNewTag = () => {
@@ -152,6 +170,11 @@ class TagScreen extends Component {
 
     // This strips everything done into real words, no special characters, etc.
     const formattedTitle = this._formatTag(this.state.text);
+
+    // Do not duplicate if we already have this tag in out selected tags.
+    if (this._checkExistingTag(formattedTitle)) {
+      return;
+    }
 
     const existingMongoTag = _.find(this._getDefaultTags(), t => {
       return t.title === formattedTitle
@@ -175,7 +198,7 @@ class TagScreen extends Component {
       ],
       text: ''
     }, () => {
-      this.refs.input.focus()
+      this.setInputBlurred();
     })
   }
 

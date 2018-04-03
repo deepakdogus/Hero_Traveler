@@ -381,6 +381,7 @@ class CreateStoryDetailScreen extends React.Component {
                   onBlur={(e) => {this._updateCost(e.nativeEvent.text)}}
                   onSubmitEditing={(e) => {this._updateCost(e.nativeEvent.text)}}
                   placeholder={this._getCostPlaceholderText(workingDraft)}
+                  keyboardType="numeric"
                 />
               </View>
             </View>

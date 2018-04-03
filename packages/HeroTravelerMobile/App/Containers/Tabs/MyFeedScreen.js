@@ -135,7 +135,7 @@ class MyFeedScreen extends React.Component {
     return (
       <View style={[styles.containerWithTabbar, styles.root]}>
         <View style={styles.fakeNavBar}>
-          <Image source={Images.logoFeedBeta} style={styles.logo} />
+          <Image source={Images.whiteLogo} style={styles.logo} />
         </View>
         { topContent }
         { bottomContent }

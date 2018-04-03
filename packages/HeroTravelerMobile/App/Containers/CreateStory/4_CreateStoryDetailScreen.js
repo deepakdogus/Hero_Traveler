@@ -80,8 +80,6 @@ for (let s in iconSizes) {
   }
 }
 
-console.log(iconStyles);
-
 class CreateStoryDetailScreen extends React.Component {
 
   constructor(props) {

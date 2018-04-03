@@ -57,33 +57,30 @@ const Radio = ({text, onPress, name, selected}) => {
 /* note that the icon style objects below are separate because they must be a must
 be a plain objects instead of stylesheets */
 
-const locationIconStyle = {
-  image: {
-    marginRight: Metrics.doubleBaseMargin,
-    marginBottom: Metrics.baseMargin,
-    width: 14,
-    height: 22,
+const commonIconStyle = {
+  marginRight: Metrics.doubleBaseMargin,
+  marginBottom: Metrics.baseMargin,
+}
+
+let iconSizes = {
+  location: { width: 17, height: 27, },
+  date: { width: 22, height: 22, },
+  category: { width: 22, height: 22, },
+  hashtag: { width: 22, height: 24, marginTop: -2},
+  cost: { width: 22, height: 24, marginTop: -3},
+}
+
+let iconStyles = {};
+
+for (let s in iconSizes) {
+  iconStyles[s] = {
+    // This is to ensure the input fields align correctly
+    view: { width: Metrics.icons.large },
+    image: Object.assign({}, commonIconStyle, iconSizes[s])
   }
 }
 
-const dateIconStyle = {
-  image: {
-    marginRight: Metrics.doubleBaseMargin,
-    marginBottom: Metrics.baseMargin,
-    width: 18,
-    height: 18,
-  }
-}
-
-const tabIconStyle = {
-  image: {
-    marginRight: Metrics.doubleBaseMargin,
-    marginBottom: Metrics.baseMargin,
-    width: 18,
-    height: 18
-  }
-}
-
+console.log(iconStyles);
 
 class CreateStoryDetailScreen extends React.Component {
 
@@ -171,7 +168,7 @@ class CreateStoryDetailScreen extends React.Component {
         placeholder = 'Cost per night'
         break;
       default:
-        placeholder = ''
+        placeholder = 'Cost'
         break;
     }
     // The currency is hardcoded for now, might want to change it later.
@@ -291,7 +288,7 @@ class CreateStoryDetailScreen extends React.Component {
           <ScrollView style={styles.root}>
             <Text style={styles.title}>{this.props.story.title} Details </Text>
             <View style={styles.fieldWrapper}>
-              <TabIcon name='location' style={locationIconStyle} />
+              <TabIcon name='location' style={iconStyles.location} />
               <TouchableWithoutFeedback onPress={this.navToLocation}>
                 <View>
                   <Text
@@ -313,7 +310,7 @@ class CreateStoryDetailScreen extends React.Component {
               </TouchableWithoutFeedback>
             </View>
             <View style={styles.fieldWrapper} >
-              <TabIcon name='date' style={dateIconStyle} />
+              <TabIcon name='date' style={iconStyles.date} />
               <TouchableHighlight
                 onPress={() => this._setModalVisible(true)}
               >
@@ -323,7 +320,7 @@ class CreateStoryDetailScreen extends React.Component {
               </TouchableHighlight>
             </View>
             <View style={styles.fieldWrapper}>
-              <TabIcon name='tag' style={tabIconStyle} />
+              <TabIcon name='tag' style={iconStyles.category} />
               <TouchableWithoutFeedback
                 onPress={this.navToCategories}
                 style={styles.tagStyle}
@@ -335,7 +332,7 @@ class CreateStoryDetailScreen extends React.Component {
               </TouchableWithoutFeedback>
             </View>
             <View style={styles.fieldWrapper}>
-              <TabIcon name='hashtag' style={tabIconStyle} />
+              <TabIcon name='hashtag' style={iconStyles.hashtag} />
               <TouchableWithoutFeedback
                 onPress={this.navToHashtags}
                 style={styles.tagStyle}
@@ -355,6 +352,12 @@ class CreateStoryDetailScreen extends React.Component {
                   text='SEE'
                 />
                 <Radio
+                  style={{marginLeft: Metrics.baseMargin}}
+                  selected={workingDraft.type === 'do'}
+                  onPress={() => this._updateType('do')}
+                  text='DO'
+                />
+                <Radio
                   selected={workingDraft.type === 'eat'}
                   onPress={() => this._updateType('eat')}
                   text='EAT'
@@ -365,16 +368,10 @@ class CreateStoryDetailScreen extends React.Component {
                   onPress={() => this._updateType('stay')}
                   text='STAY'
                 />
-                <Radio
-                  style={{marginLeft: Metrics.baseMargin}}
-                  selected={workingDraft.type === 'do'}
-                  onPress={() => this._updateType('do')}
-                  text='DO'
-                />
               </View>
             </View>
             <View style={styles.fieldWrapper}>
-              <TabIcon name='cost' style={tabIconStyle} />
+              <TabIcon name='cost' style={iconStyles.cost} />
               <View style={styles.longInput}>
                 {!!(this.state.cost) &&
                   <Text style={[styles.currency]}>$</Text>

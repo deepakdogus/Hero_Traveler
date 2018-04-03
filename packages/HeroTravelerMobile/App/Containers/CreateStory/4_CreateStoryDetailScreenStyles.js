@@ -92,7 +92,6 @@ export default StyleSheet.create({
     marginRight: 2,
   },
   radioGroup: {
-    marginLeft: Metrics.section,
     flexDirection: 'row',
     flex: 1
   },

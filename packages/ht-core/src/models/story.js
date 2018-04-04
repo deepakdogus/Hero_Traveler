@@ -26,6 +26,7 @@ const StorySchema = new Schema({
       Constants.STORY_TYPE_STAY_VALUE,
       Constants.STORY_TYPE_DO_VALUE,
     ],
+    required: true,
   },
   draft: {
     type: Boolean,
@@ -60,6 +61,7 @@ const StorySchema = new Schema({
   locationInfo: {
     name: {
       type: String,
+      required: true,
     },
     locality: {
       type: String,
@@ -77,6 +79,8 @@ const StorySchema = new Schema({
       type: Number
     },
   },
+  // location is being phased out in favor of locationInfo and 
+  // will be removed in future.
   location: {
     type: String
   },

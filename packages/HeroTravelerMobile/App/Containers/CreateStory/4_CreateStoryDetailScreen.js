@@ -237,14 +237,16 @@ class CreateStoryDetailScreen extends React.Component {
   navToCategories = () => {
     NavActions.createStory_tags({
       onDone: this._receiveCategories,
-      tags: this.props.workingDraft.categories || this.state.categories
-    })
+      tags: this.props.workingDraft.categories || this.state.categories,
+      tagType: 'category'
+})
   }
 
   navToHashtags = () => {
     NavActions.createStory_hashtags({
       onDone: this._receiveHashtags,
-      tags: this.props.workingDraft.hashtags || this.state.hashtags
+      tags: this.props.workingDraft.hashtags || this.state.hashtags,
+      tagType: 'hashtag'
     })
   }
 
@@ -320,6 +322,33 @@ class CreateStoryDetailScreen extends React.Component {
           <ScrollView style={styles.root}>
             <Text style={styles.title}>{this.props.story.title} Details </Text>
             <View style={styles.fieldWrapper}>
+              <Text style={styles.fieldLabel}>Activity: </Text>
+              <View style={styles.radioGroup}>
+                <Radio
+                  selected={workingDraft.type === 'see'}
+                  onPress={() => this._updateType('see')}
+                  text='SEE'
+                />
+                <Radio
+                  style={{marginLeft: Metrics.baseMargin}}
+                  selected={workingDraft.type === 'do'}
+                  onPress={() => this._updateType('do')}
+                  text='DO'
+                />
+                <Radio
+                  selected={workingDraft.type === 'eat'}
+                  onPress={() => this._updateType('eat')}
+                  text='EAT'
+                />
+                <Radio
+                  style={{marginLeft: Metrics.baseMargin}}
+                  selected={workingDraft.type === 'stay'}
+                  onPress={() => this._updateType('stay')}
+                  text='STAY'
+                />
+              </View>
+            </View>
+            <View style={styles.fieldWrapper}>
               <TabIcon name='location' style={iconStyles.location} />
               <TouchableWithoutFeedback onPress={this.navToLocation}>
                 <View>
@@ -352,6 +381,23 @@ class CreateStoryDetailScreen extends React.Component {
               </TouchableHighlight>
             </View>
             <View style={styles.fieldWrapper}>
+              <TabIcon name='cost' style={iconStyles.cost} />
+              <View style={styles.longInput}>
+                {!!(this.state.cost) &&
+                  <Text style={[styles.currency]}>$</Text>
+                }
+                <TextInput 
+                  style={[styles.longInputText]} 
+                  value={this.state.cost.toString()}
+                  onChangeText={this._updateCostText}
+                  onBlur={this._updateCost}
+                  onSubmitEditing={this._updateCost}
+                  placeholder={this._getCostPlaceholderText(workingDraft)}
+                  keyboardType="numeric"
+                />
+              </View>
+            </View>
+            <View style={styles.fieldWrapper}>
               <TabIcon name='tag' style={iconStyles.category} />
               <TouchableWithoutFeedback
                 onPress={this.navToCategories}
@@ -370,54 +416,17 @@ class CreateStoryDetailScreen extends React.Component {
                 style={styles.tagStyle}
               >
                 <View>
-                  {_.size(workingDraft.hashtags) > 0 && <Text style={styles.tagStyleText}>{_.map(workingDraft.hashtags, 'title').join(', ')}</Text>}
-                  {_.size(workingDraft.hashtags) === 0 && <Text style={[styles.tagStyleText, {color: '#bdbdbd'}]}>Add hashtags...</Text>}
+                  {_.size(workingDraft.hashtags) > 0 && 
+                    <Text style={styles.tagStyleText}>{
+                      _.map(workingDraft.hashtags, 
+                        (hashtag) => { return '#' + hashtag.title }).join(', ')
+                    }</Text>
+                  }
+                  {_.size(workingDraft.hashtags) === 0 && 
+                    <Text style={[styles.tagStyleText, {color: '#bdbdbd'}]}>Add hashtags...</Text>
+                  }
                 </View>
               </TouchableWithoutFeedback>
-            </View>
-            <View style={styles.fieldWrapper}>
-              <Text style={styles.fieldLabel}>Activity: </Text>
-              <View style={styles.radioGroup}>
-                <Radio
-                  selected={workingDraft.type === 'see'}
-                  onPress={() => this._updateType('see')}
-                  text='SEE'
-                />
-                <Radio
-                  style={{marginLeft: Metrics.baseMargin}}
-                  selected={workingDraft.type === 'do'}
-                  onPress={() => this._updateType('do')}
-                  text='DO'
-                />
-                <Radio
-                  selected={workingDraft.type === 'eat'}
-                  onPress={() => this._updateType('eat')}
-                  text='EAT'
-                />
-                <Radio
-                  style={{marginLeft: Metrics.baseMargin}}
-                  selected={workingDraft.type === 'stay'}
-                  onPress={() => this._updateType('stay')}
-                  text='STAY'
-                />
-              </View>
-            </View>
-            <View style={styles.fieldWrapper}>
-              <TabIcon name='cost' style={iconStyles.cost} />
-              <View style={styles.longInput}>
-                {!!(this.state.cost) &&
-                  <Text style={[styles.currency]}>$</Text>
-                }
-                <TextInput 
-                  style={[styles.longInputText]} 
-                  value={this.state.cost.toString()}
-                  onChangeText={this._updateCostText}
-                  onBlur={this._updateCost}
-                  onSubmitEditing={this._updateCost}
-                  placeholder={this._getCostPlaceholderText(workingDraft)}
-                  keyboardType="numeric"
-                />
-              </View>
             </View>
             <View style={styles.travelTipsWrapper}>
               <Text style={styles.fieldLabel}>Travel Tips: </Text>

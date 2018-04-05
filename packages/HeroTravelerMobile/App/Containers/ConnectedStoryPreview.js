@@ -52,7 +52,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, props) => {
   const {userId, story} = props
-  const storyId = story.id
+  const storyId = story && story.id
   return {
     onPress: (title) => NavActions.story({storyId, title}),
     deleteStory: () => dispatch(StoryActions.deleteStory(userId, storyId)),

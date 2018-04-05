@@ -148,7 +148,13 @@ class CreateStoryDetailScreen extends React.Component {
       })
       return;
     }
-    this.next()
+    // The numeric keyboard doesn't have a submit key and input may not 
+    // have been blurred prior to save. In that case we have to update 
+    // the working draft manually here.
+    if (workingDraft.cost !== this.state.cost) {
+      workingDraft.cost = this.state.cost;
+    }
+    this.next();
     if (workingDraft.draft) this.props.publish(workingDraft)
     else this.saveDraft(workingDraft)
   }
@@ -161,8 +167,12 @@ class CreateStoryDetailScreen extends React.Component {
     this.props.updateWorkingDraft({type})
   }
 
-  _updateCost = (cost) => {
-    this.props.updateWorkingDraft({cost})
+  _updateCostText = (value) => {
+    this.setState({cost:value})
+  }
+
+  _updateCost = () => {
+    this.props.updateWorkingDraft({cost:this.state.cost})
   }
 
   _getCostPlaceholderText = (draft) => {
@@ -400,10 +410,10 @@ class CreateStoryDetailScreen extends React.Component {
                 }
                 <TextInput 
                   style={[styles.longInputText]} 
-                  value={this.state.cost}
-                  onChangeText={(value) => {this.setState({cost:value})}}
-                  onBlur={(e) => {this._updateCost(e.nativeEvent.text)}}
-                  onSubmitEditing={(e) => {this._updateCost(e.nativeEvent.text)}}
+                  value={this.state.cost.toString()}
+                  onChangeText={this._updateCostText}
+                  onBlur={this._updateCost}
+                  onSubmitEditing={this._updateCost}
                   placeholder={this._getCostPlaceholderText(workingDraft)}
                   keyboardType="numeric"
                 />

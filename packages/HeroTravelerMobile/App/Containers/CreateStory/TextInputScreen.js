@@ -46,10 +46,18 @@ class TextInputScreen extends Component {
     this.props.onDone(this.state.text)
   }
 
+  _updateText = (value) => {
+    this.setState({text:value})
+  }
+
+  _setInputRef = (element) => {
+    this.input = element
+  }
+
   render () {
 
     return (
-      <View style={{flex: 1, position: 'relative'}}>
+      <View style={styles.textInputContainer}>
         <NavBar
           title={this.props.title}
           leftTitle='Cancel'
@@ -61,10 +69,10 @@ class TextInputScreen extends Component {
         />
         <View style={styles.root}>
           <TextInput
-            ref={(element)=>{this.input = element}}
+            ref={this._setInputRef}
             style={styles.textInput}
             value={this.state.text}
-            onChangeText={(value)=>{this.setState({text:value})}}
+            onChangeText={this._updateText}
             placeholder={this.props.placeholder}
             multiline={true}
           />

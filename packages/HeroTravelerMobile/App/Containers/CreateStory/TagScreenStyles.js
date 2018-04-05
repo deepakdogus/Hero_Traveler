@@ -83,7 +83,7 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
   },
-  defaultTags:{},
+  defaultTags: {},
   tooltipTextView: {
     height: 38,
     width: 150,

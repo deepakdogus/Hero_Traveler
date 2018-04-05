@@ -6,6 +6,10 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
+  textInputContainer: {
+    flex: 1,
+    position: 'relative'
+  },
   textInput: {
     flexGrow: 1,
     margin: Metrics.doubleBaseMargin,

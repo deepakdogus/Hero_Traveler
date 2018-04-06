@@ -1,5 +1,6 @@
 import mongoose, {Schema} from 'mongoose'
 import softDelete from 'mongoose-delete'
+import {ModelName as HashtagRef} from './hashtag'
 import {ModelName as CategoryRef} from './category'
 import {ModelName as UserRef} from './user'
 import {ModelName as UploadRef} from './upload'
@@ -14,6 +15,7 @@ const StoryDraftSchema = new Schema({
   type: {
     type: String,
     enum: [
+      Constants.STORY_TYPE_SEE_VALUE,
       Constants.STORY_TYPE_EAT_VALUE,
       Constants.STORY_TYPE_STAY_VALUE,
       Constants.STORY_TYPE_DO_VALUE,
@@ -41,6 +43,10 @@ const StoryDraftSchema = new Schema({
     type: Schema.ObjectId,
     ref: CategoryRef
   }],
+  hashtags: [{
+    type: Schema.ObjectId,
+    ref: HashtagRef
+  }],
   content: {
     type: String
   },
@@ -54,7 +60,16 @@ const StoryDraftSchema = new Schema({
   coverVideo: {
     type: Schema.ObjectId,
     ref: UploadRef,
-  }
+  },
+  cost: {
+    type: Number
+  },
+  currency: {
+    type: Number
+  },
+  travelTips: {
+    type: String
+  },
 }, {
   timestamps: true,
   toObject: {

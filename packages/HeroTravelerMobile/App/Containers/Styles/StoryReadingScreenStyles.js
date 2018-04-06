@@ -31,31 +31,11 @@ export const styles = StyleSheet.create({
     marginBottom: Metrics.tabBarHeight
   },
   locationWrapper: {
-    marginTop: Metrics.section,
-    marginBottom: 100,
-  },
-  locationText: {
-    fontFamily: Fonts.type.sourceSansPro,
-    fontWeight: '600',
-    letterSpacing: .7,
-    fontSize: 16,
-    color: Colors.grey,
+    marginVertical: Metrics.section,
   },
   locationDetails: {
     fontSize: 13,
     fontWeight: '400'
-  },
-  locationLabel: {
-    color: Colors.background
-  },
-  locationIconWrapper: {
-    marginRight: Metrics.section,
-    alignItems: 'center',
-    justifyContent: 'flex-start'
-  },
-  locationIcon: {
-    width: 16.5,
-    height: 26.5,
   },
   locationMap: {
     flex: 1,
@@ -142,6 +122,24 @@ export const styles = StyleSheet.create({
     height: 19,
     lineHeight: 17,
   },
+  costLabel: {
+    fontWeight: '800',
+    fontSize: 15,
+    color: Colors.background,
+    fontFamily: Fonts.type.base,
+    letterSpacing: .7,
+    height: 19,
+    lineHeight: 17,
+  },
+  cost: {
+    fontWeight: '300',
+    fontSize: 15,
+    color: Colors.background,
+    fontFamily: Fonts.type.base,
+    letterSpacing: .7,
+    height: 19,
+    lineHeight: 17,
+  },
   marginedRow: {
     marginHorizontal: Metrics.section,
     flexDirection: 'row',
@@ -150,7 +148,43 @@ export const styles = StyleSheet.create({
   tagRow: {
     marginTop: 0,
     marginBottom: 20,
-  }
+  },
+
+  sectionWrapper: {
+    marginHorizontal: Metrics.section,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 0,
+    marginBottom: 20,
+  },
+  sectionLabel: {
+    width: "100%",
+    fontFamily: Fonts.type.sourceSansPro,
+    letterSpacing: .7,
+    fontWeight: '600',
+    color: Colors.background,
+  },
+  sectionText: {
+    fontFamily: Fonts.type.sourceSansPro,
+    fontWeight: '400',
+    letterSpacing: .7,
+    fontSize: 15,
+    color: Colors.grey,
+  },
+  sectionTextHighlight: {
+    color: Colors.redHighlights
+  },
+  iconWrapper: {
+    marginRight: Metrics.section,
+    alignItems: 'center',
+    justifyContent: 'flex-start'
+  },
+  icon: {
+    width: 24,
+    height: 24,
+    resizeMode: "contain"
+  },
+  
 })
 
 

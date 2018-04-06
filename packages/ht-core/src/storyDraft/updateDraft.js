@@ -1,7 +1,7 @@
 import {Story} from '../models'
 import getDraft from './getDraft'
 import _ from 'lodash'
-import {parseAndInsertStoryCategories, addCover} from '../story/createStory'
+import {parseAndInsertStoryCategories, parseAndInsertStoryHashtags, addCover} from '../story/createStory'
 
 // Merge + Save (instead of update) so we run the save
 // Mongoose hooks
@@ -18,6 +18,11 @@ export default async function updateDraft(draftId, attrs, assetFormater) {
   if (attrs.categories && _.size(attrs.categories)) {
     // @TODO: this should probably happen in middleware
     attrs.categories = await parseAndInsertStoryCategories(attrs.categories)
+  }
+
+  if (attrs.hashtags && _.size(attrs.hashtags)) {
+    // @TODO: this should probably happen in middleware
+    attrs.hashtags = await parseAndInsertStoryHashtags(attrs.hashtags)
   }
 
   return draft.update(attrs)

@@ -15,6 +15,7 @@ import { MediaUploadTypes } from '../Redux/MediaUploadRedux'
 // Entities
 import { StoryTypes } from '../Redux/Entities/Stories'
 import { CategoryTypes } from '../Redux/Entities/Categories'
+import { HashtagTypes } from '../Redux/Entities/Hashtags'
 import { UserTypes } from '../Redux/Entities/Users'
 import { StoryCommentsTypes } from '../Redux/Entities/StoryComments'
 import { GuideTypes } from '../Redux/Entities/Guides'
@@ -49,6 +50,7 @@ import {
 import { openScreen } from '../../Sagas/OpenScreenSagas'
 
 import { getCategories } from './CategorySagas'
+import { getHashtags } from './HashtagSagas'
 import {
   getSuggestedUsers,
   loadUser,
@@ -161,6 +163,7 @@ export default function * root () {
     takeLatest(StoryTypes.STORY_LIKE, likeStory, heroAPI),
     takeLatest(StoryTypes.STORY_BOOKMARK, bookmarkStory, heroAPI),
     takeLatest(CategoryTypes.LOAD_CATEGORIES_REQUEST, getCategories, heroAPI),
+    takeLatest(HashtagTypes.LOAD_HASHTAGS_REQUEST, getHashtags, heroAPI),
     takeLatest(StoryTypes.LOAD_DRAFTS, loadDrafts, heroAPI),
     takeLatest(StoryTypes.DELETE_STORY, deleteStory, heroAPI),
     takeLatest(StoryTypes.GET_BOOKMARKS, getBookmarks, heroAPI),

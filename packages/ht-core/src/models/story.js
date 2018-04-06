@@ -3,6 +3,7 @@ import _ from 'lodash'
 import softDelete from 'mongoose-delete'
 import slug from 'mongoose-slug-generator'
 import {ModelName as CategoryRef} from './category'
+import {ModelName as HashtagRef} from './hashtag'
 import {ModelName as UserRef} from './user'
 import {ModelName as UploadRef} from './upload'
 import {Constants, getGoogleLatLng} from '@hero/ht-util'
@@ -20,10 +21,12 @@ const StorySchema = new Schema({
   type: {
     type: String,
     enum: [
+      Constants.STORY_TYPE_SEE_VALUE,
       Constants.STORY_TYPE_EAT_VALUE,
       Constants.STORY_TYPE_STAY_VALUE,
       Constants.STORY_TYPE_DO_VALUE,
     ],
+    required: true,
   },
   draft: {
     type: Boolean,
@@ -44,6 +47,10 @@ const StorySchema = new Schema({
     type: Schema.ObjectId,
     ref: CategoryRef,
   }],
+  hashtags: [{
+    type: Schema.ObjectId,
+    ref: HashtagRef,
+  }],
   content: {
     type: String
   },
@@ -54,6 +61,7 @@ const StorySchema = new Schema({
   locationInfo: {
     name: {
       type: String,
+      required: true,
     },
     locality: {
       type: String,
@@ -71,6 +79,8 @@ const StorySchema = new Schema({
       type: Number
     },
   },
+  // location is being phased out in favor of locationInfo and 
+  // will be removed in future.
   location: {
     type: String
   },
@@ -111,7 +121,17 @@ const StorySchema = new Schema({
   },
   coverCaption: {
     type: String,
-  }
+  },
+  cost: {
+    type: Number,
+  },
+  currency: {
+    type: String,
+  },
+  travelTips: {
+    type: String,
+  },
+  
 }, {
   timestamps: true,
   toObject: {
@@ -149,6 +169,7 @@ StorySchema.statics = {
         }
       })
       .populate('categories')
+      .populate('hashtags')
       .populate('coverImage coverVideo')
   },
 
@@ -161,11 +182,12 @@ StorySchema.statics = {
         }
       })
       .populate('categories')
+      .populate('hashtags')
       .populate('coverImage coverVideo')
       .sort({createdAt: -1})
   },
 
-  getUserFeed(userId: string, followingIds: string[]) {
+  getUserFeed(userId, followingIds) {
     return this
       .list({
         draft: false,
@@ -190,7 +212,7 @@ StorySchema.statics = {
       _id: storyId
     })
     .select('title description createdAt content location tripDate coverImage coverVideo author categories')
-    .populate('coverImage coverVideo author categories')
+    .populate('coverImage coverVideo author categories hashtags')
     .exec()
   }
 }

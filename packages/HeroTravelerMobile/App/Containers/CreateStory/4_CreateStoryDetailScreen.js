@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   TouchableHighlight,
   DatePickerIOS,
+  TextInput,
 } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
@@ -56,33 +57,28 @@ const Radio = ({text, onPress, name, selected}) => {
 /* note that the icon style objects below are separate because they must be a must
 be a plain objects instead of stylesheets */
 
-const locationIconStyle = {
-  image: {
-    marginRight: Metrics.doubleBaseMargin,
-    marginBottom: Metrics.baseMargin,
-    width: 14,
-    height: 22,
-  }
+const commonIconStyle = {
+  marginRight: Metrics.doubleBaseMargin,
+  marginBottom: Metrics.baseMargin,
 }
 
-const dateIconStyle = {
-  image: {
-    marginRight: Metrics.doubleBaseMargin,
-    marginBottom: Metrics.baseMargin,
-    width: 18,
-    height: 18,
-  }
+let iconSizes = {
+  location: { width: 17, height: 27, },
+  date: { width: 22, height: 22, },
+  category: { width: 22, height: 22, },
+  hashtag: { width: 22, height: 24, marginTop: -2},
+  cost: { width: 22, height: 24, marginTop: -3},
 }
 
-const tabIconStyle = {
-  image: {
-    marginRight: Metrics.doubleBaseMargin,
-    marginBottom: Metrics.baseMargin,
-    width: 18,
-    height: 18
+let iconStyles = {};
+
+for (let s in iconSizes) {
+  iconStyles[s] = {
+    // This is to ensure the input fields align correctly
+    view: { width: Metrics.icons.large },
+    image: Object.assign({}, commonIconStyle, iconSizes[s])
   }
 }
-
 
 class CreateStoryDetailScreen extends React.Component {
 
@@ -90,8 +86,14 @@ class CreateStoryDetailScreen extends React.Component {
     super(props)
     this.state = {
       categories: props.workingDraft.categories || [],
+      hashtags: props.workingDraft.hashtags || [],
       type: props.workingDraft.type,
+      cost: props.workingDraft.cost || '',
+      // We will not be updating the currency right now, but
+      // it is used in constructing the placeholder text.
+      currency: props.workingDraft.currency || '',
       showError: false,
+      error: null,
     }
   }
 
@@ -100,8 +102,11 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.error){
-      this.setState({ showError: true })
+    if (newProps.storyCreateError){
+      this.setState({ 
+        showError: true,
+        error: newProps.storyCreateError,
+      })
       return
     }
     if (!newProps.publishing && newProps.isCreated) {
@@ -110,7 +115,6 @@ class CreateStoryDetailScreen extends React.Component {
     if (this.props.isRepublishing && !newProps.isRepublishing){
       this.next()
     }
-
   }
 
   _setModalVisible = (visible) => {
@@ -134,7 +138,23 @@ class CreateStoryDetailScreen extends React.Component {
 
   _onRight = () => {
     const {workingDraft} = this.props
-    this.next()
+    if (!workingDraft.locationInfo || !workingDraft.type) {
+      this.setState({
+        showError: true,
+        error: {
+          message: "Please Fill Out Required Fields",
+          text: "You need to enter the activity type and the location for this story."
+        }
+      })
+      return;
+    }
+    // The numeric keyboard doesn't have a submit key and input may not 
+    // have been blurred prior to save. In that case we have to update 
+    // the working draft manually here.
+    if (workingDraft.cost !== this.state.cost) {
+      workingDraft.cost = this.state.cost;
+    }
+    this.next();
     if (workingDraft.draft) this.props.publish(workingDraft)
     else this.saveDraft(workingDraft)
   }
@@ -145,6 +165,37 @@ class CreateStoryDetailScreen extends React.Component {
 
   _updateType = (type) => {
     this.props.updateWorkingDraft({type})
+  }
+
+  _updateCostText = (value) => {
+    this.setState({cost:value})
+  }
+
+  _updateCost = () => {
+    this.props.updateWorkingDraft({cost:this.state.cost})
+  }
+
+  _getCostPlaceholderText = (draft) => {
+    let placeholder;
+    switch (draft.type) {
+      case 'see':
+      case 'do':
+        placeholder = 'Cost'
+        break;
+      case 'eat':
+        placeholder = 'Cost per person'
+        break;
+      case 'stay':
+        placeholder = 'Cost per night'
+        break;
+      default:
+        placeholder = 'Cost'
+        break;
+    }
+    // The currency is hardcoded for now, might want to change it later.
+    let currency = draft.currency || 'USD';
+    placeholder += ' (' + currency + ')'
+    return placeholder;
   }
 
   _closeError = () => {
@@ -169,14 +220,42 @@ class CreateStoryDetailScreen extends React.Component {
     NavActions.pop()
   }
 
+  _receiveHashtags = (selectedHashtags) => {
+    this.props.updateWorkingDraft({hashtags: selectedHashtags})
+    NavActions.pop()
+  }
+
+  _receiveTravelTips = (travelTips) => {
+    this.props.updateWorkingDraft({travelTips: travelTips})
+    NavActions.pop()
+  }
+
   isDraft() {
     return this.props.story.draft || false
   }
 
-  navToTags = () => {
+  navToCategories = () => {
     NavActions.createStory_tags({
       onDone: this._receiveCategories,
-      categories: this.props.workingDraft.categories || this.state.categories
+      tags: this.props.workingDraft.categories || this.state.categories,
+      tagType: 'category'
+})
+  }
+
+  navToHashtags = () => {
+    NavActions.createStory_hashtags({
+      onDone: this._receiveHashtags,
+      tags: this.props.workingDraft.hashtags || this.state.hashtags,
+      tagType: 'hashtag'
+    })
+  }
+
+  navToTravelTips = () => {
+    NavActions.createStory_travelTips({
+      onDone: this._receiveTravelTips,
+      text: this.props.workingDraft.travelTips,
+      title: 'TRAVEL TIPS',
+      placeholder: 'What should your fellow travelers know?'
     })
   }
 
@@ -203,22 +282,33 @@ class CreateStoryDetailScreen extends React.Component {
     })
   }
 
+  renderErrors() {
+    if (this.state.showError) {
+      const err = this.state.error;  
+      let errText;
+      if ((__DEV__ && err && err.problem && err.status)) {
+        errText = `${err.status}: ${err.problem}`;
+      } else if (err.text) {
+        errText = err.text;
+      }
+      return (
+        <ShadowButton
+          style={styles.errorButton}
+          onPress={this._closeError}
+          text={errText}
+          title={err.message}
+        />
+      );
+    }
+  }
+
   render () {
     const {workingDraft, publishing} = this.props
-    const {isSavingCover, modalVisible, showError} = this.state
-    const err = this.props.error
-    const errText = (__DEV__ && err && err.problem && err.status) ? `${err.status}: ${err.problem}` : ""
+    const {isSavingCover, modalVisible} = this.state
 
     return (
       <View style={{flex: 1, position: 'relative'}}>
-          { showError && err &&
-          <ShadowButton
-            style={styles.errorButton}
-            onPress={this._closeError}
-            text={errText}
-            title={err.message}
-          />
-          }
+          {this.renderErrors()}
           <NavBar
             title='Story Details'
             leftIcon='arrowLeftRed'
@@ -232,7 +322,34 @@ class CreateStoryDetailScreen extends React.Component {
           <ScrollView style={styles.root}>
             <Text style={styles.title}>{this.props.story.title} Details </Text>
             <View style={styles.fieldWrapper}>
-              <TabIcon name='location' style={locationIconStyle} />
+              <Text style={styles.fieldLabel}>Activity: </Text>
+              <View style={styles.radioGroup}>
+                <Radio
+                  selected={workingDraft.type === 'see'}
+                  onPress={() => this._updateType('see')}
+                  text='SEE'
+                />
+                <Radio
+                  style={{marginLeft: Metrics.baseMargin}}
+                  selected={workingDraft.type === 'do'}
+                  onPress={() => this._updateType('do')}
+                  text='DO'
+                />
+                <Radio
+                  selected={workingDraft.type === 'eat'}
+                  onPress={() => this._updateType('eat')}
+                  text='EAT'
+                />
+                <Radio
+                  style={{marginLeft: Metrics.baseMargin}}
+                  selected={workingDraft.type === 'stay'}
+                  onPress={() => this._updateType('stay')}
+                  text='STAY'
+                />
+              </View>
+            </View>
+            <View style={styles.fieldWrapper}>
+              <TabIcon name='location' style={iconStyles.location} />
               <TouchableWithoutFeedback onPress={this.navToLocation}>
                 <View>
                   <Text
@@ -254,7 +371,7 @@ class CreateStoryDetailScreen extends React.Component {
               </TouchableWithoutFeedback>
             </View>
             <View style={styles.fieldWrapper} >
-              <TabIcon name='date' style={dateIconStyle} />
+              <TabIcon name='date' style={iconStyles.date} />
               <TouchableHighlight
                 onPress={() => this._setModalVisible(true)}
               >
@@ -264,9 +381,26 @@ class CreateStoryDetailScreen extends React.Component {
               </TouchableHighlight>
             </View>
             <View style={styles.fieldWrapper}>
-              <TabIcon name='tag' style={tabIconStyle} />
+              <TabIcon name='cost' style={iconStyles.cost} />
+              <View style={styles.longInput}>
+                {!!(this.state.cost) &&
+                  <Text style={[styles.currency]}>$</Text>
+                }
+                <TextInput 
+                  style={[styles.longInputText]} 
+                  value={this.state.cost.toString()}
+                  onChangeText={this._updateCostText}
+                  onBlur={this._updateCost}
+                  onSubmitEditing={this._updateCost}
+                  placeholder={this._getCostPlaceholderText(workingDraft)}
+                  keyboardType="numeric"
+                />
+              </View>
+            </View>
+            <View style={styles.fieldWrapper}>
+              <TabIcon name='tag' style={iconStyles.category} />
               <TouchableWithoutFeedback
-                onPress={this.navToTags}
+                onPress={this.navToCategories}
                 style={styles.tagStyle}
               >
                 <View>
@@ -276,25 +410,35 @@ class CreateStoryDetailScreen extends React.Component {
               </TouchableWithoutFeedback>
             </View>
             <View style={styles.fieldWrapper}>
-              <Text style={styles.fieldLabel}>Activity: </Text>
-              <View style={styles.radioGroup}>
-                <Radio
-                  selected={workingDraft.type === 'eat'}
-                  onPress={() => this._updateType('eat')}
-                  text='EAT'
-                />
-                <Radio
-                  style={{marginLeft: Metrics.baseMargin}}
-                  selected={workingDraft.type === 'stay'}
-                  onPress={() => this._updateType('stay')}
-                  text='STAY'
-                />
-                <Radio
-                  style={{marginLeft: Metrics.baseMargin}}
-                  selected={workingDraft.type === 'do'}
-                  onPress={() => this._updateType('do')}
-                  text='DO'
-                />
+              <TabIcon name='hashtag' style={iconStyles.hashtag} />
+              <TouchableWithoutFeedback
+                onPress={this.navToHashtags}
+                style={styles.tagStyle}
+              >
+                <View>
+                  {_.size(workingDraft.hashtags) > 0 && 
+                    <Text style={styles.tagStyleText}>{
+                      _.map(workingDraft.hashtags, 
+                        (hashtag) => { return '#' + hashtag.title }).join(', ')
+                    }</Text>
+                  }
+                  {_.size(workingDraft.hashtags) === 0 && 
+                    <Text style={[styles.tagStyleText, {color: '#bdbdbd'}]}>Add hashtags...</Text>
+                  }
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+            <View style={styles.travelTipsWrapper}>
+              <Text style={styles.fieldLabel}>Travel Tips: </Text>
+              <View style={styles.travelTipsPreview}>
+                <TouchableHighlight onPress={this.navToTravelTips}>
+                  <Text style={[
+                    styles.travelTipsPreviewText,
+                    workingDraft.travelTips ? {} : styles.travelTipsPreviewTextDimmed
+                  ]}>
+                    {workingDraft.travelTips || "What should your fellow travelers know?"}
+                  </Text>
+                </TouchableHighlight>
               </View>
             </View>
           </ScrollView>
@@ -335,7 +479,7 @@ export default connect(
       isCreated: isCreated(state.storyCreate),
       story: {...state.storyCreate.workingDraft},
       workingDraft: {...state.storyCreate.workingDraft},
-      error: state.storyCreate.error,
+      storyCreateError: state.storyCreate.error,
       isRepublishing: state.storyCreate.isRepublishing,
     }
   },

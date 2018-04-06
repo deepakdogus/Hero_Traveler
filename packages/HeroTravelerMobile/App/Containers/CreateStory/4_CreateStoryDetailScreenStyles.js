@@ -23,6 +23,13 @@ export default StyleSheet.create({
   },
   fieldLabel: {
     marginBottom: Metrics.baseMargin / 2,
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  fieldLabelLong: {
+    flexGrow: 1,
+    width: "100%",
+    marginBottom: Metrics.baseMargin / 2,
     fontSize: 14
   },
   fieldIcon: {
@@ -47,8 +54,44 @@ export default StyleSheet.create({
     color: Colors.background,
     marginBottom: 20
   },
+  longInput: {
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    flexGrow: 1,
+    minHeight: 30
+  },
+  longInputText: {
+    flexGrow: 1,
+    fontSize: 16,
+    color: Colors.background,
+    marginBottom: 20
+  },
+  travelTipsWrapper: {
+    marginTop: Metrics.baseMargin * 2,
+    marginBottom: Metrics.baseMargin,
+    flexDirection: 'column',
+  },
+  travelTipsPreview: {
+    flexGrow: 1,
+    width: "100%",
+  },
+  travelTipsPreviewText: {
+    borderWidth: 1,
+    borderColor: Colors.navBarText,
+    padding: Metrics.baseMargin,
+    minHeight: 90,
+  },
+  travelTipsPreviewTextDimmed: {
+    color: Colors.grey
+  },
+  currency: {
+    flexShrink: 1,
+    fontSize: 14,
+    color: Colors.background,
+    marginBottom: 20,
+    marginRight: 2,
+  },
   radioGroup: {
-    marginLeft: Metrics.section,
     flexDirection: 'row',
     flex: 1
   },
@@ -120,5 +163,6 @@ export default StyleSheet.create({
     marginVertical: Metrics.baseMargin,
     marginHorizontal: Metrics.section,
     zIndex: 100,
+    padding: Metrics.section,
   },
 })

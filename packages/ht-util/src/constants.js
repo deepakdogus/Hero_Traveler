@@ -8,6 +8,8 @@ export default {
   EMAIL_REGEX: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 
   // Story types
+  STORY_TYPE_SEE_LABEL: 'SEE',
+  STORY_TYPE_SEE_VALUE: 'see',
   STORY_TYPE_EAT_LABEL: 'EAT',
   STORY_TYPE_EAT_VALUE: 'eat',
   STORY_TYPE_DO_LABEL: 'DO',

@@ -33,11 +33,11 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: Colors.lightGreyAreas
   },
-  selectedCategoryRow: {
+  selectedTagRow: {
     backgroundColor: Colors.lightGreyAreas,
     marginBottom: Metrics.baseMargin / 5,
   },
-  removeCategoryIcon: {
+  removeTagIcon: {
     marginTop: 2,
     color: Colors.background
   },
@@ -83,6 +83,7 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
   },
+  defaultTags: {},
   tooltipTextView: {
     height: 38,
     width: 150,

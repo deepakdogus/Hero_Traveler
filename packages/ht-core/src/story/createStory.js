@@ -2,6 +2,7 @@ import _ from 'lodash'
 import {Story, Category, Image, Video} from '../models'
 import updateDraft from '../storyDraft/updateDraft'
 import createCategories from '../category/create'
+import createHashtags from '../hashtag/create'
 import algoliasearchModule from 'algoliasearch'
 
 const client = algoliasearchModule(process.env.ALGOLIA_ACCT_KEY, process.env.ALGOLIA_API_KEY)
@@ -40,6 +41,17 @@ export async function parseAndInsertStoryCategories(categories) {
   })
 }
 
+// Just like above
+export async function parseAndInsertStoryHashtags(hashtags) {
+  const newHashtagTitles = _.filter(hashtags, h => !_.has(h, '_id'))
+  const existingHashtags = _.filter(hashtags, h => _.has(h, '_id'))
+  const newHashtags = await createHashtags(newHashtagTitles)
+
+  return _.map(existingHashtags.concat(newHashtags), h => {
+    return {_id: h._id}
+  })
+}
+
 export async function addCover(draft, assetFormater){
   const {coverImage, coverVideo} = draft
   const isCoverImage = !!coverImage
@@ -62,7 +74,8 @@ export default async function createStory(storyData, assetFormater) {
   const storyObject = {
     ...storyData,
     draft: false,
-    categories: await parseAndInsertStoryCategories(storyData.categories)
+    categories: await parseAndInsertStoryCategories(storyData.categories),
+    hashtags: await parseAndInsertStoryHashtags(storyData.hashtags)
   }
   if (isLocalStory) {
     await addCover(storyObject, assetFormater)

@@ -30,7 +30,7 @@ export default StyleSheet.create({
   tab: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: '25%',
+    width: '20%',
     backgroundColor: Colors.feedDividerGrey,
     borderBottomWidth: 1,
     borderBottomColor: Colors.navBarText,

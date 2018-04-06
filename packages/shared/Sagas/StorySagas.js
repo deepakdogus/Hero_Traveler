@@ -220,7 +220,7 @@ function getSyncProgressSteps(story){
 export function * publishLocalDraft (api, action) {
   const {draft} = action
   yield [
-    put(StoryActions.setRetryingBackgroundFailure(draft.id, 'retrying')),
+    put(StoryActions.setRetryingBackgroundFailure(draft.id)),
     put(StoryCreateActions.initializeSyncProgress(getSyncProgressSteps(draft), 'Publishing Story'))
   ]
   const coverResponse = yield createCover(api, draft)
@@ -277,7 +277,7 @@ export function * discardDraft (api, action) {
 export function * updateDraft (api, action) {
   const {draftId, draft, updateStoryEntity} = action
   yield [
-    put(StoryActions.setRetryingBackgroundFailure(draftId), 'retrying'),
+    put(StoryActions.setRetryingBackgroundFailure(draftId)),
     put(StoryCreateActions.initializeSyncProgress(getSyncProgressSteps(draft), 'Updating Story')),
   ]
 

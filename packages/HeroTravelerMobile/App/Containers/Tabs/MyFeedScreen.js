@@ -8,11 +8,14 @@ import SplashScreen from 'react-native-splash-screen'
 
 import {Metrics, Images} from '../../Shared/Themes'
 import StoryActions from '../../Shared/Redux/Entities/Stories'
+import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import Loader from '../../Components/Loader'
 import StoryList from '../../Containers/ConnectedStoryList'
 import ConnectedStoryPreview from '../ConnectedStoryPreview'
 import styles from '../Styles/MyFeedScreenStyles'
 import NoStoriesMessage from '../../Components/NoStoriesMessage'
+import ProgressBar from '../../Components/ProgressBar'
+import FailureBar from '../../Components/FailureBar'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
 
@@ -55,6 +58,8 @@ class MyFeedScreen extends React.Component {
       this.props.storiesById !== nextProps.storiesById,
       this.props.fetchStatus !== nextProps.fetchStatus,
       this.props.error !== nextProps.error,
+      !_.isEqual(this.props.sync, nextProps.sync),
+      !_.isEqual(this.props.backgroundFailures, nextProps.backgroundFailures),
     ])
 
     return shouldUpdate
@@ -110,9 +115,16 @@ class MyFeedScreen extends React.Component {
     )
   }
 
+  getFirstBackgroundFailure() {
+    const backgroundFailures = this.props.backgroundFailures
+    return backgroundFailures[Object.keys(backgroundFailures)[0]]
+  }
+
   render () {
-    let {storiesById, fetchStatus, error} = this.props;
+    let {storiesById, fetchStatus, error, sync, backgroundFailures} = this.props;
     let topContent, bottomContent
+
+    const failure = this.getFirstBackgroundFailure()
 
     if (error) {
       topContent = this._showError()
@@ -138,6 +150,17 @@ class MyFeedScreen extends React.Component {
           <Image source={Images.logoFeedBeta} style={styles.logo} />
         </View>
         { topContent }
+        <ProgressBar
+          {...sync}
+        />
+        { (sync.syncProgressSteps === 0 || sync.syncProgressSteps === sync.syncProgress || sync.error) && !!failure &&
+          <FailureBar
+            failure={failure}
+            updateDraft={this.props.updateDraft}
+            publishLocalDraft={this.props.publishLocalDraft}
+            discardUpdate={this.props.discardUpdate}
+          />
+        }
         { bottomContent }
       </View>
     )
@@ -150,7 +173,8 @@ const mapStateToProps = (state) => {
     userFeedById,
     fetchStatus,
     entities: stories,
-    error
+    error,
+    backgroundFailures,
   } = state.entities.stories;
   return {
     userId: state.session.userId,
@@ -158,13 +182,18 @@ const mapStateToProps = (state) => {
     fetchStatus,
     storiesById: userFeedById,
     error,
-    location: state.routes.scene.name
+    location: state.routes.scene.name,
+    sync: state.storyCreate.sync,
+    backgroundFailures,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     attemptGetUserFeed: (userId) => dispatch(StoryActions.feedRequest(userId)),
+    discardUpdate: (storyId) => dispatch(StoryActions.removeBackgroundFailure(storyId)),
+    publishLocalDraft: (story) => dispatch(StoryCreateActions.publishLocalDraft(story)),
+    updateDraft: (story) => dispatch(StoryCreateActions.updateDraft(story.id, story, true)),
   }
 }
 

@@ -14,7 +14,7 @@ import { Colors, Metrics } from '../Shared/Themes/'
 import VideoPlayer from './VideoPlayer'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import getVideoUrl from '../Shared/Lib/getVideoUrl'
-export const ActivityProps = {
+export const SyncListItemProps = {
   story: PropTypes.object.isRequired,
   failedMethod: PropTypes.string.isRequired,
   error: PropTypes.string.isRequired,
@@ -22,8 +22,8 @@ export const ActivityProps = {
   updateDraft: PropTypes.func.isRequired,
 }
 
-export default class Activity extends Component {
-  static propTypes = ActivityProps
+export default class SyncListItem extends Component {
+  static propTypes = SyncListItemProps
 
   isRetrying(){
     return this.props.status === 'retrying'

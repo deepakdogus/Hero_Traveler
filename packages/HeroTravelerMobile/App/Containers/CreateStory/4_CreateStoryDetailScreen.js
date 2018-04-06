@@ -161,7 +161,7 @@ class CreateStoryDetailScreen extends React.Component {
   next() {
     this.props.resetCreateStore()
     NavActions.tabbar({type: 'reset'})
-    NavActions.profile()
+    NavActions.myFeed()
   }
 
   _receiveCategories = (selectedCategories) => {

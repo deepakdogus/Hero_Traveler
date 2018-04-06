@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {Text, TouchableOpacity, ProgressViewIOS, View} from 'react-native'
-import styles from './Styles/ProgressBarStyles'
+import styles from './Styles/BackgroundPublishingBarsStyles'
 import {Colors} from '../Shared/Themes'
 import TabIcon from './TabIcon'
 

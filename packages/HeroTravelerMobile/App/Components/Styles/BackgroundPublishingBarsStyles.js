@@ -3,13 +3,9 @@ import { Fonts, Colors, Metrics } from '../../Shared/Themes/'
 
 export default StyleSheet.create({
   container: {
-    position: 'absolute',
     backgroundColor: Colors.white,
-    height: 32,
-    bottom: Metrics.tabBarHeight,
-    zIndex: 10,
+    minHeight: 32,
     width: Metrics.screenWidth,
-    opacity: .9,
     flexDirection: 'column',
     justifyContent: 'flex-end',
   },
@@ -17,6 +13,14 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 10,
+  },
+  failureWrapper: {
+    justifyContent: 'space-between',
+  },
+  description: {
+    flexDirection: "row",
+    alignItems: "center",
+    maxWidth: Metrics.screenWidth - 47
   },
   error: {
     height: 50,
@@ -31,9 +35,15 @@ export default StyleSheet.create({
     fontWeight: '600',
     color: Colors.background,
   },
+  retryText: {
+    paddingHorizontal: 5,
+  },
   errorIcon: {
     height: 20,
     width: 20,
+  },
+  retryButtons: {
+    flexDirection: "row"
   },
   bar: {
     transform: [{scaleY: 2}]

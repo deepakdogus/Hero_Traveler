@@ -180,7 +180,7 @@ function * publishDraftErrorHandling(draft, response){
     put(StoryActions.addDraft(draft)),
     put(StoryActions.addBackgroundFailure(
       draft,
-      'failed to publish',
+      'Failed to publish',
       'publishLocalDraft',
     )),
     put(StoryCreateActions.syncError()),
@@ -196,7 +196,7 @@ function * updateDraftErrorHandling(draft, response){
     put(StoryCreateActions.updateDraftFailure(err)),
     put(StoryActions.addBackgroundFailure(
       draft,
-      'failed to update',
+      'Failed to update',
       'updateDraft',
     ))
   ]

@@ -75,11 +75,6 @@ class LoginScreen extends React.Component {
       this.state.password,
     ])
 
-    this.setState({
-      username: _.trim(this.state.username),
-      password: _.trim(this.state.password),
-    })
-
     if (!conditions) {
       alert('Please complete all fields')
       return
@@ -141,11 +136,11 @@ class LoginScreen extends React.Component {
   }
 
   handleChangeUsername = (text) => {
-    this.setState({ username: text })
+    this.setState({ username: _.trim(text) })
   }
 
   handleChangePassword = (text) => {
-    this.setState({ password: text })
+    this.setState({ password: _.trim(text) })
   }
 
   render () {

@@ -148,6 +148,13 @@ class LoginScreen extends React.Component {
     const { fetching } = this.props
     const editable = !fetching
     const textInputStyle = editable ? styles.input : styles.textInputReadonly
+
+    let errorText = this.props.error;
+
+    if (errorText === "Unauthorized") {
+      errorText = "Invalid username or password"
+    }
+
     return (
       <ImageBackground
         source={Images.launchBackground}
@@ -182,7 +189,7 @@ class LoginScreen extends React.Component {
             Or
           </Text>
 
-          {this.props.error && <Text style={[styles.error]}>{this.props.error}</Text>}
+          {this.props.error && <Text style={[styles.error]}>{errorText}</Text>}
 
           <View style={styles.form}>
             <Input

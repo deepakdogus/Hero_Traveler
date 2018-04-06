@@ -19,6 +19,7 @@ const { Types, Creators } = createActions({
   setIsLoggedIn: ['isLoggedIn'],
   verifyEmail: ['token'],
   verifyEmailFailure: ['error'],
+  clearErrors: [],
 })
 
 export const LoginTypes = Types
@@ -60,6 +61,8 @@ export const failureRequestReset = (state) => state
 
 export const setIsLoggedIn = (state, {isLoggedIn}) => state.merge({isLoggedIn})
 
+export const clearErrors = (state) => state.merge({ error: null })
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -74,4 +77,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.RESET_PASSWORD_REQUEST_FAILURE]: failureRequestReset,
   [Types.SET_IS_LOGGED_IN]: setIsLoggedIn,
   [Types.VERIFY_EMAIL_FAILURE]: failure,
+  [Types.CLEAR_ERRORS]: clearErrors,
 })

@@ -49,7 +49,8 @@ class LoginScreen extends React.Component {
     isLoggedIn: PropTypes.bool,
     error: PropTypes.string,
     goToMyFeed: PropTypes.func,
-    signupFacebook: PropTypes.func
+    signupFacebook: PropTypes.func,
+    clearErrors: PropTypes.func
   }
 
   constructor (props) {
@@ -59,6 +60,10 @@ class LoginScreen extends React.Component {
       username: '',
       password: '',
     }
+  }
+
+  componentWillMount() {
+    this.props.clearErrors();
   }
 
   componentWillReceiveProps (newProps) {
@@ -259,6 +264,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     attemptLogin: (username, password) => dispatch(LoginActions.loginRequest(username, password)),
     signupFacebook: (...args) => dispatch(SignupActions.signupFacebook(...args)),
+    clearErrors: () => dispatch(LoginActions.clearErrors()),
   }
 }
 

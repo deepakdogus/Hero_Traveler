@@ -16,6 +16,7 @@ import styles from '../Styles/MyFeedScreenStyles'
 import NoStoriesMessage from '../../Components/NoStoriesMessage'
 import ProgressBar from '../../Components/ProgressBar'
 import FailureBar from '../../Components/FailureBar'
+import BackgroundPublishingBars from '../../Components/BackgroundPublishingBars'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
 
@@ -150,17 +151,13 @@ class MyFeedScreen extends React.Component {
           <Image source={Images.logoFeedBeta} style={styles.logo} />
         </View>
         { topContent }
-        <ProgressBar
-          {...sync}
+        <BackgroundPublishingBars
+          sync={sync}
+          failure={failure}
+          updateDraft={this.props.updateDraft}
+          publishLocalDraft={this.props.publishLocalDraft}
+          discardUpdate={this.props.discardUpdate}
         />
-        { (sync.syncProgressSteps === 0 || sync.syncProgressSteps === sync.syncProgress || sync.error) && !!failure &&
-          <FailureBar
-            failure={failure}
-            updateDraft={this.props.updateDraft}
-            publishLocalDraft={this.props.publishLocalDraft}
-            discardUpdate={this.props.discardUpdate}
-          />
-        }
         { bottomContent }
       </View>
     )

@@ -48,7 +48,7 @@ class FailureBar extends Component {
           <View style={styles.description}>
             <TabIcon name="error" style={{image: styles.errorIcon}}/>
             <Text style={styles.text}>
-              {failure.error} {failure.story.title}. Retry?
+              {failure.error} "{failure.story.title}". Retry?
             </Text>
           </View>
           <View style={styles.retryButtons}>

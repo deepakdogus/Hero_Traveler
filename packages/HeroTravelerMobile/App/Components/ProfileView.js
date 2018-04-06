@@ -23,6 +23,8 @@ import ProgressBar from './ProgressBar'
 import UserActions from '../Shared/Redux/Entities/Users'
 import StoryCreateActions from '../Shared/Redux/StoryCreateRedux'
 import isTooltipComplete, {Types as TooltipTypes} from '../Shared/Lib/firstTimeTooltips'
+import Loader from '../Components/Loader'
+import {Colors} from '../Shared/Themes'
 
 const api = HeroAPI.create()
 
@@ -51,6 +53,7 @@ class ProfileView extends React.Component {
   static propTypes = {
     location: PropTypes.string,
     error: PropTypes.object,
+    saving: PropTypes.bool,
     refresh: PropTypes.func,
     resetSync: PropTypes.func,
     sync: PropTypes.object,
@@ -62,6 +65,7 @@ class ProfileView extends React.Component {
       selectedTab: TabTypes.stories,
       imageMenuOpen: false,
       file: null,
+      saving: false,
       bioText: props.user.bio || '',
       usernameText: props.user.username || 'Enter a username',
       aboutText: props.user.about || '',
@@ -112,6 +116,29 @@ class ProfileView extends React.Component {
       this.setState({error: `Usernames must be between ${usernameContansts.minLength} and ${usernameContansts.maxLength} characters`})
       return
     }
+
+    this.setState({saving:true}, () => {
+      if (this.state.usernameText !== this.props.user.username) {
+        api.signupCheck({username:this.state.usernameText})
+        .then(response => {
+          const {data} = response
+          if (data.username) {
+            this.setState({
+              error: `This username is taken`,
+              saving: false,
+            })
+          } else {
+            this._updateUser();
+          }
+        })
+      } else {
+        this._updateUser();
+      }
+    });
+
+  }
+
+  _updateUser = () => {
     this.props.updateUser({
       bio: this.state.bioText,
       username: this.state.usernameText,
@@ -323,6 +350,15 @@ class ProfileView extends React.Component {
           />
         }
         {showTooltip && this.renderTooltip()}
+        {this.state.saving &&
+          <Loader tintColor={Colors.blackoutTint} style={{
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0
+          }} />
+        }
       </View>
     )
   }

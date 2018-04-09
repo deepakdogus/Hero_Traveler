@@ -27,6 +27,7 @@ const { Types, Creators } = createActions({
   updateUser: ['attrs'],
   updateUserSuccess: ['user'],
   updateUserFailure: ['error'],
+  eagerUpdateTooltips: ['userId' ,'tooltips'],
   receiveUsers: ['users'],
   receiveLikes: ['userId', 'storyIds'],
   receiveBookmarks: ['userId', 'storyIds'],
@@ -78,15 +79,18 @@ export const loadUserSuccess = (state) => {
     error: null
   })
 }
+
 export const loadUserFailure = (state, {error}) => {
   return state.merge({error, fetchStatus: {fetching: false, loaded: false}})
 }
+
 export const suggestions = (state) => {
   return state.setIn(
     ['fetchStatus', 'fetching'],
     true
   )
 }
+
 export const suggestionsSuccess = (state, {usersById = []}) => {
   return state.merge({
     fetchStatus: {
@@ -99,6 +103,7 @@ export const suggestionsSuccess = (state, {usersById = []}) => {
     deep: true
   })
 }
+
 export const suggestionsFailure = (state, {error}) => {
   return state.merge({
     fetchStatus: {
@@ -108,13 +113,16 @@ export const suggestionsFailure = (state, {error}) => {
     error
   })
 }
+
 export const receive = (state, {users = {}}) => {
   return state.merge({entities: users}, {deep: true})
 }
+
 export const updateUser = (state) => state.merge({
   error: null,
   updating: true
 })
+
 export const updateUserSuccess = (state, {user}) => {
   const path = ['entities', user.id]
   const updatedUser = state.getIn(path)
@@ -122,16 +130,26 @@ export const updateUserSuccess = (state, {user}) => {
   return state.setIn(path, updatedUser)
               .merge({error: null, updating: false})
 }
+
+export const eagerUpdateTooltips = (state, {userId, tooltips}) => {
+  return state.setIn(
+    ['entities', userId, 'introTooltips'],
+    tooltips
+  )
+}
+
 export const updateUserFailure = (state, {error}) => {
   return state.merge({
     error,
     updating: false
   })
 }
+
 export const receiveLikes = (state, {userId, storyIds}) => state.setIn(
   ['usersLikesById', userId],
   storyIds
 )
+
 export const receiveBookmarks = (state, {userId, storyIds}) => state.setIn(
   ['usersBookmarksById', userId],
   storyIds
@@ -341,4 +359,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.RECEIVE_ACTIVITIES]: receiveActivities,
   [Types.ACTIVITY_SEEN]: activitySeen,
   [Types.ACTIVITY_SEEN_FAILURE]: activitySeenFailure,
+  [Types.EAGER_UPDATE_TOOLTIPS]: eagerUpdateTooltips,
 })

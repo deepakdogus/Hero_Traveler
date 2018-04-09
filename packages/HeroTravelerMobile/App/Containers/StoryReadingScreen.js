@@ -227,10 +227,10 @@ class StoryReadingScreen extends React.Component {
   }
 
   renderHashtags = () => {
-    let categories = this.props.story.hashtags.map((hashtag) => {
+    let hashtags = this.props.story.hashtags.map((hashtag) => {
       return "#" + hashtag.title;
     })
-    return <Text style={[rendererStyles.unstyled, styles.sectionTextHighlight]}>{categories.join(', ')}</Text>
+    return <Text style={[rendererStyles.unstyled, styles.sectionTextHighlight]}>{hashtags.join(', ')}</Text>
   }
 
   _flagStory = () => {
@@ -401,7 +401,7 @@ class StoryReadingScreen extends React.Component {
                 </View>
               </View>
             }
-            
+
           </View>
         </ScrollView>
         <Animated.View style={[styles.toolBar, {height: this.state.toolbarHeight}]}>

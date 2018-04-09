@@ -33,6 +33,9 @@ export function * logout (api, action) {
 export function * updateUser (api, action) {
   const {attrs} = action
   const userId = yield select(currentUserId)
+  if (attrs.introTooltips) {
+    yield put(UserActions.eagerUpdateTooltips(userId, attrs.introTooltips))
+  }
   const response = yield call(
     api.updateUser,
     userId,

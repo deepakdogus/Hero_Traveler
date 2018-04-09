@@ -19,7 +19,7 @@ const { Types, Creators } = createActions({
   setIsLoggedIn: ['isLoggedIn'],
   verifyEmail: ['token'],
   verifyEmailFailure: ['error'],
-  clearErrors: [],
+  clearErrors: null,
 })
 
 export const LoginTypes = Types

@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@hero/ht-util@^0.0.42":
-  version "0.0.42"
-  resolved "https://npm.abeck.io:443/@hero%2fht-util/-/ht-util-0.0.42.tgz#61c9d613f64ec4d4b9d56a98071850eb31a416fc"
+"@hero/ht-util@^0.0.43":
+  version "0.0.43"
+  resolved "https://npm.abeck.io:443/@hero%2fht-util/-/ht-util-0.0.43.tgz#3870e2ba463ed5d0a69e432f0c8f485245766353"
   dependencies:
     request "^2.81.0"
     request-promise "^4.2.1"

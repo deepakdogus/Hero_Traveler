@@ -9,7 +9,6 @@ import SplashScreen from 'react-native-splash-screen'
 import {Metrics, Images} from '../../Shared/Themes'
 import StoryActions from '../../Shared/Redux/Entities/Stories'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
-import Loader from '../../Components/Loader'
 import StoryList from '../../Containers/ConnectedStoryList'
 import ConnectedStoryPreview from '../ConnectedStoryPreview'
 import styles from '../Styles/MyFeedScreenStyles'
@@ -173,6 +172,7 @@ const mapStateToProps = (state) => {
     error,
     backgroundFailures,
   } = state.entities.stories;
+
   return {
     userId: state.session.userId,
     user: state.entities.users.entities[state.session.userId],

@@ -141,7 +141,7 @@ class MediaSelectorScreen extends React.Component {
   _handleCaptureMedia = (data) => {
     this.setState({
       mediaCaptured: true,
-      media: data.path
+      media: "file://" + data.path
     })
   }
 

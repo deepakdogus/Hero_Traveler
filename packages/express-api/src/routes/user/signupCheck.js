@@ -7,10 +7,5 @@ export default function signupCheck(req, res) {
   return Promise.props({
     username: Models.User.findOne({username}),
     email: Models.User.findOne({email}),
-  }).then(queryResponse => {
-    return {
-      username: !!queryResponse.username,
-      email: !!queryResponse.email,
-    }
   })
 }

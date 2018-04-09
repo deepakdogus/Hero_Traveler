@@ -25,7 +25,7 @@ const NativeFeedItem = requireNativeComponent('RHNativeFeedItem', null)
 add pagingIsDisabled instead of pagingEnabled as a prop so that paging is default
 and so we do not need to add the property to (almost) every StoryList call we make
 */
-class StoryList extends React.Component {
+export default class StoryList extends React.Component {
   static propTypes = {
     stories: PropTypes.arrayOf(PropTypes.object).isRequired,
     onRefresh: PropTypes.func,
@@ -203,16 +203,3 @@ class StoryList extends React.Component {
 
 reactMixin(StoryList.prototype, ScrollResponder.Mixin)
 reactMixin(StoryList.prototype, ScrollResponder.Mixin.mixins[0])
-
-const mapStateToProps = (state) => {
-  return {
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(StoryList)
-

@@ -103,7 +103,7 @@ class CreateStoryDetailScreen extends React.Component {
 
   componentWillReceiveProps(newProps) {
     if (newProps.storyCreateError){
-      this.setState({ 
+      this.setState({
         showError: true,
         error: newProps.storyCreateError,
       })
@@ -148,8 +148,8 @@ class CreateStoryDetailScreen extends React.Component {
       })
       return;
     }
-    // The numeric keyboard doesn't have a submit key and input may not 
-    // have been blurred prior to save. In that case we have to update 
+    // The numeric keyboard doesn't have a submit key and input may not
+    // have been blurred prior to save. In that case we have to update
     // the working draft manually here.
     if (workingDraft.cost !== this.state.cost) {
       workingDraft.cost = this.state.cost;
@@ -284,7 +284,7 @@ class CreateStoryDetailScreen extends React.Component {
 
   renderErrors() {
     if (this.state.showError) {
-      const err = this.state.error;  
+      const err = this.state.error;
       let errText;
       if ((__DEV__ && err && err.problem && err.status)) {
         errText = `${err.status}: ${err.problem}`;
@@ -386,8 +386,8 @@ class CreateStoryDetailScreen extends React.Component {
                 {!!(this.state.cost) &&
                   <Text style={[styles.currency]}>$</Text>
                 }
-                <TextInput 
-                  style={[styles.longInputText]} 
+                <TextInput
+                  style={[styles.longInputText]}
                   value={this.state.cost.toString()}
                   onChangeText={this._updateCostText}
                   onBlur={this._updateCost}
@@ -416,13 +416,13 @@ class CreateStoryDetailScreen extends React.Component {
                 style={styles.tagStyle}
               >
                 <View>
-                  {_.size(workingDraft.hashtags) > 0 && 
+                  {_.size(workingDraft.hashtags) > 0 &&
                     <Text style={styles.tagStyleText}>{
-                      _.map(workingDraft.hashtags, 
+                      _.map(workingDraft.hashtags,
                         (hashtag) => { return '#' + hashtag.title }).join(', ')
                     }</Text>
                   }
-                  {_.size(workingDraft.hashtags) === 0 && 
+                  {_.size(workingDraft.hashtags) === 0 &&
                     <Text style={[styles.tagStyleText, {color: '#bdbdbd'}]}>Add hashtags...</Text>
                   }
                 </View>

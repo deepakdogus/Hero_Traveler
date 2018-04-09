@@ -241,10 +241,15 @@ export const addUserStory = (state, {stories = {}, draftId}) => {
   // adding to list of user's stories
   if (story && userStoriesById.indexOf(story.id) === -1) {
     userStoriesById = [story.id, ...userStoriesById]
+    userFeedById = [story.id, ...state.userFeedById]
+
+    // updating fetchstatus and user's storiesByUserAndId
     state = userSuccess(state, {
       userId: story.author,
-      userStoriesById
+      userStoriesById,
     })
+    state = state.merge({userFeedById})
+
   }
   return removeDraft(state, {draftId})
 }

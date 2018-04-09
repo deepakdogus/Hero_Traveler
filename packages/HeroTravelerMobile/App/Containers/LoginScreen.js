@@ -49,7 +49,8 @@ class LoginScreen extends React.Component {
     isLoggedIn: PropTypes.bool,
     error: PropTypes.string,
     goToMyFeed: PropTypes.func,
-    signupFacebook: PropTypes.func
+    signupFacebook: PropTypes.func,
+    clearErrors: PropTypes.func
   }
 
   constructor (props) {
@@ -59,6 +60,10 @@ class LoginScreen extends React.Component {
       username: '',
       password: '',
     }
+  }
+
+  componentWillMount() {
+    this.props.clearErrors();
   }
 
   componentWillReceiveProps (newProps) {
@@ -74,11 +79,6 @@ class LoginScreen extends React.Component {
       this.state.username,
       this.state.password,
     ])
-
-    this.setState({
-      username: _.trim(this.state.username),
-      password: _.trim(this.state.password),
-    })
 
     if (!conditions) {
       alert('Please complete all fields')
@@ -141,11 +141,11 @@ class LoginScreen extends React.Component {
   }
 
   handleChangeUsername = (text) => {
-    this.setState({ username: text })
+    this.setState({ username: _.trim(text) })
   }
 
   handleChangePassword = (text) => {
-    this.setState({ password: text })
+    this.setState({ password: _.trim(text) })
   }
 
   render () {
@@ -153,6 +153,13 @@ class LoginScreen extends React.Component {
     const { fetching } = this.props
     const editable = !fetching
     const textInputStyle = editable ? styles.input : styles.textInputReadonly
+
+    let errorText = this.props.error;
+
+    if (errorText === "Unauthorized") {
+      errorText = "Invalid username or password"
+    }
+
     return (
       <ImageBackground
         source={Images.launchBackground}
@@ -187,7 +194,7 @@ class LoginScreen extends React.Component {
             Or
           </Text>
 
-          {this.props.error && <Text style={[styles.error]}>{this.props.error}</Text>}
+          {this.props.error && <Text style={[styles.error]}>{errorText}</Text>}
 
           <View style={styles.form}>
             <Input
@@ -257,6 +264,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     attemptLogin: (username, password) => dispatch(LoginActions.loginRequest(username, password)),
     signupFacebook: (...args) => dispatch(SignupActions.signupFacebook(...args)),
+    clearErrors: () => dispatch(LoginActions.clearErrors()),
   }
 }
 

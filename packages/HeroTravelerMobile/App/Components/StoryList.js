@@ -178,6 +178,7 @@ export default class StoryList extends React.Component {
         onTouchCancel={this.scrollResponderHandleTouchCancel}
       >
         <RefreshControl
+          enabled={this.props.refreshing}
           refreshing={this.props.refreshing}
           onRefresh={this.props.onRefresh}
         />

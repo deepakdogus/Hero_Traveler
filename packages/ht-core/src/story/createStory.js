@@ -77,6 +77,7 @@ export default async function createStory(storyData, assetFormater) {
     categories: await parseAndInsertStoryCategories(storyData.categories),
     hashtags: await parseAndInsertStoryHashtags(storyData.hashtags)
   }
+
   if (isLocalStory) {
     await addCover(storyObject, assetFormater)
     storyData.id = undefined

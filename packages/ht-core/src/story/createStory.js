@@ -1,8 +1,9 @@
 import _ from 'lodash'
-import {Story, Category, Image, Video} from '../models'
+import {Story, Category, Hashtag, Image, Video} from '../models'
 import updateDraft from '../storyDraft/updateDraft'
 import createCategories from '../category/create'
 import createHashtags from '../hashtag/create'
+import parseAndInsertRefToStory from '../utils/parseAndInsertRefToStory'
 import algoliasearchModule from 'algoliasearch'
 
 const client = algoliasearchModule(process.env.ALGOLIA_ACCT_KEY, process.env.ALGOLIA_API_KEY)
@@ -29,27 +30,12 @@ async function incCounts(catIds) {
   return await Promise.all(asyncCalls)
 }
 
-// Separate the new categories (text string) from the existing
-// categories (_ids)
 export async function parseAndInsertStoryCategories(categories) {
-  const newCategoryTitles = _.filter(categories, c => !_.has(c, '_id'))
-  const existingCategories = _.filter(categories, c => _.has(c, '_id'))
-  const newCategories = await createCategories(newCategoryTitles)
-
-  return _.map(existingCategories.concat(newCategories), c => {
-    return {_id: c._id}
-  })
+  return parseAndInsertRefToStory(Category, categories, createCategories)
 }
 
-// Just like above
 export async function parseAndInsertStoryHashtags(hashtags) {
-  const newHashtagTitles = _.filter(hashtags, h => !_.has(h, '_id'))
-  const existingHashtags = _.filter(hashtags, h => _.has(h, '_id'))
-  const newHashtags = await createHashtags(newHashtagTitles)
-
-  return _.map(existingHashtags.concat(newHashtags), h => {
-    return {_id: h._id}
-  })
+  return parseAndInsertRefToStory(Hashtag, hashtags, createHashtags)
 }
 
 export async function addCover(draft, assetFormater){
@@ -77,6 +63,7 @@ export default async function createStory(storyData, assetFormater) {
     categories: await parseAndInsertStoryCategories(storyData.categories),
     hashtags: await parseAndInsertStoryHashtags(storyData.hashtags)
   }
+
   if (isLocalStory) {
     await addCover(storyObject, assetFormater)
     storyData.id = undefined

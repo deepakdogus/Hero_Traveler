@@ -8,7 +8,7 @@
     "build": "babel src -d dist",
     "clean": "rimraf dist",
     "start": "node dist/index.js",
-    "dev": "nodemon index.js",
+    "dev": "nodemon --watch node_modules/@hero --watch src",
     "deploy": "./ops/deploy.sh",
     "tail-logs": "./ops/tail_logs.sh"
   },
@@ -50,5 +50,9 @@
     "babel-register": "^6.23.0",
     "dotenv": "^4.0.0",
     "nodemon": "^1.11.0"
+  },
+  "nodemonConfig": {
+    "ignoreRoot": [".git"],
+    "delay": "500"
   }
 }

@@ -6,7 +6,6 @@ import algoliasearchModule from 'algoliasearch'
 const client = algoliasearchModule(process.env.ALGOLIA_ACCT_KEY, process.env.ALGOLIA_API_KEY)
 const categoryIndex = client.initIndex(process.env.ALGOLIA_CATEGORY_INDEX)
 
-
 const addCategoriesToIndex = (docs) => new Promise((resolve, reject) => {
   // return early if we are not seeding
   if (process.env.DISABLE_ALGOLIA) {
@@ -19,7 +18,6 @@ const addCategoriesToIndex = (docs) => new Promise((resolve, reject) => {
 })
 
 export default function createCategory(docs) {
-
   if (!_.isArray(docs)) {
     docs = [docs]
   }

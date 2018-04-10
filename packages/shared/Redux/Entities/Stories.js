@@ -237,7 +237,10 @@ export const updateEntities = (state, {stories = {}}) => {
 export const addUserStory = (state, {stories = {}, draftId}) => {
   state = updateEntities(state, {stories})
   const story = stories[Object.keys(stories)[0]]
-  let userStoriesById = state.storiesByUserAndId[story.author].byId
+
+  let userStoriesMeta = state.storiesByUserAndId[story.author]
+  if (!userStoriesMeta) userStoriesMeta = { "byId": []}
+  let userStoriesById = userStoriesMeta.byId
   // adding to list of user's stories
   if (story && userStoriesById.indexOf(story.id) === -1) {
     userStoriesById = [story.id, ...userStoriesById]

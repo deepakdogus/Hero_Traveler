@@ -16,6 +16,7 @@ export default StyleSheet.create({
   },
   tagline: {
     ...Fonts.style.h5,
+    fontSize: 20,
     color: Colors.snow,
     textAlign: 'center',
     fontWeight: '300',

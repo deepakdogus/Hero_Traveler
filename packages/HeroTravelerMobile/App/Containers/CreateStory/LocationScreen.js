@@ -48,9 +48,9 @@ class LocationScreen extends Component {
     .catch(() => this.setState({searching: false}))
   }
 
-  selectLocation = (place) => () => {
+  selectLocation = (placeID) => () => {
     this.setState({searching: true})
-    RNGooglePlaces.lookUpPlaceByID(place.placeID)
+    RNGooglePlaces.lookUpPlaceByID(placeID)
     .then((results) => {
       this.setState({searching: false}, () => {
         this.props.onSelectLocation(results)
@@ -60,16 +60,14 @@ class LocationScreen extends Component {
 
   onSubmit = () => {
     if (this.state.predictions.length) return
-    else {
-      this.props.onSelectLocation({"name": this.state.text})
-    }
+    else this.props.onSelectLocation({"name": this.state.text})
   }
 
   renderPlaces() {
     return this.state.predictions.map(place => {
       return (
         <View key={place.placeID} style={styles.rowWrapper}>
-          <TouchableOpacity onPress={this.selectLocation(place)}>
+          <TouchableOpacity onPress={this.selectLocation(place.placeID)}>
             <Text style={styles.boldText}>{place.primaryText}</Text>
             <Text style={[styles.boldText, styles.text]}>{place.secondaryText}</Text>
           </TouchableOpacity>

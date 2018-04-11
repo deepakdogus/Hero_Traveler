@@ -259,6 +259,7 @@ class CreateStoryDetailScreen extends React.Component {
     })
   }
 
+  // if you change this... also make sure to change getLocationInfo's formatLocationInfo
   receiveLocation = (place) => {
     this.props.updateWorkingDraft({
       locationInfo: {

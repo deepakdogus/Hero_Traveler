@@ -131,7 +131,6 @@ const StorySchema = new Schema({
   travelTips: {
     type: String,
   },
-
 }, {
   timestamps: true,
   toObject: {

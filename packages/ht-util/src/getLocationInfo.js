@@ -16,6 +16,8 @@ function formatLocationInfo(result) {
     })
   })
 
+  // if you change this... also make sure to change Mobile's 4_CreateStoryDetailScreen's
+  // receive location method
   return {
     name: result.name,
     locality: addressComponents.sublocality_level_1 || addressComponents.locality,

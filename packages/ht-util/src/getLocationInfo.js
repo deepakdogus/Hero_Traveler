@@ -57,5 +57,7 @@ export default function getLocationInfo(locationString) {
       })
     }
     return {}
-  });
+  })
+  // if we cannot find via google - just save the name with no meta
+  .catch(() => return {name: locationString})
 }

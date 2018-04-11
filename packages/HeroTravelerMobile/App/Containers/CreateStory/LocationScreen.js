@@ -58,10 +58,10 @@ class LocationScreen extends Component {
     })
   }
 
-  onSubmit = (text) => {
-    if (this.state.predictions) selectLocation(this.state.predictions[0])
+  onSubmit = () => {
+    if (this.state.predictions.length) return
     else {
-      this.props.onSelectLocation({"name": text})
+      this.props.onSelectLocation({"name": this.state.text})
     }
   }
 
@@ -83,7 +83,7 @@ class LocationScreen extends Component {
     const { location } = this.props
     return (
       <View style={styles.root}>
-        <View style={{marginTop: Metrics.baseMargin, height: 40}}>
+        <View style={styles.topWrapper}>
           <TouchableOpacity
             style={styles.cancelBtn}
             onPress={this.props.navBack}
@@ -101,12 +101,13 @@ class LocationScreen extends Component {
                 placeholder='Enter a Location'
                 placeholderTextColor={Colors.navBarText}
                 onChangeText={this._onChangeText}
-                returnKeyType='search'
+                onSubmitEditing={this.onSubmit}
+                returnKeyType='done'
                 autoFocus={!location}
               />
             </View>
           </View>
-          <ScrollView style={{flexGrow: 3}} keyboardShouldPersistTaps='always'>
+          <ScrollView style={styles.scrollView} keyboardShouldPersistTaps='always'>
             {searching  &&
               <Loader style={styles.spinner} spinnerColor={Colors.blackoutTint} />
             }

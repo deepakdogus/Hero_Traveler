@@ -6,6 +6,10 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
+  topWrapper: {
+    marginTop: Metrics.baseMargin,
+    height: 40,
+  },
   content: {
     flex: 1,
     justifyContent: 'flex-start',
@@ -62,5 +66,8 @@ export default StyleSheet.create({
   },
   spinner: {
     margin: Metrics.section
-  }
+  },
+  scrollView: {
+    flexGrow: 3,
+  },
 })

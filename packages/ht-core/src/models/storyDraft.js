@@ -4,7 +4,7 @@ import {ModelName as HashtagRef} from './hashtag'
 import {ModelName as CategoryRef} from './category'
 import {ModelName as UserRef} from './user'
 import {ModelName as UploadRef} from './upload'
-import {Constants, getGoogleLatLng} from '@hero/ht-util'
+import {Constants} from '@hero/ht-util'
 
 export const ModelName = 'StoryDraft'
 
@@ -86,18 +86,6 @@ const StoryDraftSchema = new Schema({
   toJSON: {
     virtuals: true
   }
-})
-
-StoryDraftSchema.pre('save', function(next) {
-  if (this.isModified('location')){
-    getGoogleLatLng(this.location)
-    .then(latlng => {
-      this.latitude = latlng.latitude
-      this.longitude = latlng.longitude
-      next()
-    })
-  }
-  else next();
 })
 
 StoryDraftSchema.plugin(softDelete)

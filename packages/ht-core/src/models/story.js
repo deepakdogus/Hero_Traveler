@@ -6,7 +6,7 @@ import {ModelName as CategoryRef} from './category'
 import {ModelName as HashtagRef} from './hashtag'
 import {ModelName as UserRef} from './user'
 import {ModelName as UploadRef} from './upload'
-import {Constants, getGoogleLatLng} from '@hero/ht-util'
+import {Constants} from '@hero/ht-util'
 export const ModelName = 'Story'
 
 const StorySchema = new Schema({
@@ -79,7 +79,7 @@ const StorySchema = new Schema({
       type: Number
     },
   },
-  // location is being phased out in favor of locationInfo and 
+  // location is being phased out in favor of locationInfo and
   // will be removed in future.
   location: {
     type: String
@@ -131,7 +131,6 @@ const StorySchema = new Schema({
   travelTips: {
     type: String,
   },
-  
 }, {
   timestamps: true,
   toObject: {
@@ -140,22 +139,6 @@ const StorySchema = new Schema({
   toJSON: {
     virtuals: true
   }
-})
-
-StorySchema.pre('save', function(next) {
-  if (_.size(this.location) > 0 && this.isModified('location')){
-    getGoogleLatLng(this.location)
-    .then(latlng => {
-      this.latitude = latlng.latitude
-      this.longitude = latlng.longitude
-      next()
-    })
-    .catch(() => {
-      // ignoring error until we also get googlePlacesAPI on mobile too
-      next()
-    })
-  }
-  else next();
 })
 
 StorySchema.statics = {

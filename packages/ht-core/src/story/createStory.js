@@ -1,10 +1,12 @@
 import _ from 'lodash'
+import algoliasearchModule from 'algoliasearch'
+import {getLocationInfo} from '@hero/ht-util'
+
 import {Story, Category, Hashtag, Image, Video} from '../models'
 import updateDraft from '../storyDraft/updateDraft'
 import createCategories from '../category/create'
 import createHashtags from '../hashtag/create'
 import parseAndInsertRefToStory from '../utils/parseAndInsertRefToStory'
-import algoliasearchModule from 'algoliasearch'
 
 const client = algoliasearchModule(process.env.ALGOLIA_ACCT_KEY, process.env.ALGOLIA_API_KEY)
 const storyIndex = client.initIndex(process.env.ALGOLIA_STORY_INDEX)
@@ -62,6 +64,10 @@ export default async function createStory(storyData, assetFormater) {
     draft: false,
     categories: await parseAndInsertStoryCategories(storyData.categories),
     hashtags: await parseAndInsertStoryHashtags(storyData.hashtags)
+  }
+
+  if (!storyObject.locationInfo.latitude) {
+    storyObject.locationInfo = await getLocationInfo(storyObject.locationInfo.name)
   }
 
   if (isLocalStory) {

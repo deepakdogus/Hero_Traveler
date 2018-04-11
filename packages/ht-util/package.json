@@ -13,14 +13,16 @@
     "publish:local": "npm run clean && npm run build && npm run copy-local:core && npm run copy-local:api && npm run copy-local:seeder",
     "copy-local:core": "cp -r ./{dist,package.json} ../ht-core/node_modules/@hero/ht-util",
     "copy-local:api": "cp -r ./{dist,package.json} ../express-api/node_modules/@hero/ht-util",
-    "copy-local:seeder": "cp -r ./{dist,package.json} ../ht-seed-data/node_modules/@hero/ht-util"
+    "copy-local:seeder": "cp -r ./{dist,package.json} ../ht-seed-data/node_modules/@hero/ht-util",
+    "dev": "watch 'npm run build && npm run copy-local:api && npm run copy-local:core' src"
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-env": "^1.4.0",
     "babel-register": "^6.23.0",
-    "rimraf": "^2.6.1"
+    "rimraf": "^2.6.1",
+    "watch": "^1.0.2"
   },
   "dependencies": {
     "request": "^2.81.0",

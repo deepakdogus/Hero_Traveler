@@ -1,3 +1,3 @@
 
 export {default as Constants} from './constants'
-export {default as getGoogleLatLng} from './getGoogleLatLng'
+export {default as getLocationInfo} from './getLocationInfo'

@@ -48,9 +48,9 @@ class LocationScreen extends Component {
     .catch(() => this.setState({searching: false}))
   }
 
-  selectLocation = (placeID) => () => {
+  selectLocation = (place) => () => {
     this.setState({searching: true})
-    RNGooglePlaces.lookUpPlaceByID(placeID)
+    RNGooglePlaces.lookUpPlaceByID(place.placeID)
     .then((results) => {
       this.setState({searching: false}, () => {
         this.props.onSelectLocation(results)
@@ -58,11 +58,18 @@ class LocationScreen extends Component {
     })
   }
 
+  onSubmit = (text) => {
+    if (this.state.predictions) selectLocation(this.state.predictions[0])
+    else {
+      this.props.onSelectLocation({"name": text})
+    }
+  }
+
   renderPlaces() {
     return this.state.predictions.map(place => {
       return (
         <View key={place.placeID} style={styles.rowWrapper}>
-          <TouchableOpacity onPress={this.selectLocation(place.placeID)}>
+          <TouchableOpacity onPress={this.selectLocation(place)}>
             <Text style={styles.boldText}>{place.primaryText}</Text>
             <Text style={[styles.boldText, styles.text]}>{place.secondaryText}</Text>
           </TouchableOpacity>
@@ -94,9 +101,6 @@ class LocationScreen extends Component {
                 placeholder='Enter a Location'
                 placeholderTextColor={Colors.navBarText}
                 onChangeText={this._onChangeText}
-                onSubmitEditing={this._addNewCategory}
-                onFocus={this.setInputFocused}
-                onBlur={this.setInputBlurred}
                 returnKeyType='search'
                 autoFocus={!location}
               />

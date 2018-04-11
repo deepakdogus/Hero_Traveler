@@ -263,9 +263,9 @@ class CreateStoryDetailScreen extends React.Component {
     this.props.updateWorkingDraft({
       locationInfo: {
         name: place.name,
-        locality: place.addressComponents.sublocality_level_1 || place.addressComponents.locality,
-        state: place.addressComponents.administrative_area_level_1,
-        country: place.addressComponents.country,
+        locality: _.get(place, 'addressComponents.sublocality_level_1') || _.get(place, 'addressComponents.locality'),
+        state: _.get(place, 'addressComponents.administrative_area_level_1'),
+        country: _.get(place, 'addressComponents.country'),
         latitude: place.latitude,
         longitude: place.longitude,
       }

@@ -6,7 +6,7 @@ import {ModelName as CategoryRef} from './category'
 import {ModelName as UserRef} from './user'
 import {ModelName as UploadRef} from './upload'
 import {ModelName as StoryRef} from './story'
-import {Constants, getGoogleLatLng} from '@hero/ht-util'
+import {Constants} from '@hero/ht-util'
 export const ModelName = 'Guide'
 
 const GuideSchema = new Schema({

@@ -122,11 +122,20 @@ export function * getCategoryStories (api, {categoryId, storyType}) {
 
 const extractUploadData = (uploadData) => {
   if (typeof uploadData === 'string') uploadData = JSON.parse(uploadData)
-  return {
+  const baseObject = {
     url: `${uploadData.public_id}.${uploadData.format}`,
     height: uploadData.height,
     width: uploadData.width,
   }
+  if (uploadData.resource_type === 'video') {
+    let baseUrl = uploadData.secure_url.split('.')
+    baseUrl.pop()
+    baseUrl = baseUrl.join('.')
+    baseObject.HLSUrl = baseUrl + '.m3u8'
+    baseObject.MPDUrl = baseUrl + '.mpd'
+
+  }
+  return baseObject
 }
 
 function * createCover(api, draft){

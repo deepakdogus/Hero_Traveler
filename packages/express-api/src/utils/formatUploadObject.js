@@ -8,6 +8,16 @@ export default function formatUploadObject(file, options = {}) {
   const ext = path.extname(file.url)
   const storedFilename = _.last(file.public_id.split('/')) + ext
   const folder = file.public_id.split('/')[0]
+
+  if (options.purpose === 'coverVideo') {
+    options.streamingFormats = {}
+    let baseUrl = file.secure_url.split('.')
+    baseUrl.pop()
+    baseUrl = baseUrl.join('.')
+    options.streamingFormats.HLS = baseUrl + '.m3u8'
+    options.streamingFormats.DASH = baseUrl + '.mpd'
+  }
+
   return _.merge({
     altText: file.originalname,
     original: {

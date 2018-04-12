@@ -42,7 +42,6 @@ import {
 } from './SignupSagas'
 import {
   logout,
-  updateUser,
   resumeSession,
   refreshSession
 } from './SessionSagas'
@@ -52,6 +51,7 @@ import { openScreen } from '../../Sagas/OpenScreenSagas'
 import { getCategories } from './CategorySagas'
 import { getHashtags } from './HashtagSagas'
 import {
+  updateUser,
   getSuggestedUsers,
   loadUser,
   loadUserFollowing,

@@ -32,8 +32,16 @@ export default async function updateUser(req) {
   }
   await updateUserIndex(attrs, userId)
 
-  return Models.User.update({_id: userIdToUpdate}, attrs)
-    .then(() => {
-      return User.get({_id: userIdToUpdate})
-    })
+  return Models.User.findOne({username: req.body.username})
+  .then(queryResponse => {
+    if (queryResponse && userIdToUpdate != queryResponse._id) {
+      // We have another user that has this username
+      return Promise.reject(Error("This username is taken"));
+    } else {
+      return Models.User.update({_id: userIdToUpdate}, attrs)
+      .then(() => {
+        return User.get({_id: userIdToUpdate})
+      });
+    }
+  });
 }

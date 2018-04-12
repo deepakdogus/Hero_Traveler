@@ -160,6 +160,7 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   _onLeft = () => {
+    this._updateCost();
     NavActions.pop()
   }
 

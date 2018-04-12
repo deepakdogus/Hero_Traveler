@@ -256,16 +256,10 @@ export default class StoryPreview extends Component {
     return this.props.isVisible !== false && this.props.areInRenderLocation
   }
 
-  hasNoStreams(){
-    if (process.env.NODE_ENV !== 'production') return false
-    return this.props.story.coverVideo && !this.props.story.coverVideo.streamingFormats
-  }
-
   render () {
     const {story, gradientLocations, showPlayButton, shouldHideCover} = this.props
-    if (!story || this.hasNoStreams()) {
-      return null
-    }
+    if (!story) return null
+
     // using StoryPreview height as proxy for StoryCover playbutton size
     const height = this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20
     const playButtonSize = height > 250 ? 'large' : 'small'

@@ -189,7 +189,7 @@ export default class StoryPreview extends Component {
   }
 
   renderBottomSection() {
-    const {title, counts, description, coverCaption} = this.props.story
+    const {title, counts, description, coverCaption, draft} = this.props.story
     const {isStoryReadingScreen, onPress} = this.props
 
     return (
@@ -224,7 +224,7 @@ export default class StoryPreview extends Component {
           }
 
           <View style={styles.rightRow}>
-            {this.props.showLike && this.props.onPressBookmark &&
+            {(!draft && this.props.showLike && this.props.onPressBookmark) &&
               <View style={styles.bookmarkContainer}>
                 <TouchableOpacity
                   onPress={this.props.onPressBookmark}
@@ -238,7 +238,7 @@ export default class StoryPreview extends Component {
                 </TouchableOpacity>
               </View>
             }
-            {this.props.showLike &&
+            {(!draft && this.props.showLike) &&
               <LikesComponent
                 onPress={this._onPressLike}
                 likes={formatCount(counts.likes)}

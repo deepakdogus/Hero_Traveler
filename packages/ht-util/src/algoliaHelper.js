@@ -12,6 +12,16 @@ userIndex.setSettings({
   ]
 })
 
+// methodParam is an object for all cases but delete when it is an id
+function algoliaAction(index, method, methodParam){
+  return new Promise((resolve, reject) => {
+    if (process.env.DISABLE_ALGOLIA) return resolve({})
+    index[method](methodParam, (err, content) => {
+      if (err) return reject(err)
+      return resolve(content)
+    })
+  })
+}
 
 // users
 function formatUserSearchObject(user){
@@ -27,26 +37,10 @@ function formatUserSearchObject(user){
 }
 
 function addUserToIndex(user){
-  return new Promise((resolve, reject) => {
-    if (process.env.DISABLE_ALGOLIA) return resolve({})
-
-    userIndex.addObject(formatUserSearchObject(user), (err, content) => {
-      if (err) return reject(err)
-      return resolve(content)
-    })
-  })
-}
+  return algoliaAction(userIndex, 'addObject', formatUserSearchObject(user))
 
 function updateUserIndex(user){
-  return new Promise((resolve, reject) => {
-    if (process.env.DISABLE_ALGOLIA) return resolve()
-
-    userIndex.partialUpdateObject(formatUserSearchObject(user), (err, content) => {
-      if (err) return reject(err)
-      return resolve(content)
-    })
-  })
-
+  return algoliaAction(userIndex, 'partialUpdateObject', formatUserSearchObject(user))
 }
 
 
@@ -65,68 +59,36 @@ function formatStorySearchObject(story){
 }
 
 function addStoryToIndex(story){
-  return new Promise((resolve, reject) => {
-    if (process.env.DISABLE_ALGOLIA) return resolve()
-    storyIndex.addObject(formatStorySearchObject(story), (err, content) => {
-      if (err) return reject(err)
-      return resolve(content)
-    })
-  })
+  return algoliaAction(storyIndex, 'addObject', formatStorySearchObject(story))
 }
 
 function updateStoryIndex(story){
-  return new Promise((resolve, reject) => {
-    if (process.env.DISABLE_ALGOLIA) return resolve()
-    console.log("update being called")
-    storyIndex.partialUpdateObject(formatStorySearchObject(story), (err, content) => {
-      if (err) return reject(err)
-      return resolve(content)
-    })
-  })
+  return algoliaAction(storyIndex, 'partialUpdateObject', formatStorySearchObject(story))
 }
 
 function deleteStoryFromIndex(storyId){
-  return new Promise((resolve, reject) => {
-    if (process.env.DISABLE_ALGOLIA) return resolve()
-    storyIndex.deleteObject(storyId, (error) => {
-      if (error) return reject(error)
-      return resolve('sucessfully deleted')
-    })
-  })
+  return algoliaAction(storyIndex, 'deleteObject', storyId)
 }
 
 
 function mapForTitleAndId(array){
   return array.map(item => {
     return {
+      title: item.title,
       _id: item.id,
-      title: item.title
+      objectID: item.id,
     }
   })
 }
 
 // hashtags
 function addHashtagsToIndex(hashtags){
-  return new Promise((resolve, reject) => {
-    if (process.env.DISABLE_ALGOLIA) return resolve()
-
-    hashtagIndex.addObjects(mapForTitleAndId(hashtags), (err, content) => {
-      if (err) reject(err)
-      if (content) resolve(content)
-    })
-  })
+  return algoliaAction(hashtagIndex, 'addObjects', mapForTitleAndId(hashtags))
 }
 
 // categories
 function addCategoriesToIndex(categories){
-  return new Promise((resolve, reject) => {
-    if (process.env.DISABLE_ALGOLIA) return resolve()
-
-    categoryIndex.addObjects(mapForTitleAndId(categories), (err, content) => {
-      if (err) reject(err)
-      if (content) resolve(content)
-    })
-  })
+  return algoliaAction(categoryIndex, 'addObjects', mapForTitleAndId(categories))
 }
 
 export default {

@@ -68,7 +68,7 @@ export default function createUser(userData, device: ?object) {
       return Promise.resolve(newUser)
     }
 
-    return UserDevice.addOrUpdate(
+  return UserDevice.addOrUpdate(
       device,
       newUser._id,
     ).then(() => Promise.resolve(newUser))

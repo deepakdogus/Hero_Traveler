@@ -1,5 +1,5 @@
 import {Models} from '../../ht-core'
-import algoliasearchModule from 'algoliasearch'
+import {algoliaHelper} from '@hero/ht-util'
 
 const client = algoliasearchModule(process.env.ALGOLIA_ACCT_KEY, process.env.ALGOLIA_API_KEY)
 const categoryIndex = client.initIndex(process.env.ALGOLIA_CATEGORY_INDEX)

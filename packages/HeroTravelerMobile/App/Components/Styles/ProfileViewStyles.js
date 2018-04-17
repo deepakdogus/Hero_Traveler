@@ -8,6 +8,9 @@ const profileEditHeight = 150
 
 export const storyPreviewHeight = Metrics.screenHeight - coverInnerHeight - tabNavEditHeight - Metrics.tabBarHeight
 
+// Don't forget to update ProfileTabAndStories.getHeaderHeight() if
+// related styles change. (username, about, badge, error, etc.)
+
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
@@ -59,6 +62,7 @@ export default StyleSheet.create({
     marginLeft: 5,
     flexDirection: 'column',
     marginBottom: 5,
+    minHeight: 108
   },
   italicText: {
     fontFamily: Fonts.type.sourceSansPro,
@@ -291,5 +295,6 @@ export default StyleSheet.create({
   },
   storyList: {
     height: Metrics.screenHeight - Metrics.tabBarHeight,
+    marginBottom: Metrics.tabBarHeight + Metrics.baseMargin,
   }
 })

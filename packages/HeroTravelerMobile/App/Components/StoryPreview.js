@@ -189,7 +189,7 @@ export default class StoryPreview extends Component {
   }
 
   renderBottomSection() {
-    const {title, counts, description, coverCaption} = this.props.story
+    const {title, counts, description, coverCaption, draft} = this.props.story
     const {isStoryReadingScreen, onPress} = this.props
 
     return (
@@ -223,6 +223,7 @@ export default class StoryPreview extends Component {
             </View>
           }
 
+          {!draft && 
           <View style={styles.rightRow}>
             {this.props.showLike && this.props.onPressBookmark &&
               <View style={styles.bookmarkContainer}>
@@ -247,6 +248,7 @@ export default class StoryPreview extends Component {
               />
             }
           </View>
+          }
         </View>
       </View>
     )

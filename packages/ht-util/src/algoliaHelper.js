@@ -38,32 +38,19 @@ function formatUserSearchObject(user){
 
 function addUserToIndex(user){
   return algoliaAction(userIndex, 'addObject', formatUserSearchObject(user))
+}
 
 function updateUserIndex(user){
   return algoliaAction(userIndex, 'partialUpdateObject', formatUserSearchObject(user))
 }
 
-
 // stories
-function formatStorySearchObject(story){
-  return {
-    title: story.title,
-    author: story.author.username,
-    coverImage: story.coverImage,
-    coverVideo: story.coverVideo,
-    type: story.type,
-    locationInfo: story.locationInfo,
-    _id: story._id,
-    objectID: story._id,
-  }
-}
-
 function addStoryToIndex(story){
-  return algoliaAction(storyIndex, 'addObject', formatStorySearchObject(story))
+  return algoliaAction(storyIndex, 'addObject', story)
 }
 
 function updateStoryIndex(story){
-  return algoliaAction(storyIndex, 'partialUpdateObject', formatStorySearchObject(story))
+  return algoliaAction(storyIndex, 'partialUpdateObject', story)
 }
 
 function deleteStoryFromIndex(storyId){

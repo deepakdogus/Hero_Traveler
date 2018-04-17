@@ -10,7 +10,7 @@ export default function createCategory(docs) {
 
   return Category.insertMany(docs)
   .then(categories => {
-    return algoliaHelper.addCategoriesToIndex(categories)
-    .then(() => categories)
+    algoliaHelper.addCategoriesToIndex(categories)
+    return categories
   })
 }

@@ -9,7 +9,7 @@ export default function createHashtag(docs) {
 
   return Hashtag.insertMany(docs)
   .then(hashtags => {
-    return algoliaHelper.addHashtagsToIndex(hashtags)
-    .then(() => hashtags)
+    algoliaHelper.addHashtagsToIndex(hashtags)
+    return hashtags
   })
 }

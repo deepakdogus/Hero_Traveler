@@ -1,20 +1,5 @@
 import {User, Models} from '@hero/ht-core'
-import {Constants} from '@hero/ht-util'
-import algoliasearchModule  from 'algoliasearch'
-
-const client = algoliasearchModule(process.env.ALGOLIA_ACCT_KEY, process.env.ALGOLIA_API_KEY)
-const userIndex = client.initIndex(process.env.ALGOLIA_USER_INDEX)
-
-const updateUserIndex = (attrs, userId) => new Promise((resolve, reject) => {
-  const indexObject = { objectID: userId,
-                        username: attrs.username
-                      }
-
-  userIndex.partialUpdateObject(indexObject, (err, content) => {
-    if (err) reject(err)
-    return resolve(content)
-  })
-})
+import {Constants, algoliaHelper} from '@hero/ht-util'
 
 export default async function updateUser(req) {
   const attrs = Object.assign({}, req.body)
@@ -30,10 +15,13 @@ export default async function updateUser(req) {
   if (!userId.equals(userIdToUpdate) && !isAdmin) {
     return Promise.reject(new Error('Unauthorized'))
   }
-  await updateUserIndex(attrs, userId)
+
 
   return Models.User.update({_id: userIdToUpdate}, attrs)
-    .then(() => {
-      return User.get({_id: userIdToUpdate})
-    })
+  .then(() => User.get({_id: userIdToUpdate}))
+  .then(user => {
+    // leaving as is until we get Emre refactor in
+    if (req.user.username !== user.username) algoliaHelper.updateUserIndex(user)
+    return user
+  })
 }

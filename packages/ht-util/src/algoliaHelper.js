@@ -53,9 +53,11 @@ function updateUserIndex(user){
 // stories
 function formatStorySearchObject(story){
   return {
+    title: story.title,
+    author: story.author.username,
     coverImage: story.coverImage,
     coverVideo: story.coverVideo,
-    type:: story.type,
+    type: story.type,
     locationInfo: story.locationInfo,
     _id: story._id,
     objectID: story._id,
@@ -65,8 +67,7 @@ function formatStorySearchObject(story){
 function addStoryToIndex(story){
   return new Promise((resolve, reject) => {
     if (process.env.DISABLE_ALGOLIA) return resolve()
-
-    storyIndex.addObject(story, (err, content) => {
+    storyIndex.addObject(formatStorySearchObject(story), (err, content) => {
       if (err) return reject(err)
       return resolve(content)
     })
@@ -76,8 +77,8 @@ function addStoryToIndex(story){
 function updateStoryIndex(story){
   return new Promise((resolve, reject) => {
     if (process.env.DISABLE_ALGOLIA) return resolve()
-
-    storyIndex.partialUpdateObject(story, (err, content) => {
+    console.log("update being called")
+    storyIndex.partialUpdateObject(formatStorySearchObject(story), (err, content) => {
       if (err) return reject(err)
       return resolve(content)
     })
@@ -87,7 +88,6 @@ function updateStoryIndex(story){
 function deleteStoryFromIndex(storyId){
   return new Promise((resolve, reject) => {
     if (process.env.DISABLE_ALGOLIA) return resolve()
-
     storyIndex.deleteObject(storyId, (error) => {
       if (error) return reject(error)
       return resolve('sucessfully deleted')
@@ -131,7 +131,6 @@ function addCategoriesToIndex(categories){
 
 export default {
   addUserToIndex,
-  addAvatarToIndex,
   updateUserIndex,
   addStoryToIndex,
   updateStoryIndex,

@@ -1,4 +1,4 @@
-import {getLocationInfo} from '@hero/ht-util'
+import {getLocationInfo, algoliaHelper} from '@hero/ht-util'
 import _ from 'lodash'
 
 import {Story} from '../models'
@@ -45,5 +45,9 @@ export default async function updateDraft(draftId, attrs, assetFormater) {
     .then((draft) => {
       // use getDraft so we return the populated document
       return getDraft(draftId)
+    })
+    .then((draft) => {
+      if (!draft.draft) algoliaHelper.updateStoryIndex(draft)
+      return draft
     })
 }

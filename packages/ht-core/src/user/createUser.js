@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import Promise from 'bluebird'
-import algoliasearchModule from 'algoliasearch'
 import {Constants, algoliaHelper} from '@hero/ht-util'
 
 import {User, UserDevice} from '../models'

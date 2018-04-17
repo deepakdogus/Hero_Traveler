@@ -223,8 +223,9 @@ export default class StoryPreview extends Component {
             </View>
           }
 
+          {!draft && 
           <View style={styles.rightRow}>
-            {(!draft && this.props.showLike && this.props.onPressBookmark) &&
+            {this.props.showLike && this.props.onPressBookmark &&
               <View style={styles.bookmarkContainer}>
                 <TouchableOpacity
                   onPress={this.props.onPressBookmark}
@@ -238,7 +239,7 @@ export default class StoryPreview extends Component {
                 </TouchableOpacity>
               </View>
             }
-            {(!draft && this.props.showLike) &&
+            {this.props.showLike &&
               <LikesComponent
                 onPress={this._onPressLike}
                 likes={formatCount(counts.likes)}
@@ -247,6 +248,7 @@ export default class StoryPreview extends Component {
               />
             }
           </View>
+          }
         </View>
       </View>
     )

@@ -22,26 +22,43 @@ export default async function updateUser(req) {
   const userId = req.user._id
   const isAdmin = Constants.USER_ROLES_ADMIN_VALUE === req.user.role
 
+  let attrsBlacklist = ["email", "password", "passwordResetToken"];
+
   // Only admins can change role
   if (!isAdmin) {
-    delete attrs.role
+    attrsBlacklist.push("role");
   }
 
-  if (!userId.equals(userIdToUpdate) && !isAdmin) {
-    return Promise.reject(new Error('Unauthorized'))
-  }
-  await updateUserIndex(attrs, userId)
-
-  return Models.User.findOne({username: req.body.username})
-  .then(queryResponse => {
-    if (queryResponse && userIdToUpdate != queryResponse._id) {
-      // We have another user that has this username
-      return Promise.reject(Error("This username is taken"));
-    } else {
-      return Models.User.update({_id: userIdToUpdate}, attrs)
-      .then(() => {
-        return User.get({_id: userIdToUpdate})
-      });
+  let userPromise = Promise.resolve(req.user);
+  
+  if (!userId.equals(userIdToUpdate)) {
+    if (!isAdmin) {
+      // Only admins can modify other users
+      return Promise.reject(new Error('Unauthorized'));
     }
+    userPromise = Models.User.findOne({_id: req.params.id});
+  }
+
+  return userPromise.then((user) => {
+    for (let key in attrs) {
+      if (attrsBlacklist.indexOf(key) < 0) {
+        user[key] = attrs[key];
+      }
+    }
+  
+    return user.save().then(async () => {
+      await updateUserIndex(attrs, userId);
+      return user;
+    }).catch((err) => {
+      if (
+        err && 
+        (err.code && err.code === 11000) ||
+        (err.message && err.message.indexOf("username already taken") != -1)
+      ) {
+        return Promise.reject(Error("This username is taken"));
+      } else {
+        return Promise.reject(Error("User could not be updated"));
+      }
+    });
   });
 }

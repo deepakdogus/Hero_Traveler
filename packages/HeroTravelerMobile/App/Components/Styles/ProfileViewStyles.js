@@ -159,7 +159,7 @@ export default StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     backgroundColor: 'transparent',
-    top: 31,
+    top: 46,
     left: 30,
   },
   tabs: {

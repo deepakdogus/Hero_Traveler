@@ -145,7 +145,7 @@ export default class ProfileTabsAndStories extends Component {
     // change.
     const {user, editable} = this.props
     const hasBadge = user.role === 'contributor' || user.role === 'founding member'
-    let height = editable ? 207 : 171
+    let height = editable ? 207 : 189
     height += hasBadge ? 21 : 0
     height += this.props.error ? 27 : 0
     return height

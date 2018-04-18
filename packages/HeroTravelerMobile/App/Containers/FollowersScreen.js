@@ -20,6 +20,7 @@ import Avatar from '../Components/Avatar'
 import {Colors} from '../Shared/Themes'
 import styles from './Signup/SignupSocialStyles'
 import getImageUrl from '../Shared/Lib/getImageUrl'
+import {navToProfile} from '../Navigation/NavigationRouter'
 
 class FollowersScreen extends React.Component {
 
@@ -84,7 +85,7 @@ class FollowersScreen extends React.Component {
             } else if (uid !== this.props.user.id) {
               followingText = 'FOLLOW'
             } else if (uid === this.props.user.id) {
-              NavToProfileFunction = NavActions.profile
+              NavToProfileFunction = navToProfile
             }
 
             return (

@@ -1,6 +1,29 @@
-import { call, put } from 'redux-saga/effects'
+import _ from 'lodash'
+import { call, put, select } from 'redux-saga/effects'
 import UserActions from '../Redux/Entities/Users'
 import StoryActions from '../Redux/Entities/Stories'
+
+const currentUserId = ({session}) => session.userId
+
+export function * updateUser (api, action) {
+  const {attrs} = action
+  const userId = yield select(currentUserId)
+  if (attrs.introTooltips) {
+    yield put(UserActions.eagerUpdateTooltips(userId, attrs.introTooltips))
+  }
+  const response = yield call(
+    api.updateUser,
+    userId,
+    attrs
+  )
+  if (response.ok) {
+    yield put(UserActions.updateUserSuccess(response.data))
+  } else {
+    yield put(UserActions.updateUserFailure(new Error(
+      _.get(response, "data.message", "Failed to update user")
+    )))
+  }
+}
 
 export function * getSuggestedUsers (api, action) {
   const response = yield call(api.getSuggestedUsers)

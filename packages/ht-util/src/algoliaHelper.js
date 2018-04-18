@@ -28,7 +28,7 @@ function formatUserSearchObject(user) {
   return {
     username: user.username,
     profile: {
-      fullName: user.profile.fullName,
+      fullName: user.username,
       avatar: user.profile.avatar,
     },
     _id: user._id,

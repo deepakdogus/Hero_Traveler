@@ -74,13 +74,15 @@ const atomicHandler = (item: Object): any => {
       case 'image':
         return (
           <View key={item.key} style={styles.mediaViewWrapper}>
-            <ImageWrapper
-              fullWidth={true}
-              source={{uri: `${getImageUrl(item.data.url, 'optimized', {
-                width: Metrics.screenWidth,
-                height
-              })}`}}
-            />
+            <View style={[styles.mediaPlaceholder, {minHeight: height}]}>
+              <ImageWrapper
+                fullWidth={true}
+                source={{uri: `${getImageUrl(item.data.url, 'optimized', {
+                  width: Metrics.screenWidth,
+                  height
+                })}`}}
+              />
+            </View>
             {!!item.text && <Text style={styles.caption}>{item.text}</Text>}
           </View>
         );
@@ -92,7 +94,9 @@ const atomicHandler = (item: Object): any => {
         }
         return (
           <View key={item.key} style={styles.mediaViewWrapper}>
-            <StoryVideo src={videoUrl} height={height}/>
+            <View style={[styles.mediaPlaceholder, {minHeight: height}]}>
+              <StoryVideo src={videoUrl} height={height}/>
+            </View>
             {!!item.text && <Text style={styles.caption}>{item.text}</Text>}
           </View>
         )

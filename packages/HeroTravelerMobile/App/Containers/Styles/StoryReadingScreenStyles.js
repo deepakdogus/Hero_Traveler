@@ -100,6 +100,9 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.type.base,
     color: Colors.grey,
   },
+  mediaPlaceholder: {
+    backgroundColor: Colors.lightGreyAreas
+  },
   mediaViewWrapper: {
     flex: 1,
     marginVertical: 25

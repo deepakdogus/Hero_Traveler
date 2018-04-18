@@ -27,10 +27,12 @@ function hasNewLocation(draft, attrs){
 }
 
 function shouldUpdateAlgolia(draft, attrs){
-  return hasNewCover(attrs)
-    || hasNewLocation(draft, attrs)
-    || draft.title !== attrs.title
-    || draft.type !== attrs.type
+  return true
+  // for now we are basically saving for everything. may revert later
+  // return hasNewCover(attrs)
+  //   || hasNewLocation(draft, attrs)
+  //   || draft.title !== attrs.title
+  //   || draft.type !== attrs.type
 }
 
 export default async function updateDraft(draftId, attrs, assetFormater){

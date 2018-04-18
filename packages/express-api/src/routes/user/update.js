@@ -1,9 +1,13 @@
-import {User, Models} from '@hero/ht-core'
+import {User, Models, Story} from '@hero/ht-core'
 import {Constants, algoliaHelper} from '@hero/ht-util'
 import _ from 'lodash'
 
+function hasNewUsername(user, attrs) {
+  return attrs.username && user.username !== attrs.username
+}
+
 function getShouldUpdateAlgolia(user, attrs) {
-  return (attrs.username && user.username !== attrs.username)
+  return hasNewUsername(user, attrs)
   || (attrs.profile && _.get(user, 'profile.avatar.id') !== _.get(attrs, 'profile.avatar.id'))
 }
 
@@ -33,14 +37,20 @@ export default async function updateUser(req) {
   return userPromise
   .then((user) => {
     // need to check if should update before mutating user
-    const shouldUpdateAlgolia = getShouldUpdateAlgolia(user, attrs)
+    const shouldReindexUser = getShouldUpdateAlgolia(user, attrs)
+    const shouldReindexUsersStories = hasNewUsername(user, attrs)
+
     for (let key in attrs) {
       if (attrsBlacklist.indexOf(key) < 0) {
         user[key] = attrs[key];
       }
     }
     return user.save().then(user => {
-      if (shouldUpdateAlgolia) algoliaHelper.updateUserIndex(user);
+      if (shouldReindexUser) algoliaHelper.updateUserIndex(user)
+      if (shouldReindexUsersStories) {
+        Story.getUserStories(user.id)
+        .then(algoliaHelper.updateMultipleStories)
+      }
       return user;
     }).catch((err) => {
       if (

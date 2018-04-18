@@ -13,7 +13,7 @@ userIndex.setSettings({
 })
 
 // methodParam is an object for all cases but delete when it is an id
-function algoliaAction(index, method, methodParam){
+function algoliaAction(index, method, methodParam) {
   return new Promise((resolve, reject) => {
     if (process.env.DISABLE_ALGOLIA) return resolve({})
     index[method](methodParam, (err, content) => {
@@ -24,7 +24,7 @@ function algoliaAction(index, method, methodParam){
 }
 
 // users
-function formatUserSearchObject(user){
+function formatUserSearchObject(user) {
   return {
     username: user.username,
     profile: {
@@ -36,29 +36,52 @@ function formatUserSearchObject(user){
   }
 }
 
-function addUserToIndex(user){
+function addUserToIndex(user) {
   return algoliaAction(userIndex, 'addObject', formatUserSearchObject(user))
 }
 
-function updateUserIndex(user){
+function updateUserIndex(user) {
   return algoliaAction(userIndex, 'partialUpdateObject', formatUserSearchObject(user))
 }
 
 // stories
-function addStoryToIndex(story){
-  return algoliaAction(storyIndex, 'addObject', story)
+function formatStorySearchObject(story) {
+  return {
+    title: story.title,
+    author: story.author.username,
+    coverImage: story.coverImage,
+    coverVideo: story.coverVideo,
+    type: story.type,
+    locationInfo: story.locationInfo,
+    draftjsContent: story.draftjsContent,
+    currency: story.currency,
+    cost: story.cost,
+    _id: story._id,
+    hashtags: story.hashtags,
+    content: story.content,
+    objectID: story._id,
+  }
 }
 
-function updateStoryIndex(story){
-  return algoliaAction(storyIndex, 'partialUpdateObject', story)
+function addStoryToIndex(story) {
+  return algoliaAction(storyIndex, 'addObject', formatStorySearchObject(story))
 }
 
-function deleteStoryFromIndex(storyId){
+function updateStoryIndex(story) {
+  return algoliaAction(storyIndex, 'partialUpdateObject', formatStorySearchObject(story))
+}
+
+function updateMultipleStories(stories) {
+  const formattedStories = stories.map(formatStorySearchObject)
+  return algoliaAction(storyIndex, 'partialUpdateObjects', formattedStories)
+}
+
+function deleteStoryFromIndex(storyId) {
   return algoliaAction(storyIndex, 'deleteObject', storyId)
 }
 
 
-function mapForTitleAndId(array){
+function mapForTitleAndId(array) {
   return array.map(item => {
     return {
       title: item.title,
@@ -69,12 +92,12 @@ function mapForTitleAndId(array){
 }
 
 // hashtags
-function addHashtagsToIndex(hashtags){
+function addHashtagsToIndex(hashtags) {
   return algoliaAction(hashtagIndex, 'addObjects', mapForTitleAndId(hashtags))
 }
 
 // categories
-function addCategoriesToIndex(categories){
+function addCategoriesToIndex(categories) {
   return algoliaAction(categoryIndex, 'addObjects', mapForTitleAndId(categories))
 }
 
@@ -86,4 +109,5 @@ export default {
   deleteStoryFromIndex,
   addHashtagsToIndex,
   addCategoriesToIndex,
+  updateMultipleStories,
 }

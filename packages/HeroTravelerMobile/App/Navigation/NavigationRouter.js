@@ -133,7 +133,7 @@ const navToMyFeed = () => {
   NavActions.myFeed()
 }
 
-const navToProfile = () => {
+export const navToProfile = () => {
   NavActions.tabbar({type: 'reset'})
   NavActions.profile()
 }

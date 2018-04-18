@@ -319,7 +319,9 @@ class StoryReadingScreen extends React.Component {
                 atomicHandler={atomicHandler}
               />
             }
-            {this.renderHashtags()}
+            {!!this.props.story.hashtags && 
+              this.renderHashtags()
+            }
             {!!story.videoDescription &&
               <View style={styles.videoDescription}>
                 <Text style={styles.videoDescriptionText}>{story.videoDescription}</Text>
@@ -367,7 +369,7 @@ class StoryReadingScreen extends React.Component {
                     style={{ image: styles.icon }}
                   />
                 </View>
-                <View style={styles.iconWrapper}>
+                <View style={styles.sectionTextWrapper}>
                   <Text style={styles.sectionLabel}>Categories: </Text>
                   {this.renderCategories()}
                 </View>

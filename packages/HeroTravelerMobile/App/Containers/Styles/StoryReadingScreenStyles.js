@@ -163,6 +163,10 @@ export const styles = StyleSheet.create({
     letterSpacing: .7,
     fontWeight: '600',
     color: Colors.background,
+    flexWrap: 'nowrap',
+  },
+  sectionTextWrapper: {
+    flex: 1,
   },
   sectionText: {
     fontFamily: Fonts.type.sourceSansPro,
@@ -175,6 +179,7 @@ export const styles = StyleSheet.create({
     color: Colors.redHighlights
   },
   iconWrapper: {
+    flexShrink: 1,
     marginRight: Metrics.section,
     alignItems: 'center',
     justifyContent: 'flex-start'

@@ -50,7 +50,7 @@ TokenSchema.statics = {
     })
   },
 
-  findOrAdd(attrs, next) {
+  findOrAdd(attrs) {
     const tokenConfig = oauth.tokens[attrs.type]
     const token = Object.assign({}, attrs, {
       value: randToken.generate(tokenConfig.length),
@@ -62,7 +62,7 @@ TokenSchema.statics = {
         $lte: moment().utc().add(29, 'days').toDate()
       }
     }))
-    .then(() => this.findOrCreate(attrs, token, next))
+    .then(() => this.findOrCreate(attrs, token))
   }
 }
 

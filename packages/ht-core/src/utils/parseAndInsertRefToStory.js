@@ -2,6 +2,7 @@ import _ from 'lodash'
 
 // Separate the new refs (text string) from the existing refs (_ids)
 export default async function parseAndInsertRefToStory(refModel, refsArray, createMethod) {
+  if (refsArray.length === 0) return refsArray
   // due to connectivity issues we can get IDless refs (category or hashtag)
   // that actually already exist. We are adding this check to avoid duplicates
   refsArray = await Promise.all(refsArray.map(ref => {

@@ -1,20 +1,15 @@
-import {User, Models} from '@hero/ht-core'
-import {Constants} from '@hero/ht-util'
-import algoliasearchModule  from 'algoliasearch'
+import {User, Models, Story} from '@hero/ht-core'
+import {Constants, algoliaHelper} from '@hero/ht-util'
+import _ from 'lodash'
 
-const client = algoliasearchModule(process.env.ALGOLIA_ACCT_KEY, process.env.ALGOLIA_API_KEY)
-const userIndex = client.initIndex(process.env.ALGOLIA_USER_INDEX)
+function hasNewUsername(user, attrs) {
+  return attrs.username && user.username !== attrs.username
+}
 
-const updateUserIndex = (attrs, userId) => new Promise((resolve, reject) => {
-  const indexObject = { objectID: userId,
-                        username: attrs.username
-                      }
-
-  userIndex.partialUpdateObject(indexObject, (err, content) => {
-    if (err) reject(err)
-    return resolve(content)
-  })
-})
+function getShouldUpdateAlgolia(user, attrs) {
+  return hasNewUsername(user, attrs)
+  || (attrs.profile && _.get(user, 'profile.avatar.id') !== _.get(attrs, 'profile.avatar.id'))
+}
 
 export default async function updateUser(req) {
   const attrs = Object.assign({}, req.body)
@@ -30,7 +25,7 @@ export default async function updateUser(req) {
   }
 
   let userPromise = Promise.resolve(req.user);
-  
+
   if (!userId.equals(userIdToUpdate)) {
     if (!isAdmin) {
       // Only admins can modify other users
@@ -39,19 +34,27 @@ export default async function updateUser(req) {
     userPromise = Models.User.findOne({_id: req.params.id});
   }
 
-  return userPromise.then((user) => {
+  return userPromise
+  .then((user) => {
+    // need to check if should update before mutating user
+    const shouldReindexUser = getShouldUpdateAlgolia(user, attrs)
+    const shouldReindexUsersStories = hasNewUsername(user, attrs)
+
     for (let key in attrs) {
       if (attrsBlacklist.indexOf(key) < 0) {
         user[key] = attrs[key];
       }
     }
-  
-    return user.save().then(async () => {
-      await updateUserIndex(attrs, userId);
+    return user.save().then(user => {
+      if (shouldReindexUser) algoliaHelper.updateUserIndex(user)
+      if (shouldReindexUsersStories) {
+        Story.getUserStories(user.id)
+        .then(algoliaHelper.updateMultipleStories)
+      }
       return user;
     }).catch((err) => {
       if (
-        err && 
+        err &&
         (err.code && err.code === 11000) ||
         (err.message && err.message.indexOf("username already taken") != -1)
       ) {

@@ -1,4 +1,4 @@
-import {getLocationInfo} from '@hero/ht-util'
+import {getLocationInfo, algoliaHelper} from '@hero/ht-util'
 import _ from 'lodash'
 
 import {Story} from '../models'
@@ -7,12 +7,12 @@ import {parseAndInsertStoryCategories, parseAndInsertStoryHashtags, addCover} fr
 
 // Merge + Save (instead of update) so we run the save
 // Mongoose hooks
-function hasNewCover(draft){
-  return (draft.coverImage && !draft.coverImage._id) ||
-  (draft.coverVideo && !draft.coverVideo._id)
+function hasNewCover(attrs){
+  return (attrs.coverImage && !attrs.coverImage._id) ||
+  (attrs.coverVideo && !attrs.coverVideo._id)
 }
 
-function isNewLocation(draft, attrs) {
+function shouldGetLocation(draft, attrs){
   if (!attrs.locationInfo) return false
   // need custom because draft.locationInfo has an extra mongoose $init param
   const customIsEqual = Object.keys(attrs.locationInfo).every(key => {
@@ -21,11 +21,27 @@ function isNewLocation(draft, attrs) {
   return !customIsEqual && !attrs.locationInfo.latitude
 }
 
-export default async function updateDraft(draftId, attrs, assetFormater) {
+function hasNewLocation(draft, attrs){
+  return draft.locationInfo.latitude !== attrs.locationInfo.latitude
+    || draft.locationInfo.longitude !== attrs.locationInfo.longitude
+}
+
+function shouldUpdateAlgolia(draft, attrs){
+  return true
+  // for now we are basically saving for everything. may revert later
+  // return hasNewCover(attrs)
+  //   || hasNewLocation(draft, attrs)
+  //   || draft.title !== attrs.title
+  //   || draft.type !== attrs.type
+}
+
+export default async function updateDraft(draftId, attrs, assetFormater){
   let draft = await Story.findById(draftId)
   attrs =  _.omit(attrs, 'author')
+  // need to do this before draft changes
+  const originalShouldUpdateAlgolia = shouldUpdateAlgolia(draft, attrs)
 
-  if (isNewLocation(draft, attrs)){
+  if (shouldGetLocation(draft, attrs)){
     attrs.locationInfo = await getLocationInfo(attrs.locationInfo.name)
   }
 
@@ -42,8 +58,14 @@ export default async function updateDraft(draftId, attrs, assetFormater) {
   }
 
   return draft.update(attrs)
-    .then((draft) => {
-      // use getDraft so we return the populated document
-      return getDraft(draftId)
-    })
+  .then((draft) => {
+    // use getDraft so we return the populated document
+    return getDraft(draftId)
+  })
+  .then((draft) => {
+    if (!draft.draft && originalShouldUpdateAlgolia) {
+      algoliaHelper.updateStoryIndex(draft)
+    }
+    return draft
+  })
 }

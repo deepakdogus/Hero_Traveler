@@ -126,8 +126,8 @@ class ProfileView extends React.Component {
   _onLeft = () => {
     // currently tempCover and tempAvatar are actually directly saved to DB - so we need to revert
     const profileReverts = {}
-    if (this.props.user.profile.tempCover) profileReverts.cover = this.props.user.profile.cover.id
-    if (this.props.user.profile.tempAvatar) profileReverts.avatar = this.props.user.profile.avatar.id
+    if (this.props.user.profile.tempCover) profileReverts.cover = this.props.user.profile.cover
+    if (this.props.user.profile.tempAvatar) profileReverts.avatar = this.props.user.profile.avatar
     if (Object.keys(profileReverts).length) {
       this.props.updateUser({profile: profileReverts})
     }

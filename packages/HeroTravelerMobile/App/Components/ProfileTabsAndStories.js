@@ -12,6 +12,7 @@ import { Colors, Metrics } from '../Shared/Themes'
 import StoryList from '../Containers/ConnectedStoryList'
 import Loader from './Loader'
 import ConnectedStoryPreview from '../Containers/ConnectedStoryPreview'
+import _ from 'lodash'
 
 const enhancedTab = withHandlers({
   _onPress: props => () => {
@@ -129,11 +130,12 @@ export default class ProfileTabsAndStories extends Component {
 
   _renderProfileInfo = () => {
     const {renderProfileInfo, error} = this.props
+    let errorText = _.get(error, 'message', 'Unable to fully load user data. Please try again.');
     return (
       <View>
         {renderProfileInfo()}
         {!!error &&
-          <Text style={styles.errorText}>Unable to fully load user data. Please try again.</Text>
+          <Text style={styles.errorText}>{errorText}</Text>
         }
       </View>
     )

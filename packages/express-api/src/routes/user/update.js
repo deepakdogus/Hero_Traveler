@@ -1,5 +1,11 @@
 import {User, Models} from '@hero/ht-core'
 import {Constants, algoliaHelper} from '@hero/ht-util'
+import _ from 'lodash'
+
+function getShouldUpdateAlgolia(user, attrs) {
+  return (attrs.username && user.username !== attrs.username)
+  || (attrs.profile && _.get(user, 'profile.avatar.id') !== _.get(attrs, 'profile.avatar.id'))
+}
 
 export default async function updateUser(req) {
   const attrs = Object.assign({}, req.body)
@@ -24,14 +30,17 @@ export default async function updateUser(req) {
     userPromise = Models.User.findOne({_id: req.params.id});
   }
 
-  return userPromise.then((user) => {
+  return userPromise
+  .then((user) => {
+    // need to check if should update before mutating user
+    const shouldUpdateAlgolia = getShouldUpdateAlgolia(user, attrs)
     for (let key in attrs) {
       if (attrsBlacklist.indexOf(key) < 0) {
         user[key] = attrs[key];
       }
     }
     return user.save().then(user => {
-      if (req.user.username !== user.username) updateUserIndex(attrs, userId);
+      if (shouldUpdateAlgolia) algoliaHelper.updateUserIndex(user);
       return user;
     }).catch((err) => {
       if (

@@ -140,11 +140,15 @@ export default class ProfileTabsAndStories extends Component {
   }
 
   getHeaderHeight(){
+    // This is quite manual but RN currently doesn't give accurate metrics
+    // from .measure() or onLayout. So don't forget to update here if styles
+    // change.
     const {user, editable} = this.props
     const hasBadge = user.role === 'contributor' || user.role === 'founding member'
-    let baseHeight = editable ? 201.5 : 171
-    baseHeight += hasBadge ? 21 : 0
-    return baseHeight
+    let height = editable ? 207 : 189
+    height += hasBadge ? 21 : 0
+    height += this.props.error ? 27 : 0
+    return height
   }
 
   render() {

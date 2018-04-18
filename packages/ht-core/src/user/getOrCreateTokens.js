@@ -15,9 +15,7 @@ export default function getOrCreateTokens(userId) {
       })
       .then(refreshToken => {
         return getUser({_id: userId})
-          .then(user => {
-            return formatTokenResponse(accessToken, refreshToken, user)
-          })
+        .then(user => formatTokenResponse(accessToken, refreshToken, user))
       })
     })
 }

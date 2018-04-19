@@ -103,6 +103,7 @@ export default class VideoPlayer extends React.Component {
     areInRenderLocation: PropTypes.bool,
     path: PropTypes.string,
     originalPath: PropTypes.string,
+    showControls: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -111,6 +112,7 @@ export default class VideoPlayer extends React.Component {
     videoFillSpace: true,
     resizeMode: 'contain',
     areInRenderLocation: true,
+    showControls: true,
   }
 
   constructor(props) {
@@ -290,25 +292,11 @@ export default class VideoPlayer extends React.Component {
           resizeMode={this.props.resizeMode}
           onPauseFromUI={this._onPauseFromUI}
           onPlayFromUI={this._onPlayFromUI}
+          showControls={this.props.showControls}
         />
 
         {(this.state.isStalled || isNotReadyForDisplay) &&
          <ActivityIndicator size="small" color="#ffffff" />
-        }
-        {this.props.showPlayButton &&
-          <PlayButton
-            style={[this.props.videoFillSpace ? styles.fullButtons : styles.buttons, playButtonSize === 'small' ? styles.smallButton : {}]}
-            onPress={this._togglePlayVideo}
-            isPlaying={this.state.videoPlaying}
-            size={playButtonSize}
-            videoFadeAnim={this.state.videoFadeAnim} />
-        }
-        {this.props.showMuteButton && this.props.showPlayButton &&
-          <MuteButton
-            style={styles.mute}
-            onPress={this.toggleMute}
-            isMuted={this.state.muted}
-          />
         }
         {
           this.props.showChangeBtn &&

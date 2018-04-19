@@ -114,6 +114,7 @@ RCT_EXPORT_VIEW_PROPERTY(playWhenInactive, BOOL);
 RCT_EXPORT_VIEW_PROPERTY(ignoreSilentSwitch, NSString);
 RCT_EXPORT_VIEW_PROPERTY(rate, float);
 RCT_EXPORT_VIEW_PROPERTY(fullscreen, BOOL);
+RCT_EXPORT_VIEW_PROPERTY(showControls, BOOL)
 
 RCT_EXPORT_VIEW_PROPERTY(onVideoLoad, RCTBubblingEventBlock);
 RCT_EXPORT_VIEW_PROPERTY(onVideoBuffer, RCTBubblingEventBlock);

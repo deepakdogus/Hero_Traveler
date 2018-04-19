@@ -267,6 +267,7 @@ class StoryCoverScreen extends Component {
             autoPlayVideo={false}
             showPlayButton={false}
             resizeMode='cover'
+            showControls={false}
           />
           {this.renderContent()}
         </View>

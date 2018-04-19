@@ -11,6 +11,7 @@ import {
   Alert,
   TextInput,
   ScrollView,
+  NativeModules,
 } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
@@ -43,6 +44,8 @@ import Toolbar from '../../Components/NativeEditor/Toolbar'
 import {KeyboardTrackingView} from 'react-native-keyboard-tracking-view';
 import { ProcessingManager } from 'react-native-video-processing'
 
+const VideoManager = NativeModules.VideoManager
+
 const api = API.create()
 
 const MediaTypes = {
@@ -74,16 +77,17 @@ const extractUploadData = (uploadData) => {
   return [url, height, width]
 }
 
-async function trimVideo(videoFile, callback, _this){
+async function trimVideo(videoFile, callback, storyId, _this){
   try {
     let newSource = videoFile
-    const { duration } = await ProcessingManager.getVideoInfo(videoFile)
+    const { duration } = await ProcessingManager.getVideoInfo(newSource)
     if (duration > 60) {
-      newSource = await ProcessingManager.trim(videoFile, { startTime: 0, endTime: 60 })
+      newSource = await ProcessingManager.trim(newSource, { startTime: 0, endTime: 60 })
     }
+    newSource = await VideoManager.moveVideo(newSource, storyId)
     callback(newSource)
   } catch(e) {
-      console.log('Issue trimming video')
+      console.log(`Issue trimming video ${e}`)
       _this.setState({error: 'There\'s an issue with the video you selected. Please try another.'})
       NavActions.pop()
       // jump to top to reveal error message
@@ -748,7 +752,7 @@ class StoryCoverScreen extends Component {
       this.editor.insertVideo(newSource)
       NavActions.pop()
     }
-    trimVideo(data, callback, this)
+    trimVideo(data, callback, this.props.workingDraft.id, this)
   }
 
   setHasFocus = (toolbarDisplay) => {
@@ -981,7 +985,7 @@ class StoryCoverScreen extends Component {
       NavActions.pop()
     }
 
-    trimVideo(file.uri, callback, this)
+    trimVideo(file.uri, callback, this.props.workingDraft.id, this)
   }
 }
 

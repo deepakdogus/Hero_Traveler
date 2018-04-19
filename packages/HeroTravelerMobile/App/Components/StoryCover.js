@@ -72,7 +72,9 @@ export default class StoryCover extends Component {
           width: Metrics.screenWidth,
           height: Math.min(
             Metrics.storyCover.fullScreen.height,
-            getRelativeHeight(Metrics.screenWidth, this.props.cover.original.meta)
+            this.props.cover.original
+              ? getRelativeHeight(Metrics.screenWidth, this.props.cover.original.meta)
+              : Metrics.storyCover.fullScreen.height,
           ),
         }
       }

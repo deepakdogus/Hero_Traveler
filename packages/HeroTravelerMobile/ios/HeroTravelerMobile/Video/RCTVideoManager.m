@@ -7,6 +7,89 @@
 
 RCT_EXPORT_MODULE();
 
++ (NSString*) storyDraftsDirectory
+{
+  NSArray* paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+  NSString* applicationSupportDirectory = [paths firstObject];
+  return [applicationSupportDirectory stringByAppendingPathComponent:@"storyDrafts"];
+}
+
+RCT_REMAP_METHOD(moveVideo,
+                  videoUri:(NSString*)uri
+                  storyId:(NSString*)storyId
+                  moveVideoWithResolver:(RCTPromiseResolveBlock)resolve
+                  rejector:(RCTPromiseRejectBlock)reject)
+{
+  NSString* storyDraftsDirectory = [RCTVideoManager storyDraftsDirectory];
+  
+  NSString* movieName = [uri lastPathComponent];
+  
+  NSURL* sourceUrl = [NSURL URLWithString:uri];
+
+  NSString* storyDraftDirectory = [storyDraftsDirectory stringByAppendingPathComponent:storyId];
+  NSString* videoDestination = [storyDraftDirectory stringByAppendingPathComponent:movieName];
+  NSURL* videoDestinationUrl = [NSURL fileURLWithPath:videoDestination];
+  
+  [[NSFileManager defaultManager] createDirectoryAtPath:storyDraftDirectory
+                            withIntermediateDirectories:YES
+                                             attributes:nil error:nil];
+
+  NSError* err;
+  [[NSFileManager defaultManager] copyItemAtURL:sourceUrl
+                                          toURL:videoDestinationUrl
+                                          error:&err];
+  
+  if (err)
+  {
+    reject(@"file", [err localizedDescription], err);
+    return;
+  }
+
+  BOOL success = [videoDestinationUrl setResourceValue:[NSNumber numberWithBool:YES]
+                                                forKey:NSURLIsExcludedFromBackupKey error:&err];
+
+  if (err)
+  {
+    NSLog(@"Failed to exclude from backup: %@", err);
+  }
+  
+  NSString* finalUrl = videoDestinationUrl.absoluteString;
+
+  resolve(finalUrl);
+}
+
+RCT_EXPORT_METHOD(cleanDrafts:(NSArray *)storyIds)
+{
+  NSString* storyDraftsDirectory = [RCTVideoManager storyDraftsDirectory];
+  NSError* err = nil;
+  NSArray* directories = [[NSFileManager defaultManager]
+                          contentsOfDirectoryAtPath:storyDraftsDirectory error:&err];
+  
+  NSLog(@"Directories: %@", directories);
+  
+  if (err)
+  {
+    NSLog(@"Could not get contents of cache directory: %@", err);
+  }
+  else
+  {
+    for (NSString* directory in directories)
+    {
+      NSString* storyId = [directory lastPathComponent];
+      if (![storyIds containsObject:storyId])
+      {
+        [[NSFileManager defaultManager] removeItemAtPath:[storyDraftsDirectory stringByAppendingPathComponent:storyId]
+                                                   error:&err];
+        
+        if (err)
+        {
+          NSLog(@"Failed to delete story cache %@ because %@", storyId, err);
+        }
+      }
+    }
+  }
+}
+
 @synthesize bridge = _bridge;
 
 - (UIView *)view

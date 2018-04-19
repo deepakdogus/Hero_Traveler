@@ -76,8 +76,8 @@ class FollowersScreen extends React.Component {
       content = (
         <View style={styles.followers}>
           {_.map(this.state.usersById, uid => {
-            const u = this.props.users[uid]
-            const selected = this.userIsFollowed(u.id)
+            const user = this.props.users[uid]
+            const selected = this.userIsFollowed(user.id)
             let followingText
             let NavToProfileFunction = NavActions.readOnlyProfile
             if (selected) {
@@ -89,16 +89,16 @@ class FollowersScreen extends React.Component {
             }
 
             return (
-              <View style={[styles.rowWrapper]} key={u.id}>
+              <View style={[styles.rowWrapper]} key={user.id}>
                 <View style={styles.row}>
-                  <TouchableOpacity onPress={() => NavToProfileFunction({userId: u.id})} style={styles.avatarAndName}>
+                  <TouchableOpacity onPress={() => NavToProfileFunction({userId: user.id})} style={styles.avatarAndName}>
                     <Avatar
                       style={styles.avatar}
-                      avatarUrl={getImageUrl(u.profile.avatar, 'avatar')}
+                      avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
                     />
                     <View style={styles.nameWrapper}>
-                      <Text style={styles.name}>{u.profile.fullName}</Text>
-                      <Text style={styles.followerCount}>{u.counts.followers} followers</Text>
+                      <Text style={styles.name}>{user.profile.fullName}</Text>
+                      <Text style={styles.followerCount}>{user.counts.followers} followers</Text>
                     </View>
                   </TouchableOpacity>
                   {followingText &&
@@ -129,17 +129,17 @@ class FollowersScreen extends React.Component {
     )
   }
 
-  toggleFollow = (u) => {
+  toggleFollow = (user) => {
 
     // Cannot follow yourself
-    if (this.props.user.id === u.id) {
+    if (this.props.user.id === user.id) {
       return
     }
 
-    if (this.userIsFollowed(u.id)) {
-      this.props.unfollowUser(this.props.user.id, u.id)
+    if (this.userIsFollowed(user.id)) {
+      this.props.unfollowUser(this.props.user.id, user.id)
     } else {
-      this.props.followUser(this.props.user.id, u.id)
+      this.props.followUser(this.props.user.id, user.id)
     }
   }
 }

@@ -143,6 +143,8 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
                                                      attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
 
 #endif
+    
+    self.backgroundColor = [UIColor whiteColor];
 
     magnifyingGlass = [[ACMagnifyingGlass alloc] init];
     magnifyingGlass.viewToMagnify = self;

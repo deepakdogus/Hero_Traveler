@@ -49,6 +49,7 @@ export default class ProfileTabsAndStories extends Component {
     touchEdit: PropTypes.func,
     touchTrash: PropTypes.func,
     user: PropTypes.object,
+    sessionUserId: PropTypes.string,
     location: PropTypes.string,
     error: PropTypes.object,
   }
@@ -84,7 +85,7 @@ export default class ProfileTabsAndStories extends Component {
   renderStory = (story, index) => {
     const {
       tabTypes, selectedTab,
-      editable, user, location
+      editable, sessionUserId, location
     } = this.props
     return (
       <ConnectedStoryPreview
@@ -94,7 +95,7 @@ export default class ProfileTabsAndStories extends Component {
         titleStyle={styles.storyTitleStyle}
         subtitleStyle={styles.subtitleStyle}
         story={story}
-        userId={user.id}
+        userId={sessionUserId}
         height={storyPreviewHeight}
         autoPlayVideo
         allowVideoPlay

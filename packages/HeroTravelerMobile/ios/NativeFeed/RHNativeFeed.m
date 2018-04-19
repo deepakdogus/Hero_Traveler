@@ -391,36 +391,24 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   lastBackingViewSeperatorHeight = _cellSeparatorHeight;
   lastTotalHeaderHeight = headerHeight;
   CGFloat yOffset = headerHeight;
-  NSInteger chunkSize = 10;
   
-  for (int i = 0; i < _storyInfos.count; i += chunkSize)
+  for (RHStoryInfo* storyInfo in _storyInfos)
   {
-    NSMutableArray* cellHeights = [@[] mutableCopy];
-    CGFloat backingViewHeight = 0.f;
-    for (int j = 0; j < chunkSize && (i + j) < _storyInfos.count; j++)
+    CGFloat cellHeight = storyInfo.height;
+    
+    if (cellHeight >= 1.f)
     {
-      RHStoryInfo* storyInfo = _storyInfos[i+j];
-      CGFloat cellHeight = storyInfo.height;
-      [cellHeights addObject:@(cellHeight)];
-      backingViewHeight += cellHeight + _cellSeparatorHeight;
+      CGSize backingSize = CGSizeMake(self.bounds.size.width, cellHeight);
+      
+      CGRect backingViewFrame = CGRectMake(0, yOffset, backingSize.width, backingSize.height+_cellSeparatorHeight);
+      UIImageView* backingView = [[UIImageView alloc] initWithFrame:backingViewFrame];
+      backingView.image = [RHNativeFeedBackingView backingImageSized:backingSize withSeperator:_cellSeparatorHeight];
+      [_scrollView insertSubview:backingView atIndex:0];
+
+      [newTemplates addObject:backingView];
     }
-    
-    if (backingViewHeight < 1.f)
-    {
-      continue;
-    }
-    
-    CGRect backingViewFrame = CGRectMake(0, yOffset, self.bounds.size.width, backingViewHeight);
-    
-    RHNativeFeedBackingView* backingView = [[RHNativeFeedBackingView alloc] initWithFrame:backingViewFrame];
-    backingView.userInteractionEnabled = YES;
-    [backingView setSeparatorHeight:_cellSeparatorHeight];
-    [backingView setHeights:cellHeights];
-    [_scrollView insertSubview:backingView atIndex:0];
-    
-    [newTemplates addObject:backingView];
-    
-    yOffset += backingViewHeight;
+
+    yOffset += cellHeight + _cellSeparatorHeight;
   }
   
   _cellTemplatesViews = [NSArray arrayWithArray:newTemplates];

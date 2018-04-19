@@ -33,4 +33,6 @@
 - (void) setHeights:(NSArray*)heights; // [NSNumber]
 - (void) setSeparatorHeight:(CGFloat)separatorHeight;
 
++ (UIImage*) backingImageSized:(CGSize)size withSeperator:(CGFloat)separatorSize;
+
 @end

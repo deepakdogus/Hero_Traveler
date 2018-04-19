@@ -21,7 +21,7 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   BOOL _showPlayer;
   BOOL _fullscreen;
   UIViewController * _presentingViewController;
-
+  
   /* Keep track of any modifiers, need to be applied after each play */
   float _volume;
   float _rate;
@@ -32,7 +32,8 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   BOOL _playWhenInactive;
   NSString * _ignoreSilentSwitch;
   NSString * _resizeMode;
-  
+  BOOL _showControls;
+
   BOOL _isInBackground;
   BOOL _isResigningActive;
   
@@ -223,6 +224,18 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   [self applyModifiers];
 }
 
+- (void) setShowControls:(BOOL)showControls
+{
+  _embeddedViewController.showsPlaybackControls = showControls;
+  _playerViewController.showsPlaybackControls = showControls;
+  _showControls = showControls;
+}
+
+- (BOOL) showControls
+{
+  return _showControls;
+}
+
 - (void) setVolume:(float)volume
 {
   _volume = volume;
@@ -344,6 +357,8 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   {
     _embeddedViewController = [[AVPlayerViewController alloc] init];
     _embeddedViewController.view.frame = self.bounds;
+    _embeddedViewController.showsPlaybackControls = _showControls;
+    
     
     [self setResizeMode:_resizeMode];
     
@@ -388,6 +403,7 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
     playerLayer.view.frame = self.bounds;
     
     _playerViewController = playerLayer;
+    _playerViewController.showsPlaybackControls = _showControls;
     // to prevent video from being animated when resizeMode is 'cover'
     // resize mode must be set before subview is added
     [self setResizeMode:_resizeMode];

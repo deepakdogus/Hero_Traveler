@@ -27,6 +27,7 @@
 @property (nonatomic, copy) RCTBubblingEventBlock onPlayFromUI;
 
 @property (nonatomic, assign) BOOL needsVideoLoaded;
+@property (nonatomic, assign) BOOL showControls;
 
 - (BOOL) shouldRepeat;
 

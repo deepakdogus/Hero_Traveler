@@ -50,6 +50,7 @@ class ProfileView extends React.Component {
   }
 
   static propTypes = {
+    userId: PropTypes.string,
     location: PropTypes.string,
     error: PropTypes.object,
     refresh: PropTypes.func,
@@ -306,6 +307,7 @@ class ProfileView extends React.Component {
               selectTab={this.selectTab}
               selectedTab={this.state.selectedTab}
               user={this.props.user}
+              sessionUserId={this.props.userId}
               showTooltip={showTooltip}
               location={location}
               error={this.getProfileTabsAndStoriesError()}
@@ -329,6 +331,7 @@ const mapStateToProps = (state) => {
   const userId = state.session.userId
   const hasBookmarks = !!state.entities.stories.bookmarks
   return {
+    userId,
     location: state.routes.scene.name,
     error: state.entities.users.error,
     bookmarksError: hasBookmarks ? state.entities.stories.bookmarks[userId].fetchStatus.error : undefined,

@@ -100,6 +100,9 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.type.base,
     color: Colors.grey,
   },
+  mediaPlaceholder: {
+    backgroundColor: Colors.lightGreyAreas
+  },
   mediaViewWrapper: {
     flex: 1,
     marginVertical: 25
@@ -163,6 +166,10 @@ export const styles = StyleSheet.create({
     letterSpacing: .7,
     fontWeight: '600',
     color: Colors.background,
+    flexWrap: 'nowrap',
+  },
+  sectionTextWrapper: {
+    flex: 1,
   },
   sectionText: {
     fontFamily: Fonts.type.sourceSansPro,
@@ -175,6 +182,7 @@ export const styles = StyleSheet.create({
     color: Colors.redHighlights
   },
   iconWrapper: {
+    flexShrink: 1,
     marginRight: Metrics.section,
     alignItems: 'center',
     justifyContent: 'flex-start'

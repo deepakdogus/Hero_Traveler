@@ -74,13 +74,15 @@ const atomicHandler = (item: Object): any => {
       case 'image':
         return (
           <View key={item.key} style={styles.mediaViewWrapper}>
-            <ImageWrapper
-              fullWidth={true}
-              source={{uri: `${getImageUrl(item.data.url, 'optimized', {
-                width: Metrics.screenWidth,
-                height
-              })}`}}
-            />
+            <View style={[styles.mediaPlaceholder, {minHeight: height}]}>
+              <ImageWrapper
+                fullWidth={true}
+                source={{uri: `${getImageUrl(item.data.url, 'optimized', {
+                  width: Metrics.screenWidth,
+                  height
+                })}`}}
+              />
+            </View>
             {!!item.text && <Text style={styles.caption}>{item.text}</Text>}
           </View>
         );
@@ -92,7 +94,9 @@ const atomicHandler = (item: Object): any => {
         }
         return (
           <View key={item.key} style={styles.mediaViewWrapper}>
-            <StoryVideo src={videoUrl} height={height}/>
+            <View style={[styles.mediaPlaceholder, {minHeight: height}]}>
+              <StoryVideo src={videoUrl} height={height}/>
+            </View>
             {!!item.text && <Text style={styles.caption}>{item.text}</Text>}
           </View>
         )
@@ -319,7 +323,9 @@ class StoryReadingScreen extends React.Component {
                 atomicHandler={atomicHandler}
               />
             }
-            {this.renderHashtags()}
+            {!!this.props.story.hashtags && 
+              this.renderHashtags()
+            }
             {!!story.videoDescription &&
               <View style={styles.videoDescription}>
                 <Text style={styles.videoDescriptionText}>{story.videoDescription}</Text>
@@ -367,7 +373,7 @@ class StoryReadingScreen extends React.Component {
                     style={{ image: styles.icon }}
                   />
                 </View>
-                <View style={styles.iconWrapper}>
+                <View style={styles.sectionTextWrapper}>
                   <Text style={styles.sectionLabel}>Categories: </Text>
                   {this.renderCategories()}
                 </View>

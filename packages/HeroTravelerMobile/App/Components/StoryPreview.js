@@ -223,7 +223,7 @@ export default class StoryPreview extends Component {
             </View>
           }
 
-          {!draft && 
+          {!draft &&
           <View style={styles.rightRow}>
             {this.props.showLike && this.props.onPressBookmark &&
               <View style={styles.bookmarkContainer}>

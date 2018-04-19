@@ -403,6 +403,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
       CGRect backingViewFrame = CGRectMake(0, yOffset, backingSize.width, backingSize.height+_cellSeparatorHeight);
       UIImageView* backingView = [[UIImageView alloc] initWithFrame:backingViewFrame];
       backingView.image = [RHNativeFeedBackingView backingImageSized:backingSize withSeperator:_cellSeparatorHeight];
+      backingView.userInteractionEnabled = YES;
       [_scrollView insertSubview:backingView atIndex:0];
 
       [newTemplates addObject:backingView];

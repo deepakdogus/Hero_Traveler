@@ -88,6 +88,14 @@ RCT_EXPORT_METHOD(cleanDrafts:(NSArray *)storyIds)
   }
 }
 
+RCT_REMAP_METHOD(fixFilePath,
+                 filePath:(NSString*)filePath
+                 moveVideoWithResolver:(RCTPromiseResolveBlock)resolve
+                 rejector:(RCTPromiseRejectBlock)reject)
+{
+  resolve([RCTVideoManager fixFilePath:filePath]);
+}
+
 + (NSString*) fixFilePath:(NSString*)filePath
 {
   if ([filePath hasPrefix:@"file"] && [filePath containsString:@"storyDrafts"])

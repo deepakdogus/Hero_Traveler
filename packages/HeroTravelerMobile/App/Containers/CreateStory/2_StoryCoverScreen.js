@@ -19,7 +19,6 @@ import R from 'ramda'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Immutable from 'seamless-immutable'
 
-import API from '../../Shared/Services/HeroAPI'
 import {styles as StoryReadingScreenStyles} from '../Styles/StoryReadingScreenStyles'
 import StoryActions from '../../Shared/Redux/Entities/Stories'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
@@ -45,8 +44,6 @@ import {KeyboardTrackingView} from 'react-native-keyboard-tracking-view';
 import { ProcessingManager } from 'react-native-video-processing'
 
 const VideoManager = NativeModules.VideoManager
-
-const api = API.create()
 
 const MediaTypes = {
   video: 'video',
@@ -138,10 +135,6 @@ class StoryCoverScreen extends Component {
       toolbarDisplay: false,
       contentTouched: false,
     }
-  }
-
-  componentWillMount() {
-    api.setAuth(this.props.accessToken.value)
   }
 
   isUploading() {

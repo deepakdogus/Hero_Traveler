@@ -65,8 +65,6 @@ RCT_EXPORT_METHOD(cleanDrafts:(NSArray *)storyIds)
   NSArray* directories = [[NSFileManager defaultManager]
                           contentsOfDirectoryAtPath:storyDraftsDirectory error:&err];
   
-  NSLog(@"Directories: %@", directories);
-  
   if (err)
   {
     NSLog(@"Could not get contents of cache directory: %@", err);
@@ -88,6 +86,22 @@ RCT_EXPORT_METHOD(cleanDrafts:(NSArray *)storyIds)
       }
     }
   }
+}
+
++ (NSString*) fixFilePath:(NSString*)filePath
+{
+  if ([filePath hasPrefix:@"file"] && [filePath containsString:@"storyDrafts"])
+  {
+    NSArray* components = [filePath componentsSeparatedByString:@"storyDrafts"];
+    NSString* locationInStoryDraftsDir = [components lastObject];
+    NSString* storyDraftsDirectory = [RCTVideoManager storyDraftsDirectory];
+    return [NSString stringWithFormat:@"file://%@",
+            [[storyDraftsDirectory
+              stringByAppendingPathComponent:locationInStoryDraftsDir]
+              stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
+  }
+
+  return filePath;
 }
 
 @synthesize bridge = _bridge;

@@ -17,4 +17,14 @@ REGISTER_UINTEGER(startOffset)
 REGISTER_STRING(endKey)
 REGISTER_UINTEGER(endOffset)
 
+- (RNDJDraftJsIndex*) startIndex
+{
+  return [[RNDJDraftJsIndex alloc] initWithKey:self.startKey offset:self.startOffset];
+}
+
+- (RNDJDraftJsIndex*) endIndex
+{
+  return [[RNDJDraftJsIndex alloc] initWithKey:self.endKey offset:self.endOffset];
+}
+
 @end

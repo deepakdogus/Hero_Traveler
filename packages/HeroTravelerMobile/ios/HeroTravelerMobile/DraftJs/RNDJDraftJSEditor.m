@@ -36,10 +36,11 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
 
 @implementation RNDJDraftJSEditor
 {
-  NSTextStorage *_textStorage;
-  CAShapeLayer *_highlightLayer;
-  CAShapeLayer *_autocompleteLayer;
-  UILongPressGestureRecognizer *_longPressGestureRecognizer;
+  NSTextStorage* _textStorage;
+  CAShapeLayer* _highlightLayer;
+  CAShapeLayer* _singleCursorLayer;
+  CAShapeLayer* _autocompleteLayer;
+  UILongPressGestureRecognizer* _longPressGestureRecognizer;
 
 #if DEBUG_TOUCHES
   UIView* debugTouchesView;
@@ -388,6 +389,7 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
         RNDJDraftJsIndex* selectedIndex = [self draftJsIndexForPointInView:tapPostion];
         if (selectedIndex) {
           [self requestSetSelection:selectedIndex];
+          [[UIMenuController sharedMenuController] setMenuVisible:NO animated:YES];
         } else {
           [self requestHasFocus:YES];
         }
@@ -419,10 +421,14 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
 - (void)handleLongPress:(UILongPressGestureRecognizer *)gesture
 {
   CGPoint tapPostion = [gesture locationInView:self];
-//  tapPostion.x -= _contentInset.left;
-//  tapPostion.y -= _contentInset.top;
+  
 
   if (_hasFocus) {
+    if (gesture.state == UIGestureRecognizerStateBegan)
+    {
+      [[UIMenuController sharedMenuController] setMenuVisible:NO animated:YES];
+    }
+
     RNDJDraftJsIndex* selectedIndex = [self draftJsIndexForPointInView:tapPostion];
     [self requestSetSelection:selectedIndex];
   }
@@ -447,6 +453,29 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
   //  }
   
   [self updateMagnifierFromGesture:gesture];
+  
+  
+//  On end of long press, get rectangle of cursor position (go from selection point to text point, to text rectangle)
+//  Maybe defer to next render??? since cursor is already selected there
+//
+//  How about "show menu" callback that gets passed back into editor JS
+//
+//  If tap happens, or long press, remove shared menu
+//
+//  Menu shows paste/Select/Select All originally, no "Copy"
+//
+//  Then show bars when multiple selection is working
+//  If long press starts near one of the edges, use that to extend selection
+  
+  
+  if (gesture.state == UIGestureRecognizerStateEnded)
+  {
+    UIMenuController* editMenu = [UIMenuController sharedMenuController];
+    CGRect selectionRect = CGRectMake (tapPostion.x, tapPostion.y, 10, 2);
+    [editMenu setTargetRect:selectionRect inView:self];
+    [editMenu setMenuVisible:YES animated:YES];
+    [self setMenuItems];
+  }
 }
 
 - (NSString *)description
@@ -535,15 +564,47 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
       return;
     }
     
+    __block CGPoint lastPoint = CGPointMake(-100, -100);
+    
+    __block UIBezierPath* newPath = nil;
     [layoutManager enumerateEnclosingRectsForGlyphRange:range withinSelectedGlyphRange:range inTextContainer:textContainer usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
-      UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectInset(enclosingRect, -2, -2) cornerRadius:2];
-      if (highlightPath) {
-        [highlightPath appendPath:path];
-      } else {
-        highlightPath = path;
-      }
+      CGRect highlightRect = CGRectInset(enclosingRect, -2, -2);
+      
+      lastPoint = CGPointMake(highlightRect.origin.x, highlightRect.origin.y+highlightRect.size.height);
+      
+      newPath = [UIBezierPath bezierPathWithRoundedRect:highlightRect cornerRadius:0];
     }];
+    
+    if (lastPoint.x < -50 || lastPoint.y < -50) {
+      return;
+    }
+
+    if (newPath) {
+      if (highlightPath) {
+        [highlightPath appendPath:newPath];
+      } else {
+        highlightPath = newPath;
+      }
+    }
+
+    
+//    [layoutManager enumerateEnclosingRectsForGlyphRange:range withinSelectedGlyphRange:range inTextContainer:textContainer usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
+//      UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectInset(enclosingRect, -2, -2) cornerRadius:2];
+//      if (highlightPath) {
+//        [highlightPath appendPath:path];
+//      } else {
+//        highlightPath = path;
+//      }
+//    }];
   }];
+  
+  if (highlightPath)
+  {
+    CGRect selectionBounds = highlightPath.bounds;
+    UIMenuController* editMenu = [UIMenuController sharedMenuController];
+    [editMenu setTargetRect:selectionBounds inView:self];
+    [editMenu setMenuVisible:YES animated:YES];
+  }
 
   NSMutableArray* autocompleteViewInfos = [@[] mutableCopy];
   __block UIBezierPath *autocompleteHighlightPath = nil;
@@ -602,6 +663,7 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
   });
 
 
+  __block UIBezierPath* cursorPath = nil;
   [layoutManager.textStorage enumerateAttribute:RNDJSingleCursorPositionAttributeName inRange:characterRange options:0 usingBlock:^(NSNumber *value, NSRange range, BOOL *_) {
     if (!value.boolValue) {
       return;
@@ -618,10 +680,10 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
       
       UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:cursorRect
                                                       cornerRadius:1];
-      if (highlightPath) {
-        [highlightPath appendPath:path];
+      if (cursorPath) {
+        [cursorPath appendPath:path];
       } else {
-        highlightPath = path;
+        cursorPath = path;
       }
     }];
   }];
@@ -646,6 +708,24 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     _highlightLayer = nil;
   }
   
+  CGFloat cursorOpacity = isnan(_cursorOpacity) ? 0.25 : _cursorOpacity;
+  UIColor* cursorColor = [UIColor colorWithWhite:0 alpha:cursorOpacity];
+  if (_cursorColor) {
+    cursorColor = [_cursorColor colorWithAlphaComponent:CGColorGetAlpha(_cursorColor.CGColor) * cursorOpacity];
+  }
+  if (cursorPath) {
+    if (!_singleCursorLayer) {
+      _singleCursorLayer = [CAShapeLayer layer];
+      _singleCursorLayer.fillColor = cursorColor.CGColor;
+      [self.layer addSublayer:_singleCursorLayer];
+    }
+    _singleCursorLayer.position = (CGPoint){_contentInset.left, _contentInset.top};
+    _singleCursorLayer.path = cursorPath.CGPath;
+  } else {
+    [_singleCursorLayer removeFromSuperlayer];
+    _singleCursorLayer = nil;
+  }
+  
   if (autocompleteHighlightPath) {
     if (!_autocompleteLayer) {
       _autocompleteLayer = [CAShapeLayer layer];
@@ -658,6 +738,8 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     [_autocompleteLayer removeFromSuperlayer];
     _autocompleteLayer = nil;
   }
+
+  [self setMenuItems];
 }
 
 - (NSNumber *)reactTagAtPoint:(CGPoint)point
@@ -688,6 +770,10 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     if (_highlightLayer) {
       [_highlightLayer removeFromSuperlayer];
       _highlightLayer = nil;
+    }
+    if (_singleCursorLayer) {
+      [_singleCursorLayer removeFromSuperlayer];
+      _singleCursorLayer = nil;
     }
     [_autocompleteLayer removeFromSuperlayer];
     _autocompleteLayer = nil;
@@ -743,6 +829,23 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
   }
 }
 
+- (void) requestSetSelectionFrom:(RNDJDraftJsIndex*)startIndex to:(RNDJDraftJsIndex*)endIndex
+{
+  if (startIndex.key.length > 0 && endIndex.key.length > 0) {
+    RCTDirectEventBlock onSelectionChangeRequest = _onSelectionChangeRequest;
+    if (onSelectionChangeRequest) {
+      onSelectionChangeRequest(@{
+                                 @"startKey": startIndex.key,
+                                 @"startOffset": @(startIndex.offset),
+                                 @"endKey": endIndex.key,
+                                 @"endOffset": @(endIndex.offset+1),
+                                 @"hasFocus": @YES,
+                                 });
+    }
+  }
+}
+
+
 - (BOOL)becomeFirstResponder
 {
   if (!_hasFocus) {
@@ -779,23 +882,225 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
   }
 }
 
+- (void) setMenuItems
+{
+  //  NSMutableArray* menuItems = [NSMutableArray array];
+  //
+  //  menuItems addObject:[UIMenuItem
+  //
+  //  if ([self.selectionStart isEqual:self.selectionEnd])
+  //  {
+  //
+  //  }
+  //  else
+  //  {
+  //
+  //  }
+  
+  [[UIMenuController sharedMenuController] update];
+}
+
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
+//  cut
+//  copy
+//  paste
+//  select
+//  selectAll
+//  delete
+//
   if (action == @selector(copy:)) {
-    return YES;
+    return _selectionStart && _selectionEnd && ![_selectionStart isEqual:_selectionEnd];
+  }
+  if (action == @selector(select:)) {
+    return [_selectionStart isEqual:_selectionEnd];
+  }
+  if (action == @selector(selectAll:)) {
+    return _firstIndex && _lastIndex &&
+    (!_selectionStart || !_selectionEnd || (
+                                            _firstIndex && _lastIndex &&
+                                            (![_selectionStart isEqual:_firstIndex] || ![_selectionEnd isEqual:_lastIndex])));
+  }
+  if (action == @selector(delete:)) {
+    return _selectionStart && _selectionEnd && ![_selectionStart isEqual:_selectionEnd];
+  }
+  if (action == @selector(cut:)) {
+    return _selectionStart && _selectionEnd && ![_selectionStart isEqual:_selectionEnd];
+  }
+  if (action == @selector(paste:)) {
+    return [[UIPasteboard generalPasteboard] containsPasteboardTypes:@[(id)kUTTypeUTF8PlainText]];
+  }
+
+  return [super canPerformAction:action withSender:sender];
+}
+
+- (void)select:(id)sender
+{
+  __block BOOL foundCursor = NO;
+  __block NSUInteger cursorIndex = 0;
+  
+  NSAttributedString* attributedString = _textStorage;
+  
+  [attributedString enumerateAttribute:RNDJDraftJsIndexAttributeName
+                               inRange:NSMakeRange(0, attributedString.length)
+                               options:0
+                            usingBlock:^(RNDJDraftJsIndex* index, NSRange range, BOOL* stop) {
+                              if (index && [index isEqual:_selectionStart]) {
+                                cursorIndex = range.location;
+                                foundCursor = YES;
+                                *stop = YES;
+                              }
+                            }];
+  
+  if (!foundCursor) {
+    return;
+  }
+
+  BOOL foundStart = NO;
+  NSUInteger startIndex = 0;
+  
+  NSUInteger curIndex = cursorIndex;
+  NSCharacterSet* set = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+  NSString* string = attributedString.string;
+
+  while (!foundStart && curIndex < string.length)
+  {
+    unichar ch = [string characterAtIndex:curIndex];
+    if ([set characterIsMember:ch])
+    {
+      foundStart = YES;
+      startIndex = curIndex + 1;
+      break;
+    }
+    
+    curIndex--;
   }
   
-  return [super canPerformAction:action withSender:sender];
+  if (!foundStart) {
+    startIndex = 0;
+  }
+  
+  BOOL foundEnd = NO;
+  NSUInteger endIndex = 0;
+  
+  curIndex = cursorIndex;
+  while (!foundEnd && curIndex < string.length)
+  {
+    unichar ch = [string characterAtIndex:curIndex];
+    if ([set characterIsMember:ch])
+    {
+      foundEnd = YES;
+      endIndex = curIndex - 1;
+      break;
+    }
+    
+    curIndex++;
+  }
+  
+  if (!foundEnd) {
+    endIndex = string.length - 1;
+  }
+
+  RNDJDraftJsIndex* start = [attributedString attribute:RNDJDraftJsIndexAttributeName atIndex:startIndex effectiveRange:nil];
+  RNDJDraftJsIndex* end = [attributedString attribute:RNDJDraftJsIndexAttributeName atIndex:endIndex effectiveRange:nil];
+  
+  if (start && end) {
+    [self requestSetSelectionFrom:start to:end];
+  }
+}
+
+- (void)cut:(id)sender
+{
+  [self copy:sender];
+  [self delete:sender];
+}
+
+- (void)delete:(id)sender
+{
+  RCTDirectEventBlock onReplaceRangeRequest = _onReplaceRangeRequest;
+  if (!_selectionStart || !_selectionEnd || !onReplaceRangeRequest || _selectionStart.key.length == 0 || _selectionEnd.key.length == 0)
+  {
+    return;
+  }
+
+  onReplaceRangeRequest(@{
+                          @"startKey": _selectionStart.key,
+                          @"startOffset": @(_selectionStart.offset),
+                          @"endKey": _selectionEnd.key,
+                          @"endOffset": @(_selectionEnd.offset),
+                          @"word": @"",
+                          });
+}
+
+- (void)paste:(id)sender
+{
+  NSString* text = [[UIPasteboard generalPasteboard] string];
+  
+  if (text.length > 0)
+  {
+    [self insertText:text];
+  }
+}
+
+- (void)selectAll:(id)sender
+{
+  if (!_firstIndex || !_lastIndex)
+  {
+    return;
+  }
+  
+  [self requestSetSelectionFrom:_firstIndex to:_lastIndex];
 }
 
 - (void)copy:(id)sender
 {
-#if !TARGET_OS_TV
-  NSAttributedString *attributedString = _textStorage;
+  if (!_selectionStart || !_selectionEnd) {
+    return;
+  }
+
+  __block BOOL foundStart = NO;
+  __block NSUInteger startIndex = 0;
+  __block BOOL foundEnd = NO;
+  __block NSUInteger endIndex = 0;
   
+  NSAttributedString* attributedString = _textStorage;
+
+  [attributedString enumerateAttribute:RNDJDraftJsIndexAttributeName
+                               inRange:NSMakeRange(0, attributedString.length)
+                               options:0
+                            usingBlock:^(RNDJDraftJsIndex* index, NSRange range, BOOL* stop) {
+                              if (index && [index isEqual:_selectionStart]) {
+                                startIndex = range.location;
+                                foundStart = YES;
+                                *stop = YES;
+                              }
+                            }];
+  
+  [attributedString enumerateAttribute:RNDJDraftJsIndexAttributeName
+                               inRange:NSMakeRange(0, attributedString.length)
+                               options:0
+                            usingBlock:^(RNDJDraftJsIndex* index, NSRange range, BOOL* stop) {
+                              if (index && [index isEqual:_selectionEnd]) {
+                                endIndex = range.location + range.length - 1;
+                                foundEnd = YES;
+                                *stop = YES;
+                              }
+                            }];
+
+  if (startIndex > endIndex) {
+    NSUInteger temp = endIndex;
+    endIndex = startIndex;
+    startIndex = temp;
+  }
+  
+  if (!foundStart || !foundEnd || endIndex == startIndex || endIndex >= attributedString.length || startIndex >= attributedString.length) {
+    return;
+  }
+
   NSMutableDictionary *item = [NSMutableDictionary new];
   
-  NSData *rtf = [attributedString dataFromRange:NSMakeRange(0, attributedString.length)
+  NSRange substringRange = NSMakeRange(startIndex, endIndex - startIndex);
+  NSData *rtf = [attributedString dataFromRange:substringRange
                              documentAttributes:@{NSDocumentTypeDocumentAttribute: NSRTFDTextDocumentType}
                                           error:nil];
   
@@ -803,11 +1108,10 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     [item setObject:rtf forKey:(id)kUTTypeFlatRTFD];
   }
   
-  [item setObject:attributedString.string forKey:(id)kUTTypeUTF8PlainText];
+  [item setObject:[attributedString.string substringWithRange:substringRange] forKey:(id)kUTTypeUTF8PlainText];
   
   UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
   pasteboard.items = @[item];
-#endif
 }
 
 - (BOOL)hasText
@@ -884,6 +1188,8 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
                                                    userInfo:nil
                                                     repeats:NO];
   magnifyingGlassRetainCount++;
+  
+  [[UIMenuController sharedMenuController] setMenuVisible:NO animated:YES];
 }
   
   - (void) touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {

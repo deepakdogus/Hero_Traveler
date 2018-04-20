@@ -38,10 +38,17 @@
 @property (nonatomic, copy) UIColor* selectionColor;
 @property (nonatomic, assign) CGFloat selectionOpacity;
 
+@property (nonatomic, copy) UIColor* cursorColor;
+@property (nonatomic, assign) CGFloat cursorOpacity;
+
 @property (nonatomic, assign) BOOL hasFocus;
+@property (nonatomic, strong) RNDJDraftJsIndex* firstIndex;
 @property (nonatomic, strong) RNDJDraftJsIndex* lastIndex;
 
 @property (nonatomic, assign) CGRect lastCursorRect;
+
+@property (nonatomic, strong) RNDJDraftJsIndex* selectionStart;
+@property (nonatomic, strong) RNDJDraftJsIndex* selectionEnd;
 
 @property(nonatomic) UITextAutocapitalizationType autocapitalizationType; // default is UITextAutocapitalizationTypeSentences
 @property(nonatomic) UITextAutocorrectionType autocorrectionType;         // default is UITextAutocorrectionTypeDefault

@@ -129,7 +129,10 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
 
   NSTextStorage *textStorage = [self buildTextStorageForWidth:availableWidth widthMode:YGMeasureModeExactly];
   CGRect textFrame = [self calculateTextFrame:textStorage];
-  
+
+  NSString* firstBlockKey = ((RNDJBlockModel*) contentModel.blocks.firstObject).key;
+  RNDJDraftJsIndex* firstIndex = firstBlockKey.length > 0 ? [[RNDJDraftJsIndex alloc] initWithKey:firstBlockKey offset:0] : nil;
+
   NSString* lastBlockKey = ((RNDJBlockModel*) contentModel.blocks.lastObject).key;
   NSUInteger lastBlockIndex = ((RNDJBlockModel*) contentModel.blocks.lastObject).text.length - 1;
   RNDJDraftJsIndex* lastIndex = lastBlockKey.length > 0 ? [[RNDJDraftJsIndex alloc] initWithKey:lastBlockKey offset:lastBlockIndex] : nil;
@@ -141,7 +144,10 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
     view.textStorage = textStorage;
     view.selectable = selectable;
     view.hasFocus = selectionModel ? selectionModel.hasFocus : NO;
+    view.firstIndex = firstIndex;
     view.lastIndex = lastIndex;
+    view.selectionStart = selectionModel.startIndex;
+    view.selectionEnd = selectionModel.endIndex;
   }];
   
   return parentProperties;
@@ -616,69 +622,6 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
                            range:NSMakeRange(0, attachmentString.length)];
   [outAttributedString appendAttributedString:attachmentString];
 
-//  for (RCTShadowView* child in [self reactSubviews]) {
-//    if ([child isKindOfClass:[RNDJShadowAtomicBaseView class]]) {
-//      RNDJShadowAtomicBaseView* wrapper = (RNDJShadowAtomicBaseView*)child;
-//
-//      if ([wrapper.blockKey isEqualToString:block.key]) {
-//        float width = YGNodeStyleGetWidth(child.cssNode).value;
-//        float height = YGNodeStyleGetHeight(child.cssNode).value;
-//        if (YGFloatIsUndefined(width) || YGFloatIsUndefined(height)) {
-//          RCTLogError(@"Views nested within a <Text> must have a width and height");
-//        }
-//        NSTextAttachment *attachment = [NSTextAttachment new];
-//        attachment.bounds = (CGRect){CGPointZero, {width, height}};
-//        NSMutableAttributedString *attachmentString = [NSMutableAttributedString new];
-//        [attachmentString appendAttributedString:[NSAttributedString attributedStringWithAttachment:attachment]];
-//        [attachmentString addAttribute:RCTShadowViewAttributeName value:child range:(NSRange){0, attachmentString.length}];
-//        [outAttributedString appendAttributedString:attachmentString];
-//
-////        if (height > heightOfTallestSubview) {
-////          heightOfTallestSubview = height;
-////        }
-//        // Don't call setTextComputed on this child. RCTTextManager takes care of
-//        // processing inline UIViews.
-//      }
-//    }
-//  }
-  
-//  for (RCTShadowView *child in [self reactSubviews]) {
-//    if ([child isKindOfClass:[RCTShadowText class]]) {
-//      RCTShadowText *shadowText = (RCTShadowText *)child;
-//      [attributedString appendAttributedString:
-//       [shadowText _attributedStringWithFontFamily:fontFamily
-//                                          fontSize:fontSize
-//                                        fontWeight:fontWeight
-//                                         fontStyle:fontStyle
-//                                     letterSpacing:letterSpacing
-//                                useBackgroundColor:YES
-//                                   foregroundColor:shadowText.color ?: foregroundColor
-//                                   backgroundColor:shadowText.backgroundColor ?: backgroundColor
-//                                           opacity:opacity * shadowText.opacity]];
-//      [child setTextComputed];
-//    } else if ([child isKindOfClass:[RCTShadowRawText class]]) {
-//      RCTShadowRawText *shadowRawText = (RCTShadowRawText *)child;
-//      [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:shadowRawText.text ?: @""]];
-//      [child setTextComputed];
-//    } else {
-//      float width = YGNodeStyleGetWidth(child.cssNode).value;
-//      float height = YGNodeStyleGetHeight(child.cssNode).value;
-//      if (YGFloatIsUndefined(width) || YGFloatIsUndefined(height)) {
-//        RCTLogError(@"Views nested within a <Text> must have a width and height");
-//      }
-//      NSTextAttachment *attachment = [NSTextAttachment new];
-//      attachment.bounds = (CGRect){CGPointZero, {width, height}};
-//      NSMutableAttributedString *attachmentString = [NSMutableAttributedString new];
-//      [attachmentString appendAttributedString:[NSAttributedString attributedStringWithAttachment:attachment]];
-//      [attachmentString addAttribute:RCTShadowViewAttributeName value:child range:(NSRange){0, attachmentString.length}];
-//      [attributedString appendAttributedString:attachmentString];
-//      if (height > heightOfTallestSubview) {
-//        heightOfTallestSubview = height;
-//      }
-//      // Don't call setTextComputed on this child. RCTTextManager takes care of
-//      // processing inline UIViews.
-//    }
-//  }
 }
 
 // TODO: Move this to run after the block so there can be no conflicting paragraph styles set from inline styles

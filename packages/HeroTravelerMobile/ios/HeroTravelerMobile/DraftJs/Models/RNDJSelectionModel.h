@@ -7,6 +7,7 @@
 //
 
 #import "RNDJBaseModel.h"
+#import "RNDJDraftJsIndex.h"
 
 @interface RNDJSelectionModel : RNDJBaseModel
 
@@ -17,5 +18,8 @@
 
 @property(readonly) NSString* endKey;
 @property(readonly) NSUInteger endOffset;
+
+- (RNDJDraftJsIndex*) startIndex;
+- (RNDJDraftJsIndex*) endIndex;
 
 @end

@@ -62,6 +62,8 @@ RCT_EXPORT_VIEW_PROPERTY(onReplaceRangeRequest, RCTDirectEventBlock)
 
 RCT_EXPORT_VIEW_PROPERTY(selectionColor, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(selectionOpacity, CGFloat)
+RCT_EXPORT_VIEW_PROPERTY(cursorColor, UIColor)
+RCT_EXPORT_VIEW_PROPERTY(cursorOpacity, CGFloat)
 
 #pragma mark - Shadow properties
 

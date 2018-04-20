@@ -15,5 +15,7 @@
 @property(readonly) NSString* key;
 @property(readonly) NSUInteger offset;
 
+- (BOOL) isEqual:(RNDJDraftJsIndex*)other;
+
 @end
 

@@ -46,4 +46,6 @@
 
 - (float) rate;
 
+- (void) applyModifiers;
+
 @end

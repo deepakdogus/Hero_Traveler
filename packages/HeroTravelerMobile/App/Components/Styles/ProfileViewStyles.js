@@ -38,6 +38,9 @@ export default StyleSheet.create({
   editButton: {
     marginRight: 15,
   },
+  topAreaWrapper: {
+    marginBottom: 30,
+  },
   avatarWrapper: {
     flexDirection: 'column',
     justifyContent: 'center',

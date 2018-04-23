@@ -360,7 +360,6 @@ class TagScreen extends Component {
 
         {showTooltip &&
           <Tooltip
-            type='standart'
             text={'Enter your own ' + this._getTagTypeText() + ' or pick from below'}
             style={{
               container: {top: 100, left: 20,},

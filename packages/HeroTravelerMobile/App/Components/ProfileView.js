@@ -280,7 +280,6 @@ class ProfileView extends React.Component {
         }
         {showTooltip &&
         <Tooltip
-          type='standart'
           position='bottom-center'
           text={"Looks like you don't have any stories.\nPublish your first story now!"}
           onDismiss={this._completeTooltip}

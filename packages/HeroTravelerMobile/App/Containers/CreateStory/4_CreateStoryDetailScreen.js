@@ -471,7 +471,6 @@ class CreateStoryDetailScreen extends React.Component {
         {validationError && 
           <Tooltip
             onPress={this._touchError}
-            type={"standart"}
             position={"right-nav-button"}
             text={validationError}
             onDismiss={this._dismissTooltip}

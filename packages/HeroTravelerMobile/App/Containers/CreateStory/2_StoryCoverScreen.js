@@ -783,8 +783,6 @@ class StoryCoverScreen extends Component {
     //  this.scrollViewRef.scrollTo({x: 0, y: 0, animated: true})
     // }
 
-    console.log("!!!", validationError);
-
     return (
       <View style={styles.root}>
         <ScrollView
@@ -912,7 +910,6 @@ class StoryCoverScreen extends Component {
         {validationError &&
           <Tooltip
             onPress={this._touchError}
-            type={"standart"}
             position={"title"}
             text={validationError}
             onDismiss={this._dismissTooltip}

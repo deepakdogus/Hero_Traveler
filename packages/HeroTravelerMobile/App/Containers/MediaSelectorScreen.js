@@ -71,7 +71,6 @@ class MediaSelectorScreen extends React.Component {
   renderNextTooltip() {
     return (
       <Tooltip 
-        type='standart'
         text='Tap to continue'
         position='right-nav-button'
         onDismiss={this._completeNextTooltip}

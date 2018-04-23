@@ -9,38 +9,20 @@ import MobileMetrics from '../Themes/Metrics';
 export default class Tooltip extends React.Component {
 
   static propTypes = {
-    type: PropTypes.oneOf(["standart", "image-edit"]),
+    type: PropTypes.oneOf(["default", "image-edit"]),
     onDismiss: PropTypes.func,
     style: PropTypes.object,
     // Some predefined positions to cover most of the scenarios.
-    // Only available for the "standart" type.
+    // Only available for the "default" type.
     position: PropTypes.oneOf(["title", "top-right"]),
     dimBackground: PropTypes.bool,
     text: PropTypes.string,
-  }
-
-  renderImageEdit() {
-    return (
-      <View style={styles.imageEditContainer}>
-        <View style={styles.imageEditIconContainer}>
-          <Icon name='camera' style={styles.imageEditIconCamera} size={18} />
-          <Icon name='bullseye' style={styles.imageEditIconBullseye} size={18} />
-          <Icon name='hand-pointer-o' style={styles.imageEditIconPointer} size={30} />
-        </View>
-        <Text style={styles.imageEditText}>Tap an image to edit it</Text>
-        <RoundedButton
-          style={styles.imageEditButton}
-          textStyle={styles.imageEditButtonText}
-          onPress={this.props.onDismiss}>Ok, I got it</RoundedButton>
-      </View>
-    );
   }
 
   calculateStyles() {
     let container = {};
     let tip = {};
     let textContainer = {};
-    let placeTipOnBottom = false;
 
     switch (this.props.position) {
       case "title":
@@ -60,7 +42,6 @@ export default class Tooltip extends React.Component {
         }
         break;
       case "bottom-center":
-        placeTipOnBottom = true;
         container = {
           alignItems: 'center',
           top: null,
@@ -75,13 +56,10 @@ export default class Tooltip extends React.Component {
           borderBottomColor: null,
           shadowOffset: {width: 0, height: 1}
         };
-        textContainer = {
-          shadowOffset: {width: 2, height: -2},
-        }
         break;
     }
 
-    return {container, tip, textContainer, placeTipOnBottom}
+    return {container, tip, textContainer}
   }
 
   renderGenericTooltip() {
@@ -94,6 +72,23 @@ export default class Tooltip extends React.Component {
           <Text style={[styles.text, customStyle.text]}>{this.props.text}</Text>
         </View>
         <View style={[styles.tip, calculatedStyles.tip, customStyle.tip]} />
+      </View>
+    );
+  }
+
+  renderImageEdit() {
+    return (
+      <View style={styles.imageEditContainer}>
+        <View style={styles.imageEditIconContainer}>
+          <Icon name='camera' style={styles.imageEditIconCamera} size={18} />
+          <Icon name='bullseye' style={styles.imageEditIconBullseye} size={18} />
+          <Icon name='hand-pointer-o' style={styles.imageEditIconPointer} size={30} />
+        </View>
+        <Text style={styles.imageEditText}>Tap an image to edit it</Text>
+        <RoundedButton
+          style={styles.imageEditButton}
+          textStyle={styles.imageEditButtonText}
+          onPress={this.props.onDismiss}>Ok, I got it</RoundedButton>
       </View>
     );
   }

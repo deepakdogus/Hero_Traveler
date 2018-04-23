@@ -18,6 +18,7 @@ import Loader from '../../Components/Loader'
 import ShadowButton from '../../Components/ShadowButton'
 import TabIcon from '../../Components/TabIcon'
 import RoundedButton from '../../Components/RoundedButton'
+import Tooltip from '../../Components/Tooltip'
 import NavBar from './NavBar'
 import styles from './4_CreateStoryDetailScreenStyles'
 import API from '../../Shared/Services/HeroAPI'
@@ -140,11 +141,7 @@ class CreateStoryDetailScreen extends React.Component {
     const {workingDraft} = this.props
     if (!workingDraft.locationInfo || !workingDraft.type) {
       this.setState({
-        showError: true,
-        error: {
-          message: "Please Fill Out Required Fields",
-          text: "You need to enter the activity type and the location for this story."
-        }
+        validationError: "Please add an activity type and location to continue"
       })
       return;
     }
@@ -203,6 +200,10 @@ class CreateStoryDetailScreen extends React.Component {
     this.setState({showError: false})
   }
 
+  _dismissTooltip = () => {
+    this.setState({validationError:null})
+  }
+
   saveDraft = (draft) => {
     this.props.update(
       draft.id,
@@ -230,7 +231,7 @@ class CreateStoryDetailScreen extends React.Component {
     this.props.updateWorkingDraft({travelTips: travelTips})
     NavActions.pop()
   }
-
+  
   isDraft() {
     return this.props.story.draft || false
   }
@@ -240,7 +241,7 @@ class CreateStoryDetailScreen extends React.Component {
       onDone: this._receiveCategories,
       tags: this.props.workingDraft.categories || this.state.categories,
       tagType: 'category'
-})
+    })
   }
 
   navToHashtags = () => {
@@ -306,7 +307,7 @@ class CreateStoryDetailScreen extends React.Component {
 
   render () {
     const {workingDraft, publishing} = this.props
-    const {isSavingCover, modalVisible} = this.state
+    const {isSavingCover, modalVisible, validationError} = this.state
 
     return (
       <View style={{flex: 1, position: 'relative'}}>
@@ -467,6 +468,15 @@ class CreateStoryDetailScreen extends React.Component {
             />
           </View>
         </View> }
+        {validationError && 
+          <Tooltip
+            onPress={this._touchError}
+            type={"standart"}
+            position={"right-nav-button"}
+            text={validationError}
+            onDismiss={this._dismissTooltip}
+          />
+        }
       </View>
     )
   }

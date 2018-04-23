@@ -24,6 +24,7 @@ import Loader from '../../Components/Loader'
 import styles from './TagScreenStyles'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTimeTooltips'
 import UserActions from '../../Shared/Redux/Entities/Users'
+import Tooltip from '../../Components/Tooltip'
 
 export const TAG_TYPE_CATEGORY = "category";
 export const TAG_TYPE_HASHTAG = "hashtag";
@@ -258,19 +259,6 @@ class TagScreen extends Component {
     return (this.props.tagType === TAG_TYPE_CATEGORY) ? TooltipTypes.STORY_CREATE_CATEGORIES : TooltipTypes.STORY_CREATE_HASHTAGS;
   }
 
-  renderTooltip() {
-    return (
-      <TouchableOpacity
-        style={styles.tooltipWrapper}
-        onPress={this._completeTooltip}
-      >
-        <View style={styles.tooltipTextView}>
-          <Text>Enter your own {this._getTagTypeText()} or pick from below</Text>
-        </View>
-      </TouchableOpacity>
-    )
-  }
-
   render () {
 
     const defaultTagsToShow = _.filter(this._getDefaultTags(), t => {
@@ -291,7 +279,6 @@ class TagScreen extends Component {
     const isInputFocused = this.state.isInputFocused
     return (
       <View style={styles.root}>
-        {showTooltip && this.renderTooltip()}
         <View style={{marginTop: Metrics.baseMargin, height: 40}}>
           <TouchableOpacity
             style={styles.doneBtn}
@@ -370,6 +357,19 @@ class TagScreen extends Component {
           }
           </ScrollView>
         </View>
+
+        {showTooltip &&
+          <Tooltip
+            type='standart'
+            text={'Enter your own ' + this._getTagTypeText() + ' or pick from below'}
+            style={{
+              container: {top: 100, left: 20,},
+              tip: {left: 20,},
+            }}
+            onDismiss={this._completeTooltip}
+          />
+        }
+        
       </View>
     )
   }

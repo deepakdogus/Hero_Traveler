@@ -3,6 +3,9 @@ import { Colors, Fonts } from '../../Shared/Themes/'
 import Metrics from '../../Themes/Metrics'
 
 export default StyleSheet.create({
+
+  /* Background */
+  
   backgroundOverlay: {
     position: 'absolute',
     top: 0, bottom: 0, left: 0, right: 0,
@@ -13,6 +16,8 @@ export default StyleSheet.create({
   backgroundOverlayDimmed: {
     backgroundColor: 'rgba(0,0,0,.7)',
   },
+
+  /* Generic Tooltips */
 
   container: {
     width: Metrics.screenWidth,
@@ -58,6 +63,8 @@ export default StyleSheet.create({
     fontSize: 15,
     padding: 10,
   },
+
+  /* Image Edit Only */
   
   imageEditContainer: {
     height: 200,

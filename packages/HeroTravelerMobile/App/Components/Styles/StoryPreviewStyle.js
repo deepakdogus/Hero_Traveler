@@ -23,7 +23,7 @@ export default StyleSheet.create({
   storyReadingTitle: {
     fontSize: 30,
     lineHeight: 33,
-    marginTop: 35,
+    marginTop: 15,
     marginBottom: 15,
   },
   storyReadingTitleWithDescription: {

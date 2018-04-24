@@ -270,14 +270,12 @@ export default StyleSheet.create({
     marginBottom: 12.5,
     marginTop: 12.5,
   },
-  editBioText: {
-    minHeight: profileEditHeight,
-  },
   bioWrapper: {
     borderTopColor: Colors.lightGrey,
     borderTopWidth: 1,
     padding: Metrics.section,
     backgroundColor: Colors.feedDividerGrey,
+    flex: 1,
     minHeight: Metrics.screenHeight - Metrics.navBarHeight - profileEditHeight,
   },
   badgeRow: {
@@ -299,5 +297,11 @@ export default StyleSheet.create({
   storyList: {
     height: Metrics.screenHeight - Metrics.tabBarHeight,
     marginBottom: Metrics.tabBarHeight + Metrics.baseMargin,
-  }
+  },
+  flexOne: {
+    flex: 1,
+  },
+  navbarStyle: {
+    paddingTop: 15,
+  },
 })

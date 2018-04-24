@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import VideoPlayer from '../../VideoPlayer'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { getVideoUrlBase } from "../../../Shared/Lib/getVideoUrl"
+import { getVideoUrlBase, isLocalMediaAsset} from "../../../Shared/Lib/getVideoUrl"
 import getRelativeHeight from "../../../Shared/Lib/getRelativeHeight"
 
 export default class DraftJsVideo extends Component {
@@ -17,7 +17,7 @@ export default class DraftJsVideo extends Component {
     const {url, isSelected, onPress, onDelete, style, sizeMetrics = undefined} = this.props
 
     let videoUrl
-    if (url.substring(0,7) === 'file://') videoUrl = url
+    if (isLocalMediaAsset(url)) videoUrl = url
     else videoUrl = `${getVideoUrlBase()}/${url}`
     const imageEditOverlay = (
       <View style={styles.assetEditOverlay}>

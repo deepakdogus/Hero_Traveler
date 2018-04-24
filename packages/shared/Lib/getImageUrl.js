@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import Env from '../../Config/Env'
-import {getVideoUrlBase} from './getVideoUrl'
+import {getVideoUrlBase, isLocalMediaAsset} from './getVideoUrl'
 import metrics from '../Themes/Metrics'
 
 function getImageUrlBase() {
@@ -112,10 +112,8 @@ const imageUrlParametersFactories = {
 export default function getImageUrl(image: object|string, type: string, options: object = {}): ?string {
   // special cases where image has not been fully synced
   if (!!image && (!!image.uri || !!image.secure_url)) return image.uri || image.secure_url
-  if (
-    typeof image === 'string' &&
-    (image.substring(0,7) === 'file://' || image.substring(0,6) === '/Users')
-  ) return image
+  // uncertain if this if ever gets hit but keeping just in case
+  if (isLocalMediaAsset(image)) return image
 
   const uri = getUri(image)
   if (!uri) {

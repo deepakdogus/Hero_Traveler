@@ -5,14 +5,17 @@ export function getVideoUrlBase() {
   return `https://res.cloudinary.com/${Env.cloudName}/video/upload`
 }
 
+export function isLocalMediaAsset(asset) {
+  return typeof asset === 'string'
+  && (asset.substring(0,7) === 'file://' || asset.substring(0,6) === '/Users')
+}
+
 export default function getVideoUrl(video: object, stream = true): ?string {
   // special cases where video has not been fully synced
-  if (video.uri || video.secure_url) return video.uri || video.secure_url
-  if (
-    typeof video === 'string' &&
-    (video.substring(0,7) === 'file://' || video.substring(0,6) === '/Users')
-  ) return video
 
+  if (video.uri || video.secure_url) return video.uri || video.secure_url
+  // uncertain if this if ever gets hit but keeping just in case
+  if (isLocalMediaAsset(video)) return video
 
   if (!_.has(video, 'original')) return undefined
   let url

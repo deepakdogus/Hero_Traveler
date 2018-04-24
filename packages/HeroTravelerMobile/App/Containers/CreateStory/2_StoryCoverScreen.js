@@ -30,7 +30,7 @@ import NavBar from './NavBar'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import getVideoUrl from '../../Shared/Lib/getVideoUrl'
 import ImageWrapper from '../../Components/ImageWrapper'
-import VideoPlayer from '../../Components/VideoPlayer'
+import VideoPlayer, {TouchlessPlayButton} from '../../Components/VideoPlayer'
 import pathAsFileObject from '../../Shared/Lib/pathAsFileObject'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTimeTooltips'
 import RoundedButton from '../../Components/RoundedButton'
@@ -625,7 +625,9 @@ class StoryCoverScreen extends Component {
         }
         {!this.hasNoCover() && !imageMenuOpen &&
           <TouchableWithoutFeedback onPress={this._toggleImageMenu}>
-            <View style={styles.coverHeight}/>
+            <View style={styles.imageMenuView}>
+              <TouchlessPlayButton />
+            </View>
           </TouchableWithoutFeedback>
         }
         {!this.hasNoCover() && imageMenuOpen &&

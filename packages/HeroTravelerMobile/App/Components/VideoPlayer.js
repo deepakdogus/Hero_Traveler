@@ -393,6 +393,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  videoBtnImgIcon: {
+    marginLeft: 4
+  },  
   playButtonContainer: {
     borderRadius: 30,
     width: 60,

@@ -2,6 +2,7 @@ import { NativeModules } from 'react-native'
 import RNFetchBlob from 'react-native-fetch-blob'
 
 import env from '../Config/Env'
+import {isLocalMediaAsset} from '../Shared/Lib/getVideoUrl'
 
 const VideoManager = NativeModules.VideoManager
 
@@ -18,7 +19,7 @@ async function uploadMediaFile(fileData, type){
   const uploadURL = getCloudinaryUploadUrl(type)
   const preset = type === 'image' ? env.imagePreset : env.videoPreset
   let dataUri = await VideoManager.fixFilePath(fileData.uri)
-  if (dataUri.startsWith('file://')) dataUri = decodeURIComponent(dataUri.substr(7))
+  if (isLocalMediaAsset(dataUri)) dataUri = decodeURIComponent(dataUri.substr(7))
   return RNFetchBlob.fetch(
     'POST',
     uploadURL,

@@ -22,7 +22,7 @@ import FlagModal from '../Components/FlagModal'
 import {styles, rendererStyles} from './Styles/StoryReadingScreenStyles'
 import VideoPlayer from '../Components/VideoPlayer'
 import Immutable from 'seamless-immutable'
-import {getVideoUrlBase} from '../Shared/Lib/getVideoUrl'
+import {getVideoUrlBase, isLocalMediaAsset} from '../Shared/Lib/getVideoUrl'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import getRelativeHeight from '../Shared/Lib/getRelativeHeight'
 import {displayLocationDetails} from '../Shared/Lib/locationHelpers'
@@ -89,9 +89,7 @@ const atomicHandler = (item: Object): any => {
       case 'video':
         const url = item.data.url
         let videoUrl = (item.data.HLSUrl) || `${getVideoUrlBase()}/${item.data.url}`
-        if (typeof url === 'string' && (url.substring(0,7) === 'file://' || url.substring(0,6) === '/Users')){
-          videoUrl = url
-        }
+        if (isLocalMediaAsset(url)) videoUrl = url
         return (
           <View key={item.key} style={styles.mediaViewWrapper}>
             <View style={[styles.mediaPlaceholder, {minHeight: height}]}>
@@ -323,7 +321,7 @@ class StoryReadingScreen extends React.Component {
                 atomicHandler={atomicHandler}
               />
             }
-            {!!this.props.story.hashtags && 
+            {!!this.props.story.hashtags &&
               this.renderHashtags()
             }
             {!!story.videoDescription &&

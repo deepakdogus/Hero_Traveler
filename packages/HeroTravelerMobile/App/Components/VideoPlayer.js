@@ -20,6 +20,19 @@ import Colors from '../Shared/Themes/Colors'
 const buttonLarge = 60
 const buttonSmall = 40
 const buttonTiny = 20
+
+export const TouchlessPlayButton = () => {
+  return (
+    <View style={styles.playButtonContainer}>
+      <Icon
+        name='play'
+        size={30}
+        color={Colors.snow}
+      />
+    </View>
+  )
+}
+
 const VideoButton = ({size, icon, onPress, style = {}, text}) => {
   let sizeUnits = buttonLarge
   if (size === 'small') sizeUnits = buttonSmall
@@ -376,6 +389,14 @@ const styles = StyleSheet.create({
   },
   videoBtnImg: {
     backgroundColor: Colors.windowTint,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  playButtonContainer: {
+    borderRadius: 30,
+    width: 60,
+    height: 60,
+    backgroundColor: 'rgba(0,0,0,.6)',
     alignItems: 'center',
     justifyContent: 'center',
   }

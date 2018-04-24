@@ -5,6 +5,7 @@ export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
     backgroundColor: Colors.backgroundDark,
+    paddingTop: Metrics.navBarHeight,
   },
   noStoriesWrapper: {
     flex: 1,
@@ -60,7 +61,9 @@ export default StyleSheet.create({
     color: Colors.snow,
   },
   navbarContainer: {
-    marginTop: 10,
+    position: 'absolute',
+    width: Metrics.screenWidth,
+    zIndex: 100,
   },
   navbarLeftIconStyle: {
     tintColor: Colors.navBarText

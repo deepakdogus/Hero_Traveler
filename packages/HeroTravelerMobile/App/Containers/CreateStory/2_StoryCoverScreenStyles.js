@@ -52,7 +52,7 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.montserrat,
     fontWeight: '600',
     lineHeight: 33,
-    marginTop: 25,
+    marginTop: 0,
     paddingTop: 0,
   },
   description: {

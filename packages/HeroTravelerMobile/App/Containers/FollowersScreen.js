@@ -106,7 +106,7 @@ class FollowersScreen extends React.Component {
                     style={selected ? styles.selectedFollowersButton : styles.followersButton}
                     textStyle={selected ? styles.selectedFollowersButtonText : styles.followersButtonText}
                     text={followingText}
-                    onPress={() => this.toggleFollow(u)}
+                    onPress={() => this.toggleFollow(user)}
                   />
                   }
                 </View>

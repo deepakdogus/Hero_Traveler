@@ -223,7 +223,7 @@ class ProfileView extends React.Component {
       !stories.length && !this.hasCompletedNoStoriesTooltip()
 
     return (
-      <View style={{flex: 1}}>
+      <View style={styles.flexOne}>
         {isEditing &&
           <NavBar
             title='Edit Profile'
@@ -231,28 +231,30 @@ class ProfileView extends React.Component {
             onLeft={this._onLeft}
             rightTitle='Save'
             onRight={this._onRight}
-            style={{paddingTop: 15}}
+            style={styles.navbarStyle}
           />
         }
 
         <View style={styles.gradientWrapper}>
           {isEditing &&
-            <View style={{flex: 1}}>
-              {this.renderProfileInfo()}
-              <View style={styles.bioWrapper}>
-                <Text style={styles.editBio}>Bio</Text>
-                <TextInput
-                  ref={this._bioRef}
-                  style={[styles.bioText, styles.editBioText]}
-                  multiline={true}
-                  editable={true}
-                  onChangeText={this._setBioText}
-                  value={this.state.bioText}
-                  maxLength={500}
-                  placeholder={'Tell us about yourself!'}
-                />
+            <ScrollView style={styles.flexOne}>
+              <View style={styles.flexOne}>
+                {this.renderProfileInfo()}
+                <View style={styles.bioWrapper}>
+                  <Text style={styles.editBio}>Bio</Text>
+                  <TextInput
+                    ref={this._bioRef}
+                    style={styles.bioText}
+                    multiline
+                    onChangeText={this._setBioText}
+                    value={this.state.bioText}
+                    maxLength={500}
+                    returnKeyType={'done'}
+                    placeholder='Tell us about yourself!'
+                  />
+                </View>
               </View>
-            </View>
+            </ScrollView>
           }
           {!isEditing &&
             <ProfileTabsAndStories
@@ -279,11 +281,11 @@ class ProfileView extends React.Component {
           />
         }
         {showTooltip &&
-        <Tooltip
-          position='bottom-center'
-          text={"Looks like you don't have any stories.\nPublish your first story now!"}
-          onDismiss={this._completeTooltip}
-        />
+          <Tooltip
+            position='bottom-center'
+            text={"Looks like you don't have any stories.\nPublish your first story now!"}
+            onDismiss={this._completeTooltip}
+          />
         }
       </View>
     )

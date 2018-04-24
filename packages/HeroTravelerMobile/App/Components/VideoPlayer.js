@@ -42,6 +42,7 @@ const VideoButton = ({size, icon, onPress, style = {}, text}) => {
         <Icon
           name={icon}
           size={sizeUnits / 2}
+          style={styles.videoBtnImgIcon}
           color={Colors.snow}
         />
         }
@@ -378,5 +379,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.windowTint,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  videoBtnImgIcon: {
+    marginLeft: 4
   }
 })

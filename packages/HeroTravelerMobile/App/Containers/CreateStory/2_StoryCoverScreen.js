@@ -626,7 +626,9 @@ class StoryCoverScreen extends Component {
         {!this.hasNoCover() && !imageMenuOpen &&
           <TouchableWithoutFeedback onPress={this._toggleImageMenu}>
             <View style={styles.imageMenuView}>
-              <TouchlessPlayButton />
+              {!this.hasNoVideo() &&
+                <TouchlessPlayButton />
+              }
             </View>
           </TouchableWithoutFeedback>
         }

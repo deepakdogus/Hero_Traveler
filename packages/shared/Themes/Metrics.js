@@ -38,15 +38,19 @@ const metrics = {
     },
     feed: {
       imageTypeHeight: 390,
-      videoTypeHeight: 282,
+      // videoTypeHeight: 282,
+      videoTypeHeight: platformSpecificMetrics.screenWidth * 9 / 16,
     },
   },
   feedCell: {
-    imageCellHeight: 543, // Should be imageTypeHeight + 66 + 87 (the heights of the top bar and bottom bar in feed)
-    videoCellHeight: 415, // Should be videoTypeHeight + 66 + 87
+    imageCellHeight: 390, // Should be imageTypeHeight
+    videoCellHeight: platformSpecificMetrics.screenWidth * 9 / 16, // Should be videoTypeHeight
+    padding: 68 + 90, // The heights of the top bar and bottom bar in feed
+    descriptionPadding: 34, // Only accomodates for a single line :/
     separator: 10,
   },
 }
+
 _.assign(metrics, platformSpecificMetrics)
 metrics.maxContentHeight = metrics.screenHeight - metrics.editorToolbarHeight - metrics.mainNavHeight - metrics.statusBarHeight - 90
 

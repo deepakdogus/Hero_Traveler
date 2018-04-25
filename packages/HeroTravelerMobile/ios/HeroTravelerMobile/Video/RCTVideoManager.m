@@ -22,13 +22,22 @@ RCT_EXPORT_MODULE();
 RCT_EXPORT_METHOD(getWidthAndHeight:(NSDictionary *)data
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
+  NSNumber* heightObj = [data objectForKey:@"height"];
+  NSNumber* widthObj = [data objectForKey:@"width"];
+  
+  if ([widthObj isKindOfClass:[NSNumber class]] && [heightObj isKindOfClass:[NSNumber class]])
+  {
+    resolve(@{@"width": widthObj, @"height": heightObj});
+    return;
+  }
+  
   NSString* uriString = [data objectForKey:@"uri"];
   if (uriString.length <= 0)
   {
     reject(RCTErrorDomain, @"No file URI in request data", [NSError errorWithDomain:RCTErrorDomain code:1000 userInfo:@{}]);
     return;
   }
-  NSURL* uri = [NSURL URLWithString:uriString];
+  NSURL* uri = [uriString isKindOfClass:[NSURL class]] ? (NSURL*)uriString : [NSURL URLWithString:uriString];
   if (!uri)
   {
     reject(RCTErrorDomain, @"No file URI in request data", [NSError errorWithDomain:RCTErrorDomain code:1000 userInfo:@{}]);

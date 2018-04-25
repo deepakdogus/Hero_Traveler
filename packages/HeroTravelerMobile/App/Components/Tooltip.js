@@ -14,7 +14,7 @@ export default class Tooltip extends React.Component {
     style: PropTypes.object,
     // Some predefined positions to cover most of the scenarios.
     // Only available for the "default" type.
-    position: PropTypes.oneOf(["title", "top-right"]),
+    position: PropTypes.oneOf(["title", "top-right", "bottom-center"]),
     dimBackground: PropTypes.bool,
     text: PropTypes.string,
   }

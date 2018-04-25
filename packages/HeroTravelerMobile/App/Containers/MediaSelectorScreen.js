@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import {
   Text,
   View,
-  TouchableOpacity
+  TouchableOpacity,
+  NativeModules
 } from 'react-native'
 import { connect } from 'react-redux'
 import ImagePicker from 'react-native-image-picker'
@@ -18,6 +19,8 @@ import styles from './Styles/MediaSelectorScreenStyles'
 import isTooltipComplete, {Types as TooltipTypes} from '../Shared/Lib/firstTimeTooltips'
 import UserActions from '../Shared/Redux/Entities/Users'
 import detailsStyles from './CreateStory/4_CreateStoryDetailScreenStyles'
+
+const VideoManager = NativeModules.VideoManager
 
 class MediaSelectorScreen extends React.Component {
 
@@ -117,6 +120,7 @@ class MediaSelectorScreen extends React.Component {
     this.setState({media: null})
   }
 
+  // Response from picking from the library
   _handleMediaSelector = (data) => {
     if (data.didCancel) {
       this.setState({captureOpen: true})
@@ -128,20 +132,40 @@ class MediaSelectorScreen extends React.Component {
       return
     }
 
+    VideoManager.getWidthAndHeight(data)
+      .then(response => {
+        this.setState({
+          mediaCaptured: false,
+          media: data.uri,
+          mediaMetrics: {
+            height: response.height,
+            width: response.width,
+          }
+        })
+      })
+      .catch(err => {
+        // Failing to get width/height is rare, and shouldn't stop being able to upload it
+        //   Only a few UI elements would look wrong
+        this.setState({
+          mediaCaptured: false,
+          media: data.uri,
+          mediaMetrics: {
+          }
+        })
+      })
+
+  }
+
+  // Handle the response from taking a photo or video
+  _handleCaptureMedia = (data) => {
+    
     this.setState({
-      mediaCaptured: false,
-      media: data.uri,
+      mediaCaptured: true,
+      media: "file://" + data.path,
       mediaMetrics: {
         height: data.height,
         width: data.width,
-      }
-    })
-  }
-
-  _handleCaptureMedia = (data) => {
-    this.setState({
-      mediaCaptured: true,
-      media: "file://" + data.path
+      },
     })
   }
 

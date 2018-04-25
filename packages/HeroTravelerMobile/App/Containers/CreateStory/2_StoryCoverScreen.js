@@ -25,10 +25,11 @@ import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import ShadowButton from '../../Components/ShadowButton'
 import Loader from '../../Components/Loader'
 import {Colors, Metrics} from '../../Shared/Themes'
-import styles, {customStyles, modalWrapperStyles, coverHeight} from './2_StoryCoverScreenStyles'
+import styles, {customStyles, modalWrapperStyles} from './2_StoryCoverScreenStyles'
 import NavBar from './NavBar'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import getVideoUrl from '../../Shared/Lib/getVideoUrl'
+import getRelativeHeight from '../../Shared/Lib/getRelativeHeight'
 import ImageWrapper from '../../Components/ImageWrapper'
 import VideoPlayer from '../../Components/VideoPlayer'
 import pathAsFileObject from '../../Shared/Lib/pathAsFileObject'
@@ -40,7 +41,7 @@ import Modal from '../../Components/Modal'
 
 import NativeEditor from '../../Components/NativeEditor/Editor'
 import Toolbar from '../../Components/NativeEditor/Toolbar'
-import {KeyboardTrackingView} from 'react-native-keyboard-tracking-view';
+import {KeyboardTrackingView} from 'react-native-keyboard-tracking-view'
 import { ProcessingManager } from 'react-native-video-processing'
 
 const api = API.create()
@@ -133,6 +134,7 @@ class StoryCoverScreen extends Component {
       activeModal: undefined,
       toolbarDisplay: false,
       contentTouched: false,
+      coverMetrics: {},
     }
   }
 
@@ -602,7 +604,7 @@ class StoryCoverScreen extends Component {
   }
 
   jumpToTitle = () => {
-    this.scrollViewRef.scrollTo({x:0, y: coverHeight - 30, amimated: true})
+    this.scrollViewRef.scrollTo({x:0, y: this._getCoverHeight() - 30, amimated: true})
   }
 
   renderContent () {
@@ -627,7 +629,7 @@ class StoryCoverScreen extends Component {
         }
         {!this.hasNoCover() && !imageMenuOpen &&
           <TouchableWithoutFeedback onPress={this._toggleImageMenu}>
-            <View style={styles.coverHeight}/>
+            <View style={this._getCoverStyle()}/>
           </TouchableWithoutFeedback>
         }
         {!this.hasNoCover() && imageMenuOpen &&
@@ -819,6 +821,26 @@ class StoryCoverScreen extends Component {
     return !this.props.workingDraft || !this.props.workingDraft.id
   }
 
+  _getCoverHeight() {
+    if (!this.hasNoPhoto()) {
+      return Metrics.storyCover.fullScreen.height
+    }
+    if (!this.hasNoVideo() && this.state.coverMetrics.height && this.state.coverMetrics.width) {
+      return Math.min(
+        Metrics.storyCover.fullScreen.height,
+        getRelativeHeight(Metrics.screenWidth, this.state.coverMetrics)
+      )
+    }
+
+    return Metrics.storyCover.fullScreen.height
+  }
+
+  _getCoverStyle () {
+    return {
+      height: this._getCoverHeight(),
+    }
+  }
+
   render () {
     const {error} = this.state
     const {
@@ -860,7 +882,7 @@ class StoryCoverScreen extends Component {
             rightTextStyle={styles.navBarRightTextStyle}
             style={styles.navBarStyle}
           />
-            <View style={styles.coverHeight}>
+          <View style={this._getCoverStyle()}>
               {error &&
                 <ShadowButton
                   style={styles.errorButton}
@@ -977,6 +999,7 @@ class StoryCoverScreen extends Component {
       this.setState({
         file,
         isScrollDown: true,
+        coverMetrics,
       })
       this.props.updateWorkingDraft(draftUpdates)
       NavActions.pop()

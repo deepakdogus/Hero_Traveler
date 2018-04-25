@@ -7,6 +7,7 @@ import {
 } from 'react-native'
 import {withHandlers} from 'recompose'
 
+import {Actions as NavActions} from 'react-native-router-flux'
 import styles, { storyPreviewHeight } from './Styles/ProfileViewStyles'
 import { Colors, Metrics } from '../Shared/Themes'
 import StoryList from '../Containers/ConnectedStoryList'
@@ -54,6 +55,14 @@ export default class ProfileTabsAndStories extends Component {
     error: PropTypes.object,
   }
 
+  _pressUser = (userId) => {
+    if (this.props.user.id === userId) {
+      NavActions.profile({type: 'jump'})
+    } else {
+      NavActions.readOnlyProfile({userId})
+    }
+  }
+
   renderTabs(){
     const {editable, tabTypes, selectedTab, selectTab} = this.props
     if (editable) return (
@@ -97,6 +106,7 @@ export default class ProfileTabsAndStories extends Component {
         story={story}
         userId={sessionUserId}
         height={storyPreviewHeight}
+        onPressUser={this._pressUser}
         autoPlayVideo
         allowVideoPlay
         renderLocation={location}

@@ -141,11 +141,17 @@ class MediaSelectorScreen extends React.Component {
       return
     }
 
+    const updateState = {
+      mediaCaptured: false,
+      media: data.uri,
+      mediaMetrics: {
+      }
+    }
+
     VideoManager.getWidthAndHeight(data)
       .then(response => {
         this.setState({
-          mediaCaptured: false,
-          media: data.uri,
+          ...updateState,
           mediaMetrics: {
             height: response.height,
             width: response.width,
@@ -155,12 +161,7 @@ class MediaSelectorScreen extends React.Component {
       .catch(err => {
         // Failing to get width/height is rare, and shouldn't stop being able to upload it
         //   Only a few UI elements would look wrong
-        this.setState({
-          mediaCaptured: false,
-          media: data.uri,
-          mediaMetrics: {
-          }
-        })
+        this.setState(updateState)
       })
 
   }

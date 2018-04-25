@@ -193,7 +193,7 @@ export default class StoryCover extends Component {
     const videoThumbnailOptions = {
       video: true,
       width: 'screen',
-      height: Metrics.storyCover.fullScreen.height,
+      height: this.props.isFeed ? Metrics.storyCover.feed.videoTypeHeight : Metrics.storyCover.fullScreen.height,
     }
 
     const videoImageUrl = getImageUrl(this.props.cover, 'optimized', videoThumbnailOptions)
@@ -328,7 +328,7 @@ const styles = StyleSheet.create({
     height: 100,
     top: '50%',
     left: '50%',
-    marginTop: -40,
+    marginTop: -30,
     marginLeft: -30,
   },
   readPlayButton: {

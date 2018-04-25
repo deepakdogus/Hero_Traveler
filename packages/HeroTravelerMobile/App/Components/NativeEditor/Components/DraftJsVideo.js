@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native'
-import VideoPlayer from '../../VideoPlayer'
+import VideoPlayer, {TouchlessPlayButton} from '../../VideoPlayer'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { getVideoUrlBase } from "../../../Shared/Lib/getVideoUrl"
+import { getVideoUrlBase, isLocalMediaAsset} from "../../../Shared/Lib/getVideoUrl"
 import getRelativeHeight from "../../../Shared/Lib/getRelativeHeight"
 
 export default class DraftJsVideo extends Component {
@@ -17,7 +17,7 @@ export default class DraftJsVideo extends Component {
     const {url, isSelected, onPress, onDelete, style, sizeMetrics = undefined} = this.props
 
     let videoUrl
-    if (url.substring(0,7) === 'file://') videoUrl = url
+    if (isLocalMediaAsset(url)) videoUrl = url
     else videoUrl = `${getVideoUrlBase()}/${url}`
     const imageEditOverlay = (
       <View style={styles.assetEditOverlay}>
@@ -26,6 +26,12 @@ export default class DraftJsVideo extends Component {
         </TouchableOpacity>
       </View>
     )
+    const touchlessPlayButtonOverlay = (
+      <View style={[styles.assetEditOverlay, styles.transparentBackground]}>
+        <TouchlessPlayButton />
+      </View>
+    )
+
     const height = ((sizeMetrics) && getRelativeHeight(Metrics.screenWidth, sizeMetrics)) || null;
 
     return (
@@ -44,6 +50,7 @@ export default class DraftJsVideo extends Component {
             videoFillSpace={true}
             resizeMode='cover'
           />
+          {!isSelected && touchlessPlayButtonOverlay}
           {isSelected && imageEditOverlay}
         </View>
       </TouchableWithoutFeedback>
@@ -66,5 +73,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  transparentBackground: {
+    backgroundColor: 'rgba(0,0,0,0)',
   },
 })

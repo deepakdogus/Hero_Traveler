@@ -50,7 +50,7 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.montserrat,
     fontWeight: '600',
     lineHeight: 33,
-    marginTop: 25,
+    marginTop: 15,
     paddingTop: 0,
   },
   description: {
@@ -65,7 +65,7 @@ export default StyleSheet.create({
   },
   coverCaption: {
     marginTop: 10,
-    marginBottom: 15,
+    marginBottom: 0,
     minHeight: 20,
   },
   divider: {

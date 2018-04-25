@@ -133,7 +133,7 @@ export default class ProfileTabsAndStories extends Component {
     const {renderProfileInfo, error} = this.props
     let errorText = _.get(error, 'message', 'Unable to fully load user data. Please try again.');
     return (
-      <View>
+      <View style={styles.topAreaWrapper}>
         {renderProfileInfo()}
         {!!error &&
           <Text style={styles.errorText}>{errorText}</Text>
@@ -148,7 +148,7 @@ export default class ProfileTabsAndStories extends Component {
     // change.
     const {user, editable} = this.props
     const hasBadge = user.role === 'contributor' || user.role === 'founding member'
-    let height = editable ? 207 : 189
+    let height = editable ? 237 : 219
     height += hasBadge ? 21 : 0
     height += this.props.error ? 27 : 0
     return height

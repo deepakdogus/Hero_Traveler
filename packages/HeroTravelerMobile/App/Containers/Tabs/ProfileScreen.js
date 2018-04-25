@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import React from 'react'
+import { NativeModules } from 'react-native'
 import { connect } from 'react-redux'
 import UserActions, {getByBookmarks} from '../../Shared/Redux/Entities/Users'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
@@ -7,6 +8,7 @@ import StoryActions, {getByUser, getUserFetchStatus, getBookmarksFetchStatus} fr
 import ProfileView, {TabTypes} from '../../Components/ProfileView'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 
+const VideoManager = NativeModules.VideoManager
 
 class ProfileScreen extends React.Component {
 
@@ -66,6 +68,8 @@ class ProfileScreen extends React.Component {
     if (!user) {
       return null
     }
+
+    VideoManager.cleanDrafts(draftsById)
 
     return (
       <ProfileView

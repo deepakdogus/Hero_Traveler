@@ -11,6 +11,7 @@ import {
   Alert,
   TextInput,
   ScrollView,
+  NativeModules,
 } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
@@ -18,7 +19,6 @@ import R from 'ramda'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Immutable from 'seamless-immutable'
 
-import API from '../../Shared/Services/HeroAPI'
 import {styles as StoryReadingScreenStyles} from '../Styles/StoryReadingScreenStyles'
 import StoryActions from '../../Shared/Redux/Entities/Stories'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
@@ -31,20 +31,21 @@ import getImageUrl from '../../Shared/Lib/getImageUrl'
 import getVideoUrl from '../../Shared/Lib/getVideoUrl'
 import getRelativeHeight from '../../Shared/Lib/getRelativeHeight'
 import ImageWrapper from '../../Components/ImageWrapper'
-import VideoPlayer from '../../Components/VideoPlayer'
+import VideoPlayer, {TouchlessPlayButton} from '../../Components/VideoPlayer'
 import pathAsFileObject from '../../Shared/Lib/pathAsFileObject'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTimeTooltips'
 import RoundedButton from '../../Components/RoundedButton'
 import UserActions from '../../Shared/Redux/Entities/Users'
 import TabIcon from '../../Components/TabIcon'
 import Modal from '../../Components/Modal'
+import Tooltip from '../../Components/Tooltip'
 
 import NativeEditor from '../../Components/NativeEditor/Editor'
 import Toolbar from '../../Components/NativeEditor/Toolbar'
 import {KeyboardTrackingView} from 'react-native-keyboard-tracking-view'
 import { ProcessingManager } from 'react-native-video-processing'
 
-const api = API.create()
+const VideoManager = NativeModules.VideoManager
 
 const MediaTypes = {
   video: 'video',
@@ -75,16 +76,17 @@ const extractUploadData = (uploadData) => {
   return [url, height, width]
 }
 
-async function trimVideo(videoFile, callback, _this){
+async function trimVideo(videoFile, callback, storyId, _this){
   try {
     let newSource = videoFile
-    const { duration } = await ProcessingManager.getVideoInfo(videoFile)
+    const { duration } = await ProcessingManager.getVideoInfo(newSource)
     if (duration > 60) {
-      newSource = await ProcessingManager.trim(videoFile, { startTime: 0, endTime: 60 })
+      newSource = await ProcessingManager.trim(newSource, { startTime: 0, endTime: 60 })
     }
+    newSource = await VideoManager.moveVideo(newSource, storyId)
     callback(newSource)
   } catch(e) {
-      console.log('Issue trimming video')
+      console.log(`Issue trimming video ${e}`)
       _this.setState({error: 'There\'s an issue with the video you selected. Please try another.'})
       NavActions.pop()
       // jump to top to reveal error message
@@ -136,10 +138,6 @@ class StoryCoverScreen extends Component {
       contentTouched: false,
       coverMetrics: {},
     }
-  }
-
-  componentWillMount() {
-    api.setAuth(this.props.accessToken.value)
   }
 
   isUploading() {
@@ -306,7 +304,7 @@ class StoryCoverScreen extends Component {
   _onLeftYes = () => {
     if (!this.isValid()) {
       this.setState({
-        error: 'Please add a cover and a title to continue',
+        validationError: 'Please add a cover and title to continue',
         activeModal: undefined,
       })
     } else {
@@ -385,7 +383,7 @@ class StoryCoverScreen extends Component {
     const title = 'Save Progess'
     const message = 'Do you want to save your progress?'
     if (!this.isValid()) {
-      this.setState({error: 'Please add a cover and a title to continue'})
+      this.setState({validationError: 'Please add a cover and title to continue'})
       return
     }
     Alert.alert(
@@ -395,7 +393,7 @@ class StoryCoverScreen extends Component {
         text: 'Yes',
         onPress: () => {
           if (!this.isValid()) {
-            this.setState({error: 'Please add a cover and a title to save'})
+            this.setState({validationError: 'Please add a cover and title to save'})
           } else {
             this.saveStory()
           }
@@ -450,7 +448,7 @@ class StoryCoverScreen extends Component {
         })
     }
     if (!this.isValid()) {
-      this.setState({error: 'Please add a cover and a title to continue'})
+      this.setState({validationError: 'Please add a cover and title to continue'})
       return
     }
     if ((hasImageSelected || hasVideoSelected) && (hasVideoChanged || hasImageChanged) && !this.state.file) {
@@ -629,7 +627,9 @@ class StoryCoverScreen extends Component {
         }
         {!this.hasNoCover() && !imageMenuOpen &&
           <TouchableWithoutFeedback onPress={this._toggleImageMenu}>
-            <View style={this._getCoverStyle()}/>
+            <View style={styles.imageMenuView}>
+              <TouchlessPlayButton />
+            </View>
           </TouchableWithoutFeedback>
         }
         {!this.hasNoCover() && imageMenuOpen &&
@@ -651,64 +651,12 @@ class StoryCoverScreen extends Component {
     )
   }
 
-  _completeTooltip = () => {
+  _completeIntroTooltip = () => {
     const tooltips = this.props.user.introTooltips.concat({
       name: TooltipTypes.STORY_PHOTO_EDIT,
       seen: true,
     })
     this.props.completeTooltip(tooltips)
-  }
-
-  renderTooltip() {
-    return (
-      <TouchableOpacity
-        style={{
-          position: 'absolute',
-          top: 0,
-          bottom: 0,
-          left: 0,
-          right: 0,
-          backgroundColor: 'rgba(0,0,0,.4)',
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-        onPress={this._completeTooltip}
-      >
-          <View style={{
-            height: 200,
-            width: 200,
-            padding: 20,
-            borderRadius: 20,
-            backgroundColor: 'white',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            shadowColor: 'black',
-            shadowOpacity: .2,
-            shadowRadius: 30
-          }}>
-          <View style={{
-            height: 50,
-            width: 120,
-            justifyContent: 'center',
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}>
-            <Icon name='camera' size={18} />
-          </View>
-            <Icon name='bullseye' style={{marginBottom: -10}} size={18} />
-            <Icon name='hand-pointer-o' style={{backgroundColor: 'transparent', marginRight: -8}} size={30} />
-            <Text style={{marginTop: 10}}>Tap an image to edit it</Text>
-            <RoundedButton
-              style={{
-                height: 30,
-                borderRadius: 10,
-                paddingHorizontal: 10
-              }} onPress={this._completeTooltip}>Ok, I got it</RoundedButton>
-          </View>
-
-      </TouchableOpacity>
-    )
   }
 
   handlePressAddImage = () => {
@@ -751,7 +699,7 @@ class StoryCoverScreen extends Component {
       this.editor.insertVideo(newSource)
       NavActions.pop()
     }
-    trimVideo(data, callback, this)
+    trimVideo(data, callback, this.props.workingDraft.id, this)
   }
 
   setHasFocus = (toolbarDisplay) => {
@@ -842,14 +790,14 @@ class StoryCoverScreen extends Component {
   }
 
   render () {
-    const {error} = this.state
+    const {error, validationError} = this.state
     const {
       title, coverCaption, description,
       coverImage, coverVideo
     } = this.props.workingDraft
-    let showTooltip = false;
+    let showIntroTooltip = false;
     if (this.props.user && this.state.file) {
-      showTooltip = !isTooltipComplete(
+      showIntroTooltip = !isTooltipComplete(
         TooltipTypes.STORY_PHOTO_EDIT,
         this.props.user.introTooltips
       )
@@ -935,7 +883,13 @@ class StoryCoverScreen extends Component {
             <View style={styles.editorWrapper}>
               {this.renderEditor()}
             </View>
-          {showTooltip && this.renderTooltip()}
+          {showIntroTooltip &&
+          <Tooltip
+            type='image-edit'
+            onDismiss={this._completeIntroTooltip}
+            dimBackground={true}
+          />
+        }
           {<View style={styles.toolbarAvoiding}></View>}
         </ScrollView>
         {this.editor &&
@@ -977,8 +931,20 @@ class StoryCoverScreen extends Component {
             textStyle={styles.loaderText}
             tintColor='rgba(0,0,0,.9)' />
         }
+        {validationError &&
+          <Tooltip
+            onPress={this._touchError}
+            position={"title"}
+            text={validationError}
+            onDismiss={this._dismissTooltip}
+          />
+        }
       </View>
     )
+  }
+
+  _dismissTooltip = () => {
+    this.setState({validationError: null})
   }
 
   _handleSelectCover = (path, isPhotoType, coverMetrics = {}) => {
@@ -1005,7 +971,7 @@ class StoryCoverScreen extends Component {
       NavActions.pop()
     }
 
-    trimVideo(file.uri, callback, this)
+    trimVideo(file.uri, callback, this.props.workingDraft.id, this)
   }
 }
 

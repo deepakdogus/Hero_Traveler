@@ -17,6 +17,7 @@ import pathAsFileObject from '../Shared/Lib/pathAsFileObject'
 import ProfileUserInfo from './ProfileUserInfo'
 import ProfileTabsAndStories from './ProfileTabsAndStories'
 import ShadowButton from './ShadowButton'
+import Tooltip from './Tooltip'
 
 // @TODO UserActions shouldn't be in a component
 import UserActions from '../Shared/Redux/Entities/Users'
@@ -150,50 +151,6 @@ class ProfileView extends React.Component {
     this.props.completeTooltip(tooltips)
   }
 
-  renderTooltip() {
-    return (
-      <TouchableOpacity
-        style={{
-          position: 'absolute',
-          top: 470,
-          bottom: 0,
-          left: 0,
-          right: 0,
-          backgroundColor: 'transparent',
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-        onPress={this._completeTooltip}
-      >
-          <View style={{
-            height: 80,
-            width: 300,
-            padding: 10,
-            borderRadius: 5,
-            backgroundColor: 'white',
-            alignItems: 'center',
-            shadowColor: 'black',
-            shadowOpacity: .2,
-            shadowRadius: 30
-          }}>
-            <Text style={{marginTop: 10, textAlign: 'center'}}>Looks like you don't have any stories.{"\n"}  Publish your first story now!</Text>
-          </View>
-          <View style={{
-            height: 0,
-            width: 0,
-            borderLeftWidth: 7,
-            borderLeftColor: 'transparent',
-            borderRightWidth: 7,
-            borderRightColor: 'transparent',
-            borderTopWidth: 10,
-            borderTopColor: 'white',
-          }}>
-          </View>
-      </TouchableOpacity>
-    )
-  }
-
   selectTab = (tab) => {
     if (this.state.selectedTab !== tab) {
       this.setState({selectedTab: tab}, () => {
@@ -266,7 +223,7 @@ class ProfileView extends React.Component {
       !stories.length && !this.hasCompletedNoStoriesTooltip()
 
     return (
-      <View style={{flex: 1}}>
+      <View style={styles.flexOne}>
         {isEditing &&
           <NavBar
             title='Edit Profile'
@@ -274,28 +231,30 @@ class ProfileView extends React.Component {
             onLeft={this._onLeft}
             rightTitle='Save'
             onRight={this._onRight}
-            style={{paddingTop: 15}}
+            style={styles.navbarStyle}
           />
         }
 
         <View style={styles.gradientWrapper}>
           {isEditing &&
-            <View style={{flex: 1}}>
-              {this.renderProfileInfo()}
-              <View style={styles.bioWrapper}>
-                <Text style={styles.editBio}>Bio</Text>
-                <TextInput
-                  ref={this._bioRef}
-                  style={[styles.bioText, styles.editBioText]}
-                  multiline={true}
-                  editable={true}
-                  onChangeText={this._setBioText}
-                  value={this.state.bioText}
-                  maxLength={500}
-                  placeholder={'Tell us about yourself!'}
-                />
+            <ScrollView style={styles.flexOne}>
+              <View style={styles.flexOne}>
+                {this.renderProfileInfo()}
+                <View style={styles.bioWrapper}>
+                  <Text style={styles.editBio}>Bio</Text>
+                  <TextInput
+                    ref={this._bioRef}
+                    style={styles.bioText}
+                    multiline
+                    onChangeText={this._setBioText}
+                    value={this.state.bioText}
+                    maxLength={500}
+                    returnKeyType={'done'}
+                    placeholder='Tell us about yourself!'
+                  />
+                </View>
               </View>
-            </View>
+            </ScrollView>
           }
           {!isEditing &&
             <ProfileTabsAndStories
@@ -321,7 +280,13 @@ class ProfileView extends React.Component {
             text={this.state.error}
           />
         }
-        {showTooltip && this.renderTooltip()}
+        {showTooltip &&
+          <Tooltip
+            position='bottom-center'
+            text={"Looks like you don't have any stories.\nPublish your first story now!"}
+            onDismiss={this._completeTooltip}
+          />
+        }
       </View>
     )
   }

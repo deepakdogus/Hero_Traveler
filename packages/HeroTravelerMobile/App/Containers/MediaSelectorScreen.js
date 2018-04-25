@@ -19,6 +19,7 @@ import styles from './Styles/MediaSelectorScreenStyles'
 import isTooltipComplete, {Types as TooltipTypes} from '../Shared/Lib/firstTimeTooltips'
 import UserActions from '../Shared/Redux/Entities/Users'
 import detailsStyles from './CreateStory/4_CreateStoryDetailScreenStyles'
+import Tooltip from '../Components/Tooltip'
 
 const VideoManager = NativeModules.VideoManager
 
@@ -71,6 +72,14 @@ class MediaSelectorScreen extends React.Component {
   }
 
   renderNextTooltip() {
+    return (
+      <Tooltip 
+        text='Tap to continue'
+        position='right-nav-button'
+        onDismiss={this._completeNextTooltip}
+      />
+    );
+
     return (
       <TouchableOpacity
         style={{

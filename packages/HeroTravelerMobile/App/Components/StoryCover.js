@@ -72,7 +72,9 @@ export default class StoryCover extends Component {
           width: Metrics.screenWidth,
           height: Math.min(
             Metrics.storyCover.fullScreen.height,
-            getRelativeHeight(Metrics.screenWidth, this.props.cover.original.meta)
+            this.props.cover.original
+              ? getRelativeHeight(Metrics.screenWidth, this.props.cover.original.meta)
+              : Metrics.storyCover.fullScreen.height,
           ),
         }
       }
@@ -196,12 +198,41 @@ export default class StoryCover extends Component {
 
     const videoImageUrl = getImageUrl(this.props.cover, 'optimized', videoThumbnailOptions)
 
+    let videoPath = getVideoUrl(this.props.cover)
+    let nonStreamingVideoPath = getVideoUrl(this.props.cover, false)
+
+    // If videoPath is a file url, then we do not need preview image or stream url
+    if (this.props.isFeed && videoPath.startsWith("file://")) {
+      return (
+        <TouchableWithoutFeedback
+          style={{flex: 1}}
+          onPress={this._onPress}
+        >
+          <View style={this._getWidthHeight(true)}>
+            <VideoPlayer
+              areInRenderLocation={this.props.areInRenderLocation}
+              path={videoPath}
+              originalPath={nonStreamingVideoPath}
+              imgUrl={videoImageUrl}
+              ref={this._makeRef}
+              allowVideoPlay={this.props.allowVideoPlay && this.props.autoPlayVideo}
+              shouldEnableAutoplay={this.props.shouldEnableAutoplay}
+              autoPlayVideo={false}
+              showPlayButton={false}
+              onIsPlayingChange={this._setIsPlaying}
+              onMuteChange={this._changeMute}
+              isMuted={this.props.isFeed}
+              showControls={false}
+              resizeMode='cover'
+            />
+          </View>
+        </TouchableWithoutFeedback>
+      )
+    }
+
     if (this.props.isFeed) {
       return this.renderImageWithUrl(true, videoImageUrl)
     }
-
-    let videoPath = getVideoUrl(this.props.cover)
-    let nonStreamingVideoPath = getVideoUrl(this.props.cover, false)
 
     return (
       <View style={this._getWidthHeight(true)}>
@@ -218,6 +249,7 @@ export default class StoryCover extends Component {
           onIsPlayingChange={this._setIsPlaying}
           onMuteChange={this._changeMute}
           isMuted={this.props.isFeed}
+          showControls={true}
           resizeMode='cover'
         />
       </View>

@@ -118,15 +118,21 @@ export default class StoryList extends React.Component {
     }
 
     const storyInfos = stories.map((story) => {
+      let totalPadding = Metrics.feedCell.padding;
+
+      if (story && story.description) {
+        totalPadding += Metrics.feedCell.descriptionPadding;
+      }
+
       if (story && story.coverImage) {
         return {
           headerImage: getImageUrl(story.coverImage, 'optimized', imageOptions),
-          height: Metrics.feedCell.imageCellHeight,
+          height: Metrics.feedCell.imageCellHeight + totalPadding,
         }
       } else if (story && story.coverVideo) {
         return {
-          headerImage: getImageUrl(story.coverVideo, 'optimized', videoOptions),
-          height: Metrics.feedCell.videoCellHeight,
+          headerImage: getImageUrl(story.coverVideo, 'optimized', videoOptions, story.cover),
+          height: Metrics.feedCell.videoCellHeight + totalPadding,
         }
       }
 

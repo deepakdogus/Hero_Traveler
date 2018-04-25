@@ -31,7 +31,6 @@ export default StyleSheet.create({
   },
   textContainer: {
     maxWidth: Metrics.screenWidth * .75,
-    textAlign: 'center',
     borderRadius: 5,
     backgroundColor: 'white',
     alignItems: 'center',

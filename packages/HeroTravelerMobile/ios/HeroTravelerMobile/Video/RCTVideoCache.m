@@ -9,6 +9,7 @@
 #import "RCTVideoCache.h"
 #import <AVFoundation/AVFoundation.h>
 #import "RCTVideo.h"
+#import "RCTVideoManager.h"
 
 #define VIDEO_FILE @"video.mp4"
 #define DATE_LAST_OPENED_FILE @"lastOpened"
@@ -178,7 +179,7 @@
 
   item = [self createStreamingAsset:assetKey url:url];
 
-  if (originalUrl.length > 0)
+  if (originalUrl.length > 0 && [originalUrl hasPrefix:@"http"])
   {
     VideoDownloadItem* download = [[VideoDownloadItem alloc] initWithAssetKey:assetKey downloadUrl:[NSURL URLWithString:originalUrl]];
     download.delegate = self;
@@ -206,6 +207,17 @@
 
 - (VideoCacheItem*) downloadedAsset:(NSString*) assetKey streamUrl:(NSString*)streamUrl
 {
+  if ([streamUrl hasPrefix:@"file"])
+  {
+    streamUrl = [RCTVideoManager fixFilePath:streamUrl];
+    NSURL* fileLocation = [NSURL URLWithString:streamUrl];
+    VideoCacheItem* cacheItem = [[VideoCacheItem alloc] initWithAssetKey:assetKey cachedLocation:fileLocation streamLocation:streamUrl];
+    NSMutableArray* mLoadedVideos = [loadedVideos mutableCopy];
+    [mLoadedVideos addObject:cacheItem];
+    loadedVideos = [NSArray arrayWithArray:mLoadedVideos];
+    return cacheItem;
+  }
+  
   // Check local cache if video has been previously downloaded
   if ([currentlyDownloadedFiles containsObject:assetKey])
   {

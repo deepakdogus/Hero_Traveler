@@ -9,6 +9,7 @@
 #import "RHScrollEvent.h"
 #import <SDWebImage/SDWebImageDownloader.h>
 #import "RHNativeFeedBackingView.h"
+#import "RCTVideo.h"
 
 @interface RHDisposable : NSObject
 
@@ -488,8 +489,31 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   {
     if ([view isKindOfClass:[RHNativeFeedItem class]])
     {
-      view.hidden = view.cellNum >= numLoadedCells;
+      BOOL willBeHidden = view.cellNum >= numLoadedCells;
+      
+      if (view.hidden && !willBeHidden)
+      {
+        view.hidden = willBeHidden;
+        [self recursivelyReapplyModifiers:view];
+      }
+      else
+      {
+        view.hidden = willBeHidden;
+      }
     }
+  }
+}
+
+- (void) recursivelyReapplyModifiers:(UIView*)view
+{
+  if ([view isKindOfClass:[RCTVideo class]])
+  {
+    [((RCTVideo*) view) applyModifiers];
+  }
+  
+  for (UIView* subview in [[view subviews] copy])
+  {
+    [self recursivelyReapplyModifiers:subview];
   }
 }
 

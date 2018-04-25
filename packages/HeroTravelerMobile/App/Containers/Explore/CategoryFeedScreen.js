@@ -226,7 +226,7 @@ class CategoryFeedScreen extends React.Component {
           onRight={this._onRight}
           rightTextStyle={styles.navbarRightTextStyle}
           rightTitle={isFollowingCategory ? 'FOLLOWING' : '+ FOLLOW'}
-          style={styles.navbarContainer, {marginTop: 0}}
+          style={styles.navbarContainer}
         />
         { topContent }
         { bottomContent }

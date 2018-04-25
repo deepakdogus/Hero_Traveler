@@ -124,6 +124,34 @@ RCT_REMAP_METHOD(fixFilePath,
     return dispatch_get_main_queue();
 }
 
+RCT_EXPORT_METHOD(getWidthAndHeight:(NSDictionary *)data
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject) {
+  NSString* uriString = [data objectForKey:@"uri"];
+  if (uriString.length <= 0)
+  {
+    reject(RCTErrorDomain, @"No file URI in request data", [NSError errorWithDomain:RCTErrorDomain code:1000 userInfo:@{}]);
+    return;
+  }
+  NSURL* uri = [NSURL URLWithString:uriString];
+  if (!uri)
+  {
+    reject(RCTErrorDomain, @"No file URI in request data", [NSError errorWithDomain:RCTErrorDomain code:1000 userInfo:@{}]);
+    return;
+  }
+  AVURLAsset* asset = [AVURLAsset URLAssetWithURL:uri options:nil];
+  NSArray* tracks = [asset tracksWithMediaType:AVMediaTypeVideo];
+  if (tracks.count <= 0)
+  {
+    reject(RCTErrorDomain, @"Could not get width and height from file", [NSError errorWithDomain:RCTErrorDomain code:1000 userInfo:@{}]);
+    return;
+  }
+  
+  AVAssetTrack* track = [tracks objectAtIndex:0];
+  CGSize size = track.naturalSize;
+  resolve(@{@"width": @(size.width), @"height": @(size.height)});
+}
+
 RCT_EXPORT_VIEW_PROPERTY(src, NSDictionary);
 RCT_EXPORT_VIEW_PROPERTY(resizeMode, NSString);
 RCT_EXPORT_VIEW_PROPERTY(needsVideoLoaded, BOOL);

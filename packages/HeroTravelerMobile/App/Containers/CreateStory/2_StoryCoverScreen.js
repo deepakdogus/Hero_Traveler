@@ -123,7 +123,6 @@ class StoryCoverScreen extends Component {
     this.timeout = null
 
     this.state = {
-      imageMenuOpen: false,
       file: null,
       updating: false,
       originalStory: props.workingDraft,
@@ -163,60 +162,7 @@ class StoryCoverScreen extends Component {
     else return MediaTypes.photo
   }
 
-  _toggleImageMenu = () => {
-    if (this.state.imageMenuOpen) {
-
-      if (this.timeout) {
-        clearTimeout(this.timeout)
-      }
-
-      this.setState({imageMenuOpen: false}, () => {
-        this.resetAnimation()
-      })
-    } else {
-      this.setState({imageMenuOpen: true})
-      this.timeout = setTimeout(() => {
-        if (this.state.imageMenuOpen) {
-          this.fadeOutMenu()
-        }
-      }, 5000)
-    }
-  }
-
-  closeMenu() {
-    if (this.timeout) {
-      clearTimeout(this.timeout)
-    }
-
-    this.setState({imageMenuOpen: false}, () => {
-      this.resetAnimation()
-    })
-  }
-
-  fadeOutMenu() {
-    Animated.timing(
-      this.state.toolbarOpacity,
-      {
-        toValue: 0,
-        duration: 300
-      }
-    ).start(() => {
-      this.setState({imageMenuOpen: false}, () => {
-        this.resetAnimation()
-      })
-    })
-  }
-
-  resetAnimation() {
-    this.state.toolbarOpacity.stopAnimation(() => {
-      this.state.toolbarOpacity.setValue(1)
-    })
-  }
-
   _touchChangeCover = () => {
-    this.setState({imageMenuOpen: false}, () => {
-      this.resetAnimation()
-    })
     NavActions.mediaSelectorScreen({
       title: 'Change Cover',
       leftTitle: 'Cancel',
@@ -604,7 +550,6 @@ class StoryCoverScreen extends Component {
   }
 
   renderContent () {
-    const {imageMenuOpen, toolbarOpacity} = this.state
     return (
       <View style={this.hasNoCover() ? styles.lightGreyAreasBG : styles.contentWrapper}>
         {this.hasNoCover() &&
@@ -623,27 +568,22 @@ class StoryCoverScreen extends Component {
             </TouchableOpacity>
           </View>
         }
-        {!this.hasNoCover() && !imageMenuOpen &&
-          <TouchableWithoutFeedback onPress={this._toggleImageMenu}>
-            <View style={styles.imageMenuView}>
-              <TouchlessPlayButton />
-            </View>
-          </TouchableWithoutFeedback>
-        }
-        {!this.hasNoCover() && imageMenuOpen &&
-            <TouchableWithoutFeedback onPress={this._toggleImageMenu}>
-              <Animated.View style={[
-                styles.imageMenuView,
-                {opacity: toolbarOpacity}
-              ]}>
-                <TouchableOpacity
-                  onPress={this._touchChangeCover}
-                  style={styles.iconButton}
-                >
-                  <Icon name={'camera'} color={Colors.snow} size={30} />
-                </TouchableOpacity>
-              </Animated.View>
-            </TouchableWithoutFeedback>
+        {!this.hasNoCover() &&
+          <Animated.View style={[
+            styles.imageMenuView,
+          ]}>
+            <TouchableOpacity
+              onPress={this._touchChangeCover}
+              style={styles.iconButton}
+            >
+              {this.hasNoVideo() &&
+                <Icon name={'camera'} color={Colors.snow} size={30} />
+              }
+              {!this.hasNoVideo() &&
+                <TouchlessPlayButton />
+              }
+            </TouchableOpacity>
+          </Animated.View>
         }
       </View>
     )

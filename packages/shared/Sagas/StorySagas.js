@@ -160,8 +160,9 @@ function * uploadAtomicAssets(draft){
       const {url, type} = block.data
       if (url.substring(0,4) === 'file' || url.substring(0,6) === '/Users') {
         return CloudinaryAPI.uploadMediaFile(pathAsFileObject(url), type)
-        .then(({data: imageUpload}) => {
-          return _.merge(block.data, extractUploadData(imageUpload))
+        .then(response => {
+          if (response.error) return response
+          return _.merge(block.data, extractUploadData(response.data))
         })
         .catch(err => {
           return Promise.reject(err)
@@ -170,9 +171,20 @@ function * uploadAtomicAssets(draft){
     }
     else return
   }))
-  .catch(err => {
-    return err
+
+  // part of what needs to get refactored during CloudinaryAPI refactor
+  let errorBlock
+  const hasError = promise.some(block => {
+    if (block && block.error) {
+      errorBlock = block
+      return true
+    }
+    return false
   })
+
+  if (errorBlock) return errorBlock
+  const atomicSteps = getAtomicSteps(draft)
+  yield put(StoryCreateActions.incrementSyncProgress(atomicSteps))
   return promise
 }
 
@@ -237,9 +249,8 @@ export function * publishLocalDraft (api, action) {
     yield publishDraftErrorHandling(draft, coverResponse.error)
     return
   }
-  const atomicSteps = getAtomicSteps(draft)
+
   const atomicResponse = yield uploadAtomicAssets(draft)
-  yield put(StoryCreateActions.incrementSyncProgress(atomicSteps))
   if (atomicResponse.error){
     yield publishDraftErrorHandling(draft, atomicResponse.error)
     return

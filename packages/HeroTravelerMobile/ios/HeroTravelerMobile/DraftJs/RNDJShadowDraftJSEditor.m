@@ -148,6 +148,7 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
     view.lastIndex = lastIndex;
     view.selectionStart = selectionModel.startIndex;
     view.selectionEnd = selectionModel.endIndex;
+    view.contentModel = contentModel;
   }];
   
   return parentProperties;
@@ -420,18 +421,55 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
       }
 
       
-      if (selectionModel.hasFocus) {
-        if ([selectionModel.startKey isEqualToString:block.key] && [selectionModel.startKey isEqualToString:selectionModel.endKey] && selectionModel.startOffset == selectionModel.endOffset) {
-          singleSelectionIndex = contentAttributedString.length + selectionModel.startOffset;
-        } else {
-          if (blockAttributedString.length > 0) {
-            if ([fullyHighlightedBlocks containsObject:block.key]) {
-              [blockAttributedString addAttribute:RCTIsHighlightedAttributeName value:@YES range:NSMakeRange(0, blockAttributedString.length)];
-            } else if ([block.key isEqualToString:selectionModel.startKey] && selectionModel.startOffset < blockAttributedString.length - 1) {
-              [blockAttributedString addAttribute:RCTIsHighlightedAttributeName value:@YES range:NSMakeRange(selectionModel.startOffset, blockAttributedString.length - selectionModel.startOffset)];
-            } else if ([block.key isEqualToString:selectionModel.endKey]) {
-              NSUInteger endOffset = selectionModel.endOffset < blockAttributedString.length ? selectionModel.endOffset : blockAttributedString.length;
-              [blockAttributedString addAttribute:RCTIsHighlightedAttributeName value:@YES range:NSMakeRange(0, endOffset)];
+      if (selectionModel.hasFocus)
+      {
+        BOOL isStartSelectionBlock = [block.key isEqualToString:selectionModel.startKey];
+        BOOL isEndSelectionBlock = [block.key isEqualToString:selectionModel.endKey];
+
+        if (isStartSelectionBlock && isEndSelectionBlock)
+        {
+          if (selectionModel.startOffsetIndex == selectionModel.endOffsetIndex)
+          {
+            singleSelectionIndex = contentAttributedString.length + selectionModel.startOffsetIndex;
+          }
+          else
+          {
+            NSUInteger startOffset = MIN(selectionModel.startOffsetIndex + 1, blockAttributedString.length) - 1;
+            NSUInteger endOffset = MIN(selectionModel.endOffsetIndex, blockAttributedString.length);
+            NSUInteger selectionSize = endOffset - startOffset;
+            if (selectionSize > 0)
+            {
+              [blockAttributedString addAttribute:RCTIsHighlightedAttributeName
+                                            value:@YES
+                                             range:NSMakeRange(startOffset, selectionSize)];
+            }
+          }
+        }
+        else
+        {
+          if (blockAttributedString.length > 0)
+          {
+            BOOL isFullyHighlighted = [fullyHighlightedBlocks containsObject:block.key];
+            
+            if (isFullyHighlighted)
+            {
+              [blockAttributedString addAttribute:RCTIsHighlightedAttributeName
+                                            value:@YES
+                                            range:NSMakeRange(0, blockAttributedString.length)];
+            }
+            else if (isStartSelectionBlock && selectionModel.startOffsetIndex < blockAttributedString.length - 1)
+            {
+              NSUInteger startOffset = MIN(selectionModel.startOffsetIndex + 1, blockAttributedString.length) - 1;
+              [blockAttributedString addAttribute:RCTIsHighlightedAttributeName
+                                            value:@YES
+                                            range:NSMakeRange(startOffset, blockAttributedString.length - startOffset)];
+            }
+            else if (isEndSelectionBlock)
+            {
+              NSUInteger endOffset = MIN(selectionModel.endOffsetIndex, blockAttributedString.length);
+              [blockAttributedString addAttribute:RCTIsHighlightedAttributeName
+                                            value:@YES
+                                            range:NSMakeRange(0, endOffset)];
             }
           }
         }

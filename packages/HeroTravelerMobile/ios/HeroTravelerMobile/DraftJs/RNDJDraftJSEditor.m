@@ -40,6 +40,14 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
   CAShapeLayer* _highlightLayer;
   CAShapeLayer* _singleCursorLayer;
   CAShapeLayer* _autocompleteLayer;
+  CAShapeLayer* _endDragLayer;
+  CAShapeLayer* _startDragLayer;
+  
+  UIView* startDragView;
+  UIView* endDragView;
+  
+  BOOL isDraggingRange;
+
   UILongPressGestureRecognizer* _longPressGestureRecognizer;
 
 #if DEBUG_TOUCHES
@@ -79,6 +87,21 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     
     existingAutocompleteViews = @{};
     
+    startDragView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    startDragView.backgroundColor = [UIColor clearColor];
+    startDragView.userInteractionEnabled = YES;
+    [self addSubview:startDragView];
+    endDragView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    endDragView.backgroundColor = [UIColor clearColor];
+    endDragView.userInteractionEnabled = YES;
+    [self addSubview:endDragView];
+    
+    UIPanGestureRecognizer* startPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(dragStart:)];
+    [startDragView addGestureRecognizer:startPanGesture];
+
+    UIPanGestureRecognizer* endPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(dragEnd:)];
+    [endDragView addGestureRecognizer:endPanGesture];
+
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
     [self addGestureRecognizer:tapGesture];
     
@@ -86,10 +109,6 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     [self addGestureRecognizer:longPressGesture];
     
     closedAutocorrects = [NSSet set];
-    
-//    UIPanGestureRecognizer* panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
-//    [self addGestureRecognizer:panGesture];
-//    [longPressGesture requireGestureRecognizerToFail:tapGesture];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
@@ -373,29 +392,90 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
   return closestDraftJsIndex;
 }
 
-- (void) tap:(UIGestureRecognizer*)gesture
+- (void) handleDragState:(UIPanGestureRecognizer*)gesture
+{
+  switch (gesture.state) {
+    case UIGestureRecognizerStateBegan:
+      isDraggingRange = YES;
+      break;
+    case UIGestureRecognizerStateEnded:
+    case UIGestureRecognizerStateCancelled:
+    case UIGestureRecognizerStateFailed:
+      isDraggingRange = NO;
+      
+      if (_highlightLayer.path)
+      {
+        CGRect selectionBounds = CGPathGetBoundingBox(_highlightLayer.path);
+        UIMenuController* editMenu = [UIMenuController sharedMenuController];
+        [editMenu setTargetRect:selectionBounds inView:self];
+        [editMenu setMenuVisible:YES animated:YES];
+      }
+      break;
+      
+    default:
+      break;
+  }
+}
+
+- (void) dragStart:(UIPanGestureRecognizer*)gesture
+{
+  [self handleDragState:gesture];
+  
+  if (gesture.state == UIGestureRecognizerStateChanged)
+  {
+    CGPoint tapPostion = [gesture locationInView:self];
+    RNDJDraftJsIndex* selectedBlock = [self draftJsIndexForPointInView:tapPostion];
+    NSUInteger selectedIndex = [self blockKeyToIndex:selectedBlock.key];
+    NSUInteger endIndex = [self blockKeyToIndex:_selectionEnd.key];
+    
+    if (selectedIndex < endIndex ||
+        (selectedIndex == endIndex && selectedBlock.offset < _selectionEnd.offset))
+    {
+      [self requestSetSelectionFrom:selectedBlock.key
+                             offset:selectedBlock.offset
+                                 to:_selectionEnd.key
+                             offset:_selectionEnd.offset];
+    }
+  }
+  [self updateMagnifierFromGesture:gesture];
+}
+
+- (void) dragEnd:(UIPanGestureRecognizer*)gesture
+{
+  [self handleDragState:gesture];
+
+  if (gesture.state == UIGestureRecognizerStateChanged)
+  {
+    CGPoint tapPostion = [gesture locationInView:self];
+    RNDJDraftJsIndex* selectedBlock = [self draftJsIndexForPointInView:tapPostion];
+    NSUInteger selectedIndex = [self blockKeyToIndex:selectedBlock.key];
+    NSUInteger startIndex = [self blockKeyToIndex:_selectionStart.key];
+    
+    if (startIndex < selectedIndex ||
+        (selectedIndex == startIndex && _selectionStart.offset < selectedBlock.offset))
+    {
+      [self requestSetSelectionFrom:_selectionStart.key
+                             offset:_selectionStart.offset
+                                 to:selectedBlock.key
+                             offset:selectedBlock.offset];
+    }
+  }
+  [self updateMagnifierFromGesture:gesture];
+}
+
+- (void) handlePositionSelect:(UIGestureRecognizer*)gesture
 {
   CGPoint tapPostion = [gesture locationInView:self];
-//  tapPostion.x -= _contentInset.left;
-//  tapPostion.y -= _contentInset.top;
   
   if (!_hasFocus) {
     _hasFocus = YES;
     [self becomeFirstResponder];
-
-    switch (gesture.state) {
-      case UIGestureRecognizerStateRecognized:
-      {
-        RNDJDraftJsIndex* selectedIndex = [self draftJsIndexForPointInView:tapPostion];
-        if (selectedIndex) {
-          [self requestSetSelection:selectedIndex];
-          [[UIMenuController sharedMenuController] setMenuVisible:NO animated:YES];
-        } else {
-          [self requestHasFocus:YES];
-        }
-      }
-      default:
-        break;
+    
+    RNDJDraftJsIndex* selectedIndex = [self draftJsIndexForPointInView:tapPostion];
+    if (selectedIndex) {
+      [self requestSetSelection:selectedIndex];
+    } else {
+      [self requestHasFocus:YES];
     }
   } else {
     RNDJDraftJsIndex* selectedIndex = [self draftJsIndexForPointInView:tapPostion];
@@ -405,55 +485,31 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
   [self updateMagnifierFromGesture:gesture];
 }
 
-- (void)pan:(UILongPressGestureRecognizer *)gesture
+- (void) tap:(UIGestureRecognizer*)gesture
 {
-  CGPoint tapPostion = [gesture locationInView:self];
-//  tapPostion.x -= _contentInset.left;
-//  tapPostion.y -= _contentInset.top;
-  
-  if (_hasFocus) {
-    RNDJDraftJsIndex* selectedIndex = [self draftJsIndexForPointInView:tapPostion];
-    [self requestSetSelection:selectedIndex];
+  [self handlePositionSelect:gesture];
+}
+
+- (NSUInteger) blockKeyToIndex:(NSString*)blockKey
+{
+  NSUInteger i = 0;
+  for (RNDJBlockModel* block in _contentModel.blocks)
+  {
+    if ([block.key isEqualToString:blockKey])
+    {
+      return i;
+    }
+    i++;
   }
-  [self updateMagnifierFromGesture:gesture];
+
+  return INT_MAX;
 }
 
 - (void)handleLongPress:(UILongPressGestureRecognizer *)gesture
 {
   CGPoint tapPostion = [gesture locationInView:self];
   
-
-  if (_hasFocus) {
-    if (gesture.state == UIGestureRecognizerStateBegan)
-    {
-      [[UIMenuController sharedMenuController] setMenuVisible:NO animated:YES];
-    }
-
-    RNDJDraftJsIndex* selectedIndex = [self draftJsIndexForPointInView:tapPostion];
-    [self requestSetSelection:selectedIndex];
-  }
-  
-  //  if (self.isFirstResponder) {
-  //
-  //  } else {
-  //#if !TARGET_OS_TV
-  //    UIMenuController *menuController = [UIMenuController sharedMenuController];
-  //
-  //    if (menuController.isMenuVisible) {
-  //      return;
-  //    }
-  //
-  //    if (!self.isFirstResponder) {
-  //      [self becomeFirstResponder];
-  //    }
-  //
-  //    [menuController setTargetRect:self.bounds inView:self];
-  //    [menuController setMenuVisible:YES animated:YES];
-  //#endif
-  //  }
-  
-  [self updateMagnifierFromGesture:gesture];
-  
+  [self handlePositionSelect:gesture];
   
 //  On end of long press, get rectangle of cursor position (go from selection point to text point, to text rectangle)
 //  Maybe defer to next render??? since cursor is already selected there
@@ -522,6 +578,8 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     NSMutableArray* viewsToNotRemove = [NSMutableArray arrayWithArray:[existingAutocompleteViews allValues]];
     
     [viewsToNotRemove addObject:magnifyingGlass];
+    [viewsToNotRemove addObject:startDragView];
+    [viewsToNotRemove addObject:endDragView];
 
 #if DEBUG_TOUCHES
     [viewsToNotRemove addObject:positionLabel];
@@ -558,52 +616,81 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
   [layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:textFrame.origin];
   
   __block UIBezierPath *highlightPath = nil;
+  __block UIBezierPath *startDragPath = nil;
+  __block UIBezierPath *endDragPath = nil;
+  startDragView.frame = CGRectMake(0, 0, 0, 0);
+  endDragView.frame = CGRectMake(0, 0, 0, 0);
+
   NSRange characterRange = [layoutManager characterRangeForGlyphRange:glyphRange actualGlyphRange:NULL];
   [layoutManager.textStorage enumerateAttribute:RCTIsHighlightedAttributeName inRange:characterRange options:0 usingBlock:^(NSNumber *value, NSRange range, BOOL *_) {
     if (!value.boolValue) {
       return;
     }
     
-    __block CGPoint lastPoint = CGPointMake(-100, -100);
-    
-    __block UIBezierPath* newPath = nil;
-    [layoutManager enumerateEnclosingRectsForGlyphRange:range withinSelectedGlyphRange:range inTextContainer:textContainer usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
-      CGRect highlightRect = CGRectInset(enclosingRect, -2, -2);
-      
-      lastPoint = CGPointMake(highlightRect.origin.x, highlightRect.origin.y+highlightRect.size.height);
-      
-      newPath = [UIBezierPath bezierPathWithRoundedRect:highlightRect cornerRadius:0];
-    }];
-    
-    if (lastPoint.x < -50 || lastPoint.y < -50) {
-      return;
-    }
+    NSRange startRange = NSMakeRange(range.location, 1);
+    [layoutManager
+     enumerateEnclosingRectsForGlyphRange:startRange
+     withinSelectedGlyphRange:startRange
+     inTextContainer:textContainer
+     usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
+       CGRect startRect = CGRectMake(enclosingRect.origin.x - 2,
+                                     enclosingRect.origin.y,
+                                     2,
+                                     enclosingRect.size.height);
+       startDragPath = [UIBezierPath bezierPathWithRoundedRect:startRect cornerRadius:1];
 
-    if (newPath) {
-      if (highlightPath) {
-        [highlightPath appendPath:newPath];
-      } else {
-        highlightPath = newPath;
-      }
-    }
-
+       CGRect interactableRect = CGRectInset(startRect, -15, -15);
+       interactableRect = CGRectMake(interactableRect.origin.x + _contentInset.left,
+                                     interactableRect.origin.y + _contentInset.top,
+                                     interactableRect.size.width,
+                                     interactableRect.size.height);
+       startDragView.frame = interactableRect;
+     }];
     
-//    [layoutManager enumerateEnclosingRectsForGlyphRange:range withinSelectedGlyphRange:range inTextContainer:textContainer usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
-//      UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectInset(enclosingRect, -2, -2) cornerRadius:2];
-//      if (highlightPath) {
-//        [highlightPath appendPath:path];
-//      } else {
-//        highlightPath = path;
-//      }
-//    }];
+    NSRange endRange = NSMakeRange(range.location+range.length-1, 1);
+    [layoutManager
+     enumerateEnclosingRectsForGlyphRange:endRange
+     withinSelectedGlyphRange:endRange
+     inTextContainer:textContainer
+     usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
+       CGRect endRect = CGRectMake(enclosingRect.origin.x + enclosingRect.size.width,
+                                   enclosingRect.origin.y,
+                                   2,
+                                   enclosingRect.size.height);
+       endDragPath = [UIBezierPath bezierPathWithRoundedRect:endRect cornerRadius:1];
+       
+       CGRect interactableRect = CGRectInset(endRect, -15, -15);
+       interactableRect = CGRectMake(interactableRect.origin.x + _contentInset.left,
+                                     interactableRect.origin.y + _contentInset.top,
+                                     interactableRect.size.width,
+                                     interactableRect.size.height);
+       endDragView.frame = interactableRect;
+     }];
+
+    [layoutManager
+     enumerateEnclosingRectsForGlyphRange:range
+     withinSelectedGlyphRange:range
+     inTextContainer:textContainer
+     usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
+       UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectInset(enclosingRect, -2, -2) cornerRadius:2];
+       if (highlightPath) {
+         [highlightPath appendPath:path];
+       } else {
+         highlightPath = path;
+       }
+     }];
   }];
-  
-  if (highlightPath)
+
+  if (highlightPath && !isDraggingRange)
   {
     CGRect selectionBounds = highlightPath.bounds;
     UIMenuController* editMenu = [UIMenuController sharedMenuController];
     [editMenu setTargetRect:selectionBounds inView:self];
     [editMenu setMenuVisible:YES animated:YES];
+  }
+  else
+  {
+    [[UIMenuController sharedMenuController] setMenuVisible:NO animated:YES];
   }
 
   NSMutableArray* autocompleteViewInfos = [@[] mutableCopy];
@@ -695,6 +782,14 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     selectionColor = [_selectionColor colorWithAlphaComponent:CGColorGetAlpha(_selectionColor.CGColor) * selectionOpacity];
   }
   
+  if (cursorPath)
+  {
+    CGRect selectionBounds = cursorPath.bounds;
+    UIMenuController* editMenu = [UIMenuController sharedMenuController];
+    [editMenu setTargetRect:selectionBounds inView:self];
+    [editMenu update];
+  }
+  
   if (highlightPath) {
     if (!_highlightLayer) {
       _highlightLayer = [CAShapeLayer layer];
@@ -724,6 +819,34 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
   } else {
     [_singleCursorLayer removeFromSuperlayer];
     _singleCursorLayer = nil;
+  }
+
+  if (startDragPath)
+  {
+    if (!_startDragLayer) {
+      _startDragLayer = [CAShapeLayer layer];
+      _startDragLayer.fillColor = cursorColor.CGColor;
+      [self.layer addSublayer:_startDragLayer];
+    }
+    _startDragLayer.position = (CGPoint){_contentInset.left, _contentInset.top};
+    _startDragLayer.path = startDragPath.CGPath;
+  } else {
+    [_startDragLayer removeFromSuperlayer];
+    _startDragLayer = nil;
+  }
+
+  if (endDragPath)
+  {
+    if (!_endDragLayer) {
+      _endDragLayer = [CAShapeLayer layer];
+      _endDragLayer.fillColor = cursorColor.CGColor;
+      [self.layer addSublayer:_endDragLayer];
+    }
+    _endDragLayer.position = (CGPoint){_contentInset.left, _contentInset.top};
+    _endDragLayer.path = endDragPath.CGPath;
+  } else {
+    [_endDragLayer removeFromSuperlayer];
+    _endDragLayer = nil;
   }
   
   if (autocompleteHighlightPath) {
@@ -767,14 +890,19 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
   
   if (!self.window) {
     self.layer.contents = nil;
-    if (_highlightLayer) {
-      [_highlightLayer removeFromSuperlayer];
-      _highlightLayer = nil;
-    }
-    if (_singleCursorLayer) {
-      [_singleCursorLayer removeFromSuperlayer];
-      _singleCursorLayer = nil;
-    }
+
+    [_highlightLayer removeFromSuperlayer];
+    _highlightLayer = nil;
+
+    [_singleCursorLayer removeFromSuperlayer];
+    _singleCursorLayer = nil;
+
+    [_endDragLayer removeFromSuperlayer];
+    _endDragLayer = nil;
+
+    [_startDragLayer removeFromSuperlayer];
+    _startDragLayer = nil;
+    
     [_autocompleteLayer removeFromSuperlayer];
     _autocompleteLayer = nil;
   } else if (_textStorage.length) {
@@ -831,14 +959,19 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
 
 - (void) requestSetSelectionFrom:(RNDJDraftJsIndex*)startIndex to:(RNDJDraftJsIndex*)endIndex
 {
-  if (startIndex.key.length > 0 && endIndex.key.length > 0) {
+  [self requestSetSelectionFrom:startIndex.key offset:startIndex.offset to:endIndex.key offset:endIndex.offset+1];
+}
+
+- (void) requestSetSelectionFrom:(NSString*)startKey offset:(NSUInteger)startOffset to:(NSString*)endKey offset:(NSUInteger)endOffset
+{
+  if (startKey.length > 0 && endKey.length > 0) {
     RCTDirectEventBlock onSelectionChangeRequest = _onSelectionChangeRequest;
     if (onSelectionChangeRequest) {
       onSelectionChangeRequest(@{
-                                 @"startKey": startIndex.key,
-                                 @"startOffset": @(startIndex.offset),
-                                 @"endKey": endIndex.key,
-                                 @"endOffset": @(endIndex.offset+1),
+                                 @"startKey": startKey,
+                                 @"startOffset": @(startOffset),
+                                 @"endKey": endKey,
+                                 @"endOffset": @(endOffset),
                                  @"hasFocus": @YES,
                                  });
     }
@@ -884,31 +1017,11 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
 
 - (void) setMenuItems
 {
-  //  NSMutableArray* menuItems = [NSMutableArray array];
-  //
-  //  menuItems addObject:[UIMenuItem
-  //
-  //  if ([self.selectionStart isEqual:self.selectionEnd])
-  //  {
-  //
-  //  }
-  //  else
-  //  {
-  //
-  //  }
-  
   [[UIMenuController sharedMenuController] update];
 }
 
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-//  cut
-//  copy
-//  paste
-//  select
-//  selectAll
-//  delete
-//
   if (action == @selector(copy:)) {
     return _selectionStart && _selectionEnd && ![_selectionStart isEqual:_selectionEnd];
   }
@@ -1121,6 +1234,8 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
 
 - (void)insertText:(NSString *)text
 {
+  [[UIMenuController sharedMenuController] setMenuVisible:NO animated:YES];
+
   if ([text isEqualToString:@" "] && [existingAutocompleteViews count]) {
     for (NSString* autocompleteKey in existingAutocompleteViews) {
       if (![closedAutocorrects containsObject:autocompleteKey]) {
@@ -1188,21 +1303,19 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
                                                    userInfo:nil
                                                     repeats:NO];
   magnifyingGlassRetainCount++;
-  
-  [[UIMenuController sharedMenuController] setMenuVisible:NO animated:YES];
 }
   
-  - (void) touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self updateMagnifyingGlassAtPoint:[[touches anyObject] locationInView:self]];
-  }
-  
-  - (void) touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self removeMagnifyingGlass];
-  }
-  
-  - (void) touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self removeMagnifyingGlass];
-  }
+- (void) touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+  [self updateMagnifyingGlassAtPoint:[[touches anyObject] locationInView:self]];
+}
+
+- (void) touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+  [self removeMagnifyingGlass];
+}
+
+- (void) touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+  [self removeMagnifyingGlass];
+}
 
 #pragma mark - private functions
 

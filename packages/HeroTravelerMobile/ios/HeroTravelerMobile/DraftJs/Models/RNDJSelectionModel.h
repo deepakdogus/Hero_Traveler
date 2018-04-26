@@ -14,10 +14,10 @@
 @property(readonly) BOOL hasFocus;
 
 @property(readonly) NSString* startKey;
-@property(readonly) NSUInteger startOffset;
+@property(readonly) NSUInteger startOffsetIndex;
 
 @property(readonly) NSString* endKey;
-@property(readonly) NSUInteger endOffset;
+@property(readonly) NSUInteger endOffsetIndex;
 
 - (RNDJDraftJsIndex*) startIndex;
 - (RNDJDraftJsIndex*) endIndex;

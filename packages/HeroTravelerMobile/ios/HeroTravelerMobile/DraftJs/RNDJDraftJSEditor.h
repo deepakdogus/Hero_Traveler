@@ -10,6 +10,7 @@
 #import <React/RCTComponent.h>
 #import "RNDJDraftJsIndex.h"
 #import "RNDJAutocorrectView.h"
+#import "RNDJContentModel.h"
 
 @interface SimpleAutocorrectInfo : NSObject
 
@@ -44,6 +45,8 @@
 @property (nonatomic, assign) BOOL hasFocus;
 @property (nonatomic, strong) RNDJDraftJsIndex* firstIndex;
 @property (nonatomic, strong) RNDJDraftJsIndex* lastIndex;
+
+@property (nonatomic, strong) RNDJContentModel* contentModel;
 
 @property (nonatomic, assign) CGRect lastCursorRect;
 

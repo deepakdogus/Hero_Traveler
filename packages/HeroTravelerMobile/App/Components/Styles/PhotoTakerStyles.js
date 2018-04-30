@@ -50,5 +50,17 @@ export default StyleSheet.create({
     fontSize: 16,
     color: Colors.snow,
     textAlign: 'center'
-  }
+  },
+
+  notAuthorizedWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  notAuthorizedText: {
+    ...ApplicationStyles.screen.titleText,
+    color: Colors.navBarText,
+    textAlign: "center",
+    padding: 20,
+  }  
 })

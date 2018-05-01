@@ -32,6 +32,11 @@ const StorySchema = new Schema({
     type: Boolean,
     index: true
   },
+  featured: {
+    type: Boolean,
+    default: false,
+    index: true
+  },
   description: {
     type: String
   },
@@ -179,6 +184,7 @@ StorySchema.statics = {
           {author: userId},
           {author: {$in: followingIds}},
           {categories: {$in: followingIds}},
+          {featured: true},
         ]
       })
       .exec()

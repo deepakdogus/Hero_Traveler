@@ -1,7 +1,8 @@
 import _ from 'lodash'
 import {getLocationInfo, algoliaHelper} from '@hero/ht-util'
 
-import {Story, Category, Hashtag, Image, Video} from '../models'
+import {Story, Category, Hashtag, Image, Video, User} from '../models'
+import {Constants} from '@hero/ht-util'
 import updateDraft from '../storyDraft/updateDraft'
 import createCategories from '../category/create'
 import createHashtags from '../hashtag/create'
@@ -13,6 +14,10 @@ export async function parseAndInsertStoryCategories(categories) {
 
 export async function parseAndInsertStoryHashtags(hashtags) {
   return parseAndInsertRefToStory(Hashtag, hashtags, createHashtags)
+}
+
+export async function getUserDetails(userId) {
+  return User.findOne({_id:userId});
 }
 
 export async function addCover(draft, assetFormater){
@@ -39,6 +44,16 @@ export default async function createStory(storyData, assetFormater) {
     draft: false,
     categories: await parseAndInsertStoryCategories(storyData.categories),
     hashtags: await parseAndInsertStoryHashtags(storyData.hashtags)
+  }
+
+  const authorDetails = await getUserDetails(storyData.author);
+  if (authorDetails) {
+    storyObject.featured = (
+      authorDetails.role == Constants.USER_ROLES_FOUNDING_MEMBER_VALUE ||
+      authorDetails.role == Constants.USER_ROLES_CONTRIBUTOR_VALUE
+    )
+  } else {
+    throw new Error('Could not find the author for this story');
   }
 
   if (!storyObject.locationInfo.latitude) {

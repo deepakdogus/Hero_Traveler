@@ -127,11 +127,6 @@
   }
 }
 
-- (void) downloadVideoToCache:(NSURL*)url
-{
-  
-}
-
 - (void) dispatchDownloads
 {
   for (VideoDownloadItem* download in currentDownloads)

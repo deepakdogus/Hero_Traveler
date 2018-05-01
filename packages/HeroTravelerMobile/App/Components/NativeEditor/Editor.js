@@ -331,7 +331,9 @@ export default class RNDraftJs extends Component {
           onReplaceRangeRequest={this._onReplaceRangeRequest}
           placeholderText="Tap here to start telling your story..."
           selectionColor={'#000000'}
-          selectionOpacity={1}
+          selectionOpacity={0.25}
+          cursorColor={'#000000'}
+          cursorOpacity={1}
           defaultAtomicWidth={Metrics.screenWidth}
           defaultAtomicHeight={200}
           paragraphSpacing={25}

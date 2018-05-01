@@ -29,8 +29,6 @@
 
 + (NSString*) urlToKey:(NSString*)url;
 
-- (void) downloadVideoToCache:(NSURL*)url;
-
 - (PlayingVideoItem*) assetForUrl:(NSString*)url withOriginalUrl:(NSString*)originalUrl forVideoView:(RCTVideo*)videoView;
 
 - (void) pauseAllExcept:(VideoCacheItem*)item;

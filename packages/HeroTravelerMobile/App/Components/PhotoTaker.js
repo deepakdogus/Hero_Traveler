@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import {View, TouchableOpacity, Animated, Easing, Text} from 'react-native'
+import {View, TouchableOpacity, Animated, Easing, Text, Linking} from 'react-native'
 import Camera from 'react-native-camera'
 import reactMixin from 'react-mixin'
 import TimerMixin from 'react-timer-mixin'
@@ -150,6 +150,20 @@ class PhotoTaker extends Component {
     )
   }
 
+  _navToSettings = () => {
+    Linking.openURL('app-settings:')
+  }
+
+  notAuthorizedView = (
+    <View style={[styles.notAuthorizedWrapper]}>
+      <TouchableOpacity
+        onPress={this._navToSettings}
+      >
+        <Text style={[styles.notAuthorizedText]}>Access to your camera is currently disabled.{"\n"}Tap here to update your settings.</Text>
+      </TouchableOpacity>
+    </View>
+  )
+
   render () {
     const {isRecording, backCamera, time, hasFlash, videoAnim} = this.state
     const {isPhotoType} = this.props
@@ -164,6 +178,7 @@ class PhotoTaker extends Component {
         type={backCamera ? Camera.constants.Type.back : Camera.constants.Type.front}
         aspect={Camera.constants.Aspect.fill}
         style={styles.camera}
+        notAuthorizedView={this.notAuthorizedView}
        >
         {this.isVideo() &&
           <View style={styles.videoProgressWrapper}>

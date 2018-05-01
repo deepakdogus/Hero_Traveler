@@ -187,18 +187,21 @@ class CategoryFeedScreen extends React.Component {
 
     let topContent, bottomContent
 
-    if (fetchStatus.fetching && !this.state.refreshing) {
-      topContent = (
-        <Loader />
-      )
-    } else if (error) {
+    if (error) {
       topContent = this._wrapElt(<Text style={styles.message}>Unable to find new content. Pull down to refresh.</Text>);
     }
+
     if (_.size(storiesById) === 0) {
+      const showLoader = (fetchStatus.fetching && !this.state.refreshing);
       bottomContent = (
         <View style={styles.noStoriesWrapper}>
           {this.renderTabs()}
-          <NoStoriesMessage />
+          {showLoader &&
+            <Loader />
+          }
+          {!showLoader &&
+            <NoStoriesMessage />
+          }
         </View>
       )
     }

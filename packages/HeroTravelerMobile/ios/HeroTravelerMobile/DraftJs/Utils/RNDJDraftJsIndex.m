@@ -19,5 +19,15 @@
   return self;
 }
 
+- (BOOL) isEqual:(RNDJDraftJsIndex*)other
+{
+  if (![other isKindOfClass:[RNDJDraftJsIndex class]])
+  {
+    return NO;
+  }
+  
+  return [self.key isEqualToString:other.key] && self.offset == other.offset;
+}
+
 @end
 

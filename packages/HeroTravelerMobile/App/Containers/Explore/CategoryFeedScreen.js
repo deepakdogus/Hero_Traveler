@@ -181,6 +181,15 @@ class CategoryFeedScreen extends React.Component {
     )
   }
 
+  renderNoStories = (content) => {
+    return (
+      <View style={styles.noStoriesWrapper}>
+        {this.renderTabs()}
+        {content}
+      </View>
+    )
+  }
+
   render () {
     let { storiesById, fetchStatus, error, title} = this.props;
     const isFollowingCategory = this.getIsFollowingCategory()
@@ -191,21 +200,11 @@ class CategoryFeedScreen extends React.Component {
       topContent = this._wrapElt(<Text style={styles.message}>Unable to find new content. Pull down to refresh.</Text>);
     }
 
-    if (_.size(storiesById) === 0) {
-      const showLoader = (fetchStatus.fetching && !this.state.refreshing);
-      bottomContent = (
-        <View style={styles.noStoriesWrapper}>
-          {this.renderTabs()}
-          {showLoader &&
-            <Loader />
-          }
-          {!showLoader &&
-            <NoStoriesMessage />
-          }
-        </View>
-      )
-    }
-    else {
+    if (fetchStatus.fetching && !this.state.refreshing) {
+      bottomContent = this.renderNoStories(<Loader />);
+    } else if (_.size(storiesById) === 0) {
+      bottomContent = this.renderNoStories(<NoStoriesMessage />);
+    } else {
       bottomContent = (
         <StoryList
           style={styles.storyList}

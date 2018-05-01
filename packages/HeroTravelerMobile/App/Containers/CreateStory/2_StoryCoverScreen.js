@@ -229,8 +229,8 @@ class StoryCoverScreen extends Component {
   }
 
   renderCoverPhoto(coverPhoto) {
-    if (coverPhoto) coverPhoto = getImageUrl(coverPhoto, 'basic')
 
+    if (coverPhoto) coverPhoto = getImageUrl(coverPhoto, 'basic')
     return R.ifElse(
       R.identity,
       R.always((
@@ -772,6 +772,19 @@ class StoryCoverScreen extends Component {
   }
 
   _getCoverHeight() {
+    const { coverImage, coverVideo } = this.props.workingDraft
+    const cover = coverImage || coverVideo
+
+    if (cover) {
+      let widthHeight = {
+        height: _.get(cover, 'original.meta.height') || cover.height,
+        width: _.get(cover, 'original.meta.width') || cover.width,
+      }
+      return Math.min(
+        Metrics.storyCover.fullScreen.height,
+        getRelativeHeight(Metrics.screenWidth, widthHeight)
+      )
+    }
     if (!this.hasNoPhoto()) {
       return Metrics.storyCover.fullScreen.height
     }
@@ -797,6 +810,7 @@ class StoryCoverScreen extends Component {
       title, coverCaption, description,
       coverImage, coverVideo
     } = this.props.workingDraft
+
     let showIntroTooltip = false;
     if (this.props.user && this.state.file) {
       showIntroTooltip = !isTooltipComplete(
@@ -954,7 +968,14 @@ class StoryCoverScreen extends Component {
     const draftUpdates = { coverCaption: '' }
 
     const callback = (newSource) => {
-      const modifiedFile = {...file, uri: newSource }
+      // nesting coverMetrics inside of original.meta to mirror published media asset format
+      const modifiedFile = {
+        ...file,
+        uri: newSource,
+        original: {
+          meta: coverMetrics
+        }
+      }
 
       if (isPhotoType) {
         draftUpdates.coverImage = modifiedFile

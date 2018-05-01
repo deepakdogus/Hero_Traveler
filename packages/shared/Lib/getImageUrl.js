@@ -110,10 +110,10 @@ const imageUrlParametersFactories = {
 }
 
 export default function getImageUrl(image: object|string, type: string, options: object = {}): ?string {
+  if (isLocalMediaAsset(image)) return image
+
   // special cases where image has not been fully synced
   if (!!image && (!!image.uri || !!image.secure_url)) return image.uri || image.secure_url
-  // uncertain if this if ever gets hit but keeping just in case
-  if (isLocalMediaAsset(image)) return image
 
   const uri = getUri(image)
   if (!uri) {

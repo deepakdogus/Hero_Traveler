@@ -59,6 +59,12 @@ export default class StoryCover extends Component {
     return this.props.coverType === 'image' && !!this.props.cover
   }
 
+  getMinOfHeights(){
+    return this.props.cover.original
+      ? getRelativeHeight(Metrics.screenWidth, this.props.cover.original.meta)
+      : Metrics.storyCover.fullScreen.height
+  }
+
   _getWidthHeight(isVideo){
     if (this.props.isFeed) {
       if (this.hasImage()) {
@@ -72,16 +78,14 @@ export default class StoryCover extends Component {
           width: Metrics.screenWidth,
           height: Math.min(
             Metrics.storyCover.fullScreen.height,
-            this.props.cover.original
-              ? getRelativeHeight(Metrics.screenWidth, this.props.cover.original.meta)
-              : Metrics.storyCover.fullScreen.height,
+            this.getMinOfHeights(),
           ),
         }
       }
       else {
         return {
           width: Metrics.screenWidth,
-          height: Metrics.storyCover.fullScreen.height,
+          height: this.getMinOfHeights(),
         }
       }
     }

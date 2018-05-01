@@ -1113,12 +1113,15 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
   if (!foundEnd) {
     endIndex = string.length - 1;
   }
-
-  RNDJDraftJsIndex* start = [attributedString attribute:RNDJDraftJsIndexAttributeName atIndex:startIndex effectiveRange:nil];
-  RNDJDraftJsIndex* end = [attributedString attribute:RNDJDraftJsIndexAttributeName atIndex:endIndex effectiveRange:nil];
   
-  if (start && end) {
-    [self requestSetSelectionFrom:start to:end];
+  if (startIndex < string.length && endIndex < string.length)
+  {
+    RNDJDraftJsIndex* start = [attributedString attribute:RNDJDraftJsIndexAttributeName atIndex:startIndex effectiveRange:nil];
+    RNDJDraftJsIndex* end = [attributedString attribute:RNDJDraftJsIndexAttributeName atIndex:endIndex effectiveRange:nil];
+    
+    if (start && end) {
+      [self requestSetSelectionFrom:start to:end];
+    }
   }
 }
 

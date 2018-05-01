@@ -435,9 +435,9 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
           else
           {
             NSUInteger startOffset = MIN(selectionModel.startOffsetIndex + 1, blockAttributedString.length) - 1;
-            NSUInteger endOffset = MIN(selectionModel.endOffsetIndex, blockAttributedString.length);
+            NSUInteger endOffset = MIN(selectionModel.endOffsetIndex, blockAttributedString.length - 1);
             NSUInteger selectionSize = endOffset - startOffset;
-            if (selectionSize > 0)
+            if (endOffset > startOffset && selectionSize > 0)
             {
               [blockAttributedString addAttribute:RCTIsHighlightedAttributeName
                                             value:@YES

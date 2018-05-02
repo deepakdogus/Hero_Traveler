@@ -8,6 +8,10 @@ export default StyleSheet.create({
     backgroundColor: Colors.snow,
     marginHorizontal: Metrics.doubleBaseMargin
   },
+  wrapper: {
+    flex: 1,
+    position: 'relative',
+  },
   title: {
     ...Fonts.style.title,
     fontSize: 16,
@@ -52,7 +56,8 @@ export default StyleSheet.create({
   tagStyleText: {
     fontSize: 16,
     color: Colors.background,
-    marginBottom: 20
+    marginBottom: 20,
+    color: Colors.navBarText,
   },
   longInput: {
     flexDirection: "row",
@@ -143,6 +148,17 @@ export default StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0
+  },
+  dateWrapper: {
+    position: 'absolute',
+    top: 250,
+    left: 40,
+    elevation: 100,
+  },
+  dateView: {
+    backgroundColor: 'white',
+    height: 300,
+    width: 300,
   },
   videoDescriptionWrapper: {
     borderColor: Colors.navBarText,

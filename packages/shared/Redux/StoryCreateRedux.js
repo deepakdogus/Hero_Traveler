@@ -109,6 +109,7 @@ export const registerDraftSuccess = (state, {draft}) => {
   return state.merge({
     draft,
     workingDraft: draft,
+    error: null,
   })
 }
 
@@ -168,7 +169,7 @@ export const resetSync = (state) => {
       syncProgress: 0,
       syncProgressSteps: 0,
       message: '',
-      errror: false,
+      error: false,
     }
   })
 }
@@ -190,6 +191,7 @@ export const editStorySuccess = (state, {story}) => {
     },
     draft: story,
     workingDraft: story,
+    error: false,
   })
 }
 

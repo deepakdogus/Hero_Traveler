@@ -111,21 +111,12 @@ class CategoryFeedScreen extends React.Component {
     })
   }
 
-  _touchUser = (userId) => {
-    if (this.props.user.id === userId) {
-      NavActions.profile({type: 'jump'})
-    } else {
-      NavActions.readOnlyProfile({userId})
-    }
-  }
-
   renderStory = (story, index) => {
     return (
       <ConnectedStoryPreview
         isFeed={true}
         story={story}
         height={imageHeight}
-        onPressUser={this._touchUser}
         userId={this.props.user.id}
         autoPlayVideo
         allowVideoPlay

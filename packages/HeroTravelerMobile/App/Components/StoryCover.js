@@ -99,7 +99,7 @@ export default class StoryCover extends Component {
   renderImageWithUrl(isVideo, imageUrl, imageThumbnailUrl) {
     const {
       cover, onPress, gradientLocations, gradientColors,
-      children, showPlayButton, playButtonSize,
+      children, showPlayButton,
     } = this.props
     // handling for backgroundPublish failures. Covers will not be correctly formatted yet
 
@@ -131,15 +131,8 @@ export default class StoryCover extends Component {
             {children}
           </View>
         {showPlayButton && isVideo &&
-          <PlayButton
-            onPress={this._tapVideoWrapper}
-            style={[
-              styles.playButton,
-              playButtonSize === 'small' ? styles.smallPlayButton : {}
-            ]}
-            size={playButtonSize || 'small'}
-          />
-         }
+          this.renderPlayButton()
+        }
         </View>
       </TouchableWithoutFeedback>
     )
@@ -188,6 +181,20 @@ export default class StoryCover extends Component {
     nextState.shouldEnableAutoplay !== this.props.shouldEnableAutoplay
   }
 
+  renderPlayButton() {
+    const {playButtonSize} = this.props
+    return (
+      <PlayButton
+        onPress={this._tapVideoWrapper}
+        style={[
+          styles.playButton,
+          playButtonSize === 'small' ? styles.smallPlayButton : {}
+        ]}
+        size={playButtonSize || 'small'}
+      />
+    )
+  }
+
   /*
   Nota bene. We have two different ways to display the play button. One through the Video
   component and a second through the conditional renders we have below. This should be
@@ -228,7 +235,9 @@ export default class StoryCover extends Component {
               isMuted={this.props.isFeed}
               showControls={false}
               resizeMode='cover'
-            />
+            >
+              {this.renderPlayButton()}
+            </VideoPlayer>
           </View>
         </TouchableWithoutFeedback>
       )

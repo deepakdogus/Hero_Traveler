@@ -1,23 +1,26 @@
 #import "DownloadSessionManager.h"
 #import "VideoDownloadItem.h"
+#import "RCTVideoCache.h"
 
 @interface DownloadListenerPair : NSObject
 
-- (instancetype) initWithItem:(VideoDownloadItem*)item task:(NSURLSessionDownloadTask*)task;
+- (instancetype) initWithItem:(VideoDownloadItem*)item task:(NSURLSessionDownloadTask*)task assetKey:(NSString*)assetKey;
 
 @property(readonly, weak) VideoDownloadItem* item;
 @property(readonly, weak) NSURLSessionDownloadTask* task;
+@property(readonly, strong) NSString* assetKey;
 
 @end
 
 @implementation DownloadListenerPair
 
-- (instancetype) initWithItem:(VideoDownloadItem*)item task:(NSURLSessionDownloadTask*)task
+- (instancetype) initWithItem:(VideoDownloadItem*)item task:(NSURLSessionDownloadTask*)task assetKey:(NSString*)assetKey
 {
   if (self = [super init])
   {
     _item = item;
     _task = task;
+    _assetKey = assetKey;
   }
 
   return self;
@@ -72,7 +75,7 @@
 {
   [self unregisterItem:item forTask:task];
   
-  DownloadListenerPair* pair = [[DownloadListenerPair alloc] initWithItem:item task:task];
+  DownloadListenerPair* pair = [[DownloadListenerPair alloc] initWithItem:item task:task assetKey:item.assetKey];
 
   NSMutableArray* mListenerPairs = [listenerPairs mutableCopy];
   [mListenerPairs addObject:pair];
@@ -121,10 +124,18 @@
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location
 {
+  BOOL sentToVideoCache = NO;
+
   for (DownloadListenerPair* pair in listenerPairs)
   {
     if (pair.task == downloadTask)
     {
+      if (!sentToVideoCache)
+      {
+        [[RCTVideoCache get] asset:pair.assetKey finishedAtLocation:location];
+        sentToVideoCache = YES;
+      }
+      
       [pair.item URLSession:session downloadTask:downloadTask didFinishDownloadingToURL:location];
     }
   }

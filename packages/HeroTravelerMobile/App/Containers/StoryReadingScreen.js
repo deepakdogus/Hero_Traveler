@@ -22,7 +22,7 @@ import FlagModal from '../Components/FlagModal'
 import {styles, rendererStyles} from './Styles/StoryReadingScreenStyles'
 import VideoPlayer from '../Components/VideoPlayer'
 import Immutable from 'seamless-immutable'
-import {getVideoUrlBase, isLocalMediaAsset} from '../Shared/Lib/getVideoUrl'
+import {getVideoUrlFromString} from '../Shared/Lib/getVideoUrl'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import getRelativeHeight from '../Shared/Lib/getRelativeHeight'
 import {displayLocationDetails} from '../Shared/Lib/locationHelpers'
@@ -49,7 +49,8 @@ const StoryVideo = enhanceStoryVideo((props) => {
     >
       <VideoPlayer
         ref={props.registerRef}
-        path={props.src}
+        path={props.path}
+        originalPath={props.downloadPath}
         style={styles.video}
         allowVideoPlay={true}
         autoPlayVideo={false}
@@ -87,13 +88,12 @@ const atomicHandler = (item: Object): any => {
           </View>
         );
       case 'video':
-        const url = item.data.url
-        let videoUrl = (item.data.HLSUrl) || `${getVideoUrlBase()}/${item.data.url}`
-        if (isLocalMediaAsset(url)) videoUrl = url
+        const url = getVideoUrlFromString(item.data.url, true)
+        const downloadUrl = getVideoUrlFromString(item.data.url, false)
         return (
           <View key={item.key} style={styles.mediaViewWrapper}>
             <View style={[styles.mediaPlaceholder, {minHeight: height}]}>
-              <StoryVideo src={videoUrl} height={height}/>
+            <StoryVideo path={url} downloadPath={downloadUrl} height={height}/>
             </View>
             {!!item.text && <Text style={styles.caption}>{item.text}</Text>}
           </View>

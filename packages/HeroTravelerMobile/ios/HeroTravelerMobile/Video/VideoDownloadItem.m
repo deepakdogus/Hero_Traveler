@@ -137,7 +137,6 @@
 
   _status = Finished;
 
-  [self.delegate asset:_assetKey finishedAtLocation:location];
   _downloadTask = nil;
 }
 

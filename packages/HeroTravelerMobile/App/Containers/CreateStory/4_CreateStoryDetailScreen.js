@@ -231,7 +231,7 @@ class CreateStoryDetailScreen extends React.Component {
     this.props.updateWorkingDraft({travelTips: travelTips})
     NavActions.pop()
   }
-  
+
   isDraft() {
     return this.props.story.draft || false
   }
@@ -310,7 +310,7 @@ class CreateStoryDetailScreen extends React.Component {
     const {isSavingCover, modalVisible, validationError} = this.state
 
     return (
-      <View style={{flex: 1, position: 'relative'}}>
+      <View style={styles.wrapper}>
           {this.renderErrors()}
           <NavBar
             title='Story Details'
@@ -426,7 +426,7 @@ class CreateStoryDetailScreen extends React.Component {
                     }</Text>
                   }
                   {_.size(workingDraft.hashtags) === 0 &&
-                    <Text style={[styles.tagStyleText, {color: '#bdbdbd'}]}>Add hashtags...</Text>
+                    <Text style={styles.tagStyleText}>Add hashtags...</Text>
                   }
                 </View>
               </TouchableWithoutFeedback>
@@ -450,13 +450,13 @@ class CreateStoryDetailScreen extends React.Component {
           }
         {modalVisible &&
         <View
-          style={{position: 'absolute', top: 250, left: 40, elevation: 100}}
+          style={styles.dateWrapper}
           shadowColor='black'
           shadowOpacity={.9}
           shadowRadius={10}
           shadowOffset={{width: 0, height: 0}}>
           <View
-            style={{ backgroundColor: 'white', height: 300, width: 300 }}>
+            style={styles.dateView}>
             <DatePickerIOS
               date={dateLikeItemAsDate(workingDraft.tripDate)}
               mode="date"
@@ -468,7 +468,7 @@ class CreateStoryDetailScreen extends React.Component {
             />
           </View>
         </View> }
-        {validationError && 
+        {validationError &&
           <Tooltip
             onPress={this._touchError}
             position={"right-nav-button"}

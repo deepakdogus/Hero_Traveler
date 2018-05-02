@@ -4,7 +4,8 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Linking
+  NativeModules,
+  Linking,
 } from 'react-native'
 import { connect } from 'react-redux'
 import ImagePicker from 'react-native-image-picker'
@@ -20,6 +21,8 @@ import isTooltipComplete, {Types as TooltipTypes} from '../Shared/Lib/firstTimeT
 import UserActions from '../Shared/Redux/Entities/Users'
 import detailsStyles from './CreateStory/4_CreateStoryDetailScreenStyles'
 import Tooltip from '../Components/Tooltip'
+
+const VideoManager = NativeModules.VideoManager
 
 class MediaSelectorScreen extends React.Component {
 
@@ -71,7 +74,7 @@ class MediaSelectorScreen extends React.Component {
 
   renderNextTooltip() {
     return (
-      <Tooltip 
+      <Tooltip
         text='Tap to continue'
         position='right-nav-button'
         onDismiss={this._completeNextTooltip}
@@ -83,6 +86,7 @@ class MediaSelectorScreen extends React.Component {
     this.setState({media: null})
   }
 
+  // Response from picking from the library
   _handleMediaSelector = (data) => {
     if (data.didCancel) {
       this.setState({captureOpen: true})
@@ -97,20 +101,41 @@ class MediaSelectorScreen extends React.Component {
       return
     }
 
-    this.setState({
+    const updateState = {
       mediaCaptured: false,
       media: data.uri,
       mediaMetrics: {
-        height: data.height,
-        width: data.width,
       }
-    })
+    }
+
+    VideoManager.getWidthAndHeight(data)
+      .then(response => {
+        this.setState({
+          ...updateState,
+          mediaMetrics: {
+            height: response.height,
+            width: response.width,
+          }
+        })
+      })
+      .catch(err => {
+        // Failing to get width/height is rare, and shouldn't stop being able to upload it
+        //   Only a few UI elements would look wrong
+        this.setState(updateState)
+      })
+
   }
 
+  // Handle the response from taking a photo or video
   _handleCaptureMedia = (data) => {
+
     this.setState({
       mediaCaptured: true,
-      media: "file://" + data.path
+      media: "file://" + data.path,
+      mediaMetrics: {
+        height: data.height,
+        width: data.width,
+      },
     })
   }
 

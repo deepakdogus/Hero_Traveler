@@ -12,7 +12,7 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import {Metrics} from '../Shared/Themes'
 import Colors from '../Shared/Themes/Colors'
 import getVideoUrl from '../Shared/Lib/getVideoUrl'
-import getRelativeHeight from '../Shared/Lib/getRelativeHeight'
+import getRelativeHeight, {extractCoverMetrics} from '../Shared/Lib/getRelativeHeight'
 
 export default class StoryCover extends Component {
 
@@ -60,6 +60,7 @@ export default class StoryCover extends Component {
   }
 
   _getWidthHeight(isVideo){
+    const {isFeed, cover} = this.props
     if (this.props.isFeed) {
       if (this.hasImage()) {
         return { height: Metrics.storyCover.feed.imageTypeHeight }
@@ -67,22 +68,12 @@ export default class StoryCover extends Component {
         return { height: Metrics.storyCover.feed.videoTypeHeight }
       }
     } else {
-      if (isVideo) {
-        return {
-          width: Metrics.screenWidth,
-          height: Math.min(
-            Metrics.storyCover.fullScreen.height,
-            this.props.cover.original
-              ? getRelativeHeight(Metrics.screenWidth, this.props.cover.original.meta)
-              : Metrics.storyCover.fullScreen.height,
-          ),
-        }
-      }
-      else {
-        return {
-          width: Metrics.screenWidth,
-          height: Metrics.storyCover.fullScreen.height,
-        }
+      return {
+        width: Metrics.screenWidth,
+        height: Math.min(
+          Metrics.storyCover.fullScreen.height,
+          getRelativeHeight(Metrics.screenWidth, extractCoverMetrics(cover)),
+        ),
       }
     }
   }
@@ -95,7 +86,7 @@ export default class StoryCover extends Component {
   renderImageWithUrl(isVideo, imageUrl, imageThumbnailUrl) {
     const {
       cover, onPress, gradientLocations, gradientColors,
-      children, showPlayButton, playButtonSize,
+      children, showPlayButton,
     } = this.props
     // handling for backgroundPublish failures. Covers will not be correctly formatted yet
 
@@ -107,7 +98,6 @@ export default class StoryCover extends Component {
         <View style={{
           ...imageStyle,
           ...this._getWidthHeight(),
-          maxHeight: Metrics.storyCover.fullScreen.height,
         }}>
         { imageThumbnailUrl &&
           <ImageWrapper
@@ -127,15 +117,8 @@ export default class StoryCover extends Component {
             {children}
           </View>
         {showPlayButton && isVideo &&
-          <PlayButton
-            onPress={this._tapVideoWrapper}
-            style={[
-              styles.playButton,
-              playButtonSize === 'small' ? styles.smallPlayButton : {}
-            ]}
-            size={playButtonSize || 'small'}
-          />
-         }
+          this.renderPlayButton()
+        }
         </View>
       </TouchableWithoutFeedback>
     )
@@ -184,6 +167,20 @@ export default class StoryCover extends Component {
     nextState.shouldEnableAutoplay !== this.props.shouldEnableAutoplay
   }
 
+  renderPlayButton() {
+    const {playButtonSize} = this.props
+    return (
+      <PlayButton
+        onPress={this._tapVideoWrapper}
+        style={[
+          styles.playButton,
+          playButtonSize === 'small' ? styles.smallPlayButton : {}
+        ]}
+        size={playButtonSize || 'small'}
+      />
+    )
+  }
+
   /*
   Nota bene. We have two different ways to display the play button. One through the Video
   component and a second through the conditional renders we have below. This should be
@@ -224,7 +221,9 @@ export default class StoryCover extends Component {
               isMuted={this.props.isFeed}
               showControls={false}
               resizeMode='cover'
-            />
+            >
+              {this.renderPlayButton()}
+            </VideoPlayer>
           </View>
         </TouchableWithoutFeedback>
       )

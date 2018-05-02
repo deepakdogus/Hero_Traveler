@@ -51,6 +51,7 @@ const StoryVideo = enhanceStoryVideo((props) => {
         ref={props.registerRef}
         path={props.path}
         originalPath={props.downloadPath}
+        imgUrl={props.thumbnailPath}
         style={styles.video}
         allowVideoPlay={true}
         autoPlayVideo={false}
@@ -77,6 +78,7 @@ const atomicHandler = (item: Object): any => {
           <View key={item.key} style={styles.mediaViewWrapper}>
             <View style={[styles.mediaPlaceholder, {minHeight: height}]}>
               <ImageWrapper
+                cached={true}
                 fullWidth={true}
                 source={{uri: `${getImageUrl(item.data.url, 'optimized', {
                   width: Metrics.screenWidth,
@@ -90,10 +92,14 @@ const atomicHandler = (item: Object): any => {
       case 'video':
         const url = getVideoUrlFromString(item.data.url, true)
         const downloadUrl = getVideoUrlFromString(item.data.url, false)
+        const thumbnailUrl = getImageUrl(url, 'optimized', {
+          video: true,
+          width: 'screen',
+        })
         return (
           <View key={item.key} style={styles.mediaViewWrapper}>
             <View style={[styles.mediaPlaceholder, {minHeight: height}]}>
-            <StoryVideo path={url} downloadPath={downloadUrl} height={height}/>
+            <StoryVideo path={url} downloadPath={downloadUrl} thumbnailPath={thumbnailUrl} height={height}/>
             </View>
             {!!item.text && <Text style={styles.caption}>{item.text}</Text>}
           </View>

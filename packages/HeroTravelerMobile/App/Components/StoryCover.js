@@ -60,9 +60,10 @@ export default class StoryCover extends Component {
   }
 
   getMinOfHeights(){
-    return this.props.cover.original
-      ? getRelativeHeight(Metrics.screenWidth, this.props.cover.original.meta)
-      : Metrics.storyCover.fullScreen.height
+    const {cover} = this.props
+    return cover.original
+      ? getRelativeHeight(Metrics.screenWidth, cover.original.meta)
+      : getRelativeHeight(Metrics.screenWidth, cover)
   }
 
   _getWidthHeight(isVideo){

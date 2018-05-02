@@ -29,7 +29,7 @@ import styles, {customStyles, modalWrapperStyles} from './2_StoryCoverScreenStyl
 import NavBar from './NavBar'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import getVideoUrl from '../../Shared/Lib/getVideoUrl'
-import getRelativeHeight from '../../Shared/Lib/getRelativeHeight'
+import getRelativeHeight, {extractCoverMetrics} from '../../Shared/Lib/getRelativeHeight'
 import ImageWrapper from '../../Components/ImageWrapper'
 import VideoPlayer, {TouchlessPlayButton} from '../../Components/VideoPlayer'
 import pathAsFileObject from '../../Shared/Lib/pathAsFileObject'
@@ -776,13 +776,9 @@ class StoryCoverScreen extends Component {
     const cover = coverImage || coverVideo
 
     if (cover) {
-      let widthHeight = {
-        height: _.get(cover, 'original.meta.height') || cover.height,
-        width: _.get(cover, 'original.meta.width') || cover.width,
-      }
       return Math.min(
         Metrics.storyCover.fullScreen.height,
-        getRelativeHeight(Metrics.screenWidth, widthHeight)
+        getRelativeHeight(Metrics.screenWidth, extractCoverMetrics(cover))
       )
     }
 

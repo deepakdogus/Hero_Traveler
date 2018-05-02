@@ -12,7 +12,7 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import {Metrics} from '../Shared/Themes'
 import Colors from '../Shared/Themes/Colors'
 import getVideoUrl from '../Shared/Lib/getVideoUrl'
-import getRelativeHeight from '../Shared/Lib/getRelativeHeight'
+import getRelativeHeight, {extractCoverMetrics} from '../Shared/Lib/getRelativeHeight'
 
 export default class StoryCover extends Component {
 
@@ -59,14 +59,8 @@ export default class StoryCover extends Component {
     return this.props.coverType === 'image' && !!this.props.cover
   }
 
-  _getRelativeHeight(){
-    const {cover} = this.props
-    return cover.original
-      ? getRelativeHeight(Metrics.screenWidth, cover.original.meta)
-      : getRelativeHeight(Metrics.screenWidth, cover)
-  }
-
   _getWidthHeight(isVideo){
+    const {isFeed, cover} = this.props
     if (this.props.isFeed) {
       if (this.hasImage()) {
         return { height: Metrics.storyCover.feed.imageTypeHeight }
@@ -78,7 +72,7 @@ export default class StoryCover extends Component {
         width: Metrics.screenWidth,
         height: Math.min(
           Metrics.storyCover.fullScreen.height,
-          this._getRelativeHeight(),
+          getRelativeHeight(Metrics.screenWidth, extractCoverMetrics(cover)),
         ),
       }
     }

@@ -21,8 +21,15 @@ function getAreInRenderLocation(state, ownProps){
   }
 }
 
-function onPressUser(sessionUserId) {
+function areAlreadyInProfileScreen(sceneName, profileId, authorId, sessionUserId){
+  return (sceneName === 'profile' && authorId === sessionUserId)
+  || (sceneName === 'readOnlyProfile' && authorId === profileId)
+}
+
+function onPressUser(sessionUserId, sceneName, profileId) {
   return (userId) => {
+    // avoids naving to the scene we are already in
+    if (areAlreadyInProfileScreen(sceneName, profileId, userId, sessionUserId)) return
     if (sessionUserId === userId) {
       NavActions.profile({type: 'jump'})
     } else {
@@ -39,13 +46,15 @@ const mapStateToProps = (state, ownProps) => {
   // the storyProps conditional is necessary because without it, the below configuration will throw errors when the user deletes a story
   let storyProps = null
   if (story) {
+    const {name, userId} = state.routes.scene
+
     storyProps = {
       user: entities.users.entities[story.author],
       isLiked: isStoryLiked(entities.users, sessionUserId, story.id),
       isBookmarked: isStoryBookmarked(entities.users, sessionUserId, story.id),
       myFollowedUsers: getFollowers(entities.users, 'following', sessionUserId),
       areInRenderLocation: getAreInRenderLocation(state, ownProps),
-      onPressUser: onPressUser(sessionUserId),
+      onPressUser: onPressUser(sessionUserId, name, userId),
     }
   }
 

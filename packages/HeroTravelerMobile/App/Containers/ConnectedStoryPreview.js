@@ -21,6 +21,16 @@ function getAreInRenderLocation(state, ownProps){
   }
 }
 
+function onPressUser(sessionUserId) {
+  return (userId) => {
+    if (sessionUserId === userId) {
+      NavActions.profile({type: 'jump'})
+    } else {
+      NavActions.readOnlyProfile({userId})
+    }
+  }
+}
+
 const mapStateToProps = (state, ownProps) => {
   const {session, entities} = state
   const {story} = ownProps
@@ -35,6 +45,7 @@ const mapStateToProps = (state, ownProps) => {
       isBookmarked: isStoryBookmarked(entities.users, sessionUserId, story.id),
       myFollowedUsers: getFollowers(entities.users, 'following', sessionUserId),
       areInRenderLocation: getAreInRenderLocation(state, ownProps),
+      onPressUser: onPressUser(sessionUserId),
     }
   }
 

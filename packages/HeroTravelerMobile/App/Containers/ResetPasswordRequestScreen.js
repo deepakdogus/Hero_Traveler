@@ -5,7 +5,6 @@ import {
   ScrollView,
   Text,
   TextInput,
-  Image,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { Actions as NavigationActions } from 'react-native-router-flux'
@@ -14,6 +13,7 @@ import { Images } from '../Shared/Themes'
 import RoundedButton from '../Components/RoundedButton'
 import styles from './Styles/ResetPasswordRequestScreenStyles'
 import LoginActions from '../Shared/Redux/LoginRedux'
+import ImageWrapper from '../Components/ImageWrapper'
 
 const Constants = {
   EMAIL_REGEX: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -68,10 +68,11 @@ class ResetPasswordRequestScreen extends React.Component {
   render () {
     const email = this.state.email
     return (
-      <Image
+      <ImageWrapper
         source={Images.launchBackground}
         style={styles.backgroundImage}
         blurRadius={10}
+        background
       >
         <ScrollView
           style={[styles.container]}
@@ -105,7 +106,7 @@ class ResetPasswordRequestScreen extends React.Component {
 
           {this.props.error && <Text style={styles.error}>{this.props.error}</Text>}
         </ScrollView>
-      </Image>
+      </ImageWrapper>
     )
   }
 }

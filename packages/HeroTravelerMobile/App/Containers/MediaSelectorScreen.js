@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 import {
   Text,
   View,
-  TouchableOpacity
+  TouchableOpacity,
+  NativeModules,
+  Linking,
 } from 'react-native'
 import { connect } from 'react-redux'
 import ImagePicker from 'react-native-image-picker'
@@ -19,6 +21,8 @@ import isTooltipComplete, {Types as TooltipTypes} from '../Shared/Lib/firstTimeT
 import UserActions from '../Shared/Redux/Entities/Users'
 import detailsStyles from './CreateStory/4_CreateStoryDetailScreenStyles'
 import Tooltip from '../Components/Tooltip'
+
+const VideoManager = NativeModules.VideoManager
 
 class MediaSelectorScreen extends React.Component {
 
@@ -70,62 +74,19 @@ class MediaSelectorScreen extends React.Component {
 
   renderNextTooltip() {
     return (
-      <Tooltip 
+      <Tooltip
         text='Tap to continue'
         position='right-nav-button'
         onDismiss={this._completeNextTooltip}
       />
     );
-
-    return (
-      <TouchableOpacity
-        style={{
-          position: 'absolute',
-          top: 0,
-          bottom: 490,
-          left: 220,
-          right: 0,
-          backgroundColor: 'transparent',
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-        onPress={this._completeNextTooltip}
-      >
-          <View style={{
-            height: 0,
-            width: 0,
-            borderLeftWidth: 6,
-            borderLeftColor: 'transparent',
-            borderRightWidth: 6,
-            borderRightColor: 'transparent',
-            borderBottomWidth: 6,
-            borderBottomColor: 'white',
-            position: 'relative',
-            left: 42,
-          }}>
-          </View>
-          <View style={{
-            height: 38,
-            width: 124,
-            padding: 0,
-            borderRadius: 5,
-            backgroundColor: 'white',
-            alignItems: 'center',
-            shadowColor: 'black',
-            shadowOpacity: .2,
-            shadowRadius: 30
-          }}>
-            <Text style={{marginTop: 10}}>Tap to continue</Text>
-          </View>
-      </TouchableOpacity>
-    )
   }
 
   _retake = () => {
     this.setState({media: null})
   }
 
+  // Response from picking from the library
   _handleMediaSelector = (data) => {
     if (data.didCancel) {
       this.setState({captureOpen: true})
@@ -133,24 +94,48 @@ class MediaSelectorScreen extends React.Component {
     }
 
     if (data.error) {
-      this.setState({captureOpen: true})
+      this.setState({
+        libraryNotAuthorized: true,
+        captureOpen: false
+      })
       return
     }
 
-    this.setState({
+    const updateState = {
       mediaCaptured: false,
       media: data.uri,
       mediaMetrics: {
-        height: data.height,
-        width: data.width,
       }
-    })
+    }
+
+    VideoManager.getWidthAndHeight(data)
+      .then(response => {
+        this.setState({
+          ...updateState,
+          mediaMetrics: {
+            height: response.height,
+            width: response.width,
+          }
+        })
+      })
+      .catch(err => {
+        // Failing to get width/height is rare, and shouldn't stop being able to upload it
+        //   Only a few UI elements would look wrong
+        this.setState(updateState)
+      })
+
   }
 
+  // Handle the response from taking a photo or video
   _handleCaptureMedia = (data) => {
+
     this.setState({
       mediaCaptured: true,
-      media: "file://" + data.path
+      media: "file://" + data.path,
+      mediaMetrics: {
+        height: data.height,
+        width: data.width,
+      },
     })
   }
 
@@ -173,13 +158,18 @@ class MediaSelectorScreen extends React.Component {
     this.setState({error: undefined})
   }
 
+  _navToSettings = () => {
+    this.setState({libraryNotAuthorized: false});
+    Linking.openURL('app-settings:');
+  }
+
   getIsPhotoType() {
     if (this.props.mediaType) return this.props.mediaType === 'photo'
     else return this.state.selectedMediaType === 'Photo'
   }
 
   render () {
-    const {error} = this.state
+    const {error, libraryNotAuthorized, captureOpen} = this.state
     let content
     let showNextTooltip = false;
     const mediaType = this.getMediaType()
@@ -189,7 +179,7 @@ class MediaSelectorScreen extends React.Component {
         this.props.user.introTooltips
       )
     }
-    if (this.state.captureOpen && !this.state.media) {
+    if (captureOpen && !this.state.media) {
       content = (
         <PhotoTaker
           mediaType={this.props.mediaType}
@@ -265,6 +255,15 @@ class MediaSelectorScreen extends React.Component {
               text={error.toString().substring(7)}
               title={'Media Load Failure'}
             />
+          }
+          {libraryNotAuthorized && !captureOpen &&
+            <View style={[styles.notAuthorizedWrapper]}>
+            <TouchableOpacity
+              onPress={this._navToSettings}
+            >
+              <Text style={[styles.notAuthorizedText]}>Access to your photo library is currently disabled.{"\n"}Tap here to update your settings.</Text>
+              </TouchableOpacity>
+            </View>
           }
           {content}
           <View style={styles.tabbar}>

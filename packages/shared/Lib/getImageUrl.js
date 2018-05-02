@@ -7,10 +7,14 @@ function getImageUrlBase() {
   return `https://res.cloudinary.com/${Env.cloudName}/image/upload`
 }
 
-function buildUrl(base: string, uri: string, urlParameters: object): string {
-  const parameters = _.map(_.toPairs(urlParameters || {}), function(pair) {
+function buildParameters(urlParameters) {
+  return _.map(_.toPairs(urlParameters || {}), function(pair) {
     return `${pair[0]}_${pair[1]}`
   })
+}
+
+function buildUrl(base: string, uri: string, urlParameters: object): string {
+  const parameters = buildParameters(urlParameters)
 
   if (parameters.length > 0) {
     const parameterString = parameters.join(',')
@@ -109,11 +113,32 @@ const imageUrlParametersFactories = {
   optimized: getOptimizedImageUrlParameters,
 }
 
+// hacky way to extract the url for images that get uploaded to Cloudinary but not DB
+// will look to refactor
+function midSyncSpecialCase(image, type){
+    const urlParametersFactory = imageUrlParametersFactories[type] || getOptimizedImageUrlParameters
+    const urlParameters = urlParametersFactory(image)
+    let parameters = buildParameters(urlParameters).join(",")
+
+    let orignalUrl = image.uri || image.secure_url
+    if (!parameters.length) return orignalUrl
+
+    orignalUrl = orignalUrl.split("/")
+    orignalUrl[6] = parameters
+    let lastArrayItem = orignalUrl[orignalUrl.length-1].split('.')
+    lastArrayItem[1] = 'jpg'
+    orignalUrl[orignalUrl.length-1] = lastArrayItem.join('.')
+    return orignalUrl.join("/")
+
+}
+
 export default function getImageUrl(image: object|string, type: string, options: object = {}): ?string {
+  if (isLocalMediaAsset(image) || (image && image.uri)) return image.uri || image
+
   // special cases where image has not been fully synced
-  if (!!image && (!!image.uri || !!image.secure_url)) return image.uri || image.secure_url
-  // uncertain if this if ever gets hit but keeping just in case
-  if (isLocalMediaAsset(image)) return image
+  if (!!image && (!!image.uri || !!image.secure_url)) {
+    return midSyncSpecialCase(image, type)
+  }
 
   const uri = getUri(image)
   if (!uri) {

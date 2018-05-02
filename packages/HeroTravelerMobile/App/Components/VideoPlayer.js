@@ -395,7 +395,7 @@ const styles = StyleSheet.create({
   },
   videoBtnImgIcon: {
     marginLeft: 4
-  },  
+  },
   playButtonContainer: {
     borderRadius: 30,
     width: 60,

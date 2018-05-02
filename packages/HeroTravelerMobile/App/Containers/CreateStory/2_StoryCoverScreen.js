@@ -25,10 +25,11 @@ import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import ShadowButton from '../../Components/ShadowButton'
 import Loader from '../../Components/Loader'
 import {Colors, Metrics} from '../../Shared/Themes'
-import styles, {customStyles, modalWrapperStyles, coverHeight} from './2_StoryCoverScreenStyles'
+import styles, {customStyles, modalWrapperStyles} from './2_StoryCoverScreenStyles'
 import NavBar from './NavBar'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import getVideoUrl from '../../Shared/Lib/getVideoUrl'
+import getRelativeHeight, {extractCoverMetrics} from '../../Shared/Lib/getRelativeHeight'
 import ImageWrapper from '../../Components/ImageWrapper'
 import VideoPlayer, {TouchlessPlayButton} from '../../Components/VideoPlayer'
 import pathAsFileObject from '../../Shared/Lib/pathAsFileObject'
@@ -41,7 +42,7 @@ import Tooltip from '../../Components/Tooltip'
 
 import NativeEditor from '../../Components/NativeEditor/Editor'
 import Toolbar from '../../Components/NativeEditor/Toolbar'
-import {KeyboardTrackingView} from 'react-native-keyboard-tracking-view';
+import {KeyboardTrackingView} from 'react-native-keyboard-tracking-view'
 import { ProcessingManager } from 'react-native-video-processing'
 
 const VideoManager = NativeModules.VideoManager
@@ -135,6 +136,7 @@ class StoryCoverScreen extends Component {
       activeModal: undefined,
       toolbarDisplay: false,
       contentTouched: false,
+      coverMetrics: {},
     }
   }
 
@@ -227,8 +229,8 @@ class StoryCoverScreen extends Component {
   }
 
   renderCoverPhoto(coverPhoto) {
-    if (coverPhoto) coverPhoto = getImageUrl(coverPhoto, 'basic')
 
+    if (coverPhoto) coverPhoto = getImageUrl(coverPhoto, 'basic')
     return R.ifElse(
       R.identity,
       R.always((
@@ -600,7 +602,7 @@ class StoryCoverScreen extends Component {
   }
 
   jumpToTitle = () => {
-    this.scrollViewRef.scrollTo({x:0, y: coverHeight - 30, amimated: true})
+    this.scrollViewRef.scrollTo({x:0, y: this._getCoverHeight() - 30, amimated: true})
   }
 
   renderContent () {
@@ -769,12 +771,33 @@ class StoryCoverScreen extends Component {
     return !this.props.workingDraft || !this.props.workingDraft.id
   }
 
+  _getCoverHeight() {
+    const { coverImage, coverVideo } = this.props.workingDraft
+    const cover = coverImage || coverVideo
+
+    if (cover) {
+      return Math.min(
+        Metrics.storyCover.fullScreen.height,
+        getRelativeHeight(Metrics.screenWidth, extractCoverMetrics(cover))
+      )
+    }
+
+    return Metrics.storyCover.fullScreen.height
+  }
+
+  _getCoverStyle () {
+    return {
+      height: this._getCoverHeight(),
+    }
+  }
+
   render () {
     const {error, validationError} = this.state
     const {
       title, coverCaption, description,
       coverImage, coverVideo
     } = this.props.workingDraft
+
     let showIntroTooltip = false;
     if (this.props.user && this.state.file) {
       showIntroTooltip = !isTooltipComplete(
@@ -810,7 +833,7 @@ class StoryCoverScreen extends Component {
             rightTextStyle={styles.navBarRightTextStyle}
             style={styles.navBarStyle}
           />
-            <View style={styles.coverHeight}>
+          <View style={this._getCoverStyle()}>
               {error &&
                 <ShadowButton
                   style={styles.errorButton}
@@ -932,7 +955,14 @@ class StoryCoverScreen extends Component {
     const draftUpdates = { coverCaption: '' }
 
     const callback = (newSource) => {
-      const modifiedFile = {...file, uri: newSource }
+      // nesting coverMetrics inside of original.meta to mirror published media asset format
+      const modifiedFile = {
+        ...file,
+        uri: newSource,
+        original: {
+          meta: coverMetrics
+        }
+      }
 
       if (isPhotoType) {
         draftUpdates.coverImage = modifiedFile
@@ -945,6 +975,7 @@ class StoryCoverScreen extends Component {
       this.setState({
         file,
         isScrollDown: true,
+        coverMetrics,
       })
       this.props.updateWorkingDraft(draftUpdates)
       NavActions.pop()

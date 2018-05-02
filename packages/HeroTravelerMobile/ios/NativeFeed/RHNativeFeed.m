@@ -7,7 +7,6 @@
 #import "RHNativeFeedItem.h"
 #import "RHCustomScrollView.h"
 #import "RHScrollEvent.h"
-#import <SDWebImage/SDWebImageDownloader.h>
 #import "RHNativeFeedBackingView.h"
 #import "RCTVideo.h"
 
@@ -41,13 +40,10 @@
   CGRect _lastClippedToRect;
   NSArray* _cellTemplatesViews;
 
-  // TODO: instead of tracking this context I could also create an object that can be invalidated
-  //    that handles prefetching
-  id loadImagesContext;
-  NSInteger numPendingChecks;
   NSArray* _storyInfos;
   NSSet* loadedStoryImages;
-  
+  RHNativeFeedPrefetcher* prefetcher;
+
   RHDisposable* dispatchCellRangeDisposable;
   
   BOOL storyInfosChanged;
@@ -180,14 +176,12 @@
   }
 
   loadedStoryImages = [NSSet set];
-  id currentLoadImagesContext = [[NSObject alloc] init];
-  loadImagesContext = currentLoadImagesContext;
-  numPendingChecks = numImagesToCheck;
 
   [self setContentSize];
   [self recalculateVisibleCells];
+  
+  NSMutableSet* imagesToPrefetch = [NSMutableSet set];
 
-  __weak RHNativeFeed* weakFeed = self;
   for (RHStoryInfo* storyInfo in _storyInfos)
   {
     NSURL* storyImage = storyInfo.headerImage;
@@ -196,70 +190,17 @@
     {
       continue;
     }
-
-    [[SDWebImageManager sharedManager] cachedImageExistsForURL:storyImage completion:^(BOOL isInCache){
-      RHNativeFeed* strongSelf = weakFeed;
-      [strongSelf imageUrl:storyImage wasLoaded:isInCache context:currentLoadImagesContext];
-    }];
-  }
-}
-
-- (void) imageUrl:(NSURL*)url wasLoaded:(BOOL)loaded context:(id)context
-{
-  if (context != loadImagesContext)
-  {
-    return;
-  }
-
-  if (loaded)
-  {
-    NSMutableSet* mLoadedStoryImages = [loadedStoryImages mutableCopy];
-    [mLoadedStoryImages addObject:url];
-    loadedStoryImages = [NSSet setWithSet:mLoadedStoryImages];
-  }
-  
-  numPendingChecks--;
-  
-  if (numPendingChecks <= 0)
-  {
-    [self dispatchDownloadsInContext:context];
-  }
-
-  [self setContentSize];
-}
-
-- (void) dispatchDownloadsInContext:(id)context
-{
-  if (context != loadImagesContext)
-  {
-    return;
-  }
-  
-  NSMutableArray* mUrlsToFetch = [@[] mutableCopy];
-  
-  for (RHStoryInfo* storyInfo in _storyInfos)
-  {
-    NSURL* storyImage = storyInfo.headerImage;
-    if (storyImage && ![loadedStoryImages containsObject:storyImage])
-    {
-      [mUrlsToFetch addObject:storyImage];
-    }
     
+    [imagesToPrefetch addObject:storyImage];
   }
   
-  SDWebImagePrefetcher* prefetcher = [SDWebImagePrefetcher sharedImagePrefetcher];
-  
-  prefetcher.delegate = self;
-  prefetcher.maxConcurrentDownloads = 5;
-  [prefetcher prefetchURLs:mUrlsToFetch];
+  [prefetcher invalidate];
+  prefetcher = [[RHNativeFeedPrefetcher alloc] initWithImagesToPrefetch:[NSSet setWithSet:imagesToPrefetch] delegate:self];
 }
 
-- (void)imagePrefetcher:(nonnull SDWebImagePrefetcher *)imagePrefetcher didPrefetchURL:(nullable NSURL *)imageURL finishedCount:(NSUInteger)finishedCount totalCount:(NSUInteger)totalCount
+- (void) prefetcher:(RHNativeFeedPrefetcher*)prefetcher updatedCachedImages:(NSSet*)cachedImages
 {
-  NSMutableSet* mLoadedStoryImages = [loadedStoryImages mutableCopy];
-  [mLoadedStoryImages addObject:imageURL];
-  loadedStoryImages = [NSSet setWithSet:mLoadedStoryImages];
-
+  loadedStoryImages = cachedImages;
   [self setContentSize];
 }
 

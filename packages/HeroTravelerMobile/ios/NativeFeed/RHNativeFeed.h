@@ -10,10 +10,10 @@
 #import <React/RCTEventDispatcher.h>
 #import <React/RCTComponent.h>
 #import <React/RCTView.h>
-#import <SDWebImage/SDWebImagePrefetcher.h>
 #import "RHStoryInfo.h"
+#import "RHNativeFeedPrefetcher.h"
 
-@interface RHNativeFeed : RCTView <UIScrollViewDelegate, SDWebImagePrefetcherDelegate>
+@interface RHNativeFeed : RCTView <UIScrollViewDelegate, RHNativeFeedPrefetcherDelegate>
 
 - (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher;
 - (void) recalculateBackingView;

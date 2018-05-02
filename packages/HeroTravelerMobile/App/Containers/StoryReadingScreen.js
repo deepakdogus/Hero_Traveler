@@ -191,14 +191,6 @@ class StoryReadingScreen extends React.Component {
     this.setState({showFlagModal: !this.state.showFlagModal})
   }
 
-  _pressUser = (userId) => {
-    if (this.props.user.id === userId) {
-      NavActions.profile({type: 'jump'})
-    } else {
-      NavActions.readOnlyProfile({userId})
-    }
-  }
-
   /* MBT 08/08/17: Hold off on clickable tags until future notice
   // _navBackToStory = () => {
   //   NavActions.story({storyId: this.props.story.id})
@@ -306,7 +298,6 @@ class StoryReadingScreen extends React.Component {
             isFeed={false}
             onPressLike={this._toggleLike}
             showLike={false}
-            onPressUser={this._pressUser}
             gradientColors={['rgba(0,0,0,.65)', 'transparent', 'transparent', 'rgba(0,0,0,.65)']}
             gradientLocations={[0,.25,.5,1]}
             key={story.id}

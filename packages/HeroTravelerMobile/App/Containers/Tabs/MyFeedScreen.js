@@ -90,21 +90,12 @@ class MyFeedScreen extends React.Component {
     this.props.attemptGetUserFeed(this.props.user.id)
   }
 
-  _touchUser = (userId) => {
-    if (this.props.userId === userId) {
-      NavActions.profile({type: 'jump'})
-    } else {
-      NavActions.readOnlyProfile({userId})
-    }
-  }
-
   renderStory = (story, index) => {
     return (
       <ConnectedStoryPreview
         isFeed={true}
         story={story}
         height={imageHeight}
-        onPressUser={this._touchUser}
         userId={this.props.user.id}
         autoPlayVideo
         allowVideoPlay

@@ -14,6 +14,7 @@ import styles from './Styles/StoryListStyle'
 import ModifiedListView from './ModifiedListView'
 import _ from 'lodash'
 import getImageUrl from '../Shared/Lib/getImageUrl'
+import {isLocalMediaAsset} from '../Shared/Lib/getVideoUrl'
 
 const NativeFeed = requireNativeComponent('RHNativeFeed', null)
 const NativeFeedHeader = requireNativeComponent('RHNativeFeedHeader', null)
@@ -130,8 +131,13 @@ export default class StoryList extends React.Component {
           height: Metrics.feedCell.imageCellHeight + totalPadding,
         }
       } else if (story && story.coverVideo) {
+        let headerImage = getImageUrl(story.coverVideo, 'optimized', videoOptions, story.cover)
+        if (isLocalMediaAsset(headerImage)) {
+          headerImage = null
+        }
+        
         return {
-          headerImage: getImageUrl(story.coverVideo, 'optimized', videoOptions, story.cover),
+          headerImage,
           height: Metrics.feedCell.videoCellHeight + totalPadding,
         }
       }

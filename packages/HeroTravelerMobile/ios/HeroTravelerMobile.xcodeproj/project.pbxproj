@@ -61,6 +61,7 @@
 		916D5B3C204DC86400FB09DF /* RHShadowNativeFeedItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 916D5B3B204DC86400FB09DF /* RHShadowNativeFeedItem.m */; };
 		916DBF62203C8A2B0097DE98 /* libAutoGrowTextInput.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 916DBF61203C8A1B0097DE98 /* libAutoGrowTextInput.a */; };
 		917616462055D3CC007F8E40 /* RHNativeFeedBackingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 917616452055D3CC007F8E40 /* RHNativeFeedBackingView.m */; };
+		9183B9C3209A2B4B00856E3E /* RHNativeFeedPrefetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 9183B9C2209A2B4B00856E3E /* RHNativeFeedPrefetcher.m */; };
 		919416DC2043E854006F42BC /* RHShadowNativeFeedHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 919416DB2043E854006F42BC /* RHShadowNativeFeedHeader.m */; };
 		919416DF2043E86A006F42BC /* RHNativeFeedHeaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 919416DE2043E86A006F42BC /* RHNativeFeedHeaderManager.m */; };
 		919416E22043F00C006F42BC /* RHNativeFeedHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 919416E12043F00C006F42BC /* RHNativeFeedHeader.m */; };
@@ -686,6 +687,8 @@
 		916DBF5C203C8A1B0097DE98 /* AutoGrowTextInput.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AutoGrowTextInput.xcodeproj; path = "../node_modules/react-native-autogrow-textinput/ios/AutoGrowTextInput.xcodeproj"; sourceTree = "<group>"; };
 		917616442055D3CC007F8E40 /* RHNativeFeedBackingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHNativeFeedBackingView.h; sourceTree = "<group>"; };
 		917616452055D3CC007F8E40 /* RHNativeFeedBackingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHNativeFeedBackingView.m; sourceTree = "<group>"; };
+		9183B9C1209A2B4B00856E3E /* RHNativeFeedPrefetcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHNativeFeedPrefetcher.h; sourceTree = "<group>"; };
+		9183B9C2209A2B4B00856E3E /* RHNativeFeedPrefetcher.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHNativeFeedPrefetcher.m; sourceTree = "<group>"; };
 		919416DA2043E854006F42BC /* RHShadowNativeFeedHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHShadowNativeFeedHeader.h; sourceTree = "<group>"; };
 		919416DB2043E854006F42BC /* RHShadowNativeFeedHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHShadowNativeFeedHeader.m; sourceTree = "<group>"; };
 		919416DD2043E86A006F42BC /* RHNativeFeedHeaderManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHNativeFeedHeaderManager.h; sourceTree = "<group>"; };
@@ -1316,6 +1319,8 @@
 				917616452055D3CC007F8E40 /* RHNativeFeedBackingView.m */,
 				9101B3F22056BE96008F46F4 /* RHStoryInfo.h */,
 				9101B3F32056BE96008F46F4 /* RHStoryInfo.m */,
+				9183B9C1209A2B4B00856E3E /* RHNativeFeedPrefetcher.h */,
+				9183B9C2209A2B4B00856E3E /* RHNativeFeedPrefetcher.m */,
 			);
 			path = NativeFeed;
 			sourceTree = "<group>";
@@ -2254,6 +2259,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				919416E52043F66E006F42BC /* RHCustomScrollView.m in Sources */,
+				9183B9C3209A2B4B00856E3E /* RHNativeFeedPrefetcher.m in Sources */,
 				91F1995C204F29C700EC7125 /* ICGRulerView.m in Sources */,
 				91973CAC1FA39B64006DE932 /* RNDJBaseModel.m in Sources */,
 				91973CAD1FA39B64006DE932 /* RNDJBlockModel.m in Sources */,

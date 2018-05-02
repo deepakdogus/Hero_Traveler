@@ -785,15 +785,6 @@ class StoryCoverScreen extends Component {
         getRelativeHeight(Metrics.screenWidth, widthHeight)
       )
     }
-    if (!this.hasNoPhoto()) {
-      return Metrics.storyCover.fullScreen.height
-    }
-    if (!this.hasNoVideo() && this.state.coverMetrics.height && this.state.coverMetrics.width) {
-      return Math.min(
-        Metrics.storyCover.fullScreen.height,
-        getRelativeHeight(Metrics.screenWidth, this.state.coverMetrics)
-      )
-    }
 
     return Metrics.storyCover.fullScreen.height
   }

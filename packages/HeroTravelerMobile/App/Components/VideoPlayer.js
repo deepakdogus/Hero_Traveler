@@ -307,7 +307,7 @@ export default class VideoPlayer extends React.Component {
           onPauseFromUI={this._onPauseFromUI}
           onPlayFromUI={this._onPlayFromUI}
           showControls={this.props.showControls}
-        />
+          />
 
         {(this.state.isStalled || isNotReadyForDisplay) &&
          <ActivityIndicator size="small" color="#ffffff" />

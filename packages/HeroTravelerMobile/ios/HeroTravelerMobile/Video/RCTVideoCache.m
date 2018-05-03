@@ -57,7 +57,7 @@
 
 - (void) cleanupCacheInstances
 {
-  
+  [self purgeExcessVideos:nil];
 }
 
 + (NSString*) urlToKey:(NSString*)url
@@ -176,11 +176,26 @@
 
   if (originalUrl.length > 0 && [originalUrl hasPrefix:@"http"])
   {
-    VideoDownloadItem* download = [[VideoDownloadItem alloc] initWithAssetKey:assetKey downloadUrl:[NSURL URLWithString:originalUrl]];
-    download.delegate = self;
-    NSMutableArray* mCurrentDownloads = [currentDownloads mutableCopy];
-    [mCurrentDownloads addObject:download];
-    currentDownloads = [NSArray arrayWithArray:mCurrentDownloads];
+    BOOL shouldDownload = YES;
+    for (VideoDownloadItem* item in currentDownloads)
+    {
+      if ([item.assetKey isEqualToString:assetKey])
+      {
+        if (item.status == Pending || item.status == Downloading || item.status == Finished)
+        {
+          shouldDownload = NO;
+        }
+      }
+    }
+
+    if (shouldDownload)
+    {
+      VideoDownloadItem* download = [[VideoDownloadItem alloc] initWithAssetKey:assetKey downloadUrl:[NSURL URLWithString:originalUrl]];
+      download.delegate = self;
+      NSMutableArray* mCurrentDownloads = [currentDownloads mutableCopy];
+      [mCurrentDownloads addObject:download];
+      currentDownloads = [NSArray arrayWithArray:mCurrentDownloads];
+    }
   }
 
   [item touch];
@@ -296,35 +311,32 @@
 
 - (void) purgeExcessVideos:(VideoCacheItem*)itemToKeep
 {
-  if (loadedVideos.count > 3)
+  NSMutableArray* mLoadedVideos = [@[] mutableCopy];
+  
+  NSArray* oldestVideosFirst = [loadedVideos sortedArrayUsingComparator:^(VideoCacheItem* a, VideoCacheItem* b){
+    return [a.lastTouched compare:b.lastTouched];
+  }];
+  
+  for (VideoCacheItem* existingCacheItem in oldestVideosFirst)
   {
-    NSMutableArray* mLoadedVideos = [@[] mutableCopy];
-    
-    NSArray* oldestVideosFirst = [loadedVideos sortedArrayUsingComparator:^(VideoCacheItem* a, VideoCacheItem* b){
-      return [a.lastTouched compare:b.lastTouched];
-    }];
-    
-    for (VideoCacheItem* existingCacheItem in oldestVideosFirst)
+    if (existingCacheItem == itemToKeep)
     {
-      if (existingCacheItem == itemToKeep)
+      [mLoadedVideos addObject:existingCacheItem];
+    }
+    else
+    {
+      if (![existingCacheItem purge])
       {
         [mLoadedVideos addObject:existingCacheItem];
       }
       else
       {
-        if (![existingCacheItem purge])
-        {
-          [mLoadedVideos addObject:existingCacheItem];
-        }
-        else
-        {
-          NSLog(@"Video purged");
-        }
+        NSLog(@"Video purged");
       }
     }
-    
-    loadedVideos = [NSArray arrayWithArray:mLoadedVideos];
   }
+  
+  loadedVideos = [NSArray arrayWithArray:mLoadedVideos];
 }
 
 - (void) handleMemoryWarning

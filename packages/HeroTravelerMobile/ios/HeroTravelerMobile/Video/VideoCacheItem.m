@@ -36,8 +36,10 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
     NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
     _asset = [AVURLAsset URLAssetWithURL:url options:@{AVURLAssetHTTPCookiesKey : cookies}];
     _playerItem = [AVPlayerItem playerItemWithAsset:_asset];
+    _playerItem.preferredForwardBufferDuration = 5;
+    _playerItem.canUseNetworkResourcesForLiveStreamingWhilePaused = YES;
     [self addPlayerItemObservers];
-
+    
     _player = [AVPlayer playerWithPlayerItem:_playerItem];
     _player.automaticallyWaitsToMinimizeStalling = NO;
     _player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
@@ -205,6 +207,12 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
     if (isBuffering)
     {
       [self injectAndSendDict:videoView.onVideoBuffer view:videoView info:@{@"isBuffering": @(YES)}];
+      [videoView setIsBuffering:YES];
+    }
+    else
+    {
+      [self injectAndSendDict:videoView.onVideoBuffer view:videoView info:@{@"isBuffering": @(NO)}];
+      [videoView setIsBuffering:NO];
     }
     
     if (errorDict)
@@ -533,12 +541,33 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
         }
       }
     } else if ([keyPath isEqualToString:playbackBufferEmptyKeyPath]) {
-      isBuffering = YES;
-      [self sendToAllViews:^(RCTVideo* videoView){return videoView.onVideoBuffer;} info:@{@"isBuffering": @(YES)}];
+      if (_playerItem.playbackBufferEmpty)
+      {
+        isBuffering = YES;
+        [self sendToAllViews:^(RCTVideo* videoView){return videoView.onVideoBuffer;} info:@{@"isBuffering": @(YES)}];
+        for (WeakPlayingVideoItem* weakPlayingVideoItem in currentPlayingVideoItems)
+        {
+          RCTVideo* videoView = weakPlayingVideoItem.playingVideoItem.videoView;
+          if (videoView)
+          {
+            [videoView setIsBuffering:YES];
+          }
+        }
+      }
+      else
+      {
+        isBuffering = NO;
+        [self sendToAllViews:^(RCTVideo* videoView){return videoView.onVideoBuffer;} info:@{@"isBuffering": @(NO)}];
+        for (WeakPlayingVideoItem* weakPlayingVideoItem in currentPlayingVideoItems)
+        {
+          RCTVideo* videoView = weakPlayingVideoItem.playingVideoItem.videoView;
+          if (videoView)
+          {
+            [videoView setIsBuffering:NO];
+          }
+        }
+      }
     } else if ([keyPath isEqualToString:playbackLikelyToKeepUpKeyPath]) {
-      isBuffering = NO;
-      [self sendToAllViews:^(RCTVideo* videoView){return videoView.onVideoBuffer;} info:@{@"isBuffering": @(NO)}];
-      [self applyModifiers];
     }
   } else if (object == _player) {
     if([keyPath isEqualToString:playbackRate]) {

@@ -195,6 +195,11 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   _playWhenInactive = playWhenInactive;
 }
 
+- (void) setIsBuffering:(BOOL)isBuffering
+{
+  self.hidden = isBuffering;
+}
+
 - (void) setIgnoreSilentSwitch:(NSString*)ignoreSilentSwitch
 {
   _ignoreSilentSwitch = ignoreSilentSwitch;

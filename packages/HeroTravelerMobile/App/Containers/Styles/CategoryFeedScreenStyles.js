@@ -26,7 +26,8 @@ export default StyleSheet.create({
   tabnav: {
     height: 50,
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: Colors.feedDividerGrey,
   },
   tab: {
     justifyContent: 'center',

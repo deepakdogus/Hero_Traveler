@@ -94,10 +94,11 @@ const atomicHandler = (item: Object): any => {
       case 'video':
         const url = getVideoUrlFromString(item.data.url, true)
         const downloadUrl = getVideoUrlFromString(item.data.url, false)
-        const thumbnailUrl = getImageUrl(url, 'optimized', {
+        const thumbnailUrl = getImageUrl(item.data.url, 'optimized', {
           video: true,
           width: 'screen',
         })
+
         return (
           <View key={item.key} style={styles.mediaViewWrapper}>
             <View style={[styles.mediaPlaceholder, {minHeight: height}]}>

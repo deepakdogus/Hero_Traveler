@@ -5,7 +5,6 @@ import {
   ScrollView,
   Text,
   TextInput,
-  Image,
 } from 'react-native'
 import { connect } from 'react-redux'
 
@@ -13,7 +12,7 @@ import {Images} from '../Shared/Themes'
 import RoundedButton from '../Components/RoundedButton'
 import styles from './Styles/ResetPasswordRequestScreenStyles'
 import LoginActions from '../Shared/Redux/LoginRedux'
-
+import ImageWrapper from '../Components/ImageWrapper'
 
 class Input extends React.Component {
   render() {
@@ -70,10 +69,11 @@ class ResetPasswordScreen extends React.Component {
 
   render () {
     return (
-      <Image
+      <ImageWrapper
         source={Images.launchBackground}
         style={styles.backgroundImage}
         blurRadius={10}
+        background
       >
         <ScrollView
           style={[styles.container]}
@@ -119,7 +119,7 @@ class ResetPasswordScreen extends React.Component {
 
           {this.props.error && <Text style={styles.error}>{this.props.error}</Text>}
         </ScrollView>
-      </Image>
+      </ImageWrapper>
     )
   }
 }

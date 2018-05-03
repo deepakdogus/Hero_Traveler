@@ -48,4 +48,6 @@
 
 - (void) applyModifiers;
 
+- (void) setIsBuffering:(BOOL)isBuffering;
+
 @end

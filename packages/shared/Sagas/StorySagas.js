@@ -3,7 +3,7 @@ import StoryActions from '../Redux/Entities/Stories'
 import UserActions, {isInitialAppDataLoaded, isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
 import CategoryActions from '../Redux/Entities/Categories'
 import StoryCreateActions from '../Redux/StoryCreateRedux'
-import {getNewCover, saveCover} from '../Redux/helpers/coverUpload'
+import {getNewCover} from '../Redux/helpers/coverUpload'
 import CloudinaryAPI from '../../Services/CloudinaryAPI'
 import pathAsFileObject from '../Lib/pathAsFileObject'
 import _ from 'lodash'
@@ -168,13 +168,14 @@ function * uploadAtomicAssets(draft){
           return Promise.reject(err)
         })
       }
+      else return undefined
     }
-    else return
+    else return undefined
   }))
 
   // part of what needs to get refactored during CloudinaryAPI refactor
   let errorBlock
-  const hasError = promise.some(block => {
+  promise.some(block => {
     if (block && block.error) {
       errorBlock = block
       return true

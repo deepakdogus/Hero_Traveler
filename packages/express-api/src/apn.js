@@ -1,4 +1,4 @@
-import apn from 'apn'
+import AWS from 'aws-sdk'
 import path from 'path'
 import util from 'util'
 import _ from 'lodash'
@@ -6,97 +6,118 @@ import {Models} from '@hero/ht-core'
 const sound = 'chime.caf'
 const badge = 1
 
-let certPath, keyPath
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_KEY
+});
 
-if (process.env.NODE_ENV === 'development') {
-  certPath = path.resolve(path.join(__dirname, '../certificates/apn-cert.pem'))
-  keyPath = path.resolve(path.join(__dirname, '../certificates/apn-key.pem'))
-} else {
-  certPath = path.resolve(path.join(__dirname, '../certificates/apn-prod-cert.pem'))
-  keyPath = path.resolve(path.join(__dirname, '../certificates/apn-prod-key.pem'))
-}
-
-const apnProvider = new apn.Provider({
-  cert: certPath,
-  key: keyPath,
-  ca: [
-    path.resolve(path.join(__dirname, '../certificates/entrust_2048_ca.pem'))
-  ]
-})
+const arn = process.env.AWS_ARN;
 
 function getDeviceIds(devices) {
   return _.map(devices, 'deviceId')
 }
 
-export function likeNotification(devices, user, story) {
-  const notification = new apn.Notification({
-    alert: `${user.profile.fullName} liked your story ${story.title}`,
-    badge,
-    sound,
-    payload: {
-      type: 'like'
+export function constructNotification(title, body, badge) {
+  // See https://developer.apple.com/library/content/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/PayloadKeyReference.html
+  return {
+    default: body,
+    APNS: {
+      aps: {
+        alert: {
+          title, body, badge
+        },
+        sound: 'default',
+        badge: 1,
+        url: 'hero-traveler://test'
+      }
     }
-  })
-  return _send(notification, getDeviceIds(devices))
+  };
+}
+
+export function likeNotification(devices, user, story) {
+  const notification = constructNotification(
+    `You've got a like!`,
+    `${user.profile.fullName} liked your story ${story.title}`,
+    1
+  );
+  return send(notification, getDeviceIds(devices))
     .then(result => {
-      console.log('like notif result', util.inspect(result))
       return Promise.resolve()
     })
 }
 
 export function followerNotification(devices, followingUser) {
-  const notification = new apn.Notification({
-    alert: `${followingUser.profile.fullName} is now following you`,
-    badge,
-    sound,
-    payload: {
-      type: 'follow'
-    }
-  })
+  const notification = constructNotification(
+    `You've got a follower!`,
+    `${followingUser.profile.fullName} is now following you`,
+    1
+  );
 
-  return _send(notification, getDeviceIds(devices))
+  return send(notification, getDeviceIds(devices))
     .then(result => {
-      console.log('follow notif result', util.inspect(result))
       return Promise.resolve()
     })
 }
 
 export function commentNotification(devices, story, user) {
-  const notification = new apn.Notification({
-    alert: `${user.profile.fullName} commented on your story ${story.title}`,
-    badge,
-    sound,
-    payload: {
-      type: 'comment'
-    }
-  })
+  const notification = constructNotification(
+    `You've got a follower!`,
+    `${user.profile.fullName} commented on your story ${story.title}`,
+    1
+  );
 
-  return _send(notification, getDeviceIds(devices))
+  return send(notification, getDeviceIds(devices))
     .then(result => {
-      console.log('comment notif result', util.inspect(result))
       return Promise.resolve()
     })
 }
 
-function _send(notification, devices) {
-  return apnProvider.send(notification, devices)
-    .then(result => {
-      let promise
-      if (result.failed.length) {
-        promise = Models.UserDevice.remove({
-          deviceId: {
-            $in: _.map(result.failed, 'device')
-          }
-        })
+function sendOne(notification, device) {
+  return new Promise((resolve, reject) => {
+    const sns = new AWS.SNS();
+    sns.createPlatformEndpoint({
+      PlatformApplicationArn: arn,
+      Token: device
+    }, (err, data) => {
+      if (err) {
+        reject(err);
       } else {
-        promise = Promise.resolve()
+        // first have to stringify the inner APNS object...
+        notification.APNS = JSON.stringify(notification.APNS);
+        // then have to stringify the entire message payload
+        notification = JSON.stringify(notification);
+        sns.publish({
+          Message: notification,
+          MessageStructure: 'json',
+          TargetArn: data.EndpointArn
+        }, (err, data) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(data);
+          }
+        });
       }
-
-      return promise.then(() => Promise.resolve(result))
     })
+  });
 }
 
-export function cleanup() {
-  console.log('cleaning up')
-  apnProvider.shutdown()
+export async function send(notification, devices, persistDevicesOnFail) {
+  let failed = [];
+
+  await Promise.all(
+    _.map(devices, async (device) => {
+      let result = await sendOne(notification, device).catch((err) => {
+        failed.push(device)
+      })
+    })
+  )
+
+  if (!persistDevicesOnFail) {
+    Models.UserDevice.remove({
+      deviceId: {
+        $in: failed
+      }
+    })
+  }
 }

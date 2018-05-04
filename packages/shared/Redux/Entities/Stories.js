@@ -319,7 +319,6 @@ export const addDraft = (state, {draft}) => {
 // if local id removes from story entities if present
 // removes from drafts.byId
 export const removeDraft = (state, {draftId}) => {
-  let draftsById = state.drafts.byId
   if (draftId.substring(0,6) === 'local-') state = state.setIn(['entities'], state.entities.without(draftId))
   state = removeBackgroundFailure(state, {storyId: draftId})
   const path = ['drafts', 'byId']

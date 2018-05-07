@@ -306,13 +306,27 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     } else {
       __weak RNDJDraftJSEditor* weakSelf = self;
       
+      NSUInteger previousCount = 0;
+
+      RNDJAutocorrectView* previousView = [oldAutocompleteViews objectForKey:[info previousStringRepresentation]];
+      if (previousView) {
+        previousCount = previousView.previousCount + 1;
+      }
+
       RNDJAutocorrectView* autocorrectView =
       [RNDJAutocorrectView make:info
-                                inside:self.superview
-                            cancelBlock:^(NSString* key) {
-                              [weakSelf cancelAutocorrect:key];
-                            }
-                     withContentOffset:_contentInset];
+                         inside:self.superview
+                    cancelBlock:^(NSString* key) {
+                      [weakSelf cancelAutocorrect:key];
+                    }
+              withContentOffset:_contentInset
+              withPreviousCount:previousCount];
+      
+      if (previousCount >= 2)
+      {
+        [_autocompleteLayer removeFromSuperlayer];
+        _autocompleteLayer = nil;
+      }
       
       autocorrectView.onReplaceRangeRequest = _onReplaceRangeRequest;
       
@@ -1238,18 +1252,6 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
 - (void)insertText:(NSString *)text
 {
   [[UIMenuController sharedMenuController] setMenuVisible:NO animated:YES];
-
-  if ([text isEqualToString:@" "] && [existingAutocompleteViews count]) {
-    for (NSString* autocompleteKey in existingAutocompleteViews) {
-      if (![closedAutocorrects containsObject:autocompleteKey]) {
-        RNDJAutocorrectView* autocompleteView = existingAutocompleteViews[autocompleteKey];
-        if ([autocompleteView isKindOfClass:[RNDJAutocorrectView class]]) {
-          [autocompleteView dispatch];
-        }
-      }
-    }
-  }
-  
   
   RCTDirectEventBlock onInsertTextRequest = self.onInsertTextRequest;
   RCTDirectEventBlock onNewlineRequest = self.onNewlineRequest;

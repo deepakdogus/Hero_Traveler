@@ -6,6 +6,7 @@ import StoryCreateActions from '../Redux/StoryCreateRedux'
 import {getNewCover} from '../Redux/helpers/coverUpload'
 import CloudinaryAPI from '../../Services/CloudinaryAPI'
 import pathAsFileObject from '../Lib/pathAsFileObject'
+import { isLocalMediaAsset } from '../Lib/getVideoUrl'
 import _ from 'lodash'
 import Immutable from 'seamless-immutable'
 
@@ -158,7 +159,7 @@ function * uploadAtomicAssets(draft){
   const promise = yield Promise.all(draft.draftjsContent.blocks.map((block, index) => {
     if (block.type === 'atomic') {
       const {url, type} = block.data
-      if (url.substring(0,4) === 'file' || url.substring(0,6) === '/Users') {
+      if (isLocalMediaAsset(url)) {
         return CloudinaryAPI.uploadMediaFile(pathAsFileObject(url), type)
         .then(response => {
           if (response.error) return response

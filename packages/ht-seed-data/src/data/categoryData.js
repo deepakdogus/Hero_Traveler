@@ -13,7 +13,7 @@ function create(imageName) {
   const dashSpacedImageName = imageName.split(' ').join('-')
   const imagePath = path.resolve(imagesPath, imageName)
   const baseName = path.basename(imagePath)
-  const title = string(baseName.replace(path.extname(baseName), '')).titleCase().s
+  const title = string(baseName.replace(path.extname(baseName), '')).titleCase().s.split('-').join(' ')
   const dimensions = sizeOf(imagePath)
   return Promise.all([
     sharp(imagePath)

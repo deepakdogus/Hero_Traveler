@@ -146,7 +146,6 @@ export default class VideoPlayer extends React.Component {
       isLoaded: false,
       isReadyForDisplay: false,
       isStalled: false,
-      isBuffering: false,
     }
   }
 
@@ -263,11 +262,6 @@ export default class VideoPlayer extends React.Component {
   _getShouldEnableAutoplay(){
     if (this.props.shouldEnableAutoplay === undefined) return true
     else return this.props.shouldEnableAutoplay
-  }
-
-  _onBuffer = (event) => {
-    const {isBuffering} = event
-    this.setState({isBuffering})
   }
 
   isPaused(){

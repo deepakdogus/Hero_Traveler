@@ -2,7 +2,6 @@ import { call, put, select } from 'redux-saga/effects'
 import _ from 'lodash'
 import UserActions from '../Redux/Entities/Users'
 import SessionActions from '../Redux/SessionRedux'
-import ScreenActions from '../Redux/OpenScreenRedux'
 import StartupActions from '../Redux/StartupRedux'
 
 const currentUserId = ({session}) => session.userId

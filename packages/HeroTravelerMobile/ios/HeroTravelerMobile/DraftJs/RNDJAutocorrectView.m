@@ -45,7 +45,7 @@
   [path stroke];
 }
 
-+ (RNDJAutocorrectView*) make:(AutocompleteViewInfo*)info inside:(UIView*)view cancelBlock:(CancelAutoCorrectBlock)cancelAutocorrectBlock withContentOffset:(UIEdgeInsets)contentInset
++ (RNDJAutocorrectView*) make:(AutocompleteViewInfo*)info inside:(UIView*)view cancelBlock:(CancelAutoCorrectBlock)cancelAutocorrectBlock withContentOffset:(UIEdgeInsets)contentInset withPreviousCount:(NSUInteger)previousCount
 {
   NSString* word = info.textSuggestion;
 
@@ -55,7 +55,8 @@
   
   RNDJAutocorrectView* autocompleteView = [[RNDJAutocorrectView alloc]
                                            initWithInfo:info
-                                           cancelBlock:cancelAutocorrectBlock];
+                                           cancelBlock:cancelAutocorrectBlock
+                                           withPreviousCount:previousCount];
   autocompleteView.translatesAutoresizingMaskIntoConstraints = false;
 
   [view addSubview:autocompleteView];
@@ -83,7 +84,7 @@
   return autocompleteView;
 }
 
-- (instancetype) initWithInfo:(AutocompleteViewInfo*)info cancelBlock:(CancelAutoCorrectBlock)cancelAutocorrectBlock
+- (instancetype) initWithInfo:(AutocompleteViewInfo*)info cancelBlock:(CancelAutoCorrectBlock)cancelAutocorrectBlock withPreviousCount:(NSUInteger)previousCount
 {
   if (self = [super initWithFrame:CGRectMake(0, 0, 1, 1)])
   {
@@ -91,6 +92,12 @@
     wordLabel.text = info.textSuggestion;
     _cancelAutocorrectBlock = cancelAutocorrectBlock;
     _autocomplete = info;
+    _previousCount = previousCount;
+    
+    if (_previousCount >= 2)
+    {
+      self.hidden = YES;
+    }
   }
 
   return self;
@@ -251,7 +258,7 @@
                             @"startOffset": @(start.offset),
                             @"endKey": end.key,
                             @"endOffset": @(end.offset),
-                            @"word": _autocomplete.textSuggestion,
+                            @"word": [NSString stringWithFormat:@"%@ ", _autocomplete.textSuggestion],
                             });
   }
 }
@@ -285,6 +292,16 @@
 - (NSString*) stringRepresentation
 {
   return [NSString stringWithFormat:@"x:%g;y:%g;text:%@;s:%lu;e:%lu", _point.x, _point.y, _existingText, _range.length, _range.location];
+}
+
+- (NSString*) previousStringRepresentation
+{
+  if (_existingText.length > 1)
+  {
+    NSString* substring = [_existingText substringToIndex:_existingText.length - 1];
+    return [NSString stringWithFormat:@"x:%g;y:%g;text:%@;s:%lu;e:%lu", _point.x, _point.y, substring, _range.length - 1, _range.location];
+  }
+  return [NSString stringWithFormat:@"x:%g;y:%g;text:%@;s:%d;e:%lu", _point.x, _point.y, @"", 0, _range.location];
 }
 
 @end

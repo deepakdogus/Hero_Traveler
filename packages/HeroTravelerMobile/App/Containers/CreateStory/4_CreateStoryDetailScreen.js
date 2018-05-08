@@ -401,8 +401,21 @@ class CreateStoryDetailScreen extends React.Component {
                 style={styles.tagStyle}
               >
                 <View>
-                  {_.size(workingDraft.categories) > 0 && <Text style={styles.tagStyleText}>{_.map(workingDraft.categories, 'title').join(', ')}</Text>}
-                  {_.size(workingDraft.categories) === 0 && <Text style={[styles.tagStyleText, {color: '#bdbdbd'}]}>Add categories...</Text>}
+                  {_.size(workingDraft.categories) > 0 &&
+                    <Text style={styles.tagStyleText}>{
+                      _.map(workingDraft.categories, 'title').join(', ')
+                    }</Text>
+                  }
+                  {_.size(workingDraft.categories) === 0 &&
+                    <Text
+                      style={[
+                        styles.tagStyleText,
+                        styles.tagPlaceholder
+                      ]}
+                    >
+                      Add categories...
+                    </Text>
+                  }
                 </View>
               </TouchableWithoutFeedback>
             </View>
@@ -420,7 +433,14 @@ class CreateStoryDetailScreen extends React.Component {
                     }</Text>
                   }
                   {_.size(workingDraft.hashtags) === 0 &&
-                    <Text style={styles.tagStyleText}>Add hashtags...</Text>
+                    <Text
+                      style={[
+                        styles.tagStyleText,
+                        styles.tagPlaceholder
+                      ]}
+                    >
+                      Add hashtags...
+                    </Text>
                   }
                 </View>
               </TouchableWithoutFeedback>

@@ -253,6 +253,8 @@ function mapDispatchToProps(dispatch) {
     discardDraft: (draftId) => dispatch(StoryCreateActions.discardDraft(draftId)),
     updateDraft: (draftId, attrs, doReset, isRepublishing) =>
       dispatch(StoryCreateActions.updateDraft(draftId, attrs, doReset, isRepublishing)),
+    // Emre when you refactor this you should be able to remove publishDraft function and
+    // reducer from StoryCreateRedux
     publish: (draft) => dispatch(StoryCreateActions.publishDraft(draft)),
     resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
     reroute: (path) => dispatch(push(path)),

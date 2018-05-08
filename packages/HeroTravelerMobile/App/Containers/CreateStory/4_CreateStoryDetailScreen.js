@@ -12,7 +12,7 @@ import {
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
-import StoryEditActions, {isCreated, isPublishing} from '../../Shared/Redux/StoryCreateRedux'
+import StoryEditActions from '../../Shared/Redux/StoryCreateRedux'
 import {Colors, Metrics} from '../../Shared/Themes'
 import Loader from '../../Components/Loader'
 import ShadowButton from '../../Components/ShadowButton'
@@ -109,12 +109,6 @@ class CreateStoryDetailScreen extends React.Component {
         error: newProps.storyCreateError,
       })
       return
-    }
-    if (!newProps.publishing && newProps.isCreated) {
-      this.next()
-    }
-    if (this.props.isRepublishing && !newProps.isRepublishing){
-      this.next()
     }
   }
 
@@ -306,8 +300,8 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   render () {
-    const {workingDraft, publishing} = this.props
-    const {isSavingCover, modalVisible, validationError} = this.state
+    const {workingDraft} = this.props
+    const {modalVisible, validationError} = this.state
 
     return (
       <View style={styles.wrapper}>
@@ -445,9 +439,6 @@ class CreateStoryDetailScreen extends React.Component {
               </View>
             </View>
           </ScrollView>
-          {(publishing || isSavingCover) &&
-            <Loader style={styles.loader} tintColor={Colors.blackoutTint} />
-          }
         {modalVisible &&
         <View
           style={styles.dateWrapper}
@@ -486,12 +477,9 @@ export default connect(
   (state) => {
     return {
       accessToken: _.find(state.session.tokens, {type: 'access'}),
-      publishing: isPublishing(state.storyCreate),
-      isCreated: isCreated(state.storyCreate),
       story: {...state.storyCreate.workingDraft},
       workingDraft: {...state.storyCreate.workingDraft},
       storyCreateError: state.storyCreate.error,
-      isRepublishing: state.storyCreate.isRepublishing,
     }
   },
   dispatch => ({

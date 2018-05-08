@@ -49,7 +49,6 @@ export default StyleSheet.create({
   },
   tagStyle: {
     flexGrow: 1,
-    color: Colors.background,
     fontSize: 16,
     minHeight: 30
   },
@@ -57,6 +56,8 @@ export default StyleSheet.create({
     fontSize: 16,
     color: Colors.background,
     marginBottom: 20,
+  },
+  tagPlaceholder: {
     color: Colors.navBarText,
   },
   longInput: {

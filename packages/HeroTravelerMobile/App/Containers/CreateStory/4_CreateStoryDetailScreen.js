@@ -22,6 +22,7 @@ import Tooltip from '../../Components/Tooltip'
 import NavBar from './NavBar'
 import styles from './4_CreateStoryDetailScreenStyles'
 import API from '../../Shared/Services/HeroAPI'
+import EditCategoryHashtag from '../../Components/EditCategoryHashtag'
 const api = API.create()
 
 /***
@@ -394,57 +395,26 @@ class CreateStoryDetailScreen extends React.Component {
                 />
               </View>
             </View>
-            <View style={styles.fieldWrapper}>
-              <TabIcon name='tag' style={iconStyles.category} />
-              <TouchableWithoutFeedback
-                onPress={this.navToCategories}
-                style={styles.tagStyle}
-              >
-                <View>
-                  {_.size(workingDraft.categories) > 0 &&
-                    <Text style={styles.tagStyleText}>{
-                      _.map(workingDraft.categories, 'title').join(', ')
-                    }</Text>
-                  }
-                  {_.size(workingDraft.categories) === 0 &&
-                    <Text
-                      style={[
-                        styles.tagStyleText,
-                        styles.tagPlaceholder
-                      ]}
-                    >
-                      Add categories...
-                    </Text>
-                  }
-                </View>
-              </TouchableWithoutFeedback>
-            </View>
-            <View style={styles.fieldWrapper}>
-              <TabIcon name='hashtag' style={iconStyles.hashtag} />
-              <TouchableWithoutFeedback
-                onPress={this.navToHashtags}
-                style={styles.tagStyle}
-              >
-                <View>
-                  {_.size(workingDraft.hashtags) > 0 &&
-                    <Text style={styles.tagStyleText}>{
-                      _.map(workingDraft.hashtags,
-                        (hashtag) => { return '#' + hashtag.title }).join(', ')
-                    }</Text>
-                  }
-                  {_.size(workingDraft.hashtags) === 0 &&
-                    <Text
-                      style={[
-                        styles.tagStyleText,
-                        styles.tagPlaceholder
-                      ]}
-                    >
-                      Add hashtags...
-                    </Text>
-                  }
-                </View>
-              </TouchableWithoutFeedback>
-            </View>
+            <EditCategoryHashtag
+              text='Add categories...'
+              onPress={this.navToCategories}
+              iconStyle={iconStyles.category}
+              tagName='tag'
+              array={workingDraft.categories}
+              mapFunction={(categories) => _.map(categories, 'title').join(', ')}
+            />
+            <EditCategoryHashtag
+              text='Add hashtags...'
+              onPress={this.navToHashtags}
+              iconStyle={iconStyles.hashtag}
+              tagName='hashtag'
+              array={workingDraft.hashtags}
+              mapFunction={(hashtags) => {
+                return _.map(hashtags, (hashtag) => {
+                  return `#${hashtag.title}`
+                }).join(', ')
+              }}
+            />
             <View style={styles.travelTipsWrapper}>
               <Text style={styles.fieldLabel}>Travel Tips: </Text>
               <View style={styles.travelTipsPreview}>

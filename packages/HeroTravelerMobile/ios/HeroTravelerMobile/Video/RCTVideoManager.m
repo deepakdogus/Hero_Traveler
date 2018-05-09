@@ -2,6 +2,7 @@
 #import "RCTVideo.h"
 #import <React/RCTBridge.h>
 #import <AVFoundation/AVFoundation.h>
+#import "RCTVideoCache.h"
 
 @implementation RCTVideoManager
 
@@ -95,6 +96,81 @@ RCT_REMAP_METHOD(fixFilePath,
 {
   resolve([RCTVideoManager fixFilePath:filePath]);
 }
+
+RCT_REMAP_METHOD(moveVideoToPreCache,
+                 draftStoryId:(NSString*)draftStoryId
+                 videoFileUrlString:(NSString*)videoFileUrlString
+                 streamUrl:(NSString*)streamUrl
+                 moveVideoWithResolver:(RCTPromiseResolveBlock)resolve
+                 rejector:(RCTPromiseRejectBlock)reject)
+{
+  NSURL* originalUrl = [NSURL URLWithString:videoFileUrlString];
+  NSString* assetKey = [RCTVideoCache urlToKey:streamUrl];
+
+  NSString* storyDraftDirectory = [[RCTVideoManager storyDraftsDirectory] stringByAppendingPathComponent:draftStoryId];
+  NSString* uploadedVideosDirectory = [storyDraftDirectory stringByAppendingPathComponent:@"uploadedVideos"];
+  NSString* videoDestinationString = [uploadedVideosDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", assetKey]];
+  
+  NSURL* uploadedVideosDirectoryUrl = [NSURL fileURLWithPath:uploadedVideosDirectory];
+  NSURL* videoDestinationUrl = [NSURL fileURLWithPath:videoDestinationString];
+  
+  if (!originalUrl || !videoDestinationUrl || !uploadedVideosDirectoryUrl || ![RCTVideoCache ensureDirectory:uploadedVideosDirectoryUrl])
+  {
+    reject(RCTErrorDomain, @"Invalid url", [NSError errorWithDomain:RCTErrorDomain code:1000 userInfo:@{}]);
+    return;
+  }
+
+  NSError* err;
+  [[NSFileManager defaultManager]
+   moveItemAtURL:originalUrl
+   toURL:videoDestinationUrl
+   error:&err];
+  
+  if (err)
+  {
+    reject(RCTErrorDomain, [err localizedDescription], err);
+  }
+  else
+  {
+    resolve(@{});
+  }
+}
+
+RCT_REMAP_METHOD(moveVideosFromPrecacheToCache,
+                 draftStoryId:(NSString*)draftStoryId
+                 moveVideoWithResolver:(RCTPromiseResolveBlock)resolve
+                 rejector:(RCTPromiseRejectBlock)reject)
+{
+  NSString* storyDraftDirectory = [[RCTVideoManager storyDraftsDirectory] stringByAppendingPathComponent:draftStoryId];
+  NSString* uploadedVideosDirectory = [storyDraftDirectory stringByAppendingPathComponent:@"uploadedVideos"];
+  NSError* err = nil;
+  NSArray* uploadedVideos = [[NSFileManager defaultManager]
+                          contentsOfDirectoryAtPath:uploadedVideosDirectory error:&err];
+  
+  if (err)
+  {
+    reject(RCTErrorDomain, [err localizedDescription], err);
+    return;
+  }
+  
+  for (NSString* uploadedVideo in uploadedVideos)
+  {
+    NSString* assetKey = uploadedVideo;
+
+    NSString* uploadedVideoString = [uploadedVideosDirectory stringByAppendingPathComponent:assetKey];
+    NSURL* uploadedVideoUrl = [NSURL fileURLWithPath:uploadedVideoString];
+    
+    if (!uploadedVideoUrl)
+    {
+      continue;
+    }
+
+    [RCTVideoCache moveVideo:uploadedVideoUrl toAssetKeyCache:assetKey];
+  }
+  
+  resolve(@{});
+}
+
 
 + (NSString*) fixFilePath:(NSString*)filePath
 {

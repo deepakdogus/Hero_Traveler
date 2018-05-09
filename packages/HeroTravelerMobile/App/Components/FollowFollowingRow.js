@@ -4,7 +4,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  TouchableWithoutFeedback,
 } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 
@@ -12,7 +11,7 @@ import Avatar from './Avatar'
 import RoundedButton from './RoundedButton'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import {navToProfile} from '../Navigation/NavigationRouter'
-import styles from '../Containers/Signup/SignupSocialStyles'
+import styles from './Styles/FollowFollowingRowStyles'
 
 class FollowFollowingRow extends Component {
   static propTypes = {

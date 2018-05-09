@@ -5,6 +5,14 @@ function getCloudinaryUploadUrl(resourceType){
   return `https://api.cloudinary.com/v1_1/${env.cloudName}/${resourceType}/upload`
 }
 
+// This method is only used on mobile, so providing an empty function here
+export function moveVideoToPreCache(draftStoryId, videoFileUri, cloudinaryPath) {
+}
+
+// This method is only used on mobile, so providing an empty function here
+export function moveVideosFromPrecacheToCache(draftStoryId) {
+}
+
 const create = () => {
   const cloudinaryApi = apisauce.create({
     baseURL: '/',

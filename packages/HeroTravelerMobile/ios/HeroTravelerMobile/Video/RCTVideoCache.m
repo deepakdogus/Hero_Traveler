@@ -274,7 +274,8 @@
   {
     NSLog(@"Error moving to cache: %@", err);
   }
-  
+
+  [[RCTVideoCache get] addAssetKeyToCurrentlyDownloadedFiles:assetKey];
   [self touchCachedAsset:assetKey];
 }
 

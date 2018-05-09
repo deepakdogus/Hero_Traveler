@@ -141,9 +141,9 @@ const extractUploadData = (uploadData) => {
 
 function * createCover(api, draft){
   const videoFileUri =
-        draft.coverVideo && draft.coverVideo.uri && draft.coverVideo.uri.startsWith('file://')
-        ? draft.coverVideo.uri
-        : undefined
+    draft.coverVideo && draft.coverVideo.uri && isLocalMediaAsset(draft.coverVideo.uri)
+    ? draft.coverVideo.uri
+    : undefined
   const isImageCover = draft.coverImage
   const cover = getNewCover(draft.coverImage, draft.coverVideo)
   if (!cover) return draft

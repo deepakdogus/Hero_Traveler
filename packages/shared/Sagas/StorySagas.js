@@ -4,7 +4,7 @@ import UserActions, {isInitialAppDataLoaded, isStoryLiked, isStoryBookmarked} fr
 import CategoryActions from '../Redux/Entities/Categories'
 import StoryCreateActions from '../Redux/StoryCreateRedux'
 import {getNewCover} from '../Redux/helpers/coverUpload'
-import CloudinaryAPI from '../../Services/CloudinaryAPI'
+import CloudinaryAPI, { moveVideoToPreCache, moveVideosFromPrecacheToCache } from '../../Services/CloudinaryAPI'
 import pathAsFileObject from '../Lib/pathAsFileObject'
 import { isLocalMediaAsset } from '../Lib/getVideoUrl'
 import _ from 'lodash'
@@ -140,6 +140,10 @@ const extractUploadData = (uploadData) => {
 }
 
 function * createCover(api, draft){
+  const videoFileUri =
+    draft.coverVideo && draft.coverVideo.uri && isLocalMediaAsset(draft.coverVideo.uri)
+    ? draft.coverVideo.uri
+    : undefined
   const isImageCover = draft.coverImage
   const cover = getNewCover(draft.coverImage, draft.coverVideo)
   if (!cover) return draft
@@ -149,6 +153,9 @@ function * createCover(api, draft){
   if (isImageCover) draft.coverImage = cloudinaryCover.data
   else draft.coverVideo = cloudinaryCover.data
   yield put(StoryCreateActions.incrementSyncProgress())
+  if (videoFileUri && cloudinaryCover.data && cloudinaryCover.data.public_id) {
+    moveVideoToPreCache(draft.id, videoFileUri, cloudinaryCover.data.public_id)
+  }
   return draft
 }
 
@@ -262,8 +269,10 @@ export function * publishLocalDraft (api, action) {
 
 export function * publishDraft (api, action) {
   const {draft} = action
+  const draftStoryId = draft.id
   const response = yield call(api.createStory, draft)
   if (response.ok) {
+    moveVideosFromPrecacheToCache(draftStoryId)
     const stories = {}
     const story = response.data.story
     story.author = story.author.id

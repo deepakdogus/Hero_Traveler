@@ -254,7 +254,30 @@
 
   return nil;
 }
-//assetDirectory
+
++ (void) moveVideo:(NSURL*)videoUrl toAssetKeyCache:(NSString*)assetKey
+{
+  NSURL* assetDirectory = [RCTVideoCache cachedAssetDirectoryFromAssetKey:assetKey];
+  
+  NSURL* fileLocationUrl = [assetDirectory URLByAppendingPathComponent:VIDEO_FILE];
+  if (![RCTVideoCache ensureDirectory:assetDirectory] || !fileLocationUrl)
+  {
+    return;
+  }
+
+  NSError* err;
+  
+  [[NSFileManager defaultManager]
+   moveItemAtURL:videoUrl toURL:fileLocationUrl error:&err];
+  
+  if (err)
+  {
+    NSLog(@"Error moving to cache: %@", err);
+  }
+
+  [[RCTVideoCache get] addAssetKeyToCurrentlyDownloadedFiles:assetKey];
+  [self touchCachedAsset:assetKey];
+}
 
 - (void) deleteSavedAsset:(NSString*)assetKey
 {

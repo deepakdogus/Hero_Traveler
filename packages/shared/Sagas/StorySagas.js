@@ -309,7 +309,7 @@ export function * updateDraft (api, action) {
   const {draftId, draft, updateStoryEntity} = action
   yield [
     put(StoryActions.setRetryingBackgroundFailure(draftId)),
-    put(StoryCreateActions.initializeSyncProgress(getSyncProgressSteps(draft), 'Updating Story')),
+    put(StoryCreateActions.initializeSyncProgress(getSyncProgressSteps(draft), 'Saving Story')),
   ]
 
   const coverResponse = yield createCover(api, draft)

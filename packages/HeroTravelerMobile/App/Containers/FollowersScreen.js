@@ -26,18 +26,22 @@ class FollowersScreen extends React.Component {
   static propTypes = {
     followers: PropTypes.array,
     followersType: PropTypes.oneOf(['followers', 'following']).isRequired,
-    loadDataAction: PropTypes.func.isRequired,
+    loadFollowers: PropTypes.func.isRequired,
+    loadFollowing: PropTypes.func.isRequired,
     userId: PropTypes.string.isRequired
   }
 
   componentDidMount() {
-    this.props.loadData()
+    const {followersType, loadFollowers, loadFollowing} = this.props
+    if (followersType === 'followers') loadFollowers()
+    else loadFollowing()
   }
 
   componentWillReceiveProps(nextProps) {
     if (
       nextProps.userId !== this.props.userId
       || nextProps.followersType !== this.props.followersType
+      || (nextProps.usersById.length && this.props.usersById.length === 0)
     ) {
       this.setState({usersById: nextProps.usersById})
     }
@@ -117,7 +121,8 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
-    loadData: () => dispatch(props.loadDataAction(props.userId)),
+    loadFollowers: () => dispatch(UserActions.loadUserFollowers(props.userId)),
+    loadFollowing: () => dispatch(UserActions.loadUserFollowing(props.userId)),
     followUser: (sessionUserId, userIdToFollow) => dispatch(UserActions.followUser(sessionUserId, userIdToFollow)),
     unfollowUser: (sessionUserId, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserId, userIdToUnfollow)),
   }

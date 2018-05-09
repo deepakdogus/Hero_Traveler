@@ -9,11 +9,12 @@ import _ from 'lodash'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import SignupActions from '../../Shared/Redux/SignupRedux'
-import UserActions from '../../Shared/Redux/Entities/Users'
+import UserActions, {getFollowers} from '../../Shared/Redux/Entities/Users'
 
 import RoundedButton from '../../Components/RoundedButton'
 import TabIcon from '../../Components/TabIcon'
 import Avatar from '../../Components/Avatar'
+import FollowFollowingRow from '../../Components/FollowFollowingRow'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import {Colors} from '../../Shared/Themes'
 import styles from './SignupSocialStyles'
@@ -24,14 +25,13 @@ class SignupSocialScreen extends React.Component {
     this.props.loadSuggestedPeople()
   }
 
-  userIsSelected(user) {
-    return _.includes(this.props.selectedUsersById, user.id)
+  userIsFollowed(userId) {
+    return _.includes(this.props.myFollowedUsers, userId)
   }
 
   render () {
     let content
-    const {user} = this.props
-
+    const {sessionUser, followUser, unfollowUser} = this.props
     if (_.values(this.props.users).length) {
       content = (
         <View style={styles.lightBG}>
@@ -48,7 +48,7 @@ class SignupSocialScreen extends React.Component {
           //     />
           //     <Text style={styles.connectSocialText}>Facebook</Text>
           //     <View style={styles.connectWrapper}>
-          //       {user && user.isFacebookConnected && <Text style={styles.isConnectedText}>Connected</Text>}
+          //       {sessionUser && sessionUser.isFacebookConnected && <Text style={styles.isConnectedText}>Connected</Text>}
           //       <Icon name='angle-right' size={15} color={'#757575'} />
           //     </View>
           //   </View>
@@ -79,30 +79,22 @@ class SignupSocialScreen extends React.Component {
           // </View>
         }
           <Text style={styles.sectionHeader}>SUGGESTED PEOPLE</Text>
+          <View>
           {_.map(this.props.suggestedUsersById).map(uid => {
-            const u = this.props.users[uid]
-            const selected = this.userIsSelected(u)
+            const user = this.props.users[uid]
             return (
-              <View style={[styles.rowWrapper]} key={u.id}>
-                <View style={[styles.row, styles.followers]}>
-                  <Avatar
-                    style={styles.avatar}
-                    avatarUrl={getImageUrl(u.profile.avatar, 'avatar')}
-                  />
-                  <View style={styles.nameWrapper}>
-                    <Text style={styles.name}>{u.profile.fullName}</Text>
-                    <Text style={styles.followerCount}>{u.counts.followers} followers</Text>
-                  </View>
-                  <RoundedButton
-                    style={selected ? styles.selectedFollowersButton : styles.followersButton}
-                    textStyle={selected ? styles.selectedFollowersButtonText : styles.followersButtonText}
-                    text={selected ? 'FOLLOWING' : '+ FOLLOW'}
-                    onPress={() => this.toggleFollow(u)}
-                  />
-                </View>
-              </View>
+              <FollowFollowingRow
+                isSignup
+                key={user.id}
+                sessionUserId={sessionUser.id}
+                user={user}
+                isFollowing={this.userIsFollowed(user.id)}
+                followUser={followUser}
+                unfollowUser={unfollowUser}
+              />
             )
           })}
+          </View>
         </View>
       )
     } else {
@@ -134,19 +126,20 @@ class SignupSocialScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   const users = state.entities.users.entities
+  const sessionUserId = state.session.userId
   return {
-    user: users[state.session.userId],
+    sessionUser: users[sessionUserId],
     users,
     suggestedUsersById: state.entities.users.suggestedUsersById,
-    selectedUsersById: state.signup.selectedUsers
+    myFollowedUsers: getFollowers(state.entities.users, 'following', sessionUserId)
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     loadSuggestedPeople: () => dispatch(UserActions.loadUserSuggestionsRequest()),
-    followUser: (userId) => dispatch(SignupActions.signupFollowUser(userId)),
-    unfollowUser: (userId) => dispatch(SignupActions.signupUnfollowUser(userId))
+    followUser: (sessionUserId, userIdToFollow) => dispatch(UserActions.followUser(sessionUserId, userIdToFollow)),
+    unfollowUser: (sessionUserId, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserId, userIdToUnfollow)),
   }
 }
 

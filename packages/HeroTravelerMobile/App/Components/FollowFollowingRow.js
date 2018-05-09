@@ -4,6 +4,7 @@ import {
   View,
   Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
 } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 
@@ -13,11 +14,12 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import {navToProfile} from '../Navigation/NavigationRouter'
 import styles from '../Containers/Signup/SignupSocialStyles'
 
-class BackgroundPublishingBars extends Component {
+class FollowFollowingRow extends Component {
   static propTypes = {
+    isSignup: PropTypes.bool,
     sessionUserId: PropTypes.string,
     user: PropTypes.object.isRequired,
-    selected: PropTypes.bool.isRequired,
+    isFollowing: PropTypes.bool.isRequired,
     followUser: PropTypes.func.isRequired,
     unfollowUser: PropTypes.func.isRequired,
   }
@@ -30,24 +32,25 @@ class BackgroundPublishingBars extends Component {
   }
 
   toggleFollow = () => {
-    const {followUser, unfollowUser, user, sessionUserId, selected} = this.props
-    if (selected) unfollowUser(sessionUserId, user.id)
+    const {followUser, unfollowUser, user, sessionUserId, isFollowing} = this.props
+    if (isFollowing) unfollowUser(sessionUserId, user.id)
     else followUser(sessionUserId, user.id)
   }
 
   render() {
-    const {user, selected, navToProfile, sessionUserId} = this.props
+    const {user, isFollowing, navToProfile, sessionUserId, isSignup} = this.props
     const {_navToProfile, toggleFollow} = this
 
+    const Touchable = isSignup ? View : TouchableOpacity
     let followingText
-    if (selected) followingText = 'FOLLOWING'
+    if (isFollowing) followingText = 'FOLLOWING'
     else if (user.id !== sessionUserId) followingText = 'FOLLOW'
 
     return (
       <View style={styles.rowWrapper}>
         <View style={styles.row}>
-          <TouchableOpacity
-            onPress={_navToProfile}
+          <Touchable
+            onPress={isSignup ? null : _navToProfile}
             style={styles.avatarAndName}
           >
             <Avatar
@@ -58,11 +61,11 @@ class BackgroundPublishingBars extends Component {
               <Text style={styles.name}>{user.profile.fullName}</Text>
               <Text style={styles.followerCount}>{user.counts.followers} followers</Text>
             </View>
-          </TouchableOpacity>
+          </Touchable>
           {followingText &&
             <RoundedButton
-              style={selected ? styles.selectedFollowersButton : styles.followersButton}
-              textStyle={selected ? styles.selectedFollowersButtonText : styles.followersButtonText}
+              style={isFollowing ? styles.selectedFollowersButton : styles.followersButton}
+              textStyle={isFollowing ? styles.selectedFollowersButtonText : styles.followersButtonText}
               text={followingText}
               onPress={toggleFollow}
             />
@@ -73,4 +76,4 @@ class BackgroundPublishingBars extends Component {
   }
 }
 
-export default BackgroundPublishingBars
+export default FollowFollowingRow

@@ -81,7 +81,7 @@ class FollowersScreen extends React.Component {
                   key={user.id}
                   sessionUserId={sessionUserId}
                   user={user}
-                  selected={this.userIsFollowed(user.id)}
+                  isFollowing={this.userIsFollowed(user.id)}
                   followUser={followUser}
                   unfollowUser={unfollowUser}
                 />

@@ -59,6 +59,10 @@ export const successRequestReset = (state) => state
 // success: did not find user requesting PW reset
 export const failureRequestReset = (state) => state
 
+export const resetPasswordFailure = (state, { error }) =>
+  state.merge({ fetching: false, error: "Could NOT reset your password. Please try again." })
+
+
 export const setIsLoggedIn = (state, {isLoggedIn}) => state.merge({isLoggedIn})
 
 export const clearErrors = (state) => state.merge({ error: null })
@@ -75,6 +79,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.RESET_PASSWORD_REQUEST]: requestReset,
   [Types.RESET_PASSWORD_REQUEST_SUCCESS]: successRequestReset,
   [Types.RESET_PASSWORD_REQUEST_FAILURE]: failureRequestReset,
+  [Types.RESET_PASSWORD_FAILURE]: resetPasswordFailure,
   [Types.SET_IS_LOGGED_IN]: setIsLoggedIn,
   [Types.VERIFY_EMAIL_FAILURE]: failure,
   [Types.CLEAR_ERRORS]: clearErrors,

@@ -11,39 +11,49 @@ class EditCategoryHashtag extends Component {
     text: PropTypes.string,
     tagName: PropTypes.string,
     onPress: PropTypes.func,
-    mapFunction: PropTypes.func,
     iconStyle: PropTypes.object,
     array: PropTypes.array,
   }
 
+  mapHashtags(hashtags) {
+    return _.map(hashtags, (hashtag) => {
+      return `#${hashtag.title}`
+    }).join(', ')
+  }
+
+  mapCategories(categories) {
+    return _.map(categories, 'title').join(', ')
+  }
+
   render () {
-    const {text, onPress, iconStyle, array, mapFunction, tagName} = this.props
+    const {text, onPress, iconStyle, array, tagName} = this.props
+    const mapFunction = tagName === 'hashtag' ? this.mapHashtags : this.mapCategories
     return (
-      <View style={styles.fieldWrapper}>
-        <TabIcon name={tagName} style={iconStyle} />
-        <TouchableWithoutFeedback
-          onPress={onPress}
-          style={styles.tagStyle}
-        >
-          <View>
-            {_.size(array) > 0 &&
-              <Text style={styles.tagStyleText}>
-                { mapFunction(array) }
-              </Text>
-            }
-            {_.size(array) === 0 &&
-              <Text
-                style={[
-                  styles.tagStyleText,
-                  styles.tagPlaceholder
-                ]}
-              >
-                {text}
-              </Text>
-            }
-          </View>
-        </TouchableWithoutFeedback>
-      </View>
+      <TouchableWithoutFeedback
+        onPress={onPress}
+        style={styles.tagStyle}
+      >
+        <View style={styles.fieldWrapper}>
+          <TabIcon name={tagName} style={iconStyle} />
+            <View>
+              {_.size(array) > 0 &&
+                <Text style={styles.tagStyleText}>
+                  { mapFunction(array) }
+                </Text>
+              }
+              {_.size(array) === 0 &&
+                <Text
+                  style={[
+                    styles.tagStyleText,
+                    styles.tagPlaceholder
+                  ]}
+                >
+                  {text}
+                </Text>
+              }
+            </View>
+        </View>
+      </TouchableWithoutFeedback>
     )
   }
 }

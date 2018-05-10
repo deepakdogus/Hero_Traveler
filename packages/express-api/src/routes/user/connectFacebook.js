@@ -15,7 +15,6 @@ export default function connectFacebook(req, res) {
         "email": email
       }
     ]}).then((response) => {
-      console.log(response);
       if (response == null ) {
         req.user.connectFacebook(fbid)
         return resolve(req.user.save());

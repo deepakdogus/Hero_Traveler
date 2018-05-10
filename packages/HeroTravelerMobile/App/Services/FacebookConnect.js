@@ -13,13 +13,11 @@ export function loginToFacebook () {
       'user_friends'
     ]).then(
       (result) => {
-        AccessToken.getCurrentAccessToken().then(token => {
-          if(result.isCancelled) {
-            reject(result);
-          } else {
-            resolve(result);
-          }
-        })
+        if(result.isCancelled) {
+          reject(result);
+        } else {
+          resolve(result);
+        }
       },
       (error) => {
         reject(error);

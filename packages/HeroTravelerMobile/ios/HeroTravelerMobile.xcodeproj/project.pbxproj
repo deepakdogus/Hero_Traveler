@@ -61,6 +61,7 @@
 		916D5B3C204DC86400FB09DF /* RHShadowNativeFeedItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 916D5B3B204DC86400FB09DF /* RHShadowNativeFeedItem.m */; };
 		916DBF62203C8A2B0097DE98 /* libAutoGrowTextInput.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 916DBF61203C8A1B0097DE98 /* libAutoGrowTextInput.a */; };
 		917616462055D3CC007F8E40 /* RHNativeFeedBackingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 917616452055D3CC007F8E40 /* RHNativeFeedBackingView.m */; };
+		91819F4720A4BA92005BBB4E /* UIView+DetectHierarchyChanges.m in Sources */ = {isa = PBXBuildFile; fileRef = 91819F4620A4BA92005BBB4E /* UIView+DetectHierarchyChanges.m */; };
 		9183B9C3209A2B4B00856E3E /* RHNativeFeedPrefetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 9183B9C2209A2B4B00856E3E /* RHNativeFeedPrefetcher.m */; };
 		919416DC2043E854006F42BC /* RHShadowNativeFeedHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 919416DB2043E854006F42BC /* RHShadowNativeFeedHeader.m */; };
 		919416DF2043E86A006F42BC /* RHNativeFeedHeaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 919416DE2043E86A006F42BC /* RHNativeFeedHeaderManager.m */; };
@@ -687,6 +688,8 @@
 		916DBF5C203C8A1B0097DE98 /* AutoGrowTextInput.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AutoGrowTextInput.xcodeproj; path = "../node_modules/react-native-autogrow-textinput/ios/AutoGrowTextInput.xcodeproj"; sourceTree = "<group>"; };
 		917616442055D3CC007F8E40 /* RHNativeFeedBackingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHNativeFeedBackingView.h; sourceTree = "<group>"; };
 		917616452055D3CC007F8E40 /* RHNativeFeedBackingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHNativeFeedBackingView.m; sourceTree = "<group>"; };
+		91819F4520A4BA92005BBB4E /* UIView+DetectHierarchyChanges.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+DetectHierarchyChanges.h"; sourceTree = "<group>"; };
+		91819F4620A4BA92005BBB4E /* UIView+DetectHierarchyChanges.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+DetectHierarchyChanges.m"; sourceTree = "<group>"; };
 		9183B9C1209A2B4B00856E3E /* RHNativeFeedPrefetcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHNativeFeedPrefetcher.h; sourceTree = "<group>"; };
 		9183B9C2209A2B4B00856E3E /* RHNativeFeedPrefetcher.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHNativeFeedPrefetcher.m; sourceTree = "<group>"; };
 		919416DA2043E854006F42BC /* RHShadowNativeFeedHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHShadowNativeFeedHeader.h; sourceTree = "<group>"; };
@@ -1214,6 +1217,8 @@
 				91589B3F200BE48F000B84E6 /* VideoCacheItem.m */,
 				9115FA91203D681200547516 /* VideoDownloadItem.h */,
 				9115FA92203D681200547516 /* VideoDownloadItem.m */,
+				91819F4520A4BA92005BBB4E /* UIView+DetectHierarchyChanges.h */,
+				91819F4620A4BA92005BBB4E /* UIView+DetectHierarchyChanges.m */,
 			);
 			name = Video;
 			path = HeroTravelerMobile/Video;
@@ -2257,6 +2262,7 @@
 				91973CAE1FA39B64006DE932 /* RNDJContentModel.m in Sources */,
 				917616462055D3CC007F8E40 /* RHNativeFeedBackingView.m in Sources */,
 				91F037C420035941000BA406 /* RCTVideoManager.m in Sources */,
+				91819F4720A4BA92005BBB4E /* UIView+DetectHierarchyChanges.m in Sources */,
 				916D5B3C204DC86400FB09DF /* RHShadowNativeFeedItem.m in Sources */,
 				91F86E4F2042E7DF006A9C73 /* RHShadowNativeFeed.m in Sources */,
 				91F037C320035941000BA406 /* RCTVideo.m in Sources */,

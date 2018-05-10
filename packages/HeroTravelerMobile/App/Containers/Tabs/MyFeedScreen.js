@@ -30,7 +30,13 @@ class MyFeedScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.props.attemptGetUserFeed(this.props.userId)
+    const {sync} = this.props
+    // do not want to get feed if we are doing an update
+    const shouldGetFeed = !(
+      sync.syncProgressSteps && !sync.error
+      && sync.syncProgressSteps !== sync.syncProgress
+    )
+    if (shouldGetFeed) this.props.attemptGetUserFeed(this.props.userId)
     SplashScreen.hide()
   }
 

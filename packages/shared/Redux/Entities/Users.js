@@ -27,6 +27,9 @@ const { Types, Creators } = createActions({
   updateUser: ['attrs'],
   updateUserSuccess: ['user'],
   updateUserFailure: ['error'],
+  connectFacebook: ['fbid', 'email'],
+  connectFacebookSuccess: ['user'],
+  connectFacebookFailure: ['error'],
   eagerUpdateTooltips: ['userId' ,'tooltips'],
   receiveUsers: ['users'],
   receiveLikes: ['userId', 'storyIds'],
@@ -39,6 +42,7 @@ const { Types, Creators } = createActions({
   receiveActivities: ['activities'],
   activitySeen: ['activityId'],
   activitySeenFailure: ['error', 'activityId'],
+  clearErrors: null,
 })
 
 export const UserTypes = Types
@@ -131,18 +135,48 @@ export const updateUserSuccess = (state, {user}) => {
               .merge({error: null, updating: false})
 }
 
-export const eagerUpdateTooltips = (state, {userId, tooltips}) => {
-  return state.setIn(
-    ['entities', userId, 'introTooltips'],
-    tooltips
-  )
-}
-
 export const updateUserFailure = (state, {error}) => {
   return state.merge({
     error,
     updating: false
   })
+}
+
+// User is trying to connect a FB account to their existing account
+export const connectFacebook = (state) => {
+  return state.merge({
+    fetchStatus: {
+      fetching: true,
+    },
+  })
+}
+
+// FB account is successfully connected.
+export const connectFacebookSuccess = (state, {user}) => {
+  const path = ['entities', user.id]
+  const updatedUser = state.getIn(path)
+                           .merge(user, {deep: true})
+  return state.setIn(path, updatedUser)
+              .merge({error: null, fetchStatus: {
+                fetching: false,
+              }})
+}
+
+// There was an error, either cancelled or that FB was connected to a different user
+export const connectFacebookFailure = (state, {error}) => {
+  return state.merge({
+    fetchStatus: {
+      fetching: false,
+    },
+    error
+  })
+}
+
+export const eagerUpdateTooltips = (state, {userId, tooltips}) => {
+  return state.setIn(
+    ['entities', userId, 'introTooltips'],
+    tooltips
+  )
 }
 
 export const receiveLikes = (state, {userId, storyIds}) => state.setIn(
@@ -325,6 +359,7 @@ export const getFollowersFetchStatus = (state: object, followersType: string, us
   }
 }
 
+export const clearErrors = (state) => state.merge({ error: null })
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -348,6 +383,9 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_USER]: updateUser,
   [Types.UPDATE_USER_SUCCESS]: updateUserSuccess,
   [Types.UPDATE_USER_FAILURE]: updateUserFailure,
+  [Types.CONNECT_FACEBOOK]: connectFacebook,
+  [Types.CONNECT_FACEBOOK_SUCCESS]: connectFacebookSuccess,
+  [Types.CONNECT_FACEBOOK_FAILURE]: connectFacebookFailure,
   [Types.RECEIVE_USERS]: receive,
   [Types.RECEIVE_LIKES]: receiveLikes,
   [Types.RECEIVE_BOOKMARKS]: receiveBookmarks,
@@ -360,4 +398,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ACTIVITY_SEEN]: activitySeen,
   [Types.ACTIVITY_SEEN_FAILURE]: activitySeenFailure,
   [Types.EAGER_UPDATE_TOOLTIPS]: eagerUpdateTooltips,
+  [Types.CLEAR_ERRORS]: clearErrors,
 })

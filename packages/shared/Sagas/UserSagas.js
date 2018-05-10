@@ -25,6 +25,29 @@ export function * updateUser (api, action) {
   }
 }
 
+export function * connectFacebook (api, {fbid, email}) {
+  try {
+    const response = yield call(
+      api.connectFacebook,
+      fbid,
+      email
+    )
+    if (response.ok) {
+      yield put(UserActions.connectFacebookSuccess(response.data))
+    } else {
+      yield put(UserActions.connectFacebookFailure(
+        new Error(
+          (response.data && response.data.message) ? response.data.message : "Unknown Error")
+        )
+      );
+    }
+  } catch (error) {
+    yield put(UserActions.connectFacebookFailure(
+      new Error("There was a network error")
+    ));
+  }
+}
+
 export function * getSuggestedUsers (api, action) {
   const response = yield call(api.getSuggestedUsers)
   if (response.ok) {

@@ -243,12 +243,23 @@ UserSchema.methods = {
     return !!_.find(this.accounts, account => account.kind === ACCOUNT_TYPE_FACEBOOK)
   },
 
-  connectFacebook(uid) {
-    this.accounts.push({
-      kind: ACCOUNT_TYPE_FACEBOOK,
-      uid
+  hasFacebookId(fbid) {
+    return !!_.find(this.accounts, account => {
+      return (
+        account.kind === ACCOUNT_TYPE_FACEBOOK &&
+        account.uid === fbid
+      )
     })
-    return this.save()
+  },
+
+  connectFacebook(fbid) {
+    if (!this.hasFacebookId(fbid)) {
+      this.accounts.push({
+        kind: ACCOUNT_TYPE_FACEBOOK,
+        uid: fbid
+      })
+    }
+    return this;
   }
 
 }

@@ -18,8 +18,14 @@ export async function createUserFacebook(facebookUserData, device: ?object) {
     name,
     pictureUrl
   } = facebookUserData
-  const existingUser = await User.findOne({email: facebookUserData.email})
 
+  const existingUser = await User.findOne({
+    $or: [
+      {email: email},
+      {"accounts.uid": fbid}
+    ]
+  })
+  
   // The user already has an account with us,
   // and has NOT signed up with facebook
   if (existingUser && !existingUser.hasFacebookAccountInfo()) {

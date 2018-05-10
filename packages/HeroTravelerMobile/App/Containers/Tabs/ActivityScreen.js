@@ -5,7 +5,7 @@ import moment from 'moment'
 
 import { connect } from 'react-redux'
 import UserActions from '../../Shared/Redux/Entities/Users'
-import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
+import {Actions as NavActions} from 'react-native-router-flux'
 import Loader from '../../Components/Loader'
 import styles from '../Styles/NotificationScreenStyles'
 import ActivityList from '../../Components/ActivityList'
@@ -66,6 +66,22 @@ class NotificationScreen extends React.Component {
     if (!seen) {
       this.props.markSeen(activityId)
     }
+    let activity = this.props.activities[activityId];
+    switch (activity.kind) {
+      case ActivityTypes.follow:
+        NavActions.readOnlyProfile({userId: this.props.activities[activityId].fromUser});
+        break;
+      case ActivityTypes.comment:
+      case ActivityTypes.like:
+        let story = this.props.stories[
+          this.props.activities[activityId].story
+        ];
+        NavActions.story({
+          storyId: story._id,
+          title: story.title,
+        })
+        break;
+    }
   }
 
   getDescription(activity) {
@@ -82,7 +98,7 @@ class NotificationScreen extends React.Component {
   getContent(activity) {
     switch (activity.kind) {
       case ActivityTypes.comment:
-        return 'test'
+        return _.truncate(activity.comment.content, {length: 60});
     }
   }
 

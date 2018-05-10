@@ -32,6 +32,8 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
     
     isStreaming = YES;
     
+    [self touch];
+    
     NSURL* url = [NSURL URLWithString:url_];
     NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
     _asset = [AVURLAsset URLAssetWithURL:url options:@{AVURLAssetHTTPCookiesKey : cookies}];
@@ -59,6 +61,8 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
     streamUrl = streamUrl_;
     
     isStreaming = NO;
+
+    [self touch];
 
     _playerItem = [AVPlayerItem playerItemWithURL:url];
     [self addPlayerItemObservers];
@@ -362,7 +366,6 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   [self removeListeners];
   [self removePlayerObservers];
   [self removePlayerItemObservers];
-  NSLog(@"Cache item dealloced");
 }
 
 - (void) addPlayerItemObservers

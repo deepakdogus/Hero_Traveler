@@ -6,6 +6,7 @@ import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
 import UserActions, {getFollowers} from '../Shared/Redux/Entities/Users'
 import StoryPreview from '../Components/StoryPreview'
 import StoryActions from '../Shared/Redux/Entities/Stories'
+import {navToProfile} from '../Navigation/NavigationRouter'
 
 function getAreInRenderLocation(state, ownProps){
   if (!ownProps.renderLocation || ownProps.renderLocation  === state.routes.scene.name) return true
@@ -31,7 +32,7 @@ function onPressUser(sessionUserId, sceneName, profileId) {
     // avoids naving to the scene we are already in
     if (areAlreadyInProfileScreen(sceneName, profileId, userId, sessionUserId)) return
     if (sessionUserId === userId) {
-      NavActions.profile({type: 'jump'})
+      navToProfile()
     } else {
       NavActions.readOnlyProfile({userId})
     }

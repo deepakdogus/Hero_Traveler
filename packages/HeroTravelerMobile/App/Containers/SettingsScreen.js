@@ -3,7 +3,8 @@ import {
   ScrollView,
   View,
   TouchableOpacity,
-  Text
+  Text,
+  Alert
 } from 'react-native'
 import { connect } from 'react-redux'
 import {
@@ -13,7 +14,12 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome'
 import VersionNumber from 'react-native-version-number'
 
+import {
+  loginToFacebookAndGetUserInfo,
+} from '../Services/FacebookConnect'
+
 import SessionActions from '../Shared/Redux/SessionRedux'
+import UserActions from '../Shared/Redux/Entities/Users'
 import {Colors} from '../Shared/Themes'
 import styles from './Styles/SettingsScreenStyles'
 import Loader from '../Components/Loader'
@@ -50,11 +56,33 @@ const Version = ({version}) =>
 
 class SettingsScreen extends React.Component {
 
-  // Go to launch page and reset all store state on
+  constructor(props) {
+    super(props);
+    this.state = {
+      fetching: false
+    }
+  }
+
   componentWillReceiveProps(newProps) {
+    // Go to launch page and reset all store state on
     if (this.props.isLoggedIn && !newProps.isLoggedIn) {
       NavActions.launchScreen({type: NavActionConst.RESET})
       this.props.resetStore()
+    }
+
+    if (newProps.fetching || newProps.loggingOut) {
+      this.setState({fetching: true})
+    } else if (!newProps.fetching && this.props.fetching) {
+      this.setState({fetching: false})
+    }
+    
+    if (newProps.error) {
+      let errorMessage = newProps.error.message || 'Operation could not be completed.';
+      Alert.alert('Error', errorMessage, [{
+        text: 'OK', onPress: () => {
+          this.props.clearErrors();
+        }
+      }]);
     }
   }
 
@@ -62,8 +90,20 @@ class SettingsScreen extends React.Component {
     this.props.logout(this.props.user.id)
   }
 
-  _tapFacebook = () => null
-  // _tapTwitter = () => alert('twitter!')
+  _tapFacebook = () => {
+    const user = this.props.user || {}
+    if (user.isFacebookConnected) {
+      alert('Your account is already connected to Facebook');
+    } else {
+      this.setState({fetching: true}, () => {
+        loginToFacebookAndGetUserInfo().then((userInfo) => {
+          this.props.connectFacebook(userInfo.id, userInfo.email);
+        }).catch(() => {
+          this.setState({fetching: false})
+        })
+      })
+    }
+  }
 
   render () {
     const user = this.props.user || {}
@@ -120,7 +160,7 @@ class SettingsScreen extends React.Component {
           </NavList>
           <Version version={VersionNumber.appVersion} />
         </ScrollView>
-        {this.props.loggingOut &&
+        {this.state.fetching &&
           <Loader tintColor={Colors.blackoutTint} style={{
             position: 'absolute',
             top: 0,
@@ -139,14 +179,18 @@ const mapStateToProps = (state) => {
     user: state.entities.users.entities[state.session.userId],
     isLoggedIn: !state.session.isLoggedOut,
     loggingOut: state.session.isLoggingOut,
-    tokens: state.session.tokens
+    tokens: state.session.tokens,
+    error: state.entities.users.error,
+    fetching: state.entities.users.fetchStatus.fetching,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     logout: (tokens) => dispatch(SessionActions.logout(tokens)),
-    resetStore: () => dispatch(SessionActions.resetRootStore())
+    resetStore: () => dispatch(SessionActions.resetRootStore()),
+    connectFacebook: (fbid, email) => dispatch(UserActions.connectFacebook(fbid, email)),
+    clearErrors: () => dispatch(UserActions.clearErrors()),
   }
 }
 

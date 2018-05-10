@@ -5,6 +5,7 @@ import getMe from './getMe'
 import getUser from './getUser'
 import create from './create'
 import createFacebook from './createFacebook'
+import connectFacebook from './connectFacebook'
 import update from './update'
 import updateAvatar from './updateAvatar'
 import updateCover from './updateCover'
@@ -79,6 +80,11 @@ router.get(
 router.post('/facebook',
   hasClientId,
   endpointWrapper(createFacebook)
+)
+
+router.post('/connectFacebook',
+  hasValidOauth,
+  endpointWrapper(connectFacebook)
 )
 
 router.get(

@@ -14,7 +14,10 @@ import {
   Actions as NavigationActions,
   ActionConst as NavActionConst
 } from 'react-native-router-flux'
-import {AccessToken, GraphRequest, GraphRequestManager, LoginManager} from 'react-native-fbsdk'
+
+import {
+  loginToFacebookAndGetUserInfo,
+} from '../Services/FacebookConnect'
 
 import {Images, Colors} from '../Shared/Themes'
 import Loader from '../Components/Loader'
@@ -90,22 +93,23 @@ class LoginScreen extends React.Component {
     this.props.attemptLogin(username, password)
   }
 
-  loginFinishedManager = (/*err, result*/) => {
-    LoginManager.logInWithReadPermissions([
-      'public_profile',
-      'email',
-      'user_friends'
-    ]).then(result => {
-      if(!result.isCancelled) {
-        AccessToken.getCurrentAccessToken().then((/*data*/) => {
-            this.getUserInfoAndSignup()
-          }
-        )
-      }
-    })
-    .catch(err => console.log('fb login error:', err))
+  _loginFacebook = () => {
+    loginToFacebookAndGetUserInfo().then((userResponse) => {
+      const userPicture = !userResponse.picture.data.is_silhouette ?
+      userResponse.picture.data.url : null
 
+      this.props.signupFacebook(
+        userResponse.id,
+        userResponse.email,
+        userResponse.name,
+        userPicture
+      )
+    }).catch((error) => {
+      console.log('Facebook connect failed with error: ', error);
+    });
   }
+  
+
 
   _handleGraphQuery = (error, data) => {
     if (error) {
@@ -122,22 +126,6 @@ class LoginScreen extends React.Component {
       data.name,
       userPicture
     )
-  }
-
-  getUserInfoAndSignup = () => {
-    const infoRequest = new GraphRequest(
-      '/me',
-      {
-        parameters: {
-          fields: {
-            string: 'email,about,name,picture.type(large)'
-          }
-        }
-      },
-      this._handleGraphQuery,
-    );
-
-    new GraphRequestManager().addRequest(infoRequest).start();
   }
 
   handleChangeUsername = (text) => {
@@ -177,7 +165,7 @@ class LoginScreen extends React.Component {
           </View>
           <RoundedButton
             style={launchStyles.facebook}
-            onPress={this.loginFinishedManager}
+            onPress={this._loginFacebook}
             icon='facebook'
             iconStyle={launchStyles.facebookIcon}
             text='Log in with Facebook'

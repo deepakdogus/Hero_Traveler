@@ -108,6 +108,10 @@ const create = () => {
     })
   }
 
+  const connectFacebook = (fbid, email) => {
+    return api.post('user/connectFacebook', {fbid, email})
+  }
+
   const login = (username, password) => {
     return api.post('auth', {}, {
       auth: {
@@ -399,6 +403,7 @@ const create = () => {
     resetPassword,
     signupEmail,
     signupFacebook,
+    connectFacebook,
     getUserFeed,
     createStory,
     getCategories,

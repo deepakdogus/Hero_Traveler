@@ -48,7 +48,7 @@
     currentDownloads = @[];
     
     __weak RCTVideoCache* weakCache = self;
-    cleanupTimer = [NSTimer scheduledTimerWithTimeInterval:2 repeats:YES block:^(NSTimer* _){
+    cleanupTimer = [NSTimer scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer* _){
       [weakCache cleanupCacheInstances];
     }];
   }

@@ -193,6 +193,7 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   }
   
   playingVideoItem = [[RCTVideoCache get] assetForUrl:_uri withOriginalUrl:_originalUri forVideoView:self];
+  [self applyModifiers];
 }
 
 #pragma mark - Prop setters

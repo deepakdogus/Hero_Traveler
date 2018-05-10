@@ -129,10 +129,11 @@ export const updateUser = (state) => state.merge({
 
 export const updateUserSuccess = (state, {user}) => {
   const path = ['entities', user.id]
-  const updatedUser = state.getIn(path)
-                           .merge(user, {deep: true})
-  return state.setIn(path, updatedUser)
-              .merge({error: null, updating: false})
+  const updatedUser = state.getIn(path).merge(user, {deep: true})
+  return state.setIn(path, updatedUser).merge({
+    error: null,
+    updating: false
+  })
 }
 
 export const updateUserFailure = (state, {error}) => {
@@ -154,12 +155,13 @@ export const connectFacebook = (state) => {
 // FB account is successfully connected.
 export const connectFacebookSuccess = (state, {user}) => {
   const path = ['entities', user.id]
-  const updatedUser = state.getIn(path)
-                           .merge(user, {deep: true})
-  return state.setIn(path, updatedUser)
-              .merge({error: null, fetchStatus: {
-                fetching: false,
-              }})
+  const updatedUser = state.getIn(path).merge(user, {deep: true})
+  return state.setIn(path, updatedUser).merge({
+    error: null,
+    fetchStatus: {
+      fetching: false,
+    }
+  })
 }
 
 // There was an error, either cancelled or that FB was connected to a different user

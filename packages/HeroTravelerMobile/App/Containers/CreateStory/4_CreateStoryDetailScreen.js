@@ -5,7 +5,7 @@ import {
   View,
   Text,
   TouchableWithoutFeedback,
-  TouchableHighlight,
+  TouchableOpacity,
   DatePickerIOS,
   TextInput,
 } from 'react-native'
@@ -14,7 +14,6 @@ import {Actions as NavActions} from 'react-native-router-flux'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import StoryEditActions from '../../Shared/Redux/StoryCreateRedux'
 import {Colors, Metrics} from '../../Shared/Themes'
-import Loader from '../../Components/Loader'
 import ShadowButton from '../../Components/ShadowButton'
 import TabIcon from '../../Components/TabIcon'
 import RoundedButton from '../../Components/RoundedButton'
@@ -43,7 +42,7 @@ const dateLikeItemAsDateString = (dateLikeItem) => {
 }
 
 
-const Radio = ({text, onPress, name, selected}) => {
+const Radio = ({text, onPress, selected}) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.radio}>
@@ -113,7 +112,7 @@ class CreateStoryDetailScreen extends React.Component {
     }
   }
 
-  _setModalVisible = (visible) => {
+  _setModalVisible = (visible = true) => {
     this.setState({ modalVisible: visible })
   }
 
@@ -346,10 +345,9 @@ class CreateStoryDetailScreen extends React.Component {
                 />
               </View>
             </View>
-            <View style={styles.fieldWrapper}>
-              <TabIcon name='location' style={iconStyles.location} />
-              <TouchableWithoutFeedback onPress={this.navToLocation}>
-                <View>
+            <TouchableWithoutFeedback onPress={this.navToLocation}>
+              <View style={styles.fieldWrapper}>
+                <TabIcon name='location' style={iconStyles.location} />
                   <Text
                     style={[
                       styles.inputStyle,
@@ -365,19 +363,18 @@ class CreateStoryDetailScreen extends React.Component {
                       'Location'
                     }
                   </Text>
-                </View>
-              </TouchableWithoutFeedback>
-            </View>
-            <View style={styles.fieldWrapper} >
-              <TabIcon name='date' style={iconStyles.date} />
-              <TouchableHighlight
-                onPress={() => this._setModalVisible(true)}
-              >
-                <Text style={styles.inputStyle}>
-                  {dateLikeItemAsDateString(workingDraft.tripDate)}
-                </Text>
-              </TouchableHighlight>
-            </View>
+              </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback
+              onPress={this._setModalVisible}
+            >
+              <View style={styles.fieldWrapper} >
+                <TabIcon name='date' style={iconStyles.date} />
+                  <Text style={styles.inputStyle}>
+                    {dateLikeItemAsDateString(workingDraft.tripDate)}
+                  </Text>
+              </View>
+            </TouchableWithoutFeedback>
             <View style={styles.fieldWrapper}>
               <TabIcon name='cost' style={iconStyles.cost} />
               <View style={styles.longInput}>
@@ -401,7 +398,6 @@ class CreateStoryDetailScreen extends React.Component {
               iconStyle={iconStyles.category}
               tagName='tag'
               array={workingDraft.categories}
-              mapFunction={(categories) => _.map(categories, 'title').join(', ')}
             />
             <EditCategoryHashtag
               text='Add hashtags...'
@@ -409,23 +405,18 @@ class CreateStoryDetailScreen extends React.Component {
               iconStyle={iconStyles.hashtag}
               tagName='hashtag'
               array={workingDraft.hashtags}
-              mapFunction={(hashtags) => {
-                return _.map(hashtags, (hashtag) => {
-                  return `#${hashtag.title}`
-                }).join(', ')
-              }}
             />
             <View style={styles.travelTipsWrapper}>
               <Text style={styles.fieldLabel}>Travel Tips: </Text>
               <View style={styles.travelTipsPreview}>
-                <TouchableHighlight onPress={this.navToTravelTips}>
+                <TouchableOpacity onPress={this.navToTravelTips}>
                   <Text style={[
                     styles.travelTipsPreviewText,
                     workingDraft.travelTips ? {} : styles.travelTipsPreviewTextDimmed
                   ]}>
                     {workingDraft.travelTips || "What should your fellow travelers know?"}
                   </Text>
-                </TouchableHighlight>
+                </TouchableOpacity>
               </View>
             </View>
           </ScrollView>

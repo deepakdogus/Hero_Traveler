@@ -3,7 +3,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Text, View, Image } from 'react-native'
 import { connect } from 'react-redux'
-import {Actions as NavActions} from 'react-native-router-flux'
 import SplashScreen from 'react-native-splash-screen'
 
 import {Metrics, Images} from '../../Shared/Themes'
@@ -13,8 +12,6 @@ import StoryList from '../../Containers/ConnectedStoryList'
 import ConnectedStoryPreview from '../ConnectedStoryPreview'
 import styles from '../Styles/MyFeedScreenStyles'
 import NoStoriesMessage from '../../Components/NoStoriesMessage'
-import ProgressBar from '../../Components/ProgressBar'
-import FailureBar from '../../Components/FailureBar'
 import BackgroundPublishingBars from '../../Components/BackgroundPublishingBars'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
@@ -112,7 +109,7 @@ class MyFeedScreen extends React.Component {
   }
 
   render () {
-    let {storiesById, fetchStatus, error, sync, backgroundFailures} = this.props;
+    let {storiesById, fetchStatus, error, sync} = this.props;
     let topContent, bottomContent
 
     const failure = this.getFirstBackgroundFailure()
@@ -159,7 +156,6 @@ const mapStateToProps = (state) => {
   let {
     userFeedById,
     fetchStatus,
-    entities: stories,
     error,
     backgroundFailures,
   } = state.entities.stories;

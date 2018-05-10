@@ -84,10 +84,7 @@ export default class StoryCover extends Component {
   }
 
   renderImageWithUrl(isVideo, imageUrl, imageThumbnailUrl) {
-    const {
-      cover, onPress, gradientLocations, gradientColors,
-      children, showPlayButton,
-    } = this.props
+    const {cover, children, showPlayButton} = this.props
     // handling for backgroundPublish failures. Covers will not be correctly formatted yet
 
     return (

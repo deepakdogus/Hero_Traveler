@@ -4,6 +4,7 @@
 #import <React/RCTEventDispatcher.h>
 #import <React/UIView+React.h>
 #import "RCTVideoCache.h"
+#import "UIView+DetectHierarchyChanges.h"
 
 static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
 
@@ -166,8 +167,26 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   [self removeAllPlayerViews];
 }
 
+- (BOOL) isViewVisible:(UIView*)view
+{
+  if (view.hidden || view.alpha <= 0.5f)
+  {
+    return NO;
+  }
+  else if (view.superview)
+  {
+    return [self isViewVisible:view.superview];
+  }
+  return [view isKindOfClass:[UIWindow class]];
+}
+
 - (void) restorePlayingVideo
 {
+  if (![self isViewVisible:self])
+  {
+    return;
+  }
+  
   if (playingVideoItem || _uri.length == 0)
   {
     return;
@@ -304,10 +323,14 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   }
 }
 
-- (void) layoutSubviews
+- (void) hierachyChanged
 {
-  [super layoutSubviews];
   [self restorePlayingVideo];
+}
+
+- (void) setBounds:(CGRect)bounds
+{
+  [super setBounds:bounds];
   [CATransaction begin];
   [CATransaction setAnimationDuration:0];
   _embeddedViewController.view.frame = self.bounds;

@@ -615,6 +615,10 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     {
       i++;
     }
+    else
+    {
+      break;
+    }
   }
   
   return i;

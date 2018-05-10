@@ -61,6 +61,7 @@
 		916D5B3C204DC86400FB09DF /* RHShadowNativeFeedItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 916D5B3B204DC86400FB09DF /* RHShadowNativeFeedItem.m */; };
 		916DBF62203C8A2B0097DE98 /* libAutoGrowTextInput.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 916DBF61203C8A1B0097DE98 /* libAutoGrowTextInput.a */; };
 		917616462055D3CC007F8E40 /* RHNativeFeedBackingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 917616452055D3CC007F8E40 /* RHNativeFeedBackingView.m */; };
+		91819F4720A4BA92005BBB4E /* UIView+DetectHierarchyChanges.m in Sources */ = {isa = PBXBuildFile; fileRef = 91819F4620A4BA92005BBB4E /* UIView+DetectHierarchyChanges.m */; };
 		9183B9C3209A2B4B00856E3E /* RHNativeFeedPrefetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 9183B9C2209A2B4B00856E3E /* RHNativeFeedPrefetcher.m */; };
 		919416DC2043E854006F42BC /* RHShadowNativeFeedHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 919416DB2043E854006F42BC /* RHShadowNativeFeedHeader.m */; };
 		919416DF2043E86A006F42BC /* RHNativeFeedHeaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 919416DE2043E86A006F42BC /* RHNativeFeedHeaderManager.m */; };
@@ -687,6 +688,8 @@
 		916DBF5C203C8A1B0097DE98 /* AutoGrowTextInput.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AutoGrowTextInput.xcodeproj; path = "../node_modules/react-native-autogrow-textinput/ios/AutoGrowTextInput.xcodeproj"; sourceTree = "<group>"; };
 		917616442055D3CC007F8E40 /* RHNativeFeedBackingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHNativeFeedBackingView.h; sourceTree = "<group>"; };
 		917616452055D3CC007F8E40 /* RHNativeFeedBackingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHNativeFeedBackingView.m; sourceTree = "<group>"; };
+		91819F4520A4BA92005BBB4E /* UIView+DetectHierarchyChanges.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+DetectHierarchyChanges.h"; sourceTree = "<group>"; };
+		91819F4620A4BA92005BBB4E /* UIView+DetectHierarchyChanges.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+DetectHierarchyChanges.m"; sourceTree = "<group>"; };
 		9183B9C1209A2B4B00856E3E /* RHNativeFeedPrefetcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHNativeFeedPrefetcher.h; sourceTree = "<group>"; };
 		9183B9C2209A2B4B00856E3E /* RHNativeFeedPrefetcher.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHNativeFeedPrefetcher.m; sourceTree = "<group>"; };
 		919416DA2043E854006F42BC /* RHShadowNativeFeedHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHShadowNativeFeedHeader.h; sourceTree = "<group>"; };
@@ -1214,6 +1217,8 @@
 				91589B3F200BE48F000B84E6 /* VideoCacheItem.m */,
 				9115FA91203D681200547516 /* VideoDownloadItem.h */,
 				9115FA92203D681200547516 /* VideoDownloadItem.m */,
+				91819F4520A4BA92005BBB4E /* UIView+DetectHierarchyChanges.h */,
+				91819F4620A4BA92005BBB4E /* UIView+DetectHierarchyChanges.m */,
 			);
 			name = Video;
 			path = HeroTravelerMobile/Video;
@@ -1504,7 +1509,6 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				014482B1285095E8F3676463 /* [CP] Embed Pods Frameworks */,
 				5E59E24373337F1AFBED62F1 /* [CP] Copy Pods Resources */,
 				9150BC42201AC4CC00697D90 /* ShellScript */,
 				91F19969204F2BDF00EC7125 /* CopyFiles */,
@@ -2171,21 +2175,6 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		014482B1285095E8F3676463 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HeroTravelerMobile/Pods-HeroTravelerMobile-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		052FB2737BC4540954751717 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2214,14 +2203,20 @@
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
 				"${PODS_ROOT}/GooglePlacePicker/Frameworks/GooglePlacePicker.framework/Resources/GooglePlacePicker.bundle",
 				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
-				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
+				"${PODS_CONFIGURATION_BUILD_DIR}/HockeySDK/HockeySDKResources.bundle",
 				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
 				"${PODS_ROOT}/iOS-MagnifyingGlass/MagnifyingGlass/Resources/kb-loupe-hi_6.png",
 				"${PODS_ROOT}/iOS-MagnifyingGlass/MagnifyingGlass/Resources/kb-loupe-hi_7.png",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlacePicker.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlaces.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/HockeySDKResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/kb-loupe-hi_6.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/kb-loupe-hi_7.png",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2267,6 +2262,7 @@
 				91973CAE1FA39B64006DE932 /* RNDJContentModel.m in Sources */,
 				917616462055D3CC007F8E40 /* RHNativeFeedBackingView.m in Sources */,
 				91F037C420035941000BA406 /* RCTVideoManager.m in Sources */,
+				91819F4720A4BA92005BBB4E /* UIView+DetectHierarchyChanges.m in Sources */,
 				916D5B3C204DC86400FB09DF /* RHShadowNativeFeedItem.m in Sources */,
 				91F86E4F2042E7DF006A9C73 /* RHShadowNativeFeed.m in Sources */,
 				91F037C320035941000BA406 /* RCTVideo.m in Sources */,

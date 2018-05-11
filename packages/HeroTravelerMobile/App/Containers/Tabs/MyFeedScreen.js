@@ -30,8 +30,15 @@ class MyFeedScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.props.attemptGetUserFeed(this.props.userId)
+    if (!this.isPendingUpdate()) this.props.attemptGetUserFeed(this.props.userId)
     SplashScreen.hide()
+  }
+
+  isPendingUpdate() {
+    const {sync} = this.props
+    return  sync.syncProgressSteps
+    && sync.syncProgressSteps !== sync.syncProgress
+    && !sync.error
   }
 
   isSuccessfulLoad(nextProps){
@@ -83,6 +90,7 @@ class MyFeedScreen extends React.Component {
   }
 
   _onRefresh = () => {
+    if (this.isPendingUpdate()) return
     this.setState({refreshing: true})
     this.props.attemptGetUserFeed(this.props.user.id)
   }

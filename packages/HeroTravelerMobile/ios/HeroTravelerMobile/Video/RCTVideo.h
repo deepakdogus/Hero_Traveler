@@ -44,6 +44,8 @@
 - (BOOL) isDisplayingFullscreen;
 - (BOOL) isPlaying;
 
+- (BOOL) isPresentingFullscreen;
+
 - (float) rate;
 
 - (void) applyModifiers;

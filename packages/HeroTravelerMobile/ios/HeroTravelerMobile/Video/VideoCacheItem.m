@@ -261,7 +261,7 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   {
     PlayingVideoItem* playingVidoItem = weakPlayingVideoItem.playingVideoItem;
 
-    if ([playingVidoItem.videoView isDisplayingFullscreen] || [self isViewVisible:playingVidoItem.videoView])
+    if ([playingVidoItem.videoView isPresentingFullscreen] || [self isViewVisible:playingVidoItem.videoView])
     {
       [visiblePlayers addObject:playingVidoItem];
     }
@@ -614,7 +614,7 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
     {
       
     }
-    else if (video.needsVideoLoaded && [self isViewVisible:video])
+    else if (video.needsVideoLoaded && ([video isPresentingFullscreen] || [self isViewVisible:video]))
     {
       return NO;
     }

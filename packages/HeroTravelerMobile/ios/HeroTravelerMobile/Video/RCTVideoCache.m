@@ -336,27 +336,32 @@
 {
   NSMutableArray* mLoadedVideos = [@[] mutableCopy];
   
-  NSArray* oldestVideosFirst = [loadedVideos sortedArrayUsingComparator:^(VideoCacheItem* a, VideoCacheItem* b){
-    return [a.lastTouched compare:b.lastTouched];
+  NSArray* newestVideosFirst = [loadedVideos sortedArrayUsingComparator:^(VideoCacheItem* a, VideoCacheItem* b){
+    return [b.lastTouched compare:a.lastTouched];
   }];
   
   NSDate* currentTime = [NSDate date];
   
-  for (VideoCacheItem* existingCacheItem in oldestVideosFirst)
+  NSInteger videosToKeep = 4;
+  
+  for (VideoCacheItem* existingCacheItem in newestVideosFirst)
   {
     if (fabs([currentTime timeIntervalSinceDate:existingCacheItem.lastTouched]) < 1.f)
     {
       [mLoadedVideos addObject:existingCacheItem];
+      videosToKeep--;
     }
     else
     {
-      if (![existingCacheItem purge])
+      if (videosToKeep > 0 || ![existingCacheItem purge])
       {
         [mLoadedVideos addObject:existingCacheItem];
       }
       else
       {
       }
+      
+      videosToKeep--;
     }
   }
   

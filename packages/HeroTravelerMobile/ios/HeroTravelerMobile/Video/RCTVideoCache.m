@@ -342,7 +342,7 @@
   
   NSDate* currentTime = [NSDate date];
   
-  NSInteger videosToKeep = 4;
+  NSInteger videosToKeep = 0;
   
   for (VideoCacheItem* existingCacheItem in newestVideosFirst)
   {

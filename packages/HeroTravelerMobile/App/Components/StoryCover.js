@@ -78,13 +78,8 @@ export default class StoryCover extends Component {
     }
   }
 
-  // if it is a local URL there is no need to cache since it is directly on phone
-  isLocalUrl(cover){
-    return cover.uri || cover.secure_url
-  }
-
   renderImageWithUrl(isVideo, imageUrl, imageThumbnailUrl) {
-    const {cover, children, showPlayButton} = this.props
+    const {children, showPlayButton} = this.props
     // handling for backgroundPublish failures. Covers will not be correctly formatted yet
 
     return (
@@ -98,14 +93,14 @@ export default class StoryCover extends Component {
         }}>
         { imageThumbnailUrl &&
           <ImageWrapper
-            cached={!this.isLocalUrl(cover)}
+            cached={true}
             resizeMode='cover'
             source={{uri: imageThumbnailUrl}}
             style={embeddedImageStyle}
           />
         }
           <ImageWrapper
-            cached={!this.isLocalUrl(cover)}
+            cached={true}
             resizeMode='cover'
             source={{uri: imageUrl}}
             style={embeddedImageStyle}
@@ -187,7 +182,6 @@ export default class StoryCover extends Component {
     const videoThumbnailOptions = {
       video: true,
       width: 'screen',
-      height: this.props.isFeed ? Metrics.storyCover.feed.videoTypeHeight : Metrics.storyCover.fullScreen.height,
     }
 
     const videoImageUrl = getImageUrl(this.props.cover, 'optimized', videoThumbnailOptions)

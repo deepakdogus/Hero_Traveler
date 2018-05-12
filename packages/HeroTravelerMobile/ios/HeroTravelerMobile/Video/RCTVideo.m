@@ -40,6 +40,10 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   
   NSString* _uri;
   NSString* _originalUri;
+  
+  BOOL _isBuffering;
+  BOOL _isReadyForPlay;
+  BOOL _isHidden;
 }
 
 - (instancetype) initWithEventDispatcher:(RCTEventDispatcher*)eventDispatcher
@@ -184,6 +188,7 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
 {
   if (![self isViewVisible:self])
   {
+    [[RCTVideoCache get] purgeExcessVideos];
     return;
   }
   
@@ -217,7 +222,24 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
 
 - (void) setIsBuffering:(BOOL)isBuffering
 {
-  self.hidden = isBuffering;
+  _isBuffering = isBuffering;
+  [self resolveHiddenState];
+}
+
+- (void) resolveHiddenState
+{
+  BOOL isHidden = _isBuffering || _isReadyForPlay;
+  
+  if (_isHidden != isHidden)
+  {
+    CGFloat targetAlpha = _embeddedViewController.readyForDisplay ? 1 : 0;
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+      _embeddedViewController.view.alpha = targetAlpha;
+    });
+
+    _isHidden = isHidden;
+  }
 }
 
 - (void) setIgnoreSilentSwitch:(NSString*)ignoreSilentSwitch
@@ -353,7 +375,6 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   {
     _showPlayer = YES;
     [self restorePlayingVideo];
-    [self applyModifiers];
   }
 
   [super didMoveToSuperview];
@@ -389,6 +410,7 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
     _embeddedViewController = playerLayer;
 
 //    _embeddedViewController = [[AVPlayerViewController alloc] init];
+    _embeddedViewController.view.alpha = 0;
     _embeddedViewController.view.frame = self.bounds;
     _embeddedViewController.showsPlaybackControls = _showControls;
     
@@ -404,15 +426,28 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
 																 options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
 																 context:nil];
 
-    if (_embeddedViewController.readyForDisplay)
+    BOOL isReadyForDisplay = _embeddedViewController.readyForDisplay;
+    if (!isReadyForDisplay)
     {
       dispatch_async(dispatch_get_main_queue(), ^{
         if (self.onReadyForDisplay)
         {
-          self.onReadyForDisplay(@{@"ready": @YES, @"target": self.reactTag});
+          self.onReadyForDisplay(@{@"ready": @(isReadyForDisplay), @"target": self.reactTag});
         }
       });
     }
+    else
+    {
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (self.onReadyForDisplay)
+        {
+          self.onReadyForDisplay(@{@"ready": @(isReadyForDisplay), @"target": self.reactTag});
+        }
+      });
+    }
+    
+    _isReadyForPlay = _embeddedViewController.isReadyForDisplay;
+    [self resolveHiddenState];
     
     [self addSubview:_embeddedViewController.view];
   }
@@ -575,10 +610,23 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
 {
   if (object == _embeddedViewController || object == _playerViewController) {
     if([keyPath isEqualToString:readyForDisplayKeyPath] && [change objectForKey:NSKeyValueChangeNewKey]) {
+      
+      AVPlayerViewController* player = (AVPlayerViewController*) object;
+      _isReadyForPlay = player.readyForDisplay;
+      [self resolveHiddenState];
+      
+      BOOL isReadyForPlay = _isReadyForPlay;
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (self.onReadyForDisplay)
+        {
+          self.onReadyForDisplay(@{@"ready": @(isReadyForPlay), @"target": self.reactTag});
+        }
+      });
+
       if ([change objectForKey:NSKeyValueChangeNewKey]) {
         if (self.onReadyForDisplay)
         {
-          self.onReadyForDisplay(@{@"ready": @YES, @"target": self.reactTag});
+          self.onReadyForDisplay(@{@"ready": @(player.readyForDisplay), @"target": self.reactTag});
         }
       }
 		} else if([keyPath isEqualToString:@"modalPresentationStyle"] && [change objectForKey:NSKeyValueChangeNewKey]) {

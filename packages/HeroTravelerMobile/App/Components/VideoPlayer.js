@@ -146,6 +146,7 @@ export default class VideoPlayer extends React.Component {
       isLoaded: false,
       isReadyForDisplay: false,
       isStalled: false,
+      error: false,
     }
   }
 
@@ -247,6 +248,11 @@ export default class VideoPlayer extends React.Component {
     this.props.onLoad(event.naturalSize)
   }
 
+  _onError = (val) => {
+    this.setState({error: true})
+  }
+
+
   _onReadyForDisplay = (event) => {
     this.setState({isReadyForDisplay: event.ready})
   }
@@ -271,6 +277,7 @@ export default class VideoPlayer extends React.Component {
   render() {
     const playButtonSize = this.props.playButtonSize
     const isNotReadyForDisplay = !this.state.isLoaded || !this.state.isReadyForDisplay
+    const hasError = this.state.error
     return (
       <View style={[
         styles.root,
@@ -299,6 +306,7 @@ export default class VideoPlayer extends React.Component {
             this.props.videoStyle,
           ]}
           repeat={true}
+          onError={this._onError}
           onLoad={this._onLoad}
           onReadyForDisplay={this._onReadyForDisplay}
           onPlaybackStalled={this._onPlaybackStalled}
@@ -309,7 +317,7 @@ export default class VideoPlayer extends React.Component {
           showControls={this.props.showControls}
           />
 
-        {(this.state.isStalled || isNotReadyForDisplay) &&
+        {(hasError || this.state.isStalled || isNotReadyForDisplay) &&
          <ActivityIndicator size="small" color="#ffffff" />
         }
         {

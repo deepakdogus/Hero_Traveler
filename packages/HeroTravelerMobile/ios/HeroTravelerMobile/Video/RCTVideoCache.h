@@ -30,6 +30,7 @@
 + (NSString*) urlToKey:(NSString*)url;
 + (void) moveVideo:(NSURL*)videoUrl toAssetKeyCache:(NSString*)assetKey;
 + (BOOL) ensureDirectory:(NSURL*)directory;
+- (void) purgeExcessVideos;
 
 - (PlayingVideoItem*) assetForUrl:(NSString*)url withOriginalUrl:(NSString*)originalUrl forVideoView:(RCTVideo*)videoView;
 

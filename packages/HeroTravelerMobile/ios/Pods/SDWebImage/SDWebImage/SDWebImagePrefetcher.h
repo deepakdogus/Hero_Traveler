@@ -20,10 +20,11 @@
  *
  * @param imagePrefetcher The current image prefetcher
  * @param imageURL        The image url that was prefetched
+ * @param error           The error (if any) when attempting prefetch
  * @param finishedCount   The total number of images that were prefetched (successful or not)
  * @param totalCount      The total number of images that were to be prefetched
  */
-- (void)imagePrefetcher:(nonnull SDWebImagePrefetcher *)imagePrefetcher didPrefetchURL:(nullable NSURL *)imageURL finishedCount:(NSUInteger)finishedCount totalCount:(NSUInteger)totalCount;
+- (void)imagePrefetcher:(nonnull SDWebImagePrefetcher *)imagePrefetcher didPrefetchURL:(nullable NSURL *)imageURL withError:(NSError*)error finishedCount:(NSUInteger)finishedCount totalCount:(NSUInteger)totalCount;
 
 /**
  * Called when all images are prefetched.

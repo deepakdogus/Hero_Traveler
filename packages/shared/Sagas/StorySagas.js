@@ -3,9 +3,10 @@ import StoryActions from '../Redux/Entities/Stories'
 import UserActions, {isInitialAppDataLoaded, isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
 import CategoryActions from '../Redux/Entities/Categories'
 import StoryCreateActions from '../Redux/StoryCreateRedux'
-import {getNewCover, saveCover} from '../Redux/helpers/coverUpload'
-import CloudinaryAPI from '../../Services/CloudinaryAPI'
+import {getNewCover} from '../Redux/helpers/coverUpload'
+import CloudinaryAPI, { moveVideoToPreCache, moveVideosFromPrecacheToCache } from '../../Services/CloudinaryAPI'
 import pathAsFileObject from '../Lib/pathAsFileObject'
+import { isLocalMediaAsset } from '../Lib/getVideoUrl'
 import _ from 'lodash'
 import Immutable from 'seamless-immutable'
 
@@ -139,6 +140,10 @@ const extractUploadData = (uploadData) => {
 }
 
 function * createCover(api, draft){
+  const videoFileUri =
+    draft.coverVideo && draft.coverVideo.uri && isLocalMediaAsset(draft.coverVideo.uri)
+    ? draft.coverVideo.uri
+    : undefined
   const isImageCover = draft.coverImage
   const cover = getNewCover(draft.coverImage, draft.coverVideo)
   if (!cover) return draft
@@ -148,6 +153,9 @@ function * createCover(api, draft){
   if (isImageCover) draft.coverImage = cloudinaryCover.data
   else draft.coverVideo = cloudinaryCover.data
   yield put(StoryCreateActions.incrementSyncProgress())
+  if (videoFileUri && cloudinaryCover.data && cloudinaryCover.data.public_id) {
+    moveVideoToPreCache(draft.id, videoFileUri, cloudinaryCover.data.public_id)
+  }
   return draft
 }
 
@@ -158,7 +166,7 @@ function * uploadAtomicAssets(draft){
   const promise = yield Promise.all(draft.draftjsContent.blocks.map((block, index) => {
     if (block.type === 'atomic') {
       const {url, type} = block.data
-      if (url.substring(0,4) === 'file' || url.substring(0,6) === '/Users') {
+      if (isLocalMediaAsset(url)) {
         return CloudinaryAPI.uploadMediaFile(pathAsFileObject(url), type)
         .then(response => {
           if (response.error) return response
@@ -168,13 +176,14 @@ function * uploadAtomicAssets(draft){
           return Promise.reject(err)
         })
       }
+      else return undefined
     }
-    else return
+    else return undefined
   }))
 
   // part of what needs to get refactored during CloudinaryAPI refactor
   let errorBlock
-  const hasError = promise.some(block => {
+  promise.some(block => {
     if (block && block.error) {
       errorBlock = block
       return true
@@ -260,8 +269,10 @@ export function * publishLocalDraft (api, action) {
 
 export function * publishDraft (api, action) {
   const {draft} = action
+  const draftStoryId = draft.id
   const response = yield call(api.createStory, draft)
   if (response.ok) {
+    moveVideosFromPrecacheToCache(draftStoryId)
     const stories = {}
     const story = response.data.story
     story.author = story.author.id
@@ -298,7 +309,7 @@ export function * updateDraft (api, action) {
   const {draftId, draft, updateStoryEntity} = action
   yield [
     put(StoryActions.setRetryingBackgroundFailure(draftId)),
-    put(StoryCreateActions.initializeSyncProgress(getSyncProgressSteps(draft), 'Updating Story')),
+    put(StoryCreateActions.initializeSyncProgress(getSyncProgressSteps(draft), 'Saving Story')),
   ]
 
   const coverResponse = yield createCover(api, draft)

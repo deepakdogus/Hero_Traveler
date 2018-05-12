@@ -7,7 +7,6 @@ import {
   TouchableWithoutFeedback,
   Animated,
   View,
-  KeyboardAvoidingView,
   Alert,
   TextInput,
   ScrollView,
@@ -34,7 +33,6 @@ import ImageWrapper from '../../Components/ImageWrapper'
 import VideoPlayer, {TouchlessPlayButton} from '../../Components/VideoPlayer'
 import pathAsFileObject from '../../Shared/Lib/pathAsFileObject'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTimeTooltips'
-import RoundedButton from '../../Components/RoundedButton'
 import UserActions from '../../Shared/Redux/Entities/Users'
 import TabIcon from '../../Components/TabIcon'
 import Modal from '../../Components/Modal'
@@ -67,13 +65,6 @@ const isEqual = (firstItem, secondItem) => {
   } else {
     return true
   }
-}
-
-const extractUploadData = (uploadData) => {
-  const url = _.get(uploadData, 'original.path')
-  const height = _.get(uploadData, 'original.meta.height')
-  const width = _.get(uploadData, 'original.meta.width')
-  return [url, height, width]
 }
 
 async function trimVideo(videoFile, callback, storyId, _this){
@@ -722,12 +713,18 @@ class StoryCoverScreen extends Component {
     })
   }
 
+  setEditorRef = (ref) => this.editor = ref
+
+  setScrollViewRef = (ref) => this.scrollViewRef = ref
+
+  setToolbarRef = (ref) => this.toolbar = ref
+
   renderEditor() {
     return (
       <View style={[styles.editor]}>
         {
           <NativeEditor
-            ref={i => this.editor = i}
+            ref={this.setEditorRef}
             style={{
               flex: 1,
               minWidth: Metrics.screenWidth
@@ -813,7 +810,7 @@ class StoryCoverScreen extends Component {
     return (
       <View style={styles.root}>
         <ScrollView
-          ref={i => this.scrollViewRef = i}
+          ref={this.setScrollViewRef}
           keyboardShouldPersistTaps='handled'
           stickyHeaderIndices={[0]}
           onScroll={this.onScroll}
@@ -902,7 +899,7 @@ class StoryCoverScreen extends Component {
           >
             {
             <Toolbar
-              ref={i => this.toolbar = i}
+              ref={this.setToolbarRef}
               display={this.state.toolbarDisplay}
               onPress={this.editor.onToolbarPress}
             />

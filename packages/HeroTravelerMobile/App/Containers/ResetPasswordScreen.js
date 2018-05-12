@@ -81,7 +81,7 @@ class ResetPasswordScreen extends React.Component {
           <View style={[styles.section, {marginTop: 0}]}>
             <Text style={styles.title}>RESET PASSWORD</Text>
             <Text style={styles.instructions}>
-            Please enter your email address
+            Please choose a new password
             </Text>
           </View>
           <View style={{height: 35}}>

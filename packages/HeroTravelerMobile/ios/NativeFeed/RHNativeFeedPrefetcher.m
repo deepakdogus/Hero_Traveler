@@ -94,10 +94,18 @@
   [prefetcher prefetchURLs:[NSArray arrayWithArray:mUrlsToFetch]];
 }
 
-- (void)imagePrefetcher:(nonnull SDWebImagePrefetcher *)imagePrefetcher didPrefetchURL:(nullable NSURL *)url finishedCount:(NSUInteger)finishedCount totalCount:(NSUInteger)totalCount
+- (void)imagePrefetcher:(nonnull SDWebImagePrefetcher *)imagePrefetcher didPrefetchURL:(nullable NSURL *)url withError:(NSError*)error finishedCount:(NSUInteger)finishedCount totalCount:(NSUInteger)totalCount
 {
   if (_invalidated)
   {
+    return;
+  }
+
+  // If the url is bad or resource isn't available just treat it as if its there so as not to break the rest of the feed
+  // Timeouts, on the other hand, will be added to the retry list
+  if (error.code == NSURLErrorCancelled || error.code == NSURLErrorBadURL)
+  {
+    [self image:url isInCacheAfterPrefetchAttempt:YES];
     return;
   }
 

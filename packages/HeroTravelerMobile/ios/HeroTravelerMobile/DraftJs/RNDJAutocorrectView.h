@@ -15,6 +15,7 @@ typedef void (^CancelAutoCorrectBlock)(NSString*);
 @interface AutocompleteViewInfo: NSObject
 
 - (NSString*) stringRepresentation;
+- (NSString*) previousStringRepresentation;
 
 @property(readonly) CGPoint point;
 @property(readonly, strong) NSString* existingText;
@@ -33,7 +34,9 @@ typedef void (^CancelAutoCorrectBlock)(NSString*);
 @property (nonatomic, copy) RCTDirectEventBlock onReplaceRangeRequest;
 @property(readonly, strong) CancelAutoCorrectBlock cancelAutocorrectBlock;
 
-+ (RNDJAutocorrectView*) make:(AutocompleteViewInfo*)info inside:(UIView*)view cancelBlock:(CancelAutoCorrectBlock)cancelAutocorrectBlock withContentOffset:(UIEdgeInsets)contentInset;
+@property(readonly, assign) NSUInteger previousCount;
+
++ (RNDJAutocorrectView*) make:(AutocompleteViewInfo*)info inside:(UIView*)view cancelBlock:(CancelAutoCorrectBlock)cancelAutocorrectBlock withContentOffset:(UIEdgeInsets)contentInset withPreviousCount:(NSUInteger)previousCount;
 
 - (void) dispatch;
 

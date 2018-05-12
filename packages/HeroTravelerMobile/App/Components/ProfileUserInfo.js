@@ -13,7 +13,6 @@ import styles from './Styles/ProfileViewStyles'
 import { Colors } from '../Shared/Themes'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import formatCount from '../Shared/Lib/formatCount'
-import UserActions from '../Shared/Redux/Entities/Users'
 
 import TabIcon from './TabIcon'
 import Avatar from './Avatar'
@@ -48,7 +47,6 @@ export default class ProfileUserInfo extends Component {
     NavActions.followersScreen({
       title: 'Followers',
       followersType: 'followers',
-      loadDataAction: UserActions.loadUserFollowers,
       userId: this.props.user.id
     })
   }
@@ -57,7 +55,6 @@ export default class ProfileUserInfo extends Component {
     NavActions.followersScreen({
       title: 'Following',
       followersType: 'following',
-      loadDataAction: UserActions.loadUserFollowing,
       userId: this.props.user.id
     })
   }

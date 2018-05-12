@@ -209,7 +209,7 @@ export default class StoryPreview extends Component {
           ]}>
             {title}
           </Text>
-          {description &&
+          {!!description &&
             <Text style={[
               styles.description,
               isStoryReadingScreen ? styles.storyReadingDescription : {},

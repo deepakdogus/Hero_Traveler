@@ -17,6 +17,7 @@
 #import "SplashScreen.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
 #import "RCTVideoCache.h"
+#import "RCTVideoManager.h"
 @import GooglePlaces;
 @import GoogleMaps;
 

@@ -56,9 +56,9 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
-  - SDWebImage (4.2.3):
-    - SDWebImage/Core (= 4.2.3)
-  - SDWebImage/Core (4.2.3)
+  - SDWebImage (4.3.3):
+    - SDWebImage/Core (= 4.3.3)
+  - SDWebImage/Core (4.3.3)
   - yoga (0.53.0.React)
 
 DEPENDENCIES:
@@ -83,18 +83,36 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
-  - SDWebImage
+  - SDWebImage (from `https://github.com/rehashstudio/SDWebImage.git`, commit `705cab1b7fbafb661d4476e05cf6a98e31ab7793`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - FLAnimatedImage
+    - GoogleMaps
+    - GooglePlacePicker
+    - GooglePlaces
+    - HockeySDK
+    - iOS-MagnifyingGlass
+    - IQKeyboardManager
 
 EXTERNAL SOURCES:
   React:
-    :path: ../node_modules/react-native
+    :path: "../node_modules/react-native"
   react-native-google-maps:
-    :path: ../node_modules/react-native-maps
+    :path: "../node_modules/react-native-maps"
   react-native-maps:
-    :path: ../node_modules/react-native-maps
+    :path: "../node_modules/react-native-maps"
+  SDWebImage:
+    :commit: 705cab1b7fbafb661d4476e05cf6a98e31ab7793
+    :git: https://github.com/rehashstudio/SDWebImage.git
   yoga:
-    :path: ../node_modules/react-native/ReactCommon/yoga/yoga.podspec
+    :path: "../node_modules/react-native/ReactCommon/yoga/yoga.podspec"
+
+CHECKOUT OPTIONS:
+  SDWebImage:
+    :commit: 705cab1b7fbafb661d4476e05cf6a98e31ab7793
+    :git: https://github.com/rehashstudio/SDWebImage.git
 
 SPEC CHECKSUMS:
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
@@ -104,12 +122,12 @@ SPEC CHECKSUMS:
   HockeySDK: 38b7e2726af1ea86ae97ce4b5de33ab0817e3500
   iOS-MagnifyingGlass: b11b7d3e8be7de22c85f0edcaa75538bdf0827dc
   IQKeyboardManager: 0bfa4607d39924116b5c0c8b55b5d789288b5cba
-  React: 6a94a44468604816ad2fd3bae908b2ebbab0f95d
-  react-native-google-maps: 74a81c3aa24f2095fe8c8d27cb80b2b3808a5bc3
-  react-native-maps: 6ab4fa4f78e88824ec300de0eb412f0556b6a84b
-  SDWebImage: 791bb72962b3492327ddcac4b1880bd1b5458431
-  yoga: 36cb943786c0587f19094c593b5683074d679c46
+  React: 988a7dbd5626e0dd4f4b63fb444fa7e3d975e5b7
+  react-native-google-maps: 963fc78a5ac32dad3a726e4fa08b5307faa5cab2
+  react-native-maps: 066c2afcc89e18726377bcc685315f989ca22449
+  SDWebImage: de4d90b5bff3571eae7bd16202b1f43135409fa5
+  yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: 80d99c75237a0b5981992f9cf6a485cd751cc553
+PODFILE CHECKSUM: 6e5e20dd918d68927e9d0e2d04b6928cda414826
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.5.0

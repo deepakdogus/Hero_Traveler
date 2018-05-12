@@ -40,9 +40,10 @@ export default function getVideoUrl(video: object, stream = true): ?string {
 
   // if a video is under 10 minutes long we force the mp4 version
   // this ensures we have enough time to prepare all the streamingFormats
-  const streamBufferTime = moment().subtract(10, 'minutes')
-  const timeFromBuffer = streamBufferTime.to(moment(video.createdAt))
-  const bufferHasPassed = timeFromBuffer.split(" ")[2] === 'ago'
+  // const streamBufferTime = moment().subtract(10, 'minutes')
+  // const timeFromBuffer = streamBufferTime.to(moment(video.createdAt))
+  // const bufferHasPassed = timeFromBuffer.split(" ")[2] === 'ago'
 
-  return getVideoUrlFromString(video.original.path, bufferHasPassed && stream)
+  return getVideoUrlFromString(video.original.path, stream)
+  // return getVideoUrlFromString(video.original.path, bufferHasPassed && stream)
 }

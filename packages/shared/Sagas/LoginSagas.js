@@ -31,8 +31,8 @@ export function * login (api, { username, password }) {
     } else {
       yield put(LoginActions.loginFailure(errorFormatter(response)))
     }
-  } catch (e) {
-    yield put(LoginActions.loginFailure(e))
+  } catch (error) {
+    yield put(LoginActions.loginFailure(error))
   }
 }
 

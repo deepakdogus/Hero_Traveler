@@ -15,7 +15,6 @@ class CreateStoryScreen extends Component {
     registerDraft: PropTypes.func,
     loadDraft: PropTypes.func,
     discardDraft: PropTypes.func,
-    updateDraft: PropTypes.func,
     publish: PropTypes.func,
     resetCreateStore: PropTypes.func,
     reroute: PropTypes.func,
@@ -51,8 +50,6 @@ function mapStateToProps(state, props) {
   return {
     userId: state.session.userId,
     cachedStory: state.entities.stories.entities[props.storyId],
-    isPublished: state.storyCreate.isPublished,
-    isRepublished: state.storyCreate.isRepublished,
     accessToken: accessToken.value,
     draft: state.storyCreate.draft,
     workingDraft: state.storyCreate.workingDraft,
@@ -65,8 +62,6 @@ function mapDispatchToProps(dispatch) {
     loadDraft: (draftId, cachedStory) => dispatch(StoryCreateActions.editStory(draftId, cachedStory)),
     setWorkingDraft: (cachedStory) => dispatch(StoryCreateActions.editStorySuccess(cachedStory)),
     discardDraft: (draftId) => dispatch(StoryCreateActions.discardDraft(draftId)),
-    updateDraft: (draftId, attrs, doReset, isRepublishing) =>
-      dispatch(StoryCreateActions.updateDraft(draftId, attrs, doReset, isRepublishing)),
     publish: (draft) => dispatch(StoryCreateActions.publishDraft(draft)),
     resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
   }

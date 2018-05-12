@@ -26,7 +26,6 @@ const { Types, Creators } = createActions({
   uploadCoverImageSuccess: ['draft'],
   uploadCoverImageFailure: ['error'],
   resetCreateStore: null,
-  toggleCreateModal: null,
   initializeSyncProgress: ['numSteps', 'message'],
   incrementSyncProgress: ['steps'],
   syncError: null,
@@ -39,10 +38,8 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  isShowCreateModal: false,
   draft: null,
   workingDraft: null,
-  publishing: false,
   sync: {
     syncProgress: 0,
     syncProgressSteps: 0,
@@ -50,9 +47,6 @@ export const INITIAL_STATE = Immutable({
     error: false,
   },
   error: null,
-  isPublished: false,
-  isRepublished: false,
-  isRepublishing: false,
   fetchStatus: {
     loaded: false,
     fetching: false
@@ -62,23 +56,11 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Reducers ------------- */
 export const reset = () => INITIAL_STATE
 
-export const toggleCreateModal = (state) => {
-  return state.merge({
-    isShowCreateModal: !state.isShowCreateModal,
-  })
-}
-
-export const publish = (state, { userId }) => {
-  return state.merge({
-    publishing: true, error: null
-  })
-}
+export const publish = (state, { userId }) => state.merge({ error: null })
 
 export const publishSuccess = (state, {draft}) => {
   return state.merge({
-    publishing: false,
     error: null,
-    isPublished: true,
     draft: null,
     sync: {
       syncProgress: state.sync.syncProgressSteps
@@ -86,15 +68,10 @@ export const publishSuccess = (state, {draft}) => {
   }, {deep: true})
 }
 
-export const failure = (state, {error}) =>
-  state.merge({
-    publishing: false,
-    error
-  })
+export const failure = (state, {error}) => state.merge({ error })
 
 export const failureUpdating = (state, {error}) => {
   return state.merge({
-    isRepublishing: false,
     error,
     sync: {
       error: true
@@ -113,20 +90,12 @@ export const registerDraftSuccess = (state, {draft}) => {
   })
 }
 
-export const updateDraft = (state) => {
-  return state.merge({
-    isRepublishing: true,
-  })
-}
-
 // updateDraft called after save. Making sure to sync up workingDraft + draft
 export const updateDraftSuccess = (state, {draft}) => {
   state = state.setIn(['sync', 'syncProgress'], state.sync.syncProgressSteps)
   return state.merge({
     draft,
     workingDraft: draft,
-    isRepublished: true,
-    isRepublishing: false,
   },
   {deep: true})
 }
@@ -219,7 +188,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.DISCARD_DRAFT_SUCCESS]: reset,
   [Types.DISCARD_DRAFT_FAILURE]: failure,
   [Types.UPDATE_WORKING_DRAFT]: updateWorkingDraft,
-  [Types.UPDATE_DRAFT]: updateDraft,
   [Types.UPDATE_DRAFT_SUCCESS]: updateDraftSuccess,
   [Types.UPDATE_DRAFT_FAILURE]: failureUpdating,
   [Types.REGISTER_DRAFT]: registerDraft,
@@ -231,16 +199,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.EDIT_STORY_SUCCESS]: editStorySuccess,
   [Types.EDIT_STORY_FAILURE]: editStoryFailure,
   [Types.RESET_CREATE_STORE]: reset,
-  [Types.TOGGLE_CREATE_MODAL]: toggleCreateModal,
   [Types.INITIALIZE_SYNC_PROGRESS]: initializeSyncProgress,
   [Types.INCREMENT_SYNC_PROGRESS]: incrementSyncProgress,
   [Types.SYNC_ERROR]: syncError,
   [Types.RESET_SYNC]: resetSync,
 })
-
-export const hasDraft = (state) => !!_.get(state.draft, 'id')
-export const isCreated = (state) => state.isPublished
-export const isPublishing = (state) => state.publishing
-export const getDraft = (state) => {
-  return state.storyCreate.draft
-}

@@ -18,7 +18,7 @@ const prodSettings = {
   cdnBaseUrl: 'https://res.cloudinary.com/rehash-studio/',
   cloudName: 'rehash-studio',
   imagePreset: 'xoaf1z88',
-  videoPreset: 'hyyupvie',
+  videoPreset: 'frbe5p09',
 
   SEARCH_APP_NAME: 'BEEW4KQKOP',
   SEARCH_API_KEY: '318fa67b79fd7fdd680d68798d666786',

@@ -32,6 +32,8 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
     
     isStreaming = YES;
     
+    [self touch];
+    
     NSURL* url = [NSURL URLWithString:url_];
     NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
     _asset = [AVURLAsset URLAssetWithURL:url options:@{AVURLAssetHTTPCookiesKey : cookies}];
@@ -59,6 +61,8 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
     streamUrl = streamUrl_;
     
     isStreaming = NO;
+
+    [self touch];
 
     _playerItem = [AVPlayerItem playerItemWithURL:url];
     [self addPlayerItemObservers];
@@ -238,7 +242,7 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
 
 - (BOOL) isViewVisible:(UIView*)view
 {
-  if (view.hidden || view.alpha <= 0.00001f)
+  if (view.hidden || view.alpha <= 0.5f)
   {
     return NO;
   }
@@ -257,7 +261,7 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   {
     PlayingVideoItem* playingVidoItem = weakPlayingVideoItem.playingVideoItem;
 
-    if ([playingVidoItem.videoView isDisplayingFullscreen] || [self isViewVisible:playingVidoItem.videoView])
+    if ([playingVidoItem.videoView isPresentingFullscreen] || [self isViewVisible:playingVidoItem.videoView])
     {
       [visiblePlayers addObject:playingVidoItem];
     }
@@ -362,7 +366,6 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   [self removeListeners];
   [self removePlayerObservers];
   [self removePlayerItemObservers];
-  NSLog(@"Cache item dealloced");
 }
 
 - (void) addPlayerItemObservers
@@ -611,7 +614,7 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
     {
       
     }
-    else if (video.needsVideoLoaded && [self isViewVisible:video])
+    else if (video.needsVideoLoaded && ([video isPresentingFullscreen] || [self isViewVisible:video]))
     {
       return NO;
     }

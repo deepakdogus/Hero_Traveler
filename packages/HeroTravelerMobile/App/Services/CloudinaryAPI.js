@@ -2,12 +2,21 @@ import { NativeModules } from 'react-native'
 import RNFetchBlob from 'react-native-fetch-blob'
 
 import env from '../Config/Env'
-import {isLocalMediaAsset} from '../Shared/Lib/getVideoUrl'
+import {isLocalMediaAsset, getVideoUrlFromString} from '../Shared/Lib/getVideoUrl'
 
 const VideoManager = NativeModules.VideoManager
 
 function getCloudinaryUploadUrl(resourceType){
   return `https://api.cloudinary.com/v1_1/${env.cloudName}/${resourceType}/upload`
+}
+
+export function moveVideoToPreCache(draftStoryId, videoFileUri, cloudinaryPath) {
+  const streamUrl = getVideoUrlFromString(cloudinaryPath, true)
+  VideoManager.moveVideoToPreCache(draftStoryId, videoFileUri, streamUrl)
+}
+
+export function moveVideosFromPrecacheToCache(draftStoryId) {
+  VideoManager.moveVideosFromPrecacheToCache(draftStoryId)
 }
 
 /*

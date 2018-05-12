@@ -48,7 +48,7 @@
     currentDownloads = @[];
     
     __weak RCTVideoCache* weakCache = self;
-    cleanupTimer = [NSTimer timerWithTimeInterval:2 repeats:YES block:^(NSTimer* _){
+    cleanupTimer = [NSTimer scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer* _){
       [weakCache cleanupCacheInstances];
     }];
   }
@@ -57,7 +57,7 @@
 
 - (void) cleanupCacheInstances
 {
-  [self purgeExcessVideos:nil];
+  [self purgeExcessVideos];
 }
 
 + (NSString*) urlToKey:(NSString*)url
@@ -145,7 +145,7 @@
 - (PlayingVideoItem*) assetForUrl:(NSString*)url withOriginalUrl:(NSString*)originalUrl forVideoView:(RCTVideo*)videoView
 {
   VideoCacheItem* cacheItem = [self videoCacheItemForUrl:url withOriginalUrl:originalUrl];
-  [self purgeExcessVideos:cacheItem];
+  [self purgeExcessVideos];
   [self dispatchDownloads];
   return [[PlayingVideoItem alloc] initWithVideoCacheItem:cacheItem videoView:videoView];
 }
@@ -254,7 +254,30 @@
 
   return nil;
 }
-//assetDirectory
+
++ (void) moveVideo:(NSURL*)videoUrl toAssetKeyCache:(NSString*)assetKey
+{
+  NSURL* assetDirectory = [RCTVideoCache cachedAssetDirectoryFromAssetKey:assetKey];
+  
+  NSURL* fileLocationUrl = [assetDirectory URLByAppendingPathComponent:VIDEO_FILE];
+  if (![RCTVideoCache ensureDirectory:assetDirectory] || !fileLocationUrl)
+  {
+    return;
+  }
+
+  NSError* err;
+  
+  [[NSFileManager defaultManager]
+   moveItemAtURL:videoUrl toURL:fileLocationUrl error:&err];
+  
+  if (err)
+  {
+    NSLog(@"Error moving to cache: %@", err);
+  }
+
+  [[RCTVideoCache get] addAssetKeyToCurrentlyDownloadedFiles:assetKey];
+  [self touchCachedAsset:assetKey];
+}
 
 - (void) deleteSavedAsset:(NSString*)assetKey
 {
@@ -309,30 +332,36 @@
   [self dispatchDownloads];
 }
 
-- (void) purgeExcessVideos:(VideoCacheItem*)itemToKeep
+- (void) purgeExcessVideos
 {
   NSMutableArray* mLoadedVideos = [@[] mutableCopy];
   
-  NSArray* oldestVideosFirst = [loadedVideos sortedArrayUsingComparator:^(VideoCacheItem* a, VideoCacheItem* b){
-    return [a.lastTouched compare:b.lastTouched];
+  NSArray* newestVideosFirst = [loadedVideos sortedArrayUsingComparator:^(VideoCacheItem* a, VideoCacheItem* b){
+    return [b.lastTouched compare:a.lastTouched];
   }];
   
-  for (VideoCacheItem* existingCacheItem in oldestVideosFirst)
+  NSDate* currentTime = [NSDate date];
+  
+  NSInteger videosToKeep = 4;
+  
+  for (VideoCacheItem* existingCacheItem in newestVideosFirst)
   {
-    if (existingCacheItem == itemToKeep)
+    if (fabs([currentTime timeIntervalSinceDate:existingCacheItem.lastTouched]) < 1.f)
     {
       [mLoadedVideos addObject:existingCacheItem];
+      videosToKeep--;
     }
     else
     {
-      if (![existingCacheItem purge])
+      if (videosToKeep > 0 || ![existingCacheItem purge])
       {
         [mLoadedVideos addObject:existingCacheItem];
       }
       else
       {
-        NSLog(@"Video purged");
       }
+      
+      videosToKeep--;
     }
   }
   

@@ -102,33 +102,3 @@ export function * unfollowCategory(api, {categoryId}) {
     yield put(SignupActions.signupUnfollowCategoryFailure(categoryId, 'Did not save'))
   }
 }
-
-export function * followUser(api, {userId}) {
-  const response = yield call(
-    api.followUser,
-    userId
-  )
-
-  if (response.ok) {
-    yield [
-      put(SignupActions.signupFollowUserSuccess(userId))
-    ]
-  } else {
-    yield put(SignupActions.signupFollowUserFailure(userId, 'Did not save'))
-  }
-}
-
-export function * unfollowUser(api, {userId}) {
-  const response = yield call(
-    api.unfollowUser,
-    userId
-  )
-
-  if (response.ok) {
-    yield [
-      put(SignupActions.signupUnfollowUserSuccess(userId))
-    ]
-  } else {
-    yield put(SignupActions.signupUnfollowUserFailure(userId, 'Did not save'))
-  }
-}

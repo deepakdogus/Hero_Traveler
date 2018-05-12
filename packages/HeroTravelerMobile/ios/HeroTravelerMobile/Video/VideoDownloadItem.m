@@ -91,6 +91,8 @@
     return;
   }
   
+  _downloadTask.priority = NSURLSessionTaskPriorityLow;
+  
   [_downloadTask cancelByProducingResumeData:^(NSData* resumeData){
       _resumeData = resumeData;
 

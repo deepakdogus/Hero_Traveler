@@ -5,16 +5,15 @@ import {
   View,
   Text,
   TouchableWithoutFeedback,
-  TouchableHighlight,
+  TouchableOpacity,
   DatePickerIOS,
   TextInput,
 } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
-import StoryEditActions, {isCreated, isPublishing} from '../../Shared/Redux/StoryCreateRedux'
+import StoryEditActions from '../../Shared/Redux/StoryCreateRedux'
 import {Colors, Metrics} from '../../Shared/Themes'
-import Loader from '../../Components/Loader'
 import ShadowButton from '../../Components/ShadowButton'
 import TabIcon from '../../Components/TabIcon'
 import RoundedButton from '../../Components/RoundedButton'
@@ -22,6 +21,7 @@ import Tooltip from '../../Components/Tooltip'
 import NavBar from './NavBar'
 import styles from './4_CreateStoryDetailScreenStyles'
 import API from '../../Shared/Services/HeroAPI'
+import EditCategoryHashtag from '../../Components/EditCategoryHashtag'
 const api = API.create()
 
 /***
@@ -42,7 +42,7 @@ const dateLikeItemAsDateString = (dateLikeItem) => {
 }
 
 
-const Radio = ({text, onPress, name, selected}) => {
+const Radio = ({text, onPress, selected}) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.radio}>
@@ -110,15 +110,9 @@ class CreateStoryDetailScreen extends React.Component {
       })
       return
     }
-    if (!newProps.publishing && newProps.isCreated) {
-      this.next()
-    }
-    if (this.props.isRepublishing && !newProps.isRepublishing){
-      this.next()
-    }
   }
 
-  _setModalVisible = (visible) => {
+  _setModalVisible = (visible = true) => {
     this.setState({ modalVisible: visible })
   }
 
@@ -306,8 +300,8 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   render () {
-    const {workingDraft, publishing} = this.props
-    const {isSavingCover, modalVisible, validationError} = this.state
+    const {workingDraft} = this.props
+    const {modalVisible, validationError} = this.state
 
     return (
       <View style={styles.wrapper}>
@@ -351,10 +345,9 @@ class CreateStoryDetailScreen extends React.Component {
                 />
               </View>
             </View>
-            <View style={styles.fieldWrapper}>
-              <TabIcon name='location' style={iconStyles.location} />
-              <TouchableWithoutFeedback onPress={this.navToLocation}>
-                <View>
+            <TouchableWithoutFeedback onPress={this.navToLocation}>
+              <View style={styles.fieldWrapper}>
+                <TabIcon name='location' style={iconStyles.location} />
                   <Text
                     style={[
                       styles.inputStyle,
@@ -370,19 +363,18 @@ class CreateStoryDetailScreen extends React.Component {
                       'Location'
                     }
                   </Text>
-                </View>
-              </TouchableWithoutFeedback>
-            </View>
-            <View style={styles.fieldWrapper} >
-              <TabIcon name='date' style={iconStyles.date} />
-              <TouchableHighlight
-                onPress={() => this._setModalVisible(true)}
-              >
-                <Text style={styles.inputStyle}>
-                  {dateLikeItemAsDateString(workingDraft.tripDate)}
-                </Text>
-              </TouchableHighlight>
-            </View>
+              </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback
+              onPress={this._setModalVisible}
+            >
+              <View style={styles.fieldWrapper} >
+                <TabIcon name='date' style={iconStyles.date} />
+                  <Text style={styles.inputStyle}>
+                    {dateLikeItemAsDateString(workingDraft.tripDate)}
+                  </Text>
+              </View>
+            </TouchableWithoutFeedback>
             <View style={styles.fieldWrapper}>
               <TabIcon name='cost' style={iconStyles.cost} />
               <View style={styles.longInput}>
@@ -400,54 +392,34 @@ class CreateStoryDetailScreen extends React.Component {
                 />
               </View>
             </View>
-            <View style={styles.fieldWrapper}>
-              <TabIcon name='tag' style={iconStyles.category} />
-              <TouchableWithoutFeedback
-                onPress={this.navToCategories}
-                style={styles.tagStyle}
-              >
-                <View>
-                  {_.size(workingDraft.categories) > 0 && <Text style={styles.tagStyleText}>{_.map(workingDraft.categories, 'title').join(', ')}</Text>}
-                  {_.size(workingDraft.categories) === 0 && <Text style={[styles.tagStyleText, {color: '#bdbdbd'}]}>Add categories...</Text>}
-                </View>
-              </TouchableWithoutFeedback>
-            </View>
-            <View style={styles.fieldWrapper}>
-              <TabIcon name='hashtag' style={iconStyles.hashtag} />
-              <TouchableWithoutFeedback
-                onPress={this.navToHashtags}
-                style={styles.tagStyle}
-              >
-                <View>
-                  {_.size(workingDraft.hashtags) > 0 &&
-                    <Text style={styles.tagStyleText}>{
-                      _.map(workingDraft.hashtags,
-                        (hashtag) => { return '#' + hashtag.title }).join(', ')
-                    }</Text>
-                  }
-                  {_.size(workingDraft.hashtags) === 0 &&
-                    <Text style={styles.tagStyleText}>Add hashtags...</Text>
-                  }
-                </View>
-              </TouchableWithoutFeedback>
-            </View>
+            <EditCategoryHashtag
+              text='Add categories...'
+              onPress={this.navToCategories}
+              iconStyle={iconStyles.category}
+              tagName='tag'
+              array={workingDraft.categories}
+            />
+            <EditCategoryHashtag
+              text='Add hashtags...'
+              onPress={this.navToHashtags}
+              iconStyle={iconStyles.hashtag}
+              tagName='hashtag'
+              array={workingDraft.hashtags}
+            />
             <View style={styles.travelTipsWrapper}>
               <Text style={styles.fieldLabel}>Travel Tips: </Text>
               <View style={styles.travelTipsPreview}>
-                <TouchableHighlight onPress={this.navToTravelTips}>
+                <TouchableOpacity onPress={this.navToTravelTips}>
                   <Text style={[
                     styles.travelTipsPreviewText,
                     workingDraft.travelTips ? {} : styles.travelTipsPreviewTextDimmed
                   ]}>
                     {workingDraft.travelTips || "What should your fellow travelers know?"}
                   </Text>
-                </TouchableHighlight>
+                </TouchableOpacity>
               </View>
             </View>
           </ScrollView>
-          {(publishing || isSavingCover) &&
-            <Loader style={styles.loader} tintColor={Colors.blackoutTint} />
-          }
         {modalVisible &&
         <View
           style={styles.dateWrapper}
@@ -486,12 +458,9 @@ export default connect(
   (state) => {
     return {
       accessToken: _.find(state.session.tokens, {type: 'access'}),
-      publishing: isPublishing(state.storyCreate),
-      isCreated: isCreated(state.storyCreate),
       story: {...state.storyCreate.workingDraft},
       workingDraft: {...state.storyCreate.workingDraft},
       storyCreateError: state.storyCreate.error,
-      isRepublishing: state.storyCreate.isRepublishing,
     }
   },
   dispatch => ({

@@ -28,6 +28,8 @@
 + (instancetype) get;
 
 + (NSString*) urlToKey:(NSString*)url;
++ (void) moveVideo:(NSURL*)videoUrl toAssetKeyCache:(NSString*)assetKey;
++ (BOOL) ensureDirectory:(NSURL*)directory;
 
 - (PlayingVideoItem*) assetForUrl:(NSString*)url withOriginalUrl:(NSString*)originalUrl forVideoView:(RCTVideo*)videoView;
 

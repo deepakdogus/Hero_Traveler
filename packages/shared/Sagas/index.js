@@ -52,6 +52,7 @@ import { getCategories } from './CategorySagas'
 import { getHashtags } from './HashtagSagas'
 import {
   updateUser,
+  connectFacebook,
   getSuggestedUsers,
   loadUser,
   loadUserFollowing,
@@ -140,8 +141,6 @@ export default function * root () {
     takeLatest(SignupTypes.SIGNUP_GET_USERS_CATEGORIES, getUsersCategories, heroAPI),
     takeLatest(SignupTypes.SIGNUP_FOLLOW_CATEGORY, followCategory, heroAPI),
     takeLatest(SignupTypes.SIGNUP_UNFOLLOW_CATEGORY, unfollowCategory, heroAPI),
-    takeLatest(SignupTypes.SIGNUP_FOLLOW_USER, followUser, heroAPI),
-    takeLatest(SignupTypes.SIGNUP_UNFOLLOW_USER, unfollowUser, heroAPI),
     takeLatest(SessionTypes.LOGOUT, logout, heroAPI),
     takeLatest(SessionTypes.RESUME_SESSION, resumeSession, heroAPI),
     takeLatest(SessionTypes.REFRESH_SESSION, refreshSession, heroAPI),
@@ -173,6 +172,7 @@ export default function * root () {
     takeLatest(UserTypes.LOAD_USER_SUGGESTIONS_REQUEST, getSuggestedUsers, heroAPI),
     takeLatest(UserTypes.LOAD_USER, loadUser, heroAPI),
     takeLatest(UserTypes.UPDATE_USER, updateUser, heroAPI),
+    takeLatest(UserTypes.CONNECT_FACEBOOK, connectFacebook, heroAPI),
     takeLatest(UserTypes.LOAD_USER_FOLLOWING, loadUserFollowing, heroAPI),
     takeLatest(UserTypes.LOAD_USER_FOLLOWERS, loadUserFollowers, heroAPI),
     takeLatest(UserTypes.FOLLOW_USER, userFollowUser, heroAPI),

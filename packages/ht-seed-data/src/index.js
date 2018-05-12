@@ -41,7 +41,7 @@ async function seedAllData() {
     // Only seeding categories and hashtags for now, as that's all that is needed
     // to run the app
     let categories = await createCategories()
-    let hashtags = await createHashtags()
+    // let hashtags = await createHashtags()
 
     // let stories = await createStories(users, categories, 100)
     return Promise.resolve()

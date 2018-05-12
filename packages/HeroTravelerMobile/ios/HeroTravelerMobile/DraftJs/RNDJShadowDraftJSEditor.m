@@ -497,7 +497,7 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
           NSRange textRange = NSMakeRange(startIndex, endIndex-startIndex);
           NSString* text = [block.text substringWithRange:textRange];
 
-          if (text.length > 0)
+          if (text.length > 4)
           {
             NSString* suggestedText = [self suggestionFor:text];
             if (suggestedText.length > 0) {

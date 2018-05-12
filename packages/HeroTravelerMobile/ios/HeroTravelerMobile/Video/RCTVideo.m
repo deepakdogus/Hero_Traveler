@@ -44,6 +44,9 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   BOOL _isBuffering;
   BOOL _isReadyForPlay;
   BOOL _isHidden;
+  
+  BOOL _isPresentingFullscreen;
+  BOOL _isChangingVideoGravity;
 }
 
 - (instancetype) initWithEventDispatcher:(RCTEventDispatcher*)eventDispatcher
@@ -205,13 +208,6 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
 
 - (void) setResizeMode:(NSString*)mode
 {
-  if ([self isPresentingFullscreen]) {
-    _embeddedViewController.videoGravity = AVLayerVideoGravityResizeAspect;
-    _playerViewController.videoGravity = AVLayerVideoGravityResizeAspect;
-  } else {
-    _embeddedViewController.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    _playerViewController.videoGravity = AVLayerVideoGravityResizeAspectFill;
-  }
   _resizeMode = mode;
 }
 
@@ -405,8 +401,6 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
   BOOL playerLayerVisible = _showPlayer;
   BOOL fullscreenVisible = _showPlayer && _fullscreen;
   
-  [player pause];
-  [player setRate:0.f];
 	
   if (playerLayerVisible && !_embeddedViewController)
   {
@@ -418,7 +412,10 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
     _embeddedViewController.view.alpha = 0;
     _embeddedViewController.view.frame = self.bounds;
     _embeddedViewController.showsPlaybackControls = _showControls;
+    _embeddedViewController.videoGravity = AVLayerVideoGravityResizeAspectFill;
     
+    _isPresentingFullscreen = NO;
+
     [self setResizeMode:_resizeMode];
     
     [_embeddedViewController addObserver:self
@@ -543,7 +540,7 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
 
 - (BOOL) isPresentingFullscreen
 {
-  return _embeddedViewController && _embeddedViewController.modalPresentationStyle == UIModalPresentationFullScreen;
+  return _isPresentingFullscreen;
 }
 
 - (void) applyModifiersOnPlayer:(AVPlayer*)player playerItem:(AVPlayerItem*)playerItem
@@ -635,26 +632,38 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
         }
       }
     } else if ([keyPath isEqualToString:@"videoBounds"] && [change objectForKey:NSKeyValueChangeNewKey]) {
+      if (_isChangingVideoGravity)
+      {
+        return;
+      }
+      
+      _isChangingVideoGravity = YES;
+      
       // https://stackoverflow.com/questions/26330287/how-to-detect-fullscreen-mode-of-avplayerviewcontroller/33996932
-      CGRect oldBounds = [change[NSKeyValueChangeOldKey] CGRectValue];
       CGRect newBounds = [change[NSKeyValueChangeNewKey] CGRectValue];
       
-      CGSize screenSize = [UIScreen mainScreen].bounds.size;
+      BOOL wasFullscreen = _isPresentingFullscreen;
       
-      BOOL wasFullscreen = fabs(oldBounds.size.width - screenSize.width) < 1 && fabs(oldBounds.size.height - screenSize.height);
-      BOOL isFullscreen = fabs(newBounds.size.width - screenSize.width) < 1 && fabs(newBounds.size.height - screenSize.height);
+      CGSize screenSize = [UIScreen mainScreen].bounds.size;
+      BOOL isFullscreen = newBounds.origin.x < 1 && newBounds.origin.y < 1 && fabs(newBounds.size.width - screenSize.width) < 1 && fabs(newBounds.size.height - screenSize.height) < 1;
+      _isPresentingFullscreen = isFullscreen;
       
       if (isFullscreen && !wasFullscreen) {
         NSLog(@"RCTVideo: Forcing resize mode to contain");
+        _embeddedViewController.videoGravity = AVLayerVideoGravityResizeAspect;
         [self applyModifiers];
       }
       else if (!isFullscreen && wasFullscreen) {
         NSLog(@"RCTVideo: Restoring resize mode");
+        _embeddedViewController.videoGravity = AVLayerVideoGravityResizeAspectFill;
         [self applyModifiers];
       }
+      
+      _isChangingVideoGravity = NO;
     }
   } else {
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
   }
 }
+
 @end

@@ -56,7 +56,7 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
     _fullscreen = NO;
     _rate = 1.0;
     _volume = 1.0;
-    _resizeMode = @"AVLayerVideoGravityResizeAspectFill";
+    _resizeMode = @"AVLayerVideoGravityResizeAspect";
     _playerBufferEmpty = YES;
     _playInBackground = false;
     _playWhenInactive = false;
@@ -124,7 +124,7 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
     [_embeddedViewController.view removeFromSuperview];
     [_embeddedViewController removeFromParentViewController];
     [_embeddedViewController removeObserver:self forKeyPath:readyForDisplayKeyPath];
-    [_embeddedViewController removeObserver:self forKeyPath:@"modalPresentationStyle"];
+    [_embeddedViewController removeObserver:self forKeyPath:@"videoBounds"];
     _embeddedViewController = nil;
   }
   
@@ -205,8 +205,13 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
 
 - (void) setResizeMode:(NSString*)mode
 {
-  _embeddedViewController.videoGravity = mode;
-  _playerViewController.videoGravity = mode;
+  if ([self isPresentingFullscreen]) {
+    _embeddedViewController.videoGravity = AVLayerVideoGravityResizeAspect;
+    _playerViewController.videoGravity = AVLayerVideoGravityResizeAspect;
+  } else {
+    _embeddedViewController.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    _playerViewController.videoGravity = AVLayerVideoGravityResizeAspectFill;
+  }
   _resizeMode = mode;
 }
 
@@ -420,11 +425,11 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
                               forKeyPath:readyForDisplayKeyPath
                                  options:NSKeyValueObservingOptionNew
                                  context:nil];
-
+    
     [_embeddedViewController addObserver:self
-															forKeyPath:@"modalPresentationStyle"
-																 options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-																 context:nil];
+                              forKeyPath:@"videoBounds"
+                                 options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+                                 context:nil];
 
     BOOL isReadyForDisplay = _embeddedViewController.readyForDisplay;
     if (!isReadyForDisplay)
@@ -456,7 +461,7 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
     [_embeddedViewController removeFromParentViewController];
     [_embeddedViewController.view removeFromSuperview];
     [_embeddedViewController removeObserver:self forKeyPath:readyForDisplayKeyPath];
-    [_embeddedViewController removeObserver:self forKeyPath:@"modalPresentationStyle"];
+    [_embeddedViewController removeObserver:self forKeyPath:@"videoBounds"];
     _embeddedViewController = nil;
   }
   
@@ -622,32 +627,32 @@ static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
           self.onReadyForDisplay(@{@"ready": @(isReadyForPlay), @"target": self.reactTag});
         }
       });
-
+      
       if ([change objectForKey:NSKeyValueChangeNewKey]) {
         if (self.onReadyForDisplay)
         {
           self.onReadyForDisplay(@{@"ready": @(player.readyForDisplay), @"target": self.reactTag});
         }
       }
-		} else if([keyPath isEqualToString:@"modalPresentationStyle"] && [change objectForKey:NSKeyValueChangeNewKey]) {
-			// https://stackoverflow.com/questions/26330287/how-to-detect-fullscreen-mode-of-avplayerviewcontroller/33996932
-      UIModalPresentationStyle oldStyle = [change[NSKeyValueChangeOldKey] integerValue];
-      UIModalPresentationStyle newStyle = [change[NSKeyValueChangeNewKey] integerValue];
+    } else if ([keyPath isEqualToString:@"videoBounds"] && [change objectForKey:NSKeyValueChangeNewKey]) {
+      // https://stackoverflow.com/questions/26330287/how-to-detect-fullscreen-mode-of-avplayerviewcontroller/33996932
+      CGRect oldBounds = [change[NSKeyValueChangeOldKey] CGRectValue];
+      CGRect newBounds = [change[NSKeyValueChangeNewKey] CGRectValue];
       
-      BOOL wasFullscreen = oldStyle == UIModalPresentationFullScreen;
-      BOOL isFullscreen = newStyle == UIModalPresentationFullScreen;
-
+      CGSize screenSize = [UIScreen mainScreen].bounds.size;
+      
+      BOOL wasFullscreen = fabs(oldBounds.size.width - screenSize.width) < 1 && fabs(oldBounds.size.height - screenSize.height);
+      BOOL isFullscreen = fabs(newBounds.size.width - screenSize.width) < 1 && fabs(newBounds.size.height - screenSize.height);
+      
       if (isFullscreen && !wasFullscreen) {
         NSLog(@"RCTVideo: Forcing resize mode to contain");
-        _embeddedViewController.videoGravity = @"AVLayerVideoGravityResizeAspect";
         [self applyModifiers];
       }
       else if (!isFullscreen && wasFullscreen) {
         NSLog(@"RCTVideo: Restoring resize mode");
-        [self performSelector:@selector(setResizeMode:) withObject:_resizeMode afterDelay:0];
         [self applyModifiers];
       }
-		}
+    }
   } else {
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
   }

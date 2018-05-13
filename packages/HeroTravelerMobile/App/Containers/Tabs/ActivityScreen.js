@@ -52,6 +52,7 @@ const ConnectedActivity = connect(
 )(Activity)
 
 class NotificationScreen extends React.Component {
+
   constructor(props){
     super(props)
     this.state = { selectedTab: 0}
@@ -107,6 +108,12 @@ class NotificationScreen extends React.Component {
     if (this.state.selectedTab === 2 &&
       (!nextProps.backgroundFailures || Object.keys(nextProps.backgroundFailures).length === 0)
     ) this.setState({selectedTab: 0})
+
+    if (nextProps.activities) {
+      _.map(nextProps.activities, (activity) => {
+        if (!activity.seen) nextProps.markSeen(activity._id);
+      })
+    }
   }
 
   render () {
@@ -143,14 +150,6 @@ class NotificationScreen extends React.Component {
               story: this.props.stories[
                 this.props.activities[activityId].story
               ]
-            }
-
-            // quick fix to solve for notifications crash
-            if ((activity.kind === ActivityTypes.like && (!activity.story || !activity.fromUser)) ||
-              (activity.kind === ActivityTypes.follow && !activity.user) ||
-              (activity.kind === ActivityTypes.comment && (!activity.story || !activity.fromUser))) {
-              if (!activity.seen) this._pressActivity(activity.id, false)
-              return null
             }
 
             return (

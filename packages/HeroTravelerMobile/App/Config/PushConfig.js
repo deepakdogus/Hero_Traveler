@@ -1,4 +1,5 @@
 import PushNotification from 'react-native-push-notification'
+import { Actions as NavActions } from 'react-native-router-flux'
 
 let token = null
 
@@ -14,6 +15,16 @@ PushNotification.configure({
   // (required) Called when a remote or local notification is opened or received
   onNotification: (notification) => {
     if (__DEV__) console.log('NOTIFICATION:', notification)
+
+    // It would be better to also check for !notification.foreground 
+    // but the way React Native handles resuming the application makes
+    // weird combinations happen there.
+    if (notification.userInteraction) {
+      // Reset the notification counts.
+      PushNotification.setApplicationIconBadgeNumber(0);
+      // Reset the notification counts.
+      NavActions.activity();
+    }
   },
 
   // ANDROID ONLY: (optional) GCM Sender ID.

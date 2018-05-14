@@ -58,6 +58,7 @@ class SettingsScreen extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       fetching: false
     }
@@ -72,11 +73,11 @@ class SettingsScreen extends React.Component {
 
     if (newProps.fetching || newProps.loggingOut) {
       this.setState({fetching: true})
-    } else if (!newProps.fetching && this.props.fetching) {
+    } else if (!(newProps.fetching || newProps.loggingOut) && this.props.fetching) {
       this.setState({fetching: false})
     }
     
-    if (newProps.error) {
+    if (newProps.error && !newProps.isLoggingOut) {
       let errorMessage = newProps.error.message || 'Operation could not be completed.';
       Alert.alert('Error', errorMessage, [{
         text: 'OK', onPress: () => {

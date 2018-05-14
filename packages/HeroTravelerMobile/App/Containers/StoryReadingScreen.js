@@ -1,25 +1,24 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {ScrollView, Text, View, Animated, TouchableOpacity, TouchableWithoutFeedback} from 'react-native'
+import {Text, View, Animated, TouchableOpacity, Image} from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 import MapView from 'react-native-maps';
 import RNDraftJSRender from 'react-native-draftjs-render';
 import {compose, withHandlers} from 'recompose'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import _ from 'lodash'
 
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
 import formatCount from '../Shared/Lib/formatCount'
 import ConnectedStoryPreview from './ConnectedStoryPreview'
-import {Metrics} from '../Shared/Themes'
+import {Metrics, Images} from '../Shared/Themes'
 import StoryReadingToolbar from '../Components/StoryReadingToolbar'
 import TabIcon from '../Components/TabIcon'
 import ImageWrapper from '../Components/ImageWrapper'
 import Loader from '../Components/Loader'
 import FlagModal from '../Components/FlagModal'
-import {styles, rendererStyles} from './Styles/StoryReadingScreenStyles'
+import {styles, rendererStyles, translations} from './Styles/StoryReadingScreenStyles'
 import VideoPlayer from '../Components/VideoPlayer'
 import Immutable from 'seamless-immutable'
 import {getVideoUrlFromString} from '../Shared/Lib/getVideoUrl'
@@ -137,53 +136,13 @@ class StoryReadingScreen extends React.Component {
 
   constructor(props) {
     super(props)
-    this.onScroll = this.onScroll.bind(this)
-    this.toolbarShown = false
     this.state = {
-      toolbarHeight: new Animated.Value(0),
-      newYPos: -1,
-      oldYPos: 0,
       showFlagModal: false,
+      scrollY: new Animated.Value(0),
     }
     if (!this.props.story) {
       this.props.requestStory(this.props.storyId)
     }
-  }
-
-  onScroll(event) {
-    const ypos = event.nativeEvent.contentOffset.y
-    this.setState({
-      oldYPos: this.state.newYPos,
-      newYPos: ypos,
-    })
-    if (ypos > 35 && !this.toolbarShown) {
-      this.toolbarShown = true
-      this.showToolbar()
-    } else if (ypos <= 35 && this.toolbarShown) {
-      this.toolbarShown = false
-      this.hideToolbar()
-    }
-
-  }
-
-  showToolbar() {
-    Animated.timing(
-      this.state.toolbarHeight,
-      {
-        toValue: Metrics.tabBarHeight,
-        duration: 200,
-      },
-    ).start()
-  }
-
-  hideToolbar() {
-    Animated.timing(
-      this.state.toolbarHeight,
-      {
-        toValue: 0,
-        duration: 200,
-      },
-    ).start()
   }
 
   _toggleLike = () => {
@@ -194,32 +153,9 @@ class StoryReadingScreen extends React.Component {
     this.setState({showFlagModal: !this.state.showFlagModal})
   }
 
-  /* MBT 08/08/17: Hold off on clickable tags until future notice
-  // _navBackToStory = () => {
-  //   NavActions.story({storyId: this.props.story.id})
-  // }
-
-  // _onPressTag = (category) => {
-  //   NavActions.explore_categoryFeed({
-  //     categoryId: category.id,
-  //     title: category.title,
-  //     leftButtonIconStyle: CategoryFeedNavActionStyles.leftButtonIconStyle,
-  //     navigationBarStyle: CategoryFeedNavActionStyles.navigationBarStyle,
-  //     onLeft: this._navBackToStory
-  //   })
-  // }
-    <TouchableOpacity
-      key={index}
-      onPress={() => this._onPressTag(category)}
-    >
-    </TouchableOpacity>
-  */
-  /*
-  If the old YPos is superior the the new YPos it means we scrolled up
-  and should show the content. Otherwise we should hide it.
-  */
-  isShowContent() {
-    return this.state.oldYPos >  this.state.newYPos || this.state.newYPos <= 0
+  _pressAddToGuide = () => {
+     const { story } = this.props
+     NavActions.addStoryToGuide({ story })
   }
 
   renderCategories = () => {
@@ -243,7 +179,11 @@ class StoryReadingScreen extends React.Component {
 
   hasLocationInfo() {
     const {locationInfo} = this.props.story
-    return !!locationInfo && !!locationInfo.name && !!locationInfo.latitude && !!locationInfo.longitude
+    return (
+      !!locationInfo && !!locationInfo.name
+      && !!locationInfo.latitude
+      && !!locationInfo.longitude
+    )
   }
 
   _getCostType = () => {
@@ -269,20 +209,13 @@ class StoryReadingScreen extends React.Component {
   }
 
   render () {
-    const { story, author, user } = this.props;
+    const { story, author, user } = this.props
+    const { scrollY } = this.state
     if (!story || !author) {
       return (
         <View style={[styles.darkRoot]}>
           {!story &&
-            <Loader style={{
-              flex: 1,
-              position: 'absolute',
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              }}
-            />
+            <Loader style={styles.loader} />
           }
           { story && !!story.error &&
             <Text>{story.error}</Text>
@@ -291,12 +224,20 @@ class StoryReadingScreen extends React.Component {
       )
     }
 
+    const toolbarTranslation = scrollY.interpolate(translations.toolbar)
+    const plusButtonTranslation = scrollY.interpolate(translations.plusButton)
+    const tooltipOpacity = scrollY.interpolate(translations.tooltip)
+
     return (
       <View style={[styles.root]}>
-        <ScrollView
-          onScroll={this.onScroll}
-          scrollEventThrottle={400}
-          style={[styles.scrollView]}>
+        <Animated.ScrollView
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+            { useNativeDriver: true }
+          )}
+          scrollEventThrottle={16}
+          style={[styles.scrollView]}
+        >
           <ConnectedStoryPreview
             isFeed={false}
             onPressLike={this._toggleLike}
@@ -310,7 +251,6 @@ class StoryReadingScreen extends React.Component {
             autoPlayVideo={true}
             allowVideoPlay={true}
             isStoryReadingScreen={true}
-            isContentVisible={this.isShowContent()}
           />
           <View style={styles.divider}/>
           <View style={styles.content}>
@@ -407,8 +347,12 @@ class StoryReadingScreen extends React.Component {
             }
 
           </View>
-        </ScrollView>
-        <Animated.View style={[styles.toolBar, {height: this.state.toolbarHeight}]}>
+        </Animated.ScrollView>
+        <Animated.View
+          style={[
+            styles.toolBar,
+            { transform: [{ translateY: toolbarTranslation }] },
+          ]}>
           <EnhancedStoryReadingToolbar
             likeCount={formatCount(story.counts.likes)}
             commentCount={formatCount(story.counts.comments)}
@@ -422,6 +366,40 @@ class StoryReadingScreen extends React.Component {
             toggleBookmark={this.props.toggleBookmark}
           />
         </Animated.View>
+        {/* Plus button for adding to Guide */}
+        <Animated.View
+          style={[
+            {
+              transform: [
+                {
+                  translateY: plusButtonTranslation,
+                },
+              ],
+            },
+            styles.plusButton,
+          ]}>
+          <TouchableOpacity
+            onPress={this._pressAddToGuide}
+            style={styles.plusButtonTouchable}>
+            <Image
+              source={Images.iconContentPlusWhite}
+              style={styles.plusButtonIcon}
+            />
+          </TouchableOpacity>
+        </Animated.View>
+        {/* Plus button tooltip ADD CHECK OT DISABLE TOOLTIP */}
+        {true && (
+          <Animated.View
+            style={[
+              { opacity: tooltipOpacity },
+              styles.addToGuideTooltip,
+            ]}>
+            <Text style={{ color: 'white' }}>
+              {`Tap to add story\nto a travel guide`}
+            </Text>
+            <View style={styles.addToGuideTooltipArrow} />
+          </Animated.View>
+        )}
         {
           <FlagModal
             closeModal={this._toggleFlag}

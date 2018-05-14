@@ -48,6 +48,7 @@ export const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
+    zIndex: 1,
   },
   // StoryContent component
   storyContentWrapper: {
@@ -192,10 +193,70 @@ export const styles = StyleSheet.create({
     height: 24,
     resizeMode: "contain"
   },
-  
+  loader: {
+    flex: 1,
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  plusButton: {
+    height: 44,
+    width: 44,
+    borderRadius: 22,
+    backgroundColor: Colors.redHighlights,
+    position: 'absolute',
+    bottom: Metrics.tabBarHeight + 10,
+    right: 10,
+    shadowColor: 'black',
+    shadowRadius: 2,
+    shadowOpacity: 0.5,
+    shadowOffset: {
+      height: 2,
+      width: 0,
+    },
+  },
+  plusButtonIcon: {
+    height: '50%',
+    width: '50%',
+  },
+  plusButtonTouchable: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+  },
+  addToGuideTooltip: {
+    position: 'absolute',
+    bottom: Metrics.tabBarHeight + (Metrics.baseMargin * 3) + 44,
+    right: 14,
+    backgroundColor: Colors.backgroundOpaque,
+    borderRadius: 5,
+    paddingHorizontal: 30,
+    paddingVertical: 8,
+  },
+  addToGuideTooltipArrow: {
+    position: 'absolute',
+    bottom: -30,
+    right: 10,
+    height: 30,
+    borderTopWidth: 14,
+    borderTopColor: Colors.backgroundOpaque,
+    borderLeftWidth: 8,
+    borderLeftColor: 'transparent',
+    borderRightWidth: 8,
+    borderRightColor: 'transparent',
+  },
+  addToGuideTooltipText: {
+    color: Colors.white,
+    fontFamily: Fonts.type.sourceSansPro,
+    letterSpacing: 0.7,
+    fontSize: 16,
+    fontWeight: "600",
+  },
 })
-
-
 
 export const rendererStyles = StyleSheet.flatten({
   unstyled: {
@@ -217,4 +278,41 @@ export const rendererStyles = StyleSheet.flatten({
     marginTop: Metrics.baseMargin,
     marginBottom: 0,
   },
-});
+})
+
+const scrollOffset = 20
+const plusButtonY = Metrics.tabBarHeight + Metrics.baseMargin
+
+export const translations = {
+  toolbar: {
+    inputRange: [
+      scrollOffset - 1,
+      scrollOffset,
+      Metrics.tabBarHeight + scrollOffset,
+      Metrics.tabBarHeight + scrollOffset + 1,
+    ],
+    outputRange: [Metrics.tabBarHeight, Metrics.tabBarHeight, 0, 0],
+  },
+  plusButton: {
+    inputRange: [
+      scrollOffset - 1,
+      scrollOffset,
+      plusButtonY + scrollOffset,
+      plusButtonY + scrollOffset + 1,
+    ],
+    outputRange: [
+      plusButtonY + Metrics.tabBarHeight,
+      plusButtonY + Metrics.tabBarHeight,
+      0,
+      0,
+    ],
+  },
+  tooltip: {
+    inputRange: [
+      plusButtonY + scrollOffset - 1,
+      plusButtonY + scrollOffset,
+      plusButtonY + scrollOffset + 1,
+    ],
+    outputRange: [0, 1, 1],
+  }
+}

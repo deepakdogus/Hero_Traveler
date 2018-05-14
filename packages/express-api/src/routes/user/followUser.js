@@ -4,17 +4,11 @@ import {followerNotification} from '../../apn'
 export default function followUser(req, res) {
   return User.followUser(req.user._id, req.params.userId)
     .then(({user, followedUser, notify}) => {
-      let promise
       if (followedUser.receivesFollowerNotifications() && notify) {
-        promise = Models.UserDevice.find({user: followedUser._id})
-          .then(devices => devices ?
-            followerNotification(devices, user) :
-            Promise.resolve()
-          )
-      } else {
-        promise = Promise.resolve()
+        // Notifications are not critical for the outcome
+        // so they should not block the resolution of the promise.
+        followerNotification(followedUser, user);
       }
-
-      return promise
+      return Promise.resolve()
     })
 }

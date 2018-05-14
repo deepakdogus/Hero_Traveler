@@ -1,102 +1,178 @@
-import apn from 'apn'
+import AWS from 'aws-sdk'
 import path from 'path'
 import util from 'util'
 import _ from 'lodash'
 import {Models} from '@hero/ht-core'
-const sound = 'chime.caf'
-const badge = 1
 
-let certPath, keyPath
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_KEY
+});
 
-if (process.env.NODE_ENV === 'development') {
-  certPath = path.resolve(path.join(__dirname, '../certificates/apn-cert.pem'))
-  keyPath = path.resolve(path.join(__dirname, '../certificates/apn-key.pem'))
-} else {
-  certPath = path.resolve(path.join(__dirname, '../certificates/apn-prod-cert.pem'))
-  keyPath = path.resolve(path.join(__dirname, '../certificates/apn-prod-key.pem'))
-}
+const arn = process.env.AWS_ARN;
 
-const apnProvider = new apn.Provider({
-  cert: certPath,
-  key: keyPath,
-  ca: [
-    path.resolve(path.join(__dirname, '../certificates/entrust_2048_ca.pem'))
-  ]
-})
+// ----------------------------------------------------------------------------
+// Push Types
+// ----------------------------------------------------------------------------
 
-function getDeviceIds(devices) {
-  return _.map(devices, 'deviceId')
-}
-
-export function likeNotification(devices, user, story) {
-  const notification = new apn.Notification({
-    alert: `${user.profile.fullName} liked your story ${story.title}`,
-    badge,
-    sound,
-    payload: {
-      type: 'like'
-    }
+export function likeNotification(likedUser, likingUser, story) {
+  const notification = {
+    title: `You've got a like!`,
+    body: `${likingUser.profile.fullName} liked your story ${story.title}`,
+    category: 'follower',
+    params: story._id,
+  }
+  
+  return send(likedUser, notification).then(result => {
+    return Promise.resolve()
   })
-  return _send(notification, getDeviceIds(devices))
-    .then(result => {
-      console.log('like notif result', util.inspect(result))
-      return Promise.resolve()
-    })
 }
 
-export function followerNotification(devices, followingUser) {
-  const notification = new apn.Notification({
-    alert: `${followingUser.profile.fullName} is now following you`,
-    badge,
-    sound,
-    payload: {
-      type: 'follow'
-    }
+export function followerNotification(followedUser, followingUser) {
+  const notification = {
+    title: `You've got a follower!`,
+    body: `${followingUser.profile.fullName} is now following you`,
+    category: 'follower',
+    params: followingUser._id,
+  }
+
+  return send(followedUser, notification).then(result => {
+    return Promise.resolve()
+  })
+}
+
+export function commentNotification(author, commentator, story) {
+  const notification = {
+    title: `You've got a comment!`,
+    body: `${commentator.profile.fullName} commented on your story ${story.title}`,
+    category: 'comment',
+    params: story._id,
+  }
+
+  return send(author, notification).then(result => {
+    return Promise.resolve()
+  })
+}
+
+// ----------------------------------------------------------------------------
+// Push Logic
+// ----------------------------------------------------------------------------
+
+function getDevicesForUser(user) {
+  return new Promise((resolve, reject) => {
+    Models.UserDevice.find({user: user._id}).then((devices) => {
+      resolve(_.map(devices, 'deviceId'));
+    }).catch((err) => {
+      reject(err);
+    });
+  });
+}
+
+function getUnreadActivitiesForUser(user) {
+  return Models.Activity.count({user: user._id, seen: false});
+}
+
+export function prepareNotification(notification) {
+  // See https://developer.apple.com/library/content/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/PayloadKeyReference.html
+  let applePush = JSON.stringify({
+    aps: {
+      alert: notification,
+      sound: 'default',
+      badge: notification.badge
+    },
   })
 
-  return _send(notification, getDeviceIds(devices))
-    .then(result => {
-      console.log('follow notif result', util.inspect(result))
-      return Promise.resolve()
-    })
+  return JSON.stringify({
+    default: notification.body,
+    APNS: applePush,
+    APNS_SANDBOX: applePush,
+  });
 }
 
-export function commentNotification(devices, story, user) {
-  const notification = new apn.Notification({
-    alert: `${user.profile.fullName} commented on your story ${story.title}`,
-    badge,
-    sound,
-    payload: {
-      type: 'comment'
-    }
-  })
-
-  return _send(notification, getDeviceIds(devices))
-    .then(result => {
-      console.log('comment notif result', util.inspect(result))
-      return Promise.resolve()
-    })
-}
-
-function _send(notification, devices) {
-  return apnProvider.send(notification, devices)
-    .then(result => {
-      let promise
-      if (result.failed.length) {
-        promise = Models.UserDevice.remove({
-          deviceId: {
-            $in: _.map(result.failed, 'device')
-          }
-        })
+function sendOne(device, preparedNotification) {
+  // In this function we don't want to reject an attempt, as in the batch function
+  // below we're collecting the results and act on them only after we've collected
+  // the status on all the devices.
+  return new Promise((resolve, reject) => {
+    const sns = new AWS.SNS();
+    // Before every request we ensure the we've registered this device on the SNS. 
+    // This is a noop if the device already exists.
+    sns.createPlatformEndpoint({
+      PlatformApplicationArn: arn,
+      Token: device
+    }, (err, data) => {
+      if (err) {
+        // This may only happen if the token is completely invalid i.e. not passing 
+        // validation from SNS
+        resolve({failed: true, payload: err});
       } else {
-        promise = Promise.resolve()
+        sns.publish({
+          Message: preparedNotification,
+          MessageStructure: 'json',
+          TargetArn: data.EndpointArn
+        }, (err, data) => {
+          if (err) {
+            // If this is the first push to the device, SNS always returns a success. 
+            // If the push doesn't get sent for some reason, the endpoint is disabled 
+            // and we'll receive an "Endpoint Disabled" error on subsequent tries.
+            resolve({failed: true, device, payload: err});
+          } else {
+            // This merely means that SNS acknowledged our request and put it to queue.
+            // It is not a guarantee that the push is received.
+            resolve({failed: false, device, payload: data});
+          }
+        });
       }
-
-      return promise.then(() => Promise.resolve(result))
     })
+  });
 }
 
-export function cleanup() {
-  console.log('cleaning up')
-  apnProvider.shutdown()
+export function send(user, notification) {
+  return new Promise((resolve, reject) => {
+    getDevicesForUser(user).then((devices) => {
+      getUnreadActivitiesForUser(user).then((activityCount) => {
+        // We have to wait for the activity count to supply the
+        // badge count to the notification object
+        notification.badge = activityCount;
+        let preparedNotification = prepareNotification(notification);
+
+        Promise.all(
+          // Create an array of requests, each of which are promises.
+          _.map(devices, (device) => {
+            // This is where we actually send the push.
+            return sendOne(device, preparedNotification);
+          })
+        ).then((results) => {
+          // Each request resolves even if it resulted with an error.
+          // Collect the failed ones in an array to be removed.
+          let fails = _.filter(results, (result) => {
+            return result.failed ? result.device : null;
+          });
+          let devicesToRemove = _.map(fails, fail => fail.device);
+
+          // Now it's time to remove the failed device ids.
+          Models.UserDevice.remove({
+            deviceId: {
+              $in: devicesToRemove
+            }
+          }).then(() => {
+            resolve();
+          }).catch((err) => {
+            console.error("Device removal error", err)
+            reject(err);
+          });
+        }).catch((err) => {
+          console.error("Batch send error", err)
+          reject(err);
+        })
+      }).catch((err) => {
+        console.error("Get notification count error", err)
+        reject(err);
+      })
+    }).catch((err) => {
+      console.error("Get device error", err)
+      reject(err);
+    })
+  })
 }
+

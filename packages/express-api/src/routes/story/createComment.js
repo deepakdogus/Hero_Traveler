@@ -3,7 +3,8 @@ import {Comment, Models} from '@hero/ht-core'
 import {commentNotification} from '../../apn'
 
 export default function createComment(req) {
-  const userId = req.user._id
+  const commentator = req.user
+  const userId = commentator._id
   const storyId = req.params.id
   const {content} = req.body
   return Comment.create({
@@ -14,17 +15,13 @@ export default function createComment(req) {
   .then(({story, comment}) => {
     // Dont send notifications to yourself
     const isNotStoryAuthor = !userId.equals(story.author)
-    return Promise.all([
-      Models.UserDevice.find({user: story.author}),
-      Models.User.findOne({_id: story.author})
-    ])
-    .spread((devices, user) => {
-      if (isNotStoryAuthor && user.receivesCommentNotifications() && !!devices) {
-        return commentNotification(devices, story, req.user)
-      } else {
-        return Promise.resolve()
-      }
-    })
-    .then(() => Promise.resolve(comment))
-  })
+    if (isNotStoryAuthor) {
+      Models.User.findOne({_id: story.author}).then((author) => {
+        // Notifications are not critical for the outcome
+        // so they should not block the resolution of the promise.
+        commentNotification(author, commentator, story);
+      })
+    }
+    Promise.resolve(comment);
+  });
 }

@@ -2,7 +2,8 @@ import {Story, User, Models} from '@hero/ht-core'
 import {likeNotification} from '../../apn'
 
 export default function toggleLike(req, res) {
-  const userId = req.user._id
+  const likingUser = req.user
+  const userId = likingUser._id
   const storyId = req.params.id
   return Story.toggleLike(storyId, userId)
     .then(({isLiked, story, notify}) => {
@@ -10,17 +11,13 @@ export default function toggleLike(req, res) {
       if (isLiked) {
         promise = Models.Story.populate(story, {path: 'author'})
           .then(storyWithUser => {
-            const user = storyWithUser.author
-            if (user.receivesLikeNotifications() && notify) {
-              return Models.UserDevice.find({user: user._id})
-                .then(devices => {
-                  return !!devices ?
-                    likeNotification(devices, req.user, storyWithUser) :
-                    Promise.resolve()
-                })
-            } else {
-              return Promise.resolve()
+            const likedUser = storyWithUser.author
+            if (likedUser.receivesLikeNotifications() && notify) {
+              // Notifications are not critical for the outcome
+              // so they should not block the resolution of the promise.
+              likeNotification(likedUser, likingUser, story);
             }
+            return Promise.resolve()
           })
       } else {
         promise = Promise.resolve()

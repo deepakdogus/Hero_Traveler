@@ -14,14 +14,18 @@ export function * logout (api, action) {
   const userId = yield select(currentUserId)
   yield call(api.removeDevice, userId)
 
-  const response = yield call(
-    api.logout,
-    tokens
-  )
-
-  if (response.ok) {
+  let resultAction;
+  try {
+    yield call(
+      api.logout,
+      tokens
+    )
+    resultAction = SessionActions.logoutSuccess;
+  } catch(err) {
+    resultAction = SessionActions.logoutFailure;
+  } finally {
     yield [
-      put(SessionActions.logoutSuccess()),
+      put(resultAction()),
       call(api.unsetAuth),
     ]
     yield put(StartupActions.hideSplash())

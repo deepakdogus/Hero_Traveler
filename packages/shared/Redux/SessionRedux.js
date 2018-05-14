@@ -7,6 +7,7 @@ const { Types, Creators } = createActions({
   initializeSession: ['userId', 'tokens'],
   logout: ['tokens'],
   logoutSuccess: null,
+  logoutFailure: null,
   resetRootStore: null,
   resumeSession: ['userId', 'retrievedTokens'],
   resumeSessionFailure: ['error'],
@@ -46,6 +47,14 @@ export const logout = (state) => state.merge({ isLoggingOut: true })
 // notify the UI that we've logged out
 // we reset the stores elsewhere completely
 export const logoutSuccess = (state) => state.merge({
+  isLoggedOut: true,
+  isLoggingOut: false
+})
+
+// We've somehow failed to logout, most probably because the server couldn't
+// even find our access token. In any case, we should resume client side
+// operation so that user can at least try to login again.
+export const logoutFailure = (state) => state.merge({
   isLoggedOut: true,
   isLoggingOut: false
 })

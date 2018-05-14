@@ -10,8 +10,9 @@ export default StyleSheet.create({
   scrollView: {
     flex: 1,
   },
-  scrollViewWrapper: {
-    paddingTop: 1.5*Metrics.tabBarHeight,
+  scrollViewContent: {
+    paddingTop: 2*Metrics.tabBarHeight,
+    paddingBottom: Metrics.tabBarHeight,
   },
   headerText: {
     color: Colors.blackoutTint,

@@ -43,7 +43,7 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
     [self addPlayerItemObservers];
     
     _player = [AVPlayer playerWithPlayerItem:_playerItem];
-    _player.automaticallyWaitsToMinimizeStalling = NO;
+    _player.automaticallyWaitsToMinimizeStalling = YES;
     _player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
     [self addPlayerObservers];
   }
@@ -106,7 +106,7 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   [self addPlayerItemObservers];
   
   _player = [AVPlayer playerWithPlayerItem:_playerItem];
-  _player.automaticallyWaitsToMinimizeStalling = NO;
+  _player.automaticallyWaitsToMinimizeStalling = YES;
   _player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
   [self addPlayerObservers];
   

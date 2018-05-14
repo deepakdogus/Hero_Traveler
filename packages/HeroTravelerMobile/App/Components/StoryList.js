@@ -112,6 +112,7 @@ export default class StoryList extends React.Component {
 
     const imageOptions = {
       width: 'screen',
+      height: Metrics.storyCover.fullScreen.height,
     }
     const videoOptions = {
       video: true,

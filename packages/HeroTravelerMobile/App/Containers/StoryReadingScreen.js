@@ -157,7 +157,7 @@ class StoryReadingScreen extends React.Component {
 
   _pressAddToGuide = () => {
      const { story } = this.props
-     NavActions.addStoryToGuide({ story })
+     NavActions.AddStoryToGuides({ story })
   }
 
   renderCategories = () => {

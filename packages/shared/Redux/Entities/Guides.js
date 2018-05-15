@@ -36,7 +36,15 @@ export const request = (state) => {
 }
 
 export const receiveGuides = (state, {guides = {}}) => {
-  return state.merge({entities: guides}, {deep: true})
+  return state.merge({
+    fetchStatus: {
+      fetching: false,
+      loaded: true,
+    },
+    entities: guides,
+  }, {
+    deep: true
+  })
 }
 
 export const failure = (state, {error}) =>

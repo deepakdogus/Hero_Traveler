@@ -111,6 +111,8 @@ class TabIcon extends React.Component {
         return Images.iconFounderBadge
       case 'error':
         return Images.iconErrorExclamation
+      case 'info':
+        return Images.iconInfoDark
       case 'profile':
       default:
         return Images.iconNavProfile

@@ -52,6 +52,7 @@ import NavButton from './NavButton'
 
 // Guides
 import AddStoryToGuides from '../Containers/Guides/AddStoryToGuides'
+import CreateGuideScreen from '../Containers/Guides/CreateGuide'
 
 import {Images} from '../Shared/Themes'
 
@@ -431,6 +432,11 @@ export default NavActions.create(
         key='AddStoryToGuides'
         component={AddStoryToGuides}
         hideNavBar
+      />
+      <Scene
+        key="createGuide"
+        component={CreateGuideScreen}
+        hideNavBar={true}
       />
     </Scene>
 )

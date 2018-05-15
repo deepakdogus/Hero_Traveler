@@ -31,7 +31,7 @@ class GuideListItem extends Component {
   onToggle = () => {
     this.setState({
       active: !this.state.active
-    }, this.props.onToggle)
+    }, this.props.onToggle())
   }
 
   renderLeftElement = () => {

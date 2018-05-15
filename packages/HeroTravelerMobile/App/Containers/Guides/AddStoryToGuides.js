@@ -58,27 +58,21 @@ class AddStoryToGuides extends Component {
   }
 
   toggleGuide = guide => {
-    const { removedGuides, storyGuides } = this.state
-    if (storyGuides.filter(g => g._id === guide._id).length) {
-      this.setState({
-        storyGuides: storyGuides.filter(g => g._id !== guide.id),
-        removedGuides: [...removedGuides, guide],
-      })
-    } else {
-      this.setState({
-        removedGuides: removedGuides.filter(g => g._id !== guide.id),
-        storyGuides: [...storyGuides, guide],
-      })
-    }
+
   }
 
   filterGuides = (searchTerm) => {
     return searchTerm
   }
 
+  createGuide = () => {
+    const {story} = this.props
+    NavActions.createGuide({ story })
+  }
+
   render = () => {
     const { storyGuides } = this.state
-    const { guides, onCancel, story, fetching } = this.props
+    const { guides, onCancel, fetching } = this.props
 
     return (
       <View style={storyCoverStyles.root}>
@@ -103,7 +97,7 @@ class AddStoryToGuides extends Component {
             />
             <GuideListItem
               create
-              onPress={() => NavActions.createGuide({ story })}
+              onPress={this.createGuide}
             />
             {fetching && (
               <ActivityIndicator
@@ -121,7 +115,7 @@ class AddStoryToGuides extends Component {
                     key={`guide--${idx}`}
                     label={guide.title}
                     active={isActive}
-                    onToggle={() => this.toggleGuide(guide)}
+                    onToggle={this.toggleGuide}
                   />
                 )
               })

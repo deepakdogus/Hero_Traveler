@@ -25,6 +25,8 @@ import {getVideoUrlFromString} from '../Shared/Lib/getVideoUrl'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import getRelativeHeight from '../Shared/Lib/getRelativeHeight'
 import {displayLocationDetails} from '../Shared/Lib/locationHelpers'
+import isTooltipComplete, {Types as TooltipTypes} from '../Shared/Lib/firstTimeTooltips'
+import UserActions from '../Shared/Redux/Entities/Users'
 
 const enhanceStoryVideo = compose(
   withHandlers(() => {
@@ -208,6 +210,14 @@ class StoryReadingScreen extends React.Component {
     return title;
   }
 
+  dismissTooltip = () => {
+    const updatedTooltips = this.props.user.introTooltips.concat({
+      name: TooltipTypes.ADD_TO_GUIDE,
+      seen: true,
+    })
+    this.props.completeTooltip(updatedTooltips)
+  }
+
   render () {
     const { story, author, user } = this.props
     const { scrollY } = this.state
@@ -227,6 +237,11 @@ class StoryReadingScreen extends React.Component {
     const toolbarTranslation = scrollY.interpolate(translations.toolbar)
     const plusButtonTranslation = scrollY.interpolate(translations.plusButton)
     const tooltipOpacity = scrollY.interpolate(translations.tooltip)
+
+    const showNextTooltip = !!user && !isTooltipComplete(
+      TooltipTypes.ADD_TO_GUIDE,
+      user.introTooltips,
+    )
 
     return (
       <View style={[styles.root]}>
@@ -388,17 +403,19 @@ class StoryReadingScreen extends React.Component {
           </TouchableOpacity>
         </Animated.View>
         {/* Plus button tooltip ADD CHECK OT DISABLE TOOLTIP */}
-        {true && (
-          <Animated.View
-            style={[
-              { opacity: tooltipOpacity },
-              styles.addToGuideTooltip,
-            ]}>
-            <Text style={{ color: 'white' }}>
-              {`Tap to add story\nto a travel guide`}
-            </Text>
-            <View style={styles.addToGuideTooltipArrow} />
-          </Animated.View>
+        {showNextTooltip && (
+          <TouchableOpacity onPress={this.dismissTooltip}>
+            <Animated.View
+              style={[
+                { opacity: tooltipOpacity },
+                styles.addToGuideTooltip,
+              ]}>
+              <Text style={{ color: 'white' }}>
+                {`Tap to add story\nto a travel guide`}
+              </Text>
+              <View style={styles.addToGuideTooltipArrow} />
+            </Animated.View>
+          </TouchableOpacity>
         )}
         {
           <FlagModal
@@ -433,6 +450,7 @@ const mapDispatchToProps = (dispatch) => {
     toggleBookmark: (userId, storyId) => dispatch(StoryActions.storyBookmark(userId, storyId)),
     requestStory: (storyId) => dispatch(StoryActions.storyRequest(storyId)),
     flagStory: (userId, storyId) => dispatch(StoryActions.flagStory(userId, storyId)),
+    completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips}))
   }
 }
 

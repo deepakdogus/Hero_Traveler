@@ -64,18 +64,19 @@ class NotificationScreen extends React.Component {
   }
 
   _pressActivity = (activityId, seen) => {
+    const {markSeen, activities, stories} = this.props
     if (!seen) {
-      this.props.markSeen(activityId)
+      markSeen(activityId)
     }
-    let activity = this.props.activities[activityId];
+    let activity = activities[activityId];
     switch (activity.kind) {
       case ActivityTypes.follow:
-        NavActions.readOnlyProfile({userId: this.props.activities[activityId].fromUser});
+        NavActions.readOnlyProfile({userId: activities[activityId].fromUser});
         break;
       case ActivityTypes.comment:
       case ActivityTypes.like:
-        let story = this.props.stories[
-          this.props.activities[activityId].story
+        let story = stories[
+          activities[activityId].story
         ];
         NavActions.story({
           storyId: story._id,
@@ -143,25 +144,25 @@ class NotificationScreen extends React.Component {
 
   render () {
     let content
-
-    const unseenActivities = _.size(_.filter(_.map(this.props.activitiesById, aid => ({...this.props.activities[aid]})), activity => {
+    const {activitiesById, activities, threads, fetchStatus} = this.props
+    const unseenActivities = _.size(_.filter(_.map(activitiesById, aid => ({...activities[aid]})), activity => {
       return !activity.seen
     }))
 
-    if (this.props.fetchStatus.fetching) {
+    if (fetchStatus.fetching) {
       content = (
         <Loader spinnerColor={Colors.blackoutTint} />
       )
     } else if (this.state.selectedTab === 1 ) {
       content = (
         <ThreadList
-          threads={this.props.threads}
+          threads={threads}
           onPress={() => alert('Navigate to thread')}
         />
       )
     }
     else {
-      const filteredActivities = this.props.activitiesById.filter(id => {
+      const filteredActivities = activitiesById.filter(id => {
         const activity = this.populateActivity(id)
         // quick fix to solve for notifications crash
         if (

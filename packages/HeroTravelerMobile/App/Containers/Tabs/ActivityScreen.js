@@ -116,6 +116,31 @@ class NotificationScreen extends React.Component {
     }
   }
 
+  populateActivity = (activityId) => {
+    const {users, stories, activities} = this.props
+    const activity = {...activities[activityId]}
+    activity.user = users[activity.fromUser]
+    activity.story = stories[activity.story]
+
+    return activity
+  }
+
+  renderRow = (activityId) => {
+    const activity = this.populateActivity(activityId)
+
+    return (
+      <ConnectedActivity
+        key={activityId}
+        activityId={activityId}
+        createdAt={activity.createdAt}
+        description={this.getDescription(activity)}
+        content={this.getContent(activity)}
+        user={activity.user}
+        onPress={this._pressActivity}
+      />
+    )
+  }
+
   render () {
     let content
 
@@ -136,43 +161,24 @@ class NotificationScreen extends React.Component {
       )
     }
     else {
+      const filteredActivities = this.props.activitiesById.filter(id => {
+        const activity = this.populateActivity(id)
+        // quick fix to solve for notifications crash
+        if (
+          (activity.kind === ActivityTypes.like && (!activity.story || !activity.fromUser)) ||
+          (activity.kind === ActivityTypes.follow && !activity.user) ||
+          (activity.kind === ActivityTypes.comment && (!activity.story || !activity.fromUser))
+        ) {
+          return false
+        }
+        return true
+      })
+
       content = (
         <ActivityList
           style={styles.activityList}
-          activitiesById={this.props.activitiesById}
-          renderRow={(activityId) => {
-
-            const activity = {
-              ...this.props.activities[activityId],
-              user: this.props.users[
-                this.props.activities[activityId].fromUser
-              ],
-              story: this.props.stories[
-                this.props.activities[activityId].story
-              ]
-            }
-
-            // quick fix to solve for notifications crash
-            if (
-              (activity.kind === ActivityTypes.like && (!activity.story || !activity.fromUser)) ||
-              (activity.kind === ActivityTypes.follow && !activity.user) ||
-              (activity.kind === ActivityTypes.comment && (!activity.story || !activity.fromUser))
-            ) {
-              return null
-            }
-          
-            return (
-              <ConnectedActivity
-                key={activityId}
-                activityId={activityId}
-                createdAt={activity.createdAt}
-                description={this.getDescription(activity)}
-                content={this.getContent(activity)}
-                user={activity.user}
-                onPress={this._pressActivity}
-              />
-            )
-          }}
+          activitiesById={filteredActivities}
+          renderRow={this.renderRow}
         />
       )
     }
@@ -209,6 +215,7 @@ class NotificationScreen extends React.Component {
 const mapStateToProps = (state) => {
   const users = state.entities.users.entities
   const user = state.entities.users.entities[state.session.userId]
+
   return {
     user,
     users,

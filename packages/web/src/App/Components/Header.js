@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import {NavLink} from 'react-router-dom'
+import {Link, NavLink} from 'react-router-dom'
 import Modal from 'react-modal'
 import {connect} from 'react-redux'
 import {push} from 'react-router-redux'
@@ -54,7 +54,7 @@ const StyledGrid = styled(Grid)`
 `
 
 const StyledGridBlack = styled(StyledGrid)`
-  background-color: ${props => props.theme.Colors.background}
+  background-color: ${props => props.theme.Colors.background};
 `
 
 const StyledRow = styled(Row)`
@@ -188,7 +188,9 @@ class Header extends React.Component {
       <SelectedGrid fluid>
         <StyledRow center="xs" middle="xs">
           <Col xs={12} md={2} lg={2} >
-            <Logo src={logo} alt={'Hero Traveler Logo'}/>
+            <Link to="/">
+              <Logo src={logo} alt={'Hero Traveler Logo'}/>
+            </Link>
           </Col>
           {isLoggedIn &&
           <Col xsOffset={1} lg={2}>

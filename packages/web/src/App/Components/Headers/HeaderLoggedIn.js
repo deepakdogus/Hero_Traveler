@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { Row, Col } from '../FlexboxGrid'
 import { mediaMax, mediaMin } from '../ContentLayout.component'
 import Avatar from '../Avatar'
@@ -65,7 +65,9 @@ class HeaderLoggedIn extends React.Component {
     return (
       <StyledRow between="xs" middle="xs">
         <Col>
-          <Logo src={logo} alt={'Hero Traveler Logo'}/>
+          <Link to="/">
+            <Logo src={logo} alt={'Hero Traveler Logo'}/>
+          </Link>
         </Col>
         <LoggedInDesktopContainer>
           <Col>

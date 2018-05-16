@@ -93,17 +93,6 @@ class HeaderLoggedIn extends React.Component {
               >
                 <StyledRoundedCreateButton text='Create'/>
               </NavLink>
-              <StyledRoundedMailButton
-                type='headerButton'
-                height='32px'
-                width='32px'
-                name='inbox'
-                onClick={openModal}
-              >
-                <MailIcon
-                  name='loginEmail'
-                />
-              </StyledRoundedMailButton>
               <StyledRoundedNotificationButton
                 type='headerButton'
                 height='32px'

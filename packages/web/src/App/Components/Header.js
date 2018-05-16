@@ -15,7 +15,6 @@ import Login from './Modals/Login'
 import Signup from './Modals/Signup'
 import ResetPassword from './Modals/ResetPassword'
 import AddToItinerary from './Modals/AddToItinerary'
-import Inbox from './Modals/Inbox'
 import RightModal from './RightModal'
 import NotificationsThread from './Modals/NotificationsThread'
 import {usersExample} from '../Containers/Feed_TEST_DATA'
@@ -170,7 +169,6 @@ class Header extends React.Component {
   openModal = (event) => {
     const name = event.target.name
     let modalToOpen;
-    if (name === 'inbox' || name === 'loginEmail') modalToOpen = 'inbox'
     else if (name === 'notifications' || name === 'cameraFlash') modalToOpen = 'notificationsThread'
     this.setState({ modal: modalToOpen })
   }
@@ -249,17 +247,6 @@ class Header extends React.Component {
               >
                 <StyledRoundedButton text='Create'/>
               </NavLink>
-              <StyledRoundedButton
-                type='headerButton'
-                height='32px'
-                width='32px'
-                name='inbox'
-                onClick={this.openModal}
-              >
-                <MailIcon
-                  name='loginEmail'
-                />
-              </StyledRoundedButton>
               <StyledRoundedButton
                 type='headerButton'
                 height='32px'
@@ -344,13 +331,6 @@ class Header extends React.Component {
           onRequestClose={this.closeModal}
         >
           <NotificationsThread closeModal={this.closeModal} profile={user}/>
-        </RightModal>
-        <RightModal
-          isOpen={this.state.modal === 'inbox'}
-          contentLabel='Inbox'
-          onRequestClose={this.closeModal}
-        >
-          <Inbox closeModal={this.closeModal} profile={user}/>
         </RightModal>
       </SelectedGrid>
     )

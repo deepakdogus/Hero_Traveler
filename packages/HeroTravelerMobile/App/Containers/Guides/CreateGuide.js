@@ -52,7 +52,7 @@ class CreateGuide extends Component {
   }
 
   jumpToTop = () => {
-    this.SCROLLVIEW.scrollTo({ x: 0, y: 0, amimated: true })
+    this.scrollViewRef.scrollTo({ x: 0, y: 0, amimated: true })
   }
 
   onErrorPress = () => {}
@@ -126,6 +126,16 @@ class CreateGuide extends Component {
     })
   }
 
+  setScrollViewRef = (ref) => this.scrollViewRef = ref
+  setTitle = (title) => this.updateGuide({ title })
+  setDuration = (duration) => this.updateGuide({ duration })
+  setCost = (cost) => this.updateGuide({ cost })
+  setDescription = (description) => this.updateGuide({ description })
+
+  togglePrivacy = () => {
+    this.updateGuide({ isPrivate: !this.props.guide.isPrivate })
+  }
+
   render = () => {
     const { onDone, onError, props, state, updateGuide } = this
     const { creating, guide } = state
@@ -174,7 +184,7 @@ class CreateGuide extends Component {
           keyboardShouldPersistTaps="handled"
           bounces={false}
           stickyHeaderIndices={[0]}
-          ref={s => (this.SCROLLVIEW = s)}>
+          ref={this.setScrollViewRef}>
           <NavBar
             onLeft={creating ? noop : onCancel}
             leftTitle={'Cancel'}
@@ -202,28 +212,28 @@ class CreateGuide extends Component {
           </View>
           <Form>
             <FormInput
-              icon={Images.iconInfoDark}
-              onChangeText={title => updateGuide({ title })}
-              placeholder={'Title'}
+              onChangeText={this.setTitle}
+              iconName='info'
               value={title}
+              placeholder='Title'
             />
             <FormInput
               onPress={this.onLocationSelectionPress}
-              icon={Images.iconLocation}
-              placeholder={'Location(s)'}
+              iconName='location'
               value={location ? location.name : null}
+              placeholder='Location(s)'
             />
             <FormInput
               onPress={this.onCategorySelectionPress}
-              icon={Images.iconTag}
-              placeholder={'Categories'}
+              iconName='tag'
               value={categoriesValue}
+              placeholder={'Categories'}
             />
             <DropdownMenu
               options={options}
               placeholder={'How many days is this guide?'}
               icon={Images.iconDate}
-              onValueChange={duration => updateGuide({ duration })}
+              onValueChange={this.setDuration}
               value={
                 duration
                   ? `${duration} ${duration > 1 ? 'Days' : 'Day'}`
@@ -231,24 +241,21 @@ class CreateGuide extends Component {
               }
             />
             <FormInput
+              onChangeText={this.setCost}
+              iconName='gear'
               value={cost}
-              icon={Images.iconGear}
               placeholder={'Cost (USD)'}
-              onChangeText={cost => updateGuide({ cost })}
-              style={{
-                marginBottom: Metrics.doubleBaseMargin * 2,
-              }}
             />
             <MultilineInput
               label={'Overview'}
               placeholder={"What's your guide about?"}
-              onChangeText={description => updateGuide({ description })}
+              onChangeText={this.setDescription}
               value={description}
             />
             <Checkbox
               checked={isPrivate}
               label={'Make this guide private'}
-              onPress={() => updateGuide({ isPrivate: !isPrivate })}
+              onPress={this.togglePrivacy}
             />
           </Form>
         </ScrollView>

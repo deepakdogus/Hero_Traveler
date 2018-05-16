@@ -1,39 +1,21 @@
 import React from 'react'
-import { Text, TextInput, View, StyleSheet } from 'react-native'
-import { Fonts, Colors, Metrics } from '../Shared/Themes'
+import { Text, View, TouchableOpacity } from 'react-native'
+import detailsStyles from '../Containers/CreateStory/4_CreateStoryDetailScreenStyles'
 
-const MultilineInput = ({ label, placeholder, value, onChangeText }) => (
-  <View style={styles.multilineContainer}>
-    <Text style={styles.multilineLabel}>{label}</Text>
-    <TextInput
-      multiline={true}
-      placeholder={placeholder}
-      value={value}
-      onChangeText={onChangeText}
-      style={styles.multilineTextInput}
-    />
+const MultilineInput = ({label, placeholder, value, onPress}) => (
+  <View style={detailsStyles.travelTipsWrapper}>
+    <Text style={detailsStyles.fieldLabel}>{label}</Text>
+    <View style={detailsStyles.travelTipsPreview}>
+      <TouchableOpacity onPress={onPress}>
+        <Text style={[
+          detailsStyles.travelTipsPreviewText,
+          value ? {} : detailsStyles.travelTipsPreviewTextDimmed
+        ]}>
+          {value || placeholder}
+        </Text>
+      </TouchableOpacity>
+    </View>
   </View>
 )
-export default MultilineInput
 
-const styles = StyleSheet.create({
-  multilineContainer: {
-    marginBottom: Metrics.doubleBaseMargin,
-  },
-  multilineLabel: {
-    fontFamily: Fonts.type.bold,
-    fontWeight: '600',
-    fontSize: 16,
-    marginBottom: Metrics.baseMargin,
-  },
-  multilineTextInput: {
-    borderWidth: 1,
-    borderColor: Colors.navBarText,
-    padding: Metrics.baseMargin,
-    flex: 1,
-    color: Colors.background,
-    fontSize: 16,
-    marginBottom: 10,
-    minHeight: 90,
-  },
-})
+export default MultilineInput

@@ -18,6 +18,13 @@ export default class ActivityList extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.activitiesById.length !== this.props.activitiesById.length) {
+      const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+      this.setState({dataSource: ds.cloneWithRows(nextProps.activitiesById)})
+    }
+  }
+
   render () {
     return (
       <ListView

@@ -16,6 +16,13 @@ export default class List extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.items.length !== this.props.items.length) {
+      const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+      this.setState({dataSource: ds.cloneWithRows(nextProps.items)})
+    }
+  }
+
   render () {
     return (
       <ListView
@@ -25,23 +32,4 @@ export default class List extends React.Component {
       />
     )
   }
-
-  // _renderRow = (user) => {
-  //   return (
-  //     <UserListItem
-  //       titleStyle={this.props.titleStyle}
-  //       subtitleStyle={this.props.subtitleStyle}
-  //       key={user.id || user._id}
-  //       user={user}
-  //       onPress={this._onPress}
-  //     />
-  //   )
-  // }
-  //
-  // _onPress = (user) => {
-  //   if (this.props.onPress) {
-  //     this.props.onPress(user)
-  //   }
-  // }
-
 }

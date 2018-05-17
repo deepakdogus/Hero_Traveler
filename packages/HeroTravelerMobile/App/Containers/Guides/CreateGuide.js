@@ -39,7 +39,7 @@ class CreateGuide extends Component {
       title: undefined,
       description: undefined,
       author: this.props.user.id,
-      categories: undefined,
+      categories: [],
       location: undefined,
       flagged: undefined,
       counts: undefined,
@@ -64,16 +64,6 @@ class CreateGuide extends Component {
     })
     // jump to top to reveal error message
     this.jumpToTop()
-  }
-
-  onCategorySelectionPress = () => {
-    NavActions.setCategories({
-      onDone: categories => {
-        NavActions.pop()
-        this.updateGuide({ categories })
-      },
-      categories: this.state.guide.categories,
-    })
   }
 
   onDone = () => {
@@ -108,16 +98,23 @@ class CreateGuide extends Component {
   shouldComponentUpdate = () => !this.state.creating
 
   onLocationSelectionPress = () => {
-    NavActions.setLocation({
-      onSelectLocation: location => {
-        NavActions.pop()
-        this.updateGuide({ location })
-      },
+    NavActions.locationSelectorScreen({
+      navBack: NavActions.pop,
+      onSelectLocation: this.setLocation,
       location: this.state.guide.location
         ? this.state.guide.location.name
-        : null,
+        : "",
     })
   }
+
+  onCategorySelectionPress = () => {
+    NavActions.tagSelectorScreen({
+      onDone: this.setCategories,
+      tags: this.state.guide.categories,
+      tagType: 'category',
+    })
+  }
+
 
   updateGuide = updates => {
     const newGuide = Object.assign({}, this.state.guide, updates)
@@ -134,6 +131,17 @@ class CreateGuide extends Component {
     this.updateGuide({ description })
     NavActions.pop()
   }
+
+  setCategories = (categories) => {
+    this.updateGuide({ categories })
+    NavActions.pop()
+  }
+
+  setLocation = (location) => {
+    this.updateGuide({ location })
+    NavActions.pop()
+  }
+
 
   togglePrivacy = () => {
     this.updateGuide({ isPrivate: !this.state.guide.isPrivate })

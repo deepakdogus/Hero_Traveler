@@ -373,16 +373,6 @@ export default NavActions.create(
           component={CreateStoryDetailScreen}
         />
         <Scene
-          key='createStory_tags'
-          panHandlers={null}
-          component={TagScreen}
-        />
-        <Scene
-          key='createStory_hashtags'
-          panHandlers={null}
-          component={TagScreen}
-        />
-        <Scene
           key='createStory_location'
           panHandlers={null}
           component={LocationScreen}
@@ -421,6 +411,16 @@ export default NavActions.create(
         key='textInputScreen'
         component={TextInputScreen}
         direction='horizontal'
+      />
+      <Scene
+        key='tagSelectorScreen'
+        panHandlers={null}
+        component={TagScreen}
+      />
+      <Scene
+        key='locationSelectorScreen'
+        panHandlers={null}
+        component={LocationScreen}
       />
       <Scene
         key='viewBioScreen'

@@ -11,7 +11,8 @@ import {connect} from 'react-redux'
 
 import RNGooglePlaces from 'react-native-google-places'
 import CategoryActions from '../../Shared/Redux/Entities/Categories'
-import { Metrics, Colors } from '../../Shared/Themes/'
+import { Colors } from '../../Shared/Themes/'
+import formatLocation from '../../Shared/Lib/formatLocation'
 import Loader from '../../Components/Loader'
 import styles from './LocationScreenStyles'
 
@@ -51,9 +52,9 @@ class LocationScreen extends Component {
   selectLocation = (placeID) => () => {
     this.setState({searching: true})
     RNGooglePlaces.lookUpPlaceByID(placeID)
-    .then((results) => {
+    .then((result) => {
       this.setState({searching: false}, () => {
-        this.props.onSelectLocation(results)
+        this.props.onSelectLocation(formatLocation(result))
       })
     })
   }

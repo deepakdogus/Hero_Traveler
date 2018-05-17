@@ -204,7 +204,7 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   navToCategories = () => {
-    NavActions.createStory_tags({
+    NavActions.tagSelectorScreen({
       onDone: this._receiveCategories,
       tags: this.props.workingDraft.categories || this.state.categories,
       tagType: 'category'
@@ -212,7 +212,7 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   navToHashtags = () => {
-    NavActions.createStory_hashtags({
+    NavActions.tagSelectorScreen({
       onDone: this._receiveHashtags,
       tags: this.props.workingDraft.hashtags || this.state.hashtags,
       tagType: 'hashtag'
@@ -220,26 +220,19 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   // if you change this... also make sure to change getLocationInfo's formatLocationInfo
-  receiveLocation = (place) => {
-    this.props.updateWorkingDraft({
-      locationInfo: {
-        name: place.name,
-        locality: _.get(place, 'addressComponents.sublocality_level_1') || _.get(place, 'addressComponents.locality'),
-        state: _.get(place, 'addressComponents.administrative_area_level_1'),
-        country: _.get(place, 'addressComponents.country'),
-        latitude: place.latitude,
-        longitude: place.longitude,
-      }
-    })
+  receiveLocation = (locationInfo) => {
+    this.props.updateWorkingDraft({ locationInfo })
     NavActions.pop()
   }
 
   navToLocation = () => {
-    NavActions.createStory_location({
+    NavActions.locationSelectorScreen({
       navBack: NavActions.pop,
       onSelectLocation: this.receiveLocation,
       // replace this with short name?
-      location: this.props.workingDraft.locationInfo ? this.props.workingDraft.locationInfo.name : '',
+      location: this.props.workingDraft.locationInfo
+        ? this.props.workingDraft.locationInfo.name
+        : "",
     })
   }
 

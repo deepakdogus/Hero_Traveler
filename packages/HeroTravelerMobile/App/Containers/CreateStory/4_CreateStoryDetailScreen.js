@@ -5,7 +5,6 @@ import {
   View,
   Text,
   TouchableWithoutFeedback,
-  TouchableOpacity,
   DatePickerIOS,
 } from 'react-native'
 import { connect } from 'react-redux'
@@ -20,7 +19,7 @@ import NavBar from './NavBar'
 import styles from './4_CreateStoryDetailScreenStyles'
 import API from '../../Shared/Services/HeroAPI'
 import FormInput from '../../Components/FormInput'
-import MultilineInput from '../../Components/MultilineInput'
+import TouchableMultilineInput from '../../Components/TouchableMultilineInput'
 
 const api = API.create()
 
@@ -220,15 +219,6 @@ class CreateStoryDetailScreen extends React.Component {
     })
   }
 
-  navToTravelTips = () => {
-    NavActions.createStory_travelTips({
-      onDone: this._receiveTravelTips,
-      text: this.props.workingDraft.travelTips,
-      title: 'TRAVEL TIPS',
-      placeholder: 'What should your fellow travelers know?'
-    })
-  }
-
   // if you change this... also make sure to change getLocationInfo's formatLocationInfo
   receiveLocation = (place) => {
     this.props.updateWorkingDraft({
@@ -364,8 +354,9 @@ class CreateStoryDetailScreen extends React.Component {
               value={this.getHashtagsValue()}
               placeholder='Add hashtags'
             />
-            <MultilineInput
-              onPress={this.navToTravelTips}
+            <TouchableMultilineInput
+              onDone={this._receiveTravelTips}
+              title='TRAVEL TIPS'
               label='Travel Tips: '
               value={workingDraft.travelTips}
               placeholder='What should your fellow travelers know?'

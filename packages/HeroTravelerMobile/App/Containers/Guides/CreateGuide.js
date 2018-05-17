@@ -19,7 +19,7 @@ import { Images, Colors, Metrics } from '../../Shared/Themes'
 import Checkbox from '../../Components/Checkbox'
 import DropdownMenu from '../../Components/DropdownMenu'
 import Form from '../../Components/Form'
-import MultilineInput from '../../Components/MultilineInput'
+import TouchableMultilineInput from '../../Components/TouchableMultilineInput'
 import styles from '../Styles/CreateGuideStyles'
 
 const noop = () => {}
@@ -130,10 +130,13 @@ class CreateGuide extends Component {
   setTitle = (title) => this.updateGuide({ title })
   setDuration = (duration) => this.updateGuide({ duration })
   setCost = (cost) => this.updateGuide({ cost })
-  setDescription = (description) => this.updateGuide({ description })
+  setDescription = (description) => {
+    this.updateGuide({ description })
+    NavActions.pop()
+  }
 
   togglePrivacy = () => {
-    this.updateGuide({ isPrivate: !this.props.guide.isPrivate })
+    this.updateGuide({ isPrivate: !this.state.guide.isPrivate })
   }
 
   render = () => {
@@ -246,11 +249,12 @@ class CreateGuide extends Component {
               value={cost}
               placeholder={'Cost (USD)'}
             />
-            <MultilineInput
+            <TouchableMultilineInput
+              onDone={this.setDescription}
+              title={'OVERVIEW'}
               label={'Overview'}
-              placeholder={"What's your guide about?"}
-              onChangeText={this.setDescription}
               value={description}
+              placeholder={"What's your guide about?"}
             />
             <Checkbox
               checked={isPrivate}

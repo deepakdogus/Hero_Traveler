@@ -1,17 +1,13 @@
-import _ from 'lodash'
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {
   View,
-  Text,
   TextInput,
-  TouchableOpacity,
 } from 'react-native'
-import {connect} from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 import NavBar from './NavBar'
 
-import { Metrics, Colors } from '../../Shared/Themes/'
+import { Colors } from '../../Shared/Themes/'
 import styles from './TextInputScreenStyles'
 
 class TextInputScreen extends Component {
@@ -82,7 +78,4 @@ class TextInputScreen extends Component {
   }
 }
 
-export default connect(
-  state => ({}),
-  dispatch => ({})
-)(TextInputScreen)
+export default TextInputScreen

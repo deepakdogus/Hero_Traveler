@@ -383,11 +383,6 @@ export default NavActions.create(
           component={TagScreen}
         />
         <Scene
-          key='createStory_travelTips'
-          panHandlers={null}
-          component={TextInputScreen}
-        />
-        <Scene
           key='createStory_location'
           panHandlers={null}
           component={LocationScreen}
@@ -420,6 +415,11 @@ export default NavActions.create(
       <Scene
         key='mediaSelectorScreen'
         component={MediaSelectorScreen}
+        direction='horizontal'
+      />
+      <Scene
+        key='textInputScreen'
+        component={TextInputScreen}
         direction='horizontal'
       />
       <Scene

@@ -37,6 +37,7 @@ import UserActions from '../../Shared/Redux/Entities/Users'
 import TabIcon from '../../Components/TabIcon'
 import Modal from '../../Components/Modal'
 import Tooltip from '../../Components/Tooltip'
+import EditableCoverMedia from '../../Components/EditableCoverMedia'
 
 import NativeEditor from '../../Components/NativeEditor/Editor'
 import Toolbar from '../../Components/NativeEditor/Toolbar'
@@ -261,6 +262,12 @@ class StoryCoverScreen extends Component {
       )),
       R.always(this.renderContent())
     )(!!coverVideo)
+  }
+
+  onTrimError = () => {
+    this.setState({
+      error: 'There\'s an issue with the video you selected. Please try another.'
+    })
   }
 
   renderTextColor = (baseStyle) => {
@@ -792,8 +799,9 @@ class StoryCoverScreen extends Component {
     const {error, validationError} = this.state
     const {
       title, coverCaption, description,
-      coverImage, coverVideo
+      coverImage, coverVideo, id
     } = this.props.workingDraft
+    const {updateWorkingDraft} = this.props
 
     let showIntroTooltip = false;
     if (this.props.user && this.state.file) {
@@ -837,8 +845,19 @@ class StoryCoverScreen extends Component {
                   onPress={this._touchError}
                   text={error} />
               }
-              {this.isPhotoType() && this.renderCoverPhoto(coverImage)}
-              {!this.isPhotoType() && this.renderCoverVideo(coverVideo)}
+              {
+              <EditableCoverMedia
+                isPhoto={this.isPhotoType()}
+                media={coverImage || coverVideo}
+                clearError={this._touchError}
+                targetId={id}
+                onUpdate={updateWorkingDraft}
+                onTrimError={this.onTrimError}
+                jumpToTop={this.jumpToTop}
+              />
+              }
+              {null && this.isPhotoType() && this.renderCoverPhoto(coverImage)}
+              {null && !this.isPhotoType() && this.renderCoverVideo(coverVideo)}
             </View>
             <View style={styles.titlesWrapper}>
               {!this.hasNoCover() &&

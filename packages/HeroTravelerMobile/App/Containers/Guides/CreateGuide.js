@@ -55,7 +55,9 @@ class CreateGuide extends Component {
     this.scrollViewRef.scrollTo({ x: 0, y: 0, amimated: true })
   }
 
-  onErrorPress = () => {}
+  onErrorPress = () => {
+    this.setState({error: null})
+  }
 
   onError = () => {
     this.setState({
@@ -138,7 +140,7 @@ class CreateGuide extends Component {
   }
 
   setLocation = (location) => {
-    this.updateGuide({ location })
+    this.updateGuide({ locations: [location] })
     NavActions.pop()
   }
 
@@ -158,11 +160,11 @@ class CreateGuide extends Component {
       duration,
       isPrivate,
       title,
-      location,
+      locations,
       coverImage,
     } = guide
 
-    const guideRequirementsMet = title && location && coverImage
+    const guideRequirementsMet = title && locations && coverImage
     const options = []
     for (let i = 1; i < 31; i++) options.push({ value: `${i}`, label: `${i}` })
     let categoriesValue
@@ -215,9 +217,9 @@ class CreateGuide extends Component {
               />
             )}
             <EditableCoverMedia
+              isPhoto
               media={coverImage}
-              isPhoto={true}
-              onError={onError}
+              clearError={this.onErrorPress}
               onUpdate={updateGuide}
             />
           </View>

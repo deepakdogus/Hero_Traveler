@@ -100,7 +100,6 @@ class TagScreen extends Component {
   }
 
   _selectTag = (tag) => {
-    console.log("_selectTag pressed with", tag)
     const isSearchTag = !tag.image
      if (this._checkExistingTag(tag.title)) {
       if (isSearchTag) this.setInputBlurred();
@@ -341,7 +340,7 @@ class TagScreen extends Component {
                 style={styles.textInput}
                 value={this.state.text}
                 placeholder={'Add ' + _.upperFirst(this._getTagTypeText(true))}
-                onChangeText={text => this._inputChanged(text)}
+                onChangeText={this._inputChanged}
                 onSubmitEditing={this._addNewTag}
                 onFocus={this.setInputFocused}
                 autoCorrect={this.props.tagType === TAG_TYPE_CATEGORY}

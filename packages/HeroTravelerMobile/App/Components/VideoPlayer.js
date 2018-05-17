@@ -275,9 +275,9 @@ export default class VideoPlayer extends React.Component {
   }
 
   render() {
-    const playButtonSize = this.props.playButtonSize
     const isNotReadyForDisplay = !this.state.isLoaded || !this.state.isReadyForDisplay
     const hasError = this.state.error
+
     return (
       <View style={[
         styles.root,

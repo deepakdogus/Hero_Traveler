@@ -105,7 +105,7 @@ class AddStoryToGuides extends Component {
                 style={{ padding: Metrics.baseMargin }}
               />
             )}
-            {!guides.length &&
+            {guides.length &&
               guides.map((guide, idx) => {
                 const isActive =
                   storyGuides.filter(g => g._id === guide.id).length === 1

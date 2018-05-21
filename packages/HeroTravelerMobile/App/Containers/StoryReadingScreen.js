@@ -146,7 +146,7 @@ class StoryReadingScreen extends React.Component {
       showFlagModal: false,
     }
     if (!this.props.story) {
-      this.props.requestStory(this.props.storyId)
+      this.getStory()
     }
   }
 
@@ -224,15 +224,15 @@ class StoryReadingScreen extends React.Component {
 
   renderCategories = () => {
     let categories = _.compact(this.props.story.categories.map((category) => {
-      return category.title;
-    }));
+      return category.title
+    }))
     return <Text style={[styles.sectionText, styles.sectionTextHighlight]}>{categories.join(', ')}</Text>
   }
 
   renderHashtags = () => {
     let hashtags = _.compact(this.props.story.hashtags.map((hashtag) => {
-      return "#" + hashtag.title;
-    }));
+      return "#" + hashtag.title
+    }))
     return <Text style={[rendererStyles.unstyled, styles.sectionTextHighlight]}>{hashtags.join(', ')}</Text>
   }
 
@@ -268,7 +268,7 @@ class StoryReadingScreen extends React.Component {
     return title;
   }
 
-  refreshStory = () => {
+  getStory = () => {
     this.props.requestStory(this.props.storyId)
   }
 
@@ -304,7 +304,7 @@ class StoryReadingScreen extends React.Component {
           {!story.draft &&
           <RefreshControl
             refreshing={this.props.fetching || false}
-            onRefresh={this.refreshStory}
+            onRefresh={this.getStory}
           />
           }
           <ConnectedStoryPreview

@@ -13,8 +13,14 @@ import ConnectedStoryPreview from '../ConnectedStoryPreview'
 import styles from '../Styles/MyFeedScreenStyles'
 import NoStoriesMessage from '../../Components/NoStoriesMessage'
 import BackgroundPublishingBars from '../../Components/BackgroundPublishingBars'
+import TabBar from '../../Components/TabBar'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
+
+const tabTypes = {
+  stories: "stories",
+  guides: "guides",
+}
 
 class MyFeedScreen extends React.Component {
   static propTypes = {
@@ -25,7 +31,8 @@ class MyFeedScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      refreshing: false
+      refreshing: false,
+      selectedTab: tabTypes.stories
     }
   }
 
@@ -64,6 +71,7 @@ class MyFeedScreen extends React.Component {
       this.props.error !== nextProps.error,
       !_.isEqual(this.props.sync, nextProps.sync),
       !_.isEqual(this.props.backgroundFailures, nextProps.backgroundFailures),
+      this.state.selectedTab !== nextState.selectedTab,
     ])
 
     return shouldUpdate
@@ -116,6 +124,10 @@ class MyFeedScreen extends React.Component {
     return backgroundFailures[Object.keys(backgroundFailures)[0]]
   }
 
+  selectTab = (selectedTab) => {
+    this.setState({selectedTab})
+  }
+
   render () {
     let {storiesById, fetchStatus, error, sync} = this.props;
     let topContent, bottomContent
@@ -152,6 +164,12 @@ class MyFeedScreen extends React.Component {
           updateDraft={this.props.updateDraft}
           publishLocalDraft={this.props.publishLocalDraft}
           discardUpdate={this.props.discardUpdate}
+        />
+        <TabBar
+          tabs={tabTypes}
+          activeTab={this.state.selectedTab}
+          onClickTab={this.selectTab}
+          tabStyle={styles.tabStyle}
         />
         { bottomContent }
       </View>

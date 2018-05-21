@@ -31,5 +31,8 @@ export default StyleSheet.create({
     color: '#fff',
     paddingVertical: 7,
     textAlign: 'center',
-  }
+  },
+  tabStyle: {
+    width: Metrics.screenWidth * 0.3,
+  },
 })

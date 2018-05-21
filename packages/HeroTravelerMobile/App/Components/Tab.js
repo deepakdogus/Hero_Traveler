@@ -14,12 +14,11 @@ const styles = StyleSheet.create({
     flex: 1,
     width: Metrics.screenWidth * 0.18,
     backgroundColor: Colors.feedDividerGrey,
-    borderBottomWidth: .5,
-    borderBottomColor: Colors.navBarText,
+    borderBottomWidth: 3,
+    borderBottomColor: Colors.feedDividerGrey,
   },
   tabSelected: {
     borderBottomColor: Colors.red,
-    borderBottomWidth: 3
   },
   tabText: {
     fontFamily: Fonts.type.montserrat,

@@ -46,7 +46,6 @@ class ProfileView extends React.Component {
 
   static defaultProps = {
     onPressFollow: () => {},
-    onSelectTab: () => {},
     bookmarksFetchStatus: {},
     draftsFetchStatus: {},
     storiesFetchStatus: {}
@@ -161,9 +160,7 @@ class ProfileView extends React.Component {
 
   selectTab = (tab) => {
     if (this.state.selectedTab !== tab) {
-      this.setState({selectedTab: tab}, () => {
-        this.props.onSelectTab(tab)
-      })
+      this.setState({selectedTab: tab})
     }
   }
 

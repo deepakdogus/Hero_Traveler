@@ -58,6 +58,34 @@ class ExploreScreen extends Component {
     this.removeSearchListeners(this.helper)
   }
 
+  // after we delete a story we need to make sure we purge that story
+  // from the story's hits
+  componentWillReceiveProps(nextProps) {
+    const oldStories = this.props.stories
+    const {selectedTabIndex, lastSearchResults} = this.state
+    const hits = lastSearchResults ? lastSearchResults.hits : []
+    if (
+      selectedTabIndex === 0
+      && hits.length
+      && this.hasDeletedStory(nextProps)
+    ) {
+      for (let key in oldStories) {
+        if (!nextProps.stories[key]) {
+          lastSearchResults.hits = hits.filter(hit => {
+            return key !== hit._id
+          })
+          this.setState({lastSearchResults})
+        }
+      }
+    }
+  }
+
+  hasDeletedStory(nextProps) {
+    const oldLength = Object.keys(this.props.stories).length
+    const newLength = Object.keys(nextProps.stories).length
+    return oldLength - newLength === 1
+  }
+
   setupSearchListeners(helper) {
     helper.on('result', res => {
       this.setState({
@@ -156,6 +184,7 @@ class ExploreScreen extends Component {
   renderSearchSection() {
     let searchHits = _.get(this.state.lastSearchResults, 'hits', [])
     const isSearching = this.state.searching
+
     return (
       <View style={styles.tabs}>
         <View style={styles.tabnav}>
@@ -353,6 +382,7 @@ const mapStateToProps = (state) => {
   return {
     user: state.entities.users.entities[state.session.userId],
     users: state.entities.users.entities,
+    stories: state.entities.stories.entities,
     categories,
     categoriesFetchStatus,
     error: categoriesError

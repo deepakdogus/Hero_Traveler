@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Text, View, Animated, TouchableOpacity, Image} from 'react-native'
+import {Text, View, Animated, TouchableOpacity, Image, RefreshControl} from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 import MapView from 'react-native-maps';
@@ -143,7 +143,7 @@ class StoryReadingScreen extends React.Component {
       scrollY: new Animated.Value(0),
     }
     if (!this.props.story) {
-      this.props.requestStory(this.props.storyId)
+      this.getStory()
     }
   }
 
@@ -161,16 +161,16 @@ class StoryReadingScreen extends React.Component {
   }
 
   renderCategories = () => {
-    let categories = this.props.story.categories.map((category) => {
-      return category.title;
-    })
+    let categories = _.compact(this.props.story.categories.map((category) => {
+      return category.title
+    }))
     return <Text style={[styles.sectionText, styles.sectionTextHighlight]}>{categories.join(', ')}</Text>
   }
 
   renderHashtags = () => {
-    let hashtags = this.props.story.hashtags.map((hashtag) => {
-      return "#" + hashtag.title;
-    })
+    let hashtags = _.compact(this.props.story.hashtags.map((hashtag) => {
+      return "#" + hashtag.title
+    }))
     return <Text style={[rendererStyles.unstyled, styles.sectionTextHighlight]}>{hashtags.join(', ')}</Text>
   }
 
@@ -218,6 +218,10 @@ class StoryReadingScreen extends React.Component {
     this.props.completeTooltip(updatedTooltips)
   }
 
+  getStory = () => {
+    this.props.requestStory(this.props.storyId)
+  }
+
   render () {
     const { story, author, user } = this.props
     const { scrollY } = this.state
@@ -253,6 +257,12 @@ class StoryReadingScreen extends React.Component {
           scrollEventThrottle={16}
           style={[styles.scrollView]}
         >
+          {!story.draft &&
+          <RefreshControl
+            refreshing={this.props.fetching || false}
+            onRefresh={this.getStory}
+          />
+          }
           <ConnectedStoryPreview
             isFeed={false}
             onPressLike={this._toggleLike}

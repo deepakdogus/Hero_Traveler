@@ -17,6 +17,10 @@ const Activity = new schema.Entity('activities', {
   fromUser: User,
   story: Story
 })
+const Guide = new schema.Entity('guides', {
+  author: User,
+  category: Category,
+})
 
 const videoTimeout = 120 * 1000
 const imageTimeout = 45 * 1000
@@ -378,6 +382,11 @@ const create = () => {
     return api.get(`guide/user/${userId}`)
   }
 
+  const getUserFeedGuides = (userId) => {
+    return api.get(`guide/user/${userId}/feed`)
+    .then(response => safeNormalize(response, [Guide]))
+  }
+
   // ------
   // STEP 3
   // ------
@@ -447,6 +456,7 @@ const create = () => {
     createGuide,
     updateGuide,
     getUserGuides,
+    getUserFeedGuides,
   }
 }
 

@@ -84,6 +84,7 @@ class ProfileView extends React.Component {
       this._completeTooltip()
     }
   }
+
   _handleUpdateAvatarPhoto = (data) => {
     api.uploadAvatarImage(this.props.user.id, pathAsFileObject(data))
     .then(({ data }) => {

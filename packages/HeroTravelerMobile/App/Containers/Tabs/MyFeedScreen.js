@@ -7,6 +7,7 @@ import SplashScreen from 'react-native-splash-screen'
 
 import {Metrics, Images} from '../../Shared/Themes'
 import StoryActions from '../../Shared/Redux/Entities/Stories'
+import GuideActions from '../../Shared/Redux/Entities/Guides'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import StoryList from '../../Containers/ConnectedStoryList'
 import ConnectedStoryPreview from '../ConnectedStoryPreview'
@@ -37,7 +38,10 @@ class MyFeedScreen extends React.Component {
   }
 
   componentDidMount() {
-    if (!this.isPendingUpdate()) this.props.attemptGetUserFeed(this.props.userId)
+    if (!this.isPendingUpdate()) {
+      this.props.attemptGetUserFeedStories(this.props.userId)
+      this.props.attemptGetUserFeedGuides(this.props.userId)
+    }
     SplashScreen.hide()
   }
 
@@ -100,7 +104,7 @@ class MyFeedScreen extends React.Component {
   _onRefresh = () => {
     if (this.isPendingUpdate()) return
     this.setState({refreshing: true})
-    this.props.attemptGetUserFeed(this.props.user.id)
+    this.props.attemptGetUserFeedStories(this.props.user.id)
   }
 
   renderStory = (story, index) => {
@@ -200,7 +204,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    attemptGetUserFeed: (userId) => dispatch(StoryActions.feedRequest(userId)),
+    attemptGetUserFeedStories: (userId) => dispatch(StoryActions.feedRequest(userId)),
+    attemptGetUserFeedGuides: (userId) => dispatch(GuideActions.guideFeedRequest(userId)),
     discardUpdate: (storyId) => dispatch(StoryActions.removeBackgroundFailure(storyId)),
     publishLocalDraft: (story) => dispatch(StoryCreateActions.publishLocalDraft(story)),
     updateDraft: (story) => dispatch(StoryCreateActions.updateDraft(story.id, story, true)),

@@ -53,7 +53,6 @@ export function * getUserFeed (api, action) {
   yield getInitalData(api, userId)
 
   const response = yield call(api.getUserFeed, userId)
-
   if (response.ok) {
     const { entities, result } = response.data;
     yield [

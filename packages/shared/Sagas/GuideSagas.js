@@ -63,3 +63,22 @@ export function * getUserGuides (api, action) {
   }
   // add error handling for fail
 }
+
+export function * getUserFeedGuides(api, action) {
+  const {userId} = action
+  const response = yield call(api.getUserFeedGuides, userId)
+  if (response.ok) {
+    const { entities, result } = response.data
+    yield [
+      put(UserActions.receiveUsers(entities.users)),
+      put(CategoryActions.receiveCategories(entities.categories)),
+      put(GuideActions.receiveGuides(entities.guides)),
+      put(GuideActions.guideFeedSuccess(result)),
+    ]
+  }
+  else {
+    yield put(GuideActions.guideFailure(
+      new Error("Failed get user's feed guides")
+    ))
+  }
+}

@@ -4,6 +4,7 @@ import endpointWrapper from '../../utils/endpointWrapper'
 import create from './create'
 import update from './update'
 import getUserGuides from './getUserGuides'
+import getUserFeedGuides from './getUserFeedGuides'
 
 const router = express.Router()
 
@@ -20,6 +21,11 @@ router.put('/:guideId',
 router.get('/user/:userId',
   hasValidOauth,
   endpointWrapper(getUserGuides)
+)
+
+router.get('/user/:userId/feed',
+  hasValidOauth,
+  endpointWrapper(getUserFeedGuides)
 )
 
 export default router

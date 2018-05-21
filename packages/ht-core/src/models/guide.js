@@ -107,7 +107,6 @@ GuideSchema.statics = {
     .populate('categories')
     .populate('coverImage')
   },
-
   list(/* args */) {
     return this.find(...arguments)
     .populate({
@@ -119,6 +118,18 @@ GuideSchema.statics = {
     .populate('categories')
     .populate('coverImage')
     .sort({createdAt: -1})
+  },
+  getUserFeedGuides(userId, followingIds) {
+    return this
+      .list({
+        $or: [
+          {author: userId},
+          {author: {$in: followingIds}},
+          {categories: {$in: followingIds}},
+          {featured: true},
+        ]
+      })
+      .exec()
   },
 }
 

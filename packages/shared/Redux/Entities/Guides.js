@@ -9,6 +9,8 @@ const { Types, Creators } = createActions({
   createGuideFailure: ['error'],
   updateGuide: ['guide'],
   getUserGuides: ['userId'],
+  guideFeedRequest: ['userId'],
+  guideFeedSuccess: ['feedGuidesById'],
 })
 
 export const GuideTypes = Types
@@ -22,17 +24,22 @@ export const INITIAL_STATE = Immutable({
     fetching: false,
     loaded: false,
   },
-  error: null
+  error: null,
+  feedGuidesById: [],
 })
 
 /* ------------- Reducers ------------- */
 
 export const request = (state) => {
-  return Immutable.setIn(
-    state,
-    ['fetchStatus', 'fetching'],
-    true
-  )
+  return state.merge({
+    fetchStatus: {
+      fetching: true,
+      loaded: false,
+    },
+    error: null
+  }, {
+    deep: true
+  })
 }
 
 export const receiveGuides = (state, {guides = {}}) => {
@@ -47,6 +54,10 @@ export const receiveGuides = (state, {guides = {}}) => {
   })
 }
 
+export const guideFeedSuccess = (state, {feedGuidesById}) => {
+  return state.setIn(['feedGuidesById'], feedGuidesById)
+}
+
 export const failure = (state, {error}) =>
   state.merge({fetching: false, error})
 
@@ -58,4 +69,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GUIDE_FAILURE]: failure,
   [Types.UPDATE_GUIDE]: request,
   [Types.GET_USER_GUIDES]: request,
+  [Types.GUIDE_FEED_REQUEST]: request,
+  [Types.GUIDE_FEED_SUCCESS]: guideFeedSuccess,
 })

@@ -75,7 +75,8 @@ const mapDispatchToProps = (dispatch, props) => {
   const {userId, story} = props
   const storyId = story && story.id
   return {
-    onPress: (title) => NavActions.story({storyId, title}),
+    onPressStory: (title) => NavActions.story({storyId, title}),
+    onPressGuide: (title) => NavActions.guide({storyId, title}),
     deleteStory: () => dispatch(StoryActions.deleteStory(userId, storyId)),
     removeDraft: () => dispatch(StoryActions.removeDraft(storyId)),
     onPressLike: () => dispatch(StoryActions.storyLike(userId, storyId)),

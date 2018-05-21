@@ -188,9 +188,13 @@ export default class StoryPreview extends Component {
     )
   }
 
+  _onPress = (title) => {
+    return () => this.getOnPress()(title)
+  }
+
   renderBottomSection() {
     const {title, counts, description, coverCaption, draft} = this.props.story
-    const {isStoryReadingScreen, onPress} = this.props
+    const {isStoryReadingScreen} = this.props
 
     return (
       <View style={[styles.storyInfoContainer, styles.bottomContainer]}>
@@ -199,7 +203,10 @@ export default class StoryPreview extends Component {
             {coverCaption}
           </Text>
         }
-            <TouchableOpacity onPress={(x)=>onPress(title)} disabled={!!isStoryReadingScreen}>
+        <TouchableOpacity
+          onPress={this._onPress(title)}
+          disabled={!!isStoryReadingScreen}
+        >
           <Text style={[
             styles.title,
             description ? styles.titleWithDescription : {},
@@ -258,6 +265,11 @@ export default class StoryPreview extends Component {
     return this.props.isVisible !== false && this.props.areInRenderLocation
   }
 
+  getOnPress = () => {
+    const {isStory, onPressStory, onPressGuide} = this.props
+    return isStory ? onPressStory : onPressGuide
+  }
+
   render () {
     const {story, gradientLocations, showPlayButton, shouldHideCover} = this.props
     if (!story) return null
@@ -276,7 +288,7 @@ export default class StoryPreview extends Component {
             allowVideoPlay={this.props.allowVideoPlay}
             cover={cover}
             coverType={story.coverImage ? 'image' : 'video'}
-            onPress={this.props.onPress}
+            onPress={this.getOnPress()}
             gradientColors={this.props.gradientColors}
             gradientLocations={gradientLocations}
             showPlayButton={showPlayButton}

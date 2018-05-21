@@ -27,6 +27,7 @@ class MyFeedScreen extends React.Component {
   static propTypes = {
     user: PropTypes.object,
     error: PropTypes.object,
+    feedGuidesById: PropTypes.arrayOf(PropTypes.string),
   };
 
   constructor(props) {
@@ -97,7 +98,7 @@ class MyFeedScreen extends React.Component {
 
   _showNoStories() {
     return (
-      <NoStoriesMessage />
+      <NoStoriesMessage text={this.props.selectedTab}/>
     )
   }
 
@@ -110,14 +111,15 @@ class MyFeedScreen extends React.Component {
   renderStory = (story, index) => {
     return (
       <ConnectedStoryPreview
+        index={index}
         isFeed={true}
+        isStory={this.state.selectedTab === tabTypes.stories}
         story={story}
         height={imageHeight}
         userId={this.props.user.id}
         autoPlayVideo
         allowVideoPlay
         renderLocation={this.props.location}
-        index={index}
         showPlayButton={true}
       />
     )
@@ -133,22 +135,29 @@ class MyFeedScreen extends React.Component {
   }
 
   render () {
-    let {storiesById, fetchStatus, error, sync} = this.props;
+    let {storiesById, fetchStatus, error, sync, feedGuidesById} = this.props
+    const {selectedTab} = this.state
     let topContent, bottomContent
 
+    const isStoriesSelected = selectedTab === tabTypes.stories
     const failure = this.getFirstBackgroundFailure()
 
     if (error) {
       topContent = this._showError()
     }
-    if (!storiesById || !storiesById.length) {
+    if (
+      (isStoriesSelected && (!storiesById || !storiesById.length))
+      || (!isStoriesSelected && (!feedGuidesById || !feedGuidesById.length))
+    ) {
       let innerContent = this._showNoStories();
       bottomContent = this._wrapElt(innerContent);
-    } else {
+    }
+    else {
       bottomContent = (
         <StoryList
+          isStory={isStoriesSelected}
           style={styles.storyList}
-          storiesById={storiesById}
+          storiesById={isStoriesSelected ? storiesById : feedGuidesById}
           renderStory={this.renderStory}
           onRefresh={this._onRefresh}
           refreshing={fetchStatus.fetching}
@@ -189,12 +198,13 @@ const mapStateToProps = (state) => {
     error,
     backgroundFailures,
   } = state.entities.stories;
-
+  const feedGuidesById = state.entities.guides.feedGuidesById
   return {
     userId: state.session.userId,
     user: state.entities.users.entities[state.session.userId],
     fetchStatus,
     storiesById: userFeedById,
+    feedGuidesById,
     error,
     location: state.routes.scene.name,
     sync: state.storyCreate.sync,

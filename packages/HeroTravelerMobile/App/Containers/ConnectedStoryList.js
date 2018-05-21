@@ -6,12 +6,20 @@ import StoryList from '../Components/StoryList'
 const mapStateToProps = (state, ownProps) => {
   const {entities} = state
 
-  const storyFromStoryId = (storyId) => entities.stories.entities[storyId]
-  const stories = R.map(storyFromStoryId, ownProps.storiesById)
+  let targetEntities
+  if (ownProps.isStory) {
+    const storyFromStoryId = (storyId) => entities.stories.entities[storyId]
+    targetEntities = R.map(storyFromStoryId, ownProps.storiesById)
+  }
+  else {
+    const guideFromGuideId = (guideId) => entities.guides.entities[guideId]
+    targetEntities = R.map(guideFromGuideId, ownProps.storiesById)
+  }
 
   return {
-    stories,
+    targetEntities
   }
+
 }
 
 export default connect(

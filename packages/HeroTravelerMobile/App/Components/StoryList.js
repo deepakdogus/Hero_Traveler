@@ -28,7 +28,7 @@ and so we do not need to add the property to (almost) every StoryList call we ma
 */
 export default class StoryList extends React.Component {
   static propTypes = {
-    stories: PropTypes.arrayOf(PropTypes.object).isRequired,
+    targetEntities: PropTypes.arrayOf(PropTypes.object).isRequired, // either guides or stories
     onRefresh: PropTypes.func,
     pagingIsDisabled: PropTypes.bool,
     refreshing: PropTypes.bool,
@@ -81,7 +81,7 @@ export default class StoryList extends React.Component {
 
     this.state = {
       visibleCells: undefined,
-      stories: props.stories,
+      targetEntities: props.targetEntities,
     }
   }
 
@@ -94,9 +94,9 @@ export default class StoryList extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (_.xor(nextProps.stories, this.props.stories).length !== 0){
+    if (_.xor(nextProps.targetEntities, this.props.targetEntities).length !== 0){
       this.setState({
-        stories: nextProps.stories
+        targetEntities: nextProps.targetEntities
       })
     }
   }
@@ -106,7 +106,7 @@ export default class StoryList extends React.Component {
     let storyViews = []
 
     const {
-      stories, renderSectionHeader,
+      targetEntities, renderSectionHeader,
       renderHeaderContent, headerContentHeight,
     } = this.props
 
@@ -119,7 +119,7 @@ export default class StoryList extends React.Component {
       width: 'screen',
     }
 
-    const storyInfos = stories.map((story) => {
+    const storyInfos = targetEntities.map((story) => {
       let totalPadding = Metrics.feedCell.padding;
 
       if (story && story.description) {
@@ -136,7 +136,7 @@ export default class StoryList extends React.Component {
         if (isLocalMediaAsset(headerImage)) {
           headerImage = null
         }
-        
+
         return {
           headerImage,
           height: Metrics.feedCell.videoCellHeight + totalPadding,
@@ -154,7 +154,7 @@ export default class StoryList extends React.Component {
 
       let i = minCell - 1
       let keyIndex = -1
-      storyViews = stories.slice(minCell, maxCell).map((story) => {
+      storyViews = targetEntities.slice(minCell, maxCell).map((story) => {
         i = i + 1
         keyIndex = keyIndex + 1
         return (

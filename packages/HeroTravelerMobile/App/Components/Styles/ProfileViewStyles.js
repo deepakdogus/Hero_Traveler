@@ -168,42 +168,6 @@ export default StyleSheet.create({
   tabs: {
     flex: 1
   },
-  tabnavEdit: {
-    height: tabNavEditHeight,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: Colors.feedDividerGrey,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: Colors.dividerGrey,
-  },
-  tab: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: .33,
-    borderBottomWidth: 3,
-    borderBottomColor: Colors.feedDividerGrey,
-  },
-  fullTab: {
-    flex: 1,
-  },
-  tabText: {
-    fontFamily: Fonts.type.montserrat,
-    color: Colors.navBarText,
-    fontSize: 13,
-    letterSpacing: 1.2,
-    textAlign: 'center',
-    fontWeight: '600',
-  },
-  tabSelected: {
-    borderBottomColor: Colors.red
-  },
-  tabTextSelected: {
-    fontFamily: Fonts.type.montserrat,
-    color: Colors.background,
-    fontSize: 13,
-    letterSpacing: 1.2,
-  },
   storyTitleStyle: {
     fontSize: 18,
     letterSpacing: 0,

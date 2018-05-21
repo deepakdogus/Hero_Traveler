@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: Metrics.screenWidth * 0.18,
     backgroundColor: Colors.feedDividerGrey,
-    borderBottomWidth: 1,
+    borderBottomWidth: .5,
     borderBottomColor: Colors.navBarText,
   },
   tabSelected: {

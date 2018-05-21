@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Text, View, TouchableWithoutFeedback} from 'react-native'
+import { Text, View} from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 
@@ -15,20 +15,19 @@ import Loader from '../../Components/Loader'
 import {Metrics} from '../../Shared/Themes'
 import styles from '../Styles/CategoryFeedScreenStyles'
 import NoStoriesMessage from '../../Components/NoStoriesMessage'
+import TabBar from '../../Components/TabBar'
 import NavBar from '../CreateStory/NavBar'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight - 40
 
-const Tab = ({text, onPress, selected}) => {
-  return (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <View style={[styles.tab, selected ? styles.tabSelected : null]}>
-        <Text style={[styles.tabText, selected ? styles.tabTextSelected : null]}>{text}</Text>
-      </View>
-    </TouchableWithoutFeedback>
-  )
+const tabTypes = {
+  all: null,
+  see: "see",
+  do: "do",
+  eat: "eat",
+  stay: "stay",
+  guide: "guide",
 }
-
 
 class CategoryFeedScreen extends React.Component {
 
@@ -51,31 +50,12 @@ class CategoryFeedScreen extends React.Component {
     super(props)
     this.state = {
       refreshing: false,
-      selectedTabIndex: 0
+      selectedTabValue: null
     }
   }
 
   loadData() {
-    let storyType
-
-    switch (this.state.selectedTabIndex) {
-      case 0:
-        storyType = null
-        break;
-      case 1:
-        storyType = 'see'
-        break;
-      case 2:
-        storyType = 'do'
-        break;
-      case 3:
-        storyType = 'eat'
-        break;
-      case 4:
-        storyType = 'stay'
-        break;
-    }
-
+    let storyType = this.state.selectedTabValue
     this.props.loadCategory(this.props.categoryId, storyType)
   }
 
@@ -103,9 +83,9 @@ class CategoryFeedScreen extends React.Component {
     )
   }
 
-  _changeTab = (selectedTabIndex) => {
+  _changeTab = (selectedTabValue) => {
     this.setState({
-      selectedTabIndex
+      selectedTabValue
     }, () => {
       this.loadData()
     })
@@ -142,33 +122,12 @@ class CategoryFeedScreen extends React.Component {
 
   renderTabs(){
     return (
-      <View style={styles.tabnav}>
-        <Tab
-          selected={this.state.selectedTabIndex === 0}
-          onPress={() => this._changeTab(0)}
-          text='ALL'
-        />
-        <Tab
-          selected={this.state.selectedTabIndex === 1}
-          onPress={() => this._changeTab(1)}
-          text='SEE'
-        />
-        <Tab
-          selected={this.state.selectedTabIndex === 2}
-          onPress={() => this._changeTab(2)}
-          text='DO'
-        />
-        <Tab
-          selected={this.state.selectedTabIndex === 3}
-          onPress={() => this._changeTab(3)}
-          text='EAT'
-        />
-        <Tab
-          selected={this.state.selectedTabIndex === 4}
-          onPress={() => this._changeTab(4)}
-          text='STAY'
-        />
-      </View>
+      <TabBar
+        tabs={tabTypes}
+        activeTab={this.state.selectedTabValue}
+        onClickTab={this._changeTab}
+        tabStyle={styles.tabStyle}
+      />
     )
   }
 

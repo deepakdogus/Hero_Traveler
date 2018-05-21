@@ -23,38 +23,6 @@ export default StyleSheet.create({
     paddingVertical: 7,
     textAlign: 'center',
   },
-  tabnav: {
-    height: 50,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    backgroundColor: Colors.feedDividerGrey,
-  },
-  tab: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '20%',
-    backgroundColor: Colors.feedDividerGrey,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.navBarText,
-  },
-  tabText: {
-    fontFamily: Fonts.type.montserrat,
-    color: Colors.navBarText,
-    fontSize: 13,
-    letterSpacing: 1.2,
-    textAlign: 'center',
-    fontWeight: '600',
-  },
-  tabSelected: {
-    borderBottomColor: Colors.red,
-    borderBottomWidth: 3
-  },
-  tabTextSelected: {
-    fontFamily: Fonts.type.montserrat,
-    color: Colors.background,
-    fontSize: 13,
-    letterSpacing: 1.2,
-  },
   navbarRightTextStyle: {
     fontFamily: Fonts.type.montserrat,
     fontSize: 11,

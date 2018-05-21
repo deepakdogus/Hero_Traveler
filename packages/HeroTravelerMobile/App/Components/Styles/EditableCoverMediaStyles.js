@@ -1,27 +1,14 @@
 import { StyleSheet } from 'react-native'
 import { Colors, Metrics, Fonts } from '../../Shared/Themes/'
 
-// TODO: Move this into Metrics?
-export const coverHeight = 415
-
 const coverMediaStyles = StyleSheet.create({
-  contentWrapper: {
-    flex: 1,
-  },
   lightGreyAreasBG: {
     flex: 1,
     backgroundColor: Colors.lightGreyAreas,
-    maxHeight: coverHeight,
+    maxHeight: Metrics.storyCover.fullScreen.height,
   },
-  cameraIcon: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: Metrics.doubleBaseMargin,
-  },
-  cameraIconImage: {
-    tintColor: 'gray',
-    height: 43,
-    width: 58,
+  contentWrapper: {
+    flex: 1,
   },
   addPhotoView: {
     flex: 1,
@@ -35,6 +22,16 @@ const coverMediaStyles = StyleSheet.create({
     height: 282,
     width: Metrics.screenWidth,
   },
+  cameraIcon: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: Metrics.doubleBaseMargin,
+  },
+  cameraIconImage: {
+    tintColor: 'gray',
+    height: 43,
+    width: 58,
+  },
   baseTextColor: {
     color: Colors.background
   },
@@ -45,17 +42,14 @@ const coverMediaStyles = StyleSheet.create({
     textAlign: 'center',
     color: Colors.background,
   },
-  coverHeight: {
-    height: coverHeight
-  },
-  iconButton: {
-    backgroundColor: Colors.clear
-  },
   imageMenuView: {
     flex: 1,
     justifyContent: 'space-around',
     flexDirection: 'row',
     alignItems: 'center'
+  },
+  iconButton: {
+    backgroundColor: Colors.clear
   },
   coverPhoto: {
     position: 'absolute',

@@ -19,10 +19,9 @@ import ImageWrapper from './ImageWrapper'
 import VideoPlayer, {TouchlessPlayButton} from './VideoPlayer'
 import TabIcon from './TabIcon'
 
-// import styles from './Styles/EditableCoverMediaStyles'
-import styles from '../Containers/CreateStory/2_StoryCoverScreenStyles'
+import styles from './Styles/EditableCoverMediaStyles'
 
-class EditableCoverMediaTwo extends Component {
+class EditableCoverMedia extends Component {
   static propTypes = {
     isPhoto: PropTypes.bool,
     media: PropTypes.object,
@@ -208,9 +207,7 @@ class EditableCoverMediaTwo extends Component {
           style={styles.coverPhoto}
           resizeMode='cover'
         >
-          <View
-            style={{flex: 1}}
-          >
+          <View style={styles.contentWrapper}>
             {this.renderContent()}
           </View>
         </ImageWrapper>
@@ -235,4 +232,4 @@ class EditableCoverMediaTwo extends Component {
   }
 }
 
-export default EditableCoverMediaTwo
+export default EditableCoverMedia

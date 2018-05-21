@@ -23,6 +23,8 @@ import TouchableMultilineInput from '../../Components/TouchableMultilineInput'
 import styles from '../Styles/CreateGuideStyles'
 
 const noop = () => {}
+const options = []
+for (let i = 1; i < 31; i++) options.push({ value: `${i}`, label: `${i}` })
 
 class CreateGuide extends Component {
   static defaultProps = {
@@ -144,6 +146,21 @@ class CreateGuide extends Component {
     NavActions.pop()
   }
 
+  getLocationsValue = () => {
+    const {locations} = this.state.guide
+    if (!locations.length) return
+    return locations.map(location => {
+      return location.name
+    }).join(", ")
+  }
+
+  getCategoriesValue = () => {
+    const {categories} = this.state.guide
+    if (!categories.length) return
+    return categories.map(category => {
+      return category.title
+    }).join(", ")
+  }
 
   togglePrivacy = () => {
     this.updateGuide({ isPrivate: !this.state.guide.isPrivate })
@@ -154,7 +171,6 @@ class CreateGuide extends Component {
     const { creating, guide } = state
     const { error, fetching, onCancel } = props
     const {
-      categories,
       cost,
       description,
       duration,
@@ -165,31 +181,12 @@ class CreateGuide extends Component {
     } = guide
 
     const guideRequirementsMet = title && locations && coverImage
-    const options = []
-    for (let i = 1; i < 31; i++) options.push({ value: `${i}`, label: `${i}` })
-    let categoriesValue
-    if (categories && categories.length) {
-      categoriesValue = ''
-      categories.map(
-        (c, idx) =>
-          (categoriesValue += `${c.title}${
-            idx === categories.length - 1 ? '' : ', '
-          }`)
-      )
-    }
 
     return (
       <View style={storyCoverStyles.root}>
         {creating && (
           <Loader
-            style={{
-              position: 'absolute',
-              zIndex: 2,
-              top: Metrics.navBarHeight - Metrics.baseMargin,
-              right: 0,
-              bottom: 0,
-              left: 0,
-            }}
+            style={styles.loader}
             tintColor={Colors.blackoutTint}
           />
         )}
@@ -233,13 +230,13 @@ class CreateGuide extends Component {
             <FormInput
               onPress={this.onLocationSelectionPress}
               iconName='location'
-              value={location ? location.name : null}
+              value={this.getLocationsValue()}
               placeholder='Location(s)'
             />
             <FormInput
               onPress={this.onCategorySelectionPress}
               iconName='tag'
-              value={categoriesValue}
+              value={this.getCategoriesValue()}
               placeholder={'Categories'}
             />
             <DropdownMenu

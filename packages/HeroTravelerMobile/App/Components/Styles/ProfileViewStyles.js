@@ -304,4 +304,7 @@ export default StyleSheet.create({
   navbarStyle: {
     paddingTop: 15,
   },
+  tabStyle: {
+    width: Metrics.screenWidth * 0.3,
+  },
 })

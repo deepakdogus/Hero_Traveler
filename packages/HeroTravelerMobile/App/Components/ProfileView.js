@@ -6,7 +6,6 @@ import {
   ScrollView,
   Text,
   TextInput,
-  TouchableOpacity,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
@@ -21,10 +20,7 @@ import Tooltip from './Tooltip'
 
 // @TODO UserActions shouldn't be in a component
 import UserActions from '../Shared/Redux/Entities/Users'
-import StoryCreateActions from '../Shared/Redux/StoryCreateRedux'
 import isTooltipComplete, {Types as TooltipTypes} from '../Shared/Lib/firstTimeTooltips'
-import Loader from '../Components/Loader'
-import {Colors} from '../Shared/Themes'
 
 const api = HeroAPI.create()
 
@@ -32,6 +28,12 @@ export const TabTypes = {
   stories: 'TAB_STORIES',
   drafts: 'TAB_DRAFTS',
   bookmarks: 'TAB_BOOKMARKS',
+  guides: 'TAB_GUIDES',
+}
+
+const ViewOnlyTabTypes = {
+  stories: 'TAB_STORIES',
+  guides: 'TAB_GUIDES',
 }
 
 const usernameContansts = {
@@ -268,7 +270,7 @@ class ProfileView extends React.Component {
               renderProfileInfo={this.renderProfileInfo}
               storiesById={this.getStoriesById()}
               fetchStatus={this.getFetchStatus()}
-              tabTypes={TabTypes}
+              tabTypes={editable ? TabTypes : ViewOnlyTabTypes}
               selectTab={this.selectTab}
               selectedTab={this.state.selectedTab}
               user={this.props.user}

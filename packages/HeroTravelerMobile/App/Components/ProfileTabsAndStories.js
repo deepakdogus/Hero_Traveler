@@ -3,39 +3,15 @@ import PropTypes from 'prop-types'
 import {
   View,
   Text,
-  TouchableWithoutFeedback,
 } from 'react-native'
-import {withHandlers} from 'recompose'
 
-import {Actions as NavActions} from 'react-native-router-flux'
 import styles, { storyPreviewHeight } from './Styles/ProfileViewStyles'
-import { Colors, Metrics } from '../Shared/Themes'
+import { Colors } from '../Shared/Themes'
 import StoryList from '../Containers/ConnectedStoryList'
 import Loader from './Loader'
 import ConnectedStoryPreview from '../Containers/ConnectedStoryPreview'
+import TabBar from './TabBar'
 import _ from 'lodash'
-
-const enhancedTab = withHandlers({
-  _onPress: props => () => {
-    if (props.onPress) {
-      props.onPress(props.type)
-    }
-  }
-})
-
-const Tab = enhancedTab(({text, _onPress, selected, isProfileView}) => {
-  return (
-    <TouchableWithoutFeedback onPress={_onPress}>
-      <View style={[
-        styles.tab,
-        (selected && !isProfileView) ? styles.tabSelected : null,
-        isProfileView ? styles.fullTab : null
-      ]}>
-        <Text style={[styles.tabText, selected ? styles.tabTextSelected : null]}>{text}</Text>
-      </View>
-    </TouchableWithoutFeedback>
-  )
-})
 
 export default class ProfileTabsAndStories extends Component {
   static propTypes = {
@@ -56,30 +32,14 @@ export default class ProfileTabsAndStories extends Component {
   }
 
   renderTabs(){
-    const {editable, tabTypes, selectedTab, selectTab} = this.props
-    if (editable) return (
-      <View style={styles.tabnavEdit}>
-        <Tab
-          selected={tabTypes.stories === selectedTab}
-          type={tabTypes.stories}
-          onPress={selectTab}
-          text='STORIES' />
-        <Tab
-          selected={tabTypes.drafts === selectedTab}
-          type={tabTypes.drafts}
-          onPress={selectTab}
-          text='DRAFTS' />
-        <Tab
-          selected={tabTypes.bookmarks === selectedTab}
-          type={tabTypes.bookmarks}
-          onPress={selectTab}
-          text='BOOKMARKS' />
-      </View>
-    )
-    else return (
-      <View style={styles.tabnavEdit}>
-        <Tab selected isProfileView text='STORIES' />
-      </View>
+    const {tabTypes, selectedTab, selectTab} = this.props
+    return (
+      <TabBar
+        tabs={tabTypes}
+        activeTab={selectedTab}
+        onClickTab={selectTab}
+        tabStyle={styles.tabStyle}
+      />
     )
   }
 

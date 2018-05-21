@@ -48,4 +48,12 @@ export default StyleSheet.create({
     marginBottom: 10,
     height: 30,
   },
+  loaderStyles: {
+    position: 'absolute',
+    zIndex: 2,
+    top: Metrics.navBarHeight - Metrics.baseMargin,
+    right: 0,
+    bottom: 0,
+    left: 0,
+  }
 })

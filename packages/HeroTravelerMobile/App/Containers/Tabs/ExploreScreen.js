@@ -18,7 +18,6 @@ import AlgoliaSearchHelper from 'algoliasearch-helper';
 import CategoryActions from '../../Shared/Redux/Entities/Categories'
 import Loader from '../../Components/Loader'
 import ExploreGrid from '../../Components/ExploreGrid'
-import {Metrics} from '../../Shared/Themes'
 import styles, {CategoryFeedNavActionStyles} from '../Styles/ExploreScreenStyles'
 import Colors from '../../Shared/Themes/Colors'
 import List from '../../Components/List'

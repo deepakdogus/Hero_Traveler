@@ -151,8 +151,12 @@ export default class StoryPreview extends Component {
               </TouchableOpacity>
               {isStoryReadingScreen && this.renderDate()}
               {!isStoryReadingScreen && !!story.locationInfo &&
-                <Text style={styles.locationText}>
-                  {_.truncate(displayLocation(story.locationInfo), {length: 50})}
+                <Text
+                  style={styles.locationText}
+                  numberOfLines={1}
+                  ellipsizeMode={'tail'}
+                >
+                  {displayLocation(story.locationInfo)}
                 </Text>
               }
             </View>

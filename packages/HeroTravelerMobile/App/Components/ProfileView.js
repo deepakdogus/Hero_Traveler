@@ -130,14 +130,15 @@ class ProfileView extends React.Component {
 
     // currently tempCover and tempAvatar are actually directly saved to DB - so we need to revert
     // need to add fullName so that we dont accidentally set it to undefined
-    const profileReverts = { fullName: profile.fullName }
-    if (profile.tempCover) profileReverts.cover = profile.cover
-    if (profile.tempAvatar) profileReverts.avatar = profile.avatar
-    if (Object.keys(profileReverts).length) {
-      this.props.updateUser({
-        profile: profileReverts,
-      })
+    const profileReverts = {
+      fullName: profile.fullName,
+      cover: profile.cover,
+      avatar: profile.avatar,
     }
+
+    this.props.updateUser({
+      profile: profileReverts,
+    })
 
     this.props.updateUserSuccess({
       id,

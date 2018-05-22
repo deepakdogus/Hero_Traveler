@@ -4,7 +4,7 @@ import { Actions as NavActions } from 'react-native-router-flux'
 
 import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
 import UserActions, {getFollowers} from '../Shared/Redux/Entities/Users'
-import StoryPreview from '../Components/StoryPreview'
+import FeedItemPreview from '../Components/FeedItemPreview'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import {navToProfile} from '../Navigation/NavigationRouter'
 
@@ -89,4 +89,4 @@ const mapDispatchToProps = (dispatch, props) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(StoryPreview)
+)(FeedItemPreview)

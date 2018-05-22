@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import R from 'ramda'
 
-import StoryList from '../Components/StoryList'
+import FeedList from '../Components/FeedList'
 
 const mapStateToProps = (state, ownProps) => {
   const {entities} = state
@@ -25,4 +25,4 @@ const mapStateToProps = (state, ownProps) => {
 export default connect(
   mapStateToProps,
   null
-)(StoryList)
+)(FeedList)

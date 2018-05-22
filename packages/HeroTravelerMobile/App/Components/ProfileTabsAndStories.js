@@ -5,11 +5,11 @@ import {
   Text,
 } from 'react-native'
 
-import styles, { storyPreviewHeight } from './Styles/ProfileViewStyles'
+import styles, { feedItemHeight } from './Styles/ProfileViewStyles'
 import { Colors } from '../Shared/Themes'
-import StoryList from '../Containers/ConnectedStoryList'
+import ConnectedFeedList from '../Containers/ConnectedFeedList'
 import Loader from './Loader'
-import ConnectedStoryPreview from '../Containers/ConnectedStoryPreview'
+import ConnectedFeedItemPreview from '../Containers/ConnectedFeedItemPreview'
 import TabBar from './TabBar'
 import _ from 'lodash'
 
@@ -49,15 +49,16 @@ export default class ProfileTabsAndStories extends Component {
       editable, sessionUserId, location
     } = this.props
     return (
-      <ConnectedStoryPreview
+      <ConnectedFeedItemPreview
         isFeed={true}
+        isStory={true}
         forProfile={true}
         editable={editable && selectedTab !== tabTypes.bookmarks}
         titleStyle={styles.storyTitleStyle}
         subtitleStyle={styles.subtitleStyle}
         story={story}
         userId={sessionUserId}
-        height={storyPreviewHeight}
+        height={feedItemHeight}
         autoPlayVideo
         allowVideoPlay
         renderLocation={location}
@@ -144,8 +145,9 @@ export default class ProfileTabsAndStories extends Component {
         }
 
         {storiesById.length !== 0 && !isGettingStories &&
-          <StoryList
-            style={styles.storyList}
+          <ConnectedFeedList
+            isStory={true}
+            style={styles.feedList}
             storiesById={storiesById}
             refreshing={false}
             headerContentHeight={this.getHeaderHeight()}

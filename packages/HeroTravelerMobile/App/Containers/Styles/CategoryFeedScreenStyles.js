@@ -41,7 +41,7 @@ export default StyleSheet.create({
     fontSize: 18,
     letterSpacing: 1,
   },
-  storyList: {
+  feedList: {
     height: Metrics.screenHeight - Metrics.tabBarHeight,
   }
 })

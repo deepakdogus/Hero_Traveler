@@ -8,8 +8,8 @@ import {Actions as NavActions} from 'react-native-router-flux'
 import StoryActions, {getByCategory, getFetchStatus} from '../../Shared/Redux/Entities/Stories'
 import SignupActions from '../../Shared/Redux/SignupRedux'
 
-import ConnectedStoryPreview from '../ConnectedStoryPreview'
-import StoryList from '../../Containers/ConnectedStoryList'
+import ConnectedFeedItemPreview from '../ConnectedFeedItemPreview'
+import ConnectedFeedList from '../../Containers/ConnectedFeedList'
 import Loader from '../../Components/Loader'
 
 import {Metrics} from '../../Shared/Themes'
@@ -93,8 +93,9 @@ class CategoryFeedScreen extends React.Component {
 
   renderStory = (story, index) => {
     return (
-      <ConnectedStoryPreview
+      <ConnectedFeedItemPreview
         isFeed={true}
+        isStory={true}
         story={story}
         height={imageHeight}
         userId={this.props.user.id}
@@ -156,8 +157,9 @@ class CategoryFeedScreen extends React.Component {
       bottomContent = this.renderNoStories(<NoStoriesMessage />);
     } else {
       bottomContent = (
-        <StoryList
-          style={styles.storyList}
+        <ConnectedFeedList
+          isStory={true}
+          style={styles.feedList}
           storiesById={storiesById}
           renderSectionHeader={this.renderTabs()}
           renderStory={this.renderStory}

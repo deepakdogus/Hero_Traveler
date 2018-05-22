@@ -9,8 +9,8 @@ import {Metrics, Images} from '../../Shared/Themes'
 import StoryActions from '../../Shared/Redux/Entities/Stories'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
-import StoryList from '../../Containers/ConnectedStoryList'
-import ConnectedStoryPreview from '../ConnectedStoryPreview'
+import ConnectedFeedList from '../../Containers/ConnectedFeedList'
+import ConnectedFeedItemPreview from '../ConnectedFeedItemPreview'
 import styles from '../Styles/MyFeedScreenStyles'
 import NoStoriesMessage from '../../Components/NoStoriesMessage'
 import BackgroundPublishingBars from '../../Components/BackgroundPublishingBars'
@@ -110,7 +110,7 @@ class MyFeedScreen extends React.Component {
 
   renderStory = (story, index) => {
     return (
-      <ConnectedStoryPreview
+      <ConnectedFeedItemPreview
         index={index}
         isFeed={true}
         isStory={this.state.selectedTab === tabTypes.stories}
@@ -154,9 +154,9 @@ class MyFeedScreen extends React.Component {
     }
     else {
       bottomContent = (
-        <StoryList
+        <ConnectedFeedList
           isStory={isStoriesSelected}
-          style={styles.storyList}
+          style={styles.feedList}
           storiesById={isStoriesSelected ? storiesById : feedGuidesById}
           renderStory={this.renderStory}
           onRefresh={this._onRefresh}

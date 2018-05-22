@@ -14,7 +14,7 @@ import formatCount from '../Shared/Lib/formatCount'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import {displayLocation} from '../Shared/Lib/locationHelpers'
 import { Metrics } from '../Shared/Themes'
-import styles from './Styles/StoryPreviewStyle'
+import styles from './Styles/FeedItemPreviewStyle'
 import {styles as StoryReadingScreenStyles} from '../Containers/Styles/StoryReadingScreenStyles'
 import profileViewStyles from './Styles/ProfileViewStyles'
 import LikesComponent from './LikeComponent'
@@ -23,7 +23,8 @@ import Avatar from './Avatar'
 import StoryCover from './StoryCover'
 import TabIcon from './TabIcon'
 
-export default class StoryPreview extends Component {
+// FeedItems are either a Story or a Guide
+export default class FeedItemPreview extends Component {
   // is showLike now always true? MBT - 12/07/17
   static propTypes = {
     onPressLike: PropTypes.func,
@@ -274,7 +275,7 @@ export default class StoryPreview extends Component {
     const {story, gradientLocations, showPlayButton, shouldHideCover} = this.props
     if (!story) return null
 
-    // using StoryPreview height as proxy for StoryCover playbutton size
+    // using FeedItemPreview height as proxy for StoryCover playbutton size
     const height = this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20
     const playButtonSize = height > 250 ? 'large' : 'small'
     let cover = story.coverImage || story.coverVideo

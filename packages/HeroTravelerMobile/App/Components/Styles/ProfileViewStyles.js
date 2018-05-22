@@ -6,7 +6,7 @@ const coverInnerHeight = 370
 const tabNavEditHeight = 50
 const profileEditHeight = 150
 
-export const storyPreviewHeight = Metrics.screenHeight - coverInnerHeight - tabNavEditHeight - Metrics.tabBarHeight
+export const feedItemHeight = Metrics.screenHeight - coverInnerHeight - tabNavEditHeight - Metrics.tabBarHeight
 
 // Don't forget to update ProfileTabAndStories.getHeaderHeight() if
 // related styles change. (username, about, badge, error, etc.)
@@ -258,7 +258,7 @@ export default StyleSheet.create({
     color: Colors.background,
     textAlign: 'center'
   },
-  storyList: {
+  feedList: {
     height: Metrics.screenHeight - Metrics.tabBarHeight,
     marginBottom: Metrics.tabBarHeight + Metrics.baseMargin,
   },

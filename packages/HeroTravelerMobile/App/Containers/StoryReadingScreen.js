@@ -11,7 +11,7 @@ import _ from 'lodash'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
 import formatCount from '../Shared/Lib/formatCount'
-import ConnectedStoryPreview from './ConnectedStoryPreview'
+import ConnectedFeedItemPreview from './ConnectedFeedItemPreview'
 import {Metrics, Images} from '../Shared/Themes'
 import StoryReadingToolbar from '../Components/StoryReadingToolbar'
 import TabIcon from '../Components/TabIcon'
@@ -263,7 +263,7 @@ class StoryReadingScreen extends React.Component {
             onRefresh={this.getStory}
           />
           }
-          <ConnectedStoryPreview
+          <ConnectedFeedItemPreview
             isFeed={false}
             onPressLike={this._toggleLike}
             showLike={false}

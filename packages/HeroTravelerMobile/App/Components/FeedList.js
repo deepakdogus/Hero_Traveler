@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {
-    View,
     RefreshControl,
     requireNativeComponent,
 } from 'react-native'
@@ -9,9 +8,7 @@ import reactMixin from 'react-mixin'
 import ScrollResponder from '../../node_modules/react-native/Libraries/Components/ScrollResponder'
 
 import { Metrics } from '../Shared/Themes'
-import { connect } from 'react-redux'
-import styles from './Styles/StoryListStyle'
-import ModifiedListView from './ModifiedListView'
+import styles from './Styles/FeedListStyle'
 import _ from 'lodash'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import {isLocalMediaAsset} from '../Shared/Lib/getVideoUrl'
@@ -24,9 +21,9 @@ const NativeFeedItem = requireNativeComponent('RHNativeFeedItem', null)
 
 /*
 add pagingIsDisabled instead of pagingEnabled as a prop so that paging is default
-and so we do not need to add the property to (almost) every StoryList call we make
+and so we do not need to add the property to (almost) every FeedList call we make
 */
-export default class StoryList extends React.Component {
+export default class FeedList extends React.Component {
   static propTypes = {
     targetEntities: PropTypes.arrayOf(PropTypes.object).isRequired, // either guides or stories
     onRefresh: PropTypes.func,
@@ -37,7 +34,7 @@ export default class StoryList extends React.Component {
   }
 
   static defaultProps = {
-    refreshing: false
+    refreshing: false,
   }
 
   constructor(props) {
@@ -215,5 +212,5 @@ export default class StoryList extends React.Component {
   }
 }
 
-reactMixin(StoryList.prototype, ScrollResponder.Mixin)
-reactMixin(StoryList.prototype, ScrollResponder.Mixin.mixins[0])
+reactMixin(FeedList.prototype, ScrollResponder.Mixin)
+reactMixin(FeedList.prototype, ScrollResponder.Mixin.mixins[0])

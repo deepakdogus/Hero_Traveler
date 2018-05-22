@@ -152,7 +152,7 @@ export default class StoryPreview extends Component {
               {isStoryReadingScreen && this.renderDate()}
               {!isStoryReadingScreen && !!story.locationInfo &&
                 <Text style={styles.locationText}>
-                  {displayLocation(story.locationInfo)}
+                  {_.truncate(displayLocation(story.locationInfo), {length: 50})}
                 </Text>
               }
             </View>

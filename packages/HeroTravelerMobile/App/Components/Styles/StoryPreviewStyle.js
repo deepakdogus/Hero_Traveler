@@ -94,6 +94,7 @@ export default StyleSheet.create({
     letterSpacing: .7,
     fontSize: 12,
     color: Colors.background,
+    maxWidth: Metrics.screenWidth - 2 * 15 - 42 // metrics of other elements in location text area
   },
   lastRow: {
     flexDirection: 'row',

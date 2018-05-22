@@ -89,7 +89,7 @@ class HeaderLoggedIn extends React.Component {
             <Divider>&nbsp;</Divider>
             <LoggedInDesktopContainer>
               <NavLink
-                to='/createStoryNew/new'
+                to='/editStory/new'
               >
                 <StyledRoundedCreateButton text='Create'/>
               </NavLink>
@@ -121,7 +121,7 @@ class HeaderLoggedIn extends React.Component {
             </LoggedInDesktopContainer>
             <LoggedInTabletContainer>
               <NavLink
-                to='/createStoryNew/new'
+                to='/editStory/new'
               >
                 <StyledRoundedButton text='Create'/>
               </NavLink>

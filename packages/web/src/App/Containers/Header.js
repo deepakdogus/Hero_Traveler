@@ -23,7 +23,7 @@ const StyledGrid = styled(({ fixed, ...rest }) => <Grid {...rest} />)`
 `
 
 const StyledGridBlack = styled(StyledGrid)`
-  background-color: ${props => props.theme.Colors.background}
+  background-color: ${props => props.theme.Colors.background};
 `
 
 const HeaderSpacer = styled.div`

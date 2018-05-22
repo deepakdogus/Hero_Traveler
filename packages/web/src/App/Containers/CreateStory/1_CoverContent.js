@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 
 import AddCoverTitles from '../../Components/CreateStory/AddCoverTitles'
+import StoryActions from '../../Shared/Redux/Entities/Stories'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 
 class CreateStoryCoverContent extends Component {
@@ -12,6 +13,7 @@ class CreateStoryCoverContent extends Component {
   }
 
   onInputChange = (update) => {
+    console.log("!!!", update);
     this.props.updateWorkingDraft(update)
   }
 
@@ -27,13 +29,13 @@ class CreateStoryCoverContent extends Component {
 
 function mapStateToProps(state) {
   return {
-    workingDraft: state.storyCreate.workingDraft
+    workingDraft: {...state.storyCreate.workingDraft},
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateWorkingDraft: (story) => dispatch(StoryCreateActions.updateWorkingDraft(story)),
+    updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),
   }
 }
 

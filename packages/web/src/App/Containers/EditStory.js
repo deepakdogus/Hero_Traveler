@@ -168,7 +168,6 @@ class EditStory extends Component {
   }
 
   isValid() {
-    console.log(this.props.workingDraft);
     return _.every([
       !!this.props.workingDraft.coverImage || !!this.props.workingDraft.coverVideo,
       !!_.trim(this.props.workingDraft.title)
@@ -203,8 +202,7 @@ class EditStory extends Component {
   }
 
   nextScreen() {
-    console.log("!!!", this.props.subPath);
-    this.props.reroute(`/editStory/${this.props.storyId}/details`);
+    this.props.reroute(`/editStory/${this.props.workingDraft.id}/details`);
   }
 
   saveCover = () => {
@@ -324,6 +322,8 @@ function mapStateToProps(state, props) {
     subPath: getSubPath(state.routes.location),
     originalDraft: state.storyCreate.draft,
     workingDraft: state.storyCreate.workingDraft,
+    sync: state.storyCreate.sync,
+    backgroundFailures: state.entities.stories.backgroundFailures,
   }
   
   // const accessToken = state.session.tokens.find(isAccessToken) || {}
@@ -346,7 +346,7 @@ function mapDispatchToProps(dispatch) {
     updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),
     // Emre when you refactor this you should be able to remove publishDraft function and
     // reducer from StoryCreateRedux
-    publish: (draft) => dispatch(StoryCreateActions.publishDraft(draft)),
+    publish: (draft) => dispatch(StoryCreateActions.publishLocalDraft(draft)),
     resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
     reroute: (path) => dispatch(push(path)),
 

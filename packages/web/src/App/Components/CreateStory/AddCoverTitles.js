@@ -161,7 +161,7 @@ export default class AddCoverTitles extends React.Component {
 
   render() {
     const {workingDraft} = this.props
-    const coverImage = workingDraft.coverImage ? workingDraft.coverImage.url : getImageUrl(workingDraft.coverImage)
+    const coverImage = workingDraft.coverImage ? workingDraft.coverImage.uri : getImageUrl(workingDraft.coverImage)
     return (
       <RelativeWrapper>
         <StoryOverlayWrapper image={coverImage}/>

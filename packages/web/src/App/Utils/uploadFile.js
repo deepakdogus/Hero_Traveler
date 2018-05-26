@@ -9,7 +9,7 @@ export default function uploadFile(event, componentThis, onload){
   const reader = new FileReader();
   const file = files[0]
   reader.onload = () => {
-    file.url = reader.result
+    file.uri = reader.result
     onload(file)
   }
   reader.readAsDataURL(file);

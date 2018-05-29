@@ -20,7 +20,7 @@ import profileViewStyles from './Styles/ProfileViewStyles'
 import LikesComponent from './LikeComponent'
 import TrashCan from './TrashCan'
 import Avatar from './Avatar'
-import StoryCover from './StoryCover'
+import FeedItemCover from './FeedItemCover'
 import TabIcon from './TabIcon'
 
 // FeedItems are either a Story or a Guide
@@ -37,7 +37,7 @@ export default class FeedItemPreview extends Component {
     shouldHideCover: PropTypes.bool,
     autoPlayVideo: PropTypes.bool,
     allowVideoPlay: PropTypes.bool,
-    isStoryReadingScreen: PropTypes.bool,
+    isReadingScreen: PropTypes.bool,
     gradientColors: PropTypes.arrayOf(PropTypes.string),
     isVisible: PropTypes.bool,
     isFeed: PropTypes.bool,
@@ -53,18 +53,18 @@ export default class FeedItemPreview extends Component {
 
   static defaultProps = {
     showLike: true,
-    isStoryReadingScreen: false,
+    isReadingScreen: false,
     isFeed: true,
   }
 
   _touchEdit = () => {
-    const storyId = this.props.story.id
-    NavActions.createStoryFlow({storyId, type: 'reset', navigatedFromProfile: true, shouldLoadStory: false})
-    NavActions.createStory_cover({storyId, navigatedFromProfile: true, shouldLoadStory: false})
+    const feedItemId = this.props.feedItem.id
+    NavActions.createStoryFlow({feedItemId, type: 'reset', navigatedFromProfile: true, shouldLoadStory: false})
+    NavActions.createStory_cover({feedItemId, navigatedFromProfile: true, shouldLoadStory: false})
   }
 
   _touchTrash = () => {
-    const { deleteStory, removeDraft, story, user } = this.props
+    const { deleteStory, removeDraft, feedItem, user } = this.props
     Alert.alert(
       'Delete Story',
       'Are you sure you want to delete this story?',
@@ -74,8 +74,8 @@ export default class FeedItemPreview extends Component {
           text: 'Delete',
           style: 'destructive',
           onPress: () => {
-            if (story.draft) removeDraft(story.id)
-            else deleteStory(user.id, story.id)
+            if (feedItem.draft) removeDraft(feedItem.id)
+            else deleteStory(user.id, feedItem.id)
             NavActions.pop()
           },
         }
@@ -103,31 +103,31 @@ export default class FeedItemPreview extends Component {
   }
 
   renderDate(){
-    const {isStoryReadingScreen, story} = this.props
+    const {isReadingScreen, feedItem} = this.props
     return (
       <Text style={[
         styles.dateText,
-        isStoryReadingScreen && styles.dateTextReading
+        isReadingScreen && styles.dateTextReading
       ]}>
-        {moment(story.tripDate || story.createdAt).format('LL')}
+        {moment(feedItem.tripDate || feedItem.createdAt).format('LL')}
       </Text>
     )
   }
 
   renderUserSection() {
-    const {user, story, isStoryReadingScreen, isAuthor} = this.props
+    const {user, feedItem, isReadingScreen, isAuthor} = this.props
     const isFollowing = _.includes(this.props.myFollowedUsers, user.id)
 
     return (
       <View style={[
         styles.storyInfoContainer, styles.verticalCenter, styles.userContainer,
-        !isStoryReadingScreen && styles.previewUserContainer,
+        !isReadingScreen && styles.previewUserContainer,
       ]}>
         <View style={styles.userContent}>
           <View style={styles.leftUserContent}>
             <TouchableOpacity onPress={this._touchUser}>
               <Avatar
-                size={isStoryReadingScreen ? 'small' : 'extraSmall'}
+                size={isReadingScreen ? 'small' : 'extraSmall'}
                 style={styles.avatar}
                 avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
               />
@@ -136,7 +136,7 @@ export default class FeedItemPreview extends Component {
               <TouchableOpacity onPress={this._touchUser} style={styles.profileButton}>
                 {this.hasBadge() &&
                   <TabIcon
-                    name={this.props.user.role === 'contributor' ? 'contributor' : 'founder'}
+                    name={user.role === 'contributor' ? 'contributor' : 'founder'}
                     style={{
                       image: styles.badgeImage,
                       view: styles.badgeView,
@@ -145,20 +145,20 @@ export default class FeedItemPreview extends Component {
                 }
                 <Text style={[
                   styles.username,
-                  isStoryReadingScreen && styles.usernameReading,
+                  isReadingScreen && styles.usernameReading,
                 ]}>
                   {user.username}
                 </Text>
               </TouchableOpacity>
-              {isStoryReadingScreen && this.renderDate()}
-              {!isStoryReadingScreen && !!story.locationInfo &&
+              {isReadingScreen && this.renderDate()}
+              {!isReadingScreen && !!feedItem.locationInfo &&
                 <Text style={styles.locationText}>
-                  {displayLocation(story.locationInfo)}
+                  {displayLocation(feedItem.locationInfo)}
                 </Text>
               }
             </View>
           </View>
-          {isStoryReadingScreen && !isAuthor &&
+          {isReadingScreen && !isAuthor &&
             <View style={styles.verticalCenter}>
               <TouchableOpacity
                 style={[
@@ -178,7 +178,7 @@ export default class FeedItemPreview extends Component {
               </TouchableOpacity>
             </View>
           }
-          {isStoryReadingScreen && isAuthor &&
+          {isReadingScreen && isAuthor &&
             <View>
               <TrashCan touchTrash={this._touchTrash} touchEdit={this._touchEdit} />
             </View>
@@ -194,25 +194,25 @@ export default class FeedItemPreview extends Component {
   }
 
   renderBottomSection() {
-    const {title, counts, description, coverCaption, draft} = this.props.story
-    const {isStoryReadingScreen} = this.props
+    const {title, counts, description, coverCaption, draft} = this.props.feedItem
+    const {isReadingScreen} = this.props
 
     return (
       <View style={[styles.storyInfoContainer, styles.bottomContainer]}>
-        {isStoryReadingScreen && !!coverCaption &&
+        {isReadingScreen && !!coverCaption &&
           <Text style={[StoryReadingScreenStyles.caption, styles.caption]}>
             {coverCaption}
           </Text>
         }
         <TouchableOpacity
           onPress={this._onPress(title)}
-          disabled={!!isStoryReadingScreen}
+          disabled={!!isReadingScreen}
         >
           <Text style={[
             styles.title,
             description ? styles.titleWithDescription : {},
-            isStoryReadingScreen ? styles.storyReadingTitle : {},
-            isStoryReadingScreen && description ? styles.storyReadingTitleWithDescription : {},
+            isReadingScreen ? styles.storyReadingTitle : {},
+            isReadingScreen && description ? styles.storyReadingTitleWithDescription : {},
             this.props.titleStyle
           ]}>
             {title}
@@ -220,12 +220,12 @@ export default class FeedItemPreview extends Component {
           {!!description &&
             <Text style={[
               styles.description,
-              isStoryReadingScreen ? styles.storyReadingDescription : {},
+              isReadingScreen ? styles.storyReadingDescription : {},
             ]}>{description}</Text>
           }
         </TouchableOpacity>
         <View style={styles.lastRow}>
-          {!isStoryReadingScreen &&
+          {!isReadingScreen &&
             <View style={styles.leftRow}>
               {this.renderDate()}
             </View>
@@ -272,23 +272,23 @@ export default class FeedItemPreview extends Component {
   }
 
   render () {
-    const {story, gradientLocations, showPlayButton, shouldHideCover} = this.props
-    if (!story) return null
+    const {feedItem, gradientLocations, showPlayButton, shouldHideCover} = this.props
+    if (!feedItem) return null
 
-    // using FeedItemPreview height as proxy for StoryCover playbutton size
+    // using FeedItemPreview height as proxy for FeedItemCover playbutton size
     const height = this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20
     const playButtonSize = height > 250 ? 'large' : 'small'
-    let cover = story.coverImage || story.coverVideo
+    let cover = feedItem.coverImage || feedItem.coverVideo
     return (
       <View style={styles.contentContainer}>
         {this.renderUserSection()}
         {!shouldHideCover &&
-          <StoryCover
+          <FeedItemCover
             areInRenderLocation={this.props.areInRenderLocation}
             autoPlayVideo={this.props.autoPlayVideo}
             allowVideoPlay={this.props.allowVideoPlay}
             cover={cover}
-            coverType={story.coverImage ? 'image' : 'video'}
+            coverType={feedItem.coverImage ? 'image' : 'video'}
             onPress={this.getOnPress()}
             gradientColors={this.props.gradientColors}
             gradientLocations={gradientLocations}
@@ -296,7 +296,7 @@ export default class FeedItemPreview extends Component {
             playButtonSize={playButtonSize}
             isFeed={this.props.isFeed}
             shouldEnableAutoplay={this.shouldEnableAutoplay()}
-            storyTitle={displayLocation(story.locationInfo)}
+            locationText={displayLocation(feedItem.locationInfo)}
           />
         }
         {this.renderBottomSection()}
@@ -305,9 +305,9 @@ export default class FeedItemPreview extends Component {
   }
 
   _onPressLike = () => {
-    const {story, onPressLike} = this.props
+    const {feedItem, onPressLike} = this.props
     if (onPressLike) {
-      onPressLike(story)
+      onPressLike(feedItem)
     }
   }
 }

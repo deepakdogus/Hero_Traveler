@@ -41,18 +41,19 @@ function onPressUser(sessionUserId, sceneName, profileId) {
 
 const mapStateToProps = (state, ownProps) => {
   const {session, entities} = state
-  const {story} = ownProps
+  const {feedItem} = ownProps
   const sessionUserId = session.userId
 
-  // the storyProps conditional is necessary because without it, the below configuration will throw errors when the user deletes a story
+  // the storyProps conditional is necessary because without it,
+  // the below configuration will throw errors when the user deletes a story
   let storyProps = null
-  if (story) {
+  if (feedItem) {
     const {name, userId} = state.routes.scene
 
     storyProps = {
-      user: entities.users.entities[story.author],
-      isLiked: isStoryLiked(entities.users, sessionUserId, story.id),
-      isBookmarked: isStoryBookmarked(entities.users, sessionUserId, story.id),
+      user: entities.users.entities[feedItem.author],
+      isLiked: isStoryLiked(entities.users, sessionUserId, feedItem.id),
+      isBookmarked: isStoryBookmarked(entities.users, sessionUserId, feedItem.id),
       myFollowedUsers: getFollowers(entities.users, 'following', sessionUserId),
       areInRenderLocation: getAreInRenderLocation(state, ownProps),
       onPressUser: onPressUser(sessionUserId, name, userId),
@@ -67,13 +68,13 @@ const mapStateToProps = (state, ownProps) => {
     accessToken: _.find(session.tokens, {type: 'access'}).value,
     isVisible,
     shouldHideCover,
-    isAuthor: story && story.author === sessionUserId,
+    isAuthor: feedItem && feedItem.author === sessionUserId,
   }
 }
 
 const mapDispatchToProps = (dispatch, props) => {
-  const {userId, story} = props
-  const storyId = story && story.id
+  const {userId, feedItem} = props
+  const storyId = feedItem && feedItem.id
   return {
     onPressStory: (title) => NavActions.story({storyId, title}),
     onPressGuide: (title) => NavActions.guide({storyId, title}),

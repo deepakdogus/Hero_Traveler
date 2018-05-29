@@ -91,12 +91,12 @@ class CategoryFeedScreen extends React.Component {
     })
   }
 
-  renderStory = (story, index) => {
+  renderFeedItem = (feedItem, index) => {
     return (
       <ConnectedFeedItemPreview
         isFeed={true}
         isStory={true}
-        story={story}
+        feedItem={feedItem}
         height={imageHeight}
         userId={this.props.user.id}
         autoPlayVideo
@@ -160,9 +160,9 @@ class CategoryFeedScreen extends React.Component {
         <ConnectedFeedList
           isStory={true}
           style={styles.feedList}
-          storiesById={storiesById}
+          entitiesById={storiesById}
           renderSectionHeader={this.renderTabs()}
-          renderStory={this.renderStory}
+          renderFeedItem={this.renderFeedItem}
           onRefresh={this._onRefresh}
           refreshing={this.state.refreshing}
         />

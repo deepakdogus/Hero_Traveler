@@ -31,6 +31,9 @@ export default class FeedList extends React.Component {
     refreshing: PropTypes.bool,
     renderHeaderContent: PropTypes.object,
     renderSectionHeader: PropTypes.object,
+    renderFeedItem: PropTypes.func,
+    headerContentHeight: PropTypes.number,
+    style: PropTypes.number,
   }
 
   static defaultProps = {
@@ -100,7 +103,7 @@ export default class FeedList extends React.Component {
 
   // TODO: NativeFeed should probably be wrapped in another class
   render () {
-    let storyViews = []
+    let feedItemViews = []
 
     const {
       targetEntities, renderSectionHeader,
@@ -116,20 +119,20 @@ export default class FeedList extends React.Component {
       width: 'screen',
     }
 
-    const storyInfos = targetEntities.map((story) => {
+    const entitiesInfo = targetEntities.map((entity) => {
       let totalPadding = Metrics.feedCell.padding;
 
-      if (story && story.description) {
+      if (entity && entity.description) {
         totalPadding += Metrics.feedCell.descriptionPadding;
       }
 
-      if (story && story.coverImage) {
+      if (entity && entity.coverImage) {
         return {
-          headerImage: getImageUrl(story.coverImage, 'optimized', imageOptions),
+          headerImage: getImageUrl(entity.coverImage, 'optimized', imageOptions),
           height: Metrics.feedCell.imageCellHeight + totalPadding,
         }
-      } else if (story && story.coverVideo) {
-        let headerImage = getImageUrl(story.coverVideo, 'optimized', videoOptions, story.cover)
+      } else if (entity && entity.coverVideo) {
+        let headerImage = getImageUrl(entity.coverVideo, 'optimized', videoOptions, entity.cover)
         if (isLocalMediaAsset(headerImage)) {
           headerImage = null
         }
@@ -151,12 +154,12 @@ export default class FeedList extends React.Component {
 
       let i = minCell - 1
       let keyIndex = -1
-      storyViews = targetEntities.slice(minCell, maxCell).map((story) => {
+      feedItemViews = targetEntities.slice(minCell, maxCell).map((entity) => {
         i = i + 1
         keyIndex = keyIndex + 1
         return (
           <NativeFeedItem key={`FeedItem:${keyIndex}`} cellNum={i}>
-            {this.props.renderStory(story, i)}
+            {this.props.renderFeedItem(entity, i)}
           </NativeFeedItem>
         )
       })
@@ -166,7 +169,7 @@ export default class FeedList extends React.Component {
       <NativeFeed
         style={[styles.container, this.props.style]}
         cellSeparatorHeight={Metrics.feedCell.separator}
-        storyInfos={storyInfos}
+        storyInfos={entitiesInfo}
         numPreloadBehindCells={2}
         numPreloadAheadCells={3}
         onVisibleCellsChanged={this._handleVisibleCellsChanged}
@@ -206,7 +209,7 @@ export default class FeedList extends React.Component {
           null
         }
 
-        {storyViews}
+        {feedItemViews}
       </NativeFeed>
     )
   }

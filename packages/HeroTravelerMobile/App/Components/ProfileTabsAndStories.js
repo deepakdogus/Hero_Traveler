@@ -43,7 +43,7 @@ export default class ProfileTabsAndStories extends Component {
     )
   }
 
-  renderStory = (story, index) => {
+  renderFeedItem = (feedItem, index) => {
     const {
       tabTypes, selectedTab,
       editable, sessionUserId, location
@@ -56,7 +56,7 @@ export default class ProfileTabsAndStories extends Component {
         editable={editable && selectedTab !== tabTypes.bookmarks}
         titleStyle={styles.storyTitleStyle}
         subtitleStyle={styles.subtitleStyle}
-        story={story}
+        feedItem={feedItem}
         userId={sessionUserId}
         height={feedItemHeight}
         autoPlayVideo
@@ -148,12 +148,12 @@ export default class ProfileTabsAndStories extends Component {
           <ConnectedFeedList
             isStory={true}
             style={styles.feedList}
-            storiesById={storiesById}
+            entitiesById={storiesById}
             refreshing={false}
             headerContentHeight={this.getHeaderHeight()}
             renderHeaderContent={this._renderProfileInfo()}
             renderSectionHeader={this.renderTabs()}
-            renderStory={this.renderStory}
+            renderFeedItem={this.renderFeedItem}
             pagingIsDisabled
           />
         }

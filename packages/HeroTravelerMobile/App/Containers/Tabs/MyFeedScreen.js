@@ -108,13 +108,13 @@ class MyFeedScreen extends React.Component {
     this.props.attemptGetUserFeedStories(this.props.user.id)
   }
 
-  renderStory = (story, index) => {
+  renderFeedItem = (feedItem, index) => {
     return (
       <ConnectedFeedItemPreview
         index={index}
         isFeed={true}
         isStory={this.state.selectedTab === tabTypes.stories}
-        story={story}
+        feedItem={feedItem}
         height={imageHeight}
         userId={this.props.user.id}
         autoPlayVideo
@@ -157,8 +157,8 @@ class MyFeedScreen extends React.Component {
         <ConnectedFeedList
           isStory={isStoriesSelected}
           style={styles.feedList}
-          storiesById={isStoriesSelected ? storiesById : feedGuidesById}
-          renderStory={this.renderStory}
+          entitiesById={isStoriesSelected ? storiesById : feedGuidesById}
+          renderFeedItem={this.renderFeedItem}
           onRefresh={this._onRefresh}
           refreshing={fetchStatus.fetching}
         />

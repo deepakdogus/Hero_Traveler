@@ -265,17 +265,18 @@ class StoryReadingScreen extends React.Component {
           }
           <ConnectedFeedItemPreview
             isFeed={false}
+            isStory
             onPressLike={this._toggleLike}
             showLike={false}
             gradientColors={['rgba(0,0,0,.65)', 'transparent', 'transparent', 'rgba(0,0,0,.65)']}
             gradientLocations={[0,.25,.5,1]}
             key={story.id}
             height={Metrics.screenHeight}
-            story={story}
+            feedItem={story}
             userId={user.id}
             autoPlayVideo={true}
             allowVideoPlay={true}
-            isStoryReadingScreen={true}
+            isReadingScreen={true}
           />
           <View style={styles.divider}/>
           <View style={styles.content}>

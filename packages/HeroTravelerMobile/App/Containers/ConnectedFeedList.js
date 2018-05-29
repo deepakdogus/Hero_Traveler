@@ -6,18 +6,13 @@ import FeedList from '../Components/FeedList'
 const mapStateToProps = (state, ownProps) => {
   const {entities} = state
 
-  let targetEntities
-  if (ownProps.isStory) {
-    const storyFromStoryId = (storyId) => entities.stories.entities[storyId]
-    targetEntities = R.map(storyFromStoryId, ownProps.storiesById)
-  }
-  else {
-    const guideFromGuideId = (guideId) => entities.guides.entities[guideId]
-    targetEntities = R.map(guideFromGuideId, ownProps.storiesById)
-  }
+  // mapping Ids to actual stories or guides
+  let mapFunc;
+  if (ownProps.isStory) mapFunc = (storyId) => entities.stories.entities[storyId]
+  else mapFunc = (guideId) => entities.guides.entities[guideId]
 
   return {
-    targetEntities
+    targetEntities: R.map(mapFunc, ownProps.entitiesById)
   }
 
 }

@@ -74,14 +74,14 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, props) => {
   const {userId, feedItem} = props
-  const storyId = feedItem && feedItem.id
+  const feedItemId = feedItem && feedItem.id
   return {
-    onPressStory: (title) => NavActions.story({storyId, title}),
-    onPressGuide: (title) => NavActions.guide({storyId, title}),
-    deleteStory: () => dispatch(StoryActions.deleteStory(userId, storyId)),
-    removeDraft: () => dispatch(StoryActions.removeDraft(storyId)),
-    onPressLike: () => dispatch(StoryActions.storyLike(userId, storyId)),
-    onPressBookmark: () => dispatch(StoryActions.storyBookmark(userId, storyId)),
+    onPressStory: (title) => NavActions.story({storyId: feedItemId, title}),
+    onPressGuide: (title) => NavActions.guide({guideId: feedItemId, title}),
+    deleteStory: () => dispatch(StoryActions.deleteStory(userId, feedItemId)),
+    removeDraft: () => dispatch(StoryActions.removeDraft(feedItemId)),
+    onPressLike: () => dispatch(StoryActions.storyLike(userId, feedItemId)),
+    onPressBookmark: () => dispatch(StoryActions.storyBookmark(userId, feedItemId)),
     onPressFollow: (idToFollow) => {dispatch(UserActions.followUser(userId, idToFollow))},
     onPressUnfollow: (idToUnfollow) => dispatch(UserActions.unfollowUser(userId, idToUnfollow)),
   }

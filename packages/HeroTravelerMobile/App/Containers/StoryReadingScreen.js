@@ -116,17 +116,6 @@ const atomicHandler = (item: Object): any => {
   return null
 }
 
-const EnhancedStoryReadingToolbar = withHandlers({
-  onPressBookmark: props => () => {
-    props.toggleBookmark(props.userId, props.storyId)
-  },
-  onPressComment: props => () => {
-    NavActions.storyComments({
-      storyId: props.storyId
-    })
-  }
-})(StoryReadingToolbar)
-
 class StoryReadingScreen extends React.Component {
   static propTypes = {
     user: PropTypes.object,
@@ -145,6 +134,17 @@ class StoryReadingScreen extends React.Component {
     if (!this.props.story) {
       this.getStory()
     }
+  }
+
+  _onPressBookmark = () => {
+    const {toggleBookmark, user, storyId} = this.props
+    toggleBookmark(user.id, storyId)
+  }
+
+  _onPressComment = () => {
+    NavActions.storyComments({
+      storyId: this.props.storyId
+    })
   }
 
   _toggleLike = () => {
@@ -379,7 +379,7 @@ class StoryReadingScreen extends React.Component {
             styles.toolBar,
             { transform: [{ translateY: toolbarTranslation }] },
           ]}>
-          <EnhancedStoryReadingToolbar
+          <StoryReadingToolbar
             likeCount={formatCount(story.counts.likes)}
             commentCount={formatCount(story.counts.comments)}
             boomarkCount={formatCount(story.counts.bookmarks)}
@@ -389,7 +389,8 @@ class StoryReadingScreen extends React.Component {
             storyId={story.id}
             onPressLike={this._toggleLike}
             onPressFlag={this._toggleFlag}
-            toggleBookmark={this.props.toggleBookmark}
+            onPressBookmark={this._onPressBookmark}
+            onPressComment={this._onPressComment}
           />
         </Animated.View>
         {/* Plus button for adding to Guide */}

@@ -88,6 +88,7 @@ import {
 
 import {
   createGuide,
+  getGuide,
   updateGuide,
   getUserGuides,
   getUserFeedGuides,
@@ -190,8 +191,9 @@ export default function * root () {
 
     // Guides
     takeLatest(GuideTypes.CREATE_GUIDE, createGuide, heroAPI),
+    takeLatest(GuideTypes.GET_GUIDE_REQUEST, getGuide, heroAPI),
     takeLatest(GuideTypes.UPDATE_GUIDE, updateGuide, heroAPI),
     takeLatest(GuideTypes.GET_USER_GUIDES, getUserGuides, heroAPI),
-    takeLatest(GuideTypes.GUIDE_FEED_REQUEST, getUserFeedGuides, heroAPI)
+    takeLatest(GuideTypes.GUIDE_FEED_REQUEST, getUserFeedGuides, heroAPI),
   ]
 }

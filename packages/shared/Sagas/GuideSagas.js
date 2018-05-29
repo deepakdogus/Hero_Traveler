@@ -22,8 +22,7 @@ function * createCover(api, guide){
   return guide
 }
 
-export function * createGuide (api, action) {
-  const {guide} = action
+export function * createGuide (api, {guide}) {
   const coverResponse = yield createCover(api, guide)
   // add error handling here
   const response = yield call(api.createGuide, guide)
@@ -36,8 +35,24 @@ export function * createGuide (api, action) {
   // add error handling for fail
 }
 
-export function * updateGuide (api, action) {
-  const {guide} = action
+
+export function * getGuide (api, {guideId}) {
+  const response = yield call(api.getGuide, guideId)
+  if (response.ok) {
+    const {guides, users} = response.data.entities
+    yield [
+      put(UserActions.receiveUsers(users)),
+      put(GuideActions.receiveGuides(guides)),
+    ]
+  }
+  else {
+    yield put(GuideActions.guideFailure(
+      new Error("Failed get guide")
+    ))
+  }
+}
+
+export function * updateGuide (api, {guide}) {
   const coverResponse = yield createCover(api, guide)
   // add error handling
   const response = yield call(api.updateGuide, guide)
@@ -51,8 +66,7 @@ export function * updateGuide (api, action) {
   // add error handling for fail
 }
 
-export function * getUserGuides (api, action) {
-  const {userId} = action
+export function * getUserGuides (api, {userId}) {
   const response = yield call(api.getUserGuides, userId)
   if (response.ok) {
     const guides = response.data.reduce((guides, guide) => {
@@ -64,8 +78,7 @@ export function * getUserGuides (api, action) {
   // add error handling for fail
 }
 
-export function * getUserFeedGuides(api, action) {
-  const {userId} = action
+export function * getUserFeedGuides(api, {userId}) {
   const response = yield call(api.getUserFeedGuides, userId)
   if (response.ok) {
     const { entities, result } = response.data

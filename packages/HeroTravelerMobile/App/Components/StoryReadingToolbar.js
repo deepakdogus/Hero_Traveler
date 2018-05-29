@@ -20,12 +20,30 @@ export default class StoryReadingToolbarComponent extends Component {
     boomarkCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   }
 
+  renderInViewOrTouch(contents, style, onPress) {
+    if (onPress) return (
+      <TouchableOpacity
+        style={style}
+        onPress={onPress}
+      >
+        {contents}
+      </TouchableOpacity>
+    )
+    return (
+      <View
+        style={style}
+      >
+        {contents}
+      </View>
+    )
+  }
+
   render() {
-    let likeComponent,
-        commentComponent,
-        bookmarkComponent,
-        shareComponent,
-        flagButton
+    const {
+      onPressLike, onPressComment,
+      onPressBookmark, onPressFlag
+    } = this.props
+
     const likeContainer = (
       <View style={styles.wrapper}>
         <Text
@@ -39,6 +57,11 @@ export default class StoryReadingToolbarComponent extends Component {
         />
       </View>
     )
+    const likeComponent = this.renderInViewOrTouch(
+      likeContainer,
+      styles.likeTool,
+      onPressLike,
+    )
 
     const commentContainer = (
       <View style={styles.wrapper}>
@@ -49,6 +72,11 @@ export default class StoryReadingToolbarComponent extends Component {
         </Text>
         <TabIcon name={'comment'}/>
       </View>
+    )
+    const commentComponent = this.renderInViewOrTouch(
+      commentContainer,
+      styles.commentTool,
+      onPressComment,
     )
 
     const bookmarkContainer = (
@@ -61,17 +89,27 @@ export default class StoryReadingToolbarComponent extends Component {
         <TabIcon name={this.props.isBookmarked ? 'bookmark-active' : 'bookmark'}/>
       </View>
     )
-
-    const shareContainer = (
-      <View style={styles.wrapper}>
-        <TabIcon
-          name={'share'}
-          style={{image: styles.shareIcon}}
-        />
-      </View>
+    const bookmarkComponent = this.renderInViewOrTouch(
+      bookmarkContainer,
+      styles.bookmarkTool,
+      onPressBookmark,
     )
 
-    const flagComponent = (
+    // const shareContainer = (
+    //   <View style={styles.wrapper}>
+    //     <TabIcon
+    //       name={'share'}
+    //       style={{image: styles.shareIcon}}
+    //     />
+    //   </View>
+    // )
+    // const shareComponent = this.renderInViewOrTouch(
+    //   shareContainer,
+    //   styles.shareTool,
+    //   onPressShare,
+    // )
+
+    const flagContainer = (
       <View style={styles.wrapper}>
         <TabIcon
           name={'flag'}
@@ -79,77 +117,12 @@ export default class StoryReadingToolbarComponent extends Component {
         />
       </View>
     )
+    const flagComponent = this.renderInViewOrTouch(
+      flagContainer,
+      styles.shareTool,
+      onPressFlag
+    )
 
-
-    if(this.props.onPressLike) {
-      likeComponent = (
-        <TouchableOpacity
-          style={styles.likeTool}
-          onPress={this.props.onPressLike}
-          children={likeContainer}
-        />
-      )
-    } else {
-      likeComponent = (
-        <View style={styles.likeTool} children={likeContainer} />
-      )
-    }
-
-    if(this.props.onPressComment) {
-      commentComponent = (
-        <TouchableOpacity
-          style={styles.commentTool}
-          onPress={this.props.onPressComment}
-          children={commentContainer}
-        />
-      )
-    } else {
-      commentComponent = (
-        <View style={styles.commentTool} children={commentContainer} />
-      )
-    }
-
-    if(this.props.onPressBookmark) {
-      bookmarkComponent = (
-        <TouchableOpacity
-          style={styles.bookmarkTool}
-          onPress={this.props.onPressBookmark}
-          children={bookmarkContainer}
-        />
-      )
-    } else {
-      bookmarkComponent = (
-        <View style={styles.bookmarkTool} children={bookmarkContainer} />
-      )
-    }
-
-    if(this.props.onPressShare) {
-      shareComponent = (
-        <TouchableOpacity
-          style={styles.shareTool}
-          onPress={this.props.onPressShare}
-          children={shareContainer}
-        />
-      )
-    } else {
-      shareComponent = (
-        <View style={styles.shareTool} children={shareContainer} />
-      )
-    }
-
-    if (this.props.onPressFlag) {
-      flagButton = (
-        <TouchableOpacity
-          style={styles.shareTool}
-          onPress={this.props.onPressFlag}
-          children={flagComponent}
-        />
-      )
-    } else {
-      flagButton = (
-        <View style={styles.shareTool} children={flagComponent} />
-      )
-    }
 
     return (
       <View style={[styles.root, this.props.style]}>
@@ -157,7 +130,7 @@ export default class StoryReadingToolbarComponent extends Component {
         {commentComponent}
         {bookmarkComponent}
         {/**shareComponent**/}
-        {flagButton}
+        {flagComponent}
       </View>
     )
   }

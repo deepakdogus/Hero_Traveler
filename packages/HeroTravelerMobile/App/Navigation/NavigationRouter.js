@@ -53,6 +53,7 @@ import NavButton from './NavButton'
 // Guides
 import AddStoryToGuides from '../Containers/Guides/AddStoryToGuides'
 import CreateGuideScreen from '../Containers/Guides/CreateGuide'
+import GuideReadingScreen from '../Containers/GuideReadingScreen'
 
 import {Images} from '../Shared/Themes'
 
@@ -271,6 +272,15 @@ export default NavActions.create(
       <Scene
         key='story'
         component={StoryReadingScreen}
+        direction='horizontal'
+        onLeft={NavActions.pop}
+        backButtonImage={Images.iconArrowLeft}
+        {..._.merge({}, clearNavBarProps, redBack)}
+        titleStyle={Styles.storyTitle}
+      />
+      <Scene
+        key='guide'
+        component={GuideReadingScreen}
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}

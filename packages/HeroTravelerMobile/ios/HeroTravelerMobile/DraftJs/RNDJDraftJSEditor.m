@@ -21,6 +21,7 @@
 #import <iOS-MagnifyingGlass/ACMagnifyingGlass.h>
 
 CGFloat selectNibSize = 8.f;
+NSString* terminalPunctionationString = @".?!";
 
 static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *nonTextDescendants)
 {
@@ -71,6 +72,9 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
   NSDictionary* existingAutocompleteViews;
   
   NSSet* closedAutocorrects;
+  
+  BOOL isReadyToCapitalize;
+  BOOL isReadyToEnterPeriod;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -512,9 +516,20 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     } else {
       [self requestHasFocus:YES];
     }
+
+    if ([_firstIndex.key isEqualToString:_lastIndex.key] && _firstIndex.offset == 0 && _lastIndex.offset == NSUIntegerMax)
+    {
+      isReadyToCapitalize = YES;
+    }
+    else
+    {
+      isReadyToCapitalize = NO;
+    }
+    isReadyToEnterPeriod = NO;
   } else {
     RNDJDraftJsIndex* selectedIndex = [self draftJsIndexForPointInView:tapPostion];
     [self requestSetSelection:selectedIndex];
+    isReadyToCapitalize = NO;
   }
   
   [self updateMagnifierFromGesture:gesture];
@@ -1384,9 +1399,76 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
 - (void)insertText:(NSString *)text
 {
   [[UIMenuController sharedMenuController] setMenuVisible:NO animated:YES];
-  
+
+  if ([text isEqualToString:@" "] && [existingAutocompleteViews count]) {
+    for (NSString* autocompleteKey in existingAutocompleteViews) {
+      if (![closedAutocorrects containsObject:autocompleteKey]) {
+        RNDJAutocorrectView* autocompleteView = existingAutocompleteViews[autocompleteKey];
+        if ([autocompleteView isKindOfClass:[RNDJAutocorrectView class]]) {
+          if ([autocompleteView dispatchIfWithinNChars:2])
+          {
+            isReadyToEnterPeriod = YES;
+            return;
+          }
+        }
+      }
+    }
+  }
+
   RCTDirectEventBlock onInsertTextRequest = self.onInsertTextRequest;
   RCTDirectEventBlock onNewlineRequest = self.onNewlineRequest;
+  
+  if (text.length == 1)
+  {
+    if ([[NSCharacterSet characterSetWithCharactersInString:terminalPunctionationString] characterIsMember:[text characterAtIndex:0]])
+    {
+      isReadyToCapitalize = YES;
+    }
+    else if ([[NSCharacterSet newlineCharacterSet] characterIsMember:[text characterAtIndex:0]])
+    {
+      isReadyToCapitalize = YES;
+    }
+    else if ([[NSCharacterSet whitespaceCharacterSet] characterIsMember:[text characterAtIndex:0]])
+    {
+      
+    }
+    else if (isReadyToCapitalize)
+    {
+      text = [text capitalizedString];
+      isReadyToCapitalize = NO;
+    }
+    
+    if ([text characterAtIndex:0] == ' ')
+    {
+      RCTDirectEventBlock onReplaceRangeRequest = _onReplaceRangeRequest;
+      if (isReadyToEnterPeriod && [_selectionStart isEqual:_selectionEnd] && _selectionStart.offset > 0 && _selectionStart.key.length > 0 && onReplaceRangeRequest)
+      {
+        onReplaceRangeRequest(@{
+                                @"startKey": _selectionStart.key,
+                                @"startOffset": @(_selectionStart.offset - 1),
+                                @"endKey": _selectionStart.key,
+                                @"endOffset": @(_selectionStart.offset),
+                                @"word": @". ",
+                                });
+        isReadyToEnterPeriod = NO;
+        isReadyToCapitalize = YES;
+        return;
+      }
+      else
+      {
+        isReadyToEnterPeriod = YES;
+      }
+    }
+    else
+    {
+      isReadyToEnterPeriod = NO;
+    }
+  }
+  else
+  {
+    isReadyToCapitalize = NO;
+    isReadyToEnterPeriod = NO;
+  }
 
   NSArray* textComponents = [text componentsSeparatedByString:@"\n"];
   NSUInteger numComponents = textComponents.count;

@@ -595,10 +595,11 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
   {
     endPos++;
   }
-  if (!endInclusive)
+  if (!endInclusive || endPos == s.length)
   {
     endPos--;
   }
+  
   
   
   RNDJDraftJsIndex* startDraftJsIndex = [_textStorage attribute:RNDJDraftJsIndexAttributeName atIndex:startPos effectiveRange:NULL];
@@ -1318,10 +1319,11 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     return;
   }
 
-  __block BOOL foundStart = NO;
   __block NSUInteger startIndex = 0;
-  __block BOOL foundEnd = NO;
   __block NSUInteger endIndex = 0;
+  
+  __block NSUInteger smallestStartDistance = NSUIntegerMax;
+  __block NSUInteger smallestEndDistance = NSUIntegerMax;
   
   NSAttributedString* attributedString = _textStorage;
 
@@ -1329,10 +1331,10 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
                                inRange:NSMakeRange(0, attributedString.length)
                                options:0
                             usingBlock:^(RNDJDraftJsIndex* index, NSRange range, BOOL* stop) {
-                              if (index && [index isEqual:_selectionStart]) {
+                              NSUInteger offsetDistance = abs((int)index.offset - (int)_selectionStart.offset);
+                              if (index && [index.key isEqualToString:_selectionStart.key] && offsetDistance < smallestStartDistance) {
                                 startIndex = range.location;
-                                foundStart = YES;
-                                *stop = YES;
+                                smallestStartDistance = offsetDistance;
                               }
                             }];
   
@@ -1340,10 +1342,10 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
                                inRange:NSMakeRange(0, attributedString.length)
                                options:0
                             usingBlock:^(RNDJDraftJsIndex* index, NSRange range, BOOL* stop) {
-                              if (index && [index isEqual:_selectionEnd]) {
+                              NSUInteger offsetDistance = abs((int)index.offset - (int)_selectionEnd.offset);
+                              if (index && [index.key isEqualToString:_selectionEnd.key] && offsetDistance < smallestEndDistance) {
                                 endIndex = range.location + range.length - 1;
-                                foundEnd = YES;
-                                *stop = YES;
+                                smallestEndDistance = offsetDistance;
                               }
                             }];
 
@@ -1353,7 +1355,7 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     startIndex = temp;
   }
   
-  if (!foundStart || !foundEnd || endIndex == startIndex || endIndex >= attributedString.length || startIndex >= attributedString.length) {
+  if (smallestStartDistance == NSUIntegerMax || smallestEndDistance == NSUIntegerMax || endIndex == startIndex || endIndex >= attributedString.length || startIndex >= attributedString.length) {
     return;
   }
 

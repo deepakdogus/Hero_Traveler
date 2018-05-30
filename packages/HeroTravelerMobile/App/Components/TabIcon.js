@@ -165,9 +165,8 @@ const mapStateToProps = (state, props) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-  }
+const mapDispatchToProps = () => {
+  return {}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TabIcon)

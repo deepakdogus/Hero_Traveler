@@ -15,7 +15,7 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import {displayLocation} from '../Shared/Lib/locationHelpers'
 import { Metrics } from '../Shared/Themes'
 import styles from './Styles/FeedItemPreviewStyle'
-import {styles as StoryReadingScreenStyles} from '../Containers/Styles/StoryReadingScreenStyles'
+import {styles as storyReadingScreenStyles} from '../Containers/Styles/StoryReadingScreenStyles'
 import profileViewStyles from './Styles/ProfileViewStyles'
 import LikesComponent from './LikeComponent'
 import TrashCan from './TrashCan'
@@ -114,7 +114,7 @@ export default class FeedItemPreview extends Component {
   }
 
   renderUserSection() {
-    const {user, feedItem, isReadingScreen, isAuthor} = this.props
+    const {user, feedItem, isReadingScreen, isAuthor, isStory} = this.props
     const isFollowing = _.includes(this.props.myFollowedUsers, user.id)
 
     return (
@@ -183,6 +183,7 @@ export default class FeedItemPreview extends Component {
             </View>
           }
         </View>
+        {!isStory && isReadingScreen && this.renderTitle()}
         <View style={styles.separator}/>
       </View>
     )
@@ -192,14 +193,37 @@ export default class FeedItemPreview extends Component {
     return () => this.getOnPress()(title)
   }
 
+  renderTitle() {
+    const {title, description} = this.props.feedItem
+    const {isReadingScreen, titleStyle} = this.props
+    return (
+      <Text style={[
+        styles.title,
+        description ? styles.titleWithDescription : {},
+        isReadingScreen ? styles.storyReadingTitle : {},
+        isReadingScreen && description ? styles.storyReadingTitleWithDescription : {},
+        titleStyle
+      ]}>
+        {title}
+      </Text>
+    )
+  }
+
+  isGuideReadingScreen() {
+    const {isStory, isReadingScreen} = this.props
+    return !isStory && isReadingScreen
+  }
+
   renderBottomSection() {
     const {title, counts, description, coverCaption, draft} = this.props.feedItem
     const {isReadingScreen} = this.props
 
+    if (this.isGuideReadingScreen()) return null
+
     return (
       <View style={[styles.storyInfoContainer, styles.bottomContainer]}>
         {isReadingScreen && !!coverCaption &&
-          <Text style={[StoryReadingScreenStyles.caption, styles.caption]}>
+          <Text style={[storyReadingScreenStyles.caption, styles.caption]}>
             {coverCaption}
           </Text>
         }
@@ -207,20 +231,11 @@ export default class FeedItemPreview extends Component {
           onPress={this._onPress(title)}
           disabled={!!isReadingScreen}
         >
-          <Text style={[
-            styles.title,
-            description ? styles.titleWithDescription : {},
-            isReadingScreen ? styles.storyReadingTitle : {},
-            isReadingScreen && description ? styles.storyReadingTitleWithDescription : {},
-            this.props.titleStyle
-          ]}>
-            {title}
-          </Text>
+          {this.renderTitle()}
           {!!description &&
-            <Text style={[
-              styles.description,
-              isReadingScreen ? styles.storyReadingDescription : {},
-            ]}>{description}</Text>
+            <Text style={storyReadingScreenStyles.description}>
+              {description}
+            </Text>
           }
         </TouchableOpacity>
         <View style={styles.lastRow}>

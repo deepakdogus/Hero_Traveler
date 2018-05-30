@@ -157,7 +157,6 @@ export const styles = StyleSheet.create({
     marginTop: 0,
     marginBottom: 20,
   },
-
   sectionWrapper: {
     marginHorizontal: Metrics.section,
     flexDirection: 'row',
@@ -260,6 +259,21 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
+  tabStyle: {
+    width: Metrics.screenWidth/4
+  },
+  description: {
+    fontFamily: Fonts.type.sourceSansPro,
+    fontWeight: '400',
+    fontSize: 18,
+    letterSpacing: .7,
+    color: Colors.grey,
+    marginBottom: 15,
+  },
+  guideDescription: {
+    marginHorizontal: Metrics.section,
+    marginTop: Metrics.baseMargin,
+  }
 })
 
 export const rendererStyles = StyleSheet.flatten({

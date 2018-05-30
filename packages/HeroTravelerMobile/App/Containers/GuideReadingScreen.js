@@ -1,7 +1,9 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import {
+  View,
   Animated,
+  Text,
 } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
@@ -11,6 +13,16 @@ import GuideActions from '../Shared/Redux/Entities/Guides'
 import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
 import ReadingScreensOverlap from '../Components/ReadingScreensOverlap'
 import ReadingDetails from '../Components/ReadingDetails'
+import TabBar from '../Components/TabBar'
+import {styles} from './Styles/StoryReadingScreenStyles'
+
+export const tabTypes = {
+  overview: 'overview',
+  see: 'see',
+  do: 'do',
+  eat: 'eat',
+  stay: 'stay',
+}
 
 class GuideReadingScreen extends React.Component {
   static propTypes = {
@@ -26,6 +38,7 @@ class GuideReadingScreen extends React.Component {
     this.state = {
       showFlagModal: false,
       scrollY: new Animated.Value(0),
+      selectedTab: 'overview',
     }
     if (!this.props.story) {
       this.getGuide()
@@ -60,11 +73,33 @@ class GuideReadingScreen extends React.Component {
     this.props.requestGuide(this.props.guideId)
   }
 
+  selectTab = (tab) => {
+    if (this.state.selectedTab !== tab) {
+      this.setState({selectedTab: tab})
+    }
+  }
+
   renderBody = () => {
     const {guide} =  this.props
+    const {selectedTab} = this.state
+
     return (
       <Fragment>
+        <TabBar
+          tabs={tabTypes}
+          activeTab={selectedTab}
+          onClickTab={this.selectTab}
+          tabStyle={styles.tabStyle}
+        />
+        <Text style={[
+          styles.description,
+          styles.guideDescription,
+        ]}>
+          {guide.description}
+        </Text>
+        <View style={styles.divider} />
         <ReadingDetails targetEntity={guide} />
+        <View style={styles.divider} />
       </Fragment>
     )
   }

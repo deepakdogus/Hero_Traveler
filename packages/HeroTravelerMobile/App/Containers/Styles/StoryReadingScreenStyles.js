@@ -19,6 +19,9 @@ export const styles = StyleSheet.create({
   scrollView: {
     flex: 1
   },
+  bodyWrapper: {
+    flex: 1,
+  },
   divider: {
     borderWidth: .5,
     borderStyle: 'solid',

@@ -26,8 +26,6 @@ export default class FeedItemCover extends Component {
     autoPlayVideo: PropTypes.bool.isRequired,
     allowVideoPlay: PropTypes.bool.isRequired,
     showPlayButton: PropTypes.bool,
-    gradientColors: PropTypes.arrayOf(PropTypes.string),
-    gradientLocations: PropTypes.arrayOf(PropTypes.number),
     shouldEnableAutoplay: PropTypes.bool,
     areInRenderLocation: PropTypes.bool,
     locationText: PropTypes.string,
@@ -36,8 +34,6 @@ export default class FeedItemCover extends Component {
   static defaultProps = {
     autoPlayVideo: false,
     allowVideoPlay: false,
-    gradientColors: ['transparent', 'rgba(0,0,0,.65)'],
-    gradientLocations: [.5, 1],
     areInRenderLocation: true,
   }
 

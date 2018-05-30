@@ -38,7 +38,6 @@ export default class FeedItemPreview extends Component {
     autoPlayVideo: PropTypes.bool,
     allowVideoPlay: PropTypes.bool,
     isReadingScreen: PropTypes.bool,
-    gradientColors: PropTypes.arrayOf(PropTypes.string),
     isVisible: PropTypes.bool,
     isFeed: PropTypes.bool,
     areInRenderLocation: PropTypes.bool,
@@ -272,7 +271,7 @@ export default class FeedItemPreview extends Component {
   }
 
   render () {
-    const {feedItem, gradientLocations, showPlayButton, shouldHideCover} = this.props
+    const {feedItem, showPlayButton, shouldHideCover} = this.props
     if (!feedItem) return null
 
     // using FeedItemPreview height as proxy for FeedItemCover playbutton size
@@ -290,8 +289,6 @@ export default class FeedItemPreview extends Component {
             cover={cover}
             coverType={feedItem.coverImage ? 'image' : 'video'}
             onPress={this.getOnPress()}
-            gradientColors={this.props.gradientColors}
-            gradientLocations={gradientLocations}
             showPlayButton={showPlayButton}
             playButtonSize={playButtonSize}
             isFeed={this.props.isFeed}

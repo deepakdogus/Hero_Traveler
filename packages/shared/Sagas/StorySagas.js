@@ -170,7 +170,11 @@ function * uploadAtomicAssets(draft){
         return CloudinaryAPI.uploadMediaFile(pathAsFileObject(url), type)
         .then(response => {
           if (response.error) return response
-          return _.merge(block.data, extractUploadData(response.data))
+          const responseData = typeof response.data === 'string' ? JSON.parse(response.data) : response.data
+          if (responseData.resource_type === 'video' && url && draft.id && responseData.public_id) {
+            moveVideoToPreCache(draft.id, url, responseData.public_id)
+          }
+          return _.merge(block.data, extractUploadData(responseData))
         })
         .catch(err => {
           return Promise.reject(err)

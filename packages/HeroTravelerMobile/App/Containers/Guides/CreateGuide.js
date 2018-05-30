@@ -15,7 +15,7 @@ import EditableCoverMedia from '../../Components/EditableCoverMedia'
 import FormInput from '../../Components/FormInput'
 import storyCoverStyles from '../CreateStory/2_StoryCoverScreenStyles'
 import NavBar from '../CreateStory/NavBar'
-import { Images, Colors, Metrics } from '../../Shared/Themes'
+import { Images, Colors} from '../../Shared/Themes'
 import Checkbox from '../../Components/Checkbox'
 import DropdownMenu from '../../Components/DropdownMenu'
 import Form from '../../Components/Form'
@@ -42,7 +42,7 @@ class CreateGuide extends Component {
       description: undefined,
       author: this.props.user.id,
       categories: [],
-      location: undefined,
+      locations: [],
       flagged: undefined,
       counts: undefined,
       coverImage: undefined,

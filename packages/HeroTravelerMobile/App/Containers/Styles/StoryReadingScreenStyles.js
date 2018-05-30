@@ -17,7 +17,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   scrollView: {
-    flex: 1
+    flex: 1,
+    marginBottom: Metrics.tabBarHeight,
   },
   bodyWrapper: {
     flex: 1,
@@ -31,10 +32,9 @@ export const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    marginBottom: Metrics.tabBarHeight
   },
   locationWrapper: {
-    marginVertical: Metrics.section,
+    marginTop: Metrics.section,
   },
   locationDetails: {
     fontSize: 13,
@@ -151,6 +151,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: Metrics.section,
     flexDirection: 'row',
     flexWrap: 'wrap',
+    marginBottom: Metrics.section,
   },
   tagRow: {
     marginTop: 0,

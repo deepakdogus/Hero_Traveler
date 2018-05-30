@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import {
   Animated,
@@ -10,6 +10,7 @@ import StoryActions from '../Shared/Redux/Entities/Stories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
 import ReadingScreensOverlap from '../Components/ReadingScreensOverlap'
+import ReadingDetails from '../Components/ReadingDetails'
 
 class GuideReadingScreen extends React.Component {
   static propTypes = {
@@ -59,6 +60,15 @@ class GuideReadingScreen extends React.Component {
     this.props.requestGuide(this.props.guideId)
   }
 
+  renderBody = () => {
+    const {guide} =  this.props
+    return (
+      <Fragment>
+        <ReadingDetails targetEntity={guide} />
+      </Fragment>
+    )
+  }
+
   render () {
     const {
       guide, author, user, fetching, error,
@@ -79,6 +89,7 @@ class GuideReadingScreen extends React.Component {
         onPressBookmark={this._onPressBookmark}
         onPressComment={this._onPressComment}
         flagTargetEntity={this._flagStory}
+        renderBody={this.renderBody}
       />
     )
   }

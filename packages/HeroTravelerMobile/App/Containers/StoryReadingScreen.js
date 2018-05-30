@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import {Text, View, Animated, TouchableOpacity, Image, RefreshControl} from 'react-native'
+import {Text, View, Animated, TouchableOpacity, Image} from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 import MapView from 'react-native-maps';
@@ -10,22 +10,16 @@ import _ from 'lodash'
 
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
-import formatCount from '../Shared/Lib/formatCount'
-import ConnectedFeedItemPreview from './ConnectedFeedItemPreview'
 import {Metrics, Images} from '../Shared/Themes'
-import StoryReadingToolbar from '../Components/StoryReadingToolbar'
-import TabIcon from '../Components/TabIcon'
 import ImageWrapper from '../Components/ImageWrapper'
-import Loader from '../Components/Loader'
-import FlagModal from '../Components/FlagModal'
 import {styles, rendererStyles, translations} from './Styles/StoryReadingScreenStyles'
 import VideoPlayer from '../Components/VideoPlayer'
 import ReadingScreensOverlap from '../Components/ReadingScreensOverlap'
+import ReadingDetails from '../Components/ReadingDetails'
 import Immutable from 'seamless-immutable'
 import {getVideoUrlFromString} from '../Shared/Lib/getVideoUrl'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import getRelativeHeight from '../Shared/Lib/getRelativeHeight'
-import {displayLocationDetails} from '../Shared/Lib/locationHelpers'
 import isTooltipComplete, {Types as TooltipTypes} from '../Shared/Lib/firstTimeTooltips'
 import UserActions from '../Shared/Redux/Entities/Users'
 
@@ -161,13 +155,6 @@ class StoryReadingScreen extends React.Component {
      NavActions.AddStoryToGuides({ story })
   }
 
-  renderCategories = () => {
-    let categories = _.compact(this.props.story.categories.map((category) => {
-      return category.title
-    }))
-    return <Text style={[styles.sectionText, styles.sectionTextHighlight]}>{categories.join(', ')}</Text>
-  }
-
   renderHashtags = () => {
     let hashtags = _.compact(this.props.story.hashtags.map((hashtag) => {
       return "#" + hashtag.title
@@ -187,28 +174,6 @@ class StoryReadingScreen extends React.Component {
       && !!locationInfo.latitude
       && !!locationInfo.longitude
     )
-  }
-
-  _getCostType = () => {
-    const {type, currency} = this.props.story
-    let title = '';
-    switch (type) {
-      case 'see':
-      case 'do':
-        break;
-      case 'eat':
-        title = ' per person'
-        break;
-      case 'stay':
-        title = ' per night'
-        break;
-      default:
-        break;
-    }
-    // The currency is hardcoded for now, might want to change it later.
-    let currencySign = currency || ' USD';
-    title = currencySign + title;
-    return title;
   }
 
   dismissTooltip = () => {
@@ -260,66 +225,9 @@ class StoryReadingScreen extends React.Component {
                   longitude: story.locationInfo.longitude
                 }} />
               </MapView>
-              <View style={styles.marginedRow}>
-                <View style={styles.iconWrapper}>
-                  <TabIcon
-                    name='location'
-                    style={{ image: styles.icon }}
-                  />
-                </View>
-                <View style={{flexDirection: 'column', alignItems: 'flex-start'}}>
-                  <Text style={[styles.sectionText, styles.sectionLabel]}>Location:</Text>
-                  {story.locationInfo &&
-                  <Text style={[styles.sectionText, styles.sectionTextHighlight]}>
-                    {displayLocationDetails(story.locationInfo)}
-                  </Text>
-                  }
-                </View>
-              </View>
             </View>
           }
-          {!!story.categories.length &&
-            <View style={styles.sectionWrapper}>
-              <View style={styles.iconWrapper}>
-                <TabIcon
-                  name='tag'
-                  style={{ image: styles.icon }}
-                />
-              </View>
-              <View style={styles.sectionTextWrapper}>
-                <Text style={styles.sectionLabel}>Categories: </Text>
-                {this.renderCategories()}
-              </View>
-            </View>
-          }
-          {!!story.cost &&
-            <View style={styles.sectionWrapper}>
-              <View style={styles.iconWrapper}>
-                <TabIcon
-                  name='cost'
-                  style={{ image: styles.icon }}
-                />
-              </View>
-              <View style={styles.sectionTextWrapper}>
-                <Text style={styles.sectionLabel}>Cost: </Text>
-                <Text style={styles.sectionText}>{story.cost + this._getCostType()}</Text>
-              </View>
-            </View>
-          }
-          {!!story.travelTips &&
-            <View style={styles.sectionWrapper}>
-              <View style={styles.iconWrapper}>
-                <TabIcon
-                  name='travelTips'
-                  style={{ image: styles.icon }}
-                />
-              </View>
-              <View style={styles.sectionTextWrapper}>
-                <Text style={styles.sectionLabel}>Travel Tips: </Text>
-                <Text style={styles.sectionText}>{story.travelTips}</Text>
-              </View>
-            </View>
-          }
+          <ReadingDetails targetEntity={story} />
         </View>
       </Fragment>
     )

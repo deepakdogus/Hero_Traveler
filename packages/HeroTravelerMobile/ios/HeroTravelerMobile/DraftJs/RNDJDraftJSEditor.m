@@ -20,6 +20,9 @@
 
 #import <iOS-MagnifyingGlass/ACMagnifyingGlass.h>
 
+CGFloat selectNibSize = 8.f;
+NSString* terminalPunctionationString = @".?!";
+
 static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *nonTextDescendants)
 {
   for (UIView *child in view.reactSubviews) {
@@ -69,6 +72,9 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
   NSDictionary* existingAutocompleteViews;
   
   NSSet* closedAutocorrects;
+  
+  BOOL isReadyToCapitalize;
+  BOOL isReadyToEnterPeriod;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -102,7 +108,26 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     UIPanGestureRecognizer* endPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(dragEnd:)];
     [endDragView addGestureRecognizer:endPanGesture];
 
+    UITapGestureRecognizer* quadrupleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(quadrupleTap:)];
+    quadrupleTapGesture.numberOfTapsRequired = 4;
+    [self addGestureRecognizer:quadrupleTapGesture];
+
+    UITapGestureRecognizer* tripleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tripleTap:)];
+    tripleTapGesture.numberOfTapsRequired = 3;
+    [tripleTapGesture requireGestureRecognizerToFail:quadrupleTapGesture];
+    [self addGestureRecognizer:tripleTapGesture];
+
+    UITapGestureRecognizer* doubleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTap:)];
+    doubleTapGesture.numberOfTapsRequired = 2;
+    [doubleTapGesture requireGestureRecognizerToFail:quadrupleTapGesture];
+    [doubleTapGesture requireGestureRecognizerToFail:tripleTapGesture];
+    [self addGestureRecognizer:doubleTapGesture];
+
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+    tapGesture.numberOfTapsRequired = 1;
+    [tapGesture requireGestureRecognizerToFail:quadrupleTapGesture];
+    [tapGesture requireGestureRecognizerToFail:tripleTapGesture];
+    [tapGesture requireGestureRecognizerToFail:doubleTapGesture];
     [self addGestureRecognizer:tapGesture];
     
     UILongPressGestureRecognizer* longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
@@ -491,9 +516,20 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     } else {
       [self requestHasFocus:YES];
     }
+
+    if ([_firstIndex.key isEqualToString:_lastIndex.key] && _firstIndex.offset == 0 && _lastIndex.offset == NSUIntegerMax)
+    {
+      isReadyToCapitalize = YES;
+    }
+    else
+    {
+      isReadyToCapitalize = NO;
+    }
+    isReadyToEnterPeriod = NO;
   } else {
     RNDJDraftJsIndex* selectedIndex = [self draftJsIndexForPointInView:tapPostion];
     [self requestSetSelection:selectedIndex];
+    isReadyToCapitalize = NO;
   }
   
   [self updateMagnifierFromGesture:gesture];
@@ -502,6 +538,108 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
 - (void) tap:(UIGestureRecognizer*)gesture
 {
   [self handlePositionSelect:gesture];
+}
+
+//RNDJDraftJsIndex* closestDraftJsIndex = _textStorage.length > 0 ? [_textStorage attribute:RNDJDraftJsIndexAttributeName atIndex:characterIndex effectiveRange:NULL] : nil;;
+//[attributedString enumerateAttribute:RNDJDraftJsIndexAttributeName
+//                             inRange:NSMakeRange(0, attributedString.length)
+//                             options:0
+//                          usingBlock:^(RNDJDraftJsIndex* index, NSRange range, BOOL* stop) {
+//                            if (index && [index isEqual:_selectionStart]) {
+//                              cursorIndex = range.location;
+//                              foundCursor = YES;
+//                              *stop = YES;
+//                            }
+//                          }];
+
+- (void) selectWithGesture:(UIGestureRecognizer*)gesture matchingCharSet:(NSCharacterSet*)characterSet endInclusive:(BOOL)endInclusive
+{
+  if (gesture.state != UIGestureRecognizerStateRecognized)
+  {
+    return;
+  }
+  
+  CGPoint tapPostion = [gesture locationInView:self];
+  
+  if (!_hasFocus) {
+    _hasFocus = YES;
+    [self becomeFirstResponder];
+  }
+  
+  RNDJDraftJsIndex* selectedIndex = [self draftJsIndexForPointInView:tapPostion];
+  
+  __block NSInteger selectedStringPos = NSIntegerMax;
+  [_textStorage enumerateAttribute:RNDJDraftJsIndexAttributeName
+                           inRange:NSMakeRange(0, _textStorage.length)
+                           options:0
+                        usingBlock:^(RNDJDraftJsIndex* index, NSRange range, BOOL* stop) {
+                          if (index && range.location < selectedStringPos && [index isEqual:selectedIndex]) {
+                            selectedStringPos = range.location;
+                            *stop = YES;
+                          }
+                        }];
+  
+  NSString* s = [_textStorage string];
+  if (selectedStringPos == s.length - 1)
+  {
+    selectedStringPos--;
+  }
+  
+  if (selectedStringPos < 0 || selectedStringPos >= _textStorage.length)
+  {
+    [self updateMagnifierFromGesture:gesture];
+    return;
+  }
+  
+  
+  if (s.length == 0)
+  {
+    [self updateMagnifierFromGesture:gesture];
+    return;
+  }
+  
+  NSInteger startPos = selectedStringPos;
+  while (startPos >= 0 && ![characterSet characterIsMember:[s characterAtIndex:startPos]])
+  {
+    startPos--;
+  }
+  startPos++;
+  
+  NSInteger endPos = selectedStringPos;
+  while (endPos < s.length && ![characterSet characterIsMember:[s characterAtIndex:endPos]])
+  {
+    endPos++;
+  }
+  if (!endInclusive || endPos == s.length)
+  {
+    endPos--;
+  }
+  
+  
+  
+  RNDJDraftJsIndex* startDraftJsIndex = [_textStorage attribute:RNDJDraftJsIndexAttributeName atIndex:startPos effectiveRange:NULL];
+  RNDJDraftJsIndex* endDraftJsIndex = [_textStorage attribute:RNDJDraftJsIndexAttributeName atIndex:endPos effectiveRange:NULL];
+  
+  if (startDraftJsIndex && endDraftJsIndex)
+  {
+    [self requestSetSelectionFrom:startDraftJsIndex to:endDraftJsIndex];
+  }
+  [self updateMagnifierFromGesture:gesture];
+}
+
+- (void) doubleTap:(UIGestureRecognizer*)gesture
+{
+  [self selectWithGesture:gesture matchingCharSet:[NSCharacterSet whitespaceAndNewlineCharacterSet] endInclusive:NO];
+}
+
+- (void) tripleTap:(UIGestureRecognizer*)gesture
+{
+  [self selectWithGesture:gesture matchingCharSet:[NSCharacterSet characterSetWithCharactersInString:@".\n"] endInclusive:YES];
+}
+
+- (void) quadrupleTap:(UIGestureRecognizer*)gesture
+{
+  [self requestSetSelectionFrom:_firstIndex to:_lastIndex];
 }
 
 - (NSUInteger) blockKeyToIndex:(NSString*)blockKey
@@ -647,11 +785,15 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
      withinSelectedGlyphRange:startRange
      inTextContainer:textContainer
      usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
+       enclosingRect = CGRectInset(enclosingRect, 0, -2);
        CGRect startRect = CGRectMake(enclosingRect.origin.x - 2,
                                      enclosingRect.origin.y,
                                      2,
                                      enclosingRect.size.height);
        startDragPath = [UIBezierPath bezierPathWithRoundedRect:startRect cornerRadius:1];
+       [startDragPath appendPath:[UIBezierPath bezierPathWithOvalInRect:CGRectMake(startRect.origin.x+(startRect.size.width/2.f)-(selectNibSize/2.f),
+                                                                                   startRect.origin.y-(selectNibSize/2.f),
+                                                                                   selectNibSize, selectNibSize)]];
 
        CGRect interactableRect = CGRectInset(startRect, -15, -15);
        interactableRect = CGRectMake(interactableRect.origin.x + _contentInset.left,
@@ -667,11 +809,15 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
      withinSelectedGlyphRange:endRange
      inTextContainer:textContainer
      usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
+       enclosingRect = CGRectInset(enclosingRect, 0, -2);
        CGRect endRect = CGRectMake(enclosingRect.origin.x + enclosingRect.size.width,
                                    enclosingRect.origin.y,
                                    2,
                                    enclosingRect.size.height);
        endDragPath = [UIBezierPath bezierPathWithRoundedRect:endRect cornerRadius:1];
+       [endDragPath appendPath:[UIBezierPath bezierPathWithOvalInRect:CGRectMake(endRect.origin.x+(endRect.size.width/2.f)-(selectNibSize/2.f),
+                                                                                 endRect.origin.y+endRect.size.height-(selectNibSize/2.f),
+                                                                                 selectNibSize, selectNibSize)]];
        
        CGRect interactableRect = CGRectInset(endRect, -15, -15);
        interactableRect = CGRectMake(interactableRect.origin.x + _contentInset.left,
@@ -1188,10 +1334,11 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     return;
   }
 
-  __block BOOL foundStart = NO;
   __block NSUInteger startIndex = 0;
-  __block BOOL foundEnd = NO;
   __block NSUInteger endIndex = 0;
+  
+  __block NSUInteger smallestStartDistance = NSUIntegerMax;
+  __block NSUInteger smallestEndDistance = NSUIntegerMax;
   
   NSAttributedString* attributedString = _textStorage;
 
@@ -1199,10 +1346,10 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
                                inRange:NSMakeRange(0, attributedString.length)
                                options:0
                             usingBlock:^(RNDJDraftJsIndex* index, NSRange range, BOOL* stop) {
-                              if (index && [index isEqual:_selectionStart]) {
+                              NSUInteger offsetDistance = abs((int)index.offset - (int)_selectionStart.offset);
+                              if (index && [index.key isEqualToString:_selectionStart.key] && offsetDistance < smallestStartDistance) {
                                 startIndex = range.location;
-                                foundStart = YES;
-                                *stop = YES;
+                                smallestStartDistance = offsetDistance;
                               }
                             }];
   
@@ -1210,10 +1357,10 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
                                inRange:NSMakeRange(0, attributedString.length)
                                options:0
                             usingBlock:^(RNDJDraftJsIndex* index, NSRange range, BOOL* stop) {
-                              if (index && [index isEqual:_selectionEnd]) {
+                              NSUInteger offsetDistance = abs((int)index.offset - (int)_selectionEnd.offset);
+                              if (index && [index.key isEqualToString:_selectionEnd.key] && offsetDistance < smallestEndDistance) {
                                 endIndex = range.location + range.length - 1;
-                                foundEnd = YES;
-                                *stop = YES;
+                                smallestEndDistance = offsetDistance;
                               }
                             }];
 
@@ -1223,7 +1370,7 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     startIndex = temp;
   }
   
-  if (!foundStart || !foundEnd || endIndex == startIndex || endIndex >= attributedString.length || startIndex >= attributedString.length) {
+  if (smallestStartDistance == NSUIntegerMax || smallestEndDistance == NSUIntegerMax || endIndex == startIndex || endIndex >= attributedString.length || startIndex >= attributedString.length) {
     return;
   }
 
@@ -1252,9 +1399,76 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
 - (void)insertText:(NSString *)text
 {
   [[UIMenuController sharedMenuController] setMenuVisible:NO animated:YES];
-  
+
+  if ([text isEqualToString:@" "] && [existingAutocompleteViews count]) {
+    for (NSString* autocompleteKey in existingAutocompleteViews) {
+      if (![closedAutocorrects containsObject:autocompleteKey]) {
+        RNDJAutocorrectView* autocompleteView = existingAutocompleteViews[autocompleteKey];
+        if ([autocompleteView isKindOfClass:[RNDJAutocorrectView class]]) {
+          if ([autocompleteView dispatchIfWithinNChars:2])
+          {
+            isReadyToEnterPeriod = YES;
+            return;
+          }
+        }
+      }
+    }
+  }
+
   RCTDirectEventBlock onInsertTextRequest = self.onInsertTextRequest;
   RCTDirectEventBlock onNewlineRequest = self.onNewlineRequest;
+  
+  if (text.length == 1)
+  {
+    if ([[NSCharacterSet characterSetWithCharactersInString:terminalPunctionationString] characterIsMember:[text characterAtIndex:0]])
+    {
+      isReadyToCapitalize = YES;
+    }
+    else if ([[NSCharacterSet newlineCharacterSet] characterIsMember:[text characterAtIndex:0]])
+    {
+      isReadyToCapitalize = YES;
+    }
+    else if ([[NSCharacterSet whitespaceCharacterSet] characterIsMember:[text characterAtIndex:0]])
+    {
+      
+    }
+    else if (isReadyToCapitalize)
+    {
+      text = [text capitalizedString];
+      isReadyToCapitalize = NO;
+    }
+    
+    if ([text characterAtIndex:0] == ' ')
+    {
+      RCTDirectEventBlock onReplaceRangeRequest = _onReplaceRangeRequest;
+      if (isReadyToEnterPeriod && [_selectionStart isEqual:_selectionEnd] && _selectionStart.offset > 0 && _selectionStart.key.length > 0 && onReplaceRangeRequest)
+      {
+        onReplaceRangeRequest(@{
+                                @"startKey": _selectionStart.key,
+                                @"startOffset": @(_selectionStart.offset - 1),
+                                @"endKey": _selectionStart.key,
+                                @"endOffset": @(_selectionStart.offset),
+                                @"word": @". ",
+                                });
+        isReadyToEnterPeriod = NO;
+        isReadyToCapitalize = YES;
+        return;
+      }
+      else
+      {
+        isReadyToEnterPeriod = YES;
+      }
+    }
+    else
+    {
+      isReadyToEnterPeriod = NO;
+    }
+  }
+  else
+  {
+    isReadyToCapitalize = NO;
+    isReadyToEnterPeriod = NO;
+  }
 
   NSArray* textComponents = [text componentsSeparatedByString:@"\n"];
   NSUInteger numComponents = textComponents.count;

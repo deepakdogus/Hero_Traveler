@@ -13,7 +13,6 @@ class CreateStoryCoverContent extends Component {
   }
 
   onInputChange = (update) => {
-    console.log("!!!", update);
     this.props.updateWorkingDraft(update)
   }
 

@@ -6,6 +6,8 @@ import Carousel from 'nuka-carousel'
 import RoundedButton from './RoundedButton'
 import Icon from './Icon'
 
+import 'Styles/CarouselStyles.css'
+
 const StyledRoundedButton = styled(RoundedButton)`
 	border: 0px;
 	background-color: rgba(26,28,33,0.1);
@@ -74,7 +76,6 @@ export default class FeedCarousel extends React.Component {
     position: 'CenterRight',
     style: {outline: 'none'},
   }]
-
 
   render () {
     return (

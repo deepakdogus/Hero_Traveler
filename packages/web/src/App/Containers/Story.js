@@ -101,7 +101,6 @@ class Story extends Component {
         />
         <LimitedWidthContainer>
           <StoryContentRenderer story={story} />
-          <p style={{paddingLeft: '10px'}}>Are they trying to do fixed map and/or hidden buttons on the map?</p>
           {story.locationInfo && story.locationInfo.latitude && story.locationInfo.longitude &&
             <GMap
               lat={story.locationInfo.latitude}

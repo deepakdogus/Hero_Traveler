@@ -153,7 +153,10 @@ class EditStory extends Component {
   }
 
   _discardDraft = () => {
-    this.props.discardDraft(this.props.originalDraft.id)
+    if (window.confirm('Are you sure you want to delete this story?')) {
+      this.props.discardDraft(this.props.originalDraft.id);
+      this.props.reroute('/');
+    }
   }
 
   onLeft = () => {
@@ -247,14 +250,12 @@ class EditStory extends Component {
     const {workingDraft, publish} = this.props
     if (!workingDraft.type) {
       this.setValidationErrorState('Please include an activity')
-    }
-    else {
-      if (workingDraft.draft){
-        publish(cleanDraft(workingDraft))
-      }
-      else {
-        this._updateDraft()
-      }
+    } else if (!workingDraft.location) {
+      this.setValidationErrorState('Please include a location')
+    } else if (workingDraft.draft) {
+      publish(cleanDraft(workingDraft))
+    } else {
+      this._updateDraft()
     }
   }
 

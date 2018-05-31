@@ -38,6 +38,9 @@ const Location = styled(Text)`
 const Container = styled.div`
   margin: 35px 0;
 `
+const InfoRow = styled(Row)`
+  margin: 0 0 15px 0 !important;
+`
 
 const TextContainer = styled.div`
   margin-left: 20px;
@@ -63,7 +66,7 @@ export default class StoryMetaInfo extends React.Component {
       const tag = tags[key]
 
       return (
-        <StyledLink key={key} to='/'>
+        <StyledLink key={key} to={'/category/' + tag.id} >
           {tag.title}{index !== length-1 ? ', ' : ''}
         </StyledLink>
       )
@@ -74,20 +77,20 @@ export default class StoryMetaInfo extends React.Component {
     const {story} = this.props
     return (
       <Container>
-        <Row>
+        <InfoRow>
           <LocationIcon name='location' />
           <TextContainer>
             <Label>Location:</Label>
             <Location>{story.location}</Location>
           </TextContainer>
-        </Row>
-        <Row>
+        </InfoRow>
+        <InfoRow>
           <TagsIcon name='tag' />
           <TextContainer>
-            <Label>Tags:</Label>
+            <Label>Categories:</Label>
             {this.renderTagLinks(story.categories)}
           </TextContainer>
-        </Row>
+        </InfoRow>
       </Container>
     )
   }

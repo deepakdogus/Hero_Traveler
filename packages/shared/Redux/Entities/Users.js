@@ -27,7 +27,7 @@ const { Types, Creators } = createActions({
   updateUser: ['attrs'],
   updateUserSuccess: ['user'],
   updateUserFailure: ['error'],
-  connectFacebook: ['fbid', 'email'],
+  connectFacebook: null,
   connectFacebookSuccess: ['user'],
   connectFacebookFailure: ['error'],
   eagerUpdateTooltips: ['userId' ,'tooltips'],

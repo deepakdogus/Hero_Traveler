@@ -25,12 +25,25 @@ export function * updateUser (api, action) {
   }
 }
 
-export function * connectFacebook (api, {fbid, email}) {
+export function * connectFacebook (api) {
+  try {
+    userResponse = yield loginToFacebookAndGetUserInfo();
+  } catch(err) {
+    console.log('Facebook connect failed with error: ', err);
+    yield put(SignupActions.signupFacebookFailure(err))
+    return;
+  }
+
+  if (!userResponse) {
+    yield put(SignupActions.signupFacebookFailure())
+    return;
+  }
+
   try {
     const response = yield call(
       api.connectFacebook,
-      fbid,
-      email
+      userResponse.id,
+      userResponse.email
     )
     if (response.ok) {
       yield put(UserActions.connectFacebookSuccess(response.data))

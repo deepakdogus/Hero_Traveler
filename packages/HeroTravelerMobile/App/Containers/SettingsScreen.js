@@ -14,10 +14,6 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome'
 import VersionNumber from 'react-native-version-number'
 
-import {
-  loginToFacebookAndGetUserInfo,
-} from '../Services/FacebookConnect'
-
 import SessionActions from '../Shared/Redux/SessionRedux'
 import UserActions from '../Shared/Redux/Entities/Users'
 import {Colors} from '../Shared/Themes'
@@ -58,10 +54,6 @@ class SettingsScreen extends React.Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      fetching: false
-    }
   }
 
   componentWillReceiveProps(newProps) {
@@ -71,12 +63,6 @@ class SettingsScreen extends React.Component {
       this.props.resetStore()
     }
 
-    if (newProps.fetching || newProps.loggingOut) {
-      this.setState({fetching: true})
-    } else if (!(newProps.fetching || newProps.loggingOut) && this.props.fetching) {
-      this.setState({fetching: false})
-    }
-    
     if (newProps.error && !newProps.isLoggingOut) {
       let errorMessage = newProps.error.message || 'Operation could not be completed.';
       Alert.alert('Error', errorMessage, [{
@@ -96,13 +82,7 @@ class SettingsScreen extends React.Component {
     if (user.isFacebookConnected) {
       alert('Your account is already connected to Facebook');
     } else {
-      this.setState({fetching: true}, () => {
-        loginToFacebookAndGetUserInfo().then((userInfo) => {
-          this.props.connectFacebook(userInfo.id, userInfo.email);
-        }).catch(() => {
-          this.setState({fetching: false})
-        })
-      })
+      this.props.connectFacebook();
     }
   }
 
@@ -161,7 +141,7 @@ class SettingsScreen extends React.Component {
           </NavList>
           <Version version={VersionNumber.appVersion} />
         </ScrollView>
-        {this.state.fetching &&
+        {this.props.fetching &&
           <Loader tintColor={Colors.blackoutTint} style={{
             position: 'absolute',
             top: 0,
@@ -190,7 +170,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     logout: (tokens) => dispatch(SessionActions.logout(tokens)),
     resetStore: () => dispatch(SessionActions.resetRootStore()),
-    connectFacebook: (fbid, email) => dispatch(UserActions.connectFacebook(fbid, email)),
+    connectFacebook: () => dispatch(UserActions.connectFacebook()),
     clearErrors: () => dispatch(UserActions.clearErrors()),
   }
 }

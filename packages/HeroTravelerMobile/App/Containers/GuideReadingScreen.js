@@ -14,6 +14,7 @@ import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
 import ReadingScreensOverlap from '../Components/ReadingScreensOverlap'
 import ReadingDetails from '../Components/ReadingDetails'
 import TabBar from '../Components/TabBar'
+import GuideStoriesOfType from '../Components/GuideStoriesOfType'
 import {styles} from './Styles/StoryReadingScreenStyles'
 
 export const tabTypes = {
@@ -100,6 +101,10 @@ class GuideReadingScreen extends React.Component {
         <View style={styles.divider} />
         <ReadingDetails targetEntity={guide} />
         <View style={styles.divider} />
+        <GuideStoriesOfType
+          label={'THINGS TO SEE'}
+          storyIds={guide.stories}
+        />
       </Fragment>
     )
   }

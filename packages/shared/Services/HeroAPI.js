@@ -372,12 +372,13 @@ const create = () => {
 
   const createGuide = (guide) => {
     return api.post('guide', {guide})
+    .then(response => safeNormalize(response, Guide))
   }
 
   const updateGuide = (guide) => {
     return api.put(`guide/${guide.id}`, {guide})
     .then(response => safeNormalize(response, Guide))
- }
+  }
 
   const getGuide = (guideId) => {
     return api.get(`guide/${guideId}`)

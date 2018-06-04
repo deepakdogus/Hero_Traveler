@@ -27,12 +27,14 @@ export function * createGuide(api, {guide}) {
   // add error handling here
   const response = yield call(api.createGuide, guide)
   if (response.ok) {
-    const guide = response.data.guide
-    const guides = {}
-    guides[guide.id] = guide
+    const {guides} = response.data.entities
     yield put(GuideActions.receiveGuides(guides, true))
   }
-  // add error handling for fail
+  else {
+    yield put(GuideActions.guideFailure(
+      new Error("Failed to create guide")
+    ))
+  }
 }
 
 
@@ -47,7 +49,7 @@ export function * getGuide(api, {guideId}) {
   }
   else {
     yield put(GuideActions.guideFailure(
-      new Error("Failed get guide")
+      new Error("Failed to get guide")
     ))
   }
 }

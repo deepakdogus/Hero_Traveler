@@ -86,7 +86,8 @@ class CreateGuide extends Component {
     const {creating} = this.state
     const {updateGuide, createGuide} = this.props
     if (creating) return
-    const onDoneFunc = this.isExistingGuide ? updateGuide : createGuide
+
+    const onDoneFunc = this.isExistingGuide() ? updateGuide : createGuide
     this.setState(
       {
         creating: true,
@@ -222,10 +223,10 @@ class CreateGuide extends Component {
           <NavBar
             onLeft={creating ? noop : onCancel}
             leftTitle={'Cancel'}
-            title={this.isExistingGuide ? 'EDIT GUIDE' : 'CREATE GUIDE'}
+            title={this.isExistingGuide() ? 'EDIT GUIDE' : 'CREATE GUIDE'}
             isRightValid={guideRequirementsMet && !creating ? true : false}
             onRight={guideRequirementsMet && onDone}
-            rightTitle={this.isExistingGuide ? 'Save' : 'Create'}
+            rightTitle={this.isExistingGuide() ? 'Save' : 'Create'}
             rightTextStyle={storyCoverStyles.navBarRightTextStyle}
             style={storyCoverStyles.navBarStyle}
           />

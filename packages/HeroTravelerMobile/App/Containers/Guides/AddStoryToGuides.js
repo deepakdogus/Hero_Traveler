@@ -28,29 +28,10 @@ class AddStoryToGuides extends Component {
 
   state = {
     storyGuides: this.props.storyGuides || [],
-    // this is not ideal, guides should be added/removed from story as
-    // making the dependency the other way produces maintenance overhead
-    addedGuides: [],
-    removedGuides: [],
   }
 
   onDone = () => {
-    // const { removedGuides, storyGuides } = this.state
-    // for (let removeGuide of removedGuides) {
-    //   // Remove story from guide and update guide
-    //   // removeGuide = Object.assign({}, removeGuide, {
-    //   //   stories: removeGuide.stories.filter((s) => s !== this.props.story._id)
-    //   // })
-    //   // this.props.updateGuide(removeGuide)
-    // }
-    // for (let addGuide of storyGuides) {
-    //   const wasInProps = this.props.storyGuides.filter((g) => g._id === addGuide._id).length === 1
-    //   if (wasInProps) {
-    //     // Do nothing with guide
-    //   } else {
-    //     // Add story to guide
-    //   }
-    // }
+
   }
 
   componentDidMount = () => {

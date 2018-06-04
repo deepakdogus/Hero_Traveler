@@ -128,7 +128,7 @@ class GuideReadingScreen extends React.Component {
             ]}>
               {guide.description}
             </Text>
-            <View style={styles.divider} />
+            {!!guide.description && <View style={styles.divider} />}
             <ReadingDetails targetEntity={guide} />
           </Fragment>
         }

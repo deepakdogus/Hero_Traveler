@@ -3,7 +3,6 @@ import _ from 'lodash'
 import {
   ScrollView,
   Text,
-  Image,
   View,
   TextInput,
 } from 'react-native'
@@ -25,12 +24,13 @@ const api = HeroAPI.create()
 
 // These should be in ht-util
 // but there appears to be a symlink bug with RN/lerna
+
 const Constants = {
   PASSWORD_MIN_LENGTH: 8,
   PASSWORD_MAX_LENGTH: 64,
-  USERNAME_MIN_LENGTH: 2,
+  USERNAME_MIN_LENGTH: 5,
   USERNAME_MAX_LENGTH: 20,
-  USERNAME_REGEX: /(?=^.{1,20}$)^[a-zA-Z][a-zA-Z0-9]*[._-]?[a-zA-Z0-9]+$/,
+  USERNAME_REGEX: /(?=^.{5,20}$)^[a-zA-Z][a-zA-Z0-9]*[._-]?[a-zA-Z0-9]+$/,
   EMAIL_REGEX: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 }
 
@@ -65,7 +65,7 @@ const asyncValidate = (values, dispatch) => {
   .then(response => {
     const {data} = response
     const errors = {}
-    for (key in data) {
+    for (let key in data) {
       if (data[key]) errors[key] = `That ${key} is already taken`
     }
     if (Object.keys(errors).length) throw errors

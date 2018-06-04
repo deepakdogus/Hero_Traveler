@@ -38,7 +38,7 @@ export function * signupFacebook(api, action) {
     userResponse = yield loginToFacebookAndGetUserInfo();
   } catch(err) {
     console.log('Facebook connect failed with error: ', err);
-    yield put(SignupActions.signupFacebookFailure(err))
+    yield put(SignupActions.signupFacebookFailure())
     return;
   }
 

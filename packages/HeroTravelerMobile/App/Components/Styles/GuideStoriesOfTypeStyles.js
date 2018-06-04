@@ -10,6 +10,10 @@ export default StyleSheet.create({
   wrapper: {
     flex: 1,
     marginHorizontal: Metrics.section,
+    marginBottom: Metrics.section,
+  },
+  wrapperShowAll: {
+    marginTop: Metrics.section,
   },
   label: {
     fontFamily: Fonts.type.montserrat,

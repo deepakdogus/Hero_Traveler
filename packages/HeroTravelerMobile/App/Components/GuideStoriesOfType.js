@@ -1,23 +1,38 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 import { View, TouchableOpacity, Text } from 'react-native'
+import { Actions as NavActions } from 'react-native-router-flux'
+
 import styles from './Styles/GuideStoriesOfTypeStyles'
+import {styles as StoryReadingScreenStyles} from '../Containers/Styles/StoryReadingScreenStyles'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import ImageWrapper from './ImageWrapper'
 
-class GuideStoriesOfType extends React.Component {
+export default class GuideStoriesOfType extends React.Component {
   static propTypes = {
-    label: PropTypes.string,
-    type: PropTypes.string,
+    label: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
     isShowAll: PropTypes.bool,
-    storyIds: PropTypes.arrayOf(PropTypes.string),
-    stories: PropTypes.arrayOf(PropTypes.object),
-    onPressAll: PropTypes.func
+    stories: PropTypes.arrayOf(PropTypes.object).isRequired,
+    authors: PropTypes.object.isRequired,
+    onPressAll: PropTypes.func.isRequired,
+    onPressAuthor: PropTypes.func.isRequired,
   }
 
-  setShowAll = () => {
-    this.props.onPressAll(this.props.type)
+  onPress = () => {
+    this.props.onPress(this.props.type)
+  }
+
+  onPressStory = (story) => {
+    return () => {
+      NavActions.story({storyId: story.id, title: story.title})
+    }
+  }
+
+  onPressAuthor = (authorId) => {
+    return () => {
+      this.props.onPressAuthor(authorId)
+    }
   }
 
   renderStory = (story) => {
@@ -26,64 +41,57 @@ class GuideStoriesOfType extends React.Component {
 
     return (
       <View key={story.id} style={styles.storyView}>
-        <ImageWrapper
-          cached
-          source={{uri: imageUrl}}
-          style={styles.image}
-        />
-        <Text style={styles.title}>
-          {story.title}
-        </Text>
-        <Text style={styles.author}>
-          {authors[story.author].username}
-        </Text>
+        <TouchableOpacity onPress={this.onPressStory(story)}>
+          <ImageWrapper
+            cached
+            source={{uri: imageUrl}}
+            style={styles.image}
+          />
+          <Text style={styles.title}>
+            {story.title}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={this.onPressAuthor(story.author)}>
+          <Text style={styles.author}>
+            {authors[story.author].username}
+          </Text>
+        </TouchableOpacity>
       </View>
     )
   }
 
   render () {
     const {label, stories, isShowAll} = this.props
+
+    if (stories.length === 0) return null
+
     return (
-      <View style={styles.wrapper}>
-        <Text style={styles.label}>
-          {label}
-        </Text>
-        <View style={styles.storiesWrapper}>
-          {stories.map((story, index) => {
-            if (!isShowAll && index >= 4) return null
-            return this.renderStory(story)
-          })}
-        </View>
-        <TouchableOpacity onPress={this.setShowAll}>
-          <View style={styles.seeAllView}>
-            <Text style={styles.seeAll}>
-              See all ({stories.length})
-            </Text>
+      <Fragment>
+        {!isShowAll && <View style={StoryReadingScreenStyles.divider}/>}
+        <View style={[
+          styles.wrapper,
+          isShowAll && styles.wrapperShowAll,
+        ]}>
+          <Text style={styles.label}>
+            {label}
+          </Text>
+          <View style={styles.storiesWrapper}>
+            {stories.map((story, index) => {
+              if (!isShowAll && index >= 4) return null
+              return this.renderStory(story)
+            })}
           </View>
-        </TouchableOpacity>
-      </View>
+          {!isShowAll &&
+            <TouchableOpacity onPress={this.onPress}>
+              <View style={styles.seeAllView}>
+                <Text style={styles.seeAll}>
+                  See all ({stories.length})
+                </Text>
+              </View>
+            </TouchableOpacity>
+          }
+        </View>
+      </Fragment>
     )
   }
 }
-
-const mapStateToProps = (state, props) => {
-  const allStories = state.entities.stories.entities
-  const allUsers = state.entities.users.entities
-  const authors = {}
-  return {
-    stories: props.storyIds.map(id => {
-      const story = allStories[id]
-      if (!authors[story.author]) {
-        authors[story.author] = allUsers[story.author]
-      }
-      return story
-    }),
-    authors,
-  }
-}
-
-const mapDispatchToProps = () => {
-  return {}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(GuideStoriesOfType)

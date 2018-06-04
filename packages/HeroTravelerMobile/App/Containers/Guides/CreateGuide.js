@@ -84,7 +84,7 @@ class CreateGuide extends Component {
 
   onDone = () => {
     const {creating} = this.state
-    const {updateGuide, createGuide} = this.props
+    const {updateGuide, createGuide, user} = this.props
     if (creating) return
 
     const onDoneFunc = this.isExistingGuide() ? updateGuide : createGuide
@@ -94,7 +94,7 @@ class CreateGuide extends Component {
       },
       () => {
         let guide = this.state.guide
-        onDoneFunc(guide)
+        onDoneFunc(guide, user.id)
       }
     )
   }
@@ -314,7 +314,7 @@ const mapStateToProps = (state, props) => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  createGuide: guide => dispatch(GuideActions.createGuide(guide)),
+  createGuide: (guide, userId) => dispatch(GuideActions.createGuide(guide, userId)),
   updateGuide: guide => dispatch(GuideActions.updateGuide(guide)),
 })
 

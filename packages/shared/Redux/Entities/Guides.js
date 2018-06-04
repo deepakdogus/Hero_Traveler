@@ -4,8 +4,10 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  createGuide: ['guide'],
-  receiveGuides: ['guides', 'isOwnGuide'],
+  createGuide: ['guide', 'userId'],
+  createGuideSuccess: ['guides', 'userId'],
+  receiveGuides: ['guides'],
+  receiveUsersGuides: ['guides', 'userId'],
   createGuideFailure: ['error'],
   updateGuide: ['guide'],
   getGuideRequest: ['guideId'],
@@ -46,7 +48,7 @@ export const request = (state) => {
   })
 }
 
-export const receiveGuides = (state, {guides = {}, isOwnGuide = false}) => {
+export const receiveGuides = (state, {guides = {}, userId = false}) => {
   let newState = state.merge({
     fetchStatus: {
       fetching: false,
@@ -56,12 +58,38 @@ export const receiveGuides = (state, {guides = {}, isOwnGuide = false}) => {
   }, {
     deep: true
   })
-  if (isOwnGuide) {
-    const newGuidesIds = Object.keys(guides)
-    newState.merge({
-      feedGuidesById: [...newGuidesIds, ...state.feedGuidesById],
-    })
+
+  const newGuidesIds = Object.keys(guides)
+  return newState
+}
+
+
+export const receiveUsersGuides = (state, {guides = {}, userId}) => {
+  const newGuidesIds = Object.keys(guides)
+  if (newGuidesIds.length) {
+    return state.setIn(['guideIdsByUserId', userId], newGuidesIds)
   }
+  else if (!state.guideIdsByUserId[userId]) {
+    return state.setIn(['guideIdsByUserId', userId], [])
+  }
+}
+
+export const receiveNewGuide = (state, {guides = {}, userId}) => {
+  let newState = state
+  const newGuidesIds = Object.keys(guides)
+  const oldGuideIdsByUserId = state.guideIdsByUserId[userId]
+  if (oldGuideIdsByUserId) {
+    newState = newState.setIn(
+      ['guideIdsByUserId', userId],
+      [...newGuidesIds, ...oldGuideIdsByUserId]
+    )
+  }
+  else newState = newState.setIn(['guideIdsByUserId', userId], [...newGuidesIds])
+
+  newState = newState.setIn(
+    ['feedGuidesById'],
+    [...newGuidesIds, ...state.feedGuidesById]
+  )
   return newState
 }
 
@@ -84,7 +112,9 @@ export const failure = (state, {error}) =>
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.CREATE_GUIDE]: request,
+  [Types.CREATE_GUIDE_SUCCESS]: receiveNewGuide,
   [Types.RECEIVE_GUIDES]: receiveGuides,
+  [Types.RECEIVE_USERS_GUIDES]: receiveUsersGuides,
   [Types.GUIDE_FAILURE]: failure,
   [Types.UPDATE_GUIDE]: request,
   [Types.GET_GUIDE]: request,

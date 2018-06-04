@@ -391,6 +391,7 @@ const create = () => {
 
   const getUserGuides = (userId) => {
     return api.get(`guide/user/${userId}`)
+    .then(response => safeNormalize(response, [Guide]))
   }
 
   const getUserFeedGuides = (userId) => {

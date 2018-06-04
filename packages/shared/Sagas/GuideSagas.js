@@ -22,13 +22,16 @@ function * createCover(api, guide){
   return guide
 }
 
-export function * createGuide(api, {guide}) {
+export function * createGuide(api, {guide, userId}) {
   const coverResponse = yield createCover(api, guide)
   // add error handling here
   const response = yield call(api.createGuide, guide)
   if (response.ok) {
     const {guides} = response.data.entities
-    yield put(GuideActions.receiveGuides(guides, true))
+    yield [
+      put(GuideActions.receiveGuides(guides)),
+      put(GuideActions.createGuideSuccess(guides, userId)),
+    ]
   }
   else {
     yield put(GuideActions.guideFailure(
@@ -80,11 +83,11 @@ export function * deleteGuide(api, {guideId, userId}) {
 export function * getUserGuides(api, {userId}) {
   const response = yield call(api.getUserGuides, userId)
   if (response.ok) {
-    const guides = response.data.reduce((guides, guide) => {
-      guides[guide.id] = guide
-      return guides
-    }, {})
-    yield put(GuideActions.receiveGuides(guides))
+    const {guides} = response.data.entities
+    yield [
+      put(GuideActions.receiveGuides(guides)),
+      put(GuideActions.receiveUsersGuides(guides, userId)),
+    ]
   }
   // add error handling for fail
 }

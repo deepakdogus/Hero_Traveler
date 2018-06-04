@@ -27,7 +27,7 @@ class AddStoryToGuides extends Component {
   }
 
   state = {
-    storyGuides: this.props.storyGuides || [],
+    isInGuide: this.props.isInGuide || [],
   }
 
   onDone = () => {
@@ -52,7 +52,7 @@ class AddStoryToGuides extends Component {
   }
 
   render = () => {
-    const { storyGuides } = this.state
+    const { isInGuide } = this.state
     const { guides, onCancel, fetching } = this.props
 
     return (
@@ -65,9 +65,7 @@ class AddStoryToGuides extends Component {
             onLeft={onCancel}
             leftTitle={'Cancel'}
             title={'ADD TO GUIDE'}
-            isRightValid={this.props.storyGuides.length !== storyGuides.length}
             onRight={this.onDone}
-            rightDisabled={this.props.storyGuides.length === storyGuides.length}
             rightTitle={'Done'}
             rightTextStyle={storyCoverStyles.navBarRightTextStyle}
             style={storyCoverStyles.navBarStyle}
@@ -88,8 +86,7 @@ class AddStoryToGuides extends Component {
             )}
             {!!guides.length &&
               guides.map((guide, idx) => {
-                const isActive =
-                  storyGuides.filter(g => g._id === guide.id).length === 1
+                const isActive = isInGuide[guide.id]
                 return (
                   <GuideListItem
                     imageUri={{ uri: getImageUrl(guide.coverImage, 'basic') }}
@@ -109,26 +106,31 @@ class AddStoryToGuides extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  // Integrate mapping of guides to user here.
-  const guides = []
-  for (let guideKey of Object.keys(state.entities.guides.entities)) {
-    guides.push(state.entities.guides.entities[guideKey])
-  }
-  // Create story guides array so can see those that are already checked/unchecked
-  const storyGuides = []
-  for (let guide of guides) {
-    if (guide.stories.includes(ownProps.story._id)) {
-      storyGuides.push(guide)
+  const sessionUserId = state.session.userId
+  const {guideIdsByUserId, entities, fetchStatus} = state.entities.guides
+  const storyId = ownProps.story._id
+  let usersGuides = []
+  let isInGuide = {}
+  // if the user has guides we populate usersGuides and isInGuide
+  if (guideIdsByUserId[sessionUserId]) {
+    usersGuides = guideIdsByUserId[sessionUserId].map(key => {
+      return entities[key]
+    })
+    // Create story guides array so can see those that are already checked/unchecked
+    isInGuide = {}
+    for (let guide of usersGuides) {
+      isInGuide[guide.id] = guide.stories.indexOf(storyId) !== -1
     }
   }
+
   return {
-    user: state.entities.users.entities[state.session.userId],
+    user: state.entities.users.entities[sessionUserId],
     accessToken: find(state.session.tokens, { type: 'access' }),
-    guides,
-    storyGuides,
-    fetching: state.entities.guides.fetchStatus.fetching,
-    loaded: state.entities.guides.fetchStatus.loaded,
-    status: state.entities.guides.fetchStatus,
+    guides: usersGuides,
+    isInGuide,
+    fetching: fetchStatus.fetching,
+    loaded: fetchStatus.loaded,
+    status: fetchStatus,
   }
 }
 

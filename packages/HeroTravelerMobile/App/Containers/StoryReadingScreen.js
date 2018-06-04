@@ -301,6 +301,7 @@ class StoryReadingScreen extends React.Component {
         error={error}
         isBookmarked={isBookmarked}
         isLiked={isLiked}
+        isStory
         onPressLike={this._toggleLike}
         onPressBookmark={this._onPressBookmark}
         onPressComment={this._onPressComment}

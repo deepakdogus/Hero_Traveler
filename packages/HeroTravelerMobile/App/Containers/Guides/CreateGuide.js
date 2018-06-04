@@ -77,12 +77,6 @@ class CreateGuide extends Component {
       },
       () => {
         let guide = this.state.guide
-        // Think ht-core needs updating before it can use story cover as default
-        // if (!guide.coverImage) {
-        //   guide = Object.assign({}, guide, {
-        //     coverImage: this.props.story.coverImage,
-        //   })
-        // }
         this.props.createGuide(guide)
       }
     )
@@ -167,9 +161,9 @@ class CreateGuide extends Component {
   }
 
   render = () => {
-    const { onDone, onError, props, state, updateGuide } = this
+    const { onDone, props, state, updateGuide } = this
     const { creating, guide } = state
-    const { error, fetching, onCancel } = props
+    const { error, onCancel } = props
     const {
       cost,
       description,

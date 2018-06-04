@@ -114,7 +114,7 @@ export default class FeedItemPreview extends Component {
   }
 
   renderUserSection() {
-    const {user, feedItem, isReadingScreen, isAuthor, isStory} = this.props
+    const {user, feedItem, isReadingScreen, isAuthor} = this.props
     const isFollowing = _.includes(this.props.myFollowedUsers, user.id)
 
     return (
@@ -183,7 +183,7 @@ export default class FeedItemPreview extends Component {
             </View>
           }
         </View>
-        {!isStory && isReadingScreen && this.renderTitle()}
+        {this.isGuideReadingScreen() && this.renderTitle()}
         <View style={styles.separator}/>
       </View>
     )

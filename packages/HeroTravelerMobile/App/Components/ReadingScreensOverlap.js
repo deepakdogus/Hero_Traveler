@@ -90,6 +90,7 @@ class ReadingScreenOverlap extends React.Component {
           }
           <ConnectedFeedItemPreview
             isFeed={false}
+            isStory={this.props.isStory}
             onPressLike={this._toggleLike}
             showLike={false}
             key={targetEntity.id}

@@ -376,7 +376,8 @@ const create = () => {
 
   const updateGuide = (guide) => {
     return api.put(`guide/${guide.id}`, {guide})
-  }
+    .then(response => safeNormalize(response, Guide))
+ }
 
   const getGuide = (guideId) => {
     return api.get(`guide/${guideId}`)

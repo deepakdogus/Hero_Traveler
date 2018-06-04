@@ -33,11 +33,23 @@ class CreateGuide extends Component {
 
   static propTypes = {
     onCancel: PropTypes.func,
+    guide: PropTypes.object,
+    fetching: PropTypes.bool,
+    user: PropTypes.object,
+    story: PropTypes.object,
+    updateGuide: PropTypes.func,
+    createGuide: PropTypes.func,
+  }
+
+  constructor(props) {
+    super(props)
+
   }
 
   state = {
     creating: false,
     guide: {
+      id: undefined,
       title: undefined,
       description: undefined,
       author: this.props.user.id,
@@ -71,18 +83,31 @@ class CreateGuide extends Component {
   }
 
   onDone = () => {
+    const {creating} = this.state
+    const {updateGuide, createGuide} = this.props
+    if (creating) return
+    const onDoneFunc = this.isExistingGuide ? updateGuide : createGuide
     this.setState(
       {
         creating: true,
       },
       () => {
         let guide = this.state.guide
-        this.props.createGuide(guide)
+        onDoneFunc(guide)
       }
     )
   }
 
-  componentWillReceiveProps = nextProps => {
+  componentWillMount() {
+    const {guide} = this.props
+    if (guide) {
+      this.setState({
+        guide,
+      })
+    }
+  }
+
+  componentWillReceiveProps = (nextProps) => {
     if (
       this.state.creating &&
       this.props.fetching &&
@@ -160,6 +185,11 @@ class CreateGuide extends Component {
     this.updateGuide({ isPrivate: !this.state.guide.isPrivate })
   }
 
+  isExistingGuide = () => {
+    const {guide} = this.state
+    return guide && guide.id
+  }
+
   render = () => {
     const { onDone, props, state, updateGuide } = this
     const { creating, guide } = state
@@ -174,7 +204,7 @@ class CreateGuide extends Component {
       coverImage,
     } = guide
 
-    const guideRequirementsMet = title && locations && coverImage
+    const guideRequirementsMet = title && locations.length && coverImage
 
     return (
       <View style={storyCoverStyles.root}>
@@ -192,10 +222,10 @@ class CreateGuide extends Component {
           <NavBar
             onLeft={creating ? noop : onCancel}
             leftTitle={'Cancel'}
-            title={'CREATE GUIDE'}
+            title={this.isExistingGuide ? 'EDIT GUIDE' : 'CREATE GUIDE'}
             isRightValid={guideRequirementsMet && !creating ? true : false}
-            onRight={guideRequirementsMet && !creating ? onDone : noop}
-            rightTitle={'Create'}
+            onRight={guideRequirementsMet && onDone}
+            rightTitle={this.isExistingGuide ? 'Save' : 'Create'}
             rightTextStyle={storyCoverStyles.navBarRightTextStyle}
             style={storyCoverStyles.navBarStyle}
           />
@@ -269,11 +299,13 @@ class CreateGuide extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, props) => {
+  const guides = state.entities.guides.entities
+
   return {
     user: state.entities.users.entities[state.session.userId],
     accessToken: find(state.session.tokens, { type: 'access' }),
-    guides: { ...state.entities.guides.entities },
+    guide: guides[props.guideId],
     fetching: state.entities.guides.fetchStatus.fetching,
     loaded: state.entities.guides.fetchStatus.loaded,
     status: state.entities.guides.fetchStatus,
@@ -282,10 +314,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   createGuide: guide => dispatch(GuideActions.createGuide(guide)),
+  updateGuide: guide => dispatch(GuideActions.updateGuide(guide)),
 })
 
-const ConnectedCreateGuide = connect(mapStateToProps, mapDispatchToProps)(
-  CreateGuide
-)
+const ConnectedCreateGuide = connect(mapStateToProps, mapDispatchToProps)(CreateGuide)
 
 export default ConnectedCreateGuide

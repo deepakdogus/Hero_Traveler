@@ -61,9 +61,23 @@ export default class FeedItemPreview extends Component {
   }
 
   _touchEdit = () => {
-    const feedItemId = this.props.feedItem.id
-    NavActions.createStoryFlow({feedItemId, type: 'reset', navigatedFromProfile: true, shouldLoadStory: false})
-    NavActions.createStory_cover({feedItemId, navigatedFromProfile: true, shouldLoadStory: false})
+    const {isStory, feedItem} = this.props
+    if (isStory) {
+      NavActions.createStoryFlow({
+        storyId: feedItem.id,
+        type: 'reset',
+        navigatedFromProfile: true,
+        shouldLoadStory: false
+      })
+      NavActions.createStory_cover({
+        storyId: feedItem.id,
+        navigatedFromProfile: true,
+        shouldLoadStory: false
+      })
+    }
+    else {
+      NavActions.createGuide({ guideId: feedItem.id })
+    }
   }
 
   _touchTrash = () => {

@@ -57,10 +57,7 @@ export function * updateGuide(api, {guide}) {
   // add error handling
   const response = yield call(api.updateGuide, guide)
   if (response.ok) {
-    // refactor this
-    const guide = response.data.guide
-    const guides = {}
-    guides[guide.id] = guide
+    const {guides} = response.data.entities
     yield put(GuideActions.receiveGuides(guides))
   }
   // add error handling for fail

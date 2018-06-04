@@ -16,6 +16,7 @@ const { Types, Creators } = createActions({
   getUserGuides: ['userId'],
   guideFeedRequest: ['userId'],
   guideFeedSuccess: ['feedGuidesById'],
+  bulkSaveStoryToGuideRequest: ['storyId', 'isInGuide'],
 })
 
 export const GuideTypes = Types
@@ -123,4 +124,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_USER_GUIDES]: request,
   [Types.GUIDE_FEED_REQUEST]: request,
   [Types.GUIDE_FEED_SUCCESS]: guideFeedSuccess,
+  [Types.BULK_SAVE_STORY_TO_GUIDE_REQUEST]: request,
 })

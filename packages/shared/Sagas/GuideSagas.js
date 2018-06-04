@@ -109,3 +109,18 @@ export function * getUserFeedGuides(api, {userId}) {
     ))
   }
 }
+
+export function * bulkSaveStoryToGuide(api, {storyId, isInGuide}) {
+  const response = yield call(api.bulkSaveStoryToGuide, storyId, isInGuide)
+  if (response.ok) {
+    const {guides} = response.data.entities
+    yield [
+      put(GuideActions.receiveGuides(guides)),
+    ]
+  }
+  else {
+    yield put(GuideActions.guideFailure(
+      new Error("Failed to add story to guides")
+    ))
+  }
+}

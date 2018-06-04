@@ -27,19 +27,24 @@ class AddStoryToGuides extends Component {
   }
 
   state = {
-    isInGuide: this.props.isInGuide || [],
+    isInGuide: this.props.isInGuide || {},
   }
 
   onDone = () => {
-
+    const {bulkSaveStoryToGuide, story} = this.props
+    const {isInGuide} = this.state
+    bulkSaveStoryToGuide(story._id, isInGuide)
+    NavActions.pop()
   }
 
   componentDidMount = () => {
     this.props.getUserGuides(this.props.user.id)
   }
 
-  toggleGuide = guide => {
-
+  toggleGuide = guideId => {
+    const {isInGuide} = this.state
+    isInGuide[guideId] = !isInGuide[guideId]
+    this.setState({isInGuide})
   }
 
   filterGuides = (searchTerm) => {
@@ -93,6 +98,7 @@ class AddStoryToGuides extends Component {
                     key={`guide--${idx}`}
                     label={guide.title}
                     active={isActive}
+                    guideId={guide.id}
                     onToggle={this.toggleGuide}
                   />
                 )
@@ -137,6 +143,9 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => ({
   getUserGuides: userId => dispatch(GuideActions.getUserGuides(userId)),
   updateGuide: guide => dispatch(GuideActions.updateGuide(guide)),
+  bulkSaveStoryToGuide: (storyId, isInGuide) => {
+    dispatch(GuideActions.bulkSaveStoryToGuideRequest(storyId, isInGuide))
+  }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddStoryToGuides)

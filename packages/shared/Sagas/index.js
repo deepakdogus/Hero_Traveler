@@ -93,6 +93,7 @@ import {
   deleteGuide,
   getUserGuides,
   getUserFeedGuides,
+  bulkSaveStoryToGuide,
 } from './GuideSagas'
 
 /* ------------- API ------------- */
@@ -197,5 +198,6 @@ export default function * root () {
     takeLatest(GuideTypes.DELETE_GUIDE_REQUEST, deleteGuide, heroAPI),
     takeLatest(GuideTypes.GET_USER_GUIDES, getUserGuides, heroAPI),
     takeLatest(GuideTypes.GUIDE_FEED_REQUEST, getUserFeedGuides, heroAPI),
+    takeLatest(GuideTypes.BULK_SAVE_STORY_TO_GUIDE_REQUEST, bulkSaveStoryToGuide, heroAPI),
   ]
 }

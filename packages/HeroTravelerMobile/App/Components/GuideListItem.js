@@ -12,7 +12,6 @@ class GuideListItem extends Component {
     active: false,
     create: false,
     onPress: () => {},
-    onToggle: () => {}
   }
 
   static propTypes = {
@@ -22,16 +21,12 @@ class GuideListItem extends Component {
     onPress: PropTypes.func,
     onToggle: PropTypes.func,
     imageUri: PropTypes.object,
-  }
-
-  state = {
-    active: this.props.active
+    guideId: PropTypes.string,
   }
 
   onToggle = () => {
-    this.setState({
-      active: !this.state.active
-    }, this.props.onToggle())
+    const {guideId, onToggle} = this.props
+    onToggle(guideId)
   }
 
   renderLeftElement = () => {
@@ -48,8 +43,7 @@ class GuideListItem extends Component {
   }
 
   renderRightElement = () => {
-    const {create} = this.props
-    const {active} = this.state
+    const {create, active} = this.props
     if (create) return null
     return (
        <View style={styles.checkbox}>

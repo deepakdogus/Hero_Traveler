@@ -380,6 +380,11 @@ const create = () => {
     .then(response => safeNormalize(response, Guide))
   }
 
+  const bulkSaveStoryToGuide = (storyId, isInGuide) => {
+    return api.put(`guide/story/${storyId}`, {isInGuide})
+    .then(response => safeNormalize(response, [Guide]))
+  }
+
   const getGuide = (guideId) => {
     return api.get(`guide/${guideId}`)
     .then(response => safeNormalize(response, Guide))
@@ -468,6 +473,7 @@ const create = () => {
     createGuide,
     updateGuide,
     deleteGuide,
+    bulkSaveStoryToGuide,
     getGuide,
     getUserGuides,
     getUserFeedGuides,

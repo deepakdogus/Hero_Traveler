@@ -90,6 +90,7 @@ import {
   createGuide,
   getGuide,
   updateGuide,
+  deleteGuide,
   getUserGuides,
   getUserFeedGuides,
 } from './GuideSagas'
@@ -193,6 +194,7 @@ export default function * root () {
     takeLatest(GuideTypes.CREATE_GUIDE, createGuide, heroAPI),
     takeLatest(GuideTypes.GET_GUIDE_REQUEST, getGuide, heroAPI),
     takeLatest(GuideTypes.UPDATE_GUIDE, updateGuide, heroAPI),
+    takeLatest(GuideTypes.DELETE_GUIDE_REQUEST, deleteGuide, heroAPI),
     takeLatest(GuideTypes.GET_USER_GUIDES, getUserGuides, heroAPI),
     takeLatest(GuideTypes.GUIDE_FEED_REQUEST, getUserFeedGuides, heroAPI),
   ]

@@ -92,7 +92,7 @@ class ReadingDetails extends React.Component {
 
     return (
       <Fragment>
-        {this.hasLocationInfo() &&
+        {!!this.hasLocationInfo() &&
           this.renderRow(
             'location',
             'Location',

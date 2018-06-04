@@ -4,6 +4,7 @@ import endpointWrapper from '../../utils/endpointWrapper'
 import create from './create'
 import update from './update'
 import getGuide from './getGuide'
+import deleteGuide from './deleteGuide'
 import getUserGuides from './getUserGuides'
 import getUserFeedGuides from './getUserFeedGuides'
 
@@ -22,6 +23,11 @@ router.put('/:guideId',
 router.get('/:guideId',
   hasValidOauth,
   endpointWrapper(getGuide)
+)
+
+router.delete('/:guideId',
+  hasValidOauth,
+  endpointWrapper(deleteGuide)
 )
 
 router.get('/user/:userId',

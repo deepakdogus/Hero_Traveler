@@ -27,6 +27,8 @@ import TabIcon from './TabIcon'
 export default class FeedItemPreview extends Component {
   // is showLike now always true? MBT - 12/07/17
   static propTypes = {
+    user: PropTypes.object,
+    feedItem: PropTypes.object,
     onPressLike: PropTypes.func,
     onPress: PropTypes.func,
     onPressUser: PropTypes.func,
@@ -40,7 +42,9 @@ export default class FeedItemPreview extends Component {
     isReadingScreen: PropTypes.bool,
     isVisible: PropTypes.bool,
     isFeed: PropTypes.bool,
+    isStory: PropTypes.bool,
     areInRenderLocation: PropTypes.bool,
+    deleteGuide: PropTypes.func,
     deleteStory: PropTypes.func,
     removeDraft: PropTypes.func,
     onPressFollow: PropTypes.func,
@@ -63,7 +67,7 @@ export default class FeedItemPreview extends Component {
   }
 
   _touchTrash = () => {
-    const { deleteStory, removeDraft, feedItem, user } = this.props
+    const { deleteStory, removeDraft, feedItem, user, isStory, deleteGuide} = this.props
     Alert.alert(
       'Delete Story',
       'Are you sure you want to delete this story?',
@@ -73,8 +77,13 @@ export default class FeedItemPreview extends Component {
           text: 'Delete',
           style: 'destructive',
           onPress: () => {
-            if (feedItem.draft) removeDraft(feedItem.id)
-            else deleteStory(user.id, feedItem.id)
+            if (isStory) {
+              if (feedItem.draft) removeDraft(feedItem.id)
+              else deleteStory(user.id, feedItem.id)
+            }
+            else {
+              deleteGuide(feedItem.id)
+            }
             NavActions.pop()
           },
         }

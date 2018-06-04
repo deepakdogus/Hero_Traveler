@@ -381,7 +381,11 @@ const create = () => {
   const getGuide = (guideId) => {
     return api.get(`guide/${guideId}`)
     .then(response => safeNormalize(response, Guide))
-}
+  }
+
+  const deleteGuide = (guideId) => {
+    return api.delete(`guide/${guideId}`)
+  }
 
   const getUserGuides = (userId) => {
     return api.get(`guide/user/${userId}`)
@@ -460,6 +464,7 @@ const create = () => {
     flagStory,
     createGuide,
     updateGuide,
+    deleteGuide,
     getGuide,
     getUserGuides,
     getUserFeedGuides,

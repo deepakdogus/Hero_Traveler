@@ -6,6 +6,7 @@ import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
 import UserActions, {getFollowers} from '../Shared/Redux/Entities/Users'
 import FeedItemPreview from '../Components/FeedItemPreview'
 import StoryActions from '../Shared/Redux/Entities/Stories'
+import GuideActions from '../Shared/Redux/Entities/Guides'
 import {navToProfile} from '../Navigation/NavigationRouter'
 
 function getAreInRenderLocation(state, ownProps){
@@ -78,6 +79,7 @@ const mapDispatchToProps = (dispatch, props) => {
   return {
     onPressStory: (title) => NavActions.story({storyId: feedItemId, title}),
     onPressGuide: (title) => NavActions.guide({guideId: feedItemId, title}),
+    deleteGuide: () => dispatch(GuideActions.deleteGuideRequest(feedItemId)),
     deleteStory: () => dispatch(StoryActions.deleteStory(userId, feedItemId)),
     removeDraft: () => dispatch(StoryActions.removeDraft(feedItemId)),
     onPressLike: () => dispatch(StoryActions.storyLike(userId, feedItemId)),

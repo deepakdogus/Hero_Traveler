@@ -133,5 +133,6 @@ GuideSchema.statics = {
   },
 }
 
+GuideSchema.plugin(softDelete, {overrideMethods: true})
 
 export default mongoose.model(ModelName, GuideSchema)

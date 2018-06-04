@@ -19,8 +19,8 @@ export default class GuideStoriesOfType extends React.Component {
     onPressAuthor: PropTypes.func.isRequired,
   }
 
-  onPress = () => {
-    this.props.onPress(this.props.type)
+  onPressAll = () => {
+    this.props.onPressAll(this.props.type)
   }
 
   onPressStory = (story) => {
@@ -82,7 +82,7 @@ export default class GuideStoriesOfType extends React.Component {
             })}
           </View>
           {!isShowAll &&
-            <TouchableOpacity onPress={this.onPress}>
+            <TouchableOpacity onPress={this.onPressAll}>
               <View style={styles.seeAllView}>
                 <Text style={styles.seeAll}>
                   See all ({stories.length})

@@ -22,7 +22,7 @@ function * createCover(api, guide){
   return guide
 }
 
-export function * createGuide (api, {guide}) {
+export function * createGuide(api, {guide}) {
   const coverResponse = yield createCover(api, guide)
   // add error handling here
   const response = yield call(api.createGuide, guide)
@@ -30,13 +30,13 @@ export function * createGuide (api, {guide}) {
     const guide = response.data.guide
     const guides = {}
     guides[guide.id] = guide
-    yield put(GuideActions.receiveGuides(guides))
+    yield put(GuideActions.receiveGuides(guides, true))
   }
   // add error handling for fail
 }
 
 
-export function * getGuide (api, {guideId}) {
+export function * getGuide(api, {guideId}) {
   const response = yield call(api.getGuide, guideId)
   if (response.ok) {
     const {guides, users} = response.data.entities
@@ -52,7 +52,7 @@ export function * getGuide (api, {guideId}) {
   }
 }
 
-export function * updateGuide (api, {guide}) {
+export function * updateGuide(api, {guide}) {
   const coverResponse = yield createCover(api, guide)
   // add error handling
   const response = yield call(api.updateGuide, guide)
@@ -66,7 +66,19 @@ export function * updateGuide (api, {guide}) {
   // add error handling for fail
 }
 
-export function * getUserGuides (api, {userId}) {
+export function * deleteGuide(api, {guideId, userId}) {
+  const response = yield call(api.deleteGuide, guideId)
+  if (response.ok) {
+    yield put(GuideActions.deleteGuideSuccess(guideId, userId))
+  }
+  else {
+    yield put(GuideActions.guideFailure(
+      new Error("Failed to delete guide")
+    ))
+  }
+}
+
+export function * getUserGuides(api, {userId}) {
   const response = yield call(api.getUserGuides, userId)
   if (response.ok) {
     const guides = response.data.reduce((guides, guide) => {

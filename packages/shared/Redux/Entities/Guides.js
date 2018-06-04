@@ -5,10 +5,12 @@ import Immutable from 'seamless-immutable'
 
 const { Types, Creators } = createActions({
   createGuide: ['guide'],
-  receiveGuides: ['guides'],
+  receiveGuides: ['guides', 'isOwnGuide'],
   createGuideFailure: ['error'],
   updateGuide: ['guide'],
   getGuideRequest: ['guideId'],
+  deleteGuideRequest: ['guideId', 'userId'],
+  deleteGuideSuccess: ['guideId', 'userId'],
   getUserGuides: ['userId'],
   guideFeedRequest: ['userId'],
   guideFeedSuccess: ['feedGuidesById'],
@@ -26,6 +28,7 @@ export const INITIAL_STATE = Immutable({
     loaded: false,
   },
   error: null,
+  guideIdsByUserId: {},
   feedGuidesById: [],
 })
 
@@ -43,8 +46,8 @@ export const request = (state) => {
   })
 }
 
-export const receiveGuides = (state, {guides = {}}) => {
-  return state.merge({
+export const receiveGuides = (state, {guides = {}, isOwnGuide = false}) => {
+  let newState = state.merge({
     fetchStatus: {
       fetching: false,
       loaded: true,
@@ -53,6 +56,21 @@ export const receiveGuides = (state, {guides = {}}) => {
   }, {
     deep: true
   })
+  if (isOwnGuide) {
+    const newGuidesIds = Object.keys(guides)
+    newState.merge({
+      feedGuidesById: [...newGuidesIds, ...state.feedGuidesById],
+    })
+  }
+  return newState
+}
+
+export const deleteGuideSuccess = (state, {guideId, userId}) => {
+  let newState = state.setIn(['entities'], state.entities.without(guideId))
+  // add a line to remove from guideIdsByUserId in future
+  return newState.setIn(['feedGuidesById'], state.feedGuidesById.filter(id => {
+    return id !== guideId
+  }))
 }
 
 export const guideFeedSuccess = (state, {feedGuidesById}) => {
@@ -70,6 +88,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GUIDE_FAILURE]: failure,
   [Types.UPDATE_GUIDE]: request,
   [Types.GET_GUIDE]: request,
+  [Types.DELETE_GUIDE_REQUEST]: request,
+  [Types.DELETE_GUIDE_SUCCESS]: deleteGuideSuccess,
   [Types.GET_USER_GUIDES]: request,
   [Types.GUIDE_FEED_REQUEST]: request,
   [Types.GUIDE_FEED_SUCCESS]: guideFeedSuccess,

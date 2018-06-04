@@ -1,5 +1,6 @@
 export {default as createGuide} from './createGuide'
 export {default as getUserGuides} from './getUserGuides'
 export {default as updateGuide} from './updateGuide'
+export {default as deleteGuide} from './deleteGuide'
 export {default as getGuideById} from './getGuideById'
 export {default as getUserFeedGuides} from './getUserFeedGuides'

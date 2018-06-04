@@ -42,7 +42,12 @@ export default async function updateUser(req) {
 
     for (let key in attrs) {
       if (attrsBlacklist.indexOf(key) < 0) {
-        user[key] = attrs[key];
+        if (key.indexOf('profile.') == 0) {
+          user.profile["taytay"] = "taytay"
+          user.profile[key.slice('profile.'.length)] = attrs[key];
+        } else {
+          user[key] = attrs[key];
+        }
       }
     }
     return user.save().then(user => {

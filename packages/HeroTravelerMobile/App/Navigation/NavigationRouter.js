@@ -14,6 +14,7 @@ import ExploreScreen from '../Containers/Tabs/ExploreScreen'
 import TabIcon from '../Components/TabIcon'
 // Profile tab
 import ProfileScreen from '../Containers/Tabs/ProfileScreen'
+import ProfileEditScreen from '../Containers/ProfileEditScreen'
 import ReadOnlyProfileScreen from '../Containers/ReadOnlyProfileScreen'
 import SettingsScreen from '../Containers/SettingsScreen'
 import Settings_NotificationScreen from '../Containers/Settings_NotificationScreen'
@@ -363,7 +364,7 @@ export default NavActions.create(
       </Scene>
       <Scene
         key='edit_profile'
-        component={ProfileScreen}
+        component={ProfileEditScreen}
         hideNavBar
         isEditing={true}
         direction='vertical'

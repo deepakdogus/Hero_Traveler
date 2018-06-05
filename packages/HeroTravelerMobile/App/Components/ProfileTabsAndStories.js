@@ -16,6 +16,7 @@ import _ from 'lodash'
 export default class ProfileTabsAndStories extends Component {
   static propTypes = {
     editable: PropTypes.bool,
+    isStory: PropTypes.bool,
     tabTypes: PropTypes.object,
     renderProfileInfo: PropTypes.func,
     storiesById: PropTypes.arrayOf(PropTypes.string),
@@ -45,13 +46,13 @@ export default class ProfileTabsAndStories extends Component {
 
   renderFeedItem = (feedItem, index) => {
     const {
-      tabTypes, selectedTab,
+      tabTypes, selectedTab, isStory,
       editable, sessionUserId, location
     } = this.props
     return (
       <ConnectedFeedItemPreview
         isFeed={true}
-        isStory={true}
+        isStory={isStory}
         forProfile={true}
         editable={editable && selectedTab !== tabTypes.bookmarks}
         titleStyle={styles.storyTitleStyle}
@@ -117,7 +118,7 @@ export default class ProfileTabsAndStories extends Component {
   }
 
   render() {
-    const {renderProfileInfo, storiesById, fetchStatus, editable} = this.props
+    const {renderProfileInfo, storiesById, fetchStatus, editable, isStory} = this.props
     const isGettingStories = this.isGettingStories()
 
     return (
@@ -146,7 +147,7 @@ export default class ProfileTabsAndStories extends Component {
 
         {storiesById.length !== 0 && !isGettingStories &&
           <ConnectedFeedList
-            isStory={true}
+            isStory={isStory}
             style={styles.feedList}
             entitiesById={storiesById}
             refreshing={false}

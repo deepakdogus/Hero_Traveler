@@ -20,6 +20,7 @@ class ProfileScreen extends React.Component {
       this.props.userStoriesFetchStatus !== nextProps.userStoriesFetchStatus,
       this.props.userBookmarksById !== nextProps.userBookmarksById,
       this.props.userBookmarksFetchStatus !== nextProps.userBookmarksFetchStatus,
+      this.props.guidesFetchStatus !== nextProps.guidesFetchStatus,
     ])
 
     return shouldUpdate
@@ -61,6 +62,9 @@ class ProfileScreen extends React.Component {
       updateUser,
       userBookmarksById,
       userBookmarksFetchStatus,
+      draftsFetchStatus,
+      guideIds,
+      guidesFetchStatus,
     } = this.props
 
     // Deals with the case that the user logs out
@@ -77,6 +81,7 @@ class ProfileScreen extends React.Component {
         stories={userStoriesById}
         drafts={draftsById}
         bookmarks={userBookmarksById}
+        guideIds={guideIds}
         onSelectTab={this._selectTab}
         editable={true}
         isEditing={this.props.isEditing}
@@ -84,7 +89,8 @@ class ProfileScreen extends React.Component {
         accessToken={accessToken}
         profileImage={this._isTempImage() ? getImageUrl(user.profile.tempCover, 'basic') : getImageUrl(user.profile.cover, 'basic')}
         fetchStatus={userStoriesFetchStatus}
-        draftsFetchStatus={this.props.draftsFetchStatus}
+        draftsFetchStatus={draftsFetchStatus}
+        guidesFetchStatus={guidesFetchStatus}
         bookmarksFetchStatus={userBookmarksFetchStatus}
         hasTabbar={!this.props.isEditing}
       />
@@ -94,8 +100,7 @@ class ProfileScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   const {userId} = state.session
-  let {stories, users} = state.entities
-
+  let {stories, users, guides} = state.entities
   return {
     user: state.entities.users.entities[userId],
     accessToken: _.find(state.session.tokens, {type: 'access'}).value,
@@ -105,7 +110,9 @@ const mapStateToProps = (state) => {
     draftsById: stories.drafts.byId,
     userBookmarksById: getByBookmarks(users, userId),
     userBookmarksFetchStatus: getBookmarksFetchStatus(stories, userId),
-    error: stories.error
+    guideIds: guides.guideIdsByUserId[userId],
+    guidesFetchStatus: guides.fetchStatus,
+    error: stories.error,
   }
 }
 

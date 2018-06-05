@@ -48,7 +48,8 @@ class ProfileView extends React.Component {
     onPressFollow: () => {},
     bookmarksFetchStatus: {},
     draftsFetchStatus: {},
-    storiesFetchStatus: {}
+    storiesFetchStatus: {},
+    guidesFetchStatus: {},
   }
 
   static propTypes = {
@@ -174,10 +175,11 @@ class ProfileView extends React.Component {
   _bioRef = c => this.bioInput = c
 
   getStoriesById() {
-    const {drafts, bookmarks, stories} = this.props
+    const {drafts, bookmarks, stories, guideIds} = this.props
     if (this.state.selectedTab === TabTypes.stories) return stories
     else if (this.state.selectedTab === TabTypes.drafts) return drafts
     else if (this.state.selectedTab === TabTypes.bookmarks) return bookmarks
+    else if (this.state.selectedTab === TabTypes.guides) return guideIds
   }
 
   getFetchStatus(){
@@ -185,6 +187,7 @@ class ProfileView extends React.Component {
     if (selectedTab === TabTypes.stories) return this.props.fetchStatus
     else if (selectedTab === TabTypes.drafts) return this.props.draftsFetchStatus
     else if (selectedTab === TabTypes.bookmarks) return this.props.bookmarksFetchStatus
+    else if (selectedTab === TabTypes.guides) return this.props.guidesFetchStatus
   }
 
   renderProfileInfo = () => {
@@ -225,7 +228,7 @@ class ProfileView extends React.Component {
 
   render() {
     const {editable, isEditing, location, stories} = this.props
-
+    const {selectedTab} = this.state
     let showTooltip = !isEditing && editable &&
       !stories.length && !this.hasCompletedNoStoriesTooltip()
 
@@ -266,6 +269,7 @@ class ProfileView extends React.Component {
           {!isEditing &&
             <ProfileTabsAndStories
               editable={editable}
+              isStory={selectedTab !== TabTypes.guides}
               renderProfileInfo={this.renderProfileInfo}
               storiesById={this.getStoriesById()}
               fetchStatus={this.getFetchStatus()}

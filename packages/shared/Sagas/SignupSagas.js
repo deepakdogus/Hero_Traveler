@@ -25,8 +25,8 @@ export function * signupEmail (api, action) {
     yield [
       put(UserActions.receiveUsers({[user.id]: user})),
       call(api.setAuth, accessToken.value),
+      put(SessionActions.initializeSession(user.id, tokens)),
       put(SignupActions.signupEmailSuccess()),
-      put(SessionActions.initializeSession(user.id, tokens))
     ]
   } else {
     yield put(SignupActions.signupEmailFailure(response.data.message))

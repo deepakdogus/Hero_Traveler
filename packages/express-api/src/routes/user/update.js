@@ -40,6 +40,10 @@ export default async function updateUser(req) {
     const shouldReindexUser = getShouldUpdateAlgolia(user, attrs)
     const shouldReindexUsersStories = hasNewUsername(user, attrs)
 
+    if (hasNewUsername(user, attrs)) {
+      user.usernameIsTemporary = false;
+    }
+
     for (let key in attrs) {
       if (attrsBlacklist.indexOf(key) < 0) {
         if (key.indexOf('profile.') == 0) {
@@ -49,6 +53,7 @@ export default async function updateUser(req) {
         }
       }
     }
+
     return user.save().then(user => {
       if (shouldReindexUser) algoliaHelper.updateUserIndex(user)
       if (shouldReindexUsersStories) {

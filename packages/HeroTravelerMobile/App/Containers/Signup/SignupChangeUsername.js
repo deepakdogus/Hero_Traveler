@@ -55,13 +55,14 @@ class SignupChangeUsername extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      newUsername: props.user.username,
+      newUsername: "",
       error: null
     }
   }
 
   componentDidMount() {
     if (!this.props.user.usernameIsTemporary) {
+      NavActions.signupFlow_topics();
     }
   }
 

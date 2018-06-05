@@ -174,7 +174,7 @@ class ProfileView extends React.Component {
 
   _bioRef = c => this.bioInput = c
 
-  getStoriesById() {
+  getFeedItemsById() {
     const {drafts, bookmarks, stories, guideIds} = this.props
     if (this.state.selectedTab === TabTypes.stories) return stories
     else if (this.state.selectedTab === TabTypes.drafts) return drafts
@@ -271,7 +271,7 @@ class ProfileView extends React.Component {
               editable={editable}
               isStory={selectedTab !== TabTypes.guides}
               renderProfileInfo={this.renderProfileInfo}
-              storiesById={this.getStoriesById()}
+              feedItemsById={this.getFeedItemsById()}
               fetchStatus={this.getFetchStatus()}
               tabTypes={editable ? TabTypes : ViewOnlyTabTypes}
               selectTab={this.selectTab}

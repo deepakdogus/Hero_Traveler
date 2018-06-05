@@ -19,7 +19,7 @@ export default class ProfileTabsAndStories extends Component {
     isStory: PropTypes.bool,
     tabTypes: PropTypes.object,
     renderProfileInfo: PropTypes.func,
-    storiesById: PropTypes.arrayOf(PropTypes.string),
+    feedItemsById: PropTypes.arrayOf(PropTypes.string),
     fetchStatus: PropTypes.object,
     selectTab: PropTypes.func,
     selectedTab: PropTypes.string,
@@ -74,7 +74,7 @@ export default class ProfileTabsAndStories extends Component {
   }
 
   areNoStories(){
-    return this.props.storiesById.length === 0
+    return this.props.feedItemsById.length === 0
   }
 
   getNoStoriesText() {
@@ -118,9 +118,8 @@ export default class ProfileTabsAndStories extends Component {
   }
 
   render() {
-    const {renderProfileInfo, storiesById, fetchStatus, editable, isStory} = this.props
+    const {renderProfileInfo, feedItemsById, fetchStatus, editable, isStory} = this.props
     const isGettingStories = this.isGettingStories()
-
     return (
       <View style={[
         styles.profileTabsAndStoriesHeight,
@@ -132,7 +131,7 @@ export default class ProfileTabsAndStories extends Component {
             {this.renderTabs()}
           </View>
         }
-        {storiesById.length === 0 && fetchStatus.loaded &&
+        {feedItemsById.length === 0 && fetchStatus.loaded &&
           <View style={styles.noStories}>
             <Text style={styles.noStoriesText}>{this.getNoStoriesText()}</Text>
           </View>
@@ -145,11 +144,11 @@ export default class ProfileTabsAndStories extends Component {
           </View>
         }
 
-        {storiesById.length !== 0 && !isGettingStories &&
+        {feedItemsById.length !== 0 && !isGettingStories &&
           <ConnectedFeedList
             isStory={isStory}
             style={styles.feedList}
-            entitiesById={storiesById}
+            entitiesById={feedItemsById}
             refreshing={false}
             headerContentHeight={this.getHeaderHeight()}
             renderHeaderContent={this._renderProfileInfo()}

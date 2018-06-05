@@ -546,7 +546,12 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
                                                        language:lang];
   
   if (allWords.count == 0) {
-    return nil;
+    allWords = [textCheck guessesForWordRange:NSMakeRange(0, text.length)
+                                     inString:text
+                                     language:lang];
+    if (allWords.count == 0) {
+      return nil;
+    }
   }
   
   NSString* word = allWords[0];

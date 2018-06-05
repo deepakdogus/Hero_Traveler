@@ -93,11 +93,6 @@
     _cancelAutocorrectBlock = cancelAutocorrectBlock;
     _autocomplete = info;
     _previousCount = previousCount;
-    
-    if (_previousCount >= 2)
-    {
-      self.hidden = YES;
-    }
   }
 
   return self;
@@ -251,6 +246,22 @@
     cancelAutocorrectBlock([_autocomplete stringRepresentation]);
   }
 }
+
+- (BOOL) dispatchIfOnlyShownNTimes:(NSUInteger)n
+{
+  NSString* existing = _autocomplete.existingText;
+
+  if ([[[UITextChecker alloc] init] rangeOfMisspelledWordInString:existing range:NSMakeRange(0, existing.length) startingAt:0 wrap:NO language:@"en_US"].location != NSNotFound)
+  {
+    if (_previousCount <= n)
+    {
+      [self dispatch];
+      return YES;
+    }
+  }
+  return NO;
+}
+
 
 - (BOOL) dispatchIfWithinNChars:(NSUInteger)n
 {

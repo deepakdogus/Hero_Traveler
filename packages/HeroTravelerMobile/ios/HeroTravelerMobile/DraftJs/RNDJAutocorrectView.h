@@ -43,5 +43,6 @@ typedef void (^CancelAutoCorrectBlock)(NSString*);
 
 - (void) dispatch;
 - (BOOL) dispatchIfWithinNChars:(NSUInteger)n;
+- (BOOL) dispatchIfOnlyShownNTimes:(NSUInteger)n;
 
 @end

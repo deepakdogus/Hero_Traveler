@@ -36,6 +36,11 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
 
 #define MAGNIFYING_GLASS_SHOW_DELAY 0.5
 
+typedef enum AutoPeriodState {
+  AutoPeriodStateNotReady,
+  AutoPeriodStateEnteredCharacter,
+  AutoPeriodStateEnteredFirstPeriod,
+} AutoPeriodState;
 
 @implementation RNDJDraftJSEditor
 {
@@ -74,7 +79,7 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
   NSSet* closedAutocorrects;
   
   BOOL isReadyToCapitalize;
-  BOOL isReadyToEnterPeriod;
+  AutoPeriodState periodEnterState;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -83,6 +88,8 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     _textStorage = [NSTextStorage new];
     self.isAccessibilityElement = YES;
     self.accessibilityTraits |= UIAccessibilityTraitStaticText;
+    
+    periodEnterState = AutoPeriodStateNotReady;
     
     self.opaque = NO;
     self.contentMode = UIViewContentModeRedraw;
@@ -384,6 +391,28 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
 - (void)keyboardDidShow:(NSNotification*)aNotification
 {
   [self scrollToCursorIfNeeded];
+  
+//  for (UIWindow* window in [[UIApplication sharedApplication] windows]) {
+//      [self searchForKeys:window];
+//  }
+}
+
+- (void) searchForKeys:(UIView*)v
+{
+  if ([[v description] rangeOfString:@"UIKBKeyView"].location != NSNotFound)
+  {
+    NSLog(@"K: %@", v);
+  }
+  
+  if ([[v description] hasPrefix:@"<UIKBKeyView"])
+  {
+    NSLog(@"K: %@", v);
+  }
+  
+  for (UIView* subview in [v subviews])
+  {
+    [self searchForKeys:subview];
+  }
 }
 
 - (void)keyboardWillHide:(NSNotification*)aNotification
@@ -525,7 +554,8 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     {
       isReadyToCapitalize = NO;
     }
-    isReadyToEnterPeriod = NO;
+    
+    periodEnterState = AutoPeriodStateNotReady;
   } else {
     RNDJDraftJsIndex* selectedIndex = [self draftJsIndexForPointInView:tapPostion];
     [self requestSetSelection:selectedIndex];
@@ -580,7 +610,7 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
                         }];
   
   NSString* s = [_textStorage string];
-  if (selectedStringPos == s.length - 1)
+  if (selectedStringPos >= s.length - 1 || [s characterAtIndex:selectedStringPos+1] == '\n')
   {
     selectedStringPos--;
   }
@@ -954,7 +984,7 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     if (!_highlightLayer) {
       _highlightLayer = [CAShapeLayer layer];
       _highlightLayer.fillColor = selectionColor.CGColor;
-      [self.layer addSublayer:_highlightLayer];
+      [self.layer insertSublayer:_highlightLayer atIndex:0];
     }
     _highlightLayer.position = (CGPoint){_contentInset.left, _contentInset.top};
     _highlightLayer.path = highlightPath.CGPath;
@@ -1405,9 +1435,9 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
       if (![closedAutocorrects containsObject:autocompleteKey]) {
         RNDJAutocorrectView* autocompleteView = existingAutocompleteViews[autocompleteKey];
         if ([autocompleteView isKindOfClass:[RNDJAutocorrectView class]]) {
-          if ([autocompleteView dispatchIfWithinNChars:2])
+          if ([autocompleteView dispatchIfOnlyShownNTimes:2])
           {
-            isReadyToEnterPeriod = YES;
+            periodEnterState = AutoPeriodStateEnteredFirstPeriod;
             return;
           }
         }
@@ -1441,7 +1471,11 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
     if ([text characterAtIndex:0] == ' ')
     {
       RCTDirectEventBlock onReplaceRangeRequest = _onReplaceRangeRequest;
-      if (isReadyToEnterPeriod && [_selectionStart isEqual:_selectionEnd] && _selectionStart.offset > 0 && _selectionStart.key.length > 0 && onReplaceRangeRequest)
+      if (periodEnterState == AutoPeriodStateEnteredCharacter)
+      {
+        periodEnterState = AutoPeriodStateEnteredFirstPeriod;
+      }
+      else  if (periodEnterState == AutoPeriodStateEnteredFirstPeriod && [_selectionStart isEqual:_selectionEnd] && _selectionStart.offset > 0 && _selectionStart.key.length > 0 && onReplaceRangeRequest)
       {
         onReplaceRangeRequest(@{
                                 @"startKey": _selectionStart.key,
@@ -1450,24 +1484,27 @@ static void collectNonTextDescendants(RNDJDraftJSEditor *view, NSMutableArray *n
                                 @"endOffset": @(_selectionStart.offset),
                                 @"word": @". ",
                                 });
-        isReadyToEnterPeriod = NO;
+        periodEnterState = AutoPeriodStateNotReady;
         isReadyToCapitalize = YES;
         return;
-      }
-      else
-      {
-        isReadyToEnterPeriod = YES;
       }
     }
     else
     {
-      isReadyToEnterPeriod = NO;
+      if ([[NSCharacterSet letterCharacterSet] characterIsMember:[text characterAtIndex:0]])
+      {
+        periodEnterState = AutoPeriodStateEnteredCharacter;
+      }
+      else
+      {
+        periodEnterState = AutoPeriodStateNotReady;
+      }
     }
   }
   else
   {
     isReadyToCapitalize = NO;
-    isReadyToEnterPeriod = NO;
+    periodEnterState = AutoPeriodStateNotReady;
   }
 
   NSArray* textComponents = [text componentsSeparatedByString:@"\n"];

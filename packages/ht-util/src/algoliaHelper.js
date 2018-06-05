@@ -28,7 +28,7 @@ function formatUserSearchObject(user) {
   return {
     username: user.username,
     profile: {
-      fullName: user.username,
+      fullName: user.profile.fullName,
       avatar: user.profile.avatar,
     },
     _id: user._id,
@@ -38,6 +38,11 @@ function formatUserSearchObject(user) {
 
 function addUserToIndex(user) {
   return algoliaAction(userIndex, 'addObject', formatUserSearchObject(user))
+}
+
+// only used for patch normally but because it works
+function addUsersToIndex(users) {
+  return algoliaAction(userIndex, 'addObjects', users.map(formatUserSearchObject))
 }
 
 function updateUserIndex(user) {
@@ -103,6 +108,7 @@ function addCategoriesToIndex(categories) {
 
 export default {
   addUserToIndex,
+  addUsersToIndex,
   updateUserIndex,
   addStoryToIndex,
   updateStoryIndex,

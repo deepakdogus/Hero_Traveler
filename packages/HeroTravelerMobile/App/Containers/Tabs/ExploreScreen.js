@@ -273,7 +273,7 @@ class ExploreScreen extends Component {
                         iconColor={Colors.lightGreyAreas}
                       />
                     }
-                    text={<Text style={styles.listItemText}>{user.profile.fullName}</Text>}
+                    text={<Text style={styles.listItemText}>{user.username}</Text>}
                     rightElement={<Icon name='angle-right' color={Colors.whiteAlphaPt3} size={30} />}
                   />
                 )

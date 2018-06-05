@@ -174,7 +174,11 @@ export default class FeedItemPreview extends Component {
               </TouchableOpacity>
               {isReadingScreen && this.renderDate()}
               {!isReadingScreen && !!feedItem.locationInfo &&
-                <Text style={styles.locationText}>
+                <Text
+                  style={styles.locationText}
+                  numberOfLines={1}
+                  ellipsizeMode={'tail'}
+                >
                   {displayLocation(feedItem.locationInfo)}
                 </Text>
               }

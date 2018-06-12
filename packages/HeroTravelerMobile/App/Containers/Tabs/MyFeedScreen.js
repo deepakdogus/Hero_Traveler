@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Text, View, Image } from 'react-native'
+import { View, Image } from 'react-native'
 import { connect } from 'react-redux'
 import SplashScreen from 'react-native-splash-screen'
 
@@ -22,6 +22,7 @@ class MyFeedScreen extends React.Component {
     error: PropTypes.object,
     attemptGetUserFeed: PropTypes.func,
     userId: PropTypes.string,
+    location: PropTypes.string,
     sync: PropTypes.object,
     fetchStatus: PropTypes.object,
     storiesById: PropTypes.arrayOf(PropTypes.string),
@@ -29,13 +30,6 @@ class MyFeedScreen extends React.Component {
     updateDraft: PropTypes.func,
     publishLocalDraft: PropTypes.func,
     discardUpdate: PropTypes.func,
-  };
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      refreshing: false
-    }
   }
 
   componentDidMount() {
@@ -50,24 +44,13 @@ class MyFeedScreen extends React.Component {
     && !sync.error
   }
 
-  isSuccessfulLoad(nextProps){
-    return this.state.refreshing && nextProps.fetchStatus.loaded
-  }
-
   isFailedLoad(nextProps){
-    return this.state.refreshing && nextProps.error &&
-    this.props.fetchStatus.fetching && !nextProps.fetchStatus.fetching
+    return nextProps.error
+    && this.props.fetchStatus.fetching && !nextProps.fetchStatus.fetching
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.isSuccessfulLoad(nextProps) || this.isFailedLoad(nextProps)) {
-      this.setState({refreshing: false})
-    }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps) {
     const shouldUpdate = _.some([
-      this.state.refreshing !== nextState.refreshing,
       this.props.storiesById !== nextProps.storiesById,
       this.props.fetchStatus !== nextProps.fetchStatus,
       this.props.error !== nextProps.error,
@@ -94,7 +77,6 @@ class MyFeedScreen extends React.Component {
 
   _onRefresh = () => {
     if (this.isPendingUpdate()) return
-    this.setState({refreshing: true})
     this.props.attemptGetUserFeed(this.props.user.id)
   }
 

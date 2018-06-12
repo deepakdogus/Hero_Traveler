@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Text, View, Image } from 'react-native'
+import { View, Image } from 'react-native'
 import { connect } from 'react-redux'
 import SplashScreen from 'react-native-splash-screen'
 
@@ -20,13 +20,16 @@ class MyFeedScreen extends React.Component {
   static propTypes = {
     user: PropTypes.object,
     error: PropTypes.object,
-  };
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      refreshing: false
-    }
+    attemptGetUserFeed: PropTypes.func,
+    userId: PropTypes.string,
+    location: PropTypes.string,
+    sync: PropTypes.object,
+    fetchStatus: PropTypes.object,
+    storiesById: PropTypes.arrayOf(PropTypes.string),
+    backgroundFailures: PropTypes.object,
+    updateDraft: PropTypes.func,
+    publishLocalDraft: PropTypes.func,
+    discardUpdate: PropTypes.func,
   }
 
   componentDidMount() {
@@ -41,24 +44,13 @@ class MyFeedScreen extends React.Component {
     && !sync.error
   }
 
-  isSuccessfulLoad(nextProps){
-    return this.state.refreshing && nextProps.fetchStatus.loaded
-  }
-
   isFailedLoad(nextProps){
-    return this.state.refreshing && nextProps.error &&
-    this.props.fetchStatus.fetching && !nextProps.fetchStatus.fetching
+    return nextProps.error
+    && this.props.fetchStatus.fetching && !nextProps.fetchStatus.fetching
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.isSuccessfulLoad(nextProps) || this.isFailedLoad(nextProps)) {
-      this.setState({refreshing: false})
-    }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps) {
     const shouldUpdate = _.some([
-      this.state.refreshing !== nextState.refreshing,
       this.props.storiesById !== nextProps.storiesById,
       this.props.fetchStatus !== nextProps.fetchStatus,
       this.props.error !== nextProps.error,
@@ -77,12 +69,6 @@ class MyFeedScreen extends React.Component {
     )
   }
 
-  _showError(){
-    return (
-      <Text style={styles.message}>Failed to update feed. Please try again.</Text>
-    )
-  }
-
   _showNoStories() {
     return (
       <NoStoriesMessage />
@@ -91,7 +77,6 @@ class MyFeedScreen extends React.Component {
 
   _onRefresh = () => {
     if (this.isPendingUpdate()) return
-    this.setState({refreshing: true})
     this.props.attemptGetUserFeed(this.props.user.id)
   }
 
@@ -117,14 +102,11 @@ class MyFeedScreen extends React.Component {
   }
 
   render () {
-    let {storiesById, fetchStatus, error, sync} = this.props;
-    let topContent, bottomContent
+    let {storiesById, fetchStatus, sync} = this.props;
+    let bottomContent
 
     const failure = this.getFirstBackgroundFailure()
 
-    if (error) {
-      topContent = this._showError()
-    }
     if (!storiesById || !storiesById.length) {
       let innerContent = this._showNoStories();
       bottomContent = this._wrapElt(innerContent);
@@ -145,7 +127,6 @@ class MyFeedScreen extends React.Component {
         <View style={styles.fakeNavBar}>
           <Image source={Images.whiteLogo} style={styles.logo} />
         </View>
-        { topContent }
         <BackgroundPublishingBars
           sync={sync}
           failure={failure}

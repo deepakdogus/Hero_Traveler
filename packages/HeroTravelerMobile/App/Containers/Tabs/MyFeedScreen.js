@@ -20,6 +20,15 @@ class MyFeedScreen extends React.Component {
   static propTypes = {
     user: PropTypes.object,
     error: PropTypes.object,
+    attemptGetUserFeed: PropTypes.func,
+    userId: PropTypes.string,
+    sync: PropTypes.object,
+    fetchStatus: PropTypes.object,
+    storiesById: PropTypes.arrayOf(PropTypes.string),
+    backgroundFailures: PropTypes.object,
+    updateDraft: PropTypes.func,
+    publishLocalDraft: PropTypes.func,
+    discardUpdate: PropTypes.func,
   };
 
   constructor(props) {
@@ -77,12 +86,6 @@ class MyFeedScreen extends React.Component {
     )
   }
 
-  _showError(){
-    return (
-      <Text style={styles.message}>Failed to update feed. Please try again.</Text>
-    )
-  }
-
   _showNoStories() {
     return (
       <NoStoriesMessage />
@@ -117,14 +120,11 @@ class MyFeedScreen extends React.Component {
   }
 
   render () {
-    let {storiesById, fetchStatus, error, sync} = this.props;
-    let topContent, bottomContent
+    let {storiesById, fetchStatus, sync} = this.props;
+    let bottomContent
 
     const failure = this.getFirstBackgroundFailure()
 
-    if (error) {
-      topContent = this._showError()
-    }
     if (!storiesById || !storiesById.length) {
       let innerContent = this._showNoStories();
       bottomContent = this._wrapElt(innerContent);
@@ -145,7 +145,6 @@ class MyFeedScreen extends React.Component {
         <View style={styles.fakeNavBar}>
           <Image source={Images.whiteLogo} style={styles.logo} />
         </View>
-        { topContent }
         <BackgroundPublishingBars
           sync={sync}
           failure={failure}

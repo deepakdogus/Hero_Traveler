@@ -19,7 +19,7 @@ export class FormTextInput extends React.Component {
     const {input, meta, label, styles} = this.props;
     return (
       <View style={styles.inputWrapper}>
-        <Text style={styles.inputLabel}>{label}</Text>
+        {label && <Text style={styles.inputLabel}>{label}</Text>}
         <TextInput
           style={styles.input}
           returnKeyType={this.props.returnKeyType || 'done'}
@@ -29,6 +29,10 @@ export class FormTextInput extends React.Component {
           value={input.value}
           multiline={this.props.multiline}
           placeholder={this.props.placeholder}
+          placeholderTextColor={this.props.placeholderTextColor}
+          autoCapitalize={this.props.autoCapitalize}
+          secureTextEntry={this.props.secureTextEntry}
+          keyboardType={this.props.keyboardType}
         />
         {!meta.pristine && !meta.active && meta.error &&
           <View style={styles.errorView}>
@@ -39,4 +43,5 @@ export class FormTextInput extends React.Component {
     )
   }
 }
+
 

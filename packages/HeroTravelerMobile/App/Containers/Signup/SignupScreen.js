@@ -64,6 +64,7 @@ class SignupScreen extends React.Component {
                 component={FormTextInput}
                 placeholder='Full name'
                 placeholderTextColor='white'
+                styles={styles}
               />
               <Field
                 name='username'
@@ -71,6 +72,7 @@ class SignupScreen extends React.Component {
                 component={FormTextInput}
                 placeholder='Username'
                 placeholderTextColor='white'
+                styles={styles}
               />
               <Field
                 name='email'
@@ -79,6 +81,7 @@ class SignupScreen extends React.Component {
                 placeholder='Email'
                 keyboardType='email-address'
                 placeholderTextColor='white'
+                styles={styles}
               />
               <Field
                 name='password'
@@ -87,6 +90,7 @@ class SignupScreen extends React.Component {
                 placeholder='Password'
                 secureTextEntry={true}
                 placeholderTextColor='white'
+                styles={styles}
               />
               <Field
                 name='confirmPassword'
@@ -95,6 +99,7 @@ class SignupScreen extends React.Component {
                 placeholder='Confirm password'
                 secureTextEntry={true}
                 placeholderTextColor='white'
+                styles={styles}
               />
               <RoundedButton
                 text='Sign Up'
@@ -149,11 +154,11 @@ export default R.compose(
     asyncValidate: asyncValidate,
     asyncBlurFields: ['username', 'email'],
     initialValues: {
-      fullName: 'Ryan W',
+      fullName: '',
       username: '',
       email: '',
-      password: 'ryanwood',
-      confirmPassword: 'ryanwood'
+      password: '',
+      confirmPassword: ''
     },
   })
 )(SignupScreen)

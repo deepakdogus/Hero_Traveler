@@ -136,7 +136,7 @@ export default class StoryList extends React.Component {
         if (isLocalMediaAsset(headerImage)) {
           headerImage = null
         }
-        
+
         return {
           headerImage,
           height: Metrics.feedCell.videoCellHeight + totalPadding,
@@ -192,7 +192,7 @@ export default class StoryList extends React.Component {
       >
         <RefreshControl
           enabled={this.props.refreshing}
-          refreshing={this.props.refreshing}
+          refreshing={false} // workaround to prevent it from persisting
           onRefresh={this.props.onRefresh}
         />
         {

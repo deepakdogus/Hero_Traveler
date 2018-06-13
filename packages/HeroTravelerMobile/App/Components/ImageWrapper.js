@@ -14,8 +14,14 @@ export default class ImageWrapper extends Component {
     }
   }
 
-  componentWillMount(){
+  componentDidMount(){
+    // Kind of an antipattern but we have an async call below.
+    this._mounted = true;
     if (!this.hasStyleMetrics()) this._setImageSize(this.props.source.uri)
+  }
+
+  componentWillUnmount(){
+    this._mounted = false;
   }
 
   componentWillReceiveProps(nextProps){
@@ -32,11 +38,13 @@ export default class ImageWrapper extends Component {
   _setImageSize(imageUrl) {
     if(!imageUrl) return
     Image.getSize(imageUrl, (width, height) => {
-      this.setState({
-        width,
-        height,
-        imageUrl
-      })
+      if (this._mounted) {
+        this.setState({
+          width,
+          height,
+          imageUrl
+        })
+      }
     })
   }
 

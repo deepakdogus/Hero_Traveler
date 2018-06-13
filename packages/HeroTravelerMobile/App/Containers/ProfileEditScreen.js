@@ -7,7 +7,6 @@ import {
   View,
   ScrollView,
   Text,
-  TextInput,
   TouchableOpacity,
 } from 'react-native'
 import { connect } from 'react-redux'
@@ -23,6 +22,7 @@ import ShadowButton from '../Components/ShadowButton'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Avatar from '../Components/Avatar'
 import getImageUrl from '../Shared/Lib/getImageUrl'
+import { FormTextInput } from '../Components/FormTextInput';
 
 const api = HeroAPI.create()
 
@@ -72,31 +72,6 @@ const asyncValidate = (values) => {
     if (Object.keys(errors).length) throw errors
     return {}
   })
-}
-
-class Input extends React.Component {
-  render() {
-    const {input, meta, label} = this.props
-    return (
-      <View style={styles.inputWrapper}>
-        <Text style={styles.inputLabel}>{label}</Text>
-        <TextInput
-          style={styles.input}
-          returnKeyType={'done'}
-          onChangeText={this.props.input.onChange}
-          onFocus= { val => input.onFocus(val)}
-          onBlur= { val => input.onBlur(val)}
-          value={this.props.input.value}
-          {...this.props}
-        />
-        {!meta.pristine && !meta.active && meta.error &&
-          <View style={styles.errorView}>
-            <Text style={styles.error}>{meta.error}</Text>
-          </View>
-        }
-      </View>
-    )
-  }
 }
 
 class ProfileEditScreen extends React.Component {
@@ -252,7 +227,7 @@ class ProfileEditScreen extends React.Component {
           onPress={this._selectAvatar}
         >
           <Text style={styles.avatarEditText}>
-            Edit Profile Picture
+            Edit profile picture
           </Text>
         </TouchableOpacity>
       </View>
@@ -286,28 +261,32 @@ class ProfileEditScreen extends React.Component {
                 <Field
                   name='username'
                   autoCapitalize='none'
-                  component={Input}
+                  component={FormTextInput}
+                  styles={styles}
                   label='User Name'
                   placeholder=''
                   initialValue={user.username}
                 />
                 <Field
                   name='fullName'
-                  component={Input}
+                  component={FormTextInput}
+                  styles={styles}
                   label='Full Name'
                   placeholder='Your Name'
                   initialValue={user.fullName}
                 />
                 <Field
                   name='about'
-                  component={Input}
+                  component={FormTextInput}
+                  styles={styles}
                   label='About'
                   placeholder='What do you do? What do you like? Etc.'
                   multiline={true}
                 />
                 <Field
                   name='bio'
-                  component={Input}
+                  component={FormTextInput}
+                  styles={styles}
                   label='Bio'
                   placeholder='Tell us about yourself in detail'
                   multiline={true}

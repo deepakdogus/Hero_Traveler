@@ -206,7 +206,6 @@ class ProfileEditScreen extends React.Component {
           onRight={handleSubmit(this._onRight)}
           style={styles.navbarStyle}
         />
-
         <View style={styles.gradientWrapper}>
           <ScrollView style={styles.flexOne}>
             <View style={styles.flexOne}>
@@ -306,6 +305,3 @@ export default R.compose(
     asyncBlurFields: ['username', 'email'],
   })
 )(ProfileEditScreen)
-
-
-// export default connect(mapStateToProps, mapDispatchToProps)(ProfileEditScreen)

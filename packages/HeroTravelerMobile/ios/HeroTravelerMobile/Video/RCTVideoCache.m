@@ -10,6 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "RCTVideo.h"
 #import "RCTVideoManager.h"
+#import "UIViewController+WatchFullscreenChanges.h"
 
 #define VIDEO_FILE @"video.mp4"
 #define DATE_LAST_OPENED_FILE @"lastOpened"
@@ -51,8 +52,50 @@
     cleanupTimer = [NSTimer scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer* _){
       [weakCache cleanupCacheInstances];
     }];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fullscreenChanged:) name:kFullscreenControllerChangedNotification object:nil];
   }
   return self;
+}
+
+- (void) dealloc
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:kFullscreenControllerChangedNotification object:nil];
+}
+
+// Assumes just one AVPlayerLayer, so should only be used on player view controller views
+- (AVPlayer*) getPlayerRecursivelyFromView:(UIView*)view
+{
+  if ([view.layer isKindOfClass:[AVPlayerLayer class]])
+  {
+    return ((AVPlayerLayer*)view.layer).player;
+  }
+  
+  for (UIView* subview in [view subviews])
+  {
+    AVPlayer* player = [self getPlayerRecursivelyFromView:subview];
+    if (player)
+    {
+      return player;
+    }
+  }
+  
+  return nil;
+}
+
+- (void) fullscreenChanged:(NSNotification*)notif
+{
+  dispatch_async(dispatch_get_main_queue(), ^{
+    id obj = notif.userInfo[kPresentedFullscreenControllerKey];
+    UIViewController* presentedViewController = [obj isKindOfClass:[UIViewController class]] ? (UIViewController*)obj : nil;
+    AVPlayer* player = presentedViewController.view != nil ? [self getPlayerRecursivelyFromView:presentedViewController.view] : nil;
+    
+    for (VideoCacheItem* cacheItem in loadedVideos)
+    {
+      BOOL isPresentingFullscreen = cacheItem.player == player;
+      [cacheItem setIsPresentingFullscreen:isPresentingFullscreen];
+    }
+  });
 }
 
 - (void) cleanupCacheInstances

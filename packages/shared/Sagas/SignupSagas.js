@@ -49,18 +49,13 @@ export function * signupFacebook(api, action) {
 
   const userPicture = !userResponse.picture.data.is_silhouette ?
   userResponse.picture.data.url : null
-  ['fbid', 'email', 'name', 'pictureUrl']
-  let fbid = userResponse.id;
-  let email = userResponse.email;
-  let name = userResponse.name;
-  let pictureUrl = userPicture;
 
   const response = yield call(
     api.signupFacebook,
-    fbid,
-    email,
-    name,
-    pictureUrl
+    userResponse.id,
+    userResponse.email,
+    userResponse.name,
+    userPicture
   )
 
   if (response.ok) {

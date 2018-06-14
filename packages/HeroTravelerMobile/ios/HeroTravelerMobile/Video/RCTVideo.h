@@ -41,10 +41,12 @@
 - (void) purgePlayingVideo;
 - (void) restorePlayingVideo;
 
+// TODO: Remove displaying fullscreen from react, including _playerViewController, first confirm not used in project currently
 - (BOOL) isDisplayingFullscreen;
 - (BOOL) isPlaying;
 
 - (BOOL) isPresentingFullscreen;
+- (BOOL) setPresentingFullscreen:(BOOL)isPresentingFullscreen;
 
 - (float) rate;
 

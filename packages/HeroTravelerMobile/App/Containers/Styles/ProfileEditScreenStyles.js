@@ -103,45 +103,6 @@ export default StyleSheet.create({
     bottom: 55
   },
 
-  // profileInfoContainer: {},
-  // profileEditInfoContainer: {
-  //   height: profileEditHeight,
-  //   flexDirection: 'column',
-  //   justifyContent: 'center',
-  // },
-  // secondRow: {
-  //   justifyContent: 'space-between',
-  //   marginBottom: 12.5,
-  //   marginTop: 12.5,
-  // },
-  // bioWrapper: {
-  //   borderTopColor: Colors.lightGrey,
-  //   borderTopWidth: 1,
-  //   padding: Metrics.section,
-  //   backgroundColor: Colors.feedDividerGrey,
-  //   flex: 1,
-  //   minHeight: Metrics.screenHeight - Metrics.navBarHeight - profileEditHeight,
-  // },
-  // badgeRow: {
-  //   alignItems: 'center',
-  //   marginTop: 5,
-  // },
-  // badgeImage: {
-  //   width: 16,
-  //   height: 16,
-  // },
-  // badgeText: {
-  //   marginLeft: 5,
-  //   fontFamily: Fonts.type.montserrat,
-  //   fontWeight: '600',
-  //   fontSize: 8,
-  //   color: Colors.background,
-  //   textAlign: 'center'
-  // },
-  // storyList: {
-  //   height: Metrics.screenHeight - Metrics.tabBarHeight,
-  //   marginBottom: Metrics.tabBarHeight + Metrics.baseMargin,
-  // },
   flexOne: {
     flex: 1,
   },

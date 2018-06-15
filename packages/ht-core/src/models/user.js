@@ -51,6 +51,10 @@ const UserSchema = new Schema({
     index: true,
     uniqueCaseInsensitive: true
   },
+  usernameIsTemporary: {
+    type: Boolean,
+    default: false
+  },
   accounts: {
     type: [AccountSchema],
     hideJSON: true
@@ -171,6 +175,7 @@ UserSchema.statics = {
 
     return this.create({
       username,
+      usernameIsTemporary: true,
       email,
       accounts: [{
         kind: ACCOUNT_TYPE_FACEBOOK,

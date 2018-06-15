@@ -40,11 +40,20 @@ export default async function updateUser(req) {
     const shouldReindexUser = getShouldUpdateAlgolia(user, attrs)
     const shouldReindexUsersStories = hasNewUsername(user, attrs)
 
+    if (hasNewUsername(user, attrs)) {
+      user.usernameIsTemporary = false;
+    }
+
     for (let key in attrs) {
       if (attrsBlacklist.indexOf(key) < 0) {
-        user[key] = attrs[key];
+        if (key.indexOf('profile.') == 0) {
+          user.profile[key.slice('profile.'.length)] = attrs[key];
+        } else {
+          user[key] = attrs[key];
+        }
       }
     }
+
     return user.save().then(user => {
       if (shouldReindexUser) algoliaHelper.updateUserIndex(user)
       if (shouldReindexUsersStories) {

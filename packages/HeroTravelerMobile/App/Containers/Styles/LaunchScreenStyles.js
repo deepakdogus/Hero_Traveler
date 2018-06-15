@@ -79,5 +79,12 @@ export default StyleSheet.create({
   tosText: {
     ...Fonts.style.tos,
     fontSize: 15,
+  },
+  loader: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0
   }
 })

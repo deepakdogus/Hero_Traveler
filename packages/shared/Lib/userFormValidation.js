@@ -14,27 +14,55 @@ export const FieldConstraints = {
   EMAIL_REGEX: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 }
 
-export const validate = (values) => {
+export const validate = (values, props, fields) => {
   const errors = {}
 
-  if (!values.fullName) {
-    errors.fullName = 'Required'
-  } else if (!values.username) {
-    errors.username = 'Required'
-  } else if (values.username.length < FieldConstraints.USERNAME_MIN_LENGTH || values.username.length > FieldConstraints.USERNAME_MAX_LENGTH) {
-    errors.username = `Must be between ${FieldConstraints.USERNAME_MIN_LENGTH} and ${FieldConstraints.USERNAME_MAX_LENGTH} characters`
-  } else if (!FieldConstraints.USERNAME_REGEX.test(values.username)) {
-    errors.username = 'Usernames may contain letters, numbers, _ and -'
-  } else if (!values.email) {
-    errors.email = 'Required'
-  } else if (!FieldConstraints.EMAIL_REGEX.test(values.email)) {
-    errors.email = 'Invalid email address'
-  } else if (!values.password) {
-    errors.password = 'Required'
-  } else if (values.password.length < FieldConstraints.PASSWORD_MIN_LENGTH || values.password.length > FieldConstraints.PASSWORD_MAX_LENGTH) {
-    errors.password = `Passwords must be ${FieldConstraints.PASSWORD_MIN_LENGTH} to ${FieldConstraints.PASSWORD_MAX_LENGTH} characters long`
-  } else if (!values.confirmPassword || values.password !== values.confirmPassword) {
-    errors.confirmPassword = 'Passwords must match'
+  if (!fields) {
+    fields = [
+      'fullName',
+      'username',
+      'email',
+      'password',
+      'confirmPassword',
+    ]
+  }
+
+  const checkField = (fieldName) => {
+    return fields.indexOf(fieldName) > -1
+  }
+
+  if (checkField('fullName')) {
+    if (!values.fullName) {
+      errors.fullName = 'Required'
+    }
+  }
+
+  if (checkField('username')) {
+    if (!values.username) {
+      errors.username = 'Required'
+    } else if (values.username.length < FieldConstraints.USERNAME_MIN_LENGTH || values.username.length > FieldConstraints.USERNAME_MAX_LENGTH) {
+      errors.username = `Must be between ${FieldConstraints.USERNAME_MIN_LENGTH} and ${FieldConstraints.USERNAME_MAX_LENGTH} characters`
+    } else if (!FieldConstraints.USERNAME_REGEX.test(values.username)) {
+      errors.username = 'Usernames may contain letters, numbers, _ and -'
+    }
+  }
+
+  if (checkField('email')) {
+    if (!values.email) {
+      errors.email = 'Required'
+    } else if (!FieldConstraints.EMAIL_REGEX.test(values.email)) {
+      errors.email = 'Invalid email address'
+    }
+  }
+
+  if (checkField('password')) {
+    if (!values.password) {
+      errors.password = 'Required'
+    } else if (values.password.length < FieldConstraints.PASSWORD_MIN_LENGTH || values.password.length > FieldConstraints.PASSWORD_MAX_LENGTH) {
+      errors.password = `Passwords must be ${FieldConstraints.PASSWORD_MIN_LENGTH} to ${FieldConstraints.PASSWORD_MAX_LENGTH} characters long`
+    } else if (!values.confirmPassword || values.password !== values.confirmPassword) {
+      errors.confirmPassword = 'Passwords must match'
+    }
   }
 
   return errors

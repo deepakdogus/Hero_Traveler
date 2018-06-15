@@ -70,43 +70,6 @@ class ProfileView extends React.Component {
       this._completeTooltip()
     }
   }
-  _handleUpdateAvatarPhoto = (data) => {
-    api.uploadAvatarImage(this.props.user.id, pathAsFileObject(data))
-    .then(({ data }) => {
-      // if there is a message it means there was an error
-      if (data.message) {
-        return Promise.reject(new Error(data.message))
-      }
-      else {
-        this.props.updateUserSuccess({
-          id: data.id,
-          profile: {
-            tempAvatar: data.profile.avatar,
-          }
-        })
-      }
-    })
-    .then(() => {
-      NavActions.pop()
-    })
-    .catch(() => {
-      NavActions.pop()
-      this.setState({error: 'There was an error updating your profile photo. Please try again'})
-    })
-  }
-
-  _updateUser = () => {
-    this.props.updateUser({
-      bio: this.state.bioText,
-      username: this.state.usernameText,
-      about: this.state.aboutText,
-    })
-    NavActions.pop()
-  }
-
-  _onLeft = () => {
-    NavActions.pop()
-  }
 
   _completeTooltip = () => {
     const tooltips = this.props.user.introTooltips.concat({
@@ -161,7 +124,6 @@ class ProfileView extends React.Component {
         setUsername={this._setText}
         aboutText={this.state.aboutText}
         setAbout={this._setAbout}
-        handleUpdateAvatarPhoto={this._handleUpdateAvatarPhoto}
       />
     )
   }
@@ -224,8 +186,9 @@ class ProfileView extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const userId = state.session.userId
-  const hasBookmarks = !!state.entities.stories.bookmarks
+  const userId = state.session.userId;
+  // If the signup process is not completed, a user can still login but they don't have some entities set.
+  const hasBookmarks = !!state.entities.stories.bookmarks && !!state.entities.stories.bookmarks[userId];
   return {
     userId,
     location: state.routes.scene.name,

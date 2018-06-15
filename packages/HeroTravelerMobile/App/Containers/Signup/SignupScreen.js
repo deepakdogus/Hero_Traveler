@@ -4,7 +4,6 @@ import {
   ScrollView,
   Text,
   View,
-  TextInput,
 } from 'react-native'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'

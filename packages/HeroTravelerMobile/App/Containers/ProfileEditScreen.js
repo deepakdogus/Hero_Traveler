@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import _ from 'lodash'
 import R from 'ramda'
 import styles from './Styles/ProfileEditScreenStyles'
@@ -26,13 +27,21 @@ import HeroAPI from '../Shared/Services/HeroAPI'
 
 const api = HeroAPI.create()
 
-
 const asyncValidate = (values) => {
-  // Make the validation ignore the username
+  // Make the validation ignore our own username
   return asyncValidateOriginal(values, null, true);
 }
 
 class ProfileEditScreen extends React.Component {
+
+  static propTypes = {
+    user: PropTypes.object,
+    accessToken: PropTypes.string,
+    newValues: PropTypes.object,
+    updateUser: PropTypes.func,
+    updateUserSuccess: PropTypes.func,
+    handleSubmit: PropTypes.func,
+  }
 
   static defaultProps = {
   }
@@ -40,11 +49,7 @@ class ProfileEditScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      imageMenuOpen: false,
-      file: null,
-      bioText: props.user.bio || '',
-      usernameText: props.user.username || 'Enter a username',
-      aboutText: props.user.about || '',
+      error: null
     }
   }
 
@@ -127,31 +132,6 @@ class ProfileEditScreen extends React.Component {
       rightTitle: 'Done',
       rightIcon: 'none',
       onSelectMedia: this._handleUpdateAvatarPhoto
-    })
-  }
-
-  _handleUpdateAvatarPhoto = (data) => {
-    api.uploadAvatarImage(this.props.user.id, pathAsFileObject(data))
-    .then(({ data }) => {
-      // if there is a message it means there was an error
-      if (data.message) {
-        return Promise.reject(new Error(data.message))
-      }
-      else {
-        this.props.updateUserSuccess({
-          id: data.id,
-          profile: {
-            tempAvatar: data.profile.avatar,
-          }
-        })
-      }
-    })
-    .then(() => {
-      NavActions.pop()
-    })
-    .catch(() => {
-      NavActions.pop()
-      this.setState({error: 'There was an error updating your profile photo. Please try again'})
     })
   }
 

@@ -22,7 +22,6 @@ export default class ProfileUserInfo extends Component {
     isFollowing: PropTypes.bool,
     onPressFollow: PropTypes.func,
     onPressUnfollow: PropTypes.func,
-    handleUpdateAvatarPhoto: PropTypes.func,
     usernameText: PropTypes.string,
     setUsername: PropTypes.func,
     aboutText: PropTypes.string,
@@ -48,20 +47,6 @@ export default class ProfileUserInfo extends Component {
       title: 'Following',
       followersType: 'following',
       userId: this.props.user.id
-    })
-  }
-
-  _selectAvatar = () => {
-    NavActions.mediaSelectorScreen({
-      mediaType: 'photo',
-      title: 'Edit Avatar',
-      titleStyle: {color: Colors.white},
-      leftTitle: 'Cancel',
-      leftTextStyle: {color: Colors.white},
-      onLeft: () => NavActions.pop(),
-      rightTitle: 'Done',
-      rightIcon: 'none',
-      onSelectMedia: this.props.handleUpdateAvatarPhoto
     })
   }
 

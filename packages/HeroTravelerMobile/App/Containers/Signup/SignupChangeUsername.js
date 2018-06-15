@@ -11,41 +11,16 @@ import UserActions from '../../Shared/Redux/Entities/Users'
 import { Images } from '../../Shared/Themes'
 import ImageWrapper from '../../Components/ImageWrapper'
 import NavButton from '../../Navigation/NavButton'
+import {validate as validateOriginal, asyncValidate as asyncValidateOriginal} from '../Shared/Lib/userFormValidation'
 
 import styles from './SignupChangeUsernameStyles'
-import HeroAPI from '../../Shared/Services/HeroAPI'
-
-const api = HeroAPI.create()
-
-const Constants = {
-  USERNAME_MIN_LENGTH: 5,
-  USERNAME_MAX_LENGTH: 20,
-  USERNAME_REGEX: /^([a-zA-Z0-9]+[._-]*[a-zA-Z0-9]+)+$/,
-}
 
 const asyncValidate = (username) => {
-  return new Promise((resolve, reject) => {
-    api.signupCheck({username})
-    .then(response => {
-      const {data} = response
-      if (data && data.username) {
-        reject('That username is already taken');
-      } else {
-        resolve();
-      }
-    })
-  })
+  return asyncValidateOriginal({username})
 }
 
 const validate = (username) => {
-  if (!username) {
-    return  'Required'
-  } else if (username.length < Constants.USERNAME_MIN_LENGTH || username.length > Constants.USERNAME_MAX_LENGTH) {
-    return `Must be between ${Constants.USERNAME_MIN_LENGTH} and ${Constants.USERNAME_MAX_LENGTH} characters`
-  } else if (!Constants.USERNAME_REGEX.test(username)) {
-    return 'Usernames may contain letters, numbers, _ and -'
-  }
-  return null;
+  return validateOriginal({username}, null, ["username"]);
 }
 
 class SignupChangeUsername extends React.Component {

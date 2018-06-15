@@ -11,24 +11,24 @@ import UserActions from '../../Shared/Redux/Entities/Users'
 import { Images } from '../../Shared/Themes'
 import ImageWrapper from '../../Components/ImageWrapper'
 import NavButton from '../../Navigation/NavButton'
-import {validate as validateOriginal, asyncValidate as asyncValidateOriginal} from '../Shared/Lib/userFormValidation'
+import {validate as validateOriginal, asyncValidate as asyncValidateOriginal} from '../../Shared/Lib/userFormValidation'
 
 import styles from './SignupChangeUsernameStyles'
 
-const asyncValidate = (username) => {
-  return asyncValidateOriginal({username})
+const asyncValidate = (values) => {
+  return asyncValidateOriginal(values)
 }
 
-const validate = (username) => {
-  return validateOriginal({username}, null, ["username"]);
+const validate = (values) => {
+  return validateOriginal(values, null, ["username"])
 }
 
 class SignupChangeUsername extends React.Component {
 
-  validationTimeout = null;
+  validationTimeout = null
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       newUsername: "",
       error: null
@@ -37,36 +37,36 @@ class SignupChangeUsername extends React.Component {
 
   componentDidMount() {
     if (!this.props.user.usernameIsTemporary) {
-      NavActions.signupFlow_topics();
+      NavActions.signupFlow_topics()
     }
   }
 
-  runValidations(username) {
+  runValidations(values) {
     return new Promise((resolve, reject) => {
-      let validationError = validate(username);
-      if (validationError) {
-        reject(validationError);
+      let validationError = validate(values)
+      if (Object.keys(validationError).length > 0) {
+        reject(validationError[Object.keys(validationError)[0]])
       } else {
-        asyncValidate(username).then(() => {
-          resolve();
-        }).catch((e) => {
-          reject(e);
-        });
+        asyncValidate(values).then(() => {
+          resolve()
+        }).catch((err) =>  {
+          reject(err[Object.keys(err)[0]])
+        })
       }
-    });
+    })
   }
 
   onChangeText = (username) => {
     this.setState({
       newUsername: username,
       error: null
-    });
+    })
   }
 
   onBlur = () => {
-    this.runValidations(this.state.newUsername).catch((e) => {
+    this.runValidations({username: this.state.newUsername}).catch((e) => {
       this.setState({error: e})
-    });
+    })
   }
 
   updateUser = () => {
@@ -77,12 +77,12 @@ class SignupChangeUsername extends React.Component {
 
   onRight = () => {
     if (!this.state.error) {
-      this.runValidations(this.state.newUsername).then(() => {
-        this.updateUser();
-        NavActions.signupFlow_topics();
+      this.runValidations({username: this.state.newUsername}).then(() => {
+        this.updateUser()
+        NavActions.signupFlow_topics()
       }).catch((e) => {
         this.setState({error: e})
-      });
+      })
     }
   }
 

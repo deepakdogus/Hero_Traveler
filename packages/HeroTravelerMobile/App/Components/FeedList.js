@@ -192,7 +192,7 @@ export default class FeedList extends React.Component {
       >
         <RefreshControl
           enabled={this.props.refreshing}
-          refreshing={this.props.refreshing}
+          refreshing={false} // workaround to prevent it from persisting
           onRefresh={this.props.onRefresh}
         />
         {

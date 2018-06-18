@@ -3,16 +3,10 @@ import PropTypes from 'prop-types'
 import styles from './Styles/ProfileViewStyles'
 import {
   View,
-  ScrollView,
-  Text,
-  TextInput,
 } from 'react-native'
 import { connect } from 'react-redux'
-import { Actions as NavActions } from 'react-native-router-flux'
 
-import NavBar from '../Containers/CreateStory/NavBar'
 import HeroAPI from '../Shared/Services/HeroAPI'
-import pathAsFileObject from '../Shared/Lib/pathAsFileObject'
 import ProfileUserInfo from './ProfileUserInfo'
 import ProfileTabsAndStories from './ProfileTabsAndStories'
 import ShadowButton from './ShadowButton'
@@ -36,12 +30,6 @@ const ViewOnlyTabTypes = {
   guides: 'TAB_GUIDES',
 }
 
-const usernameContansts = {
-  maxLength: 20,
-  minLength: 2,
-}
-
-// @TOOO make this smaller
 class ProfileView extends React.Component {
 
   static defaultProps = {
@@ -86,73 +74,6 @@ class ProfileView extends React.Component {
     }
   }
 
-  _handleUpdateAvatarPhoto = (data) => {
-    api.uploadAvatarImage(this.props.user.id, pathAsFileObject(data))
-    .then(({ data }) => {
-      // if there is a message it means there was an error
-      if (data.message) {
-        return Promise.reject(new Error(data.message))
-      }
-      else {
-        this.props.updateUserSuccess({
-          id: data.id,
-          profile: {
-            tempAvatar: data.profile.avatar,
-          }
-        })
-      }
-    })
-    .then(() => {
-      NavActions.pop()
-    })
-    .catch(() => {
-      NavActions.pop()
-      this.setState({error: 'There was an error updating your profile photo. Please try again'})
-    })
-  }
-
-  _onRight = () => {
-    if (this.state.usernameText.length <= 1) {
-      this.setState({error: `Usernames must be between ${usernameContansts.minLength} and ${usernameContansts.maxLength} characters`})
-      return
-    }
-    this._updateUser();
-  }
-
-  _updateUser = () => {
-    this.props.updateUser({
-      bio: this.state.bioText,
-      username: this.state.usernameText,
-      about: this.state.aboutText,
-    })
-    NavActions.pop()
-  }
-
-  _onLeft = () => {
-    const {id, profile} = this.props.user
-
-    // currently tempCover and tempAvatar are actually directly saved to DB - so we need to revert
-    // need to add fullName so that we dont accidentally set it to undefined
-    const profileReverts = {
-      fullName: profile.fullName,
-      cover: profile.cover,
-      avatar: profile.avatar,
-    }
-
-    this.props.updateUser({
-      profile: profileReverts,
-    })
-
-    this.props.updateUserSuccess({
-      id,
-      profile: {
-        tempCover: undefined,
-        tempAvatar: undefined,
-      }
-    })
-    NavActions.pop()
-  }
-
   _completeTooltip = () => {
     const tooltips = this.props.user.introTooltips.concat({
       name: TooltipTypes.PROFILE_NO_STORIES,
@@ -192,14 +113,13 @@ class ProfileView extends React.Component {
 
   renderProfileInfo = () => {
     const {
-      user, editable, isEditing,
+      user, editable,
       isFollowing, onPressFollow, onPressUnfollow
     } = this.props
     return (
       <ProfileUserInfo
         user={user}
         editable={editable}
-        isEditing={isEditing}
         isFollowing={isFollowing}
         onPressUnfollow={onPressUnfollow}
         onPressFollow={onPressFollow}
@@ -207,7 +127,6 @@ class ProfileView extends React.Component {
         setUsername={this._setText}
         aboutText={this.state.aboutText}
         setAbout={this._setAbout}
-        handleUpdateAvatarPhoto={this._handleUpdateAvatarPhoto}
       />
     )
   }
@@ -227,62 +146,30 @@ class ProfileView extends React.Component {
   }
 
   render() {
-    const {editable, isEditing, location, stories} = this.props
+    const {editable, location, stories, user, userId} = this.props
     const {selectedTab} = this.state
-    let showTooltip = !isEditing && editable &&
+
+    let showTooltip = editable &&
       !stories.length && !this.hasCompletedNoStoriesTooltip()
 
     return (
       <View style={styles.flexOne}>
-        {isEditing &&
-          <NavBar
-            title='Edit Profile'
-            leftTitle='Cancel'
-            onLeft={this._onLeft}
-            rightTitle='Save'
-            onRight={this._onRight}
-            style={styles.navbarStyle}
-          />
-        }
-
         <View style={styles.gradientWrapper}>
-          {isEditing &&
-            <ScrollView style={styles.flexOne}>
-              <View style={styles.flexOne}>
-                {this.renderProfileInfo()}
-                <View style={styles.bioWrapper}>
-                  <Text style={styles.editBio}>Bio</Text>
-                  <TextInput
-                    ref={this._bioRef}
-                    style={styles.bioText}
-                    multiline
-                    onChangeText={this._setBioText}
-                    value={this.state.bioText}
-                    maxLength={500}
-                    returnKeyType={'done'}
-                    placeholder='Tell us about yourself!'
-                  />
-                </View>
-              </View>
-            </ScrollView>
-          }
-          {!isEditing &&
-            <ProfileTabsAndStories
-              editable={editable}
-              isStory={selectedTab !== TabTypes.guides}
-              renderProfileInfo={this.renderProfileInfo}
-              feedItemsById={this.getFeedItemsById()}
-              fetchStatus={this.getFetchStatus()}
-              tabTypes={editable ? TabTypes : ViewOnlyTabTypes}
-              selectTab={this.selectTab}
-              selectedTab={this.state.selectedTab}
-              user={this.props.user}
-              sessionUserId={this.props.userId}
-              showTooltip={showTooltip}
-              location={location}
-              error={this.getProfileTabsAndStoriesError()}
-            />
-          }
+          <ProfileTabsAndStories
+            editable={editable}
+            isStory={selectedTab !== TabTypes.guides}
+            renderProfileInfo={this.renderProfileInfo}
+            feedItemsById={this.getFeedItemsById()}
+            fetchStatus={this.getFetchStatus()}
+            tabTypes={editable ? TabTypes : ViewOnlyTabTypes}
+            selectTab={this.selectTab}
+            selectedTab={selectedTab}
+            user={user}
+            sessionUserId={userId}
+            showTooltip={showTooltip}
+            location={location}
+            error={this.getProfileTabsAndStoriesError()}
+          />
         </View>
         {this.state.error &&
           <ShadowButton
@@ -304,8 +191,9 @@ class ProfileView extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const userId = state.session.userId
-  const hasBookmarks = !!state.entities.stories.bookmarks
+  const userId = state.session.userId;
+  // If the signup process is not completed, a user can still login but they don't have some entities set.
+  const hasBookmarks = !!state.entities.stories.bookmarks && !!state.entities.stories.bookmarks[userId];
   return {
     userId,
     location: state.routes.scene.name,

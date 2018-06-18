@@ -8,7 +8,7 @@ const { Types, Creators } = createActions({
   signupEmail: ['fullName', 'username', 'email', 'password'],
   signupEmailSuccess: null,
   signupEmailFailure: ['error'],
-  signupFacebook: ['fbid', 'email', 'name', 'pictureUrl'],
+  signupFacebook: null,
   signupFacebookSuccess: null,
   signupFacebookFailure: ['error'],
   signupGetUsersCategories: [],

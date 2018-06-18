@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Text, View, Image } from 'react-native'
+import { View, Image } from 'react-native'
 import { connect } from 'react-redux'
 import SplashScreen from 'react-native-splash-screen'
 
@@ -28,6 +28,16 @@ class MyFeedScreen extends React.Component {
     user: PropTypes.object,
     error: PropTypes.object,
     feedGuidesById: PropTypes.arrayOf(PropTypes.string),
+    attemptGetUserFeed: PropTypes.func,
+    userId: PropTypes.string,
+    location: PropTypes.string,
+    sync: PropTypes.object,
+    fetchStatus: PropTypes.object,
+    storiesById: PropTypes.arrayOf(PropTypes.string),
+    backgroundFailures: PropTypes.object,
+    updateDraft: PropTypes.func,
+    publishLocalDraft: PropTypes.func,
+    discardUpdate: PropTypes.func,
   };
 
   constructor(props) {
@@ -53,24 +63,13 @@ class MyFeedScreen extends React.Component {
     && !sync.error
   }
 
-  isSuccessfulLoad(nextProps){
-    return this.state.refreshing && nextProps.fetchStatus.loaded
-  }
-
   isFailedLoad(nextProps){
-    return this.state.refreshing && nextProps.error &&
-    this.props.fetchStatus.fetching && !nextProps.fetchStatus.fetching
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.isSuccessfulLoad(nextProps) || this.isFailedLoad(nextProps)) {
-      this.setState({refreshing: false})
-    }
+    return nextProps.error
+    && this.props.fetchStatus.fetching && !nextProps.fetchStatus.fetching
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     const shouldUpdate = _.some([
-      this.state.refreshing !== nextState.refreshing,
       this.props.storiesById !== nextProps.storiesById,
       this.props.fetchStatus !== nextProps.fetchStatus,
       this.props.error !== nextProps.error,
@@ -90,12 +89,6 @@ class MyFeedScreen extends React.Component {
     )
   }
 
-  _showError(){
-    return (
-      <Text style={styles.message}>Failed to update feed. Please try again.</Text>
-    )
-  }
-
   _showNoStories() {
     return (
       <NoStoriesMessage text={this.props.selectedTab}/>
@@ -106,6 +99,7 @@ class MyFeedScreen extends React.Component {
     if (this.isPendingUpdate()) return
     this.setState({refreshing: true})
     this.props.attemptGetUserFeedStories(this.props.user.id)
+    this.props.attemptGetUserFeedGuides(this.props.user.id)
   }
 
   renderFeedItem = (feedItem, index) => {
@@ -135,16 +129,13 @@ class MyFeedScreen extends React.Component {
   }
 
   render () {
-    let {storiesById, fetchStatus, error, sync, feedGuidesById} = this.props
+    let {storiesById, fetchStatus, sync, feedGuidesById} = this.props
     const {selectedTab} = this.state
-    let topContent, bottomContent
+    let bottomContent
 
     const isStoriesSelected = selectedTab === tabTypes.stories
     const failure = this.getFirstBackgroundFailure()
 
-    if (error) {
-      topContent = this._showError()
-    }
     if (
       (isStoriesSelected && (!storiesById || !storiesById.length))
       || (!isStoriesSelected && (!feedGuidesById || !feedGuidesById.length))
@@ -170,7 +161,6 @@ class MyFeedScreen extends React.Component {
         <View style={styles.fakeNavBar}>
           <Image source={Images.whiteLogo} style={styles.logo} />
         </View>
-        { topContent }
         <BackgroundPublishingBars
           sync={sync}
           failure={failure}
@@ -180,7 +170,7 @@ class MyFeedScreen extends React.Component {
         />
         <TabBar
           tabs={tabTypes}
-          activeTab={this.state.selectedTab}
+          activeTab={selectedTab}
           onClickTab={this.selectTab}
           tabStyle={styles.tabStyle}
         />

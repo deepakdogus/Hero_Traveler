@@ -15,10 +15,6 @@ import {
   ActionConst as NavActionConst
 } from 'react-native-router-flux'
 
-import {
-  loginToFacebookAndGetUserInfo,
-} from '../Services/FacebookConnect'
-
 import {Images, Colors} from '../Shared/Themes'
 import Loader from '../Components/Loader'
 import RoundedButton from '../Components/RoundedButton'
@@ -94,22 +90,8 @@ class LoginScreen extends React.Component {
   }
 
   _loginFacebook = () => {
-    loginToFacebookAndGetUserInfo().then((userResponse) => {
-      const userPicture = !userResponse.picture.data.is_silhouette ?
-      userResponse.picture.data.url : null
-
-      this.props.signupFacebook(
-        userResponse.id,
-        userResponse.email,
-        userResponse.name,
-        userPicture
-      )
-    }).catch((error) => {
-      console.log('Facebook connect failed with error: ', error);
-    });
+    this.props.signupFacebook()
   }
-  
-
 
   _handleGraphQuery = (error, data) => {
     if (error) {
@@ -240,7 +222,7 @@ class LoginScreen extends React.Component {
 const mapStateToProps = (state) => {
   return {
     error: state.login.error,
-    fetching: state.login.fetching,
+    fetching: state.login.fetching || state.signup.fetching,
     isLoggedIn: state.login.isLoggedIn
   }
 }

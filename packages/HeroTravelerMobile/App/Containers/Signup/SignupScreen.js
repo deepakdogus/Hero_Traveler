@@ -3,9 +3,7 @@ import _ from 'lodash'
 import {
   ScrollView,
   Text,
-  Image,
   View,
-  TextInput,
 } from 'react-native'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
@@ -19,83 +17,8 @@ import RoundedButton from '../../Components/RoundedButton'
 import ImageWrapper from '../../Components/ImageWrapper'
 import TOS from '../../Components/TosFooter'
 import styles from '../Styles/SignupScreenStyles'
-import HeroAPI from '../../Shared/Services/HeroAPI'
-
-const api = HeroAPI.create()
-
-// These should be in ht-util
-// but there appears to be a symlink bug with RN/lerna
-const Constants = {
-  PASSWORD_MIN_LENGTH: 8,
-  PASSWORD_MAX_LENGTH: 64,
-  USERNAME_MIN_LENGTH: 2,
-  USERNAME_MAX_LENGTH: 20,
-  USERNAME_REGEX: /(?=^.{1,20}$)^[a-zA-Z][a-zA-Z0-9]*[._-]?[a-zA-Z0-9]+$/,
-  EMAIL_REGEX: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-}
-
-const validate = (values) => {
-  const errors = {}
-
-  if (!values.fullName) {
-    errors.fullName = 'Required'
-  } else if (!values.username) {
-    errors.username = 'Required'
-  } else if (values.username.length < Constants.USERNAME_MIN_LENGTH || values.username.length > Constants.USERNAME_MAX_LENGTH) {
-    errors.username = `Must be between ${Constants.USERNAME_MIN_LENGTH} and ${Constants.USERNAME_MAX_LENGTH} characters`
-  } else if (!Constants.USERNAME_REGEX.test(values.username)) {
-    errors.username = 'Usernames may contain letters, numbers, _ and -'
-  } else if (!values.email) {
-    errors.email = 'Required'
-  } else if (!Constants.EMAIL_REGEX.test(values.email)) {
-    errors.email = 'Invalid email address'
-  } else if (!values.password) {
-    errors.password = 'Required'
-  } else if (values.password.length < Constants.PASSWORD_MIN_LENGTH || values.password.length > Constants.PASSWORD_MAX_LENGTH) {
-    errors.password = `Passwords must be ${Constants.PASSWORD_MIN_LENGTH} to ${Constants.PASSWORD_MAX_LENGTH} characters long`
-  } else if (!values.confirmPassword || values.password !== values.confirmPassword) {
-    errors.confirmPassword = 'Passwords must match'
-  }
-
-  return errors
-}
-
-const asyncValidate = (values, dispatch) => {
-  return api.signupCheck(values)
-  .then(response => {
-    const {data} = response
-    const errors = {}
-    for (key in data) {
-      if (data[key]) errors[key] = `That ${key} is already taken`
-    }
-    if (Object.keys(errors).length) throw errors
-    return {}
-  })
-}
-
-class Input extends React.Component {
-  render() {
-    const {input, meta} = this.props
-    return (
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          returnKeyType={'done'}
-          onChangeText={this.props.input.onChange}
-          onFocus= { val => input.onFocus(val)}
-          onBlur= { val => input.onBlur(val)}
-          placeholderTextColor='white'
-          {...this.props}
-        />
-        {!meta.pristine && !meta.active && meta.error &&
-          <View style={styles.errorView}>
-            <Text style={styles.error}>{meta.error}</Text>
-          </View>
-        }
-      </View>
-    )
-  }
-}
+import {validate, asyncValidate} from '../../Shared/Lib/userFormValidation'
+import { FormTextInput } from '../../Components/FormTextInput';
 
 class SignupScreen extends React.Component {
 
@@ -137,35 +60,45 @@ class SignupScreen extends React.Component {
             <View style={styles.form}>
               <Field
                 name='fullName'
-                component={Input}
+                component={FormTextInput}
                 placeholder='Full name'
+                placeholderTextColor='white'
+                styles={styles}
               />
               <Field
                 name='username'
                 autoCapitalize='none'
-                component={Input}
+                component={FormTextInput}
                 placeholder='Username'
+                placeholderTextColor='white'
+                styles={styles}
               />
               <Field
                 name='email'
                 autoCapitalize='none'
-                component={Input}
+                component={FormTextInput}
                 placeholder='Email'
                 keyboardType='email-address'
+                placeholderTextColor='white'
+                styles={styles}
               />
               <Field
                 name='password'
                 autoCapitalize='none'
-                component={Input}
+                component={FormTextInput}
                 placeholder='Password'
                 secureTextEntry={true}
+                placeholderTextColor='white'
+                styles={styles}
               />
               <Field
                 name='confirmPassword'
                 autoCapitalize='none'
-                component={Input}
+                component={FormTextInput}
                 placeholder='Confirm password'
                 secureTextEntry={true}
+                placeholderTextColor='white'
+                styles={styles}
               />
               <RoundedButton
                 text='Sign Up'
@@ -220,11 +153,11 @@ export default R.compose(
     asyncValidate: asyncValidate,
     asyncBlurFields: ['username', 'email'],
     initialValues: {
-      fullName: 'Ryan W',
+      fullName: '',
       username: '',
       email: '',
-      password: 'ryanwood',
-      confirmPassword: 'ryanwood'
+      password: '',
+      confirmPassword: ''
     },
   })
 )(SignupScreen)

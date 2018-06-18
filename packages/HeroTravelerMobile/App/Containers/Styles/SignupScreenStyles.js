@@ -37,7 +37,7 @@ export default StyleSheet.create({
     right: 0,
     bottom: 55
   },
-  inputContainer: {
+  inputWrapper: {
     flex: 1,
     height: 40,
     marginLeft: Metrics.section,

@@ -497,7 +497,7 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
           NSRange textRange = NSMakeRange(startIndex, endIndex-startIndex);
           NSString* text = [block.text substringWithRange:textRange];
 
-          if (text.length > 4)
+          if (text.length > 2)
           {
             NSString* suggestedText = [self suggestionFor:text];
             if (suggestedText.length > 0) {
@@ -546,7 +546,12 @@ static YGSize RCTMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, f
                                                        language:lang];
   
   if (allWords.count == 0) {
-    return nil;
+    allWords = [textCheck guessesForWordRange:NSMakeRange(0, text.length)
+                                     inString:text
+                                     language:lang];
+    if (allWords.count == 0) {
+      return nil;
+    }
   }
   
   NSString* word = allWords[0];

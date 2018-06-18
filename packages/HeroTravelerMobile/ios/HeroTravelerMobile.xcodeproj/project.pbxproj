@@ -103,6 +103,7 @@
 		91F86E4920425EE9006A9C73 /* RHNativeFeedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F86E4820425EE9006A9C73 /* RHNativeFeedManager.m */; };
 		91F86E4C20426037006A9C73 /* RHNativeFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F86E4B20426037006A9C73 /* RHNativeFeed.m */; };
 		91F86E4F2042E7DF006A9C73 /* RHShadowNativeFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F86E4E2042E7DF006A9C73 /* RHShadowNativeFeed.m */; };
+		91FB939420D10BC400B16CD2 /* UIViewController+WatchFullscreenChanges.m in Sources */ = {isa = PBXBuildFile; fileRef = 91FB939320D10BC400B16CD2 /* UIViewController+WatchFullscreenChanges.m */; };
 		91FC449B203C960600ED309A /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 91FC4492203C95EA00ED309A /* libRNCamera.a */; };
 		942D124B1EB395B200A0CFE5 /* RNHockeyApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 942D124A1EB395B200A0CFE5 /* RNHockeyApp.m */; };
 		9465AAA71EB0FDC7003109B0 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9465AAA61EB0FDC7003109B0 /* GameKit.framework */; };
@@ -770,6 +771,8 @@
 		91F86E4B20426037006A9C73 /* RHNativeFeed.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHNativeFeed.m; sourceTree = "<group>"; };
 		91F86E4D2042E7DF006A9C73 /* RHShadowNativeFeed.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHShadowNativeFeed.h; sourceTree = "<group>"; };
 		91F86E4E2042E7DF006A9C73 /* RHShadowNativeFeed.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHShadowNativeFeed.m; sourceTree = "<group>"; };
+		91FB939320D10BC400B16CD2 /* UIViewController+WatchFullscreenChanges.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+WatchFullscreenChanges.m"; sourceTree = "<group>"; };
+		91FB93D020D10BE200B16CD2 /* UIViewController+WatchFullscreenChanges.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+WatchFullscreenChanges.h"; sourceTree = "<group>"; };
 		91FC445D203C95EA00ED309A /* RNCamera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
 		942D12171EB3956400A0CFE5 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
 		942D12491EB395B200A0CFE5 /* RNHockeyApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNHockeyApp.h; sourceTree = "<group>"; };
@@ -1219,6 +1222,8 @@
 				9115FA92203D681200547516 /* VideoDownloadItem.m */,
 				91819F4520A4BA92005BBB4E /* UIView+DetectHierarchyChanges.h */,
 				91819F4620A4BA92005BBB4E /* UIView+DetectHierarchyChanges.m */,
+				91FB93D020D10BE200B16CD2 /* UIViewController+WatchFullscreenChanges.h */,
+				91FB939320D10BC400B16CD2 /* UIViewController+WatchFullscreenChanges.m */,
 			);
 			name = Video;
 			path = HeroTravelerMobile/Video;
@@ -2272,6 +2277,7 @@
 				91F19958204F29C700EC7125 /* RNVideoProcessingManager.swift in Sources */,
 				916D5B39204DC82300FB09DF /* RHNativeFeedItem.m in Sources */,
 				91973CB01FA39B64006DE932 /* RNDJEntityRangeModel.m in Sources */,
+				91FB939420D10BC400B16CD2 /* UIViewController+WatchFullscreenChanges.m in Sources */,
 				91F19960204F29C700EC7125 /* SDAVAssetExportSession.m in Sources */,
 				91973CB11FA39B64006DE932 /* RNDJInlineStyleRangeModel.m in Sources */,
 				91F86E4C20426037006A9C73 /* RHNativeFeed.m in Sources */,

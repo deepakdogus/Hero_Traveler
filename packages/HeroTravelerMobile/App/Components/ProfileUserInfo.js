@@ -4,9 +4,7 @@ import {
   View,
   Text,
   TouchableOpacity,
-  TextInput,
 } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import { Actions as NavActions } from 'react-native-router-flux'
 
 import styles from './Styles/ProfileViewStyles'
@@ -17,20 +15,13 @@ import formatCount from '../Shared/Lib/formatCount'
 import TabIcon from './TabIcon'
 import Avatar from './Avatar'
 
-const usernameContansts = {
-  maxLength: 20,
-  minLength: 2,
-}
-
 export default class ProfileUserInfo extends Component {
   static propTypes = {
     user: PropTypes.object,
     editable: PropTypes.bool,
-    isEditing: PropTypes.bool,
     isFollowing: PropTypes.bool,
     onPressFollow: PropTypes.func,
     onPressUnfollow: PropTypes.func,
-    handleUpdateAvatarPhoto: PropTypes.func,
     usernameText: PropTypes.string,
     setUsername: PropTypes.func,
     aboutText: PropTypes.string,
@@ -59,24 +50,9 @@ export default class ProfileUserInfo extends Component {
     })
   }
 
-  _selectAvatar = () => {
-    NavActions.mediaSelectorScreen({
-      mediaType: 'photo',
-      title: 'Edit Avatar',
-      titleStyle: {color: Colors.white},
-      leftTitle: 'Cancel',
-      leftTextStyle: {color: Colors.white},
-      onLeft: () => NavActions.pop(),
-      rightTitle: 'Done',
-      rightIcon: 'none',
-      onSelectMedia: this.props.handleUpdateAvatarPhoto
-    })
-  }
-
   renderTop() {
-    const {isEditing, editable} = this.props
-    if (isEditing) return null
-    else if (editable) return (
+    const {editable} = this.props
+    if (editable) return (
       <View style={styles.topRightContainer}>
         <TouchableOpacity onPress={this._navToEditProfile} style={styles.editButton}>
           <TabIcon
@@ -96,42 +72,7 @@ export default class ProfileUserInfo extends Component {
   }
 
   renderUserInfo() {
-    const {isEditing, user, usernameText, setUsername, aboutText, setAbout} = this.props
-    if (isEditing) return (
-      <View style={styles.userInfoWrapper}>
-        <View style={styles.editTitleWrapper}>
-          <TextInput
-            placeholder={user.username}
-            value={usernameText}
-            autoCapitalize='none'
-            style={[styles.titleText, styles.editTitle]}
-            onChangeText={setUsername}
-            maxLength={usernameContansts.maxLength}
-            minLength={usernameContansts.minLength}
-            returnKeyType={'done'}
-          />
-          <TabIcon
-            name='pencil'
-            style={{
-              view: styles.editPencilView,
-              image: styles.editPencilImage,
-            }}
-          />
-        </View>
-        <Text style={styles.aboutTitle}>About</Text>
-        <TextInput
-          placeholder='Tell us about yourself'
-          value={aboutText}
-          autoCapitalize='none'
-          style={[styles.aboutText, styles.aboutTextEdit]}
-          onChangeText={setAbout}
-          maxLength={63}
-          multiline
-          returnKeyType={'done'}
-        />
-      </View>
-    )
-
+    const {user} = this.props
     return (
       <View style={styles.userInfoWrapper}>
         <Text style={styles.titleText}>{user.username}</Text>
@@ -167,24 +108,9 @@ export default class ProfileUserInfo extends Component {
   }
 
   renderFirstRow() {
-    const {isEditing, user} = this.props
+    const {user} = this.props
 
-    const avatarOverlay = isEditing ? (
-      <TouchableOpacity
-        style={styles.addAvatarPhotoButton}
-        onPress={this._selectAvatar}
-      >
-        <Icon
-          name='camera'
-          size={32.5}
-          color={Colors.whiteAlphaPt80}
-          style={styles.updateAvatorIcon} />
-      </TouchableOpacity>
-    ) : null
-
-    const avatarUrl = (isEditing && user.profile.tempAvatar) ?
-      getImageUrl(user.profile.tempAvatar, 'avatar') :
-      getImageUrl(user.profile.avatar, 'avatar')
+    const avatarUrl = getImageUrl(user.profile.avatar, 'avatar')
 
     return (
       <View style={styles.profileWrapper}>
@@ -193,7 +119,6 @@ export default class ProfileUserInfo extends Component {
             size='extraLarge'
             avatarUrl={avatarUrl}
           />
-          {avatarOverlay}
         </View>
         <View style={styles.userInfoMargin}>
           {this.renderUserInfo()}
@@ -247,14 +172,12 @@ export default class ProfileUserInfo extends Component {
   }
 
   render() {
-    const {isEditing} = this.props
-
     return (
-      <View style={isEditing ? styles.profileEditInfoContainer : styles.profileInfoContainer}>
+      <View style={styles.profileInfoContainer}>
         {this.renderTop()}
         {this.renderFirstRow()}
         {this.hasBadge() && this.renderBadgeRow()}
-        {!isEditing && this.renderSecondRow()}
+        {this.renderSecondRow()}
       </View>
     )
   }

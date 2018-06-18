@@ -20,6 +20,7 @@ class ProfileScreen extends React.Component {
       this.props.userStoriesFetchStatus !== nextProps.userStoriesFetchStatus,
       this.props.userBookmarksById !== nextProps.userBookmarksById,
       this.props.userBookmarksFetchStatus !== nextProps.userBookmarksFetchStatus,
+      this.props.guideIds !== nextProps.guideIds,
       this.props.guidesFetchStatus !== nextProps.guidesFetchStatus,
     ])
 
@@ -101,6 +102,7 @@ class ProfileScreen extends React.Component {
 const mapStateToProps = (state) => {
   const {userId} = state.session
   let {stories, users, guides} = state.entities
+
   return {
     user: state.entities.users.entities[userId],
     accessToken: _.find(state.session.tokens, {type: 'access'}).value,

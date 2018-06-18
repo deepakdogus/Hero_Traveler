@@ -73,6 +73,7 @@ export const receiveUsersGuides = (state, {guides = {}, userId}) => {
   else if (!state.guideIdsByUserId[userId]) {
     return state.setIn(['guideIdsByUserId', userId], [])
   }
+  else return state
 }
 
 export const receiveNewGuide = (state, {guides = {}, userId}) => {

@@ -241,6 +241,7 @@ class CreateGuide extends Component {
             <EditableCoverMedia
               isPhoto
               media={coverImage}
+              mediaType='photo'
               clearError={this.onErrorPress}
               onUpdate={updateGuide}
             />

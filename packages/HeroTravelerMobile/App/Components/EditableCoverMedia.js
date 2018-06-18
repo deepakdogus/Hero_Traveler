@@ -25,6 +25,7 @@ class EditableCoverMedia extends Component {
   static propTypes = {
     isPhoto: PropTypes.bool,
     media: PropTypes.object,
+    mediaType: PropTypes.string,
     clearError: PropTypes.func,
     targetId: PropTypes.string,
     onUpdate: PropTypes.func,
@@ -52,6 +53,7 @@ class EditableCoverMedia extends Component {
   _contentAddCover = () => {
     this.props.clearError({error: null})
     NavActions.mediaSelectorScreen({
+      mediaType: this.props.mediaType,
       title: 'Add Cover',
       leftTitle: 'Cancel',
       onLeft: () => NavActions.pop(),
@@ -65,6 +67,7 @@ class EditableCoverMedia extends Component {
       this.resetAnimation()
     })
     NavActions.mediaSelectorScreen({
+      mediaType: this.props.mediaType,
       title: 'Change Cover',
       leftTitle: 'Cancel',
       onLeft: () => NavActions.pop(),

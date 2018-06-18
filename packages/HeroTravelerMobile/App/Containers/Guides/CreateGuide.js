@@ -43,7 +43,6 @@ class CreateGuide extends Component {
 
   constructor(props) {
     super(props)
-
   }
 
   state = {
@@ -108,18 +107,17 @@ class CreateGuide extends Component {
     }
   }
 
-  componentWillReceiveProps = (nextProps) => {
+  componentDidUpdate = (prevProps, prevState, snapshot) => {
     if (
       this.state.creating &&
-      this.props.fetching &&
-      nextProps.fetching === false
+      prevProps.fetching && this.props.fetching === false
     ) {
-      NavActions.pop()
+      if (!prevProps.error && this.props.error) {
+        this.setState({creating: false})
+      }
+      else NavActions.pop()
     }
   }
-
-  // Quick win for not updating unmounted components on guide creation
-  shouldComponentUpdate = () => !this.state.creating
 
   onLocationSelectionPress = () => {
     NavActions.locationSelectorScreen({
@@ -226,17 +224,17 @@ class CreateGuide extends Component {
               leftTitle={'Cancel'}
               title={this.isExistingGuide() ? 'EDIT GUIDE' : 'CREATE GUIDE'}
               isRightValid={guideRequirementsMet && !creating ? true : false}
-              onRight={guideRequirementsMet && onDone}
+              onRight={onDone}
               rightTitle={this.isExistingGuide() ? 'Save' : 'Create'}
               rightTextStyle={storyCoverStyles.navBarRightTextStyle}
               style={storyCoverStyles.navBarStyle}
             />
             <View style={styles.coverHeight}>
-              {error && (
+              {!!error && (
                 <ShadowButton
                   style={styles.errorButton}
                   onPress={this.onErrorPress}
-                  text={error}
+                  text={error.message}
                 />
               )}
               <EditableCoverMedia
@@ -311,6 +309,7 @@ const mapStateToProps = (state, props) => {
     accessToken: find(state.session.tokens, { type: 'access' }),
     guide: guides[props.guideId],
     fetching: state.entities.guides.fetchStatus.fetching,
+    error: state.entities.guides.error,
     loaded: state.entities.guides.fetchStatus.loaded,
     status: state.entities.guides.fetchStatus,
   }

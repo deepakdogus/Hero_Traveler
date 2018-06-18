@@ -109,8 +109,14 @@ export const guideFeedSuccess = (state, {feedGuidesById}) => {
   return state.setIn(['feedGuidesById'], feedGuidesById)
 }
 
-export const failure = (state, {error}) =>
-  state.merge({fetching: false, error})
+export const failure = (state, {error}) => {
+  return state.merge({
+    fetchStatus: {
+      fetching: false,
+    },
+    error,
+  })
+}
 
 /* ------------- Hookup Reducers To Types ------------- */
 

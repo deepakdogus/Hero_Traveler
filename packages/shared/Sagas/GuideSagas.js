@@ -110,6 +110,24 @@ export function * getUserFeedGuides(api, {userId}) {
   }
 }
 
+export function * getCategoryGuides(api, {categoryId}) {
+  const response = yield call(api.getCategoryGuides, categoryId)
+  if (response.ok) {
+    const {entities, result} = response.data
+    yield [
+      put(UserActions.receiveUsers(entities.users)),
+      put(CategoryActions.receiveCategories(entities.categories)),
+      put(GuideActions.receiveGuides(entities.guides)),
+      put(GuideActions.getCategoryGuidesSuccess(categoryId, result))
+    ]
+  }
+  else {
+    yield put(GuideActions.guideFailure(
+      new Error("Failed to get category's guides")
+    ))
+  }
+}
+
 export function * bulkSaveStoryToGuide(api, {storyId, isInGuide}) {
   const response = yield call(api.bulkSaveStoryToGuide, storyId, isInGuide)
   if (response.ok) {

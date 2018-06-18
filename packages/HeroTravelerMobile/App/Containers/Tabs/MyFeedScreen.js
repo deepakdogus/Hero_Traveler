@@ -91,7 +91,7 @@ class MyFeedScreen extends React.Component {
 
   _showNoStories() {
     return (
-      <NoStoriesMessage text={this.props.selectedTab}/>
+      <NoStoriesMessage text={this.state.selectedTab}/>
     )
   }
 

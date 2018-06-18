@@ -16,6 +16,8 @@ const { Types, Creators } = createActions({
   getUserGuides: ['userId'],
   guideFeedRequest: ['userId'],
   guideFeedSuccess: ['feedGuidesById'],
+  getCategoryGuides: ['categoryId'],
+  getCategoryGuidesSuccess: ['categoryId', 'guideIds'],
   bulkSaveStoryToGuideRequest: ['storyId', 'isInGuide'],
 })
 
@@ -66,14 +68,13 @@ export const receiveGuides = (state, {guides = {}, userId = false}) => {
 
 
 export const receiveUsersGuides = (state, {guides = {}, userId}) => {
-  const newGuidesIds = Object.keys(guides)
-  if (newGuidesIds.length) {
-    return state.setIn(['guideIdsByUserId', userId], newGuidesIds)
-  }
-  else if (!state.guideIdsByUserId[userId]) {
-    return state.setIn(['guideIdsByUserId', userId], [])
-  }
-  else return state
+  // only needs ids so getting the keys
+  return state.setIn(['guideIdsByUserId', userId], Object.keys(guides))
+}
+
+export const receiveCategoryGuides = (state, {categoryId, guideIds = {}}) => {
+  return state.setIn(['guideIdsByCategoryId', categoryId], guideIds)
+
 }
 
 export const receiveNewGuide = (state, {guides = {}, userId}) => {
@@ -125,5 +126,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_USER_GUIDES]: request,
   [Types.GUIDE_FEED_REQUEST]: request,
   [Types.GUIDE_FEED_SUCCESS]: guideFeedSuccess,
+  [Types.GET_CATEGORY_GUIDES]: request,
+  [Types.GET_CATEGORY_GUIDES_SUCCESS]: receiveCategoryGuides,
   [Types.BULK_SAVE_STORY_TO_GUIDE_REQUEST]: request,
 })

@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 export default class TabBar extends Component {
   static propTypes = {
     tabs: PropTypes.object.isRequired,
-    activeTab: PropTypes.string.isRequired,
+    activeTab: PropTypes.string, // removing required since it can also be null
     onClickTab: PropTypes.func.isRequired,
     tabStyle: PropTypes.number, // StyleSheet.create returns numbers
   }

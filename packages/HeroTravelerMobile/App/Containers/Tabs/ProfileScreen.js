@@ -108,7 +108,7 @@ const mapStateToProps = (state) => {
     accessToken: _.find(state.session.tokens, {type: 'access'}).value,
     userStoriesFetchStatus: getUserFetchStatus(stories, userId),
     userStoriesById: getByUser(stories, userId),
-    draftsFetchStatus: stories.drafts.fetchStatus,
+    draftsFetchStatus: {loaded: true},
     draftsById: stories.drafts.byId,
     userBookmarksById: getByBookmarks(users, userId),
     userBookmarksFetchStatus: getBookmarksFetchStatus(stories, userId),

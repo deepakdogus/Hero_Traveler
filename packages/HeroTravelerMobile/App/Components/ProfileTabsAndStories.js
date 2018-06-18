@@ -85,6 +85,7 @@ export default class ProfileTabsAndStories extends Component {
     }
     else if (selectedTab === tabTypes.drafts) return 'There are no stories here'
     else if (selectedTab === tabTypes.bookmarks) return 'There are no bookmarked stories here'
+    else if (selectedTab === tabTypes.guides) return 'There are no guides here'
     return ''
   }
 
@@ -120,6 +121,7 @@ export default class ProfileTabsAndStories extends Component {
   render() {
     const {renderProfileInfo, feedItemsById, fetchStatus, editable, isStory} = this.props
     const isGettingStories = this.isGettingStories()
+
     return (
       <View style={[
         styles.profileTabsAndStoriesHeight,

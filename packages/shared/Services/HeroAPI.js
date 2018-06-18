@@ -404,6 +404,11 @@ const create = () => {
     .then(response => safeNormalize(response, [Guide]))
   }
 
+  const getCategoryGuides = (categoryId) => {
+    return api.get(`guide/category/${categoryId}`)
+    .then(response => safeNormalize(response, [Guide]))
+  }
+
   // ------
   // STEP 3
   // ------
@@ -477,6 +482,7 @@ const create = () => {
     getGuide,
     getUserGuides,
     getUserFeedGuides,
+    getCategoryGuides,
   }
 }
 

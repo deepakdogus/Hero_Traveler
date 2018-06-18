@@ -9,6 +9,7 @@ const { Types, Creators } = createActions({
   receiveGuides: ['guides'],
   receiveUsersGuides: ['guides', 'userId'],
   createGuideFailure: ['error'],
+  guideFailure: ['error'],
   updateGuide: ['guide'],
   getGuideRequest: ['guideId'],
   deleteGuideRequest: ['guideId', 'userId'],

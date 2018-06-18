@@ -215,87 +215,89 @@ class CreateGuide extends Component {
             tintColor={Colors.blackoutTint}
           />
         )}
-        <ScrollView
-          keyboardShouldPersistTaps="handled"
-          bounces={false}
-          stickyHeaderIndices={[0]}
-          ref={this.setScrollViewRef}>
-          <NavBar
-            onLeft={creating ? noop : onCancel}
-            leftTitle={'Cancel'}
-            title={this.isExistingGuide() ? 'EDIT GUIDE' : 'CREATE GUIDE'}
-            isRightValid={guideRequirementsMet && !creating ? true : false}
-            onRight={guideRequirementsMet && onDone}
-            rightTitle={this.isExistingGuide() ? 'Save' : 'Create'}
-            rightTextStyle={storyCoverStyles.navBarRightTextStyle}
-            style={storyCoverStyles.navBarStyle}
-          />
-          <View style={styles.coverHeight}>
-            {error && (
-              <ShadowButton
-                style={styles.errorButton}
-                onPress={this.onErrorPress}
-                text={error}
+        {!creating &&
+          <ScrollView
+            keyboardShouldPersistTaps="handled"
+            bounces={false}
+            stickyHeaderIndices={[0]}
+            ref={this.setScrollViewRef}>
+            <NavBar
+              onLeft={creating ? noop : onCancel}
+              leftTitle={'Cancel'}
+              title={this.isExistingGuide() ? 'EDIT GUIDE' : 'CREATE GUIDE'}
+              isRightValid={guideRequirementsMet && !creating ? true : false}
+              onRight={guideRequirementsMet && onDone}
+              rightTitle={this.isExistingGuide() ? 'Save' : 'Create'}
+              rightTextStyle={storyCoverStyles.navBarRightTextStyle}
+              style={storyCoverStyles.navBarStyle}
+            />
+            <View style={styles.coverHeight}>
+              {error && (
+                <ShadowButton
+                  style={styles.errorButton}
+                  onPress={this.onErrorPress}
+                  text={error}
+                />
+              )}
+              <EditableCoverMedia
+                isPhoto
+                media={coverImage}
+                mediaType='photo'
+                clearError={this.onErrorPress}
+                onUpdate={updateGuide}
               />
-            )}
-            <EditableCoverMedia
-              isPhoto
-              media={coverImage}
-              mediaType='photo'
-              clearError={this.onErrorPress}
-              onUpdate={updateGuide}
-            />
-          </View>
-          <Form>
-            <FormInput
-              onChangeText={this.setTitle}
-              iconName='info'
-              value={title}
-              placeholder='Title'
-            />
-            <FormInput
-              onPress={this.onLocationSelectionPress}
-              iconName='location'
-              value={this.getLocationsValue()}
-              placeholder='Location(s)'
-            />
-            <FormInput
-              onPress={this.onCategorySelectionPress}
-              iconName='tag'
-              value={this.getCategoriesValue()}
-              placeholder={'Categories'}
-            />
-            <DropdownMenu
-              options={options}
-              placeholder={'How many days is this guide?'}
-              icon={Images.iconDate}
-              onValueChange={this.setDuration}
-              value={
-                duration
-                  ? `${duration} ${duration > 1 ? 'Days' : 'Day'}`
-                  : undefined
-              }
-            />
-            <FormInput
-              onChangeText={this.setCost}
-              iconName='gear'
-              value={cost}
-              placeholder={'Cost (USD)'}
-            />
-            <TouchableMultilineInput
-              onDone={this.setDescription}
-              title={'OVERVIEW'}
-              label={'Overview'}
-              value={description}
-              placeholder={"What's your guide about?"}
-            />
-            <Checkbox
-              checked={isPrivate}
-              label={'Make this guide private'}
-              onPress={this.togglePrivacy}
-            />
-          </Form>
-        </ScrollView>
+            </View>
+            <Form>
+              <FormInput
+                onChangeText={this.setTitle}
+                iconName='info'
+                value={title}
+                placeholder='Title'
+              />
+              <FormInput
+                onPress={this.onLocationSelectionPress}
+                iconName='location'
+                value={this.getLocationsValue()}
+                placeholder='Location(s)'
+              />
+              <FormInput
+                onPress={this.onCategorySelectionPress}
+                iconName='tag'
+                value={this.getCategoriesValue()}
+                placeholder={'Categories'}
+              />
+              <DropdownMenu
+                options={options}
+                placeholder={'How many days is this guide?'}
+                icon={Images.iconDate}
+                onValueChange={this.setDuration}
+                value={
+                  duration
+                    ? `${duration} ${duration > 1 ? 'Days' : 'Day'}`
+                    : undefined
+                }
+              />
+              <FormInput
+                onChangeText={this.setCost}
+                iconName='gear'
+                value={cost}
+                placeholder={'Cost (USD)'}
+              />
+              <TouchableMultilineInput
+                onDone={this.setDescription}
+                title={'OVERVIEW'}
+                label={'Overview'}
+                value={description}
+                placeholder={"What's your guide about?"}
+              />
+              <Checkbox
+                checked={isPrivate}
+                label={'Make this guide private'}
+                onPress={this.togglePrivacy}
+              />
+            </Form>
+          </ScrollView>
+        }
       </View>
     )
   }

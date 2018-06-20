@@ -4,7 +4,8 @@ import { Fonts, Colors, Metrics } from '../../Shared/Themes/'
 // Don't forget to update ProfileTabAndStories.getHeaderHeight() if
 // related styles change. (username, about, badge, error, etc.)
 
-const storyWidth = (Metrics.screenWidth - 2 * Metrics.section - Metrics.section) / 2
+export const storyWidth = (Metrics.screenWidth - 2 * Metrics.section - Metrics.section) / 2
+const storyHeight = storyWidth / 16 * 9
 
 export default StyleSheet.create({
   wrapper: {
@@ -64,7 +65,17 @@ export default StyleSheet.create({
     letterSpacing: .7,
   },
   image: {
-    height: storyWidth/16*9,
+    height: storyHeight,
     width: storyWidth,
-  }
+  },
+  playButtonAbsolute: {
+    position: 'absolute',
+    width: '100%',
+    height: storyHeight,
+  },
+  playButtonCenter: {
+    height: storyHeight,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 })

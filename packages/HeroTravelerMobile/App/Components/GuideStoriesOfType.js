@@ -3,10 +3,16 @@ import PropTypes from 'prop-types'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 
-import styles from './Styles/GuideStoriesOfTypeStyles'
+import styles, {storyWidth} from './Styles/GuideStoriesOfTypeStyles'
 import {styles as StoryReadingScreenStyles} from '../Containers/Styles/StoryReadingScreenStyles'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import ImageWrapper from './ImageWrapper'
+import {TouchlessPlayButton} from './VideoPlayer'
+
+const videoImageOptions = {
+  video: true,
+  width: storyWidth
+}
 
 export default class GuideStoriesOfType extends React.Component {
   static propTypes = {
@@ -35,8 +41,21 @@ export default class GuideStoriesOfType extends React.Component {
     }
   }
 
+  renderPlayButton = () => {
+    return (
+      <View style={styles.playButtonAbsolute}>
+        <View style={styles.playButtonCenter}>
+          <TouchlessPlayButton size={20}/>
+        </View>
+      </View>
+    )
+  }
+
   renderStory = (story) => {
-    const imageUrl = getImageUrl(story.coverImage, 'basic')
+    const isVideo = !!story.coverVideo
+    const coverUrl = isVideo
+      ? getImageUrl(story.coverVideo, 'optimized', videoImageOptions)
+      : getImageUrl(story.coverImage, 'basic')
     const {authors} = this.props
 
     return (
@@ -44,9 +63,10 @@ export default class GuideStoriesOfType extends React.Component {
         <TouchableOpacity onPress={this.onPressStory(story)}>
           <ImageWrapper
             cached
-            source={{uri: imageUrl}}
+            source={{uri: coverUrl}}
             style={styles.image}
           />
+         {isVideo && this.renderPlayButton()}
           <Text style={styles.title}>
             {story.title}
           </Text>

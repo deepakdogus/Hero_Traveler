@@ -62,6 +62,8 @@ class FormInput extends Component {
       return (
         <Text
           style={[detailsStyles.inputStyle, value ? null : { color: Colors.navBarText }]}
+          numberOfLines={1}
+          ellipsizeMode={'tail'}
         >
           {value || placeholder}
         </Text>

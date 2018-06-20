@@ -42,6 +42,7 @@ export default StyleSheet.create({
   },
   inputStyle: {
     flexGrow: 1,
+    maxWidth: Metrics.screenWidth - 2 * Metrics.doubleBaseMargin - 40, // metrics of other elements in location text area
     color: Colors.background,
     fontSize: 16,
     marginBottom: 10,

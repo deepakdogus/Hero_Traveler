@@ -227,7 +227,6 @@ class CreateStoryDetailScreen extends React.Component {
 
   navToLocation = () => {
     NavActions.locationSelectorScreen({
-      navBack: NavActions.pop,
       onSelectLocation: this.receiveLocation,
       // replace this with short name?
       location: this.props.workingDraft.locationInfo

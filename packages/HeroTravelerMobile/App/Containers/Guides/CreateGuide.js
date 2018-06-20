@@ -112,11 +112,9 @@ class CreateGuide extends Component {
 
   onLocationSelectionPress = () => {
     NavActions.locationSelectorScreen({
-      navBack: NavActions.pop,
-      onSelectLocation: this.setLocation,
-      location: this.state.guide.location
-        ? this.state.guide.location.name
-        : "",
+      onSelectLocation: this.updateLocations,
+      locations: this.state.guide.locations,
+      isMultiSelect: true,
     })
   }
 
@@ -150,8 +148,8 @@ class CreateGuide extends Component {
     NavActions.pop()
   }
 
-  setLocation = (location) => {
-    this.updateGuide({ locations: [location] })
+  updateLocations = (locations) => {
+    this.updateGuide({locations})
     NavActions.pop()
   }
 

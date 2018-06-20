@@ -35,6 +35,7 @@ export const INITIAL_STATE = Immutable({
   },
   error: null,
   guideIdsByUserId: {},
+  guideIdsByCategoryId: {},
   feedGuidesById: [],
 })
 

@@ -155,7 +155,7 @@ const navToSignupTopics = () => NavActions.signupFlow_topics()
 const navToSignupSocial = () => NavActions.signupFlow_social()
 
 const navToTabbar = () => NavActions.tabbar()
-
+const noop = () => {}
 /* **************************
 * Documentation: https://github.com/aksonov/react-native-router-flux
 ***************************/
@@ -200,7 +200,7 @@ export default NavActions.create(
           component={SignupTopics}
           renderRightButton={topicsRightBtn}
           onRight={navToSignupSocial}
-          onBack={() => {}}
+          onBack={noop}
         />
         <Scene
           key='signupFlow_social'

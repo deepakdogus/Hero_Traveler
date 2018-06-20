@@ -214,7 +214,7 @@ const mapStateToProps = (state, props) => {
     user: state.entities.users.entities[state.session.userId],
     fetchStatus: getFetchStatus(state.entities.stories, props.categoryId),
     storiesById: getByCategory(state.entities.stories, props.categoryId),
-    categoryGuidesById: state.entities.guides.guideIdsByCategoryId[props.categoryId],
+    categoryGuidesById: state.entities.guides.guideIdsByCategoryId[props.categoryId] || [],
     error: state.entities.stories.error,
     selectedCategories: state.signup.selectedCategories,
     location: state.routes.scene.name

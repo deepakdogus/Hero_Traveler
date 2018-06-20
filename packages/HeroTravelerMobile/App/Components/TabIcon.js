@@ -55,6 +55,8 @@ class TabIcon extends React.Component {
         return Images.iconArrowLeftRed
       case 'redCheck':
         return Images.iconRedCheck
+      case 'redCheckOutlined':
+        return Images.iconRedCheckOutlined
       case 'facebook':
         return Images.iconLoginFacebook
       case 'twitter':

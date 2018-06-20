@@ -20,6 +20,7 @@ const { Types, Creators } = createActions({
   getCategoryGuides: ['categoryId'],
   getCategoryGuidesSuccess: ['categoryId', 'guideIds'],
   bulkSaveStoryToGuideRequest: ['storyId', 'isInGuide'],
+  dismissError: null,
 })
 
 export const GuideTypes = Types
@@ -119,6 +120,10 @@ export const failure = (state, {error}) => {
   })
 }
 
+export const dismissError = (state, {error}) => {
+  return state.setIn(['error'], null)
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -137,4 +142,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_CATEGORY_GUIDES]: request,
   [Types.GET_CATEGORY_GUIDES_SUCCESS]: receiveCategoryGuides,
   [Types.BULK_SAVE_STORY_TO_GUIDE_REQUEST]: request,
+  [Types.DISMISS_ERROR]: dismissError,
 })

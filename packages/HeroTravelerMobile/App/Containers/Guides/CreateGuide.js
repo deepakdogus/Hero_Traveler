@@ -69,16 +69,7 @@ class CreateGuide extends Component {
   }
 
   onErrorPress = () => {
-    this.setState({error: null})
-  }
-
-  onError = () => {
-    this.setState({
-      error:
-        "There's an issue with the video you selected. Please try another.",
-    })
-    // jump to top to reveal error message
-    this.jumpToTop()
+    this.props.dismissError()
   }
 
   onDone = () => {
@@ -241,7 +232,7 @@ class CreateGuide extends Component {
                 isPhoto
                 media={coverImage}
                 mediaType='photo'
-                clearError={this.onErrorPress}
+                clearError={error ? this.onErrorPress : noop}
                 onUpdate={updateGuide}
               />
             </View>
@@ -318,6 +309,7 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = dispatch => ({
   createGuide: (guide, userId) => dispatch(GuideActions.createGuide(guide, userId)),
   updateGuide: guide => dispatch(GuideActions.updateGuide(guide)),
+  dismissError: () => dispatch(GuideActions.dismissError()),
 })
 
 const ConnectedCreateGuide = connect(mapStateToProps, mapDispatchToProps)(CreateGuide)

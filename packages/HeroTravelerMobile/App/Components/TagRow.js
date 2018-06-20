@@ -4,10 +4,11 @@ import {
   View,
   Text,
   TouchableOpacity,
+  StyleSheet,
 } from 'react-native'
 
 import { TAG_TYPE_HASHTAG } from '../Containers/CreateStory/TagScreen'
-import tagScreenStyles from '../Containers/CreateStory/TagScreenStyles'
+import { Colors, Metrics } from '../Shared/Themes/'
 
 export default class TagRow extends Component {
   static propTypes = {
@@ -24,10 +25,10 @@ export default class TagRow extends Component {
   render() {
     const {tag, tagType} = this.props
     return (
-      <View key={tag._id} style={tagScreenStyles.rowWrapper}>
+      <View key={tag._id} style={styles.rowWrapper}>
         <TouchableOpacity
           onPress={this._onPress}
-          style={tagScreenStyles.row}
+          style={styles.row}
         >
           <Text>
             {tagType === TAG_TYPE_HASHTAG ? "#" : ""}{tag.title}
@@ -37,3 +38,15 @@ export default class TagRow extends Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  row: {
+    padding: Metrics.baseMargin,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  rowWrapper: {
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.lightGreyAreas
+  },
+})

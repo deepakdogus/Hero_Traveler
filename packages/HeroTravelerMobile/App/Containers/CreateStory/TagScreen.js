@@ -19,13 +19,13 @@ const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KE
 import CategoryActions from '../../Shared/Redux/Entities/Categories'
 import HashtagActions from '../../Shared/Redux/Entities/Hashtags'
 import { Metrics, Colors } from '../../Shared/Themes/'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import Loader from '../../Components/Loader'
 import styles from './TagScreenStyles'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTimeTooltips'
 import UserActions from '../../Shared/Redux/Entities/Users'
 import Tooltip from '../../Components/Tooltip'
 import TagRow from '../../Components/TagRow'
+import SelectedItem from '../../Components/SelectedItem'
 
 export const TAG_TYPE_CATEGORY = "category";
 export const TAG_TYPE_HASHTAG = "hashtag";
@@ -354,14 +354,14 @@ class TagScreen extends Component {
           */}
           {_.size(this.state.selectedTags) > 0 &&
             <View style={styles.selectedTags}>
-              {_.map(this.state.selectedTags, t => {
+              {_.map(this.state.selectedTags, tag => {
                 return (
-                  <View key={t._id || t.title} style={styles.selectedTagRow}>
-                    <TouchableOpacity onPress={() => this._removeTag(t)} style={[styles.row, styles.rowSelected]}>
-                      <Text>{this.props.tagType === TAG_TYPE_HASHTAG ? "#" : ""}{t.title}</Text>
-                      <Icon name='close' size={15} style={styles.removeTagIcon} />
-                    </TouchableOpacity>
-                  </View>
+                  <SelectedItem
+                    key={tag._id || tag.title}
+                    text={`${this.props.tagType === TAG_TYPE_HASHTAG ? "#" : ""}${tag.title}`}
+                    onPressRemove={this._removeTag}
+                    item={tag}
+                  />
                 )
               })}
             </View>
@@ -371,7 +371,7 @@ class TagScreen extends Component {
             <Loader style={styles.spinner} spinnerColor={Colors.blackoutTint} />
           }
           {(isShowSearchResults || isShowDefaultResults) &&
-            <View style={styles.defaultTags}>
+            <View>
               {_.map(tagsToShow, this.renderTagRow)}
             </View>
           }

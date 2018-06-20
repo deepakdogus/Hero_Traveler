@@ -36,13 +36,16 @@ const StyledRoundedAvatarButton = styled(RoundedButton)`
   margin-left: 10px;
   margin-right: 20px;
   position: relative;
-  top: ${props => props.profileAvatar ? '4px' : '-3px'};
+  top: ${props => props.profileAvatar ? '4px' : '2px'};
+  
 `
+
 
 const StyledRoundedCreateButton = styled(RoundedButton)`
     position: relative;
-    bottom: 5px;
+    bottom: 1px;
 `
+
 
 const StyledRoundedMailButton = styled(StyledRoundedButton)`
     position: relative;
@@ -51,8 +54,9 @@ const StyledRoundedMailButton = styled(StyledRoundedButton)`
 
 const StyledRoundedNotificationButton = styled(StyledRoundedButton)`
     position: relative;
-    bottom: 3px;
+    top: 2px;
 `
+
 
 class HeaderLoggedIn extends React.Component {
   static PropTypes = {
@@ -62,6 +66,7 @@ class HeaderLoggedIn extends React.Component {
 
   render () {
     const { openModal, user, profileAvatar } = this.props
+    console.log('props.profileAvatar', profileAvatar)
     return (
       <StyledRow between="xs" middle="xs">
         <Col>

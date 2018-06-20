@@ -6,7 +6,7 @@ import Carousel from 'nuka-carousel'
 import RoundedButton from './RoundedButton'
 import Icon from './Icon'
 
-import 'Styles/CarouselStyles.css'
+import './Styles/CarouselStyles.css'
 
 const StyledRoundedButton = styled(RoundedButton)`
 	border: 0px;

@@ -66,7 +66,6 @@ class HeaderLoggedIn extends React.Component {
 
   render () {
     const { openModal, user, profileAvatar } = this.props
-    console.log('props.profileAvatar', profileAvatar)
     return (
       <StyledRow between="xs" middle="xs">
         <Col>

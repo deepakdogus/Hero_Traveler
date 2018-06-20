@@ -5,7 +5,7 @@ import {NavLink} from 'react-router-dom';
 
 import Icon from './Icon'
 import {Row} from './FlexboxGrid'
-import {displayLocation} from '../Shared/Lib/locationHelpers'
+import {displayLocationDetails} from '../Shared/Lib/locationHelpers'
 
 const LocationIcon = styled(Icon)`
   padding: 3px 2px 0;
@@ -76,14 +76,13 @@ export default class StoryMetaInfo extends React.Component {
 
   render () {
     const {story} = this.props
-    console.log('in story meta data', story)
     return (
       <Container>
         <InfoRow>
           <LocationIcon name='location' />
           <TextContainer>
             <Label>Location:</Label>
-            <Location>{displayLocation(story.locationInfo)}</Location>
+            <Location>{displayLocationDetails(story.locationInfo)}</Location>
           </TextContainer>
         </InfoRow>
         <InfoRow>

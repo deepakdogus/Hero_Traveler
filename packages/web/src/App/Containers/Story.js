@@ -10,7 +10,6 @@ import StoryActions from '../Shared/Redux/Entities/Stories'
 import UserActions from '../Shared/Redux/Entities/Users'
 import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
 import UXActions from '../Redux/UXRedux'
-import {displayLocationDetails} from '../Shared/Lib/locationHelpers'
 
 import StoryHeader from '../Components/StoryHeader'
 import StoryContentRenderer from '../Components/StoryContentRenderer'

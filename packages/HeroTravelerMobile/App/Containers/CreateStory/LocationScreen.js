@@ -70,7 +70,7 @@ class LocationScreen extends Component {
       }
       else this.setState({
         searching: false,
-        locations: [newLocation, ...this.state.locations],
+        locations: [...this.state.locations, newLocation],
         text: '',
         predictions: [],
       })

@@ -23,7 +23,6 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     marginVertical: Metrics.baseMargin,
     flexDirection: 'row',
-    // justifyContent: 'flex-start'
   },
   fieldLabel: {
     marginBottom: Metrics.baseMargin / 2,

@@ -136,8 +136,19 @@ export default class FeedItemPreview extends Component {
     )
   }
 
+  hasLocation = () => {
+    const {locationInfo, locations = []} = this.props.feedItem
+    return !!locationInfo || locations.length !== 0
+  }
+
+  getLocationText = () => {
+    const {locationInfo, locations = []} = this.props.feedItem
+    if (locationInfo) return displayLocation(locationInfo)
+    else if (locations.length) return displayLocation(locations[0])
+  }
+
   renderUserSection() {
-    const {user, feedItem, isReadingScreen, isAuthor} = this.props
+    const {user, isReadingScreen, isAuthor} = this.props
     const isFollowing = _.includes(this.props.myFollowedUsers, user.id)
 
     return (
@@ -173,13 +184,13 @@ export default class FeedItemPreview extends Component {
                 </Text>
               </TouchableOpacity>
               {isReadingScreen && this.renderDate()}
-              {!isReadingScreen && !!feedItem.locationInfo &&
+              {!isReadingScreen && this.hasLocation() &&
                 <Text
                   style={styles.locationText}
                   numberOfLines={1}
                   ellipsizeMode={'tail'}
                 >
-                  {displayLocation(feedItem.locationInfo)}
+                  {this.getLocationText()}
                 </Text>
               }
             </View>
@@ -335,7 +346,7 @@ export default class FeedItemPreview extends Component {
             playButtonSize={playButtonSize}
             isFeed={this.props.isFeed}
             shouldEnableAutoplay={this.shouldEnableAutoplay()}
-            locationText={displayLocation(feedItem.locationInfo)}
+            locationText={this.getLocationText()}
           />
         }
         {this.renderBottomSection()}

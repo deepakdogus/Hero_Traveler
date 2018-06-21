@@ -128,6 +128,19 @@ class MyFeedScreen extends React.Component {
     this.setState({selectedTab})
   }
 
+  renderTabs(){
+    const {selectedTab} = this.state
+    return (
+      <TabBar
+        tabs={tabTypes}
+        activeTab={selectedTab}
+        onClickTab={this.selectTab}
+        tabStyle={styles.tabStyle}
+      />
+    )
+  }
+
+
   render () {
     let {storiesById, fetchStatus, sync, feedGuidesById} = this.props
     const {selectedTab} = this.state
@@ -147,9 +160,9 @@ class MyFeedScreen extends React.Component {
       bottomContent = (
         <ConnectedFeedList
           isStory={isStoriesSelected}
-          style={styles.feedList}
           entitiesById={isStoriesSelected ? storiesById : feedGuidesById}
           renderFeedItem={this.renderFeedItem}
+          renderSectionHeader={this.renderTabs()}
           onRefresh={this._onRefresh}
           refreshing={fetchStatus.fetching}
         />
@@ -167,12 +180,6 @@ class MyFeedScreen extends React.Component {
           updateDraft={this.props.updateDraft}
           publishLocalDraft={this.props.publishLocalDraft}
           discardUpdate={this.props.discardUpdate}
-        />
-        <TabBar
-          tabs={tabTypes}
-          activeTab={selectedTab}
-          onClickTab={this.selectTab}
-          tabStyle={styles.tabStyle}
         />
         { bottomContent }
       </View>

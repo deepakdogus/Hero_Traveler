@@ -7,7 +7,7 @@
     "build": "node_modules/.bin/babel src -d dist",
     "clean": "rimraf dist",
     "start": "node dist/index.js",
-    "dev": "nodemon index.js",
+    "dev": "nodemon --watch node_modules/@hero --watch src",
     "deploy": "./ops/deploy.sh",
     "tail-logs": "./ops/tail_logs.sh"
   },

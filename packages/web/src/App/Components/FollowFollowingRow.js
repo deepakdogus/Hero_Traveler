@@ -107,6 +107,7 @@ export default class FollowFollowingRow extends Component {
   }
 
   render() {
+    console.log('this.props.user', this.props.user)
     return (
       <Container margin={this.props.margin}>
         <SpaceBetweenRow

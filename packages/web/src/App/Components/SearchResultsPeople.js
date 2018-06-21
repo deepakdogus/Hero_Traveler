@@ -19,27 +19,41 @@ export default class SearchResultsPeople extends Component {
   }
 
   render() {
-    const users = this.props.userSearchResults;
+    //const stories = this.props.storySearchResults.hits ? this.props.storySearchResults.hits : [];
+    const users = this.props.userSearchResults.hits ? this.props.userSearchResults.hits : [];
 
     /*
       We only need the first 4 elements for suggestions
       We will improve this check to allow 'pagination' will carousel scroll
     */
-    const renderedUsers = Object.keys(users).reduce((rows, key, index) => {
-      const user = users[key]
-      if (index >= 4) return null
-      const isSelected = index % 2 === 0
-      if (index !== 0) rows.push((<HorizontalDivider key={`${key}-HR`} color='light-grey'/>))
-      rows.push((
+    // const renderedUsers = Object.keys(users).reduce((rows, key, index) => {
+    //   const user = users[key]
+    //   if (index >= 4) return null
+    //   const isSelected = index % 2 === 0
+    //   if (index !== 0) rows.push((<HorizontalDivider key={`${key}-HR`} color='light-grey'/>))
+    //   rows.push((
+    //     <FollowFollowingRow
+    //       key={key}
+    //       user={user}
+    //       isFollowing={isSelected}
+    //       type='follow'
+    //     />
+    //   ))
+    //   return rows
+    // }, [])
+
+    const renderedUsers = users.map((user, index)=> {
+      return (
         <FollowFollowingRow
-          key={key}
+          key={index}
           user={user}
-          isFollowing={isSelected}
           type='follow'
         />
-      ))
-      return rows
-    }, [])
+      )
+    })
+
+
+
     return (
       <Container>
         {renderedUsers}

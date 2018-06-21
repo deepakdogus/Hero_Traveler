@@ -15,8 +15,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@hero/ht-core": "0.0.54",
-    "@hero/ht-util": "^0.0.46",
+    "@hero/ht-core": "0.0.58",
+    "@hero/ht-util": "^0.0.50",
     "algoliasearch": "^3.23.0",
     "apn": "^2.1.4",
     "aws-sdk": "^2.40.0",

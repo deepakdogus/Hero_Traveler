@@ -29,6 +29,9 @@ typedef void (^CancelAutoCorrectBlock)(NSString*);
 @end
 
 @interface RNDJAutocorrectView : UIView
+{
+  NSTimer* closeTimer;
+}
 
 @property (nonatomic, strong) AutocompleteViewInfo* autocomplete;
 @property (nonatomic, copy) RCTDirectEventBlock onReplaceRangeRequest;
@@ -39,5 +42,7 @@ typedef void (^CancelAutoCorrectBlock)(NSString*);
 + (RNDJAutocorrectView*) make:(AutocompleteViewInfo*)info inside:(UIView*)view cancelBlock:(CancelAutoCorrectBlock)cancelAutocorrectBlock withContentOffset:(UIEdgeInsets)contentInset withPreviousCount:(NSUInteger)previousCount;
 
 - (void) dispatch;
+- (BOOL) dispatchIfWithinNChars:(NSUInteger)n;
+- (BOOL) dispatchIfOnlyShownNTimes:(NSUInteger)n;
 
 @end

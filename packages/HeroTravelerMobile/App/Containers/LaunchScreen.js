@@ -6,15 +6,12 @@ import {
 } from 'react-native-router-flux'
 import SplashScreen from 'react-native-splash-screen'
 
-import {
-  loginToFacebookAndGetUserInfo,
-} from '../Services/FacebookConnect'
-
 import SessionActions, {hasAuthData} from '../Shared/Redux/SessionRedux'
 import SignupActions, {hasSignedUp} from '../Shared/Redux/SignupRedux'
 import RoundedButton from '../Components/RoundedButton'
 import TextButton from '../Components/TextButton'
-import { Images } from '../Shared/Themes'
+import { Images, Colors } from '../Shared/Themes'
+import Loader from '../Components/Loader'
 import styles from './Styles/LaunchScreenStyles'
 
 class LaunchScreen extends React.Component {
@@ -39,19 +36,7 @@ class LaunchScreen extends React.Component {
   }
 
   _signupFacebook = () => {
-    loginToFacebookAndGetUserInfo().then((userResponse) => {
-      const userPicture = !userResponse.picture.data.is_silhouette ?
-      userResponse.picture.data.url : null
-
-      this.props.signupFacebook(
-        userResponse.id,
-        userResponse.email,
-        userResponse.name,
-        userPicture
-      )
-    }).catch((error) => {
-      console.log('Facebook connect failed with error: ', error);
-    });
+    this.props.signupFacebook();
   }
 
   fadeIn() {
@@ -106,6 +91,9 @@ class LaunchScreen extends React.Component {
           />
         </View>
         </Animated.View>
+        {this.props.fetching &&
+          <Loader tintColor={Colors.blackoutTint} style={styles.loader} />
+        }
       </ImageBackground>
     )
   }

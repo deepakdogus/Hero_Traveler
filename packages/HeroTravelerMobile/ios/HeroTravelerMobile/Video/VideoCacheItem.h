@@ -63,6 +63,7 @@ typedef void (^FinishedDownloadBlock)(NSURL* location, VideoCacheItem* videoCach
 - (void) applyModifiers;
 
 - (BOOL) purge;
+- (void) setIsPresentingFullscreen:(BOOL)isPresentingFullscreen;
 
 @end
 

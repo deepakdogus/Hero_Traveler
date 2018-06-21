@@ -14,6 +14,7 @@ import ExploreScreen from '../Containers/Tabs/ExploreScreen'
 import TabIcon from '../Components/TabIcon'
 // Profile tab
 import ProfileScreen from '../Containers/Tabs/ProfileScreen'
+import ProfileEditScreen from '../Containers/ProfileEditScreen'
 import ReadOnlyProfileScreen from '../Containers/ReadOnlyProfileScreen'
 import SettingsScreen from '../Containers/SettingsScreen'
 import Settings_NotificationScreen from '../Containers/Settings_NotificationScreen'
@@ -47,6 +48,7 @@ import LoginScreen from '../Containers/LoginScreen'
 import ResetPasswordRequestScreen from '../Containers/ResetPasswordRequestScreen'
 import ResetPasswordScreen from '../Containers/ResetPasswordScreen'
 import SignupScreen from '../Containers/Signup/SignupScreen'
+import SignupChangeUsername from '../Containers/Signup/SignupChangeUsername'
 import SignupTopics from '../Containers/Signup/SignupTopics'
 import SignupSocial from '../Containers/Signup/SignupSocial'
 import NavButton from './NavButton'
@@ -123,10 +125,12 @@ const alwaysNull = () => null
 
 const popVertical = () => NavActions.pop({direction: 'horizontal'})
 
-const navToCreateFlow = () => NavActions.createStoryFlow({
-  type: 'reset',
-  shouldLoadStory: true,
-})
+const navToCreateFlow = () => {
+  NavActions.createStoryFlow({
+    type: 'reset',
+    shouldLoadStory: true,
+  })
+}
 
 const navToMyFeed = () => {
   NavActions.tabbar({type: 'reset'})
@@ -143,6 +147,7 @@ const navToExplore = () => {
   NavActions.explore()
 }
 
+const navToSignupTopics = () => NavActions.signupFlow_topics()
 const navToSignupSocial = () => NavActions.signupFlow_social()
 
 const navToTabbar = () => NavActions.tabbar()
@@ -177,13 +182,25 @@ export default NavActions.create(
       >
         <Scene
           initial
+          key='signupFlow_changeUsername'
+          hideNavBar={true}
+          component={SignupChangeUsername}
+          onRight={navToSignupTopics}
+          renderRightButton={socialRightBtn}
+        />
+        <Scene
+          hideBackImage={true}
+          hideNavBar={false}
+          panHandlers={null}
           key='signupFlow_topics'
           component={SignupTopics}
-          onRight={navToSignupSocial}
           renderRightButton={topicsRightBtn}
+          onRight={navToSignupSocial}
+          onBack={() => {}}
         />
         <Scene
           key='signupFlow_social'
+          hideNavBar={false}
           component={SignupSocial}
           renderRightButton={socialRightBtn}
           leftButtonIconStyle={Styles.buttonGrey}
@@ -347,7 +364,7 @@ export default NavActions.create(
       </Scene>
       <Scene
         key='edit_profile'
-        component={ProfileScreen}
+        component={ProfileEditScreen}
         hideNavBar
         isEditing={true}
         direction='vertical'

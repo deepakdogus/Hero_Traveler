@@ -4,6 +4,9 @@ import SignupActions from '../Redux/SignupRedux'
 import OpenScreenActions from '../Redux/OpenScreenRedux'
 import SessionActions from '../Redux/SessionRedux'
 import UserActions from '../Redux/Entities/Users'
+import {
+  loginToFacebookAndGetUserInfo,
+} from '../../Services/FacebookConnect'
 
 // attempts to signup with email
 export function * signupEmail (api, action) {
@@ -22,8 +25,8 @@ export function * signupEmail (api, action) {
     yield [
       put(UserActions.receiveUsers({[user.id]: user})),
       call(api.setAuth, accessToken.value),
+      put(SessionActions.initializeSession(user.id, tokens)),
       put(SignupActions.signupEmailSuccess()),
-      put(SessionActions.initializeSession(user.id, tokens))
     ]
   } else {
     yield put(SignupActions.signupEmailFailure(response.data.message))
@@ -31,13 +34,28 @@ export function * signupEmail (api, action) {
 }
 
 export function * signupFacebook(api, action) {
-  const {fbid, email, name, pictureUrl} = action
+  try {
+    userResponse = yield loginToFacebookAndGetUserInfo();
+  } catch(err) {
+    console.log('Facebook connect failed with error: ', err);
+    yield put(SignupActions.signupFacebookFailure())
+    return;
+  }
+
+  if (!userResponse) {
+    yield put(SignupActions.signupFacebookFailure())
+    return;
+  }
+
+  const userPicture = !userResponse.picture.data.is_silhouette ?
+  userResponse.picture.data.url : null
+
   const response = yield call(
     api.signupFacebook,
-    fbid,
-    email,
-    name,
-    pictureUrl
+    userResponse.id,
+    userResponse.email,
+    userResponse.name,
+    userPicture
   )
 
   if (response.ok) {
@@ -54,7 +72,7 @@ export function * signupFacebook(api, action) {
       yield put(SignupActions.signupFacebookSuccess())
     }
   } else {
-    yield put(SignupActions.signupEmailFailure(response.data.message))
+    yield put(SignupActions.signupFacebookFailure(response.data.message))
   }
 }
 

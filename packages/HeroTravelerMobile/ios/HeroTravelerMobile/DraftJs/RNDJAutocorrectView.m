@@ -93,11 +93,6 @@
     _cancelAutocorrectBlock = cancelAutocorrectBlock;
     _autocomplete = info;
     _previousCount = previousCount;
-    
-    if (_previousCount >= 2)
-    {
-      self.hidden = YES;
-    }
   }
 
   return self;
@@ -234,6 +229,13 @@
                              relatedBy:NSLayoutRelationEqual
                              toItem:cancelView
                              attribute:NSLayoutAttributeCenterY multiplier:1 constant:0]];
+  
+  closeTimer = [NSTimer scheduledTimerWithTimeInterval:2.f repeats:NO block:^(NSTimer* _){
+    if (self.superview)
+    {
+      [self tapCancel:nil];
+    }
+  }];
 }
 
 - (void) tapCancel:(UITapGestureRecognizer*)tap
@@ -244,6 +246,58 @@
     cancelAutocorrectBlock([_autocomplete stringRepresentation]);
   }
 }
+
+- (BOOL) dispatchIfOnlyShownNTimes:(NSUInteger)n
+{
+  NSString* existing = _autocomplete.existingText;
+
+  if ([[[UITextChecker alloc] init] rangeOfMisspelledWordInString:existing range:NSMakeRange(0, existing.length) startingAt:0 wrap:NO language:@"en_US"].location != NSNotFound)
+  {
+    if (_previousCount <= n)
+    {
+      [self dispatch];
+      return YES;
+    }
+  }
+  return NO;
+}
+
+
+- (BOOL) dispatchIfWithinNChars:(NSUInteger)n
+{
+  NSString* suggestion = _autocomplete.textSuggestion;
+  NSString* existing = _autocomplete.existingText;
+  
+  NSUInteger maxCount = MAX(suggestion.length, existing.length);
+  
+  NSUInteger numMismatched = 0;
+  
+  for (NSUInteger i = 0; i < maxCount; i++)
+  {
+    if (i >= suggestion.length || i >= existing.length)
+    {
+      numMismatched++;
+    }
+    else
+    {
+      if ([suggestion characterAtIndex:i] != [existing characterAtIndex:i])
+      {
+        numMismatched++;
+      }
+    }
+  }
+  
+  if (numMismatched <= n)
+  {
+    if ([[[UITextChecker alloc] init] rangeOfMisspelledWordInString:existing range:NSMakeRange(0, existing.length) startingAt:0 wrap:NO language:@"en_US"].location != NSNotFound)
+    {
+      [self dispatch];
+      return YES;
+    }
+  }
+  return NO;
+}
+
 
 - (void) dispatch
 {

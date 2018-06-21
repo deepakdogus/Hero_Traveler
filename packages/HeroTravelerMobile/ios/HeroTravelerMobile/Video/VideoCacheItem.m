@@ -10,6 +10,7 @@
 #import "RCTVideo.h"
 #import "RCTVideoCache.h"
 #import <React/UIView+React.h>
+#import <React/RCTRootView.h>
 
 static NSString *const statusKeyPath = @"status";
 static NSString *const playbackLikelyToKeepUpKeyPath = @"playbackLikelyToKeepUp";
@@ -250,7 +251,7 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   {
     return [self isViewVisible:view.superview];
   }
-  return [view isKindOfClass:[UIWindow class]];
+  return [view isKindOfClass:[UIWindow class]] || [view isKindOfClass:[RCTRootView class]];
 }
 
 - (PlayingVideoItem*) getControllingVideoView
@@ -261,7 +262,7 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
   {
     PlayingVideoItem* playingVidoItem = weakPlayingVideoItem.playingVideoItem;
 
-    if ([playingVidoItem.videoView isPresentingFullscreen] || [self isViewVisible:playingVidoItem.videoView])
+    if ([self isViewVisible:playingVidoItem.videoView])
     {
       [visiblePlayers addObject:playingVidoItem];
     }
@@ -607,6 +608,8 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
 
 - (BOOL) purge
 {
+  BOOL shouldUnloadAsset = YES;
+  
   for (WeakPlayingVideoItem* weakPlayingVideoItem in currentPlayingVideoItems)
   {
     RCTVideo* video = weakPlayingVideoItem.playingVideoItem.videoView;
@@ -616,7 +619,7 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
     }
     else if (video.needsVideoLoaded && ([video isPresentingFullscreen] || [self isViewVisible:video]))
     {
-      return NO;
+      shouldUnloadAsset = NO;
     }
     else
     {
@@ -624,7 +627,25 @@ typedef RCTBubblingEventBlock (^ExtractEvent)(RCTVideo*);
     }
   }
   
-  return YES;
+  return shouldUnloadAsset;
+}
+
+- (void) setIsPresentingFullscreen:(BOOL)isPresentingFullscreen
+{
+  BOOL didUpdate = NO;
+  for (WeakPlayingVideoItem* weakPlayingVideoItem in currentPlayingVideoItems)
+  {
+    RCTVideo* videoView = weakPlayingVideoItem.playingVideoItem.videoView;
+    if (videoView)
+    {
+      didUpdate = didUpdate || [videoView setPresentingFullscreen:isPresentingFullscreen];
+    }
+  }
+  
+  if (didUpdate)
+  {
+    [self applyModifiers];
+  }
 }
 
 @end

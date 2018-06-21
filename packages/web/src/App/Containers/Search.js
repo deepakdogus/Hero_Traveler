@@ -1,15 +1,13 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
 import env from '../Config/Env'
 
 import SearchResultsPeople from '../Components/SearchResultsPeople'
 import SearchResultsStories from '../Components/SearchResultsStories'
 import TabBar from '../Components/TabBar'
 import {Row} from '../Components/FlexboxGrid'
-
-import {feedExample, usersExample} from './Feed_TEST_DATA'
-
 //seach
 import algoliasearchModule from 'algoliasearch'
 import algoliaSearchHelper from 'algoliasearch-helper'
@@ -71,7 +69,7 @@ const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KE
 const STORY_INDEX = env.SEARCH_STORY_INDEX
 const USERS_INDEX = env.SEARCH_USERS_INDEX
 
-export default class Search extends Component {
+class Search extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -141,6 +139,13 @@ export default class Search extends Component {
   }
 
   resetSearchText = () => {
+    if(!this.state.lastSearchResults.hits) return
+    else{
+      this.setState({
+        inputText: '', 
+        lastSearchResults: {}
+      })
+    }
   }
 
   getSearchIndex(activeTab) {
@@ -170,10 +175,6 @@ export default class Search extends Component {
     }
   }
 
-  
-
-
-
   onClickTab = (event) => {
     let tab = event.target.innerHTML
     this._changeTab(tab)
@@ -184,6 +185,8 @@ export default class Search extends Component {
       return (
         <SearchResultsPeople
           userSearchResults={this.state.lastSearchResults}
+          userFollowing={this.props.userFollowing}
+          currentUser={this.props.currentUser}
         />
       )
     }
@@ -197,7 +200,6 @@ export default class Search extends Component {
   }
 
   render() {
-    console.log('search results', this.state.lastSearchResults)
     return (
       <Container>
         <HeaderInputContainer between='xs'>
@@ -205,7 +207,9 @@ export default class Search extends Component {
             value={this.state.inputText} 
             onChange={this.inputFieldChange}
             placeholder='Type to search' />
-          <Text>Cancel</Text>
+          <Text
+            onClick={this.resetSearchText}
+          >Cancel</Text>
         </HeaderInputContainer>
         <ContentWrapper>
           <TabBar
@@ -220,3 +224,14 @@ export default class Search extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    userFollowing: state.entities.users.userFollowingByUserIdAndId,
+    currentUser: state.session.userId
+  }
+}
+
+
+
+export default connect(mapStateToProps)(Search)

@@ -12,6 +12,9 @@ const Container = styled.div`
 export default class SearchResultsPeople extends Component {
   static PropTypes = {
     userSearchResults: PropTypes.object,
+    userFollowing: PropTypes.array,
+    currentUser: PropTypes.string
+
   }
   constructor(props) {
     super(props)
@@ -21,6 +24,7 @@ export default class SearchResultsPeople extends Component {
   render() {
     //const stories = this.props.storySearchResults.hits ? this.props.storySearchResults.hits : [];
     const users = this.props.userSearchResults.hits ? this.props.userSearchResults.hits : [];
+    const {userFollowing, currentUser} = this.props
 
     /*
       We only need the first 4 elements for suggestions
@@ -43,11 +47,13 @@ export default class SearchResultsPeople extends Component {
     // }, [])
 
     const renderedUsers = users.map((user, index)=> {
+      const isFollowing = userFollowing[currentUser].byId.includes(user.objectID)
       return (
         <FollowFollowingRow
           key={index}
           user={user}
           type='follow'
+          isFollowing={isFollowing}
         />
       )
     })

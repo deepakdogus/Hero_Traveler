@@ -7,7 +7,6 @@ import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Avatar from './Avatar'
 import RoundedButton from './RoundedButton'
-import NavLink from './NavLinkStyled'
 
 const Container = styled.div`
   margin: ${props => props.margin ? props.margin : '0'};
@@ -36,12 +35,6 @@ const ProfileDetail = styled.p`
   color: ${props => props.theme.Colors.grey};
 `
 
-// For SignupSocial we want to disable navigation to Profile
-const ConditionalNavLink = (props) => {
-  if (!props.onClick) return <div {...props}/>
-  return ( <NavLink {...props} /> )
-}
-
 export default class FollowFollowingRow extends Component {
   static propTypes = {
     isFollowing: PropTypes.bool,
@@ -59,7 +52,7 @@ export default class FollowFollowingRow extends Component {
   }
 
   renderImage = () => {
-    const {onProfileClick, user} = this.props
+    const {user} = this.props
     return (
         <Avatar
           avatarUrl={getImageUrl(user.profile.avatar)}
@@ -70,7 +63,7 @@ export default class FollowFollowingRow extends Component {
   }
 
   renderText = () => {
-    const {user, onProfileClick, type} = this.props
+    const {user, type} = this.props
     const detailsText = type === 'count' ? `${user.counts.followers} followers` : 'Lorum Ipsum'
     return (
       <StyledVerticalCenter>
@@ -103,8 +96,7 @@ export default class FollowFollowingRow extends Component {
 
   _onFollowClick = () => {
     const {user, onFollowClick} = this.props
-    if(!user.id) onFollowClick(user._id)
-    else onFollowClick(user.id)
+    onFollowClick(user.id || user._id)
   }
 
   render() {

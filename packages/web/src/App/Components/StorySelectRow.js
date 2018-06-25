@@ -7,7 +7,6 @@ import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Icon from './Icon'
 import {StyledVerticalCenter} from './Modals/Shared'
-import NavLink from './NavLinkStyled'
 
 const StyledImage = styled.img`
   width: 77px;
@@ -48,11 +47,6 @@ const UserName = styled(DefaultText)`
 
 const DefaultWrapper = styled.div``
 
-const ConditionalNavLink = (props) => {
-  if(!props.onClick) return <div {...props}/>
-  return ( <NavLink {...props} /> )
-}
-
 export default class StorySelectRow extends Component {
   static propTypes = {
     isSelected: PropTypes.bool,
@@ -76,8 +70,8 @@ export default class StorySelectRow extends Component {
   renderImage = () => {
     const src = getImageUrl(this.props.story.coverImage)
     return (
-        <StyledImage 
-          src={src} 
+        <StyledImage
+          src={src}
           alt='ADD ALT TEXT'
           onClick={this._handleStoryClick}
         />
@@ -96,7 +90,13 @@ export default class StorySelectRow extends Component {
           >
             {story.title}
           </Text>
-          {username && <UserName onClick={this._handleProfileClick} >{username}</UserName>}
+          {username &&
+            <UserName
+              onClick={this._handleProfileClick}
+            >
+              {username}
+            </UserName>
+          }
       </StyledVerticalCenter>
     )
   }

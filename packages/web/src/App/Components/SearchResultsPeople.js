@@ -16,8 +16,8 @@ export default class SearchResultsPeople extends Component {
     followUser: PropTypes.func,
     unfollowUser: PropTypes.func,
     navToUserProfile: PropTypes.func
-
   }
+
   constructor(props) {
     super(props)
     this.state = {}

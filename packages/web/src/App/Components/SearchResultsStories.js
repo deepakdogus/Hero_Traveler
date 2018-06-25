@@ -22,24 +22,18 @@ export default class SearchResultsStories extends Component {
   }
 
   render() {
-    const stories = this.props.storySearchResults.hits ? this.props.storySearchResults.hits : [];
-    // const users = this.props.userSearchResults;
-
-    /*
-      We only need the first 4 elements for suggestions
-      We will improve this check to allow 'pagination' will carousel scroll
-    */
-
+    const stories = this.props.storySearchResults.hits || []
     const renderedStories = stories.map((story, index) => {
       if(story.coverVideo) return null
       return (
-        <StorySelectRow 
+        <StorySelectRow
           story={story}
           username={story.author}
           key={index}
           index={index}
           ReplacementContainer={StyledContainer}
           navToStory={this.props.navToStory}
+          navToUserProfile={this.props.navToUserProfile}
         />
       )
     })

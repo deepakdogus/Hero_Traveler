@@ -61,36 +61,42 @@ export default class StorySelectRow extends Component {
     renderRight: PropTypes.bool,
     styles: PropTypes.object,
     index: PropTypes.number,
-    navToStory: PropTypes.func
+    navToStory: PropTypes.func,
+    navToUserProfile: PropTypes.func
+  }
+
+  _handleStoryClick = () => {
+    this.props.navToStory(this.props.story.objectID)
+  }
+
+  _handleProfileClick = () => {
+
   }
 
   renderImage = () => {
     const src = getImageUrl(this.props.story.coverImage)
     return (
-      <ConditionalNavLink
-        to={`/story/${this.props.story.objectID}`}
-        onClick={()=> this.props.navToStory(this.props.story.objectID)}
-        >
-        <StyledImage src={src} alt='ADD ALT TEXT'/>
-      </ConditionalNavLink>
+        <StyledImage 
+          src={src} 
+          alt='ADD ALT TEXT'
+          onClick={this._handleStoryClick}
+        />
     )
   }
 
   renderText = () => {
     const {username, story, textStyles} = this.props
-
     let Text = DefaultText
     if (textStyles) Text = styled(DefaultText)`${textStyles}`
 
     return (
       <StyledVerticalCenter>
-        <ConditionalNavLink
-        to={`/story/${this.props.story.objectID}`}
-        onClick={()=> this.props.navToStory(this.props.story.objectID)}
-        >
-          <Text>{story.title}</Text>
-          {username && <UserName>{username}</UserName>}
-        </ConditionalNavLink>
+          <Text
+            onClick={this._handleStoryClick}
+          >
+            {story.title}
+          </Text>
+          {username && <UserName onClick={this._handleProfileClick} >{username}</UserName>}
       </StyledVerticalCenter>
     )
   }

@@ -53,18 +53,19 @@ export default class FollowFollowingRow extends Component {
     onProfileClick: PropTypes.func,
   }
 
+  _handleProfileClick = () => {
+    const {user} = this.props
+    this.props.onProfileClick(user.id || user._id)
+  }
+
   renderImage = () => {
     const {onProfileClick, user} = this.props
     return (
-      <ConditionalNavLink
-        to={`/profile/${user.id ? user.id : user._id}/view`}
-        onClick={()=> onProfileClick(user.id ? user.id : user._id)}
-      >
         <Avatar
           avatarUrl={getImageUrl(user.profile.avatar)}
           size='larger'
+          onClick={this._handleProfileClick}
         />
-      </ConditionalNavLink>
     )
   }
 
@@ -73,12 +74,11 @@ export default class FollowFollowingRow extends Component {
     const detailsText = type === 'count' ? `${user.counts.followers} followers` : 'Lorum Ipsum'
     return (
       <StyledVerticalCenter>
-        <ConditionalNavLink
-          to={`/profile/${user.id ? user.id : user._id}/view`}
-          onClick={() => onProfileClick(user.id ? user.id : user._id)}
-        >
-          <UserName>{user.username}</UserName>
-        </ConditionalNavLink>
+          <UserName
+            onClick={this._handleProfileClick}
+          >
+            {user.username}
+          </UserName>
         <ProfileDetail>{detailsText}</ProfileDetail>
       </StyledVerticalCenter>
     )

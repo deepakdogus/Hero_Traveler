@@ -69,7 +69,7 @@ const tabBarTabs = ['STORIES', 'PEOPLE']
 
 const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
 const STORY_INDEX = env.SEARCH_STORY_INDEX
-const USERS_INDEX = env.SEARCH_USERS_INDEX
+const USERS_INDEX = env.SEARCH_USER_INDEX
 
 class Search extends Component {
   constructor(props) {
@@ -90,7 +90,7 @@ class Search extends Component {
     this.removeSearchListeners(this.helper)
   }
 
-  //loads user following if user log's in on the home page
+  //loads user following if user log's in on the search page
   componentDidUpdate(prevProps){
     if(this.props.userId !== prevProps.userId){
       this.props.loadUserFollowing(this.props.userId)
@@ -223,6 +223,7 @@ class Search extends Component {
         <SearchResultsStories
           storySearchResults={this.state.lastSearchResults}
           navToStory={this._navToStory}
+          navToUserProfile={this._navToUserProfile}
         />
       )
     }
@@ -269,7 +270,5 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     reroute: (path) => dispatch(push(path))
   }
 }
-
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search)

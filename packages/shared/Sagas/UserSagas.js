@@ -2,6 +2,10 @@ import _ from 'lodash'
 import { call, put, select } from 'redux-saga/effects'
 import UserActions from '../Redux/Entities/Users'
 import StoryActions from '../Redux/Entities/Stories'
+import SignupActions from '../Redux/SignupRedux'
+import {
+  loginToFacebookAndGetUserInfo,
+} from '../../Services/FacebookConnect'
 
 const currentUserId = ({session}) => session.userId
 
@@ -26,6 +30,7 @@ export function * updateUser (api, action) {
 }
 
 export function * connectFacebook (api) {
+  let userResponse
   try {
     userResponse = yield loginToFacebookAndGetUserInfo();
   } catch(err) {

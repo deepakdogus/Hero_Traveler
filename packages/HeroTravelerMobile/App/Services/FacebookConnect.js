@@ -55,6 +55,7 @@ export function getFacebookUserInfo () {
 
 export function loginToFacebookAndGetUserInfo() {
   return new Promise((resolve, reject) => {
+    logoutOfFacebook();
     loginToFacebook().then((/*loginResponse*/) => {
       getFacebookUserInfo().then((userResponse) => {
         resolve(userResponse);

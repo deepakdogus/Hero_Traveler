@@ -103,11 +103,11 @@ export default class FollowFollowingRow extends Component {
 
   _onFollowClick = () => {
     const {user, onFollowClick} = this.props
-    onFollowClick(user.id)
+    if(!user.id) onFollowClick(user._id)
+    else onFollowClick(user.id)
   }
 
   render() {
-    console.log('this.props.user', this.props.user)
     return (
       <Container margin={this.props.margin}>
         <SpaceBetweenRow

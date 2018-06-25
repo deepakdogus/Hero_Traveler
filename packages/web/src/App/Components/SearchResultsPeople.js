@@ -13,7 +13,9 @@ export default class SearchResultsPeople extends Component {
   static PropTypes = {
     userSearchResults: PropTypes.object,
     userFollowing: PropTypes.array,
-    currentUser: PropTypes.string
+    userId: PropTypes.string,
+    followUser: PropTypes.func,
+    unfollowUser: PropTypes.func,
 
   }
   constructor(props) {
@@ -24,8 +26,7 @@ export default class SearchResultsPeople extends Component {
   render() {
     //const stories = this.props.storySearchResults.hits ? this.props.storySearchResults.hits : [];
     const users = this.props.userSearchResults.hits ? this.props.userSearchResults.hits : [];
-    const {userFollowing, currentUser} = this.props
-
+    const {userFollowing, userId} = this.props
     /*
       We only need the first 4 elements for suggestions
       We will improve this check to allow 'pagination' will carousel scroll
@@ -45,15 +46,16 @@ export default class SearchResultsPeople extends Component {
     //   ))
     //   return rows
     // }, [])
-
     const renderedUsers = users.map((user, index)=> {
-      const isFollowing = userFollowing[currentUser].byId.includes(user.objectID)
+      const isFollowing = userFollowing[userId] ? userFollowing[userId].byId.includes(user.objectID) : false
       return (
         <FollowFollowingRow
           key={index}
           user={user}
           type='follow'
           isFollowing={isFollowing}
+          onFollowClick={isFollowing ? this.props.unfollowUser : this.props.followUser}
+          userId={userId}
         />
       )
     })

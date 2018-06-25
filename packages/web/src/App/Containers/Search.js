@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import env from '../Config/Env'
 
+import UserActions from '../Shared/Redux/Entities/Users'
 import SearchResultsPeople from '../Components/SearchResultsPeople'
 import SearchResultsStories from '../Components/SearchResultsStories'
 import TabBar from '../Components/TabBar'
@@ -86,6 +87,13 @@ class Search extends Component {
 
   componentWillUnmount() {
     this.removeSearchListeners(this.helper)
+  }
+
+  //loads user following if user log's in on the home page
+  componentDidUpdate(prevProps){
+    if(this.props.userId !== prevProps.userId){
+      this.props.loadUserFollowing(this.props.userId)
+    }
   }
 
   setupSearchListeners(helper) {
@@ -180,13 +188,23 @@ class Search extends Component {
     this._changeTab(tab)
   }
 
+  _followUser = (userIdToFollow) => {
+    this.props.followUser(this.props.userId, userIdToFollow)
+  }
+
+  _unfollowUser = (userIdToUnfollow) => {
+    this.props.unfollowUser(this.props.userId, userIdToUnfollow)
+  }
+
   renderActiveTab = () => {
     if (this.state.activeTab === 'PEOPLE') {
       return (
         <SearchResultsPeople
           userSearchResults={this.state.lastSearchResults}
           userFollowing={this.props.userFollowing}
-          currentUser={this.props.currentUser}
+          userId={this.props.userId}
+          followUser={this._followUser}
+          unfollowUser={this._unfollowUser}
         />
       )
     }
@@ -228,10 +246,18 @@ class Search extends Component {
 const mapStateToProps = (state) => {
   return {
     userFollowing: state.entities.users.userFollowingByUserIdAndId,
-    currentUser: state.session.userId
+    userId: state.session.userId
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    followUser: (sessionUserID, userIdToFollow) => dispatch(UserActions.followUser(sessionUserID, userIdToFollow)),
+    unfollowUser: (sessionUserID, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserID, userIdToUnfollow)),
+    loadUserFollowing: (sessionUserID) => dispatch(UserActions.loadUserFollowing(sessionUserID))
   }
 }
 
 
 
-export default connect(mapStateToProps)(Search)
+export default connect(mapStateToProps, mapDispatchToProps)(Search)

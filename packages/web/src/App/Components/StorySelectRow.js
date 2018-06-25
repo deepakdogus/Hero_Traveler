@@ -60,11 +60,8 @@ export default class StorySelectRow extends Component {
   }
 
   _handleStoryClick = () => {
-    this.props.navToStory(this.props.story.objectID)
-  }
-
-  _handleProfileClick = () => {
-
+    const {story} = this.props.story
+    this.props.navToStory(story.id || story.objectID)
   }
 
   renderImage = () => {

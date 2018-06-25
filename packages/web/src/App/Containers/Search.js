@@ -2,6 +2,7 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import {push} from 'react-router-redux'
 import env from '../Config/Env'
 
 import UserActions from '../Shared/Redux/Entities/Users'
@@ -196,6 +197,14 @@ class Search extends Component {
     this.props.unfollowUser(this.props.userId, userIdToUnfollow)
   }
 
+  _navToUserProfile = (userId) => {
+    this.props.reroute(`/profile/${userId}/view`)
+  }
+
+  _navToStory = (storyId) => {
+    this.props.reroute(`/story/${storyId}`)
+  }
+
   renderActiveTab = () => {
     if (this.state.activeTab === 'PEOPLE') {
       return (
@@ -205,6 +214,7 @@ class Search extends Component {
           userId={this.props.userId}
           followUser={this._followUser}
           unfollowUser={this._unfollowUser}
+          navToUserProfile={this._navToUserProfile}
         />
       )
     }
@@ -212,6 +222,7 @@ class Search extends Component {
       return (
         <SearchResultsStories
           storySearchResults={this.state.lastSearchResults}
+          navToStory={this._navToStory}
         />
       )
     }
@@ -254,7 +265,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     followUser: (sessionUserID, userIdToFollow) => dispatch(UserActions.followUser(sessionUserID, userIdToFollow)),
     unfollowUser: (sessionUserID, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserID, userIdToUnfollow)),
-    loadUserFollowing: (sessionUserID) => dispatch(UserActions.loadUserFollowing(sessionUserID))
+    loadUserFollowing: (sessionUserID) => dispatch(UserActions.loadUserFollowing(sessionUserID)),
+    reroute: (path) => dispatch(push(path))
   }
 }
 

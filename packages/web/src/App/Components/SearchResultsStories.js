@@ -14,7 +14,7 @@ const StyledContainer = styled(DefaultContainer)`
 export default class SearchResultsStories extends Component {
   static PropTypes = {
     storySearchResults: PropTypes.object,
-    // userSearchResults: PropTypes.object,
+    navToStory: PropTypes.func
   }
   constructor(props) {
     super(props)
@@ -39,6 +39,7 @@ export default class SearchResultsStories extends Component {
           key={index}
           index={index}
           ReplacementContainer={StyledContainer}
+          navToStory={this.props.navToStory}
         />
       )
     })

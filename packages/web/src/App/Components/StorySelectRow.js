@@ -7,6 +7,7 @@ import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Icon from './Icon'
 import {StyledVerticalCenter} from './Modals/Shared'
+import NavLink from './NavLinkStyled'
 
 const StyledImage = styled.img`
   width: 77px;
@@ -47,6 +48,11 @@ const UserName = styled(DefaultText)`
 
 const DefaultWrapper = styled.div``
 
+const ConditionalNavLink = (props) => {
+  if(!props.onClick) return <div {...props}/>
+  return ( <NavLink {...props} /> )
+}
+
 export default class StorySelectRow extends Component {
   static propTypes = {
     isSelected: PropTypes.bool,
@@ -55,12 +61,18 @@ export default class StorySelectRow extends Component {
     renderRight: PropTypes.bool,
     styles: PropTypes.object,
     index: PropTypes.number,
+    navToStory: PropTypes.func
   }
 
   renderImage = () => {
     const src = getImageUrl(this.props.story.coverImage)
     return (
-      <StyledImage src={src} alt='ADD ALT TEXT'/>
+      <ConditionalNavLink
+        to={`/story/${this.props.story.objectID}`}
+        onClick={()=> this.props.navToStory(this.props.story.objectID)}
+        >
+        <StyledImage src={src} alt='ADD ALT TEXT'/>
+      </ConditionalNavLink>
     )
   }
 
@@ -72,8 +84,13 @@ export default class StorySelectRow extends Component {
 
     return (
       <StyledVerticalCenter>
-        <Text>{story.title}</Text>
-        {username && <UserName>{username}</UserName>}
+        <ConditionalNavLink
+        to={`/story/${this.props.story.objectID}`}
+        onClick={()=> this.props.navToStory(this.props.story.objectID)}
+        >
+          <Text>{story.title}</Text>
+          {username && <UserName>{username}</UserName>}
+        </ConditionalNavLink>
       </StyledVerticalCenter>
     )
   }
@@ -96,7 +113,6 @@ export default class StorySelectRow extends Component {
     let Container = ReplacementContainer || DefaultContainer
     let Wrapper = DefaultWrapper
     if (this.props.isAddToBoard) Wrapper = InteractiveContainer
-
     return (
       <Wrapper>
         <Container index={index}>

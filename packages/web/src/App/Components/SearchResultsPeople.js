@@ -16,6 +16,7 @@ export default class SearchResultsPeople extends Component {
     userId: PropTypes.string,
     followUser: PropTypes.func,
     unfollowUser: PropTypes.func,
+    navToUserProfile: PropTypes.func
 
   }
   constructor(props) {
@@ -55,12 +56,11 @@ export default class SearchResultsPeople extends Component {
           type='follow'
           isFollowing={isFollowing}
           onFollowClick={isFollowing ? this.props.unfollowUser : this.props.followUser}
+          onProfileClick={this.props.navToUserProfile}
           userId={userId}
         />
       )
     })
-
-
 
     return (
       <Container>

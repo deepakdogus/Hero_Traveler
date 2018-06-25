@@ -57,8 +57,8 @@ export default class FollowFollowingRow extends Component {
     const {onProfileClick, user} = this.props
     return (
       <ConditionalNavLink
-        to={`/profile/${user.id}/view`}
-        onClick={onProfileClick}
+        to={`/profile/${user.id ? user.id : user._id}/view`}
+        onClick={()=> onProfileClick(user.id ? user.id : user._id)}
       >
         <Avatar
           avatarUrl={getImageUrl(user.profile.avatar)}
@@ -74,8 +74,8 @@ export default class FollowFollowingRow extends Component {
     return (
       <StyledVerticalCenter>
         <ConditionalNavLink
-          to={`/profile/${user.id}/view`}
-          onClick={onProfileClick}
+          to={`/profile/${user.id ? user.id : user._id}/view`}
+          onClick={() => onProfileClick(user.id ? user.id : user._id)}
         >
           <UserName>{user.username}</UserName>
         </ConditionalNavLink>

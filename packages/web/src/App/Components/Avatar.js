@@ -24,6 +24,7 @@ export default class Avatar extends React.Component {
         <Icon
           name={type === 'profile' ? 'defaultProfile' : 'user-circle-o'}
           size={size}
+          onClick={onClick}
         />
       )
     }

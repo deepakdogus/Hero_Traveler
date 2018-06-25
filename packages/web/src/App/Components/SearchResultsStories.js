@@ -14,7 +14,7 @@ const StyledContainer = styled(DefaultContainer)`
 export default class SearchResultsStories extends Component {
   static PropTypes = {
     storySearchResults: PropTypes.object,
-    userSearchResults: PropTypes.object,
+    navToStory: PropTypes.func
   }
   constructor(props) {
     super(props)
@@ -22,23 +22,18 @@ export default class SearchResultsStories extends Component {
   }
 
   render() {
-    const stories = this.props.storySearchResults;
-    const users = this.props.userSearchResults;
-
-    /*
-      We only need the first 4 elements for suggestions
-      We will improve this check to allow 'pagination' will carousel scroll
-    */
-    const renderedStories = Object.keys(stories).map((key, index) => {
-      const story = stories[key]
-      if (story.coverVideo) return null
+    const stories = this.props.storySearchResults.hits || []
+    const renderedStories = stories.map((story, index) => {
+      if(story.coverVideo) return null
       return (
         <StorySelectRow
           story={story}
-          username={users[story.author].username}
+          username={story.author}
           key={index}
           index={index}
           ReplacementContainer={StyledContainer}
+          navToStory={this.props.navToStory}
+          navToUserProfile={this.props.navToUserProfile}
         />
       )
     })

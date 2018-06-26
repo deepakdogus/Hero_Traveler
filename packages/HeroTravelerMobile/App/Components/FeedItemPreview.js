@@ -28,13 +28,19 @@ export default class FeedItemPreview extends Component {
   // is showLike now always true? MBT - 12/07/17
   static propTypes = {
     user: PropTypes.object,
+    sessionUserId: PropTypes.string,
     feedItem: PropTypes.object,
-    onPressLike: PropTypes.func,
+    onPressGuide: PropTypes.func,
+    onPressStory: PropTypes.func,
+    onPressStoryLike: PropTypes.func,
+    onPressGuideLike: PropTypes.func,
+    onPressGuideUnlike: PropTypes.func,
     onPress: PropTypes.func,
     onPressUser: PropTypes.func,
     forProfile: PropTypes.bool,
     height: PropTypes.number,
-    isLiked: PropTypes.bool,
+    isStoryLiked: PropTypes.bool,
+    isGuideLiked: PropTypes.bool,
     showLike: PropTypes.bool,
     shouldHideCover: PropTypes.bool,
     autoPlayVideo: PropTypes.bool,
@@ -303,7 +309,7 @@ export default class FeedItemPreview extends Component {
               <LikesComponent
                 onPress={this._onPressLike}
                 likes={formatCount(counts.likes)}
-                isLiked={this.props.isLiked}
+                isLiked={this.props.isStoryLiked}
                 isRightText
               />
             }
@@ -355,9 +361,18 @@ export default class FeedItemPreview extends Component {
   }
 
   _onPressLike = () => {
-    const {feedItem, onPressLike} = this.props
-    if (onPressLike) {
-      onPressLike(feedItem)
+    const {
+      feedItem, isStory, isGuideLiked, sessionUserId,
+      onPressStoryLike, onPressGuideLike, onPressGuideUnlike
+    } = this.props
+    if (isStory && onPressStoryLike) {
+      console.log("calling onPressStoryStoryLike")
+      onPressStoryLike(feedItem)
+    }
+    else {
+      console.log("in guide branch", feedItem)
+      if (isGuideLiked) onPressGuideUnlike(feedItem.id, sessionUserId)
+      else onPressGuideLike(feedItem.id, sessionUserId)
     }
   }
 }

@@ -142,3 +142,35 @@ export function * bulkSaveStoryToGuide(api, {storyId, isInGuide}) {
     ))
   }
 }
+
+export function * likeGuide(api, {guideId, userId}) {
+  const response = yield call(api.likeGuide, guideId)
+  if (response.ok) {
+    console.log("response", response)
+    // const {guides} = response.data.entities
+    // yield [
+    //   put(GuideActions.receiveGuides(guides)),
+    // ]
+  }
+  else {
+    yield put(GuideActions.guideFailure(
+      new Error("Failed to like guide")
+    ))
+  }
+}
+
+export function * unlikeGuide(api, {guideId, userId}) {
+  const response = yield call(api.unlikeGuide, guideId)
+  if (response.ok) {
+    console.log("response", response)
+    // const {guides} = response.data.entities
+    // yield [
+    //   put(GuideActions.receiveGuides(guides)),
+    // ]
+  }
+  else {
+    yield put(GuideActions.guideFailure(
+      new Error("Failed to like guide")
+    ))
+  }
+}

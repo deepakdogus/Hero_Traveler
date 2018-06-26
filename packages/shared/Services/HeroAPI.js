@@ -290,6 +290,10 @@ const create = () => {
 
   const likeStory = (storyId) => {
     return api.get(`story/${storyId}/like`)
+    .then(response => {
+      console.log("Response is ", response)
+      return response
+    })
   }
 
   const flagStory = (storyId) => {
@@ -409,6 +413,16 @@ const create = () => {
     .then(response => safeNormalize(response, [Guide]))
   }
 
+  const likeGuide = (guideId) => {
+    return api.put(`guide/${guideId}/like`)
+    .then(response => safeNormalize(response, [Guide]))
+  }
+
+  const unlikeGuide = (guideId) => {
+    return api.put(`guide/${guideId}/unlike`)
+    .then(response => safeNormalize(response, [Guide]))
+  }
+
   // ------
   // STEP 3
   // ------
@@ -483,6 +497,8 @@ const create = () => {
     getUserGuides,
     getUserFeedGuides,
     getCategoryGuides,
+    likeGuide,
+    unlikeGuide,
   }
 }
 

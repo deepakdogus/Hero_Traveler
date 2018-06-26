@@ -53,7 +53,7 @@ const mapStateToProps = (state, ownProps) => {
 
     storyProps = {
       user: entities.users.entities[feedItem.author],
-      isLiked: isStoryLiked(entities.users, sessionUserId, feedItem.id),
+      isStoryLiked: isStoryLiked(entities.users, sessionUserId, feedItem.id),
       isBookmarked: isStoryBookmarked(entities.users, sessionUserId, feedItem.id),
       myFollowedUsers: getFollowers(entities.users, 'following', sessionUserId),
       areInRenderLocation: getAreInRenderLocation(state, ownProps),
@@ -70,6 +70,7 @@ const mapStateToProps = (state, ownProps) => {
     isVisible,
     shouldHideCover,
     isAuthor: feedItem && feedItem.author === sessionUserId,
+    sessionUserId,
   }
 }
 
@@ -82,7 +83,13 @@ const mapDispatchToProps = (dispatch, props) => {
     deleteGuide: () => dispatch(GuideActions.deleteGuideRequest(feedItemId)),
     deleteStory: () => dispatch(StoryActions.deleteStory(userId, feedItemId)),
     removeDraft: () => dispatch(StoryActions.removeDraft(feedItemId)),
-    onPressLike: () => dispatch(StoryActions.storyLike(userId, feedItemId)),
+    onPressStoryLike: () => dispatch(StoryActions.storyLike(userId, feedItemId)),
+    onPressGuideLike: (guideId, sessionUserId) => {
+      dispatch(GuideActions.likeGuide(guideId, sessionUserId))
+    },
+    onPressGuideUnlike: (guideId, sessionUserId) => {
+      dispatch(GuideActions.unlikeGuide(guideId, sessionUserId))
+    },
     onPressBookmark: () => dispatch(StoryActions.storyBookmark(userId, feedItemId)),
     onPressFollow: (idToFollow) => {dispatch(UserActions.followUser(userId, idToFollow))},
     onPressUnfollow: (idToUnfollow) => dispatch(UserActions.unfollowUser(userId, idToUnfollow)),

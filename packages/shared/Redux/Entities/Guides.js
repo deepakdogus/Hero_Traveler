@@ -1,5 +1,6 @@
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
+import _ from 'lodash'
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -21,6 +22,8 @@ const { Types, Creators } = createActions({
   getCategoryGuidesSuccess: ['categoryId', 'guideIds'],
   bulkSaveStoryToGuideRequest: ['storyId', 'isInGuide'],
   dismissError: null,
+  likeGuide: ['guideId', 'userId'],
+  unlikeGuide: ['guideId', 'userId'],
 })
 
 export const GuideTypes = Types
@@ -124,6 +127,26 @@ export const dismissError = (state, {error}) => {
   return state.setIn(['error'], null)
 }
 
+// eager incrementation
+export const likeGuide = (state, {guideId, userId}) => {
+  const newState = request(state)
+  const numOfLikes = _.get(state, `entities.${guideId}.counts.likes`, 0)
+  return state.setIn(
+    ['entities', guideId, 'counts', 'likes'],
+    numOfLikes + 1
+  )
+}
+
+// eager decrementation
+export const unlikeGuide = (state, {guideId, userId}) => {
+  const newState = request(state)
+  const numOfLikes = _.get(state, `entities.${guideId}.counts.likes`, 0)
+  return state.setIn(
+    ['entities', guideId, 'counts', 'likes'],
+    numOfLikes - 1
+  )
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -143,4 +166,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_CATEGORY_GUIDES_SUCCESS]: receiveCategoryGuides,
   [Types.BULK_SAVE_STORY_TO_GUIDE_REQUEST]: request,
   [Types.DISMISS_ERROR]: dismissError,
+  [Types.LIKE_GUIDE]: likeGuide,
+  [Types.UNLIKE_GUIDE]: unlikeGuide,
 })

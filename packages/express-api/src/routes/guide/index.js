@@ -9,6 +9,8 @@ import getUserGuides from './getUserGuides'
 import getUserFeedGuides from './getUserFeedGuides'
 import getCategoryGuides from './getCategoryGuides'
 import bulkSaveStoryToGuide from './bulkSaveStoryToGuide'
+import likeGuide from './likeGuide'
+import unlikeGuide from './unlikeGuide'
 
 const router = express.Router()
 
@@ -50,6 +52,16 @@ router.get('/category/:categoryId',
 router.put('/story/:storyId',
   hasValidOauth,
   endpointWrapper(bulkSaveStoryToGuide)
+)
+
+router.put('/:guideId/like',
+  hasValidOauth,
+  endpointWrapper(likeGuide)
+)
+
+router.put('/:guideId/unlike',
+  hasValidOauth,
+  endpointWrapper(unlikeGuide)
 )
 
 export default router

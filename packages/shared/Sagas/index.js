@@ -95,6 +95,8 @@ import {
   getUserFeedGuides,
   getCategoryGuides,
   bulkSaveStoryToGuide,
+  likeGuide,
+  unlikeGuide,
 } from './GuideSagas'
 
 /* ------------- API ------------- */
@@ -201,5 +203,7 @@ export default function * root () {
     takeLatest(GuideTypes.GUIDE_FEED_REQUEST, getUserFeedGuides, heroAPI),
     takeLatest(GuideTypes.GET_CATEGORY_GUIDES, getCategoryGuides, heroAPI),
     takeLatest(GuideTypes.BULK_SAVE_STORY_TO_GUIDE_REQUEST, bulkSaveStoryToGuide, heroAPI),
+    takeLatest(GuideTypes.LIKE_GUIDE, likeGuide, heroAPI),
+    takeLatest(GuideTypes.UNLIKE_GUIDE, unlikeGuide, heroAPI),
   ]
 }

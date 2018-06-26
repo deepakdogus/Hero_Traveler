@@ -34,7 +34,7 @@ export default class SpaceBetweenRow extends Component {
           </Col>
         </Left>
         <Right>
-          {renderRight()}
+          {/* {renderRight()} */}
         </Right>
       </Row>
     )

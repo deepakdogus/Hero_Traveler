@@ -37,7 +37,6 @@ const StyledRoundedAvatarButton = styled(RoundedButton)`
   margin-right: 20px;
   position: relative;
   top: ${props => props.profileAvatar ? '4px' : '2px'};
-  
 `
 
 

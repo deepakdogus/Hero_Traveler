@@ -147,7 +147,7 @@ export default class NotificationRow extends Component {
           <SpaceBetweenRow
             renderImage={this.renderImage}
             renderText={this.renderText}
-            renderRight={this.renderTripImage}
+            // renderRight={this.props.trip && this.renderTripImage}
           />
         </Container>
         <StyledHorizontalDivider color='light-grey'/>

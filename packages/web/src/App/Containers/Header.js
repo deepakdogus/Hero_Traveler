@@ -9,6 +9,7 @@ import HeaderLoggedIn from '../Components/Headers/HeaderLoggedIn'
 import LoginActions from '../Shared/Redux/LoginRedux'
 import UXActions from '../Redux/UXRedux'
 import HeaderModals from '../Components/HeaderModals'
+import UserActions from '../Shared/Redux/Entities/Users'
 
 // If we don't explicity prevent 'fixed' from being passed to Grid, we get an error about unknown prop on div element
 // because apparently react-flexbox-grid passes all props down to underlying React elements
@@ -38,6 +39,10 @@ class Header extends React.Component {
     closeGlobalModal: PropTypes.func,
     globalModalThatIsOpen: PropTypes.string,
     globalModalParams: PropTypes.object,
+    activitiesById: PropTypes.array,
+    activities: PropTypes.object,
+    markSeen: PropTypes.func,
+    users: PropTypes.object
   }
 
   constructor(props) {
@@ -93,7 +98,16 @@ class Header extends React.Component {
   }
 
   render () {
-    const {isLoggedIn, attemptLogin, closeGlobalModal, currentUser, globalModalThatIsOpen, globalModalParams } = this.props
+    const { isLoggedIn,
+            attemptLogin,
+            closeGlobalModal,
+            currentUser,
+            globalModalThatIsOpen,
+            globalModalParams,
+            activities,
+            activitiesById,
+            markSeen,
+            users, } = this.props
     const SelectedGrid = (this.props.blackHeader || this.state.navbarEngaged) ? StyledGridBlack : StyledGrid
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
     return (
@@ -120,6 +134,10 @@ class Header extends React.Component {
               modal={this.state.modal}
               globalModalThatIsOpen={globalModalThatIsOpen}
               globalModalParams={globalModalParams}
+              activities={activities}
+              activitiesById={activitiesById}
+              markSeen={markSeen}
+              users={users}
           />
       </SelectedGrid>
       <HeaderSpacer
@@ -136,8 +154,11 @@ function mapStateToProps(state) {
     isLoggedIn: state.login.isLoggedIn,
     blackHeader: _.includes(['/', '/feed', ''], pathname) ? false : true,
     currentUser: state.session.userId,
+    activitiesById: state.entities.users.activitiesById,
+    activities: state.entities.users.activities,
     globalModalThatIsOpen: state.ux.modalName,
     globalModalParams: state.ux.params,
+    users: state.entities.users.entities
   }
 }
 
@@ -145,6 +166,7 @@ function mapDispatchToProps(dispatch) {
   return {
     attemptLogin: (username, password) => dispatch(LoginActions.loginRequest(username, password)),
     closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
+    markSeen: (activityId) => dispatch(UserActions.activitySeen(activityId))
   }
 }
 

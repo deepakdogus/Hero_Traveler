@@ -8,6 +8,12 @@ import NotificationRow from '../NotificationRow'
 import {RightTitle, RightModalCloseX} from './Shared'
 import {randomDate} from './Shared/RandomDate'
 
+const ActivityTypes = {
+  like: 'ActivityStoryLike',
+  follow: 'ActivityFollow',
+  comment: 'ActivityStoryComment'
+}
+
 const Container = styled.div``
 
 const NotificationRowsContainer = styled.div`
@@ -39,40 +45,73 @@ for (var i=0; i<3; i++)
 
 export default class NotificationsThread extends React.Component {
   static PropTypes = {
-    profile: PropTypes.object,
+    profile: PropTypes.string,
     users: PropTypes.object,
     closeModal: PropTypes.func,
+    activitiesById: PropTypes.array,
+    activities: PropTypes.object,
+    markSeen: PropTypes.func,
+    users: PropTypes.object,
   }
 
-  renderNotificationRows(userKeys) {
-    userKeys.pop()
-    return userKeys.map((key, index) => {
+  // renderNotificationRows(userKeys) {
+  //   userKeys.pop()
+  //   return userKeys.map((key, index) => {
+  //     return (
+  //       <NotificationRow
+  //         key={key}
+  //         user={usersExample[key]}
+  //         notification={notificationTypes[index].notificationText}
+  //         comment={notificationTypes[index].commentText}
+  //         trip={tripsExampleSliced[index]}
+  //         isTrip={notificationTypes[index].isTrip}
+  //         timestamp={randomDate(new Date(2017,7,1), new Date())}
+  //       />
+  //     )
+  //   })
+  // }
+
+  renderNotificationRows = () => {
+    const {profile, activities, activitiesById, users} = this.props
+    return activitiesById.map(id => {
+      const userId = activities[id].fromUser
+      const userProfile = users[userId]
+      const activity = activities[id]
       return (
         <NotificationRow
-          key={key}
-          user={usersExample[key]}
-          notification={notificationTypes[index].notificationText}
-          comment={notificationTypes[index].commentText}
-          trip={tripsExampleSliced[index]}
-          isTrip={notificationTypes[index].isTrip}
-          timestamp={randomDate(new Date(2017,7,1), new Date())}
+          key={id}
+          user={userProfile}
+          notification={this.getDescription(activity)}
+          //add comments
+          //add trips
+          //add timestamp
         />
       )
     })
   }
 
+  getDescription(activity) {
+    switch (activity.kind) {
+      case ActivityTypes.follow:
+        return `is now following you.`
+      case ActivityTypes.comment:
+        return  `commented on your story ${activity.story.title}.`
+      case ActivityTypes.like:
+        return `liked your story ${activity.story.title}.`
+    }
+  }
+
   render() {
     const {profile} = this.props
-    const userKeys = Object.keys(usersExample).filter((key, index) => {
-      return key !== profile.id
-    })
-
+    // const userKeys = Object.keys(users).filter((key, index) => {
+    //   return key !== profile
+    // })
     return (
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>NOTIFICATIONS</RightTitle>
           <NotificationRowsContainer>
-            {this.renderNotificationRows(userKeys)}
+            {this.renderNotificationRows()}
           </NotificationRowsContainer>
       </Container>
     )

@@ -173,6 +173,11 @@ UserSchema.statics = {
     // Make a semi-random username for the user:
     const username = `${_.kebabCase(trimmedName)}-${randToken.generate(10)}`
 
+    if (!email) {
+      // Make a semi-random email for the user that we can detect on the frontend
+      email = `${randToken.generate(10)}@herotraveler`
+    }
+
     return this.create({
       username,
       usernameIsTemporary: true,

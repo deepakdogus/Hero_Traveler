@@ -68,6 +68,11 @@ export const validate = (values, props, fields) => {
   return errors
 }
 
+let originalUsername = ""
+export const setOriginalUsername = function(username){
+  originalUsername = username
+}
+
 export const asyncValidate = (values, dispatch, ignoreUsername) => {
   return api.signupCheck(values)
   .then(response => {
@@ -75,7 +80,10 @@ export const asyncValidate = (values, dispatch, ignoreUsername) => {
     const errors = {}
     for (let key in data) {
       if (data[key] && !(ignoreUsername && key !== 'username')) {
-        if (data[key]) errors[key] = `That ${key} is already taken`
+        if (
+          data[key]
+          && (key !== 'username' || originalUsername !== values.username)
+        ) errors[key] = `That ${key} is already taken`
       }
     }
     if (Object.keys(errors).length) throw errors

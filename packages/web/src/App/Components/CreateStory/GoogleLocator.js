@@ -84,16 +84,37 @@ class GoogleLocator extends React.Component {
     onChange: PropTypes.func,
   }
 
+  _formatLocationUpdate = (locationUpdate, result) => {
+    result.address_components.forEach( component => {
+      if(component.types.includes('locality') || component.types.includes('sublocality_level_1 ')){
+        locationUpdate.locality = component.long_name
+      }
+      if(component.types.includes('administrative_area_level_1')){
+        locationUpdate.state = component.long_name
+      }
+      if(component.types.includes('country')){
+        locationUpdate.country = component.long_name
+      }
+    })
+    return locationUpdate
+  }
+
   handleSelect = (event) => {
-    const locationUpdate = {
+    let locationUpdate = {
       name: event.split(',')[0]
     }
     geocodeByAddress(event)
-    .then(results => getLatLng(results[0]))
+    .then(results => {
+      locationUpdate = (this._formatLocationUpdate(locationUpdate, results[0]))
+      return getLatLng(results[0])
+    })
     .then(latLng => {
       locationUpdate.latitude = latLng.lat
       locationUpdate.longitude = latLng.lng
-      this.props.onChange({locationInfo: locationUpdate})
+      this.props.onChange({
+        locationInfo: locationUpdate,
+        location: event
+      })
     })
     .catch(error => console.error('Error', error))
   }

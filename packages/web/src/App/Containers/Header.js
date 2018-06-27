@@ -44,7 +44,7 @@ class Header extends React.Component {
     activities: PropTypes.object,
     stories: PropTypes.object,
     markSeen: PropTypes.func,
-    users: PropTypes.object
+    users: PropTypes.object,
   }
 
   constructor(props) {
@@ -100,18 +100,20 @@ class Header extends React.Component {
   }
 
   render () {
-    const { isLoggedIn,
-            attemptLogin,
-            closeGlobalModal,
-            currentUser,
-            globalModalThatIsOpen,
-            globalModalParams,
-            activities,
-            activitiesById,
-            markSeen,
-            stories,
-            reroute,
-            users, } = this.props
+    const {
+      isLoggedIn,
+      attemptLogin,
+      closeGlobalModal,
+      currentUser,
+      globalModalThatIsOpen,
+      globalModalParams,
+      activities,
+      activitiesById,
+      markSeen,
+      stories,
+      reroute,
+      users,
+    } = this.props
     const SelectedGrid = (this.props.blackHeader || this.state.navbarEngaged) ? StyledGridBlack : StyledGrid
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
     return (

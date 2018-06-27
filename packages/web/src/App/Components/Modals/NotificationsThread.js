@@ -2,11 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import {usersExample} from '../../Containers/Feed_TEST_DATA'
-import {feedExample} from '../../Containers/Feed_TEST_DATA'
 import NotificationRow from '../NotificationRow'
 import {RightTitle, RightModalCloseX} from './Shared'
-import {randomDate} from './Shared/RandomDate'
 
 const ActivityTypes = {
   like: 'ActivityStoryLike',
@@ -19,51 +16,26 @@ const Container = styled.div``
 const NotificationRowsContainer = styled.div`
 `
 
-const notificationTypes = [
-  {
-    notificationText: 'commented on your trip to Africa.',
-    commentText: 'lorem ipsum',
-    isTrip: true,
-  },
-  {
-    notificationText: 'is now following you.',
-    commentText: 'lorem ipsum',
-    isTrip: false,
-  },
-  {
-    notificationText: 'earned 100pts for creating a story. Keep up the good work!',
-    commentText: 'lorem ipsum',
-    isTrip: false,
-  },
-]
-
-//test trip images
-const tripsExample = feedExample['59d59ac574b3840010a1d6f3'].categories
-let tripsExampleSliced = {};
-for (var i=0; i<3; i++)
-    tripsExampleSliced[i] = tripsExample[i];
-
 export default class NotificationsThread extends React.Component {
   static PropTypes = {
-    profile: PropTypes.string,
-    users: PropTypes.object,
     closeModal: PropTypes.func,
     activitiesById: PropTypes.array,
     activities: PropTypes.object,
     markSeen: PropTypes.func,
     stories: PropTypes.object,
-    reroute: PropTypes.func,
     users: PropTypes.object,
+    reroute: PropTypes.func,
   }
 
   renderNotificationRows = () => {
-    const { profile,
-            activities,
-            activitiesById,
-            closeModal,
-            stories,
-            users,
-            reroute,} = this.props
+    const {
+      activities,
+      activitiesById,
+      closeModal,
+      stories,
+      users,
+      reroute,
+    } = this.props
     return activitiesById.map(id => {
       const userId = activities[id].fromUser
       const userProfile = users[userId]
@@ -78,8 +50,6 @@ export default class NotificationsThread extends React.Component {
           story={story}
           reroute={reroute}
           closeModal={closeModal}
-          //add comments
-          //add timestamp
         />
       )
     })
@@ -101,7 +71,6 @@ export default class NotificationsThread extends React.Component {
   }
 
   render() {
-    const {profile} = this.props
     return (
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>

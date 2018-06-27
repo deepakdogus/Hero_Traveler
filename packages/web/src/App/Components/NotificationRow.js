@@ -96,6 +96,7 @@ export default class NotificationRow extends Component {
     story: PropTypes.object,
     isFeedItem: PropTypes.bool,
     timestamp: PropTypes.object,
+    reroute: PropTypes.func,
   }
 
   navToStory = () => {
@@ -118,7 +119,7 @@ export default class NotificationRow extends Component {
   }
 
   renderText = () => {
-    const {user, story} = this.props
+    const {user} = this.props
     return (
       <StyledVerticalCenter>
         <StyledNotificationContent>
@@ -156,7 +157,7 @@ export default class NotificationRow extends Component {
       <InteractiveContainer>
         <Container
           onClick={this.props.isFeedItem? this.navToStory : this.navToUserProfile}
-          margin={this.props.margin}>
+          >
           <SpaceBetweenRow
             renderImage={this.renderImage}
             renderText={this.renderText}

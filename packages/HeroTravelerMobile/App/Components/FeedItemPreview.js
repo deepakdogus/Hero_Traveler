@@ -258,9 +258,14 @@ export default class FeedItemPreview extends Component {
     return !isStory && isReadingScreen
   }
 
+  getIsLiked = () => {
+    const {isStory, isStoryLiked, isGuideLiked} = this.props
+    return isStory ? isStoryLiked : isGuideLiked
+  }
+
   renderBottomSection() {
     const {title, counts, description, coverCaption, draft} = this.props.feedItem
-    const {isReadingScreen} = this.props
+    const {isReadingScreen, isStory, isStoryLiked, isGuideLiked} = this.props
 
     if (this.isGuideReadingScreen()) return null
 
@@ -309,7 +314,7 @@ export default class FeedItemPreview extends Component {
               <LikesComponent
                 onPress={this._onPressLike}
                 likes={formatCount(counts.likes)}
-                isLiked={this.props.isStoryLiked}
+                isLiked={isStory ? isStoryLiked : isGuideLiked}
                 isRightText
               />
             }
@@ -365,12 +370,9 @@ export default class FeedItemPreview extends Component {
       feedItem, isStory, isGuideLiked, sessionUserId,
       onPressStoryLike, onPressGuideLike, onPressGuideUnlike
     } = this.props
-    if (isStory && onPressStoryLike) {
-      console.log("calling onPressStoryStoryLike")
-      onPressStoryLike(feedItem)
-    }
+
+    if (isStory && onPressStoryLike) onPressStoryLike(feedItem)
     else {
-      console.log("in guide branch", feedItem)
       if (isGuideLiked) onPressGuideUnlike(feedItem.id, sessionUserId)
       else onPressGuideLike(feedItem.id, sessionUserId)
     }

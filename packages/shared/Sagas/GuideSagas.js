@@ -144,25 +144,28 @@ export function * bulkSaveStoryToGuide(api, {storyId, isInGuide}) {
 }
 
 export function * likeGuide(api, {guideId, userId}) {
-  const response = yield call(api.likeGuide, guideId)
-  if (response.ok) {
-    console.log("response", response)
-    // const {guides} = response.data.entities
-    // yield [
-    //   put(GuideActions.receiveGuides(guides)),
-    // ]
-  }
-  else {
-    yield put(GuideActions.guideFailure(
-      new Error("Failed to like guide")
-    ))
+  // eagerly incrementing guideLike count and adding guide to users like list
+  const [response] = yield [
+    call(api.likeGuide, guideId),
+    put(UserActions.userGuideLike(userId, guideId)),
+    put(GuideActions.likeGuide(guideId, userId)),
+  ]
+
+  // every update is done greedily so we do not need to do anything upon success
+  if (!response.ok) {
+    yield [
+      put(GuideActions.guideFailure(
+        new Error("Failed to like guide")
+      )),
+      put(UserActions.userGuideUnlike(userId, guideId)),
+      put(GuideActions.unlikeGuide(guideId, userId))
+    ]
   }
 }
 
 export function * unlikeGuide(api, {guideId, userId}) {
   const response = yield call(api.unlikeGuide, guideId)
   if (response.ok) {
-    console.log("response", response)
     // const {guides} = response.data.entities
     // yield [
     //   put(GuideActions.receiveGuides(guides)),

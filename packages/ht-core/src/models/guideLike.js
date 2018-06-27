@@ -12,7 +12,7 @@ const GuideLikeSchema = new mongoose.Schema({
     required: true,
     index: true
   },
-  story: {
+  guide: {
     type: mongoose.Schema.ObjectId,
     ref: GuideRef,
     required: true
@@ -33,7 +33,7 @@ GuideLikeSchema.statics = {
       user: userId,
     })
     .lean()
-    .distinct('story')
+    .distinct('guide')
   }
 }
 

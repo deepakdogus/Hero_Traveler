@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import { Actions as NavActions } from 'react-native-router-flux'
 
-import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
+import {isStoryLiked, isStoryBookmarked, isGuideLiked} from '../Shared/Redux/Entities/Users'
 import UserActions, {getFollowers} from '../Shared/Redux/Entities/Users'
 import FeedItemPreview from '../Components/FeedItemPreview'
 import StoryActions from '../Shared/Redux/Entities/Stories'
@@ -68,6 +68,7 @@ const mapStateToProps = (state, ownProps) => {
     ...storyProps,
     accessToken: _.find(session.tokens, {type: 'access'}).value,
     isVisible,
+    isGuideLiked: isGuideLiked(entities.users, sessionUserId, feedItem.id),
     shouldHideCover,
     isAuthor: feedItem && feedItem.author === sessionUserId,
     sessionUserId,
@@ -85,10 +86,10 @@ const mapDispatchToProps = (dispatch, props) => {
     removeDraft: () => dispatch(StoryActions.removeDraft(feedItemId)),
     onPressStoryLike: () => dispatch(StoryActions.storyLike(userId, feedItemId)),
     onPressGuideLike: (guideId, sessionUserId) => {
-      dispatch(GuideActions.likeGuide(guideId, sessionUserId))
+      dispatch(GuideActions.likeGuideRequest(guideId, sessionUserId))
     },
     onPressGuideUnlike: (guideId, sessionUserId) => {
-      dispatch(GuideActions.unlikeGuide(guideId, sessionUserId))
+      dispatch(GuideActions.unlikeGuideRequest(guideId, sessionUserId))
     },
     onPressBookmark: () => dispatch(StoryActions.storyBookmark(userId, feedItemId)),
     onPressFollow: (idToFollow) => {dispatch(UserActions.followUser(userId, idToFollow))},

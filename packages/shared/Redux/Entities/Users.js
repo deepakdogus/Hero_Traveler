@@ -32,10 +32,12 @@ const { Types, Creators } = createActions({
   connectFacebookFailure: ['error'],
   eagerUpdateTooltips: ['userId' ,'tooltips'],
   receiveUsers: ['users'],
-  receiveLikes: ['userId', 'storyIds'],
+  receiveLikes: ['userId', 'likes'],
   receiveBookmarks: ['userId', 'storyIds'],
   userToggleLike: ['userId', 'storyId'],
   userToggleBookmark: ['userId', 'storyId'],
+  userGuideLike: ['userId', 'guideId'],
+  userGuideUnlike: ['userId', 'guideId'],
   fetchActivities: null,
   fetchActivitiesSuccess: ['activitiesById'],
   fetchActivitiesFailure: ['error'],
@@ -59,6 +61,7 @@ export const INITIAL_STATE = Immutable({
   activities: {},
   activitiesById: [],
   usersLikesById: {},
+  usersGuideLikesById: {},
   usersBookmarksById: {},
   userFollowersByUserIdAndId: {},
   userFollowingByUserIdAndId: {},
@@ -181,10 +184,16 @@ export const eagerUpdateTooltips = (state, {userId, tooltips}) => {
   )
 }
 
-export const receiveLikes = (state, {userId, storyIds}) => state.setIn(
-  ['usersLikesById', userId],
-  storyIds
-)
+export const receiveLikes = (state, {userId, likes}) => {
+  const updatedState = state.setIn(
+    ['usersLikesById', userId],
+    likes.stories,
+  )
+  return updatedState.setIn(
+    ['usersGuideLikesById', userId],
+    likes.guides,
+  )
+}
 
 export const receiveBookmarks = (state, {userId, storyIds}) => state.setIn(
   ['usersBookmarksById', userId],
@@ -223,6 +232,28 @@ export const toggleBookmark = (state, {userId, storyId}) => {
       [storyId, ...likes]
     )
   }
+}
+
+export const addGuideLike = (state, {userId, guideId}) => {
+  const guideLikes = _.get(state, `usersGuideLikesById.${userId}`, [])
+  if (!_.includes(guideLikes, guideId)) {
+    return  state.setIn(
+      ['usersGuideLikesById', userId],
+      guideLikes.concat(guideId)
+    )
+  }
+  return state
+}
+
+export const removeGuideLike = (state, {userId, guideId}) => {
+  const guideLikes = _.get(state, `usersGuideLikesById.${userId}`, [])
+  if (_.includes(guideLikes, guideId)) {
+    return  state.setIn(
+      ['usersGuideLikesById', userId],
+      _.without(guideLikes, guideId),
+    )
+  }
+  return state
 }
 
 export const loadUserFollowers = (state, {userId}) => {
@@ -329,7 +360,6 @@ export const activitySeenFailure = (state, {activityId}) => {
 
 
 
-
 /* -------------        Selectors        ------------- */
 export const isInitialAppDataLoaded = (state, userId) => {
   return _.every([
@@ -339,6 +369,10 @@ export const isInitialAppDataLoaded = (state, userId) => {
 
 export const isStoryLiked = (state: object, userId: string, storyId: string) => {
   return _.includes(state.getIn(['usersLikesById', userId]), storyId)
+}
+
+export const isGuideLiked = (state: object, userId: string, guideId: string) => {
+  return _.includes(state.getIn(['usersGuideLikesById', userId]), guideId)
 }
 
 export const isStoryBookmarked = (state: object, userId: string, storyId: string) => {
@@ -393,6 +427,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.RECEIVE_BOOKMARKS]: receiveBookmarks,
   [Types.USER_TOGGLE_LIKE]: toggleLike,
   [Types.USER_TOGGLE_BOOKMARK]: toggleBookmark,
+  [Types.USER_GUIDE_LIKE]: addGuideLike,
+  [Types.USER_GUIDE_UNLIKE]: removeGuideLike,
   [Types.FETCH_ACTIVITIES]: fetchActivities,
   [Types.FETCH_ACTIVITIES_SUCCESS]: fetchActivitiesSuccess,
   [Types.FETCH_ACTIVITIES_FAILURE]: fetchActivitiesFailure,

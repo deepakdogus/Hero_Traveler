@@ -22,6 +22,8 @@ const { Types, Creators } = createActions({
   getCategoryGuidesSuccess: ['categoryId', 'guideIds'],
   bulkSaveStoryToGuideRequest: ['storyId', 'isInGuide'],
   dismissError: null,
+  likeGuideRequest: ['guideId', 'userId'],
+  unlikeGuideRequest: ['guideId', 'userId'],
   likeGuide: ['guideId', 'userId'],
   unlikeGuide: ['guideId', 'userId'],
 })
@@ -127,7 +129,7 @@ export const dismissError = (state, {error}) => {
   return state.setIn(['error'], null)
 }
 
-// eager incrementation
+// called eagerly on likeGuide + on unlikeGuide fail
 export const likeGuide = (state, {guideId, userId}) => {
   const newState = request(state)
   const numOfLikes = _.get(state, `entities.${guideId}.counts.likes`, 0)
@@ -137,7 +139,7 @@ export const likeGuide = (state, {guideId, userId}) => {
   )
 }
 
-// eager decrementation
+// called eagerly on unlikeGuide + on likeGuide fail
 export const unlikeGuide = (state, {guideId, userId}) => {
   const newState = request(state)
   const numOfLikes = _.get(state, `entities.${guideId}.counts.likes`, 0)
@@ -166,6 +168,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_CATEGORY_GUIDES_SUCCESS]: receiveCategoryGuides,
   [Types.BULK_SAVE_STORY_TO_GUIDE_REQUEST]: request,
   [Types.DISMISS_ERROR]: dismissError,
+  [Types.LIKE_GUIDE_REQUEST]: request,
+  [Types.UNLIKE_GUIDE_REQUEST]: request,
   [Types.LIKE_GUIDE]: likeGuide,
   [Types.UNLIKE_GUIDE]: unlikeGuide,
 })

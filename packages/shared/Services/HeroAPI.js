@@ -415,12 +415,10 @@ const create = () => {
 
   const likeGuide = (guideId) => {
     return api.put(`guide/${guideId}/like`)
-    .then(response => safeNormalize(response, [Guide]))
   }
 
   const unlikeGuide = (guideId) => {
     return api.put(`guide/${guideId}/unlike`)
-    .then(response => safeNormalize(response, [Guide]))
   }
 
   // ------

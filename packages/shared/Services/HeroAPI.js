@@ -13,13 +13,14 @@ const Story = new schema.Entity('stories', {
   author: User,
   category: Category
 })
-const Activity = new schema.Entity('activities', {
-  fromUser: User,
-  story: Story
-})
 const Guide = new schema.Entity('guides', {
   author: User,
   category: Category,
+})
+const Activity = new schema.Entity('activities', {
+  fromUser: User,
+  story: Story,
+  guide: Guide,
 })
 
 const videoTimeout = 120 * 1000

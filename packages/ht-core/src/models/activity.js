@@ -45,6 +45,12 @@ ActivitySchema.statics = {
         path: 'coverImage coverVideo'
       }
     })
+    .populate({
+      path: 'guide',
+      populate: {
+        path: 'coverImage'
+      }
+    })
     .populate('comment')
   },
 

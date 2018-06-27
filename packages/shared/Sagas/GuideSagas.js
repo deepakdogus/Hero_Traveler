@@ -153,27 +153,33 @@ export function * likeGuide(api, {guideId, userId}) {
 
   // every update is done greedily so we do not need to do anything upon success
   if (!response.ok) {
-    yield [
-      put(GuideActions.guideFailure(
-        new Error("Failed to like guide")
-      )),
-      put(UserActions.userGuideUnlike(userId, guideId)),
-      put(GuideActions.unlikeGuide(guideId, userId))
-    ]
+    yield put(GuideActions.unlikeGuide(guideId, userId))
+    if (_.get(response, 'data.message') !== 'Already liked') {
+      yield [
+        put(GuideActions.guideFailure(
+          new Error("Failed to like guide")
+        )),
+        put(UserActions.userGuideUnlike(userId, guideId)),
+      ]
+    }
   }
 }
 
 export function * unlikeGuide(api, {guideId, userId}) {
-  const response = yield call(api.unlikeGuide, guideId)
-  if (response.ok) {
-    // const {guides} = response.data.entities
-    // yield [
-    //   put(GuideActions.receiveGuides(guides)),
-    // ]
-  }
-  else {
-    yield put(GuideActions.guideFailure(
-      new Error("Failed to like guide")
-    ))
+  const [response] = yield [
+    call(api.unlikeGuide, guideId),
+    put(UserActions.userGuideUnlike(userId, guideId)),
+    put(GuideActions.unlikeGuide(guideId, userId)),
+  ]
+
+  // every update is done greedily so we do not need to do anything upon success
+  if (!response.ok) {
+    yield [
+      put(GuideActions.guideFailure(
+        new Error("Failed to unlike guide")
+      )),
+      put(UserActions.userGuideLike(userId, guideId)),
+      put(GuideActions.likeGuide(guideId, userId)),
+    ]
   }
 }

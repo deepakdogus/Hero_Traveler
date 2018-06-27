@@ -17,7 +17,8 @@ import NotificationBadge from '../../Components/NotificationBadge'
 const ActivityTypes = {
   like: 'ActivityStoryLike',
   follow: 'ActivityFollow',
-  comment: 'ActivityStoryComment'
+  comment: 'ActivityStoryComment',
+  guideLike: 'ActivityGuideLike',
 }
 
 const Tab = ({text, onPress, selected, notificationCount, width = '100%'}) => {
@@ -64,7 +65,7 @@ class NotificationScreen extends React.Component {
   }
 
   _pressActivity = (activityId, seen) => {
-    const {markSeen, activities, stories} = this.props
+    const {markSeen, activities, stories, guides} = this.props
     if (!seen) {
       markSeen(activityId)
     }
@@ -83,6 +84,14 @@ class NotificationScreen extends React.Component {
           title: story.title,
         })
         break;
+      case ActivityTypes.guideLike:
+        let guide = guides[
+          activities[activityId].guide
+        ]
+        NavActions.guide({
+          guideId: guide._id,
+          title: guide.title,
+        })
     }
   }
 
@@ -94,6 +103,8 @@ class NotificationScreen extends React.Component {
         return  `commented on your story ${activity.story.title}.`
       case ActivityTypes.like:
         return `liked your story ${activity.story.title}.`
+      case ActivityTypes.guideLike:
+        return `liked your guide ${activity.guide.title}.`
     }
   }
 
@@ -118,11 +129,11 @@ class NotificationScreen extends React.Component {
   }
 
   populateActivity = (activityId) => {
-    const {users, stories, activities} = this.props
+    const {users, stories, activities, guides} = this.props
     const activity = {...activities[activityId]}
     activity.user = users[activity.fromUser]
-    activity.story = stories[activity.story]
-
+    if (activity.story) activity.story = stories[activity.story]
+    if (activity.guide) activity.guide = guides[activity.guide]
     return activity
   }
 
@@ -168,7 +179,8 @@ class NotificationScreen extends React.Component {
         if (
           (activity.kind === ActivityTypes.like && (!activity.story || !activity.fromUser)) ||
           (activity.kind === ActivityTypes.follow && !activity.user) ||
-          (activity.kind === ActivityTypes.comment && (!activity.story || !activity.fromUser))
+          (activity.kind === ActivityTypes.comment && (!activity.story || !activity.fromUser)) ||
+          (activity.kind === ActivityTypes.guideLike && (!activity.guide || !activity.fromUser))
         ) {
           return false
         }
@@ -221,6 +233,7 @@ const mapStateToProps = (state) => {
     user,
     users,
     stories: state.entities.stories.entities,
+    guides: state.entities.guides.entities,
     activitiesById: state.entities.users.activitiesById,
     activities: state.entities.users.activities,
     fetchStatus: state.entities.users.fetchStatus,

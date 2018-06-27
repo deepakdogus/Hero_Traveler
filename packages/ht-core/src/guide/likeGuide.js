@@ -1,4 +1,8 @@
-import {Guide, GuideLike, ActivityStoryLike} from '../models'
+import {
+  Guide,
+  GuideLike,
+  ActivityGuideLike,
+} from '../models'
 
 export default function likeGuide(guideId, userId) {
   const params = {
@@ -18,9 +22,13 @@ export default function likeGuide(guideId, userId) {
         new: true
       })
     })
-    .then(() => {
+    .then((guide) => {
       // add ActivityGuideLike
-      return
+      return ActivityGuideLike.add(
+        guide.author,
+        userId,
+        guideId,
+      )
     })
   })
 }

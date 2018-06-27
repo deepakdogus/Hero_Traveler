@@ -73,13 +73,18 @@ export const setOriginalUsername = function(username){
   originalUsername = username
 }
 
-export const asyncValidate = (values, dispatch, ignoreUsername) => {
+// refactor this ignore logic
+export const asyncValidate = (values, dispatch, ignoreUsername, ignoreEmail) => {
   return api.signupCheck(values)
   .then(response => {
     const {data} = response
     const errors = {}
     for (let key in data) {
-      if (data[key] && !(ignoreUsername && key !== 'username')) {
+      if (
+        data[key]
+        && !(ignoreUsername && key !== 'username')
+        && !(ignoreEmail && key === 'email')
+      ) {
         if (
           data[key]
           && (key !== 'username' || originalUsername !== values.username)

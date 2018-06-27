@@ -16,7 +16,7 @@ import {validate as validateOriginal, asyncValidate as asyncValidateOriginal} fr
 import styles from './SignupChangeUsernameStyles'
 
 const asyncValidate = (values) => {
-  return asyncValidateOriginal(values)
+  return asyncValidateOriginal(values, null, false, true)
 }
 
 const validate = (values) => {

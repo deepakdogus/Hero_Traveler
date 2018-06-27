@@ -16,28 +16,31 @@ import {validate as validateOriginal, asyncValidate as asyncValidateOriginal} fr
 import styles from './SignupChangeUsernameStyles'
 
 const asyncValidate = (values) => {
-  return asyncValidateOriginal(values, null, false, true)
+  return asyncValidateOriginal(values)
 }
 
 const validate = (values) => {
-  return validateOriginal(values, null, ["username"])
+  return validateOriginal(values, null, ["email"])
 }
 
-class SignupChangeUsername extends React.Component {
+class SignupChangeEmail extends React.Component {
 
   validationTimeout = null
 
   constructor(props) {
     super(props)
     this.state = {
-      newUsername: "",
+      newEmail: '',
       error: null
     }
   }
 
   componentDidMount() {
-    if (!this.props.user.usernameIsTemporary) {
-      NavActions.signupFlow_changeEmail()
+    if (
+      this.props.user.email &&
+      !this.props.user.email.endsWith('herotraveler')
+    ) {
+      NavActions.signupFlow_topics()
     }
   }
 
@@ -56,31 +59,31 @@ class SignupChangeUsername extends React.Component {
     })
   }
 
-  onChangeText = (username) => {
+  onChangeText = (email) => {
     this.setState({
-      newUsername: username,
+      newEmail: email,
       error: null
     })
   }
 
   onBlur = () => {
-    this.runValidations({username: this.state.newUsername}).catch((e) => {
+    this.runValidations({email: this.state.newEmail}).catch((e) => {
       this.setState({error: e})
     })
   }
 
   updateUser = () => {
     this.props.updateUser({
-      username: this.state.newUsername,
+      email: this.state.newEmail,
     })
   }
 
   onRight = () => {
     if (!this.state.error && !this.state.submitting) {
       this.setState({submitting: true}, () => {
-        this.runValidations({username: this.state.newUsername}).then(() => {
+        this.runValidations({email: this.state.newEmail}).then(() => {
           this.updateUser()
-          NavActions.signupFlow_changeEmail()
+          NavActions.signupFlow_topics()
         }).catch((e) => {
           this.setState({error: e})
         }).finally(() => {
@@ -110,7 +113,7 @@ class SignupChangeUsername extends React.Component {
         <View style={[styles.container, styles.root]}>
           <View style={styles.header}>
             <Text style={styles.title}>SIGN UP</Text>
-            <Text style={styles.subtitle}>Let&#39;s start by choosing your username</Text>
+            <Text style={styles.subtitle}>Please enter your email</Text>
           </View>
           <View style={styles.form}>
             <View style={styles.inputContainer}>
@@ -119,7 +122,7 @@ class SignupChangeUsername extends React.Component {
                 returnKeyType={'done'}
                 onChangeText={this.onChangeText}
                 onBlur={this.onBlur}
-                value={this.state.newUsername}
+                value={this.state.newEmail}
                 placeholderTextColor='white'
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -150,4 +153,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignupChangeUsername)
+export default connect(mapStateToProps, mapDispatchToProps)(SignupChangeEmail)

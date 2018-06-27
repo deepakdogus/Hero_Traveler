@@ -1,6 +1,6 @@
 {
   "name": "@hero/ht-core",
-  "version": "0.0.57",
+  "version": "0.0.60",
   "description": "HERO Traveler core server functions",
   "main": "dist/index.js",
   "scripts": {
@@ -10,13 +10,15 @@
     "publish:local": "npm run clean && npm run build && npm run copy-local:api && npm run copy-local:seeder",
     "copy-local:api": "cp -r ./{dist,package.json} ../express-api/node_modules/@hero/ht-core",
     "copy-local:seeder": "cp -r ./{dist,package.json} ../ht-seed-data/node_modules/@hero/ht-core",
-    "dev": "watch 'npm run build && npm run copy-local:api' src"
+    "copy-local:cms": "cp -r ./{dist,package.json} ../cms/node_modules/@hero/ht-core",
+    "dev": "watch 'npm run build && npm run copy-local:api' src",
+    "dev:cms": "watch 'npm run build && npm run copy-local:cms' src"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@hero/ht-util": "^0.0.49",
+    "@hero/ht-util": "^0.0.50",
     "algoliasearch": "^3.22.1",
     "babel-preset-flow": "^6.23.0",
     "babel-register": "^6.23.0",

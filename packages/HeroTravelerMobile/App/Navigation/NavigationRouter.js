@@ -48,6 +48,7 @@ import ResetPasswordRequestScreen from '../Containers/ResetPasswordRequestScreen
 import ResetPasswordScreen from '../Containers/ResetPasswordScreen'
 import SignupScreen from '../Containers/Signup/SignupScreen'
 import SignupChangeUsername from '../Containers/Signup/SignupChangeUsername'
+import SignupChangeEmail from '../Containers/Signup/SignupChangeEmail'
 import SignupTopics from '../Containers/Signup/SignupTopics'
 import SignupSocial from '../Containers/Signup/SignupSocial'
 import NavButton from './NavButton'
@@ -152,6 +153,7 @@ const navToExplore = () => {
 }
 
 const navToSignupTopics = () => NavActions.signupFlow_topics()
+const navToSignupChangeEmail = () => NavActions.signupFlow_changeEmail()
 const navToSignupSocial = () => NavActions.signupFlow_social()
 
 const navToTabbar = () => NavActions.tabbar()
@@ -189,6 +191,13 @@ export default NavActions.create(
           key='signupFlow_changeUsername'
           hideNavBar={true}
           component={SignupChangeUsername}
+          onRight={navToSignupChangeEmail}
+          renderRightButton={socialRightBtn}
+        />
+        <Scene
+          key='signupFlow_changeEmail'
+          hideNavBar={true}
+          component={SignupChangeEmail}
           onRight={navToSignupTopics}
           renderRightButton={socialRightBtn}
         />

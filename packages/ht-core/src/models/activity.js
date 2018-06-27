@@ -42,7 +42,7 @@ ActivitySchema.statics = {
     .populate({
       path: 'story',
       populate: {
-        path: 'coverImage coverVideo'
+        path: 'coverImage coverVideo categories hashtags'
       }
     })
     .populate({

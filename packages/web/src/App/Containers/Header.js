@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import {push} from 'react-router-redux'
 import * as _ from 'lodash'
 import { Grid } from '../Components/FlexboxGrid'
 import HeaderAnonymous from '../Components/Headers/HeaderAnonymous'
@@ -41,6 +42,7 @@ class Header extends React.Component {
     globalModalParams: PropTypes.object,
     activitiesById: PropTypes.array,
     activities: PropTypes.object,
+    stories: PropTypes.object,
     markSeen: PropTypes.func,
     users: PropTypes.object
   }
@@ -107,6 +109,8 @@ class Header extends React.Component {
             activities,
             activitiesById,
             markSeen,
+            stories,
+            reroute,
             users, } = this.props
     const SelectedGrid = (this.props.blackHeader || this.state.navbarEngaged) ? StyledGridBlack : StyledGrid
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
@@ -134,9 +138,11 @@ class Header extends React.Component {
               modal={this.state.modal}
               globalModalThatIsOpen={globalModalThatIsOpen}
               globalModalParams={globalModalParams}
-              activities={activities}
               activitiesById={activitiesById}
+              activities={activities}
+              stories={stories}
               markSeen={markSeen}
+              reroute={reroute}
               users={users}
           />
       </SelectedGrid>
@@ -158,7 +164,8 @@ function mapStateToProps(state) {
     activities: state.entities.users.activities,
     globalModalThatIsOpen: state.ux.modalName,
     globalModalParams: state.ux.params,
-    users: state.entities.users.entities
+    users: state.entities.users.entities,
+    stories: state.entities.stories.entities,
   }
 }
 
@@ -166,7 +173,8 @@ function mapDispatchToProps(dispatch) {
   return {
     attemptLogin: (username, password) => dispatch(LoginActions.loginRequest(username, password)),
     closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
-    markSeen: (activityId) => dispatch(UserActions.activitySeen(activityId))
+    markSeen: (activityId) => dispatch(UserActions.activitySeen(activityId)),
+    reroute: (path) => dispatch(push(path)),
   }
 }
 

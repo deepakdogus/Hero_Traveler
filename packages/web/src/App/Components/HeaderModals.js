@@ -56,7 +56,9 @@ export default class HeaderModals extends React.Component {
     user: PropTypes.string, // actually just a userId
     activitiesById: PropTypes.array,
     activities: PropTypes.object,
+    stories: PropTypes.object,
     markSeen: PropTypes.func,
+    reroute: PropTypes.func,
     users: PropTypes.object
   }
   closeGlobalModal = () => {
@@ -70,6 +72,8 @@ export default class HeaderModals extends React.Component {
             activities,
             activitiesById,
             markSeen,
+            reroute,
+            stories,
             users, } = this.props
     return (
       <div>
@@ -127,6 +131,8 @@ export default class HeaderModals extends React.Component {
             activities={activities}
             activitiesById={activitiesById}
             markSeen={markSeen}
+            stories={stories}
+            reroute={reroute}
             users={users}
             />
         </RightModal>

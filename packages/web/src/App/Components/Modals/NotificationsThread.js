@@ -51,61 +51,57 @@ export default class NotificationsThread extends React.Component {
     activitiesById: PropTypes.array,
     activities: PropTypes.object,
     markSeen: PropTypes.func,
+    stories: PropTypes.object,
+    reroute: PropTypes.func,
     users: PropTypes.object,
   }
 
-  // renderNotificationRows(userKeys) {
-  //   userKeys.pop()
-  //   return userKeys.map((key, index) => {
-  //     return (
-  //       <NotificationRow
-  //         key={key}
-  //         user={usersExample[key]}
-  //         notification={notificationTypes[index].notificationText}
-  //         comment={notificationTypes[index].commentText}
-  //         trip={tripsExampleSliced[index]}
-  //         isTrip={notificationTypes[index].isTrip}
-  //         timestamp={randomDate(new Date(2017,7,1), new Date())}
-  //       />
-  //     )
-  //   })
-  // }
-
   renderNotificationRows = () => {
-    const {profile, activities, activitiesById, users} = this.props
+    const { profile,
+            activities,
+            activitiesById,
+            closeModal,
+            stories,
+            users,
+            reroute,} = this.props
     return activitiesById.map(id => {
       const userId = activities[id].fromUser
       const userProfile = users[userId]
       const activity = activities[id]
+      const story = stories[activity.story]
       return (
         <NotificationRow
           key={id}
           user={userProfile}
-          notification={this.getDescription(activity)}
+          notification={this.getDescription(activity, story)}
+          isFeedItem={this.isFeedItem(activity)}
+          story={story}
+          reroute={reroute}
+          closeModal={closeModal}
           //add comments
-          //add trips
           //add timestamp
         />
       )
     })
   }
 
-  getDescription(activity) {
+  getDescription = (activity, story) => {
     switch (activity.kind) {
       case ActivityTypes.follow:
         return `is now following you.`
       case ActivityTypes.comment:
-        return  `commented on your story ${activity.story.title}.`
+        return  `commented on your story ${story.title}.`
       case ActivityTypes.like:
-        return `liked your story ${activity.story.title}.`
+        return `liked your story ${story.title}.`
     }
+  }
+
+  isFeedItem = (activity) => {
+    return activity.kind === 'ActivityStoryComment' || activity.kind === 'ActivityStoryLike'
   }
 
   render() {
     const {profile} = this.props
-    // const userKeys = Object.keys(users).filter((key, index) => {
-    //   return key !== profile
-    // })
     return (
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>

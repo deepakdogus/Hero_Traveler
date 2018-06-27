@@ -10,7 +10,7 @@ import {Actions as NavActions} from 'react-native-router-flux'
 
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
-import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
+import {isStoryLiked, isStoryBookmarked, isGuideLiked} from '../Shared/Redux/Entities/Users'
 import ReadingScreensOverlap from '../Components/ReadingScreensOverlap'
 import ReadingDetails from '../Components/ReadingDetails'
 import TabBar from '../Components/TabBar'
@@ -33,6 +33,9 @@ class GuideReadingScreen extends React.Component {
     guide: PropTypes.object,
     fetching: PropTypes.bool,
     error: PropTypes.object,
+    isGuideLiked: PropTypes.bool,
+    onPressGuideLike: PropTypes.func,
+    onPressGuideUnlike: PropTypes.func,
   };
 
   constructor(props) {
@@ -59,7 +62,12 @@ class GuideReadingScreen extends React.Component {
   }
 
   _toggleLike = () => {
-    this.props.toggleLike(this.props.sessionUser.id, this.props.story.id)
+    const {
+      guideId, sessionUser, isGuideLiked,
+      onPressGuideLike, onPressGuideUnlike,
+    } = this.props
+    if (isGuideLiked) onPressGuideUnlike(guideId, sessionUser.id)
+    else onPressGuideLike(guideId, sessionUser.id)
   }
 
   _toggleFlag = () => {
@@ -179,7 +187,7 @@ class GuideReadingScreen extends React.Component {
   render () {
     const {
       guide, author, sessionUser, fetching, error,
-      isBookmarked, isLiked,
+      isBookmarked, isGuideLiked,
     } = this.props
 
     return (
@@ -191,7 +199,7 @@ class GuideReadingScreen extends React.Component {
         fetching={fetching}
         error={error}
         isBookmarked={isBookmarked}
-        isLiked={isLiked}
+        isLiked={isGuideLiked}
         onPressLike={this._toggleLike}
         onPressBookmark={this._onPressBookmark}
         onPressComment={this._onPressComment}
@@ -220,7 +228,7 @@ const mapStateToProps = (state, props) => {
     guide,
     guideStories,
     error,
-    isLiked: isStoryLiked(state.entities.users, userId, props.guideId),
+    isGuideLiked: isGuideLiked(state.entities.users, userId, props.guideId),
     isBookmarked: isStoryBookmarked(state.entities.users, userId, props.guideId),
   }
 }
@@ -229,6 +237,12 @@ const mapDispatchToProps = (dispatch) => {
   return {
     toggleLike: (userId, guideId) => dispatch(StoryActions.storyLike(userId, guideId)),
     toggleBookmark: (userId, guideId) => dispatch(StoryActions.storyBookmark(userId, guideId)),
+    onPressGuideLike: (guideId, sessionUserId) => {
+      dispatch(GuideActions.likeGuideRequest(guideId, sessionUserId))
+    },
+    onPressGuideUnlike: (guideId, sessionUserId) => {
+      dispatch(GuideActions.unlikeGuideRequest(guideId, sessionUserId))
+    },
     requestGuide: (guideId) => dispatch(GuideActions.getGuideRequest(guideId)),
     flagStory: (userId, guideId) => dispatch(StoryActions.flagStory(userId, guideId)),
   }

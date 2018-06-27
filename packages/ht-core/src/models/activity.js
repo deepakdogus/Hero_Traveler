@@ -48,7 +48,7 @@ ActivitySchema.statics = {
     .populate({
       path: 'guide',
       populate: {
-        path: 'coverImage'
+        path: 'coverImage categories hashtags'
       }
     })
     .populate('comment')

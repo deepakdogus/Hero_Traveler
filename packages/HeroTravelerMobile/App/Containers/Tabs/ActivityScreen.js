@@ -2,8 +2,8 @@ import _ from 'lodash'
 import React from 'react'
 import { ScrollView, Text, View, TouchableOpacity } from 'react-native'
 import moment from 'moment'
-
 import { connect } from 'react-redux'
+
 import UserActions from '../../Shared/Redux/Entities/Users'
 import {Actions as NavActions} from 'react-native-router-flux'
 import Loader from '../../Components/Loader'
@@ -13,6 +13,7 @@ import Activity from '../../Components/Activity'
 import ThreadList from '../../Components/ThreadList'
 import Colors from '../../Shared/Themes/Colors'
 import NotificationBadge from '../../Components/NotificationBadge'
+import {displayLocation} from '../../Shared/Lib/locationHelpers'
 
 const ActivityTypes = {
   like: 'ActivityStoryLike',
@@ -81,7 +82,7 @@ class NotificationScreen extends React.Component {
         ];
         NavActions.story({
           storyId: story._id,
-          title: story.title,
+          title: displayLocation(story.locationInfo),
         })
         break;
       case ActivityTypes.guideLike:
@@ -90,7 +91,7 @@ class NotificationScreen extends React.Component {
         ]
         NavActions.guide({
           guideId: guide._id,
-          title: guide.title,
+          title: displayLocation(guide.locations[0]),
         })
     }
   }

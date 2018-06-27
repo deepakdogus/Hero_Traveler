@@ -168,8 +168,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_CATEGORY_GUIDES_SUCCESS]: receiveCategoryGuides,
   [Types.BULK_SAVE_STORY_TO_GUIDE_REQUEST]: request,
   [Types.DISMISS_ERROR]: dismissError,
-  [Types.LIKE_GUIDE_REQUEST]: request,
-  [Types.UNLIKE_GUIDE_REQUEST]: request,
   [Types.LIKE_GUIDE]: likeGuide,
   [Types.UNLIKE_GUIDE]: unlikeGuide,
 })

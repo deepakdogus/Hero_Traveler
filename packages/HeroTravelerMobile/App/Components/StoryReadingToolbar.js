@@ -41,7 +41,7 @@ export default class StoryReadingToolbarComponent extends Component {
   render() {
     const {
       onPressLike, onPressComment,
-      onPressBookmark, onPressFlag
+      onPressBookmark, onPressFlag, isStory
     } = this.props
 
     const likeContainer = (
@@ -123,14 +123,17 @@ export default class StoryReadingToolbarComponent extends Component {
       onPressFlag
     )
 
-
     return (
-      <View style={[styles.root, this.props.style]}>
+      <View style={[
+        styles.root,
+        this.props.style,
+        {justifyContent: 'space-around'},
+      ]}>
         {likeComponent}
         {commentComponent}
-        {bookmarkComponent}
+        {isStory && bookmarkComponent}
         {/**shareComponent**/}
-        {flagComponent}
+        {isStory && flagComponent}
       </View>
     )
   }

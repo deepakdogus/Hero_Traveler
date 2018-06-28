@@ -56,7 +56,7 @@ class ReadingScreenOverlap extends React.Component {
       author, user, isLiked, isBookmarked, renderBody, animatedViews,
       onPressLike, onPressBookmark, onPressComment,
       fetching, getTargetEntity, targetEntity, flagTargetEntity,
-      selectedTab,
+      selectedTab, isStory
     } = this.props
     const { scrollY } = this.state
     if (!targetEntity || !author) {
@@ -92,7 +92,7 @@ class ReadingScreenOverlap extends React.Component {
           }
           <ConnectedFeedItemPreview
             isFeed={false}
-            isStory={this.props.isStory}
+            isStory={isStory}
             onPressLike={this._toggleLike}
             showLike={false}
             key={targetEntity.id}
@@ -112,6 +112,7 @@ class ReadingScreenOverlap extends React.Component {
             { transform: [{ translateY: toolbarTranslation }] },
           ]}>
           <StoryReadingToolbar
+            isStory={isStory}
             likeCount={formatCount(targetEntity.counts.likes)}
             commentCount={formatCount(targetEntity.counts.comments)}
             boomarkCount={formatCount(targetEntity.counts.bookmarks)}

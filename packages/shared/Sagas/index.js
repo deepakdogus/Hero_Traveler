@@ -53,6 +53,7 @@ import { getHashtags } from './HashtagSagas'
 import {
   updateUser,
   connectFacebook,
+  deleteUser,
   getSuggestedUsers,
   loadUser,
   loadUserFollowing,
@@ -173,6 +174,7 @@ export default function * root () {
     takeLatest(UserTypes.LOAD_USER, loadUser, heroAPI),
     takeLatest(UserTypes.UPDATE_USER, updateUser, heroAPI),
     takeLatest(UserTypes.CONNECT_FACEBOOK, connectFacebook, heroAPI),
+    takeLatest(UserTypes.DELETE_USER, deleteUser, heroAPI),
     takeLatest(UserTypes.LOAD_USER_FOLLOWING, loadUserFollowing, heroAPI),
     takeLatest(UserTypes.LOAD_USER_FOLLOWERS, loadUserFollowers, heroAPI),
     takeLatest(UserTypes.FOLLOW_USER, userFollowUser, heroAPI),

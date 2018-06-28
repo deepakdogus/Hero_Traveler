@@ -112,6 +112,10 @@ const create = () => {
     return api.post('user/connectFacebook', {fbid, email})
   }
 
+  const deleteUser = (userId) => {
+    return api.delete(`user/${userId}`);
+  }
+
   const login = (username, password) => {
     return api.post('auth', {}, {
       auth: {
@@ -401,6 +405,7 @@ const create = () => {
     getUser,
     resetPasswordRequest,
     resetPassword,
+    deleteUser,
     signupEmail,
     signupFacebook,
     connectFacebook,

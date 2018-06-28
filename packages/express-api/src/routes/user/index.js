@@ -32,6 +32,7 @@ import changePassword from './changePassword'
 import signupCheck from './signupCheck'
 import resetPasswordRedirect from './resetPasswordRedirect'
 import verifyEmailRedirect from './verifyEmailRedirect'
+import deleteUser from './delete'
 
 const router = express.Router()
 
@@ -198,6 +199,12 @@ router.delete(
 router.post('/signupCheck',
   hasClientId,
   endpointWrapper(signupCheck)
+)
+
+router.delete(
+  '/:id',
+  hasValidOauth,
+  endpointWrapper(deleteUser)
 )
 
 export default router

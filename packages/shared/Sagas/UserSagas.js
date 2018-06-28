@@ -2,6 +2,8 @@ import _ from 'lodash'
 import { call, put, select } from 'redux-saga/effects'
 import UserActions from '../Redux/Entities/Users'
 import StoryActions from '../Redux/Entities/Stories'
+import StartupActions from '../Redux/StartupRedux'
+import SessionActions from '../Redux/SessionRedux'
 
 const currentUserId = ({session}) => session.userId
 
@@ -57,6 +59,34 @@ export function * connectFacebook (api) {
   } catch (error) {
     yield put(UserActions.connectFacebookFailure(
       new Error("There was a network error")
+    ));
+  }
+}
+
+export function * deleteUser(api) {
+  try {
+    const userId = yield select(currentUserId)
+    const response = yield call(
+      api.deleteUser,
+      userId
+    )
+    if (response.ok) {
+      yield [
+        put(UserActions.deleteUserSuccess()),
+        put(SessionActions.logoutSuccess()),
+        call(api.unsetAuth),
+      ]
+      yield put(StartupActions.hideSplash())
+    } else {
+      yield put(UserActions.deleteUserFailure(
+        new Error(
+          (response.data && response.data.message) ? response.data.message : "Unknown Error")
+        )
+      );
+    }
+  } catch(err) {
+    yield put(UserActions.deleteUserFailure(
+      new Error("There was an error deleting the user.")
     ));
   }
 }

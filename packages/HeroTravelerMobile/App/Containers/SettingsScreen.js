@@ -86,6 +86,19 @@ class SettingsScreen extends React.Component {
     }
   }
 
+  _deleteAccount = () => {
+    Alert.alert(
+      'Delete Account',
+      'Are you sure you want to delete this account?',
+      [
+        {text: 'Cancel', style: 'cancel'},
+        {text: 'OK', onPress: () => {
+          this.props.deleteUser();
+        }},
+      ]
+    )
+  }
+
   render () {
     const user = this.props.user || {}
 
@@ -114,6 +127,10 @@ class SettingsScreen extends React.Component {
               onPress={NavActions.changePassword}
             />
             <Row
+              text='Change Email Address'
+              onPress={NavActions.changePassword}
+            />
+            <Row
               text='Notifications'
               onPress={NavActions.settings_notification}
             />
@@ -131,6 +148,11 @@ class SettingsScreen extends React.Component {
           <Row
             text='Privacy Policy'
             onPress={NavActions.privacy}
+          />
+          <Row
+            text='Delete Account'
+            onPress={this._deleteAccount}
+            hideAngleRight={true}
           />
           <Row
             text='Sign Out'
@@ -171,6 +193,7 @@ const mapDispatchToProps = (dispatch) => {
     logout: (tokens) => dispatch(SessionActions.logout(tokens)),
     resetStore: () => dispatch(SessionActions.resetRootStore()),
     connectFacebook: () => dispatch(UserActions.connectFacebook()),
+    deleteUser: () => dispatch(UserActions.deleteUser()),
     clearErrors: () => dispatch(UserActions.clearErrors()),
   }
 }

@@ -30,6 +30,9 @@ const { Types, Creators } = createActions({
   connectFacebook: null,
   connectFacebookSuccess: ['user'],
   connectFacebookFailure: ['error'],
+  deleteUser: null,
+  deleteUserSuccess: null,
+  deleteUserFailure: ['error'],
   eagerUpdateTooltips: ['userId' ,'tooltips'],
   receiveUsers: ['users'],
   receiveLikes: ['userId', 'storyIds'],
@@ -166,6 +169,32 @@ export const connectFacebookSuccess = (state, {user}) => {
 
 // There was an error, either cancelled or that FB was connected to a different user
 export const connectFacebookFailure = (state, {error}) => {
+  return state.merge({
+    fetchStatus: {
+      fetching: false,
+    },
+    error
+  })
+}
+
+// User is trying to delete their account
+export const deleteUser = (state) => {
+  return state.merge({
+    fetchStatus: {
+      fetching: true,
+    },
+  })
+}
+
+export const deleteUserSuccess = (state) => {
+  return state.merge({
+    fetchStatus: {
+      fetching: false,
+    },
+  })
+}
+
+export const deleteUserFailure = (state, {error}) => {
   return state.merge({
     fetchStatus: {
       fetching: false,
@@ -388,6 +417,9 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.CONNECT_FACEBOOK]: connectFacebook,
   [Types.CONNECT_FACEBOOK_SUCCESS]: connectFacebookSuccess,
   [Types.CONNECT_FACEBOOK_FAILURE]: connectFacebookFailure,
+  [Types.DELETE_USER]: deleteUser,
+  [Types.DELETE_USER_SUCCESS]: deleteUserSuccess,
+  [Types.DELETE_USER_FAILURE]: deleteUserFailure,
   [Types.RECEIVE_USERS]: receive,
   [Types.RECEIVE_LIKES]: receiveLikes,
   [Types.RECEIVE_BOOKMARKS]: receiveBookmarks,

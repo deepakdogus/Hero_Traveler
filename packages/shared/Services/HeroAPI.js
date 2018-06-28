@@ -286,15 +286,11 @@ const create = () => {
   }
 
   const getUserLikes = (userId) => {
-    return api.get(`story/user/${userId}/like`)
+    return api.get(`story/user/${userId}/like/v2`)
   }
 
   const likeStory = (storyId) => {
     return api.get(`story/${storyId}/like`)
-    .then(response => {
-      console.log("Response is ", response)
-      return response
-    })
   }
 
   const flagStory = (storyId) => {

@@ -1,6 +1,6 @@
 import Promise from 'bluebird'
 import {Comment, Models} from '@hero/ht-core'
-import {commentNotification} from '../../apn'
+import {guideCommentNotification} from '../../apn'
 
 export default function createGuideComment(req) {
   const commentator = req.user
@@ -19,7 +19,7 @@ export default function createGuideComment(req) {
       Models.User.findOne({_id: updatedModel.author}).then((author) => {
         // Notifications are not critical for the outcome
         // so they should not block the resolution of the promise.
-        commentNotification(author, commentator, updatedModel);
+        guideCommentNotification(author, commentator, updatedModel);
       })
     }
     Promise.resolve(comment);

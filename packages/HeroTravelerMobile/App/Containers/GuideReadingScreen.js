@@ -121,6 +121,15 @@ class GuideReadingScreen extends React.Component {
     return selectedTab === tabTypes.overview || selectedTab === type
   }
 
+  getPossibleTabTypes = () => {
+    const tabsWithStories = {}
+    tabsWithStories.overview = tabTypes.overview
+    this.props.guideStories.forEach(story => {
+      if (!tabsWithStories[story.type]) tabsWithStories[story.type] = tabTypes[story.type]
+    })
+    return tabsWithStories
+  }
+
   renderBody = () => {
     const {guide} =  this.props
     const {selectedTab} = this.state
@@ -128,7 +137,7 @@ class GuideReadingScreen extends React.Component {
     return (
       <Fragment>
         <TabBar
-          tabs={tabTypes}
+          tabs={this.getPossibleTabTypes()}
           activeTab={selectedTab}
           onClickTab={this.selectTab}
           tabStyle={styles.tabStyle}

@@ -1,49 +1,61 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import MapView from 'react-native-maps';
+import MapView from 'react-native-maps'
+import memoize from 'memoize-one'
 
 class GuideMap extends Component {
   static propTypes = {
     stories: PropTypes.arrayOf(PropTypes.object),
   }
 
-  state = {
-    initialRegion: undefined
+  componentDidUpdate = (prevProps) => {
+    if (
+      prevProps.stories.length !== this.props.stories.length
+      || this.hasDifferentStories(prevProps.stories, this.props.stories)
+    ) {
+      this.onLayout()
+    }
+  }
+
+  hasDifferentStories(oldStories, newStories) {
+    return oldStories.some((story, index) => {
+      return story.id !== newStories[index].id
+    })
   }
 
   // this will find the center of the coords and their span
-  setInitialRegion = () => {
-    const {stories} = this.props
-    const numStories = stories.length
-    const center = stories.reduce((latLng, story) => {
-      latLng.latitude += story.locationInfo.latitude / numStories
-      latLng.longitude += story.locationInfo.longitude / numStories
-      return latLng
-    }, {latitude: 0, longitude: 0})
+  getStoriesRegion = memoize(
+    (storiesLatLng) => {
+      const numStories = storiesLatLng.length
+      const center = storiesLatLng.reduce((latLng, story) => {
+        latLng.latitude += story.latitude / numStories
+        latLng.longitude += story.longitude / numStories
+        return latLng
+      }, {latitude: 0, longitude: 0})
 
-    // takig default values from StoryReadingScreens map in case there is only one story.
-    let maxLatitudeDelta = 0.0922
-    let maxLongitudeDelta = 0.0421
-    stories.forEach(story =>{
-      maxLatitudeDelta = Math.max(
-        maxLatitudeDelta,
-        Math.abs(center.latitude - story.locationInfo.latitude)
-      )
-      maxLongitudeDelta = Math.max(
-        maxLongitudeDelta,
-        Math.abs(center.longitude - story.locationInfo.longitude)
-      )
-    })
+      // takig default values from StoryReadingScreens map in case there is only one story.
+      let maxLatitudeDelta = 0.0922
+      let maxLongitudeDelta = 0.0421
+      storiesLatLng.forEach(story =>{
+        maxLatitudeDelta = Math.max(
+          maxLatitudeDelta,
+          Math.abs(center.latitude - story.latitude)
+        )
+        maxLongitudeDelta = Math.max(
+          maxLongitudeDelta,
+          Math.abs(center.longitude - story.longitude)
+        )
+      })
 
-    const initialRegion = {
-      latitude: center.latitude,
-      longitude: center.longitude,
-      latitudeDelta: maxLatitudeDelta,
-      longitudeDelta: maxLongitudeDelta,
+      const storiesRegion = {
+        latitude: center.latitude,
+        longitude: center.longitude,
+        latitudeDelta: maxLatitudeDelta,
+        longitudeDelta: maxLongitudeDelta,
+      }
+      return storiesRegion
     }
-    this.setState({initialRegion})
-    return initialRegion
-  }
+  )
 
   renderStoryPins = () => {
     return this.props.stories.map(story => {
@@ -63,6 +75,7 @@ class GuideMap extends Component {
   setMapViewRef = (ref) => this.mapViewRef = ref
 
   onLayout = () => {
+    if (!this.mapViewRef) return
     this.mapViewRef.fitToCoordinates(
       this.getStoriesCoordinates(),
       {
@@ -85,7 +98,7 @@ class GuideMap extends Component {
       <MapView
         ref={this.setMapViewRef}
         style={{height: 400}}
-        initialRegion={this.state.initialRegion || this.setInitialRegion()}
+        initialRegion={this.getStoriesRegion(this.getStoriesCoordinates())}
         onLayout={this.onLayout}
       >
         {this.renderStoryPins()}

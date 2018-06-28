@@ -4683,6 +4683,10 @@ mem@^1.1.0:
   dependencies:
     mimic-fn "^1.0.0"
 
+memoize-one@^3.1.1:
+  version "3.1.1"
+  resolved "https://npm.abeck.io:443/memoize-one/-/memoize-one-3.1.1.tgz#ef609811e3bc28970eac2884eece64d167830d17"
+
 meow@^3.7.0:
   version "3.7.0"
   resolved "https://npm.abeck.io:443/meow/-/meow-3.7.0.tgz#72cb668b425228290abbfa856892587308a801fb"

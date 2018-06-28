@@ -18,7 +18,6 @@ export const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    marginBottom: Metrics.tabBarHeight,
   },
   bodyWrapper: {
     flex: 1,

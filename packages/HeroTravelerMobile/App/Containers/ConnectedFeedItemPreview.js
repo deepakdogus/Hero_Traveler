@@ -8,6 +8,7 @@ import FeedItemPreview from '../Components/FeedItemPreview'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import {navToProfile} from '../Navigation/NavigationRouter'
+import {tabTypes} from './GuideReadingScreen'
 
 function getAreInRenderLocation(state, ownProps){
   if (!ownProps.renderLocation || ownProps.renderLocation  === state.routes.scene.name) return true
@@ -40,9 +41,17 @@ function onPressUser(sessionUserId, sceneName, profileId) {
   }
 }
 
+function getSelectedStories(stories, storyIds, selectedTab) {
+  return storyIds.filter(id => {
+    return stories[id].type === selectedTab
+  }).map(id => {
+    return stories[id]
+  })
+}
+
 const mapStateToProps = (state, ownProps) => {
   const {session, entities} = state
-  const {feedItem} = ownProps
+  const {feedItem, isStory, selectedTab, isReadingScreen} = ownProps
   const sessionUserId = session.userId
 
   // the storyProps conditional is necessary because without it,
@@ -62,16 +71,24 @@ const mapStateToProps = (state, ownProps) => {
   }
 
   const isVisible = true
-  const shouldHideCover = false
+  const isShowCover =
+    !isReadingScreen
+    || isStory
+    || selectedTab === tabTypes.overview
+
+  const selectedStories = isStory
+    ? []
+    : getSelectedStories(entities.stories.entities, feedItem.stories, ownProps.selectedTab)
 
   return {
     ...storyProps,
     accessToken: _.find(session.tokens, {type: 'access'}).value,
     isVisible,
     isGuideLiked: isGuideLiked(entities.users, sessionUserId, feedItem.id),
-    shouldHideCover,
+    isShowCover,
     isAuthor: feedItem && feedItem.author === sessionUserId,
     sessionUserId,
+    selectedStories,
   }
 }
 

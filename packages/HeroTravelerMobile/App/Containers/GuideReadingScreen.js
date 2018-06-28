@@ -10,7 +10,7 @@ import {Actions as NavActions} from 'react-native-router-flux'
 
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
-import {isStoryLiked, isStoryBookmarked, isGuideLiked} from '../Shared/Redux/Entities/Users'
+import {isStoryBookmarked, isGuideLiked} from '../Shared/Redux/Entities/Users'
 import ReadingScreensOverlap from '../Components/ReadingScreensOverlap'
 import ReadingDetails from '../Components/ReadingDetails'
 import TabBar from '../Components/TabBar'
@@ -31,11 +31,16 @@ class GuideReadingScreen extends React.Component {
     sessionUser: PropTypes.object,
     guideId: PropTypes.string,
     guide: PropTypes.object,
+    requestGuide: PropTypes.func,
     fetching: PropTypes.bool,
     error: PropTypes.object,
     isGuideLiked: PropTypes.bool,
     onPressGuideLike: PropTypes.func,
     onPressGuideUnlike: PropTypes.func,
+    isBookmarked: PropTypes.bool,
+    author: PropTypes.object,
+    guideStories: PropTypes.arrayOf(PropTypes.object),
+    users: PropTypes.object,
   };
 
   constructor(props) {
@@ -45,21 +50,21 @@ class GuideReadingScreen extends React.Component {
       scrollY: new Animated.Value(0),
       selectedTab: 'overview',
     }
-    if (!this.props.story) {
+    if (!this.props.guide) {
       this.getGuide()
     }
   }
 
-  _onPressBookmark = () => {
-    const {toggleBookmark, sessionUser, storyId} = this.props
-    toggleBookmark(sessionUser.id, storyId)
-  }
+  // _onPressBookmark = () => {
+  //   const {toggleBookmark, sessionUser, storyId} = this.props
+  //   toggleBookmark(sessionUser.id, storyId)
+  // }
 
-  _onPressComment = () => {
-    NavActions.storyComments({
-      storyId: this.props.storyId
-    })
-  }
+  // _onPressComment = () => {
+  //   NavActions.storyComments({
+  //     storyId: this.props.storyId
+  //   })
+  // }
 
   _toggleLike = () => {
     const {
@@ -70,14 +75,14 @@ class GuideReadingScreen extends React.Component {
     else onPressGuideLike(guideId, sessionUser.id)
   }
 
-  _toggleFlag = () => {
-    this.setState({showFlagModal: !this.state.showFlagModal})
-  }
+  // _toggleFlag = () => {
+  //   this.setState({showFlagModal: !this.state.showFlagModal})
+  // }
 
-  _flagStory = () => {
-    this.props.flagStory(this.props.sessionUser.id, this.props.story.id)
-    NavActions.pop()
-  }
+  // _flagStory = () => {
+  //   this.props.flagStory(this.props.sessionUser.id, this.props.story.id)
+  //   NavActions.pop()
+  // }
 
   getGuide = () => {
     this.props.requestGuide(this.props.guideId)
@@ -205,6 +210,7 @@ class GuideReadingScreen extends React.Component {
         onPressComment={this._onPressComment}
         flagTargetEntity={this._flagStory}
         renderBody={this.renderBody}
+        selectedTab={this.state.selectedTab}
       />
     )
   }
@@ -218,7 +224,7 @@ const mapStateToProps = (state, props) => {
   const guide = guides[props.guideId]
   const guideStories = guide ? guide.stories.map(storyId => {
     return stories[storyId]
-  }) : {}
+  }) : []
 
   return {
     author: guide ? users[guide.author] : undefined,

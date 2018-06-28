@@ -22,6 +22,7 @@ import TrashCan from './TrashCan'
 import Avatar from './Avatar'
 import FeedItemCover from './FeedItemCover'
 import TabIcon from './TabIcon'
+import GuideMap from './GuideMap'
 
 // FeedItems are either a Story or a Guide
 export default class FeedItemPreview extends Component {
@@ -42,7 +43,7 @@ export default class FeedItemPreview extends Component {
     isStoryLiked: PropTypes.bool,
     isGuideLiked: PropTypes.bool,
     showLike: PropTypes.bool,
-    shouldHideCover: PropTypes.bool,
+    isShowCover: PropTypes.bool,
     autoPlayVideo: PropTypes.bool,
     allowVideoPlay: PropTypes.bool,
     isReadingScreen: PropTypes.bool,
@@ -335,7 +336,7 @@ export default class FeedItemPreview extends Component {
   }
 
   render () {
-    const {feedItem, showPlayButton, shouldHideCover} = this.props
+    const {feedItem, showPlayButton, isShowCover, selectedStories} = this.props
     if (!feedItem) return null
 
     // using FeedItemPreview height as proxy for FeedItemCover playbutton size
@@ -345,7 +346,7 @@ export default class FeedItemPreview extends Component {
     return (
       <View style={styles.contentContainer}>
         {this.renderUserSection()}
-        {!shouldHideCover &&
+        {isShowCover &&
           <FeedItemCover
             areInRenderLocation={this.props.areInRenderLocation}
             autoPlayVideo={this.props.autoPlayVideo}
@@ -358,6 +359,11 @@ export default class FeedItemPreview extends Component {
             isFeed={this.props.isFeed}
             shouldEnableAutoplay={this.shouldEnableAutoplay()}
             locationText={this.getLocationText()}
+          />
+        }
+        {!isShowCover &&
+          <GuideMap
+            stories={selectedStories}
           />
         }
         {this.renderBottomSection()}

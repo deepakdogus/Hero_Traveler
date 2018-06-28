@@ -32,6 +32,7 @@ class ReadingScreenOverlap extends React.Component {
     flagTargetEntity: PropTypes.func,
     renderBody: PropTypes.func,
     animatedViews: PropTypes.arrayOf(PropTypes.func),
+    selectedTab: PropTypes.string,
   }
 
   static defaultProps = {
@@ -55,6 +56,7 @@ class ReadingScreenOverlap extends React.Component {
       author, user, isLiked, isBookmarked, renderBody, animatedViews,
       onPressLike, onPressBookmark, onPressComment,
       fetching, getTargetEntity, targetEntity, flagTargetEntity,
+      selectedTab,
     } = this.props
     const { scrollY } = this.state
     if (!targetEntity || !author) {
@@ -100,6 +102,7 @@ class ReadingScreenOverlap extends React.Component {
             autoPlayVideo={true}
             allowVideoPlay={true}
             isReadingScreen={true}
+            selectedTab={selectedTab}
           />
           {renderBody()}
         </Animated.ScrollView>

@@ -128,7 +128,7 @@ class SettingsScreen extends React.Component {
             />
             <Row
               text='Change Email Address'
-              onPress={NavActions.changePassword}
+              onPress={NavActions.changeEmail}
             />
             <Row
               text='Notifications'

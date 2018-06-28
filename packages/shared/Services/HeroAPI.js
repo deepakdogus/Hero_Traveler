@@ -314,8 +314,18 @@ const create = () => {
     return api.get(`story/${storyId}/comment`)
   }
 
+  const getGuideComments = (guideId) => {
+    return api.get(`guide/${guideId}/comment`)
+  }
+
   const createComment = (storyId, text) => {
     return api.post(`story/${storyId}/comment`, {
+      content: text
+    })
+  }
+
+  const createGuideComment = (guideId, text) => {
+    return api.post(`guide/${guideId}/comment`, {
       content: text
     })
   }
@@ -472,7 +482,9 @@ const create = () => {
     removeDraft,
     getBookmarks,
     getComments,
+    getGuideComments,
     createComment,
+    createGuideComment,
     uploadCoverImage,
     uploadCoverVideo,
     uploadStoryImage,

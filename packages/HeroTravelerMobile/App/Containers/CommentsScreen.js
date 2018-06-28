@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Text, View, ScrollView, TextInput } from 'react-native'
 import { connect } from 'react-redux'
 import moment from 'moment'
@@ -8,8 +9,9 @@ import Avatar from '../Components/Avatar'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import {Colors} from '../Shared/Themes'
 import API from '../Shared/Services/HeroAPI'
-import styles, { listHeight } from './Styles/StoryCommentsScreenStyles'
+import styles, { listHeight } from './Styles/CommentsScreenStyles'
 import StoryActions from '../Shared/Redux/Entities/Stories'
+import GuideActions from '../Shared/Redux/Entities/Guides'
 
 const api = API.create()
 
@@ -31,6 +33,15 @@ const Comment = ({avatar, name, comment, timestamp}) => {
 }
 
 class StoryCommentsScreen extends React.Component {
+  static propTypes = {
+    accessToken: PropTypes.object,
+    storyId: PropTypes.string,
+    guideId: PropTypes.string,
+    updateStory: PropTypes.func,
+    updateLocalGuide: PropTypes.func,
+    user: PropTypes.object,
+  };
+
   constructor(props) {
     super(props)
 
@@ -45,7 +56,8 @@ class StoryCommentsScreen extends React.Component {
   componentDidMount() {
     api.setAuth(this.props.accessToken.value)
       .then(() => {
-        api.getComments(this.props.storyId)
+        const getMethod = this.props.storyId ? api.getComments : api.getGuideComments
+        getMethod(this.props.storyId || this.props.guideId)
           .then(({data}) => {
             this.setState({
               loading: false,
@@ -72,18 +84,20 @@ class StoryCommentsScreen extends React.Component {
       story: this.props.storyId
     };
 
-    api.createComment(
-      this.props.storyId,
+    const createMethod = this.props.storyId ? api.createComment : api.createGuideComment
+    createMethod(
+      this.props.storyId || this.props.guideId,
       this.state.text
     )
     .then(() => {
       const update = {}
-      update[this.props.storyId] = {
+      update[this.props.storyId || this.props.guideId] = {
         counts: {
           comments: this.state.comments.length + 1,
         }
       }
-      this.props.updateStory(update)
+      const updateMethod = this.props.storyId ? this.props.updateStory : this.props.updateLocalGuide
+      updateMethod(update)
 
       this.setState({
         comments: [
@@ -182,7 +196,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateStory: (story) => dispatch(StoryActions.receiveStories(story))
+    updateStory: (story) => dispatch(StoryActions.receiveStories(story)),
+    updateLocalGuide: (guide) => dispatch(GuideActions.receiveGuides(guide)),
   }
 }
 

@@ -1,7 +1,7 @@
 import {Comment} from '../models'
 
-export default function findComments(storyId) {
-  return Comment.find({story: storyId})
+export default function findComments(params) {
+  return Comment.find(params)
     .sort('createdAt')
     .populate({
     	path: 'user',

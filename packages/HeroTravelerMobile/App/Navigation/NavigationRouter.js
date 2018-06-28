@@ -32,7 +32,7 @@ import ChangePasswordScreen from '../Containers/ChangePasswordScreen'
 
 // Story reading & creating
 import StoryReadingScreen from '../Containers/StoryReadingScreen'
-import StoryCommentsScreen from '../Containers/StoryCommentsScreen'
+import CommentsScreen from '../Containers/CommentsScreen'
 import StoryCreateScreen from '../Containers/CreateStory/1_CreateStoryScreen'
 import CreateStoryDetailScreen from '../Containers/CreateStory/4_CreateStoryDetailScreen'
 import TagScreen from '../Containers/CreateStory/TagScreen'
@@ -314,8 +314,8 @@ export default NavActions.create(
         titleStyle={Styles.storyTitle}
       />
       <Scene
-        key='storyComments'
-        component={StoryCommentsScreen}
+        key='comments'
+        component={CommentsScreen}
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconClose}

@@ -11,6 +11,8 @@ import getCategoryGuides from './getCategoryGuides'
 import bulkSaveStoryToGuide from './bulkSaveStoryToGuide'
 import likeGuide from './likeGuide'
 import unlikeGuide from './unlikeGuide'
+import getGuideComments from './getGuideComments'
+import createGuideComment from './createGuideComment'
 
 const router = express.Router()
 
@@ -62,6 +64,16 @@ router.put('/:guideId/like',
 router.put('/:guideId/unlike',
   hasValidOauth,
   endpointWrapper(unlikeGuide)
+)
+
+router.get('/:guideId/comment',
+  hasValidOauth,
+  endpointWrapper(getGuideComments)
+)
+
+router.post('/:guideId/comment',
+  hasValidOauth,
+  endpointWrapper(createGuideComment)
 )
 
 export default router

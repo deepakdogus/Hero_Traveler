@@ -60,11 +60,11 @@ class GuideReadingScreen extends React.Component {
   //   toggleBookmark(sessionUser.id, storyId)
   // }
 
-  // _onPressComment = () => {
-  //   NavActions.storyComments({
-  //     storyId: this.props.storyId
-  //   })
-  // }
+  _onPressComment = () => {
+    NavActions.comments({
+      guideId: this.props.guideId,
+    })
+  }
 
   _toggleLike = () => {
     const {

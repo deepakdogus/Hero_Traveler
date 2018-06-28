@@ -137,8 +137,8 @@ class StoryReadingScreen extends React.Component {
   }
 
   _onPressComment = () => {
-    NavActions.storyComments({
-      storyId: this.props.storyId
+    NavActions.comments({
+      storyId: this.props.storyId,
     })
   }
 

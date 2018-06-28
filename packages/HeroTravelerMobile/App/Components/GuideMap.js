@@ -1,7 +1,23 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import MapView from 'react-native-maps'
+import {
+  View,
+  Text,
+} from 'react-native'
+import MapView, {Marker, Callout} from 'react-native-maps'
 import memoize from 'memoize-one'
+import {Actions as NavActions} from 'react-native-router-flux'
+
+import ImageWrapper from './ImageWrapper'
+import {getStoryImageUrl} from './GuideStoriesOfType'
+import styles from './Styles/GuideMapStyles'
+import {storyWidth} from './Styles/GuideStoriesOfTypeStyles'
+import {displayLocation} from '../Shared/Lib/locationHelpers'
+
+const videImageOptions = {
+  video: true,
+  width: storyWidth / 2
+}
 
 class GuideMap extends Component {
   static propTypes = {
@@ -57,17 +73,38 @@ class GuideMap extends Component {
     }
   )
 
+  onPressStory = (story) => {
+    return () => NavActions.story({
+      storyId: story._id,
+      title: displayLocation(story.locationInfo),
+    })
+  }
+
   renderStoryPins = () => {
     return this.props.stories.map(story => {
+      const coverUrl = getStoryImageUrl(story, videImageOptions)
       return (
-        <MapView.Marker
+        <Marker
           key={story.id}
           coordinate={{
             latitude: story.locationInfo.latitude,
             longitude: story.locationInfo.longitude,
           }}
           fitToElements={{animated: true}}
-        />
+        >
+          <Callout onPress={this.onPressStory(story)}>
+            <View style={styles.calloutView}>
+              <ImageWrapper
+                cached
+                source={{uri: coverUrl}}
+                style={styles.image}
+              />
+              <Text style={styles.title}>
+                {story.title}
+              </Text>
+            </View>
+          </Callout>
+        </Marker>
       )
     })
   }
@@ -97,7 +134,7 @@ class GuideMap extends Component {
     return (
       <MapView
         ref={this.setMapViewRef}
-        style={{height: 400}}
+        style={styles.mapView}
         initialRegion={this.getStoriesRegion(this.getStoriesCoordinates())}
         onLayout={this.onLayout}
       >

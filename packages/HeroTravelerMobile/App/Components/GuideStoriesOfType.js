@@ -9,9 +9,16 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import ImageWrapper from './ImageWrapper'
 import {TouchlessPlayButton} from './VideoPlayer'
 
-const videoImageOptions = {
+const defaultVideoImageOptions = {
   video: true,
   width: storyWidth
+}
+
+export function getStoryImageUrl(story, videoImageOptions = defaultVideoImageOptions) {
+    const isVideo = !!story.coverVideo
+    return isVideo
+      ? getImageUrl(story.coverVideo, 'optimized', videoImageOptions)
+      : getImageUrl(story.coverImage, 'basic')
 }
 
 export default class GuideStoriesOfType extends React.Component {
@@ -53,9 +60,7 @@ export default class GuideStoriesOfType extends React.Component {
 
   renderStory = (story) => {
     const isVideo = !!story.coverVideo
-    const coverUrl = isVideo
-      ? getImageUrl(story.coverVideo, 'optimized', videoImageOptions)
-      : getImageUrl(story.coverImage, 'basic')
+    const coverUrl = getStoryImageUrl(story)
     const {authors} = this.props
 
     return (

@@ -105,6 +105,7 @@ class ReadingScreenOverlap extends React.Component {
             selectedTab={selectedTab}
           />
           {renderBody()}
+          {<View style={styles.toolbarPadding}/>}
         </Animated.ScrollView>
         <Animated.View
           style={[

@@ -20,6 +20,7 @@ const ActivityTypes = {
   follow: 'ActivityFollow',
   comment: 'ActivityStoryComment',
   guideLike: 'ActivityGuideLike',
+  guideComment: 'ActivityGuideComment',
 }
 
 const Tab = ({text, onPress, selected, notificationCount, width = '100%'}) => {
@@ -86,6 +87,7 @@ class NotificationScreen extends React.Component {
         })
         break;
       case ActivityTypes.guideLike:
+      case ActivityTypes.guideComment:
         let guide = guides[
           activities[activityId].guide
         ]
@@ -102,6 +104,8 @@ class NotificationScreen extends React.Component {
         return `is now following you.`
       case ActivityTypes.comment:
         return  `commented on your story ${activity.story.title}.`
+      case ActivityTypes.guideComment:
+        return  `commented on your guide ${activity.guide.title}.`
       case ActivityTypes.like:
         return `liked your story ${activity.story.title}.`
       case ActivityTypes.guideLike:
@@ -112,6 +116,7 @@ class NotificationScreen extends React.Component {
   getContent(activity) {
     switch (activity.kind) {
       case ActivityTypes.comment:
+      case ActivityTypes.guideComment:
         return _.truncate(activity.comment.content, {length: 60});
     }
   }
@@ -181,7 +186,8 @@ class NotificationScreen extends React.Component {
           (activity.kind === ActivityTypes.like && (!activity.story || !activity.fromUser)) ||
           (activity.kind === ActivityTypes.follow && !activity.user) ||
           (activity.kind === ActivityTypes.comment && (!activity.story || !activity.fromUser)) ||
-          (activity.kind === ActivityTypes.guideLike && (!activity.guide || !activity.fromUser))
+          (activity.kind === ActivityTypes.guideLike && (!activity.guide || !activity.fromUser)) ||
+          (activity.kind === ActivityTypes.guideComment && (!activity.guide || !activity.fromUser))
         ) {
           return false
         }

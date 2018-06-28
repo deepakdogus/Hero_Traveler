@@ -76,7 +76,7 @@ const mapStateToProps = (state, ownProps) => {
     || isStory
     || selectedTab === tabTypes.overview
 
-  const selectedStories = isStory
+  const selectedStories = (isStory || !isReadingScreen)
     ? []
     : getSelectedStories(entities.stories.entities, feedItem.stories, ownProps.selectedTab)
 

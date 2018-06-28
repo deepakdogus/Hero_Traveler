@@ -3,6 +3,7 @@ import {
   Comment,
   ActivityStoryComment,
   Guide,
+  ActivityGuideComment,
 } from '../models'
 
 export default function createComment(attrs) {
@@ -15,13 +16,15 @@ export default function createComment(attrs) {
           {new: true}
         )
         .then(updatedModel => {
-          return updatedModel
-          // return ActivityStoryComment.add(
-          //   updatedModel.author,
-          //   attrs.user,
-          //   comment._id,
-          //   updatedModel._id
-          // ).then(() => Promise.resolve(updatedModel))
+          const targetActivityModel = attrs.story ? ActivityStoryComment : ActivityGuideComment
+          return targetActivityModel.add(
+            updatedModel.author,
+            attrs.user,
+            comment._id,
+            updatedModel._id
+          ).then((activity) => {
+            return Promise.resolve(updatedModel)
+          })
         })
         .then(updatedModel => {
           return Promise.resolve({updatedModel, comment})

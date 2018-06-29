@@ -231,9 +231,10 @@ const mapStateToProps = (state, props) => {
   const users = state.entities.users.entities
   const stories = state.entities.stories.entities
   const guide = guides[props.guideId]
-  const guideStories = guide ? guide.stories.map(storyId => {
+  let guideStories = guide ? guide.stories.map(storyId => {
     return stories[storyId]
   }) : []
+  guideStories = guideStories.filter(story => !!story)
 
   return {
     author: guide ? users[guide.author] : undefined,

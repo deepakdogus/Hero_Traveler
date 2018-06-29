@@ -43,7 +43,7 @@ function onPressUser(sessionUserId, sceneName, profileId) {
 
 function getSelectedStories(stories, storyIds, selectedTab) {
   return storyIds.filter(id => {
-    return stories[id].type === selectedTab
+    return stories[id] && stories[id].type === selectedTab
   }).map(id => {
     return stories[id]
   })
@@ -52,6 +52,7 @@ function getSelectedStories(stories, storyIds, selectedTab) {
 const mapStateToProps = (state, ownProps) => {
   const {session, entities} = state
   const {feedItem, isStory, selectedTab, isReadingScreen} = ownProps
+  if (!feedItem) return {}
   const sessionUserId = session.userId
 
   // the storyProps conditional is necessary because without it,

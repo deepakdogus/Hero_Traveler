@@ -28,7 +28,8 @@ class MyFeedScreen extends React.Component {
     user: PropTypes.object,
     error: PropTypes.object,
     feedGuidesById: PropTypes.arrayOf(PropTypes.string),
-    attemptGetUserFeed: PropTypes.func,
+    attemptGetUserFeedStories: PropTypes.func,
+    attemptGetUserFeedGuides: PropTypes.func,
     userId: PropTypes.string,
     location: PropTypes.string,
     sync: PropTypes.object,
@@ -195,7 +196,7 @@ const mapStateToProps = (state) => {
     error,
     backgroundFailures,
   } = state.entities.stories;
-  const feedGuidesById = state.entities.guides.feedGuidesById
+  const feedGuidesById = state.entities.guides.feedGuidesById || []
   return {
     userId: state.session.userId,
     user: state.entities.users.entities[state.session.userId],

@@ -39,6 +39,7 @@ class CreateGuide extends Component {
     story: PropTypes.object,
     updateGuide: PropTypes.func,
     createGuide: PropTypes.func,
+    error: PropTypes.object,
   }
 
   constructor(props) {
@@ -72,10 +73,21 @@ class CreateGuide extends Component {
     this.props.dismissError()
   }
 
+  isGuideValid = () => {
+    const {coverImage, title, locations} = this.state
+    return !!coverImage && !!title && locations.length
+  }
+
   onDone = () => {
     const {creating} = this.state
-    const {updateGuide, createGuide, user} = this.props
+    const {updateGuide, createGuide, user, guideFailure} = this.props
     if (creating) return
+    if (!this.isGuideValid()) {
+      guideFailure(new Error(
+        "Please ensure the guide has a photo, a title, and at least one location."
+      ))
+      return
+    }
 
     const onDoneFunc = this.isExistingGuide() ? updateGuide : createGuide
     this.setState(
@@ -98,7 +110,7 @@ class CreateGuide extends Component {
     }
   }
 
-  componentDidUpdate = (prevProps, prevState, snapshot) => {
+  componentDidUpdate = (prevProps) => {
     if (
       this.state.creating &&
       prevProps.fetching && this.props.fetching === false
@@ -307,6 +319,7 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = dispatch => ({
   createGuide: (guide, userId) => dispatch(GuideActions.createGuide(guide, userId)),
   updateGuide: guide => dispatch(GuideActions.updateGuide(guide)),
+  guideFailure: error => dispatch(GuideActions.guideFailure(error)),
   dismissError: () => dispatch(GuideActions.dismissError()),
 })
 

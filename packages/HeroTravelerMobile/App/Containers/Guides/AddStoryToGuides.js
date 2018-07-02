@@ -118,12 +118,11 @@ const mapStateToProps = (state, ownProps) => {
   let usersGuides = []
   let isInGuide = {}
   // if the user has guides we populate usersGuides and isInGuide
-  if (guideIdsByUserId[sessionUserId]) {
+  if (guideIdsByUserId && guideIdsByUserId[sessionUserId]) {
     usersGuides = guideIdsByUserId[sessionUserId].map(key => {
       return entities[key]
     })
     // Create story guides array so can see those that are already checked/unchecked
-    isInGuide = {}
     for (let guide of usersGuides) {
       isInGuide[guide.id] = guide.stories.indexOf(storyId) !== -1
     }

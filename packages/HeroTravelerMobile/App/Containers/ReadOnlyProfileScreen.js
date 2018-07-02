@@ -106,7 +106,7 @@ const mapStateToProps = (state, props) => {
     user: users.entities[props.userId],
     storiesById: getByUser(state.entities.stories, props.userId),
     storiesFetchStatus: getUserFetchStatus(state.entities.stories, props.userId),
-    guideIds: guides.guideIdsByUserId[props.userId],
+    guideIds: guides.guideIdsByUserId ? guides.guideIdsByUserId[props.userId] : [],
     guidesFetchStatus: guides.fetchStatus,
     userFetchStatus: users.fetchStatus,
     myFollowedUsers: getFollowers(users, 'following', authedUser.id)

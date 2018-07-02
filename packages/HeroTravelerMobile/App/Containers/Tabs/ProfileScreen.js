@@ -112,7 +112,7 @@ const mapStateToProps = (state) => {
     draftsById: stories.drafts.byId,
     userBookmarksById: getByBookmarks(users, userId),
     userBookmarksFetchStatus: getBookmarksFetchStatus(stories, userId),
-    guideIds: guides.guideIdsByUserId[userId],
+    guideIds: guides.guideIdsByUserId ? guides.guideIdsByUserId[userId] : [],
     guidesFetchStatus: guides.fetchStatus,
     error: stories.error,
   }

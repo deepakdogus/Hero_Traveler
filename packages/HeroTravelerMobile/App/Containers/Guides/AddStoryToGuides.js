@@ -43,6 +43,7 @@ class AddStoryToGuides extends Component {
 
   state = {
     isInGuideById: this.props.isInGuideById || {},
+    filteredGuides: this.props.guides,
   }
 
   onDone = () => {
@@ -72,6 +73,12 @@ class AddStoryToGuides extends Component {
   }
 
   filterGuides = (searchTerm) => {
+    const filteredGuides = this.props.guides.filter((guide) => {
+      return guide.title.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
+    })
+    this.setState({
+      filteredGuides,
+    })
     return searchTerm
   }
 
@@ -81,8 +88,8 @@ class AddStoryToGuides extends Component {
   }
 
   render = () => {
-    const { isInGuideById } = this.state
-    const { guides, onCancel, fetching } = this.props
+    const { isInGuideById, filteredGuides } = this.state
+    const { onCancel, fetching } = this.props
 
     return (
       <View style={storyCoverStyles.root}>
@@ -113,8 +120,8 @@ class AddStoryToGuides extends Component {
                 style={{ padding: Metrics.baseMargin }}
               />
             )}
-            {!!guides.length &&
-              guides.map((guide, idx) => {
+            {!!filteredGuides.length &&
+              filteredGuides.map((guide, idx) => {
                 const isActive = isInGuideById[guide.id]
                 return (
                   <GuideListItem

@@ -40,6 +40,8 @@ class CreateGuide extends Component {
     updateGuide: PropTypes.func,
     createGuide: PropTypes.func,
     error: PropTypes.object,
+    dismissError: PropTypes.func,
+    guideFailure: PropTypes.func,
   }
 
   constructor(props) {
@@ -74,7 +76,7 @@ class CreateGuide extends Component {
   }
 
   isGuideValid = () => {
-    const {coverImage, title, locations} = this.state
+    const {coverImage, title, locations} = this.state.guide
     return !!coverImage && !!title && locations.length
   }
 
@@ -204,8 +206,6 @@ class CreateGuide extends Component {
       coverImage,
     } = guide
 
-    const guideRequirementsMet = title && locations.length && coverImage
-
     return (
       <View style={storyCoverStyles.root}>
         {creating && (
@@ -224,7 +224,7 @@ class CreateGuide extends Component {
               onLeft={creating ? noop : onCancel}
               leftTitle={'Cancel'}
               title={this.isExistingGuide() ? 'EDIT GUIDE' : 'CREATE GUIDE'}
-              isRightValid={guideRequirementsMet && !creating ? true : false}
+              isRightValid={this.isGuideValid() && !creating ? true : false}
               onRight={onDone}
               rightTitle={this.isExistingGuide() ? 'Save' : 'Create'}
               rightTextStyle={storyCoverStyles.navBarRightTextStyle}

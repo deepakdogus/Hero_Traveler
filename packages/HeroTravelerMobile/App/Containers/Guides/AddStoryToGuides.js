@@ -15,6 +15,13 @@ import { Metrics } from '../../Shared/Themes'
 
 import styles from '../Styles/AddStoryToGuidesStyles'
 
+function getIsInGuidesById(guides, storyId) {
+  return guides.reduce((isInGuideById, guide) => {
+    isInGuideById[guide.id] = guide.stories.indexOf(storyId) !== -1
+    return isInGuideById
+  }, {})
+}
+
 class AddStoryToGuides extends Component {
   static defaultProps = {
     onCancel: NavActions.pop,
@@ -22,18 +29,26 @@ class AddStoryToGuides extends Component {
   }
 
   static propTypes = {
+    storyId: PropTypes.string,
     onCancel: PropTypes.func,
     onDone: PropTypes.func,
+    bulkSaveStoryToGuide: PropTypes.func,
+    getUserGuides: PropTypes.func,
+    story: PropTypes.object,
+    user: PropTypes.object,
+    guides: PropTypes.arrayOf(PropTypes.object),
+    isInGuideById: PropTypes.object,
+    fetching: PropTypes.bool,
   }
 
   state = {
-    isInGuide: this.props.isInGuide || {},
+    isInGuideById: this.props.isInGuideById || {},
   }
 
   onDone = () => {
     const {bulkSaveStoryToGuide, story} = this.props
-    const {isInGuide} = this.state
-    bulkSaveStoryToGuide(story._id, isInGuide)
+    const {isInGuideById} = this.state
+    bulkSaveStoryToGuide(story._id, isInGuideById)
     NavActions.pop()
   }
 
@@ -41,10 +56,19 @@ class AddStoryToGuides extends Component {
     this.props.getUserGuides(this.props.user.id)
   }
 
+  componentDidUpdate(prevProps) {
+    const {guides, story} = this.props
+    if (prevProps.guides.length !== this.props.guides.length) {
+      this.setState({
+        isInGuideById: getIsInGuidesById(guides, story.id),
+      })
+    }
+  }
+
   toggleGuide = guideId => {
-    const {isInGuide} = this.state
-    isInGuide[guideId] = !isInGuide[guideId]
-    this.setState({isInGuide})
+    const {isInGuideById} = this.state
+    isInGuideById[guideId] = !isInGuideById[guideId]
+    this.setState({isInGuideById})
   }
 
   filterGuides = (searchTerm) => {
@@ -57,7 +81,7 @@ class AddStoryToGuides extends Component {
   }
 
   render = () => {
-    const { isInGuide } = this.state
+    const { isInGuideById } = this.state
     const { guides, onCancel, fetching } = this.props
 
     return (
@@ -91,7 +115,7 @@ class AddStoryToGuides extends Component {
             )}
             {!!guides.length &&
               guides.map((guide, idx) => {
-                const isActive = isInGuide[guide.id]
+                const isActive = isInGuideById[guide.id]
                 return (
                   <GuideListItem
                     imageUri={{ uri: getImageUrl(guide.coverImage, 'basic') }}
@@ -116,23 +140,17 @@ const mapStateToProps = (state, ownProps) => {
   const {guideIdsByUserId, entities, fetchStatus} = state.entities.guides
   const storyId = ownProps.story._id
   let usersGuides = []
-  let isInGuide = {}
-  // if the user has guides we populate usersGuides and isInGuide
   if (guideIdsByUserId && guideIdsByUserId[sessionUserId]) {
     usersGuides = guideIdsByUserId[sessionUserId].map(key => {
       return entities[key]
     })
-    // Create story guides array so can see those that are already checked/unchecked
-    for (let guide of usersGuides) {
-      isInGuide[guide.id] = guide.stories.indexOf(storyId) !== -1
-    }
   }
 
   return {
     user: state.entities.users.entities[sessionUserId],
     accessToken: find(state.session.tokens, { type: 'access' }),
     guides: usersGuides,
-    isInGuide,
+    isInGuideById: getIsInGuidesById(usersGuides, storyId),
     fetching: fetchStatus.fetching,
     loaded: fetchStatus.loaded,
     status: fetchStatus,
@@ -142,8 +160,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => ({
   getUserGuides: userId => dispatch(GuideActions.getUserGuides(userId)),
   updateGuide: guide => dispatch(GuideActions.updateGuide(guide)),
-  bulkSaveStoryToGuide: (storyId, isInGuide) => {
-    dispatch(GuideActions.bulkSaveStoryToGuideRequest(storyId, isInGuide))
+  bulkSaveStoryToGuide: (storyId, isInGuideById) => {
+    dispatch(GuideActions.bulkSaveStoryToGuideRequest(storyId, isInGuideById))
   }
 })
 

@@ -16,10 +16,11 @@ import { Metrics } from '../../Shared/Themes'
 import styles from '../Styles/AddStoryToGuidesStyles'
 
 function getIsInGuidesById(guides, storyId) {
-  return guides.reduce((isInGuideById, guide) => {
+  const isInGuideById = {}
+  for (let guide of guides) {
     isInGuideById[guide.id] = guide.stories.indexOf(storyId) !== -1
-    return isInGuideById
-  }, {})
+  }
+  return isInGuideById
 }
 
 class AddStoryToGuides extends Component {
@@ -111,7 +112,7 @@ class AddStoryToGuides extends Component {
               onSearch={this.filterGuides}
             />
             <GuideListItem
-              create
+              isCreate
               onPress={this.createGuide}
             />
             {fetching && (
@@ -166,7 +167,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => ({
   getUserGuides: userId => dispatch(GuideActions.getUserGuides(userId)),
-  updateGuide: guide => dispatch(GuideActions.updateGuide(guide)),
   bulkSaveStoryToGuide: (storyId, isInGuideById) => {
     dispatch(GuideActions.bulkSaveStoryToGuideRequest(storyId, isInGuideById))
   }

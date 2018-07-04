@@ -26,7 +26,6 @@ export default StyleSheet.create({
     backgroundColor: Colors.errorPink,
     height: 50,
     width: 65,
-    resizeMode: 'cover',
   },
   placeholderImage: {
     width: 30,

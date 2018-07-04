@@ -6,7 +6,6 @@ import {
   View,
 } from 'react-native'
 import { connect } from 'react-redux'
-import { find } from 'lodash'
 
 import Loader from '../../Components/Loader'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
@@ -113,6 +112,7 @@ class CreateGuide extends Component {
   }
 
   componentDidUpdate = (prevProps) => {
+    const {guide} = this.props
     if (
       this.state.creating &&
       prevProps.fetching && this.props.fetching === false
@@ -120,7 +120,15 @@ class CreateGuide extends Component {
       if (!prevProps.error && this.props.error) {
         this.setState({creating: false})
       }
-      else NavActions.pop()
+      else {
+        this.setState(
+          {creating: false},
+          () => {
+            if (this.isExistingGuide()) NavActions.editGuideStories({guideId: guide.id})
+            else NavActions.pop()
+          }
+        )
+      }
     }
   }
 
@@ -163,7 +171,7 @@ class CreateGuide extends Component {
   }
 
   updateLocations = (locations) => {
-    this.updateGuide({locations})
+    this.updateGuide({ locations })
     NavActions.pop()
   }
 
@@ -202,7 +210,6 @@ class CreateGuide extends Component {
       duration,
       isPrivate,
       title,
-      locations,
       coverImage,
     } = guide
 
@@ -223,10 +230,10 @@ class CreateGuide extends Component {
             <NavBar
               onLeft={creating ? noop : onCancel}
               leftTitle={'Cancel'}
-              title={this.isExistingGuide() ? 'EDIT GUIDE' : 'CREATE GUIDE'}
+              title={this.isExistingGuide() ? 'GUIDE DETAILS' : 'CREATE GUIDE'}
               isRightValid={this.isGuideValid() && !creating ? true : false}
               onRight={onDone}
-              rightTitle={this.isExistingGuide() ? 'Save' : 'Create'}
+              rightTitle={this.isExistingGuide() ? 'Next' : 'Create'}
               rightTextStyle={storyCoverStyles.navBarRightTextStyle}
               style={storyCoverStyles.navBarStyle}
             />
@@ -307,7 +314,6 @@ const mapStateToProps = (state, props) => {
 
   return {
     user: state.entities.users.entities[state.session.userId],
-    accessToken: find(state.session.tokens, { type: 'access' }),
     guide: guides[props.guideId],
     fetching: state.entities.guides.fetchStatus.fetching,
     error: state.entities.guides.error,

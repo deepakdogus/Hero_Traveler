@@ -32,7 +32,7 @@ import changePassword from './changePassword'
 import signupCheck from './signupCheck'
 import resetPasswordRedirect from './resetPasswordRedirect'
 import verifyEmailRedirect from './verifyEmailRedirect'
-import deleteUser from './delete'
+import deleteUser from './deleteUser'
 
 const router = express.Router()
 

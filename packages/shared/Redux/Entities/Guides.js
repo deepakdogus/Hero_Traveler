@@ -105,11 +105,37 @@ export const receiveNewGuide = (state, {guides = {}, userId}) => {
 }
 
 export const deleteGuideSuccess = (state, {guideId, userId}) => {
+  let guide = state.getIn(['entities', guideId])
   let newState = state.setIn(['entities'], state.entities.without(guideId))
-  // add a line to remove from guideIdsByUserId in future
-  return newState.setIn(['feedGuidesById'], state.feedGuidesById.filter(id => {
+  newState = newState.setIn(
+    ['fetchStatus'],
+    {
+      fetching: false,
+      loaded: true,
+    }
+  )
+
+  newState = newState.setIn(['feedGuidesById'], state.feedGuidesById.filter(id => {
     return id !== guideId
   }))
+
+  newState = newState.setIn(
+    ['guideIdsByUserId', userId],
+    _.get(newState, `guideIdsByUserId.${userId}`, []).filter(id => {
+      return id !== guideId
+    })
+  )
+
+  _.get(guide, 'categories',[]).forEach(category => {
+    newState = newState.setIn(
+      ['guideIdsByCategoryId', category.id],
+      _.get(newState, `guideIdsByCategoryId.${category.id}`, []).filter(id => {
+        return id !== guideId
+      })
+    )
+  })
+
+  return newState
 }
 
 export const guideFeedSuccess = (state, {feedGuidesById}) => {

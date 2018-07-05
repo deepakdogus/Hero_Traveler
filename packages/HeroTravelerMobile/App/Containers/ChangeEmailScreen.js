@@ -1,20 +1,16 @@
 import React from 'react'
-import _ from 'lodash'
 import {
   View,
   Text,
   TextInput
 } from 'react-native'
-import {
-  Actions as NavActions
-} from 'react-native-router-flux'
+import PropTypes from 'prop-types'
+import { Actions as NavActions } from 'react-native-router-flux'
 import RoundedButton from '../Components/RoundedButton'
 import Loader from '../Components/Loader'
 import { connect } from 'react-redux'
 import {Colors} from '../Shared/Themes'
 import styles from './Styles/ChangePasswordScreenStyles'
-import LoginActions from '../Shared/Redux/LoginRedux'
-import { Actions as NavigationActions } from 'react-native-router-flux'
 import UserActions from '../Shared/Redux/Entities/Users'
 import {validate as validateOriginal, asyncValidate as asyncValidateOriginal} from '../Shared/Lib/userFormValidation'
 
@@ -26,7 +22,15 @@ const validate = (values) => {
   return validateOriginal(values, null, ["email"])
 }
 
-class ChangePasswordScreen extends React.Component {
+class ChangeEmailScreen extends React.Component {
+
+  static propTypes = {
+    user: PropTypes.shape({
+      email: PropTypes.string.isRequired,
+    }),
+    updateUser: PropTypes.func.isRequired,
+  }
+
   validationTimeout = null
 
   constructor(props) {
@@ -74,7 +78,7 @@ class ChangePasswordScreen extends React.Component {
   onSubmit = () => {
     if (!this.state.error && !this.state.submitting) {
       if (this.state.newEmail === this.props.user.email) {
-        return;
+        return
       }
       this.setState({submitting: true}, () => {
         this.runValidations({email: this.state.newEmail}).then(() => {
@@ -119,17 +123,18 @@ class ChangePasswordScreen extends React.Component {
             />
           </View>
           <Text style={styles.errorWrapper}>
-            {this.state.validationError && <Text style={[styles.section, styles.error]}>{this.state.validationError}</Text>}
+            {this.state.validationError &&
+              <Text style={[styles.section, styles.error]}>
+                {this.state.validationError}
+              </Text>
+            }
           </Text>
         </View>
         {this.state.updating &&
-          <Loader tintColor={Colors.blackoutTint} style={{
-            position: 'absolute',
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0
-          }} />
+          <Loader
+            tintColor={Colors.blackoutTint}
+            style={styles.spinner}
+          />
         }
       </View>
     )
@@ -148,4 +153,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChangePasswordScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(ChangeEmailScreen)

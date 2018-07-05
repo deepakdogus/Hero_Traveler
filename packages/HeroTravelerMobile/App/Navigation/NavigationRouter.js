@@ -244,7 +244,7 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        title='Change Emaila'
+        title='Change Email'
         {...darkNavBarProps}
       />
       <Scene

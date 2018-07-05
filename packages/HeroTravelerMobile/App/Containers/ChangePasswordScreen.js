@@ -8,6 +8,7 @@ import {
 import {
   Actions as NavActions
 } from 'react-native-router-flux'
+import PropTypes from 'prop-types'
 import RoundedButton from '../Components/RoundedButton'
 import Loader from '../Components/Loader'
 import { connect } from 'react-redux'
@@ -20,6 +21,12 @@ import { Actions as NavigationActions } from 'react-native-router-flux'
 const api = HeroAPI.create()
 
 class ChangePasswordScreen extends React.Component {
+
+  static propTypes = {
+    accessToken: PropTypes.string.isRequired,
+    userId: PropTypes.string.isRequired,
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -100,13 +107,10 @@ class ChangePasswordScreen extends React.Component {
           </Text>
         </View>
         {this.state.updating &&
-          <Loader tintColor={Colors.blackoutTint} style={{
-            position: 'absolute',
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0
-          }} />
+          <Loader
+            tintColor={Colors.blackoutTint}
+            style={styles.spinner}
+          />
         }
       </View>
     )

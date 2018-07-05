@@ -6,6 +6,7 @@ import {
   Text,
   Alert
 } from 'react-native'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {
   ActionConst as NavActionConst,
@@ -52,8 +53,21 @@ const Version = ({version}) =>
 
 class SettingsScreen extends React.Component {
 
+  static propTypes = {
+    isLoggedIn: PropTypes.bool.isRequired,
+    user: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }),
+    resetStore: PropTypes.func.isRequired,
+    clearErrors: PropTypes.func.isRequired,
+    logout: PropTypes.func.isRequired,
+    connectFacebook: PropTypes.func.isRequired,
+    deleteUser: PropTypes.func.isRequired,
+    fetching: PropTypes.bool.isRequired,
+  }
+
   constructor(props) {
-    super(props);
+    super(props)
   }
 
   componentWillReceiveProps(newProps) {
@@ -64,12 +78,12 @@ class SettingsScreen extends React.Component {
     }
 
     if (newProps.error && !newProps.isLoggingOut) {
-      let errorMessage = newProps.error.message || 'Operation could not be completed.';
+      let errorMessage = newProps.error.message || 'Operation could not be completed.'
       Alert.alert('Error', errorMessage, [{
         text: 'OK', onPress: () => {
-          this.props.clearErrors();
+          this.props.clearErrors()
         }
-      }]);
+      }])
     }
   }
 
@@ -80,9 +94,9 @@ class SettingsScreen extends React.Component {
   _tapFacebook = () => {
     const user = this.props.user || {}
     if (user.isFacebookConnected) {
-      alert('Your account is already connected to Facebook');
+      alert('Your account is already connected to Facebook')
     } else {
-      this.props.connectFacebook();
+      this.props.connectFacebook()
     }
   }
 
@@ -93,7 +107,7 @@ class SettingsScreen extends React.Component {
       [
         {text: 'Cancel', style: 'cancel'},
         {text: 'OK', onPress: () => {
-          this.props.deleteUser();
+          this.props.deleteUser()
         }},
       ]
     )
@@ -137,40 +151,40 @@ class SettingsScreen extends React.Component {
           </NavList>
           <View style={styles.separator} />
           <NavList>
-          <Row
-            text='FAQ'
-            onPress={NavActions.FAQ}
-          />
-          <Row
-            text='Terms & Conditions'
-            onPress={NavActions.terms}
-          />
-          <Row
-            text='Privacy Policy'
-            onPress={NavActions.privacy}
-          />
-          <Row
-            text='Delete Account'
-            onPress={this._deleteAccount}
-            hideAngleRight={true}
-          />
-          <Row
-            text='Sign Out'
-            hideAngleRight={true}
-            onPress={this._logOut}
-            textStyle={{color: Colors.red}}
-          />
+            <Row
+              text='FAQ'
+              onPress={NavActions.FAQ}
+            />
+            <Row
+              text='Terms & Conditions'
+              onPress={NavActions.terms}
+            />
+            <Row
+              text='Privacy Policy'
+              onPress={NavActions.privacy}
+            />
+            <Row
+              text='Sign Out'
+              hideAngleRight={true}
+              onPress={this._logOut}
+              textStyle={{color: Colors.red}}
+            />
+          </NavList>
+          <View style={styles.separator} />
+          <NavList>
+            <Row
+              text='Delete Account'
+              onPress={this._deleteAccount}
+              hideAngleRight={true}
+            />
           </NavList>
           <Version version={VersionNumber.appVersion} />
         </ScrollView>
         {this.props.fetching &&
-          <Loader tintColor={Colors.blackoutTint} style={{
-            position: 'absolute',
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0
-          }} />
+          <Loader
+          tintColor={Colors.blackoutTint}
+          style={styles.spinner}
+          />
         }
       </View>
     )

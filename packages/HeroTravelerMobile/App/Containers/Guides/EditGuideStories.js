@@ -68,7 +68,7 @@ class EditGuideStories extends Component {
             leftTitle={'Back'}
             title={'Guide Stories'}
             onRight={this.onDone}
-            rightTitle={'Save'}
+            rightTitle={'Next'}
             rightTextStyle={storyCoverStyles.navBarRightTextStyle}
             style={storyCoverStyles.navBarStyle}
           />

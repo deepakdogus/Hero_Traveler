@@ -78,7 +78,7 @@ class LocationScreen extends Component {
   }
 
   onSubmit = () => {
-    if (this.state.predictions.length) return
+    if (this.state.predictions.length || this.props.isMultiSelect) return
     else this.props.onSelectLocation({"name": this.state.text})
   }
 

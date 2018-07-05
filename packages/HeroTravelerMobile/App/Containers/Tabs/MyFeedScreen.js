@@ -92,7 +92,12 @@ class MyFeedScreen extends React.Component {
 
   _showNoStories() {
     return (
-      <NoStoriesMessage text={this.state.selectedTab}/>
+      <View style={[styles.containerWithTabbar, styles.root]}>
+        <View style={styles.tabWrapper}>
+          {this.renderTabs()}
+        </View>
+        <NoStoriesMessage text={this.state.selectedTab}/>
+      </View>
     )
   }
 

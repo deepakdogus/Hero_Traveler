@@ -35,4 +35,7 @@ export default StyleSheet.create({
   tabStyle: {
     width: Metrics.screenWidth * 0.3,
   },
+  tabWrapper: {
+    width: Metrics.screenWidth,
+  },
 })

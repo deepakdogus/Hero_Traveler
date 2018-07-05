@@ -297,7 +297,7 @@ export default class FeedItemPreview extends Component {
 
           {!draft &&
           <View style={styles.rightRow}>
-            {this.props.showLike && this.props.onPressBookmark &&
+            {this.props.showLike && this.props.onPressBookmark && this.props.isStory &&
               <View style={styles.bookmarkContainer}>
                 <TouchableOpacity
                   onPress={this.props.onPressBookmark}

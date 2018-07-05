@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import PropTypes from 'prop-types'
 import { Actions as NavActions } from 'react-native-router-flux'
 import React, { Component } from 'react'
@@ -149,9 +150,11 @@ const mapStateToProps = (state, ownProps) => {
   const storyId = ownProps.story._id
   let usersGuides = []
   if (guideIdsByUserId && guideIdsByUserId[sessionUserId]) {
-    usersGuides = guideIdsByUserId[sessionUserId].map(key => {
+    // TODO: Temporarily compacting the array here because
+    // deleting a guide still leaves an 'undefined' there.
+    usersGuides = _.compact(guideIdsByUserId[sessionUserId].map(key => {
       return entities[key]
-    })
+    }))
   }
 
   return {

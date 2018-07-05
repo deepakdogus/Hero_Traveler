@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {
@@ -24,12 +25,23 @@ class GuideMap extends Component {
     stories: PropTypes.arrayOf(PropTypes.object),
   }
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      coords: this.uniqueCoords(props.stories)
+    }
+  }
+
   componentDidUpdate = (prevProps) => {
     if (
       prevProps.stories.length !== this.props.stories.length
       || this.hasDifferentStories(prevProps.stories, this.props.stories)
     ) {
-      this.onLayout()
+      this.setState({
+        coords: this.uniqueCoords(this.props.stories)
+      }, () => {
+        this.onLayout()
+      })
     }
   }
 
@@ -37,6 +49,34 @@ class GuideMap extends Component {
     return oldStories.some((story, index) => {
       return story.id !== newStories[index].id
     })
+  }
+
+  uniqueCoords = (stories) => {
+    let cache = [];
+    let coords = {};
+
+    stories.forEach(story => {
+      // https://stackoverflow.com/questions/7477003/calculating-new-longitude-latitude-from-old-n-meters
+      let lat, long, latLongId
+      let distance = 10 * 0.0000089
+      let increment = 0
+      do {
+        lat = story.locationInfo.latitude + (distance * increment)
+        long = story.locationInfo.longitude + (distance * increment) / Math.cos(lat * Math.PI / 180)
+        latLongId = lat + "-" + long
+        increment++
+      } while (
+        cache.indexOf(latLongId) > -1
+      )
+      cache.push(latLongId)
+
+      coords[story.id] = {
+        latitude: lat,
+        longitude: long,
+      }
+    })
+
+    return coords
   }
 
   // this will find the center of the coords and their span
@@ -83,12 +123,14 @@ class GuideMap extends Component {
   renderStoryPins = () => {
     return this.props.stories.map(story => {
       const coverUrl = getStoryImageUrl(story, videImageOptions)
-      return (
+      let coords = this.state.coords[story._id]
+
+      return coords && (
         <Marker
           key={story.id}
           coordinate={{
-            latitude: story.locationInfo.latitude,
-            longitude: story.locationInfo.longitude,
+            latitude: coords.latitude,
+            longitude: coords.longitude,
           }}
           fitToElements={{animated: true}}
         >
@@ -122,12 +164,7 @@ class GuideMap extends Component {
   }
 
   getStoriesCoordinates = () => {
-    return this.props.stories.map(story => {
-      return {
-        latitude: story.locationInfo.latitude,
-        longitude: story.locationInfo.longitude,
-      }
-    })
+    return _.values(this.state.coords)
   }
 
   render() {

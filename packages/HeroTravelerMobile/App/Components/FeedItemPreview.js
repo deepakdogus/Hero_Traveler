@@ -240,13 +240,14 @@ export default class FeedItemPreview extends Component {
 
   renderTitle() {
     const {title, description} = this.props.feedItem
-    const {isReadingScreen, titleStyle} = this.props
+    const {isReadingScreen, titleStyle, isStory, isFeed} = this.props
+    let showDescription = (isStory || !isFeed)
     return (
       <Text style={[
         styles.title,
-        description ? styles.titleWithDescription : {},
+        (description && showDescription) ? styles.titleWithDescription : {},
         isReadingScreen ? styles.storyReadingTitle : {},
-        isReadingScreen && description ? styles.storyReadingTitleWithDescription : {},
+        (isReadingScreen && description && showDescription) ? styles.storyReadingTitleWithDescription : {},
         titleStyle
       ]}>
         {title}
@@ -266,7 +267,7 @@ export default class FeedItemPreview extends Component {
 
   renderBottomSection() {
     const {title, counts, description, coverCaption, draft} = this.props.feedItem
-    const {isReadingScreen, isStory, isStoryLiked, isGuideLiked} = this.props
+    const {isReadingScreen, isStory, isFeed, isStoryLiked, isGuideLiked} = this.props
 
     if (this.isGuideReadingScreen()) return null
 
@@ -282,7 +283,7 @@ export default class FeedItemPreview extends Component {
           disabled={!!isReadingScreen}
         >
           {this.renderTitle()}
-          {!!description &&
+          {!!description && !(!isStory && isFeed) &&
             <Text style={storyReadingScreenStyles.description}>
               {description}
             </Text>

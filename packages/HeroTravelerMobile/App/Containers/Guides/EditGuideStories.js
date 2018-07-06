@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
@@ -34,7 +35,7 @@ class EditGuideStories extends Component {
 
   onDone = () => {
     NavActions.tabbar({type: 'reset'})
-    NavActions.myFeed()
+    NavActions.profile()
   }
 
   onLeft = () => {
@@ -103,7 +104,7 @@ class EditGuideStories extends Component {
 const mapStateToProps = (state, props) => {
   const guide = state.entities.guides.entities[props.guideId]
   const allStories = state.entities.stories.entities
-  const stories = guide.stories.map((storyId) => allStories[storyId])
+  const stories = _.compact(guide.stories.map((storyId) => allStories[storyId]))
 
   return {
     guide,

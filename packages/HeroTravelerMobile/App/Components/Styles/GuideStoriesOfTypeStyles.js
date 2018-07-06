@@ -31,7 +31,7 @@ export default StyleSheet.create({
     height: 35,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: Metrics.baseMargin,
+    marginVertical: Metrics.baseMargin,
   },
   seeAll: {
     fontFamily: Fonts.type.montserrat,
@@ -57,6 +57,8 @@ export default StyleSheet.create({
     fontSize: 13,
     letterSpacing: .7,
     fontWeight: '600',
+    marginTop: Metrics.baseMargin,
+    marginBottom: Metrics.baseMargin * .5,
   },
   author: {
     fontFamily: Fonts.type.montserrat,

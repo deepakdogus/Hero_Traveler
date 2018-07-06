@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import PropTypes from 'prop-types'
 import { Actions as NavActions } from 'react-native-router-flux'
 import React, { Component } from 'react'

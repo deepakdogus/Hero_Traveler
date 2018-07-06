@@ -99,7 +99,7 @@ const mapDispatchToProps = (dispatch, props) => {
   return {
     onPressStory: (title) => NavActions.story({storyId: feedItemId, title}),
     onPressGuide: (title) => NavActions.guide({guideId: feedItemId, title}),
-    deleteGuide: () => dispatch(GuideActions.deleteGuideRequest(feedItemId)),
+    deleteGuide: () => dispatch(GuideActions.deleteGuideRequest(feedItemId, userId)),
     deleteStory: () => dispatch(StoryActions.deleteStory(userId, feedItemId)),
     removeDraft: () => dispatch(StoryActions.removeDraft(feedItemId)),
     onPressStoryLike: () => dispatch(StoryActions.storyLike(userId, feedItemId)),

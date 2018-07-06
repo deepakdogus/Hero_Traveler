@@ -25,13 +25,21 @@ class TextInputScreen extends Component {
     super(props)
 
     this.state = {
-      text: '',
+      text: props.text,
       isInputFocused: false,
     }
   }
 
   componentDidMount() {
     this.input.focus();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.text !== this.props.text) {
+      this.setState({
+        text: this.props.text,
+      })
+    }
   }
 
   _onLeft = () => {

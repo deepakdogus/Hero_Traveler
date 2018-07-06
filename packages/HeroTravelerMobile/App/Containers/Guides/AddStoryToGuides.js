@@ -64,6 +64,7 @@ class AddStoryToGuides extends Component {
     if (prevProps.guides.length !== this.props.guides.length) {
       this.setState({
         isInGuideById: getIsInGuidesById(guides, story.id),
+        filteredGuides: this.getFilteredGuides(this.state.searchTerm || ""),
       })
     }
   }
@@ -74,12 +75,16 @@ class AddStoryToGuides extends Component {
     this.setState({isInGuideById})
   }
 
-  filterGuides = (searchTerm) => {
-    const filteredGuides = this.props.guides.filter((guide) => {
+  getFilteredGuides = (searchTerm) => {
+    return this.props.guides.filter((guide) => {
       return guide.title.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
     })
+  }
+
+  filterGuides = (searchTerm) => {
     this.setState({
-      filteredGuides,
+      filteredGuides: this.getFilteredGuides(searchTerm),
+      searchTerm: searchTerm,
     })
     return searchTerm
   }

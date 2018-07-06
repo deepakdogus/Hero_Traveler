@@ -155,11 +155,9 @@ const mapStateToProps = (state, ownProps) => {
   const storyId = ownProps.story._id
   let usersGuides = []
   if (guideIdsByUserId && guideIdsByUserId[sessionUserId]) {
-    // TODO: Temporarily compacting the array here because
-    // deleting a guide still leaves an 'undefined' there.
-    usersGuides = _.compact(guideIdsByUserId[sessionUserId].map(key => {
+    usersGuides = guideIdsByUserId[sessionUserId].map(key => {
       return entities[key]
-    }))
+    })
   }
 
   return {

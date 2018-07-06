@@ -271,7 +271,8 @@ export const styles = StyleSheet.create({
   },
   guideDescription: {
     marginHorizontal: Metrics.section,
-    marginTop: Metrics.baseMargin,
+    marginTop: 25,
+    marginBottom: 30,
   },
   toolbarPadding: {
     height: Metrics.tabBarHeight

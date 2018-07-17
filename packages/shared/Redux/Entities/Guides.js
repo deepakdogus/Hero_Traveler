@@ -5,6 +5,9 @@ import _ from 'lodash'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
+  registerDraft: null,
+  registerDraftSuccess: ['draft'],
+  registerDraftFailure: ['error'],
   createGuide: ['guide', 'userId'],
   createGuideSuccess: ['guides', 'userId'],
   receiveGuides: ['guides'],
@@ -33,6 +36,11 @@ export default Creators
 
 /* ------------- Initial State ------------- */
 
+const initialFetchStatus = () => ({
+  fetching: false,
+  loaded: false,
+})
+
 export const INITIAL_STATE = Immutable({
   entities: {},
   fetchStatus: {
@@ -40,6 +48,13 @@ export const INITIAL_STATE = Immutable({
     loaded: false,
   },
   error: null,
+  draft: null,
+  workingDraft: null,
+  drafts: {
+    error: null,
+    fetchStatus: initialFetchStatus(),
+    byId: []
+  },
   guideIdsByUserId: {},
   guideIdsByCategoryId: {},
   feedGuidesById: [],
@@ -57,6 +72,64 @@ export const request = (state) => {
   }, {
     deep: true
   })
+}
+
+export const registerDraft = () => INITIAL_STATE
+
+export const registerDraftSuccess = (state, {draft}) => {
+  return state.merge({
+    draft,
+    workingDraft: draft,
+    error: null,
+  })
+}
+
+// updateDraft called after save. Making sure to sync up workingDraft + draft
+export const updateDraftSuccess = (state, {draft}) => {
+  // state = state.setIn(['sync', 'syncProgress'], state.sync.syncProgressSteps)
+  return state.merge({
+    draft,
+    workingDraft: draft,
+  },
+  {deep: true})
+}
+
+// updateWorkingDraft only updates local draft
+export const updateWorkingDraft = (state, {workingDraft}) => {
+  return state.merge({workingDraft}, {deep: true})
+}
+
+export const updateEntities = (state, {guides = {}}) => {
+  return state.merge({entities: guides}, {deep: true})
+}
+
+export const addDraft = (state, {draft}) => {
+  const guides = {}
+  guides[draft.id] = draft
+  state = updateEntities(state, {stories})
+
+  let draftsById = state.drafts.byId
+  if (draftsById.indexOf(draft.id) === -1) draftsById = [draft.id, ...draftsById]
+  return state.merge({
+    drafts: {
+      fetchStatus: {
+        fetching: false,
+        loaded: true
+      },
+      byId: draftsById
+    }
+  })
+}
+
+// if local id removes from story entities if present
+// removes from drafts.byId
+export const removeDraft = (state, {draftId}) => {
+  if (draftId.substring(0,6) === 'local-') state = state.setIn(['entities'], state.entities.without(draftId))
+  // state = removeBackgroundFailure(state, {storyId: draftId})
+  const path = ['drafts', 'byId']
+  return state.setIn(path, state.getIn(path, draftId).filter(id => {
+    return id !== draftId
+  }))
 }
 
 export const receiveGuides = (state, {guides = {}, userId = false}) => {

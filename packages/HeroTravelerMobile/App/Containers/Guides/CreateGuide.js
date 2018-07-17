@@ -19,6 +19,7 @@ import Checkbox from '../../Components/Checkbox'
 import DropdownMenu from '../../Components/DropdownMenu'
 import Form from '../../Components/Form'
 import TouchableMultilineInput from '../../Components/TouchableMultilineInput'
+import createLocalGuideDraft from '../../Shared/Lib/createLocalGuideDraft'
 import styles from '../Styles/CreateGuideStyles'
 
 const noop = () => {}
@@ -36,6 +37,7 @@ class CreateGuide extends Component {
     fetching: PropTypes.bool,
     user: PropTypes.object,
     story: PropTypes.object,
+    registerDraft: PropTypes.func,
     updateGuide: PropTypes.func,
     createGuide: PropTypes.func,
     error: PropTypes.object,
@@ -108,6 +110,8 @@ class CreateGuide extends Component {
       this.setState({
         guide,
       })
+    } else {
+      this.props.registerDraft(createLocalGuideDraft(this.props.user.id, this.props.story))
     }
   }
 
@@ -323,6 +327,7 @@ const mapStateToProps = (state, props) => {
 }
 
 const mapDispatchToProps = dispatch => ({
+  registerDraft: (draft) => dispatch(GuideActions.registerDraftSuccess(draft)),
   createGuide: (guide, userId) => dispatch(GuideActions.createGuide(guide, userId)),
   updateGuide: guide => dispatch(GuideActions.updateGuide(guide)),
   guideFailure: error => dispatch(GuideActions.guideFailure(error)),

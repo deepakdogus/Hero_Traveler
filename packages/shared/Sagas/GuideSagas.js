@@ -23,20 +23,24 @@ function * createCover(api, guide){
 }
 
 export function * createGuide(api, {guide, userId}) {
-  const coverResponse = yield createCover(api, guide)
-  // add error handling here
-  const response = yield call(api.createGuide, guide)
-  if (response.ok) {
-    const {guides} = response.data.entities
-    yield [
-      put(GuideActions.receiveGuides(guides)),
-      put(GuideActions.createGuideSuccess(guides, userId)),
-    ]
-  }
-  else {
-    yield put(GuideActions.guideFailure(
-      new Error("Failed to create guide")
-    ))
+  try {
+    const coverResponse = yield createCover(api, guide)
+    // add error handling here
+    const response = yield call(api.createGuide, guide)
+    if (response.ok) {
+      const {guides} = response.data.entities
+      yield [
+        put(GuideActions.receiveGuides(guides)),
+        put(GuideActions.createGuideSuccess(guides, userId)),
+      ]
+    }
+    else {
+      yield put(GuideActions.guideFailure(
+        new Error("Failed to create guide")
+      ))
+    }
+  } catch (err) {
+    console.log("ERROR!", err);
   }
 }
 
@@ -183,3 +187,56 @@ export function * unlikeGuide(api, {guideId, userId}) {
     ]
   }
 }
+
+export function * registerDraft (api, action) {
+  // const response = yield call(api.createDraft)
+  // if (response.ok) {
+  //   const {data: draft} = response
+    yield put(GuideActions.registerDraftSuccess(draft))
+  // } else {
+  //   yield put(StoryCreateActions.registerDraftFailure(new Error('Failed to initialize draft')))
+  // }
+}
+
+export function * discardDraft (api, action) {
+  const {draftId} = action
+  // const response = yield call(api.removeDraft, draftId)
+  if (response.ok) {
+    yield put(StoryCreateActions.discardDraftSuccess())
+  } else {
+    yield put(StoryCreateActions.discardDraftFailure(new Error('Failed to initialize draft')))
+  }
+}
+
+// export function * updateDraft (api, action) {
+//   const {draftId, draft, updateStoryEntity} = action
+//   yield [
+//     put(StoryActions.setRetryingBackgroundFailure(draftId)),
+//     put(StoryCreateActions.initializeSyncProgress(getSyncProgressSteps(draft), 'Saving Story')),
+//   ]
+
+//   const coverResponse = yield createCover(api, draft)
+//   if (coverResponse.error) {
+//     yield updateDraftErrorHandling(draft, coverResponse.error)
+//     return
+//   }
+
+//   const atomicResponse = yield uploadAtomicAssets(draft)
+//   if (atomicResponse.error){
+//     yield updateDraftErrorHandling(draft, atomicResponse.error)
+//     return
+//   }
+
+//   const response = yield call(api.updateDraft, draftId, draft)
+//   if (response.ok) {
+//     const {entities, result} = response.data
+//     const story = entities.stories[result]
+//     if (updateStoryEntity || !story.draft) {
+//       yield put(StoryActions.receiveStories(entities.stories))
+//     }
+//     yield [
+//       put(StoryCreateActions.updateDraftSuccess(story)),
+//       put(StoryActions.removeBackgroundFailure(story.id)),
+//     ]
+//   } else yield updateDraftErrorHandling(draft, draftId)
+// }

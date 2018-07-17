@@ -57,6 +57,7 @@ class ProfileScreen extends React.Component {
     const {
       user,
       draftsById,
+      guideDraftsById,
       userStoriesById,
       userStoriesFetchStatus,
       accessToken,
@@ -74,7 +75,8 @@ class ProfileScreen extends React.Component {
       return null
     }
 
-    VideoManager.cleanDrafts(draftsById)
+    console.log("LOOK AT ME I'M CLEANING DRAFTS IMAGES!!!!!!!");
+    VideoManager.cleanDrafts(draftsById.concat(guideDraftsById))
 
     return (
       <ProfileView
@@ -110,6 +112,8 @@ const mapStateToProps = (state) => {
     userStoriesById: getByUser(stories, userId),
     draftsFetchStatus: {loaded: true},
     draftsById: stories.drafts.byId,
+    // TODO: Not yet getting any drafts. Remove conditional when we do.
+    guideDraftsById: guides.drafts ? guides.drafts.byId : [],
     userBookmarksById: getByBookmarks(users, userId),
     userBookmarksFetchStatus: getBookmarksFetchStatus(stories, userId),
     guideIds: guides.guideIdsByUserId ? guides.guideIdsByUserId[userId] : [],

@@ -38,6 +38,15 @@ class ProfileScreen extends React.Component {
     this.props.getGuides(this.props.user.id)
   }
 
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.guideIds !== prevProps.guideIds
+      && this.props.userStoriesById !== prevProps.userStoriesById
+    ) {
+      VideoManager.cleanDrafts(this.props.draftsById)
+    }
+  }
+
   _selectTab = (tab) => {
     switch (tab) {
       case TabTypes.stories:
@@ -73,8 +82,6 @@ class ProfileScreen extends React.Component {
     if (!user) {
       return null
     }
-
-    VideoManager.cleanDrafts(draftsById)
 
     return (
       <ProfileView

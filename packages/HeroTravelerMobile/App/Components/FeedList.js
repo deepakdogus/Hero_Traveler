@@ -122,7 +122,7 @@ export default class FeedList extends React.Component {
     const entitiesInfo = targetEntities.map((entity) => {
       let totalPadding = Metrics.feedCell.padding;
 
-      if (entity && entity.description) {
+      if (entity && entity.description && !entity.locations) {
         totalPadding += Metrics.feedCell.descriptionPadding;
       }
 

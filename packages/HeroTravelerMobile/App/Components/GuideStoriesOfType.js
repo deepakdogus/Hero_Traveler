@@ -106,7 +106,7 @@ export default class GuideStoriesOfType extends React.Component {
               return this.renderStory(story)
             })}
           </View>
-          {!isShowAll &&
+          {!isShowAll && stories.length > 4 &&
             <TouchableOpacity onPress={this.onPressAll}>
               <View style={styles.seeAllView}>
                 <Text style={styles.seeAll}>

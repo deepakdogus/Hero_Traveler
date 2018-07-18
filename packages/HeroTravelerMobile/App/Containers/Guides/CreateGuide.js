@@ -297,8 +297,8 @@ class CreateGuide extends Component {
                 placeholder={"What's your guide about?"}
               />
               <Checkbox
-                checked={isPrivate}
-                label={'Make this guide private'}
+                checked={!isPrivate}
+                label={'Verified'}
                 onPress={this.togglePrivacy}
               />
             </Form>

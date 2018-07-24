@@ -19,7 +19,7 @@ class ReadingDetails extends React.Component {
     const {locationInfo, locations} = this.props.targetEntity
     return (
       (!!locationInfo && !!locationInfo.name)
-      || (locations.length && locations[0].name)
+      || (locations && locations.length && locations[0].name)
     )
   }
 

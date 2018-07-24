@@ -355,6 +355,7 @@ export const deleteStory = (state, {userId, storyId}) => {
 
 export const deleteStorySuccess = (state, {userId, storyId}) => {
   let newState = state.setIn(['entities'], state.entities.without(storyId))
+  newState = newState.setIn(['userFeedById'], _.without(state.userFeedById, storyId))
 
   const story = state.entities[storyId]
   const path = story.draft ? ['drafts', 'byId'] : ['storiesByUserAndId', userId, 'byId']

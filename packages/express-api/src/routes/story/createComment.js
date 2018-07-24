@@ -12,14 +12,14 @@ export default function createComment(req) {
     user: userId,
     content
   })
-  .then(({story, comment}) => {
+  .then(({updatedModel, comment}) => {
     // Dont send notifications to yourself
-    const isNotStoryAuthor = !userId.equals(story.author)
+    const isNotStoryAuthor = !userId.equals(updatedModel.author)
     if (isNotStoryAuthor) {
-      Models.User.findOne({_id: story.author}).then((author) => {
+      Models.User.findOne({_id: updatedModel.author}).then((author) => {
         // Notifications are not critical for the outcome
         // so they should not block the resolution of the promise.
-        commentNotification(author, commentator, story);
+        commentNotification(author, commentator, updatedModel);
       })
     }
     Promise.resolve(comment);

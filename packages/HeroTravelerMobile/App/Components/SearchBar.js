@@ -1,43 +1,41 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, Text, TextInput, TouchableOpacity } from 'react-native'
+import { View, TextInput } from 'react-native'
 import styles from './Styles/SearchBarStyles'
 import { Colors, Metrics } from '../Shared/Themes/'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 export default class SearchBar extends React.Component {
-
   static propTypes = {
     onSearch: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
     searchTerm: PropTypes.string
   }
 
-  render () {
-    const { onSearch, onCancel, searchTerm } = this.props
-    const onSubmitEditing = () => onSearch(searchTerm)
+  render() {
+    const { onSearch, searchTerm } = this.props
+
     return (
       <View style={styles.container}>
-        <Icon name='search' size={Metrics.icons.tiny} style={styles.searchIcon} />
+        <Icon
+          name='search'
+          size={Metrics.icons.tiny}
+          style={styles.searchIcon}
+        />
         <TextInput
           ref='searchText'
-          autoFocus
+          autoFocus={false}
           placeholder='Search'
-          placeholderTextColor={Colors.snow}
+          placeholderTextColor={Colors.grey}
           underlineColorAndroid='transparent'
           style={styles.searchInput}
-          value={this.props.searchTerm}
+          value={searchTerm}
           onChangeText={onSearch}
           autoCapitalize='none'
-          onSubmitEditing={onSubmitEditing}
           returnKeyType={'search'}
           autoCorrect={false}
-          selectionColor={Colors.snow}
+          selectionColor={Colors.red}
           clearButtonMode='while-editing'
         />
-        <TouchableOpacity onPress={onCancel} style={styles.cancelButton}>
-          <Text style={styles.buttonLabel}>Cancel</Text>
-        </TouchableOpacity>
       </View>
     )
   }

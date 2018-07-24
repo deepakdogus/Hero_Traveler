@@ -2,11 +2,13 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import { Actions as NavActions } from 'react-native-router-flux'
 
-import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
+import {isStoryLiked, isStoryBookmarked, isGuideLiked} from '../Shared/Redux/Entities/Users'
 import UserActions, {getFollowers} from '../Shared/Redux/Entities/Users'
-import StoryPreview from '../Components/StoryPreview'
+import FeedItemPreview from '../Components/FeedItemPreview'
 import StoryActions from '../Shared/Redux/Entities/Stories'
+import GuideActions from '../Shared/Redux/Entities/Guides'
 import {navToProfile} from '../Navigation/NavigationRouter'
+import {tabTypes} from './GuideReadingScreen'
 
 function getAreInRenderLocation(state, ownProps){
   if (!ownProps.renderLocation || ownProps.renderLocation  === state.routes.scene.name) return true
@@ -39,20 +41,30 @@ function onPressUser(sessionUserId, sceneName, profileId) {
   }
 }
 
+function getSelectedStories(stories, storyIds, selectedTab) {
+  return storyIds.filter(id => {
+    return stories[id] && stories[id].type === selectedTab
+  }).map(id => {
+    return stories[id]
+  })
+}
+
 const mapStateToProps = (state, ownProps) => {
   const {session, entities} = state
-  const {story} = ownProps
+  const {feedItem, isStory, selectedTab, isReadingScreen} = ownProps
+  if (!feedItem) return {}
   const sessionUserId = session.userId
 
-  // the storyProps conditional is necessary because without it, the below configuration will throw errors when the user deletes a story
+  // the storyProps conditional is necessary because without it,
+  // the below configuration will throw errors when the user deletes a story
   let storyProps = null
-  if (story) {
+  if (feedItem) {
     const {name, userId} = state.routes.scene
 
     storyProps = {
-      user: entities.users.entities[story.author],
-      isLiked: isStoryLiked(entities.users, sessionUserId, story.id),
-      isBookmarked: isStoryBookmarked(entities.users, sessionUserId, story.id),
+      user: entities.users.entities[feedItem.author],
+      isStoryLiked: isStoryLiked(entities.users, sessionUserId, feedItem.id),
+      isBookmarked: isStoryBookmarked(entities.users, sessionUserId, feedItem.id),
       myFollowedUsers: getFollowers(entities.users, 'following', sessionUserId),
       areInRenderLocation: getAreInRenderLocation(state, ownProps),
       onPressUser: onPressUser(sessionUserId, name, userId),
@@ -60,26 +72,44 @@ const mapStateToProps = (state, ownProps) => {
   }
 
   const isVisible = true
-  const shouldHideCover = false
+  const isShowCover =
+    !isReadingScreen
+    || isStory
+    || selectedTab === tabTypes.overview
+
+  const selectedStories = (isStory || !isReadingScreen)
+    ? []
+    : getSelectedStories(entities.stories.entities, feedItem.stories, ownProps.selectedTab)
 
   return {
     ...storyProps,
     accessToken: _.find(session.tokens, {type: 'access'}).value,
     isVisible,
-    shouldHideCover,
-    isAuthor: story && story.author === sessionUserId,
+    isGuideLiked: isGuideLiked(entities.users, sessionUserId, feedItem.id),
+    isShowCover,
+    isAuthor: feedItem && feedItem.author === sessionUserId,
+    sessionUserId,
+    selectedStories,
   }
 }
 
 const mapDispatchToProps = (dispatch, props) => {
-  const {userId, story} = props
-  const storyId = story && story.id
+  const {userId, feedItem} = props
+  const feedItemId = feedItem && feedItem.id
   return {
-    onPress: (title) => NavActions.story({storyId, title}),
-    deleteStory: () => dispatch(StoryActions.deleteStory(userId, storyId)),
-    removeDraft: () => dispatch(StoryActions.removeDraft(storyId)),
-    onPressLike: () => dispatch(StoryActions.storyLike(userId, storyId)),
-    onPressBookmark: () => dispatch(StoryActions.storyBookmark(userId, storyId)),
+    onPressStory: (title) => NavActions.story({storyId: feedItemId, title}),
+    onPressGuide: (title) => NavActions.guide({guideId: feedItemId, title}),
+    deleteGuide: () => dispatch(GuideActions.deleteGuideRequest(feedItemId, userId)),
+    deleteStory: () => dispatch(StoryActions.deleteStory(userId, feedItemId)),
+    removeDraft: () => dispatch(StoryActions.removeDraft(feedItemId)),
+    onPressStoryLike: () => dispatch(StoryActions.storyLike(userId, feedItemId)),
+    onPressGuideLike: (guideId, sessionUserId) => {
+      dispatch(GuideActions.likeGuideRequest(guideId, sessionUserId))
+    },
+    onPressGuideUnlike: (guideId, sessionUserId) => {
+      dispatch(GuideActions.unlikeGuideRequest(guideId, sessionUserId))
+    },
+    onPressBookmark: () => dispatch(StoryActions.storyBookmark(userId, feedItemId)),
     onPressFollow: (idToFollow) => {dispatch(UserActions.followUser(userId, idToFollow))},
     onPressUnfollow: (idToUnfollow) => dispatch(UserActions.unfollowUser(userId, idToUnfollow)),
   }
@@ -88,4 +118,4 @@ const mapDispatchToProps = (dispatch, props) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(StoryPreview)
+)(FeedItemPreview)

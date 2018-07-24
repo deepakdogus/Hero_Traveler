@@ -17,7 +17,10 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   scrollView: {
-    flex: 1
+    flex: 1,
+  },
+  bodyWrapper: {
+    flex: 1,
   },
   divider: {
     borderWidth: .5,
@@ -28,10 +31,9 @@ export const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    marginBottom: Metrics.tabBarHeight
   },
   locationWrapper: {
-    marginVertical: Metrics.section,
+    marginTop: Metrics.section,
   },
   locationDetails: {
     fontSize: 13,
@@ -48,6 +50,7 @@ export const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
+    zIndex: 1,
   },
   // StoryContent component
   storyContentWrapper: {
@@ -147,12 +150,12 @@ export const styles = StyleSheet.create({
     marginHorizontal: Metrics.section,
     flexDirection: 'row',
     flexWrap: 'wrap',
+    marginBottom: Metrics.section,
   },
   tagRow: {
     marginTop: 0,
     marginBottom: 20,
   },
-
   sectionWrapper: {
     marginHorizontal: Metrics.section,
     flexDirection: 'row',
@@ -192,10 +195,89 @@ export const styles = StyleSheet.create({
     height: 24,
     resizeMode: "contain"
   },
-  
+  loader: {
+    flex: 1,
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  plusButton: {
+    height: 44,
+    width: 44,
+    borderRadius: 22,
+    backgroundColor: Colors.redHighlights,
+    position: 'absolute',
+    bottom: Metrics.tabBarHeight + 10,
+    right: 10,
+    shadowColor: 'black',
+    shadowRadius: 2,
+    shadowOpacity: 0.5,
+    shadowOffset: {
+      height: 2,
+      width: 0,
+    },
+  },
+  plusButtonIcon: {
+    height: '50%',
+    width: '50%',
+  },
+  plusButtonTouchable: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+  },
+  addToGuideTooltip: {
+    position: 'absolute',
+    bottom: Metrics.tabBarHeight + (Metrics.baseMargin * 3) + 44,
+    right: 14,
+    backgroundColor: Colors.backgroundOpaque,
+    borderRadius: 5,
+    paddingHorizontal: 30,
+    paddingVertical: 8,
+  },
+  addToGuideTooltipArrow: {
+    position: 'absolute',
+    bottom: -30,
+    right: 10,
+    height: 30,
+    borderTopWidth: 14,
+    borderTopColor: Colors.backgroundOpaque,
+    borderLeftWidth: 8,
+    borderLeftColor: 'transparent',
+    borderRightWidth: 8,
+    borderRightColor: 'transparent',
+  },
+  addToGuideTooltipText: {
+    color: Colors.white,
+    fontFamily: Fonts.type.sourceSansPro,
+    letterSpacing: 0.7,
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  tabStyle: {
+    width: Metrics.screenWidth/4
+  },
+  description: {
+    fontFamily: Fonts.type.sourceSansPro,
+    fontWeight: '400',
+    fontSize: 18,
+    letterSpacing: .7,
+    color: Colors.grey,
+    marginBottom: 15,
+  },
+  guideDescription: {
+    marginHorizontal: Metrics.section,
+    marginTop: 25,
+    marginBottom: 30,
+  },
+  toolbarPadding: {
+    height: Metrics.tabBarHeight
+  }
 })
-
-
 
 export const rendererStyles = StyleSheet.flatten({
   unstyled: {
@@ -217,4 +299,41 @@ export const rendererStyles = StyleSheet.flatten({
     marginTop: Metrics.baseMargin,
     marginBottom: 0,
   },
-});
+})
+
+const scrollOffset = 20
+const plusButtonY = Metrics.tabBarHeight + Metrics.baseMargin
+
+export const translations = {
+  toolbar: {
+    inputRange: [
+      scrollOffset - 1,
+      scrollOffset,
+      Metrics.tabBarHeight + scrollOffset,
+      Metrics.tabBarHeight + scrollOffset + 1,
+    ],
+    outputRange: [Metrics.tabBarHeight, Metrics.tabBarHeight, 0, 0],
+  },
+  plusButton: {
+    inputRange: [
+      scrollOffset - 1,
+      scrollOffset,
+      plusButtonY + scrollOffset,
+      plusButtonY + scrollOffset + 1,
+    ],
+    outputRange: [
+      plusButtonY + Metrics.tabBarHeight,
+      plusButtonY + Metrics.tabBarHeight,
+      0,
+      0,
+    ],
+  },
+  tooltip: {
+    inputRange: [
+      plusButtonY + scrollOffset - 1,
+      plusButtonY + scrollOffset,
+      plusButtonY + scrollOffset + 1,
+    ],
+    outputRange: [0, 1, 1],
+  }
+}

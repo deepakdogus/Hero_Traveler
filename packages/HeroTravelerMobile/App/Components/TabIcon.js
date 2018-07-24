@@ -55,6 +55,8 @@ class TabIcon extends React.Component {
         return Images.iconArrowLeftRed
       case 'redCheck':
         return Images.iconRedCheck
+      case 'redCheckOutlined':
+        return Images.iconRedCheckOutlined
       case 'facebook':
         return Images.iconLoginFacebook
       case 'twitter':
@@ -111,6 +113,8 @@ class TabIcon extends React.Component {
         return Images.iconFounderBadge
       case 'error':
         return Images.iconErrorExclamation
+      case 'info':
+        return Images.iconInfoDark
       case 'profile':
       default:
         return Images.iconNavProfile
@@ -163,9 +167,8 @@ const mapStateToProps = (state, props) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-  }
+const mapDispatchToProps = () => {
+  return {}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TabIcon)

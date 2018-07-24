@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import {ModelName as StoryRef} from './story'
 import {ModelName as UserRef} from './user'
+import {ModelName as GuideRef} from './guide'
 
 export const ModelName = 'Comment'
 
@@ -17,8 +18,11 @@ const CommentSchema = new mongoose.Schema({
   story: {
     type: mongoose.Schema.ObjectId,
     ref: StoryRef,
-    required: true
-  }
+  },
+  guide: {
+    type: mongoose.Schema.ObjectId,
+    ref: GuideRef,
+  },
 }, {
   timestamps: true,
   toObject: {

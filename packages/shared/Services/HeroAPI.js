@@ -13,9 +13,14 @@ const Story = new schema.Entity('stories', {
   author: User,
   category: Category
 })
+const Guide = new schema.Entity('guides', {
+  author: User,
+  category: Category,
+})
 const Activity = new schema.Entity('activities', {
   fromUser: User,
-  story: Story
+  story: Story,
+  guide: Guide,
 })
 
 const videoTimeout = 120 * 1000
@@ -281,7 +286,7 @@ const create = () => {
   }
 
   const getUserLikes = (userId) => {
-    return api.get(`story/user/${userId}/like`)
+    return api.get(`story/user/${userId}/like/v2`)
   }
 
   const likeStory = (storyId) => {
@@ -305,8 +310,18 @@ const create = () => {
     return api.get(`story/${storyId}/comment`)
   }
 
+  const getGuideComments = (guideId) => {
+    return api.get(`guide/${guideId}/comment`)
+  }
+
   const createComment = (storyId, text) => {
     return api.post(`story/${storyId}/comment`, {
+      content: text
+    })
+  }
+
+  const createGuideComment = (guideId, text) => {
+    return api.post(`guide/${guideId}/comment`, {
       content: text
     })
   }
@@ -368,14 +383,49 @@ const create = () => {
 
   const createGuide = (guide) => {
     return api.post('guide', {guide})
+    .then(response => safeNormalize(response, Guide))
   }
 
   const updateGuide = (guide) => {
     return api.put(`guide/${guide.id}`, {guide})
+    .then(response => safeNormalize(response, Guide))
+  }
+
+  const bulkSaveStoryToGuide = (storyId, isInGuide) => {
+    return api.put(`guide/story/${storyId}`, {isInGuide})
+    .then(response => safeNormalize(response, [Guide]))
+  }
+
+  const getGuide = (guideId) => {
+    return api.get(`guide/${guideId}`)
+    .then(response => safeNormalize(response, Guide))
+  }
+
+  const deleteGuide = (guideId) => {
+    return api.delete(`guide/${guideId}`)
   }
 
   const getUserGuides = (userId) => {
     return api.get(`guide/user/${userId}`)
+    .then(response => safeNormalize(response, [Guide]))
+  }
+
+  const getUserFeedGuides = (userId) => {
+    return api.get(`guide/user/${userId}/feed`)
+    .then(response => safeNormalize(response, [Guide]))
+  }
+
+  const getCategoryGuides = (categoryId) => {
+    return api.get(`guide/category/${categoryId}`)
+    .then(response => safeNormalize(response, [Guide]))
+  }
+
+  const likeGuide = (guideId) => {
+    return api.put(`guide/${guideId}/like`)
+  }
+
+  const unlikeGuide = (guideId) => {
+    return api.put(`guide/${guideId}/unlike`)
   }
 
   // ------
@@ -428,7 +478,9 @@ const create = () => {
     removeDraft,
     getBookmarks,
     getComments,
+    getGuideComments,
     createComment,
+    createGuideComment,
     uploadCoverImage,
     uploadCoverVideo,
     uploadStoryImage,
@@ -446,7 +498,14 @@ const create = () => {
     flagStory,
     createGuide,
     updateGuide,
+    deleteGuide,
+    bulkSaveStoryToGuide,
+    getGuide,
     getUserGuides,
+    getUserFeedGuides,
+    getCategoryGuides,
+    likeGuide,
+    unlikeGuide,
   }
 }
 

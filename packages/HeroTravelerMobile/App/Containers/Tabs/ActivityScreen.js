@@ -2,8 +2,8 @@ import _ from 'lodash'
 import React from 'react'
 import { ScrollView, Text, View, TouchableOpacity } from 'react-native'
 import moment from 'moment'
-
 import { connect } from 'react-redux'
+
 import UserActions from '../../Shared/Redux/Entities/Users'
 import {Actions as NavActions} from 'react-native-router-flux'
 import Loader from '../../Components/Loader'
@@ -13,11 +13,14 @@ import Activity from '../../Components/Activity'
 import ThreadList from '../../Components/ThreadList'
 import Colors from '../../Shared/Themes/Colors'
 import NotificationBadge from '../../Components/NotificationBadge'
+import {displayLocation} from '../../Shared/Lib/locationHelpers'
 
 const ActivityTypes = {
   like: 'ActivityStoryLike',
   follow: 'ActivityFollow',
-  comment: 'ActivityStoryComment'
+  comment: 'ActivityStoryComment',
+  guideLike: 'ActivityGuideLike',
+  guideComment: 'ActivityGuideComment',
 }
 
 const Tab = ({text, onPress, selected, notificationCount, width = '100%'}) => {
@@ -64,7 +67,7 @@ class NotificationScreen extends React.Component {
   }
 
   _pressActivity = (activityId, seen) => {
-    const {markSeen, activities, stories} = this.props
+    const {markSeen, activities, stories, guides} = this.props
     if (!seen) {
       markSeen(activityId)
     }
@@ -80,9 +83,18 @@ class NotificationScreen extends React.Component {
         ];
         NavActions.story({
           storyId: story._id,
-          title: story.title,
+          title: displayLocation(story.locationInfo),
         })
         break;
+      case ActivityTypes.guideLike:
+      case ActivityTypes.guideComment:
+        let guide = guides[
+          activities[activityId].guide
+        ]
+        NavActions.guide({
+          guideId: guide._id,
+          title: displayLocation(guide.locations[0]),
+        })
     }
   }
 
@@ -92,14 +104,19 @@ class NotificationScreen extends React.Component {
         return `is now following you.`
       case ActivityTypes.comment:
         return  `commented on your story ${activity.story.title}.`
+      case ActivityTypes.guideComment:
+        return  `commented on your guide ${activity.guide.title}.`
       case ActivityTypes.like:
         return `liked your story ${activity.story.title}.`
+      case ActivityTypes.guideLike:
+        return `liked your guide ${activity.guide.title}.`
     }
   }
 
   getContent(activity) {
     switch (activity.kind) {
       case ActivityTypes.comment:
+      case ActivityTypes.guideComment:
         return _.truncate(activity.comment.content, {length: 60});
     }
   }
@@ -118,11 +135,11 @@ class NotificationScreen extends React.Component {
   }
 
   populateActivity = (activityId) => {
-    const {users, stories, activities} = this.props
+    const {users, stories, activities, guides} = this.props
     const activity = {...activities[activityId]}
     activity.user = users[activity.fromUser]
-    activity.story = stories[activity.story]
-
+    if (activity.story) activity.story = stories[activity.story]
+    if (activity.guide) activity.guide = guides[activity.guide]
     return activity
   }
 
@@ -168,7 +185,9 @@ class NotificationScreen extends React.Component {
         if (
           (activity.kind === ActivityTypes.like && (!activity.story || !activity.fromUser)) ||
           (activity.kind === ActivityTypes.follow && !activity.user) ||
-          (activity.kind === ActivityTypes.comment && (!activity.story || !activity.fromUser))
+          (activity.kind === ActivityTypes.comment && (!activity.story || !activity.fromUser)) ||
+          (activity.kind === ActivityTypes.guideLike && (!activity.guide || !activity.fromUser)) ||
+          (activity.kind === ActivityTypes.guideComment && (!activity.guide || !activity.fromUser))
         ) {
           return false
         }
@@ -221,6 +240,7 @@ const mapStateToProps = (state) => {
     user,
     users,
     stories: state.entities.stories.entities,
+    guides: state.entities.guides.entities,
     activitiesById: state.entities.users.activitiesById,
     activities: state.entities.users.activities,
     fetchStatus: state.entities.users.fetchStatus,

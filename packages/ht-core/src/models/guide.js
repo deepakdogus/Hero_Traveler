@@ -107,9 +107,12 @@ GuideSchema.statics = {
     .populate('categories')
     .populate('coverImage')
   },
-
-  list(/* args */) {
-    return this.find(...arguments)
+  list(query, isShowEmptyGuides = false) {
+    if (!isShowEmptyGuides) {
+      if (query.stories) query.stories.$not = hideStorylessGuides.$not
+      else query.stories = hideStorylessGuides.stories
+    }
+    return this.find(query)
     .populate({
       path: 'author',
       populate: {
@@ -120,7 +123,28 @@ GuideSchema.statics = {
     .populate('coverImage')
     .sort({createdAt: -1})
   },
+  getUserFeedGuides(userId, followingIds) {
+    return this
+      .list({
+        $or: [
+          {author: userId},
+          {author: {$in: followingIds}},
+          {categories: {$in: followingIds}},
+          {featured: true},
+        ]
+      })
+      .exec()
+  },
 }
 
+GuideSchema.plugin(softDelete, {overrideMethods: true})
+
+const hideStorylessGuides = {
+  stories: {
+    $not: {
+      "$size": 0
+    }
+  }
+}
 
 export default mongoose.model(ModelName, GuideSchema)

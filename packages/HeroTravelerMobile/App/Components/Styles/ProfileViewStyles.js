@@ -6,7 +6,7 @@ const coverInnerHeight = 370
 const tabNavEditHeight = 50
 const profileEditHeight = 150
 
-export const storyPreviewHeight = Metrics.screenHeight - coverInnerHeight - tabNavEditHeight - Metrics.tabBarHeight
+export const feedItemHeight = Metrics.screenHeight - coverInnerHeight - tabNavEditHeight - Metrics.tabBarHeight
 
 // Don't forget to update ProfileTabAndStories.getHeaderHeight() if
 // related styles change. (username, about, badge, error, etc.)
@@ -168,42 +168,6 @@ export default StyleSheet.create({
   tabs: {
     flex: 1
   },
-  tabnavEdit: {
-    height: tabNavEditHeight,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: Colors.feedDividerGrey,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: Colors.dividerGrey,
-  },
-  tab: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: .33,
-    borderBottomWidth: 3,
-    borderBottomColor: Colors.feedDividerGrey,
-  },
-  fullTab: {
-    flex: 1,
-  },
-  tabText: {
-    fontFamily: Fonts.type.montserrat,
-    color: Colors.navBarText,
-    fontSize: 13,
-    letterSpacing: 1.2,
-    textAlign: 'center',
-    fontWeight: '600',
-  },
-  tabSelected: {
-    borderBottomColor: Colors.red
-  },
-  tabTextSelected: {
-    fontFamily: Fonts.type.montserrat,
-    color: Colors.background,
-    fontSize: 13,
-    letterSpacing: 1.2,
-  },
   storyTitleStyle: {
     fontSize: 18,
     letterSpacing: 0,
@@ -294,7 +258,7 @@ export default StyleSheet.create({
     color: Colors.background,
     textAlign: 'center'
   },
-  storyList: {
+  feedList: {
     height: Metrics.screenHeight - Metrics.tabBarHeight,
     marginBottom: Metrics.tabBarHeight + Metrics.baseMargin,
   },
@@ -303,5 +267,8 @@ export default StyleSheet.create({
   },
   navbarStyle: {
     paddingTop: 15,
+  },
+  tabStyle: {
+    width: Metrics.screenWidth * 0.3,
   },
 })

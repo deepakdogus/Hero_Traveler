@@ -50,14 +50,7 @@ export default async function createGuide(guideData, assetFormater) {
   await addCover(guideObject, assetFormater)
   guideData.id = undefined
   newGuide = await Guide.create(guideObject)
-
-  // make a query for the story with just the fields
-  // we want for the search index
-  // const populatedStory = await Story.get({_id: newGuide._id})
-  return {
-    guide: newGuide
-    // story: populatedStory,
-    // author: guideData.author // only want to pass the ID
-  }
+  newGuide = await Guide.get({_id: newGuide.id})
+  return newGuide
 }
 

@@ -2,14 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styles from './Styles/ProfileViewStyles'
 import {
-  View
+  View,
 } from 'react-native'
 import { connect } from 'react-redux'
-import { Actions as NavActions } from 'react-native-router-flux'
 
-import NavBar from '../Containers/CreateStory/NavBar'
 import HeroAPI from '../Shared/Services/HeroAPI'
-import pathAsFileObject from '../Shared/Lib/pathAsFileObject'
 import ProfileUserInfo from './ProfileUserInfo'
 import ProfileTabsAndStories from './ProfileTabsAndStories'
 import ShadowButton from './ShadowButton'
@@ -25,16 +22,22 @@ export const TabTypes = {
   stories: 'TAB_STORIES',
   drafts: 'TAB_DRAFTS',
   bookmarks: 'TAB_BOOKMARKS',
+  guides: 'TAB_GUIDES',
+}
+
+const ViewOnlyTabTypes = {
+  stories: 'TAB_STORIES',
+  guides: 'TAB_GUIDES',
 }
 
 class ProfileView extends React.Component {
 
   static defaultProps = {
     onPressFollow: () => {},
-    onSelectTab: () => {},
     bookmarksFetchStatus: {},
     draftsFetchStatus: {},
-    storiesFetchStatus: {}
+    storiesFetchStatus: {},
+    guidesFetchStatus: {},
   }
 
   static propTypes = {
@@ -81,9 +84,7 @@ class ProfileView extends React.Component {
 
   selectTab = (tab) => {
     if (this.state.selectedTab !== tab) {
-      this.setState({selectedTab: tab}, () => {
-        this.props.onSelectTab(tab)
-      })
+      this.setState({selectedTab: tab})
     }
   }
 
@@ -94,11 +95,12 @@ class ProfileView extends React.Component {
 
   _bioRef = c => this.bioInput = c
 
-  getStoriesById() {
-    const {drafts, bookmarks, stories} = this.props
+  getFeedItemsById() {
+    const {drafts, bookmarks, stories, guideIds} = this.props
     if (this.state.selectedTab === TabTypes.stories) return stories
     else if (this.state.selectedTab === TabTypes.drafts) return drafts
     else if (this.state.selectedTab === TabTypes.bookmarks) return bookmarks
+    else if (this.state.selectedTab === TabTypes.guides) return guideIds
   }
 
   getFetchStatus(){
@@ -106,6 +108,7 @@ class ProfileView extends React.Component {
     if (selectedTab === TabTypes.stories) return this.props.fetchStatus
     else if (selectedTab === TabTypes.drafts) return this.props.draftsFetchStatus
     else if (selectedTab === TabTypes.bookmarks) return this.props.bookmarksFetchStatus
+    else if (selectedTab === TabTypes.guides) return this.props.guidesFetchStatus
   }
 
   renderProfileInfo = () => {
@@ -143,7 +146,8 @@ class ProfileView extends React.Component {
   }
 
   render() {
-    const {editable, location, stories} = this.props
+    const {editable, location, stories, user, userId} = this.props
+    const {selectedTab} = this.state
 
     let showTooltip = editable &&
       !stories.length && !this.hasCompletedNoStoriesTooltip()
@@ -153,14 +157,15 @@ class ProfileView extends React.Component {
         <View style={styles.gradientWrapper}>
           <ProfileTabsAndStories
             editable={editable}
+            isStory={selectedTab !== TabTypes.guides}
             renderProfileInfo={this.renderProfileInfo}
-            storiesById={this.getStoriesById()}
+            feedItemsById={this.getFeedItemsById()}
             fetchStatus={this.getFetchStatus()}
-            tabTypes={TabTypes}
+            tabTypes={editable ? TabTypes : ViewOnlyTabTypes}
             selectTab={this.selectTab}
-            selectedTab={this.state.selectedTab}
-            user={this.props.user}
-            sessionUserId={this.props.userId}
+            selectedTab={selectedTab}
+            user={user}
+            sessionUserId={userId}
             showTooltip={showTooltip}
             location={location}
             error={this.getProfileTabsAndStoriesError()}

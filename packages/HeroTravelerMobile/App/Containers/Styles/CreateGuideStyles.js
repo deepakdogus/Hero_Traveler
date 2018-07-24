@@ -39,7 +39,6 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     marginVertical: Metrics.baseMargin,
     flexDirection: 'row',
-    // justifyContent: 'flex-start'
   },
   inputStyle: {
     flex: 1,
@@ -59,4 +58,12 @@ export default StyleSheet.create({
   errorButton: {
     zIndex: 10,
   },
+  tooltipContainer: {
+    alignItems: 'flex-start',
+    marginLeft: 20,
+    bottom: 55,
+  },
+  tooltipTip: {
+    left: 20,
+  }
 })

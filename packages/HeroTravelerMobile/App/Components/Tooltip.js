@@ -12,6 +12,7 @@ export default class Tooltip extends React.Component {
     type: PropTypes.oneOf(["default", "image-edit"]),
     onDismiss: PropTypes.func,
     style: PropTypes.object,
+    isSmallButton: PropTypes.bool, // TouchableOpacity only takes up size of text
     // Some predefined positions to cover most of the scenarios.
     // Only available for the "default" type.
     position: PropTypes.oneOf(["title", "right-nav-button", "bottom-center"]),
@@ -64,7 +65,15 @@ export default class Tooltip extends React.Component {
 
   renderGenericTooltip() {
     let calculatedStyles = this.calculateStyles();
-    let customStyle = Object.assign({container:null, tip:null, textContainer:null, text:null}, this.props.style);
+    let customStyle = Object.assign(
+      {
+        container: null,
+        tip: null,
+        textContainer: null,
+        text: null
+      },
+      this.props.style
+    )
 
     return (
       <View style={[styles.container, calculatedStyles.container, customStyle.container]}>
@@ -103,9 +112,14 @@ export default class Tooltip extends React.Component {
   }
 
   render () {
+    const {isSmallButton} = this.props
     return (
       <TouchableOpacity
-        style={[styles.backgroundOverlay, this.props.dimBackground ? styles.backgroundOverlayDimmed : null]}
+        style={[
+          styles.backgroundOverlay,
+          !isSmallButton && styles.backgroundOverlayFullScreen,
+          this.props.dimBackground ? styles.backgroundOverlayDimmed : null,
+        ]}
         onPress={this.props.onDismiss}
       >
         {this.renderContent()}

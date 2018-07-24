@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 
 import Loader from '../../Components/Loader'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
+import UserActions from '../../Shared/Redux/Entities/Users'
 import ShadowButton from '../../Components/ShadowButton'
 import EditableCoverMedia from '../../Components/EditableCoverMedia'
 import FormInput from '../../Components/FormInput'
@@ -18,6 +19,8 @@ import { Images, Colors} from '../../Shared/Themes'
 import Checkbox from '../../Components/Checkbox'
 import DropdownMenu from '../../Components/DropdownMenu'
 import Form from '../../Components/Form'
+import Tooltip from '../../Components/Tooltip'
+import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTimeTooltips'
 import TouchableMultilineInput from '../../Components/TouchableMultilineInput'
 import styles from '../Styles/CreateGuideStyles'
 
@@ -41,6 +44,7 @@ class CreateGuide extends Component {
     error: PropTypes.object,
     dismissError: PropTypes.func,
     guideFailure: PropTypes.func,
+    completeTooltip: PropTypes.func,
   }
 
   constructor(props) {
@@ -191,6 +195,22 @@ class CreateGuide extends Component {
     }).join(", ")
   }
 
+  isShowTooltip = () => {
+    return !isTooltipComplete(
+      TooltipTypes.GUIDE_IS_VERIFIED,
+      this.props.user.introTooltips,
+    )
+  }
+
+  _completeTooltip = () => {
+    const tooltips = this.props.user.introTooltips.concat({
+      name: TooltipTypes.GUIDE_IS_VERIFIED,
+      seen: true,
+    })
+    this.props.completeTooltip(tooltips)
+  }
+
+
   togglePrivacy = () => {
     this.updateGuide({ isPrivate: !this.state.guide.isPrivate })
   }
@@ -301,6 +321,18 @@ class CreateGuide extends Component {
                 label={'Verified'}
                 onPress={this.togglePrivacy}
               />
+              {this.isShowTooltip() &&
+                <Tooltip
+                  position='bottom-center'
+                  style={{
+                    container: styles.tooltipContainer,
+                    tip: styles.tooltipTip,
+                  }}
+                  isSmallButton
+                  text={"Verified Guides are trips you’ve taken, not ones your are planning. Other users will only see Guides which are verified."}
+                  onDismiss={this._completeTooltip}
+                />
+              }
             </Form>
           </ScrollView>
         }
@@ -327,6 +359,7 @@ const mapDispatchToProps = dispatch => ({
   updateGuide: guide => dispatch(GuideActions.updateGuide(guide)),
   guideFailure: error => dispatch(GuideActions.guideFailure(error)),
   dismissError: () => dispatch(GuideActions.dismissError()),
+  completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips})),
 })
 
 const ConnectedCreateGuide = connect(mapStateToProps, mapDispatchToProps)(CreateGuide)

@@ -577,7 +577,7 @@ class StoryCoverScreen extends Component {
     const {updateWorkingDraft} = this.props
 
     let showIntroTooltip = false;
-    if (this.props.user && this.state.file) {
+    if (this.props.user && (coverImage || coverVideo)) {
       showIntroTooltip = !isTooltipComplete(
         TooltipTypes.STORY_PHOTO_EDIT,
         this.props.user.introTooltips

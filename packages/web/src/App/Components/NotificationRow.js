@@ -5,7 +5,6 @@ import moment from 'moment'
 
 import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
-import getS3ImageUrl from '../Shared/Lib/getS3ImageUrl'
 import Avatar from './Avatar'
 import {getSize} from './Icon'
 import HorizontalDivider from './HorizontalDivider'
@@ -134,7 +133,7 @@ export default class NotificationRow extends Component {
     return (
       <VerticalCenter>
         <StyledImage
-          src={getS3ImageUrl(this.props.trip.image, 'versions.thumbnail240.path')}
+          src={getImageUrl(this.props.trip.image, 'image')}
         />
       </VerticalCenter>
     )

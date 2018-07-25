@@ -456,6 +456,19 @@ export function * loadDrafts(api) {
   }
 }
 
+export function * getGuideStories(api, {guideId}) {
+  const response = yield call(api.getGuideStories, guideId)
+  if (response.ok) {
+    const {entities} = response.data
+    yield [
+      put(UserActions.receiveUsers(entities.users)),
+      put(CategoryActions.receiveCategories(entities.categories)),
+      put(StoryActions.receiveStories(entities.stories)),
+    ]
+  }
+  // no fail case... worse case they will see less stories
+}
+
 export function * deleteStory(api, {userId, storyId}){
   const response = yield call(
     api.deleteStory,

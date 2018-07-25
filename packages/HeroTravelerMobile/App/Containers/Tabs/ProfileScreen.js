@@ -101,6 +101,7 @@ class ProfileScreen extends React.Component {
         guidesFetchStatus={guidesFetchStatus}
         bookmarksFetchStatus={userBookmarksFetchStatus}
         hasTabbar={!this.props.isEditing}
+        onRefresh={this.initializeData}
       />
     )
   }

@@ -30,6 +30,7 @@ export default class ProfileTabsAndStories extends Component {
     sessionUserId: PropTypes.string,
     location: PropTypes.string,
     error: PropTypes.object,
+    onRefresh: PropTypes.func,
   }
 
   renderTabs(){
@@ -119,7 +120,11 @@ export default class ProfileTabsAndStories extends Component {
   }
 
   render() {
-    const {renderProfileInfo, feedItemsById, fetchStatus, editable, isStory} = this.props
+    const {
+      renderProfileInfo, feedItemsById,
+      fetchStatus, editable, isStory, onRefresh
+    } = this.props
+
     const isGettingStories = this.isGettingStories()
 
     return (
@@ -157,6 +162,7 @@ export default class ProfileTabsAndStories extends Component {
             renderSectionHeader={this.renderTabs()}
             renderFeedItem={this.renderFeedItem}
             pagingIsDisabled
+            onRefresh={onRefresh}
           />
         }
       </View>

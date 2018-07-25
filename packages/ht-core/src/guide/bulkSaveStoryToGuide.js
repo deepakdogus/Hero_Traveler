@@ -2,13 +2,19 @@ import {Guide} from '../models'
 
 export default async function bulkSaveStoryToGuide(storyId, isInGuide) {
   const guideIds = Object.keys(isInGuide)
-  return Guide.list({
+  return Guide.list(
+  {
     _id: { $in : guideIds}
-  })
+  },
+  true
+  )
   .then((guides) => {
     return Promise.all(guides.map(guide => {
       if (isInGuide[guide.id] && guide.stories.indexOf(storyId) === -1) {
-        guide.stories.push(storyId)
+        if (guide.stories.length) {
+          guide.stories = [...guide.stories, storyId]
+        }
+        else guide.stories = [storyId]
         return guide.save()
       }
       else if (!isInGuide[guide.id] && guide.stories.indexOf(storyId) !== -1) {

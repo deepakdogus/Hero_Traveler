@@ -90,8 +90,8 @@ export default class FeedItemPreview extends Component {
   _touchTrash = () => {
     const { deleteStory, removeDraft, feedItem, user, isStory, deleteGuide} = this.props
     Alert.alert(
-      'Delete Story',
-      'Are you sure you want to delete this story?',
+      `Delete ${isStory ? 'Story' : 'Guide'}`,
+      `Are you sure you want to delete this ${isStory ? 'story' : 'guide'}?`,
       [
         { text: 'Cancel' },
         {

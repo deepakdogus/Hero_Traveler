@@ -150,7 +150,8 @@ export const getBookmarksFailure = (state, {userId, error}) => {
 }
 
 export const categoryRequest = (state, {categoryId}) => {
-  return state.setIn(
+  const errorLessState = state.setIn(['error'], null)
+  return errorLessState.setIn(
     ['storiesByCategoryAndId', categoryId, 'fetchStatus'],
     {fetching: true, loaded: false}
   )
@@ -176,12 +177,13 @@ export const categoryFailure = (state, {categoryId, error}) => {
 
   return state.setIn(
     ['storiesByCategoryAndId', categoryId, 'fetchStatus'],
-    {fetching: false, loaded: false, error}
+    {fetching: false, loaded: false}
   )
   .setIn(
     ['storiesByCategoryAndId', categoryId, 'byId'],
     derivedStoriesById
   )
+  .setIn(['error'], error)
 }
 
 export const failure = (state, {error}) =>

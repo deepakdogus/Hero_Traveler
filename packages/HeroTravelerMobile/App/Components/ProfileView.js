@@ -146,7 +146,7 @@ class ProfileView extends React.Component {
   }
 
   render() {
-    const {editable, location, stories, user, userId} = this.props
+    const {editable, location, stories, user, userId, onRefresh} = this.props
     const {selectedTab} = this.state
 
     let showTooltip = editable &&
@@ -169,6 +169,7 @@ class ProfileView extends React.Component {
             showTooltip={showTooltip}
             location={location}
             error={this.getProfileTabsAndStoriesError()}
+            onRefresh={onRefresh}
           />
         </View>
         {this.state.error &&

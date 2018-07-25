@@ -5,7 +5,7 @@ import { Fonts, Colors, Metrics } from '../../Shared/Themes/'
 // related styles change. (username, about, badge, error, etc.)
 
 export const storyWidth = (Metrics.screenWidth - 2 * Metrics.section - Metrics.section) / 2
-const storyHeight = storyWidth / 16 * 9
+export const storyHeight = storyWidth / 16 * 9
 
 export default StyleSheet.create({
   wrapper: {

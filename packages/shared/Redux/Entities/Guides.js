@@ -26,6 +26,7 @@ const { Types, Creators } = createActions({
   unlikeGuideRequest: ['guideId', 'userId'],
   likeGuide: ['guideId', 'userId'],
   unlikeGuide: ['guideId', 'userId'],
+  deleteStoryFromGuides: ['storyId'],
 })
 
 export const GuideTypes = Types
@@ -59,7 +60,7 @@ export const request = (state) => {
   })
 }
 
-export const receiveGuides = (state, {guides = {}, userId = false}) => {
+export const receiveGuides = (state, {guides = {} }) => {
   let newState = state.merge({
     fetchStatus: {
       fetching: false,
@@ -70,7 +71,6 @@ export const receiveGuides = (state, {guides = {}, userId = false}) => {
     deep: true
   })
 
-  const newGuidesIds = Object.keys(guides)
   return newState
 }
 
@@ -175,6 +175,26 @@ export const unlikeGuide = (state, {guideId, userId}) => {
   )
 }
 
+export const deleteStoryFromGuides = (state, {storyId}) => {
+  const guides = state.entities
+  const updatedGuides = {}
+  for (key in guides) {
+    let guide = guides[key]
+    if (guide.stories.indexOf(storyId) !== -1) {
+      guide = guide.setIn(
+        ['stories'],
+        guide.stories.filter(filterStoryId => storyId !== filterStoryId)
+      )
+      updatedGuides[key] = guide
+    }
+  }
+
+  return state.merge(
+    {entities: updatedGuides},
+    {deep: true}
+  )
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -196,4 +216,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.DISMISS_ERROR]: dismissError,
   [Types.LIKE_GUIDE]: likeGuide,
   [Types.UNLIKE_GUIDE]: unlikeGuide,
+  [Types.DELETE_STORY_FROM_GUIDES]: deleteStoryFromGuides,
 })

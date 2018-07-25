@@ -1,5 +1,6 @@
 import { call, put, select } from 'redux-saga/effects'
 import StoryActions from '../Redux/Entities/Stories'
+import GuideActions from '../Redux/Entities/Guides'
 import UserActions, {isInitialAppDataLoaded, isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
 import CategoryActions from '../Redux/Entities/Categories'
 import StoryCreateActions from '../Redux/StoryCreateRedux'
@@ -462,6 +463,9 @@ export function * deleteStory(api, {userId, storyId}){
   )
 
   if (response.ok) {
-    yield put(StoryActions.deleteStorySuccess(userId, storyId))
+    yield [
+      put(StoryActions.deleteStorySuccess(userId, storyId)),
+      put(GuideActions.deleteStoryFromGuides(storyId)),
+    ]
   }
 }

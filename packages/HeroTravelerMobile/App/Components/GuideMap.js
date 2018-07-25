@@ -12,12 +12,18 @@ import {Actions as NavActions} from 'react-native-router-flux'
 import ImageWrapper from './ImageWrapper'
 import {getStoryImageUrl} from './GuideStoriesOfType'
 import styles from './Styles/GuideMapStyles'
-import {storyWidth} from './Styles/GuideStoriesOfTypeStyles'
+import {storyWidth, storyHeight} from './Styles/GuideStoriesOfTypeStyles'
 import {displayLocation} from '../Shared/Lib/locationHelpers'
 
-const videImageOptions = {
+const videoImageOptions = {
   video: true,
-  width: storyWidth / 2
+  width: storyWidth / 2,
+  height: storyHeight / 2
+}
+
+const imageOptions = {
+  width: storyWidth / 2,
+  height: storyHeight / 2,
 }
 
 class GuideMap extends Component {
@@ -122,7 +128,7 @@ class GuideMap extends Component {
 
   renderStoryPins = () => {
     return this.props.stories.map(story => {
-      const coverUrl = getStoryImageUrl(story, videImageOptions)
+      const coverUrl = getStoryImageUrl(story, videoImageOptions, imageOptions)
       let coords = this.state.coords[story._id]
 
       return coords && (

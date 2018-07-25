@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 
-import styles, {storyWidth} from './Styles/GuideStoriesOfTypeStyles'
+import styles, {storyWidth, storyHeight} from './Styles/GuideStoriesOfTypeStyles'
 import {styles as StoryReadingScreenStyles} from '../Containers/Styles/StoryReadingScreenStyles'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import ImageWrapper from './ImageWrapper'
@@ -14,11 +14,20 @@ const defaultVideoImageOptions = {
   width: storyWidth
 }
 
-export function getStoryImageUrl(story, videoImageOptions = defaultVideoImageOptions) {
+const defaultImageOptions = {
+  width: storyWidth,
+  height: storyHeight,
+}
+
+export function getStoryImageUrl(
+  story,
+  videoImageOptions = defaultVideoImageOptions,
+  imageOptions = defaultImageOptions,
+) {
     const isVideo = !!story.coverVideo
     return isVideo
       ? getImageUrl(story.coverVideo, 'optimized', videoImageOptions)
-      : getImageUrl(story.coverImage, 'basic')
+      : getImageUrl(story.coverImage, 'optimized', imageOptions)
 }
 
 export default class GuideStoriesOfType extends React.Component {

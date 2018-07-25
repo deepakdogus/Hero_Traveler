@@ -5,6 +5,9 @@ import {
   Fonts,
 } from '../../Shared/Themes'
 
+export const imageWidth = 65
+export const imageHeight = 50
+
 export default StyleSheet.create({
   container: {
     paddingHorizontal: 0,
@@ -24,8 +27,8 @@ export default StyleSheet.create({
   },
   image: {
     backgroundColor: Colors.errorPink,
-    height: 50,
-    width: 65,
+    height: imageHeight,
+    width: imageWidth,
   },
   placeholderImage: {
     width: 30,
@@ -33,8 +36,8 @@ export default StyleSheet.create({
   },
   imageContainer: {
     backgroundColor: Colors.errorPink,
-    height: 50,
-    width: 65,
+    height: imageHeight,
+    width: imageWidth,
     alignItems: 'center',
     justifyContent: 'center',
   },

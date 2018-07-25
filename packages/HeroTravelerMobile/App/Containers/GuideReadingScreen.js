@@ -32,6 +32,7 @@ class GuideReadingScreen extends React.Component {
     guideId: PropTypes.string,
     guide: PropTypes.object,
     requestGuide: PropTypes.func,
+    getGuidesStories: PropTypes.func,
     fetching: PropTypes.bool,
     error: PropTypes.object,
     isGuideLiked: PropTypes.bool,
@@ -50,8 +51,15 @@ class GuideReadingScreen extends React.Component {
       scrollY: new Animated.Value(0),
       selectedTab: 'overview',
     }
-    if (!this.props.guide) {
+    const {guide, guideStories, getGuidesStories, guideId} = this.props
+    // when we access guides from search (in the future)
+    if (!guide) {
       this.getGuide()
+    }
+
+
+    if (guide.stories.length !== guideStories.length) {
+      getGuidesStories(guideId)
     }
   }
 
@@ -260,6 +268,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(GuideActions.unlikeGuideRequest(guideId, sessionUserId))
     },
     requestGuide: (guideId) => dispatch(GuideActions.getGuideRequest(guideId)),
+    getGuidesStories: (guideId) => dispatch(StoryActions.getGuideStories(guideId)),
     flagStory: (userId, guideId) => dispatch(StoryActions.flagStory(userId, guideId)),
   }
 }

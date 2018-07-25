@@ -38,6 +38,7 @@ const { Types, Creators } = createActions({
   addUserStory: ['stories', 'draftId'],
   deleteStory: ['userId', 'storyId'],
   deleteStorySuccess: ['userId', 'storyId'],
+  getGuideStories: ['guideId'],
 })
 
 export const StoryTypes = Types

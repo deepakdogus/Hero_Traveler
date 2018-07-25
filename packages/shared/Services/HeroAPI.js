@@ -232,6 +232,11 @@ const create = () => {
     .then(response => safeNormalize(response, [Story]))
   }
 
+  const getGuideStories = (guideId) => {
+    return api.get(`story/guide/${guideId}`)
+    .then(response => safeNormalize(response, [Story]))
+  }
+
   const getCategories = () => {
     return api.get('category')
     .then(response => safeNormalize(response, [Category]))
@@ -473,6 +478,7 @@ const create = () => {
     bookmarkStory,
     getStory,
     getDrafts,
+    getGuideStories,
     updateDraft,
     createDraft,
     removeDraft,

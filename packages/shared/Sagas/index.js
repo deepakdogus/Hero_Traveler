@@ -75,6 +75,7 @@ import {
   getBookmarks,
   uploadCoverImage, loadStory, loadDrafts, deleteStory,
   flagStory,
+  getGuideStories,
 } from './StorySagas'
 
 import {
@@ -171,6 +172,7 @@ export default function * root () {
     takeLatest(CategoryTypes.LOAD_CATEGORIES_REQUEST, getCategories, heroAPI),
     takeLatest(HashtagTypes.LOAD_HASHTAGS_REQUEST, getHashtags, heroAPI),
     takeLatest(StoryTypes.LOAD_DRAFTS, loadDrafts, heroAPI),
+    takeLatest(StoryTypes.GET_GUIDE_STORIES, getGuideStories, heroAPI),
     takeLatest(StoryTypes.DELETE_STORY, deleteStory, heroAPI),
     takeLatest(StoryTypes.GET_BOOKMARKS, getBookmarks, heroAPI),
     takeLatest(StoryTypes.FLAG_STORY, flagStory, heroAPI),

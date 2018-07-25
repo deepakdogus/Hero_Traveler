@@ -14,6 +14,7 @@ import storyCoverStyles from '../CreateStory/2_StoryCoverScreenStyles'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
 import NavBar from '../CreateStory/NavBar'
 import GuideListItem from '../../Components/GuideListItem'
+import {imageHeight, imageWidth} from '../../Components/Styles/GuideListItemStyles'
 import {
   Metrics,
   Colors,
@@ -24,6 +25,17 @@ const deleteBtnParams = {
   text: 'Delete',
   backgroundColor : Colors.redHighlights,
   underlayColor : Colors.redHighlights,
+}
+
+const videoImageUrlOptions = {
+  height: imageHeight,
+  width: imageWidth,
+  video: true,
+}
+
+const imageUrlOptions = {
+  height: imageHeight,
+  width: imageWidth,
 }
 
 class EditGuideStories extends Component {
@@ -76,6 +88,12 @@ class EditGuideStories extends Component {
           <View style={styles.storyWrapper}>
             {!!stories.length &&
               stories.map((story, idx) => {
+
+                const coverUrl = getStoryImageUrl(
+                  story,
+                  videoImageUrlOptions,
+                  imageUrlOptions,
+                )
                 return (
                   <Swipeout
                     style={{backgroundColor: 'white'}}
@@ -86,7 +104,7 @@ class EditGuideStories extends Component {
                     }]}
                   >
                     <GuideListItem
-                      imageUri={{ uri: getStoryImageUrl(story) }}
+                      imageUri={{ uri: coverUrl }}
                       label={story.title}
                       guideId={story.id}
                     />

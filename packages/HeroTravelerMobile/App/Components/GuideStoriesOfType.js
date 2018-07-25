@@ -19,11 +19,15 @@ const defaultImageOptions = {
   height: storyHeight,
 }
 
-export function getStoryImageUrl(story, videoImageOptions = defaultVideoImageOptions) {
+export function getStoryImageUrl(
+  story,
+  videoImageOptions = defaultVideoImageOptions,
+  imageOptions = defaultImageOptions,
+) {
     const isVideo = !!story.coverVideo
     return isVideo
       ? getImageUrl(story.coverVideo, 'optimized', videoImageOptions)
-      : getImageUrl(story.coverImage, 'optimized', defaultImageOptions)
+      : getImageUrl(story.coverImage, 'optimized', imageOptions)
 }
 
 export default class GuideStoriesOfType extends React.Component {

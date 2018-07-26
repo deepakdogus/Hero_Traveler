@@ -178,7 +178,7 @@ export const unlikeGuide = (state, {guideId, userId}) => {
 export const deleteStoryFromGuides = (state, {storyId}) => {
   const guides = state.entities
   const updatedGuides = {}
-  for (key in guides) {
+  for (let key in guides) {
     let guide = guides[key]
     if (guide.stories.indexOf(storyId) !== -1) {
       guide = guide.setIn(

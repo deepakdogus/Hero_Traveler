@@ -13,8 +13,7 @@ const ActivityTypes = {
 
 const Container = styled.div``
 
-const NotificationRowsContainer = styled.div`
-`
+const NotificationRowsContainer = styled.div``
 
 export default class NotificationsThread extends React.Component {
   static PropTypes = {
@@ -36,6 +35,7 @@ export default class NotificationsThread extends React.Component {
       users,
       reroute,
     } = this.props
+
     return activitiesById.map(id => {
       const userId = activities[id].fromUser
       const userProfile = users[userId]

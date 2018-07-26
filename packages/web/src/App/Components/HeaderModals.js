@@ -61,9 +61,11 @@ export default class HeaderModals extends React.Component {
     reroute: PropTypes.func,
     users: PropTypes.object,
   }
+
   closeGlobalModal = () => {
     this.props.closeGlobalModal()
   }
+
   render() {
     const {
       globalModalThatIsOpen,
@@ -77,6 +79,7 @@ export default class HeaderModals extends React.Component {
       stories,
       users,
     } = this.props
+
     return (
       <div>
         <Modal

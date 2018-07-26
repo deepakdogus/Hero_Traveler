@@ -121,6 +121,7 @@ class Header extends React.Component {
       reroute,
       users,
     } = this.props
+
     const SelectedGrid = (this.props.blackHeader || this.state.navbarEngaged) ? StyledGridBlack : StyledGrid
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
     return (

@@ -22,7 +22,6 @@ export default class SpaceBetweenRow extends Component {
 
   render() {
     const {renderImage, renderText, renderRight, leftProps = {} } = this.props
-
     return (
       <Row between='xs'>
         <Left data={leftProps}> 

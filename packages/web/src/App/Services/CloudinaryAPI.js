@@ -33,7 +33,7 @@ const create = () => {
     const uploadURL = getCloudinaryUploadUrl(type)
     const preset = type === 'image' ? env.imagePreset : env.videoPreset
     const data = new FormData()
-    data.append('file', fileObject)
+    data.append('file', fileObject.uri)
     data.append('upload_preset', preset)
     return cloudinaryApi.post(uploadURL, data)
   }

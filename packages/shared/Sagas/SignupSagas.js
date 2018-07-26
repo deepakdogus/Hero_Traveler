@@ -34,6 +34,7 @@ export function * signupEmail (api, action) {
 }
 
 export function * signupFacebook(api, action) {
+  let userResponse
   try {
     userResponse = yield loginToFacebookAndGetUserInfo();
   } catch(err) {

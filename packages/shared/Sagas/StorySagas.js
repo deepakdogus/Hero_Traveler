@@ -149,7 +149,10 @@ function * createCover(api, draft){
   if (!cover) return draft
   const cloudinaryCover = yield CloudinaryAPI.uploadMediaFile(cover, isImageCover ? 'image' : 'video')
   if (cloudinaryCover.error) return cloudinaryCover
-  cloudinaryCover.data = JSON.parse(cloudinaryCover.data)
+  // Web and mobile receive two different responses.
+  if (typeof cloudinaryCover.data === "string") {
+    cloudinaryCover.data = JSON.parse(cloudinaryCover.data)
+  }
   if (isImageCover) draft.coverImage = cloudinaryCover.data
   else draft.coverVideo = cloudinaryCover.data
   yield put(StoryCreateActions.incrementSyncProgress())
@@ -237,6 +240,9 @@ function * updateDraftErrorHandling(draft, response){
 }
 
 function getAtomicSteps(story){
+  if (!story.draftjsContent) {
+    return 0;
+  }
   return story.draftjsContent.blocks.reduce((count, block) => {
     if (block.type === 'atomic' && block.data.url.substring(0,4) === 'file') return count + 1
     return count
@@ -264,7 +270,7 @@ export function * publishLocalDraft (api, action) {
   }
 
   const atomicResponse = yield uploadAtomicAssets(draft)
-  if (atomicResponse.error){
+  if (atomicResponse && atomicResponse.error){
     yield publishDraftErrorHandling(draft, atomicResponse.error)
     return
   }

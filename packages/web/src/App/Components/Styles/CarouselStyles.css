@@ -1,0 +1,6 @@
+.slider, .slider-frame {
+  height: 100% !important;
+}
+.slider-slide > div {
+  background-position: center center;
+}

@@ -5,7 +5,6 @@ import moment from 'moment'
 
 import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
-import getS3ImageUrl from '../Shared/Lib/getS3ImageUrl'
 import Avatar from './Avatar'
 import {getSize} from './Icon'
 import HorizontalDivider from './HorizontalDivider'
@@ -90,11 +89,24 @@ const StyledNotificationContent = styled(NotificationContent)`
 export default class NotificationRow extends Component {
   static propTypes = {
     notification: PropTypes.string,
+    closeModal: PropTypes.func,
     comment: PropTypes.string,
     user: PropTypes.object,
     trip: PropTypes.object,
-    isTrip: PropTypes.bool,
+    story: PropTypes.object,
+    isFeedItem: PropTypes.bool,
     timestamp: PropTypes.object,
+    reroute: PropTypes.func,
+  }
+
+  navToStory = () => {
+    this.props.reroute(`/story/${this.props.story.id}`)
+    this.props.closeModal()
+  }
+
+  navToUserProfile = () => {
+    this.props.reroute(`/profile/${this.props.user.id}/view`)
+    this.props.closeModal()
   }
 
   renderImage = () => {
@@ -129,21 +141,23 @@ export default class NotificationRow extends Component {
   }
 
   renderTripImage = () => {
-    // temp fix until we get actual data
-    this.props.trip.image.versions.thumbnail240.path = this.props.trip.image.versions.thumbnail240.path.split(" ").join("-")
-    return (
-      <VerticalCenter>
-        <StyledImage
-          src={getS3ImageUrl(this.props.trip.image, 'versions.thumbnail240.path')}
-        />
-      </VerticalCenter>
-    )
+    if(this.props.isFeedItem){
+      return (
+        <VerticalCenter>
+          <StyledImage
+            src={getImageUrl(this.props.story.coverImage, 'thumbnail')}
+          />
+        </VerticalCenter>
+      )
+    } else return
   }
 
   render() {
     return (
       <InteractiveContainer>
-        <Container margin={this.props.margin}>
+        <Container
+          onClick={this.props.isFeedItem? this.navToStory : this.navToUserProfile}
+          >
           <SpaceBetweenRow
             renderImage={this.renderImage}
             renderText={this.renderText}

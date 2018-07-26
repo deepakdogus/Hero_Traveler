@@ -29,17 +29,6 @@ export default StyleSheet.create({
   storyReadingTitleWithDescription: {
     marginBottom: 15,
   },
-  description: {
-    fontFamily: Fonts.type.sourceSansPro,
-    fontWeight: '400',
-    fontSize: 18,
-    letterSpacing: .7,
-    color: Colors.grey,
-    marginBottom: 15,
-  },
-  storyReadingDescription: {
-    marginBottom: 15,
-  },
   userContent: {
     flexDirection: 'row',
     justifyContent: 'space-between'

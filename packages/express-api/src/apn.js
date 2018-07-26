@@ -22,7 +22,7 @@ export function likeNotification(likedUser, likingUser, story) {
     category: 'follower',
     params: story._id,
   }
-  
+
   return send(likedUser, notification).then(result => {
     return Promise.resolve()
   })
@@ -47,6 +47,19 @@ export function commentNotification(author, commentator, story) {
     body: `${commentator.profile.fullName} commented on your story ${story.title}`,
     category: 'comment',
     params: story._id,
+  }
+
+  return send(author, notification).then(result => {
+    return Promise.resolve()
+  })
+}
+
+export function guideCommentNotification(author, commentator, guide) {
+  const notification = {
+    title: `You've got a comment!`,
+    body: `${commentator.profile.fullName} commented on your guide ${guide.title}`,
+    category: 'comment',
+    params: guide.id,
   }
 
   return send(author, notification).then(result => {
@@ -95,14 +108,14 @@ function sendOne(device, preparedNotification) {
   // the status on all the devices.
   return new Promise((resolve, reject) => {
     const sns = new AWS.SNS();
-    // Before every request we ensure the we've registered this device on the SNS. 
+    // Before every request we ensure the we've registered this device on the SNS.
     // This is a noop if the device already exists.
     sns.createPlatformEndpoint({
       PlatformApplicationArn: arn,
       Token: device
     }, (err, data) => {
       if (err) {
-        // This may only happen if the token is completely invalid i.e. not passing 
+        // This may only happen if the token is completely invalid i.e. not passing
         // validation from SNS
         resolve({failed: true, payload: err});
       } else {
@@ -112,8 +125,8 @@ function sendOne(device, preparedNotification) {
           TargetArn: data.EndpointArn
         }, (err, data) => {
           if (err) {
-            // If this is the first push to the device, SNS always returns a success. 
-            // If the push doesn't get sent for some reason, the endpoint is disabled 
+            // If this is the first push to the device, SNS always returns a success.
+            // If the push doesn't get sent for some reason, the endpoint is disabled
             // and we'll receive an "Endpoint Disabled" error on subsequent tries.
             resolve({failed: true, device, payload: err});
           } else {

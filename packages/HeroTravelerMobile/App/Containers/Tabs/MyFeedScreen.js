@@ -7,20 +7,29 @@ import SplashScreen from 'react-native-splash-screen'
 
 import {Metrics, Images} from '../../Shared/Themes'
 import StoryActions from '../../Shared/Redux/Entities/Stories'
+import GuideActions from '../../Shared/Redux/Entities/Guides'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
-import StoryList from '../../Containers/ConnectedStoryList'
-import ConnectedStoryPreview from '../ConnectedStoryPreview'
+import ConnectedFeedList from '../../Containers/ConnectedFeedList'
+import ConnectedFeedItemPreview from '../ConnectedFeedItemPreview'
 import styles from '../Styles/MyFeedScreenStyles'
 import NoStoriesMessage from '../../Components/NoStoriesMessage'
 import BackgroundPublishingBars from '../../Components/BackgroundPublishingBars'
+import TabBar from '../../Components/TabBar'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
+
+const tabTypes = {
+  stories: "stories",
+  guides: "guides",
+}
 
 class MyFeedScreen extends React.Component {
   static propTypes = {
     user: PropTypes.object,
     error: PropTypes.object,
-    attemptGetUserFeed: PropTypes.func,
+    feedGuidesById: PropTypes.arrayOf(PropTypes.string),
+    attemptGetUserFeedStories: PropTypes.func,
+    attemptGetUserFeedGuides: PropTypes.func,
     userId: PropTypes.string,
     location: PropTypes.string,
     sync: PropTypes.object,
@@ -30,10 +39,21 @@ class MyFeedScreen extends React.Component {
     updateDraft: PropTypes.func,
     publishLocalDraft: PropTypes.func,
     discardUpdate: PropTypes.func,
+  };
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      refreshing: false,
+      selectedTab: tabTypes.stories
+    }
   }
 
   componentDidMount() {
-    if (!this.isPendingUpdate()) this.props.attemptGetUserFeed(this.props.userId)
+    if (!this.isPendingUpdate()) {
+      this.props.attemptGetUserFeedStories(this.props.userId)
+      this.props.attemptGetUserFeedGuides(this.props.userId)
+    }
     SplashScreen.hide()
   }
 
@@ -49,13 +69,14 @@ class MyFeedScreen extends React.Component {
     && this.props.fetchStatus.fetching && !nextProps.fetchStatus.fetching
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
     const shouldUpdate = _.some([
       this.props.storiesById !== nextProps.storiesById,
       this.props.fetchStatus !== nextProps.fetchStatus,
       this.props.error !== nextProps.error,
       !_.isEqual(this.props.sync, nextProps.sync),
       !_.isEqual(this.props.backgroundFailures, nextProps.backgroundFailures),
+      this.state.selectedTab !== nextState.selectedTab,
     ])
 
     return shouldUpdate
@@ -71,26 +92,34 @@ class MyFeedScreen extends React.Component {
 
   _showNoStories() {
     return (
-      <NoStoriesMessage />
+      <View style={[styles.containerWithTabbar, styles.root]}>
+        <View style={styles.tabWrapper}>
+          {this.renderTabs()}
+        </View>
+        <NoStoriesMessage text={this.state.selectedTab}/>
+      </View>
     )
   }
 
   _onRefresh = () => {
     if (this.isPendingUpdate()) return
-    this.props.attemptGetUserFeed(this.props.user.id)
+    this.setState({refreshing: true})
+    this.props.attemptGetUserFeedStories(this.props.user.id)
+    this.props.attemptGetUserFeedGuides(this.props.user.id)
   }
 
-  renderStory = (story, index) => {
+  renderFeedItem = (feedItem, index) => {
     return (
-      <ConnectedStoryPreview
+      <ConnectedFeedItemPreview
+        index={index}
         isFeed={true}
-        story={story}
+        isStory={this.state.selectedTab === tabTypes.stories}
+        feedItem={feedItem}
         height={imageHeight}
         userId={this.props.user.id}
         autoPlayVideo
         allowVideoPlay
         renderLocation={this.props.location}
-        index={index}
         showPlayButton={true}
       />
     )
@@ -101,21 +130,45 @@ class MyFeedScreen extends React.Component {
     return backgroundFailures[Object.keys(backgroundFailures)[0]]
   }
 
+  selectTab = (selectedTab) => {
+    this.setState({selectedTab})
+  }
+
+  renderTabs(){
+    const {selectedTab} = this.state
+    return (
+      <TabBar
+        tabs={tabTypes}
+        activeTab={selectedTab}
+        onClickTab={this.selectTab}
+        tabStyle={styles.tabStyle}
+      />
+    )
+  }
+
+
   render () {
-    let {storiesById, fetchStatus, sync} = this.props;
+    let {storiesById, fetchStatus, sync, feedGuidesById} = this.props
+    const {selectedTab} = this.state
     let bottomContent
 
+    const isStoriesSelected = selectedTab === tabTypes.stories
     const failure = this.getFirstBackgroundFailure()
 
-    if (!storiesById || !storiesById.length) {
+    if (
+      (isStoriesSelected && (!storiesById || !storiesById.length))
+      || (!isStoriesSelected && (!feedGuidesById || !feedGuidesById.length))
+    ) {
       let innerContent = this._showNoStories();
       bottomContent = this._wrapElt(innerContent);
-    } else {
+    }
+    else {
       bottomContent = (
-        <StoryList
-          style={styles.storyList}
-          storiesById={storiesById}
-          renderStory={this.renderStory}
+        <ConnectedFeedList
+          isStory={isStoriesSelected}
+          entitiesById={isStoriesSelected ? storiesById : feedGuidesById}
+          renderFeedItem={this.renderFeedItem}
+          renderSectionHeader={this.renderTabs()}
           onRefresh={this._onRefresh}
           refreshing={fetchStatus.fetching}
         />
@@ -148,12 +201,13 @@ const mapStateToProps = (state) => {
     error,
     backgroundFailures,
   } = state.entities.stories;
-
+  const feedGuidesById = state.entities.guides.feedGuidesById || []
   return {
     userId: state.session.userId,
     user: state.entities.users.entities[state.session.userId],
     fetchStatus,
     storiesById: userFeedById,
+    feedGuidesById,
     error,
     location: state.routes.scene.name,
     sync: state.storyCreate.sync,
@@ -163,7 +217,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    attemptGetUserFeed: (userId) => dispatch(StoryActions.feedRequest(userId)),
+    attemptGetUserFeedStories: (userId) => dispatch(StoryActions.feedRequest(userId)),
+    attemptGetUserFeedGuides: (userId) => dispatch(GuideActions.guideFeedRequest(userId)),
     discardUpdate: (storyId) => dispatch(StoryActions.removeBackgroundFailure(storyId)),
     publishLocalDraft: (story) => dispatch(StoryCreateActions.publishLocalDraft(story)),
     updateDraft: (story) => dispatch(StoryCreateActions.updateDraft(story.id, story, true)),

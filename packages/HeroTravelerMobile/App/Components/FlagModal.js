@@ -8,7 +8,7 @@ const visibleButtonHeight = 50
 const marginBottom = 10
 const maxOffSet = Metrics.tabBarHeight + 2*visibleButtonHeight + 2*marginBottom
 const hiddenView = -Metrics.screenHeight
-const visibleView = -(Metrics.screenHeight - maxOffSet)
+const visibleView = -(Metrics.screenHeight - maxOffSet) + 20
 
 export default class FlagModal extends Component {
 

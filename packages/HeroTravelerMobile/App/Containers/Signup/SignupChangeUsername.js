@@ -16,7 +16,7 @@ import {validate as validateOriginal, asyncValidate as asyncValidateOriginal} fr
 import styles from './SignupChangeUsernameStyles'
 
 const asyncValidate = (values) => {
-  return asyncValidateOriginal(values)
+  return asyncValidateOriginal(values, null, false, true)
 }
 
 const validate = (values) => {
@@ -37,7 +37,7 @@ class SignupChangeUsername extends React.Component {
 
   componentDidMount() {
     if (!this.props.user.usernameIsTemporary) {
-      NavActions.signupFlow_topics()
+      NavActions.signupFlow_changeEmail()
     }
   }
 
@@ -76,12 +76,16 @@ class SignupChangeUsername extends React.Component {
   }
 
   onRight = () => {
-    if (!this.state.error) {
-      this.runValidations({username: this.state.newUsername}).then(() => {
-        this.updateUser()
-        NavActions.signupFlow_topics()
-      }).catch((e) => {
-        this.setState({error: e})
+    if (!this.state.error && !this.state.submitting) {
+      this.setState({submitting: true}, () => {
+        this.runValidations({username: this.state.newUsername}).then(() => {
+          this.updateUser()
+          NavActions.signupFlow_changeEmail()
+        }).catch((e) => {
+          this.setState({error: e})
+        }).finally(() => {
+          this.setState({submitting: false});
+        });
       })
     }
   }

@@ -4,31 +4,39 @@ import { Fonts, Colors, Metrics } from '../../Shared/Themes/'
 export default StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: Metrics.smallMargin,
+    marginTop: 0,
+    width: '100%',
+    height: 50,
     backgroundColor: Colors.transparent,
     flexDirection: 'row',
-    width: Metrics.screenWidth - Metrics.baseMargin,
-    height: Metrics.searchBarHeight,
+    justifyContent: 'flex-start',
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.grey,
+    marginBottom: Metrics.baseMargin,
   },
   searchInput: {
-    flex: 5,
-    height: Metrics.searchBarHeight,
-    alignSelf: 'center',
     padding: Metrics.smallMargin,
     textAlign: 'left',
-    fontFamily: Fonts.type.base,
-    fontSize: Fonts.size.instructions,
     borderRadius: 5,
     borderWidth: 1,
     borderColor: Colors.snow,
     paddingLeft: 30,
-    color: Colors.snow,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    color: Colors.background,
+    fontSize: 15,
+    letterSpacing: 0.7,
+    fontWeight: '400',
+    width: '100%',
+    height: '100%',
+    flex: 1,
+    alignSelf: 'flex-start',
+    fontFamily: Fonts.type.sourceSansPro,
   },
   searchIcon: {
-    left: Metrics.doubleBaseMargin,
+    color: Colors.grey,
+    position: 'absolute',
+    left: 2,
     alignSelf: 'center',
-    color: Colors.snow,
     backgroundColor: Colors.transparent
   },
   cancelButton: {
@@ -41,5 +49,5 @@ export default StyleSheet.create({
     color: Colors.snow,
     fontFamily: Fonts.type.base,
     fontSize: Fonts.size.regular
-  }
+  },
 })

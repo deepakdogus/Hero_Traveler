@@ -77,7 +77,15 @@ export default class ProfileUserInfo extends Component {
       <View style={styles.userInfoWrapper}>
         <Text style={styles.titleText}>{user.username}</Text>
         <Text style={styles.italicText}>{user.profile.fullName}</Text>
-        {!!(user.about) && <Text style={styles.aboutText}>{user.about}</Text>}
+        {!!(user.about) &&
+          <Text
+            style={styles.aboutText}
+            numberOfLines={3}
+            ellipsizeMode={'tail'}
+          >
+            {user.about}
+          </Text>
+        }
         <TouchableOpacity onPress={this._navToViewBio}>
           <Text style={styles.readBioText}>Read Bio</Text>
         </TouchableOpacity>

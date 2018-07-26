@@ -19,12 +19,13 @@ const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KE
 import CategoryActions from '../../Shared/Redux/Entities/Categories'
 import HashtagActions from '../../Shared/Redux/Entities/Hashtags'
 import { Metrics, Colors } from '../../Shared/Themes/'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import Loader from '../../Components/Loader'
 import styles from './TagScreenStyles'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTimeTooltips'
 import UserActions from '../../Shared/Redux/Entities/Users'
 import Tooltip from '../../Components/Tooltip'
+import TagRow from '../../Components/TagRow'
+import SelectedItem from '../../Components/SelectedItem'
 
 export const TAG_TYPE_CATEGORY = "category";
 export const TAG_TYPE_HASHTAG = "hashtag";
@@ -32,9 +33,15 @@ export const TAG_TYPE_HASHTAG = "hashtag";
 class TagScreen extends Component {
 
   static propTypes = {
-    tagType: PropTypes.oneOf([TAG_TYPE_CATEGORY, TAG_TYPE_HASHTAG]),
+    tagType: PropTypes.oneOf([TAG_TYPE_CATEGORY, TAG_TYPE_HASHTAG]).isRequired,
     tags: PropTypes.array,
     onDone: PropTypes.func.isRequired,
+    defaultCategories: PropTypes.object,
+    defaultHashtags: PropTypes.object,
+    loadDefaultCategories: PropTypes.func,
+    loadDefaultHashtags: PropTypes.func,
+    user: PropTypes.object,
+    completeTooltip: PropTypes.func,
   }
 
   constructor(props) {
@@ -50,8 +57,7 @@ class TagScreen extends Component {
         this.tagIndex = env.SEARCH_HASHTAGS_INDEX;
         break;
       default:
-        throw new Error("No tag type supplied to the TagScreen");
-        break;
+        throw new Error("No tag type supplied to the TagScreen")
     }
 
     this.state = {
@@ -93,11 +99,32 @@ class TagScreen extends Component {
     this.props.onDone(this.state.selectedTags)
   }
 
+  _selectTag = (tag) => {
+    const isSearchTag = !tag.image
+     if (this._checkExistingTag(tag.title)) {
+      if (isSearchTag) this.setInputBlurred();
+      return;
+    }
+
+    const updatedState = {
+      selectedTags: [
+        ...this.state.selectedTags,
+        {_id: tag._id, title: tag.title}
+      ]
+    }
+    updatedState.text = ''
+    this.setState(updatedState, () => {
+      // This is a fix for search results disappearing as soon as the
+      // TextInput is blurred.
+      if (isSearchTag) this.setInputBlurred();
+    })
+  }
+
   _selectDefaultTag = (mongoTag) => {
     if (this._checkExistingTag(mongoTag.title)) {
       return;
     }
-    
+
     this.setState({
       selectedTags: [
         ...this.state.selectedTags,
@@ -259,6 +286,17 @@ class TagScreen extends Component {
     return (this.props.tagType === TAG_TYPE_CATEGORY) ? TooltipTypes.STORY_CREATE_CATEGORIES : TooltipTypes.STORY_CREATE_HASHTAGS;
   }
 
+  renderTagRow = (tag) => {
+    return (
+      <TagRow
+        key={tag._id}
+        tag={tag}
+        tagType={this.props.tagType}
+        onPress={this._selectTag}
+      />
+    )
+  }
+
   render () {
 
     const defaultTagsToShow = _.filter(this._getDefaultTags(), t => {
@@ -276,6 +314,13 @@ class TagScreen extends Component {
     const searchResultsToShow = _.filter(this.getSearchHits(), t => {
       return !_.includes(_.map(this.state.selectedTags, '_id'), t._id)
     })
+
+    const isShowSearchResults = !this.state.searching
+      && !!this.state.text
+      && _.size(searchResultsToShow) > 0
+    const isShowDefaultResults = !this.state.text && _.size(defaultTagsToShow) > 0
+    const tagsToShow = isShowSearchResults ? searchResultsToShow : defaultTagsToShow
+
     const isInputFocused = this.state.isInputFocused
     return (
       <View style={styles.root}>
@@ -295,7 +340,7 @@ class TagScreen extends Component {
                 style={styles.textInput}
                 value={this.state.text}
                 placeholder={'Add ' + _.upperFirst(this._getTagTypeText(true))}
-                onChangeText={text => this._inputChanged(text)}
+                onChangeText={this._inputChanged}
                 onSubmitEditing={this._addNewTag}
                 onFocus={this.setInputFocused}
                 autoCorrect={this.props.tagType === TAG_TYPE_CATEGORY}
@@ -309,14 +354,14 @@ class TagScreen extends Component {
           */}
           {_.size(this.state.selectedTags) > 0 &&
             <View style={styles.selectedTags}>
-              {_.map(this.state.selectedTags, t => {
+              {_.map(this.state.selectedTags, tag => {
                 return (
-                  <View key={t._id || t.title} style={styles.selectedTagRow}>
-                    <TouchableOpacity onPress={() => this._removeTag(t)} style={[styles.row, styles.rowSelected]}>
-                      <Text>{this.props.tagType === TAG_TYPE_HASHTAG ? "#" : ""}{t.title}</Text>
-                      <Icon name='close' size={15} style={styles.removeTagIcon} />
-                    </TouchableOpacity>
-                  </View>
+                  <SelectedItem
+                    key={tag._id || tag.title}
+                    text={`${this.props.tagType === TAG_TYPE_HASHTAG ? "#" : ""}${tag.title}`}
+                    onPressRemove={this._removeTag}
+                    item={tag}
+                  />
                 )
               })}
             </View>
@@ -325,34 +370,9 @@ class TagScreen extends Component {
           {this.state.searching &&
             <Loader style={styles.spinner} spinnerColor={Colors.blackoutTint} />
           }
-
-          {/* Show search results when text is present */}
-          {!this.state.searching && !!this.state.text && _.size(searchResultsToShow) > 0 &&
-            <View style={styles.defaultTags}>
-              {_.map(searchResultsToShow, t => {
-                return (
-                  <View key={t._id} style={styles.rowWrapper}>
-                    <TouchableOpacity onPress={() => {this._selectSearchTag(t)}} style={styles.row}>
-                      <Text>{this.props.tagType === TAG_TYPE_HASHTAG ? "#" : ""}{t.title}</Text>
-                    </TouchableOpacity>
-                  </View>
-                )
-              })}
-            </View>
-          }
-
-          {/* Show default tags from mongo */}
-          {!this.state.text && _.size(defaultTagsToShow) > 0 &&
-            <View style={styles.defaultTags}>
-              {_.map(defaultTagsToShow, t => {
-                return (
-                  <View key={t._id} style={styles.rowWrapper}>
-                    <TouchableOpacity onPress={() => {this._selectDefaultTag(t)}} style={styles.row}>
-                      <Text>{this.props.tagType === TAG_TYPE_HASHTAG ? "#" : ""}{t.title}</Text>
-                    </TouchableOpacity>
-                  </View>
-                )
-              })}
+          {(isShowSearchResults || isShowDefaultResults) &&
+            <View>
+              {_.map(tagsToShow, this.renderTagRow)}
             </View>
           }
           </ScrollView>
@@ -368,7 +388,7 @@ class TagScreen extends Component {
             onDismiss={this._completeTooltip}
           />
         }
-        
+
       </View>
     )
   }
@@ -377,12 +397,8 @@ class TagScreen extends Component {
 export default connect(
   state => ({
     user: state.entities.users.entities[state.session.userId],
-
     defaultCategories: state.entities.categories.entities,
-    categoriesFetchStatus: state.entities.categories.fetchStatus,
-    
     defaultHashtags: state.entities.hashtags.entities,
-    hashtagsFetchStatus: state.entities.hashtags.fetchStatus
   }),
   dispatch => ({
     loadDefaultHashtags: () => dispatch(HashtagActions.loadHashtagsRequest()),

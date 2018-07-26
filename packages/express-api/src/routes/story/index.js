@@ -8,6 +8,7 @@ import getUser from './getUser'
 import create from './create'
 import getUserFeed from './getUserFeed'
 import getUserLikes from './getUserLikes'
+import getUserLikesOld from './getUserLikesOld'
 import getCategoryStories from './getCategoryStories'
 import toggleLike from './toggleLike'
 import toggleBookmark from './toggleBookmark'
@@ -16,6 +17,7 @@ import getComments from './getComments'
 import createComment from './createComment'
 import deleteStory from './deleteStory'
 import flagStory from './flagStory'
+import getGuideStories from './getGuideStories'
 
 import getDraft from './draft/get'
 import findDrafts from './draft/find'
@@ -33,7 +35,8 @@ const router = express.Router()
 
 router.get('/user/:userId', hasValidOauth, getUser)
 router.get('/user/:userId/feed', hasValidOauth, getUserFeed);
-router.get('/user/:userId/like', hasValidOauth, endpointWrapper(getUserLikes));
+router.get('/user/:userId/like/v2', hasValidOauth, endpointWrapper(getUserLikes))
+router.get('/user/:userId/like', hasValidOauth, endpointWrapper(getUserLikesOld))
 router.get('/category/:categoryId', endpointWrapper(getCategoryStories));
 router.get('/user/:userId/bookmark', hasValidOauth, endpointWrapper(getBookmarks))
 
@@ -77,5 +80,11 @@ router.get('/:id/like', hasValidOauth, endpointWrapper(toggleLike))
 router.get('/:id/bookmark', hasValidOauth, endpointWrapper(toggleBookmark))
 router.put('/:id/flag', hasValidOauth, endpointWrapper(flagStory))
 router.post('/', hasValidOauth, endpointWrapper(create))
+
+router.get(
+  '/guide/:guideId',
+  hasValidOauth,
+  endpointWrapper(getGuideStories)
+)
 
 export default router

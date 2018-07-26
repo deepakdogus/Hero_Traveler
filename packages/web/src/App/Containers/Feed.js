@@ -6,7 +6,6 @@ import StoryList from '../Components/StoryList'
 import FeedHeader from '../Components/FeedHeader'
 import Footer from '../Components/Footer'
 import ShowMore from '../Components/ShowMore'
-import StoryActions from '../Shared/Redux/Entities/Stories'
 import HorizontalDivider from '../Components/HorizontalDivider'
 
 const CenteredText = styled.p`
@@ -36,10 +35,6 @@ const StyledDivider = styled(HorizontalDivider)`
 
 class Feed extends Component {
 
-  componentDidMount() {
-    this.props.attemptGetUserFeed(this.props.userId)
-  }
-
   render() {
     const {stories, users, storiesById} = this.props
     const feedStories = storiesById.map((id) => {
@@ -63,8 +58,7 @@ class Feed extends Component {
   }
 }
 
-
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   let { userFeedById, entities: stories } = state.entities.stories
   return {
     userId: state.session.userId,
@@ -74,10 +68,4 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    attemptGetUserFeed: (userId) => dispatch(StoryActions.feedRequest(userId)),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Feed)
+export default connect(mapStateToProps)(Feed)

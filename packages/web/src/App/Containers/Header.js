@@ -9,6 +9,7 @@ import HeaderAnonymous from '../Components/Headers/HeaderAnonymous'
 import HeaderLoggedIn from '../Components/Headers/HeaderLoggedIn'
 import LoginActions from '../Shared/Redux/LoginRedux'
 import UXActions from '../Redux/UXRedux'
+import StoryActions from '../Shared/Redux/Entities/Stories'
 import HeaderModals from '../Components/HeaderModals'
 import UserActions from '../Shared/Redux/Entities/Users'
 
@@ -61,6 +62,12 @@ class Header extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll)
+  }
+
+  componentDidUpdate(prevProps) {
+    if(this.props.currentUser && prevProps.currentUser !== this.props.currentUser){
+      this.props.attemptGetUserFeed(this.props.currentUser)
+    }
   }
 
   handleScroll = (event) => {
@@ -174,6 +181,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     attemptLogin: (username, password) => dispatch(LoginActions.loginRequest(username, password)),
+    attemptGetUserFeed: (userId) => dispatch(StoryActions.feedRequest(userId)),
     closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
     markSeen: (activityId) => dispatch(UserActions.activitySeen(activityId)),
     reroute: (path) => dispatch(push(path)),

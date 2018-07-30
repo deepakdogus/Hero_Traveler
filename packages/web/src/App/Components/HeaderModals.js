@@ -69,6 +69,12 @@ export default class HeaderModals extends React.Component {
     attemptUpdateUser: PropTypes.func,
     userEntitiesUpdating: PropTypes.bool,
     userEntitiesError: PropTypes.object,
+    activitiesById: PropTypes.array,
+    activities: PropTypes.object,
+    stories: PropTypes.object,
+    markSeen: PropTypes.func,
+    reroute: PropTypes.func,
+    users: PropTypes.object,
   }
 
   closeGlobalModal = () => {
@@ -79,7 +85,8 @@ export default class HeaderModals extends React.Component {
     const { globalModalThatIsOpen, loginReduxFetching, loginReduxError,
       closeModal, modal, globalModalParams, attemptChangePassword, user,
       attemptUpdateUser, userEntitiesUpdating, userEntitiesError,
-      currentUserEmail, currentUserProfile, currentUserNotificationTypes, } = this.props
+      currentUserEmail, currentUserProfile, currentUserNotificationTypes,
+      activities, activitiesById, markSeen, reroute, stories, users,} = this.props
     return (
       <Container>
         <Modal
@@ -130,7 +137,15 @@ export default class HeaderModals extends React.Component {
           contentLabel='Notifications Thread'
           onRequestClose={closeModal}
         >
-          <NotificationsThread closeModal={closeModal} profile={this.props.userId}/>
+          <NotificationsThread 
+            closeModal={closeModal} 
+            profile={this.props.userId}
+            activities={activities}
+            activitiesById={activitiesById}
+            markSeen={markSeen}
+            stories={stories}
+            reroute={reroute}
+            users={users}/>
         </RightModal>
         <RightModal
           isOpen={globalModalThatIsOpen === 'comments'}

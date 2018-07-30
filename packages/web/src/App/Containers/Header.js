@@ -55,6 +55,11 @@ class Header extends React.Component {
     attemptUpdateUser: PropTypes.func,
     userEntitiesUpdating: PropTypes.bool,
     userEntitiesError: PropTypes.object,
+    activitiesById: PropTypes.array,
+    activities: PropTypes.object,
+    stories: PropTypes.object,
+    markSeen: PropTypes.func,
+    users: PropTypes.object,
   }
 
   constructor(props) {
@@ -118,7 +123,7 @@ class Header extends React.Component {
   render () {
     const { isLoggedIn, loginReduxFetching, loginReduxError, attemptLogin, attemptLogout, attemptChangePassword, closeGlobalModal, openGlobalModal,
       currentUserId, currentUserProfile, currentUserEmail, currentUserNotificationTypes, globalModalThatIsOpen, globalModalParams,
-      reroute, attemptUpdateUser, userEntitiesUpdating, userEntitiesError } = this.props
+      reroute, attemptUpdateUser, userEntitiesUpdating, userEntitiesError, activitiesById, activities, stories, markSeen, users, } = this.props
     const SelectedGrid = (this.props.blackHeader || this.state.navbarEngaged) ? StyledGridBlack : StyledGrid
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
     return (
@@ -158,6 +163,12 @@ class Header extends React.Component {
               attemptUpdateUser={attemptUpdateUser}
               userEntitiesUpdating={userEntitiesUpdating}
               userEntitiesError={userEntitiesError}
+              activities={activities}
+              activitiesById={activitiesById}
+              stories={stories}
+              markSeen={markSeen}
+              users={users}
+              reroute={reroute}
           />
       </SelectedGrid>
       <HeaderSpacer
@@ -186,6 +197,11 @@ function mapStateToProps(state) {
     currentUserProfile: (currentUser) && currentUser.profile,
     currentUserEmail: (currentUser) && currentUser.email,
     currentUserNotificationTypes: (currentUser) && currentUser.notificationTypes,
+    currentUser: state.session.userId,
+    activitiesById: state.entities.users.activitiesById,
+    activities: state.entities.users.activities,
+    users: state.entities.users.entities,
+    stories: state.entities.stories.entities,
   }
 }
 

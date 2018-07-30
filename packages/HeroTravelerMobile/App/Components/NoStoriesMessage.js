@@ -14,10 +14,10 @@ const styles = StyleSheet.create({
   }
 })
 
-export default function NoStoriesMessage({style, textStyle}) {
+export default function NoStoriesMessage({style, textStyle, text = "stories"}) {
   return (
     <View style={[styles.wrapper, style]}>
-      <Text style={[styles.text, textStyle]}>There are no stories here</Text>
+      <Text style={[styles.text, textStyle]}>There are no {text} here</Text>
     </View>
   )
 }

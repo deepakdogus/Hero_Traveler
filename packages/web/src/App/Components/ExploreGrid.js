@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import { Grid, Row, Col } from './FlexboxGrid';
-import getS3ImageUrl from '../Shared/Lib/getS3ImageUrl'
+import { Grid, Row, Col } from './FlexboxGrid'
+import getImageUrl from '../Shared/Lib/getImageUrl'
 import Icon from './Icon'
 import {VerticalCenterStyles} from './VerticalCenter'
 import OverlayHover from './OverlayHover'
@@ -64,7 +64,7 @@ class Tile extends React.Component {
       <Col xs={6} sm={4} md={3} lg={2} >
         <Wrapper onClick={this._onClickTile}>
           <CategoryTile
-            imageSource={getS3ImageUrl(category.image, 'versions.thumbnail240.path')}
+            imageSource={getImageUrl(category.image, 'optimized')}
           />
           <TitleContainer selected={category.selected} overlayColor="black">
             <Title>{category.title}</Title>

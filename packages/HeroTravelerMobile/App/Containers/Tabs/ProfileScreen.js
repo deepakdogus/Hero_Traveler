@@ -20,6 +20,8 @@ class ProfileScreen extends React.Component {
       this.props.userStoriesFetchStatus !== nextProps.userStoriesFetchStatus,
       this.props.userBookmarksById !== nextProps.userBookmarksById,
       this.props.userBookmarksFetchStatus !== nextProps.userBookmarksFetchStatus,
+      this.props.guideIds !== nextProps.guideIds,
+      this.props.guidesFetchStatus !== nextProps.guidesFetchStatus,
     ])
 
     return shouldUpdate
@@ -34,6 +36,15 @@ class ProfileScreen extends React.Component {
     this.props.getStories(this.props.user.id)
     this.props.loadBookmarks(this.props.user.id)
     this.props.getGuides(this.props.user.id)
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.guideIds !== prevProps.guideIds
+      || this.props.userStoriesById !== prevProps.userStoriesById
+    ) {
+      VideoManager.cleanDrafts(this.props.draftsById)
+    }
   }
 
   _selectTab = (tab) => {
@@ -61,6 +72,9 @@ class ProfileScreen extends React.Component {
       updateUser,
       userBookmarksById,
       userBookmarksFetchStatus,
+      draftsFetchStatus,
+      guideIds,
+      guidesFetchStatus,
     } = this.props
 
     // Deals with the case that the user logs out
@@ -69,14 +83,13 @@ class ProfileScreen extends React.Component {
       return null
     }
 
-    VideoManager.cleanDrafts(draftsById)
-
     return (
       <ProfileView
         user={user}
         stories={userStoriesById}
         drafts={draftsById}
         bookmarks={userBookmarksById}
+        guideIds={guideIds}
         onSelectTab={this._selectTab}
         editable={true}
         isEditing={this.props.isEditing}
@@ -84,9 +97,11 @@ class ProfileScreen extends React.Component {
         accessToken={accessToken}
         profileImage={this._isTempImage() ? getImageUrl(user.profile.tempCover, 'basic') : getImageUrl(user.profile.cover, 'basic')}
         fetchStatus={userStoriesFetchStatus}
-        draftsFetchStatus={this.props.draftsFetchStatus}
+        draftsFetchStatus={draftsFetchStatus}
+        guidesFetchStatus={guidesFetchStatus}
         bookmarksFetchStatus={userBookmarksFetchStatus}
         hasTabbar={!this.props.isEditing}
+        onRefresh={this.initializeData}
       />
     )
   }
@@ -94,18 +109,20 @@ class ProfileScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   const {userId} = state.session
-  let {stories, users} = state.entities
+  let {stories, users, guides} = state.entities
 
   return {
     user: state.entities.users.entities[userId],
     accessToken: _.find(state.session.tokens, {type: 'access'}).value,
     userStoriesFetchStatus: getUserFetchStatus(stories, userId),
     userStoriesById: getByUser(stories, userId),
-    draftsFetchStatus: stories.drafts.fetchStatus,
+    draftsFetchStatus: {loaded: true},
     draftsById: stories.drafts.byId,
     userBookmarksById: getByBookmarks(users, userId),
     userBookmarksFetchStatus: getBookmarksFetchStatus(stories, userId),
-    error: stories.error
+    guideIds: guides.guideIdsByUserId ? guides.guideIdsByUserId[userId] : [],
+    guidesFetchStatus: guides.fetchStatus,
+    error: stories.error,
   }
 }
 

@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {
   View,
   Text,
@@ -11,7 +12,14 @@ import styles from './ExploreGridStyles'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import {Metrics} from '../../Shared/Themes'
 
+const noop = () => null
+
 export default class ExploreGrid extends Component {
+
+  static propTypes = {
+    categories: PropTypes.arrayOf(PropTypes.object),
+    onPress: PropTypes.func,
+  }
 
   render() {
     return (
@@ -38,13 +46,13 @@ export default class ExploreGrid extends Component {
           style={styles.gridImage}
         >
           <TouchableWithoutFeedback
-            onPress={() => this._onPress(category)}
+            onPress={this._onPress(category)}
             >
             <View style={styles.gridImage}>
               <Text style={styles.gridRowText}>{category.title}</Text>
               {category.selected &&
                 <TabIcon
-                  name='redCheck'
+                  name='redCheckOutlined'
                   style={{view: styles.selectedIcon}}
                 />
               }
@@ -56,8 +64,8 @@ export default class ExploreGrid extends Component {
   }
 
   _onPress = (category) => {
-    if (this.props.onPress) {
-      this.props.onPress(category)
-    }
+    const {onPress} = this.props
+    if (onPress) return () => onPress(category)
+    else return noop
   }
 }

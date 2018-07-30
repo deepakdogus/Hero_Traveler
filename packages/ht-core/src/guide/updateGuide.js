@@ -19,4 +19,7 @@ export default async function updateguide(attrs, assetFormater) {
   }
 
   return guide.update(attrs)
+  .then(() => {
+    return Guide.get({_id: attrs.id})
+  })
 }

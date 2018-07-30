@@ -70,9 +70,11 @@ export default class HeaderModals extends React.Component {
     userEntitiesUpdating: PropTypes.bool,
     userEntitiesError: PropTypes.object,
   }
+
   closeGlobalModal = () => {
     this.props.closeGlobalModal()
   }
+
   render() {
     const { globalModalThatIsOpen, loginReduxFetching, loginReduxError,
       closeModal, modal, globalModalParams, attemptChangePassword, user,

@@ -8,19 +8,27 @@ import {
   View,
 } from 'react-native'
 import {connect} from 'react-redux'
+import { Actions as NavActions } from 'react-native-router-flux'
 
 import RNGooglePlaces from 'react-native-google-places'
 import CategoryActions from '../../Shared/Redux/Entities/Categories'
-import { Metrics, Colors } from '../../Shared/Themes/'
+import { Colors } from '../../Shared/Themes/'
+import formatLocation from '../../Shared/Lib/formatLocation'
+import {displayLocationDetails} from '../../Shared/Lib/locationHelpers'
 import Loader from '../../Components/Loader'
+import SelectedItem from '../../Components/SelectedItem'
 import styles from './LocationScreenStyles'
 
 class LocationScreen extends Component {
+  static defaultProps = {
+    locations: [],
+  }
 
   static propTypes = {
-    location: PropTypes.string,
-    navBack: PropTypes.func.isRequired,
+    location: PropTypes.string, // only used for single location selection
+    locations: PropTypes.arrayOf(PropTypes.object), // only used for multiple location selection
     onSelectLocation: PropTypes.func.isRequired,
+    isMultiSelect: PropTypes.bool,
   }
 
   constructor(props) {
@@ -29,6 +37,7 @@ class LocationScreen extends Component {
       text: '',
       searching: false,
       predictions: [],
+      locations: this.props.locations,
     }
   }
 
@@ -49,17 +58,27 @@ class LocationScreen extends Component {
   }
 
   selectLocation = (placeID) => () => {
+    const {isMultiSelect, onSelectLocation} = this.props
     this.setState({searching: true})
     RNGooglePlaces.lookUpPlaceByID(placeID)
-    .then((results) => {
-      this.setState({searching: false}, () => {
-        this.props.onSelectLocation(results)
+    .then((result) => {
+      const newLocation = formatLocation(result)
+      if (!isMultiSelect) {
+        this.setState({searching: false}, () => {
+          onSelectLocation(newLocation)
+        })
+      }
+      else this.setState({
+        searching: false,
+        locations: [...this.state.locations, newLocation],
+        text: '',
+        predictions: [],
       })
     })
   }
 
   onSubmit = () => {
-    if (this.state.predictions.length) return
+    if (this.state.predictions.length || this.props.isMultiSelect) return
     else this.props.onSelectLocation({"name": this.state.text})
   }
 
@@ -76,17 +95,52 @@ class LocationScreen extends Component {
     })
   }
 
+  onRemoveLocation = (locationToRemove) => {
+    const filteredLocations = this.state.locations.filter(location => {
+      return location.latitude !== locationToRemove.latitude
+      && location.longitude !== locationToRemove.longitude
+    })
+    this.setState({locations: filteredLocations})
+  }
+
+  renderSelectedLocations = () => {
+    return this.state.locations.map((location, index) => {
+      return (
+        <SelectedItem
+          key={`selected${index}`}
+          text={displayLocationDetails(location)}
+          item={location}
+          onPressRemove={this.onRemoveLocation}
+        />
+      )
+    })
+  }
+
+  onPressTopRight = () => {
+    const {location, onSelectLocation} = this.props
+    const {locations, text} = this.state
+    if (location) return NavActions.pop() // always Navback is single location
+    if (text) this.setState({
+      text: '',
+      predictions: [],
+    }) // clear search
+    else onSelectLocation(locations) // submit chosen location
+  }
+
   render () {
-    const {searching, predictions} = this.state
+    const {searching, predictions, locations, text} = this.state
     const { location } = this.props
+
     return (
       <View style={styles.root}>
         <View style={styles.topWrapper}>
           <TouchableOpacity
             style={styles.cancelBtn}
-            onPress={this.props.navBack}
+            onPress={this.onPressTopRight}
           >
-            <Text style={styles.cancelBtnText}>Cancel</Text>
+            <Text style={styles.cancelBtnText}>
+              {(location || text) ? 'Cancel' : 'Done'}
+            </Text>
           </TouchableOpacity>
         </View>
         <View style={styles.content}>
@@ -106,6 +160,7 @@ class LocationScreen extends Component {
             </View>
           </View>
           <ScrollView style={styles.scrollView} keyboardShouldPersistTaps='always'>
+            {!!locations.length && this.renderSelectedLocations()}
             {searching  &&
               <Loader style={styles.spinner} spinnerColor={Colors.blackoutTint} />
             }

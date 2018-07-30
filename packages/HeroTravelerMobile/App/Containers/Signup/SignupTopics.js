@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {
   ScrollView,
   View,
@@ -14,6 +15,15 @@ import ExploreGrid from '../../Components/ExploreGrid'
 import styles from './SignupTopicsStyles'
 
 class SignupTopicsScreen extends React.Component {
+  static propTypes = {
+    onPress: PropTypes.func,
+    categories: PropTypes.object,
+    loadCategories: PropTypes.func,
+    areCategoriesLoaded: PropTypes.bool,
+    selectCategory: PropTypes.func,
+    unselectCategory: PropTypes.func,
+    selectedCategories: PropTypes.arrayOf(PropTypes.string)
+  }
 
   constructor(props) {
     super(props)
@@ -29,7 +39,7 @@ class SignupTopicsScreen extends React.Component {
   render () {
     let content
 
-    if (this.props.categoriesLoaded) {
+    if (this.props.areCategoriesLoaded) {
       content = (
         <ExploreGrid
           onPress={this._toggleCategory}
@@ -74,7 +84,7 @@ class SignupTopicsScreen extends React.Component {
 const mapStateToProps = (state) => {
   return {
     categories: state.entities.categories.entities,
-    categoriesLoaded: state.entities.categories.fetchStatus.loaded,
+    areCategoriesLoaded: state.entities.categories.fetchStatus.loaded,
     selectedCategories: state.signup.selectedCategories
   }
 }

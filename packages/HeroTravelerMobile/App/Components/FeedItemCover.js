@@ -7,14 +7,14 @@ import {
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import ImageWrapper from './ImageWrapper'
-import VideoPlayer, {MuteButton, PlayButton} from './VideoPlayer'
+import VideoPlayer, {PlayButton} from './VideoPlayer'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import {Metrics} from '../Shared/Themes'
 import Colors from '../Shared/Themes/Colors'
 import getVideoUrl from '../Shared/Lib/getVideoUrl'
 import getRelativeHeight, {extractCoverMetrics} from '../Shared/Lib/getRelativeHeight'
 
-export default class StoryCover extends Component {
+export default class FeedItemCover extends Component {
 
   static propTypes = {
     coverType: PropTypes.oneOf(['image', 'video']).isRequired,
@@ -26,18 +26,14 @@ export default class StoryCover extends Component {
     autoPlayVideo: PropTypes.bool.isRequired,
     allowVideoPlay: PropTypes.bool.isRequired,
     showPlayButton: PropTypes.bool,
-    gradientColors: PropTypes.arrayOf(PropTypes.string),
-    gradientLocations: PropTypes.arrayOf(PropTypes.number),
     shouldEnableAutoplay: PropTypes.bool,
     areInRenderLocation: PropTypes.bool,
-    storyTitle: PropTypes.string,
+    locationText: PropTypes.string,
   }
 
   static defaultProps = {
     autoPlayVideo: false,
     allowVideoPlay: false,
-    gradientColors: ['transparent', 'rgba(0,0,0,.65)'],
-    gradientLocations: [.5, 1],
     areInRenderLocation: true,
   }
 
@@ -59,9 +55,9 @@ export default class StoryCover extends Component {
     return this.props.coverType === 'image' && !!this.props.cover
   }
 
-  _getWidthHeight(isVideo){
+  _getWidthHeight(isOverride = false){
     const {isFeed, cover} = this.props
-    if (this.props.isFeed) {
+    if (isFeed && !isOverride) {
       if (this.hasImage()) {
         return { height: Metrics.storyCover.feed.imageTypeHeight }
       } else {
@@ -117,12 +113,17 @@ export default class StoryCover extends Component {
   }
 
   renderImage() {
-    let imageUrl = getImageUrl(this.props.cover, 'optimized', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
+    let imageUrl = getImageUrl(
+      this.props.cover,
+      'optimized',
+      this._getWidthHeight(true)
+    )
+
     return this.renderImageWithUrl(false, imageUrl)
   }
 
   _onPress = () => {
-    return this.props.onPress(this.props.storyTitle)
+    return this.props.onPress(this.props.locationText)
   }
 
   _tapVideoWrapper() {
@@ -196,7 +197,7 @@ export default class StoryCover extends Component {
           style={{flex: 1}}
           onPress={this._onPress}
         >
-          <View style={this._getWidthHeight(true)}>
+          <View style={this._getWidthHeight()}>
             <VideoPlayer
               areInRenderLocation={this.props.areInRenderLocation}
               path={videoPath}
@@ -225,7 +226,7 @@ export default class StoryCover extends Component {
     }
 
     return (
-      <View style={this._getWidthHeight(true)}>
+      <View style={this._getWidthHeight()}>
         <VideoPlayer
           areInRenderLocation={this.props.areInRenderLocation}
           path={videoPath}
@@ -298,8 +299,6 @@ const styles = StyleSheet.create({
   gradient: {
     paddingHorizontal: 25,
     paddingVertical: Metrics.doubleBaseMargin,
-    // height: Metrics.screenHeight/2 - Metrics.navBarHeight,
-    // width: Metrics.screenWidth,
     top: 0,
     left: 0,
     right: 0,

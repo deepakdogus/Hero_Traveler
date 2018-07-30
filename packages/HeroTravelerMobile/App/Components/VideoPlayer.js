@@ -13,7 +13,6 @@ import NativeCachingVideo from './NativeCachingVideo/NativeCachingVideo'
 import TabIcon from './TabIcon'
 import ImageWrapper from './ImageWrapper'
 import MediaSelectorStyles from '../Containers/Styles/MediaSelectorScreenStyles'
-import FullScreenButton from './FullScreenButton'
 
 import Colors from '../Shared/Themes/Colors'
 
@@ -21,12 +20,21 @@ const buttonLarge = 60
 const buttonSmall = 40
 const buttonTiny = 20
 
-export const TouchlessPlayButton = () => {
+export const TouchlessPlayButton = ({size = 30}) => {
   return (
-    <View style={styles.playButtonContainer}>
+    <View
+      style={[
+        styles.playButtonContainer,
+        {
+          borderRadius: size,
+          width: size*2,
+          height: size*2,
+        }
+      ]}
+    >
       <Icon
         name='play'
-        size={30}
+        size={size}
         color={Colors.snow}
       />
     </View>
@@ -275,9 +283,9 @@ export default class VideoPlayer extends React.Component {
   }
 
   render() {
-    const playButtonSize = this.props.playButtonSize
     const isNotReadyForDisplay = !this.state.isLoaded || !this.state.isReadyForDisplay
     const hasError = this.state.error
+
     return (
       <View style={[
         styles.root,
@@ -405,9 +413,6 @@ const styles = StyleSheet.create({
     marginLeft: 4
   },
   playButtonContainer: {
-    borderRadius: 30,
-    width: 60,
-    height: 60,
     backgroundColor: 'rgba(0,0,0,.6)',
     alignItems: 'center',
     justifyContent: 'center',

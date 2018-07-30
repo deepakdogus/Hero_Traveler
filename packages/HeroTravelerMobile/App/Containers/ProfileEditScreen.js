@@ -22,7 +22,11 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import Avatar from '../Components/Avatar'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import { FormTextInput } from '../Components/FormTextInput';
-import {validate, asyncValidate as asyncValidateOriginal} from '../Shared/Lib/userFormValidation'
+import {
+  validate,
+  asyncValidate as asyncValidateOriginal,
+  setOriginalUsername,
+} from '../Shared/Lib/userFormValidation'
 import HeroAPI from '../Shared/Services/HeroAPI'
 
 const api = HeroAPI.create()
@@ -54,7 +58,9 @@ class ProfileEditScreen extends React.Component {
   }
 
   componentDidMount() {
-    api.setAuth(this.props.accessToken)
+    const {accessToken, user} = this.props
+    api.setAuth(accessToken)
+    if (user) setOriginalUsername(user.username)
   }
 
   _handleUpdateAvatarPhoto = (data) => {

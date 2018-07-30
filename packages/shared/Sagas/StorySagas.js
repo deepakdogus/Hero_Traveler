@@ -1,5 +1,6 @@
 import { call, put, select } from 'redux-saga/effects'
 import StoryActions from '../Redux/Entities/Stories'
+import GuideActions from '../Redux/Entities/Guides'
 import UserActions, {isInitialAppDataLoaded, isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
 import CategoryActions from '../Redux/Entities/Categories'
 import StoryCreateActions from '../Redux/StoryCreateRedux'
@@ -53,7 +54,6 @@ export function * getUserFeed (api, action) {
   yield getInitalData(api, userId)
 
   const response = yield call(api.getUserFeed, userId)
-
   if (response.ok) {
     const { entities, result } = response.data;
     yield [
@@ -462,6 +462,19 @@ export function * loadDrafts(api) {
   }
 }
 
+export function * getGuideStories(api, {guideId}) {
+  const response = yield call(api.getGuideStories, guideId)
+  if (response.ok) {
+    const {entities} = response.data
+    yield [
+      put(UserActions.receiveUsers(entities.users)),
+      put(CategoryActions.receiveCategories(entities.categories)),
+      put(StoryActions.receiveStories(entities.stories)),
+    ]
+  }
+  // no fail case... worse case they will see less stories
+}
+
 export function * deleteStory(api, {userId, storyId}){
   const response = yield call(
     api.deleteStory,
@@ -469,6 +482,9 @@ export function * deleteStory(api, {userId, storyId}){
   )
 
   if (response.ok) {
-    yield put(StoryActions.deleteStorySuccess(userId, storyId))
+    yield [
+      put(StoryActions.deleteStorySuccess(userId, storyId)),
+      put(GuideActions.deleteStoryFromGuides(storyId)),
+    ]
   }
 }

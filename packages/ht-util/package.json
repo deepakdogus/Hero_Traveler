@@ -1,6 +1,6 @@
 {
   "name": "@hero/ht-util",
-  "version": "0.0.50",
+  "version": "0.0.51",
   "description": "Common server/client javascript functions",
   "main": "dist/index.js",
   "keywords": [],
@@ -14,7 +14,9 @@
     "copy-local:core": "cp -r ./{dist,package.json} ../ht-core/node_modules/@hero/ht-util",
     "copy-local:api": "cp -r ./{dist,package.json} ../express-api/node_modules/@hero/ht-util",
     "copy-local:seeder": "cp -r ./{dist,package.json} ../ht-seed-data/node_modules/@hero/ht-util",
-    "dev": "watch 'npm run build && npm run copy-local:api && npm run copy-local:core' src"
+    "copy-local:cms": "cp -r ./{dist,package.json} ../cms/node_modules/@hero/ht-util",
+    "dev": "watch 'npm run build && npm run copy-local:api && npm run copy-local:core' src",
+    "dev:cms": "watch 'npm run build && npm run copy-local:cms && npm run copy-local:core' src"
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",

@@ -55,9 +55,9 @@ export default class FeedItemCover extends Component {
     return this.props.coverType === 'image' && !!this.props.cover
   }
 
-  _getWidthHeight(){
+  _getWidthHeight(isOverride = false){
     const {isFeed, cover} = this.props
-    if (isFeed) {
+    if (isFeed && !isOverride) {
       if (this.hasImage()) {
         return { height: Metrics.storyCover.feed.imageTypeHeight }
       } else {
@@ -113,7 +113,12 @@ export default class FeedItemCover extends Component {
   }
 
   renderImage() {
-    let imageUrl = getImageUrl(this.props.cover, 'optimized', {width: 'screen', height: Metrics.storyCover.fullScreen.height})
+    let imageUrl = getImageUrl(
+      this.props.cover,
+      'optimized',
+      this._getWidthHeight(true)
+    )
+
     return this.renderImageWithUrl(false, imageUrl)
   }
 
@@ -192,7 +197,7 @@ export default class FeedItemCover extends Component {
           style={{flex: 1}}
           onPress={this._onPress}
         >
-          <View style={this._getWidthHeight(true)}>
+          <View style={this._getWidthHeight()}>
             <VideoPlayer
               areInRenderLocation={this.props.areInRenderLocation}
               path={videoPath}
@@ -221,7 +226,7 @@ export default class FeedItemCover extends Component {
     }
 
     return (
-      <View style={this._getWidthHeight(true)}>
+      <View style={this._getWidthHeight()}>
         <VideoPlayer
           areInRenderLocation={this.props.areInRenderLocation}
           path={videoPath}

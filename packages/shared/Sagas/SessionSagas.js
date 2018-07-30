@@ -1,6 +1,7 @@
 import { call, put, select } from 'redux-saga/effects'
 import _ from 'lodash'
 import UserActions from '../Redux/Entities/Users'
+import LoginActions from '../Redux/LoginRedux'
 import SessionActions from '../Redux/SessionRedux'
 import StartupActions from '../Redux/StartupRedux'
 
@@ -9,6 +10,7 @@ const currentUserTokens = ({session}) => session.tokens
 
 // attempts to signup with email
 export function * logout (api, action) {
+  let setIsLoggedIn = undefined
   const {tokens} = action
 
   const userId = yield select(currentUserId)
@@ -21,13 +23,18 @@ export function * logout (api, action) {
       tokens
     )
     resultAction = SessionActions.logoutSuccess;
+    setIsLoggedIn = LoginActions.setIsLoggedIn
   } catch(err) {
     resultAction = SessionActions.logoutFailure;
   } finally {
-    yield [
+    setIsLoggedIn ? yield[
       put(resultAction()),
+      put(setIsLoggedIn(false)),
       call(api.unsetAuth),
-    ]
+    ] : yield [
+        put(resultAction()),
+        call(api.unsetAuth),
+      ]
     yield put(StartupActions.hideSplash())
   }
 }

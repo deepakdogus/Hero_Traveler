@@ -2,15 +2,21 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Modal from 'react-modal'
 
+import styled from 'styled-components'
 import Login from './Modals/HeaderModals/Login'
 import Signup from './Modals/HeaderModals/Signup'
 import ResetPassword from './Modals/HeaderModals/ResetPassword'
 import Contributor from './Modals/HeaderModals/Contributor'
 import AddToItinerary from './Modals/HeaderModals/AddToItinerary'
 import Comments from './Modals/HeaderModals/Comments'
+import Settings from './Modals/Settings'
+import FAQTermsAndConditions from './Modals/FAQTermsAndConditions'
 import Inbox from './Modals/Inbox'
 import RightModal from './RightModal'
+import CenterModal from './CenterModal'
 import NotificationsThread from './Modals/NotificationsThread'
+
+const Container = styled.div``
 
 const customModalStyles = {
   content: {
@@ -53,15 +59,27 @@ export default class HeaderModals extends React.Component {
     openSignupModal: PropTypes.func,
     attemptLogin: PropTypes.func,
     openLoginModal: PropTypes.func,
-    user: PropTypes.string, // actually just a userId
+    user: PropTypes.string,
+    currentUserProfile: PropTypes.object,
+    currentUserEmail: PropTypes.string,
+    currentUserNotificationTypes: PropTypes.arrayOf(PropTypes.string),
+    attemptChangePassword: PropTypes.func,
+    loginReduxFetching: PropTypes.bool,
+    loginReduxError: PropTypes.object,
+    attemptUpdateUser: PropTypes.func,
+    userEntitiesUpdating: PropTypes.bool,
+    userEntitiesError: PropTypes.object,
   }
   closeGlobalModal = () => {
     this.props.closeGlobalModal()
   }
   render() {
-    const { globalModalThatIsOpen, closeModal, modal, globalModalParams } = this.props
+    const { globalModalThatIsOpen, loginReduxFetching, loginReduxError,
+      closeModal, modal, globalModalParams, attemptChangePassword, user,
+      attemptUpdateUser, userEntitiesUpdating, userEntitiesError,
+      currentUserEmail, currentUserProfile, currentUserNotificationTypes, } = this.props
     return (
-      <div>
+      <Container>
         <Modal
           isOpen={modal === 'login'}
           contentLabel="Login Modal"
@@ -110,7 +128,7 @@ export default class HeaderModals extends React.Component {
           contentLabel='Notifications Thread'
           onRequestClose={closeModal}
         >
-          <NotificationsThread closeModal={closeModal} profile={this.props.user}/>
+          <NotificationsThread closeModal={closeModal} profile={this.props.userId}/>
         </RightModal>
         <RightModal
           isOpen={globalModalThatIsOpen === 'comments'}
@@ -123,13 +141,38 @@ export default class HeaderModals extends React.Component {
           />
         </RightModal>
         <RightModal
+          isOpen={globalModalThatIsOpen === 'settings'}
+          contentLabel='Settings Modal'
+        >
+          <Settings
+            closeModal={this.closeGlobalModal}
+            attemptChangePassword={attemptChangePassword}
+            loginReduxFetching={loginReduxFetching}
+            loginReduxError={loginReduxError}
+            attemptUpdateUser={attemptUpdateUser}
+            userEntitiesUpdating={userEntitiesUpdating}
+            userEntitiesError={userEntitiesError}
+            userId={user}
+            userProfile={currentUserProfile}
+            userEmail={currentUserEmail}
+            userNotificationTypes={currentUserNotificationTypes}
+          />
+        </RightModal>
+        <CenterModal
+          isOpen={globalModalThatIsOpen === 'faqTermsAndConditions'}
+          contentLabel='FAQ Terms & Conditions'
+          onRequestClose={this.closeGlobalModal}
+        >
+          <FAQTermsAndConditions closeModal={this.closeGlobalModal}/>
+        </CenterModal>
+        <RightModal
           isOpen={modal === 'inbox'}
           contentLabel='Inbox'
           onRequestClose={closeModal}
         >
-          <Inbox closeModal={closeModal} profile={this.props.user}/>
+          <Inbox closeModal={closeModal} profile={this.props.userId}/>
         </RightModal>
-      </div>
+      </Container>
     )
   }
 }

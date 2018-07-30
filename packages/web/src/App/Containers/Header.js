@@ -2,11 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-<<<<<<< HEAD
 import { push } from 'react-router-redux'
-=======
-import {push} from 'react-router-redux'
->>>>>>> master
 import * as _ from 'lodash'
 import { Grid } from '../Components/FlexboxGrid'
 import HeaderAnonymous from '../Components/Headers/HeaderAnonymous'
@@ -17,7 +13,6 @@ import SessionActions from '../Shared/Redux/SessionRedux'
 import UXActions from '../Redux/UXRedux'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import HeaderModals from '../Components/HeaderModals'
-import UserActions from '../Shared/Redux/Entities/Users'
 
 // If we don't explicity prevent 'fixed' from being passed to Grid, we get an error about unknown prop on div element
 // because apparently react-flexbox-grid passes all props down to underlying React elements
@@ -56,18 +51,10 @@ class Header extends React.Component {
     openGlobalModal: PropTypes.func,
     globalModalThatIsOpen: PropTypes.string,
     globalModalParams: PropTypes.object,
-<<<<<<< HEAD
     reroute: PropTypes.func,
     attemptUpdateUser: PropTypes.func,
     userEntitiesUpdating: PropTypes.bool,
     userEntitiesError: PropTypes.object,
-=======
-    activitiesById: PropTypes.array,
-    activities: PropTypes.object,
-    stories: PropTypes.object,
-    markSeen: PropTypes.func,
-    users: PropTypes.object,
->>>>>>> master
   }
 
   constructor(props) {
@@ -129,27 +116,9 @@ class Header extends React.Component {
   }
 
   render () {
-<<<<<<< HEAD
     const { isLoggedIn, loginReduxFetching, loginReduxError, attemptLogin, attemptLogout, attemptChangePassword, closeGlobalModal, openGlobalModal,
       currentUserId, currentUserProfile, currentUserEmail, currentUserNotificationTypes, globalModalThatIsOpen, globalModalParams,
       reroute, attemptUpdateUser, userEntitiesUpdating, userEntitiesError } = this.props
-=======
-    const {
-      isLoggedIn,
-      attemptLogin,
-      closeGlobalModal,
-      currentUser,
-      globalModalThatIsOpen,
-      globalModalParams,
-      activities,
-      activitiesById,
-      markSeen,
-      stories,
-      reroute,
-      users,
-    } = this.props
-
->>>>>>> master
     const SelectedGrid = (this.props.blackHeader || this.state.navbarEngaged) ? StyledGridBlack : StyledGrid
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
     return (
@@ -227,14 +196,9 @@ function mapDispatchToProps(dispatch) {
     attemptChangePassword: (userId, oldPassword, newPassword) => dispatch(LoginActions.changePasswordRequest(userId, oldPassword, newPassword)),
     attemptGetUserFeed: (userId) => dispatch(StoryActions.feedRequest(userId)),
     closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
-<<<<<<< HEAD
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
     reroute: (route) => dispatch(push(route)),
     attemptUpdateUser: (updates) => dispatch(UserActions.updateUser(updates))
-=======
-    markSeen: (activityId) => dispatch(UserActions.activitySeen(activityId)),
-    reroute: (path) => dispatch(push(path)),
->>>>>>> master
   }
 }
 

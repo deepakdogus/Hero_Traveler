@@ -3,8 +3,9 @@ import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 
 import AddCoverTitles from '../../Components/CreateStory/AddCoverTitles'
-import StoryActions from '../../Shared/Redux/Entities/Stories'
+import BodyEditor from '../../Components/CreateStory/Editor'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
+
 
 class CreateStoryCoverContent extends Component {
   static propTypes = {
@@ -18,10 +19,15 @@ class CreateStoryCoverContent extends Component {
 
   render() {
     return (
-      <AddCoverTitles
-        onInputChange={this.onInputChange}
-        workingDraft={this.props.workingDraft}
-      />
+      <div>
+        <AddCoverTitles
+          onInputChange={this.onInputChange}
+          workingDraft={this.props.workingDraft}
+        />
+        <BodyEditor
+
+        />
+      </div>
     )
   }
 }

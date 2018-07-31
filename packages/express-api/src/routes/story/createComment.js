@@ -22,6 +22,6 @@ export default function createComment(req) {
         commentNotification(author, commentator, updatedModel);
       })
     }
-    Promise.resolve(comment);
+    return Promise.resolve(comment);
   });
 }

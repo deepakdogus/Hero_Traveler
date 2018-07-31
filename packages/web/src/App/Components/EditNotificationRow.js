@@ -33,7 +33,11 @@ export default class EditNotificationRow extends Component {
     text: PropTypes.string,
     index: PropTypes.number,
     toggleNotificationSwitch: PropTypes.func,
-    checked: PropTypes.bool,
+    element: PropTypes.object
+  }
+
+  _toggleNotificationSwitch = () => {
+    this.props.toggleNotificationSwitch(this.props.element.value)
   }
 
   renderText = () => {
@@ -51,7 +55,7 @@ export default class EditNotificationRow extends Component {
           checked={this.props.checked}
           index={this.props.index}
           disabled={null}
-          onChange={this.props.toggleNotificationSwitch}
+          onChange={this._toggleNotificationSwitch}
           onColor={Colors.red}
         />
       </VerticalCenter>

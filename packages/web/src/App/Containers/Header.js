@@ -47,6 +47,7 @@ class Header extends React.Component {
     attemptLogin: PropTypes.func,
     attemptLogout: PropTypes.func,
     attemptChangePassword: PropTypes.func,
+    attemptGetUserFeed: PropTypes.func,
     closeGlobalModal: PropTypes.func,
     openGlobalModal: PropTypes.func,
     globalModalThatIsOpen: PropTypes.string,
@@ -121,36 +122,60 @@ class Header extends React.Component {
   }
 
   render () {
-    const { isLoggedIn, loginReduxFetching, loginReduxError, attemptLogin, attemptLogout, attemptChangePassword, closeGlobalModal, openGlobalModal,
-      currentUserId, currentUserProfile, currentUserEmail, currentUserNotificationTypes, globalModalThatIsOpen, globalModalParams,
-      reroute, attemptUpdateUser, userEntitiesUpdating, userEntitiesError, activitiesById, activities, stories, markSeen, users, } = this.props
+    const {
+      isLoggedIn,
+      loginReduxFetching,
+      loginReduxError,
+      attemptLogin,
+      attemptLogout,
+      attemptChangePassword,
+      closeGlobalModal,
+      openGlobalModal,
+      currentUserId,
+      currentUserProfile,
+      currentUserEmail,
+      currentUserNotificationTypes,
+      globalModalThatIsOpen,
+      globalModalParams,
+      reroute,
+      attemptUpdateUser,
+      userEntitiesUpdating,
+      userEntitiesError,
+      activitiesById,
+      activities,
+      stories,
+      markSeen,
+      users,
+    } = this.props
+
     const SelectedGrid = (this.props.blackHeader || this.state.navbarEngaged) ? StyledGridBlack : StyledGrid
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
+
     return (
       <div>
         <SelectedGrid fluid fixed>
           {isLoggedIn &&
-          <HeaderLoggedIn
-              user={currentUserId}
+            <HeaderLoggedIn
+              userId={currentUserId}
               openModal={this.openModal}
               openGlobalModal={openGlobalModal}
               reroute={reroute}
               attemptLogout={attemptLogout}
-          />
+            />
           }
           {!isLoggedIn &&
-          <HeaderAnonymous
+            <HeaderAnonymous
               openLoginModal={this.openLoginModal}
-          />
+            />
           }
-          <HeaderModals
+            <HeaderModals
               closeModal={this.closeModal}
               closeGlobalModal={closeGlobalModal}
               openSignupModal={this.openSignupModal}
               attemptLogin={attemptLogin}
               attemptLogout={attemptLogout}
               openLoginModal={this.openLoginModal}
-              user={currentUserId}
+              userId={currentUserId}
               currentUserProfile={currentUserProfile}
               currentUserEmail={currentUserEmail}
               currentUserNotificationTypes={currentUserNotificationTypes}
@@ -169,12 +194,12 @@ class Header extends React.Component {
               markSeen={markSeen}
               users={users}
               reroute={reroute}
-          />
-      </SelectedGrid>
-      <HeaderSpacer
+            />
+        </SelectedGrid>
+        <HeaderSpacer
           spacerSize={spacerSize}
-      />
-    </div>
+        />
+      </div>
   )
   }
 }

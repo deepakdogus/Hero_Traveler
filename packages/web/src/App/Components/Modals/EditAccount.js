@@ -41,9 +41,9 @@ export default class EditAccount extends React.Component {
   componentDidUpdate(prevProps){
     if(prevProps.userEntitiesUpdating && !this.props.userEntitiesUpdating && !this.props.userEntitiesError){
       this.setState({
-              success: true
-            })
-          }
+          success: true
+        })
+      }
     }
 
   loadInitialData = () => {
@@ -142,10 +142,22 @@ export default class EditAccount extends React.Component {
             onChange={this.onChangeText}
           />
         </InputContainer>
-        {this.state.localError && <ErrorMessage> {this.state.localError} </ErrorMessage>}
-        {!!(userEntitiesError) && <ErrorMessage> {userEntitiesError.toString()} </ErrorMessage>}
-        { userEntitiesUpdating ? <FetchingMessage> Updating... </FetchingMessage> : null}
-        { this.state.success && <FetchingMessage> You have successfully changed your info. </FetchingMessage>}
+        {this.state.localError &&
+          <ErrorMessage>
+            {this.state.localError}
+          </ErrorMessage>}
+        {!!(userEntitiesError) &&
+          <ErrorMessage>
+            {userEntitiesError.toString()}
+          </ErrorMessage>}
+        {userEntitiesUpdating &&
+          <FetchingMessage>
+            Updating...
+          </FetchingMessage>}
+        {this.state.success &&
+          <FetchingMessage>
+            You have successfully changed your info.
+          </FetchingMessage>}
         <CenteredButtons
           buttonsToRender={[
             this.renderButtonLeft,

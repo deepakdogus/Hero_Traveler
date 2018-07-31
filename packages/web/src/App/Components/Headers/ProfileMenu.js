@@ -33,18 +33,37 @@ class ProfileMenu extends React.Component{
     closeMyself: PropTypes.func,
     openModal: PropTypes.func,
     openGlobalModal: PropTypes.func,
-    user: PropTypes.string,
+    userId: PropTypes.string,
     attemptLogout: PropTypes.func
   }
 
-  handleClickOutside = (evt) => {
+  handleClickOutside = () => {
       this.props.closeMyself()
+  }
+
+  rerouteToProfile = ()=> {
+    this.rerouteAndClose(`/profile/${this.props.userId}/view`)
+  }
+
+  rerouteToCustomizeInterests = () => {
+    this.rerouteAndClose('/signup/topics')
   }
 
   rerouteAndClose = (routePath) => {
     this.props.closeMyself()
     this.props.reroute(routePath)
+  }
 
+  openFAQ = () => {
+    this.openGlobalModalAndClose('faqTermsAndConditions')
+  }
+
+  openSettings = () => {
+    this.openGlobalModalAndClose('settings')
+  }
+
+  handleLogout = () =>{
+    this.props.attemptLogout(this.props.userId)
   }
 
   openGlobalModalAndClose = (modalName) => {
@@ -53,14 +72,23 @@ class ProfileMenu extends React.Component{
   }
 
   render(){
-    const {user, attemptLogout} = this.props
     return(
       <Sidebar>
-        <SidebarDemiLink onClick={()=>this.rerouteAndClose(`/profile/${user}/view`)}>My Profile</SidebarDemiLink>
-        <SidebarDemiLink onClick={()=>this.openGlobalModalAndClose('settings')}>Settings</SidebarDemiLink>
-        <SidebarDemiLink onClick={()=>this.rerouteAndClose('/signup/topics')}>Customize Interests</SidebarDemiLink>
-        <SidebarDemiLink onClick={()=>this.openGlobalModalAndClose('faqTermsAndConditions')}>FAQ</SidebarDemiLink>
-        <SidebarDemiLink onClick={()=>attemptLogout(user)}>Logout</SidebarDemiLink>
+        <SidebarDemiLink onClick={this.rerouteToProfile}>
+          My Profile
+        </SidebarDemiLink>
+        <SidebarDemiLink onClick={this.openSettings}>
+          Settings
+        </SidebarDemiLink>
+        <SidebarDemiLink onClick={this.rerouteToCustomizeInterests}>
+          Customize Interests
+        </SidebarDemiLink>
+        <SidebarDemiLink onClick={this.openFAQ}>
+          FAQ
+        </SidebarDemiLink>
+        <SidebarDemiLink onClick={this.handleLogout}>
+          Logout
+        </SidebarDemiLink>
       </Sidebar>
     )
   }

@@ -145,10 +145,22 @@ export default class EditPassword extends React.Component {
             onChange={this.onChangeText}
           />
         </InputContainer>
-        { this.state.localError && <ErrorMessage> {this.state.localError} </ErrorMessage> }
-        { !!(loginReduxError) && <ErrorMessage> {loginReduxError.toString()} </ErrorMessage> }
-        { loginReduxFetching ? <FetchingMessage> Fetching... </FetchingMessage> : null}
-        { this.state.success && <FetchingMessage> You have successfully changed your info. </FetchingMessage>}
+        {this.state.localError &&
+          <ErrorMessage>
+            {this.state.localError}
+          </ErrorMessage> }
+        {!!(loginReduxError) &&
+          <ErrorMessage>
+            {loginReduxError.toString()}
+          </ErrorMessage> }
+        {loginReduxFetching &&
+          <FetchingMessage>
+            Fetching...
+          </FetchingMessage>}
+        {this.state.success &&
+          <FetchingMessage>
+            You have successfully changed your info.
+          </FetchingMessage>}
         <CenteredButtons
           buttonsToRender={[
             this.renderButtonLeft,

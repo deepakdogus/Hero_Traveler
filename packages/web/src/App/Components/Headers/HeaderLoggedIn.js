@@ -22,12 +22,6 @@ const LoggedInTabletContainer = styled.div`
   ${mediaMax.phone`display: none;`}
 `
 
-const MailIcon = styled(Icon)`
-  height: 12px;
-  width: 18px;
-  padding-top: 2px;
-`
-
 const NotificationsIcon = styled(Icon)`
   height: 18px;
   width: 18px;
@@ -45,12 +39,6 @@ const StyledRoundedCreateButton = styled(RoundedButton)`
     bottom: 1px;
 `
 
-
-const StyledRoundedMailButton = styled(StyledRoundedButton)`
-    position: relative;
-    bottom: 5px;
-`
-
 const StyledRoundedNotificationButton = styled(StyledRoundedButton)`
     position: relative;
     top: 2px;
@@ -61,23 +49,27 @@ class HeaderLoggedIn extends React.Component {
     reroute: PropTypes.func,
     openModal: PropTypes.func,
     openGlobalModal: PropTypes.func,
-    user: PropTypes.string,
+    userId: PropTypes.string,
     attemptLogout: PropTypes.func,
+    profileAvatar: PropTypes.object
   }
 
-  constructor(){
-    super()
-    this.state = {
-      profileMenuIsOpen: false
-    }
-
-    this.toggleProfileMenu = this.toggleProfileMenu.bind(this)
+  state = {
+    profileMenuIsOpen: false
   }
 
   toggleProfileMenu = () => this.setState({profileMenuIsOpen: !this.state.profileMenuIsOpen})
 
   render () {
-    const { openModal, openGlobalModal, user, profileAvatar, reroute, attemptLogout } = this.props
+    const {
+      openModal,
+      openGlobalModal,
+      userId,
+      profileAvatar,
+      reroute,
+      attemptLogout
+    } = this.props
+
     return (
       <StyledRow between="xs" middle="xs">
         <Col>
@@ -136,7 +128,7 @@ class HeaderLoggedIn extends React.Component {
                       closeMyself={this.toggleProfileMenu}
                       openModal={openModal}
                       openGlobalModal={openGlobalModal}
-                      user={user}
+                      userId={userId}
                       reroute={reroute}
                       attemptLogout={attemptLogout}
                     />
@@ -162,7 +154,7 @@ class HeaderLoggedIn extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   let {users} = state.entities
-  const profileAvatar =  users.entities[ownProps.user].profile.avatar
+  const profileAvatar =  users.entities[ownProps.userId].profile.avatar
   return {
     profileAvatar
   }

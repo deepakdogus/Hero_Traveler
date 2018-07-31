@@ -42,9 +42,19 @@ export default class Settings extends React.Component {
   }
 
   render() {
-    const { loginReduxError, loginReduxFetching, attemptChangePassword, userId,
-      userProfile, userEmail, userNotificationTypes = [], attemptUpdateUser, userEntitiesUpdating,
-      userEntitiesError } = this.props
+    const {
+      loginReduxError,
+      loginReduxFetching,
+      attemptChangePassword,
+      userId,
+      userProfile,
+      userEmail,
+      userNotificationTypes = [],
+      attemptUpdateUser,
+      userEntitiesUpdating,
+      userEntitiesError
+    } = this.props
+
     return (
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>

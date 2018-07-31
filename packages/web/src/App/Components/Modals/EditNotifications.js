@@ -71,9 +71,10 @@ export default class EditNotifications extends React.Component {
           index={index}
           key={element.text}
           text={element.text}
-          toggleNotificationSwitch={() => this.toggleNotificationSwitch(element.value)}
+          toggleNotificationSwitch={this.toggleNotificationSwitch}
           logOnChange={this.logOnChange}
           checked={element.isNotifying}
+          element={element}
         />
       )
     })

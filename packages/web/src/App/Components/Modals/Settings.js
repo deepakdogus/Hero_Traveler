@@ -5,10 +5,9 @@ import PropTypes from 'prop-types'
 import {RightTitle, RightModalCloseX} from './Shared'
 import TabBar from '../TabBar'
 
-import EditAccount from './EditAccount'
 import EditNotifications from './EditNotifications'
-import EditPassword from './EditPassword'
 import EditServices from './EditServices'
+import EditSettings from './EditSettings'
 
 const Container = styled.div``
 
@@ -67,12 +66,13 @@ export default class Settings extends React.Component {
           whiteBG
         />
         {this.state.activeTab === 'Account' &&
-          <EditAccount
-            attemptUpdateUser={attemptUpdateUser}
-            userEntitiesUpdating={userEntitiesUpdating}
-            userEntitiesError={userEntitiesError}
+          <EditSettings
+            updateAccountOrPassword={attemptUpdateUser}
             userProfile={userProfile}
-            userEmail={userEmail}
+            userEmailOrId={userEmail}
+            isUpdating={userEntitiesUpdating}
+            errorObj={userEntitiesError}
+            type={'account'}
           />
         }
         {this.state.activeTab === 'Services' && <EditServices/>}
@@ -85,11 +85,13 @@ export default class Settings extends React.Component {
           />
         }
         {this.state.activeTab === 'Password' &&
-          <EditPassword
-            attemptChangePassword={attemptChangePassword}
-            loginReduxFetching={loginReduxFetching}
-            loginReduxError={loginReduxError}
-            userId={userId}
+          <EditSettings
+            updateAccountOrPassword={attemptChangePassword}
+            userProfile={userProfile}
+            userEmailOrId={userId}
+            isUpdating={loginReduxFetching}
+            errorObj={loginReduxError}
+            type={'password'}
           />
         }
       </Container>

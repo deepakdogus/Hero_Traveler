@@ -15,7 +15,6 @@ import {
   convertFromRaw,
   insertAtomicBlock,
 } from './editorHelpers/draft-js'
-
 import Image from '../Image'
 import Video from '../Video'
 import Icon from '../Icon'
@@ -59,18 +58,21 @@ const sideToolbarPlugin = createSideToolbarPlugin({
   structure: [CustomBlockTypeSelect]
 })
 
-const { SideToolbar } = sideToolbarPlugin;
+const { SideToolbar } = sideToolbarPlugin
 
 class MediaComponent extends React.Component {
   render() {
-    const {type, url, text, key} = this.props.blockProps
-
+    let {type, url, text, key} = this.props.blockProps
+    let imageUrl = url.startsWith('data:')
+      ? url
+      : getImageUrl(url, 'contentBlock')
     const videoUrl = `${getVideoUrlBase()}/${url}`
+
     switch (type) {
       case 'image':
         return (
           <div key={key}>
-            <StyledImage src={getImageUrl(url, 'contentBlock')} />
+            <StyledImage src={imageUrl} />
             {text && <Caption>{text}</Caption>}
           </div>
         )
@@ -93,7 +95,8 @@ class AddMediaButton extends React.Component {
   uploadFile = (event) => {
 
     uploadFile(event, this, (file) => {
-      // add EditorState update logic
+      const update = insertAtomicBlock(this.props.getEditorState(), 'image', file.uri)
+      this.props.setEditorState(update)
     })
   }
 
@@ -103,6 +106,7 @@ class AddMediaButton extends React.Component {
   render() {
     const { theme } = this.props
     const className = theme.button
+
     return (
       <div
         className={theme.buttonWrapper}

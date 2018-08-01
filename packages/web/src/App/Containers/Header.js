@@ -46,6 +46,7 @@ class Header extends React.Component {
     stories: PropTypes.object,
     markSeen: PropTypes.func,
     users: PropTypes.object,
+    pathname: PropTypes.string,
   }
 
   constructor(props) {
@@ -53,6 +54,7 @@ class Header extends React.Component {
     this.state = {
       modal: undefined,
       navbarEngaged: false,
+      nextPathAfterSave: undefined,
     }
   }
 
@@ -89,6 +91,13 @@ class Header extends React.Component {
     this.setState({ modal: 'signup' })
   }
 
+  openSaveEditsModal = (path) => {
+    this.setState({
+      modal: 'saveEdits',
+      nextPathAfterSave: path
+    })
+  }
+
   componentWillReceiveProps(nextProps) {
     if (!this.props.isLoggedIn && nextProps.isLoggedIn) this.closeModal()
   }
@@ -120,6 +129,7 @@ class Header extends React.Component {
       stories,
       reroute,
       users,
+      pathname
     } = this.props
 
     const SelectedGrid = (this.props.blackHeader || this.state.navbarEngaged) ? StyledGridBlack : StyledGrid
@@ -131,6 +141,8 @@ class Header extends React.Component {
           <HeaderLoggedIn
               user={currentUser}
               openModal={this.openModal}
+              pathname={pathname}
+              openSaveEditsModal={this.openSaveEditsModal}
           />
           }
           {!isLoggedIn &&
@@ -154,6 +166,7 @@ class Header extends React.Component {
               markSeen={markSeen}
               reroute={reroute}
               users={users}
+              nextPathAfterSave={this.state.nextPathAfterSave}
           />
       </SelectedGrid>
       <HeaderSpacer
@@ -176,6 +189,7 @@ function mapStateToProps(state) {
     globalModalParams: state.ux.params,
     users: state.entities.users.entities,
     stories: state.entities.stories.entities,
+    pathname: pathname,
   }
 }
 

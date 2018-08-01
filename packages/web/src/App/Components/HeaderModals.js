@@ -4,6 +4,7 @@ import Modal from 'react-modal'
 
 import Login from './Modals/HeaderModals/Login'
 import Signup from './Modals/HeaderModals/Signup'
+import SaveEdits from './Modals/HeaderModals/SaveEdits'
 import ResetPassword from './Modals/HeaderModals/ResetPassword'
 import Contributor from './Modals/HeaderModals/Contributor'
 import AddToItinerary from './Modals/HeaderModals/AddToItinerary'
@@ -60,6 +61,7 @@ export default class HeaderModals extends React.Component {
     markSeen: PropTypes.func,
     reroute: PropTypes.func,
     users: PropTypes.object,
+    nextPathAfterSave: PropTypes.string,
   }
 
   closeGlobalModal = () => {
@@ -78,6 +80,7 @@ export default class HeaderModals extends React.Component {
       reroute,
       stories,
       users,
+      nextPathAfterSave,
     } = this.props
 
     return (
@@ -124,6 +127,18 @@ export default class HeaderModals extends React.Component {
           style={addToItineraryModalStyles}
         >
           <AddToItinerary/>
+        </Modal>
+        <Modal
+          isOpen={modal=== 'saveEdits'}
+          contentLabel="Save Edits Modal"
+          onRequestClose={closeModal}
+          style={customModalStyles}
+        >
+          <SaveEdits
+            reroute={reroute}
+            nextPathAfterSave={nextPathAfterSave}
+            closeModal={closeModal}
+          />
         </Modal>
         <RightModal
           isOpen={modal === 'notificationsThread'}

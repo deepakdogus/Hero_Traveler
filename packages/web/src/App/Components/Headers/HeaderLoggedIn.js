@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { Link, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { Row, Col } from '../FlexboxGrid'
 import { mediaMax, mediaMin } from '../ContentLayout.component'
 import Avatar from '../Avatar'
@@ -11,6 +11,7 @@ import Icon from '../Icon'
 import { StyledRow, StyledRoundedButton, Logo, Divider, HamburgerIcon, MenuLink, SearchNav } from './Shared'
 import logo from '../../Shared/Images/ht-logo-white.png'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
+import ConditionalLink from '../ConditionalLink'
 
 const LoggedInDesktopContainer = styled.div`
   ${mediaMax.desktop`display: none;`}
@@ -61,16 +62,23 @@ class HeaderLoggedIn extends React.Component {
   static PropTypes = {
     openModal: PropTypes.func,
     user: PropTypes.object,
+    pathname: PropTypes.string,
+    openSaveEditsModal: PropTypes.func,
   }
 
   render () {
-    const { openModal, user, profileAvatar } = this.props
+    const { openModal, user, profileAvatar, pathname, openSaveEditsModal } = this.props
+
     return (
       <StyledRow between="xs" middle="xs">
         <Col>
-          <Link to="/">
+          <ConditionalLink
+            to="/"
+            pathname={pathname}
+            openSaveEditsModal={openSaveEditsModal}
+          >
             <Logo src={logo} alt={'Hero Traveler Logo'}/>
-          </Link>
+          </ConditionalLink>
         </Col>
         <LoggedInDesktopContainer>
           <Col>

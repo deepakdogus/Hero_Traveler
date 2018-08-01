@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
+import Immutable from 'seamless-immutable'
+import _ from 'lodash'
 
 import AddCoverTitles from '../../Components/CreateStory/AddCoverTitles'
 import BodyEditor from '../../Components/CreateStory/Editor'
@@ -17,6 +19,18 @@ class CreateStoryCoverContent extends Component {
     this.props.updateWorkingDraft(update)
   }
 
+  getContent() {
+    if (_.keys(this.props.workingDraft.draftjsContent).length) {
+      const content = Immutable.asMutable(this.props.workingDraft.draftjsContent, {deep: true})
+      if (!content.entityMap) content.entityMap = {}
+      return {value: content}
+    } else {
+      return {}
+    }
+  }
+
+  setEditorRef = (ref) => this.editor = ref
+
   render() {
     return (
       <div>
@@ -25,7 +39,8 @@ class CreateStoryCoverContent extends Component {
           workingDraft={this.props.workingDraft}
         />
         <BodyEditor
-
+          onInputChange={this.onInputChange}
+          {...this.getContent()}
         />
       </div>
     )

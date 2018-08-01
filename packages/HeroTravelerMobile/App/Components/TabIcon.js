@@ -9,8 +9,8 @@ import NotificationBadge from './NotificationBadge'
 
 class TabIcon extends React.Component {
 
-  getIconName(navKey) {
-    switch (navKey) {
+  getIconSource(name) {
+    switch (name) {
       case 'pencil':
         return Images.iconPencil
       case 'pencilOutline':
@@ -137,7 +137,7 @@ class TabIcon extends React.Component {
         style={style.view}
       >
         <Image
-          source={this.getIconName(name)}
+          source={this.getIconSource(name)}
           style={style.image || {}}
         />
         {name === 'activity' && notificationCount > 0 &&

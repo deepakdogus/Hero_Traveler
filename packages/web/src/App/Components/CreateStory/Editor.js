@@ -13,23 +13,15 @@ import {
 
 import {
   convertFromRaw,
+  insertAtomicBlock,
 } from './editorHelpers/draft-js'
+
 import Image from '../Image'
 import Video from '../Video'
+import Icon from '../Icon'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import {getVideoUrlBase} from '../../Shared/Lib/getVideoUrl'
-//   NativeEditor,
-//   EditorState,
-//   RichUtils,
-//   convertToRaw,
-//   insertText,
-//   insertTextAtPosition,
-//   backspace,
-//   insertNewline,
-//   insertAtomicBlock,
-//   updateSelectionHasFocus,
-//   updateSelectionAnchorAndFocus,
-//   makeSelectionState,
+import uploadFile from '../../Utils/uploadFile'
 
 const Caption = styled.p`
   font-weight: 400;
@@ -45,6 +37,12 @@ const StyledImage = styled(Image)`
   width: 100%;
 `
 
+const HiddenInput = styled.input`
+  opacity: 0;
+  width: 0;
+  height: 0;
+`
+
 const CustomBlockTypeSelect = ({ getEditorState, setEditorState, theme }) => (
   <BlockTypeSelect
     getEditorState={getEditorState}
@@ -52,6 +50,7 @@ const CustomBlockTypeSelect = ({ getEditorState, setEditorState, theme }) => (
     theme={theme}
     structure={[
       BoldButton,
+      AddMediaButton,
     ]}
   />
 )
@@ -89,6 +88,50 @@ class MediaComponent extends React.Component {
   }
 }
 
+class AddMediaButton extends React.Component {
+
+  uploadFile = (event) => {
+
+    uploadFile(event, this, (file) => {
+      // add EditorState update logic
+    })
+  }
+
+  preventBubblingUp = (event) => event.preventDefault()
+  setAddImageInputRef = (ref) => this.addImageInputRef = ref
+
+  render() {
+    const { theme } = this.props
+    const className = theme.button
+    return (
+      <div
+        className={theme.buttonWrapper}
+        onMouseDown={this.preventBubblingUp}
+      >
+        <button
+          className={className}
+          type="button"
+        >
+          <label
+            htmlFor='media_upload'
+          >
+            <Icon
+              name='like-active'
+            />
+            <HiddenInput
+              ref={this.setAddImageInputRef}
+              className={theme.buttonWrapper}
+              type='file'
+              id='media_upload'
+              name='storyImage'
+              onChange={this.uploadFile}
+            />
+          </label>
+        </button>
+      </div>
+    )
+  }
+}
 
 function myBlockRenderer(contentBlock) {
   const type = contentBlock.getType()

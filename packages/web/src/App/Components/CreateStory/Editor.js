@@ -1,6 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {EditorState} from 'draft-js'
+import {
+  EditorState,
+  Modifier,
+  SelectionState,
+} from 'draft-js'
 import 'draft-js/dist/Draft.css'
 import 'draft-js-side-toolbar-plugin/lib/plugin.css'
 import Editor from 'draft-js-plugins-editor'
@@ -21,6 +25,8 @@ import Icon from '../Icon'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import {getVideoUrlBase} from '../../Shared/Lib/getVideoUrl'
 import uploadFile from '../../Utils/uploadFile'
+import {CloseXContainer} from './Shared'
+import CloseX from '../CloseX'
 
 const Caption = styled.p`
   font-weight: 400;
@@ -42,6 +48,10 @@ const HiddenInput = styled.input`
   height: 0;
 `
 
+const BodyMediaDiv = styled.div`
+  position: relative;
+`
+
 const CustomBlockTypeSelect = ({ getEditorState, setEditorState, theme }) => (
   <BlockTypeSelect
     getEditorState={getEditorState}
@@ -61,6 +71,11 @@ const sideToolbarPlugin = createSideToolbarPlugin({
 const { SideToolbar } = sideToolbarPlugin
 
 class MediaComponent extends React.Component {
+  onClickDelete = () => {
+    const {key , onClickDelete} = this.props.blockProps
+    onClickDelete(key, this.props.block.getLength())
+  }
+
   render() {
     let {type, url, text, key} = this.props.blockProps
     let imageUrl = url.startsWith('data:')
@@ -71,20 +86,27 @@ class MediaComponent extends React.Component {
     switch (type) {
       case 'image':
         return (
-          <div key={key}>
+          <BodyMediaDiv key={key}>
+            <CloseXContainer>
+              <CloseX
+                onClick={this.onClickDelete}
+              />
+            </CloseXContainer>
             <StyledImage src={imageUrl} />
-            {text && <Caption>{text}</Caption>}
-          </div>
+            {
+              // <Caption>{displayText}</Caption>
+            }
+          </BodyMediaDiv>
         )
       case 'video':
         return (
-          <div key={key}>
+          <BodyMediaDiv key={key}>
             <Video
               src={videoUrl}
               withPrettyControls
             />
-            {text && <Caption>{text}</Caption>}
-          </div>
+            <Caption>{text}</Caption>
+          </BodyMediaDiv>
         )
     }
   }
@@ -116,12 +138,8 @@ class AddMediaButton extends React.Component {
           className={className}
           type="button"
         >
-          <label
-            htmlFor='media_upload'
-          >
-            <Icon
-              name='like-active'
-            />
+          <label htmlFor='media_upload'>
+            <Icon name='like-active' />
             <HiddenInput
               ref={this.setAddImageInputRef}
               className={theme.buttonWrapper}
@@ -137,25 +155,6 @@ class AddMediaButton extends React.Component {
   }
 }
 
-function myBlockRenderer(contentBlock) {
-  const type = contentBlock.getType()
-
-  if (type === 'atomic') {
-    const props = {
-      text: contentBlock.getText(),
-      key: contentBlock.getKey(),
-    }
-    contentBlock.getData().mapEntries((entry) => {
-      props[entry[0]] = entry[1]
-    })
-    return {
-      component: MediaComponent,
-      editable: false,
-      props: props,
-    };
-  }
-}
-
 export default class BodyEditor extends React.Component {
   constructor(props) {
     super(props)
@@ -165,6 +164,69 @@ export default class BodyEditor extends React.Component {
     else editorState = EditorState.createEmpty()
     this.state = {
       editorState
+    }
+  }
+
+  removeMedia = (key, length) => {
+    const contentState = this.state.editorState.getCurrentContent()
+    let selectKey = contentState.getKeyBefore(key) || contentState.getKeyAfter(key)
+
+    const selection = new SelectionState({
+      anchorKey: selectKey,
+      anchorOffset: 0,
+      focusKey: selectKey,
+      focusOffset: 0,
+    })
+
+    // see https://github.com/facebook/draft-js/issues/1510
+    // for remove atomic block logic
+    const withoutAtomicEntity = Modifier.removeRange(
+      contentState,
+      new SelectionState({
+        anchorKey: key,
+        anchorOffset: 0,
+        focusKey: key,
+        focusOffset: length,
+      }),
+      'backward',
+    )
+
+    const blockMap = withoutAtomicEntity.getBlockMap().delete(key)
+    var withoutAtomic = withoutAtomicEntity.merge({
+      blockMap,
+      selectionAfter: selection,
+    });
+
+    const newEditorState = EditorState.push(
+      this.state.editorState,
+      withoutAtomic,
+      'remove-range',
+    )
+
+    this.setState({editorState: newEditorState})
+  }
+
+  myBlockRenderer = (contentBlock) => {
+    const type = contentBlock.getType()
+    const focusKey = this.state.editorState.getSelection().getFocusKey()
+    const blockKey = contentBlock.getKey()
+
+    if (type === 'atomic') {
+      const props = {
+        text: contentBlock.getText(),
+        key: contentBlock.getKey(),
+        isFocused: focusKey === blockKey,
+        onClickDelete: this.removeMedia
+      }
+      contentBlock.getData().mapEntries((entry) => {
+        props[entry[0]] = entry[1]
+      })
+
+      return {
+        component: MediaComponent,
+        editable: true,
+        props: props,
+      };
     }
   }
 
@@ -198,7 +260,7 @@ export default class BodyEditor extends React.Component {
           onChange={this.onChange}
           plugins={[sideToolbarPlugin]}
           ref={this.setEditorRef}
-          blockRendererFn={myBlockRenderer}
+          blockRendererFn={this.myBlockRenderer}
         />
         <SideToolbar />
       </div>

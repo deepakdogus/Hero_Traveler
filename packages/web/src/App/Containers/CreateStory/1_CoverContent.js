@@ -40,6 +40,7 @@ class CreateStoryCoverContent extends Component {
         />
         <BodyEditor
           onInputChange={this.onInputChange}
+          setGetEditorState={this.props.setGetEditorState}
           {...this.getContent()}
         />
       </div>

@@ -17,6 +17,7 @@ import {
 
 import {
   convertFromRaw,
+  convertToRaw,
   insertAtomicBlock,
 } from './editorHelpers/draft-js'
 import Image from '../Image'
@@ -167,6 +168,17 @@ export default class BodyEditor extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.props.setGetEditorState(this.getEditorStateAsObject)
+  }
+
+  getEditorStateAsObject = () => {
+    return convertToRaw(this.state.editorState.getCurrentContent())
+  }
+
+
+  // see https://github.com/facebook/draft-js/issues/1510
+  // for remove atomic block logic
   removeMedia = (key, length) => {
     const contentState = this.state.editorState.getCurrentContent()
     let selectKey = contentState.getKeyBefore(key) || contentState.getKeyAfter(key)
@@ -178,8 +190,6 @@ export default class BodyEditor extends React.Component {
       focusOffset: 0,
     })
 
-    // see https://github.com/facebook/draft-js/issues/1510
-    // for remove atomic block logic
     const withoutAtomicEntity = Modifier.removeRange(
       contentState,
       new SelectionState({
@@ -231,9 +241,7 @@ export default class BodyEditor extends React.Component {
   }
 
   componentDidUpdate(prevProps){
-    if ((!prevProps.value && this.props.value) ||
-      (this.props.value && this.props.storyId !== prevProps.storyId)
-    ){
+    if (this.props.value && this.props.storyId !== prevProps.storyId) {
       this.setState({
         editorState: EditorState.createWithContent((this.props.value))
       })
@@ -243,9 +251,6 @@ export default class BodyEditor extends React.Component {
 
   onChange = (editorState) => {
     this.setState({editorState})
-    // this.props.onInputChange({
-    //   draftjsContent: editorState
-    // })
   }
 
   focus = () => this.editor.focus()

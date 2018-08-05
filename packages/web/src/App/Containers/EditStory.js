@@ -194,7 +194,7 @@ class EditStory extends Component {
     if (this.hasFieldChanged('title')) draft.title = _.trim(draft.title)
     if (this.hasFieldChanged('description')) draft.description = _.trim(draft.description)
     if (this.hasFieldChanged('coverCaption')) draft.coverCaption = _.trim(draft.coverCaption)
-    // draft.draftjsContent = this.editor.getEditorStateAsObject()
+    draft.draftjsContent = this.getEditorState()
   }
 
   // this only saves it at the redux level
@@ -268,9 +268,12 @@ class EditStory extends Component {
     this.setState({error: {}})
   }
 
+  setGetEditorState = getEditorState => this.getEditorState = getEditorState
+
   render() {
     const {workingDraft, match, subPath} = this.props
     const error = this.state.error
+
     return (
       <Container>
         <ContentWrapper>
@@ -279,6 +282,7 @@ class EditStory extends Component {
               <AuthRoute
                 path={`${match.url}/cover`}
                 component={CreateStoryCoverContent}
+                setGetEditorState={this.setGetEditorState}
               />
               <AuthRoute
                 path={`${match.url}/details`}
@@ -326,15 +330,6 @@ function mapStateToProps(state, props) {
     sync: state.storyCreate.sync,
     backgroundFailures: state.entities.stories.backgroundFailures,
   }
-  
-  // const accessToken = state.session.tokens.find(isAccessToken) || {}
-  // return {
-  //   isPublished: state.storyCreate.isPublished,
-  //   isRepublished: state.storyCreate.isRepublished,
-  //   accessToken: accessToken.value,
-  //   draft: state.storyCreate.draft,
-  //   workingDraft: state.storyCreate.workingDraft,
-  // }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -350,14 +345,8 @@ function mapDispatchToProps(dispatch) {
     publish: (draft) => dispatch(StoryCreateActions.publishLocalDraft(draft)),
     resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
     reroute: (path) => dispatch(push(path)),
-
-    // registerDraft: (draft) => dispatch(StoryCreateActions.registerDraftSuccess(draft)),
-    // loadDraft: (draftId, cachedStory) => dispatch(StoryCreateActions.editStory(draftId, cachedStory)),
     setWorkingDraft: (cachedStory) => dispatch(StoryCreateActions.editStorySuccess(cachedStory)),
-    // discardDraft: (draftId) => dispatch(StoryCreateActions.discardDraft(draftId)),
-    // publish: (draft) => dispatch(StoryCreateActions.publishDraft(draft)),
-    // resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
-    
+
   }
 }
 

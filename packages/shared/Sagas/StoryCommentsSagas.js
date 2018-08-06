@@ -8,7 +8,7 @@ export function * getComments(api, {storyId}) {
   if (response.ok) {
     yield put(StoryCommentsActions.getCommentsSuccess(response.data))
   } else {
-    yield put(StoryCommentsActions.commentRequestFailure('get', 'Failed to get stories'))
+    yield put(StoryCommentsActions.commentRequestFailure('get', 'Failed to get comments'))
   }
 }
 
@@ -21,7 +21,7 @@ export function * createCommment(api, {storyId, text}) {
       put(StoryActions.changeCountOfType(storyId, 'comments', true))
     ]
   } else {
-    yield put(StoryCommentsActions.commentRequestFailure('create', 'Failed to get stories'))
+    yield put(StoryCommentsActions.commentRequestFailure('create', 'Failed to create comment'))
   }
 }
 

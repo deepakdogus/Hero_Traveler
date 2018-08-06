@@ -24,12 +24,10 @@ const { Types, Creators } = createActions({
   addBackgroundFailure: ['story', 'error', 'failedMethod'],
   removeBackgroundFailure: ['storyId'],
   setRetryingBackgroundFailure: ['storyId'],
-  toggleLike: ['storyId', 'wasLiked'],
   changeCountOfType: ['storyId', 'countType', 'isIncrement'],
   storyLike: ['userId', 'storyId'],
   flagStory: ['userId', 'storyId'],
   // storyLikeFailure: ['storyId', 'wasLiked'],
-  toggleBookmark: ['storyId', 'wasLiked'],
   storyBookmark: ['userId', 'storyId'],
   // storyBookmarkFailure: ['storyId', 'wasLiked'],
   getBookmarks: ['userId'],
@@ -198,21 +196,14 @@ export const failure = (state, {error}) =>
     deep: true
   })
 
-// Toggle like optimistically
-const storyLike = (state, {storyId, wasLiked}) => {
-  const numOfLikes = _.get(state, `entities.${storyId}.counts.likes`, 0)
-  return state.setIn(
-    ['entities', storyId, 'counts', 'likes'],
-    !wasLiked ? numOfLikes + 1 : numOfLikes - 1
-  )
-}
-
-
-const changeCountOfType = (state, {storyId, countType, isIncrement}) => {
+const changeCountOfType = (state, {storyId, countType, isIncrement }) => {
+  console.log('countType', countType)
+  console.log('isIncrement', isIncrement)
+  if(countType === 'comments') isIncrement = !isIncrement
   const currentNumCountOfType = _.get(state, `entities.${storyId}.counts.${countType}`, 0)
   return state.setIn(
     ['entities', storyId, 'counts', countType],
-    isIncrement ? currentNumCountOfType + 1 : currentNumCountOfType - 1
+    !isIncrement ? currentNumCountOfType + 1 : currentNumCountOfType - 1
   )
 }
 
@@ -224,15 +215,6 @@ const changeCountOfType = (state, {storyId, countType, isIncrement}) => {
 //     !wasLiked ? numOfLikes - 1 : numOfLikes + 1
 //   )
 // }
-
-// Increase count of bookmarks
-const storyBookmark = (state, {storyId, wasLiked}) => {
-  const numOfLikes = _.get(state, `entities.${storyId}.counts.bookmarks`, 0)
-  return state.setIn(
-    ['entities', storyId, 'counts', 'bookmarks'],
-    !wasLiked ? numOfLikes + 1 : numOfLikes - 1
-  )
-}
 
 // // Revert the optimistic update on bookmark failure
 // const storyBookmarkFailure = (state, {storyId, wasLiked}) => {
@@ -422,8 +404,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ADD_BACKGROUND_FAILURE]: addBackgroundFailure,
   [Types.REMOVE_BACKGROUND_FAILURE]: removeBackgroundFailure,
   [Types.SET_RETRYING_BACKGROUND_FAILURE]: setRetryingBackgroundFailure,
-  [Types.TOGGLE_LIKE]: storyLike,
-  [Types.TOGGLE_BOOKMARK]: storyBookmark,
   [Types.CHANGE_COUNT_OF_TYPE]: changeCountOfType,
   [Types.RECEIVE_STORIES]: updateEntities,
   [Types.ADD_USER_STORY]: addUserStory,

@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import redraft from 'redraft'
+import _ from 'lodash'
 
 import Image from './Image'
 import Video from './Video'
@@ -57,21 +58,26 @@ const getAtomic = (children, { data, keys }) => {
     this seems a pretty precarious to get the text.
     TODO: See if we can find a better way to isolate the text
   */
-  const text = children[0][1][0].trim()
+  const text = _.get(children, '[0][1][0]', '').trim()
+  const type = data[0].type
+  const mediaUrl =
+    type === 'image'
+    ? getImageUrl(data[0].url, 'contentBlock')
+    : `${getVideoUrlBase()}/${data[0].url}`
+
   switch (data[0].type) {
     case 'image':
       return (
         <div key={keys[0]}>
-          <StyledImage src={getImageUrl(data[0].url, 'contentBlock')} />
+          <StyledImage src={mediaUrl} />
           {text && <Caption>{text}</Caption>}
         </div>
       )
     case 'video':
-      const videoUrl = `${getVideoUrlBase()}/${data[0].url}`
       return (
         <div key={keys[0]}>
           <Video
-            src={videoUrl}
+            src={mediaUrl}
             withPrettyControls
           />
           {text && <Caption>{text}</Caption>}

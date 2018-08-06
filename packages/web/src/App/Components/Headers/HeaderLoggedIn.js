@@ -8,7 +8,7 @@ import { mediaMax, mediaMin } from '../ContentLayout.component'
 import Avatar from '../Avatar'
 import RoundedButton from '../RoundedButton'
 import Icon from '../Icon'
-import { StyledRow, StyledRoundedButton, Logo, Divider, HamburgerIcon, MenuLink, SearchNav } from './Shared'
+import { StyledRow, StyledRoundedButton, Logo, Divider, HamburgerIcon, SearchNav } from './Shared'
 import logo from '../../Shared/Images/ht-logo-white.png'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import ConditionalLink from '../ConditionalLink'
@@ -22,12 +22,6 @@ const LoggedInTabletContainer = styled.div`
   ${mediaMax.phone`display: none;`}
 `
 
-const MailIcon = styled(Icon)`
-  height: 12px;
-  width: 18px;
-  padding-top: 2px;
-`
-
 const NotificationsIcon = styled(Icon)`
   height: 18px;
   width: 18px;
@@ -37,24 +31,17 @@ const StyledRoundedAvatarButton = styled(RoundedButton)`
   margin-left: 10px;
   margin-right: 20px;
   position: relative;
-  top: ${props => props.profileAvatar ? '4px' : '2px'};
+  top: ${props => props.profileAvatar ? '4px' : '3px'};
 `
-
 
 const StyledRoundedCreateButton = styled(RoundedButton)`
     position: relative;
-    bottom: 1px;
-`
-
-
-const StyledRoundedMailButton = styled(StyledRoundedButton)`
-    position: relative;
-    bottom: 5px;
+    bottom: 7px;
 `
 
 const StyledRoundedNotificationButton = styled(StyledRoundedButton)`
     position: relative;
-    top: 2px;
+    bottom: 4px;
 `
 
 
@@ -76,6 +63,7 @@ class HeaderLoggedIn extends React.Component {
             to="/"
             pathname={pathname}
             openSaveEditsModal={openSaveEditsModal}
+            isMenuLink={false}
           >
             <Logo src={logo} alt={'Hero Traveler Logo'}/>
           </ConditionalLink>
@@ -83,14 +71,24 @@ class HeaderLoggedIn extends React.Component {
         <LoggedInDesktopContainer>
           <Col>
             <Row middle="xs">
-              <MenuLink to='/feed/' exact>
+              <ConditionalLink
+                to='/feed/'
+                pathname={pathname}
+                openSaveEditsModal={openSaveEditsModal}
+                isMenuLink={true}
+              >
                 My Feed
-              </MenuLink>
+              </ConditionalLink>
               <Divider>&nbsp;</Divider>
               <span>&nbsp;</span>
-              <MenuLink to='/' exact>
+              <ConditionalLink
+                to='/'
+                pathname={pathname}
+                openSaveEditsModal={openSaveEditsModal}
+                isMenuLink={true}
+              >
                 Explore
-              </MenuLink>
+              </ConditionalLink>
             </Row>
           </Col>
         </LoggedInDesktopContainer>
@@ -99,11 +97,11 @@ class HeaderLoggedIn extends React.Component {
             <SearchNav />
             <Divider>&nbsp;</Divider>
             <LoggedInDesktopContainer>
-              <NavLink
-                to='/editStory/new'
-              >
+              {// we remove the 'Create' button from the HeaderLoggedIn Nav if we're editting a story
+              !this.props.pathname.includes('editStory') &&
+              <NavLink to='/editStory/new'>
                 <StyledRoundedCreateButton text='Create'/>
-              </NavLink>
+              </NavLink>}
               <StyledRoundedNotificationButton
                 type='headerButton'
                 height='32px'

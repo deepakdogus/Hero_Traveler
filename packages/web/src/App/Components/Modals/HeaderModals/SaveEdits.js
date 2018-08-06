@@ -2,10 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import RoundedButton from '../../RoundedButton'
-import {
-  Container,
-  Title,
-} from '../../Modals/Shared'
+import { Container,Title, } from '../../Modals/Shared'
 import {Row} from '../../FlexboxGrid'
 
 
@@ -18,9 +15,10 @@ export default class SaveEdits extends React.Component{
     closeModal: PropTypes.func,
   }
 
-  saveAndReroute = () => {
-    
-  }
+  // TODO: save draft and then re-reoute
+  // saveAndReroute = () => {
+  //   this.props.reroute(this.props.nextPathAfterSave)
+  // }
 
   dontSaveAndReroute = () => {
     this.props.reroute(this.props.nextPathAfterSave)

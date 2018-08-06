@@ -7,7 +7,6 @@ import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Avatar from './Avatar'
 import RoundedButton from './RoundedButton'
-import NavLink from './NavLinkStyled'
 
 const Container = styled.div`
   margin: ${props => props.margin ? props.margin : '0'};
@@ -36,12 +35,6 @@ const ProfileDetail = styled.p`
   color: ${props => props.theme.Colors.grey};
 `
 
-// For SignupSocial we want to disable navigation to Profile
-const ConditionalNavLink = (props) => {
-  if (!props.onClick) return <div {...props}/>
-  return ( <NavLink {...props} /> )
-}
-
 export default class FollowFollowingRow extends Component {
   static propTypes = {
     isFollowing: PropTypes.bool,
@@ -53,32 +46,32 @@ export default class FollowFollowingRow extends Component {
     onProfileClick: PropTypes.func,
   }
 
+  _handleProfileClick = () => {
+    const {user} = this.props
+    this.props.onProfileClick(user.id || user._id)
+  }
+
   renderImage = () => {
-    const {onProfileClick, user} = this.props
+    const {user} = this.props
     return (
-      <ConditionalNavLink
-        to={`/profile/${user.id}/view`}
-        onClick={onProfileClick}
-      >
         <Avatar
           avatarUrl={getImageUrl(user.profile.avatar)}
           size='larger'
+          onClick={this._handleProfileClick}
         />
-      </ConditionalNavLink>
     )
   }
 
   renderText = () => {
-    const {user, onProfileClick, type} = this.props
+    const {user, type} = this.props
     const detailsText = type === 'count' ? `${user.counts.followers} followers` : 'Lorum Ipsum'
     return (
       <StyledVerticalCenter>
-        <ConditionalNavLink
-          to={`/profile/${user.id}/view`}
-          onClick={onProfileClick}
-        >
-          <UserName>{user.username}</UserName>
-        </ConditionalNavLink>
+          <UserName
+            onClick={this._handleProfileClick}
+          >
+            {user.username}
+          </UserName>
         <ProfileDetail>{detailsText}</ProfileDetail>
       </StyledVerticalCenter>
     )
@@ -103,7 +96,7 @@ export default class FollowFollowingRow extends Component {
 
   _onFollowClick = () => {
     const {user, onFollowClick} = this.props
-    onFollowClick(user.id)
+    onFollowClick(user.id || user._id)
   }
 
   render() {

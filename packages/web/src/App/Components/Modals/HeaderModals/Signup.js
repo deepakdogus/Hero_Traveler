@@ -101,7 +101,8 @@ class Signup extends React.Component {
     })
   }
 
-  _onAttemptSignup = () => {
+  _onAttemptSignup = (e) => {
+    e.preventDefault()
     if (!this.props.fetching) {
       this.props.onAttemptSignup(
         _.trim(this.props.fullName),
@@ -116,56 +117,57 @@ class Signup extends React.Component {
     return (
       <Container>
         <Title>SIGN UP</Title>
-        <SocialMediaButton
-          type='facebookSignup'
-          iconName='facebookLarge'
-          page='signup'
-        />
-        <SocialMediaButton
-          type='twitterSignup'
-          iconName='twitterLarge'
-          page='signup'
-        />
-        <Text>Or</Text>
-        <Field
-          name='fullName'
-          component={FormInput}
-          type='text'
-          placeholder='Full Name'
-        />
-        <Field
-          name='username'
-          component={FormInput}
-          type='text'
-          placeholder='Username'
-        />
-        <Field
-          name='email'
-          component={FormInput}
-          type='text'
-          placeholder='Email'
-        />
-        <Field
-          name='password'
-          component={FormInput}
-          type='password'
-          placeholder='Password'
-        />
-        <Field
-          name='confirmPassword'
-          component={FormInput}
-          type='password'
-          placeholder='Confirm Password'
-        />
-        <ToSText>By continuing, you accept the <SmallBold>Terms of Use</SmallBold> and <SmallBold>Privacy Policy</SmallBold></ToSText>
-        <RoundedButton
-          text='SIGN UP'
-          width='100%'
-          margin='none'
-          height='39px'
-          onClick={this._onAttemptSignup}
-        />
-
+        <form onSubmit={this._onAttemptSignup}>
+          <SocialMediaButton
+            type='facebookSignup'
+            iconName='facebookLarge'
+            page='signup'
+          />
+          <SocialMediaButton
+            type='twitterSignup'
+            iconName='twitterLarge'
+            page='signup'
+          />
+          <Text>Or</Text>
+          <Field
+            name='fullName'
+            component={FormInput}
+            type='text'
+            placeholder='Full Name'
+          />
+          <Field
+            name='username'
+            component={FormInput}
+            type='text'
+            placeholder='Username'
+          />
+          <Field
+            name='email'
+            component={FormInput}
+            type='text'
+            placeholder='Email'
+          />
+          <Field
+            name='password'
+            component={FormInput}
+            type='password'
+            placeholder='Password'
+          />
+          <Field
+            name='confirmPassword'
+            component={FormInput}
+            type='password'
+            placeholder='Confirm Password'
+          />
+          <ToSText>By continuing, you accept the <SmallBold>Terms of Use</SmallBold> and <SmallBold>Privacy Policy</SmallBold></ToSText>
+          <RoundedButton
+            text='SIGN UP'
+            width='100%'
+            margin='none'
+            height='39px'
+            type='submit'
+          />
+        </form>
         <HasAccount>Already have an account?
           <SignupText onClick={this.props.onLoginClick}> Login</SignupText>
         </HasAccount>

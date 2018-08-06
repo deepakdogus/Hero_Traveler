@@ -74,7 +74,6 @@ export default StyleSheet.create({
   input: {
     flex: 1,
     backgroundColor: Colors.snow,
-    fontSize: Fonts.size.medium,
     width: '100%',
     textAlign: 'left',
     fontFamily: Fonts.type.base,

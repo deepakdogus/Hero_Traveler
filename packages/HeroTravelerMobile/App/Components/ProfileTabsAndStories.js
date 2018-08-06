@@ -3,46 +3,23 @@ import PropTypes from 'prop-types'
 import {
   View,
   Text,
-  TouchableWithoutFeedback,
 } from 'react-native'
-import {withHandlers} from 'recompose'
 
-import {Actions as NavActions} from 'react-native-router-flux'
-import styles, { storyPreviewHeight } from './Styles/ProfileViewStyles'
-import { Colors, Metrics } from '../Shared/Themes'
-import StoryList from '../Containers/ConnectedStoryList'
+import styles, { feedItemHeight } from './Styles/ProfileViewStyles'
+import { Colors } from '../Shared/Themes'
+import ConnectedFeedList from '../Containers/ConnectedFeedList'
 import Loader from './Loader'
-import ConnectedStoryPreview from '../Containers/ConnectedStoryPreview'
+import ConnectedFeedItemPreview from '../Containers/ConnectedFeedItemPreview'
+import TabBar from './TabBar'
 import _ from 'lodash'
-
-const enhancedTab = withHandlers({
-  _onPress: props => () => {
-    if (props.onPress) {
-      props.onPress(props.type)
-    }
-  }
-})
-
-const Tab = enhancedTab(({text, _onPress, selected, isProfileView}) => {
-  return (
-    <TouchableWithoutFeedback onPress={_onPress}>
-      <View style={[
-        styles.tab,
-        (selected && !isProfileView) ? styles.tabSelected : null,
-        isProfileView ? styles.fullTab : null
-      ]}>
-        <Text style={[styles.tabText, selected ? styles.tabTextSelected : null]}>{text}</Text>
-      </View>
-    </TouchableWithoutFeedback>
-  )
-})
 
 export default class ProfileTabsAndStories extends Component {
   static propTypes = {
     editable: PropTypes.bool,
+    isStory: PropTypes.bool,
     tabTypes: PropTypes.object,
     renderProfileInfo: PropTypes.func,
-    storiesById: PropTypes.arrayOf(PropTypes.string),
+    feedItemsById: PropTypes.arrayOf(PropTypes.string),
     fetchStatus: PropTypes.object,
     selectTab: PropTypes.func,
     selectedTab: PropTypes.string,
@@ -53,51 +30,37 @@ export default class ProfileTabsAndStories extends Component {
     sessionUserId: PropTypes.string,
     location: PropTypes.string,
     error: PropTypes.object,
+    onRefresh: PropTypes.func,
   }
 
   renderTabs(){
-    const {editable, tabTypes, selectedTab, selectTab} = this.props
-    if (editable) return (
-      <View style={styles.tabnavEdit}>
-        <Tab
-          selected={tabTypes.stories === selectedTab}
-          type={tabTypes.stories}
-          onPress={selectTab}
-          text='STORIES' />
-        <Tab
-          selected={tabTypes.drafts === selectedTab}
-          type={tabTypes.drafts}
-          onPress={selectTab}
-          text='DRAFTS' />
-        <Tab
-          selected={tabTypes.bookmarks === selectedTab}
-          type={tabTypes.bookmarks}
-          onPress={selectTab}
-          text='BOOKMARKS' />
-      </View>
-    )
-    else return (
-      <View style={styles.tabnavEdit}>
-        <Tab selected isProfileView text='STORIES' />
-      </View>
+    const {tabTypes, selectedTab, selectTab} = this.props
+    return (
+      <TabBar
+        tabs={tabTypes}
+        activeTab={selectedTab}
+        onClickTab={selectTab}
+        tabStyle={styles.tabStyle}
+      />
     )
   }
 
-  renderStory = (story, index) => {
+  renderFeedItem = (feedItem, index) => {
     const {
-      tabTypes, selectedTab,
+      tabTypes, selectedTab, isStory,
       editable, sessionUserId, location
     } = this.props
     return (
-      <ConnectedStoryPreview
+      <ConnectedFeedItemPreview
         isFeed={true}
+        isStory={isStory}
         forProfile={true}
         editable={editable && selectedTab !== tabTypes.bookmarks}
         titleStyle={styles.storyTitleStyle}
         subtitleStyle={styles.subtitleStyle}
-        story={story}
+        feedItem={feedItem}
         userId={sessionUserId}
-        height={storyPreviewHeight}
+        height={feedItemHeight}
         autoPlayVideo
         allowVideoPlay
         renderLocation={location}
@@ -112,7 +75,7 @@ export default class ProfileTabsAndStories extends Component {
   }
 
   areNoStories(){
-    return this.props.storiesById.length === 0
+    return this.props.feedItemsById.length === 0
   }
 
   getNoStoriesText() {
@@ -123,6 +86,7 @@ export default class ProfileTabsAndStories extends Component {
     }
     else if (selectedTab === tabTypes.drafts) return 'There are no stories here'
     else if (selectedTab === tabTypes.bookmarks) return 'There are no bookmarked stories here'
+    else if (selectedTab === tabTypes.guides) return 'There are no guides here'
     return ''
   }
 
@@ -156,7 +120,11 @@ export default class ProfileTabsAndStories extends Component {
   }
 
   render() {
-    const {renderProfileInfo, storiesById, fetchStatus, editable} = this.props
+    const {
+      renderProfileInfo, feedItemsById,
+      fetchStatus, editable, isStory, onRefresh
+    } = this.props
+
     const isGettingStories = this.isGettingStories()
 
     return (
@@ -170,7 +138,7 @@ export default class ProfileTabsAndStories extends Component {
             {this.renderTabs()}
           </View>
         }
-        {storiesById.length === 0 && fetchStatus.loaded &&
+        {feedItemsById.length === 0 && fetchStatus.loaded &&
           <View style={styles.noStories}>
             <Text style={styles.noStoriesText}>{this.getNoStoriesText()}</Text>
           </View>
@@ -183,16 +151,18 @@ export default class ProfileTabsAndStories extends Component {
           </View>
         }
 
-        {storiesById.length !== 0 && !isGettingStories &&
-          <StoryList
-            style={styles.storyList}
-            storiesById={storiesById}
+        {feedItemsById.length !== 0 && !isGettingStories &&
+          <ConnectedFeedList
+            isStory={isStory}
+            style={styles.feedList}
+            entitiesById={feedItemsById}
             refreshing={false}
             headerContentHeight={this.getHeaderHeight()}
             renderHeaderContent={this._renderProfileInfo()}
             renderSectionHeader={this.renderTabs()}
-            renderStory={this.renderStory}
+            renderFeedItem={this.renderFeedItem}
             pagingIsDisabled
+            onRefresh={onRefresh}
           />
         }
       </View>

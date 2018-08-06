@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { Row, Col } from '../FlexboxGrid'
 import { mediaMax, mediaMin } from '../ContentLayout.component'
 import Avatar from '../Avatar'
@@ -36,13 +36,15 @@ const StyledRoundedAvatarButton = styled(RoundedButton)`
   margin-left: 10px;
   margin-right: 20px;
   position: relative;
-  top: ${props => props.profileAvatar ? '4px' : '-3px'};
+  top: ${props => props.profileAvatar ? '4px' : '2px'};
 `
+
 
 const StyledRoundedCreateButton = styled(RoundedButton)`
     position: relative;
-    bottom: 5px;
+    bottom: 1px;
 `
+
 
 const StyledRoundedMailButton = styled(StyledRoundedButton)`
     position: relative;
@@ -51,8 +53,9 @@ const StyledRoundedMailButton = styled(StyledRoundedButton)`
 
 const StyledRoundedNotificationButton = styled(StyledRoundedButton)`
     position: relative;
-    bottom: 3px;
+    top: 2px;
 `
+
 
 class HeaderLoggedIn extends React.Component {
   static PropTypes = {
@@ -65,7 +68,9 @@ class HeaderLoggedIn extends React.Component {
     return (
       <StyledRow between="xs" middle="xs">
         <Col>
-          <Logo src={logo} alt={'Hero Traveler Logo'}/>
+          <Link to="/">
+            <Logo src={logo} alt={'Hero Traveler Logo'}/>
+          </Link>
         </Col>
         <LoggedInDesktopContainer>
           <Col>
@@ -87,21 +92,10 @@ class HeaderLoggedIn extends React.Component {
             <Divider>&nbsp;</Divider>
             <LoggedInDesktopContainer>
               <NavLink
-                to='/createStoryNew/new'
+                to='/editStory/new'
               >
                 <StyledRoundedCreateButton text='Create'/>
               </NavLink>
-              <StyledRoundedMailButton
-                type='headerButton'
-                height='32px'
-                width='32px'
-                name='inbox'
-                onClick={openModal}
-              >
-                <MailIcon
-                  name='loginEmail'
-                />
-              </StyledRoundedMailButton>
               <StyledRoundedNotificationButton
                 type='headerButton'
                 height='32px'
@@ -130,7 +124,7 @@ class HeaderLoggedIn extends React.Component {
             </LoggedInDesktopContainer>
             <LoggedInTabletContainer>
               <NavLink
-                to='/createStoryNew/new'
+                to='/editStory/new'
               >
                 <StyledRoundedButton text='Create'/>
               </NavLink>

@@ -4,6 +4,8 @@ import UserActions from '../Redux/Entities/Users'
 import StoryActions from '../Redux/Entities/Stories'
 import StartupActions from '../Redux/StartupRedux'
 import SessionActions from '../Redux/SessionRedux'
+import SignupActions from '../Redux/SignupRedux'
+import { loginToFacebookAndGetUserInfo } from '../../Services/FacebookConnect'
 
 const currentUserId = ({session}) => session.userId
 
@@ -28,6 +30,7 @@ export function * updateUser (api, action) {
 }
 
 export function * connectFacebook (api) {
+  let userResponse
   try {
     userResponse = yield loginToFacebookAndGetUserInfo()
   } catch(err) {

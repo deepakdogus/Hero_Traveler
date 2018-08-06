@@ -76,6 +76,7 @@ import {
   getBookmarks,
   uploadCoverImage, loadStory, loadDrafts, deleteStory,
   flagStory,
+  getGuideStories,
 } from './StorySagas'
 
 import {
@@ -89,8 +90,15 @@ import {
 
 import {
   createGuide,
+  getGuide,
   updateGuide,
+  deleteGuide,
   getUserGuides,
+  getUserFeedGuides,
+  getCategoryGuides,
+  bulkSaveStoryToGuide,
+  likeGuide,
+  unlikeGuide,
 } from './GuideSagas'
 
 /* ------------- API ------------- */
@@ -165,6 +173,7 @@ export default function * root () {
     takeLatest(CategoryTypes.LOAD_CATEGORIES_REQUEST, getCategories, heroAPI),
     takeLatest(HashtagTypes.LOAD_HASHTAGS_REQUEST, getHashtags, heroAPI),
     takeLatest(StoryTypes.LOAD_DRAFTS, loadDrafts, heroAPI),
+    takeLatest(StoryTypes.GET_GUIDE_STORIES, getGuideStories, heroAPI),
     takeLatest(StoryTypes.DELETE_STORY, deleteStory, heroAPI),
     takeLatest(StoryTypes.GET_BOOKMARKS, getBookmarks, heroAPI),
     takeLatest(StoryTypes.FLAG_STORY, flagStory, heroAPI),
@@ -191,7 +200,14 @@ export default function * root () {
 
     // Guides
     takeLatest(GuideTypes.CREATE_GUIDE, createGuide, heroAPI),
+    takeLatest(GuideTypes.GET_GUIDE_REQUEST, getGuide, heroAPI),
     takeLatest(GuideTypes.UPDATE_GUIDE, updateGuide, heroAPI),
+    takeLatest(GuideTypes.DELETE_GUIDE_REQUEST, deleteGuide, heroAPI),
     takeLatest(GuideTypes.GET_USER_GUIDES, getUserGuides, heroAPI),
+    takeLatest(GuideTypes.GUIDE_FEED_REQUEST, getUserFeedGuides, heroAPI),
+    takeLatest(GuideTypes.GET_CATEGORY_GUIDES, getCategoryGuides, heroAPI),
+    takeLatest(GuideTypes.BULK_SAVE_STORY_TO_GUIDE_REQUEST, bulkSaveStoryToGuide, heroAPI),
+    takeLatest(GuideTypes.LIKE_GUIDE_REQUEST, likeGuide, heroAPI),
+    takeLatest(GuideTypes.UNLIKE_GUIDE_REQUEST, unlikeGuide, heroAPI),
   ]
 }

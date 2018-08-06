@@ -9,19 +9,19 @@ import {SubTitle, Input, CloseXContainer} from './Shared'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import uploadFile from '../../Utils/uploadFile'
 
-const Container = styled.div`
+const Wrapper = styled.div`
   position: absolute;
   top: 0;
-  padding: 127.5px;
+  padding: 127.5px 30px;
   background-color: ${props => props.hasImage ? props.theme.Colors.transparent : props.theme.Colors.pink};
-  border: 1px dashed ${props => props.hasImage ? 'none' : `1px dashed ${props.theme.Colors.redHighlights}`}
+  border: 1px dashed ${props => props.hasImage ? 'none' : `1px dashed ${props.theme.Colors.redHighlights}`};
 `
 
-const RelativeContainer = styled.div`
+const RelativeWrapper = styled.div`
   position: relative;
 `
 
-const StoryOverlayContainer = styled(Overlay)`
+const StoryOverlayWrapper = styled(Overlay)`
   margin-top: 40px;
   padding-top: 505px;
   width: 100%;
@@ -33,12 +33,17 @@ const StoryOverlayContainer = styled(Overlay)`
   z-index: -100;
 `
 
+const UploadWrapper = styled.label`
+  position: absolute;
+  width: 100%;
+  margin-left: -30px;
+`
 const IconSubTitle = styled(SubTitle)`
   font-weight: 400;
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-size: 13px;
   letter-spacing: 1.5px;
-  color: ${props => props.theme.Colors.redHighlights}
+  color: ${props => props.theme.Colors.redHighlights};
 `
 
 const StyledIcon = styled(Icon)`
@@ -47,7 +52,7 @@ const StyledIcon = styled(Icon)`
   margin-top: 10px;
 `
 
-const IconContainer = styled.div`
+const IconWrapper = styled.div`
   text-align: center;
   height: 100%;
   width: 100%;
@@ -71,6 +76,7 @@ const StyledTitleInput = styled(StyledInput)`
   font-size: 50px;
   margin-top: ${props => `${props.hasImage ? 158 : 46}px`};
   letter-spacing: 1.5px;
+  width: 100%;
 `
 
 const StyledSubTitleInput = styled(StyledInput)`
@@ -86,7 +92,7 @@ const StyledCoverCaptionInput = styled(StyledInput)`
   width: 100%;
 `
 
-const TitleInputsContainer = styled.div`
+const TitleInputsWrapper = styled.div`
   text-align: center;
   background-color: inherit;
 `
@@ -116,7 +122,7 @@ export default class AddCoverTitles extends React.Component {
     uploadFile(event, this, (file) => {
       // refactor later to differentiate between image and video
       this.props.onInputChange({
-        'tempCover': file,
+        'coverImage': file,
         'coverType': 'image',
       })
     })
@@ -124,8 +130,7 @@ export default class AddCoverTitles extends React.Component {
 
   _onCoverRemove = (event) => {
     this.props.onInputChange({
-      'tempCover': undefined,
-      'coverImage': undefined
+      'coverImage': undefined,
     })
   }
 
@@ -156,31 +161,27 @@ export default class AddCoverTitles extends React.Component {
 
   render() {
     const {workingDraft} = this.props
-    const coverImage = workingDraft.tempCover ? workingDraft.tempCover.url : getImageUrl(workingDraft.coverImage)
+    const coverImage = (workingDraft.coverImage && workingDraft.coverImage.uri) ? workingDraft.coverImage.uri : getImageUrl(workingDraft.coverImage)
     return (
-      <RelativeContainer>
-        <StoryOverlayContainer image={coverImage}/>
-        <Container hasImage={!!coverImage}>
-          {!!coverImage &&
-          <CloseXContainer>
-            <CloseX onClick={this._onCoverRemove}/>
-          </CloseXContainer>
-          }
-          {!coverImage &&
-            <label htmlFor='cover_upload'>
-              <IconContainer>
-                <StyledIcon name='components'/>
-              </IconContainer>
-              <IconSubTitle>+ ADD A COVER PHOTO</IconSubTitle>
-              <HiddenInput
-                type='file'
-                id='cover_upload'
-                name='tempCover'
-                onChange={this._onCoverChange}
-              />
-            </label>
-          }
-          <TitleInputsContainer>
+      <RelativeWrapper>
+        <StoryOverlayWrapper image={coverImage}/>
+        <Wrapper hasImage={!!coverImage}>
+          <UploadWrapper htmlFor='cover_upload'>
+            <IconWrapper>
+              <StyledIcon name='components'/>
+            </IconWrapper>
+            <IconSubTitle>
+              {coverImage && "+ CHANGE COVER PHOTO"}
+              {!!coverImage && "+ ADD A COVER PHOTO"}
+            </IconSubTitle>
+            <HiddenInput
+              type='file'
+              id='cover_upload'
+              name='coverImage'
+              onChange={this._onCoverChange}
+            />
+          </UploadWrapper>
+          <TitleInputsWrapper>
             <StyledTitleInput
               type='text'
               placeholder='ADD TITLE'
@@ -199,8 +200,8 @@ export default class AddCoverTitles extends React.Component {
               maxLength={50}
               hasImage={!!coverImage}
             />
-          </TitleInputsContainer>
-        </Container>
+          </TitleInputsWrapper>
+        </Wrapper>
         { !!coverImage && <StyledCoverCaptionInput
             type='text'
             placeholder='Add Cover Caption'
@@ -210,7 +211,7 @@ export default class AddCoverTitles extends React.Component {
             maxLength={100}
           />
         }
-      </RelativeContainer>
+      </RelativeWrapper>
     )
   }
 }

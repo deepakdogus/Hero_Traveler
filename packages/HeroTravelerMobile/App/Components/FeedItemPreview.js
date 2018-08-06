@@ -14,33 +14,44 @@ import formatCount from '../Shared/Lib/formatCount'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import {displayLocation} from '../Shared/Lib/locationHelpers'
 import { Metrics } from '../Shared/Themes'
-import styles from './Styles/StoryPreviewStyle'
-import {styles as StoryReadingScreenStyles} from '../Containers/Styles/StoryReadingScreenStyles'
+import styles from './Styles/FeedItemPreviewStyle'
+import {styles as storyReadingScreenStyles} from '../Containers/Styles/StoryReadingScreenStyles'
 import profileViewStyles from './Styles/ProfileViewStyles'
 import LikesComponent from './LikeComponent'
 import TrashCan from './TrashCan'
 import Avatar from './Avatar'
-import StoryCover from './StoryCover'
+import FeedItemCover from './FeedItemCover'
 import TabIcon from './TabIcon'
+import GuideMap from './GuideMap'
 
-export default class StoryPreview extends Component {
+// FeedItems are either a Story or a Guide
+export default class FeedItemPreview extends Component {
   // is showLike now always true? MBT - 12/07/17
   static propTypes = {
-    onPressLike: PropTypes.func,
+    user: PropTypes.object,
+    sessionUserId: PropTypes.string,
+    feedItem: PropTypes.object,
+    onPressGuide: PropTypes.func,
+    onPressStory: PropTypes.func,
+    onPressStoryLike: PropTypes.func,
+    onPressGuideLike: PropTypes.func,
+    onPressGuideUnlike: PropTypes.func,
     onPress: PropTypes.func,
     onPressUser: PropTypes.func,
     forProfile: PropTypes.bool,
     height: PropTypes.number,
-    isLiked: PropTypes.bool,
+    isStoryLiked: PropTypes.bool,
+    isGuideLiked: PropTypes.bool,
     showLike: PropTypes.bool,
-    shouldHideCover: PropTypes.bool,
+    isShowCover: PropTypes.bool,
     autoPlayVideo: PropTypes.bool,
     allowVideoPlay: PropTypes.bool,
-    isStoryReadingScreen: PropTypes.bool,
-    gradientColors: PropTypes.arrayOf(PropTypes.string),
+    isReadingScreen: PropTypes.bool,
     isVisible: PropTypes.bool,
     isFeed: PropTypes.bool,
+    isStory: PropTypes.bool,
     areInRenderLocation: PropTypes.bool,
+    deleteGuide: PropTypes.func,
     deleteStory: PropTypes.func,
     removeDraft: PropTypes.func,
     onPressFollow: PropTypes.func,
@@ -52,29 +63,48 @@ export default class StoryPreview extends Component {
 
   static defaultProps = {
     showLike: true,
-    isStoryReadingScreen: false,
+    isReadingScreen: false,
     isFeed: true,
   }
 
   _touchEdit = () => {
-    const storyId = this.props.story.id
-    NavActions.createStoryFlow({storyId, type: 'reset', navigatedFromProfile: true, shouldLoadStory: false})
-    NavActions.createStory_cover({storyId, navigatedFromProfile: true, shouldLoadStory: false})
+    const {isStory, feedItem} = this.props
+    if (isStory) {
+      NavActions.createStoryFlow({
+        storyId: feedItem.id,
+        type: 'reset',
+        navigatedFromProfile: true,
+        shouldLoadStory: false
+      })
+      NavActions.createStory_cover({
+        storyId: feedItem.id,
+        navigatedFromProfile: true,
+        shouldLoadStory: false
+      })
+    }
+    else {
+      NavActions.createGuide({ guideId: feedItem.id })
+    }
   }
 
   _touchTrash = () => {
-    const { deleteStory, removeDraft, story, user } = this.props
+    const { deleteStory, removeDraft, feedItem, user, isStory, deleteGuide} = this.props
     Alert.alert(
-      'Delete Story',
-      'Are you sure you want to delete this story?',
+      `Delete ${isStory ? 'Story' : 'Guide'}`,
+      `Are you sure you want to delete this ${isStory ? 'story' : 'guide'}?`,
       [
         { text: 'Cancel' },
         {
           text: 'Delete',
           style: 'destructive',
           onPress: () => {
-            if (story.draft) removeDraft(story.id)
-            else deleteStory(user.id, story.id)
+            if (isStory) {
+              if (feedItem.draft) removeDraft(feedItem.id)
+              else deleteStory(user.id, feedItem.id)
+            }
+            else {
+              deleteGuide(feedItem.id)
+            }
             NavActions.pop()
           },
         }
@@ -102,31 +132,42 @@ export default class StoryPreview extends Component {
   }
 
   renderDate(){
-    const {isStoryReadingScreen, story} = this.props
+    const {isReadingScreen, feedItem} = this.props
     return (
       <Text style={[
         styles.dateText,
-        isStoryReadingScreen && styles.dateTextReading
+        isReadingScreen && styles.dateTextReading
       ]}>
-        {moment(story.tripDate || story.createdAt).format('LL')}
+        {moment(feedItem.tripDate || feedItem.createdAt).format('LL')}
       </Text>
     )
   }
 
+  hasLocation = () => {
+    const {locationInfo, locations = []} = this.props.feedItem
+    return !!locationInfo || locations.length !== 0
+  }
+
+  getLocationText = () => {
+    const {locationInfo, locations = []} = this.props.feedItem
+    if (locationInfo) return displayLocation(locationInfo)
+    else if (locations.length) return displayLocation(locations[0])
+  }
+
   renderUserSection() {
-    const {user, story, isStoryReadingScreen, isAuthor} = this.props
+    const {user, isReadingScreen, isAuthor} = this.props
     const isFollowing = _.includes(this.props.myFollowedUsers, user.id)
 
     return (
       <View style={[
         styles.storyInfoContainer, styles.verticalCenter, styles.userContainer,
-        !isStoryReadingScreen && styles.previewUserContainer,
+        !isReadingScreen && styles.previewUserContainer,
       ]}>
         <View style={styles.userContent}>
           <View style={styles.leftUserContent}>
             <TouchableOpacity onPress={this._touchUser}>
               <Avatar
-                size={isStoryReadingScreen ? 'small' : 'extraSmall'}
+                size={isReadingScreen ? 'small' : 'extraSmall'}
                 style={styles.avatar}
                 avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
               />
@@ -135,7 +176,7 @@ export default class StoryPreview extends Component {
               <TouchableOpacity onPress={this._touchUser} style={styles.profileButton}>
                 {this.hasBadge() &&
                   <TabIcon
-                    name={this.props.user.role === 'contributor' ? 'contributor' : 'founder'}
+                    name={user.role === 'contributor' ? 'contributor' : 'founder'}
                     style={{
                       image: styles.badgeImage,
                       view: styles.badgeView,
@@ -144,24 +185,24 @@ export default class StoryPreview extends Component {
                 }
                 <Text style={[
                   styles.username,
-                  isStoryReadingScreen && styles.usernameReading,
+                  isReadingScreen && styles.usernameReading,
                 ]}>
                   {user.username}
                 </Text>
               </TouchableOpacity>
-              {isStoryReadingScreen && this.renderDate()}
-              {!isStoryReadingScreen && !!story.locationInfo &&
+              {isReadingScreen && this.renderDate()}
+              {!isReadingScreen && this.hasLocation() &&
                 <Text
                   style={styles.locationText}
                   numberOfLines={1}
                   ellipsizeMode={'tail'}
                 >
-                  {displayLocation(story.locationInfo)}
+                  {this.getLocationText()}
                 </Text>
               }
             </View>
           </View>
-          {isStoryReadingScreen && !isAuthor &&
+          {isReadingScreen && !isAuthor &&
             <View style={styles.verticalCenter}>
               <TouchableOpacity
                 style={[
@@ -181,47 +222,75 @@ export default class StoryPreview extends Component {
               </TouchableOpacity>
             </View>
           }
-          {isStoryReadingScreen && isAuthor &&
+          {isReadingScreen && isAuthor &&
             <View>
               <TrashCan touchTrash={this._touchTrash} touchEdit={this._touchEdit} />
             </View>
           }
         </View>
+        {this.isGuideReadingScreen() && this.renderTitle()}
         <View style={styles.separator}/>
       </View>
     )
   }
 
+  _onPress = (title) => {
+    return () => this.getOnPress()(title)
+  }
+
+  renderTitle() {
+    const {title, description} = this.props.feedItem
+    const {isReadingScreen, titleStyle, isStory, isFeed} = this.props
+    let showDescription = (isStory || !isFeed)
+    return (
+      <Text style={[
+        styles.title,
+        (description && showDescription) ? styles.titleWithDescription : {},
+        isReadingScreen ? styles.storyReadingTitle : {},
+        (isReadingScreen && description && showDescription) ? styles.storyReadingTitleWithDescription : {},
+        titleStyle
+      ]}>
+        {title}
+      </Text>
+    )
+  }
+
+  isGuideReadingScreen() {
+    const {isStory, isReadingScreen} = this.props
+    return !isStory && isReadingScreen
+  }
+
+  getIsLiked = () => {
+    const {isStory, isStoryLiked, isGuideLiked} = this.props
+    return isStory ? isStoryLiked : isGuideLiked
+  }
+
   renderBottomSection() {
-    const {title, counts, description, coverCaption, draft} = this.props.story
-    const {isStoryReadingScreen, onPress} = this.props
+    const {title, counts, description, coverCaption, draft} = this.props.feedItem
+    const {isReadingScreen, isStory, isFeed, isStoryLiked, isGuideLiked} = this.props
+
+    if (this.isGuideReadingScreen()) return null
 
     return (
       <View style={[styles.storyInfoContainer, styles.bottomContainer]}>
-        {isStoryReadingScreen && !!coverCaption &&
-          <Text style={[StoryReadingScreenStyles.caption, styles.caption]}>
+        {isReadingScreen && !!coverCaption &&
+          <Text style={[storyReadingScreenStyles.caption, styles.caption]}>
             {coverCaption}
           </Text>
         }
-            <TouchableOpacity onPress={(x)=>onPress(title)} disabled={!!isStoryReadingScreen}>
-          <Text style={[
-            styles.title,
-            description ? styles.titleWithDescription : {},
-            isStoryReadingScreen ? styles.storyReadingTitle : {},
-            isStoryReadingScreen && description ? styles.storyReadingTitleWithDescription : {},
-            this.props.titleStyle
-          ]}>
-            {title}
-          </Text>
-          {!!description &&
-            <Text style={[
-              styles.description,
-              isStoryReadingScreen ? styles.storyReadingDescription : {},
-            ]}>{description}</Text>
+        <TouchableOpacity
+          onPress={this._onPress(title)}
+          disabled={!!isReadingScreen}
+        >
+          {this.renderTitle()}
+          {!!description && !(!isStory && isFeed) &&
+            <Text style={storyReadingScreenStyles.description}>
+              {description}
+            </Text>
           }
         </TouchableOpacity>
         <View style={styles.lastRow}>
-          {!isStoryReadingScreen &&
+          {!isReadingScreen &&
             <View style={styles.leftRow}>
               {this.renderDate()}
             </View>
@@ -229,7 +298,7 @@ export default class StoryPreview extends Component {
 
           {!draft &&
           <View style={styles.rightRow}>
-            {this.props.showLike && this.props.onPressBookmark &&
+            {this.props.showLike && this.props.onPressBookmark && this.props.isStory &&
               <View style={styles.bookmarkContainer}>
                 <TouchableOpacity
                   onPress={this.props.onPressBookmark}
@@ -247,7 +316,7 @@ export default class StoryPreview extends Component {
               <LikesComponent
                 onPress={this._onPressLike}
                 likes={formatCount(counts.likes)}
-                isLiked={this.props.isLiked}
+                isLiked={isStory ? isStoryLiked : isGuideLiked}
                 isRightText
               />
             }
@@ -262,32 +331,40 @@ export default class StoryPreview extends Component {
     return this.props.isVisible !== false && this.props.areInRenderLocation
   }
 
-  render () {
-    const {story, gradientLocations, showPlayButton, shouldHideCover} = this.props
-    if (!story) return null
+  getOnPress = () => {
+    const {isStory, onPressStory, onPressGuide} = this.props
+    return isStory ? onPressStory : onPressGuide
+  }
 
-    // using StoryPreview height as proxy for StoryCover playbutton size
+  render () {
+    const {feedItem, showPlayButton, isShowCover, selectedStories} = this.props
+    if (!feedItem) return null
+
+    // using FeedItemPreview height as proxy for FeedItemCover playbutton size
     const height = this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20
     const playButtonSize = height > 250 ? 'large' : 'small'
-    let cover = story.coverImage || story.coverVideo
+    let cover = feedItem.coverImage || feedItem.coverVideo
     return (
       <View style={styles.contentContainer}>
         {this.renderUserSection()}
-        {!shouldHideCover &&
-          <StoryCover
+        {isShowCover &&
+          <FeedItemCover
             areInRenderLocation={this.props.areInRenderLocation}
             autoPlayVideo={this.props.autoPlayVideo}
             allowVideoPlay={this.props.allowVideoPlay}
             cover={cover}
-            coverType={story.coverImage ? 'image' : 'video'}
-            onPress={this.props.onPress}
-            gradientColors={this.props.gradientColors}
-            gradientLocations={gradientLocations}
+            coverType={feedItem.coverImage ? 'image' : 'video'}
+            onPress={this.getOnPress()}
             showPlayButton={showPlayButton}
             playButtonSize={playButtonSize}
             isFeed={this.props.isFeed}
             shouldEnableAutoplay={this.shouldEnableAutoplay()}
-            storyTitle={displayLocation(story.locationInfo)}
+            locationText={this.getLocationText()}
+          />
+        }
+        {!isShowCover &&
+          <GuideMap
+            stories={selectedStories}
           />
         }
         {this.renderBottomSection()}
@@ -296,9 +373,15 @@ export default class StoryPreview extends Component {
   }
 
   _onPressLike = () => {
-    const {story, onPressLike} = this.props
-    if (onPressLike) {
-      onPressLike(story)
+    const {
+      feedItem, isStory, isGuideLiked, sessionUserId,
+      onPressStoryLike, onPressGuideLike, onPressGuideUnlike
+    } = this.props
+
+    if (isStory && onPressStoryLike) onPressStoryLike(feedItem)
+    else {
+      if (isGuideLiked) onPressGuideUnlike(feedItem.id, sessionUserId)
+      else onPressGuideLike(feedItem.id, sessionUserId)
     }
   }
 }

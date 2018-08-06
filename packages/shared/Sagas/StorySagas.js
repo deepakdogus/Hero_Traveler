@@ -1,5 +1,6 @@
 import { call, put, select } from 'redux-saga/effects'
 import StoryActions from '../Redux/Entities/Stories'
+import GuideActions from '../Redux/Entities/Guides'
 import UserActions, {isInitialAppDataLoaded, isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
 import CategoryActions from '../Redux/Entities/Categories'
 import StoryCreateActions from '../Redux/StoryCreateRedux'
@@ -53,7 +54,6 @@ export function * getUserFeed (api, action) {
   yield getInitalData(api, userId)
 
   const response = yield call(api.getUserFeed, userId)
-
   if (response.ok) {
     const { entities, result } = response.data;
     yield [
@@ -149,7 +149,10 @@ function * createCover(api, draft){
   if (!cover) return draft
   const cloudinaryCover = yield CloudinaryAPI.uploadMediaFile(cover, isImageCover ? 'image' : 'video')
   if (cloudinaryCover.error) return cloudinaryCover
-  cloudinaryCover.data = JSON.parse(cloudinaryCover.data)
+  // Web and mobile receive two different responses.
+  if (typeof cloudinaryCover.data === "string") {
+    cloudinaryCover.data = JSON.parse(cloudinaryCover.data)
+  }
   if (isImageCover) draft.coverImage = cloudinaryCover.data
   else draft.coverVideo = cloudinaryCover.data
   yield put(StoryCreateActions.incrementSyncProgress())
@@ -237,6 +240,9 @@ function * updateDraftErrorHandling(draft, response){
 }
 
 function getAtomicSteps(story){
+  if (!story.draftjsContent) {
+    return 0;
+  }
   return story.draftjsContent.blocks.reduce((count, block) => {
     if (block.type === 'atomic' && block.data.url.substring(0,4) === 'file') return count + 1
     return count
@@ -264,7 +270,7 @@ export function * publishLocalDraft (api, action) {
   }
 
   const atomicResponse = yield uploadAtomicAssets(draft)
-  if (atomicResponse.error){
+  if (atomicResponse && atomicResponse.error){
     yield publishDraftErrorHandling(draft, atomicResponse.error)
     return
   }
@@ -456,6 +462,19 @@ export function * loadDrafts(api) {
   }
 }
 
+export function * getGuideStories(api, {guideId}) {
+  const response = yield call(api.getGuideStories, guideId)
+  if (response.ok) {
+    const {entities} = response.data
+    yield [
+      put(UserActions.receiveUsers(entities.users)),
+      put(CategoryActions.receiveCategories(entities.categories)),
+      put(StoryActions.receiveStories(entities.stories)),
+    ]
+  }
+  // no fail case... worse case they will see less stories
+}
+
 export function * deleteStory(api, {userId, storyId}){
   const response = yield call(
     api.deleteStory,
@@ -463,6 +482,9 @@ export function * deleteStory(api, {userId, storyId}){
   )
 
   if (response.ok) {
-    yield put(StoryActions.deleteStorySuccess(userId, storyId))
+    yield [
+      put(StoryActions.deleteStorySuccess(userId, storyId)),
+      put(GuideActions.deleteStoryFromGuides(storyId)),
+    ]
   }
 }

@@ -55,25 +55,45 @@ export default class StorySelectRow extends Component {
     renderRight: PropTypes.bool,
     styles: PropTypes.object,
     index: PropTypes.number,
+    navToStory: PropTypes.func,
+    navToUserProfile: PropTypes.func
+  }
+
+  _handleStoryClick = () => {
+    const {story} = this.props.story
+    this.props.navToStory(story.id || story.objectID)
   }
 
   renderImage = () => {
     const src = getImageUrl(this.props.story.coverImage)
     return (
-      <StyledImage src={src} alt='ADD ALT TEXT'/>
+        <StyledImage
+          src={src}
+          alt='ADD ALT TEXT'
+          onClick={this._handleStoryClick}
+        />
     )
   }
 
   renderText = () => {
     const {username, story, textStyles} = this.props
-
     let Text = DefaultText
     if (textStyles) Text = styled(DefaultText)`${textStyles}`
 
     return (
       <StyledVerticalCenter>
-        <Text>{story.title}</Text>
-        {username && <UserName>{username}</UserName>}
+          <Text
+            onClick={this._handleStoryClick}
+          >
+            {story.title}
+          </Text>
+          {username &&
+            <UserName
+              onClick={this._handleProfileClick}
+            >
+              {username}
+            </UserName>
+          }
       </StyledVerticalCenter>
     )
   }
@@ -96,7 +116,6 @@ export default class StorySelectRow extends Component {
     let Container = ReplacementContainer || DefaultContainer
     let Wrapper = DefaultWrapper
     if (this.props.isAddToBoard) Wrapper = InteractiveContainer
-
     return (
       <Wrapper>
         <Container index={index}>

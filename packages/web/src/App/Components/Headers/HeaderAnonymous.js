@@ -1,5 +1,6 @@
 import React from 'react'
 import logo from '../../Shared/Images/ht-logo-white.png'
+import { Link } from 'react-router-dom'
 import { Row, Col } from '../FlexboxGrid'
 import { StyledRow, StyledRoundedLoginButton, LoginLink, Logo, Divider, HamburgerIcon, SearchNav } from './Shared'
 
@@ -8,7 +9,9 @@ export default class HeaderAnonymous extends React.Component {
     return (
       <StyledRow between="xs" middle="xs">
         <Col>
-          <Logo src={logo} alt={'Hero Traveler Logo'}/>
+          <Link to="/">
+            <Logo src={logo} alt={'Hero Traveler Logo'}/>
+          </Link>
         </Col>
         <Col lg={5}>
         </Col>

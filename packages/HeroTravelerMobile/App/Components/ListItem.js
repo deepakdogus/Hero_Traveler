@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {View, TouchableWithoutFeedback, StyleSheet} from 'react-native'
 import {Metrics, Colors} from '../Shared/Themes/'
 
-const S = StyleSheet.create({
+const styles = StyleSheet.create({
   root: {
     flex: 1,
     flexDirection: 'row',
@@ -31,6 +31,7 @@ const S = StyleSheet.create({
 export default class ListItem extends Component {
 
   static propTypes = {
+    onPress: PropTypes.func,
     leftElement: PropTypes.element,
     text: PropTypes.node.isRequired,
     secondaryText: PropTypes.node,
@@ -38,15 +39,20 @@ export default class ListItem extends Component {
   }
 
   render() {
+    const {
+      onPress, style, text,
+      leftElement, secondaryText, rightElement
+    } = this.props
+
     return (
-      <TouchableWithoutFeedback onPress={this.props.onPress}>
-        <View style={[S.root, this.props.style]}>
-          {this.props.leftElement && <View style={S.left}>{this.props.leftElement}</View>}
-          <View style={S.middle}>
-            {this.props.text}
-            <View style={S.secondaryText}>{this.props.secondaryText}</View>
+      <TouchableWithoutFeedback onPress={onPress}>
+        <View style={[styles.root, style]}>
+          {leftElement && <View style={styles.left}>{leftElement}</View>}
+          <View style={styles.middle}>
+            {text}
+            <View style={styles.secondaryText}>{secondaryText}</View>
           </View>
-          {this.props.rightElement && <View style={S.right}>{this.props.rightElement}</View>}
+          {rightElement && <View style={styles.right}>{rightElement}</View>}
         </View>
       </TouchableWithoutFeedback>
     )

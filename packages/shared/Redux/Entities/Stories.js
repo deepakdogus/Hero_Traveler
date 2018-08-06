@@ -38,6 +38,7 @@ const { Types, Creators } = createActions({
   addUserStory: ['stories', 'draftId'],
   deleteStory: ['userId', 'storyId'],
   deleteStorySuccess: ['userId', 'storyId'],
+  getGuideStories: ['guideId'],
 })
 
 export const StoryTypes = Types
@@ -149,7 +150,8 @@ export const getBookmarksFailure = (state, {userId, error}) => {
 }
 
 export const categoryRequest = (state, {categoryId}) => {
-  return state.setIn(
+  const errorLessState = state.setIn(['error'], null)
+  return errorLessState.setIn(
     ['storiesByCategoryAndId', categoryId, 'fetchStatus'],
     {fetching: true, loaded: false}
   )
@@ -175,12 +177,13 @@ export const categoryFailure = (state, {categoryId, error}) => {
 
   return state.setIn(
     ['storiesByCategoryAndId', categoryId, 'fetchStatus'],
-    {fetching: false, loaded: false, error}
+    {fetching: false, loaded: false}
   )
   .setIn(
     ['storiesByCategoryAndId', categoryId, 'byId'],
     derivedStoriesById
   )
+  .setIn(['error'], error)
 }
 
 export const failure = (state, {error}) =>
@@ -355,6 +358,7 @@ export const deleteStory = (state, {userId, storyId}) => {
 
 export const deleteStorySuccess = (state, {userId, storyId}) => {
   let newState = state.setIn(['entities'], state.entities.without(storyId))
+  newState = newState.setIn(['userFeedById'], _.without(state.userFeedById, storyId))
 
   const story = state.entities[storyId]
   const path = story.draft ? ['drafts', 'byId'] : ['storiesByUserAndId', userId, 'byId']

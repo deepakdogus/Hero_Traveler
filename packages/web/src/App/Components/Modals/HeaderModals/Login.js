@@ -32,7 +32,8 @@ export default class Login extends React.Component {
     }
   }
 
-  _onAttemptLogin = () => {
+  _onAttemptLogin = (e) => {
+    e.preventDefault()
     const {onAttemptLogin} = this.props
     const {password, username} = this.state
     onAttemptLogin(username, password)
@@ -62,17 +63,18 @@ export default class Login extends React.Component {
           page='login'
         />
         <Text>Or</Text>
-        <StyledInput placeholder='Username' onChange={this.setUsername}/>
-        <StyledInput placeholder='Password' onChange={this.setPassword} type='password'/>
-        <ForgotPasswordText>Forgot Password?</ForgotPasswordText>
-        <RoundedButton
-          text='LOGIN'
-          width='100%'
-          margin='none'
-          height='39px'
-          onClick={this._onAttemptLogin}
-        />
-
+          <form onSubmit={this._onAttemptLogin}>
+            <StyledInput placeholder='Username' onChange={this.setUsername}/>
+            <StyledInput placeholder='Password' onChange={this.setPassword} type='password'/>
+            <ForgotPasswordText>Forgot Password?</ForgotPasswordText>
+            <RoundedButton
+              text='LOGIN'
+              width='100%'
+              margin='none'
+              height='39px'
+              type='submit'
+            />
+          </form> 
         <HasAccount>Don't have an account? <SignupText onClick={onSignupClick}>Sign up</SignupText></HasAccount>
       </Container>
     )

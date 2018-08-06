@@ -4,18 +4,13 @@ import PropTypes from 'prop-types'
 import {
   Text,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  Animated,
   View,
   Alert,
   TextInput,
   ScrollView,
-  NativeModules,
 } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
-import R from 'ramda'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import Immutable from 'seamless-immutable'
 
 import {styles as StoryReadingScreenStyles} from '../Styles/StoryReadingScreenStyles'
@@ -26,24 +21,17 @@ import Loader from '../../Components/Loader'
 import {Colors, Metrics} from '../../Shared/Themes'
 import styles, {customStyles, modalWrapperStyles} from './2_StoryCoverScreenStyles'
 import NavBar from './NavBar'
-import getImageUrl from '../../Shared/Lib/getImageUrl'
-import getVideoUrl from '../../Shared/Lib/getVideoUrl'
 import getRelativeHeight, {extractCoverMetrics} from '../../Shared/Lib/getRelativeHeight'
-import ImageWrapper from '../../Components/ImageWrapper'
-import VideoPlayer, {TouchlessPlayButton} from '../../Components/VideoPlayer'
-import pathAsFileObject from '../../Shared/Lib/pathAsFileObject'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTimeTooltips'
+import {trimVideo} from '../../Shared/Lib/mediaHelpers'
 import UserActions from '../../Shared/Redux/Entities/Users'
-import TabIcon from '../../Components/TabIcon'
 import Modal from '../../Components/Modal'
 import Tooltip from '../../Components/Tooltip'
+import EditableCoverMedia from '../../Components/EditableCoverMedia'
 
 import NativeEditor from '../../Components/NativeEditor/Editor'
 import Toolbar from '../../Components/NativeEditor/Toolbar'
 import {KeyboardTrackingView} from 'react-native-keyboard-tracking-view'
-import { ProcessingManager } from 'react-native-video-processing'
-
-const VideoManager = NativeModules.VideoManager
 
 const MediaTypes = {
   video: 'video',
@@ -67,30 +55,10 @@ const isEqual = (firstItem, secondItem) => {
   }
 }
 
-async function trimVideo(videoFile, callback, storyId, _this){
-  try {
-    let newSource = videoFile
-    const { duration } = await ProcessingManager.getVideoInfo(newSource)
-    if (duration > 60) {
-      newSource = await ProcessingManager.trim(newSource, { startTime: 0, endTime: 60 })
-    }
-    newSource = await VideoManager.moveVideo(newSource, storyId)
-    callback(newSource)
-  } catch(e) {
-      console.log(`Issue trimming video ${e}`)
-      _this.setState({error: 'There\'s an issue with the video you selected. Please try another.'})
-      NavActions.pop()
-      // jump to top to reveal error message
-      _this.jumpToTop()
-  }
-}
-
-
 class StoryCoverScreen extends Component {
 
   static propTypes = {
     mediaType: PropTypes.oneOf([MediaTypes.video, MediaTypes.photo]),
-    accessToken: PropTypes.object,
     user: PropTypes.object,
     story: PropTypes.object,
     storyId: PropTypes.string,
@@ -115,11 +83,9 @@ class StoryCoverScreen extends Component {
     this.timeout = null
 
     this.state = {
-      imageMenuOpen: false,
       file: null,
       updating: false,
       originalStory: props.workingDraft,
-      toolbarOpacity: new Animated.Value(1),
       imageUploading: false,
       videoUploading: false,
       isScrollDown: !!props.workingDraft.coverImage | !!props.workingDraft.coverVideo,
@@ -156,128 +122,10 @@ class StoryCoverScreen extends Component {
     else return MediaTypes.photo
   }
 
-  _toggleImageMenu = () => {
-    if (this.state.imageMenuOpen) {
-
-      if (this.timeout) {
-        clearTimeout(this.timeout)
-      }
-
-      this.setState({imageMenuOpen: false}, () => {
-        this.resetAnimation()
-      })
-    } else {
-      this.setState({imageMenuOpen: true})
-      this.timeout = setTimeout(() => {
-        if (this.state.imageMenuOpen) {
-          this.fadeOutMenu()
-        }
-      }, 5000)
-    }
-  }
-
-  closeMenu() {
-    if (this.timeout) {
-      clearTimeout(this.timeout)
-    }
-
-    this.setState({imageMenuOpen: false}, () => {
-      this.resetAnimation()
+  onTrimError = () => {
+    this.setState({
+      error: 'There\'s an issue with the video you selected. Please try another.'
     })
-  }
-
-  fadeOutMenu() {
-    Animated.timing(
-      this.state.toolbarOpacity,
-      {
-        toValue: 0,
-        duration: 300
-      }
-    ).start(() => {
-      this.setState({imageMenuOpen: false}, () => {
-        this.resetAnimation()
-      })
-    })
-  }
-
-  resetAnimation() {
-    this.state.toolbarOpacity.stopAnimation(() => {
-      this.state.toolbarOpacity.setValue(1)
-    })
-  }
-
-  _touchChangeCover = () => {
-    this.setState({imageMenuOpen: false}, () => {
-      this.resetAnimation()
-    })
-    NavActions.mediaSelectorScreen({
-      title: 'Change Cover',
-      leftTitle: 'Cancel',
-      onLeft: () => NavActions.pop(),
-      rightTitle: 'Update',
-      onSelectMedia: this._handleSelectCover
-    })
-  }
-
-  renderCoverPhoto(coverPhoto) {
-
-    if (coverPhoto) coverPhoto = getImageUrl(coverPhoto, 'basic')
-    return R.ifElse(
-      R.identity,
-      R.always((
-        <ImageWrapper
-          background={true}
-          source={{uri: coverPhoto}}
-          style={styles.coverPhoto}
-          resizeMode='cover'
-        >
-          <View
-            style={{flex: 1}}
-          >
-            {this.renderContent()}
-          </View>
-        </ImageWrapper>
-      )),
-      R.always(this.renderContent(coverPhoto))
-    )(!!coverPhoto)
-  }
-
-  renderCoverVideo(coverVideo) {
-    if (coverVideo) coverVideo = getVideoUrl(coverVideo)
-    return R.ifElse(
-      R.identity,
-      R.always((
-        <View style={styles.coverVideo}>
-          <VideoPlayer
-            path={coverVideo}
-            allowVideoPlay={false}
-            autoPlayVideo={false}
-            showPlayButton={false}
-            resizeMode='cover'
-            showControls={false}
-          />
-          {this.renderContent()}
-        </View>
-      )),
-      R.always(this.renderContent())
-    )(!!coverVideo)
-  }
-
-  renderTextColor = (baseStyle) => {
-    this.props.workingDraft.coverImage
-    return R.ifElse(
-      R.identity,
-      R.always([baseStyle, { color: Colors.snow }]),
-      R.always(baseStyle),
-    )(!!(this.props.workingDraft.coverImage || this.props.workingDraft.coverImage))
-  }
-
-  renderPlaceholderColor = (baseColor) => {
-    return R.ifElse(
-      R.identity,
-      R.always('white'),
-      R.always(baseColor)
-    )(!!(this.props.workingDraft.coverImage || this.props.workingDraft.coverImage))
   }
 
   /*
@@ -414,7 +262,6 @@ class StoryCoverScreen extends Component {
   }
 
 
-  // TODO
   _onRight = () => {
     const hasVideoSelected = !!this.state.coverVideo
     const hasImageSelected = !!this.state.coverImage
@@ -479,15 +326,6 @@ class StoryCoverScreen extends Component {
     return Promise.resolve({})
   }
 
-  saveFailed = () => {
-    this.setState({
-      updating: false,
-      imageUploading: false,
-      videoUploading: false,
-      activeModal: 'saveFail',
-    })
-  }
-
   renderFailModal = () => {
     const {activeModal} = this.state
     let renderProps;
@@ -545,18 +383,7 @@ class StoryCoverScreen extends Component {
     return this.hasNoPhoto() && this.hasNoVideo()
   }
 
-  _contentAddCover = () => {
-    this.setState({error: null})
-    NavActions.mediaSelectorScreen({
-      title: 'Add Cover',
-      leftTitle: 'Cancel',
-      onLeft: () => NavActions.pop(),
-      rightTitle: 'Next',
-      onSelectMedia: this._handleSelectCover
-    })
-  }
-
-  _touchError = () => {
+  clearError = () => {
     this.setState({error: null})
   }
 
@@ -578,7 +405,6 @@ class StoryCoverScreen extends Component {
     this.props.updateWorkingDraft({coverCaption})
   }
 
-
   setDescription = (description) => {
     this.props.updateWorkingDraft({description})
   }
@@ -594,54 +420,6 @@ class StoryCoverScreen extends Component {
 
   jumpToTitle = () => {
     this.scrollViewRef.scrollTo({x:0, y: this._getCoverHeight() - 30, amimated: true})
-  }
-
-  renderContent () {
-    const {imageMenuOpen, toolbarOpacity} = this.state
-    return (
-      <View style={this.hasNoCover() ? styles.lightGreyAreasBG : styles.contentWrapper}>
-        {this.hasNoCover() &&
-          <View style={[styles.addPhotoView]}>
-            <TouchableOpacity
-              style={styles.addPhotoButton}
-              onPress={this._contentAddCover}
-            >
-              <TabIcon name='cameraDark' style={{
-                view: styles.cameraIcon,
-                image: styles.cameraIconImage,
-              }} />
-              <Text style={this.renderTextColor([styles.baseTextColor, styles.coverPhotoText])}>
-                + ADD COVER PHOTO OR VIDEO
-              </Text>
-            </TouchableOpacity>
-          </View>
-        }
-        {!this.hasNoCover() && !imageMenuOpen &&
-          <TouchableWithoutFeedback onPress={this._toggleImageMenu}>
-            <View style={styles.imageMenuView}>
-              {!this.hasNoVideo() &&
-                <TouchlessPlayButton />
-              }
-            </View>
-          </TouchableWithoutFeedback>
-        }
-        {!this.hasNoCover() && imageMenuOpen &&
-            <TouchableWithoutFeedback onPress={this._toggleImageMenu}>
-              <Animated.View style={[
-                styles.imageMenuView,
-                {opacity: toolbarOpacity}
-              ]}>
-                <TouchableOpacity
-                  onPress={this._touchChangeCover}
-                  style={styles.iconButton}
-                >
-                  <Icon name={'camera'} color={Colors.snow} size={30} />
-                </TouchableOpacity>
-              </Animated.View>
-            </TouchableWithoutFeedback>
-        }
-      </View>
-    )
   }
 
   _completeIntroTooltip = () => {
@@ -714,9 +492,7 @@ class StoryCoverScreen extends Component {
   }
 
   setEditorRef = (ref) => this.editor = ref
-
   setScrollViewRef = (ref) => this.scrollViewRef = ref
-
   setToolbarRef = (ref) => this.toolbar = ref
 
   renderEditor() {
@@ -788,24 +564,25 @@ class StoryCoverScreen extends Component {
     }
   }
 
+  _dismissTooltip = () => {
+    this.setState({validationError: null})
+  }
+
   render () {
     const {error, validationError} = this.state
     const {
       title, coverCaption, description,
-      coverImage, coverVideo
+      coverImage, coverVideo, id
     } = this.props.workingDraft
+    const {updateWorkingDraft} = this.props
 
     let showIntroTooltip = false;
-    if (this.props.user && this.state.file) {
+    if (this.props.user && (coverImage || coverVideo)) {
       showIntroTooltip = !isTooltipComplete(
         TooltipTypes.STORY_PHOTO_EDIT,
         this.props.user.introTooltips
       )
     }
-    // if (this.scrollViewRef && this.state.isScrollDown) {
-    //  this.setState({isScrollDown: false})
-    //  this.scrollViewRef.scrollTo({x: 0, y: 0, animated: true})
-    // }
 
     return (
       <View style={styles.root}>
@@ -834,11 +611,18 @@ class StoryCoverScreen extends Component {
               {error &&
                 <ShadowButton
                   style={styles.errorButton}
-                  onPress={this._touchError}
+                  onPress={this.clearError}
                   text={error} />
               }
-              {this.isPhotoType() && this.renderCoverPhoto(coverImage)}
-              {!this.isPhotoType() && this.renderCoverVideo(coverVideo)}
+              <EditableCoverMedia
+                isPhoto={this.isPhotoType()}
+                media={coverImage || coverVideo}
+                clearError={this.clearError}
+                targetId={id}
+                onUpdate={updateWorkingDraft}
+                onTrimError={this.onTrimError}
+                jumpToTop={this.jumpToTop}
+              />
             </View>
             <View style={styles.titlesWrapper}>
               {!this.hasNoCover() &&
@@ -933,7 +717,7 @@ class StoryCoverScreen extends Component {
         }
         {validationError &&
           <Tooltip
-            onPress={this._touchError}
+            onPress={this.clearError}
             position={"title"}
             text={validationError}
             onDismiss={this._dismissTooltip}
@@ -942,49 +726,10 @@ class StoryCoverScreen extends Component {
       </View>
     )
   }
-
-  _dismissTooltip = () => {
-    this.setState({validationError: null})
-  }
-
-  _handleSelectCover = (path, isPhotoType, coverMetrics = {}) => {
-    const file = pathAsFileObject(path)
-    const draftUpdates = { coverCaption: '' }
-
-    const callback = (newSource) => {
-      // nesting coverMetrics inside of original.meta to mirror published media asset format
-      const modifiedFile = {
-        ...file,
-        uri: newSource,
-        original: {
-          meta: coverMetrics
-        }
-      }
-
-      if (isPhotoType) {
-        draftUpdates.coverImage = modifiedFile
-        draftUpdates.coverVideo = undefined
-      } else {
-        draftUpdates.coverImage = undefined
-        draftUpdates.coverVideo = modifiedFile
-      }
-
-      this.setState({
-        file,
-        isScrollDown: true,
-        coverMetrics,
-      })
-      this.props.updateWorkingDraft(draftUpdates)
-      NavActions.pop()
-    }
-
-    trimVideo(file.uri, callback, this.props.workingDraft.id, this)
-  }
 }
 
 export default connect((state) => {
   return {
-    accessToken: _.find(state.session.tokens, {type: 'access'}),
     user: state.entities.users.entities[state.session.userId],
     originalDraft: {...state.storyCreate.draft},
     workingDraft: {...state.storyCreate.workingDraft},

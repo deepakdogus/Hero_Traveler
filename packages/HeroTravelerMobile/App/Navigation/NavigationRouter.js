@@ -33,9 +33,8 @@ import ChangeEmailScreen from '../Containers/ChangeEmailScreen'
 
 // Story reading & creating
 import StoryReadingScreen from '../Containers/StoryReadingScreen'
-import StoryCommentsScreen from '../Containers/StoryCommentsScreen'
+import CommentsScreen from '../Containers/CommentsScreen'
 import StoryCreateScreen from '../Containers/CreateStory/1_CreateStoryScreen'
-import StoryCoverScreen from '../Containers/CreateStory/2_StoryCoverScreen'
 import CreateStoryDetailScreen from '../Containers/CreateStory/4_CreateStoryDetailScreen'
 import TagScreen from '../Containers/CreateStory/TagScreen'
 import TextInputScreen from '../Containers/CreateStory/TextInputScreen'
@@ -54,6 +53,12 @@ import SignupChangeEmail from '../Containers/Signup/SignupChangeEmail'
 import SignupTopics from '../Containers/Signup/SignupTopics'
 import SignupSocial from '../Containers/Signup/SignupSocial'
 import NavButton from './NavButton'
+
+// Guides
+import AddStoryToGuides from '../Containers/Guides/AddStoryToGuides'
+import CreateGuideScreen from '../Containers/Guides/CreateGuide'
+import EditGuideStories from '../Containers/Guides/EditGuideStories'
+import GuideReadingScreen from '../Containers/GuideReadingScreen'
 
 import {Images} from '../Shared/Themes'
 
@@ -154,7 +159,7 @@ const navToSignupChangeEmail = () => NavActions.signupFlow_changeEmail()
 const navToSignupSocial = () => NavActions.signupFlow_social()
 
 const navToTabbar = () => NavActions.tabbar()
-
+const noop = () => {}
 /* **************************
 * Documentation: https://github.com/aksonov/react-native-router-flux
 ***************************/
@@ -206,7 +211,7 @@ export default NavActions.create(
           component={SignupTopics}
           renderRightButton={topicsRightBtn}
           onRight={navToSignupSocial}
-          onBack={() => {}}
+          onBack={noop}
         />
         <Scene
           key='signupFlow_social'
@@ -311,8 +316,17 @@ export default NavActions.create(
         titleStyle={Styles.storyTitle}
       />
       <Scene
-        key='storyComments'
-        component={StoryCommentsScreen}
+        key='guide'
+        component={GuideReadingScreen}
+        direction='horizontal'
+        onLeft={NavActions.pop}
+        backButtonImage={Images.iconArrowLeft}
+        {..._.merge({}, clearNavBarProps, redBack)}
+        titleStyle={Styles.storyTitle}
+      />
+      <Scene
+        key='comments'
+        component={CommentsScreen}
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconClose}
@@ -406,21 +420,6 @@ export default NavActions.create(
           component={CreateStoryDetailScreen}
         />
         <Scene
-          key='createStory_tags'
-          panHandlers={null}
-          component={TagScreen}
-        />
-        <Scene
-          key='createStory_hashtags'
-          panHandlers={null}
-          component={TagScreen}
-        />
-        <Scene
-          key='createStory_travelTips'
-          panHandlers={null}
-          component={TextInputScreen}
-        />
-        <Scene
           key='createStory_location'
           panHandlers={null}
           component={LocationScreen}
@@ -456,10 +455,40 @@ export default NavActions.create(
         direction='horizontal'
       />
       <Scene
+        key='textInputScreen'
+        component={TextInputScreen}
+        direction='horizontal'
+      />
+      <Scene
+        key='tagSelectorScreen'
+        panHandlers={null}
+        component={TagScreen}
+      />
+      <Scene
+        key='locationSelectorScreen'
+        panHandlers={null}
+        component={LocationScreen}
+      />
+      <Scene
         key='viewBioScreen'
         component={ViewBioScreen}
         direction='horizontal'
         hideNavBar={true}
       />
-      </Scene>
+      <Scene
+        key='AddStoryToGuides'
+        component={AddStoryToGuides}
+        hideNavBar
+      />
+      <Scene
+        key='createGuide'
+        component={CreateGuideScreen}
+        hideNavBar
+      />
+      <Scene
+        key='editGuideStories'
+        component={EditGuideStories}
+        hideNavBar
+      />
+    </Scene>
 )

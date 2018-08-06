@@ -290,6 +290,14 @@ export default class StoryDetails extends React.Component {
                 onChange={this.handleRadioChange}
               >
                 <RadioButton
+                  value="see"
+                  label="SEE"
+                  style={styles.radioButton}
+                  labelStyle={styles.radioButtonLabel}
+                  checkedIcon={<RadioButtonChecked style={{fill: '#ed1e2e'}} />}
+                  uncheckedIcon={<RadioButtonUnchecked/>}
+                />
+                <RadioButton
                   value="eat"
                   label="EAT"
                   style={styles.radioButton}

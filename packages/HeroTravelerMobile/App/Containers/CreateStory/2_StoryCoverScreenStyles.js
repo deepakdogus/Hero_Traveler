@@ -13,14 +13,6 @@ export default StyleSheet.create({
   containerWithNavbar: {
     ...ApplicationStyles.screen.containerWithNavbar
   },
-  contentWrapper: {
-    flex: 1,
-  },
-  lightGreyAreasBG: {
-    flex: 1,
-    backgroundColor: Colors.lightGreyAreas,
-    maxHeight: Metrics.storyCover.fullScreen.height,
-  },
   errorButton: {
     position: 'absolute',
     top: 0,
@@ -75,16 +67,6 @@ export default StyleSheet.create({
     marginTop: 10,
     marginBottom: 15,
   },
-  cameraIcon: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: Metrics.doubleBaseMargin,
-  },
-  cameraIconImage: {
-    tintColor: 'gray',
-    height: 43,
-    width: 58,
-  },
   videoIconImage: {
     tintColor: 'gray',
     height: 31,
@@ -98,57 +80,9 @@ export default StyleSheet.create({
     left: 0,
     right: 0,
   },
-  addPhotoView: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   addTitleView: {
     height: third,
     justifyContent: 'center'
-  },
-  imageMenuView: {
-    flex: 1,
-    justifyContent: 'space-around',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  addPhotoButton: {
-    justifyContent: 'center',
-    backgroundColor: 'transparent',
-    height: 282,
-    width: Metrics.screenWidth,
-  },
-  baseTextColor: {
-    color: Colors.background
-  },
-  coverPhoto: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    flex: 1,
-  },
-  coverVideo: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    flex: 1,
-    backgroundColor: 'black'
-  },
-  coverPhotoText: {
-    fontFamily: Fonts.type.montserrat,
-    fontSize: 13,
-    fontWeight: '700',
-    textAlign: 'center',
-    color: Colors.background,
-  },
-  iconButton: {
-    backgroundColor: Colors.clear
   },
   navBarStyle: {
     height: Metrics.navBarHeight - 10,

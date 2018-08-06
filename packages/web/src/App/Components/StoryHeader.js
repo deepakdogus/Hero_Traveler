@@ -36,7 +36,7 @@ const Username = styled(RedText)`
 const TimeStamp = styled(RedText)`
   font-style: italic;
   font-size: 14px;
-  color: ${props => props.theme.Colors.background}
+  color: ${props => props.theme.Colors.background};
 `
 
 const CoverImage = styled.img`
@@ -112,7 +112,7 @@ export default class StoryHeader extends React.Component {
   }
 
   _editReroute = () => {
-    this.props.reroute(`/createStoryNew/${this.props.story.id}`)
+    this.props.reroute(`/editStory/${this.props.story.id}`)
   }
 
   render () {

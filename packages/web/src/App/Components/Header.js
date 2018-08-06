@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import {NavLink} from 'react-router-dom'
+import {Link, NavLink} from 'react-router-dom'
 import Modal from 'react-modal'
 import {connect} from 'react-redux'
 import {push} from 'react-router-redux'
@@ -15,7 +15,6 @@ import Login from './Modals/Login'
 import Signup from './Modals/Signup'
 import ResetPassword from './Modals/ResetPassword'
 import AddToItinerary from './Modals/AddToItinerary'
-import Inbox from './Modals/Inbox'
 import RightModal from './RightModal'
 import NotificationsThread from './Modals/NotificationsThread'
 import {usersExample} from '../Containers/Feed_TEST_DATA'
@@ -54,7 +53,7 @@ const StyledGrid = styled(Grid)`
 `
 
 const StyledGridBlack = styled(StyledGrid)`
-  background-color: ${props => props.theme.Colors.background}
+  background-color: ${props => props.theme.Colors.background};
 `
 
 const StyledRow = styled(Row)`
@@ -170,7 +169,6 @@ class Header extends React.Component {
   openModal = (event) => {
     const name = event.target.name
     let modalToOpen;
-    if (name === 'inbox' || name === 'loginEmail') modalToOpen = 'inbox'
     else if (name === 'notifications' || name === 'cameraFlash') modalToOpen = 'notificationsThread'
     this.setState({ modal: modalToOpen })
   }
@@ -188,7 +186,9 @@ class Header extends React.Component {
       <SelectedGrid fluid>
         <StyledRow center="xs" middle="xs">
           <Col xs={12} md={2} lg={2} >
-            <Logo src={logo} alt={'Hero Traveler Logo'}/>
+            <Link to="/">
+              <Logo src={logo} alt={'Hero Traveler Logo'}/>
+            </Link>
           </Col>
           {isLoggedIn &&
           <Col xsOffset={1} lg={2}>
@@ -243,21 +243,10 @@ class Header extends React.Component {
               </NavLink>
               <Divider>&nbsp;</Divider>
               <NavLink
-                to='/createStoryNew/new'
+                to='/editStory/new'
               >
                 <StyledRoundedButton text='Create'/>
               </NavLink>
-              <StyledRoundedButton
-                type='headerButton'
-                height='32px'
-                width='32px'
-                name='inbox'
-                onClick={this.openModal}
-              >
-                <MailIcon
-                  name='loginEmail'
-                />
-              </StyledRoundedButton>
               <StyledRoundedButton
                 type='headerButton'
                 height='32px'
@@ -342,13 +331,6 @@ class Header extends React.Component {
           onRequestClose={this.closeModal}
         >
           <NotificationsThread closeModal={this.closeModal} profile={user}/>
-        </RightModal>
-        <RightModal
-          isOpen={this.state.modal === 'inbox'}
-          contentLabel='Inbox'
-          onRequestClose={this.closeModal}
-        >
-          <Inbox closeModal={this.closeModal} profile={user}/>
         </RightModal>
       </SelectedGrid>
     )

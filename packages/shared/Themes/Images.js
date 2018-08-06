@@ -51,7 +51,8 @@ const images = {
   iconTwitterBlue: require('../Images/ht-icons/icon_twitter.png'),
   iconInstagram: require('../Images/ht-icons/icon_instagram.png'),
   iconLoginEmail: require('../Images/ht-icons/icon_login-button-email.png'),
-  iconRedCheck: require('../Images/ht-icons/icon_red-check-image-selected.png'),
+  iconRedCheck: require('../Images/ht-icons/red-check.png'),
+  iconRedCheckOutlined: require('../Images/ht-icons/icon_red-check-image-selected.png'),
   iconArrowRight: require('../Images/ht-icons/icon_arrow_right.png'),
   iconArrowLeft: require('../Images/ht-icons/icon_arrow_left.png'),
   iconArrowRightRed: require('../Images/ht-icons/icon_arrow_right_red.png'),
@@ -104,7 +105,10 @@ const images = {
   appleAppStoreBadge: require('../Images/ht-icons/apple-app-store-badge.svg'),
   iconContributorBadage: require('../Images/ht-icons/contributor-badge.png'),
   iconFounderBadge: require('../Images/ht-icons/founder-badge.png'),
-  iconErrorExclamation: require('../Images/ht-icons/error.png')
+  iconErrorExclamation: require('../Images/ht-icons/error.png'),
+  iconInfoDark: require('../Images/ht-icons/icon_info_dark.png'),
+  iconGreyCheck: require('../Images/ht-icons/grey-check.png'),
+  iconCreateGuide: require('../Images/ht-icons/icon_create-new-guide.png'),
 }
 
 export default images

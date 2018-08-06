@@ -54,12 +54,32 @@ export default class HeaderModals extends React.Component {
     attemptLogin: PropTypes.func,
     openLoginModal: PropTypes.func,
     user: PropTypes.string, // actually just a userId
+    activitiesById: PropTypes.array,
+    activities: PropTypes.object,
+    stories: PropTypes.object,
+    markSeen: PropTypes.func,
+    reroute: PropTypes.func,
+    users: PropTypes.object,
   }
+
   closeGlobalModal = () => {
     this.props.closeGlobalModal()
   }
+
   render() {
-    const { globalModalThatIsOpen, closeModal, modal, globalModalParams } = this.props
+    const {
+      globalModalThatIsOpen,
+      closeModal,
+      modal,
+      globalModalParams,
+      activities,
+      activitiesById,
+      markSeen,
+      reroute,
+      stories,
+      users,
+    } = this.props
+
     return (
       <div>
         <Modal
@@ -110,7 +130,15 @@ export default class HeaderModals extends React.Component {
           contentLabel='Notifications Thread'
           onRequestClose={closeModal}
         >
-          <NotificationsThread closeModal={closeModal} profile={this.props.user}/>
+          <NotificationsThread
+            closeModal={closeModal}
+            activities={activities}
+            activitiesById={activitiesById}
+            markSeen={markSeen}
+            stories={stories}
+            reroute={reroute}
+            users={users}
+            />
         </RightModal>
         <RightModal
           isOpen={globalModalThatIsOpen === 'comments'}

@@ -1,31 +1,27 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import {ScrollView, Text, View, Animated, RefreshControl} from 'react-native'
+import {Text, View, Animated, TouchableOpacity, Image} from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
 import MapView from 'react-native-maps';
 import RNDraftJSRender from 'react-native-draftjs-render';
 import {compose, withHandlers} from 'recompose'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import _ from 'lodash'
 
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
-import formatCount from '../Shared/Lib/formatCount'
-import ConnectedStoryPreview from './ConnectedStoryPreview'
-import {Metrics} from '../Shared/Themes'
-import StoryReadingToolbar from '../Components/StoryReadingToolbar'
-import TabIcon from '../Components/TabIcon'
+import {Metrics, Images} from '../Shared/Themes'
 import ImageWrapper from '../Components/ImageWrapper'
-import Loader from '../Components/Loader'
-import FlagModal from '../Components/FlagModal'
-import {styles, rendererStyles} from './Styles/StoryReadingScreenStyles'
+import {styles, rendererStyles, translations} from './Styles/StoryReadingScreenStyles'
 import VideoPlayer from '../Components/VideoPlayer'
+import ReadingScreensOverlap from '../Components/ReadingScreensOverlap'
+import ReadingDetails from '../Components/ReadingDetails'
 import Immutable from 'seamless-immutable'
 import {getVideoUrlFromString} from '../Shared/Lib/getVideoUrl'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import getRelativeHeight from '../Shared/Lib/getRelativeHeight'
-import {displayLocationDetails} from '../Shared/Lib/locationHelpers'
+import isTooltipComplete, {Types as TooltipTypes} from '../Shared/Lib/firstTimeTooltips'
+import UserActions from '../Shared/Redux/Entities/Users'
 
 const enhanceStoryVideo = compose(
   withHandlers(() => {
@@ -115,17 +111,6 @@ const atomicHandler = (item: Object): any => {
   return null
 }
 
-const EnhancedStoryReadingToolbar = withHandlers({
-  onPressBookmark: props => () => {
-    props.toggleBookmark(props.userId, props.storyId)
-  },
-  onPressComment: props => () => {
-    NavActions.storyComments({
-      storyId: props.storyId
-    })
-  }
-})(StoryReadingToolbar)
-
 class StoryReadingScreen extends React.Component {
   static propTypes = {
     user: PropTypes.object,
@@ -137,53 +122,24 @@ class StoryReadingScreen extends React.Component {
 
   constructor(props) {
     super(props)
-    this.onScroll = this.onScroll.bind(this)
-    this.toolbarShown = false
     this.state = {
-      toolbarHeight: new Animated.Value(0),
-      newYPos: -1,
-      oldYPos: 0,
       showFlagModal: false,
+      scrollY: new Animated.Value(0),
     }
     if (!this.props.story) {
       this.getStory()
     }
   }
 
-  onScroll(event) {
-    const ypos = event.nativeEvent.contentOffset.y
-    this.setState({
-      oldYPos: this.state.newYPos,
-      newYPos: ypos,
+  _onPressBookmark = () => {
+    const {toggleBookmark, user, storyId} = this.props
+    toggleBookmark(user.id, storyId)
+  }
+
+  _onPressComment = () => {
+    NavActions.comments({
+      storyId: this.props.storyId,
     })
-    if (ypos > 35 && !this.toolbarShown) {
-      this.toolbarShown = true
-      this.showToolbar()
-    } else if (ypos <= 35 && this.toolbarShown) {
-      this.toolbarShown = false
-      this.hideToolbar()
-    }
-
-  }
-
-  showToolbar() {
-    Animated.timing(
-      this.state.toolbarHeight,
-      {
-        toValue: Metrics.tabBarHeight,
-        duration: 200,
-      },
-    ).start()
-  }
-
-  hideToolbar() {
-    Animated.timing(
-      this.state.toolbarHeight,
-      {
-        toValue: 0,
-        duration: 200,
-      },
-    ).start()
   }
 
   _toggleLike = () => {
@@ -194,39 +150,9 @@ class StoryReadingScreen extends React.Component {
     this.setState({showFlagModal: !this.state.showFlagModal})
   }
 
-  /* MBT 08/08/17: Hold off on clickable tags until future notice
-  // _navBackToStory = () => {
-  //   NavActions.story({storyId: this.props.story.id})
-  // }
-
-  // _onPressTag = (category) => {
-  //   NavActions.explore_categoryFeed({
-  //     categoryId: category.id,
-  //     title: category.title,
-  //     leftButtonIconStyle: CategoryFeedNavActionStyles.leftButtonIconStyle,
-  //     navigationBarStyle: CategoryFeedNavActionStyles.navigationBarStyle,
-  //     onLeft: this._navBackToStory
-  //   })
-  // }
-    <TouchableOpacity
-      key={index}
-      onPress={() => this._onPressTag(category)}
-    >
-    </TouchableOpacity>
-  */
-  /*
-  If the old YPos is superior the the new YPos it means we scrolled up
-  and should show the content. Otherwise we should hide it.
-  */
-  isShowContent() {
-    return this.state.oldYPos >  this.state.newYPos || this.state.newYPos <= 0
-  }
-
-  renderCategories = () => {
-    let categories = _.compact(this.props.story.categories.map((category) => {
-      return category.title
-    }))
-    return <Text style={[styles.sectionText, styles.sectionTextHighlight]}>{categories.join(', ')}</Text>
+  _pressAddToGuide = () => {
+     const { story } = this.props
+     NavActions.AddStoryToGuides({ story })
   }
 
   renderHashtags = () => {
@@ -243,203 +169,149 @@ class StoryReadingScreen extends React.Component {
 
   hasLocationInfo() {
     const {locationInfo} = this.props.story
-    return !!locationInfo && !!locationInfo.name && !!locationInfo.latitude && !!locationInfo.longitude
+    return (
+      !!locationInfo && !!locationInfo.name
+      && !!locationInfo.latitude
+      && !!locationInfo.longitude
+    )
   }
 
-  _getCostType = () => {
-    const {type, currency} = this.props.story
-    let title = '';
-    switch (type) {
-      case 'see':
-      case 'do':
-        break;
-      case 'eat':
-        title = ' per person'
-        break;
-      case 'stay':
-        title = ' per night'
-        break;
-      default:
-        break;
-    }
-    // The currency is hardcoded for now, might want to change it later.
-    let currencySign = currency || ' USD';
-    title = currencySign + title;
-    return title;
+  dismissTooltip = () => {
+    const updatedTooltips = this.props.user.introTooltips.concat({
+      name: TooltipTypes.ADD_TO_GUIDE,
+      seen: true,
+    })
+    this.props.completeTooltip(updatedTooltips)
   }
 
   getStory = () => {
     this.props.requestStory(this.props.storyId)
   }
 
-  render () {
-    const { story, author, user } = this.props;
-    if (!story || !author) {
-      return (
-        <View style={[styles.darkRoot]}>
-          {!story &&
-            <Loader style={{
-              flex: 1,
-              position: 'absolute',
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              }}
+  renderBody = () => {
+    const {story} = this.props
+    return (
+      <Fragment>
+        <View style={styles.divider}/>
+        <View style={styles.content}>
+          {!!story.draftjsContent &&
+            <RNDraftJSRender
+              contentState={Immutable.asMutable(story.draftjsContent, {deep: true})}
+              customStyles={rendererStyles}
+              atomicHandler={atomicHandler}
             />
           }
-          { story && !!story.error &&
-            <Text>{story.error}</Text>
+          {!!this.props.story.hashtags &&
+            this.renderHashtags()
           }
+          {!!story.videoDescription &&
+            <View style={styles.videoDescription}>
+              <Text style={styles.videoDescriptionText}>{story.videoDescription}</Text>
+            </View>
+          }
+          {this.hasLocationInfo() &&
+            <View style={styles.locationWrapper}>
+              <MapView
+                style={styles.locationMap}
+                initialRegion={{
+                  latitude: story.locationInfo.latitude,
+                  longitude: story.locationInfo.longitude,
+                  latitudeDelta: 0.0922,
+                  longitudeDelta: 0.0421,
+                }}
+              >
+                <MapView.Marker coordinate={{
+                  latitude: story.locationInfo.latitude,
+                  longitude: story.locationInfo.longitude
+                }} />
+              </MapView>
+            </View>
+          }
+          <ReadingDetails targetEntity={story} />
         </View>
-      )
-    }
+      </Fragment>
+    )
+  }
+
+  renderPlusButton = (scrollY) => {
+    const plusButtonTranslation = scrollY.interpolate(translations.plusButton)
+    return (
+      <Animated.View
+        key='plusButton'
+        style={[
+          {
+            transform: [
+              {
+                translateY: plusButtonTranslation,
+              },
+            ],
+          },
+          styles.plusButton,
+        ]}>
+        <TouchableOpacity
+          onPress={this._pressAddToGuide}
+          style={styles.plusButtonTouchable}>
+          <Image
+            source={Images.iconContentPlusWhite}
+            style={styles.plusButtonIcon}
+          />
+        </TouchableOpacity>
+      </Animated.View>
+    )
+  }
+
+  renderToolTip = (scrollY) => {
+    const {user} = this.props
+    const tooltipOpacity = scrollY.interpolate(translations.tooltip)
+    const showNextTooltip = !!user && !isTooltipComplete(
+      TooltipTypes.ADD_TO_GUIDE,
+      user.introTooltips,
+    )
+    if (!showNextTooltip) return null
 
     return (
-      <View style={[styles.root]}>
-        <ScrollView
-          onScroll={this.onScroll}
-          scrollEventThrottle={400}
-          style={[styles.scrollView]}>
-          {!story.draft &&
-          <RefreshControl
-            refreshing={this.props.fetching || false}
-            onRefresh={this.getStory}
-          />
-          }
-          <ConnectedStoryPreview
-            isFeed={false}
-            onPressLike={this._toggleLike}
-            showLike={false}
-            gradientColors={['rgba(0,0,0,.65)', 'transparent', 'transparent', 'rgba(0,0,0,.65)']}
-            gradientLocations={[0,.25,.5,1]}
-            key={story.id}
-            height={Metrics.screenHeight}
-            story={story}
-            userId={user.id}
-            autoPlayVideo={true}
-            allowVideoPlay={true}
-            isStoryReadingScreen={true}
-            isContentVisible={this.isShowContent()}
-          />
-          <View style={styles.divider}/>
-          <View style={styles.content}>
-            {!!story.draftjsContent &&
-              <RNDraftJSRender
-                contentState={Immutable.asMutable(story.draftjsContent, {deep: true})}
-                customStyles={rendererStyles}
-                atomicHandler={atomicHandler}
-              />
-            }
-            {!!this.props.story.hashtags &&
-              this.renderHashtags()
-            }
-            {!!story.videoDescription &&
-              <View style={styles.videoDescription}>
-                <Text style={styles.videoDescriptionText}>{story.videoDescription}</Text>
-              </View>
-            }
-            {this.hasLocationInfo() &&
-              <View style={styles.locationWrapper}>
-                <MapView
-                  style={styles.locationMap}
-                  initialRegion={{
-                    latitude: story.locationInfo.latitude,
-                    longitude: story.locationInfo.longitude,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                  }}
-                >
-                  <MapView.Marker coordinate={{
-                    latitude: story.locationInfo.latitude,
-                    longitude: story.locationInfo.longitude
-                  }} />
-                </MapView>
-                <View style={styles.marginedRow}>
-                  <View style={styles.iconWrapper}>
-                    <TabIcon
-                      name='location'
-                      style={{ image: styles.icon }}
-                    />
-                  </View>
-                  <View style={{flexDirection: 'column', alignItems: 'flex-start'}}>
-                    <Text style={[styles.sectionText, styles.sectionLabel]}>Location:</Text>
-                    {story.locationInfo &&
-                    <Text style={[styles.sectionText, styles.sectionTextHighlight]}>
-                      {displayLocationDetails(story.locationInfo)}
-                    </Text>
-                    }
-                  </View>
-                </View>
-              </View>
-            }
-            {!!story.categories.length &&
-              <View style={styles.sectionWrapper}>
-                <View style={styles.iconWrapper}>
-                  <TabIcon
-                    name='tag'
-                    style={{ image: styles.icon }}
-                  />
-                </View>
-                <View style={styles.sectionTextWrapper}>
-                  <Text style={styles.sectionLabel}>Categories: </Text>
-                  {this.renderCategories()}
-                </View>
-              </View>
-            }
-            {!!story.cost &&
-              <View style={styles.sectionWrapper}>
-                <View style={styles.iconWrapper}>
-                  <TabIcon
-                    name='cost'
-                    style={{ image: styles.icon }}
-                  />
-                </View>
-                <View style={styles.sectionTextWrapper}>
-                  <Text style={styles.sectionLabel}>Cost: </Text>
-                  <Text style={styles.sectionText}>{story.cost + this._getCostType()}</Text>
-                </View>
-              </View>
-            }
-            {!!story.travelTips &&
-              <View style={styles.sectionWrapper}>
-                <View style={styles.iconWrapper}>
-                  <TabIcon
-                    name='travelTips'
-                    style={{ image: styles.icon }}
-                  />
-                </View>
-                <View style={styles.sectionTextWrapper}>
-                  <Text style={styles.sectionLabel}>Travel Tips: </Text>
-                  <Text style={styles.sectionText}>{story.travelTips}</Text>
-                </View>
-              </View>
-            }
-
-          </View>
-        </ScrollView>
-        <Animated.View style={[styles.toolBar, {height: this.state.toolbarHeight}]}>
-          <EnhancedStoryReadingToolbar
-            likeCount={formatCount(story.counts.likes)}
-            commentCount={formatCount(story.counts.comments)}
-            boomarkCount={formatCount(story.counts.bookmarks)}
-            isBookmarked={this.props.isBookmarked}
-            isLiked={this.props.isLiked}
-            userId={this.props.user.id}
-            storyId={story.id}
-            onPressLike={this._toggleLike}
-            onPressFlag={this._toggleFlag}
-            toggleBookmark={this.props.toggleBookmark}
-          />
+      <TouchableOpacity key={'tooltip'} onPress={this.dismissTooltip}>
+        <Animated.View
+          style={[
+            { opacity: tooltipOpacity },
+            styles.addToGuideTooltip,
+          ]}>
+          <Text style={{ color: 'white' }}>
+            {`Tap to add story\nto a travel guide`}
+          </Text>
+          <View style={styles.addToGuideTooltipArrow} />
         </Animated.View>
-        {
-          <FlagModal
-            closeModal={this._toggleFlag}
-            showModal={this.state.showFlagModal}
-            flagStory={this._flagStory}
-          />
-        }
-      </View>
+      </TouchableOpacity>
+    )
+  }
+
+  render () {
+    const {
+      story, author, user, fetching, error,
+      isBookmarked, isLiked,
+    } = this.props
+
+    return (
+      <ReadingScreensOverlap
+        author={author}
+        user={user}
+        targetEntity={story}
+        getTargetEntity={this.getStory}
+        fetching={fetching}
+        error={error}
+        isBookmarked={isBookmarked}
+        isLiked={isLiked}
+        isStory
+        onPressLike={this._toggleLike}
+        onPressBookmark={this._onPressBookmark}
+        onPressComment={this._onPressComment}
+        flagTargetEntity={this._flagStory}
+        renderBody={this.renderBody}
+        animatedViews={[
+          this.renderPlusButton,
+          this.renderToolTip,
+        ]}
+      />
     )
   }
 }
@@ -465,6 +337,7 @@ const mapDispatchToProps = (dispatch) => {
     toggleBookmark: (userId, storyId) => dispatch(StoryActions.storyBookmark(userId, storyId)),
     requestStory: (storyId) => dispatch(StoryActions.storyRequest(storyId)),
     flagStory: (userId, storyId) => dispatch(StoryActions.flagStory(userId, storyId)),
+    completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips}))
   }
 }
 

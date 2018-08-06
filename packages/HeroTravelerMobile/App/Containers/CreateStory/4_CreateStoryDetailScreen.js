@@ -5,9 +5,7 @@ import {
   View,
   Text,
   TouchableWithoutFeedback,
-  TouchableOpacity,
   DatePickerIOS,
-  TextInput,
 } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
@@ -15,13 +13,14 @@ import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import StoryEditActions from '../../Shared/Redux/StoryCreateRedux'
 import {Colors, Metrics} from '../../Shared/Themes'
 import ShadowButton from '../../Components/ShadowButton'
-import TabIcon from '../../Components/TabIcon'
 import RoundedButton from '../../Components/RoundedButton'
 import Tooltip from '../../Components/Tooltip'
 import NavBar from './NavBar'
 import styles from './4_CreateStoryDetailScreenStyles'
 import API from '../../Shared/Services/HeroAPI'
-import EditCategoryHashtag from '../../Components/EditCategoryHashtag'
+import FormInput from '../../Components/FormInput'
+import TouchableMultilineInput from '../../Components/TouchableMultilineInput'
+
 const api = API.create()
 
 /***
@@ -53,32 +52,6 @@ const Radio = ({text, onPress, selected}) => {
       </View>
     </TouchableWithoutFeedback>
   )
-}
-
-/* note that the icon style objects below are separate because they must be a must
-be a plain objects instead of stylesheets */
-
-const commonIconStyle = {
-  marginRight: Metrics.doubleBaseMargin,
-  marginBottom: Metrics.baseMargin,
-}
-
-let iconSizes = {
-  location: { width: 17, height: 27, },
-  date: { width: 22, height: 22, },
-  category: { width: 22, height: 22, },
-  hashtag: { width: 22, height: 24, marginTop: -2},
-  cost: { width: 22, height: 24, marginTop: -3},
-}
-
-let iconStyles = {};
-
-for (let s in iconSizes) {
-  iconStyles[s] = {
-    // This is to ensure the input fields align correctly
-    view: { width: Metrics.icons.large },
-    image: Object.assign({}, commonIconStyle, iconSizes[s])
-  }
 }
 
 class CreateStoryDetailScreen extends React.Component {
@@ -231,7 +204,7 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   navToCategories = () => {
-    NavActions.createStory_tags({
+    NavActions.tagSelectorScreen({
       onDone: this._receiveCategories,
       tags: this.props.workingDraft.categories || this.state.categories,
       tagType: 'category'
@@ -239,43 +212,26 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   navToHashtags = () => {
-    NavActions.createStory_hashtags({
+    NavActions.tagSelectorScreen({
       onDone: this._receiveHashtags,
       tags: this.props.workingDraft.hashtags || this.state.hashtags,
       tagType: 'hashtag'
     })
   }
 
-  navToTravelTips = () => {
-    NavActions.createStory_travelTips({
-      onDone: this._receiveTravelTips,
-      text: this.props.workingDraft.travelTips,
-      title: 'TRAVEL TIPS',
-      placeholder: 'What should your fellow travelers know?'
-    })
-  }
-
   // if you change this... also make sure to change getLocationInfo's formatLocationInfo
-  receiveLocation = (place) => {
-    this.props.updateWorkingDraft({
-      locationInfo: {
-        name: place.name,
-        locality: _.get(place, 'addressComponents.sublocality_level_1') || _.get(place, 'addressComponents.locality'),
-        state: _.get(place, 'addressComponents.administrative_area_level_1'),
-        country: _.get(place, 'addressComponents.country'),
-        latitude: place.latitude,
-        longitude: place.longitude,
-      }
-    })
+  receiveLocation = (locationInfo) => {
+    this.props.updateWorkingDraft({ locationInfo })
     NavActions.pop()
   }
 
   navToLocation = () => {
-    NavActions.createStory_location({
-      navBack: NavActions.pop,
+    NavActions.locationSelectorScreen({
       onSelectLocation: this.receiveLocation,
       // replace this with short name?
-      location: this.props.workingDraft.locationInfo ? this.props.workingDraft.locationInfo.name : '',
+      location: this.props.workingDraft.locationInfo
+        ? this.props.workingDraft.locationInfo.name
+        : "",
     })
   }
 
@@ -297,6 +253,20 @@ class CreateStoryDetailScreen extends React.Component {
         />
       );
     }
+  }
+
+  getHashtagsValue() {
+    const { hashtags } = this.props.workingDraft
+    if (hashtags.length === 0) return undefined
+    return _.map(hashtags, (hashtag) => {
+      return `#${hashtag.title}`
+    }).join(', ')
+  }
+
+  getCategoriesValue() {
+    const { categories } = this.props.workingDraft
+    if (categories.length === 0) return undefined
+    return _.map(categories, 'title').join(', ')
   }
 
   render () {
@@ -345,80 +315,44 @@ class CreateStoryDetailScreen extends React.Component {
                 />
               </View>
             </View>
-            <TouchableWithoutFeedback onPress={this.navToLocation}>
-              <View style={styles.fieldWrapper}>
-                <TabIcon name='location' style={iconStyles.location} />
-                  <Text
-                    style={[
-                      styles.inputStyle,
-                      workingDraft.locationInfo ? null : {color: Colors.navBarText}
-                    ]}
-                    placeholder='Location'
-                    placeholderTextColor={Colors.navBarText}
-                    value={workingDraft.locationInfo ? workingDraft.locationInfo.name : ''}
-                  >
-                    {
-                      workingDraft.locationInfo ?
-                      workingDraft.locationInfo.name :
-                      'Location'
-                    }
-                  </Text>
-              </View>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback
+            <FormInput
+              onPress={this.navToLocation}
+              iconName='location'
+              value={workingDraft.locationInfo ? workingDraft.locationInfo.name : ''}
+              placeholder='Location'
+            />
+            <FormInput
               onPress={this._setModalVisible}
-            >
-              <View style={styles.fieldWrapper} >
-                <TabIcon name='date' style={iconStyles.date} />
-                  <Text style={styles.inputStyle}>
-                    {dateLikeItemAsDateString(workingDraft.tripDate)}
-                  </Text>
-              </View>
-            </TouchableWithoutFeedback>
-            <View style={styles.fieldWrapper}>
-              <TabIcon name='cost' style={iconStyles.cost} />
-              <View style={styles.longInput}>
-                {!!(this.state.cost) &&
-                  <Text style={[styles.currency]}>$</Text>
-                }
-                <TextInput
-                  style={[styles.longInputText]}
-                  value={this.state.cost.toString()}
-                  onChangeText={this._updateCostText}
-                  onBlur={this._updateCost}
-                  onSubmitEditing={this._updateCost}
-                  placeholder={this._getCostPlaceholderText(workingDraft)}
-                  keyboardType="numeric"
-                />
-              </View>
-            </View>
-            <EditCategoryHashtag
-              text='Add categories...'
+              iconName='date'
+              value={dateLikeItemAsDateString(workingDraft.tripDate)}
+            />
+            <FormInput
+              onChangeText={this._updateCostText}
+              iconName='cost'
+              value={this.state.cost.toString()}
+              placeholder={this._getCostPlaceholderText(workingDraft)}
+              keyboardType='numeric'
+              cost={this.state.cost}
+            />
+            <FormInput
               onPress={this.navToCategories}
-              iconStyle={iconStyles.category}
-              tagName='tag'
-              array={workingDraft.categories}
+              iconName='tag'
+              value={this.getCategoriesValue()}
+              placeholder='Add categories...'
             />
-            <EditCategoryHashtag
-              text='Add hashtags...'
+            <FormInput
               onPress={this.navToHashtags}
-              iconStyle={iconStyles.hashtag}
-              tagName='hashtag'
-              array={workingDraft.hashtags}
+              iconName='hashtag'
+              value={this.getHashtagsValue()}
+              placeholder='Add hashtags'
             />
-            <View style={styles.travelTipsWrapper}>
-              <Text style={styles.fieldLabel}>Travel Tips: </Text>
-              <View style={styles.travelTipsPreview}>
-                <TouchableOpacity onPress={this.navToTravelTips}>
-                  <Text style={[
-                    styles.travelTipsPreviewText,
-                    workingDraft.travelTips ? {} : styles.travelTipsPreviewTextDimmed
-                  ]}>
-                    {workingDraft.travelTips || "What should your fellow travelers know?"}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
+            <TouchableMultilineInput
+              onDone={this._receiveTravelTips}
+              title='TRAVEL TIPS'
+              label='Travel Tips: '
+              value={workingDraft.travelTips}
+              placeholder='What should your fellow travelers know?'
+            />
           </ScrollView>
         {modalVisible &&
         <View

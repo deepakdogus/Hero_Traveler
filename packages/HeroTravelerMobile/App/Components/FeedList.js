@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {
-    View,
     RefreshControl,
     requireNativeComponent,
 } from 'react-native'
@@ -9,9 +8,7 @@ import reactMixin from 'react-mixin'
 import ScrollResponder from '../../node_modules/react-native/Libraries/Components/ScrollResponder'
 
 import { Metrics } from '../Shared/Themes'
-import { connect } from 'react-redux'
-import styles from './Styles/StoryListStyle'
-import ModifiedListView from './ModifiedListView'
+import styles from './Styles/FeedListStyle'
 import _ from 'lodash'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import {isLocalMediaAsset} from '../Shared/Lib/getVideoUrl'
@@ -24,20 +21,23 @@ const NativeFeedItem = requireNativeComponent('RHNativeFeedItem', null)
 
 /*
 add pagingIsDisabled instead of pagingEnabled as a prop so that paging is default
-and so we do not need to add the property to (almost) every StoryList call we make
+and so we do not need to add the property to (almost) every FeedList call we make
 */
-export default class StoryList extends React.Component {
+export default class FeedList extends React.Component {
   static propTypes = {
-    stories: PropTypes.arrayOf(PropTypes.object).isRequired,
+    targetEntities: PropTypes.arrayOf(PropTypes.object).isRequired, // either guides or stories
     onRefresh: PropTypes.func,
     pagingIsDisabled: PropTypes.bool,
     refreshing: PropTypes.bool,
     renderHeaderContent: PropTypes.object,
     renderSectionHeader: PropTypes.object,
+    renderFeedItem: PropTypes.func,
+    headerContentHeight: PropTypes.number,
+    style: PropTypes.number,
   }
 
   static defaultProps = {
-    refreshing: false
+    refreshing: false,
   }
 
   constructor(props) {
@@ -81,7 +81,7 @@ export default class StoryList extends React.Component {
 
     this.state = {
       visibleCells: undefined,
-      stories: props.stories,
+      targetEntities: props.targetEntities,
     }
   }
 
@@ -94,19 +94,19 @@ export default class StoryList extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (_.xor(nextProps.stories, this.props.stories).length !== 0){
+    if (_.xor(nextProps.targetEntities, this.props.targetEntities).length !== 0){
       this.setState({
-        stories: nextProps.stories
+        targetEntities: nextProps.targetEntities
       })
     }
   }
 
   // TODO: NativeFeed should probably be wrapped in another class
   render () {
-    let storyViews = []
+    let feedItemViews = []
 
     const {
-      stories, renderSectionHeader,
+      targetEntities, renderSectionHeader,
       renderHeaderContent, headerContentHeight,
     } = this.props
 
@@ -119,20 +119,20 @@ export default class StoryList extends React.Component {
       width: 'screen',
     }
 
-    const storyInfos = stories.map((story) => {
+    const entitiesInfo = targetEntities.map((entity) => {
       let totalPadding = Metrics.feedCell.padding;
 
-      if (story && story.description) {
+      if (entity && entity.description && !entity.locations) {
         totalPadding += Metrics.feedCell.descriptionPadding;
       }
 
-      if (story && story.coverImage) {
+      if (entity && entity.coverImage) {
         return {
-          headerImage: getImageUrl(story.coverImage, 'optimized', imageOptions),
+          headerImage: getImageUrl(entity.coverImage, 'optimized', imageOptions),
           height: Metrics.feedCell.imageCellHeight + totalPadding,
         }
-      } else if (story && story.coverVideo) {
-        let headerImage = getImageUrl(story.coverVideo, 'optimized', videoOptions, story.cover)
+      } else if (entity && entity.coverVideo) {
+        let headerImage = getImageUrl(entity.coverVideo, 'optimized', videoOptions, entity.cover)
         if (isLocalMediaAsset(headerImage)) {
           headerImage = null
         }
@@ -154,12 +154,12 @@ export default class StoryList extends React.Component {
 
       let i = minCell - 1
       let keyIndex = -1
-      storyViews = stories.slice(minCell, maxCell).map((story) => {
+      feedItemViews = targetEntities.slice(minCell, maxCell).map((entity) => {
         i = i + 1
         keyIndex = keyIndex + 1
         return (
           <NativeFeedItem key={`FeedItem:${keyIndex}`} cellNum={i}>
-            {this.props.renderStory(story, i)}
+            {this.props.renderFeedItem(entity, i)}
           </NativeFeedItem>
         )
       })
@@ -169,7 +169,7 @@ export default class StoryList extends React.Component {
       <NativeFeed
         style={[styles.container, this.props.style]}
         cellSeparatorHeight={Metrics.feedCell.separator}
-        storyInfos={storyInfos}
+        storyInfos={entitiesInfo}
         numPreloadBehindCells={2}
         numPreloadAheadCells={3}
         onVisibleCellsChanged={this._handleVisibleCellsChanged}
@@ -209,11 +209,11 @@ export default class StoryList extends React.Component {
           null
         }
 
-        {storyViews}
+        {feedItemViews}
       </NativeFeed>
     )
   }
 }
 
-reactMixin(StoryList.prototype, ScrollResponder.Mixin)
-reactMixin(StoryList.prototype, ScrollResponder.Mixin.mixins[0])
+reactMixin(FeedList.prototype, ScrollResponder.Mixin)
+reactMixin(FeedList.prototype, ScrollResponder.Mixin.mixins[0])

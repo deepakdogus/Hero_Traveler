@@ -8,7 +8,7 @@ import HorizontalDivider from './HorizontalDivider'
 import RoundedButton from './RoundedButton'
 import {OverlayStyles} from './Overlay'
 import HeaderTopGradient from './Headers/Shared/HeaderTopGradient'
-import getS3ImageUrl from '../Shared/Lib/getS3ImageUrl'
+import getImageUrl from '../Shared/Lib/getImageUrl'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   ${OverlayStyles}
@@ -63,7 +63,7 @@ export default class CategoryHeader extends React.Component {
   render () {
     const {category} = this.props
     if (!category) return null
-    const categoryImageUrl = getS3ImageUrl(category.image, 'versions.thumbnail240.path')
+    const categoryImageUrl = getImageUrl(category.image, 'image')
     return (
       <OpaqueHeaderImageWrapper
         backgroundImage={categoryImageUrl}

@@ -5,11 +5,6 @@ import {ModelName as UserRef} from './user'
 import {ModelName as GuideRef} from './guide'
 
 const GuideLikeActivitySchema = Schema({
-  fromUser: {
-    type: Schema.Types.ObjectId,
-    ref: UserRef,
-    required: true,
-  },
   guide: {
     type: Schema.Types.ObjectId,
     ref: GuideRef,

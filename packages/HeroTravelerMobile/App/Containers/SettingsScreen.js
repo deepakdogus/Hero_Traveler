@@ -182,8 +182,8 @@ class SettingsScreen extends React.Component {
         </ScrollView>
         {this.props.fetching &&
           <Loader
-          tintColor={Colors.blackoutTint}
-          style={styles.spinner}
+            tintColor={Colors.blackoutTint}
+            style={styles.spinner}
           />
         }
       </View>

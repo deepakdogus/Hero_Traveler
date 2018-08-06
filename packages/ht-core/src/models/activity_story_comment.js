@@ -6,11 +6,6 @@ import {ModelName as StoryRef} from './story'
 import {ModelName as CommentRef} from './comment'
 
 const StoryCommentActivitySchema = Schema({
-  fromUser: {
-    type: Schema.Types.ObjectId,
-    ref: UserRef,
-    required: true,
-  },
   story: {
     type: Schema.Types.ObjectId,
     ref: StoryRef,

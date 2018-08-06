@@ -2,16 +2,17 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import {push} from 'react-router-redux'
+import { push } from 'react-router-redux'
 import * as _ from 'lodash'
 import { Grid } from '../Components/FlexboxGrid'
 import HeaderAnonymous from '../Components/Headers/HeaderAnonymous'
 import HeaderLoggedIn from '../Components/Headers/HeaderLoggedIn'
 import LoginActions from '../Shared/Redux/LoginRedux'
+import UserActions from '../Shared/Redux/Entities/Users'
+import SessionActions from '../Shared/Redux/SessionRedux'
 import UXActions from '../Redux/UXRedux'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import HeaderModals from '../Components/HeaderModals'
-import UserActions from '../Shared/Redux/Entities/Users'
 
 // If we don't explicity prevent 'fixed' from being passed to Grid, we get an error about unknown prop on div element
 // because apparently react-flexbox-grid passes all props down to underlying React elements
@@ -35,12 +36,26 @@ const HeaderSpacer = styled.div`
 
 class Header extends React.Component {
   static propTypes = {
+    currentUserId: PropTypes.string,
+    currentUserProfile: PropTypes.object,
+    currentUserEmail: PropTypes.string,
+    currentUserNotificationTypes: PropTypes.arrayOf(PropTypes.string),
     isLoggedIn: PropTypes.bool,
+    loginReduxFetching: PropTypes.bool,
+    loginReduxError: PropTypes.object,
     blackHeader: PropTypes.bool,
     attemptLogin: PropTypes.func,
+    attemptLogout: PropTypes.func,
+    attemptChangePassword: PropTypes.func,
+    attemptGetUserFeed: PropTypes.func,
     closeGlobalModal: PropTypes.func,
+    openGlobalModal: PropTypes.func,
     globalModalThatIsOpen: PropTypes.string,
     globalModalParams: PropTypes.object,
+    reroute: PropTypes.func,
+    attemptUpdateUser: PropTypes.func,
+    userEntitiesUpdating: PropTypes.bool,
+    userEntitiesError: PropTypes.object,
     activitiesById: PropTypes.array,
     activities: PropTypes.object,
     stories: PropTypes.object,
@@ -109,71 +124,110 @@ class Header extends React.Component {
   render () {
     const {
       isLoggedIn,
+      loginReduxFetching,
+      loginReduxError,
       attemptLogin,
+      attemptLogout,
+      attemptChangePassword,
       closeGlobalModal,
-      currentUser,
+      openGlobalModal,
+      currentUserId,
+      currentUserProfile,
+      currentUserEmail,
+      currentUserNotificationTypes,
       globalModalThatIsOpen,
       globalModalParams,
-      activities,
-      activitiesById,
-      markSeen,
-      stories,
       reroute,
+      attemptUpdateUser,
+      userEntitiesUpdating,
+      userEntitiesError,
+      activitiesById,
+      activities,
+      stories,
+      markSeen,
       users,
     } = this.props
 
-    const SelectedGrid = (this.props.blackHeader || this.state.navbarEngaged) ? StyledGridBlack : StyledGrid
+    const SelectedGrid =
+      (this.props.blackHeader || this.state.navbarEngaged)
+      ? StyledGridBlack
+      : StyledGrid
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
+
     return (
       <div>
         <SelectedGrid fluid fixed>
           {isLoggedIn &&
-          <HeaderLoggedIn
-              user={currentUser}
+            <HeaderLoggedIn
+              userId={currentUserId}
               openModal={this.openModal}
-          />
+              openGlobalModal={openGlobalModal}
+              reroute={reroute}
+              attemptLogout={attemptLogout}
+            />
           }
           {!isLoggedIn &&
-          <HeaderAnonymous
+            <HeaderAnonymous
               openLoginModal={this.openLoginModal}
-          />
+            />
           }
-          <HeaderModals
+            <HeaderModals
               closeModal={this.closeModal}
               closeGlobalModal={closeGlobalModal}
               openSignupModal={this.openSignupModal}
               attemptLogin={attemptLogin}
+              attemptLogout={attemptLogout}
               openLoginModal={this.openLoginModal}
-              user={currentUser}
+              userId={currentUserId}
+              currentUserProfile={currentUserProfile}
+              currentUserEmail={currentUserEmail}
+              currentUserNotificationTypes={currentUserNotificationTypes}
               modal={this.state.modal}
               globalModalThatIsOpen={globalModalThatIsOpen}
               globalModalParams={globalModalParams}
-              activitiesById={activitiesById}
+              attemptChangePassword={attemptChangePassword}
+              loginReduxFetching={loginReduxFetching}
+              loginReduxError={loginReduxError}
+              attemptUpdateUser={attemptUpdateUser}
+              userEntitiesUpdating={userEntitiesUpdating}
+              userEntitiesError={userEntitiesError}
               activities={activities}
+              activitiesById={activitiesById}
               stories={stories}
               markSeen={markSeen}
-              reroute={reroute}
               users={users}
-          />
-      </SelectedGrid>
-      <HeaderSpacer
+              reroute={reroute}
+            />
+        </SelectedGrid>
+        <HeaderSpacer
           spacerSize={spacerSize}
-      />
-    </div>
+        />
+      </div>
   )
   }
 }
 
 function mapStateToProps(state) {
   const pathname = state.routes.location ? state.routes.location.pathname : ''
+  const users = state.entities.users.entities
+  const currentUserId = state.session.userId
+  const currentUser = users[currentUserId]
   return {
     isLoggedIn: state.login.isLoggedIn,
+    loginReduxFetching: state.login.fetching,
+    loginReduxError: state.login.error,
     blackHeader: _.includes(['/', '/feed', ''], pathname) ? false : true,
+    currentUserId: currentUserId,
+    globalModalThatIsOpen: state.ux.modalName,
+    globalModalParams: state.ux.params,
+    userEntitiesUpdating: state.entities.users.updating,
+    userEntitiesError: state.entities.users.error,
+    currentUserProfile: (currentUser) && currentUser.profile,
+    currentUserEmail: (currentUser) && currentUser.email,
+    currentUserNotificationTypes: (currentUser) && currentUser.notificationTypes,
     currentUser: state.session.userId,
     activitiesById: state.entities.users.activitiesById,
     activities: state.entities.users.activities,
-    globalModalThatIsOpen: state.ux.modalName,
-    globalModalParams: state.ux.params,
     users: state.entities.users.entities,
     stories: state.entities.stories.entities,
   }
@@ -182,10 +236,13 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     attemptLogin: (username, password) => dispatch(LoginActions.loginRequest(username, password)),
+    attemptLogout: (tokens) => dispatch(SessionActions.logout(tokens)),
+    attemptChangePassword: (userId, oldPassword, newPassword) => dispatch(LoginActions.changePasswordRequest(userId, oldPassword, newPassword)),
     attemptGetUserFeed: (userId) => dispatch(StoryActions.feedRequest(userId)),
     closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
-    markSeen: (activityId) => dispatch(UserActions.activitySeen(activityId)),
-    reroute: (path) => dispatch(push(path)),
+    openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
+    reroute: (route) => dispatch(push(route)),
+    attemptUpdateUser: (updates) => dispatch(UserActions.updateUser(updates))
   }
 }
 

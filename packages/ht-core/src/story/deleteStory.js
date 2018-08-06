@@ -5,7 +5,6 @@ import {algoliaHelper} from '@hero/ht-util'
 export default function deleteStory (storyId) {
   // intentionally doing algolia delete first to prevent client side search crash
   return algoliaHelper.deleteStoryFromIndex(storyId)
-  .then(() => Story.delete({_id: storyId}))
   .then(() => StoryBookmark.remove({story: storyId}))
   .then(() => Guide.find({stories: storyId}))
   .then(guides => {
@@ -16,4 +15,5 @@ export default function deleteStory (storyId) {
       return guide.update({stories: filteredStories})
     }))
   })
+  .then(() => Story.delete({_id: storyId}))
 }

@@ -17,7 +17,7 @@ export default async function updateUser(req) {
   const userId = req.user._id
   const isAdmin = Constants.USER_ROLES_ADMIN_VALUE === req.user.role
 
-  let attrsBlacklist = ["email", "password", "passwordResetToken"];
+  let attrsBlacklist = ["password", "passwordResetToken"];
 
   // Only admins can change role
   if (!isAdmin) {

@@ -14,7 +14,13 @@ const ActivitySchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: UserRef,
     required: true
-  }
+  },
+  // the user that did the activity
+  fromUser: {
+    type: Schema.Types.ObjectId,
+    ref: UserRef,
+    required: true,
+  },
 }, {
   timestamps: true,
   discriminatorKey: 'kind',

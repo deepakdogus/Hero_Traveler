@@ -6,11 +6,6 @@ import {ModelName as GuideRef} from './guide'
 import {ModelName as CommentRef} from './comment'
 
 const GuideCommentActivitySchema = Schema({
-  fromUser: {
-    type: Schema.Types.ObjectId,
-    ref: UserRef,
-    required: true,
-  },
   guide: {
     type: Schema.Types.ObjectId,
     ref: GuideRef,

@@ -56,7 +56,7 @@ const passwordInputs = [
 
 export default class EditSettings extends React.Component{
   static propTypes ={
-    updateAccountOrPassword: PropTypes.func,
+    updateAction: PropTypes.func,
     userProfile: PropTypes.object,
     userEmailOrId: PropTypes.string,
     isUpdating: PropTypes.bool,
@@ -73,14 +73,14 @@ export default class EditSettings extends React.Component{
   }
 
   componentDidMount(){
-    if(this.props.type === 'account') this.loadInitialData()
+    if (this.props.type === 'account') this.loadInitialData()
   }
 
   loadInitialData = () => {
-      this.setState({
-        email: this.props.userEmailOrId,
-        name: this.props.userProfile.fullName
-      })
+    this.setState({
+      email: this.props.userEmailOrId,
+      name: this.props.userProfile.fullName
+    })
   }
 
   onChangeText = (e) => {
@@ -99,31 +99,31 @@ export default class EditSettings extends React.Component{
       retypePassword: '',
       success: false
     })
-    if(this.props.type === 'account') this.loadInitialData()
+    if (this.props.type === 'account') this.loadInitialData()
   }
 
   submitAccountChanges = () => {
     const updates = {}
-    if(this.state.name !== this.props.userProfile.fullName){
+    if (this.state.name !== this.props.userProfile.fullName) {
       updates.profile = {...this.props.userProfile, fullName: this.state.name}
     }
-    if (this.state.email !== this.props.userEmailOrId){
+    if (this.state.email !== this.props.userEmailOrId) {
       updates.email = this.state.email
     }
     if (!(Object.keys(updates).length)) {
       this.setState({
         localError: 'There are no changes to save.'
       })
-    }else {
+    } else {
       this.setState({
         localError: ''
       })
-      this.props.updateAccountOrPassword(updates)
+      this.props.updateAction(updates)
     }
   }
 
   submitPasswordChanges = () => {
-    if(this.state.newPassword !== this.state.retypePassword){
+    if (this.state.newPassword !== this.state.retypePassword){
       this.setState({
         localError: 'Please ensure that you retyped your new password correctly.'
       })
@@ -131,7 +131,13 @@ export default class EditSettings extends React.Component{
       this.setState({
         localError: '',
       })
-      if(!this.state.localError)this.props.updateAccountOrPassword(this.props.userEmailOrId, this.state.oldPassword, this.state.newPassword)
+      if (!this.state.localError) {
+        this.props.updateAction(
+          this.props.userEmailOrId,
+          this.state.oldPassword,
+          this.state.newPassword,
+        )
+      }
     }
   }
 
@@ -158,7 +164,11 @@ export default class EditSettings extends React.Component{
           margin='none'
           width='180px'
           padding='mediumEven'
-          onClick={this.props.type === 'account' ? this.submitAccountChanges : this.submitPasswordChanges}
+          onClick={
+            this.props.type === 'account'
+            ? this.submitAccountChanges
+            : this.submitPasswordChanges
+          }
         />
       </VerticalCenter>
     )
@@ -166,7 +176,7 @@ export default class EditSettings extends React.Component{
 
   renderInputs = () => {
     const inputArr = this.props.type === 'account' ? accountInputs : passwordInputs
-    return inputArr.map((inputObj, index)=> {
+    return inputArr.map((inputObj, index) => {
       return (
         <InputContainer
           key={index}

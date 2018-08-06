@@ -36,7 +36,7 @@ export default class InputWithLabel extends React.Component {
     onChange: PropTypes.func,
     name: PropTypes.string,
     type: PropTypes.string,
-    label: PropTypes.string,
+    id: PropTypes.string,
   }
 
   render() {

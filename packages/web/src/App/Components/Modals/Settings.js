@@ -67,7 +67,7 @@ export default class Settings extends React.Component {
         />
         {this.state.activeTab === 'Account' &&
           <EditSettings
-            updateAccountOrPassword={attemptUpdateUser}
+            updateAction={attemptUpdateUser}
             userProfile={userProfile}
             userEmailOrId={userEmail}
             isUpdating={userEntitiesUpdating}
@@ -86,7 +86,7 @@ export default class Settings extends React.Component {
         }
         {this.state.activeTab === 'Password' &&
           <EditSettings
-            updateAccountOrPassword={attemptChangePassword}
+            updateAction={attemptChangePassword}
             userProfile={userProfile}
             userEmailOrId={userId}
             isUpdating={loginReduxFetching}

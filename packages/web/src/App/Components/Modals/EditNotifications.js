@@ -65,16 +65,16 @@ export default class EditNotifications extends React.Component {
   }
 
   renderEditNotificationRows(notificationTypes) {
-    return this.state.typesMap.map((element, index) => {
+    return this.state.typesMap.map((notificationType, index) => {
       return (
         <EditNotificationRow
           index={index}
-          key={element.text}
-          text={element.text}
+          key={notificationType.text}
+          text={notificationType.text}
           toggleNotificationSwitch={this.toggleNotificationSwitch}
           logOnChange={this.logOnChange}
-          checked={element.isNotifying}
-          element={element}
+          checked={notificationType.isNotifying}
+          value={notificationType.value}
         />
       )
     })

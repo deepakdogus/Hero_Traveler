@@ -33,11 +33,12 @@ export default class EditNotificationRow extends Component {
     text: PropTypes.string,
     index: PropTypes.number,
     toggleNotificationSwitch: PropTypes.func,
-    element: PropTypes.object
+    checked: PropTypes.bool,
+    value: PropTypes.string,
   }
 
   _toggleNotificationSwitch = () => {
-    this.props.toggleNotificationSwitch(this.props.element.value)
+    this.props.toggleNotificationSwitch(this.props.value)
   }
 
   renderText = () => {

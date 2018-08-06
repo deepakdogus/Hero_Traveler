@@ -25,6 +25,7 @@ const { Types, Creators } = createActions({
   removeBackgroundFailure: ['storyId'],
   setRetryingBackgroundFailure: ['storyId'],
   toggleLike: ['storyId', 'wasLiked'],
+  changeCountOfType: ['storyId', 'countType', 'isIncrement'],
   storyLike: ['userId', 'storyId'],
   flagStory: ['userId', 'storyId'],
   // storyLikeFailure: ['storyId', 'wasLiked'],
@@ -203,6 +204,15 @@ const storyLike = (state, {storyId, wasLiked}) => {
   return state.setIn(
     ['entities', storyId, 'counts', 'likes'],
     !wasLiked ? numOfLikes + 1 : numOfLikes - 1
+  )
+}
+
+
+const changeCountOfType = (state, {storyId, countType, isIncrement}) => {
+  const currentNumCountOfType = _.get(state, `entities.${storyId}.counts.${countType}`, 0)
+  return state.setIn(
+    ['entities', storyId, 'counts', countType],
+    isIncrement ? currentNumCountOfType + 1 : currentNumCountOfType - 1
   )
 }
 
@@ -414,6 +424,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SET_RETRYING_BACKGROUND_FAILURE]: setRetryingBackgroundFailure,
   [Types.TOGGLE_LIKE]: storyLike,
   [Types.TOGGLE_BOOKMARK]: storyBookmark,
+  [Types.CHANGE_COUNT_OF_TYPE]: changeCountOfType,
   [Types.RECEIVE_STORIES]: updateEntities,
   [Types.ADD_USER_STORY]: addUserStory,
   [Types.DELETE_STORY]: deleteStory,

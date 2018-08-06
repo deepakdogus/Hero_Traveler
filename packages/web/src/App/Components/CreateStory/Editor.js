@@ -60,7 +60,8 @@ const CustomBlockTypeSelect = ({ getEditorState, setEditorState, theme }) => (
     theme={theme}
     structure={[
       BoldButton,
-      AddMediaButton,
+      AddImageButton,
+      AddVideoButton,
     ]}
   />
 )
@@ -79,10 +80,12 @@ class MediaComponent extends React.Component {
 
   render() {
     let {type, url, text, key} = this.props.blockProps
-    let imageUrl = url.startsWith('data:')
+    const imageUrl = url.startsWith('data:')
       ? url
       : getImageUrl(url, 'contentBlock')
-    const videoUrl = `${getVideoUrlBase()}/${url}`
+    const videoUrl = url.startsWith('data:')
+      ? url
+      : `${getVideoUrlBase()}/${url}`
 
     switch (type) {
       case 'image':
@@ -114,11 +117,10 @@ class MediaComponent extends React.Component {
 }
 
 class AddMediaButton extends React.Component {
-
   uploadFile = (event) => {
-
     uploadFile(event, this, (file) => {
-      const update = insertAtomicBlock(this.props.getEditorState(), 'image', file.uri)
+      const {getEditorState, type} = this.props
+      const update = insertAtomicBlock(getEditorState(), type, file.uri)
       this.props.setEditorState(update)
     })
   }
@@ -127,7 +129,7 @@ class AddMediaButton extends React.Component {
   setAddImageInputRef = (ref) => this.addImageInputRef = ref
 
   render() {
-    const { theme } = this.props
+    const { theme, type } = this.props
     const className = theme.button
 
     return (
@@ -139,13 +141,13 @@ class AddMediaButton extends React.Component {
           className={className}
           type="button"
         >
-          <label htmlFor='media_upload'>
+          <label htmlFor={`${type}_upload`}>
             <Icon name='like-active' />
             <HiddenInput
               ref={this.setAddImageInputRef}
               className={theme.buttonWrapper}
               type='file'
-              id='media_upload'
+              id={`${type}_upload`}
               name='storyImage'
               onChange={this.uploadFile}
             />
@@ -154,6 +156,25 @@ class AddMediaButton extends React.Component {
       </div>
     )
   }
+}
+
+const AddImageButton = (props) => {
+  return (
+    <AddMediaButton
+      {...props}
+      type="image"
+    />
+  )
+}
+
+const AddVideoButton = (props) => {
+  // console.log("calling AddVideoButton", props)
+  return (
+    <AddMediaButton
+      {...props}
+      type="video"
+    />
+  )
 }
 
 export default class BodyEditor extends React.Component {

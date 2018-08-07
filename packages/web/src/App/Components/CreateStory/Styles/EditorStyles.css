@@ -1,14 +1,16 @@
-.editor {
-  box-sizing: border-box;
-  border: 1px solid #ddd;
-  cursor: text;
-  padding: 16px;
-  border-radius: 2px;
-  margin-bottom: 2em;
-  box-shadow: inset 0px 1px 8px -3px #ABABAB;
-  background: #fefefe;
+.editorParagraph {
+  font-family: "Source Sans Pro";
+	font-weight: 400;
+	letter-spacing: .7px;
+	font-size: 18px;
+	color: #757575;
 }
 
-.editor :global(.public-DraftEditor-content) {
-  min-height: 140px;
+.editorHeaderOne {
+  font-family: 'Montserrat';
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  font-size: 30px;
+  color: #1a1c21;
+	text-transform: uppercase;
 }

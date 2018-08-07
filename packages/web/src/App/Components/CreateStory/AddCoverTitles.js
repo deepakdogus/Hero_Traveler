@@ -180,6 +180,7 @@ export default class AddCoverTitles extends React.Component {
               type='file'
               id='cover_upload'
               name='coverImage'
+              accept='image/*, video/*'
               onChange={this._onCoverChange}
             />
           </UploadWrapper>

@@ -44,7 +44,6 @@ const HeaderOne = styled.h1`
 
 const StyledStrong = styled.strong`
   font-weight: 600;
-  color: ${props => props.theme.Colors.background};
 `
 
 const inline = {

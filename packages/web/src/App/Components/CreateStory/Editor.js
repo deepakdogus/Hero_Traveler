@@ -13,6 +13,7 @@ import BlockTypeSelect from 'draft-js-side-toolbar-plugin/lib/components/BlockTy
 import styled from 'styled-components'
 import {
   BoldButton,
+  HeadlineOneButton,
 } from 'draft-js-buttons'
 
 import {
@@ -20,6 +21,7 @@ import {
   convertToRaw,
   insertAtomicBlock,
 } from './editorHelpers/draft-js'
+import './Styles/EditorStyles.css'
 import Image from '../Image'
 import Video from '../Video'
 import Icon from '../Icon'
@@ -61,6 +63,7 @@ const CustomBlockTypeSelect = ({ getEditorState, setEditorState, theme }) => (
     structure={[
       BoldButton,
       AddImageButton,
+      HeadlineOneButton,
       AddVideoButton,
     ]}
   />
@@ -172,13 +175,18 @@ const AddImageButton = (props) => {
 }
 
 const AddVideoButton = (props) => {
-  // console.log("calling AddVideoButton", props)
   return (
     <AddMediaButton
       {...props}
       type="video"
     />
   )
+}
+
+const styleMap = {
+  'BOLD': {
+    fontWeight: 600,
+  }
 }
 
 export default class BodyEditor extends React.Component {
@@ -265,6 +273,12 @@ export default class BodyEditor extends React.Component {
     }
   }
 
+  myBlockStyleFn(contentBlock) {
+    const type = contentBlock.getType()
+    if (type === 'header-one') return 'editorHeaderOne'
+    else if (type === 'unstyled') return 'editorParagraph'
+  }
+
   componentDidUpdate(prevProps){
     if (this.props.value && this.props.storyId !== prevProps.storyId) {
       this.setState({
@@ -285,12 +299,14 @@ export default class BodyEditor extends React.Component {
     return (
       <div>
         <Editor
+          customStyleMap={styleMap}
           editorState={this.state.editorState}
           placeholder='Tell your story'
           onChange={this.onChange}
           plugins={[sideToolbarPlugin]}
           ref={this.setEditorRef}
           blockRendererFn={this.myBlockRenderer}
+          blockStyleFn={this.myBlockStyleFn}
         />
         <SideToolbar />
       </div>

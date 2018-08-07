@@ -23,11 +23,14 @@ export default class Video extends React.Component {
     type: PropTypes.oneOf(['cover', 'preview']),
     noControls: PropTypes.bool,
     withPrettyControls: PropTypes.bool,
+    onError: PropTypes.func,
   }
 
   showErrorAlert = () => {
     const {onError} = this.props
-    alert("There was a problem processing your video.\nPlease reformat your file and try again.")
+    let alertMessage = "There was a problem processing your video."
+    if (onError) alertMessage = alertMessage += "\nPlease reformat your file and try again."
+    alert(alertMessage)
     if (onError) onError()
   }
 

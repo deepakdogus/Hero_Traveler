@@ -14,6 +14,7 @@ import ThreadList from '../../Components/ThreadList'
 import Colors from '../../Shared/Themes/Colors'
 import NotificationBadge from '../../Components/NotificationBadge'
 import {displayLocation} from '../../Shared/Lib/locationHelpers'
+import PushNotification from 'react-native-push-notification'
 
 const ActivityTypes = {
   like: 'ActivityStoryLike',
@@ -64,6 +65,12 @@ class NotificationScreen extends React.Component {
 
   componentWillMount() {
     this.props.getActivity()
+  }
+
+  componentDidMount() {
+    // We can assume that it's safe to clear the notifications count
+    // from the app icon.
+    PushNotification.setApplicationIconBadgeNumber(0);
   }
 
   _pressActivity = (activityId, seen) => {

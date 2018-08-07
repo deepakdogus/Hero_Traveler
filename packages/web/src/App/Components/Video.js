@@ -25,6 +25,14 @@ export default class Video extends React.Component {
     withPrettyControls: PropTypes.bool,
   }
 
+  showErrorAlert = () => {
+    const {onError} = this.props
+    alert("There was a problem processing your video.\nPlease reformat your file and try again.")
+    if (onError) onError()
+  }
+
+  setRef = (ref) => this.videoRef = ref
+
   render() {
     const {src, type, withPrettyControls } = this.props
     const usingChrome = browserIs('Chrome')
@@ -33,13 +41,15 @@ export default class Video extends React.Component {
       withPrettyControls && usingChrome
       ?
       <VideoWithControls
+        ref={this.setRef}
+        onError={this.showErrorAlert}
         autoPlay={type==='cover'}
         controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
       >
-        <source src={src} type="video/webm" /> 
-    </VideoWithControls>
-    : 
-     <VideoWrapper>
+        <source src={src} type="video/webm" />
+      </VideoWithControls>
+    :
+      <VideoWrapper>
         <StyledVideo
           autoplay
           src={src}

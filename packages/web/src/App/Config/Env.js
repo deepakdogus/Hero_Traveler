@@ -4,7 +4,7 @@ const devSettings = {
   cdnBaseUrl: 'https://res.cloudinary.com/di6rehjqx/',
   cloudName: 'di6rehjqx',
   imagePreset: 'xoj70ai1',
-  videoPreset: 'qriodesx',
+  videoPreset: 'tojnfdos',
 
   SEARCH_APP_NAME: 'BEEW4KQKOP',
   SEARCH_API_KEY: '318fa67b79fd7fdd680d68798d666786',

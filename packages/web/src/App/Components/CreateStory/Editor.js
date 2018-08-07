@@ -78,6 +78,8 @@ class MediaComponent extends React.Component {
     onClickDelete(key, this.props.block.getLength())
   }
 
+  setErrorState = () => this.setState({error: 'Failed to load asset'})
+
   render() {
     let {type, url, text, key} = this.props.blockProps
     const imageUrl = url.startsWith('data:')
@@ -108,6 +110,7 @@ class MediaComponent extends React.Component {
             <Video
               src={videoUrl}
               withPrettyControls
+              onError={this.onClickDelete}
             />
             <Caption>{text}</Caption>
           </BodyMediaDiv>
@@ -147,6 +150,7 @@ class AddMediaButton extends React.Component {
               ref={this.setAddImageInputRef}
               className={theme.buttonWrapper}
               type='file'
+              accept={`${type}/*`}
               id={`${type}_upload`}
               name='storyImage'
               onChange={this.uploadFile}

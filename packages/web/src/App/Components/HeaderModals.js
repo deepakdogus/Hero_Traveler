@@ -15,8 +15,17 @@ import NotificationsThread from './Modals/NotificationsThread'
 
 const customModalStyles = {
   content: {
-    width: 420,
-    margin: 'auto',
+    border: '0',
+    bottom: 'auto',
+    minHeight: '10rem',
+    left: '50%',
+    padding: '2rem',
+    position: 'fixed',
+    right: 'auto',
+    top: '50%',
+    transform: 'translate(-50%,-50%)',
+    minWidth: '20rem',
+    maxWidth: '28rem',
   },
   overlay: {
     backgroundColor: 'rgba(0,0,0, .5)',

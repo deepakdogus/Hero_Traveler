@@ -30,7 +30,6 @@ const { Types, Creators } = createActions({
   storyLike: ['userId', 'storyId'],
   flagStory: ['userId', 'storyId'],
   // storyLikeFailure: ['storyId', 'wasLiked'],
-  toggleBookmark: ['storyId', 'wasLiked'],
   storyBookmark: ['userId', 'storyId'],
   // storyBookmarkFailure: ['storyId', 'wasLiked'],
   getBookmarks: ['userId'],
@@ -199,7 +198,7 @@ export const failure = (state, {error}) =>
     deep: true
   })
 
-  export const updateEntities = (state, {stories = {}}) => {
+export const updateEntities = (state, {stories = {}}) => {
   return state.merge({entities: stories}, {deep: true})
 }
 

@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
+import changeCountOfType from '../helpers/changeCountOfTypeHelper'
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -25,7 +26,7 @@ const { Types, Creators } = createActions({
   removeBackgroundFailure: ['storyId'],
   setRetryingBackgroundFailure: ['storyId'],
   toggleLike: ['storyId', 'wasLiked'],
-  changeCountOfType: ['storyId', 'countType', 'isIncrement'],
+  changeCountOfType: ['feedItemId', 'countType', 'isIncrement'],
   storyLike: ['userId', 'storyId'],
   flagStory: ['userId', 'storyId'],
   // storyLikeFailure: ['storyId', 'wasLiked'],
@@ -198,52 +199,7 @@ export const failure = (state, {error}) =>
     deep: true
   })
 
-// Toggle like optimistically
-const storyLike = (state, {storyId, wasLiked}) => {
-  const numOfLikes = _.get(state, `entities.${storyId}.counts.likes`, 0)
-  return state.setIn(
-    ['entities', storyId, 'counts', 'likes'],
-    !wasLiked ? numOfLikes + 1 : numOfLikes - 1
-  )
-}
-
-
-const changeCountOfType = (state, {storyId, countType, isIncrement}) => {
-  const currentNumCountOfType = _.get(state, `entities.${storyId}.counts.${countType}`, 0)
-  return state.setIn(
-    ['entities', storyId, 'counts', countType],
-    isIncrement ? currentNumCountOfType + 1 : currentNumCountOfType - 1
-  )
-}
-
-// // Revert the optimistic update on like failure
-// const storyLikeFailure = (state, {storyId, wasLiked}) => {
-//   const numOfLikes = _.get(state, `entities.${storyId}.counts.likes`, 0)
-//   return state.setIn(
-//     ['entities', storyId, 'counts', 'likes'],
-//     !wasLiked ? numOfLikes - 1 : numOfLikes + 1
-//   )
-// }
-
-// Increase count of bookmarks
-const storyBookmark = (state, {storyId, wasLiked}) => {
-  const numOfLikes = _.get(state, `entities.${storyId}.counts.bookmarks`, 0)
-  return state.setIn(
-    ['entities', storyId, 'counts', 'bookmarks'],
-    !wasLiked ? numOfLikes + 1 : numOfLikes - 1
-  )
-}
-
-// // Revert the optimistic update on bookmark failure
-// const storyBookmarkFailure = (state, {storyId, wasLiked}) => {
-//   const numOfLikes = _.get(state, `entities.${storyId}.counts.bookmarks`, 0)
-//   return state.setIn(
-//     ['entities', storyId, 'counts', 'bookmarks'],
-//     !wasLiked ? numOfLikes - 1 : numOfLikes + 1
-//   )
-// }
-
-export const updateEntities = (state, {stories = {}}) => {
+  export const updateEntities = (state, {stories = {}}) => {
   return state.merge({entities: stories}, {deep: true})
 }
 
@@ -422,8 +378,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ADD_BACKGROUND_FAILURE]: addBackgroundFailure,
   [Types.REMOVE_BACKGROUND_FAILURE]: removeBackgroundFailure,
   [Types.SET_RETRYING_BACKGROUND_FAILURE]: setRetryingBackgroundFailure,
-  [Types.TOGGLE_LIKE]: storyLike,
-  [Types.TOGGLE_BOOKMARK]: storyBookmark,
   [Types.CHANGE_COUNT_OF_TYPE]: changeCountOfType,
   [Types.RECEIVE_STORIES]: updateEntities,
   [Types.ADD_USER_STORY]: addUserStory,

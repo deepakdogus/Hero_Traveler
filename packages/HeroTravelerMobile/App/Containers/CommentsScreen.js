@@ -11,7 +11,9 @@ import {Colors} from '../Shared/Themes'
 import API from '../Shared/Services/HeroAPI'
 import styles, { listHeight } from './Styles/CommentsScreenStyles'
 import StoryActions from '../Shared/Redux/Entities/Stories'
+import StoryCommentActions from '../Shared/Redux//Entities/StoryComments'
 import GuideActions from '../Shared/Redux/Entities/Guides'
+import GuideCommentsActions from '../Shared/Redux/Entities/GuideComments';
 
 const api = API.create()
 
@@ -40,6 +42,7 @@ class StoryCommentsScreen extends React.Component {
     updateStory: PropTypes.func,
     updateLocalGuide: PropTypes.func,
     user: PropTypes.object,
+    createStoryComment: PropTypes.func,
   };
 
   constructor(props) {
@@ -84,20 +87,9 @@ class StoryCommentsScreen extends React.Component {
       story: this.props.storyId
     };
 
-    const createMethod = this.props.storyId ? api.createComment : api.createGuideComment
-    createMethod(
-      this.props.storyId || this.props.guideId,
-      this.state.text
-    )
-    .then(() => {
-      const update = {}
-      update[this.props.storyId || this.props.guideId] = {
-        counts: {
-          comments: this.state.comments.length + 1,
-        }
-      }
-      const updateMethod = this.props.storyId ? this.props.updateStory : this.props.updateLocalGuide
-      updateMethod(update)
+    this.props.storyId ?
+      this.props.createStoryComment(this.state.text) :
+      this.props.createGuideComment(this.state.text)
 
       this.setState({
         comments: [
@@ -106,7 +98,6 @@ class StoryCommentsScreen extends React.Component {
         ],
         text: '',
       })
-    })
   }
 
   _setRef = i => this._scrollView = i
@@ -134,6 +125,7 @@ class StoryCommentsScreen extends React.Component {
   }
 
   render () {
+
     return (
           <View style={[styles.containerWithNavbar]}>
             <ScrollView
@@ -194,10 +186,12 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     updateStory: (story) => dispatch(StoryActions.receiveStories(story)),
     updateLocalGuide: (guide) => dispatch(GuideActions.receiveGuides(guide)),
+    createStoryComment: (text) => dispatch(StoryCommentActions.createCommentRequest(ownProps.storyId, text)),
+    createGuideComment: (text) => dispatch(GuideCommentsActions.createGuidesCommentRequest(ownProps.guideId, text)),
   }
 }
 

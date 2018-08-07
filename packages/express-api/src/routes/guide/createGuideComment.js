@@ -22,6 +22,6 @@ export default function createGuideComment(req) {
         guideCommentNotification(author, commentator, updatedModel);
       })
     }
-    Promise.resolve(comment);
+    return Promise.resolve(comment);
   });
 }

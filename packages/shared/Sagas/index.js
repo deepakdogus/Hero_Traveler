@@ -19,6 +19,7 @@ import { HashtagTypes } from '../Redux/Entities/Hashtags'
 import { UserTypes } from '../Redux/Entities/Users'
 import { StoryCommentsTypes } from '../Redux/Entities/StoryComments'
 import { GuideTypes } from '../Redux/Entities/Guides'
+import { GuideCommentsTypes } from '../Redux/Entities/GuideComments'
 
 /* ------------- Sagas ------------- */
 
@@ -99,6 +100,11 @@ import {
   likeGuide,
   unlikeGuide,
 } from './GuideSagas'
+
+import {
+  getGuideComments,
+  createGuideComment,
+} from './GuideCommentsSagas'
 
 /* ------------- API ------------- */
 
@@ -207,5 +213,9 @@ export default function * root () {
     takeLatest(GuideTypes.BULK_SAVE_STORY_TO_GUIDE_REQUEST, bulkSaveStoryToGuide, heroAPI),
     takeLatest(GuideTypes.LIKE_GUIDE_REQUEST, likeGuide, heroAPI),
     takeLatest(GuideTypes.UNLIKE_GUIDE_REQUEST, unlikeGuide, heroAPI),
+
+    //Guide Comments
+    takeLatest(GuideCommentsTypes.GET_GUIDES_COMMENTS_REQUEST, getGuideComments, heroAPI),
+    takeLatest(GuideCommentsTypes.CREATE_GUIDES_COMMENT_REQUEST, createGuideComment, heroAPI),
   ]
 }

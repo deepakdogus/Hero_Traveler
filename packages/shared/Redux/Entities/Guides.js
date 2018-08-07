@@ -1,6 +1,7 @@
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
 import _ from 'lodash'
+import changeCountOfType from '../helpers/changeCountOfTypeHelper'
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -26,6 +27,7 @@ const { Types, Creators } = createActions({
   unlikeGuideRequest: ['guideId', 'userId'],
   likeGuide: ['guideId', 'userId'],
   unlikeGuide: ['guideId', 'userId'],
+  changeCountOfType:['feedItemId', 'countType', 'isIncrement'],
   deleteStoryFromGuides: ['storyId'],
 })
 
@@ -155,25 +157,6 @@ export const dismissError = (state, {error}) => {
   return state.setIn(['error'], null)
 }
 
-// called eagerly on likeGuide + on unlikeGuide fail
-export const likeGuide = (state, {guideId, userId}) => {
-  const newState = request(state)
-  const numOfLikes = _.get(state, `entities.${guideId}.counts.likes`, 0)
-  return state.setIn(
-    ['entities', guideId, 'counts', 'likes'],
-    numOfLikes + 1
-  )
-}
-
-// called eagerly on unlikeGuide + on likeGuide fail
-export const unlikeGuide = (state, {guideId, userId}) => {
-  const newState = request(state)
-  const numOfLikes = _.get(state, `entities.${guideId}.counts.likes`, 0)
-  return state.setIn(
-    ['entities', guideId, 'counts', 'likes'],
-    numOfLikes - 1
-  )
-}
 
 export const deleteStoryFromGuides = (state, {storyId}) => {
   const guides = state.entities
@@ -212,9 +195,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GUIDE_FEED_SUCCESS]: guideFeedSuccess,
   [Types.GET_CATEGORY_GUIDES]: request,
   [Types.GET_CATEGORY_GUIDES_SUCCESS]: receiveCategoryGuides,
+  [Types.CHANGE_COUNT_OF_TYPE]: changeCountOfType,
   [Types.BULK_SAVE_STORY_TO_GUIDE_REQUEST]: request,
   [Types.DISMISS_ERROR]: dismissError,
-  [Types.LIKE_GUIDE]: likeGuide,
-  [Types.UNLIKE_GUIDE]: unlikeGuide,
   [Types.DELETE_STORY_FROM_GUIDES]: deleteStoryFromGuides,
 })

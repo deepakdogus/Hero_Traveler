@@ -11,7 +11,7 @@ const Sidebar = styled.div`
   box-shadow: 3px 3px 5px -1px ${props => props.theme.Colors.background};
   padding: 20px 0px 20px 40px;
   animation-name: fadeIn;
-  animation-duration: 1s;
+  animation-duration: .3s;
   overflow: hidden;
 `
 
@@ -34,7 +34,9 @@ class ProfileMenu extends React.Component{
     openModal: PropTypes.func,
     openGlobalModal: PropTypes.func,
     userId: PropTypes.string,
-    attemptLogout: PropTypes.func
+    attemptLogout: PropTypes.func,
+    openSaveEditsModal: PropTypes.func,
+    pathname: PropTypes.string,
   }
 
   handleClickOutside = () => {
@@ -43,6 +45,22 @@ class ProfileMenu extends React.Component{
 
   rerouteToProfile = ()=> {
     this.rerouteAndClose(`/profile/${this.props.userId}/view`)
+  }
+
+  _openSaveEditsModalToProfile = () => {
+    if(!this.props.pathname.includes('editStory')){
+      this.rerouteToProfile()
+    }else{
+      this.props.openSaveEditsModal(`/profile/${this.props.userId}/view`)
+    }
+  }
+
+  _openSaveEditsModalToLogout = () => {
+    if(!this.props.pathname.includes('editStory')){
+      this.handleLogout()
+    }else{
+      
+    }
   }
 
   rerouteToCustomizeInterests = () => {
@@ -72,9 +90,10 @@ class ProfileMenu extends React.Component{
   }
 
   render(){
+
     return(
       <Sidebar>
-        <SidebarDemiLink onClick={this.rerouteToProfile}>
+        <SidebarDemiLink onClick={this._openSaveEditsModalToProfile}>
           My Profile
         </SidebarDemiLink>
         <SidebarDemiLink onClick={this.openSettings}>
@@ -86,7 +105,7 @@ class ProfileMenu extends React.Component{
         <SidebarDemiLink onClick={this.openFAQ}>
           FAQ
         </SidebarDemiLink>
-        <SidebarDemiLink onClick={this.handleLogout}>
+        <SidebarDemiLink onClick={this._openSaveEditsModalToLogout}>
           Logout
         </SidebarDemiLink>
       </Sidebar>

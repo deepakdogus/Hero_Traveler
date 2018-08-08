@@ -56,7 +56,7 @@ class HeaderLoggedIn extends React.Component {
     openGlobalModal: PropTypes.func,
     userId: PropTypes.string,
     attemptLogout: PropTypes.func,
-    profileAvatar: PropTypes.object
+    profileAvatar: PropTypes.object,
   }
 
   state = {
@@ -156,6 +156,8 @@ class HeaderLoggedIn extends React.Component {
                       userId={userId}
                       reroute={reroute}
                       attemptLogout={attemptLogout}
+                      openSaveEditsModal={openSaveEditsModal}
+                      pathname={pathname}
                     />
                   }
             </LoggedInDesktopContainer>

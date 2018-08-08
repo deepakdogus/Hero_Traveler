@@ -82,8 +82,8 @@ class Header extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(this.props.currentUser && prevProps.currentUser !== this.props.currentUser){
-      this.props.attemptGetUserFeed(this.props.currentUser)
+    if(this.props.currentUserId && prevProps.currentUserId !== this.props.currentUserId){
+      this.props.attemptGetUserFeed(this.props.currentUserId)
     }
   }
 
@@ -238,7 +238,6 @@ function mapStateToProps(state) {
     currentUserProfile: (currentUser) && currentUser.profile,
     currentUserEmail: (currentUser) && currentUser.email,
     currentUserNotificationTypes: (currentUser) && currentUser.notificationTypes,
-    currentUser: state.session.userId,
     activitiesById: state.entities.users.activitiesById,
     activities: state.entities.users.activities,
     users: state.entities.users.entities,

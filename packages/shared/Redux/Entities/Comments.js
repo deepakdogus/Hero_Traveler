@@ -1,55 +1,61 @@
-import { createReducer, createActions } from 'reduxsauce'
+import {createReducer, createActions} from 'reduxsauce'
 import Immutable from 'seamless-immutable'
 
 /* ------------- Types and Action Creators ------------- */
 
-const { Types, Creators } = createActions({
-  getCommentsRequest: ['storyId'],
-  getCommentsSuccess: ['comments'],
+const {Types, Creators} = createActions({
+	getCommentsRequest: ['feedItemId', 'entityType'],
+	getCommentsSuccess: ['comments', 'feedItemId', 'entityType'],
   commentRequestFailure: ['error', 'request'],
-  createCommentRequest: ['storyId', 'text'],
-  createCommentSuccess: ['comment'],
+  createCommentRequest: ['feedItemId', 'entityType', 'text'],
+  createCommentSuccess: ['comment', 'feedItemId', 'entityType'],
 })
 
-export const StoryCommentsTypes = Types
+export const CommentTypes = Types
 export default Creators
 
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  comments: [],
+	guide: {},
+	story: {},
   getCommentsStatus: {
     fetching: false,
     loaded: false,
   },
   createCommentStatus: {
     creating: false,
-  },
+      },
   error: null,
 })
 
 /* ------------- Reducers ------------- */
 
 export const getCommentsRequest = (state) => {
-  return state.merge({
-    getCommentsStatus: {
-      fetching: true,
-      loaded: false,
-    }
-  })
+    return state.merge({
+        getCommentsStatus: {
+          fetching: true,
+          loaded: false,
+        }
+      })
 }
 
-export const getCommentsSuccess = (state, {comments = []}) => {
-  return state.merge({
-    fetchStatus: {
-      fetching: false,
-      loaded: true,
-    },
-    error: null,
-    comments: comments
-  }, {
-    deep: true
-  })
+export const getCommentsSuccess = (state, {comments=[], feedItemId, entityType}) => {
+	const update = {
+		story:{},
+		guide:{},
+		fetchStatus: {
+			fetching: false,
+			loaded: true,
+		},
+		error: null,
+	}
+	update[entityType][feedItemId] = comments
+
+	return state.merge(
+		update,
+		{ deep: true }
+	)
 }
 
 export const commentRequestFailure = (state, {error, request}) => {
@@ -70,18 +76,18 @@ export const createCommentRequest = (state) => {
   })
 }
 
-export const createCommentSuccess = (state, {comment}) => {
-  return state.setIn(
-    ['comments'],
-    state.getIn(['comments'], []).concat(comment)
-  )
-  .setIn(['createCommentStatus', 'creating'], false)
+export const createCommentSuccess = (state, {comment, feedItemId, entityType}) => {
+	return state.setIn(
+		[entityType, feedItemId],
+		state.getIn([entityType, feedItemId], []).concat(comment)
+	)
+	.setIn(['createCommentStatus', 'creating'], false)
 }
 
-/* ------------- Hookup Reducers To Types ------------- */
+
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.GET_COMMENTS_REQUEST]: getCommentsRequest,
+	[Types.GET_COMMENTS_REQUEST]: getCommentsRequest,
   [Types.GET_COMMENTS_SUCCESS]: getCommentsSuccess,
   [Types.COMMENTS_REQUEST_FAILURE]: commentRequestFailure,
   [Types.CREATE_COMMENT_REQUEST]: createCommentRequest,

@@ -17,9 +17,8 @@ import { StoryTypes } from '../Redux/Entities/Stories'
 import { CategoryTypes } from '../Redux/Entities/Categories'
 import { HashtagTypes } from '../Redux/Entities/Hashtags'
 import { UserTypes } from '../Redux/Entities/Users'
-import { StoryCommentsTypes } from '../Redux/Entities/StoryComments'
 import { GuideTypes } from '../Redux/Entities/Guides'
-import { GuideCommentsTypes } from '../Redux/Entities/GuideComments'
+import { CommentTypes } from '../Redux/Entities/Comments'
 
 /* ------------- Sagas ------------- */
 
@@ -84,11 +83,6 @@ import {
 } from './MediaUploadSagas'
 
 import {
-  getComments,
-  createCommment,
-} from './StoryCommentsSagas'
-
-import {
   createGuide,
   getGuide,
   updateGuide,
@@ -102,9 +96,10 @@ import {
 } from './GuideSagas'
 
 import {
-  getGuideComments,
-  createGuideComment,
-} from './GuideCommentsSagas'
+  getComments,
+  createComment
+} from './CommentsSagas'
+
 
 /* ------------- API ------------- */
 
@@ -198,10 +193,6 @@ export default function * root () {
     // Media Upload
     takeLatest(MediaUploadTypes.UPLOAD_REQUEST, uploadMedia, heroAPI),
 
-    // Story Comments
-    takeLatest(StoryCommentsTypes.GET_COMMENTS_REQUEST, getComments, heroAPI),
-    takeLatest(StoryCommentsTypes.CREATE_COMMENT_REQUEST, createCommment, heroAPI),
-
     // Guides
     takeLatest(GuideTypes.CREATE_GUIDE, createGuide, heroAPI),
     takeLatest(GuideTypes.GET_GUIDE_REQUEST, getGuide, heroAPI),
@@ -214,8 +205,8 @@ export default function * root () {
     takeLatest(GuideTypes.LIKE_GUIDE_REQUEST, likeGuide, heroAPI),
     takeLatest(GuideTypes.UNLIKE_GUIDE_REQUEST, unlikeGuide, heroAPI),
 
-    //Guide Comments
-    takeLatest(GuideCommentsTypes.GET_GUIDES_COMMENTS_REQUEST, getGuideComments, heroAPI),
-    takeLatest(GuideCommentsTypes.CREATE_GUIDES_COMMENT_REQUEST, createGuideComment, heroAPI),
+    //Comments
+    takeLatest(CommentTypes.GET_COMMENTS_REQUEST, getComments, heroAPI),
+    takeLatest(CommentTypes.CREATE_COMMENT_REQUEST, createComment, heroAPI)
   ]
 }

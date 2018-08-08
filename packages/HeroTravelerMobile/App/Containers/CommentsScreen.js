@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Text, View, ScrollView, TextInput } from 'react-native'
@@ -8,14 +7,11 @@ import RoundedButton from '../Components/RoundedButton'
 import Avatar from '../Components/Avatar'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import {Colors} from '../Shared/Themes'
-import API from '../Shared/Services/HeroAPI'
 import styles, { listHeight } from './Styles/CommentsScreenStyles'
 import StoryActions from '../Shared/Redux/Entities/Stories'
-import StoryCommentActions from '../Shared/Redux//Entities/StoryComments'
 import GuideActions from '../Shared/Redux/Entities/Guides'
-import GuideCommentsActions from '../Shared/Redux/Entities/GuideComments';
+import CommentActions from '../Shared/Redux/Entities/Comments';
 
-const api = API.create()
 
 const Comment = ({avatar, name, comment, timestamp}) => {
   return (
@@ -36,38 +32,29 @@ const Comment = ({avatar, name, comment, timestamp}) => {
 
 class StoryCommentsScreen extends React.Component {
   static propTypes = {
-    accessToken: PropTypes.object,
     storyId: PropTypes.string,
     guideId: PropTypes.string,
     updateStory: PropTypes.func,
     updateLocalGuide: PropTypes.func,
     user: PropTypes.object,
-    createStoryComment: PropTypes.func,
+    comments: PropTypes.object,
+    createComment: PropTypes.func,
+    getComments: PropTypes.func,
   };
 
   constructor(props) {
     super(props)
 
     this.state = {
-      loading: true,
       text: '',
-      comments: [],
       isFocused: false,
     }
   }
 
   componentDidMount() {
-    api.setAuth(this.props.accessToken.value)
-      .then(() => {
-        const getMethod = this.props.storyId ? api.getComments : api.getGuideComments
-        getMethod(this.props.storyId || this.props.guideId)
-          .then(({data}) => {
-            this.setState({
-              loading: false,
-              comments: data
-            })
-          })
-      })
+    this.props.storyId
+    ? this.props.getComments(this.props.storyId, 'story')
+    : this.props.getComments(this.props.guideId, 'guide')
   }
 
   isValid() {
@@ -80,22 +67,11 @@ class StoryCommentsScreen extends React.Component {
     if (this.state.text.trim().length=== 0) return
 
     this.input.blur()
-    const newComment = {
-      user: this.props.user,
-      createdAt: Date.now(),
-      content: this.state.text,
-      story: this.props.storyId
-    };
-
-    this.props.storyId ?
-      this.props.createStoryComment(this.state.text) :
-      this.props.createGuideComment(this.state.text)
+    this.props.storyId
+    ? this.props.createComment(this.props.storyId, 'story', this.state.text)
+    : this.props.createComment(this.props.guideId, 'guide', this.state.text)
 
       this.setState({
-        comments: [
-          ...this.state.comments,
-          newComment
-        ],
         text: '',
       })
   }
@@ -103,7 +79,12 @@ class StoryCommentsScreen extends React.Component {
   _setRef = i => this._scrollView = i
 
   _onContentSizeChange = () => {
-    if (this.state.comments.length > 6) {
+    let {comments, storyId, guideId} = this.props
+    storyId
+    ? comments = comments['story'][storyId]
+    : comments = comments['guide'][guideId]
+
+    if (comments.length > 6) {
       this._scrollView.scrollToEnd({animated: true})
     }
   }
@@ -125,56 +106,60 @@ class StoryCommentsScreen extends React.Component {
   }
 
   render () {
+    let {comments, storyId, guideId} = this.props
+    storyId
+    ? comments = comments['story'][storyId]
+    : comments = comments['guide'][guideId]
 
     return (
-          <View style={[styles.containerWithNavbar]}>
-            <ScrollView
-              ref={this._setRef}
-              onContentSizeChange={this._onContentSizeChange}
-              style={[
-                styles.list,
-                this.state.isFocused ? {height: listHeight - 295} : {}
-              ]}>
-            {this.state.comments.map(comment => {
-              return(
-                <Comment
-                  avatar={getImageUrl(comment.user.profile.avatar, 'avatar')}
-                  name={comment.user.profile.fullName}
-                  comment={comment.content}
-                  timestamp={moment(comment.createdAt).fromNow()}
-                  key={comment.createdAt.toString()}
-                />
-                )})}
-            </ScrollView>
-            <View>
-              <View style={styles.inputGroupWrapper}>
-                <View style={styles.inputWrapper}>
-                  <TextInput
-                    placeholder='Add a comment'
-                    style={styles.input}
-                    value={this.state.text}
-                    autoCapitalize='none'
-                    onSubmitEditing={this.setFocusedFalse}
-                    onFocus={this.setFocusedTrue}
-                    onBlur={this.setFocusedFalse}
-                    onChangeText={this.setChangedText}
-                    autoCorrect={false}
-                    returnKeyType={'done'}
-                    ref={this.setInputRef}
-                  />
-                </View>
-                <RoundedButton
-                  style={[
-                    styles.inputButton,
-                    {backgroundColor: this.isValid() ? Colors.red : Colors.inactiveRed},
-                  ]}
-                  onPress={this.handleSend}
-                >
-                  Send
-                </RoundedButton>
-              </View>
+      <View style={[styles.containerWithNavbar]}>
+        <ScrollView
+          ref={this._setRef}
+          onContentSizeChange={this._onContentSizeChange}
+          style={[
+            styles.list,
+            this.state.isFocused ? {height: listHeight - 295} : {}
+          ]}>
+        {comments && comments.map(comment => {
+          return(
+            <Comment
+              avatar={getImageUrl(comment.user.profile.avatar, 'avatar')}
+              name={comment.user.profile.fullName}
+              comment={comment.content}
+              timestamp={moment(comment.createdAt).fromNow()}
+              key={comment.createdAt.toString()}
+            />
+            )})}
+        </ScrollView>
+        <View>
+          <View style={styles.inputGroupWrapper}>
+            <View style={styles.inputWrapper}>
+              <TextInput
+                placeholder='Add a comment'
+                style={styles.input}
+                value={this.state.text}
+                autoCapitalize='none'
+                onSubmitEditing={this.setFocusedFalse}
+                onFocus={this.setFocusedTrue}
+                onBlur={this.setFocusedFalse}
+                onChangeText={this.setChangedText}
+                autoCorrect={false}
+                returnKeyType={'done'}
+                ref={this.setInputRef}
+              />
             </View>
+            <RoundedButton
+              style={[
+                styles.inputButton,
+                {backgroundColor: this.isValid() ? Colors.red : Colors.inactiveRed},
+              ]}
+              onPress={this.handleSend}
+            >
+              Send
+            </RoundedButton>
           </View>
+        </View>
+      </View>
     )
   }
 }
@@ -182,16 +167,16 @@ class StoryCommentsScreen extends React.Component {
 const mapStateToProps = (state) => {
   return {
     user: state.entities.users.entities[state.session.userId],
-    accessToken: _.find(state.session.tokens, {type: 'access'})
+    comments: state.entities.comments,
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     updateStory: (story) => dispatch(StoryActions.receiveStories(story)),
     updateLocalGuide: (guide) => dispatch(GuideActions.receiveGuides(guide)),
-    createStoryComment: (text) => dispatch(StoryCommentActions.createCommentRequest(ownProps.storyId, text)),
-    createGuideComment: (text) => dispatch(GuideCommentsActions.createGuidesCommentRequest(ownProps.guideId, text)),
+    getComments: (feedItemId, entityType) => dispatch(CommentActions.getCommentsRequest(feedItemId, entityType)),
+    createComment: (feedItemId, entityType, text) => dispatch(CommentActions.createCommentRequest(feedItemId, entityType, text)),
   }
 }
 

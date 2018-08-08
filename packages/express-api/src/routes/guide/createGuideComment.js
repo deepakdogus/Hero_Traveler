@@ -9,7 +9,7 @@ export default function createGuideComment(req) {
   const {content} = req.body
   return Comment.create({
     guide: guideId,
-    user: userId,
+    user: commentator,
     content
   })
   .then(({updatedModel, comment}) => {

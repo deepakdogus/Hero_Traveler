@@ -28,6 +28,7 @@ import TermsAndConditionsScreen from '../Containers/TermsAndConditionsScreen'
 import FAQScreen from '../Containers/FAQScreen'
 import PrivacyScreen from '../Components/PrivacyScreen'
 import ChangePasswordScreen from '../Containers/ChangePasswordScreen'
+import ChangeEmailScreen from '../Containers/ChangeEmailScreen'
 
 
 // Story reading & creating
@@ -240,6 +241,15 @@ export default NavActions.create(
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
         title='Change Password'
+        {...darkNavBarProps}
+      />
+      <Scene
+        key='changeEmail'
+        component={ChangeEmailScreen}
+        direction='horizontal'
+        onLeft={NavActions.pop}
+        backButtonImage={Images.iconArrowLeft}
+        title='Change Email'
         {...darkNavBarProps}
       />
       <Scene

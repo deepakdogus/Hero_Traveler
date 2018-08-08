@@ -7,11 +7,11 @@ import {ModelName as CommentRef} from './comment'
 
 const FollowActivitySchema = Schema({
   // The user that did the following
-  fromUser: {
-    type: Schema.Types.ObjectId,
-    ref: UserRef,
-    required: true,
-  }
+  // fromUser: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: UserRef,
+  //   required: true,
+  // }
 })
 
 FollowActivitySchema.statics = {

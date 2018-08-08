@@ -2,6 +2,7 @@ export {
   default as create,
   createUserFacebook as createFacebook
 } from './createUser'
+export {default as deleteUser} from './deleteUser'
 export {default as get} from './getUser'
 export {default as getFollowers} from './getFollowers'
 export {default as getFollowees} from './getFollowees'

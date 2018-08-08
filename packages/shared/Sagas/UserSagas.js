@@ -2,10 +2,10 @@ import _ from 'lodash'
 import { call, put, select } from 'redux-saga/effects'
 import UserActions from '../Redux/Entities/Users'
 import StoryActions from '../Redux/Entities/Stories'
+import StartupActions from '../Redux/StartupRedux'
+import SessionActions from '../Redux/SessionRedux'
 import SignupActions from '../Redux/SignupRedux'
-import {
-  loginToFacebookAndGetUserInfo,
-} from '../../Services/FacebookConnect'
+import { loginToFacebookAndGetUserInfo } from '../../Services/FacebookConnect'
 
 const currentUserId = ({session}) => session.userId
 
@@ -32,16 +32,16 @@ export function * updateUser (api, action) {
 export function * connectFacebook (api) {
   let userResponse
   try {
-    userResponse = yield loginToFacebookAndGetUserInfo();
+    userResponse = yield loginToFacebookAndGetUserInfo()
   } catch(err) {
-    console.log('Facebook connect failed with error: ', err);
+    console.log('Facebook connect failed with error: ', err)
     yield put(SignupActions.signupFacebookFailure(err))
-    return;
+    return
   }
 
   if (!userResponse) {
     yield put(SignupActions.signupFacebookFailure())
-    return;
+    return
   }
 
   try {
@@ -55,21 +55,49 @@ export function * connectFacebook (api) {
     } else {
       yield put(UserActions.connectFacebookFailure(
         new Error(
-          (response.data && response.data.message) ? response.data.message : "Unknown Error")
+          _.get(response, "data.message", "Unknown Error")
         )
-      );
+      ))
     }
   } catch (error) {
     yield put(UserActions.connectFacebookFailure(
       new Error("There was a network error")
-    ));
+    ))
+  }
+}
+
+export function * deleteUser(api) {
+  try {
+    const userId = yield select(currentUserId)
+    const response = yield call(
+      api.deleteUser,
+      userId
+    )
+    if (response.ok) {
+      yield [
+        put(UserActions.deleteUserSuccess()),
+        put(SessionActions.logoutSuccess()),
+        call(api.unsetAuth),
+      ]
+      yield put(StartupActions.hideSplash())
+    } else {
+      yield put(UserActions.deleteUserFailure(
+        new Error(
+          (response.data && response.data.message) ? response.data.message : "Unknown Error")
+        )
+      )
+    }
+  } catch(err) {
+    yield put(UserActions.deleteUserFailure(
+      new Error("There was an error deleting the user.")
+    ))
   }
 }
 
 export function * getSuggestedUsers (api, action) {
   const response = yield call(api.getSuggestedUsers)
   if (response.ok) {
-    const { entities, result } = response.data;
+    const { entities, result } = response.data
     yield [
       put(UserActions.receiveUsers(entities.users)),
       put(UserActions.loadUserSuggestionsSuccess(result))
@@ -82,7 +110,7 @@ export function * getSuggestedUsers (api, action) {
 export function * loadUser (api, {userId}) {
   const response = yield call(api.getUser, userId)
   if (response.ok) {
-    const { entities } = response.data;
+    const { entities } = response.data
     yield put(UserActions.receiveUsers(entities.users))
     yield put(UserActions.loadUserSuccess())
   } else {
@@ -93,7 +121,7 @@ export function * loadUser (api, {userId}) {
 export function * loadUserFollowers (api, {userId}) {
   const response = yield call(api.getUserFollowers, userId)
   if (response.ok) {
-    const { entities, result } = response.data;
+    const { entities, result } = response.data
     yield [
       put(UserActions.receiveUsers(entities.users)),
       put(UserActions.loadUserFollowersSuccess(userId, result))
@@ -106,7 +134,7 @@ export function * loadUserFollowers (api, {userId}) {
 export function * loadUserFollowing (api, {userId}) {
   const response = yield call(api.getUserFollowing, userId)
   if (response.ok) {
-    const { entities, result } = response.data;
+    const { entities, result } = response.data
     yield [
       put(UserActions.receiveUsers(entities.users)),
       put(UserActions.loadUserFollowingSuccess(userId, result))

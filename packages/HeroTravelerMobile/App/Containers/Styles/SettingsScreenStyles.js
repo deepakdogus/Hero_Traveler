@@ -50,5 +50,12 @@ export default StyleSheet.create({
     fontSize: 8,
     fontFamily: Fonts.type.montserrat,
     color: Colors.navBarText
-  }
+  },
+  spinner: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0
+  },
 })

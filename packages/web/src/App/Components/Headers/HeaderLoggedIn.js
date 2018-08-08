@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 import { Row, Col } from '../FlexboxGrid'
+import ProfileMenu from './ProfileMenu'
 import { mediaMax, mediaMin } from '../ContentLayout.component'
 import Avatar from '../Avatar'
 import RoundedButton from '../RoundedButton'
@@ -37,6 +38,7 @@ const StyledRoundedAvatarButton = styled(RoundedButton)`
 const StyledRoundedCreateButton = styled(RoundedButton)`
     position: relative;
     bottom: 7px;
+
 `
 
 const StyledRoundedNotificationButton = styled(StyledRoundedButton)`
@@ -44,17 +46,39 @@ const StyledRoundedNotificationButton = styled(StyledRoundedButton)`
     bottom: 4px;
 `
 
-
 class HeaderLoggedIn extends React.Component {
-  static PropTypes = {
+  static propTypes = {
+    reroute: PropTypes.func,
     openModal: PropTypes.func,
     user: PropTypes.object,
     pathname: PropTypes.string,
     openSaveEditsModal: PropTypes.func,
+    openGlobalModal: PropTypes.func,
+    userId: PropTypes.string,
+    attemptLogout: PropTypes.func,
+    profileAvatar: PropTypes.object
+  }
+
+  state = {
+    profileMenuIsOpen: false
+  }
+
+  toggleProfileMenu = () => {
+    this.setState({profileMenuIsOpen: !this.state.profileMenuIsOpen})
   }
 
   render () {
-    const { openModal, user, profileAvatar, pathname, openSaveEditsModal } = this.props
+
+    const {
+      openModal,
+      openGlobalModal,
+      userId,
+      profileAvatar,
+      pathname,
+      reroute,
+      attemptLogout,
+      openSaveEditsModal
+    } = this.props
 
     return (
       <StyledRow between="xs" middle="xs">
@@ -111,14 +135,12 @@ class HeaderLoggedIn extends React.Component {
               >
                 <NotificationsIcon name='cameraFlash' />
               </StyledRoundedNotificationButton>
-              <NavLink
-                to={`/profile/${user}/view`}
-              >
                 <StyledRoundedAvatarButton
                   type='headerButton'
                   height='32px'
                   width='32px'
                   profileAvatar={profileAvatar}
+                  onClick={this.toggleProfileMenu}
                 >
                   <Avatar
                     type='avatar'
@@ -126,7 +148,16 @@ class HeaderLoggedIn extends React.Component {
                     avatarUrl={getImageUrl(profileAvatar)}
                   />
                 </StyledRoundedAvatarButton>
-              </NavLink>
+                  {this.state.profileMenuIsOpen &&
+                    <ProfileMenu
+                      closeMyself={this.toggleProfileMenu}
+                      openModal={openModal}
+                      openGlobalModal={openGlobalModal}
+                      userId={userId}
+                      reroute={reroute}
+                      attemptLogout={attemptLogout}
+                    />
+                  }
             </LoggedInDesktopContainer>
             <LoggedInTabletContainer>
               <NavLink
@@ -148,7 +179,7 @@ class HeaderLoggedIn extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   let {users} = state.entities
-  const profileAvatar =  users.entities[ownProps.user].profile.avatar
+  const profileAvatar =  users.entities[ownProps.userId].profile.avatar
   return {
     profileAvatar
   }

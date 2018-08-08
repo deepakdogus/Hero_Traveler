@@ -60,7 +60,7 @@ export default class StorySelectRow extends Component {
   }
 
   _handleStoryClick = () => {
-    const {story} = this.props.story
+    const {story} = this.props
     this.props.navToStory(story.id || story.objectID)
   }
 

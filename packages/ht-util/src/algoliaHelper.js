@@ -85,6 +85,9 @@ function deleteStoryFromIndex(storyId) {
   return algoliaAction(storyIndex, 'deleteObject', storyId)
 }
 
+function deleteUserFromIndex(userId) {
+  return algoliaAction(userIndex, 'deleteObject', userId)
+}
 
 function mapForTitleAndId(array) {
   return array.map(item => {
@@ -113,6 +116,7 @@ export default {
   addStoryToIndex,
   updateStoryIndex,
   deleteStoryFromIndex,
+  deleteUserFromIndex,
   addHashtagsToIndex,
   addCategoriesToIndex,
   updateMultipleStories,

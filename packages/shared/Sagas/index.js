@@ -29,7 +29,8 @@ import {
   resetPasswordRequest,
   resetPassword,
   loggedIn,
-  verifyEmail
+  verifyEmail,
+  changePassword,
 } from './LoginSagas'
 import {
   signupEmail,
@@ -53,6 +54,7 @@ import { getHashtags } from './HashtagSagas'
 import {
   updateUser,
   connectFacebook,
+  deleteUser,
   getSuggestedUsers,
   loadUser,
   loadUserFollowing,
@@ -142,6 +144,7 @@ export default function * root () {
     takeLatest(LoginTypes.RESET_PASSWORD_REQUEST, resetPasswordRequest, heroAPI),
     takeLatest(LoginTypes.RESET_PASSWORD, resetPassword, heroAPI),
     takeLatest(LoginTypes.VERIFY_EMAIL, verifyEmail, heroAPI),
+    takeLatest(LoginTypes.CHANGE_PASSWORD_REQUEST, changePassword, heroAPI),
     takeLatest(SessionTypes.INITIALIZE_SESSION, loggedIn),
 
     takeLatest(SignupTypes.SIGNUP_EMAIL, signupEmail, heroAPI),
@@ -182,6 +185,7 @@ export default function * root () {
     takeLatest(UserTypes.LOAD_USER, loadUser, heroAPI),
     takeLatest(UserTypes.UPDATE_USER, updateUser, heroAPI),
     takeLatest(UserTypes.CONNECT_FACEBOOK, connectFacebook, heroAPI),
+    takeLatest(UserTypes.DELETE_USER, deleteUser, heroAPI),
     takeLatest(UserTypes.LOAD_USER_FOLLOWING, loadUserFollowing, heroAPI),
     takeLatest(UserTypes.LOAD_USER_FOLLOWERS, loadUserFollowers, heroAPI),
     takeLatest(UserTypes.FOLLOW_USER, userFollowUser, heroAPI),

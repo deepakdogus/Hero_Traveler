@@ -32,14 +32,36 @@ export default class InputWithLabel extends React.Component {
   static propTypes = {
     label: PropTypes.string,
     placeholder: PropTypes.string,
+    value: PropTypes.string,
+    onChange: PropTypes.func,
+    name: PropTypes.string,
+    type: PropTypes.string,
+    id: PropTypes.string,
   }
 
   render() {
-    const {name, type, id, label, placeholder} = this.props
+    const {
+      name,
+      type,
+      id,
+      label,
+      placeholder,
+      onChange,
+      value
+    } = this.props
+
     return (
       <Container>
-        <StyledInputLabel for={name}>{label}</StyledInputLabel>
-        <StyledInput id={id} type={type} placeholder={placeholder}/>       
+        <StyledInputLabel for={name}>
+          {label}
+        </StyledInputLabel>
+        <StyledInput
+          id={id}
+          type={type}
+          placeholder={placeholder}
+          onChange={onChange}
+          value={value}
+        />
       </Container>
     )
   }

@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Modal from 'react-modal'
 
+import styled from 'styled-components'
 import Login from './Modals/HeaderModals/Login'
 import Signup from './Modals/HeaderModals/Signup'
 import SaveEdits from './Modals/HeaderModals/SaveEdits'
@@ -9,9 +10,14 @@ import ResetPassword from './Modals/HeaderModals/ResetPassword'
 import Contributor from './Modals/HeaderModals/Contributor'
 import AddToItinerary from './Modals/HeaderModals/AddToItinerary'
 import Comments from './Modals/HeaderModals/Comments'
+import Settings from './Modals/Settings'
+import FAQTermsAndConditions from './Modals/FAQTermsAndConditions'
 import Inbox from './Modals/Inbox'
 import RightModal from './RightModal'
+import CenterModal from './CenterModal'
 import NotificationsThread from './Modals/NotificationsThread'
+
+const Container = styled.div``
 
 const customModalStyles = {
   content: {
@@ -63,7 +69,16 @@ export default class HeaderModals extends React.Component {
     openSignupModal: PropTypes.func,
     attemptLogin: PropTypes.func,
     openLoginModal: PropTypes.func,
-    user: PropTypes.string, // actually just a userId
+    userId: PropTypes.string,
+    currentUserProfile: PropTypes.object,
+    currentUserEmail: PropTypes.string,
+    currentUserNotificationTypes: PropTypes.arrayOf(PropTypes.string),
+    attemptChangePassword: PropTypes.func,
+    loginReduxFetching: PropTypes.bool,
+    loginReduxError: PropTypes.object,
+    attemptUpdateUser: PropTypes.func,
+    userEntitiesUpdating: PropTypes.bool,
+    userEntitiesError: PropTypes.object,
     activitiesById: PropTypes.array,
     activities: PropTypes.object,
     stories: PropTypes.object,
@@ -80,9 +95,19 @@ export default class HeaderModals extends React.Component {
   render() {
     const {
       globalModalThatIsOpen,
+      loginReduxFetching,
+      loginReduxError,
       closeModal,
       modal,
       globalModalParams,
+      attemptChangePassword,
+      userId,
+      attemptUpdateUser,
+      userEntitiesUpdating,
+      userEntitiesError,
+      currentUserEmail,
+      currentUserProfile,
+      currentUserNotificationTypes,
       activities,
       activitiesById,
       markSeen,
@@ -93,7 +118,7 @@ export default class HeaderModals extends React.Component {
     } = this.props
 
     return (
-      <div>
+      <Container>
         <Modal
           isOpen={modal === 'login'}
           contentLabel="Login Modal"
@@ -156,13 +181,13 @@ export default class HeaderModals extends React.Component {
         >
           <NotificationsThread
             closeModal={closeModal}
-            activities={activities}
             activitiesById={activitiesById}
+            activities={activities}
             markSeen={markSeen}
             stories={stories}
             reroute={reroute}
             users={users}
-            />
+          />
         </RightModal>
         <RightModal
           isOpen={globalModalThatIsOpen === 'comments'}
@@ -175,13 +200,38 @@ export default class HeaderModals extends React.Component {
           />
         </RightModal>
         <RightModal
+          isOpen={globalModalThatIsOpen === 'settings'}
+          contentLabel='Settings Modal'
+        >
+          <Settings
+            closeModal={this.closeGlobalModal}
+            attemptChangePassword={attemptChangePassword}
+            loginReduxFetching={loginReduxFetching}
+            loginReduxError={loginReduxError}
+            attemptUpdateUser={attemptUpdateUser}
+            userEntitiesUpdating={userEntitiesUpdating}
+            userEntitiesError={userEntitiesError}
+            userId={userId}
+            userProfile={currentUserProfile}
+            userEmail={currentUserEmail}
+            userNotificationTypes={currentUserNotificationTypes}
+          />
+        </RightModal>
+        <CenterModal
+          isOpen={globalModalThatIsOpen === 'faqTermsAndConditions'}
+          contentLabel='FAQ Terms & Conditions'
+          onRequestClose={this.closeGlobalModal}
+        >
+          <FAQTermsAndConditions closeModal={this.closeGlobalModal}/>
+        </CenterModal>
+        <RightModal
           isOpen={modal === 'inbox'}
           contentLabel='Inbox'
           onRequestClose={closeModal}
         >
-          <Inbox closeModal={closeModal} profile={this.props.user}/>
+          <Inbox closeModal={closeModal} profile={userId}/>
         </RightModal>
-      </div>
+      </Container>
     )
   }
 }

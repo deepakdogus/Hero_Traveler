@@ -5,10 +5,9 @@ import PropTypes from 'prop-types'
 import {RightTitle, RightModalCloseX} from './Shared'
 import TabBar from '../TabBar'
 
-import EditAccount from './EditAccount'
 import EditNotifications from './EditNotifications'
-import EditPassword from './EditPassword'
 import EditServices from './EditServices'
+import EditSettings from './EditSettings'
 
 const Container = styled.div``
 
@@ -17,6 +16,16 @@ const tabBarTabs = ['Account', 'Services', 'Notifications', 'Password']
 export default class Settings extends React.Component {
   static propTypes = {
     closeModal: PropTypes.func,
+    attemptChangePassword: PropTypes.func,
+    loginReduxFetching: PropTypes.bool,
+    loginReduxError: PropTypes.object,
+    userId: PropTypes.string,
+    userProfile: PropTypes.object,
+    userEmail: PropTypes.string,
+    attemptUpdateUser: PropTypes.func,
+    userEntitiesUpdating: PropTypes.bool,
+    userEntitiesError: PropTypes.object,
+    userNotificationTypes: PropTypes.arrayOf(PropTypes.string),
   }
 
   constructor(props) {
@@ -32,6 +41,19 @@ export default class Settings extends React.Component {
   }
 
   render() {
+    const {
+      loginReduxError,
+      loginReduxFetching,
+      attemptChangePassword,
+      userId,
+      userProfile,
+      userEmail,
+      userNotificationTypes = [],
+      attemptUpdateUser,
+      userEntitiesUpdating,
+      userEntitiesError
+    } = this.props
+
     return (
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
@@ -43,10 +65,35 @@ export default class Settings extends React.Component {
           isModal
           whiteBG
         />
-        {this.state.activeTab === 'Account' && <EditAccount/>}
+        {this.state.activeTab === 'Account' &&
+          <EditSettings
+            updateAction={attemptUpdateUser}
+            userProfile={userProfile}
+            userEmailOrId={userEmail}
+            isUpdating={userEntitiesUpdating}
+            errorObj={userEntitiesError}
+            type={'account'}
+          />
+        }
         {this.state.activeTab === 'Services' && <EditServices/>}
-        {this.state.activeTab === 'Notifications' && <EditNotifications/>}
-        {this.state.activeTab === 'Password' && <EditPassword/>}
+        {this.state.activeTab === 'Notifications' &&
+          <EditNotifications
+            attemptUpdateUser={attemptUpdateUser}
+            userEntitiesUpdating={userEntitiesUpdating}
+            userEntitiesError={userEntitiesError}
+            userNotificationTypes={userNotificationTypes}
+          />
+        }
+        {this.state.activeTab === 'Password' &&
+          <EditSettings
+            updateAction={attemptChangePassword}
+            userProfile={userProfile}
+            userEmailOrId={userId}
+            isUpdating={loginReduxFetching}
+            errorObj={loginReduxError}
+            type={'password'}
+          />
+        }
       </Container>
     )
   }

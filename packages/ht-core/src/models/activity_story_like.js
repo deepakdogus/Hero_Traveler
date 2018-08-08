@@ -5,11 +5,6 @@ import {ModelName as UserRef} from './user'
 import {ModelName as StoryRef} from './story'
 
 const StoryLikeActivitySchema = Schema({
-  fromUser: {
-    type: Schema.Types.ObjectId,
-    ref: UserRef,
-    required: true,
-  },
   story: {
     type: Schema.Types.ObjectId,
     ref: StoryRef,

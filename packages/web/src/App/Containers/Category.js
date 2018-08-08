@@ -12,7 +12,7 @@ import StoryList from '../Components/StoryList'
 import Footer from '../Components/Footer'
 import ShowMore from '../Components/ShowMore'
 
-const tabBarTabs = ['ALL', 'DO', 'EAT', 'STAY']
+const tabBarTabs = ['ALL', 'SEE', 'DO', 'EAT', 'STAY']
 
 const ContentWrapper = styled.div``
 

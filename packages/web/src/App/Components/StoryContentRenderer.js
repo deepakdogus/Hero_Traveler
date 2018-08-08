@@ -8,6 +8,7 @@ import Image from './Image'
 import Video from './Video'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import {getVideoUrlBase} from '../Shared/Lib/getVideoUrl'
+import Caption from './MediaCaption'
 
 const ContentContainer = styled.div`
   margin: 100px 0;
@@ -15,16 +16,6 @@ const ContentContainer = styled.div`
 
 const StyledImage = styled(Image)`
   width: 100%;
-`
-
-const Caption = styled.p`
-  font-weight: 400;
-  font-size: 18px;
-  color: ${props => props.theme.Colors.grey};
-  letter-spacing: .7px;
-  font-style: italic;
-  text-align: center;
-  margin-top: 0;
 `
 
 const Text = styled.p`

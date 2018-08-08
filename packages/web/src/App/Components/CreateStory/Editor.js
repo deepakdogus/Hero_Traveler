@@ -4,12 +4,9 @@ import {
   EditorState,
   Modifier,
   SelectionState,
-  EditorBlock,
 } from 'draft-js'
-import DraftEditorPlaceholder from 'draft-js/lib/DraftEditorPlaceholder.react'
 import 'draft-js/dist/Draft.css'
 import 'draft-js-side-toolbar-plugin/lib/plugin.css'
-import cx from 'draft-js/node_modules/fbjs/lib/cx'
 import Editor from 'draft-js-plugins-editor'
 import createSideToolbarPlugin from 'draft-js-side-toolbar-plugin'
 import BlockTypeSelect from 'draft-js-side-toolbar-plugin/lib/components/BlockTypeSelect'
@@ -22,45 +19,16 @@ import {
 import {
   convertFromRaw,
   convertToRaw,
-  insertAtomicBlock,
 } from './editorHelpers/draft-js'
 import './Styles/EditorStyles.css'
-import Image from '../Image'
-import Video from '../Video'
-import Icon from '../Icon'
-import getImageUrl from '../../Shared/Lib/getImageUrl'
-import {getVideoUrlBase} from '../../Shared/Lib/getVideoUrl'
-import uploadFile from '../../Utils/uploadFile'
-import {CloseXContainer} from './Shared'
-import CloseX from '../CloseX'
+import {
+  AddImageButton,
+  AddVideoButton,
+} from './EditorAddMediaButton'
+import MediaComponent from './EditorMediaComponent'
 
 const EditorWrapper = styled.div`
   margin-bottom: 95px;
-`
-
-const Caption = styled.div`
-  font-weight: 400;
-  font-size: 18px;
-  color: ${props => props.theme.Colors.grey};
-  letter-spacing: .7px;
-  font-style: italic;
-  text-align: center;
-  margin-top: 0;
-  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
-`
-
-const StyledImage = styled(Image)`
-  width: 100%;
-`
-
-const HiddenInput = styled.input`
-  opacity: 0;
-  width: 0;
-  height: 0;
-`
-
-const BodyMediaDiv = styled.div`
-  position: relative;
 `
 
 const CustomBlockTypeSelect = ({ getEditorState, setEditorState, theme }) => (
@@ -77,167 +45,17 @@ const CustomBlockTypeSelect = ({ getEditorState, setEditorState, theme }) => (
   />
 )
 
+CustomBlockTypeSelect.propTypes = {
+  getEditorState: PropTypes.func,
+  setEditorState: PropTypes.func,
+  theme: PropTypes.object,
+}
+
 const sideToolbarPlugin = createSideToolbarPlugin({
   structure: [CustomBlockTypeSelect]
 })
 
 const { SideToolbar } = sideToolbarPlugin
-
-class CustomPlaceholder extends DraftEditorPlaceholder {
-  shouldComponentUpdate(nextProps) {
-    return this.props.text !== nextProps.text
-  }
-
-  render() {
-    const className = cx({
-      'public/DraftEditorPlaceholder/root': true,
-      'public/DraftEditorPlaceholder/hasFocus': true,
-    })
-
-    const contentStyle = {
-      whiteSpace: 'pre-wrap',
-    };
-
-    return (
-      <div className={className} style={{width: '100%'}}>
-        <Caption
-          className={cx('public/DraftEditorPlaceholder/inner')}
-          id={this.props.accessibilityID}
-          style={contentStyle}>
-          {this.props.text}
-        </Caption>
-      </div>
-    );
-  }
-}
-
-
-class MediaComponent extends EditorBlock {
-  onClickDelete = () => {
-    const {key , onClickDelete} = this.props.blockProps
-    onClickDelete(key, this.props.block.getLength())
-  }
-
-  setErrorState = () => this.setState({error: 'Failed to load asset'})
-
-  getMediaComponent() {
-    let {type, url, key} = this.props.blockProps
-    const imageUrl = url.startsWith('data:')
-      ? url
-      : getImageUrl(url, 'contentBlock')
-    const videoUrl = url.startsWith('data:')
-      ? url
-      : `${getVideoUrlBase()}/${url}`
-    switch (type) {
-      case 'image':
-        return (
-          <BodyMediaDiv key={key}>
-            <CloseXContainer>
-              <CloseX
-                onClick={this.onClickDelete}
-              />
-            </CloseXContainer>
-            <StyledImage src={imageUrl} />
-          </BodyMediaDiv>
-        )
-      case 'video':
-        return (
-          <BodyMediaDiv key={key}>
-            <Video
-              src={videoUrl}
-              withPrettyControls
-              onError={this.onClickDelete}
-            />
-          </BodyMediaDiv>
-        )
-    }
-
-  }
-
-  render() {
-    const {offsetKey, direction} = this.props
-    const {text} = this.props.blockProps
-    const className = cx({
-      'public/DraftStyleDefault/block': true,
-      'public/DraftStyleDefault/ltr': direction === 'LTR',
-      'public/DraftStyleDefault/rtl': direction === 'RTL',
-    })
-
-    return (
-      <div
-        data-offset-key={offsetKey}
-        className={className}
-      >
-        {this.getMediaComponent()}
-        {!text && <CustomPlaceholder text='placeholder'/>}
-        <Caption>
-          {this._renderChildren()}
-        </Caption>
-      </div>
-    )
-  }
-}
-
-class AddMediaButton extends React.Component {
-  uploadFile = (event) => {
-    uploadFile(event, this, (file) => {
-      const {getEditorState, type} = this.props
-      const update = insertAtomicBlock(getEditorState(), type, file.uri)
-      this.props.setEditorState(update)
-    })
-  }
-
-  preventBubblingUp = (event) => event.preventDefault()
-  setAddImageInputRef = (ref) => this.addImageInputRef = ref
-
-  render() {
-    const { theme, type } = this.props
-    const className = theme.button
-
-    return (
-      <div
-        className={theme.buttonWrapper}
-        onMouseDown={this.preventBubblingUp}
-      >
-        <button
-          className={className}
-          type="button"
-        >
-          <label htmlFor={`${type}_upload`}>
-            <Icon name='like-active' />
-            <HiddenInput
-              ref={this.setAddImageInputRef}
-              className={theme.buttonWrapper}
-              type='file'
-              accept={`${type}/*`}
-              id={`${type}_upload`}
-              name='storyImage'
-              onChange={this.uploadFile}
-            />
-          </label>
-        </button>
-      </div>
-    )
-  }
-}
-
-const AddImageButton = (props) => {
-  return (
-    <AddMediaButton
-      {...props}
-      type="image"
-    />
-  )
-}
-
-const AddVideoButton = (props) => {
-  return (
-    <AddMediaButton
-      {...props}
-      type="video"
-    />
-  )
-}
 
 const styleMap = {
   'BOLD': {
@@ -246,6 +64,12 @@ const styleMap = {
 }
 
 export default class BodyEditor extends React.Component {
+  static propTypes = {
+    value: PropTypes.string,
+    setGetEditorState: PropTypes.func,
+    storyId: PropTypes.string,
+  }
+
   constructor(props) {
     super(props)
     let editorState
@@ -264,7 +88,6 @@ export default class BodyEditor extends React.Component {
   getEditorStateAsObject = () => {
     return convertToRaw(this.state.editorState.getCurrentContent())
   }
-
 
   // see https://github.com/facebook/draft-js/issues/1510
   // for remove atomic block logic
@@ -353,7 +176,6 @@ export default class BodyEditor extends React.Component {
   setEditorRef = (ref) => this.editor = ref
 
   render() {
-
     return (
       <EditorWrapper>
         <Editor

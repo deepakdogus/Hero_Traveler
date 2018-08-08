@@ -12,8 +12,9 @@ import {
   processColor,
 } from 'react-native'
 
+import {NativeEditor} from './libs/draft-js'
+
 import {
-  NativeEditor,
   EditorState,
   RichUtils,
   convertToRaw,
@@ -26,8 +27,8 @@ import {
   updateSelectionHasFocus,
   updateSelectionAnchorAndFocus,
   makeSelectionState,
-} from './libs/draft-js'
-import * as DJSConsts from './libs/draft-js/constants'
+} from '../../Shared/Lib/draft-js-helpers'
+import * as DJSConsts from '../../Shared/Lib/draft-js-helpers/constants'
 
 import { PressTypes } from './Toolbar'
 import Metrics from '../../Shared/Themes/Metrics'

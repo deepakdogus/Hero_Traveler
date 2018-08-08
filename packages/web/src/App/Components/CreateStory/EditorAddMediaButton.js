@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import uploadFile from '../../Utils/uploadFile'
 import {
   insertAtomicBlock,
-} from './editorHelpers/draft-js'
+} from '../../Shared/Lib/draft-js-helpers'
 import Icon from '../Icon'
 import styled from 'styled-components'
 

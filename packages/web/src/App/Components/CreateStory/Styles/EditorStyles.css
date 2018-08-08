@@ -14,3 +14,7 @@
   color: #1a1c21;
 	text-transform: uppercase;
 }
+
+.DraftEditor-root figure {
+	margin: 0;
+}

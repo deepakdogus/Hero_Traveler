@@ -34,7 +34,11 @@ import uploadFile from '../../Utils/uploadFile'
 import {CloseXContainer} from './Shared'
 import CloseX from '../CloseX'
 
-const Caption = styled.p`
+const EditorWrapper = styled.div`
+  margin-bottom: 95px;
+`
+
+const Caption = styled.div`
   font-weight: 400;
   font-size: 18px;
   color: ${props => props.theme.Colors.grey};
@@ -42,6 +46,7 @@ const Caption = styled.p`
   font-style: italic;
   text-align: center;
   margin-top: 0;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
 `
 
 const StyledImage = styled(Image)`
@@ -94,13 +99,13 @@ class CustomPlaceholder extends DraftEditorPlaceholder {
     };
 
     return (
-      <div className={className}>
-        <div
+      <div className={className} style={{width: '100%'}}>
+        <Caption
           className={cx('public/DraftEditorPlaceholder/inner')}
           id={this.props.accessibilityID}
           style={contentStyle}>
           {this.props.text}
-        </div>
+        </Caption>
       </div>
     );
   }
@@ -165,7 +170,9 @@ class MediaComponent extends EditorBlock {
       >
         {this.getMediaComponent()}
         {!text && <CustomPlaceholder text='placeholder'/>}
-        {this._renderChildren()}
+        <Caption>
+          {this._renderChildren()}
+        </Caption>
       </div>
     )
   }
@@ -348,7 +355,7 @@ export default class BodyEditor extends React.Component {
   render() {
 
     return (
-      <div>
+      <EditorWrapper>
         <Editor
           customStyleMap={styleMap}
           editorState={this.state.editorState}
@@ -360,7 +367,7 @@ export default class BodyEditor extends React.Component {
           blockStyleFn={this.myBlockStyleFn}
         />
         <SideToolbar />
-      </div>
+      </EditorWrapper>
     )
   }
 }

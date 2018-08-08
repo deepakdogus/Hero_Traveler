@@ -2,11 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import redraft from 'redraft'
+import _ from 'lodash'
 
 import Image from './Image'
 import Video from './Video'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import {getVideoUrlBase} from '../Shared/Lib/getVideoUrl'
+import Caption from './MediaCaption'
 
 const ContentContainer = styled.div`
   margin: 100px 0;
@@ -14,16 +16,6 @@ const ContentContainer = styled.div`
 
 const StyledImage = styled(Image)`
   width: 100%;
-`
-
-const Caption = styled.p`
-  font-weight: 400;
-  font-size: 18px;
-  color: ${props => props.theme.Colors.grey};
-  letter-spacing: .7px;
-  font-style: italic;
-  text-align: center;
-  margin-top: 0;
 `
 
 const Text = styled.p`
@@ -43,7 +35,6 @@ const HeaderOne = styled.h1`
 
 const StyledStrong = styled.strong`
   font-weight: 600;
-  color: ${props => props.theme.Colors.background};
 `
 
 const inline = {
@@ -57,21 +48,26 @@ const getAtomic = (children, { data, keys }) => {
     this seems a pretty precarious to get the text.
     TODO: See if we can find a better way to isolate the text
   */
-  const text = children[0][1][0].trim()
+  const text = _.get(children, '[0][1][0]', '').trim()
+  const type = data[0].type
+  const mediaUrl =
+    type === 'image'
+    ? getImageUrl(data[0].url, 'contentBlock')
+    : `${getVideoUrlBase()}/${data[0].url}`
+
   switch (data[0].type) {
     case 'image':
       return (
         <div key={keys[0]}>
-          <StyledImage src={getImageUrl(data[0].url, 'contentBlock')} />
+          <StyledImage src={mediaUrl} />
           {text && <Caption>{text}</Caption>}
         </div>
       )
     case 'video':
-      const videoUrl = `${getVideoUrlBase()}/${data[0].url}`
       return (
         <div key={keys[0]}>
           <Video
-            src={videoUrl}
+            src={mediaUrl}
             withPrettyControls
           />
           {text && <Caption>{text}</Caption>}

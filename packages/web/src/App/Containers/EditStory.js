@@ -8,15 +8,12 @@ import PropTypes from 'prop-types'
 
 import StoryCreateActions from '../Shared/Redux/StoryCreateRedux'
 import createLocalDraft from '../Shared/Lib/createLocalDraft'
-import API from '../Shared/Services/HeroAPI'
 import AuthRoute from './AuthRoute'
 
 import CreateStoryCoverContent from './CreateStory/1_CoverContent'
 import CreateStoryDetails from './CreateStory/2_Details'
 import FooterToolbar from '../Components/CreateStory/FooterToolbar'
 import {Title, Text} from '../Components/Modals/Shared'
-
-const api = API.create()
 
 const Container = styled.div``
 
@@ -27,11 +24,6 @@ const ContentWrapper = styled.div`
 const ItemContainer = styled.div`
   margin: 40px 0;
 `
-
-function isNew(props) {
-  const draftId = props.match.params.draftId
-  return draftId === 'new'
-}
 
 const customModalStyles = {
   content: {
@@ -62,10 +54,6 @@ const isEqual = (firstItem, secondItem) => {
   } else {
     return true
   }
-}
-
-function cleanDraft(draft){
-  return _.omit(draft, 'tempCover')
 }
 
 /*
@@ -147,18 +135,14 @@ class EditStory extends Component {
   }
 
   _updateDraft = () => {
-    const {originalDraft, workingDraft, accessToken, subPath} = this.props
-    let coverPromise;
-    if (workingDraft.tempCover) {
-      api.setAuth(accessToken)
-      coverPromise = api.uploadCoverImage(workingDraft.id, workingDraft.tempCover)
-      .then(response => response.data)
-    }
-    else coverPromise = Promise.resolve(workingDraft)
-    return coverPromise.then(response => {
-      const isRepublishing = !workingDraft.draft && subPath === 'details'
-      this.props.updateDraft(originalDraft.id, cleanDraft(workingDraft), null, isRepublishing)
-    })
+    const {originalDraft, workingDraft, subPath} = this.props
+    const isRepublishing = !workingDraft.draft && subPath === 'details'
+    this.props.updateDraft(
+      originalDraft.id,
+      this.cleanDraft(workingDraft),
+      null,
+      isRepublishing
+    )
   }
 
   _discardDraft = () => {
@@ -200,17 +184,18 @@ class EditStory extends Component {
   }
 
   cleanDraft(draft){
-    if (this.hasFieldChanged('title')) draft.title = _.trim(draft.title)
-    if (this.hasFieldChanged('description')) draft.description = _.trim(draft.description)
-    if (this.hasFieldChanged('coverCaption')) draft.coverCaption = _.trim(draft.coverCaption)
-    // draft.draftjsContent = this.editor.getEditorStateAsObject()
+    const cleanedDraft = _.merge({}, draft)
+    if (this.hasFieldChanged('title')) cleanedDraft.title = _.trim(cleanedDraft.title)
+    if (this.hasFieldChanged('description')) cleanedDraft.description = _.trim(cleanedDraft.description)
+    if (this.hasFieldChanged('coverCaption')) cleanedDraft.coverCaption = _.trim(cleanedDraft.coverCaption)
+    cleanedDraft.draftjsContent = this.getEditorState()
+    return cleanedDraft
   }
 
   // this only saves it at the redux level
   softSaveDraft() {
-    const copy = _.merge({}, this.props.workingDraft)
-    this.cleanDraft(copy)
-    return Promise.resolve(this.props.updateWorkingDraft(copy))
+    const cleanedDraft = this.cleanDraft(this.props.workingDraft)
+    return Promise.resolve(this.props.updateWorkingDraft(cleanedDraft))
   }
 
   nextScreen() {
@@ -262,7 +247,7 @@ class EditStory extends Component {
     } else if (!workingDraft.location) {
       this.setValidationErrorState('Please include a location')
     } else if (workingDraft.draft) {
-      publish(cleanDraft(workingDraft))
+      publish(this.cleanDraft(workingDraft))
     } else {
       this._updateDraft()
     }
@@ -277,9 +262,12 @@ class EditStory extends Component {
     this.setState({error: {}})
   }
 
+  setGetEditorState = getEditorState => this.getEditorState = getEditorState
+
   render() {
     const {workingDraft, match, subPath} = this.props
     const error = this.state.error
+
     return (
       <Container>
         <ContentWrapper>
@@ -288,6 +276,7 @@ class EditStory extends Component {
               <AuthRoute
                 path={`${match.url}/cover`}
                 component={CreateStoryCoverContent}
+                setGetEditorState={this.setGetEditorState}
               />
               <AuthRoute
                 path={`${match.url}/details`}
@@ -335,15 +324,6 @@ function mapStateToProps(state, props) {
     sync: state.storyCreate.sync,
     backgroundFailures: state.entities.stories.backgroundFailures,
   }
-  
-  // const accessToken = state.session.tokens.find(isAccessToken) || {}
-  // return {
-  //   isPublished: state.storyCreate.isPublished,
-  //   isRepublished: state.storyCreate.isRepublished,
-  //   accessToken: accessToken.value,
-  //   draft: state.storyCreate.draft,
-  //   workingDraft: state.storyCreate.workingDraft,
-  // }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -359,14 +339,8 @@ function mapDispatchToProps(dispatch) {
     publish: (draft) => dispatch(StoryCreateActions.publishLocalDraft(draft)),
     resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
     reroute: (path) => dispatch(push(path)),
-
-    // registerDraft: (draft) => dispatch(StoryCreateActions.registerDraftSuccess(draft)),
-    // loadDraft: (draftId, cachedStory) => dispatch(StoryCreateActions.editStory(draftId, cachedStory)),
     setWorkingDraft: (cachedStory) => dispatch(StoryCreateActions.editStorySuccess(cachedStory)),
-    // discardDraft: (draftId) => dispatch(StoryCreateActions.discardDraft(draftId)),
-    // publish: (draft) => dispatch(StoryCreateActions.publishDraft(draft)),
-    // resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
-    
+
   }
 }
 

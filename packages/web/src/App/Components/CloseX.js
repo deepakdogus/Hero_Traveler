@@ -9,6 +9,7 @@ const Container = styled.div``
 
 const StyledIcon = styled(Icon)`
   align-self: center;
+  cursor: pointer;
 `
 
 export default class CloseX extends React.Component {

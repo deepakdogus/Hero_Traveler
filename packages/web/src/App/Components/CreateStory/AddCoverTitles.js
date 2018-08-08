@@ -38,6 +38,7 @@ const UploadWrapper = styled.label`
   width: 100%;
   margin-left: -30px;
 `
+
 const IconSubTitle = styled(SubTitle)`
   font-weight: 400;
   font-family: ${props => props.theme.Fonts.type.montserrat};
@@ -162,6 +163,7 @@ export default class AddCoverTitles extends React.Component {
   render() {
     const {workingDraft} = this.props
     const coverImage = (workingDraft.coverImage && workingDraft.coverImage.uri) ? workingDraft.coverImage.uri : getImageUrl(workingDraft.coverImage)
+
     return (
       <RelativeWrapper>
         <StoryOverlayWrapper image={coverImage}/>
@@ -172,12 +174,13 @@ export default class AddCoverTitles extends React.Component {
             </IconWrapper>
             <IconSubTitle>
               {coverImage && "+ CHANGE COVER PHOTO"}
-              {!!coverImage && "+ ADD A COVER PHOTO"}
+              {!coverImage && "+ ADD A COVER PHOTO"}
             </IconSubTitle>
             <HiddenInput
               type='file'
               id='cover_upload'
               name='coverImage'
+              accept='image/*, video/*'
               onChange={this._onCoverChange}
             />
           </UploadWrapper>

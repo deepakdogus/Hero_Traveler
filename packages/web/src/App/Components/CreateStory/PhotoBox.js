@@ -33,7 +33,7 @@ export default class PhotoBox extends React.Component {
           <StyledImage src={imageURL}/>
            <CloseXContainer>
             <CloseX onClick={closeImage}/>
-          </CloseXContainer>                              
+          </CloseXContainer>
         </ImageContainer>
         <StyledCaptionInput placeholder={caption || 'Add a caption'}/>
       </Container>

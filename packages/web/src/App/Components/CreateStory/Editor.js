@@ -4,9 +4,12 @@ import {
   EditorState,
   Modifier,
   SelectionState,
+  EditorBlock,
 } from 'draft-js'
+import DraftEditorPlaceholder from 'draft-js/lib/DraftEditorPlaceholder.react'
 import 'draft-js/dist/Draft.css'
 import 'draft-js-side-toolbar-plugin/lib/plugin.css'
+import cx from 'draft-js/node_modules/fbjs/lib/cx'
 import Editor from 'draft-js-plugins-editor'
 import createSideToolbarPlugin from 'draft-js-side-toolbar-plugin'
 import BlockTypeSelect from 'draft-js-side-toolbar-plugin/lib/components/BlockTypeSelect'
@@ -75,7 +78,36 @@ const sideToolbarPlugin = createSideToolbarPlugin({
 
 const { SideToolbar } = sideToolbarPlugin
 
-class MediaComponent extends React.Component {
+class CustomPlaceholder extends DraftEditorPlaceholder {
+  shouldComponentUpdate(nextProps) {
+    return this.props.text !== nextProps.text
+  }
+
+  render() {
+    const className = cx({
+      'public/DraftEditorPlaceholder/root': true,
+      'public/DraftEditorPlaceholder/hasFocus': true,
+    })
+
+    const contentStyle = {
+      whiteSpace: 'pre-wrap',
+    };
+
+    return (
+      <div className={className}>
+        <div
+          className={cx('public/DraftEditorPlaceholder/inner')}
+          id={this.props.accessibilityID}
+          style={contentStyle}>
+          {this.props.text}
+        </div>
+      </div>
+    );
+  }
+}
+
+
+class MediaComponent extends EditorBlock {
   onClickDelete = () => {
     const {key , onClickDelete} = this.props.blockProps
     onClickDelete(key, this.props.block.getLength())
@@ -83,15 +115,14 @@ class MediaComponent extends React.Component {
 
   setErrorState = () => this.setState({error: 'Failed to load asset'})
 
-  render() {
-    let {type, url, text, key} = this.props.blockProps
+  getMediaComponent() {
+    let {type, url, key} = this.props.blockProps
     const imageUrl = url.startsWith('data:')
       ? url
       : getImageUrl(url, 'contentBlock')
     const videoUrl = url.startsWith('data:')
       ? url
       : `${getVideoUrlBase()}/${url}`
-
     switch (type) {
       case 'image':
         return (
@@ -102,9 +133,6 @@ class MediaComponent extends React.Component {
               />
             </CloseXContainer>
             <StyledImage src={imageUrl} />
-            {
-              // <Caption>{displayText}</Caption>
-            }
           </BodyMediaDiv>
         )
       case 'video':
@@ -115,10 +143,31 @@ class MediaComponent extends React.Component {
               withPrettyControls
               onError={this.onClickDelete}
             />
-            <Caption>{text}</Caption>
           </BodyMediaDiv>
         )
     }
+
+  }
+
+  render() {
+    const {offsetKey, direction} = this.props
+    const {text} = this.props.blockProps
+    const className = cx({
+      'public/DraftStyleDefault/block': true,
+      'public/DraftStyleDefault/ltr': direction === 'LTR',
+      'public/DraftStyleDefault/rtl': direction === 'RTL',
+    })
+
+    return (
+      <div
+        data-offset-key={offsetKey}
+        className={className}
+      >
+        {this.getMediaComponent()}
+        {!text && <CustomPlaceholder text='placeholder'/>}
+        {this._renderChildren()}
+      </div>
+    )
   }
 }
 
@@ -259,7 +308,8 @@ export default class BodyEditor extends React.Component {
         text: contentBlock.getText(),
         key: contentBlock.getKey(),
         isFocused: focusKey === blockKey,
-        onClickDelete: this.removeMedia
+        onClickDelete: this.removeMedia,
+        direction: 'LTR',
       }
       contentBlock.getData().mapEntries((entry) => {
         props[entry[0]] = entry[1]
@@ -296,6 +346,7 @@ export default class BodyEditor extends React.Component {
   setEditorRef = (ref) => this.editor = ref
 
   render() {
+
     return (
       <div>
         <Editor

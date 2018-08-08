@@ -196,7 +196,7 @@ export const failure = (state, {error}) =>
     deep: true
   })
 
-  export const updateEntities = (state, {stories = {}}) => {
+export const updateEntities = (state, {stories = {}}) => {
   return state.merge({entities: stories}, {deep: true})
 }
 

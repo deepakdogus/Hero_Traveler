@@ -35,4 +35,4 @@ var customDraftModifier = {
   },
 };
 
-module.exports = customDraftModifier;
+export default customDraftModifier;

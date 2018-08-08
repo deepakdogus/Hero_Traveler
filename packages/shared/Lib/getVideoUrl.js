@@ -8,7 +8,11 @@ export function getVideoUrlBase() {
 
 export function isLocalMediaAsset(asset) {
   return typeof asset === 'string'
-  && (asset.substring(0,7) === 'file://' || asset.substring(0,6) === '/Users')
+  && (
+    asset.substring(0,7) === 'file://'
+    || asset.substring(0,6) === '/Users'
+    || asset.startsWith('data:')
+  )
 }
 
 export function getVideoUrlFromString(video: string, stream = true): ?string {

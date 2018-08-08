@@ -28,5 +28,3 @@ export default function customKeyCommandInsertNewline(editorState, textType) {
   	'split-block'
   )
 }
-
-module.exports = customKeyCommandInsertNewline;

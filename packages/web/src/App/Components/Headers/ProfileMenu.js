@@ -37,6 +37,8 @@ class ProfileMenu extends React.Component{
     attemptLogout: PropTypes.func,
     openSaveEditsModal: PropTypes.func,
     pathname: PropTypes.string,
+    workingDraft: PropTypes.object,
+    draftHasChanged: PropTypes.func,
   }
 
   handleClickOutside = () => {
@@ -48,18 +50,18 @@ class ProfileMenu extends React.Component{
   }
 
   _openSaveEditsModalToProfile = () => {
-    if(!this.props.pathname.includes('editStory')){
+    if (!this.props.pathname.includes('editStory') || !this.props.draftHasChanged()){
       this.rerouteToProfile()
-    }else{
+    } else if (this.props.draftHasChanged()) {
       this.props.openSaveEditsModal(`/profile/${this.props.userId}/view`)
     }
   }
 
   _openSaveEditsModalToLogout = () => {
-    if(!this.props.pathname.includes('editStory')){
+    if (!this.props.pathname.includes('editStory') || !this.props.draftHasChanged()){
       this.handleLogout()
-    }else{
-      
+    } else if (this.props.draftHasChanged()) {
+      this.props.openSaveEditsModal('logout')
     }
   }
 

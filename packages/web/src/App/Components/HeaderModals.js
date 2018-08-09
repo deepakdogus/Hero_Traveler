@@ -86,6 +86,8 @@ export default class HeaderModals extends React.Component {
     reroute: PropTypes.func,
     users: PropTypes.object,
     nextPathAfterSave: PropTypes.string,
+    attemptLogout: PropTypes.func,
+    resetCreateStore: PropTypes.func,
   }
 
   closeGlobalModal = () => {
@@ -95,6 +97,7 @@ export default class HeaderModals extends React.Component {
   render() {
     const {
       globalModalThatIsOpen,
+      closeGlobalModal,
       loginReduxFetching,
       loginReduxError,
       closeModal,
@@ -115,6 +118,8 @@ export default class HeaderModals extends React.Component {
       stories,
       users,
       nextPathAfterSave,
+      attemptLogout,
+      resetCreateStore,
     } = this.props
 
     return (
@@ -163,15 +168,18 @@ export default class HeaderModals extends React.Component {
           <AddToItinerary/>
         </Modal>
         <Modal
-          isOpen={modal=== 'saveEdits'}
+          isOpen={globalModalThatIsOpen === 'saveEdits'}
           contentLabel="Save Edits Modal"
           onRequestClose={closeModal}
           style={customModalStyles}
         >
           <SaveEdits
+            params={globalModalParams}
             reroute={reroute}
             nextPathAfterSave={nextPathAfterSave}
-            closeModal={closeModal}
+            closeModal={closeGlobalModal}
+            attemptLogout={attemptLogout}
+            resetCreateStore={resetCreateStore}
           />
         </Modal>
         <RightModal

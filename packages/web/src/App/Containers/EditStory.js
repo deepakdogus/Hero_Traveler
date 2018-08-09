@@ -9,7 +9,7 @@ import PropTypes from 'prop-types'
 import StoryCreateActions from '../Shared/Redux/StoryCreateRedux'
 import createLocalDraft from '../Shared/Lib/createLocalDraft'
 import AuthRoute from './AuthRoute'
-
+import UXActions from '../Redux/UXRedux'
 import CreateStoryCoverContent from './CreateStory/1_CoverContent'
 import CreateStoryDetails from './CreateStory/2_Details'
 import FooterToolbar from '../Components/CreateStory/FooterToolbar'
@@ -83,6 +83,7 @@ class EditStory extends Component {
     publish: PropTypes.func,
     resetCreateStore: PropTypes.func,
     reroute: PropTypes.func,
+    updateGlobalModalParams: PropTypes.func,
   }
 
   constructor(props){
@@ -121,6 +122,12 @@ class EditStory extends Component {
     // once our draft is loaded be sure to reroute
     if (originalDraft && originalDraft.id && match.isExact) {
       reroute(`/editStory/${originalDraft.id}/cover`)
+    }
+    if(this.props.globalModal.modalName !== 'saveEdits' && nextProps.globalModal.modalName === 'saveEdits'){
+      this.props.updateGlobalModalParams({
+        resetCreateStore: this.props.resetCreateStore,
+        updateDraft: this._updateDraft,
+      })
     }
   }
 
@@ -323,6 +330,7 @@ function mapStateToProps(state, props) {
     workingDraft: state.storyCreate.workingDraft,
     sync: state.storyCreate.sync,
     backgroundFailures: state.entities.stories.backgroundFailures,
+    globalModal: state.ux
   }
 }
 
@@ -340,6 +348,7 @@ function mapDispatchToProps(dispatch) {
     resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
     reroute: (path) => dispatch(push(path)),
     setWorkingDraft: (cachedStory) => dispatch(StoryCreateActions.editStorySuccess(cachedStory)),
+    updateGlobalModalParams: (params) => dispatch(UXActions.updateGlobalModalParams(params))
 
   }
 }

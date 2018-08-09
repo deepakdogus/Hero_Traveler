@@ -8,6 +8,7 @@ import { Grid } from '../Components/FlexboxGrid'
 import HeaderAnonymous from '../Components/Headers/HeaderAnonymous'
 import HeaderLoggedIn from '../Components/Headers/HeaderLoggedIn'
 import LoginActions from '../Shared/Redux/LoginRedux'
+import StoryCreateActions from '../Shared/Redux/StoryCreateRedux'
 import UserActions from '../Shared/Redux/Entities/Users'
 import SessionActions from '../Shared/Redux/SessionRedux'
 import UXActions from '../Redux/UXRedux'
@@ -59,6 +60,9 @@ class Header extends React.Component {
     activitiesById: PropTypes.array,
     activities: PropTypes.object,
     stories: PropTypes.object,
+    originalDraft: PropTypes.object,
+    workingDraft: PropTypes.object,
+    resetCreateStore: PropTypes.func,
     markSeen: PropTypes.func,
     users: PropTypes.object,
     pathname: PropTypes.string,
@@ -106,11 +110,43 @@ class Header extends React.Component {
     this.setState({ modal: 'signup' })
   }
 
+  //to help intercept navigation when we should open SaveEdits Modal
+  hasFieldChanged(field) {
+    return !this.isEqual(this.props.workingDraft[field], this.props.originalDraft[field])
+  }
+
+  draftHasChanged = () => {
+    if(!this.props.workingDraft) return false
+    else {
+      const fieldsToCheck = ['title', 'description', 'coverCaption', 'coverImage', 'coverVideo', 'tripDate', 'location', 'type', 'categories']
+      return !_.every([
+        ...fieldsToCheck.map(field => !this.hasFieldChanged(field)),
+      ])
+    }
+  }
+
+  isEqual = (firstItem, secondItem) => {
+    if (!!firstItem && !secondItem || !firstItem && !!secondItem) {
+      return false
+    } else if (!!firstItem && !!secondItem) {
+      // lodash will take of equality check for all objects
+      return _.isEqual(firstItem, secondItem)
+    } else {
+      return true
+    }
+  }
+
   openSaveEditsModal = (path) => {
-    this.setState({
-      modal: 'saveEdits',
-      nextPathAfterSave: path
-    })
+    if (this.props.workingDraft && this.props.pathname.includes('editStory') && this.draftHasChanged()) {
+      this.setState({
+        nextPathAfterSave: path,
+      })
+      this.props.openGlobalModal('saveEdits')
+    }
+  }
+
+  _resetCreateStore = () => {
+      this.props.resetCreateStore(this.props.originalDraft.id)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -155,7 +191,8 @@ class Header extends React.Component {
       stories,
       markSeen,
       users,
-      pathname
+      pathname,
+      workingDraft,
     } = this.props
 
     const SelectedGrid =
@@ -176,6 +213,9 @@ class Header extends React.Component {
               openGlobalModal={openGlobalModal}
               reroute={reroute}
               attemptLogout={attemptLogout}
+              resetCreateStore={this._resetCreateStore}
+              draftHasChanged={this.draftHasChanged}
+              workingDraft={workingDraft}
             />
           }
           {!isLoggedIn &&
@@ -210,6 +250,7 @@ class Header extends React.Component {
               users={users}
               nextPathAfterSave={this.state.nextPathAfterSave}
               reroute={reroute}
+              resetCreateStore={this._resetCreateStore}
             />
         </SelectedGrid>
         <HeaderSpacer
@@ -242,6 +283,8 @@ function mapStateToProps(state) {
     activities: state.entities.users.activities,
     users: state.entities.users.entities,
     stories: state.entities.stories.entities,
+    originalDraft: state.storyCreate.draft,
+    workingDraft: state.storyCreate.workingDraft,
     pathname: pathname,
   }
 }
@@ -255,7 +298,8 @@ function mapDispatchToProps(dispatch) {
     closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
     reroute: (route) => dispatch(push(route)),
-    attemptUpdateUser: (updates) => dispatch(UserActions.updateUser(updates))
+    attemptUpdateUser: (updates) => dispatch(UserActions.updateUser(updates)),
+    resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
   }
 }
 

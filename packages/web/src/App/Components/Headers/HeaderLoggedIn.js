@@ -57,6 +57,8 @@ class HeaderLoggedIn extends React.Component {
     userId: PropTypes.string,
     attemptLogout: PropTypes.func,
     profileAvatar: PropTypes.object,
+    draftHasChanged: PropTypes.func,
+    workingDraft: PropTypes.object,
   }
 
   state = {
@@ -77,7 +79,9 @@ class HeaderLoggedIn extends React.Component {
       pathname,
       reroute,
       attemptLogout,
-      openSaveEditsModal
+      openSaveEditsModal,
+      draftHasChanged,
+      workingDraft,
     } = this.props
 
     return (
@@ -88,6 +92,8 @@ class HeaderLoggedIn extends React.Component {
             pathname={pathname}
             openSaveEditsModal={openSaveEditsModal}
             isMenuLink={false}
+            draftHasChanged={draftHasChanged}
+            workingDraft={workingDraft}
           >
             <Logo src={logo} alt={'Hero Traveler Logo'}/>
           </ConditionalLink>
@@ -100,6 +106,8 @@ class HeaderLoggedIn extends React.Component {
                 pathname={pathname}
                 openSaveEditsModal={openSaveEditsModal}
                 isMenuLink={true}
+                draftHasChanged={draftHasChanged}
+                workingDraft={workingDraft}
               >
                 My Feed
               </ConditionalLink>
@@ -110,6 +118,8 @@ class HeaderLoggedIn extends React.Component {
                 pathname={pathname}
                 openSaveEditsModal={openSaveEditsModal}
                 isMenuLink={true}
+                draftHasChanged={draftHasChanged}
+                workingDraft={workingDraft}
               >
                 Explore
               </ConditionalLink>
@@ -158,6 +168,8 @@ class HeaderLoggedIn extends React.Component {
                       attemptLogout={attemptLogout}
                       openSaveEditsModal={openSaveEditsModal}
                       pathname={pathname}
+                      workingDraft={workingDraft}
+                      draftHasChanged={draftHasChanged}
                     />
                   }
             </LoggedInDesktopContainer>

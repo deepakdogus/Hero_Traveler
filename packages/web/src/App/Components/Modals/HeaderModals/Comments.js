@@ -43,7 +43,7 @@ class Comments extends Component {
     : createComment(guideId, 'guide', text)
   }
 
-  setBottomDivRef = (ref) => this.BottomDiv = ref
+  setBottomDivRef = (ref) => this.bottomDivRef = ref
 
   renderUserMessageRows(comments) {
     return comments.map((comment, index) => {
@@ -65,14 +65,26 @@ class Comments extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const entityType = this.props.storyId ? 'story' : 'guide'
-    if (nextProps.comments[entityType].length - this.props.comments[entityType].length === 0 && this.BottomDiv) {
-      this.BottomDiv.scrollIntoView({ behavior: "smooth" })
+    const {storyId, comments} = this.props
+    const entityType = storyId ? 'story' : 'guide'
+    if (
+      nextProps.comments[entityType].length - comments[entityType].length === 0
+      && this.bottomDivRef)
+    {
+      this.bottomDivRef.scrollIntoView({ behavior: "smooth" })
     }
   }
 
   render() {
-    let {comments, storyId, guideId} = this.props
+    let {
+      comments,
+      storyId,
+      guideId,
+      createCommentStatus,
+      error,
+      closeModal,
+      sessionUserId,
+    } = this.props
 
     storyId
     ? comments = comments['story'][storyId]
@@ -80,13 +92,13 @@ class Comments extends Component {
 
     return (
       <Container>
-        <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
+        <RightModalCloseX name='closeDark' onClick={closeModal}/>
         <RightTitle>COMMENTS</RightTitle>
         {comments && this.renderUserMessageRows(comments)}
-        {this.props.sessionUserId &&
+        {sessionUserId &&
           <InputRow
             onClick={this._createComment}
-            handlingSubmit={this.props.createCommentStatus.creating && !this.props.error}
+            handlingSubmit={createCommentStatus.creating && !error}
           />
         }
         <div ref={this.setBottomDivRef}/>

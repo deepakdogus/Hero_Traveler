@@ -8,16 +8,13 @@ import Avatar from '../Components/Avatar'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import {Colors} from '../Shared/Themes'
 import styles, { listHeight } from './Styles/CommentsScreenStyles'
-import StoryActions from '../Shared/Redux/Entities/Stories'
-import GuideActions from '../Shared/Redux/Entities/Guides'
 import CommentActions from '../Shared/Redux/Entities/Comments';
 
-
-const Comment = ({avatar, name, comment, timestamp}) => {
+const Comment = ({avatarUrl, name, comment, timestamp}) => {
   return (
     <View style={styles.commentWrapper}>
       <View style={styles.comment}>
-        <Avatar avatarUrl={avatar} size='almostExtraSmall' />
+        <Avatar avatarUrl={avatarUrl} size='almostExtraSmall' />
         <View style={styles.commentTextWrapper}>
           <View style={styles.nameAndTimeStamp}>
             <Text style={styles.commentName}>{name}</Text>
@@ -30,12 +27,17 @@ const Comment = ({avatar, name, comment, timestamp}) => {
   )
 }
 
+Comment.propTypes = {
+  avatarUrl: PropTypes.string,
+  name: PropTypes.string,
+  comment: PropTypes.string,
+  timestamp: PropTypes.string,
+}
+
 class StoryCommentsScreen extends React.Component {
   static propTypes = {
     storyId: PropTypes.string,
     guideId: PropTypes.string,
-    updateStory: PropTypes.func,
-    updateLocalGuide: PropTypes.func,
     user: PropTypes.object,
     comments: PropTypes.object,
     createComment: PropTypes.func,
@@ -71,9 +73,9 @@ class StoryCommentsScreen extends React.Component {
     ? this.props.createComment(this.props.storyId, 'story', this.state.text)
     : this.props.createComment(this.props.guideId, 'guide', this.state.text)
 
-      this.setState({
-        text: '',
-      })
+    this.setState({
+      text: '',
+    })
   }
 
   _setRef = i => this._scrollView = i
@@ -81,8 +83,8 @@ class StoryCommentsScreen extends React.Component {
   _onContentSizeChange = () => {
     let {comments, storyId, guideId} = this.props
     storyId
-    ? comments = comments['story'][storyId]
-    : comments = comments['guide'][guideId]
+    ? comments = comments['story'][storyId] || []
+    : comments = comments['guide'][guideId] || []
 
     if (comments.length > 6) {
       this._scrollView.scrollToEnd({animated: true})
@@ -107,6 +109,7 @@ class StoryCommentsScreen extends React.Component {
 
   render () {
     let {comments, storyId, guideId} = this.props
+    console.log("comments are", comments)
     storyId
     ? comments = comments['story'][storyId]
     : comments = comments['guide'][guideId]
@@ -173,8 +176,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateStory: (story) => dispatch(StoryActions.receiveStories(story)),
-    updateLocalGuide: (guide) => dispatch(GuideActions.receiveGuides(guide)),
     getComments: (feedItemId, entityType) => dispatch(CommentActions.getCommentsRequest(feedItemId, entityType)),
     createComment: (feedItemId, entityType, text) => dispatch(CommentActions.createCommentRequest(feedItemId, entityType, text)),
   }

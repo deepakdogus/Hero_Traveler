@@ -25,19 +25,19 @@ export const INITIAL_STATE = Immutable({
   },
   createCommentStatus: {
     creating: false,
-      },
+  },
   error: null,
 })
 
 /* ------------- Reducers ------------- */
 
 export const getCommentsRequest = (state) => {
-    return state.merge({
-        getCommentsStatus: {
-          fetching: true,
-          loaded: false,
-        }
-      })
+  return state.merge({
+    getCommentsStatus: {
+      fetching: true,
+      loaded: false,
+    }
+  })
 }
 
 export const getCommentsSuccess = (state, {comments=[], feedItemId, entityType}) => {

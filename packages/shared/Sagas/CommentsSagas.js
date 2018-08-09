@@ -3,19 +3,19 @@ import CommentActions from '../Redux/Entities/Comments'
 import StoryActions from '../Redux/Entities/Stories'
 import GuideActions from '../Redux/Entities/Guides'
 
-export function * getComments(api, {feedItemId, entityType}){
+export function * getComments(api, {feedItemId, entityType}) {
   const response = entityType === 'story'
   ? yield call(api.getComments, feedItemId)
   : yield call(api.getGuideComments, feedItemId)
 
-  if(response.ok){
+  if (response.ok) {
     yield put(CommentActions.getCommentsSuccess(response.data, feedItemId, entityType))
-  }else{
+  } else {
     yield put(CommentActions.commentRequestFailure('get', 'Failed to get comments'))
   }
 }
 
-export function * createComment(api, {feedItemId, entityType, text}){
+export function * createComment(api, {feedItemId, entityType, text}) {
   const response = entityType === 'story'
   ? yield call(api.createComment, feedItemId, text)
   : yield call(api.createGuideComment, feedItemId, text)
@@ -24,12 +24,12 @@ export function * createComment(api, {feedItemId, entityType, text}){
   ? StoryActions.changeCountOfType
   : GuideActions.changeCountOfType
 
-  if(response.ok){
+  if (response.ok) {
     yield [
       put(CommentActions.createCommentSuccess(response.data, feedItemId, entityType)),
       put(changeCount(feedItemId, 'comments', true))
     ]
-  }else{
+  } else {
     yield put(CommentActions.commentRequestFailure('get', 'Failed to create comment'))
   }
 }

@@ -148,7 +148,7 @@ export function * likeGuide(api, {guideId, userId}) {
   const [response] = yield [
     call(api.likeGuide, guideId),
     put(UserActions.userGuideLike(userId, guideId)),
-    put(GuideActions.likeGuide(guideId, userId)),
+    put(GuideActions.changeCountOfType(guideId, 'likes', true)),
   ]
 
   // every update is done greedily so we do not need to do anything upon success
@@ -169,7 +169,7 @@ export function * unlikeGuide(api, {guideId, userId}) {
   const [response] = yield [
     call(api.unlikeGuide, guideId),
     put(UserActions.userGuideUnlike(userId, guideId)),
-    put(GuideActions.unlikeGuide(guideId, userId)),
+    put(GuideActions.changeCountOfType(guideId, 'likes', false)),
   ]
 
   // every update is done greedily so we do not need to do anything upon success

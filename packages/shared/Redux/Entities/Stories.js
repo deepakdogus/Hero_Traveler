@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
+import changeCountOfType from '../helpers/changeCountOfTypeHelper'
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -24,12 +25,11 @@ const { Types, Creators } = createActions({
   addBackgroundFailure: ['story', 'error', 'failedMethod'],
   removeBackgroundFailure: ['storyId'],
   setRetryingBackgroundFailure: ['storyId'],
-  changeCountOfType: ['storyId', 'countType', 'isIncrement'],
+  changeCountOfType: ['feedItemId', 'countType', 'isIncrement'],
   storyLike: ['userId', 'storyId'],
   flagStory: ['userId', 'storyId'],
-  // storyLikeFailure: ['storyId', 'wasLiked'],
+  toggleBookmark: ['storyId', 'wasLiked'],
   storyBookmark: ['userId', 'storyId'],
-  // storyBookmarkFailure: ['storyId', 'wasLiked'],
   getBookmarks: ['userId'],
   getBookmarksSuccess: ['userId', 'bookmarks'],
   getBookmarksFailure: ['userId', 'error'],
@@ -195,35 +195,6 @@ export const failure = (state, {error}) =>
   }, {
     deep: true
   })
-
-const changeCountOfType = (state, {storyId, countType, isIncrement }) => {
-  console.log('countType', countType)
-  console.log('isIncrement', isIncrement)
-  if(countType === 'comments') isIncrement = !isIncrement
-  const currentNumCountOfType = _.get(state, `entities.${storyId}.counts.${countType}`, 0)
-  return state.setIn(
-    ['entities', storyId, 'counts', countType],
-    !isIncrement ? currentNumCountOfType + 1 : currentNumCountOfType - 1
-  )
-}
-
-// // Revert the optimistic update on like failure
-// const storyLikeFailure = (state, {storyId, wasLiked}) => {
-//   const numOfLikes = _.get(state, `entities.${storyId}.counts.likes`, 0)
-//   return state.setIn(
-//     ['entities', storyId, 'counts', 'likes'],
-//     !wasLiked ? numOfLikes - 1 : numOfLikes + 1
-//   )
-// }
-
-// // Revert the optimistic update on bookmark failure
-// const storyBookmarkFailure = (state, {storyId, wasLiked}) => {
-//   const numOfLikes = _.get(state, `entities.${storyId}.counts.bookmarks`, 0)
-//   return state.setIn(
-//     ['entities', storyId, 'counts', 'bookmarks'],
-//     !wasLiked ? numOfLikes - 1 : numOfLikes + 1
-//   )
-// }
 
 export const updateEntities = (state, {stories = {}}) => {
   return state.merge({entities: stories}, {deep: true})

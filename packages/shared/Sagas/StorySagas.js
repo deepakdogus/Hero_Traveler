@@ -367,7 +367,7 @@ export function * likeStory(api, {userId, storyId}) {
 
   yield [
     put(UserActions.userToggleLike(userId, storyId)),
-    put(StoryActions.changeCountOfType(storyId, 'likes', wasLiked,)),
+    put(StoryActions.changeCountOfType(storyId, 'likes' , !wasLiked)),
   ]
 
   if (!response.ok) {
@@ -400,7 +400,8 @@ export function * bookmarkStory(api, {userId, storyId}) {
 
   yield [
     put(UserActions.userToggleBookmark(userId, storyId)),
-    put(StoryActions.changeCountOfType(storyId, 'bookmarks', wasBookmarked))
+    put(StoryActions.changeCountOfType(storyId, 'bookmarks', !wasBookmarked)),
+
   ]
 
   if (!response.ok) {

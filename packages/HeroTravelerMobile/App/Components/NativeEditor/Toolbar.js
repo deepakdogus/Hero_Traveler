@@ -2,14 +2,13 @@ import React from 'react'
 import {
   TouchableOpacity,
   View,
-  Text,
   StyleSheet
 } from 'react-native'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import TabIcon from '../TabIcon'
 import {Colors, Metrics} from '../../Shared/Themes'
-import * as DJSConsts from './libs/draft-js/constants'
+import * as DJSConsts from '../../Shared/Lib/draft-js-helpers/constants'
 
 const ToolbarIcon = ({name, color, isTabIcon, extraStyle = {}}) => {
   return (

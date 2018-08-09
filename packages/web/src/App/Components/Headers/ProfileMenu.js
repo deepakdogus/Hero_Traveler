@@ -12,6 +12,7 @@ const Sidebar = styled.div`
   padding: 20px 0px 20px 40px;
   animation-name: fadeIn;
   animation-duration: .3s;
+
   overflow: hidden;
 `
 
@@ -64,7 +65,6 @@ class ProfileMenu extends React.Component{
       this.props.openSaveEditsModal('logout')
     }
   }
-
   rerouteToCustomizeInterests = () => {
     this.rerouteAndClose('/signup/topics')
   }

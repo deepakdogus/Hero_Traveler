@@ -367,13 +367,12 @@ export function * likeStory(api, {userId, storyId}) {
 
   yield [
     put(UserActions.userToggleLike(userId, storyId)),
-    put(StoryActions.toggleLike(storyId, wasLiked)),
+    put(StoryActions.changeCountOfType(storyId, 'likes' , !wasLiked)),
   ]
 
   if (!response.ok) {
     yield [
       put(UserActions.userToggleLike(userId, storyId)),
-      put(StoryActions.toggleLike(storyId, !wasLiked)),
     ]
   }
 }
@@ -391,7 +390,7 @@ export function * flagStory(api, {userId, storyId}) {
 }
 
 export function * bookmarkStory(api, {userId, storyId}) {
-  const [wasLiked, response] = yield [
+  const [wasBookmarked, response] = yield [
     select(isStoryBookmarkedSelector, userId, storyId),
     call(
       api.bookmarkStory,
@@ -401,13 +400,13 @@ export function * bookmarkStory(api, {userId, storyId}) {
 
   yield [
     put(UserActions.userToggleBookmark(userId, storyId)),
-    put(StoryActions.toggleBookmark(storyId, wasLiked))
+    put(StoryActions.changeCountOfType(storyId, 'bookmarks', !wasBookmarked)),
+
   ]
 
   if (!response.ok) {
     yield [
       put(UserActions.userToggleBookmark(userId, storyId)),
-      put(StoryActions.toggleBookmark(storyId, !wasLiked))
     ]
   }
 }

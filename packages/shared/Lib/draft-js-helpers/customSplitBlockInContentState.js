@@ -13,8 +13,8 @@
 
 'use strict';
 
-var Immutable = require('immutable');
 import {genKey} from '.'
+var Immutable = require('immutable');
 
 var invariant = require('fbjs/lib/invariant');
 
@@ -68,4 +68,4 @@ function customSplitBlockInContentState(contentState, selectionState, textType) 
   });
 }
 
-module.exports = customSplitBlockInContentState;
+export default customSplitBlockInContentState;

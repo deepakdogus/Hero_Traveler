@@ -38,7 +38,6 @@ const StyledRoundedAvatarButton = styled(RoundedButton)`
 const StyledRoundedCreateButton = styled(RoundedButton)`
     position: relative;
     bottom: 7px;
-
 `
 
 const StyledRoundedNotificationButton = styled(StyledRoundedButton)`
@@ -59,6 +58,7 @@ class HeaderLoggedIn extends React.Component {
     profileAvatar: PropTypes.object,
     draftHasChanged: PropTypes.func,
     workingDraft: PropTypes.object,
+
   }
 
   state = {
@@ -69,8 +69,9 @@ class HeaderLoggedIn extends React.Component {
     this.setState({profileMenuIsOpen: !this.state.profileMenuIsOpen})
   }
 
-  render () {
+  toggleProfileMenu = () => this.setState({profileMenuIsOpen: !this.state.profileMenuIsOpen})
 
+  render () {
     const {
       openModal,
       openGlobalModal,

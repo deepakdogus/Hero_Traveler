@@ -19,7 +19,7 @@ import {
 import {
   convertFromRaw,
   convertToRaw,
-} from './editorHelpers/draft-js'
+} from '../../Shared/Lib/draft-js-helpers'
 import './Styles/EditorStyles.css'
 import {
   AddImageButton,

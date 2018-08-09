@@ -13,6 +13,10 @@ const Container = styled.div`
   bottom: 0;
 `
 
+const FormContainer = styled.form`
+  margin-right: 2%;
+`
+
 const InputFooter = styled.div`
   background-color: ${props => props.theme.Colors.lightGreyAreas};
   margin: 0;
@@ -36,7 +40,6 @@ const StyledFooterInput = styled.input`
   padding: 6px 12px;
   font-size: 18px;
   outline: none;
-  margin-right: 2%;
 `
 
 
@@ -58,6 +61,12 @@ export default class InputRow extends Component {
     if (this.state.inputValue) this.props.onClick(this.state.inputValue)
   }
 
+  _onSend = (e) => {
+    //sends comment on 'enter' keydown
+    e.preventDefault()
+    if(this.state.inputValue) this.props.onClick(this.state.inputValue)
+  }
+
   onChangeText = (event) => {
     this.setState({ inputValue: event.target.value })
   }
@@ -74,18 +83,20 @@ export default class InputRow extends Component {
         <InputFooter>
           <VerticalCenter>
             <Row>
-              <StyledFooterInput
-                value={this.state.inputValue}
-                placeholder='Add a comment...'
-                onChange={this.onChangeText}
-              />
-              <RoundedButton
-                text='Send'
-                margin='none'
-                width='94px'
-                padding='medium'
-                onClick={this.onSend}
-              />
+              <FormContainer onSubmit={this._onSend}>
+                <StyledFooterInput
+                  value={this.state.inputValue}
+                  placeholder='Add a comment...'
+                  onChange={this.onChangeText}
+                />
+              </FormContainer>
+                <RoundedButton
+                  text='Send'
+                  margin='none'
+                  width='94px'
+                  padding='medium'
+                  onClick={this.onSend}
+                />
             </Row>
           </VerticalCenter>
         </InputFooter>

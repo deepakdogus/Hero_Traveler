@@ -9,7 +9,7 @@ export default function createGuideComment(req) {
   const {content} = req.body
   return Comment.create({
     guide: guideId,
-    user: userId,
+    user: commentator,
     content
   })
   .then(({updatedModel, comment}) => {
@@ -22,6 +22,6 @@ export default function createGuideComment(req) {
         guideCommentNotification(author, commentator, updatedModel);
       })
     }
-    Promise.resolve(comment);
+    return Promise.resolve(comment);
   });
 }

@@ -9,7 +9,7 @@ export default function createComment(req) {
   const {content} = req.body
   return Comment.create({
     story: storyId,
-    user: userId,
+    user: commentator,
     content
   })
   .then(({updatedModel, comment}) => {
@@ -22,6 +22,6 @@ export default function createComment(req) {
         commentNotification(author, commentator, updatedModel);
       })
     }
-    Promise.resolve(comment);
+    return Promise.resolve(comment);
   });
 }

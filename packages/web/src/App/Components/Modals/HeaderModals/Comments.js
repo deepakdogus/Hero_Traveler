@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import StoryCommentsActions from '../../../Shared/Redux/Entities/StoryComments'
+import CommentActions from '../../../Shared/Redux/Entities/Comments'
 
 import MessageRow from '../../MessageRow'
 import InputRow from '../../InputRow'
@@ -19,6 +19,8 @@ class Comments extends Component {
     closeModal: PropTypes.func,
     sessionUserId: PropTypes.string,
     users: PropTypes.object,
+    storyId: PropTypes.string,
+    guideId: PropTypes.string,
     comments: PropTypes.arrayOf(PropTypes.object),
     getCommentsStatus: PropTypes.object,
     createCommentStatus: PropTypes.object,
@@ -28,14 +30,20 @@ class Comments extends Component {
   }
 
   componentDidMount() {
-    this.props.getComments()
+    const {storyId, guideId, getComments} = this.props
+    storyId
+    ? getComments(storyId, 'story')
+    : getComments(guideId, 'guide')
   }
 
   _createComment = (text) => {
-    this.props.createComment(text)
+    const {storyId, guideId, createComment} = this.props
+    storyId
+    ? createComment(storyId, 'story', text)
+    : createComment(guideId, 'guide', text)
   }
 
-  setBottomDivRef = (ref) => this.BottomDiv = ref
+  setBottomDivRef = (ref) => this.bottomDivRef = ref
 
   renderUserMessageRows(comments) {
     return comments.map((comment, index) => {
@@ -57,23 +65,40 @@ class Comments extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.comments.length - this.props.comments.length === 0 && this.BottomDiv) {
-      this.BottomDiv.scrollIntoView({ behavior: "smooth" })
+    const {storyId, comments} = this.props
+    const entityType = storyId ? 'story' : 'guide'
+    if (
+      nextProps.comments[entityType].length - comments[entityType].length === 0
+      && this.bottomDivRef)
+    {
+      this.bottomDivRef.scrollIntoView({ behavior: "smooth" })
     }
   }
 
   render() {
-    const {comments} = this.props
+    let {
+      comments,
+      storyId,
+      guideId,
+      createCommentStatus,
+      error,
+      closeModal,
+      sessionUserId,
+    } = this.props
+
+    storyId
+    ? comments = comments['story'][storyId]
+    : comments = comments['guide'][guideId]
 
     return (
       <Container>
-        <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
+        <RightModalCloseX name='closeDark' onClick={closeModal}/>
         <RightTitle>COMMENTS</RightTitle>
-        {this.renderUserMessageRows(comments)}
-        {this.props.sessionUserId &&
+        {comments && this.renderUserMessageRows(comments)}
+        {sessionUserId &&
           <InputRow
             onClick={this._createComment}
-            handlingSubmit={this.props.createCommentStatus.creating && !this.props.error}
+            handlingSubmit={createCommentStatus.creating && !error}
           />
         }
         <div ref={this.setBottomDivRef}/>
@@ -82,19 +107,20 @@ class Comments extends Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   const sessionUserId = state.session.userId
   return {
-    ...state.entities.storyComments,
+    ...state.entities.comments,
     sessionUserId,
     users: state.entities.users.entities,
+    comments: state.entities.comments
   }
 }
 
-function mapDispatchToProps(dispatch, ownProps) {
+function mapDispatchToProps(dispatch) {
   return {
-    getComments: () => dispatch(StoryCommentsActions.getCommentsRequest(ownProps.storyId)),
-    createComment: (text) => dispatch(StoryCommentsActions.createCommentRequest(ownProps.storyId, text)),
+    getComments: (feedItemId, entityType) => dispatch(CommentActions.getCommentsRequest(feedItemId, entityType)),
+    createComment: (feedItemId, entityType, text) => dispatch(CommentActions.createCommentRequest(feedItemId, entityType, text)),
   }
 }
 

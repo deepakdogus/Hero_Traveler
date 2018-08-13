@@ -1,13 +1,11 @@
-export function displayLocation(locationInfo = {}) {
+export function displayLocationWeb(locationInfo = {}) {
   const {name, locality, state, country} = locationInfo
   const locationArray = []
 
   if (name) locationArray.push(name)
-  if (country === 'United States') {
-    if (state) locationArray.push(state)
-    else if (locality) locationArray.push(locality)
-  }
-  else if (country) locationArray.push(country)
+  if (locality && locality !== name) locationArray.push(locality)
+  if (state && state !== locality) locationArray.push(state)
+  if (country) locationArray.push(country)
   return locationArray.join(', ')
 }
 
@@ -21,6 +19,6 @@ export function displayLocationDetails(locationInfo = {}) {
 }
 
 export default {
-  displayLocation,
+  displayLocationWeb,
   displayLocationDetails,
 }

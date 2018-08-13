@@ -136,6 +136,7 @@ export default class StoryDetails extends React.Component {
       day: '',
       categoryInputText: '',
       categoriesList,
+      address: this.props.workingDraft.locationInfo.name || ''
     };
   }
 
@@ -143,6 +144,16 @@ export default class StoryDetails extends React.Component {
     if (Object.keys(this.props.categories).length !== Object.keys(nextProps.categories).length && nextProps.workingDraft){
       const categoriesList = formatCategories(nextProps.categories)
       this.updateCategoriesList(_.differenceWith(categoriesList, nextProps.workingDraft.categories, isSameTag))
+    }
+  }
+
+  handleLocationSelect = (addressObj) => {
+    const {location, locationInfo} = addressObj
+    if (!location && locationInfo) {
+      this.setState({address: locationInfo.name})
+      this.props.onInputChange({locationInfo: locationInfo})
+    } else {
+      this.setState({address: location})
     }
   }
 
@@ -215,7 +226,7 @@ export default class StoryDetails extends React.Component {
   }
 
   render() {
-    const {workingDraft, onInputChange } = this.props
+    const {workingDraft} = this.props
     const {showDayPicker, showCategoryPicker, categoriesList} = this.state
 
     // normally this only happens when you just published a draft
@@ -228,8 +239,8 @@ export default class StoryDetails extends React.Component {
         <InputRowContainer>
           <LocationIcon name='location'/>
           <GoogleLocator
-            onChange={onInputChange}
-            address={workingDraft.location}
+            onChange={this.handleLocationSelect}
+            address={this.state.address}
           />
         </InputRowContainer>
         <HorizontalDivider color='lighter-grey' opaque/>

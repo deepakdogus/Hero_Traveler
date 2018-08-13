@@ -14,17 +14,15 @@ import Loader from '../Components/Loader'
 import { connect } from 'react-redux'
 import {Colors} from '../Shared/Themes'
 import styles from './Styles/ChangePasswordScreenStyles'
-import HeroAPI from '../Shared/Services/HeroAPI'
 import LoginActions from '../Shared/Redux/LoginRedux'
-import { Actions as NavigationActions } from 'react-native-router-flux'
-
-const api = HeroAPI.create()
 
 class ChangePasswordScreen extends React.Component {
 
   static propTypes = {
     accessToken: PropTypes.string.isRequired,
     userId: PropTypes.string.isRequired,
+    changePassword: PropTypes.func.isRequired,
+    passwordError: PropTypes.object,
   }
 
   constructor(props) {
@@ -36,22 +34,23 @@ class ChangePasswordScreen extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps){
+    if(!prevProps.passwordError && this.props.passwordError){
+      this.setState({validationError: this.props.passwordError.message})
+    }
+    //removes validation error if you previously failed, then succeeded in changing password
+    if(prevProps.passwordError && !this.props.passwordError){
+      this.setState({validationError: ''})
+    }
+  }
+
   _handleSubmit = () => {
     if (this.state.newText.length < 8 || this.state.newText.length > 64) {
-      this.setState({validationError: 'password must be between 8 and 64 characters long'})
-      return
+       this.setState({validationError: 'password must be between 8 and 64 characters long'})
+       return
+    } else {
+      this.props.changePassword(this.props.userId, this.state.currentText, this.state.newText)
     }
-    return api.setAuth(this.props.accessToken)
-    .then(() => {
-      return api.changePassword(this.props.userId, this.state.currentText, this.state.newText)
-      .then((res) => {
-        if (!res.ok) this.setState({validationError: 'We were unable to reset your password. Please verify your old password is correct.'})
-        else {
-          NavigationActions.pop()
-          alert("Password changed!")
-        }
-      })
-    })
   }
 
   _setText = (currentText) => this.setState({currentText})
@@ -72,6 +71,7 @@ class ChangePasswordScreen extends React.Component {
               autoCapitalize='none'
               onChangeText={this._setText}
               autoCorrect={false}
+              secureTextEntry={true}
             />
           </View>
         <View style={styles.separator} />
@@ -85,6 +85,7 @@ class ChangePasswordScreen extends React.Component {
               autoCapitalize='none'
               onChangeText={this._setNewText}
               autoCorrect={false}
+              secureTextEntry={true}
             />
           </View>
         <View style={styles.separator}>
@@ -121,12 +122,13 @@ const mapStateToProps = (state) => {
   return {
     userId: state.session.userId,
     accessToken: _.find(state.session.tokens, {type: 'access'}).value,
+    passwordError: state.login.error
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    changePassword: (userId, password) => dispatch(LoginActions.changePassword(userId, password))
+    changePassword: (userId, oldPassword, newPassword) => dispatch(LoginActions.changePasswordRequest(userId, oldPassword, newPassword))
   }
 }
 

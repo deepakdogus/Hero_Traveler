@@ -115,6 +115,12 @@ class EditStory extends Component {
     }
   }
 
+  componentDidUpdate(){
+    if(this.props.sync.message === 'Publish Success'){
+      this.props.reroute('/feed')
+    }
+  }
+
   hasPublished(nextProps){
     return (!this.props.isPublished && nextProps.isPublished) ||
     (!this.props.isRepublished && nextProps.isRepublished)

@@ -63,7 +63,8 @@ export const publishSuccess = (state, {draft}) => {
     error: null,
     draft: null,
     sync: {
-      syncProgress: state.sync.syncProgressSteps
+      syncProgress: state.sync.syncProgressSteps,
+      message: 'Publish Success',
     }
   }, {deep: true})
 }

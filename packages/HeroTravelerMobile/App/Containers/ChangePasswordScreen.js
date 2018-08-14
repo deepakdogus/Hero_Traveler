@@ -23,6 +23,7 @@ class ChangePasswordScreen extends React.Component {
     userId: PropTypes.string.isRequired,
     changePassword: PropTypes.func.isRequired,
     passwordError: PropTypes.object,
+    isFetching: PropTypes.bool
   }
 
   constructor(props) {
@@ -35,12 +36,17 @@ class ChangePasswordScreen extends React.Component {
   }
 
   componentDidUpdate(prevProps){
-    if(!prevProps.passwordError && this.props.passwordError){
+    if (!prevProps.passwordError && this.props.passwordError) {
       this.setState({validationError: this.props.passwordError.message})
     }
     //removes validation error if you previously failed, then succeeded in changing password
-    if(prevProps.passwordError && !this.props.passwordError){
+    if (prevProps.passwordError && !this.props.passwordError) {
       this.setState({validationError: ''})
+    }
+    //upon succesfully changing password
+    if (prevProps.isFetching && (!this.props.isFetching && !this.props.passwordError)) {
+      NavActions.pop()
+      alert('Your password has been successfully changed')
     }
   }
 
@@ -122,7 +128,8 @@ const mapStateToProps = (state) => {
   return {
     userId: state.session.userId,
     accessToken: _.find(state.session.tokens, {type: 'access'}).value,
-    passwordError: state.login.error
+    passwordError: state.login.error,
+    isFetching: state.login.fetching,
   }
 }
 

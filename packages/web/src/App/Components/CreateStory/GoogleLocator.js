@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
+import PlacesAutocomplete from 'react-places-autocomplete'
 import PropTypes from 'prop-types'
-import formatLocationWeb from '../../Shared/Lib/formatLocationWeb'
+import { formatLocationWeb } from '../../Shared/Lib/formatLocation'
+
 
 import HorizontalDivider from '../HorizontalDivider'
 import './Styles/GoogleLocatorStyles.css';
@@ -85,37 +86,9 @@ class GoogleLocator extends React.Component {
     onChange: PropTypes.func,
   }
 
-
-  formatLocationInfo =(result) => {
-    const addressComponents = {}
-    result.address_components.forEach(component => {
-      if (component.types) component.types.forEach(type => {
-        if (type !== 'political') addressComponents[type] = component.long_name
-      })
-    })
-    return {
-      name: result.name,
-      locality: addressComponents.sublocality_level_1 || addressComponents.locality,
-      state: addressComponents.administrative_area_level_1,
-      formattedAdress: result.formatted_address,
-      country: addressComponents.country,
-    }
-  }
-
-  handleSelect = (event) => {
-    let locationUpdate;
-    geocodeByAddress(event)
-    .then(results => {
-      locationUpdate = formatLocationWeb(results[0])
-      locationUpdate.name = event.split(',')[0]
-      return getLatLng(results[0])
-    })
-    .then(latLng => {
-      locationUpdate.latitude = latLng.lat
-      locationUpdate.longitude = latLng.lng
-      this.props.onChange({locationInfo: locationUpdate})
-    })
-    .catch(error => console.error('Error', error))
+  handleSelect = async (event) => {
+    let locationInfo  = await formatLocationWeb(event)
+    this.props.onChange({locationInfo: locationInfo})
   }
 
   onChange = (address) => this.props.onChange({ location: address })

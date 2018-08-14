@@ -61,6 +61,7 @@ const StyledIcon = styled(Icon)`
   height: 40px;
   width: 40px;
   margin-top: 10px;
+  cursor: pointer;
 `
 
 const IconWrapper = styled.div`
@@ -75,7 +76,7 @@ const HiddenInput = styled.input`
   height: 0;
 `
 
-const StyledInput = styled(Input)`;
+const StyledInput = styled(Input)`
   color: ${props => props.theme.Colors.grey};
   ::placeholder {
     color: ${props => props.theme.Colors.grey};

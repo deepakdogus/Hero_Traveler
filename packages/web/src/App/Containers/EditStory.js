@@ -74,6 +74,8 @@ class EditStory extends Component {
     publish: PropTypes.func,
     resetCreateStore: PropTypes.func,
     reroute: PropTypes.func,
+    syncProgressSteps: PropTypes.number,
+    syncProgress: PropTypes.number,
   }
 
   constructor(props){
@@ -112,6 +114,13 @@ class EditStory extends Component {
     // once our draft is loaded be sure to reroute
     if (originalDraft && originalDraft.id && match.isExact) {
       reroute(`/editStory/${originalDraft.id}/cover`)
+    }
+  }
+
+  componentDidUpdate(){
+    if (this.props.syncProgress > 0 && this.props.syncProgressSteps === this.props.syncProgress) {
+      this.props.reroute('/feed')
+      this.props.resetCreateStore()
     }
   }
 
@@ -312,7 +321,8 @@ function mapStateToProps(state, props) {
     subPath: getSubPath(state.routes.location),
     originalDraft: state.storyCreate.draft,
     workingDraft: state.storyCreate.workingDraft,
-    sync: state.storyCreate.sync,
+    syncProgress: state.storyCreate.sync.syncProgress,
+    syncProgressSteps: state.storyCreate.sync.syncProgressSteps,
     backgroundFailures: state.entities.stories.backgroundFailures,
   }
 }

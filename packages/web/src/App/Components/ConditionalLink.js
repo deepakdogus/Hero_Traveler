@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import {MenuLink} from './Headers/Shared'
 
 const Container = styled.div`
-  maring: 0;
+  margin: 0;
   padding: 0;
 `
 
@@ -54,57 +54,42 @@ export default class ConditionalLink extends React.Component{
   }
 
   //helper function to clean up logic regarding rendering appropriate link, logo, or openSaveEdits link
-  linkOrOpenSaveEdits = (navLinkType, isLogo) => {
+  getShouldOpenSaveEditsModal = (isMenuLink) => {
     const {pathname, draftHasChanged} = this.props
-    if (isLogo) navLinkType = !navLinkType
-    return pathname.includes('editStory') && navLinkType && (pathname.includes('editStory') && draftHasChanged())
+    return pathname.includes('editStory')
+    && isMenuLink
+    && (pathname.includes('editStory')
+    && draftHasChanged())
   }
 
   _renderOpenSaveEditsMenuLinkContainer = () => {
+    const ChildrenWrapper = this.props.isMenuLink ? ShouldEditLink : ShouldEditLogo
     return (
       <Container onClick={this._handleOpenSaveEditsModal} style={{cursor: 'pointer'}}>
-        <ShouldEditLink>
+        <ChildrenWrapper>
           {this.props.children}
-        </ShouldEditLink>
+        </ChildrenWrapper>
       </Container>
     )
   }
 
-  _renderOpenSaveEditsLogoContainer = () => {
+  getLink() {
+    const {isMenuLink} = this.props
+    if (this.getShouldOpenSaveEditsModal(isMenuLink)) {
+      return this._renderOpenSaveEditsMenuLinkContainer()
+    }
+    const ChosenLink = this.props.isMenuLink ? MenuLink : Link
     return (
-      <Container onClick={this._handleOpenSaveEditsModal} style={{cursor: 'pointer'}}>
-        <ShouldEditLogo>
-          {this.props.children}
-        </ShouldEditLogo>
-      </Container>
+      <ChosenLink to={to}>
+        {this.props.children}
+      </ChosenLink>
     )
   }
 
   render(){
-    const { to } = this.props
-
-    //logic for My Feed and Explore Menu Links
-    const menulinkOrSaveEdit = this.linkOrOpenSaveEdits(this.props.isMenuLink)
-    ? this._renderOpenSaveEditsMenuLinkContainer()
-    : <MenuLink to={to} exact>
-        {this.props.children}
-      </MenuLink>
-
-    // Logic for Hero traveler Logo Link
-    const logoOrSaveEdit = this.linkOrOpenSaveEdits(this.props.isMenuLink, true)
-    ? this._renderOpenSaveEditsLogoContainer()
-    : <Link to={to}>
-        {this.props.children}
-      </Link>
-
-    ///Are we rendering Link or Menu Link
-    const link = this.props.isMenuLink
-    ? menulinkOrSaveEdit
-    : logoOrSaveEdit
-
     return(
       <Container>
-        {link}
+        {this.getLink()}
       </Container>
     )
   }

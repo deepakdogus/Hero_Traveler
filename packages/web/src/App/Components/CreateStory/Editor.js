@@ -29,6 +29,7 @@ import MediaComponent from './EditorMediaComponent'
 
 const EditorWrapper = styled.div`
   margin-bottom: 95px;
+  margin-top: 20px;
 `
 
 const CustomBlockTypeSelect = ({ getEditorState, setEditorState, theme }) => (

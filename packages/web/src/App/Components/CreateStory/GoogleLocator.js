@@ -106,7 +106,7 @@ class GoogleLocator extends React.Component {
         <StyledAddress>{ formattedSuggestion.secondaryText }</StyledAddress>
         <StyledHorizontalDivider color='lighter-grey' opaque/>
       </div>
-      )
+    )
 
     return (
       <Container>

@@ -11,7 +11,7 @@ export default function formatLocation(place) {
   }
 }
 
-export async function formatLocationWeb (place, geocodeByAddress, getLatLng) {
+export async function formatLocationWeb(place, geocodeByAddress, getLatLng) {
   const geocode = await geocodeByAddress(place)
   const result = await extractWeb(geocode[0], getLatLng)
   return {
@@ -25,7 +25,7 @@ export async function formatLocationWeb (place, geocodeByAddress, getLatLng) {
   }
 }
 
-async function extractWeb (place, getLatLng) {
+async function extractWeb(place, getLatLng) {
   const addressComponents = {}
   place.address_components.forEach(component => {
     if (component.types) component.types.forEach(type => {

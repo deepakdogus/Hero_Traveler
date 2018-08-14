@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import PlacesAutocomplete from 'react-places-autocomplete'
+import PlacesAutocomplete, {getLatLng, geocodeByAddress} from 'react-places-autocomplete'
 import PropTypes from 'prop-types'
 import { formatLocationWeb } from '../../Shared/Lib/formatLocation'
 
@@ -87,7 +87,7 @@ class GoogleLocator extends React.Component {
   }
 
   handleSelect = async (event) => {
-    let locationInfo  = await formatLocationWeb(event)
+    let locationInfo  = await formatLocationWeb(event, geocodeByAddress, getLatLng)
     this.props.onChange({locationInfo: locationInfo})
   }
 

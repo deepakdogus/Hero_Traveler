@@ -136,7 +136,7 @@ export default class StoryDetails extends React.Component {
       day: '',
       categoryInputText: '',
       categoriesList,
-      address: this.props.workingDraft.locationInfo.name || ''
+      address: _.get(this.props.workingDraft, ['locationInfo', 'name'], '')
     };
   }
 

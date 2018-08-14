@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 
 export default function formatLocation(place) {
   return {
@@ -12,19 +11,21 @@ export default function formatLocation(place) {
   }
 }
 
-export async function formatLocationWeb (place) {
+export async function formatLocationWeb (place, geocodeByAddress, getLatLng) {
   const geocode = await geocodeByAddress(place)
-  const result = await extractWeb(geocode[0])
+  const result = await extractWeb(geocode[0], getLatLng)
   return {
     name: place.split(',')[0],
     locality: result.sublocality_level_1 || result.locality,
     state: result.administrative_area_level_1,
     formattedAdress: geocode[0].formatted_address,
     country: result.country,
+    latitude: result.latitude,
+    longitude: result.longitude,
   }
 }
 
-async function extractWeb (place) {
+async function extractWeb (place, getLatLng) {
   const addressComponents = {}
   place.address_components.forEach(component => {
     if (component.types) component.types.forEach(type => {

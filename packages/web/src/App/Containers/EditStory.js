@@ -244,7 +244,7 @@ class EditStory extends Component {
     const {workingDraft, publish} = this.props
     if (!workingDraft.type) {
       this.setValidationErrorState('Please include an activity')
-    } else if (!workingDraft.location) {
+    } else if (!_.get(workingDraft, 'locationInfo.name')) {
       this.setValidationErrorState('Please include a location')
     } else if (workingDraft.draft) {
       publish(this.cleanDraft(workingDraft))

@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
+import PlacesAutocomplete, {getLatLng, geocodeByAddress} from 'react-places-autocomplete'
 import PropTypes from 'prop-types'
+import { formatLocationWeb } from '../../Shared/Lib/formatLocation'
+
 
 import HorizontalDivider from '../HorizontalDivider'
 import './Styles/GoogleLocatorStyles.css';
@@ -84,18 +86,9 @@ class GoogleLocator extends React.Component {
     onChange: PropTypes.func,
   }
 
-  handleSelect = (event) => {
-    const locationUpdate = {
-      name: event.split(',')[0]
-    }
-    geocodeByAddress(event)
-    .then(results => getLatLng(results[0]))
-    .then(latLng => {
-      locationUpdate.latitude = latLng.lat
-      locationUpdate.longitude = latLng.lng
-      this.props.onChange({locationInfo: locationUpdate})
-    })
-    .catch(error => console.error('Error', error))
+  handleSelect = async (event) => {
+    let locationInfo  = await formatLocationWeb(event, geocodeByAddress, getLatLng)
+    this.props.onChange({locationInfo: locationInfo})
   }
 
   onChange = (address) => this.props.onChange({ location: address })
@@ -113,7 +106,7 @@ class GoogleLocator extends React.Component {
         <StyledAddress>{ formattedSuggestion.secondaryText }</StyledAddress>
         <StyledHorizontalDivider color='lighter-grey' opaque/>
       </div>
-      )
+    )
 
     return (
       <Container>

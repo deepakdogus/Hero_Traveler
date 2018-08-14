@@ -11,7 +11,7 @@ const Sidebar = styled.div`
   box-shadow: 3px 3px 5px -1px ${props => props.theme.Colors.background};
   padding: 20px 0px 20px 40px;
   animation-name: fadeIn;
-  animation-duration: 1s;
+  animation-duration: .1s;
   overflow: hidden;
 `
 
@@ -29,7 +29,6 @@ const SidebarDemiLink = styled.p`
 class ProfileMenu extends React.Component{
   static propTypes = {
     reroute: PropTypes.func,
-    isOpen: PropTypes.bool,
     closeMyself: PropTypes.func,
     openModal: PropTypes.func,
     openGlobalModal: PropTypes.func,
@@ -72,6 +71,7 @@ class ProfileMenu extends React.Component{
   }
 
   render(){
+
     return(
       <Sidebar>
         <SidebarDemiLink onClick={this.rerouteToProfile}>

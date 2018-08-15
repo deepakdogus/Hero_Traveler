@@ -59,14 +59,20 @@ export default class CategoryHeader extends React.Component {
   static propTypes = {
     category: PropTypes.object,
     followCategory: PropTypes.func,
+    unfollowCategory: PropTypes.func,
+    isFollowingCategory: PropTypes.bool,
   }
 
   _followCategory = () => {
     this.props.followCategory(this.props.category.id)
   }
 
+  _unfollowCategory = () => {
+    this.props.unfollowCategory(this.props.category.id)
+  }
+
   render () {
-    const {category} = this.props
+    const {category, isFollowingCategory} = this.props
 
     if (!category) return null
     const categoryImageUrl = getImageUrl(category.image, 'image')
@@ -81,10 +87,10 @@ export default class CategoryHeader extends React.Component {
           <StyledHorizontalDivider />
           <ButtonWrapper>
             <StyledRoundedButton
-              type='categoryFollow'
-              text='Follow'
+              type={isFollowingCategory ? 'blackWhite' : 'categoryFollow'}
+              text={isFollowingCategory ? 'Following' : 'Follow'}
               textProps={textProps}
-              onClick={this._followCategory}
+              onClick={isFollowingCategory ? this._unfollowCategory : this._followCategory}
             />
           </ButtonWrapper>
         </Centered>

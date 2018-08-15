@@ -165,7 +165,10 @@ class HeaderLoggedIn extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   let {users} = state.entities
-  const profileAvatar =  users.entities[ownProps.userId].profile.avatar
+  let profileAvatar;
+  if (users.entities[ownProps.userId]) {
+    profileAvatar =  users.entities[ownProps.userId].profile.avatar
+  }
   return {
     profileAvatar
   }

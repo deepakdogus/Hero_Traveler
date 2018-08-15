@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { call, put } from 'redux-saga/effects'
 import LoginActions from '../Redux/LoginRedux'
 import SessionActions from '../Redux/SessionRedux'
+import SignupActions from '../Redux/SignupRedux'
 import UserActions from '../Redux/Entities/Users'
 import errorFormatter from '../Lib/errorFormatter'
 
@@ -27,6 +28,7 @@ export function * login (api, { username, password }) {
         put(SessionActions.initializeSession(user.id, tokens)),
         put(LoginActions.loginSuccess()),
         put(UserActions.fetchActivities()),
+        put(SignupActions.signupGetUsersCategories())
       ]
     } else {
       yield put(LoginActions.loginFailure(errorFormatter(response)))

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import _ from 'lodash'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
@@ -31,6 +32,8 @@ class Category extends Component {
     loadCategories: PropTypes.func,
     loadCategoryStories: PropTypes.func,
     followCategory: PropTypes.func,
+    unfollowCategory: PropTypes.func,
+    isFollowingCategory: PropTypes.bool,
   }
 
   constructor(props) {
@@ -68,6 +71,8 @@ class Category extends Component {
       category,
       users,
       followCategory,
+      unfollowCategory,
+      isFollowingCategory,
     } = this.props
     const categoryStories = storiesById.map((id) => {
       return stories[id]
@@ -78,6 +83,8 @@ class Category extends Component {
         <CategoryHeader
           category={category}
           followCategory={followCategory}
+          unfollowCategory={unfollowCategory}
+          isFollowingCategory={isFollowingCategory}
         />
         <TabBar
           tabs={tabBarTabs}
@@ -96,6 +103,11 @@ class Category extends Component {
 
 function mapStateToProps(state, ownProps) {
   const categoryId = ownProps.match.params.categoryId
+  let isFollowingCategory = false;
+  if (state.session.userId) {
+    isFollowingCategory = _.includes(state.signup.selectedCategories, categoryId)
+  }
+
   return {
     categoryId,
     category: state.entities.categories.entities[categoryId],
@@ -103,6 +115,7 @@ function mapStateToProps(state, ownProps) {
     storiesById: getByCategory(state.entities.stories, categoryId),
     stories: state.entities.stories.entities,
     users: state.entities.users.entities,
+    isFollowingCategory,
   }
 }
 
@@ -111,6 +124,7 @@ function mapDispatchToProps(dispatch) {
     loadCategoryStories: (categoryId, storyType) => dispatch(StoryActions.fromCategoryRequest(categoryId, storyType)),
     loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
     followCategory: (categoryId) => dispatch(SignupActions.signupFollowCategory(categoryId)),
+    unfollowCategory: (categoryId) => dispatch(SignupActions.signupUnfollowCategory(categoryId)),
   }
 }
 

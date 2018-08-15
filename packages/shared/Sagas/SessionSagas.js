@@ -4,6 +4,7 @@ import UserActions from '../Redux/Entities/Users'
 import LoginActions from '../Redux/LoginRedux'
 import SessionActions from '../Redux/SessionRedux'
 import StartupActions from '../Redux/StartupRedux'
+import SignupActions from '../Redux/SignupRedux'
 
 const currentUserId = ({session}) => session.userId
 const currentUserTokens = ({session}) => session.tokens
@@ -67,6 +68,7 @@ export function * resumeSession (api, action) {
       // so the user object is accessible
       put(UserActions.receiveUsers({[user.id]: user})),
       put(UserActions.fetchActivities()),
+      put(SignupActions.signupGetUsersCategories()),
     ]
     yield put(SessionActions.initializeSession(user.id, tokens))
     yield put(SessionActions.refreshSessionSuccess(tokens))

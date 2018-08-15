@@ -127,11 +127,15 @@ export default class EditSettings extends React.Component{
       this.setState({
         localError: 'Please ensure that you retyped your new password correctly.'
       })
+    } else if (!this.state.newPassword || !this.state.retypePassword) {
+      this.setState({
+        localError: 'Please ensure that you filled out all fields correctly.'
+      })
     } else {
       this.setState({
         localError: '',
       })
-      if (!this.state.localError) {
+      if (!this.state.localError || !this.props.errorObj) {
         this.props.updateAction(
           this.props.userEmailOrId,
           this.state.oldPassword,

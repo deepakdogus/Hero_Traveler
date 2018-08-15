@@ -65,9 +65,9 @@ class HeaderLoggedIn extends React.Component {
 
   closeProfileMenu = () => {
     if (this.state.profileMenuIsOpen) {
-      setTimeout(()=>{
+      setTimeout( () => {
         this.setState({profileMenuIsOpen: false})
-      },100)
+      }, 100)
     }
   }
 

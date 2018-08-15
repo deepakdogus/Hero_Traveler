@@ -103,6 +103,9 @@ export default class StoryActionBar extends React.Component {
     isBookmarked: PropTypes.bool,
     onClickBookmark: PropTypes.func,
     onClickComments: PropTypes.func,
+    flagStory: PropTypes.func,
+    userId: PropTypes.string,
+    reroute: PropTypes.func,
   }
 
   constructor(props){
@@ -118,8 +121,20 @@ export default class StoryActionBar extends React.Component {
     })
   }
 
+  _flagStory = () => {
+    this.props.flagStory(this.props.userId, this.props.story.id)
+    this.props.reroute('/feed')
+  }
+
   render () {
-    const {story, isLiked, isBookmarked, onClickBookmark, onClickLike, onClickComments} = this.props
+    const {
+      story,
+      isLiked,
+      isBookmarked,
+      onClickBookmark,
+      onClickLike,
+      onClickComments
+    } = this.props
 
     return (
       <AbsoluteWrapper>
@@ -156,7 +171,12 @@ export default class StoryActionBar extends React.Component {
             <StyledIcon name='tumblr'/>
             <StyledIcon name='pinterest'/>
             <StyledIcon name='email'/>
-            <StyledIcon name='report'/>
+            <ClickableWrapper>
+              <StyledIcon
+                name='report'
+                onClick={this._flagStory}
+              />
+            </ClickableWrapper>
             <HandMadeIcon onClick={this.toggleShowMore}>
               <HandMadeIconMinus />
             </HandMadeIcon>

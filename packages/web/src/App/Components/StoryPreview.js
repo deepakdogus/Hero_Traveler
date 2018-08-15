@@ -93,6 +93,11 @@ const BookmarkIcon = styled(Icon)`
   margin: 1.5px 10px;
 `
 
+const videoThumbnailOptions = {
+  video: true,
+  width: 385.5,
+}
+
 class StoryPreview extends Component {
   static propTypes = {
     story: PropTypes.object,
@@ -101,6 +106,8 @@ class StoryPreview extends Component {
     isLiked: PropTypes.bool,
     isBookmarked: PropTypes.bool,
     reroute: PropTypes.func,
+    onClickBookmark: PropTypes.func,
+    onClickLike: PropTypes.func,
   }
 
   navToStory = () => {
@@ -131,7 +138,9 @@ class StoryPreview extends Component {
 
     let imageUrl;
     if (story.coverImage) imageUrl = getImageUrl(story.coverImage)
-    else if (story.coverVideo) imageUrl = getImageUrl(story.coverVideo, 'video')
+    else if (story.coverVideo) {
+      imageUrl = getImageUrl(story.coverVideo, 'optimized', videoThumbnailOptions)
+    }
 
     return (
       <MarginWrapper>

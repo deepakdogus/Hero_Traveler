@@ -39,7 +39,8 @@ class ProfileMenu extends React.Component{
     openSaveEditsModal: PropTypes.func,
     pathname: PropTypes.string,
     workingDraft: PropTypes.object,
-    draftHasChanged: PropTypes.func,
+    originalDraft: PropTypes.object,
+    haveFieldsChanged: PropTypes.func,
   }
 
   handleClickOutside = () => {
@@ -51,20 +52,30 @@ class ProfileMenu extends React.Component{
   }
 
   _openSaveEditsModalToProfile = () => {
-    if (!this.props.pathname.includes('editStory') || !this.props.draftHasChanged()){
+    const {haveFieldsChanged, workingDraft, originalDraft} = this.props
+    if (this._shouldOpenSaveEditsModal()){
       this.rerouteToProfile()
-    } else if (this.props.draftHasChanged()) {
+    } else if (haveFieldsChanged(workingDraft, originalDraft, 'web')) {
       this.props.openSaveEditsModal(`/profile/${this.props.userId}/view`)
     }
   }
 
   _openSaveEditsModalToLogout = () => {
-    if (!this.props.pathname.includes('editStory') || !this.props.draftHasChanged()){
+    const {haveFieldsChanged, workingDraft, originalDraft} = this.props
+    if (this._shouldOpenSaveEditsModal()){
       this.handleLogout()
-    } else if (this.props.draftHasChanged()) {
+    } else if (haveFieldsChanged(workingDraft, originalDraft, 'web')) {
       this.props.openSaveEditsModal('logout')
     }
   }
+
+  _shouldOpenSaveEditsModal = () => {
+    const {haveFieldsChanged, workingDraft, originalDraft} = this.props
+    return !this.props.pathname.includes('editStory')
+      ||
+      !haveFieldsChanged(workingDraft, originalDraft, 'web')
+  }
+
   rerouteToCustomizeInterests = () => {
     this.rerouteAndClose('/signup/topics')
   }

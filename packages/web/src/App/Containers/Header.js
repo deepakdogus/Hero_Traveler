@@ -14,6 +14,9 @@ import SessionActions from '../Shared/Redux/SessionRedux'
 import UXActions from '../Redux/UXRedux'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import HeaderModals from '../Components/HeaderModals'
+import {
+  haveFieldsChanged
+} from '../Shared/Lib/draftChangedHelpers'
 
 // If we don't explicity prevent 'fixed' from being passed to Grid, we get an error about unknown prop on div element
 // because apparently react-flexbox-grid passes all props down to underlying React elements
@@ -110,34 +113,12 @@ class Header extends React.Component {
     this.setState({ modal: 'signup' })
   }
 
-  //to help intercept navigation when we should open SaveEdits Modal
-  hasFieldChanged(field) {
-    return !this.isEqual(this.props.workingDraft[field], this.props.originalDraft[field])
-  }
-
-  draftHasChanged = () => {
-    if(!this.props.workingDraft) return false
-    else {
-      const fieldsToCheck = ['title', 'description', 'coverCaption', 'coverImage', 'coverVideo', 'tripDate', 'location', 'type', 'categories']
-      return !_.every([
-        ...fieldsToCheck.map(field => !this.hasFieldChanged(field)),
-      ])
-    }
-  }
-
-  isEqual = (firstItem, secondItem) => {
-    if (!!firstItem && !secondItem || !firstItem && !!secondItem) {
-      return false
-    } else if (!!firstItem && !!secondItem) {
-      // lodash will take of equality check for all objects
-      return _.isEqual(firstItem, secondItem)
-    } else {
-      return true
-    }
-  }
-
   openSaveEditsModal = (path) => {
-    if (this.props.workingDraft && this.props.pathname.includes('editStory') && this.draftHasChanged()) {
+    if (
+      this.props.workingDraft
+      && this.props.pathname.includes('editStory')
+      && haveFieldsChanged(this.props.workingDraft, this.props.originalDraft, 'web')
+    ) {
       this.setState({
         nextPathAfterSave: path,
       })
@@ -193,6 +174,7 @@ class Header extends React.Component {
       users,
       pathname,
       workingDraft,
+      originalDraft,
     } = this.props
 
     const SelectedGrid =
@@ -214,8 +196,9 @@ class Header extends React.Component {
               reroute={reroute}
               attemptLogout={attemptLogout}
               resetCreateStore={this._resetCreateStore}
-              draftHasChanged={this.draftHasChanged}
+              haveFieldsChanged={haveFieldsChanged}
               workingDraft={workingDraft}
+              originalDraft={originalDraft}
             />
           }
           {!isLoggedIn &&

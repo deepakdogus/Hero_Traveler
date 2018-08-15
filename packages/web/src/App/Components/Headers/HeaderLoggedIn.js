@@ -56,8 +56,9 @@ class HeaderLoggedIn extends React.Component {
     userId: PropTypes.string,
     attemptLogout: PropTypes.func,
     profileAvatar: PropTypes.object,
-    draftHasChanged: PropTypes.func,
+    haveFieldsChanged: PropTypes.func,
     workingDraft: PropTypes.object,
+    originalDraft: PropTypes.object,
 
   }
 
@@ -81,8 +82,9 @@ class HeaderLoggedIn extends React.Component {
       reroute,
       attemptLogout,
       openSaveEditsModal,
-      draftHasChanged,
+      haveFieldsChanged,
       workingDraft,
+      originalDraft,
     } = this.props
 
     return (
@@ -93,8 +95,9 @@ class HeaderLoggedIn extends React.Component {
             pathname={pathname}
             openSaveEditsModal={openSaveEditsModal}
             isMenuLink={false}
-            draftHasChanged={draftHasChanged}
+            haveFieldsChanged={haveFieldsChanged}
             workingDraft={workingDraft}
+            originalDraft={originalDraft}
           >
             <Logo src={logo} alt={'Hero Traveler Logo'}/>
           </ConditionalLink>
@@ -107,8 +110,9 @@ class HeaderLoggedIn extends React.Component {
                 pathname={pathname}
                 openSaveEditsModal={openSaveEditsModal}
                 isMenuLink={true}
-                draftHasChanged={draftHasChanged}
+                haveFieldsChanged={haveFieldsChanged}
                 workingDraft={workingDraft}
+                originalDraft={originalDraft}
               >
                 My Feed
               </ConditionalLink>
@@ -119,8 +123,9 @@ class HeaderLoggedIn extends React.Component {
                 pathname={pathname}
                 openSaveEditsModal={openSaveEditsModal}
                 isMenuLink={true}
-                draftHasChanged={draftHasChanged}
+                haveFieldsChanged={haveFieldsChanged}
                 workingDraft={workingDraft}
+                originalDraft={originalDraft}
               >
                 Explore
               </ConditionalLink>
@@ -169,8 +174,9 @@ class HeaderLoggedIn extends React.Component {
                       attemptLogout={attemptLogout}
                       openSaveEditsModal={openSaveEditsModal}
                       pathname={pathname}
+                      haveFieldsChanged={haveFieldsChanged}
                       workingDraft={workingDraft}
-                      draftHasChanged={draftHasChanged}
+                      originalDraft={originalDraft}
                     />
                   }
             </LoggedInDesktopContainer>

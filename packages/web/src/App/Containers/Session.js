@@ -5,7 +5,8 @@ import { instanceOf } from 'prop-types'
 
 import SessionActions from '../Shared/Redux/SessionRedux'
 
-const defaultExpiration = 500
+//auth tokens expire in 7 days
+const defaultExpiration = 604800000
 
 function addToken(key, cookies, tokens){
   const token = cookies[key]

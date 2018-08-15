@@ -58,10 +58,16 @@ const textProps = `
 export default class CategoryHeader extends React.Component {
   static propTypes = {
     category: PropTypes.object,
+    followCategory: PropTypes.func,
+  }
+
+  _followCategory = () => {
+    this.props.followCategory(this.props.category.id)
   }
 
   render () {
     const {category} = this.props
+
     if (!category) return null
     const categoryImageUrl = getImageUrl(category.image, 'image')
     return (
@@ -78,6 +84,7 @@ export default class CategoryHeader extends React.Component {
               type='categoryFollow'
               text='Follow'
               textProps={textProps}
+              onClick={this._followCategory}
             />
           </ButtonWrapper>
         </Centered>

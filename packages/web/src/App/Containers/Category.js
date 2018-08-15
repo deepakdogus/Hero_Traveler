@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 
 import StoryActions, {getByCategory, getFetchStatus} from '../Shared/Redux/Entities/Stories'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
+import SignupActions from'../Shared/Redux/SignupRedux'
 
 import CategoryHeader from '../Components/CategoryHeader'
 import TabBar from '../Components/TabBar'
@@ -29,6 +30,7 @@ class Category extends Component {
     category: PropTypes.object,
     loadCategories: PropTypes.func,
     loadCategoryStories: PropTypes.func,
+    followCategory: PropTypes.func,
   }
 
   constructor(props) {
@@ -60,13 +62,23 @@ class Category extends Component {
   }
 
   render() {
-    const {storiesById, stories, category, users} = this.props
+    const {
+      storiesById,
+      stories,
+      category,
+      users,
+      followCategory,
+    } = this.props
     const categoryStories = storiesById.map((id) => {
       return stories[id]
     })
+
     return (
       <ContentWrapper>
-        <CategoryHeader category={category}/>
+        <CategoryHeader
+          category={category}
+          followCategory={followCategory}
+        />
         <TabBar
           tabs={tabBarTabs}
           activeTab={this.state.activeTab}
@@ -97,7 +109,8 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     loadCategoryStories: (categoryId, storyType) => dispatch(StoryActions.fromCategoryRequest(categoryId, storyType)),
-    loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest())
+    loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
+    followCategory: (categoryId) => dispatch(SignupActions.signupFollowCategory(categoryId)),
   }
 }
 

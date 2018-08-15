@@ -12,7 +12,7 @@ import {Actions as NavActions} from 'react-native-router-flux'
 
 import formatCount from '../Shared/Lib/formatCount'
 import getImageUrl from '../Shared/Lib/getImageUrl'
-import {displayLocation} from '../Shared/Lib/locationHelpers'
+import {displayLocationPreview} from '../Shared/Lib/locationHelpers'
 import { Metrics } from '../Shared/Themes'
 import styles from './Styles/FeedItemPreviewStyle'
 import {styles as storyReadingScreenStyles} from '../Containers/Styles/StoryReadingScreenStyles'
@@ -150,8 +150,8 @@ export default class FeedItemPreview extends Component {
 
   getLocationText = () => {
     const {locationInfo, locations = []} = this.props.feedItem
-    if (locationInfo) return displayLocation(locationInfo)
-    else if (locations.length) return displayLocation(locations[0])
+    if (locationInfo) return displayLocationPreview(locationInfo)
+    else if (locations.length) return displayLocationPreview(locations[0])
   }
 
   renderUserSection() {

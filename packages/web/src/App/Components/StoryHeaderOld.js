@@ -96,6 +96,11 @@ const StoryInfoRow = styled(Row)`
   padding-left: 5px;
 `
 
+const videoThumbnailOptions = {
+  video: true,
+  width: 'screen',
+}
+
 export default class StoryHeader extends React.Component {
   static propTypes = {
     story: PropTypes.object,
@@ -112,7 +117,7 @@ export default class StoryHeader extends React.Component {
   getCoverImage() {
     const {story, isPreview} = this.props
     if (isPreview && this.getMediaType() === 'video') {
-      return getImageUrl(story.coverVideo, 'video')
+      return getImageUrl(story.coverVideo, 'optimized', videoThumbnailOptions)
     }
     return getImageUrl(story.coverImage)
   }
@@ -120,6 +125,7 @@ export default class StoryHeader extends React.Component {
   render () {
     const {story, author, isPreview} = this.props
     const mediaType = this.getMediaType()
+
     return (
       <HeaderImageWrapper
         backgroundImage={this.getCoverImage()}

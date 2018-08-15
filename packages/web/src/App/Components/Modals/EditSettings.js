@@ -137,6 +137,8 @@ export default class EditSettings extends React.Component{
           this.state.oldPassword,
           this.state.newPassword,
         )
+        setTimeout(()=> this.setState({success: false}), 5000)
+        this.setState({success: true})
       }
     }
   }

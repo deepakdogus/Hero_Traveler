@@ -67,10 +67,17 @@ class HeaderLoggedIn extends React.Component {
   }
 
   toggleProfileMenu = () => {
-    this.setState({profileMenuIsOpen: !this.state.profileMenuIsOpen})
+    if (this.state.profileMenuIsOpen) return
+    this.setState({profileMenuIsOpen: true})
   }
 
-  toggleProfileMenu = () => this.setState({profileMenuIsOpen: !this.state.profileMenuIsOpen})
+  closeProfileMenu = () => {
+    if (this.state.profileMenuIsOpen) {
+      setTimeout( () => {
+        this.setState({profileMenuIsOpen: false})
+      }, 100)
+    }
+  }
 
   render () {
     const {
@@ -166,7 +173,7 @@ class HeaderLoggedIn extends React.Component {
                 </StyledRoundedAvatarButton>
                   {this.state.profileMenuIsOpen &&
                     <ProfileMenu
-                      closeMyself={this.toggleProfileMenu}
+                      closeMyself={this.closeProfileMenu}
                       openModal={openModal}
                       openGlobalModal={openGlobalModal}
                       userId={userId}

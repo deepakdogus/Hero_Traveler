@@ -11,6 +11,7 @@ const devSettings = {
   SEARCH_STORY_INDEX: 'matthew_dev_STORIES',
   SEARCH_USER_INDEX: 'matthew_dev_USERS',
   SEARCH_CATEGORIES_INDEX: 'matthew_dev_CATEGORIES',
+  SEARCH_HASHTAGS_INDEX:'matthew_dev_HASHTAGS',
 }
 
 const prodSettings = {
@@ -25,6 +26,7 @@ const prodSettings = {
   SEARCH_STORY_INDEX: 'prod_STORIES',
   SEARCH_USER_INDEX: 'prod_USERS',
   SEARCH_CATEGORIES_INDEX: 'prod_CATEGORIES',
+  SEARCH_HASHTAGS_INDEX:'prod_HASHTAGS',
 }
 
 export default process.env.NODE_ENV === 'development' ? devSettings : prodSettings

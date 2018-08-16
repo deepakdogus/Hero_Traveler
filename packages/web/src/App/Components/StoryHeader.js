@@ -33,6 +33,8 @@ const Subtitle = styled.p`
 
 const LocationText = styled(Subtitle)`
   color: ${props => props.theme.Colors.background};
+  text-transform: uppercase;
+  font-weight: 600;
 `
 
 const RedText = styled.span`

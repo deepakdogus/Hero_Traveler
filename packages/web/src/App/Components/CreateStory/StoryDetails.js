@@ -15,11 +15,12 @@ import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton'
 import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unchecked'
 import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checked'
 
-const Container = styled.div``
-
-const InputRowContainer = styled(Container)`
+const Container = styled.div`
   padding: 14px 0px 14px 0px;
   position: relative;
+`
+
+const InputRowContainer = styled(Container)`
   display: flex;
   align-items: center;
 `
@@ -31,7 +32,9 @@ const StyledTitle = styled(Title)`
   text-transform: uppercase;
 `
 
-const ActivitySelectRow = styled(Row)`
+const ActivitySelectRow = styled(Row)``
+
+const DetailLabel = styled.label`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 600;
   font-size: 18px;
@@ -69,6 +72,22 @@ const DateIcon = styled(IconWithMargin)`
 `
 const TagIcon = styled(IconWithMargin)`
   height: 26px;
+  width: 26px;
+`
+
+const HashtagIcon = styled(IconWithMargin)`
+  height: 35px;
+  width: 35px;
+`
+
+const CostIcon = styled(IconWithMargin)`
+  height: 30px;
+  width: 30px;
+`
+
+const IconWrapper = styled.div`
+  width: 35px;
+  text-align: center;
 `
 
 const StyledReactDayPicker = styled(ReactDayPicker)`
@@ -78,6 +97,27 @@ const StyledReactDayPicker = styled(ReactDayPicker)`
 const RelativePositionAncestor = styled.div`
   position: relative;
   width: 100px;
+`
+
+const TravelTipsInput = styled.textarea`
+  font-family: ${props => props.theme.Fonts.type.base};
+  ::placeholder {
+    font-family: ${props => props.theme.Fonts.type.base};
+    color: ${props => props.theme.Colors.navBarText};
+  }
+  color: ${props => props.theme.Colors.background};
+  font-size: 16px;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  font-weight: 400;
+  letter-spacing: .7px;
+  width: 100%;
+  height: 160px;
+  resize: none;
+  border-width: 2.5px;
+  border-color: ${props => props.theme.Colors.navBarText};
+  border-radius: 2.5px;
+  padding: 10px;
+  margin-top: 5px;
 `
 
 const styles = {
@@ -99,6 +139,9 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
   },
+  radioButtonFilled: {
+    fill: '#ed1e2e',
+  }
 }
 
 function sortCategories(categories) {
@@ -113,6 +156,8 @@ const formatCategories = (categories) => sortCategories(_.values(categories))
 function isSameTag(a, b){
   return a.title === b.title
 }
+
+const buttons = ['see', 'do', 'eat', 'stay']
 
 export default class StoryDetails extends React.Component {
   static propTypes = {
@@ -225,6 +270,12 @@ export default class StoryDetails extends React.Component {
     }
   }
 
+  onGenericChange = (event) => {
+    this.props.onInputChange({
+      [event.target.name]: event.target.value,
+    })
+  }
+
   render() {
     const {workingDraft} = this.props
     const {showDayPicker, showCategoryPicker, categoriesList} = this.state
@@ -237,7 +288,35 @@ export default class StoryDetails extends React.Component {
         <br/>
         <br/>
         <InputRowContainer>
-          <LocationIcon name='location'/>
+          <ActivitySelectRow>
+            <DetailLabel>Activity: </DetailLabel>
+              <RadioButtonGroup
+                valueSelected={workingDraft.type}
+                name="activity"
+                style={styles.radioButtonGroup}
+                onChange={this.handleRadioChange}
+              >
+                {buttons.map((button, index) => {
+                  return (
+                    <RadioButton
+                      key={index}
+                      value={button}
+                      label={button.toUpperCase()}
+                      style={styles.radioButton}
+                      labelStyle={styles.radioButtonLabel}
+                      checkedIcon={<RadioButtonChecked style={styles.radioButtonFilled} />}
+                      uncheckedIcon={<RadioButtonUnchecked/>}
+                    />
+                  )
+                })}
+              </RadioButtonGroup>
+          </ActivitySelectRow>
+        </InputRowContainer>
+        <HorizontalDivider color='lighter-grey' opaque/>
+        <InputRowContainer>
+          <IconWrapper>
+            <LocationIcon name='location'/>
+          </IconWrapper>
           <GoogleLocator
             onChange={this.handleLocationSelect}
             address={this.state.address}
@@ -245,7 +324,9 @@ export default class StoryDetails extends React.Component {
         </InputRowContainer>
         <HorizontalDivider color='lighter-grey' opaque/>
         <InputRowContainer>
-          <DateIcon name='date'/>
+          <IconWrapper>
+            <DateIcon name='date'/>
+          </IconWrapper>
           <StyledInput
             type='text'
             placeholder={'MM-DD-YYYY'}
@@ -262,7 +343,9 @@ export default class StoryDetails extends React.Component {
         </InputRowContainer>
         <HorizontalDivider color='lighter-grey' opaque/>
         <InputRowContainer>
-          <TagIcon name='tag'/>        
+          <IconWrapper>
+            <TagIcon name='tag'/>
+          </IconWrapper>
           <CategoryTileGridAndInput
             selectedCategories={this.props.workingDraft.categories}
             handleCategoryRemove={this.handleCategoryRemove}
@@ -292,50 +375,30 @@ export default class StoryDetails extends React.Component {
         </InputRowContainer>
         <HorizontalDivider color='lighter-grey' opaque/>
         <InputRowContainer>
-          <ActivitySelectRow>
-            <label>Activity: </label>
-              <RadioButtonGroup
-                valueSelected={workingDraft.type}
-                name="activity"
-                style={styles.radioButtonGroup}
-                onChange={this.handleRadioChange}
-              >
-                <RadioButton
-                  value="see"
-                  label="SEE"
-                  style={styles.radioButton}
-                  labelStyle={styles.radioButtonLabel}
-                  checkedIcon={<RadioButtonChecked style={{fill: '#ed1e2e'}} />}
-                  uncheckedIcon={<RadioButtonUnchecked/>}
-                />
-                <RadioButton
-                  value="eat"
-                  label="EAT"
-                  style={styles.radioButton}
-                  labelStyle={styles.radioButtonLabel}
-                  checkedIcon={<RadioButtonChecked style={{fill: '#ed1e2e'}} />}
-                  uncheckedIcon={<RadioButtonUnchecked/>}
-                />
-                <RadioButton
-                  value="stay"
-                  label="STAY"
-                  style={styles.radioButton}
-                  labelStyle={styles.radioButtonLabel}
-                  checkedIcon={<RadioButtonChecked style={{fill: '#ed1e2e'}} />}
-                  uncheckedIcon={<RadioButtonUnchecked/>}
-                />
-                <RadioButton
-                  value="do"
-                  label="DO"
-                  style={styles.radioButton}
-                  labelStyle={styles.radioButtonLabel}
-                  checkedIcon={<RadioButtonChecked style={{fill: '#ed1e2e'}} />}
-                  uncheckedIcon={<RadioButtonUnchecked/>}
-                />
-              </RadioButtonGroup>
-          </ActivitySelectRow>
+          <IconWrapper>
+            <CostIcon name='cost'/>
+          </IconWrapper>
+          <StyledInput
+            type='number'
+            placeholder='Cost (USD)'
+            value={workingDraft.cost}
+            min='0'
+            name='cost'
+            onChange={this.onGenericChange}
+          />
         </InputRowContainer>
         <HorizontalDivider color='lighter-grey' opaque/>
+        <Container>
+          <DetailLabel>
+            Travel Tips
+          </DetailLabel>
+          <TravelTipsInput
+            value={workingDraft.travelTips}
+            name='travelTips'
+            placeholder='What should your fellow travelers know?'
+            onChange={this.onGenericChange}
+          />
+        </Container>
       </Container>
     )
   }

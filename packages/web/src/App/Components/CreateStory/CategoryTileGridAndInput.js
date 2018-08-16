@@ -55,6 +55,13 @@ const VerticallyCenterRow = styled(Row)`
   align-items: center;
 `
 
+const TilesWrapper = styled.div`
+  margin-left: 15px;
+  flex-direction: row;
+  align-items: center;
+  display: flex;
+`
+
 export default class CategoryTileGridAndInput extends React.Component {
   static propTypes = {
     selectedCategories: PropTypes.arrayOf(PropTypes.object),
@@ -132,9 +139,9 @@ export default class CategoryTileGridAndInput extends React.Component {
       <StyledGrid>
         <VerticallyCenterRow>
           {!!renderedTiles.length &&
-            <div style={{marginLeft: '15px', flexDirection: 'row', alignItems: 'center', display: 'flex'}}>
+            <TilesWrapper>
               {renderedTiles}
-            </div>
+            </TilesWrapper>
           }
           <InputWrapper>
             <StyledInput

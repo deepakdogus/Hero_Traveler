@@ -12,12 +12,26 @@ import {Row} from './FlexboxGrid';
 import Video from './Video'
 import RoundedButton from './RoundedButton'
 import Icon from './Icon'
+import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
 
 const Title = styled.p`
+  margin: 0;
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 700;
   font-size: 38px;
   line-height: 50px;
+  color: ${props => props.theme.Colors.background};
+`
+
+const Subtitle = styled.p`
+  margin: 7.5px 0;
+  font-family: ${props => props.theme.Fonts.type.montserrat};
+  font-weight: 400;
+  color: ${props => props.theme.Colors.grey};
+  letter-spacing: .7px;
+`
+
+const LocationText = styled(Subtitle)`
   color: ${props => props.theme.Colors.background};
 `
 
@@ -115,7 +129,7 @@ export default class StoryHeader extends React.Component {
     this.props.reroute(`/editStory/${this.props.story.id}`)
   }
 
-  render () {
+  render() {
     const {
       story, author, sessionUserId,
       isFollowing, unfollowUser, followUser
@@ -123,6 +137,7 @@ export default class StoryHeader extends React.Component {
 
     const mediaType = this.getMediaType()
     const isUsersStory = author.id === sessionUserId
+
     return (
       <Container>
         <TopRow between="xs">
@@ -158,7 +173,7 @@ export default class StoryHeader extends React.Component {
             </VerticalCenter>
           }
         </TopRow>
-        { 
+        {
           mediaType === 'image' &&
           <CoverImage
             src={this.getCoverImage()}
@@ -173,7 +188,9 @@ export default class StoryHeader extends React.Component {
           />
         }
         <CoverCaption>{story.coverCaption}</CoverCaption>
+        <LocationText>{displayLocationPreview(story.locationInfo)}</LocationText>
         <Title mediaType={mediaType}>{story.title}</Title>
+        <Subtitle>{story.description}</Subtitle>
       </Container>
     )
   }

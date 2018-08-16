@@ -9,15 +9,23 @@ import getImageUrl from '../../Shared/Lib/getImageUrl'
 import uploadFile from '../../Utils/uploadFile'
 import {VerticalCenterStyles} from '../VerticalCenter'
 
+const ButtonsHorizontalCenter = styled.div`
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  height: 350px;
+  margin: auto;
+  ${VerticalCenterStyles}
+
+`
+
 const Wrapper = styled.div`
   position: absolute;
   top: 0;
-  height: 350px;
   width: 100%;
   background-color: ${props =>
     props.hasImage ? props.theme.Colors.transparent : props.theme.Colors.lightGreyAreas
   };
-  ${VerticalCenterStyles}
 `
 
 const RelativeWrapper = styled.div`
@@ -30,7 +38,7 @@ const DeleteIcon = styled(Icon)`
 `
 
 const StoryOverlayWrapper = styled(Overlay)`
-  margin-top: 40px;
+  margin: 40px auto 0;
   padding-top: 350px;
   width: 100%;
   max-width: 800px;
@@ -257,9 +265,11 @@ export default class AddCoverTitles extends React.Component {
     return (
       <RelativeWrapper>
         <StoryOverlayWrapper image={coverImage}/>
-        <Wrapper hasImage={!!coverImage}>
-          {this.renderUploadButton()}
-        </Wrapper>
+          <Wrapper hasImage={!!coverImage}>
+          <ButtonsHorizontalCenter>
+            {this.renderUploadButton()}
+          </ButtonsHorizontalCenter>
+          </Wrapper>
         {!!coverImage &&
           <StyledCoverCaptionInput
             type='text'

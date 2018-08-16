@@ -19,6 +19,7 @@ const { Types, Creators } = createActions({
   signupUnfollowCategory: ['categoryId'],
   signupUnfollowCategorySuccess: ['categoryId'],
   signupUnfollowCategoryFailure: ['categoryId', 'error'],
+  signUpReset: null,
 })
 
 export const SignupTypes = Types
@@ -69,6 +70,8 @@ export const unfollowCategoryFailure = (state, {categoryId}) =>
 export const unfollowCategorySuccess = (state, {categoryId}) =>
   state.merge({error: null})
 
+export const reset = () => INITIAL_STATE
+
 /* ------------- Hookup Reducers To Types ------------- */
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.SIGNUP_EMAIL]: signupEmail,
@@ -84,6 +87,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SIGNUP_UNFOLLOW_CATEGORY]: unfollowCategory,
   [Types.SIGNUP_UNFOLLOW_CATEGORY_SUCCESS]: unfollowCategorySuccess,
   [Types.SIGNUP_UNFOLLOW_CATEGORY_FAILURE]: unfollowCategoryFailure,
+  [Types.SIGNUP_RESET]: reset,
 })
 
 export const hasSignedUp = (signupState) => signupState.signedUp

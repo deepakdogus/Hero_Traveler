@@ -61,6 +61,7 @@ class Header extends React.Component {
     stories: PropTypes.object,
     markSeen: PropTypes.func,
     users: PropTypes.object,
+    signedUp: PropTypes.bool,
   }
 
   constructor(props) {
@@ -82,6 +83,9 @@ class Header extends React.Component {
   componentDidUpdate(prevProps) {
     if(this.props.currentUser && prevProps.currentUser !== this.props.currentUser){
       this.props.attemptGetUserFeed(this.props.currentUser)
+    }
+    if (!prevProps.signedUp && this.props.signedUp) {
+      this.props.reroute('/signup/topics')
     }
   }
 
@@ -230,6 +234,7 @@ function mapStateToProps(state) {
     activities: state.entities.users.activities,
     users: state.entities.users.entities,
     stories: state.entities.stories.entities,
+    signedUp: state.signup.signedUp,
   }
 }
 

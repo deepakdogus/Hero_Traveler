@@ -1,22 +1,36 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import {NavLink} from 'react-router-dom';
+import {NavLink} from 'react-router-dom'
+import _ from 'lodash'
 
 import Icon from './Icon'
 import {Row} from './FlexboxGrid'
 import { displayLocationDetails } from '../Shared/Lib/locationHelpers'
 
 const LocationIcon = styled(Icon)`
-  padding: 3px 2px 0;
-  width: 11px;
-  height: 18px;
+  width: 17px;
+  height: 27px;
 `
 
 const TagsIcon = styled(Icon)`
-  padding-top: 3px;
-  width: 15px;
-  height: 15px;
+  width: 23px;
+  height: 23px;
+`
+
+const CostIcon = styled(Icon)`
+  width: 25px;
+  height: 25px;
+`
+
+const TravelTipsIcon = styled(Icon)`
+  weight: 25px;
+  height: 25px;
+`
+
+const IconWrapper = styled.div`
+  width: 27px;
+  text-align: center;
 `
 
 const Text = styled.p`
@@ -55,43 +69,88 @@ const StyledLink = styled(NavLink)`
   text-decoration: none;
 `
 
+function DetailRow({Icon, iconName, label, children}) {
+  if (
+    (typeof children === 'object' && !_.get(children, 'props.children'))
+    || (typeof children === 'string' && !children)
+    || typeof children === 'undefined'
+  ) return null
+
+  return (
+    <InfoRow>
+      <IconWrapper>
+        <Icon name={iconName} />
+      </IconWrapper>
+      <TextContainer>
+        <Label>{label}:</Label>
+        {children}
+      </TextContainer>
+    </InfoRow>
+  )
+}
+
+DetailRow.propTypes = {
+  Icon: PropTypes.object,
+  iconName: PropTypes.string,
+  label: PropTypes.string,
+  children: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.element,
+  ])
+}
+
 export default class StoryMetaInfo extends React.Component {
   static propTypes = {
     story: PropTypes.object,
   }
 
-  renderTagLinks (tags) {
-    const keys = Object.keys(tags)
-    const length = keys.length;
+  renderCategoriesLinks = (categories) => {
+    const keys = Object.keys(categories)
+    const length = keys.length
+    if (length === 0) return
     return keys.map((key, index) => {
-      const tag = tags[key]
+      const categorie = categories[key]
 
       return (
-        <StyledLink key={key} to={'/category/' + tag.id} >
-          {tag.title}{index !== length-1 ? ', ' : ''}
+        <StyledLink key={key} to={'/category/' + categorie.id} >
+          {categorie.title}{index !== length - 1 ? ', ' : ''}
         </StyledLink>
       )
     })
   }
 
-  render () {
+  render() {
     const {story} = this.props
     return (
       <Container>
-        <InfoRow>
-          <LocationIcon name='location' />
-          <TextContainer>
-            <Label>Location:</Label>
-            <Location>{displayLocationDetails(story.locationInfo)}</Location>
-          </TextContainer>
-        </InfoRow>
-        <InfoRow>
-          <TagsIcon name='tag' />
-          <TextContainer>
-            <Label>Categories:</Label>
-            {this.renderTagLinks(story.categories)}
-          </TextContainer>
-        </InfoRow>
+        <DetailRow
+          Icon={LocationIcon}
+          iconName='location'
+          label='Location'
+        >
+          <Location>{displayLocationDetails(story.locationInfo)}</Location>
+        </DetailRow>
+        <DetailRow
+          Icon={TagsIcon}
+          iconName='tag'
+          label='Categories'
+        >
+          <Location>{this.renderCategoriesLinks(story.categories)}</Location>
+        </DetailRow>
+        <DetailRow
+          Icon={CostIcon}
+          iconName='cost'
+          label='Cost'
+        >
+          {story.cost ? `$${story.cost} USD` : ''}
+        </DetailRow>
+        <DetailRow
+          Icon={TravelTipsIcon}
+          iconName='travelTips'
+          label='Travel Tips'
+        >
+          {story.travelTips}
+        </DetailRow>
       </Container>
     )
   }

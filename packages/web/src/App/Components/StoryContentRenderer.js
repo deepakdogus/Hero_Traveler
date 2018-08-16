@@ -19,6 +19,7 @@ const StyledImage = styled(Image)`
 `
 
 const Text = styled.p`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 400;
   font-size: 18px;
   color: ${props => props.theme.Colors.grey};

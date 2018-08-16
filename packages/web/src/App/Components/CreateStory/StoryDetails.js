@@ -3,23 +3,24 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import Moment from 'moment'
 import _ from 'lodash'
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton'
+import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unchecked'
+import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checked'
+
 import {Row} from '../FlexboxGrid'
 import Icon from '../Icon'
 import HorizontalDivider from '../HorizontalDivider'
 import GoogleLocator from './GoogleLocator'
 import ReactDayPicker from './ReactDayPicker'
-import CategoryPicker from './CategoryPicker'
-import CategoryTileGridAndInput from './CategoryTileGridAndInput'
 import {Title} from './Shared'
-import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton'
-import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unchecked'
-import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checked'
+import TagSelector from './TagSelector'
 
-const Container = styled.div``
-
-const InputRowContainer = styled(Container)`
+const Container = styled.div`
   padding: 14px 0px 14px 0px;
   position: relative;
+`
+
+export const InputRowContainer = styled(Container)`
   display: flex;
   align-items: center;
 `
@@ -31,7 +32,9 @@ const StyledTitle = styled(Title)`
   text-transform: uppercase;
 `
 
-const ActivitySelectRow = styled(Row)`
+const ActivitySelectRow = styled(Row)``
+
+const DetailLabel = styled.label`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 600;
   font-size: 18px;
@@ -69,15 +72,47 @@ const DateIcon = styled(IconWithMargin)`
 `
 const TagIcon = styled(IconWithMargin)`
   height: 26px;
+  width: 26px;
+`
+
+const HashtagIcon = styled(IconWithMargin)`
+  height: 35px;
+  width: 35px;
+`
+
+const CostIcon = styled(IconWithMargin)`
+  height: 30px;
+  width: 30px;
+`
+
+export const IconWrapper = styled.div`
+  width: 35px;
+  text-align: center;
 `
 
 const StyledReactDayPicker = styled(ReactDayPicker)`
   position: absolute;
 `
 
-const RelativePositionAncestor = styled.div`
-  position: relative;
-  width: 100px;
+const TravelTipsInput = styled.textarea`
+  font-family: ${props => props.theme.Fonts.type.base};
+  ::placeholder {
+    font-family: ${props => props.theme.Fonts.type.base};
+    color: ${props => props.theme.Colors.navBarText};
+  }
+  color: ${props => props.theme.Colors.background};
+  font-size: 16px;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  font-weight: 400;
+  letter-spacing: .7px;
+  width: 100%;
+  height: 160px;
+  resize: none;
+  border-width: 2.5px;
+  border-color: ${props => props.theme.Colors.navBarText};
+  border-radius: 2.5px;
+  padding: 10px;
+  margin-top: 5px;
 `
 
 const styles = {
@@ -99,6 +134,9 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
   },
+  radioButtonFilled: {
+    fill: '#ed1e2e',
+  }
 }
 
 function sortCategories(categories) {
@@ -113,6 +151,8 @@ const formatCategories = (categories) => sortCategories(_.values(categories))
 function isSameTag(a, b){
   return a.title === b.title
 }
+
+const buttons = ['see', 'do', 'eat', 'stay']
 
 export default class StoryDetails extends React.Component {
   static propTypes = {
@@ -136,7 +176,8 @@ export default class StoryDetails extends React.Component {
       day: '',
       categoryInputText: '',
       categoriesList,
-      address: _.get(this.props.workingDraft, ['locationInfo', 'name'], '')
+      hashtagsList: [],
+      address: _.get(this.props.workingDraft, ['locationInfo', 'name'], ''),
     };
   }
 
@@ -183,29 +224,47 @@ export default class StoryDetails extends React.Component {
     else return Moment(day).format('MM-DD-YYYY')
   }
 
-  handleCategorySelect = (event, category) => {
+  handleTagAdd = (event, tag, type = 'categories') => {
     event.stopPropagation()
-    const categoryTitle = event.target.innerHTML || category
+    const tagTitle = event.target.innerHTML || tag
     // If it is already a category in DB, we need to fetch the whole object
-    const clickedCategory = _.find(this.state.categoriesList, cat => cat.title === categoryTitle) || { title: categoryTitle }
-    const categories = this.props.workingDraft.categories.concat([clickedCategory])
-    this.loadDefaultCategories([clickedCategory])
-    this.setState({categoryInputText: ''})
-    this.props.onInputChange({categories})
+    const clickedTag = _.find(
+      type === 'categories' ? this.state.categoriesList : [],
+      tag => tag.title === tagTitle
+    ) || { title: tagTitle }
+    const updatedTags = this.props.workingDraft[type].concat([clickedTag])
+
+    if (type === 'categories') this.loadDefaultCategories([clickedTag])
+    else this.loadDefaultHashtags()
+
+    this.props.onInputChange({ [type]: updatedTags })
   }
 
-  handleCategoryRemove = (event, tagTitle) => {
+  handleTagRemove = (event, clickedTitle, type = 'categories') => {
     event.stopPropagation()
-    const clickedCategoryTitle = tagTitle
-    const clickedCategory = _.find(this.props.workingDraft.categories, cat => cat.title === clickedCategoryTitle)
-    const categories = _.differenceWith(this.props.workingDraft.categories, [clickedCategory], isSameTag)
-    this.updateCategoriesList(sortCategories(this.state.categoriesList.concat([clickedCategory])))
-    this.props.onInputChange({categories})
+    const selectedTagsOfType = this.props.workingDraft[type]
+    const clickedTag = _.find(
+      selectedTagsOfType,
+      tag => tag.title === clickedTitle
+    )
+    const updatedTags = _.differenceWith(selectedTagsOfType, [clickedTag], isSameTag)
+    if (type === 'categories') {
+      this.updateCategoriesList(
+        sortCategories(this.state.categoriesList.concat([clickedTag]))
+      )
+    }
+    this.props.onInputChange({ [type]: updatedTags })
   }
 
   updateCategoriesList = (newCategoriesList) => {
     this.setState({
       categoriesList: newCategoriesList
+    })
+  }
+
+  updateHashtagsList = (newHashtagsList) => {
+    this.setState({
+      hashtagsList: newHashtagsList
     })
   }
 
@@ -225,19 +284,60 @@ export default class StoryDetails extends React.Component {
     }
   }
 
+  loadDefaultHashtags = () => this.setState({hashtagsList: []})
+
+  onGenericChange = (event) => {
+    this.props.onInputChange({
+      [event.target.name]: event.target.value,
+    })
+  }
+
   render() {
     const {workingDraft} = this.props
-    const {showDayPicker, showCategoryPicker, categoriesList} = this.state
+    const {
+      showDayPicker,
+      categoriesList,
+      hashtagsList,
+    } = this.state
 
     // normally this only happens when you just published a draft
     if (!workingDraft) return null
+
     return (
       <Container>
         <StyledTitle>{workingDraft.title} DETAILS</StyledTitle>
         <br/>
         <br/>
         <InputRowContainer>
-          <LocationIcon name='location'/>
+          <ActivitySelectRow>
+            <DetailLabel>Activity: </DetailLabel>
+              <RadioButtonGroup
+                valueSelected={workingDraft.type}
+                name="activity"
+                style={styles.radioButtonGroup}
+                onChange={this.handleRadioChange}
+              >
+                {buttons.map((button, index) => {
+                  return (
+                    <RadioButton
+                      key={index}
+                      value={button}
+                      label={button.toUpperCase()}
+                      style={styles.radioButton}
+                      labelStyle={styles.radioButtonLabel}
+                      checkedIcon={<RadioButtonChecked style={styles.radioButtonFilled} />}
+                      uncheckedIcon={<RadioButtonUnchecked/>}
+                    />
+                  )
+                })}
+              </RadioButtonGroup>
+          </ActivitySelectRow>
+        </InputRowContainer>
+        <HorizontalDivider color='lighter-grey' opaque/>
+        <InputRowContainer>
+          <IconWrapper>
+            <LocationIcon name='location'/>
+          </IconWrapper>
           <GoogleLocator
             onChange={this.handleLocationSelect}
             address={this.state.address}
@@ -245,7 +345,9 @@ export default class StoryDetails extends React.Component {
         </InputRowContainer>
         <HorizontalDivider color='lighter-grey' opaque/>
         <InputRowContainer>
-          <DateIcon name='date'/>
+          <IconWrapper>
+            <DateIcon name='date'/>
+          </IconWrapper>
           <StyledInput
             type='text'
             placeholder={'MM-DD-YYYY'}
@@ -261,81 +363,57 @@ export default class StoryDetails extends React.Component {
           }
         </InputRowContainer>
         <HorizontalDivider color='lighter-grey' opaque/>
-        <InputRowContainer>
-          <TagIcon name='tag'/>        
-          <CategoryTileGridAndInput
-            selectedCategories={this.props.workingDraft.categories}
-            handleCategoryRemove={this.handleCategoryRemove}
-            inputOnClick={this.toggleCategoryPicker}
-            categories={categoriesList}
-            addCategory={this.handleCategorySelect}
-            updateCategoriesList={this.updateCategoriesList}
-            categoryInputText={this.state.categoryInputText}
-            handleTextInput={this.handleCategoryInputTextChange}
-            isSameTag={isSameTag}
-          >
-        {/* Making the Category Picker a child so we can position it absolutely, relative
-          to where the last category tile is
-        */}
-          {
-            showCategoryPicker &&
-            <RelativePositionAncestor>
-              <CategoryPicker
-                closePicker={this.toggleCategoryPicker}
-                handleCategorySelect={this.handleCategorySelect}
-                categoriesList={categoriesList}
-                loadDefaultCategories={this.loadDefaultCategories}
-              />
-            </RelativePositionAncestor>
-          }
-          </CategoryTileGridAndInput>
-        </InputRowContainer>
+        <TagSelector
+          handleTagAdd={this.handleTagAdd}
+          loadDefaultTags={this.loadDefaultCategories}
+          handleTagRemove={this.handleTagRemove}
+          updateTagsList={this.updateCategoriesList}
+          isSameTag={isSameTag}
+          Icon={TagIcon}
+          iconName='tag'
+          selectedTags={workingDraft.categories}
+          tagsList={categoriesList}
+        />
+        <HorizontalDivider color='lighter-grey' opaque/>
+        {
+        <TagSelector
+          handleTagAdd={this.handleTagAdd}
+          loadDefaultTags={this.loadDefaultHashtags}
+          handleTagRemove={this.handleTagRemove}
+          updateTagsList={this.updateHashtagsList}
+          isSameTag={isSameTag}
+          Icon={HashtagIcon}
+          iconName='hashtag'
+          selectedTags={workingDraft.hashtags}
+          tagsList={hashtagsList}
+        />
+        }
         <HorizontalDivider color='lighter-grey' opaque/>
         <InputRowContainer>
-          <ActivitySelectRow>
-            <label>Activity: </label>
-              <RadioButtonGroup
-                valueSelected={workingDraft.type}
-                name="activity"
-                style={styles.radioButtonGroup}
-                onChange={this.handleRadioChange}
-              >
-                <RadioButton
-                  value="see"
-                  label="SEE"
-                  style={styles.radioButton}
-                  labelStyle={styles.radioButtonLabel}
-                  checkedIcon={<RadioButtonChecked style={{fill: '#ed1e2e'}} />}
-                  uncheckedIcon={<RadioButtonUnchecked/>}
-                />
-                <RadioButton
-                  value="eat"
-                  label="EAT"
-                  style={styles.radioButton}
-                  labelStyle={styles.radioButtonLabel}
-                  checkedIcon={<RadioButtonChecked style={{fill: '#ed1e2e'}} />}
-                  uncheckedIcon={<RadioButtonUnchecked/>}
-                />
-                <RadioButton
-                  value="stay"
-                  label="STAY"
-                  style={styles.radioButton}
-                  labelStyle={styles.radioButtonLabel}
-                  checkedIcon={<RadioButtonChecked style={{fill: '#ed1e2e'}} />}
-                  uncheckedIcon={<RadioButtonUnchecked/>}
-                />
-                <RadioButton
-                  value="do"
-                  label="DO"
-                  style={styles.radioButton}
-                  labelStyle={styles.radioButtonLabel}
-                  checkedIcon={<RadioButtonChecked style={{fill: '#ed1e2e'}} />}
-                  uncheckedIcon={<RadioButtonUnchecked/>}
-                />
-              </RadioButtonGroup>
-          </ActivitySelectRow>
+          <IconWrapper>
+            <CostIcon name='cost'/>
+          </IconWrapper>
+          <StyledInput
+            type='number'
+            placeholder='Cost (USD)'
+            value={workingDraft.cost}
+            min='0'
+            name='cost'
+            onChange={this.onGenericChange}
+          />
         </InputRowContainer>
         <HorizontalDivider color='lighter-grey' opaque/>
+        <Container>
+          <DetailLabel>
+            Travel Tips
+          </DetailLabel>
+          <TravelTipsInput
+            value={workingDraft.travelTips}
+            name='travelTips'
+            placeholder='What should your fellow travelers know?'
+            onChange={this.onGenericChange}
+          />
+        </Container>
       </Container>
     )
   }

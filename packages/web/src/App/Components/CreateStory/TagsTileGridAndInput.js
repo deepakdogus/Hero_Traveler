@@ -9,8 +9,17 @@ import Icon from '../Icon'
 import { StyledInput } from './StoryDetails'
 import config from '../../Config/Env'
 
-const { SEARCH_APP_NAME, SEARCH_API_KEY, SEARCH_CATEGORIES_INDEX } = config
-const algoliasearch = algoliasearch_module(SEARCH_APP_NAME, SEARCH_API_KEY, { protocol: 'https:' })
+const {
+  SEARCH_APP_NAME,
+  SEARCH_API_KEY,
+  SEARCH_CATEGORIES_INDEX,
+  SEARCH_HASHTAGS_INDEX,
+} = config
+const algoliasearch = algoliasearch_module(
+  SEARCH_APP_NAME,
+  SEARCH_API_KEY,
+  { protocol: 'https:' }
+)
 
 
 const WrapperCol = styled(Col)`
@@ -24,7 +33,7 @@ const InputWrapper = styled(Col)`
   margin: 10px 0px;
 `
 
-const Tile = styled(Row)`
+const TextTile = styled(Row)`
   background-color: ${props => props.theme.Colors.lightGreyAreas};
   border-radius: 4px;
   height: 34px;
@@ -55,24 +64,62 @@ const VerticallyCenterRow = styled(Row)`
   align-items: center;
 `
 
-export default class CategoryTileGridAndInput extends React.Component {
+const TilesWrapper = styled.div`
+  margin-left: 15px;
+  flex-direction: row;
+  align-items: center;
+  display: flex;
+`
+
+class Tile extends React.Component {
   static propTypes = {
-    selectedCategories: PropTypes.arrayOf(PropTypes.object),
-    categories: PropTypes.arrayOf(PropTypes.object),
-    handleCategoryRemove: PropTypes.func,
-    updateCategoriesList: PropTypes.func,
+    tag: PropTypes.object,
+    handleTagRemove: PropTypes.func
+  }
+
+  _handleTagRemove = (event) => {
+    const {tag, handleTagRemove} = this.props
+    handleTagRemove(event, tag.title)
+  }
+
+  render() {
+    const {tag} = this.props
+    return (
+      <WrapperCol key={tag.id ? tag.id : tag.title}> {/* Tags do not yet have ids if they have just been entered by user*/}
+        <TextTile around='xs'>
+          <TagText>{tag.title}</TagText>
+          <StyledIcon
+            data-tagName={tag.id}
+            name='closeDark'
+            onClick={this._handleTagRemove}
+          />
+        </TextTile>
+      </WrapperCol>
+    )
+  }
+}
+
+export default class TagsTileGridAndInput extends React.Component {
+  static propTypes = {
+    selectedTags: PropTypes.arrayOf(PropTypes.object),
+    handleTagRemove: PropTypes.func,
+    updateTagsList: PropTypes.func,
     placeholder: PropTypes.string,
     inputValue: PropTypes.string,
     inputOnChange: PropTypes.func,
     inputOnClick: PropTypes.func,
-    categoryInputText: PropTypes.string,
+    inputText: PropTypes.string,
     handleTextInput: PropTypes.func,
-    addCategory: PropTypes.func,
-    isSameTag: PropTypes.func
+    addTag: PropTypes.func,
+    isSameTag: PropTypes.func,
+    type: PropTypes.string,
   }
 
   componentWillMount() {
-    this.helper = algoliasearch_helper(algoliasearch, SEARCH_CATEGORIES_INDEX)
+    this.helper = algoliasearch_helper(
+      algoliasearch,
+      this.props.type === 'hashtag' ? SEARCH_HASHTAGS_INDEX : SEARCH_CATEGORIES_INDEX,
+    )
     this.setUpSearchListeners(this.helper)
   }
 
@@ -83,7 +130,11 @@ export default class CategoryTileGridAndInput extends React.Component {
   setUpSearchListeners = (helper) => {
     helper.on('result', res => {
       if (res.hits){
-        this.props.updateCategoriesList(_.differenceWith(res.hits, this.props.selectedCategories, this.props.isSameTag))
+        this.props.updateTagsList(_.differenceWith(
+          res.hits,
+          this.props.selectedTags,
+          this.props.isSameTag
+        ))
       }
     })
   }
@@ -106,41 +157,38 @@ export default class CategoryTileGridAndInput extends React.Component {
 
   handleKeyPress = (e) => {
     if (e.key === 'Enter') {
-      this.props.addCategory(e, this.props.categoryInputText)
+      this.props.addTag(e, this.props.inputText)
     }
   }
 
   render() {
-    const {selectedCategories, handleCategoryRemove} = this.props
+    const {selectedTags, handleTagRemove, type} = this.props
 
-    const renderedTiles = selectedCategories.map((tag) => {
+    const renderedTiles = selectedTags.map((tag) => {
       return (
-        <WrapperCol key={tag.id ? tag.id : tag.title}> {/* Tags do not yet have ids if they have just been entered by user*/}
-          <Tile around='xs'>
-            <TagText>{tag.title}</TagText>
-            <StyledIcon
-              data-tagName={tag.id}
-              name='closeDark'
-              onClick={(e) => handleCategoryRemove(e, tag.title)}
-            />
-          </Tile>
-        </WrapperCol>
+        <Tile
+          key={tag.id ? tag.id : tag.title}
+          tag={tag}
+          handleTagRemove={handleTagRemove}
+        />
       )
     })
+
+    const placeholder = `Add ${type === 'hashtag' ? 'Hashtags' : 'Categories'}`
 
     return (
       <StyledGrid>
         <VerticallyCenterRow>
           {!!renderedTiles.length &&
-            <div style={{marginLeft: '15px', flexDirection: 'row', alignItems: 'center', display: 'flex'}}>
+            <TilesWrapper>
               {renderedTiles}
-            </div>
+            </TilesWrapper>
           }
           <InputWrapper>
             <StyledInput
               type='text'
-              placeholder='Add Categories'
-              value={this.props.categoryInputText}
+              placeholder={placeholder}
+              value={this.props.inputText}
               onChange={this.handleTextInput}
               onClick={this.props.inputOnClick}
               onKeyPress={this.handleKeyPress}

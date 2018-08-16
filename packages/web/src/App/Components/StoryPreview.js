@@ -9,6 +9,7 @@ import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import formatCount from '../Shared/Lib/formatCount'
 import StoryActions from '../Shared/Redux/Entities/Stories'
+import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
 
 import Avatar from './Avatar'
 import LikeComponent from './LikeComponent'
@@ -39,6 +40,9 @@ const Title = styled.h3`
   display: inline-block;
   margin: 0;
   cursor: pointer;
+  &:hover {
+    color: #757575;
+  }
 `
 
 const Description = styled.h2`
@@ -69,6 +73,15 @@ const Text = styled.span`
   letter-spacing: .7px;
   font-size: 15px;
   color: ${props => props.theme.Colors.grey};
+`
+
+const LocationPreview = styled(Text)`
+  color: ${props => props.theme.Colors.background};
+  letter-spacing: .4px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  text-transform: uppercase;
 `
 
 const ByText = styled(Text)`
@@ -150,6 +163,7 @@ class StoryPreview extends Component {
             onClick={this.navToStory}
           />
           <StoryInfoContainer>
+            <LocationPreview>{displayLocationPreview(story.locationInfo)}</LocationPreview>
             <Title onClick={this.navToStory}>{story.title}</Title>
             <Description>{story.description}</Description>
             <DetailsContainer between='xs'>

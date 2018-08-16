@@ -15,6 +15,7 @@ import Inbox from './Modals/Inbox'
 import RightModal from './RightModal'
 import CenterModal from './CenterModal'
 import NotificationsThread from './Modals/NotificationsThread'
+import FlagStory from './Modals/FlagStory'
 
 const Container = styled.div``
 
@@ -75,6 +76,7 @@ export default class HeaderModals extends React.Component {
     markSeen: PropTypes.func,
     reroute: PropTypes.func,
     users: PropTypes.object,
+    flagStory: PropTypes.func,
   }
 
   closeGlobalModal = () => {
@@ -103,6 +105,7 @@ export default class HeaderModals extends React.Component {
       reroute,
       stories,
       users,
+      flagStory,
     } = this.props
 
     return (
@@ -149,6 +152,20 @@ export default class HeaderModals extends React.Component {
           style={addToItineraryModalStyles}
         >
           <AddToItinerary/>
+        </Modal>
+        <Modal
+          isOpen={globalModalThatIsOpen === 'flagStory'}
+          contentLabel="Flag Story Modal"
+          onRequestClose={closeModal}
+          style={customModalStyles}
+        >
+          <FlagStory
+            closeModal={this.closeGlobalModal}
+            reroute={reroute}
+            userId={userId}
+            flagStory={flagStory}
+            params={globalModalParams}
+          />
         </Modal>
         <RightModal
           isOpen={modal === 'notificationsThread'}

@@ -106,6 +106,7 @@ export default class StoryActionBar extends React.Component {
     flagStory: PropTypes.func,
     userId: PropTypes.string,
     reroute: PropTypes.func,
+    openGlobalModal: PropTypes.func,
   }
 
   constructor(props){
@@ -121,9 +122,8 @@ export default class StoryActionBar extends React.Component {
     })
   }
 
-  _flagStory = () => {
-    this.props.flagStory(this.props.userId, this.props.story.id)
-    this.props.reroute('/feed')
+  _openFlagStoryModal = () => {
+    this.props.openGlobalModal('flagStory', {storyId: this.props.story.id})
   }
 
   render () {
@@ -174,7 +174,7 @@ export default class StoryActionBar extends React.Component {
             <ClickableWrapper>
               <StyledIcon
                 name='report'
-                onClick={this._flagStory}
+                onClick={this._openFlagStoryModal}
               />
             </ClickableWrapper>
             <HandMadeIcon onClick={this.toggleShowMore}>

@@ -48,6 +48,7 @@ class Story extends Component {
     match: PropTypes.object,
     onClickComments: PropTypes.func,
     flagStory: PropTypes.func,
+    openGlobalModal: PropTypes.func,
   }
 
   componentDidMount() {
@@ -90,6 +91,7 @@ class Story extends Component {
       isBookmarked,
       isLiked,
       flagStory,
+      openGlobalModal,
     } = this.props
     if (!story || !author) return null
     const suggestedStories = Object.keys(feedExample).map(key => {
@@ -133,6 +135,7 @@ class Story extends Component {
           flagStory={flagStory}
           userId={sessionUserId}
           reroute={reroute}
+          openGlobalModal={openGlobalModal}
         />
       </ContentWrapper>
     )
@@ -173,6 +176,7 @@ function mapDispatchToProps(dispatch, ownProps) {
     onClickBookmark: (sessionUserId) => dispatch(StoryActions.storyBookmark(sessionUserId, storyId)),
     onClickComments: () => dispatch(UXActions.openGlobalModal('comments', { storyId })),
     flagStory: (sessionUserId, storyId) => dispatch(StoryActions.flagStory(sessionUserId, storyId)),
+    openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
   }
 }
 

@@ -31,6 +31,15 @@ const GreyWrapper = styled.div`
   background-color: ${props => props.theme.Colors.dividerGrey};
 `
 
+const HashtagText = styled.p`
+  font-weight: 400;
+  font-size: 18px;
+  color: ${props => props.theme.Colors.redHighlights};
+  letter-spacing: .7px;
+  text-decoration: none;
+  margin-botton: 45px;
+`
+
 class Story extends Component {
   static propTypes = {
     story: PropTypes.object,
@@ -75,8 +84,23 @@ class Story extends Component {
     this.props.onClickBookmark(this.props.sessionUserId)
   }
 
-  _onClickComments= () => {
+  _onClickComments = () => {
     this.props.onClickComments()
+  }
+
+  renderHashtags = () => {
+    const {story} = this.props
+    if (!story.hashtags) return null
+
+    const hashtagMap = story.hashtags.map((hashtag) => {
+      return `#${hashtag.title}`
+    })
+
+    return (
+      <HashtagText>
+        {hashtagMap.join(', ')}
+      </HashtagText>
+    )
   }
 
   render() {
@@ -101,6 +125,7 @@ class Story extends Component {
         />
         <LimitedWidthContainer>
           <StoryContentRenderer story={story} />
+          {this.renderHashtags()}
           {story.locationInfo && story.locationInfo.latitude && story.locationInfo.longitude &&
             <GMap
               lat={story.locationInfo.latitude}

@@ -71,9 +71,11 @@ const StyledLink = styled(NavLink)`
 
 function DetailRow({Icon, iconName, label, children}) {
   if (
-    typeof children === 'object' && !_.get(children, 'props.children')
-    || typeof children === 'string' && !children
+    (typeof children === 'object' && !_.get(children, 'props.children'))
+    || (typeof children === 'string' && !children)
+    || typeof children === 'undefined'
   ) return null
+
   return (
     <InfoRow>
       <IconWrapper>

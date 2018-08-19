@@ -77,7 +77,7 @@ const Text = styled.span`
 
 const LocationPreview = styled(Text)`
   color: ${props => props.theme.Colors.background};
-  letter-spacing: .4px;
+  letter-spacing: .7px;
   font-size: 14px;
   font-weight: 600;
   margin-bottom: 12px;

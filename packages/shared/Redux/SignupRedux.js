@@ -19,7 +19,7 @@ const { Types, Creators } = createActions({
   signupUnfollowCategory: ['categoryId'],
   signupUnfollowCategorySuccess: ['categoryId'],
   signupUnfollowCategoryFailure: ['categoryId', 'error'],
-  signUpReset: null,
+  signupReset: null,
 })
 
 export const SignupTypes = Types

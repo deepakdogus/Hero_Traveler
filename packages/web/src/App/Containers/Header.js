@@ -62,6 +62,7 @@ class Header extends React.Component {
     markSeen: PropTypes.func,
     users: PropTypes.object,
     signedUp: PropTypes.bool,
+    flagStory: PropTypes.func,
   }
 
   constructor(props) {
@@ -150,6 +151,7 @@ class Header extends React.Component {
       stories,
       markSeen,
       users,
+      flagStory,
     } = this.props
 
     const SelectedGrid =
@@ -201,6 +203,7 @@ class Header extends React.Component {
               markSeen={markSeen}
               users={users}
               reroute={reroute}
+              flagStory={flagStory}
             />
         </SelectedGrid>
         <HeaderSpacer
@@ -247,7 +250,8 @@ function mapDispatchToProps(dispatch) {
     closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
     reroute: (route) => dispatch(push(route)),
-    attemptUpdateUser: (updates) => dispatch(UserActions.updateUser(updates))
+    attemptUpdateUser: (updates) => dispatch(UserActions.updateUser(updates)),
+    flagStory: (sessionUserId, storyId) => dispatch(StoryActions.flagStory(sessionUserId, storyId)),
   }
 }
 

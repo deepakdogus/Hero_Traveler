@@ -31,6 +31,15 @@ const GreyWrapper = styled.div`
   background-color: ${props => props.theme.Colors.dividerGrey};
 `
 
+const HashtagText = styled.p`
+  font-weight: 400;
+  font-size: 18px;
+  color: ${props => props.theme.Colors.redHighlights};
+  letter-spacing: .7px;
+  text-decoration: none;
+  margin-botton: 45px;
+`
+
 class Story extends Component {
   static propTypes = {
     story: PropTypes.object,
@@ -47,6 +56,8 @@ class Story extends Component {
     onClickBookmark: PropTypes.func,
     match: PropTypes.object,
     onClickComments: PropTypes.func,
+    flagStory: PropTypes.func,
+    openGlobalModal: PropTypes.func,
   }
 
   componentDidMount() {
@@ -75,19 +86,42 @@ class Story extends Component {
     this.props.onClickBookmark(this.props.sessionUserId)
   }
 
-  _onClickComments= () => {
+  _onClickComments = () => {
     this.props.onClickComments()
+  }
+
+  renderHashtags = () => {
+    const {story} = this.props
+    if (!story.hashtags) return null
+
+    const hashtagMap = story.hashtags.map((hashtag) => {
+      return `#${hashtag.title}`
+    })
+
+    return (
+      <HashtagText>
+        {hashtagMap.join(', ')}
+      </HashtagText>
+    )
   }
 
   render() {
     const {
-      story, author, reroute, sessionUserId,
-      isFollowing, isBookmarked, isLiked,
+      story,
+      author,
+      reroute,
+      sessionUserId,
+      isFollowing,
+      isBookmarked,
+      isLiked,
+      flagStory,
+      openGlobalModal,
     } = this.props
     if (!story || !author) return null
     const suggestedStories = Object.keys(feedExample).map(key => {
       return feedExample[key]
     })
+
     return (
       <ContentWrapper>
         <StoryHeader
@@ -101,6 +135,7 @@ class Story extends Component {
         />
         <LimitedWidthContainer>
           <StoryContentRenderer story={story} />
+          {this.renderHashtags()}
           {story.locationInfo && story.locationInfo.latitude && story.locationInfo.longitude &&
             <GMap
               lat={story.locationInfo.latitude}
@@ -122,6 +157,10 @@ class Story extends Component {
           isBookmarked={isBookmarked}
           onClickBookmark={this._onClickBookmark}
           onClickComments={this._onClickComments}
+          flagStory={flagStory}
+          userId={sessionUserId}
+          reroute={reroute}
+          openGlobalModal={openGlobalModal}
         />
       </ContentWrapper>
     )
@@ -161,6 +200,8 @@ function mapDispatchToProps(dispatch, ownProps) {
     onClickLike: (sessionUserId) => dispatch(StoryActions.storyLike(sessionUserId, storyId)),
     onClickBookmark: (sessionUserId) => dispatch(StoryActions.storyBookmark(sessionUserId, storyId)),
     onClickComments: () => dispatch(UXActions.openGlobalModal('comments', { storyId })),
+    flagStory: (sessionUserId, storyId) => dispatch(StoryActions.flagStory(sessionUserId, storyId)),
+    openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
   }
 }
 

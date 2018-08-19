@@ -56,6 +56,8 @@ class Story extends Component {
     onClickBookmark: PropTypes.func,
     match: PropTypes.object,
     onClickComments: PropTypes.func,
+    flagStory: PropTypes.func,
+    openGlobalModal: PropTypes.func,
   }
 
   componentDidMount() {
@@ -105,13 +107,21 @@ class Story extends Component {
 
   render() {
     const {
-      story, author, reroute, sessionUserId,
-      isFollowing, isBookmarked, isLiked,
+      story,
+      author,
+      reroute,
+      sessionUserId,
+      isFollowing,
+      isBookmarked,
+      isLiked,
+      flagStory,
+      openGlobalModal,
     } = this.props
     if (!story || !author) return null
     const suggestedStories = Object.keys(feedExample).map(key => {
       return feedExample[key]
     })
+
     return (
       <ContentWrapper>
         <StoryHeader
@@ -147,6 +157,10 @@ class Story extends Component {
           isBookmarked={isBookmarked}
           onClickBookmark={this._onClickBookmark}
           onClickComments={this._onClickComments}
+          flagStory={flagStory}
+          userId={sessionUserId}
+          reroute={reroute}
+          openGlobalModal={openGlobalModal}
         />
       </ContentWrapper>
     )
@@ -186,6 +200,8 @@ function mapDispatchToProps(dispatch, ownProps) {
     onClickLike: (sessionUserId) => dispatch(StoryActions.storyLike(sessionUserId, storyId)),
     onClickBookmark: (sessionUserId) => dispatch(StoryActions.storyBookmark(sessionUserId, storyId)),
     onClickComments: () => dispatch(UXActions.openGlobalModal('comments', { storyId })),
+    flagStory: (sessionUserId, storyId) => dispatch(StoryActions.flagStory(sessionUserId, storyId)),
+    openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
   }
 }
 

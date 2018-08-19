@@ -10,7 +10,7 @@ import {
 import {Row} from '../FlexboxGrid'
 
 export default class FlagStory extends React.Component {
-  static proptypes = {
+  static propTypes = {
     closeModal: PropTypes.func,
     reroute: PropTypes.func,
     flagStory: PropTypes.func,
@@ -30,7 +30,6 @@ export default class FlagStory extends React.Component {
   }
 
   render(){
-
     return(
       <Container>
         <Title>Flag Story:</Title>

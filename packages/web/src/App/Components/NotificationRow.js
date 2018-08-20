@@ -86,6 +86,25 @@ const StyledNotificationContent = styled(NotificationContent)`
   max-width: ${notificationContentWidth}px;
 `
 
+const RenderImageContainer = styled.div`
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+`
+
+const NewNotificationBullet = styled.div`
+  display: flex;
+  background-color: #ed1e2e;
+  margin: 0;
+  margin-right: 5px;
+  padding: 0;
+  width: 7.1px;
+  height: 7.1px;
+  border-radius: 50%;
+`
+
 export default class NotificationRow extends Component {
   static propTypes = {
     notification: PropTypes.string,
@@ -97,6 +116,9 @@ export default class NotificationRow extends Component {
     isFeedItem: PropTypes.bool,
     timestamp: PropTypes.object,
     reroute: PropTypes.func,
+    seen: PropTypes.bool,
+    markSeen: PropTypes.func,
+    activityId: PropTypes.string,
   }
 
   navToStory = () => {
@@ -111,10 +133,13 @@ export default class NotificationRow extends Component {
 
   renderImage = () => {
     return (
-      <Avatar
-        avatarUrl={getImageUrl(this.props.user.profile.avatar, 'avatar')}
-        size='larger'
-      />
+      <RenderImageContainer>
+        {!this.props.seen && <NewNotificationBullet />}
+        <Avatar
+          avatarUrl={getImageUrl(this.props.user.profile.avatar, 'avatar')}
+          size='larger'
+        />
+      </RenderImageContainer>
     )
   }
 
@@ -152,9 +177,15 @@ export default class NotificationRow extends Component {
     } else return
   }
 
+  _markSeen = () => {
+    if (!this.props.seen) {
+      this.props.markSeen(this.props.activityId)
+    }
+  }
+
   render() {
     return (
-      <InteractiveContainer>
+      <InteractiveContainer onClick={this._markSeen}>
         <Container
           onClick={this.props.isFeedItem? this.navToStory : this.navToUserProfile}
           >

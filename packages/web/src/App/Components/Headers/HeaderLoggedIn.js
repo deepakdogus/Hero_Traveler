@@ -11,6 +11,7 @@ import RoundedButton from '../RoundedButton'
 import Icon from '../Icon'
 import { StyledRow, StyledRoundedButton, Logo, Divider, HamburgerIcon, MenuLink, SearchNav } from './Shared'
 import logo from '../../Shared/Images/ht-logo-white.png'
+import NotificationsBadge from '../NotificationsBadge'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 
 const LoggedInDesktopContainer = styled.div`
@@ -44,6 +45,13 @@ const StyledRoundedNotificationButton = styled(StyledRoundedButton)`
     top: 2px;
 `
 
+const NotificationButtonContainer = styled.div`
+  margin: 0;
+  padding: 0;
+  position: relative;
+  display: inline;
+`
+
 class HeaderLoggedIn extends React.Component {
   static propTypes = {
     reroute: PropTypes.func,
@@ -51,7 +59,9 @@ class HeaderLoggedIn extends React.Component {
     openGlobalModal: PropTypes.func,
     userId: PropTypes.string,
     attemptLogout: PropTypes.func,
-    profileAvatar: PropTypes.object
+    profileAvatar: PropTypes.object,
+    activities: PropTypes.objectOf(PropTypes.object),
+    activitiesById: PropTypes.arrayOf(PropTypes.string),
   }
 
   state = {
@@ -71,6 +81,15 @@ class HeaderLoggedIn extends React.Component {
     }
   }
 
+  _getNotificationsCount = () => {
+    const {activities, activitiesById} = this.props
+    let count = 0
+    activitiesById.map(id => {
+      if(!activities[id].seen) count++
+    })
+    return count
+  }
+
   render () {
     const {
       openModal,
@@ -78,7 +97,7 @@ class HeaderLoggedIn extends React.Component {
       userId,
       profileAvatar,
       reroute,
-      attemptLogout
+      attemptLogout,
     } = this.props
 
     return (
@@ -112,15 +131,21 @@ class HeaderLoggedIn extends React.Component {
               >
                 <StyledRoundedCreateButton text='Create'/>
               </NavLink>
-              <StyledRoundedNotificationButton
-                type='headerButton'
-                height='32px'
-                width='32px'
-                name='notifications'
-                onClick={openModal}
-              >
-                <NotificationsIcon name='cameraFlash' />
-              </StyledRoundedNotificationButton>
+              <NotificationButtonContainer>
+                {this._getNotificationsCount() > 0
+                && <NotificationsBadge
+                  count={this._getNotificationsCount()}
+                   />}
+                <StyledRoundedNotificationButton
+                  type='headerButton'
+                  height='32px'
+                  width='32px'
+                  name='notifications'
+                  onClick={openModal}
+                >
+                  <NotificationsIcon name='cameraFlash' />
+                </StyledRoundedNotificationButton>
+              </NotificationButtonContainer>
                 <StyledRoundedAvatarButton
                   type='headerButton'
                   height='32px'

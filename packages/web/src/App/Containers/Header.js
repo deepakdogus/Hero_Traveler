@@ -170,6 +170,8 @@ class Header extends React.Component {
               openGlobalModal={openGlobalModal}
               reroute={reroute}
               attemptLogout={attemptLogout}
+              activities={activities}
+              activitiesById={activitiesById}
             />
           }
           {!isLoggedIn &&
@@ -252,6 +254,7 @@ function mapDispatchToProps(dispatch) {
     reroute: (route) => dispatch(push(route)),
     attemptUpdateUser: (updates) => dispatch(UserActions.updateUser(updates)),
     flagStory: (sessionUserId, storyId) => dispatch(StoryActions.flagStory(sessionUserId, storyId)),
+    markSeen: (activityId) => dispatch(UserActions.activitySeen(activityId)),
   }
 }
 

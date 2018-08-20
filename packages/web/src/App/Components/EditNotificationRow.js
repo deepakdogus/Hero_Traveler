@@ -29,7 +29,7 @@ const RowSpacer = styled.div`
 
 export default class EditNotificationRow extends Component {
 
-  static PropTypes = {
+  static propTypes = {
     text: PropTypes.string,
     index: PropTypes.number,
     toggleNotificationSwitch: PropTypes.func,

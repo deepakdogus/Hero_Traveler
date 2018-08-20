@@ -222,7 +222,7 @@ export default class HeaderModals extends React.Component {
           contentLabel='Inbox'
           onRequestClose={closeModal}
         >
-          <Inbox closeModal={closeModal} profile={userId}/>
+          <Inbox closeModal={closeModal} profile={currentUserProfile}/>
         </RightModal>
       </Container>
     )

@@ -77,6 +77,8 @@ export default class MediaComponent extends EditorBlock {
             />
           </BodyMediaDiv>
         )
+      default:
+        return null
     }
   }
 

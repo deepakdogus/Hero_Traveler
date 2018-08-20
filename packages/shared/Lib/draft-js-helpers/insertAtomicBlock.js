@@ -1,6 +1,4 @@
 import insertBlock from './insertBlock'
-import updateSelectionAnchorAndFocus from './updateSelectionAnchorAndFocus'
-import updateSelectionHasFocus from './updateSelectionHasFocus'
 
 export default function insertAtomicBlock(editorState, type, url, height, width) {
   const selectionState = editorState.getSelection()

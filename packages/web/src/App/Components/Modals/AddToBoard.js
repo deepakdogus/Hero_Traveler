@@ -49,7 +49,7 @@ const storyKeys = Object.keys(feedExample).filter((key, index) => {
 })
 
 export default class AddToBoard extends React.Component {
-  static PropTypes = {
+  static propTypes = {
     profile: PropTypes.object,
     users: PropTypes.object,
     closeModal: PropTypes.func,

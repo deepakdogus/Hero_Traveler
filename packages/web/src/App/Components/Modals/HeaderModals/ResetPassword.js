@@ -13,7 +13,7 @@ const RestyledInput = styled(StyledInput)`
 `
 
 export default class ResetPassword extends React.Component {
-  static PropTypes = {
+  static propTypes = {
     onLoginClick: PropTypes.func,
   }
 

@@ -1,5 +1,4 @@
 import {EditorState, Modifier} from '.'
-import insertBlock from './insertBlock'
 
 export default function insertText(editorState, text) {
   const newContentState = Modifier.replaceText(

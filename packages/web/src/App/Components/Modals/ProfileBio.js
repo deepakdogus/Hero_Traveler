@@ -48,7 +48,7 @@ const InstagramIcon = styled(StyledIcon)`
 `
 
 export default class ProfileBio extends React.Component {
-  static PropTypes = {
+  static propTypes = {
     profile: PropTypes.object,
     closeModal: PropTypes.func,
   }

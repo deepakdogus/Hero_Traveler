@@ -66,7 +66,7 @@ const styleMap = {
 
 export default class BodyEditor extends React.Component {
   static propTypes = {
-    value: PropTypes.string,
+    value: PropTypes.object,
     setGetEditorState: PropTypes.func,
     storyId: PropTypes.string,
   }

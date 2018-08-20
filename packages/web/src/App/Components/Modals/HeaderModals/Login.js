@@ -19,7 +19,7 @@ const ForgotPasswordText = styled(Text)`
 `
 
 export default class Login extends React.Component {
-  static PropTypes = {
+  static propTypes = {
     onAttemptLogin: PropTypes.func,
     onSignupClick: PropTypes.func,
   }
@@ -74,7 +74,7 @@ export default class Login extends React.Component {
               height='39px'
               type='submit'
             />
-          </form> 
+          </form>
         <HasAccount>Don't have an account? <SignupText onClick={onSignupClick}>Sign up</SignupText></HasAccount>
       </Container>
     )

@@ -124,7 +124,7 @@ Can provide RoundedButton with either straight text or children
 Children will supplant the text
 */
 export default class RoundedButton extends React.Component {
-  static PropTypes = {
+  static propTypes = {
     text: PropTypes.string,
     children: PropTypes.node,
     onClick: PropTypes.func,

@@ -59,7 +59,7 @@ const HowText =  styled(Text)`
 `
 
 export default class ProfileStats extends React.Component {
-  static PropTypes = {
+  static propTypes = {
     profile: PropTypes.object,
     closeModal: PropTypes.func,
   }

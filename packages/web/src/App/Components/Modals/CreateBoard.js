@@ -22,7 +22,7 @@ const CreateBoardStyledInput = styled(StyledInput)`
 `
 
 export default class CreateBoard extends React.Component {
-  static PropTypes = {
+  static propTypes = {
     closeModal: PropTypes.func,
   }
 

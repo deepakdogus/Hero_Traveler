@@ -12,7 +12,7 @@ const StyledContainer = styled(DefaultContainer)`
 `
 
 export default class SearchResultsStories extends Component {
-  static PropTypes = {
+  static propTypes = {
     storySearchResults: PropTypes.object,
     navToStory: PropTypes.func
   }

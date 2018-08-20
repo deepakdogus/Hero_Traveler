@@ -31,7 +31,7 @@ const storyKeys = Object.keys(feedExample).filter((key, index) => {
 })
 
 export default class AddToItinerary extends React.Component {
-  static PropTypes = {
+  static propTypes = {
     onAddClick: PropTypes.func,
     stories: PropTypes.object,
   }

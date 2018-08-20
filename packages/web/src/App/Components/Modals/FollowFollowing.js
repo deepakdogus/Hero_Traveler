@@ -16,7 +16,7 @@ const UserRowsContainer = styled.div`
 `
 
 class FollowFollowing extends Component {
-  static PropTypes = {
+  static propTypes = {
     profile: PropTypes.object,
     closeModal: PropTypes.func,
     followersType: PropTypes.oneOf(['followers', 'following']).isRequired,

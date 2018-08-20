@@ -85,7 +85,7 @@ const asyncValidate = (values, dispatch) => {
 }
 
 class Signup extends React.Component {
-  static PropTypes = {
+  static propTypes = {
     onLoginClick: PropTypes.func,
     onAttemptSignup: PropTypes.func,
     fetching: PropTypes.bool,

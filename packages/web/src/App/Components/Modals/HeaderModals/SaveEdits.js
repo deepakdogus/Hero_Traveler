@@ -13,7 +13,7 @@ import {Row} from '../../FlexboxGrid'
 
 export default class SaveEdits extends React.Component{
 
-  static proptypes = {
+  static propTypes = {
     reroute: PropTypes.func,
     nextPathAfterSave: PropTypes.string,
     closeModal: PropTypes.func,
@@ -24,21 +24,20 @@ export default class SaveEdits extends React.Component{
 
   saveAndReroute = () => {
     this.props.params.updateDraft()
-    if (this.props.nextPathAfterSave === 'logout') {
-      this.logoutAndReroute()
-    } else {
-      this.props.reroute(this.props.nextPathAfterSave)
-    }
-    this.props.closeModal()
+    this._reroute()
   }
 
   dontSaveAndReroute = () => {
+    this._reroute()
+    this.props.resetCreateStore()
+  }
+
+  _reroute = () => {
     if (this.props.nextPathAfterSave === 'logout') {
       this.logoutAndReroute()
     } else {
       this.props.reroute(this.props.nextPathAfterSave)
     }
-    this.props.resetCreateStore()
     this.props.closeModal()
   }
 

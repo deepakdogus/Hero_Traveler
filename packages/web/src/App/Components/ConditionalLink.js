@@ -7,6 +7,7 @@ import {MenuLink} from './Headers/Shared'
 const Container = styled.div`
   margin: 0;
   padding: 0;
+  cursor: pointer;
 `
 
 const ShouldEditLink = styled.p`
@@ -39,7 +40,7 @@ const ShouldEditLogo = styled.div`
 
 export default class ConditionalLink extends React.Component{
 
-  static proptypes = {
+  static propTypes = {
     to: PropTypes.string,
     pathname: PropTypes.string,
     onClick: PropTypes.func,
@@ -59,7 +60,7 @@ export default class ConditionalLink extends React.Component{
     const {pathname, haveFieldsChanged, workingDraft, originalDraft} = this.props
     return pathname.includes('editStory')
     && (pathname.includes('editStory')
-    && haveFieldsChanged(workingDraft, originalDraft, 'web'))
+    && haveFieldsChanged(workingDraft, originalDraft))
   }
 
   _renderOpenSaveEditsLinkContainer = () => {
@@ -67,7 +68,7 @@ export default class ConditionalLink extends React.Component{
     ? ShouldEditLink
     : ShouldEditLogo
     return (
-      <Container onClick={this._handleOpenSaveEditsModal} style={{cursor: 'pointer'}}>
+      <Container onClick={this._handleOpenSaveEditsModal}>
         <ChildrenWrapper>
           {this.props.children}
         </ChildrenWrapper>

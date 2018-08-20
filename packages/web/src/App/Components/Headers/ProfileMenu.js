@@ -51,28 +51,30 @@ class ProfileMenu extends React.Component{
   }
 
   _openSaveEditsModalToProfile = () => {
-    const {haveFieldsChanged, workingDraft, originalDraft} = this.props
-    if (this._shouldOpenSaveEditsModal()){
-      this.rerouteToProfile()
-    } else if (haveFieldsChanged(workingDraft, originalDraft, 'web')) {
-      this.props.openSaveEditsModal(`/profile/${this.props.userId}/view`)
-    }
+    this._saveEditsModalHelper(this.rerouteToProfile, `/profile/${this.props.userId}/view`)
   }
 
   _openSaveEditsModalToLogout = () => {
+    this._saveEditsModalHelper(this.handleLogout, 'logout')
+  }
+
+  _openSaveEditsModalToCustomizeInterests = () => {
+    this._saveEditsModalHelper(this.rerouteToCustomizeInterests, '/signup/topics')
+  }
+
+  _saveEditsModalHelper = (rerouteFunc, pathname) => {
     const {haveFieldsChanged, workingDraft, originalDraft} = this.props
     if (this._shouldOpenSaveEditsModal()){
-      this.handleLogout()
-    } else if (haveFieldsChanged(workingDraft, originalDraft, 'web')) {
-      this.props.openSaveEditsModal('logout')
+      rerouteFunc()
+    } else if (haveFieldsChanged(workingDraft, originalDraft)) {
+      this.props.openSaveEditsModal(pathname)
     }
   }
 
   _shouldOpenSaveEditsModal = () => {
     const {haveFieldsChanged, workingDraft, originalDraft} = this.props
     return !this.props.pathname.includes('editStory')
-      ||
-      !haveFieldsChanged(workingDraft, originalDraft, 'web')
+      || !haveFieldsChanged(workingDraft, originalDraft)
   }
 
   rerouteToCustomizeInterests = () => {
@@ -113,7 +115,7 @@ class ProfileMenu extends React.Component{
         <SidebarDemiLink onClick={this.openSettings}>
           Settings
         </SidebarDemiLink>
-        <SidebarDemiLink onClick={this.rerouteToCustomizeInterests}>
+        <SidebarDemiLink onClick={this._openSaveEditsModalToCustomizeInterests}>
           Customize Interests
         </SidebarDemiLink>
         <SidebarDemiLink onClick={this.openFAQ}>

@@ -141,7 +141,14 @@ class HeaderLoggedIn extends React.Component {
         </LoggedInDesktopContainer>
         <Col smOffset={2} lg={5}>
           <Row end='xs' middle='xs'>
-            <SearchNav />
+            <SearchNav
+              pathname={pathname}
+              openSaveEditsModal={openSaveEditsModal}
+              isMenuLink={false}
+              haveFieldsChanged={haveFieldsChanged}
+              workingDraft={workingDraft}
+              originalDraft={originalDraft}
+            />
             <Divider>&nbsp;</Divider>
             <LoggedInDesktopContainer>
               {// we remove the 'Create' button from the HeaderLoggedIn Nav if we're editting a story

@@ -64,6 +64,9 @@ class StoryCoverScreen extends Component {
     resetCreateStore: PropTypes.func,
     workingDraft: PropTypes.object,
     originalDraft: PropTypes.object,
+    updateWorkingDraft: PropTypes.func,
+    saveDraftToCache: PropTypes.func,
+    error: PropTypes.string,
   }
 
   static defaultProps = {
@@ -157,8 +160,8 @@ class StoryCoverScreen extends Component {
   }
 
   _onLeft = () => {
-    const {workginDraft, originalDraft} = this.props
-    if (haveFieldsChanged(workginDraft, originalDraft, 'mobile')) {
+    const {workingDraft, originalDraft} = this.props
+    if (haveFieldsChanged(workingDraft, originalDraft)) {
       this.setState({ activeModal: 'cancel' })
     } else {
       // If there are no changes, just close without opening the modal
@@ -234,7 +237,7 @@ class StoryCoverScreen extends Component {
   }
 
   navBack = () => {
-    this.props.dispatch(StoryCreateActions.resetCreateStore())
+    this.props.resetCreateStore()
     if (this.props.navigatedFromProfile) {
       NavActions.tabbar({type: 'reset'})
       NavActions.profile()
@@ -272,7 +275,11 @@ class StoryCoverScreen extends Component {
       this.setState({validationError: 'Please add a cover and title to continue'})
       return
     }
-    if ((hasImageSelected || hasVideoSelected) && (hasVideoChanged || hasImageChanged) && !this.state.file) {
+    if (
+      (hasImageSelected || hasVideoSelected)
+      && (isVideoSame || isImageSame)
+      && !this.state.file
+    ) {
       this.setState({error: 'Sorry, could not process file. Please try another file.'})
       return
     }

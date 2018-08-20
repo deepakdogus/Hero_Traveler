@@ -16,6 +16,7 @@ import Inbox from './Modals/Inbox'
 import RightModal from './RightModal'
 import CenterModal from './CenterModal'
 import NotificationsThread from './Modals/NotificationsThread'
+import FlagStory from './Modals/FlagStory'
 
 const Container = styled.div``
 
@@ -88,6 +89,7 @@ export default class HeaderModals extends React.Component {
     nextPathAfterSave: PropTypes.string,
     attemptLogout: PropTypes.func,
     resetCreateStore: PropTypes.func,
+    flagStory: PropTypes.func,
   }
 
   closeGlobalModal = () => {
@@ -120,6 +122,7 @@ export default class HeaderModals extends React.Component {
       nextPathAfterSave,
       attemptLogout,
       resetCreateStore,
+      flagStory,
     } = this.props
 
     return (
@@ -180,6 +183,20 @@ export default class HeaderModals extends React.Component {
             closeModal={closeGlobalModal}
             attemptLogout={attemptLogout}
             resetCreateStore={resetCreateStore}
+          />
+        </Modal>
+        <Modal
+          isOpen={globalModalThatIsOpen === 'flagStory'}
+          contentLabel="Flag Story Modal"
+          onRequestClose={closeModal}
+          style={customModalStyles}
+        >
+          <FlagStory
+            closeModal={this.closeGlobalModal}
+            reroute={reroute}
+            userId={userId}
+            flagStory={flagStory}
+            params={globalModalParams}
           />
         </Modal>
         <RightModal

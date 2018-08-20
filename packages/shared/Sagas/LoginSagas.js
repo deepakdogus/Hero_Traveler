@@ -97,7 +97,6 @@ export function * changePassword (api, {userId, oldPassword, newPassword}){
   )
 
   if (response.ok){
-    alert('Your password has been successfully changed')
     yield put(LoginActions.changePasswordSuccess())
   }else{
     yield put(LoginActions.changePasswordFailure(new Error('Change password attempt failed. Please verify your old password is correct.')))

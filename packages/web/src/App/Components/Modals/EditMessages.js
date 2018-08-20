@@ -23,7 +23,7 @@ const EditMessages = (props) => {
         <FetchingMessage>
           Fetching...
         </FetchingMessage>}
-      {success &&
+      {success && !isUpdating &&
         <FetchingMessage>
           You have successfully changed your info.
         </FetchingMessage>}

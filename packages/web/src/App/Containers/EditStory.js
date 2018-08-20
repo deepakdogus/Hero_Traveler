@@ -78,6 +78,8 @@ class EditStory extends Component {
     reroute: PropTypes.func,
     updateGlobalModalParams: PropTypes.func,
     globalModal: PropTypes.object,
+    syncProgressSteps: PropTypes.number,
+    syncProgress: PropTypes.number,
   }
 
   constructor(props){
@@ -125,6 +127,13 @@ class EditStory extends Component {
         resetCreateStore: this.props.resetCreateStore,
         updateDraft: this._updateDraft,
       })
+    }
+  }
+
+  componentDidUpdate(){
+    if (this.props.syncProgress > 0 && this.props.syncProgressSteps === this.props.syncProgress) {
+      this.props.reroute('/feed')
+      this.props.resetCreateStore()
     }
   }
 
@@ -246,7 +255,7 @@ class EditStory extends Component {
     const {workingDraft, publish} = this.props
     if (!workingDraft.type) {
       this.setValidationErrorState('Please include an activity')
-    } else if (!workingDraft.location) {
+    } else if (!_.get(workingDraft, 'locationInfo.name')) {
       this.setValidationErrorState('Please include a location')
     } else if (workingDraft.draft) {
       publish(this.cleanDraft(workingDraft))
@@ -323,7 +332,8 @@ function mapStateToProps(state, props) {
     subPath: getSubPath(state.routes.location),
     originalDraft: state.storyCreate.draft,
     workingDraft: state.storyCreate.workingDraft,
-    sync: state.storyCreate.sync,
+    syncProgress: state.storyCreate.sync.syncProgress,
+    syncProgressSteps: state.storyCreate.sync.syncProgressSteps,
     backgroundFailures: state.entities.stories.backgroundFailures,
     globalModal: state.ux
   }

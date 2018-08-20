@@ -120,6 +120,8 @@ export default class Icon extends React.Component {
         return Images.iconNavActivity
       case 'tag':
         return Images.iconTag
+      case 'hashtag':
+        return Images.iconHashtag
       case 'explore':
         return Images.iconNavExplore
       case 'story':
@@ -168,6 +170,10 @@ export default class Icon extends React.Component {
         return Images.iconSquareEmail
       case 'report':
         return Images.iconSquareFlag
+      case 'cost':
+        return Images.iconCost
+      case 'travelTips':
+        return Images.iconTravelTips
       case 'profile':
       default:
         return Images.iconNavProfile

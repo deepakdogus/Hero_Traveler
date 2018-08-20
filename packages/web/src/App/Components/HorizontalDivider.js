@@ -15,4 +15,5 @@ export default styled.hr`
   };
   opacity: ${props => props.opaque ? .5 : 1};
   border-style: solid;
+  border-width: 1.1px;
 `

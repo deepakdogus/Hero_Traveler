@@ -103,6 +103,10 @@ export default class StoryActionBar extends React.Component {
     isBookmarked: PropTypes.bool,
     onClickBookmark: PropTypes.func,
     onClickComments: PropTypes.func,
+    flagStory: PropTypes.func,
+    userId: PropTypes.string,
+    reroute: PropTypes.func,
+    openGlobalModal: PropTypes.func,
   }
 
   constructor(props){
@@ -118,8 +122,19 @@ export default class StoryActionBar extends React.Component {
     })
   }
 
+  _openFlagStoryModal = () => {
+    this.props.openGlobalModal('flagStory', {storyId: this.props.story.id})
+  }
+
   render () {
-    const {story, isLiked, isBookmarked, onClickBookmark, onClickLike, onClickComments} = this.props
+    const {
+      story,
+      isLiked,
+      isBookmarked,
+      onClickBookmark,
+      onClickLike,
+      onClickComments
+    } = this.props
 
     return (
       <AbsoluteWrapper>
@@ -156,7 +171,12 @@ export default class StoryActionBar extends React.Component {
             <StyledIcon name='tumblr'/>
             <StyledIcon name='pinterest'/>
             <StyledIcon name='email'/>
-            <StyledIcon name='report'/>
+            <ClickableWrapper>
+              <StyledIcon
+                name='report'
+                onClick={this._openFlagStoryModal}
+              />
+            </ClickableWrapper>
             <HandMadeIcon onClick={this.toggleShowMore}>
               <HandMadeIconMinus />
             </HandMadeIcon>

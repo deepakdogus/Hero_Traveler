@@ -2,42 +2,60 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import CloseX from '../CloseX'
 import Overlay from '../Overlay'
 import Icon from '../Icon'
 import {SubTitle, Input, CloseXContainer} from './Shared'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import uploadFile from '../../Utils/uploadFile'
+import {VerticalCenterStyles} from '../VerticalCenter'
+
+const ButtonsHorizontalCenter = styled.div`
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  height: 350px;
+  margin: auto;
+  ${VerticalCenterStyles}
+
+`
 
 const Wrapper = styled.div`
   position: absolute;
   top: 0;
-  padding: 127.5px 30px;
-  background-color: ${props => props.hasImage ? props.theme.Colors.transparent : props.theme.Colors.pink};
-  border: 1px dashed ${props => props.hasImage ? 'none' : `1px dashed ${props.theme.Colors.redHighlights}`};
+  width: 100%;
+  background-color: ${props =>
+    props.hasImage ? props.theme.Colors.transparent : props.theme.Colors.lightGreyAreas
+  };
 `
 
 const RelativeWrapper = styled.div`
   position: relative;
 `
 
+const DeleteIcon = styled(Icon)`
+  align-self: center;
+  cursor: pointer;
+`
+
 const StoryOverlayWrapper = styled(Overlay)`
-  margin-top: 40px;
-  padding-top: 505px;
+  margin: 40px auto 0;
+  padding-top: 350px;
   width: 100%;
-  max-width: 900px;
-  max-height: 505px;
+  max-width: 800px;
+  max-height: 350px;
   background-image: ${props => `url(${props.image})`};
   background-size: cover;
   position: relative;
   z-index: -100;
 `
 
-const UploadWrapper = styled.label`
-  position: absolute;
+const NewUploadWrapper = styled.label`
   width: 100%;
-  margin-left: -30px;
+  cursor: pointer;
+  ${VerticalCenterStyles}
 `
+
+const ReplaceUploadWrapper = styled.label``
 
 const IconSubTitle = styled(SubTitle)`
   font-weight: 400;
@@ -51,6 +69,7 @@ const StyledIcon = styled(Icon)`
   height: 40px;
   width: 40px;
   margin-top: 10px;
+  cursor: pointer;
 `
 
 const IconWrapper = styled.div`
@@ -66,23 +85,32 @@ const HiddenInput = styled.input`
 `
 
 const StyledInput = styled(Input)`
-  background-color: ${props => props.hasImage ? props.theme.Colors.transparent : props.theme.Colors.pink};
+  color: ${props => props.theme.Colors.grey};
+  ::placeholder {
+    color: ${props => props.theme.Colors.grey};
+  }
+`
+
+const StyledTitleInput = styled(StyledInput)`
+  margin-top: 10px;
+  text-align: left;
+  font-family: ${props => props.theme.Fonts.type.montserrat};
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 50px;
+  letter-spacing: 1.5px;
+  color: ${props => props.theme.Colors.background};
   ::placeholder {
     color: ${props => props.theme.Colors.background};
   }
 `
 
-const StyledTitleInput = styled(StyledInput)`
-  font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-size: 50px;
-  margin-top: ${props => `${props.hasImage ? 158 : 46}px`};
-  letter-spacing: 1.5px;
-  width: 100%;
-`
-
 const StyledSubTitleInput = styled(StyledInput)`
+  text-align: left;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-size: 20px;
+  font-weight: 400;
+  letter-spacing: .7px;
 `
 
 const StyledCoverCaptionInput = styled(StyledInput)`
@@ -93,9 +121,33 @@ const StyledCoverCaptionInput = styled(StyledInput)`
   width: 100%;
 `
 
-const TitleInputsWrapper = styled.div`
-  text-align: center;
-  background-color: inherit;
+const CoverCaptionSpacer = styled.div`
+  height: 27px;
+`
+
+const TitleInputsWrapper = styled.div``
+
+const StyledCloseXContainer = styled(CloseXContainer)`
+  z-index: 1;
+`
+
+// we cannot use a button if we want the hiddenInput to work
+// as such we have recreated the same styles as a button would
+// so that it matches CloseX that is used for the body media
+const CustonCloseX = styled.div`
+  cursor: pointer;
+  border-radius: 18px;
+  border: 1px solid;
+  border-color: ${props => props.theme.Colors.closeXBorder};
+  margin: 3px;
+  padding: 5px;
+  background-color: ${props => props.theme.Colors.backgroundOpaque};
+  width: 18px;
+  height: 18px;
+  &:hover {
+    background-color: ${props => props.theme.Colors.backgroundOpaque};
+  };
+  ${VerticalCenterStyles}
 `
 
 function isNewStory(props, nextProps) {
@@ -159,53 +211,67 @@ export default class AddCoverTitles extends React.Component {
     }
   }
 
+  renderUploadButton() {
+    const coverImage = this.getCoverImage()
+    if (coverImage) return (
+      <ReplaceUploadWrapper htmlFor="cover_upload_replace">
+        <StyledCloseXContainer>
+          <CustonCloseX>
+            <DeleteIcon
+              size='small'
+              name='close'
+            />
+          </CustonCloseX>
+        </StyledCloseXContainer>
+        <HiddenInput
+          type='file'
+          id='cover_upload_replace'
+          name='coverImage'
+          accept='image/*, video/*'
+          onChange={this._onCoverChange}
+        />
+      </ReplaceUploadWrapper>
+    )
+    return (
+      <NewUploadWrapper htmlFor='cover_upload'>
+        <IconWrapper>
+          <StyledIcon name='components'/>
+        </IconWrapper>
+        <IconSubTitle>
+          {coverImage && "+ CHANGE COVER PHOTO OR VIDEO"}
+          {!coverImage && "+ ADD A COVER PHOTO OR VIDEO"}
+        </IconSubTitle>
+        <HiddenInput
+          type='file'
+          id='cover_upload'
+          name='coverImage'
+          accept='image/*, video/*'
+          onChange={this._onCoverChange}
+        />
+      </NewUploadWrapper>
+    )
+  }
+
+  getCoverImage() {
+    const {workingDraft} = this.props
+    return workingDraft.coverImage && workingDraft.coverImage.uri
+    ? workingDraft.coverImage.uri
+    : getImageUrl(workingDraft.coverImage)
+  }
 
   render() {
-    const {workingDraft} = this.props
-    const coverImage = (workingDraft.coverImage && workingDraft.coverImage.uri) ? workingDraft.coverImage.uri : getImageUrl(workingDraft.coverImage)
+    const coverImage = this.getCoverImage()
 
     return (
       <RelativeWrapper>
         <StoryOverlayWrapper image={coverImage}/>
-        <Wrapper hasImage={!!coverImage}>
-          <UploadWrapper htmlFor='cover_upload'>
-            <IconWrapper>
-              <StyledIcon name='components'/>
-            </IconWrapper>
-            <IconSubTitle>
-              {coverImage && "+ CHANGE COVER PHOTO"}
-              {!coverImage && "+ ADD A COVER PHOTO"}
-            </IconSubTitle>
-            <HiddenInput
-              type='file'
-              id='cover_upload'
-              name='coverImage'
-              accept='image/*, video/*'
-              onChange={this._onCoverChange}
-            />
-          </UploadWrapper>
-          <TitleInputsWrapper>
-            <StyledTitleInput
-              type='text'
-              placeholder='ADD TITLE'
-              name='title'
-              onChange={this._onTextChange}
-              value={this.state.title}
-              maxLength={40}
-              hasImage={!!coverImage}
-            />
-            <StyledSubTitleInput
-              type='text'
-              placeholder='Add a subtitle'
-              name='description'
-              onChange={this._onTextChange}
-              value={this.state.description}
-              maxLength={50}
-              hasImage={!!coverImage}
-            />
-          </TitleInputsWrapper>
-        </Wrapper>
-        { !!coverImage && <StyledCoverCaptionInput
+          <Wrapper hasImage={!!coverImage}>
+          <ButtonsHorizontalCenter>
+            {this.renderUploadButton()}
+          </ButtonsHorizontalCenter>
+          </Wrapper>
+        {!!coverImage &&
+          <StyledCoverCaptionInput
             type='text'
             placeholder='Add Cover Caption'
             name='coverCaption'
@@ -214,6 +280,27 @@ export default class AddCoverTitles extends React.Component {
             maxLength={100}
           />
         }
+        {!coverImage && <CoverCaptionSpacer />}
+        <TitleInputsWrapper>
+          <StyledTitleInput
+            type='text'
+            placeholder='ADD TITLE'
+            name='title'
+            onChange={this._onTextChange}
+            value={this.state.title}
+            maxLength={40}
+            hasImage={!!coverImage}
+          />
+          <StyledSubTitleInput
+            type='text'
+            placeholder='Add a subtitle'
+            name='description'
+            onChange={this._onTextChange}
+            value={this.state.description}
+            maxLength={50}
+            hasImage={!!coverImage}
+          />
+        </TitleInputsWrapper>
       </RelativeWrapper>
     )
   }

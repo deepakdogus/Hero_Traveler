@@ -69,6 +69,8 @@ class Header extends React.Component {
     markSeen: PropTypes.func,
     users: PropTypes.object,
     pathname: PropTypes.string,
+    signedUp: PropTypes.bool,
+    flagStory: PropTypes.func,
   }
 
   constructor(props) {
@@ -92,6 +94,9 @@ class Header extends React.Component {
     const { currentUserId } = this.props
     if ( currentUserId && prevProps.currentUserId !== currentUserId ) {
       this.props.attemptGetUserFeed(currentUserId)
+    }
+    if (!prevProps.signedUp && this.props.signedUp) {
+      this.props.reroute('/signup/topics')
     }
   }
 
@@ -176,6 +181,7 @@ class Header extends React.Component {
       pathname,
       workingDraft,
       originalDraft,
+      flagStory,
     } = this.props
 
     const SelectedGrid =
@@ -236,6 +242,7 @@ class Header extends React.Component {
               nextPathAfterSave={this.state.nextPathAfterSave}
               reroute={reroute}
               resetCreateStore={this._resetCreateStore}
+              flagStory={flagStory}
             />
         </SelectedGrid>
         <HeaderSpacer
@@ -271,6 +278,7 @@ function mapStateToProps(state) {
     originalDraft: state.storyCreate.draft,
     workingDraft: state.storyCreate.workingDraft,
     pathname: pathname,
+    signedUp: state.signup.signedUp,
   }
 }
 
@@ -285,6 +293,7 @@ function mapDispatchToProps(dispatch) {
     reroute: (route) => dispatch(push(route)),
     attemptUpdateUser: (updates) => dispatch(UserActions.updateUser(updates)),
     resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
+    flagStory: (sessionUserId, storyId) => dispatch(StoryActions.flagStory(sessionUserId, storyId)),
   }
 }
 

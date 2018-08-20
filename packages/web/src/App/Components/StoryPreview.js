@@ -9,6 +9,7 @@ import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import formatCount from '../Shared/Lib/formatCount'
 import StoryActions from '../Shared/Redux/Entities/Stories'
+import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
 
 import Avatar from './Avatar'
 import LikeComponent from './LikeComponent'
@@ -39,6 +40,9 @@ const Title = styled.h3`
   display: inline-block;
   margin: 0;
   cursor: pointer;
+  &:hover {
+    color: #757575;
+  }
 `
 
 const Description = styled.h2`
@@ -71,6 +75,15 @@ const Text = styled.span`
   color: ${props => props.theme.Colors.grey};
 `
 
+const LocationPreview = styled(Text)`
+  color: ${props => props.theme.Colors.background};
+  letter-spacing: .7px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+`
+
 const ByText = styled(Text)`
   margin-left: 7.5px;
 `
@@ -93,6 +106,11 @@ const BookmarkIcon = styled(Icon)`
   margin: 1.5px 10px;
 `
 
+const videoThumbnailOptions = {
+  video: true,
+  width: 385.5,
+}
+
 class StoryPreview extends Component {
   static propTypes = {
     story: PropTypes.object,
@@ -101,6 +119,8 @@ class StoryPreview extends Component {
     isLiked: PropTypes.bool,
     isBookmarked: PropTypes.bool,
     reroute: PropTypes.func,
+    onClickBookmark: PropTypes.func,
+    onClickLike: PropTypes.func,
   }
 
   navToStory = () => {
@@ -131,7 +151,9 @@ class StoryPreview extends Component {
 
     let imageUrl;
     if (story.coverImage) imageUrl = getImageUrl(story.coverImage)
-    else if (story.coverVideo) imageUrl = getImageUrl(story.coverVideo, 'video')
+    else if (story.coverVideo) {
+      imageUrl = getImageUrl(story.coverVideo, 'optimized', videoThumbnailOptions)
+    }
 
     return (
       <MarginWrapper>
@@ -141,6 +163,7 @@ class StoryPreview extends Component {
             onClick={this.navToStory}
           />
           <StoryInfoContainer>
+            <LocationPreview>{displayLocationPreview(story.locationInfo)}</LocationPreview>
             <Title onClick={this.navToStory}>{story.title}</Title>
             <Description>{story.description}</Description>
             <DetailsContainer between='xs'>

@@ -188,7 +188,7 @@ class EditStory extends Component {
     if (this.hasFieldChanged('title')) cleanedDraft.title = _.trim(cleanedDraft.title)
     if (this.hasFieldChanged('description')) cleanedDraft.description = _.trim(cleanedDraft.description)
     if (this.hasFieldChanged('coverCaption')) cleanedDraft.coverCaption = _.trim(cleanedDraft.coverCaption)
-    cleanedDraft.draftjsContent = this.getEditorState()
+    if (this.getEditorState) cleanedDraft.draftjsContent = this.getEditorState()
     return cleanedDraft
   }
 

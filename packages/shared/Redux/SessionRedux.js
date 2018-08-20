@@ -48,6 +48,7 @@ export const logout = (state) => state.merge({ isLoggingOut: true })
 // we reset the stores elsewhere completely
 export const logoutSuccess = (state) => state.merge({
   userId: null,
+  tokens: null,
   isLoggedOut: true,
   isLoggingOut: false
 })

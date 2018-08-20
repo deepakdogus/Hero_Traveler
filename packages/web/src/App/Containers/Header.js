@@ -89,8 +89,9 @@ class Header extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(this.props.currentUserId && prevProps.currentUserId !== this.props.currentUserId){
-      this.props.attemptGetUserFeed(this.props.currentUserId)
+    const { currentUserId } = this.props
+    if ( currentUserId && prevProps.currentUserId !== currentUserId ) {
+      this.props.attemptGetUserFeed(currentUserId)
     }
   }
 
@@ -117,7 +118,7 @@ class Header extends React.Component {
     if (
       this.props.workingDraft
       && this.props.pathname.includes('editStory')
-      && haveFieldsChanged(this.props.workingDraft, this.props.originalDraft, 'web')
+      && haveFieldsChanged(this.props.workingDraft, this.props.originalDraft)
     ) {
       this.setState({
         nextPathAfterSave: path,
@@ -204,6 +205,7 @@ class Header extends React.Component {
           {!isLoggedIn &&
             <HeaderAnonymous
               openLoginModal={this.openLoginModal}
+              pathname={pathname}
             />
           }
             <HeaderModals

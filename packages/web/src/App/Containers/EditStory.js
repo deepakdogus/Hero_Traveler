@@ -84,6 +84,7 @@ class EditStory extends Component {
     resetCreateStore: PropTypes.func,
     reroute: PropTypes.func,
     updateGlobalModalParams: PropTypes.func,
+    globalModal: PropTypes.object,
   }
 
   constructor(props){
@@ -123,7 +124,10 @@ class EditStory extends Component {
     if (originalDraft && originalDraft.id && match.isExact) {
       reroute(`/editStory/${originalDraft.id}/cover`)
     }
-    if(this.props.globalModal.modalName !== 'saveEdits' && nextProps.globalModal.modalName === 'saveEdits'){
+    if (
+      this.props.globalModal.modalName !== 'saveEdits'
+      && nextProps.globalModal.modalName === 'saveEdits'
+    ) {
       this.props.updateGlobalModalParams({
         resetCreateStore: this.props.resetCreateStore,
         updateDraft: this._updateDraft,

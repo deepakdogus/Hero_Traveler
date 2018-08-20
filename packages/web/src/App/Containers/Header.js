@@ -168,6 +168,7 @@ class Header extends React.Component {
               userId={currentUserId}
               openModal={this.openModal}
               openGlobalModal={openGlobalModal}
+              closeGlobalModal={closeGlobalModal}
               reroute={reroute}
               attemptLogout={attemptLogout}
             />

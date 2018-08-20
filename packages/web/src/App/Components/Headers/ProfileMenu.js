@@ -33,7 +33,8 @@ class ProfileMenu extends React.Component{
     openModal: PropTypes.func,
     openGlobalModal: PropTypes.func,
     userId: PropTypes.string,
-    attemptLogout: PropTypes.func
+    attemptLogout: PropTypes.func,
+    globalModalParams: PropTypes.object,
   }
 
   handleClickOutside = () => {
@@ -71,11 +72,20 @@ class ProfileMenu extends React.Component{
   }
 
   render() {
+    const {
+      globalModalParams
+    } = this.props
+
     return (
       <Sidebar>
         <SidebarDemiLink onClick={this.rerouteToProfile}>
           My Profile
         </SidebarDemiLink>
+        {globalModalParams.isHamburger &&
+          <SidebarDemiLink>
+            Notifications
+          </SidebarDemiLink>
+        }
         <SidebarDemiLink onClick={this.openSettings}>
           Settings
         </SidebarDemiLink>

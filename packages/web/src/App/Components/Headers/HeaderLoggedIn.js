@@ -51,24 +51,33 @@ class HeaderLoggedIn extends React.Component {
     openGlobalModal: PropTypes.func,
     userId: PropTypes.string,
     attemptLogout: PropTypes.func,
-    profileAvatar: PropTypes.object
-  }
-
-  state = {
-    profileMenuIsOpen: false
+    profileAvatar: PropTypes.object,
+    globalModal: PropTypes.string,
+    globalModalParams: PropTypes.object,
+    closeGlobalModal: PropTypes.func,
   }
 
   toggleProfileMenu = () => {
-    if (this.state.profileMenuIsOpen) return
-    this.setState({profileMenuIsOpen: true})
+    if (
+      this.props.globalModal === 'profileMenu'
+      || this.props.globalModal === 'hamburgerMenu'
+    ) return
+    this.props.openGlobalModal('profileMenu')
   }
 
   closeProfileMenu = () => {
-    if (this.state.profileMenuIsOpen) {
+    if (
+      this.props.globalModal === 'profileMenu'
+      || this.props.globalModal === 'hamburgerMenu'
+    ) {
       setTimeout( () => {
-        this.setState({profileMenuIsOpen: false})
+        this.props.closeGlobalModal()
       }, 100)
     }
+  }
+
+  _openHamburgerMenu = () => {
+    this.props.openGlobalModal('hamburgerMenu', {isHamburger: true})
   }
 
   render () {
@@ -78,7 +87,9 @@ class HeaderLoggedIn extends React.Component {
       userId,
       profileAvatar,
       reroute,
-      attemptLogout
+      attemptLogout,
+      globalModal,
+      globalModalParams,
     } = this.props
 
     return (
@@ -134,7 +145,7 @@ class HeaderLoggedIn extends React.Component {
                     avatarUrl={getImageUrl(profileAvatar)}
                   />
                 </StyledRoundedAvatarButton>
-                  {this.state.profileMenuIsOpen &&
+                  {globalModal === 'profileMenu' &&
                     <ProfileMenu
                       closeMyself={this.closeProfileMenu}
                       openModal={openModal}
@@ -142,6 +153,7 @@ class HeaderLoggedIn extends React.Component {
                       userId={userId}
                       reroute={reroute}
                       attemptLogout={attemptLogout}
+                      globalModalParams={globalModalParams}
                     />
                   }
             </LoggedInDesktopContainer>
@@ -154,8 +166,19 @@ class HeaderLoggedIn extends React.Component {
             </LoggedInTabletContainer>
             <HamburgerIcon
               name='hamburger'
-              onClick={openModal}
+              onClick={this._openHamburgerMenu}
             />
+            {globalModal === 'hamburgerMenu' &&
+              <ProfileMenu
+                closeMyself={this.closeProfileMenu}
+                openModal={openModal}
+                openGlobalModal={openGlobalModal}
+                userId={userId}
+                reroute={reroute}
+                attemptLogout={attemptLogout}
+                globalModalParams={globalModalParams}
+              />
+            }
           </Row>
         </Col>
       </StyledRow>
@@ -167,7 +190,9 @@ function mapStateToProps(state, ownProps) {
   let {users} = state.entities
   const profileAvatar =  users.entities[ownProps.userId].profile.avatar
   return {
-    profileAvatar
+    profileAvatar,
+    globalModal: state.ux.modalName,
+    globalModalParams: state.ux.params,
   }
 }
 

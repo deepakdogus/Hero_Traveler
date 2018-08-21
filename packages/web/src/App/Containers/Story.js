@@ -16,8 +16,6 @@ import StoryContentRenderer from '../Components/StoryContentRenderer'
 import GMap from '../Components/GoogleMap'
 import StoryMetaInfo from '../Components/StoryMetaInfo'
 import StoryActionBar from '../Components/StoryActionBar'
-import StorySuggestions from '../Components/StorySuggestions'
-
 
 const ContentWrapper = styled.div``
 
@@ -25,10 +23,6 @@ const LimitedWidthContainer = styled.div`
   width: 66%;
   max-width: 900px;
   margin: 0 auto;
-`
-
-const GreyWrapper = styled.div`
-  background-color: ${props => props.theme.Colors.dividerGrey};
 `
 
 const HashtagText = styled.p`
@@ -145,11 +139,6 @@ class Story extends Component {
           }
           <StoryMetaInfo story={story}/>
         </LimitedWidthContainer>
-        <GreyWrapper>
-          <LimitedWidthContainer>
-            <StorySuggestions suggestedStories={suggestedStories}/>
-          </LimitedWidthContainer>
-        </GreyWrapper>
         <StoryActionBar
           story={story}
           isLiked={isLiked}

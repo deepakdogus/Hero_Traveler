@@ -51,7 +51,7 @@ export default class Settings extends React.Component {
       userNotificationTypes = [],
       attemptUpdateUser,
       userEntitiesUpdating,
-      userEntitiesError
+      userEntitiesError,
     } = this.props
 
     return (

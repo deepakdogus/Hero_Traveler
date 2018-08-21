@@ -9,11 +9,15 @@ import PropTypes from 'prop-types'
 import StoryCreateActions from '../Shared/Redux/StoryCreateRedux'
 import createLocalDraft from '../Shared/Lib/createLocalDraft'
 import AuthRoute from './AuthRoute'
-
+import UXActions from '../Redux/UXRedux'
 import CreateStoryCoverContent from './CreateStory/1_CoverContent'
 import CreateStoryDetails from './CreateStory/2_Details'
 import FooterToolbar from '../Components/CreateStory/FooterToolbar'
 import {Title, Text} from '../Components/Modals/Shared'
+
+import {
+  isFieldSame,
+} from '../Shared/Lib/draftChangedHelpers'
 
 const Container = styled.div``
 
@@ -27,23 +31,21 @@ const ItemContainer = styled.div`
 
 const customModalStyles = {
   content: {
-    width: 420,
-    margin: 'auto',
+    border: '0',
+    bottom: 'auto',
+    minHeight: '10rem',
+    left: '50%',
+    padding: '2rem',
+    position: 'fixed',
+    right: 'auto',
+    top: '50%',
+    transform: 'translate(-50%,-50%)',
+    minWidth: '20rem',
+    maxWidth: '28rem',
   },
   overlay: {
     backgroundColor: 'rgba(0,0,0, .5)',
     zIndex: 100,
-  }
-}
-
-const isEqual = (firstItem, secondItem) => {
-  if (!!firstItem && !secondItem || !firstItem && !!secondItem) {
-    return false
-  } else if (!!firstItem && !!secondItem) {
-    // lodash will take of equality check for all objects
-    return _.isEqual(firstItem, secondItem)
-  } else {
-    return true
   }
 }
 
@@ -74,6 +76,8 @@ class EditStory extends Component {
     publish: PropTypes.func,
     resetCreateStore: PropTypes.func,
     reroute: PropTypes.func,
+    updateGlobalModalParams: PropTypes.func,
+    globalModal: PropTypes.object,
     syncProgressSteps: PropTypes.number,
     syncProgress: PropTypes.number,
   }
@@ -114,6 +118,15 @@ class EditStory extends Component {
     // once our draft is loaded be sure to reroute
     if (originalDraft && originalDraft.id && match.isExact) {
       reroute(`/editStory/${originalDraft.id}/cover`)
+    }
+    if (
+      this.props.globalModal.modalName !== 'saveEdits'
+      && nextProps.globalModal.modalName === 'saveEdits'
+    ) {
+      this.props.updateGlobalModalParams({
+        resetCreateStore: this.props.resetCreateStore,
+        updateDraft: this._updateDraft,
+      })
     }
   }
 
@@ -179,15 +192,12 @@ class EditStory extends Component {
     })
   }
 
-  hasFieldChanged(field) {
-    return !isEqual(this.props.workingDraft[field], this.props.originalDraft[field])
-  }
-
   cleanDraft(draft){
+    const {workingDraft, originalDraft} = this.props
     const cleanedDraft = _.merge({}, draft)
-    if (this.hasFieldChanged('title')) cleanedDraft.title = _.trim(cleanedDraft.title)
-    if (this.hasFieldChanged('description')) cleanedDraft.description = _.trim(cleanedDraft.description)
-    if (this.hasFieldChanged('coverCaption')) cleanedDraft.coverCaption = _.trim(cleanedDraft.coverCaption)
+    if (!isFieldSame('title', workingDraft, originalDraft)) cleanedDraft.title = _.trim(cleanedDraft.title)
+    if (!isFieldSame('description', workingDraft, originalDraft)) cleanedDraft.description = _.trim(cleanedDraft.description)
+    if (!isFieldSame('coverCaption', workingDraft, originalDraft)) cleanedDraft.coverCaption = _.trim(cleanedDraft.coverCaption)
     cleanedDraft.draftjsContent = this.getEditorState()
     return cleanedDraft
   }
@@ -203,20 +213,21 @@ class EditStory extends Component {
   }
 
   saveCover = () => {
+    const {workingDraft, originalDraft} = this.props
     const hasVideoSelected = !!this.state.coverVideo
     const hasImageSelected = !!this.state.coverImage
-    const hasImageChanged = this.hasFieldChanged('coverImage')
-    const hasVideoChanged = this.hasFieldChanged('coverVideo')
-    const hasTitleChanged = this.hasFieldChanged('title')
-    const hasDescriptionChanged = this.hasFieldChanged('description')
-    const hasCoverCaptionChanged = this.hasFieldChanged('coverCaption')
+    const isImageSame = isFieldSame('coverImage', workingDraft, originalDraft)
+    const isVideoSame = isFieldSame('coverVideo', workingDraft, originalDraft)
+    const isTitleSame = isFieldSame('title', workingDraft, originalDraft)
+    const isDescriptionSame = isFieldSame('description', workingDraft, originalDraft)
+    const isCoverCaptionSame = isFieldSame('coverCaption', workingDraft, originalDraft)
     const nothingHasChanged = _.every([
       hasVideoSelected || hasImageSelected,
-      !hasImageChanged,
-      !hasVideoChanged,
-      !hasTitleChanged,
-      !hasDescriptionChanged,
-      !hasCoverCaptionChanged
+      isImageSame,
+      isVideoSame,
+      isTitleSame,
+      isDescriptionSame,
+      isCoverCaptionSame
     ])
     // If nothing has changed, let the user go forward if they navigated back
     if (nothingHasChanged) {
@@ -229,7 +240,7 @@ class EditStory extends Component {
       this.setValidationErrorState('Please add a cover and title to continue');
       return
     }
-    if ((hasImageSelected || hasVideoSelected) && (hasVideoChanged || hasImageChanged) && !this.state.file) {
+    if ((hasImageSelected || hasVideoSelected) && (!isVideoSame || !isImageSame) && !this.state.file) {
       this.setState({error: 'Sorry, could not process file. Please try another file.'})
       return
     }
@@ -324,6 +335,7 @@ function mapStateToProps(state, props) {
     syncProgress: state.storyCreate.sync.syncProgress,
     syncProgressSteps: state.storyCreate.sync.syncProgressSteps,
     backgroundFailures: state.entities.stories.backgroundFailures,
+    globalModal: state.ux
   }
 }
 
@@ -341,6 +353,7 @@ function mapDispatchToProps(dispatch) {
     resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
     reroute: (path) => dispatch(push(path)),
     setWorkingDraft: (cachedStory) => dispatch(StoryCreateActions.editStorySuccess(cachedStory)),
+    updateGlobalModalParams: (params) => dispatch(UXActions.updateGlobalModalParams(params))
 
   }
 }

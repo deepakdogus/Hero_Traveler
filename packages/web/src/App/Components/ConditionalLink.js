@@ -11,7 +11,7 @@ const Container = styled.div`
 `
 
 const ShouldEditLink = styled.p`
-  maring: 0px;
+  margin: 0px;
   text-decoration: none;
   padding: 10px;
   margin-right: 10px;
@@ -26,15 +26,16 @@ const ShouldEditLink = styled.p`
 `
 
 const ShouldEditLogo = styled.div`
-  padding: 0px;
-  display: flex;
   color: white;
   font-family: 'montserrat';
   font-size: 15px;
   letter-spacing: 1.2px;
-  border-bottom-width: 3px;
-  border-bottom-color: transparent;
-  border-bottom-style: solid;
+  ${props => {
+    props.noBorder ? 'null' :
+   `border-bottom-width: 3px;
+    border-bottom-color: transparent;
+    border-bottom-style: solid;`
+  }}
 `
 
 
@@ -50,6 +51,7 @@ export default class ConditionalLink extends React.Component{
     workingDraft: PropTypes.object,
     originalDraft: PropTypes.object,
     children: PropTypes.any,
+    noBorder: PropTypes.bool,
   }
 
   _handleOpenSaveEditsModal = () => {
@@ -77,12 +79,17 @@ export default class ConditionalLink extends React.Component{
   }
 
   getLink = () => {
-    const {isMenuLink, to} = this.props
+    const {
+      isMenuLink,
+      to,
+      noBorder
+    } = this.props
+
     if (this.getShouldOpenSaveEditsModal()) {
       return this._renderOpenSaveEditsLinkContainer()
     } else {
       const ChosenLink = isMenuLink ? MenuLink : Link
-      const props = {to}
+      const props = {to, noBorder}
       if (isMenuLink) props.exact = true
       return (
         <ChosenLink {...props}>

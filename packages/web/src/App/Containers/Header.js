@@ -42,7 +42,7 @@ class Header extends React.Component {
     currentUserNotificationTypes: PropTypes.arrayOf(PropTypes.string),
     isLoggedIn: PropTypes.bool,
     loginReduxFetching: PropTypes.bool,
-    loginReduxError: PropTypes.object,
+    loginReduxError: PropTypes.string,
     blackHeader: PropTypes.bool,
     attemptLogin: PropTypes.func,
     attemptLogout: PropTypes.func,

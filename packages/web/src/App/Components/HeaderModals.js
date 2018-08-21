@@ -119,6 +119,8 @@ export default class HeaderModals extends React.Component {
           <Login
             onSignupClick={this.props.openSignupModal}
             onAttemptLogin={this.props.attemptLogin}
+            loginReduxFetching={loginReduxFetching}
+            loginReduxError={loginReduxError}
           />
         </Modal>
         <Modal

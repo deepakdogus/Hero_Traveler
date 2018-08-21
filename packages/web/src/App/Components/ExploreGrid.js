@@ -7,6 +7,7 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import Icon from './Icon'
 import {VerticalCenterStyles} from './VerticalCenter'
 import OverlayHover from './OverlayHover'
+import Colors from '../Shared/Themes/Colors'
 
 const Wrapper = styled.div`
   margin: 1px;
@@ -28,7 +29,6 @@ const TitleContainer = styled(OverlayHover)`
   width: 100%;
   height: 100%;
   top: 0;
-
 `
 
 const Title = styled.div`
@@ -44,6 +44,11 @@ const RedCheck = styled(Icon)`
   position: absolute;
   top: 10px;
   right: 10px;
+  border-color: ${Colors.white};
+  border-style: solid;
+  border-width: 1.3px;
+  border-radius: 50%;
+  background-color:  ${Colors.white};
 `
 
 // created specific component to optimize speed with _onClickTile

@@ -5,6 +5,7 @@ import Modal from 'react-modal'
 import styled from 'styled-components'
 import Login from './Modals/HeaderModals/Login'
 import Signup from './Modals/HeaderModals/Signup'
+import SaveEdits from './Modals/HeaderModals/SaveEdits'
 import ResetPassword from './Modals/HeaderModals/ResetPassword'
 import Contributor from './Modals/HeaderModals/Contributor'
 import AddToItinerary from './Modals/HeaderModals/AddToItinerary'
@@ -21,8 +22,17 @@ const Container = styled.div``
 
 const customModalStyles = {
   content: {
-    width: 420,
-    margin: 'auto',
+    border: '0',
+    bottom: 'auto',
+    minHeight: '10rem',
+    left: '50%',
+    padding: '2rem',
+    position: 'fixed',
+    right: 'auto',
+    top: '50%',
+    transform: 'translate(-50%,-50%)',
+    minWidth: '20rem',
+    maxWidth: '28rem',
   },
   overlay: {
     backgroundColor: 'rgba(0,0,0, .5)',
@@ -76,6 +86,9 @@ export default class HeaderModals extends React.Component {
     markSeen: PropTypes.func,
     reroute: PropTypes.func,
     users: PropTypes.object,
+    nextPathAfterSave: PropTypes.string,
+    attemptLogout: PropTypes.func,
+    resetCreateStore: PropTypes.func,
     flagStory: PropTypes.func,
   }
 
@@ -86,6 +99,7 @@ export default class HeaderModals extends React.Component {
   render() {
     const {
       globalModalThatIsOpen,
+      closeGlobalModal,
       loginReduxFetching,
       loginReduxError,
       closeModal,
@@ -105,6 +119,9 @@ export default class HeaderModals extends React.Component {
       reroute,
       stories,
       users,
+      nextPathAfterSave,
+      attemptLogout,
+      resetCreateStore,
       flagStory,
     } = this.props
 
@@ -152,6 +169,21 @@ export default class HeaderModals extends React.Component {
           style={addToItineraryModalStyles}
         >
           <AddToItinerary/>
+        </Modal>
+        <Modal
+          isOpen={globalModalThatIsOpen === 'saveEdits'}
+          contentLabel="Save Edits Modal"
+          onRequestClose={closeModal}
+          style={customModalStyles}
+        >
+          <SaveEdits
+            params={globalModalParams}
+            reroute={reroute}
+            nextPathAfterSave={nextPathAfterSave}
+            closeModal={closeGlobalModal}
+            attemptLogout={attemptLogout}
+            resetCreateStore={resetCreateStore}
+          />
         </Modal>
         <Modal
           isOpen={globalModalThatIsOpen === 'flagStory'}

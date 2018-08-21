@@ -12,6 +12,7 @@ const Sidebar = styled.div`
   padding: 20px 0px 20px 40px;
   animation-name: fadeIn;
   animation-duration: .2s;
+
   overflow: hidden;
 `
 
@@ -33,7 +34,12 @@ class ProfileMenu extends React.Component{
     openModal: PropTypes.func,
     openGlobalModal: PropTypes.func,
     userId: PropTypes.string,
-    attemptLogout: PropTypes.func
+    attemptLogout: PropTypes.func,
+    openSaveEditsModal: PropTypes.func,
+    pathname: PropTypes.string,
+    workingDraft: PropTypes.object,
+    originalDraft: PropTypes.object,
+    haveFieldsChanged: PropTypes.func,
   }
 
   handleClickOutside = () => {
@@ -42,6 +48,33 @@ class ProfileMenu extends React.Component{
 
   rerouteToProfile = ()=> {
     this.rerouteAndClose(`/profile/${this.props.userId}/view`)
+  }
+
+  _openSaveEditsModalToProfile = () => {
+    this._saveEditsModalHelper(this.rerouteToProfile, `/profile/${this.props.userId}/view`)
+  }
+
+  _openSaveEditsModalToLogout = () => {
+    this._saveEditsModalHelper(this.handleLogout, 'logout')
+  }
+
+  _openSaveEditsModalToCustomizeInterests = () => {
+    this._saveEditsModalHelper(this.rerouteToCustomizeInterests, '/signup/topics')
+  }
+
+  _saveEditsModalHelper = (rerouteFunc, pathname) => {
+    const {haveFieldsChanged, workingDraft, originalDraft} = this.props
+    if (this._shouldOpenSaveEditsModal()){
+      rerouteFunc()
+    } else if (haveFieldsChanged(workingDraft, originalDraft)) {
+      this.props.openSaveEditsModal(pathname)
+    }
+  }
+
+  _shouldOpenSaveEditsModal = () => {
+    const {haveFieldsChanged, workingDraft, originalDraft} = this.props
+    return !this.props.pathname.includes('editStory')
+      || !haveFieldsChanged(workingDraft, originalDraft)
   }
 
   rerouteToCustomizeInterests = () => {
@@ -70,22 +103,25 @@ class ProfileMenu extends React.Component{
     this.props.openGlobalModal(modalName)
   }
 
-  render() {
-    return (
+
+  render(){
+
+    return(
+
       <Sidebar>
-        <SidebarDemiLink onClick={this.rerouteToProfile}>
+        <SidebarDemiLink onClick={this._openSaveEditsModalToProfile}>
           My Profile
         </SidebarDemiLink>
         <SidebarDemiLink onClick={this.openSettings}>
           Settings
         </SidebarDemiLink>
-        <SidebarDemiLink onClick={this.rerouteToCustomizeInterests}>
+        <SidebarDemiLink onClick={this._openSaveEditsModalToCustomizeInterests}>
           Customize Interests
         </SidebarDemiLink>
         <SidebarDemiLink onClick={this.openFAQ}>
           FAQ
         </SidebarDemiLink>
-        <SidebarDemiLink onClick={this.handleLogout}>
+        <SidebarDemiLink onClick={this._openSaveEditsModalToLogout}>
           Logout
         </SidebarDemiLink>
       </Sidebar>

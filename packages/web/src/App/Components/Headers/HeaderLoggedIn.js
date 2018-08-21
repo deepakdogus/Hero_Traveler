@@ -164,7 +164,7 @@ class HeaderLoggedIn extends React.Component {
                 name='notifications'
                 onClick={openModal}
               >
-                <NotificationsIcon name='cameraFlash' />
+                <NotificationsIcon name='navNotifications' />
               </StyledRoundedNotificationButton>
                 <StyledRoundedAvatarButton
                   type='headerButton'

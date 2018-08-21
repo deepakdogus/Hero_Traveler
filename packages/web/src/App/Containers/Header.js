@@ -212,6 +212,9 @@ class Header extends React.Component {
             <HeaderAnonymous
               openLoginModal={this.openLoginModal}
               pathname={pathname}
+              haveFieldsChanged={haveFieldsChanged}
+              originalDraft={originalDraft}
+              workingDraft={workingDraft}
             />
           }
             <HeaderModals

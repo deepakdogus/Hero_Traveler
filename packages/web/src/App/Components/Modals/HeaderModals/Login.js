@@ -70,6 +70,8 @@ export default class Login extends React.Component {
 
     if (loginReduxError === 'Unauthorized') {
       loginReduxError = "Invalid username or password"
+    } else if (loginReduxError === 'TIMEOUT_ERROR' || loginReduxError === 'NETWORK_ERROR' ) {
+      loginReduxError = "Unable to login, check your connection..."
     }
 
     return (

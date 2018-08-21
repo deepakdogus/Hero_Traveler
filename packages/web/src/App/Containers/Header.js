@@ -43,6 +43,8 @@ class Header extends React.Component {
     isLoggedIn: PropTypes.bool,
     loginReduxFetching: PropTypes.bool,
     loginReduxError: PropTypes.string,
+    signupReduxFetching: PropTypes.bool,
+    signupReduxError: PropTypes.string,
     blackHeader: PropTypes.bool,
     attemptLogin: PropTypes.func,
     attemptLogout: PropTypes.func,
@@ -131,6 +133,8 @@ class Header extends React.Component {
       isLoggedIn,
       loginReduxFetching,
       loginReduxError,
+      signupReduxFetching,
+      signupReduxError,
       attemptLogin,
       attemptLogout,
       attemptChangePassword,
@@ -194,6 +198,8 @@ class Header extends React.Component {
               attemptChangePassword={attemptChangePassword}
               loginReduxFetching={loginReduxFetching}
               loginReduxError={loginReduxError}
+              signupReduxFetching={signupReduxFetching}
+              signupReduxError={signupReduxError}
               attemptUpdateUser={attemptUpdateUser}
               userEntitiesUpdating={userEntitiesUpdating}
               userEntitiesError={userEntitiesError}
@@ -223,6 +229,8 @@ function mapStateToProps(state) {
     isLoggedIn: state.login.isLoggedIn,
     loginReduxFetching: state.login.fetching,
     loginReduxError: state.login.error,
+    signupReduxFetching: state.signup.fetching,
+    signupReduxError: state.signup.error,
     blackHeader: _.includes(['/', '/feed', ''], pathname) ? false : true,
     currentUserId: currentUserId,
     globalModalThatIsOpen: state.ux.modalName,

@@ -5,10 +5,15 @@ import {push} from 'react-router-redux'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
-import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
+import {
+  isStoryLiked,
+  isGuideLiked,
+  isStoryBookmarked,
+} from '../Shared/Redux/Entities/Users'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import formatCount from '../Shared/Lib/formatCount'
 import StoryActions from '../Shared/Redux/Entities/Stories'
+import GuideActions from '../Shared/Redux/Entities/Guides'
 import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
 
 import Avatar from './Avatar'
@@ -137,7 +142,9 @@ class FeedItemPreview extends Component {
     isBookmarked: PropTypes.bool,
     reroute: PropTypes.func,
     onClickBookmark: PropTypes.func,
-    onClickLike: PropTypes.func,
+    onClickStoryLike: PropTypes.func,
+    onClickGuideLike: PropTypes.func,
+    onClickGuideUnLike: PropTypes.func,
   }
 
   defaultProps = {
@@ -153,8 +160,15 @@ class FeedItemPreview extends Component {
   }
 
   _onClickLike = () => {
-    const {sessionUserId, onClickLike} = this.props
-    onClickLike(sessionUserId)
+    const {
+      sessionUserId, isLiked, isStory,
+      onClickStoryLike, onClickGuideLike, onClickGuideUnLike,
+    } = this.props
+    if (isStory) onClickStoryLike(sessionUserId)
+    else {
+      if (isLiked) onClickGuideUnLike(sessionUserId)
+      else onClickGuideLike(sessionUserId)
+    }
   }
 
   _onClickBookmark = () => {
@@ -224,10 +238,12 @@ class FeedItemPreview extends Component {
                 onClick={sessionUserId ? this._onClickLike : undefined}
                 horizontal
               />
-              <BookmarkIcon
-                name={isBookmarked ? 'bookmark-active' : 'bookmark'}
-                onClick={sessionUserId ? this._onClickBookmark : undefined}
-              />
+              {isStory &&
+                <BookmarkIcon
+                  name={isBookmarked ? 'bookmark-active' : 'bookmark'}
+                  onClick={sessionUserId ? this._onClickBookmark : undefined}
+                />
+              }
             </Bottom>
           </StoryInfoContainer>
         </Row>
@@ -240,15 +256,17 @@ class FeedItemPreview extends Component {
 const mapStateToProps = (state, ownProps) => {
   const {session, entities} = state
   const sessionUserId = session.userId
-  const {feedItem} = ownProps
+  const {feedItem, isStory} = ownProps
 
   let feedItemProps = null
   if (feedItem) {
     feedItemProps = {
       author: entities.users.entities[feedItem.author],
-      isLiked: isStoryLiked(entities.users, sessionUserId, feedItem.id),
       isBookmarked: isStoryBookmarked(entities.users, sessionUserId, feedItem.id),
     }
+    feedItemProps.isLiked = isStory ?
+    isStoryLiked(entities.users, sessionUserId, feedItem.id)
+    : isGuideLiked(entities.users, sessionUserId, feedItem.id)
   }
 
   return {
@@ -260,7 +278,9 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, props) => {
   const {feedItem} = props
   return {
-    onClickLike: (sessionUserId) => dispatch(StoryActions.storyLike(sessionUserId, feedItem.id)),
+    onClickStoryLike: (sessionUserId) => dispatch(StoryActions.storyLike(sessionUserId, feedItem.id)),
+    onClickGuideLike: (sessionUserId) => dispatch(GuideActions.likeGuideRequest(feedItem.id, sessionUserId)),
+    onClickGuideUnLike: (sessionUserId) => dispatch(GuideActions.unlikeGuideRequest(feedItem.id, sessionUserId)),
     onClickBookmark: (sessionUserId) => dispatch(StoryActions.storyBookmark(sessionUserId, feedItem.id)),
     reroute: (path) => dispatch(push(path)),
   }

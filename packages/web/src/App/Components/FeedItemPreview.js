@@ -51,11 +51,12 @@ const Description = styled.h2`
   color : ${props => props.theme.Colors.grey};
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
-  margin-bottom: 30px;
   margin-top: 7.5px;
+  margin-bottom: 0;
 `
 
 const DetailsContainer = styled(Row)`
+  padding-top: 13px;
   display: flex;
   position: relative;
 `
@@ -201,7 +202,9 @@ class FeedItemPreview extends Component {
             }
             <LocationPreview>{this.getLocationText()}</LocationPreview>
             <Title onClick={this.navToStory}>{feedItem.title}</Title>
-            <Description>{feedItem.description}</Description>
+            {isStory && feedItem.description &&
+              <Description>{feedItem.description}</Description>
+            }
             <DetailsContainer between='xs'>
               <Row middle='xs'>
                 <Avatar

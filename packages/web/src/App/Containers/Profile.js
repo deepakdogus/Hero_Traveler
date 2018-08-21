@@ -118,7 +118,7 @@ class Profile extends Component {
     })
   }
 
-  getSelectedStories = () => {
+  getSelectedFeedItems = () => {
     const {
       userStoriesFetchStatus, userStoriesById,
       draftsFetchStatus, draftsById,
@@ -131,23 +131,23 @@ class Profile extends Component {
       case 'DRAFTS':
         return {
           fetchStatus: draftsFetchStatus,
-          selectedStories: this.getFeedItemsByIds(draftsById),
+          selectedFeedItems: this.getFeedItemsByIds(draftsById),
         }
       case 'BOOKMARKS':
         return {
           fetchStatus: userBookmarksFetchStatus,
-          selectedStories: this.getFeedItemsByIds(userBookmarksById),
+          selectedFeedItems: this.getFeedItemsByIds(userBookmarksById),
         }
       case 'GUIDES':
         return {
           fetchStatus: guidesFetchStatus,
-          selectedStories: this.getFeedItemsByIds(userGuidesById, 'guides')
+          selectedFeedItems: this.getFeedItemsByIds(userGuidesById, 'guides')
         }
       case 'STORIES':
       default:
         return {
           fetchStatus: userStoriesFetchStatus,
-          selectedStories: this.getFeedItemsByIds(userStoriesById),
+          selectedFeedItems: this.getFeedItemsByIds(userStoriesById),
         }
     }
   }
@@ -167,7 +167,7 @@ class Profile extends Component {
   render() {
     const {
       match, profilesUser, sessionUserId,
-      users, myFollowedUsers, userError,
+      myFollowedUsers, userError,
       userUpdating, updateUser, uploadMedia
     } = this.props
     if (!profilesUser) return null
@@ -177,7 +177,7 @@ class Profile extends Component {
     const isContributor  = profilesUser.role === 'contributor'
     const isUsersProfile = profilesUser.id === sessionUserId
     const isFollowing = _.includes(myFollowedUsers, profilesUser.id)
-    const {selectedStories} = this.getSelectedStories()
+    const {selectedFeedItems} = this.getselectedFeedItems()
     return (
       <ContentWrapper>
         <ProfileHeader
@@ -201,12 +201,9 @@ class Profile extends Component {
             onClickTab={this.onClickTab}
           />
 
-          { (!!selectedStories.length) &&
+          { (!!selectedFeedItems.length) &&
           <FeedItemListWrapper>
-            <FeedItemList
-              feedItems={selectedStories}
-              users={users}
-            />
+            <FeedItemList feedItems={selectedFeedItems} />
             <Footer />
           </FeedItemListWrapper>
           }

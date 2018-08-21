@@ -22,7 +22,7 @@ const StyledTextButtonContainer = styled(VerticalCenter)`
 `
 
 export default class InboxThread extends React.Component {
-  static PropTypes = {
+  static propTypes = {
     profile: PropTypes.object,
     users: PropTypes.object,
     closeModal: PropTypes.func,
@@ -53,7 +53,7 @@ export default class InboxThread extends React.Component {
 
     return (
       <Container>
-        <StyledTextButtonContainer 
+        <StyledTextButtonContainer
           onClick={this.props.closeModal}
         >{'<'}&nbsp;&nbsp;Inbox
         </StyledTextButtonContainer>

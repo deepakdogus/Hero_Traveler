@@ -13,7 +13,7 @@ const UserRowsContainer = styled.div`
 `
 
 export default class LikedBy extends React.Component {
-  static PropTypes = {
+  static propTypes = {
     profile: PropTypes.object,
     users: PropTypes.object,
     closeModal: PropTypes.func,

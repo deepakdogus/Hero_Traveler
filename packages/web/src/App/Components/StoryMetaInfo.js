@@ -90,7 +90,7 @@ function DetailRow({Icon, iconName, label, children}) {
 }
 
 DetailRow.propTypes = {
-  Icon: PropTypes.object,
+  Icon: PropTypes.func,
   iconName: PropTypes.string,
   label: PropTypes.string,
   children: PropTypes.oneOfType([

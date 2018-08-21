@@ -66,7 +66,7 @@ const styleMap = {
 
 export default class BodyEditor extends React.Component {
   static propTypes = {
-    value: PropTypes.string,
+    value: PropTypes.object,
     setGetEditorState: PropTypes.func,
     storyId: PropTypes.string,
   }
@@ -94,13 +94,14 @@ export default class BodyEditor extends React.Component {
   // for remove atomic block logic
   removeMedia = (key, length) => {
     const contentState = this.state.editorState.getCurrentContent()
-    let selectKey = contentState.getKeyBefore(key) || contentState.getKeyAfter(key)
+    let selectKey = contentState.getKeyAfter(key) || contentState.getKeyBefore(key)
 
     const selection = new SelectionState({
       anchorKey: selectKey,
       anchorOffset: 0,
       focusKey: selectKey,
       focusOffset: 0,
+      hasFocus: true,
     })
 
     const withoutAtomicEntity = Modifier.removeRange(

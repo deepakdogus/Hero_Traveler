@@ -9,7 +9,7 @@ const Container = styled.div`
 `
 
 export default class SearchResultsPeople extends Component {
-  static PropTypes = {
+  static propTypes = {
     userSearchResults: PropTypes.object,
     userFollowing: PropTypes.array,
     userId: PropTypes.string,

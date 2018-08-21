@@ -34,7 +34,7 @@ There is finicky styling for the social media buttons (In order to make the text
 the Icons the same size) so to keep other files clear I am doing the ugly work here
 */
 export default class SocialMediaButton extends React.Component {
-  static PropTypes = {
+  static propTypes = {
     onClick: PropTypes.func,
     buttonType: PropTypes.string.required,
     iconName: PropTypes.string.required,

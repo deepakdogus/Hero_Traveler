@@ -1,3 +1,4 @@
+'use strict'
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -9,8 +10,6 @@
  * @providesModule customKeyCommandInsertNewline
  *
  */
-
-'use strict'
 
 import {EditorState} from '.'
 import customDraftModifier from './customDraftModifier'

@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import moment from 'moment'
 import Env from '../../Config/Env'
 
 export function getVideoUrlBase() {

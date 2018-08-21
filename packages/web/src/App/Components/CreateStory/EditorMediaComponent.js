@@ -28,8 +28,12 @@ export default class MediaComponent extends EditorBlock {
     offsetKey: PropTypes.string,
     type: PropTypes.string,
     url: PropTypes.string,
-    key: PropTypes.string,
     direction: PropTypes.string,
+  }
+
+  componentWillMount = () => {
+    const {url} = this.props.blockProps
+    if (!url) this.onClickDelete()
   }
 
   onClickDelete = () => {
@@ -77,6 +81,8 @@ export default class MediaComponent extends EditorBlock {
             />
           </BodyMediaDiv>
         )
+      default:
+        return null
     }
   }
 
@@ -88,6 +94,9 @@ export default class MediaComponent extends EditorBlock {
       'public/DraftStyleDefault/ltr': direction === 'LTR',
       'public/DraftStyleDefault/rtl': direction === 'RTL',
     })
+
+    const {url} = this.props.blockProps
+    if (!url) return <div data-offset-key={offsetKey} className={className}/>
 
     return (
       <div

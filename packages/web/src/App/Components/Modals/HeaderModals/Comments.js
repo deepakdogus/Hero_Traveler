@@ -15,7 +15,7 @@ const Container = styled.div`
 `
 
 class Comments extends Component {
-  static PropTypes = {
+  static propTypes = {
     closeModal: PropTypes.func,
     sessionUserId: PropTypes.string,
     users: PropTypes.object,

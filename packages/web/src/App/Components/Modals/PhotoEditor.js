@@ -38,7 +38,7 @@ const ButtonRow = styled(Row)`
 `
 
 export default class PhotoEditor extends React.Component {
-  static PropTypes = {
+  static propTypes = {
     isAvatar: PropTypes.bool,
     profile: PropTypes.object,
     users: PropTypes.object,

@@ -47,7 +47,7 @@ const CountContainer = styled.div`
 `
 
 export default class ProfileStatsCountsCol extends React.Component {
-  static PropTypes = {
+  static propTypes = {
     iconName: PropTypes.string,
     count: PropTypes.count,
     text: PropTypes.string,

@@ -16,7 +16,7 @@ const Container = styled.div``
 const NotificationRowsContainer = styled.div``
 
 export default class NotificationsThread extends React.Component {
-  static PropTypes = {
+  static propTypes = {
     closeModal: PropTypes.func,
     activitiesById: PropTypes.array,
     activities: PropTypes.object,
@@ -63,6 +63,8 @@ export default class NotificationsThread extends React.Component {
         return  `commented on your story ${story.title}.`
       case ActivityTypes.like:
         return `liked your story ${story.title}.`
+      default:
+        return ''
     }
   }
 

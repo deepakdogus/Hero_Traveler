@@ -17,7 +17,7 @@ const ErrorText = styled.p`
 `
 
 export default class Input extends React.Component {
-  static PropTypes = {
+  static propTypes = {
     input: PropTypes.object,
     meta: PropTypes.object,
     placeholder: PropTypes.string,

@@ -1,14 +1,10 @@
-import { call, put, select } from 'redux-saga/effects'
-import StoryActions from '../Redux/Entities/Stories'
+import { call, put } from 'redux-saga/effects'
 import GuideActions from '../Redux/Entities/Guides'
-import UserActions, {isInitialAppDataLoaded, isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
+import UserActions from '../Redux/Entities/Users'
 import CategoryActions from '../Redux/Entities/Categories'
-import StoryCreateActions from '../Redux/StoryCreateRedux'
-import {getNewCover, saveCover} from '../Redux/helpers/coverUpload'
+import { getNewCover } from '../Redux/helpers/coverUpload'
 import CloudinaryAPI from '../../Services/CloudinaryAPI'
-import pathAsFileObject from '../Lib/pathAsFileObject'
 import _ from 'lodash'
-import Immutable from 'seamless-immutable'
 
 function * createCover(api, guide){
   const isImageCover = guide.coverImage

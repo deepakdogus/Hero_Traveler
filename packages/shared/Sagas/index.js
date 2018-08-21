@@ -38,8 +38,6 @@ import {
   getUsersCategories,
   followCategory,
   unfollowCategory,
-  followUser,
-  unfollowUser,
 } from './SignupSagas'
 import {
   logout,
@@ -58,7 +56,11 @@ import {
   getSuggestedUsers,
   loadUser,
   loadUserFollowing,
-  loadUserFollowers, userFollowUser, userUnfollowUser, getActivities, seenActivity
+  loadUserFollowers,
+  userFollowUser,
+  userUnfollowUser,
+  getActivities,
+  seenActivity,
 } from './UserSagas'
 
 import {
@@ -75,7 +77,10 @@ import {
   likeStory,
   bookmarkStory,
   getBookmarks,
-  uploadCoverImage, loadStory, loadDrafts, deleteStory,
+  uploadCoverImage,
+  loadStory,
+  loadDrafts,
+  deleteStory,
   flagStory,
   getGuideStories,
 } from './StorySagas'

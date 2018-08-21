@@ -3,7 +3,9 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { ErrorMessage, FetchingMessage } from './Shared/'
 
-const Container = styled.div``
+const Container = styled.div`
+  padding-right: 25px;
+`
 
 
 const EditMessages = (props) => {
@@ -12,7 +14,7 @@ const EditMessages = (props) => {
   return(
     <Container>
       {localError &&
-          <ErrorMessage>
+        <ErrorMessage>
           {localError}
         </ErrorMessage> }
       {!!(errorObj) &&

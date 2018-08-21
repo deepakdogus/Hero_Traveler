@@ -8,11 +8,15 @@ import { Grid } from '../Components/FlexboxGrid'
 import HeaderAnonymous from '../Components/Headers/HeaderAnonymous'
 import HeaderLoggedIn from '../Components/Headers/HeaderLoggedIn'
 import LoginActions from '../Shared/Redux/LoginRedux'
+import StoryCreateActions from '../Shared/Redux/StoryCreateRedux'
 import UserActions from '../Shared/Redux/Entities/Users'
 import SessionActions from '../Shared/Redux/SessionRedux'
 import UXActions from '../Redux/UXRedux'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import HeaderModals from '../Components/HeaderModals'
+import {
+  haveFieldsChanged
+} from '../Shared/Lib/draftChangedHelpers'
 
 // If we don't explicity prevent 'fixed' from being passed to Grid, we get an error about unknown prop on div element
 // because apparently react-flexbox-grid passes all props down to underlying React elements
@@ -61,8 +65,12 @@ class Header extends React.Component {
     activitiesById: PropTypes.array,
     activities: PropTypes.object,
     stories: PropTypes.object,
+    originalDraft: PropTypes.object,
+    workingDraft: PropTypes.object,
+    resetCreateStore: PropTypes.func,
     markSeen: PropTypes.func,
     users: PropTypes.object,
+    pathname: PropTypes.string,
     signedUp: PropTypes.bool,
     flagStory: PropTypes.func,
   }
@@ -72,6 +80,7 @@ class Header extends React.Component {
     this.state = {
       modal: undefined,
       navbarEngaged: false,
+      nextPathAfterSave: undefined,
     }
   }
 
@@ -84,8 +93,9 @@ class Header extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(this.props.currentUser && prevProps.currentUser !== this.props.currentUser){
-      this.props.attemptGetUserFeed(this.props.currentUser)
+    const { currentUserId } = this.props
+    if ( currentUserId && prevProps.currentUserId !== currentUserId ) {
+      this.props.attemptGetUserFeed(currentUserId)
     }
     if (!prevProps.signedUp && this.props.signedUp) {
       this.props.reroute('/signup/topics')
@@ -109,6 +119,23 @@ class Header extends React.Component {
 
   openSignupModal = () => {
     this.setState({ modal: 'signup' })
+  }
+
+  openSaveEditsModal = (path) => {
+    if (
+      this.props.workingDraft
+      && this.props.pathname.includes('editStory')
+      && haveFieldsChanged(this.props.workingDraft, this.props.originalDraft)
+    ) {
+      this.setState({
+        nextPathAfterSave: path,
+      })
+      this.props.openGlobalModal('saveEdits')
+    }
+  }
+
+  _resetCreateStore = () => {
+      this.props.resetCreateStore(this.props.originalDraft.id)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -155,6 +182,9 @@ class Header extends React.Component {
       stories,
       markSeen,
       users,
+      pathname,
+      workingDraft,
+      originalDraft,
       flagStory,
     } = this.props
 
@@ -171,14 +201,21 @@ class Header extends React.Component {
             <HeaderLoggedIn
               userId={currentUserId}
               openModal={this.openModal}
+              pathname={pathname}
+              openSaveEditsModal={this.openSaveEditsModal}
               openGlobalModal={openGlobalModal}
               reroute={reroute}
               attemptLogout={attemptLogout}
+              resetCreateStore={this._resetCreateStore}
+              haveFieldsChanged={haveFieldsChanged}
+              workingDraft={workingDraft}
+              originalDraft={originalDraft}
             />
           }
           {!isLoggedIn &&
             <HeaderAnonymous
               openLoginModal={this.openLoginModal}
+              pathname={pathname}
             />
           }
             <HeaderModals
@@ -208,7 +245,9 @@ class Header extends React.Component {
               stories={stories}
               markSeen={markSeen}
               users={users}
+              nextPathAfterSave={this.state.nextPathAfterSave}
               reroute={reroute}
+              resetCreateStore={this._resetCreateStore}
               flagStory={flagStory}
             />
         </SelectedGrid>
@@ -232,19 +271,21 @@ function mapStateToProps(state) {
     signupReduxFetching: state.signup.fetching,
     signupReduxError: state.signup.error,
     blackHeader: _.includes(['/', '/feed', ''], pathname) ? false : true,
-    currentUserId: currentUserId,
     globalModalThatIsOpen: state.ux.modalName,
     globalModalParams: state.ux.params,
     userEntitiesUpdating: state.entities.users.updating,
     userEntitiesError: state.entities.users.error,
+    currentUserId: currentUserId,
     currentUserProfile: (currentUser) && currentUser.profile,
     currentUserEmail: (currentUser) && currentUser.email,
     currentUserNotificationTypes: (currentUser) && currentUser.notificationTypes,
-    currentUser: state.session.userId,
     activitiesById: state.entities.users.activitiesById,
     activities: state.entities.users.activities,
     users: state.entities.users.entities,
     stories: state.entities.stories.entities,
+    originalDraft: state.storyCreate.draft,
+    workingDraft: state.storyCreate.workingDraft,
+    pathname: pathname,
     signedUp: state.signup.signedUp,
   }
 }
@@ -259,6 +300,7 @@ function mapDispatchToProps(dispatch) {
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
     reroute: (route) => dispatch(push(route)),
     attemptUpdateUser: (updates) => dispatch(UserActions.updateUser(updates)),
+    resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
     flagStory: (sessionUserId, storyId) => dispatch(StoryActions.flagStory(sessionUserId, storyId)),
   }
 }

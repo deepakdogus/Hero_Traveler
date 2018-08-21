@@ -33,6 +33,11 @@ import NativeEditor from '../../Components/NativeEditor/Editor'
 import Toolbar from '../../Components/NativeEditor/Toolbar'
 import {KeyboardTrackingView} from 'react-native-keyboard-tracking-view'
 
+import {
+  isFieldSame,
+  haveFieldsChanged,
+} from '../../Shared/Lib/draftChangedHelpers'
+
 const MediaTypes = {
   video: 'video',
   photo: 'photo',
@@ -43,17 +48,6 @@ const MediaTypes = {
 Utility functions
 
 */
-
-const isEqual = (firstItem, secondItem) => {
-  if (!!firstItem && !secondItem || !firstItem && !!secondItem) {
-    return false
-  } else if (!!firstItem && !!secondItem) {
-    // lodash will take of equality check for all objects
-    return _.isEqual(firstItem, secondItem)
-  } else {
-    return true
-  }
-}
 
 class StoryCoverScreen extends Component {
 
@@ -70,6 +64,9 @@ class StoryCoverScreen extends Component {
     resetCreateStore: PropTypes.func,
     workingDraft: PropTypes.object,
     originalDraft: PropTypes.object,
+    updateWorkingDraft: PropTypes.func,
+    saveDraftToCache: PropTypes.func,
+    error: PropTypes.string,
   }
 
   static defaultProps = {
@@ -163,7 +160,8 @@ class StoryCoverScreen extends Component {
   }
 
   _onLeft = () => {
-    if (this.draftHasChanged()){
+    const {workingDraft, originalDraft} = this.props
+    if (haveFieldsChanged(workingDraft, originalDraft)) {
       this.setState({ activeModal: 'cancel' })
     } else {
       // If there are no changes, just close without opening the modal
@@ -173,19 +171,6 @@ class StoryCoverScreen extends Component {
 
   closeModal = () => {
     this.setState({ activeModal: undefined})
-  }
-
-
-  hasFieldChanged(field) {
-    return !isEqual(this.props.workingDraft[field], this.props.originalDraft[field])
-  }
-
-  draftHasChanged = () => {
-    const fieldsToCheck = ['title', 'description', 'coverCaption', 'coverImage', 'coverVideo', 'tripDate', 'location', 'type', 'categories', 'hashtags', 'travelTips']
-    return !_.every([
-      ...fieldsToCheck.map(field => !this.hasFieldChanged(field)),
-      !this.state.contentTouched ,
-    ])
   }
 
   renderCancel = () => {
@@ -252,7 +237,7 @@ class StoryCoverScreen extends Component {
   }
 
   navBack = () => {
-    this.props.dispatch(StoryCreateActions.resetCreateStore())
+    this.props.resetCreateStore()
     if (this.props.navigatedFromProfile) {
       NavActions.tabbar({type: 'reset'})
       NavActions.profile()
@@ -263,20 +248,21 @@ class StoryCoverScreen extends Component {
 
 
   _onRight = () => {
+    const {workingDraft, originalDraft} = this.props
     const hasVideoSelected = !!this.state.coverVideo
     const hasImageSelected = !!this.state.coverImage
-    const hasImageChanged = this.hasFieldChanged('coverImage')
-    const hasVideoChanged = this.hasFieldChanged('coverVideo')
-    const hasTitleChanged = this.hasFieldChanged('title')
-    const hasDescriptionChanged = this.hasFieldChanged('description')
-    const hasCoverCaptionChanged = this.hasFieldChanged('coverCaption')
+    const isImageSame = isFieldSame('coverImage', workingDraft, originalDraft)
+    const isVideoSame = isFieldSame('coverVideo', workingDraft, originalDraft)
+    const isTitleSame = isFieldSame('title', workingDraft, originalDraft)
+    const isDescriptionSame = isFieldSame('description', workingDraft, originalDraft)
+    const isCoverCaptionSame = isFieldSame('coverCaption', workingDraft, originalDraft)
     const nothingHasChanged = _.every([
       hasVideoSelected || hasImageSelected,
-      !hasImageChanged,
-      !hasVideoChanged,
-      !hasTitleChanged,
-      !hasDescriptionChanged,
-      !hasCoverCaptionChanged
+      isImageSame,
+      isVideoSame,
+      isTitleSame,
+      isDescriptionSame,
+      isCoverCaptionSame
     ])
     // If nothing has changed, let the user go forward if they navigated back
     if (nothingHasChanged) {
@@ -289,7 +275,11 @@ class StoryCoverScreen extends Component {
       this.setState({validationError: 'Please add a cover and title to continue'})
       return
     }
-    if ((hasImageSelected || hasVideoSelected) && (hasVideoChanged || hasImageChanged) && !this.state.file) {
+    if (
+      (hasImageSelected || hasVideoSelected)
+      && (isVideoSame || isImageSame)
+      && !this.state.file
+    ) {
       this.setState({error: 'Sorry, could not process file. Please try another file.'})
       return
     }
@@ -304,9 +294,10 @@ class StoryCoverScreen extends Component {
   }
 
   cleanDraft(draft){
-    if (this.hasFieldChanged('title')) draft.title = _.trim(draft.title)
-    if (this.hasFieldChanged('description')) draft.description = _.trim(draft.description)
-    if (this.hasFieldChanged('coverCaption')) draft.coverCaption = _.trim(draft.coverCaption)
+    const {workingDraft, originalDraft} = this.props
+    if (!isFieldSame('title', workingDraft, originalDraft)) draft.title = _.trim(draft.title)
+    if (!isFieldSame('description', workingDraft, originalDraft)) draft.description = _.trim(draft.description)
+    if (!isFieldSame('coverCaption', workingDraft, originalDraft)) draft.coverCaption = _.trim(draft.coverCaption)
     draft.draftjsContent = this.editor.getEditorStateAsObject()
   }
 

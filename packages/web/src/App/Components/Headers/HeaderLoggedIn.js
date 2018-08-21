@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import _ from 'lodash'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Link, NavLink } from 'react-router-dom'
@@ -165,7 +166,7 @@ class HeaderLoggedIn extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   let {users} = state.entities
-  const profileAvatar =  users.entities[ownProps.userId].profile.avatar
+  let profileAvatar = _.get(users, `entities[${ownProps.userId}].profile.avatar`)
   return {
     profileAvatar
   }

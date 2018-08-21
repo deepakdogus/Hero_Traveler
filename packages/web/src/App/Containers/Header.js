@@ -82,8 +82,9 @@ class Header extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(this.props.currentUser && prevProps.currentUser !== this.props.currentUser){
-      this.props.attemptGetUserFeed(this.props.currentUser)
+    const { currentUserId } = this.props
+    if (currentUserId && prevProps.currentUserId !== currentUserId) {
+      this.props.attemptGetUserFeed(currentUserId)
     }
     if (!prevProps.signedUp && this.props.signedUp) {
       this.props.reroute('/signup/topics')
@@ -118,7 +119,9 @@ class Header extends React.Component {
     const name = event.target.name
     let modalToOpen;
     if (name === 'inbox' || name === 'loginEmail') modalToOpen = 'inbox'
-    else if (name === 'notifications' || name === 'cameraFlash') modalToOpen = 'notificationsThread'
+    else if (name === 'notifications' || name === 'cameraFlash') {
+      this.props.openGlobalModal('notificationsThread')
+    }
     this.setState({ modal: modalToOpen })
   }
 
@@ -233,7 +236,6 @@ function mapStateToProps(state) {
     currentUserProfile: (currentUser) && currentUser.profile,
     currentUserEmail: (currentUser) && currentUser.email,
     currentUserNotificationTypes: (currentUser) && currentUser.notificationTypes,
-    currentUser: state.session.userId,
     activitiesById: state.entities.users.activitiesById,
     activities: state.entities.users.activities,
     users: state.entities.users.entities,

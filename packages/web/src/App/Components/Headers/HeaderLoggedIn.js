@@ -66,14 +66,14 @@ class HeaderLoggedIn extends React.Component {
   }
 
   closeProfileMenu = () => {
-    if (
-      this.props.globalModal === 'profileMenu'
-      || this.props.globalModal === 'hamburgerMenu'
-    ) {
-      setTimeout( () => {
-        this.props.closeGlobalModal()
-      }, 100)
-    }
+    setTimeout(() => {
+      if(
+        this.props.globalModal === 'profileMenu'
+        || this.props.globalModal === 'hamburgerMenu'
+      ) {
+          this.props.closeGlobalModal()
+      }
+    }, 100)
   }
 
   _openHamburgerMenu = () => {

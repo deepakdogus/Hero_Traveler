@@ -62,6 +62,10 @@ class ProfileMenu extends React.Component{
     this.openGlobalModalAndClose('settings')
   }
 
+  openNotifications = () => {
+    this.openGlobalModalAndClose('notificationsThread')
+  }
+
   handleLogout = () =>{
     this.props.attemptLogout(this.props.userId)
   }
@@ -82,7 +86,7 @@ class ProfileMenu extends React.Component{
           My Profile
         </SidebarDemiLink>
         {globalModalParams.isHamburger &&
-          <SidebarDemiLink>
+          <SidebarDemiLink onClick={this.openNotifications}>
             Notifications
           </SidebarDemiLink>
         }

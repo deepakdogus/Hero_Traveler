@@ -168,12 +168,12 @@ export default class HeaderModals extends React.Component {
           />
         </Modal>
         <RightModal
-          isOpen={modal === 'notificationsThread'}
+          isOpen={globalModalThatIsOpen === 'notificationsThread'}
           contentLabel='Notifications Thread'
           onRequestClose={closeModal}
         >
           <NotificationsThread
-            closeModal={closeModal}
+            closeModal={this.closeGlobalModal}
             activitiesById={activitiesById}
             activities={activities}
             markSeen={markSeen}

@@ -6,21 +6,22 @@ import PropTypes from 'prop-types'
 import _ from 'lodash'
 
 import UserActions, {getByBookmarks} from '../Shared/Redux/Entities/Users'
+import GuideActions from '../Shared/Redux/Entities/Guides'
 import StoryActions, {getByUser, getUserFetchStatus, getBookmarksFetchStatus} from '../Shared/Redux/Entities/Stories'
 import MediaUploadActions from '../Shared/Redux/MediaUploadRedux'
 
 import ProfileHeader from '../Components/ProfileHeader/ProfileHeader'
 import TabBar from '../Components/TabBar'
-import StoryList from '../Components/StoryList'
+import FeedItemList from '../Components/FeedItemList'
 import Footer from '../Components/Footer'
 import Overlay from '../Components/Overlay'
 
-const tabBarTabs = ['STORIES', 'DRAFTS', 'BOOKMARKS']
-const readOnlyTabBarTabs = ['STORIES']
+const tabBarTabs = ['STORIES', 'DRAFTS', 'BOOKMARKS', 'GUIDES']
+const readOnlyTabBarTabs = ['STORIES', 'GUIDES']
 
 const ContentWrapper = styled.div``
 
-const StoryListWrapper = styled.div`
+const FeedItemListWrapper = styled.div`
   margin: 50px 7% 0;
 `
 
@@ -40,10 +41,13 @@ class Profile extends Component {
     // mapStateToProps properties
     sessionUserId: PropTypes.string,
     profilesUser: PropTypes.object,
+    userUpdating: PropTypes.bool,
     users: PropTypes.object,
     stories: PropTypes.object,
     userStoriesFetchStatus: PropTypes.object,
     userStoriesById: PropTypes.arrayOf(PropTypes.string),
+    guidesFetchStatus: PropTypes.object,
+    userGuidesById: PropTypes.arrayOf(PropTypes.string),
     draftsFetchStatus: PropTypes.object,
     draftsById: PropTypes.arrayOf(PropTypes.string),
     userBookmarksFetchStatus: PropTypes.object,
@@ -53,6 +57,7 @@ class Profile extends Component {
     myFollowedUsers: PropTypes.arrayOf(PropTypes.string),
     // mapDispatchToProps functions
     getStories: PropTypes.func,
+    getGuides: PropTypes.func,
     getDrafts: PropTypes.func,
     updateUser: PropTypes.func,
     getUser: PropTypes.func,
@@ -87,6 +92,8 @@ class Profile extends Component {
         return this.props.getDrafts(this.props.profilesUser.id)
       case 'BOOKMARKS':
         return this.props.loadBookmarks(this.props.profilesUser.id)
+      case 'GUIDES':
+        return this.props.getGuides(this.props.profilesUser.id)
       case 'STORIES':
       default:
         return this.props.getStories(this.props.profilesUser.id)
@@ -105,9 +112,9 @@ class Profile extends Component {
     this.props.loadBookmarks(userId)
   }
 
-  getStoriesByIds(idList) {
+  getFeedItemsByIds(idList, type = 'stories') {
     return idList.map(id => {
-      return this.props.stories[id]
+      return this.props[type][id]
     })
   }
 
@@ -116,24 +123,31 @@ class Profile extends Component {
       userStoriesFetchStatus, userStoriesById,
       draftsFetchStatus, draftsById,
       userBookmarksFetchStatus, userBookmarksById,
+      guidesFetchStatus, userGuidesById
     } = this.props
+
     // will use fetchStatus to show loading/error
     switch(this.state.activeTab){
       case 'DRAFTS':
         return {
           fetchStatus: draftsFetchStatus,
-          selectedStories: this.getStoriesByIds(draftsById),
+          selectedStories: this.getFeedItemsByIds(draftsById),
         }
       case 'BOOKMARKS':
         return {
           fetchStatus: userBookmarksFetchStatus,
-          selectedStories: this.getStoriesByIds(userBookmarksById),
+          selectedStories: this.getFeedItemsByIds(userBookmarksById),
+        }
+      case 'GUIDES':
+        return {
+          fetchStatus: guidesFetchStatus,
+          selectedStories: this.getFeedItemsByIds(userGuidesById, 'guides')
         }
       case 'STORIES':
       default:
         return {
           fetchStatus: userStoriesFetchStatus,
-          selectedStories: this.getStoriesByIds(userStoriesById),
+          selectedStories: this.getFeedItemsByIds(userStoriesById),
         }
     }
   }
@@ -188,13 +202,13 @@ class Profile extends Component {
           />
 
           { (!!selectedStories.length) &&
-          <StoryListWrapper>
-            <StoryList
-              stories={selectedStories}
+          <FeedItemListWrapper>
+            <FeedItemList
+              feedItems={selectedStories}
               users={users}
             />
             <Footer />
-          </StoryListWrapper>
+          </FeedItemListWrapper>
           }
           {isEdit && <OpaqueCover/>}
         </ListWrapper>
@@ -206,7 +220,7 @@ class Profile extends Component {
 
 function mapStateToProps(state, ownProps) {
   const userId = ownProps.match.params.userId
-  let {stories, users} = state.entities
+  let {stories, users, guides} = state.entities
   const profilesUser =  users.entities[userId]
   const sessionUserId = state.session.userId
   const myFollowedUsersObject = users.userFollowingByUserIdAndId[sessionUserId]
@@ -217,8 +231,11 @@ function mapStateToProps(state, ownProps) {
     profilesUser,
     users: users.entities,
     stories: stories.entities,
+    guides: guides.entities,
     userStoriesFetchStatus: getUserFetchStatus(stories, userId),
     userStoriesById: getByUser(stories, userId),
+    guidesFetchStatus: guides.fetchStatus,
+    userGuidesById: _.get(guides, `guideIdsByUserId[${userId}]`, []),
     draftsFetchStatus: stories.drafts.fetchStatus,
     draftsById: stories.drafts.byId,
     userBookmarksFetchStatus: getBookmarksFetchStatus(stories, userId),
@@ -233,6 +250,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     getStories: (userId) => dispatch(StoryActions.fromUserRequest(userId)),
+    getGuides: (userId) => dispatch(GuideActions.getUserGuides(userId)),
     getDrafts: () => dispatch(StoryActions.loadDrafts()),
     updateUser: (attrs) => dispatch(UserActions.updateUser(attrs)),
     getUser: (userId) => dispatch(UserActions.loadUser(userId)),

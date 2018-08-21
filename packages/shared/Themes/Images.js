@@ -109,6 +109,7 @@ const images = {
   iconInfoDark: require('../Images/ht-icons/icon_info_dark.png'),
   iconGreyCheck: require('../Images/ht-icons/grey-check.png'),
   iconCreateGuide: require('../Images/ht-icons/icon_create-new-guide.png'),
+  iconGuide: require('../Images/ht-icons/icon_guide.png'),
 }
 
 export default images

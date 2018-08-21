@@ -13,7 +13,7 @@ import {
   Timestamp,
 } from './Modals/Shared'
 import SpaceBetweenRow from './SpaceBetweenRow'
-import metrics from '../Shared/Themes/Metrics'
+// import metrics from '../Shared/Themes/Metrics' <--AND THIS?
 
 let avatarWidth = getSize({size: 'larger'})
 avatarWidth = Number(avatarWidth.substring(0, avatarWidth.length - 2))
@@ -27,6 +27,9 @@ const relevantMetrics  = {
 
 const Container = styled.div`
   padding: ${relevantMetrics.containerPadding}px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `
 
 const StyledUserName = styled.span`
@@ -62,6 +65,7 @@ const CommentContent = styled.p`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 16px;
+  flex-wrap: wrap;
   letter-spacing: .7px;
   margin: 0;
   color: ${props => props.theme.Colors.grey};
@@ -75,15 +79,15 @@ const NotificationContent = styled.p`
   margin: 0;
   color: ${props => props.theme.Colors.background};
 `
-
-const notificationContentWidth = metrics.rightModalWidth -
-  (2 * relevantMetrics.containerPadding +
-  relevantMetrics.avatarWidth +
-  relevantMetrics.imageWidth +
-  relevantMetrics.leftPadding + 1)
+//SHOULD I GET RID OF THIS?
+// const notificationContentWidth = metrics.rightModalWidth -
+//   (2 * relevantMetrics.containerPadding +
+//   relevantMetrics.avatarWidth +
+//   relevantMetrics.imageWidth +
+//   relevantMetrics.leftPadding + 1)
 
 const StyledNotificationContent = styled(NotificationContent)`
-  max-width: ${notificationContentWidth}px;
+  width: 300px;
 `
 
 const RenderImageContainer = styled.div`
@@ -93,16 +97,19 @@ const RenderImageContainer = styled.div`
     align-items: center;
     flex-direction: row;
 `
-
-const NewNotificationBullet = styled.div`
+const VisibleBulletContainer = styled.div`
   display: flex;
   background-color: #ed1e2e;
   margin: 0;
-  margin-right: 5px;
+  margin-right: 15px;
   padding: 0;
   width: 7.1px;
   height: 7.1px;
   border-radius: 50%;
+`
+
+const HiddenBulletContainer = styled(VisibleBulletContainer)`
+  visibility: hidden;
 `
 
 export default class NotificationRow extends Component {
@@ -134,12 +141,18 @@ export default class NotificationRow extends Component {
   renderImage = () => {
     return (
       <RenderImageContainer>
-        {!this.props.seen && <NewNotificationBullet />}
         <Avatar
           avatarUrl={getImageUrl(this.props.user.profile.avatar, 'avatar')}
           size='larger'
         />
       </RenderImageContainer>
+    )
+  }
+
+  renderSeenBullet = () => {
+    const BulletContainer = this.props.seen ? HiddenBulletContainer : VisibleBulletContainer
+    return (
+      <BulletContainer />
     )
   }
 
@@ -184,15 +197,21 @@ export default class NotificationRow extends Component {
   }
 
   render() {
+    const leftProps = {
+      'max-width': '450px',
+    }
+
     return (
       <InteractiveContainer onClick={this._markSeen}>
         <Container
           onClick={this.props.isFeedItem? this.navToStory : this.navToUserProfile}
           >
+          {this.renderSeenBullet()}
           <SpaceBetweenRow
             renderImage={this.renderImage}
             renderText={this.renderText}
             renderRight={this.renderTripImage}
+            leftProps={leftProps}
           />
         </Container>
         <StyledHorizontalDivider color='light-grey'/>

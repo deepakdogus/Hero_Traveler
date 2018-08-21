@@ -6,10 +6,10 @@ const Container = styled.div`
   background-color: #ed1e2e;
   display: inline-flex;
   position: absolute;
-  top: -20px;
+  top: -15px;
   right: 6px;
-  width: 25px;
-  height: 25px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   text-align: center;
   z-index: 50;
@@ -18,9 +18,8 @@ const Container = styled.div`
 
 const Text = styled.p`
   color: #ffffff;
-  font-size: 9px;
+  font-size: 8px;
   margin: auto;
-  padding: 5px;
 `
 
 export default function NotificationsBadge({count}) {

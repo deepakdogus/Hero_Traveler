@@ -151,8 +151,9 @@ class FeedItemPreview extends Component {
     isStory: true,
   }
 
-  navToStory = () => {
-    this.props.reroute(`/story/${this.props.feedItem.id}`)
+  navToFeedItem = () => {
+    const storyOrGuide = this.props.isStory ? 'story' : 'guide'
+    this.props.reroute(`/${storyOrGuide}/${this.props.feedItem.id}`)
   }
 
   navToUserProfile = () => {
@@ -205,7 +206,7 @@ class FeedItemPreview extends Component {
         <Row>
           <CoverImage
             src={imageUrl}
-            onClick={this.navToStory}
+            onClick={this.navToFeedItem}
           />
           <StoryInfoContainer>
             {!isStory &&
@@ -215,7 +216,7 @@ class FeedItemPreview extends Component {
               </Top>
             }
             <LocationPreview>{this.getLocationText()}</LocationPreview>
-            <Title onClick={this.navToStory}>{feedItem.title}</Title>
+            <Title onClick={this.navToFeedItem}>{feedItem.title}</Title>
             {isStory && feedItem.description &&
               <Description>{feedItem.description}</Description>
             }

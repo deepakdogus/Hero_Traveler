@@ -5,20 +5,30 @@ import PropTypes from 'prop-types'
 import {push} from 'react-router-redux'
 import _ from 'lodash'
 
+import {feedExample} from './Feed_TEST_DATA'
 import StoryActions from '../Shared/Redux/Entities/Stories'
+import GuideActions from '../Shared/Redux/Entities/Guides'
 import UserActions from '../Shared/Redux/Entities/Users'
-import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
+import {
+  isStoryLiked,
+  isStoryBookmarked,
+  isGuideLiked,
+} from '../Shared/Redux/Entities/Users'
 import UXActions from '../Redux/UXRedux'
 
 import FeedItemHeader from '../Components/FeedItemHeader'
+import {BodyText as Description} from '../Components/StoryContentRenderer'
 import StoryContentRenderer from '../Components/StoryContentRenderer'
 import GMap from '../Components/GoogleMap'
 import FeedItemMetaInfo from '../Components/FeedItemMetaInfo'
 import StoryActionBar from '../Components/StoryActionBar'
+import TabBar from '../Components/TabBar'
 
 const ContentWrapper = styled.div``
 
 const LimitedWidthContainer = styled.div`
+  padding-left: 45px;
+  padding-right: 45px;
   max-width: 800px;
   margin: 0 auto;
 `
@@ -32,7 +42,9 @@ const HashtagText = styled.p`
   margin-botton: 45px;
 `
 
-class Story extends Component {
+const tabBarTabs = ['OVERVIEW', 'SEE', 'DO', 'EAT', 'STAY']
+
+class Guide extends Component {
   static propTypes = {
     story: PropTypes.object,
     author: PropTypes.object,
@@ -40,7 +52,6 @@ class Story extends Component {
     isFollowing: PropTypes.bool,
     unfollowUser: PropTypes.func,
     followUser: PropTypes.func,
-    getStory: PropTypes.func,
     reroute: PropTypes.func,
     isLiked: PropTypes.bool,
     onClickLike: PropTypes.func,
@@ -52,9 +63,11 @@ class Story extends Component {
     openGlobalModal: PropTypes.func,
   }
 
+  state = { activeTab: 'OVERVIEW' }
+
   componentDidMount() {
-    if (!this.props.story) {
-      this.props.getStory(this.props.match.params.storyId)
+    if (!this.props.guide) {
+      this.props.getGuide(this.props.match.params.guideId)
     }
   }
 
@@ -83,10 +96,10 @@ class Story extends Component {
   }
 
   renderHashtags = () => {
-    const {story} = this.props
-    if (!story.hashtags) return null
+    const {guide} = this.props
+    if (!guide.hashtags) return null
 
-    const hashtagMap = story.hashtags.map((hashtag) => {
+    const hashtagMap = guide.hashtags.map((hashtag) => {
       return `#${hashtag.title}`
     })
 
@@ -97,9 +110,19 @@ class Story extends Component {
     )
   }
 
+  onClickTab = (event) => {
+    let tab = event.target.innerHTML
+    if (this.state.activeTab !== tab) {
+      this.setState({ activeTab: tab }, () => {
+        // this.getTabInfo(tab)
+      })
+    }
+  }
+
   render() {
     const {
       story,
+      guide,
       author,
       reroute,
       sessionUserId,
@@ -109,85 +132,104 @@ class Story extends Component {
       flagStory,
       openGlobalModal,
     } = this.props
-    if (!story || !author) return null
+    if (!guide || !author) return null
+    const suggestedStories = Object.keys(feedExample).map(key => {
+      return feedExample[key]
+    })
+
+
 
     return (
       <ContentWrapper>
         <FeedItemHeader
-          feedItem={story}
+          feedItem={guide}
           author={author}
           reroute={reroute}
           sessionUserId={sessionUserId}
           isFollowing={isFollowing}
           followUser={this._followUser}
           unfollowUser={this._unfollowUser}
-          isStory
         />
         <LimitedWidthContainer>
-          <StoryContentRenderer story={story} />
+          <TabBar
+            tabs={tabBarTabs}
+            activeTab={this.state.activeTab}
+            onClickTab={this.onClickTab}
+          />
+          <Description>{guide.description}</Description>
           {this.renderHashtags()}
-          {story.locationInfo && story.locationInfo.latitude && story.locationInfo.longitude &&
-            <GMap
-              lat={story.locationInfo.latitude}
-              lng={story.locationInfo.longitude}
-              location={story.locationInfo.name}
-            />
-          }
-          <FeedItemMetaInfo feedItem={story}/>
+          <FeedItemMetaInfo feedItem={guide}/>
         </LimitedWidthContainer>
-        <StoryActionBar
-          story={story}
-          isLiked={isLiked}
-          onClickLike={this._onClickLike}
-          isBookmarked={isBookmarked}
-          onClickBookmark={this._onClickBookmark}
-          onClickComments={this._onClickComments}
-          flagStory={flagStory}
-          userId={sessionUserId}
-          reroute={reroute}
-          openGlobalModal={openGlobalModal}
-        />
+        {
+
+        // <LimitedWidthContainer>
+        //   <StoryContentRenderer story={story} />
+        //   {this.renderHashtags()}
+        //   {story.locationInfo && story.locationInfo.latitude && story.locationInfo.longitude &&
+        //     <GMap
+        //       lat={story.locationInfo.latitude}
+        //       lng={story.locationInfo.longitude}
+        //       location={story.locationInfo.name}
+        //     />
+        //   }
+        //   <FeedItemMetaInfo story={story}/>
+        // </LimitedWidthContainer>
+        }
+        {
+        // <StoryActionBar
+        //   story={story}
+        //   isLiked={isLiked}
+        //   onClickLike={this._onClickLike}
+        //   isBookmarked={isBookmarked}
+        //   onClickBookmark={this._onClickBookmark}
+        //   onClickComments={this._onClickComments}
+        //   flagStory={flagStory}
+        //   userId={sessionUserId}
+        //   reroute={reroute}
+        //   openGlobalModal={openGlobalModal}
+        // />
+        }
       </ContentWrapper>
     )
   }
 }
 
 function mapStateToProps(state, ownProps) {
-  const storyId = ownProps.match.params.storyId
-  const story = state.entities.stories.entities[storyId]
-  const author = story ? state.entities.users.entities[story.author] : undefined
+  const guideId = ownProps.match.params.guideId
+  const {guides, users} = state.entities
+  const guide = guides.entities[guideId]
+  const author = guide ? users.entities[guide.author] : undefined
 
   let isFollowing
   const sessionUserId = state.session.userId
   if (sessionUserId && author){
-    const myFollowedUsersObject = state.entities.users.userFollowingByUserIdAndId[sessionUserId]
+    const myFollowedUsersObject = users.userFollowingByUserIdAndId[sessionUserId]
     const myFollowedUsers = myFollowedUsersObject ? myFollowedUsersObject.byId : undefined
     isFollowing = _.includes(myFollowedUsers, author.id)
   }
 
   return {
-    story,
+    guide,
     author,
     isFollowing,
     sessionUserId,
-    isLiked: isStoryLiked(state.entities.users, sessionUserId, storyId),
-    isBookmarked: isStoryBookmarked(state.entities.users, sessionUserId, storyId),
+    isLiked: isGuideLiked(users, sessionUserId, guideId),
+    // isBookmarked: isStoryBookmarked(state.entities.users, sessionUserId, guideId),
   }
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
   const storyId = ownProps.match.params.storyId
   return {
-    getStory: (storyId, tokens) => dispatch(StoryActions.storyRequest(storyId)),
+    getGuide: (guideId) => dispatch(GuideActions.getGuideRequest(guideId)),
     reroute: (path) => dispatch(push(path)),
     followUser: (sessionUserId, userIdToFollow) => dispatch(UserActions.followUser(sessionUserId, userIdToFollow)),
     unfollowUser: (sessionUserId, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserId, userIdToUnfollow)),
     onClickLike: (sessionUserId) => dispatch(StoryActions.storyLike(sessionUserId, storyId)),
-    onClickBookmark: (sessionUserId) => dispatch(StoryActions.storyBookmark(sessionUserId, storyId)),
     onClickComments: () => dispatch(UXActions.openGlobalModal('comments', { storyId })),
     flagStory: (sessionUserId, storyId) => dispatch(StoryActions.flagStory(sessionUserId, storyId)),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Story)
+export default connect(mapStateToProps, mapDispatchToProps)(Guide)

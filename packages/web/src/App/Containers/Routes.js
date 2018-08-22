@@ -15,6 +15,7 @@ import SignupSocial from './Signup/SignupSocial'
 import SignupTopics from './Signup/SignupTopics'
 import Profile from './Profile'
 import Header from './Header'
+import Guide from './Guide'
 
 class AppRoot extends Component {
   render() {
@@ -28,6 +29,7 @@ class AppRoot extends Component {
         <AuthRoute path='/signup/social' component={SignupSocial} />
         <AuthRoute path='/signup/topics' component={SignupTopics} />
         <Route path='/story/:storyId' component={Story} />
+        <Route path='/guide/:guideId' component={Guide} />
         <Route exact path='/createStory' component={CreateStory} />
         <AuthRoute path='/editStory/:storyId' component={EditStory} />
         <Route path='/profile/:userId/view' component={Profile} />

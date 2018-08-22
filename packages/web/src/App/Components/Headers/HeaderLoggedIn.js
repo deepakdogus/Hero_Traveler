@@ -33,17 +33,17 @@ const StyledRoundedAvatarButton = styled(RoundedButton)`
   margin-left: 10px;
   margin-right: 20px;
   position: relative;
-  top: ${props => props.profileAvatar ? '4px' : '3px'};
+  top: ${props => props.profileAvatar ? '4px' : '2.5px'};
 `
 
 const StyledRoundedCreateButton = styled(RoundedButton)`
     position: relative;
-    bottom: 7px;
+    bottom: ${props => props.profileAvatar ? '7px' : '2px'};
 `
 
 const StyledRoundedNotificationButton = styled(StyledRoundedButton)`
     position: relative;
-    bottom: 4px;
+    bottom: ${props => props.profileAvatar ? '4px' : '-1.8px'};
 `
 
 class HeaderLoggedIn extends React.Component {
@@ -155,13 +155,17 @@ class HeaderLoggedIn extends React.Component {
               {// we remove the 'Create' button from the HeaderLoggedIn Nav if we're editting a story
               !this.props.pathname.includes('editStory') &&
               <NavLink to='/editStory/new'>
-                <StyledRoundedCreateButton text='Create'/>
+                <StyledRoundedCreateButton
+                  text='Create'
+                  profileAvatar={profileAvatar}
+                />
               </NavLink>}
               <StyledRoundedNotificationButton
                 type='headerButton'
                 height='32px'
                 width='32px'
                 name='notifications'
+                profileAvatar={profileAvatar}
                 onClick={openModal}
               >
                 <NotificationsIcon name='cameraFlash' />

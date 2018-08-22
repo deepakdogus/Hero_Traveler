@@ -105,6 +105,7 @@ const BookmarkIcon = styled(Icon)`
   height: 16px;
   margin: 1.5px 10px;
 `
+// height: ${props => props.avatar ? '20px;': '0'}
 
 const videoThumbnailOptions = {
   video: true,
@@ -169,6 +170,7 @@ class StoryPreview extends Component {
             <DetailsContainer between='xs'>
               <Row middle='xs'>
                 <Avatar
+                  storyPreview={true}
                   avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
                   size='avatar'
                   onClick={this.navToUserProfile}

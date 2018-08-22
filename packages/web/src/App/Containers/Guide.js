@@ -23,6 +23,8 @@ import GMap from '../Components/GoogleMap'
 import FeedItemMetaInfo from '../Components/FeedItemMetaInfo'
 import StoryActionBar from '../Components/StoryActionBar'
 import TabBar from '../Components/TabBar'
+import GuideStoriesOfType from '../Components/GuideStoriesOfType'
+import HorizontalDivider from '../Components/HorizontalDivider'
 
 const ContentWrapper = styled.div``
 
@@ -61,13 +63,30 @@ class Guide extends Component {
     onClickComments: PropTypes.func,
     flagStory: PropTypes.func,
     openGlobalModal: PropTypes.func,
+
+    guide: PropTypes.object,
+    guideStories: PropTypes.arrayOf(PropTypes.object),
+    getGuide: PropTypes.func,
+    getGuideStories: PropTypes.func,
   }
 
   state = { activeTab: 'OVERVIEW' }
 
   componentDidMount() {
     if (!this.props.guide) {
-      this.props.getGuide(this.props.match.params.guideId)
+      this.props.getGuide()
+    }
+    else this.checkForGuideStories()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.guide && this.props.guide) this.checkForGuideStories()
+  }
+
+  checkForGuideStories() {
+    const {guide, guideStories, getGuideStories} = this.props
+    if (guide.stories.length !== guideStories.length) {
+      getGuideStories()
     }
   }
 
@@ -110,14 +129,50 @@ class Guide extends Component {
     )
   }
 
-  onClickTab = (event) => {
-    let tab = event.target.innerHTML
+  // onClickTab is the generic way we are dealing with TabBar clicks
+  // in the future we will refactor so it immediately gives text
+  // GuideStoriesOfType however also needs to trigger this so adding selectedTab
+  onClickTab = (event, selectedTab) => {
+    let tab = _.get(event, 'target.innerHTML', selectedTab)
     if (this.state.activeTab !== tab) {
-      this.setState({ activeTab: tab }, () => {
-        // this.getTabInfo(tab)
-      })
+      this.setState({ activeTab: tab })
     }
   }
+
+  getStoriesAndAuthorsByType = (type) => {
+    const {guideStories, users} = this.props
+    const authors = {}
+    const storiesOfType = guideStories.filter(story => {
+      if (story.type === type) {
+        if (!authors[story.author]) authors[story.author] = users[story.author]
+        return true
+      }
+      else return false
+    })
+    return {
+      stories: storiesOfType,
+      authors: authors
+    }
+  }
+
+  shouldDisplay = (type) => {
+    const {activeTab} = this.state
+    return activeTab === 'OVERVIEW' || activeTab === type
+  }
+
+  getGuideStoriesOfTypeProps(type) {
+    const {activeTab} = this.state
+    const label = type === 'STAY' ? `PLACES TO STAY` : `THINGS TO ${type}`
+    // onClickShowAll={this.onClickTab}
+    return {
+      type,
+      label,
+      isShowAll: activeTab === type,
+      ...this.getStoriesAndAuthorsByType(type.toLowerCase()),
+      onClickShowAll: this.onClickTab,
+    }
+  }
+
 
   render() {
     const {
@@ -132,12 +187,8 @@ class Guide extends Component {
       flagStory,
       openGlobalModal,
     } = this.props
+    const {activeTab} = this.state
     if (!guide || !author) return null
-    const suggestedStories = Object.keys(feedExample).map(key => {
-      return feedExample[key]
-    })
-
-
 
     return (
       <ContentWrapper>
@@ -159,22 +210,20 @@ class Guide extends Component {
           <Description>{guide.description}</Description>
           {this.renderHashtags()}
           <FeedItemMetaInfo feedItem={guide}/>
+          <HorizontalDivider color='light-grey'/>
+          {this.shouldDisplay("SEE") &&
+            <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('SEE')} />
+          }
+          {this.shouldDisplay("DO") &&
+            <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('DO')} />
+          }
+          {this.shouldDisplay("EAT") &&
+            <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('EAT')} />
+          }
+          {this.shouldDisplay("STAY") &&
+            <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('STAY')} />
+          }
         </LimitedWidthContainer>
-        {
-
-        // <LimitedWidthContainer>
-        //   <StoryContentRenderer story={story} />
-        //   {this.renderHashtags()}
-        //   {story.locationInfo && story.locationInfo.latitude && story.locationInfo.longitude &&
-        //     <GMap
-        //       lat={story.locationInfo.latitude}
-        //       lng={story.locationInfo.longitude}
-        //       location={story.locationInfo.name}
-        //     />
-        //   }
-        //   <FeedItemMetaInfo story={story}/>
-        // </LimitedWidthContainer>
-        }
         {
         // <StoryActionBar
         //   story={story}
@@ -199,6 +248,7 @@ function mapStateToProps(state, ownProps) {
   const {guides, users} = state.entities
   const guide = guides.entities[guideId]
   const author = guide ? users.entities[guide.author] : undefined
+  const stories = state.entities.stories.entities
 
   let isFollowing
   const sessionUserId = state.session.userId
@@ -208,9 +258,16 @@ function mapStateToProps(state, ownProps) {
     isFollowing = _.includes(myFollowedUsers, author.id)
   }
 
+  let guideStories = guide ? guide.stories.map(storyId => {
+    return stories[storyId]
+  }) : []
+  guideStories = guideStories.filter(story => !!story)
+
   return {
     guide,
+    guideStories,
     author,
+    users: users.entities,
     isFollowing,
     sessionUserId,
     isLiked: isGuideLiked(users, sessionUserId, guideId),
@@ -220,8 +277,10 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch, ownProps) {
   const storyId = ownProps.match.params.storyId
+  const guideId = ownProps.match.params.guideId
   return {
-    getGuide: (guideId) => dispatch(GuideActions.getGuideRequest(guideId)),
+    getGuide: () => dispatch(GuideActions.getGuideRequest(guideId)),
+    getGuideStories: () => dispatch(StoryActions.getGuideStories(guideId)),
     reroute: (path) => dispatch(push(path)),
     followUser: (sessionUserId, userIdToFollow) => dispatch(UserActions.followUser(sessionUserId, userIdToFollow)),
     unfollowUser: (sessionUserId, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserId, userIdToUnfollow)),

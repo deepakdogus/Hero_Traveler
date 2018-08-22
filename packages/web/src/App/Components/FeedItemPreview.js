@@ -24,17 +24,28 @@ import Icon from './Icon'
 
 const coverHeight = '257px'
 
-const MarginWrapper = styled.div`
+const VerticalWrapper = styled.div``
+
+const HorizontalMarginWrapper = styled.div`
   position: relative;
   max-width: 960px;
   margin: auto;
   color: ${props => props.theme.Colors.lightGrey};
 `
 
-const StoryInfoContainer = styled(VerticalCenter)`
+const VerticalMarginWrapper = styled(HorizontalMarginWrapper)`
+  margin: 25px 0 0;
+`
+
+const HorizontalStoryInfoContainer = styled(VerticalCenter)`
   position: relative;
   height: ${coverHeight};
   margin-left: 20px;
+`
+
+const VerticalStoryInfoContainer = styled(HorizontalStoryInfoContainer)`
+  height: auto;
+  margin-left: 0;
 `
 
 const Title = styled.h3`
@@ -60,10 +71,14 @@ const Description = styled.h2`
   margin-bottom: 0;
 `
 
-const DetailsContainer = styled(Row)`
+const HorizontalDetailsContainer = styled(Row)`
   padding-top: 13px;
   display: flex;
   position: relative;
+`
+
+const VerticalDetailsContainer = styled(HorizontalDetailsContainer)`
+  padding-top: 5px;
 `
 
 const CoverImage = styled.img`
@@ -81,7 +96,7 @@ const Text = styled.span`
   color: ${props => props.theme.Colors.grey};
 `
 
-const LocationPreview = styled(Text)`
+const HorizontalLocationPreview = styled(Text)`
   color: ${props => props.theme.Colors.background};
   letter-spacing: .7px;
   font-size: 14px;
@@ -90,7 +105,11 @@ const LocationPreview = styled(Text)`
   text-transform: uppercase;
 `
 
-const GuideIconText = styled(LocationPreview)`
+const VerticalLocationPreview = styled(HorizontalLocationPreview)`
+  margin-bottom: 6px;
+`
+
+const GuideIconText = styled(HorizontalLocationPreview)`
   padding-left: 10px;
 `
 
@@ -145,6 +164,7 @@ class FeedItemPreview extends Component {
     onClickStoryLike: PropTypes.func,
     onClickGuideLike: PropTypes.func,
     onClickGuideUnLike: PropTypes.func,
+    isVertical: PropTypes.bool,
   }
 
   defaultProps = {
@@ -191,6 +211,7 @@ class FeedItemPreview extends Component {
       isLiked,
       isBookmarked,
       isStory,
+      isVertical,
     } = this.props
 
     if (!feedItem || !author) return
@@ -201,9 +222,15 @@ class FeedItemPreview extends Component {
       imageUrl = getImageUrl(feedItem.coverVideo, 'optimized', videoThumbnailOptions)
     }
 
+    const DirectionalWrapper = isVertical ? VerticalWrapper : Row
+    const StoryInfoContainer = isVertical ? VerticalStoryInfoContainer : HorizontalStoryInfoContainer
+    const MarginWrapper = isVertical ? VerticalMarginWrapper : HorizontalMarginWrapper
+    const DetailsContainer = isVertical ? VerticalDetailsContainer : HorizontalDetailsContainer
+    const LocationPreview = isVertical ? VerticalLocationPreview : HorizontalLocationPreview
+
     return (
       <MarginWrapper>
-        <Row>
+        <DirectionalWrapper>
           <CoverImage
             src={imageUrl}
             onClick={this.navToFeedItem}
@@ -222,32 +249,36 @@ class FeedItemPreview extends Component {
             }
             <DetailsContainer between='xs'>
               <Row middle='xs'>
-                <Avatar
-                  avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
-                  size='avatar'
-                  onClick={this.navToUserProfile}
-                />
-                <ByText>By&nbsp;</ByText>
+                {!isVertical &&
+                  <Avatar
+                    avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
+                    size='avatar'
+                    onClick={this.navToUserProfile}
+                  />
+                }
+                {!isVertical && <ByText>By&nbsp;</ByText>}
                 <Username onClick={this.navToUserProfile}>{author.username}</Username>
-                <Text>, {moment(feedItem.createdAt).fromNow()}</Text>
+                {!isVertical && <Text>, {moment(feedItem.createdAt).fromNow()}</Text>}
               </Row>
             </DetailsContainer>
-            <Bottom>
-              <LikeComponent
-                likes={formatCount(feedItem.counts.likes)}
-                isLiked={isLiked}
-                onClick={sessionUserId ? this._onClickLike : undefined}
-                horizontal
-              />
-              {isStory &&
-                <BookmarkIcon
-                  name={isBookmarked ? 'bookmark-active' : 'bookmark'}
-                  onClick={sessionUserId ? this._onClickBookmark : undefined}
+            {!isVertical &&
+              <Bottom>
+                <LikeComponent
+                  likes={formatCount(feedItem.counts.likes)}
+                  isLiked={isLiked}
+                  onClick={sessionUserId ? this._onClickLike : undefined}
+                  horizontal
                 />
-              }
-            </Bottom>
+                {isStory &&
+                  <BookmarkIcon
+                    name={isBookmarked ? 'bookmark-active' : 'bookmark'}
+                    onClick={sessionUserId ? this._onClickBookmark : undefined}
+                  />
+                }
+              </Bottom>
+            }
           </StoryInfoContainer>
-        </Row>
+        </DirectionalWrapper>
       </MarginWrapper>
     )
   }

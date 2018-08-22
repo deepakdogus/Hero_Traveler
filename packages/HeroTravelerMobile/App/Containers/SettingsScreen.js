@@ -88,7 +88,7 @@ class SettingsScreen extends React.Component {
   }
 
   _logOut = () => {
-    this.props.logout(this.props.user.id)
+    this.props.logout(this.props.user.id, 'mobile')
   }
 
   _tapFacebook = () => {
@@ -204,7 +204,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logout: (tokens) => dispatch(SessionActions.logout(tokens)),
+    logout: (tokens, deviceType) => dispatch(SessionActions.logout(tokens, deviceType)),
     resetStore: () => dispatch(SessionActions.resetRootStore()),
     connectFacebook: () => dispatch(UserActions.connectFacebook()),
     deleteUser: () => dispatch(UserActions.deleteUser()),

@@ -5,8 +5,8 @@ import Immutable from 'seamless-immutable'
 
 const { Types, Creators } = createActions({
   initializeSession: ['userId', 'tokens'],
-  logout: ['tokens'],
-  logoutSuccess: null,
+  logout: ['tokens', 'deviceType'],
+  logoutSuccess: ['deviceType'],
   logoutFailure: null,
   resetRootStore: null,
   resumeSession: ['userId', 'retrievedTokens'],
@@ -46,12 +46,17 @@ export const logout = (state) => state.merge({ isLoggingOut: true })
 
 // notify the UI that we've logged out
 // we reset the stores elsewhere completely
-export const logoutSuccess = (state) => state.merge({
-  userId: null,
-  tokens: null,
-  isLoggedOut: true,
-  isLoggingOut: false
-})
+export const logoutSuccess = (state, {deviceType}) => {
+  let update = {
+      isLoggedOut: true,
+      isLoggingOut: false
+    }
+  if (deviceType !== 'mobile') {
+    update[tokens] = null
+    update[userId] = null
+  }
+  return state.merge(update)
+}
 
 // We've somehow failed to logout, most probably because the server couldn't
 // even find our access token. In any case, we should resume client side

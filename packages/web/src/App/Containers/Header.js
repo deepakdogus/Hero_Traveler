@@ -71,6 +71,7 @@ class Header extends React.Component {
     pathname: PropTypes.string,
     signedUp: PropTypes.bool,
     flagStory: PropTypes.func,
+    deleteStory: PropTypes.func,
   }
 
   constructor(props) {
@@ -182,6 +183,7 @@ class Header extends React.Component {
       workingDraft,
       originalDraft,
       flagStory,
+      deleteStory,
     } = this.props
 
     const SelectedGrid =
@@ -243,6 +245,8 @@ class Header extends React.Component {
               reroute={reroute}
               resetCreateStore={this._resetCreateStore}
               flagStory={flagStory}
+              deleteStory={deleteStory}
+              pathname={pathname}
             />
         </SelectedGrid>
         <HeaderSpacer
@@ -294,6 +298,7 @@ function mapDispatchToProps(dispatch) {
     attemptUpdateUser: (updates) => dispatch(UserActions.updateUser(updates)),
     resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
     flagStory: (sessionUserId, storyId) => dispatch(StoryActions.flagStory(sessionUserId, storyId)),
+    deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
   }
 }
 

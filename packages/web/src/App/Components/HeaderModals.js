@@ -17,6 +17,7 @@ import RightModal from './RightModal'
 import CenterModal from './CenterModal'
 import NotificationsThread from './Modals/NotificationsThread'
 import FlagStory from './Modals/FlagStory'
+import DeleteStory from './Modals/DeleteStory'
 
 const Container = styled.div``
 
@@ -90,6 +91,8 @@ export default class HeaderModals extends React.Component {
     attemptLogout: PropTypes.func,
     resetCreateStore: PropTypes.func,
     flagStory: PropTypes.func,
+    deleteStory: PropTypes.func,
+    pathname: PropTypes.string,
   }
 
   closeGlobalModal = () => {
@@ -123,6 +126,8 @@ export default class HeaderModals extends React.Component {
       attemptLogout,
       resetCreateStore,
       flagStory,
+      deleteStory,
+      pathname,
     } = this.props
 
     return (
@@ -183,6 +188,21 @@ export default class HeaderModals extends React.Component {
             closeModal={closeGlobalModal}
             attemptLogout={attemptLogout}
             resetCreateStore={resetCreateStore}
+          />
+        </Modal>
+        <Modal
+          isOpen={globalModalThatIsOpen === 'deleteStory'}
+          contentLabel="Delete Story Modal"
+          onRequestClose={closeModal}
+          style={customModalStyles}
+        >
+          <DeleteStory
+            reroute={reroute}
+            closeModal={closeGlobalModal}
+            deleteStory={deleteStory}
+            resetCreateStore={resetCreateStore}
+            userId={userId}
+            pathname={pathname}
           />
         </Modal>
         <Modal

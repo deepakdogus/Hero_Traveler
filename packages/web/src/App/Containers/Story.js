@@ -14,7 +14,7 @@ import FeedItemHeader from '../Components/FeedItemHeader'
 import StoryContentRenderer from '../Components/StoryContentRenderer'
 import GMap from '../Components/GoogleMap'
 import FeedItemMetaInfo from '../Components/FeedItemMetaInfo'
-import StoryActionBar from '../Components/StoryActionBar'
+import FeedItemActionBar from '../Components/FeedItemActionBar'
 
 const ContentWrapper = styled.div``
 
@@ -48,7 +48,6 @@ class Story extends Component {
     onClickBookmark: PropTypes.func,
     match: PropTypes.object,
     onClickComments: PropTypes.func,
-    flagStory: PropTypes.func,
     openGlobalModal: PropTypes.func,
   }
 
@@ -106,7 +105,6 @@ class Story extends Component {
       isFollowing,
       isBookmarked,
       isLiked,
-      flagStory,
       openGlobalModal,
     } = this.props
     if (!story || !author) return null
@@ -135,14 +133,14 @@ class Story extends Component {
           }
           <FeedItemMetaInfo feedItem={story}/>
         </LimitedWidthContainer>
-        <StoryActionBar
-          story={story}
+        <FeedItemActionBar
+          feedItem={story}
+          isStory
           isLiked={isLiked}
           onClickLike={this._onClickLike}
           isBookmarked={isBookmarked}
           onClickBookmark={this._onClickBookmark}
           onClickComments={this._onClickComments}
-          flagStory={flagStory}
           userId={sessionUserId}
           reroute={reroute}
           openGlobalModal={openGlobalModal}
@@ -185,7 +183,6 @@ function mapDispatchToProps(dispatch, ownProps) {
     onClickLike: (sessionUserId) => dispatch(StoryActions.storyLike(sessionUserId, storyId)),
     onClickBookmark: (sessionUserId) => dispatch(StoryActions.storyBookmark(sessionUserId, storyId)),
     onClickComments: () => dispatch(UXActions.openGlobalModal('comments', { storyId })),
-    flagStory: (sessionUserId, storyId) => dispatch(StoryActions.flagStory(sessionUserId, storyId)),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
   }
 }

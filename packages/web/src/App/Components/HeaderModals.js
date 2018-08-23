@@ -190,6 +190,7 @@ export default class HeaderModals extends React.Component {
           <Comments
             closeModal={this.closeGlobalModal}
             storyId={globalModalParams.storyId}
+            guideId={globalModalParams.guideId}
           />
         </RightModal>
         <RightModal

@@ -21,7 +21,7 @@ import {BodyText as Description} from '../Components/StoryContentRenderer'
 import StoryContentRenderer from '../Components/StoryContentRenderer'
 import GMap from '../Components/GoogleMap'
 import FeedItemMetaInfo from '../Components/FeedItemMetaInfo'
-import StoryActionBar from '../Components/StoryActionBar'
+import FeedItemActionBar from '../Components/FeedItemActionBar'
 import TabBar from '../Components/TabBar'
 import GuideStoriesOfType from '../Components/GuideStoriesOfType'
 import HorizontalDivider from '../Components/HorizontalDivider'
@@ -61,13 +61,14 @@ class Guide extends Component {
     onClickBookmark: PropTypes.func,
     match: PropTypes.object,
     onClickComments: PropTypes.func,
-    flagStory: PropTypes.func,
     openGlobalModal: PropTypes.func,
 
     guide: PropTypes.object,
     guideStories: PropTypes.arrayOf(PropTypes.object),
     getGuide: PropTypes.func,
     getGuideStories: PropTypes.func,
+    onClickGuideLike: PropTypes.func,
+    onClickGuideUnLike: PropTypes.func,
   }
 
   state = { activeTab: 'OVERVIEW' }
@@ -101,8 +102,10 @@ class Guide extends Component {
   }
 
   _onClickLike = () => {
+    const {sessionUserId} = this.props
     if (!this.props.sessionUserId) return
-    this.props.onClickLike(this.props.sessionUserId)
+    if (this.props.isLiked) this.props.onClickGuideUnLike(sessionUserId)
+    else this.props.onClickGuideLike(sessionUserId)
   }
 
   _onClickBookmark = () => {
@@ -184,10 +187,9 @@ class Guide extends Component {
       isFollowing,
       isBookmarked,
       isLiked,
-      flagStory,
       openGlobalModal,
     } = this.props
-    const {activeTab} = this.state
+
     if (!guide || !author) return null
 
     return (
@@ -225,18 +227,18 @@ class Guide extends Component {
           }
         </LimitedWidthContainer>
         {
-        // <StoryActionBar
-        //   story={story}
-        //   isLiked={isLiked}
-        //   onClickLike={this._onClickLike}
-        //   isBookmarked={isBookmarked}
-        //   onClickBookmark={this._onClickBookmark}
-        //   onClickComments={this._onClickComments}
-        //   flagStory={flagStory}
-        //   userId={sessionUserId}
-        //   reroute={reroute}
-        //   openGlobalModal={openGlobalModal}
-        // />
+        <FeedItemActionBar
+          isStory={false}
+          feedItem={guide}
+          isLiked={isLiked}
+          onClickLike={this._onClickLike}
+          // isBookmarked={isBookmarked}
+          // onClickBookmark={this._onClickBookmark}
+          onClickComments={this._onClickComments}
+          userId={sessionUserId}
+          reroute={reroute}
+          openGlobalModal={openGlobalModal}
+        />
         }
       </ContentWrapper>
     )
@@ -276,7 +278,6 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
-  const storyId = ownProps.match.params.storyId
   const guideId = ownProps.match.params.guideId
   return {
     getGuide: () => dispatch(GuideActions.getGuideRequest(guideId)),
@@ -284,9 +285,10 @@ function mapDispatchToProps(dispatch, ownProps) {
     reroute: (path) => dispatch(push(path)),
     followUser: (sessionUserId, userIdToFollow) => dispatch(UserActions.followUser(sessionUserId, userIdToFollow)),
     unfollowUser: (sessionUserId, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserId, userIdToUnfollow)),
-    onClickLike: (sessionUserId) => dispatch(StoryActions.storyLike(sessionUserId, storyId)),
-    onClickComments: () => dispatch(UXActions.openGlobalModal('comments', { storyId })),
-    flagStory: (sessionUserId, storyId) => dispatch(StoryActions.flagStory(sessionUserId, storyId)),
+    onClickGuideLike: (sessionUserId) => dispatch(GuideActions.likeGuideRequest(guideId, sessionUserId)),
+    onClickGuideUnLike: (sessionUserId) => dispatch(GuideActions.unlikeGuideRequest(guideId, sessionUserId)),
+    // onClickBookmark: (sessionUserId) => dispatch(StoryActions.storyBookmark(sessionUserId, storyId)),
+    onClickComments: () => dispatch(UXActions.openGlobalModal('comments', { guideId })),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
   }
 }

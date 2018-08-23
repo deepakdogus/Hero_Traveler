@@ -21,7 +21,7 @@ class Comments extends Component {
     users: PropTypes.object,
     storyId: PropTypes.string,
     guideId: PropTypes.string,
-    comments: PropTypes.arrayOf(PropTypes.object),
+    comments: PropTypes.object,
     getCommentsStatus: PropTypes.object,
     createCommentStatus: PropTypes.object,
     error: PropTypes.string,

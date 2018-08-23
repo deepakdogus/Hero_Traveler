@@ -83,14 +83,13 @@ export default class ConditionalLink extends React.Component{
     const {
       isMenuLink,
       to,
-      noBorder
     } = this.props
 
     if (this.getShouldOpenSaveEditsModal()) {
       return this._renderOpenSaveEditsLinkContainer()
     } else {
       const ChosenLink = isMenuLink ? MenuLink : Link
-      const props = {to, noBorder}
+      const props = {to}
       if (isMenuLink) props.exact = true
       return (
         <ChosenLink {...props}>

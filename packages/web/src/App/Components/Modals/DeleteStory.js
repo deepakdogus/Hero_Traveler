@@ -18,6 +18,7 @@ export default class DeleteStory extends React.Component {
     resetCreateStore: PropTypes.func,
     userId: PropTypes.string,
     pathname: PropTypes.string,
+    globalModalParams: PropTypes.object,
   }
 
   deleteAndReroute = () => {
@@ -32,8 +33,8 @@ export default class DeleteStory extends React.Component {
   }
 
   _deleteStory = () => {
-    const pathArr = this.props.pathname.split('/')
-    this.props.deleteStory(this.props.userId, pathArr[pathArr.length - 2])
+    const { storyId } = this.props.globalModalParams
+    this.props.deleteStory(this.props.userId, storyId)
   }
 
   render() {

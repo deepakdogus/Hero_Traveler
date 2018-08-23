@@ -160,7 +160,8 @@ class EditStory extends Component {
   }
 
   _discardDraft = () => {
-    this.props.openGlobalModal('deleteStory')
+    const { originalDraft } = this.props
+    this.props.openGlobalModal('deleteStory', {storyId: originalDraft.id})
   }
 
   onLeft = () => {

@@ -217,6 +217,7 @@ export default class HeaderModals extends React.Component {
             resetCreateStore={resetCreateStore}
             userId={userId}
             pathname={pathname}
+            globalModalParams={globalModalParams}
           />
         </Modal>
         <Modal

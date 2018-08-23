@@ -52,8 +52,8 @@ export const logoutSuccess = (state, {deviceType}) => {
       isLoggingOut: false
     }
   if (deviceType !== 'mobile') {
-    update[tokens] = null
-    update[userId] = null
+    update.tokens = null
+    update.userId = null
   }
   return state.merge(update)
 }

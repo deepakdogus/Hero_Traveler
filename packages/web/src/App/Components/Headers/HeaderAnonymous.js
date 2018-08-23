@@ -17,9 +17,18 @@ export default class HeaderAnonymous extends React.Component {
   static propTypes = {
     openLoginModal: PropTypes.func,
     pathname: PropTypes.string,
+    haveFieldsChanged: PropTypes.func,
+    workingDraft: PropTypes.object,
+    originalDraft: PropTypes.object,
   }
 
   render () {
+    const {
+      haveFieldsChanged,
+      workingDraft,
+      originalDraft,
+    } = this.props
+
     return (
       <StyledRow between="xs" middle="xs">
         <Col>
@@ -34,6 +43,9 @@ export default class HeaderAnonymous extends React.Component {
             <SearchNav
               to='/search'
               pathname={this.props.pathname}
+              haveFieldsChanged={haveFieldsChanged}
+              workingDraft={workingDraft}
+              originalDraft={originalDraft}
             />
             <Divider>&nbsp;</Divider>
             <LoginLink

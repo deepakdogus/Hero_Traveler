@@ -34,6 +34,7 @@ export default class NotificationsThread extends React.Component {
       stories,
       users,
       reroute,
+      markSeen,
     } = this.props
 
     return activitiesById.map(id => {
@@ -50,12 +51,16 @@ export default class NotificationsThread extends React.Component {
           story={story}
           reroute={reroute}
           closeModal={closeModal}
+          seen={activity.seen}
+          markSeen={markSeen}
+          activityId={activity.id}
         />
       )
     })
   }
 
   getDescription = (activity, story) => {
+    if (!story) return
     switch (activity.kind) {
       case ActivityTypes.follow:
         return `is now following you.`

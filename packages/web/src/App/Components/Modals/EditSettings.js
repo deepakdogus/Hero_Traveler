@@ -76,6 +76,16 @@ export default class EditSettings extends React.Component{
     if (this.props.type === 'account') this.loadInitialData()
   }
 
+  componentDidUpdate(prevProps) {
+    if (
+      (prevProps.isUpdating && !this.props.isUpdating)
+      && !this.props.errorObj
+    ) {
+      setTimeout(()=> this.setState({success: false}), 5000)
+      this.setState({success: true})
+    }
+  }
+
   loadInitialData = () => {
     this.setState({
       email: this.props.userEmailOrId,
@@ -127,21 +137,21 @@ export default class EditSettings extends React.Component{
       this.setState({
         localError: 'Please ensure that you retyped your new password correctly.'
       })
+    } else if (!this.state.newPassword || !this.state.retypePassword) {
+      this.setState({
+        localError: 'Please ensure that you filled out all fields correctly.'
+      })
     } else {
       this.setState({
         localError: '',
       })
-      if (!this.state.localError) {
         this.props.updateAction(
           this.props.userEmailOrId,
           this.state.oldPassword,
           this.state.newPassword,
         )
-        setTimeout(()=> this.setState({success: false}), 5000)
-        this.setState({success: true})
       }
     }
-  }
 
   renderButtonLeft = () => {
     return (

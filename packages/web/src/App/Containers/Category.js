@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
+import _ from 'lodash'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import StoryActions, {getByCategory, getFetchStatus} from '../Shared/Redux/Entities/Stories'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
+import SignupActions from'../Shared/Redux/SignupRedux'
 
 import CategoryHeader from '../Components/CategoryHeader'
 import TabBar from '../Components/TabBar'
@@ -29,6 +31,9 @@ class Category extends Component {
     category: PropTypes.object,
     loadCategories: PropTypes.func,
     loadCategoryStories: PropTypes.func,
+    followCategory: PropTypes.func,
+    unfollowCategory: PropTypes.func,
+    isFollowingCategory: PropTypes.bool,
   }
 
   constructor(props) {
@@ -60,13 +65,27 @@ class Category extends Component {
   }
 
   render() {
-    const {storiesById, stories, category, users} = this.props
+    const {
+      storiesById,
+      stories,
+      category,
+      users,
+      followCategory,
+      unfollowCategory,
+      isFollowingCategory,
+    } = this.props
     const categoryStories = storiesById.map((id) => {
       return stories[id]
     })
+
     return (
       <ContentWrapper>
-        <CategoryHeader category={category}/>
+        <CategoryHeader
+          category={category}
+          followCategory={followCategory}
+          unfollowCategory={unfollowCategory}
+          isFollowingCategory={isFollowingCategory}
+        />
         <TabBar
           tabs={tabBarTabs}
           activeTab={this.state.activeTab}
@@ -84,6 +103,11 @@ class Category extends Component {
 
 function mapStateToProps(state, ownProps) {
   const categoryId = ownProps.match.params.categoryId
+  let isFollowingCategory = false;
+  if (state.session.userId) {
+    isFollowingCategory = _.includes(state.signup.selectedCategories, categoryId)
+  }
+
   return {
     categoryId,
     category: state.entities.categories.entities[categoryId],
@@ -91,13 +115,16 @@ function mapStateToProps(state, ownProps) {
     storiesById: getByCategory(state.entities.stories, categoryId),
     stories: state.entities.stories.entities,
     users: state.entities.users.entities,
+    isFollowingCategory,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     loadCategoryStories: (categoryId, storyType) => dispatch(StoryActions.fromCategoryRequest(categoryId, storyType)),
-    loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest())
+    loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
+    followCategory: (categoryId) => dispatch(SignupActions.signupFollowCategory(categoryId)),
+    unfollowCategory: (categoryId) => dispatch(SignupActions.signupUnfollowCategory(categoryId)),
   }
 }
 

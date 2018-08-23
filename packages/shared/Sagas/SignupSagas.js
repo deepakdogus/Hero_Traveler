@@ -10,26 +10,34 @@ import {
 
 // attempts to signup with email
 export function * signupEmail (api, action) {
-  const {fullName, username, email, password} = action
-  const response = yield call(
-    api.signupEmail,
-    fullName,
-    username,
-    email,
-    password
-  )
+  try {
+    const {fullName, username, email, password} = action
+    const response = yield call(
+      api.signupEmail,
+      fullName,
+      username,
+      email,
+      password
+    )
 
-  if (response.ok) {
-    const {user, tokens} = response.data
-    const accessToken = _.find(tokens, {type: 'access'})
-    yield [
-      put(UserActions.receiveUsers({[user.id]: user})),
-      call(api.setAuth, accessToken.value),
-      put(SessionActions.initializeSession(user.id, tokens)),
-      put(SignupActions.signupEmailSuccess()),
-    ]
-  } else {
-    yield put(SignupActions.signupEmailFailure(response.data.message))
+    if (response.ok) {
+      const {user, tokens} = response.data
+      const accessToken = _.find(tokens, {type: 'access'})
+      yield [
+        put(UserActions.receiveUsers({[user.id]: user})),
+        call(api.setAuth, accessToken.value),
+        put(SessionActions.initializeSession(user.id, tokens)),
+        put(SignupActions.signupEmailSuccess()),
+      ]
+    } else {
+      if (response.data) {
+        yield put(SignupActions.signupEmailFailure(response.data.message))
+      } else {
+        yield put(SignupActions.signupEmailFailure(response.problem))
+      }
+    }
+  } catch(error) {
+    yield put(SignupActions.signupEmailFailure(error))
   }
 }
 

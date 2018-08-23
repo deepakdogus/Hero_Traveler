@@ -21,7 +21,6 @@ import {
   HasAccount,
   SignupText,
 } from '../Shared'
-import Colors from '../../../Shared/Themes/Colors'
 
 const SmallBold = styled.strong`
   font-weight: 600;
@@ -34,12 +33,12 @@ const ToSText = styled(Text)`
 const SignupErrorText = styled(Text)`
   font-size: 14px;
   margin: 0;
-  color: ${Colors.errorRed}
+  color: ${props => props.theme.Colors.errorRed};
 `
 const SignupFetchingText = styled(Text)`
   font-size: 14px;
   margin: 0;
-  color: ${Colors.signupGrey}
+  color: ${props => props.theme.Colors.signupGrey};
 `
 
 const api = HeroAPI.create()
@@ -82,7 +81,6 @@ const validate = (values) => {
 }
 
 const asyncValidate = (values, dispatch) => {
-  console.log('test2')
   return api.signupCheck(values)
   .then(response => {
     const {data} = response

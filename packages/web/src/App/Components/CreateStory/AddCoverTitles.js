@@ -173,11 +173,17 @@ export default class AddCoverTitles extends React.Component {
 
   _onCoverChange = (event) => {
     uploadFile(event, this, (file) => {
-      // refactor later to differentiate between image and video
-      this.props.onInputChange({
+      let update = file.type.includes('video')
+      ? {
+        'coverVideo': file,
+        'coverType': 'video'
+      }
+      : {
         'coverImage': file,
-        'coverType': 'image',
-      })
+        'coverType': 'image'
+      }
+      // refactor later to differentiate between image and video
+      this.props.onInputChange(update)
     })
   }
 

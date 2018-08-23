@@ -22,8 +22,17 @@ import {
 
 const customModalStyles = {
   content: {
-    width: 420,
-    margin: 'auto',
+    border: '0',
+    bottom: 'auto',
+    minHeight: '10rem',
+    left: '50%',
+    padding: '2rem',
+    position: 'fixed',
+    right: 'auto',
+    top: '50%',
+    transform: 'translate(-50%,-50%)',
+    minWidth: '20rem',
+    maxWidth: '28rem',
   },
   overlay: {
     backgroundColor: 'rgba(0,0,0, .5)',
@@ -177,7 +186,7 @@ export default class ProfileHeaderEdit extends React.Component {
         bio: nextProps.user.bio,
         username: nextProps.user.username
       })
-    } 
+    }
     // If save was successful, reroute
     if (!!this.props.updating && !nextProps.updating && !nextProps.error) {
       this.props.toProfileView()
@@ -218,11 +227,10 @@ export default class ProfileHeaderEdit extends React.Component {
   saveCroppedImage = (croppedImageUrl) => {
     // formatting into blob for upload
     fetch(croppedImageUrl)
-    .then(res => res.blob())
-    .then(blob => {
+    .then(res => {
       this.props.uploadMedia(
         this.props.user.id,
-        blob,
+        res,
         this.state.photoType,
       )
       const stateUpdates = { modal: undefined }
@@ -366,7 +374,7 @@ export default class ProfileHeaderEdit extends React.Component {
             isAvatar={photoType === 'avatar'}
             closeModal={this.closeModal}
             saveCroppedImage={this.saveCroppedImage}
-            src={loadedImage ? loadedImage.url : targetedImage}
+            src={loadedImage ? loadedImage.uri : targetedImage}
           />
         </Modal>
       </Container>

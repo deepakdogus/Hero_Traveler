@@ -60,6 +60,7 @@ export default class NotificationsThread extends React.Component {
   }
 
   getDescription = (activity, story) => {
+    if (!story) return
     switch (activity.kind) {
       case ActivityTypes.follow:
         return `is now following you.`

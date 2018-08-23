@@ -12,6 +12,7 @@ import RoundedButton from '../RoundedButton'
 import Icon from '../Icon'
 import { StyledRow, StyledRoundedButton, Logo, Divider, HamburgerIcon, SearchNav } from './Shared'
 import logo from '../../Shared/Images/ht-logo-white.png'
+import NotificationsBadge from '../NotificationsBadge'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import ConditionalLink from '../ConditionalLink'
 
@@ -46,6 +47,13 @@ const StyledRoundedNotificationButton = styled(StyledRoundedButton)`
     bottom: ${props => props.profileAvatar ? '4px' : '-1.8px'};
 `
 
+const NotificationButtonContainer = styled.div`
+  margin: 0;
+  padding: 0;
+  position: relative;
+  display: inline;
+`
+
 class HeaderLoggedIn extends React.Component {
   static propTypes = {
     reroute: PropTypes.func,
@@ -57,10 +65,12 @@ class HeaderLoggedIn extends React.Component {
     userId: PropTypes.string,
     attemptLogout: PropTypes.func,
     profileAvatar: PropTypes.object,
+
+    activities: PropTypes.objectOf(PropTypes.object),
+    activitiesById: PropTypes.arrayOf(PropTypes.string),
     haveFieldsChanged: PropTypes.func,
     workingDraft: PropTypes.object,
     originalDraft: PropTypes.object,
-
   }
 
   state = {
@@ -80,6 +90,15 @@ class HeaderLoggedIn extends React.Component {
     }
   }
 
+  _getNotificationsCount = () => {
+    const {activities, activitiesById} = this.props
+    let count = 0
+    activitiesById.map(id => {
+      if(!activities[id].seen) count++
+    })
+    return count
+  }
+
   render () {
     const {
       openModal,
@@ -94,6 +113,8 @@ class HeaderLoggedIn extends React.Component {
       workingDraft,
       originalDraft,
     } = this.props
+
+    const notificationsCount = this._getNotificationsCount()
 
     return (
       <StyledRow between="xs" middle="xs">
@@ -152,24 +173,28 @@ class HeaderLoggedIn extends React.Component {
             />
             <Divider>&nbsp;</Divider>
             <LoggedInDesktopContainer>
-              {// we remove the 'Create' button from the HeaderLoggedIn Nav if we're editting a story
-              !this.props.pathname.includes('editStory') &&
-              <NavLink to='/editStory/new'>
-                <StyledRoundedCreateButton
-                  text='Create'
-                  profileAvatar={profileAvatar}
-                />
-              </NavLink>}
-              <StyledRoundedNotificationButton
-                type='headerButton'
-                height='32px'
-                width='32px'
-                name='notifications'
-                profileAvatar={profileAvatar}
-                onClick={openModal}
-              >
-                <NotificationsIcon name='cameraFlash' />
-              </StyledRoundedNotificationButton>
+              {!this.props.pathname.includes('editStory') &&
+                // we remove the 'Create' button from the HeaderLoggedIn Nav if we're editting a story
+                <NavLink to='/editStory/new'>
+                  <StyledRoundedCreateButton text='Create'/>
+                </NavLink>
+              }
+              <NotificationButtonContainer>
+                {notificationsCount > 0 &&
+                  <NotificationsBadge
+                    count={notificationsCount}
+                   />
+                }
+                <StyledRoundedNotificationButton
+                  type='headerButton'
+                  height='32px'
+                  width='32px'
+                  name='notifications'
+                  onClick={openModal}
+                >
+                  <NotificationsIcon name='navNotifications' />
+                </StyledRoundedNotificationButton>
+              </NotificationButtonContainer>
                 <StyledRoundedAvatarButton
                   type='headerButton'
                   height='32px'

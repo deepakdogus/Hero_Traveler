@@ -46,7 +46,7 @@ export default class FooterToolbar extends Component {
           height='50px'
           onClick={updateDraft}
         >
-          <StyledIcon name='save'/>
+          <StyledIcon name='createSave'/>
         </RoundedButton>
       </Row>
     )

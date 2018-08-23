@@ -13,7 +13,7 @@ import Activity from '../../Components/Activity'
 import ThreadList from '../../Components/ThreadList'
 import Colors from '../../Shared/Themes/Colors'
 import NotificationBadge from '../../Components/NotificationBadge'
-import {displayLocation} from '../../Shared/Lib/locationHelpers'
+import {displayLocationPreview} from '../../Shared/Lib/locationHelpers'
 import PushNotification from 'react-native-push-notification'
 
 const ActivityTypes = {
@@ -90,7 +90,7 @@ class NotificationScreen extends React.Component {
         ];
         NavActions.story({
           storyId: story._id,
-          title: displayLocation(story.locationInfo),
+          title: displayLocationPreview(story.locationInfo),
         })
         break;
       case ActivityTypes.guideLike:
@@ -100,7 +100,7 @@ class NotificationScreen extends React.Component {
         ]
         NavActions.guide({
           guideId: guide._id,
-          title: displayLocation(guide.locations[0]),
+          title: displayLocationPreview(guide.locations[0]),
         })
     }
   }

@@ -91,6 +91,9 @@ export const SearchNav = (props) => {
   const {
     pathname,
     openSaveEditsModal,
+    haveFieldsChanged,
+    workingDraft,
+    originalDraft,
   } = props
 
   return (
@@ -99,6 +102,10 @@ export const SearchNav = (props) => {
       pathname={pathname}
       openSaveEditsModal={openSaveEditsModal}
       isMenuLink={false}
+      haveFieldsChanged={haveFieldsChanged}
+      workingDraft={workingDraft}
+      originalDraft={originalDraft}
+      noBorder={true}
     >
       <StyledRoundedButton
         type='headerButton'

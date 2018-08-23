@@ -46,7 +46,7 @@ export default class EditPhotoOptions extends React.Component {
     return (
       <Container>
         <label htmlFor='image_upload'>
-          <ModalRow>
+          <ModalRow center='xs'>
             <ShareIcon name='share'/>
             <VerticalCenter>
               <EditModalText>Upload Photo</EditModalText>

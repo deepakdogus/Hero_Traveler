@@ -34,6 +34,7 @@ export default class NotificationsThread extends React.Component {
       stories,
       users,
       reroute,
+      markSeen,
     } = this.props
 
     return activitiesById.map(id => {
@@ -50,6 +51,9 @@ export default class NotificationsThread extends React.Component {
           story={story}
           reroute={reroute}
           closeModal={closeModal}
+          seen={activity.seen}
+          markSeen={markSeen}
+          activityId={activity.id}
         />
       )
     })

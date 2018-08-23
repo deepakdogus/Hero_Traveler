@@ -13,7 +13,6 @@ import {
   Timestamp,
 } from './Modals/Shared'
 import SpaceBetweenRow from './SpaceBetweenRow'
-import metrics from '../Shared/Themes/Metrics'
 
 let avatarWidth = getSize({size: 'larger'})
 avatarWidth = Number(avatarWidth.substring(0, avatarWidth.length - 2))
@@ -27,6 +26,9 @@ const relevantMetrics  = {
 
 const Container = styled.div`
   padding: ${relevantMetrics.containerPadding}px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `
 
 const StyledUserName = styled.span`
@@ -62,6 +64,7 @@ const CommentContent = styled.p`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 16px;
+  flex-wrap: wrap;
   letter-spacing: .7px;
   margin: 0;
   color: ${props => props.theme.Colors.grey};
@@ -76,14 +79,30 @@ const NotificationContent = styled.p`
   color: ${props => props.theme.Colors.background};
 `
 
-const notificationContentWidth = metrics.rightModalWidth -
-  (2 * relevantMetrics.containerPadding +
-  relevantMetrics.avatarWidth +
-  relevantMetrics.imageWidth +
-  relevantMetrics.leftPadding + 1)
-
 const StyledNotificationContent = styled(NotificationContent)`
-  max-width: ${notificationContentWidth}px;
+  width: 300px;
+`
+
+const RenderImageContainer = styled.div`
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+`
+const VisibleBulletContainer = styled.div`
+  display: flex;
+  background-color: #ed1e2e;
+  margin: 0;
+  margin-right: 15px;
+  padding: 0;
+  width: 7.1px;
+  height: 7.1px;
+  border-radius: 50%;
+`
+
+const HiddenBulletContainer = styled(VisibleBulletContainer)`
+  visibility: hidden;
 `
 
 export default class NotificationRow extends Component {
@@ -97,6 +116,9 @@ export default class NotificationRow extends Component {
     isFeedItem: PropTypes.bool,
     timestamp: PropTypes.object,
     reroute: PropTypes.func,
+    seen: PropTypes.bool,
+    markSeen: PropTypes.func,
+    activityId: PropTypes.string,
   }
 
   navToStory = () => {
@@ -111,11 +133,18 @@ export default class NotificationRow extends Component {
 
   renderImage = () => {
     return (
-      <Avatar
-        avatarUrl={getImageUrl(this.props.user.profile.avatar, 'avatar')}
-        size='larger'
-      />
+      <RenderImageContainer>
+        <Avatar
+          avatarUrl={getImageUrl(this.props.user.profile.avatar, 'avatar')}
+          size='larger'
+        />
+      </RenderImageContainer>
     )
+  }
+
+  renderSeenBullet = () => {
+    const BulletContainer = this.props.seen ? HiddenBulletContainer : VisibleBulletContainer
+    return (<BulletContainer />)
   }
 
   renderText = () => {
@@ -152,16 +181,27 @@ export default class NotificationRow extends Component {
     } else return
   }
 
+  _markSeen = () => {
+    if (!this.props.seen) {
+      this.props.markSeen(this.props.activityId)
+    }
+  }
+
   render() {
+    const leftProps = { 'max-width': '450px', }
+    if (!this.props.story) return null
+
     return (
-      <InteractiveContainer>
+      <InteractiveContainer onClick={this._markSeen}>
         <Container
           onClick={this.props.isFeedItem? this.navToStory : this.navToUserProfile}
           >
+          {this.renderSeenBullet()}
           <SpaceBetweenRow
             renderImage={this.renderImage}
             renderText={this.renderText}
             renderRight={this.renderTripImage}
+            leftProps={leftProps}
           />
         </Container>
         <StyledHorizontalDivider color='light-grey'/>

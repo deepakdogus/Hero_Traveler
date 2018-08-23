@@ -10,6 +10,7 @@ import {Images} from '../Shared/Themes'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   ${OverlayStyles}
+  overflow: hidden;
 `
 
 const Tagline = styled.p`

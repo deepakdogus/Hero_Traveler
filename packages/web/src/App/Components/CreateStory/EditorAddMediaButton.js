@@ -46,7 +46,7 @@ export class AddMediaButton extends React.Component {
           type="button"
         >
           <label htmlFor={`${type}_upload`}>
-            <Icon name='like-active' />
+            <Icon name={type === 'image' ? 'createPhoto' : 'createVideo' } />
             <HiddenInput
               ref={this.setAddImageInputRef}
               className={theme.buttonWrapper}

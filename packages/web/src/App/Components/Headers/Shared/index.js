@@ -105,6 +105,7 @@ export const SearchNav = (props) => {
       haveFieldsChanged={haveFieldsChanged}
       workingDraft={workingDraft}
       originalDraft={originalDraft}
+      noBorder={true}
     >
       <StyledRoundedButton
         type='headerButton'

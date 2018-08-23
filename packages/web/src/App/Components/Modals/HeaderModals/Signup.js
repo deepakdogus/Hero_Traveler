@@ -30,6 +30,16 @@ const ToSText = styled(Text)`
   font-size: 12px;
   margin-bottom: 39px;
 `
+const SignupErrorText = styled(Text)`
+  font-size: 14px;
+  margin: 0;
+  color: ${props => props.theme.Colors.errorRed};
+`
+const SignupFetchingText = styled(Text)`
+  font-size: 14px;
+  margin: 0;
+  color: ${props => props.theme.Colors.signupGrey};
+`
 
 const api = HeroAPI.create()
 
@@ -93,6 +103,8 @@ class Signup extends React.Component {
     username: PropTypes.string,
     email: PropTypes.string,
     password: PropTypes.string,
+    signupReduxFetching: PropTypes.bool,
+    signupReduxError: PropTypes.string,
   }
 
   _onTextChange = (event) => {
@@ -114,6 +126,15 @@ class Signup extends React.Component {
   }
 
   render() {
+    let {
+      signupReduxFetching,
+      signupReduxError,
+    } = this.props
+
+    if (signupReduxError === 'NETWORK_ERROR') {
+      signupReduxError = 'Unable to signup, check your connection...'
+    }
+
     return (
       <Container>
         <Title>SIGN UP</Title>
@@ -159,6 +180,12 @@ class Signup extends React.Component {
             type='password'
             placeholder='Confirm Password'
           />
+          {signupReduxFetching &&
+              <SignupFetchingText>Signing In ...</SignupFetchingText>
+            }
+          {(signupReduxError && !signupReduxFetching) &&
+            <SignupErrorText>{signupReduxError}</SignupErrorText>
+          }
           <ToSText>By continuing, you accept the <SmallBold>Terms of Use</SmallBold> and <SmallBold>Privacy Policy</SmallBold></ToSText>
           <RoundedButton
             text='SIGN UP'

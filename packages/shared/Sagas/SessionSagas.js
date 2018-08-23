@@ -12,7 +12,7 @@ const currentUserTokens = ({session}) => session.tokens
 // attempts to signup with email
 export function * logout (api, action) {
   let setIsLoggedIn = undefined
-  const {tokens} = action
+  const {tokens, deviceType} = action
 
   const userId = yield select(currentUserId)
   yield call(api.removeDevice, userId)
@@ -29,7 +29,7 @@ export function * logout (api, action) {
     resultAction = SessionActions.logoutFailure;
   } finally {
     setIsLoggedIn ? yield[
-      put(resultAction()),
+      put(resultAction(deviceType)),
       put(setIsLoggedIn(false)),
       call(api.unsetAuth),
     ] : yield [

@@ -169,6 +169,7 @@ class StoryPreview extends Component {
             <DetailsContainer between='xs'>
               <Row middle='xs'>
                 <Avatar
+                  isStoryPreview
                   avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
                   size='avatar'
                   onClick={this.navToUserProfile}

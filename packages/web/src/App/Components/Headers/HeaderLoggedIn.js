@@ -15,6 +15,9 @@ import logo from '../../Shared/Images/ht-logo-white.png'
 import NotificationsBadge from '../NotificationsBadge'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import ConditionalLink from '../ConditionalLink'
+import {
+  haveFieldsChanged
+} from '../../Shared/Lib/draftChangedHelpers'
 
 const LoggedInDesktopContainer = styled.div`
   ${mediaMax.desktop`display: none;`}
@@ -75,10 +78,6 @@ class HeaderLoggedIn extends React.Component {
     originalDraft: PropTypes.object,
   }
 
-  state = {
-    profileMenuIsOpen: false
-  }
-
   toggleProfileMenu = () => {
     if (
       this.props.globalModal === 'profileMenu'
@@ -122,10 +121,9 @@ class HeaderLoggedIn extends React.Component {
       attemptLogout,
       globalModal,
       globalModalParams,
-      openSaveEditsModal,
-      haveFieldsChanged,
       workingDraft,
       originalDraft,
+      openSaveEditsModal,
     } = this.props
 
     const notificationsCount = this._getNotificationsCount()
@@ -228,17 +226,16 @@ class HeaderLoggedIn extends React.Component {
                   {globalModal === 'profileMenu' &&
                     <ProfileMenu
                       closeMyself={this.closeProfileMenu}
-                      openModal={openModal}
                       openGlobalModal={openGlobalModal}
                       userId={userId}
                       reroute={reroute}
                       attemptLogout={attemptLogout}
                       globalModalParams={globalModalParams}
-                      openSaveEditsModal={openSaveEditsModal}
-                      pathname={pathname}
                       haveFieldsChanged={haveFieldsChanged}
                       workingDraft={workingDraft}
                       originalDraft={originalDraft}
+                      openSaveEditsModal={openSaveEditsModal}
+                      pathname={pathname}
                     />
                   }
             </LoggedInDesktopContainer>
@@ -256,12 +253,16 @@ class HeaderLoggedIn extends React.Component {
             {globalModal === 'hamburgerMenu' &&
               <ProfileMenu
                 closeMyself={this.closeProfileMenu}
-                openModal={openModal}
                 openGlobalModal={openGlobalModal}
                 userId={userId}
                 reroute={reroute}
                 attemptLogout={attemptLogout}
                 globalModalParams={globalModalParams}
+                haveFieldsChanged={haveFieldsChanged}
+                workingDraft={workingDraft}
+                originalDraft={originalDraft}
+                openSaveEditsModal={openSaveEditsModal}
+                pathname={pathname}
               />
             }
           </Row>

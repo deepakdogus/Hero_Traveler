@@ -206,6 +206,9 @@ class Header extends React.Component {
               openGlobalModal={openGlobalModal}
               reroute={reroute}
               attemptLogout={attemptLogout}
+
+              activities={activities}
+              activitiesById={activitiesById}
               resetCreateStore={this._resetCreateStore}
               haveFieldsChanged={haveFieldsChanged}
               workingDraft={workingDraft}
@@ -302,6 +305,7 @@ function mapDispatchToProps(dispatch) {
     attemptUpdateUser: (updates) => dispatch(UserActions.updateUser(updates)),
     resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
     flagStory: (sessionUserId, storyId) => dispatch(StoryActions.flagStory(sessionUserId, storyId)),
+    markSeen: (activityId) => dispatch(UserActions.activitySeen(activityId)),
   }
 }
 

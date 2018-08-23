@@ -81,9 +81,10 @@ export const MenuLink = (props) => {
         borderBottomWidth: '3px',
         borderBottomColor: 'red'
       }}
-      to={props.to}>
-        {props.children}
-      </NavLink>
+      to={props.to}
+    >
+      {props.children}
+    </NavLink>
   )
 }
 
@@ -105,6 +106,7 @@ export const SearchNav = (props) => {
       haveFieldsChanged={haveFieldsChanged}
       workingDraft={workingDraft}
       originalDraft={originalDraft}
+      noBorder={true}
     >
       <StyledRoundedButton
         type='headerButton'

@@ -13,7 +13,6 @@ import {
   Timestamp,
 } from './Modals/Shared'
 import SpaceBetweenRow from './SpaceBetweenRow'
-// import metrics from '../Shared/Themes/Metrics' <--AND THIS?
 
 let avatarWidth = getSize({size: 'larger'})
 avatarWidth = Number(avatarWidth.substring(0, avatarWidth.length - 2))
@@ -79,12 +78,6 @@ const NotificationContent = styled.p`
   margin: 0;
   color: ${props => props.theme.Colors.background};
 `
-//SHOULD I GET RID OF THIS?
-// const notificationContentWidth = metrics.rightModalWidth -
-//   (2 * relevantMetrics.containerPadding +
-//   relevantMetrics.avatarWidth +
-//   relevantMetrics.imageWidth +
-//   relevantMetrics.leftPadding + 1)
 
 const StyledNotificationContent = styled(NotificationContent)`
   width: 300px;
@@ -151,9 +144,7 @@ export default class NotificationRow extends Component {
 
   renderSeenBullet = () => {
     const BulletContainer = this.props.seen ? HiddenBulletContainer : VisibleBulletContainer
-    return (
-      <BulletContainer />
-    )
+    return (<BulletContainer />)
   }
 
   renderText = () => {
@@ -197,9 +188,7 @@ export default class NotificationRow extends Component {
   }
 
   render() {
-    const leftProps = {
-      'max-width': '450px',
-    }
+    const leftProps = { 'max-width': '450px', }
 
     return (
       <InteractiveContainer onClick={this._markSeen}>

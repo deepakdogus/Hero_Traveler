@@ -114,6 +114,8 @@ class HeaderLoggedIn extends React.Component {
       originalDraft,
     } = this.props
 
+    const notificationsCount = this._getNotificationsCount()
+
     return (
       <StyledRow between="xs" middle="xs">
         <Col>
@@ -171,16 +173,18 @@ class HeaderLoggedIn extends React.Component {
             />
             <Divider>&nbsp;</Divider>
             <LoggedInDesktopContainer>
-              {// we remove the 'Create' button from the HeaderLoggedIn Nav if we're editting a story
-              !this.props.pathname.includes('editStory') &&
-              <NavLink to='/editStory/new'>
-                <StyledRoundedCreateButton text='Create'/>
-              </NavLink>
+              {!this.props.pathname.includes('editStory') &&
+                // we remove the 'Create' button from the HeaderLoggedIn Nav if we're editting a story
+                <NavLink to='/editStory/new'>
+                  <StyledRoundedCreateButton text='Create'/>
+                </NavLink>
+              }
               <NotificationButtonContainer>
-                {this._getNotificationsCount() > 0
-                && <NotificationsBadge
-                  count={this._getNotificationsCount()}
-                   />}
+                {notificationsCount > 0 &&
+                  <NotificationsBadge
+                    count={notificationsCount}
+                   />
+                }
                 <StyledRoundedNotificationButton
                   type='headerButton'
                   height='32px'

@@ -58,6 +58,7 @@ export default class ConditionalLink extends React.Component{
 
   getShouldOpenSaveEditsModal = () => {
     const {pathname, haveFieldsChanged, workingDraft, originalDraft} = this.props
+    if (!haveFieldsChanged) return false
     return pathname.includes('editStory')
     && (pathname.includes('editStory')
     && haveFieldsChanged(workingDraft, originalDraft))

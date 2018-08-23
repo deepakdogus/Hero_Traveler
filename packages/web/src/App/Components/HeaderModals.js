@@ -78,6 +78,8 @@ export default class HeaderModals extends React.Component {
     attemptChangePassword: PropTypes.func,
     loginReduxFetching: PropTypes.bool,
     loginReduxError: PropTypes.object,
+    signupReduxFetching: PropTypes.bool,
+    signupReduxError: PropTypes.string,
     attemptUpdateUser: PropTypes.func,
     userEntitiesUpdating: PropTypes.bool,
     userEntitiesError: PropTypes.object,
@@ -103,8 +105,6 @@ export default class HeaderModals extends React.Component {
     const {
       globalModalThatIsOpen,
       closeGlobalModal,
-      loginReduxFetching,
-      loginReduxError,
       closeModal,
       modal,
       globalModalParams,
@@ -130,6 +130,14 @@ export default class HeaderModals extends React.Component {
       pathname,
     } = this.props
 
+    //destructuring these as let so we can reassign message in respective components
+    let {
+      loginReduxFetching,
+      loginReduxError,
+      signupReduxFetching,
+      signupReduxError,
+    } = this.props
+
     return (
       <Container>
         <Modal
@@ -141,6 +149,8 @@ export default class HeaderModals extends React.Component {
           <Login
             onSignupClick={this.props.openSignupModal}
             onAttemptLogin={this.props.attemptLogin}
+            loginReduxFetching={loginReduxFetching}
+            loginReduxError={loginReduxError}
           />
         </Modal>
         <Modal
@@ -149,7 +159,11 @@ export default class HeaderModals extends React.Component {
           onRequestClose={closeModal}
           style={customModalStyles}
         >
-          <Signup onLoginClick={this.props.openLoginModal}/>
+          <Signup
+            onLoginClick={this.props.openLoginModal}
+            signupReduxFetching={signupReduxFetching}
+            signupReduxError={signupReduxError}
+          />
         </Modal>
         <Modal
           isOpen={modal === 'resetPassword'}

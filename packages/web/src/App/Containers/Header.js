@@ -46,7 +46,9 @@ class Header extends React.Component {
     currentUserNotificationTypes: PropTypes.arrayOf(PropTypes.string),
     isLoggedIn: PropTypes.bool,
     loginReduxFetching: PropTypes.bool,
-    loginReduxError: PropTypes.object,
+    loginReduxError: PropTypes.string,
+    signupReduxFetching: PropTypes.bool,
+    signupReduxError: PropTypes.string,
     blackHeader: PropTypes.bool,
     attemptLogin: PropTypes.func,
     attemptLogout: PropTypes.func,
@@ -159,6 +161,8 @@ class Header extends React.Component {
       isLoggedIn,
       loginReduxFetching,
       loginReduxError,
+      signupReduxFetching,
+      signupReduxError,
       attemptLogin,
       attemptLogout,
       attemptChangePassword,
@@ -204,6 +208,9 @@ class Header extends React.Component {
               openGlobalModal={openGlobalModal}
               reroute={reroute}
               attemptLogout={attemptLogout}
+
+              activities={activities}
+              activitiesById={activitiesById}
               resetCreateStore={this._resetCreateStore}
               haveFieldsChanged={haveFieldsChanged}
               workingDraft={workingDraft}
@@ -233,6 +240,8 @@ class Header extends React.Component {
               attemptChangePassword={attemptChangePassword}
               loginReduxFetching={loginReduxFetching}
               loginReduxError={loginReduxError}
+              signupReduxFetching={signupReduxFetching}
+              signupReduxError={signupReduxError}
               attemptUpdateUser={attemptUpdateUser}
               userEntitiesUpdating={userEntitiesUpdating}
               userEntitiesError={userEntitiesError}
@@ -266,6 +275,8 @@ function mapStateToProps(state) {
     isLoggedIn: state.login.isLoggedIn,
     loginReduxFetching: state.login.fetching,
     loginReduxError: state.login.error,
+    signupReduxFetching: state.signup.fetching,
+    signupReduxError: state.signup.error,
     blackHeader: _.includes(['/', '/feed', ''], pathname) ? false : true,
     globalModalThatIsOpen: state.ux.modalName,
     globalModalParams: state.ux.params,

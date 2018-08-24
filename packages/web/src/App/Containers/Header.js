@@ -255,7 +255,6 @@ class Header extends React.Component {
               resetCreateStore={this._resetCreateStore}
               flagStory={flagStory}
               deleteStory={deleteStory}
-              pathname={pathname}
             />
         </SelectedGrid>
         <HeaderSpacer

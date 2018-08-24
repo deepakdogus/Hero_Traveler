@@ -94,7 +94,6 @@ export default class HeaderModals extends React.Component {
     resetCreateStore: PropTypes.func,
     flagStory: PropTypes.func,
     deleteStory: PropTypes.func,
-    pathname: PropTypes.string,
   }
 
   closeGlobalModal = () => {
@@ -127,7 +126,6 @@ export default class HeaderModals extends React.Component {
       resetCreateStore,
       flagStory,
       deleteStory,
-      pathname,
     } = this.props
 
     //destructuring these as let so we can reassign message in respective components
@@ -216,7 +214,6 @@ export default class HeaderModals extends React.Component {
             deleteStory={deleteStory}
             resetCreateStore={resetCreateStore}
             userId={userId}
-            pathname={pathname}
             globalModalParams={globalModalParams}
           />
         </Modal>

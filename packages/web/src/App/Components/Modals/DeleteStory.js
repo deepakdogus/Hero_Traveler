@@ -17,13 +17,14 @@ export default class DeleteStory extends React.Component {
     deleteStory: PropTypes.func,
     resetCreateStore: PropTypes.func,
     userId: PropTypes.string,
-    pathname: PropTypes.string,
     globalModalParams: PropTypes.object,
+    storyId: PropTypes.string,
   }
 
   deleteAndReroute = () => {
-    const { pathname, reroute, closeModal, resetCreateStore } = this.props
-    if (pathname.includes('local')) {
+    const { reroute, closeModal, resetCreateStore } = this.props
+    const { storyId } = this.props.globalModalParams
+    if (storyId.includes('local')) {
       resetCreateStore()
     } else{
       this._deleteStory()

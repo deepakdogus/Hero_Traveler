@@ -15,6 +15,9 @@ import logo from '../../Shared/Images/ht-logo-white.png'
 import NotificationsBadge from '../NotificationsBadge'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import ConditionalLink from '../ConditionalLink'
+import {
+  haveFieldsChanged
+} from '../../Shared/Lib/draftChangedHelpers'
 
 const LoggedInDesktopContainer = styled.div`
   ${mediaMax.desktop`display: none;`}
@@ -65,7 +68,9 @@ class HeaderLoggedIn extends React.Component {
     userId: PropTypes.string,
     attemptLogout: PropTypes.func,
     profileAvatar: PropTypes.object,
-
+    globalModal: PropTypes.string,
+    globalModalParams: PropTypes.object,
+    closeGlobalModal: PropTypes.func,
     activities: PropTypes.objectOf(PropTypes.object),
     activitiesById: PropTypes.arrayOf(PropTypes.string),
     haveFieldsChanged: PropTypes.func,
@@ -73,21 +78,27 @@ class HeaderLoggedIn extends React.Component {
     originalDraft: PropTypes.object,
   }
 
-  state = {
-    profileMenuIsOpen: false
-  }
-
   toggleProfileMenu = () => {
-    if (this.state.profileMenuIsOpen) return
-    this.setState({profileMenuIsOpen: true})
+    if (
+      this.props.globalModal === 'profileMenu'
+      || this.props.globalModal === 'hamburgerMenu'
+    ) return
+    this.props.openGlobalModal('profileMenu')
   }
 
   closeProfileMenu = () => {
-    if (this.state.profileMenuIsOpen) {
-      setTimeout( () => {
-        this.setState({profileMenuIsOpen: false})
-      }, 100)
-    }
+    setTimeout(() => {
+      if(
+        this.props.globalModal === 'profileMenu'
+        || this.props.globalModal === 'hamburgerMenu'
+      ) {
+          this.props.closeGlobalModal()
+      }
+    }, 100)
+  }
+
+  _openHamburgerMenu = () => {
+    this.props.openGlobalModal('hamburgerMenu', {isHamburger: true})
   }
 
   _getNotificationsCount = () => {
@@ -108,10 +119,11 @@ class HeaderLoggedIn extends React.Component {
       pathname,
       reroute,
       attemptLogout,
-      openSaveEditsModal,
-      haveFieldsChanged,
+      globalModal,
+      globalModalParams,
       workingDraft,
       originalDraft,
+      openSaveEditsModal,
     } = this.props
 
     const notificationsCount = this._getNotificationsCount()
@@ -211,19 +223,19 @@ class HeaderLoggedIn extends React.Component {
                     avatarUrl={getImageUrl(profileAvatar)}
                   />
                 </StyledRoundedAvatarButton>
-                  {this.state.profileMenuIsOpen &&
+                  {globalModal === 'profileMenu' &&
                     <ProfileMenu
                       closeMyself={this.closeProfileMenu}
-                      openModal={openModal}
                       openGlobalModal={openGlobalModal}
                       userId={userId}
                       reroute={reroute}
                       attemptLogout={attemptLogout}
-                      openSaveEditsModal={openSaveEditsModal}
-                      pathname={pathname}
+                      globalModalParams={globalModalParams}
                       haveFieldsChanged={haveFieldsChanged}
                       workingDraft={workingDraft}
                       originalDraft={originalDraft}
+                      openSaveEditsModal={openSaveEditsModal}
+                      pathname={pathname}
                     />
                   }
             </LoggedInDesktopContainer>
@@ -236,8 +248,23 @@ class HeaderLoggedIn extends React.Component {
             </LoggedInTabletContainer>
             <HamburgerIcon
               name='hamburger'
-              onClick={openModal}
+              onClick={this._openHamburgerMenu}
             />
+            {globalModal === 'hamburgerMenu' &&
+              <ProfileMenu
+                closeMyself={this.closeProfileMenu}
+                openGlobalModal={openGlobalModal}
+                userId={userId}
+                reroute={reroute}
+                attemptLogout={attemptLogout}
+                globalModalParams={globalModalParams}
+                haveFieldsChanged={haveFieldsChanged}
+                workingDraft={workingDraft}
+                originalDraft={originalDraft}
+                openSaveEditsModal={openSaveEditsModal}
+                pathname={pathname}
+              />
+            }
           </Row>
         </Col>
       </StyledRow>
@@ -249,7 +276,9 @@ function mapStateToProps(state, ownProps) {
   let {users} = state.entities
   let profileAvatar = _.get(users, `entities[${ownProps.userId}].profile.avatar`)
   return {
-    profileAvatar
+    profileAvatar,
+    globalModal: state.ux.modalName,
+    globalModalParams: state.ux.params,
   }
 }
 

@@ -147,7 +147,9 @@ class Header extends React.Component {
     const name = event.target.name
     let modalToOpen;
     if (name === 'inbox' || name === 'loginEmail') modalToOpen = 'inbox'
-    else if (name === 'notifications' || name === 'cameraFlash') modalToOpen = 'notificationsThread'
+    else if (name === 'notifications' || name === 'cameraFlash') {
+      this.props.openGlobalModal('notificationsThread')
+    }
     this.setState({ modal: modalToOpen })
   }
 
@@ -204,6 +206,7 @@ class Header extends React.Component {
               pathname={pathname}
               openSaveEditsModal={this.openSaveEditsModal}
               openGlobalModal={openGlobalModal}
+              closeGlobalModal={closeGlobalModal}
               reroute={reroute}
               attemptLogout={attemptLogout}
 

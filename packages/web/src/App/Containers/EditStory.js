@@ -80,6 +80,7 @@ class EditStory extends Component {
     globalModal: PropTypes.object,
     syncProgressSteps: PropTypes.number,
     syncProgress: PropTypes.number,
+    openGlobalModal: PropTypes.func,
   }
 
   constructor(props){
@@ -159,10 +160,8 @@ class EditStory extends Component {
   }
 
   _discardDraft = () => {
-    if (window.confirm('Are you sure you want to delete this story?')) {
-      this.props.discardDraft(this.props.originalDraft.id);
-      this.props.reroute('/');
-    }
+    const { originalDraft } = this.props
+    this.props.openGlobalModal('deleteStory', {storyId: originalDraft.id})
   }
 
   onLeft = () => {
@@ -353,7 +352,8 @@ function mapDispatchToProps(dispatch) {
     resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
     reroute: (path) => dispatch(push(path)),
     setWorkingDraft: (cachedStory) => dispatch(StoryCreateActions.editStorySuccess(cachedStory)),
-    updateGlobalModalParams: (params) => dispatch(UXActions.updateGlobalModalParams(params))
+    updateGlobalModalParams: (params) => dispatch(UXActions.updateGlobalModalParams(params)),
+    openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
 
   }
 }

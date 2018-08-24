@@ -47,7 +47,7 @@ const StyledRoundedCreateButton = styled(RoundedButton)`
 
 const StyledRoundedNotificationButton = styled(StyledRoundedButton)`
     position: relative;
-    bottom: ${props => props.profileAvatar ? '4px' : '-1.8px'};
+    bottom: ${props => props.profileAvatar ? '5px' : '-1.8px'};
 `
 
 const NotificationButtonContainer = styled.div`
@@ -205,6 +205,7 @@ class HeaderLoggedIn extends React.Component {
                   height='32px'
                   width='32px'
                   name='notifications'
+                  profileAvatar={profileAvatar}
                   onClick={openModal}
                 >
                   <NotificationsIcon name='navNotifications' />

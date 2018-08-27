@@ -56,6 +56,7 @@ const EditAvatarWrapper = styled(VerticalCenter)`
   align-items: center;
   width: 100%;
   height: 100%;
+  z-index: 50;
 `
 
 const BioInput = styled.textarea`
@@ -362,7 +363,7 @@ export default class ProfileHeaderEdit extends React.Component {
           <EditPhotoOptions
             onCrop={this.openCrop}
             onUpload={this.uploadImageToBrowser}
-            hasImage={!!targetedImage}
+            loadedImage={loadedImage}
           />
         </Modal>
         <Modal

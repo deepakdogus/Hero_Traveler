@@ -73,6 +73,7 @@ class Header extends React.Component {
     pathname: PropTypes.string,
     signedUp: PropTypes.bool,
     flagStory: PropTypes.func,
+    deleteStory: PropTypes.func,
   }
 
   constructor(props) {
@@ -147,7 +148,9 @@ class Header extends React.Component {
     const name = event.target.name
     let modalToOpen;
     if (name === 'inbox' || name === 'loginEmail') modalToOpen = 'inbox'
-    else if (name === 'notifications' || name === 'cameraFlash') modalToOpen = 'notificationsThread'
+    else if (name === 'notifications' || name === 'cameraFlash') {
+      this.props.openGlobalModal('notificationsThread')
+    }
     this.setState({ modal: modalToOpen })
   }
 
@@ -186,6 +189,7 @@ class Header extends React.Component {
       workingDraft,
       originalDraft,
       flagStory,
+      deleteStory,
     } = this.props
 
     const SelectedGrid =
@@ -204,6 +208,7 @@ class Header extends React.Component {
               pathname={pathname}
               openSaveEditsModal={this.openSaveEditsModal}
               openGlobalModal={openGlobalModal}
+              closeGlobalModal={closeGlobalModal}
               reroute={reroute}
               attemptLogout={attemptLogout}
 
@@ -252,6 +257,7 @@ class Header extends React.Component {
               reroute={reroute}
               resetCreateStore={this._resetCreateStore}
               flagStory={flagStory}
+              deleteStory={deleteStory}
             />
         </SelectedGrid>
         <HeaderSpacer
@@ -305,6 +311,7 @@ function mapDispatchToProps(dispatch) {
     attemptUpdateUser: (updates) => dispatch(UserActions.updateUser(updates)),
     resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
     flagStory: (sessionUserId, storyId) => dispatch(StoryActions.flagStory(sessionUserId, storyId)),
+    deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
     markSeen: (activityId) => dispatch(UserActions.activitySeen(activityId)),
   }
 }

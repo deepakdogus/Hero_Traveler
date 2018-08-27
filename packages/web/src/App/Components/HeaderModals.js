@@ -17,6 +17,7 @@ import RightModal from './RightModal'
 import CenterModal from './CenterModal'
 import NotificationsThread from './Modals/NotificationsThread'
 import FlagStory from './Modals/FlagStory'
+import DeleteStory from './Modals/DeleteStory'
 
 const Container = styled.div``
 
@@ -92,6 +93,7 @@ export default class HeaderModals extends React.Component {
     attemptLogout: PropTypes.func,
     resetCreateStore: PropTypes.func,
     flagStory: PropTypes.func,
+    deleteStory: PropTypes.func,
   }
 
   closeGlobalModal = () => {
@@ -123,6 +125,7 @@ export default class HeaderModals extends React.Component {
       attemptLogout,
       resetCreateStore,
       flagStory,
+      deleteStory,
     } = this.props
 
     //destructuring these as let so we can reassign message in respective components
@@ -200,6 +203,21 @@ export default class HeaderModals extends React.Component {
           />
         </Modal>
         <Modal
+          isOpen={globalModalThatIsOpen === 'deleteStory'}
+          contentLabel="Delete Story Modal"
+          onRequestClose={closeModal}
+          style={customModalStyles}
+        >
+          <DeleteStory
+            reroute={reroute}
+            closeModal={closeGlobalModal}
+            deleteStory={deleteStory}
+            resetCreateStore={resetCreateStore}
+            userId={userId}
+            globalModalParams={globalModalParams}
+          />
+        </Modal>
+        <Modal
           isOpen={globalModalThatIsOpen === 'flagStory'}
           contentLabel="Flag Story Modal"
           onRequestClose={closeModal}
@@ -214,12 +232,12 @@ export default class HeaderModals extends React.Component {
           />
         </Modal>
         <RightModal
-          isOpen={modal === 'notificationsThread'}
+          isOpen={globalModalThatIsOpen === 'notificationsThread'}
           contentLabel='Notifications Thread'
           onRequestClose={closeModal}
         >
           <NotificationsThread
-            closeModal={closeModal}
+            closeModal={this.closeGlobalModal}
             activitiesById={activitiesById}
             activities={activities}
             markSeen={markSeen}

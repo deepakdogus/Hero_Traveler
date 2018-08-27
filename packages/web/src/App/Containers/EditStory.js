@@ -79,6 +79,7 @@ class EditStory extends Component {
     updateGlobalModalParams: PropTypes.func,
     globalModal: PropTypes.object,
     syncProgressSteps: PropTypes.number,
+    syncProgressMessage: PropTypes.number,
     syncProgress: PropTypes.number,
   }
 
@@ -276,7 +277,12 @@ class EditStory extends Component {
   setGetEditorState = getEditorState => this.getEditorState = getEditorState
 
   render() {
-    const {workingDraft, match, subPath} = this.props
+    const {
+      workingDraft,
+      match,
+      subPath,
+      syncProgressMessage
+    } = this.props
     const error = this.state.error
 
     return (
@@ -302,6 +308,7 @@ class EditStory extends Component {
           isDetailsView={subPath === 'details'}
           onRight={this.onRight}
           onLeft={this.onLeft}
+          syncProgressMessage={syncProgressMessage}
         />
         <Modal
           isOpen={!!error.title}
@@ -334,6 +341,7 @@ function mapStateToProps(state, props) {
     workingDraft: state.storyCreate.workingDraft,
     syncProgress: state.storyCreate.sync.syncProgress,
     syncProgressSteps: state.storyCreate.sync.syncProgressSteps,
+    syncProgressMessage: state.storyCreate.sync.message,
     backgroundFailures: state.entities.stories.backgroundFailures,
     globalModal: state.ux
   }

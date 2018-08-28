@@ -363,7 +363,7 @@ export default class ProfileHeaderEdit extends React.Component {
           <EditPhotoOptions
             onCrop={this.openCrop}
             onUpload={this.uploadImageToBrowser}
-            loadedImage={loadedImage}
+            hasLoadedImage={!!loadedImage}
           />
         </Modal>
         <Modal

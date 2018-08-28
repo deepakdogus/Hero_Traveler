@@ -43,6 +43,7 @@ export default class Login extends React.Component {
     this.state = {
       username: '',
       password: '',
+      localError: '',
     }
   }
 
@@ -50,7 +51,16 @@ export default class Login extends React.Component {
     e.preventDefault()
     const {onAttemptLogin} = this.props
     const {password, username} = this.state
-    onAttemptLogin(username, password)
+    if(!password || !username){
+      this.setState({
+        localError: 'Please input both username and password'
+      })
+    } else {
+      onAttemptLogin(username, password)
+      if(this.state.localError) {
+        this.setState({localError: ''})
+      }
+    }
   }
 
   setUsername = (event) => {
@@ -68,7 +78,7 @@ export default class Login extends React.Component {
       loginReduxError,
     } = this.props
 
-    if (loginReduxError === 'Unauthorized') {
+    if (loginReduxError === 'Unauthorized' || loginReduxError === 'CLIENT_ERROR') {
       loginReduxError = "Invalid username or password"
     } else if (loginReduxError === 'TIMEOUT_ERROR' || loginReduxError === 'NETWORK_ERROR' ) {
       loginReduxError = "Unable to login, check your connection..."
@@ -96,6 +106,9 @@ export default class Login extends React.Component {
             }
             {(loginReduxError && !loginReduxFetching) &&
               <LoginErrorText>{loginReduxError}</LoginErrorText>
+            }
+            {this.state.localError &&
+              <LoginErrorText>{this.state.localError}</LoginErrorText>
             }
             <ForgotPasswordText>Forgot Password?</ForgotPasswordText>
             <RoundedButton

@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 import Icon from '../Icon'
 import {Row} from '../FlexboxGrid'
 import RoundedButton from '../RoundedButton'
-import Colors from '../../Shared/Themes/Colors'
 
 const Container = styled.div`
   position: relative;
@@ -17,7 +16,7 @@ const StyledIcon = styled(Icon)`
 `
 
 const Text = styled.p`
-  color: ${Colors.redHighlights};
+  color: ${props => props.theme.Colors.redHighlights};
   margin: 0 auto;
 `
 

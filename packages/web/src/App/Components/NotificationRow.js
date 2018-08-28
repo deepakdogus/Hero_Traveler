@@ -189,7 +189,6 @@ export default class NotificationRow extends Component {
 
   render() {
     const leftProps = { 'max-width': '450px', }
-    if (!this.props.story) return null
 
     return (
       <InteractiveContainer onClick={this._markSeen}>

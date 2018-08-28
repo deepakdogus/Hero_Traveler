@@ -105,6 +105,12 @@ const HiddenBulletContainer = styled(VisibleBulletContainer)`
   visibility: hidden;
 `
 
+const ActivityTypes = {
+  like: 'ActivityStoryLike',
+  follow: 'ActivityFollow',
+  comment: 'ActivityStoryComment'
+}
+
 export default class NotificationRow extends Component {
   static propTypes = {
     notification: PropTypes.string,
@@ -119,6 +125,7 @@ export default class NotificationRow extends Component {
     seen: PropTypes.bool,
     markSeen: PropTypes.func,
     activityId: PropTypes.string,
+    activityKind: PropTypes.string,
   }
 
   navToStory = () => {
@@ -153,7 +160,7 @@ export default class NotificationRow extends Component {
       <StyledVerticalCenter>
         <StyledNotificationContent>
           <StyledUserName>{user.username}&nbsp;</StyledUserName>
-          {this.props.notification}
+          {this.getDescription()}
         </StyledNotificationContent>
         {this.props.comment &&
           <CommentContent>
@@ -187,9 +194,25 @@ export default class NotificationRow extends Component {
     }
   }
 
+  getDescription = () => {
+    const {story, activityKind} = this.props
+    switch (activityKind) {
+      case ActivityTypes.follow:
+        return `is now following you.`
+      case ActivityTypes.comment:
+        return  `commented on your story ${story.title}.`
+      case ActivityTypes.like:
+        return `liked your story ${story.title}.`
+      default:
+        return ''
+    }
+  }
+
+
   render() {
     const leftProps = { 'max-width': '450px', }
-
+    const {activityKind, story} = this.props
+    if (activityKind !== ActivityTypes.follow && !story) return null
     return (
       <InteractiveContainer onClick={this._markSeen}>
         <Container

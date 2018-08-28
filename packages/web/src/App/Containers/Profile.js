@@ -160,7 +160,6 @@ class Profile extends Component {
 
     let path = match.path.split("/")
     const isEdit = path[path.length-1] === 'edit'
-    const isContributor  = profilesUser.role === 'contributor'
     const isUsersProfile = profilesUser.id === sessionUserId
     const isFollowing = _.includes(myFollowedUsers, profilesUser.id)
     const {selectedStories} = this.getSelectedStories()
@@ -170,7 +169,6 @@ class Profile extends Component {
           user={profilesUser}
           error={userError}
           updating={userUpdating}
-          isContributor={isContributor}
           isEdit={isEdit}
           isUsersProfile={isUsersProfile}
           isFollowing={isFollowing}

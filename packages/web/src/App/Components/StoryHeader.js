@@ -139,6 +139,7 @@ export default class StoryHeader extends React.Component {
 
     const mediaType = this.getMediaType()
     const isUsersStory = author.id === sessionUserId
+    const isImportant = author.role === 'contributor' || author.role === 'founding member'
 
     return (
       <Container>
@@ -149,6 +150,14 @@ export default class StoryHeader extends React.Component {
               size='medium'
               onClick={this._profileReroute}
             />
+            {isImportant &&
+            <VerticalCenter>
+              <Icon
+              name={author.role === 'contributor' ? 'profileBadge' : 'founderBadge'}
+              size='mediumSmall'
+            />
+            </VerticalCenter>
+            }
             <SpacedVerticalCenter>
               <Username onClick={this._profileReroute}>{author.username}</Username>
               <TimeStamp>{moment(story.createdAt).fromNow()}</TimeStamp>

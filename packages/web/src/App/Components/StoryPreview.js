@@ -146,6 +146,7 @@ class StoryPreview extends Component {
       story, author, sessionUserId,
       isLiked, isBookmarked,
     } = this.props
+    const isImportant = author.role === 'contributor' || author.role === 'founding member'
 
     if (!story || !author) return
 
@@ -174,7 +175,14 @@ class StoryPreview extends Component {
                   size='avatar'
                   onClick={this.navToUserProfile}
                 />
+                {isImportant &&
+                  <Icon
+                    name={author.role === 'contributor' ? 'profileBadge' : 'founderBadge'}
+                    size='small'
+                  />
+                }
                 <ByText>By&nbsp;</ByText>
+
                 <Username onClick={this.navToUserProfile}>{author.username}</Username>
                 <Text>, {moment(story.createdAt).fromNow()}</Text>
               </Row>

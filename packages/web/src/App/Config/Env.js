@@ -11,7 +11,9 @@ const devSettings = {
   SEARCH_STORY_INDEX: 'matthew_dev_STORIES',
   SEARCH_USER_INDEX: 'matthew_dev_USERS',
   SEARCH_CATEGORIES_INDEX: 'matthew_dev_CATEGORIES',
+  SEARCH_HASHTAGS_INDEX:'matthew_dev_HASHTAGS',
 }
+
 
 const prodSettings = {
   API_URL: 'http://ht-api.rehashstudio.com/',

@@ -78,12 +78,18 @@ class HeaderLoggedIn extends React.Component {
     originalDraft: PropTypes.object,
   }
 
+  componentDidMount(){
+    this.props.closeGlobalModal()
+  }
+
   toggleProfileMenu = () => {
     if (
       this.props.globalModal === 'profileMenu'
       || this.props.globalModal === 'hamburgerMenu'
     ) return
-    this.props.openGlobalModal('profileMenu')
+    else{
+      this.props.openGlobalModal('profileMenu')
+    }
   }
 
   closeProfileMenu = () => {

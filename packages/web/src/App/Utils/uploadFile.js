@@ -8,6 +8,7 @@ export default function uploadFile(event, componentThis, onload){
   }
   const reader = new FileReader();
   const file = files[0]
+  if(!file) return
   reader.onload = () => {
     file.uri = reader.result
     onload(file)

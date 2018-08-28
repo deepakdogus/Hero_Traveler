@@ -19,7 +19,7 @@ const create = () => {
     headers: {
       'Content-Type': 'multipart/form-data'
     },
-    timeout: 15000
+    timeout: 30000
   })
 
   // Wrap api's addMonitor to allow the calling code to attach

@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { DefaultPlayer as VideoWithControls } from 'react-html5video'
+import 'react-html5video/dist/styles.css';
 import { browserIs } from '../Shared/Lib/browserIs'
 import '../../video-styles.css'
 
@@ -17,6 +18,8 @@ const StyledVideo = styled.video`
   max-width: 100%;
 `
 
+
+
 export default class Video extends React.Component {
   static propTypes = {
     src: PropTypes.string,
@@ -24,6 +27,7 @@ export default class Video extends React.Component {
     noControls: PropTypes.bool,
     withPrettyControls: PropTypes.bool,
     onError: PropTypes.func,
+    width: PropTypes.string,
   }
 
   showErrorAlert = () => {
@@ -39,6 +43,8 @@ export default class Video extends React.Component {
   render() {
     const {src, type, withPrettyControls } = this.props
     const usingChrome = browserIs('Chrome')
+    console.log('this.props', this.props)
+    console.log('usingChrome', usingChrome)
 
     return (
       withPrettyControls && usingChrome
@@ -54,6 +60,7 @@ export default class Video extends React.Component {
     :
       <VideoWrapper>
         <StyledVideo
+          height={'350'}
           autoplay
           src={src}
           type={type}

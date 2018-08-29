@@ -8,6 +8,7 @@ import {SubTitle, Input, CloseXContainer} from './Shared'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import uploadFile from '../../Utils/uploadFile'
 import {VerticalCenterStyles} from '../VerticalCenter'
+import Video from '../Video'
 
 const ButtonsHorizontalCenter = styled.div`
   position: relative;
@@ -131,6 +132,10 @@ const StyledCloseXContainer = styled(CloseXContainer)`
   z-index: 1;
 `
 
+const VideoContainer = styled.div`
+  height: 350px;
+`
+
 // we cannot use a button if we want the hiddenInput to work
 // as such we have recreated the same styles as a button would
 // so that it matches CloseX that is used for the body media
@@ -149,6 +154,7 @@ const CustonCloseX = styled.div`
   };
   ${VerticalCenterStyles}
 `
+
 
 function isNewStory(props, nextProps) {
   return (!props.workingDraft && nextProps.workingDraft) ||
@@ -219,7 +225,8 @@ export default class AddCoverTitles extends React.Component {
 
   renderUploadButton() {
     const coverImage = this.getCoverImage()
-    if (coverImage) return (
+    const coverVideo = this.getCoverVideo()
+    if (coverImage || coverVideo) return (
       <ReplaceUploadWrapper htmlFor="cover_upload_replace">
         <StyledCloseXContainer>
           <CustonCloseX>
@@ -265,11 +272,35 @@ export default class AddCoverTitles extends React.Component {
     : getImageUrl(workingDraft.coverImage)
   }
 
+  getCoverVideo() {
+    const { workingDraft } = this.props
+    return workingDraft.coverVideo && workingDraft.coverVideo.uri
+    ? workingDraft.coverVideo.uri
+    : null
+  }
+
+  getCoverVideoStyles() {
+    return {
+      'width': '100%',
+    }
+  }
+
   render() {
     const coverImage = this.getCoverImage()
+    const coverVideo = this.getCoverVideo()
+
 
     return (
       <RelativeWrapper>
+        {coverVideo &&
+          <VideoContainer>
+            <Video
+              src={coverVideo}
+              type={'cover'}
+              withPrettyControls
+            />
+          </VideoContainer>
+          }
         <StoryOverlayWrapper image={coverImage}/>
           <Wrapper hasImage={!!coverImage}>
           <ButtonsHorizontalCenter>

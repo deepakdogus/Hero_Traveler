@@ -252,6 +252,7 @@ class FeedItemPreview extends Component {
               <Row middle='xs'>
                 {!isVertical &&
                   <Avatar
+                    isStoryPreview
                     avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
                     size='avatar'
                     onClick={this.navToUserProfile}

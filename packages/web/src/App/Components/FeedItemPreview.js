@@ -57,8 +57,9 @@ const Title = styled.h3`
   margin: 0;
   cursor: pointer;
   &:hover {
-    color: #757575;
-  }
+    color: ${props => props.theme.Colors.grey};
+  };
+  width: 385.5px;
 `
 
 const Description = styled.h2`

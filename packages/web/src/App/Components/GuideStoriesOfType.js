@@ -47,6 +47,8 @@ export default class GuideStoriesOfType extends React.Component {
       isShowAll
     } = this.props
 
+    if (stories.length === 0) return null
+
     return (
       <Wrapper>
         <Title>{label}</Title>

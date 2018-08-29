@@ -5,12 +5,6 @@ import PropTypes from 'prop-types'
 import NotificationRow from '../NotificationRow'
 import {RightTitle, RightModalCloseX} from './Shared'
 
-const ActivityTypes = {
-  like: 'ActivityStoryLike',
-  follow: 'ActivityFollow',
-  comment: 'ActivityStoryComment'
-}
-
 const Container = styled.div``
 
 const NotificationRowsContainer = styled.div``
@@ -46,7 +40,7 @@ export default class NotificationsThread extends React.Component {
         <NotificationRow
           key={id}
           user={userProfile}
-          notification={this.getDescription(activity, story)}
+          activityKind={activity.kind}
           isFeedItem={this.isFeedItem(activity)}
           story={story}
           reroute={reroute}
@@ -57,20 +51,6 @@ export default class NotificationsThread extends React.Component {
         />
       )
     })
-  }
-
-  getDescription = (activity, story) => {
-    if (!story) return
-    switch (activity.kind) {
-      case ActivityTypes.follow:
-        return `is now following you.`
-      case ActivityTypes.comment:
-        return  `commented on your story ${story.title}.`
-      case ActivityTypes.like:
-        return `liked your story ${story.title}.`
-      default:
-        return ''
-    }
   }
 
   isFeedItem = (activity) => {

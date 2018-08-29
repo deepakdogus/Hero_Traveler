@@ -5,6 +5,7 @@ import Modal from 'react-modal'
 import styled from 'styled-components'
 import Login from './Modals/HeaderModals/Login'
 import Signup from './Modals/HeaderModals/Signup'
+import SaveEdits from './Modals/HeaderModals/SaveEdits'
 import ResetPassword from './Modals/HeaderModals/ResetPassword'
 import Contributor from './Modals/HeaderModals/Contributor'
 import AddToItinerary from './Modals/HeaderModals/AddToItinerary'
@@ -16,13 +17,23 @@ import RightModal from './RightModal'
 import CenterModal from './CenterModal'
 import NotificationsThread from './Modals/NotificationsThread'
 import FlagStory from './Modals/FlagStory'
+import DeleteStory from './Modals/DeleteStory'
 
 const Container = styled.div``
 
 const customModalStyles = {
   content: {
-    width: 420,
-    margin: 'auto',
+    border: '0',
+    bottom: 'auto',
+    minHeight: '10rem',
+    left: '50%',
+    padding: '2rem',
+    position: 'fixed',
+    right: 'auto',
+    top: '50%',
+    transform: 'translate(-50%,-50%)',
+    minWidth: '20rem',
+    maxWidth: '28rem',
   },
   overlay: {
     backgroundColor: 'rgba(0,0,0, .5)',
@@ -67,6 +78,8 @@ export default class HeaderModals extends React.Component {
     attemptChangePassword: PropTypes.func,
     loginReduxFetching: PropTypes.bool,
     loginReduxError: PropTypes.object,
+    signupReduxFetching: PropTypes.bool,
+    signupReduxError: PropTypes.string,
     attemptUpdateUser: PropTypes.func,
     userEntitiesUpdating: PropTypes.bool,
     userEntitiesError: PropTypes.object,
@@ -76,7 +89,11 @@ export default class HeaderModals extends React.Component {
     markSeen: PropTypes.func,
     reroute: PropTypes.func,
     users: PropTypes.object,
+    nextPathAfterSave: PropTypes.string,
+    attemptLogout: PropTypes.func,
+    resetCreateStore: PropTypes.func,
     flagStory: PropTypes.func,
+    deleteStory: PropTypes.func,
   }
 
   closeGlobalModal = () => {
@@ -86,8 +103,7 @@ export default class HeaderModals extends React.Component {
   render() {
     const {
       globalModalThatIsOpen,
-      loginReduxFetching,
-      loginReduxError,
+      closeGlobalModal,
       closeModal,
       modal,
       globalModalParams,
@@ -105,7 +121,19 @@ export default class HeaderModals extends React.Component {
       reroute,
       stories,
       users,
+      nextPathAfterSave,
+      attemptLogout,
+      resetCreateStore,
       flagStory,
+      deleteStory,
+    } = this.props
+
+    //destructuring these as let so we can reassign message in respective components
+    let {
+      loginReduxFetching,
+      loginReduxError,
+      signupReduxFetching,
+      signupReduxError,
     } = this.props
 
     return (
@@ -119,6 +147,8 @@ export default class HeaderModals extends React.Component {
           <Login
             onSignupClick={this.props.openSignupModal}
             onAttemptLogin={this.props.attemptLogin}
+            loginReduxFetching={loginReduxFetching}
+            loginReduxError={loginReduxError}
           />
         </Modal>
         <Modal
@@ -127,7 +157,11 @@ export default class HeaderModals extends React.Component {
           onRequestClose={closeModal}
           style={customModalStyles}
         >
-          <Signup onLoginClick={this.props.openLoginModal}/>
+          <Signup
+            onLoginClick={this.props.openLoginModal}
+            signupReduxFetching={signupReduxFetching}
+            signupReduxError={signupReduxError}
+          />
         </Modal>
         <Modal
           isOpen={modal === 'resetPassword'}
@@ -154,6 +188,36 @@ export default class HeaderModals extends React.Component {
           <AddToItinerary/>
         </Modal>
         <Modal
+          isOpen={globalModalThatIsOpen === 'saveEdits'}
+          contentLabel="Save Edits Modal"
+          onRequestClose={closeModal}
+          style={customModalStyles}
+        >
+          <SaveEdits
+            params={globalModalParams}
+            reroute={reroute}
+            nextPathAfterSave={nextPathAfterSave}
+            closeModal={closeGlobalModal}
+            attemptLogout={attemptLogout}
+            resetCreateStore={resetCreateStore}
+          />
+        </Modal>
+        <Modal
+          isOpen={globalModalThatIsOpen === 'deleteStory'}
+          contentLabel="Delete Story Modal"
+          onRequestClose={closeModal}
+          style={customModalStyles}
+        >
+          <DeleteStory
+            reroute={reroute}
+            closeModal={closeGlobalModal}
+            deleteStory={deleteStory}
+            resetCreateStore={resetCreateStore}
+            userId={userId}
+            globalModalParams={globalModalParams}
+          />
+        </Modal>
+        <Modal
           isOpen={globalModalThatIsOpen === 'flagStory'}
           contentLabel="Flag Story Modal"
           onRequestClose={closeModal}
@@ -168,12 +232,12 @@ export default class HeaderModals extends React.Component {
           />
         </Modal>
         <RightModal
-          isOpen={modal === 'notificationsThread'}
+          isOpen={globalModalThatIsOpen === 'notificationsThread'}
           contentLabel='Notifications Thread'
           onRequestClose={closeModal}
         >
           <NotificationsThread
-            closeModal={closeModal}
+            closeModal={this.closeGlobalModal}
             activitiesById={activitiesById}
             activities={activities}
             markSeen={markSeen}

@@ -1,10 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 import { NavLink } from 'react-router-dom'
 import { Row } from '../../FlexboxGrid'
 import Icon from '../../Icon'
 import RoundedButton from '../../RoundedButton'
 import { mediaMax } from '../../ContentLayout.component'
+import ConditionalLink from '../../ConditionalLink'
 
 export const StyledRow = styled(Row)`
   height: 65px;
@@ -79,16 +81,32 @@ export const MenuLink = (props) => {
         borderBottomWidth: '3px',
         borderBottomColor: 'red'
       }}
-      to={props.to}>
-        {props.children}
-      </NavLink>
+      to={props.to}
+    >
+      {props.children}
+    </NavLink>
   )
 }
 
-export const SearchNav = () => {
+export const SearchNav = (props) => {
+  const {
+    pathname,
+    openSaveEditsModal,
+    haveFieldsChanged,
+    workingDraft,
+    originalDraft,
+  } = props
+
   return (
-    <NavLink
+    <ConditionalLink
       to='/search'
+      pathname={pathname}
+      openSaveEditsModal={openSaveEditsModal}
+      isMenuLink={false}
+      haveFieldsChanged={haveFieldsChanged}
+      workingDraft={workingDraft}
+      originalDraft={originalDraft}
+      noBorder={true}
     >
       <StyledRoundedButton
         type='headerButton'
@@ -99,6 +117,20 @@ export const SearchNav = () => {
         name='explore'
       />
       </StyledRoundedButton>
-    </NavLink>
+    </ConditionalLink>
   )
+}
+
+MenuLink.propTypes = {
+  to: PropTypes.string,
+  exact: PropTypes.bool,
+  children: PropTypes.string,
+}
+
+SearchNav.propTypes = {
+  pathname: PropTypes.string,
+  openSaveEditsModal: PropTypes.func,
+  haveFieldsChanged: PropTypes.func,
+  workingDraft: PropTypes.object,
+  originalDraft: PropTypes.object,
 }

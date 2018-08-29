@@ -14,6 +14,7 @@ const devSettings = {
   SEARCH_HASHTAGS_INDEX:'matthew_dev_HASHTAGS',
 }
 
+
 const prodSettings = {
   API_URL: 'http://ht-api.rehashstudio.com/',
   cdnBaseUrl: 'https://res.cloudinary.com/rehash-studio/',
@@ -26,7 +27,6 @@ const prodSettings = {
   SEARCH_STORY_INDEX: 'prod_STORIES',
   SEARCH_USER_INDEX: 'prod_USERS',
   SEARCH_CATEGORIES_INDEX: 'prod_CATEGORIES',
-  SEARCH_HASHTAGS_INDEX:'prod_HASHTAGS',
 }
 
 export default process.env.NODE_ENV === 'development' ? devSettings : prodSettings

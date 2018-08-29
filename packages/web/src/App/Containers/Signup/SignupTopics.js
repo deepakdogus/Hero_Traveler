@@ -11,6 +11,16 @@ import RoundedButton from '../../Components/RoundedButton'
 import ExploreGrid from '../../Components/ExploreGrid'
 import NavLinkStyled from '../../Components/NavLinkStyled'
 
+const TopicsContainer = styled.div`
+  margin-bottom: 30px;
+`
+
+const NavLinkContainer = styled(TopicsContainer)`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+`
+
 const Container = styled.div`
   margin: 0 7.5%;
   text-align: center;
@@ -20,6 +30,7 @@ const Title = styled.p`
   font-size: 35px;
   color: ${props => props.theme.Colors.background};
   letter-spacing: 1.2px;
+  margin-top: 0;
 `
 
 const Subtitle = styled.p`
@@ -63,10 +74,12 @@ class SignupTopics extends Component {
 
   render() {
     return (
-        <div>
-          <NavLinkStyled to='/signup/social'>
-            <RoundedButton text='Next >'></RoundedButton>
-          </NavLinkStyled>
+        <TopicsContainer>
+          <NavLinkContainer>
+            <NavLinkStyled to='/signup/social'>
+              <RoundedButton text='Next >'></RoundedButton>
+            </NavLinkStyled>
+          </NavLinkContainer>
           <Container>
             <SizedDiv>
               <Title>WELCOME!</Title>
@@ -78,7 +91,7 @@ class SignupTopics extends Component {
               />
             </SizedDiv>
           </Container>
-        </div>
+        </TopicsContainer>
     )
   }
 }

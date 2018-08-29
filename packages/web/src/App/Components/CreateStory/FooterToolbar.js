@@ -15,6 +15,11 @@ const StyledIcon = styled(Icon)`
   align-self: center;
 `
 
+const Text = styled.p`
+  color: ${props => props.theme.Colors.redHighlights};
+  margin: 0 auto;
+`
+
 export default class FooterToolbar extends Component {
   static propTypes = {
     isDetailsView: PropTypes.bool,
@@ -22,6 +27,7 @@ export default class FooterToolbar extends Component {
     updateDraft: PropTypes.func,
     onRight: PropTypes.func,
     onLeft: PropTypes.func,
+    syncProgressMessage: PropTypes.string,
   }
 
   renderIcons = () => {
@@ -46,16 +52,27 @@ export default class FooterToolbar extends Component {
           height='50px'
           onClick={updateDraft}
         >
-          <StyledIcon name='save'/>
+          <StyledIcon name='createSave'/>
         </RoundedButton>
       </Row>
     )
   }
 
   renderButtons = () => {
-    const {isDetailsView, onRight, onLeft} = this.props
+    const {
+      isDetailsView,
+      onRight,
+      onLeft,
+      syncProgressMessage
+    } = this.props
+
     return (
       <Container>
+        <Row middle='xs'>
+        {syncProgressMessage === 'Publishing Story' &&
+          <Text>{syncProgressMessage}...</Text>
+        }
+        </Row>
         <Row middle='xs'>
           <RoundedButton
             text={isDetailsView ? '< Back' : 'Preview'}

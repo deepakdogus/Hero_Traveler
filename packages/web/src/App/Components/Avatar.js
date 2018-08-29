@@ -10,15 +10,27 @@ const StyledImage = styled(Image)`
   position: relative;
   right: 6px;
   bottom: 2px;
+  margin-left: ${props => props.isStoryPreview ? '7px':'0'};
 `
 
 export default class Avatar extends React.Component {
   static propTypes = {
     avatarUrl: PropTypes.string,
+    isStoryPreview: PropTypes.bool,
+    size: PropTypes.string,
+    onClick: PropTypes.func,
+    type: PropTypes.string,
   }
 
   render() {
-    const {avatarUrl, size, type, onClick} = this.props
+    const {
+      avatarUrl,
+      size,
+      type,
+      onClick,
+      isStoryPreview
+    } = this.props
+
     if (!avatarUrl) {
       return (
         <Icon
@@ -31,6 +43,7 @@ export default class Avatar extends React.Component {
     else {
       return (
         <StyledImage
+          isStoryPreview={isStoryPreview}
           src={avatarUrl}
           type={size || 'avatar'}
           onClick={onClick}

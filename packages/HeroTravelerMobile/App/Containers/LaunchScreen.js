@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Text, Image, ImageBackground, View, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import {
@@ -15,6 +16,15 @@ import Loader from '../Components/Loader'
 import styles from './Styles/LaunchScreenStyles'
 
 class LaunchScreen extends React.Component {
+
+  static propTypes = {
+    fetching: PropTypes.bool,
+    hasHeroAccessToken: PropTypes.bool,
+    hasSignedUp: PropTypes.bool,
+    signupFacebook: PropTypes.func,
+    splashShown: PropTypes.bool,
+    resumeSession: PropTypes.func,
+  }
 
   constructor(props) {
     super(props)

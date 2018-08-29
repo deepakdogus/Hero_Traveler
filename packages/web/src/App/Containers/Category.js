@@ -1,12 +1,13 @@
 import React from 'react'
+import _ from 'lodash'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import _ from 'lodash'
 
 import StoryActions, {getByCategory, getFetchStatus} from '../Shared/Redux/Entities/Stories'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
+import SignupActions from'../Shared/Redux/SignupRedux'
 
 import ContainerWithFeedList from './ContainerWithFeedList'
 import CategoryHeader from '../Components/CategoryHeader'
@@ -29,6 +30,10 @@ class Category extends ContainerWithFeedList {
     categoryId: PropTypes.string,
     category: PropTypes.object,
     loadCategories: PropTypes.func,
+    loadCategoryStories: PropTypes.func,
+    followCategory: PropTypes.func,
+    unfollowCategory: PropTypes.func,
+    isFollowingCategory: PropTypes.bool,
   }
 
   state = { activeTab: 'ALL' }
@@ -40,12 +45,22 @@ class Category extends ContainerWithFeedList {
   }
 
   render() {
-    const {category} = this.props
+    const {
+      category,
+      followCategory,
+      unfollowCategory,
+      isFollowingCategory,
+    } = this.props
     const {selectedFeedItems} = this.getSelectedFeedItems()
 
     return (
       <ContentWrapper>
-        <CategoryHeader category={category}/>
+        <CategoryHeader
+          category={category}
+          followCategory={followCategory}
+          unfollowCategory={unfollowCategory}
+          isFollowingCategory={isFollowingCategory}
+        />
         <TabBar
           tabs={tabBarTabs}
           activeTab={this.state.activeTab}
@@ -63,6 +78,11 @@ class Category extends ContainerWithFeedList {
 
 function mapStateToProps(state, ownProps) {
   const categoryId = ownProps.match.params.categoryId
+  let isFollowingCategory = false;
+  if (state.session.userId) {
+    isFollowingCategory = _.includes(state.signup.selectedCategories, categoryId)
+  }
+
   return {
     categoryId,
     category: state.entities.categories.entities[categoryId],
@@ -71,19 +91,22 @@ function mapStateToProps(state, ownProps) {
     stories: state.entities.stories.entities,
     guides: state.entities.guides.entities,
     guidesById: _.get(state, `entities.guides.guideIdsByCategoryId[${categoryId}]`, []),
+    isFollowingCategory,
   }
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
   const categoryId = ownProps.match.params.categoryId
   return {
-    getStories: (ignore, storyType) => {
+    getStories: (_ignore, storyType) => {
       storyType = storyType.toLowerCase()
       if (storyType === 'all') storyType = null
       dispatch(StoryActions.fromCategoryRequest(categoryId, storyType))
     },
     loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
     getGuides: () => dispatch(GuideActions.getCategoryGuides(categoryId)),
+    followCategory: (categoryId) => dispatch(SignupActions.signupFollowCategory(categoryId)),
+    unfollowCategory: (categoryId) => dispatch(SignupActions.signupUnfollowCategory(categoryId)),
   }
 }
 

@@ -17,11 +17,22 @@ const Container = styled.div`
   text-align: center;
 `
 
+const SocialContainer = styled.div`
+  margin-bottom: 30px;
+`
+
+const NavLinkContainer = styled(SocialContainer)`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+`
+
 /*
 Title and Subtitle are indentical in SignupSocial and SignupTopics
 Possibly refactor into separate file or add styles to themes
 */
 const Title = styled.p`
+  margin-top:0;
   font-weight: 400;
   font-size: 35px;
   color: ${props => props.theme.Colors.background};
@@ -106,13 +117,15 @@ class SignupSocial extends Component {
 
   render() {
     return (
-      <div>
-        <NavLinkStyled to='/signup/topics'>
-          <RoundedButton text='< Back' type="blackWhite"></RoundedButton>
-        </NavLinkStyled>
-        <NavLinkStyled to='/feed'>
-          <RoundedButton text='Finish'></RoundedButton>
-        </NavLinkStyled>
+      <SocialContainer>
+        <NavLinkContainer>
+          <NavLinkStyled to='/signup/topics'>
+            <RoundedButton text='< Back' type="blackWhite"></RoundedButton>
+          </NavLinkStyled>
+          <NavLinkStyled to='/feed'>
+            <RoundedButton text='Finish'></RoundedButton>
+          </NavLinkStyled>
+        </NavLinkContainer>
         <Container>
         <Title>FOLLOW</Title>
           <Subtitle>We'll add stories by people you follow to your custom reading list</Subtitle>
@@ -132,7 +145,7 @@ class SignupSocial extends Component {
             {this.renderSuggestedUsers()}
           </Section>
         </Container>
-      </div>
+      </SocialContainer>
     )
   }
 }

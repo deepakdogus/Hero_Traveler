@@ -113,19 +113,15 @@ const ActivityTypes = {
 
 export default class NotificationRow extends Component {
   static propTypes = {
-    notification: PropTypes.string,
-    closeModal: PropTypes.func,
-    comment: PropTypes.string,
     user: PropTypes.object,
-    trip: PropTypes.object,
-    story: PropTypes.object,
+    activityKind: PropTypes.string,
     isFeedItem: PropTypes.bool,
-    timestamp: PropTypes.object,
+    story: PropTypes.object,
     reroute: PropTypes.func,
+    closeModal: PropTypes.func,
     seen: PropTypes.bool,
     markSeen: PropTypes.func,
     activityId: PropTypes.string,
-    activityKind: PropTypes.string,
   }
 
   navToStory = () => {

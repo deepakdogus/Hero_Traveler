@@ -14,15 +14,12 @@ const StyledIcon = styled(Icon)`
   height: 20px;
   width: 20px;
   @media (max-width: ${sizes.tablet}px) {
-    
+
   }
 `
 
 const HandMadeIcon = styled.div`display: block;
   margin: auto;
-  margin-bottom: 15px;
-  margin-left: 5px;
-  margin-right: 5px;
   height: 14px;
   width: 14px;
   border-radius: 14px;
@@ -38,7 +35,7 @@ const HandMadeIcon = styled.div`display: block;
 const HandMadeIconMinus = styled.div`
   display: block;
   height: 1px;
-  width: 10px;
+  width: 9px;
   background-color: ${props => props.theme.Colors.grey};
 `
 
@@ -97,13 +94,14 @@ const ClickableWrapper = styled.div`
 
 export default class StoryActionBar extends React.Component {
   static propTypes = {
-    story: PropTypes.object,
+    feedItem: PropTypes.object,
+    isStory: PropTypes.bool,
     isLiked: PropTypes.bool,
     onClickLike: PropTypes.func,
     isBookmarked: PropTypes.bool,
     onClickBookmark: PropTypes.func,
     onClickComments: PropTypes.func,
-    flagStory: PropTypes.func,
+    onClickFlag: PropTypes.func,
     userId: PropTypes.string,
     reroute: PropTypes.func,
     openGlobalModal: PropTypes.func,
@@ -123,12 +121,13 @@ export default class StoryActionBar extends React.Component {
   }
 
   _openFlagStoryModal = () => {
-    this.props.openGlobalModal('flagStory', {storyId: this.props.story.id})
+    this.props.openGlobalModal('flagStory', {storyId: this.props.feedItem.id})
   }
 
   render () {
     const {
-      story,
+      feedItem,
+      isStory,
       isLiked,
       isBookmarked,
       onClickBookmark,
@@ -139,19 +138,21 @@ export default class StoryActionBar extends React.Component {
     return (
       <AbsoluteWrapper>
         <ActionBarContainer>
-          <BookmarkIcon
-            name={isBookmarked ? 'squareBookmarkActive' : 'squareBookmark'}
-            onClick={onClickBookmark}
-          />
+          {isStory &&
+            <BookmarkIcon
+              name={isBookmarked ? 'squareBookmarkActive' : 'squareBookmark'}
+              onClick={onClickBookmark}
+            />
+          }
           <ClickableWrapper>
-            <Count>{story.counts.likes}</Count>
+            <Count>{feedItem.counts.likes}</Count>
             <LeftActionBarIcon
               name={isLiked ? 'squareLikeActive' : 'squareLike'}
               onClick={onClickLike}
             />
           </ClickableWrapper>
           <ClickableWrapper>
-            <Count>{story.counts.comments}</Count>
+            <Count>{feedItem.counts.comments}</Count>
             <LeftActionBarIcon
               name='squareComment'
               onClick={onClickComments}
@@ -171,12 +172,14 @@ export default class StoryActionBar extends React.Component {
             <StyledIcon name='tumblr'/>
             <StyledIcon name='pinterest'/>
             <StyledIcon name='email'/>
-            <ClickableWrapper>
-              <StyledIcon
-                name='report'
-                onClick={this._openFlagStoryModal}
-              />
-            </ClickableWrapper>
+            {isStory &&
+              <ClickableWrapper>
+                <StyledIcon
+                  name='report'
+                  onClick={this._openFlagStoryModal}
+                />
+              </ClickableWrapper>
+            }
             <HandMadeIcon onClick={this.toggleShowMore}>
               <HandMadeIconMinus />
             </HandMadeIcon>

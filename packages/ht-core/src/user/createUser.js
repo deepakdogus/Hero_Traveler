@@ -30,39 +30,40 @@ export async function createUserFacebook(facebookUserData, device: ?object) {
   const existingUser = await User.findOne({
     $or: query
   })
-  
+
+  let userToReturn
   // The user already has an account with us,
   // and has NOT signed up with facebook
   if (existingUser && !existingUser.hasFacebookAccountInfo()) {
-    const updatedUser = await existingUser.connectFacebook(fbid)
-    return Promise.resolve([updatedUser, true])
+    userToReturn = await existingUser.connectFacebook(fbid)
   }
 
   // The user already has an account with us,
   // and has already signed up with facebook
-  if (existingUser && existingUser.hasFacebookAccountInfo()) {
-    return Promise.resolve([existingUser, true])
+  else if (existingUser && existingUser.hasFacebookAccountInfo()) {
+    userToReturn = existingUser
   }
 
-  const newUser = await User.createFromFacebookData(
-    fbid,
-    email,
-    name,
-    pictureUrl
-  )
+  else {
+    userToReturn = await User.createFromFacebookData(
+      fbid,
+      email,
+      name,
+      pictureUrl
+    )
+    await Promise.all([
+      algoliaHelper.addUserToIndex(userToReturn),
+      welcomeEmail(userToReturn),
+    ])
+  }
 
   if (!!device) {
     const userDevice = await UserDevice.addOrUpdate(
       device,
-      newUser._id,
+      userToReturn._id,
     )
   }
-
-  return Promise.all([
-    algoliaHelper.addUserToIndex(newUser),
-    welcomeEmail(newUser)
-  ])
-  .then(() => Promise.resolve([newUser, false]))
+  return Promise.resolve([userToReturn, !!existingUser])
 }
 
 // @TODO validate user

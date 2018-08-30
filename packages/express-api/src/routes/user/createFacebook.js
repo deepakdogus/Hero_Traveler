@@ -4,6 +4,7 @@ import {User, Models} from '@hero/ht-core'
 // Create the user and generate auth tokens
 export default function createUserFromFacebook(req, res) {
   const {user, deviceId} = req.body
+
   return User.createFacebook(user, deviceId)
     .then(([user, wasSignedUp]) => {
       return User.getOrCreateTokens(user._id)

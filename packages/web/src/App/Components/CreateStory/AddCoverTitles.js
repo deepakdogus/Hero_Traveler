@@ -132,10 +132,6 @@ const StyledCloseXContainer = styled(CloseXContainer)`
   z-index: 1;
 `
 
-const VideoContainer = styled.div`
-  height: 350px;
-`
-
 // we cannot use a button if we want the hiddenInput to work
 // as such we have recreated the same styles as a button would
 // so that it matches CloseX that is used for the body media
@@ -182,10 +178,12 @@ export default class AddCoverTitles extends React.Component {
       let update = file.type.includes('video')
       ? {
         'coverVideo': file,
+        'coverImage': null,
         'coverType': 'video'
       }
       : {
         'coverImage': file,
+        'coverVideo': null,
         'coverType': 'image'
       }
       // refactor later to differentiate between image and video
@@ -292,21 +290,21 @@ export default class AddCoverTitles extends React.Component {
 
     return (
       <RelativeWrapper>
+        {!coverVideo &&
+          <StoryOverlayWrapper image={coverImage}/>
+        }
         {coverVideo &&
-          <VideoContainer>
-            <Video
-              src={coverVideo}
-              type={'cover'}
-              withPrettyControls
-            />
-          </VideoContainer>
+          <Video
+            src={coverVideo}
+            type={'cover'}
+            withPrettyControls
+          />
           }
-        <StoryOverlayWrapper image={coverImage}/>
-          <Wrapper hasImage={!!coverImage}>
+        <Wrapper hasImage={!!coverImage || !!coverVideo}>
           <ButtonsHorizontalCenter>
             {this.renderUploadButton()}
           </ButtonsHorizontalCenter>
-          </Wrapper>
+        </Wrapper>
         {!!coverImage &&
           <StyledCoverCaptionInput
             type='text'

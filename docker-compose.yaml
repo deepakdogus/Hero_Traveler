@@ -17,8 +17,10 @@ services:
       update_config:
         parallelism: 1
         delay: 10s
+        failure_action: rollback
       restart_policy:
         condition: on-failure
+        max_attempts: 10
       placement:
         constraints: [node.role == worker]
   cms:
@@ -37,8 +39,10 @@ services:
       update_config:
         parallelism: 1
         delay: 10s
+        failure_action: rollback
       restart_policy:
         condition: on-failure
+        max_attempts: 10
       placement:
         constraints: [node.role == worker]
 

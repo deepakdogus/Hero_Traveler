@@ -24,6 +24,8 @@ class LaunchScreen extends React.Component {
     signupFacebook: PropTypes.func,
     splashShown: PropTypes.bool,
     resumeSession: PropTypes.func,
+    isLoggedOut: PropTypes.bool,
+    isResumingSession: PropTypes.bool,
   }
 
   constructor(props) {
@@ -40,6 +42,13 @@ class LaunchScreen extends React.Component {
     }
 
     if (this.props.splashShown && !newProps.splashShown && !this.props.hasHeroAccessToken) {
+      SplashScreen.hide()
+      this.fadeIn()
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.isLoggedOut && !this.props.isResumingSession) {
       SplashScreen.hide()
       this.fadeIn()
     }
@@ -115,6 +124,8 @@ const mapStateToProps = (state) => {
     fetching: state.signup.fetching,
     hasSignedUp: hasSignedUp(state.signup),
     splashShown: state.startup.splashShown,
+    isLoggedOut: state.session.isLoggedOut,
+    isResumingSession: state.session.isResumingSession,
   }
 }
 

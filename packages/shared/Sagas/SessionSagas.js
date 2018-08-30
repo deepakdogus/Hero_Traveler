@@ -50,7 +50,11 @@ export function * resumeSession (api, action) {
   // for web we use retrieved tokens (cookies) since store does not persist
   if (action.retrievedTokens) tokens = action.retrievedTokens
   const accessToken = _.find(tokens, {type: 'access'})
-  if (!accessToken) return yield put(SessionActions.resumeSessionFailure())
+  if (!accessToken) {
+    yield put(SessionActions.resumeSessionFailure())
+    yield put(SessionActions.logout(userId, 'mobile'))
+    return
+}
 
   yield call(api.setAuth, accessToken.value)
   const response = yield call(
@@ -79,6 +83,9 @@ export function * resumeSession (api, action) {
     // yield put(SessionActions.resetRootStore())
     // yield put(ScreenActions.openScreen('launchScreen'))
     // yield put(StartupActions.hideSplash())
+    yield put(SessionActions.resumeSessionFailure())
+    yield put(SessionActions.logout(userId, 'mobile'))
+    return
   }
 }
 

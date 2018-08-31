@@ -4,6 +4,7 @@ import {isArray} from 'lodash'
 import {normalize, schema} from 'normalizr'
 import {getToken as getPushToken} from '../../Config/PushConfig'
 import env from '../../Config/Env'
+import debugConfig from '../../Config/DebugConfig'
 import CloudinaryAPI from '../../Services/CloudinaryAPI'
 
 const User = new schema.Entity('users')
@@ -56,7 +57,7 @@ const create = () => {
   // Wrap api's addMonitor to allow the calling code to attach
   // additional monitors in the future.  But only in process.env.NODE_ENV === 'development' and only
   // if we've attached Reactotron to console (it isn't during unit tests).
-  if (process.env.NODE_ENV === 'development' && console.tron) {
+  if (debugConfig.useReactotron && console.tron) {
     api.addMonitor(console.tron.apisauce)
   }
 

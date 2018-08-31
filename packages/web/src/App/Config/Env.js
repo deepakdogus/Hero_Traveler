@@ -29,4 +29,4 @@ const prodSettings = {
   SEARCH_CATEGORIES_INDEX: 'prod_CATEGORIES',
 }
 
-export default process.env.NODE_ENV === 'development' ? devSettings : prodSettings
+export default process.env.NODE_ENV === 'development' ? prodSettings : prodSettings

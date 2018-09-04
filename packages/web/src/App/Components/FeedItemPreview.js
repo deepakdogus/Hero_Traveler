@@ -136,6 +136,10 @@ const Bottom = styled(Row)`
   left: 0;
 `
 
+const BadgeIcon = styled(Icon)`
+  margin-left: ${props => props.profileAvatar ? '0' : '6'}px;
+`
+
 const GuideIcon = styled(Icon)`
   width: 17px;
   height: 17px;
@@ -217,7 +221,7 @@ class FeedItemPreview extends Component {
 
     if (!feedItem || !author) return
 
-    const isImportant = author.role === 'contributor' || author.role === 'founding member'
+    const hasBadge = author.role === 'contributor' || author.role === 'founding member'
 
     let imageUrl;
     if (feedItem.coverImage) imageUrl = getImageUrl(feedItem.coverImage)
@@ -260,10 +264,11 @@ class FeedItemPreview extends Component {
                     onClick={this.navToUserProfile}
                   />
                 }
-                {isImportant &&
-                  <Icon
+                {hasBadge &&
+                  <BadgeIcon
                     name={author.role === 'contributor' ? 'profileBadge' : 'founderBadge'}
                     size='small'
+                    profileAvatar={author.profile.avatar}
                   />
                 }
                 {!isVertical && <ByText>By&nbsp;</ByText>}

@@ -146,7 +146,7 @@ export default class ProfileHeaderView extends React.Component {
       unfollowUser,
     } = this.props
 
-    const isImportant = user.role === 'contributor' || user.role === 'founding member'
+    const hasBadge = user.role === 'contributor' || user.role === 'founding member'
 
     return (
       <Centered>
@@ -206,7 +206,7 @@ export default class ProfileHeaderView extends React.Component {
             </VerticalCenter>
           </SecondCol>
         </LimitedWidthRow>
-        { isImportant && this._renderUserBadge()}
+        { hasBadge && this._renderUserBadge()}
       </Centered>
     )
   }

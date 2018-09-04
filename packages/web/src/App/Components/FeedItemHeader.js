@@ -101,6 +101,10 @@ const ClickableRow = styled(Row)`
   cursor: pointer;
 `
 
+const BadgeIcon = styled(Icon)`
+  margin-left: ${props => props.profileAvatar ? '0' : '10'}px;
+`
+
 export default class FeedItemHeader extends React.Component {
   static propTypes = {
     feedItem: PropTypes.object,
@@ -148,7 +152,7 @@ export default class FeedItemHeader extends React.Component {
     } = this.props
 
     const mediaType = this.getMediaType()
-    const isImportant = author.role === 'contributor' || author.role === 'founding member'
+    const hasBadge = author.role === 'contributor' || author.role === 'founding member'
     const isUsersFeedItem = author.id === sessionUserId
 
     return (
@@ -160,13 +164,14 @@ export default class FeedItemHeader extends React.Component {
               size='medium'
               onClick={this._profileReroute}
             />
-            {isImportant &&
-            <VerticalCenter>
-              <Icon
-              name={author.role === 'contributor' ? 'profileBadge' : 'founderBadge'}
-              size='mediumSmall'
-            />
-            </VerticalCenter>
+            {hasBadge &&
+              <VerticalCenter>
+                <BadgeIcon
+                name={author.role === 'contributor' ? 'profileBadge' : 'founderBadge'}
+                size='mediumSmall'
+                profileAvatar={author.profile.avatar}
+                />
+              </VerticalCenter>
             }
             <SpacedVerticalCenter>
               <Username onClick={this._profileReroute}>{author.username}</Username>

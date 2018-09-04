@@ -35,7 +35,6 @@ const contributorModalStyles = {
 export default class ProfileHeader extends React.Component {
   static propTypes = {
     user: PropTypes.object,
-    isContributor: PropTypes.bool,
     isEdit: PropTypes.bool,
     isUsersProfile: PropTypes.bool,
   }

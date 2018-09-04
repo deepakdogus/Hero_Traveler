@@ -13,8 +13,7 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     targetEntities: R.map(mapFunc, ownProps.entitiesById),
-    isLoggedOut: state.session.isLoggedOut,
-    isResumingSession: state.session.isResumingSession,
+    sessionError: state.session.error,
   }
 
 }

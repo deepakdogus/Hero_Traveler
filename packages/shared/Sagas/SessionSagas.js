@@ -51,7 +51,7 @@ export function * resumeSession (api, action) {
   if (action.retrievedTokens) tokens = action.retrievedTokens
   const accessToken = _.find(tokens, {type: 'access'})
   if (!accessToken) {
-    yield put(SessionActions.resumeSessionFailure())
+    yield put(SessionActions.resumeSessionFailure('Unauthorized'))
     yield put(SessionActions.logout(userId, 'mobile'))
     return
 }
@@ -77,13 +77,7 @@ export function * resumeSession (api, action) {
     yield put(SessionActions.initializeSession(user.id, tokens))
     yield put(SessionActions.refreshSessionSuccess(tokens))
   } else {
-    // simply not logging them out if we have their token info
-    // const errorMessage = new Error('You have been logged out.')
-    // yield put(SessionActions.resumeSessionFailure(errorMessage))
-    // yield put(SessionActions.resetRootStore())
-    // yield put(ScreenActions.openScreen('launchScreen'))
-    // yield put(StartupActions.hideSplash())
-    yield put(SessionActions.resumeSessionFailure())
+    yield put(SessionActions.resumeSessionFailure('Unauthorized'))
     yield put(SessionActions.logout(userId, 'mobile'))
     return
   }

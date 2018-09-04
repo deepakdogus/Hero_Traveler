@@ -39,8 +39,7 @@ export default class FeedList extends React.Component {
     renderFeedItem: PropTypes.func,
     headerContentHeight: PropTypes.number,
     style: PropTypes.number,
-    isLoggedOut: PropTypes.bool,
-    isResumingSession: PropTypes.bool,
+    sessionError: PropTypes.string,
   }
 
   static defaultProps = {
@@ -107,7 +106,8 @@ export default class FeedList extends React.Component {
       })
     }
     //log outif session runs out
-    if (nextProps.isLoggedOut && !nextProps.isResumingSession) {
+    const { sessionError } = this.props
+    if (sessionError && sessionError === 'Unauthorized') {
       NavActions.launchScreen({type: NavActionConst.RESET})
       Alert.alert(
         'Session Timed Out',

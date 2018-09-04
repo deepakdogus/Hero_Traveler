@@ -30,6 +30,7 @@ export function getVideoUrlFromString(video: string, stream = true): ?string {
 }
 
 export default function getVideoUrl(video: object, stream = true): ?string {
+  if(!video) return undefined
   if (typeof video === 'string') {
     return getVideoUrlFromString(video, stream)
   }

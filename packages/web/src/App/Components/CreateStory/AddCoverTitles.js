@@ -6,6 +6,7 @@ import Overlay from '../Overlay'
 import Icon from '../Icon'
 import {SubTitle, Input, CloseXContainer} from './Shared'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
+import getVideoUrl from '../../Shared/Lib/getVideoUrl'
 import uploadFile from '../../Utils/uploadFile'
 import {VerticalCenterStyles} from '../VerticalCenter'
 import Video from '../Video'
@@ -25,8 +26,13 @@ const Wrapper = styled.div`
   top: 0;
   width: 100%;
   background-color: ${props =>
-    props.hasImage ? props.theme.Colors.transparent : props.theme.Colors.lightGreyAreas
+    props.hasMediaAsset ? props.theme.Colors.transparent : props.theme.Colors.lightGreyAreas
   };
+`
+const LimitedWidthContainer = styled.div`
+  max-heigh: 600px;
+  max-width: 800px;
+  margin: 0 auto;
 `
 
 const RelativeWrapper = styled.div`
@@ -274,13 +280,7 @@ export default class AddCoverTitles extends React.Component {
     const { workingDraft } = this.props
     return workingDraft.coverVideo && workingDraft.coverVideo.uri
     ? workingDraft.coverVideo.uri
-    : null
-  }
-
-  getCoverVideoStyles() {
-    return {
-      'width': '100%',
-    }
+    : getVideoUrl(workingDraft.coverVideo, false)
   }
 
   render() {
@@ -294,18 +294,20 @@ export default class AddCoverTitles extends React.Component {
           <StoryOverlayWrapper image={coverImage}/>
         }
         {coverVideo &&
-          <Video
-            src={coverVideo}
-            type={'cover'}
-            withPrettyControls
-          />
+          <LimitedWidthContainer>
+            <Video
+              src={coverVideo}
+              type={'cover'}
+              withPrettyControls
+            />
+          </LimitedWidthContainer>
           }
-        <Wrapper hasImage={!!coverImage || !!coverVideo}>
+        <Wrapper hasMediaAsset={!!coverImage || !!coverVideo}>
           <ButtonsHorizontalCenter>
             {this.renderUploadButton()}
           </ButtonsHorizontalCenter>
         </Wrapper>
-        {!!coverImage &&
+        {!!coverImage || !!coverVideo &&
           <StyledCoverCaptionInput
             type='text'
             placeholder='Add Cover Caption'
@@ -315,7 +317,7 @@ export default class AddCoverTitles extends React.Component {
             maxLength={100}
           />
         }
-        {!coverImage && <CoverCaptionSpacer />}
+        {!coverImage || !coverVideo&& <CoverCaptionSpacer />}
         <TitleInputsWrapper>
           <StyledTitleInput
             type='text'
@@ -324,7 +326,7 @@ export default class AddCoverTitles extends React.Component {
             onChange={this._onTextChange}
             value={this.state.title}
             maxLength={40}
-            hasImage={!!coverImage}
+            hasMediaAsset={!!coverImage || !!coverVideo}
           />
           <StyledSubTitleInput
             type='text'
@@ -333,7 +335,7 @@ export default class AddCoverTitles extends React.Component {
             onChange={this._onTextChange}
             value={this.state.description}
             maxLength={50}
-            hasImage={!!coverImage}
+            hasMediaAsset={!!coverImage || !!coverVideo}
           />
         </TitleInputsWrapper>
       </RelativeWrapper>

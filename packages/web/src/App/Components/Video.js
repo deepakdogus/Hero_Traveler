@@ -43,8 +43,6 @@ export default class Video extends React.Component {
   render() {
     const {src, type, withPrettyControls } = this.props
     const usingChrome = browserIs('Chrome')
-    console.log('this.props', this.props)
-    console.log('usingChrome', usingChrome)
 
     return (
       withPrettyControls && usingChrome
@@ -60,7 +58,6 @@ export default class Video extends React.Component {
     :
       <VideoWrapper>
         <StyledVideo
-          height={'350'}
           autoplay
           src={src}
           type={type}

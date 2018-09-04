@@ -43,14 +43,14 @@ export default class EditPhotoOptions extends React.Component {
   static propTypes = {
     onCrop: PropTypes.func,
     onUpload: PropTypes.func,
-    loadedImage: PropTypes.object,
+    hasLoadedImage: PropTypes.bool,
   }
 
   render() {
     const {
       onCrop,
       onUpload,
-      loadedImage
+      hasLoadedImage
     } = this.props
 
     return (
@@ -69,7 +69,7 @@ export default class EditPhotoOptions extends React.Component {
             />
           </ModalRow>
         </label>
-        { loadedImage &&
+        { hasLoadedImage &&
           <ModalRow center='xs' onClick={onCrop}>
             <RepositionIcon name='createPhoto' />
             <VerticalCenter>

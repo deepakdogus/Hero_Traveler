@@ -8,7 +8,7 @@ import Image from './Image'
 const StyledImage = styled(Image)`
   cursor: ${props => props.onClick ? 'pointer' : undefined};
   position: relative;
-  right: 6px;
+  right: ${props=> props.isProfileHeader ? '0' : '6'}px;
   bottom: 2px;
   margin-left: ${props => props.isStoryPreview ? '7px':'0'};
 `
@@ -20,6 +20,7 @@ export default class Avatar extends React.Component {
     size: PropTypes.string,
     onClick: PropTypes.func,
     type: PropTypes.string,
+    isProfileHeader: PropTypes.bool,
   }
 
   render() {
@@ -28,7 +29,8 @@ export default class Avatar extends React.Component {
       size,
       type,
       onClick,
-      isStoryPreview
+      isStoryPreview,
+      isProfileHeader,
     } = this.props
 
     if (!avatarUrl) {
@@ -47,6 +49,7 @@ export default class Avatar extends React.Component {
           src={avatarUrl}
           type={size || 'avatar'}
           onClick={onClick}
+          isProfileHeader={isProfileHeader}
         />
       )
     }

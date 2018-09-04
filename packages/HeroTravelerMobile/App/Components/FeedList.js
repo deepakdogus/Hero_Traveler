@@ -3,10 +3,15 @@ import PropTypes from 'prop-types'
 import {
     RefreshControl,
     requireNativeComponent,
+    Alert,
 } from 'react-native'
 import reactMixin from 'react-mixin'
 import ScrollResponder from '../../node_modules/react-native/Libraries/Components/ScrollResponder'
 
+import {
+  ActionConst as NavActionConst,
+  Actions as NavActions,
+} from 'react-native-router-flux'
 import { Metrics } from '../Shared/Themes'
 import styles from './Styles/FeedListStyle'
 import _ from 'lodash'
@@ -34,6 +39,7 @@ export default class FeedList extends React.Component {
     renderFeedItem: PropTypes.func,
     headerContentHeight: PropTypes.number,
     style: PropTypes.number,
+    sessionError: PropTypes.string,
   }
 
   static defaultProps = {
@@ -98,6 +104,18 @@ export default class FeedList extends React.Component {
       this.setState({
         targetEntities: nextProps.targetEntities
       })
+    }
+    //log outif session runs out
+    const { sessionError } = this.props
+    if (sessionError && sessionError === 'Unauthorized') {
+      NavActions.launchScreen({type: NavActionConst.RESET})
+      Alert.alert(
+        'Session Timed Out',
+        'Please log in again',
+        [
+          {text: 'OK'}
+        ]
+      )
     }
   }
 

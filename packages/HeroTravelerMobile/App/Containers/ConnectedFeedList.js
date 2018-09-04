@@ -12,7 +12,8 @@ const mapStateToProps = (state, ownProps) => {
   else mapFunc = (guideId) => entities.guides.entities[guideId]
 
   return {
-    targetEntities: R.map(mapFunc, ownProps.entitiesById)
+    targetEntities: R.map(mapFunc, ownProps.entitiesById),
+    sessionError: state.session.error,
   }
 
 }

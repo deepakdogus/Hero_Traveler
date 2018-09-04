@@ -34,15 +34,25 @@ const HiddenInput = styled.input`
   height: 0;
 `
 
+const RepositionIcon = styled(Icon)`
+  margin-right: 10px;
+  padding-left: 0;
+`
+
 export default class EditPhotoOptions extends React.Component {
   static propTypes = {
     onCrop: PropTypes.func,
     onUpload: PropTypes.func,
-    hasImage: PropTypes.bool,
+    hasLoadedImage: PropTypes.bool,
   }
 
   render() {
-    const {onCrop, onUpload, hasImage} = this.props
+    const {
+      onCrop,
+      onUpload,
+      hasLoadedImage
+    } = this.props
+
     return (
       <Container>
         <label htmlFor='image_upload'>
@@ -55,12 +65,13 @@ export default class EditPhotoOptions extends React.Component {
               type='file'
               id='image_upload'
               onChange={onUpload}
+              accept={'image/*'}
             />
           </ModalRow>
         </label>
-        { hasImage &&
-          <ModalRow onClick={onCrop}>
-            <Icon name='createStory' />
+        { hasLoadedImage &&
+          <ModalRow center='xs' onClick={onCrop}>
+            <RepositionIcon name='createPhoto' />
             <VerticalCenter>
               <EditModalText>Reposition</EditModalText>
             </VerticalCenter>

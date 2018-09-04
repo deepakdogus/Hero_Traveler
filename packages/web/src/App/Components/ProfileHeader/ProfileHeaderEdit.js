@@ -56,6 +56,7 @@ const EditAvatarWrapper = styled(VerticalCenter)`
   align-items: center;
   width: 100%;
   height: 100%;
+  z-index: 50;
 `
 
 const BioInput = styled.textarea`
@@ -153,6 +154,7 @@ const SaveCancelButtonWrapper = styled(ButtonWrapper)`
 const SaveCancelButton = styled(RoundedButton)`
   margin: 0px 10px;
 `
+
 function getInitialState(user = {}){
   return {
     bio: user.bio,
@@ -173,6 +175,7 @@ export default class ProfileHeaderEdit extends React.Component {
     updateUser: PropTypes.func,
     uploadMedia: PropTypes.func,
     toProfileView: PropTypes.func,
+    updating: PropTypes.bool,
   }
 
   constructor(props) {
@@ -287,6 +290,7 @@ export default class ProfileHeaderEdit extends React.Component {
                   avatarUrl={avatarUrl}
                   type='profile'
                   size='x-large'
+                  isProfileHeader={true}
                 />
               </AvatarWrapper>
             </Col>
@@ -362,7 +366,7 @@ export default class ProfileHeaderEdit extends React.Component {
           <EditPhotoOptions
             onCrop={this.openCrop}
             onUpload={this.uploadImageToBrowser}
-            hasImage={!!targetedImage}
+            hasLoadedImage={!!loadedImage}
           />
         </Modal>
         <Modal

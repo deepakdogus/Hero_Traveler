@@ -154,6 +154,7 @@ const SaveCancelButtonWrapper = styled(ButtonWrapper)`
 const SaveCancelButton = styled(RoundedButton)`
   margin: 0px 10px;
 `
+
 function getInitialState(user = {}){
   return {
     bio: user.bio,
@@ -174,6 +175,7 @@ export default class ProfileHeaderEdit extends React.Component {
     updateUser: PropTypes.func,
     uploadMedia: PropTypes.func,
     toProfileView: PropTypes.func,
+    updating: PropTypes.bool,
   }
 
   constructor(props) {
@@ -288,6 +290,7 @@ export default class ProfileHeaderEdit extends React.Component {
                   avatarUrl={avatarUrl}
                   type='profile'
                   size='x-large'
+                  isProfileHeader={true}
                 />
               </AvatarWrapper>
             </Col>

@@ -65,6 +65,7 @@ export default class EditPhotoOptions extends React.Component {
               type='file'
               id='image_upload'
               onChange={onUpload}
+              accept={'image/*'}
             />
           </ModalRow>
         </label>

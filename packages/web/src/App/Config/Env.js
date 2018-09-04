@@ -16,7 +16,7 @@ const devSettings = {
 
 
 const prodSettings = {
-  API_URL: 'https://ht-api.rehashstudio.com',
+  API_URL: 'http://ht-api.rehashstudio.com',
   cdnBaseUrl: 'https://res.cloudinary.com/rehash-studio/',
   cloudName: 'rehash-studio',
   imagePreset: 'xoaf1z88',

@@ -301,7 +301,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    attemptLogin: (username, password) => dispatch(LoginActions.loginRequest(username, password)),
+    attemptLogin: (userIdentifier, password) => dispatch(LoginActions.loginRequest(userIdentifier, password)),
     attemptLogout: (tokens) => dispatch(SessionActions.logout(tokens)),
     attemptChangePassword: (userId, oldPassword, newPassword) => dispatch(LoginActions.changePasswordRequest(userId, oldPassword, newPassword)),
     attemptGetUserFeed: (userId) => dispatch(StoryActions.feedRequest(userId)),

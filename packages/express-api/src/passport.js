@@ -5,8 +5,8 @@ import {User} from '@hero/ht-core'
 
 passport.use(
   new BasicStrategy(
-    (username, password, next) => {
-      User.validateCredentials(username, password)
+    (userIdentifier, password, next) => {
+      User.validateCredentials(userIdentifier, password)
         .then(user => {
           next(null, user)
           return null

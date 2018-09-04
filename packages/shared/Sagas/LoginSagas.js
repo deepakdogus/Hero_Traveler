@@ -7,11 +7,11 @@ import UserActions from '../Redux/Entities/Users'
 import errorFormatter from '../Lib/errorFormatter'
 
 // attempts to login
-export function * login (api, { username, password }) {
+export function * login (api, { userIdentifier, password }) {
   try {
     const response = yield call(
       api.login,
-      username,
+      userIdentifier,
       password
     )
 

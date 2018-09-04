@@ -30,7 +30,7 @@ const Wrapper = styled.div`
   };
 `
 const LimitedWidthContainer = styled.div`
-  max-heigh: 600px;
+  max-height: 600px;
   max-width: 800px;
   margin: 0 auto;
 `
@@ -286,6 +286,7 @@ export default class AddCoverTitles extends React.Component {
   render() {
     const coverImage = this.getCoverImage()
     const coverVideo = this.getCoverVideo()
+    const hasMediaAsset = !!coverImage || !!coverVideo
 
 
     return (
@@ -302,12 +303,12 @@ export default class AddCoverTitles extends React.Component {
             />
           </LimitedWidthContainer>
           }
-        <Wrapper hasMediaAsset={!!coverImage || !!coverVideo}>
+        <Wrapper hasMediaAsset={hasMediaAsset}>
           <ButtonsHorizontalCenter>
             {this.renderUploadButton()}
           </ButtonsHorizontalCenter>
         </Wrapper>
-        {!!coverImage || !!coverVideo &&
+        {hasMediaAsset &&
           <StyledCoverCaptionInput
             type='text'
             placeholder='Add Cover Caption'
@@ -317,7 +318,7 @@ export default class AddCoverTitles extends React.Component {
             maxLength={100}
           />
         }
-        {!coverImage || !coverVideo&& <CoverCaptionSpacer />}
+        {!hasMediaAsset && <CoverCaptionSpacer />}
         <TitleInputsWrapper>
           <StyledTitleInput
             type='text'
@@ -326,7 +327,7 @@ export default class AddCoverTitles extends React.Component {
             onChange={this._onTextChange}
             value={this.state.title}
             maxLength={40}
-            hasMediaAsset={!!coverImage || !!coverVideo}
+            hasMediaAsset={hasMediaAsset}
           />
           <StyledSubTitleInput
             type='text'
@@ -335,7 +336,7 @@ export default class AddCoverTitles extends React.Component {
             onChange={this._onTextChange}
             value={this.state.description}
             maxLength={50}
-            hasMediaAsset={!!coverImage || !!coverVideo}
+            hasMediaAsset={hasMediaAsset}
           />
         </TitleInputsWrapper>
       </RelativeWrapper>

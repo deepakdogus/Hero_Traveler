@@ -5,30 +5,22 @@ import PropTypes from 'prop-types'
 import {push} from 'react-router-redux'
 import _ from 'lodash'
 
-import {feedExample} from './Feed_TEST_DATA'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import UserActions from '../Shared/Redux/Entities/Users'
 import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
 import UXActions from '../Redux/UXRedux'
 
-import StoryHeader from '../Components/StoryHeader'
+import FeedItemHeader from '../Components/FeedItemHeader'
 import StoryContentRenderer from '../Components/StoryContentRenderer'
 import GMap from '../Components/GoogleMap'
-import StoryMetaInfo from '../Components/StoryMetaInfo'
-import StoryActionBar from '../Components/StoryActionBar'
-import StorySuggestions from '../Components/StorySuggestions'
-
+import FeedItemMetaInfo from '../Components/FeedItemMetaInfo'
+import FeedItemActionBar from '../Components/FeedItemActionBar'
 
 const ContentWrapper = styled.div``
 
 const LimitedWidthContainer = styled.div`
-  width: 66%;
-  max-width: 900px;
+  max-width: 800px;
   margin: 0 auto;
-`
-
-const GreyWrapper = styled.div`
-  background-color: ${props => props.theme.Colors.dividerGrey};
 `
 
 const HashtagText = styled.p`
@@ -56,7 +48,6 @@ class Story extends Component {
     onClickBookmark: PropTypes.func,
     match: PropTypes.object,
     onClickComments: PropTypes.func,
-    flagStory: PropTypes.func,
     openGlobalModal: PropTypes.func,
   }
 
@@ -114,24 +105,21 @@ class Story extends Component {
       isFollowing,
       isBookmarked,
       isLiked,
-      flagStory,
       openGlobalModal,
     } = this.props
     if (!story || !author) return null
-    const suggestedStories = Object.keys(feedExample).map(key => {
-      return feedExample[key]
-    })
 
     return (
       <ContentWrapper>
-        <StoryHeader
-          story={story}
+        <FeedItemHeader
+          feedItem={story}
           author={author}
           reroute={reroute}
           sessionUserId={sessionUserId}
           isFollowing={isFollowing}
           followUser={this._followUser}
           unfollowUser={this._unfollowUser}
+          isStory
         />
         <LimitedWidthContainer>
           <StoryContentRenderer story={story} />
@@ -143,21 +131,16 @@ class Story extends Component {
               location={story.locationInfo.name}
             />
           }
-          <StoryMetaInfo story={story}/>
+          <FeedItemMetaInfo feedItem={story}/>
         </LimitedWidthContainer>
-        <GreyWrapper>
-          <LimitedWidthContainer>
-            <StorySuggestions suggestedStories={suggestedStories}/>
-          </LimitedWidthContainer>
-        </GreyWrapper>
-        <StoryActionBar
-          story={story}
+        <FeedItemActionBar
+          feedItem={story}
+          isStory
           isLiked={isLiked}
           onClickLike={this._onClickLike}
           isBookmarked={isBookmarked}
           onClickBookmark={this._onClickBookmark}
           onClickComments={this._onClickComments}
-          flagStory={flagStory}
           userId={sessionUserId}
           reroute={reroute}
           openGlobalModal={openGlobalModal}
@@ -200,7 +183,6 @@ function mapDispatchToProps(dispatch, ownProps) {
     onClickLike: (sessionUserId) => dispatch(StoryActions.storyLike(sessionUserId, storyId)),
     onClickBookmark: (sessionUserId) => dispatch(StoryActions.storyBookmark(sessionUserId, storyId)),
     onClickComments: () => dispatch(UXActions.openGlobalModal('comments', { storyId })),
-    flagStory: (sessionUserId, storyId) => dispatch(StoryActions.flagStory(sessionUserId, storyId)),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
   }
 }

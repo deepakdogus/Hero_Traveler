@@ -96,7 +96,7 @@ const ContainerBottomGradient = styled.div`
   background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.6));
 `
 
-export default class StoryPreview extends React.Component {
+export default class HorizontalStoryPreview extends React.Component {
   static propTypes = {
     story: PropTypes.object,
     author: PropTypes.object,

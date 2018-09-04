@@ -226,6 +226,7 @@ class ProfileEditScreen extends React.Component {
                   label='About'
                   placeholder='What do you do? What do you like? Etc.'
                   multiline={true}
+                  maxLength={63}
                 />
                 <Field
                   name='bio'

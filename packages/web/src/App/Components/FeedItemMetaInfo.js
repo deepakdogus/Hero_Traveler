@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import {NavLink} from 'react-router-dom'
-import _ from 'lodash'
 
 import Icon from './Icon'
 import {Row} from './FlexboxGrid'
@@ -24,8 +23,13 @@ const CostIcon = styled(Icon)`
 `
 
 const TravelTipsIcon = styled(Icon)`
-  weight: 25px;
+  width: 25px;
   height: 25px;
+`
+
+const CalendarIcon = styled(Icon)`
+  width: 22px;
+  height: 22px;
 `
 
 const IconWrapper = styled.div`
@@ -44,7 +48,7 @@ const Label = styled(Text)`
   margin: 0;
 `
 
-const Location = styled(Text)`
+const DetailText = styled(Text)`
   font-weight: 400;
   margin: 0;
   color: ${props => props.theme.Colors.grey};
@@ -69,13 +73,8 @@ const StyledLink = styled(NavLink)`
   text-decoration: none;
 `
 
-function DetailRow({Icon, iconName, label, children}) {
-  if (
-    (typeof children === 'object' && !_.get(children, 'props.children'))
-    || (typeof children === 'string' && !children)
-    || typeof children === 'undefined'
-  ) return null
-
+function DetailRow({Icon, iconName, label, hasValue, children}) {
+  if (!hasValue) return null
   return (
     <InfoRow>
       <IconWrapper>
@@ -93,15 +92,13 @@ DetailRow.propTypes = {
   Icon: PropTypes.func,
   iconName: PropTypes.string,
   label: PropTypes.string,
-  children: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.element,
-  ])
+  children: PropTypes.any,
+  hasValue: PropTypes.bool,
 }
 
-export default class StoryMetaInfo extends React.Component {
+export default class FeedItemMetaInfo extends React.Component {
   static propTypes = {
-    story: PropTypes.object,
+    feedItem: PropTypes.object,
   }
 
   renderCategoriesLinks = (categories) => {
@@ -119,37 +116,62 @@ export default class StoryMetaInfo extends React.Component {
     })
   }
 
+  getLocationText = () => {
+    const {locationInfo, locations = []} = this.props.feedItem
+    if (locationInfo) return displayLocationDetails(locationInfo)
+    else if (locations.length) return locations.map(displayLocationDetails).join(' - ')
+  }
+
+  getDuration = () => {
+    const {duration} = this.props.feedItem
+    if (!duration) return
+    return `${duration} day${duration > 1 ? 's' : ''}`
+  }
+
+
   render() {
-    const {story} = this.props
+    const {feedItem} = this.props
     return (
       <Container>
         <DetailRow
           Icon={LocationIcon}
           iconName='location'
           label='Location'
+          hasValue
         >
-          <Location>{displayLocationDetails(story.locationInfo)}</Location>
+          <DetailText>{this.getLocationText()}</DetailText>
         </DetailRow>
         <DetailRow
           Icon={TagsIcon}
           iconName='tag'
           label='Categories'
+          hasValue={!!feedItem.categories.length}
         >
-          <Location>{this.renderCategoriesLinks(story.categories)}</Location>
+          {this.renderCategoriesLinks(feedItem.categories)}
         </DetailRow>
         <DetailRow
           Icon={CostIcon}
           iconName='cost'
           label='Cost'
+          hasValue={!!feedItem.cost}
         >
-          {story.cost ? `$${story.cost} USD` : ''}
+          <DetailText>{feedItem.cost ? `$${feedItem.cost} USD` : ''}</DetailText>
         </DetailRow>
         <DetailRow
           Icon={TravelTipsIcon}
           iconName='travelTips'
           label='Travel Tips'
+          hasValue={!!feedItem.travelTips}
         >
-          {story.travelTips}
+          <DetailText>{feedItem.travelTips}</DetailText>
+        </DetailRow>
+        <DetailRow
+          Icon={CalendarIcon}
+          iconName='date'
+          label='Duration'
+          hasValue={!!feedItem.duration}
+        >
+          <DetailText>{this.getDuration()}</DetailText>
         </DetailRow>
       </Container>
     )

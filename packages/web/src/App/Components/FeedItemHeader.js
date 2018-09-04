@@ -23,6 +23,10 @@ const Title = styled.p`
   color: ${props => props.theme.Colors.background};
 `
 
+const GuideTitle = styled(Title)`
+  margin-bottom: 35px;
+`
+
 const Subtitle = styled.p`
   margin: 7.5px 0;
   font-family: ${props => props.theme.Fonts.type.montserrat};
@@ -97,30 +101,31 @@ const ClickableRow = styled(Row)`
   cursor: pointer;
 `
 
-export default class StoryHeader extends React.Component {
+export default class FeedItemHeader extends React.Component {
   static propTypes = {
-    story: PropTypes.object,
+    feedItem: PropTypes.object,
     author: PropTypes.object,
     sessionUserId: PropTypes.string,
     isFollowing: PropTypes.bool,
     unfollowUser: PropTypes.func,
     followUser: PropTypes.func,
     reroute: PropTypes.func,
+    isStory: PropTypes.bool,
   }
 
   getMediaType() {
-    const {story} = this.props
-    if (story.coverVideo && !story.coverImage) return 'video'
-    if (story.coverImage) return 'image'
+    const {feedItem} = this.props
+    if (feedItem.coverVideo && !feedItem.coverImage) return 'video'
+    if (feedItem.coverImage) return 'image'
     return undefined
   }
 
   getCoverImage() {
-    const {story} = this.props
+    const {feedItem} = this.props
     if (this.getMediaType() === 'video') {
-      return getImageUrl(story.coverVideo, 'video')
+      return getImageUrl(feedItem.coverVideo, 'video')
     }
-    return getImageUrl(story.coverImage)
+    return getImageUrl(feedItem.coverImage)
   }
 
   _profileReroute = () => {
@@ -128,18 +133,23 @@ export default class StoryHeader extends React.Component {
   }
 
   _editReroute = () => {
-    this.props.reroute(`/editStory/${this.props.story.id}`)
+    this.props.reroute(`/editStory/${this.props.feedItem.id}`)
   }
 
   render() {
     const {
-      story, author, sessionUserId,
-      isFollowing, unfollowUser, followUser
+      feedItem,
+      author,
+      sessionUserId,
+      isFollowing,
+      unfollowUser,
+      followUser,
+      isStory,
     } = this.props
 
     const mediaType = this.getMediaType()
-    const isUsersStory = author.id === sessionUserId
     const isImportant = author.role === 'contributor' || author.role === 'founding member'
+    const isUsersFeedItem = author.id === sessionUserId
 
     return (
       <Container>
@@ -160,9 +170,9 @@ export default class StoryHeader extends React.Component {
             }
             <SpacedVerticalCenter>
               <Username onClick={this._profileReroute}>{author.username}</Username>
-              <TimeStamp>{moment(story.createdAt).fromNow()}</TimeStamp>
+              <TimeStamp>{moment(feedItem.createdAt).fromNow()}</TimeStamp>
             </SpacedVerticalCenter>
-            {!isUsersStory && sessionUserId &&
+            {!isUsersFeedItem && sessionUserId &&
               <SpacedVerticalCenter>
                 <RoundedButton
                   margin='none'
@@ -173,7 +183,7 @@ export default class StoryHeader extends React.Component {
               </SpacedVerticalCenter>
             }
           </Row>
-          {isUsersStory &&
+          {isUsersFeedItem &&
             <VerticalCenter>
               <ClickableRow onClick={this._editReroute}>
                 <PencilIcon
@@ -184,6 +194,9 @@ export default class StoryHeader extends React.Component {
             </VerticalCenter>
           }
         </TopRow>
+        {!isStory &&
+          <GuideTitle mediaType={mediaType}>{feedItem.title}</GuideTitle>
+        }
         {
           mediaType === 'image' &&
           <CoverImage
@@ -193,15 +206,19 @@ export default class StoryHeader extends React.Component {
         {
           mediaType === 'video' &&
           <Video
-            src={getVideoUrl(story.coverVideo, false)}
+            src={getVideoUrl(feedItem.coverVideo, false)}
             type='cover'
             withPrettyControls
           />
         }
-        <CoverCaption>{story.coverCaption}</CoverCaption>
-        <LocationText>{displayLocationPreview(story.locationInfo)}</LocationText>
-        <Title mediaType={mediaType}>{story.title}</Title>
-        <Subtitle>{story.description}</Subtitle>
+        {isStory &&
+          <div>
+            <CoverCaption>{feedItem.coverCaption}</CoverCaption>
+            <LocationText>{displayLocationPreview(feedItem.locationInfo)}</LocationText>
+            <Title mediaType={mediaType}>{feedItem.title}</Title>
+            <Subtitle>{feedItem.description}</Subtitle>
+          </div>
+        }
       </Container>
     )
   }

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import {push} from 'react-router-redux'
@@ -6,21 +6,23 @@ import PropTypes from 'prop-types'
 import _ from 'lodash'
 
 import UserActions, {getByBookmarks} from '../Shared/Redux/Entities/Users'
+import GuideActions from '../Shared/Redux/Entities/Guides'
 import StoryActions, {getByUser, getUserFetchStatus, getBookmarksFetchStatus} from '../Shared/Redux/Entities/Stories'
 import MediaUploadActions from '../Shared/Redux/MediaUploadRedux'
 
+import ContainerWithFeedList from './ContainerWithFeedList'
 import ProfileHeader from '../Components/ProfileHeader/ProfileHeader'
 import TabBar from '../Components/TabBar'
-import StoryList from '../Components/StoryList'
+import FeedItemList from '../Components/FeedItemList'
 import Footer from '../Components/Footer'
 import Overlay from '../Components/Overlay'
 
-const tabBarTabs = ['STORIES', 'DRAFTS', 'BOOKMARKS']
-const readOnlyTabBarTabs = ['STORIES']
+const tabBarTabs = ['STORIES', 'DRAFTS', 'BOOKMARKS', 'GUIDES']
+const readOnlyTabBarTabs = ['STORIES', 'GUIDES']
 
 const ContentWrapper = styled.div``
 
-const StoryListWrapper = styled.div`
+const FeedItemListWrapper = styled.div`
   margin: 50px 7% 0;
 `
 
@@ -34,63 +36,29 @@ const OpaqueCover = styled(Overlay)`
 `
 
 
-class Profile extends Component {
+class Profile extends ContainerWithFeedList {
   static propTypes = {
     match: PropTypes.object,
     // mapStateToProps properties
-    sessionUserId: PropTypes.string,
     profilesUser: PropTypes.object,
+    userUpdating: PropTypes.bool,
     users: PropTypes.object,
-    stories: PropTypes.object,
     userStoriesFetchStatus: PropTypes.object,
-    userStoriesById: PropTypes.arrayOf(PropTypes.string),
+    guidesFetchStatus: PropTypes.object,
     draftsFetchStatus: PropTypes.object,
-    draftsById: PropTypes.arrayOf(PropTypes.string),
     userBookmarksFetchStatus: PropTypes.object,
-    userBookmarksById: PropTypes.arrayOf(PropTypes.string),
     error: PropTypes.bool,
     userError: PropTypes.object,
     myFollowedUsers: PropTypes.arrayOf(PropTypes.string),
     // mapDispatchToProps functions
-    getStories: PropTypes.func,
-    getDrafts: PropTypes.func,
     updateUser: PropTypes.func,
     getUser: PropTypes.func,
     deleteStory: PropTypes.func,
-    loadBookmarks: PropTypes.func,
     loadUserFollowing: PropTypes.func,
     followUser: PropTypes.func,
     unfollowUser: PropTypes.func,
     reroute: PropTypes.func,
     uploadMedia: PropTypes.func,
-  }
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      activeTab: 'STORIES'
-    }
-  }
-
-  onClickTab = (event) => {
-    let tab = event.target.innerHTML
-    if (this.state.activeTab !== tab) {
-      this.setState({ activeTab: tab }, () => {
-        this.getTabInfo(tab)
-      })
-    }
-  }
-
-  getTabInfo = (tab) => {
-    switch (tab) {
-      case 'DRAFTS':
-        return this.props.getDrafts(this.props.profilesUser.id)
-      case 'BOOKMARKS':
-        return this.props.loadBookmarks(this.props.profilesUser.id)
-      case 'STORIES':
-      default:
-        return this.props.getStories(this.props.profilesUser.id)
-    }
   }
 
   componentWillMount() {
@@ -103,39 +71,6 @@ class Profile extends Component {
     this.props.getUser(userId)
     this.props.getStories(userId)
     this.props.loadBookmarks(userId)
-  }
-
-  getStoriesByIds(idList) {
-    return idList.map(id => {
-      return this.props.stories[id]
-    })
-  }
-
-  getSelectedStories = () => {
-    const {
-      userStoriesFetchStatus, userStoriesById,
-      draftsFetchStatus, draftsById,
-      userBookmarksFetchStatus, userBookmarksById,
-    } = this.props
-    // will use fetchStatus to show loading/error
-    switch(this.state.activeTab){
-      case 'DRAFTS':
-        return {
-          fetchStatus: draftsFetchStatus,
-          selectedStories: this.getStoriesByIds(draftsById),
-        }
-      case 'BOOKMARKS':
-        return {
-          fetchStatus: userBookmarksFetchStatus,
-          selectedStories: this.getStoriesByIds(userBookmarksById),
-        }
-      case 'STORIES':
-      default:
-        return {
-          fetchStatus: userStoriesFetchStatus,
-          selectedStories: this.getStoriesByIds(userStoriesById),
-        }
-    }
   }
 
   _followUser = () => {
@@ -153,7 +88,7 @@ class Profile extends Component {
   render() {
     const {
       match, profilesUser, sessionUserId,
-      users, myFollowedUsers, userError,
+      myFollowedUsers, userError,
       userUpdating, updateUser, uploadMedia
     } = this.props
     if (!profilesUser) return null
@@ -162,7 +97,8 @@ class Profile extends Component {
     const isEdit = path[path.length-1] === 'edit'
     const isUsersProfile = profilesUser.id === sessionUserId
     const isFollowing = _.includes(myFollowedUsers, profilesUser.id)
-    const {selectedStories} = this.getSelectedStories()
+    const {selectedFeedItems} = this.getSelectedFeedItems()
+
     return (
       <ContentWrapper>
         <ProfileHeader
@@ -185,14 +121,11 @@ class Profile extends Component {
             onClickTab={this.onClickTab}
           />
 
-          { (!!selectedStories.length) &&
-          <StoryListWrapper>
-            <StoryList
-              stories={selectedStories}
-              users={users}
-            />
+          { (!!selectedFeedItems.length) &&
+          <FeedItemListWrapper>
+            <FeedItemList feedItems={selectedFeedItems} />
             <Footer />
-          </StoryListWrapper>
+          </FeedItemListWrapper>
           }
           {isEdit && <OpaqueCover/>}
         </ListWrapper>
@@ -204,7 +137,7 @@ class Profile extends Component {
 
 function mapStateToProps(state, ownProps) {
   const userId = ownProps.match.params.userId
-  let {stories, users} = state.entities
+  let {stories, users, guides} = state.entities
   const profilesUser =  users.entities[userId]
   const sessionUserId = state.session.userId
   const myFollowedUsersObject = users.userFollowingByUserIdAndId[sessionUserId]
@@ -215,8 +148,11 @@ function mapStateToProps(state, ownProps) {
     profilesUser,
     users: users.entities,
     stories: stories.entities,
+    guides: guides.entities,
     userStoriesFetchStatus: getUserFetchStatus(stories, userId),
-    userStoriesById: getByUser(stories, userId),
+    storiesById: getByUser(stories, userId),
+    guidesFetchStatus: guides.fetchStatus,
+    guidesById: _.get(guides, `guideIdsByUserId[${userId}]`, []),
     draftsFetchStatus: stories.drafts.fetchStatus,
     draftsById: stories.drafts.byId,
     userBookmarksFetchStatus: getBookmarksFetchStatus(stories, userId),
@@ -231,6 +167,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     getStories: (userId) => dispatch(StoryActions.fromUserRequest(userId)),
+    getGuides: (userId) => dispatch(GuideActions.getUserGuides(userId)),
     getDrafts: () => dispatch(StoryActions.loadDrafts()),
     updateUser: (attrs) => dispatch(UserActions.updateUser(attrs)),
     getUser: (userId) => dispatch(UserActions.loadUser(userId)),

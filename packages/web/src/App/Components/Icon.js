@@ -176,6 +176,8 @@ export default class Icon extends React.Component {
         return Images.iconCost
       case 'travelTips':
         return Images.iconTravelTips
+      case 'guide':
+        return Images.iconGuide
       case 'profile':
       case 'createSave':
         return Images.iconCreateSave

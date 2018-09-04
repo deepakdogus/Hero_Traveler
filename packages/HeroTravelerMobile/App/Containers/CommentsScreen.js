@@ -34,7 +34,7 @@ Comment.propTypes = {
   timestamp: PropTypes.string,
 }
 
-class StoryCommentsScreen extends React.Component {
+class CommentsScreen extends React.Component {
   static propTypes = {
     storyId: PropTypes.string,
     guideId: PropTypes.string,
@@ -109,7 +109,6 @@ class StoryCommentsScreen extends React.Component {
 
   render () {
     let {comments, storyId, guideId} = this.props
-    console.log("comments are", comments)
     storyId
     ? comments = comments['story'][storyId]
     : comments = comments['guide'][guideId]
@@ -181,4 +180,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(StoryCommentsScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(CommentsScreen)

@@ -18,7 +18,7 @@ const StyledImage = styled(Image)`
   width: 100%;
 `
 
-const Text = styled.p`
+export const BodyText = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 400;
   font-size: 18px;
@@ -81,7 +81,7 @@ const getAtomic = (children, { data, keys }) => {
 
 // only actually using unstyled - atomic - header-one
 const blocks = {
-  unstyled: (children, { keys }) => <Text key={keys[0]}>{children}</Text>,
+  unstyled: (children, { keys }) => <BodyText key={keys[0]}>{children}</BodyText>,
   atomic: getAtomic,
   blockquote: (children, { keys }) => <blockquote key={keys[0]} >{children}</blockquote>,
   'header-one': (children, { keys }) => children.map((child, i) => <HeaderOne key={keys[i]}>{child}</HeaderOne>),

@@ -67,13 +67,15 @@ export const logoutFailure = (state) => state.merge({
 })
 
 export const setIsResuming = (state, {isResuming}) => state.merge({
-  isResumingSession: true
+  isResumingSession: true,
+  error: null,
 })
 
 export const refreshSessionSuccess = (state, {tokens}) => {
   return state.merge({
     tokens,
     isLoggingOut: false,
+    error: null,
   })
 }
 

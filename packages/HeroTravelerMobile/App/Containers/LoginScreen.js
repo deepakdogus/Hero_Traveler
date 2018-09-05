@@ -56,7 +56,7 @@ class LoginScreen extends React.Component {
     super(props)
     this.state = {
       isLoggedIn: false,
-      username: '',
+      userIdentifier: '',
       password: '',
     }
   }
@@ -75,7 +75,7 @@ class LoginScreen extends React.Component {
 
     // TODO fix Ghetto check
     const conditions = _.every([
-      this.state.username,
+      this.state.userIdentifier,
       this.state.password,
     ])
 
@@ -84,9 +84,9 @@ class LoginScreen extends React.Component {
       return
     }
 
-    const { username, password } = this.state
+    const { userIdentifier, password } = this.state
     // attempt a login - a saga is listening to pick it up from here.
-    this.props.attemptLogin(username, password)
+    this.props.attemptLogin(userIdentifier, password)
   }
 
   _loginFacebook = () => {
@@ -110,8 +110,8 @@ class LoginScreen extends React.Component {
     )
   }
 
-  handleChangeUsername = (text) => {
-    this.setState({ username: _.trim(text) })
+  handleChangeUserIdentifier = (text) => {
+    this.setState({ userIdentifier: _.trim(text) })
   }
 
   handleChangePassword = (text) => {
@@ -119,7 +119,7 @@ class LoginScreen extends React.Component {
   }
 
   render () {
-    const { username, password } = this.state
+    const { userIdentifier, password } = this.state
     const { fetching } = this.props
     const editable = !fetching
     const textInputStyle = editable ? styles.input : styles.textInputReadonly
@@ -127,7 +127,7 @@ class LoginScreen extends React.Component {
     let errorText = this.props.error;
 
     if (errorText === "Unauthorized") {
-      errorText = "Invalid username or password"
+      errorText = "Invalid username, email, or password"
     }
 
     return (
@@ -169,15 +169,15 @@ class LoginScreen extends React.Component {
           <View style={styles.form}>
             <Input
               style={textInputStyle}
-              value={username}
+              value={userIdentifier}
               editable={editable}
               keyboardType='default'
               returnKeyType='next'
               autoCapitalize='none'
               autoCorrect={false}
-              onChangeText={this.handleChangeUsername}
+              onChangeText={this.handleChangeUserIdentifier}
               underlineColorAndroid='transparent'
-              placeholder='Username' />
+              placeholder='Username OR Email' />
 
             <Input
               style={textInputStyle}
@@ -232,7 +232,7 @@ const mapDispatchToProps = (dispatch) => {
     goToMyFeed: () => {
       return NavigationActions.tabbar({type: NavActionConst.POP_AND_REPLACE})
     },
-    attemptLogin: (username, password) => dispatch(LoginActions.loginRequest(username, password)),
+    attemptLogin: (userIdentifier, password) => dispatch(LoginActions.loginRequest(userIdentifier, password)),
     signupFacebook: (...args) => dispatch(SignupActions.signupFacebook(...args)),
     clearErrors: () => dispatch(LoginActions.clearErrors()),
   }

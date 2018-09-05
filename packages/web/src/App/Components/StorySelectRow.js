@@ -8,9 +8,17 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import Icon from './Icon'
 import {StyledVerticalCenter} from './Modals/Shared'
 
-const StyledImage = styled.img`
+const StyledImageWrapper = styled.div`
   width: 77px;
   height: 98px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+`
+
+const StyledImage = styled.img`
+  height: 100%;
 `
 
 export const DefaultContainer = styled.div`
@@ -67,11 +75,14 @@ export default class StorySelectRow extends Component {
   renderImage = () => {
     const src = getImageUrl(this.props.story.coverImage)
     return (
+      <StyledImageWrapper>
         <StyledImage
           src={src}
           alt='ADD ALT TEXT'
           onClick={this._handleStoryClick}
         />
+      </StyledImageWrapper>
+      
     )
   }
 

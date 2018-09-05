@@ -95,7 +95,6 @@ class Profile extends ContainerWithFeedList {
 
     let path = match.path.split("/")
     const isEdit = path[path.length-1] === 'edit'
-    const isContributor  = profilesUser.role === 'contributor'
     const isUsersProfile = profilesUser.id === sessionUserId
     const isFollowing = _.includes(myFollowedUsers, profilesUser.id)
     const {selectedFeedItems} = this.getSelectedFeedItems()
@@ -106,7 +105,6 @@ class Profile extends ContainerWithFeedList {
           user={profilesUser}
           error={userError}
           updating={userUpdating}
-          isContributor={isContributor}
           isEdit={isEdit}
           isUsersProfile={isUsersProfile}
           isFollowing={isFollowing}

@@ -13,7 +13,6 @@ import {
   StyledAvatar,
   AvatarWrapper,
   ButtonWrapper,
-  BottomLeft,
   BottomLeftText,
 } from './ProfileHeaderShared'
 import NavLinkStyled from '../NavLinkStyled'
@@ -90,10 +89,13 @@ const Spacer = styled.div`
   height: 15px;
 `
 
+const BadgeContainer = styled.div`
+  margin-left: 25px;
+`
+
 export default class ProfileHeaderView extends React.Component {
   static propTypes = {
     user: PropTypes.object,
-    isContributor: PropTypes.bool,
     isFollowing: PropTypes.bool,
     isUsersProfile: PropTypes.bool,
     openBio: PropTypes.func,
@@ -111,14 +113,40 @@ export default class ProfileHeaderView extends React.Component {
     }
   }
 
+  _renderUserBadge = () => {
+    const roleType = this.props.user.role === 'contributor'
+    ? {
+      badgeType: 'profileBadge',
+      text: 'CONTRIBUTOR'
+    } : {
+      badgeType: 'founderBadge',
+      text: 'FOUNDING MEMBER'
+    }
+
+    return (
+      <BadgeContainer>
+        <ClickRow onClick={this.props.openContributor}>
+          <Icon name={roleType.badgeType}/>
+          <BottomLeftText>{roleType.text}</BottomLeftText>
+        </ClickRow>
+      </BadgeContainer>
+    )
+  }
+
+
   render () {
     const {
       user,
-      isContributor, isUsersProfile, isFollowing,
-      openBio, openContributor,
-      openFollowedBy, openFollowing,
-      followUser, unfollowUser,
+      isUsersProfile,
+      isFollowing,
+      openBio,
+      openFollowedBy,
+      openFollowing,
+      followUser,
+      unfollowUser,
     } = this.props
+
+    const hasBadge = user.role === 'contributor' || user.role === 'founding member'
 
     return (
       <Centered>
@@ -178,14 +206,7 @@ export default class ProfileHeaderView extends React.Component {
             </VerticalCenter>
           </SecondCol>
         </LimitedWidthRow>
-        { isContributor &&
-        <BottomLeft>
-            <ClickRow onClick={openContributor}>
-              <Icon name='profileBadge'/>
-              <BottomLeftText>CONTRIBUTOR</BottomLeftText>
-            </ClickRow>
-        </BottomLeft>
-        }
+        { hasBadge && this._renderUserBadge()}
       </Centered>
     )
   }

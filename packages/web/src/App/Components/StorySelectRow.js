@@ -12,8 +12,8 @@ const StyledImageWrapper = styled.div`
   width: 77px;
   height: 98px;
   display:flex;
-  align-items:center;
   justify-content:center;
+  align-items:center;
   overflow:hidden;
 `
 

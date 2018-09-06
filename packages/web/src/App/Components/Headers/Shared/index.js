@@ -20,6 +20,7 @@ export const StyledRoundedButton = styled(RoundedButton)`
 export const SearchIcon = styled(Icon)`
   height: 17px;
   width: 17px;
+  cursor:pointer;
 `
 
 export const LoginLink = styled.a`

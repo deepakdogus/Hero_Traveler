@@ -63,6 +63,7 @@ const Text = styled.p`
   font-weight: 400;
   line-height: 122px;
   letter-spacing: .7px;
+  cursor:pointer;
 `
 
 const tabBarTabs = ['STORIES', 'PEOPLE']

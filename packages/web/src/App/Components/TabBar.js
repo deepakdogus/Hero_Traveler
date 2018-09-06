@@ -10,7 +10,7 @@ const Container = styled.div`
 `
 
 const TabContainer = styled.div`
-  padding: ${props => props.isModal ? '0' : '0px 10px'};
+  margin: ${props => props.isModal ? '0' : '0px 10px'};
   cursor: pointer;
 `
 

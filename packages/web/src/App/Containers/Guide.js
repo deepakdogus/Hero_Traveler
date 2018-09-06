@@ -209,7 +209,10 @@ class Guide extends Component {
         />
         <LimitedWidthContainer>
           {activeTab !== 'OVERVIEW' &&
-            <GoogleMap stories={selectedStoriesAndAuthors.stories} />
+            <GoogleMap
+              stories={selectedStoriesAndAuthors.stories}
+              reroute={reroute}
+            />
           }
           <TabBar
             tabs={tabBarTabs}

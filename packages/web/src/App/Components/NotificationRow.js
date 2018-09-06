@@ -50,9 +50,17 @@ const StyledHorizontalDivider = styled(HorizontalDivider)`
   margin: 0;
 `
 
-const StyledImage = styled.img`
+const StyledImageContainer = styled.div`
   width: ${relevantMetrics.imageWidth}px;
   height: ${relevantMetrics.imageWidth}px;
+  display: flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+`
+
+const StyledImage = styled.img`
+  height:100%;
 `
 
 const StyledVerticalCenter = styled(VerticalCenter)`
@@ -109,6 +117,10 @@ const ActivityTypes = {
   like: 'ActivityStoryLike',
   follow: 'ActivityFollow',
   comment: 'ActivityStoryComment'
+}
+
+const videoThumbnailOptions = {
+  video: true,
 }
 
 export default class NotificationRow extends Component {
@@ -173,12 +185,18 @@ export default class NotificationRow extends Component {
   }
 
   renderTripImage = () => {
-    if(this.props.isFeedItem){
+    const {story, isFeedItem} = this.props; 
+    if(isFeedItem){
       return (
         <VerticalCenter>
-          <StyledImage
-            src={getImageUrl(this.props.story.coverImage, 'thumbnail')}
-          />
+          <StyledImageContainer>
+            <StyledImage
+              src = {story.coverImage  
+                    ? getImageUrl(story.coverImage, 'thumbnail') 
+                    : getImageUrl(story.coverVideo, 'optimized', videoThumbnailOptions)
+                    }
+            />
+          </StyledImageContainer>
         </VerticalCenter>
       )
     } else return

@@ -1,5 +1,6 @@
 .rh5v-DefaultPlayer_component {
     height: 600px;
+    margin: auto;
     position: relative;
     font-family: Helvetica;
     font-size: 11px;

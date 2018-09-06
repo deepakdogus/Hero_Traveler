@@ -1,4 +1,5 @@
 import { createReducer, createActions } from 'reduxsauce'
+import { changeCoverVideo, needToChangeCoverVideo } from './helpers/coverUpload'
 import Immutable from 'seamless-immutable'
 
 /* ------------- Types and Action Creators ------------- */
@@ -101,7 +102,11 @@ export const updateDraftSuccess = (state, {draft}) => {
 
 // updateWorkingDraft only updates local draft
 export const updateWorkingDraft = (state, {workingDraft}) => {
-  return state.merge({workingDraft}, {deep: true})
+  if(needToChangeCoverVideo(state, workingDraft)) {
+    return changeCoverVideo(state, workingDraft.coverVideo)
+  } else {
+    return state.merge({workingDraft}, {deep: true})
+  }
 }
 
 export const uploadCoverImageSuccess = (state, {draft}) => {

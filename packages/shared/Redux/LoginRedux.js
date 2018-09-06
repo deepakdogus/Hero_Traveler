@@ -4,11 +4,11 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  loginRequest: ['username', 'password'],
+  loginRequest: ['userIdentifier', 'password'],
   loginSuccess: [],
   loginFailure: ['error'],
   loginFacebook: null,
-  loginFacebookSuccess: ['username'],
+  loginFacebookSuccess: ['userIdentifier'],
   loginFacebookFailure: ['error'],
   resetPasswordRequest: ['email'],
   resetPasswordRequestSuccess: [],
@@ -46,7 +46,7 @@ export const success = (state) =>
   state.merge({fetching: false, error: null})
 
 // SUCCESS: facebook
-export const successFacebook = (state, { username }) =>
+export const successFacebook = (state, { userIdentifier }) =>
   state.merge({fetching: false, error: null})
 
 // we've had a problem logging in

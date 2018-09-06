@@ -41,7 +41,7 @@ export default class Login extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      username: '',
+      userIdentifier: '',
       password: '',
       localError: '',
     }
@@ -50,21 +50,21 @@ export default class Login extends React.Component {
   _onAttemptLogin = (e) => {
     e.preventDefault()
     const {onAttemptLogin} = this.props
-    const {password, username} = this.state
-    if(!password || !username){
+    const {password, userIdentifier} = this.state
+    if(!password || !userIdentifier){
       this.setState({
         localError: 'Please input both username and password'
       })
     } else {
-      onAttemptLogin(username, password)
+      onAttemptLogin(userIdentifier, password)
       if(this.state.localError) {
         this.setState({localError: ''})
       }
     }
   }
 
-  setUsername = (event) => {
-    this.setState({username: event.target.value})
+  setUserIdentifier = (event) => {
+    this.setState({userIdentifier: event.target.value})
   }
 
   setPassword =(event) => {
@@ -99,7 +99,7 @@ export default class Login extends React.Component {
         />
         <Text>Or</Text>
           <form onSubmit={this._onAttemptLogin}>
-            <StyledInput placeholder='Username' onChange={this.setUsername}/>
+            <StyledInput placeholder='Username OR Email' onChange={this.setUserIdentifier}/>
             <StyledInput placeholder='Password' onChange={this.setPassword} type='password'/>
             {loginReduxFetching &&
               <LoginFetchingText>Signing In ...</LoginFetchingText>

@@ -24,3 +24,21 @@ export function saveCover(api, workingDraft, cover){
     })
   })
 }
+
+export function changeCoverVideo(state, coverVideo){
+  const nullVideo = state.setIn(
+    ['workingDraft', 'coverVideo'],
+    null,
+  )
+  return nullVideo.setIn(
+    ['workingDraft', 'coverVideo'],
+    coverVideo
+  )
+}
+
+export function needToChangeCoverVideo(state, workingDraft){
+  return (
+    (state.workingDraft.coverVideo && workingDraft.coverVideo) &&
+      (state.workingDraft.coverVideo.uri !== workingDraft.coverVideo.uri)
+  )
+}

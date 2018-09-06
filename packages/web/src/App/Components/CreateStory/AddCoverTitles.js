@@ -6,8 +6,10 @@ import Overlay from '../Overlay'
 import Icon from '../Icon'
 import {SubTitle, Input, CloseXContainer} from './Shared'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
+import getVideoUrl from '../../Shared/Lib/getVideoUrl'
 import uploadFile from '../../Utils/uploadFile'
 import {VerticalCenterStyles} from '../VerticalCenter'
+import Video from '../Video'
 
 const ButtonsHorizontalCenter = styled.div`
   position: relative;
@@ -24,8 +26,13 @@ const Wrapper = styled.div`
   top: 0;
   width: 100%;
   background-color: ${props =>
-    props.hasImage ? props.theme.Colors.transparent : props.theme.Colors.lightGreyAreas
+    props.hasMediaAsset ? props.theme.Colors.transparent : props.theme.Colors.lightGreyAreas
   };
+`
+const LimitedWidthContainer = styled.div`
+  max-height: 600px;
+  max-width: 800px;
+  margin: 0 auto;
 `
 
 const RelativeWrapper = styled.div`
@@ -150,6 +157,7 @@ const CustonCloseX = styled.div`
   ${VerticalCenterStyles}
 `
 
+
 function isNewStory(props, nextProps) {
   return (!props.workingDraft && nextProps.workingDraft) ||
   (props.workingDraft.id !== nextProps.workingDraft.id)
@@ -176,10 +184,12 @@ export default class AddCoverTitles extends React.Component {
       let update = file.type.includes('video')
       ? {
         'coverVideo': file,
+        'coverImage': null,
         'coverType': 'video'
       }
       : {
         'coverImage': file,
+        'coverVideo': null,
         'coverType': 'image'
       }
       // refactor later to differentiate between image and video
@@ -219,7 +229,8 @@ export default class AddCoverTitles extends React.Component {
 
   renderUploadButton() {
     const coverImage = this.getCoverImage()
-    if (coverImage) return (
+    const coverVideo = this.getCoverVideo()
+    if (coverImage || coverVideo) return (
       <ReplaceUploadWrapper htmlFor="cover_upload_replace">
         <StyledCloseXContainer>
           <CustonCloseX>
@@ -265,18 +276,39 @@ export default class AddCoverTitles extends React.Component {
     : getImageUrl(workingDraft.coverImage)
   }
 
+  getCoverVideo() {
+    const { workingDraft } = this.props
+    return workingDraft.coverVideo && workingDraft.coverVideo.uri
+    ? workingDraft.coverVideo.uri
+    : getVideoUrl(workingDraft.coverVideo, false)
+  }
+
   render() {
     const coverImage = this.getCoverImage()
+    const coverVideo = this.getCoverVideo()
+    const hasMediaAsset = !!coverImage || !!coverVideo
+
 
     return (
       <RelativeWrapper>
-        <StoryOverlayWrapper image={coverImage}/>
-          <Wrapper hasImage={!!coverImage}>
+        {!coverVideo &&
+          <StoryOverlayWrapper image={coverImage}/>
+        }
+        {coverVideo &&
+          <LimitedWidthContainer>
+            <Video
+              src={coverVideo}
+              type={'cover'}
+              withPrettyControls
+            />
+          </LimitedWidthContainer>
+          }
+        <Wrapper hasMediaAsset={hasMediaAsset}>
           <ButtonsHorizontalCenter>
             {this.renderUploadButton()}
           </ButtonsHorizontalCenter>
-          </Wrapper>
-        {!!coverImage &&
+        </Wrapper>
+        {hasMediaAsset &&
           <StyledCoverCaptionInput
             type='text'
             placeholder='Add Cover Caption'
@@ -286,7 +318,7 @@ export default class AddCoverTitles extends React.Component {
             maxLength={100}
           />
         }
-        {!coverImage && <CoverCaptionSpacer />}
+        {!hasMediaAsset && <CoverCaptionSpacer />}
         <TitleInputsWrapper>
           <StyledTitleInput
             type='text'
@@ -295,7 +327,7 @@ export default class AddCoverTitles extends React.Component {
             onChange={this._onTextChange}
             value={this.state.title}
             maxLength={40}
-            hasImage={!!coverImage}
+            hasMediaAsset={hasMediaAsset}
           />
           <StyledSubTitleInput
             type='text'
@@ -304,7 +336,7 @@ export default class AddCoverTitles extends React.Component {
             onChange={this._onTextChange}
             value={this.state.description}
             maxLength={50}
-            hasImage={!!coverImage}
+            hasMediaAsset={hasMediaAsset}
           />
         </TitleInputsWrapper>
       </RelativeWrapper>

@@ -3,98 +3,18 @@ import PropTypes from 'prop-types'
 import {
   withGoogleMap,
   GoogleMap,
-  Marker,
-  InfoWindow,
 } from "react-google-maps";
 import MarkerClusterer from "react-google-maps/lib/addons/MarkerClusterer"
 import _ from 'lodash'
-import styled from 'styled-components'
 
-import { Row } from './FlexboxGrid'
 import getImageUrl from '../Shared/Lib/getImageUrl'
-import VerticalCenter from './VerticalCenter'
+import MapMarker from './MapMarker'
 
 const windowMaps = window.google.maps
-
-const CoverImage = styled.img`
-  width: 140px;
-  height: 90px;
-  object-fit: cover;
-  cursor: pointer;
-`
-
-const Title = styled.p`
-  font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-weight: 600;
-  font-size: 14px;
-  color: ${props => props.theme.Colors.background};
-  cursor: pointer;
-  margin-left: 10px;
-`
 
 const videoThumbnailOptions = {
   video: true,
   width: 140,
-}
-
-class MarkerWithPopup extends React.Component {
-  static propTypes = {
-    setSelectedMarkerId: PropTypes.func,
-    id: PropTypes.string,
-    isSelected: PropTypes.bool,
-    imageUrl: PropTypes.string,
-    title: PropTypes.string,
-    reroute: PropTypes.func,
-  }
-
-  onOpenMarker = () => {
-    this.props.setSelectedMarkerId(this.props.id)
-  }
-
-  closeMarker = () => {
-    this.props.setSelectedMarkerId(undefined)
-  }
-
-  rerouteToStory = () => {
-    this.props.reroute(`/story/${this.props.id}`)
-  }
-
-  render() {
-    const {
-      isSelected,
-      imageUrl,
-      title,
-      reroute,
-    } = this.props
-    return (
-      <Marker
-        clickable
-        {...this.props}
-        onClick={this.onOpenMarker}
-      >
-        {isSelected && reroute &&
-          <InfoWindow
-            onCloseClick={this.closeMarker}
-          >
-            <Row>
-              <CoverImage
-                src={imageUrl}
-                onClick={this.rerouteToStory}
-              />
-              <VerticalCenter>
-                <Title
-                  onClick={this.rerouteToStory}
-                >
-                  {title}
-                </Title>
-              </VerticalCenter>
-            </Row>
-          </InfoWindow>
-
-        }
-      </Marker>
-    )
-  }
 }
 
 const HOCMap = withGoogleMap(props => {
@@ -111,7 +31,7 @@ const HOCMap = withGoogleMap(props => {
     >
       <MarkerClusterer averageCenter>
         {props.markers && props.markers.map((marker, index) => (
-          <MarkerWithPopup
+          <MapMarker
             {...marker}
             setSelectedMarkerId={setSelectedMarkerId}
             isSelected={marker.id === selectedMarkerId}
@@ -153,8 +73,10 @@ export default class GMap extends React.Component {
   getMarkers() {
     const {reroute, stories} = this.props
     return stories.map((story, index) => {
-      let imageUrl;
-      if (story.coverImage) imageUrl = getImageUrl(story.coverImage)
+      let imageUrl
+      if (story.coverImage) {
+        imageUrl = getImageUrl(story.coverImage)
+      }
       else if (story.coverVideo) {
         imageUrl = getImageUrl(story.coverVideo, 'optimized', videoThumbnailOptions)
       }

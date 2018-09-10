@@ -178,6 +178,7 @@ export default class StoryDetails extends React.Component {
       categoriesList,
       hashtagsList: [],
       address: _.get(this.props.workingDraft, ['locationInfo', 'name'], ''),
+      costPlaceHolderText: 'Cost (USD)'
     };
   }
 
@@ -185,6 +186,15 @@ export default class StoryDetails extends React.Component {
     if (Object.keys(this.props.categories).length !== Object.keys(nextProps.categories).length && nextProps.workingDraft){
       const categoriesList = formatCategories(nextProps.categories)
       this.updateCategoriesList(_.differenceWith(categoriesList, nextProps.workingDraft.categories, isSameTag))
+    }    
+    if(this.props.workingDraft.type !== nextProps.workingDraft.type){
+      this.getCostPlaceHolderText(nextProps.workingDraft.type)
+    }
+  }
+
+  componentDidMount(){
+    if (this.props.workingDraft.type){
+      this.getCostPlaceHolderText(this.props.workingDraft.type)
     }
   }
 
@@ -292,12 +302,27 @@ export default class StoryDetails extends React.Component {
     })
   }
 
+  getCostPlaceHolderText = (type) =>{
+    let costPlaceHolderText
+    if(type){
+      if (type === "stay"){
+         costPlaceHolderText = "Cost Per Night"
+      }else{
+        costPlaceHolderText = "Cost Per Person"
+      }
+    }else{
+      costPlaceHolderText = "Cost (USD)"
+    }
+    this.setState({costPlaceHolderText})
+  }
+
   render() {
     const {workingDraft} = this.props
     const {
       showDayPicker,
       categoriesList,
       hashtagsList,
+      costPlaceHolderText
     } = this.state
 
     // normally this only happens when you just published a draft
@@ -395,7 +420,7 @@ export default class StoryDetails extends React.Component {
           </IconWrapper>
           <StyledInput
             type='number'
-            placeholder='Cost (USD)'
+            placeholder={costPlaceHolderText}
             value={workingDraft.cost}
             min='0'
             name='cost'

@@ -94,6 +94,7 @@ export default class HeaderModals extends React.Component {
     resetCreateStore: PropTypes.func,
     flagStory: PropTypes.func,
     deleteStory: PropTypes.func,
+    loginFacebook: PropTypes.func,
   }
 
   closeGlobalModal = () => {
@@ -126,6 +127,7 @@ export default class HeaderModals extends React.Component {
       resetCreateStore,
       flagStory,
       deleteStory,
+      loginFacebook,
     } = this.props
 
     //destructuring these as let so we can reassign message in respective components
@@ -149,6 +151,7 @@ export default class HeaderModals extends React.Component {
             onAttemptLogin={this.props.attemptLogin}
             loginReduxFetching={loginReduxFetching}
             loginReduxError={loginReduxError}
+            loginFacebook={loginFacebook}
           />
         </Modal>
         <Modal

@@ -13,6 +13,7 @@ import UserActions from '../Shared/Redux/Entities/Users'
 import SessionActions from '../Shared/Redux/SessionRedux'
 import UXActions from '../Redux/UXRedux'
 import StoryActions from '../Shared/Redux/Entities/Stories'
+import SignupActions from '../Shared/Redux/SignupRedux'
 import HeaderModals from '../Components/HeaderModals'
 import {
   haveFieldsChanged
@@ -74,6 +75,7 @@ class Header extends React.Component {
     signedUp: PropTypes.bool,
     flagStory: PropTypes.func,
     deleteStory: PropTypes.func,
+    signupFacebook: PropTypes.func,
   }
 
   constructor(props) {
@@ -91,6 +93,10 @@ class Header extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll)
+  }
+
+  _loginFacebook = () => {
+    this.props.signupFacebook()
   }
 
   componentDidUpdate(prevProps) {
@@ -258,6 +264,7 @@ class Header extends React.Component {
               resetCreateStore={this._resetCreateStore}
               flagStory={flagStory}
               deleteStory={deleteStory}
+              loginFacebook={this._loginFacebook}
             />
         </SelectedGrid>
         <HeaderSpacer
@@ -313,6 +320,7 @@ function mapDispatchToProps(dispatch) {
     flagStory: (sessionUserId, storyId) => dispatch(StoryActions.flagStory(sessionUserId, storyId)),
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
     markSeen: (activityId) => dispatch(UserActions.activitySeen(activityId)),
+    signupFacebook: () => dispatch(SignupActions.signupFacebook())
   }
 }
 

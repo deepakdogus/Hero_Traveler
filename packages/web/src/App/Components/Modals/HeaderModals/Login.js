@@ -36,6 +36,7 @@ export default class Login extends React.Component {
     onSignupClick: PropTypes.func,
     loginReduxFetching: PropTypes.bool,
     loginReduxError: PropTypes.string,
+    loginFacebook: PropTypes.func,
   }
 
   constructor(props){
@@ -76,6 +77,7 @@ export default class Login extends React.Component {
       onSignupClick,
       loginReduxFetching,
       loginReduxError,
+      loginFacebook
     } = this.props
 
     if (loginReduxError === 'Unauthorized' || loginReduxError === 'CLIENT_ERROR') {
@@ -91,6 +93,7 @@ export default class Login extends React.Component {
           type='facebookSignup'
           iconName='facebookLarge'
           page='login'
+          onClick={loginFacebook}
         />
         <SocialMediaButton
           type='twitterSignup'

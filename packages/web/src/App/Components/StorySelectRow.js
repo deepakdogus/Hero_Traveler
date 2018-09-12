@@ -11,10 +11,6 @@ import {StyledVerticalCenter} from './Modals/Shared'
 const StyledImageWrapper = styled.div`
   width: 77px;
   height: 98px;
-<<<<<<< HEAD
-=======
-  cursor:pointer;
->>>>>>> ca243913cf5f97ad0cb66aec011d9cfd3542f1d6
   display: flex;
   justify-content: center;
   align-items: center;

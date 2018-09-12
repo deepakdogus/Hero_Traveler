@@ -24,7 +24,7 @@ export default class SendToRow extends Component {
   renderImage = () => {
     return (
       <Avatar
-        avatarUrl={getImageUrl(this.props.user.profile.avatar)}
+        avatarUrl={getImageUrl(this.props.user.profile.avatar, 'larger')}
         size='larger'
       />
     )

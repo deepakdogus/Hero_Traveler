@@ -51,7 +51,7 @@ export default class SocialMediaRow extends Component {
     return (
       <UserContainer>
         <Avatar
-          avatarUrl={getImageUrl(user.profile.avatar)}
+          avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
           size='large'
         />
         <UserInfo>

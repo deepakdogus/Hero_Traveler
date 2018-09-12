@@ -82,7 +82,21 @@ function getBasicImageUrlParameters(size: object): string {
 }
 
 function getAvatarImageUrlParameters(size: object): string {
-  return {}
+  return {
+    f: 'auto',
+    c: 'fit',
+    w: '85',
+    h: '85',
+  }
+}
+
+function getLargerImageUrlParameters(size: object): string {
+  return {
+    f: 'auto',
+    c: 'fit',
+    w: '125',
+    h: '125',
+  }
 }
 
 function getNotificationImageUrlParameters(){
@@ -121,6 +135,7 @@ const imageUrlParametersFactories = {
   loading: getLoadingPreviewImageUrlParameters,
   optimized: getOptimizedImageUrlParameters,
   thumbnail: getNotificationImageUrlParameters,
+  larger: getLargerImageUrlParameters
 }
 
 // hacky way to extract the url for images that get uploaded to Cloudinary but not DB

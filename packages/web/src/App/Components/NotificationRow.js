@@ -50,9 +50,17 @@ const StyledHorizontalDivider = styled(HorizontalDivider)`
   margin: 0;
 `
 
-const StyledImage = styled.img`
+const StyledImageContainer = styled.div`
   width: ${relevantMetrics.imageWidth}px;
   height: ${relevantMetrics.imageWidth}px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+`
+
+const StyledImage = styled.img`
+  height: 100%;
 `
 
 const StyledVerticalCenter = styled(VerticalCenter)`
@@ -111,6 +119,10 @@ const ActivityTypes = {
   comment: 'ActivityStoryComment'
 }
 
+const videoThumbnailOptions = {
+  video: true,
+}
+
 export default class NotificationRow extends Component {
   static propTypes = {
     user: PropTypes.object,
@@ -152,6 +164,7 @@ export default class NotificationRow extends Component {
 
   renderText = () => {
     const {user} = this.props
+
     return (
       <StyledVerticalCenter>
         <StyledNotificationContent>
@@ -173,12 +186,23 @@ export default class NotificationRow extends Component {
   }
 
   renderTripImage = () => {
-    if(this.props.isFeedItem){
+    const {
+      story,
+      isFeedItem,
+    } = this.props
+
+    if (isFeedItem) {
+      let imageUrl
+      if (story.coverImage) imageUrl = getImageUrl(story.coverImage, 'thumbnail')
+      else imageUrl = getImageUrl(story.coverVideo, 'optimized', videoThumbnailOptions)
+
       return (
         <VerticalCenter>
-          <StyledImage
-            src={getImageUrl(this.props.story.coverImage, 'thumbnail')}
-          />
+          <StyledImageContainer>
+            <StyledImage
+              src={imageUrl}
+            />
+          </StyledImageContainer>
         </VerticalCenter>
       )
     } else return

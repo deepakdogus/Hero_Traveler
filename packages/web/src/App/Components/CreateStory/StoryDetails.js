@@ -185,7 +185,7 @@ export default class StoryDetails extends React.Component {
     if (Object.keys(this.props.categories).length !== Object.keys(nextProps.categories).length && nextProps.workingDraft){
       const categoriesList = formatCategories(nextProps.categories)
       this.updateCategoriesList(_.differenceWith(categoriesList, nextProps.workingDraft.categories, isSameTag))
-    }    
+    }
   }
 
   handleLocationSelect = (addressObj) => {

@@ -111,6 +111,24 @@ class EditStory extends Component {
     }
   }
 
+  componentDidMount() {
+    const {
+      userId,
+      registerDraft,
+      workingDraft
+    } = this.props
+
+    //need to return a non-falsy value to render window dialog
+    window.onbeforeunload = (e) => {
+      e.preventDefault()
+      return 'test'
+    }
+
+    if (workingDraft === null) {
+      registerDraft(createLocalDraft(userId))
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     const {match, reroute, originalDraft} = nextProps
     if (this.hasPublished(nextProps)){

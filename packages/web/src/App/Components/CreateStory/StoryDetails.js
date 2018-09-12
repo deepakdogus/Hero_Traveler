@@ -191,7 +191,7 @@ export default class StoryDetails extends React.Component {
 
   componentDidMount() {
     const { coverVideo, coverImage } = this.props.workingDraft
-    if( !coverVideo && !coverImage) {
+    if (!coverVideo && !coverImage) {
       this.props.reroute('/editStory/')
     }
   }

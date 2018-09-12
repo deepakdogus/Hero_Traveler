@@ -9,7 +9,7 @@ import styled from 'styled-components'
 
 const HiddenInput = styled.input`
   opacity: 0;
-  width:0;
+  width: 0;
   height: 0;
   pointer-events: none;
 `

@@ -1,8 +1,27 @@
 import React from 'react'
-import { withGoogleMap, GoogleMap, Marker } from "react-google-maps";
+import PropTypes from 'prop-types'
+import {
+  withGoogleMap,
+  GoogleMap,
+} from "react-google-maps";
+import MarkerClusterer from "react-google-maps/lib/addons/MarkerClusterer"
 import _ from 'lodash'
 
-const GettingStartedGoogleMap = withGoogleMap(props => {
+import getImageUrl from '../Shared/Lib/getImageUrl'
+import MapMarker from './MapMarker'
+
+const windowMaps = window.google.maps
+
+const videoThumbnailOptions = {
+  video: true,
+  width: 140,
+}
+
+const HOCMap = withGoogleMap(props => {
+  const {
+    selectedMarkerId,
+    setSelectedMarkerId,
+  } = props
   return (
     <GoogleMap
       ref={props.onMapLoad}
@@ -10,42 +29,132 @@ const GettingStartedGoogleMap = withGoogleMap(props => {
       defaultCenter={{ lat: props.lat, lng: props.lng }}
       onClick={props.onMapClick}
     >
-      {props.markers && props.markers.map((marker, index) => (
-        <Marker
-          {...marker}
-          onRightClick={() => props.onMarkerRightClick(index)}
-        />
-      ))}
+      <MarkerClusterer averageCenter>
+        {props.markers && props.markers.map((marker, index) => (
+          <MapMarker
+            {...marker}
+            setSelectedMarkerId={setSelectedMarkerId}
+            isSelected={marker.id === selectedMarkerId}
+            key={marker.id}
+          />
+        ))}
+      </MarkerClusterer>
     </GoogleMap>
   )}
 );
 
 export default class GMap extends React.Component {
+  static propTypes = {
+    stories: PropTypes.arrayOf(PropTypes.object),
+    reroute: PropTypes.func,
+  }
+
+  defaultProps = {
+    stories: [],
+  }
+
+  state = {
+    selectedMarkerId: undefined
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.getAreStoriesDifferent(prevProps.stories, this.props.stories)) {
+      this.recenterMap()
+    }
+  }
+
+  getAreStoriesDifferent(oldStories, newStories) {
+    if (oldStories.length !== newStories.length) return true
+    return oldStories.some((story, index) => {
+      return story.id !== newStories[index].id
+    })
+  }
+
+  getMarkers() {
+    const {reroute, stories} = this.props
+    return stories.map((story, index) => {
+      let imageUrl
+      if (story.coverImage) {
+        imageUrl = getImageUrl(story.coverImage)
+      }
+      else if (story.coverVideo) {
+        imageUrl = getImageUrl(story.coverVideo, 'optimized', videoThumbnailOptions)
+      }
+      return {
+        position: {
+          lat: story.locationInfo.latitude,
+          lng: story.locationInfo.longitude,
+        },
+        title: story.title,
+        id: story.id,
+        defaultAnimation: 2,
+        imageUrl,
+        reroute,
+      }
+    })
+  }
+
+  getBounds() {
+    const bounds = new windowMaps.LatLngBounds()
+
+    this.props.stories.forEach(story => {
+      const {latitude, longitude} = story.locationInfo
+      bounds.extend(
+        new windowMaps.LatLng(
+          latitude,
+          longitude,
+        )
+      )
+    })
+
+    // edge case for single story so we are not overly zoomed in
+    if (bounds.getNorthEast().equals(bounds.getSouthWest())) {
+      var extendPointNE = new windowMaps.LatLng(
+        bounds.getNorthEast().lat() + 0.01,
+        bounds.getNorthEast().lng() + 0.01
+      )
+      var extendPointSW =  new windowMaps.LatLng(
+        bounds.getNorthEast().lat() - 0.01,
+        bounds.getNorthEast().lng() - 0.01
+      )
+      bounds.extend(extendPointNE)
+      bounds.extend(extendPointSW)
+    }
+
+    return bounds
+  }
+
+  recenterMap = () => {
+    if (this.gMapRef) {
+      this.gMapRef.fitBounds(this.getBounds())
+    }
+  }
+
+  onMapLoad = (ref) => {
+    this.gMapRef = ref
+    this.recenterMap()
+  }
+
+  setSelectedMarkerId = (selectedMarkerId) => {
+    this.setState({ selectedMarkerId })
+  }
 
   render () {
-    const {lat, lng, location} = this.props
-    const markers = [{
-      position: {
-        lat: lat,
-        lng: lng,
-      },
-      key: `${location}`,
-      defaultAnimation: 2,
-    }]
     return (
-      <GettingStartedGoogleMap
-        lat={lat}
-        lng={lng}
+      <HOCMap
         containerElement={
           <div style={{ height: `500px` }} />
         }
         mapElement={
           <div style={{ height: `100%` }} />
         }
-        onMapLoad={_.noop}
+        onMapLoad={this.onMapLoad}
         onMapClick={_.noop}
-        markers={markers}
+        selectedMarkerId={this.state.selectedMarkerId}
+        setSelectedMarkerId={this.setSelectedMarkerId}
+        markers={this.getMarkers()}
         onMarkerRightClick={_.noop}
+        bounds={this.getBounds()}
       />
     )
   }

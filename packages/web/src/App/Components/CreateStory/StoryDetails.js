@@ -292,6 +292,11 @@ export default class StoryDetails extends React.Component {
     })
   }
 
+  getCostPlaceHolderText = (type) =>{
+    if (type === "stay") return "Cost Per Night"
+    return "Cost Per Person"
+  }
+
   render() {
     const {workingDraft} = this.props
     const {
@@ -395,7 +400,7 @@ export default class StoryDetails extends React.Component {
           </IconWrapper>
           <StyledInput
             type='number'
-            placeholder='Cost (USD)'
+            placeholder={this.getCostPlaceHolderText(workingDraft.type)}
             value={workingDraft.cost}
             min='0'
             name='cost'

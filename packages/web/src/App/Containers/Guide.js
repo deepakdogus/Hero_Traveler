@@ -19,7 +19,7 @@ import UXActions from '../Redux/UXRedux'
 import FeedItemHeader from '../Components/FeedItemHeader'
 import {BodyText as Description} from '../Components/StoryContentRenderer'
 import StoryContentRenderer from '../Components/StoryContentRenderer'
-import GMap from '../Components/GoogleMap'
+import GoogleMap from '../Components/GoogleMap'
 import FeedItemMetaInfo from '../Components/FeedItemMetaInfo'
 import FeedItemActionBar from '../Components/FeedItemActionBar'
 import TabBar from '../Components/TabBar'
@@ -165,6 +165,7 @@ class Guide extends Component {
 
   getGuideStoriesOfTypeProps(type) {
     const {activeTab} = this.state
+    if (type === 'OVERVIEW') return {}
     const label = type === 'STAY' ? `PLACES TO STAY` : `THINGS TO ${type}`
     // onClickShowAll={this.onClickTab}
     return {
@@ -189,8 +190,10 @@ class Guide extends Component {
       isLiked,
       openGlobalModal,
     } = this.props
+    const { activeTab } = this.state
 
     if (!guide || !author) return null
+    const selectedStoriesAndAuthors = this.getStoriesAndAuthorsByType(activeTab.toLowerCase())
 
     return (
       <ContentWrapper>
@@ -202,11 +205,18 @@ class Guide extends Component {
           isFollowing={isFollowing}
           followUser={this._followUser}
           unfollowUser={this._unfollowUser}
+          hideCover={this.state.activeTab !== 'OVERVIEW'}
         />
         <LimitedWidthContainer>
+          {activeTab !== 'OVERVIEW' &&
+            <GoogleMap
+              stories={selectedStoriesAndAuthors.stories}
+              reroute={reroute}
+            />
+          }
           <TabBar
             tabs={tabBarTabs}
-            activeTab={this.state.activeTab}
+            activeTab={activeTab}
             onClickTab={this.onClickTab}
           />
           <Description>{guide.description}</Description>

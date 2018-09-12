@@ -12,7 +12,7 @@ import UXActions from '../Redux/UXRedux'
 
 import FeedItemHeader from '../Components/FeedItemHeader'
 import StoryContentRenderer from '../Components/StoryContentRenderer'
-import GMap from '../Components/GoogleMap'
+import GoogleMap from '../Components/GoogleMap'
 import FeedItemMetaInfo from '../Components/FeedItemMetaInfo'
 import FeedItemActionBar from '../Components/FeedItemActionBar'
 
@@ -125,13 +125,9 @@ class Story extends Component {
           <StoryContentRenderer story={story} />
           {this.renderHashtags()}
           {story.locationInfo && story.locationInfo.latitude && story.locationInfo.longitude &&
-            <GMap
-              lat={story.locationInfo.latitude}
-              lng={story.locationInfo.longitude}
-              location={story.locationInfo.name}
-            />
+            <GoogleMap stories={ [story] } />
           }
-          <FeedItemMetaInfo feedItem={story}/>
+          <FeedItemMetaInfo feedItem={story} />
         </LimitedWidthContainer>
         <FeedItemActionBar
           feedItem={story}

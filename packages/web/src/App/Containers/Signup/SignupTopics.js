@@ -6,6 +6,8 @@ import _ from 'lodash'
 
 import CategoryActions from '../../Shared/Redux/Entities/Categories'
 import SignupActions from '../../Shared/Redux/SignupRedux'
+import UXActions from '../../Redux/UXRedux'
+import UserActions from '../../Shared/Redux/Entities/Users'
 
 import RoundedButton from '../../Components/RoundedButton'
 import ExploreGrid from '../../Components/ExploreGrid'
@@ -55,6 +57,10 @@ class SignupTopics extends Component {
     getSelectedCategories: PropTypes.func,
     selectCategory: PropTypes.func,
     unselectCategory: PropTypes.func,
+    user: PropTypes.object,
+    users: PropTypes.object,
+    openGlobalModal: PropTypes.func,
+    updateUser: PropTypes.func,
   }
 
   componentDidMount() {
@@ -72,6 +78,14 @@ class SignupTopics extends Component {
     else this.props.unselectCategory(categoryId)
   }
 
+  _openChangeTempUsernameModal = () => {
+    const modalParams = {
+      user: this.props.user,
+      updateUser: this.props.updateUser
+    }
+    this.props.openGlobalModal('changeTempUsername', modalParams)
+  }
+
   render() {
     return (
         <TopicsContainer>
@@ -80,6 +94,10 @@ class SignupTopics extends Component {
               <RoundedButton text='Next >'></RoundedButton>
             </NavLinkStyled>
           </NavLinkContainer>
+          <RoundedButton
+                text='Test Username Change'
+                onClick={this._openChangeTempUsernameModal}
+              />
           <Container>
             <SizedDiv>
               <Title>WELCOME!</Title>
@@ -97,12 +115,16 @@ class SignupTopics extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
+  const users = state.entities.users.entities
+  const user = users[state.session.userId]
   let {
     fetchStatus: categoriesFetchStatus,
     entities: categories,
   } = state.entities.categories;
 
   return {
+    user,
+    users,
     categories,
     categoriesFetchStatus,
     selectedCategories: state.signup.selectedCategories
@@ -115,6 +137,8 @@ function mapDispatchToProps(dispatch) {
     getSelectedCategories: () => dispatch(SignupActions.signupGetUsersCategories()),
     selectCategory: (categoryId) => dispatch(SignupActions.signupFollowCategory(categoryId)),
     unselectCategory: (categoryId) => dispatch(SignupActions.signupUnfollowCategory(categoryId)),
+    openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
+    updateUser: (attrs) => dispatch(UserActions.updateUser(attrs)),
   }
 }
 

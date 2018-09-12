@@ -18,6 +18,7 @@ import CenterModal from './CenterModal'
 import NotificationsThread from './Modals/NotificationsThread'
 import FlagStory from './Modals/FlagStory'
 import DeleteStory from './Modals/DeleteStory'
+import ChangeTempUsername from './Modals/ChangeTempUsername'
 
 const Container = styled.div``
 
@@ -231,6 +232,17 @@ export default class HeaderModals extends React.Component {
             reroute={reroute}
             userId={userId}
             flagStory={flagStory}
+            params={globalModalParams}
+          />
+        </Modal>
+        <Modal
+          isOpen={globalModalThatIsOpen === 'changeTempUsername'}
+          contentLabel="Flag Story Modal"
+          onRequestClose={closeModal}
+          style={customModalStyles}
+        >
+          <ChangeTempUsername
+            closeModal={closeGlobalModal}
             params={globalModalParams}
           />
         </Modal>

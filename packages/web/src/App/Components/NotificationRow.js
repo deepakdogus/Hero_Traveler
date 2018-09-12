@@ -54,13 +54,13 @@ const StyledImageContainer = styled.div`
   width: ${relevantMetrics.imageWidth}px;
   height: ${relevantMetrics.imageWidth}px;
   display: flex;
-  justify-content:center;
-  align-items:center;
-  overflow:hidden;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 `
 
 const StyledImage = styled.img`
-  height:100%;
+  height: 100%;
 `
 
 const StyledVerticalCenter = styled(VerticalCenter)`
@@ -164,6 +164,7 @@ export default class NotificationRow extends Component {
 
   renderText = () => {
     const {user} = this.props
+
     return (
       <StyledVerticalCenter>
         <StyledNotificationContent>
@@ -185,16 +186,21 @@ export default class NotificationRow extends Component {
   }
 
   renderTripImage = () => {
-    const {story, isFeedItem} = this.props; 
-    if(isFeedItem){
+    const {
+      story,
+      isFeedItem,
+    } = this.props
+
+    if (isFeedItem) {
+      let imageUrl
+      if (story.coverImage) imageUrl = getImageUrl(story.coverImage, 'thumbnail')
+      else imageUrl = getImageUrl(story.coverVideo, 'optimized', videoThumbnailOptions)
+
       return (
         <VerticalCenter>
           <StyledImageContainer>
             <StyledImage
-              src = {story.coverImage  
-                    ? getImageUrl(story.coverImage, 'thumbnail') 
-                    : getImageUrl(story.coverVideo, 'optimized', videoThumbnailOptions)
-                    }
+              src={imageUrl}
             />
           </StyledImageContainer>
         </VerticalCenter>

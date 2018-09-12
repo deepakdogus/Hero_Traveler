@@ -12,15 +12,25 @@ export const StyledRow = styled(Row)`
   height: 65px;
 `
 
+const StyledButtonWrapper = styled.div`
+  padding-left: 10px;
+  padding-right: 10px;
+`
+
 export const StyledRoundedButton = styled(RoundedButton)`
   margin-left: 10px;
   margin-right: 10px;
 `
 
+export const StyledRoundedSearchButton = styled(RoundedButton)`
+  margin-left: 0px;
+  margin-right: 0px;
+`
+
 export const SearchIcon = styled(Icon)`
   height: 17px;
   width: 17px;
-  cursor:pointer;
+  cursor: pointer;
 `
 
 export const LoginLink = styled.a`
@@ -99,26 +109,28 @@ export const SearchNav = (props) => {
   } = props
 
   return (
-    <ConditionalLink
-      to='/search'
-      pathname={pathname}
-      openSaveEditsModal={openSaveEditsModal}
-      isMenuLink={false}
-      haveFieldsChanged={haveFieldsChanged}
-      workingDraft={workingDraft}
-      originalDraft={originalDraft}
-      noBorder={true}
-    >
-      <StyledRoundedButton
-        type='headerButton'
-        height='32px'
-        width='32px'
+    <StyledButtonWrapper>
+      <ConditionalLink
+        to='/search'
+        pathname={pathname}
+        openSaveEditsModal={openSaveEditsModal}
+        isMenuLink={false}
+        haveFieldsChanged={haveFieldsChanged}
+        workingDraft={workingDraft}
+        originalDraft={originalDraft}
+        noBorder={true}
       >
-      <SearchIcon
-        name='explore'
-      />
-      </StyledRoundedButton>
-    </ConditionalLink>
+        <StyledRoundedSearchButton
+          type='headerButton'
+          height='32px'
+          width='32px'
+        >
+        <SearchIcon
+          name='explore'
+        />
+        </StyledRoundedSearchButton>
+      </ConditionalLink>
+    </StyledButtonWrapper>
   )
 }
 

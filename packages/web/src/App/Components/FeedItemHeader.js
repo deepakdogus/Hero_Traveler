@@ -149,6 +149,7 @@ export default class FeedItemHeader extends React.Component {
       unfollowUser,
       followUser,
       isStory,
+      hideCover,
     } = this.props
 
     const mediaType = this.getMediaType()
@@ -194,7 +195,9 @@ export default class FeedItemHeader extends React.Component {
                 <PencilIcon
                   name='pencilBlack'
                 />
-                <RedText>Edit Story</RedText>
+                <RedText>
+                  Edit {isStory ? 'Story' : 'Guide'}
+                </RedText>
               </ClickableRow>
             </VerticalCenter>
           }
@@ -203,13 +206,13 @@ export default class FeedItemHeader extends React.Component {
           <GuideTitle mediaType={mediaType}>{feedItem.title}</GuideTitle>
         }
         {
-          mediaType === 'image' &&
+          mediaType === 'image' && !hideCover &&
           <CoverImage
             src={this.getCoverImage()}
           />
         }
         {
-          mediaType === 'video' &&
+          mediaType === 'video' && !hideCover &&
           <Video
             src={getVideoUrl(feedItem.coverVideo, false)}
             type='cover'

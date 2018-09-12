@@ -11,10 +11,10 @@ import {StyledVerticalCenter} from './Modals/Shared'
 const StyledImageWrapper = styled.div`
   width: 77px;
   height: 98px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  overflow:hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 `
 
 const StyledImage = styled.img`
@@ -82,7 +82,7 @@ export default class StorySelectRow extends Component {
           onClick={this._handleStoryClick}
         />
       </StyledImageWrapper>
-      
+
     )
   }
 

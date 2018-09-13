@@ -50,7 +50,7 @@ export default class MessageRow extends Component {
   renderImage = () => {
     return (
       <Avatar
-        avatarUrl={getImageUrl(this.props.user.profile.avatar, 'larger')}
+        avatarUrl={getImageUrl(this.props.user.profile.avatar, 'avatarLarge')}
         size='larger'
       />
     )

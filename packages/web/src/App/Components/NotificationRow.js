@@ -152,7 +152,7 @@ export default class NotificationRow extends Component {
     return (
       <RenderImageContainer>
         <Avatar
-          avatarUrl={getImageUrl(this.props.user.profile.avatar, 'larger')}
+          avatarUrl={getImageUrl(this.props.user.profile.avatar, 'avatarLarge')}
           size='larger'
         />
       </RenderImageContainer>

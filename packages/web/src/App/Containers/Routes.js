@@ -16,6 +16,7 @@ import SignupTopics from './Signup/SignupTopics'
 import Profile from './Profile'
 import Header from './Header'
 import Guide from './Guide'
+import CreateGuide from './CreateGuide'
 
 class AppRoot extends Component {
   render() {
@@ -32,6 +33,7 @@ class AppRoot extends Component {
         <Route path='/guide/:guideId' component={Guide} />
         <Route exact path='/createStory' component={CreateStory} />
         <AuthRoute path='/editStory/:storyId' component={EditStory} />
+        <Route path='/guide/edit/:guideId' component={CreateGuide} />
         <Route path='/profile/:userId/view' component={Profile} />
         <AuthRoute path='/profile/:userId/edit' component={Profile}/>
         <Route path='/search' component={Search} />

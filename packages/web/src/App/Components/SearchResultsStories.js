@@ -34,6 +34,7 @@ export default class SearchResultsStories extends Component {
           ReplacementContainer={StyledContainer}
           navToStory={this.props.navToStory}
           navToUserProfile={this.props.navToUserProfile}
+          isVertical
         />
       )
     })

@@ -150,6 +150,7 @@ export default class FeedItemHeader extends React.Component {
       followUser,
       isStory,
       hideCover,
+      onClickAddToGuide,
     } = this.props
 
     const mediaType = this.getMediaType()
@@ -189,18 +190,27 @@ export default class FeedItemHeader extends React.Component {
               </SpacedVerticalCenter>
             }
           </Row>
-          {isUsersFeedItem &&
-            <VerticalCenter>
-              <ClickableRow onClick={this._editReroute}>
-                <PencilIcon
-                  name='pencilBlack'
-                />
-                <RedText>
-                  Edit {isStory ? 'Story' : 'Guide'}
-                </RedText>
-              </ClickableRow>
-            </VerticalCenter>
-          }
+          <Row>
+            {isUsersFeedItem &&
+              <VerticalCenter>
+                <ClickableRow onClick={this._editReroute}>
+                  <PencilIcon
+                    name='pencilBlack'
+                  />
+                  <RedText>
+                    Edit {isStory ? 'Story' : 'Guide'}
+                  </RedText>
+                </ClickableRow>
+              </VerticalCenter>
+            }
+            {onClickAddToGuide &&
+              <RoundedButton
+                margin='noRight'
+                text='Add To Guide'
+                onClick={onClickAddToGuide}
+              />
+            }
+          </Row>
         </TopRow>
         {!isStory &&
           <GuideTitle mediaType={mediaType}>{feedItem.title}</GuideTitle>

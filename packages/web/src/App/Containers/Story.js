@@ -49,6 +49,7 @@ class Story extends Component {
     match: PropTypes.object,
     onClickComments: PropTypes.func,
     openGlobalModal: PropTypes.func,
+    onClickAddToGuide: PropTypes.func,
   }
 
   componentDidMount() {
@@ -106,6 +107,7 @@ class Story extends Component {
       isBookmarked,
       isLiked,
       openGlobalModal,
+      onClickAddToGuide,
     } = this.props
     if (!story || !author) return null
 
@@ -119,6 +121,7 @@ class Story extends Component {
           isFollowing={isFollowing}
           followUser={this._followUser}
           unfollowUser={this._unfollowUser}
+          onClickAddToGuide={onClickAddToGuide}
           isStory
         />
         <LimitedWidthContainer>
@@ -179,6 +182,7 @@ function mapDispatchToProps(dispatch, ownProps) {
     onClickLike: (sessionUserId) => dispatch(StoryActions.storyLike(sessionUserId, storyId)),
     onClickBookmark: (sessionUserId) => dispatch(StoryActions.storyBookmark(sessionUserId, storyId)),
     onClickComments: () => dispatch(UXActions.openGlobalModal('comments', { storyId })),
+    onClickAddToGuide: () => dispatch(UXActions.openGlobalModal('guidesSelect', { storyId })),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
   }
 }

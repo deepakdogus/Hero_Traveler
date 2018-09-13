@@ -8,7 +8,6 @@ import Signup from './Modals/HeaderModals/Signup'
 import SaveEdits from './Modals/HeaderModals/SaveEdits'
 import ResetPassword from './Modals/HeaderModals/ResetPassword'
 import Contributor from './Modals/HeaderModals/Contributor'
-import AddToItinerary from './Modals/HeaderModals/AddToItinerary'
 import Comments from './Modals/HeaderModals/Comments'
 import Settings from './Modals/Settings'
 import FAQTermsAndConditions from './Modals/FAQTermsAndConditions'
@@ -18,6 +17,7 @@ import CenterModal from './CenterModal'
 import NotificationsThread from './Modals/NotificationsThread'
 import FlagStory from './Modals/FlagStory'
 import DeleteStory from './Modals/DeleteStory'
+import AddStoryToGuides from './Modals/AddStoryToGuides'
 
 const Container = styled.div``
 
@@ -44,16 +44,6 @@ const customModalStyles = {
 const contributorModalStyles = {
   content: {
     width: 380,
-    margin: 'auto',
-  },
-  overlay: {
-    backgroundColor: 'rgba(0,0,0, .5)'
-  }
-}
-
-const addToItineraryModalStyles = {
-  content: {
-    width: 600,
     margin: 'auto',
   },
   overlay: {
@@ -188,14 +178,6 @@ export default class HeaderModals extends React.Component {
           <Contributor/>
         </Modal>
         <Modal
-          isOpen={modal === 'addToItinerary'}
-          contentLabel="Add To Itinerary Modal"
-          onRequestClose={closeModal}
-          style={addToItineraryModalStyles}
-        >
-          <AddToItinerary/>
-        </Modal>
-        <Modal
           isOpen={globalModalThatIsOpen === 'saveEdits'}
           contentLabel="Save Edits Modal"
           onRequestClose={closeModal}
@@ -281,6 +263,15 @@ export default class HeaderModals extends React.Component {
             userProfile={currentUserProfile}
             userEmail={currentUserEmail}
             userNotificationTypes={currentUserNotificationTypes}
+          />
+        </RightModal>
+        <RightModal
+          isOpen={globalModalThatIsOpen === 'guidesSelect'}
+          contentLabel='Add to a guide'
+        >
+          <AddStoryToGuides
+            storyId={globalModalParams.storyId}
+            closeModal={this.closeGlobalModal}
           />
         </RightModal>
         <CenterModal

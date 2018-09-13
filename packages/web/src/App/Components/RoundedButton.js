@@ -9,6 +9,11 @@ function getMargin(props) {
   else if (props.margin === 'small') return '3px'
   else if (props.margin === 'medium') return '11px'
   else if (props.margin === 'vertical') return '5px 0'
+  else if (props.margin === 'noRight') {
+    const vertical = props.theme.Metrics.baseMargin
+    const left = props.theme.Metrics.section
+    return `${vertical}px 0 ${vertical}px ${left}px`
+  }
   return `${props.theme.Metrics.baseMargin}px ${props.theme.Metrics.section}px`
 }
 

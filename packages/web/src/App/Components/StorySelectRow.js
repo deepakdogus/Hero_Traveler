@@ -9,16 +9,17 @@ import Icon from './Icon'
 import {StyledVerticalCenter} from './Modals/Shared'
 
 const StyledImageWrapper = styled.div`
-  width: 77px;
-  height: 98px;
+  width: ${props => props.isVertical ? "77px" : "140px"};
+  height: ${props => props.isVertical ? "98px" : "90px"};
   display: flex;
-  justify-content: center;
+  justify-content: ${props => props.isVertical ? "center" : "left"};
   align-items: center;
   overflow: hidden;
   cursor: pointer;
 `
 
 const StyledImage = styled.img`
+  width: 100%;
   height: 100%;
 `
 
@@ -28,7 +29,7 @@ export const DefaultContainer = styled.div`
   padding: 5px 5px 0;
 `
 
-const DefaultText = styled.p`
+const Text = styled.p`
   color: ${props => props.theme.Colors.background};
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-size: 18px;
@@ -38,24 +39,12 @@ const DefaultText = styled.p`
   cursor: pointer;
 `
 
-const Container = styled.div`
-  padding: 8px 30px 8px 30px;
-`
-
-const InteractiveContainer = styled.div`
-  &:hover ${Container} {
-    background-color: ${props => props.theme.Colors.onHoverGrey};
-  }
-`
-
-const UserName = styled(DefaultText)`
+const UserName = styled(Text)`
   color: ${props => props.theme.Colors.grey};
   font-weight: 400;
   font-size: 14px;
   font-style: italic;
 `
-
-const DefaultWrapper = styled.div``
 
 export default class StorySelectRow extends Component {
   static propTypes = {
@@ -66,32 +55,37 @@ export default class StorySelectRow extends Component {
     styles: PropTypes.object,
     index: PropTypes.number,
     navToStory: PropTypes.func,
-    navToUserProfile: PropTypes.func
+    navToUserProfile: PropTypes.func,
+    isVertical: PropTypes.bool,
+    onSelect: PropTypes.func,
+    ReplacementContainer: PropTypes.func,
   }
 
   _handleStoryClick = () => {
-    const {story} = this.props
-    this.props.navToStory(story.id || story.objectID)
+    const {story, onSelect} = this.props
+    if (onSelect) this.onSelect()
+    else this.props.navToStory(story.id || story.objectID)
+  }
+
+  onSelect = () => {
+    this.props.onSelect(this.props.story.id)
   }
 
   renderImage = () => {
     const src = getImageUrl(this.props.story.coverImage)
     return (
-      <StyledImageWrapper>
+      <StyledImageWrapper isVertical={this.props.isVertical}>
         <StyledImage
           src={src}
           alt='ADD ALT TEXT'
           onClick={this._handleStoryClick}
         />
       </StyledImageWrapper>
-
     )
   }
 
   renderText = () => {
-    const {username, story, textStyles} = this.props
-    let Text = DefaultText
-    if (textStyles) Text = styled(DefaultText)`${textStyles}`
+    const {username, story} = this.props
 
     return (
       <StyledVerticalCenter>
@@ -112,10 +106,9 @@ export default class StorySelectRow extends Component {
   }
 
   renderRight = () => {
-    const {isSelected, renderRight, isAddToBoard} = this.props
-    if (!renderRight) return null
-    const unSelectedIconName = isAddToBoard ? 'redCheck' : 'createStory'
-    const iconName = isSelected ? 'redCheck' : unSelectedIconName;
+    const {isSelected, onSelect} = this.props
+    if (!onSelect) return null
+    const iconName = isSelected ? 'redCheck' : 'greyCheck'
 
     return (
       <VerticalCenter>
@@ -125,20 +118,23 @@ export default class StorySelectRow extends Component {
   }
 
   render() {
-    const {index, ReplacementContainer} = this.props
+    const {
+      index,
+      ReplacementContainer,
+      onSelect,
+    } = this.props
     let Container = ReplacementContainer || DefaultContainer
-    let Wrapper = DefaultWrapper
-    if (this.props.isAddToBoard) Wrapper = InteractiveContainer
+    const containerProps = { index }
+    if (onSelect) containerProps.onClick = this.onSelect
+
     return (
-      <Wrapper>
-        <Container index={index}>
-          <SpaceBetweenRow
-            renderImage={this.renderImage}
-            renderText={this.renderText}
-            renderRight={this.renderRight}
-          />
-        </Container>
-      </Wrapper>
+      <Container {...containerProps}>
+        <SpaceBetweenRow
+          renderImage={this.renderImage}
+          renderText={this.renderText}
+          renderRight={this.renderRight}
+        />
+      </Container>
     )
   }
 }

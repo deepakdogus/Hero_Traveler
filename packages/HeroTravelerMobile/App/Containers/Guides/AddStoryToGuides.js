@@ -93,6 +93,10 @@ class AddStoryToGuides extends Component {
     NavActions.createGuide({ story })
   }
 
+  exit() {
+    NavActions.pop()
+  }
+
   render = () => {
     const { isInGuideById, filteredGuides } = this.state
     const { onCancel, fetching } = this.props

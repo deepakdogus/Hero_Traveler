@@ -17,6 +17,7 @@ import {
 } from './ProfileHeaderShared'
 import NavLinkStyled from '../NavLinkStyled'
 import VerticalCenter from '../VerticalCenter'
+import { branchLink } from '../../Services/BranchIO'
 
 const LimitedWidthRow = styled(Row)`
   align-self: center;
@@ -202,6 +203,11 @@ export default class ProfileHeaderView extends React.Component {
                   text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
                 />
               }
+              <a
+                href={branchLink()}
+              >
+                Branch
+              </a>
             </ButtonWrapper>
             </VerticalCenter>
           </SecondCol>

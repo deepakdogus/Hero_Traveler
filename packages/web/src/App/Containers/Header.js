@@ -14,9 +14,15 @@ import SessionActions from '../Shared/Redux/SessionRedux'
 import UXActions from '../Redux/UXRedux'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import HeaderModals from '../Components/HeaderModals'
+import { branchInit } from '../Services/BranchIO'
 import {
   haveFieldsChanged
 } from '../Shared/Lib/draftChangedHelpers'
+
+
+branchInit()
+
+
 
 // If we don't explicity prevent 'fixed' from being passed to Grid, we get an error about unknown prop on div element
 // because apparently react-flexbox-grid passes all props down to underlying React elements

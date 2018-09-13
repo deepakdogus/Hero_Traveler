@@ -5,9 +5,9 @@ import { connect } from 'react-redux'
 import {
   mapStateToProps,
   mapDispatchToProps,
-  BaseComponent,
+  SharedComponent,
 } from '../../Shared/Lib/addStoryToGuidesHelpers'
-import StorySelectRow, {DefaultContainer} from '../StorySelectRow'
+import FeedItemSelectRow, { DefaultContainer } from '../FeedItemSelectRow'
 import SpaceBetweenRow from '../SpaceBetweenRow'
 import VerticalCenter from '../VerticalCenter'
 import CenteredButtons from '../CenteredButtons'
@@ -56,7 +56,7 @@ const ReplacementContainer = styled(DefaultContainer)`
   }
 `
 
-class AddStoryToGuides extends BaseComponent {
+class AddStoryToGuides extends SharedComponent {
   renderImage() {
     return (
       <CreateIconContainer>
@@ -86,7 +86,7 @@ class AddStoryToGuides extends BaseComponent {
 
     return this.props.guides.map((guide, index) => {
       return (
-        <StorySelectRow
+        <FeedItemSelectRow
           key={guide.id}
           index={index}
           story={guide}
@@ -97,10 +97,6 @@ class AddStoryToGuides extends BaseComponent {
         />
       )
     })
-  }
-
-  exit() {
-    this.props.closeModal()
   }
 
   cancelButton = () => {
@@ -126,6 +122,10 @@ class AddStoryToGuides extends BaseComponent {
         onClick={this.onDone}
       />
     )
+  }
+
+  exit() {
+    this.props.closeModal()
   }
 
   render() {

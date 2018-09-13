@@ -4,46 +4,7 @@ import { find } from 'lodash'
 
 import GuideActions from '../Redux/Entities/Guides'
 
-function getIsInGuidesById(guides, storyId) {
-  const isInGuideById = {}
-  for (let guide of guides) {
-    isInGuideById[guide.id] = guide.stories.indexOf(storyId) !== -1
-  }
-  return isInGuideById
-}
-
-export const mapStateToProps = (state, ownProps) => {
-  const sessionUserId = state.session.userId
-  const {guideIdsByUserId, entities, fetchStatus} = state.entities.guides
-  const story = state.entities.stories.entities[ownProps.storyId]
-  let usersGuides = []
-  if (guideIdsByUserId && guideIdsByUserId[sessionUserId]) {
-    usersGuides = guideIdsByUserId[sessionUserId].map(key => {
-      return entities[key]
-    })
-  }
-
-  return {
-    user: state.entities.users.entities[sessionUserId],
-    accessToken: find(state.session.tokens, { type: 'access' }),
-    guides: usersGuides,
-    isInGuideById: getIsInGuidesById(usersGuides, ownProps.storyId),
-    fetching: fetchStatus.fetching,
-    loaded: fetchStatus.loaded,
-    status: fetchStatus,
-    story,
-
-  }
-}
-
-export const mapDispatchToProps = dispatch => ({
-  getUserGuides: userId => dispatch(GuideActions.getUserGuides(userId)),
-  bulkSaveStoryToGuide: (storyId, isInGuideById) => {
-    dispatch(GuideActions.bulkSaveStoryToGuideRequest(storyId, isInGuideById))
-  }
-})
-
-export class BaseComponent extends Component {
+export class SharedComponent extends Component {
   static propTypes = {
     storyId: PropTypes.string,
     onCancel: PropTypes.func,
@@ -103,3 +64,41 @@ export class BaseComponent extends Component {
     this.setState({isInGuideById})
   }
 }
+
+function getIsInGuidesById(guides, storyId) {
+  const isInGuideById = {}
+  for (let guide of guides) {
+    isInGuideById[guide.id] = guide.stories.indexOf(storyId) !== -1
+  }
+  return isInGuideById
+}
+
+export const mapStateToProps = (state, ownProps) => {
+  const sessionUserId = state.session.userId
+  const {guideIdsByUserId, entities, fetchStatus} = state.entities.guides
+  const story = state.entities.stories.entities[ownProps.storyId]
+  let usersGuides = []
+  if (guideIdsByUserId && guideIdsByUserId[sessionUserId]) {
+    usersGuides = guideIdsByUserId[sessionUserId].map(key => {
+      return entities[key]
+    })
+  }
+
+  return {
+    user: state.entities.users.entities[sessionUserId],
+    accessToken: find(state.session.tokens, { type: 'access' }),
+    guides: usersGuides,
+    isInGuideById: getIsInGuidesById(usersGuides, ownProps.storyId),
+    fetching: fetchStatus.fetching,
+    loaded: fetchStatus.loaded,
+    status: fetchStatus,
+    story,
+  }
+}
+
+export const mapDispatchToProps = dispatch => ({
+  getUserGuides: userId => dispatch(GuideActions.getUserGuides(userId)),
+  bulkSaveStoryToGuide: (storyId, isInGuideById) => {
+    dispatch(GuideActions.bulkSaveStoryToGuideRequest(storyId, isInGuideById))
+  }
+})

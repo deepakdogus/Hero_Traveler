@@ -51,8 +51,6 @@ export default class StorySelectRow extends Component {
     isSelected: PropTypes.bool,
     story: PropTypes.object,
     username: PropTypes.string,
-    renderRight: PropTypes.bool,
-    styles: PropTypes.object,
     index: PropTypes.number,
     navToStory: PropTypes.func,
     navToUserProfile: PropTypes.func,

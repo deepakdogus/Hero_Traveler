@@ -20,6 +20,11 @@ export default class HeaderAnonymous extends React.Component {
     haveFieldsChanged: PropTypes.func,
     workingDraft: PropTypes.object,
     originalDraft: PropTypes.object,
+    openGlobalModal: PropTypes.func,
+  }
+
+  _openLoginModal = () => {
+    this.props.openGlobalModal('login')
   }
 
   render () {
@@ -53,7 +58,7 @@ export default class HeaderAnonymous extends React.Component {
             >Log In</LoginLink>
             <StyledRoundedLoginButton
               text='Login'
-              onClick={this.props.openLoginModal}
+              onClick={this._openLoginModal}
             />
             <HamburgerIcon
               name='hamburger'

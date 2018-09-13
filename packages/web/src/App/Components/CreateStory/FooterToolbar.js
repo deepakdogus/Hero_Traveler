@@ -13,6 +13,7 @@ const Container = styled.div`
 
 const StyledIcon = styled(Icon)`
   align-self: center;
+  cursor: pointer;
 `
 
 const Text = styled.p`

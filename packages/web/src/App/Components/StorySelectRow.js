@@ -15,6 +15,7 @@ const StyledImageWrapper = styled.div`
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  cursor: pointer;
 `
 
 const StyledImage = styled.img`
@@ -34,6 +35,7 @@ const DefaultText = styled.p`
   font-weight: 600;
   letter-spacing: .7px;
   margin: 0;
+  cursor: pointer;
 `
 
 const Container = styled.div`

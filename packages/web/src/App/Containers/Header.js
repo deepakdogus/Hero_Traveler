@@ -74,6 +74,7 @@ class Header extends React.Component {
     signedUp: PropTypes.bool,
     flagStory: PropTypes.func,
     deleteStory: PropTypes.func,
+    resetPassword: PropTypes.func,
   }
 
   constructor(props) {
@@ -148,7 +149,7 @@ class Header extends React.Component {
     const name = event.target.name
     let modalToOpen;
     if (name === 'inbox' || name === 'loginEmail') modalToOpen = 'inbox'
-    else if (name === 'notifications' || name === 'cameraFlash') {
+    else if (name === 'notifications' || name === 'navNotifications') {
       this.props.openGlobalModal('notificationsThread')
     }
     this.setState({ modal: modalToOpen })
@@ -190,6 +191,7 @@ class Header extends React.Component {
       originalDraft,
       flagStory,
       deleteStory,
+      resetPassword,
     } = this.props
 
     const SelectedGrid =
@@ -224,6 +226,7 @@ class Header extends React.Component {
             <HeaderAnonymous
               openLoginModal={this.openLoginModal}
               pathname={pathname}
+              openGlobalModal={openGlobalModal}
             />
           }
             <HeaderModals
@@ -258,6 +261,8 @@ class Header extends React.Component {
               resetCreateStore={this._resetCreateStore}
               flagStory={flagStory}
               deleteStory={deleteStory}
+              openGlobalModal={openGlobalModal}
+              resetPassword={resetPassword}
             />
         </SelectedGrid>
         <HeaderSpacer
@@ -313,6 +318,7 @@ function mapDispatchToProps(dispatch) {
     flagStory: (sessionUserId, storyId) => dispatch(StoryActions.flagStory(sessionUserId, storyId)),
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
     markSeen: (activityId) => dispatch(UserActions.activitySeen(activityId)),
+    resetPassword: (email) => dispatch(LoginActions.resetPasswordRequest(email)),
   }
 }
 

@@ -94,6 +94,8 @@ export default class HeaderModals extends React.Component {
     resetCreateStore: PropTypes.func,
     flagStory: PropTypes.func,
     deleteStory: PropTypes.func,
+    openGlobalModal: PropTypes.func,
+    resetPassword: PropTypes.func,
   }
 
   closeGlobalModal = () => {
@@ -126,6 +128,8 @@ export default class HeaderModals extends React.Component {
       resetCreateStore,
       flagStory,
       deleteStory,
+      openGlobalModal,
+      resetPassword,
     } = this.props
 
     //destructuring these as let so we can reassign message in respective components
@@ -139,7 +143,7 @@ export default class HeaderModals extends React.Component {
     return (
       <Container>
         <Modal
-          isOpen={modal === 'login'}
+          isOpen={globalModalThatIsOpen === 'login'}
           contentLabel="Login Modal"
           onRequestClose={closeModal}
           style={customModalStyles}
@@ -149,6 +153,7 @@ export default class HeaderModals extends React.Component {
             onAttemptLogin={this.props.attemptLogin}
             loginReduxFetching={loginReduxFetching}
             loginReduxError={loginReduxError}
+            openGlobalModal={openGlobalModal}
           />
         </Modal>
         <Modal
@@ -164,12 +169,15 @@ export default class HeaderModals extends React.Component {
           />
         </Modal>
         <Modal
-          isOpen={modal === 'resetPassword'}
+          isOpen={globalModalThatIsOpen === 'resetPassword'}
           contentLabel="Reset Password Modal"
           onRequestClose={closeModal}
           style={customModalStyles}
         >
-          <ResetPassword/>
+          <ResetPassword
+            resetPassword={resetPassword}
+            closeModal={closeGlobalModal}
+          />
         </Modal>
         <Modal
           isOpen={modal === 'contributor'}

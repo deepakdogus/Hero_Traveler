@@ -7,7 +7,6 @@ import {MenuLink} from './Headers/Shared'
 const Container = styled.div`
   margin: 0;
   padding: 0;
-  cursor: pointer;
 `
 
 const ShouldEditLink = styled.p`

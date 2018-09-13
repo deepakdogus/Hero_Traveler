@@ -12,6 +12,7 @@ import Colors from '../Shared/Themes/Colors'
 const Wrapper = styled.div`
   margin: 1px;
   position: relative;
+  cursor: pointer;
 `
 
 const CategoryTile = styled.div`

@@ -25,6 +25,7 @@ const UserName = styled.p`
   color: ${props => props.theme.Colors.background};
   letter-spacing: .7px;
   margin: 0;
+  cursor: pointer;
 `
 
 const ProfileDetail = styled.p`

@@ -62,14 +62,14 @@ class Tile extends React.Component {
   _onClickTile = () => {
     this.props.onClick(this.props.category.id)
   }
-
+ 
   render(){
     const {category, isSelected} = this.props
     return (
       <Col xs={6} sm={4} md={3} lg={2} >
         <Wrapper onClick={this._onClickTile}>
           <CategoryTile
-            imageSource={getImageUrl(category.image, 'optimized')}
+            imageSource={getImageUrl(category.image, 'optimized', {width: 400, height: 400})}
           />
           <TitleContainer selected={category.selected} overlayColor="black">
             <Title>{category.title}</Title>

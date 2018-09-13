@@ -36,18 +36,18 @@ const StyledIcon = styled(Icon)`
 const FacebookIcon = styled(StyledIcon)`
   width: 12.5px;
   padding: 0 9px;
-  cursor:pointer;
+  cursor: pointer;
 `
 
 const TwitterIcon = styled(StyledIcon)`
   width: 30.5px;
-  cursor:pointer;
+  cursor: pointer;
 `
 
 const InstagramIcon = styled(StyledIcon)`
   width: 25px;
   padding: 0 2.5px;
-  cursor:pointer;
+  cursor: pointer;
 `
 
 export default class ProfileBio extends React.Component {

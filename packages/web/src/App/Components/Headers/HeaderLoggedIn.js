@@ -31,7 +31,7 @@ const LoggedInTabletContainer = styled.div`
 const NotificationsIcon = styled(Icon)`
   height: 18px;
   width: 18px;
-  cursor:pointer;
+  cursor: pointer;
 `
 
 const StyledRoundedAvatarButton = styled(RoundedButton)`

@@ -51,7 +51,7 @@ export const SignupText = styled.span`
   font-weight: 600;
   color: ${props => props.theme.Colors.redHighlights};
   display: inline;
-  cursor:pointer;
+  cursor: pointer;
 `
 
 export const StyledInput = styled.input`

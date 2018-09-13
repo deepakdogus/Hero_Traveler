@@ -39,7 +39,7 @@ const Divider = styled.div`
 const StyledIcon = styled(Icon)`
   align-self: center;
   margin-top: 6px;
-  cursor:pointer;
+  cursor: pointer;
 `
 
 const FacebookIcon = styled(StyledIcon)`

@@ -63,7 +63,7 @@ const Text = styled.p`
   font-weight: 400;
   line-height: 122px;
   letter-spacing: .7px;
-  cursor:pointer;
+  cursor: pointer;
 `
 
 const tabBarTabs = ['STORIES', 'PEOPLE']
@@ -152,7 +152,7 @@ class Search extends Component {
     if(!this.state.lastSearchResults.hits) return
     else{
       this.setState({
-        inputText: '', 
+        inputText: '',
         lastSearchResults: {}
       })
     }
@@ -235,7 +235,7 @@ class Search extends Component {
       <Container>
         <HeaderInputContainer between='xs'>
           <HeaderInput
-            value={this.state.inputText} 
+            value={this.state.inputText}
             onChange={this.inputFieldChange}
             placeholder='Type to search' />
           <Text

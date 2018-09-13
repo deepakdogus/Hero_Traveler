@@ -13,7 +13,7 @@ const StyledIcon = styled(Icon)`
   margin-right: 5px;
   height: 20px;
   width: 20px;
-  cursor:pointer;
+  cursor: pointer;
   @media (max-width: ${sizes.tablet}px) {
 
   }

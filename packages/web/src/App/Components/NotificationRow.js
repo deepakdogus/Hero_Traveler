@@ -29,7 +29,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  cursor:pointer;
+  cursor: pointer;
 `
 
 const StyledUserName = styled.span`

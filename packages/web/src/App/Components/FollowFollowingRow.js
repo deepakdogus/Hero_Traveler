@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
@@ -64,15 +65,21 @@ export default class FollowFollowingRow extends Component {
 
   renderText = () => {
     const {user, type} = this.props
-    const detailsText = type === 'count' ? `${user.counts.followers} followers` : 'Lorum Ipsum'
+    const detailsText = type === 'count' 
+      ? `${_.get(user, 'counts.followers', 0)} followers` 
+      : `${_.get(user, 'profile.fullName')}`
     return (
       <StyledVerticalCenter>
-          <UserName
-            onClick={this._handleProfileClick}
-          >
-            {user.username}
-          </UserName>
-        <ProfileDetail>{detailsText}</ProfileDetail>
+        <UserName
+          onClick={this._handleProfileClick}
+        >
+          {user.username}
+        </UserName>
+        <ProfileDetail
+          onClick={this._handleProfileClick}
+        >
+          {detailsText}
+        </ProfileDetail>
       </StyledVerticalCenter>
     )
   }

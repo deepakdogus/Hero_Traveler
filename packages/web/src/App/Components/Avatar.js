@@ -3,14 +3,18 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import Icon from './Icon'
-import Image from './Image'
+import ImageWrapper from './ImageWrapper'
 
-const StyledImage = styled(Image)`
+const StyledImage = styled(ImageWrapper)`
   cursor: ${props => props.onClick ? 'pointer' : undefined};
   position: relative;
   right: ${props=> props.isProfileHeader ? '0' : '6'}px;
   bottom: 2px;
   margin-left: ${props => props.isStoryPreview ? '7px':'0'};
+  background-image: url(${props => props.src});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 `
 
 export default class Avatar extends React.Component {

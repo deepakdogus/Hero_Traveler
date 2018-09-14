@@ -28,12 +28,9 @@ const UserName = styled.p`
   cursor: pointer;
 `
 
-const ProfileDetail = styled.p`
-  font-family: ${props => props.theme.Fonts.type.base};
+const ProfileDetail = styled(UserName)`
   font-weight: 400;
   font-size: 16px;
-  letter-spacing: .7px;
-  margin: 0;
   color: ${props => props.theme.Colors.grey};
 `
 
@@ -66,8 +63,8 @@ export default class FollowFollowingRow extends Component {
 
   renderText = () => {
     const {user, type} = this.props
-    const detailsText = type === 'count' 
-      ? `${_.get(user, 'counts.followers', 0)} followers` 
+    const detailsText = type === 'count'
+      ? `${_.get(user, 'counts.followers', 0)} followers`
       : `${_.get(user, 'profile.fullName')}`
     return (
       <StyledVerticalCenter>

@@ -54,7 +54,7 @@ export default class FollowFollowingRow extends Component {
     const {user} = this.props
     return (
         <Avatar
-          avatarUrl={getImageUrl(user.profile.avatar)}
+          avatarUrl={getImageUrl(user.profile.avatar, 'avatarLarge')}
           size='larger'
           onClick={this._handleProfileClick}
         />

@@ -157,7 +157,7 @@ export default class StoryHeaderOld extends React.Component {
           <Row center='xs'>
             <ProfileLink to={`/profile/${author.id}/view`}>
               <Avatar
-                avatarUrl={getImageUrl(author.profile.avatar)}
+                avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
                 size='medium'
               />
             </ProfileLink>

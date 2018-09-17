@@ -155,7 +155,7 @@ class EditStory extends Component {
     if (haveFieldsChanged(workingDraft, originalDraft)) {
       window.onbeforeunload = (e) => {
         e.preventDefault()
-        return 'test'
+        return true
       }
     }
   }

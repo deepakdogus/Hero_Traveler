@@ -17,6 +17,13 @@ const StyledImage = styled(ImageWrapper)`
   background-repeat: no-repeat;
 `
 
+const StyledIcon = styled(Icon)`
+  cursor: ${props => props.onClick ? 'pointer' : undefined};
+  position: relative;
+  right: ${props=> props.isProfileHeader ? '0' : '6'}px;
+  margin-left: ${props => props.isStoryPreview ? '7px':'0'};
+`
+
 export default class Avatar extends React.Component {
   static propTypes = {
     avatarUrl: PropTypes.string,
@@ -39,21 +46,23 @@ export default class Avatar extends React.Component {
 
     if (!avatarUrl) {
       return (
-        <Icon
+        <StyledIcon
           name={type === 'profile' ? 'defaultProfile' : 'user-circle-o'}
           size={size}
           onClick={onClick}
+          isProfileHeader={isProfileHeader}
+          isStoryPreview={isStoryPreview}
         />
       )
     }
     else {
       return (
         <StyledImage
-          isStoryPreview={isStoryPreview}
           src={avatarUrl}
           type={size || 'avatar'}
           onClick={onClick}
           isProfileHeader={isProfileHeader}
+          isStoryPreview={isStoryPreview}
         />
       )
     }

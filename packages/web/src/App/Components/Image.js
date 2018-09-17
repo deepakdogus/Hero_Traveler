@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-function getSize(props) {
+export function getSize(props) {
   switch(props.type) {
     case 'avatar':
       return '30px'

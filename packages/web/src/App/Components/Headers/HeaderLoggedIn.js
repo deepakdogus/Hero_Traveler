@@ -4,6 +4,7 @@ import _ from 'lodash'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
+import { WrappedNavLink } from '../../Components/NavLinkStyled'
 import { Row, Col } from '../FlexboxGrid'
 import ProfileMenu from './ProfileMenu'
 import { mediaMax, mediaMin } from '../ContentLayout.component'
@@ -46,12 +47,6 @@ const StyledRoundedCreateButton = styled(RoundedButton)`
   bottom: ${props => props.profileAvatar ? '7px' : '2px'};
 `
 
-const StyledCreateButtonContainer = styled.div`
-  margin: 10px 25px;
-  position: relative;
-  display: inline;
-`
-
 const StyledRoundedNotificationButton = styled(StyledRoundedButton)`
   position: relative;
   bottom: ${props => props.profileAvatar ? '5px' : '-1.8px'};
@@ -63,6 +58,11 @@ const NotificationButtonContainer = styled.div`
   position: relative;
   display: inline;
 `
+
+const CreateButtonStyleOverride = {
+  position: 'relative',
+  display: 'inline',
+}
 
 class HeaderLoggedIn extends React.Component {
   static propTypes = {
@@ -200,15 +200,13 @@ class HeaderLoggedIn extends React.Component {
             <LoggedInDesktopContainer>
               {!this.props.pathname.includes('editStory') &&
                 // we remove the 'Create' button from the HeaderLoggedIn Nav if we're editting a story
-                <StyledCreateButtonContainer>
-                  <NavLink to='/editStory/new'>
-                    <StyledRoundedCreateButton
-                      text='Create'
-                      profileAvatar={profileAvatar}
-                      margin='none' 
-                    />
-                  </NavLink>
-                </StyledCreateButtonContainer>
+                <WrappedNavLink to='/editStory/new' styles={CreateButtonStyleOverride}>
+                  <StyledRoundedCreateButton
+                    text='Create'
+                    profileAvatar={profileAvatar}
+                    margin='none' 
+                  />
+                </WrappedNavLink>
               }
               <NotificationButtonContainer>
                 {notificationsCount > 0 &&
@@ -257,16 +255,12 @@ class HeaderLoggedIn extends React.Component {
                   }
             </LoggedInDesktopContainer>
             <LoggedInTabletContainer>
-              <StyledCreateButtonContainer>
-                <NavLink
-                  to='/editStory/new'
-                >
-                  <RoundedButton 
-                    text='Create'
-                    margin='none' 
-                  />
-                </NavLink>
-              </StyledCreateButtonContainer>
+              <WrappedNavLink to='/editStory/new' styles={CreateButtonStyleOverride}>
+                <RoundedButton 
+                  text='Create'
+                  margin='none'
+                />
+              </WrappedNavLink>
             </LoggedInTabletContainer>
             <HamburgerIcon
               name='hamburger'

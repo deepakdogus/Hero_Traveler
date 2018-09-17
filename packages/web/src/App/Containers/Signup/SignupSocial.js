@@ -6,7 +6,7 @@ import _ from 'lodash'
 
 import UserActions, {getFollowers} from '../../Shared/Redux/Entities/Users'
 
-import NavLinkStyled from '../../Components/NavLinkStyled'
+import { WrappedNavLink } from '../../Components/NavLinkStyled'
 import RoundedButton from '../../Components/RoundedButton'
 import HorizontalDivider from '../../Components/HorizontalDivider'
 // import SocialMediaRow from '../../Components/Signup/SocialMediaRow'
@@ -25,10 +25,6 @@ const NavLinkContainer = styled(SocialContainer)`
   display: flex;
   justify-content: flex-end;
   margin-top: 20px;
-`
-const NavLinkButtonContainer = styled.div`
- padding: 0;
- margin: 10px 25px;
 `
 
 /*
@@ -123,16 +119,12 @@ class SignupSocial extends Component {
     return (
       <SocialContainer>
         <NavLinkContainer>
-          <NavLinkButtonContainer>
-            <NavLinkStyled to='/signup/topics'>
-              <RoundedButton text='< Back' type="blackWhite" margin='none'></RoundedButton>
-            </NavLinkStyled>
-          </NavLinkButtonContainer>
-          <NavLinkButtonContainer>
-            <NavLinkStyled to='/feed'>
-              <RoundedButton text='Finish' margin='none'></RoundedButton>
-            </NavLinkStyled>
-          </ NavLinkButtonContainer>
+          <WrappedNavLink to='/signup/topics'>
+            <RoundedButton text='< Back' type="blackWhite" margin='none' />
+          </WrappedNavLink>
+          <WrappedNavLink to='/feed'>
+            <RoundedButton text='Finish' margin='none' />
+          </WrappedNavLink>
         </NavLinkContainer>
         <Container>
         <Title>FOLLOW</Title>

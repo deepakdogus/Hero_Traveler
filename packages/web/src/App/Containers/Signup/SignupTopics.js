@@ -9,7 +9,7 @@ import SignupActions from '../../Shared/Redux/SignupRedux'
 
 import RoundedButton from '../../Components/RoundedButton'
 import ExploreGrid from '../../Components/ExploreGrid'
-import NavLinkStyled from '../../Components/NavLinkStyled'
+import { WrappedNavLink } from '../../Components/NavLinkStyled'
 
 const TopicsContainer = styled.div`
   margin-bottom: 30px;
@@ -19,11 +19,6 @@ const NavLinkContainer = styled(TopicsContainer)`
   display: flex;
   justify-content: flex-end;
   margin-top: 20px;
-`
-
-const NavLinkButtonContainer = styled.div`
- padding: 0;
- margin: 10px 25px;
 `
 
 const Container = styled.div`
@@ -81,11 +76,12 @@ class SignupTopics extends Component {
     return (
         <TopicsContainer>
           <NavLinkContainer>
-            <NavLinkButtonContainer>
-              <NavLinkStyled to='/signup/social'>
-                <RoundedButton text='Next >' margin='none'></RoundedButton>
-              </NavLinkStyled>
-            </NavLinkButtonContainer>
+            <WrappedNavLink to='/signup/social'>
+              <RoundedButton
+                text='Next >'
+                margin='none' 
+              />
+            </WrappedNavLink>
           </NavLinkContainer>
           <Container>
             <SizedDiv>

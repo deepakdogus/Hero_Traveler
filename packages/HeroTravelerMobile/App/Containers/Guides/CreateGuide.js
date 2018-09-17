@@ -342,15 +342,19 @@ class CreateGuide extends Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const guides = state.entities.guides.entities
+  const {
+    fetchStatus,
+    error,
+    entities: guides,
+  } =  state.entities.guides
 
   return {
     user: state.entities.users.entities[state.session.userId],
     guide: guides[props.guideId],
-    fetching: state.entities.guides.fetchStatus.fetching,
-    error: state.entities.guides.error,
-    loaded: state.entities.guides.fetchStatus.loaded,
-    status: state.entities.guides.fetchStatus,
+    fetching: fetchStatus.fetching,
+    error: error,
+    loaded: fetchStatus.loaded,
+    status: fetchStatus,
   }
 }
 

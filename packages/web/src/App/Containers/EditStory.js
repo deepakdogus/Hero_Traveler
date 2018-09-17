@@ -19,9 +19,9 @@ import {
   isFieldSame,
 } from '../Shared/Lib/draftChangedHelpers'
 
-const Container = styled.div``
+export const Container = styled.div``
 
-const ContentWrapper = styled.div`
+export const ContentWrapper = styled.div`
   margin: 0 17%;
 `
 

@@ -1,44 +1,70 @@
-import React, { Component } from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
-import PropTypes from 'prop-types'
+import _ from 'lodash'
 
+import CategoryActions from '../Shared/Redux/Entities/Categories'
 import AddCoverTitles from '../Components/CreateStory/AddCoverTitles'
+import StoryDetails from '../Components/CreateStory/StoryDetails'
+import {
+  SharedComponent,
+  mapStateToProps,
+  mapDispatchToProps,
+} from '../Shared/Lib/CreateGuideHelpers'
+import {
+  Container,
+  ContentWrapper,
+} from './EditStory'
 
-
-class CreateGuide extends Component {
-  static propTypes = {
-    workingDraft: PropTypes.object,
-    updateWorkingDraft: PropTypes.func,
+class CreateGuide extends SharedComponent {
+  updateGuide = (update) => {
+    const updatedGuide = _.merge({}, this.state.guide, update)
+    this.setState({
+      guide: updatedGuide
+    })
   }
 
-  onInputChange = (update) => {
-    this.props.updateWorkingDraft(update)
+  componentWillMount() {
+    const {guide, loadDefaultCategories} = this.props
+    loadDefaultCategories()
+    if (guide) {
+      this.setState({
+        guide,
+      })
+    }
   }
-
-  setEditorRef = (ref) => this.editor = ref
 
   render() {
     return (
-      <div>
-        <AddCoverTitles
-          onInputChange={this.onInputChange}
-          workingDraft={this.props.workingDraft}
-        />
-      </div>
+      <Container>
+        <ContentWrapper>
+          <AddCoverTitles
+            onInputChange={this.updateGuide}
+            workingDraft={this.state.guide}
+            isGuide
+          />
+          <StoryDetails
+            onInputChange={this.updateGuide}
+            workingDraft={this.state.guide}
+            categories={this.props.categories}
+            isGuide
+          />
+        </ContentWrapper>
+      </Container>
     )
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    workingDraft: {...state.storyCreate.workingDraft},
-  }
+function extendedMapStateToProps(state, props) {
+  const stateMapping = mapStateToProps(state, props)
+  stateMapping.categories = state.entities.categories.entities
+  return stateMapping
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    // updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),
-  }
+function extendedMapDispatchToProps(dispatch) {
+  const dispatchMapping = mapDispatchToProps(dispatch)
+  dispatchMapping.loadDefaultCategories = () => dispatch(CategoryActions.loadCategoriesRequest())
+  return dispatchMapping
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateGuide)
+
+export default connect(extendedMapStateToProps, extendedMapDispatchToProps)(CreateGuide)

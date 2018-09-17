@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import { push } from 'react-router-redux'
 
 import {
   mapStateToProps,
@@ -24,6 +25,10 @@ const CategoryRowsContainer = styled.div``
 
 const CreateContainer = styled.div`
   padding: 8px 30px;
+  cursor: pointer;
+  &:hover {
+    background-color: ${props => props.theme.Colors.onHoverGrey};
+  }
 `
 
 const CreateIconContainer = styled(VerticalCenter)`
@@ -128,12 +133,17 @@ class AddStoryToGuides extends SharedComponent {
     this.props.closeModal()
   }
 
+  createGuideReroute = () => {
+    this.props.reroute('/guide/edit/new')
+    this.props.closeModal()
+  }
+
   render() {
     return (
       <Container>
         <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
         <RightTitle>ADD TO GUIDE</RightTitle>
-        <CreateContainer>
+        <CreateContainer onClick={this.createGuideReroute}>
           <SpaceBetweenRow
             renderImage={this.renderImage}
             renderText={this.renderText}
@@ -155,5 +165,10 @@ class AddStoryToGuides extends SharedComponent {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddStoryToGuides)
+function extendedMapDispatchToProps(dispatch) {
+  const mapping = mapDispatchToProps(dispatch)
+  mapping.reroute = (path) => dispatch(push(path))
+  return mapping
+}
 
+export default connect(mapStateToProps, extendedMapDispatchToProps)(AddStoryToGuides)

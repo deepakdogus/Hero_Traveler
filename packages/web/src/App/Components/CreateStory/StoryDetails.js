@@ -14,6 +14,7 @@ import GoogleLocator from './GoogleLocator'
 import ReactDayPicker from './ReactDayPicker'
 import {Title} from './Shared'
 import TagSelector from './TagSelector'
+import VerticalCenter from '../VerticalCenter'
 
 const Container = styled.div`
   padding: 14px 0px 14px 0px;
@@ -41,6 +42,10 @@ const DetailLabel = styled.label`
   color: ${props => props.theme.Colors.background};
   letter-spacing: .7px;
   padding-left: 2px;
+`
+
+const PrivacyLabel = styled(DetailLabel)`
+  font-size: 16px;
 `
 
 export const StyledInput = styled.input`
@@ -75,6 +80,8 @@ const TagIcon = styled(IconWithMargin)`
   width: 26px;
 `
 
+const CheckIcon = styled(TagIcon)``
+
 const HashtagIcon = styled(IconWithMargin)`
   height: 35px;
   width: 35px;
@@ -84,6 +91,8 @@ const CostIcon = styled(IconWithMargin)`
   height: 30px;
   width: 30px;
 `
+
+const InfoIcon = styled(CostIcon)``
 
 export const IconWrapper = styled.div`
   width: 35px;
@@ -159,6 +168,7 @@ export default class StoryDetails extends React.Component {
     workingDraft: PropTypes.object,
     onInputChange: PropTypes.func,
     categories: PropTypes.object,
+    isGuide: PropTypes.bool,
   }
   constructor(props) {
     super(props)
@@ -292,13 +302,22 @@ export default class StoryDetails extends React.Component {
     })
   }
 
+  togglePrivacy = () => {
+    this.props.onInputChange({
+      isPrivate: !this.props.workingDraft.isPrivate
+    })
+  }
+
   getCostPlaceHolderText = (type) =>{
     if (type === "stay") return "Cost Per Night"
     return "Cost Per Person"
   }
 
   render() {
-    const {workingDraft} = this.props
+    const {
+      workingDraft,
+      isGuide,
+    } = this.props
     const {
       showDayPicker,
       categoriesList,
@@ -310,34 +329,53 @@ export default class StoryDetails extends React.Component {
 
     return (
       <Container>
-        <StyledTitle>{workingDraft.title} DETAILS</StyledTitle>
-        <br/>
-        <br/>
-        <InputRowContainer>
-          <ActivitySelectRow>
-            <DetailLabel>Activity: </DetailLabel>
-              <RadioButtonGroup
-                valueSelected={workingDraft.type}
-                name="activity"
-                style={styles.radioButtonGroup}
-                onChange={this.handleRadioChange}
-              >
-                {buttons.map((button, index) => {
-                  return (
-                    <RadioButton
-                      key={index}
-                      value={button}
-                      label={button.toUpperCase()}
-                      style={styles.radioButton}
-                      labelStyle={styles.radioButtonLabel}
-                      checkedIcon={<RadioButtonChecked style={styles.radioButtonFilled} />}
-                      uncheckedIcon={<RadioButtonUnchecked/>}
-                    />
-                  )
-                })}
-              </RadioButtonGroup>
-          </ActivitySelectRow>
-        </InputRowContainer>
+        {!isGuide &&
+          <div>
+            <StyledTitle>{workingDraft.title} DETAILS</StyledTitle>
+            <br/>
+            <br/>
+          </div>
+        }
+        {!isGuide &&
+          <InputRowContainer>
+            <ActivitySelectRow>
+              <DetailLabel>Activity: </DetailLabel>
+                <RadioButtonGroup
+                  valueSelected={workingDraft.type}
+                  name="activity"
+                  style={styles.radioButtonGroup}
+                  onChange={this.handleRadioChange}
+                >
+                  {buttons.map((button, index) => {
+                    return (
+                      <RadioButton
+                        key={index}
+                        value={button}
+                        label={button.toUpperCase()}
+                        style={styles.radioButton}
+                        labelStyle={styles.radioButtonLabel}
+                        checkedIcon={<RadioButtonChecked style={styles.radioButtonFilled} />}
+                        uncheckedIcon={<RadioButtonUnchecked/>}
+                      />
+                    )
+                  })}
+                </RadioButtonGroup>
+            </ActivitySelectRow>
+          </InputRowContainer>
+        }
+        {isGuide &&
+          <InputRowContainer>
+            <IconWrapper>
+              <InfoIcon name='info'/>
+            </IconWrapper>
+            <StyledInput
+              placeholder='Title'
+              value={workingDraft.title}
+              name='title'
+              onChange={this.onGenericChange}
+            />
+          </InputRowContainer>
+        }
         <HorizontalDivider color='lighter-grey' opaque/>
         <InputRowContainer>
           <IconWrapper>
@@ -348,25 +386,27 @@ export default class StoryDetails extends React.Component {
             address={this.state.address}
           />
         </InputRowContainer>
-        <HorizontalDivider color='lighter-grey' opaque/>
-        <InputRowContainer>
-          <IconWrapper>
-            <DateIcon name='date'/>
-          </IconWrapper>
-          <StyledInput
-            type='text'
-            placeholder={'MM-DD-YYYY'}
-            value={this.formatTripDate(workingDraft.tripDate)}
-            onClick={this.toggleDayPicker}
-            readOnly
-          />
-          {showDayPicker &&
-            <StyledReactDayPicker
-              handleDayClick={this.handleDayClick}
-              togglePicker={this.toggleDayPicker}
+        {!isGuide && <HorizontalDivider color='lighter-grey' opaque/>}
+        {!isGuide &&
+          <InputRowContainer>
+            <IconWrapper>
+              <DateIcon name='date'/>
+            </IconWrapper>
+            <StyledInput
+              type='text'
+              placeholder={'MM-DD-YYYY'}
+              value={this.formatTripDate(workingDraft.tripDate)}
+              onClick={this.toggleDayPicker}
+              readOnly
             />
-          }
-        </InputRowContainer>
+            {showDayPicker &&
+              <StyledReactDayPicker
+                handleDayClick={this.handleDayClick}
+                togglePicker={this.toggleDayPicker}
+              />
+            }
+          </InputRowContainer>
+        }
         <HorizontalDivider color='lighter-grey' opaque/>
         <TagSelector
           handleTagAdd={this.handleTagAdd}
@@ -379,21 +419,37 @@ export default class StoryDetails extends React.Component {
           selectedTags={workingDraft.categories}
           tagsList={categoriesList}
         />
-        <HorizontalDivider color='lighter-grey' opaque/>
-        {
-        <TagSelector
-          handleTagAdd={this.handleTagAdd}
-          loadDefaultTags={this.loadDefaultHashtags}
-          handleTagRemove={this.handleTagRemove}
-          updateTagsList={this.updateHashtagsList}
-          isSameTag={isSameTag}
-          Icon={HashtagIcon}
-          iconName='hashtag'
-          selectedTags={workingDraft.hashtags}
-          tagsList={hashtagsList}
-        />
+        {!isGuide && <HorizontalDivider color='lighter-grey' opaque/>}
+        {!isGuide &&
+          <TagSelector
+            handleTagAdd={this.handleTagAdd}
+            loadDefaultTags={this.loadDefaultHashtags}
+            handleTagRemove={this.handleTagRemove}
+            updateTagsList={this.updateHashtagsList}
+            isSameTag={isSameTag}
+            Icon={HashtagIcon}
+            iconName='hashtag'
+            selectedTags={workingDraft.hashtags}
+            tagsList={hashtagsList}
+          />
         }
         <HorizontalDivider color='lighter-grey' opaque/>
+        {isGuide &&
+          <InputRowContainer>
+            <IconWrapper>
+              <DateIcon name='date'/>
+            </IconWrapper>
+            <StyledInput
+              type='number'
+              placeholder='How many days is this guide?'
+              value={workingDraft.duration}
+              min='0'
+              name='duration'
+              onChange={this.onGenericChange}
+            />
+          </InputRowContainer>
+        }
+        {isGuide && <HorizontalDivider color='lighter-grey' opaque/>}
         <InputRowContainer>
           <IconWrapper>
             <CostIcon name='cost'/>
@@ -410,14 +466,33 @@ export default class StoryDetails extends React.Component {
         <HorizontalDivider color='lighter-grey' opaque/>
         <Container>
           <DetailLabel>
-            Travel Tips
+            {isGuide ? 'Overview' : 'Travel Tips'}
           </DetailLabel>
           <TravelTipsInput
-            value={workingDraft.travelTips}
+            value={isGuide ? workingDraft.travelTips : workingDraft.travelTips}
             name='travelTips'
-            placeholder='What should your fellow travelers know?'
+            placeholder={
+              isGuide
+              ? `What's your guide about?`
+              : 'What should your fellow travelers know?'
+            }
             onChange={this.onGenericChange}
           />
+        </Container>
+        <Container>
+          <Row>
+            <IconWrapper>
+              <CheckIcon
+                name={workingDraft.isPrivate ? 'redCheck' : 'greyCheck'}
+                onClick={this.togglePrivacy}
+              />
+            </IconWrapper>
+            <VerticalCenter>
+              <PrivacyLabel>
+                Make this guide private
+              </PrivacyLabel>
+            </VerticalCenter>
+          </Row>
         </Container>
       </Container>
     )

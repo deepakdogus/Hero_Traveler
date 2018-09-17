@@ -161,7 +161,7 @@ export default class FeedItemHeader extends React.Component {
         <TopRow between="xs">
           <Row>
             <Avatar
-              avatarUrl={getImageUrl(author.profile.avatar)}
+              avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
               size='medium'
               onClick={this._profileReroute}
             />

@@ -154,7 +154,7 @@ export default class ProfileHeaderView extends React.Component {
           <NarrowCol>
             <AvatarWrapper>
               <StyledAvatar
-                avatarUrl={getImageUrl(user.profile.avatar)}
+                avatarUrl={getImageUrl(user.profile.avatar, 'avatarLarge')}
                 type='profile'
                 size='x-large'
               />

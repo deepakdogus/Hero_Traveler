@@ -122,6 +122,8 @@ const ActivityTypes = {
 
 const videoThumbnailOptions = {
   video: true,
+  width: 100,
+  height: 100
 }
 
 export default class NotificationRow extends Component {
@@ -151,7 +153,7 @@ export default class NotificationRow extends Component {
     return (
       <RenderImageContainer>
         <Avatar
-          avatarUrl={getImageUrl(this.props.user.profile.avatar, 'avatar')}
+          avatarUrl={getImageUrl(this.props.user.profile.avatar, 'avatarLarge')}
           size='larger'
         />
       </RenderImageContainer>

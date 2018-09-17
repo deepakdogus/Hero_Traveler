@@ -3,6 +3,7 @@ package com.herotravelermobile;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.branch.rnbranch.RNBranchPackage;
 import com.wix.autogrowtextinput.AutoGrowTextInputPackage;
 import com.wix.autogrowtextinput.AutoGrowTextInputPackage;
 import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
@@ -39,6 +40,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNBranchPackage(),
             new AutoGrowTextInputPackage(),
             new AutoGrowTextInputPackage(),
             new RNGooglePlacesPackage(),

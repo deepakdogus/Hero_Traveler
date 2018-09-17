@@ -126,6 +126,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-branch')
     compile project(':react-native-autogrow-textinput')
     compile project(':@hero/react-native-autogrow-textinput')
     compile project(':react-native-google-places')

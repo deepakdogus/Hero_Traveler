@@ -18,6 +18,7 @@
 #import <IQKeyboardManager/IQKeyboardManager.h>
 #import "RCTVideoCache.h"
 #import "RCTVideoManager.h"
+#import <react-native-branch/RNBranch.h>
 @import GooglePlaces;
 @import GoogleMaps;
 

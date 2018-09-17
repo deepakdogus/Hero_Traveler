@@ -159,6 +159,7 @@ export default class StoryDetails extends React.Component {
     workingDraft: PropTypes.object,
     onInputChange: PropTypes.func,
     categories: PropTypes.object,
+    reroute: PropTypes.func,
   }
   constructor(props) {
     super(props)
@@ -185,6 +186,13 @@ export default class StoryDetails extends React.Component {
     if (Object.keys(this.props.categories).length !== Object.keys(nextProps.categories).length && nextProps.workingDraft){
       const categoriesList = formatCategories(nextProps.categories)
       this.updateCategoriesList(_.differenceWith(categoriesList, nextProps.workingDraft.categories, isSameTag))
+    }
+  }
+
+  componentDidMount() {
+    const { coverVideo, coverImage } = this.props.workingDraft
+    if (!coverVideo && !coverImage) {
+      this.props.reroute('/editStory/new')
     }
   }
 

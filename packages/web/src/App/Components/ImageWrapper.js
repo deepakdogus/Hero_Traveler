@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { getSize } from './Image'
+import { getSize } from './Icon'
 
 export default styled.div`
   width: ${props => getSize};

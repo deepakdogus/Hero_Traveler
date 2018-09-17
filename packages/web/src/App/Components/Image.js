@@ -1,25 +1,12 @@
 import styled from 'styled-components'
+import { getSize } from './Icon'
 
-export function getSize(props) {
-  switch(props.type) {
-    case 'avatar':
-      return '30px'
-    case 'medium':
-      return '50px'
-    case 'large':
-      return '62px'
-    case 'larger':
-      return '85px'
-    case 'x-large':
-      return '140px'
-    default:
-      return 'auto'
-  }
+function getSizeOverrideDefault(props){
+  return getSize(props, 'auto')
 }
 
-
 export default styled.img`
-  width: ${props => getSize};
-  height: ${props => getSize};
+  width: ${props => getSizeOverrideDefault};
+  height: ${props => getSizeOverrideDefault};
   border-radius: ${props => props.type !== undefined ? '100%' : '0'};
 `

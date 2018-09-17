@@ -42,13 +42,19 @@ const StyledRoundedAvatarButton = styled(RoundedButton)`
 `
 
 const StyledRoundedCreateButton = styled(RoundedButton)`
-    position: relative;
-    bottom: ${props => props.profileAvatar ? '7px' : '2px'};
+  position: relative;
+  bottom: ${props => props.profileAvatar ? '7px' : '2px'};
+`
+
+const StyledCreateButtonContainer = styled.div`
+  margin: 10px 25px;
+  position: relative;
+  display: inline;
 `
 
 const StyledRoundedNotificationButton = styled(StyledRoundedButton)`
-    position: relative;
-    bottom: ${props => props.profileAvatar ? '5px' : '-1.8px'};
+  position: relative;
+  bottom: ${props => props.profileAvatar ? '5px' : '-1.8px'};
 `
 
 const NotificationButtonContainer = styled.div`
@@ -194,12 +200,15 @@ class HeaderLoggedIn extends React.Component {
             <LoggedInDesktopContainer>
               {!this.props.pathname.includes('editStory') &&
                 // we remove the 'Create' button from the HeaderLoggedIn Nav if we're editting a story
-                <NavLink to='/editStory/new'>
-                  <StyledRoundedCreateButton
-                    text='Create'
-                    profileAvatar={profileAvatar}
-                  />
-                </NavLink>
+                <StyledCreateButtonContainer>
+                  <NavLink to='/editStory/new'>
+                    <StyledRoundedCreateButton
+                      text='Create'
+                      profileAvatar={profileAvatar}
+                      margin='none' 
+                    />
+                  </NavLink>
+                </StyledCreateButtonContainer>
               }
               <NotificationButtonContainer>
                 {notificationsCount > 0 &&
@@ -248,11 +257,16 @@ class HeaderLoggedIn extends React.Component {
                   }
             </LoggedInDesktopContainer>
             <LoggedInTabletContainer>
-              <NavLink
-                to='/editStory/new'
-              >
-                <StyledRoundedButton text='Create'/>
-              </NavLink>
+              <StyledCreateButtonContainer>
+                <NavLink
+                  to='/editStory/new'
+                >
+                  <RoundedButton 
+                    text='Create'
+                    margin='none' 
+                  />
+                </NavLink>
+              </StyledCreateButtonContainer>
             </LoggedInTabletContainer>
             <HamburgerIcon
               name='hamburger'

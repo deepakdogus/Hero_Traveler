@@ -26,6 +26,10 @@ const NavLinkContainer = styled(SocialContainer)`
   justify-content: flex-end;
   margin-top: 20px;
 `
+const NavLinkButtonContainer = styled.div`
+ padding: 0;
+ margin: 10px 25px;
+`
 
 /*
 Title and Subtitle are indentical in SignupSocial and SignupTopics
@@ -119,12 +123,16 @@ class SignupSocial extends Component {
     return (
       <SocialContainer>
         <NavLinkContainer>
-          <NavLinkStyled to='/signup/topics'>
-            <RoundedButton text='< Back' type="blackWhite"></RoundedButton>
-          </NavLinkStyled>
-          <NavLinkStyled to='/feed'>
-            <RoundedButton text='Finish'></RoundedButton>
-          </NavLinkStyled>
+          <NavLinkButtonContainer>
+            <NavLinkStyled to='/signup/topics'>
+              <RoundedButton text='< Back' type="blackWhite" margin='none'></RoundedButton>
+            </NavLinkStyled>
+          </NavLinkButtonContainer>
+          <NavLinkButtonContainer>
+            <NavLinkStyled to='/feed'>
+              <RoundedButton text='Finish' margin='none'></RoundedButton>
+            </NavLinkStyled>
+          </ NavLinkButtonContainer>
         </NavLinkContainer>
         <Container>
         <Title>FOLLOW</Title>

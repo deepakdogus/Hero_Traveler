@@ -21,6 +21,11 @@ const NavLinkContainer = styled(TopicsContainer)`
   margin-top: 20px;
 `
 
+const NavLinkButtonContainer = styled.div`
+ padding: 0;
+ margin: 10px 25px;
+`
+
 const Container = styled.div`
   margin: 0 7.5%;
   text-align: center;
@@ -76,9 +81,11 @@ class SignupTopics extends Component {
     return (
         <TopicsContainer>
           <NavLinkContainer>
-            <NavLinkStyled to='/signup/social'>
-              <RoundedButton text='Next >'></RoundedButton>
-            </NavLinkStyled>
+            <NavLinkButtonContainer>
+              <NavLinkStyled to='/signup/social'>
+                <RoundedButton text='Next >' margin='none'></RoundedButton>
+              </NavLinkStyled>
+            </NavLinkButtonContainer>
           </NavLinkContainer>
           <Container>
             <SizedDiv>

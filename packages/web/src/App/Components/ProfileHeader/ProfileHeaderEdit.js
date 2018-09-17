@@ -269,10 +269,10 @@ export default class ProfileHeaderEdit extends React.Component {
   render () {
     const {user, error} = this.props
     const {bio, loadedImage, modal, photoType, username, about} = this.state
-    const avatarUrl = getImageUrl(user.profile.avatar, 'avatar')
+    const avatarUrl = getImageUrl(user.profile.avatar, 'avatarLarge')
     let targetedImage
     if (photoType === 'avatar') targetedImage = avatarUrl
-    else if (photoType === 'userCover') targetedImage = getImageUrl(user.profile.cover)
+    else if (photoType === 'userCover') targetedImage = getImageUrl(user.profile.cover, 'avatarLarge')
     return (
       <Container>
         <ProfileEditCentered>

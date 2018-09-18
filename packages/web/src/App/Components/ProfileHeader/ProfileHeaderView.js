@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import {Row, Col} from '../FlexboxGrid'
+import { Row, Col } from '../FlexboxGrid'
 import RoundedButton from '../RoundedButton'
 import Icon from '../Icon'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
@@ -15,7 +15,7 @@ import {
   ButtonWrapper,
   BottomLeftText,
 } from './ProfileHeaderShared'
-import NavLinkStyled from '../NavLinkStyled'
+import { NavLinkStyled } from '../NavLinkStyled'
 import VerticalCenter from '../VerticalCenter'
 
 const LimitedWidthRow = styled(Row)`
@@ -154,7 +154,7 @@ export default class ProfileHeaderView extends React.Component {
           <NarrowCol>
             <AvatarWrapper>
               <StyledAvatar
-                avatarUrl={getImageUrl(user.profile.avatar)}
+                avatarUrl={getImageUrl(user.profile.avatar, 'avatarLarge')}
                 type='profile'
                 size='x-large'
               />

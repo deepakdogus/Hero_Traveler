@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
+import {push} from 'react-router-redux'
 
 import StoryDetails from '../../Components/CreateStory/StoryDetails'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
@@ -12,6 +13,7 @@ class CreateStoryCoverContent extends Component {
     workingDraft: PropTypes.object,
     loadDefaultCategories: PropTypes.func,
     updateWorkingDraft: PropTypes.func,
+    reroute: PropTypes.func,
   }
 
   onInputChange = (update) => {
@@ -28,6 +30,7 @@ class CreateStoryCoverContent extends Component {
         onInputChange={this.onInputChange}
         workingDraft={this.props.workingDraft}
         categories={this.props.categories}
+        reroute={this.props.reroute}
       />
     )
   }
@@ -44,6 +47,7 @@ function mapDispatchToProps(dispatch) {
   return {
     loadDefaultCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
     updateWorkingDraft: (story) => dispatch(StoryCreateActions.updateWorkingDraft(story)),
+    reroute: (path) => dispatch(push(path)),
   }
 }
 

@@ -6,7 +6,7 @@ import _ from 'lodash'
 
 import UserActions, {getFollowers} from '../../Shared/Redux/Entities/Users'
 
-import NavLinkStyled from '../../Components/NavLinkStyled'
+import { WrappedNavLink } from '../../Components/NavLinkStyled'
 import RoundedButton from '../../Components/RoundedButton'
 import HorizontalDivider from '../../Components/HorizontalDivider'
 // import SocialMediaRow from '../../Components/Signup/SocialMediaRow'
@@ -119,12 +119,19 @@ class SignupSocial extends Component {
     return (
       <SocialContainer>
         <NavLinkContainer>
-          <NavLinkStyled to='/signup/topics'>
-            <RoundedButton text='< Back' type="blackWhite"></RoundedButton>
-          </NavLinkStyled>
-          <NavLinkStyled to='/feed'>
-            <RoundedButton text='Finish'></RoundedButton>
-          </NavLinkStyled>
+          <WrappedNavLink to='/signup/topics'>
+            <RoundedButton
+              text='< Back'
+              type="blackWhite"
+              margin='none'
+            />
+          </WrappedNavLink>
+          <WrappedNavLink to='/feed'>
+            <RoundedButton
+              text='Finish'
+              margin='none'
+            />
+          </WrappedNavLink>
         </NavLinkContainer>
         <Container>
         <Title>FOLLOW</Title>

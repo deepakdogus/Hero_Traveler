@@ -14,6 +14,7 @@ import CreateStoryCoverContent from './CreateStory/1_CoverContent'
 import CreateStoryDetails from './CreateStory/2_Details'
 import FooterToolbar from '../Components/CreateStory/FooterToolbar'
 import {Title, Text} from '../Components/Modals/Shared'
+import { haveFieldsChanged } from '../Shared/Lib/draftChangedHelpers'
 
 import {
   isFieldSame,
@@ -111,6 +112,19 @@ class EditStory extends Component {
     }
   }
 
+  componentDidMount() {
+    const {
+      userId,
+      registerDraft,
+      workingDraft
+    } = this.props
+    //need to return a non-falsy value to render window dialog
+
+    if (workingDraft === null) {
+      registerDraft(createLocalDraft(userId))
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     const {match, reroute, originalDraft} = nextProps
     if (this.hasPublished(nextProps)){
@@ -136,6 +150,13 @@ class EditStory extends Component {
     if (this.props.syncProgress > 0 && this.props.syncProgressSteps === this.props.syncProgress) {
       this.props.reroute('/feed')
       this.props.resetCreateStore()
+    }
+    const { workingDraft, originalDraft } = this.props
+    if (haveFieldsChanged(workingDraft, originalDraft)) {
+      window.onbeforeunload = (e) => {
+        e.preventDefault()
+        return true
+      }
     }
   }
 

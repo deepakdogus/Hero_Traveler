@@ -29,11 +29,10 @@ class AppRoot extends Component {
         <AuthRoute exact path='/feed' component={Feed} />
         <AuthRoute path='/signup/social' component={SignupSocial} />
         <AuthRoute path='/signup/topics' component={SignupTopics} />
+        <AuthRoute path='/guide/edit/:guideId' component={CreateGuide} />
         <Route path='/story/:storyId' component={Story} />
         <Route path='/guide/:guideId' component={Guide} />
-        <Route exact path='/createStory' component={CreateStory} />
         <AuthRoute path='/editStory/:storyId' component={EditStory} />
-        <Route path='/guide/edit/:guideId' component={CreateGuide} />
         <Route path='/profile/:userId/view' component={Profile} />
         <AuthRoute path='/profile/:userId/edit' component={Profile}/>
         <Route path='/search' component={Search} />

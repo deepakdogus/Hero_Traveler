@@ -43,34 +43,6 @@ class CreateGuide extends SharedCreateGuide {
     this.props.dismissError()
   }
 
-  isGuideValid = () => {
-    const {coverImage, title, locations} = this.state.guide
-    return !!coverImage && !!title && locations.length
-  }
-
-  onDone = () => {
-    const {creating} = this.state
-    const {updateGuide, createGuide, user, guideFailure} = this.props
-    if (creating) return
-    if (!this.isGuideValid()) {
-      guideFailure(new Error(
-        "Please ensure the guide has a photo, a title, and at least one location."
-      ))
-      return
-    }
-
-    const onDoneFunc = this.isExistingGuide() ? updateGuide : createGuide
-    this.setState(
-      {
-        creating: true,
-      },
-      () => {
-        let guide = this.state.guide
-        onDoneFunc(guide, user.id)
-      }
-    )
-  }
-
   componentWillMount() {
     const {guide} = this.props
     if (guide) {
@@ -80,25 +52,10 @@ class CreateGuide extends SharedCreateGuide {
     }
   }
 
-  componentDidUpdate = (prevProps) => {
+  onSuccessfullSave = () => {
     const {guide} = this.props
-    if (
-      this.state.creating &&
-      prevProps.fetching && this.props.fetching === false
-    ) {
-      if (!prevProps.error && this.props.error) {
-        this.setState({creating: false})
-      }
-      else {
-        this.setState(
-          {creating: false},
-          () => {
-            if (this.isExistingGuide()) NavActions.editGuideStories({guideId: guide.id})
-            else NavActions.pop()
-          }
-        )
-      }
-    }
+    if (this.isExistingGuide()) NavActions.editGuideStories({guideId: guide.id})
+    else NavActions.pop()
   }
 
   onLocationSelectionPress = () => {
@@ -178,11 +135,6 @@ class CreateGuide extends SharedCreateGuide {
 
   togglePrivacy = () => {
     this.updateGuide({ isPrivate: !this.state.guide.isPrivate })
-  }
-
-  isExistingGuide = () => {
-    const {guide} = this.state
-    return guide && guide.id
   }
 
   render() {

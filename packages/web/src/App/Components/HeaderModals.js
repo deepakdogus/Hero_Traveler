@@ -88,10 +88,6 @@ export default class HeaderModals extends React.Component {
     resetPassword: PropTypes.func,
   }
 
-  closeGlobalModal = () => {
-    this.props.closeGlobalModal()
-  }
-
   render() {
     const {
       globalModalThatIsOpen,
@@ -214,7 +210,7 @@ export default class HeaderModals extends React.Component {
           style={customModalStyles}
         >
           <FlagStory
-            closeModal={this.closeGlobalModal}
+            closeModal={closeGlobalModal}
             reroute={reroute}
             userId={userId}
             flagStory={flagStory}
@@ -227,7 +223,7 @@ export default class HeaderModals extends React.Component {
           onRequestClose={closeModal}
         >
           <NotificationsThread
-            closeModal={this.closeGlobalModal}
+            closeModal={closeGlobalModal}
             activitiesById={activitiesById}
             activities={activities}
             markSeen={markSeen}
@@ -239,10 +235,10 @@ export default class HeaderModals extends React.Component {
         <RightModal
           isOpen={globalModalThatIsOpen === 'comments'}
           contentLabel='Comments Modal'
-          onRequestClose={this.closeGlobalModal}
+          onRequestClose={closeGlobalModal}
         >
           <Comments
-            closeModal={this.closeGlobalModal}
+            closeModal={closeGlobalModal}
             storyId={globalModalParams.storyId}
             guideId={globalModalParams.guideId}
           />
@@ -252,7 +248,7 @@ export default class HeaderModals extends React.Component {
           contentLabel='Settings Modal'
         >
           <Settings
-            closeModal={this.closeGlobalModal}
+            closeModal={closeGlobalModal}
             attemptChangePassword={attemptChangePassword}
             loginReduxFetching={loginReduxFetching}
             loginReduxError={loginReduxError}
@@ -271,15 +267,15 @@ export default class HeaderModals extends React.Component {
         >
           <AddStoryToGuides
             storyId={globalModalParams.storyId}
-            closeModal={this.closeGlobalModal}
+            closeModal={closeGlobalModal}
           />
         </RightModal>
         <CenterModal
           isOpen={globalModalThatIsOpen === 'faqTermsAndConditions'}
           contentLabel='FAQ Terms & Conditions'
-          onRequestClose={this.closeGlobalModal}
+          onRequestClose={closeGlobalModal}
         >
-          <FAQTermsAndConditions closeModal={this.closeGlobalModal}/>
+          <FAQTermsAndConditions closeModal={closeGlobalModal}/>
         </CenterModal>
         <RightModal
           isOpen={modal === 'inbox'}

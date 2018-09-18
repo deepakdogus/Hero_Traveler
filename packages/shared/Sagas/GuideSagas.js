@@ -4,22 +4,11 @@ import UserActions from '../Redux/Entities/Users'
 import CategoryActions from '../Redux/Entities/Categories'
 import { getNewCover } from '../Redux/helpers/coverUpload'
 import CloudinaryAPI from '../../Services/CloudinaryAPI'
+import { createCover } from './StorySagas'
 import _ from 'lodash'
 
-function * createCover(api, guide){
-  const isImageCover = guide.coverImage
-  const cover = getNewCover(guide.coverImage, guide.coverVideo)
-  if (!cover) return guide
-  const cloudinaryCover = yield CloudinaryAPI.uploadMediaFile(cover, isImageCover ? 'image' : 'video')
-  if (cloudinaryCover.error) return cloudinaryCover
-  cloudinaryCover.data = JSON.parse(cloudinaryCover.data)
-  if (isImageCover) guide.coverImage = cloudinaryCover.data
-  else guide.coverVideo = cloudinaryCover.data
-  return guide
-}
-
 export function * createGuide(api, {guide, userId}) {
-  const coverResponse = yield createCover(api, guide)
+  const coverResponse = yield createCover(api, guide, true)
   // add error handling here
   const response = yield call(api.createGuide, guide)
   if (response.ok) {
@@ -54,7 +43,7 @@ export function * getGuide(api, {guideId}) {
 }
 
 export function * updateGuide(api, {guide}) {
-  const coverResponse = yield createCover(api, guide)
+  const coverResponse = yield createCover(api, guide, true)
   // add error handling
   const response = yield call(api.updateGuide, guide)
   if (response.ok) {

@@ -310,7 +310,7 @@ function mapDispatchToProps(dispatch) {
     attemptLogout: (tokens) => dispatch(SessionActions.logout(tokens)),
     attemptChangePassword: (userId, oldPassword, newPassword) => dispatch(LoginActions.changePasswordRequest(userId, oldPassword, newPassword)),
     attemptGetUserFeed: (userId) => dispatch(StoryActions.feedRequest(userId)),
-    closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
+    closeGlobalModal: (params) => dispatch(UXActions.closeGlobalModal(params)),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
     reroute: (route) => dispatch(push(route)),
     attemptUpdateUser: (updates) => dispatch(UserActions.updateUser(updates)),

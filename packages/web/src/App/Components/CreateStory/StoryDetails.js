@@ -512,21 +512,23 @@ export default class StoryDetails extends React.Component {
             onChange={this.onGenericChange}
           />
         </Container>
-        <Container>
-          <Row>
-            <IconWrapper>
-              <CheckIcon
-                name={workingDraft.isPrivate ? 'greyCheck' : 'redCheck'}
-                onClick={this.togglePrivacy}
-              />
-            </IconWrapper>
-            <VerticalCenter>
-              <PrivacyLabel>
-                Make this guide private
-              </PrivacyLabel>
-            </VerticalCenter>
-          </Row>
-        </Container>
+        {isGuide &&
+          <Container>
+            <Row>
+              <IconWrapper>
+                <CheckIcon
+                  name={workingDraft.isPrivate ? 'greyCheck' : 'redCheck'}
+                  onClick={this.togglePrivacy}
+                />
+              </IconWrapper>
+              <VerticalCenter>
+                <PrivacyLabel>
+                  Make this guide public
+                </PrivacyLabel>
+              </VerticalCenter>
+            </Row>
+          </Container>
+        }
       </Container>
     )
   }

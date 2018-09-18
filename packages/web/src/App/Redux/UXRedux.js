@@ -6,7 +6,7 @@ import Immutable from 'seamless-immutable'
 const { Types, Creators } = createActions({
   openGlobalModal: ['modalName', 'params'],
   updateGlobalModalParams: ['params'],
-  closeGlobalModal: [],
+  closeGlobalModal: ['params'],
 })
 
 export const StartupTypes = Types
@@ -20,7 +20,12 @@ export const openGlobalModal = (state, {modalName, params = {} }) => state.merge
 
 export const updateGlobalModalParams = (state, {params = {}}) => state.merge({params})
 
-export const closeGlobalModal = (state) => state.merge({modalName: '', params: {}})
+export const closeGlobalModal = (state, {params = {}}) => {
+  return state.merge({
+    modalName: '',
+    params,
+  })
+}
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.OPEN_GLOBAL_MODAL]: openGlobalModal,

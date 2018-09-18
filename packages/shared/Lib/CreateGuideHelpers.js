@@ -35,8 +35,70 @@ export class SharedCreateGuide extends Component {
       isPrivate: undefined,
       cost: undefined,
       duration: undefined,
-      stories: [this.props.story],
+      stories: [],
     },
+  }
+
+  isExistingGuide = () => {
+    const {guide} = this.state
+    return guide && guide.id
+  }
+
+  isGuideValid = () => {
+    const {coverImage, title, locations} = this.state.guide
+    return !!coverImage && !!title && locations.length
+  }
+
+  onDone = () => {
+    const {creating} = this.state
+    const {
+      updateGuide,
+      createGuide,
+      user,
+      guideFailure,
+      story,
+      storyId,
+    } = this.props
+    if (creating) return
+    if (!this.isGuideValid()) {
+      guideFailure(new Error(
+        "Please ensure the guide has a photo, a title, and at least one location."
+      ))
+      return
+    }
+
+    let onDoneFunc
+    let guide = this.state.guide
+    if (this.isExistingGuide()) onDoneFunc = updateGuide
+    else {
+      onDoneFunc = createGuide
+      guide.stories.push(_.get(story, 'id') || storyId)
+    }
+    this.setState(
+      {
+        creating: true,
+      },
+      () => {
+        onDoneFunc(guide, user.id)
+      }
+    )
+  }
+
+  componentDidUpdate = (prevProps) => {
+    if (
+      this.state.creating &&
+      prevProps.fetching && this.props.fetching === false
+    ) {
+      if (!prevProps.error && this.props.error) {
+        this.setState({creating: false})
+      }
+      else {
+        this.setState(
+          {creating: false},
+          this.onSuccessfullSave,
+        )
+      }
+    }
   }
 }
 

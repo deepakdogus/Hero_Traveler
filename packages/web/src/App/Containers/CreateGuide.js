@@ -35,13 +35,20 @@ class CreateGuide extends SharedCreateGuide {
   }
 
   componentWillMount() {
-    const {guide, loadDefaultCategories} = this.props
+    const {
+      guide,
+      loadDefaultCategories,
+      guideId,
+      getGuide,
+    } = this.props
+
     loadDefaultCategories()
     if (guide) {
       this.setState({
         guide,
       })
     }
+    else if (guideId !== 'new') getGuide(guideId)
   }
 
   renderButtonLeft = () => {
@@ -57,9 +64,10 @@ class CreateGuide extends SharedCreateGuide {
   }
 
   renderButtonRight = () => {
+    const actionVerb = this.isExistingGuide ? 'Save' : 'Create'
     return (
       <RoundedButton
-        text={'Create Guide'}
+        text={`${actionVerb} Guide`}
         margin='none'
         padding='even'
         onClick={this.onDone}
@@ -130,14 +138,17 @@ class CreateGuide extends SharedCreateGuide {
   }
 }
 
-function extendedMapStateToProps(state, props) {
-  const stateMapping = mapStateToProps(state, props)
+function extendedMapStateToProps(state, ownProps) {
+  const stateMapping = mapStateToProps(state, ownProps)
+  const guideId = ownProps.match.params.guideId
   stateMapping.categories = state.entities.categories.entities
   stateMapping.storyId = state.ux.params.storyId
+  stateMapping.guide = state.entities.guides.entities[ownProps.match.params.guideId]
+  stateMapping.guideId = guideId
   return stateMapping
 }
 
-function extendedMapDispatchToProps(dispatch) {
+function extendedMapDispatchToProps(dispatch, ownProps) {
   const dispatchMapping = mapDispatchToProps(dispatch)
   dispatchMapping.loadDefaultCategories = () => dispatch(CategoryActions.loadCategoriesRequest())
   dispatchMapping.reroute = (path) => dispatch(push(path))
@@ -145,6 +156,7 @@ function extendedMapDispatchToProps(dispatch) {
     dispatch(UXActions.openGlobalModal(modalName, params))
   }
   dispatchMapping.dismissError = () => dispatch(GuideActions.dismissError())
+  dispatchMapping.getGuide = (guideId) => dispatch(GuideActions.getGuideRequest(guideId))
   return dispatchMapping
 }
 

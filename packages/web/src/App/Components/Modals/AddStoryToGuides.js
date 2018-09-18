@@ -136,7 +136,7 @@ class AddStoryToGuides extends SharedComponent {
 
   createGuideReroute = () => {
     this.props.reroute('/edit/guide/new')
-    this.props.closeModal({storyId: this.props.storyId})
+    this.props.closeModalWithParams({storyId: this.props.storyId})
   }
 
   render() {
@@ -169,7 +169,10 @@ class AddStoryToGuides extends SharedComponent {
 function extendedMapDispatchToProps(dispatch) {
   const mapping = mapDispatchToProps(dispatch)
   mapping.reroute = (path) => dispatch(push(path))
-  mapping.closeModal = (params = {}) => dispatch(UXActions.closeGlobalModalWithParams())
+  mapping.closeModal = () => dispatch(UXActions.closeGlobalModal())
+  mapping.closeModalWithParams = (params = {}) => {
+    dispatch(UXActions.closeGlobalModalWithParams(params))
+  }
   return mapping
 }
 

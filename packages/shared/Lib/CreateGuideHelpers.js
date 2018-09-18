@@ -99,10 +99,15 @@ export class SharedCreateGuide extends Component {
         )
       }
     }
+    else if (!prevProps.guide && this.props.guide) {
+      this.setState({
+        guide: this.props.guide,
+      })
+    }
   }
 }
 
-export const mapStateToProps = (state, props) => {
+export const mapStateToProps = (state, ownProps) => {
   const {
     fetchStatus,
     error,
@@ -111,7 +116,7 @@ export const mapStateToProps = (state, props) => {
 
   return {
     user: state.entities.users.entities[state.session.userId],
-    guide: guides[props.guideId],
+    guide: guides[ownProps.guideId],
     fetching: fetchStatus.fetching,
     error: error,
     loaded: fetchStatus.loaded,

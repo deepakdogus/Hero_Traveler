@@ -208,13 +208,6 @@ export default class StoryDetails extends React.Component {
     }
   }
 
-  componentDidMount() {
-    const { coverVideo, coverImage } = this.props.workingDraft
-    if (!coverVideo && !coverImage) {
-      this.props.reroute('/editStory/new')
-    }
-  }
-
   handleLocationSelect = (addressObj) => {
     const { isGuide } = this.props
     const {location, locationInfo} = addressObj

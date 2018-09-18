@@ -5,7 +5,7 @@ import _ from 'lodash'
 import GuideActions from '../Redux/Entities/Guides'
 import UserActions from '../Redux/Entities/Users'
 
-export class SharedComponent extends Component {
+export class SharedCreateGuide extends Component {
   static propTypes = {
     onCancel: PropTypes.func,
     guide: PropTypes.object,

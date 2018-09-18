@@ -516,7 +516,7 @@ export default class StoryDetails extends React.Component {
           <Row>
             <IconWrapper>
               <CheckIcon
-                name={workingDraft.isPrivate ? 'redCheck' : 'greyCheck'}
+                name={workingDraft.isPrivate ? 'greyCheck' : 'redCheck'}
                 onClick={this.togglePrivacy}
               />
             </IconWrapper>

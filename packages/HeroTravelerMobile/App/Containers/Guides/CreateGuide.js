@@ -1,15 +1,17 @@
-import PropTypes from 'prop-types'
 import { Actions as NavActions } from 'react-native-router-flux'
-import React, { Component } from 'react'
+import React from 'react'
 import {
   ScrollView,
   View,
 } from 'react-native'
 import { connect } from 'react-redux'
 
+import {
+  SharedCreateGuide,
+  mapStateToProps,
+  mapDispatchToProps,
+} from '../../Shared/Lib/CreateGuideHelpers'
 import Loader from '../../Components/Loader'
-import GuideActions from '../../Shared/Redux/Entities/Guides'
-import UserActions from '../../Shared/Redux/Entities/Users'
 import ShadowButton from '../../Components/ShadowButton'
 import EditableCoverMedia from '../../Components/EditableCoverMedia'
 import FormInput from '../../Components/FormInput'
@@ -28,46 +30,9 @@ const noop = () => {}
 const options = []
 for (let i = 1; i < 31; i++) options.push({ value: `${i}`, label: `${i}` })
 
-class CreateGuide extends Component {
+class CreateGuide extends SharedCreateGuide {
   static defaultProps = {
     onCancel: NavActions.pop,
-  }
-
-  static propTypes = {
-    onCancel: PropTypes.func,
-    guide: PropTypes.object,
-    fetching: PropTypes.bool,
-    user: PropTypes.object,
-    story: PropTypes.object,
-    updateGuide: PropTypes.func,
-    createGuide: PropTypes.func,
-    error: PropTypes.object,
-    dismissError: PropTypes.func,
-    guideFailure: PropTypes.func,
-    completeTooltip: PropTypes.func,
-  }
-
-  constructor(props) {
-    super(props)
-  }
-
-  state = {
-    creating: false,
-    guide: {
-      id: undefined,
-      title: undefined,
-      description: undefined,
-      author: this.props.user.id,
-      categories: [],
-      locations: [],
-      flagged: undefined,
-      counts: undefined,
-      coverImage: undefined,
-      isPrivate: undefined,
-      cost: undefined,
-      duration: undefined,
-      stories: [this.props.story],
-    },
   }
 
   jumpToTop = () => {
@@ -220,7 +185,7 @@ class CreateGuide extends Component {
     return guide && guide.id
   }
 
-  render = () => {
+  render() {
     const { onDone, props, state, updateGuide } = this
     const { creating, guide } = state
     const { error, onCancel } = props
@@ -341,31 +306,4 @@ class CreateGuide extends Component {
   }
 }
 
-const mapStateToProps = (state, props) => {
-  const {
-    fetchStatus,
-    error,
-    entities: guides,
-  } =  state.entities.guides
-
-  return {
-    user: state.entities.users.entities[state.session.userId],
-    guide: guides[props.guideId],
-    fetching: fetchStatus.fetching,
-    error: error,
-    loaded: fetchStatus.loaded,
-    status: fetchStatus,
-  }
-}
-
-const mapDispatchToProps = dispatch => ({
-  createGuide: (guide, userId) => dispatch(GuideActions.createGuide(guide, userId)),
-  updateGuide: guide => dispatch(GuideActions.updateGuide(guide)),
-  guideFailure: error => dispatch(GuideActions.guideFailure(error)),
-  dismissError: () => dispatch(GuideActions.dismissError()),
-  completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips})),
-})
-
-const ConnectedCreateGuide = connect(mapStateToProps, mapDispatchToProps)(CreateGuide)
-
-export default ConnectedCreateGuide
+export default connect(mapStateToProps, mapDispatchToProps)(CreateGuide)

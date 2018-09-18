@@ -6,7 +6,7 @@ import CategoryActions from '../Shared/Redux/Entities/Categories'
 import AddCoverTitles from '../Components/CreateStory/AddCoverTitles'
 import StoryDetails from '../Components/CreateStory/StoryDetails'
 import {
-  SharedComponent,
+  SharedCreateGuide,
   mapStateToProps,
   mapDispatchToProps,
 } from '../Shared/Lib/CreateGuideHelpers'
@@ -15,7 +15,7 @@ import {
   ContentWrapper,
 } from './EditStory'
 
-class CreateGuide extends SharedComponent {
+class CreateGuide extends SharedCreateGuide {
   updateGuide = (update) => {
     const guide = _.merge({}, this.state.guide)
     for (const key in update) {

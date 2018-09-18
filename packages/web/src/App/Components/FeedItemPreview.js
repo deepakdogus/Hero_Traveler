@@ -21,26 +21,53 @@ import LikeComponent from './LikeComponent'
 import {Row} from './FlexboxGrid'
 import VerticalCenter from './VerticalCenter'
 import Icon from './Icon'
+import { sizes } from '../Themes/Metrics'
+
 
 const coverHeight = '257px'
 
 const VerticalWrapper = styled.div``
 
+const HorizontalRowWrapper = styled(Row)`
+  // border:2px dashed blue;
+  @media (max-width: ${sizes.tablet}px){
+    width:100vw;
+    flex-direction: column;
+    justify-content: center;
+    // align-items:center;
+  }
+`
+
 const HorizontalMarginWrapper = styled.div`
+  // border: 2px solid red;
   position: relative;
   max-width: 960px;
   margin: auto;
   color: ${props => props.theme.Colors.lightGrey};
+  @media (max-width: ${sizes.tablet}px){
+    max-width:100vw;
+    width: 100vw;
+    margin: 0;
+  }
 `
 
 const VerticalMarginWrapper = styled(HorizontalMarginWrapper)`
+  // border:5px dashed orange;
   margin: 25px 0 0;
 `
 
 const HorizontalStoryInfoContainer = styled(VerticalCenter)`
   position: relative;
   height: ${coverHeight};
-  margin-left: 20px;
+  border: 2px solid blue;
+  @media (max-width: ${sizes.tablet}px){
+    padding-top: 15px;
+    padding-left:15px;
+    // align-items:flex-start;
+    height:auto;
+    padding-bottom: 25px;
+
+  }
 `
 
 const VerticalStoryInfoContainer = styled(HorizontalStoryInfoContainer)`
@@ -83,10 +110,20 @@ const VerticalDetailsContainer = styled(HorizontalDetailsContainer)`
 `
 
 const CoverImage = styled.img`
+  // border: 2px solid green;
   width: 385.5px;
   height: ${coverHeight};
   object-fit: cover;
   cursor: pointer;
+  margin-right: 20px;
+  @media (max-width: ${sizes.tablet}px){
+    max-width:100vw;
+    width: 100vw;
+    margin: 0;
+    margin-right: 0px;
+
+  }
+
 `
 
 const Text = styled.span`
@@ -131,6 +168,7 @@ const Top = styled(Row)`
 `
 
 const Bottom = styled(Row)`
+  // border:1px dashed red;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -229,11 +267,13 @@ class FeedItemPreview extends Component {
       imageUrl = getImageUrl(feedItem.coverVideo, 'optimized', videoThumbnailOptions)
     }
 
-    const DirectionalWrapper = isVertical ? VerticalWrapper : Row
+    const DirectionalWrapper = isVertical ? VerticalWrapper : HorizontalRowWrapper
     const StoryInfoContainer = isVertical ? VerticalStoryInfoContainer : HorizontalStoryInfoContainer
     const MarginWrapper = isVertical ? VerticalMarginWrapper : HorizontalMarginWrapper
     const DetailsContainer = isVertical ? VerticalDetailsContainer : HorizontalDetailsContainer
     const LocationPreview = isVertical ? VerticalLocationPreview : HorizontalLocationPreview
+
+    console.log('isVertical: ', )
 
     return (
       <MarginWrapper>

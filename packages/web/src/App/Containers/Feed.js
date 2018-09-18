@@ -13,6 +13,7 @@ import Footer from '../Components/Footer'
 import ShowMore from '../Components/ShowMore'
 import HorizontalDivider from '../Components/HorizontalDivider'
 import TabBar from '../Components/TabBar'
+import { sizes } from '../Themes/Metrics'
 
 const CenteredText = styled.p`
   text-align: center;
@@ -31,6 +32,12 @@ const Wrapper = styled.div``
 
 const ContentWrapper = styled.div`
   margin: 0 7%;
+  @media (max-width: ${sizes.tablet}px){
+    margin: 0;
+    padding:0;
+    box-sizing: border-box;
+  }
+  
 `
 
 const StyledDivider = styled(HorizontalDivider)`

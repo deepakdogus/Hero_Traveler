@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import FeedItemPreview from './FeedItemPreview'
 import HorizontalDivider from './HorizontalDivider'
-import {Row} from './FlexboxGrid'
+import { Row } from './FlexboxGrid'
 
 const StyledDivider = styled(HorizontalDivider)`
   max-width: 960px;
@@ -24,6 +24,8 @@ export default class FeedItemList extends React.Component {
   }
 
   defaultProps = { isHorizontalList: false }
+
+  shouldBeHorizontal = () => this.props.isHorizontalList || this.state.isHorizontalList
 
   render() {
     const {
@@ -57,6 +59,8 @@ export default class FeedItemList extends React.Component {
       ))
       return rows
     }, [])
+
+    console.log('THIS.PROPS: ', renderedFeedItems)
 
     const Wrapper = isHorizontalList ? StyledRow : VerticalWrapper
     const wrapperProps = isHorizontalList ? { between: 'xs'} : {}

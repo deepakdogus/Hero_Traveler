@@ -2,9 +2,10 @@ import React from 'react'
 import {connect} from 'react-redux'
 import _ from 'lodash'
 import { push } from 'react-router-redux'
-
+import Modal from 'react-modal'
 
 import UXActions from '../Redux/UXRedux'
+import GuideActions from '../Shared/Redux/Entities/Guides'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
 import AddCoverTitles from '../Components/CreateStory/AddCoverTitles'
 import StoryDetails from '../Components/CreateStory/StoryDetails'
@@ -18,7 +19,9 @@ import {
 import {
   Container,
   ContentWrapper,
+  customModalStyles,
 } from './EditStory'
+import {Title, Text} from '../Components/Modals/Shared'
 
 class CreateGuide extends SharedCreateGuide {
   updateGuide = (update) => {
@@ -88,6 +91,8 @@ class CreateGuide extends SharedCreateGuide {
 
 
   render() {
+    const errorMessage = _.get(this, 'props.error.message')
+
     return (
       <Container>
         <ContentWrapper>
@@ -109,6 +114,17 @@ class CreateGuide extends SharedCreateGuide {
             ]}
           />
         </ContentWrapper>
+        {
+        <Modal
+          isOpen={!!errorMessage}
+          contentLabel="Guide Modal"
+          onRequestClose={this.props.dismissError}
+          style={customModalStyles}
+        >
+          <Title>Error</Title>
+          <Text>{errorMessage}</Text>
+        </Modal>
+        }
       </Container>
     )
   }
@@ -128,6 +144,7 @@ function extendedMapDispatchToProps(dispatch) {
   dispatchMapping.openGlobalModal = (modalName, params) => {
     dispatch(UXActions.openGlobalModal(modalName, params))
   }
+  dispatchMapping.dismissError = () => dispatch(GuideActions.dismissError())
   return dispatchMapping
 }
 

@@ -5,20 +5,16 @@ import PropTypes from 'prop-types'
 import {push} from 'react-router-redux'
 import _ from 'lodash'
 
-import {feedExample} from './Feed_TEST_DATA'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import UserActions from '../Shared/Redux/Entities/Users'
 import {
-  isStoryLiked,
-  isStoryBookmarked,
   isGuideLiked,
 } from '../Shared/Redux/Entities/Users'
 import UXActions from '../Redux/UXRedux'
 
 import FeedItemHeader from '../Components/FeedItemHeader'
 import {BodyText as Description} from '../Components/StoryContentRenderer'
-import StoryContentRenderer from '../Components/StoryContentRenderer'
 import GoogleMap from '../Components/GoogleMap'
 import FeedItemMetaInfo from '../Components/FeedItemMetaInfo'
 import FeedItemActionBar from '../Components/FeedItemActionBar'
@@ -180,7 +176,6 @@ class Guide extends Component {
 
   render() {
     const {
-      story,
       guide,
       author,
       reroute,
@@ -205,7 +200,7 @@ class Guide extends Component {
           isFollowing={isFollowing}
           followUser={this._followUser}
           unfollowUser={this._unfollowUser}
-          hideCover={this.state.activeTab !== 'OVERVIEW'}
+          shouldHideCover={this.state.activeTab !== 'OVERVIEW'}
         />
         <LimitedWidthContainer>
           {activeTab !== 'OVERVIEW' &&

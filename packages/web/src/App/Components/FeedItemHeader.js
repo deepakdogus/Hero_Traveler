@@ -115,6 +115,8 @@ export default class FeedItemHeader extends React.Component {
     followUser: PropTypes.func,
     reroute: PropTypes.func,
     isStory: PropTypes.bool,
+    shouldHideCover: PropTypes.bool,
+    onClickAddToGuide: PropTypes.func,
   }
 
   getMediaType() {
@@ -137,7 +139,8 @@ export default class FeedItemHeader extends React.Component {
   }
 
   _editReroute = () => {
-    this.props.reroute(`/editStory/${this.props.feedItem.id}`)
+    if (this.props.isStory) this.props.reroute(`/editStory/${this.props.feedItem.id}`)
+    else this.props.reroute(`/edit/guide/${this.props.feedItem.id}`)
   }
 
   render() {
@@ -149,7 +152,7 @@ export default class FeedItemHeader extends React.Component {
       unfollowUser,
       followUser,
       isStory,
-      hideCover,
+      shouldHideCover,
       onClickAddToGuide,
     } = this.props
 
@@ -216,13 +219,13 @@ export default class FeedItemHeader extends React.Component {
           <GuideTitle mediaType={mediaType}>{feedItem.title}</GuideTitle>
         }
         {
-          mediaType === 'image' && !hideCover &&
+          mediaType === 'image' && !shouldHideCover &&
           <CoverImage
             src={this.getCoverImage()}
           />
         }
         {
-          mediaType === 'video' && !hideCover &&
+          mediaType === 'video' && !shouldHideCover &&
           <Video
             src={getVideoUrl(feedItem.coverVideo, false)}
             type='cover'

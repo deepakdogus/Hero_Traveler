@@ -134,7 +134,7 @@ class AddStoryToGuides extends SharedComponent {
   }
 
   createGuideReroute = () => {
-    this.props.reroute('/guide/edit/new')
+    this.props.reroute('/edit/guide/new')
     this.props.closeModal({storyId: this.props.storyId})
   }
 

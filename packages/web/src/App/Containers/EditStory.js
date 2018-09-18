@@ -29,7 +29,7 @@ const ItemContainer = styled.div`
   margin: 40px 0;
 `
 
-const customModalStyles = {
+export const customModalStyles = {
   content: {
     border: '0',
     bottom: 'auto',

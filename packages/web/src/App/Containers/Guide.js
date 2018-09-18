@@ -40,10 +40,9 @@ const HashtagText = styled.p`
   margin-botton: 45px;
 `
 
-const tabBarTabs = ['OVERVIEW', 'SEE', 'DO', 'EAT', 'STAY']
-
 class Guide extends Component {
   static propTypes = {
+    users: PropTypes.object,
     story: PropTypes.object,
     author: PropTypes.object,
     sessionUserId: PropTypes.string,
@@ -173,6 +172,15 @@ class Guide extends Component {
     }
   }
 
+  getPossibleTabs = () => {
+    const possibleTabs = ['OVERVIEW']
+    this.props.guideStories.forEach(story => {
+      const type = story.type.toUpperCase()
+      if (possibleTabs.indexOf(type) === -1) possibleTabs.push(type)
+    })
+    return possibleTabs
+  }
+
 
   render() {
     const {
@@ -210,7 +218,7 @@ class Guide extends Component {
             />
           }
           <TabBar
-            tabs={tabBarTabs}
+            tabs={this.getPossibleTabs()}
             activeTab={activeTab}
             onClickTab={this.onClickTab}
           />

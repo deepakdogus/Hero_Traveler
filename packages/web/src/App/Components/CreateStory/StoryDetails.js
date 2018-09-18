@@ -15,6 +15,8 @@ import ReactDayPicker from './ReactDayPicker'
 import {Title} from './Shared'
 import TagSelector from './TagSelector'
 import VerticalCenter from '../VerticalCenter'
+import Tile from './Tile'
+import {displayLocationDetails} from '../../Shared/Lib/locationHelpers'
 
 const Container = styled.div`
   padding: 14px 0px 14px 0px;
@@ -148,6 +150,13 @@ const styles = {
   }
 }
 
+const TilesWrapper = styled.div`
+  margin-left: 50px;
+  flex-direction: column;
+  align-items: start;
+  display: flex;
+`
+
 function sortCategories(categories) {
   return categories.sort((a,b) => {
     if (a.title < b.title) return -1
@@ -199,10 +208,19 @@ export default class StoryDetails extends React.Component {
   }
 
   handleLocationSelect = (addressObj) => {
+    const { isGuide } = this.props
     const {location, locationInfo} = addressObj
     if (!location && locationInfo) {
-      this.setState({address: locationInfo.name})
-      this.props.onInputChange({locationInfo: locationInfo})
+      if (isGuide) {
+        this.setState({address: ""})
+        this.props.onInputChange({
+          locations: [...this.props.workingDraft.locations, locationInfo]
+        })
+      }
+      else {
+        this.setState({address: locationInfo.name})
+        this.props.onInputChange({locationInfo: locationInfo})
+      }
     } else {
       this.setState({address: location})
     }
@@ -313,6 +331,21 @@ export default class StoryDetails extends React.Component {
     return "Cost Per Person"
   }
 
+  renderLocations() {
+    return (
+      <TilesWrapper>
+      {
+        this.props.workingDraft.locations.map((location, index) => {
+          return <Tile
+            key={index}
+            text={displayLocationDetails(location)}
+          />
+        })
+      }
+      </TilesWrapper>
+    )
+  }
+
   render() {
     const {
       workingDraft,
@@ -323,7 +356,6 @@ export default class StoryDetails extends React.Component {
       categoriesList,
       hashtagsList,
     } = this.state
-
     // normally this only happens when you just published a draft
     if (!workingDraft) return null
 
@@ -386,6 +418,7 @@ export default class StoryDetails extends React.Component {
             address={this.state.address}
           />
         </InputRowContainer>
+        {isGuide && this.renderLocations()}
         {!isGuide && <HorizontalDivider color='lighter-grey' opaque/>}
         {!isGuide &&
           <InputRowContainer>

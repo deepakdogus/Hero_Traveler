@@ -17,9 +17,12 @@ import {
 
 class CreateGuide extends SharedComponent {
   updateGuide = (update) => {
-    const updatedGuide = _.merge({}, this.state.guide, update)
+    const guide = _.merge({}, this.state.guide)
+    for (const key in update) {
+      guide[key] = update[key]
+    }
     this.setState({
-      guide: updatedGuide
+      guide
     })
   }
 

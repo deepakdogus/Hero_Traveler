@@ -4,10 +4,15 @@ import styled from 'styled-components'
 import algoliasearch_module from 'algoliasearch'
 import algoliasearch_helper from 'algoliasearch-helper'
 import _ from 'lodash'
-import { Grid, Row, Col } from '../FlexboxGrid';
-import Icon from '../Icon'
+
+import {
+  Grid,
+  Row,
+  Col,
+} from '../FlexboxGrid'
 import { StyledInput } from './StoryDetails'
 import config from '../../Config/Env'
+import Tile from './Tile'
 
 const {
   SEARCH_APP_NAME,
@@ -21,11 +26,6 @@ const algoliasearch = algoliasearch_module(
   { protocol: 'https:' }
 )
 
-
-const WrapperCol = styled(Col)`
-  margin: 5px 10px;
-`
-
 const InputWrapper = styled(Col)`
   display: flex;
   flex-direction: 'column';
@@ -33,28 +33,6 @@ const InputWrapper = styled(Col)`
   margin: 10px 0px;
 `
 
-const TextTile = styled(Row)`
-  background-color: ${props => props.theme.Colors.lightGreyAreas};
-  border-radius: 4px;
-  height: 34px;
-  z-index: 90;
-  padding: 5px;
-`
-
-const TagText = styled.p`
-  font-family: ${props => props.theme.Fonts.type.base};
-  font-weight: 600;
-  font-size: 15px;
-  letter-spacing: .7px;
-  margin: auto 0px;
-`
-
-const StyledIcon = styled(Icon)`
-  align-self: center;
-  height: 12px;
-  width: 12px;
-  margin-left: 10px;
-`
 const StyledGrid = styled(Grid)`
   margin-left: 0px;
   width: 90%;
@@ -70,34 +48,6 @@ const TilesWrapper = styled.div`
   align-items: center;
   display: flex;
 `
-
-class Tile extends React.Component {
-  static propTypes = {
-    tag: PropTypes.object,
-    handleTagRemove: PropTypes.func
-  }
-
-  _handleTagRemove = (event) => {
-    const {tag, handleTagRemove} = this.props
-    handleTagRemove(event, tag.title)
-  }
-
-  render() {
-    const {tag} = this.props
-    return (
-      <WrapperCol key={tag.id ? tag.id : tag.title}> {/* Tags do not yet have ids if they have just been entered by user*/}
-        <TextTile around='xs'>
-          <TagText>{tag.title}</TagText>
-          <StyledIcon
-            data-tagName={tag.id}
-            name='closeDark'
-            onClick={this._handleTagRemove}
-          />
-        </TextTile>
-      </WrapperCol>
-    )
-  }
-}
 
 export default class TagsTileGridAndInput extends React.Component {
   static propTypes = {
@@ -168,7 +118,7 @@ export default class TagsTileGridAndInput extends React.Component {
       return (
         <Tile
           key={tag.id ? tag.id : tag.title}
-          tag={tag}
+          text={tag.title}
           handleTagRemove={handleTagRemove}
         />
       )

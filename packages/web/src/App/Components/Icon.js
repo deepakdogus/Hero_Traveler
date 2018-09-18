@@ -2,10 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import {Images} from '../Shared/Themes'
+import { Images } from '../Shared/Themes'
 
-export function getSize(props) {
-  switch(props.size) {
+export function getSize(props, defaultOverride = '25px') {
+  const switchStatement = props.size || props.type
+  
+  switch(switchStatement) {
     case 'avatar':
       return '30px'
     case 'small':
@@ -21,7 +23,7 @@ export function getSize(props) {
     case 'x-large':
       return '140px'
     default:
-      return '25px'
+      return defaultOverride
   }
 }
 

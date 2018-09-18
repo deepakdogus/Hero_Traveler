@@ -14,7 +14,6 @@ import Avatar from './Avatar'
 import Login from './Modals/Login'
 import Signup from './Modals/Signup'
 import ResetPassword from './Modals/ResetPassword'
-import AddToItinerary from './Modals/AddToItinerary'
 import RightModal from './RightModal'
 import NotificationsThread from './Modals/NotificationsThread'
 import {usersExample} from '../Containers/Feed_TEST_DATA'
@@ -29,16 +28,6 @@ const customModalStyles = {
   overlay: {
     backgroundColor: 'rgba(0,0,0, .5)',
     zIndex: 100,
-  }
-}
-
-const addToItineraryModalStyles = {
-  content: {
-    width: 600,
-    margin: 'auto',
-  },
-  overlay: {
-    backgroundColor: 'rgba(0,0,0, .5)'
   }
 }
 
@@ -316,14 +305,6 @@ class Header extends React.Component {
           style={customModalStyles}
         >
           <ResetPassword/>
-        </Modal>
-        <Modal
-          isOpen={this.state.modal === 'addToItinerary'}
-          contentLabel="Add To Itinerary Modal"
-          onRequestClose={this.closeModal}
-          style={addToItineraryModalStyles}
-        >
-          <AddToItinerary/>
         </Modal>
         <RightModal
           isOpen={this.state.modal === 'notificationsThread'}

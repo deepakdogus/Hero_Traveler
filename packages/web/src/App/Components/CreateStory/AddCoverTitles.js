@@ -168,6 +168,7 @@ export default class AddCoverTitles extends React.Component {
   static propTypes = {
     onInputChange: PropTypes.func,
     workingDraft: PropTypes.object,
+    isGuide: PropTypes.bool,
   }
 
   constructor(props) {
@@ -228,8 +229,17 @@ export default class AddCoverTitles extends React.Component {
   }
 
   renderUploadButton() {
+    const {isGuide} = this.props
     const coverImage = this.getCoverImage()
     const coverVideo = this.getCoverVideo()
+
+    let acceptProp = 'image/*'
+    let coverTypeText = 'COVER PHOTO'
+    if (!isGuide) {
+      acceptProp += ', video/*'
+      coverTypeText += 'OR VIDEO'
+    }
+
     if (coverImage || coverVideo) return (
       <ReplaceUploadWrapper htmlFor="cover_upload_replace">
         <StyledCloseXContainer>
@@ -244,7 +254,7 @@ export default class AddCoverTitles extends React.Component {
           type='file'
           id='cover_upload_replace'
           name='coverImage'
-          accept='image/*, video/*'
+          accept={acceptProp}
           onChange={this._onCoverChange}
         />
       </ReplaceUploadWrapper>
@@ -255,14 +265,14 @@ export default class AddCoverTitles extends React.Component {
           <StyledIcon name='components'/>
         </IconWrapper>
         <IconSubTitle>
-          {coverImage && "+ CHANGE COVER PHOTO OR VIDEO"}
-          {!coverImage && "+ ADD A COVER PHOTO OR VIDEO"}
+          {coverImage && `+ CHANGE ${coverTypeText}`}
+          {!coverImage && `+ ADD A ${coverTypeText}`}
         </IconSubTitle>
         <HiddenInput
           type='file'
           id='cover_upload'
           name='coverImage'
-          accept='image/*, video/*'
+          accept={acceptProp}
           onChange={this._onCoverChange}
         />
       </NewUploadWrapper>
@@ -284,10 +294,10 @@ export default class AddCoverTitles extends React.Component {
   }
 
   render() {
+    const {isGuide} = this.props
     const coverImage = this.getCoverImage()
     const coverVideo = this.getCoverVideo()
     const hasMediaAsset = !!coverImage || !!coverVideo
-
 
     return (
       <RelativeWrapper>
@@ -308,7 +318,7 @@ export default class AddCoverTitles extends React.Component {
             {this.renderUploadButton()}
           </ButtonsHorizontalCenter>
         </Wrapper>
-        {hasMediaAsset &&
+        {hasMediaAsset && !isGuide &&
           <StyledCoverCaptionInput
             type='text'
             placeholder='Add Cover Caption'
@@ -318,27 +328,29 @@ export default class AddCoverTitles extends React.Component {
             maxLength={100}
           />
         }
-        {!hasMediaAsset && <CoverCaptionSpacer />}
-        <TitleInputsWrapper>
-          <StyledTitleInput
-            type='text'
-            placeholder='ADD TITLE'
-            name='title'
-            onChange={this._onTextChange}
-            value={this.state.title}
-            maxLength={40}
-            hasMediaAsset={hasMediaAsset}
-          />
-          <StyledSubTitleInput
-            type='text'
-            placeholder='Add a subtitle'
-            name='description'
-            onChange={this._onTextChange}
-            value={this.state.description}
-            maxLength={50}
-            hasMediaAsset={hasMediaAsset}
-          />
-        </TitleInputsWrapper>
+        {!hasMediaAsset && !isGuide && <CoverCaptionSpacer />}
+        {!isGuide &&
+          <TitleInputsWrapper>
+            <StyledTitleInput
+              type='text'
+              placeholder='ADD TITLE'
+              name='title'
+              onChange={this._onTextChange}
+              value={this.state.title}
+              maxLength={40}
+              hasMediaAsset={hasMediaAsset}
+            />
+            <StyledSubTitleInput
+              type='text'
+              placeholder='Add a subtitle'
+              name='description'
+              onChange={this._onTextChange}
+              value={this.state.description}
+              maxLength={50}
+              hasMediaAsset={hasMediaAsset}
+            />
+          </TitleInputsWrapper>
+        }
       </RelativeWrapper>
     )
   }

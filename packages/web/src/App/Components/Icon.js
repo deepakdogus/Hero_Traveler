@@ -96,6 +96,8 @@ export default class Icon extends React.Component {
         return Images.iconArrowLeftRed
       case 'redCheck':
         return Images.iconRedCheck
+      case 'greyCheck':
+        return Images.iconGreyCheck
       case 'facebook':
         return Images.iconLoginFacebook
       case 'facebookLarge':
@@ -130,6 +132,8 @@ export default class Icon extends React.Component {
         return Images.iconCreateMenuStory
       case 'createStory':
         return Images.iconNavCreate
+      case 'createGuide':
+        return Images.iconCreateGuide
       case 'hamburger':
         return Images.hamburger
       case 'close':
@@ -189,6 +193,8 @@ export default class Icon extends React.Component {
         return Images.iconCreateVideo
       case 'navNotifications':
         return Images.iconNavNotifications
+      case 'info':
+        return Images.iconInfoDark
       default:
         return Images.iconNavProfile
     }

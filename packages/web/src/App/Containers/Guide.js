@@ -5,20 +5,16 @@ import PropTypes from 'prop-types'
 import {push} from 'react-router-redux'
 import _ from 'lodash'
 
-import {feedExample} from './Feed_TEST_DATA'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import UserActions from '../Shared/Redux/Entities/Users'
 import {
-  isStoryLiked,
-  isStoryBookmarked,
   isGuideLiked,
 } from '../Shared/Redux/Entities/Users'
 import UXActions from '../Redux/UXRedux'
 
 import FeedItemHeader from '../Components/FeedItemHeader'
 import {BodyText as Description} from '../Components/StoryContentRenderer'
-import StoryContentRenderer from '../Components/StoryContentRenderer'
 import GoogleMap from '../Components/GoogleMap'
 import FeedItemMetaInfo from '../Components/FeedItemMetaInfo'
 import FeedItemActionBar from '../Components/FeedItemActionBar'
@@ -44,10 +40,9 @@ const HashtagText = styled.p`
   margin-botton: 45px;
 `
 
-const tabBarTabs = ['OVERVIEW', 'SEE', 'DO', 'EAT', 'STAY']
-
 class Guide extends Component {
   static propTypes = {
+    users: PropTypes.object,
     story: PropTypes.object,
     author: PropTypes.object,
     sessionUserId: PropTypes.string,
@@ -177,10 +172,18 @@ class Guide extends Component {
     }
   }
 
+  getPossibleTabs = () => {
+    const possibleTabs = ['OVERVIEW']
+    this.props.guideStories.forEach(story => {
+      const type = story.type.toUpperCase()
+      if (possibleTabs.indexOf(type) === -1) possibleTabs.push(type)
+    })
+    return possibleTabs
+  }
+
 
   render() {
     const {
-      story,
       guide,
       author,
       reroute,
@@ -205,7 +208,7 @@ class Guide extends Component {
           isFollowing={isFollowing}
           followUser={this._followUser}
           unfollowUser={this._unfollowUser}
-          hideCover={this.state.activeTab !== 'OVERVIEW'}
+          shouldHideCover={this.state.activeTab !== 'OVERVIEW'}
         />
         <LimitedWidthContainer>
           {activeTab !== 'OVERVIEW' &&
@@ -215,7 +218,7 @@ class Guide extends Component {
             />
           }
           <TabBar
-            tabs={tabBarTabs}
+            tabs={this.getPossibleTabs()}
             activeTab={activeTab}
             onClickTab={this.onClickTab}
           />

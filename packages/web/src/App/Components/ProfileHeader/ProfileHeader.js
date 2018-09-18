@@ -11,7 +11,6 @@ import FollowFollowing from '../Modals/FollowFollowing'
 import ProfileStats from '../Modals/ProfileStats'
 import LikedBy from '../Modals/LikedBy'
 import SendTo from '../Modals/SendTo'
-import AddToBoard from '../Modals/AddToBoard'
 import CreateBoard from '../Modals/CreateBoard'
 import Inbox from '../Modals/Inbox'
 import InboxThread from '../Modals/InboxThread'
@@ -101,13 +100,6 @@ export default class ProfileHeader extends React.Component {
           onRequestClose={this.closeModal}
         >
           <SendTo closeModal={this.closeModal} profile={user}/>
-        </RightModal>
-        <RightModal
-          isOpen={this.state.modal === 'addToBoard'}
-          contentLabel='Add To Board Modal'
-          onRequestClose={this.closeModal}
-        >
-          <AddToBoard closeModal={this.closeModal} profile={user}/>
         </RightModal>
         <RightModal
           isOpen={this.state.modal === 'createBoard'}

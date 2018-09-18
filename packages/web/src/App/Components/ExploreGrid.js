@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { Grid, Row, Col } from './FlexboxGrid'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Icon from './Icon'
-import {VerticalCenterStyles} from './VerticalCenter'
+import { VerticalCenterStyles } from './VerticalCenter'
 import OverlayHover from './OverlayHover'
 import Colors from '../Shared/Themes/Colors'
 
@@ -67,7 +67,7 @@ class Tile extends React.Component {
   render(){
     const {category, isSelected} = this.props
     return (
-      <Col xs={6} sm={4} md={3} lg={2} >
+      <Col xs={4} sm={4} md={3} lg={2} >
         <Wrapper onClick={this._onClickTile}>
           <CategoryTile
             imageSource={getImageUrl(category.image, 'optimized', {width: 400, height: 400})}

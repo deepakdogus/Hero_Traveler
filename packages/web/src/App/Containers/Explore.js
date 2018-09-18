@@ -8,6 +8,7 @@ import ExploreHeader from '../Components/ExploreHeader'
 import Footer from '../Components/Footer'
 import ExploreGrid from '../Components/ExploreGrid'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
+import { sizes } from '../Themes/Metrics'
 
 const CenteredText = styled.p`
   text-align: center;
@@ -20,6 +21,11 @@ const ExploreText = styled(CenteredText)`
   font-size: 30px;
   letter-spacing: 1.2px;
   padding: 50px 0px;
+  @media (max-width: ${sizes.tablet}px) {
+    font-size: 18px;
+    padding: 30px 0px;
+    margin: 0;
+  }
 `
 
 const Wrapper = styled.div``
@@ -27,6 +33,9 @@ const Wrapper = styled.div``
 const ContentWrapper = styled.div`
   margin: 0 7%;
   text-align: center;
+  @media (max-width: ${sizes.tablet}px) {
+    margin: 0;
+  }
 `
 
 class Explore extends Component {

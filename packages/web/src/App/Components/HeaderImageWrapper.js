@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { sizes } from '../Themes/Metrics'
 
 // overlay defaults to white with .4 opacity
 export default styled.div`
@@ -29,4 +30,7 @@ export default styled.div`
     }
   }};
   position: relative;
+  @media (max-width: ${sizes.tablet}px){
+    height: 280px;
+  }
 `

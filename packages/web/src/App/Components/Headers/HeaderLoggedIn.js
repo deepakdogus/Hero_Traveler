@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { NavLink } from 'react-router-dom'
 import { WrappedNavLink } from '../../Components/NavLinkStyled'
 import { Row, Col } from '../FlexboxGrid'
 import ProfileMenu from './ProfileMenu'
@@ -200,11 +199,14 @@ class HeaderLoggedIn extends React.Component {
             <LoggedInDesktopContainer>
               {!this.props.pathname.includes('editStory') &&
                 // we remove the 'Create' button from the HeaderLoggedIn Nav if we're editting a story
-                <WrappedNavLink to='/editStory/new' styles={CreateButtonStyleOverride}>
+                <WrappedNavLink
+                  to='/editStory/new'
+                  styles={CreateButtonStyleOverride}
+                >
                   <StyledRoundedCreateButton
                     text='Create'
                     profileAvatar={profileAvatar}
-                    margin='none' 
+                    margin='none'
                   />
                 </WrappedNavLink>
               }
@@ -255,8 +257,11 @@ class HeaderLoggedIn extends React.Component {
                   }
             </LoggedInDesktopContainer>
             <LoggedInTabletContainer>
-              <WrappedNavLink to='/editStory/new' styles={CreateButtonStyleOverride}>
-                <RoundedButton 
+              <WrappedNavLink
+                to='/editStory/new'
+                styles={CreateButtonStyleOverride}
+              >
+                <RoundedButton
                   text='Create'
                   margin='none'
                 />

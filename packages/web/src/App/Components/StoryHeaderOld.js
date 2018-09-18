@@ -105,6 +105,7 @@ export default class StoryHeaderOld extends React.Component {
   static propTypes = {
     story: PropTypes.object,
     author: PropTypes.object,
+    isPreview: PropTypes.bool,
   }
 
   getMediaType() {

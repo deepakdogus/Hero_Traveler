@@ -1,10 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 const NavLinkContainer = styled.div`
   padding: 0;
-  margin: 10px 25px; 
+  margin: 10px 25px;
   ${props => props.styleOverride}
 `
 
@@ -13,7 +14,7 @@ export const NavLinkStyled = styled(NavLink)`
   color: inherit;
 `
 
-export function WrappedNavLink({to, styles=``,  children}){
+export function WrappedNavLink({to, styles = ``, children}){
   return (
     <NavLinkContainer styleOverride={styles}>
       <NavLinkStyled to={to}>
@@ -23,6 +24,11 @@ export function WrappedNavLink({to, styles=``,  children}){
   )
 }
 
+WrappedNavLink.propTypes = {
+  to: PropTypes.string,
+  styles: PropTypes.object,
+  children: PropTypes.element,
+}
 
 
 

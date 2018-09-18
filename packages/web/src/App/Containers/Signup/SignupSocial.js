@@ -120,10 +120,17 @@ class SignupSocial extends Component {
       <SocialContainer>
         <NavLinkContainer>
           <WrappedNavLink to='/signup/topics'>
-            <RoundedButton text='< Back' type="blackWhite" margin='none' />
+            <RoundedButton
+              text='< Back'
+              type="blackWhite"
+              margin='none'
+            />
           </WrappedNavLink>
           <WrappedNavLink to='/feed'>
-            <RoundedButton text='Finish' margin='none' />
+            <RoundedButton
+              text='Finish'
+              margin='none'
+            />
           </WrappedNavLink>
         </NavLinkContainer>
         <Container>

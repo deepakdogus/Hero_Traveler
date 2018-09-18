@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 
+import UXActions from '../../Redux/UXRedux'
 import {
   mapStateToProps,
   mapDispatchToProps,
@@ -112,7 +113,7 @@ class AddStoryToGuides extends SharedComponent {
         width='116px'
         type='blackWhite'
         padding='mediumEven'
-        onClick={this.closeModal}
+        onClick={this.props.closeModal}
       />
     )
   }
@@ -168,6 +169,7 @@ class AddStoryToGuides extends SharedComponent {
 function extendedMapDispatchToProps(dispatch) {
   const mapping = mapDispatchToProps(dispatch)
   mapping.reroute = (path) => dispatch(push(path))
+  mapping.closeModal = (params = {}) => dispatch(UXActions.closeGlobalModalWithParams())
   return mapping
 }
 

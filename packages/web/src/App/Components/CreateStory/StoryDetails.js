@@ -476,7 +476,7 @@ export default class StoryDetails extends React.Component {
               type='number'
               placeholder='How many days is this guide?'
               value={workingDraft.duration}
-              min='0'
+              min='1'
               name='duration'
               onChange={this.onGenericChange}
             />

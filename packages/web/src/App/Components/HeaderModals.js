@@ -265,10 +265,7 @@ export default class HeaderModals extends React.Component {
           isOpen={globalModalThatIsOpen === 'guidesSelect'}
           contentLabel='Add to a guide'
         >
-          <AddStoryToGuides
-            storyId={globalModalParams.storyId}
-            closeModal={closeGlobalModal}
-          />
+          <AddStoryToGuides storyId={globalModalParams.storyId} />
         </RightModal>
         <CenterModal
           isOpen={globalModalThatIsOpen === 'faqTermsAndConditions'}

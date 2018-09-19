@@ -159,11 +159,12 @@ class Guide extends Component {
   }
 
   getGuideStoriesOfTypeProps(type) {
-    const {activeTab} = this.state
+    const { activeTab } = this.state
     if (type === 'OVERVIEW') return {}
     const label = type === 'STAY' ? `PLACES TO STAY` : `THINGS TO ${type}`
     // onClickShowAll={this.onClickTab}
     return {
+      guideId: this.props.guide.id,
       type,
       label,
       isShowAll: activeTab === type,

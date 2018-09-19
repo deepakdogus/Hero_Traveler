@@ -2,9 +2,13 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import moment from 'moment'
+import _ from 'lodash'
 
 import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
+import {
+  ActivityTypes,
+} from '../Shared/Lib/NotificationHelpers'
 import Avatar from './Avatar'
 import {getSize} from './Icon'
 import HorizontalDivider from './HorizontalDivider'
@@ -114,12 +118,6 @@ const HiddenBulletContainer = styled(VisibleBulletContainer)`
   visibility: hidden;
 `
 
-const ActivityTypes = {
-  like: 'ActivityStoryLike',
-  follow: 'ActivityFollow',
-  comment: 'ActivityStoryComment'
-}
-
 const videoThumbnailOptions = {
   video: true,
   width: 100,
@@ -150,10 +148,11 @@ export default class NotificationRow extends Component {
   }
 
   renderImage = () => {
+    const avatar = _.get(this, 'props.user.profile.avatar')
     return (
       <RenderImageContainer>
         <Avatar
-          avatarUrl={getImageUrl(this.props.user.profile.avatar, 'avatarLarge')}
+          avatarUrl={avatar ? getImageUrl(avatar, 'avatarLarge') : undefined}
           size='larger'
         />
       </RenderImageContainer>

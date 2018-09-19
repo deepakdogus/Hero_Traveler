@@ -74,12 +74,7 @@ export default class HeaderModals extends React.Component {
     attemptUpdateUser: PropTypes.func,
     userEntitiesUpdating: PropTypes.bool,
     userEntitiesError: PropTypes.object,
-    activitiesById: PropTypes.array,
-    activities: PropTypes.object,
-    stories: PropTypes.object,
-    markSeen: PropTypes.func,
     reroute: PropTypes.func,
-    users: PropTypes.object,
     nextPathAfterSave: PropTypes.string,
     attemptLogout: PropTypes.func,
     resetCreateStore: PropTypes.func,
@@ -104,12 +99,7 @@ export default class HeaderModals extends React.Component {
       currentUserEmail,
       currentUserProfile,
       currentUserNotificationTypes,
-      activities,
-      activitiesById,
-      markSeen,
       reroute,
-      stories,
-      users,
       nextPathAfterSave,
       attemptLogout,
       resetCreateStore,
@@ -223,15 +213,7 @@ export default class HeaderModals extends React.Component {
           contentLabel='Notifications Thread'
           onRequestClose={closeModal}
         >
-          <NotificationsThread
-            closeModal={closeGlobalModal}
-            activitiesById={activitiesById}
-            activities={activities}
-            markSeen={markSeen}
-            stories={stories}
-            reroute={reroute}
-            users={users}
-          />
+          <NotificationsThread closeModal={closeGlobalModal}/>
         </RightModal>
         <RightModal
           isOpen={globalModalThatIsOpen === 'comments'}

@@ -5,7 +5,10 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 
 import UserActions from '../../Shared/Redux/Entities/Users'
-import { getIsActivityIncomplete } from '../../Shared/Lib/NotificationHelpers'
+import {
+  isActivityIncomplete,
+  getPopulatedActivity,
+} from '../../Shared/Lib/NotificationHelpers'
 import NotificationRow from '../NotificationRow'
 import {RightTitle, RightModalCloseX} from './Shared'
 
@@ -39,24 +42,18 @@ class NotificationsThread extends React.Component {
 
     return activitiesById.map(id => {
       const activity = activities[id]
-      const populatedActivity = {
-        id: id,
-        seen: activity.seen,
-        kind: activity.kind,
-      }
-      populatedActivity.fromUser = users[activity.fromUser]
-      populatedActivity.story = stories[activity.story]
-      populatedActivity.guide = guides[activity.guide]
+      const populatedActivity = getPopulatedActivity(id, this.props)
 
       const fromUserId = activities[id].fromUser
       const fromUser = users[fromUserId]
       const story = stories[activity.story]
       const guide = guides[activity.guide]
-      if (getIsActivityIncomplete(populatedActivity)) return null
+      if (isActivityIncomplete(populatedActivity)) return null
 
       return (
         <NotificationRow
           key={id}
+          activity={populatedActivity}
           user={fromUser}
           activityKind={activity.kind}
           isFeedItem={this.isFeedItem(activity)}

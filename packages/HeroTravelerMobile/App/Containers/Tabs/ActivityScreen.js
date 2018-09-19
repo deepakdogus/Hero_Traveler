@@ -3,6 +3,7 @@ import React from 'react'
 import { ScrollView, Text, View, TouchableOpacity } from 'react-native'
 import moment from 'moment'
 import { connect } from 'react-redux'
+import PushNotification from 'react-native-push-notification'
 
 import UserActions from '../../Shared/Redux/Entities/Users'
 import {Actions as NavActions} from 'react-native-router-flux'
@@ -14,15 +15,12 @@ import ThreadList from '../../Components/ThreadList'
 import Colors from '../../Shared/Themes/Colors'
 import NotificationBadge from '../../Components/NotificationBadge'
 import {displayLocationPreview} from '../../Shared/Lib/locationHelpers'
-import PushNotification from 'react-native-push-notification'
-
-const ActivityTypes = {
-  like: 'ActivityStoryLike',
-  follow: 'ActivityFollow',
-  comment: 'ActivityStoryComment',
-  guideLike: 'ActivityGuideLike',
-  guideComment: 'ActivityGuideComment',
-}
+import {
+  isActivityIncomplete,
+  ActivityTypes,
+  getDescription,
+  getPopulatedActivity,
+} from '../../Shared/Lib/NotificationHelpers'
 
 const Tab = ({text, onPress, selected, notificationCount, width = '100%'}) => {
   return (
@@ -105,21 +103,6 @@ class NotificationScreen extends React.Component {
     }
   }
 
-  getDescription(activity) {
-    switch (activity.kind) {
-      case ActivityTypes.follow:
-        return `is now following you.`
-      case ActivityTypes.comment:
-        return  `commented on your story ${activity.story.title}.`
-      case ActivityTypes.guideComment:
-        return  `commented on your guide ${activity.guide.title}.`
-      case ActivityTypes.like:
-        return `liked your story ${activity.story.title}.`
-      case ActivityTypes.guideLike:
-        return `liked your guide ${activity.guide.title}.`
-    }
-  }
-
   getContent(activity) {
     switch (activity.kind) {
       case ActivityTypes.comment:
@@ -141,24 +124,15 @@ class NotificationScreen extends React.Component {
     }
   }
 
-  populateActivity = (activityId) => {
-    const {users, stories, activities, guides} = this.props
-    const activity = {...activities[activityId]}
-    activity.user = users[activity.fromUser]
-    if (activity.story) activity.story = stories[activity.story]
-    if (activity.guide) activity.guide = guides[activity.guide]
-    return activity
-  }
-
   renderRow = (activityId) => {
-    const activity = this.populateActivity(activityId)
+    const activity = getPopulatedActivity(activityId, this.props)
 
     return (
       <ConnectedActivity
         key={activityId}
         activityId={activityId}
         createdAt={activity.createdAt}
-        description={this.getDescription(activity)}
+        description={getDescription(activity)}
         content={this.getContent(activity)}
         user={activity.user}
         onPress={this._pressActivity}
@@ -187,18 +161,8 @@ class NotificationScreen extends React.Component {
     }
     else {
       const filteredActivities = activitiesById.filter(id => {
-        const activity = this.populateActivity(id)
-        // quick fix to solve for notifications crash
-        if (
-          (activity.kind === ActivityTypes.like && (!activity.story || !activity.fromUser)) ||
-          (activity.kind === ActivityTypes.follow && !activity.user) ||
-          (activity.kind === ActivityTypes.comment && (!activity.story || !activity.fromUser)) ||
-          (activity.kind === ActivityTypes.guideLike && (!activity.guide || !activity.fromUser)) ||
-          (activity.kind === ActivityTypes.guideComment && (!activity.guide || !activity.fromUser))
-        ) {
-          return false
-        }
-        return true
+        const activity = getPopulatedActivity(id, this.props)
+        return !isActivityIncomplete(activity)
       })
 
       content = (

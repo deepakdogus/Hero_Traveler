@@ -8,6 +8,7 @@ import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import {
   ActivityTypes,
+  getDescription,
 } from '../Shared/Lib/NotificationHelpers'
 import Avatar from './Avatar'
 import {getSize} from './Icon'
@@ -165,13 +166,16 @@ export default class NotificationRow extends Component {
   }
 
   renderText = () => {
-    const {user} = this.props
+    const {
+      user,
+      activity,
+    } = this.props
 
     return (
       <StyledVerticalCenter>
         <StyledNotificationContent>
           <StyledUserName>{user.username}&nbsp;</StyledUserName>
-          {this.getDescription()}
+          {getDescription(activity)}
         </StyledNotificationContent>
         {this.props.comment &&
           <CommentContent>
@@ -234,7 +238,7 @@ export default class NotificationRow extends Component {
   render() {
     const leftProps = { 'max-width': '450px', }
     const {activityKind, story} = this.props
-    if (activityKind !== ActivityTypes.follow && !story) return null
+
     return (
       <InteractiveContainer onClick={this._markSeen}>
         <Container

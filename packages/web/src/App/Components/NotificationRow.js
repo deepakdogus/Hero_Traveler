@@ -7,6 +7,7 @@ import _ from 'lodash'
 import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import {
+  getContent,
   getDescription,
 } from '../Shared/Lib/NotificationHelpers'
 import Avatar from './Avatar'
@@ -173,7 +174,7 @@ export default class NotificationRow extends Component {
         </StyledNotificationContent>
         {!!activity.comment &&
           <CommentContent>
-            {activity.comment.content}
+            {getContent(activity)}
           </CommentContent>
         }
         <StyledTimestamp

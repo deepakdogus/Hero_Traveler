@@ -7,25 +7,21 @@ import moment from 'moment'
 import { Colors, Metrics } from '../Shared/Themes/'
 import Avatar from '../Components/Avatar'
 import getImageUrl from '../Shared/Lib/getImageUrl'
-
-export const ActivityProps = {
-  user: PropTypes.object.isRequired,
-  description: PropTypes.string.isRequired,
-  content: PropTypes.string,
-  createdAt: PropTypes.string.isRequired,
-}
+import {
+  getDescription,
+  getContent,
+} from '../Shared/Lib/NotificationHelpers'
 
 export default class Activity extends Component {
-  static propTypes = ActivityProps
+  static propTypes = {
+  onPress: PropTypes.func,
+  activity: PropTypes.object,
+}
 
   render () {
-    let {
-      user,
-      description,
-      content,
-      createdAt,
-      seen,
-    } = this.props
+    let { activity } = this.props
+    const content = getContent(activity)
+
     return (
       <View style={styles.root}>
         <TouchableOpacity
@@ -34,12 +30,14 @@ export default class Activity extends Component {
           <View style={styles.innerButton}>
             <Avatar
               style={styles.avatar}
-              avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
+              avatarUrl={getImageUrl(activity.fromUser.profile.avatar, 'avatar')}
             />
             <View style={styles.middle}>
               <Text style={styles.description}>
-                <Text style={styles.actionUserText}>{user.profile.fullName} </Text>
-                <Text>{description}</Text>
+                <Text style={styles.actionUserText}>
+                  {activity.fromUser.profile.fullName}
+                </Text>
+                <Text> {getDescription(activity)}</Text>
               </Text>
               {!!content &&
                 <View style={styles.content}>
@@ -52,10 +50,10 @@ export default class Activity extends Component {
                 </View>
               }
               <Text style={styles.dateText}>
-                {moment(createdAt).fromNow()}
+                {moment(activity.createdAt).fromNow()}
               </Text>
             </View>
-            {!seen &&
+            {!activity.seen &&
               <Icon name='circle' size={10} color={Colors.redLight}/>
             }
           </View>
@@ -65,9 +63,9 @@ export default class Activity extends Component {
   }
 
   _onPress = () => {
-    const {activityId, seen, onPress} = this.props
+    const {activity, onPress} = this.props
     if (onPress) {
-      onPress(activityId, seen)
+      onPress(activity.id, activity.seen)
     }
   }
 }

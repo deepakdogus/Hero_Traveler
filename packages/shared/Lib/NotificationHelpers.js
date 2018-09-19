@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 export const ActivityTypes = {
   like: 'ActivityStoryLike',
   follow: 'ActivityFollow',
@@ -33,8 +35,16 @@ export function getDescription(activity) {
 export function getPopulatedActivity(activityId, props) {
     const {users, stories, activities, guides} = props
     const activity = {...activities[activityId]}
-    activity.user = users[activity.fromUser]
+    activity.fromUser = users[activity.fromUser]
     if (activity.story) activity.story = stories[activity.story]
     if (activity.guide) activity.guide = guides[activity.guide]
     return activity
+}
+
+export function getContent(activity) {
+  switch (activity.kind) {
+    case ActivityTypes.comment:
+    case ActivityTypes.guideComment:
+      return _.truncate(activity.comment.content, {length: 60});
+  }
 }

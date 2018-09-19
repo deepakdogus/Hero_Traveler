@@ -18,7 +18,6 @@ import {displayLocationPreview} from '../../Shared/Lib/locationHelpers'
 import {
   isActivityIncomplete,
   ActivityTypes,
-  getDescription,
   getPopulatedActivity,
 } from '../../Shared/Lib/NotificationHelpers'
 
@@ -43,15 +42,6 @@ const Tab = ({text, onPress, selected, notificationCount, width = '100%'}) => {
     </TouchableOpacity>
   )
 }
-
-const ConnectedActivity = connect(
-  (state, props) => {
-    const activities = state.entities.users.activities
-    return {
-      seen: activities[props.activityId].seen
-    }
-  }
-)(Activity)
 
 class NotificationScreen extends React.Component {
 
@@ -103,14 +93,6 @@ class NotificationScreen extends React.Component {
     }
   }
 
-  getContent(activity) {
-    switch (activity.kind) {
-      case ActivityTypes.comment:
-      case ActivityTypes.guideComment:
-        return _.truncate(activity.comment.content, {length: 60});
-    }
-  }
-
   componentWillReceiveProps(nextProps){
     // if no more backgroundFailures - focus on normal notifications
     if (this.state.selectedTab === 2 &&
@@ -125,16 +107,12 @@ class NotificationScreen extends React.Component {
   }
 
   renderRow = (activityId) => {
-    const activity = getPopulatedActivity(activityId, this.props)
+    const populatedActivity = getPopulatedActivity(activityId, this.props)
 
     return (
-      <ConnectedActivity
+      <Activity
         key={activityId}
-        activityId={activityId}
-        createdAt={activity.createdAt}
-        description={getDescription(activity)}
-        content={this.getContent(activity)}
-        user={activity.user}
+        activity={populatedActivity}
         onPress={this._pressActivity}
       />
     )

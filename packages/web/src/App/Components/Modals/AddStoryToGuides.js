@@ -8,7 +8,7 @@ import {
   mapStateToProps,
   mapDispatchToProps,
   SharedComponent,
-} from '../../Shared/Lib/addStoryToGuidesHelpers'
+} from '../../Shared/Lib/AddStoryToGuidesHelpers'
 import FeedItemSelectRow, { DefaultContainer } from '../FeedItemSelectRow'
 import SpaceBetweenRow from '../SpaceBetweenRow'
 import VerticalCenter from '../VerticalCenter'
@@ -19,6 +19,7 @@ import {
   StyledVerticalCenter,
   RightModalCloseX,
 } from './Shared'
+
 import Icon from '../Icon'
 
 const Container = styled.div``

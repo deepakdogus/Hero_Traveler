@@ -17,6 +17,7 @@ const StyledRow = styled(Row)``
 
 export default class FeedItemList extends React.Component {
   static propTypes = {
+    guideId: PropTypes.string,
     feedItems: PropTypes.arrayOf(PropTypes.object),
     type: PropTypes.string,
     isHorizontalList: PropTypes.bool,
@@ -27,6 +28,7 @@ export default class FeedItemList extends React.Component {
 
   render() {
     const {
+      guideId,
       feedItems,
       type,
       isHorizontalList,
@@ -49,6 +51,7 @@ export default class FeedItemList extends React.Component {
       rows.push((
         <FeedItemPreview
           key={feedItem.id}
+          guideId={guideId}
           feedItem={feedItem}
           type={type}
           isStory={!!feedItem.locationInfo}

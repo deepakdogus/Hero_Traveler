@@ -18,6 +18,7 @@ import NotificationsThread from './Modals/NotificationsThread'
 import FlagStory from './Modals/FlagStory'
 import DeleteStory from './Modals/DeleteStory'
 import AddStoryToGuides from './Modals/AddStoryToGuides'
+import RemoveStoryFromGuide from './Modals/RemoveStoryFromGuide'
 
 const Container = styled.div``
 
@@ -267,6 +268,15 @@ export default class HeaderModals extends React.Component {
         >
           <AddStoryToGuides storyId={globalModalParams.storyId} />
         </RightModal>
+        <Modal
+          isOpen={globalModalThatIsOpen === 'guideStoryRemove'}
+          contentLabel='Remove Story From Guide'
+          style={customModalStyles}
+        >
+          <RemoveStoryFromGuide
+            closeModal={closeGlobalModal}
+          />
+        </Modal>
         <CenterModal
           isOpen={globalModalThatIsOpen === 'faqTermsAndConditions'}
           contentLabel='FAQ Terms & Conditions'

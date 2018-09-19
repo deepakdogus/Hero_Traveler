@@ -383,7 +383,6 @@ function mapDispatchToProps(dispatch) {
     setWorkingDraft: (cachedStory) => dispatch(StoryCreateActions.editStorySuccess(cachedStory)),
     updateGlobalModalParams: (params) => dispatch(UXActions.updateGlobalModalParams(params)),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
-
   }
 }
 

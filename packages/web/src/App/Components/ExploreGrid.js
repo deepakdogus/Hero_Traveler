@@ -21,7 +21,6 @@ const CategoryTile = styled.div`
   padding-top: 50%;
   padding-bottom: 50%;
   position: relative;
-  ${props => console.log('PROPS! ', props)}
 `
 
 const TitleContainer = styled(OverlayHover)`
@@ -39,6 +38,9 @@ const Title = styled.div`
   color: ${props => props.theme.Colors.snow};
   letter-spacing: 1.2px;
   margin: 0;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 12px;
+  }
 `
 
 const RedCheck = styled(Icon)`

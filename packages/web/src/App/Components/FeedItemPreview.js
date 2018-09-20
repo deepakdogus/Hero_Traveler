@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import {push} from 'react-router-redux'
+import { push } from 'react-router-redux'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
@@ -18,7 +18,7 @@ import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
 
 import Avatar from './Avatar'
 import LikeComponent from './LikeComponent'
-import {Row} from './FlexboxGrid'
+import { Row } from './FlexboxGrid'
 import VerticalCenter from './VerticalCenter'
 import Icon from './Icon'
 import { sizes } from '../Themes/Metrics'
@@ -26,77 +26,74 @@ import { sizes } from '../Themes/Metrics'
 
 const coverHeight = '257px'
 
-const VerticalWrapper = styled.div``
-
-const HorizontalRowWrapper = styled(Row)`
-  // border:2px dashed blue;
+const Text = styled.span`
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  font-weight: 400;
+  letter-spacing: .7px;
+  font-size: 15px;
+  color: ${props => props.theme.Colors.grey};
   @media (max-width: ${sizes.tablet}px){
-    width:100vw;
-    flex-direction: column;
-    justify-content: center;
-    // align-items:center;
+    font-size: 12px;
   }
 `
 
 const HorizontalMarginWrapper = styled.div`
-  // border: 2px solid red;
+  // border: 5px solid purple;
   position: relative;
   max-width: 960px;
   margin: auto;
   color: ${props => props.theme.Colors.lightGrey};
   @media (max-width: ${sizes.tablet}px){
-    max-width:100vw;
+    max-width: 100vw;
     width: 100vw;
     margin: 0;
   }
 `
 
 const VerticalMarginWrapper = styled(HorizontalMarginWrapper)`
-  // border:5px dashed orange;
+  // border: 2px solid blue;
   margin: 25px 0 0;
+  @media (max-width: ${sizes.tablet}px){
+    max-width: 100%;
+    margin: 0;
+    width:100%;
+  }
+`
+
+const HorizontalRowWrapper = styled(Row)`
+  border: 2px solid green;
+  @media (max-width: ${sizes.tablet}px){
+    width: 100vw;
+    flex-direction: column;
+    justify-content: center;
+  }
+`
+
+const VerticalWrapper = styled.div`
+  // border: 2px solid red;
+  @media (max-width: ${sizes.tablet}px){
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 `
 
 const HorizontalStoryInfoContainer = styled(VerticalCenter)`
   position: relative;
   height: ${coverHeight};
-  border: 2px solid blue;
   @media (max-width: ${sizes.tablet}px){
-    padding-top: 15px;
-    padding-left:15px;
-    // align-items:flex-start;
     height:auto;
-    padding-bottom: 25px;
-
+    > * {
+      padding-left: 15px;
+      padding-top: 15px;
+    }
   }
 `
 
 const VerticalStoryInfoContainer = styled(HorizontalStoryInfoContainer)`
   height: auto;
   margin-left: 0;
-`
-
-const Title = styled.h3`
-  font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-weight: 600;
-  font-size: 23px;
-  color: ${props => props.theme.Colors.background};
-  display: inline-block;
-  margin: 0;
-  cursor: pointer;
-  &:hover {
-    color: ${props => props.theme.Colors.grey};
-  };
-  width: 385.5px;
-`
-
-const Description = styled.h2`
-  font-size: 16px;
-  letter-spacing: .7px;
-  color : ${props => props.theme.Colors.grey};
-  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
-  font-weight: 400;
-  margin-top: 7.5px;
-  margin-bottom: 0;
 `
 
 const HorizontalDetailsContainer = styled(Row)`
@@ -109,31 +106,6 @@ const VerticalDetailsContainer = styled(HorizontalDetailsContainer)`
   padding-top: 5px;
 `
 
-const CoverImage = styled.img`
-  // border: 2px solid green;
-  width: 385.5px;
-  height: ${coverHeight};
-  object-fit: cover;
-  cursor: pointer;
-  margin-right: 20px;
-  @media (max-width: ${sizes.tablet}px){
-    max-width:100vw;
-    width: 100vw;
-    margin: 0;
-    margin-right: 0px;
-
-  }
-
-`
-
-const Text = styled.span`
-  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
-  font-weight: 400;
-  letter-spacing: .7px;
-  font-size: 15px;
-  color: ${props => props.theme.Colors.grey};
-`
-
 const HorizontalLocationPreview = styled(Text)`
   color: ${props => props.theme.Colors.background};
   letter-spacing: .7px;
@@ -141,10 +113,59 @@ const HorizontalLocationPreview = styled(Text)`
   font-weight: 600;
   margin-bottom: 12px;
   text-transform: uppercase;
+  @media (max-width: ${sizes.tablet}px){
+    font-size: 13px;
+    margin: 0;
+  }
 `
 
 const VerticalLocationPreview = styled(HorizontalLocationPreview)`
   margin-bottom: 6px;
+`
+
+const Title = styled.h3`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
+  font-weight: 600;
+  font-size: 23px;
+  color: ${props => props.theme.Colors.background};
+  display: inline-block;
+  margin: 0;
+  cursor: pointer;
+  max-width: 225px;
+  @media (max-width: ${sizes.tablet}px){
+    max-width: 385.5px;
+    font-size: 20px;
+  }
+  &:hover {
+    color: ${props => props.theme.Colors.grey};
+  };
+`
+
+const Description = styled.h2`
+  font-size: 16px;
+  letter-spacing: .7px;
+  color : ${props => props.theme.Colors.grey};
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  font-weight: 400;
+  margin-top: 7.5px;
+  margin-bottom: 0;
+  @media (max-width: ${sizes.tablet}px){
+    display: none;
+  }
+`
+
+const CoverImage = styled.img`
+  width: 385.5px;
+  height: ${coverHeight};
+  object-fit: cover;
+  cursor: pointer;
+  margin-right: 20px;
+  @media (max-width: ${sizes.tablet}px){
+    max-width:100vw;
+    width: 100%;
+    margin: 0;
+    margin-right: 0px;
+  }
 `
 
 const GuideIconText = styled(HorizontalLocationPreview)`
@@ -165,13 +186,18 @@ const Top = styled(Row)`
   position: absolute;
   top: 0;
   left: 0;
+  @media (max-width: ${sizes.tablet}px){
+    position: relative;
+  }
 `
 
 const Bottom = styled(Row)`
-  // border:1px dashed red;
   position: absolute;
   bottom: 0;
   left: 0;
+  @media (max-width: ${sizes.tablet}px){
+    position: relative;
+  }
 `
 
 const BadgeIcon = styled(Icon)`
@@ -267,13 +293,11 @@ class FeedItemPreview extends Component {
       imageUrl = getImageUrl(feedItem.coverVideo, 'optimized', videoThumbnailOptions)
     }
 
+    const MarginWrapper = isVertical ? VerticalMarginWrapper : HorizontalMarginWrapper
     const DirectionalWrapper = isVertical ? VerticalWrapper : HorizontalRowWrapper
     const StoryInfoContainer = isVertical ? VerticalStoryInfoContainer : HorizontalStoryInfoContainer
-    const MarginWrapper = isVertical ? VerticalMarginWrapper : HorizontalMarginWrapper
     const DetailsContainer = isVertical ? VerticalDetailsContainer : HorizontalDetailsContainer
     const LocationPreview = isVertical ? VerticalLocationPreview : HorizontalLocationPreview
-
-    console.log('isVertical: ', )
 
     return (
       <MarginWrapper>

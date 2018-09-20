@@ -21,14 +21,24 @@ import FeedItemActionBar from '../Components/FeedItemActionBar'
 import TabBar from '../Components/TabBar'
 import GuideStoriesOfType from '../Components/GuideStoriesOfType'
 import HorizontalDivider from '../Components/HorizontalDivider'
+import { sizes } from '../Themes/Metrics'
 
 const ContentWrapper = styled.div``
 
 const LimitedWidthContainer = styled.div`
+  // border: 2px dashed blue;
   padding-left: 45px;
   padding-right: 45px;
   max-width: 800px;
   margin: 0 auto;
+`
+
+const LimitedWidthContainerWithoutPadding = styled(LimitedWidthContainer)`
+  // border: 2px dashed green;
+  @media (max-width: ${sizes.tablet}px){
+    padding-left: 0px;
+    padding-right: 0px;
+  }
 `
 
 const HashtagText = styled.p`
@@ -226,6 +236,8 @@ class Guide extends Component {
           {this.renderHashtags()}
           <FeedItemMetaInfo feedItem={guide}/>
           <HorizontalDivider color='light-grey'/>
+        </LimitedWidthContainer>
+        <LimitedWidthContainerWithoutPadding>
           {this.shouldDisplay("SEE") &&
             <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('SEE')} />
           }
@@ -238,7 +250,7 @@ class Guide extends Component {
           {this.shouldDisplay("STAY") &&
             <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('STAY')} />
           }
-        </LimitedWidthContainer>
+        </LimitedWidthContainerWithoutPadding>
         {
         <FeedItemActionBar
           isStory={false}

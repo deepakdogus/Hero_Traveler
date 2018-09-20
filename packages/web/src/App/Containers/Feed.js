@@ -26,6 +26,10 @@ const FeedText = styled(CenteredText)`
   font-size: 30px;
   letter-spacing: 1.5px;
   padding: 30px 0 0 0;
+  @media (max-width: ${sizes.tablet}px){
+    padding: 20px;
+    font-size: 18px;
+  }
 `
 
 const Wrapper = styled.div``
@@ -39,11 +43,13 @@ const ContentWrapper = styled.div`
   }
   
 `
-
 const StyledDivider = styled(HorizontalDivider)`
   border-color: ${props => props.theme.Colors.background};
   border-width: 1px;
   margin-bottom: 23px;
+  @media (max-width: ${sizes.tablet}px){
+    display: none; 
+  }
 `
 
 const tabBarTabs = ['STORIES', 'GUIDES']

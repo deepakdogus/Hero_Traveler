@@ -5,15 +5,33 @@ import styled from 'styled-components'
 import FeedItemPreview from './FeedItemPreview'
 import HorizontalDivider from './HorizontalDivider'
 import { Row } from './FlexboxGrid'
+import { sizes } from '../Themes/Metrics'
 
 const StyledDivider = styled(HorizontalDivider)`
   max-width: 960px;
   margin: 20px auto;
+  @media (max-width: ${sizes.tablet}px){
+    border-color: transparent;
+    background-color: transparent;
+    margin-top: 0;
+    margin-bottom: 15px;
+  }
 `
 
-const VerticalWrapper = styled.div``
+const VerticalWrapper = styled.div`
+  border: 4px solid green;
+`
 
-const StyledRow = styled(Row)``
+const StyledRow = styled(Row)`
+border: 4px solid red;
+`
+
+// const StyledRow = styled.div`
+// border: 4px solid red;
+// overflow: scroll;
+// display: flex;
+// flex-direction: column;
+// `
 
 export default class FeedItemList extends React.Component {
   static propTypes = {
@@ -45,7 +63,10 @@ export default class FeedItemList extends React.Component {
       if (!feedItem) return rows
       if (index !== 0 && !isHorizontalList) {
         rows.push((
-          <StyledDivider key={`hr-${feedItem.id}`} color='lighter-grey'/>
+          <StyledDivider 
+            key={`hr-${feedItem.id}`} 
+            color={'lighter-grey'}
+          />
         ))
       }
       rows.push((
@@ -59,8 +80,6 @@ export default class FeedItemList extends React.Component {
       ))
       return rows
     }, [])
-
-    console.log('THIS.PROPS: ', renderedFeedItems)
 
     const Wrapper = isHorizontalList ? StyledRow : VerticalWrapper
     const wrapperProps = isHorizontalList ? { between: 'xs'} : {}

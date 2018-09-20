@@ -3,13 +3,11 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 import FeedItemList from './FeedItemList'
-import { sizes } from '../Themes/Metrics'
 
 
 const Wrapper = styled.div`
-  // border: 5px dashed teal;
   margin: 20px 0;
-  @media (max-width: ${sizes.tablet}px){
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     margin: 0;
   }
 `
@@ -22,8 +20,9 @@ const Title = styled.p`
   line-height: 40px;
   letter-spacing: .7px;
   color: ${props => props.theme.Colors.background};
-  @media (max-width: ${sizes.tablet}px){
-    text-align: center;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 20px;
+    padding: 15px 20px;
   }
 `
 

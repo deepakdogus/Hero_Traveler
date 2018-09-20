@@ -5,12 +5,11 @@ import styled from 'styled-components'
 import FeedItemPreview from './FeedItemPreview'
 import HorizontalDivider from './HorizontalDivider'
 import { Row } from './FlexboxGrid'
-import { sizes } from '../Themes/Metrics'
 
 const StyledDivider = styled(HorizontalDivider)`
   max-width: 960px;
   margin: 20px auto;
-  @media (max-width: ${sizes.tablet}px){
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     border-color: transparent;
     background-color: transparent;
     margin-top: 0;
@@ -19,11 +18,9 @@ const StyledDivider = styled(HorizontalDivider)`
 `
 
 const VerticalWrapper = styled.div`
-  border: 4px solid blue;
 `
 
 const StyledRow = styled(Row)`
-// border: 4px solid red;
 `
 
 export default class FeedItemList extends React.Component {

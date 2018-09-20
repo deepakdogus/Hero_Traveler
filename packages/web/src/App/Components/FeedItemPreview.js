@@ -22,7 +22,6 @@ import LikeComponent from './LikeComponent'
 import { Row } from './FlexboxGrid'
 import VerticalCenter from './VerticalCenter'
 import Icon from './Icon'
-import { sizes } from '../Themes/Metrics'
 
 import OverlayHover from './OverlayHover'
 import CloseX from './CloseX'
@@ -35,18 +34,17 @@ const Text = styled.span`
   letter-spacing: .7px;
   font-size: 15px;
   color: ${props => props.theme.Colors.grey};
-  @media (max-width: ${sizes.tablet}px){
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 12px;
   }
 `
 
 const HorizontalMarginWrapper = styled.div`
-  // border: 3px solid purple;
   position: relative;
   max-width: 960px;
   margin: auto;
   color: ${props => props.theme.Colors.lightGrey};
-  @media (max-width: ${sizes.tablet}px){
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     max-width: 100vw;
     width: 100vw;
     margin: 0;
@@ -54,18 +52,16 @@ const HorizontalMarginWrapper = styled.div`
 `
 
 const VerticalMarginWrapper = styled(HorizontalMarginWrapper)`
-  border: 3px solid teal;
   margin: 25px 0 0;
-  @media (max-width: ${sizes.tablet}px){
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     max-width: 100%;
     margin: 0;
-    width:100%;
+    width: 100%;
   }
 `
 
 const HorizontalRowWrapper = styled(Row)`
-  border: 2px solid green;
-  @media (max-width: ${sizes.tablet}px){
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     width: 100vw;
     flex-direction: column;
     justify-content: center;
@@ -73,23 +69,14 @@ const HorizontalRowWrapper = styled(Row)`
 `
 
 const VerticalWrapper = styled.div`
-  // border: 2px solid orange;
-  // margin: 20px;
-  @media (max-width: ${sizes.tablet}px){
-    // width: 100%;
-    // display: flex;
-    // flex-direction: row;
-    // justify-content: center;
-    // margin: 20px;
-
-  }
+  margin: 0;
 `
 
 const HorizontalStoryInfoContainer = styled(VerticalCenter)`
-  border: 2px solid red;
   position: relative;
   height: ${coverHeight};
-  @media (max-width: ${sizes.tablet}px){
+  max-width: 385.5px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     height:auto;
     > * {
       padding-left: 15px;
@@ -101,16 +88,25 @@ const HorizontalStoryInfoContainer = styled(VerticalCenter)`
 const VerticalStoryInfoContainer = styled(HorizontalStoryInfoContainer)`
   height: auto;
   margin-left: 0;
+  > * {
+    padding: 5px 0px
+  }
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 5px;
+    > * {
+      padding-left: 15px;
+      padding-top: 0px;
+    }
+  }
 `
 
 const HorizontalDetailsContainer = styled(Row)`
   padding-top: 13px;
-  display: flex;
   position: relative;
 `
 
 const VerticalDetailsContainer = styled(HorizontalDetailsContainer)`
-  padding-top: 5px;
+  padding-top: 0px;
 `
 
 const HorizontalLocationPreview = styled(Text)`
@@ -118,16 +114,22 @@ const HorizontalLocationPreview = styled(Text)`
   letter-spacing: .7px;
   font-size: 14px;
   font-weight: 600;
+  margin-top: 6px;
   margin-bottom: 12px;
   text-transform: uppercase;
-  @media (max-width: ${sizes.tablet}px){
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 13px;
     margin: 0;
   }
 `
 
 const VerticalLocationPreview = styled(HorizontalLocationPreview)`
-  margin-bottom: 6px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin-bottom: 0px;
+    font-size: 13px;
+  }
 `
 
 const Title = styled.h3`
@@ -139,7 +141,7 @@ const Title = styled.h3`
   margin: 0;
   cursor: pointer;
   max-width: 225px;
-  @media (max-width: ${sizes.tablet}px){
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     max-width: 385.5px;
     font-size: 20px;
   }
@@ -154,21 +156,19 @@ const Description = styled.h2`
   color : ${props => props.theme.Colors.grey};
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
-  margin-top: 7.5px;
-  margin-bottom: 0;
-  @media (max-width: ${sizes.tablet}px){
+  margin-top: 0;
+  margin-bottom: 7.5px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     display: none;
   }
 `
 
-const ImageContainer = styled.div`
-  // border: 3px solid red;
+const ImageWrapper = styled.div`
   position: relative;
   width: 385.5px;
   height: ${coverHeight};
   cursor: pointer;
-  margin-right: 20px;
-  @media (max-width: ${sizes.tablet}px){
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     max-width:100vw;
     width: 100%;
     margin: 0;
@@ -176,8 +176,13 @@ const ImageContainer = styled.div`
   }
 `
 
+const HorizontalImageContainer = styled(ImageWrapper)`
+  margin-right: 20px;
+`
+const VerticalImageContainer = styled(ImageWrapper)`
+  margin-right: 0px;
+`
 const CoverImage = styled.img`
-  // border: 2px solid yellow;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -213,13 +218,16 @@ const ByText = styled(Text)`
 const Username = styled(Text)`
   color: ${props => props.theme.Colors.redHighlights};
   cursor: pointer;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 13px;
+  }
 `
 
 const Top = styled(Row)`
   position: absolute;
   top: 0;
   left: 0;
-  @media (max-width: ${sizes.tablet}px){
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     position: relative;
   }
 `
@@ -228,7 +236,7 @@ const Bottom = styled(Row)`
   position: absolute;
   bottom: 0;
   left: 0;
-  @media (max-width: ${sizes.tablet}px){
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     position: relative;
   }
 `
@@ -348,6 +356,7 @@ class FeedItemPreview extends Component {
 
     const MarginWrapper = isVertical ? VerticalMarginWrapper : HorizontalMarginWrapper
     const DirectionalWrapper = isVertical ? VerticalWrapper : HorizontalRowWrapper
+    const ImageContainer = isVertical ? VerticalImageContainer : HorizontalImageContainer
     const StoryInfoContainer = isVertical ? VerticalStoryInfoContainer : HorizontalStoryInfoContainer
     const DetailsContainer = isVertical ? VerticalDetailsContainer : HorizontalDetailsContainer
     const LocationPreview = isVertical ? VerticalLocationPreview : HorizontalLocationPreview

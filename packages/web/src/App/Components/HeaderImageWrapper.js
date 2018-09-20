@@ -29,4 +29,7 @@ export default styled.div`
     }
   }};
   position: relative;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    height: 280px;
+  }
 `

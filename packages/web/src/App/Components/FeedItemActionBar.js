@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import {sizes} from '../Themes/Metrics'
 import Icon from './Icon'
 import {Col} from './FlexboxGrid'
 
@@ -14,9 +13,6 @@ const StyledIcon = styled(Icon)`
   height: 20px;
   width: 20px;
   cursor: pointer;
-  @media (max-width: ${sizes.tablet}px) {
-
-  }
 `
 
 const HandMadeIcon = styled.div`display: block;
@@ -47,7 +43,7 @@ const TwitterIcon = styled(StyledIcon)``
 const DotsIcon = styled(StyledIcon)``
 
 const ActionBarContainer = styled(Col)`
-  @media (max-width: ${sizes.tablet}px) {
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -70,10 +66,10 @@ const AbsoluteWrapper = styled.div`
   position: fixed;
   top: 150px;
   left: 90%;
-  @media (max-width: ${sizes.desktopLarge}px) {
+  @media (max-width: ${props => props.theme.Metrics.sizes.desktopLarge}px) {
     left: 95%;
   }
-  @media (max-width: ${sizes.tablet}px) {
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     display: flex;
     flex-direction: row;
     bottom: 0px;
@@ -86,7 +82,7 @@ const AbsoluteWrapper = styled.div`
 `
 
 const ClickableWrapper = styled.div`
-  @media (max-width: ${sizes.tablet}px) {
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     display: flex;
     flex-direction: row;
     margin-top: 15px;

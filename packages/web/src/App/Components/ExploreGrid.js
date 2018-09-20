@@ -7,7 +7,6 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import Icon from './Icon'
 import { VerticalCenterStyles } from './VerticalCenter'
 import OverlayHover from './OverlayHover'
-import Colors from '../Shared/Themes/Colors'
 
 const Wrapper = styled.div`
   margin: 1px;
@@ -46,11 +45,11 @@ const RedCheck = styled(Icon)`
   position: absolute;
   top: 10px;
   right: 10px;
-  border-color: ${Colors.white};
+  border-color: ${props => props.theme.Colors.snow};
   border-style: solid;
   border-width: 1.3px;
   border-radius: 50%;
-  background-color:  ${Colors.white};
+  background-color: ${props => props.theme.Colors.snow};
 `
 
 // created specific component to optimize speed with _onClickTile
@@ -64,7 +63,7 @@ class Tile extends React.Component {
   _onClickTile = () => {
     this.props.onClick(this.props.category.id)
   }
- 
+
   render(){
     const {category, isSelected} = this.props
     return (

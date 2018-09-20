@@ -57,7 +57,7 @@ const BadgeSpacer = styled.div`
   width: 20px;
   display: inline-block;
   @media (max-width: ${sizes.tablet}px){
-    width: 15px;   
+    width: 15px;
   }
 `
 

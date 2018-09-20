@@ -19,19 +19,12 @@ const StyledDivider = styled(HorizontalDivider)`
 `
 
 const VerticalWrapper = styled.div`
-  border: 4px solid green;
+  border: 4px solid blue;
 `
 
 const StyledRow = styled(Row)`
-border: 4px solid red;
-`
-
-// const StyledRow = styled.div`
 // border: 4px solid red;
-// overflow: scroll;
-// display: flex;
-// flex-direction: column;
-// `
+`
 
 export default class FeedItemList extends React.Component {
   static propTypes = {

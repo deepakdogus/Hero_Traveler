@@ -41,7 +41,7 @@ const Text = styled.span`
 `
 
 const HorizontalMarginWrapper = styled.div`
-  // border: 5px solid purple;
+  // border: 3px solid purple;
   position: relative;
   max-width: 960px;
   margin: auto;
@@ -54,7 +54,7 @@ const HorizontalMarginWrapper = styled.div`
 `
 
 const VerticalMarginWrapper = styled(HorizontalMarginWrapper)`
-  // border: 2px solid blue;
+  border: 3px solid teal;
   margin: 25px 0 0;
   @media (max-width: ${sizes.tablet}px){
     max-width: 100%;
@@ -73,16 +73,20 @@ const HorizontalRowWrapper = styled(Row)`
 `
 
 const VerticalWrapper = styled.div`
-  // border: 2px solid red;
+  // border: 2px solid orange;
+  // margin: 20px;
   @media (max-width: ${sizes.tablet}px){
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    // width: 100%;
+    // display: flex;
+    // flex-direction: row;
+    // justify-content: center;
+    // margin: 20px;
+
   }
 `
 
 const HorizontalStoryInfoContainer = styled(VerticalCenter)`
+  border: 2px solid red;
   position: relative;
   height: ${coverHeight};
   @media (max-width: ${sizes.tablet}px){
@@ -158,15 +162,10 @@ const Description = styled.h2`
 `
 
 const ImageContainer = styled.div`
+  // border: 3px solid red;
   position: relative;
   width: 385.5px;
   height: ${coverHeight};
-`
-
-const CoverImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
   cursor: pointer;
   margin-right: 20px;
   @media (max-width: ${sizes.tablet}px){
@@ -175,6 +174,13 @@ const CoverImage = styled.img`
     margin: 0;
     margin-right: 0px;
   }
+`
+
+const CoverImage = styled.img`
+  // border: 2px solid yellow;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `
 
 const StyledOverlay = styled(OverlayHover)`

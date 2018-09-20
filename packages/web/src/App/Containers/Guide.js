@@ -26,7 +26,7 @@ import { sizes } from '../Themes/Metrics'
 const ContentWrapper = styled.div``
 
 const LimitedWidthContainer = styled.div`
-  // border: 2px dashed blue;
+  border: 2px dashed blue;
   padding-left: 45px;
   padding-right: 45px;
   max-width: 800px;
@@ -34,7 +34,7 @@ const LimitedWidthContainer = styled.div`
 `
 
 const LimitedWidthContainerWithoutPadding = styled(LimitedWidthContainer)`
-  // border: 2px dashed green;
+  border: 2px dashed green;
   @media (max-width: ${sizes.tablet}px){
     padding-left: 0px;
     padding-right: 0px;

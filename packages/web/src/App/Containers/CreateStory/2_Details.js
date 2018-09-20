@@ -24,6 +24,13 @@ class CreateStoryCoverContent extends Component {
     this.props.loadDefaultCategories()
   }
 
+  componentDidMount() {
+    const { coverVideo, coverImage } = this.props.workingDraft
+    if (!coverVideo && !coverImage) {
+      this.props.reroute('/editStory/new')
+    }
+  }
+
   render() {
     return (
       <StoryDetails

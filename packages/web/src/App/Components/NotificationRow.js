@@ -2,9 +2,14 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import moment from 'moment'
+import _ from 'lodash'
 
 import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
+import {
+  getContent,
+  getDescription,
+} from '../Shared/Lib/NotificationHelpers'
 import Avatar from './Avatar'
 import {getSize} from './Icon'
 import HorizontalDivider from './HorizontalDivider'
@@ -114,12 +119,6 @@ const HiddenBulletContainer = styled(VisibleBulletContainer)`
   visibility: hidden;
 `
 
-const ActivityTypes = {
-  like: 'ActivityStoryLike',
-  follow: 'ActivityFollow',
-  comment: 'ActivityStoryComment'
-}
-
 const videoThumbnailOptions = {
   video: true,
   width: 100,
@@ -128,32 +127,29 @@ const videoThumbnailOptions = {
 
 export default class NotificationRow extends Component {
   static propTypes = {
-    user: PropTypes.object,
-    activityKind: PropTypes.string,
+    activity: PropTypes.object,
     isFeedItem: PropTypes.bool,
-    story: PropTypes.object,
     reroute: PropTypes.func,
     closeModal: PropTypes.func,
-    seen: PropTypes.bool,
     markSeen: PropTypes.func,
-    activityId: PropTypes.string,
   }
 
   navToStory = () => {
-    this.props.reroute(`/story/${this.props.story.id}`)
+    this.props.reroute(`/story/${this.props.activity.story.id}`)
     this.props.closeModal()
   }
 
   navToUserProfile = () => {
-    this.props.reroute(`/profile/${this.props.user.id}/view`)
+    this.props.reroute(`/profile/${this.props.activity.fromUser.id}/view`)
     this.props.closeModal()
   }
 
   renderImage = () => {
+    const avatar = _.get(this, 'props.user.profile.avatar')
     return (
       <RenderImageContainer>
         <Avatar
-          avatarUrl={getImageUrl(this.props.user.profile.avatar, 'avatarLarge')}
+          avatarUrl={avatar ? getImageUrl(avatar, 'avatarLarge') : undefined}
           size='larger'
         />
       </RenderImageContainer>
@@ -161,28 +157,30 @@ export default class NotificationRow extends Component {
   }
 
   renderSeenBullet = () => {
-    const BulletContainer = this.props.seen ? HiddenBulletContainer : VisibleBulletContainer
-    return (<BulletContainer />)
+    if (this.props.activity.seen) return ( <HiddenBulletContainer /> )
+    else return ( <VisibleBulletContainer /> )
   }
 
   renderText = () => {
-    const {user} = this.props
+    const { activity } = this.props
 
     return (
       <StyledVerticalCenter>
         <StyledNotificationContent>
-          <StyledUserName>{user.username}&nbsp;</StyledUserName>
-          {this.getDescription()}
+          <StyledUserName>
+            {activity.fromUser.username}&nbsp;
+          </StyledUserName>
+          {getDescription(activity)}
         </StyledNotificationContent>
-        {this.props.comment &&
+        {!!activity.comment &&
           <CommentContent>
-            {this.props.comment}
+            {getContent(activity)}
           </CommentContent>
         }
         <StyledTimestamp
           margin='none'
           width='50px' >
-          {moment(this.props.timestamp).fromNow()}
+          {moment(activity.createdAt).fromNow()}
         </StyledTimestamp>
       </StyledVerticalCenter>
     )
@@ -190,14 +188,14 @@ export default class NotificationRow extends Component {
 
   renderTripImage = () => {
     const {
-      story,
       isFeedItem,
+      activity,
     } = this.props
-
     if (isFeedItem) {
+      const feedItem = activity.story || activity.guide
       let imageUrl
-      if (story.coverImage) imageUrl = getImageUrl(story.coverImage, 'thumbnail')
-      else imageUrl = getImageUrl(story.coverVideo, 'optimized', videoThumbnailOptions)
+      if (feedItem.coverImage) imageUrl = getImageUrl(feedItem.coverImage, 'thumbnail')
+      else imageUrl = getImageUrl(feedItem.coverVideo, 'optimized', videoThumbnailOptions)
 
       return (
         <VerticalCenter>
@@ -212,34 +210,18 @@ export default class NotificationRow extends Component {
   }
 
   _markSeen = () => {
-    if (!this.props.seen) {
-      this.props.markSeen(this.props.activityId)
+    if (!this.props.activity.seen) {
+      this.props.markSeen(this.props.activity.id)
     }
   }
-
-  getDescription = () => {
-    const {story, activityKind} = this.props
-    switch (activityKind) {
-      case ActivityTypes.follow:
-        return `is now following you.`
-      case ActivityTypes.comment:
-        return  `commented on your story ${story.title}.`
-      case ActivityTypes.like:
-        return `liked your story ${story.title}.`
-      default:
-        return ''
-    }
-  }
-
 
   render() {
     const leftProps = { 'max-width': '450px', }
-    const {activityKind, story} = this.props
-    if (activityKind !== ActivityTypes.follow && !story) return null
+
     return (
       <InteractiveContainer onClick={this._markSeen}>
         <Container
-          onClick={this.props.isFeedItem? this.navToStory : this.navToUserProfile}
+          onClick={this.props.isFeedItem ? this.navToStory : this.navToUserProfile}
           >
           {this.renderSeenBullet()}
           <SpaceBetweenRow

@@ -101,7 +101,7 @@ const videoThumbnailOptions = {
   width: 'screen',
 }
 
-export default class StoryHeaderOld extends React.Component {
+export default class HeaderSlide extends React.Component {
   static propTypes = {
     story: PropTypes.object,
     author: PropTypes.object,

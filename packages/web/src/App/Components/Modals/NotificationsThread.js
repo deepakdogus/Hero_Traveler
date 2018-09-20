@@ -1,7 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { push } from 'react-router-redux'
 
+import UserActions from '../../Shared/Redux/Entities/Users'
+import {
+  ActivityTypes,
+  isActivityIncomplete,
+  getPopulatedActivity,
+} from '../../Shared/Lib/NotificationHelpers'
 import NotificationRow from '../NotificationRow'
 import {RightTitle, RightModalCloseX} from './Shared'
 
@@ -9,7 +17,7 @@ const Container = styled.div``
 
 const NotificationRowsContainer = styled.div``
 
-export default class NotificationsThread extends React.Component {
+class NotificationsThread extends React.Component {
   static propTypes = {
     closeModal: PropTypes.func,
     activitiesById: PropTypes.array,
@@ -17,6 +25,7 @@ export default class NotificationsThread extends React.Component {
     markSeen: PropTypes.func,
     stories: PropTypes.object,
     users: PropTypes.object,
+    guides: PropTypes.object,
     reroute: PropTypes.func,
   }
 
@@ -25,36 +34,31 @@ export default class NotificationsThread extends React.Component {
       activities,
       activitiesById,
       closeModal,
-      stories,
-      users,
       reroute,
       markSeen,
     } = this.props
 
     return activitiesById.map(id => {
-      const userId = activities[id].fromUser
-      const userProfile = users[userId]
       const activity = activities[id]
-      const story = stories[activity.story]
+      const populatedActivity = getPopulatedActivity(id, this.props)
+
+      if (isActivityIncomplete(populatedActivity)) return null
+
       return (
         <NotificationRow
           key={id}
-          user={userProfile}
-          activityKind={activity.kind}
+          activity={populatedActivity}
           isFeedItem={this.isFeedItem(activity)}
-          story={story}
           reroute={reroute}
           closeModal={closeModal}
-          seen={activity.seen}
           markSeen={markSeen}
-          activityId={activity.id}
         />
       )
     })
   }
 
   isFeedItem = (activity) => {
-    return activity.kind === 'ActivityStoryComment' || activity.kind === 'ActivityStoryLike'
+    return activity.kind !== ActivityTypes.follow
   }
 
   render() {
@@ -69,3 +73,24 @@ export default class NotificationsThread extends React.Component {
     )
   }
 }
+
+function mapStateToProps(state) {
+  const users = state.entities.users
+  return {
+    activitiesById: users.activitiesById,
+    activities: users.activities,
+    users: users.entities,
+    stories: state.entities.stories.entities,
+    guides: state.entities.guides.entities,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    reroute: (route) => dispatch(push(route)),
+    markSeen: (activityId) => dispatch(UserActions.activitySeen(activityId)),
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationsThread)

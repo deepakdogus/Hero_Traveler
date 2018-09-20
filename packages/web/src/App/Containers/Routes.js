@@ -9,13 +9,13 @@ import Explore from './Explore'
 import Feed from './Feed'
 import Story from './Story'
 import Search from './Search'
-import CreateStory from './CreateStory'
 import EditStory from './EditStory'
 import SignupSocial from './Signup/SignupSocial'
 import SignupTopics from './Signup/SignupTopics'
 import Profile from './Profile'
 import Header from './Header'
 import Guide from './Guide'
+import CreateGuide from './CreateGuide'
 
 class AppRoot extends Component {
   render() {
@@ -28,9 +28,9 @@ class AppRoot extends Component {
         <AuthRoute exact path='/feed' component={Feed} />
         <AuthRoute path='/signup/social' component={SignupSocial} />
         <AuthRoute path='/signup/topics' component={SignupTopics} />
+        <AuthRoute path='/edit/guide/:guideId' component={CreateGuide} />
         <Route path='/story/:storyId' component={Story} />
         <Route path='/guide/:guideId' component={Guide} />
-        <Route exact path='/createStory' component={CreateStory} />
         <AuthRoute path='/editStory/:storyId' component={EditStory} />
         <Route path='/profile/:userId/view' component={Profile} />
         <AuthRoute path='/profile/:userId/edit' component={Profile}/>

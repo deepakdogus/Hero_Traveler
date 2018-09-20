@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import StorySelectRow, {DefaultContainer} from './StorySelectRow'
+import FeedItemSelectRow, {DefaultContainer} from './FeedItemSelectRow'
 
 const Container = styled.div``
 
@@ -26,7 +26,7 @@ export default class SearchResultsStories extends Component {
     const renderedStories = stories.map((story, index) => {
       if(story.coverVideo) return null
       return (
-        <StorySelectRow
+        <FeedItemSelectRow
           story={story}
           username={story.author}
           key={index}
@@ -34,6 +34,7 @@ export default class SearchResultsStories extends Component {
           ReplacementContainer={StyledContainer}
           navToStory={this.props.navToStory}
           navToUserProfile={this.props.navToUserProfile}
+          isVertical
         />
       )
     })

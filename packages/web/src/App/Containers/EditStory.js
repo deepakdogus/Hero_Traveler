@@ -20,9 +20,9 @@ import {
   isFieldSame,
 } from '../Shared/Lib/draftChangedHelpers'
 
-const Container = styled.div``
+export const Container = styled.div``
 
-const ContentWrapper = styled.div`
+export const ContentWrapper = styled.div`
   margin: 0 17%;
 `
 
@@ -30,7 +30,7 @@ const ItemContainer = styled.div`
   margin: 40px 0;
 `
 
-const customModalStyles = {
+export const customModalStyles = {
   content: {
     border: '0',
     bottom: 'auto',
@@ -383,7 +383,6 @@ function mapDispatchToProps(dispatch) {
     setWorkingDraft: (cachedStory) => dispatch(StoryCreateActions.editStorySuccess(cachedStory)),
     updateGlobalModalParams: (params) => dispatch(UXActions.updateGlobalModalParams(params)),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
-
   }
 }
 

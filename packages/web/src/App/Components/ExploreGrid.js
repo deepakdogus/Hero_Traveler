@@ -22,6 +22,7 @@ const CategoryTile = styled.div`
   padding-top: 50%;
   padding-bottom: 50%;
   position: relative;
+  ${props => console.log('PROPS! ', props)}
 `
 
 const TitleContainer = styled(OverlayHover)`
@@ -67,7 +68,7 @@ class Tile extends React.Component {
   render(){
     const {category, isSelected} = this.props
     return (
-      <Col xs={4} sm={4} md={3} lg={2} >
+      <Col xs={4} md={3} lg={2} >
         <Wrapper onClick={this._onClickTile}>
           <CategoryTile
             imageSource={getImageUrl(category.image, 'optimized', {width: 400, height: 400})}

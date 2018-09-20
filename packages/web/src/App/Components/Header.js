@@ -14,8 +14,6 @@ import Avatar from './Avatar'
 import Login from './Modals/Login'
 import Signup from './Modals/Signup'
 import ResetPassword from './Modals/ResetPassword'
-import RightModal from './RightModal'
-import NotificationsThread from './Modals/NotificationsThread'
 import {usersExample} from '../Containers/Feed_TEST_DATA'
 import LoginActions from '../Shared/Redux/LoginRedux'
 import StoryActions from '../Shared/Redux/Entities/Stories'
@@ -152,14 +150,6 @@ class Header extends React.Component {
       this.closeModal()
       if (nextProps.isSignedUp) nextProps.reroute('/signup/topics')
     }
-  }
-
-  // name correspond to icon name and button name
-  openModal = (event) => {
-    const name = event.target.name
-    let modalToOpen;
-    else if (name === 'notifications' || name === 'cameraFlash') modalToOpen = 'notificationsThread'
-    this.setState({ modal: modalToOpen })
   }
 
   closeModal = () => {
@@ -306,13 +296,6 @@ class Header extends React.Component {
         >
           <ResetPassword/>
         </Modal>
-        <RightModal
-          isOpen={this.state.modal === 'notificationsThread'}
-          contentLabel='Notifications Thread'
-          onRequestClose={this.closeModal}
-        >
-          <NotificationsThread closeModal={this.closeModal} profile={user}/>
-        </RightModal>
       </SelectedGrid>
     )
   }

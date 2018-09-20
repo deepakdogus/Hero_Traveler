@@ -9,7 +9,7 @@ import {
   SharedComponent,
   mapStateToProps,
   mapDispatchToProps,
-} from '../../Shared/Lib/addStoryToGuidesHelpers'
+} from '../../Shared/Lib/AddStoryToGuidesHelpers'
 import GuideListItem from '../../Components/GuideListItem'
 import storyCoverStyles from '../CreateStory/2_StoryCoverScreenStyles'
 import NavBar from '../CreateStory/NavBar'

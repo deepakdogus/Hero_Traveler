@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import * as _ from 'lodash'
+
 import { Grid } from '../Components/FlexboxGrid'
 import HeaderAnonymous from '../Components/Headers/HeaderAnonymous'
 import HeaderLoggedIn from '../Components/Headers/HeaderLoggedIn'
@@ -64,12 +65,10 @@ class Header extends React.Component {
     userEntitiesError: PropTypes.object,
     activitiesById: PropTypes.array,
     activities: PropTypes.object,
-    stories: PropTypes.object,
     originalDraft: PropTypes.object,
     workingDraft: PropTypes.object,
     resetCreateStore: PropTypes.func,
     markSeen: PropTypes.func,
-    users: PropTypes.object,
     pathname: PropTypes.string,
     signedUp: PropTypes.bool,
     flagStory: PropTypes.func,
@@ -183,9 +182,7 @@ class Header extends React.Component {
       userEntitiesError,
       activitiesById,
       activities,
-      stories,
       markSeen,
-      users,
       pathname,
       workingDraft,
       originalDraft,
@@ -253,9 +250,7 @@ class Header extends React.Component {
               userEntitiesError={userEntitiesError}
               activities={activities}
               activitiesById={activitiesById}
-              stories={stories}
               markSeen={markSeen}
-              users={users}
               nextPathAfterSave={this.state.nextPathAfterSave}
               reroute={reroute}
               resetCreateStore={this._resetCreateStore}
@@ -295,8 +290,6 @@ function mapStateToProps(state) {
     currentUserNotificationTypes: (currentUser) && currentUser.notificationTypes,
     activitiesById: state.entities.users.activitiesById,
     activities: state.entities.users.activities,
-    users: state.entities.users.entities,
-    stories: state.entities.stories.entities,
     originalDraft: state.storyCreate.draft,
     workingDraft: state.storyCreate.workingDraft,
     pathname: pathname,

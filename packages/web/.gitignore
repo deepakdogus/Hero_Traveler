@@ -20,7 +20,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-src/App/shared
+# src/App/Shared
 src/App/Config/Env/dev.js
 src/App/Config/Env/prod.js
 

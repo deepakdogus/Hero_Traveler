@@ -4,5 +4,5 @@ export default {
   yellowBox: __DEV__,
   reduxLogging: false,
   includeExamples: __DEV__,
-  useReactotron: __DEV__
+  useReactotron: false,
 }

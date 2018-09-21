@@ -84,7 +84,7 @@ class HeaderLoggedIn extends React.Component {
     originalDraft: PropTypes.object,
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.props.closeGlobalModal()
   }
 

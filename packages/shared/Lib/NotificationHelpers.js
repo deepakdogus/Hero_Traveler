@@ -29,6 +29,8 @@ export function getDescription(activity) {
       return `liked your story ${activity.story.title}.`
     case ActivityTypes.guideLike:
       return `liked your guide ${activity.guide.title}.`
+    default:
+      return ''
   }
 }
 
@@ -45,6 +47,8 @@ export function getContent(activity) {
   switch (activity.kind) {
     case ActivityTypes.comment:
     case ActivityTypes.guideComment:
-      return _.truncate(activity.comment.content, {length: 60});
+      return _.truncate(activity.comment.content, {length: 60})
+    default:
+      return ''
   }
 }

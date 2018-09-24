@@ -21,18 +21,14 @@ import {
 
 // If we don't explicity prevent 'fixed' from being passed to Grid, we get an error about unknown prop on div element
 // because apparently react-flexbox-grid passes all props down to underlying React elements
-const StyledGrid = styled(({ fixed, ...rest }) => <Grid {...rest} />)`
+const StyledGrid = styled(({ fixed, hasBlackBackground, ...rest }) => <Grid {...rest} />)`
   padding: 15px;
   z-index: 3;
   position: ${props => props.fixed ? 'fixed' : 'absolute'};
   width: 100%;
   top: 0;
   padding-right: 10px;
-  background-color: ${props => props.blackBackground ? '#1a1c21' : 'rgba(0,0,0,0)'};
-`
-
-const StyledGridBlack = styled(StyledGrid)`
-  background-color: ${props => props.theme.Colors.background};
+  background-color: ${props => props.hasBlackBackground ? '#1a1c21' : 'rgba(0,0,0,0)'};
 `
 
 const HeaderSpacer = styled.div`
@@ -191,15 +187,16 @@ class Header extends React.Component {
       resetPassword,
     } = this.props
 
-    const SelectedGrid =
-      (this.props.blackHeader || this.state.navbarEngaged)
-      ? StyledGridBlack
-      : StyledGrid
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
+    const hasBlackBackground = this.props.blackHeader || this.state.navbarEngaged
 
     return (
       <div>
-        <SelectedGrid fluid fixed>
+        <StyledGrid
+          fluid
+          fixed
+          hasBlackBackground={hasBlackBackground}
+        >
           {isLoggedIn &&
             <HeaderLoggedIn
               userId={currentUserId}
@@ -259,7 +256,7 @@ class Header extends React.Component {
               openGlobalModal={openGlobalModal}
               resetPassword={resetPassword}
             />
-        </SelectedGrid>
+        </StyledGrid>
         <HeaderSpacer
           spacerSize={spacerSize}
         />

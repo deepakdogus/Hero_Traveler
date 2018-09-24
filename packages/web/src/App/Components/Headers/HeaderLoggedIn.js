@@ -85,7 +85,7 @@ class HeaderLoggedIn extends React.Component {
     originalDraft: PropTypes.object,
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.props.closeGlobalModal()
   }
 
@@ -116,11 +116,11 @@ class HeaderLoggedIn extends React.Component {
 
   _getNotificationsCount = () => {
     const {activities, activitiesById} = this.props
-    let count = 0
-    activitiesById.map(id => {
-      if(!activities[id].seen) count++
-    })
-    return count
+
+    return activitiesById.reduce((count , id) => {
+      if (!activities[id].seen) return count + 1
+      else return count
+    }, 0)
   }
 
   render () {

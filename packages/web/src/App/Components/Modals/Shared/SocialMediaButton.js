@@ -36,8 +36,7 @@ the Icons the same size) so to keep other files clear I am doing the ugly work h
 export default class SocialMediaButton extends React.Component {
   static propTypes = {
     onClick: PropTypes.func,
-    buttonType: PropTypes.string.required,
-    iconName: PropTypes.string.required,
+    iconName: PropTypes.string.isRequired,
     page: PropTypes.oneOf(['login', 'signup']),
   }
 

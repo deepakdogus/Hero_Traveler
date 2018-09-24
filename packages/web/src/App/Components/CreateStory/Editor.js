@@ -90,7 +90,7 @@ export default class BodyEditor extends React.Component {
     return convertToRaw(this.state.editorState.getCurrentContent())
   }
 
-  createFocusSelection = (key) => {
+  createSelectionWithFocus = (key) => {
     return new SelectionState({
       anchorKey: key,
       anchorOffset: 0,
@@ -106,7 +106,7 @@ export default class BodyEditor extends React.Component {
     const contentState = this.state.editorState.getCurrentContent()
     let selectKey = contentState.getKeyAfter(key) || contentState.getKeyBefore(key)
 
-    const selection = this.createFocusSelection(selectKey)
+    const selection = this.createSelectionWithFocus(selectKey)
 
     const withoutAtomicEntity = Modifier.removeRange(
       contentState,
@@ -169,6 +169,8 @@ export default class BodyEditor extends React.Component {
     return this.state.editorState.getSelection().getFocusKey()
   }
 
+  // atomic media caption placeholder only properly works if focusOffset is 0
+  // we shoud refocus when that is not the case
   shouldRefocusPlaceholder() {
     const { editorState } = this.state
     const selectionState = editorState.getSelection()
@@ -176,7 +178,7 @@ export default class BodyEditor extends React.Component {
     const currentBlock = editorState.getCurrentContent().getBlockForKey(focusKey)
     const blockType = currentBlock.getType()
     const text = currentBlock.getText()
-    return blockType === 'atomic' && !text && selectionState.getFocusOffset()
+    return blockType === 'atomic' && !text && selectionState.getFocusOffset() !== 0
   }
 
   componentDidUpdate(prevProps) {
@@ -189,7 +191,7 @@ export default class BodyEditor extends React.Component {
       this.setState({
         editorState: EditorState.forceSelection(
           this.state.editorState,
-          this.createFocusSelection(this.getFocusKey())
+          this.createSelectionWithFocus(this.getFocusKey())
         )
       })
     }

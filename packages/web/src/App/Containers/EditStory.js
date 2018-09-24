@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import {connect} from 'react-redux'
-import {push} from 'react-router-redux'
+import { connect } from 'react-redux'
+import { push } from 'react-router-redux'
 import _ from 'lodash'
 import Modal from 'react-modal'
 import PropTypes from 'prop-types'
@@ -13,7 +13,7 @@ import UXActions from '../Redux/UXRedux'
 import CreateStoryCoverContent from './CreateStory/1_CoverContent'
 import CreateStoryDetails from './CreateStory/2_Details'
 import FooterToolbar from '../Components/CreateStory/FooterToolbar'
-import {Title, Text} from '../Components/Modals/Shared'
+import { Title, Text } from '../Components/Modals/Shared'
 import { haveFieldsChanged } from '../Shared/Lib/draftChangedHelpers'
 
 import {
@@ -147,7 +147,7 @@ class EditStory extends Component {
   }
 
   componentDidUpdate(){
-    if (this.props.syncProgress > 0 && this.props.syncProgressSteps === this.props.syncProgress) {
+    if (this.props.syncProgress > 0 && this.props.syncProgressSteps === this.props.syncProgress && this.props.subPath === 'details') {
       this.props.reroute('/feed')
       this.props.resetCreateStore()
     }

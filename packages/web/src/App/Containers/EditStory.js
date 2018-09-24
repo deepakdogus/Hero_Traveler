@@ -146,11 +146,17 @@ class EditStory extends Component {
     }
   }
 
-  componentDidUpdate(){
-    if (this.props.syncProgress > 0 && this.props.syncProgressSteps === this.props.syncProgress) {
+  componentDidUpdate(prevProps){
+    if (
+      this.props.syncProgress > 0
+      && this.props.syncProgressSteps === this.props.syncProgress
+      && prevProps.syncProgress !== this.props.syncProgress
+      && this.props.subPath === 'details'
+    ) {
       this.props.reroute('/feed')
       this.props.resetCreateStore()
     }
+
     const { workingDraft, originalDraft } = this.props
     if (haveFieldsChanged(workingDraft, originalDraft)) {
       window.onbeforeunload = (e) => {

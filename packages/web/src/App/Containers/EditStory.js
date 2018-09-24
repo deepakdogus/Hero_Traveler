@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import {connect} from 'react-redux'
-import {push} from 'react-router-redux'
+import { connect } from 'react-redux'
+import { push } from 'react-router-redux'
 import _ from 'lodash'
 import Modal from 'react-modal'
 import PropTypes from 'prop-types'
@@ -13,10 +13,12 @@ import UXActions from '../Redux/UXRedux'
 import CreateStoryCoverContent from './CreateStory/1_CoverContent'
 import CreateStoryDetails from './CreateStory/2_Details'
 import FooterToolbar from '../Components/CreateStory/FooterToolbar'
-import {Title, Text} from '../Components/Modals/Shared'
-import { haveFieldsChanged } from '../Shared/Lib/draftChangedHelpers'
-
 import {
+  Title,
+  Text,
+} from '../Components/Modals/Shared'
+import {
+  haveFieldsChanged,
   isFieldSame,
 } from '../Shared/Lib/draftChangedHelpers'
 
@@ -98,13 +100,13 @@ class EditStory extends Component {
       registerDraft, loadDraft, setWorkingDraft,
     } = this.props
 
-    let storyId = _.get(this.props, "match.params.storyId");
+    let storyId = this.getStoryId()
 
     if (!storyId || storyId === 'new') {
       registerDraft(createLocalDraft(userId))
     }
     // should only load publish stories since locals do not exist in DB
-    else if (storyId.substring(0,6) !== 'local-'){
+    else if (!this.isLocalStory()){
       loadDraft(storyId, cachedStory)
     }
     else {
@@ -118,9 +120,8 @@ class EditStory extends Component {
       registerDraft,
       workingDraft
     } = this.props
-    //need to return a non-falsy value to render window dialog
 
-    if (workingDraft === null) {
+    if (workingDraft === null && this.isLocalStory()) {
       registerDraft(createLocalDraft(userId))
     }
   }
@@ -164,6 +165,14 @@ class EditStory extends Component {
         return true
       }
     }
+  }
+
+  getStoryId() {
+    return _.get(this.props, "match.params.storyId")
+  }
+
+  isLocalStory() {
+    return this.getStoryId().substring(0,6) === 'local-'
   }
 
   hasPublished(nextProps){
@@ -376,7 +385,7 @@ function mapStateToProps(state, props) {
 function mapDispatchToProps(dispatch) {
   return {
     registerDraft: (draft) => dispatch(StoryCreateActions.registerDraftSuccess(draft)),
-    loadDraft: (draftId) => dispatch(StoryCreateActions.editStory(draftId)),
+    loadDraft: (draftId, cachedStory) => dispatch(StoryCreateActions.editStory(draftId, cachedStory)),
     discardDraft: (draftId) => dispatch(StoryCreateActions.discardDraft(draftId)),
     updateDraft: (draftId, attrs, doReset, isRepublishing) =>
       dispatch(StoryCreateActions.updateDraft(draftId, attrs, doReset, isRepublishing)),

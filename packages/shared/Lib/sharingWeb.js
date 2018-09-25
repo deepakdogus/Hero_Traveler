@@ -10,7 +10,6 @@ export const createBranchLinkWeb = async (feedItem, feedItemType) => {
   const coverMediaURL = coverImage
   ? getImageUrl(coverImage)
   : getImageUrl(coverVideo, 'optimized', videoThumbnailOptions)
-  console.log('coverMediaURL', coverMediaURL)
 
   FB.ui({
     method: 'share_open_graph',

@@ -22,7 +22,6 @@ import {
   createBranchUniversalObj,
   shareLinkWithShareDialog,
 } from '../Shared/Lib/sharingMobile'
-import {Metrics} from '../Shared/Themes'
 
 
 export const tabTypes = {
@@ -91,18 +90,13 @@ class GuideReadingScreen extends React.Component {
   }
 
   _onPressShare = async () => {
-    console.log('test1')
-    const imageOptions = {
-      width: 'screen',
-      height: Metrics.storyCover.fullScreen.height,
-    }
     const videoOptions = {
       video: true,
       width: 'screen',
     }
     const { coverImage, coverVideo, title, id } = this.props.guide
     let coverMediaURL = coverImage
-    ? getImageUrl(coverImage, 'optimized', imageOptions)
+    ? getImageUrl(coverImage, 'optimized')
     : getImageUrl(coverVideo, 'optimized', videoOptions)
     let branchUrl = await createBranchUniversalObj(title, coverMediaURL, 'Test Description', `guide/${id}`)
     shareLinkWithShareDialog(branchUrl)

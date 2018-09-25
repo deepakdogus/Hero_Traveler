@@ -42,7 +42,7 @@ export const shareLinkWithShareDialog = (contentUrl, contentDescription) => {
     if (res.isCancelled) {
       alert('Share cancelled')
     } else {
-      alert('Share success)
+      alert('Share success')
     }
   },
   (err) => {

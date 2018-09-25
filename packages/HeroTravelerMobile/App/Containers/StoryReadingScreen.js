@@ -163,8 +163,18 @@ class StoryReadingScreen extends React.Component {
   }
 
   _pressShare = async () => {
+    const imageOptions = {
+      width: 'screen',
+      height: Metrics.storyCover.fullScreen.height,
+    }
+    const videoOptions = {
+      video: true,
+      width: 'screen',
+    }
     const { coverImage, coverVideo, title, description, id } = this.props.story
-    let coverMediaURL = coverImage ? getImageUrl(coverImage) : getImageUrl(coverVideo)
+    let coverMediaURL = coverImage
+    ? getImageUrl(coverImage, 'optimized', imageOptions)
+    : getImageUrl(coverVideo, 'optimized', videoOptions)
     let branchUrl = await createBranchUniversalObj(title, coverMediaURL, description, id)
     shareLinkWithShareDialog(branchUrl, description)
   }

@@ -17,7 +17,7 @@ export const createBranchUniversalObj = async (title, contentImageUrl,contentDes
   }
 
   const controlParams = {
-    $desktop_url: 'https://ab5532da.ngrok.io'
+    $desktop_url: 'http://localhost:3001'
   }
 
   const {url} = await branchUniversalObject.generateShortUrl(linkProperties, controlParams)

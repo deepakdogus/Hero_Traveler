@@ -5,8 +5,8 @@ const videoThumbnailOptions = {
   width: 385.5,
 }
 
-export const createBranchLinkWeb = async (story) => {
-  const { id, coverImage, coverVideo, title, description } = story
+export const createBranchLinkWeb = async (feedItem, feedItemType) => {
+  const { id, coverImage, coverVideo, title, description } = feedItem
   const coverMediaURL = coverImage
   ? getImageUrl(coverImage)
   : getImageUrl(coverVideo, 'optimized', videoThumbnailOptions)
@@ -19,10 +19,10 @@ export const createBranchLinkWeb = async (story) => {
       article: {
         'fb:app_id': '1589340484457361',
         'og:title': title,
-        'og:url': 'http://localhost:3001/story/' + id,
+        'og:url': `http://localhost:3001/${feedItemType}/${id}`,
         'og:description': description,
         'og:image': coverMediaURL,
-        "al:ios:url": `com.herotraveler.herotraveler-beta://?storyId=${id}&title=${title}`,
+        "al:ios:url": `com.herotraveler.herotraveler-beta://?${feedItemType}Id=${id}&title=${title}`,
         "al:web:should_fallback": "false",
         "al:ios:app_store_id": "1288145566",
       }

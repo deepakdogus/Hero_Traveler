@@ -38,8 +38,10 @@ class App extends Component {
       }
       if (params['+non_branch_link']) {
         //facebook/twitter (non-branch) link routing
-        const {storyId, title} = parseNonBranchURL(params['+non_branch_link'])
-        navToStoryFromOutsideLink(storyId, title)
+        let obj = parseNonBranchURL(params['+non_branch_link'])
+        obj['storyId']
+        ? navToStoryFromOutsideLink(obj['storyId'], obj['title'])
+        : navToGuideFromOutsideLink(obj['guideId'], obj['title'])
         return
       }
       if (!params['+clicked_branch_link']) {

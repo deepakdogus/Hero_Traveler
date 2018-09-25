@@ -88,12 +88,8 @@ class Header extends React.Component {
     branch.data((err, data)=> {
       if (err) console.log('Branch Error: ', err)
       else {
-        let storyId = data.data_parsed['$canonical_url']
-        if ( storyId && storyId.includes('localhost')){
-          let temp = storyId.split('/')
-          storyId = temp[temp.length -1]
-        }
-        if (storyId) this.props.reroute('/story/'+storyId)
+        let feedItemUrl = data.data_parsed['$canonical_url']
+        if (feedItemUrl) this.props.reroute(feedItemUrl)
       }
     });
   }

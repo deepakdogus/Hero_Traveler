@@ -84,7 +84,7 @@ class Story extends Component {
   }
 
   _onClickShare = async () => {
-    createBranchLinkWeb(this.props.story)
+    createBranchLinkWeb(this.props.story, 'story')
   }
 
   renderHashtags = () => {

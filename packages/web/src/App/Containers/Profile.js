@@ -168,7 +168,6 @@ function mapDispatchToProps(dispatch) {
   return {
     getStories: (userId) => dispatch(StoryActions.fromUserRequest(userId)),
     getGuides: (userId) => dispatch(GuideActions.getUserGuides(userId)),
-    getDrafts: () => dispatch(StoryActions.loadDrafts()),
     updateUser: (attrs) => dispatch(UserActions.updateUser(attrs)),
     getUser: (userId) => dispatch(UserActions.loadUser(userId)),
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),

@@ -149,6 +149,10 @@ export const navToProfile = () => {
   NavActions.profile()
 }
 
+export const navToStoryFromOutsideLink = (storyId, title) => {
+  NavActions.story({storyId, title})
+}
+
 const navToExplore = () => {
   NavActions.tabbar({type: 'reset'})
   NavActions.explore()

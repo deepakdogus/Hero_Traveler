@@ -17,6 +17,7 @@ import HeaderModals from '../Components/HeaderModals'
 import {
   haveFieldsChanged
 } from '../Shared/Lib/draftChangedHelpers'
+/*global branch*/
 
 // If we don't explicity prevent 'fixed' from being passed to Grid, we get an error about unknown prop on div element
 // because apparently react-flexbox-grid passes all props down to underlying React elements
@@ -88,6 +89,18 @@ class Header extends React.Component {
 
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll)
+
+    branch.data((err, data)=> {
+      if (err) console.log('Branch Error: ', err)
+      else {
+        let storyId = data.data_parsed['$canonical_url']
+        if ( storyId && storyId.includes('localhost')){
+          let temp = storyId.split('/')
+          storyId = temp[temp.length -1]
+        }
+        if (storyId) this.props.reroute('/story/'+storyId)
+      }
+    });
   }
 
   componentWillUnmount() {

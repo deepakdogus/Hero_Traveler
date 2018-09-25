@@ -15,6 +15,7 @@ import StoryContentRenderer from '../Components/StoryContentRenderer'
 import GoogleMap from '../Components/GoogleMap'
 import FeedItemMetaInfo from '../Components/FeedItemMetaInfo'
 import FeedItemActionBar from '../Components/FeedItemActionBar'
+import { createBranchLinkWeb } from '../Shared/Lib/sharingWeb'
 
 const ContentWrapper = styled.div``
 
@@ -81,6 +82,10 @@ class Story extends Component {
     this.props.onClickComments()
   }
 
+  _onClickShare = async () => {
+    createBranchLinkWeb(this.props.story)
+  }
+
   renderHashtags = () => {
     const {story} = this.props
     if (!story.hashtags) return null
@@ -140,6 +145,7 @@ class Story extends Component {
           userId={sessionUserId}
           reroute={reroute}
           openGlobalModal={openGlobalModal}
+          onClickShare={this._onClickShare}
         />
       </ContentWrapper>
     )

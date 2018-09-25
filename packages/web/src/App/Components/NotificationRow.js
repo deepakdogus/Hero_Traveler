@@ -31,11 +31,18 @@ const relevantMetrics  = {
 
 const Container = styled.div`
   padding: ${relevantMetrics.containerPadding}px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   cursor: pointer;
 `
+
+const rowProps = { 
+  'justify-content' : 'space-between',
+}
+
+const leftProps = { 
+  'max-width': '450px',
+  'align-items' : 'center',
+  'flex-wrap' : 'nowrap'
+}
 
 const StyledUserName = styled.span`
   ${UserNameStyles},
@@ -94,15 +101,15 @@ const NotificationContent = styled.p`
 `
 
 const StyledNotificationContent = styled(NotificationContent)`
-  width: 300px;
+  max-width: 300px;
 `
 
 const RenderImageContainer = styled.div`
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
 `
 const VisibleBulletContainer = styled.div`
   display: flex;
@@ -216,7 +223,6 @@ export default class NotificationRow extends Component {
   }
 
   render() {
-    const leftProps = { 'max-width': '450px', }
 
     return (
       <InteractiveContainer onClick={this._markSeen}>
@@ -229,6 +235,7 @@ export default class NotificationRow extends Component {
             renderText={this.renderText}
             renderRight={this.renderTripImage}
             leftProps={leftProps}
+            rowProps={rowProps}
           />
         </Container>
         <StyledHorizontalDivider color='light-grey'/>

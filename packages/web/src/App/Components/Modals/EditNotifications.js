@@ -11,6 +11,9 @@ const notificationTypes = [
 
 const Container = styled.div`
   padding: 25px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0;
+  }
 `
 export default class EditNotifications extends React.Component {
 

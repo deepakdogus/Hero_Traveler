@@ -13,6 +13,9 @@ const InputContainer = styled.div`
   font-family: ${props => props.theme.Fonts.type.base};
   font-style: none;
   padding: 25px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0;
+  }
 `
 
 const accountInputs = [

@@ -6,6 +6,15 @@ import SocialMediaRow from '../Signup/SocialMediaRow'
 
 const Container = styled.div`
   padding: 25px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0px;
+  }
+`
+
+const StyledSocialMediaRow = styled(SocialMediaRow)`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 25px;
+  }
 `
 
 export default class EditServices extends React.Component {
@@ -13,11 +22,11 @@ export default class EditServices extends React.Component {
     return (
         <Container>
           <HorizontalDivider color='grey'/>
-          <SocialMediaRow text={'Facebook'} margin='modal' isConnected={true} />
+          <StyledSocialMediaRow text={'Facebook'} margin='modal' isConnected={true} />
           <HorizontalDivider color='grey'/>
-          <SocialMediaRow text={'Twitter'} margin='modal' isConnected={false} />
+          <StyledSocialMediaRow text={'Twitter'} margin='modal' isConnected={false} />
           <HorizontalDivider color='grey'/>
-          <SocialMediaRow text={'Instagram'} margin='modal' isConnected={false} />
+          <StyledSocialMediaRow text={'Instagram'} margin='modal' isConnected={false} />
           <HorizontalDivider color='grey'/>
         </Container>
     )

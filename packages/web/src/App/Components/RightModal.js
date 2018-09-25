@@ -1,22 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Modal from 'react-modal'
-
-const customModalStyles = {
-  content: {
-    width: 570,
-    top: 0,
-    bottom: 0,
-    right: 0,
-    left: 'auto',
-    padding: 0,
-    borderRadius: 0,
-  },
-  overlay: {
-    backgroundColor: 'rgba(0,0,0, .5)',
-    zIndex: 100,
-  }
-}
+import "./Styles/RightModalStyles.css"
 
 export default class RightModal extends React.Component {
   static propTypes = {
@@ -28,7 +13,9 @@ export default class RightModal extends React.Component {
     return (
       <Modal
         {...this.props}
-        style={customModalStyles}>
+        className="right-modal"
+        overlayClassName="overlay"
+        >
         {this.props.children}
       </Modal>
     )

@@ -1,17 +1,29 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import {Row} from './FlexboxGrid'
-import {Text} from './Modals/Shared'
+import { Text } from './Modals/Shared'
 
 const Container = styled.div`
   background-color: ${props => props.whiteBG ? props.theme.Colors.snow : props.theme.Colors.lightGreyAreas};
   margin: ${props => props.isModal ? '25px 0' : '0'};
 `
 
+const StyledRow = styled.div`
+  display: flex;
+  justify-content: center;
+  max-width: 100%;
+  flex-wrap: nowrap;
+`
+
 const TabContainer = styled.div`
   margin: ${props => props.isModal ? '0' : '0px 10px'};
   cursor: pointer;
+  flex-shrink: ${props => props.isModal ? '1' : 'auto'};
+  flex-grow: ${props => props.isModal ? '1' : 'auto'};
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: ${props => props.isModal ? '0' : '0px 3px'};
+    flex-shrink: 1;
+  }
 `
 
 const ModalText = styled(Text)`
@@ -23,6 +35,9 @@ const ModalText = styled(Text)`
   border-color:  ${props => props.theme.Colors.navBarText};
   padding: 0 25px 0 25px;
   margin: 0;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0;
+  }
 `
 
 const DefaultText = styled.p`
@@ -35,6 +50,10 @@ const DefaultText = styled.p`
   border-color:  ${props => props.theme.Colors.redHighlights};
   margin: 0;
   padding: 12.5px 10px 12.5px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 13px;
+    padding: 12.5px 2vw;
+  }
 `
 
 export default class TabBar extends React.Component {
@@ -71,9 +90,9 @@ export default class TabBar extends React.Component {
   render() {
     return (
       <Container whiteBG={this.props.whiteBG} isModal={this.props.isModal}>
-        <Row center='xs'>
+        <StyledRow isModal={this.props.isModal}>
           {this.renderTabs()}
-        </Row>
+        </StyledRow>
       </Container>
     )
   }

@@ -7,7 +7,7 @@ import _ from 'lodash'
 import UserActions, {getFollowers, getFollowersFetchStatus} from '../../Shared/Redux/Entities/Users'
 
 import FollowFollowingRow from '../FollowFollowingRow'
-import {RightTitle, RightModalCloseX} from './Shared'
+import { RightTitle, RightModalCloseX } from './Shared'
 
 const Container = styled.div``
 
@@ -62,6 +62,7 @@ class FollowFollowing extends Component {
           user={this.props.users[id]}
           isFollowing={isFollowing}
           isYou={isYou}
+          isModal={true}
           onFollowClick={isFollowing ? this._unfollowUser : this._followUser}
           onProfileClick={closeModal}
           margin='0 0 25px'

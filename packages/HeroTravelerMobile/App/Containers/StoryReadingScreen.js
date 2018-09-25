@@ -175,7 +175,7 @@ class StoryReadingScreen extends React.Component {
     let coverMediaURL = coverImage
     ? getImageUrl(coverImage, 'optimized', imageOptions)
     : getImageUrl(coverVideo, 'optimized', videoOptions)
-    let branchUrl = await createBranchUniversalObj(title, coverMediaURL, description, id)
+    let branchUrl = await createBranchUniversalObj(title, coverMediaURL, description, `story/${id}`)
     shareLinkWithShareDialog(branchUrl, description)
   }
 

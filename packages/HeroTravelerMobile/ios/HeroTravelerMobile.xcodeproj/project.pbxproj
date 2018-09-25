@@ -496,13 +496,6 @@
 			remoteGlobalIDString = B3A3CC361C5B0A070016AC52;
 			remoteInfo = RNBranch;
 		};
-		9389EF05214AFBE300ED4DFC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = DFF30B0D5070CE72312FA045F97B7C02;
-			remoteInfo = Branch;
-		};
 		9404AF3A1E745B230054289E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 656DC182365C4CFC8F7AF2AD /* RNDeviceInfo.xcodeproj */;
@@ -1406,7 +1399,6 @@
 		942D12181EB3956400A0CFE5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9389EF06214AFBE300ED4DFC /* libBranch.a */,
 				9162A1BD2044D39B005BA024 /* libFLAnimatedImage.a */,
 				942D12201EB3956400A0CFE5 /* HockeySDKResources.bundle */,
 				91AC58CC1FD83CFD0017B1E8 /* libiOS-MagnifyingGlass.a */,
@@ -2071,13 +2063,6 @@
 			fileType = archive.ar;
 			path = "libreact-native-branch.a";
 			remoteRef = 9389EECC214AFADF00ED4DFC /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		9389EF06214AFBE300ED4DFC /* libBranch.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libBranch.a;
-			remoteRef = 9389EF05214AFBE300ED4DFC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		9404AF3B1E745B230054289E /* libRNDeviceInfo.a */ = {

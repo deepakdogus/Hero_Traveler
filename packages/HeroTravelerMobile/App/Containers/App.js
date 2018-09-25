@@ -5,7 +5,10 @@ import { Provider } from 'react-redux'
 import RootContainer from './RootContainer'
 import createStore from '../Shared/Redux'
 import branch from 'react-native-branch'
-import { navToStoryFromOutsideLink } from '../Navigation/NavigationRouter'
+import {
+  navToStoryFromOutsideLink,
+  navToGuideFromOutsideLink
+ } from '../Navigation/NavigationRouter'
 import { parseNonBranchURL } from '../Shared/Lib/sharingMobile'
 
 // create our store
@@ -44,8 +47,11 @@ class App extends Component {
       }
       //branch deep link routing
       const title = params.$og_title
-      const storyId = params.$canonical_url
-      navToStoryFromOutsideLink(storyId, title)
+      const feedItemType = params.$canonical_url.split('/')[0]
+      const feedItemId = params.$canonical_url.split('/')[1]
+      feedItemType === 'story'
+      ? navToStoryFromOutsideLink(feedItemId, title)
+      : navToGuideFromOutsideLink(feedItemId, title)
     })
   }
 

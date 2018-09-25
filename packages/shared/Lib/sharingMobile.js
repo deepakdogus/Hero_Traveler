@@ -2,11 +2,11 @@ import branch from 'react-native-branch'
 import { ShareDialog } from 'react-native-fbsdk'
 
 //creates Branch Universal Object to be passed throught the Facebook Share Dialog
-export const createBranchUniversalObj = async (title, contentImageUrl,contentDescription, storyId) => {
+export const createBranchUniversalObj = async (title, contentImageUrl,contentDescription, feedItemId) => {
   const branchUniversalObject = await branch.createBranchUniversalObject('heroTravelerMobile', {
     locallyIndex: true,
     title,
-    canonicalUrl: storyId,
+    canonicalUrl: feedItemId,
     contentImageUrl,
     contentDescription,
   })

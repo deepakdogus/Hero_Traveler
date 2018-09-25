@@ -17,6 +17,13 @@ import TabBar from '../Components/TabBar'
 import {navToProfile} from '../Navigation/NavigationRouter'
 import GuideStoriesOfType from '../Components/GuideStoriesOfType'
 import {styles} from './Styles/StoryReadingScreenStyles'
+import getImageUrl from '../Shared/Lib/getImageUrl'
+import {
+  createBranchUniversalObj,
+  shareLinkWithShareDialog,
+} from '../Shared/Lib/sharingMobile'
+import {Metrics} from '../Shared/Themes'
+
 
 export const tabTypes = {
   overview: 'overview',
@@ -81,6 +88,24 @@ class GuideReadingScreen extends React.Component {
     } = this.props
     if (isGuideLiked) onPressGuideUnlike(guideId, sessionUser.id)
     else onPressGuideLike(guideId, sessionUser.id)
+  }
+
+  _onPressShare = async () => {
+    console.log('test1')
+    const imageOptions = {
+      width: 'screen',
+      height: Metrics.storyCover.fullScreen.height,
+    }
+    const videoOptions = {
+      video: true,
+      width: 'screen',
+    }
+    const { coverImage, coverVideo, title, id } = this.props.guide
+    let coverMediaURL = coverImage
+    ? getImageUrl(coverImage, 'optimized', imageOptions)
+    : getImageUrl(coverVideo, 'optimized', videoOptions)
+    let branchUrl = await createBranchUniversalObj(title, coverMediaURL, 'Test Description', `guide/${id}`)
+    shareLinkWithShareDialog(branchUrl)
   }
 
   // _toggleFlag = () => {
@@ -225,6 +250,7 @@ class GuideReadingScreen extends React.Component {
         onPressLike={this._toggleLike}
         onPressBookmark={this._onPressBookmark}
         onPressComment={this._onPressComment}
+        onPressShare={this._onPressShare}
         flagTargetEntity={this._flagStory}
         renderBody={this.renderBody}
         selectedTab={this.state.selectedTab}

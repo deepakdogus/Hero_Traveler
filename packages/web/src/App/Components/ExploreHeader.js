@@ -4,9 +4,9 @@ import styled from 'styled-components'
 import background from '../Shared/Images/create-story.png'
 import HeaderImageWrapper from './HeaderImageWrapper'
 import VerticalCenter from './VerticalCenter'
-import {OverlayStyles} from './Overlay'
+import { OverlayStyles } from './Overlay'
 import HeaderTopGradient from './Headers/Shared/HeaderTopGradient'
-import {Images} from '../Shared/Themes'
+import { Images } from '../Shared/Themes'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   ${OverlayStyles}
@@ -20,6 +20,10 @@ const Tagline = styled.p`
   color: ${props => props.theme.Colors.snow};
   letter-spacing: .9px;
   margin: 0 0 24px 0;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 24px;
+    margin: 0 0 12px 0;
+  }
 `
 
 const ItalicText = styled.p`
@@ -30,6 +34,9 @@ const ItalicText = styled.p`
   letter-spacing: .5px;
   font-style: italic;
   margin: 0;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 12px;
+  }
 `
 
 const Centered = styled(VerticalCenter)`
@@ -39,15 +46,28 @@ const Centered = styled(VerticalCenter)`
   top:0;
   text-align:center;
   z-index: 2;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    top: 60px;
+    height: 220px;
+  }
 `
 
 const BadgeSpacer = styled.div`
   width: 20px;
   display: inline-block;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    width: 15px;
+  }
 `
 
 const BadgeWrapper = styled.div`
   margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin-top: 12px;
+  }
 `
 
 const GooglePlayImage = styled.img`
@@ -57,12 +77,20 @@ const GooglePlayImage = styled.img`
   margin: -14px;
   overflow: hidden;
   display: inline-block;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    height: 50px;
+    width: 129px;
+  }
 `
 
 const AppleAppStoreImage = styled.img`
   height: 60px;
   width: 202px;
   display: inline-block;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    height: 33.33px;
+    width: 112px;
+  }
 `
 
 export default class ExploreHeader extends React.Component {

@@ -139,7 +139,7 @@ const extractUploadData = (uploadData) => {
   return baseObject
 }
 
-function * createCover(api, draft){
+export function * createCover(api, draft, isGuide){
   const videoFileUri =
     draft.coverVideo && draft.coverVideo.uri && isLocalMediaAsset(draft.coverVideo.uri)
     ? draft.coverVideo.uri
@@ -155,7 +155,7 @@ function * createCover(api, draft){
   }
   if (isImageCover) draft.coverImage = cloudinaryCover.data
   else draft.coverVideo = cloudinaryCover.data
-  yield put(StoryCreateActions.incrementSyncProgress())
+  if (!isGuide) yield put(StoryCreateActions.incrementSyncProgress())
   if (videoFileUri && cloudinaryCover.data && cloudinaryCover.data.public_id) {
     moveVideoToPreCache(draft.id, videoFileUri, cloudinaryCover.data.public_id)
   }

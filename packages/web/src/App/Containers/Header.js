@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import * as _ from 'lodash'
+
 import { Grid } from '../Components/FlexboxGrid'
 import HeaderAnonymous from '../Components/Headers/HeaderAnonymous'
 import HeaderLoggedIn from '../Components/Headers/HeaderLoggedIn'
@@ -21,18 +22,14 @@ import {
 
 // If we don't explicity prevent 'fixed' from being passed to Grid, we get an error about unknown prop on div element
 // because apparently react-flexbox-grid passes all props down to underlying React elements
-const StyledGrid = styled(({ fixed, ...rest }) => <Grid {...rest} />)`
+const StyledGrid = styled(({ fixed, hasBlackBackground, ...rest }) => <Grid {...rest} />)`
   padding: 15px;
   z-index: 3;
   position: ${props => props.fixed ? 'fixed' : 'absolute'};
   width: 100%;
   top: 0;
   padding-right: 10px;
-  background-color: ${props => props.blackBackground ? '#1a1c21' : 'rgba(0,0,0,0)'};
-`
-
-const StyledGridBlack = styled(StyledGrid)`
-  background-color: ${props => props.theme.Colors.background};
+  background-color: ${props => props.hasBlackBackground ? '#1a1c21' : 'rgba(0,0,0,0)'};
 `
 
 const HeaderSpacer = styled.div`
@@ -65,12 +62,10 @@ class Header extends React.Component {
     userEntitiesError: PropTypes.object,
     activitiesById: PropTypes.array,
     activities: PropTypes.object,
-    stories: PropTypes.object,
     originalDraft: PropTypes.object,
     workingDraft: PropTypes.object,
     resetCreateStore: PropTypes.func,
     markSeen: PropTypes.func,
-    users: PropTypes.object,
     pathname: PropTypes.string,
     signedUp: PropTypes.bool,
     flagStory: PropTypes.func,
@@ -196,9 +191,7 @@ class Header extends React.Component {
       userEntitiesError,
       activitiesById,
       activities,
-      stories,
       markSeen,
-      users,
       pathname,
       workingDraft,
       originalDraft,
@@ -207,15 +200,16 @@ class Header extends React.Component {
       resetPassword,
     } = this.props
 
-    const SelectedGrid =
-      (this.props.blackHeader || this.state.navbarEngaged)
-      ? StyledGridBlack
-      : StyledGrid
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
+    const hasBlackBackground = this.props.blackHeader || this.state.navbarEngaged
 
     return (
       <div>
-        <SelectedGrid fluid fixed>
+        <StyledGrid
+          fluid
+          fixed
+          hasBlackBackground={hasBlackBackground}
+        >
           {isLoggedIn &&
             <HeaderLoggedIn
               userId={currentUserId}
@@ -266,9 +260,7 @@ class Header extends React.Component {
               userEntitiesError={userEntitiesError}
               activities={activities}
               activitiesById={activitiesById}
-              stories={stories}
               markSeen={markSeen}
-              users={users}
               nextPathAfterSave={this.state.nextPathAfterSave}
               reroute={reroute}
               resetCreateStore={this._resetCreateStore}
@@ -277,7 +269,7 @@ class Header extends React.Component {
               openGlobalModal={openGlobalModal}
               resetPassword={resetPassword}
             />
-        </SelectedGrid>
+        </StyledGrid>
         <HeaderSpacer
           spacerSize={spacerSize}
         />
@@ -308,8 +300,6 @@ function mapStateToProps(state) {
     currentUserNotificationTypes: (currentUser) && currentUser.notificationTypes,
     activitiesById: state.entities.users.activitiesById,
     activities: state.entities.users.activities,
-    users: state.entities.users.entities,
-    stories: state.entities.stories.entities,
     originalDraft: state.storyCreate.draft,
     workingDraft: state.storyCreate.workingDraft,
     pathname: pathname,

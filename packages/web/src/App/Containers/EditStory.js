@@ -14,14 +14,15 @@ import CreateStoryCoverContent from './CreateStory/1_CoverContent'
 import CreateStoryDetails from './CreateStory/2_Details'
 import FooterToolbar from '../Components/CreateStory/FooterToolbar'
 import {Title, Text} from '../Components/Modals/Shared'
+import { haveFieldsChanged } from '../Shared/Lib/draftChangedHelpers'
 
 import {
   isFieldSame,
 } from '../Shared/Lib/draftChangedHelpers'
 
-const Container = styled.div``
+export const Container = styled.div``
 
-const ContentWrapper = styled.div`
+export const ContentWrapper = styled.div`
   margin: 0 17%;
 `
 
@@ -29,7 +30,7 @@ const ItemContainer = styled.div`
   margin: 40px 0;
 `
 
-const customModalStyles = {
+export const customModalStyles = {
   content: {
     border: '0',
     bottom: 'auto',
@@ -111,6 +112,19 @@ class EditStory extends Component {
     }
   }
 
+  componentDidMount() {
+    const {
+      userId,
+      registerDraft,
+      workingDraft
+    } = this.props
+    //need to return a non-falsy value to render window dialog
+
+    if (workingDraft === null) {
+      registerDraft(createLocalDraft(userId))
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     const {match, reroute, originalDraft} = nextProps
     if (this.hasPublished(nextProps)){
@@ -136,6 +150,13 @@ class EditStory extends Component {
     if (this.props.syncProgress > 0 && this.props.syncProgressSteps === this.props.syncProgress) {
       this.props.reroute('/feed')
       this.props.resetCreateStore()
+    }
+    const { workingDraft, originalDraft } = this.props
+    if (haveFieldsChanged(workingDraft, originalDraft)) {
+      window.onbeforeunload = (e) => {
+        e.preventDefault()
+        return true
+      }
     }
   }
 
@@ -362,7 +383,6 @@ function mapDispatchToProps(dispatch) {
     setWorkingDraft: (cachedStory) => dispatch(StoryCreateActions.editStorySuccess(cachedStory)),
     updateGlobalModalParams: (params) => dispatch(UXActions.updateGlobalModalParams(params)),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
-
   }
 }
 

@@ -57,15 +57,13 @@ class EditGuideStories extends Component {
   removeStoryFromGuide = (storyIdToRemove) => {
     const {updateGuide, guide} = this.props
     return () => {
-      const filetedStories = guide.stories.filter((storyId) => storyIdToRemove !== storyId)
+      const filteredStories = guide.stories.filter((storyId) => storyIdToRemove !== storyId)
       updateGuide({
         id: guide.id,
-        stories: filetedStories,
+        stories: filteredStories,
       })
     }
   }
-
-  noop = () => undefined
 
   render = () => {
     const {stories} = this.props

@@ -29,6 +29,7 @@ const SeeAllText = styled.p`
 
 export default class GuideStoriesOfType extends React.Component {
   static propTypes = {
+    guideId: PropTypes.string,
     label: PropTypes.string,
     type: PropTypes.string,
     stories: PropTypes.arrayOf(PropTypes.object),
@@ -44,7 +45,8 @@ export default class GuideStoriesOfType extends React.Component {
     const {
       stories,
       label,
-      isShowAll
+      isShowAll,
+      guideId,
     } = this.props
 
     if (stories.length === 0) return null
@@ -53,6 +55,7 @@ export default class GuideStoriesOfType extends React.Component {
       <Wrapper>
         <Title>{label}</Title>
         <FeedItemList
+          guideId={guideId}
           feedItems={stories}
           isHorizontalList
           isShowAll={isShowAll}

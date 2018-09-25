@@ -14,6 +14,7 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import formatCount from '../Shared/Lib/formatCount'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
+import UXActions from '../Redux/UXRedux'
 import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
 
 import Avatar from './Avatar'
@@ -21,6 +22,8 @@ import LikeComponent from './LikeComponent'
 import {Row} from './FlexboxGrid'
 import VerticalCenter from './VerticalCenter'
 import Icon from './Icon'
+import OverlayHover from './OverlayHover'
+import CloseX from './CloseX'
 
 const coverHeight = '257px'
 
@@ -82,11 +85,36 @@ const VerticalDetailsContainer = styled(HorizontalDetailsContainer)`
   padding-top: 5px;
 `
 
-const CoverImage = styled.img`
+const ImageContainer = styled.div`
+  position: relative;
   width: 385.5px;
   height: ${coverHeight};
+`
+
+const CoverImage = styled.img`
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   cursor: pointer;
+`
+
+const StyledOverlay = styled(OverlayHover)`
+  top: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  cursor: pointer;
+  &:hover div {
+    visibility: visible;
+  }
+`
+
+const CloseXContainer = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 5px;
+  visibility: hidden;
 `
 
 const Text = styled.span`
@@ -121,7 +149,6 @@ const ByText = styled(Text)`
 const Username = styled(Text)`
   color: ${props => props.theme.Colors.redHighlights};
   cursor: pointer;
-
 `
 
 const Top = styled(Row)`
@@ -160,6 +187,7 @@ class FeedItemPreview extends Component {
   static propTypes = {
     feedItem: PropTypes.object,
     author: PropTypes.object,
+    guideId: PropTypes.string,
     sessionUserId: PropTypes.string,
     isStory: PropTypes.bool,
     isLiked: PropTypes.bool,
@@ -169,6 +197,7 @@ class FeedItemPreview extends Component {
     onClickStoryLike: PropTypes.func,
     onClickGuideLike: PropTypes.func,
     onClickGuideUnLike: PropTypes.func,
+    openGlobalModal: PropTypes.func,
     isVertical: PropTypes.bool,
   }
 
@@ -208,8 +237,26 @@ class FeedItemPreview extends Component {
     else if (locations.length) return displayLocationPreview(locations[0])
   }
 
+  openRemoveStoryModal = (event) => {
+    event.stopPropagation()
+    const {
+      feedItem,
+      guideId,
+    } = this.props
+    this.props.openGlobalModal(
+      'guideStoryRemove',
+      {
+        guideId: guideId,
+        storyId: feedItem.id,
+      }
+    )
+  }
+
+  noop = () => undefined
+
   render() {
     const {
+      guideId,
       feedItem,
       author,
       sessionUserId,
@@ -238,10 +285,22 @@ class FeedItemPreview extends Component {
     return (
       <MarginWrapper>
         <DirectionalWrapper>
-          <CoverImage
-            src={imageUrl}
-            onClick={this.navToFeedItem}
-          />
+          <ImageContainer>
+            <CoverImage
+              src={imageUrl}
+              onClick={guideId ? this.noop : this.navToFeedItem}
+            />
+            {!!guideId &&
+              <StyledOverlay
+                overlayColor='black'
+                onClick={this.navToFeedItem}
+              >
+                <CloseXContainer>
+                  <CloseX onClick={this.openRemoveStoryModal}/>
+                </CloseXContainer>
+              </StyledOverlay>
+          }
+          </ImageContainer>
           <StoryInfoContainer>
             {!isStory &&
               <Top>
@@ -325,6 +384,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, props) => {
   const {feedItem} = props
   return {
+    openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
     onClickStoryLike: (sessionUserId) => dispatch(StoryActions.storyLike(sessionUserId, feedItem.id)),
     onClickGuideLike: (sessionUserId) => dispatch(GuideActions.likeGuideRequest(feedItem.id, sessionUserId)),
     onClickGuideUnLike: (sessionUserId) => dispatch(GuideActions.unlikeGuideRequest(feedItem.id, sessionUserId)),

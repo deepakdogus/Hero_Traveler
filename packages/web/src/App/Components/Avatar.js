@@ -3,13 +3,24 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import Icon from './Icon'
-import Image from './Image'
+import ImageWrapper from './ImageWrapper'
 
-const StyledImage = styled(Image)`
+const StyledImage = styled(ImageWrapper)`
   cursor: ${props => props.onClick ? 'pointer' : undefined};
   position: relative;
   right: ${props=> props.isProfileHeader ? '0' : '6'}px;
   bottom: 2px;
+  margin-left: ${props => props.isStoryPreview ? '7px':'0'};
+  background-image: url(${props => props.src});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+`
+
+const StyledIcon = styled(Icon)`
+  cursor: ${props => props.onClick ? 'pointer' : undefined};
+  position: relative;
+  right: ${props=> props.isProfileHeader ? '0' : '6'}px;
   margin-left: ${props => props.isStoryPreview ? '7px':'0'};
 `
 
@@ -35,21 +46,23 @@ export default class Avatar extends React.Component {
 
     if (!avatarUrl) {
       return (
-        <Icon
+        <StyledIcon
           name={type === 'profile' ? 'defaultProfile' : 'user-circle-o'}
           size={size}
           onClick={onClick}
+          isProfileHeader={isProfileHeader}
+          isStoryPreview={isStoryPreview}
         />
       )
     }
     else {
       return (
         <StyledImage
-          isStoryPreview={isStoryPreview}
           src={avatarUrl}
           type={size || 'avatar'}
           onClick={onClick}
           isProfileHeader={isProfileHeader}
+          isStoryPreview={isStoryPreview}
         />
       )
     }

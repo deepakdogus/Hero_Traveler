@@ -10,6 +10,7 @@ import com.cboy.rn.splashscreen.SplashScreenReactPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -30,8 +31,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainApplication extends MultiDexApplication implements ReactApplication {
+    private static final CallbackManager CALLBACK_MANAGER = CallbackManager.Factory.create();
 
-  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+    private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+
     @Override
     public boolean getUseDeveloperSupport() {
       return BuildConfig.DEBUG;
@@ -39,7 +42,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
+        return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new RNVideoProcessingPackage(),
             new FastImageViewPackage(),
@@ -51,7 +54,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
             new WebViewBridgePackage(),
             new RNHockeyAppPackage(MainApplication.this),
             new ReactNativePushNotificationPackage(),
-            new FBSDKPackage(new CallbackManager.Factory().create()),
+            new FBSDKPackage(CALLBACK_MANAGER),
             new SplashScreenReactPackage(),
             new ImagePickerPackage(),
             new RNCameraPackage(),
@@ -61,7 +64,11 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     }
   };
 
-  @Override
+    public static CallbackManager getCallbackManager() {
+        return CALLBACK_MANAGER;
+    }
+
+    @Override
   public ReactNativeHost getReactNativeHost() {
     return mReactNativeHost;
   }

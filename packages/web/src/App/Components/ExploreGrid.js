@@ -5,13 +5,13 @@ import styled from 'styled-components'
 import { Grid, Row, Col } from './FlexboxGrid'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Icon from './Icon'
-import {VerticalCenterStyles} from './VerticalCenter'
+import { VerticalCenterStyles } from './VerticalCenter'
 import OverlayHover from './OverlayHover'
-import Colors from '../Shared/Themes/Colors'
 
 const Wrapper = styled.div`
   margin: 1px;
   position: relative;
+  cursor: pointer;
 `
 
 const CategoryTile = styled.div`
@@ -38,17 +38,20 @@ const Title = styled.div`
   color: ${props => props.theme.Colors.snow};
   letter-spacing: 1.2px;
   margin: 0;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 12px;
+  }
 `
 
 const RedCheck = styled(Icon)`
   position: absolute;
   top: 10px;
   right: 10px;
-  border-color: ${Colors.white};
+  border-color: ${props => props.theme.Colors.snow};
   border-style: solid;
   border-width: 1.3px;
   border-radius: 50%;
-  background-color:  ${Colors.white};
+  background-color: ${props => props.theme.Colors.snow};
 `
 
 // created specific component to optimize speed with _onClickTile
@@ -66,10 +69,10 @@ class Tile extends React.Component {
   render(){
     const {category, isSelected} = this.props
     return (
-      <Col xs={6} sm={4} md={3} lg={2} >
+      <Col xs={4} md={3} lg={2} >
         <Wrapper onClick={this._onClickTile}>
           <CategoryTile
-            imageSource={getImageUrl(category.image, 'optimized')}
+            imageSource={getImageUrl(category.image, 'optimized', {width: 400, height: 400})}
           />
           <TitleContainer selected={category.selected} overlayColor="black">
             <Title>{category.title}</Title>

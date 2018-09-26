@@ -48,7 +48,7 @@ export default class FAQ extends React.Component {
         </FAQContainer>
       )
     })
-  }	
+  }
 
   render() {
     return (

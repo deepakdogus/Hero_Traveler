@@ -8,7 +8,6 @@ import Signup from './Modals/HeaderModals/Signup'
 import SaveEdits from './Modals/HeaderModals/SaveEdits'
 import ResetPassword from './Modals/HeaderModals/ResetPassword'
 import Contributor from './Modals/HeaderModals/Contributor'
-import AddToItinerary from './Modals/HeaderModals/AddToItinerary'
 import Comments from './Modals/HeaderModals/Comments'
 import Settings from './Modals/Settings'
 import FAQTermsAndConditions from './Modals/FAQTermsAndConditions'
@@ -19,6 +18,8 @@ import NotificationsThread from './Modals/NotificationsThread'
 import FlagStory from './Modals/FlagStory'
 import DeleteStory from './Modals/DeleteStory'
 import ChangeTempUsername from './Modals/ChangeTempUsername'
+import AddStoryToGuides from './Modals/AddStoryToGuides'
+import RemoveStoryFromGuide from './Modals/RemoveStoryFromGuide'
 
 const Container = styled.div``
 
@@ -52,16 +53,6 @@ const contributorModalStyles = {
   }
 }
 
-const addToItineraryModalStyles = {
-  content: {
-    width: 600,
-    margin: 'auto',
-  },
-  overlay: {
-    backgroundColor: 'rgba(0,0,0, .5)'
-  }
-}
-
 export default class HeaderModals extends React.Component {
   static propTypes = {
     globalModalThatIsOpen: PropTypes.string,
@@ -84,18 +75,15 @@ export default class HeaderModals extends React.Component {
     attemptUpdateUser: PropTypes.func,
     userEntitiesUpdating: PropTypes.bool,
     userEntitiesError: PropTypes.object,
-    activitiesById: PropTypes.array,
-    activities: PropTypes.object,
-    stories: PropTypes.object,
-    markSeen: PropTypes.func,
     reroute: PropTypes.func,
-    users: PropTypes.object,
     nextPathAfterSave: PropTypes.string,
     attemptLogout: PropTypes.func,
     resetCreateStore: PropTypes.func,
     flagStory: PropTypes.func,
     deleteStory: PropTypes.func,
     loginFacebook: PropTypes.func,
+    openGlobalModal: PropTypes.func,
+    resetPassword: PropTypes.func,
   }
 
   closeGlobalModal = () => {
@@ -117,18 +105,15 @@ export default class HeaderModals extends React.Component {
       currentUserEmail,
       currentUserProfile,
       currentUserNotificationTypes,
-      activities,
-      activitiesById,
-      markSeen,
       reroute,
-      stories,
-      users,
       nextPathAfterSave,
       attemptLogout,
       resetCreateStore,
       flagStory,
       deleteStory,
       loginFacebook,
+      openGlobalModal,
+      resetPassword,
     } = this.props
 
     //destructuring these as let so we can reassign message in respective components
@@ -142,7 +127,7 @@ export default class HeaderModals extends React.Component {
     return (
       <Container>
         <Modal
-          isOpen={modal === 'login'}
+          isOpen={globalModalThatIsOpen === 'login'}
           contentLabel="Login Modal"
           onRequestClose={closeModal}
           style={customModalStyles}
@@ -153,6 +138,7 @@ export default class HeaderModals extends React.Component {
             loginReduxFetching={loginReduxFetching}
             loginReduxError={loginReduxError}
             loginFacebook={loginFacebook}
+            openGlobalModal={openGlobalModal}
           />
         </Modal>
         <Modal
@@ -168,12 +154,15 @@ export default class HeaderModals extends React.Component {
           />
         </Modal>
         <Modal
-          isOpen={modal === 'resetPassword'}
+          isOpen={globalModalThatIsOpen === 'resetPassword'}
           contentLabel="Reset Password Modal"
           onRequestClose={closeModal}
           style={customModalStyles}
         >
-          <ResetPassword/>
+          <ResetPassword
+            resetPassword={resetPassword}
+            closeModal={closeGlobalModal}
+          />
         </Modal>
         <Modal
           isOpen={modal === 'contributor'}
@@ -182,14 +171,6 @@ export default class HeaderModals extends React.Component {
           style={contributorModalStyles}
         >
           <Contributor/>
-        </Modal>
-        <Modal
-          isOpen={modal === 'addToItinerary'}
-          contentLabel="Add To Itinerary Modal"
-          onRequestClose={closeModal}
-          style={addToItineraryModalStyles}
-        >
-          <AddToItinerary/>
         </Modal>
         <Modal
           isOpen={globalModalThatIsOpen === 'saveEdits'}
@@ -228,7 +209,7 @@ export default class HeaderModals extends React.Component {
           style={customModalStyles}
         >
           <FlagStory
-            closeModal={this.closeGlobalModal}
+            closeModal={closeGlobalModal}
             reroute={reroute}
             userId={userId}
             flagStory={flagStory}
@@ -251,23 +232,15 @@ export default class HeaderModals extends React.Component {
           contentLabel='Notifications Thread'
           onRequestClose={closeModal}
         >
-          <NotificationsThread
-            closeModal={this.closeGlobalModal}
-            activitiesById={activitiesById}
-            activities={activities}
-            markSeen={markSeen}
-            stories={stories}
-            reroute={reroute}
-            users={users}
-          />
+          <NotificationsThread closeModal={closeGlobalModal}/>
         </RightModal>
         <RightModal
           isOpen={globalModalThatIsOpen === 'comments'}
           contentLabel='Comments Modal'
-          onRequestClose={this.closeGlobalModal}
+          onRequestClose={closeGlobalModal}
         >
           <Comments
-            closeModal={this.closeGlobalModal}
+            closeModal={closeGlobalModal}
             storyId={globalModalParams.storyId}
             guideId={globalModalParams.guideId}
           />
@@ -277,7 +250,7 @@ export default class HeaderModals extends React.Component {
           contentLabel='Settings Modal'
         >
           <Settings
-            closeModal={this.closeGlobalModal}
+            closeModal={closeGlobalModal}
             attemptChangePassword={attemptChangePassword}
             loginReduxFetching={loginReduxFetching}
             loginReduxError={loginReduxError}
@@ -290,12 +263,27 @@ export default class HeaderModals extends React.Component {
             userNotificationTypes={currentUserNotificationTypes}
           />
         </RightModal>
+        <RightModal
+          isOpen={globalModalThatIsOpen === 'guidesSelect'}
+          contentLabel='Add to a guide'
+        >
+          <AddStoryToGuides storyId={globalModalParams.storyId} />
+        </RightModal>
+        <Modal
+          isOpen={globalModalThatIsOpen === 'guideStoryRemove'}
+          contentLabel='Remove Story From Guide'
+          style={customModalStyles}
+        >
+          <RemoveStoryFromGuide
+            closeModal={closeGlobalModal}
+          />
+        </Modal>
         <CenterModal
           isOpen={globalModalThatIsOpen === 'faqTermsAndConditions'}
           contentLabel='FAQ Terms & Conditions'
-          onRequestClose={this.closeGlobalModal}
+          onRequestClose={closeGlobalModal}
         >
-          <FAQTermsAndConditions closeModal={this.closeGlobalModal}/>
+          <FAQTermsAndConditions closeModal={closeGlobalModal}/>
         </CenterModal>
         <RightModal
           isOpen={modal === 'inbox'}

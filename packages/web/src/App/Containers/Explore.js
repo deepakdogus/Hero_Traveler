@@ -20,6 +20,11 @@ const ExploreText = styled(CenteredText)`
   font-size: 30px;
   letter-spacing: 1.2px;
   padding: 50px 0px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 18px;
+    padding: 30px 0px;
+    margin: 0;
+  }
 `
 
 const Wrapper = styled.div``
@@ -27,6 +32,9 @@ const Wrapper = styled.div``
 const ContentWrapper = styled.div`
   margin: 0 7%;
   text-align: center;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 0;
+  }
 `
 
 class Explore extends Component {

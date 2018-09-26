@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
@@ -24,14 +25,12 @@ const UserName = styled.p`
   color: ${props => props.theme.Colors.background};
   letter-spacing: .7px;
   margin: 0;
+  cursor: pointer;
 `
 
-const ProfileDetail = styled.p`
-  font-family: ${props => props.theme.Fonts.type.base};
+const ProfileDetail = styled(UserName)`
   font-weight: 400;
   font-size: 16px;
-  letter-spacing: .7px;
-  margin: 0;
   color: ${props => props.theme.Colors.grey};
 `
 
@@ -55,7 +54,7 @@ export default class FollowFollowingRow extends Component {
     const {user} = this.props
     return (
         <Avatar
-          avatarUrl={getImageUrl(user.profile.avatar)}
+          avatarUrl={getImageUrl(user.profile.avatar, 'avatarLarge')}
           size='larger'
           onClick={this._handleProfileClick}
         />
@@ -64,15 +63,21 @@ export default class FollowFollowingRow extends Component {
 
   renderText = () => {
     const {user, type} = this.props
-    const detailsText = type === 'count' ? `${user.counts.followers} followers` : 'Lorum Ipsum'
+    const detailsText = type === 'count'
+      ? `${_.get(user, 'counts.followers', 0)} followers`
+      : `${_.get(user, 'profile.fullName')}`
     return (
       <StyledVerticalCenter>
-          <UserName
-            onClick={this._handleProfileClick}
-          >
-            {user.username}
-          </UserName>
-        <ProfileDetail>{detailsText}</ProfileDetail>
+        <UserName
+          onClick={this._handleProfileClick}
+        >
+          {user.username}
+        </UserName>
+        <ProfileDetail
+          onClick={this._handleProfileClick}
+        >
+          {detailsText}
+        </ProfileDetail>
       </StyledVerticalCenter>
     )
   }

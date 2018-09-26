@@ -17,6 +17,7 @@ import {
 const ForgotPasswordText = styled(Text)`
   font-size: 14px;
   margin-bottom: 39px;
+  cursor: pointer;
 `
 
 const LoginErrorText = styled(Text)`
@@ -37,6 +38,7 @@ export default class Login extends React.Component {
     loginReduxFetching: PropTypes.bool,
     loginReduxError: PropTypes.string,
     loginFacebook: PropTypes.func,
+    openGlobalModal: PropTypes.func,
   }
 
   constructor(props){
@@ -70,6 +72,10 @@ export default class Login extends React.Component {
 
   setPassword =(event) => {
     this.setState({password: event.target.value})
+  }
+
+  _openResetPasswordModal = () => {
+    this.props.openGlobalModal('resetPassword')
   }
 
   render() {
@@ -113,7 +119,11 @@ export default class Login extends React.Component {
             {this.state.localError &&
               <LoginErrorText>{this.state.localError}</LoginErrorText>
             }
-            <ForgotPasswordText>Forgot Password?</ForgotPasswordText>
+              <ForgotPasswordText
+                onClick={this._openResetPasswordModal}
+              >
+                Forgot Password?
+              </ForgotPasswordText>
             <RoundedButton
               text='LOGIN'
               width='100%'

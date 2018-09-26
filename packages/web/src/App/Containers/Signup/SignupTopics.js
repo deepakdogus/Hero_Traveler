@@ -11,7 +11,7 @@ import UserActions from '../../Shared/Redux/Entities/Users'
 
 import RoundedButton from '../../Components/RoundedButton'
 import ExploreGrid from '../../Components/ExploreGrid'
-import NavLinkStyled from '../../Components/NavLinkStyled'
+import { WrappedNavLink } from '../../Components/NavLinkStyled'
 
 const TopicsContainer = styled.div`
   margin-bottom: 30px;
@@ -90,9 +90,12 @@ class SignupTopics extends Component {
     return (
         <TopicsContainer>
           <NavLinkContainer>
-            <NavLinkStyled to='/signup/social'>
-              <RoundedButton text='Next >'></RoundedButton>
-            </NavLinkStyled>
+            <WrappedNavLink to='/signup/social'>
+              <RoundedButton
+                text='Next >'
+                margin='none' 
+              />
+            </WrappedNavLink>
           </NavLinkContainer>
           <RoundedButton
                 text='Test Username Change'

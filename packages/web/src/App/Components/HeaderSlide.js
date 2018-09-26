@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import moment from 'moment'
-import {NavLink} from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import getVideoUrl from '../Shared/Lib/getVideoUrl'
@@ -10,10 +10,10 @@ import getVideoUrl from '../Shared/Lib/getVideoUrl'
 import Avatar from './Avatar'
 import HeaderImageWrapper from './HeaderImageWrapper'
 import VerticalCenter, {VerticalCenterStyles} from './VerticalCenter'
-import {Row} from './FlexboxGrid';
+import { Row } from './FlexboxGrid';
 import HorizontalDivider from './HorizontalDivider'
 import Video from './Video'
-import NavLinkStyled from './NavLinkStyled'
+import { NavLinkStyled } from './NavLinkStyled'
 import RotatedArrow from './RotatedArrow'
 import RoundedButton from './RoundedButton'
 
@@ -101,10 +101,11 @@ const videoThumbnailOptions = {
   width: 'screen',
 }
 
-export default class StoryHeaderOld extends React.Component {
+export default class HeaderSlide extends React.Component {
   static propTypes = {
     story: PropTypes.object,
     author: PropTypes.object,
+    isPreview: PropTypes.bool,
   }
 
   getMediaType() {
@@ -157,7 +158,7 @@ export default class StoryHeaderOld extends React.Component {
           <Row center='xs'>
             <ProfileLink to={`/profile/${author.id}/view`}>
               <Avatar
-                avatarUrl={getImageUrl(author.profile.avatar)}
+                avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
                 size='medium'
               />
             </ProfileLink>

@@ -2,10 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import {Images} from '../Shared/Themes'
+import { Images } from '../Shared/Themes'
 
-export function getSize(props) {
-  switch(props.size) {
+export function getSize(props, defaultOverride = '25px') {
+  const switchStatement = props.size || props.type
+  
+  switch(switchStatement) {
     case 'avatar':
       return '30px'
     case 'small':
@@ -21,7 +23,7 @@ export function getSize(props) {
     case 'x-large':
       return '140px'
     default:
-      return '25px'
+      return defaultOverride
   }
 }
 
@@ -94,6 +96,8 @@ export default class Icon extends React.Component {
         return Images.iconArrowLeftRed
       case 'redCheck':
         return Images.iconRedCheck
+      case 'greyCheck':
+        return Images.iconGreyCheck
       case 'facebook':
         return Images.iconLoginFacebook
       case 'facebookLarge':
@@ -128,6 +132,8 @@ export default class Icon extends React.Component {
         return Images.iconCreateMenuStory
       case 'createStory':
         return Images.iconNavCreate
+      case 'createGuide':
+        return Images.iconCreateGuide
       case 'hamburger':
         return Images.hamburger
       case 'close':
@@ -187,6 +193,8 @@ export default class Icon extends React.Component {
         return Images.iconCreateVideo
       case 'navNotifications':
         return Images.iconNavNotifications
+      case 'info':
+        return Images.iconInfoDark
       default:
         return Images.iconNavProfile
     }

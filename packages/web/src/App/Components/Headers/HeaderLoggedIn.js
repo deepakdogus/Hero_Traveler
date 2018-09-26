@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { NavLink } from 'react-router-dom'
+import { WrappedNavLink } from '../../Components/NavLinkStyled'
 import { Row, Col } from '../FlexboxGrid'
 import ProfileMenu from './ProfileMenu'
 import { mediaMax, mediaMin } from '../ContentLayout.component'
@@ -31,6 +31,7 @@ const LoggedInTabletContainer = styled.div`
 const NotificationsIcon = styled(Icon)`
   height: 18px;
   width: 18px;
+  cursor: pointer;
 `
 
 const StyledRoundedAvatarButton = styled(RoundedButton)`
@@ -41,13 +42,13 @@ const StyledRoundedAvatarButton = styled(RoundedButton)`
 `
 
 const StyledRoundedCreateButton = styled(RoundedButton)`
-    position: relative;
-    bottom: ${props => props.profileAvatar ? '7px' : '2px'};
+  position: relative;
+  bottom: ${props => props.profileAvatar ? '7px' : '2px'};
 `
 
 const StyledRoundedNotificationButton = styled(StyledRoundedButton)`
-    position: relative;
-    bottom: ${props => props.profileAvatar ? '5px' : '-1.8px'};
+  position: relative;
+  bottom: ${props => props.profileAvatar ? '5px' : '-1.8px'};
 `
 
 const NotificationButtonContainer = styled.div`
@@ -56,6 +57,11 @@ const NotificationButtonContainer = styled.div`
   position: relative;
   display: inline;
 `
+
+const CreateButtonStyleOverride = {
+  position: 'relative',
+  display: 'inline',
+}
 
 class HeaderLoggedIn extends React.Component {
   static propTypes = {
@@ -78,7 +84,7 @@ class HeaderLoggedIn extends React.Component {
     originalDraft: PropTypes.object,
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.props.closeGlobalModal()
   }
 
@@ -109,11 +115,11 @@ class HeaderLoggedIn extends React.Component {
 
   _getNotificationsCount = () => {
     const {activities, activitiesById} = this.props
-    let count = 0
-    activitiesById.map(id => {
-      if(!activities[id].seen) count++
-    })
-    return count
+
+    return activitiesById.reduce((count , id) => {
+      if (!activities[id].seen) return count + 1
+      else return count
+    }, 0)
   }
 
   render () {
@@ -193,12 +199,16 @@ class HeaderLoggedIn extends React.Component {
             <LoggedInDesktopContainer>
               {!this.props.pathname.includes('editStory') &&
                 // we remove the 'Create' button from the HeaderLoggedIn Nav if we're editting a story
-                <NavLink to='/editStory/new'>
+                <WrappedNavLink
+                  to='/editStory/new'
+                  styles={CreateButtonStyleOverride}
+                >
                   <StyledRoundedCreateButton
                     text='Create'
                     profileAvatar={profileAvatar}
+                    margin='none'
                   />
-                </NavLink>
+                </WrappedNavLink>
               }
               <NotificationButtonContainer>
                 {notificationsCount > 0 &&
@@ -227,7 +237,8 @@ class HeaderLoggedIn extends React.Component {
                   <Avatar
                     type='avatar'
                     size={profileAvatar ? 'avatar' : 'mediumSmall'}
-                    avatarUrl={getImageUrl(profileAvatar)}
+                    avatarUrl={getImageUrl(profileAvatar, 'avatar')}
+                    isProfileHeader={true}
                   />
                 </StyledRoundedAvatarButton>
                   {globalModal === 'profileMenu' &&
@@ -247,11 +258,15 @@ class HeaderLoggedIn extends React.Component {
                   }
             </LoggedInDesktopContainer>
             <LoggedInTabletContainer>
-              <NavLink
+              <WrappedNavLink
                 to='/editStory/new'
+                styles={CreateButtonStyleOverride}
               >
-                <StyledRoundedButton text='Create'/>
-              </NavLink>
+                <RoundedButton
+                  text='Create'
+                  margin='none'
+                />
+              </WrappedNavLink>
             </LoggedInTabletContainer>
             <HamburgerIcon
               name='hamburger'

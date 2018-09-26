@@ -1,16 +1,16 @@
-// import immutablePersistenceTransform from '../Shared/Services/ImmutablePersistenceTransform'
+import immutablePersistenceTransform from '../Shared/Services/ImmutablePersistenceTransform'
 // import { AsyncStorage } from 'react-native'
+import { asyncLocalStorage } from "redux-persist/storages"
 
-// HAS NOT BEEN SET UP FOR WEB - WHY ACTIVE IS SET TO FALSE
 const REDUX_PERSIST = {
-  active: false,
+  active: true,
   reducerVersion: '8',
   storeConfig: {
-    // storage: AsyncStorage,
+    storage: asyncLocalStorage,
     // blacklist: ['login', 'search', 'feed'], // reducer keys that you do NOT want stored to persistence here
-    whitelist: ['session'], // Optionally, just specify the keys you DO want stored to
+    whitelist: ['session', 'entities'], // Optionally, just specify the keys you DO want stored to
     // persistence. An empty array means 'don't store any reducers' -> infinitered/ignite#409
-    // transforms: [immutablePersistenceTransform]
+    transforms: [immutablePersistenceTransform]
   }
 }
 

@@ -166,6 +166,10 @@ class EditStory extends Component {
     }
   }
 
+  componentWillUnmount(){
+    window.onbeforeunload = () => null
+  }
+
   isLocalStory() {
     return this.props.storyId.substring(0,6) === 'local-'
   }

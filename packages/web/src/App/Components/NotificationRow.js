@@ -42,12 +42,15 @@ const rowProps = {
 const leftProps = { 
   'max-width': '450px',
   'align-items' : 'center',
-  'flex-wrap' : 'nowrap'
+  'flex-wrap' : 'nowrap',
+  'tablet-max-width' : '85%'
 }
 
 const StyledUserName = styled.span`
   ${UserNameStyles},
   font-size: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 const StyledTimestamp = styled(Timestamp)`
@@ -96,7 +99,7 @@ const CommentContent = styled.p`
   color: ${props => props.theme.Colors.grey};
 `
 
-const NotificationContent = styled.p`
+const NotificationContent = styled.div`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 16px;
@@ -106,7 +109,10 @@ const NotificationContent = styled.p`
 `
 
 const StyledNotificationContent = styled(NotificationContent)`
-  max-width: 300px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin-right: 5px;    
+    word-break: break-word;
+  }
 `
 
 const RenderImageContainer = styled.div`

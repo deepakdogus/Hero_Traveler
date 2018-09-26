@@ -8,6 +8,9 @@ const Left = styled(Row)`
   max-width: ${props => props.data['max-width']};
   flex-wrap: ${props => props.data['flex-wrap']};
   align-items: ${props => props.data['align-items']};
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    max-width: ${props => props.data['tablet-max-width']}
+  }
 `
 const Right = styled(Row)``
 

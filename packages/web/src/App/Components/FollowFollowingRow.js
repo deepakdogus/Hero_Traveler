@@ -18,11 +18,16 @@ const Container = styled.div`
 const StyledVerticalCenter = styled(VerticalCenter)`
   height: 90%;
   padding-left: 25px;
-  max-width: 100%;
   flex-shrink: 1;
+  width: 30vw;
+  text-overflow: ellipsis;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding-left: 0px;
+    width: 30vw;
+  }
 `
 
-const UserName = styled.p`
+const UserName = styled.div`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 600;
   font-size: 18px;
@@ -30,6 +35,13 @@ const UserName = styled.p`
   letter-spacing: .2px;
   margin: 0;
   cursor: pointer;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0px 15px;
+    font-size: 16px;
+  }
 `
 
 const ProfileDetail = styled(UserName)`

@@ -45,6 +45,9 @@ const StyledSpan = styled.span`
   position: absolute;
   line-height: 30px;
   bottom: 0;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 16px;
+  }
 `
 
 const RightSpan = styled(StyledSpan)`

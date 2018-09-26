@@ -1,15 +1,14 @@
-import ReduxPersist from '../Config/ReduxPersist'
+import ReduxPersist from '../../Config/ReduxPersist'
 import { persistStore } from 'redux-persist'
-import StartupActions from '../Shared/Redux/StartupRedux'
-import { asyncLocalStorage } from "redux-persist/storages"
+import StartupActions from '../Redux/StartupRedux'
 
 const updateReducers = (store: Object) => {
   const reducerVersion = ReduxPersist.reducerVersion
   const config = ReduxPersist.storeConfig
   const startup = () => store.dispatch(StartupActions.startup())
-
+  const AsyncStorage = ReduxPersist.storeConfig.storage
   // Check to ensure latest reducer version
-  asyncLocalStorage.getItem('reducerVersion').then((localVersion) => {
+  AsyncStorage.getItem('reducerVersion').then((localVersion) => {
     if (localVersion !== reducerVersion) {
       console.tron.display({
         name: 'PURGE',
@@ -22,7 +21,7 @@ const updateReducers = (store: Object) => {
       })
       // Purge store
       persistStore(store, config, startup).purge()
-      asyncLocalStorage.setItem('reducerVersion', reducerVersion)
+      AsyncStorage.setItem('reducerVersion', reducerVersion)
     } else {
       console.tron.display({
         messsage: 'Store',
@@ -36,7 +35,7 @@ const updateReducers = (store: Object) => {
   }).catch(() => {
     console.tron.log('Caught something!')
     persistStore(store, config, startup)
-    asyncLocalStorage.setItem('reducerVersion', reducerVersion)
+    AsyncStorage.setItem('reducerVersion', reducerVersion)
   })
 }
 

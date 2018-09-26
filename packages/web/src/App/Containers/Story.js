@@ -15,7 +15,7 @@ import StoryContentRenderer from '../Components/StoryContentRenderer'
 import GoogleMap from '../Components/GoogleMap'
 import FeedItemMetaInfo from '../Components/FeedItemMetaInfo'
 import FeedItemActionBar from '../Components/FeedItemActionBar'
-import { createBranchLinkWeb } from '../Shared/Lib/sharingWeb'
+import { createDeepLinkWeb } from '../Shared/Lib/sharingWeb'
 
 const ContentWrapper = styled.div``
 
@@ -84,7 +84,7 @@ class Story extends Component {
   }
 
   _onClickShare = async () => {
-    createBranchLinkWeb(this.props.story, 'story')
+    createDeepLinkWeb(this.props.story, 'story')
   }
 
   renderHashtags = () => {

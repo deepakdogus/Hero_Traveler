@@ -5,7 +5,7 @@ const videoThumbnailOptions = {
   width: 385.5,
 }
 
-export const createBranchLinkWeb = async (feedItem, feedItemType) => {
+export const createDeepLinkWeb = async (feedItem, feedItemType) => {
   const { id, coverImage, coverVideo, title, description } = feedItem
   const coverMediaURL = coverImage
   ? getImageUrl(coverImage)

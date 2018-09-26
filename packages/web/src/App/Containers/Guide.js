@@ -21,7 +21,7 @@ import FeedItemActionBar from '../Components/FeedItemActionBar'
 import TabBar from '../Components/TabBar'
 import GuideStoriesOfType from '../Components/GuideStoriesOfType'
 import HorizontalDivider from '../Components/HorizontalDivider'
-import { createBranchLinkWeb } from '../Shared/Lib/sharingWeb'
+import { createDeepLinkWeb } from '../Shared/Lib/sharingWeb'
 
 const ContentWrapper = styled.div``
 
@@ -114,7 +114,7 @@ class Guide extends Component {
   }
 
   _onClickShare = () => {
-    createBranchLinkWeb(this.props.guide, 'guide')
+    createDeepLinkWeb(this.props.guide, 'guide')
   }
 
   renderHashtags = () => {

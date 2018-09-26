@@ -131,6 +131,7 @@ export default class HeaderModals extends React.Component {
             loginReduxFetching={loginReduxFetching}
             loginReduxError={loginReduxError}
             openGlobalModal={openGlobalModal}
+            closeGlobalModal={closeGlobalModal}
           />
         </Modal>
         <Modal

@@ -66,6 +66,9 @@ class SignupTopics extends Component {
   componentDidMount() {
     this.props.loadCategories()
     this.props.getSelectedCategories()
+    if (this.props.user.usernameIsTemporary) {
+      this._openChangeTempUsernameModal()
+    }
   }
 
   getIsSelected = (categoryId) => {
@@ -93,14 +96,10 @@ class SignupTopics extends Component {
             <WrappedNavLink to='/signup/social'>
               <RoundedButton
                 text='Next >'
-                margin='none' 
+                margin='none'
               />
             </WrappedNavLink>
           </NavLinkContainer>
-          <RoundedButton
-                text='Test Username Change'
-                onClick={this._openChangeTempUsernameModal}
-              />
           <Container>
             <SizedDiv>
               <Title>WELCOME!</Title>

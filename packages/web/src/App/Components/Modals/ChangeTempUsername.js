@@ -67,7 +67,7 @@ class ChangeTempUsername extends React.Component{
     invalid: PropTypes.bool,
     updating: PropTypes.bool,
     fetching: PropTypes.bool,
-    handleSubmit: PropTypes.func,
+    updateUser: PropTypes.func,
   }
 
   componentDidUpdate(prevProps) {
@@ -77,8 +77,6 @@ class ChangeTempUsername extends React.Component{
   }
 
   _handleSubmit = (e) => {
-    console.log('e', e)
-    console.log('test2')
     e.preventDefault()
     const attrs = {
       username: this.props.username
@@ -90,25 +88,24 @@ class ChangeTempUsername extends React.Component{
     const {
       invalid,
       updating,
-      handleSubmit,
       params: {
         user
       }
     } = this.props
-    console.log('this.props', this.props)
 
     return(
       <Container>
         <Title>Change Temp Username</Title>
         <Text>Do you want to change your username?</Text>
         <StyledUsernameText>{user.username}</StyledUsernameText>
-        <form onSubmit={handleSubmit(this.props.onSubmit)}>
+        <form onSubmit={this._handleSubmit}>
           <Field
             name={'username'}
             component={FormInput}
             type='text'
             placeholder='Username'
           />
+          <Row center='xs'>
             <RoundedButton
               text="No"
               margin='small'
@@ -120,6 +117,7 @@ class ChangeTempUsername extends React.Component{
               margin='small'
               type='submit'
             />
+          </Row>
         </form>
         {(!invalid && updating) &&
           <Text>Updating Username...</Text>
@@ -138,16 +136,6 @@ function mapStateToProps(state) {
   }
 }
 
-function mapDispatchToProps(dispatch, ownProps) {
-  return {
-    onSubmit: (values) => {
-      ownProps.params.updateUser({username:values.username})
-    }
-  }
-}
-
-
-
 export default reduxForm({
   form: 'changeTempUsername',
   validate,
@@ -157,4 +145,4 @@ export default reduxForm({
   initialValues: {
     username: '',
   }
-})(connect(mapStateToProps, mapDispatchToProps)(ChangeTempUsername))
+})(connect(mapStateToProps)(ChangeTempUsername))

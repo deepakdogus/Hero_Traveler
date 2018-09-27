@@ -6,9 +6,8 @@ import RootContainer from './RootContainer'
 import createStore from '../Shared/Redux'
 import branch from 'react-native-branch'
 import {
-  navToStoryFromOutsideLink,
-  navToGuideFromOutsideLink
- } from '../Navigation/NavigationRouter'
+  Actions as NavActions
+} from 'react-native-router-flux'
 import { parseNonBranchURL } from '../Shared/Lib/sharingMobile'
 
 // create our store
@@ -40,8 +39,8 @@ class App extends Component {
         //facebook/twitter (non-branch) link routing
         let obj = parseNonBranchURL(params['+non_branch_link'])
         obj['storyId']
-        ? navToStoryFromOutsideLink(obj['storyId'], obj['title'])
-        : navToGuideFromOutsideLink(obj['guideId'], obj['title'])
+        ? this._navToStoryFromOutsideLink(obj['storyId'], obj['title'])
+        : this._navToGuideFromOutsideLink(obj['guideId'], obj['title'])
         return
       }
       if (!params['+clicked_branch_link']) {
@@ -52,9 +51,17 @@ class App extends Component {
       const feedItemType = params.$canonical_url.split('/')[0]
       const feedItemId = params.$canonical_url.split('/')[1]
       feedItemType === 'story'
-      ? navToStoryFromOutsideLink(feedItemId, title)
-      : navToGuideFromOutsideLink(feedItemId, title)
+      ? this._navToStoryFromOutsideLink(feedItemId, title)
+      : this._navToGuideFromOutsideLink(feedItemId, title)
     })
+  }
+
+  _navToStoryFromOutsideLink = (storyId, title) => {
+    NavActions.story({storyId, title})
+  }
+
+  _navToGuideFromOutsideLink = (guideId, title) => {
+    NavActions.guide({guideId, title})
   }
 
   render () {

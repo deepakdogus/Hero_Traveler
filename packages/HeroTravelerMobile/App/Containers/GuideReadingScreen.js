@@ -17,11 +17,9 @@ import TabBar from '../Components/TabBar'
 import {navToProfile} from '../Navigation/NavigationRouter'
 import GuideStoriesOfType from '../Components/GuideStoriesOfType'
 import {styles} from './Styles/StoryReadingScreenStyles'
-import getImageUrl from '../Shared/Lib/getImageUrl'
 import {
-  createBranchUniversalObj,
-  shareLinkWithShareDialog,
-} from '../Shared/Lib/sharingMobile'
+  createShareDialog,
+} from '../Lib/sharingMobile'
 
 
 export const tabTypes = {
@@ -90,16 +88,7 @@ class GuideReadingScreen extends React.Component {
   }
 
   _onPressShare = async () => {
-    const videoOptions = {
-      video: true,
-      width: 'screen',
-    }
-    const { coverImage, coverVideo, title, id } = this.props.guide
-    let coverMediaURL = coverImage
-    ? getImageUrl(coverImage, 'optimized')
-    : getImageUrl(coverVideo, 'optimized', videoOptions)
-    let branchUrl = await createBranchUniversalObj(title, coverMediaURL, 'Test Description', `guide/${id}`)
-    shareLinkWithShareDialog(branchUrl)
+    createShareDialog(this.props.guide, 'guide')
   }
 
   // _toggleFlag = () => {

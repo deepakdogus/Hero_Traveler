@@ -23,9 +23,8 @@ import getRelativeHeight from '../Shared/Lib/getRelativeHeight'
 import isTooltipComplete, {Types as TooltipTypes} from '../Shared/Lib/firstTimeTooltips'
 import UserActions from '../Shared/Redux/Entities/Users'
 import {
-  createBranchUniversalObj,
-  shareLinkWithShareDialog,
-} from '../Shared/Lib/sharingMobile'
+  createShareDialog,
+} from '../Lib/sharingMobile'
 
 const enhanceStoryVideo = compose(
   withHandlers(() => {
@@ -162,17 +161,8 @@ class StoryReadingScreen extends React.Component {
     })
   }
 
-  _pressShare = async () => {
-    const videoThumbnailOptions = {
-      video: true,
-      width: 385.5,
-    }
-    const { coverImage, coverVideo, title, description, id } = this.props.story
-    let coverMediaURL = coverImage
-    ? getImageUrl(coverImage)
-    : getImageUrl(coverVideo, 'optimized', videoThumbnailOptions)
-    let branchUrl = await createBranchUniversalObj(title, coverMediaURL, description, `story/${id}`)
-    shareLinkWithShareDialog(branchUrl, description)
+  _onPressShare = () =>{
+    createShareDialog(this.props.story, 'story')
   }
 
   renderHashtags = () => {
@@ -325,7 +315,7 @@ class StoryReadingScreen extends React.Component {
         onPressLike={this._toggleLike}
         onPressBookmark={this._onPressBookmark}
         onPressComment={this._onPressComment}
-        onPressShare={this._pressShare}
+        onPressShare={this._onPressShare}
         flagTargetEntity={this._flagStory}
         renderBody={this.renderBody}
         animatedViews={[

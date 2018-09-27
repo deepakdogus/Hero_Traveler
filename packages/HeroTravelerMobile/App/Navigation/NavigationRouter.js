@@ -149,14 +149,6 @@ export const navToProfile = () => {
   NavActions.profile()
 }
 
-export const navToStoryFromOutsideLink = (storyId, title) => {
-  NavActions.story({storyId, title})
-}
-
-export const navToGuideFromOutsideLink = (guideId, title) => {
-  NavActions.guide({guideId, title})
-}
-
 const navToExplore = () => {
   NavActions.tabbar({type: 'reset'})
   NavActions.explore()

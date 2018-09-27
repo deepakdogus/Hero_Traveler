@@ -1,8 +1,9 @@
 import branch from 'react-native-branch'
 import { ShareDialog } from 'react-native-fbsdk'
+import getImageUrl from '../Shared/Lib/getImageUrl'
 
 //creates Branch Universal Object to be passed throught the Facebook Share Dialog
-export const createBranchUniversalObj = async (title, contentImageUrl,contentDescription, feedItemId) => {
+export const createBranchUniversalObj = async (title, contentImageUrl, contentDescription, feedItemId) => {
   const branchUniversalObject = await branch.createBranchUniversalObject('heroTravelerMobile', {
     locallyIndex: true,
     title,
@@ -30,10 +31,9 @@ export const shareLinkWithShareDialog = (contentUrl, contentDescription) => {
     contentType: 'link',
     contentUrl: contentUrl,
     contentDescription,
-  };
+  }
   ShareDialog.canShow(content)
   .then(canShow => {
-    console.log('canShow', canShow)
     if (canShow) {
       return ShareDialog.show(content)
     }
@@ -48,6 +48,24 @@ export const shareLinkWithShareDialog = (contentUrl, contentDescription) => {
   (err) => {
     alert('Share fail with error: ' + err)
   })
+}
+
+export const createShareDialog = async (feedItem, feedItemType) => {
+  const videoThumbnailOptions = {
+    video: true,
+    width: 385.5,
+  }
+  const { coverImage, coverVideo, title, description, id } = feedItem
+  let coverMediaURL = coverImage
+  ? getImageUrl(coverImage)
+  : getImageUrl(coverVideo, 'optimized', videoThumbnailOptions)
+  let branchUrl =
+  await createBranchUniversalObj(
+    title,
+    coverMediaURL,
+    description,
+    `${feedItemType}/${id}`)
+  shareLinkWithShareDialog(branchUrl, description)
 }
 
 export const parseNonBranchURL = (url) => {

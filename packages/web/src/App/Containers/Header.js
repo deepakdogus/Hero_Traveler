@@ -86,7 +86,7 @@ class Header extends React.Component {
     window.addEventListener('scroll', this.handleScroll)
 
     branch.data((err, data)=> {
-      if (err) console.log('Branch Error: ', err)
+      if (err) return
       else {
         let feedItemUrl = data.data_parsed['$canonical_url']
         if (feedItemUrl) this.props.reroute(feedItemUrl)

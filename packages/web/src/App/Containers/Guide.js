@@ -21,7 +21,7 @@ import FeedItemActionBar from '../Components/FeedItemActionBar'
 import TabBar from '../Components/TabBar'
 import GuideStoriesOfType from '../Components/GuideStoriesOfType'
 import HorizontalDivider from '../Components/HorizontalDivider'
-import { createDeepLinkWeb } from '../Shared/Lib/sharingWeb'
+import { createDeepLinkWeb } from '../Lib/sharingWeb'
 
 const ContentWrapper = styled.div``
 

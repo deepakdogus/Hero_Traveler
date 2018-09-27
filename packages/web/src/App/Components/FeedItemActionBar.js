@@ -38,7 +38,7 @@ const HandMadeIconMinus = styled.div`
 
 const LeftActionBarIcon = styled(StyledIcon)``
 const BookmarkIcon = styled(StyledIcon)``
-const FacebookIocn = styled(StyledIcon)``
+const FacebookIcon = styled(StyledIcon)``
 const TwitterIcon = styled(StyledIcon)``
 const DotsIcon = styled(StyledIcon)``
 
@@ -157,7 +157,7 @@ export default class StoryActionBar extends React.Component {
               onClick={onClickComments}
             />
           </ClickableWrapper>
-          <FacebookIocn
+          <FacebookIcon
             name='squareFacebookOutline'
             onClick={onClickShare}
           />

@@ -108,6 +108,7 @@ export default class StoryReadingToolbarComponent extends Component {
         />
       </View>
     )
+
     const shareComponent = this.renderInViewOrTouch(
       shareContainer,
       styles.shareTool,

@@ -15,7 +15,7 @@ import StoryContentRenderer from '../Components/StoryContentRenderer'
 import GoogleMap from '../Components/GoogleMap'
 import FeedItemMetaInfo from '../Components/FeedItemMetaInfo'
 import FeedItemActionBar from '../Components/FeedItemActionBar'
-import { createDeepLinkWeb } from '../Shared/Lib/sharingWeb'
+import { createDeepLinkWeb } from '../Lib/sharingWeb'
 
 const ContentWrapper = styled.div``
 

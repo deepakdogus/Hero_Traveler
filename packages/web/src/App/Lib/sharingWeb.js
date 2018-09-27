@@ -1,4 +1,4 @@
-import getImageUrl from './getImageUrl'
+import getImageUrl from '../Shared/Lib/getImageUrl'
 /*global FB*/
 const videoThumbnailOptions = {
   video: true,

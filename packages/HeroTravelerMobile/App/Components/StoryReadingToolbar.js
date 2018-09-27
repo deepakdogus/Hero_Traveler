@@ -62,6 +62,7 @@ export default class StoryReadingToolbarComponent extends Component {
         />
       </View>
     )
+
     const likeComponent = this.renderInViewOrTouch(
       likeContainer,
       styles.likeTool,
@@ -78,6 +79,7 @@ export default class StoryReadingToolbarComponent extends Component {
         <TabIcon name={'comment'}/>
       </View>
     )
+
     const commentComponent = this.renderInViewOrTouch(
       commentContainer,
       styles.commentTool,
@@ -94,6 +96,7 @@ export default class StoryReadingToolbarComponent extends Component {
         <TabIcon name={this.props.isBookmarked ? 'bookmark-active' : 'bookmark'}/>
       </View>
     )
+
     const bookmarkComponent = this.renderInViewOrTouch(
       bookmarkContainer,
       styles.bookmarkTool,
@@ -123,6 +126,7 @@ export default class StoryReadingToolbarComponent extends Component {
         />
       </View>
     )
+
     const flagComponent = this.renderInViewOrTouch(
       flagContainer,
       styles.shareTool,

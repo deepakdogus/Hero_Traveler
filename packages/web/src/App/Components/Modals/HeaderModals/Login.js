@@ -74,7 +74,7 @@ export default class Login extends React.Component {
   }
 
   _openResetPasswordModal = () => {
-    this.props.openGlobalModal('resetPassword')
+    this.props.openGlobalModal('resetPasswordRequest')
   }
 
   render() {

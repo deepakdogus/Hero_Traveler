@@ -21,10 +21,10 @@ const ErrorText = styled(Text)`
   color: ${props => props.theme.Colors.redLight};
 `
 
-export default class ResetPassword extends React.Component {
+export default class ResetPasswordRequest extends React.Component {
   static propTypes = {
     closeModal: PropTypes.func,
-    resetPassword: PropTypes.func,
+    resetPasswordRequest: PropTypes.func,
   }
 
   state = {
@@ -37,13 +37,14 @@ export default class ResetPassword extends React.Component {
   }
 
   _handleResetPasswordRequest = () => {
-    if (!Constants.EMAIL_REGEX.test(this.state.email)) {
+    if (Constants.EMAIL_REGEX.test(this.state.email)) {
+      this.props.resetPasswordRequest(this.state.email)
+    alert('A password reset link has been emailed to you!')
+    this.props.closeModal()
+    } else {
       this.setState({error: 'Invalid email address'})
     }
 
-    this.props.resetPassword(this.state.email)
-    alert('A password reset link has been emailed to you!')
-    this.props.closeModal()
   }
 
   render() {

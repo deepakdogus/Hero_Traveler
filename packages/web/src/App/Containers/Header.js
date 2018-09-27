@@ -69,7 +69,8 @@ class Header extends React.Component {
     signedUp: PropTypes.bool,
     flagStory: PropTypes.func,
     deleteStory: PropTypes.func,
-    resetPassword: PropTypes.func,
+    resetPasswordRequest: PropTypes.func,
+    resetPasswordAttempt: PropTypes.func,
   }
 
   constructor(props) {
@@ -184,7 +185,8 @@ class Header extends React.Component {
       originalDraft,
       flagStory,
       deleteStory,
-      resetPassword,
+      resetPasswordRequest,
+      resetPasswordAttempt,
     } = this.props
 
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
@@ -221,6 +223,7 @@ class Header extends React.Component {
               openLoginModal={this.openLoginModal}
               pathname={pathname}
               openGlobalModal={openGlobalModal}
+              reroute={reroute}
             />
           }
             <HeaderModals
@@ -254,7 +257,8 @@ class Header extends React.Component {
               flagStory={flagStory}
               deleteStory={deleteStory}
               openGlobalModal={openGlobalModal}
-              resetPassword={resetPassword}
+              resetPasswordRequest={resetPasswordRequest}
+              resetPasswordAttempt={resetPasswordAttempt}
             />
         </StyledGrid>
         <HeaderSpacer
@@ -308,7 +312,8 @@ function mapDispatchToProps(dispatch) {
     flagStory: (sessionUserId, storyId) => dispatch(StoryActions.flagStory(sessionUserId, storyId)),
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
     markSeen: (activityId) => dispatch(UserActions.activitySeen(activityId)),
-    resetPassword: (email) => dispatch(LoginActions.resetPasswordRequest(email)),
+    resetPasswordRequest: (email) => dispatch(LoginActions.resetPasswordRequest(email)),
+    resetPasswordAttempt: (password, token) => dispatch(LoginActions.resetPassword(password, token)),
   }
 }
 

@@ -22,11 +22,16 @@ const HOCMap = withGoogleMap(props => {
     selectedMarkerId,
     setSelectedMarkerId,
   } = props
+  const center = new windowMaps.LatLng(
+    props.lat,
+    props.lng,
+  )
+
   return (
     <GoogleMap
       ref={props.onMapLoad}
       defaultZoom={11}
-      defaultCenter={{ lat: props.lat, lng: props.lng }}
+      defaultCenter={center}
       onClick={props.onMapClick}
     >
       <MarkerClusterer averageCenter>
@@ -96,7 +101,6 @@ export default class GMap extends React.Component {
 
   getBounds() {
     const bounds = new windowMaps.LatLngBounds()
-
     this.props.stories.forEach(story => {
       const {latitude, longitude} = story.locationInfo
       bounds.extend(

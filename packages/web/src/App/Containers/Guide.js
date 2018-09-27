@@ -70,7 +70,7 @@ class Guide extends Component {
     reroute: PropTypes.func,
     isLiked: PropTypes.bool,
     onClickLike: PropTypes.func,
-    isBookmarked: PropTypes.bool,
+    // isBookmarked: PropTypes.bool,
     onClickBookmark: PropTypes.func,
     match: PropTypes.object,
     onClickComments: PropTypes.func,
@@ -208,7 +208,7 @@ class Guide extends Component {
       reroute,
       sessionUserId,
       isFollowing,
-      isBookmarked,
+      // isBookmarked,
       isLiked,
       openGlobalModal,
     } = this.props

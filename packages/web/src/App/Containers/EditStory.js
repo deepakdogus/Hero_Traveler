@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import {connect} from 'react-redux'
-import {push} from 'react-router-redux'
+import { connect } from 'react-redux'
+import { push } from 'react-router-redux'
 import _ from 'lodash'
 import Modal from 'react-modal'
 import PropTypes from 'prop-types'
 
+import StoryActions from '../Shared/Redux/Entities/Stories'
 import StoryCreateActions from '../Shared/Redux/StoryCreateRedux'
 import createLocalDraft from '../Shared/Lib/createLocalDraft'
 import AuthRoute from './AuthRoute'
@@ -13,13 +14,14 @@ import UXActions from '../Redux/UXRedux'
 import CreateStoryCoverContent from './CreateStory/1_CoverContent'
 import CreateStoryDetails from './CreateStory/2_Details'
 import FooterToolbar from '../Components/CreateStory/FooterToolbar'
-import {Title, Text} from '../Components/Modals/Shared'
-import { haveFieldsChanged } from '../Shared/Lib/draftChangedHelpers'
-
 import {
+  Title,
+  Text,
+} from '../Components/Modals/Shared'
+import {
+  haveFieldsChanged,
   isFieldSame,
 } from '../Shared/Lib/draftChangedHelpers'
-
 export const Container = styled.div``
 
 export const ContentWrapper = styled.div`
@@ -72,6 +74,7 @@ class EditStory extends Component {
     loadDraft: PropTypes.func,
     setWorkingDraft: PropTypes.func,
     discardDraft: PropTypes.func,
+    saveDraftToCache: PropTypes.func,
     updateDraft: PropTypes.func,
     updateWorkingDraft: PropTypes.func,
     publish: PropTypes.func,
@@ -94,17 +97,15 @@ class EditStory extends Component {
 
   componentWillMount() {
     const {
-      userId, cachedStory,
+      userId, cachedStory, storyId,
       registerDraft, loadDraft, setWorkingDraft,
     } = this.props
-
-    let storyId = _.get(this.props, "match.params.storyId");
 
     if (!storyId || storyId === 'new') {
       registerDraft(createLocalDraft(userId))
     }
     // should only load publish stories since locals do not exist in DB
-    else if (storyId.substring(0,6) !== 'local-'){
+    else if (!this.isLocalStory()){
       loadDraft(storyId, cachedStory)
     }
     else {
@@ -118,9 +119,8 @@ class EditStory extends Component {
       registerDraft,
       workingDraft
     } = this.props
-    //need to return a non-falsy value to render window dialog
 
-    if (workingDraft === null) {
+    if (workingDraft === null && this.isLocalStory()) {
       registerDraft(createLocalDraft(userId))
     }
   }
@@ -146,11 +146,17 @@ class EditStory extends Component {
     }
   }
 
-  componentDidUpdate(){
-    if (this.props.syncProgress > 0 && this.props.syncProgressSteps === this.props.syncProgress) {
+  componentDidUpdate(prevProps){
+    if (
+      this.props.syncProgress > 0
+      && this.props.syncProgressSteps === this.props.syncProgress
+      && prevProps.syncProgress !== this.props.syncProgress
+      && this.props.subPath === 'details'
+    ) {
       this.props.reroute('/feed')
       this.props.resetCreateStore()
     }
+
     const { workingDraft, originalDraft } = this.props
     if (haveFieldsChanged(workingDraft, originalDraft)) {
       window.onbeforeunload = (e) => {
@@ -158,6 +164,14 @@ class EditStory extends Component {
         return true
       }
     }
+  }
+
+  componentWillUnmount(){
+    window.onbeforeunload = () => null
+  }
+
+  isLocalStory() {
+    return this.props.storyId.substring(0,6) === 'local-'
   }
 
   hasPublished(nextProps){
@@ -171,14 +185,23 @@ class EditStory extends Component {
   }
 
   _updateDraft = () => {
-    const {originalDraft, workingDraft, subPath} = this.props
-    const isRepublishing = !workingDraft.draft && subPath === 'details'
-    this.props.updateDraft(
-      originalDraft.id,
-      this.cleanDraft(workingDraft),
-      null,
-      isRepublishing
-    )
+    const {
+      originalDraft,
+      workingDraft,
+      subPath,
+      saveDraftToCache,
+    } = this.props
+
+    if (workingDraft.draft) saveDraftToCache(this.cleanDraft(workingDraft))
+    else {
+      const isRepublishing = !workingDraft.draft && subPath === 'details'
+      this.props.updateDraft(
+        originalDraft.id,
+        this.cleanDraft(workingDraft),
+        null,
+        isRepublishing
+      )
+    }
   }
 
   _discardDraft = () => {
@@ -352,9 +375,12 @@ function getSubPath(location) {
 
 function mapStateToProps(state, props) {
   const accessToken = _.find(state.session.tokens, {type: 'access'})
+  const storyId = _.get(props, "match.params.storyId")
+
   return {
     userId: state.session.userId,
-    cachedStory: state.entities.stories.entities[props.storyId],
+    storyId,
+    cachedStory: state.entities.stories.entities[storyId],
     accessToken: accessToken.value,
     subPath: getSubPath(state.routes.location),
     originalDraft: state.storyCreate.draft,
@@ -363,15 +389,16 @@ function mapStateToProps(state, props) {
     syncProgressSteps: state.storyCreate.sync.syncProgressSteps,
     syncProgressMessage: state.storyCreate.sync.message,
     backgroundFailures: state.entities.stories.backgroundFailures,
-    globalModal: state.ux
+    globalModal: state.ux,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     registerDraft: (draft) => dispatch(StoryCreateActions.registerDraftSuccess(draft)),
-    loadDraft: (draftId) => dispatch(StoryCreateActions.editStory(draftId)),
+    loadDraft: (draftId, cachedStory) => dispatch(StoryCreateActions.editStory(draftId, cachedStory)),
     discardDraft: (draftId) => dispatch(StoryCreateActions.discardDraft(draftId)),
+    saveDraftToCache: (draft) => dispatch(StoryActions.addDraft(draft)),
     updateDraft: (draftId, attrs, doReset, isRepublishing) =>
       dispatch(StoryCreateActions.updateDraft(draftId, attrs, doReset, isRepublishing)),
     updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),

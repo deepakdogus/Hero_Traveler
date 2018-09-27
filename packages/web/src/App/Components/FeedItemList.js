@@ -34,7 +34,9 @@ export default class FeedItemList extends React.Component {
 
   defaultProps = { isHorizontalList: false }
 
-  shouldBeHorizontal = () => this.props.isHorizontalList || this.state.isHorizontalList
+  isStory(feedItem) {
+    return typeof feedItem.draft === 'boolean'
+  }
 
   render() {
     const {
@@ -67,7 +69,7 @@ export default class FeedItemList extends React.Component {
           guideId={guideId}
           feedItem={feedItem}
           type={type}
-          isStory={!!feedItem.locationInfo}
+          isStory={this.isStory(feedItem)}
           isVertical={isHorizontalList}
         />
       ))

@@ -237,7 +237,7 @@ export default class AddCoverTitles extends React.Component {
     let coverTypeText = 'COVER PHOTO'
     if (!isGuide) {
       acceptProp += ', video/*'
-      coverTypeText += 'OR VIDEO'
+      coverTypeText += ' OR VIDEO'
     }
 
     if (coverImage || coverVideo) return (

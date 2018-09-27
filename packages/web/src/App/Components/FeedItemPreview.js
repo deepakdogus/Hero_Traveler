@@ -219,7 +219,7 @@ const Username = styled(Text)`
   color: ${props => props.theme.Colors.redHighlights};
   cursor: pointer;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    font-size: 13px;
+    font-size: 12px;
   }
 `
 

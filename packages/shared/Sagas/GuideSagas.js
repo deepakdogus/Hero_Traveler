@@ -2,13 +2,11 @@ import { call, put } from 'redux-saga/effects'
 import GuideActions from '../Redux/Entities/Guides'
 import UserActions from '../Redux/Entities/Users'
 import CategoryActions from '../Redux/Entities/Categories'
-import { getNewCover } from '../Redux/helpers/coverUpload'
-import CloudinaryAPI from '../../Services/CloudinaryAPI'
 import { createCover } from './StorySagas'
 import _ from 'lodash'
 
 export function * createGuide(api, {guide, userId}) {
-  const coverResponse = yield createCover(api, guide, true)
+  yield createCover(api, guide, true)
   // add error handling here
   const response = yield call(api.createGuide, guide)
   if (response.ok) {
@@ -43,7 +41,7 @@ export function * getGuide(api, {guideId}) {
 }
 
 export function * updateGuide(api, {guide}) {
-  const coverResponse = yield createCover(api, guide, true)
+  yield createCover(api, guide, true)
   // add error handling
   const response = yield call(api.updateGuide, guide)
   if (response.ok) {

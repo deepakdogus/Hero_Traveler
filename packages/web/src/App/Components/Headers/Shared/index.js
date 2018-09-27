@@ -15,6 +15,10 @@ export const StyledRow = styled(Row)`
 const StyledButtonWrapper = styled.div`
   padding-left: 10px;
   padding-right: 10px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
 `
 
 export const StyledRoundedButton = styled(RoundedButton)`
@@ -25,6 +29,10 @@ export const StyledRoundedButton = styled(RoundedButton)`
 export const StyledRoundedSearchButton = styled(RoundedButton)`
   margin-left: 0px;
   margin-right: 0px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    border: none;
+    background-color: transparent;
+  }
 `
 
 export const SearchIcon = styled(Icon)`
@@ -39,7 +47,7 @@ export const LoginLink = styled.a`
   letter-spacing: 1.5px;
   font-size: 13px;
   display: none;
-  ${mediaMax.phone`display: inline;`}
+  ${mediaMax.phone`display: inline;`}  
 `
 
 export const Logo = styled.img`
@@ -54,6 +62,11 @@ export const Divider = styled.div`
   background-color: ${props => props.theme.Colors.snow};
   margin-left: 10px;
   margin-right: 10px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin-left: 5px;
+    margin-right: 5px;
+    height: 25px;
+  }
 `
 
 export const StyledRoundedLoginButton = styled(RoundedButton)`
@@ -61,6 +74,16 @@ export const StyledRoundedLoginButton = styled(RoundedButton)`
   margin-right: 20px;
   display: inline;
   ${mediaMax.phone`display: none;`}
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    background-color: transparent;
+    border: none;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 0px;
+    &:hover {
+      background-color: transparent;
+    }
+  }
 `
 
 export const HamburgerIcon = styled(Icon)`

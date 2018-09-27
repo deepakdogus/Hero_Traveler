@@ -15,6 +15,7 @@ import SessionActions from '../Shared/Redux/SessionRedux'
 import UXActions from '../Redux/UXRedux'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import HeaderModals from '../Components/HeaderModals'
+import { sizes } from '../Themes/Metrics'
 import {
   haveFieldsChanged
 } from '../Shared/Lib/draftChangedHelpers'
@@ -82,10 +83,16 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
+    window.addEventListener('resize', this.handleWindowResize)
     window.addEventListener('scroll', this.handleScroll)
   }
 
+  componentWillMount() {
+    this.handleWindowResize()
+  }
+
   componentWillUnmount() {
+    window.removeEventListener('resize', this.handleWindowResize)
     window.removeEventListener('scroll', this.handleScroll)
   }
 
@@ -99,12 +106,24 @@ class Header extends React.Component {
     }
   }
 
+  handleWindowResize = (event) => {
+    let windowWidth = window.innerWidth 
+    const tabletSize = sizes.tablet
+    if(windowWidth <= tabletSize ){
+      this.setState({ navbarEngaged: true })
+    }else if (window.scrollY < 65 && this.state.navbarEngaged && windowWidth >= tabletSize) {
+      this.setState({ navbarEngaged: false })
+    }
+  }
+
   handleScroll = (event) => {
+    let windowWidth = window.innerWidth 
+    const tabletSize = sizes.tablet
     // If header is transparent, it should mark itself as "engaged" so we know to style it differently (aka black background)
     if (!this.props.blackHeader){
       if (window.scrollY > 65 && !this.state.navbarEngaged){
         this.setState({ navbarEngaged: true })
-      } else if (window.scrollY < 65 && this.state.navbarEngaged) {
+      } else if (window.scrollY < 65 && this.state.navbarEngaged && windowWidth >= tabletSize ) {
         this.setState({ navbarEngaged: false })
       }
     }

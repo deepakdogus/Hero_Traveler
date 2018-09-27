@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import {NavLink} from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 import Icon from './Icon'
-import {Row} from './FlexboxGrid'
+import { Row } from './FlexboxGrid'
 import { displayLocationDetails } from '../Shared/Lib/locationHelpers'
 
 const LocationIcon = styled(Icon)`
@@ -31,12 +31,6 @@ const CalendarIcon = styled(Icon)`
   width: 22px;
   height: 22px;
 `
-
-const IconWrapper = styled.div`
-  width: 27px;
-  text-align: center;
-`
-
 const Text = styled.p`
   font-weight: 600;
   font-size: 18px;
@@ -59,10 +53,16 @@ const Container = styled.div`
 `
 const InfoRow = styled(Row)`
   margin: 0 0 15px 0 !important;
+  flex-wrap: nowrap;
 `
 
+const IconWrapper = styled.div`
+  width: 27px;
+  text-align: center;
+  margin-right: 20px;
+`
 const TextContainer = styled.div`
-  margin-left: 20px;
+  min-height: 100%;
 `
 
 const StyledLink = styled(NavLink)`

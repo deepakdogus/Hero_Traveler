@@ -17,7 +17,7 @@ export const createBranchUniversalObj = async (title, contentImageUrl,contentDes
   }
 
   const controlParams = {
-    $desktop_url: 'http://localhost:3001'
+    $desktop_url: 'https://ht-web.herokuapp.com/'
   }
 
   const {url} = await branchUniversalObject.generateShortUrl(linkProperties, controlParams)

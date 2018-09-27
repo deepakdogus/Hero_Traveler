@@ -18,7 +18,7 @@ export const createDeepLinkWeb = async (feedItem, feedItemType) => {
       article: {
         'fb:app_id': '1589340484457361',
         'og:title': title,
-        'og:url': `http://localhost:3001/${feedItemType}/${id}`,
+        'og:url': `https://ht-web.herokuapp.com/${feedItemType}/${id}`,
         'og:description': description,
         'og:image': coverMediaURL,
         "al:ios:url": `com.herotraveler.herotraveler-beta://?${feedItemType}Id=${id}&title=${title}`,

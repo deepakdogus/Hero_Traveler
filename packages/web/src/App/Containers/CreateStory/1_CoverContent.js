@@ -13,6 +13,7 @@ class CreateStoryCoverContent extends Component {
   static propTypes = {
     workingDraft: PropTypes.object,
     updateWorkingDraft: PropTypes.func,
+    setGetEditorState: PropTypes.func,
   }
 
   onInputChange = (update) => {

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 export default class ContainerWithFeedList extends React.Component {
   static propTypes = {
     sessionUserId: PropTypes.string,
-    getDrafts: PropTypes.func,
     loadBookmarks: PropTypes.func,
     getGuides: PropTypes.func,
     getStories: PropTypes.func,
@@ -30,7 +29,7 @@ export default class ContainerWithFeedList extends React.Component {
   getTabInfo = (tab) => {
     switch (tab) {
       case 'DRAFTS':
-        return this.props.getDrafts(this.props.sessionUserId)
+        return // cached only so no need to fetch
       case 'BOOKMARKS':
         return this.props.loadBookmarks(this.props.sessionUserId)
       case 'GUIDES':

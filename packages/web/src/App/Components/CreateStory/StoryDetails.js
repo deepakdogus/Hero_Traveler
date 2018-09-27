@@ -3,24 +3,35 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import Moment from 'moment'
 import _ from 'lodash'
-import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton'
+import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
 import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unchecked'
 import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checked'
 
-import {Row} from '../FlexboxGrid'
+import { Row } from '../FlexboxGrid'
 import Icon from '../Icon'
 import HorizontalDivider from '../HorizontalDivider'
 import GoogleLocator from './GoogleLocator'
 import ReactDayPicker from './ReactDayPicker'
-import {Title} from './Shared'
+import { Title } from './Shared'
 import TagSelector from './TagSelector'
 import VerticalCenter from '../VerticalCenter'
 import Tile from './Tile'
-import {displayLocationDetails} from '../../Shared/Lib/locationHelpers'
+import { displayLocationDetails } from '../../Shared/Lib/locationHelpers'
 
 const Container = styled.div`
   padding: 14px 0px 14px 0px;
   position: relative;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 14px 15px;
+  }
+`
+
+const TravelTipsContainer = styled.div`
+  padding: 14px 0px 14px 0px;
+  position: relative;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 14px 15px;
+  }
 `
 
 export const InputRowContainer = styled(Container)`
@@ -35,7 +46,14 @@ const StyledTitle = styled(Title)`
   text-transform: uppercase;
 `
 
-const ActivitySelectRow = styled(Row)``
+const ActivitySelectRow = styled(Row)`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+`
 
 const DetailLabel = styled.label`
   font-family: ${props => props.theme.Fonts.type.base};
@@ -44,6 +62,14 @@ const DetailLabel = styled.label`
   color: ${props => props.theme.Colors.background};
   letter-spacing: .7px;
   padding-left: 2px;
+`
+
+const ActivityDetailLabel = styled(DetailLabel)`
+  margin-right: 40px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin-right: 0px;
+    margin-bottom: 10px;
+  }
 `
 
 const PrivacyLabel = styled(DetailLabel)`
@@ -124,12 +150,14 @@ const TravelTipsInput = styled.textarea`
   border-radius: 2.5px;
   padding: 10px;
   margin-top: 5px;
+  box-sizing: border-box;
 `
 
 const styles = {
   radioButton: {
     display: 'inline-block',
-    width: 120,
+    width: '25%',
+    marginRight: '15px'
   },
   radioButtonLabel: {
     fontWeight: 600,
@@ -141,7 +169,6 @@ const styles = {
     fill: '#ed1e2e',
   },
   radioButtonGroup: {
-    marginLeft: 40,
     display: 'flex',
     alignItems: 'center',
   },
@@ -372,7 +399,7 @@ export default class StoryDetails extends React.Component {
         {!isGuide &&
           <InputRowContainer>
             <ActivitySelectRow>
-              <DetailLabel>Activity: </DetailLabel>
+              <ActivityDetailLabel>Activity: </ActivityDetailLabel>
                 <RadioButtonGroup
                   valueSelected={workingDraft.type}
                   name="activity"
@@ -498,7 +525,7 @@ export default class StoryDetails extends React.Component {
           />
         </InputRowContainer>
         <HorizontalDivider color='lighter-grey' opaque/>
-        <Container>
+        <TravelTipsContainer>
           <DetailLabel>
             {isGuide ? 'Overview' : 'Travel Tips'}
           </DetailLabel>
@@ -512,7 +539,7 @@ export default class StoryDetails extends React.Component {
             }
             onChange={this.onGenericChange}
           />
-        </Container>
+        </TravelTipsContainer>
         {isGuide &&
           <Container>
             <Row>

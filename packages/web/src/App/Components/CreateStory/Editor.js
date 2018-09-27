@@ -30,6 +30,10 @@ import MediaComponent from './EditorMediaComponent'
 const EditorWrapper = styled.div`
   margin-bottom: 95px;
   margin-top: 20px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
 `
 
 const CustomBlockTypeSelect = ({ getEditorState, setEditorState, theme }) => (

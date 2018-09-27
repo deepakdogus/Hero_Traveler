@@ -8,7 +8,7 @@ import ImageWrapper from './ImageWrapper'
 const StyledImage = styled(ImageWrapper)`
   cursor: ${props => props.onClick ? 'pointer' : undefined};
   position: relative;
-  right: ${props=> props.isProfileHeader ? '0' : '6'}px;
+  right: ${props=> props.isProfileHeader ? '6' : '0'}px;
   bottom: 2px;
   margin-left: ${props => props.isStoryPreview ? '7px':'0'};
   background-image: url(${props => props.src});
@@ -21,6 +21,7 @@ const StyledIcon = styled(Icon)`
   cursor: ${props => props.onClick ? 'pointer' : undefined};
   position: relative;
   right: ${props=> props.isProfileHeader ? '0' : '6'}px;
+  bottom: ${props=> props.isProfileHeader ? '1' : '0'}px;
   margin-left: ${props => props.isStoryPreview ? '7px':'0'};
 `
 

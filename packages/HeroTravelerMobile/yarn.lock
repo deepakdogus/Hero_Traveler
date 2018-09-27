@@ -5751,9 +5751,9 @@ react-native-branch@^2.3.3:
     lodash "^4.17.4"
     prop-types "^15.5.10"
 
-react-native-device-info@^0.10.0:
-  version "0.10.2"
-  resolved "https://npm.abeck.io:443/react-native-device-info/-/react-native-device-info-0.10.2.tgz#350cd68ed43839022ddea0a3a423439f16fa4fba"
+react-native-device-info@^0.11.0:
+  version "0.11.0"
+  resolved "https://npm.abeck.io:443/react-native-device-info/-/react-native-device-info-0.11.0.tgz#e96dd0e3f8a7d7e3022c1f441f51fa912fdc7444"
 
 react-native-draftjs-render@2.4.0:
   version "2.4.0"
@@ -5865,6 +5865,10 @@ react-native-mock@^0.3.1:
     react-timer-mixin "^0.13.3"
     warning "^2.1.0"
 
+react-native-push-notification@3.0.1:
+  version "3.0.1"
+  resolved "https://npm.abeck.io:443/react-native-push-notification/-/react-native-push-notification-3.0.1.tgz#0e23db302d03bb4a3f28dc072dcaf2a9a1178ed8"
+
 react-native-push-notification@^2.2.1:
   version "2.2.1"
   resolved "https://npm.abeck.io:443/react-native-push-notification/-/react-native-push-notification-2.2.1.tgz#9b392cee8f5223a1e1772c9a88c95742549fcfc3"
@@ -5880,9 +5884,9 @@ react-native-router-flux@3.43:
     react-native-tabs "^1.0.9"
     react-static-container "^1.0.2"
 
-react-native-splash-screen@^2.0.0:
-  version "2.1.0"
-  resolved "https://npm.abeck.io:443/react-native-splash-screen/-/react-native-splash-screen-2.1.0.tgz#4e0a5e4e8c32974fe7a3cdb4d9a226d06d9daf4f"
+react-native-splash-screen@3.0.0:
+  version "3.0.0"
+  resolved "https://npm.abeck.io:443/react-native-splash-screen/-/react-native-splash-screen-3.0.0.tgz#44ac95f84b9bf58d800af1ab9ff52093fa3efcb9"
 
 react-native-swipeout@^2.3.3:
   version "2.3.3"

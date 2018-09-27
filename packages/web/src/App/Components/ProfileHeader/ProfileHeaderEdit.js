@@ -10,7 +10,7 @@ import Modal from 'react-modal'
 import EditPhotoOptions from '../Modals/EditPhotoOptions'
 import PhotoEditor from '../Modals/PhotoEditor'
 import uploadFile from '../../Utils/uploadFile'
-import {Constants as SignupConstants} from '../Modals/HeaderModals/Signup'
+import { FieldConstraints as SignupConstants } from '../../Shared/Lib/userFormValidation'
 
 import {
   UsernameBaseStyles,

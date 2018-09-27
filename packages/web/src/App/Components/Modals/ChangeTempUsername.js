@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import RoundedButton from '../RoundedButton'
+import UserActions from '../../Shared/Redux/Entities/Users'
 import {
   Container,
   Title,
@@ -10,62 +11,30 @@ import {
 } from './Shared'
 import { Row } from '../FlexboxGrid'
 import FormInput from '../FormInput'
-import { Field, reduxForm, formValueSelector } from 'redux-form'
-import HeroAPI from '../../Shared/Services/HeroAPI'
-
-const api = HeroAPI.create()
+import {
+  Field,
+  reduxForm,
+  formValueSelector
+} from 'redux-form'
+import {
+  validate,
+  asyncValidate
+} from '../../Shared/Lib/userFormValidation'
 
 const StyledUsernameText = styled(Title)`
   font-size: 20px;
 `
 
-const StyledForm = styled.form`
-  padding-bottom: 25px;
-`
-
-export const Constants = {
-  USERNAME_MIN_LENGTH: 2,
-  USERNAME_MAX_LENGTH: 20,
-  USERNAME_REGEX: /(?=^.{1,20}$)^[a-zA-Z][a-zA-Z0-9]*[._-]?[a-zA-Z0-9]+$/,
-}
-
-const asyncValidate = (values) => {
-  return api.signupCheck(values)
-  .then(response => {
-    const {data} = response
-    const errors = {}
-    Object.keys(data).forEach(key => {
-      if (data[key]) errors[key] = `That ${key} is already taken`
-    })
-    if (Object.keys(errors).length) throw errors
-    return {}
-  })
-
-}
-
-const validate = (values) => {
-  const errors = {}
-
-  if (!values.username) {
-    errors.username = 'Required'
-  } else if (values.username.length < Constants.USERNAME_MIN_LENGTH || values.username.length > Constants.USERNAME_MAX_LENGTH) {
-    errors.username = `Must be between ${Constants.USERNAME_MIN_LENGTH} and ${Constants.USERNAME_MAX_LENGTH} characters`
-  } else if (!Constants.USERNAME_REGEX.test(values.username)) {
-    errors.username = 'Usernames may contain letters, numbers, _ and -'
-  }
-
-  return errors
-}
-
-
 class ChangeTempUsername extends React.Component{
 
   static propTypes = {
     closeModal: PropTypes.func,
-    params: PropTypes.object,
     username: PropTypes.string,
+    user: PropTypes.object,
     invalid: PropTypes.bool,
     updating: PropTypes.bool,
+    submitting: PropTypes.bool,
+    pristine: PropTypes.bool,
     fetching: PropTypes.bool,
     updateUser: PropTypes.func,
   }
@@ -81,16 +50,16 @@ class ChangeTempUsername extends React.Component{
     const attrs = {
       username: this.props.username
     }
-      this.props.params.updateUser(attrs)
+    this.props.updateUser(attrs)
   }
 
   render() {
     const {
       invalid,
+      submitting,
+      pristine,
       updating,
-      params: {
-        user
-      }
+      user,
     } = this.props
 
     return(
@@ -116,6 +85,7 @@ class ChangeTempUsername extends React.Component{
               text='Yes'
               margin='small'
               type='submit'
+              disabled={invalid|| submitting || pristine}
             />
           </Row>
         </form>
@@ -130,9 +100,18 @@ class ChangeTempUsername extends React.Component{
 const selector = formValueSelector('changeTempUsername')
 
 function mapStateToProps(state) {
+  const users = state.entities.users.entities
+  const user = users[state.session.userId]
   return {
+    user,
     username: selector(state, 'username'),
     updating: state.entities.users.updating,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    updateUser: (updates) => dispatch(UserActions.updateUser(updates)),
   }
 }
 
@@ -145,4 +124,4 @@ export default reduxForm({
   initialValues: {
     username: '',
   }
-})(connect(mapStateToProps)(ChangeTempUsername))
+})(connect(mapStateToProps, mapDispatchToProps)(ChangeTempUsername))

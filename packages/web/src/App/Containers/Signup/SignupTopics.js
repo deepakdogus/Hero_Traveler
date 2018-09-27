@@ -58,7 +58,6 @@ class SignupTopics extends Component {
     selectCategory: PropTypes.func,
     unselectCategory: PropTypes.func,
     user: PropTypes.object,
-    users: PropTypes.object,
     openGlobalModal: PropTypes.func,
     updateUser: PropTypes.func,
   }
@@ -82,11 +81,7 @@ class SignupTopics extends Component {
   }
 
   _openChangeTempUsernameModal = () => {
-    const modalParams = {
-      user: this.props.user,
-      updateUser: this.props.updateUser
-    }
-    this.props.openGlobalModal('changeTempUsername', modalParams)
+    this.props.openGlobalModal('changeTempUsername')
   }
 
   render() {
@@ -126,7 +121,6 @@ function mapStateToProps(state, ownProps) {
 
   return {
     user,
-    users,
     categories,
     categoriesFetchStatus,
     selectedCategories: state.signup.selectedCategories
@@ -140,7 +134,6 @@ function mapDispatchToProps(dispatch) {
     selectCategory: (categoryId) => dispatch(SignupActions.signupFollowCategory(categoryId)),
     unselectCategory: (categoryId) => dispatch(SignupActions.signupUnfollowCategory(categoryId)),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
-    updateUser: (attrs) => dispatch(UserActions.updateUser(attrs)),
   }
 }
 

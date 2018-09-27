@@ -224,7 +224,6 @@ export default class HeaderModals extends React.Component {
         >
           <ChangeTempUsername
             closeModal={closeGlobalModal}
-            params={globalModalParams}
           />
         </Modal>
         <RightModal

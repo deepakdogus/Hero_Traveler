@@ -38,6 +38,7 @@ export default class SocialMediaButton extends React.Component {
     onClick: PropTypes.func,
     iconName: PropTypes.string.isRequired,
     page: PropTypes.oneOf(['login', 'signup']),
+    type: PropTypes.string,
   }
 
   getIcon() {
@@ -45,7 +46,12 @@ export default class SocialMediaButton extends React.Component {
   }
 
   render() {
-    const {type, iconName, page} = this.props
+    const {
+      type,
+      iconName,
+      page,
+      onClick
+    } = this.props
     const SelectedIcon = this.getIcon()
 
     return (
@@ -53,6 +59,7 @@ export default class SocialMediaButton extends React.Component {
           width='100%'
           margin='vertical'
           type={type}
+          onClick={onClick}
         >
           <Row center='xs'>
             <VerticalCenter>

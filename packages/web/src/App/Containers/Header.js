@@ -14,6 +14,7 @@ import UserActions from '../Shared/Redux/Entities/Users'
 import SessionActions from '../Shared/Redux/SessionRedux'
 import UXActions from '../Redux/UXRedux'
 import StoryActions from '../Shared/Redux/Entities/Stories'
+import SignupActions from '../Shared/Redux/SignupRedux'
 import HeaderModals from '../Components/HeaderModals'
 import { sizes } from '../Themes/Metrics'
 import {
@@ -70,6 +71,7 @@ class Header extends React.Component {
     signedUp: PropTypes.bool,
     flagStory: PropTypes.func,
     deleteStory: PropTypes.func,
+    signupFacebook: PropTypes.func,
     resetPassword: PropTypes.func,
   }
 
@@ -94,6 +96,10 @@ class Header extends React.Component {
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleWindowResize)
     window.removeEventListener('scroll', this.handleScroll)
+  }
+
+  _loginFacebook = () => {
+    this.props.signupFacebook()
   }
 
   componentDidUpdate(prevProps) {
@@ -272,6 +278,7 @@ class Header extends React.Component {
               resetCreateStore={this._resetCreateStore}
               flagStory={flagStory}
               deleteStory={deleteStory}
+              loginFacebook={this._loginFacebook}
               openGlobalModal={openGlobalModal}
               resetPassword={resetPassword}
             />
@@ -327,6 +334,7 @@ function mapDispatchToProps(dispatch) {
     flagStory: (sessionUserId, storyId) => dispatch(StoryActions.flagStory(sessionUserId, storyId)),
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
     markSeen: (activityId) => dispatch(UserActions.activitySeen(activityId)),
+    signupFacebook: () => dispatch(SignupActions.signupFacebook()),
     resetPassword: (email) => dispatch(LoginActions.resetPasswordRequest(email)),
   }
 }

@@ -17,6 +17,7 @@ import CenterModal from './CenterModal'
 import NotificationsThread from './Modals/NotificationsThread'
 import FlagStory from './Modals/FlagStory'
 import DeleteStory from './Modals/DeleteStory'
+import ChangeTempUsername from './Modals/ChangeTempUsername'
 import AddStoryToGuides from './Modals/AddStoryToGuides'
 import RemoveStoryFromGuide from './Modals/RemoveStoryFromGuide'
 
@@ -80,8 +81,13 @@ export default class HeaderModals extends React.Component {
     resetCreateStore: PropTypes.func,
     flagStory: PropTypes.func,
     deleteStory: PropTypes.func,
+    loginFacebook: PropTypes.func,
     openGlobalModal: PropTypes.func,
     resetPassword: PropTypes.func,
+  }
+
+  closeGlobalModal = () => {
+    this.props.closeGlobalModal()
   }
 
   render() {
@@ -105,6 +111,7 @@ export default class HeaderModals extends React.Component {
       resetCreateStore,
       flagStory,
       deleteStory,
+      loginFacebook,
       openGlobalModal,
       resetPassword,
     } = this.props
@@ -130,6 +137,7 @@ export default class HeaderModals extends React.Component {
             onAttemptLogin={this.props.attemptLogin}
             loginReduxFetching={loginReduxFetching}
             loginReduxError={loginReduxError}
+            loginFacebook={loginFacebook}
             openGlobalModal={openGlobalModal}
           />
         </Modal>
@@ -206,6 +214,16 @@ export default class HeaderModals extends React.Component {
             userId={userId}
             flagStory={flagStory}
             params={globalModalParams}
+          />
+        </Modal>
+        <Modal
+          isOpen={globalModalThatIsOpen === 'changeTempUsername'}
+          contentLabel="Flag Story Modal"
+          onRequestClose={closeModal}
+          style={customModalStyles}
+        >
+          <ChangeTempUsername
+            closeModal={closeGlobalModal}
           />
         </Modal>
         <RightModal

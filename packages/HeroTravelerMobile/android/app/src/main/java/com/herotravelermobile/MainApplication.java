@@ -2,6 +2,13 @@ package com.herotravelermobile;
 
 import android.support.multidex.MultiDexApplication;
 
+
+import com.facebook.react.ReactApplication;
+import io.branch.rnbranch.RNBranchPackage;
+import com.wix.autogrowtextinput.AutoGrowTextInputPackage;
+import com.wix.autogrowtextinput.AutoGrowTextInputPackage;
+import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
+import com.apsl.versionnumber.RNVersionNumberPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.apsl.versionnumber.RNVersionNumberPackage;
@@ -41,6 +48,8 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNBranchPackage(),
+            new AutoGrowTextInputPackage(),
             new RNVideoProcessingPackage(),
             new FastImageViewPackage(),
             new AutoGrowTextInputPackage(),

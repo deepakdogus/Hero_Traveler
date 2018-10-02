@@ -73,16 +73,16 @@ class RootContainer extends Component {
     }
   }
 
-  isDarkProfile() {
+  isDarkBar() {
     const location = this.props.location
     return location === 'profile' || location === 'readOnlyProfile' ||
-    location === 'story'
+    location === 'story' || location === 'guide'
   }
 
   render () {
     return (
       <View style={styles.applicationView}>
-        <StatusBar barStyle={this.isDarkProfile() ? 'dark-content' : 'light-content'} />
+        <StatusBar barStyle={this.isDarkBar() ? 'dark-content' : 'light-content'} />
         <ConnectedRouter scenes={NavigationScenes} />
       </View>
     )

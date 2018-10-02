@@ -38,7 +38,7 @@ const HandMadeIconMinus = styled.div`
 
 const LeftActionBarIcon = styled(StyledIcon)``
 const BookmarkIcon = styled(StyledIcon)``
-const FacebookIocn = styled(StyledIcon)``
+const FacebookIcon = styled(StyledIcon)``
 const TwitterIcon = styled(StyledIcon)``
 const DotsIcon = styled(StyledIcon)``
 
@@ -102,6 +102,7 @@ export default class StoryActionBar extends React.Component {
     userId: PropTypes.string,
     reroute: PropTypes.func,
     openGlobalModal: PropTypes.func,
+    onClickShare: PropTypes.func,
   }
 
   constructor(props){
@@ -129,7 +130,8 @@ export default class StoryActionBar extends React.Component {
       isBookmarked,
       onClickBookmark,
       onClickLike,
-      onClickComments
+      onClickComments,
+      onClickShare,
     } = this.props
 
     return (
@@ -155,7 +157,10 @@ export default class StoryActionBar extends React.Component {
               onClick={onClickComments}
             />
           </ClickableWrapper>
-          <FacebookIocn name='squareFacebookOutline'/>
+          <FacebookIcon
+            name='squareFacebookOutline'
+            onClick={onClickShare}
+          />
           <TwitterIcon name='squareTwitterOutline'/>
           {!this.state.showMore &&
             <DotsIcon

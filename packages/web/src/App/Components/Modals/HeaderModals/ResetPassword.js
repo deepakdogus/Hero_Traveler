@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import RoundedButton from '../../RoundedButton'
+import onClickOutside from 'react-onclickoutside'
 import {
   Container,
   Title,
@@ -14,14 +15,14 @@ const Constants = {
 }
 
 const RestyledInput = styled(StyledInput)`
-  margin: 120px 0 50px;
+  margin: 40px 0 50px;
 `
 
 const ErrorText = styled(Text)`
   color: ${props => props.theme.Colors.redLight};
 `
 
-export default class ResetPassword extends React.Component {
+class ResetPassword extends React.Component {
   static propTypes = {
     closeModal: PropTypes.func,
     resetPassword: PropTypes.func,
@@ -30,6 +31,11 @@ export default class ResetPassword extends React.Component {
   state = {
     email: '',
     error: '',
+  }
+
+  handleClickOutside = (e) => {
+    e.preventDefault()
+    this.props.closeModal()
   }
 
   _handleEmailChange = (e) => {
@@ -71,3 +77,5 @@ export default class ResetPassword extends React.Component {
     )
   }
 }
+
+export default onClickOutside(ResetPassword)

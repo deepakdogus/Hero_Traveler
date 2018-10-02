@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import RoundedButton from '../../RoundedButton'
 import SocialMediaButton from '../../Modals/Shared/SocialMediaButton'
 import Colors from '../../../Shared/Themes/Colors'
-
+import onClickOutside from 'react-onclickoutside'
 import {
   Container,
   Title,
@@ -31,7 +31,7 @@ const LoginFetchingText = styled(Text)`
   color: ${Colors.signupGrey}
 `
 
-export default class Login extends React.Component {
+class Login extends React.Component {
   static propTypes = {
     onAttemptLogin: PropTypes.func,
     onSignupClick: PropTypes.func,
@@ -39,6 +39,7 @@ export default class Login extends React.Component {
     loginReduxError: PropTypes.string,
     loginFacebook: PropTypes.func,
     openGlobalModal: PropTypes.func,
+    closeGlobalModal: PropTypes.func,
   }
 
   constructor(props){
@@ -48,6 +49,11 @@ export default class Login extends React.Component {
       password: '',
       localError: '',
     }
+  }
+
+  handleClickOutside = (e) => {
+    e.preventDefault()
+    this.props.closeGlobalModal()
   }
 
   _onAttemptLogin = (e) => {
@@ -137,3 +143,5 @@ export default class Login extends React.Component {
     )
   }
 }
+
+export default onClickOutside(Login)

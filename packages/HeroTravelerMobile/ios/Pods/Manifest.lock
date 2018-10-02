@@ -87,7 +87,7 @@ DEPENDENCIES:
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - FLAnimatedImage
     - GoogleMaps
     - GooglePlacePicker
@@ -128,6 +128,6 @@ SPEC CHECKSUMS:
   SDWebImage: de4d90b5bff3571eae7bd16202b1f43135409fa5
   yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: 6e5e20dd918d68927e9d0e2d04b6928cda414826
+PODFILE CHECKSUM: 8d73bb490530e01d0c2d3a36cb5c10e295935b4e
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.5.3

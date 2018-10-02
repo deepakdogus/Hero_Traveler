@@ -21,6 +21,7 @@ import FeedItemActionBar from '../Components/FeedItemActionBar'
 import TabBar from '../Components/TabBar'
 import GuideStoriesOfType from '../Components/GuideStoriesOfType'
 import HorizontalDivider from '../Components/HorizontalDivider'
+import { createDeepLinkWeb } from '../Lib/sharingWeb'
 
 const ContentWrapper = styled.div``
 
@@ -128,6 +129,10 @@ class Guide extends Component {
 
   _onClickComments = () => {
     this.props.onClickComments()
+  }
+
+  _onClickShare = () => {
+    createDeepLinkWeb(this.props.guide, 'guide')
   }
 
   renderHashtags = () => {
@@ -271,6 +276,7 @@ class Guide extends Component {
           // isBookmarked={isBookmarked}
           // onClickBookmark={this._onClickBookmark}
           onClickComments={this._onClickComments}
+          onClickShare={this._onClickShare}
           userId={sessionUserId}
           reroute={reroute}
           openGlobalModal={openGlobalModal}

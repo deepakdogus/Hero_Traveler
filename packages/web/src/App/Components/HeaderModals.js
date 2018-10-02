@@ -139,6 +139,7 @@ export default class HeaderModals extends React.Component {
             loginReduxError={loginReduxError}
             loginFacebook={loginFacebook}
             openGlobalModal={openGlobalModal}
+            closeGlobalModal={closeGlobalModal}
           />
         </Modal>
         <Modal

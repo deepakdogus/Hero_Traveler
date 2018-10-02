@@ -29,10 +29,12 @@ class ReadingScreenOverlap extends React.Component {
     onPressFlag: PropTypes.func,
     onPressBookmark: PropTypes.func,
     onPressComment: PropTypes.func,
+    onPressShare: PropTypes.func,
     flagTargetEntity: PropTypes.func,
     renderBody: PropTypes.func,
     animatedViews: PropTypes.arrayOf(PropTypes.func),
     selectedTab: PropTypes.string,
+    isStory: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -54,7 +56,7 @@ class ReadingScreenOverlap extends React.Component {
   render () {
     const {
       author, user, isLiked, isBookmarked, renderBody, animatedViews,
-      onPressLike, onPressBookmark, onPressComment,
+      onPressLike, onPressBookmark, onPressComment, onPressShare,
       fetching, getTargetEntity, targetEntity, flagTargetEntity,
       selectedTab, isStory
     } = this.props
@@ -125,6 +127,7 @@ class ReadingScreenOverlap extends React.Component {
             onPressFlag={this._toggleFlag}
             onPressBookmark={onPressBookmark}
             onPressComment={onPressComment}
+            onPressShare={onPressShare}
           />
         </Animated.View>
         {animatedViews.map(renderFunc => {

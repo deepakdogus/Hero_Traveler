@@ -133,6 +133,7 @@ def supportLibVersion = '27.0.2'
 def googlePlayServicesVersion = '15.0.1'
 
 dependencies {
+    compile project(':react-native-branch')
     compile "com.google.android.gms:play-services-base:$googlePlayServicesVersion"
     compile "com.google.android.gms:play-services-maps:$googlePlayServicesVersion"
     compile "com.google.android.gms:play-services-places:$googlePlayServicesVersion"

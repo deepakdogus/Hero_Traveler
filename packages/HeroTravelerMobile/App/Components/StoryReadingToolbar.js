@@ -18,6 +18,7 @@ export default class StoryReadingToolbarComponent extends Component {
     likeCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     commentCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     boomarkCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    isStory: PropTypes.bool,
   }
 
   renderInViewOrTouch(contents, style, onPress) {
@@ -40,8 +41,12 @@ export default class StoryReadingToolbarComponent extends Component {
 
   render() {
     const {
-      onPressLike, onPressComment,
-      onPressBookmark, onPressFlag, isStory
+      onPressLike,
+      onPressComment,
+      onPressBookmark,
+      onPressFlag,
+      isStory,
+      onPressShare,
     } = this.props
 
     const likeContainer = (
@@ -57,6 +62,7 @@ export default class StoryReadingToolbarComponent extends Component {
         />
       </View>
     )
+
     const likeComponent = this.renderInViewOrTouch(
       likeContainer,
       styles.likeTool,
@@ -73,6 +79,7 @@ export default class StoryReadingToolbarComponent extends Component {
         <TabIcon name={'comment'}/>
       </View>
     )
+
     const commentComponent = this.renderInViewOrTouch(
       commentContainer,
       styles.commentTool,
@@ -89,25 +96,27 @@ export default class StoryReadingToolbarComponent extends Component {
         <TabIcon name={this.props.isBookmarked ? 'bookmark-active' : 'bookmark'}/>
       </View>
     )
+
     const bookmarkComponent = this.renderInViewOrTouch(
       bookmarkContainer,
       styles.bookmarkTool,
       onPressBookmark,
     )
 
-    // const shareContainer = (
-    //   <View style={styles.wrapper}>
-    //     <TabIcon
-    //       name={'share'}
-    //       style={{image: styles.shareIcon}}
-    //     />
-    //   </View>
-    // )
-    // const shareComponent = this.renderInViewOrTouch(
-    //   shareContainer,
-    //   styles.shareTool,
-    //   onPressShare,
-    // )
+    const shareContainer = (
+      <View style={styles.wrapper}>
+        <TabIcon
+          name={'share'}
+          style={{image: styles.shareIcon}}
+        />
+      </View>
+    )
+
+    const shareComponent = this.renderInViewOrTouch(
+      shareContainer,
+      styles.shareTool,
+      onPressShare,
+    )
 
     const flagContainer = (
       <View style={styles.wrapper}>
@@ -117,6 +126,7 @@ export default class StoryReadingToolbarComponent extends Component {
         />
       </View>
     )
+
     const flagComponent = this.renderInViewOrTouch(
       flagContainer,
       styles.shareTool,
@@ -132,7 +142,7 @@ export default class StoryReadingToolbarComponent extends Component {
         {likeComponent}
         {commentComponent}
         {isStory && bookmarkComponent}
-        {/**shareComponent**/}
+        {shareComponent}
         {isStory && flagComponent}
       </View>
     )

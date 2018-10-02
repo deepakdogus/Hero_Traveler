@@ -22,6 +22,9 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import getRelativeHeight from '../Shared/Lib/getRelativeHeight'
 import isTooltipComplete, {Types as TooltipTypes} from '../Shared/Lib/firstTimeTooltips'
 import UserActions from '../Shared/Redux/Entities/Users'
+import {
+  createShareDialog,
+} from '../Lib/sharingMobile'
 
 const enhanceStoryVideo = compose(
   withHandlers(() => {
@@ -156,6 +159,10 @@ class StoryReadingScreen extends React.Component {
       storyId: story.id,
       story,
     })
+  }
+
+  _onPressShare = () =>{
+    createShareDialog(this.props.story, 'story')
   }
 
   renderHashtags = () => {
@@ -308,6 +315,7 @@ class StoryReadingScreen extends React.Component {
         onPressLike={this._toggleLike}
         onPressBookmark={this._onPressBookmark}
         onPressComment={this._onPressComment}
+        onPressShare={this._onPressShare}
         flagTargetEntity={this._flagStory}
         renderBody={this.renderBody}
         animatedViews={[

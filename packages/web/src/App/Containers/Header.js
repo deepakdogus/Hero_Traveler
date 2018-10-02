@@ -20,6 +20,7 @@ import { sizes } from '../Themes/Metrics'
 import {
   haveFieldsChanged
 } from '../Shared/Lib/draftChangedHelpers'
+/*global branch*/
 
 // If we don't explicity prevent 'fixed' from being passed to Grid, we get an error about unknown prop on div element
 // because apparently react-flexbox-grid passes all props down to underlying React elements
@@ -87,6 +88,14 @@ class Header extends React.Component {
   componentDidMount() {
     window.addEventListener('resize', this.handleWindowResize)
     window.addEventListener('scroll', this.handleScroll)
+
+    branch.data((err, data)=> {
+      if (err) return
+      else {
+        let feedItemUrl = data.data_parsed['$canonical_url']
+        if (feedItemUrl) this.props.reroute(feedItemUrl)
+      }
+    });
   }
 
   componentWillMount() {

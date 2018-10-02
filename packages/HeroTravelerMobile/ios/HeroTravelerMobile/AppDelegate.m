@@ -18,6 +18,7 @@
 #import <IQKeyboardManager/IQKeyboardManager.h>
 #import "RCTVideoCache.h"
 #import "RCTVideoManager.h"
+#import <react-native-branch/RNBranch.h>
 @import GooglePlaces;
 @import GoogleMaps;
 
@@ -69,10 +70,12 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
   [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
   [GMSPlacesClient provideAPIKey:@"AIzaSyCwX6XPRPYobXzotl-P7k3iiA2mNedMz1g"];
   [GMSServices provideAPIKey:@"AIzaSyCwX6XPRPYobXzotl-P7k3iiA2mNedMz1g"];
-  
   [[RCTVideoCache get] handleAppOpen];
 
   NSSetUncaughtExceptionHandler(&myExceptionHandler);
+   // Uncomment this line to use the test key instead of the live one.
+  // [RNBranch useTestInstance];
+  [RNBranch initSessionWithLaunchOptions:launchOptions isReferrable:YES]; // <-- add this
 
   NSURL *jsCodeLocation;
 
@@ -94,6 +97,17 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
   [self.window makeKeyAndVisible];
   [SplashScreen show];
   return YES;
+}
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    if (![RNBranch.branch application:app openURL:url options:options]) {
+        // do other deep link routing for the Facebook SDK, Pinterest SDK, etc
+    }
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {
+    return [RNBranch continueUserActivity:userActivity];
 }
 
 - (BOOL)application:(UIApplication *)application

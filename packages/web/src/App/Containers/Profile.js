@@ -164,14 +164,15 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch, ownProps) {
+  const targetUserId = ownProps.match.params.userId
   return {
-    getStories: (userId) => dispatch(StoryActions.fromUserRequest(userId)),
-    getGuides: (userId) => dispatch(GuideActions.getUserGuides(userId)),
+    getStories: () => dispatch(StoryActions.fromUserRequest(targetUserId)),
+    getGuides: () => dispatch(GuideActions.getUserGuides(targetUserId)),
     updateUser: (attrs) => dispatch(UserActions.updateUser(attrs)),
     getUser: (userId) => dispatch(UserActions.loadUser(userId)),
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
-    loadBookmarks: (userId) => dispatch(StoryActions.getBookmarks(userId)),
+    loadBookmarks: () => dispatch(StoryActions.getBookmarks(targetUserId)),
     loadUserFollowing: (userId) => dispatch(UserActions.loadUserFollowing(userId)),
     followUser: (sessionUserId, userIdToFollow) => dispatch(UserActions.followUser(sessionUserId, userIdToFollow)),
     unfollowUser: (sessionUserId, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserId, userIdToUnfollow)),

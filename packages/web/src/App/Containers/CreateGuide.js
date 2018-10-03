@@ -74,7 +74,7 @@ class CreateGuide extends SharedCreateGuide {
   }
 
   renderButtonRight = () => {
-    const actionVerb = this.isExistingGuide ? 'Save' : 'Create'
+    const actionVerb = this.isExistingGuide() ? 'Save' : 'Create'
     return (
       <RoundedButton
         text={`${actionVerb} Guide`}

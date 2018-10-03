@@ -26,17 +26,14 @@ const Container = styled.div`
   }
 `
 
-const TravelTipsContainer = styled.div`
-  padding: 14px 0px 14px 0px;
-  position: relative;
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding: 14px 15px;
-  }
-`
+const TravelTipsContainer = styled(Container)``
 
 export const InputRowContainer = styled(Container)`
   display: flex;
   align-items: center;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 14px 15px 14px 0px;
+  }
 `
 
 const StyledTitle = styled(Title)`

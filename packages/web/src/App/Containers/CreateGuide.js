@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import {connect} from 'react-redux'
 import _ from 'lodash'
 import { push } from 'react-router-redux'
@@ -21,7 +22,16 @@ import {
   ContentWrapper,
   customModalStyles,
 } from './EditStory'
-import {Title, Text} from '../Components/Modals/Shared'
+import { Title, Text } from '../Components/Modals/Shared'
+
+const StyledTitle = styled(Title)`
+  margin: 20px 0px 0px 0px;
+  display: none;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 18px;
+    display: block;
+  }
+`
 
 class CreateGuide extends SharedCreateGuide {
   updateGuide = (update) => {
@@ -64,7 +74,7 @@ class CreateGuide extends SharedCreateGuide {
   }
 
   renderButtonRight = () => {
-    const actionVerb = this.isExistingGuide ? 'Save' : 'Create'
+    const actionVerb = this.isExistingGuide() ? 'Save' : 'Create'
     return (
       <RoundedButton
         text={`${actionVerb} Guide`}
@@ -104,6 +114,7 @@ class CreateGuide extends SharedCreateGuide {
     return (
       <Container>
         <ContentWrapper>
+          <StyledTitle>CREATE GUIDE</StyledTitle>
           <AddCoverTitles
             onInputChange={this.updateGuide}
             workingDraft={this.state.guide}

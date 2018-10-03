@@ -1,7 +1,7 @@
 import {Guide} from '../models'
 
-export default async function getUserGuides(authorId, isShowEmptyGuides) {
+export default async function getUserGuides(authorId, isAuthor) {
   return Guide
-  .list({author: authorId}, isShowEmptyGuides)
+  .list({author: authorId}, isAuthor)
   .exec()
 }

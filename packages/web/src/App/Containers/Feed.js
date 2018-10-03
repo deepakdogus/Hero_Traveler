@@ -10,7 +10,6 @@ import StoryActions from '../Shared/Redux/Entities/Stories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import SignUpActions from '../Shared/Redux/SignupRedux'
 import Footer from '../Components/Footer'
-import ShowMore from '../Components/ShowMore'
 import HorizontalDivider from '../Components/HorizontalDivider'
 import TabBar from '../Components/TabBar'
 import { sizes } from '../Themes/Metrics'
@@ -92,7 +91,6 @@ class Feed extends ContainerWithFeedList {
           <FeedText>MY FEED</FeedText>
           <StyledDivider />
           <FeedItemList feedItems={selectedFeedItems}/>
-          <ShowMore/>
           <Footer />
         </ContentWrapper>
       </Wrapper>

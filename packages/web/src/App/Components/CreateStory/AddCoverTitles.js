@@ -47,6 +47,7 @@ const DeleteIcon = styled(Icon)`
 const StoryOverlayWrapper = styled(Overlay)`
   margin: 40px auto 0;
   padding-top: 350px;
+  max-width: 800px;
   width: 100%;
   max-height: 350px;
   background-image: ${props => `url(${props.image})`};

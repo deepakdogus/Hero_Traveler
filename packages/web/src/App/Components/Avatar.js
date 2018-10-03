@@ -10,7 +10,7 @@ const StyledImage = styled(ImageWrapper)`
   position: relative;
   right: ${props=> props.isProfileHeader ? '6' : '0'}px;
   bottom: 2px;
-  margin-left: ${props => props.isStoryPreview ? '7px':'0'};
+  margin-right: ${props => props.isStoryPreview ? '7.5px': '0'};
   background-image: url(${props => props.src});
   background-size: cover;
   background-position: center;
@@ -22,7 +22,7 @@ const StyledIcon = styled(Icon)`
   position: relative;
   right: ${props=> props.isProfileHeader ? '0' : '6'}px;
   bottom: ${props=> props.isProfileHeader ? '1' : '0'}px;
-  margin-left: ${props => props.isStoryPreview ? '7px':'0'};
+  margin-left: ${props => props.isStoryPreview ? '7px' : '0'};
 `
 
 export default class Avatar extends React.Component {

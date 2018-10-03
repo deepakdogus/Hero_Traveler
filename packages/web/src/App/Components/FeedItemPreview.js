@@ -211,10 +211,6 @@ const GuideIconText = styled(HorizontalLocationPreview)`
   padding-left: 10px;
 `
 
-const ByText = styled(Text)`
-  margin-left: 7.5px;
-`
-
 const Username = styled(Text)`
   color: ${props => props.theme.Colors.redHighlights};
   cursor: pointer;
@@ -409,7 +405,6 @@ class FeedItemPreview extends Component {
                     profileAvatar={author.profile.avatar}
                   />
                 }
-                {!isVertical && <ByText>By&nbsp;</ByText>}
                 <Username onClick={this.navToUserProfile}>{author.username}</Username>
                 {!isVertical && <Text>, {moment(feedItem.createdAt).fromNow()}</Text>}
               </Row>

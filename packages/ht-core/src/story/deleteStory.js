@@ -1,5 +1,5 @@
-import {Story} from '../models'
 import {
+  Story,
   StoryBookmark,
   Guide,
   ActivityStoryLike,

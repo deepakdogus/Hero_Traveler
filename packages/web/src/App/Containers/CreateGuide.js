@@ -10,6 +10,7 @@ import GuideActions from '../Shared/Redux/Entities/Guides'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
 import AddCoverTitles from '../Components/CreateStory/AddCoverTitles'
 import StoryDetails from '../Components/CreateStory/StoryDetails'
+import { TrashButton } from '../Components/CreateStory/FooterToolbar'
 import CenteredButtons from '../Components/CenteredButtons'
 import RoundedButton from '../Components/RoundedButton'
 import {
@@ -23,6 +24,8 @@ import {
   customModalStyles,
 } from './EditStory'
 import { Title, Text } from '../Components/Modals/Shared'
+import { Row } from '../Components/FlexboxGrid'
+import VerticalCenter from '../Components/VerticalCenter'
 
 const StyledTitle = styled(Title)`
   margin: 20px 0px 0px 0px;
@@ -107,6 +110,20 @@ class CreateGuide extends SharedCreateGuide {
     else reroute(`/feed`)
   }
 
+  removeGuide = () => {
+    const guideId = this.state.guide.id
+    if (this.state.guide.id) {
+      this.props.openGlobalModal(
+        'deleteFeedItem',
+        {
+          feedItemId: guideId,
+          type: 'guide',
+          rerouteOverride: this.rerouteAway,
+        }
+      )
+    }
+    else this.rerouteAway()
+  }
 
   render() {
     const errorMessage = _.get(this, 'props.error.message')
@@ -126,12 +143,19 @@ class CreateGuide extends SharedCreateGuide {
             categories={this.props.categories}
             isGuide
           />
-          <CenteredButtons
-            buttonsToRender={[
-              this.renderButtonLeft,
-              this.renderButtonRight,
-            ]}
-          />
+          <Row between='xs'>
+            {
+              <VerticalCenter>
+                <TrashButton removeFeedItem={this.removeGuide}/>
+              </VerticalCenter>
+            }
+            <CenteredButtons
+              buttonsToRender={[
+                this.renderButtonLeft,
+                this.renderButtonRight,
+              ]}
+            />
+          </Row>
         </ContentWrapper>
         {
         <Modal

@@ -484,7 +484,7 @@ export function * deleteStory(api, {userId, storyId}){
     yield [
       put(StoryActions.deleteStorySuccess(userId, storyId)),
       put(GuideActions.deleteStoryFromGuides(storyId)),
-      put(UserActions.removeStorysActivities(storyId))
+      put(UserActions.removeActivities(storyId, 'story')),
     ]
   }
 }

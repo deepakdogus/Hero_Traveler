@@ -25,10 +25,30 @@ const StyledIcon = styled(Icon)`
   cursor: pointer;
 `
 
+const TrashIcon = styled(StyledIcon)`
+  width: 20px;
+  height: 27px;
+`
+
 const Text = styled.p`
   color: ${props => props.theme.Colors.redHighlights};
   margin: 0 auto;
 `
+
+export function TrashButton({removeFeedItem}) {
+  return (
+    <RoundedButton
+      type='grey'
+      padding='even'
+      margin='none'
+      width='50px'
+      height='50px'
+      onClick={removeFeedItem}
+    >
+      <TrashIcon name='trash'/>
+    </RoundedButton>
+  )
+}
 
 export default class FooterToolbar extends Component {
   static propTypes = {
@@ -45,16 +65,7 @@ export default class FooterToolbar extends Component {
     return (
       <ButtonIconContainer>
         <Row middle='xs'>
-          <RoundedButton
-            type='grey'
-            padding='even'
-            margin='medium'
-            width='50px'
-            height='50px'
-            onClick={discardDraft}
-          >
-            <StyledIcon name='trash'/>
-          </RoundedButton>
+          <TrashButton removeFeedItem={discardDraft} />
           <RoundedButton
             type='grey'
             padding='even'

@@ -189,19 +189,12 @@ export default class HeaderModals extends React.Component {
           />
         </Modal>
         <Modal
-          isOpen={globalModalThatIsOpen === 'deleteStory'}
+          isOpen={globalModalThatIsOpen === 'deleteFeedItem'}
           contentLabel="Delete Story Modal"
           onRequestClose={closeModal}
           style={customModalStyles}
         >
-          <DeleteStory
-            reroute={reroute}
-            closeModal={closeGlobalModal}
-            deleteStory={deleteStory}
-            resetCreateStore={resetCreateStore}
-            userId={userId}
-            globalModalParams={globalModalParams}
-          />
+          <DeleteStory closeModal={closeGlobalModal} />
         </Modal>
         <Modal
           isOpen={globalModalThatIsOpen === 'flagStory'}

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import {
   InputRowContainer,
   IconWrapper,
-} from './StoryDetails'
+} from './FeedItemDetails'
 import TagsTileGridAndInput from './TagsTileGridAndInput'
 import TagPicker from './TagPicker'
 

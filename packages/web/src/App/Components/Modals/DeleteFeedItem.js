@@ -14,7 +14,7 @@ import {
 } from './Shared'
 import {Row} from '../FlexboxGrid'
 
-class DeleteStory extends React.Component {
+class DeleteFeedItem extends React.Component {
 
   static propTypes = {
     reroute: PropTypes.func,
@@ -98,4 +98,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DeleteStory)
+export default connect(mapStateToProps, mapDispatchToProps)(DeleteFeedItem)

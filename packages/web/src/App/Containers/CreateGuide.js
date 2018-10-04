@@ -9,7 +9,7 @@ import UXActions from '../Redux/UXRedux'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
 import AddCoverTitles from '../Components/CreateStory/AddCoverTitles'
-import StoryDetails from '../Components/CreateStory/StoryDetails'
+import FeedItemDetails from '../Components/CreateStory/FeedItemDetails'
 import { TrashButton } from '../Components/CreateStory/FooterToolbar'
 import CenteredButtons from '../Components/CenteredButtons'
 import RoundedButton from '../Components/RoundedButton'
@@ -137,7 +137,7 @@ class CreateGuide extends SharedCreateGuide {
             workingDraft={this.state.guide}
             isGuide
           />
-          <StoryDetails
+          <FeedItemDetails
             onInputChange={this.updateGuide}
             workingDraft={this.state.guide}
             categories={this.props.categories}

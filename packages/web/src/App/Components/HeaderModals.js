@@ -16,7 +16,7 @@ import RightModal from './RightModal'
 import CenterModal from './CenterModal'
 import NotificationsThread from './Modals/NotificationsThread'
 import FlagStory from './Modals/FlagStory'
-import DeleteStory from './Modals/DeleteStory'
+import DeleteFeedItem from './Modals/DeleteFeedItem'
 import ChangeTempUsername from './Modals/ChangeTempUsername'
 import AddStoryToGuides from './Modals/AddStoryToGuides'
 import RemoveStoryFromGuide from './Modals/RemoveStoryFromGuide'
@@ -110,7 +110,6 @@ export default class HeaderModals extends React.Component {
       attemptLogout,
       resetCreateStore,
       flagStory,
-      deleteStory,
       loginFacebook,
       openGlobalModal,
       resetPassword,
@@ -194,7 +193,7 @@ export default class HeaderModals extends React.Component {
           onRequestClose={closeModal}
           style={customModalStyles}
         >
-          <DeleteStory closeModal={closeGlobalModal} />
+          <DeleteFeedItem closeModal={closeGlobalModal} />
         </Modal>
         <Modal
           isOpen={globalModalThatIsOpen === 'flagStory'}

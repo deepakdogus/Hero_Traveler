@@ -10,7 +10,7 @@ import {
   Row,
   Col,
 } from '../FlexboxGrid'
-import { StyledInput } from './StoryDetails'
+import { StyledInput } from './FeedItemDetails'
 import config from '../../Config/Env'
 import Tile from './Tile'
 

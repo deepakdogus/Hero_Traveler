@@ -20,6 +20,7 @@ import DeleteFeedItem from './Modals/DeleteFeedItem'
 import ChangeTempUsername from './Modals/ChangeTempUsername'
 import AddStoryToGuides from './Modals/AddStoryToGuides'
 import RemoveStoryFromGuide from './Modals/RemoveStoryFromGuide'
+import EmailVerificationConfirmation from './Modals/EmailVerificationConfirmation'
 
 const Container = styled.div``
 
@@ -218,6 +219,13 @@ export default class HeaderModals extends React.Component {
           <ChangeTempUsername
             closeModal={closeGlobalModal}
           />
+        </Modal>
+        <Modal
+          isOpen={globalModalThatIsOpen === 'emailVerificationConfirmation'}
+          contentLabel="Flag Story Modal"
+          style={customModalStyles}
+        >
+          <EmailVerificationConfirmation />
         </Modal>
         <RightModal
           isOpen={globalModalThatIsOpen === 'notificationsThread'}

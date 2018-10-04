@@ -33,6 +33,7 @@ const { Types, Creators } = createActions({
   deleteUser: null,
   deleteUserSuccess: null,
   deleteUserFailure: ['error'],
+  removeActivities: ['feedItemId', 'feedItemType'],
   eagerUpdateTooltips: ['userId' ,'tooltips'],
   receiveUsers: ['users'],
   receiveLikes: ['userId', 'likes'],
@@ -204,6 +205,26 @@ export const deleteUserFailure = (state, {error}) => {
     },
     error
   })
+}
+
+export const removeActivities = (state, {feedItemId, feedItemType}) => {
+  const removedActivitesIds = []
+  const filteredActivities = Immutable.without(state.activities, (activity, id) => {
+    if (activity[feedItemType] === feedItemId) {
+      removedActivitesIds.push(activity.id)
+      return true
+    }
+    return false
+  })
+
+  const updatedState = state.setIn(
+    ['activities'],
+    filteredActivities
+  )
+  return updatedState.setIn(
+    ['activitiesById'],
+     _.without(state.activitiesById, ...removedActivitesIds)
+  )
 }
 
 export const eagerUpdateTooltips = (state, {userId, tooltips}) => {
@@ -454,6 +475,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.DELETE_USER]: deleteUser,
   [Types.DELETE_USER_SUCCESS]: deleteUserSuccess,
   [Types.DELETE_USER_FAILURE]: deleteUserFailure,
+  [Types.REMOVE_ACTIVITIES]: removeActivities,
   [Types.RECEIVE_USERS]: receive,
   [Types.RECEIVE_LIKES]: receiveLikes,
   [Types.RECEIVE_BOOKMARKS]: receiveBookmarks,

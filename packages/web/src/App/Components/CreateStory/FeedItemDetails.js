@@ -196,7 +196,7 @@ function isSameTag(a, b){
 
 const buttons = ['see', 'do', 'eat', 'stay']
 
-export default class StoryDetails extends React.Component {
+export default class FeedItemDetails extends React.Component {
   static propTypes = {
     workingDraft: PropTypes.object,
     onInputChange: PropTypes.func,

@@ -79,13 +79,23 @@ class Profile extends ContainerWithFeedList {
         })
       }, 1500)
     }
+    if (location.search && location.search.indexOf('?pt=') !== -1) {
+      setTimeout(() => {
+        openGlobalModal('resetPasswordAttempt', {
+          path: location.pathname,
+          token: location.search.substring(4)
+        })
+      }, 1500)
+    }
   }
 
   componentDidMount() {
     const userId = this.props.match.params.userId
     this.props.getUser(userId)
     this.props.getStories(userId)
-    this.props.loadBookmarks(userId)
+    if (this.props.sessionUserId === userId) {
+      this.props.loadBookmarks(userId)
+    }
   }
 
   _followUser = () => {

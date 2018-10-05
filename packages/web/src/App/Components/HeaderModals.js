@@ -6,7 +6,8 @@ import styled from 'styled-components'
 import Login from './Modals/HeaderModals/Login'
 import Signup from './Modals/HeaderModals/Signup'
 import SaveEdits from './Modals/HeaderModals/SaveEdits'
-import ResetPassword from './Modals/HeaderModals/ResetPassword'
+import ResetPasswordRequest from './Modals/HeaderModals/ResetPasswordRequest'
+import ResetPasswordAttempt from './Modals/HeaderModals/ResetPasswordAttempt'
 import Contributor from './Modals/HeaderModals/Contributor'
 import Comments from './Modals/HeaderModals/Comments'
 import Settings from './Modals/Settings'
@@ -84,7 +85,7 @@ export default class HeaderModals extends React.Component {
     deleteStory: PropTypes.func,
     loginFacebook: PropTypes.func,
     openGlobalModal: PropTypes.func,
-    resetPassword: PropTypes.func,
+    resetPasswordRequest: PropTypes.func,
   }
 
   closeGlobalModal = () => {
@@ -113,7 +114,7 @@ export default class HeaderModals extends React.Component {
       flagStory,
       loginFacebook,
       openGlobalModal,
-      resetPassword,
+      resetPasswordRequest,
     } = this.props
 
     //destructuring these as let so we can reassign message in respective components
@@ -155,15 +156,22 @@ export default class HeaderModals extends React.Component {
           />
         </Modal>
         <Modal
-          isOpen={globalModalThatIsOpen === 'resetPassword'}
+          isOpen={globalModalThatIsOpen === 'resetPasswordRequest'}
           contentLabel="Reset Password Modal"
           onRequestClose={closeModal}
           style={customModalStyles}
         >
-          <ResetPassword
-            resetPassword={resetPassword}
+          <ResetPasswordRequest
+            resetPasswordRequest={resetPasswordRequest}
             closeModal={closeGlobalModal}
           />
+        </Modal>
+        <Modal
+          isOpen={globalModalThatIsOpen === 'resetPasswordAttempt'}
+          contentLabel="Reset Password Modal"
+          style={customModalStyles}
+        >
+          <ResetPasswordAttempt />
         </Modal>
         <Modal
           isOpen={modal === 'contributor'}

@@ -72,8 +72,8 @@ class Header extends React.Component {
     signedUp: PropTypes.bool,
     flagStory: PropTypes.func,
     deleteStory: PropTypes.func,
+    resetPasswordRequest: PropTypes.func,
     signupFacebook: PropTypes.func,
-    resetPassword: PropTypes.func,
   }
 
   constructor(props) {
@@ -122,7 +122,7 @@ class Header extends React.Component {
   }
 
   handleWindowResize = (event) => {
-    let windowWidth = window.innerWidth 
+    let windowWidth = window.innerWidth
     const tabletSize = sizes.tablet
     if(windowWidth <= tabletSize ){
       this.setState({ navbarEngaged: true })
@@ -132,7 +132,7 @@ class Header extends React.Component {
   }
 
   handleScroll = (event) => {
-    let windowWidth = window.innerWidth 
+    let windowWidth = window.innerWidth
     const tabletSize = sizes.tablet
     // If header is transparent, it should mark itself as "engaged" so we know to style it differently (aka black background)
     if (!this.props.blackHeader){
@@ -218,7 +218,7 @@ class Header extends React.Component {
       originalDraft,
       flagStory,
       deleteStory,
-      resetPassword,
+      resetPasswordRequest,
     } = this.props
 
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
@@ -255,6 +255,7 @@ class Header extends React.Component {
               openLoginModal={this.openLoginModal}
               pathname={pathname}
               openGlobalModal={openGlobalModal}
+              reroute={reroute}
             />
           }
             <HeaderModals
@@ -289,7 +290,7 @@ class Header extends React.Component {
               deleteStory={deleteStory}
               loginFacebook={this._loginFacebook}
               openGlobalModal={openGlobalModal}
-              resetPassword={resetPassword}
+              resetPasswordRequest={resetPasswordRequest}
             />
         </StyledGrid>
         <HeaderSpacer
@@ -343,8 +344,8 @@ function mapDispatchToProps(dispatch) {
     flagStory: (sessionUserId, storyId) => dispatch(StoryActions.flagStory(sessionUserId, storyId)),
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
     markSeen: (activityId) => dispatch(UserActions.activitySeen(activityId)),
+    resetPasswordRequest: (email) => dispatch(LoginActions.resetPasswordRequest(email)),
     signupFacebook: () => dispatch(SignupActions.signupFacebook()),
-    resetPassword: (email) => dispatch(LoginActions.resetPasswordRequest(email)),
   }
 }
 

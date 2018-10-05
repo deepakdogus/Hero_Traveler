@@ -4,7 +4,7 @@ import removeStreamlessStories from '../../utils/removeStreamlessStories'
 export default function getUserStories(req, res) {
   return Story.getUserStories(req.params.userId)
   .then(stories => {
-    if (req.params.userId === req.user.id) return stories
+    if (req.user && req.params.userId === req.user.id) return stories
     return removeStreamlessStories(stories)
   })
   .then(data => {

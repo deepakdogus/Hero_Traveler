@@ -20,6 +20,7 @@ export default class HeaderAnonymous extends React.Component {
     workingDraft: PropTypes.object,
     originalDraft: PropTypes.object,
     openGlobalModal: PropTypes.func,
+    reroute: PropTypes.func,
   }
 
   _openLoginModal = () => {

@@ -79,6 +79,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOGIN_FACEBOOK]: request,
   [Types.LOGIN_FACEBOOK_SUCCESS]: successFacebook,
   [Types.LOGIN_FACEBOOK_FAILURE]: failure,
+  [Types.RESET_PASSWORD]: request,
   [Types.RESET_PASSWORD_REQUEST]: requestReset,
   [Types.RESET_PASSWORD_REQUEST_SUCCESS]: successRequestReset,
   [Types.RESET_PASSWORD_REQUEST_FAILURE]: failureRequestReset,

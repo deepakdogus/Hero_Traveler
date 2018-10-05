@@ -47,7 +47,7 @@ export const LoginLink = styled.a`
   letter-spacing: 1.5px;
   font-size: 13px;
   display: none;
-  ${mediaMax.phone`display: inline;`}  
+  ${mediaMax.phone`display: inline;`}
 `
 
 export const Logo = styled.img`

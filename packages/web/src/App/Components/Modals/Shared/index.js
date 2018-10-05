@@ -111,8 +111,7 @@ export const RightModalCloseX = styled(Icon)`
   cursor: pointer;
 `
 
-export const ErrorMessage = styled.p`
-  padding-left: 25px;
+export const ErrorMessage = styled(Text)`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   color: ${props => props.theme.Colors.redHighlights};
 `

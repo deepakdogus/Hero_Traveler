@@ -7,7 +7,7 @@ import {
   Container,
   Title,
   StyledInput,
-  Text
+  ErrorMessage,
 } from '../../Modals/Shared'
 
 const Constants = {
@@ -16,10 +16,6 @@ const Constants = {
 
 const RestyledInput = styled(StyledInput)`
   margin: 40px 0 50px;
-`
-
-const ErrorText = styled(Text)`
-  color: ${props => props.theme.Colors.redLight};
 `
 
 class ResetPassword extends React.Component {
@@ -45,8 +41,8 @@ class ResetPassword extends React.Component {
   _handleResetPasswordRequest = () => {
     if (Constants.EMAIL_REGEX.test(this.state.email)) {
       this.props.resetPasswordRequest(this.state.email)
-    alert('A password reset link has been emailed to you!')
-    this.props.closeModal()
+      alert('A password reset link has been emailed to you!')
+      this.props.closeModal()
     } else {
       this.setState({error: 'Invalid email address'})
     }
@@ -59,7 +55,7 @@ class ResetPassword extends React.Component {
       <Container>
         <Title>RESET PASSWORD</Title>
         {this.state.error &&
-          <ErrorText>{this.state.error}</ErrorText>
+          <ErrorMessage>{this.state.error}</ErrorMessage>
         }
         <RestyledInput
           name='email'

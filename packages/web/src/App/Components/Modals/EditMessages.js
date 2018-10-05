@@ -7,7 +7,6 @@ const Container = styled.div`
   padding-right: 25px;
 `
 
-
 const EditMessages = (props) => {
   const {isUpdating, errorObj, localError, success} = props
 

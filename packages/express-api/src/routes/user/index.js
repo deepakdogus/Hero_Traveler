@@ -151,7 +151,6 @@ router.post('/threads/:id',
 )
 
 router.get('/:id',
-  hasValidOauth,
   endpointWrapper(getUser)
 )
 

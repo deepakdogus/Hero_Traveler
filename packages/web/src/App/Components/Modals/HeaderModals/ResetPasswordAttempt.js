@@ -1,39 +1,56 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
+import { push } from 'react-router-redux'
+import { connect } from 'react-redux'
+
+import LoginActions from '../../../Shared/Redux/LoginRedux'
+import UXActions from '../../../Redux/UXRedux'
 import RoundedButton from '../../RoundedButton'
 import { Row } from '../../FlexboxGrid'
 import {
   Container,
   Title,
   StyledInput,
-  Text,
+  ErrorMessage,
 } from '../../Modals/Shared'
-
-const PasswordErrorText = styled(Text)`
-  font-size: 14px;
-  margin: 5px 0px;
-  color: ${props => props.theme.Colors.errorRed};
-`
 
 export const Constants = {
   PASSWORD_MIN_LENGTH: 8,
   PASSWORD_MAX_LENGTH: 64,
 }
 
-
-export default class ResetPasswordAttempt extends React.Component {
+class ResetPasswordAttempt extends React.Component {
   static propTypes = {
     resetPasswordAttempt: PropTypes.func,
-    params: PropTypes.object,
+    resetToken: PropTypes.string,
+    path: PropTypes.string,
+    fetching: PropTypes.bool,
+    error: PropTypes.string,
+    closeGlobalModal: PropTypes.func,
+    reroute: PropTypes.func,
   }
+
   state = {
     newPassword: '',
     confirmPassword: '',
     passwordError: ''
   }
 
-  _handleChange = (e) =>{
+  componentDidUpdate = (prevProps) => {
+    const {
+      fetching,
+      error,
+      reroute,
+      closeGlobalModal,
+      path,
+    } = this.props
+    if (prevProps.fetching && !fetching && !error) {
+      reroute(path)
+      closeGlobalModal()
+    }
+  }
+
+  _handleChange = (e) => {
     e.preventDefault()
     this.setState({
     [e.target.name]: e.target.value
@@ -54,15 +71,13 @@ export default class ResetPasswordAttempt extends React.Component {
     this.setState({passwordError})
     if (!passwordError) {
       this.props.resetPasswordAttempt(
-        this.props.params.userToken,
+        this.props.resetToken,
         this.state.newPassword,
       )
     }
   }
 
   render() {
-    console.log('this.props.params', this.props.params)
-
     return (
       <Container>
         <Title>Reset Password</Title>
@@ -82,7 +97,7 @@ export default class ResetPasswordAttempt extends React.Component {
             onChange={this._handleChange}
           />
           {this.state.passwordError &&
-            <PasswordErrorText>{this.state.passwordError}</PasswordErrorText>
+            <ErrorMessage>{this.state.passwordError}</ErrorMessage>
           }
           <Row center='xs'>
             <RoundedButton
@@ -97,5 +112,24 @@ export default class ResetPasswordAttempt extends React.Component {
       </Container>
     )
   }
-
 }
+
+function mapStateToProps(state) {
+  return {
+    path: state.ux.params.path,
+    resetToken: state.ux.params.token,
+    fetching: state.login.fetching,
+    error: state.login.error,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    reroute: (path) => dispatch(push(path)),
+    closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
+    resetPasswordAttempt: (password, token) => dispatch(LoginActions.resetPassword(password, token)),
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(ResetPasswordAttempt)

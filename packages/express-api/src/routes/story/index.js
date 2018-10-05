@@ -4,7 +4,7 @@ import {hasValidOauth} from '../../middleware'
 
 // route functions
 import getStory from './getStory'
-import getUser from './getUser'
+import getUserStories from './getUserStories'
 import create from './create'
 import getUserFeed from './getUserFeed'
 import getUserLikes from './getUserLikes'
@@ -33,7 +33,7 @@ import uploadDraftVideo from './draft/upload_story_video'
 
 const router = express.Router()
 
-router.get('/user/:userId', hasValidOauth, getUser)
+router.get('/user/:userId', getUserStories)
 router.get('/user/:userId/feed', hasValidOauth, getUserFeed);
 router.get('/user/:userId/like/v2', hasValidOauth, endpointWrapper(getUserLikes))
 router.get('/user/:userId/like', hasValidOauth, endpointWrapper(getUserLikesOld))

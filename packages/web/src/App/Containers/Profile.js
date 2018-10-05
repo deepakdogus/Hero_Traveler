@@ -80,7 +80,6 @@ class Profile extends ContainerWithFeedList {
       }, 1500)
     }
     if (location.search && location.search.indexOf('?pt=') !== -1) {
-      console.log("location", location)
       setTimeout(() => {
         openGlobalModal('resetPasswordAttempt', {
           path: location.pathname,

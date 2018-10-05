@@ -86,7 +86,6 @@ export default class HeaderModals extends React.Component {
     loginFacebook: PropTypes.func,
     openGlobalModal: PropTypes.func,
     resetPasswordRequest: PropTypes.func,
-    resetPasswordAttempt: PropTypes.func,
   }
 
   closeGlobalModal = () => {
@@ -116,7 +115,6 @@ export default class HeaderModals extends React.Component {
       loginFacebook,
       openGlobalModal,
       resetPasswordRequest,
-      resetPasswordAttempt,
     } = this.props
 
     //destructuring these as let so we can reassign message in respective components
@@ -171,14 +169,9 @@ export default class HeaderModals extends React.Component {
         <Modal
           isOpen={globalModalThatIsOpen === 'resetPasswordAttempt'}
           contentLabel="Reset Password Modal"
-          onRequestClose={closeModal}
           style={customModalStyles}
         >
-          <ResetPasswordAttempt
-            closeModal={closeGlobalModal}
-            resetPasswordAttempt={resetPasswordAttempt}
-            params={globalModalParams}
-          />
+          <ResetPasswordAttempt />
         </Modal>
         <Modal
           isOpen={modal === 'contributor'}

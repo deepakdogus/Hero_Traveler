@@ -26,7 +26,7 @@ class ResetPasswordAttempt extends React.Component {
     path: PropTypes.string,
     fetching: PropTypes.bool,
     error: PropTypes.string,
-    closeGlobalModal: PropTypes.func,
+    openGlobalModal: PropTypes.func,
     reroute: PropTypes.func,
   }
 
@@ -41,12 +41,12 @@ class ResetPasswordAttempt extends React.Component {
       fetching,
       error,
       reroute,
-      closeGlobalModal,
+      openGlobalModal,
       path,
     } = this.props
     if (prevProps.fetching && !fetching && !error) {
       reroute(path)
-      closeGlobalModal()
+      openGlobalModal('login')
     }
   }
 
@@ -78,6 +78,8 @@ class ResetPasswordAttempt extends React.Component {
   }
 
   render() {
+    const errorText = this.state.passwordError || this.props.error
+
     return (
       <Container>
         <Title>Reset Password</Title>
@@ -96,8 +98,8 @@ class ResetPasswordAttempt extends React.Component {
             value={this.state.confirmPassword}
             onChange={this._handleChange}
           />
-          {this.state.passwordError &&
-            <ErrorMessage>{this.state.passwordError}</ErrorMessage>
+          {errorText &&
+            <ErrorMessage>{errorText}</ErrorMessage>
           }
           <Row center='xs'>
             <RoundedButton
@@ -126,7 +128,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     reroute: (path) => dispatch(push(path)),
-    closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
+    openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
     resetPasswordAttempt: (password, token) => dispatch(LoginActions.resetPassword(password, token)),
   }
 }

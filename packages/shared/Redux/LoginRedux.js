@@ -63,7 +63,10 @@ export const successRequestReset = (state) => state
 export const failureRequestReset = (state) => state
 
 export const resetPasswordFailure = (state, { error }) =>
-  state.merge({ fetching: false, error: "Could NOT reset your password. Please try again." })
+  state.merge({
+    fetching: false,
+    error: "Could NOT reset your password. Your token may be expired. Please try again."
+  })
 
 
 export const setIsLoggedIn = (state, {isLoggedIn}) => state.merge({isLoggedIn})
@@ -80,10 +83,11 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOGIN_FACEBOOK_SUCCESS]: successFacebook,
   [Types.LOGIN_FACEBOOK_FAILURE]: failure,
   [Types.RESET_PASSWORD]: request,
+  [Types.RESET_PASSWORD_FAILURE]: resetPasswordFailure,
+  [Types.RESET_PASSWORD_SUCCESS]: success,
   [Types.RESET_PASSWORD_REQUEST]: requestReset,
   [Types.RESET_PASSWORD_REQUEST_SUCCESS]: successRequestReset,
   [Types.RESET_PASSWORD_REQUEST_FAILURE]: failureRequestReset,
-  [Types.RESET_PASSWORD_FAILURE]: resetPasswordFailure,
   [Types.SET_IS_LOGGED_IN]: setIsLoggedIn,
   [Types.VERIFY_EMAIL_FAILURE]: failure,
   [Types.CLEAR_ERRORS]: clearErrors,

@@ -73,9 +73,7 @@ class Header extends React.Component {
     flagStory: PropTypes.func,
     deleteStory: PropTypes.func,
     resetPasswordRequest: PropTypes.func,
-    resetPasswordAttempt: PropTypes.func,
     signupFacebook: PropTypes.func,
-    resetPassword: PropTypes.func,
   }
 
   constructor(props) {
@@ -221,7 +219,6 @@ class Header extends React.Component {
       flagStory,
       deleteStory,
       resetPasswordRequest,
-      resetPasswordAttempt,
     } = this.props
 
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
@@ -294,7 +291,6 @@ class Header extends React.Component {
               loginFacebook={this._loginFacebook}
               openGlobalModal={openGlobalModal}
               resetPasswordRequest={resetPasswordRequest}
-              resetPasswordAttempt={resetPasswordAttempt}
             />
         </StyledGrid>
         <HeaderSpacer
@@ -349,9 +345,7 @@ function mapDispatchToProps(dispatch) {
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
     markSeen: (activityId) => dispatch(UserActions.activitySeen(activityId)),
     resetPasswordRequest: (email) => dispatch(LoginActions.resetPasswordRequest(email)),
-    resetPasswordAttempt: (password, token) => dispatch(LoginActions.resetPassword(password, token)),
     signupFacebook: () => dispatch(SignupActions.signupFacebook()),
-    resetPassword: (email) => dispatch(LoginActions.resetPasswordRequest(email)),
   }
 }
 

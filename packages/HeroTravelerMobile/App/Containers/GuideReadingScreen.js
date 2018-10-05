@@ -17,6 +17,10 @@ import TabBar from '../Components/TabBar'
 import {navToProfile} from '../Navigation/NavigationRouter'
 import GuideStoriesOfType from '../Components/GuideStoriesOfType'
 import {styles} from './Styles/StoryReadingScreenStyles'
+import {
+  createShareDialog,
+} from '../Lib/sharingMobile'
+
 
 export const tabTypes = {
   overview: 'overview',
@@ -81,6 +85,10 @@ class GuideReadingScreen extends React.Component {
     } = this.props
     if (isGuideLiked) onPressGuideUnlike(guideId, sessionUser.id)
     else onPressGuideLike(guideId, sessionUser.id)
+  }
+
+  _onPressShare = async () => {
+    createShareDialog(this.props.guide, 'guide')
   }
 
   // _toggleFlag = () => {
@@ -225,6 +233,7 @@ class GuideReadingScreen extends React.Component {
         onPressLike={this._toggleLike}
         onPressBookmark={this._onPressBookmark}
         onPressComment={this._onPressComment}
+        onPressShare={this._onPressShare}
         flagTargetEntity={this._flagStory}
         renderBody={this.renderBody}
         selectedTab={this.state.selectedTab}

@@ -25,6 +25,11 @@ const Title = styled.p`
 
 const GuideTitle = styled(Title)`
   margin-bottom: 35px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding-left: 45px;
+    padding-right: 45px;
+    font-size: 30px;
+  }
 `
 
 const Subtitle = styled.p`
@@ -63,6 +68,9 @@ const CoverImage = styled.img`
   width: 100%;
   text-align: center;
   font-style: italic;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    width: 100vw;
+  }
 `
 
 const CoverCaption = styled.p`
@@ -77,14 +85,24 @@ const CoverCaption = styled.p`
 `
 
 const Container = styled.div`
+  z-index: 500;
   margin: 65px auto 0;
   max-width: 800px;
   padding-left: 45px;
   padding-right: 45px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  
 `
 
 const TopRow = styled(Row)`
   margin-bottom: 35px !important;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding-left: 45px;
+    padding-right: 45px;
+  }
 `
 
 const PencilIcon = styled(Icon)`

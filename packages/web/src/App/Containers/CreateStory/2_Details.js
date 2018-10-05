@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {push} from 'react-router-redux'
 
-import StoryDetails from '../../Components/CreateStory/StoryDetails'
+import FeedItemDetails from '../../Components/CreateStory/FeedItemDetails'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import CategoryActions from '../../Shared/Redux/Entities/Categories'
 
@@ -33,7 +33,7 @@ class CreateStoryCoverContent extends Component {
 
   render() {
     return (
-      <StoryDetails
+      <FeedItemDetails
         onInputChange={this.onInputChange}
         workingDraft={this.props.workingDraft}
         categories={this.props.categories}

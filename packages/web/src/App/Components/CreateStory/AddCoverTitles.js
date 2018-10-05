@@ -54,6 +54,9 @@ const StoryOverlayWrapper = styled(Overlay)`
   background-size: cover;
   position: relative;
   z-index: -100;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 20px auto 0;
+  }
 `
 
 const NewUploadWrapper = styled.label`
@@ -110,6 +113,9 @@ const StyledTitleInput = styled(StyledInput)`
   ::placeholder {
     color: ${props => props.theme.Colors.background};
   }
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 30px;
+  }
 `
 
 const StyledSubTitleInput = styled(StyledInput)`
@@ -118,6 +124,9 @@ const StyledSubTitleInput = styled(StyledInput)`
   font-size: 20px;
   font-weight: 400;
   letter-spacing: .7px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 18px;
+  }
 `
 
 const StyledCoverCaptionInput = styled(StyledInput)`
@@ -132,7 +141,11 @@ const CoverCaptionSpacer = styled.div`
   height: 27px;
 `
 
-const TitleInputsWrapper = styled.div``
+const TitleInputsWrapper = styled.div`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 0px 15px;
+  }
+`
 
 const StyledCloseXContainer = styled(CloseXContainer)`
   z-index: 1;

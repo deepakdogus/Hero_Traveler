@@ -54,7 +54,10 @@ export function * updateGuide(api, {guide}) {
 export function * deleteGuide(api, {guideId, userId}) {
   const response = yield call(api.deleteGuide, guideId)
   if (response.ok) {
-    yield put(GuideActions.deleteGuideSuccess(guideId, userId))
+    yield [
+      put(GuideActions.deleteGuideSuccess(guideId, userId)),
+      put(UserActions.removeActivities(guideId, 'guide')),
+    ]
   }
   else {
     yield put(GuideActions.guideFailure(

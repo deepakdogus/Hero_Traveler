@@ -47,6 +47,7 @@ const styles = {
     display: 'inline-block',
     width: '100%',
     padding: '10px',
+    paddingLeft: '5px',
     outline: 'none',
     border: 'none',
     fontWeight: '400',

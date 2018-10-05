@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import {push} from 'react-router-redux'
+import { push } from 'react-router-redux'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
@@ -19,36 +19,117 @@ import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
 
 import Avatar from './Avatar'
 import LikeComponent from './LikeComponent'
-import {Row} from './FlexboxGrid'
+import { Row } from './FlexboxGrid'
 import VerticalCenter from './VerticalCenter'
 import Icon from './Icon'
+
 import OverlayHover from './OverlayHover'
 import CloseX from './CloseX'
 
 const coverHeight = '257px'
 
-const VerticalWrapper = styled.div``
+const Text = styled.span`
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  font-weight: 400;
+  letter-spacing: .7px;
+  font-size: 15px;
+  color: ${props => props.theme.Colors.grey};
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 12px;
+  }
+`
 
 const HorizontalMarginWrapper = styled.div`
   position: relative;
   max-width: 960px;
   margin: auto;
   color: ${props => props.theme.Colors.lightGrey};
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    max-width: 100vw;
+    width: 100vw;
+    margin: 0;
+  }
 `
 
 const VerticalMarginWrapper = styled(HorizontalMarginWrapper)`
   margin: 25px 0 0;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    max-width: 100%;
+    margin: 0;
+    width: 100%;
+  }
+`
+
+const HorizontalRowWrapper = styled(Row)`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    width: 100vw;
+    flex-direction: column;
+    justify-content: center;
+  }
+`
+
+const VerticalWrapper = styled.div`
+  margin: 0;
 `
 
 const HorizontalStoryInfoContainer = styled(VerticalCenter)`
   position: relative;
   height: ${coverHeight};
-  margin-left: 20px;
+  max-width: 385.5px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    height:auto;
+    > * {
+      padding-left: 15px;
+      padding-top: 15px;
+    }
+  }
 `
 
 const VerticalStoryInfoContainer = styled(HorizontalStoryInfoContainer)`
   height: auto;
   margin-left: 0;
+  > * {
+    padding: 5px 0px
+  }
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 5px;
+    > * {
+      padding-left: 15px;
+      padding-top: 0px;
+    }
+  }
+`
+
+const HorizontalDetailsContainer = styled(Row)`
+  padding-top: 13px;
+  position: relative;
+`
+
+const VerticalDetailsContainer = styled(HorizontalDetailsContainer)`
+  padding-top: 0px;
+`
+
+const HorizontalLocationPreview = styled(Text)`
+  color: ${props => props.theme.Colors.background};
+  letter-spacing: .7px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 6px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 13px;
+    margin: 0;
+  }
+`
+
+const VerticalLocationPreview = styled(HorizontalLocationPreview)`
+  margin-top: 0px;
+  margin-bottom: 0px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin-bottom: 0px;
+    font-size: 13px;
+  }
 `
 
 const Title = styled.h3`
@@ -59,10 +140,14 @@ const Title = styled.h3`
   display: inline-block;
   margin: 0;
   cursor: pointer;
+  max-width: 225px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    max-width: 385.5px;
+    font-size: 20px;
+  }
   &:hover {
     color: ${props => props.theme.Colors.grey};
   };
-  width: 385.5px;
 `
 
 const Description = styled.h2`
@@ -71,31 +156,36 @@ const Description = styled.h2`
   color : ${props => props.theme.Colors.grey};
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
-  margin-top: 7.5px;
-  margin-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 7.5px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    display: none;
+  }
 `
 
-const HorizontalDetailsContainer = styled(Row)`
-  padding-top: 13px;
-  display: flex;
-  position: relative;
-`
-
-const VerticalDetailsContainer = styled(HorizontalDetailsContainer)`
-  padding-top: 5px;
-`
-
-const ImageContainer = styled.div`
+const ImageWrapper = styled.div`
   position: relative;
   width: 385.5px;
   height: ${coverHeight};
+  cursor: pointer;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    max-width:100vw;
+    width: 100%;
+    margin: 0;
+    margin-right: 0px;
+  }
 `
 
+const HorizontalImageContainer = styled(ImageWrapper)`
+  margin-right: 20px;
+`
+const VerticalImageContainer = styled(ImageWrapper)`
+  margin-right: 0px;
+`
 const CoverImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  cursor: pointer;
 `
 
 const StyledOverlay = styled(OverlayHover)`
@@ -117,50 +207,34 @@ const CloseXContainer = styled.div`
   visibility: hidden;
 `
 
-const Text = styled.span`
-  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
-  font-weight: 400;
-  letter-spacing: .7px;
-  font-size: 15px;
-  color: ${props => props.theme.Colors.grey};
-`
-
-const HorizontalLocationPreview = styled(Text)`
-  color: ${props => props.theme.Colors.background};
-  letter-spacing: .7px;
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 12px;
-  text-transform: uppercase;
-`
-
-const VerticalLocationPreview = styled(HorizontalLocationPreview)`
-  margin-bottom: 6px;
-`
-
 const GuideIconText = styled(HorizontalLocationPreview)`
   padding-left: 10px;
-`
-
-const ByText = styled(Text)`
-  margin-left: 7.5px;
 `
 
 const Username = styled(Text)`
   color: ${props => props.theme.Colors.redHighlights};
   cursor: pointer;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 12px;
+  }
 `
 
 const Top = styled(Row)`
   position: absolute;
   top: 0;
   left: 0;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    position: relative;
+  }
 `
 
 const Bottom = styled(Row)`
   position: absolute;
   bottom: 0;
   left: 0;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    position: relative;
+  }
 `
 
 const BadgeIcon = styled(Icon)`
@@ -276,9 +350,10 @@ class FeedItemPreview extends Component {
       imageUrl = getImageUrl(feedItem.coverVideo, 'optimized', videoThumbnailOptions)
     }
 
-    const DirectionalWrapper = isVertical ? VerticalWrapper : Row
-    const StoryInfoContainer = isVertical ? VerticalStoryInfoContainer : HorizontalStoryInfoContainer
     const MarginWrapper = isVertical ? VerticalMarginWrapper : HorizontalMarginWrapper
+    const DirectionalWrapper = isVertical ? VerticalWrapper : HorizontalRowWrapper
+    const ImageContainer = isVertical ? VerticalImageContainer : HorizontalImageContainer
+    const StoryInfoContainer = isVertical ? VerticalStoryInfoContainer : HorizontalStoryInfoContainer
     const DetailsContainer = isVertical ? VerticalDetailsContainer : HorizontalDetailsContainer
     const LocationPreview = isVertical ? VerticalLocationPreview : HorizontalLocationPreview
 
@@ -330,7 +405,6 @@ class FeedItemPreview extends Component {
                     profileAvatar={author.profile.avatar}
                   />
                 }
-                {!isVertical && <ByText>By&nbsp;</ByText>}
                 <Username onClick={this.navToUserProfile}>{author.username}</Username>
                 {!isVertical && <Text>, {moment(feedItem.createdAt).fromNow()}</Text>}
               </Row>

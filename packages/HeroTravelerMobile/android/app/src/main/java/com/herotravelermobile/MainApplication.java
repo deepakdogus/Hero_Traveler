@@ -1,33 +1,42 @@
 package com.herotravelermobile;
 
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
+
 
 import com.facebook.react.ReactApplication;
+import io.branch.rnbranch.RNBranchPackage;
 import com.wix.autogrowtextinput.AutoGrowTextInputPackage;
 import com.wix.autogrowtextinput.AutoGrowTextInputPackage;
 import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
 import com.apsl.versionnumber.RNVersionNumberPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.airbnb.android.react.maps.MapsPackage;
-import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
-import com.slowpath.hockeyapp.RNHockeyAppPackage;
-import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
-import com.brentvatne.react.ReactVideoPackage;
-import com.facebook.reactnative.androidsdk.FBSDKPackage;
+import com.apsl.versionnumber.RNVersionNumberPackage;
+import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
 import com.cboy.rn.splashscreen.SplashScreenReactPackage;
-import com.imagepicker.ImagePickerPackage;
-import com.lwansbrough.RCTCamera.RCTCameraPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
+import com.dylanvann.fastimage.FastImageViewPackage;
+import com.facebook.CallbackManager;
+import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.facebook.soloader.SoLoader;
+import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
+import com.imagepicker.ImagePickerPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.shahenlibrary.RNVideoProcessingPackage;
+import com.slowpath.hockeyapp.RNHockeyAppPackage;
+import com.wix.autogrowtextinput.AutoGrowTextInputPackage;
+
+import org.reactnative.camera.RNCameraPackage;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends MultiDexApplication implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
@@ -39,20 +48,22 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNBranchPackage(),
             new AutoGrowTextInputPackage(),
+            new RNVideoProcessingPackage(),
+            new FastImageViewPackage(),
             new AutoGrowTextInputPackage(),
             new RNGooglePlacesPackage(),
             new RNVersionNumberPackage(),
             new RNFetchBlobPackage(),
             new MapsPackage(),
             new WebViewBridgePackage(),
-            new RNHockeyAppPackage(),
+            new RNHockeyAppPackage(MainApplication.this),
             new ReactNativePushNotificationPackage(),
-            new ReactVideoPackage(),
-            new FBSDKPackage(),
+            new FBSDKPackage(new CallbackManager.Factory().create()),
             new SplashScreenReactPackage(),
             new ImagePickerPackage(),
-            new RCTCameraPackage(),
+            new RNCameraPackage(),
             new VectorIconsPackage(),
             new RNDeviceInfo()
       );

@@ -10,9 +10,9 @@ import StoryActions from '../Shared/Redux/Entities/Stories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import SignUpActions from '../Shared/Redux/SignupRedux'
 import Footer from '../Components/Footer'
-import ShowMore from '../Components/ShowMore'
 import HorizontalDivider from '../Components/HorizontalDivider'
 import TabBar from '../Components/TabBar'
+import { sizes } from '../Themes/Metrics'
 
 const CenteredText = styled.p`
   text-align: center;
@@ -25,18 +25,30 @@ const FeedText = styled(CenteredText)`
   font-size: 30px;
   letter-spacing: 1.5px;
   padding: 30px 0 0 0;
+  @media (max-width: ${sizes.tablet}px){
+    padding: 20px;
+    font-size: 18px;
+  }
 `
 
 const Wrapper = styled.div``
 
 const ContentWrapper = styled.div`
   margin: 0 7%;
-`
+  @media (max-width: ${sizes.tablet}px){
+    margin: 0;
+    padding:0;
+    box-sizing: border-box;
+  }
 
+`
 const StyledDivider = styled(HorizontalDivider)`
   border-color: ${props => props.theme.Colors.background};
   border-width: 1px;
   margin-bottom: 23px;
+  @media (max-width: ${sizes.tablet}px){
+    display: none;
+  }
 `
 
 const tabBarTabs = ['STORIES', 'GUIDES']
@@ -79,7 +91,6 @@ class Feed extends ContainerWithFeedList {
           <FeedText>MY FEED</FeedText>
           <StyledDivider />
           <FeedItemList feedItems={selectedFeedItems}/>
-          <ShowMore/>
           <Footer />
         </ContentWrapper>
       </Wrapper>

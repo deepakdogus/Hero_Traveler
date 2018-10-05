@@ -9,7 +9,6 @@ import {
   LoginLink,
   Logo,
   Divider,
-  HamburgerIcon,
   SearchNav
 } from './Shared'
 
@@ -71,9 +70,6 @@ export default class HeaderAnonymous extends React.Component {
             <StyledRoundedLoginButton
               text='Login'
               onClick={this._openLoginModal}
-            />
-            <HamburgerIcon
-              name='hamburger'
             />
           </Row>
         </Col>

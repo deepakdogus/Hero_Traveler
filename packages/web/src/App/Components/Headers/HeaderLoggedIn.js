@@ -26,6 +26,7 @@ const LoggedInDesktopContainer = styled.div`
 const LoggedInTabletContainer = styled.div`
   ${mediaMin.desktop`display: none;`}
   ${mediaMax.phone`display: none;`}
+  ${mediaMax.tablet`display: none;`}
 `
 
 const NotificationsIcon = styled(Icon)`

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import _ from 'lodash'
 
 import UserActions, {getByBookmarks} from '../Shared/Redux/Entities/Users'
+import UXActions from '../Redux/UXRedux'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import StoryActions, {getByUser, getUserFetchStatus, getBookmarksFetchStatus} from '../Shared/Redux/Entities/Stories'
 import MediaUploadActions from '../Shared/Redux/MediaUploadRedux'
@@ -59,11 +60,25 @@ class Profile extends ContainerWithFeedList {
     unfollowUser: PropTypes.func,
     reroute: PropTypes.func,
     uploadMedia: PropTypes.func,
+    openGlobalModal: PropTypes.func,
   }
 
   componentWillMount() {
-    const {loadUserFollowing, myFollowedUsers, sessionUserId} = this.props
+    const {
+      loadUserFollowing,
+      myFollowedUsers,
+      sessionUserId,
+      openGlobalModal,
+      location,
+    } = this.props
     if (!myFollowedUsers && sessionUserId) loadUserFollowing(sessionUserId)
+    if (location.search && location.search.indexOf('?t=') !== -1) {
+      setTimeout(() => {
+        openGlobalModal('emailVerificationConfirmation', {
+          path: location.pathname,
+        })
+      }, 1500)
+    }
   }
 
   componentDidMount() {
@@ -164,19 +179,21 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch, ownProps) {
+  const targetUserId = ownProps.match.params.userId
   return {
-    getStories: (userId) => dispatch(StoryActions.fromUserRequest(userId)),
-    getGuides: (userId) => dispatch(GuideActions.getUserGuides(userId)),
+    getStories: () => dispatch(StoryActions.fromUserRequest(targetUserId)),
+    getGuides: () => dispatch(GuideActions.getUserGuides(targetUserId)),
     updateUser: (attrs) => dispatch(UserActions.updateUser(attrs)),
     getUser: (userId) => dispatch(UserActions.loadUser(userId)),
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
-    loadBookmarks: (userId) => dispatch(StoryActions.getBookmarks(userId)),
+    loadBookmarks: () => dispatch(StoryActions.getBookmarks(targetUserId)),
     loadUserFollowing: (userId) => dispatch(UserActions.loadUserFollowing(userId)),
     followUser: (sessionUserId, userIdToFollow) => dispatch(UserActions.followUser(sessionUserId, userIdToFollow)),
     unfollowUser: (sessionUserId, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserId, userIdToUnfollow)),
     reroute: (path) => dispatch(push(path)),
     uploadMedia: (userId, file, uploadType) => dispatch(MediaUploadActions.uploadRequest(userId, file, uploadType)),
+    openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
   }
 }
 

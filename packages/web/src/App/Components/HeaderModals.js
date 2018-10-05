@@ -17,9 +17,11 @@ import RightModal from './RightModal'
 import CenterModal from './CenterModal'
 import NotificationsThread from './Modals/NotificationsThread'
 import FlagStory from './Modals/FlagStory'
-import DeleteStory from './Modals/DeleteStory'
+import DeleteFeedItem from './Modals/DeleteFeedItem'
+import ChangeTempUsername from './Modals/ChangeTempUsername'
 import AddStoryToGuides from './Modals/AddStoryToGuides'
 import RemoveStoryFromGuide from './Modals/RemoveStoryFromGuide'
+import EmailVerificationConfirmation from './Modals/EmailVerificationConfirmation'
 
 const Container = styled.div``
 
@@ -81,9 +83,14 @@ export default class HeaderModals extends React.Component {
     resetCreateStore: PropTypes.func,
     flagStory: PropTypes.func,
     deleteStory: PropTypes.func,
+    loginFacebook: PropTypes.func,
     openGlobalModal: PropTypes.func,
     resetPasswordRequest: PropTypes.func,
     resetPasswordAttempt: PropTypes.func,
+  }
+
+  closeGlobalModal = () => {
+    this.props.closeGlobalModal()
   }
 
   render() {
@@ -106,7 +113,7 @@ export default class HeaderModals extends React.Component {
       attemptLogout,
       resetCreateStore,
       flagStory,
-      deleteStory,
+      loginFacebook,
       openGlobalModal,
       resetPasswordRequest,
       resetPasswordAttempt,
@@ -133,7 +140,9 @@ export default class HeaderModals extends React.Component {
             onAttemptLogin={this.props.attemptLogin}
             loginReduxFetching={loginReduxFetching}
             loginReduxError={loginReduxError}
+            loginFacebook={loginFacebook}
             openGlobalModal={openGlobalModal}
+            closeGlobalModal={closeGlobalModal}
           />
         </Modal>
         <Modal
@@ -195,19 +204,12 @@ export default class HeaderModals extends React.Component {
           />
         </Modal>
         <Modal
-          isOpen={globalModalThatIsOpen === 'deleteStory'}
+          isOpen={globalModalThatIsOpen === 'deleteFeedItem'}
           contentLabel="Delete Story Modal"
           onRequestClose={closeModal}
           style={customModalStyles}
         >
-          <DeleteStory
-            reroute={reroute}
-            closeModal={closeGlobalModal}
-            deleteStory={deleteStory}
-            resetCreateStore={resetCreateStore}
-            userId={userId}
-            globalModalParams={globalModalParams}
-          />
+          <DeleteFeedItem closeModal={closeGlobalModal} />
         </Modal>
         <Modal
           isOpen={globalModalThatIsOpen === 'flagStory'}
@@ -222,6 +224,23 @@ export default class HeaderModals extends React.Component {
             flagStory={flagStory}
             params={globalModalParams}
           />
+        </Modal>
+        <Modal
+          isOpen={globalModalThatIsOpen === 'changeTempUsername'}
+          contentLabel="Flag Story Modal"
+          onRequestClose={closeModal}
+          style={customModalStyles}
+        >
+          <ChangeTempUsername
+            closeModal={closeGlobalModal}
+          />
+        </Modal>
+        <Modal
+          isOpen={globalModalThatIsOpen === 'emailVerificationConfirmation'}
+          contentLabel="Flag Story Modal"
+          style={customModalStyles}
+        >
+          <EmailVerificationConfirmation />
         </Modal>
         <RightModal
           isOpen={globalModalThatIsOpen === 'notificationsThread'}

@@ -26,6 +26,9 @@ export const Container = styled.div``
 
 export const ContentWrapper = styled.div`
   margin: 0 17%;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 0;
+  }
 `
 
 const ItemContainer = styled.div`
@@ -206,7 +209,13 @@ class EditStory extends Component {
 
   _discardDraft = () => {
     const { originalDraft } = this.props
-    this.props.openGlobalModal('deleteStory', {storyId: originalDraft.id})
+    this.props.openGlobalModal(
+      'deleteFeedItem',
+      {
+        feedItemId: originalDraft.id,
+        type: 'story',
+      }
+    )
   }
 
   onLeft = () => {

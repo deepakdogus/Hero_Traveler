@@ -107,10 +107,11 @@ GuideSchema.statics = {
     .populate('categories')
     .populate('coverImage')
   },
-  list(query, isShowEmptyGuides = false) {
-    if (!isShowEmptyGuides) {
+  list(query, isAuthor = false) {
+    if (!isAuthor) {
       if (query.stories) query.stories.$not = hideStorylessGuides.$not
       else query.stories = hideStorylessGuides.stories
+      query.isPrivate = false
     }
     return this.find(query)
     .populate({

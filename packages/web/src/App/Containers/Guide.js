@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import {push} from 'react-router-redux'
+import { push } from 'react-router-redux'
 import _ from 'lodash'
 
 import StoryActions from '../Shared/Redux/Entities/Stories'
@@ -21,6 +21,7 @@ import FeedItemActionBar from '../Components/FeedItemActionBar'
 import TabBar from '../Components/TabBar'
 import GuideStoriesOfType from '../Components/GuideStoriesOfType'
 import HorizontalDivider from '../Components/HorizontalDivider'
+import { createDeepLinkWeb } from '../Lib/sharingWeb'
 
 const ContentWrapper = styled.div``
 
@@ -29,6 +30,24 @@ const LimitedWidthContainer = styled.div`
   padding-right: 45px;
   max-width: 800px;
   margin: 0 auto;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+`
+
+const MetaInfoContainer = styled.div`
+  padding-left: 0px;
+  padding-right: 0px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding-left: 45px;
+    padding-right: 45px;
+  }
+`
+const ConditionalHorizontalDivider = styled(HorizontalDivider)`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    display: none;
+  }
 `
 
 const HashtagText = styled.p`
@@ -110,6 +129,10 @@ class Guide extends Component {
 
   _onClickComments = () => {
     this.props.onClickComments()
+  }
+
+  _onClickShare = () => {
+    createDeepLinkWeb(this.props.guide, 'guide')
   }
 
   renderHashtags = () => {
@@ -225,20 +248,24 @@ class Guide extends Component {
           />
           <Description>{guide.description}</Description>
           {this.renderHashtags()}
-          <FeedItemMetaInfo feedItem={guide}/>
-          <HorizontalDivider color='light-grey'/>
-          {this.shouldDisplay("SEE") &&
-            <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('SEE')} />
-          }
-          {this.shouldDisplay("DO") &&
-            <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('DO')} />
-          }
-          {this.shouldDisplay("EAT") &&
-            <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('EAT')} />
-          }
-          {this.shouldDisplay("STAY") &&
-            <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('STAY')} />
-          }
+          <MetaInfoContainer>
+            <FeedItemMetaInfo feedItem={guide}/>
+            <ConditionalHorizontalDivider color='light-grey'/>
+          </MetaInfoContainer>
+        </LimitedWidthContainer>
+        <LimitedWidthContainer>
+            {this.shouldDisplay("SEE") &&
+              <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('SEE')} />
+            }
+            {this.shouldDisplay("DO") &&
+              <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('DO')} />
+            }
+            {this.shouldDisplay("EAT") &&
+              <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('EAT')} />
+            }
+            {this.shouldDisplay("STAY") &&
+              <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('STAY')} />
+            }
         </LimitedWidthContainer>
         {
         <FeedItemActionBar
@@ -249,6 +276,7 @@ class Guide extends Component {
           // isBookmarked={isBookmarked}
           // onClickBookmark={this._onClickBookmark}
           onClickComments={this._onClickComments}
+          onClickShare={this._onClickShare}
           userId={sessionUserId}
           reroute={reroute}
           openGlobalModal={openGlobalModal}

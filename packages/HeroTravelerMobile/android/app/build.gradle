@@ -83,18 +83,22 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion 27
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "com.herotravelermobile"
         minSdkVersion 16
+        multiDexEnabled true
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+    }
+    dexOptions {
+        javaMaxHeapSize "4g"
     }
     splits {
         abi {
@@ -125,17 +129,35 @@ android {
     }
 }
 
+def supportLibVersion = '27.0.2'
+def googlePlayServicesVersion = '15.0.1'
+
 dependencies {
+    compile project(':react-native-branch')
+    compile "com.google.android.gms:play-services-base:$googlePlayServicesVersion"
+    compile "com.google.android.gms:play-services-maps:$googlePlayServicesVersion"
+    compile "com.google.android.gms:play-services-places:$googlePlayServicesVersion"
+    compile "com.google.android.gms:play-services-location:$googlePlayServicesVersion"
+
+    compile(project(':react-native-maps')){
+        exclude group: 'com.google.android.gms', module: 'play-services-base'
+        exclude group: 'com.google.android.gms', module: 'play-services-maps'
+    }
+
+    compile(project(':react-native-google-places')){
+        exclude group: 'com.google.android.gms', module: 'play-services-base'
+        exclude group: 'com.google.android.gms', module: 'play-services-places'
+        exclude group: 'com.google.android.gms', module: 'play-services-location'
+    }
+
+    compile project(':react-native-video-processing')
+    compile project(':react-native-fast-image')
     compile project(':react-native-autogrow-textinput')
-    compile project(':@hero/react-native-autogrow-textinput')
-    compile project(':react-native-google-places')
     compile project(':react-native-version-number')
     compile project(':react-native-fetch-blob')
-    compile project(':react-native-maps')
     compile project(':react-native-webview-bridge-updated')
     compile project(':react-native-hockeyapp')
     compile project(':react-native-push-notification')
-    compile project(':react-native-video')
     compile project(':react-native-fbsdk')
     compile project(':react-native-splash-screen')
     compile project(':react-native-image-picker')
@@ -143,7 +165,7 @@ dependencies {
     compile project(':react-native-vector-icons')
     compile project(':react-native-device-info')
     compile fileTree(dir: "libs", include: ["*.jar"])
-    compile "com.android.support:appcompat-v7:23.0.1"
+    compile "com.android.support:appcompat-v7:$supportLibVersion"
     compile "com.facebook.react:react-native:+"  // From node_modules
 }
 

@@ -14,10 +14,13 @@ import UserActions from '../Shared/Redux/Entities/Users'
 import SessionActions from '../Shared/Redux/SessionRedux'
 import UXActions from '../Redux/UXRedux'
 import StoryActions from '../Shared/Redux/Entities/Stories'
+import SignupActions from '../Shared/Redux/SignupRedux'
 import HeaderModals from '../Components/HeaderModals'
+import { sizes } from '../Themes/Metrics'
 import {
   haveFieldsChanged
 } from '../Shared/Lib/draftChangedHelpers'
+/*global branch*/
 
 // If we don't explicity prevent 'fixed' from being passed to Grid, we get an error about unknown prop on div element
 // because apparently react-flexbox-grid passes all props down to underlying React elements
@@ -71,6 +74,8 @@ class Header extends React.Component {
     deleteStory: PropTypes.func,
     resetPasswordRequest: PropTypes.func,
     resetPasswordAttempt: PropTypes.func,
+    signupFacebook: PropTypes.func,
+    resetPassword: PropTypes.func,
   }
 
   constructor(props) {
@@ -83,11 +88,29 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
+    window.addEventListener('resize', this.handleWindowResize)
     window.addEventListener('scroll', this.handleScroll)
+
+    branch.data((err, data)=> {
+      if (err) return
+      else {
+        let feedItemUrl = data.data_parsed['$canonical_url']
+        if (feedItemUrl) this.props.reroute(feedItemUrl)
+      }
+    });
+  }
+
+  componentWillMount() {
+    this.handleWindowResize()
   }
 
   componentWillUnmount() {
+    window.removeEventListener('resize', this.handleWindowResize)
     window.removeEventListener('scroll', this.handleScroll)
+  }
+
+  _loginFacebook = () => {
+    this.props.signupFacebook()
   }
 
   componentDidUpdate(prevProps) {
@@ -100,12 +123,24 @@ class Header extends React.Component {
     }
   }
 
+  handleWindowResize = (event) => {
+    let windowWidth = window.innerWidth
+    const tabletSize = sizes.tablet
+    if(windowWidth <= tabletSize ){
+      this.setState({ navbarEngaged: true })
+    }else if (window.scrollY < 65 && this.state.navbarEngaged && windowWidth >= tabletSize) {
+      this.setState({ navbarEngaged: false })
+    }
+  }
+
   handleScroll = (event) => {
+    let windowWidth = window.innerWidth
+    const tabletSize = sizes.tablet
     // If header is transparent, it should mark itself as "engaged" so we know to style it differently (aka black background)
     if (!this.props.blackHeader){
       if (window.scrollY > 65 && !this.state.navbarEngaged){
         this.setState({ navbarEngaged: true })
-      } else if (window.scrollY < 65 && this.state.navbarEngaged) {
+      } else if (window.scrollY < 65 && this.state.navbarEngaged && windowWidth >= tabletSize ) {
         this.setState({ navbarEngaged: false })
       }
     }
@@ -256,6 +291,7 @@ class Header extends React.Component {
               resetCreateStore={this._resetCreateStore}
               flagStory={flagStory}
               deleteStory={deleteStory}
+              loginFacebook={this._loginFacebook}
               openGlobalModal={openGlobalModal}
               resetPasswordRequest={resetPasswordRequest}
               resetPasswordAttempt={resetPasswordAttempt}
@@ -314,6 +350,8 @@ function mapDispatchToProps(dispatch) {
     markSeen: (activityId) => dispatch(UserActions.activitySeen(activityId)),
     resetPasswordRequest: (email) => dispatch(LoginActions.resetPasswordRequest(email)),
     resetPasswordAttempt: (password, token) => dispatch(LoginActions.resetPassword(password, token)),
+    signupFacebook: () => dispatch(SignupActions.signupFacebook()),
+    resetPassword: (email) => dispatch(LoginActions.resetPasswordRequest(email)),
   }
 }
 

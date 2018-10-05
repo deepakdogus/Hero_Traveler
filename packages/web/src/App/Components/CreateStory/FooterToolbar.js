@@ -9,17 +9,46 @@ import RoundedButton from '../RoundedButton'
 const Container = styled.div`
   position: relative;
   margin: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    justify-content: space-evenly;
+  }
 `
+
+const ButtonIconContainer = styled.div``
 
 const StyledIcon = styled(Icon)`
   align-self: center;
   cursor: pointer;
 `
 
+const TrashIcon = styled(StyledIcon)`
+  width: 20px;
+  height: 27px;
+`
+
 const Text = styled.p`
   color: ${props => props.theme.Colors.redHighlights};
   margin: 0 auto;
 `
+
+export function TrashButton({removeFeedItem}) {
+  return (
+    <RoundedButton
+      type='grey'
+      padding='even'
+      margin='none'
+      width='50px'
+      height='50px'
+      onClick={removeFeedItem}
+    >
+      <TrashIcon name='trash'/>
+    </RoundedButton>
+  )
+}
 
 export default class FooterToolbar extends Component {
   static propTypes = {
@@ -34,28 +63,21 @@ export default class FooterToolbar extends Component {
   renderIcons = () => {
     const {discardDraft, updateDraft} = this.props
     return (
-      <Row middle='xs'>
-        <RoundedButton
-          type='grey'
-          padding='even'
-          margin='medium'
-          width='50px'
-          height='50px'
-          onClick={discardDraft}
-        >
-          <StyledIcon name='trash'/>
-        </RoundedButton>
-        <RoundedButton
-          type='grey'
-          padding='even'
-          margin='medium'
-          width='50px'
-          height='50px'
-          onClick={updateDraft}
-        >
-          <StyledIcon name='createSave'/>
-        </RoundedButton>
-      </Row>
+      <ButtonIconContainer>
+        <Row middle='xs'>
+          <TrashButton removeFeedItem={discardDraft} />
+          <RoundedButton
+            type='grey'
+            padding='even'
+            margin='medium'
+            width='50px'
+            height='50px'
+            onClick={updateDraft}
+          >
+            <StyledIcon name='createSave'/>
+          </RoundedButton>
+        </Row>
+      </ButtonIconContainer>
     )
   }
 
@@ -68,7 +90,7 @@ export default class FooterToolbar extends Component {
     } = this.props
 
     return (
-      <Container>
+      <ButtonIconContainer>
         <Row middle='xs'>
         {syncProgressMessage === 'Publishing Story' &&
           <Text>{syncProgressMessage}...</Text>
@@ -91,17 +113,15 @@ export default class FooterToolbar extends Component {
             onClick={onRight}
           />
         </Row>
-      </Container>
+      </ButtonIconContainer>
     )
   }
 
   render() {
     return (
       <Container>
-        <Row between='xs'>
           {this.renderIcons()}
           {this.renderButtons()}
-        </Row>
       </Container>
     )
   }

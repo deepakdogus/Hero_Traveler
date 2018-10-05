@@ -14,7 +14,6 @@ import CategoryHeader from '../Components/CategoryHeader'
 import TabBar from '../Components/TabBar'
 import FeedItemList from '../Components/FeedItemList'
 import Footer from '../Components/Footer'
-import ShowMore from '../Components/ShowMore'
 
 const tabBarTabs = ['ALL', 'SEE', 'DO', 'EAT', 'STAY', 'GUIDES']
 
@@ -68,7 +67,6 @@ class Category extends ContainerWithFeedList {
         />
         <FeedItemListWrapper>
           <FeedItemList feedItems={selectedFeedItems} />
-          <ShowMore/>
           <Footer />
         </FeedItemListWrapper>
       </ContentWrapper>

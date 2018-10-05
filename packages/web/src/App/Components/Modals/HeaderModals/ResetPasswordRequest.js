@@ -9,10 +9,9 @@ import {
   StyledInput,
   ErrorMessage,
 } from '../../Modals/Shared'
-
-const Constants = {
-  EMAIL_REGEX: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-}
+import {
+  validate,
+} from '../../../Shared/Lib/userFormValidation'
 
 const RestyledInput = styled(StyledInput)`
   margin: 40px 0 50px;
@@ -39,12 +38,17 @@ class ResetPassword extends React.Component {
   }
 
   _handleResetPasswordRequest = () => {
-    if (Constants.EMAIL_REGEX.test(this.state.email)) {
+    const errors = validate(this.state, null, ['email'])
+
+    if (errors.email) {
+      const errorMessage = errors.email === 'Required'
+      ? 'Email is required'
+      : errors.email
+      this.setState({error: errorMessage})
+    } else {
       this.props.resetPasswordRequest(this.state.email)
       alert('A password reset link has been emailed to you!')
       this.props.closeModal()
-    } else {
-      this.setState({error: 'Invalid email address'})
     }
 
   }

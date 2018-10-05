@@ -13,11 +13,9 @@ import {
   StyledInput,
   ErrorMessage,
 } from '../../Modals/Shared'
-
-export const Constants = {
-  PASSWORD_MIN_LENGTH: 8,
-  PASSWORD_MAX_LENGTH: 64,
-}
+import {
+  FieldConstraints,
+} from '../../../Shared/Lib/userFormValidation'
 
 class ResetPasswordAttempt extends React.Component {
   static propTypes = {
@@ -63,8 +61,8 @@ class ResetPasswordAttempt extends React.Component {
     let passwordError = ''
     if (!newPassword || !confirmPassword) {
         passwordError ='Both Fields Must Be Filled Out'
-    } else if (newPassword.length < Constants.PASSWORD_MIN_LENGTH || newPassword.length > Constants.PASSWORD_MAX_LENGTH) {
-        passwordError = `Passwords must be ${Constants.PASSWORD_MIN_LENGTH} to ${Constants.PASSWORD_MAX_LENGTH} characters long`
+    } else if (newPassword.length < FieldConstraints.PASSWORD_MIN_LENGTH || newPassword.length > FieldConstraints.PASSWORD_MAX_LENGTH) {
+        passwordError = `Passwords must be ${FieldConstraints.PASSWORD_MIN_LENGTH} to ${FieldConstraints.PASSWORD_MAX_LENGTH} characters long`
     } else if (newPassword !== confirmPassword) {
       passwordError = 'Passwords do not match'
     }
@@ -132,6 +130,5 @@ function mapDispatchToProps(dispatch) {
     resetPasswordAttempt: (password, token) => dispatch(LoginActions.resetPassword(password, token)),
   }
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResetPasswordAttempt)

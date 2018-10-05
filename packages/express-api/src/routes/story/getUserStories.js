@@ -1,6 +1,5 @@
 import {Story} from '@hero/ht-core'
 import removeStreamlessStories from '../../utils/removeStreamlessStories'
-import _ from 'lodash'
 
 export default function getUserStories(req, res) {
   return Story.getUserStories(req.params.userId)

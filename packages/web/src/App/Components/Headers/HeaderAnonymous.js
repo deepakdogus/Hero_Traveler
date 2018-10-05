@@ -23,17 +23,6 @@ export default class HeaderAnonymous extends React.Component {
     reroute: PropTypes.func,
   }
 
-  componentDidMount() {
-    //if coming from a reset-password email
-    let { pathname, reroute } = this.props
-    if (pathname.includes('redirect-reset-password')) {
-      pathname = pathname.split('/')
-      const userToken = pathname[pathname.length - 1]
-      reroute('/')
-      this.props.openGlobalModal('resetPasswordAttempt', {userToken})
-    }
-  }
-
   _openLoginModal = () => {
     this.props.openGlobalModal('login')
   }

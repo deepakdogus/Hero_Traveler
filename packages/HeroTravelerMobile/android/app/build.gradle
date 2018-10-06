@@ -97,6 +97,7 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     dexOptions {
         javaMaxHeapSize "4g"
@@ -127,6 +128,24 @@ android {
                         versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
             }
         }
+    }
+    sourceSets {
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.md'
+        exclude 'META-INF/LICENSE-notice.md'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
     }
 }
 
@@ -171,6 +190,9 @@ dependencies {
 
     compile('com.facebook.android:facebook-android-sdk:4.+')
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    androidTestImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
 }
 
 // Run this once to be able to run the application with BUCK

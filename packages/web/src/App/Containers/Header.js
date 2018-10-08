@@ -120,6 +120,10 @@ class Header extends React.Component {
     if (!prevProps.signedUp && this.props.signedUp) {
       this.props.reroute('/signup/topics')
     }
+    if (prevProps.isLoggedIn && !this.props.isLoggedIn) {
+      this.props.reroute('/signup/topics')
+      this.props.openGlobalModal('login')
+    }
   }
 
   handleWindowResize = event => {

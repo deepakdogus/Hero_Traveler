@@ -133,7 +133,8 @@ export const incrementSyncProgress = (state, {steps = 1}) => {
 }
 
 export const syncError = (state) => {
-  return state.setIn(['sync', 'error'], true)
+  const updatedState = state.setIn(['sync', 'error'], true)
+  return updatedState.setIn(['sync', 'message'], 'Publish Failure: Please Retry')
 }
 
 export const resetSync = (state) => {

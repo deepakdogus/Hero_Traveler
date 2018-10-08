@@ -58,16 +58,16 @@ function getBasicOptimizedUrlParameters(size: object) {
     f: 'auto',
   }
 
+  if (size.width && size.height) {
+    urlParameters.c = 'fill'
+  }
+
   if (size.width) {
     urlParameters.w = `${size.width}`
   }
 
   if (size.height) {
     urlParameters.h = `${size.height}`
-  }
-
-  if (size.width && size.height) {
-    urlParameters.c = 'fill'
   }
 
   return urlParameters

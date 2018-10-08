@@ -92,8 +92,8 @@ export default class FooterToolbar extends Component {
     return (
       <ButtonIconContainer>
         <Row middle='xs'>
-        {syncProgressMessage === 'Publishing Story' &&
-          <Text>{syncProgressMessage}...</Text>
+        {syncProgressMessage &&
+          <Text>{syncProgressMessage}</Text>
         }
         </Row>
         <Row middle='xs'>

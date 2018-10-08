@@ -17,21 +17,22 @@ import StoryActions from '../Shared/Redux/Entities/Stories'
 import SignupActions from '../Shared/Redux/SignupRedux'
 import HeaderModals from '../Components/HeaderModals'
 import { sizes } from '../Themes/Metrics'
-import {
-  haveFieldsChanged
-} from '../Shared/Lib/draftChangedHelpers'
+import { haveFieldsChanged } from '../Shared/Lib/draftChangedHelpers'
 /*global branch*/
 
 // If we don't explicity prevent 'fixed' from being passed to Grid, we get an error about unknown prop on div element
 // because apparently react-flexbox-grid passes all props down to underlying React elements
-const StyledGrid = styled(({ fixed, hasBlackBackground, ...rest }) => <Grid {...rest} />)`
+const StyledGrid = styled(({ fixed, hasBlackBackground, ...rest }) => (
+  <Grid {...rest} />
+))`
   padding: 15px;
   z-index: 3;
-  position: ${props => props.fixed ? 'fixed' : 'absolute'};
+  position: ${props => (props.fixed ? 'fixed' : 'absolute')};
   width: 100%;
   top: 0;
   padding-right: 10px;
-  background-color: ${props => props.hasBlackBackground ? '#1a1c21' : 'rgba(0,0,0,0)'};
+  background-color: ${props =>
+    props.hasBlackBackground ? '#1a1c21' : 'rgba(0,0,0,0)'};
 `
 
 const HeaderSpacer = styled.div`
@@ -74,7 +75,7 @@ class Header extends React.Component {
     deleteStory: PropTypes.func,
     signupFacebook: PropTypes.func,
     resetPassword: PropTypes.func,
-  }
+  };
 
   constructor(props) {
     super(props)
@@ -89,13 +90,13 @@ class Header extends React.Component {
     window.addEventListener('resize', this.handleWindowResize)
     window.addEventListener('scroll', this.handleScroll)
 
-    branch.data((err, data)=> {
+    branch.data((err, data) => {
       if (err) return
       else {
         let feedItemUrl = data.data_parsed['$canonical_url']
         if (feedItemUrl) this.props.reroute(feedItemUrl)
       }
-    });
+    })
   }
 
   componentWillMount() {
@@ -109,11 +110,11 @@ class Header extends React.Component {
 
   _loginFacebook = () => {
     this.props.signupFacebook()
-  }
+  };
 
   componentDidUpdate(prevProps) {
     const { currentUserId } = this.props
-    if ( currentUserId && prevProps.currentUserId !== currentUserId ) {
+    if (currentUserId && prevProps.currentUserId !== currentUserId) {
       this.props.attemptGetUserFeed(currentUserId)
     }
     if (!prevProps.signedUp && this.props.signedUp) {
@@ -121,74 +122,82 @@ class Header extends React.Component {
     }
   }
 
-  handleWindowResize = (event) => {
-    let windowWidth = window.innerWidth 
+  handleWindowResize = event => {
+    let windowWidth = window.innerWidth
     const tabletSize = sizes.tablet
-    if(windowWidth <= tabletSize ){
+    if (windowWidth <= tabletSize) {
       this.setState({ navbarEngaged: true })
-    }else if (window.scrollY < 65 && this.state.navbarEngaged && windowWidth >= tabletSize) {
+    } else if (
+      window.scrollY < 65 &&
+      this.state.navbarEngaged &&
+      windowWidth >= tabletSize
+    ) {
       this.setState({ navbarEngaged: false })
     }
-  }
+  };
 
-  handleScroll = (event) => {
-    let windowWidth = window.innerWidth 
+  handleScroll = event => {
+    let windowWidth = window.innerWidth
     const tabletSize = sizes.tablet
     // If header is transparent, it should mark itself as "engaged" so we know to style it differently (aka black background)
-    if (!this.props.blackHeader){
-      if (window.scrollY > 65 && !this.state.navbarEngaged){
+    if (!this.props.blackHeader) {
+      if (window.scrollY > 65 && !this.state.navbarEngaged) {
         this.setState({ navbarEngaged: true })
-      } else if (window.scrollY < 65 && this.state.navbarEngaged && windowWidth >= tabletSize ) {
+      } else if (
+        window.scrollY < 65 &&
+        this.state.navbarEngaged &&
+        windowWidth >= tabletSize
+      ) {
         this.setState({ navbarEngaged: false })
       }
     }
-  }
+  };
 
   openLoginModal = () => {
     this.setState({ modal: 'login' })
-  }
+  };
 
   openSignupModal = () => {
     this.setState({ modal: 'signup' })
-  }
+  };
 
-  openSaveEditsModal = (path) => {
+  openSaveEditsModal = path => {
     if (
-      this.props.workingDraft
-      && this.props.pathname.includes('editStory')
-      && haveFieldsChanged(this.props.workingDraft, this.props.originalDraft)
+      this.props.workingDraft &&
+      this.props.pathname.includes('editStory') &&
+      haveFieldsChanged(this.props.workingDraft, this.props.originalDraft)
     ) {
       this.setState({
         nextPathAfterSave: path,
       })
       this.props.openGlobalModal('saveEdits')
     }
-  }
+  };
 
   _resetCreateStore = () => {
-      this.props.resetCreateStore(this.props.originalDraft.id)
-  }
+    this.props.resetCreateStore(this.props.originalDraft.id)
+  };
 
   componentWillReceiveProps(nextProps) {
     if (!this.props.isLoggedIn && nextProps.isLoggedIn) this.closeModal()
   }
 
   // name correspond to icon name and button name
-  openModal = (event) => {
+  openModal = event => {
     const name = event.target.name
-    let modalToOpen;
+    let modalToOpen
     if (name === 'inbox' || name === 'loginEmail') modalToOpen = 'inbox'
     else if (name === 'notifications' || name === 'navNotifications') {
       this.props.openGlobalModal('notificationsThread')
     }
     this.setState({ modal: modalToOpen })
-  }
+  };
 
   closeModal = () => {
     this.setState({ modal: undefined })
-  }
+  };
 
-  render () {
+  render() {
     const {
       isLoggedIn,
       loginReduxFetching,
@@ -222,16 +231,13 @@ class Header extends React.Component {
     } = this.props
 
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
-    const hasBlackBackground = this.props.blackHeader || this.state.navbarEngaged
+    const hasBlackBackground =
+      this.props.blackHeader || this.state.navbarEngaged
 
     return (
       <div>
-        <StyledGrid
-          fluid
-          fixed
-          hasBlackBackground={hasBlackBackground}
-        >
-          {isLoggedIn &&
+        <StyledGrid fluid fixed hasBlackBackground={hasBlackBackground}>
+          {isLoggedIn && (
             <HeaderLoggedIn
               userId={currentUserId}
               openModal={this.openModal}
@@ -241,7 +247,6 @@ class Header extends React.Component {
               closeGlobalModal={closeGlobalModal}
               reroute={reroute}
               attemptLogout={attemptLogout}
-
               activities={activities}
               activitiesById={activitiesById}
               resetCreateStore={this._resetCreateStore}
@@ -249,54 +254,52 @@ class Header extends React.Component {
               workingDraft={workingDraft}
               originalDraft={originalDraft}
             />
-          }
-          {!isLoggedIn &&
+          )}
+          {!isLoggedIn && (
             <HeaderAnonymous
               openLoginModal={this.openLoginModal}
               pathname={pathname}
               openGlobalModal={openGlobalModal}
             />
-          }
-            <HeaderModals
-              closeModal={this.closeModal}
-              closeGlobalModal={closeGlobalModal}
-              openSignupModal={this.openSignupModal}
-              attemptLogin={attemptLogin}
-              attemptLogout={attemptLogout}
-              openLoginModal={this.openLoginModal}
-              userId={currentUserId}
-              currentUserProfile={currentUserProfile}
-              currentUserEmail={currentUserEmail}
-              currentUserNotificationTypes={currentUserNotificationTypes}
-              modal={this.state.modal}
-              globalModalThatIsOpen={globalModalThatIsOpen}
-              globalModalParams={globalModalParams}
-              attemptChangePassword={attemptChangePassword}
-              loginReduxFetching={loginReduxFetching}
-              loginReduxError={loginReduxError}
-              signupReduxFetching={signupReduxFetching}
-              signupReduxError={signupReduxError}
-              attemptUpdateUser={attemptUpdateUser}
-              userEntitiesUpdating={userEntitiesUpdating}
-              userEntitiesError={userEntitiesError}
-              activities={activities}
-              activitiesById={activitiesById}
-              markSeen={markSeen}
-              nextPathAfterSave={this.state.nextPathAfterSave}
-              reroute={reroute}
-              resetCreateStore={this._resetCreateStore}
-              flagStory={flagStory}
-              deleteStory={deleteStory}
-              loginFacebook={this._loginFacebook}
-              openGlobalModal={openGlobalModal}
-              resetPassword={resetPassword}
-            />
+          )}
+          <HeaderModals
+            closeModal={this.closeModal}
+            closeGlobalModal={closeGlobalModal}
+            openSignupModal={this.openSignupModal}
+            attemptLogin={attemptLogin}
+            attemptLogout={attemptLogout}
+            openLoginModal={this.openLoginModal}
+            userId={currentUserId}
+            currentUserProfile={currentUserProfile}
+            currentUserEmail={currentUserEmail}
+            currentUserNotificationTypes={currentUserNotificationTypes}
+            modal={this.state.modal}
+            globalModalThatIsOpen={globalModalThatIsOpen}
+            globalModalParams={globalModalParams}
+            attemptChangePassword={attemptChangePassword}
+            loginReduxFetching={loginReduxFetching}
+            loginReduxError={loginReduxError}
+            signupReduxFetching={signupReduxFetching}
+            signupReduxError={signupReduxError}
+            attemptUpdateUser={attemptUpdateUser}
+            userEntitiesUpdating={userEntitiesUpdating}
+            userEntitiesError={userEntitiesError}
+            activities={activities}
+            activitiesById={activitiesById}
+            markSeen={markSeen}
+            nextPathAfterSave={this.state.nextPathAfterSave}
+            reroute={reroute}
+            resetCreateStore={this._resetCreateStore}
+            flagStory={flagStory}
+            deleteStory={deleteStory}
+            loginFacebook={this._loginFacebook}
+            openGlobalModal={openGlobalModal}
+            resetPassword={resetPassword}
+          />
         </StyledGrid>
-        <HeaderSpacer
-          spacerSize={spacerSize}
-        />
+        <HeaderSpacer spacerSize={spacerSize} />
       </div>
-  )
+    )
   }
 }
 
@@ -317,9 +320,9 @@ function mapStateToProps(state) {
     userEntitiesUpdating: state.entities.users.updating,
     userEntitiesError: state.entities.users.error,
     currentUserId: currentUserId,
-    currentUserProfile: (currentUser) && currentUser.profile,
-    currentUserEmail: (currentUser) && currentUser.email,
-    currentUserNotificationTypes: (currentUser) && currentUser.notificationTypes,
+    currentUserProfile: currentUser && currentUser.profile,
+    currentUserEmail: currentUser && currentUser.email,
+    currentUserNotificationTypes: currentUser && currentUser.notificationTypes,
     activitiesById: state.entities.users.activitiesById,
     activities: state.entities.users.activities,
     originalDraft: state.storyCreate.draft,
@@ -331,22 +334,31 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    attemptLogin: (userIdentifier, password) => dispatch(LoginActions.loginRequest(userIdentifier, password)),
-    attemptLogout: (tokens) => dispatch(SessionActions.logout(tokens)),
-    attemptChangePassword: (userId, oldPassword, newPassword) => dispatch(LoginActions.changePasswordRequest(userId, oldPassword, newPassword)),
-    attemptGetUserFeed: (userId) => dispatch(StoryActions.feedRequest(userId)),
+    attemptLogin: (userIdentifier, password) =>
+      dispatch(LoginActions.loginRequest(userIdentifier, password)),
+    attemptLogout: tokens => dispatch(SessionActions.logout(tokens)),
+    attemptChangePassword: (userId, oldPassword, newPassword) =>
+      dispatch(
+        LoginActions.changePasswordRequest(userId, oldPassword, newPassword),
+      ),
+    attemptGetUserFeed: userId => dispatch(StoryActions.feedRequest(userId)),
     closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
-    openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
-    reroute: (route) => dispatch(push(route)),
-    attemptUpdateUser: (updates) => dispatch(UserActions.updateUser(updates)),
+    openGlobalModal: (modalName, params) =>
+      dispatch(UXActions.openGlobalModal(modalName, params)),
+    reroute: route => dispatch(push(route)),
+    attemptUpdateUser: updates => dispatch(UserActions.updateUser(updates)),
     resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
-    flagStory: (sessionUserId, storyId) => dispatch(StoryActions.flagStory(sessionUserId, storyId)),
-    deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
-    markSeen: (activityId) => dispatch(UserActions.activitySeen(activityId)),
+    flagStory: (sessionUserId, storyId) =>
+      dispatch(StoryActions.flagStory(sessionUserId, storyId)),
+    deleteStory: (userId, storyId) =>
+      dispatch(StoryActions.deleteStory(userId, storyId)),
+    markSeen: activityId => dispatch(UserActions.activitySeen(activityId)),
     signupFacebook: () => dispatch(SignupActions.signupFacebook()),
-    resetPassword: (email) => dispatch(LoginActions.resetPasswordRequest(email)),
+    resetPassword: email => dispatch(LoginActions.resetPasswordRequest(email)),
   }
 }
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Header)

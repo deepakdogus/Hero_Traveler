@@ -122,6 +122,10 @@ class Header extends React.Component {
         behavior: 'instant',
       })
     }
+    if (prevProps.isLoggedIn && !this.props.isLoggedIn) {
+      this.props.reroute('/signup/topics')
+      this.props.openGlobalModal('login')
+    }
   }
 
   handleWindowResize = event => {

@@ -75,7 +75,6 @@ const CreateButtonStyleOverride = {
 class HeaderLoggedIn extends React.Component {
   static propTypes = {
     reroute: PropTypes.func,
-    openModal: PropTypes.func,
     user: PropTypes.object,
     pathname: PropTypes.string,
     openSaveEditsModal: PropTypes.func,
@@ -131,9 +130,12 @@ class HeaderLoggedIn extends React.Component {
     }, 0)
   }
 
+  openNotifications = () => {
+    this.props.openGlobalModal('notificationsThread')
+  }
+
   render () {
     const {
-      openModal,
       openGlobalModal,
       userId,
       profileAvatar,
@@ -222,7 +224,8 @@ class HeaderLoggedIn extends React.Component {
                 {notificationsCount > 0 &&
                   <NotificationsBadge
                     count={notificationsCount}
-                   />
+                    onClick={this.openNotifications}
+                  />
                 }
                 <StyledRoundedNotificationButton
                   type='headerButton'
@@ -230,7 +233,7 @@ class HeaderLoggedIn extends React.Component {
                   width='32px'
                   name='notifications'
                   profileAvatar={profileAvatar}
-                  onClick={openModal}
+                  onClick={this.openNotifications}
                 >
                   <NotificationsIcon name='navNotifications' />
                 </StyledRoundedNotificationButton>

@@ -123,7 +123,7 @@ class Header extends React.Component {
       })
     }
     if (prevProps.isLoggedIn && !this.props.isLoggedIn) {
-      this.props.reroute('/signup/topics')
+      this.props.reroute('/')
       this.props.openGlobalModal('login')
     }
   }

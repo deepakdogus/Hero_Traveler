@@ -9,24 +9,11 @@
 
 package com.herotravelermobile.editor;
 
-import android.graphics.PorterDuff;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
-import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spannable;
-import android.text.TextWatcher;
-import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
+import android.util.Log;
 
-import com.facebook.infer.annotation.Assertions;
-import com.facebook.react.bridge.JSApplicationIllegalArgumentException;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
@@ -34,32 +21,18 @@ import com.facebook.react.common.MapBuilder;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.BaseViewManager;
 import com.facebook.react.uimanager.LayoutShadowNode;
-import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.Spacing;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
-import com.facebook.react.uimanager.ViewDefaults;
-import com.facebook.react.uimanager.ViewProps;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.facebook.react.uimanager.annotations.ReactPropGroup;
-import com.facebook.react.uimanager.events.EventDispatcher;
-import com.facebook.react.views.imagehelper.ResourceDrawableIdHelper;
-import com.facebook.react.views.scroll.ScrollEvent;
 import com.facebook.react.views.scroll.ScrollEventType;
-import com.facebook.react.views.text.DefaultStyleValuesUtil;
-import com.facebook.react.views.text.ReactFontManager;
 import com.facebook.react.views.text.ReactTextUpdate;
 import com.facebook.react.views.text.TextInlineImageSpan;
-import com.facebook.react.views.textinput.ContentSizeWatcher;
-import com.facebook.react.views.textinput.ReactContentSizeChangedEvent;
-import com.facebook.react.views.textinput.ReactTextChangedEvent;
-import com.facebook.react.views.textinput.ReactTextInputEvent;
 import com.facebook.react.views.textinput.ReactTextInputShadowNode;
-import com.facebook.react.views.textinput.ScrollWatcher;
-import com.facebook.yoga.YogaConstants;
+import com.herotravelermobile.editor.event.OnSelectionChangeRequestKt;
+import com.herotravelermobile.editor.model.DraftJsContent;
+import com.herotravelermobile.editor.model.DraftJsSelection;
 
-import java.lang.reflect.Field;
-import java.util.LinkedList;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -68,7 +41,7 @@ import javax.annotation.Nullable;
  * Manages instances of TextInput.
  */
 @ReactModule(name = RNDJDraftJSEditorManager.REACT_CLASS)
-public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEditor, LayoutShadowNode> {
+public class RNDJDraftJSEditorManager extends BaseViewManager<RNDJDraftJSEditor, LayoutShadowNode> {
     protected static final String REACT_CLASS = "RNDJDraftJSEditor";
 
     private static final int[] SPACING_TYPES = {
@@ -95,8 +68,8 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     }
 
     @Override
-    public BaseRNDJDraftJSEditor createViewInstance(ThemedReactContext context) {
-        BaseRNDJDraftJSEditor editText = new RNDJDraftJSEditor(context);
+    public RNDJDraftJSEditor createViewInstance(ThemedReactContext context) {
+        RNDJDraftJSEditor editText = new RNDJDraftJSEditor(context);
         /*int inputType = editText.getInputType();
         editText.setInputType(inputType & (~InputType.TYPE_TEXT_FLAG_MULTI_LINE));
         editText.setReturnKeyType("done");
@@ -194,6 +167,10 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
                         ScrollEventType.SCROLL.getJSEventName(),
                         MapBuilder.of("registrationName", "onScroll")
                 )
+                .put(
+                        OnSelectionChangeRequestKt.EVENT_NAME,
+                        MapBuilder.of("registrationName", OnSelectionChangeRequestKt.EVENT_NAME)
+                )
                 .build();
     }
 
@@ -202,25 +179,26 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     Map<String, Integer> getCommandsMap() {
         return MapBuilder.of("focusTextInput", FOCUS_TEXT_INPUT, "blurTextInput", BLUR_TEXT_INPUT);
     }
-/*
+
     @Override
     public void receiveCommand(
-            BaseRNDJDraftJSEditor RNDJDraftJSEditor,
+            RNDJDraftJSEditor RNDJDraftJSEditor,
             int commandId,
             @Nullable ReadableArray args
     ) {
         switch (commandId) {
             case FOCUS_TEXT_INPUT:
-                RNDJDraftJSEditor.requestFocusFromJS();
+                Log.d("DraftJS", "focusTextInput() received");
+                //RNDJDraftJSEditor.requestFocusFromJS();
                 break;
             case BLUR_TEXT_INPUT:
-                RNDJDraftJSEditor.clearFocusFromJS();
+                //RNDJDraftJSEditor.clearFocusFromJS();
                 break;
         }
     }
-*/
+
     @Override
-    public void updateExtraData(BaseRNDJDraftJSEditor view, Object extraData) {
+    public void updateExtraData(RNDJDraftJSEditor view, Object extraData) {
         if (extraData instanceof ReactTextUpdate) {
             ReactTextUpdate update = (ReactTextUpdate) extraData;
 
@@ -240,12 +218,32 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     }
 
     @ReactProp(name = "content")
-    public void setContent(BaseRNDJDraftJSEditor view, ReadableMap content) {
+    public void setContent(RNDJDraftJSEditor view, ReadableMap content) {
         view.setContent(new DraftJsContent(content));
     }
-/*
+
+    @ReactProp(name = "selection")
+    public void setSelection(RNDJDraftJSEditor view, ReadableMap selection) {
+        view.setSelection(new DraftJsSelection(selection));
+    }
+
+    @ReactProp(name = "onSelectionChangeRequest")
+    public void setOnSelectionChangeRequest(RNDJDraftJSEditor view, boolean selection) {
+        if (selection) {
+            view.setEventSender(event -> {
+                final ReactContext reactContext = (ReactContext) view.getContext();
+                reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher()
+                        .dispatchEvent(event);
+                return null;
+            });
+        } else {
+            view.setEventSender(null);
+        }
+    }
+
+    /*
     @ReactProp(name = ViewProps.FONT_SIZE, defaultFloat = ViewDefaults.FONT_SIZE_SP)
-    public void setFontSize(BaseRNDJDraftJSEditor view, float fontSize) {
+    public void setFontSize(RNDJDraftJSEditor view, float fontSize) {
         view.setTextSize(
                 TypedValue.COMPLEX_UNIT_PX,
                 (int) Math.ceil(PixelUtil.toPixelFromSP(fontSize))
@@ -253,7 +251,7 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     }
 
     @ReactProp(name = ViewProps.FONT_FAMILY)
-    public void setFontFamily(BaseRNDJDraftJSEditor view, String fontFamily) {
+    public void setFontFamily(RNDJDraftJSEditor view, String fontFamily) {
         int style = Typeface.NORMAL;
         if (view.getTypeface() != null) {
             style = view.getTypeface().getStyle();
@@ -271,7 +269,7 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
      /* TODO: Factor into a common place they can both use
      *//*
     @ReactProp(name = ViewProps.FONT_WEIGHT)
-    public void setFontWeight(BaseRNDJDraftJSEditor view, @Nullable String fontWeightString) {
+    public void setFontWeight(RNDJDraftJSEditor view, @Nullable String fontWeightString) {
         int fontWeightNumeric = fontWeightString != null ?
                 parseNumericFontWeight(fontWeightString) : -1;
         int fontWeight = UNSET;
@@ -295,7 +293,7 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
      /* TODO: Factor into a common place they can both use
      *//*
     @ReactProp(name = ViewProps.FONT_STYLE)
-    public void setFontStyle(BaseRNDJDraftJSEditor view, @Nullable String fontStyleString) {
+    public void setFontStyle(RNDJDraftJSEditor view, @Nullable String fontStyleString) {
         int fontStyle = UNSET;
         if ("italic".equals(fontStyleString)) {
             fontStyle = Typeface.ITALIC;
@@ -313,7 +311,7 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     }
 
     @ReactProp(name = "selection")
-    public void setSelection(BaseRNDJDraftJSEditor view, @Nullable ReadableMap selection) {
+    public void setSelection(RNDJDraftJSEditor view, @Nullable ReadableMap selection) {
         if (selection == null) {
             return;
         }
@@ -324,7 +322,8 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     }
 
     @ReactProp(name = "onSelectionChange", defaultBoolean = false)
-    public void setOnSelectionChange(final BaseRNDJDraftJSEditor view, boolean onSelectionChange) {
+    public void setOnSelectionChange(final RNDJDraftJSEditor view, boolean onSelectionChange) {
+        Log.d("DraftJS", "onSelectionChange()");
         if (onSelectionChange) {
             view.setSelectionWatcher(new ReactSelectionWatcher(view));
         } else {
@@ -333,12 +332,12 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     }
 
     @ReactProp(name = "blurOnSubmit")
-    public void setBlurOnSubmit(BaseRNDJDraftJSEditor view, @Nullable Boolean blurOnSubmit) {
+    public void setBlurOnSubmit(RNDJDraftJSEditor view, @Nullable Boolean blurOnSubmit) {
         view.setBlurOnSubmit(blurOnSubmit);
     }
 
     @ReactProp(name = "onContentSizeChange", defaultBoolean = false)
-    public void setOnContentSizeChange(final BaseRNDJDraftJSEditor view, boolean onContentSizeChange) {
+    public void setOnContentSizeChange(final RNDJDraftJSEditor view, boolean onContentSizeChange) {
         if (onContentSizeChange) {
             view.setContentSizeWatcher(new ReactContentSizeWatcher(view));
         } else {
@@ -347,7 +346,7 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     }
 
     @ReactProp(name = "onScroll", defaultBoolean = false)
-    public void setOnScroll(final BaseRNDJDraftJSEditor view, boolean onScroll) {
+    public void setOnScroll(final RNDJDraftJSEditor view, boolean onScroll) {
         if (onScroll) {
             view.setScrollWatcher(new ReactScrollWatcher(view));
         } else {
@@ -356,12 +355,12 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     }
 
     @ReactProp(name = "placeholder")
-    public void setPlaceholder(BaseRNDJDraftJSEditor view, @Nullable String placeholder) {
+    public void setPlaceholder(RNDJDraftJSEditor view, @Nullable String placeholder) {
         view.setHint(placeholder);
     }
 
     @ReactProp(name = "placeholderTextColor", customType = "Color")
-    public void setPlaceholderTextColor(BaseRNDJDraftJSEditor view, @Nullable Integer color) {
+    public void setPlaceholderTextColor(RNDJDraftJSEditor view, @Nullable Integer color) {
         if (color == null) {
             view.setHintTextColor(DefaultStyleValuesUtil.getDefaultTextColorHint(view.getContext()));
         } else {
@@ -370,7 +369,7 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     }
 
     @ReactProp(name = "selectionColor", customType = "Color")
-    public void setSelectionColor(BaseRNDJDraftJSEditor view, @Nullable Integer color) {
+    public void setSelectionColor(RNDJDraftJSEditor view, @Nullable Integer color) {
         if (color == null) {
             view.setHighlightColor(DefaultStyleValuesUtil.getDefaultTextColorHighlight(view.getContext()));
         } else {
@@ -380,7 +379,7 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
         setCursorColor(view, color);
     }
 
-    private void setCursorColor(BaseRNDJDraftJSEditor view, @Nullable Integer color) {
+    private void setCursorColor(RNDJDraftJSEditor view, @Nullable Integer color) {
         // Evil method that uses reflection because there is no public API to changes
         // the cursor color programmatically.
         // Based on http://stackoverflow.com/questions/25996032/how-to-change-programatically-edittext-cursor-color-in-android.
@@ -416,17 +415,17 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     }
 
     @ReactProp(name = "caretHidden", defaultBoolean = false)
-    public void setCaretHidden(BaseRNDJDraftJSEditor view, boolean caretHidden) {
+    public void setCaretHidden(RNDJDraftJSEditor view, boolean caretHidden) {
         view.setCursorVisible(!caretHidden);
     }
 
     @ReactProp(name = "selectTextOnFocus", defaultBoolean = false)
-    public void setSelectTextOnFocus(BaseRNDJDraftJSEditor view, boolean selectTextOnFocus) {
+    public void setSelectTextOnFocus(RNDJDraftJSEditor view, boolean selectTextOnFocus) {
         view.setSelectAllOnFocus(selectTextOnFocus);
     }
 
     @ReactProp(name = ViewProps.COLOR, customType = "Color")
-    public void setColor(BaseRNDJDraftJSEditor view, @Nullable Integer color) {
+    public void setColor(RNDJDraftJSEditor view, @Nullable Integer color) {
         if (color == null) {
             view.setTextColor(DefaultStyleValuesUtil.getDefaultTextColor(view.getContext()));
         } else {
@@ -435,7 +434,7 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     }
 
     @ReactProp(name = "underlineColorAndroid", customType = "Color")
-    public void setUnderlineColor(BaseRNDJDraftJSEditor view, @Nullable Integer underlineColor) {
+    public void setUnderlineColor(RNDJDraftJSEditor view, @Nullable Integer underlineColor) {
         // Drawable.mutate() can sometimes crash due to an AOSP bug:
         // See https://code.google.com/p/android/issues/detail?id=191754 for more info
         Drawable background = view.getBackground();
@@ -451,7 +450,7 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     }
 
     @ReactProp(name = ViewProps.TEXT_ALIGN)
-    public void setTextAlign(BaseRNDJDraftJSEditor view, @Nullable String textAlign) {
+    public void setTextAlign(RNDJDraftJSEditor view, @Nullable String textAlign) {
         if (textAlign == null || "auto".equals(textAlign)) {
             view.setGravityHorizontal(Gravity.NO_GRAVITY);
         } else if ("left".equals(textAlign)) {
@@ -469,7 +468,7 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     }
 
     @ReactProp(name = ViewProps.TEXT_ALIGN_VERTICAL)
-    public void setTextAlignVertical(BaseRNDJDraftJSEditor view, @Nullable String textAlignVertical) {
+    public void setTextAlignVertical(RNDJDraftJSEditor view, @Nullable String textAlignVertical) {
         if (textAlignVertical == null || "auto".equals(textAlignVertical)) {
             view.setGravityVertical(Gravity.NO_GRAVITY);
         } else if ("top".equals(textAlignVertical)) {
@@ -484,7 +483,7 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     }
 
     @ReactProp(name = "inlineImageLeft")
-    public void setInlineImageLeft(BaseRNDJDraftJSEditor view, @Nullable String resource) {
+    public void setInlineImageLeft(RNDJDraftJSEditor view, @Nullable String resource) {
         int id = ResourceDrawableIdHelper.getInstance().getResourceDrawableId(
                 view.getContext(),
                 resource
@@ -493,22 +492,22 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     }
 
     @ReactProp(name = "inlineImagePadding")
-    public void setInlineImagePadding(BaseRNDJDraftJSEditor view, int padding) {
+    public void setInlineImagePadding(RNDJDraftJSEditor view, int padding) {
         view.setCompoundDrawablePadding(padding);
     }
 
     @ReactProp(name = "editable", defaultBoolean = true)
-    public void setEditable(BaseRNDJDraftJSEditor view, boolean editable) {
+    public void setEditable(RNDJDraftJSEditor view, boolean editable) {
         view.setEnabled(editable);
     }
 
     @ReactProp(name = ViewProps.NUMBER_OF_LINES, defaultInt = 1)
-    public void setNumLines(BaseRNDJDraftJSEditor view, int numLines) {
+    public void setNumLines(RNDJDraftJSEditor view, int numLines) {
         view.setLines(numLines);
     }
 
     @ReactProp(name = "maxLength")
-    public void setMaxLength(BaseRNDJDraftJSEditor view, @Nullable Integer maxLength) {
+    public void setMaxLength(RNDJDraftJSEditor view, @Nullable Integer maxLength) {
         InputFilter[] currentFilters = view.getFilters();
         InputFilter[] newFilters = EMPTY_FILTERS;
 
@@ -549,7 +548,7 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     }
 
     @ReactProp(name = "autoCorrect")
-    public void setAutoCorrect(BaseRNDJDraftJSEditor view, @Nullable Boolean autoCorrect) {
+    public void setAutoCorrect(RNDJDraftJSEditor view, @Nullable Boolean autoCorrect) {
         // clear auto correct flags, set SUGGESTIONS or NO_SUGGESTIONS depending on value
         updateStagedInputTypeFlag(
                 view,
@@ -562,7 +561,7 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     }
 
     @ReactProp(name = "multiline", defaultBoolean = false)
-    public void setMultiline(BaseRNDJDraftJSEditor view, boolean multiline) {
+    public void setMultiline(RNDJDraftJSEditor view, boolean multiline) {
         updateStagedInputTypeFlag(
                 view,
                 multiline ? 0 : InputType.TYPE_TEXT_FLAG_MULTI_LINE,
@@ -571,7 +570,7 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     }
 
     @ReactProp(name = "secureTextEntry", defaultBoolean = false)
-    public void setSecureTextEntry(BaseRNDJDraftJSEditor view, boolean password) {
+    public void setSecureTextEntry(RNDJDraftJSEditor view, boolean password) {
         updateStagedInputTypeFlag(
                 view,
                 password ? 0 :
@@ -582,7 +581,7 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     }
 
     @ReactProp(name = "autoCapitalize")
-    public void setAutoCapitalize(BaseRNDJDraftJSEditor view, int autoCapitalize) {
+    public void setAutoCapitalize(RNDJDraftJSEditor view, int autoCapitalize) {
         updateStagedInputTypeFlag(
                 view,
                 InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_CAP_WORDS |
@@ -592,7 +591,7 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     }
 
     @ReactProp(name = "keyboardType")
-    public void setKeyboardType(BaseRNDJDraftJSEditor view, @Nullable String keyboardType) {
+    public void setKeyboardType(RNDJDraftJSEditor view, @Nullable String keyboardType) {
         int flagsToSet = InputType.TYPE_CLASS_TEXT;
         if (KEYBOARD_TYPE_NUMERIC.equalsIgnoreCase(keyboardType)) {
             flagsToSet = INPUT_TYPE_KEYBOARD_NUMBERED;
@@ -613,19 +612,19 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     }
 
     @ReactProp(name = "returnKeyType")
-    public void setReturnKeyType(BaseRNDJDraftJSEditor view, String returnKeyType) {
+    public void setReturnKeyType(RNDJDraftJSEditor view, String returnKeyType) {
         view.setReturnKeyType(returnKeyType);
     }
 
     @ReactProp(name = "disableFullscreenUI", defaultBoolean = false)
-    public void setDisableFullscreenUI(BaseRNDJDraftJSEditor view, boolean disableFullscreenUI) {
+    public void setDisableFullscreenUI(RNDJDraftJSEditor view, boolean disableFullscreenUI) {
         view.setDisableFullscreenUI(disableFullscreenUI);
     }
 
     private static final int IME_ACTION_ID = 0x670;
 
     @ReactProp(name = "returnKeyLabel")
-    public void setReturnKeyLabel(BaseRNDJDraftJSEditor view, String returnKeyLabel) {
+    public void setReturnKeyLabel(RNDJDraftJSEditor view, String returnKeyLabel) {
         view.setImeActionLabel(returnKeyLabel, IME_ACTION_ID);
     }
 
@@ -636,7 +635,7 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
             ViewProps.BORDER_BOTTOM_RIGHT_RADIUS,
             ViewProps.BORDER_BOTTOM_LEFT_RADIUS
     }, defaultFloat = YogaConstants.UNDEFINED)
-    public void setBorderRadius(BaseRNDJDraftJSEditor view, int index, float borderRadius) {
+    public void setBorderRadius(RNDJDraftJSEditor view, int index, float borderRadius) {
         if (!YogaConstants.isUndefined(borderRadius)) {
             borderRadius = PixelUtil.toPixelFromDIP(borderRadius);
         }
@@ -649,7 +648,7 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     }
 
     @ReactProp(name = "borderStyle")
-    public void setBorderStyle(BaseRNDJDraftJSEditor view, @Nullable String borderStyle) {
+    public void setBorderStyle(RNDJDraftJSEditor view, @Nullable String borderStyle) {
         view.setBorderStyle(borderStyle);
     }
 
@@ -660,7 +659,7 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
             ViewProps.BORDER_TOP_WIDTH,
             ViewProps.BORDER_BOTTOM_WIDTH,
     }, defaultFloat = YogaConstants.UNDEFINED)
-    public void setBorderWidth(BaseRNDJDraftJSEditor view, int index, float width) {
+    public void setBorderWidth(RNDJDraftJSEditor view, int index, float width) {
         if (!YogaConstants.isUndefined(width)) {
             width = PixelUtil.toPixelFromDIP(width);
         }
@@ -670,20 +669,20 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     @ReactPropGroup(names = {
             "borderColor", "borderLeftColor", "borderRightColor", "borderTopColor", "borderBottomColor"
     }, customType = "Color")
-    public void setBorderColor(BaseRNDJDraftJSEditor view, int index, Integer color) {
+    public void setBorderColor(RNDJDraftJSEditor view, int index, Integer color) {
         float rgbComponent = color == null ? YogaConstants.UNDEFINED : (float) ((int) color & 0x00FFFFFF);
         float alphaComponent = color == null ? YogaConstants.UNDEFINED : (float) ((int) color >>> 24);
         view.setBorderColor(SPACING_TYPES[index], rgbComponent, alphaComponent);
     }
 
     @Override
-    protected void onAfterUpdateTransaction(BaseRNDJDraftJSEditor view) {
+    protected void onAfterUpdateTransaction(RNDJDraftJSEditor view) {
         super.onAfterUpdateTransaction(view);
         view.commitStagedInputType();
     }
 
     // Sets the correct password type, since numeric and text passwords have different types
-    private static void checkPasswordType(BaseRNDJDraftJSEditor view) {
+    private static void checkPasswordType(RNDJDraftJSEditor view) {
         if ((view.getStagedInputType() & INPUT_TYPE_KEYBOARD_NUMBERED) != 0 &&
                 (view.getStagedInputType() & InputType.TYPE_TEXT_VARIATION_PASSWORD) != 0) {
             // Text input type is numbered password, remove text password variation, add numeric one
@@ -710,7 +709,7 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     }
 
     private static void updateStagedInputTypeFlag(
-            BaseRNDJDraftJSEditor view,
+            RNDJDraftJSEditor view,
             int flagsToUnset,
             int flagsToSet
     ) {
@@ -720,12 +719,12 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
     private class ReactTextInputTextWatcher implements TextWatcher {
 
         private EventDispatcher mEventDispatcher;
-        private BaseRNDJDraftJSEditor mEditText;
+        private RNDJDraftJSEditor mEditText;
         private String mPreviousText;
 
         public ReactTextInputTextWatcher(
                 final ReactContext reactContext,
-                final BaseRNDJDraftJSEditor editText
+                final RNDJDraftJSEditor editText
         ) {
             mEventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
             mEditText = editText;
@@ -777,83 +776,22 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
         public void afterTextChanged(Editable s) {
         }
     }
-
-    @Override
+*/
+    /*@Override
     protected void addEventEmitters(
             final ThemedReactContext reactContext,
-            final BaseRNDJDraftJSEditor editText
+            final RNDJDraftJSEditor view
     ) {
-        editText.addTextChangedListener(new ReactTextInputTextWatcher(reactContext, editText));
-        editText.setOnFocusChangeListener(
-                new View.OnFocusChangeListener() {
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        EventDispatcher eventDispatcher =
-                                reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
-                        if (hasFocus) {
-                            eventDispatcher.dispatchEvent(
-                                    new ReactTextInputFocusEvent(
-                                            editText.getId()));
-                        } else {
-                            eventDispatcher.dispatchEvent(
-                                    new ReactTextInputBlurEvent(
-                                            editText.getId()));
 
-                            eventDispatcher.dispatchEvent(
-                                    new ReactTextInputEndEditingEvent(
-                                            editText.getId(),
-                                            editText.getText().toString()
-                                    ));
-                        }
-                    }
-                });
-
-        editText.setOnEditorActionListener(
-                new TextView.OnEditorActionListener() {
-                    @Override
-                    public boolean onEditorAction(TextView v, int actionId, KeyEvent keyEvent) {
-                        // Any 'Enter' action will do
-                        if ((actionId & EditorInfo.IME_MASK_ACTION) > 0 ||
-                                actionId == EditorInfo.IME_NULL) {
-                            boolean blurOnSubmit = editText.getBlurOnSubmit();
-                            boolean isMultiline = ((editText.getInputType() &
-                                    InputType.TYPE_TEXT_FLAG_MULTI_LINE) != 0);
-
-                            // Motivation:
-                            // * blurOnSubmit && isMultiline => Clear focus; prevent default behaviour (return true);
-                            // * blurOnSubmit && !isMultiline => Clear focus; prevent default behaviour (return true);
-                            // * !blurOnSubmit && isMultiline => Perform default behaviour (return false);
-                            // * !blurOnSubmit && !isMultiline => Prevent default behaviour (return true).
-                            // Additionally we always generate a `submit` event.
-
-                            EventDispatcher eventDispatcher =
-                                    reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
-
-                            eventDispatcher.dispatchEvent(
-                                    new ReactTextInputSubmitEditingEvent(
-                                            editText.getId(),
-                                            editText.getText().toString()
-                                    ));
-
-                            if (blurOnSubmit) {
-                                editText.clearFocus();
-                            }
-
-                            // Prevent default behavior except when we want it to insert a newline.
-                            return blurOnSubmit || !isMultiline;
-                        }
-
-                        return true;
-                    }
-                });
-    }
-
+    }*/
+/*
     private class ReactContentSizeWatcher implements ContentSizeWatcher {
-        private BaseRNDJDraftJSEditor mEditText;
+        private RNDJDraftJSEditor mEditText;
         private EventDispatcher mEventDispatcher;
         private int mPreviousContentWidth = 0;
         private int mPreviousContentHeight = 0;
 
-        public ReactContentSizeWatcher(BaseRNDJDraftJSEditor editText) {
+        public ReactContentSizeWatcher(RNDJDraftJSEditor editText) {
             mEditText = editText;
             ReactContext reactContext = (ReactContext) editText.getContext();
             mEventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
@@ -888,12 +826,12 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
 
     private class ReactSelectionWatcher implements SelectionWatcher {
 
-        private BaseRNDJDraftJSEditor mRNDJDraftJSEditor;
+        private RNDJDraftJSEditor mRNDJDraftJSEditor;
         private EventDispatcher mEventDispatcher;
         private int mPreviousSelectionStart;
         private int mPreviousSelectionEnd;
 
-        public ReactSelectionWatcher(BaseRNDJDraftJSEditor editText) {
+        public ReactSelectionWatcher(RNDJDraftJSEditor editText) {
             mRNDJDraftJSEditor = editText;
             ReactContext reactContext = (ReactContext) editText.getContext();
             mEventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
@@ -920,12 +858,12 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<BaseRNDJDraftJSEdi
 
     private class ReactScrollWatcher implements ScrollWatcher {
 
-        private BaseRNDJDraftJSEditor mRNDJDraftJSEditor;
+        private RNDJDraftJSEditor mRNDJDraftJSEditor;
         private EventDispatcher mEventDispatcher;
         private int mPreviousHoriz;
         private int mPreviousVert;
 
-        public ReactScrollWatcher(BaseRNDJDraftJSEditor editText) {
+        public ReactScrollWatcher(RNDJDraftJSEditor editText) {
             mRNDJDraftJSEditor = editText;
             ReactContext reactContext = (ReactContext) editText.getContext();
             mEventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();

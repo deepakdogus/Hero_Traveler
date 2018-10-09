@@ -7,8 +7,10 @@ import com.facebook.react.bridge.ReactContext
 import com.facebook.react.uimanager.UIManagerModule
 import com.facebook.react.views.textinput.ReactTextInputLocalData
 
-class Filter(private val editText: EditText) : InputFilter {
+class DraftJsInputFilter(private val editText: EditText) : InputFilter {
     private val dummyEditText = EditText(editText.context)
+
+    var enabled = true
 
     override fun filter(
             source: CharSequence,
@@ -17,7 +19,9 @@ class Filter(private val editText: EditText) : InputFilter {
             dest: Spanned,
             dstart: Int,
             dend: Int
-    ): CharSequence {
+    ): CharSequence? {
+        //TODO: copy spans
+
         val newSubstring = source.substring(start, end)
 
         dummyEditText.setText(dest.replaceRange(dstart, dend, newSubstring))
@@ -28,6 +32,6 @@ class Filter(private val editText: EditText) : InputFilter {
             uiManager.setViewLocalData(id, localData)
         }
 
-        return newSubstring
+        return null
     }
 }

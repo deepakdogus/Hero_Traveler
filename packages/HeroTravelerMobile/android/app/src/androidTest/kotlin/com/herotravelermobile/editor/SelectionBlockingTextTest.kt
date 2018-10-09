@@ -16,11 +16,15 @@ import kotlin.test.assertTrue
 
 @RunWith(AndroidJUnit4::class)
 class SelectionBlockingTextTest {
+    companion object {
+        val callback : (start: Int, end: Int) -> Unit = { _, _ -> }
+    }
+
     private val spannable = SpannableStringBuilder("foo")
 
     @Test
     fun setSpanBlocksSelection() {
-        val editable = SelectionBlockingText(spannable)
+        val editable = SelectionBlockingText(spannable, callback)
 
         editable.setSpan(SELECTION_START, 1, 1, SPAN_POINT_POINT)
 
@@ -32,7 +36,7 @@ class SelectionBlockingTextTest {
 
     @Test
     fun setSpanAddsOther() {
-        val editable = SelectionBlockingText(spannable)
+        val editable = SelectionBlockingText(spannable, callback)
         val span = UnderlineSpan()
 
         editable.setSpan(span, 1, 2, SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -43,7 +47,7 @@ class SelectionBlockingTextTest {
     @Test
     fun removeSpanLeavesSelection() {
         spannable.setSpan(SELECTION_START, 1, 1, SPAN_POINT_POINT)
-        val editable = SelectionBlockingText(spannable)
+        val editable = SelectionBlockingText(spannable, callback)
 
         editable.removeSpan(SELECTION_START)
 
@@ -54,7 +58,7 @@ class SelectionBlockingTextTest {
     fun removeSpanRemovesOther() {
         val span = UnderlineSpan()
         spannable.setSpan(span, 1, 2, SPAN_EXCLUSIVE_EXCLUSIVE)
-        val editable = SelectionBlockingText(spannable)
+        val editable = SelectionBlockingText(spannable, callback)
 
         editable.removeSpan(span)
 
@@ -70,7 +74,7 @@ class SelectionBlockingTextTest {
         spannable.setSpan(SELECTION_END, 3, 3, SPAN_POINT_POINT)
         spannable.setSpan(UnderlineSpan(), 0, 1, SPAN_EXCLUSIVE_EXCLUSIVE)
         spannable.setSpan(SubscriptSpan(), 2, 3, SPAN_EXCLUSIVE_EXCLUSIVE)
-        val editable = SelectionBlockingText(spannable)
+        val editable = SelectionBlockingText(spannable, callback)
 
         editable.clearSpans()
 
@@ -84,7 +88,7 @@ class SelectionBlockingTextTest {
     fun clearSpanRemovesAllIfNoSelection() {
         spannable.setSpan(UnderlineSpan(), 0, 1, SPAN_EXCLUSIVE_EXCLUSIVE)
         spannable.setSpan(SubscriptSpan(), 2, 3, SPAN_EXCLUSIVE_EXCLUSIVE)
-        val editable = SelectionBlockingText(spannable)
+        val editable = SelectionBlockingText(spannable, callback)
 
         editable.clearSpans()
 

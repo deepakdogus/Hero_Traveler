@@ -59,7 +59,7 @@ class ReactEditTextInputConnectionWrapper extends InputConnectionWrapper {
   public static final String BACKSPACE_KEY_VALUE = "Backspace";
   public static final String ENTER_KEY_VALUE = "Enter";
 
-  private BaseRNDJDraftJSEditor mEditText;
+  private RNDJDraftJSEditor mEditText;
   private EventDispatcher mEventDispatcher;
   private boolean mIsBatchEdit;
   private @Nullable String mKey = null;
@@ -67,7 +67,7 @@ class ReactEditTextInputConnectionWrapper extends InputConnectionWrapper {
   public ReactEditTextInputConnectionWrapper(
       InputConnection target,
       final ReactContext reactContext,
-      final BaseRNDJDraftJSEditor editText
+      final RNDJDraftJSEditor editText
   ) {
     super(target, false);
     mEventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();

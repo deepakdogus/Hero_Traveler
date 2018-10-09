@@ -365,16 +365,16 @@ class FeedItemPreview extends Component {
               src={imageUrl}
               onClick={guideId ? this.noop : this.navToFeedItem}
             />
-            {!!guideId &&
-              <StyledOverlay
-                overlayColor='black'
-                onClick={this.navToFeedItem}
-              >
+            <StyledOverlay
+              overlayColor='black'
+              onClick={this.navToFeedItem}
+            >
+              {!!guideId &&
                 <CloseXContainer>
                   <CloseX onClick={this.openRemoveStoryModal}/>
                 </CloseXContainer>
-              </StyledOverlay>
-          }
+              }
+            </StyledOverlay>
           </ImageContainer>
           <StoryInfoContainer>
             {!isStory &&

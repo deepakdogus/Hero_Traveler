@@ -119,6 +119,12 @@ class Header extends React.Component {
     if (!prevProps.signedUp && this.props.signedUp) {
       this.props.reroute('/signup/topics')
     }
+    if (prevProps.pathname !== this.props.pathname) {
+      window.scrollTo({
+        top: 0,
+        behavior: 'instant'
+      })
+    }
   }
 
   handleWindowResize = (event) => {

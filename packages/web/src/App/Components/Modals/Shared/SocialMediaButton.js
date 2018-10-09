@@ -13,14 +13,14 @@ const StyledIcon = styled(Icon)`
 `
 
 const FacebookIcon = styled(StyledIcon)`
-  height: 21.5px;
+  height: 22px;
   width: 11px;
   padding: 0 7px;
 `
 
 const TwitterIcon = styled(StyledIcon)`
-  height: 20px;
-  width: 25px;
+  height: 16px;
+  width: 20px;
   margin-left: -21px;
 `
 

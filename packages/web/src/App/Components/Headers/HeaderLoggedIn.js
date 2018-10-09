@@ -4,20 +4,28 @@ import _ from 'lodash'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { WrappedNavLink } from '../../Components/NavLinkStyled'
-import { Row, Col } from '../FlexboxGrid'
+import {
+  Row,
+  Col,
+} from '../FlexboxGrid'
 import ProfileMenu from './ProfileMenu'
 import { mediaMax, mediaMin } from '../ContentLayout.component'
 import Avatar from '../Avatar'
 import RoundedButton from '../RoundedButton'
 import Icon from '../Icon'
-import { StyledRow, StyledRoundedButton, Logo, Divider, HamburgerIcon, SearchNav } from './Shared'
+import {
+  StyledRow,
+  StyledRoundedButton,
+  Logo,
+  Divider,
+  HamburgerIcon,
+  SearchNav,
+} from './Shared'
 import logo from '../../Shared/Images/ht-logo-white.png'
 import NotificationsBadge from '../NotificationsBadge'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import ConditionalLink from '../ConditionalLink'
-import {
-  haveFieldsChanged
-} from '../../Shared/Lib/draftChangedHelpers'
+import { haveFieldsChanged } from '../../Shared/Lib/draftChangedHelpers'
 
 const LoggedInDesktopContainer = styled.div`
   ${mediaMax.desktop`display: none;`}
@@ -171,7 +179,6 @@ class HeaderLoggedIn extends React.Component {
                 My Feed
               </ConditionalLink>
               <Divider>&nbsp;</Divider>
-              <span>&nbsp;</span>
               <ConditionalLink
                 to='/'
                 pathname={pathname}

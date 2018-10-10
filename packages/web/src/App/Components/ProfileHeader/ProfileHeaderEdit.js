@@ -56,7 +56,7 @@ const EditAvatarWrapper = styled(VerticalCenter)`
   align-items: center;
   width: 100%;
   height: 100%;
-  z-index: 50;
+  z-index: 1;
 `
 
 const BioInput = styled.textarea`
@@ -305,7 +305,7 @@ export default class ProfileHeaderEdit extends React.Component {
                       maxLength={SignupConstants.USERNAME_MAX_LENGTH}
                     />
                     { username && username.length < SignupConstants.USERNAME_MIN_LENGTH &&
-                      <ErrorText>Username must be at least 2 characters long</ErrorText>
+                      <ErrorText>Username must be at least 5 characters long</ErrorText>
                     }
                     { error &&
                       <ErrorText>Sorry, that username is already in use</ErrorText>

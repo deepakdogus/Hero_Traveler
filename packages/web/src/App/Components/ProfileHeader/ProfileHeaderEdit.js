@@ -305,7 +305,7 @@ export default class ProfileHeaderEdit extends React.Component {
                       maxLength={SignupConstants.USERNAME_MAX_LENGTH}
                     />
                     { username && username.length < SignupConstants.USERNAME_MIN_LENGTH &&
-                      <ErrorText>Username must be at least 5 characters long</ErrorText>
+                      <ErrorText>Username must be at least {SignupConstants.USERNAME_MIN_LENGTH} characters long</ErrorText>
                     }
                     { error &&
                       <ErrorText>Sorry, that username is already in use</ErrorText>

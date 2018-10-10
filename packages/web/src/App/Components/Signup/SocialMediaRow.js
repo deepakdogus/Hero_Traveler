@@ -67,9 +67,9 @@ export default class SocialMediaRow extends Component {
   getIcon(text) {
     switch (text){
       case 'Facebook':
-        return (<FacebookIcon name='facebook-blue' />)
+        return (<FacebookIcon name='facebook-dark' />)
       case 'Twitter':
-        return (<TwitterIcon name='twitter-blue' />)
+        return (<TwitterIcon name='twitter-dark' />)
       case 'Instagram':
       default:
         return (<InstagramIcon name='instagram' />)

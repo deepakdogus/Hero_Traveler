@@ -6,7 +6,7 @@ import { Images } from '../Shared/Themes'
 
 export function getSize(props, defaultOverride = '25px') {
   const switchStatement = props.size || props.type
-  
+
   switch(switchStatement) {
     case 'avatar':
       return '30px'
@@ -104,6 +104,8 @@ export default class Icon extends React.Component {
         return Images.iconLoginFacebookLarge
       case 'facebook-blue':
         return Images.iconFacebook
+      case 'facebook-dark':
+        return Images.iconFacebookDark
       case 'squareFacebookOutline':
         return Images.iconSquareFacebookOutline
       case 'twitter':
@@ -112,10 +114,14 @@ export default class Icon extends React.Component {
         return Images.iconTwitterLarge
       case 'twitter-blue':
         return Images.iconTwitterBlue
+      case 'twitter-dark':
+        return Images.iconTwitterDark
       case 'squareTwitterOutline':
         return Images.iconSquareTwitterOutline
       case 'instagram':
         return Images.iconInstagram
+      case 'instagram-dark':
+        return Images.iconInstagramDark
       case 'loginEmail':
         return Images.iconLoginEmail
       case 'myFeed':

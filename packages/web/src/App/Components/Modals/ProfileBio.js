@@ -29,24 +29,9 @@ const SocialFooterText = styled(Text)`
 `
 
 const StyledIcon = styled(Icon)`
+  width: 25px;
   height: 25px;
   margin-top: 10px;
-`
-
-const FacebookIcon = styled(StyledIcon)`
-  width: 12.5px;
-  padding: 0 9px;
-  cursor: pointer;
-`
-
-const TwitterIcon = styled(StyledIcon)`
-  width: 30.5px;
-  cursor: pointer;
-`
-
-const InstagramIcon = styled(StyledIcon)`
-  width: 25px;
-  padding: 0 2.5px;
   cursor: pointer;
 `
 
@@ -69,9 +54,9 @@ export default class ProfileBio extends React.Component {
         <SocialFooterContainer>
           <SocialFooterText>Follow me on:</SocialFooterText>
           <Row between='xs'>
-            <FacebookIcon name='facebook-blue'/>
-            <TwitterIcon name='twitter-blue'/>
-            <InstagramIcon name='instagram'/>
+            <StyledIcon name='facebook-dark'/>
+            <StyledIcon name='twitter-dark'/>
+            <StyledIcon name='instagram-dark'/>
           </Row>
         </SocialFooterContainer>
       </Container>

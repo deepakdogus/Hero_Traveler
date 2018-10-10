@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { withCookies, Cookies } from 'react-cookie'
 import { instanceOf } from 'prop-types'
+import * as _ from 'lodash'
 
 import SessionActions from '../Shared/Redux/SessionRedux'
 
@@ -62,6 +63,11 @@ class Session extends Component {
           const options = token.type === 'refresh' ? { } : { expires }
           cookies.set(name, token.value, options)
         }
+      })
+    }
+    else if (!nextProps.userId && !_.isEmpty(this.props.tokens)) {
+      this.props.tokens.forEach(token => {
+        cookies.remove(`session_${token.type}`)
       })
     }
   }

@@ -33,10 +33,9 @@ class RNDJDraftJSEditor(context: Context) : EditText(context) {
     }
 
     fun setContent(content : DraftJsContent) {
-        val wasInitialized = ::_content.isInitialized
         _content = content
         forceSetText(content.flatText)
-        if (!wasInitialized && ::_selection.isInitialized) {
+        if (::_selection.isInitialized) {
             setSelection(_selection)
         }
     }

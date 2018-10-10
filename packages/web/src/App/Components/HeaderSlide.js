@@ -54,7 +54,7 @@ const BottomContainer = styled.div`
 const Centered = styled(VerticalCenter)`
   position: absolute;
   width: 100vw;
-  height: 85vh;
+  height: 570px;
   top:0;
   text-align:center;
   z-index: 1;

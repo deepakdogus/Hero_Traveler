@@ -42,7 +42,7 @@ const ItalicText = styled.p`
 const Centered = styled(VerticalCenter)`
   position: absolute;
   width: 100vw;
-  height: 630px;
+  height: 570px;
   top:0;
   text-align:center;
   z-index: 2;
@@ -113,7 +113,9 @@ export default class ExploreHeader extends React.Component {
             <BadgeWrapper>
               <GooglePlayImage src={Images.googlePlayBadge}/>
               <BadgeSpacer/>
-              <AppleAppStoreImage src={Images.appleAppStoreBadge}/>
+              <a href='https://itunes.apple.com/us/app/hero-traveler/id1288145566'>
+                <AppleAppStoreImage src={Images.appleAppStoreBadge}/>
+              </a>
             </BadgeWrapper>
         </Centered>
       </OpaqueHeaderImageWrapper>

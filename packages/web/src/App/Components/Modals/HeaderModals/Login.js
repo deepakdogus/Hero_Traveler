@@ -107,11 +107,6 @@ class Login extends React.Component {
           page='login'
           onClick={loginFacebook}
         />
-        <SocialMediaButton
-          type='twitterSignup'
-          iconName='twitterLarge'
-          page='login'
-        />
         <Text>Or</Text>
           <form onSubmit={this._onAttemptLogin}>
             <StyledInput placeholder='Username OR Email' onChange={this.setUserIdentifier}/>

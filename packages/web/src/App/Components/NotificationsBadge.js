@@ -14,6 +14,7 @@ const Container = styled.div`
   text-align: center;
   z-index: 50;
   margin: auto;
+  cursor: pointer;
 `
 
 const Text = styled.p`
@@ -22,9 +23,9 @@ const Text = styled.p`
   margin: auto;
 `
 
-export default function NotificationsBadge({count}) {
+export default function NotificationsBadge({count, onClick}) {
   return (
-    <Container>
+    <Container onClick={onClick}>
       <Text>{count}</Text>
     </Container>
   )
@@ -32,6 +33,7 @@ export default function NotificationsBadge({count}) {
 
 NotificationsBadge.propTypes = {
   count: PropTypes.number,
+  onClick: PropTypes.func,
   styles: PropTypes.object,
 }
 

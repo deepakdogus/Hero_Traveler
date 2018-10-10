@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { push } from 'react-router-redux'
 import _ from 'lodash'
 
 import UserActions, {getFollowers, getFollowersFetchStatus} from '../../Shared/Redux/Entities/Users'
@@ -31,6 +32,7 @@ class FollowFollowing extends Component {
     unfollowUser: PropTypes.func,
     loadUserFollowedBy: PropTypes.func,
     loadUserFollowing: PropTypes.func,
+    reroute: PropTypes.func,
   }
 
   componentWillMount() {
@@ -51,8 +53,13 @@ class FollowFollowing extends Component {
     }
   }
 
+  navToProfile = (userId) => {
+    this.props.closeModal()
+    this.props.reroute(`/profile/${userId}/view`)
+  }
+
   renderUserRows = (ids) => {
-    const {myFollowedUsers, closeModal, sessionUserId} = this.props
+    const {myFollowedUsers, sessionUserId} = this.props
     return ids.map((id, index) => {
       const isFollowing = _.includes(myFollowedUsers, id)
       const isYou = id === sessionUserId
@@ -63,7 +70,7 @@ class FollowFollowing extends Component {
           isFollowing={isFollowing}
           isYou={isYou}
           onFollowClick={isFollowing ? this._unfollowUser : this._followUser}
-          onProfileClick={closeModal}
+          onProfileClick={this.navToProfile}
           margin='0 0 25px'
         />
       )
@@ -114,6 +121,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch, ownProps) {
   return {
+    reroute: (route) => dispatch(push(route)),
     followUser: (sessionUserID, userIdToFollow) => dispatch(UserActions.followUser(sessionUserID, userIdToFollow)),
     unfollowUser: (sessionUserID, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserID, userIdToUnfollow)),
     loadUserFollowedBy: (userId) => dispatch(UserActions.loadUserFollowers(userId)),

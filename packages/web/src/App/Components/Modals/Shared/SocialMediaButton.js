@@ -7,17 +7,20 @@ import Icon from '../../Icon'
 import {Row} from '../../FlexboxGrid'
 import VerticalCenter from '../../VerticalCenter'
 
-const FacebookIcon = styled(Icon)`
-  height: 21.5px;
-  width: 11px;
-  padding: 0 7px;
+const StyledIcon = styled(Icon)`
   margin-right: 25px;
+  cursor: pointer;
 `
 
-const TwitterIcon = styled(Icon)`
-  height: 20px;
-  width: 25px;
-  margin-right: 25px;
+const FacebookIcon = styled(StyledIcon)`
+  height: 22px;
+  width: 11px;
+  padding: 0 7px;
+`
+
+const TwitterIcon = styled(StyledIcon)`
+  height: 16px;
+  width: 20px;
   margin-left: -21px;
 `
 

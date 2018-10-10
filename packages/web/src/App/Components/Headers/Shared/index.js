@@ -62,10 +62,11 @@ export const Divider = styled.div`
   background-color: ${props => props.theme.Colors.snow};
   margin-left: 10px;
   margin-right: 10px;
+  cursor: default;
+  height: 25px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     margin-left: 5px;
     margin-right: 5px;
-    height: 25px;
   }
 `
 

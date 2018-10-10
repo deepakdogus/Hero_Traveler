@@ -4,20 +4,28 @@ import _ from 'lodash'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { WrappedNavLink } from '../../Components/NavLinkStyled'
-import { Row, Col } from '../FlexboxGrid'
+import {
+  Row,
+  Col,
+} from '../FlexboxGrid'
 import ProfileMenu from './ProfileMenu'
 import { mediaMax, mediaMin } from '../ContentLayout.component'
 import Avatar from '../Avatar'
 import RoundedButton from '../RoundedButton'
 import Icon from '../Icon'
-import { StyledRow, StyledRoundedButton, Logo, Divider, HamburgerIcon, SearchNav } from './Shared'
+import {
+  StyledRow,
+  StyledRoundedButton,
+  Logo,
+  Divider,
+  HamburgerIcon,
+  SearchNav,
+} from './Shared'
 import logo from '../../Shared/Images/ht-logo-white.png'
 import NotificationsBadge from '../NotificationsBadge'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import ConditionalLink from '../ConditionalLink'
-import {
-  haveFieldsChanged
-} from '../../Shared/Lib/draftChangedHelpers'
+import { haveFieldsChanged } from '../../Shared/Lib/draftChangedHelpers'
 
 const LoggedInDesktopContainer = styled.div`
   ${mediaMax.desktop`display: none;`}
@@ -67,7 +75,6 @@ const CreateButtonStyleOverride = {
 class HeaderLoggedIn extends React.Component {
   static propTypes = {
     reroute: PropTypes.func,
-    openModal: PropTypes.func,
     user: PropTypes.object,
     pathname: PropTypes.string,
     openSaveEditsModal: PropTypes.func,
@@ -123,9 +130,12 @@ class HeaderLoggedIn extends React.Component {
     }, 0)
   }
 
+  openNotifications = () => {
+    this.props.openGlobalModal('notificationsThread')
+  }
+
   render () {
     const {
-      openModal,
       openGlobalModal,
       userId,
       profileAvatar,
@@ -171,7 +181,6 @@ class HeaderLoggedIn extends React.Component {
                 My Feed
               </ConditionalLink>
               <Divider>&nbsp;</Divider>
-              <span>&nbsp;</span>
               <ConditionalLink
                 to='/'
                 pathname={pathname}
@@ -215,7 +224,8 @@ class HeaderLoggedIn extends React.Component {
                 {notificationsCount > 0 &&
                   <NotificationsBadge
                     count={notificationsCount}
-                   />
+                    onClick={this.openNotifications}
+                  />
                 }
                 <StyledRoundedNotificationButton
                   type='headerButton'
@@ -223,7 +233,7 @@ class HeaderLoggedIn extends React.Component {
                   width='32px'
                   name='notifications'
                   profileAvatar={profileAvatar}
-                  onClick={openModal}
+                  onClick={this.openNotifications}
                 >
                   <NotificationsIcon name='navNotifications' />
                 </StyledRoundedNotificationButton>

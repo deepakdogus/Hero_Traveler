@@ -10,9 +10,8 @@ export default styled.div`
       case 'fullScreen':
         return '100vh'
       case 'preview':
-        return '570px'
       case 'large':
-        return '630px'
+        return '570px'
       default:
         return '180px;'
     }

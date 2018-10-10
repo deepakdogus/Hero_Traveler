@@ -19,6 +19,8 @@ class RNDJDraftJSEditor(context: Context) : EditText(context) {
 
     private val filter = DraftJsInputFilter(this)
 
+    private var textWrapper : SelectionBlockingText? = null
+
     var eventSender: ((Event<*>) -> Unit?)? = null
 
     private var blockFocusRequest = true
@@ -79,14 +81,19 @@ class RNDJDraftJSEditor(context: Context) : EditText(context) {
 
     override fun getText(): Editable? {
         val text = super.getText()
-        return text?.let { SelectionBlockingText(it) { start, end ->
-            val (startKey, startOffset) = _content.flatIndexToAddress(start)
-            val (endKey, endOffset) = _content.flatIndexToAddress(end)
-            eventSender?.invoke(OnSelectionChangeRequest(
-                    id,
-                    DraftJsSelection(startKey, startOffset, endKey, endOffset, hasFocus())
-            ))
-        } }
+        if (text !== textWrapper?.delegate) {
+            textWrapper = text?.let {
+                SelectionBlockingText(it) { start, end ->
+                    val (startKey, startOffset) = _content.flatIndexToAddress(start)
+                    val (endKey, endOffset) = _content.flatIndexToAddress(end)
+                    eventSender?.invoke(OnSelectionChangeRequest(
+                            id,
+                            DraftJsSelection(startKey, startOffset, endKey, endOffset, hasFocus())
+                    ))
+                }
+            }
+        }
+        return textWrapper
     }
 
     private fun forceSetText(text: CharSequence?) {

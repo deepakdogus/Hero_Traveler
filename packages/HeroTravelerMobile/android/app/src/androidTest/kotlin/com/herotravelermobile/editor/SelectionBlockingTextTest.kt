@@ -97,4 +97,13 @@ class SelectionBlockingTextTest {
                 "clearSpans() must clear all spans"
         )
     }
+
+    @Test
+    fun toStringsCallsDelegate() {
+        assertEquals(
+                SelectionBlockingText(spannable, callback).toString(),
+                spannable.toString(),
+                "toString() must return the same object as the delegate"
+        )
+    }
 }

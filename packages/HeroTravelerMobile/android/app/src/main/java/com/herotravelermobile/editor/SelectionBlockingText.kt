@@ -7,13 +7,19 @@ import android.text.Selection.SELECTION_START
 import android.text.Spanned
 
 class SelectionBlockingText(
-        private val delegate: Editable,
+        val delegate: Editable,
         private val selectionCallback: (Int, Int) -> Unit
 ) : Editable by delegate {
     private var selectionStart: Int
     private var selectionEnd: Int
 
     init {
+        selectionStart = 0
+        selectionEnd = 0
+        initSelectionIndices()
+    }
+
+    private fun initSelectionIndices() {
         selectionStart = getSpanStart(SELECTION_START)
         selectionEnd = getSpanStart(SELECTION_END)
     }
@@ -28,6 +34,7 @@ class SelectionBlockingText(
                 }
                 if (flags and Spanned.SPAN_INTERMEDIATE != Spanned.SPAN_INTERMEDIATE) {
                     selectionCallback.invoke(selectionStart, selectionEnd)
+                    initSelectionIndices()
                 }
             }
             else -> delegate.setSpan(what, start, end, flags)
@@ -49,5 +56,9 @@ class SelectionBlockingText(
         } else {
             delegate.clearSpans()
         }
+    }
+
+    override fun toString(): String {
+        return delegate.toString()
     }
 }

@@ -35,6 +35,7 @@ export default class ProfileHeader extends React.Component {
     user: PropTypes.object,
     isEdit: PropTypes.bool,
     isUsersProfile: PropTypes.bool,
+    toProfileView: PropTypes.func,
   }
 
   constructor(props) {
@@ -42,6 +43,11 @@ export default class ProfileHeader extends React.Component {
     this.state = {
       modal: undefined,
     }
+  }
+
+  componentDidMount = () => {
+    const { isEdit, isUsersProfile, toProfileView } = this.props
+    if (isEdit && !isUsersProfile) toProfileView()
   }
 
   closeModal = () => {

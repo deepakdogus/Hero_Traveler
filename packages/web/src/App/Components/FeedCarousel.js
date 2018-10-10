@@ -17,7 +17,8 @@ const StyledRoundedButton = styled(RoundedButton)`
 const StyledArrowIcon = styled(Icon)`
 	width: 12px;
 	height: 20px;
-	align-self: center;
+  align-self: center;
+  cursor: pointer;
   margin-left: ${props => props.name === 'arrowLeft' ? '0' : '4px'};
   margin-right: ${props => props.name === 'arrowLeft' ? '4px' : '0'};
 `

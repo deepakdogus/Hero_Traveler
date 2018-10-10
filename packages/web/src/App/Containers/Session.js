@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { withCookies, Cookies } from 'react-cookie'
 import { instanceOf } from 'prop-types'
 import * as _ from 'lodash'
+import PropTypes from 'prop-types'
 
 import SessionActions from '../Shared/Redux/SessionRedux'
 
@@ -28,7 +29,11 @@ function isNewToken(oldTokenOfType, token) {
 
 class Session extends Component {
   static propTypes = {
-    cookies: instanceOf(Cookies).isRequired
+    cookies: instanceOf(Cookies).isRequired,
+    userId: PropTypes.string,
+    tokens: PropTypes.arrayOf(PropTypes.object),
+    resumeSession: PropTypes.func,
+    retrievedCookies: PropTypes.object,
   }
 
   componentDidMount() {
@@ -36,7 +41,8 @@ class Session extends Component {
     const tokens = []
     addToken('session_access', retrievedCookies, tokens)
     addToken('session_refresh', retrievedCookies, tokens)
-    this.props.resumeSession(userId, tokens)
+    if (tokens.length) this.props.resumeSession(userId, tokens)
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -74,9 +80,7 @@ class Session extends Component {
 
   render() {
     return (
-      <div>
-        {this.props.children}
-      </div>
+      <div />
     )
   }
 }

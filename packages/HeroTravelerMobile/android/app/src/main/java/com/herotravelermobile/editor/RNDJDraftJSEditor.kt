@@ -4,9 +4,12 @@ import android.content.Context
 import android.graphics.Rect
 import android.text.Editable
 import android.text.Selection
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputConnection
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import com.facebook.react.uimanager.events.Event
+import com.herotravelermobile.editor.event.OnInsertTextRequest
 import com.herotravelermobile.editor.event.OnSelectionChangeRequest
 import com.herotravelermobile.editor.model.Address
 import com.herotravelermobile.editor.model.DraftJsContent
@@ -17,9 +20,15 @@ class RNDJDraftJSEditor(context: Context) : EditText(context) {
 
     private lateinit var _selection: DraftJsSelection
 
-    private val filter = DraftJsInputFilter(this)
+    private val filter = DraftJsInputFilter(
+            this,
+            { OnInsertTextRequest(id, it).sendIf(onInsertTextEnabled) }
+    )
 
     private var textWrapper : SelectionBlockingText? = null
+
+    var onInsertTextEnabled = false
+    var onSelectionChangedEnabled = false
 
     var eventSender: ((Event<*>) -> Unit?)? = null
 
@@ -63,7 +72,7 @@ class RNDJDraftJSEditor(context: Context) : EditText(context) {
 
     override fun requestFocus(direction: Int, previouslyFocusedRect: Rect?): Boolean {
         return if (blockFocusRequest && !hasFocus()) {
-            eventSender?.invoke(OnSelectionChangeRequest(id, _selection.copy(hasFocus = true)))
+            OnSelectionChangeRequest(id, _selection.copy(hasFocus = true)).sendIf(onSelectionChangedEnabled)
             false
         } else {
             super.requestFocus(direction, previouslyFocusedRect)
@@ -74,23 +83,23 @@ class RNDJDraftJSEditor(context: Context) : EditText(context) {
         super.onFocusChanged(focused, direction, previouslyFocusedRect)
         if (!focused) {
             _selection = _selection.copy(hasFocus = false)
-            eventSender?.invoke(OnSelectionChangeRequest(id, _selection))
+            OnSelectionChangeRequest(id, _selection).sendIf(onSelectionChangedEnabled)
         }
+    }
+
+    private fun selectionCallback() = { start: Int, end: Int ->
+        val (startKey, startOffset) = _content.flatIndexToAddress(start)
+        val (endKey, endOffset) = _content.flatIndexToAddress(end)
+        eventSender?.invoke(OnSelectionChangeRequest(
+                id,
+                DraftJsSelection(startKey, startOffset, endKey, endOffset, hasFocus())
+        ))
     }
 
     override fun getText(): Editable? {
         val text = super.getText()
         if (text !== textWrapper?.delegate) {
-            textWrapper = text?.let {
-                SelectionBlockingText(it) { start, end ->
-                    val (startKey, startOffset) = _content.flatIndexToAddress(start)
-                    val (endKey, endOffset) = _content.flatIndexToAddress(end)
-                    eventSender?.invoke(OnSelectionChangeRequest(
-                            id,
-                            DraftJsSelection(startKey, startOffset, endKey, endOffset, hasFocus())
-                    ))
-                }
-            }
+            textWrapper = text?.let { SelectionBlockingText(it, selectionCallback()) }
         }
         return textWrapper
     }
@@ -100,5 +109,13 @@ class RNDJDraftJSEditor(context: Context) : EditText(context) {
         setText(text)
         filter.enabled = true
     }
-}
 
+    override fun onCreateInputConnection(outAttrs: EditorInfo?): InputConnection {
+        return SelectionBlockingConnection(
+                super.onCreateInputConnection(outAttrs),
+                selectionCallback()
+        )
+    }
+
+    private fun Event<*>.sendIf(condition: Boolean) { if (condition) eventSender?.invoke(this) }
+}

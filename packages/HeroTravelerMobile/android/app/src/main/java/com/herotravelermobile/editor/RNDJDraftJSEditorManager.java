@@ -1,14 +1,6 @@
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- * <p>
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- */
-
 package com.herotravelermobile.editor;
 
+import android.support.annotation.NonNull;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spannable;
@@ -25,17 +17,22 @@ import com.facebook.react.uimanager.Spacing;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.views.scroll.ScrollEventType;
 import com.facebook.react.views.text.ReactTextUpdate;
 import com.facebook.react.views.text.TextInlineImageSpan;
 import com.facebook.react.views.textinput.ReactTextInputShadowNode;
-import com.herotravelermobile.editor.event.OnSelectionChangeRequestKt;
+import com.herotravelermobile.editor.event.OnInsertTextRequest;
+import com.herotravelermobile.editor.event.OnSelectionChangeRequest;
 import com.herotravelermobile.editor.model.DraftJsContent;
 import com.herotravelermobile.editor.model.DraftJsSelection;
 
 import java.util.Map;
 
 import javax.annotation.Nullable;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 /**
  * Manages instances of TextInput.
@@ -77,6 +74,7 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<RNDJDraftJSEditor,
                 TypedValue.COMPLEX_UNIT_PX,
                 (int) Math.ceil(PixelUtil.toPixelFromSP(ViewDefaults.FONT_SIZE_SP))
         );*/
+        editText.setEventSender(createEventSender(editText));
         return editText;
     }
 
@@ -168,8 +166,12 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<RNDJDraftJSEditor,
                         MapBuilder.of("registrationName", "onScroll")
                 )
                 .put(
-                        OnSelectionChangeRequestKt.EVENT_NAME,
-                        MapBuilder.of("registrationName", OnSelectionChangeRequestKt.EVENT_NAME)
+                        OnSelectionChangeRequest.EVENT_NAME,
+                        MapBuilder.of("registrationName", OnSelectionChangeRequest.EVENT_NAME)
+                )
+                .put(
+                        OnInsertTextRequest.EVENT_NAME,
+                        MapBuilder.of("registrationName", OnInsertTextRequest.EVENT_NAME)
                 )
                 .build();
     }
@@ -228,17 +230,23 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<RNDJDraftJSEditor,
     }
 
     @ReactProp(name = "onSelectionChangeRequest")
-    public void setOnSelectionChangeRequest(RNDJDraftJSEditor view, boolean selection) {
-        if (selection) {
-            view.setEventSender(event -> {
-                final ReactContext reactContext = (ReactContext) view.getContext();
-                reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher()
-                        .dispatchEvent(event);
-                return null;
-            });
-        } else {
-            view.setEventSender(null);
-        }
+    public void setOnSelectionChangeRequest(RNDJDraftJSEditor view, boolean enabled) {
+        view.setOnSelectionChangedEnabled(enabled);
+    }
+
+    @ReactProp(name = "onInsertTextRequest")
+    public void setOnInsertTextRequest(RNDJDraftJSEditor view, boolean enabled) {
+        view.setOnInsertTextEnabled(enabled);
+    }
+
+    @NonNull
+    private Function1<Event<?>, Unit> createEventSender(RNDJDraftJSEditor view) {
+        return event -> {
+            final ReactContext reactContext = (ReactContext) view.getContext();
+            reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher()
+                    .dispatchEvent(event);
+            return null;
+        };
     }
 
     /*

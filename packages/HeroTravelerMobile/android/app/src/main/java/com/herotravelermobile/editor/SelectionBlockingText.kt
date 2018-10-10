@@ -1,14 +1,15 @@
 package com.herotravelermobile.editor
 
 import android.text.Editable
-
 import android.text.Selection.SELECTION_END
 import android.text.Selection.SELECTION_START
 import android.text.Spanned
+import com.herotravelermobile.utils.selectionEnd
+import com.herotravelermobile.utils.selectionStart
 
 class SelectionBlockingText(
         val delegate: Editable,
-        private val selectionCallback: (Int, Int) -> Unit
+        private val selectionCallback: (Int, Int) -> Unit?
 ) : Editable by delegate {
     private var selectionStart: Int
     private var selectionEnd: Int
@@ -20,8 +21,8 @@ class SelectionBlockingText(
     }
 
     private fun initSelectionIndices() {
-        selectionStart = getSpanStart(SELECTION_START)
-        selectionEnd = getSpanStart(SELECTION_END)
+        selectionStart = selectionStart()
+        selectionEnd = selectionEnd()
     }
 
     override fun setSpan(what: Any?, start: Int, end: Int, flags: Int) {
@@ -49,7 +50,7 @@ class SelectionBlockingText(
     }
 
     override fun clearSpans() {
-        if (getSpanStart(SELECTION_START) != -1 || getSpanStart(SELECTION_END) != -1) {
+        if (selectionStart() != -1 || selectionEnd() != -1) {
             getSpans(0, length, Object::class.java)
                     .filterNot { it === SELECTION_START || it === SELECTION_END }
                     .forEach { delegate.removeSpan(it) }

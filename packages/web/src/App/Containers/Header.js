@@ -128,26 +128,30 @@ class Header extends React.Component {
     }
   }
 
+  shouldDisengageNavbar = () => {
+    return window.scrollY < 65
+    && this.state.navbarEngaged
+    && window.innerWidth >= sizes.tablet
+  }
+
   handleWindowResize = event => {
     let windowWidth = window.innerWidth
     const tabletSize = sizes.tablet
     if (windowWidth <= tabletSize) {
       this.setState({ navbarEngaged: true })
     }
-    else if (window.scrollY < 65 && this.state.navbarEngaged && windowWidth >= tabletSize) {
+    else if (this.shouldDisengageNavbar()) {
       this.setState({ navbarEngaged: false })
     }
   }
 
   handleScroll = event => {
-    let windowWidth = window.innerWidth
-    const tabletSize = sizes.tablet
     // If header is transparent, it should mark itself as "engaged" so we know to style it differently (aka black background)
     if (!this.props.blackHeader) {
       if (window.scrollY > 65 && !this.state.navbarEngaged) {
         this.setState({ navbarEngaged: true })
       }
-      else if (window.scrollY < 65 && this.state.navbarEngaged && windowWidth >= tabletSize) {
+      else if (this.shouldDisengageNavbar()) {
         this.setState({ navbarEngaged: false })
       }
     }

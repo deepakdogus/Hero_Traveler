@@ -4,10 +4,10 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import StoryActions, {getByCategory, getFetchStatus} from '../Shared/Redux/Entities/Stories'
+import StoryActions, { getByCategory, getFetchStatus } from '../Shared/Redux/Entities/Stories'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
-import SignupActions from'../Shared/Redux/SignupRedux'
+import SignupActions from '../Shared/Redux/SignupRedux'
 
 import ContainerWithFeedList from './ContainerWithFeedList'
 import CategoryHeader from '../Components/CategoryHeader'
@@ -66,7 +66,9 @@ class Category extends ContainerWithFeedList {
           onClickTab={this.onClickTab}
         />
         <FeedItemListWrapper>
-          <FeedItemList feedItems={selectedFeedItems} />
+          <FeedItemList
+            feedItems={selectedFeedItems}
+            activeTab={this.state.activeTab === 'GUIDES' ? 'GUIDES' : 'STORIES'}/>
           <Footer />
         </FeedItemListWrapper>
       </ContentWrapper>
@@ -76,7 +78,7 @@ class Category extends ContainerWithFeedList {
 
 function mapStateToProps(state, ownProps) {
   const categoryId = ownProps.match.params.categoryId
-  let isFollowingCategory = false;
+  let isFollowingCategory = false
   if (state.session.userId) {
     isFollowingCategory = _.includes(state.signup.selectedCategories, categoryId)
   }
@@ -108,4 +110,7 @@ function mapDispatchToProps(dispatch, ownProps) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Category)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Category)

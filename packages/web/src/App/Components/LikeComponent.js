@@ -27,8 +27,7 @@ export default class LikeComponent extends React.Component {
       <Row middle='xs'>
         <Likes horizontal={this.props.horizontal}>{this.props.likes}</Likes>
         <Icon
-          name={this.props.isLiked ? 'like-active' : 'like'}
-          size={'small'}
+          name={this.props.isLiked ? 'like-active-large' : 'like-large'}
           onClick={this.props.onClick}
         />
       </Row>

@@ -61,6 +61,7 @@ const VerticalMarginWrapper = styled(HorizontalMarginWrapper)`
 `
 
 const HorizontalRowWrapper = styled(Row)`
+  flex-wrap: nowrap;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     width: 100vw;
     flex-direction: column;
@@ -75,7 +76,7 @@ const VerticalWrapper = styled.div`
 const HorizontalStoryInfoContainer = styled(VerticalCenter)`
   position: relative;
   height: ${coverHeight};
-  max-width: 385.5px;
+  width: 400px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     height:auto;
     > * {
@@ -112,7 +113,7 @@ const VerticalDetailsContainer = styled(HorizontalDetailsContainer)`
 const HorizontalLocationPreview = styled(Text)`
   color: ${props => props.theme.Colors.background};
   letter-spacing: .7px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   margin-top: 6px;
   margin-bottom: 12px;
@@ -135,12 +136,12 @@ const VerticalLocationPreview = styled(HorizontalLocationPreview)`
 const Title = styled.h3`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 600;
-  font-size: 23px;
+  font-size: 25px;
   color: ${props => props.theme.Colors.background};
   display: inline-block;
   margin: 0;
   cursor: pointer;
-  max-width: 225px;
+  max-width: 400px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     max-width: 385.5px;
     font-size: 20px;
@@ -148,19 +149,6 @@ const Title = styled.h3`
   &:hover {
     color: ${props => props.theme.Colors.grey};
   };
-`
-
-const Description = styled.h2`
-  font-size: 16px;
-  letter-spacing: .7px;
-  color : ${props => props.theme.Colors.grey};
-  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
-  font-weight: 400;
-  margin-top: 0;
-  margin-bottom: 7.5px;
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    display: none;
-  }
 `
 
 const ImageWrapper = styled.div`
@@ -214,6 +202,14 @@ const GuideIconText = styled(HorizontalLocationPreview)`
 const Username = styled(Text)`
   color: ${props => props.theme.Colors.redHighlights};
   cursor: pointer;
+  font-size: 14px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 12px;
+  }
+`
+
+const TimeStamp = styled(Text)`
+  font-size: 14px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 12px;
   }
@@ -247,9 +243,7 @@ const GuideIcon = styled(Icon)`
 `
 
 const BookmarkIcon = styled(Icon)`
-  width: 12px;
-  height: 16px;
-  margin: 1.5px 10px;
+  margin: 0 5px;
 `
 
 const videoThumbnailOptions = {
@@ -322,7 +316,7 @@ class FeedItemPreview extends Component {
       {
         guideId: guideId,
         storyId: feedItem.id,
-      }
+      },
     )
   }
 
@@ -344,7 +338,7 @@ class FeedItemPreview extends Component {
 
     const hasBadge = author.role === 'contributor' || author.role === 'founding member'
 
-    let imageUrl;
+    let imageUrl
     if (feedItem.coverImage) imageUrl = getImageUrl(feedItem.coverImage)
     else if (feedItem.coverVideo) {
       imageUrl = getImageUrl(feedItem.coverVideo, 'optimized', videoThumbnailOptions)
@@ -385,9 +379,6 @@ class FeedItemPreview extends Component {
             }
             <LocationPreview>{this.getLocationText()}</LocationPreview>
             <Title onClick={this.navToFeedItem}>{feedItem.title}</Title>
-            {isStory && feedItem.description &&
-              <Description>{feedItem.description}</Description>
-            }
             <DetailsContainer between='xs'>
               <Row middle='xs'>
                 {!isVertical &&
@@ -406,7 +397,7 @@ class FeedItemPreview extends Component {
                   />
                 }
                 <Username onClick={this.navToUserProfile}>{author.username}</Username>
-                {!isVertical && <Text>, {moment(feedItem.createdAt).fromNow()}</Text>}
+                {!isVertical && <TimeStamp>, {moment(feedItem.createdAt).fromNow()}</TimeStamp>}
               </Row>
             </DetailsContainer>
             {!isVertical &&
@@ -419,7 +410,7 @@ class FeedItemPreview extends Component {
                 />
                 {isStory &&
                   <BookmarkIcon
-                    name={isBookmarked ? 'bookmark-active' : 'bookmark'}
+                    name={isBookmarked ? 'feedBookmarkActive' : 'feedBookmark'}
                     onClick={sessionUserId ? this._onClickBookmark : undefined}
                   />
                 }
@@ -431,7 +422,6 @@ class FeedItemPreview extends Component {
     )
   }
 }
-
 
 const mapStateToProps = (state, ownProps) => {
   const {session, entities} = state
@@ -469,6 +459,5 @@ const mapDispatchToProps = (dispatch, props) => {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(FeedItemPreview)
-

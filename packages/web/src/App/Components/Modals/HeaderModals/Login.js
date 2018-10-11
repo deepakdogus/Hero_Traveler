@@ -1,10 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import RoundedButton from '../../RoundedButton'
-import SocialMediaButton from '../../Modals/Shared/SocialMediaButton'
-import Colors from '../../../Shared/Themes/Colors'
+import { connect } from 'react-redux'
 import onClickOutside from 'react-onclickoutside'
+
+import LoginActions from '../../../Shared/Redux/LoginRedux'
+import SignupActions from '../../../Shared/Redux/SignupRedux'
+import UXActions from '../../../Redux/UXRedux'
+import RoundedButton from '../../RoundedButton'
+import SocialMediaButton from '../Shared/SocialMediaButton'
 import {
   Container,
   Title,
@@ -23,20 +27,19 @@ const ForgotPasswordText = styled(Text)`
 const LoginErrorText = styled(Text)`
   font-size: 14px;
   margin: 0;
-  color: ${Colors.errorRed}
+  color: ${props => props.theme.Colors.errorRed};
 `
 const LoginFetchingText = styled(Text)`
   font-size: 14px;
   margin: 0;
-  color: ${Colors.signupGrey}
+  color: ${props => props.theme.Colors.signupGrey};
 `
 
 class Login extends React.Component {
   static propTypes = {
-    onAttemptLogin: PropTypes.func,
-    onSignupClick: PropTypes.func,
     loginReduxFetching: PropTypes.bool,
     loginReduxError: PropTypes.string,
+    attemptLogin: PropTypes.func,
     loginFacebook: PropTypes.func,
     openGlobalModal: PropTypes.func,
     closeGlobalModal: PropTypes.func,
@@ -56,9 +59,9 @@ class Login extends React.Component {
     this.props.closeGlobalModal()
   }
 
-  _onAttemptLogin = (e) => {
+  onAttemptLogin = (e) => {
     e.preventDefault()
-    const {onAttemptLogin} = this.props
+    const {attemptLogin} = this.props
     const {password, userIdentifier} = this.state
     if(!password || !userIdentifier){
       this.setState({
@@ -66,7 +69,7 @@ class Login extends React.Component {
       })
     }
     else {
-      onAttemptLogin(userIdentifier, password)
+      attemptLogin(userIdentifier, password)
       if(this.state.localError) {
         this.setState({localError: ''})
       }
@@ -85,9 +88,12 @@ class Login extends React.Component {
     this.props.openGlobalModal('resetPasswordRequest')
   }
 
+  openSignup = () => {
+    this.props.openGlobalModal('signup')
+  }
+
   render() {
     let {
-      onSignupClick,
       loginReduxFetching,
       loginReduxError,
       loginFacebook,
@@ -110,7 +116,7 @@ class Login extends React.Component {
           onClick={loginFacebook}
         />
         <Text>Or</Text>
-          <form onSubmit={this._onAttemptLogin}>
+          <form onSubmit={this.onAttemptLogin}>
             <StyledInput placeholder='Username OR Email' onChange={this.setUserIdentifier}/>
             <StyledInput placeholder='Password' onChange={this.setPassword} type='password'/>
             {loginReduxFetching &&
@@ -135,10 +141,34 @@ class Login extends React.Component {
               type='submit'
             />
           </form>
-        <HasAccount>Don't have an account? <SignupText onClick={onSignupClick}>Sign up</SignupText></HasAccount>
+        <HasAccount>Don’t have an account?
+          <SignupText onClick={this.openSignup}>
+            &nbsp;Sign up
+          </SignupText>
+        </HasAccount>
       </Container>
     )
   }
 }
 
-export default onClickOutside(Login)
+function mapStateToProps(state) {
+  return {
+    loginReduxFetching: state.login.fetching,
+    loginReduxError: state.login.error,
+  }
+}
+
+function mapDispatchtoProps(dispatch) {
+  return {
+    attemptLogin: (userIdentifier, password) =>
+      dispatch(LoginActions.loginRequest(userIdentifier, password)),
+    openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
+    closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
+    loginFacebook: () => dispatch(SignupActions.signupFacebook()),
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchtoProps,
+)(onClickOutside(Login))

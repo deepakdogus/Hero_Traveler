@@ -62,9 +62,6 @@ export default class HeaderModals extends React.Component {
     modal: PropTypes.string,
     closeModal: PropTypes.func,
     closeGlobalModal: PropTypes.func,
-    openSignupModal: PropTypes.func,
-    attemptLogin: PropTypes.func,
-    openLoginModal: PropTypes.func,
     userId: PropTypes.string,
     currentUserProfile: PropTypes.object,
     currentUserEmail: PropTypes.string,
@@ -72,8 +69,6 @@ export default class HeaderModals extends React.Component {
     attemptChangePassword: PropTypes.func,
     loginReduxFetching: PropTypes.bool,
     loginReduxError: PropTypes.object,
-    signupReduxFetching: PropTypes.bool,
-    signupReduxError: PropTypes.string,
     attemptUpdateUser: PropTypes.func,
     userEntitiesUpdating: PropTypes.bool,
     userEntitiesError: PropTypes.object,
@@ -83,9 +78,7 @@ export default class HeaderModals extends React.Component {
     resetCreateStore: PropTypes.func,
     flagStory: PropTypes.func,
     deleteStory: PropTypes.func,
-    loginFacebook: PropTypes.func,
     openGlobalModal: PropTypes.func,
-    resetPasswordRequest: PropTypes.func,
   }
 
   closeGlobalModal = () => {
@@ -112,17 +105,12 @@ export default class HeaderModals extends React.Component {
       attemptLogout,
       resetCreateStore,
       flagStory,
-      loginFacebook,
-      openGlobalModal,
-      resetPasswordRequest,
     } = this.props
 
     //destructuring these as let so we can reassign message in respective components
     let {
       loginReduxFetching,
       loginReduxError,
-      signupReduxFetching,
-      signupReduxError,
     } = this.props
 
     return (
@@ -133,27 +121,15 @@ export default class HeaderModals extends React.Component {
           onRequestClose={closeModal}
           style={customModalStyles}
         >
-          <Login
-            onSignupClick={this.props.openSignupModal}
-            onAttemptLogin={this.props.attemptLogin}
-            loginReduxFetching={loginReduxFetching}
-            loginReduxError={loginReduxError}
-            loginFacebook={loginFacebook}
-            openGlobalModal={openGlobalModal}
-            closeGlobalModal={closeGlobalModal}
-          />
+          <Login />
         </Modal>
         <Modal
-          isOpen={modal === 'signup'}
+          isOpen={globalModalThatIsOpen === 'signup'}
           contentLabel="Signup Modal"
           onRequestClose={closeModal}
           style={customModalStyles}
         >
-          <Signup
-            onLoginClick={this.props.openLoginModal}
-            signupReduxFetching={signupReduxFetching}
-            signupReduxError={signupReduxError}
-          />
+          <Signup />
         </Modal>
         <Modal
           isOpen={globalModalThatIsOpen === 'resetPasswordRequest'}
@@ -161,10 +137,7 @@ export default class HeaderModals extends React.Component {
           onRequestClose={closeModal}
           style={customModalStyles}
         >
-          <ResetPasswordRequest
-            resetPasswordRequest={resetPasswordRequest}
-            closeModal={closeGlobalModal}
-          />
+          <ResetPasswordRequest />
         </Modal>
         <Modal
           isOpen={globalModalThatIsOpen === 'resetPasswordAttempt'}

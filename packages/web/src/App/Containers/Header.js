@@ -14,7 +14,6 @@ import UserActions from '../Shared/Redux/Entities/Users'
 import SessionActions from '../Shared/Redux/SessionRedux'
 import UXActions from '../Redux/UXRedux'
 import StoryActions from '../Shared/Redux/Entities/Stories'
-import SignupActions from '../Shared/Redux/SignupRedux'
 import HeaderModals from '../Components/HeaderModals'
 import { sizes } from '../Themes/Metrics'
 import { haveFieldsChanged } from '../Shared/Lib/draftChangedHelpers'
@@ -45,10 +44,7 @@ class Header extends React.Component {
     isLoggedIn: PropTypes.bool,
     loginReduxFetching: PropTypes.bool,
     loginReduxError: PropTypes.string,
-    signupReduxFetching: PropTypes.bool,
-    signupReduxError: PropTypes.string,
     blackHeader: PropTypes.bool,
-    attemptLogin: PropTypes.func,
     attemptLogout: PropTypes.func,
     attemptChangePassword: PropTypes.func,
     attemptGetUserFeed: PropTypes.func,
@@ -70,8 +66,6 @@ class Header extends React.Component {
     signedUp: PropTypes.bool,
     flagStory: PropTypes.func,
     deleteStory: PropTypes.func,
-    resetPasswordRequest: PropTypes.func,
-    signupFacebook: PropTypes.func,
   }
 
   constructor(props) {
@@ -102,10 +96,6 @@ class Header extends React.Component {
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleWindowResize)
     window.removeEventListener('scroll', this.handleScroll)
-  }
-
-  _loginFacebook = () => {
-    this.props.signupFacebook()
   }
 
   componentDidUpdate(prevProps) {
@@ -161,10 +151,6 @@ class Header extends React.Component {
     this.setState({ modal: 'login' })
   }
 
-  openSignupModal = () => {
-    this.setState({ modal: 'signup' })
-  }
-
   openSaveEditsModal = path => {
     if (
       this.props.workingDraft
@@ -203,9 +189,6 @@ class Header extends React.Component {
       isLoggedIn,
       loginReduxFetching,
       loginReduxError,
-      signupReduxFetching,
-      signupReduxError,
-      attemptLogin,
       attemptLogout,
       attemptChangePassword,
       closeGlobalModal,
@@ -228,7 +211,6 @@ class Header extends React.Component {
       originalDraft,
       flagStory,
       deleteStory,
-      resetPasswordRequest,
     } = this.props
 
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
@@ -266,10 +248,7 @@ class Header extends React.Component {
           <HeaderModals
             closeModal={this.closeModal}
             closeGlobalModal={closeGlobalModal}
-            openSignupModal={this.openSignupModal}
-            attemptLogin={attemptLogin}
             attemptLogout={attemptLogout}
-            openLoginModal={this.openLoginModal}
             userId={currentUserId}
             currentUserProfile={currentUserProfile}
             currentUserEmail={currentUserEmail}
@@ -280,8 +259,6 @@ class Header extends React.Component {
             attemptChangePassword={attemptChangePassword}
             loginReduxFetching={loginReduxFetching}
             loginReduxError={loginReduxError}
-            signupReduxFetching={signupReduxFetching}
-            signupReduxError={signupReduxError}
             attemptUpdateUser={attemptUpdateUser}
             userEntitiesUpdating={userEntitiesUpdating}
             userEntitiesError={userEntitiesError}
@@ -293,9 +270,7 @@ class Header extends React.Component {
             resetCreateStore={this._resetCreateStore}
             flagStory={flagStory}
             deleteStory={deleteStory}
-            loginFacebook={this._loginFacebook}
             openGlobalModal={openGlobalModal}
-            resetPasswordRequest={resetPasswordRequest}
           />
         </StyledGrid>
         <HeaderSpacer spacerSize={spacerSize} />
@@ -313,8 +288,6 @@ function mapStateToProps(state) {
     isLoggedIn: state.login.isLoggedIn,
     loginReduxFetching: state.login.fetching,
     loginReduxError: state.login.error,
-    signupReduxFetching: state.signup.fetching,
-    signupReduxError: state.signup.error,
     blackHeader: _.includes(['/', '/feed', ''], pathname) ? false : true,
     globalModalThatIsOpen: state.ux.modalName,
     globalModalParams: state.ux.params,
@@ -335,8 +308,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    attemptLogin: (userIdentifier, password) =>
-      dispatch(LoginActions.loginRequest(userIdentifier, password)),
     attemptLogout: tokens => dispatch(SessionActions.logout(tokens)),
     attemptChangePassword: (userId, oldPassword, newPassword) =>
       dispatch(LoginActions.changePasswordRequest(userId, oldPassword, newPassword)),
@@ -349,8 +320,6 @@ function mapDispatchToProps(dispatch) {
     flagStory: (sessionUserId, storyId) => dispatch(StoryActions.flagStory(sessionUserId, storyId)),
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
     markSeen: activityId => dispatch(UserActions.activitySeen(activityId)),
-    resetPasswordRequest: email => dispatch(LoginActions.resetPasswordRequest(email)),
-    signupFacebook: () => dispatch(SignupActions.signupFacebook()),
   }
 }
 

@@ -7,18 +7,22 @@ import {Row} from '../FlexboxGrid'
 import RoundedButton from '../RoundedButton'
 
 const Container = styled.div`
-  position: relative;
-  margin: 20px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+  z-index: 1;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     justify-content: space-evenly;
   }
 `
 
-const ButtonIconContainer = styled.div``
+const ButtonIconContainer = styled.div`
+  // background-color: blue;
+`
 
 const StyledIcon = styled(Icon)`
   align-self: center;
@@ -40,7 +44,7 @@ export function TrashButton({removeFeedItem}) {
     <RoundedButton
       type='grey'
       padding='even'
-      margin='none'
+      margin='medium'
       width='50px'
       height='50px'
       onClick={removeFeedItem}
@@ -86,7 +90,7 @@ export default class FooterToolbar extends Component {
       isDetailsView,
       onRight,
       onLeft,
-      syncProgressMessage
+      syncProgressMessage,
     } = this.props
 
     return (

@@ -36,7 +36,6 @@ const OpaqueCover = styled(Overlay)`
   }
 `
 
-
 class Profile extends ContainerWithFeedList {
   static propTypes = {
     match: PropTypes.object,
@@ -83,7 +82,7 @@ class Profile extends ContainerWithFeedList {
       setTimeout(() => {
         openGlobalModal('resetPasswordAttempt', {
           path: location.pathname,
-          token: location.search.substring(4)
+          token: location.search.substring(4),
         })
       }, 1500)
     }
@@ -114,12 +113,13 @@ class Profile extends ContainerWithFeedList {
     const {
       match, profilesUser, sessionUserId,
       myFollowedUsers, userError,
-      userUpdating, updateUser, uploadMedia
+      userUpdating, updateUser, uploadMedia,
+      openGlobalModal,
     } = this.props
     if (!profilesUser) return null
 
-    let path = match.path.split("/")
-    const isEdit = path[path.length-1] === 'edit'
+    let path = match.path.split('/')
+    const isEdit = path[path.length - 1] === 'edit'
     const isUsersProfile = profilesUser.id === sessionUserId
     const isFollowing = _.includes(myFollowedUsers, profilesUser.id)
     const {selectedFeedItems} = this.getSelectedFeedItems()
@@ -138,6 +138,7 @@ class Profile extends ContainerWithFeedList {
           toProfileView={this._toProfileReroute}
           updateUser={updateUser}
           uploadMedia={uploadMedia}
+          openGlobalModal={openGlobalModal}
         />
         <ListWrapper>
           <TabBar
@@ -159,11 +160,10 @@ class Profile extends ContainerWithFeedList {
   }
 }
 
-
 function mapStateToProps(state, ownProps) {
   const userId = ownProps.match.params.userId
   let {stories, users, guides} = state.entities
-  const profilesUser =  users.entities[userId]
+  const profilesUser = users.entities[userId]
   const sessionUserId = state.session.userId
   const myFollowedUsersObject = users.userFollowingByUserIdAndId[sessionUserId]
   const myFollowedUsers = myFollowedUsersObject ? myFollowedUsersObject.byId : undefined

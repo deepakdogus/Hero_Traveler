@@ -18,7 +18,7 @@ const Sidebar = styled.div`
 
 const SidebarDemiLink = styled.p`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
-  color: ${props =>  props.theme.Colors.background};
+  color: ${props => props.theme.Colors.background};
   font-weight: 400;
   letter-spacing: .7px;
   font-size: 16px;
@@ -95,7 +95,8 @@ class ProfileMenu extends React.Component{
     const {haveFieldsChanged, workingDraft, originalDraft, openSaveEditsModal} = this.props
     if (this._shouldOpenSaveEditsModal()){
       rerouteFunc()
-    } else if (haveFieldsChanged(workingDraft, originalDraft)) {
+    }
+    else if (haveFieldsChanged(workingDraft, originalDraft)) {
       openSaveEditsModal(pathname)
     }
   }
@@ -105,7 +106,6 @@ class ProfileMenu extends React.Component{
     return !this.props.pathname.includes('editStory')
       || !haveFieldsChanged(workingDraft, originalDraft)
   }
-
 
   openFAQ = () => {
     this.openGlobalModalAndClose('faqTermsAndConditions')
@@ -159,7 +159,7 @@ class ProfileMenu extends React.Component{
           FAQ
         </SidebarDemiLink>
         <SidebarDemiLink onClick={this._openSaveEditsModalToLogout}>
-          Logout
+          Log Out
         </SidebarDemiLink>
       </Sidebar>
     )

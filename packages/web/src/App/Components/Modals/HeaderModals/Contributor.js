@@ -1,11 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
+import onClickOutside from 'react-onclickoutside'
 
 import logo from '../../../Shared/Images/ht-icons/icon_contributor-popup-logo@2x.png'
 import contributorSrc from '../../../Shared/Images/ht-icons/icon_contibutor-popup-badge@2x.png'
 import {
   Title,
-  Text
+  Text,
 } from '../../Modals/Shared'
 
 const Container = styled.div`
@@ -43,7 +44,12 @@ const Badge = styled(StyledImage)`
   margin: 40px auto;
 `
 
-export default class Contributor extends React.Component {
+class Contributor extends React.Component {
+
+  handleClickOutside = (e) => {
+    e.preventDefault()
+    this.props.closeGlobalModal()
+  }
 
   render() {
     return (
@@ -56,3 +62,5 @@ export default class Contributor extends React.Component {
     )
   }
 }
+
+export default onClickOutside(Contributor)

@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import Modal from 'react-modal'
 
 import RightModal from '../RightModal'
 import ProfileHeaderView from './ProfileHeaderView'
@@ -15,20 +14,8 @@ import CreateBoard from '../Modals/CreateBoard'
 import Inbox from '../Modals/Inbox'
 import InboxThread from '../Modals/InboxThread'
 import ProfileBio from '../Modals/ProfileBio'
-import Contributor from '../Modals/HeaderModals/Contributor'
 
 const Container = styled.div``
-
-const contributorModalStyles = {
-  content: {
-    width: 380,
-    margin: 'auto',
-  },
-  overlay: {
-    backgroundColor: 'rgba(0,0,0, .5)',
-    zIndex: 3,
-  }
-}
 
 export default class ProfileHeader extends React.Component {
   static propTypes = {
@@ -57,8 +44,8 @@ export default class ProfileHeader extends React.Component {
   openFollowedByModal = () => this.setState({ modal: 'followedBy' })
   openFollowingModal = () => this.setState({ modal: 'following' })
   openBioModal = () => this.setState({modal: 'profileBio'})
-  openContributorModal = () => this.setState({modal: 'contributor'})
   openInboxModal = () => this.setState({modal: 'inbox'})
+  openContributor = () => this.props.openGlobalModal('contributor')
 
   render () {
     const {user, isEdit } = this.props
@@ -69,7 +56,7 @@ export default class ProfileHeader extends React.Component {
           <ProfileHeaderView
             {...this.props}
             openBio={this.openBioModal}
-            openContributor={this.openContributorModal}
+            openContributor={this.openContributor}
             openFollowedBy={this.openFollowedByModal}
             openFollowing={this.openFollowingModal}
           />}
@@ -134,14 +121,6 @@ export default class ProfileHeader extends React.Component {
         >
           <ProfileBio closeModal={this.closeModal} profile={user}/>
         </RightModal>
-        <Modal
-          isOpen={this.state.modal === 'contributor'}
-          contentLabel='Contributor'
-          onRequestClose={this.closeModal}
-          style={contributorModalStyles}
-        >
-          <Contributor/>
-        </Modal>
       </Container>
     )
   }

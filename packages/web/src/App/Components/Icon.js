@@ -6,7 +6,7 @@ import { Images } from '../Shared/Themes'
 
 export function getSize(props, defaultOverride = '25px') {
   const switchStatement = props.size || props.type
-  
+
   switch(switchStatement) {
     case 'avatar':
       return '30px'
@@ -33,7 +33,6 @@ const StyledIcon = styled.img`
   margin: ${props => props.center ? 'auto' : 0};
   cursor: ${props => props.onClick ? 'pointer' : 'auto'}
 `
-
 
 export default class Icon extends React.Component {
   static propTypes = {
@@ -164,6 +163,8 @@ export default class Icon extends React.Component {
         return Images.components
       case 'trash':
         return Images.iconEditImageTrash
+      case 'trashLarge':
+        return Images.iconEditImageTrashLarge
       case 'addCoverCamera':
         return Images.iconAddCoverCamera
       case 'google':
@@ -187,6 +188,8 @@ export default class Icon extends React.Component {
       case 'profile':
       case 'createSave':
         return Images.iconCreateSave
+      case 'createSaveLarge':
+        return Images.iconCreateSaveLarge
       case 'createPhoto':
         return Images.iconCreatePhoto
       case 'createVideo':

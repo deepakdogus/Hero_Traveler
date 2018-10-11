@@ -25,13 +25,10 @@ const ButtonIconContainer = styled.div`
 `
 
 const StyledIcon = styled(Icon)`
+  width: 35px;
+  height: 35px;
   align-self: center;
   cursor: pointer;
-`
-
-const TrashIcon = styled(StyledIcon)`
-  width: 20px;
-  height: 27px;
 `
 
 const Text = styled.p`
@@ -39,7 +36,7 @@ const Text = styled.p`
   margin: 0 auto;
 `
 
-export function TrashButton({removeFeedItem}) {
+export function TrashButton({ removeFeedItem }) {
   return (
     <RoundedButton
       type='grey'
@@ -49,7 +46,7 @@ export function TrashButton({removeFeedItem}) {
       height='50px'
       onClick={removeFeedItem}
     >
-      <TrashIcon name='trash'/>
+      <StyledIcon name='trashLarge'/>
     </RoundedButton>
   )
 }
@@ -78,7 +75,7 @@ export default class FooterToolbar extends Component {
             height='50px'
             onClick={updateDraft}
           >
-            <StyledIcon name='createSave'/>
+            <StyledIcon name='createSaveLarge'/>
           </RoundedButton>
         </Row>
       </ButtonIconContainer>

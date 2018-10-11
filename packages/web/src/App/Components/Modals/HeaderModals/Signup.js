@@ -33,11 +33,13 @@ const ToSText = styled(Text)`
   font-size: 12px;
   margin-bottom: 39px;
 `
+
 const SignupErrorText = styled(Text)`
   font-size: 14px;
   margin: 0;
   color: ${props => props.theme.Colors.errorRed};
 `
+
 const SignupFetchingText = styled(Text)`
   font-size: 14px;
   margin: 0;

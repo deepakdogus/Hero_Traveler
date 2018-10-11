@@ -153,7 +153,7 @@ export default class HeaderModals extends React.Component {
           onRequestClose={closeModal}
           style={contributorModalStyles}
         >
-          <Contributor/>
+          <Contributor closeGlobalModal={closeGlobalModal} />
         </Modal>
         <Modal
           isOpen={globalModalThatIsOpen === 'saveEdits'}

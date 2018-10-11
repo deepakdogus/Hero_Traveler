@@ -1,8 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import RoundedButton from '../../RoundedButton'
+import {connect} from 'react-redux'
 import onClickOutside from 'react-onclickoutside'
+
+import LoginActions from '../../../Shared/Redux/LoginRedux'
+import UXActions from '../../../Redux/UXRedux'
+import RoundedButton from '../../RoundedButton'
 import {
   Container,
   Title,
@@ -19,7 +23,7 @@ const RestyledInput = styled(StyledInput)`
 
 class ResetPassword extends React.Component {
   static propTypes = {
-    closeModal: PropTypes.func,
+    closeGlobalModal: PropTypes.func,
     resetPasswordRequest: PropTypes.func,
   }
 
@@ -30,7 +34,7 @@ class ResetPassword extends React.Component {
 
   handleClickOutside = (e) => {
     e.preventDefault()
-    this.props.closeModal()
+    this.props.closeGlobalModal()
   }
 
   _handleEmailChange = (e) => {
@@ -45,16 +49,15 @@ class ResetPassword extends React.Component {
       ? 'Email is required'
       : errors.email
       this.setState({error: errorMessage})
-    } else {
+    }
+    else {
       this.props.resetPasswordRequest(this.state.email)
       alert('A password reset link has been emailed to you!')
-      this.props.closeModal()
+      this.props.closeGlobalModal()
     }
-
   }
 
   render() {
-
     return (
       <Container>
         <Title>RESET PASSWORD</Title>
@@ -79,4 +82,14 @@ class ResetPassword extends React.Component {
   }
 }
 
-export default onClickOutside(ResetPassword)
+function mapDispatchToProps(dispatch) {
+  return {
+    closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
+    resetPasswordRequest: email => dispatch(LoginActions.resetPasswordRequest(email)),
+  }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(onClickOutside(ResetPassword))

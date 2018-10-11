@@ -1,5 +1,3 @@
-/* eslint no-useless-escape: 0 */
-
 import React from 'react'
 import {connect} from 'react-redux'
 import styled from 'styled-components'
@@ -8,6 +6,7 @@ import _ from 'lodash'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import R from 'ramda'
 
+import UXActions from '../../../Redux/UXRedux'
 import SignupActions, {hasSignedUp} from '../../../Shared/Redux/SignupRedux'
 
 import RoundedButton from '../../RoundedButton'
@@ -22,7 +21,7 @@ import {
 } from '../Shared'
 import {
   validate,
-  asyncValidate
+  asyncValidate,
 } from '../../../Shared/Lib/userFormValidation'
 
 const SmallBold = styled.strong`
@@ -46,7 +45,7 @@ const SignupFetchingText = styled(Text)`
 
 class Signup extends React.Component {
   static propTypes = {
-    onLoginClick: PropTypes.func,
+    openGlobalModal: PropTypes.func,
     onAttemptSignup: PropTypes.func,
     fetching: PropTypes.bool,
     fullName: PropTypes.string,
@@ -59,7 +58,7 @@ class Signup extends React.Component {
 
   _onTextChange = (event) => {
     this.setState({
-      [event.target.name]: _.trim(event.target.value)
+      [event.target.name]: _.trim(event.target.value),
     })
   }
 
@@ -70,9 +69,13 @@ class Signup extends React.Component {
         _.trim(this.props.fullName),
         _.trim(this.props.username),
         _.trim(this.props.email),
-        _.trim(this.props.password)
+        _.trim(this.props.password),
       )
     }
+  }
+
+  openLogin = () => {
+    this.props.openGlobalModal('login')
   }
 
   render() {
@@ -92,11 +95,6 @@ class Signup extends React.Component {
           <SocialMediaButton
             type='facebookSignup'
             iconName='facebookLarge'
-            page='signup'
-          />
-          <SocialMediaButton
-            type='twitterSignup'
-            iconName='twitterLarge'
             page='signup'
           />
           <Text>Or</Text>
@@ -146,7 +144,7 @@ class Signup extends React.Component {
           />
         </form>
         <HasAccount>Already have an account?
-          <SignupText onClick={this.props.onLoginClick}> Login</SignupText>
+          <SignupText onClick={this.openLogin}> Login</SignupText>
         </HasAccount>
       </Container>
     )
@@ -166,15 +164,20 @@ export default R.compose(
         email: _.trim(selector(state, 'email')),
         password: _.trim(selector(state, 'password')),
         confirmPassword: _.trim(selector(state, 'confirmPassword')),
+        signupReduxFetching: state.signup.fetching,
+        signupReduxError: state.signup.error,
       }
     },
     (dispatch) => {
       return {
         onAttemptSignup: (fullName, username, email, password) => {
           return dispatch(SignupActions.signupEmail(fullName, username, email, password))
-        }
+        },
+        openGlobalModal: (modalName, params) => {
+          return dispatch(UXActions.openGlobalModal(modalName, params))
+        },
       }
-    }
+    },
   ),
   reduxForm({
     form: 'signupForm',
@@ -187,7 +190,7 @@ export default R.compose(
       username: '',
       email: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
     },
-  })
+  }),
 )(Signup)

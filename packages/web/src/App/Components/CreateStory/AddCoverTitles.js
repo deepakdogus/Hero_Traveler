@@ -18,7 +18,6 @@ const ButtonsHorizontalCenter = styled.div`
   height: 350px;
   margin: auto;
   ${VerticalCenterStyles}
-
 `
 
 const Wrapper = styled.div`
@@ -170,11 +169,9 @@ const CustonCloseX = styled.div`
   ${VerticalCenterStyles}
 `
 
-
 function isNewStory(props, nextProps) {
   return (!props.workingDraft && nextProps.workingDraft) ||
   (props.workingDraft.id !== nextProps.workingDraft.id)
-
 }
 
 export default class AddCoverTitles extends React.Component {
@@ -199,12 +196,12 @@ export default class AddCoverTitles extends React.Component {
       ? {
         'coverVideo': file,
         'coverImage': null,
-        'coverType': 'video'
+        'coverType': 'video',
       }
       : {
         'coverImage': file,
         'coverVideo': null,
-        'coverType': 'image'
+        'coverType': 'image',
       }
       // refactor later to differentiate between image and video
       this.props.onInputChange(update)

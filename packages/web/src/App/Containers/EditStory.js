@@ -22,10 +22,14 @@ import {
   haveFieldsChanged,
   isFieldSame,
 } from '../Shared/Lib/draftChangedHelpers'
-export const Container = styled.div``
+
+export const Container = styled.div`
+  display: flex;
+  justify-content: center;
+`
 
 export const ContentWrapper = styled.div`
-  margin: 0 17%;
+  width: 800px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     margin: 0;
   }
@@ -52,7 +56,7 @@ export const customModalStyles = {
   overlay: {
     backgroundColor: 'rgba(0,0,0, .5)',
     zIndex: 100,
-  }
+  },
 }
 
 /*
@@ -120,7 +124,7 @@ class EditStory extends Component {
     const {
       userId,
       registerDraft,
-      workingDraft
+      workingDraft,
     } = this.props
 
     if (workingDraft === null && this.isLocalStory()) {
@@ -202,7 +206,7 @@ class EditStory extends Component {
         originalDraft.id,
         this.cleanDraft(workingDraft),
         null,
-        isRepublishing
+        isRepublishing,
       )
     }
   }
@@ -214,7 +218,7 @@ class EditStory extends Component {
       {
         feedItemId: originalDraft.id,
         type: 'story',
-      }
+      },
     )
   }
 
@@ -232,7 +236,7 @@ class EditStory extends Component {
   isValid() {
     return _.every([
       !!this.props.workingDraft.coverImage || !!this.props.workingDraft.coverVideo,
-      !!_.trim(this.props.workingDraft.title)
+      !!_.trim(this.props.workingDraft.title),
     ])
   }
 
@@ -241,7 +245,7 @@ class EditStory extends Component {
       error: {
         title: 'Validation Error',
         text,
-      }
+      },
     })
   }
 
@@ -262,7 +266,7 @@ class EditStory extends Component {
   }
 
   nextScreen() {
-    this.props.reroute(`/editStory/${this.props.workingDraft.id}/details`);
+    this.props.reroute(`/editStory/${this.props.workingDraft.id}/details`)
   }
 
   saveCover = () => {
@@ -280,7 +284,7 @@ class EditStory extends Component {
       isVideoSame,
       isTitleSame,
       isDescriptionSame,
-      isCoverCaptionSame
+      isCoverCaptionSame,
     ])
     // If nothing has changed, let the user go forward if they navigated back
     if (nothingHasChanged) {
@@ -290,7 +294,7 @@ class EditStory extends Component {
         })
     }
     if (!this.isValid()) {
-      this.setValidationErrorState('Please add a cover and title to continue');
+      this.setValidationErrorState('Please add a cover and title to continue')
       return
     }
     if ((hasImageSelected || hasVideoSelected) && (!isVideoSame || !isImageSame) && !this.state.file) {
@@ -301,18 +305,20 @@ class EditStory extends Component {
       .then(() => {
         this.nextScreen()
       })
-
   }
 
   saveDetails = () => {
     const {workingDraft, publish} = this.props
     if (!workingDraft.type) {
       this.setValidationErrorState('Please include an activity')
-    } else if (!_.get(workingDraft, 'locationInfo.name')) {
+    }
+    else if (!_.get(workingDraft, 'locationInfo.name')) {
       this.setValidationErrorState('Please include a location')
-    } else if (workingDraft.draft) {
+    }
+    else if (workingDraft.draft) {
       publish(this.cleanDraft(workingDraft))
-    } else {
+    }
+    else {
       this._updateDraft()
     }
   }
@@ -333,7 +339,7 @@ class EditStory extends Component {
       workingDraft,
       match,
       subPath,
-      syncProgressMessage
+      syncProgressMessage,
     } = this.props
     const error = this.state.error
 
@@ -376,7 +382,6 @@ class EditStory extends Component {
   }
 }
 
-
 function getSubPath(location) {
   const splitPath = location.pathname.split('/')
   return splitPath[splitPath.length - 1]
@@ -384,7 +389,7 @@ function getSubPath(location) {
 
 function mapStateToProps(state, props) {
   const accessToken = _.find(state.session.tokens, {type: 'access'})
-  const storyId = _.get(props, "match.params.storyId")
+  const storyId = _.get(props, 'match.params.storyId')
 
   return {
     userId: state.session.userId,
@@ -421,6 +426,5 @@ function mapDispatchToProps(dispatch) {
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
   }
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditStory)

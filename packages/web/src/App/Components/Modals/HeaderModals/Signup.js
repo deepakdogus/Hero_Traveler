@@ -102,7 +102,7 @@ class Signup extends React.Component {
             name='fullName'
             component={FormInput}
             type='text'
-            placeholder='Full Name'
+            placeholder='Full Name (eg. John Smith)'
           />
           <Field
             name='username'

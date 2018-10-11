@@ -9,7 +9,7 @@ import {
   Col,
 } from '../FlexboxGrid'
 import ProfileMenu from './ProfileMenu'
-import { mediaMax, mediaMin } from '../ContentLayout.component'
+import { mediaMax } from '../ContentLayout.component'
 import Avatar from '../Avatar'
 import RoundedButton from '../RoundedButton'
 import Icon from '../Icon'
@@ -29,12 +29,6 @@ import { haveFieldsChanged } from '../../Shared/Lib/draftChangedHelpers'
 
 const LoggedInDesktopContainer = styled.div`
   ${mediaMax.desktop`display: none;`}
-`
-
-const LoggedInTabletContainer = styled.div`
-  ${mediaMin.desktop`display: none;`}
-  ${mediaMax.phone`display: none;`}
-  ${mediaMax.tablet`display: none;`}
 `
 
 const NotificationsIcon = styled(Icon)`
@@ -134,16 +128,41 @@ class HeaderLoggedIn extends React.Component {
     this.props.openGlobalModal('notificationsThread')
   }
 
-  render () {
+  renderProfileMenu = () => {
     const {
       openGlobalModal,
       userId,
-      profileAvatar,
       pathname,
       reroute,
       attemptLogout,
-      globalModal,
       globalModalParams,
+      workingDraft,
+      originalDraft,
+      openSaveEditsModal,
+    } = this.props
+
+    return (
+      <ProfileMenu
+        closeMyself={this.closeProfileMenu}
+        openGlobalModal={openGlobalModal}
+        userId={userId}
+        reroute={reroute}
+        attemptLogout={attemptLogout}
+        globalModalParams={globalModalParams}
+        haveFieldsChanged={haveFieldsChanged}
+        workingDraft={workingDraft}
+        originalDraft={originalDraft}
+        openSaveEditsModal={openSaveEditsModal}
+        pathname={pathname}
+      />
+    )
+  }
+
+  render () {
+    const {
+      profileAvatar,
+      pathname,
+      globalModal,
       workingDraft,
       originalDraft,
       openSaveEditsModal,
@@ -215,6 +234,7 @@ class HeaderLoggedIn extends React.Component {
                 >
                   <StyledRoundedCreateButton
                     text='Create'
+                    type='navbar'
                     profileAvatar={profileAvatar}
                     margin='none'
                   />
@@ -253,50 +273,15 @@ class HeaderLoggedIn extends React.Component {
                   />
                 </StyledRoundedAvatarButton>
                   {globalModal === 'profileMenu' &&
-                    <ProfileMenu
-                      closeMyself={this.closeProfileMenu}
-                      openGlobalModal={openGlobalModal}
-                      userId={userId}
-                      reroute={reroute}
-                      attemptLogout={attemptLogout}
-                      globalModalParams={globalModalParams}
-                      haveFieldsChanged={haveFieldsChanged}
-                      workingDraft={workingDraft}
-                      originalDraft={originalDraft}
-                      openSaveEditsModal={openSaveEditsModal}
-                      pathname={pathname}
-                    />
+                    this.renderProfileMenu()
                   }
             </LoggedInDesktopContainer>
-            <LoggedInTabletContainer>
-              <WrappedNavLink
-                to='/editStory/new'
-                styles={CreateButtonStyleOverride}
-              >
-                <RoundedButton
-                  text='Create'
-                  margin='none'
-                />
-              </WrappedNavLink>
-            </LoggedInTabletContainer>
             <HamburgerIcon
               name='hamburger'
               onClick={this._openHamburgerMenu}
             />
             {globalModal === 'hamburgerMenu' &&
-              <ProfileMenu
-                closeMyself={this.closeProfileMenu}
-                openGlobalModal={openGlobalModal}
-                userId={userId}
-                reroute={reroute}
-                attemptLogout={attemptLogout}
-                globalModalParams={globalModalParams}
-                haveFieldsChanged={haveFieldsChanged}
-                workingDraft={workingDraft}
-                originalDraft={originalDraft}
-                openSaveEditsModal={openSaveEditsModal}
-                pathname={pathname}
-              />
+              this.renderProfileMenu()
             }
           </Row>
         </Col>

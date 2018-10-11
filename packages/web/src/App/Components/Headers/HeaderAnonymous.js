@@ -56,6 +56,7 @@ export default class HeaderAnonymous extends React.Component {
               onClick={this._openLoginModal}
             >Log In</LoginLink>
             <StyledRoundedLoginButton
+              type='navbar'
               text='Login'
               onClick={this._openLoginModal}
             />

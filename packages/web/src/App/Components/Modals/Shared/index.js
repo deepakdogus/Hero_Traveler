@@ -3,7 +3,6 @@ import VerticalCenter from '../../VerticalCenter'
 import Icon from '../../Icon'
 
 const basicTextStyle = `
-  font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 16px;
   letter-spacing: .7px;
@@ -19,6 +18,7 @@ export const Title = styled.p`
   color: ${props => props.theme.Colors.background};
   letter-spacing: 1.2px;
   text-align: center;
+  font-family: ${props => props.theme.Fonts.type.montserrat}
 `
 
 export const RightTitle = styled.p`
@@ -35,6 +35,7 @@ export const RightTitle = styled.p`
 
 export const Text = styled.p`
   ${basicTextStyle};
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   color: ${props => props.theme.Colors.grey};
   text-align: center;
 `
@@ -46,6 +47,7 @@ export const HasAccount = styled(Text)`
 
 export const SignupText = styled.span`
   ${basicTextStyle};
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-size: 15px;
   margin-top: 15px;
   font-weight: 600;
@@ -62,6 +64,7 @@ export const StyledInput = styled.input`
   border-width: 0 0 1px;
   border-color: ${props => props.theme.Colors.dividerGrey};
   margin-bottom: 25px;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
 `
 
 //RightModal Styles

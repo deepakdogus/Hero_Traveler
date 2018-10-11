@@ -9,12 +9,11 @@ import {
   LoginLink,
   Logo,
   Divider,
-  SearchNav
+  SearchNav,
 } from './Shared'
 
 export default class HeaderAnonymous extends React.Component {
   static propTypes = {
-    openLoginModal: PropTypes.func,
     pathname: PropTypes.string,
     haveFieldsChanged: PropTypes.func,
     workingDraft: PropTypes.object,
@@ -54,7 +53,7 @@ export default class HeaderAnonymous extends React.Component {
             />
             <Divider>&nbsp;</Divider>
             <LoginLink
-              onClick={this.props.openLoginModal}
+              onClick={this._openLoginModal}
             >Log In</LoginLink>
             <StyledRoundedLoginButton
               text='Login'

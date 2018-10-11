@@ -22,7 +22,7 @@ import {
 } from '../Shared'
 import {
   validate,
-  asyncValidate
+  asyncValidate,
 } from '../../../Shared/Lib/userFormValidation'
 
 const SmallBold = styled.strong`
@@ -59,7 +59,7 @@ class Signup extends React.Component {
 
   _onTextChange = (event) => {
     this.setState({
-      [event.target.name]: _.trim(event.target.value)
+      [event.target.name]: _.trim(event.target.value),
     })
   }
 
@@ -70,7 +70,7 @@ class Signup extends React.Component {
         _.trim(this.props.fullName),
         _.trim(this.props.username),
         _.trim(this.props.email),
-        _.trim(this.props.password)
+        _.trim(this.props.password),
       )
     }
   }
@@ -92,11 +92,6 @@ class Signup extends React.Component {
           <SocialMediaButton
             type='facebookSignup'
             iconName='facebookLarge'
-            page='signup'
-          />
-          <SocialMediaButton
-            type='twitterSignup'
-            iconName='twitterLarge'
             page='signup'
           />
           <Text>Or</Text>
@@ -172,9 +167,9 @@ export default R.compose(
       return {
         onAttemptSignup: (fullName, username, email, password) => {
           return dispatch(SignupActions.signupEmail(fullName, username, email, password))
-        }
+        },
       }
-    }
+    },
   ),
   reduxForm({
     form: 'signupForm',
@@ -187,7 +182,7 @@ export default R.compose(
       username: '',
       email: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
     },
-  })
+  }),
 )(Signup)

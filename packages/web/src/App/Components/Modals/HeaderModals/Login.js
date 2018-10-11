@@ -62,9 +62,10 @@ class Login extends React.Component {
     const {password, userIdentifier} = this.state
     if(!password || !userIdentifier){
       this.setState({
-        localError: 'Please input both username and password'
+        localError: 'Please input both username and password',
       })
-    } else {
+    }
+    else {
       onAttemptLogin(userIdentifier, password)
       if(this.state.localError) {
         this.setState({localError: ''})
@@ -89,13 +90,14 @@ class Login extends React.Component {
       onSignupClick,
       loginReduxFetching,
       loginReduxError,
-      loginFacebook
+      loginFacebook,
     } = this.props
 
     if (loginReduxError === 'Unauthorized' || loginReduxError === 'CLIENT_ERROR') {
-      loginReduxError = "Invalid username or password"
-    } else if (loginReduxError === 'TIMEOUT_ERROR' || loginReduxError === 'NETWORK_ERROR' ) {
-      loginReduxError = "Unable to login, check your connection..."
+      loginReduxError = 'Invalid username or password'
+    }
+    else if (loginReduxError === 'TIMEOUT_ERROR' || loginReduxError === 'NETWORK_ERROR' ) {
+      loginReduxError = 'Unable to login, check your connection...'
     }
 
     return (

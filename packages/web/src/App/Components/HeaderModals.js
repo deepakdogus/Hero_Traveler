@@ -35,14 +35,14 @@ const customModalStyles = {
     position: 'fixed',
     right: 'auto',
     top: '50%',
-    transform: 'translate(-50%,-50%)',
+    transform: 'translate(-50%, -50%)',
     minWidth: '20rem',
     maxWidth: '28rem',
   },
   overlay: {
-    backgroundColor: 'rgba(0,0,0, .5)',
+    backgroundColor: 'rgba(0, 0, 0, .5)',
     zIndex: 100,
-  }
+  },
 }
 
 const contributorModalStyles = {
@@ -51,8 +51,8 @@ const contributorModalStyles = {
     margin: 'auto',
   },
   overlay: {
-    backgroundColor: 'rgba(0,0,0, .5)'
-  }
+    backgroundColor: 'rgba(0, 0, 0, .5)',
+  },
 }
 
 export default class HeaderModals extends React.Component {

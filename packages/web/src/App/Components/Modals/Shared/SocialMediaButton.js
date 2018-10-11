@@ -30,6 +30,11 @@ const SocialMediaText = styled.p`
   letter-spacing: .7px;
   color: ${props => props.theme.Colors.white};
   margin: 7px 0;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+`
+
+const Bold = styled.strong`
+  font-weight: 700;
 `
 
 /*
@@ -69,7 +74,7 @@ export default class SocialMediaButton extends React.Component {
               <SelectedIcon name={iconName}/>
             </VerticalCenter>
             <SocialMediaText>{page === 'login' ? 'Login' : 'Sign up'} with
-              <strong> {type === 'facebookSignup' ? 'Facebook' : 'Twitter'}</strong>
+              <Bold> {type === 'facebookSignup' ? 'Facebook' : 'Twitter'}</Bold>
             </SocialMediaText>
           </Row>
         </RoundedButton>

@@ -238,7 +238,7 @@ const Bottom = styled(Row)`
 `
 
 const BadgeIcon = styled(Icon)`
-  margin-left: ${props => props.profileAvatar ? '0' : '6'}px;
+  margin-right: 6px;
 `
 
 const GuideIcon = styled(Icon)`
@@ -322,7 +322,7 @@ class FeedItemPreview extends Component {
       {
         guideId: guideId,
         storyId: feedItem.id,
-      }
+      },
     )
   }
 
@@ -344,7 +344,7 @@ class FeedItemPreview extends Component {
 
     const hasBadge = author.role === 'contributor' || author.role === 'founding member'
 
-    let imageUrl;
+    let imageUrl
     if (feedItem.coverImage) imageUrl = getImageUrl(feedItem.coverImage)
     else if (feedItem.coverVideo) {
       imageUrl = getImageUrl(feedItem.coverVideo, 'optimized', videoThumbnailOptions)
@@ -432,7 +432,6 @@ class FeedItemPreview extends Component {
   }
 }
 
-
 const mapStateToProps = (state, ownProps) => {
   const {session, entities} = state
   const sessionUserId = session.userId
@@ -469,6 +468,5 @@ const mapDispatchToProps = (dispatch, props) => {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(FeedItemPreview)
-

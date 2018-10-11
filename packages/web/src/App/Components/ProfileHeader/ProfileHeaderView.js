@@ -90,7 +90,12 @@ const Spacer = styled.div`
 `
 
 const BadgeContainer = styled.div`
+  margin-top: 10px;
   margin-left: 25px;
+`
+
+const ClickableIcon = styled(Icon)`
+  cursor: pointer;
 `
 
 export default class ProfileHeaderView extends React.Component {
@@ -117,22 +122,21 @@ export default class ProfileHeaderView extends React.Component {
     const roleType = this.props.user.role === 'contributor'
     ? {
       badgeType: 'profileBadge',
-      text: 'CONTRIBUTOR'
+      text: 'CONTRIBUTOR',
     } : {
       badgeType: 'founderBadge',
-      text: 'FOUNDING MEMBER'
+      text: 'FOUNDING MEMBER',
     }
 
     return (
       <BadgeContainer>
         <ClickRow onClick={this.props.openContributor}>
-          <Icon name={roleType.badgeType}/>
+          <ClickableIcon name={roleType.badgeType}/>
           <BottomLeftText>{roleType.text}</BottomLeftText>
         </ClickRow>
       </BadgeContainer>
     )
   }
-
 
   render () {
     const {

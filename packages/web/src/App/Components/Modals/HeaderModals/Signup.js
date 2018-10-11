@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import _ from 'lodash'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import R from 'ramda'
+import onClickOutside from 'react-onclickoutside'
 
 import UXActions from '../../../Redux/UXRedux'
 import SignupActions, {hasSignedUp} from '../../../Shared/Redux/SignupRedux'
@@ -46,6 +47,7 @@ const SignupFetchingText = styled(Text)`
 class Signup extends React.Component {
   static propTypes = {
     openGlobalModal: PropTypes.func,
+    closeGlobalModal: PropTypes.func,
     onAttemptSignup: PropTypes.func,
     fetching: PropTypes.bool,
     fullName: PropTypes.string,
@@ -54,6 +56,11 @@ class Signup extends React.Component {
     password: PropTypes.string,
     signupReduxFetching: PropTypes.bool,
     signupReduxError: PropTypes.string,
+  }
+
+  handleClickOutside = (e) => {
+    e.preventDefault()
+    this.props.closeGlobalModal()
   }
 
   _onTextChange = (event) => {
@@ -176,6 +183,7 @@ export default R.compose(
         openGlobalModal: (modalName, params) => {
           return dispatch(UXActions.openGlobalModal(modalName, params))
         },
+        closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
       }
     },
   ),
@@ -193,4 +201,4 @@ export default R.compose(
       confirmPassword: '',
     },
   }),
-)(Signup)
+)(onClickOutside(Signup))

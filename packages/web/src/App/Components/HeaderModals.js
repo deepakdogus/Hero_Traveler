@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Modal from 'react-modal'
+import _ from 'lodash'
 
 import styled from 'styled-components'
 import Login from './Modals/HeaderModals/Login'
@@ -45,15 +46,15 @@ const customModalStyles = {
   },
 }
 
-const contributorModalStyles = {
-  content: {
-    width: 380,
-    margin: 'auto',
+const contributorModalStyles = _.merge(
+  {},
+  customModalStyles,
+  {
+    content: {
+      padding: '1em',
+    },
   },
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, .5)',
-  },
-}
+)
 
 export default class HeaderModals extends React.Component {
   static propTypes = {
@@ -147,8 +148,8 @@ export default class HeaderModals extends React.Component {
           <ResetPasswordAttempt />
         </Modal>
         <Modal
-          isOpen={modal === 'contributor'}
-          contentLabel="Reset Password Modal"
+          isOpen={globalModalThatIsOpen === 'contributor'}
+          contentLabel='Contributor'
           onRequestClose={closeModal}
           style={contributorModalStyles}
         >

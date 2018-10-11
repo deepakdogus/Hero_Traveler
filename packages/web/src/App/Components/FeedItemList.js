@@ -3,12 +3,14 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 import FeedItemPreview from './FeedItemPreview'
+import FeedItemMessage from './FeedItemMessage'
 import HorizontalDivider from './HorizontalDivider'
 import { Row } from './FlexboxGrid'
 
 const StyledDivider = styled(HorizontalDivider)`
   max-width: 960px;
   margin: 20px auto;
+  border-width: 1px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     border-color: transparent;
     background-color: transparent;
@@ -30,6 +32,7 @@ export default class FeedItemList extends React.Component {
     type: PropTypes.string,
     isHorizontalList: PropTypes.bool,
     isShowAll: PropTypes.bool,
+    activeTab: PropTypes.string,
   }
 
   defaultProps = { isHorizontalList: false }
@@ -45,7 +48,16 @@ export default class FeedItemList extends React.Component {
       type,
       isHorizontalList,
       isShowAll,
+      activeTab,
     } = this.props
+
+    if (!feedItems || !feedItems.length) {
+      const noItemsMessage = `Looks like there are no ${
+        activeTab ? activeTab.toLowerCase() : 'stories'
+      } yet.`
+      return <FeedItemMessage message={noItemsMessage} />
+    }
+
     const renderedFeedItems = feedItems.reduce((rows, feedItem, index) => {
       /*
         We only need the first 4 elements for suggestions
@@ -57,8 +69,8 @@ export default class FeedItemList extends React.Component {
       if (!feedItem) return rows
       if (index !== 0 && !isHorizontalList) {
         rows.push((
-          <StyledDivider 
-            key={`hr-${feedItem.id}`} 
+          <StyledDivider
+            key={`hr-${feedItem.id}`}
             color={'lighter-grey'}
           />
         ))

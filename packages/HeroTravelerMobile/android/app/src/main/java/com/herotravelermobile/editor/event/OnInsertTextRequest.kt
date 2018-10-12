@@ -18,4 +18,6 @@ class OnInsertTextRequest(viewTag: Int, private val text: String):
             rctEventEmitter.receiveEvent(viewTag, eventName, this)
         }
     }
+
+    override fun canCoalesce() = false
 }

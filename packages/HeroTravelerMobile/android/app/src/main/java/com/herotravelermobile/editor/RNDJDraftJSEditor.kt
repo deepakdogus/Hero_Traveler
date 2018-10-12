@@ -4,13 +4,10 @@ import android.content.Context
 import android.graphics.Rect
 import android.text.Editable
 import android.text.Selection
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputConnection
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import com.facebook.react.uimanager.events.Event
-import com.herotravelermobile.editor.event.OnInsertTextRequest
-import com.herotravelermobile.editor.event.OnSelectionChangeRequest
+import com.herotravelermobile.editor.event.*
 import com.herotravelermobile.editor.model.Address
 import com.herotravelermobile.editor.model.DraftJsContent
 import com.herotravelermobile.editor.model.DraftJsSelection
@@ -22,13 +19,26 @@ class RNDJDraftJSEditor(context: Context) : EditText(context) {
 
     private val filter = DraftJsInputFilter(
             this,
-            { OnInsertTextRequest(id, it).sendIf(onInsertTextEnabled) }
+            { OnInsertTextRequest(id, it).sendIf(onInsertTextEnabled) },
+            { OnBackspaceRequest(id).sendIf(onBackspaceEnabled) },
+            { OnNewlineRequest(id).sendIf(onNewlineEnabled) },
+            { replacement, rangeToReplace ->
+                OnReplaceRangeRequest(
+                        id,
+                        replacement,
+                        _content.flatIndexToAddress(rangeToReplace.start),
+                        _content.flatIndexToAddress(rangeToReplace.endInclusive + 1)
+                ).sendIf(onReplaceRangeEnabled)
+            }
     )
 
     private var textWrapper : SelectionBlockingText? = null
 
     var onInsertTextEnabled = false
+    var onBackspaceEnabled = false
+    var onNewlineEnabled = false
     var onSelectionChangedEnabled = false
+    var onReplaceRangeEnabled = false
 
     var eventSender: ((Event<*>) -> Unit?)? = null
 
@@ -36,6 +46,22 @@ class RNDJDraftJSEditor(context: Context) : EditText(context) {
 
     private val inputMethodManager =
             context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+    // Workaround. Parent constructor calls getText() before selectionCallback gets initialized
+    private var _selectionCallback: ((Int, Int) -> Unit?)? = null
+    private val selectionCallback: (Int, Int) -> Unit?
+        get() {
+            return _selectionCallback ?: ({ start: Int, end: Int ->
+                val (startKey, startOffset) = _content.flatIndexToAddress(start)
+                val (endKey, endOffset) = _content.flatIndexToAddress(end)
+                eventSender?.invoke(
+                        OnSelectionChangeRequest(
+                                id,
+                                DraftJsSelection(startKey, startOffset, endKey, endOffset, hasFocus())
+                        )
+                )
+            }).also { _selectionCallback = it }
+        }
 
     init {
         filters = arrayOf(* (filters ?: emptyArray()), filter)
@@ -87,34 +113,26 @@ class RNDJDraftJSEditor(context: Context) : EditText(context) {
         }
     }
 
-    private fun selectionCallback() = { start: Int, end: Int ->
-        val (startKey, startOffset) = _content.flatIndexToAddress(start)
-        val (endKey, endOffset) = _content.flatIndexToAddress(end)
-        eventSender?.invoke(OnSelectionChangeRequest(
-                id,
-                DraftJsSelection(startKey, startOffset, endKey, endOffset, hasFocus())
-        ))
-    }
-
     override fun getText(): Editable? {
         val text = super.getText()
         if (text !== textWrapper?.delegate) {
-            textWrapper = text?.let { SelectionBlockingText(it, selectionCallback()) }
+            textWrapper = text?.let { SelectionBlockingText(it, selectionCallback) }
         }
         return textWrapper
     }
+
+  /*  override fun getEditableText(): Editable? {
+        val text = super.getEditableText()
+        if (text !== textWrapper?.delegate) {
+            textWrapper = text?.let { SelectionBlockingText(it, selectionCallback) }
+        }
+        return textWrapper
+    }*/
 
     private fun forceSetText(text: CharSequence?) {
         filter.enabled = false
         setText(text)
         filter.enabled = true
-    }
-
-    override fun onCreateInputConnection(outAttrs: EditorInfo?): InputConnection {
-        return SelectionBlockingConnection(
-                super.onCreateInputConnection(outAttrs),
-                selectionCallback()
-        )
     }
 
     private fun Event<*>.sendIf(condition: Boolean) { if (condition) eventSender?.invoke(this) }

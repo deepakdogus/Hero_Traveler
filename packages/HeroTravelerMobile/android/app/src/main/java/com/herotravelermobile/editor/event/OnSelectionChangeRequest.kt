@@ -23,4 +23,6 @@ class OnSelectionChangeRequest(viewTag: Int, private val selection: DraftJsSelec
             rctEventEmitter.receiveEvent(viewTag, eventName, this)
         }
     }
+
+    override fun canCoalesce() = false
 }

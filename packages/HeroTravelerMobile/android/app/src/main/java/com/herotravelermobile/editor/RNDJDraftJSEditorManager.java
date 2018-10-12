@@ -22,7 +22,10 @@ import com.facebook.react.views.scroll.ScrollEventType;
 import com.facebook.react.views.text.ReactTextUpdate;
 import com.facebook.react.views.text.TextInlineImageSpan;
 import com.facebook.react.views.textinput.ReactTextInputShadowNode;
+import com.herotravelermobile.editor.event.OnBackspaceRequest;
 import com.herotravelermobile.editor.event.OnInsertTextRequest;
+import com.herotravelermobile.editor.event.OnNewlineRequest;
+import com.herotravelermobile.editor.event.OnReplaceRangeRequest;
 import com.herotravelermobile.editor.event.OnSelectionChangeRequest;
 import com.herotravelermobile.editor.model.DraftJsContent;
 import com.herotravelermobile.editor.model.DraftJsSelection;
@@ -173,6 +176,18 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<RNDJDraftJSEditor,
                         OnInsertTextRequest.EVENT_NAME,
                         MapBuilder.of("registrationName", OnInsertTextRequest.EVENT_NAME)
                 )
+                .put(
+                        OnBackspaceRequest.EVENT_NAME,
+                        MapBuilder.of("registrationName", OnBackspaceRequest.EVENT_NAME)
+                )
+                .put(
+                        OnNewlineRequest.EVENT_NAME,
+                        MapBuilder.of("registrationName", OnNewlineRequest.EVENT_NAME)
+                )
+                .put(
+                        OnReplaceRangeRequest.EVENT_NAME,
+                        MapBuilder.of("registrationName", OnReplaceRangeRequest.EVENT_NAME)
+                )
                 .build();
     }
 
@@ -237,6 +252,21 @@ public class RNDJDraftJSEditorManager extends BaseViewManager<RNDJDraftJSEditor,
     @ReactProp(name = "onInsertTextRequest")
     public void setOnInsertTextRequest(RNDJDraftJSEditor view, boolean enabled) {
         view.setOnInsertTextEnabled(enabled);
+    }
+    
+    @ReactProp(name = "onBackspaceRequest")
+    public void setOnBackspaceRequest(RNDJDraftJSEditor view, boolean enabled) {
+        view.setOnBackspaceEnabled(enabled);
+    }
+
+    @ReactProp(name = "onNewlineRequest")
+    public void setOnNewlineRequest(RNDJDraftJSEditor view, boolean enabled) {
+        view.setOnNewlineEnabled(enabled);
+    }
+
+    @ReactProp(name = "onReplaceRangeRequest")
+    public void setOnReplaceRangeRequest(RNDJDraftJSEditor view, boolean enabled) {
+        view.setOnReplaceRangeEnabled(enabled);
     }
 
     @NonNull

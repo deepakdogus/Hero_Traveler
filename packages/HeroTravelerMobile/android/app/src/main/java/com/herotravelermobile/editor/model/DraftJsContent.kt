@@ -46,9 +46,11 @@ data class DraftJsContent(
 
     operator fun get(key: String) = keyToIndexMap[key]
 
-    fun addressToFlatIndex(addr: Address): Int {
-        val index = keyToIndexMap[addr.key]
-        return if (index != null) flatOffsets[index] + addr.offset else -1
+    fun addressToFlatIndex(addr: Address) = addressToFlatIndex(addr.key, addr.offset)
+
+    fun addressToFlatIndex(key: String, offset: Int): Int {
+        val index = keyToIndexMap[key]
+        return if (index != null) flatOffsets[index] + offset else -1
     }
 
     fun flatIndexToAddress(index: Int): Address {

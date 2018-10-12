@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import background from '../Shared/Images/create-story.png'
+import background from '../Shared/Images/explore-hero.jpg'
 import HeaderImageWrapper from './HeaderImageWrapper'
 import VerticalCenter from './VerticalCenter'
 import { OverlayStyles } from './Overlay'

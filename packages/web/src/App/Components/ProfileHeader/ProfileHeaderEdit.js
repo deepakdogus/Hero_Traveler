@@ -37,7 +37,7 @@ const customModalStyles = {
   overlay: {
     backgroundColor: 'rgba(0,0,0, .5)',
     zIndex: 100,
-  }
+  },
 }
 
 const CameraIcon = styled(Icon)`
@@ -131,7 +131,7 @@ const UsernameInput = styled.input`
   ${UsernameBaseStyles};
   font-family: ${props => props.theme.Fonts.type.montserrat}};
   color: ${props => props.theme.Colors.background};
-  width: 250px;
+  width: 454px;
   border-width: 0;
   padding-left: 5px;
 `
@@ -187,7 +187,7 @@ export default class ProfileHeaderEdit extends React.Component {
     if (nextProps.user.id !== this.props.user.id) {
       this.setState({
         bio: nextProps.user.bio,
-        username: nextProps.user.username
+        username: nextProps.user.username,
       })
     }
     // If save was successful, reroute
@@ -206,7 +206,7 @@ export default class ProfileHeaderEdit extends React.Component {
   setOptionsState = (type) => {
     this.setState({
       modal: 'editPhotoOptions',
-      photoType: type
+      photoType: type,
     })
   }
 
@@ -263,7 +263,6 @@ export default class ProfileHeaderEdit extends React.Component {
       username: this.state.username,
       about: this.state.about,
     })
-
   }
 
   render () {

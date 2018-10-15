@@ -96,14 +96,19 @@ const HiddenInput = styled.input`
 `
 
 const StyledInput = styled(Input)`
+  padding: 0;
   color: ${props => props.theme.Colors.grey};
   ::placeholder {
     color: ${props => props.theme.Colors.grey};
   }
 `
 
-const StyledTitleInput = styled(StyledInput)`
-  margin-top: 10px;
+const StyledTitleTextArea = styled.textarea`
+  width: 100%;
+  padding: 0;
+  resize: none;
+  outline: none;
+  border: none;
   text-align: left;
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-size: 38px;
@@ -170,8 +175,14 @@ export default class AddCoverTitles extends React.Component {
       title: props.workingDraft.title || '',
       description: props.workingDraft.description || '',
       coverCaption: props.workingDraft.coverCaption || '',
+      textAreaHeight: { height: '50px'},
+      textAreaBreakCharIdx: 0,
     }
+
+    this.textAreaRef = null
   }
+
+  _setTextAreaRef = (ref) => this.textAreaRef = ref
 
   _onCoverChange = (event) => {
     uploadFile(event, this, (file) => {
@@ -208,6 +219,35 @@ export default class AddCoverTitles extends React.Component {
     this.setState({
       [event.target.name]: event.target.value
     })
+  }
+
+  _onTextAreaTextChange = (event) => {
+    /*
+    Disallow new lines in textAreas. There's no access to keyCode in onChange
+    handler, so checking newline value of newest char instead
+    */
+    if (event.target.value.charCodeAt(event.target.value.length - 1) === 10) {
+      return
+    }
+
+    // set line break index so deleting first char of a newline reduces height
+    const textAreaBreakCharIdx =
+      this.state.textAreaHeight.height !== `${this.textAreaRef.scrollHeight}px`
+        ? this.state.title.length
+        : this.state.textAreaBreakCharIdx
+
+    const textAreaHeight =
+      event.target.value.length >= this.state.title.length ||
+      event.target.value.length >= this.state.textAreaBreakCharIdx
+        ? { height: `${this.textAreaRef.scrollHeight}px` }
+        : { height: `${this.textAreaRef.scrollHeight - 50 || 50}px` }
+
+    this.setState({
+      textAreaHeight,
+      textAreaBreakCharIdx,
+    })
+
+    this._onTextChange(event)
   }
 
   // add this to properly set the value of the titleInput
@@ -319,13 +359,16 @@ export default class AddCoverTitles extends React.Component {
         {!hasMediaAsset && !isGuide && <CoverCaptionSpacer />}
         {!isGuide &&
           <TitleInputsWrapper>
-            <StyledTitleInput
+            <StyledTitleTextArea
               type='text'
               placeholder='Add Title'
               name='title'
-              onChange={this._onTextChange}
+              onChange={this._onTextAreaTextChange}
               value={this.state.title}
+              innerRef={this._setTextAreaRef}
+              style={this.state.textAreaHeight}
               maxLength={40}
+              rows={1}
               hasMediaAsset={hasMediaAsset}
             />
             <StyledSubTitleInput

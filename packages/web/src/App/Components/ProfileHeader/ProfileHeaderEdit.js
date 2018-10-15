@@ -48,7 +48,7 @@ const CameraIcon = styled(Icon)`
 const PencilIcon = styled(Icon)`
   width: 35px;
   height: 35px;
-  margin: 10px 0;
+  margin: 5px 0;
 `
 
 const EditAvatarWrapper = styled(VerticalCenter)`

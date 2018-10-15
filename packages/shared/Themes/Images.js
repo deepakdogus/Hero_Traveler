@@ -34,6 +34,7 @@ const images = {
   iconEditImageTrash: require('../Images/ht-icons/icon_edit-image-trash.png'),
   iconEditImageTrashLarge: require('../Images/ht-icons/icon_edit-image-trash-large.png'),
   iconContentXWhite: require('../Images/ht-icons/icon_content-x-white.png'),
+  iconContentXBlack: require('../Images/ht-icons/icon_content-x-black.png'),
   iconContentPlusWhite: require('../Images/ht-icons/icon_content-plus.png'),
   iconContentXDark: require('../Images/ht-icons/icon_content-x.png'),
   iconNavHome: require('../Images/ht-icons/icon_nav-home.png'),

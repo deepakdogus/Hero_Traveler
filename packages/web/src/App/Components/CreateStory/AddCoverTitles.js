@@ -39,6 +39,8 @@ const RelativeWrapper = styled.div`
 `
 
 const DeleteIcon = styled(Icon)`
+  width: 32px;
+  height: 32px;
   align-self: center;
   cursor: pointer;
 `
@@ -150,25 +152,6 @@ const StyledCloseXContainer = styled(CloseXContainer)`
   z-index: 1;
 `
 
-// we cannot use a button if we want the hiddenInput to work
-// as such we have recreated the same styles as a button would
-// so that it matches CloseX that is used for the body media
-const CustonCloseX = styled.div`
-  cursor: pointer;
-  border-radius: 18px;
-  border: 1px solid;
-  border-color: ${props => props.theme.Colors.closeXBorder};
-  margin: 3px;
-  padding: 5px;
-  background-color: ${props => props.theme.Colors.backgroundOpaque};
-  width: 18px;
-  height: 18px;
-  &:hover {
-    background-color: ${props => props.theme.Colors.backgroundOpaque};
-  };
-  ${VerticalCenterStyles}
-`
-
 function isNewStory(props, nextProps) {
   return (!props.workingDraft && nextProps.workingDraft) ||
   (props.workingDraft.id !== nextProps.workingDraft.id)
@@ -253,12 +236,7 @@ export default class AddCoverTitles extends React.Component {
     if (coverImage || coverVideo) return (
       <ReplaceUploadWrapper htmlFor="cover_upload_replace">
         <StyledCloseXContainer>
-          <CustonCloseX>
-            <DeleteIcon
-              size='small'
-              name='close'
-            />
-          </CustonCloseX>
+            <DeleteIcon size='small' name='closeBlack' />
         </StyledCloseXContainer>
         <HiddenInput
           type='file'

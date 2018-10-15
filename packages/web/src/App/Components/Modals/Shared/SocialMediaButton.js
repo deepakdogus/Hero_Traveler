@@ -14,13 +14,13 @@ const StyledIcon = styled(Icon)`
 
 const FacebookIcon = styled(StyledIcon)`
   height: 22px;
-  width: 11px;
-  padding: 0 7px;
+  width: 22px;
+  padding: 0;
 `
 
 const TwitterIcon = styled(StyledIcon)`
-  height: 16px;
-  width: 20px;
+  height: 22px;
+  width: 22px;
   margin-left: -21px;
 `
 
@@ -58,7 +58,7 @@ export default class SocialMediaButton extends React.Component {
       type,
       iconName,
       page,
-      onClick
+      onClick,
     } = this.props
     const SelectedIcon = this.getIcon()
 

@@ -1,7 +1,9 @@
 package com.herotravelermobile.editor
 
+import android.annotation.SuppressLint
+import android.view.Gravity
+import com.facebook.react.bridge.JSApplicationIllegalArgumentException
 import com.facebook.react.bridge.ReactContext
-
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.common.MapBuilder
 import com.facebook.react.module.annotations.ReactModule
@@ -9,15 +11,21 @@ import com.facebook.react.uimanager.BaseViewManager
 import com.facebook.react.uimanager.LayoutShadowNode
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.UIManagerModule
+import com.facebook.react.uimanager.ViewProps
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.facebook.react.uimanager.events.Event
 import com.facebook.react.views.scroll.ScrollEventType
 import com.facebook.react.views.text.ReactTextUpdate
 import com.facebook.react.views.text.TextInlineImageSpan
 import com.facebook.react.views.textinput.ReactTextInputShadowNode
-import com.herotravelermobile.editor.event.*
+import com.herotravelermobile.editor.event.OnBackspaceRequest
+import com.herotravelermobile.editor.event.OnInsertTextRequest
+import com.herotravelermobile.editor.event.OnNewlineRequest
+import com.herotravelermobile.editor.event.OnReplaceRangeRequest
+import com.herotravelermobile.editor.event.OnSelectionChangeRequest
 import com.herotravelermobile.editor.model.DraftJsContent
 import com.herotravelermobile.editor.model.DraftJsSelection
+
 /**
  * Manages instances of TextInput.
  */
@@ -180,6 +188,25 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
         val reactContext = view.context as ReactContext
         reactContext.getNativeModule(UIManagerModule::class.java).eventDispatcher
                 .dispatchEvent(event)
+    }
+
+    @SuppressLint("RtlHardcoded")
+    @ReactProp(name = ViewProps.TEXT_ALIGN)
+    fun setTextAlign(view: RNDJDraftJSEditor, textAlign: String?) {
+        if (textAlign == null || "auto" == textAlign) {
+            view.setGravityHorizontal(Gravity.NO_GRAVITY)
+        } else if ("left" == textAlign) {
+            view.setGravityHorizontal(Gravity.LEFT)
+        } else if ("right" == textAlign) {
+            view.setGravityHorizontal(Gravity.RIGHT)
+        } else if ("center" == textAlign) {
+            view.setGravityHorizontal(Gravity.CENTER_HORIZONTAL)
+        } else if ("justify" == textAlign) {
+            // Fallback gracefully for cross-platform compat instead of error
+            view.setGravityHorizontal(Gravity.LEFT)
+        } else {
+            throw JSApplicationIllegalArgumentException("Invalid textAlign: $textAlign")
+        }
     }
 
     private fun MapBuilder.Builder<String,Any>.put(eventName: String) =

@@ -4,15 +4,23 @@ import android.content.Context
 import android.graphics.Rect
 import android.text.Editable
 import android.text.Selection
+import android.view.Gravity
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import com.facebook.react.uimanager.events.Event
-import com.herotravelermobile.editor.event.*
+import com.herotravelermobile.editor.event.OnBackspaceRequest
+import com.herotravelermobile.editor.event.OnInsertTextRequest
+import com.herotravelermobile.editor.event.OnNewlineRequest
+import com.herotravelermobile.editor.event.OnReplaceRangeRequest
+import com.herotravelermobile.editor.event.OnSelectionChangeRequest
 import com.herotravelermobile.editor.model.Address
 import com.herotravelermobile.editor.model.DraftJsContent
 import com.herotravelermobile.editor.model.DraftJsSelection
 
 class RNDJDraftJSEditor(context: Context) : EditText(context) {
+    private val defaultGravityHorizontal: Int = gravity and
+            (Gravity.HORIZONTAL_GRAVITY_MASK or Gravity.RELATIVE_HORIZONTAL_GRAVITY_MASK)
+
     private lateinit var _content: DraftJsContent
 
     private lateinit var _selection: DraftJsSelection
@@ -65,6 +73,12 @@ class RNDJDraftJSEditor(context: Context) : EditText(context) {
 
     init {
         filters = arrayOf(* (filters ?: emptyArray()), filter)
+    }
+
+    internal fun setGravityHorizontal(gravityHorizontal: Int) {
+        gravity = gravity and Gravity.HORIZONTAL_GRAVITY_MASK.inv() and
+                Gravity.RELATIVE_HORIZONTAL_GRAVITY_MASK.inv() or
+                (if (gravityHorizontal != 0) gravityHorizontal else defaultGravityHorizontal)
     }
 
     fun setContent(content : DraftJsContent) {

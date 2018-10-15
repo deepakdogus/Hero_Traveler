@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import VerticalCenter from './VerticalCenter'
 
 function getMargin(props) {
-  if (props.margin === 'none') return 0;
+  if (props.margin === 'none') return 0
   else if (props.margin === 'small') return '3px'
   else if (props.margin === 'medium') return '11px'
   else if (props.margin === 'vertical') return '5px 0'
@@ -19,10 +19,10 @@ function getMargin(props) {
 
 // 2px 6px 3px is default react padding.
 function getPadding(props) {
-  if (props.padding ==='even') return '5px';
-  if (props.padding ==='evenMedium') return '11px';
-  if (props.padding ==='mediumEven') return '8px';
-  if (props.padding ==='medium') return '4px 8px 5px';
+  if (props.padding === 'even') return '5px'
+  if (props.padding === 'evenMedium') return '11px'
+  if (props.padding === 'mediumEven') return '8px'
+  if (props.padding === 'medium') return '4px 8px 5px'
   return '2px 6px 3px'
 }
 
@@ -57,7 +57,7 @@ function getBackgroundColor (type, colors) {
 }
 
 const StyledButton = styled.button`
-  cursor: pointer;
+  cursor: pointer
   font-family: ${props => props.theme.Fonts.type.montserrat};
   height: ${props => props.height || 'auto'};
   border-radius: 30px;
@@ -138,7 +138,7 @@ export default class RoundedButton extends React.Component {
     margin: PropTypes.string,
     padding: PropTypes.string,
     height: PropTypes.string,
-    textProps: PropTypes.object,
+    textProps: PropTypes.string,
   }
 
   renderContent() {
@@ -148,10 +148,7 @@ export default class RoundedButton extends React.Component {
     if (textProps) RenderText = styled(Text)`${textProps}`
     if (children) return children
     else return (
-      <RenderText
-        type={type}
-        {...this.textProps}
-      >
+      <RenderText type={type}>
         {text}
       </RenderText>
     )

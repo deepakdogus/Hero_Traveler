@@ -20,12 +20,12 @@ export default class FAQTermsAndConditions extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      activeTab: 'FAQ'
+      activeTab: 'FAQ',
     }
   }
 
   onClickTab = (event) => {
-    let tab = event.target.innerHTML.split("&amp;").join("&")
+    let tab = event.target.innerHTML.split('&amp;').join('&')
     if (this.state.activeTab !== tab) this.setState({ activeTab: tab })
   }
 
@@ -46,6 +46,3 @@ export default class FAQTermsAndConditions extends React.Component {
     )
   }
 }
-
-
-

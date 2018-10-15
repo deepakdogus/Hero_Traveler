@@ -15,7 +15,7 @@ export default class ContainerWithFeedList extends React.Component {
     stories: PropTypes.object,
   }
 
-  state = { activeTab: "STORIES"}
+  state = { activeTab: 'STORIES'}
 
   onClickTab = (event) => {
     let tab = event.target.innerHTML
@@ -56,7 +56,7 @@ export default class ContainerWithFeedList extends React.Component {
       userStoriesFetchStatus, storiesById,
       draftsFetchStatus, draftsById,
       userBookmarksFetchStatus, userBookmarksById,
-      guidesFetchStatus, guidesById
+      guidesFetchStatus, guidesById,
     } = this.props
 
     // will use fetchStatus to show loading/error
@@ -74,7 +74,7 @@ export default class ContainerWithFeedList extends React.Component {
       case 'GUIDES':
         return {
           fetchStatus: guidesFetchStatus,
-          selectedFeedItems: this.getFeedItemsByIds(guidesById, 'guides')
+          selectedFeedItems: this.getFeedItemsByIds(guidesById, 'guides'),
         }
       case 'STORIES':
       case 'ALL':

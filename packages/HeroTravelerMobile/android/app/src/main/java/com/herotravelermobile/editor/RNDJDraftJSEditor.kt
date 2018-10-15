@@ -121,13 +121,13 @@ class RNDJDraftJSEditor(context: Context) : EditText(context) {
         return textWrapper
     }
 
-  /*  override fun getEditableText(): Editable? {
+    override fun getEditableText(): Editable? {
         val text = super.getEditableText()
         if (text !== textWrapper?.delegate) {
             textWrapper = text?.let { SelectionBlockingText(it, selectionCallback) }
         }
         return textWrapper
-    }*/
+    }
 
     private fun forceSetText(text: CharSequence?) {
         filter.enabled = false

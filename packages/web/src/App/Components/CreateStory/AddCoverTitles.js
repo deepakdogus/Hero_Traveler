@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import Overlay from '../Overlay'
 import Icon from '../Icon'
 import {SubTitle, Input, CloseXContainer} from './Shared'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
@@ -45,7 +44,7 @@ const DeleteIcon = styled(Icon)`
   cursor: pointer;
 `
 
-const StoryOverlayWrapper = styled(Overlay)`
+const ImageWrapper = styled.div`
   margin: 40px auto 0;
   padding-top: 350px;
   width: 100%;
@@ -330,7 +329,7 @@ export default class AddCoverTitles extends React.Component {
     return (
       <RelativeWrapper>
         {!coverVideo &&
-          <StoryOverlayWrapper image={coverImage}/>
+          <ImageWrapper image={coverImage}/>
         }
         {coverVideo &&
           <LimitedWidthContainer>

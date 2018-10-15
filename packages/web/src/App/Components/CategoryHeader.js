@@ -27,9 +27,9 @@ const CategoryTitle = styled.p`
 const Centered = styled(VerticalCenter)`
   position: absolute;
   width: 100vw;
-  height: 630px;
+  height: 570px;
   top:0;
-  text-align:center;
+  text-align: center;
   z-index: 2;
 `
 

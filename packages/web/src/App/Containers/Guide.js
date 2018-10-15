@@ -172,7 +172,7 @@ class Guide extends Component {
     })
     return {
       stories: storiesOfType,
-      authors: authors
+      authors: authors,
     }
   }
 
@@ -204,7 +204,6 @@ class Guide extends Component {
     })
     return possibleTabs
   }
-
 
   render() {
     const {
@@ -254,16 +253,16 @@ class Guide extends Component {
           </MetaInfoContainer>
         </LimitedWidthContainer>
         <LimitedWidthContainer>
-            {this.shouldDisplay("SEE") &&
+            {this.shouldDisplay('SEE') &&
               <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('SEE')} />
             }
-            {this.shouldDisplay("DO") &&
+            {this.shouldDisplay('DO') &&
               <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('DO')} />
             }
-            {this.shouldDisplay("EAT") &&
+            {this.shouldDisplay('EAT') &&
               <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('EAT')} />
             }
-            {this.shouldDisplay("STAY") &&
+            {this.shouldDisplay('STAY') &&
               <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('STAY')} />
             }
         </LimitedWidthContainer>

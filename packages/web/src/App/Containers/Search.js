@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import {push} from 'react-router-redux'
+import PropTypes from 'prop-types'
 import env from '../Config/Env'
 
 import UserActions from '../Shared/Redux/Entities/Users'
@@ -73,12 +74,21 @@ const STORY_INDEX = env.SEARCH_STORY_INDEX
 const USERS_INDEX = env.SEARCH_USER_INDEX
 
 class Search extends Component {
+  static propTypes = {
+    userId: PropTypes.string,
+    loadUserFollowing: PropTypes.func,
+    followUser: PropTypes.func,
+    unfollowUser: PropTypes.func,
+    userFollowing: PropTypes.object,
+    reroute: PropTypes.func,
+  }
+
   constructor(props) {
     super(props)
     this.state = {
       activeTab: 'STORIES',
       lastSearchResults: {},
-      inputText: ''
+      inputText: '',
     }
   }
 
@@ -102,7 +112,7 @@ class Search extends Component {
     helper.on('result', res => {
       this.setState({
         search: false,
-        lastSearchResults: res
+        lastSearchResults: res,
       })
     })
     helper.on('search', () => {
@@ -128,14 +138,15 @@ class Search extends Component {
       this.setState({
         lastSearchResults: {},
         searching: false,
-        hasSearchText
+        hasSearchText,
       })
       return
-    } else if (_.isString(q) && q.length < 3) {
+    }
+    else if (_.isString(q) && q.length < 3) {
       if(hasSearchText && !this.state.hasSearchText) {
         this.setState({
           lastSearchResults: {},
-          hasSearchText
+          hasSearchText,
         })
       }
       return
@@ -153,7 +164,7 @@ class Search extends Component {
     else{
       this.setState({
         inputText: '',
-        lastSearchResults: {}
+        lastSearchResults: {},
       })
     }
   }
@@ -176,7 +187,7 @@ class Search extends Component {
       this.setState({
         searching: true,
         activeTab,
-        lastSearchResults: {}
+        lastSearchResults: {},
       })
       this.helper.search()
     }
@@ -259,7 +270,7 @@ class Search extends Component {
 const mapStateToProps = (state) => {
   return {
     userFollowing: state.entities.users.userFollowingByUserIdAndId,
-    userId: state.session.userId
+    userId: state.session.userId,
   }
 }
 
@@ -268,7 +279,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     followUser: (sessionUserID, userIdToFollow) => dispatch(UserActions.followUser(sessionUserID, userIdToFollow)),
     unfollowUser: (sessionUserID, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserID, userIdToUnfollow)),
     loadUserFollowing: (sessionUserID) => dispatch(UserActions.loadUserFollowing(sessionUserID)),
-    reroute: (path) => dispatch(push(path))
+    reroute: (path) => dispatch(push(path)),
   }
 }
 

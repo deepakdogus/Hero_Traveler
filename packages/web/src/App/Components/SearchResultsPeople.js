@@ -11,11 +11,11 @@ const Container = styled.div`
 export default class SearchResultsPeople extends Component {
   static propTypes = {
     userSearchResults: PropTypes.object,
-    userFollowing: PropTypes.array,
+    userFollowing: PropTypes.object,
     userId: PropTypes.string,
     followUser: PropTypes.func,
     unfollowUser: PropTypes.func,
-    navToUserProfile: PropTypes.func
+    navToUserProfile: PropTypes.func,
   }
 
   constructor(props) {
@@ -48,4 +48,3 @@ export default class SearchResultsPeople extends Component {
     )
   }
 }
-

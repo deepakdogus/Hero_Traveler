@@ -284,6 +284,7 @@ function mapStateToProps(state) {
   const users = state.entities.users.entities
   const currentUserId = state.session.userId
   const currentUser = users[currentUserId]
+
   return {
     isLoggedIn: state.login.isLoggedIn,
     loginReduxFetching: state.login.fetching,

@@ -16,6 +16,7 @@
     "normalizr": "^3.2.4",
     "nuka-carousel": "^3.0.0",
     "numeral": "^2.0.6",
+    "pluralize": "^7.0.0",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-cookie": "^2.1.1",

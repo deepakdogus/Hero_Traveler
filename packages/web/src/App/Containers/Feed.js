@@ -90,7 +90,10 @@ class Feed extends ContainerWithFeedList {
         <ContentWrapper>
           <FeedText>MY FEED</FeedText>
           <StyledDivider />
-          <FeedItemList feedItems={selectedFeedItems}/>
+          <FeedItemList
+            activeTab={this.state.activeTab}
+            feedItems={selectedFeedItems}
+          />
           <Footer />
         </ContentWrapper>
       </Wrapper>

@@ -138,8 +138,8 @@ const StyledCoverCaptionInput = styled(StyledInput)`
   background-color: transparent;
   font-size: 14px;
   font-style: italic;
-  margin-top: 7px;
   width: 100%;
+  height: 27px;
 `
 
 const CoverCaptionSpacer = styled.div`

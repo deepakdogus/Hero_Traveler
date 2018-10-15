@@ -12,7 +12,7 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   flex-wrap: wrap;
   z-index: 1;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
@@ -20,9 +20,7 @@ const Container = styled.div`
   }
 `
 
-const ButtonIconContainer = styled.div`
-  // background-color: blue;
-`
+const ButtonIconContainer = styled.div``
 
 const StyledIcon = styled(Icon)`
   width: 35px;
@@ -62,7 +60,12 @@ export default class FooterToolbar extends Component {
   }
 
   renderIcons = () => {
-    const {discardDraft, updateDraft} = this.props
+    const {
+      discardDraft,
+      updateDraft,
+      syncProgressMessage,
+      isDetailsView,
+    } = this.props
     return (
       <ButtonIconContainer>
         <Row middle='xs'>
@@ -77,6 +80,9 @@ export default class FooterToolbar extends Component {
           >
             <StyledIcon name='createSaveLarge'/>
           </RoundedButton>
+          {syncProgressMessage && !isDetailsView &&
+            <Text>{syncProgressMessage}</Text>
+          }
         </Row>
       </ButtonIconContainer>
     )
@@ -93,7 +99,7 @@ export default class FooterToolbar extends Component {
     return (
       <ButtonIconContainer>
         <Row middle='xs'>
-        {syncProgressMessage &&
+        {syncProgressMessage && isDetailsView &&
           <Text>{syncProgressMessage}</Text>
         }
         </Row>

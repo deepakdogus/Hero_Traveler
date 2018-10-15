@@ -115,6 +115,7 @@ const images = {
   iconCreateSaveLarge: require('../Images/ht-icons/icon_create-save-large.png'),
   iconCreatePhoto: require('../Images/ht-icons/icon_create-photo.png'),
   iconCreateVideo: require('../Images/ht-icons/icon_create-video.png'),
+  iconCreateAddCover: require('../Images/ht-icons/icon_create-add-cover.png'),
   iconNavNotifications: require('../Images/ht-icons/icon_nav-notifications.png'),
 }
 

@@ -75,8 +75,8 @@ const IconSubTitle = styled(SubTitle)`
 `
 
 const StyledIcon = styled(Icon)`
-  height: 40px;
-  width: 40px;
+  height: 70px;
+  width: 70px;
   margin-top: 10px;
   cursor: pointer;
 `
@@ -105,7 +105,7 @@ const StyledTitleInput = styled(StyledInput)`
   text-align: left;
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-size: 38px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 50px;
   letter-spacing: 1.5px;
   color: ${props => props.theme.Colors.background};
@@ -272,7 +272,7 @@ export default class AddCoverTitles extends React.Component {
     return (
       <NewUploadWrapper htmlFor='cover_upload'>
         <IconWrapper>
-          <StyledIcon name='components'/>
+          <StyledIcon name='createAddCover'/>
         </IconWrapper>
         <IconSubTitle>
           {coverImage && `+ CHANGE ${coverTypeText}`}
@@ -343,7 +343,7 @@ export default class AddCoverTitles extends React.Component {
           <TitleInputsWrapper>
             <StyledTitleInput
               type='text'
-              placeholder='ADD TITLE'
+              placeholder='Add Title'
               name='title'
               onChange={this._onTextChange}
               value={this.state.title}

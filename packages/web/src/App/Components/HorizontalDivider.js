@@ -18,5 +18,6 @@ export default styled.hr`
   background-color: ${getColor};
   opacity: ${props => props.opaque ? .5 : 1};
   border-style: solid;
-  border-width: 1.1px;
+  border-width: 0;
+  border-bottom-width: 1.1px;
 `

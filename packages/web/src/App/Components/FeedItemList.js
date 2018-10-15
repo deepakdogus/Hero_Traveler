@@ -10,7 +10,6 @@ import { Row } from './FlexboxGrid'
 const StyledDivider = styled(HorizontalDivider)`
   max-width: 960px;
   margin: 20px auto;
-  border-width: 1px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     border-color: transparent;
     background-color: transparent;

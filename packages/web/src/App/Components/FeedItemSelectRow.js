@@ -8,11 +8,26 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import Icon from './Icon'
 import {StyledVerticalCenter} from './Modals/Shared'
 
+const verticalMetrics = {
+  width: 77,
+  height: 98,
+}
+
+const horizontalMetrics = {
+  width: 140,
+  height: 90,
+}
+
+function getMetric(isVertical, metric) {
+  const metrics = isVertical ? verticalMetrics : horizontalMetrics
+  return metrics[metric] + 'px'
+}
+
 const StyledImageWrapper = styled.div`
-  width: ${props => props.isVertical ? "77px" : "140px"};
-  height: ${props => props.isVertical ? "98px" : "90px"};
+  width: ${props => getMetric(props.isVertical, 'width')};
+  height: ${props => getMetric(props.isVertical, 'height')};
   display: flex;
-  justify-content: ${props => props.isVertical ? "center" : "left"};
+  justify-content: ${props => props.isVertical ? 'center' : 'left'};
   align-items: center;
   overflow: hidden;
   cursor: pointer;
@@ -24,7 +39,7 @@ const StyledImage = styled.img`
 `
 
 export const DefaultContainer = styled.div`
-  border: ${props => `1px solid ${props.theme.Colors.dividerGrey}`};
+  border: ${props => `0 solid ${props.theme.Colors.dividerGrey}`};
   border-width: ${props => props.index === 0 ? '1px 0 1px' : '0 0 1px'};
   padding: 5px 5px 0;
 `
@@ -70,7 +85,12 @@ export default class StorySelectRow extends Component {
   }
 
   renderImage = () => {
-    const src = getImageUrl(this.props.story.coverImage)
+    const src = getImageUrl(
+      this.props.story.coverImage,
+      'optimized',
+      this.props.isVertical ? verticalMetrics : horizontalMetrics,
+    )
+
     return (
       <StyledImageWrapper isVertical={this.props.isVertical}>
         <StyledImage

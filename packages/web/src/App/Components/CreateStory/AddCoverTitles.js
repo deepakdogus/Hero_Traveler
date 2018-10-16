@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import Overlay from '../Overlay'
 import Icon from '../Icon'
 import {SubTitle, Input, CloseXContainer} from './Shared'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
@@ -18,7 +17,6 @@ const ButtonsHorizontalCenter = styled.div`
   height: 350px;
   margin: auto;
   ${VerticalCenterStyles}
-
 `
 
 const Wrapper = styled.div`
@@ -40,11 +38,13 @@ const RelativeWrapper = styled.div`
 `
 
 const DeleteIcon = styled(Icon)`
+  width: 32px;
+  height: 32px;
   align-self: center;
   cursor: pointer;
 `
 
-const StoryOverlayWrapper = styled(Overlay)`
+const ImageWrapper = styled.div`
   margin: 40px auto 0;
   padding-top: 350px;
   width: 100%;
@@ -76,8 +76,8 @@ const IconSubTitle = styled(SubTitle)`
 `
 
 const StyledIcon = styled(Icon)`
-  height: 40px;
-  width: 40px;
+  height: 70px;
+  width: 70px;
   margin-top: 10px;
   cursor: pointer;
 `
@@ -95,18 +95,23 @@ const HiddenInput = styled.input`
 `
 
 const StyledInput = styled(Input)`
+  padding: 0;
   color: ${props => props.theme.Colors.grey};
   ::placeholder {
     color: ${props => props.theme.Colors.grey};
   }
 `
 
-const StyledTitleInput = styled(StyledInput)`
-  margin-top: 10px;
+const StyledTitleTextArea = styled.textarea`
+  width: 100%;
+  padding: 0;
+  resize: none;
+  outline: none;
+  border: none;
   text-align: left;
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-size: 38px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 50px;
   letter-spacing: 1.5px;
   color: ${props => props.theme.Colors.background};
@@ -133,8 +138,8 @@ const StyledCoverCaptionInput = styled(StyledInput)`
   background-color: transparent;
   font-size: 14px;
   font-style: italic;
-  margin-top: 7px;
   width: 100%;
+  height: 27px;
 `
 
 const CoverCaptionSpacer = styled.div`
@@ -151,30 +156,9 @@ const StyledCloseXContainer = styled(CloseXContainer)`
   z-index: 1;
 `
 
-// we cannot use a button if we want the hiddenInput to work
-// as such we have recreated the same styles as a button would
-// so that it matches CloseX that is used for the body media
-const CustonCloseX = styled.div`
-  cursor: pointer;
-  border-radius: 18px;
-  border: 1px solid;
-  border-color: ${props => props.theme.Colors.closeXBorder};
-  margin: 3px;
-  padding: 5px;
-  background-color: ${props => props.theme.Colors.backgroundOpaque};
-  width: 18px;
-  height: 18px;
-  &:hover {
-    background-color: ${props => props.theme.Colors.backgroundOpaque};
-  };
-  ${VerticalCenterStyles}
-`
-
-
 function isNewStory(props, nextProps) {
   return (!props.workingDraft && nextProps.workingDraft) ||
   (props.workingDraft.id !== nextProps.workingDraft.id)
-
 }
 
 export default class AddCoverTitles extends React.Component {
@@ -190,8 +174,14 @@ export default class AddCoverTitles extends React.Component {
       title: props.workingDraft.title || '',
       description: props.workingDraft.description || '',
       coverCaption: props.workingDraft.coverCaption || '',
+      textAreaHeight: { height: '50px'},
+      textAreaBreakCharIdx: 0,
     }
+
+    this.textAreaRef = null
   }
+
+  _setTextAreaRef = (ref) => this.textAreaRef = ref
 
   _onCoverChange = (event) => {
     uploadFile(event, this, (file) => {
@@ -199,12 +189,12 @@ export default class AddCoverTitles extends React.Component {
       ? {
         'coverVideo': file,
         'coverImage': null,
-        'coverType': 'video'
+        'coverType': 'video',
       }
       : {
         'coverImage': file,
         'coverVideo': null,
-        'coverType': 'image'
+        'coverType': 'image',
       }
       // refactor later to differentiate between image and video
       this.props.onInputChange(update)
@@ -228,6 +218,35 @@ export default class AddCoverTitles extends React.Component {
     this.setState({
       [event.target.name]: event.target.value
     })
+  }
+
+  _onTextAreaTextChange = (event) => {
+    /*
+    Disallow new lines in textAreas. There's no access to keyCode in onChange
+    handler, so checking newline value of newest char instead
+    */
+    if (event.target.value.charCodeAt(event.target.value.length - 1) === 10) {
+      return
+    }
+
+    // set line break index so deleting first char of a newline reduces height
+    const textAreaBreakCharIdx =
+      this.state.textAreaHeight.height !== `${this.textAreaRef.scrollHeight}px`
+        ? this.state.title.length + 1
+        : this.state.textAreaBreakCharIdx
+
+    const textAreaHeight =
+      event.target.value.length >= this.state.title.length ||
+      event.target.value.length >= this.state.textAreaBreakCharIdx
+        ? { height: `${this.textAreaRef.scrollHeight}px` }
+        : { height: `${this.textAreaRef.scrollHeight - 50 || 50}px` }
+
+    this.setState({
+      textAreaHeight,
+      textAreaBreakCharIdx,
+    })
+
+    this._onTextChange(event)
   }
 
   // add this to properly set the value of the titleInput
@@ -256,12 +275,7 @@ export default class AddCoverTitles extends React.Component {
     if (coverImage || coverVideo) return (
       <ReplaceUploadWrapper htmlFor="cover_upload_replace">
         <StyledCloseXContainer>
-          <CustonCloseX>
-            <DeleteIcon
-              size='small'
-              name='close'
-            />
-          </CustonCloseX>
+            <DeleteIcon size='small' name='closeBlack' />
         </StyledCloseXContainer>
         <HiddenInput
           type='file'
@@ -275,7 +289,7 @@ export default class AddCoverTitles extends React.Component {
     return (
       <NewUploadWrapper htmlFor='cover_upload'>
         <IconWrapper>
-          <StyledIcon name='components'/>
+          <StyledIcon name='createAddCover'/>
         </IconWrapper>
         <IconSubTitle>
           {coverImage && `+ CHANGE ${coverTypeText}`}
@@ -315,7 +329,7 @@ export default class AddCoverTitles extends React.Component {
     return (
       <RelativeWrapper>
         {!coverVideo &&
-          <StoryOverlayWrapper image={coverImage}/>
+          <ImageWrapper image={coverImage}/>
         }
         {coverVideo &&
           <LimitedWidthContainer>
@@ -344,13 +358,16 @@ export default class AddCoverTitles extends React.Component {
         {!hasMediaAsset && !isGuide && <CoverCaptionSpacer />}
         {!isGuide &&
           <TitleInputsWrapper>
-            <StyledTitleInput
+            <StyledTitleTextArea
               type='text'
-              placeholder='ADD TITLE'
+              placeholder='Add Title'
               name='title'
-              onChange={this._onTextChange}
+              onChange={this._onTextAreaTextChange}
               value={this.state.title}
+              innerRef={this._setTextAreaRef}
+              style={this.state.textAreaHeight}
               maxLength={40}
+              rows={1}
               hasMediaAsset={hasMediaAsset}
             />
             <StyledSubTitleInput

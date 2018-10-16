@@ -29,7 +29,7 @@ const { Types, Creators } = createActions({
   initializeSyncProgress: ['numSteps', 'message'],
   incrementSyncProgress: ['steps'],
   syncError: null,
-  resetSync: null
+  resetSync: null,
 })
 
 export const StoryCreateTypes = Types
@@ -92,10 +92,13 @@ export const registerDraftSuccess = (state, {draft}) => {
 
 // updateDraft called after save. Making sure to sync up workingDraft + draft
 export const updateDraftSuccess = (state, {draft}) => {
-  state = state.setIn(['sync', 'syncProgress'], state.sync.syncProgressSteps)
   return state.merge({
     draft,
     workingDraft: draft,
+    sync: {
+      syncProgress: state.sync.syncProgressSteps,
+      message: '',
+    }
   },
   {deep: true})
 }

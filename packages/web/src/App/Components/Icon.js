@@ -34,7 +34,6 @@ const StyledIcon = styled.img`
   cursor: ${props => props.onClick ? 'pointer' : 'auto'}
 `
 
-
 export default class Icon extends React.Component {
   static propTypes = {
     name: PropTypes.string,
@@ -148,6 +147,8 @@ export default class Icon extends React.Component {
         return Images.iconContentXWhite
       case 'closeDark':
         return Images.iconContentXDark
+      case 'closeBlack':
+        return Images.iconContentXBlack
       case 'add':
         return Images.iconContentPlusWhite
       case 'cameraReverse':
@@ -172,6 +173,8 @@ export default class Icon extends React.Component {
         return Images.components
       case 'trash':
         return Images.iconEditImageTrash
+      case 'trashLarge':
+        return Images.iconEditImageTrashLarge
       case 'addCoverCamera':
         return Images.iconAddCoverCamera
       case 'google':
@@ -195,10 +198,14 @@ export default class Icon extends React.Component {
       case 'profile':
       case 'createSave':
         return Images.iconCreateSave
+      case 'createSaveLarge':
+        return Images.iconCreateSaveLarge
       case 'createPhoto':
         return Images.iconCreatePhoto
       case 'createVideo':
         return Images.iconCreateVideo
+      case 'createAddCover':
+        return Images.iconCreateAddCover
       case 'navNotifications':
         return Images.iconNavNotifications
       case 'info':

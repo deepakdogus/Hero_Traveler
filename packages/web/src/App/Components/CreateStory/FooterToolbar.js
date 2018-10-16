@@ -7,12 +7,14 @@ import {Row} from '../FlexboxGrid'
 import RoundedButton from '../RoundedButton'
 
 const Container = styled.div`
-  position: relative;
-  margin: 20px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   flex-wrap: wrap;
+  z-index: 1;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     justify-content: space-evenly;
   }
@@ -21,13 +23,10 @@ const Container = styled.div`
 const ButtonIconContainer = styled.div``
 
 const StyledIcon = styled(Icon)`
+  width: 35px;
+  height: 35px;
   align-self: center;
   cursor: pointer;
-`
-
-const TrashIcon = styled(StyledIcon)`
-  width: 20px;
-  height: 27px;
 `
 
 const Text = styled.p`
@@ -35,17 +34,17 @@ const Text = styled.p`
   margin: 0 auto;
 `
 
-export function TrashButton({removeFeedItem}) {
+export function TrashButton({ removeFeedItem }) {
   return (
     <RoundedButton
       type='grey'
       padding='even'
-      margin='none'
+      margin='medium'
       width='50px'
       height='50px'
       onClick={removeFeedItem}
     >
-      <TrashIcon name='trash'/>
+      <StyledIcon name='trashLarge'/>
     </RoundedButton>
   )
 }
@@ -61,7 +60,12 @@ export default class FooterToolbar extends Component {
   }
 
   renderIcons = () => {
-    const {discardDraft, updateDraft} = this.props
+    const {
+      discardDraft,
+      updateDraft,
+      syncProgressMessage,
+      isDetailsView,
+    } = this.props
     return (
       <ButtonIconContainer>
         <Row middle='xs'>
@@ -74,8 +78,11 @@ export default class FooterToolbar extends Component {
             height='50px'
             onClick={updateDraft}
           >
-            <StyledIcon name='createSave'/>
+            <StyledIcon name='createSaveLarge'/>
           </RoundedButton>
+          {syncProgressMessage && !isDetailsView &&
+            <Text>{syncProgressMessage}</Text>
+          }
         </Row>
       </ButtonIconContainer>
     )
@@ -86,13 +93,13 @@ export default class FooterToolbar extends Component {
       isDetailsView,
       onRight,
       onLeft,
-      syncProgressMessage
+      syncProgressMessage,
     } = this.props
 
     return (
       <ButtonIconContainer>
         <Row middle='xs'>
-        {syncProgressMessage &&
+        {syncProgressMessage && isDetailsView &&
           <Text>{syncProgressMessage}</Text>
         }
         </Row>

@@ -14,6 +14,7 @@ import android.text.style.AbsoluteSizeSpan
 import android.text.style.BackgroundColorSpan
 import android.text.style.ForegroundColorSpan
 import android.view.Gravity
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import com.facebook.react.bridge.ReactContext
@@ -24,6 +25,7 @@ import com.facebook.react.views.text.ReactTagSpan
 import com.facebook.react.views.text.ReactTextUpdate
 import com.facebook.react.views.textinput.ContentSizeWatcher
 import com.facebook.react.views.textinput.ReactTextInputLocalData
+import com.facebook.react.views.view.ReactViewBackgroundManager
 import com.herotravelermobile.editor.event.OnBackspaceRequest
 import com.herotravelermobile.editor.event.OnInsertTextRequest
 import com.herotravelermobile.editor.event.OnNewlineRequest
@@ -36,6 +38,14 @@ import com.herotravelermobile.editor.model.DraftJsSelection
 class RNDJDraftJSEditor(context: Context) : EditText(context) {
     private val defaultGravityHorizontal: Int = gravity and
             (Gravity.HORIZONTAL_GRAVITY_MASK or Gravity.RELATIVE_HORIZONTAL_GRAVITY_MASK)
+
+    private val defaultGravityVertical = gravity and Gravity.VERTICAL_GRAVITY_MASK
+
+    private val reactBackgroundManager = ReactViewBackgroundManager(this)
+
+    private var returnKeyType: String? = null
+
+    private var disableFullscreen = false
 
     private lateinit var _content: DraftJsContent
 
@@ -206,6 +216,63 @@ class RNDJDraftJSEditor(context: Context) : EditText(context) {
         gravity = gravity and Gravity.HORIZONTAL_GRAVITY_MASK.inv() and
                 Gravity.RELATIVE_HORIZONTAL_GRAVITY_MASK.inv() or
                 (if (gravityHorizontal != 0) gravityHorizontal else defaultGravityHorizontal)
+    }
+
+    internal fun setGravityVertical(gravityVertical: Int) {
+        gravity = gravity and Gravity.VERTICAL_GRAVITY_MASK.inv() or
+                (if (gravityVertical != 0) gravityVertical else defaultGravityVertical)
+    }
+
+    fun setBorderRadius(borderRadius: Float) {
+        reactBackgroundManager.setBorderRadius(borderRadius)
+    }
+
+    fun setBorderRadius(borderRadius: Float, position: Int) {
+        reactBackgroundManager.setBorderRadius(borderRadius, position)
+    }
+
+    fun setBorderStyle(style: String?) {
+        reactBackgroundManager.setBorderStyle(style)
+    }
+
+    fun setBorderWidth(position: Int, width: Float) {
+        reactBackgroundManager.setBorderWidth(position, width)
+    }
+
+    fun setBorderColor(position: Int, color: Float, alpha: Float) {
+        reactBackgroundManager.setBorderColor(position, color, alpha)
+    }
+
+    fun setReturnKeyType(returnKeyType: String) {
+        this.returnKeyType = returnKeyType
+        updateImeOptions()
+    }
+
+    fun setDisableFullscreenUI(disableFullscreenUI: Boolean) {
+        disableFullscreen = disableFullscreenUI
+        updateImeOptions()
+    }
+
+    private fun updateImeOptions() {
+        // Default to IME_ACTION_DONE
+        var returnKeyFlag = EditorInfo.IME_ACTION_DONE
+        if (returnKeyType != null) {
+            when (returnKeyType) {
+                "go" -> returnKeyFlag = EditorInfo.IME_ACTION_GO
+                "next" -> returnKeyFlag = EditorInfo.IME_ACTION_NEXT
+                "none" -> returnKeyFlag = EditorInfo.IME_ACTION_NONE
+                "previous" -> returnKeyFlag = EditorInfo.IME_ACTION_PREVIOUS
+                "search" -> returnKeyFlag = EditorInfo.IME_ACTION_SEARCH
+                "send" -> returnKeyFlag = EditorInfo.IME_ACTION_SEND
+                "done" -> returnKeyFlag = EditorInfo.IME_ACTION_DONE
+            }
+        }
+
+        imeOptions = if (disableFullscreen) {
+            returnKeyFlag or EditorInfo.IME_FLAG_NO_FULLSCREEN
+        } else {
+            returnKeyFlag
+        }
     }
 
     fun setContent(content : DraftJsContent) {

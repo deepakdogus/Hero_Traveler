@@ -232,7 +232,7 @@ export default class AddCoverTitles extends React.Component {
     // set line break index so deleting first char of a newline reduces height
     const textAreaBreakCharIdx =
       this.state.textAreaHeight.height !== `${this.textAreaRef.scrollHeight}px`
-        ? this.state.title.length
+        ? this.state.title.length + 1
         : this.state.textAreaBreakCharIdx
 
     const textAreaHeight =

@@ -37,24 +37,11 @@ const Divider = styled.div`
 `
 
 const StyledIcon = styled(Icon)`
+  width: 20px;
+  height: 20px;
   align-self: center;
   margin-top: 6px;
   cursor: pointer;
-`
-
-const FacebookIcon = styled(StyledIcon)`
-  width: 12px;
-  height: 19px;
-`
-
-const TwitterIcon = styled(StyledIcon)`
-  width: 22.5px;
-  height: 18.5px;
-`
-
-const InstagramIcon = styled(StyledIcon)`
-  width: 20px;
-  height: 20px;
 `
 
 /*
@@ -72,11 +59,11 @@ export default class Footer extends React.Component {
             <StyledLink to='/'>Contact Us</StyledLink>
           </Row>
           <Row middle='xs'>
-            <FacebookIcon name='facebook-blue'/>
-            <Divider></Divider>
-            <TwitterIcon name='twitter-blue'/>
-            <Divider></Divider>
-            <InstagramIcon name='instagram'/>
+            <StyledIcon name='facebookDark'/>
+            <Divider />
+            <StyledIcon name='twitterDark'/>
+            <Divider />
+            <StyledIcon name='instagramDark'/>
           </Row>
         </SizedRow>
       </Container>

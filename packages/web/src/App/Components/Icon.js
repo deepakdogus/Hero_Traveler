@@ -111,10 +111,14 @@ export default class Icon extends React.Component {
         return Images.iconLoginFacebookLarge
       case 'facebook-blue':
         return Images.iconFacebook
+      case 'facebookDark':
+        return Images.iconFacebookDark
       case 'squareFacebookOutline':
         return Images.iconSquareFacebookOutline
       case 'twitter':
         return Images.iconTwitter
+      case 'twitterDark':
+        return Images.iconTwitterDark
       case 'twitterLarge':
         return Images.iconTwitterLarge
       case 'twitter-blue':
@@ -123,6 +127,8 @@ export default class Icon extends React.Component {
         return Images.iconSquareTwitterOutline
       case 'instagram':
         return Images.iconInstagram
+      case 'instagramDark':
+        return Images.iconInstagramDark
       case 'loginEmail':
         return Images.iconLoginEmail
       case 'myFeed':

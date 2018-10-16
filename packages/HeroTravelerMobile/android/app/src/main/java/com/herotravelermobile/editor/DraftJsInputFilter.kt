@@ -1,25 +1,17 @@
 package com.herotravelermobile.editor
 
 import android.text.InputFilter
-import android.text.SpannableStringBuilder
 import android.text.Spanned
-import android.widget.EditText
-import com.facebook.react.bridge.ReactContext
-import com.facebook.react.uimanager.UIManagerModule
-import com.facebook.react.views.textinput.ReactTextInputLocalData
 import com.herotravelermobile.utils.plus
 import com.herotravelermobile.utils.selectionEnd
 import com.herotravelermobile.utils.selectionStart
 
 class DraftJsInputFilter(
-        private val editText: EditText,
         private val onInsertText: (String) -> Unit,
         private val onBackspace: () -> Unit,
         private val onNewline: () -> Unit,
         private val onReplaceRange: (replacement: String, rangeToReplace: IntRange) -> Unit
 ) : InputFilter {
-    private val dummyEditText = EditText(editText.context)
-
     var enabled = true
 
     override fun filter(
@@ -31,16 +23,6 @@ class DraftJsInputFilter(
             dend: Int
     ): CharSequence? {
         val newPiece = source.substring(start until end)
-
-        val newText = SpannableStringBuilder(dest.replaceRange(dstart until dend, newPiece))
-
-        dummyEditText.text = newText
-
-        editText.run {
-            val uiManager = (context as ReactContext).getNativeModule(UIManagerModule::class.java)
-            val localData = ReactTextInputLocalData(dummyEditText)
-            uiManager.setViewLocalData(id, localData)
-        }
 
         return dest.takeIf { enabled }?.run {
             val oldPiece = subSequence(dstart until dend)

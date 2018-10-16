@@ -2,12 +2,28 @@ package com.herotravelermobile.editor
 
 import android.content.Context
 import android.graphics.Rect
+import android.os.Build
 import android.text.Editable
+import android.text.InputType
 import android.text.Selection
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.TextUtils
+import android.text.TextWatcher
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.BackgroundColorSpan
+import android.text.style.ForegroundColorSpan
 import android.view.Gravity
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import com.facebook.react.bridge.ReactContext
+import com.facebook.react.uimanager.UIManagerModule
 import com.facebook.react.uimanager.events.Event
+import com.facebook.react.views.text.CustomStyleSpan
+import com.facebook.react.views.text.ReactTagSpan
+import com.facebook.react.views.text.ReactTextUpdate
+import com.facebook.react.views.textinput.ContentSizeWatcher
+import com.facebook.react.views.textinput.ReactTextInputLocalData
 import com.herotravelermobile.editor.event.OnBackspaceRequest
 import com.herotravelermobile.editor.event.OnInsertTextRequest
 import com.herotravelermobile.editor.event.OnNewlineRequest
@@ -26,7 +42,6 @@ class RNDJDraftJSEditor(context: Context) : EditText(context) {
     private lateinit var _selection: DraftJsSelection
 
     private val filter = DraftJsInputFilter(
-            this,
             { OnInsertTextRequest(id, it).sendIf(onInsertTextEnabled) },
             { OnBackspaceRequest(id).sendIf(onBackspaceEnabled) },
             { OnNewlineRequest(id).sendIf(onNewlineEnabled) },
@@ -40,7 +55,7 @@ class RNDJDraftJSEditor(context: Context) : EditText(context) {
             }
     )
 
-    private var textWrapper : SelectionBlockingText? = null
+    private lateinit var textWrapper : SelectionBlockingText
 
     var onInsertTextEnabled = false
     var onBackspaceEnabled = false
@@ -71,9 +86,121 @@ class RNDJDraftJSEditor(context: Context) : EditText(context) {
             }).also { _selectionCallback = it }
         }
 
+    private var mNativeEventCount = 0
+
+    private var containsImages = false
+
+    var contentSizeWatcher: ContentSizeWatcher? = null
+
     init {
         filters = arrayOf(* (filters ?: emptyArray()), filter)
+        addTextChangedListener(ContentSizeNotifier())
     }
+
+    fun incrementAndGetEventCounter(): Int {
+        return ++mNativeEventCount
+    }
+
+    fun maybeSetText(reactTextUpdate: ReactTextUpdate) {
+        if (isSecureText() && TextUtils.equals(text, reactTextUpdate.text)) {
+            return
+        }
+
+        // Only set the text if it is up to date.
+        if (reactTextUpdate.jsEventCounter < mNativeEventCount) {
+            return
+        }
+
+        // The current text gets replaced with the text received from JS. However, the spans on the
+        // current text need to be adapted to the new text. Since TextView#setText() will remove or
+        // reset some of these spans even if they are set directly, SpannableStringBuilder#replace() is
+        // used instead (this is also used by the the keyboard implementation underneath the covers).
+        val spannableStringBuilder = SpannableStringBuilder(reactTextUpdate.text)
+        manageSpans(spannableStringBuilder)
+        containsImages = reactTextUpdate.containsImages()
+
+        text.replace(0, length(), spannableStringBuilder)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (breakStrategy != reactTextUpdate.textBreakStrategy) {
+                breakStrategy = reactTextUpdate.textBreakStrategy
+            }
+        }
+    }
+
+    private fun setIntrinsicContentSize() {
+        val reactContext = context as ReactContext
+        val uiManager = reactContext.getNativeModule(UIManagerModule::class.java)
+        val localData = ReactTextInputLocalData(this)
+        uiManager.setViewLocalData(id, localData)
+    }
+
+    private fun onContentSizeChange() {
+        if (contentSizeWatcher != null) {
+            contentSizeWatcher!!.onLayout()
+        }
+
+        setIntrinsicContentSize()
+    }
+
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) =
+            onContentSizeChange()
+
+    /**
+     * Remove and/or add [Spanned.SPAN_EXCLUSIVE_EXCLUSIVE] spans, since they should only exist
+     * as long as the text they cover is the same. All other spans will remain the same, since they
+     * will adapt to the new text, hence why [SpannableStringBuilder.replace] never removes
+     * them.
+     */
+    private fun manageSpans(spannableStringBuilder: SpannableStringBuilder) {
+        val spans = text.getSpans(0, length(), Any::class.java)
+        for (spanIdx in spans.indices) {
+            // Remove all styling spans we might have previously set
+            if (ForegroundColorSpan::class.java.isInstance(spans[spanIdx]) ||
+                    BackgroundColorSpan::class.java.isInstance(spans[spanIdx]) ||
+                    AbsoluteSizeSpan::class.java.isInstance(spans[spanIdx]) ||
+                    CustomStyleSpan::class.java.isInstance(spans[spanIdx]) ||
+                    ReactTagSpan::class.java.isInstance(spans[spanIdx])) {
+                text.removeSpan(spans[spanIdx])
+            }
+
+            if (text.getSpanFlags(spans[spanIdx]) and Spanned.SPAN_EXCLUSIVE_EXCLUSIVE != Spanned.SPAN_EXCLUSIVE_EXCLUSIVE) {
+                continue
+            }
+            val span = spans[spanIdx]
+            val spanStart = text.getSpanStart(spans[spanIdx])
+            val spanEnd = text.getSpanEnd(spans[spanIdx])
+            val spanFlags = text.getSpanFlags(spans[spanIdx])
+
+            // Make sure the span is removed from existing text, otherwise the spans we set will be
+            // ignored or it will cover text that has changed.
+            text.removeSpan(spans[spanIdx])
+            if (sameTextForSpan(text, spannableStringBuilder, spanStart, spanEnd)) {
+                spannableStringBuilder.setSpan(span, spanStart, spanEnd, spanFlags)
+            }
+        }
+    }
+
+    private fun sameTextForSpan(
+            oldText: Editable,
+            newText: SpannableStringBuilder,
+            start: Int,
+            end: Int
+    ): Boolean {
+        if (start > newText.length || end > newText.length) {
+            return false
+        }
+        for (charIdx in start until end) {
+            if (oldText[charIdx] != newText[charIdx]) {
+                return false
+            }
+        }
+        return true
+    }
+
+
+    private fun isSecureText() =
+        inputType and (InputType.TYPE_NUMBER_VARIATION_PASSWORD or InputType.TYPE_TEXT_VARIATION_PASSWORD) != 0
 
     internal fun setGravityHorizontal(gravityHorizontal: Int) {
         gravity = gravity and Gravity.HORIZONTAL_GRAVITY_MASK.inv() and
@@ -127,27 +254,32 @@ class RNDJDraftJSEditor(context: Context) : EditText(context) {
         }
     }
 
-    override fun getText(): Editable? {
+    override fun getText(): Editable {
         val text = super.getText()
-        if (text !== textWrapper?.delegate) {
-            textWrapper = text?.let { SelectionBlockingText(it, selectionCallback) }
+        if (!::textWrapper.isInitialized || text !== textWrapper.delegate) {
+            textWrapper = SelectionBlockingText(text, selectionCallback)
         }
         return textWrapper
     }
 
-    override fun getEditableText(): Editable? {
-        val text = super.getEditableText()
-        if (text !== textWrapper?.delegate) {
-            textWrapper = text?.let { SelectionBlockingText(it, selectionCallback) }
-        }
-        return textWrapper
-    }
+    override fun getEditableText() = text
 
     private fun forceSetText(text: CharSequence?) {
         filter.enabled = false
         setText(text)
         filter.enabled = true
     }
+
+    private inner class ContentSizeNotifier : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            onContentSizeChange()
+        }
+
+        override fun afterTextChanged(s: Editable) {}
+    }
+
 
     private fun Event<*>.sendIf(condition: Boolean) { if (condition) eventSender?.invoke(this) }
 }

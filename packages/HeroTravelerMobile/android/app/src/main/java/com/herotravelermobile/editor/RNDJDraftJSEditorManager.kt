@@ -1,6 +1,7 @@
 package com.herotravelermobile.editor
 
 import android.annotation.SuppressLint
+import android.graphics.Typeface
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.TypedValue
@@ -22,6 +23,7 @@ import com.facebook.react.uimanager.annotations.ReactProp
 import com.facebook.react.uimanager.events.Event
 import com.facebook.react.uimanager.events.EventDispatcher
 import com.facebook.react.views.scroll.ScrollEventType
+import com.facebook.react.views.text.DefaultStyleValuesUtil
 import com.facebook.react.views.text.ReactTextUpdate
 import com.facebook.react.views.text.TextInlineImageSpan
 import com.facebook.react.views.textinput.ContentSizeWatcher
@@ -44,6 +46,7 @@ import com.herotravelermobile.editor.model.DraftJsSelection
 class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadowNode>() {
     companion object {
         const val REACT_CLASS = "RNDJDraftJSEditor"
+        private const val UNSET = -1
     }
 
     override fun getName(): String {
@@ -51,9 +54,9 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
     }
 
     public override fun createViewInstance(context: ThemedReactContext): RNDJDraftJSEditor {
-        val editText = RNDJDraftJSEditor(context)
-        editText.eventSender = createEventSender(editText)
-        return editText
+        return RNDJDraftJSEditor(context).apply {
+            eventSender = createEventSender(this)
+        }
     }
 
     override fun createShadowNodeInstance() = ReactTextInputShadowNode()
@@ -250,19 +253,14 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
     @SuppressLint("RtlHardcoded")
     @ReactProp(name = ViewProps.TEXT_ALIGN)
     fun setTextAlign(view: RNDJDraftJSEditor, textAlign: String?) {
-        if (textAlign == null || "auto" == textAlign) {
-            view.setGravityHorizontal(Gravity.NO_GRAVITY)
-        } else if ("left" == textAlign) {
-            view.setGravityHorizontal(Gravity.LEFT)
-        } else if ("right" == textAlign) {
-            view.setGravityHorizontal(Gravity.RIGHT)
-        } else if ("center" == textAlign) {
-            view.setGravityHorizontal(Gravity.CENTER_HORIZONTAL)
-        } else if ("justify" == textAlign) {
-            // Fallback gracefully for cross-platform compat instead of error
-            view.setGravityHorizontal(Gravity.LEFT)
-        } else {
-            throw JSApplicationIllegalArgumentException("Invalid textAlign: $textAlign")
+        when (textAlign) {
+            null, "auto" -> view.setGravityHorizontal(Gravity.NO_GRAVITY)
+            "left" -> view.setGravityHorizontal(Gravity.LEFT)
+            "right" -> view.setGravityHorizontal(Gravity.RIGHT)
+            "center" -> view.setGravityHorizontal(Gravity.CENTER_HORIZONTAL)
+            "justify" -> // Fallback gracefully for cross-platform compat instead of error
+                view.setGravityHorizontal(Gravity.LEFT)
+            else -> throw JSApplicationIllegalArgumentException("Invalid textAlign: $textAlign")
         }
     }
 
@@ -272,6 +270,42 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
                 TypedValue.COMPLEX_UNIT_PX,
                 Math.ceil(PixelUtil.toPixelFromSP(fontSize).toDouble()).toInt().toFloat()
         )
+    }
+
+    @ReactProp(name = ViewProps.COLOR, customType = "Color")
+    fun setColor(view: RNDJDraftJSEditor, color: Int?) {
+        if (color == null) {
+            view.setTextColor(DefaultStyleValuesUtil.getDefaultTextColor(view.context))
+        } else {
+            view.setTextColor(color)
+        }
+    }
+
+    @SuppressLint("WrongConstant")
+    @ReactProp(name = ViewProps.FONT_WEIGHT)
+    fun setFontWeight(view: RNDJDraftJSEditor, fontWeightString: String?) {
+        val fontWeightNumeric = when (fontWeightString) {
+            null -> -1
+            else -> parseNumericFontWeight(fontWeightString)
+        }
+        val fontWeight = when {
+            fontWeightNumeric >= 500 || "bold" == fontWeightString                              -> Typeface.BOLD
+            "normal" == fontWeightString || fontWeightNumeric != -1 && fontWeightNumeric < 500  -> Typeface.NORMAL
+            else                                                                                -> UNSET
+        }
+        val currentTypeface: Typeface = view.typeface ?: Typeface.DEFAULT
+        if (fontWeight != currentTypeface.style) {
+            view.setTypeface(currentTypeface, fontWeight)
+        }
+    }
+
+    private fun parseNumericFontWeight(fontWeightString: String): Int {
+        // This should be much faster than using regex to verify input and Integer.parseInt
+        return if (fontWeightString.length == 3 && fontWeightString.endsWith("00")
+                && fontWeightString[0] <= '9' && fontWeightString[0] >= '1')
+            100 * (fontWeightString[0] - '0')
+        else
+            -1
     }
 
     override fun addEventEmitters(reactContext: ThemedReactContext, view: RNDJDraftJSEditor) {

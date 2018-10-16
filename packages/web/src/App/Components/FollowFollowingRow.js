@@ -11,6 +11,7 @@ import RoundedButton from './RoundedButton'
 
 const Container = styled.div`
   margin: ${props => props.margin ? props.margin : '0'};
+  min-height: 90px;
 `
 
 const StyledVerticalCenter = styled(VerticalCenter)`
@@ -56,6 +57,7 @@ export default class FollowFollowingRow extends Component {
         <Avatar
           avatarUrl={getImageUrl(_.get(user, 'profile.avatar'), 'avatarLarge')}
           size='larger'
+          type='profile'
           onClick={this._handleProfileClick}
         />
     )

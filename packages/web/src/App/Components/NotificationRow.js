@@ -22,7 +22,7 @@ import SpaceBetweenRow from './SpaceBetweenRow'
 let avatarWidth = getSize({size: 'larger'})
 avatarWidth = Number(avatarWidth.substring(0, avatarWidth.length - 2))
 
-const relevantMetrics  = {
+const relevantMetrics = {
   containerPadding: 25,
   imageWidth: 60,
   avatarWidth,
@@ -122,7 +122,7 @@ const HiddenBulletContainer = styled(VisibleBulletContainer)`
 const videoThumbnailOptions = {
   video: true,
   width: 100,
-  height: 100
+  height: 100,
 }
 
 export default class NotificationRow extends Component {

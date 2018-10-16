@@ -7,6 +7,7 @@ import PropTypes from 'prop-types'
 import env from '../Config/Env'
 
 import UserActions from '../Shared/Redux/Entities/Users'
+import UXActions from '../Redux/UXRedux'
 import SearchResultsPeople from '../Components/SearchResultsPeople'
 import SearchResultsStories from '../Components/SearchResultsStories'
 import TabBar from '../Components/TabBar'
@@ -15,9 +16,7 @@ import {Row} from '../Components/FlexboxGrid'
 import algoliasearchModule from 'algoliasearch'
 import algoliaSearchHelper from 'algoliasearch-helper'
 
-const Container = styled.div`
-  margin-top: 65px;
-`
+const Container = styled.div``
 
 const HeaderInputContainer = styled(Row)`
   background-color: ${props => props.theme.Colors.lightGreyAreas};
@@ -81,6 +80,8 @@ class Search extends Component {
     unfollowUser: PropTypes.func,
     userFollowing: PropTypes.object,
     reroute: PropTypes.func,
+    addRecentSearch: PropTypes.func,
+    searchHistory: PropTypes.object,
   }
 
   constructor(props) {
@@ -95,6 +96,7 @@ class Search extends Component {
   componentWillMount() {
     this.helper = algoliaSearchHelper(algoliasearch, STORY_INDEX)
     this.setupSearchListeners(this.helper)
+    this.reinitializeQuery()
   }
 
   componentWillUnmount() {
@@ -125,16 +127,15 @@ class Search extends Component {
     helper.removeAllListeners('search')
   }
 
-  inputFieldChange = (e) => {
-    this.setState({inputText: e.target.value})
-    this._changeQuery(e)
+  inputFieldChange = (event) => {
+    this.setState({inputText: event.target.value})
+    this._changeQuery(event.target.value)
   }
 
-  _changeQuery = (e) => {
+  _changeQuery = (queryText) => {
     const helper = this.helper
-    const q = e.target.value
-    const hasSearchText = q.length > 0
-    if(_.isString(q) && q.length === 0) {
+    const hasSearchText = queryText.length > 0
+    if (_.isString(queryText) && queryText.length === 0) {
       this.setState({
         lastSearchResults: {},
         searching: false,
@@ -142,8 +143,8 @@ class Search extends Component {
       })
       return
     }
-    else if (_.isString(q) && q.length < 3) {
-      if(hasSearchText && !this.state.hasSearchText) {
+    else if (_.isString(queryText) && queryText.length < 3) {
+      if (hasSearchText && !this.state.hasSearchText) {
         this.setState({
           lastSearchResults: {},
           hasSearchText,
@@ -154,7 +155,7 @@ class Search extends Component {
 
     _.debounce(() => {
       helper
-        .setQuery(q)
+        .setQuery(queryText)
         .search()
     }, 300)()
   }
@@ -180,18 +181,32 @@ class Search extends Component {
     return this.helper
   }
 
+  reinitializeQuery() {
+    const {searchHistory} = this.props
+    const lastSearchType = searchHistory.lastSearchType
+    const inputText = _.get(searchHistory, `${lastSearchType}[0]`)
+    if (inputText) {
+      const activeTab = searchHistory.lastSearchType === 'story' ? 'STORIES' : 'PEOPLE'
+      this.changeIndex(this.getSearchIndex(activeTab))
+      this.setState({
+        inputText,
+        activeTab,
+      }, () => this._changeQuery(inputText))
+    }
+  }
+
   _changeTab = (activeTab) => {
     this.changeIndex(this.getSearchIndex(activeTab))
     const textValue = this.state.inputText
-    if(textValue && textValue.length >= 3) {
+    if (textValue && textValue.length >= 3) {
       this.setState({
         searching: true,
         activeTab,
         lastSearchResults: {},
       })
-      this.helper.search()
+      this.helper.setQuery(textValue).search()
     }
-    else{
+    else {
       this.setState({activeTab, lastSearchResults: {}})
     }
   }
@@ -210,10 +225,12 @@ class Search extends Component {
   }
 
   _navToUserProfile = (userId) => {
+    this.props.addRecentSearch('user', this.state.inputText, userId)
     this.props.reroute(`/profile/${userId}/view`)
   }
 
   _navToStory = (storyId) => {
+    this.props.addRecentSearch('story', this.state.inputText, storyId)
     this.props.reroute(`/story/${storyId}`)
   }
 
@@ -271,6 +288,7 @@ const mapStateToProps = (state) => {
   return {
     userFollowing: state.entities.users.userFollowingByUserIdAndId,
     userId: state.session.userId,
+    searchHistory: state.ux.searchHistory,
   }
 }
 
@@ -280,6 +298,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     unfollowUser: (sessionUserID, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserID, userIdToUnfollow)),
     loadUserFollowing: (sessionUserID) => dispatch(UserActions.loadUserFollowing(sessionUserID)),
     reroute: (path) => dispatch(push(path)),
+    addRecentSearch: (type, text, id) => dispatch(UXActions.addRecentSearch(type, text, id)),
   }
 }
 

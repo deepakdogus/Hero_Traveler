@@ -7,14 +7,14 @@ import FeedItemSelectRow, {DefaultContainer} from './FeedItemSelectRow'
 const Container = styled.div``
 
 const StyledContainer = styled(DefaultContainer)`
-  border-width: ${props => props.index !== 0 ? '2px 0 0' : '0'};
+  border-width: ${props => props.index !== 0 ? '1px 0 0 0' : '0'};
   padding: 10px 0px 6px;
 `
 
 export default class SearchResultsStories extends Component {
   static propTypes = {
     storySearchResults: PropTypes.object,
-    navToStory: PropTypes.func
+    navToStory: PropTypes.func,
   }
   constructor(props) {
     super(props)
@@ -33,7 +33,6 @@ export default class SearchResultsStories extends Component {
           index={index}
           ReplacementContainer={StyledContainer}
           navToStory={this.props.navToStory}
-          navToUserProfile={this.props.navToUserProfile}
           isVertical
         />
       )
@@ -46,4 +45,3 @@ export default class SearchResultsStories extends Component {
     )
   }
 }
-

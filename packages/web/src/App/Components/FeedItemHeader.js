@@ -94,7 +94,7 @@ const Container = styled.div`
     padding-left: 0;
     padding-right: 0;
   }
-  
+
 `
 
 const TopRow = styled(Row)`
@@ -190,9 +190,9 @@ export default class FeedItemHeader extends React.Component {
             {hasBadge &&
               <VerticalCenter>
                 <BadgeIcon
-                name={author.role === 'contributor' ? 'profileBadge' : 'founderBadge'}
-                size='mediumSmall'
-                profileAvatar={author.profile.avatar}
+                  name={author.role === 'contributor' ? 'profileBadge' : 'founderBadge'}
+                  size='mediumSmall'
+                  profileAvatar={author.profile.avatar}
                 />
               </VerticalCenter>
             }

@@ -6,7 +6,6 @@ import {
   SelectionState,
 } from 'draft-js'
 import 'draft-js/dist/Draft.css'
-import 'draft-js-side-toolbar-plugin/lib/plugin.css'
 import Editor from 'draft-js-plugins-editor'
 import createSideToolbarPlugin from 'draft-js-side-toolbar-plugin'
 import BlockTypeSelect from 'draft-js-side-toolbar-plugin/lib/components/BlockTypeSelect'
@@ -21,11 +20,16 @@ import {
   convertToRaw,
 } from '../../Shared/Lib/draft-js-helpers'
 import './Styles/EditorStyles.css'
+import './Styles/ToolbarStyles.css'
 import {
   AddImageButton,
   AddVideoButton,
 } from './EditorAddMediaButton'
 import MediaComponent from './EditorMediaComponent'
+
+// import buttonStyles from './Styles/buttonStyles.css'
+// import toolbarStyles from './Styles/toolbarStyles-dep.css'
+// import blockTypeSelectStyles from './Styles/blockTypeSelectStyles.css'
 
 const EditorWrapper = styled.div`
   margin-bottom: 95px;
@@ -127,7 +131,7 @@ export default class BodyEditor extends React.Component {
     var withoutAtomic = withoutAtomicEntity.merge({
       blockMap,
       selectionAfter: selection,
-    });
+    })
 
     const newEditorState = EditorState.push(
       this.state.editorState,
@@ -159,7 +163,7 @@ export default class BodyEditor extends React.Component {
         component: MediaComponent,
         editable: true,
         props: props,
-      };
+      }
     }
   }
 

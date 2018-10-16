@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 
 export default styled.div`
-  font-weight: 400;
-  font-size: 18px;
+  font-weight: 300;
+  font-size: 14px;
   color: ${props => props.theme.Colors.grey};
   letter-spacing: .7px;
   font-style: italic;

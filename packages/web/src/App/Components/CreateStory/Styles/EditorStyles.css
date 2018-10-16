@@ -7,12 +7,15 @@
 }
 
 .editorHeaderOne {
-  font-family: 'Montserrat';
-  font-weight: 400;
+  font-family: 'Source Sans Pro';
+  font-weight: 600;
   letter-spacing: 1.5px;
-  font-size: 30px;
+  font-size: 24px;
   color: #1a1c21;
-	text-transform: uppercase;
+}
+
+.editorHeaderOne::first-letter {
+  text-transform: uppercase;
 }
 
 .DraftEditor-root figure {

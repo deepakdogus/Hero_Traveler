@@ -1,0 +1,46 @@
+/*
+Custom theming through the side toolbar plugin is currently not working, so
+modifying the Side Toolbar classes directly. Should be revised later
+
+class names derived from 'draft-js-side-toolbar-plugin/lib/plugin.css'
+
+*/
+
+@import '../../../../../node_modules/draft-js-side-toolbar-plugin/lib/plugin.css';
+
+.draftJsToolbar__blockType__27Jwn {
+  margin-top: -8px;
+  border: 1px solid #757575;
+  background-size: cover;
+  background-image:
+    url('../../../Shared/Images/ht-icons/icon_create-plus.png');
+}
+
+.draftJsToolbar__blockType__27Jwn svg {
+  fill: none;
+}
+
+.draftJsToolbar__popup__GHzbY {
+  border: 1px solid #757575;
+}
+
+.draftJsToolbar__popup__GHzbY:before {
+  border-bottom-color: #757575
+}
+
+.draftJsToolbar__button__qi1gf {
+  background: #fff;
+  color: #757575
+}
+
+.draftJsToolbar__button__qi1gf svg {
+  fill: #757575;
+}
+
+.draftJsToolbar__active__3qcpF {
+  color: #ed1e2e;
+}
+
+.draftJsToolbar__active__3qcpF svg {
+  fill: #ed1e2e;
+}

@@ -1,17 +1,24 @@
 .editorParagraph {
+  padding-bottom: 30px;
   font-family: "Source Sans Pro";
 	font-weight: 400;
 	letter-spacing: .7px;
 	font-size: 18px;
-	color: #757575;
+  color: #757575;
 }
 
 .editorHeaderOne {
+  margin: 0;
+  padding-bottom: 30px;
   font-family: 'Source Sans Pro';
   font-weight: 600;
   letter-spacing: 1.5px;
   font-size: 24px;
   color: #1a1c21;
+}
+
+.editorSpacer {
+  padding-top: 30px;
 }
 
 .editorHeaderOne::first-letter {
@@ -20,4 +27,8 @@
 
 .DraftEditor-root figure {
 	margin: 0;
+}
+
+.public-DraftEditor-content {
+  min-height: 50vh;
 }

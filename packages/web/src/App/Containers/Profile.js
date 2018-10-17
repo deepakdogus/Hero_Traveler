@@ -140,21 +140,22 @@ class Profile extends ContainerWithFeedList {
           uploadMedia={uploadMedia}
           openGlobalModal={openGlobalModal}
         />
-        <ListWrapper>
-          <TabBar
-            tabs={isUsersProfile ? tabBarTabs : readOnlyTabBarTabs}
-            activeTab={this.state.activeTab}
-            onClickTab={this.onClickTab}
-          />
+        {!isEdit &&
+          <ListWrapper>
+            <TabBar
+              tabs={isUsersProfile ? tabBarTabs : readOnlyTabBarTabs}
+              activeTab={this.state.activeTab}
+              onClickTab={this.onClickTab}
+            />
 
-          { (!!selectedFeedItems.length) &&
-          <FeedItemListWrapper>
-            <FeedItemList feedItems={selectedFeedItems} />
-            <Footer />
-          </FeedItemListWrapper>
-          }
-          {isEdit && <OpaqueCover/>}
-        </ListWrapper>
+            { (!!selectedFeedItems.length) &&
+            <FeedItemListWrapper>
+              <FeedItemList feedItems={selectedFeedItems} />
+              <Footer />
+            </FeedItemListWrapper>
+            }
+          </ListWrapper>
+        }
       </ContentWrapper>
     )
   }

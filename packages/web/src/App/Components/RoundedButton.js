@@ -40,6 +40,7 @@ function getBackgroundColor (type, colors) {
     case 'twitterSignup':
       return colors.twitterBlue
     case 'categoryFollow':
+    case 'exploreCategoryFollow':
       return colors.redLight
     case 'blackWhite':
     case 'facebook':
@@ -90,6 +91,7 @@ const StyledButton = styled.button`
         return props.theme.Colors.grey
       case 'backgroundOpaque':
         return props.theme.Colors.closeXBorder
+      case 'exploreCategoryFollow':
       default:
         return props.theme.Colors.redHighlights
     }

@@ -16,8 +16,7 @@ import Placeholder from './EditorCustomPlaceholder'
 import Caption from '../MediaCaption'
 
 const MediaWrapper = styled.div`
-  padding-top: 30px;
-  padding-bottom: 30px;
+  padding-bottom: 60px;
 `
 
 const BodyMediaDiv = styled.div`

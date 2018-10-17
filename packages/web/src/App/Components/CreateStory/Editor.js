@@ -165,17 +165,18 @@ export default class BodyEditor extends React.Component {
   }
 
   myBlockStyleFn = (contentBlock) => {
-    const contentState = this.state.editorState.getCurrentContent()
-    const prevBlockKey = contentState.getKeyBefore(contentBlock.getKey())
-    const prevBlock = contentState.getBlockForKey(prevBlockKey)
-    const prevBlockType = prevBlock ? prevBlock.getType() : ''
     const currBlockType = contentBlock.getType()
+    const contentState = this.state.editorState.getCurrentContent()
+    const nextBlockKey = contentState.getKeyAfter(contentBlock.getKey())
+    const nextBlock = contentState.getBlockForKey(nextBlockKey)
+    const nextBlockType = nextBlock ? nextBlock.getType() : ''
+
     let className = ''
 
     if (currBlockType === 'unstyled') className = 'editorParagraph'
     if (currBlockType === 'header-one') className = 'editorHeaderOne'
-    if (prevBlockType
-      && prevBlockType === 'atomic'
+    if (nextBlockType
+      && nextBlockType === 'atomic'
       && currBlockType !== 'atomic') {
       className += ' editorSpacer'
     }
@@ -197,6 +198,15 @@ export default class BodyEditor extends React.Component {
     const text = currentBlock.getText()
     return blockType === 'atomic' && !text && selectionState.getFocusOffset() !== 0
   }
+
+  // shouldDisplayToolbar() {
+  //   const { editorState } = this.state
+  //   const lastBlock = editorState.getCurrentContent().getLastBlock()
+  //   const type = lastBlock.getType()
+  //   console.log('type', type)
+  //   console.log('bool', !(type === 'atomic'))
+  //   return !(type === 'atomic')
+  // }
 
   componentDidUpdate(prevProps) {
     if (this.props.value && this.props.storyId !== prevProps.storyId) {

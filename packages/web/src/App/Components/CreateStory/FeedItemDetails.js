@@ -142,7 +142,7 @@ const TravelTipsInput = styled.textarea`
   width: 100%;
   height: 160px;
   resize: none;
-  border-width: 2.5px;
+  border-width: 1px;
   border-color: ${props => props.theme.Colors.navBarText};
   border-radius: 2.5px;
   padding: 10px;
@@ -154,7 +154,7 @@ const styles = {
   radioButton: {
     display: 'inline-block',
     width: '25%',
-    marginRight: '15px'
+    marginRight: '15px',
   },
   radioButtonLabel: {
     fontWeight: 600,
@@ -171,7 +171,7 @@ const styles = {
   },
   radioButtonFilled: {
     fill: '#ed1e2e',
-  }
+  },
 }
 
 const TilesWrapper = styled.div`
@@ -222,7 +222,7 @@ export default class FeedItemDetails extends React.Component {
       categoriesList,
       hashtagsList: [],
       address: _.get(this.props.workingDraft, ['locationInfo', 'name'], ''),
-    };
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -237,16 +237,17 @@ export default class FeedItemDetails extends React.Component {
     const {location, locationInfo} = addressObj
     if (!location && locationInfo) {
       if (isGuide) {
-        this.setState({address: ""})
+        this.setState({address: ''})
         this.props.onInputChange({
-          locations: [...this.props.workingDraft.locations, locationInfo]
+          locations: [...this.props.workingDraft.locations, locationInfo],
         })
       }
       else {
         this.setState({address: locationInfo.name})
         this.props.onInputChange({locationInfo: locationInfo})
       }
-    } else {
+    }
+    else {
       this.setState({address: location})
     }
   }
@@ -283,7 +284,7 @@ export default class FeedItemDetails extends React.Component {
     // If it is already a category in DB, we need to fetch the whole object
     const clickedTag = _.find(
       type === 'categories' ? this.state.categoriesList : [],
-      tag => tag.title === tagTitle
+      tag => tag.title === tagTitle,
     ) || { title: tagTitle }
     const updatedTags = this.props.workingDraft[type].concat([clickedTag])
 
@@ -298,12 +299,12 @@ export default class FeedItemDetails extends React.Component {
     const selectedTagsOfType = this.props.workingDraft[type]
     const clickedTag = _.find(
       selectedTagsOfType,
-      tag => tag.title === clickedTitle
+      tag => tag.title === clickedTitle,
     )
     const updatedTags = _.differenceWith(selectedTagsOfType, [clickedTag], isSameTag)
     if (type === 'categories') {
       this.updateCategoriesList(
-        sortCategories(this.state.categoriesList.concat([clickedTag]))
+        sortCategories(this.state.categoriesList.concat([clickedTag])),
       )
     }
     this.props.onInputChange({ [type]: updatedTags })
@@ -311,13 +312,13 @@ export default class FeedItemDetails extends React.Component {
 
   updateCategoriesList = (newCategoriesList) => {
     this.setState({
-      categoriesList: newCategoriesList
+      categoriesList: newCategoriesList,
     })
   }
 
   updateHashtagsList = (newHashtagsList) => {
     this.setState({
-      hashtagsList: newHashtagsList
+      hashtagsList: newHashtagsList,
     })
   }
 
@@ -347,13 +348,13 @@ export default class FeedItemDetails extends React.Component {
 
   togglePrivacy = () => {
     this.props.onInputChange({
-      isPrivate: !this.props.workingDraft.isPrivate
+      isPrivate: !this.props.workingDraft.isPrivate,
     })
   }
 
   getCostPlaceHolderText = (type) =>{
-    if (type === "stay") return "Cost Per Night"
-    return "Cost Per Person"
+    if (type === 'stay') return 'Cost Per Night'
+    return 'Cost Per Person'
   }
 
   renderLocations() {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import onClickOutside from 'react-onclickoutside'
@@ -9,6 +9,7 @@ const TagPickerContainer = styled.div`
   z-index: 100;
   max-height: 250px;
   top: 20px;
+  left: -172px;
   padding: 8px 15px 0px 15px;
   width: 250px;
   overflow: scroll;
@@ -37,7 +38,7 @@ const BottomSpacer = styled.div`
   margin-top: 8px;
 `
 
-class TagOption extends React.Component {
+class TagOption extends Component {
   static propTypes = {
     tag: PropTypes.object,
     handleTagSelect: PropTypes.func,
@@ -63,7 +64,7 @@ class TagOption extends React.Component {
   }
 }
 
-class TagPicker extends React.Component {
+class TagPicker extends Component {
 
   static propTypes = {
     closePicker: PropTypes.func,

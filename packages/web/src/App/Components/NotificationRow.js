@@ -134,22 +134,26 @@ export default class NotificationRow extends Component {
     markSeen: PropTypes.func,
   }
 
-  navToStory = () => {
+  navToStory = (event) => {
+    event.stopPropagation()
     this.props.reroute(`/story/${this.props.activity.story.id}`)
     this.props.closeModal()
   }
 
-  navToUserProfile = () => {
+  navToUserProfile = (event) => {
+    event.stopPropagation()
     this.props.reroute(`/profile/${this.props.activity.fromUser.id}/view`)
     this.props.closeModal()
   }
 
   renderImage = () => {
     const avatar = _.get(this, 'props.user.profile.avatar')
+
     return (
       <RenderImageContainer>
         <Avatar
           avatarUrl={avatar ? getImageUrl(avatar, 'avatarLarge') : undefined}
+          type='profile'
           size='larger'
         />
       </RenderImageContainer>
@@ -163,11 +167,10 @@ export default class NotificationRow extends Component {
 
   renderText = () => {
     const { activity } = this.props
-
     return (
       <StyledVerticalCenter>
         <StyledNotificationContent>
-          <StyledUserName>
+          <StyledUserName onClick={this.navToUserProfile}>
             {activity.fromUser.username}&nbsp;
           </StyledUserName>
           {getDescription(activity)}
@@ -217,7 +220,6 @@ export default class NotificationRow extends Component {
 
   render() {
     const leftProps = { 'max-width': '450px', }
-
     return (
       <InteractiveContainer onClick={this._markSeen}>
         <Container

@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import {Row, Col} from '../FlexboxGrid'
 import RoundedButton from '../RoundedButton'
 import Icon from '../Icon'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
@@ -13,10 +12,7 @@ import uploadFile from '../../Utils/uploadFile'
 import { FieldConstraints as SignupConstants } from '../../Shared/Lib/userFormValidation'
 
 import {
-  UsernameBaseStyles,
-  Centered,
   StyledAvatar,
-  AvatarWrapper,
   ButtonWrapper,
 } from './ProfileHeaderShared'
 
@@ -45,95 +41,19 @@ const CameraIcon = styled(Icon)`
   height: 24px;
 `
 
-const PencilIcon = styled(Icon)`
-  width: 35px;
-  height: 35px;
-  margin: 5px 0;
-`
-
 const EditAvatarWrapper = styled(VerticalCenter)`
   position: absolute;
   align-items: center;
-  width: 100%;
   height: 100%;
   z-index: 1;
+  left: 54.5px;
 `
 
-const BioInput = styled.textarea`
-  color: ${props => props.theme.Colors.grey};
-  font-size: 16px;
-  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
-  font-weight: 400;
-  letter-spacing: .7px;
-  width: 100%;
-  height: 160px;
-  resize: none;
-  background-color: ${props => props.theme.Colors.lightGreyAreas};
-  border-width: 0px;
-  padding: 0;
-`
-
-const Container = styled.div``
-
-const ProfileEditCentered = styled(Centered)`
-  height: 320px;
-`
-
-const SecondCol = styled(Col)`
-  margin-left: 20px;
-`
-
-const UsernameWrapper = styled(VerticalCenter)``
-
-const EditBioText = styled.p`
-  font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-weight: 700;
-  color: ${props => props.theme.Colors.background};
-  padding: 30px 0 10px;
-  margin: 0;
-`
-const AboutWrapper = styled(VerticalCenter)``
-
-const EditAboutText = styled.text`
-  font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-weight: 600;
-  color: ${props => props.theme.Colors.background};
-  padding: 10px 0 10px 5px;
-  margin: 0;
-  font-size: 18px;
-  text-align: left;
-`
-const AboutInput = styled.textarea`
-  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
-  font-weight: 400;
-  color: ${props => props.theme.Colors.grey};
-  padding: 5px;
-  margin: 0;
-  font-size: 18px;
-  letter-spacing: .7px;
-  text-align: left;
-  background-color: transparent;
-  border-width: 0px;
-  resize: none;
-  width: 450px;
-`
-
-const BioWrapper = styled.div`
-  background-color: ${props => props.theme.Colors.lightGreyAreas};
-`
-
-const BioContainer = styled.div`
+const Container = styled.div`
+  padding: 20px;
   max-width: 800px;
   margin: auto;
-`
-
-const UsernameInput = styled.input`
-  ${UsernameBaseStyles};
-  font-family: ${props => props.theme.Fonts.type.montserrat}};
-  color: ${props => props.theme.Colors.background};
-  width: 454px;
-  border-width: 0;
-  padding-left: 5px;
+  margin-top: 60px;
 `
 
 const ErrorText = styled.p`
@@ -155,9 +75,71 @@ const SaveCancelButton = styled(RoundedButton)`
   margin: 0px 10px;
 `
 
-function getInitialState(user = {}){
+const RelativeWrapper = styled.div`
+  position: relative;
+  display: flex;
+`
+
+const UpdatePictureText = styled.p`
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  font-weight: 600;
+  letter-spacing: .7px;
+  font-size: 18px;
+  color: ${props => props.theme.Colors.redHighlights};
+  margin-left: 20px;
+  cursor: pointer;
+`
+
+const Label = styled.label`
+  display: block;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  font-weight: 600;
+  letter-spacing: .7px;
+  font-size: 16px;
+  color: ${props => props.theme.Colors.background};
+  margin: 16px 0 8px;
+`
+
+const BaseInputStyles = `
+  font-weight: 400;
+  letter-spacing: .7px;
+  font-size: 18px;
+  width: 100%;
+`
+
+const Input = styled.input`
+  ${BaseInputStyles};
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  color: ${props => props.theme.Colors.grey};
+  border-color: ${props => props.theme.Colors.navBarText};
+  border-width: 0 0 1px 0;
+  padding-bottom: 6px;
+`
+
+const Textarea = styled.textarea`
+  ${BaseInputStyles};
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  color: ${props => props.theme.Colors.grey};
+  resize: none;
+  border: none;
+`
+
+const TextareaWrapper = styled.div`
+  border-color: ${props => props.theme.Colors.navBarText};
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 2.5px;
+  padding: 10px;
+`
+
+const InputsWrapper = styled.div`
+  margin: 40px 0;
+`
+
+function getInitialState(user = {}) {
   return {
     bio: user.bio,
+    fullname: user.profile.fullName,
     username: user.username,
     about: user.about,
     modal: undefined,
@@ -262,99 +244,110 @@ export default class ProfileHeaderEdit extends React.Component {
       bio: this.state.bio,
       username: this.state.username,
       about: this.state.about,
+      profile: {
+        fullName: this.state.fullname,
+        // avatar: this.props.user.profile.avatar,
+      },
     })
   }
 
   render () {
     const {user, error} = this.props
-    const {bio, loadedImage, modal, photoType, username, about} = this.state
+    const {
+      bio,
+      loadedImage,
+      modal, photoType,
+      username,
+      about,
+      fullname,
+    } = this.state
     const avatarUrl = getImageUrl(user.profile.avatar, 'avatarLarge')
     let targetedImage
     if (photoType === 'avatar') targetedImage = avatarUrl
     else if (photoType === 'userCover') targetedImage = getImageUrl(user.profile.cover, 'avatarLarge')
+
     return (
       <Container>
-        <ProfileEditCentered>
-          <Row center='xs'>
-            <Col>
-              <AvatarWrapper>
-                <EditAvatarWrapper>
-                  <CameraIcon
-                    type='avatar'
-                    name='camera'
-                    onClick={this.openAvatarOptions}
-                  />
-                </EditAvatarWrapper>
-                <StyledAvatar
-                  avatarUrl={avatarUrl}
-                  type='profile'
-                  size='x-large'
-                  isProfileHeader={true}
-                />
-              </AvatarWrapper>
-            </Col>
-            <SecondCol>
-              <UsernameWrapper>
-                <Row>
-                  <Col>
-                    <UsernameInput
-                      value={username}
-                      name='username'
-                      onChange={this.onChangeText}
-                      maxLength={SignupConstants.USERNAME_MAX_LENGTH}
-                    />
-                    { username && username.length < SignupConstants.USERNAME_MIN_LENGTH &&
-                      <ErrorText>Username must be at least {SignupConstants.USERNAME_MIN_LENGTH} characters long</ErrorText>
-                    }
-                    { error &&
-                      <ErrorText>Sorry, that username is already in use</ErrorText>
-                    }
-                  </Col>
-                  <PencilIcon
-                    name='pencilBlack'
-                  />
-                </Row>
-              </UsernameWrapper>
-              <AboutWrapper>
-                <EditAboutText>Edit About</EditAboutText>
-                  <AboutInput
-                    value={about}
-                    name='about'
-                    placeholder='Click to add About Me'
-                    onChange={this.onChangeText}
-                    rows={2}
-                    maxLength={63}
-                  />
-              </AboutWrapper>
-            </SecondCol>
-          </Row>
-        </ProfileEditCentered>
-
-        <BioWrapper>
-          <BioContainer>
-            <EditBioText>Edit Bio</EditBioText>
-            <BioInput
+        <RelativeWrapper>
+          <EditAvatarWrapper>
+            <CameraIcon
+              type='avatar'
+              name='camera'
+              onClick={this.openAvatarOptions}
+            />
+          </EditAvatarWrapper>
+          <StyledAvatar
+            avatarUrl={avatarUrl}
+            type='profile'
+            size='x-large'
+            isProfileHeader={false}
+          />
+          <VerticalCenter>
+            <UpdatePictureText
+              onClick={this.openAvatarOptions}
+            >
+              Update profile picture
+            </UpdatePictureText>
+          </VerticalCenter>
+        </RelativeWrapper>
+        <InputsWrapper>
+          <Label>Name</Label>
+          <Input
+            value={fullname}
+            name='fullname'
+            onChange={this.onChangeText}
+            maxLength={SignupConstants.FULLNAME_MAX_LENGTH}
+          />
+          <Label>Username</Label>
+          <Input
+            value={username}
+            name='username'
+            onChange={this.onChangeText}
+            maxLength={SignupConstants.USERNAME_MAX_LENGTH}
+          />
+          { !!username && username.length < SignupConstants.USERNAME_MIN_LENGTH &&
+            <ErrorText>Username must be at least {SignupConstants.USERNAME_MIN_LENGTH} characters long</ErrorText>
+          }
+          { !!error &&
+            <ErrorText>Sorry, that username is already in use</ErrorText>
+          }
+          <Label>About</Label>
+          <TextareaWrapper>
+            <Textarea
+              value={about}
+              name='about'
+              placeholder='Click to add About Me'
+              onChange={this.onChangeText}
+              rows={2}
+              maxLength={63}
+            />
+          </TextareaWrapper>
+          <Label>Bio</Label>
+          <TextareaWrapper>
+            <Textarea
               value={bio}
               name='bio'
               placeholder='Enter your bio'
               onChange={this.onChangeText}
+              rows={7}
             />
-            <SaveCancelButtonWrapper>
-                <SaveCancelButton
-                  margin='small'
-                  type={'blackWhite'}
-                  text={'CANCEL'}
-                  onClick={this.onCancel}
-                />
-                <SaveCancelButton
-                  margin='small'
-                  text='SAVE CHANGES'
-                  onClick={this.onSave}
-                  disabled={!username || (username.length < SignupConstants.USERNAME_MIN_LENGTH)}
-                />
-            </SaveCancelButtonWrapper>
-          </BioContainer>
-        </BioWrapper>
+          </TextareaWrapper>
+        </InputsWrapper>
+
+        <SaveCancelButtonWrapper>
+            <SaveCancelButton
+              margin='small'
+              type={'blackWhite'}
+              text={'CANCEL'}
+              onClick={this.onCancel}
+            />
+            <SaveCancelButton
+              margin='small'
+              text='SAVE CHANGES'
+              onClick={this.onSave}
+              disabled={!username || (username.length < SignupConstants.USERNAME_MIN_LENGTH)}
+            />
+        </SaveCancelButtonWrapper>
 
         <Modal
           contentLabel='Edit Photo Options'

@@ -81,7 +81,7 @@ const getAtomic = (children, { data, keys }) => {
 
 // only actually using unstyled - atomic - header-one
 const blocks = {
-  unstyled: (children, { keys }) => <BodyText key={keys[0]}>{children}</BodyText>,
+  unstyled: (children, { keys }) => children.map((child, i) => <BodyText key={keys[i]}>{child}</BodyText>),
   atomic: getAtomic,
   blockquote: (children, { keys }) => <blockquote key={keys[0]} >{children}</blockquote>,
   'header-one': (children, { keys }) => children.map((child, i) => <HeaderOne key={keys[i]}>{child}</HeaderOne>),

@@ -13,6 +13,7 @@ const TabContainer = styled.div`
   margin: ${props => props.isModal ? '0' : '0px 10px'};
   cursor: pointer;
   min-width: 100px;
+  max-height: 70px;
 `
 
 const ModalText = styled(Text)`

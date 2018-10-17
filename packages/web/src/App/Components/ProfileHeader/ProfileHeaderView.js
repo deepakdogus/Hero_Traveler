@@ -17,6 +17,7 @@ import {
 } from './ProfileHeaderShared'
 import { NavLinkStyled } from '../NavLinkStyled'
 import VerticalCenter from '../VerticalCenter'
+import { FollowButtonStyle } from '../FollowFollowingRow'
 
 const LimitedWidthRow = styled(Row)`
   align-self: center;
@@ -44,7 +45,7 @@ const Count = styled.p`
 const CountLabel = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat}};
   margin: 0;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 13px;
   color ${props => props.theme.Colors.background};
 `
@@ -96,6 +97,10 @@ const BadgeContainer = styled.div`
 
 const ClickableIcon = styled(Icon)`
   cursor: pointer;
+`
+
+const EditButtonStyle = `
+  font-size: 13px;
 `
 
 export default class ProfileHeaderView extends React.Component {
@@ -192,18 +197,20 @@ export default class ProfileHeaderView extends React.Component {
               { isUsersProfile &&
                 <NavLinkStyled to={`/profile/${user.id}/edit`}>
                   <RoundedButton
-                    margin='none'
+                    margin='small-button'
                     type='blackWhite'
                     text='EDIT PROFILE'
+                    textProps={EditButtonStyle}
                   />
                 </NavLinkStyled>
               }
               { !isUsersProfile &&
                 <RoundedButton
-                  margin='none'
+                  margin='small-button'
                   onClick={isFollowing ? unfollowUser : followUser}
-                  type={isFollowing ? 'blackWhite' : ''}
+                  type={isFollowing ? '' : 'blackWhite'}
                   text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
+                  textProps={FollowButtonStyle}
                 />
               }
             </ButtonWrapper>

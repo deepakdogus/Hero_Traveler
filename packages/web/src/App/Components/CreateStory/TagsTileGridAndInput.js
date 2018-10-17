@@ -47,6 +47,7 @@ const TilesWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   display: flex;
+  flex-wrap: wrap;
 `
 
 export default class TagsTileGridAndInput extends React.Component {

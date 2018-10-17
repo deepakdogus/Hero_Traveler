@@ -147,11 +147,14 @@ export default class NotificationRow extends Component {
   }
 
   renderImage = () => {
+    console.log(this.props)
     const avatar = _.get(this, 'props.user.profile.avatar')
+    
     return (
       <RenderImageContainer>
         <Avatar
           avatarUrl={avatar ? getImageUrl(avatar, 'avatarLarge') : undefined}
+          type='profile'
           size='larger'
         />
       </RenderImageContainer>

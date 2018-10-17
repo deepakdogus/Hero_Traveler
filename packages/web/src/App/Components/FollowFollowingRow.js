@@ -57,6 +57,7 @@ export default class FollowFollowingRow extends Component {
           avatarUrl={getImageUrl(user.profile.avatar, 'avatarLarge')}
           size='larger'
           onClick={this._handleProfileClick}
+          type='profile'
         />
     )
   }

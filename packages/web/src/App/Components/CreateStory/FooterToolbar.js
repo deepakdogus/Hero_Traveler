@@ -104,14 +104,14 @@ export default class FooterToolbar extends Component {
         }
         </Row>
         <Row middle='xs'>
-          <RoundedButton
-            text={isDetailsView ? '< Back' : 'Preview'}
+          {isDetailsView && <RoundedButton
+            text={'< Back'}
             margin='medium'
             padding='even'
             width='120px'
             type='grey'
             onClick={onLeft}
-          />
+          />}
           <RoundedButton
             text={isDetailsView ? 'Publish' : 'Next >'}
             margin='medium'

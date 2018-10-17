@@ -27,10 +27,6 @@ import {
 } from './EditorAddMediaButton'
 import MediaComponent from './EditorMediaComponent'
 
-// import buttonStyles from './Styles/buttonStyles.css'
-// import toolbarStyles from './Styles/toolbarStyles-dep.css'
-// import blockTypeSelectStyles from './Styles/blockTypeSelectStyles.css'
-
 const EditorWrapper = styled.div`
   margin-bottom: 95px;
   margin-top: 20px;
@@ -168,10 +164,22 @@ export default class BodyEditor extends React.Component {
     }
   }
 
-  myBlockStyleFn(contentBlock) {
-    const type = contentBlock.getType()
-    if (type === 'header-one') return 'editorHeaderOne'
-    else if (type === 'unstyled') return 'editorParagraph'
+  myBlockStyleFn = (contentBlock) => {
+    const contentState = this.state.editorState.getCurrentContent()
+    const prevBlockKey = contentState.getKeyBefore(contentBlock.getKey())
+    const prevBlock = contentState.getBlockForKey(prevBlockKey)
+    const prevBlockType = prevBlock ? prevBlock.getType() : ''
+    const currBlockType = contentBlock.getType()
+    let className = ''
+
+    if (currBlockType === 'unstyled') className = 'editorParagraph'
+    if (currBlockType === 'header-one') className = 'editorHeaderOne'
+    if (prevBlockType
+      && prevBlockType === 'atomic'
+      && currBlockType !== 'atomic') {
+      className += ' editorSpacer'
+    }
+    return className
   }
 
   getFocusKey() {
@@ -193,19 +201,18 @@ export default class BodyEditor extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.value && this.props.storyId !== prevProps.storyId) {
       this.setState({
-        editorState: EditorState.createWithContent((this.props.value))
+        editorState: EditorState.createWithContent((this.props.value)),
       })
     }
     else if (this.shouldRefocusPlaceholder()) {
       this.setState({
         editorState: EditorState.forceSelection(
           this.state.editorState,
-          this.createSelectionWithFocus(this.getFocusKey())
-        )
+          this.createSelectionWithFocus(this.getFocusKey()),
+        ),
       })
     }
   }
-
 
   onChange = (editorState) => {
     this.setState({editorState})

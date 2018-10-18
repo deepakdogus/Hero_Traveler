@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 
 import {RightTitle, RightModalCloseX} from './Shared'
 import TabBar from '../TabBar'
@@ -13,13 +14,14 @@ const Container = styled.div``
 
 const tabBarTabs = ['Account', 'Services', 'Notifications', 'Password']
 
-export default class Settings extends React.Component {
+class Settings extends React.Component {
   static propTypes = {
     closeModal: PropTypes.func,
     attemptChangePassword: PropTypes.func,
     loginReduxFetching: PropTypes.bool,
     loginReduxError: PropTypes.object,
     userId: PropTypes.string,
+    user: PropTypes.object,
     userProfile: PropTypes.object,
     userEmail: PropTypes.string,
     attemptUpdateUser: PropTypes.func,
@@ -31,7 +33,7 @@ export default class Settings extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      activeTab: 'Account'
+      activeTab: 'Account',
     }
   }
 
@@ -45,6 +47,7 @@ export default class Settings extends React.Component {
       loginReduxError,
       loginReduxFetching,
       attemptChangePassword,
+      user,
       userId,
       userProfile,
       userEmail,
@@ -75,7 +78,11 @@ export default class Settings extends React.Component {
             type={'account'}
           />
         }
-        {this.state.activeTab === 'Services' && <EditServices/>}
+        {this.state.activeTab === 'Services' &&
+          <EditServices
+            user={user}
+          />
+        }
         {this.state.activeTab === 'Notifications' &&
           <EditNotifications
             attemptUpdateUser={attemptUpdateUser}
@@ -98,3 +105,22 @@ export default class Settings extends React.Component {
     )
   }
 }
+
+function mapStateToProps(state) {
+  const users = state.entities.users.entities
+  const currentUserId = state.session.userId
+  const user = users[currentUserId]
+
+  return {
+    user,
+  }
+}
+
+function mapDispatchToProps() {
+  return {}
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Settings)

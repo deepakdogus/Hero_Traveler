@@ -19,5 +19,5 @@ export default styled.hr`
   opacity: ${props => props.opaque ? .5 : 1};
   border-style: solid;
   border-width: 0;
-  border-bottom-width: 1.1px;
+  border-bottom-width: 1.05px;
 `

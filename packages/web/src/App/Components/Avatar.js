@@ -20,8 +20,8 @@ const StyledImage = styled(ImageWrapper)`
 const StyledIcon = styled(Icon)`
   cursor: ${props => props.onClick ? 'pointer' : undefined};
   position: relative;
-  right: ${props=> props.isProfileHeader ? '0' : '6'}px;
-  bottom: ${props=> props.isProfileHeader ? '1' : '0'}px;
+  right: ${props => props.isProfileHeader ? '0' : '6'}px;
+  bottom: ${props => props.isProfileHeader ? '1' : '0'}px;
   margin-left: ${props => props.isStoryPreview ? '7px' : '0'};
 `
 
@@ -51,7 +51,7 @@ export default class Avatar extends React.Component {
           name={type === 'profile' ? 'defaultProfile' : 'user-circle-o'}
           size={size}
           onClick={onClick}
-          isProfileHeader={isProfileHeader}
+          isProfileHeader={isProfileHeader || type === 'profile'}
           isStoryPreview={isStoryPreview}
         />
       )

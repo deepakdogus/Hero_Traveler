@@ -11,7 +11,6 @@ import TagPicker from './TagPicker'
 
 const RelativePositionAncestor = styled.div`
   position: relative;
-  width: 100px;
 `
 
 export default class TagSelector extends Component {
@@ -28,7 +27,7 @@ export default class TagSelector extends Component {
   }
 
   state = {
-    isPickerOpen: false
+    isPickerOpen: false,
   }
 
   togglePicker = () => this.setState({isPickerOpen: !this.state.isPickerOpen})
@@ -61,7 +60,7 @@ export default class TagSelector extends Component {
       updateTagsList,
       tagsList,
       isSameTag,
-      loadDefaultTags
+      loadDefaultTags,
     } = this.props
     const {isPickerOpen, inputText} = this.state
 

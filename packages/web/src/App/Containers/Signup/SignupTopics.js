@@ -18,13 +18,15 @@ const TopicsContainer = styled.div`
 `
 
 const NavLinkContainer = styled(TopicsContainer)`
+  width: 100%;
+  position: fixed;
+  top: 85px;
   display: flex;
   justify-content: flex-end;
-  margin-top: 20px;
 `
 
 const Container = styled.div`
-  margin: 0 7.5%;
+  margin: 100px; 7.5% 0;
   text-align: center;
 `
 const Title = styled.p`

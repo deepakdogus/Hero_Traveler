@@ -135,9 +135,11 @@ export default class NotificationRow extends Component {
     markSeen: PropTypes.func,
   }
 
-  navToStory = (event) => {
+  navToFeedItem = (event) => {
     event.stopPropagation()
-    this.props.reroute(`/story/${this.props.activity.story.id}`)
+    const feedItem = this.props.activity.story || this.props.activity.guide
+    const feedItemType = this.props.activity.story ? 'story' : 'guide'
+    this.props.reroute(`/${feedItemType}/${feedItem.id}`)
     this.props.closeModal()
   }
 
@@ -177,7 +179,7 @@ export default class NotificationRow extends Component {
           </StyledUserName>
           {getDescriptionText(activity)}
           {!!title &&
-            <StyledUserName onClick={this.navToStory}>
+            <StyledUserName onClick={this.navToFeedItem}>
               title
             </StyledUserName>
           }
@@ -232,7 +234,7 @@ export default class NotificationRow extends Component {
     return (
       <InteractiveContainer onClick={this._markSeen}>
         <Container
-          onClick={this.props.isFeedItem ? this.navToStory : this.navToUserProfile}
+          onClick={this.props.isFeedItem ? this.navToFeedItem : this.navToUserProfile}
           >
           {this.renderSeenBullet()}
           <SpaceBetweenRow

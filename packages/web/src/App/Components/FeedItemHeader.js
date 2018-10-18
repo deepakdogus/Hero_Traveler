@@ -59,9 +59,8 @@ const Username = styled(RedText)`
 `
 
 const TimeStamp = styled(RedText)`
-  font-style: italic;
   font-size: 14px;
-  color: ${props => props.theme.Colors.background};
+  color: ${props => props.theme.Colors.grey};
 `
 
 const CoverImage = styled.img`
@@ -94,7 +93,6 @@ const Container = styled.div`
     padding-left: 0;
     padding-right: 0;
   }
-
 `
 
 const TopRow = styled(Row)`
@@ -121,6 +119,11 @@ const ClickableRow = styled(Row)`
 
 const BadgeIcon = styled(Icon)`
   margin-left: ${props => props.profileAvatar ? '0' : '10'}px;
+`
+
+const followButtonStyles = `
+  font-size: 10px;
+  font-weight: 600;
 `
 
 export default class FeedItemHeader extends React.Component {
@@ -197,19 +200,23 @@ export default class FeedItemHeader extends React.Component {
               </VerticalCenter>
             }
             <SpacedVerticalCenter>
-              <Username onClick={this._profileReroute}>{author.username}</Username>
+              <Row>
+                <Username onClick={this._profileReroute}>{author.username}</Username>
+                {!isUsersFeedItem && sessionUserId &&
+                  <SpacedVerticalCenter>
+                    <RoundedButton
+                      margin='none'
+                      padding='smallEven'
+                      onClick={isFollowing ? unfollowUser : followUser}
+                      type={isFollowing ? 'follow' : 'blackWhite'}
+                      text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
+                      textProps={followButtonStyles}
+                    />
+                  </SpacedVerticalCenter>
+                }
+              </Row>
               <TimeStamp>{moment(feedItem.createdAt).fromNow()}</TimeStamp>
             </SpacedVerticalCenter>
-            {!isUsersFeedItem && sessionUserId &&
-              <SpacedVerticalCenter>
-                <RoundedButton
-                  margin='none'
-                  onClick={isFollowing ? unfollowUser : followUser}
-                  type={isFollowing ? 'blackWhite' : ''}
-                  text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
-                />
-              </SpacedVerticalCenter>
-            }
           </Row>
           <Row>
             {isUsersFeedItem &&

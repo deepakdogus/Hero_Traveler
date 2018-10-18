@@ -28,8 +28,8 @@ import {
 import MediaComponent from './EditorMediaComponent'
 
 const EditorWrapper = styled.div`
-  margin-bottom: 95px;
-  margin-top: 20px;
+margin-bottom: 95px;
+margin-top: 20px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     margin-left: 15px;
     margin-right: 15px;
@@ -175,9 +175,11 @@ export default class BodyEditor extends React.Component {
 
     if (currBlockType === 'unstyled') className = 'editorParagraph'
     if (currBlockType === 'header-one') className = 'editorHeaderOne'
-    if (nextBlockType
+    if (
+      nextBlockType
       && nextBlockType === 'atomic'
-      && currBlockType !== 'atomic') {
+      && currBlockType !== 'atomic'
+    ) {
       className += ' editorSpacer'
     }
     return className
@@ -198,15 +200,6 @@ export default class BodyEditor extends React.Component {
     const text = currentBlock.getText()
     return blockType === 'atomic' && !text && selectionState.getFocusOffset() !== 0
   }
-
-  // shouldDisplayToolbar() {
-  //   const { editorState } = this.state
-  //   const lastBlock = editorState.getCurrentContent().getLastBlock()
-  //   const type = lastBlock.getType()
-  //   console.log('type', type)
-  //   console.log('bool', !(type === 'atomic'))
-  //   return !(type === 'atomic')
-  // }
 
   componentDidUpdate(prevProps) {
     if (this.props.value && this.props.storyId !== prevProps.storyId) {

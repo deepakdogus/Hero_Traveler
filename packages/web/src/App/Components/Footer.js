@@ -15,6 +15,7 @@ const SizedRow = styled(Row)`
   position: relative;
   margin: 0 auto 20px;
   padding-right: 16px;
+  height: 35px;
   border-top: ${props => `2px solid ${props.theme.Colors.background}`};
 `
 
@@ -93,13 +94,16 @@ export default class Footer extends React.Component {
             <StyledPseudoLink onClick={this.openTAC}>Terms of Service</StyledPseudoLink>
             <StyledOffsiteLink href='mailto:info@herotraveler.com'>Contact Us</StyledOffsiteLink>
           </Row>
-          <Row middle='xs'>
-            <StyledIcon name='facebookDark'/>
-            <Divider />
-            <StyledIcon name='twitterDark'/>
-            <Divider />
-            <StyledIcon name='instagramDark'/>
-          </Row>
+          {/* hidden until HT social media campaigns launch */}
+          {false &&
+            <Row middle='xs'>
+              <StyledIcon name='facebookDark'/>
+              <Divider />
+              <StyledIcon name='twitterDark'/>
+              <Divider />
+              <StyledIcon name='instagramDark'/>
+            </Row>
+          }
         </SizedRow>
       </Container>
     )

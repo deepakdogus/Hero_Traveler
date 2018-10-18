@@ -12,6 +12,7 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   ${OverlayStyles}
+  background-position: center;
 `
 
 const CategoryTitle = styled.p`

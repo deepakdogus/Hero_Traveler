@@ -101,6 +101,8 @@ const ClickableIcon = styled(Icon)`
 
 const EditButtonStyle = `
   font-size: 13px;
+  margin-top: 6px;
+  margin-bottom: 6px;
 `
 
 export default class ProfileHeaderView extends React.Component {
@@ -197,7 +199,6 @@ export default class ProfileHeaderView extends React.Component {
               { isUsersProfile &&
                 <NavLinkStyled to={`/profile/${user.id}/edit`}>
                   <RoundedButton
-                    margin='small-button'
                     type='blackWhite'
                     text='EDIT PROFILE'
                     textProps={EditButtonStyle}
@@ -206,7 +207,6 @@ export default class ProfileHeaderView extends React.Component {
               }
               { !isUsersProfile &&
                 <RoundedButton
-                  margin='small-button'
                   onClick={isFollowing ? unfollowUser : followUser}
                   type={isFollowing ? '' : 'blackWhite'}
                   text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}

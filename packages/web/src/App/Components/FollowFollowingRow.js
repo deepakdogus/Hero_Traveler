@@ -36,6 +36,8 @@ const ProfileDetail = styled(UserName)`
 
 export const FollowButtonStyle = `
   font-size: 13px;
+  margin-top: 6px;
+  margin-bottom: 6px;
 `
 
 export default class FollowFollowingRow extends Component {
@@ -94,7 +96,6 @@ export default class FollowFollowingRow extends Component {
         <RoundedButton
           text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
           type={isFollowing ? undefined : 'blackWhite'}
-          margin='small-button'
           width='154px'
           padding='even'
           onClick={this._onFollowClick}

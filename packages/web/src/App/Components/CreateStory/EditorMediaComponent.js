@@ -108,7 +108,7 @@ export default class MediaComponent extends EditorBlock {
         className={className}
       >
         {this.getMediaComponent()}
-        {!text && <Placeholder text='placeholder'/>}
+        {!text && <Placeholder text='Add a caption'/>}
         <Caption>
           {this._renderChildren()}
         </Caption>

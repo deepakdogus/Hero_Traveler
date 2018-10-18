@@ -8,7 +8,8 @@ import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import {
   getContent,
-  getDescription,
+  getDescriptionText,
+  getFeedItemTitle,
 } from '../Shared/Lib/NotificationHelpers'
 import Avatar from './Avatar'
 import {getSize} from './Icon'
@@ -22,7 +23,7 @@ import SpaceBetweenRow from './SpaceBetweenRow'
 let avatarWidth = getSize({size: 'larger'})
 avatarWidth = Number(avatarWidth.substring(0, avatarWidth.length - 2))
 
-const relevantMetrics  = {
+const relevantMetrics = {
   containerPadding: 25,
   imageWidth: 60,
   avatarWidth,
@@ -122,7 +123,7 @@ const HiddenBulletContainer = styled(VisibleBulletContainer)`
 const videoThumbnailOptions = {
   video: true,
   width: 100,
-  height: 100
+  height: 100,
 }
 
 export default class NotificationRow extends Component {
@@ -167,13 +168,20 @@ export default class NotificationRow extends Component {
 
   renderText = () => {
     const { activity } = this.props
+    const title = getFeedItemTitle(activity)
     return (
       <StyledVerticalCenter>
         <StyledNotificationContent>
           <StyledUserName onClick={this.navToUserProfile}>
             {activity.fromUser.username}&nbsp;
           </StyledUserName>
-          {getDescription(activity)}
+          {getDescriptionText(activity)}
+          {!!title &&
+            <StyledUserName onClick={this.navToStory}>
+              title
+            </StyledUserName>
+          }
+          .
         </StyledNotificationContent>
         {!!activity.comment &&
           <CommentContent>
@@ -209,7 +217,8 @@ export default class NotificationRow extends Component {
           </StyledImageContainer>
         </VerticalCenter>
       )
-    } else return
+    }
+    else return
   }
 
   _markSeen = () => {
@@ -219,7 +228,7 @@ export default class NotificationRow extends Component {
   }
 
   render() {
-    const leftProps = { 'max-width': '450px', }
+    const leftProps = { 'max-width': '450px' }
     return (
       <InteractiveContainer onClick={this._markSeen}>
         <Container

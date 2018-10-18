@@ -1,14 +1,13 @@
 package com.herotravelermobile.editor
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import android.os.Build
 import android.text.Editable
-import android.text.InputType
 import android.text.Selection
 import android.text.SpannableStringBuilder
 import android.text.Spanned
-import android.text.TextUtils
 import android.text.TextWatcher
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.BackgroundColorSpan
@@ -22,7 +21,6 @@ import com.facebook.react.uimanager.UIManagerModule
 import com.facebook.react.uimanager.events.Event
 import com.facebook.react.views.text.CustomStyleSpan
 import com.facebook.react.views.text.ReactTagSpan
-import com.facebook.react.views.text.ReactTextUpdate
 import com.facebook.react.views.textinput.ContentSizeWatcher
 import com.facebook.react.views.textinput.ReactTextInputLocalData
 import com.facebook.react.views.view.ReactViewBackgroundManager
@@ -35,7 +33,8 @@ import com.herotravelermobile.editor.model.Address
 import com.herotravelermobile.editor.model.DraftJsContent
 import com.herotravelermobile.editor.model.DraftJsSelection
 
-class RNDJDraftJSEditor(context: Context) : EditText(context) {
+@SuppressLint("ViewConstructor")
+class RNDJDraftJSEditor(val context: ReactContext) : EditText(context) {
     private val defaultGravityHorizontal: Int = gravity and
             (Gravity.HORIZONTAL_GRAVITY_MASK or Gravity.RELATIVE_HORIZONTAL_GRAVITY_MASK)
 
@@ -96,8 +95,6 @@ class RNDJDraftJSEditor(context: Context) : EditText(context) {
             }).also { _selectionCallback = it }
         }
 
-    private var mNativeEventCount = 0
-
     private var containsImages = false
 
     var contentSizeWatcher: ContentSizeWatcher? = null
@@ -107,40 +104,34 @@ class RNDJDraftJSEditor(context: Context) : EditText(context) {
         addTextChangedListener(ContentSizeNotifier())
     }
 
-    fun incrementAndGetEventCounter(): Int {
-        return ++mNativeEventCount
-    }
-
-    fun maybeSetText(reactTextUpdate: ReactTextUpdate) {
-        if (isSecureText() && TextUtils.equals(text, reactTextUpdate.text)) {
-            return
-        }
-
-        // Only set the text if it is up to date.
-        if (reactTextUpdate.jsEventCounter < mNativeEventCount) {
-            return
-        }
+    fun updateText(reactTextUpdate: ReactTextUpdate) {
+        _content = reactTextUpdate.content
 
         // The current text gets replaced with the text received from JS. However, the spans on the
         // current text need to be adapted to the new text. Since TextView#setText() will remove or
         // reset some of these spans even if they are set directly, SpannableStringBuilder#replace() is
         // used instead (this is also used by the the keyboard implementation underneath the covers).
-        val spannableStringBuilder = SpannableStringBuilder(reactTextUpdate.text)
+        val spannableStringBuilder = SpannableStringBuilder(_content.flatText)
         manageSpans(spannableStringBuilder)
-        containsImages = reactTextUpdate.containsImages()
+        containsImages = reactTextUpdate.containsImages
 
+        filter.enabled = false
         text.replace(0, length(), spannableStringBuilder)
+        filter.enabled = true
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (breakStrategy != reactTextUpdate.textBreakStrategy) {
                 breakStrategy = reactTextUpdate.textBreakStrategy
             }
         }
+
+        if (::_selection.isInitialized) {
+            setSelection(_selection)
+        }
     }
 
     private fun setIntrinsicContentSize() {
-        val reactContext = context as ReactContext
-        val uiManager = reactContext.getNativeModule(UIManagerModule::class.java)
+        val uiManager = context.getNativeModule(UIManagerModule::class.java)
         val localData = ReactTextInputLocalData(this)
         uiManager.setViewLocalData(id, localData)
     }
@@ -149,12 +140,10 @@ class RNDJDraftJSEditor(context: Context) : EditText(context) {
         if (contentSizeWatcher != null) {
             contentSizeWatcher!!.onLayout()
         }
-
-        setIntrinsicContentSize()
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) =
-            onContentSizeChange()
+            setIntrinsicContentSize()
 
     /**
      * Remove and/or add [Spanned.SPAN_EXCLUSIVE_EXCLUSIVE] spans, since they should only exist
@@ -207,10 +196,6 @@ class RNDJDraftJSEditor(context: Context) : EditText(context) {
         }
         return true
     }
-
-
-    private fun isSecureText() =
-        inputType and (InputType.TYPE_NUMBER_VARIATION_PASSWORD or InputType.TYPE_TEXT_VARIATION_PASSWORD) != 0
 
     internal fun setGravityHorizontal(gravityHorizontal: Int) {
         gravity = gravity and Gravity.HORIZONTAL_GRAVITY_MASK.inv() and
@@ -275,22 +260,15 @@ class RNDJDraftJSEditor(context: Context) : EditText(context) {
         }
     }
 
-    fun setContent(content : DraftJsContent) {
-        _content = content
-        forceSetText(content.flatText)
-        if (::_selection.isInitialized) {
-            setSelection(_selection)
-        }
-    }
-
     fun setSelection(selection: DraftJsSelection) {
         _selection = selection
         selection.let {
             if (::_content.isInitialized) {
+                val text = super.getText()
                 val startIndex = _content.addressToFlatIndex(Address(it.startKey, it.startOffset))
                 val endIndex = _content.addressToFlatIndex(Address(it.endKey, it.endOffset))
-                if (startIndex >= 0 && endIndex >= 0) {
-                    Selection.setSelection(super.getText(), startIndex, endIndex)
+                if (startIndex >= 0 && endIndex >= 0 && startIndex <= text.length && endIndex <= text.length) {
+                    Selection.setSelection(text, startIndex, endIndex)
                 }
             }
             if (it.hasFocus) {
@@ -330,12 +308,6 @@ class RNDJDraftJSEditor(context: Context) : EditText(context) {
     }
 
     override fun getEditableText() = text
-
-    private fun forceSetText(text: CharSequence?) {
-        filter.enabled = false
-        setText(text)
-        filter.enabled = true
-    }
 
     private inner class ContentSizeNotifier : TextWatcher {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}

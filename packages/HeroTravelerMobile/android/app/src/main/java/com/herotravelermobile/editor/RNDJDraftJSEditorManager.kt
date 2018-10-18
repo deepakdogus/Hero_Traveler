@@ -33,20 +33,15 @@ import com.facebook.react.views.imagehelper.ResourceDrawableIdHelper
 import com.facebook.react.views.scroll.ScrollEventType
 import com.facebook.react.views.text.DefaultStyleValuesUtil
 import com.facebook.react.views.text.ReactFontManager
-import com.facebook.react.views.text.ReactTextUpdate
-import com.facebook.react.views.text.TextInlineImageSpan
 import com.facebook.react.views.textinput.ContentSizeWatcher
 import com.facebook.react.views.textinput.ReactContentSizeChangedEvent
-import com.facebook.react.views.textinput.ReactTextChangedEvent
 import com.facebook.react.views.textinput.ReactTextInputEvent
-import com.facebook.react.views.textinput.ReactTextInputShadowNode
 import com.facebook.yoga.YogaConstants
 import com.herotravelermobile.editor.event.OnBackspaceRequest
 import com.herotravelermobile.editor.event.OnInsertTextRequest
 import com.herotravelermobile.editor.event.OnNewlineRequest
 import com.herotravelermobile.editor.event.OnReplaceRangeRequest
 import com.herotravelermobile.editor.event.OnSelectionChangeRequest
-import com.herotravelermobile.editor.model.DraftJsContent
 import com.herotravelermobile.editor.model.DraftJsSelection
 import java.util.*
 
@@ -176,11 +171,11 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
                     extraData.paddingBottom.toInt()
             )
 
-            if (extraData.containsImages()) {
-                val spannable = extraData.text
-                TextInlineImageSpan.possiblyUpdateInlineImageSpans(spannable, view)
+            if (extraData.containsImages) {
+                /*val spannable = extraData.text
+                TextInlineImageSpan.possiblyUpdateInlineImageSpans(spannable, view)*/
             }
-            view.maybeSetText(extraData)
+            view.updateText(extraData)
         }
     }
 
@@ -193,46 +188,37 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
                     null
     }
 
-    private inner class ReactContentSizeWatcher(private val mEditText: RNDJDraftJSEditor) : ContentSizeWatcher {
-        private val mEventDispatcher: EventDispatcher
+    private inner class ReactContentSizeWatcher(private val editText: RNDJDraftJSEditor) : ContentSizeWatcher {
+        private val eventDispatcher: EventDispatcher = editText.context
+                .getNativeModule(UIManagerModule::class.java).eventDispatcher
         private var mPreviousContentWidth = 0
         private var mPreviousContentHeight = 0
 
-        init {
-            val reactContext = mEditText.context as ReactContext
-            mEventDispatcher = reactContext.getNativeModule(UIManagerModule::class.java).eventDispatcher
-        }
-
         override fun onLayout() {
-            var contentWidth = mEditText.width
-            var contentHeight = mEditText.height
+            var contentWidth = editText.width
+            var contentHeight = editText.height
 
             // Use instead size of text content within EditText when available
-            if (mEditText.layout != null) {
-                contentWidth = mEditText.compoundPaddingLeft + mEditText.layout.width +
-                        mEditText.compoundPaddingRight
-                contentHeight = mEditText.compoundPaddingTop + mEditText.layout.height +
-                        mEditText.compoundPaddingBottom
+            if (editText.layout != null) {
+                contentWidth = editText.compoundPaddingLeft + editText.layout.width +
+                        editText.compoundPaddingRight
+                contentHeight = editText.compoundPaddingTop + editText.layout.height +
+                        editText.compoundPaddingBottom
             }
 
             if (contentWidth != mPreviousContentWidth || contentHeight != mPreviousContentHeight) {
                 mPreviousContentHeight = contentHeight
                 mPreviousContentWidth = contentWidth
 
-                mEventDispatcher.dispatchEvent(
+                eventDispatcher.dispatchEvent(
                         ReactContentSizeChangedEvent(
-                                mEditText.id,
+                                editText.id,
                                 PixelUtil.toDIPFromPixel(contentWidth.toFloat()),
                                 PixelUtil.toDIPFromPixel(contentHeight.toFloat())
                         )
                 )
             }
         }
-    }
-
-    @ReactProp(name = "content")
-    fun setContent(view: RNDJDraftJSEditor, content: ReadableMap) {
-        view.setContent(DraftJsContent(content))
     }
 
     @ReactProp(name = "selection")
@@ -266,8 +252,7 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
     }
 
     private fun createEventSender(view: RNDJDraftJSEditor): Function1<Event<*>, Unit> = { event ->
-        val reactContext = view.context as ReactContext
-        reactContext.getNativeModule(UIManagerModule::class.java).eventDispatcher
+        view.context.getNativeModule(UIManagerModule::class.java).eventDispatcher
                 .dispatchEvent(event)
     }
 
@@ -362,7 +347,7 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
         }
     }
 
-    @ReactProp(name = "placeholder")
+    @ReactProp(name = "placeholderText")
     fun setPlaceholder(view: RNDJDraftJSEditor, placeholder: String?) {
         view.hint = placeholder
     }
@@ -435,8 +420,8 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
 
     @ReactProp(name = "underlineColorAndroid", customType = "Color")
     fun setUnderlineColor(view: RNDJDraftJSEditor, underlineColor: Int?) {
-// Drawable.mutate() can sometimes crash due to an AOSP bug:
-// See https://code.google.com/p/android/issues/detail?id=191754 for more info
+        // Drawable.mutate() can sometimes crash due to an AOSP bug:
+        // See https://code.google.com/p/android/issues/detail?id=191754 for more info
         val background = view.background
         val drawableToMutate = if (background.constantState != null)
             background.mutate()
@@ -606,16 +591,6 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
                 return
             }
 
-            // The event that contains the event counter and updates it must be sent first.
-            // TODO: t7936714 merge these events
-            mEventDispatcher.dispatchEvent(
-                    ReactTextChangedEvent(
-                            mEditText.id,
-                            s.toString(),
-                            mEditText.incrementAndGetEventCounter()
-                    )
-            )
-
             mEventDispatcher.dispatchEvent(
                     ReactTextInputEvent(
                             mEditText.id,
@@ -628,6 +603,5 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
         }
 
         override fun afterTextChanged(s: Editable) {}
-
     }
 }

@@ -28,6 +28,17 @@ const StyledLink = styled(NavLink)`
   margin-bottom: 0;
 `
 
+const StyledOffsiteLink = styled.a`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
+  font-weight: 400;
+  font-size: 16px;
+  color: ${props => props.theme.Colors.background};
+  letter-spacing: 1.2px;
+  text-decoration: none;
+  margin-right: 25px;
+  margin-bottom: 0;
+`
+
 const Divider = styled.div`
   display: inline-block;
   width: 1px;
@@ -55,8 +66,8 @@ export default class Footer extends React.Component {
         <SizedRow between='xs'>
           <Row bottom='xs'>
             <StyledLink to='/'>About Us</StyledLink>
-            <StyledLink to='/'>Terms of Service</StyledLink>
-            <StyledLink to='/'>Contact Us</StyledLink>
+            <StyledLink to='/privacy'>Terms of Service</StyledLink>
+            <StyledOffsiteLink href='mailto:info@herotraveler.com'>Contact Us</StyledOffsiteLink>
           </Row>
           <Row middle='xs'>
             <StyledIcon name='facebookDark'/>

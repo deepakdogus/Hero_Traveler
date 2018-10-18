@@ -16,6 +16,7 @@ import Profile from './Profile'
 import Header from './Header'
 import Guide from './Guide'
 import CreateGuide from './CreateGuide'
+import PrivacyScreen from '../Components/PrivacyScreen'
 
 class AppRoot extends Component {
   render() {
@@ -35,6 +36,7 @@ class AppRoot extends Component {
         <Route path='/profile/:userId/view' component={Profile} />
         <AuthRoute path='/profile/:userId/edit' component={Profile}/>
         <Route path='/search' component={Search} />
+        <Route path='/privacy' component={PrivacyScreen} />
       </div>
     )
   }

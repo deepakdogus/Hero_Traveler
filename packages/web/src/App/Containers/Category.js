@@ -13,7 +13,7 @@ import ContainerWithFeedList from './ContainerWithFeedList'
 import CategoryHeader from '../Components/CategoryHeader'
 import TabBar from '../Components/TabBar'
 import FeedItemList from '../Components/FeedItemList'
-import Footer from '../Components/Footer'
+import Footer from './Footer'
 
 const tabBarTabs = ['ALL', 'SEE', 'DO', 'EAT', 'STAY', 'GUIDES']
 

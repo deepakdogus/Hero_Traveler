@@ -1,13 +1,14 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import {NavLink} from 'react-router-dom';
+import { NavLink } from 'react-router-dom'
 
 import Icon from './Icon'
-import {Row} from './FlexboxGrid'
+import { Row } from './FlexboxGrid'
 
 const Container = styled.div`
   width: 100%;
-  margin: 25px 0;
+  margin: 80px 0 25px;
 `
 
 const SizedRow = styled(Row)`
@@ -39,6 +40,18 @@ const StyledOffsiteLink = styled.a`
   margin-bottom: 0;
 `
 
+const StyledPseudoLink = styled.div`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
+  font-weight: 400;
+  font-size: 16px;
+  color: ${props => props.theme.Colors.background};
+  letter-spacing: 1.2px;
+  text-decoration: none;
+  margin-right: 25px;
+  margin-bottom: 0;
+  cursor: pointer;
+`
+
 const Divider = styled.div`
   display: inline-block;
   width: 1px;
@@ -59,14 +72,25 @@ const StyledIcon = styled(Icon)`
 Need black icons and what size they want them. Ideally all icons should be square!
 */
 export default class Footer extends React.Component {
+  static propTypes = {
+    openGlobalModal: PropTypes.func,
+  }
 
-  render () {
+  openTAC = () => {
+    this.openGlobalModalandClose('faqTermsAndConditions', 'Terms & Conditions')
+  }
+
+  openGlobalModalandClose = (modalName, activeTab) => {
+    this.props.openGlobalModal(modalName, { activeTab })
+  }
+
+  render() {
     return (
       <Container fluid>
         <SizedRow between='xs'>
           <Row bottom='xs'>
             <StyledLink to='/'>About Us</StyledLink>
-            <StyledLink to='/privacy'>Terms of Service</StyledLink>
+            <StyledPseudoLink onClick={this.openTAC}>Terms of Service</StyledPseudoLink>
             <StyledOffsiteLink href='mailto:info@herotraveler.com'>Contact Us</StyledOffsiteLink>
           </Row>
           <Row middle='xs'>

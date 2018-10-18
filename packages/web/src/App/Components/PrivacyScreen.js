@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import Footer from './Footer'
+import Footer from '../Containers/Footer'
 
 const ContentWrapper = styled.div`
   margin: 65px 7% 0;
@@ -25,7 +25,7 @@ const BodyText = styled.p`
   font-weight: 400;
   font-size: 18px;
   color: ${props => props.theme.Colors.grey};
-  letter-spacing: 0.7px;S
+  letter-spacing: 0.7px;
 `
 
 const StyledHeaderText = styled.h1`

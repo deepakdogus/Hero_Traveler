@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
@@ -42,41 +43,42 @@ const inline = {
   BOLD: (children, { key }) => <StyledStrong key={key}>{children}</StyledStrong>,
   ITALIC: (children, { key }) => <em key={key}>{children}</em>,
   UNDERLINE: (children, { key }) => <u key={key}>{children}</u>,
-};
+}
 
 const getAtomic = (children, { data, keys }) => {
   /*
     this seems a pretty precarious to get the text.
     TODO: See if we can find a better way to isolate the text
   */
-  const text = _.get(children, '[0][1][0]', '').trim()
-  const type = data[0].type
-  const mediaUrl =
-    type === 'image'
-    ? getImageUrl(data[0].url, 'contentBlock')
-    : `${getVideoUrlBase()}/${data[0].url}`
-
-  switch (data[0].type) {
-    case 'image':
-      return (
-        <div key={keys[0]}>
-          <StyledImage src={mediaUrl} />
-          {text && <Caption>{text}</Caption>}
-        </div>
-      )
-    case 'video':
-      return (
-        <div key={keys[0]}>
-          <Video
-            src={mediaUrl}
-            withPrettyControls
-          />
-          {text && <Caption>{text}</Caption>}
-        </div>
-      )
-    default:
-      return null
-  }
+  return data.map((media, index) => {
+    const type = media.type
+    const mediaUrl =
+      type === 'image'
+      ? getImageUrl(media.url, 'contentBlock')
+      : `${getVideoUrlBase()}/${media.url}`
+    const text = _.get(children, `[${index}][1][0]`, '').trim()
+    switch (media.type) {
+      case 'image':
+        return (
+          <div key={keys[index]}>
+            <StyledImage src={mediaUrl} />
+            {text && <Caption>{text}</Caption>}
+          </div>
+        )
+      case 'video':
+        return (
+          <div key={keys[index]}>
+            <Video
+              src={mediaUrl}
+              withPrettyControls
+            />
+            {text && <Caption>{text}</Caption>}
+          </div>
+        )
+      default:
+        return null
+    }
+  })
 }
 
 // only actually using unstyled - atomic - header-one
@@ -90,11 +92,11 @@ const blocks = {
   'header-four': (children, { keys }) => children.map((child, i) => <h4 key={keys[i]}>{child}</h4>),
   'header-five': (children, { keys }) => children.map((child, i) => <h5 key={keys[i]}>{child}</h5>),
   'header-six': (children, { keys }) => children.map((child, i) => <h6 key={keys[i]}>{child}</h6>),
-};
+}
 
 const entities = {
   LINK: (children, entity, { key }) => <a key={key} href={entity.url}>{children}</a>,
-};
+}
 
 const options = {
   cleanup: {
@@ -102,7 +104,7 @@ const options = {
     types: 'all',
     split: true,
   },
-};
+}
 
 export default class StoryContentRenderer extends React.Component {
   static propTypes = {

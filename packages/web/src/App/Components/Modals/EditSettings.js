@@ -1,4 +1,6 @@
 import React from 'react'
+import { connect } from 'react-redux'
+
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import InputWithLabel from '../InputWithLabel'
@@ -6,6 +8,8 @@ import CenteredButtons from '../CenteredButtons'
 import VerticalCenter from '../VerticalCenter'
 import RoundedButton from '../RoundedButton'
 import EditMessages from './EditMessages'
+import UserActions from '../../Shared/Redux/Entities/Users'
+
 
 const Container = styled.div``
 
@@ -13,6 +17,21 @@ const InputContainer = styled.div`
   font-family: ${props => props.theme.Fonts.type.base};
   font-style: none;
   padding: 25px;
+`
+
+const DeleteButtonContainer = styled.div`
+  padding: 25px;
+`
+const DeleteButton = styled.div`
+  font-family: ${props => props.theme.Fonts.type.base};
+  font-size: 18px;
+  color: ${props => props.theme.Colors.redHighlights};
+  border: solid;
+  border-color: ${props => props.theme.Colors.dividerGrey};
+  border-width: 0 0 1px;
+  padding-bottom: 8px;
+  width: 100%;
+  letter-spacing: .7px;
 `
 
 const accountInputs = [
@@ -54,7 +73,7 @@ const passwordInputs = [
   }
 ]
 
-export default class EditSettings extends React.Component{
+class EditSettings extends React.Component{
   static propTypes ={
     updateAction: PropTypes.func,
     userProfile: PropTypes.object,
@@ -153,6 +172,11 @@ export default class EditSettings extends React.Component{
       }
     }
 
+  confirmDelete = () => {
+    let confirmation = window.confirm('Are you sure you want to delete your account?')
+    if (confirmation) this.props.deleteUser()
+  }
+
   renderButtonLeft = () => {
     return (
       <VerticalCenter>
@@ -216,6 +240,9 @@ export default class EditSettings extends React.Component{
           localError={this.state.localError}
           success={this.state.success}
         />
+        <DeleteButtonContainer>
+          <DeleteButton onClick={this.confirmDelete}>Delete Account</DeleteButton>
+        </DeleteButtonContainer>
         <CenteredButtons
           buttonsToRender={[
             this.renderButtonLeft,
@@ -226,3 +253,11 @@ export default class EditSettings extends React.Component{
     )
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteUser: () => dispatch(UserActions.deleteUser()),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(EditSettings)

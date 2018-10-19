@@ -15,7 +15,7 @@ const More = styled.p`
 
 const ArrowContainer = styled.div`
   text-align: center;
-  margin-bottom: 220px;
+  margin-bottom: 120px;
 `
 
 const ShowMore = props => {

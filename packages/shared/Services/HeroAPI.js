@@ -186,9 +186,7 @@ const create = () => {
   }
 
   const getUserFeed = (userId, params) => {
-    return api.get(`story/user/${userId}/feed`, {
-      params
-    })
+    return api.get(`story/user/${userId}/feed`, params)
     .then(response => safeNormalize(response, [Story]))
   }
 

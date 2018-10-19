@@ -47,13 +47,13 @@ function * getInitalData(api, userId) {
 }
 
 export function * getUserFeed (api, action) {
-  const { userId } = action
+  const { userId, params } = action
 
   // See if we need to load likes and bookmark info
 
   yield getInitalData(api, userId)
 
-  const response = yield call(api.getUserFeed, userId)
+  const response = yield call(api.getUserFeed, userId, params)
   if (response.ok) {
     const { entities, result } = response.data;
     yield [

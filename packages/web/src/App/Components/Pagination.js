@@ -1,72 +1,96 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import pluralize from 'pluralize'
-import styled from 'styled-components'
 import { chunk } from 'lodash'
 
-import RoundedButton from './RoundedButton'
-import { Row } from './FlexboxGrid'
-
-const ButtonRow = styled(Row)`
-  align-items: center;
-  justify-content: center;
-  padding-top: 25px;
-  & button {
-    cursor: pointer;
-  }
-`
+import ShowMore from './ShowMore'
 
 class Pagination extends PureComponent {
   constructor(props) {
     super(props)
 
-    this.type = pluralize(props.type)
     const pages = chunk(props.records, props.totalPerPage)
     this.state = {
       pages,
       pageIndex: 0,
       lastPage: pages.length <= 1,
-      [this.type]: pages[0],
+      [props.type]: pages[0],
     }
   }
 
-  loadMore = (event) => {
-    event.preventDefault()
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll)
+  }
 
-    const { pageIndex, pages, [this.type]: page } = this.state
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll)
+  }
+
+  handleScroll = () => {
+    const { lastPage } = this.state
+
+    if (lastPage) {
+      return
+    }
+
+    const windowHeight =
+      'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+    const { body, documentElement: html } = document
+    const docHeight = Math.max(
+      body.scrollHeight,
+      body.offsetHeight,
+      html.clientHeight,
+      html.scrollHeight,
+      html.offsetHeight,
+    )
+    const windowBottom = windowHeight + window.pageYOffset
+    if (windowBottom >= docHeight) {
+      setTimeout(() => {
+        this.showMore()
+      }, 250) // adds a slight delay to increase "fetching" effect for end-user
+    }
+  }
+
+  showMore = (event) => {
+    if (event) {
+      event.preventDefault()
+    }
+
+    const { type } = this.props
+    const { pageIndex, pages, [type]: page } = this.state
     const newPageIndex = pageIndex + 1
 
     this.setState({
       pageIndex: newPageIndex,
-      [this.type]: [].concat(page, pages[newPageIndex]),
+      [type]: [].concat(page, pages[newPageIndex]),
       lastPage: pages.length === newPageIndex + 1,
-    })
+    }, this.paginate)
   }
 
-  LoadMoreButton = () => {
+  ShowMoreButton = () => {
     const { lastPage } = this.state
 
     if (lastPage) {
       return null
     }
 
-    return (
-      <ButtonRow>
-        <RoundedButton
-          margin="none"
-          onClick={this.loadMore}
-          text="Read more"
-        />
-      </ButtonRow>
-    )
+    return <ShowMore />
+  }
+
+  paginate = () => {
+    const { pageIndex, pages } = this.state
+    const penultimatePage = (pages.length - 1) === (pageIndex + 1)
+    if (penultimatePage) {
+      this.props.onPaginate()
+    }
   }
 
   render() {
-    const { [this.type]: page } = this.state
+    const { children, type } = this.props
+    const { [type]: page } = this.state
 
-    return this.props.children({
-      [this.type]: page,
-      LoadMoreButton: this.LoadMoreButton,
+    return children({
+      [type]: page,
+      ShowMore: this.ShowMoreButton,
     })
   }
 }
@@ -75,10 +99,12 @@ Pagination.propTypes = {
   children: PropTypes.func.isRequired,
   records: PropTypes.arrayOf(PropTypes.object).isRequired,
   type: PropTypes.string.isRequired,
+  onPaginate: PropTypes.func,
   totalPerPage: PropTypes.number,
 }
 
 Pagination.defaultProps = {
+  onPaginate: () => {},
   totalPerPage: 10,
 }
 

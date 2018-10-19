@@ -15,7 +15,7 @@ export default class ContainerWithFeedList extends React.Component {
     stories: PropTypes.object,
   }
 
-  state = { activeTab: 'STORIES'}
+  state = { activeTab: 'STORIES', pagination: { perPage: 100, page: 1 } }
 
   onClickTab = (event) => {
     let tab = event.target.innerHTML
@@ -41,7 +41,8 @@ export default class ContainerWithFeedList extends React.Component {
       case 'EAT':
       case 'STAY':
       default:
-        return this.props.getStories(this.props.sessionUserId, tab)
+        const { pagination } = this.state
+        return this.props.getStories(this.props.sessionUserId, pagination)
     }
   }
 
@@ -88,5 +89,17 @@ export default class ContainerWithFeedList extends React.Component {
           selectedFeedItems: this.getFeedItemsByIds(storiesById),
         }
     }
+  }
+
+  paginate = () => {
+    this.setState(currentState => ({
+      pagination: {
+        ...currentState.pagination,
+        page: currentState.pagination.page + 1,
+      },
+    }), () => {
+      const { pagination } = this.state
+      this.props.getStories(this.props.sessionUserId, pagination)
+    })
   }
 }

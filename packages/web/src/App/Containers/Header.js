@@ -101,7 +101,7 @@ class Header extends React.Component {
   componentDidUpdate(prevProps) {
     const { currentUserId } = this.props
     if (currentUserId && prevProps.currentUserId !== currentUserId) {
-      this.props.attemptGetUserFeed(currentUserId)
+      this.props.attemptGetUserFeed(currentUserId, { perPage: 100, page: 1 })
     }
     if (!prevProps.signedUp && this.props.signedUp) {
       this.props.reroute('/signup/topics')
@@ -312,7 +312,7 @@ function mapDispatchToProps(dispatch) {
     attemptLogout: tokens => dispatch(SessionActions.logout(tokens)),
     attemptChangePassword: (userId, oldPassword, newPassword) =>
       dispatch(LoginActions.changePasswordRequest(userId, oldPassword, newPassword)),
-    attemptGetUserFeed: userId => dispatch(StoryActions.feedRequest(userId)),
+    attemptGetUserFeed: (userId, params) => dispatch(StoryActions.feedRequest(userId, params)),
     closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
     reroute: route => dispatch(push(route)),

@@ -34,6 +34,7 @@ export default class FeedItemList extends React.Component {
     isHorizontalList: PropTypes.bool,
     isShowAll: PropTypes.bool,
     activeTab: PropTypes.string,
+    onPaginate: PropTypes.func,
   }
 
   defaultProps = { isHorizontalList: false }
@@ -50,6 +51,7 @@ export default class FeedItemList extends React.Component {
       isHorizontalList,
       isShowAll,
       activeTab,
+      onPaginate,
     } = this.props
 
     if (!feedItems || !feedItems.length) {
@@ -64,8 +66,8 @@ export default class FeedItemList extends React.Component {
 
     return (
       <Wrapper {...wrapperProps}>
-        <Pagination records={feedItems} type="stories">
-          {({ stories, LoadMoreButton }) => {
+        <Pagination records={feedItems} type="stories" onPaginate={onPaginate}>
+          {({ stories, ShowMore }) => {
             const renderedFeedItems = stories.reduce((rows, feedItem, index) => {
               /*
                 We only need the first 4 elements for suggestions
@@ -99,7 +101,7 @@ export default class FeedItemList extends React.Component {
             return (
               <div>
                 {renderedFeedItems}
-                <LoadMoreButton />
+                <ShowMore />
               </div>
             )
           }}

@@ -7,7 +7,7 @@ import changeCountOfType from '../helpers/changeCountOfTypeHelper'
 
 const { Types, Creators } = createActions({
   storyRequest: ['storyId'],
-  feedRequest: ['userId'],
+  feedRequest: ['userId', 'params'],
   feedSuccess: ['userFeedById'],
   feedFailure: ['error'],
   likesAndBookmarksRequest: ['userId'],
@@ -70,7 +70,7 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Reducers ------------- */
 
 // request the temperature for a city
-export const feedRequest = (state, { userId }) => {
+export const feedRequest = (state, { userId, params }) => {
   return state.setIn(
     ['fetchStatus', 'fetching'],
     true

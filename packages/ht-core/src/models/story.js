@@ -175,7 +175,7 @@ StorySchema.statics = {
       .sort({createdAt: -1})
   },
 
-  getUserFeed(userId, followingIds) {
+  getUserFeed(userId, followingIds, page = 1, perPage = 100) {
     return this
       .list({
         draft: false,
@@ -187,6 +187,8 @@ StorySchema.statics = {
           {featured: true},
         ]
       })
+      .skip((page - 1) * perPage)
+      .limit(perPage)
       .exec()
   },
 

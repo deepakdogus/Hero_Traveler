@@ -62,7 +62,8 @@ class Feed extends ContainerWithFeedList {
   componentDidMount(){
     //get user feed on signUp and reset signUp redux
     if (this.props.signedUp) {
-      this.props.getStories(this.props.sessionUserId)
+      const { pagination } = this.state
+      this.props.getStories(this.props.sessionUserId, pagination)
       this.props.signupReset()
     }
   }
@@ -93,6 +94,7 @@ class Feed extends ContainerWithFeedList {
           <FeedItemList
             activeTab={this.state.activeTab}
             feedItems={selectedFeedItems}
+            onPaginate={this.paginate}
           />
           <Footer />
         </ContentWrapper>
@@ -119,9 +121,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getStories: (sessionUserId) => dispatch(StoryActions.feedRequest(sessionUserId)),
+    getStories: (sessionUserId, params) => dispatch(StoryActions.feedRequest(sessionUserId, params)),
     getGuides: (sessionUserId) => dispatch(GuideActions.guideFeedRequest(sessionUserId)),
-    signupReset: () => dispatch(SignUpActions.signupReset())
+    signupReset: () => dispatch(SignUpActions.signupReset()),
   }
 }
 

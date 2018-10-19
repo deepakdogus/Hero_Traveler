@@ -10,7 +10,7 @@ const StyledInputLabel = styled.label`
   font-size: 14px;
   font-weight: 400;
   letter-spacing: .7px;
-  color: ${props => props.theme.Colors.navBarText};
+  color:  ${props => props.fontColor === 'background' ? props.theme.Colors.background : props.theme.Colors.navBarText};
   margin-bottom: 8px;
 `
 
@@ -47,12 +47,15 @@ export default class InputWithLabel extends React.Component {
       label,
       placeholder,
       onChange,
-      value
+      value,
+      fontColor
     } = this.props
 
     return (
       <Container>
-        <StyledInputLabel for={name}>
+        <StyledInputLabel 
+          fontColor={fontColor}
+          for={name}>
           {label}
         </StyledInputLabel>
         <StyledInput

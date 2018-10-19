@@ -100,6 +100,7 @@ class Settings extends React.Component {
             isUpdating={loginReduxFetching}
             errorObj={loginReduxError}
             type={'password'}
+            fontColor='background'
           />
         }
       </Container>

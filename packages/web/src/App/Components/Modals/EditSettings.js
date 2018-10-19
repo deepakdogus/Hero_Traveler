@@ -54,6 +54,7 @@ const passwordInputs = [
   }
 ]
 
+
 export default class EditSettings extends React.Component{
   static propTypes ={
     updateAction: PropTypes.func,
@@ -188,6 +189,7 @@ export default class EditSettings extends React.Component{
 
   renderInputs = () => {
     const inputArr = this.props.type === 'account' ? accountInputs : passwordInputs
+    const fontColor = this.props.fontColor
     return inputArr.map((inputObj, index) => {
       return (
         <InputContainer
@@ -197,6 +199,7 @@ export default class EditSettings extends React.Component{
             {...inputObj}
             onChange={this.onChangeText}
             value={this.state[inputObj.id]}
+            fontColor={fontColor}
           />
         </InputContainer>
       )

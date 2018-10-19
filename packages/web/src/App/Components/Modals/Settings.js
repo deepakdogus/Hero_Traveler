@@ -7,12 +7,12 @@ import {RightTitle, RightModalCloseX} from './Shared'
 import TabBar from '../TabBar'
 
 import EditNotifications from './EditNotifications'
-import EditServices from './EditServices'
+import EditConnections from './EditConnections'
 import EditSettings from './EditSettings'
 
 const Container = styled.div``
 
-const tabBarTabs = ['Account', 'Services', 'Notifications', 'Password']
+const tabBarTabs = ['Account', 'Connections', 'Notifications', 'Password']
 
 class Settings extends React.Component {
   static propTypes = {
@@ -66,6 +66,7 @@ class Settings extends React.Component {
           onClickTab={this.onClickTab}
           tabs={tabBarTabs}
           isModal
+          isSmallModal
           whiteBG
         />
         {this.state.activeTab === 'Account' &&
@@ -78,8 +79,8 @@ class Settings extends React.Component {
             type={'account'}
           />
         }
-        {this.state.activeTab === 'Services' &&
-          <EditServices
+        {this.state.activeTab === 'Connections' &&
+          <EditConnections
             user={user}
           />
         }

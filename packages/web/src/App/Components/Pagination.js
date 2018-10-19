@@ -21,6 +21,19 @@ class Pagination extends PureComponent {
     window.addEventListener('scroll', this.handleScroll)
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.type !== this.props.type) {
+      const pages = chunk(nextProps.records, nextProps.totalPerPage)
+      this.state = {
+        pages,
+        pageIndex: 0,
+        lastPage: pages.length <= 1,
+        [nextProps.type]: pages[0],
+        [this.props.type]: null,
+      }
+    }
+  }
+
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll)
   }

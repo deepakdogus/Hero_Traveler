@@ -66,9 +66,9 @@ export default class FeedItemList extends React.Component {
 
     return (
       <Wrapper {...wrapperProps}>
-        <Pagination records={feedItems} type="stories" onPaginate={onPaginate}>
-          {({ stories, ShowMore }) => {
-            const renderedFeedItems = stories.reduce((rows, feedItem, index) => {
+        <Pagination records={feedItems} type={activeTab.toLowerCase()} onPaginate={onPaginate}>
+          {({ guides, stories, ShowMore }) => {
+            const renderedFeedItems = (guides || stories).reduce((rows, feedItem, index) => {
               /*
                 We only need the first 4 elements for suggestions
                 We will improve this check to allow 'pagination' will carousel scroll

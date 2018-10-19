@@ -29,14 +29,20 @@ import com.facebook.yoga.YogaMeasureFunction
 import com.facebook.yoga.YogaMeasureMode
 import com.facebook.yoga.YogaMeasureOutput
 import com.facebook.yoga.YogaNode
+import com.herotravelermobile.editor.model.BlockFontType
 import com.herotravelermobile.editor.model.DraftJsContent
+import com.herotravelermobile.editor.model.FontParam
+import com.herotravelermobile.utils.dynamicIterator
+import com.herotravelermobile.utils.toMap
 
 @VisibleForTesting
-class ReactTextInputShadowNode : ReactBaseTextShadowNode(), YogaMeasureFunction {
+class RNDraftJsShadowNode : ReactBaseTextShadowNode(), YogaMeasureFunction {
     private lateinit var dummyEditText: EditText
     private var localData: ReactTextInputLocalData? = null
 
     private lateinit var content: DraftJsContent
+
+    private var blockFontTypes: Map<String, BlockFontType>? = null
 
     init {
         mTextBreakStrategy = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
@@ -48,10 +54,26 @@ class ReactTextInputShadowNode : ReactBaseTextShadowNode(), YogaMeasureFunction 
     }
 
     @ReactProp(name = "content")
-    fun setContent(content: ReadableMap) {
-        this.content = DraftJsContent(content)
+    fun setContent(map: ReadableMap) {
+        content = DraftJsContent(DraftJsContent.ContentBlock.fromMap(map), blockFontTypes)
         dirty()
         markUpdated()
+    }
+
+    @ReactProp(name = "blockFontTypes")
+    fun setBlockFontTypes(types: ReadableMap) {
+        this.blockFontTypes = types.toMap {
+            HashSet<FontParam>().also { set ->
+                dynamicIterator().forEach {
+                    set.add(FontParam.fromEntry(it))
+                }
+            }
+        }
+        if (::content.isInitialized) {
+            content = DraftJsContent(content.blocks, blockFontTypes)
+            dirty()
+            markUpdated()
+        }
     }
 
     override fun setThemedContext(themedContext: ThemedReactContext) {

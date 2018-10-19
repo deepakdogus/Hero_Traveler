@@ -75,9 +75,9 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
         }
     }
 
-    override fun createShadowNodeInstance() = ReactTextInputShadowNode()
+    override fun createShadowNodeInstance() = RNDraftJsShadowNode()
 
-    override fun getShadowNodeClass(): Class<out LayoutShadowNode> = ReactTextInputShadowNode::class.java
+    override fun getShadowNodeClass(): Class<out LayoutShadowNode> = RNDraftJsShadowNode::class.java
 
     override fun getExportedCustomBubblingEventTypeConstants(): Map<String, Any>? {
         return MapBuilder.builder<String, Any>()

@@ -1,11 +1,14 @@
 package com.herotravelermobile.editor.model
 
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
 import com.facebook.react.bridge.ReadableMap
 import com.herotravelermobile.utils.list
 import com.herotravelermobile.utils.plusAssign
 
 data class DraftJsContent(
-        val blocks: List<ContentBlock>
+        val blocks: List<ContentBlock>,
+        private val blockFontTypes: Map<String, BlockFontType>? = null
 ) {
     val flatText: CharSequence
 
@@ -13,36 +16,40 @@ data class DraftJsContent(
     private val keyToIndexMap = HashMap<String, Int>(blocks.size)
 
     init {
-        val flatTextBuilder = StringBuilder()
+        val flatTextBuilder: Appendable =
+                if (blockFontTypes != null) SpannableStringBuilder() else StringBuilder()
+
         var offset = 0
 
-        for (i in 0 until blocks.size) {
+        for (i in blocks.indices) {
             val block = blocks[i]
 
             keyToIndexMap[block.key] = i
 
+            val blockFontType = blockFontTypes?.get(block.type)
+            val styledText = block.text.run {
+                if (blockFontType != null) {
+                    SpannableString(this).apply {
+                        blockFontType.forEach { it.apply(this) }
+                    }
+                } else {
+                    this
+                }
+            }
+
             flatOffsets[i] = offset
-            offset += block.text.length + 1
+            offset += styledText.length + 1
 
             if (i == 0) {
-                flatTextBuilder += block.text
+                flatTextBuilder += styledText
             } else {
                 flatTextBuilder += '\n'
-                flatTextBuilder += block.text
+                flatTextBuilder += styledText
             }
         }
 
-        flatText = flatTextBuilder
+        flatText = flatTextBuilder as CharSequence
     }
-
-    constructor (rawContent: ReadableMap) : this(
-            rawContent.list("blocks") {
-                ContentBlock(
-                        getString("key"),
-                        getString("text")
-                )
-            }
-    )
 
     operator fun get(key: String) = keyToIndexMap[key]
 
@@ -60,6 +67,17 @@ data class DraftJsContent(
         return Address(blocks[blockIndex].key, index - flatOffsets[blockIndex])
     }
 
-    data class ContentBlock(val key : String, val text: String)
+    data class ContentBlock(val key : String, val text: String, val type: String){
+        companion object {
+            fun fromMap(map: ReadableMap) =
+                    map.list("blocks") {
+                        ContentBlock(
+                                getString("key"),
+                                getString("text"),
+                                getString("type")
+                        )
+                    }
+        }
+    }
 }
 

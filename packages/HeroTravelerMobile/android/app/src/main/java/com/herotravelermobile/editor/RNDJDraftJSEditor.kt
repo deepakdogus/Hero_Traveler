@@ -155,12 +155,12 @@ class RNDJDraftJSEditor(val context: ReactContext) : EditText(context) {
         val spans = text.getSpans(0, length(), Any::class.java)
         for (spanIdx in spans.indices) {
             // Remove all styling spans we might have previously set
-            if (ForegroundColorSpan::class.java.isInstance(spans[spanIdx]) ||
-                    BackgroundColorSpan::class.java.isInstance(spans[spanIdx]) ||
-                    AbsoluteSizeSpan::class.java.isInstance(spans[spanIdx]) ||
-                    CustomStyleSpan::class.java.isInstance(spans[spanIdx]) ||
-                    ReactTagSpan::class.java.isInstance(spans[spanIdx])) {
-                text.removeSpan(spans[spanIdx])
+            when (spans[spanIdx]) {
+                is ForegroundColorSpan,
+                is BackgroundColorSpan,
+                is AbsoluteSizeSpan,
+                is CustomStyleSpan,
+                is ReactTagSpan -> text.removeSpan(spans[spanIdx])
             }
 
             if (text.getSpanFlags(spans[spanIdx]) and Spanned.SPAN_EXCLUSIVE_EXCLUSIVE != Spanned.SPAN_EXCLUSIVE_EXCLUSIVE) {
@@ -170,6 +170,9 @@ class RNDJDraftJSEditor(val context: ReactContext) : EditText(context) {
             val spanStart = text.getSpanStart(spans[spanIdx])
             val spanEnd = text.getSpanEnd(spans[spanIdx])
             val spanFlags = text.getSpanFlags(spans[spanIdx])
+
+                    // Make sure the span is removed from existing text, otherwise the spans we set will be
+            // ignored or it will cover text that has changed.
 
             // Make sure the span is removed from existing text, otherwise the spans we set will be
             // ignored or it will cover text that has changed.

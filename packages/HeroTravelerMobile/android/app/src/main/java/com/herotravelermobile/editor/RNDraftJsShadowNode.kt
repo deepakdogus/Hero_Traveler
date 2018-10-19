@@ -56,6 +56,10 @@ class RNDraftJsShadowNode : ReactBaseTextShadowNode(), YogaMeasureFunction {
     @ReactProp(name = "content")
     fun setContent(map: ReadableMap) {
         content = DraftJsContent(DraftJsContent.ContentBlock.fromMap(map), blockFontTypes)
+
+        dummyEditText.setText(content.flatText)
+        localData = ReactTextInputLocalData(dummyEditText)
+
         dirty()
         markUpdated()
     }

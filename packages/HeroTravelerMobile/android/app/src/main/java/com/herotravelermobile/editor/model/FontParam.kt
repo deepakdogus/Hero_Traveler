@@ -1,10 +1,12 @@
 package com.herotravelermobile.editor.model
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.text.Spannable
 import android.text.Spanned
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import com.facebook.react.bridge.Dynamic
 import com.facebook.react.bridge.ReadableType
 
@@ -12,7 +14,7 @@ sealed class FontParam {
     abstract fun createSpan(): Any
 
     fun apply(text: Spannable) {
-        text.setSpan(createSpan(), 0, text.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+        text.setSpan(createSpan(), 0, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
     }
 
     companion object {
@@ -25,6 +27,19 @@ sealed class FontParam {
                                 asInt()
                             else
                                 Color.parseColor(asString())
+                        }
+                )
+                "fontWeight" -> FontWeightParam(
+                        entry.value.run {
+                            if (type == ReadableType.Number) {
+                                asInt()
+                            } else {
+                                when (asString()) {
+                                    "normal" -> 400
+                                    "bold" -> 700
+                                    else -> asString().toInt()
+                                }
+                            }
                         }
                 )
                 else -> DummyParam()
@@ -47,4 +62,9 @@ class FontSizeParam(private val fontSize: Int) : FontParam() {
 class FontColorParam(private val color: Int) : FontParam() {
     override fun createSpan() =
             ForegroundColorSpan(color)
+}
+
+class FontWeightParam(private val weight: Int) : FontParam() {
+    override fun createSpan() =
+            StyleSpan(if (weight < 500) Typeface.NORMAL else Typeface.BOLD)
 }

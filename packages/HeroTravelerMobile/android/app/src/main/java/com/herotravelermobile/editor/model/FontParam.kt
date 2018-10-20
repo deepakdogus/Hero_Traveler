@@ -2,9 +2,11 @@ package com.herotravelermobile.editor.model
 
 import android.graphics.Color
 import android.graphics.Typeface
+import android.text.Layout
 import android.text.Spannable
 import android.text.Spanned
 import android.text.style.AbsoluteSizeSpan
+import android.text.style.AlignmentSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import com.facebook.react.bridge.Dynamic
@@ -43,6 +45,7 @@ sealed class FontParam {
                         }
                 )
                 "fontStyle" -> FontStyleParam(entry.value.asString())
+                "textAlign" -> TextAlignParam(entry.value.asString())
                 else -> null
             }
         }
@@ -64,4 +67,13 @@ class FontWeightParam(private val weight: Int) : FontParam() {
 
 class FontStyleParam(private val style: String) : FontParam() {
     override fun createSpan() = if (style == "italic") StyleSpan(Typeface.ITALIC) else null
+}
+
+class TextAlignParam(private val value: String) : FontParam() {
+    override fun createSpan() = when (value) {
+        "left" -> Layout.Alignment.ALIGN_NORMAL
+        "right" -> Layout.Alignment.ALIGN_OPPOSITE
+        "center" -> Layout.Alignment.ALIGN_CENTER
+        else -> null
+    }?.let { AlignmentSpan { it } }
 }

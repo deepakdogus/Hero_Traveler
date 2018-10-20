@@ -69,7 +69,7 @@ class RNDraftJsShadowNode : ReactBaseTextShadowNode(), YogaMeasureFunction {
         this.blockFontTypes = types.toMap {
             HashSet<FontParam>().also { set ->
                 dynamicIterator().forEach {
-                    set.add(FontParam.fromEntry(it))
+                    FontParam.fromEntry(it)?.run { set.add(this) }
                 }
             }
         }

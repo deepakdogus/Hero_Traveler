@@ -11,14 +11,14 @@ import com.facebook.react.bridge.Dynamic
 import com.facebook.react.bridge.ReadableType
 
 sealed class FontParam {
-    abstract fun createSpan(): Any
+    abstract fun createSpan(): Any?
 
     fun apply(text: Spannable) {
-        text.setSpan(createSpan(), 0, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        createSpan()?.apply { text.setSpan(this, 0, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE) }
     }
 
     companion object {
-        fun fromEntry(entry: Map.Entry<String, Dynamic>): FontParam {
+        fun fromEntry(entry: Map.Entry<String, Dynamic>): FontParam? {
             return when (entry.key) {
                 "fontSize" -> FontSizeParam(entry.value.asInt())
                 "color" -> FontColorParam(
@@ -42,17 +42,11 @@ sealed class FontParam {
                             }
                         }
                 )
-                else -> DummyParam()
+                "fontStyle" -> FontStyleParam(entry.value.asString())
+                else -> null
             }
         }
     }
-}
-
-class DummyParam : FontParam() {
-    companion object {
-        private val dummySpan = Any()
-    }
-    override fun createSpan() = dummySpan // No need to create new instance
 }
 
 class FontSizeParam(private val fontSize: Int) : FontParam() {
@@ -65,6 +59,9 @@ class FontColorParam(private val color: Int) : FontParam() {
 }
 
 class FontWeightParam(private val weight: Int) : FontParam() {
-    override fun createSpan() =
-            StyleSpan(if (weight < 500) Typeface.NORMAL else Typeface.BOLD)
+    override fun createSpan() = if (weight >= 500) StyleSpan(Typeface.BOLD) else null
+}
+
+class FontStyleParam(private val style: String) : FontParam() {
+    override fun createSpan() = if (style == "italic") StyleSpan(Typeface.ITALIC) else null
 }

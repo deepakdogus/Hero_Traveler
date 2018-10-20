@@ -5,6 +5,7 @@ import android.text.SpannableStringBuilder
 import com.facebook.react.bridge.ReadableMap
 import com.herotravelermobile.utils.list
 import com.herotravelermobile.utils.plusAssign
+import com.herotravelermobile.utils.toCamelCase
 
 data class DraftJsContent(
         val blocks: List<ContentBlock>,
@@ -26,7 +27,7 @@ data class DraftJsContent(
 
             keyToIndexMap[block.key] = i
 
-            val blockFontType = blockFontTypes?.get(block.type)
+            val blockFontType = blockFontTypes?.get(block.type.toCamelCase())
             val styledText = block.text.run {
                 if (blockFontType != null) {
                     SpannableString(this).apply {

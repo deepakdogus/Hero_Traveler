@@ -27,7 +27,7 @@ const accountInputs = [
     name: 'email',
     placeholder: 'jdoe@gmail.com',
     label: 'Email',
-  }
+  },
 ]
 
 const passwordInputs = [
@@ -51,9 +51,8 @@ const passwordInputs = [
     placeholder: '',
     label: 'Retype Password',
     type: 'password',
-  }
+  },
 ]
-
 
 export default class EditSettings extends React.Component{
   static propTypes ={
@@ -63,6 +62,7 @@ export default class EditSettings extends React.Component{
     isUpdating: PropTypes.bool,
     errorObj: PropTypes.object,
     type: PropTypes.string,
+    fontColor: PropTypes.string,
   }
 
   constructor(){
@@ -90,7 +90,7 @@ export default class EditSettings extends React.Component{
   loadInitialData = () => {
     this.setState({
       email: this.props.userEmailOrId,
-      name: this.props.userProfile.fullName
+      name: this.props.userProfile.fullName,
     })
   }
 
@@ -98,7 +98,7 @@ export default class EditSettings extends React.Component{
     const text = e.target.value
     const field = e.target.id
     this.setState({
-      [field]: text
+      [field]: text,
     })
   }
 
@@ -108,7 +108,7 @@ export default class EditSettings extends React.Component{
       newPassword: '',
       oldPassword: '',
       retypePassword: '',
-      success: false
+      success: false,
     })
     if (this.props.type === 'account') this.loadInitialData()
   }
@@ -123,11 +123,12 @@ export default class EditSettings extends React.Component{
     }
     if (!(Object.keys(updates).length)) {
       this.setState({
-        localError: 'There are no changes to save.'
+        localError: 'There are no changes to save.',
       })
-    } else {
+    }
+    else {
       this.setState({
-        localError: ''
+        localError: '',
       })
       this.props.updateAction(updates)
     }
@@ -136,13 +137,15 @@ export default class EditSettings extends React.Component{
   submitPasswordChanges = () => {
     if (this.state.newPassword !== this.state.retypePassword){
       this.setState({
-        localError: 'Please ensure that you retyped your new password correctly.'
+        localError: 'Please ensure that you retyped your new password correctly.',
       })
-    } else if (!this.state.newPassword || !this.state.retypePassword) {
+    }
+    else if (!this.state.newPassword || !this.state.retypePassword) {
       this.setState({
-        localError: 'Please ensure that you filled out all fields correctly.'
+        localError: 'Please ensure that you filled out all fields correctly.',
       })
-    } else {
+    }
+    else {
       this.setState({
         localError: '',
       })

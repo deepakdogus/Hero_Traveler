@@ -37,6 +37,7 @@ export default class InputWithLabel extends React.Component {
     name: PropTypes.string,
     type: PropTypes.string,
     id: PropTypes.string,
+    fontColor: PropTypes.string,
   }
 
   render() {
@@ -48,12 +49,12 @@ export default class InputWithLabel extends React.Component {
       placeholder,
       onChange,
       value,
-      fontColor
+      fontColor,
     } = this.props
 
     return (
       <Container>
-        <StyledInputLabel 
+        <StyledInputLabel
           fontColor={fontColor}
           for={name}>
           {label}

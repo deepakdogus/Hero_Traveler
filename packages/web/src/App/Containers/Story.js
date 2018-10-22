@@ -22,9 +22,17 @@ const ContentWrapper = styled.div``
 const LimitedWidthContainer = styled.div`
   max-width: 800px;
   margin: 0 auto;
+  padding-left: 45px;
+  padding-right: 45px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0;
+  }
 `
 
 const HashtagText = styled.p`
+  margin: 0;
+  padding-top 30px;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
   font-size: 18px;
   color: ${props => props.theme.Colors.redHighlights};
@@ -96,9 +104,11 @@ class Story extends Component {
     })
 
     return (
-      <HashtagText>
-        {hashtagMap.join(', ')}
-      </HashtagText>
+      hashtagMap.length
+      ? (<HashtagText>
+          {hashtagMap.join(', ')}
+        </HashtagText>)
+      : null
     )
   }
 

@@ -54,6 +54,7 @@ const Container = styled.div`
 const InfoRow = styled(Row)`
   margin: 0 0 15px 0 !important;
   flex-wrap: nowrap;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
 `
 
 const IconWrapper = styled.div`
@@ -106,11 +107,11 @@ export default class FeedItemMetaInfo extends React.Component {
     const length = keys.length
     if (length === 0) return
     return keys.map((key, index) => {
-      const categorie = categories[key]
+      const category = categories[key]
 
       return (
-        <StyledLink key={key} to={'/category/' + categorie.id} >
-          {categorie.title}{index !== length - 1 ? ', ' : ''}
+        <StyledLink key={key} to={'/category/' + category.id} >
+          {category.title}{index !== length - 1 ? ', ' : ''}
         </StyledLink>
       )
     })

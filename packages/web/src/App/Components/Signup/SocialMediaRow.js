@@ -18,7 +18,6 @@ const StyledIcon = styled(Icon)`
 `
 
 const FacebookIcon = styled(StyledIcon)`
-  width: 12.5px;
   padding: 0 9px;
 `
 
@@ -67,7 +66,7 @@ export default class SocialMediaRow extends Component {
   getIcon(text) {
     switch (text){
       case 'Facebook':
-        return (<FacebookIcon name='facebook-blue' />)
+        return (<FacebookIcon name='facebook-blue-large' />)
       case 'Twitter':
         return (<TwitterIcon name='twitter-blue' />)
       case 'Instagram':

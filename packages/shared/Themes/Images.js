@@ -47,6 +47,7 @@ const images = {
   iconLoginFacebook: require('../Images/ht-icons/icon_login-button-facebook.png'),
   iconLoginFacebookLarge: require('../Images/ht-icons/icon_login-button-facebook.png'),
   iconFacebook: require('../Images/ht-icons/icon_facebook.png'),
+  iconFacebookBlueLarge: require('../Images/ht-icons/icon_facebook-blue-large.png'),
   iconFacebookDark: require('../Images/ht-icons/icon_facebook-dark.png'),
   iconSquareTwitterOutline: require('../Images/ht-icons/story-actions-twitter.png'),
   iconTwitter: require('../Images/ht-icons/icon_login-button-twitter.png'),

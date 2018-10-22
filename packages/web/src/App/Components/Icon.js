@@ -107,6 +107,8 @@ export default class Icon extends React.Component {
         return Images.iconGreyCheck
       case 'facebook':
         return Images.iconLoginFacebook
+      case 'facebook-blue-large':
+        return Images.iconFacebookBlueLarge
       case 'facebookLarge':
         return Images.iconLoginFacebookLarge
       case 'facebook-blue':

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import moment from 'moment'
-import { NavLink } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import getVideoUrl from '../Shared/Lib/getVideoUrl'
@@ -158,12 +158,16 @@ export default class HeaderSlide extends React.Component {
             <ProfileLink to={`/profile/${author.id}/view`}>
               <Avatar
                 avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
-                size='medium'
+                size='extraMedium'
               />
             </ProfileLink>
             <VerticalCenter>
               <StoryInfoRow>
-                <StoryInfo>By {author.username}</StoryInfo>
+                <StoryInfo>By
+                  <NavLink to={`/profile/${author.id}/view`}>
+                  {author.username}
+                  </NavLink>
+                </StoryInfo>
                 <Divider>&nbsp;</Divider>
                 <StoryInfo>{moment(story.createdAt).format('MMMM Do YYYY')}</StoryInfo>
               </StoryInfoRow>

@@ -17,13 +17,12 @@ import FeedItemMetaInfo from '../Components/FeedItemMetaInfo'
 import FeedItemActionBar from '../Components/FeedItemActionBar'
 import { createDeepLinkWeb } from '../Lib/sharingWeb'
 
-const ContentWrapper = styled.div``
-
-const LimitedWidthContainer = styled.div`
-  max-width: 800px;
+const ContentWrapper = styled.div`
+  position: relative;
   margin: 0 auto;
-  padding-left: 45px;
-  padding-right: 45px;
+  padding-left: 80px;
+  padding-right: 80px;
+  max-width: 800px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding: 0;
   }
@@ -139,14 +138,12 @@ class Story extends Component {
           onClickAddToGuide={onClickAddToGuide}
           isStory
         />
-        <LimitedWidthContainer>
           <StoryContentRenderer story={story} />
           {this.renderHashtags()}
           {story.locationInfo && story.locationInfo.latitude && story.locationInfo.longitude &&
             <GoogleMap stories={ [story] } />
           }
           <FeedItemMetaInfo feedItem={story} />
-        </LimitedWidthContainer>
         <FeedItemActionBar
           feedItem={story}
           isStory

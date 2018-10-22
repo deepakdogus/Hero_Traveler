@@ -91,8 +91,6 @@ const Container = styled.div`
   z-index: 500;
   margin: 65px auto 0;
   max-width: 800px;
-  padding-left: 45px;
-  padding-right: 45px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding-left: 0;
     padding-right: 0;

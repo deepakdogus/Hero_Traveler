@@ -8,11 +8,13 @@ const StyledIcon = styled(Icon)`
   display: block;
   margin: auto;
   margin-bottom: 15px;
-  margin-left: 5px;
-  margin-right: 5px;
-  height: 20px;
-  width: 20px;
+  height: 30px;
+  width: 30px;
   cursor: pointer;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
 `
 
 const HandMadeIcon = styled.div`display: block;
@@ -63,13 +65,15 @@ const Count = styled.p`
 
 const AbsoluteWrapper = styled.div`
   background-color: white;
-  position: fixed;
-  top: 150px;
-  left: 90%;
+  position: absolute;
+  top: 87px;
+  right: 0;
   @media (max-width: ${props => props.theme.Metrics.sizes.desktopLarge}px) {
     left: 95%;
   }
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    position: fixed;
+    bottom: 0;
     display: flex;
     flex-direction: row;
     bottom: 0px;

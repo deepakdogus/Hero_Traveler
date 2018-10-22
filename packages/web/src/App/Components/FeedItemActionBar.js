@@ -161,14 +161,30 @@ export default class StoryActionBar extends React.Component {
             name='squareFacebookOutline'
             onClick={onClickShare}
           />
-          <TwitterIcon name='squareTwitterOutline'/>
-          {!this.state.showMore &&
+          {/* hidden until after launch */}
+          { false &&
+            <TwitterIcon name='squareTwitterOutline'/>
+          }
+          {/* present at top level until after launch */}
+          {isStory &&
+              <ClickableWrapper>
+                <StyledIcon
+                  name='report'
+                  onClick={this._openFlagStoryModal}
+                />
+              </ClickableWrapper>
+            }
+          {/* hidden until after launch */}
+          { false &&
+            !this.state.showMore &&
             <DotsIcon
               name='dots'
               onClick={this.toggleShowMore}
-            />}
+          />}
         </ActionBarContainer>
-        { this.state.showMore &&
+        {/* hidden until after launch */}
+        { false &&
+          this.state.showMore &&
           <ActionBarContainer>
             <StyledIcon name='google'/>
             <StyledIcon name='tumblr'/>

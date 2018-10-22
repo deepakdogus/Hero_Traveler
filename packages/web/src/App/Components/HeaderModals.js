@@ -223,6 +223,7 @@ export default class HeaderModals extends React.Component {
         >
           <Comments
             closeModal={closeGlobalModal}
+            reroute={reroute}
             storyId={globalModalParams.storyId}
             guideId={globalModalParams.guideId}
           />

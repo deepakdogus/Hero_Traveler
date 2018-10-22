@@ -41,10 +41,17 @@ const StyledHorizontalDivider = styled(HorizontalDivider)`
 
 export default class MessageRow extends Component {
   static propTypes = {
+    reroute: PropTypes.func,
+    closeModal: PropTypes.func,
     message: PropTypes.string,
     user: PropTypes.object,
     timestamp: PropTypes.object,
     isComment: PropTypes.bool,
+  }
+
+  _profileReroute = () => {
+    this.props.reroute(`/profile/${this.props.user.id}/view`)
+    this.props.closeModal()
   }
 
   renderImage = () => {
@@ -52,6 +59,7 @@ export default class MessageRow extends Component {
       <Avatar
         avatarUrl={getImageUrl(this.props.user.profile.avatar, 'avatarLarge')}
         size='larger'
+        onClick={this._profileReroute}
       />
     )
   }
@@ -61,7 +69,11 @@ export default class MessageRow extends Component {
     const messageText = this.props.message ? this.props.message : 'Lorum Ipsum'
     return (
       <TextContainer>
-        <UserName>{user.username}</UserName>
+        <UserName
+          onClick={this._profileReroute}
+        >
+          {user.username}
+        </UserName>
         <MessageContent>{messageText}</MessageContent>
       </TextContainer>
     )

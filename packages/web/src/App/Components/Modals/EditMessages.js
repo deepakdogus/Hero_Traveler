@@ -10,6 +10,8 @@ const Container = styled.div`
 const EditMessages = (props) => {
   const {isUpdating, errorObj, localError, success} = props
 
+  console.log("errorObj", errorObj)
+
   return(
     <Container>
       {localError &&

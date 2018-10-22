@@ -19,9 +19,17 @@ const InputContainer = styled.div`
   padding: 25px;
 `
 
-const DeleteButtonContainer = styled.div`
+const DeleteContainer = styled.div`
   padding: 25px;
 `
+
+const DeleteTextContainer = styled.div`
+  font-family: ${props => props.theme.Fonts.type.base};
+  color: ${props => props.theme.Colors.signupGrey};
+  padding-top: 15px;
+  font-size: 15px;
+`
+
 const DeleteButton = styled.div`
   font-family: ${props => props.theme.Fonts.type.base};
   font-size: 18px;
@@ -88,6 +96,7 @@ class EditSettings extends React.Component{
     this.state = {
       localError: '',
       success: false,
+      showDeleteAccountMessage: false
     }
   }
 
@@ -172,39 +181,57 @@ class EditSettings extends React.Component{
       }
     }
 
-  confirmDelete = () => {
-    let confirmation = window.confirm('Are you sure you want to delete your account?')
-    if (confirmation) this.props.deleteUser()
+    showDeleteAccountOptions = () => {
+      this.setState({showDeleteAccountMessage: true})
+  }
+
+    hideDeleteAccountOptions = () => {
+      this.setState({showDeleteAccountMessage: false})
+  }
+    deleteUser = () => {
+      this.props.deleteUser()
+    }
+
+  getButtonProps (type, state, buttonSide) {
+    if (buttonSide === 'right') {
+      if (type === 'password') return {text: 'Save Password', onClick: this.submitPasswordChanges }
+      if (state.showDeleteAccountMessage) return {text: 'Delete Account', onClick: this.deleteUser }
+      else return {text: 'Save Changes', onClick: this.SubmitAccountChanges}
+    }
+    if (buttonSide === 'left') {
+      if (state.showDeleteAccountMessage) return {text: 'Cancel', onClick: this.hideDeleteAccountOptions }
+      else return {text: 'Cancel', onClick: this.cancel}
+    }
   }
 
   renderButtonLeft = () => {
+    const {text, onClick} = this.getButtonProps(this.props.type, this.state, 'left')
+    
     return (
       <VerticalCenter>
         <RoundedButton
-          text={'Cancel'}
+          text={text}
           margin='none'
           width='116px'
           type='blackWhite'
           padding='mediumEven'
-          onClick={this.cancel}
+          onClick={onClick}
         />
       </VerticalCenter>
     )
   }
 
   renderButtonRight = () => {
+    const {text, onClick} = this.getButtonProps(this.props.type, this.state, 'right')
+
     return (
       <VerticalCenter>
         <RoundedButton
-          text={this.props.type === 'account' ? 'Save Changes' : 'Save Password'}
+          text={text}
           margin='none'
           width='180px'
           padding='mediumEven'
-          onClick={
-            this.props.type === 'account'
-            ? this.submitAccountChanges
-            : this.submitPasswordChanges
-          }
+          onClick={onClick}
         />
       </VerticalCenter>
     )
@@ -227,11 +254,24 @@ class EditSettings extends React.Component{
     })
   }
 
+  renderDeleteButton = () => {
+    return (
+      <DeleteContainer>
+        <DeleteButton onClick={this.showDeleteAccountOptions}>Delete Account</DeleteButton>
+        {!!this.state.showDeleteAccountMessage && 
+        <DeleteTextContainer>
+        We're sorry to see you go. Once your account is deleted, all of your content will be permanently gone.
+        </DeleteTextContainer>
+        }
+      </DeleteContainer>
+    )
+  }
+
   render() {
     const { isUpdating, errorObj} = this.props
     const inputs = this.renderInputs()
 
-    return(
+    return (
       <Container>
         {!!inputs && inputs}
         <EditMessages
@@ -240,9 +280,7 @@ class EditSettings extends React.Component{
           localError={this.state.localError}
           success={this.state.success}
         />
-        <DeleteButtonContainer>
-          <DeleteButton onClick={this.confirmDelete}>Delete Account</DeleteButton>
-        </DeleteButtonContainer>
+        {this.props.type === 'account' ? this.renderDeleteButton() : null }
         <CenteredButtons
           buttonsToRender={[
             this.renderButtonLeft,
@@ -253,6 +291,7 @@ class EditSettings extends React.Component{
     )
   }
 }
+
 
 const mapDispatchToProps = (dispatch) => {
   return {

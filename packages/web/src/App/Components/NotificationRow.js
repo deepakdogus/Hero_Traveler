@@ -8,7 +8,8 @@ import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import {
   getContent,
-  getDescription,
+  getDescriptionText,
+  getFeedItemTitle,
 } from '../Shared/Lib/NotificationHelpers'
 import Avatar from './Avatar'
 import {getSize} from './Icon'
@@ -67,6 +68,10 @@ const StyledImageContainer = styled.div`
 
 const StyledImage = styled.img`
   height: 100%;
+`
+
+const StyledAvatar = styled(Avatar)`
+  cursor: pointer;
 `
 
 const StyledVerticalCenter = styled(VerticalCenter)`
@@ -134,22 +139,29 @@ export default class NotificationRow extends Component {
     markSeen: PropTypes.func,
   }
 
-  navToStory = () => {
-    this.props.reroute(`/story/${this.props.activity.story.id}`)
+  navToFeedItem = (event) => {
+    event.stopPropagation()
+    const feedItem = this.props.activity.story || this.props.activity.guide
+    const feedItemType = this.props.activity.story ? 'story' : 'guide'
+    this.props.reroute(`/${feedItemType}/${feedItem.id}`)
     this.props.closeModal()
   }
 
-  navToUserProfile = () => {
+  navToUserProfile = (event) => {
+    event.stopPropagation()
     this.props.reroute(`/profile/${this.props.activity.fromUser.id}/view`)
     this.props.closeModal()
   }
 
   renderImage = () => {
     const avatar = _.get(this, 'props.user.profile.avatar')
+
     return (
       <RenderImageContainer>
-        <Avatar
+        <StyledAvatar
+          onClick={this.navToUserProfile}
           avatarUrl={avatar ? getImageUrl(avatar, 'avatarLarge') : undefined}
+          type='profile'
           size='larger'
         />
       </RenderImageContainer>
@@ -163,14 +175,20 @@ export default class NotificationRow extends Component {
 
   renderText = () => {
     const { activity } = this.props
-
+    const title = getFeedItemTitle(activity)
     return (
       <StyledVerticalCenter>
         <StyledNotificationContent>
-          <StyledUserName>
+          <StyledUserName onClick={this.navToUserProfile}>
             {activity.fromUser.username}&nbsp;
           </StyledUserName>
-          {getDescription(activity)}
+          {getDescriptionText(activity)}
+          {!!title &&
+            <StyledUserName onClick={this.navToFeedItem}>
+              title
+            </StyledUserName>
+          }
+          .
         </StyledNotificationContent>
         {!!activity.comment &&
           <CommentContent>
@@ -206,7 +224,8 @@ export default class NotificationRow extends Component {
           </StyledImageContainer>
         </VerticalCenter>
       )
-    } else return
+    }
+    else return
   }
 
   _markSeen = () => {
@@ -216,12 +235,11 @@ export default class NotificationRow extends Component {
   }
 
   render() {
-    const leftProps = { 'max-width': '450px', }
-
+    const leftProps = { 'max-width': '450px' }
     return (
       <InteractiveContainer onClick={this._markSeen}>
         <Container
-          onClick={this.props.isFeedItem ? this.navToStory : this.navToUserProfile}
+          onClick={this.props.isFeedItem ? this.navToFeedItem : this.navToUserProfile}
           >
           {this.renderSeenBullet()}
           <SpaceBetweenRow

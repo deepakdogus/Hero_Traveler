@@ -17,21 +17,29 @@ export function isActivityIncomplete(activity) {
     || (activity.kind === ActivityTypes.guideComment && !activity.guide)
 }
 
-export function getDescription(activity) {
+export function getFeedItemTitle(activity) {
+  return _.get(activity, 'story.title') || _.get(activity, 'guide.title', '')
+}
+
+export function getDescriptionText(activity) {
   switch (activity.kind) {
     case ActivityTypes.follow:
-      return `is now following you.`
+      return `is now following you`
     case ActivityTypes.comment:
-      return  `commented on your story ${activity.story.title}.`
+      return  `commented on your story `
     case ActivityTypes.guideComment:
-      return  `commented on your guide ${activity.guide.title}.`
+      return  `commented on your guide `
     case ActivityTypes.like:
-      return `liked your story ${activity.story.title}.`
+      return `liked your story `
     case ActivityTypes.guideLike:
-      return `liked your guide ${activity.guide.title}.`
+      return `liked your guide `
     default:
       return ''
   }
+}
+
+export function getDescription(activity) {
+  return getDescriptionText(activity) + getFeedItemTitle(activity) + '.'
 }
 
 export function getPopulatedActivity(activityId, props) {

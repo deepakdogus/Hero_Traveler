@@ -14,7 +14,6 @@ function getMargin(props) {
     const left = props.theme.Metrics.section
     return `${vertical}px 0 ${vertical}px ${left}px`
   }
-  else if (props.margin === 'small-button') return '6px 0'
   return `${props.theme.Metrics.baseMargin}px ${props.theme.Metrics.section}px`
 }
 

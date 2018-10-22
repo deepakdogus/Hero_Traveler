@@ -33,8 +33,6 @@ const TitleContainer = styled(OverlayHover)`
   width: 100%;
   height: 100%;
   top: 0;
-  opacity: 0.3;
-  background: black;
 `
 
 const Title = styled.div`
@@ -80,7 +78,7 @@ class Tile extends React.Component {
           <CategoryTile
             imageSource={getImageUrl(category.image, 'optimized', {width: 400, height: 400})}
           />
-          <TitleContainer selected={category.selected} overlayColor="black">
+          <TitleContainer selected={category.selected} overlayColor="light-black">
             <Title>{category.title}</Title>
           </TitleContainer>
           {isSelected &&

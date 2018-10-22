@@ -70,13 +70,12 @@ const DownArrow = styled(RotatedArrow)``
 
 const StyledRoundedButton = styled(RoundedButton)`
   align-self: center;
-  border: 2px solid white;
 `
 
 const StoryInfo = styled.span`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
-  font-size: 18px;
+  font-size: 16px;
   color: ${props => props.theme.Colors.snow};
   letter-spacing: .7px;
   display: inline-block;
@@ -142,7 +141,7 @@ export default class HeaderSlide extends React.Component {
                to={`/story/${story.id}`}
            >
             <StyledRoundedButton
-              type='storyHeader'
+              // type='storyHeader'
               padding='even'
               text='READ MORE'
               width='168px'

@@ -70,6 +70,10 @@ const StyledImage = styled.img`
   height: 100%;
 `
 
+const StyledAvatar = styled(Avatar)`
+  cursor: pointer;
+`
+
 const StyledVerticalCenter = styled(VerticalCenter)`
   height: 100%;
   padding-left: ${relevantMetrics.leftPadding}px;
@@ -154,7 +158,8 @@ export default class NotificationRow extends Component {
 
     return (
       <RenderImageContainer>
-        <Avatar
+        <StyledAvatar
+          onClick={this.navToUserProfile}
           avatarUrl={avatar ? getImageUrl(avatar, 'avatarLarge') : undefined}
           type='profile'
           size='larger'

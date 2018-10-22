@@ -1,8 +1,10 @@
 package com.herotravelermobile.utils
 
 import com.facebook.react.bridge.Dynamic
+import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.ReadableMapKeySetIterator
+import com.google.gson.Gson
 
 /**
  * Returns a [List] of elements of array with key [[name]], mapped to class [T] by [elementMapper].
@@ -40,3 +42,23 @@ private inline fun <T> ReadableMap.iterator(crossinline elementMapper: (String) 
 fun ReadableMap.mapsIterator(): Iterator<Map.Entry<String, ReadableMap>> = iterator(this::getMap)
 
 fun ReadableMap.dynamicIterator(): Iterator<Map.Entry<String, Dynamic>> = iterator(this::getDynamic)
+
+private val GSON = Gson()
+
+fun ReadableMap.toJson() =
+        GSON.toJson(toSerializable(this))
+
+private fun toSerializable(value: Any): Any? =
+        when (value) {
+            is ReadableMap -> value.toHashMap().apply {
+                iterator().forEach {
+                    put(it.key, toSerializable(it.value))
+                }
+            }
+            is ReadableArray -> value.toArrayList().apply {
+                listIterator().withIndex().forEach {
+                    set(it.index, toSerializable(it.value))
+                }
+            }
+            else -> value
+        }

@@ -191,6 +191,8 @@ dependencies {
     compile('com.facebook.android:facebook-android-sdk:4.+')
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    implementation 'com.google.code.gson:gson:2.8.5'
+
     androidTestImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
 }

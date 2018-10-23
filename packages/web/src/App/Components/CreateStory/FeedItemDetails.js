@@ -528,8 +528,8 @@ export default class FeedItemDetails extends React.Component {
             {isGuide ? 'Overview' : 'Travel Tips'}
           </DetailLabel>
           <TravelTipsInput
-            value={isGuide ? workingDraft.travelTips : workingDraft.travelTips}
-            name='travelTips'
+            value={isGuide ? workingDraft.description : workingDraft.travelTips}
+            name={isGuide ? 'description' : 'travelTips'}
             placeholder={
               isGuide
               ? `What's your guide about?`

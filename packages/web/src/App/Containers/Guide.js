@@ -50,6 +50,10 @@ const ConditionalHorizontalDivider = styled(HorizontalDivider)`
   }
 `
 
+const Spacer = styled.div`
+  height: 45px;
+`
+
 const HashtagText = styled.p`
   font-weight: 400;
   font-size: 18px;
@@ -244,8 +248,13 @@ class Guide extends Component {
             tabs={this.getPossibleTabs()}
             activeTab={activeTab}
             onClickTab={this.onClickTab}
+            whiteBG={true}
           />
-          <Description>{guide.description}</Description>
+          <Spacer />
+          { guide &&
+            guide.description &&
+            <Description>{guide.description}</Description>
+          }
           {this.renderHashtags()}
           <MetaInfoContainer>
             <FeedItemMetaInfo feedItem={guide}/>

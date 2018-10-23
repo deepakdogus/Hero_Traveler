@@ -142,6 +142,7 @@ class EditSettings extends React.Component{
 
   submitAccountChanges = () => {
     const updates = {}
+
     if (this.state.name !== this.props.userProfile.fullName) {
       updates.profile = {...this.props.userProfile, fullName: this.state.name}
     }
@@ -193,10 +194,11 @@ class EditSettings extends React.Component{
     }
 
   getButtonProps (type, state, buttonSide) {
+
     if (buttonSide === 'right') {
       if (type === 'password') return {text: 'Save Password', onClick: this.submitPasswordChanges }
       if (state.showDeleteAccountMessage) return {text: 'Delete Account', onClick: this.deleteUser }
-      else return {text: 'Save Changes', onClick: this.SubmitAccountChanges}
+      else return {text: 'Save Changes', onClick: this.submitAccountChanges}
     }
     if (buttonSide === 'left') {
       if (state.showDeleteAccountMessage) return {text: 'Cancel', onClick: this.hideDeleteAccountOptions }
@@ -206,7 +208,7 @@ class EditSettings extends React.Component{
 
   renderButtonLeft = () => {
     const {text, onClick} = this.getButtonProps(this.props.type, this.state, 'left')
-    
+
     return (
       <VerticalCenter>
         <RoundedButton
@@ -261,8 +263,7 @@ class EditSettings extends React.Component{
         {!!this.state.showDeleteAccountMessage && 
         <DeleteTextContainer>
         We're sorry to see you go. Once your account is deleted, all of your content will be permanently gone.
-        </DeleteTextContainer>
-        }
+        </DeleteTextContainer>}
       </DeleteContainer>
     )
   }

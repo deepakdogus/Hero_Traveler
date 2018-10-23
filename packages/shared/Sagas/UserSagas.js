@@ -76,7 +76,7 @@ export function * deleteUser(api) {
     if (response.ok) {
       yield [
         put(UserActions.deleteUserSuccess()),
-        put(SessionActions.logout()),
+        put(SessionActions.logoutSuccess()),
         call(api.unsetAuth),
       ]
       yield put(StartupActions.hideSplash())

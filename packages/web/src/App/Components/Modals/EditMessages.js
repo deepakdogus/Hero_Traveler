@@ -9,14 +9,13 @@ const Container = styled.div`
 
 const EditMessages = (props) => {
   const {isUpdating, errorObj, localError, success} = props
-
   return(
     <Container>
       {localError &&
         <ErrorMessage>
           {localError}
         </ErrorMessage> }
-      {!!(errorObj) &&
+      { errorObj && errorObj.message &&
         <ErrorMessage>
           {errorObj.toString()}
         </ErrorMessage> }

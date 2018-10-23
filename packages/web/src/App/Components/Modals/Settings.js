@@ -66,7 +66,6 @@ class Settings extends React.Component {
           onClickTab={this.onClickTab}
           tabs={tabBarTabs}
           isModal
-          isSmallModal
           whiteBG
         />
         {this.state.activeTab === 'Account' &&
@@ -100,7 +99,6 @@ class Settings extends React.Component {
             isUpdating={loginReduxFetching}
             errorObj={loginReduxError}
             type={'password'}
-            fontColor='background'
           />
         }
       </Container>

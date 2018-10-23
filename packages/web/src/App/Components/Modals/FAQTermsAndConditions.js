@@ -39,7 +39,7 @@ export default class FAQTermsAndConditions extends React.Component {
           tabs={tabBarTabs}
           isModal
           whiteBG
-          isSmallModal
+          isModal
         />
         {this.state.activeTab === 'FAQ' && <FAQ/>}
         {this.state.activeTab === 'Terms & Conditions' && <TermsAndConditions/>}

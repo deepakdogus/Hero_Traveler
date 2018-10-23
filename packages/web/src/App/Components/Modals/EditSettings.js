@@ -192,7 +192,7 @@ export default class EditSettings extends React.Component{
 
   renderInputs = () => {
     const inputArr = this.props.type === 'account' ? accountInputs : passwordInputs
-    const fontColor = this.props.fontColor
+    const fontColor = this.props.type === 'account' ? undefined : 'background'
     return inputArr.map((inputObj, index) => {
       return (
         <InputContainer

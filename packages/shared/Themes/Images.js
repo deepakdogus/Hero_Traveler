@@ -44,6 +44,7 @@ const images = {
   iconNavProfile: require('../Images/ht-icons/icon_nav-profile.png'),
   iconDefaultProfile: require('../Images/ht-icons/icon_profile-default-avatar.png'),
   iconSquareFacebookOutline: require('../Images/ht-icons/story-actions-fb.png'),
+  iconLoginFacebookOld: require('../Images/ht-icons/icon_login-button-facebook-old.png'),
   iconLoginFacebook: require('../Images/ht-icons/icon_login-button-facebook.png'),
   iconLoginFacebookLarge: require('../Images/ht-icons/icon_login-button-facebook.png'),
   iconFacebook: require('../Images/ht-icons/icon_facebook.png'),

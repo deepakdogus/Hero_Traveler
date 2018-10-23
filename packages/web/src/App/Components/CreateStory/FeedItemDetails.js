@@ -90,34 +90,18 @@ export const StyledInput = styled.input`
 `
 const IconWithMargin = styled(Icon)`
   margin-left: 2px;
-`
-const LocationIcon = styled(IconWithMargin)`
-  height: 34px;
-  width: 23px;
-`
-
-const DateIcon = styled(IconWithMargin)`
-  height: 26px;
   width: 30px;
-`
-const TagIcon = styled(IconWithMargin)`
-  height: 26px;
-  width: 26px;
-`
-
-const CheckIcon = styled(TagIcon)``
-
-const HashtagIcon = styled(IconWithMargin)`
-  height: 35px;
-  width: 35px;
-`
-
-const CostIcon = styled(IconWithMargin)`
   height: 30px;
-  width: 30px;
 `
 
-const InfoIcon = styled(CostIcon)``
+const EnlargedIcon = styled(IconWithMargin)`
+  width: 35px;
+  height: 35px;
+`
+
+const CheckIcon = styled(IconWithMargin)``
+
+const HashtagIcon = styled(IconWithMargin)``
 
 export const IconWrapper = styled.div`
   width: 35px;
@@ -424,7 +408,7 @@ export default class FeedItemDetails extends React.Component {
         {isGuide &&
           <InputRowContainer>
             <IconWrapper>
-              <InfoIcon name='info'/>
+              <IconWithMargin name='infoLarge'/>
             </IconWrapper>
             <StyledInput
               placeholder='Title'
@@ -437,7 +421,7 @@ export default class FeedItemDetails extends React.Component {
         <HorizontalDivider color='lighter-grey' opaque/>
         <InputRowContainer>
           <IconWrapper>
-            <LocationIcon name='location'/>
+            <EnlargedIcon name='locationLarge'/>
           </IconWrapper>
           <GoogleLocator
             onChange={this.handleLocationSelect}
@@ -449,7 +433,7 @@ export default class FeedItemDetails extends React.Component {
         {!isGuide &&
           <InputRowContainer>
             <IconWrapper>
-              <DateIcon name='date'/>
+              <EnlargedIcon name='dateLarge'/>
             </IconWrapper>
             <StyledInput
               type='text'
@@ -473,8 +457,8 @@ export default class FeedItemDetails extends React.Component {
           handleTagRemove={this.handleTagRemove}
           updateTagsList={this.updateCategoriesList}
           isSameTag={isSameTag}
-          Icon={TagIcon}
-          iconName='tag'
+          Icon={EnlargedIcon}
+          iconName='tagLarge'
           selectedTags={workingDraft.categories}
           tagsList={categoriesList}
         />
@@ -496,7 +480,7 @@ export default class FeedItemDetails extends React.Component {
         {isGuide &&
           <InputRowContainer>
             <IconWrapper>
-              <DateIcon name='date'/>
+              <EnlargedIcon name='dateLarge'/>
             </IconWrapper>
             <StyledInput
               type='number'
@@ -511,7 +495,7 @@ export default class FeedItemDetails extends React.Component {
         {isGuide && <HorizontalDivider color='lighter-grey' opaque/>}
         <InputRowContainer>
           <IconWrapper>
-            <CostIcon name='cost'/>
+            <IconWithMargin name='costLarge'/>
           </IconWrapper>
           <StyledInput
             type='number'

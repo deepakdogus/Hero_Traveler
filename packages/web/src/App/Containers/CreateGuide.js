@@ -43,7 +43,7 @@ class CreateGuide extends SharedCreateGuide {
       guide[key] = update[key]
     }
     this.setState({
-      guide
+      guide,
     })
   }
 
@@ -123,7 +123,7 @@ class CreateGuide extends SharedCreateGuide {
           feedItemId: guideId,
           type: 'guide',
           rerouteOverride: this.rerouteAway,
-        }
+        },
       )
     }
     else this.rerouteAway()
@@ -198,6 +198,5 @@ function extendedMapDispatchToProps(dispatch, ownProps) {
   dispatchMapping.getGuide = (guideId) => dispatch(GuideActions.getGuideRequest(guideId))
   return dispatchMapping
 }
-
 
 export default connect(extendedMapStateToProps, extendedMapDispatchToProps)(CreateGuide)

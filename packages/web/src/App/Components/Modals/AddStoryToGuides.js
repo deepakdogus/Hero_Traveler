@@ -34,12 +34,13 @@ const CreateContainer = styled.div`
 `
 
 const CreateIconContainer = styled(VerticalCenter)`
+  margin: 20px 0;
+  width: 115px;
+  height: 90px;
   background-color: ${props => props.theme.Colors.pink};
   border-color: ${props => props.theme.Colors.redLight};
   border-style: dashed;
   border-width: 1px;
-  height: 90px;
-  width: 140px;
 `
 
 const StyledIcon = styled(Icon)`
@@ -79,7 +80,7 @@ class AddStoryToGuides extends SharedComponent {
   renderText() {
     return (
       <StyledVerticalCenter>
-        <CreateText>{"+ Create new guide"}</CreateText>
+        <CreateText>{'+ Create new guide'}</CreateText>
       </StyledVerticalCenter>
     )
   }
@@ -88,7 +89,7 @@ class AddStoryToGuides extends SharedComponent {
     return null
   }
 
-  renderGuides(categoryKeys) {
+  renderGuides() {
     const { isInGuideById } = this.state
 
     return this.props.guides.map((guide, index) => {

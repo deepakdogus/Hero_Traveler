@@ -15,7 +15,7 @@ import ContainerWithFeedList from './ContainerWithFeedList'
 import ProfileHeader from '../Components/ProfileHeader/ProfileHeader'
 import TabBar from '../Components/TabBar'
 import FeedItemList from '../Components/FeedItemList'
-import Footer from './Footer'
+import Footer from '../Components/Footer'
 import Overlay from '../Components/Overlay'
 
 const tabBarTabs = ['STORIES', 'DRAFTS', 'BOOKMARKS', 'GUIDES']

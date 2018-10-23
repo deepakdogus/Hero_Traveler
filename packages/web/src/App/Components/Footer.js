@@ -1,10 +1,22 @@
-import React from 'react'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 
 import Icon from './Icon'
 import { Row } from './FlexboxGrid'
+
+import UXActions from '../Redux/UXRedux'
+
+const LinkStyles = `
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: 1.2px;
+  text-decoration: none;
+  margin-right: 25px;
+  margin-bottom: 0;
+`
 
 const Container = styled.div`
   width: 100%;
@@ -20,36 +32,27 @@ const SizedRow = styled(Row)`
 `
 
 const StyledLink = styled(NavLink)`
+${LinkStyles}
   font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-weight: 400;
-  font-size: 16px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: 1.2px;
-  text-decoration: none;
-  margin-right: 25px;
-  margin-bottom: 0;
+  &:visited {
+    color: ${props => props.theme.Colors.background};
+  }
 `
 
 const StyledOffsiteLink = styled.a`
+  ${LinkStyles}
   font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-weight: 400;
-  font-size: 16px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: 1.2px;
-  text-decoration: none;
-  margin-right: 25px;
-  margin-bottom: 0;
+  &:visited {
+    color: ${props => props.theme.Colors.background};
+  }
 `
 
 const StyledPseudoLink = styled.div`
+  ${LinkStyles}
   font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-weight: 400;
-  font-size: 16px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: 1.2px;
-  text-decoration: none;
-  margin-right: 25px;
-  margin-bottom: 0;
   cursor: pointer;
 `
 
@@ -69,20 +72,16 @@ const StyledIcon = styled(Icon)`
   cursor: pointer;
 `
 
-/*
-Need black icons and what size they want them. Ideally all icons should be square!
-*/
-export default class Footer extends React.Component {
+class Footer extends Component {
   static propTypes = {
     openGlobalModal: PropTypes.func,
   }
 
   openTAC = () => {
-    this.openGlobalModalandClose('faqTermsAndConditions', 'Terms & Conditions')
-  }
-
-  openGlobalModalandClose = (modalName, activeTab) => {
-    this.props.openGlobalModal(modalName, { activeTab })
+    this.props.openGlobalModal(
+      'documentation',
+      { activeTab: 'Terms & Conditions' },
+    )
   }
 
   render() {
@@ -91,8 +90,16 @@ export default class Footer extends React.Component {
         <SizedRow between='xs'>
           <Row bottom='xs'>
             <StyledLink to='/'>About Us</StyledLink>
-            <StyledPseudoLink onClick={this.openTAC}>Terms of Service</StyledPseudoLink>
-            <StyledOffsiteLink href='mailto:info@herotraveler.com'>Contact Us</StyledOffsiteLink>
+            <StyledPseudoLink
+              onClick={this.openTAC}
+            >
+              Terms of Service
+            </StyledPseudoLink>
+            <StyledOffsiteLink
+              href='mailto:info@herotraveler.com'
+            >
+              Contact Us
+            </StyledOffsiteLink>
           </Row>
           {/* hidden until HT social media campaigns launch */}
           {false &&
@@ -109,3 +116,14 @@ export default class Footer extends React.Component {
     )
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
+  }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(Footer)

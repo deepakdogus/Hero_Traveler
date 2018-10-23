@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
@@ -8,12 +8,13 @@ import TabBar from '../TabBar'
 
 import FAQ from './FAQ'
 import TermsAndConditions from './TermsAndConditions'
+import Privacy from './Privacy'
 
 const Container = styled.div``
 
-const tabBarTabs = ['FAQ', 'Terms & Conditions']
+const tabBarTabs = ['FAQ', 'Terms & Conditions', 'Privacy Policy']
 
-class FAQTermsAndConditions extends React.Component {
+class Documentation extends Component {
   static propTypes = {
     closeModal: PropTypes.func,
     globalModalParams: PropTypes.object,
@@ -44,6 +45,7 @@ class FAQTermsAndConditions extends React.Component {
         />
         {this.state.activeTab === 'FAQ' && <FAQ/>}
         {this.state.activeTab === 'Terms & Conditions' && <TermsAndConditions/>}
+        {this.state.activeTab === 'Privacy Policy' && <Privacy />}
       </Container>
     )
   }
@@ -51,4 +53,4 @@ class FAQTermsAndConditions extends React.Component {
 
 const mapStateToProps = (state) => ({ globalModalParams: state.ux.params})
 
-export default connect(mapStateToProps, null)(FAQTermsAndConditions)
+export default connect(mapStateToProps, null)(Documentation)

@@ -59,6 +59,7 @@ export default class FollowFollowingRow extends Component {
           size='larger'
           type='profile'
           onClick={this._handleProfileClick}
+          type='profile'
         />
     )
   }

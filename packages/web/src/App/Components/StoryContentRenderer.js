@@ -62,6 +62,7 @@ const getAtomic = (children, { data, keys }) => {
     const type = media.type
     const mediaUrl =
       type === 'image'
+<<<<<<< HEAD
         ? getImageUrl(media.url, 'contentBlock')
         : `${getVideoUrlBase()}/${media.url}`
     const text = _.get(children, `[${index}][1][0]`, '').trim()
@@ -86,6 +87,29 @@ const getAtomic = (children, { data, keys }) => {
           <Spacer key={1} />,
           <Spacer key={2} />,
         ]
+=======
+      ? getImageUrl(media.url, 'contentBlock')
+      : `${getVideoUrlBase()}/${media.url}`
+    const text = _.get(children, `[${index}][1][0]`, '').trim()
+    switch (media.type) {
+      case 'image':
+        return (
+          <div key={keys[index]}>
+            <StyledImage src={mediaUrl} />
+            {text && <Caption>{text}</Caption>}
+          </div>
+        )
+      case 'video':
+        return (
+          <div key={keys[index]}>
+            <Video
+              src={mediaUrl}
+              withPrettyControls
+            />
+            {text && <Caption>{text}</Caption>}
+          </div>
+        )
+>>>>>>> master
       default:
         return null
     }
@@ -94,8 +118,12 @@ const getAtomic = (children, { data, keys }) => {
 
 // only actually using unstyled - atomic - header-one
 const blocks = {
+<<<<<<< HEAD
   unstyled: (children, { keys }) =>
     children.map((child, i) => [<BodyText key={i}>{child}</BodyText>, <Spacer key={1} />]),
+=======
+  unstyled: (children, { keys }) => children.map((child, i) => <BodyText key={keys[i]}>{child}</BodyText>),
+>>>>>>> master
   atomic: getAtomic,
   blockquote: (children, { keys }) => <blockquote key={keys[0]}>{children}</blockquote>,
   'header-one': (children, { keys }) =>
@@ -109,11 +137,15 @@ const blocks = {
 }
 
 const entities = {
+<<<<<<< HEAD
   LINK: (children, entity, { key }) => (
     <a key={key} href={entity.url}>
       {children}
     </a>
   ),
+=======
+  LINK: (children, entity, { key }) => <a key={key} href={entity.url}>{children}</a>,
+>>>>>>> master
 }
 
 const options = {

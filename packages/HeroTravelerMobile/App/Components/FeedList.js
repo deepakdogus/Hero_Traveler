@@ -40,6 +40,7 @@ export default class FeedList extends React.Component {
     headerContentHeight: PropTypes.number,
     style: PropTypes.number,
     sessionError: PropTypes.string,
+    clearSessionError: PropTypes.func,
   }
 
   static defaultProps = {
@@ -113,7 +114,10 @@ export default class FeedList extends React.Component {
         'Session Timed Out',
         'Please log in again',
         [
-          {text: 'OK'},
+          {
+            text: 'OK',
+            onPress: this.props.clearSessionError,
+          },
         ],
       )
     }

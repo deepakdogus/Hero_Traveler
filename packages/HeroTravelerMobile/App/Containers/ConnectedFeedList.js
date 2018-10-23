@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 import R from 'ramda'
 
+import SessionActions from '../Shared/Redux/SessionRedux'
 import FeedList from '../Components/FeedList'
 
 const mapStateToProps = (state, ownProps) => {
@@ -17,7 +18,13 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    clearSessionError: () => dispatch(SessionActions.clearError()),
+  }
+}
+
 export default connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
 )(FeedList)

@@ -101,11 +101,15 @@ class CreateGuide extends SharedCreateGuide {
      const {
       reroute,
       storyId,
+      guideId,
       openGlobalModal,
     } = this.props
     if (storyId) {
       reroute(`/story/${storyId}`)
       openGlobalModal('guidesSelect', { storyId })
+    }
+    else if (guideId) {
+      reroute(`/guide/${guideId}`)
     }
     else reroute(`/feed`)
   }

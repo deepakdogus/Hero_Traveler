@@ -11,8 +11,16 @@ import {navToProfile} from '../Navigation/NavigationRouter'
 import {tabTypes} from './GuideReadingScreen'
 
 function getAreInRenderLocation(state, ownProps){
-  if (!ownProps.renderLocation || ownProps.renderLocation  === state.routes.scene.name) return true
-  else if (ownProps.renderLocation === 'myFeed' || ownProps.renderLocation === 'tabbar') {
+  if (
+    !ownProps.renderLocation
+    || ownProps.renderLocation === state.routes.scene.name
+  ) {
+    return true
+  }
+  else if (
+    ownProps.renderLocation === 'myFeed'
+    || ownProps.renderLocation === 'tabbar'
+  ) {
     return (state.routes.scene.name === 'tabbar' && state.routes.scene.index === 0) ||
       (ownProps.renderLocation === 'tabbar' && state.routes.scene.name === 'myFeed')
   }
@@ -35,7 +43,8 @@ function onPressUser(sessionUserId, sceneName, profileId) {
     if (areAlreadyInProfileScreen(sceneName, profileId, userId, sessionUserId)) return
     if (sessionUserId === userId) {
       navToProfile()
-    } else {
+    }
+    else {
       NavActions.readOnlyProfile({userId})
     }
   }
@@ -80,10 +89,11 @@ const mapStateToProps = (state, ownProps) => {
   const selectedStories = (isStory || !isReadingScreen)
     ? []
     : getSelectedStories(entities.stories.entities, feedItem.stories, ownProps.selectedTab)
+  const accessToken = _.find(state.session.tokens, {type: 'access'})
 
   return {
     ...storyProps,
-    accessToken: _.find(session.tokens, {type: 'access'}).value,
+    accessToken: accessToken ? accessToken.value : null,
     isVisible,
     isGuideLiked: isGuideLiked(entities.users, sessionUserId, feedItem.id),
     isShowCover,
@@ -110,12 +120,12 @@ const mapDispatchToProps = (dispatch, props) => {
       dispatch(GuideActions.unlikeGuideRequest(guideId, sessionUserId))
     },
     onPressBookmark: () => dispatch(StoryActions.storyBookmark(userId, feedItemId)),
-    onPressFollow: (idToFollow) => {dispatch(UserActions.followUser(userId, idToFollow))},
+    onPressFollow: (idToFollow) => dispatch(UserActions.followUser(userId, idToFollow)),
     onPressUnfollow: (idToUnfollow) => dispatch(UserActions.unfollowUser(userId, idToUnfollow)),
   }
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(FeedItemPreview)

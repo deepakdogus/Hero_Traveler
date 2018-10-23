@@ -60,6 +60,7 @@ const RedText = styled.span`
 
 const Username = styled(RedText)`
   cursor: pointer;
+  margin-left: 6px;
 `
 
 const TimeStamp = styled(RedText)`
@@ -97,6 +98,12 @@ const Container = styled.div`
   }
 `
 
+const ClickableContainer = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`
+
 const StyledDivider = styled(HorizontalDivider)`
   max-width: 960px;
   margin: 30px auto;
@@ -132,6 +139,7 @@ const ClickableRow = styled(Row)`
 
 const BadgeIcon = styled(Icon)`
   margin-left: ${props => props.profileAvatar ? '0' : '10'}px;
+  cursor: pointer;
 `
 
 const followButtonStyles = `
@@ -210,18 +218,22 @@ export default class FeedItemHeader extends React.Component {
               size='medium'
               onClick={this._profileReroute}
             />
-            {hasBadge &&
-              <VerticalCenter>
-                <BadgeIcon
-                  name={author.role === 'contributor' ? 'profileBadge' : 'founderBadge'}
-                  size='mediumSmall'
-                  profileAvatar={author.profile.avatar}
-                />
-              </VerticalCenter>
-            }
             <SpacedVerticalCenter>
               <Row>
-                <Username onClick={this._profileReroute}>{author.username}</Username>
+                <ClickableContainer
+                  onClick={this._profileReroute}
+                >
+                  {hasBadge &&
+                    <VerticalCenter>
+                      <BadgeIcon
+                        name={author.role === 'contributor' ? 'profileBadge' : 'founderBadge'}
+                        size='mediumSmall'
+                        profileAvatar={author.profile.avatar}
+                      />
+                    </VerticalCenter>
+                  }
+                  <Username onClick={this._profileReroute}>{author.username}</Username>
+                </ClickableContainer>
                 {!isUsersFeedItem && sessionUserId &&
                   <SpacedVerticalCenter>
                     <RoundedButton

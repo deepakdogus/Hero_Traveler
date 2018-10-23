@@ -184,7 +184,8 @@ export default class StoryActionBar extends React.Component {
             <DotsIcon
               name='dots'
               onClick={this.toggleShowMore}
-          />}
+            />
+          }
         </ActionBarContainer>
         {/* hidden until after launch */}
         { false &&

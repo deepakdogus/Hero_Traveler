@@ -74,7 +74,6 @@ const deleteAllFromModelHelper = (model, query) => {
 const deleteAllEntitiesHelper = (entities) => {
   return Promise.all(
     _.map(entities, (entity) => {
-      console.log("\nentity is", entity)
       return entity.remove()
     })
   )

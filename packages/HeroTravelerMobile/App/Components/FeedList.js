@@ -102,7 +102,7 @@ export default class FeedList extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (_.xor(nextProps.targetEntities, this.props.targetEntities).length !== 0){
       this.setState({
-        targetEntities: nextProps.targetEntities
+        targetEntities: nextProps.targetEntities,
       })
     }
     //log outif session runs out
@@ -113,8 +113,8 @@ export default class FeedList extends React.Component {
         'Session Timed Out',
         'Please log in again',
         [
-          {text: 'OK'}
-        ]
+          {text: 'OK'},
+        ],
       )
     }
   }
@@ -138,10 +138,10 @@ export default class FeedList extends React.Component {
     }
 
     const entitiesInfo = targetEntities.map((entity) => {
-      let totalPadding = Metrics.feedCell.padding;
+      let totalPadding = Metrics.feedCell.padding
 
       if (entity && entity.description && !entity.locations) {
-        totalPadding += Metrics.feedCell.descriptionPadding;
+        totalPadding += Metrics.feedCell.descriptionPadding
       }
 
       if (entity && entity.coverImage) {
@@ -149,7 +149,8 @@ export default class FeedList extends React.Component {
           headerImage: getImageUrl(entity.coverImage, 'optimized', imageOptions),
           height: Metrics.feedCell.imageCellHeight + totalPadding,
         }
-      } else if (entity && entity.coverVideo) {
+      }
+      else if (entity && entity.coverVideo) {
         let headerImage = getImageUrl(entity.coverVideo, 'optimized', videoOptions, entity.cover)
         if (isLocalMediaAsset(headerImage)) {
           headerImage = null

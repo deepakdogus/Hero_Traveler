@@ -7,7 +7,7 @@ const mapStateToProps = (state, ownProps) => {
   const {entities} = state
 
   // mapping Ids to actual stories or guides
-  let mapFunc;
+  let mapFunc
   if (ownProps.isStory) mapFunc = (storyId) => entities.stories.entities[storyId]
   else mapFunc = (guideId) => entities.guides.entities[guideId]
 
@@ -15,10 +15,9 @@ const mapStateToProps = (state, ownProps) => {
     targetEntities: R.map(mapFunc, ownProps.entitiesById),
     sessionError: state.session.error,
   }
-
 }
 
 export default connect(
   mapStateToProps,
-  null
+  null,
 )(FeedList)

@@ -90,6 +90,10 @@ class HeaderLoggedIn extends React.Component {
     this.props.closeGlobalModal()
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.userId && !nextProps.userId) this.props.closeGlobalModal()
+  }
+
   toggleProfileMenu = () => {
     if (
       this.props.globalModal === 'profileMenu'

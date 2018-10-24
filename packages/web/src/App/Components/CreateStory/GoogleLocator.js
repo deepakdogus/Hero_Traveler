@@ -52,7 +52,7 @@ const styles = {
     border: 'none',
     fontWeight: '400',
     fontSize: '18px',
-    letterSpacing: '.7px',
+    letterSpacing: '.2px',
     color: '#1a1c21',
     fontFamily: 'source sans pro',
   },

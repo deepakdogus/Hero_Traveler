@@ -21,7 +21,7 @@ export const Name = styled.p`
   font-weight: 400;
   font-size: 18px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   margin: 8px 0px;
   text-align: left;
   font-style: italic;

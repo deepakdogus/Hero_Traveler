@@ -37,7 +37,7 @@ const Subtitle = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 400;
   color: ${props => props.theme.Colors.grey};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
 `
 
 const LocationText = styled(Subtitle)`
@@ -51,7 +51,7 @@ const RedText = styled.span`
   font-weight: 400;
   font-size: 16px;
   color: ${props => props.theme.Colors.redHighlights};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
 `
 
 const Username = styled(RedText)`
@@ -81,7 +81,7 @@ const CoverCaption = styled.p`
   font-weight: 400;
   font-size: 14px;
   color: ${props => props.theme.Colors.bioGrey};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
 `
 
 const Container = styled.div`

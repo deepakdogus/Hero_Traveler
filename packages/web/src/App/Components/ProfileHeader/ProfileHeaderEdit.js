@@ -83,7 +83,7 @@ const RelativeWrapper = styled.div`
 const UpdatePictureText = styled.p`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 600;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   font-size: 18px;
   color: ${props => props.theme.Colors.redHighlights};
   margin-left: 20px;
@@ -94,7 +94,7 @@ const Label = styled.label`
   display: block;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 600;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   font-size: 16px;
   color: ${props => props.theme.Colors.background};
   margin: 16px 0 8px;
@@ -102,7 +102,7 @@ const Label = styled.label`
 
 const BaseInputStyles = `
   font-weight: 400;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   font-size: 18px;
   width: 100%;
 `

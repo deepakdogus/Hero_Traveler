@@ -21,7 +21,7 @@ const SidebarDemiLink = styled.p`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   color: ${props => props.theme.Colors.background};
   font-weight: 400;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   font-size: 16px;
   max-width: 80%;
   text-align: start;

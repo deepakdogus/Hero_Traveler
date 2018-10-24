@@ -42,7 +42,7 @@ const Subtitle = styled.p`
   font-family: 'Source Sans Pro';
   font-size: 18px;
   color: ${props => props.theme.Colors.grey};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   margin-bottom: 30px;
 `
 

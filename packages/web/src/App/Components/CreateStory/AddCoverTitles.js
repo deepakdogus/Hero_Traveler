@@ -128,7 +128,7 @@ const StyledSubTitleInput = styled(StyledInput)`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-size: 20px;
   font-weight: 400;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 18px;
   }

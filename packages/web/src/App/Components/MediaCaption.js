@@ -4,7 +4,7 @@ export default styled.div`
   font-weight: 300;
   font-size: 14px;
   color: ${props => props.theme.Colors.grey};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   font-style: italic;
   text-align: center;
   margin-top: 0;

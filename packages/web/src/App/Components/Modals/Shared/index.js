@@ -5,7 +5,7 @@ import Icon from '../../Icon'
 const basicTextStyle = `
   font-weight: 400;
   font-size: 16px;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
 `
 
 export const Container = styled.div`
@@ -79,7 +79,7 @@ export const UserNameStyles = `
   font-weight: 600;
   font-size: 18px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   margin: 0;
 `
 
@@ -91,7 +91,7 @@ export const MessageContent = styled.p`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 16px;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   margin: 0;
   color: ${props => props.theme.Colors.grey};
 `
@@ -100,7 +100,7 @@ export const Timestamp = styled.p`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 14px;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   margin: 0;
   color: ${props => props.theme.Colors.grey};
 `

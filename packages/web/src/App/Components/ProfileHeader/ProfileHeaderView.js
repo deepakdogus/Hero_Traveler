@@ -68,7 +68,7 @@ const BioText = styled.p`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro}};
   font-style: normal;
   font-weight: 400;
-  letter-spacing: .5px;
+  letter-spacing: .2px;
   text-align: left;
   font-size: 16px;
   color: ${props => props.theme.Colors.redHighlights};

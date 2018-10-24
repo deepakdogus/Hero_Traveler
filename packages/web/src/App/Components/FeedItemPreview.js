@@ -31,7 +31,7 @@ const coverHeight = '257px'
 const Text = styled.span`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   font-size: 15px;
   color: ${props => props.theme.Colors.grey};
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
@@ -112,7 +112,7 @@ const VerticalDetailsContainer = styled(HorizontalDetailsContainer)`
 
 const HorizontalLocationPreview = styled(Text)`
   color: ${props => props.theme.Colors.background};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   font-size: 13px;
   font-weight: 600;
   margin-top: 6px;

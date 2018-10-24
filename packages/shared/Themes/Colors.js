@@ -56,6 +56,7 @@ const colors = {
   closeXBorder: '#6d6a6d',
   blueBubble: '#e3f2fd',
   onHoverGrey: '#f6f6f6',
+  onHoverRed: '#c01a27'
 }
 
 export default colors

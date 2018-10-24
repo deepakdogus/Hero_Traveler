@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import {
   withGoogleMap,
   GoogleMap,
-} from "react-google-maps";
-import MarkerClusterer from "react-google-maps/lib/addons/MarkerClusterer"
+} from 'react-google-maps'
+import MarkerClusterer from 'react-google-maps/lib/addons/MarkerClusterer'
 import _ from 'lodash'
 
 import getImageUrl from '../Shared/Lib/getImageUrl'
@@ -45,8 +45,8 @@ const HOCMap = withGoogleMap(props => {
         ))}
       </MarkerClusterer>
     </GoogleMap>
-  )}
-);
+  )
+})
 
 export default class GMap extends React.Component {
   static propTypes = {
@@ -59,7 +59,7 @@ export default class GMap extends React.Component {
   }
 
   state = {
-    selectedMarkerId: undefined
+    selectedMarkerId: undefined,
   }
 
   componentDidUpdate(prevProps) {
@@ -107,7 +107,7 @@ export default class GMap extends React.Component {
         new windowMaps.LatLng(
           latitude,
           longitude,
-        )
+        ),
       )
     })
 
@@ -115,11 +115,11 @@ export default class GMap extends React.Component {
     if (bounds.getNorthEast().equals(bounds.getSouthWest())) {
       var extendPointNE = new windowMaps.LatLng(
         bounds.getNorthEast().lat() + 0.01,
-        bounds.getNorthEast().lng() + 0.01
+        bounds.getNorthEast().lng() + 0.01,
       )
-      var extendPointSW =  new windowMaps.LatLng(
+      var extendPointSW = new windowMaps.LatLng(
         bounds.getNorthEast().lat() - 0.01,
-        bounds.getNorthEast().lng() - 0.01
+        bounds.getNorthEast().lng() - 0.01,
       )
       bounds.extend(extendPointNE)
       bounds.extend(extendPointSW)
@@ -147,7 +147,7 @@ export default class GMap extends React.Component {
     return (
       <HOCMap
         containerElement={
-          <div style={{ height: `500px` }} />
+          <div style={{ height: `500px`, margin: `60px 0` }} />
         }
         mapElement={
           <div style={{ height: `100%` }} />

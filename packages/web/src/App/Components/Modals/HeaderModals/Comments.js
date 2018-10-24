@@ -17,6 +17,7 @@ const Container = styled.div`
 class Comments extends Component {
   static propTypes = {
     closeModal: PropTypes.func,
+    reroute: PropTypes.func,
     sessionUserId: PropTypes.string,
     users: PropTypes.object,
     storyId: PropTypes.string,
@@ -47,6 +48,7 @@ class Comments extends Component {
 
   renderUserMessageRows(comments) {
     return comments.map((comment, index) => {
+      const { reroute, closeModal } = this.props
       let user
       if (typeof comment.user === 'string') user = this.props.users[comment.user]
       else user = comment.user
@@ -59,6 +61,8 @@ class Comments extends Component {
           timestamp={new Date(comment.createdAt)}
           padding='10px 30px'
           isComment={true}
+          reroute={reroute}
+          closeModal={closeModal}
         />
       )
     })

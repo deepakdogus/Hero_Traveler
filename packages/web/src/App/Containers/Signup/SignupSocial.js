@@ -34,14 +34,17 @@ Possibly refactor into separate file or add styles to themes
 const Title = styled.p`
   margin-top:0;
   font-weight: 400;
+  font-family: 'montserrat';
   font-size: 35px;
   color: ${props => props.theme.Colors.background};
   letter-spacing: 1.2px;
+  margin-bottom: 15px;
 `
 
 const Subtitle = styled.p`
   font-weight: 400;
-  font-size: 18px;
+  font-size: 16px;
+  font-family: 'Source Sans Pro';
   color: ${props => props.theme.Colors.grey};
   letter-spacing: .7px;
   margin-bottom: 30px;
@@ -55,7 +58,8 @@ const Section = styled.div`
 
 const SectionText = styled.h4`
   font-weight: 400;
-  font-size: 20px;
+  font-size: 16px;
+  font-family: 'Source Sans Pro';
   color: ${props => props.theme.Colors.background};
   letter-spacing: 1.2px;
   background-color: ${props => props.theme.Colors.lightGreyAreas};

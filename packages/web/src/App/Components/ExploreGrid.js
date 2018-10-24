@@ -21,7 +21,7 @@ const Wrapper = styled.div`
 const CategoryTile = styled.div`
   background-image: ${props => `url(${props.imageSource})`};
   background-repeat: no-repeat;
-  background-size: 247px;
+  background-size: cover;
   padding-top: 50%;
   padding-bottom: 50%;
   position: relative;

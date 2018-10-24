@@ -129,7 +129,6 @@ export default class FeedItemMetaInfo extends React.Component {
     return `${duration} day${duration > 1 ? 's' : ''}`
   }
 
-
   render() {
     const {feedItem} = this.props
     return (

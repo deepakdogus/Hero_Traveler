@@ -79,7 +79,6 @@ export default class MessageRow extends Component {
     )
   }
 
-
   renderRight = () => {
     return (
       <TimestampContainer>

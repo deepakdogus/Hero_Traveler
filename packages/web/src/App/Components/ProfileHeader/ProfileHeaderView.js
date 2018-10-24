@@ -12,7 +12,6 @@ import {
   Centered,
   StyledAvatar,
   AvatarWrapper,
-  ButtonWrapper,
   BottomLeftText,
 } from './ProfileHeaderShared'
 import { NavLinkStyled } from '../NavLinkStyled'
@@ -105,6 +104,10 @@ const EditButtonStyle = `
   margin-bottom: 6px;
 `
 
+const StyledButton = styled.div`
+  text-align: left;
+`
+
 export default class ProfileHeaderView extends React.Component {
   static propTypes = {
     user: PropTypes.object,
@@ -180,6 +183,7 @@ export default class ProfileHeaderView extends React.Component {
         </LimitedWidthRow>
         <Spacer/>
         <LimitedWidthRow center='xs'>
+        <VerticalCenter>
           <NarrowCol>
             <CountWrapper>
               <CountItemWrapper onClick={openFollowedBy}>
@@ -193,9 +197,10 @@ export default class ProfileHeaderView extends React.Component {
               </CountItemWrapper>
             </CountWrapper>
           </NarrowCol>
+          </VerticalCenter>
           <SecondCol>
             <VerticalCenter>
-            <ButtonWrapper>
+            <StyledButton>
               { isUsersProfile &&
                 <NavLinkStyled to={`/profile/${user.id}/edit`}>
                   <RoundedButton
@@ -213,7 +218,7 @@ export default class ProfileHeaderView extends React.Component {
                   textProps={FollowButtonStyle}
                 />
               }
-            </ButtonWrapper>
+            </StyledButton>
             </VerticalCenter>
           </SecondCol>
         </LimitedWidthRow>

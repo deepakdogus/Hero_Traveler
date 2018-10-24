@@ -14,6 +14,8 @@ export function getSize(props, defaultOverride = '25px') {
       return '15px'
     case 'mediumSmall':
       return '18px'
+    case 'extraMedium':
+      return '38px'  
     case 'medium':
       return '50px'
     case 'large':

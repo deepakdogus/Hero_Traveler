@@ -60,7 +60,7 @@ const RedText = styled.span`
 
 const Username = styled(RedText)`
   cursor: pointer;
-  margin-left: 6px;
+  margin-left: ${props => props.hasBadge ? '6px' : '0'}
 `
 
 const TimeStamp = styled(RedText)`
@@ -232,7 +232,12 @@ export default class FeedItemHeader extends React.Component {
                       />
                     </VerticalCenter>
                   }
-                  <Username onClick={this._profileReroute}>{author.username}</Username>
+                  <Username
+                    onClick={this._profileReroute}
+                    hasBadge={hasBadge}
+                  >
+                    {author.username}
+                  </Username>
                 </ClickableContainer>
                 {!isUsersFeedItem && sessionUserId &&
                   <SpacedVerticalCenter>
@@ -240,7 +245,7 @@ export default class FeedItemHeader extends React.Component {
                       margin='none'
                       padding='smallEven'
                       onClick={isFollowing ? unfollowUser : followUser}
-                      type={isFollowing ? 'follow' : 'blackWhite'}
+                      type={isFollowing ? 'followSmall' : 'blackWhite'}
                       text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
                       textProps={followButtonStyles}
                     />

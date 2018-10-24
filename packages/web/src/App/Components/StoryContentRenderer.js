@@ -43,6 +43,10 @@ const Spacer = styled.div`
   height: 30px;
 `
 
+Spacer.defaultProps = {
+  spacer: true,
+}
+
 const StyledStrong = styled.strong`
   font-weight: 600;
 `
@@ -95,7 +99,7 @@ const getAtomic = (children, { data, keys }) => {
 // only actually using unstyled - atomic - header-one
 const blocks = {
   unstyled: (children, { keys }) =>
-    children.map((child, i) => [<BodyText key={i}>{child}</BodyText>, <Spacer key={1} />]),
+    children.map((child, i) => [<BodyText key={keys[i]}>{child}</BodyText>, <Spacer key={1} />]),
   atomic: getAtomic,
   blockquote: (children, { keys }) => <blockquote key={keys[0]}>{children}</blockquote>,
   'header-one': (children, { keys }) =>
@@ -131,11 +135,16 @@ export default class StoryContentRenderer extends React.Component {
 
   trimSpacers = contentBlocks => {
     if (!contentBlocks) return null
+    if (!contentBlocks.length) return contentBlocks
 
     const lastBlock = contentBlocks[contentBlocks.length - 1][0]
-    lastBlock.pop()
-    if (lastBlock.length > 2) {
-      // case: atomic contentBlocks have 2 end spacers
+
+    while (
+      lastBlock.length > 1
+      && lastBlock[lastBlock.length - 1]
+      && lastBlock[lastBlock.length - 1].props
+      && lastBlock[lastBlock.length - 1].props.spacer
+    ) {
       lastBlock.pop()
     }
 

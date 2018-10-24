@@ -96,18 +96,14 @@ class Story extends Component {
 
   renderHashtags = () => {
     const {story} = this.props
-    if (!story.hashtags) return null
+    if (!story.hashtags || !story.hashtags.length) return null
 
-    const hashtagMap = story.hashtags.map((hashtag) => {
-      return `#${hashtag.title}`
-    })
+    const hashtagMap = story.hashtags.map((hashtag) => `#${hashtag.title}`)
 
     return (
-      hashtagMap.length
-      ? (<HashtagText>
-          {hashtagMap.join(', ')}
-        </HashtagText>)
-      : null
+      <HashtagText>
+        {hashtagMap.join(', ')}
+      </HashtagText>
     )
   }
 

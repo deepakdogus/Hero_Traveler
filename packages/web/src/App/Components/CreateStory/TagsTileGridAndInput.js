@@ -30,7 +30,6 @@ const InputWrapper = styled(Col)`
   display: flex;
   flex-direction: 'column';
   justify-content: 'center';
-  margin: 10px 0px;
 `
 
 const StyledGrid = styled(Grid)`
@@ -125,7 +124,7 @@ export default class TagsTileGridAndInput extends React.Component {
       )
     })
 
-    const placeholder = `Add ${type === 'hashtag' ? 'Hashtags' : 'Categories'}`
+    const placeholder = `Add ${type === 'hashtag' ? 'hashtags' : 'categories'}`
 
     return (
       <StyledGrid>

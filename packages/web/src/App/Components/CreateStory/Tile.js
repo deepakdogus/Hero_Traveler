@@ -17,7 +17,7 @@ const TextTile = styled(Row)`
   border-radius: 4px;
   height: 34px;
   z-index: 90;
-  padding: 5px;
+  padding: 5px 10px;
 `
 
 const Text = styled.p`
@@ -38,7 +38,7 @@ const StyledIcon = styled(Icon)`
 export default class Tile extends React.Component {
   static propTypes = {
     text: PropTypes.string,
-    handleTagRemove: PropTypes.func
+    handleTagRemove: PropTypes.func,
   }
 
   _handleTagRemove = (event) => {

@@ -7,7 +7,7 @@ import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
 import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unchecked'
 import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checked'
 
-import { Row } from '../FlexboxGrid'
+import { Grid, Row } from '../FlexboxGrid'
 import Icon from '../Icon'
 import HorizontalDivider from '../HorizontalDivider'
 import GoogleLocator from './GoogleLocator'
@@ -41,6 +41,15 @@ const StyledTitle = styled(Title)`
   font-size: 28px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
+`
+
+const StyledGrid = styled(Grid)`
+  margin-left: 0px;
+  width: 90%;
+`
+
+const VerticallyCenterRow = styled(Row)`
+  align-items: center;
 `
 
 const ActivitySelectRow = styled(Row)`
@@ -81,13 +90,14 @@ export const StyledInput = styled.input`
   width: 80%;
   color: ${props => props.theme.Colors.background};
   border-width: 0;
-  margin-left: 25px;
+  margin: 10px 0 10px 25px;
   outline: none;
   ::placeholder {
     font-family: ${props => props.theme.Fonts.type.base};
     color: ${props => props.theme.Colors.navBarText};
   }
 `
+
 const IconWithMargin = styled(Icon)`
   margin-left: 2px;
   width: 30px;
@@ -127,11 +137,15 @@ const TravelTipsInput = styled.textarea`
   height: 160px;
   resize: none;
   border-width: 1px;
-  border-color: ${props => props.theme.Colors.navBarText};
+  border-color: ${props => props.theme.Colors.navBarTextLowOpacity};
   border-radius: 2.5px;
   padding: 10px;
   margin-top: 5px;
   box-sizing: border-box;
+`
+
+const Spacer = styled.div`
+  height: 45px;
 `
 
 const styles = {
@@ -159,10 +173,11 @@ const styles = {
 }
 
 const TilesWrapper = styled.div`
-  margin-left: 50px;
-  flex-direction: column;
-  align-items: start;
+  margin-left: 15px;
+  flex-direction: row;
+  align-items: center;
   display: flex;
+  flex-wrap: wrap;
 `
 
 function sortCategories(categories) {
@@ -343,16 +358,26 @@ export default class FeedItemDetails extends React.Component {
 
   renderLocations() {
     return (
-      <TilesWrapper>
-      {
-        this.props.workingDraft.locations.map((location, index) => {
-          return <Tile
-            key={index}
-            text={displayLocationDetails(location)}
+      <StyledGrid>
+        <VerticallyCenterRow>
+          {!!this.props.workingDraft.locations.length && <TilesWrapper>
+            {
+              this.props.workingDraft.locations.map((location, index) => {
+                return <Tile
+                  key={index}
+                  text={displayLocationDetails(location)}
+                />
+              })
+            }
+          </TilesWrapper>
+          }
+          <GoogleLocator
+            onChange={this.handleLocationSelect}
+            address={this.state.address}
+            isGuide={true}
           />
-        })
-      }
-      </TilesWrapper>
+        </VerticallyCenterRow>
+      </StyledGrid>
     )
   }
 
@@ -405,6 +430,7 @@ export default class FeedItemDetails extends React.Component {
             </ActivitySelectRow>
           </InputRowContainer>
         }
+        {isGuide && <Spacer />}
         {isGuide &&
           <InputRowContainer>
             <IconWrapper>
@@ -415,6 +441,7 @@ export default class FeedItemDetails extends React.Component {
               value={workingDraft.title}
               name='title'
               onChange={this.onGenericChange}
+              autoComplete='off'
             />
           </InputRowContainer>
         }
@@ -423,12 +450,14 @@ export default class FeedItemDetails extends React.Component {
           <IconWrapper>
             <EnlargedIcon name='locationLarge'/>
           </IconWrapper>
-          <GoogleLocator
-            onChange={this.handleLocationSelect}
-            address={this.state.address}
-          />
+          {isGuide
+            ? this.renderLocations()
+            : <GoogleLocator
+                onChange={this.handleLocationSelect}
+                address={this.state.address}
+              />
+          }
         </InputRowContainer>
-        {isGuide && this.renderLocations()}
         {!isGuide && <HorizontalDivider color='lighter-grey' opaque/>}
         {!isGuide &&
           <InputRowContainer>
@@ -489,6 +518,7 @@ export default class FeedItemDetails extends React.Component {
               min='1'
               name='duration'
               onChange={this.onGenericChange}
+              autoComplete='off'
             />
           </InputRowContainer>
         }
@@ -507,6 +537,7 @@ export default class FeedItemDetails extends React.Component {
           />
         </InputRowContainer>
         <HorizontalDivider color='lighter-grey' opaque/>
+        <Spacer />
         <TravelTipsContainer>
           <DetailLabel>
             {isGuide ? 'Overview' : 'Travel Tips'}

@@ -4,14 +4,13 @@ import PlacesAutocomplete, {getLatLng, geocodeByAddress} from 'react-places-auto
 import PropTypes from 'prop-types'
 import { formatLocationWeb } from '../../Shared/Lib/formatLocation'
 
-
 import HorizontalDivider from '../HorizontalDivider'
 import './Styles/GoogleLocatorStyles.css';
 
 const Container = styled.div`
   display: inline-block;
-  margin-left: 20px;
-  width: 80%;
+  margin-left: 25px;
+  width: ${props => props.isGuide ? '' : '80%' }
 `
 
 const StyledLocation = styled.p`
@@ -42,12 +41,12 @@ const styles = {
   root: {
     position: 'relative',
     paddingBottom: '0px',
+    width: '100%',
   },
   input: {
     display: 'inline-block',
     width: '100%',
-    padding: '10px',
-    paddingLeft: '5px',
+    padding: '1px',
     outline: 'none',
     border: 'none',
     fontWeight: '400',
@@ -55,6 +54,7 @@ const styles = {
     letterSpacing: '.7px',
     color: '#1a1c21',
     fontFamily: 'source sans pro',
+    margin: '10px 0px',
   },
   autocompleteContainer: {
     position: 'absolute',
@@ -65,30 +65,29 @@ const styles = {
     boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
     width: '320px',
     height: '400px',
-    padding: '5px',
     overflowY: 'auto',
     zIndex: '100',
+    margin: '10px 0px',
   },
   autocompleteItem: {
     backgroundColor: '#ffffff',
-    padding: '10px 10px 0px 10px',
     color: '#555555',
     cursor: 'pointer',
   },
   autocompleteItemActive: {
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
   },
 }
-
 
 class GoogleLocator extends React.Component {
   static propTypes = {
     address: PropTypes.string,
     onChange: PropTypes.func,
+    isGuide: PropTypes.bool,
   }
 
   handleSelect = async (event) => {
-    let locationInfo  = await formatLocationWeb(event, geocodeByAddress, getLatLng)
+    let locationInfo = await formatLocationWeb(event, geocodeByAddress, getLatLng)
     this.props.onChange({locationInfo: locationInfo})
   }
 
@@ -110,7 +109,7 @@ class GoogleLocator extends React.Component {
     )
 
     return (
-      <Container>
+      <Container isGuide={this.props.isGuide}>
         <PlacesAutocomplete
           inputProps={inputProps}
           autocompleteItem={AutocompleteItem}

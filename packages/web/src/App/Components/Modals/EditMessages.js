@@ -10,15 +10,13 @@ const Container = styled.div`
 const EditMessages = (props) => {
   const {isUpdating, errorObj, localError, success} = props
 
-  console.log("errorObj", errorObj)
-
   return(
     <Container>
       {localError &&
         <ErrorMessage>
           {localError}
         </ErrorMessage> }
-      {!!(errorObj) &&
+      { errorObj && errorObj.message &&
         <ErrorMessage>
           {errorObj.toString()}
         </ErrorMessage> }
@@ -34,7 +32,7 @@ const EditMessages = (props) => {
   )
 }
 
-EditMessages.proptypes = {
+EditMessages.propTypes = {
     isUpdating: PropTypes.bool,
     errorObj: PropTypes.object,
     localError: PropTypes.string,

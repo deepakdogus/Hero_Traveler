@@ -111,8 +111,6 @@ export default class ExploreHeader extends React.Component {
           <Tagline>For Travelers By Travelers</Tagline>
           <ItalicText>Available on</ItalicText>
             <BadgeWrapper>
-              <GooglePlayImage src={Images.googlePlayBadge}/>
-              <BadgeSpacer/>
               <a href='https://itunes.apple.com/us/app/hero-traveler/id1288145566'>
                 <AppleAppStoreImage src={Images.appleAppStoreBadge}/>
               </a>

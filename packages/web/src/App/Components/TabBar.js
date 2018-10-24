@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import {Row} from './FlexboxGrid'
 import {Text} from './Modals/Shared'
+import VerticalCenter from './VerticalCenter'
 
 const Container = styled.div`
   background-color: ${props => props.whiteBG ? props.theme.Colors.snow : props.theme.Colors.lightGreyAreas};
@@ -22,20 +23,20 @@ const ModalText = styled(Text)`
   border-style: solid;
   letter-spacing: 1.5px;
   border-color:  ${props => props.theme.Colors.navBarText};
-  padding: 0 25px 0 25px;
+  padding: ${props => props.isModal ? '0 15px 0 15px' : '0 25px 0 25px'};
   margin: 0;
 `
 
-const DefaultText = styled.p`
+const DefaultText = styled(VerticalCenter)`
   border-style: solid;
   color: ${props => props.isActive ? props.theme.Colors.background : props.theme.Colors.navBarText};
   font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-size: 18px;
+  font-size: 13px;
   letter-spacing: 1.2px;
   border-width: ${props => !props.isOnlyTab && props.isActive ? '0 0 5px 0' : '0' };
   border-color:  ${props => props.theme.Colors.redHighlights};
   margin: 0;
-  padding: 12.5px 10px 12.5px;
+  padding: 24px 10px;
 `
 
 export default class TabBar extends React.Component {
@@ -48,7 +49,12 @@ export default class TabBar extends React.Component {
   }
 
   renderTabs(){
-    const {activeTab, tabs = [], onClickTab, isModal} = this.props
+    const {
+      activeTab,
+      tabs = [],
+      onClickTab,
+      isModal,
+    } = this.props
     const Text = isModal ? ModalText : DefaultText
     return tabs.map((tab, index) => {
       return (
@@ -61,6 +67,7 @@ export default class TabBar extends React.Component {
             isOnlyTab={tabs.length === 1}
             isActive={tab === activeTab}
             isLast={index === tabs.length - 1}
+            isModal={isModal}
           >
             {tab}
           </Text>

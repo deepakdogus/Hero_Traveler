@@ -15,6 +15,7 @@ import StoryContentRenderer from '../Components/StoryContentRenderer'
 import GoogleMap from '../Components/GoogleMap'
 import FeedItemMetaInfo from '../Components/FeedItemMetaInfo'
 import FeedItemActionBar from '../Components/FeedItemActionBar'
+import Footer from '../Components/Footer'
 import { createDeepLinkWeb } from '../Lib/sharingWeb'
 
 const ContentWrapper = styled.div`
@@ -153,6 +154,7 @@ class Story extends Component {
           openGlobalModal={openGlobalModal}
           onClickShare={this._onClickShare}
         />
+        <Footer />
       </ContentWrapper>
     )
   }

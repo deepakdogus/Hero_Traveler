@@ -130,14 +130,15 @@ function * watchRefreshTokens() {
   while(true) { // eslint-disable-line no-constant-condition
     yield take([
       SessionTypes.INITIALIZE_SESSION,
-      SessionTypes.REFRESH_SESSION_SUCCESS
+      SessionTypes.REFRESH_SESSION_SUCCESS,
     ])
     yield race([
       call(pollRefreshTokens),
-      take(SessionTypes.LOGOUT_SUCCESS)
+      take(SessionTypes.LOGOUT_SUCCESS),
     ])
   }
 }
+
 
 export default function * root () {
   yield [

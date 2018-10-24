@@ -112,13 +112,13 @@ export default class StoryActionBar extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      showMore: false
+      showMore: false,
     }
   }
 
   toggleShowMore = () => {
     this.setState({
-      showMore: !this.state.showMore
+      showMore: !this.state.showMore,
     })
   }
 

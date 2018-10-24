@@ -30,12 +30,12 @@ const DefaultText = styled.p`
   border-style: solid;
   color: ${props => props.isActive ? props.theme.Colors.background : props.theme.Colors.navBarText};
   font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-size: 18px;
+  font-size: 13px;
   letter-spacing: 1.2px;
   border-width: ${props => !props.isOnlyTab && props.isActive ? '0 0 5px 0' : '0' };
   border-color:  ${props => props.theme.Colors.redHighlights};
   margin: 0;
-  padding: 12.5px 10px 12.5px;
+  padding: 24px 10px;
 `
 
 export default class TabBar extends React.Component {

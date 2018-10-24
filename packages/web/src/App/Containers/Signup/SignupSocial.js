@@ -25,6 +25,7 @@ const NavLinkContainer = styled(SocialContainer)`
   display: flex;
   justify-content: flex-end;
   margin-top: 20px;
+  
 `
 
 /*
@@ -61,6 +62,19 @@ const SectionText = styled.h4`
   background-color: ${props => props.theme.Colors.lightGreyAreas};
   padding: 10px 20px;
 `
+const LeftButtonStyleOverride = {
+  marginBottom: '10px',
+  marginLeft: '10px',
+  marginRight: '5px',
+  marginTop: '10px'
+}
+
+const RightButtonStyleOverride = {
+  marginBottom: '10px',
+  marginLeft: '5px',
+  marginRight: '30px',
+  marginTop: '10px'
+}
 
 class SignupSocial extends Component {
   static propTypes = {
@@ -119,14 +133,21 @@ class SignupSocial extends Component {
     return (
       <SocialContainer>
         <NavLinkContainer>
-          <WrappedNavLink to='/signup/topics'>
+          <WrappedNavLink 
+            to='/signup/topics'
+            styles={LeftButtonStyleOverride}
+          >
             <RoundedButton
               text='< Back'
               type="blackWhite"
               margin='none'
+              
             />
           </WrappedNavLink>
-          <WrappedNavLink to='/feed'>
+          <WrappedNavLink 
+            to='/feed'
+            styles={RightButtonStyleOverride}
+            >
             <RoundedButton
               text='Finish'
               margin='none'

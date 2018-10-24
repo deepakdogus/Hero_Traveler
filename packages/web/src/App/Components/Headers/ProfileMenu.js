@@ -109,7 +109,7 @@ class ProfileMenu extends React.Component{
   }
 
   openFAQ = () => {
-    this.openGlobalModalAndClose('faqTermsAndConditions')
+    this.openGlobalModalAndClose('documentation')
   }
 
   openSettings = () => {

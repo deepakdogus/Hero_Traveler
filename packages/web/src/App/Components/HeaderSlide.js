@@ -70,13 +70,12 @@ const DownArrow = styled(RotatedArrow)``
 
 const StyledRoundedButton = styled(RoundedButton)`
   align-self: center;
-  border: 2px solid white;
 `
 
 const StoryInfo = styled.span`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
-  font-size: 18px;
+  font-size: 16px;
   color: ${props => props.theme.Colors.snow};
   letter-spacing: .7px;
   display: inline-block;
@@ -142,7 +141,6 @@ export default class HeaderSlide extends React.Component {
                to={`/story/${story.id}`}
            >
             <StyledRoundedButton
-              type='storyHeader'
               padding='even'
               text='READ MORE'
               width='168px'
@@ -159,12 +157,16 @@ export default class HeaderSlide extends React.Component {
             <ProfileLink to={`/profile/${author.id}/view`}>
               <Avatar
                 avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
-                size='medium'
+                size='extraMedium'
               />
             </ProfileLink>
             <VerticalCenter>
               <StoryInfoRow>
-                <StoryInfo>By {author.username}</StoryInfo>
+                <StoryInfo>By{' '}
+                  <NavLinkStyled to={`/profile/${author.id}/view`}>
+                  {author.username}
+                  </NavLinkStyled>
+                </StoryInfo>
                 <Divider>&nbsp;</Divider>
                 <StoryInfo>{moment(story.createdAt).format('MMMM Do YYYY')}</StoryInfo>
               </StoryInfoRow>

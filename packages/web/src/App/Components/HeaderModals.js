@@ -12,7 +12,7 @@ import ResetPasswordAttempt from './Modals/HeaderModals/ResetPasswordAttempt'
 import Contributor from './Modals/HeaderModals/Contributor'
 import Comments from './Modals/HeaderModals/Comments'
 import Settings from './Modals/Settings'
-import FAQTermsAndConditions from './Modals/FAQTermsAndConditions'
+import Documentation from './Modals/Documentation'
 import Inbox from './Modals/Inbox'
 import RightModal from './RightModal'
 import CenterModal from './CenterModal'
@@ -261,11 +261,11 @@ export default class HeaderModals extends React.Component {
           />
         </Modal>
         <CenterModal
-          isOpen={globalModalThatIsOpen === 'faqTermsAndConditions'}
-          contentLabel='FAQ Terms & Conditions'
+          isOpen={globalModalThatIsOpen === 'documentation'}
+          contentLabel='Documentation'
           onRequestClose={closeGlobalModal}
         >
-          <FAQTermsAndConditions closeModal={closeGlobalModal}/>
+          <Documentation closeModal={closeGlobalModal}/>
         </CenterModal>
         <RightModal
           isOpen={modal === 'inbox'}

@@ -47,8 +47,6 @@ function getBackgroundColor (type, colors) {
     case 'lightGrey':
     case 'opaqueGrey':
       return colors.snow
-    case 'storyHeader':
-      return colors.backgroundTint
     case 'headerButton':
     case 'backgroundOpaque':
       return colors.backgroundOpaque

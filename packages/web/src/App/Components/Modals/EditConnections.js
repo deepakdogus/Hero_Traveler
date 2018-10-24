@@ -9,7 +9,7 @@ const Container = styled.div`
   padding: 25px;
 `
 
-export default class EditServices extends React.Component {
+export default class EditConnections extends React.Component {
   static propTypes = {
     user: PropTypes.object,
   }

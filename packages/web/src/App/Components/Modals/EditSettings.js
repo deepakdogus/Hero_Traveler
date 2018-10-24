@@ -10,7 +10,6 @@ import RoundedButton from '../RoundedButton'
 import EditMessages from './EditMessages'
 import UserActions from '../../Shared/Redux/Entities/Users'
 
-
 const Container = styled.div``
 
 const InputContainer = styled.div`
@@ -54,7 +53,7 @@ const accountInputs = [
     name: 'email',
     placeholder: 'jdoe@gmail.com',
     label: 'Email',
-  }
+  },
 ]
 
 const passwordInputs = [
@@ -78,11 +77,12 @@ const passwordInputs = [
     placeholder: '',
     label: 'Retype Password',
     type: 'password',
-  }
+  },
 ]
 
 class EditSettings extends React.Component{
   static propTypes ={
+    deleteUser: PropTypes.func,
     updateAction: PropTypes.func,
     userProfile: PropTypes.object,
     userEmailOrId: PropTypes.string,
@@ -96,7 +96,7 @@ class EditSettings extends React.Component{
     this.state = {
       localError: '',
       success: false,
-      showDeleteAccountMessage: false
+      showDeleteAccountConfirmation: false,
     }
   }
 
@@ -117,7 +117,7 @@ class EditSettings extends React.Component{
   loadInitialData = () => {
     this.setState({
       email: this.props.userEmailOrId,
-      name: this.props.userProfile.fullName
+      name: this.props.userProfile.fullName,
     })
   }
 
@@ -125,7 +125,7 @@ class EditSettings extends React.Component{
     const text = e.target.value
     const field = e.target.id
     this.setState({
-      [field]: text
+      [field]: text,
     })
   }
 
@@ -135,7 +135,7 @@ class EditSettings extends React.Component{
       newPassword: '',
       oldPassword: '',
       retypePassword: '',
-      success: false
+      success: false,
     })
     if (this.props.type === 'account') this.loadInitialData()
   }
@@ -151,11 +151,12 @@ class EditSettings extends React.Component{
     }
     if (!(Object.keys(updates).length)) {
       this.setState({
-        localError: 'There are no changes to save.'
+        localError: 'There are no changes to save.',
       })
-    } else {
+    }
+    else {
       this.setState({
-        localError: ''
+        localError: '',
       })
       this.props.updateAction(updates)
     }
@@ -164,13 +165,15 @@ class EditSettings extends React.Component{
   submitPasswordChanges = () => {
     if (this.state.newPassword !== this.state.retypePassword){
       this.setState({
-        localError: 'Please ensure that you retyped your new password correctly.'
+        localError: 'Please ensure that you retyped your new password correctly.',
       })
-    } else if (!this.state.newPassword || !this.state.retypePassword) {
+    }
+    else if (!this.state.newPassword || !this.state.retypePassword) {
       this.setState({
-        localError: 'Please ensure that you filled out all fields correctly.'
+        localError: 'Please ensure that you filled out all fields correctly.',
       })
-    } else {
+    }
+    else {
       this.setState({
         localError: '',
       })
@@ -182,27 +185,38 @@ class EditSettings extends React.Component{
       }
     }
 
-    showDeleteAccountOptions = () => {
-      this.setState({showDeleteAccountMessage: true})
+  showDeleteAccountOptions = () => {
+    this.setState({showDeleteAccountConfirmation: true})
   }
 
-    hideDeleteAccountOptions = () => {
-      this.setState({showDeleteAccountMessage: false})
+  hideDeleteAccountOptions = () => {
+    this.setState({showDeleteAccountConfirmation: false})
   }
-    deleteUser = () => {
-      this.props.deleteUser()
-    }
 
   getButtonProps (type, state, buttonSide) {
-
     if (buttonSide === 'right') {
-      if (type === 'password') return {text: 'Save Password', onClick: this.submitPasswordChanges }
-      if (state.showDeleteAccountMessage) return {text: 'Delete Account', onClick: this.deleteUser }
-      else return {text: 'Save Changes', onClick: this.submitAccountChanges}
+      if (type === 'password') return {
+        text: 'Save Password',
+        onClick: this.submitPasswordChanges,
+      }
+      if (state.showDeleteAccountConfirmation) return {
+        text: 'Delete Account',
+        onClick: this.props.deleteUser,
+      }
+      else return {
+        text: 'Save Changes',
+        onClick: this.submitAccountChanges,
+      }
     }
     if (buttonSide === 'left') {
-      if (state.showDeleteAccountMessage) return {text: 'Cancel', onClick: this.hideDeleteAccountOptions }
-      else return {text: 'Cancel', onClick: this.cancel}
+      if (state.showDeleteAccountConfirmation) return {
+        text: 'Cancel',
+        onClick: this.hideDeleteAccountOptions,
+      }
+      else return {
+        text: 'Cancel',
+        onClick: this.cancel,
+      }
     }
   }
 
@@ -260,9 +274,9 @@ class EditSettings extends React.Component{
     return (
       <DeleteContainer>
         <DeleteButton onClick={this.showDeleteAccountOptions}>Delete Account</DeleteButton>
-        {!!this.state.showDeleteAccountMessage && 
+        {!!this.state.showDeleteAccountConfirmation &&
         <DeleteTextContainer>
-        We're sorry to see you go. Once your account is deleted, all of your content will be permanently gone.
+        We’re sorry to see you go. Once your account is deleted, all of your content will be permanently gone.
         </DeleteTextContainer>}
       </DeleteContainer>
     )
@@ -292,7 +306,6 @@ class EditSettings extends React.Component{
     )
   }
 }
-
 
 const mapDispatchToProps = (dispatch) => {
   return {

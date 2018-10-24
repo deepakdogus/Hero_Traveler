@@ -1,4 +1,6 @@
 import React from 'react'
+import { connect } from 'react-redux'
+
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import InputWithLabel from '../InputWithLabel'
@@ -6,6 +8,7 @@ import CenteredButtons from '../CenteredButtons'
 import VerticalCenter from '../VerticalCenter'
 import RoundedButton from '../RoundedButton'
 import EditMessages from './EditMessages'
+import UserActions from '../../Shared/Redux/Entities/Users'
 
 const Container = styled.div``
 
@@ -13,6 +16,29 @@ const InputContainer = styled.div`
   font-family: ${props => props.theme.Fonts.type.base};
   font-style: none;
   padding: 25px;
+`
+
+const DeleteContainer = styled.div`
+  padding: 25px;
+`
+
+const DeleteTextContainer = styled.div`
+  font-family: ${props => props.theme.Fonts.type.base};
+  color: ${props => props.theme.Colors.signupGrey};
+  padding-top: 15px;
+  font-size: 15px;
+`
+
+const DeleteButton = styled.div`
+  font-family: ${props => props.theme.Fonts.type.base};
+  font-size: 18px;
+  color: ${props => props.theme.Colors.redHighlights};
+  border: solid;
+  border-color: ${props => props.theme.Colors.dividerGrey};
+  border-width: 0 0 1px;
+  padding-bottom: 8px;
+  width: 100%;
+  letter-spacing: .7px;
 `
 
 const accountInputs = [
@@ -27,7 +53,7 @@ const accountInputs = [
     name: 'email',
     placeholder: 'jdoe@gmail.com',
     label: 'Email',
-  }
+  },
 ]
 
 const passwordInputs = [
@@ -51,11 +77,12 @@ const passwordInputs = [
     placeholder: '',
     label: 'Retype Password',
     type: 'password',
-  }
+  },
 ]
 
-export default class EditSettings extends React.Component{
+class EditSettings extends React.Component{
   static propTypes ={
+    deleteUser: PropTypes.func,
     updateAction: PropTypes.func,
     userProfile: PropTypes.object,
     userEmailOrId: PropTypes.string,
@@ -69,6 +96,7 @@ export default class EditSettings extends React.Component{
     this.state = {
       localError: '',
       success: false,
+      showDeleteAccountConfirmation: false,
     }
   }
 
@@ -89,7 +117,7 @@ export default class EditSettings extends React.Component{
   loadInitialData = () => {
     this.setState({
       email: this.props.userEmailOrId,
-      name: this.props.userProfile.fullName
+      name: this.props.userProfile.fullName,
     })
   }
 
@@ -97,7 +125,7 @@ export default class EditSettings extends React.Component{
     const text = e.target.value
     const field = e.target.id
     this.setState({
-      [field]: text
+      [field]: text,
     })
   }
 
@@ -107,13 +135,14 @@ export default class EditSettings extends React.Component{
       newPassword: '',
       oldPassword: '',
       retypePassword: '',
-      success: false
+      success: false,
     })
     if (this.props.type === 'account') this.loadInitialData()
   }
 
   submitAccountChanges = () => {
     const updates = {}
+
     if (this.state.name !== this.props.userProfile.fullName) {
       updates.profile = {...this.props.userProfile, fullName: this.state.name}
     }
@@ -122,11 +151,12 @@ export default class EditSettings extends React.Component{
     }
     if (!(Object.keys(updates).length)) {
       this.setState({
-        localError: 'There are no changes to save.'
+        localError: 'There are no changes to save.',
       })
-    } else {
+    }
+    else {
       this.setState({
-        localError: ''
+        localError: '',
       })
       this.props.updateAction(updates)
     }
@@ -135,13 +165,15 @@ export default class EditSettings extends React.Component{
   submitPasswordChanges = () => {
     if (this.state.newPassword !== this.state.retypePassword){
       this.setState({
-        localError: 'Please ensure that you retyped your new password correctly.'
+        localError: 'Please ensure that you retyped your new password correctly.',
       })
-    } else if (!this.state.newPassword || !this.state.retypePassword) {
+    }
+    else if (!this.state.newPassword || !this.state.retypePassword) {
       this.setState({
-        localError: 'Please ensure that you filled out all fields correctly.'
+        localError: 'Please ensure that you filled out all fields correctly.',
       })
-    } else {
+    }
+    else {
       this.setState({
         localError: '',
       })
@@ -153,34 +185,69 @@ export default class EditSettings extends React.Component{
       }
     }
 
+  showDeleteAccountOptions = () => {
+    this.setState({showDeleteAccountConfirmation: true})
+  }
+
+  hideDeleteAccountOptions = () => {
+    this.setState({showDeleteAccountConfirmation: false})
+  }
+
+  getButtonProps (type, state, buttonSide) {
+    if (buttonSide === 'right') {
+      if (type === 'password') return {
+        text: 'Save Password',
+        onClick: this.submitPasswordChanges,
+      }
+      if (state.showDeleteAccountConfirmation) return {
+        text: 'Delete Account',
+        onClick: this.props.deleteUser,
+      }
+      else return {
+        text: 'Save Changes',
+        onClick: this.submitAccountChanges,
+      }
+    }
+    if (buttonSide === 'left') {
+      if (state.showDeleteAccountConfirmation) return {
+        text: 'Cancel',
+        onClick: this.hideDeleteAccountOptions,
+      }
+      else return {
+        text: 'Cancel',
+        onClick: this.cancel,
+      }
+    }
+  }
+
   renderButtonLeft = () => {
+    const {text, onClick} = this.getButtonProps(this.props.type, this.state, 'left')
+
     return (
       <VerticalCenter>
         <RoundedButton
-          text={'Cancel'}
+          text={text}
           margin='none'
           width='116px'
           type='blackWhite'
           padding='mediumEven'
-          onClick={this.cancel}
+          onClick={onClick}
         />
       </VerticalCenter>
     )
   }
 
   renderButtonRight = () => {
+    const {text, onClick} = this.getButtonProps(this.props.type, this.state, 'right')
+
     return (
       <VerticalCenter>
         <RoundedButton
-          text={this.props.type === 'account' ? 'Save Changes' : 'Save Password'}
+          text={text}
           margin='none'
           width='180px'
           padding='mediumEven'
-          onClick={
-            this.props.type === 'account'
-            ? this.submitAccountChanges
-            : this.submitPasswordChanges
-          }
+          onClick={onClick}
         />
       </VerticalCenter>
     )
@@ -203,11 +270,23 @@ export default class EditSettings extends React.Component{
     })
   }
 
+  renderDeleteButton = () => {
+    return (
+      <DeleteContainer>
+        <DeleteButton onClick={this.showDeleteAccountOptions}>Delete Account</DeleteButton>
+        {!!this.state.showDeleteAccountConfirmation &&
+        <DeleteTextContainer>
+        We’re sorry to see you go. Once your account is deleted, all of your content will be permanently gone.
+        </DeleteTextContainer>}
+      </DeleteContainer>
+    )
+  }
+
   render() {
     const { isUpdating, errorObj} = this.props
     const inputs = this.renderInputs()
 
-    return(
+    return (
       <Container>
         {!!inputs && inputs}
         <EditMessages
@@ -216,6 +295,7 @@ export default class EditSettings extends React.Component{
           localError={this.state.localError}
           success={this.state.success}
         />
+        {this.props.type === 'account' ? this.renderDeleteButton() : null }
         <CenteredButtons
           buttonsToRender={[
             this.renderButtonLeft,
@@ -226,3 +306,11 @@ export default class EditSettings extends React.Component{
     )
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteUser: () => dispatch(UserActions.deleteUser()),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(EditSettings)

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import {Row} from './FlexboxGrid'
 import {Text} from './Modals/Shared'
+import VerticalCenter from './VerticalCenter'
 
 const Container = styled.div`
   background-color: ${props => props.whiteBG ? props.theme.Colors.snow : props.theme.Colors.lightGreyAreas};
@@ -26,7 +27,7 @@ const ModalText = styled(Text)`
   margin: 0;
 `
 
-const DefaultText = styled.p`
+const DefaultText = styled(VerticalCenter)`
   border-style: solid;
   color: ${props => props.isActive ? props.theme.Colors.background : props.theme.Colors.navBarText};
   font-family: ${props => props.theme.Fonts.type.montserrat};

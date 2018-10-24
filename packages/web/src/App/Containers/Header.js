@@ -286,7 +286,7 @@ function mapStateToProps(state) {
   const currentUser = users[currentUserId]
 
   return {
-    isLoggedIn: state.login.isLoggedIn,
+    isLoggedIn: !state.session.isLoggedOut,
     loginReduxFetching: state.login.fetching,
     loginReduxError: state.login.error,
     blackHeader: _.includes(['/', '/feed', ''], pathname) ? false : true,

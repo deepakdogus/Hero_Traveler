@@ -29,6 +29,3 @@ WrappedNavLink.propTypes = {
   styles: PropTypes.object,
   children: PropTypes.element,
 }
-
-
-

@@ -66,14 +66,14 @@ const LeftButtonStyleOverride = {
   marginBottom: '10px',
   marginLeft: '10px',
   marginRight: '5px',
-  marginTop: '10px'
+  marginTop: '10px',
 }
 
 const RightButtonStyleOverride = {
   marginBottom: '10px',
   marginLeft: '5px',
   marginRight: '30px',
-  marginTop: '10px'
+  marginTop: '10px',
 }
 
 class SignupSocial extends Component {
@@ -112,7 +112,14 @@ class SignupSocial extends Component {
     const renderedSuggestions = suggestedUsersById.reduce((suggestions, key, index) => {
       const user = users[key]
       const isFollowing = this.userIsSelected(user)
-      if (index !== 0) suggestions.push((<HorizontalDivider key={`${key}-HR`} color='grey'/>))
+      if (index !== 0) {
+        suggestions.push((
+          <HorizontalDivider
+            key={`${key}-HR`}
+            color='grey'
+          />
+        ))
+      }
       suggestions.push((
         <FollowFollowingRow
           key={key}
@@ -133,7 +140,7 @@ class SignupSocial extends Component {
     return (
       <SocialContainer>
         <NavLinkContainer>
-          <WrappedNavLink 
+          <WrappedNavLink
             to='/signup/topics'
             styles={LeftButtonStyleOverride}
           >
@@ -141,10 +148,10 @@ class SignupSocial extends Component {
               text='< Back'
               type="blackWhite"
               margin='none'
-              
+
             />
           </WrappedNavLink>
-          <WrappedNavLink 
+          <WrappedNavLink
             to='/feed'
             styles={RightButtonStyleOverride}
             >
@@ -156,7 +163,7 @@ class SignupSocial extends Component {
         </NavLinkContainer>
         <Container>
         <Title>FOLLOW</Title>
-          <Subtitle>We'll add stories by people you follow to your custom reading list</Subtitle>
+          <Subtitle>We’ll add stories by people you follow to your custom reading list</Subtitle>
           {
           // disabled until further notice
           // <Section>

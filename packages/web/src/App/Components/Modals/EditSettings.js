@@ -62,7 +62,6 @@ export default class EditSettings extends React.Component{
     isUpdating: PropTypes.bool,
     errorObj: PropTypes.object,
     type: PropTypes.string,
-    fontColor: PropTypes.string,
   }
 
   constructor(){

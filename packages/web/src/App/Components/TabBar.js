@@ -48,7 +48,12 @@ export default class TabBar extends React.Component {
   }
 
   renderTabs(){
-    const { activeTab, tabs = [], onClickTab, isModal } = this.props
+    const {
+      activeTab,
+      tabs = [],
+      onClickTab,
+      isModal,
+    } = this.props
     const Text = isModal ? ModalText : DefaultText
     return tabs.map((tab, index) => {
       return (

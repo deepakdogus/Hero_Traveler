@@ -255,6 +255,7 @@ class EditSettings extends React.Component{
 
   renderInputs = () => {
     const inputArr = this.props.type === 'account' ? accountInputs : passwordInputs
+    const fontColor = this.props.type === 'account' ? undefined : 'background'
     return inputArr.map((inputObj, index) => {
       return (
         <InputContainer
@@ -264,6 +265,7 @@ class EditSettings extends React.Component{
             {...inputObj}
             onChange={this.onChangeText}
             value={this.state[inputObj.id]}
+            fontColor={fontColor}
           />
         </InputContainer>
       )

@@ -23,7 +23,7 @@ const ModalText = styled(Text)`
   border-style: solid;
   letter-spacing: 1.5px;
   border-color:  ${props => props.theme.Colors.navBarText};
-  padding: 0 25px 0 25px;
+  padding: ${props => props.isModal ? '0 15px 0 15px' : '0 25px 0 25px'};
   margin: 0;
 `
 
@@ -49,7 +49,12 @@ export default class TabBar extends React.Component {
   }
 
   renderTabs(){
-    const {activeTab, tabs = [], onClickTab, isModal} = this.props
+    const {
+      activeTab,
+      tabs = [],
+      onClickTab,
+      isModal,
+    } = this.props
     const Text = isModal ? ModalText : DefaultText
     return tabs.map((tab, index) => {
       return (
@@ -62,6 +67,7 @@ export default class TabBar extends React.Component {
             isOnlyTab={tabs.length === 1}
             isActive={tab === activeTab}
             isLast={index === tabs.length - 1}
+            isModal={isModal}
           >
             {tab}
           </Text>

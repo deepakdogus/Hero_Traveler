@@ -29,14 +29,17 @@ const Container = styled.div`
 `
 const Title = styled.p`
   font-weight: 400;
+  font-family: 'montserrat';
   font-size: 35px;
   color: ${props => props.theme.Colors.background};
   letter-spacing: 1.2px;
   margin-top: 0;
+  margin-bottom: 15px;
 `
 
 const Subtitle = styled.p`
   font-weight: 400;
+  font-family: 'Source Sans Pro';
   font-size: 18px;
   color: ${props => props.theme.Colors.grey};
   letter-spacing: .7px;

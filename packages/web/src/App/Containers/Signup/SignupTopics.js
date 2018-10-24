@@ -7,43 +7,31 @@ import _ from 'lodash'
 import CategoryActions from '../../Shared/Redux/Entities/Categories'
 import SignupActions from '../../Shared/Redux/SignupRedux'
 import UXActions from '../../Redux/UXRedux'
-import UserActions from '../../Shared/Redux/Entities/Users'
 
 import RoundedButton from '../../Components/RoundedButton'
 import ExploreGrid from '../../Components/ExploreGrid'
 import { WrappedNavLink } from '../../Components/NavLinkStyled'
+import {
+  Title,
+  Subtitle,
+} from './SignupSocial'
 
 const TopicsContainer = styled.div`
   margin-bottom: 30px;
 `
 
 const NavLinkContainer = styled(TopicsContainer)`
+  width: 100%;
+  position: fixed;
+  top: 85px;
   display: flex;
   justify-content: flex-end;
-  margin-top: 20px;
+  z-index: 1;
 `
 
 const Container = styled.div`
-  margin: 0 7.5%;
+  margin: 100px 7.5%;
   text-align: center;
-`
-const Title = styled.p`
-  font-weight: 400;
-  font-family: 'montserrat';
-  font-size: 35px;
-  color: ${props => props.theme.Colors.background};
-  letter-spacing: 1.2px;
-  margin-top: 0;
-  margin-bottom: 15px;
-`
-
-const Subtitle = styled.p`
-  font-weight: 400;
-  font-family: 'Source Sans Pro';
-  font-size: 18px;
-  color: ${props => props.theme.Colors.grey};
-  letter-spacing: .2px;
-  margin-bottom: 30px;
 `
 
 const SizedDiv = styled.div`
@@ -120,13 +108,13 @@ function mapStateToProps(state, ownProps) {
   let {
     fetchStatus: categoriesFetchStatus,
     entities: categories,
-  } = state.entities.categories;
+  } = state.entities.categories
 
   return {
     user,
     categories,
     categoriesFetchStatus,
-    selectedCategories: state.signup.selectedCategories
+    selectedCategories: state.signup.selectedCategories,
   }
 }
 

@@ -8,8 +8,8 @@ const Sidebar = styled.div`
   right: 10px;
   top: 75px;
   background-color: ${props => props.theme.Colors.white};
-  box-shadow: 0px 2px 6px 0px rgba(26, 28, 33, 0.3);
-  border: 1px solid #dedede;
+  box-shadow: ${props => `0px 2px 6px 0px ${props.theme.Colors.backgroundTintLow}`};
+  border: ${props => `1px solid ${props.theme.Colors.dividerGrey}`};
   padding: 20px 0px 20px 40px;
   animation-name: fadeIn;
   animation-duration: .2s;
@@ -109,7 +109,7 @@ class ProfileMenu extends React.Component{
   }
 
   openFAQ = () => {
-    this.openGlobalModalAndClose('faqTermsAndConditions')
+    this.openGlobalModalAndClose('documentation')
   }
 
   openSettings = () => {

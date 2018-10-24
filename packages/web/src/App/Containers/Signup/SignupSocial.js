@@ -38,7 +38,7 @@ export const Title = styled.p`
   font-size: 35px;
   color: ${props => props.theme.Colors.background};
   letter-spacing: 1.2px;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 `
 
 export const Subtitle = styled.p`

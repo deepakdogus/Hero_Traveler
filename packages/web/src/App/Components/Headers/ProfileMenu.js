@@ -5,10 +5,10 @@ import styled from 'styled-components'
 
 const Sidebar = styled.div`
   position: absolute;
-  right: 5px;
-  top: 70px;
+  right: 20px;
+  top: 65px;
   background-color: ${props => props.theme.Colors.white};
-  box-shadow: 3px 3px 5px -1px ${props => props.theme.Colors.background};
+  box-shadow: 0px 2px 6px 0px rgba(26, 28, 33, 0.3);
   padding: 20px 0px 20px 40px;
   animation-name: fadeIn;
   animation-duration: .2s;

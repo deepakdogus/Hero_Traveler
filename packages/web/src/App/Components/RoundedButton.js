@@ -122,8 +122,6 @@ const Text = styled.p`
   text-align: center;
   font-size: ${props => {
     switch(props.type) {
-      case 'followSmall':
-        return '10px'
       case 'navbar':
         return '15px'
       default:

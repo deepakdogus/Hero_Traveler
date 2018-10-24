@@ -82,10 +82,11 @@ const CoverCaption = styled.p`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-style: italic;
   text-align: center;
-  font-weight: 400;
+  font-weight: 300;
   font-size: 14px;
   color: ${props => props.theme.Colors.bioGrey};
   letter-spacing: .7px;
+  margin-top: 0px;
 `
 
 const Container = styled.div`
@@ -245,7 +246,7 @@ export default class FeedItemHeader extends React.Component {
                       margin='none'
                       padding='smallEven'
                       onClick={isFollowing ? unfollowUser : followUser}
-                      type={isFollowing ? 'followSmall' : 'blackWhite'}
+                      type={isFollowing ? undefined : 'blackWhite'}
                       text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
                       textProps={followButtonStyles}
                     />

@@ -141,9 +141,7 @@ export default class StoryContentRenderer extends React.Component {
 
     while (
       lastBlock.length > 1
-      && lastBlock[lastBlock.length - 1]
-      && lastBlock[lastBlock.length - 1].props
-      && lastBlock[lastBlock.length - 1].props.spacer
+      && _.get(lastBlock, `[${lastBlock.length - 1}].props.spacer`)
     ) {
       lastBlock.pop()
     }

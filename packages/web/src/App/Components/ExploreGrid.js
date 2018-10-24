@@ -65,7 +65,7 @@ class Tile extends React.Component {
    static propTypes = {
     category: PropTypes.object,
     onClick: PropTypes.func,
-    isSelected: PropTypes.bool
+    isSelected: PropTypes.bool,
   }
 
   _onClickTile = () => {
@@ -78,9 +78,18 @@ class Tile extends React.Component {
       <Col xs={3} >
         <Wrapper onClick={this._onClickTile}>
           <CategoryTile
-            imageSource={getImageUrl(category.image, 'optimized', {width: 400, height: 400})}
+            imageSource={
+              getImageUrl(
+                category.image,
+                'optimized',
+                {width: 400, height: 400},
+              )
+            }
           />
-          <TitleContainer selected={category.selected} overlayColor='black'>
+          <TitleContainer
+            selected={category.selected}
+            overlayColor='black'
+          >
             <Title>{category.title}</Title>
           </TitleContainer>
           {isSelected &&
@@ -91,7 +100,6 @@ class Tile extends React.Component {
     )
   }
 }
-
 
 export default class ExploreGrid extends React.Component {
   static propTypes = {

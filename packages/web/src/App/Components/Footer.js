@@ -56,6 +56,10 @@ const StyledPseudoLink = styled.div`
   cursor: pointer;
 `
 
+const UnstyledLink = styled.a`
+  margin-top: 6px;
+`
+
 const Divider = styled.div`
   display: inline-block;
   width: 1px;
@@ -68,7 +72,6 @@ const StyledIcon = styled(Icon)`
   width: 20px;
   height: 20px;
   align-self: center;
-  margin-top: 6px;
   cursor: pointer;
 `
 
@@ -89,7 +92,10 @@ class Footer extends Component {
       <Container fluid>
         <SizedRow between='xs'>
           <Row bottom='xs'>
-            <StyledLink to='/'>About Us</StyledLink>
+            {/* Hidden until after launch*/}
+            {false &&
+              <StyledLink to='/'>About Us</StyledLink>
+            }
             <StyledPseudoLink
               onClick={this.openTAC}
             >
@@ -101,16 +107,25 @@ class Footer extends Component {
               Contact Us
             </StyledOffsiteLink>
           </Row>
-          {/* hidden until HT social media campaigns launch */}
-          {false &&
-            <Row middle='xs'>
+          <Row middle='xs'>
+            <UnstyledLink
+              href='https://www.facebook.com/herotraveler/'
+            >
               <StyledIcon name='facebookDark'/>
-              <Divider />
+            </UnstyledLink>
+            <Divider />
+            <UnstyledLink
+              href='https://twitter.com/HeroTraveler'
+            >
               <StyledIcon name='twitterDark'/>
-              <Divider />
+            </UnstyledLink>
+            <Divider />
+            <UnstyledLink
+              href='https://www.instagram.com/herotraveler/'
+            >
               <StyledIcon name='instagramDark'/>
-            </Row>
-          }
+            </UnstyledLink>
+          </Row>
         </SizedRow>
       </Container>
     )

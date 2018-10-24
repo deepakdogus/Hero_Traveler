@@ -7,7 +7,6 @@ import _ from 'lodash'
 import CategoryActions from '../../Shared/Redux/Entities/Categories'
 import SignupActions from '../../Shared/Redux/SignupRedux'
 import UXActions from '../../Redux/UXRedux'
-import UserActions from '../../Shared/Redux/Entities/Users'
 
 import RoundedButton from '../../Components/RoundedButton'
 import ExploreGrid from '../../Components/ExploreGrid'
@@ -18,13 +17,16 @@ const TopicsContainer = styled.div`
 `
 
 const NavLinkContainer = styled(TopicsContainer)`
+  width: 100%;
+  position: fixed;
+  top: 85px;
   display: flex;
   justify-content: flex-end;
-  margin-top: 20px;
+  z-index: 1;
 `
 
 const Container = styled.div`
-  margin: 0 7.5%;
+  margin: 100px 7.5%;
   text-align: center;
 `
 const Title = styled.p`

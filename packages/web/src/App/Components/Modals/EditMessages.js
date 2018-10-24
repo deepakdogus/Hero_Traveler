@@ -9,6 +9,7 @@ const Container = styled.div`
 
 const EditMessages = (props) => {
   const {isUpdating, errorObj, localError, success} = props
+
   return(
     <Container>
       {localError &&
@@ -31,7 +32,7 @@ const EditMessages = (props) => {
   )
 }
 
-EditMessages.proptypes = {
+EditMessages.propTypes = {
     isUpdating: PropTypes.bool,
     errorObj: PropTypes.object,
     localError: PropTypes.string,

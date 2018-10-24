@@ -8,7 +8,7 @@ import branch from 'react-native-branch'
 import {
   Actions as NavActions
 } from 'react-native-router-flux'
-import { parseNonBranchURL } from '../Shared/Lib/sharingMobile'
+import { parseNonBranchURL } from '../Lib/sharingMobile'
 
 // create our store
 const store = createStore()

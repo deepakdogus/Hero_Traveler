@@ -30,8 +30,10 @@ export const Container = styled.div`
 
 export const ContentWrapper = styled.div`
   width: 800px;
+  padding: 0 100px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     margin: 0;
+    padding: 0;
   }
 `
 

@@ -19,8 +19,8 @@ import TabBar from '../../Components/TabBar'
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
 
 const tabTypes = {
-  stories: "stories",
-  guides: "guides",
+  stories: 'stories',
+  guides: 'guides',
 }
 
 class MyFeedScreen extends React.Component {
@@ -45,7 +45,7 @@ class MyFeedScreen extends React.Component {
     super(props)
     this.state = {
       refreshing: false,
-      selectedTab: tabTypes.stories
+      selectedTab: tabTypes.stories,
     }
   }
 
@@ -59,7 +59,7 @@ class MyFeedScreen extends React.Component {
 
   isPendingUpdate() {
     const {sync} = this.props
-    return  sync.syncProgressSteps
+    return sync.syncProgressSteps
     && sync.syncProgressSteps !== sync.syncProgress
     && !sync.error
   }
@@ -104,8 +104,8 @@ class MyFeedScreen extends React.Component {
   _onRefresh = () => {
     if (this.isPendingUpdate()) return
     this.setState({refreshing: true})
-    this.props.attemptGetUserFeedStories(this.props.user.id)
-    this.props.attemptGetUserFeedGuides(this.props.user.id)
+    this.props.attemptGetUserFeedStories(this.props.userId)
+    this.props.attemptGetUserFeedGuides(this.props.userId)
   }
 
   renderFeedItem = (feedItem, index) => {
@@ -116,7 +116,7 @@ class MyFeedScreen extends React.Component {
         isStory={this.state.selectedTab === tabTypes.stories}
         feedItem={feedItem}
         height={imageHeight}
-        userId={this.props.user.id}
+        userId={this.props.userId}
         autoPlayVideo
         allowVideoPlay
         renderLocation={this.props.location}
@@ -146,7 +146,6 @@ class MyFeedScreen extends React.Component {
     )
   }
 
-
   render () {
     let {storiesById, fetchStatus, sync, feedGuidesById} = this.props
     const {selectedTab} = this.state
@@ -159,8 +158,8 @@ class MyFeedScreen extends React.Component {
       (isStoriesSelected && (!storiesById || !storiesById.length))
       || (!isStoriesSelected && (!feedGuidesById || !feedGuidesById.length))
     ) {
-      let innerContent = this._showNoStories();
-      bottomContent = this._wrapElt(innerContent);
+      let innerContent = this._showNoStories()
+      bottomContent = this._wrapElt(innerContent)
     }
     else {
       bottomContent = (
@@ -172,7 +171,7 @@ class MyFeedScreen extends React.Component {
           onRefresh={this._onRefresh}
           refreshing={fetchStatus.fetching}
         />
-      );
+      )
     }
 
     return (
@@ -193,14 +192,13 @@ class MyFeedScreen extends React.Component {
   }
 }
 
-
 const mapStateToProps = (state) => {
   let {
     userFeedById,
     fetchStatus,
     error,
     backgroundFailures,
-  } = state.entities.stories;
+  } = state.entities.stories
   const feedGuidesById = state.entities.guides.feedGuidesById || []
   return {
     userId: state.session.userId,

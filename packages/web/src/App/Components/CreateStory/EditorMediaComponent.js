@@ -15,6 +15,10 @@ import CloseX from '../CloseX'
 import Placeholder from './EditorCustomPlaceholder'
 import Caption from '../MediaCaption'
 
+const MediaWrapper = styled.div`
+  padding-bottom: 60px;
+`
+
 const BodyMediaDiv = styled.div`
   position: relative;
 `
@@ -99,16 +103,16 @@ export default class MediaComponent extends EditorBlock {
     if (!url) return <div data-offset-key={offsetKey} className={className}/>
 
     return (
-      <div
+      <MediaWrapper
         data-offset-key={offsetKey}
         className={className}
       >
         {this.getMediaComponent()}
-        {!text && <Placeholder text='placeholder'/>}
+        {!text && <Placeholder text='Add a caption'/>}
         <Caption>
           {this._renderChildren()}
         </Caption>
-      </div>
+      </MediaWrapper>
     )
   }
 }

@@ -11,6 +11,10 @@ import UXActions from '../../Redux/UXRedux'
 import RoundedButton from '../../Components/RoundedButton'
 import ExploreGrid from '../../Components/ExploreGrid'
 import { WrappedNavLink } from '../../Components/NavLinkStyled'
+import {
+  Title,
+  Subtitle,
+} from './SignupSocial'
 
 const TopicsContainer = styled.div`
   margin-bottom: 30px;
@@ -28,24 +32,6 @@ const NavLinkContainer = styled(TopicsContainer)`
 const Container = styled.div`
   margin: 100px 7.5%;
   text-align: center;
-`
-const Title = styled.p`
-  font-weight: 400;
-  font-family: 'montserrat';
-  font-size: 35px;
-  color: ${props => props.theme.Colors.background};
-  letter-spacing: 1.2px;
-  margin-top: 0;
-  margin-bottom: 15px;
-`
-
-const Subtitle = styled.p`
-  font-weight: 400;
-  font-family: 'Source Sans Pro';
-  font-size: 18px;
-  color: ${props => props.theme.Colors.grey};
-  letter-spacing: .7px;
-  margin-bottom: 30px;
 `
 
 const SizedDiv = styled.div`
@@ -122,13 +108,13 @@ function mapStateToProps(state, ownProps) {
   let {
     fetchStatus: categoriesFetchStatus,
     entities: categories,
-  } = state.entities.categories;
+  } = state.entities.categories
 
   return {
     user,
     categories,
     categoriesFetchStatus,
-    selectedCategories: state.signup.selectedCategories
+    selectedCategories: state.signup.selectedCategories,
   }
 }
 

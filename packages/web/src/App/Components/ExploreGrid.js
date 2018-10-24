@@ -75,7 +75,7 @@ class Tile extends React.Component {
   render(){
     const {category, isSelected} = this.props
     return (
-      <Col xs={4} md={4} lg={3} >
+      <Col xs={4} lg={3} >
         <Wrapper onClick={this._onClickTile}>
           <CategoryTile
             imageSource={

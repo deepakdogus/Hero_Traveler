@@ -245,7 +245,7 @@ class EditStory extends Component {
   setValidationErrorState = (text) => {
     this.setState({
       error: {
-        title: 'Validation Error',
+        title: 'Whoops!',
         text,
       },
     })

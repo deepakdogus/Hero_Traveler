@@ -49,7 +49,7 @@ export default class SaveEdits extends React.Component{
   _renderModalMessage = () => {
     return this.props.nextPathAfterSave === 'logout'
     ? 'Do you want to save your changes before you go?'
-    : 'Do you want to save your changes before you leave this page?'
+    : 'Do you want to save your changes before you leave?'
   }
 
   render(){
@@ -57,7 +57,7 @@ export default class SaveEdits extends React.Component{
     return(
       <Container>
         <Title>{ this._renderModalMessage() }</Title>
-        <Text>Any changes that are not saved will be lost</Text>
+        <Text>Any unsaved changes will be discarded.</Text>
         <Row center='xs'>
           <RoundedButton
             text='No'

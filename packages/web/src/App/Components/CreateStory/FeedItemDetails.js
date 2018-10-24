@@ -557,8 +557,8 @@ export default class FeedItemDetails extends React.Component {
           <Container>
             <Row>
               <IconWrapper>
-                <CheckIcon
-                  name={workingDraft.isPrivate ? 'greyCheck' : 'redCheck'}
+                <input
+                  type='checkbox'
                   onClick={this.togglePrivacy}
                 />
               </IconWrapper>

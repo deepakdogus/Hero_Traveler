@@ -8,6 +8,10 @@ import Icon from './Icon'
 import { VerticalCenterStyles } from './VerticalCenter'
 import OverlayHover from './OverlayHover'
 
+const StyledGrid = styled(Grid)`
+  max-width: 1000px;
+`
+
 const Wrapper = styled.div`
   margin: 1px;
   position: relative;
@@ -17,7 +21,7 @@ const Wrapper = styled.div`
 const CategoryTile = styled.div`
   background-image: ${props => `url(${props.imageSource})`};
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: 247px;
   padding-top: 50%;
   padding-bottom: 50%;
   position: relative;
@@ -29,6 +33,8 @@ const TitleContainer = styled(OverlayHover)`
   width: 100%;
   height: 100%;
   top: 0;
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.3);
 `
 
 const Title = styled.div`
@@ -59,7 +65,7 @@ class Tile extends React.Component {
    static propTypes = {
     category: PropTypes.object,
     onClick: PropTypes.func,
-    isSelected: PropTypes.bool
+    isSelected: PropTypes.bool,
   }
 
   _onClickTile = () => {
@@ -69,12 +75,21 @@ class Tile extends React.Component {
   render(){
     const {category, isSelected} = this.props
     return (
-      <Col xs={4} md={3} lg={2} >
+      <Col xs={3} >
         <Wrapper onClick={this._onClickTile}>
           <CategoryTile
-            imageSource={getImageUrl(category.image, 'optimized', {width: 400, height: 400})}
+            imageSource={
+              getImageUrl(
+                category.image,
+                'optimized',
+                {width: 400, height: 400},
+              )
+            }
           />
-          <TitleContainer selected={category.selected} overlayColor="black">
+          <TitleContainer
+            selected={category.selected}
+            overlayColor='black'
+          >
             <Title>{category.title}</Title>
           </TitleContainer>
           {isSelected &&
@@ -85,7 +100,6 @@ class Tile extends React.Component {
     )
   }
 }
-
 
 export default class ExploreGrid extends React.Component {
   static propTypes = {
@@ -110,11 +124,11 @@ export default class ExploreGrid extends React.Component {
     })
 
     return (
-      <Grid fluid>
+      <StyledGrid fluid>
         <Row>
           {renderedCategories}
         </Row>
-      </Grid>
+      </StyledGrid>
     )
   }
 }

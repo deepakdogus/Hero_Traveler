@@ -12,11 +12,11 @@ import {
   Centered,
   StyledAvatar,
   AvatarWrapper,
-  ButtonWrapper,
   BottomLeftText,
 } from './ProfileHeaderShared'
 import { NavLinkStyled } from '../NavLinkStyled'
 import VerticalCenter from '../VerticalCenter'
+import { FollowButtonStyle } from '../FollowFollowingRow'
 
 const LimitedWidthRow = styled(Row)`
   align-self: center;
@@ -44,7 +44,7 @@ const Count = styled.p`
 const CountLabel = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat}};
   margin: 0;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 13px;
   color ${props => props.theme.Colors.background};
 `
@@ -96,6 +96,16 @@ const BadgeContainer = styled.div`
 
 const ClickableIcon = styled(Icon)`
   cursor: pointer;
+`
+
+const EditButtonStyle = `
+  font-size: 13px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+`
+
+const StyledButton = styled.div`
+  text-align: left;
 `
 
 export default class ProfileHeaderView extends React.Component {
@@ -173,6 +183,7 @@ export default class ProfileHeaderView extends React.Component {
         </LimitedWidthRow>
         <Spacer/>
         <LimitedWidthRow center='xs'>
+        <VerticalCenter>
           <NarrowCol>
             <CountWrapper>
               <CountItemWrapper onClick={openFollowedBy}>
@@ -186,27 +197,28 @@ export default class ProfileHeaderView extends React.Component {
               </CountItemWrapper>
             </CountWrapper>
           </NarrowCol>
+          </VerticalCenter>
           <SecondCol>
             <VerticalCenter>
-            <ButtonWrapper>
+            <StyledButton>
               { isUsersProfile &&
                 <NavLinkStyled to={`/profile/${user.id}/edit`}>
                   <RoundedButton
-                    margin='none'
                     type='blackWhite'
                     text='EDIT PROFILE'
+                    textProps={EditButtonStyle}
                   />
                 </NavLinkStyled>
               }
               { !isUsersProfile &&
                 <RoundedButton
-                  margin='none'
                   onClick={isFollowing ? unfollowUser : followUser}
-                  type={isFollowing ? 'blackWhite' : ''}
+                  type={isFollowing ? '' : 'blackWhite'}
                   text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
+                  textProps={FollowButtonStyle}
                 />
               }
-            </ButtonWrapper>
+            </StyledButton>
             </VerticalCenter>
           </SecondCol>
         </LimitedWidthRow>

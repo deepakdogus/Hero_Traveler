@@ -88,7 +88,7 @@ export default class CategoryHeader extends React.Component {
           <StyledHorizontalDivider />
           <ButtonWrapper>
             <StyledRoundedButton
-              type={isFollowingCategory ? 'blackWhite' : 'categoryFollow'}
+              type={isFollowingCategory ? 'blackWhite' : 'exploreCategoryFollow'}
               text={isFollowingCategory ? 'Following' : 'Follow'}
               textProps={textProps}
               onClick={isFollowingCategory ? this._unfollowCategory : this._followCategory}

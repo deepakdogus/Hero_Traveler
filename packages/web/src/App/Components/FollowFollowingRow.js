@@ -43,6 +43,7 @@ export const FollowButtonStyle = `
 
 export default class FollowFollowingRow extends Component {
   static propTypes = {
+    isSignup: PropTypes.bool,
     isFollowing: PropTypes.bool,
     isYou: PropTypes.bool,
     user: PropTypes.object,
@@ -53,8 +54,8 @@ export default class FollowFollowingRow extends Component {
   }
 
   _handleProfileClick = () => {
-    const {user} = this.props
-    this.props.onProfileClick(user.id || user._id)
+    const {user, isSignup} = this.props
+    isSignup ? null : this.props.onProfileClick((user.id || user._id))
   }
 
   renderImage = () => {

@@ -81,6 +81,7 @@ export const UserNameStyles = `
   color: ${props => props.theme.Colors.background};
   letter-spacing: .2px;
   margin: 0;
+  cursor: pointer;
 `
 
 export const UserName = styled.p`

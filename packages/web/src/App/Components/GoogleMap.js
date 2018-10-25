@@ -147,7 +147,7 @@ export default class GMap extends React.Component {
     return (
       <HOCMap
         containerElement={
-          <div style={{ height: `500px`, margin: `60px 0` }} />
+          <div style={{ height: `500px` }} />
         }
         mapElement={
           <div style={{ height: `100%` }} />

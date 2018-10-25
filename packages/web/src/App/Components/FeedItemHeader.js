@@ -22,6 +22,11 @@ const Title = styled.p`
   font-size: 38px;
   line-height: 50px;
   color: ${props => props.theme.Colors.background};
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding-left: 45px;
+    padding-right: 45px;
+    font-size: 30px;
+  }
 `
 
 const GuideTitle = styled(Title)`
@@ -40,6 +45,10 @@ const Subtitle = styled.p`
   font-weight: 400;
   color: ${props => props.theme.Colors.grey};
   letter-spacing: .7px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding-left: 45px;
+    padding-right: 45px;
+  }
 `
 
 const LocationText = styled(Subtitle)`
@@ -48,6 +57,10 @@ const LocationText = styled(Subtitle)`
   color: ${props => props.theme.Colors.background};
   text-transform: uppercase;
   font-weight: 600;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 0;
+    font-size: 13px;
+  }
 `
 
 const RedText = styled.span`
@@ -92,7 +105,6 @@ const CoverCaption = styled.p`
 const Container = styled.div`
   z-index: 500;
   margin: 65px auto 0;
-  max-width: 800px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding-left: 0;
     padding-right: 0;
@@ -305,9 +317,11 @@ export default class FeedItemHeader extends React.Component {
             <Subtitle>{feedItem.description}</Subtitle>
           </div>
         }
-        <StyledDivider
-          color={'lighter-grey'}
-        />
+        {isStory &&
+          <StyledDivider
+            color={'lighter-grey'}
+          />
+        }
       </Container>
     )
   }

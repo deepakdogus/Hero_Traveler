@@ -29,6 +29,9 @@ const SizedRow = styled(Row)`
   padding-right: 16px;
   height: 35px;
   border-top: ${props => `2px solid ${props.theme.Colors.background}`};
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    display: ${props => props.hideOnTablet ? 'none' : 'block'};
+  }
 `
 
 const StyledLink = styled(NavLink)`
@@ -78,6 +81,7 @@ const StyledIcon = styled(Icon)`
 class Footer extends Component {
   static propTypes = {
     openGlobalModal: PropTypes.func,
+    hideOnTablet: PropTypes.bool,
   }
 
   openTAC = () => {
@@ -90,7 +94,7 @@ class Footer extends Component {
   render() {
     return (
       <Container fluid>
-        <SizedRow between='xs'>
+        <SizedRow between='xs' hideOnTablet={this.props.hideOnTablet}>
           <Row bottom='xs'>
             {/* Hidden until after launch*/}
             {false &&

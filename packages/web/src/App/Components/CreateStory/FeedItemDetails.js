@@ -33,6 +33,7 @@ export const InputRowContainer = styled(Container)`
   align-items: center;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding: 14px 15px 14px 0px;
+    margin: 0 15px;
   }
 `
 
@@ -80,6 +81,7 @@ const ActivityDetailLabel = styled(DetailLabel)`
 
 const PrivacyLabel = styled(DetailLabel)`
   font-size: 16px;
+  margin-left: 5px;
 `
 
 export const StyledInput = styled.input`
@@ -108,8 +110,6 @@ const EnlargedIcon = styled(IconWithMargin)`
   width: 35px;
   height: 35px;
 `
-
-const CheckIcon = styled(IconWithMargin)``
 
 const HashtagIcon = styled(IconWithMargin)``
 
@@ -178,6 +178,12 @@ const TilesWrapper = styled.div`
   align-items: center;
   display: flex;
   flex-wrap: wrap;
+`
+
+const StyledDivider = styled(HorizontalDivider)`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 0.5em 15px;
+  }
 `
 
 function sortCategories(categories) {
@@ -445,7 +451,7 @@ export default class FeedItemDetails extends React.Component {
             />
           </InputRowContainer>
         }
-        <HorizontalDivider color='lighter-grey' opaque/>
+        <StyledDivider color='lighter-grey' opaque/>
         <InputRowContainer>
           <IconWrapper>
             <EnlargedIcon name='locationLarge'/>
@@ -458,7 +464,7 @@ export default class FeedItemDetails extends React.Component {
               />
           }
         </InputRowContainer>
-        {!isGuide && <HorizontalDivider color='lighter-grey' opaque/>}
+        {!isGuide && <StyledDivider color='lighter-grey' opaque/>}
         {!isGuide &&
           <InputRowContainer>
             <IconWrapper>
@@ -479,7 +485,7 @@ export default class FeedItemDetails extends React.Component {
             }
           </InputRowContainer>
         }
-        <HorizontalDivider color='lighter-grey' opaque/>
+        <StyledDivider color='lighter-grey' opaque/>
         <TagSelector
           handleTagAdd={this.handleTagAdd}
           loadDefaultTags={this.loadDefaultCategories}
@@ -491,7 +497,7 @@ export default class FeedItemDetails extends React.Component {
           selectedTags={workingDraft.categories}
           tagsList={categoriesList}
         />
-        {!isGuide && <HorizontalDivider color='lighter-grey' opaque/>}
+        {!isGuide && <StyledDivider color='lighter-grey' opaque/>}
         {!isGuide &&
           <TagSelector
             handleTagAdd={this.handleTagAdd}
@@ -505,7 +511,7 @@ export default class FeedItemDetails extends React.Component {
             tagsList={hashtagsList}
           />
         }
-        <HorizontalDivider color='lighter-grey' opaque/>
+        <StyledDivider color='lighter-grey' opaque/>
         {isGuide &&
           <InputRowContainer>
             <IconWrapper>
@@ -522,7 +528,7 @@ export default class FeedItemDetails extends React.Component {
             />
           </InputRowContainer>
         }
-        {isGuide && <HorizontalDivider color='lighter-grey' opaque/>}
+        {isGuide && <StyledDivider color='lighter-grey' opaque/>}
         <InputRowContainer>
           <IconWrapper>
             <IconWithMargin name='costLarge'/>
@@ -536,7 +542,7 @@ export default class FeedItemDetails extends React.Component {
             onChange={this.onGenericChange}
           />
         </InputRowContainer>
-        <HorizontalDivider color='lighter-grey' opaque/>
+        <StyledDivider color='lighter-grey' opaque/>
         <Spacer />
         <TravelTipsContainer>
           <DetailLabel>
@@ -556,12 +562,12 @@ export default class FeedItemDetails extends React.Component {
         {isGuide &&
           <Container>
             <Row>
-              <IconWrapper>
+              <VerticalCenter>
                 <input
                   type='checkbox'
                   onClick={this.togglePrivacy}
                 />
-              </IconWrapper>
+              </VerticalCenter>
               <VerticalCenter>
                 <PrivacyLabel>
                   Make this guide public

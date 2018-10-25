@@ -45,11 +45,13 @@ const TwitterIcon = styled(StyledIcon)``
 const DotsIcon = styled(StyledIcon)``
 
 const ActionBarContainer = styled(Col)`
+  z-index: 1;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     width: 100%;
+    background-color: ${props => props.theme.Colors.snow}
   }
 `
 
@@ -66,7 +68,7 @@ const Count = styled.p`
 const AbsoluteWrapper = styled.div`
   background-color: white;
   position: absolute;
-  top: 87px;
+  top: ${props => props.isStory ? '87px' : '170px' };
   right: 0;
   @media (max-width: ${props => props.theme.Metrics.sizes.desktopLarge}px) {
     left: 95%;
@@ -139,7 +141,7 @@ export default class StoryActionBar extends React.Component {
     } = this.props
 
     return (
-      <AbsoluteWrapper>
+      <AbsoluteWrapper isStory={isStory}>
         <ActionBarContainer>
           {isStory &&
             <BookmarkIcon

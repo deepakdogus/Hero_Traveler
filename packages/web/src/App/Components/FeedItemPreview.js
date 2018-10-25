@@ -145,6 +145,7 @@ const Title = styled.h3`
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     max-width: 385.5px;
     font-size: 20px;
+    padding: 0 15px;
   }
   &:hover {
     color: ${props => props.theme.Colors.grey};

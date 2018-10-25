@@ -18,6 +18,13 @@ import FeedItemActionBar from '../Components/FeedItemActionBar'
 import Footer from '../Components/Footer'
 import { createDeepLinkWeb } from '../Lib/sharingWeb'
 
+const Container = styled.div`
+  margin: 0 7%;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 0;
+  }
+`
+
 const ContentWrapper = styled.div`
   position: relative;
   margin: 0 auto;
@@ -27,6 +34,10 @@ const ContentWrapper = styled.div`
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding: 0;
   }
+`
+
+const MapContainer = styled.div`
+  margin: 60px 0;
 `
 
 const HashtagText = styled.p`
@@ -123,39 +134,43 @@ class Story extends Component {
     if (!story || !author) return null
 
     return (
-      <ContentWrapper>
-        <FeedItemHeader
-          feedItem={story}
-          author={author}
-          reroute={reroute}
-          sessionUserId={sessionUserId}
-          isFollowing={isFollowing}
-          followUser={this._followUser}
-          unfollowUser={this._unfollowUser}
-          onClickAddToGuide={onClickAddToGuide}
-          isStory
-        />
-          <StoryContentRenderer story={story} />
-          {this.renderHashtags()}
-          {story.locationInfo && story.locationInfo.latitude && story.locationInfo.longitude &&
-            <GoogleMap stories={ [story] } />
-          }
-          <FeedItemMetaInfo feedItem={story} />
-        <FeedItemActionBar
-          feedItem={story}
-          isStory
-          isLiked={isLiked}
-          onClickLike={this._onClickLike}
-          isBookmarked={isBookmarked}
-          onClickBookmark={this._onClickBookmark}
-          onClickComments={this._onClickComments}
-          userId={sessionUserId}
-          reroute={reroute}
-          openGlobalModal={openGlobalModal}
-          onClickShare={this._onClickShare}
-        />
-        <Footer />
-      </ContentWrapper>
+      <Container>
+        <ContentWrapper>
+          <FeedItemHeader
+            feedItem={story}
+            author={author}
+            reroute={reroute}
+            sessionUserId={sessionUserId}
+            isFollowing={isFollowing}
+            followUser={this._followUser}
+            unfollowUser={this._unfollowUser}
+            onClickAddToGuide={onClickAddToGuide}
+            isStory
+          />
+            <StoryContentRenderer story={story} />
+            {this.renderHashtags()}
+            {story.locationInfo && story.locationInfo.latitude && story.locationInfo.longitude &&
+              <MapContainer>
+                <GoogleMap stories={ [story] } />
+              </MapContainer>
+            }
+            <FeedItemMetaInfo feedItem={story} />
+          <FeedItemActionBar
+            feedItem={story}
+            isStory
+            isLiked={isLiked}
+            onClickLike={this._onClickLike}
+            isBookmarked={isBookmarked}
+            onClickBookmark={this._onClickBookmark}
+            onClickComments={this._onClickComments}
+            userId={sessionUserId}
+            reroute={reroute}
+            openGlobalModal={openGlobalModal}
+            onClickShare={this._onClickShare}
+          />
+        </ContentWrapper>
+        <Footer hideOnTablet={true}/>
+      </Container>
     )
   }
 }

@@ -46,6 +46,7 @@ const StyledDivider = styled(HorizontalDivider)`
   border-color: ${props => props.theme.Colors.background};
   border-width: 1px;
   margin-bottom: 23px;
+  max-width: 960px;
   @media (max-width: ${sizes.tablet}px){
     display: none;
   }

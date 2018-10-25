@@ -17,6 +17,9 @@ const InputContainer = styled.div`
   font-style: none;
   letter-spacing: .2px;
   padding: 25px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0;
+  }
 `
 
 const DeleteContainer = styled.div`
@@ -32,6 +35,9 @@ const DeleteTextContainer = styled.div`
   color: ${props => props.theme.Colors.signupGrey};
   padding-top: 15px;
   font-size: 15px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 25px;
+  } 
 `
 
 const DeleteButton = styled.div`
@@ -44,6 +50,9 @@ const DeleteButton = styled.div`
   padding-bottom: 8px;
   width: 100%;
   letter-spacing: .2px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 25px;
+  } 
 `
 
 const accountInputs = [

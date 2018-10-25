@@ -7,6 +7,14 @@ import SocialMediaRow from '../Signup/SocialMediaRow'
 
 const Container = styled.div`
   padding: 25px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0px;
+  }
+`
+ const StyledSocialMediaRow = styled(SocialMediaRow)`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 25px;
+  }
 `
 
 export default class EditConnections extends React.Component {
@@ -20,7 +28,7 @@ export default class EditConnections extends React.Component {
     return (
       <Container>
         <HorizontalDivider color='grey'/>
-        <SocialMediaRow
+        <StyledSocialMediaRow
           text={'Facebook'}
           margin='modal'
           isConnected={user.isFacebookConnected}

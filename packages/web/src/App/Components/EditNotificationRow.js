@@ -21,6 +21,9 @@ const NotificationTitle = styled.p`
   letter-spacing: .2px;
   margin: 0;
   color: ${props => props.theme.Colors.grey};
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin-left: 25px;
+  }
 `
 
 const RowSpacer = styled.div`

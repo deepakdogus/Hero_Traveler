@@ -12,11 +12,14 @@ import RoundedButton from './RoundedButton'
 const Container = styled.div`
   margin: ${props => props.margin ? props.margin : '0'};
   min-height: 90px;
+  display: flex;
 `
 
 const StyledVerticalCenter = styled(VerticalCenter)`
   height: 90%;
   padding-left: 25px;
+  max-width: 100%;
+  flex-shrink: 1;
 `
 
 const UserName = styled.p`
@@ -40,6 +43,15 @@ export const FollowButtonStyle = `
   margin-top: 6px;
   margin-bottom: 6px;
 `
+const LeftProps = {
+  'flex-wrap' : 'nowrap',
+  'align-items' : 'center'
+}
+
+const RowProps = {
+  'justify-content' : 'space-between',
+  'flex-wrap' : 'nowrap'
+}
 
 export default class FollowFollowingRow extends Component {
   static propTypes = {
@@ -120,6 +132,8 @@ export default class FollowFollowingRow extends Component {
           renderImage={this.renderImage}
           renderText={this.renderText}
           renderRight={this.renderRight}
+          leftProps={LeftProps}
+          rowProps={RowProps}
         />
       </Container>
     )

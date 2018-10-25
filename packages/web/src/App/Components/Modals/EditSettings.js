@@ -21,6 +21,9 @@ const InputContainer = styled.div`
 
 const DeleteContainer = styled.div`
   padding: 25px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0;
+  }
 `
 
 const DeleteTextContainer = styled.div`

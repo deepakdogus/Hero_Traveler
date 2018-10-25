@@ -17,6 +17,7 @@ import StoryActions from '../Shared/Redux/Entities/Stories'
 import HeaderModals from '../Components/HeaderModals'
 import { sizes } from '../Themes/Metrics'
 import { haveFieldsChanged } from '../Shared/Lib/draftChangedHelpers'
+import { itemsPerQuery } from './ContainerWithFeedList'
 /*global branch*/
 
 // If we don't explicity prevent 'fixed' from being passed to Grid, we get an error about unknown prop on div element
@@ -101,7 +102,13 @@ class Header extends React.Component {
   componentDidUpdate(prevProps) {
     const { currentUserId } = this.props
     if (currentUserId && prevProps.currentUserId !== currentUserId) {
-      this.props.attemptGetUserFeed(currentUserId, { perPage: 100, page: 1 })
+      this.props.attemptGetUserFeed(
+        currentUserId,
+        {
+          perPage: itemsPerQuery,
+          page: 1,
+        },
+      )
     }
     if (!prevProps.signedUp && this.props.signedUp) {
       this.props.reroute('/signup/topics')

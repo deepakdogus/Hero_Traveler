@@ -8,7 +8,7 @@ import changeCountOfType from '../helpers/changeCountOfTypeHelper'
 const { Types, Creators } = createActions({
   storyRequest: ['storyId'],
   feedRequest: ['userId', 'params'],
-  feedSuccess: ['userFeedById', 'count'],
+  feedSuccess: ['userFeedById', 'count', 'params'],
   feedFailure: ['error'],
   likesAndBookmarksRequest: ['userId'],
   fromUserRequest: ['userId'],
@@ -78,13 +78,23 @@ export const feedRequest = (state, { userId, params }) => {
   );
 }
 // successful temperature lookup
-export const feedSuccess = (state, {userFeedById, count}) => {
+export const feedSuccess = (state, {userFeedById, count, params}) => {
+  let userFeedUpdate = userFeedById
+  if (_.get(params, 'page', 1) > 1) {
+    userFeedUpdate = [...state.userFeedById]
+    userFeedById.forEach(id => {
+      if (userFeedUpdate.indexOf(id) === -1) {
+        userFeedUpdate.push(id)
+      }
+    })
+  }
+
   return state.merge({
     fetchStatus: {
       fetching: false,
       loaded: true,
     },
-    userFeedById,
+    userFeedById: userFeedUpdate,
     userStoryFeedCount: count,
     error: null
   }, {

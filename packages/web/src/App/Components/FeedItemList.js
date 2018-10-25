@@ -1,13 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-
-import Pagination from './Pagination'
+import InfiniteScroll from 'react-infinite-scroller'
 
 import FeedItemPreview from './FeedItemPreview'
 import FeedItemMessage from './FeedItemMessage'
 import HorizontalDivider from './HorizontalDivider'
 import { Row } from './FlexboxGrid'
+import { itemsPerQuery } from '../Containers/ContainerWithFeedList'
 
 const StyledDivider = styled(HorizontalDivider)`
   max-width: 960px;
@@ -20,11 +20,11 @@ const StyledDivider = styled(HorizontalDivider)`
   }
 `
 
-const VerticalWrapper = styled.div`
-`
+const VerticalWrapper = styled.div``
 
-const StyledRow = styled(Row)`
-`
+const StyledRow = styled(Row)``
+
+const itemsPerPage = 10
 
 export default class FeedItemList extends React.Component {
   static propTypes = {
@@ -34,7 +34,13 @@ export default class FeedItemList extends React.Component {
     isHorizontalList: PropTypes.bool,
     isShowAll: PropTypes.bool,
     activeTab: PropTypes.string,
-    onPaginate: PropTypes.func,
+    feedItemCount: PropTypes.number,
+    getTabInfo: PropTypes.func,
+  }
+
+  state = {
+    page: 1,
+    hasMore: true,
   }
 
   defaultProps = { isHorizontalList: false }
@@ -43,12 +49,13 @@ export default class FeedItemList extends React.Component {
     return typeof feedItem.draft === 'boolean'
   }
 
-  renderFeedItems = (feedItems) => {
+  renderFeedItems = () => {
     const {
       guideId,
       type,
       isHorizontalList,
       isShowAll,
+      feedItems,
     } = this.props
 
     return feedItems.reduce((rows, feedItem, index) => {
@@ -58,6 +65,7 @@ export default class FeedItemList extends React.Component {
       */
       if (type === 'suggestions' && index >= 4) return rows
       if (isHorizontalList && index >= 2 && !isShowAll) return rows
+      if (index > itemsPerPage * this.state.page) return rows
 
       if (!feedItem) return rows
       if (index !== 0 && !isHorizontalList) {
@@ -82,12 +90,26 @@ export default class FeedItemList extends React.Component {
     }, [])
   }
 
+  loadFeedItems = (page) => {
+    this.setState({page})
+    const isBeforeLastPage = (
+      (page * itemsPerPage) % itemsPerQuery)
+      >= (itemsPerQuery - itemsPerPage
+    )
+    if (isBeforeLastPage && this.props.activeTab === 'STORIES') {
+      const pageToQuery = ((page * itemsPerPage + itemsPerPage) / itemsPerQuery) + 1
+      this.props.getTabInfo(pageToQuery)
+    }
+    if (page * itemsPerPage >= this.props.feedItemCount) {
+      this.setState({hasMore: false})
+    }
+  }
+
   render() {
     const {
       feedItems,
       isHorizontalList,
       activeTab,
-      onPaginate,
     } = this.props
 
     if (!feedItems || !feedItems.length) {
@@ -102,14 +124,13 @@ export default class FeedItemList extends React.Component {
 
     return (
       <Wrapper {...wrapperProps}>
-        <Pagination records={feedItems} type={activeTab.toLowerCase()} onPaginate={onPaginate}>
-          {({ guides, stories, ShowMore }) => (
-            <div>
-              {this.renderFeedItems(guides || stories)}
-              <ShowMore />
-            </div>
-          )}
-        </Pagination>
+        <InfiniteScroll
+          pageStart={1}
+          loadMore={this.loadFeedItems}
+          hasMore={this.state.hasMore}
+        >
+          {this.renderFeedItems()}
+        </InfiniteScroll>
       </Wrapper>
     )
   }

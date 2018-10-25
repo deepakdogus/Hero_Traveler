@@ -60,7 +60,7 @@ export function * getUserFeed (api, action) {
       put(UserActions.receiveUsers(entities.users)),
       put(CategoryActions.receiveCategories(entities.categories)),
       put(StoryActions.receiveStories(entities.stories)),
-      put(StoryActions.feedSuccess(result)),
+      put(StoryActions.feedSuccess(result, response.count, params)),
     ]
   } else {
     yield put(StoryActions.feedFailure(new Error('Failed to get feed')))

@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+export const itemsPerQuery = 100
+
 export default class ContainerWithFeedList extends React.Component {
   static propTypes = {
     sessionUserId: PropTypes.string,
@@ -15,19 +17,21 @@ export default class ContainerWithFeedList extends React.Component {
     stories: PropTypes.object,
   }
 
-  state = { activeTab: 'STORIES', pagination: { perPage: 100, page: 1 } }
+  state = {
+    activeTab: 'STORIES',
+  }
 
   onClickTab = (event) => {
     let tab = event.target.innerHTML
     if (this.state.activeTab !== tab) {
       this.setState({ activeTab: tab }, () => {
-        this.getTabInfo(tab)
+        this.getTabInfo()
       })
     }
   }
 
-  getTabInfo = (tab) => {
-    switch (tab) {
+  getTabInfo = (page) => {
+    switch (this.state.activeTab) {
       case 'DRAFTS':
         return // cached only so no need to fetch
       case 'BOOKMARKS':
@@ -41,8 +45,14 @@ export default class ContainerWithFeedList extends React.Component {
       case 'EAT':
       case 'STAY':
       default:
-        const { pagination } = this.state
-        return this.props.getStories(this.props.sessionUserId, pagination)
+        return this.props.getStories(
+          this.props.sessionUserId,
+          this.state.activeTab,
+          {
+            perPage: itemsPerQuery,
+            page,
+          },
+        )
     }
   }
 
@@ -89,17 +99,5 @@ export default class ContainerWithFeedList extends React.Component {
           selectedFeedItems: this.getFeedItemsByIds(storiesById),
         }
     }
-  }
-
-  paginate = () => {
-    this.setState(currentState => ({
-      pagination: {
-        ...currentState.pagination,
-        page: currentState.pagination.page + 1,
-      },
-    }), () => {
-      const { pagination } = this.state
-      this.props.getStories(this.props.sessionUserId, pagination)
-    })
   }
 }

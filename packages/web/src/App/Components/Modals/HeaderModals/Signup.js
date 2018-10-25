@@ -71,8 +71,7 @@ class Signup extends React.Component {
     })
   }
 
-  _onAttemptSignup = (e) => {
-    e.preventDefault()
+  _onAttemptSignup = () => {
     if (!this.props.fetching) {
       this.props.onAttemptSignup(
         _.trim(this.props.fullName),
@@ -100,7 +99,7 @@ class Signup extends React.Component {
     return (
       <Container>
         <Title>SIGN UP</Title>
-        <form onSubmit={this._onAttemptSignup}>
+        <form onSubmit={this.props.handleSubmit(this._onAttemptSignup)}>
           <SocialMediaButton
             type='facebookSignup'
             iconName='facebookLarge'

@@ -31,17 +31,20 @@ const NavLinkContainer = styled(SocialContainer)`
 Title and Subtitle are indentical in SignupSocial and SignupTopics
 Possibly refactor into separate file or add styles to themes
 */
-const Title = styled.p`
+export const Title = styled.p`
   margin-top:0;
   font-weight: 400;
+  font-family: ${props => props.theme.Fonts.type.montserrat};
   font-size: 35px;
   color: ${props => props.theme.Colors.background};
   letter-spacing: 1.2px;
+  margin-bottom: 15px;
 `
 
-const Subtitle = styled.p`
+export const Subtitle = styled.p`
   font-weight: 400;
-  font-size: 18px;
+  font-size: 16px;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   color: ${props => props.theme.Colors.grey};
   letter-spacing: .7px;
   margin-bottom: 30px;
@@ -55,12 +58,26 @@ const Section = styled.div`
 
 const SectionText = styled.h4`
   font-weight: 400;
-  font-size: 20px;
+  font-size: 16px;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   color: ${props => props.theme.Colors.background};
   letter-spacing: 1.2px;
   background-color: ${props => props.theme.Colors.lightGreyAreas};
   padding: 10px 20px;
 `
+const LeftButtonStyleOverride = {
+  marginBottom: '10px',
+  marginLeft: '10px',
+  marginRight: '5px',
+  marginTop: '10px',
+}
+
+const RightButtonStyleOverride = {
+  marginBottom: '10px',
+  marginLeft: '5px',
+  marginRight: '30px',
+  marginTop: '10px',
+}
 
 class SignupSocial extends Component {
   static propTypes = {
@@ -98,7 +115,14 @@ class SignupSocial extends Component {
     const renderedSuggestions = suggestedUsersById.reduce((suggestions, key, index) => {
       const user = users[key]
       const isFollowing = this.userIsSelected(user)
-      if (index !== 0) suggestions.push((<HorizontalDivider key={`${key}-HR`} color='grey'/>))
+      if (index !== 0) {
+        suggestions.push((
+          <HorizontalDivider
+            key={`${key}-HR`}
+            color='grey'
+          />
+        ))
+      }
       suggestions.push((
         <FollowFollowingRow
           key={key}
@@ -119,14 +143,21 @@ class SignupSocial extends Component {
     return (
       <SocialContainer>
         <NavLinkContainer>
-          <WrappedNavLink to='/signup/topics'>
+          <WrappedNavLink
+            to='/signup/topics'
+            styles={LeftButtonStyleOverride}
+          >
             <RoundedButton
               text='< Back'
               type="blackWhite"
               margin='none'
+
             />
           </WrappedNavLink>
-          <WrappedNavLink to='/feed'>
+          <WrappedNavLink
+            to='/feed'
+            styles={RightButtonStyleOverride}
+            >
             <RoundedButton
               text='Finish'
               margin='none'
@@ -135,7 +166,7 @@ class SignupSocial extends Component {
         </NavLinkContainer>
         <Container>
         <Title>FOLLOW</Title>
-          <Subtitle>We'll add stories by people you follow to your custom reading list</Subtitle>
+          <Subtitle>We’ll add stories by people you follow to your custom reading list</Subtitle>
           {
           // disabled until further notice
           // <Section>

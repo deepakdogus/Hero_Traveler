@@ -8,32 +8,44 @@ import _ from 'lodash'
 import Image from './Image'
 import Video from './Video'
 import getImageUrl from '../Shared/Lib/getImageUrl'
-import {getVideoUrlBase} from '../Shared/Lib/getVideoUrl'
+import { getVideoUrlBase } from '../Shared/Lib/getVideoUrl'
 import Caption from './MediaCaption'
 
-const ContentContainer = styled.div`
-  margin: 100px 0;
-`
+const ContentContainer = styled.div``
 
 const StyledImage = styled(Image)`
   width: 100%;
 `
 
 export const BodyText = styled.p`
-  font-family: ${props => props.theme.Fonts.type.montserrat};
+  margin: 0;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
   font-size: 18px;
   color: ${props => props.theme.Colors.grey};
-  letter-spacing: .7px;
+  letter-spacing: 0.7px;
 `
 
 const HeaderOne = styled.h1`
-  font-weight: 400;
-  font-size: 30px;
+  margin: 0;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  font-weight: 600;
+  font-size: 24px;
   color: ${props => props.theme.Colors.background};
   letter-spacing: 1.5px;
-  text-transform: uppercase;
+  &:first-letter {
+    text-transform: uppercase;
+  }
 `
+
+const Spacer = styled.div`
+  width: 100%;
+  height: 30px;
+`
+
+Spacer.defaultProps = {
+  spacer: true,
+}
 
 const StyledStrong = styled.strong`
   font-weight: 600;
@@ -54,27 +66,30 @@ const getAtomic = (children, { data, keys }) => {
     const type = media.type
     const mediaUrl =
       type === 'image'
-      ? getImageUrl(media.url, 'contentBlock')
-      : `${getVideoUrlBase()}/${media.url}`
+        ? getImageUrl(media.url, 'contentBlock')
+        : `${getVideoUrlBase()}/${media.url}`
     const text = _.get(children, `[${index}][1][0]`, '').trim()
     switch (media.type) {
       case 'image':
-        return (
+        return [
+          <Spacer key={0} />,
           <div key={keys[index]}>
             <StyledImage src={mediaUrl} />
             {text && <Caption>{text}</Caption>}
-          </div>
-        )
+          </div>,
+          <Spacer key={1} />,
+          <Spacer key={2} />,
+        ]
       case 'video':
-        return (
+        return [
+          <Spacer key={0} />,
           <div key={keys[index]}>
-            <Video
-              src={mediaUrl}
-              withPrettyControls
-            />
+            <Video src={mediaUrl} withPrettyControls />
             {text && <Caption>{text}</Caption>}
-          </div>
-        )
+          </div>,
+          <Spacer key={1} />,
+          <Spacer key={2} />,
+        ]
       default:
         return null
     }
@@ -83,19 +98,26 @@ const getAtomic = (children, { data, keys }) => {
 
 // only actually using unstyled - atomic - header-one
 const blocks = {
-  unstyled: (children, { keys }) => children.map((child, i) => <BodyText key={keys[i]}>{child}</BodyText>),
+  unstyled: (children, { keys }) =>
+    children.map((child, i) => [<BodyText key={keys[i]}>{child}</BodyText>, <Spacer key={1} />]),
   atomic: getAtomic,
-  blockquote: (children, { keys }) => <blockquote key={keys[0]} >{children}</blockquote>,
-  'header-one': (children, { keys }) => children.map((child, i) => <HeaderOne key={keys[i]}>{child}</HeaderOne>),
+  blockquote: (children, { keys }) => <blockquote key={keys[0]}>{children}</blockquote>,
+  'header-one': (children, { keys }) =>
+    children.map((child, i) => [<HeaderOne key={keys[i]}>{child}</HeaderOne>, <Spacer key={1} />]),
   'header-two': (children, { keys }) => children.map((child, i) => <h2 key={keys[i]}>{child}</h2>),
-  'header-three': (children, { keys }) => children.map((child, i) => <h3 key={keys[i]}>{child}</h3>),
+  'header-three': (children, { keys }) =>
+    children.map((child, i) => <h3 key={keys[i]}>{child}</h3>),
   'header-four': (children, { keys }) => children.map((child, i) => <h4 key={keys[i]}>{child}</h4>),
   'header-five': (children, { keys }) => children.map((child, i) => <h5 key={keys[i]}>{child}</h5>),
   'header-six': (children, { keys }) => children.map((child, i) => <h6 key={keys[i]}>{child}</h6>),
 }
 
 const entities = {
-  LINK: (children, entity, { key }) => <a key={key} href={entity.url}>{children}</a>,
+  LINK: (children, entity, { key }) => (
+    <a key={key} href={entity.url}>
+      {children}
+    </a>
+  ),
 }
 
 const options = {
@@ -111,13 +133,31 @@ export default class StoryContentRenderer extends React.Component {
     story: PropTypes.object,
   }
 
-  render () {
-    const {story} = this.props
+  trimSpacers = contentBlocks => {
+    if (!contentBlocks) return null
+    if (!contentBlocks.length) return contentBlocks
+
+    const lastBlock = contentBlocks[contentBlocks.length - 1][0]
+
+    while (
+      lastBlock.length > 1
+      && _.get(lastBlock, `[${lastBlock.length - 1}].props.spacer`)
+    ) {
+      lastBlock.pop()
+    }
+
+    contentBlocks[contentBlocks.length - 1] = lastBlock
+    return contentBlocks
+  }
+
+  render() {
+    const { story } = this.props
     if (!story.draftjsContent) return null
-    return (
-      <ContentContainer>
-        {redraft(story.draftjsContent, { inline, blocks, entities }, options)}
-      </ContentContainer>
+
+    const contentBlocks = this.trimSpacers(
+      redraft(story.draftjsContent, { inline, blocks, entities }, options),
     )
+
+    return <ContentContainer>{contentBlocks}</ContentContainer>
   }
 }

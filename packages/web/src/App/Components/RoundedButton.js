@@ -19,6 +19,7 @@ function getMargin(props) {
 
 // 2px 6px 3px is default react padding.
 function getPadding(props) {
+  if (props.padding === 'smallEven') return '2px'
   if (props.padding === 'even') return '5px'
   if (props.padding === 'evenMedium') return '11px'
   if (props.padding === 'mediumEven') return '8px'
@@ -39,6 +40,7 @@ function getBackgroundColor (type, colors) {
     case 'twitterSignup':
       return colors.twitterBlue
     case 'categoryFollow':
+    case 'exploreCategoryFollow':
       return colors.redLight
     case 'blackWhite':
     case 'facebook':
@@ -46,8 +48,6 @@ function getBackgroundColor (type, colors) {
     case 'lightGrey':
     case 'opaqueGrey':
       return colors.snow
-    case 'storyHeader':
-      return colors.backgroundTint
     case 'headerButton':
     case 'backgroundOpaque':
       return colors.backgroundOpaque
@@ -89,6 +89,7 @@ const StyledButton = styled.button`
         return props.theme.Colors.grey
       case 'backgroundOpaque':
         return props.theme.Colors.closeXBorder
+      case 'exploreCategoryFollow':
       default:
         return props.theme.Colors.redHighlights
     }
@@ -119,7 +120,14 @@ const Text = styled.p`
     }
   }};
   text-align: center;
-  font-size: ${props => `${props.type === 'navbar' ? '15' : '16'}px`};
+  font-size: ${props => {
+    switch(props.type) {
+      case 'navbar':
+        return '15px'
+      default:
+        return '16px'
+    }
+  }};
   margin: ${props => `${props.type === 'navbar' ? '3.5' : '2.5'}px 10px`};
   letter-spacing: 1.2px;
 `

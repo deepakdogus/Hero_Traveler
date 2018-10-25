@@ -1,0 +1,52 @@
+import styled from 'styled-components'
+
+export const DocumentationTabStyles = `
+  font-family: ${props => props.theme.Fonts.type.base};
+  font-weight: 400;
+  font-size: 14px;
+  color: ${props => props.theme.Colors.background};
+  letter-spacing: .7px;
+`
+
+export const Container = styled.div``
+
+export const Wrapper = styled.div`
+  padding: 0px 15px;
+`
+
+export const Title = styled.p`
+  ${DocumentationTabStyles}
+  font-family: ${props => props.theme.Fonts.type.base};
+  font-weight: 600;
+  font-size: 16px;
+  color: ${props => props.theme.Colors.background};
+`
+
+export const Header = styled.p`
+  ${DocumentationTabStyles}
+  font-family: ${props => props.theme.Fonts.type.base};
+  font-weight: 600;
+  color: ${props => props.theme.Colors.background};
+`
+
+export const Subtitle = styled(Header)``
+
+export const BodyNumber = styled(Header)``
+
+export const Body = styled.p`
+  ${DocumentationTabStyles}
+  font-family: ${props => props.theme.Fonts.type.base};
+  color: ${props => props.theme.Colors.background};
+`
+
+export const OLBody = styled(Body)``
+
+export const Link = styled.a`
+  ${DocumentationTabStyles}
+  font-family: ${props => props.theme.Fonts.type.base};
+  text-decoration: none;
+  color: ${props => props.theme.Colors.background};
+  &:visited {
+    color: ${props => props.theme.Colors.background};
+  }
+`

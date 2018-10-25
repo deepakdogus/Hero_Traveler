@@ -15,16 +15,24 @@ import StoryContentRenderer from '../Components/StoryContentRenderer'
 import GoogleMap from '../Components/GoogleMap'
 import FeedItemMetaInfo from '../Components/FeedItemMetaInfo'
 import FeedItemActionBar from '../Components/FeedItemActionBar'
+import Footer from '../Components/Footer'
 import { createDeepLinkWeb } from '../Lib/sharingWeb'
 
-const ContentWrapper = styled.div``
-
-const LimitedWidthContainer = styled.div`
-  max-width: 800px;
+const ContentWrapper = styled.div`
+  position: relative;
   margin: 0 auto;
+  padding-left: 80px;
+  padding-right: 80px;
+  max-width: 800px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0;
+  }
 `
 
 const HashtagText = styled.p`
+  margin: 0;
+  padding-top 30px;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
   font-size: 18px;
   color: ${props => props.theme.Colors.redHighlights};
@@ -89,11 +97,9 @@ class Story extends Component {
 
   renderHashtags = () => {
     const {story} = this.props
-    if (!story.hashtags) return null
+    if (!story.hashtags || !story.hashtags.length) return null
 
-    const hashtagMap = story.hashtags.map((hashtag) => {
-      return `#${hashtag.title}`
-    })
+    const hashtagMap = story.hashtags.map((hashtag) => `#${hashtag.title}`)
 
     return (
       <HashtagText>
@@ -129,14 +135,12 @@ class Story extends Component {
           onClickAddToGuide={onClickAddToGuide}
           isStory
         />
-        <LimitedWidthContainer>
           <StoryContentRenderer story={story} />
           {this.renderHashtags()}
           {story.locationInfo && story.locationInfo.latitude && story.locationInfo.longitude &&
             <GoogleMap stories={ [story] } />
           }
           <FeedItemMetaInfo feedItem={story} />
-        </LimitedWidthContainer>
         <FeedItemActionBar
           feedItem={story}
           isStory
@@ -150,6 +154,7 @@ class Story extends Component {
           openGlobalModal={openGlobalModal}
           onClickShare={this._onClickShare}
         />
+        <Footer />
       </ContentWrapper>
     )
   }

@@ -238,6 +238,7 @@ const BadgeIcon = styled(Icon)`
 `
 
 const GuideIcon = styled(Icon)`
+  padding-top: 7px;
   width: 17px;
   height: 17px;
 `

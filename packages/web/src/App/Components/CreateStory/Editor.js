@@ -6,7 +6,6 @@ import {
   SelectionState,
 } from 'draft-js'
 import 'draft-js/dist/Draft.css'
-import 'draft-js-side-toolbar-plugin/lib/plugin.css'
 import Editor from 'draft-js-plugins-editor'
 import createSideToolbarPlugin from 'draft-js-side-toolbar-plugin'
 import BlockTypeSelect from 'draft-js-side-toolbar-plugin/lib/components/BlockTypeSelect'
@@ -21,6 +20,7 @@ import {
   convertToRaw,
 } from '../../Shared/Lib/draft-js-helpers'
 import './Styles/EditorStyles.css'
+import './Styles/ToolbarStyles.css'
 import {
   AddImageButton,
   AddVideoButton,
@@ -28,8 +28,8 @@ import {
 import MediaComponent from './EditorMediaComponent'
 
 const EditorWrapper = styled.div`
-  margin-bottom: 95px;
-  margin-top: 20px;
+margin-bottom: 95px;
+margin-top: 20px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     margin-left: 15px;
     margin-right: 15px;
@@ -82,12 +82,13 @@ export default class BodyEditor extends React.Component {
     if (props.value) editorState = EditorState.createWithContent(convertFromRaw(props.value))
     else editorState = EditorState.createEmpty()
     this.state = {
-      editorState
+      editorState,
     }
   }
 
   componentDidMount() {
     this.props.setGetEditorState(this.getEditorStateAsObject)
+    this.editor.focus()
   }
 
   getEditorStateAsObject = () => {
@@ -127,7 +128,7 @@ export default class BodyEditor extends React.Component {
     var withoutAtomic = withoutAtomicEntity.merge({
       blockMap,
       selectionAfter: selection,
-    });
+    })
 
     const newEditorState = EditorState.push(
       this.state.editorState,
@@ -159,14 +160,29 @@ export default class BodyEditor extends React.Component {
         component: MediaComponent,
         editable: true,
         props: props,
-      };
+      }
     }
   }
 
-  myBlockStyleFn(contentBlock) {
-    const type = contentBlock.getType()
-    if (type === 'header-one') return 'editorHeaderOne'
-    else if (type === 'unstyled') return 'editorParagraph'
+  myBlockStyleFn = (contentBlock) => {
+    const currBlockType = contentBlock.getType()
+    const contentState = this.state.editorState.getCurrentContent()
+    const nextBlockKey = contentState.getKeyAfter(contentBlock.getKey())
+    const nextBlock = contentState.getBlockForKey(nextBlockKey)
+    const nextBlockType = nextBlock ? nextBlock.getType() : ''
+
+    let className = ''
+
+    if (currBlockType === 'unstyled') className = 'editorParagraph'
+    if (currBlockType === 'header-one') className = 'editorHeaderOne'
+    if (
+      nextBlockType
+      && nextBlockType === 'atomic'
+      && currBlockType !== 'atomic'
+    ) {
+      className += ' editorSpacer'
+    }
+    return className
   }
 
   getFocusKey() {
@@ -188,19 +204,18 @@ export default class BodyEditor extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.value && this.props.storyId !== prevProps.storyId) {
       this.setState({
-        editorState: EditorState.createWithContent((this.props.value))
+        editorState: EditorState.createWithContent((this.props.value)),
       })
     }
     else if (this.shouldRefocusPlaceholder()) {
       this.setState({
         editorState: EditorState.forceSelection(
           this.state.editorState,
-          this.createSelectionWithFocus(this.getFocusKey())
-        )
+          this.createSelectionWithFocus(this.getFocusKey()),
+        ),
       })
     }
   }
-
 
   onChange = (editorState) => {
     this.setState({editorState})
@@ -222,7 +237,7 @@ export default class BodyEditor extends React.Component {
           blockRendererFn={this.myBlockRenderer}
           blockStyleFn={this.myBlockStyleFn}
         />
-        <SideToolbar />
+        <SideToolbar/>
       </EditorWrapper>
     )
   }

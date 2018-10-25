@@ -137,6 +137,7 @@ const StyledSubTitleInput = styled(StyledInput)`
 const StyledCoverCaptionInput = styled(StyledInput)`
   background-color: transparent;
   font-size: 14px;
+  font-weight: 300;
   font-style: italic;
   width: 100%;
   height: 27px;
@@ -348,7 +349,7 @@ export default class AddCoverTitles extends React.Component {
         {hasMediaAsset && !isGuide &&
           <StyledCoverCaptionInput
             type='text'
-            placeholder='Add Cover Caption'
+            placeholder='Add a caption'
             name='coverCaption'
             onChange={this._onTextChange}
             value={this.state.coverCaption}

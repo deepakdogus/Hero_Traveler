@@ -16,7 +16,7 @@ const EditMessages = (props) => {
         <ErrorMessage>
           {localError}
         </ErrorMessage> }
-      {!!(errorObj) &&
+      { errorObj && errorObj.message &&
         <ErrorMessage>
           {errorObj.toString()}
         </ErrorMessage> }
@@ -32,7 +32,7 @@ const EditMessages = (props) => {
   )
 }
 
-EditMessages.proptypes = {
+EditMessages.propTypes = {
     isUpdating: PropTypes.bool,
     errorObj: PropTypes.object,
     localError: PropTypes.string,

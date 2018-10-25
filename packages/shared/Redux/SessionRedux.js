@@ -12,7 +12,8 @@ const { Types, Creators } = createActions({
   resumeSession: ['userId', 'retrievedTokens'],
   resumeSessionFailure: ['error'],
   refreshSession: ['tokens'],
-  refreshSessionSuccess: ['tokens']
+  refreshSessionSuccess: ['tokens'],
+  clearError: null,
 })
 
 export const SessionTypes = Types
@@ -26,6 +27,7 @@ export const INITIAL_STATE = Immutable({
   isLoggingOut: false,
   isLoggedOut: true,
   isResumingSession: true,
+  error: null,
 })
 
 /* ------------- Reducers ------------- */
@@ -79,7 +81,12 @@ export const refreshSessionSuccess = (state, {tokens}) => {
   })
 }
 
-export const resumeError = (state, {error}) => state.merge({isResumingSession: false, error})
+export const resumeError = (state, {error}) => state.merge({
+  isResumingSession: false,
+  error
+})
+
+export const clearError = (state) => state.merge({ error: null })
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -89,14 +96,14 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOGOUT_SUCCESS]: logoutSuccess,
   [Types.RESUME_SESSION]: setIsResuming,
   [Types.RESUME_SESSION_FAILURE]: resumeError,
-  [Types.REFRESH_SESSION_SUCCESS]: refreshSessionSuccess
+  [Types.REFRESH_SESSION_SUCCESS]: refreshSessionSuccess,
+  [Types.CLEAR_ERROR]: clearError,
 })
 
 /* ------------- Selectors ------------- */
 
 // Does the user have necessary info to make API requests?
 export const hasAuthData: boolean = (sessionState) => {
-  // console.log('hasAuthData', !!sessionState.tokens, !!sessionState.userId)
   return !!sessionState.tokens && !!sessionState.userId
 }
 export const getUserId: string = (sessionState) => sessionState.userId

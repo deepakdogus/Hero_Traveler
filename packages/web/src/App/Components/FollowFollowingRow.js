@@ -35,6 +35,12 @@ const ProfileDetail = styled(UserName)`
   color: ${props => props.theme.Colors.grey};
 `
 
+export const FollowButtonStyle = `
+  font-size: 13px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+`
+
 export default class FollowFollowingRow extends Component {
   static propTypes = {
     isFollowing: PropTypes.bool,
@@ -59,6 +65,7 @@ export default class FollowFollowingRow extends Component {
           size='larger'
           type='profile'
           onClick={this._handleProfileClick}
+          type='profile'
         />
     )
   }
@@ -92,10 +99,10 @@ export default class FollowFollowingRow extends Component {
         <RoundedButton
           text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
           type={isFollowing ? undefined : 'blackWhite'}
-          margin='none'
           width='154px'
           padding='even'
           onClick={this._onFollowClick}
+          textProps={FollowButtonStyle}
         />
       </VerticalCenter>
     )

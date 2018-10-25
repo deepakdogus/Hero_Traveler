@@ -1,13 +1,11 @@
-import React from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import HorizontalDivider from '../HorizontalDivider'
-
-const Container = styled.div`
-  padding: 0px 15px;
-`
-
-const FAQContainer = styled.div``
+import {
+  Container,
+  Wrapper,
+} from './Shared/DocumenationTabs'
 
 const Question = styled.p`
   font-family: ${props => props.theme.Fonts.type.base};
@@ -37,25 +35,24 @@ const FAQs = [
 {q: 'How do I post a story?', a: 'Contributors are the cream of the crop, representing our most passionate users. To be labeled with the “Contributor” star on your profile, you must first publish 200 stories or more. To learn about other eligibility requirements, click here/ send us an email at contributors@herotraveler.com'},
 ]
 
-export default class FAQ extends React.Component {
-
+export default class FAQ extends Component {
   renderFAQs(FAQs) {
     return FAQs.map((FAQ, index) => {
       return (
-        <FAQContainer key={index}>
+        <Container key={index}>
           <Question>{FAQ.q}</Question>
           <Answer>{FAQ.a}</Answer>
-        </FAQContainer>
+        </Container>
       )
     })
   }
 
   render() {
     return (
-      <Container>
+      <Wrapper>
         <HorizontalDivider color='light-grey'/>
         {this.renderFAQs(FAQs)}
-      </Container>
+      </Wrapper>
     )
   }
 }

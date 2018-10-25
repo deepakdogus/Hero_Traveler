@@ -1543,10 +1543,10 @@
 			buildRules = (
 			);
 			dependencies = (
+				948D40A01EA6528B00DE9ED9 /* PBXTargetDependency */,
 				91F19967204F2AD300EC7125 /* PBXTargetDependency */,
 				91FC449D203C96C900ED309A /* PBXTargetDependency */,
 				916DBF64203C8A3C0097DE98 /* PBXTargetDependency */,
-				948D40A01EA6528B00DE9ED9 /* PBXTargetDependency */,
 			);
 			name = HeroTravelerMobile;
 			productName = "Hello World";

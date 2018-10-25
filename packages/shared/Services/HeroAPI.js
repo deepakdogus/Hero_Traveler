@@ -5,6 +5,7 @@ import {normalize, schema} from 'normalizr'
 import {getToken as getPushToken} from '../../Config/PushConfig'
 import env from '../../Config/Env'
 import CloudinaryAPI from '../../Services/CloudinaryAPI'
+import _ from 'lodash'
 
 const User = new schema.Entity('users')
 const Category = new schema.Entity('categories')
@@ -34,10 +35,10 @@ function putMediaResponse(api, url, response, timeout){
   })
 }
 
-function safeNormalize(response, schema){
+function safeNormalize(response, schema, path = 'data'){
   if (!response.ok) return response
   return Object.assign({}, response, {
-    data: normalize(response.data, schema)
+    data: normalize(_.get(response, path), schema)
   })
 }
 
@@ -170,7 +171,6 @@ const create = () => {
     return api.get(`user/verify-email/${token}`)
   }
 
-
   const getMe = () => {
     return api.get('user')
     .then(response => safeNormalize(response, User))
@@ -187,7 +187,13 @@ const create = () => {
 
   const getUserFeed = (userId, params) => {
     return api.get(`story/user/${userId}/feed`, params)
-    .then(response => safeNormalize(response, [Story]))
+    .then(response => {
+      if (!response.ok) return response
+      return {
+        count: response.data.count,
+        ...safeNormalize(response, [Story], 'data.feed'),
+      }
+    })
   }
 
   const getUserStories = (userId, params) => {

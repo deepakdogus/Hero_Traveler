@@ -8,7 +8,7 @@ import changeCountOfType from '../helpers/changeCountOfTypeHelper'
 const { Types, Creators } = createActions({
   storyRequest: ['storyId'],
   feedRequest: ['userId', 'params'],
-  feedSuccess: ['userFeedById'],
+  feedSuccess: ['userFeedById', 'count'],
   feedFailure: ['error'],
   likesAndBookmarksRequest: ['userId'],
   fromUserRequest: ['userId'],
@@ -53,6 +53,7 @@ const initialFetchStatus = () => ({
 export const INITIAL_STATE = Immutable({
   entities: {},
   userFeedById: [],
+  userStoryFeedCount: 9999999999,
   storiesByUserAndId: {},
   storiesByCategoryAndId: {},
   backgroundFailures: {},
@@ -77,13 +78,14 @@ export const feedRequest = (state, { userId, params }) => {
   );
 }
 // successful temperature lookup
-export const feedSuccess = (state, {userFeedById}) => {
+export const feedSuccess = (state, {userFeedById, count}) => {
   return state.merge({
     fetchStatus: {
       fetching: false,
       loaded: true,
     },
     userFeedById,
+    userStoryFeedCount: count,
     error: null
   }, {
     deep: true

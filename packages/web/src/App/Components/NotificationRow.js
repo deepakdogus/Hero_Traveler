@@ -32,6 +32,9 @@ const relevantMetrics = {
 
 const Container = styled.div`
   padding: ${relevantMetrics.containerPadding}px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   cursor: pointer;
 `
 

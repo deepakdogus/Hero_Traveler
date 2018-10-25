@@ -138,7 +138,7 @@ const TravelTipsInput = styled.textarea`
   font-size: 16px;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   width: 100%;
   height: 160px;
   resize: none;

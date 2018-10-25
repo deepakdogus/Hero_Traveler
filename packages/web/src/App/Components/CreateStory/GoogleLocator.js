@@ -18,7 +18,7 @@ const StyledLocation = styled.p`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 600;
   font-size: 14px;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   color: ${props => props.theme.Colors.background};
   margin: 0px;
 `
@@ -27,7 +27,7 @@ const StyledAddress = styled.p`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 14px;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   color: ${props => props.theme.Colors.grey};
   margin: 0px;
   padding-bottom: 10px;

@@ -34,6 +34,7 @@ const SizedRow = styled(Row)`
 const StyledLink = styled(NavLink)`
 ${LinkStyles}
   font-family: ${props => props.theme.Fonts.type.montserrat};
+  letter-spacing: .6px;
   color: ${props => props.theme.Colors.background};
   &:visited {
     color: ${props => props.theme.Colors.background};
@@ -43,6 +44,7 @@ ${LinkStyles}
 const StyledOffsiteLink = styled.a`
   ${LinkStyles}
   font-family: ${props => props.theme.Fonts.type.montserrat};
+  letter-spacing: .6px;
   color: ${props => props.theme.Colors.background};
   &:visited {
     color: ${props => props.theme.Colors.background};
@@ -52,6 +54,7 @@ const StyledOffsiteLink = styled.a`
 const StyledPseudoLink = styled.div`
   ${LinkStyles}
   font-family: ${props => props.theme.Fonts.type.montserrat};
+  letter-spacing: .6px;
   color: ${props => props.theme.Colors.background};
   cursor: pointer;
 `

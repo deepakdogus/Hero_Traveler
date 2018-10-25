@@ -142,6 +142,7 @@ const Title = styled.h3`
   margin: 0;
   cursor: pointer;
   max-width: 400px;
+  letter-spacing: .6px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     max-width: 385.5px;
     font-size: 20px;

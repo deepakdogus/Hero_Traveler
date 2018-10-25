@@ -29,7 +29,7 @@ const Title = styled.p`
     return props.mediaType === 'video' ? '30px' : '65px'
   }};
   color: ${props => props.theme.Colors.snow};
-  letter-spacing: 1.5px;
+  letter-spacing: .6px;
   text-transform: uppercase;
   margin: 0;
 `

@@ -58,6 +58,7 @@ function getBackgroundColor (type, colors) {
 const StyledButton = styled.button`
   cursor: pointer
   font-family: ${props => props.theme.Fonts.type.montserrat};
+  letter-spacing: .6px;
   height: ${props => props.height || 'auto'};
   border-radius: 30px;
   outline: none;
@@ -121,7 +122,7 @@ const Text = styled.p`
   text-align: center;
   font-size: ${props => `${props.type === 'navbar' ? '15' : '16'}px`};
   margin: ${props => `${props.type === 'navbar' ? '3.5' : '2.5'}px 10px`};
-  letter-spacing: 1.2px;
+  letter-spacing: .6px;
 `
 
 /*

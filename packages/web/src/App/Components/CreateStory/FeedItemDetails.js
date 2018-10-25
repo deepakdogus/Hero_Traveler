@@ -39,7 +39,7 @@ export const InputRowContainer = styled(Container)`
 const StyledTitle = styled(Title)`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-size: 28px;
-  letter-spacing: 1.5px;
+  letter-spacing: .6px;
   text-transform: uppercase;
 `
 

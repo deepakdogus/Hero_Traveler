@@ -18,7 +18,7 @@ const Title = styled.p`
   font-weight: 600;
   font-size: 29px;
   line-height: 40px;
-  letter-spacing: .2px;
+  letter-spacing: .6px;
   color: ${props => props.theme.Colors.background};
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 20px;

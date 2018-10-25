@@ -35,6 +35,7 @@ const About = styled(Name)`
 
 const Count = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat}};
+  letter-spacing: .6px;
   margin: 0;
   font-weight: 600;
   font-size: 23px;
@@ -43,6 +44,7 @@ const Count = styled.p`
 
 const CountLabel = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat}};
+  letter-spacing: .6px;
   margin: 0;
   font-weight: 400;
   font-size: 13px;

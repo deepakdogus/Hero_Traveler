@@ -79,11 +79,13 @@
   height: 1.5rem;
   text-align: center;
   font-family: montserrat;
+  letter-spacing: .6px;
 }
 
 .DayPicker-Weekdays {
   display: table-header-group;
   font-family: montserrat;
+  letter-spacing: .6px;
 }
 
 .DayPicker-WeekdaysRow {
@@ -97,6 +99,7 @@
   text-align: center;
   color: #8b9898;
   font-family: montserrat;
+  letter-spacing: .6px;
 }
 
 abbr {
@@ -107,6 +110,7 @@ abbr {
   display: table-row-group;
   font-family: montserrat;
   font-size: 15px;
+  letter-spacing: .6px;
 }
 
 .DayPicker-Week {

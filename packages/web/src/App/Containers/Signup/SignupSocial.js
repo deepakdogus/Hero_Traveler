@@ -37,7 +37,7 @@ export const Title = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-size: 35px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: 1.2px;
+  letter-spacing: .6px;
   margin-bottom: 15px;
 `
 

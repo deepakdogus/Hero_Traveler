@@ -18,7 +18,7 @@ const ExploreText = styled(CenteredText)`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 600;
   font-size: 30px;
-  letter-spacing: 1.2px;
+  letter-spacing: .6px;
   padding: 50px 0px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 18px;

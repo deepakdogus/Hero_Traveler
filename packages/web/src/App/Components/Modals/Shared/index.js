@@ -16,7 +16,7 @@ export const Title = styled.p`
   font-weight: 400;
   font-size: 25px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: 1.2px;
+  letter-spacing: .6px;
   text-align: center;
   font-family: ${props => props.theme.Fonts.type.montserrat}
 `
@@ -25,7 +25,7 @@ export const RightTitle = styled.p`
   font-weight: 400;
   font-size: 20px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: 1.5px;
+  letter-spacing: .6px;
   text-align: center;
   margin: 0;
   padding: 20px;

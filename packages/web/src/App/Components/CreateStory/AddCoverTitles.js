@@ -71,7 +71,7 @@ const IconSubTitle = styled(SubTitle)`
   font-weight: 400;
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-size: 13px;
-  letter-spacing: 1.5px;
+  letter-spacing: .6px;
   color: ${props => props.theme.Colors.redHighlights};
 `
 
@@ -113,7 +113,7 @@ const StyledTitleTextArea = styled.textarea`
   font-size: 38px;
   font-weight: 600;
   line-height: 50px;
-  letter-spacing: 1.5px;
+  letter-spacing: .6px;
   color: ${props => props.theme.Colors.background};
   ::placeholder {
     color: ${props => props.theme.Colors.background};

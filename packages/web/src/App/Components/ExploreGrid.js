@@ -42,7 +42,7 @@ const Title = styled.div`
   font-weight: 400;
   font-size: 18px;
   color: ${props => props.theme.Colors.snow};
-  letter-spacing: 1.2px;
+  letter-spacing: .6px;
   margin: 0;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 12px;

@@ -21,6 +21,7 @@ const Title = styled.p`
   font-size: 38px;
   line-height: 50px;
   color: ${props => props.theme.Colors.background};
+  letter-spacing: .6px;
 `
 
 const GuideTitle = styled(Title)`
@@ -37,7 +38,7 @@ const Subtitle = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 400;
   color: ${props => props.theme.Colors.grey};
-  letter-spacing: .2px;
+  letter-spacing: .6px;
 `
 
 const LocationText = styled(Subtitle)`

@@ -24,7 +24,7 @@ export const BodyText = styled.p`
   font-weight: 400;
   font-size: 18px;
   color: ${props => props.theme.Colors.grey};
-  letter-spacing: .7px;
+  letter-spacing: .6px;
 `
 
 const HeaderOne = styled.h1`

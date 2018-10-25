@@ -25,7 +25,7 @@ import Icon from './Icon'
 
 import OverlayHover from './OverlayHover'
 
-const coverHeight = '257px'
+const coverHeight = '190px'
 
 const Text = styled.span`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
@@ -75,7 +75,10 @@ const VerticalWrapper = styled.div`
 const HorizontalStoryInfoContainer = styled(VerticalCenter)`
   position: relative;
   height: ${coverHeight};
-  width: 400px;
+  width: 285px;
+  @media (max-width: 960px) {
+    width:400px;
+  }
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     height:auto;
     > * {
@@ -140,13 +143,18 @@ const Title = styled.h3`
   display: inline-block;
   margin: 0;
   cursor: pointer;
-  max-width: 400px;
+  max-width: 285px;
   padding: 12px 0;
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+  @media (max-width: 960px) {
     max-width: 385.5px;
     font-size: 20px;
     padding: 0 15px;
   }
+  // @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+  //   max-width: 385.5px;
+  //   font-size: 20px;
+  //   padding: 0 15px;
+  // }
   &:hover {
     color: ${props => props.theme.Colors.grey};
   };
@@ -154,9 +162,12 @@ const Title = styled.h3`
 
 const ImageWrapper = styled.div`
   position: relative;
-  width: 385.5px;
+  width: 285px;
   height: ${coverHeight};
   cursor: pointer;
+  @media (max-width: 960px) {
+    width: 385.5px
+  }
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     max-width:100vw;
     width: 100%;
@@ -257,7 +268,7 @@ const DeleteIcon = styled(Icon)`
 
 const videoThumbnailOptions = {
   video: true,
-  width: 385.5,
+  width: 285,
 }
 
 class FeedItemPreview extends Component {

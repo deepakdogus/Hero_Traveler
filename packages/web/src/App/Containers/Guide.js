@@ -36,7 +36,7 @@ const ContentWrapper = styled.div`
   margin: 0 auto;
   padding-left: 80px;
   padding-right: 80px;
-  max-width: 800px;
+  max-width: 960px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding: 0;
   }

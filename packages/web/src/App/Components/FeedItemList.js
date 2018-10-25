@@ -24,6 +24,12 @@ const VerticalWrapper = styled.div`
 const StyledRow = styled(Row)`
 `
 
+const Spacer = styled.div`
+  width: 285px;
+`
+
+const rowLength = 3
+
 export default class FeedItemList extends React.Component {
   static propTypes = {
     guideId: PropTypes.string,
@@ -63,7 +69,7 @@ export default class FeedItemList extends React.Component {
         We will improve this check to allow 'pagination' will carousel scroll
       */
       if (type === 'suggestions' && index >= 4) return rows
-      if (isHorizontalList && index >= 2 && !isShowAll) return rows
+      if (isHorizontalList && index >= 3 && !isShowAll) return rows
 
       if (!feedItem) return rows
       if (index !== 0 && !isHorizontalList) {
@@ -82,17 +88,24 @@ export default class FeedItemList extends React.Component {
           type={type}
           isStory={this.isStory(feedItem)}
           isVertical={isHorizontalList}
+          isShowAll={isShowAll}
         />
       ))
       return rows
     }, [])
 
+    const withSpacers = (renderedFeedItems) => {
+      const spacerCount = renderedFeedItems.length % rowLength
+      if (spacerCount <= 0) return renderedFeedItems
+      return renderedFeedItems.concat(Array(spacerCount).fill(<Spacer />))
+    }
+
     const Wrapper = isHorizontalList ? StyledRow : VerticalWrapper
     const wrapperProps = isHorizontalList ? { between: 'xs'} : {}
 
     return (
-      <Wrapper {...wrapperProps}>
-        {renderedFeedItems}
+      <Wrapper fluid {...wrapperProps}>
+        {withSpacers(renderedFeedItems)}
       </Wrapper>
     )
   }

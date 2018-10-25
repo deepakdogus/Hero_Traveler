@@ -32,7 +32,7 @@ const HeaderInput = styled.input`
   font-size: 30px;
   border: none;
   outline: none;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   color: ${props => props.theme.Colors.signupGrey};
   &::placeholder{
     color: ${props => props.theme.Colors.signupGrey};
@@ -62,7 +62,7 @@ const Text = styled.p`
   font-size: 18px;
   font-weight: 400;
   line-height: 122px;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   cursor: pointer;
 `
 

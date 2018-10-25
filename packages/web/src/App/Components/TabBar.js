@@ -21,7 +21,7 @@ const ModalText = styled(Text)`
   color: ${props => props.isActive ? props.theme.Colors.background : props.theme.Colors.navBarText};
   border-width: ${props => props.isLast ? '0 0 0 0' : '0 1px 0 0' };
   border-style: solid;
-  letter-spacing: 1.5px;
+  letter-spacing: .6px;
   border-color:  ${props => props.theme.Colors.navBarText};
   padding: ${props => props.isModal ? '0 15px 0 15px' : '0 25px 0 25px'};
   margin: 0;
@@ -32,7 +32,7 @@ const DefaultText = styled(VerticalCenter)`
   color: ${props => props.isActive ? props.theme.Colors.background : props.theme.Colors.navBarText};
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-size: 13px;
-  letter-spacing: 1.2px;
+  letter-spacing: .6px;
   border-width: ${props => !props.isOnlyTab && props.isActive ? '0 0 5px 0' : '0' };
   border-color:  ${props => props.theme.Colors.redHighlights};
   margin: 0;

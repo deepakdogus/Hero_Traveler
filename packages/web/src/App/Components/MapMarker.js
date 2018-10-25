@@ -18,6 +18,7 @@ const CoverImage = styled.img`
 
 const Title = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat};
+  letter-spacing: .6px;
   font-weight: 600;
   font-size: 14px;
   color: ${props => props.theme.Colors.background};

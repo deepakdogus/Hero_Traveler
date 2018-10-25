@@ -36,7 +36,7 @@ const HashtagText = styled.p`
   font-weight: 400;
   font-size: 18px;
   color: ${props => props.theme.Colors.redHighlights};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   text-decoration: none;
   margin-botton: 45px;
 `

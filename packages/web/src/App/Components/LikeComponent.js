@@ -10,7 +10,7 @@ const Likes = styled.span`
   font-family: ${props => props.horizontal ? props.theme.Fonts.type.sourceSansPro : props.theme.Fonts.type.montserrat};
   font-size: ${props => props.horizontal ? '15px' : '12px'};
   font-weight: 400;
-  letter-spacing: ${props => props.horizontal ? '.7px' : '1.5px'};
+  letter-spacing: ${props => props.horizontal ? '.2x' : '.6px'};
   margin: ${props => props.horizontal ? '0 5px 0 0' : 'auto 5px'};
 `
 

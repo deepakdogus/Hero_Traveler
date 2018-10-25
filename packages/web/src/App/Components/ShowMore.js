@@ -8,7 +8,7 @@ const More = styled.p`
   color: ${props => props.theme.Colors.background};
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-size: 15px;
-  letter-spacing: 1.2px;
+  letter-spacing: .6px;
   margin: 100px 0 8px 0;
   text-align: center;
 `

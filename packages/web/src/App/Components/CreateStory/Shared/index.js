@@ -4,7 +4,7 @@ export const Title = styled.p`
   font-weight: 400;
   font-size: 25px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: 1.2px;
+  letter-spacing: .6px;
   text-align: center;
 `
 
@@ -13,7 +13,7 @@ export const SubTitle = styled.p`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 20px;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
 `
 
 export const CloseXContainer = styled.div`
@@ -28,7 +28,7 @@ export const Input = styled.input`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   width: 80%;
   text-align: center;
   border: none;
@@ -42,4 +42,5 @@ export const StyledCaptionInput = styled(Input)`
   padding-top: 20px;
   font-size: 18px;
   font-style: italic
+  letter-spacing: .2px;
 `

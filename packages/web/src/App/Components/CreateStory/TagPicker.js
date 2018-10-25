@@ -23,7 +23,7 @@ const Tag = styled.p`
   font-family: ${props => props.theme.Fonts.type.base};
   color: ${props => props.theme.Colors.background};
   font-weight: 600;
-  letter-spacing: 0.7px;
+  letter-spacing: 0.2px;
   font-size: 14px;
   padding: 8px 0;
   margin: 0;

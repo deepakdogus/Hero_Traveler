@@ -20,7 +20,7 @@ const CategoryTitle = styled.p`
   font-weight: 400;
   font-size: 59px;
   color: ${props => props.theme.Colors.snow};
-  letter-spacing: 1.5px;
+  letter-spacing: .6px;
   text-transform: uppercase;
   margin: 0;
 `
@@ -49,11 +49,12 @@ const StyledRoundedButton = styled(RoundedButton)`
   text-transform: uppercase;
   width: 160px;
   padding: 9px;
+  letter-spacing: .6px;
 `
 
 const textProps = `
   font-size: 14px;
-  letter-spacing: 1.5px;
+  letter-spacing: .6px;
 `
 
 export default class CategoryHeader extends React.Component {

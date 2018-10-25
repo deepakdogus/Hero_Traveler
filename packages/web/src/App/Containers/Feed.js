@@ -23,7 +23,7 @@ const FeedText = styled(CenteredText)`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 600;
   font-size: 30px;
-  letter-spacing: 1.5px;
+  letter-spacing: .6px;
   padding: 30px 0 0 0;
   @media (max-width: ${sizes.tablet}px){
     padding: 20px;

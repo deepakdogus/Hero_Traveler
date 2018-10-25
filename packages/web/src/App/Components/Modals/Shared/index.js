@@ -5,7 +5,7 @@ import Icon from '../../Icon'
 const basicTextStyle = `
   font-weight: 400;
   font-size: 16px;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
 `
 
 export const Container = styled.div`
@@ -16,7 +16,7 @@ export const Title = styled.p`
   font-weight: 400;
   font-size: 25px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: 1.2px;
+  letter-spacing: .6px;
   text-align: center;
   font-family: ${props => props.theme.Fonts.type.montserrat}
 `
@@ -25,7 +25,7 @@ export const RightTitle = styled.p`
   font-weight: 400;
   font-size: 20px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: 1.5px;
+  letter-spacing: .6px;
   text-align: center;
   margin: 0;
   padding: 20px;
@@ -38,6 +38,7 @@ export const Text = styled.p`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   color: ${props => props.theme.Colors.grey};
   text-align: center;
+  letter-spacing: .2px;
 `
 
 export const HasAccount = styled(Text)`
@@ -54,6 +55,7 @@ export const SignupText = styled.span`
   color: ${props => props.theme.Colors.redHighlights};
   display: inline;
   cursor: pointer;
+  letter-spacing: .2px;
 `
 
 export const StyledInput = styled.input`
@@ -65,6 +67,7 @@ export const StyledInput = styled.input`
   border-color: ${props => props.theme.Colors.dividerGrey};
   margin-bottom: 25px;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  letter-spacing: .2px;
 `
 
 //RightModal Styles
@@ -79,7 +82,7 @@ export const UserNameStyles = `
   font-weight: 600;
   font-size: 18px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   margin: 0;
   cursor: pointer;
 `
@@ -92,7 +95,7 @@ export const MessageContent = styled.p`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 16px;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   margin: 0;
   color: ${props => props.theme.Colors.grey};
 `
@@ -101,7 +104,7 @@ export const Timestamp = styled.p`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 14px;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   margin: 0;
   color: ${props => props.theme.Colors.grey};
 `
@@ -118,6 +121,7 @@ export const RightModalCloseX = styled(Icon)`
 export const ErrorMessage = styled(Text)`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   color: ${props => props.theme.Colors.redHighlights};
+  letter-spacing: .2px;
 `
 
 export const FetchingMessage = styled(ErrorMessage)`

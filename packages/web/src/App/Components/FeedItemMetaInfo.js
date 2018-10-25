@@ -35,7 +35,7 @@ const Text = styled.p`
   font-weight: 600;
   font-size: 18px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
 `
 
 const Label = styled(Text)`
@@ -70,7 +70,7 @@ const StyledLink = styled(NavLink)`
   font-weight: 400;
   font-size: 18px;
   color: ${props => props.theme.Colors.redHighlights};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   text-decoration: none;
 `
 

@@ -84,7 +84,7 @@ const CommentContent = styled.p`
   font-weight: 400;
   font-size: 16px;
   flex-wrap: wrap;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   margin: 0;
   color: ${props => props.theme.Colors.grey};
 `
@@ -93,7 +93,7 @@ const NotificationContent = styled.p`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 16px;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   margin: 0;
   color: ${props => props.theme.Colors.background};
 `

@@ -40,7 +40,7 @@ const StyledSpan = styled.span`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 18px;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   position: absolute;
   line-height: 30px;
   bottom: 0;

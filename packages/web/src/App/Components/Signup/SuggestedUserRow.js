@@ -27,14 +27,14 @@ const UserName = styled.p`
   font-weight: 600;
   font-size: 18px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   margin: 0;
 `
 
 const Followers = styled.p`
   font-weight: 400;
   font-size: 16px;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   margin: 0;
   color: ${props => props.theme.Colors.grey};
 `

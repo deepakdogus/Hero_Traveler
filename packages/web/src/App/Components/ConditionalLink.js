@@ -18,7 +18,7 @@ const ShouldEditLink = styled.p`
   color: white;
   font-family: 'montserrat';
   font-size: 15px;
-  letter-spacing: 1.2px;
+  letter-spacing: .6px;
   border-bottom-width: 3px;
   border-bottom-color: transparent;
   border-bottom-style: solid;
@@ -28,7 +28,7 @@ const ShouldEditLogo = styled.div`
   color: white;
   font-family: 'montserrat';
   font-size: 15px;
-  letter-spacing: 1.2px;
+  letter-spacing: .6px;
   ${props => {
     props.noBorder ? 'null' :
    `border-bottom-width: 3px;

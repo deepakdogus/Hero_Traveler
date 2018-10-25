@@ -16,6 +16,7 @@ const InputContainer = styled.div`
 const CreateBoardStyledInput = styled(StyledInput)`
   font-family: ${props => props.theme.Fonts.type.base};
   font-size: 18px;
+  letter-spacing: .2px;
   padding-bottom: 15px;
   padding-left: 0px;
   outline: none;

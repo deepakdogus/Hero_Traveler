@@ -86,6 +86,14 @@ class Signup extends React.Component {
     this.props.openGlobalModal('login')
   }
 
+  openTerms = () => {
+    this.props.openGlobalModal('documentation', {page: 'Terms'} )
+  }
+
+  openPrivacy = () => {
+    this.props.openGlobalModal('documentation', {page: 'Privacy'} )
+  }
+
   render() {
     let {
       signupReduxFetching,
@@ -142,7 +150,7 @@ class Signup extends React.Component {
           {(signupReduxError && !signupReduxFetching) &&
             <SignupErrorText>{signupReduxError}</SignupErrorText>
           }
-          <ToSText>By continuing, you accept the <SmallBold>Terms of Use</SmallBold> and <SmallBold>Privacy Policy</SmallBold></ToSText>
+          <ToSText >By continuing, you accept the <SmallBold onClick={this.openTerms}>Terms of Use</SmallBold> and <SmallBold onClick={this.openPrivacy}>Privacy Policy</SmallBold></ToSText>
           <RoundedButton
             text='SIGN UP'
             width='100%'

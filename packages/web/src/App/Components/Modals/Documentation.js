@@ -27,6 +27,11 @@ class Documentation extends Component {
     }
   }
 
+  componentDidMount () {
+    if (this.props.globalModalParams.page === 'Privacy') this.setState({ activeTab: 'Privacy Policy'})
+    if (this.props.globalModalParams.page === 'Terms') this.setState({ activeTab: 'Terms & Conditions'})
+  }
+
   onClickTab = (event) => {
     let tab = event.target.innerHTML.split('&amp;').join('&')
     if (this.state.activeTab !== tab) this.setState({ activeTab: tab })

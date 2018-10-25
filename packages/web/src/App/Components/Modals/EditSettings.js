@@ -27,7 +27,6 @@ const DeleteContainer = styled.div`
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding: 0;
   }
-<<<<<<< HEAD
 `
 
 const DeleteTextContainer = styled.div`
@@ -54,8 +53,6 @@ const DeleteButton = styled.div`
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding: 25px;
   } 
-=======
->>>>>>> 1f7cd0bfe284ea83ec1a40ae59e082ef74b004e1
 `
 
 const accountInputs = [

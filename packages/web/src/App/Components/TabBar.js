@@ -1,13 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-<<<<<<< HEAD
 import {Row} from './FlexboxGrid'
 import {Text} from './Modals/Shared'
 import VerticalCenter from './VerticalCenter'
-=======
-import { Text } from './Modals/Shared'
->>>>>>> 1f7cd0bfe284ea83ec1a40ae59e082ef74b004e1
 
 const Container = styled.div`
   background-color: ${props => props.whiteBG ? props.theme.Colors.snow : props.theme.Colors.lightGreyAreas};
@@ -24,10 +20,7 @@ const StyledRow = styled.div`
 const TabContainer = styled.div`
   margin: ${props => props.isModal ? '0' : '0px 10px'};
   cursor: pointer;
-<<<<<<< HEAD
   min-width: 100px;
-=======
->>>>>>> 1f7cd0bfe284ea83ec1a40ae59e082ef74b004e1
   flex-shrink: ${props => props.isModal ? '1' : 'auto'};
   flex-grow: ${props => props.isModal ? '1' : 'auto'};
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {

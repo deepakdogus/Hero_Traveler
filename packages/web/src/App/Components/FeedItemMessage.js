@@ -5,7 +5,7 @@ import styled from 'styled-components'
 const Text = styled.span`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   font-size: 25px;
   color: ${props => props.theme.Colors.grey};
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {

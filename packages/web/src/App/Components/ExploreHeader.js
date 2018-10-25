@@ -18,7 +18,7 @@ const Tagline = styled.p`
   font-weight: 300;
   font-size: 40px;
   color: ${props => props.theme.Colors.snow};
-  letter-spacing: .9px;
+  letter-spacing: .2px;
   margin: 0 0 24px 0;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 24px;

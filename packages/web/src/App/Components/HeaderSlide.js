@@ -77,7 +77,7 @@ const StoryInfo = styled.span`
   font-weight: 400;
   font-size: 16px;
   color: ${props => props.theme.Colors.snow};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   display: inline-block;
 `
 
@@ -87,7 +87,7 @@ const Divider = styled.div`
   background-color: ${props => props.theme.Colors.snow};
   margin-left: 7.5px;
   margin-right: 7.5px;
-  margin-top: 1.5px;
+  margin-top: .2px;
   height: 20px;
 `
 

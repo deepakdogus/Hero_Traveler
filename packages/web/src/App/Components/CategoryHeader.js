@@ -54,7 +54,7 @@ const StyledRoundedButton = styled(RoundedButton)`
 
 const textProps = `
   font-size: 14px;
-  letter-spacing: 1.5px;
+  letter-spacing: .6px;
 `
 
 export default class CategoryHeader extends React.Component {

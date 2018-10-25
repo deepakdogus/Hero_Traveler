@@ -12,7 +12,7 @@ const Question = styled.p`
   font-weight: 600;
   font-size: 16px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
 `
 
 const Answer = styled.p`
@@ -20,7 +20,7 @@ const Answer = styled.p`
   font-weight: 400;
   font-size: 16px;
   color: ${props => props.theme.Colors.bioGrey};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
 `
 
 const FAQs = [

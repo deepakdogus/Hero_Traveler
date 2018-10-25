@@ -51,7 +51,7 @@ const CreateText = styled.p`
   font-weight: 600;
   font-size: 18px;
   color: ${props => props.theme.Colors.redLight};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   margin: 0;
 `
 

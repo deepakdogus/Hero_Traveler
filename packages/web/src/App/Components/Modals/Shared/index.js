@@ -38,6 +38,7 @@ export const Text = styled.p`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   color: ${props => props.theme.Colors.grey};
   text-align: center;
+  letter-spacing: .2px;
 `
 
 export const HasAccount = styled(Text)`
@@ -54,6 +55,7 @@ export const SignupText = styled.span`
   color: ${props => props.theme.Colors.redHighlights};
   display: inline;
   cursor: pointer;
+  letter-spacing: .2px;
 `
 
 export const StyledInput = styled.input`
@@ -65,6 +67,7 @@ export const StyledInput = styled.input`
   border-color: ${props => props.theme.Colors.dividerGrey};
   margin-bottom: 25px;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  letter-spacing: .2px;
 `
 
 //RightModal Styles
@@ -118,6 +121,7 @@ export const RightModalCloseX = styled(Icon)`
 export const ErrorMessage = styled(Text)`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   color: ${props => props.theme.Colors.redHighlights};
+  letter-spacing: .2px;
 `
 
 export const FetchingMessage = styled(ErrorMessage)`

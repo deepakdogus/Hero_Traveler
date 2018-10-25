@@ -32,7 +32,7 @@ const HeaderOne = styled.h1`
   font-weight: 600;
   font-size: 24px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: 1.5px;
+  letter-spacing: .2px;
   &:first-letter {
     text-transform: uppercase;
   }

@@ -12,7 +12,7 @@ import UXActions from '../Redux/UXRedux'
 const LinkStyles = `
   font-weight: 400;
   font-size: 16px;
-  letter-spacing: 1.2px;
+  letter-spacing: .6px;
   text-decoration: none;
   margin-right: 25px;
   margin-bottom: 0;

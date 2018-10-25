@@ -4,7 +4,7 @@ export const Title = styled.p`
   font-weight: 400;
   font-size: 25px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: 1.2px;
+  letter-spacing: .6px;
   text-align: center;
 `
 
@@ -42,4 +42,5 @@ export const StyledCaptionInput = styled(Input)`
   padding-top: 20px;
   font-size: 18px;
   font-style: italic
+  letter-spacing: .2px;
 `

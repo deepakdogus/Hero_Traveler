@@ -32,7 +32,7 @@ const Count = styled.p`
   font-weight: 600;
   font-size: 20px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   margin: 10px 0 0;
 `
 
@@ -40,6 +40,7 @@ const CountLabel = styled(Text)`
   font-size: 13px;
   color: ${props => props.theme.Colors.background};
   margin: 3px 0 0;
+  letter-spacing: .2px;
 `
 
 const CountContainer = styled.div`

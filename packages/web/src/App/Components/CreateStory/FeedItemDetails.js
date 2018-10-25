@@ -77,7 +77,7 @@ export const StyledInput = styled.input`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 18px;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   width: 80%;
   color: ${props => props.theme.Colors.background};
   border-width: 0;
@@ -160,7 +160,7 @@ const styles = {
     fontWeight: 600,
     fontSize: 18,
     color: '#1a1c21',
-    letterSpacing: .7,
+    letterSpacing: .2,
   },
   radioIcon: {
     fill: '#ed1e2e',

@@ -9,7 +9,7 @@ const StyledInputLabel = styled.label`
   display: block;
   font-size: 14px;
   font-weight: 400;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   color:  ${props => props.fontColor === 'background' ? props.theme.Colors.background : props.theme.Colors.navBarText};
   margin-bottom: 8px;
 `
@@ -21,7 +21,7 @@ export const StyledInput = styled.input`
   color: ${props => props.theme.Colors.background};
   font-size: 18px;
   font-weight: 600;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   outline: none;
   padding-bottom: 8px;
   padding-left: 0px;

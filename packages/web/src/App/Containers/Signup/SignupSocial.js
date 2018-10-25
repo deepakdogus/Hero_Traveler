@@ -61,7 +61,7 @@ const SectionText = styled.h4`
   font-size: 16px;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   color: ${props => props.theme.Colors.background};
-  letter-spacing: 1.2px;
+  letter-spacing: .6px;
   background-color: ${props => props.theme.Colors.lightGreyAreas};
   padding: 10px 20px;
 `

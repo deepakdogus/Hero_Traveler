@@ -40,7 +40,7 @@ const Subtitle = styled.p`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
   color: ${props => props.theme.Colors.grey};
-  letter-spacing: .6px;
+  letter-spacing: .2px;
 `
 
 const LocationText = styled(Subtitle)`

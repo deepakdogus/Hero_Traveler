@@ -45,6 +45,16 @@ export default class FeedItemList extends React.Component {
 
   defaultProps = { isHorizontalList: false }
 
+  componentDidUpdate(prevProps) {
+    const feedItemLength = this.props.feedItems.length
+    if (
+      prevProps.feedItems.length === 0
+      && (feedItemLength && feedItemLength < itemsPerPage)
+    ) {
+      this.setState({ hasMore: false })
+    }
+  }
+
   isStory(feedItem) {
     return typeof feedItem.draft === 'boolean'
   }
@@ -91,17 +101,26 @@ export default class FeedItemList extends React.Component {
   }
 
   loadFeedItems = (page) => {
+    const {
+      feedItemCount,
+      activeTab,
+      getTabInfo,
+      feedItems,
+    } = this.props
     this.setState({page})
     const isBeforeLastPage = (
       (page * itemsPerPage) % itemsPerQuery)
       >= (itemsPerQuery - itemsPerPage
     )
-    if (isBeforeLastPage && this.props.activeTab === 'STORIES') {
+    if (isBeforeLastPage && activeTab === 'STORIES') {
       const pageToQuery = ((page * itemsPerPage + itemsPerPage) / itemsPerQuery) + 1
-      this.props.getTabInfo(pageToQuery)
+      getTabInfo(pageToQuery)
     }
-    if (page * itemsPerPage >= this.props.feedItemCount) {
-      this.setState({hasMore: false})
+    if (
+      page * itemsPerPage >= feedItemCount
+      || (!feedItemCount && page * itemsPerPage >= feedItems.length)
+    ) {
+      this.setState({ hasMore: false })
     }
   }
 

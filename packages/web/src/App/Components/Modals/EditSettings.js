@@ -15,6 +15,7 @@ const Container = styled.div``
 const InputContainer = styled.div`
   font-family: ${props => props.theme.Fonts.type.base};
   font-style: none;
+  letter-spacing: .2px;
   padding: 25px;
 `
 
@@ -24,6 +25,7 @@ const DeleteContainer = styled.div`
 
 const DeleteTextContainer = styled.div`
   font-family: ${props => props.theme.Fonts.type.base};
+  letter-spacing: .2px;
   color: ${props => props.theme.Colors.signupGrey};
   padding-top: 15px;
   font-size: 15px;
@@ -38,7 +40,7 @@ const DeleteButton = styled.div`
   border-width: 0 0 1px;
   padding-bottom: 8px;
   width: 100%;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
 `
 
 const accountInputs = [

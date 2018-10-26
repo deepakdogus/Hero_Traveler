@@ -27,7 +27,7 @@ const TwitterIcon = styled(StyledIcon)`
 const SocialMediaText = styled.p`
   font-weight: 400;
   font-size: 16px;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   color: ${props => props.theme.Colors.white};
   margin: 7px 0;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};

@@ -24,7 +24,7 @@ const Text = styled.p`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 600;
   font-size: 15px;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   margin: auto 0px;
 `
 

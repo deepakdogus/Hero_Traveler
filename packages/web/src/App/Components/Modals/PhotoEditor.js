@@ -30,7 +30,7 @@ const StyledTitle = styled(Title)`
   font-size: 18px;
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 400;
-  letter-spacing: 1.5px;
+  letter-spacing: .6px;
 `
 
 const ButtonRow = styled(Row)`

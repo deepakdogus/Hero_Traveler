@@ -15,7 +15,7 @@ const StyledTitle = styled(Title)`
   font-size: 16px;
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 600;
-  letter-spacing: .7px;
+  letter-spacing: .6px;
 `
 
 const ButtonRow = styled(Row)`

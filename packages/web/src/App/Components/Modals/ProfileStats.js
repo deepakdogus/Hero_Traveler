@@ -43,7 +43,7 @@ const Points = styled.p`
   font-weight: 600;
   font-size: 25px;
   color: ${props => props.theme.Colors.redHighlights};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   margin: 0;
 `
 

@@ -44,7 +44,7 @@ export const SearchIcon = styled(Icon)`
 export const LoginLink = styled.a`
   font-family: 'montserrat';
   color: #ffffff;
-  letter-spacing: 1.5px;
+  letter-spacing: .6px;
   font-size: 13px;
   display: none;
   ${mediaMax.phone`display: inline;`}
@@ -107,7 +107,7 @@ export const MenuLink = (props) => {
         color: 'white',
         fontFamily: 'montserrat',
         fontSize: '15px',
-        letterSpacing: '1.2px',
+        letterSpacing: '.6px',
         borderBottomWidth: '3px',
         borderBottomColor: 'transparent',
         borderBottomStyle: 'solid'

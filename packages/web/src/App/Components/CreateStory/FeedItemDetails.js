@@ -39,7 +39,7 @@ export const InputRowContainer = styled(Container)`
 const StyledTitle = styled(Title)`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-size: 28px;
-  letter-spacing: 1.5px;
+  letter-spacing: .6px;
   text-transform: uppercase;
 `
 
@@ -57,7 +57,7 @@ const DetailLabel = styled.label`
   font-weight: 600;
   font-size: 18px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   padding-left: 2px;
 `
 
@@ -77,7 +77,7 @@ export const StyledInput = styled.input`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 18px;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   width: 80%;
   color: ${props => props.theme.Colors.background};
   border-width: 0;
@@ -138,7 +138,7 @@ const TravelTipsInput = styled.textarea`
   font-size: 16px;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   width: 100%;
   height: 160px;
   resize: none;
@@ -160,7 +160,7 @@ const styles = {
     fontWeight: 600,
     fontSize: 18,
     color: '#1a1c21',
-    letterSpacing: .7,
+    letterSpacing: .2,
   },
   radioIcon: {
     fill: '#ed1e2e',

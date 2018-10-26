@@ -43,7 +43,7 @@ import com.herotravelermobile.editor.event.OnNewlineRequest
 import com.herotravelermobile.editor.event.OnReplaceRangeRequest
 import com.herotravelermobile.editor.event.OnSelectionChangeRequest
 import com.herotravelermobile.editor.model.DraftJsSelection
-import java.util.*
+import java.util.LinkedList
 
 /**
  * Manages instances of TextInput.
@@ -71,7 +71,7 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
 
     public override fun createViewInstance(context: ThemedReactContext): RNDJDraftJSEditor {
         return RNDJDraftJSEditor(context).apply {
-            eventSender = createEventSender(this)
+            editText.eventSender = createEventSender(editText)
         }
     }
 
@@ -164,7 +164,7 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
     override fun updateExtraData(view: RNDJDraftJSEditor, extraData: Any) {
         if (extraData is ReactTextUpdate) {
 
-            view.setPadding(
+            view.editText.setPadding(
                     extraData.paddingLeft.toInt(),
                     extraData.paddingTop.toInt(),
                     extraData.paddingRight.toInt(),
@@ -175,20 +175,20 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
                 /*val spannable = extraData.text
                 TextInlineImageSpan.possiblyUpdateInlineImageSpans(spannable, view)*/
             }
-            view.updateText(extraData)
+            view.editText.updateText(extraData)
         }
     }
 
     @ReactProp(name = "onContentSizeChange", defaultBoolean = false)
     fun setOnContentSizeChange(view: RNDJDraftJSEditor, onContentSizeChange: Boolean) {
-        view.contentSizeWatcher =
+        view.editText.contentSizeWatcher =
                 if (onContentSizeChange)
-                    ReactContentSizeWatcher(view)
+                    ReactContentSizeWatcher(view.editText)
                 else
                     null
     }
 
-    private inner class ReactContentSizeWatcher(private val editText: RNDJDraftJSEditor) : ContentSizeWatcher {
+    private inner class ReactContentSizeWatcher(private val editText: RNDJDraftJSEditText) : ContentSizeWatcher {
         private val eventDispatcher: EventDispatcher = editText.context
                 .getNativeModule(UIManagerModule::class.java).eventDispatcher
         private var mPreviousContentWidth = 0
@@ -212,7 +212,7 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
 
                 eventDispatcher.dispatchEvent(
                         ReactContentSizeChangedEvent(
-                                editText.id,
+                                editText.tag,
                                 PixelUtil.toDIPFromPixel(contentWidth.toFloat()),
                                 PixelUtil.toDIPFromPixel(contentHeight.toFloat())
                         )
@@ -223,35 +223,35 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
 
     @ReactProp(name = "selection")
     fun setSelection(view: RNDJDraftJSEditor, selection: ReadableMap) {
-        view.setSelection(DraftJsSelection(selection))
+        view.editText.setSelection(DraftJsSelection(selection))
     }
 
     @ReactProp(name = "onSelectionChangeRequest")
     fun setOnSelectionChangeRequest(view: RNDJDraftJSEditor, enabled: Boolean) {
-        view.onSelectionChangedEnabled = enabled
+        view.editText.onSelectionChangedEnabled = enabled
     }
 
     @ReactProp(name = "onInsertTextRequest")
     fun setOnInsertTextRequest(view: RNDJDraftJSEditor, enabled: Boolean) {
-        view.onInsertTextEnabled = enabled
+        view.editText.onInsertTextEnabled = enabled
     }
 
     @ReactProp(name = "onBackspaceRequest")
     fun setOnBackspaceRequest(view: RNDJDraftJSEditor, enabled: Boolean) {
-        view.onBackspaceEnabled = enabled
+        view.editText.onBackspaceEnabled = enabled
     }
 
     @ReactProp(name = "onNewlineRequest")
     fun setOnNewlineRequest(view: RNDJDraftJSEditor, enabled: Boolean) {
-        view.onNewlineEnabled = enabled
+        view.editText.onNewlineEnabled = enabled
     }
 
     @ReactProp(name = "onReplaceRangeRequest")
     fun setOnReplaceRangeRequest(view: RNDJDraftJSEditor, enabled: Boolean) {
-        view.onReplaceRangeEnabled = enabled
+        view.editText.onReplaceRangeEnabled = enabled
     }
 
-    private fun createEventSender(view: RNDJDraftJSEditor): Function1<Event<*>, Unit> = { event ->
+    private fun createEventSender(view: RNDJDraftJSEditText): Function1<Event<*>, Unit> = { event ->
         view.context.getNativeModule(UIManagerModule::class.java).eventDispatcher
                 .dispatchEvent(event)
     }
@@ -260,19 +260,19 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
     @ReactProp(name = ViewProps.TEXT_ALIGN)
     fun setTextAlign(view: RNDJDraftJSEditor, textAlign: String?) {
         when (textAlign) {
-            null, "auto" -> view.setGravityHorizontal(Gravity.NO_GRAVITY)
-            "left" -> view.setGravityHorizontal(Gravity.LEFT)
-            "right" -> view.setGravityHorizontal(Gravity.RIGHT)
-            "center" -> view.setGravityHorizontal(Gravity.CENTER_HORIZONTAL)
+            null, "auto" -> view.editText.setGravityHorizontal(Gravity.NO_GRAVITY)
+            "left" -> view.editText.setGravityHorizontal(Gravity.LEFT)
+            "right" -> view.editText.setGravityHorizontal(Gravity.RIGHT)
+            "center" -> view.editText.setGravityHorizontal(Gravity.CENTER_HORIZONTAL)
             "justify" -> // Fallback gracefully for cross-platform compat instead of error
-                view.setGravityHorizontal(Gravity.LEFT)
+                view.editText.setGravityHorizontal(Gravity.LEFT)
             else -> throw JSApplicationIllegalArgumentException("Invalid textAlign: $textAlign")
         }
     }
 
     @ReactProp(name = ViewProps.FONT_SIZE, defaultFloat = ViewDefaults.FONT_SIZE_SP)
     fun setFontSize(view: RNDJDraftJSEditor, fontSize: Float) {
-        view.setTextSize(
+        view.editText.setTextSize(
                 TypedValue.COMPLEX_UNIT_PX,
                 Math.ceil(PixelUtil.toPixelFromSP(fontSize).toDouble()).toInt().toFloat()
         )
@@ -281,9 +281,9 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
     @ReactProp(name = ViewProps.COLOR, customType = "Color")
     fun setColor(view: RNDJDraftJSEditor, color: Int?) {
         if (color == null) {
-            view.setTextColor(DefaultStyleValuesUtil.getDefaultTextColor(view.context))
+            view.editText.setTextColor(DefaultStyleValuesUtil.getDefaultTextColor(view.context))
         } else {
-            view.setTextColor(color)
+            view.editText.setTextColor(color)
         }
     }
 
@@ -299,9 +299,9 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
             "normal" == fontWeightString || fontWeightNumeric != -1 && fontWeightNumeric < 500 -> Typeface.NORMAL
             else -> UNSET
         }
-        val currentTypeface: Typeface = view.typeface ?: Typeface.DEFAULT
+        val currentTypeface: Typeface = view.editText.typeface ?: Typeface.DEFAULT
         if (fontWeight != currentTypeface.style) {
-            view.setTypeface(currentTypeface, fontWeight)
+            view.editText.setTypeface(currentTypeface, fontWeight)
         }
     }
 
@@ -317,15 +317,15 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
     @ReactProp(name = ViewProps.FONT_FAMILY)
     fun setFontFamily(view: RNDJDraftJSEditor, fontFamily: String) {
         var style = Typeface.NORMAL
-        if (view.typeface != null) {
-            style = view.typeface.style
+        if (view.editText.typeface != null) {
+            style = view.editText.typeface.style
         }
         val newTypeface = ReactFontManager.getInstance().getTypeface(
                 fontFamily,
                 style,
                 view.context.assets
         )
-        view.typeface = newTypeface
+        view.editText.typeface = newTypeface
     }
 
     @SuppressLint("WrongConstant")
@@ -338,41 +338,41 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
             fontStyle = Typeface.NORMAL
         }
 
-        var currentTypeface: Typeface? = view.typeface
+        var currentTypeface: Typeface? = view.editText.typeface
         if (currentTypeface == null) {
             currentTypeface = Typeface.DEFAULT
         }
         if (fontStyle != currentTypeface!!.style) {
-            view.setTypeface(currentTypeface, fontStyle)
+            view.editText.setTypeface(currentTypeface, fontStyle)
         }
     }
 
     @ReactProp(name = "placeholderText")
     fun setPlaceholder(view: RNDJDraftJSEditor, placeholder: String?) {
-        view.hint = placeholder
+        view.editText.hint = placeholder
     }
 
     @ReactProp(name = "placeholderTextColor", customType = "Color")
     fun setPlaceholderTextColor(view: RNDJDraftJSEditor, color: Int?) {
         if (color == null) {
-            view.setHintTextColor(DefaultStyleValuesUtil.getDefaultTextColorHint(view.context))
+            view.editText.setHintTextColor(DefaultStyleValuesUtil.getDefaultTextColorHint(view.context))
         } else {
-            view.setHintTextColor(color)
+            view.editText.setHintTextColor(color)
         }
     }
 
     @ReactProp(name = "selectionColor", customType = "Color")
     fun setSelectionColor(view: RNDJDraftJSEditor, color: Int?) {
         if (color == null) {
-            view.highlightColor = DefaultStyleValuesUtil.getDefaultTextColorHighlight(view.context)
+            view.editText.highlightColor = DefaultStyleValuesUtil.getDefaultTextColorHighlight(view.context)
         } else {
-            view.highlightColor = color
+            view.editText.highlightColor = color
         }
 
-        setCursorColor(view, color)
+        setCursorColor(view.editText, color)
     }
 
-    private fun setCursorColor(view: RNDJDraftJSEditor, color: Int?) {
+    private fun setCursorColor(view: RNDJDraftJSEditText, color: Int?) {
         // Evil method that uses reflection because there is no public API to changes
         // the cursor color programmatically.
         // Based on http://stackoverflow.com/questions/25996032/how-to-change-programatically-edittext-cursor-color-in-android.
@@ -410,12 +410,12 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
 
     @ReactProp(name = "caretHidden", defaultBoolean = false)
     fun setCaretHidden(view: RNDJDraftJSEditor, caretHidden: Boolean) {
-        view.isCursorVisible = !caretHidden
+        view.editText.isCursorVisible = !caretHidden
     }
 
     @ReactProp(name = "selectTextOnFocus", defaultBoolean = false)
     fun setSelectTextOnFocus(view: RNDJDraftJSEditor, selectTextOnFocus: Boolean) {
-        view.setSelectAllOnFocus(selectTextOnFocus)
+        view.editText.setSelectAllOnFocus(selectTextOnFocus)
     }
 
     @ReactProp(name = "underlineColorAndroid", customType = "Color")
@@ -438,23 +438,23 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
     @ReactProp(name = ViewProps.TEXT_ALIGN_VERTICAL)
     fun setTextAlignVertical(view: RNDJDraftJSEditor, textAlignVertical: String?) {
         when (textAlignVertical) {
-            null, "auto" -> view.setGravityVertical(Gravity.NO_GRAVITY)
-            "top" -> view.setGravityVertical(Gravity.TOP)
-            "bottom" -> view.setGravityVertical(Gravity.BOTTOM)
-            "center" -> view.setGravityVertical(Gravity.CENTER_VERTICAL)
+            null, "auto" -> view.editText.setGravityVertical(Gravity.NO_GRAVITY)
+            "top" -> view.editText.setGravityVertical(Gravity.TOP)
+            "bottom" -> view.editText.setGravityVertical(Gravity.BOTTOM)
+            "center" -> view.editText.setGravityVertical(Gravity.CENTER_VERTICAL)
             else -> throw JSApplicationIllegalArgumentException("Invalid textAlignVertical: $textAlignVertical")
         }
     }
 
     @ReactProp(name = "inlineImageLeft")
     fun setInlineImageLeft(view: RNDJDraftJSEditor, resource: String?) {
-        val id = ResourceDrawableIdHelper.getInstance().getResourceDrawableId(view.context, resource)
-        view.setCompoundDrawablesWithIntrinsicBounds(id, 0, 0, 0)
+        val id = ResourceDrawableIdHelper.getInstance().getResourceDrawableId(view.editText.context, resource)
+        view.editText.setCompoundDrawablesWithIntrinsicBounds(id, 0, 0, 0)
     }
 
     @ReactProp(name = "inlineImagePadding")
     fun setInlineImagePadding(view: RNDJDraftJSEditor, padding: Int) {
-        view.compoundDrawablePadding = padding
+        view.editText.compoundDrawablePadding = padding
     }
 
     @ReactProp(name = "editable", defaultBoolean = true)
@@ -464,12 +464,12 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
 
     @ReactProp(name = ViewProps.NUMBER_OF_LINES, defaultInt = 1)
     fun setNumLines(view: RNDJDraftJSEditor, numLines: Int) {
-        view.setLines(numLines)
+        view.editText.setLines(numLines)
     }
 
     @ReactProp(name = "maxLength")
     fun setMaxLength(view: RNDJDraftJSEditor, maxLength: Int?) {
-        val currentFilters = view.filters
+        val currentFilters = view.editText.filters
         var newFilters = EMPTY_FILTERS
 
         if (maxLength == null) {
@@ -505,7 +505,7 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
             }
         }
 
-        view.filters = newFilters
+        view.editText.filters = newFilters
     }
 
     @ReactPropGroup(names = [ViewProps.BORDER_RADIUS, ViewProps.BORDER_TOP_LEFT_RADIUS, ViewProps.BORDER_TOP_RIGHT_RADIUS, ViewProps.BORDER_BOTTOM_RIGHT_RADIUS, ViewProps.BORDER_BOTTOM_LEFT_RADIUS], defaultFloat = YOGA_CONSTANTS_UNDEFINED)
@@ -516,20 +516,20 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
         }
 
         if (index == 0) {
-            view.setBorderRadius(br)
+            view.editText.setBorderRadius(br)
         } else {
-            view.setBorderRadius(br, index - 1)
+            view.editText.setBorderRadius(br, index - 1)
         }
     }
 
     @ReactProp(name = "borderStyle")
     fun setBorderStyle(view: RNDJDraftJSEditor, borderStyle: String?) {
-        view.setBorderStyle(borderStyle)
+        view.editText.setBorderStyle(borderStyle)
     }
 
     @ReactPropGroup(names = [ViewProps.BORDER_WIDTH, ViewProps.BORDER_LEFT_WIDTH, ViewProps.BORDER_RIGHT_WIDTH, ViewProps.BORDER_TOP_WIDTH, ViewProps.BORDER_BOTTOM_WIDTH], defaultFloat = YOGA_CONSTANTS_UNDEFINED)
     fun setBorderWidth(view: RNDJDraftJSEditor, index: Int, width: Float) {
-        view.setBorderWidth(
+        view.editText.setBorderWidth(
                 SPACING_TYPES[index],
                 width.takeIf { YogaConstants.isUndefined(width) } ?: PixelUtil.toPixelFromDIP(width)
         )
@@ -539,26 +539,26 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
     fun setBorderColor(view: RNDJDraftJSEditor, index: Int, color: Int?) {
         val rgbComponent = if (color == null) YogaConstants.UNDEFINED else (color and 0x00FFFFFF).toFloat()
         val alphaComponent = if (color == null) YogaConstants.UNDEFINED else (color.ushr(24)).toFloat()
-        view.setBorderColor(SPACING_TYPES[index], rgbComponent, alphaComponent)
+        view.editText.setBorderColor(SPACING_TYPES[index], rgbComponent, alphaComponent)
     }
 
     @ReactProp(name = "returnKeyType")
     fun setReturnKeyType(view: RNDJDraftJSEditor, returnKeyType: String) {
-        view.setReturnKeyType(returnKeyType)
+        view.editText.setReturnKeyType(returnKeyType)
     }
 
     @ReactProp(name = "disableFullscreenUI", defaultBoolean = false)
     fun setDisableFullscreenUI(view: RNDJDraftJSEditor, disableFullscreenUI: Boolean) {
-        view.setDisableFullscreenUI(disableFullscreenUI)
+        view.editText.setDisableFullscreenUI(disableFullscreenUI)
     }
 
     @ReactProp(name = "returnKeyLabel")
     fun setReturnKeyLabel(view: RNDJDraftJSEditor, returnKeyLabel: String) {
-        view.setImeActionLabel(returnKeyLabel, IME_ACTION_ID)
+        view.editText.setImeActionLabel(returnKeyLabel, IME_ACTION_ID)
     }
 
     override fun addEventEmitters(reactContext: ThemedReactContext, view: RNDJDraftJSEditor) {
-        view.addTextChangedListener(ReactTextInputTextWatcher(reactContext, view))
+        view.editText.addTextChangedListener(ReactTextInputTextWatcher(reactContext, view.editText))
     }
 
     private fun MapBuilder.Builder<String, Any>.put(eventName: String) =
@@ -566,7 +566,7 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
 
     private inner class ReactTextInputTextWatcher(
             reactContext: ReactContext,
-            private val mEditText: RNDJDraftJSEditor
+            private val mEditText: RNDJDraftJSEditText
     ) : TextWatcher {
 
         private val mEventDispatcher: EventDispatcher = reactContext.getNativeModule(UIManagerModule::class.java).eventDispatcher
@@ -593,7 +593,7 @@ class RNDJDraftJSEditorManager : BaseViewManager<RNDJDraftJSEditor, LayoutShadow
 
             mEventDispatcher.dispatchEvent(
                     ReactTextInputEvent(
-                            mEditText.id,
+                            mEditText.tag,
                             newText,
                             oldText,
                             start,

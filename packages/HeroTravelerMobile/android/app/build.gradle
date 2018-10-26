@@ -193,6 +193,10 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.8.5'
 
+    androidTestImplementation "org.mockito:mockito-android:2.11.0"
+    androidTestImplementation ("com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC2", {
+        exclude group: 'org.mockito'
+    })
     androidTestImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
 }

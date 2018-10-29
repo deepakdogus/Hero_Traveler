@@ -57,8 +57,8 @@ class Story extends Component {
     onClickBookmark: PropTypes.func,
     match: PropTypes.object,
     onClickComments: PropTypes.func,
-    openGlobalModal: PropTypes.func,
     onClickAddToGuide: PropTypes.func,
+    onClickFlag: PropTypes.func,
   }
 
   componentDidMount() {
@@ -78,17 +78,19 @@ class Story extends Component {
   }
 
   _onClickLike = () => {
-    if (!this.props.sessionUserId) return
     this.props.onClickLike(this.props.sessionUserId)
   }
 
   _onClickBookmark = () => {
-    if (!this.props.sessionUserId) return
     this.props.onClickBookmark(this.props.sessionUserId)
   }
 
   _onClickComments = () => {
-    this.props.onClickComments()
+    this.props.onClickComments(this.props.sessionUserId)
+  }
+
+  _onClickFlag = (storyId) => {
+    this.props.onClickFlag(this.props.sessionUserId, storyId)
   }
 
   _onClickShare = async () => {
@@ -117,7 +119,6 @@ class Story extends Component {
       isFollowing,
       isBookmarked,
       isLiked,
-      openGlobalModal,
       onClickAddToGuide,
     } = this.props
     if (!story || !author) return null
@@ -149,9 +150,9 @@ class Story extends Component {
           isBookmarked={isBookmarked}
           onClickBookmark={this._onClickBookmark}
           onClickComments={this._onClickComments}
+          onClickFlag={this._onClickFlag}
           userId={sessionUserId}
           reroute={reroute}
-          openGlobalModal={openGlobalModal}
           onClickShare={this._onClickShare}
         />
         <Footer />
@@ -185,16 +186,27 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch, ownProps) {
   const storyId = ownProps.match.params.storyId
+
+  const runIfAuthed = (sessionUserId, fn) =>
+    sessionUserId ? dispatch(fn()) : dispatch(UXActions.openGlobalModal('login'))
+
   return {
     getStory: (storyId, tokens) => dispatch(StoryActions.storyRequest(storyId)),
     reroute: (path) => dispatch(push(path)),
-    followUser: (sessionUserId, userIdToFollow) => dispatch(UserActions.followUser(sessionUserId, userIdToFollow)),
-    unfollowUser: (sessionUserId, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserId, userIdToUnfollow)),
-    onClickLike: (sessionUserId) => dispatch(StoryActions.storyLike(sessionUserId, storyId)),
-    onClickBookmark: (sessionUserId) => dispatch(StoryActions.storyBookmark(sessionUserId, storyId)),
-    onClickComments: () => dispatch(UXActions.openGlobalModal('comments', { storyId })),
-    onClickAddToGuide: () => dispatch(UXActions.openGlobalModal('guidesSelect', { storyId })),
-    openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
+    followUser: (sessionUserId, userIdToFollow) =>
+      runIfAuthed(sessionUserId, () => UserActions.followUser(sessionUserId, userIdToFollow)),
+    unfollowUser: (sessionUserId, userIdToUnfollow) =>
+      runIfAuthed(sessionUserId, () => UserActions.unfollowUser(sessionUserId, userIdToUnfollow)),
+    onClickLike: (sessionUserId) =>
+      runIfAuthed(sessionUserId, () => StoryActions.storyLike(sessionUserId, storyId)),
+    onClickBookmark: (sessionUserId) =>
+      runIfAuthed(sessionUserId, () => StoryActions.storyBookmark(sessionUserId, storyId)),
+    onClickComments: (sessionUserId) =>
+      runIfAuthed(sessionUserId, () => UXActions.openGlobalModal('comments', { storyId })),
+    onClickAddToGuide: (sessionUserId) =>
+      runIfAuthed(sessionUserId, () => UXActions.openGlobalModal('guidesSelect', { storyId })),
+    onClickFlag: (sessionUserId, storyId) =>
+      runIfAuthed(sessionUserId, () => UXActions.openGlobalModal('flagStory', { storyId })),
   }
 }
 

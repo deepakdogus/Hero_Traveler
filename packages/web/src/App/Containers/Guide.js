@@ -75,7 +75,7 @@ class Guide extends Component {
     onClickBookmark: PropTypes.func,
     match: PropTypes.object,
     onClickComments: PropTypes.func,
-    openGlobalModal: PropTypes.func,
+    onClickFlag: PropTypes.func,
 
     guide: PropTypes.object,
     guideStories: PropTypes.arrayOf(PropTypes.object),
@@ -117,18 +117,20 @@ class Guide extends Component {
 
   _onClickLike = () => {
     const {sessionUserId} = this.props
-    if (!this.props.sessionUserId) return
     if (this.props.isLiked) this.props.onClickGuideUnLike(sessionUserId)
     else this.props.onClickGuideLike(sessionUserId)
   }
 
   _onClickBookmark = () => {
-    if (!this.props.sessionUserId) return
     this.props.onClickBookmark(this.props.sessionUserId)
   }
 
   _onClickComments = () => {
-    this.props.onClickComments()
+    this.props.onClickComments(this.props.sessionUserId)
+  }
+
+  _onClickFlag = (storyId) => {
+    this.props.onClickFlag(this.props.sessionUserId, storyId)
   }
 
   _onClickShare = () => {
@@ -320,17 +322,28 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch, ownProps) {
   const guideId = ownProps.match.params.guideId
+
+  const runIfAuthed = (sessionUserId, fn) =>
+    sessionUserId ? dispatch(fn()) : dispatch(UXActions.openGlobalModal('login'))
+
   return {
     getGuide: () => dispatch(GuideActions.getGuideRequest(guideId)),
     getGuideStories: () => dispatch(StoryActions.getGuideStories(guideId)),
     reroute: (path) => dispatch(push(path)),
-    followUser: (sessionUserId, userIdToFollow) => dispatch(UserActions.followUser(sessionUserId, userIdToFollow)),
-    unfollowUser: (sessionUserId, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserId, userIdToUnfollow)),
-    onClickGuideLike: (sessionUserId) => dispatch(GuideActions.likeGuideRequest(guideId, sessionUserId)),
-    onClickGuideUnLike: (sessionUserId) => dispatch(GuideActions.unlikeGuideRequest(guideId, sessionUserId)),
-    // onClickBookmark: (sessionUserId) => dispatch(StoryActions.storyBookmark(sessionUserId, storyId)),
-    onClickComments: () => dispatch(UXActions.openGlobalModal('comments', { guideId })),
-    openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
+    followUser: (sessionUserId, userIdToFollow) =>
+      runIfAuthed(sessionUserId, () => UserActions.followUser(sessionUserId, userIdToFollow)),
+    unfollowUser: (sessionUserId, userIdToUnfollow) =>
+      runIfAuthed(sessionUserId, () => UserActions.unfollowUser(sessionUserId, userIdToUnfollow)),
+    onClickGuideLike: (sessionUserId) =>
+      runIfAuthed(sessionUserId, () => GuideActions.likeGuideRequest(guideId, sessionUserId)),
+    onClickGuideUnLike: (sessionUserId) =>
+      runIfAuthed(sessionUserId, () => GuideActions.unlikeGuideRequest(guideId, sessionUserId)),
+    // onClickBookmark: (sessionUserId) =>
+    //    runIfAuthed(sessionUserId, StoryActions.storyBookmark(sessionUserId, storyId)),
+    onClickComments: (sessionUserId) =>
+      runIfAuthed(sessionUserId, () => UXActions.openGlobalModal('comments', { guideId })),
+    onClickFlag: (sessionUserId, storyId) =>
+      runIfAuthed(sessionUserId, () => UXActions.openGlobalModal('flagStory', { storyId })),
   }
 }
 

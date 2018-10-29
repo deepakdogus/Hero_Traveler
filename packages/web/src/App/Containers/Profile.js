@@ -192,6 +192,10 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch, ownProps) {
   const targetUserId = ownProps.match.params.userId
+
+  const runIfAuthed = (sessionUserId, fn) =>
+    sessionUserId ? dispatch(fn()) : dispatch(UXActions.openGlobalModal('login'))
+
   return {
     getStories: () => dispatch(StoryActions.fromUserRequest(targetUserId)),
     getGuides: () => dispatch(GuideActions.getUserGuides(targetUserId)),
@@ -200,8 +204,10 @@ function mapDispatchToProps(dispatch, ownProps) {
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
     loadBookmarks: () => dispatch(StoryActions.getBookmarks(targetUserId)),
     loadUserFollowing: (userId) => dispatch(UserActions.loadUserFollowing(userId)),
-    followUser: (sessionUserId, userIdToFollow) => dispatch(UserActions.followUser(sessionUserId, userIdToFollow)),
-    unfollowUser: (sessionUserId, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserId, userIdToUnfollow)),
+    followUser: (sessionUserId, userIdToFollow) =>
+      runIfAuthed(sessionUserId, () => UserActions.followUser(sessionUserId, userIdToFollow)),
+    unfollowUser: (sessionUserId, userIdToUnfollow) =>
+      runIfAuthed(sessionUserId, () => UserActions.unfollowUser(sessionUserId, userIdToUnfollow)),
     reroute: (path) => dispatch(push(path)),
     uploadMedia: (userId, file, uploadType) => dispatch(MediaUploadActions.uploadRequest(userId, file, uploadType)),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),

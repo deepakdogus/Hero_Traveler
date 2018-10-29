@@ -185,6 +185,10 @@ export default class FeedItemHeader extends React.Component {
     return getImageUrl(feedItem.coverImage)
   }
 
+  _onClickAddToGuide = () => {
+    this.props.onClickAddToGuide(this.props.sessionUserId)
+  }
+
   _profileReroute = () => {
     this.props.reroute(`/profile/${this.props.author.id}/view`)
   }
@@ -241,7 +245,7 @@ export default class FeedItemHeader extends React.Component {
                     {author.username}
                   </Username>
                 </ClickableContainer>
-                {!isUsersFeedItem && sessionUserId &&
+                {!isUsersFeedItem &&
                   <SpacedVerticalCenter>
                     <RoundedButton
                       margin='none'
@@ -275,7 +279,7 @@ export default class FeedItemHeader extends React.Component {
                 margin='noRight'
                 padding='smallEven'
                 text='Add To Guide'
-                onClick={onClickAddToGuide}
+                onClick={this._onClickAddToGuide}
                 textProps={addToGuideButtonStyles}
               />
             }

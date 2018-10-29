@@ -24,6 +24,7 @@ import {
   validate,
   asyncValidate,
 } from '../../../Shared/Lib/userFormValidation'
+import { tabbarObj as documentationTabs } from '../Documentation'
 
 const SmallBold = styled.strong`
   font-weight: 600;
@@ -88,13 +89,23 @@ class Signup extends React.Component {
     this.props.openGlobalModal('login')
   }
 
-  openTerms = () => {
-    this.props.openGlobalModal('documentation', {page: 'Terms'} )
+  openSignup = () => {
+    this.props.openGlobalModal('signup')
   }
 
-  openPrivacy = () => {
-    this.props.openGlobalModal('documentation', {page: 'Privacy'} )
+  openDocumentationPage = (tab) => {
+    this.props.openGlobalModal(
+      'documentation',
+      {
+        activeTab: documentationTabs[tab],
+        onCloseModal: 'signup',
+      },
+    )
   }
+
+  openTerms = () => this.openDocumentationPage('Terms')
+
+  openPrivacy = () => this.openDocumentationPage('Privacy')
 
   render() {
     let {

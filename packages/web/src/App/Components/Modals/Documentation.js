@@ -9,15 +9,27 @@ import TabBar from '../TabBar'
 import FAQ from './FAQ'
 import TermsAndConditions from './TermsAndConditions'
 import Privacy from './Privacy'
+import UXActions from '../../Redux/UXRedux'
 
 const Container = styled.div``
 
-const tabBarTabs = ['FAQ', 'Terms & Conditions', 'Privacy Policy']
+export const tabbarObj = {
+  FAQ: 'FAQ',
+  Terms: 'Terms & Conditions',
+  Privacy: 'Privacy Policy',
+}
+
+const tabBarTabs = Object.values(tabbarObj)
 
 class Documentation extends Component {
   static propTypes = {
-    closeModal: PropTypes.func,
+    openGlobalModal: PropTypes.func,
+    closeGlobalModal: PropTypes.func,
     globalModalParams: PropTypes.object,
+  }
+
+  defaultProps = {
+    globalModalParams: {},
   }
 
   constructor(props) {
@@ -27,20 +39,21 @@ class Documentation extends Component {
     }
   }
 
-  componentDidMount () {
-    if (this.props.globalModalParams.page === 'Privacy') this.setState({ activeTab: 'Privacy Policy'})
-    if (this.props.globalModalParams.page === 'Terms') this.setState({ activeTab: 'Terms & Conditions'})
-  }
-
   onClickTab = (event) => {
     let tab = event.target.innerHTML.split('&amp;').join('&')
     if (this.state.activeTab !== tab) this.setState({ activeTab: tab })
   }
 
+  handleClose = () => {
+    const onCloseModal = this.props.globalModalParams.onCloseModal
+    if (onCloseModal) this.props.openGlobalModal(onCloseModal)
+    else this.props.closeGlobalModal()
+  }
+
   render() {
     return (
       <Container>
-        <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
+        <RightModalCloseX name='closeDark' onClick={this.handleClose}/>
         <TabBar
           activeTab={this.state.activeTab}
           onClickTab={this.onClickTab}
@@ -58,4 +71,11 @@ class Documentation extends Component {
 
 const mapStateToProps = (state) => ({ globalModalParams: state.ux.params})
 
-export default connect(mapStateToProps, null)(Documentation)
+const mapDispatchToPRops = (dispatch) => {
+  return {
+    closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
+    openGlobalModal: (modalName) => dispatch(UXActions.openGlobalModal(modalName)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToPRops)(Documentation)

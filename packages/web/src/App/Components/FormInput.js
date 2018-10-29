@@ -33,7 +33,7 @@ export default class Input extends React.Component {
           placeholder={placeholder}
           type={type}
         />
-        {!meta.pristine && !meta.active && meta.error &&
+        {meta.touched && !meta.active && meta.error &&
           <ErrorText>{meta.error}</ErrorText>
         }
       </InputWrapper>

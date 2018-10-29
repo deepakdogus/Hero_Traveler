@@ -22,13 +22,9 @@ export class FormTextInput extends React.Component {
   // with redux-form, so most of the parameters (styles, etc.) come
   // directly from the container.
 
-  onFocus = (val) => {
-    this.props.input.onFocus(val)
-  }
+  onFocus = (val) => this.props.input.onFocus(val)
 
-  onBlur = (val) => {
-    this.props.input.onBlur(val)
-  }
+  onBlur = (val) => this.props.input.onBlur(val)
 
   render() {
     const {

@@ -89,10 +89,6 @@ class Signup extends React.Component {
     this.props.openGlobalModal('login')
   }
 
-  openSignup = () => {
-    this.props.openGlobalModal('signup')
-  }
-
   openDocumentationPage = (tab) => {
     this.props.openGlobalModal(
       'documentation',

@@ -23,6 +23,7 @@ export default class ProfileHeader extends React.Component {
     isEdit: PropTypes.bool,
     isUsersProfile: PropTypes.bool,
     toProfileView: PropTypes.func,
+    openGlobalModal: PropTypes.func,
   }
 
   constructor(props) {

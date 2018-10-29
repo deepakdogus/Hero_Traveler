@@ -29,7 +29,7 @@ export const Name = styled.p`
 `
 
 export const Centered = styled(VerticalCenter)`
-  margin-top: 65px;
+  position: relative;
   height: 365px;
 `
 
@@ -43,13 +43,6 @@ export const AvatarWrapper = styled(VerticalCenter)`
 export const ButtonWrapper = styled.div`
   margin-top: 10px;
   text-align: left;
-`
-
-export const BottomLeft = styled.div`
-  position: absolute;
-  left: 20px;
-  bottom: 90px;
-  z-index: 2;
 `
 
 export const BottomLeftText = styled.p`

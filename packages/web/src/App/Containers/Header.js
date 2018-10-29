@@ -100,6 +100,7 @@ class Header extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { currentUserId } = this.props
+
     if (currentUserId && prevProps.currentUserId !== currentUserId) {
       this.props.attemptGetUserFeed(currentUserId)
     }
@@ -113,6 +114,10 @@ class Header extends React.Component {
       })
     }
     if (prevProps.isLoggedIn && !this.props.isLoggedIn) {
+      this.props.reroute('/')
+      this.props.openGlobalModal('login')
+    }
+    if (prevProps.globalModalThatIsOpen === 'documentation' && !this.props.globalModalThatIsOpen && !this.props.isLoggedIn) {
       this.props.reroute('/')
       this.props.openGlobalModal('login')
     }

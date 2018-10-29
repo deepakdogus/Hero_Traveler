@@ -264,9 +264,8 @@ export default class HeaderModals extends React.Component {
         <CenterModal
           isOpen={globalModalThatIsOpen === 'documentation'}
           contentLabel='Documentation'
-          onRequestClose={closeGlobalModal}
         >
-          <Documentation closeModal={closeGlobalModal}/>
+          <Documentation />
         </CenterModal>
         <RightModal
           isOpen={modal === 'inbox'}

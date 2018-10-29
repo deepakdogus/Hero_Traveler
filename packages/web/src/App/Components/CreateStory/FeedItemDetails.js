@@ -181,7 +181,7 @@ const TilesWrapper = styled.div`
   display: flex;
 `
 
-function sortCategories(categories) {
+const sortCategories = (categories) => {
   return categories.sort((a,b) => {
     if (a.title < b.title) return -1
     else return 1
@@ -190,8 +190,11 @@ function sortCategories(categories) {
 
 const formatCategories = (categories) => sortCategories(_.values(categories))
 
-function isSameTag(a, b){
-  return a.title === b.title
+const isSameTag = (a, b) => a.title === b.title
+
+const isSameLocation = (a, b) => {
+  // use coords over names to prevent match of distinct location with duplicated name
+  return a.latitude === b.latitude && a.longitude === b.longitude
 }
 
 const buttons = ['see', 'do', 'eat', 'stay']
@@ -294,20 +297,32 @@ export default class FeedItemDetails extends React.Component {
     this.props.onInputChange({ [type]: updatedTags })
   }
 
-  handleTagRemove = (event, clickedTitle, type = 'categories') => {
+  handleTileRemove = (event, clickedTitle, type = 'categories') => {
     event.stopPropagation()
-    const selectedTagsOfType = this.props.workingDraft[type]
-    const clickedTag = _.find(
-      selectedTagsOfType,
-      tag => tag.title === clickedTitle,
+    const findByTitleFns = {
+      categories: tile => tile.title === clickedTitle,
+      locations: tile => displayLocationDetails(tile) === clickedTitle,
+    }
+    const isSameFns = {
+      categories: isSameTag,
+      locations: isSameLocation,
+    }
+    const selectedTilesOfType = this.props.workingDraft[type]
+
+    const clickedTile = _.find(selectedTilesOfType, findByTitleFns[type])
+    if (!clickedTile) return
+
+    const updatedTiles = _.differenceWith(
+      selectedTilesOfType,
+      [clickedTile], isSameFns[type],
     )
-    const updatedTags = _.differenceWith(selectedTagsOfType, [clickedTag], isSameTag)
+
     if (type === 'categories') {
       this.updateCategoriesList(
-        sortCategories(this.state.categoriesList.concat([clickedTag])),
+        sortCategories(this.state.categoriesList.concat([clickedTile])),
       )
     }
-    this.props.onInputChange({ [type]: updatedTags })
+    this.props.onInputChange({ [type]: updatedTiles })
   }
 
   updateCategoriesList = (newCategoriesList) => {
@@ -358,6 +373,10 @@ export default class FeedItemDetails extends React.Component {
   }
 
   renderLocations() {
+    const handleLocationTileRemove = (event, clickedTitle) => {
+      this.handleTileRemove(event, clickedTitle, 'locations')
+    }
+
     return (
       <TilesWrapper>
       {
@@ -365,6 +384,7 @@ export default class FeedItemDetails extends React.Component {
           return <Tile
             key={index}
             text={displayLocationDetails(location)}
+            handleTileRemove={handleLocationTileRemove}
           />
         })
       }
@@ -470,7 +490,7 @@ export default class FeedItemDetails extends React.Component {
         <TagSelector
           handleTagAdd={this.handleTagAdd}
           loadDefaultTags={this.loadDefaultCategories}
-          handleTagRemove={this.handleTagRemove}
+          handleTileRemove={this.handleTileRemove}
           updateTagsList={this.updateCategoriesList}
           isSameTag={isSameTag}
           Icon={TagIcon}
@@ -483,7 +503,7 @@ export default class FeedItemDetails extends React.Component {
           <TagSelector
             handleTagAdd={this.handleTagAdd}
             loadDefaultTags={this.loadDefaultHashtags}
-            handleTagRemove={this.handleTagRemove}
+            handleTileRemove={this.handleTileRemove}
             updateTagsList={this.updateHashtagsList}
             isSameTag={isSameTag}
             Icon={HashtagIcon}

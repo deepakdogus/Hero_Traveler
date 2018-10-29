@@ -1,9 +1,8 @@
-import React from 'react';
-import {View, Text, TextInput} from 'react-native';
+import React from 'react'
+import {View, Text, TextInput} from 'react-native'
 import PropTypes from 'prop-types'
 
 export class FormTextInput extends React.Component {
-
   static propTypes = {
     input: PropTypes.object,
     meta: PropTypes.object,
@@ -13,6 +12,10 @@ export class FormTextInput extends React.Component {
     styles: PropTypes.object,
     maxLength: PropTypes.number,
     returnKeyType: PropTypes.string,
+    placeholderTextColor: PropTypes.string,
+    autoCapitalize: PropTypes.string,
+    secureTextEntry: PropTypes.bool,
+    keyboardType: PropTypes.string,
   }
 
   // This component is designed to be used in conjunction
@@ -20,11 +23,11 @@ export class FormTextInput extends React.Component {
   // directly from the container.
 
   onFocus = (val) => {
-    this.props.input.onFocus(val);
+    this.props.input.onFocus(val)
   }
 
   onBlur = (val) => {
-    this.props.input.onBlur(val);
+    this.props.input.onBlur(val)
   }
 
   render() {
@@ -33,8 +36,8 @@ export class FormTextInput extends React.Component {
       meta,
       label,
       styles,
-      maxLength
-    } = this.props;
+      maxLength,
+    } = this.props
 
     return (
       <View style={styles.inputWrapper}>
@@ -54,7 +57,7 @@ export class FormTextInput extends React.Component {
           keyboardType={this.props.keyboardType}
           maxLength={maxLength}
         />
-        {!meta.pristine && !meta.active && meta.error &&
+        {meta.touched && !meta.active && meta.error &&
           <View style={styles.errorView}>
             <Text style={styles.error}>{meta.error}</Text>
           </View>
@@ -63,5 +66,3 @@ export class FormTextInput extends React.Component {
     )
   }
 }
-
-

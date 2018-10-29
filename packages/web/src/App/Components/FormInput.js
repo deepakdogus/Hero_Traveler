@@ -21,6 +21,7 @@ export default class Input extends React.Component {
     input: PropTypes.object,
     meta: PropTypes.object,
     placeholder: PropTypes.string,
+    type: PropTypes.string,
   }
 
   render(){
@@ -32,7 +33,7 @@ export default class Input extends React.Component {
           placeholder={placeholder}
           type={type}
         />
-        {meta.touched && !meta.active && meta.error &&
+        {!meta.pristine && !meta.active && meta.error &&
           <ErrorText>{meta.error}</ErrorText>
         }
       </InputWrapper>

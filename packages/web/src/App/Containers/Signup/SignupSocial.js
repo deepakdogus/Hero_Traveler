@@ -37,7 +37,7 @@ export const Title = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-size: 35px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: 1.2px;
+  letter-spacing: .6px;
   margin-bottom: 15px;
 `
 
@@ -46,7 +46,7 @@ export const Subtitle = styled.p`
   font-size: 16px;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   color: ${props => props.theme.Colors.grey};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   margin-bottom: 30px;
 `
 
@@ -61,7 +61,7 @@ const SectionText = styled.h4`
   font-size: 16px;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   color: ${props => props.theme.Colors.background};
-  letter-spacing: 1.2px;
+  letter-spacing: .6px;
   background-color: ${props => props.theme.Colors.lightGreyAreas};
   padding: 10px 20px;
 `

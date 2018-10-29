@@ -32,7 +32,7 @@ const InputFooter = styled.div`
 const StyledFooterInput = styled.input`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   width: 380px;
   color: ${props => props.theme.Colors.grey};
   border: none;

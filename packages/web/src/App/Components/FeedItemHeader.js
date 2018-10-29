@@ -22,6 +22,7 @@ const Title = styled.p`
   font-size: 38px;
   line-height: 50px;
   color: ${props => props.theme.Colors.background};
+  letter-spacing: .6px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding-left: 45px;
     padding-right: 45px;
@@ -44,7 +45,7 @@ const Subtitle = styled.p`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
   color: ${props => props.theme.Colors.grey};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding-left: 45px;
     padding-right: 45px;
@@ -68,7 +69,7 @@ const RedText = styled.span`
   font-weight: 400;
   font-size: 16px;
   color: ${props => props.theme.Colors.redHighlights};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
 `
 
 const Username = styled(RedText)`
@@ -98,7 +99,7 @@ const CoverCaption = styled.p`
   font-weight: 300;
   font-size: 14px;
   color: ${props => props.theme.Colors.bioGrey};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   margin-top: 0px;
 `
 

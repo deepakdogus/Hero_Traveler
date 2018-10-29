@@ -13,7 +13,7 @@ const EditModalText = styled.p`
   font-size: 15px;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   margin: 0;
   padding-left: 25px;
 `

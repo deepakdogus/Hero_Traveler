@@ -60,7 +60,7 @@ const Count = styled.p`
   font-weight: 400;
   font-size: 14px;
   color: ${props => props.theme.Colors.grey};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   margin: 0;
   text-align: center;
 `

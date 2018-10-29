@@ -13,6 +13,7 @@ export const UsernameBaseStyles = `
 export const Username = styled.p`
   ${UsernameBaseStyles};
   font-family: ${props => props.theme.Fonts.type.montserrat}};
+  letter-spacing: .6px;
   color: ${props => props.theme.Colors.background};
 `
 
@@ -21,7 +22,7 @@ export const Name = styled.p`
   font-weight: 400;
   font-size: 18px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   margin: 8px 0px;
   text-align: left;
   font-style: italic;
@@ -53,6 +54,7 @@ export const BottomLeft = styled.div`
 
 export const BottomLeftText = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat}};
+  letter-spacing: .6px;
   font-weight: 400;
   font-size: 12px;
   color: ${props => props.theme.Colors.grey};

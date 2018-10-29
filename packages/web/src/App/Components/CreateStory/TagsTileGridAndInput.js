@@ -23,7 +23,7 @@ const {
 const algoliasearch = algoliasearch_module(
   SEARCH_APP_NAME,
   SEARCH_API_KEY,
-  { protocol: 'https:' }
+  { protocol: 'https:' },
 )
 
 const InputWrapper = styled(Col)`
@@ -52,7 +52,7 @@ const TilesWrapper = styled.div`
 export default class TagsTileGridAndInput extends React.Component {
   static propTypes = {
     selectedTags: PropTypes.arrayOf(PropTypes.object),
-    handleTagRemove: PropTypes.func,
+    handleTileRemove: PropTypes.func,
     updateTagsList: PropTypes.func,
     placeholder: PropTypes.string,
     inputValue: PropTypes.string,
@@ -83,7 +83,7 @@ export default class TagsTileGridAndInput extends React.Component {
         this.props.updateTagsList(_.differenceWith(
           res.hits,
           this.props.selectedTags,
-          this.props.isSameTag
+          this.props.isSameTag,
         ))
       }
     })
@@ -112,14 +112,14 @@ export default class TagsTileGridAndInput extends React.Component {
   }
 
   render() {
-    const {selectedTags, handleTagRemove, type} = this.props
+    const {selectedTags, handleTileRemove, type} = this.props
 
     const renderedTiles = selectedTags.map((tag) => {
       return (
         <Tile
           key={tag.id ? tag.id : tag.title}
           text={tag.title}
-          handleTagRemove={handleTagRemove}
+          handleTileRemove={handleTileRemove}
         />
       )
     })

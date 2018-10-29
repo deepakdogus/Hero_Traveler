@@ -23,7 +23,7 @@ export const BodyText = styled.p`
   font-weight: 400;
   font-size: 18px;
   color: ${props => props.theme.Colors.grey};
-  letter-spacing: 0.7px;
+  letter-spacing: 0.6px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding-left: 45px;
     padding-right: 45px;
@@ -36,7 +36,7 @@ const HeaderOne = styled.h1`
   font-weight: 600;
   font-size: 24px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: 1.5px;
+  letter-spacing: .2px;
   &:first-letter {
     text-transform: uppercase;
   }

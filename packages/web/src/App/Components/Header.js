@@ -103,7 +103,7 @@ const MenuLink = (props) => {
         color: 'white',
         fontFamily: 'montserrat',
         fontSize: '15px',
-        letterSpacing: '1.2px',
+        letterSpacing: '.6px',
         borderBottomWidth: '3px',
         borderBottomColor: 'transparent',
         borderBottomStyle: 'solid'

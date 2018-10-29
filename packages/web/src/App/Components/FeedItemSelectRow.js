@@ -50,7 +50,7 @@ const Text = styled.p`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-size: 18px;
   font-weight: ${props => props.isVertical ? '600' : '400'};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   margin: 0;
   cursor: pointer;
 `

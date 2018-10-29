@@ -17,7 +17,7 @@ export default class TagSelector extends Component {
   static propTypes = {
     handleTagAdd: PropTypes.func,
     loadDefaultTags: PropTypes.func,
-    handleTagRemove: PropTypes.func,
+    handleTileRemove: PropTypes.func,
     updateTagsList: PropTypes.func,
     isSameTag: PropTypes.func,
     Icon: PropTypes.func,
@@ -39,8 +39,8 @@ export default class TagSelector extends Component {
     this.setState({inputText: ''})
   }
 
-  _handleTagRemove = (event, tagTitle) => {
-    this.props.handleTagRemove(event, tagTitle, this.getType())
+  _handleTileRemove = (event, tagTitle) => {
+    this.props.handleTileRemove(event, tagTitle, this.getType())
   }
 
   handleCategoryInputTextChange = (text) => {
@@ -71,7 +71,7 @@ export default class TagSelector extends Component {
         </IconWrapper>
         <TagsTileGridAndInput
           selectedTags={selectedTags}
-          handleTagRemove={this._handleTagRemove}
+          handleTileRemove={this._handleTileRemove}
           inputOnClick={this.togglePicker}
           addTag={this._handleTagAdd}
           updateTagsList={updateTagsList}

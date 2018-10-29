@@ -40,7 +40,7 @@ export const InputRowContainer = styled(Container)`
 const StyledTitle = styled(Title)`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-size: 28px;
-  letter-spacing: 1.5px;
+  letter-spacing: .6px;
   text-transform: uppercase;
 `
 
@@ -67,7 +67,7 @@ const DetailLabel = styled.label`
   font-weight: 600;
   font-size: 18px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   padding-left: 2px;
 `
 
@@ -88,7 +88,7 @@ export const StyledInput = styled.input`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 18px;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   width: 80%;
   color: ${props => props.theme.Colors.background};
   border-width: 0;
@@ -132,7 +132,7 @@ const TravelTipsInput = styled.textarea`
   font-size: 16px;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   width: 100%;
   height: 160px;
   resize: none;
@@ -158,7 +158,7 @@ const styles = {
     fontWeight: 600,
     fontSize: 18,
     color: '#1a1c21',
-    letterSpacing: .7,
+    letterSpacing: .2,
   },
   radioIcon: {
     fill: '#ed1e2e',
@@ -186,7 +186,7 @@ const StyledDivider = styled(HorizontalDivider)`
   }
 `
 
-function sortCategories(categories) {
+const sortCategories = (categories) => {
   return categories.sort((a,b) => {
     if (a.title < b.title) return -1
     else return 1
@@ -195,8 +195,11 @@ function sortCategories(categories) {
 
 const formatCategories = (categories) => sortCategories(_.values(categories))
 
-function isSameTag(a, b){
-  return a.title === b.title
+const isSameTag = (a, b) => a.title === b.title
+
+const isSameLocation = (a, b) => {
+  // use coords over names to prevent match of distinct location with duplicate names
+  return a.latitude === b.latitude && a.longitude === b.longitude
 }
 
 const buttons = ['see', 'do', 'eat', 'stay']
@@ -299,20 +302,32 @@ export default class FeedItemDetails extends React.Component {
     this.props.onInputChange({ [type]: updatedTags })
   }
 
-  handleTagRemove = (event, clickedTitle, type = 'categories') => {
+  handleTileRemove = (event, clickedTitle, type = 'categories') => {
     event.stopPropagation()
-    const selectedTagsOfType = this.props.workingDraft[type]
-    const clickedTag = _.find(
-      selectedTagsOfType,
-      tag => tag.title === clickedTitle,
+    const findByTitleFns = {
+      categories: tile => tile.title === clickedTitle,
+      locations: tile => displayLocationDetails(tile) === clickedTitle,
+    }
+    const isSameFns = {
+      categories: isSameTag,
+      locations: isSameLocation,
+    }
+    const selectedTilesOfType = this.props.workingDraft[type]
+
+    const clickedTile = _.find(selectedTilesOfType, findByTitleFns[type])
+    if (!clickedTile) return
+
+    const updatedTiles = _.differenceWith(
+      selectedTilesOfType,
+      [clickedTile], isSameFns[type],
     )
-    const updatedTags = _.differenceWith(selectedTagsOfType, [clickedTag], isSameTag)
+
     if (type === 'categories') {
       this.updateCategoriesList(
-        sortCategories(this.state.categoriesList.concat([clickedTag])),
+        sortCategories(this.state.categoriesList.concat([clickedTile])),
       )
     }
-    this.props.onInputChange({ [type]: updatedTags })
+    this.props.onInputChange({ [type]: updatedTiles })
   }
 
   updateCategoriesList = (newCategoriesList) => {
@@ -363,6 +378,10 @@ export default class FeedItemDetails extends React.Component {
   }
 
   renderLocations() {
+    const handleLocationTileRemove = (event, clickedTitle) => {
+      this.handleTileRemove(event, clickedTitle, 'locations')
+    }
+
     return (
       <StyledGrid>
         <VerticallyCenterRow>
@@ -372,6 +391,7 @@ export default class FeedItemDetails extends React.Component {
                 return <Tile
                   key={index}
                   text={displayLocationDetails(location)}
+                  handleTileRemove={handleLocationTileRemove}
                 />
               })
             }
@@ -489,7 +509,7 @@ export default class FeedItemDetails extends React.Component {
         <TagSelector
           handleTagAdd={this.handleTagAdd}
           loadDefaultTags={this.loadDefaultCategories}
-          handleTagRemove={this.handleTagRemove}
+          handleTileRemove={this.handleTileRemove}
           updateTagsList={this.updateCategoriesList}
           isSameTag={isSameTag}
           Icon={EnlargedIcon}
@@ -502,7 +522,7 @@ export default class FeedItemDetails extends React.Component {
           <TagSelector
             handleTagAdd={this.handleTagAdd}
             loadDefaultTags={this.loadDefaultHashtags}
-            handleTagRemove={this.handleTagRemove}
+            handleTileRemove={this.handleTileRemove}
             updateTagsList={this.updateHashtagsList}
             isSameTag={isSameTag}
             Icon={HashtagIcon}

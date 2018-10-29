@@ -12,7 +12,7 @@ import UXActions from '../Redux/UXRedux'
 const LinkStyles = `
   font-weight: 400;
   font-size: 16px;
-  letter-spacing: 1.2px;
+  letter-spacing: .6px;
   text-decoration: none;
   margin-right: 25px;
   margin-bottom: 0;
@@ -37,6 +37,7 @@ const SizedRow = styled(Row)`
 const StyledLink = styled(NavLink)`
 ${LinkStyles}
   font-family: ${props => props.theme.Fonts.type.montserrat};
+  letter-spacing: .6px;
   color: ${props => props.theme.Colors.background};
   &:visited {
     color: ${props => props.theme.Colors.background};
@@ -46,6 +47,7 @@ ${LinkStyles}
 const StyledOffsiteLink = styled.a`
   ${LinkStyles}
   font-family: ${props => props.theme.Fonts.type.montserrat};
+  letter-spacing: .6px;
   color: ${props => props.theme.Colors.background};
   &:visited {
     color: ${props => props.theme.Colors.background};
@@ -55,6 +57,7 @@ const StyledOffsiteLink = styled.a`
 const StyledPseudoLink = styled.div`
   ${LinkStyles}
   font-family: ${props => props.theme.Fonts.type.montserrat};
+  letter-spacing: .6px;
   color: ${props => props.theme.Colors.background};
   cursor: pointer;
 `

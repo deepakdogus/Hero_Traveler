@@ -17,7 +17,7 @@ const StyledLocation = styled.p`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 600;
   font-size: 14px;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   color: ${props => props.theme.Colors.background};
   margin: 0px;
 `
@@ -26,7 +26,7 @@ const StyledAddress = styled.p`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 14px;
-  letter-spacing: .7px;
+  letter-spacing: .2px;
   color: ${props => props.theme.Colors.grey};
   margin: 0px;
   padding-bottom: 10px;
@@ -51,7 +51,7 @@ const styles = {
     border: 'none',
     fontWeight: '400',
     fontSize: '18px',
-    letterSpacing: '.7px',
+    letterSpacing: '.2px',
     color: '#1a1c21',
     fontFamily: 'source sans pro',
     margin: '10px 0px',

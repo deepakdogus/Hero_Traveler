@@ -70,14 +70,14 @@ function getHoverColorAndBorder (type, colors) {
       return [colors.whiteAlphaPt4, colors.snow]
     case 'facebook':
     case 'facebookSignup':
-      return [colors.facebook, colors.facebook]
+      return [colors.facebookHover, colors.facebookHover]
     case 'twitter':
     case 'twitterSignup':
-      return [colors.twitterBlue, colors.twitterBlue]
+      return [colors.twitterBlueHover, colors.twitterBlueHover]
     case 'opaqueGrey':
-      return [colors.grey, colors.grey]
+      return [colors.greyHover, colors.greyHover]
     case 'lightGrey':
-      return [colors.signupGrey, colors.signupGrey]
+      return [colors.signupGreyHover, colors.signupGreyHover]
     case 'exploreCategoryFollow':
     case 'categoryFollow':
     case 'backgroundOpaque':

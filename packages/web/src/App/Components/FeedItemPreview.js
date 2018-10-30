@@ -135,7 +135,7 @@ const VerticalLocationPreview = styled(HorizontalLocationPreview)`
 const Title = styled.h3`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 600;
-  font-size: ${props => props.isGuide ? '20px;' : '25px;'};
+  font-size: ${props => props.isGuide ? '20px' : '25px'};
   color: ${props => props.theme.Colors.background};
   display: inline-block;
   margin: 0;

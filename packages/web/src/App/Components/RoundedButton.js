@@ -88,7 +88,7 @@ function getHoverColorAndBorder (type, colors) {
 }
 
 const StyledButton = styled.button`
-  cursor: pointer
+  cursor: pointer;
   font-family: ${props => props.theme.Fonts.type.montserrat};
   letter-spacing: .6px;
   height: ${props => props.height || 'auto'};

@@ -26,7 +26,7 @@ const UserName = styled.p`
   color: ${props => props.theme.Colors.background};
   letter-spacing: .2px;
   margin: 0;
-  cursor: pointer;
+  cursor: ${props => props.onClick ? 'pointer' : 'auto'};
 `
 
 const ProfileDetail = styled(UserName)`
@@ -53,8 +53,13 @@ export default class FollowFollowingRow extends Component {
   }
 
   _handleProfileClick = () => {
-    const {user} = this.props
-    this.props.onProfileClick(user.id || user._id)
+    const {user, onProfileClick} = this.props
+    if (onProfileClick) onProfileClick(user.id || user._id)
+  }
+
+  getOnclick = () => {
+    if (this.props.onProfileClick) return this._handleProfileClick
+    else return undefined
   }
 
   renderImage = () => {
@@ -64,8 +69,7 @@ export default class FollowFollowingRow extends Component {
           avatarUrl={getImageUrl(_.get(user, 'profile.avatar'), 'avatarLarge')}
           size='larger'
           type='profile'
-          onClick={this._handleProfileClick}
-          type='profile'
+          onClick={this.getOnclick()}
         />
     )
   }
@@ -78,12 +82,12 @@ export default class FollowFollowingRow extends Component {
     return (
       <StyledVerticalCenter>
         <UserName
-          onClick={this._handleProfileClick}
+          onClick={this.getOnclick()}
         >
           {user.username}
         </UserName>
         <ProfileDetail
-          onClick={this._handleProfileClick}
+          onClick={this.getOnclick()}
         >
           {detailsText}
         </ProfileDetail>

@@ -196,6 +196,13 @@ const create = () => {
     })
   }
 
+  const getUserFeedOld = (userId, params) => {
+    return api.get(`story/user/${userId}/feed`, {
+      params
+    })
+    .then(response => safeNormalize(response, [Story]))
+  }
+
   const getUserStories = (userId, params) => {
     return api.get(`story/user/${userId}`, params)
     .then(response => safeNormalize(response, [Story]))
@@ -469,6 +476,7 @@ const create = () => {
     signupFacebook,
     connectFacebook,
     getUserFeed,
+    getUserFeedOld,
     createStory,
     getCategories,
     getHashtags,

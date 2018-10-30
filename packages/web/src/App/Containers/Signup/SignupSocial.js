@@ -125,7 +125,6 @@ class SignupSocial extends Component {
       }
       suggestions.push((
         <FollowFollowingRow
-          isSignup
           key={key}
           user={user}
           isFollowing={isFollowing}

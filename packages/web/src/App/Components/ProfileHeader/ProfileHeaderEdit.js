@@ -122,6 +122,7 @@ const Textarea = styled.textarea`
   color: ${props => props.theme.Colors.grey};
   resize: none;
   border: none;
+  outline: none;
 `
 
 const TextareaWrapper = styled.div`
@@ -139,7 +140,7 @@ const InputsWrapper = styled.div`
 function getInitialState(user = {}) {
   return {
     bio: user.bio,
-    fullname: user.profile.fullName,
+    fullname: user.profile ? user.profile.fullName : undefined,
     username: user.username,
     about: user.about,
     modal: undefined,

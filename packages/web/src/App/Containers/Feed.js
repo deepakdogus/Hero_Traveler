@@ -58,12 +58,14 @@ class Feed extends ContainerWithFeedList {
   static propTypes = {
     users: PropTypes.objectOf(PropTypes.object),
     signedUp: PropTypes.bool,
+    storiesCount: PropTypes.number,
   }
 
   componentDidMount(){
     //get user feed on signUp and reset signUp redux
     if (this.props.signedUp) {
-      this.props.getStories(this.props.sessionUserId)
+      const { pagination } = this.state
+      this.props.getStories(this.props.sessionUserId, pagination)
       this.props.signupReset()
     }
   }
@@ -73,12 +75,14 @@ class Feed extends ContainerWithFeedList {
       users,
       stories,
       storiesById,
+      storiesCount,
     } = this.props
     const feedStories = storiesById.map((id) => {
       return stories[id]
     })
 
     const {selectedFeedItems} = this.getSelectedFeedItems()
+    const isStory = this.state.activeTab === 'STORIES'
 
     return (
       <Wrapper>
@@ -92,8 +96,10 @@ class Feed extends ContainerWithFeedList {
           <FeedText>MY FEED</FeedText>
           <StyledDivider />
           <FeedItemList
+            getTabInfo={this.getTabInfo}
             activeTab={this.state.activeTab}
             feedItems={selectedFeedItems}
+            feedItemCount={isStory ? storiesCount : selectedFeedItems.length}
           />
           <Footer />
         </ContentWrapper>
@@ -103,7 +109,11 @@ class Feed extends ContainerWithFeedList {
 }
 
 function mapStateToProps(state) {
-  let { userFeedById, entities: stories } = state.entities.stories
+  let {
+    userFeedById,
+    entities: stories,
+    userStoryFeedCount,
+  } = state.entities.stories
   const guides = state.entities.guides.entities
   const guidesById = state.entities.guides.feedGuidesById || []
 
@@ -114,15 +124,16 @@ function mapStateToProps(state) {
     stories,
     guides,
     users: state.entities.users.entities,
+    storiesCount: userStoryFeedCount,
     signedUp: state.signup.signedUp,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getStories: (sessionUserId) => dispatch(StoryActions.feedRequest(sessionUserId)),
+    getStories: (sessionUserId, _null, params) => dispatch(StoryActions.feedRequest(sessionUserId, params)),
     getGuides: (sessionUserId) => dispatch(GuideActions.guideFeedRequest(sessionUserId)),
-    signupReset: () => dispatch(SignUpActions.signupReset())
+    signupReset: () => dispatch(SignUpActions.signupReset()),
   }
 }
 

@@ -39,7 +39,7 @@ class Category extends ContainerWithFeedList {
 
   componentDidMount() {
     const {category, loadCategories} = this.props
-    this.getTabInfo(this.state.activeTab)
+    this.getTabInfo()
     if (!category) loadCategories()
   }
 

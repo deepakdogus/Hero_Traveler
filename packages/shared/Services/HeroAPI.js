@@ -186,7 +186,7 @@ const create = () => {
   }
 
   const getUserFeed = (userId, params) => {
-    return api.get(`story/user/${userId}/feed`, params)
+    return api.get(`story/user/${userId}/feed/v2`, params)
     .then(response => {
       if (!response.ok) return response
       return {

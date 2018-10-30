@@ -7,6 +7,7 @@ import getStory from './getStory'
 import getUserStories from './getUserStories'
 import create from './create'
 import getUserFeed from './getUserFeed'
+import getUserFeedOld from './getUserFeedOld'
 import getUserLikes from './getUserLikes'
 import getUserLikesOld from './getUserLikesOld'
 import getCategoryStories from './getCategoryStories'
@@ -34,7 +35,8 @@ import uploadDraftVideo from './draft/upload_story_video'
 const router = express.Router()
 
 router.get('/user/:userId', getUserStories)
-router.get('/user/:userId/feed', hasValidOauth, getUserFeed);
+router.get('/user/:userId/feed/v2', hasValidOauth, getUserFeed);
+router.get('/user/:userId/feed', hasValidOauth, getUserFeedOld);
 router.get('/user/:userId/like/v2', hasValidOauth, endpointWrapper(getUserLikes))
 router.get('/user/:userId/like', hasValidOauth, endpointWrapper(getUserLikesOld))
 router.get('/category/:categoryId', endpointWrapper(getCategoryStories));

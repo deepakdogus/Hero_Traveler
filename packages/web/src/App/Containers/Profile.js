@@ -10,6 +10,7 @@ import UXActions from '../Redux/UXRedux'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import StoryActions, {getByUser, getUserFetchStatus, getBookmarksFetchStatus} from '../Shared/Redux/Entities/Stories'
 import MediaUploadActions from '../Shared/Redux/MediaUploadRedux'
+import { runIfAuthed } from '../Lib/authHelpers'
 
 import ContainerWithFeedList from './ContainerWithFeedList'
 import ProfileHeader from '../Components/ProfileHeader/ProfileHeader'
@@ -193,9 +194,6 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch, ownProps) {
   const targetUserId = ownProps.match.params.userId
 
-  const runIfAuthed = (sessionUserId, fn) =>
-    sessionUserId ? dispatch(fn()) : dispatch(UXActions.openGlobalModal('login'))
-
   return {
     getStories: () => dispatch(StoryActions.fromUserRequest(targetUserId)),
     getGuides: () => dispatch(GuideActions.getUserGuides(targetUserId)),
@@ -205,9 +203,9 @@ function mapDispatchToProps(dispatch, ownProps) {
     loadBookmarks: () => dispatch(StoryActions.getBookmarks(targetUserId)),
     loadUserFollowing: (userId) => dispatch(UserActions.loadUserFollowing(userId)),
     followUser: (sessionUserId, userIdToFollow) =>
-      runIfAuthed(sessionUserId, () => UserActions.followUser(sessionUserId, userIdToFollow)),
+      dispatch(runIfAuthed(sessionUserId, UserActions.followUser, [sessionUserId, userIdToFollow])),
     unfollowUser: (sessionUserId, userIdToUnfollow) =>
-      runIfAuthed(sessionUserId, () => UserActions.unfollowUser(sessionUserId, userIdToUnfollow)),
+      dispatch(runIfAuthed(sessionUserId, UserActions.unfollowUser, [sessionUserId, userIdToUnfollow])),
     reroute: (path) => dispatch(push(path)),
     uploadMedia: (userId, file, uploadType) => dispatch(MediaUploadActions.uploadRequest(userId, file, uploadType)),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),

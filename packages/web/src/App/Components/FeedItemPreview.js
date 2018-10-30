@@ -16,6 +16,7 @@ import StoryActions from '../Shared/Redux/Entities/Stories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import UXActions from '../Redux/UXRedux'
 import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
+import { runIfAuthed } from '../Lib/authHelpers'
 
 import Avatar from './Avatar'
 import LikeComponent from './LikeComponent'
@@ -452,19 +453,16 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, props) => {
   const {feedItem} = props
 
-  const runIfAuthed = (sessionUserId, fn) =>
-    sessionUserId ? dispatch(fn()) : dispatch(UXActions.openGlobalModal('login'))
-
   return {
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
     onClickStoryLike: (sessionUserId) =>
-      runIfAuthed(sessionUserId, () => StoryActions.storyLike(sessionUserId, feedItem.id)),
+      dispatch(runIfAuthed(sessionUserId, StoryActions.storyLike, [sessionUserId, feedItem.id])),
     onClickGuideLike: (sessionUserId) =>
-      runIfAuthed(sessionUserId, () => GuideActions.likeGuideRequest(feedItem.id, sessionUserId)),
+      dispatch(runIfAuthed(sessionUserId, GuideActions.likeGuideRequest, [feedItem.id, sessionUserId])),
     onClickGuideUnLike: (sessionUserId) =>
-      runIfAuthed(sessionUserId, () => GuideActions.unlikeGuideRequest(feedItem.id, sessionUserId)),
+      dispatch(runIfAuthed(sessionUserId, GuideActions.unlikeGuideRequest, [feedItem.id, sessionUserId])),
     onClickBookmark: (sessionUserId) =>
-      runIfAuthed(sessionUserId, () => StoryActions.storyBookmark(sessionUserId, feedItem.id)),
+      dispatch(runIfAuthed(sessionUserId, StoryActions.storyBookmark, [sessionUserId, feedItem.id])),
     reroute: (path) => dispatch(push(path)),
   }
 }

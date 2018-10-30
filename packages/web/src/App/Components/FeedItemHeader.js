@@ -147,6 +147,7 @@ const BadgeIcon = styled(Icon)`
 const followButtonStyles = `
   font-size: 10px;
   font-weight: 600;
+  cursor: pointer;
 `
 
 const addToGuideButtonStyles = `
@@ -154,6 +155,7 @@ const addToGuideButtonStyles = `
   font-weight: 600;
   margin-top: 4px;
   margin-bottom: 4px;
+  cursor: pointer;
 `
 
 export default class FeedItemHeader extends React.Component {

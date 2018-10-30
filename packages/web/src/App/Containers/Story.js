@@ -9,6 +9,7 @@ import StoryActions from '../Shared/Redux/Entities/Stories'
 import UserActions from '../Shared/Redux/Entities/Users'
 import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
 import UXActions from '../Redux/UXRedux'
+import { runIfAuthed } from '../Lib/authHelpers'
 
 import FeedItemHeader from '../Components/FeedItemHeader'
 import StoryContentRenderer from '../Components/StoryContentRenderer'
@@ -187,26 +188,23 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch, ownProps) {
   const storyId = ownProps.match.params.storyId
 
-  const runIfAuthed = (sessionUserId, fn) =>
-    sessionUserId ? dispatch(fn()) : dispatch(UXActions.openGlobalModal('login'))
-
   return {
     getStory: (storyId, tokens) => dispatch(StoryActions.storyRequest(storyId)),
     reroute: (path) => dispatch(push(path)),
     followUser: (sessionUserId, userIdToFollow) =>
-      runIfAuthed(sessionUserId, () => UserActions.followUser(sessionUserId, userIdToFollow)),
+      dispatch(runIfAuthed(sessionUserId, UserActions.followUser, [sessionUserId, userIdToFollow])),
     unfollowUser: (sessionUserId, userIdToUnfollow) =>
-      runIfAuthed(sessionUserId, () => UserActions.unfollowUser(sessionUserId, userIdToUnfollow)),
+      dispatch(runIfAuthed(sessionUserId, UserActions.unfollowUser, [sessionUserId, userIdToUnfollow])),
     onClickLike: (sessionUserId) =>
-      runIfAuthed(sessionUserId, () => StoryActions.storyLike(sessionUserId, storyId)),
+      dispatch(runIfAuthed(sessionUserId, StoryActions.storyLike, [sessionUserId, storyId])),
     onClickBookmark: (sessionUserId) =>
-      runIfAuthed(sessionUserId, () => StoryActions.storyBookmark(sessionUserId, storyId)),
+      dispatch(runIfAuthed(sessionUserId, StoryActions.storyBookmark, [sessionUserId, storyId])),
     onClickComments: (sessionUserId) =>
-      runIfAuthed(sessionUserId, () => UXActions.openGlobalModal('comments', { storyId })),
+      dispatch(runIfAuthed(sessionUserId, UXActions.openGlobalModal, ['comments', { storyId }])),
     onClickAddToGuide: (sessionUserId) =>
-      runIfAuthed(sessionUserId, () => UXActions.openGlobalModal('guidesSelect', { storyId })),
+      dispatch(runIfAuthed(sessionUserId, UXActions.openGlobalModal, ['guidesSelect', { storyId }])),
     onClickFlag: (sessionUserId, storyId) =>
-      runIfAuthed(sessionUserId, () => UXActions.openGlobalModal('flagStory', { storyId })),
+      dispatch(runIfAuthed(sessionUserId, UXActions.openGlobalModal, ['flagStory', { storyId }])),
   }
 }
 

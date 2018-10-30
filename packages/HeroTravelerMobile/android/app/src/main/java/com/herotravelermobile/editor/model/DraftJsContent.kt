@@ -80,5 +80,16 @@ data class DraftJsContent(
                     }
         }
     }
+
+    companion object {
+        fun findAddedAtomicBlocks(oldContent: DraftJsContent?, newContent: DraftJsContent): Sequence<String> {
+            val oldKeys = oldContent?.blocks?.map(ContentBlock::key) ?: emptyList()
+            return newContent.blocks
+                    .asSequence()
+                    .filter { it.type == "atomic" }
+                    .map(ContentBlock::key)
+                    .filterNot(oldKeys::contains)
+        }
+    }
 }
 

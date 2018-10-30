@@ -12,12 +12,15 @@ package com.herotravelermobile.editor
 import android.os.Build
 import android.support.v4.view.ViewCompat
 import android.text.Layout
+import android.text.Spannable
+import android.text.Spanned
 import android.view.ViewGroup
 import android.widget.EditText
 import com.facebook.infer.annotation.Assertions
 import com.facebook.react.bridge.JSApplicationIllegalArgumentException
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.common.annotations.VisibleForTesting
+import com.facebook.react.uimanager.ReactShadowNodeImpl
 import com.facebook.react.uimanager.Spacing
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.UIViewOperationQueue
@@ -44,6 +47,17 @@ class RNDraftJsShadowNode : ReactBaseTextShadowNode(), YogaMeasureFunction {
 
     private var blockFontTypes: Map<String, BlockFontType>? = null
 
+    /**
+     * Index in the array is the index of the child to be positioned. Value means priority (the less - the higher)
+     */
+    private val childrenToPosition = ArrayList<Int?>()
+
+    /*var defaultAtomicHeight: Int = 0
+        @ReactProp(name = "defaultAtomicHeight")
+        set(value) {
+            field = value
+        }*/
+
     init {
         mTextBreakStrategy = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
             0
@@ -55,7 +69,33 @@ class RNDraftJsShadowNode : ReactBaseTextShadowNode(), YogaMeasureFunction {
 
     @ReactProp(name = "content")
     fun setContent(map: ReadableMap) {
-        content = DraftJsContent(DraftJsContent.ContentBlock.fromMap(map), blockFontTypes)
+        val newContent = DraftJsContent(DraftJsContent.ContentBlock.fromMap(map), blockFontTypes)
+        val addedBlocks = DraftJsContent.findAddedAtomicBlocks(
+                if (::content.isInitialized) content else null,
+                newContent
+        )
+        content = newContent
+
+        (content.flatText as? Spannable)?.run {
+            addedBlocks.forEach {
+                @Suppress("NestedLambdaShadowedImplicitParameter")
+                val childToPosition = childrenToPosition
+                        .asSequence()
+                        .withIndex()
+                        .filter { it.value != null }
+                        .minBy { it.value!! }!!
+
+                val flatIndex = content.addressToFlatIndex(it, 0)
+                setSpan(
+                        AtomicBlockSpan(getChildAt(childToPosition.index).styleHeight.value.toInt()),
+                        flatIndex,
+                        flatIndex + 1,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+
+                childrenToPosition[childToPosition.index] = null
+            }
+        }
 
         dummyEditText.setText(content.flatText)
         localData = ReactTextInputLocalData(dummyEditText)
@@ -126,7 +166,7 @@ class RNDraftJsShadowNode : ReactBaseTextShadowNode(), YogaMeasureFunction {
         return YogaMeasureOutput.make(dummyEditText.measuredWidth, dummyEditText.measuredHeight)
     }
 
-    override fun isVirtualAnchor() = true
+    override fun isVirtualAnchor() = false
 
     override fun isYogaLeafNode() = true
 
@@ -176,4 +216,15 @@ class RNDraftJsShadowNode : ReactBaseTextShadowNode(), YogaMeasureFunction {
         super.setPadding(spacingType, padding)
         markUpdated()
     }
+
+    override fun addChildAt(child: ReactShadowNodeImpl, i: Int) {
+        super.addChildAt(child, i)
+        childrenToPosition.add(
+                i,
+                childrenToPosition.asSequence().filterNotNull().max()?.plus(1) ?: 0
+        )
+    }
+
+    override fun removeChildAt(i: Int): ReactShadowNodeImpl =
+            super.removeChildAt(i).also { childrenToPosition.removeAt(i) }
 }

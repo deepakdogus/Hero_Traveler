@@ -54,6 +54,10 @@ const Container = styled.div`
   max-width: 800px;
   margin: auto;
   margin-top: 60px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0;
+    margin-top: 20px;
+  }
 `
 
 const ErrorText = styled.p`
@@ -135,6 +139,9 @@ const TextareaWrapper = styled.div`
 
 const InputsWrapper = styled.div`
   margin: 40px 0;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 20px 0;
+  }
 `
 
 function getInitialState(user = {}) {

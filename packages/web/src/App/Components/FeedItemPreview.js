@@ -79,6 +79,7 @@ const HorizontalStoryInfoContainer = styled(VerticalCenter)`
   width: 400px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     height:auto;
+    width: auto;
     > * {
       padding-left: 15px;
       padding-top: 15px;

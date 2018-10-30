@@ -32,7 +32,6 @@ const Title = styled.p`
 
 const GuideTitle = styled(Title)`
   margin-bottom: 35px;
-  font-weight: 700;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding-left: 45px;
     padding-right: 45px;

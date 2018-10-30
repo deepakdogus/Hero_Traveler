@@ -36,7 +36,7 @@ const colors = {
   text: '#E0D7E5',
   steel: '#CCCCCC',
   navBarText: '#bdbdbd',
-  navBarTextLowOpacity: 'rgba(189,189,189,0.5)',
+  navBarTextLowOpacity: 'rgba(189, 189, 189, 0.5)',
   tabBar: '#282828',
   charcoal: '#595959',
   lightGrey: '#e0e0e0',

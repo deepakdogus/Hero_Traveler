@@ -9,6 +9,7 @@ class names derived from 'draft-js-side-toolbar-plugin/lib/plugin.css'
 @import '../../../../../node_modules/draft-js-side-toolbar-plugin/lib/plugin.css';
 
 .draftJsToolbar__blockType__27Jwn {
+  cursor: auto;
   margin-top: -5px;
   border: 1px solid #757575;
   background-size: cover;

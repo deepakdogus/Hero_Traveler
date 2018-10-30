@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {
   StyleSheet,
   TouchableWithoutFeedback,
-  View
+  View,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import ImageWrapper from './ImageWrapper'
@@ -15,7 +15,6 @@ import getVideoUrl from '../Shared/Lib/getVideoUrl'
 import getRelativeHeight, {extractCoverMetrics} from '../Shared/Lib/getRelativeHeight'
 
 export default class FeedItemCover extends Component {
-
   static propTypes = {
     coverType: PropTypes.oneOf(['image', 'video']).isRequired,
     cover: PropTypes.object,
@@ -29,6 +28,7 @@ export default class FeedItemCover extends Component {
     shouldEnableAutoplay: PropTypes.bool,
     areInRenderLocation: PropTypes.bool,
     locationText: PropTypes.string,
+    isFeed: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -60,16 +60,20 @@ export default class FeedItemCover extends Component {
     if (isFeed && !isOverride) {
       if (this.hasImage()) {
         return { height: Metrics.storyCover.feed.imageTypeHeight }
-      } else {
+      }
+      else {
         return { height: Metrics.storyCover.feed.videoTypeHeight }
       }
-    } else {
+    }
+    else {
+      let height = Math.min(
+        Metrics.storyCover.fullScreen.height,
+        getRelativeHeight(Metrics.screenWidth, extractCoverMetrics(cover)),
+      )
+      height = Math.max(282, height)
       return {
         width: Metrics.screenWidth,
-        height: Math.min(
-          Metrics.storyCover.fullScreen.height,
-          getRelativeHeight(Metrics.screenWidth, extractCoverMetrics(cover)),
-        ),
+        height,
       }
     }
   }
@@ -116,7 +120,7 @@ export default class FeedItemCover extends Component {
     let imageUrl = getImageUrl(
       this.props.cover,
       'optimized',
-      this._getWidthHeight(true)
+      this._getWidthHeight(true),
     )
 
     return this.renderImageWithUrl(false, imageUrl)
@@ -167,7 +171,7 @@ export default class FeedItemCover extends Component {
         onPress={this._tapVideoWrapper}
         style={[
           styles.playButton,
-          playButtonSize === 'small' ? styles.smallPlayButton : {}
+          playButtonSize === 'small' ? styles.smallPlayButton : {},
         ]}
         size={playButtonSize || 'small'}
       />
@@ -191,7 +195,7 @@ export default class FeedItemCover extends Component {
     let nonStreamingVideoPath = getVideoUrl(this.props.cover, false)
 
     // If videoPath is a file url, then we do not need preview image or stream url
-    if (this.props.isFeed && videoPath.startsWith("file://")) {
+    if (this.props.isFeed && videoPath.startsWith('file://')) {
       return (
         <TouchableWithoutFeedback
           style={{flex: 1}}
@@ -248,7 +252,7 @@ export default class FeedItemCover extends Component {
   }
 
   render() {
-    let coverType;
+    let coverType
     if (this.hasImage()) coverType = 'image'
     else if (this.hasVideo()) coverType = 'video'
 
@@ -275,9 +279,9 @@ export default class FeedItemCover extends Component {
 // Image needs to be able to mutate it so we need to give it the raw object
 const imageStyle = {
   width: Metrics.screenWidth,
-  flexDirection: "column",
-  justifyContent: "flex-end",
-  position: 'relative'
+  flexDirection: 'column',
+  justifyContent: 'flex-end',
+  position: 'relative',
 }
 
 const embeddedImageStyle = {
@@ -291,7 +295,7 @@ const embeddedImageStyle = {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.clear
+    backgroundColor: Colors.clear,
   },
   videoWrapper: {
     flex: 1,
@@ -305,11 +309,11 @@ const styles = StyleSheet.create({
     bottom: 0,
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   videoGradient: {
     position: 'absolute',
-    bottom: 0
+    bottom: 0,
   },
   playButton: {
     position: 'absolute',
@@ -331,7 +335,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 40,
     height: 40,
-    top: Metrics.section*2,
+    top: Metrics.section * 2,
     right: Metrics.section,
   },
   noCover: {
@@ -342,7 +346,6 @@ const styles = StyleSheet.create({
 
   },
   noCoverIcon: {
-    color: Colors.lightGreyAreas
-
-  }
+    color: Colors.lightGreyAreas,
+  },
 })

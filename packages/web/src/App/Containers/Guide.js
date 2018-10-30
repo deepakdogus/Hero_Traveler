@@ -217,7 +217,6 @@ class Guide extends Component {
       isFollowing,
       // isBookmarked,
       isLiked,
-      openGlobalModal,
     } = this.props
     const { activeTab } = this.state
 
@@ -281,7 +280,6 @@ class Guide extends Component {
           onClickShare={this._onClickShare}
           userId={sessionUserId}
           reroute={reroute}
-          openGlobalModal={openGlobalModal}
         />
         }
       </ContentWrapper>

@@ -10,7 +10,7 @@ import {StyledVerticalCenter} from './Modals/Shared'
 
 const verticalMetrics = {
   width: 77,
-  height: 77,
+  height: 98,
 }
 
 const horizontalMetrics = {

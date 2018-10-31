@@ -57,12 +57,12 @@ export const FollowButtonStyle = `
 `
 const LeftProps = {
   'flex-wrap' : 'nowrap',
-  'align-items' : 'center'
+  'align-items' : 'center',
 }
 
 const RowProps = {
   'justify-content' : 'space-between',
-  'flex-wrap' : 'nowrap'
+  'flex-wrap' : 'nowrap',
 }
 
 export default class FollowFollowingRow extends Component {

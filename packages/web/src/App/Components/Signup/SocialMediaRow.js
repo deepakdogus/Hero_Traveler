@@ -19,6 +19,9 @@ const StyledIcon = styled(Icon)`
 
 const FacebookIcon = styled(StyledIcon)`
   padding: 0 9px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0;
+  }
 `
 
 const TwitterIcon = styled(StyledIcon)`
@@ -28,6 +31,9 @@ const TwitterIcon = styled(StyledIcon)`
 const InstagramIcon = styled(StyledIcon)`
   width: 25px;
   padding: 0 2.5px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0;
+  }
 `
 
 const SocialMediaItemContainer = styled.div`

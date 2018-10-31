@@ -584,13 +584,14 @@ export default class FeedItemDetails extends React.Component {
             <Row>
               <VerticalCenter>
                 <input
+                  checked={workingDraft.isPrivate || false}
                   type='checkbox'
                   onClick={this.togglePrivacy}
                 />
               </VerticalCenter>
               <VerticalCenter>
                 <PrivacyLabel>
-                  Make this guide public
+                  Make this guide private
                 </PrivacyLabel>
               </VerticalCenter>
             </Row>

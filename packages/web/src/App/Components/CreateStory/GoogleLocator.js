@@ -58,8 +58,8 @@ const styles = {
   },
   autocompleteContainer: {
     position: 'absolute',
-    top: '124%',
-    left: '10px',
+    top: '35px',
+    left: '0px',
     backgroundColor: 'white',
     border: 'none',
     boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',

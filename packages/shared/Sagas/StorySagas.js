@@ -47,20 +47,20 @@ function * getInitalData(api, userId) {
 }
 
 export function * getUserFeed (api, action) {
-  const { userId } = action
+  const { userId, params } = action
 
   // See if we need to load likes and bookmark info
 
   yield getInitalData(api, userId)
 
-  const response = yield call(api.getUserFeed, userId)
+  const response = yield call(api.getUserFeed, userId, params)
   if (response.ok) {
     const { entities, result } = response.data;
     yield [
       put(UserActions.receiveUsers(entities.users)),
       put(CategoryActions.receiveCategories(entities.categories)),
       put(StoryActions.receiveStories(entities.stories)),
-      put(StoryActions.feedSuccess(result)),
+      put(StoryActions.feedSuccess(result, response.count, params)),
     ]
   } else {
     yield put(StoryActions.feedFailure(new Error('Failed to get feed')))

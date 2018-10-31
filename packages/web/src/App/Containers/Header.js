@@ -17,6 +17,7 @@ import StoryActions from '../Shared/Redux/Entities/Stories'
 import HeaderModals from '../Components/HeaderModals'
 import { sizes } from '../Themes/Metrics'
 import { haveFieldsChanged } from '../Shared/Lib/draftChangedHelpers'
+import { itemsPerQuery } from './ContainerWithFeedList'
 /*global branch*/
 
 // If we don't explicity prevent 'fixed' from being passed to Grid, we get an error about unknown prop on div element
@@ -100,8 +101,15 @@ class Header extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { currentUserId } = this.props
+
     if (currentUserId && prevProps.currentUserId !== currentUserId) {
-      this.props.attemptGetUserFeed(currentUserId)
+      this.props.attemptGetUserFeed(
+        currentUserId,
+        {
+          perPage: itemsPerQuery,
+          page: 1,
+        },
+      )
     }
     if (!prevProps.signedUp && this.props.signedUp) {
       this.props.reroute('/signup/topics')
@@ -113,6 +121,10 @@ class Header extends React.Component {
       })
     }
     if (prevProps.isLoggedIn && !this.props.isLoggedIn) {
+      this.props.reroute('/')
+      this.props.openGlobalModal('login')
+    }
+    if (prevProps.globalModalThatIsOpen === 'documentation' && !this.props.globalModalThatIsOpen && !this.props.isLoggedIn) {
       this.props.reroute('/')
       this.props.openGlobalModal('login')
     }
@@ -312,7 +324,7 @@ function mapDispatchToProps(dispatch) {
     attemptLogout: tokens => dispatch(SessionActions.logout(tokens)),
     attemptChangePassword: (userId, oldPassword, newPassword) =>
       dispatch(LoginActions.changePasswordRequest(userId, oldPassword, newPassword)),
-    attemptGetUserFeed: userId => dispatch(StoryActions.feedRequest(userId)),
+    attemptGetUserFeed: (userId, params) => dispatch(StoryActions.feedRequest(userId, params)),
     closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
     reroute: route => dispatch(push(route)),

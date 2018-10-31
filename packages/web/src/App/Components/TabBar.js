@@ -10,10 +10,31 @@ const Container = styled.div`
   margin: ${props => props.isModal ? '25px 0' : '0'};
 `
 
+// need && hack because styled-component insertion order was placing Row styles
+// behind the styled-compoenent s.tyles, so they weren't overwriting base styles
+const StyledRow = styled(Row)`
+  && {
+    flex-wrap: nowrap;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+      justify-content: flex-start;
+      -webkit-overflow-scrolling: touch;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
+`
+
 const TabContainer = styled.div`
   margin: ${props => props.isModal ? '0' : '0px 10px'};
   cursor: pointer;
   min-width: 100px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 0 10px 0 0;
+  }
 `
 
 const ModalText = styled(Text)`
@@ -80,9 +101,9 @@ export default class TabBar extends React.Component {
   render() {
     return (
       <Container whiteBG={this.props.whiteBG} isModal={this.props.isModal}>
-        <Row center='xs'>
+        <StyledRow center='xs'>
           {this.renderTabs()}
-        </Row>
+        </StyledRow>
       </Container>
     )
   }

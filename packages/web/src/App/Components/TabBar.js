@@ -19,7 +19,7 @@ const StyledRow = styled(Row)`
     flex-wrap: nowrap;
     overflow-x: auto;
     @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-      justify-content: flex-start;
+      justify-content: ${props => props.overflows ? 'flex-start' : 'center'};
       -webkit-overflow-scrolling: touch;
       &::-webkit-scrollbar {
         display: none;
@@ -46,6 +46,8 @@ const ModalText = styled(Text)`
   border-color:  ${props => props.theme.Colors.navBarText};
   padding: ${props => props.isModal ? '0 15px 0 15px' : '0 25px 0 25px'};
   margin: 0;
+  height: 100%;
+  white-space: nowrap;
 `
 
 const DefaultText = styled(VerticalCenter)`
@@ -99,9 +101,13 @@ export default class TabBar extends React.Component {
   }
 
   render() {
+    const { whiteBG, isModal, tabs = [] } = this.props
     return (
-      <Container whiteBG={this.props.whiteBG} isModal={this.props.isModal}>
-        <StyledRow center='xs'>
+      <Container whiteBG={whiteBG} isModal={isModal}>
+        <StyledRow
+          center='xs'
+          overflows={tabs.length > 3}
+        >
           {this.renderTabs()}
         </StyledRow>
       </Container>

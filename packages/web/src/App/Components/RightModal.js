@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Modal from 'react-modal'
-import "./Styles/RightModalStyles.css"
+import './Styles/RightModalStyles.css'
 
 export default class RightModal extends React.Component {
   static propTypes = {

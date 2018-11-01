@@ -28,7 +28,7 @@ export const RightTitle = styled.p`
   letter-spacing: .6px;
   text-align: center;
   margin: 0;
-  padding: 20px 20px 20px 65px;
+  padding: 20px;
   font-family: ${props => props.theme.Fonts.type.montserrat};
   background-color: ${props => props.theme.Colors.lightGreyAreas};
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {

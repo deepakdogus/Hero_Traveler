@@ -284,7 +284,11 @@ export default class ProfileHeaderEdit extends React.Component {
       fullname,
     } = this.state
     const avatarUrl = getImageUrl(user.profile.avatar, 'avatarLarge')
-    const bioLines = (bio.match(/\r?\n/g) || '').length + 1
+    const minRows = 7
+    const bioLines =
+      (bio && typeof bio === 'string')
+      ? (bio.match(/\r?\n/g) || '').length + 1
+      : minRows
     let targetedImage
 
     if (photoType === 'avatar') targetedImage = avatarUrl
@@ -353,7 +357,7 @@ export default class ProfileHeaderEdit extends React.Component {
               name='bio'
               placeholder='Enter your bio'
               onChange={this.onChangeText}
-              rows={bioLines > 7 ? bioLines : 7}
+              rows={bioLines > minRows ? bioLines : minRows}
               minRows={7}
               maxRows={500}
               textProps={ResizableTextareaStyles}

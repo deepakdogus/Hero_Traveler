@@ -29,9 +29,7 @@ const StyledRow = styled(Row)`
 `
 
 const TabContainer = styled.div`
-  padding: ${props => props.isModal ? '0' : '0px 10px'};
   cursor: pointer;
-  min-width: ${props => props.isModal ? 'auto' : '100px'};
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     margin: ${props => props.isModal ? '0' : '0 10px 0 0'};
   }
@@ -61,6 +59,7 @@ const DefaultText = styled(VerticalCenter)`
   border-top: 5px solid transparent;
   margin: 0;
   padding: 22px 10px;
+  min-width: ${props => props.isModal ? 'auto' : '80px'};
 `
 
 export default class TabBar extends React.Component {
@@ -106,7 +105,7 @@ export default class TabBar extends React.Component {
       <Container whiteBG={whiteBG} isModal={isModal}>
         <StyledRow
           center='xs'
-          overflows={tabs.length > 3}
+          overflows={tabs.length > 2}
         >
           {this.renderTabs()}
         </StyledRow>

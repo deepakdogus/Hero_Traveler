@@ -26,8 +26,10 @@ const Container = styled.div``
 const CategoryRowsContainer = styled.div``
 
 const CreateContainer = styled.div`
-  padding: 8px 30px;
+  padding: 10px 20px;
   cursor: pointer;
+  border: ${props => `0 solid ${props.theme.Colors.dividerGrey}`};
+  border-width: 1px 0 1px;
   &:hover {
     background-color: ${props => props.theme.Colors.onHoverGrey};
   }
@@ -40,6 +42,11 @@ const CreateIconContainer = styled(VerticalCenter)`
   border-width: 1px;
   height: 90px;
   width: 140px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    height: 50px;
+    width: 67px;
+    border: none;
+  }
 `
 
 const StyledIcon = styled(Icon)`
@@ -53,13 +60,30 @@ const CreateText = styled.p`
   color: ${props => props.theme.Colors.redLight};
   letter-spacing: .2px;
   margin: 0;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 15px;
+  }
 `
 
 const ReplacementContainer = styled(DefaultContainer)`
-  padding: 5px 30px 5px;
+  padding: 10px 20px;
   cursor: pointer;
+  border: ${props => `0 solid ${props.theme.Colors.dividerGrey}`};
+  border-width: 0 0 1px;
   &:hover {
     background-color: ${props => props.theme.Colors.onHoverGrey};
+  }
+`
+
+const ResponsiveCloseBar = styled(VerticalCenter)`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid ${props => props.theme.Colors.navBarText};
+    > * {
+      padding: 20px 0;
+    }
   }
 `
 
@@ -155,13 +179,14 @@ class AddStoryToGuides extends SharedComponent {
         <CategoryRowsContainer>
           {this.renderGuides()}
         </CategoryRowsContainer>
-        <CenteredButtons
-          buttonsToRender={[
-            this.cancelButton,
-            this.saveButton,
-          ]}
-        >
-        </CenteredButtons>
+        <ResponsiveCloseBar>
+          <CenteredButtons
+            buttonsToRender={[
+              this.cancelButton,
+              this.saveButton,
+            ]}
+          />
+        </ResponsiveCloseBar>
       </Container>
     )
   }

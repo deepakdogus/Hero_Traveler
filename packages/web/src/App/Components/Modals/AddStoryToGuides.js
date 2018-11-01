@@ -17,7 +17,6 @@ import RoundedButton from '../RoundedButton'
 import {
   RightTitle,
   StyledVerticalCenter,
-  RightModalCloseX,
 } from './Shared'
 
 import Icon from '../Icon'
@@ -167,8 +166,7 @@ class AddStoryToGuides extends SharedComponent {
   render() {
     return (
       <Container>
-        <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
-        <RightTitle>ADD TO GUIDE</RightTitle>
+        <RightTitle>ADD TO A GUIDE</RightTitle>
         <CreateContainer onClick={this.createGuideReroute}>
           <SpaceBetweenRow
             renderImage={this.renderImage}

@@ -26,4 +26,10 @@
   .right-modal {
     width: 100vw;
   }
+
+  .overlay {
+    /* needs to be at least 1px more than header height or header will
+    briefly appear to change its height */
+    top: 66px;
+  }
 }

@@ -30,9 +30,9 @@ export const RightTitle = styled.p`
   margin: 0;
   padding: 20px;
   font-family: ${props => props.theme.Fonts.type.montserrat};
-  background-color: ${props => props.theme.Colors.lightGreyAreas};
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 18px;
+    line-height: 30px;
   }
 `
 

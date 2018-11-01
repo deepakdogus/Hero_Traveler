@@ -65,6 +65,12 @@ const RowProps = {
   'flex-wrap' : 'nowrap',
 }
 
+export const FollowButtonResponsiveStyle = `
+  font-size: 10px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+`
+
 export default class FollowFollowingRow extends Component {
   static propTypes = {
     isFollowing: PropTypes.bool,

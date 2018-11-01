@@ -15,6 +15,7 @@ import {
   StyledAvatar,
   ButtonWrapper,
 } from './ProfileHeaderShared'
+import ResizableTextarea from '../ResizableTextarea'
 
 const customModalStyles = {
   content: {
@@ -54,6 +55,10 @@ const Container = styled.div`
   max-width: 800px;
   margin: auto;
   margin-top: 60px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0;
+    margin-top: 20px;
+  }
 `
 
 const ErrorText = styled.p`
@@ -122,6 +127,13 @@ const Textarea = styled.textarea`
   color: ${props => props.theme.Colors.grey};
   resize: none;
   border: none;
+  outline: none;
+`
+
+const ResizableTextareaStyles = `
+  ${BaseInputStyles};
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  color: ${props => props.theme.Colors.grey};
 `
 
 const TextareaWrapper = styled.div`
@@ -134,12 +146,15 @@ const TextareaWrapper = styled.div`
 
 const InputsWrapper = styled.div`
   margin: 40px 0;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 20px 0;
+  }
 `
 
 function getInitialState(user = {}) {
   return {
     bio: user.bio,
-    fullname: user.profile.fullName,
+    fullname: user.profile ? user.profile.fullName : undefined,
     username: user.username,
     about: user.about,
     modal: undefined,
@@ -201,7 +216,14 @@ export default class ProfileHeaderEdit extends React.Component {
   }
 
   onChangeText = (event) => {
-    this.setState({ [event.target.name]: event.target.value })
+    let newText = event.target.value
+
+    if (event.target.name === 'about') {
+      // trim new lines
+      newText = newText.replace(/\n|\r/g, '')
+    }
+
+    this.setState({ [event.target.name]: newText })
   }
 
   openCrop = () => {
@@ -262,7 +284,9 @@ export default class ProfileHeaderEdit extends React.Component {
       fullname,
     } = this.state
     const avatarUrl = getImageUrl(user.profile.avatar, 'avatarLarge')
+    const bioLines = (bio.match(/\r?\n/g) || '').length + 1
     let targetedImage
+
     if (photoType === 'avatar') targetedImage = avatarUrl
     else if (photoType === 'userCover') targetedImage = getImageUrl(user.profile.cover, 'avatarLarge')
 
@@ -324,12 +348,15 @@ export default class ProfileHeaderEdit extends React.Component {
           </TextareaWrapper>
           <Label>Bio</Label>
           <TextareaWrapper>
-            <Textarea
+            <ResizableTextarea
               value={bio}
               name='bio'
               placeholder='Enter your bio'
               onChange={this.onChangeText}
-              rows={7}
+              rows={bioLines > 7 ? bioLines : 7}
+              minRows={7}
+              maxRows={500}
+              textProps={ResizableTextareaStyles}
             />
           </TextareaWrapper>
         </InputsWrapper>

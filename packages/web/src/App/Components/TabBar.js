@@ -10,22 +10,30 @@ const Container = styled.div`
   margin: ${props => props.isModal ? '25px 0' : '0'};
 `
 
-const StyledRow = styled.div`
-  display: flex;
-  justify-content: center;
-  max-width: 100%;
-  flex-wrap: nowrap;
+// need && hack because styled-component insertion order was placing Row styles
+// behind the styled-compoenent styles, so they weren't overwriting base styles
+const StyledRow = styled(Row)`
+  && {
+    flex-wrap: nowrap;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+      justify-content: flex-start;
+      -webkit-overflow-scrolling: touch;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
 `
 
 const TabContainer = styled.div`
-  margin: ${props => props.isModal ? '0' : '0px 10px'};
+  padding: ${props => props.isModal ? '0' : '0px 10px'};
   cursor: pointer;
-  min-width: 100px;
-  flex-shrink: ${props => props.isModal ? '1' : 'auto'};
-  flex-grow: ${props => props.isModal ? '1' : 'auto'};
+  min-width: ${props => props.isModal ? 'auto' : '100px'};
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    margin: ${props => props.isModal ? '0' : '0px 3px'};
-    flex-shrink: 1;
+    margin: ${props => props.isModal ? '0' : '0 10px 0 0'};
   }
 `
 
@@ -38,25 +46,19 @@ const ModalText = styled(Text)`
   border-color:  ${props => props.theme.Colors.navBarText};
   padding: ${props => props.isModal ? '0 15px 0 15px' : '0 25px 0 25px'};
   margin: 0;
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding: 0;
-  }
 `
 
 const DefaultText = styled(VerticalCenter)`
-  border-style: solid;
   color: ${props => props.isActive ? props.theme.Colors.background : props.theme.Colors.navBarText};
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-size: 13px;
   letter-spacing: .6px;
-  border-width: ${props => !props.isOnlyTab && props.isActive ? '0 0 5px 0' : '0' };
-  border-color:  ${props => props.theme.Colors.redHighlights};
+  border-bottom: ${props => !props.isOnlyTab && props.isActive ? 'solid' : 'transparent' };
+  border-bottom-width: ${props => !props.isOnlyTab && props.isActive ? '5px' : '0' };
+  border-bottom-color:  ${props => props.theme.Colors.redHighlights};
+  border-top: 5px solid transparent;
   margin: 0;
-  padding: 12.5px 10px 12.5px;
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    font-size: 13px;
-    padding: 12.5px 2vw;
-  }
+  padding: 22px 10px;
 `
 
 export default class TabBar extends React.Component {
@@ -99,7 +101,7 @@ export default class TabBar extends React.Component {
   render() {
     return (
       <Container whiteBG={this.props.whiteBG} isModal={this.props.isModal}>
-        <StyledRow isModal={this.props.isModal}>
+        <StyledRow center='xs'>
           {this.renderTabs()}
         </StyledRow>
       </Container>

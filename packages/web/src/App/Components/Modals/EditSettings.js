@@ -49,7 +49,6 @@ const DeleteButton = styled.div`
   font-size: 18px;
   color: ${props => props.theme.Colors.redHighlights};
   padding-bottom: 8px;
-  width: 100%;
   letter-spacing: .2px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding: 21.5px 0;

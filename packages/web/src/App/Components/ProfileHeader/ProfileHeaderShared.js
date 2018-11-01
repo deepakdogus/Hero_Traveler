@@ -15,6 +15,9 @@ export const Username = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat}};
   letter-spacing: .6px;
   color: ${props => props.theme.Colors.background};
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 20px;
+  }
 `
 
 export const Name = styled.p`
@@ -26,30 +29,29 @@ export const Name = styled.p`
   margin: 8px 0px;
   text-align: left;
   font-style: italic;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 13px;
+    color: ${props => props.theme.Colors.redHighlights};
+    margin: 2px 0px;
+  }
 `
 
 export const Centered = styled(VerticalCenter)`
-  margin-top: 65px;
+  position: relative;
   height: 365px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    max-height: 220px;
+    display: flex;
+    justify-content: flex-end;
+  }
 `
 
-export const StyledAvatar = styled(Avatar)``
-
-export const AvatarWrapper = styled(VerticalCenter)`
-  position: relative;
-  height: 160px;
+export const StyledAvatar = styled(Avatar)`
 `
 
 export const ButtonWrapper = styled.div`
   margin-top: 10px;
   text-align: left;
-`
-
-export const BottomLeft = styled.div`
-  position: absolute;
-  left: 20px;
-  bottom: 90px;
-  z-index: 2;
 `
 
 export const BottomLeftText = styled.p`
@@ -62,4 +64,8 @@ export const BottomLeftText = styled.p`
   margin: 0;
   padding-left: 10px;
   line-height: 25px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 8px;
+    font-weight: 600;
+  }
 `

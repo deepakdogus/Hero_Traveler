@@ -156,6 +156,11 @@ const Text = styled.p`
   }};
   margin: ${props => `${props.type === 'navbar' ? '3.5' : '2.5'}px 10px`};
   letter-spacing: .6px;
+  white-space: nowrap;
+  ${props => props.textProps}
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    ${props => props.responsiveProps}
+  }
 `
 
 /*
@@ -173,16 +178,20 @@ export default class RoundedButton extends React.Component {
     padding: PropTypes.string,
     height: PropTypes.string,
     textProps: PropTypes.string,
+    responsiveProps: PropTypes.string,
   }
 
   renderContent() {
-    const {text, children, type, textProps} = this.props
+    const {text, children, type, textProps, responsiveProps} = this.props
     let RenderText = Text
 
-    if (textProps) RenderText = styled(Text)`${textProps}`
     if (children) return children
     else return (
-      <RenderText type={type}>
+      <RenderText
+        type={type}
+        textProps={textProps}
+        responsiveProps={responsiveProps}
+      >
         {text}
       </RenderText>
     )

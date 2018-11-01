@@ -52,11 +52,7 @@ const DefaultText = styled(VerticalCenter)`
   border-width: ${props => !props.isOnlyTab && props.isActive ? '0 0 5px 0' : '0' };
   border-color:  ${props => props.theme.Colors.redHighlights};
   margin: 0;
-<<<<<<< HEAD
-  padding: 24px 10px;
-=======
   padding: 12.5px 10px 12.5px;
->>>>>>> 1f7cd0bfe284ea83ec1a40ae59e082ef74b004e1
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 13px;
     padding: 12.5px 2vw;

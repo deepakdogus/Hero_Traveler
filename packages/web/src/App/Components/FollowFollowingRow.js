@@ -13,6 +13,10 @@ const Container = styled.div`
   margin: ${props => props.margin ? props.margin : '0'};
   min-height: 90px;
   display: flex;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: ${props => props.responsiveMargin ? props.responsiveMargin : '0'};
+    min-height: 70px;
+  }
 `
 
 const StyledVerticalCenter = styled(VerticalCenter)`
@@ -50,11 +54,6 @@ const ProfileDetail = styled(UserName)`
   color: ${props => props.theme.Colors.grey};
 `
 
-export const FollowButtonStyle = `
-  font-size: 13px;
-  margin-top: 6px;
-  margin-bottom: 6px;
-`
 const LeftProps = {
   'flex-wrap' : 'nowrap',
   'align-items' : 'center',
@@ -65,10 +64,26 @@ const RowProps = {
   'flex-wrap' : 'nowrap',
 }
 
-export const FollowButtonResponsiveStyle = `
+export const FollowButtonTextStyle = `
+  font-size: 13px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+`
+
+export const FollowButtonResponsiveTextStyle = `
   font-size: 10px;
   margin-top: 3px;
   margin-bottom: 3px;
+`
+
+export const FollowButtonResponsiveButtonStyle = `
+  width: 100px;
+  margin: 0;
+`
+
+const AvatarResponsiveStyle = `
+  width: 50px;
+  height: 50px;
 `
 
 export default class FollowFollowingRow extends Component {
@@ -100,6 +115,7 @@ export default class FollowFollowingRow extends Component {
           size='larger'
           type='profile'
           onClick={this.getOnclick()}
+          responsiveProps={AvatarResponsiveStyle}
         />
     )
   }
@@ -136,7 +152,9 @@ export default class FollowFollowingRow extends Component {
           width='154px'
           padding='even'
           onClick={this._onFollowClick}
-          textProps={FollowButtonStyle}
+          textProps={FollowButtonTextStyle}
+          responsiveTextProps={FollowButtonResponsiveTextStyle}
+          responsiveButtonProps={FollowButtonResponsiveButtonStyle}
         />
       </VerticalCenter>
     )

@@ -15,8 +15,8 @@ import {
 } from './ProfileHeaderShared'
 import { NavLinkStyled } from '../NavLinkStyled'
 import {
-  FollowButtonStyle,
-  FollowButtonResponsiveStyle,
+  FollowButtonTextStyle,
+  FollowButtonResponsiveTextStyle,
 } from '../FollowFollowingRow'
 
 const LimitedWidthRow = styled(Row)`
@@ -337,8 +337,8 @@ export default class ProfileHeaderView extends React.Component {
                   type={isFollowing ? '' : 'blackWhite'}
                   text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
                   margin='none'
-                  textProps={FollowButtonStyle}
-                  responsiveProps={FollowButtonResponsiveStyle}
+                  textProps={FollowButtonTextStyle}
+                  responsiveTextProps={FollowButtonResponsiveTextStyle}
                 />
               }
             </StyledButton>

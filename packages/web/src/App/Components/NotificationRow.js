@@ -38,11 +38,11 @@ const Container = styled.div`
   cursor: pointer;
 `
 
-const rowProps = { 
+const rowProps = {
   'justify-content' : 'space-between',
 }
 
-const leftProps = { 
+const leftProps = {
   'max-width': '450px',
   'align-items' : 'center',
   'flex-wrap' : 'nowrap',
@@ -113,7 +113,7 @@ const NotificationContent = styled.div`
 
 const StyledNotificationContent = styled(NotificationContent)`
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    margin-right: 5px;    
+    margin-right: 5px;
     word-break: break-word;
   }
 `
@@ -138,6 +138,11 @@ const VisibleBulletContainer = styled.div`
 
 const HiddenBulletContainer = styled(VisibleBulletContainer)`
   visibility: hidden;
+`
+
+const AvatarResponsiveStyle = `
+  width: 50px;
+  height: 50px;
 `
 
 const videoThumbnailOptions = {
@@ -179,6 +184,7 @@ export default class NotificationRow extends Component {
           avatarUrl={avatar ? getImageUrl(avatar, 'avatarLarge') : undefined}
           type='profile'
           size='larger'
+          responsiveProps={AvatarResponsiveStyle}
         />
       </RenderImageContainer>
     )

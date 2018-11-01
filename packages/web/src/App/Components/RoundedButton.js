@@ -134,6 +134,9 @@ const StyledButton = styled.button`
     background:  ${props => getHoverColorAndBorder(props.type, props.theme.Colors)[0]};
     border-color:  ${props => getHoverColorAndBorder(props.type, props.theme.Colors)[1]};
   }
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    ${props => props.responsiveButtonProps}
+  }
 `
 const Text = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat};
@@ -159,7 +162,7 @@ const Text = styled.p`
   white-space: nowrap;
   ${props => props.textProps}
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    ${props => props.responsiveProps}
+    ${props => props.responsiveTextProps}
   }
 `
 
@@ -178,11 +181,11 @@ export default class RoundedButton extends React.Component {
     padding: PropTypes.string,
     height: PropTypes.string,
     textProps: PropTypes.string,
-    responsiveProps: PropTypes.string,
+    responsiveTextProps: PropTypes.string,
   }
 
   renderContent() {
-    const {text, children, type, textProps, responsiveProps} = this.props
+    const {text, children, type, textProps, responsiveTextProps} = this.props
     let RenderText = Text
 
     if (children) return children
@@ -190,7 +193,7 @@ export default class RoundedButton extends React.Component {
       <RenderText
         type={type}
         textProps={textProps}
-        responsiveProps={responsiveProps}
+        responsiveTextProps={responsiveTextProps}
       >
         {text}
       </RenderText>

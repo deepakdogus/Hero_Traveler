@@ -29,9 +29,6 @@ const SizedRow = styled(Row)`
   padding-right: 16px;
   height: 35px;
   border-top: ${props => `2px solid ${props.theme.Colors.background}`};
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    display: ${props => props.hideOnTablet ? 'none' : 'block'};
-  }
 `
 
 const StyledLink = styled(NavLink)`
@@ -81,6 +78,12 @@ const StyledIcon = styled(Icon)`
   cursor: pointer;
 `
 
+const ResponsiveContainer = styled.div`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    display: ${props => props.hideOnTablet ? 'none' : 'block'};
+  }
+`
+
 class Footer extends Component {
   static propTypes = {
     openGlobalModal: PropTypes.func,
@@ -97,43 +100,45 @@ class Footer extends Component {
   render() {
     return (
       <Container fluid>
-        <SizedRow between='xs' hideOnTablet={this.props.hideOnTablet}>
-          <Row bottom='xs'>
-            {/* Hidden until after launch*/}
-            {false &&
-              <StyledLink to='/'>About Us</StyledLink>
-            }
-            <StyledPseudoLink
-              onClick={this.openTAC}
-            >
-              Terms of Service
-            </StyledPseudoLink>
-            <StyledOffsiteLink
-              href='mailto:info@herotraveler.com'
-            >
-              Contact Us
-            </StyledOffsiteLink>
-          </Row>
-          <Row middle='xs'>
-            <UnstyledLink
-              href='https://www.facebook.com/herotraveler/'
-            >
-              <StyledIcon name='facebookDark'/>
-            </UnstyledLink>
-            <Divider />
-            <UnstyledLink
-              href='https://twitter.com/HeroTraveler'
-            >
-              <StyledIcon name='twitterDark'/>
-            </UnstyledLink>
-            <Divider />
-            <UnstyledLink
-              href='https://www.instagram.com/herotraveler/'
-            >
-              <StyledIcon name='instagramDark'/>
-            </UnstyledLink>
-          </Row>
-        </SizedRow>
+        <ResponsiveContainer hideOnTablet={this.props.hideOnTablet}>
+          <SizedRow between='xs'>
+            <Row bottom='xs'>
+              {/* Hidden until after launch*/}
+              {false &&
+                <StyledLink to='/'>About Us</StyledLink>
+              }
+              <StyledPseudoLink
+                onClick={this.openTAC}
+              >
+                Terms of Service
+              </StyledPseudoLink>
+              <StyledOffsiteLink
+                href='mailto:info@herotraveler.com'
+              >
+                Contact Us
+              </StyledOffsiteLink>
+            </Row>
+            <Row middle='xs'>
+              <UnstyledLink
+                href='https://www.facebook.com/herotraveler/'
+              >
+                <StyledIcon name='facebookDark'/>
+              </UnstyledLink>
+              <Divider />
+              <UnstyledLink
+                href='https://twitter.com/HeroTraveler'
+              >
+                <StyledIcon name='twitterDark'/>
+              </UnstyledLink>
+              <Divider />
+              <UnstyledLink
+                href='https://www.instagram.com/herotraveler/'
+              >
+                <StyledIcon name='instagramDark'/>
+              </UnstyledLink>
+            </Row>
+          </SizedRow>
+        </ResponsiveContainer>
       </Container>
     )
   }

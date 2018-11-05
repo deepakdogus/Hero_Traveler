@@ -7,8 +7,8 @@ import changeCountOfType from '../helpers/changeCountOfTypeHelper'
 
 const { Types, Creators } = createActions({
   storyRequest: ['storyId'],
-  feedRequest: ['userId'],
-  feedSuccess: ['userFeedById'],
+  feedRequest: ['userId', 'params'],
+  feedSuccess: ['userFeedById', 'count', 'params'],
   feedFailure: ['error'],
   likesAndBookmarksRequest: ['userId'],
   fromUserRequest: ['userId'],
@@ -53,6 +53,7 @@ const initialFetchStatus = () => ({
 export const INITIAL_STATE = Immutable({
   entities: {},
   userFeedById: [],
+  userStoryFeedCount: 9999999999,
   storiesByUserAndId: {},
   storiesByCategoryAndId: {},
   backgroundFailures: {},
@@ -70,20 +71,31 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Reducers ------------- */
 
 // request the temperature for a city
-export const feedRequest = (state, { userId }) => {
+export const feedRequest = (state, { userId, params }) => {
   return state.setIn(
     ['fetchStatus', 'fetching'],
     true
   );
 }
 // successful temperature lookup
-export const feedSuccess = (state, {userFeedById}) => {
+export const feedSuccess = (state, {userFeedById, count, params}) => {
+  let userFeedUpdate = userFeedById
+  if (_.get(params, 'page', 1) > 1) {
+    userFeedUpdate = [...state.userFeedById]
+    userFeedById.forEach(id => {
+      if (userFeedUpdate.indexOf(id) === -1) {
+        userFeedUpdate.push(id)
+      }
+    })
+  }
+
   return state.merge({
     fetchStatus: {
       fetching: false,
       loaded: true,
     },
-    userFeedById,
+    userFeedById: userFeedUpdate,
+    userStoryFeedCount: count,
     error: null
   }, {
     deep: true

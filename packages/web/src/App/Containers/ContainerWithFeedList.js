@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+export const itemsPerQuery = 100
+
 export default class ContainerWithFeedList extends React.Component {
   static propTypes = {
     sessionUserId: PropTypes.string,
@@ -15,19 +17,21 @@ export default class ContainerWithFeedList extends React.Component {
     stories: PropTypes.object,
   }
 
-  state = { activeTab: 'STORIES'}
+  state = {
+    activeTab: 'STORIES',
+  }
 
   onClickTab = (event) => {
     let tab = event.target.innerHTML
     if (this.state.activeTab !== tab) {
       this.setState({ activeTab: tab }, () => {
-        this.getTabInfo(tab)
+        this.getTabInfo()
       })
     }
   }
 
-  getTabInfo = (tab) => {
-    switch (tab) {
+  getTabInfo = (page) => {
+    switch (this.state.activeTab) {
       case 'DRAFTS':
         return // cached only so no need to fetch
       case 'BOOKMARKS':
@@ -41,7 +45,14 @@ export default class ContainerWithFeedList extends React.Component {
       case 'EAT':
       case 'STAY':
       default:
-        return this.props.getStories(this.props.sessionUserId, tab)
+        return this.props.getStories(
+          this.props.sessionUserId,
+          this.state.activeTab,
+          {
+            perPage: itemsPerQuery,
+            page,
+          },
+        )
     }
   }
 

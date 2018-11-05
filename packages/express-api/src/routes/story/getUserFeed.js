@@ -1,11 +1,8 @@
 import {Story} from '@hero/ht-core'
-import removeStreamlessStories from '../../utils/removeStreamlessStories'
 
 export default function getUserFeed(req, res) {
-    const userId = req.user._id
-    Story.getUserFeed(userId)
-    .then(removeStreamlessStories)
-    .then( data => {
-      res.json(data)
-    });
+  const userId = req.user._id
+  const page = parseInt(req.query.page, 10);
+  const perPage = parseInt(req.query.perPage, 10);
+  return Story.getUserFeed(userId, page, perPage)
 }

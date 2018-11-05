@@ -7,6 +7,7 @@ import getStory from './getStory'
 import getUserStories from './getUserStories'
 import create from './create'
 import getUserFeed from './getUserFeed'
+import getUserFeedOld from './getUserFeedOld'
 import getUserLikes from './getUserLikes'
 import getUserLikesOld from './getUserLikesOld'
 import getCategoryStories from './getCategoryStories'
@@ -34,10 +35,11 @@ import uploadDraftVideo from './draft/upload_story_video'
 const router = express.Router()
 
 router.get('/user/:userId', getUserStories)
-router.get('/user/:userId/feed', hasValidOauth, getUserFeed);
+router.get('/user/:userId/feed/v2', hasValidOauth, endpointWrapper(getUserFeed))
+router.get('/user/:userId/feed', hasValidOauth, endpointWrapper(getUserFeedOld))
 router.get('/user/:userId/like/v2', hasValidOauth, endpointWrapper(getUserLikes))
 router.get('/user/:userId/like', hasValidOauth, endpointWrapper(getUserLikesOld))
-router.get('/category/:categoryId', endpointWrapper(getCategoryStories));
+router.get('/category/:categoryId', endpointWrapper(getCategoryStories))
 router.get('/user/:userId/bookmark', hasValidOauth, endpointWrapper(getBookmarks))
 
 // webhook for uploading a video

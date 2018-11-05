@@ -61,7 +61,11 @@ export const validate = (values, _props, fields) => {
       errors.password = 'Required'
     } else if (values.password.length < FieldConstraints.PASSWORD_MIN_LENGTH || values.password.length > FieldConstraints.PASSWORD_MAX_LENGTH) {
       errors.password = `Passwords must be ${FieldConstraints.PASSWORD_MIN_LENGTH} to ${FieldConstraints.PASSWORD_MAX_LENGTH} characters long`
-    } else if (!values.confirmPassword || values.password !== values.confirmPassword) {
+    }
+  }
+
+  if (checkField('confirmPassword')) {
+    if (!values.confirmPassword || values.password !== values.confirmPassword) {
       errors.confirmPassword = 'Passwords must match'
     }
   }

@@ -1,3 +1,4 @@
+import Promise from 'bluebird'
 import mongoose, {Schema} from 'mongoose'
 import _ from 'lodash'
 import softDelete from 'mongoose-delete'
@@ -175,19 +176,35 @@ StorySchema.statics = {
       .sort({createdAt: -1})
   },
 
-  getUserFeed(userId, followingIds) {
-    return this
-      .list({
-        draft: false,
-        flagged: false,
-        $or: [
-          {author: userId},
-          {author: {$in: followingIds}},
-          {categories: {$in: followingIds}},
-          {featured: true},
-        ]
-      })
-      .exec()
+  getUserFeed(userId, followingIds, page = 1, perPage = 100) {
+    const query = {
+      draft: false,
+      flagged: false,
+      $or: [
+        {author: userId},
+        {author: {$in: followingIds}},
+        {categories: {$in: followingIds}},
+        {featured: true},
+      ]
+    }
+
+    return Promise.props({
+      count: this.count(query).exec(),
+      feed: this
+        .list({
+          draft: false,
+          flagged: false,
+          $or: [
+            {author: userId},
+            {author: {$in: followingIds}},
+            {categories: {$in: followingIds}},
+            {featured: true},
+          ]
+        })
+        .skip((page - 1) * perPage)
+        .limit(perPage)
+        .exec(),
+    })
   },
 
   getUserStories(userId) {

@@ -56,8 +56,39 @@ function getBackgroundColor (type, colors) {
   }
 }
 
+function getHoverColorAndBorder (type, colors) {
+  switch(type) {
+    case 'grey':
+      return [colors.btnDarkGreyBackground, colors.btnDarkGreyBackground]
+    case 'blackWhite':
+      return [colors.lightGreyAreas, colors.photoOverlay]
+    case 'headerButton':
+      return ['transparent', colors.navBarText]
+    case 'myFeedHeaderButton':
+    case 'opaque':
+      return [colors.windowTint, colors.snow]
+    case 'opaqueWhite':
+      return [colors.whiteAlphaPt4, colors.snow]
+    case 'facebook':
+    case 'facebookSignup':
+      return [colors.facebookHover, colors.facebookHover]
+    case 'twitter':
+    case 'twitterSignup':
+      return [colors.twitterBlueHover, colors.twitterBlueHover]
+    case 'opaqueGrey':
+      return [colors.greyHover, colors.greyHover]
+    case 'lightGrey':
+      return [colors.signupGreyHover, colors.signupGreyHover]
+    case 'exploreCategoryFollow':
+    case 'categoryFollow':
+    case 'backgroundOpaque':
+    default:
+      return [colors.onHoverRed, colors.onHoverRed]
+  }
+}
+
 const StyledButton = styled.button`
-  cursor: pointer
+  cursor: pointer;
   font-family: ${props => props.theme.Fonts.type.montserrat};
   letter-spacing: .6px;
   height: ${props => props.height || 'auto'};
@@ -100,14 +131,8 @@ const StyledButton = styled.button`
   background-color: ${props => getBackgroundColor(props.type, props.theme.Colors)};
   width: ${props => props.width || 'inherit'};
   &:hover {
-    background-color: ${props => {
-      switch(props.type) {
-        case 'grey':
-          return props.theme.Colors.btnDarkGreyBackground
-        default:
-          return getBackgroundColor(props.type, props.theme.Colors)
-      }
-    }}
+    background:  ${props => getHoverColorAndBorder(props.type, props.theme.Colors)[0]};
+    border-color:  ${props => getHoverColorAndBorder(props.type, props.theme.Colors)[1]};
   }
 `
 const Text = styled.p`

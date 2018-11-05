@@ -158,6 +158,7 @@ const BadgeIcon = styled(Icon)`
 const followButtonStyles = `
   font-size: 10px;
   font-weight: 600;
+  cursor: pointer;
 `
 
 const addToGuideButtonStyles = `
@@ -165,6 +166,7 @@ const addToGuideButtonStyles = `
   font-weight: 600;
   margin-top: 4px;
   margin-bottom: 4px;
+  cursor: pointer;
 `
 
 export default class FeedItemHeader extends React.Component {
@@ -194,6 +196,10 @@ export default class FeedItemHeader extends React.Component {
       return getImageUrl(feedItem.coverVideo, 'video')
     }
     return getImageUrl(feedItem.coverImage)
+  }
+
+  _onClickAddToGuide = () => {
+    this.props.onClickAddToGuide(this.props.sessionUserId)
   }
 
   _profileReroute = () => {
@@ -252,7 +258,7 @@ export default class FeedItemHeader extends React.Component {
                     {author.username}
                   </Username>
                 </ClickableContainer>
-                {!isUsersFeedItem && sessionUserId &&
+                {!isUsersFeedItem &&
                   <SpacedVerticalCenter>
                     <RoundedButton
                       margin='none'
@@ -286,7 +292,7 @@ export default class FeedItemHeader extends React.Component {
                 margin='noRight'
                 padding='smallEven'
                 text='Add To Guide'
-                onClick={onClickAddToGuide}
+                onClick={this._onClickAddToGuide}
                 textProps={addToGuideButtonStyles}
               />
             }

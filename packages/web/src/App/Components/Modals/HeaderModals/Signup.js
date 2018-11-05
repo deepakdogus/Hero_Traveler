@@ -24,9 +24,11 @@ import {
   validate,
   asyncValidate,
 } from '../../../Shared/Lib/userFormValidation'
+import { tabbarObj as documentationTabs } from '../Documentation'
 
 const SmallBold = styled.strong`
   font-weight: 600;
+  cursor: pointer;
 `
 
 const ToSText = styled(Text)`
@@ -48,6 +50,7 @@ const SignupFetchingText = styled(Text)`
 
 class Signup extends React.Component {
   static propTypes = {
+    handleSubmit: PropTypes.func,
     openGlobalModal: PropTypes.func,
     closeGlobalModal: PropTypes.func,
     onAttemptSignup: PropTypes.func,
@@ -71,8 +74,7 @@ class Signup extends React.Component {
     })
   }
 
-  _onAttemptSignup = (e) => {
-    e.preventDefault()
+  _onAttemptSignup = () => {
     if (!this.props.fetching) {
       this.props.onAttemptSignup(
         _.trim(this.props.fullName),
@@ -87,6 +89,20 @@ class Signup extends React.Component {
     this.props.openGlobalModal('login')
   }
 
+  openDocumentationPage = (tab) => {
+    this.props.openGlobalModal(
+      'documentation',
+      {
+        activeTab: documentationTabs[tab],
+        onCloseModal: 'signup',
+      },
+    )
+  }
+
+  openTerms = () => this.openDocumentationPage('Terms')
+
+  openPrivacy = () => this.openDocumentationPage('Privacy')
+
   render() {
     let {
       signupReduxFetching,
@@ -100,7 +116,7 @@ class Signup extends React.Component {
     return (
       <Container>
         <Title>SIGN UP</Title>
-        <form onSubmit={this._onAttemptSignup}>
+        <form onSubmit={this.props.handleSubmit(this._onAttemptSignup)}>
           <SocialMediaButton
             type='facebookSignup'
             iconName='facebookLarge'
@@ -143,7 +159,15 @@ class Signup extends React.Component {
           {(signupReduxError && !signupReduxFetching) &&
             <SignupErrorText>{signupReduxError}</SignupErrorText>
           }
-          <ToSText>By continuing, you accept the <SmallBold>Terms of Use</SmallBold> and <SmallBold>Privacy Policy</SmallBold></ToSText>
+          <ToSText>
+            By continuing, you accept the&nbsp;
+            <SmallBold onClick={this.openTerms}>
+              Terms of Use
+            </SmallBold>
+            &nbsp;and&nbsp;
+            <SmallBold onClick={this.openPrivacy}>
+              Privacy Policy
+            </SmallBold></ToSText>
           <RoundedButton
             text='SIGN UP'
             width='100%'

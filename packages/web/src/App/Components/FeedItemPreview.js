@@ -16,6 +16,7 @@ import StoryActions from '../Shared/Redux/Entities/Stories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import UXActions from '../Redux/UXRedux'
 import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
+import { runIfAuthed } from '../Lib/authHelpers'
 
 import Avatar from './Avatar'
 import LikeComponent from './LikeComponent'
@@ -247,6 +248,7 @@ const GuideIcon = styled(Icon)`
 
 const BookmarkIcon = styled(Icon)`
   margin: 0 5px;
+  cursor: pointer
 `
 
 const DeleteIcon = styled(Icon)`
@@ -297,6 +299,7 @@ class FeedItemPreview extends Component {
       sessionUserId, isLiked, isStory,
       onClickStoryLike, onClickGuideLike, onClickGuideUnLike,
     } = this.props
+
     if (isStory) onClickStoryLike(sessionUserId)
     else {
       if (isLiked) onClickGuideUnLike(sessionUserId)
@@ -422,13 +425,13 @@ class FeedItemPreview extends Component {
                 <LikeComponent
                   likes={formatCount(feedItem.counts.likes)}
                   isLiked={isLiked}
-                  onClick={sessionUserId ? this._onClickLike : undefined}
+                  onClick={this._onClickLike}
                   horizontal
                 />
                 {isStory &&
                   <BookmarkIcon
                     name={isBookmarked ? 'feedBookmarkActive' : 'feedBookmark'}
-                    onClick={sessionUserId ? this._onClickBookmark : undefined}
+                    onClick={this._onClickBookmark}
                   />
                 }
               </Bottom>
@@ -464,12 +467,17 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, props) => {
   const {feedItem} = props
+
   return {
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
-    onClickStoryLike: (sessionUserId) => dispatch(StoryActions.storyLike(sessionUserId, feedItem.id)),
-    onClickGuideLike: (sessionUserId) => dispatch(GuideActions.likeGuideRequest(feedItem.id, sessionUserId)),
-    onClickGuideUnLike: (sessionUserId) => dispatch(GuideActions.unlikeGuideRequest(feedItem.id, sessionUserId)),
-    onClickBookmark: (sessionUserId) => dispatch(StoryActions.storyBookmark(sessionUserId, feedItem.id)),
+    onClickStoryLike: (sessionUserId) =>
+      dispatch(runIfAuthed(sessionUserId, StoryActions.storyLike, [sessionUserId, feedItem.id])),
+    onClickGuideLike: (sessionUserId) =>
+      dispatch(runIfAuthed(sessionUserId, GuideActions.likeGuideRequest, [feedItem.id, sessionUserId])),
+    onClickGuideUnLike: (sessionUserId) =>
+      dispatch(runIfAuthed(sessionUserId, GuideActions.unlikeGuideRequest, [feedItem.id, sessionUserId])),
+    onClickBookmark: (sessionUserId) =>
+      dispatch(runIfAuthed(sessionUserId, StoryActions.storyBookmark, [sessionUserId, feedItem.id])),
     reroute: (path) => dispatch(push(path)),
   }
 }

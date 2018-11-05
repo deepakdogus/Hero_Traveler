@@ -1,6 +1,7 @@
 const colors = {
   clear: 'rgba(0,0,0,0)',
   facebook: '#3b5998',
+  facebookHover: 'rgba(59, 89, 152, 0.9)',
   transparent: 'rgba(0,0,0,0)',
   error: 'rgba(200, 0, 0, 0.8)',
   ricePaper: 'rgba(255,255,255, 0.75)',
@@ -26,12 +27,15 @@ const colors = {
   border: '#483F53',
   banner: '#5F3E63',
   twitterBlue: '#0084b4',
+  twitterBlueHover: 'rgba(0, 132, 180, 0.9)',
   facebookBlue: '#3b5998',
   redHighlights: '#ed1e2e',
   bioGrey: '#757575',
   lightGreyAreas: '#eeeeee',
   grey: '#757575',
+  greyHover: 'rgba(117, 117, 117, 0.9)',
   signupGrey: '#9e9e9e',
+  signupGreyHover: 'rgba(158, 158, 158, 0.9)',
   white: '#ffffff',
   text: '#E0D7E5',
   steel: '#CCCCCC',
@@ -57,6 +61,7 @@ const colors = {
   closeXBorder: '#6d6a6d',
   blueBubble: '#e3f2fd',
   onHoverGrey: '#f6f6f6',
+  onHoverRed: '#c01a27'
 }
 
 export default colors

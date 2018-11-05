@@ -294,7 +294,6 @@ class Guide extends Component {
             onClickShare={this._onClickShare}
             userId={sessionUserId}
             reroute={reroute}
-            openGlobalModal={openGlobalModal}
           />
         </ContentWrapper>
         <Footer hideOnTablet={true} />

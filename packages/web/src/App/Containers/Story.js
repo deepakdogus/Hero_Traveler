@@ -167,7 +167,6 @@ class Story extends Component {
             onClickComments={this._onClickComments}
             userId={sessionUserId}
             reroute={reroute}
-            openGlobalModal={openGlobalModal}
             onClickShare={this._onClickShare}
           />
         </ContentWrapper>

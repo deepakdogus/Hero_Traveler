@@ -154,7 +154,7 @@ export default class NotificationRow extends Component {
   }
 
   renderImage = () => {
-    const avatar = _.get(this, 'props.user.profile.avatar')
+    const avatar = _.get(this, 'props.activity.fromUser.profile.avatar')
 
     return (
       <RenderImageContainer>

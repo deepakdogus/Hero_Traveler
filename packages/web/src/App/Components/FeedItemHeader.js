@@ -28,16 +28,17 @@ const Title = styled.p`
   color: ${props => props.theme.Colors.background};
   letter-spacing: .6px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding-left: 15px;
+    padding-right: 15px;
     font-size: 30px;
   }
 `
 
 const GuideTitle = styled(Title)`
   margin-bottom: 35px;
-  font-weight: 700;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding-left: 45px;
-    padding-right: 45px;
+    padding-left: 15px;
+    padding-right: 15px;
     font-size: 30px;
   }
 `
@@ -50,6 +51,8 @@ const Subtitle = styled.p`
   letter-spacing: .2px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 18px;
+    padding-left: 15px;
+    padding-right: 15px;
   }
 `
 
@@ -61,6 +64,7 @@ const LocationText = styled(Subtitle)`
   font-weight: 600;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 15px;
+    margin: 0;
   }
 `
 
@@ -115,7 +119,6 @@ const CoverCaption = styled.p`
 const Container = styled.div`
   z-index: 500;
   margin: 65px auto 0;
-  max-width: 800px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     margin: 15px auto;
     padding-left: 0;
@@ -183,6 +186,7 @@ const ResponsiveButton = styled(RoundedButton)`
 const followButtonStyles = `
   font-size: 10px;
   font-weight: 600;
+  cursor: pointer;
 `
 
 const followButtonResponsiveStyles = `
@@ -199,6 +203,7 @@ const addToGuideButtonStyles = `
   font-weight: 600;
   margin-top: 4px;
   margin-bottom: 4px;
+  cursor: pointer;
 `
 
 const addToGuideButtonResponsiveStyles = `
@@ -236,6 +241,10 @@ export default class FeedItemHeader extends React.Component {
       return getImageUrl(feedItem.coverVideo, 'video')
     }
     return getImageUrl(feedItem.coverImage)
+  }
+
+  _onClickAddToGuide = () => {
+    this.props.onClickAddToGuide(this.props.sessionUserId)
   }
 
   _profileReroute = () => {
@@ -295,7 +304,7 @@ export default class FeedItemHeader extends React.Component {
                     {author.username}
                   </Username>
                 </ClickableContainer>
-                {!isUsersFeedItem && sessionUserId &&
+                {!isUsersFeedItem &&
                   <SpacedVerticalCenter>
                     <RoundedButton
                       margin='none'
@@ -330,7 +339,7 @@ export default class FeedItemHeader extends React.Component {
                 margin='noRight'
                 padding='smallEven'
                 text='Add To Guide'
-                onClick={onClickAddToGuide}
+                onClick={this._onClickAddToGuide}
                 textProps={addToGuideButtonStyles}
                 responsiveButtonProps={addToGuideButtonResponsiveStyles}
                 responsiveTextProps={addToGuideButtonResponsiveTextStyles}
@@ -374,9 +383,11 @@ export default class FeedItemHeader extends React.Component {
             <Subtitle>{feedItem.description}</Subtitle>
           </div>
         }
-        <StyledDivider
-          color={'lighter-grey'}
-        />
+        {isStory &&
+          <StyledDivider
+            color={'lighter-grey'}
+          />
+        }
       </Container>
     )
   }

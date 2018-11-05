@@ -16,6 +16,7 @@ import StoryActions from '../Shared/Redux/Entities/Stories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import UXActions from '../Redux/UXRedux'
 import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
+import { runIfAuthed } from '../Lib/authHelpers'
 
 import Avatar from './Avatar'
 import LikeComponent from './LikeComponent'
@@ -24,7 +25,6 @@ import VerticalCenter from './VerticalCenter'
 import Icon from './Icon'
 
 import OverlayHover from './OverlayHover'
-import CloseX from './CloseX'
 
 const coverHeight = '257px'
 
@@ -137,16 +137,18 @@ const VerticalLocationPreview = styled(HorizontalLocationPreview)`
 const Title = styled.h3`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 600;
-  font-size: 25px;
+  font-size: ${props => props.isGuide ? '20px' : '25px'};
   color: ${props => props.theme.Colors.background};
   display: inline-block;
   margin: 0;
   cursor: pointer;
   max-width: 400px;
+  padding: 12px 0;
   letter-spacing: .6px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     max-width: 385.5px;
     font-size: 20px;
+    padding: 0 15px;
   }
   &:hover {
     color: ${props => props.theme.Colors.grey};
@@ -247,6 +249,14 @@ const GuideIcon = styled(Icon)`
 
 const BookmarkIcon = styled(Icon)`
   margin: 0 5px;
+  cursor: pointer
+`
+
+const DeleteIcon = styled(Icon)`
+  width: 32px;
+  height: 32px;
+  align-self: center;
+  cursor: pointer;
 `
 
 const videoThumbnailOptions = {
@@ -290,6 +300,7 @@ class FeedItemPreview extends Component {
       sessionUserId, isLiked, isStory,
       onClickStoryLike, onClickGuideLike, onClickGuideUnLike,
     } = this.props
+
     if (isStory) onClickStoryLike(sessionUserId)
     else {
       if (isLiked) onClickGuideUnLike(sessionUserId)
@@ -367,8 +378,8 @@ class FeedItemPreview extends Component {
               onClick={this.navToFeedItem}
             >
               {!!guideId &&
-                <CloseXContainer>
-                  <CloseX onClick={this.openRemoveStoryModal}/>
+                <CloseXContainer onClick={this.openRemoveStoryModal}>
+                  <DeleteIcon size='small' name='closeBlack'/>
                 </CloseXContainer>
               }
             </StyledOverlay>
@@ -380,8 +391,15 @@ class FeedItemPreview extends Component {
                 <GuideIconText>Guide</GuideIconText>
               </Top>
             }
-            <LocationPreview>{this.getLocationText()}</LocationPreview>
-            <Title onClick={this.navToFeedItem}>{feedItem.title}</Title>
+            {!guideId &&
+              <LocationPreview>{this.getLocationText()}</LocationPreview>
+            }
+            <Title
+              onClick={this.navToFeedItem}
+              isGuide={!!guideId}
+            >
+              {feedItem.title}
+            </Title>
             <DetailsContainer between='xs'>
               <Row middle='xs'>
                 {!isVertical &&
@@ -408,13 +426,13 @@ class FeedItemPreview extends Component {
                 <LikeComponent
                   likes={formatCount(feedItem.counts.likes)}
                   isLiked={isLiked}
-                  onClick={sessionUserId ? this._onClickLike : undefined}
+                  onClick={this._onClickLike}
                   horizontal
                 />
                 {isStory &&
                   <BookmarkIcon
                     name={isBookmarked ? 'feedBookmarkActive' : 'feedBookmark'}
-                    onClick={sessionUserId ? this._onClickBookmark : undefined}
+                    onClick={this._onClickBookmark}
                   />
                 }
               </Bottom>
@@ -450,12 +468,17 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, props) => {
   const {feedItem} = props
+
   return {
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
-    onClickStoryLike: (sessionUserId) => dispatch(StoryActions.storyLike(sessionUserId, feedItem.id)),
-    onClickGuideLike: (sessionUserId) => dispatch(GuideActions.likeGuideRequest(feedItem.id, sessionUserId)),
-    onClickGuideUnLike: (sessionUserId) => dispatch(GuideActions.unlikeGuideRequest(feedItem.id, sessionUserId)),
-    onClickBookmark: (sessionUserId) => dispatch(StoryActions.storyBookmark(sessionUserId, feedItem.id)),
+    onClickStoryLike: (sessionUserId) =>
+      dispatch(runIfAuthed(sessionUserId, StoryActions.storyLike, [sessionUserId, feedItem.id])),
+    onClickGuideLike: (sessionUserId) =>
+      dispatch(runIfAuthed(sessionUserId, GuideActions.likeGuideRequest, [feedItem.id, sessionUserId])),
+    onClickGuideUnLike: (sessionUserId) =>
+      dispatch(runIfAuthed(sessionUserId, GuideActions.unlikeGuideRequest, [feedItem.id, sessionUserId])),
+    onClickBookmark: (sessionUserId) =>
+      dispatch(runIfAuthed(sessionUserId, StoryActions.storyBookmark, [sessionUserId, feedItem.id])),
     reroute: (path) => dispatch(push(path)),
   }
 }

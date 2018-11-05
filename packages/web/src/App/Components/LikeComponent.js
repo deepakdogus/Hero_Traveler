@@ -14,6 +14,10 @@ const Likes = styled.span`
   margin: ${props => props.horizontal ? '0 5px 0 0' : 'auto 5px'};
 `
 
+const StyledIcon = styled(Icon)`
+  cursor: pointer;
+`
+
 export default class LikeComponent extends React.Component {
   static propTypes = {
     likes: PropTypes.string,
@@ -26,7 +30,7 @@ export default class LikeComponent extends React.Component {
     return (
       <Row middle='xs'>
         <Likes horizontal={this.props.horizontal}>{this.props.likes}</Likes>
-        <Icon
+        <StyledIcon
           name={this.props.isLiked ? 'like-active-large' : 'like-large'}
           onClick={this.props.onClick}
         />

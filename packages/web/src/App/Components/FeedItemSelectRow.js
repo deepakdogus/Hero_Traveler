@@ -14,7 +14,7 @@ const verticalMetrics = {
 }
 
 const horizontalMetrics = {
-  width: 140,
+  width: 115,
   height: 90,
 }
 
@@ -39,6 +39,7 @@ function getResponsiveMetric(isVertical, metric) {
 }
 
 const StyledImageWrapper = styled.div`
+  margin: 20px 0;
   width: ${props => getMetric(props.isVertical, 'width')};
   height: ${props => getMetric(props.isVertical, 'height')};
   display: flex;
@@ -67,7 +68,7 @@ const Text = styled.p`
   color: ${props => props.theme.Colors.background};
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-size: 18px;
-  font-weight: 600;
+  font-weight: ${props => props.isVertical ? '600' : '400'};
   letter-spacing: .2px;
   margin: 0;
   cursor: pointer;
@@ -128,6 +129,7 @@ export default class StorySelectRow extends Component {
       <StyledVerticalCenter>
           <Text
             onClick={this._handleStoryClick}
+            isVertical={this.props.isVertical}
           >
             {story.title}
           </Text>

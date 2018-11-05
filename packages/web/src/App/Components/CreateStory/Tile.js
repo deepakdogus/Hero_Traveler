@@ -17,7 +17,7 @@ const TextTile = styled(Row)`
   border-radius: 4px;
   height: 34px;
   z-index: 90;
-  padding: 5px;
+  padding: 5px 10px;
 `
 
 const Text = styled.p`
@@ -38,16 +38,16 @@ const StyledIcon = styled(Icon)`
 export default class Tile extends React.Component {
   static propTypes = {
     text: PropTypes.string,
-    handleTagRemove: PropTypes.func
+    handleTileRemove: PropTypes.func,
   }
 
-  _handleTagRemove = (event) => {
-    const {text, handleTagRemove} = this.props
-    handleTagRemove(event, text)
+  _handleTileRemove = (event) => {
+    const { text, handleTileRemove } = this.props
+    handleTileRemove(event, text)
   }
 
   render() {
-    const {text} = this.props
+    const { text } = this.props
 
     return (
       <WrapperCol>
@@ -56,7 +56,7 @@ export default class Tile extends React.Component {
           <StyledIcon
             data-tagName={text}
             name='closeDark'
-            onClick={this._handleTagRemove}
+            onClick={this._handleTileRemove}
           />
         </TextTile>
       </WrapperCol>

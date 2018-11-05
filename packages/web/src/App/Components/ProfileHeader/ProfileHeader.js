@@ -23,6 +23,8 @@ export default class ProfileHeader extends React.Component {
     isEdit: PropTypes.bool,
     isUsersProfile: PropTypes.bool,
     toProfileView: PropTypes.func,
+    sessionUserId: PropTypes.string,
+    openGlobalModal: PropTypes.func,
   }
 
   constructor(props) {
@@ -41,8 +43,14 @@ export default class ProfileHeader extends React.Component {
     this.setState({ modal: undefined })
   }
 
-  openFollowedByModal = () => this.setState({ modal: 'followedBy' })
-  openFollowingModal = () => this.setState({ modal: 'following' })
+  openModalIfAuthed = (modal) => {
+    return this.props.sessionUserId
+      ? this.setState(modal)
+      : this.props.openGlobalModal('login')
+  }
+
+  openFollowedByModal = () => this.openModalIfAuthed({ modal: 'followedBy' })
+  openFollowingModal = () => this.openModalIfAuthed({ modal: 'following' })
   openBioModal = () => this.setState({modal: 'profileBio'})
   openInboxModal = () => this.setState({modal: 'inbox'})
   openContributor = () => this.props.openGlobalModal('contributor')

@@ -15,40 +15,50 @@ import UXActions from '../Redux/UXRedux'
 import { runIfAuthed } from '../Lib/authHelpers'
 
 import FeedItemHeader from '../Components/FeedItemHeader'
-import {BodyText as Description} from '../Components/StoryContentRenderer'
+import {BodyText} from '../Components/StoryContentRenderer'
 import GoogleMap from '../Components/GoogleMap'
 import FeedItemMetaInfo from '../Components/FeedItemMetaInfo'
 import FeedItemActionBar from '../Components/FeedItemActionBar'
 import TabBar from '../Components/TabBar'
 import GuideStoriesOfType from '../Components/GuideStoriesOfType'
 import HorizontalDivider from '../Components/HorizontalDivider'
+import Footer from '../Components/Footer'
 import { createDeepLinkWeb } from '../Lib/sharingWeb'
 
-const ContentWrapper = styled.div``
-
-const LimitedWidthContainer = styled.div`
-  padding-left: 45px;
-  padding-right: 45px;
-  max-width: 800px;
-  margin: 0 auto;
+const Container = styled.div`
+  margin: 0 7%;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding-left: 0px;
-    padding-right: 0px;
+    margin: 0;
+  }
+`
+
+const ContentWrapper = styled.div`
+  position: relative;
+  margin: 0 auto;
+  padding-left: 80px;
+  padding-right: 80px;
+  max-width: 800px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0;
   }
 `
 
 const MetaInfoContainer = styled.div`
   padding-left: 0px;
   padding-right: 0px;
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding-left: 45px;
-    padding-right: 45px;
-  }
 `
 const ConditionalHorizontalDivider = styled(HorizontalDivider)`
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     display: none;
   }
+`
+
+const Spacer = styled.div`
+  height: 45px;
+`
+
+const Description = styled(BodyText)`
+  padding: 0 45px;
 `
 
 const HashtagText = styled.p`
@@ -224,18 +234,18 @@ class Guide extends Component {
     const selectedStoriesAndAuthors = this.getStoriesAndAuthorsByType(activeTab.toLowerCase())
 
     return (
-      <ContentWrapper>
-        <FeedItemHeader
-          feedItem={guide}
-          author={author}
-          reroute={reroute}
-          sessionUserId={sessionUserId}
-          isFollowing={isFollowing}
-          followUser={this._followUser}
-          unfollowUser={this._unfollowUser}
-          shouldHideCover={this.state.activeTab !== 'OVERVIEW'}
-        />
-        <LimitedWidthContainer>
+      <Container>
+        <ContentWrapper>
+          <FeedItemHeader
+            feedItem={guide}
+            author={author}
+            reroute={reroute}
+            sessionUserId={sessionUserId}
+            isFollowing={isFollowing}
+            followUser={this._followUser}
+            unfollowUser={this._unfollowUser}
+            shouldHideCover={this.state.activeTab !== 'OVERVIEW'}
+          />
           {activeTab !== 'OVERVIEW' &&
             <GoogleMap
               stories={selectedStoriesAndAuthors.stories}
@@ -246,43 +256,49 @@ class Guide extends Component {
             tabs={this.getPossibleTabs()}
             activeTab={activeTab}
             onClickTab={this.onClickTab}
+            whiteBG={true}
           />
-          <Description>{guide.description}</Description>
+          <Spacer />
+          { guide &&
+            guide.description &&
+            activeTab === 'OVERVIEW' &&
+            <Description>{guide.description}</Description>
+          }
           {this.renderHashtags()}
-          <MetaInfoContainer>
-            <FeedItemMetaInfo feedItem={guide}/>
-            <ConditionalHorizontalDivider color='light-grey'/>
-          </MetaInfoContainer>
-        </LimitedWidthContainer>
-        <LimitedWidthContainer>
-            {this.shouldDisplay('SEE') &&
-              <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('SEE')} />
-            }
-            {this.shouldDisplay('DO') &&
-              <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('DO')} />
-            }
-            {this.shouldDisplay('EAT') &&
-              <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('EAT')} />
-            }
-            {this.shouldDisplay('STAY') &&
-              <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('STAY')} />
-            }
-        </LimitedWidthContainer>
-        {
-        <FeedItemActionBar
-          isStory={false}
-          feedItem={guide}
-          isLiked={isLiked}
-          onClickLike={this._onClickLike}
-          // isBookmarked={isBookmarked}
-          // onClickBookmark={this._onClickBookmark}
-          onClickComments={this._onClickComments}
-          onClickShare={this._onClickShare}
-          userId={sessionUserId}
-          reroute={reroute}
-        />
-        }
-      </ContentWrapper>
+          {activeTab === 'OVERVIEW' &&
+            <MetaInfoContainer>
+              <FeedItemMetaInfo feedItem={guide}/>
+              <ConditionalHorizontalDivider color='light-grey'/>
+            </MetaInfoContainer>
+          }
+          {this.shouldDisplay('SEE') &&
+            <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('SEE')} />
+          }
+          {this.shouldDisplay('DO') &&
+            <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('DO')} />
+          }
+          {this.shouldDisplay('EAT') &&
+            <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('EAT')} />
+          }
+          {this.shouldDisplay('STAY') &&
+            <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('STAY')} />
+          }
+          <FeedItemActionBar
+            isStory={false}
+            feedItem={guide}
+            isLiked={isLiked}
+            onClickLike={this._onClickLike}
+            // isBookmarked={isBookmarked}
+            // onClickBookmark={this._onClickBookmark}
+            onClickComments={this._onClickComments}
+            onClickShare={this._onClickShare}
+            userId={sessionUserId}
+            reroute={reroute}
+            openGlobalModal={openGlobalModal}
+          />
+        </ContentWrapper>
+        <Footer hideOnTablet={true} />
+      </Container>
     )
   }
 }

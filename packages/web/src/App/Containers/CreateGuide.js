@@ -36,6 +36,25 @@ const StyledTitle = styled(Title)`
   }
 `
 
+const FooterRow = styled(Row)`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0 30px;
+  }
+`
+
+/* counteracts 11px margin of exported TrashButton */
+const StyledVerticalCenter = styled(VerticalCenter)`
+  margin-left: -11px;
+`
+
+/*
+  counteracts 5px margin of RoundedButton (needed because
+  setting margin through textProps changes interior p margin too)
+*/
+const StyledCenteredButtons = styled(CenteredButtons)`
+  margin-right: -5px;
+`
+
 class CreateGuide extends SharedCreateGuide {
   updateGuide = (update) => {
     const guide = _.merge({}, this.state.guide)
@@ -43,7 +62,7 @@ class CreateGuide extends SharedCreateGuide {
       guide[key] = update[key]
     }
     this.setState({
-      guide
+      guide,
     })
   }
 
@@ -101,11 +120,15 @@ class CreateGuide extends SharedCreateGuide {
      const {
       reroute,
       storyId,
+      guideId,
       openGlobalModal,
     } = this.props
     if (storyId) {
       reroute(`/story/${storyId}`)
       openGlobalModal('guidesSelect', { storyId })
+    }
+    else if (guideId) {
+      reroute(`/guide/${guideId}`)
     }
     else reroute(`/feed`)
   }
@@ -119,7 +142,7 @@ class CreateGuide extends SharedCreateGuide {
           feedItemId: guideId,
           type: 'guide',
           rerouteOverride: this.rerouteAway,
-        }
+        },
       )
     }
     else this.rerouteAway()
@@ -143,19 +166,17 @@ class CreateGuide extends SharedCreateGuide {
             categories={this.props.categories}
             isGuide
           />
-          <Row between='xs'>
-            {
-              <VerticalCenter>
-                <TrashButton removeFeedItem={this.removeGuide}/>
-              </VerticalCenter>
-            }
-            <CenteredButtons
+          <FooterRow between='xs'>
+            <StyledVerticalCenter>
+              <TrashButton removeFeedItem={this.removeGuide}/>
+            </StyledVerticalCenter>
+            <StyledCenteredButtons
               buttonsToRender={[
                 this.renderButtonLeft,
                 this.renderButtonRight,
               ]}
             />
-          </Row>
+          </FooterRow>
         </ContentWrapper>
         {
         <Modal
@@ -194,6 +215,5 @@ function extendedMapDispatchToProps(dispatch, ownProps) {
   dispatchMapping.getGuide = (guideId) => dispatch(GuideActions.getGuideRequest(guideId))
   return dispatchMapping
 }
-
 
 export default connect(extendedMapStateToProps, extendedMapDispatchToProps)(CreateGuide)

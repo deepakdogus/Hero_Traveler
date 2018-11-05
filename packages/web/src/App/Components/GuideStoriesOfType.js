@@ -4,12 +4,8 @@ import styled from 'styled-components'
 
 import FeedItemList from './FeedItemList'
 
-
 const Wrapper = styled.div`
-  margin: 20px 0;
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    margin: 0;
-  }
+  margin: 45px 0;
 `
 
 const Title = styled.p`
@@ -33,6 +29,9 @@ const SeeAllText = styled.p`
   letter-spacing: .2px;
   color: ${props => props.theme.Colors.redHighlights};
   cursor: pointer;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0 20px;
+  }
 `
 
 export default class GuideStoriesOfType extends React.Component {
@@ -43,7 +42,7 @@ export default class GuideStoriesOfType extends React.Component {
     stories: PropTypes.arrayOf(PropTypes.object),
     isShowAll: PropTypes.bool,
     onClickShowAll: PropTypes.func,
-    titlePadding: PropTypes.string
+    titlePadding: PropTypes.string,
   }
 
   _onClickShowAll = () => {

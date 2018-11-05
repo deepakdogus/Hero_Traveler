@@ -24,6 +24,10 @@ export const BodyText = styled.p`
   font-size: 18px;
   color: ${props => props.theme.Colors.grey};
   letter-spacing: 0.6px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding-left: 45px;
+    padding-right: 45px;
+  }
 `
 
 const HeaderOne = styled.h1`
@@ -35,6 +39,10 @@ const HeaderOne = styled.h1`
   letter-spacing: .2px;
   &:first-letter {
     text-transform: uppercase;
+  }
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding-left: 45px;
+    padding-right: 45px;
   }
 `
 

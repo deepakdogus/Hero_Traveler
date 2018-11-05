@@ -7,7 +7,7 @@ import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
 import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unchecked'
 import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checked'
 
-import { Row } from '../FlexboxGrid'
+import { Grid, Row } from '../FlexboxGrid'
 import Icon from '../Icon'
 import HorizontalDivider from '../HorizontalDivider'
 import GoogleLocator from './GoogleLocator'
@@ -33,6 +33,7 @@ export const InputRowContainer = styled(Container)`
   align-items: center;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding: 14px 15px 14px 0px;
+    margin: 0 15px;
   }
 `
 
@@ -41,6 +42,15 @@ const StyledTitle = styled(Title)`
   font-size: 28px;
   letter-spacing: .6px;
   text-transform: uppercase;
+`
+
+const StyledGrid = styled(Grid)`
+  margin-left: 0px;
+  width: 90%;
+`
+
+const VerticallyCenterRow = styled(Row)`
+  align-items: center;
 `
 
 const ActivitySelectRow = styled(Row)`
@@ -71,6 +81,7 @@ const ActivityDetailLabel = styled(DetailLabel)`
 
 const PrivacyLabel = styled(DetailLabel)`
   font-size: 16px;
+  margin-left: 5px;
 `
 
 export const StyledInput = styled.input`
@@ -81,43 +92,26 @@ export const StyledInput = styled.input`
   width: 80%;
   color: ${props => props.theme.Colors.background};
   border-width: 0;
-  margin-left: 25px;
+  margin: 10px 0 10px 25px;
   outline: none;
   ::placeholder {
     font-family: ${props => props.theme.Fonts.type.base};
     color: ${props => props.theme.Colors.navBarText};
   }
 `
+
 const IconWithMargin = styled(Icon)`
   margin-left: 2px;
-`
-const LocationIcon = styled(IconWithMargin)`
-  height: 34px;
-  width: 23px;
-`
-
-const DateIcon = styled(IconWithMargin)`
-  height: 26px;
   width: 30px;
-`
-const TagIcon = styled(IconWithMargin)`
-  height: 26px;
-  width: 26px;
-`
-
-const CheckIcon = styled(TagIcon)``
-
-const HashtagIcon = styled(IconWithMargin)`
-  height: 35px;
-  width: 35px;
-`
-
-const CostIcon = styled(IconWithMargin)`
   height: 30px;
-  width: 30px;
 `
 
-const InfoIcon = styled(CostIcon)``
+const EnlargedIcon = styled(IconWithMargin)`
+  width: 35px;
+  height: 35px;
+`
+
+const HashtagIcon = styled(IconWithMargin)``
 
 export const IconWrapper = styled.div`
   width: 35px;
@@ -143,11 +137,15 @@ const TravelTipsInput = styled.textarea`
   height: 160px;
   resize: none;
   border-width: 1px;
-  border-color: ${props => props.theme.Colors.navBarText};
+  border-color: ${props => props.theme.Colors.navBarTextLowOpacity};
   border-radius: 2.5px;
   padding: 10px;
   margin-top: 5px;
   box-sizing: border-box;
+`
+
+const Spacer = styled.div`
+  height: 45px;
 `
 
 const styles = {
@@ -175,13 +173,20 @@ const styles = {
 }
 
 const TilesWrapper = styled.div`
-  margin-left: 50px;
-  flex-direction: column;
-  align-items: start;
+  margin-left: 15px;
+  flex-direction: row;
+  align-items: center;
   display: flex;
+  flex-wrap: wrap;
 `
 
-function sortCategories(categories) {
+const StyledDivider = styled(HorizontalDivider)`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 0.5em 15px;
+  }
+`
+
+const sortCategories = (categories) => {
   return categories.sort((a,b) => {
     if (a.title < b.title) return -1
     else return 1
@@ -190,8 +195,11 @@ function sortCategories(categories) {
 
 const formatCategories = (categories) => sortCategories(_.values(categories))
 
-function isSameTag(a, b){
-  return a.title === b.title
+const isSameTag = (a, b) => a.title === b.title
+
+const isSameLocation = (a, b) => {
+  // use coords over names to prevent match of distinct location with duplicate names
+  return a.latitude === b.latitude && a.longitude === b.longitude
 }
 
 const buttons = ['see', 'do', 'eat', 'stay']
@@ -294,20 +302,32 @@ export default class FeedItemDetails extends React.Component {
     this.props.onInputChange({ [type]: updatedTags })
   }
 
-  handleTagRemove = (event, clickedTitle, type = 'categories') => {
+  handleTileRemove = (event, clickedTitle, type = 'categories') => {
     event.stopPropagation()
-    const selectedTagsOfType = this.props.workingDraft[type]
-    const clickedTag = _.find(
-      selectedTagsOfType,
-      tag => tag.title === clickedTitle,
+    const findByTitleFns = {
+      categories: tile => tile.title === clickedTitle,
+      locations: tile => displayLocationDetails(tile) === clickedTitle,
+    }
+    const isSameFns = {
+      categories: isSameTag,
+      locations: isSameLocation,
+    }
+    const selectedTilesOfType = this.props.workingDraft[type]
+
+    const clickedTile = _.find(selectedTilesOfType, findByTitleFns[type])
+    if (!clickedTile) return
+
+    const updatedTiles = _.differenceWith(
+      selectedTilesOfType,
+      [clickedTile], isSameFns[type],
     )
-    const updatedTags = _.differenceWith(selectedTagsOfType, [clickedTag], isSameTag)
+
     if (type === 'categories') {
       this.updateCategoriesList(
-        sortCategories(this.state.categoriesList.concat([clickedTag])),
+        sortCategories(this.state.categoriesList.concat([clickedTile])),
       )
     }
-    this.props.onInputChange({ [type]: updatedTags })
+    this.props.onInputChange({ [type]: updatedTiles })
   }
 
   updateCategoriesList = (newCategoriesList) => {
@@ -358,17 +378,32 @@ export default class FeedItemDetails extends React.Component {
   }
 
   renderLocations() {
+    const handleLocationTileRemove = (event, clickedTitle) => {
+      this.handleTileRemove(event, clickedTitle, 'locations')
+    }
+
     return (
-      <TilesWrapper>
-      {
-        this.props.workingDraft.locations.map((location, index) => {
-          return <Tile
-            key={index}
-            text={displayLocationDetails(location)}
+      <StyledGrid>
+        <VerticallyCenterRow>
+          {!!this.props.workingDraft.locations.length && <TilesWrapper>
+            {
+              this.props.workingDraft.locations.map((location, index) => {
+                return <Tile
+                  key={index}
+                  text={displayLocationDetails(location)}
+                  handleTileRemove={handleLocationTileRemove}
+                />
+              })
+            }
+          </TilesWrapper>
+          }
+          <GoogleLocator
+            onChange={this.handleLocationSelect}
+            address={this.state.address}
+            isGuide={true}
           />
-        })
-      }
-      </TilesWrapper>
+        </VerticallyCenterRow>
+      </StyledGrid>
     )
   }
 
@@ -421,35 +456,39 @@ export default class FeedItemDetails extends React.Component {
             </ActivitySelectRow>
           </InputRowContainer>
         }
+        {isGuide && <Spacer />}
         {isGuide &&
           <InputRowContainer>
             <IconWrapper>
-              <InfoIcon name='info'/>
+              <IconWithMargin name='infoLarge'/>
             </IconWrapper>
             <StyledInput
               placeholder='Title'
               value={workingDraft.title}
               name='title'
               onChange={this.onGenericChange}
+              autoComplete='off'
             />
           </InputRowContainer>
         }
-        <HorizontalDivider color='lighter-grey' opaque/>
+        <StyledDivider color='lighter-grey' opaque/>
         <InputRowContainer>
           <IconWrapper>
-            <LocationIcon name='location'/>
+            <EnlargedIcon name='locationLarge'/>
           </IconWrapper>
-          <GoogleLocator
-            onChange={this.handleLocationSelect}
-            address={this.state.address}
-          />
+          {isGuide
+            ? this.renderLocations()
+            : <GoogleLocator
+                onChange={this.handleLocationSelect}
+                address={this.state.address}
+              />
+          }
         </InputRowContainer>
-        {isGuide && this.renderLocations()}
-        {!isGuide && <HorizontalDivider color='lighter-grey' opaque/>}
+        {!isGuide && <StyledDivider color='lighter-grey' opaque/>}
         {!isGuide &&
           <InputRowContainer>
             <IconWrapper>
-              <DateIcon name='date'/>
+              <EnlargedIcon name='dateLarge'/>
             </IconWrapper>
             <StyledInput
               type='text'
@@ -466,24 +505,24 @@ export default class FeedItemDetails extends React.Component {
             }
           </InputRowContainer>
         }
-        <HorizontalDivider color='lighter-grey' opaque/>
+        <StyledDivider color='lighter-grey' opaque/>
         <TagSelector
           handleTagAdd={this.handleTagAdd}
           loadDefaultTags={this.loadDefaultCategories}
-          handleTagRemove={this.handleTagRemove}
+          handleTileRemove={this.handleTileRemove}
           updateTagsList={this.updateCategoriesList}
           isSameTag={isSameTag}
-          Icon={TagIcon}
-          iconName='tag'
+          Icon={EnlargedIcon}
+          iconName='tagLarge'
           selectedTags={workingDraft.categories}
           tagsList={categoriesList}
         />
-        {!isGuide && <HorizontalDivider color='lighter-grey' opaque/>}
+        {!isGuide && <StyledDivider color='lighter-grey' opaque/>}
         {!isGuide &&
           <TagSelector
             handleTagAdd={this.handleTagAdd}
             loadDefaultTags={this.loadDefaultHashtags}
-            handleTagRemove={this.handleTagRemove}
+            handleTileRemove={this.handleTileRemove}
             updateTagsList={this.updateHashtagsList}
             isSameTag={isSameTag}
             Icon={HashtagIcon}
@@ -492,11 +531,11 @@ export default class FeedItemDetails extends React.Component {
             tagsList={hashtagsList}
           />
         }
-        <HorizontalDivider color='lighter-grey' opaque/>
+        <StyledDivider color='lighter-grey' opaque/>
         {isGuide &&
           <InputRowContainer>
             <IconWrapper>
-              <DateIcon name='date'/>
+              <EnlargedIcon name='dateLarge'/>
             </IconWrapper>
             <StyledInput
               type='number'
@@ -505,13 +544,14 @@ export default class FeedItemDetails extends React.Component {
               min='1'
               name='duration'
               onChange={this.onGenericChange}
+              autoComplete='off'
             />
           </InputRowContainer>
         }
-        {isGuide && <HorizontalDivider color='lighter-grey' opaque/>}
+        {isGuide && <StyledDivider color='lighter-grey' opaque/>}
         <InputRowContainer>
           <IconWrapper>
-            <CostIcon name='cost'/>
+            <IconWithMargin name='costLarge'/>
           </IconWrapper>
           <StyledInput
             type='number'
@@ -522,14 +562,15 @@ export default class FeedItemDetails extends React.Component {
             onChange={this.onGenericChange}
           />
         </InputRowContainer>
-        <HorizontalDivider color='lighter-grey' opaque/>
+        <StyledDivider color='lighter-grey' opaque/>
+        <Spacer />
         <TravelTipsContainer>
           <DetailLabel>
             {isGuide ? 'Overview' : 'Travel Tips'}
           </DetailLabel>
           <TravelTipsInput
-            value={isGuide ? workingDraft.travelTips : workingDraft.travelTips}
-            name='travelTips'
+            value={isGuide ? workingDraft.description : workingDraft.travelTips}
+            name={isGuide ? 'description' : 'travelTips'}
             placeholder={
               isGuide
               ? `What's your guide about?`
@@ -541,15 +582,16 @@ export default class FeedItemDetails extends React.Component {
         {isGuide &&
           <Container>
             <Row>
-              <IconWrapper>
-                <CheckIcon
-                  name={workingDraft.isPrivate ? 'greyCheck' : 'redCheck'}
+              <VerticalCenter>
+                <input
+                  checked={workingDraft.isPrivate || false}
+                  type='checkbox'
                   onClick={this.togglePrivacy}
                 />
-              </IconWrapper>
+              </VerticalCenter>
               <VerticalCenter>
                 <PrivacyLabel>
-                  Make this guide public
+                  Make this guide private
                 </PrivacyLabel>
               </VerticalCenter>
             </Row>

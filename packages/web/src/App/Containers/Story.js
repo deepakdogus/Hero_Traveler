@@ -71,6 +71,7 @@ class Story extends Component {
     onClickComments: PropTypes.func,
     onClickAddToGuide: PropTypes.func,
     onClickFlag: PropTypes.func,
+    openGlobalModal: PropTypes.func,
   }
 
   componentDidMount() {
@@ -132,45 +133,11 @@ class Story extends Component {
       isBookmarked,
       isLiked,
       onClickAddToGuide,
+      openGlobalModal,
     } = this.props
     if (!story || !author) return null
 
     return (
-<<<<<<< HEAD
-      <ContentWrapper>
-        <FeedItemHeader
-          feedItem={story}
-          author={author}
-          reroute={reroute}
-          sessionUserId={sessionUserId}
-          isFollowing={isFollowing}
-          followUser={this._followUser}
-          unfollowUser={this._unfollowUser}
-          onClickAddToGuide={onClickAddToGuide}
-          isStory
-        />
-        <StoryContentRenderer story={story} />
-        {this.renderHashtags()}
-        {story.locationInfo && story.locationInfo.latitude && story.locationInfo.longitude &&
-          <GoogleMap stories={ [story] } />
-        }
-        <FeedItemMetaInfo feedItem={story} />
-        <FeedItemActionBar
-          feedItem={story}
-          isStory
-          isLiked={isLiked}
-          onClickLike={this._onClickLike}
-          isBookmarked={isBookmarked}
-          onClickBookmark={this._onClickBookmark}
-          onClickComments={this._onClickComments}
-          userId={sessionUserId}
-          reroute={reroute}
-          openGlobalModal={openGlobalModal}
-          onClickShare={this._onClickShare}
-        />
-        <Footer />
-      </ContentWrapper>
-=======
       <Container>
         <ContentWrapper>
           <FeedItemHeader
@@ -208,7 +175,6 @@ class Story extends Component {
         </ContentWrapper>
         <Footer hideOnTablet={true}/>
       </Container>
->>>>>>> master
     )
   }
 }

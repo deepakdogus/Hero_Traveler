@@ -47,7 +47,7 @@ const HorizontalMarginWrapper = styled.div`
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     max-width: 100vw;
     width: 100vw;
-    margin: 0;
+    margin: 15px 0;
   }
 `
 

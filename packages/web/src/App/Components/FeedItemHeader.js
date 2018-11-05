@@ -28,8 +28,8 @@ const Title = styled.p`
   color: ${props => props.theme.Colors.background};
   letter-spacing: .6px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
     font-size: 30px;
   }
 `
@@ -37,8 +37,9 @@ const Title = styled.p`
 const GuideTitle = styled(Title)`
   margin-bottom: 35px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding-left: 15px;
-    padding-right: 15px;
+    margin-bottom: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
     font-size: 30px;
   }
 `
@@ -51,8 +52,8 @@ const Subtitle = styled.p`
   letter-spacing: .2px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 18px;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 `
 
@@ -64,7 +65,7 @@ const LocationText = styled(Subtitle)`
   font-weight: 600;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 15px;
-    margin: 0;
+    margin-top: 30px;
   }
 `
 
@@ -120,7 +121,7 @@ const Container = styled.div`
   z-index: 500;
   margin: 65px auto 0;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    margin: 15px auto;
+    margin: 0 auto;
     padding-left: 0;
     padding-right: 0;
   }
@@ -136,16 +137,17 @@ const StyledDivider = styled(HorizontalDivider)`
   max-width: 960px;
   margin: 30px auto;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    margin: 30px 15px;
+    margin: 30px 20px;
   }
 `
 
 const TopRow = styled(Row)`
   margin-bottom: 35px !important;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin-top: 15px !important;
     margin-bottom: 15px !important;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 `
 

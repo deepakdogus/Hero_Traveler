@@ -3,9 +3,21 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 import FeedItemList from './FeedItemList'
+import HorizontalDivider from './HorizontalDivider'
 
 const Wrapper = styled.div`
   margin: 45px 0;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 0;
+  }
+`
+
+const StyledDivider = styled(HorizontalDivider)`
+  display: none;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    display: block;
+    margin: 0 20px;
+  }
 `
 
 const Title = styled.p`
@@ -30,7 +42,12 @@ const SeeAllText = styled.p`
   color: ${props => props.theme.Colors.redHighlights};
   cursor: pointer;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding: 0 20px;
+    padding: 12px;
+    margin: 20px;
+    font-size: 15px;
+    text-align: center;
+    border: 1px solid ${props => props.theme.Colors.redHighlights};
+    border-radius: 2px;
   }
 `
 
@@ -73,6 +90,7 @@ export default class GuideStoriesOfType extends React.Component {
             See All ({stories.length})
           </SeeAllText>
         }
+        <StyledDivider color='light-grey'/>
       </Wrapper>
     )
   }

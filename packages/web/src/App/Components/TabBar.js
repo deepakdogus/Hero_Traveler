@@ -60,6 +60,10 @@ const DefaultText = styled(VerticalCenter)`
   margin: 0;
   padding: 22px 10px;
   min-width: ${props => props.isModal ? 'auto' : '80px'};
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: ${props => props.isModal ? '0' : '13px 10px'};
+    border-bottom-width: ${props => !props.isOnlyTab && props.isActive ? '3px' : '0' };
+  }
 `
 
 export default class TabBar extends React.Component {

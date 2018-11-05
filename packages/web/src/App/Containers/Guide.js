@@ -12,6 +12,7 @@ import {
   isGuideLiked,
 } from '../Shared/Redux/Entities/Users'
 import UXActions from '../Redux/UXRedux'
+import { runIfAuthed } from '../Lib/authHelpers'
 
 import FeedItemHeader from '../Components/FeedItemHeader'
 import {BodyText as Description} from '../Components/StoryContentRenderer'
@@ -75,7 +76,7 @@ class Guide extends Component {
     onClickBookmark: PropTypes.func,
     match: PropTypes.object,
     onClickComments: PropTypes.func,
-    openGlobalModal: PropTypes.func,
+    onClickFlag: PropTypes.func,
 
     guide: PropTypes.object,
     guideStories: PropTypes.arrayOf(PropTypes.object),
@@ -117,18 +118,20 @@ class Guide extends Component {
 
   _onClickLike = () => {
     const {sessionUserId} = this.props
-    if (!this.props.sessionUserId) return
     if (this.props.isLiked) this.props.onClickGuideUnLike(sessionUserId)
     else this.props.onClickGuideLike(sessionUserId)
   }
 
   _onClickBookmark = () => {
-    if (!this.props.sessionUserId) return
     this.props.onClickBookmark(this.props.sessionUserId)
   }
 
   _onClickComments = () => {
-    this.props.onClickComments()
+    this.props.onClickComments(this.props.sessionUserId)
+  }
+
+  _onClickFlag = (storyId) => {
+    this.props.onClickFlag(this.props.sessionUserId, storyId)
   }
 
   _onClickShare = () => {
@@ -214,7 +217,6 @@ class Guide extends Component {
       isFollowing,
       // isBookmarked,
       isLiked,
-      openGlobalModal,
     } = this.props
     const { activeTab } = this.state
 
@@ -278,7 +280,6 @@ class Guide extends Component {
           onClickShare={this._onClickShare}
           userId={sessionUserId}
           reroute={reroute}
-          openGlobalModal={openGlobalModal}
         />
         }
       </ContentWrapper>
@@ -320,17 +321,25 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch, ownProps) {
   const guideId = ownProps.match.params.guideId
+
   return {
     getGuide: () => dispatch(GuideActions.getGuideRequest(guideId)),
     getGuideStories: () => dispatch(StoryActions.getGuideStories(guideId)),
     reroute: (path) => dispatch(push(path)),
-    followUser: (sessionUserId, userIdToFollow) => dispatch(UserActions.followUser(sessionUserId, userIdToFollow)),
-    unfollowUser: (sessionUserId, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserId, userIdToUnfollow)),
-    onClickGuideLike: (sessionUserId) => dispatch(GuideActions.likeGuideRequest(guideId, sessionUserId)),
-    onClickGuideUnLike: (sessionUserId) => dispatch(GuideActions.unlikeGuideRequest(guideId, sessionUserId)),
-    // onClickBookmark: (sessionUserId) => dispatch(StoryActions.storyBookmark(sessionUserId, storyId)),
-    onClickComments: () => dispatch(UXActions.openGlobalModal('comments', { guideId })),
-    openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
+    followUser: (sessionUserId, userIdToFollow) =>
+      dispatch(runIfAuthed(sessionUserId, UserActions.followUser, [sessionUserId, userIdToFollow])),
+    unfollowUser: (sessionUserId, userIdToUnfollow) =>
+      dispatch(runIfAuthed(sessionUserId, UserActions.unfollowUser, [sessionUserId, userIdToUnfollow])),
+    onClickGuideLike: (sessionUserId) =>
+      dispatch(runIfAuthed(sessionUserId, GuideActions.likeGuideRequest, [guideId, sessionUserId])),
+    onClickGuideUnLike: (sessionUserId) =>
+      dispatch(runIfAuthed(sessionUserId, GuideActions.unlikeGuideRequest, [guideId, sessionUserId])),
+    // onClickBookmark: (sessionUserId) =>
+    //    dispatch(runIfAuthed(sessionUserId, StoryActions.storyBookmark, [sessionUserId, storyId])),
+    onClickComments: (sessionUserId) =>
+      dispatch(runIfAuthed(sessionUserId, UXActions.openGlobalModal, ['comments', { guideId }])),
+    onClickFlag: (sessionUserId, storyId) =>
+      dispatch(runIfAuthed(sessionUserId, UXActions.openGlobalModal, ['flagStory', { storyId }])),
   }
 }
 

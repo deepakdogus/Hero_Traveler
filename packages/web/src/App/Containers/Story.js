@@ -135,12 +135,12 @@ class Story extends Component {
           onClickAddToGuide={onClickAddToGuide}
           isStory
         />
-          <StoryContentRenderer story={story} />
-          {this.renderHashtags()}
-          {story.locationInfo && story.locationInfo.latitude && story.locationInfo.longitude &&
-            <GoogleMap stories={ [story] } />
-          }
-          <FeedItemMetaInfo feedItem={story} />
+        <StoryContentRenderer story={story} />
+        {this.renderHashtags()}
+        {story.locationInfo && story.locationInfo.latitude && story.locationInfo.longitude &&
+          <GoogleMap stories={ [story] } />
+        }
+        <FeedItemMetaInfo feedItem={story} />
         <FeedItemActionBar
           feedItem={story}
           isStory

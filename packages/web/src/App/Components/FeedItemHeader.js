@@ -15,6 +15,10 @@ import RoundedButton from './RoundedButton'
 import Icon from './Icon'
 import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
 
+const UserInfoRow = styled(Row)`
+  align-items: center;
+`
+
 const Title = styled.p`
   margin: 0;
   font-family: ${props => props.theme.Fonts.type.montserrat};
@@ -23,6 +27,9 @@ const Title = styled.p`
   line-height: 50px;
   color: ${props => props.theme.Colors.background};
   letter-spacing: .6px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 30px;
+  }
 `
 
 const GuideTitle = styled(Title)`
@@ -41,6 +48,9 @@ const Subtitle = styled.p`
   font-weight: 400;
   color: ${props => props.theme.Colors.grey};
   letter-spacing: .2px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 18px;
+  }
 `
 
 const LocationText = styled(Subtitle)`
@@ -49,6 +59,9 @@ const LocationText = styled(Subtitle)`
   color: ${props => props.theme.Colors.background};
   text-transform: uppercase;
   font-weight: 600;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 15px;
+  }
 `
 
 const RedText = styled.span`
@@ -94,6 +107,9 @@ const CoverCaption = styled.p`
   color: ${props => props.theme.Colors.bioGrey};
   letter-spacing: .2px;
   margin-top: 0px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 12px;
+  }
 `
 
 const Container = styled.div`
@@ -150,6 +166,11 @@ const ClickableRow = styled(Row)`
 const BadgeIcon = styled(Icon)`
   margin-left: ${props => props.profileAvatar ? '0' : '10'}px;
   cursor: pointer;
+`
+
+const responsiveAvatarStyles = `
+  width: 40px;
+  height: 40px;
 `
 
 const ResponsiveButton = styled(RoundedButton)`
@@ -246,11 +267,12 @@ export default class FeedItemHeader extends React.Component {
     return (
       <Container>
         <TopRow between="xs">
-          <Row>
+          <UserInfoRow>
             <Avatar
               avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
               size='medium'
               onClick={this._profileReroute}
+              responsiveProps={responsiveAvatarStyles}
             />
             <SpacedVerticalCenter>
               <Row>
@@ -289,7 +311,7 @@ export default class FeedItemHeader extends React.Component {
               </Row>
               <TimeStamp>{moment(feedItem.createdAt).fromNow()}</TimeStamp>
             </SpacedVerticalCenter>
-          </Row>
+          </UserInfoRow>
           <Row>
             {isUsersFeedItem &&
               <VerticalCenter>

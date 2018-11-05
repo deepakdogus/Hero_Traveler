@@ -69,6 +69,12 @@ const TimeStamp = styled(RedText)`
   color: ${props => props.theme.Colors.grey};
 `
 
+const EditText = styled(RedText)`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    display: none;
+  }
+`
+
 const CoverImage = styled.img`
   width: 100%;
   text-align: center;
@@ -95,6 +101,7 @@ const Container = styled.div`
   margin: 65px auto 0;
   max-width: 800px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 15px auto;
     padding-left: 0;
     padding-right: 0;
   }
@@ -110,18 +117,16 @@ const StyledDivider = styled(HorizontalDivider)`
   max-width: 960px;
   margin: 30px auto;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    border-color: transparent;
-    background-color: transparent;
-    margin-top: 0;
-    margin-bottom: 15px;
+    margin: 30px 15px;
   }
 `
 
 const TopRow = styled(Row)`
   margin-bottom: 35px !important;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding-left: 45px;
-    padding-right: 45px;
+    margin-bottom: 15px !important;
+    padding-left: 15px;
+    padding-right: 15px;
   }
 `
 
@@ -129,6 +134,9 @@ const PencilIcon = styled(Icon)`
   width: 18px;
   height: 18px;
   margin-right: 5px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin-right: 15px;
+  }
 `
 
 const SpacedVerticalCenter = styled(VerticalCenter)`
@@ -144,9 +152,25 @@ const BadgeIcon = styled(Icon)`
   cursor: pointer;
 `
 
+const ResponsiveButton = styled(RoundedButton)`
+  display: none;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    display: block;
+  }
+`
+
 const followButtonStyles = `
   font-size: 10px;
   font-weight: 600;
+`
+
+const followButtonResponsiveStyles = `
+  margin: 10px 0;
+  font-size: 10px;
+`
+
+const hiddenFollowButttonResponsiveStyles = `
+  display: none;
 `
 
 const addToGuideButtonStyles = `
@@ -154,6 +178,14 @@ const addToGuideButtonStyles = `
   font-weight: 600;
   margin-top: 4px;
   margin-bottom: 4px;
+`
+
+const addToGuideButtonResponsiveStyles = `
+  margin: 10px 0;
+`
+
+const addToGuideButtonResponsiveTextStyles = `
+  font-size: 10px;
 `
 
 export default class FeedItemHeader extends React.Component {
@@ -250,6 +282,7 @@ export default class FeedItemHeader extends React.Component {
                       type={isFollowing ? undefined : 'blackWhite'}
                       text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
                       textProps={followButtonStyles}
+                      responsiveButtonProps={hiddenFollowButttonResponsiveStyles}
                     />
                   </SpacedVerticalCenter>
                 }
@@ -264,19 +297,32 @@ export default class FeedItemHeader extends React.Component {
                   <PencilIcon
                     name='pencilBlack'
                   />
-                  <RedText>
+                  <EditText>
                     Edit {isStory ? 'Story' : 'Guide'}
-                  </RedText>
+                  </EditText>
                 </ClickableRow>
               </VerticalCenter>
             }
-            {onClickAddToGuide &&
+            {onClickAddToGuide && isUsersFeedItem &&
               <RoundedButton
                 margin='noRight'
                 padding='smallEven'
                 text='Add To Guide'
                 onClick={onClickAddToGuide}
                 textProps={addToGuideButtonStyles}
+                responsiveButtonProps={addToGuideButtonResponsiveStyles}
+                responsiveTextProps={addToGuideButtonResponsiveTextStyles}
+              />
+            }
+            {!isUsersFeedItem && sessionUserId &&
+              <ResponsiveButton
+              margin='none'
+              padding='smallEven'
+              onClick={isFollowing ? unfollowUser : followUser}
+              type={isFollowing ? undefined : 'blackWhite'}
+              text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
+              textProps={followButtonStyles}
+              responsiveButtonProps={followButtonResponsiveStyles}
               />
             }
           </Row>

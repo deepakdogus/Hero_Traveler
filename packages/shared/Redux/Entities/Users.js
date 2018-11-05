@@ -49,6 +49,7 @@ const { Types, Creators } = createActions({
   activitySeen: ['activityId'],
   activitySeenFailure: ['error', 'activityId'],
   clearErrors: null,
+  resetActivities: null,
 })
 
 export const UserTypes = Types
@@ -447,6 +448,11 @@ export const getFollowersFetchStatus = (state: object, followersType: string, us
 
 export const clearErrors = (state) => state.merge({ error: null })
 
+export const resetActivities = (state) => state.merge({
+  activities: {},
+  activitiesById: [],
+})
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -491,4 +497,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ACTIVITY_SEEN_FAILURE]: activitySeenFailure,
   [Types.EAGER_UPDATE_TOOLTIPS]: eagerUpdateTooltips,
   [Types.CLEAR_ERRORS]: clearErrors,
+  [Types.RESET_ACTIVITIES]: resetActivities,
 })

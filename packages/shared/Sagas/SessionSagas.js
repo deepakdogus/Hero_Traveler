@@ -36,7 +36,10 @@ export function * logout (api, action) {
         put(resultAction()),
         call(api.unsetAuth),
       ]
-    yield put(StartupActions.hideSplash())
+    yield [
+      put(StartupActions.hideSplash()),
+      put(UserActions.resetActivities()),
+    ]
   }
 }
 

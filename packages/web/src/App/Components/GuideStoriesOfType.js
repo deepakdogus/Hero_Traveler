@@ -26,7 +26,7 @@ const Title = styled.p`
   font-weight: 600;
   font-size: 29px;
   line-height: 40px;
-  letter-spacing: .6px;
+  letter-spacing: 0.6px;
   color: ${props => props.theme.Colors.background};
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 20px;
@@ -38,7 +38,7 @@ const SeeAllText = styled.p`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 600;
   font-size: 16px;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   color: ${props => props.theme.Colors.redHighlights};
   cursor: pointer;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
@@ -66,6 +66,15 @@ export default class GuideStoriesOfType extends React.Component {
     this.props.onClickShowAll(null, this.props.type)
   }
 
+  _renderFeedItemLists = () => {
+    const chunks = 2
+    const { stories } = this.props
+    return Array(Math.ceil(stories.length / chunks))
+      .fill()
+      .map((_, index) => index * chunks)
+      .map(begin => stories.slice(begin, begin + chunks))
+  }
+
   render() {
     const {
       stories,
@@ -79,16 +88,31 @@ export default class GuideStoriesOfType extends React.Component {
     return (
       <Wrapper>
         <Title>{label}</Title>
-        <FeedItemList
-          guideId={guideId}
-          feedItems={stories}
-          isHorizontalList
-          isShowAll={isShowAll}
-        />
+        {isShowAll
+          ? this._renderFeedItemLists().map((feedItemList, idx) => {
+            return (
+              <FeedItemList
+                key={`${guideId}-${idx}`}
+                guideId={guideId}
+                feedItems={feedItemList}
+                isHorizontalList
+                isShowAll={isShowAll}
+                isGuideRow={true}
+              />
+            )
+          })
+          : <FeedItemList
+            guideId={guideId}
+            feedItems={stories}
+            isHorizontalList
+            isShowAll={isShowAll}
+            isGuideRow={true}
+          />
+        }
         {stories.length > 2 && !isShowAll &&
-          <SeeAllText onClick={this._onClickShowAll}>
-            See All ({stories.length})
-          </SeeAllText>
+            <SeeAllText onClick={this._onClickShowAll}>
+              See All ({stories.length})
+            </SeeAllText>
         }
         <StyledDivider color='light-grey'/>
       </Wrapper>

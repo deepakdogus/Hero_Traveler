@@ -24,6 +24,7 @@ import Icon from '../Icon'
 const Container = styled.div``
 const CategoryRowsContainer = styled.div``
 
+
 const CreateContainer = styled.div`
   padding: 10px 20px;
   cursor: pointer;
@@ -36,7 +37,7 @@ const CreateContainer = styled.div`
 
 const CreateIconContainer = styled(VerticalCenter)`
   margin: 20px 0;
-  width: 140px;
+  width: 115px;
   height: 90px;
   background-color: ${props => props.theme.Colors.pink};
   border-color: ${props => props.theme.Colors.redLight};
@@ -77,15 +78,29 @@ const ReplacementContainer = styled(DefaultContainer)`
 
 const ResponsiveCloseBar = styled(VerticalCenter)`
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
+    background-color: ${props => props.theme.Colors.snow};
     border-top: 1px solid ${props => props.theme.Colors.navBarText};
     > * {
       padding: 20px 0;
     }
   }
 `
+
+const ResponsiveSpacer = styled.div`
+  display: none;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    display: block;
+    height: 80px;
+  }
+`
+
+const RowProps = {
+  'justify-content' : 'space-between',
+  'flex-wrap' : 'nowrap',
+}
 
 class AddStoryToGuides extends SharedComponent {
   renderImage() {
@@ -168,16 +183,18 @@ class AddStoryToGuides extends SharedComponent {
     return (
       <Container>
         <RightTitle>ADD TO A GUIDE</RightTitle>
-        <CreateContainer onClick={this.createGuideReroute}>
-          <SpaceBetweenRow
-            renderImage={this.renderImage}
-            renderText={this.renderText}
-            renderRight={this.renderRight}
-          />
-        </CreateContainer>
-        <CategoryRowsContainer>
-          {this.renderGuides()}
-        </CategoryRowsContainer>
+          <CreateContainer onClick={this.createGuideReroute}>
+            <SpaceBetweenRow
+              renderImage={this.renderImage}
+              renderText={this.renderText}
+              renderRight={this.renderRight}
+              rowProps={RowProps}
+            />
+          </CreateContainer>
+          <CategoryRowsContainer>
+            {this.renderGuides()}
+          </CategoryRowsContainer>
+          <ResponsiveSpacer/>
         <ResponsiveCloseBar>
           <CenteredButtons
             buttonsToRender={[

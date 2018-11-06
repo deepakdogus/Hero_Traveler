@@ -31,14 +31,21 @@ export default class SpaceBetweenRow extends Component {
     renderText: PropTypes.func,
     renderRight: PropTypes.func,
     leftProps: PropTypes.object,
-    rowProps: PropTypes.object
+    rowProps: PropTypes.object,
   }
 
   render() {
-    const { renderImage, renderText, renderRight, leftProps = {}, rowProps = {} } = this.props
+    const {
+      renderImage,
+      renderText,
+      renderRight,
+      leftProps = {},
+      rowProps = {'justify-content': 'space-between'},
+    } = this.props
+
     return (
       <ResponsiveRow data={rowProps}>
-        <Left data={leftProps}> 
+        <Left data={leftProps}>
           <Col>
             {renderImage()}
           </Col>

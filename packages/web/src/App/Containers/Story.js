@@ -171,6 +171,7 @@ class Story extends Component {
             reroute={reroute}
             openGlobalModal={openGlobalModal}
             onClickShare={this._onClickShare}
+            onClickFlag={this._onClickFlag}
           />
         </ContentWrapper>
         <Footer hideOnTablet={true}/>

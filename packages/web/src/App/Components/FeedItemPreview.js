@@ -64,6 +64,7 @@ const VerticalMarginWrapper = styled(HorizontalMarginWrapper)`
 
 const HorizontalRowWrapper = styled(Row)`
   flex-wrap: nowrap;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     flex-direction: column;
     justify-content: center;
   }
@@ -164,7 +165,7 @@ const ImageWrapper = styled.div`
 const VerticalImageContainer = styled(ImageWrapper)`
   width: auto;
   height: 0;
-  padding-bottom: 71.4%;
+  padding-bottom: 70.84%;
   background: url(${props => props.src});
   background-size: cover;
 `
@@ -172,7 +173,7 @@ const VerticalImageContainer = styled(ImageWrapper)`
 const HorizontalImageContainer = styled(ImageWrapper)`
   margin-right: 20px;
   width: 385.5px;
-  height: 275px;
+  height: 257px;
   background: url(${props => props.src});
   background-size: cover;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {

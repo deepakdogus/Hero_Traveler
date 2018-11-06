@@ -110,9 +110,9 @@ export default class GuideStoriesOfType extends React.Component {
           />
         }
         {stories.length > 2 && !isShowAll &&
-            <SeeAllText onClick={this._onClickShowAll}>
-              See All ({stories.length})
-            </SeeAllText>
+          <SeeAllText onClick={this._onClickShowAll}>
+            See All ({stories.length})
+          </SeeAllText>
         }
         <StyledDivider color='light-grey'/>
       </Wrapper>

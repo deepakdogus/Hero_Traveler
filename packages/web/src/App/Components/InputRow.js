@@ -15,12 +15,16 @@ const Container = styled.div`
 
 const FormContainer = styled.form`
   margin-right: 2%;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    width: auto;
+  }
 `
 
 const StyledRow = styled(Row)`
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     flex-wrap: nowrap;
-    justify-content: center;
+    justify-content: space-between;
+    padding: 0 20px;
   }
 `
 
@@ -51,6 +55,9 @@ const StyledFooterInput = styled.input`
   padding: 6px 12px;
   font-size: 18px;
   outline: none;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    width: 100%;
+  }
 `
 
 export default class InputRow extends Component {

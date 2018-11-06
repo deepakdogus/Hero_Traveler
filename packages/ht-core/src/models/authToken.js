@@ -6,11 +6,11 @@ const oauth = {
 	tokens: {
 		access: {
 			length: 32,
-			life: (3600 * 24 * 30), // 30 days
+			life: (3600 * 24 * 365), // 1 year
 		},
 		refresh: {
 			length: 32,
-			life: (3600 * 24 * 90),
+			life: (3600 * 24 * 365),
 		},
 	},
 	clients: {
@@ -59,7 +59,10 @@ TokenSchema.statics = {
     // Remove tokens that are about to expire
     return this.remove(Object.assign({}, attrs, {
       expiresAt: {
-        $lte: moment().utc().add(29, 'days').toDate()
+        $lte: moment()
+          .utc()
+          .add(7, 'days')
+          .toDate()
       }
     }))
     .then(() => this.findOrCreate(attrs, token))

@@ -46,11 +46,8 @@ class LaunchScreen extends React.Component {
   }
 
   componentDidMount() {
-    const { sessionError } = this.props
-    if (sessionError && sessionError === 'Unauthorized') {
-      SplashScreen.hide()
-      this.fadeIn()
-    }
+    SplashScreen.hide()
+    this.fadeIn()
   }
 
   _signupFacebook = () => {

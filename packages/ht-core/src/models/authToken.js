@@ -6,11 +6,11 @@ const oauth = {
 	tokens: {
 		access: {
 			length: 32,
-			life: (3600 * 24 * 30), // 30 days
+			life: (3600 * 24 * 365), // 1 year
 		},
 		refresh: {
 			length: 32,
-			life: (3600 * 24 * 90),
+			life: (3600 * 24 * 365),
 		},
 	},
 	clients: {
@@ -61,7 +61,7 @@ TokenSchema.statics = {
       expiresAt: {
         $lte: moment()
           .utc()
-          .add(15, 'minutes')
+          .add(7, 'days')
           .toDate()
       }
     }))

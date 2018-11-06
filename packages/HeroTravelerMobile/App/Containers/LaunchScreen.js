@@ -23,7 +23,6 @@ class LaunchScreen extends React.Component {
     hasSignedUp: PropTypes.bool,
     signupFacebook: PropTypes.func,
     splashShown: PropTypes.bool,
-    resumeSession: PropTypes.func,
     sessionError: PropTypes.string,
   }
 
@@ -130,7 +129,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    resumeSession: () => dispatch(SessionActions.resumeSession()),
     signupFacebook: (...args) => dispatch(SignupActions.signupFacebook(...args)),
   }
 }

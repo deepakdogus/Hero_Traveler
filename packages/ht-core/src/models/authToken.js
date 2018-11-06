@@ -59,7 +59,10 @@ TokenSchema.statics = {
     // Remove tokens that are about to expire
     return this.remove(Object.assign({}, attrs, {
       expiresAt: {
-        $lte: moment().utc().add(29, 'days').toDate()
+        $lte: moment()
+          .utc()
+          .add(15, 'minutes')
+          .toDate()
       }
     }))
     .then(() => this.findOrCreate(attrs, token))

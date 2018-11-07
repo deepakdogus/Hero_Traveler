@@ -66,6 +66,14 @@ export default class GuideStoriesOfType extends React.Component {
     this.props.onClickShowAll(null, this.props.type)
   }
 
+  /*
+  * for guides, stories must display as a row of 2-3 items, which currently
+  * requires us to use multiple single-row FeedItemList components; this logic
+  * splits a flat array of stories into a 2D array of 2-item story arrays to pass
+  * to FeedItemList components
+  *
+  * TODO: Refactor this logic into a full-fledged FeedItemGrid component
+  */
   _renderFeedItemLists = () => {
     const chunks = 2
     const { stories } = this.props
@@ -97,7 +105,7 @@ export default class GuideStoriesOfType extends React.Component {
                 feedItems={feedItemList}
                 isHorizontalList
                 isShowAll={isShowAll}
-                isGuideRow={true}
+                type='guide'
               />
             )
           })
@@ -106,7 +114,7 @@ export default class GuideStoriesOfType extends React.Component {
             feedItems={stories}
             isHorizontalList
             isShowAll={isShowAll}
-            isGuideRow={true}
+            type='guide'
           />
         }
         {stories.length > 2 && !isShowAll &&
@@ -114,7 +122,7 @@ export default class GuideStoriesOfType extends React.Component {
             See All ({stories.length})
           </SeeAllText>
         }
-        <StyledDivider color='light-grey'/>
+        {!isShowAll && <StyledDivider color='light-grey'/>}
       </Wrapper>
     )
   }

@@ -71,7 +71,6 @@ class Story extends Component {
     onClickComments: PropTypes.func,
     onClickAddToGuide: PropTypes.func,
     onClickFlag: PropTypes.func,
-    openGlobalModal: PropTypes.func,
   }
 
   componentDidMount() {
@@ -133,7 +132,6 @@ class Story extends Component {
       isBookmarked,
       isLiked,
       onClickAddToGuide,
-      openGlobalModal,
     } = this.props
     if (!story || !author) return null
 
@@ -169,7 +167,6 @@ class Story extends Component {
             onClickComments={this._onClickComments}
             userId={sessionUserId}
             reroute={reroute}
-            openGlobalModal={openGlobalModal}
             onClickShare={this._onClickShare}
             onClickFlag={this._onClickFlag}
           />

@@ -23,11 +23,9 @@ const StyledVerticalCenter = styled(VerticalCenter)`
   height: 90%;
   padding-left: 25px;
   flex-shrink: 1;
-  width: 30vw;
   text-overflow: ellipsis;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding-left: 0px;
-    width: 30vw;
   }
 `
 

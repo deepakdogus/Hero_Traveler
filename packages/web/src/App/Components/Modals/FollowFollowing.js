@@ -69,7 +69,6 @@ class FollowFollowing extends Component {
           user={this.props.users[id]}
           isFollowing={isFollowing}
           isYou={isYou}
-          isModal={true}
           onFollowClick={isFollowing ? this._unfollowUser : this._followUser}
           onProfileClick={this.navToProfile}
           margin='0 0 25px'

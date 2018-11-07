@@ -10,10 +10,24 @@ const Container = styled.div`
   margin: ${props => props.isModal ? '25px 0' : '0'};
 `
 
+// need && hack because styled-component insertion order was placing Row styles
+// behind the styled-compoenent styles, so they weren't overwriting base styles
+const TabItems = styled(Row)`
+  && {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+`
+
 const TabContainer = styled.div`
-  margin: ${props => props.isModal ? '0' : '0px 10px'};
   cursor: pointer;
-  min-width: 100px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: ${props => props.isModal ? '0' : '0 10px 0 0'};
+  }
 `
 
 const ModalText = styled(Text)`
@@ -25,18 +39,26 @@ const ModalText = styled(Text)`
   border-color:  ${props => props.theme.Colors.navBarText};
   padding: ${props => props.isModal ? '0 15px 0 15px' : '0 25px 0 25px'};
   margin: 0;
+  height: 100%;
+  white-space: nowrap;
 `
 
 const DefaultText = styled(VerticalCenter)`
-  border-style: solid;
   color: ${props => props.isActive ? props.theme.Colors.background : props.theme.Colors.navBarText};
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-size: 13px;
   letter-spacing: .6px;
-  border-width: ${props => !props.isOnlyTab && props.isActive ? '0 0 5px 0' : '0' };
-  border-color:  ${props => props.theme.Colors.redHighlights};
+  border-bottom: ${props => !props.isOnlyTab && props.isActive ? 'solid' : 'transparent' };
+  border-bottom-width: ${props => !props.isOnlyTab && props.isActive ? '5px' : '0' };
+  border-bottom-color:  ${props => props.theme.Colors.redHighlights};
+  border-top: 5px solid transparent;
   margin: 0;
-  padding: 24px 10px;
+  padding: 22px 10px;
+  min-width: ${props => props.isModal ? 'auto' : '80px'};
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: ${props => props.isModal ? '0' : '13px 10px'};
+    border-bottom-width: ${props => !props.isOnlyTab && props.isActive ? '3px' : '0' };
+  }
 `
 
 export default class TabBar extends React.Component {
@@ -77,10 +99,13 @@ export default class TabBar extends React.Component {
   }
 
   render() {
+    const { whiteBG, isModal, tabs = [] } = this.props
     return (
-      <Container whiteBG={this.props.whiteBG} isModal={this.props.isModal}>
+      <Container whiteBG={whiteBG} isModal={isModal}>
         <Row center='xs'>
-          {this.renderTabs()}
+          <TabItems>
+            {this.renderTabs()}
+          </TabItems>
         </Row>
       </Container>
     )

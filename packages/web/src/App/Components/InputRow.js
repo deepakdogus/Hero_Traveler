@@ -15,6 +15,17 @@ const Container = styled.div`
 
 const FormContainer = styled.form`
   margin-right: 2%;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    width: auto;
+  }
+`
+
+const StyledRow = styled(Row)`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 0 20px;
+  }
 `
 
 const InputFooter = styled.div`
@@ -27,6 +38,10 @@ const InputFooter = styled.div`
   border-width 2px 0 0 0;
   border-color: ${props => props.theme.Colors.dividerGrey};
   border-style: solid;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    width: 100vw;
+    padding: 30px 0;
+  }
 `
 
 const StyledFooterInput = styled.input`
@@ -40,8 +55,10 @@ const StyledFooterInput = styled.input`
   padding: 6px 12px;
   font-size: 18px;
   outline: none;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    width: 100%;
+  }
 `
-
 
 export default class InputRow extends Component {
   static propTypes = {
@@ -82,7 +99,7 @@ export default class InputRow extends Component {
       <Container margin={this.props.margin}>
         <InputFooter>
           <VerticalCenter>
-            <Row>
+            <StyledRow>
               <FormContainer onSubmit={this._onSend}>
                 <StyledFooterInput
                   value={this.state.inputValue}
@@ -97,7 +114,7 @@ export default class InputRow extends Component {
                   padding='medium'
                   onClick={this.onSend}
                 />
-            </Row>
+            </StyledRow>
           </VerticalCenter>
         </InputFooter>
       </Container>

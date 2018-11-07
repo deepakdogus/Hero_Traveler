@@ -18,8 +18,21 @@ const horizontalMetrics = {
   height: 90,
 }
 
-function getMetric(isVertical, metric) {
-  const metrics = isVertical ? verticalMetrics : horizontalMetrics
+const responsiveVerticalMetrics = {
+  width: 77,
+  height: 99,
+}
+
+const responsiveHorizontalMetrics = {
+  width: 67,
+  height: 50,
+}
+
+function getMetric(isVertical, metric, isResponsive) {
+  let metrics = isVertical ? verticalMetrics : horizontalMetrics
+  if (isResponsive) {
+    metrics = isVertical ? responsiveVerticalMetrics : responsiveHorizontalMetrics
+  }
   return metrics[metric] + 'px'
 }
 
@@ -32,6 +45,10 @@ const StyledImageWrapper = styled.div`
   align-items: center;
   overflow: hidden;
   cursor: pointer;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    width: ${props => getMetric(props.isVertical, 'width', true)};
+    height: ${props => getMetric(props.isVertical, 'height', true)};
+  }
 `
 
 const StyledImage = styled.img`

@@ -15,6 +15,10 @@ import RoundedButton from './RoundedButton'
 import Icon from './Icon'
 import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
 
+const UserInfoRow = styled(Row)`
+  align-items: center;
+`
+
 const Title = styled.p`
   margin: 0;
   font-family: ${props => props.theme.Fonts.type.montserrat};
@@ -24,8 +28,8 @@ const Title = styled.p`
   color: ${props => props.theme.Colors.background};
   letter-spacing: .6px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding-left: 45px;
-    padding-right: 45px;
+    padding-left: 20px;
+    padding-right: 20px;
     font-size: 30px;
   }
 `
@@ -33,8 +37,9 @@ const Title = styled.p`
 const GuideTitle = styled(Title)`
   margin-bottom: 35px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding-left: 45px;
-    padding-right: 45px;
+    margin-bottom: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
     font-size: 30px;
   }
 `
@@ -46,8 +51,9 @@ const Subtitle = styled.p`
   color: ${props => props.theme.Colors.grey};
   letter-spacing: .2px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding-left: 45px;
-    padding-right: 45px;
+    font-size: 18px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 `
 
@@ -58,8 +64,8 @@ const LocationText = styled(Subtitle)`
   text-transform: uppercase;
   font-weight: 600;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    margin: 0;
-    font-size: 13px;
+    font-size: 15px;
+    margin-top: 30px;
   }
 `
 
@@ -81,6 +87,12 @@ const TimeStamp = styled(RedText)`
   color: ${props => props.theme.Colors.grey};
 `
 
+const EditText = styled(RedText)`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    display: none;
+  }
+`
+
 const CoverImage = styled.img`
   width: 100%;
   text-align: center;
@@ -100,12 +112,16 @@ const CoverCaption = styled.p`
   color: ${props => props.theme.Colors.bioGrey};
   letter-spacing: .2px;
   margin-top: 0px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 12px;
+  }
 `
 
 const Container = styled.div`
   z-index: 500;
   margin: 65px auto 0;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 0 auto;
     padding-left: 0;
     padding-right: 0;
   }
@@ -121,18 +137,17 @@ const StyledDivider = styled(HorizontalDivider)`
   max-width: 960px;
   margin: 30px auto;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    border-color: transparent;
-    background-color: transparent;
-    margin-top: 0;
-    margin-bottom: 15px;
+    margin: 30px 20px;
   }
 `
 
 const TopRow = styled(Row)`
   margin-bottom: 35px !important;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding-left: 45px;
-    padding-right: 45px;
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 `
 
@@ -140,6 +155,9 @@ const PencilIcon = styled(Icon)`
   width: 18px;
   height: 18px;
   margin-right: 5px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin-right: 15px;
+  }
 `
 
 const SpacedVerticalCenter = styled(VerticalCenter)`
@@ -155,10 +173,31 @@ const BadgeIcon = styled(Icon)`
   cursor: pointer;
 `
 
+const responsiveAvatarStyles = `
+  width: 40px;
+  height: 40px;
+`
+
+const ResponsiveButton = styled(RoundedButton)`
+  display: none;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    display: block;
+  }
+`
+
 const followButtonStyles = `
   font-size: 10px;
   font-weight: 600;
   cursor: pointer;
+`
+
+const responsiveFollowButtonStyles = `
+  margin: 10px 0;
+  font-size: 10px;
+`
+
+const hideButttonStyles = `
+  display: none;
 `
 
 const addToGuideButtonStyles = `
@@ -167,6 +206,14 @@ const addToGuideButtonStyles = `
   margin-top: 4px;
   margin-bottom: 4px;
   cursor: pointer;
+`
+
+const responsiveAddToGuideButtonStyles = `
+  margin: 10px 0;
+`
+
+const responsiveAddToGuideButtonTextStyles = `
+  font-size: 10px;
 `
 
 export default class FeedItemHeader extends React.Component {
@@ -231,11 +278,12 @@ export default class FeedItemHeader extends React.Component {
     return (
       <Container>
         <TopRow between="xs">
-          <Row>
+          <UserInfoRow>
             <Avatar
               avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
               size='medium'
               onClick={this._profileReroute}
+              responsiveProps={responsiveAvatarStyles}
             />
             <SpacedVerticalCenter>
               <Row>
@@ -267,13 +315,14 @@ export default class FeedItemHeader extends React.Component {
                       type={isFollowing ? undefined : 'blackWhite'}
                       text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
                       textProps={followButtonStyles}
+                      responsiveButtonProps={hideButttonStyles}
                     />
                   </SpacedVerticalCenter>
                 }
               </Row>
               <TimeStamp>{moment(feedItem.createdAt).fromNow()}</TimeStamp>
             </SpacedVerticalCenter>
-          </Row>
+          </UserInfoRow>
           <Row>
             {isUsersFeedItem &&
               <VerticalCenter>
@@ -281,19 +330,32 @@ export default class FeedItemHeader extends React.Component {
                   <PencilIcon
                     name='pencilBlack'
                   />
-                  <RedText>
+                  <EditText>
                     Edit {isStory ? 'Story' : 'Guide'}
-                  </RedText>
+                  </EditText>
                 </ClickableRow>
               </VerticalCenter>
             }
-            {onClickAddToGuide &&
+            {onClickAddToGuide && isUsersFeedItem &&
               <RoundedButton
                 margin='noRight'
                 padding='smallEven'
                 text='Add To Guide'
                 onClick={this._onClickAddToGuide}
                 textProps={addToGuideButtonStyles}
+                responsiveButtonProps={responsiveAddToGuideButtonStyles}
+                responsiveTextProps={responsiveAddToGuideButtonTextStyles}
+              />
+            }
+            {!isUsersFeedItem && sessionUserId &&
+              <ResponsiveButton
+              margin='none'
+              padding='smallEven'
+              onClick={isFollowing ? unfollowUser : followUser}
+              type={isFollowing ? undefined : 'blackWhite'}
+              text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
+              textProps={followButtonStyles}
+              responsiveButtonProps={responsiveFollowButtonStyles}
               />
             }
           </Row>

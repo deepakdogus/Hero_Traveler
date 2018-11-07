@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
 import logo from '../../Shared/Images/ht-logo-white.png'
 import { Link } from 'react-router-dom'
-import { Row, Col } from '../FlexboxGrid'
+import { Col } from '../FlexboxGrid'
 import {
   StyledRow,
   StyledRoundedLoginButton,
@@ -11,6 +12,12 @@ import {
   Divider,
   SearchNav,
 } from './Shared'
+
+const ItemsRow = styled(StyledRow)`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding-right: 20px;
+  }
+`
 
 export default class HeaderAnonymous extends React.Component {
   static propTypes = {
@@ -43,7 +50,7 @@ export default class HeaderAnonymous extends React.Component {
         <Col lg={5}>
         </Col>
         <Col>
-          <Row around='xs' middle='xs'>
+          <ItemsRow around='xs' middle='xs'>
             <SearchNav
               to='/search'
               pathname={this.props.pathname}
@@ -52,15 +59,15 @@ export default class HeaderAnonymous extends React.Component {
               originalDraft={originalDraft}
             />
             <Divider>&nbsp;</Divider>
-            <LoginLink
-              onClick={this._openLoginModal}
-            >Log In</LoginLink>
+            <LoginLink onClick={this._openLoginModal}>
+              Log In
+            </LoginLink>
             <StyledRoundedLoginButton
               type='navbar'
               text='Login'
               onClick={this._openLoginModal}
             />
-          </Row>
+          </ItemsRow>
         </Col>
       </StyledRow>
     )

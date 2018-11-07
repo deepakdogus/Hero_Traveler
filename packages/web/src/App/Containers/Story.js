@@ -168,6 +168,7 @@ class Story extends Component {
             userId={sessionUserId}
             reroute={reroute}
             onClickShare={this._onClickShare}
+            onClickFlag={this._onClickFlag}
           />
         </ContentWrapper>
         <Footer hideOnTablet={true}/>

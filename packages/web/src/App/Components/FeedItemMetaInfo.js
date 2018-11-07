@@ -51,8 +51,8 @@ const DetailText = styled(Text)`
 const Container = styled.div`
   margin: 35px 0;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding-left: 45px;
-    padding-right: 45px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 `
 const InfoRow = styled(Row)`

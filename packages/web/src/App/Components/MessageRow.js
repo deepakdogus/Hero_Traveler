@@ -27,6 +27,11 @@ const TextContainer = styled(VerticalCenter)`
   justify-content: flex-start;
   margin-left: 20px;
   margin-top: 10px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    justify-content: center;
+    margin-top: 0;
+    height: 100%;
+  }
 `
 
 const InteractiveContainer = styled.div`
@@ -37,6 +42,11 @@ const InteractiveContainer = styled.div`
 
 const StyledHorizontalDivider = styled(HorizontalDivider)`
   margin: 0;
+`
+
+const responsiveAvatarStyles = `
+  width: 50px;
+  height: 50px;
 `
 
 export default class MessageRow extends Component {
@@ -60,6 +70,7 @@ export default class MessageRow extends Component {
         avatarUrl={getImageUrl(this.props.user.profile.avatar, 'avatarLarge')}
         size='larger'
         onClick={this._profileReroute}
+        responsiveProps={responsiveAvatarStyles}
       />
     )
   }

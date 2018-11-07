@@ -45,14 +45,16 @@ const HorizontalMarginWrapper = styled.div`
   margin: auto;
   color: ${props => props.theme.Colors.lightGrey};
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    max-width: 100vw;
-    width: 100vw;
-    margin: 0;
+    margin-bottom: 15px;
   }
 `
 
 const VerticalMarginWrapper = styled(HorizontalMarginWrapper)`
   margin: 25px 0 0;
+  flex-basis: 385.5px;
+  &:nth-child(2) {
+    padding-left: 20px;
+  }
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     max-width: 100%;
     margin: 0;
@@ -63,7 +65,6 @@ const VerticalMarginWrapper = styled(HorizontalMarginWrapper)`
 const HorizontalRowWrapper = styled(Row)`
   flex-wrap: nowrap;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    width: 100vw;
     flex-direction: column;
     justify-content: center;
   }
@@ -76,11 +77,13 @@ const VerticalWrapper = styled.div`
 const HorizontalStoryInfoContainer = styled(VerticalCenter)`
   position: relative;
   height: ${coverHeight};
-  width: 400px;
+  flex-basis: 385.5px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     height:auto;
+    width: auto;
+    flex-basis: unset;
     > * {
-      padding-left: 15px;
+      padding-left: ${props => props.type === 'guide' ? '0' : '15px'};
       padding-top: 15px;
     }
   }
@@ -95,7 +98,7 @@ const VerticalStoryInfoContainer = styled(HorizontalStoryInfoContainer)`
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding: 5px;
     > * {
-      padding-left: 15px;
+      padding-left: ${props => props.type === 'guide' ? '0' : '15px'};
       padding-top: 0px;
     }
   }
@@ -141,13 +144,12 @@ const Title = styled.h3`
   display: inline-block;
   margin: 0;
   cursor: pointer;
-  max-width: 400px;
   padding: 12px 0;
   letter-spacing: .6px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    max-width: 385.5px;
-    font-size: 20px;
-    padding: 0 15px;
+    padding: ${props => props.type === 'guide' ? '0' : '0 15px'};
+    font-size: ${props => props.type === 'guide' ? '15px' : '20px'};
+    hyphens: auto;
   }
   &:hover {
     color: ${props => props.theme.Colors.grey};
@@ -156,27 +158,32 @@ const Title = styled.h3`
 
 const ImageWrapper = styled.div`
   position: relative;
-  width: 385.5px;
-  height: ${coverHeight};
   cursor: pointer;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    max-width:100vw;
-    width: 100%;
     margin: 0;
-    margin-right: 0px;
   }
+`
+
+// 70.84 is for to maintain aspect ratio
+const VerticalImageContainer = styled(ImageWrapper)`
+  width: auto;
+  height: 0;
+  padding-bottom: 70.84%;
+  background: url(${props => props.src});
+  background-size: cover;
 `
 
 const HorizontalImageContainer = styled(ImageWrapper)`
   margin-right: 20px;
-`
-const VerticalImageContainer = styled(ImageWrapper)`
-  margin-right: 0px;
-`
-const CoverImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 385.5px;
+  height: 257px;
+  background: url(${props => props.src});
+  background-size: cover;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 0;
+    max-width:100vw;
+    width: 100%;
+  }
 `
 
 const StyledOverlay = styled(OverlayHover)`
@@ -269,6 +276,7 @@ class FeedItemPreview extends Component {
     author: PropTypes.object,
     guideId: PropTypes.string,
     sessionUserId: PropTypes.string,
+    isGuideRow: PropTypes.bool,
     isStory: PropTypes.bool,
     isLiked: PropTypes.bool,
     isBookmarked: PropTypes.bool,
@@ -340,7 +348,7 @@ class FeedItemPreview extends Component {
       guideId,
       feedItem,
       author,
-      sessionUserId,
+      isGuideRow,
       isLiked,
       isBookmarked,
       isStory,
@@ -367,11 +375,10 @@ class FeedItemPreview extends Component {
     return (
       <MarginWrapper>
         <DirectionalWrapper>
-          <ImageContainer>
-            <CoverImage
-              src={imageUrl}
-              onClick={guideId ? this.noop : this.navToFeedItem}
-            />
+          <ImageContainer
+            onClick={guideId ? this.noop : this.navToFeedItem}
+            src={imageUrl}
+          >
             <StyledOverlay
               overlayColor='black'
               onClick={this.navToFeedItem}
@@ -383,7 +390,7 @@ class FeedItemPreview extends Component {
               }
             </StyledOverlay>
           </ImageContainer>
-          <StoryInfoContainer>
+          <StoryInfoContainer isGuideRow={isGuideRow}>
             {!isStory &&
               <Top>
                 <GuideIcon name='guide' />
@@ -396,6 +403,7 @@ class FeedItemPreview extends Component {
             <Title
               onClick={this.navToFeedItem}
               isGuide={!!guideId}
+              isGuideRow={isGuideRow}
             >
               {feedItem.title}
             </Title>

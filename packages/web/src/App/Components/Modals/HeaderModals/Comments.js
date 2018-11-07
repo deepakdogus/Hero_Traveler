@@ -117,7 +117,7 @@ function mapStateToProps(state) {
     ...state.entities.comments,
     sessionUserId,
     users: state.entities.users.entities,
-    comments: state.entities.comments
+    comments: state.entities.comments,
   }
 }
 

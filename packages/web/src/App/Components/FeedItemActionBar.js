@@ -14,6 +14,7 @@ const StyledIcon = styled(Icon)`
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     margin-left: 5px;
     margin-right: 5px;
+    margin-bottom: 0px;
   }
 `
 
@@ -75,15 +76,16 @@ const AbsoluteWrapper = styled.div`
   }
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     position: fixed;
-    bottom: 0;
-    display: flex;
-    flex-direction: row;
     bottom: 0px;
     right: 0px;
     top: auto;
     left: auto;
-    width: 100%;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: row;
     justify-content: space-around;
+    width: 100%;
+    border-top: 1px solid ${props => props.theme.Colors.navBarText};
   }
 `
 
@@ -91,7 +93,7 @@ const ClickableWrapper = styled.div`
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     display: flex;
     flex-direction: row;
-    margin-top: 15px;
+    align-items: center;
   }
 `
 

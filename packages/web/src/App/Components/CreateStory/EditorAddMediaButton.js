@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import uploadFile from '../../Utils/uploadFile'
+import uploadFile, {
+  getAcceptedFormats,
+} from '../../Utils/uploadFile'
 import {
   insertAtomicBlock,
 } from '../../Shared/Lib/draft-js-helpers'
@@ -24,6 +26,7 @@ export class AddMediaButton extends React.Component {
 
   uploadFile = (event) => {
     uploadFile(event, this, (file) => {
+      if (!file) return
       const {getEditorState, type} = this.props
       const update = insertAtomicBlock(getEditorState(), type, file.uri)
       this.props.setEditorState(update)
@@ -52,7 +55,7 @@ export class AddMediaButton extends React.Component {
               ref={this.setAddImageInputRef}
               className={theme.buttonWrapper}
               type='file'
-              accept={`${type}/*`}
+              accept={getAcceptedFormats(type)}
               id={`${type}_upload`}
               name='storyImage'
               onChange={this.uploadFile}

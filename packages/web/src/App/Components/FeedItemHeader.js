@@ -155,9 +155,6 @@ const PencilIcon = styled(Icon)`
   width: 18px;
   height: 18px;
   margin-right: 5px;
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    margin-right: 15px;
-  }
 `
 
 const SpacedVerticalCenter = styled(VerticalCenter)`
@@ -178,25 +175,19 @@ const responsiveAvatarStyles = `
   height: 40px;
 `
 
-const ResponsiveButton = styled(RoundedButton)`
-  display: none;
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    display: block;
-  }
-`
-
-const followButtonStyles = `
+const followButtonTextStyles = `
   font-size: 10px;
   font-weight: 600;
   cursor: pointer;
 `
 
 const responsiveFollowButtonStyles = `
+  display: block;
   margin: 10px 0;
   font-size: 10px;
 `
 
-const hideButttonStyles = `
+const hideButtonStyles = `
   display: none;
 `
 
@@ -206,14 +197,6 @@ const addToGuideButtonStyles = `
   margin-top: 4px;
   margin-bottom: 4px;
   cursor: pointer;
-`
-
-const responsiveAddToGuideButtonStyles = `
-  margin: 10px 0;
-`
-
-const responsiveAddToGuideButtonTextStyles = `
-  font-size: 10px;
 `
 
 export default class FeedItemHeader extends React.Component {
@@ -314,8 +297,8 @@ export default class FeedItemHeader extends React.Component {
                       onClick={isFollowing ? unfollowUser : followUser}
                       type={isFollowing ? undefined : 'blackWhite'}
                       text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
-                      textProps={followButtonStyles}
-                      responsiveButtonProps={hideButttonStyles}
+                      textProps={followButtonTextStyles}
+                      responsiveButtonProps={hideButtonStyles}
                     />
                   </SpacedVerticalCenter>
                 }
@@ -336,25 +319,25 @@ export default class FeedItemHeader extends React.Component {
                 </ClickableRow>
               </VerticalCenter>
             }
-            {onClickAddToGuide && isUsersFeedItem &&
+            {onClickAddToGuide &&
               <RoundedButton
                 margin='noRight'
                 padding='smallEven'
                 text='Add To Guide'
                 onClick={this._onClickAddToGuide}
                 textProps={addToGuideButtonStyles}
-                responsiveButtonProps={responsiveAddToGuideButtonStyles}
-                responsiveTextProps={responsiveAddToGuideButtonTextStyles}
+                responsiveButtonProps={hideButtonStyles}
               />
             }
             {!isUsersFeedItem && sessionUserId &&
-              <ResponsiveButton
+              <RoundedButton
               margin='none'
               padding='smallEven'
               onClick={isFollowing ? unfollowUser : followUser}
               type={isFollowing ? undefined : 'blackWhite'}
               text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
-              textProps={followButtonStyles}
+              textProps={followButtonTextStyles}
+              buttonProps={hideButtonStyles}
               responsiveButtonProps={responsiveFollowButtonStyles}
               />
             }

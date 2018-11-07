@@ -27,7 +27,7 @@ function getPadding(props) {
   return '2px 6px 3px'
 }
 
-function getBackgroundColor (type, colors) {
+function getPrimaryColor (type, colors) {
   switch(type) {
     case 'grey':
       return colors.btnGreyBackground
@@ -51,6 +51,15 @@ function getBackgroundColor (type, colors) {
     case 'headerButton':
     case 'backgroundOpaque':
       return colors.backgroundOpaque
+    default:
+      return colors.redHighlights
+  }
+}
+
+function getSecondaryColor (type, colors) {
+  switch(type) {
+    case 'floating':
+      return colors.backgroundTintLow
     default:
       return colors.redHighlights
   }
@@ -128,12 +137,17 @@ const StyledButton = styled.button`
   }};
   margin: ${props => getMargin};
   padding: ${props => getPadding};
-  background-color: ${props => getBackgroundColor(props.type, props.theme.Colors)};
+  background-color: ${props => getPrimaryColor(props.type, props.theme.Colors)};
   width: ${props => props.width || 'inherit'};
+  box-shadow: ${props => props.type === 'floating'
+    ? `0px 2px 6px 0px ${getSecondaryColor(props.type, props.theme.Colors)}`
+    : 'initial'
+  };
   &:hover {
     background:  ${props => getHoverColorAndBorder(props.type, props.theme.Colors)[0]};
     border-color:  ${props => getHoverColorAndBorder(props.type, props.theme.Colors)[1]};
   }
+  ${props => props.buttonProps}
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     ${props => props.responsiveButtonProps}
   }

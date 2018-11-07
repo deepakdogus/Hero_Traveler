@@ -15,6 +15,8 @@ import FeedItemHeader from '../Components/FeedItemHeader'
 import StoryContentRenderer from '../Components/StoryContentRenderer'
 import GoogleMap from '../Components/GoogleMap'
 import FeedItemMetaInfo from '../Components/FeedItemMetaInfo'
+import RoundedButton from '../Components/RoundedButton'
+import Icon from '../Components/Icon'
 import FeedItemActionBar from '../Components/FeedItemActionBar'
 import Footer from '../Components/Footer'
 import { createDeepLinkWeb } from '../Lib/sharingWeb'
@@ -52,6 +54,39 @@ const HashtagText = styled.p`
   text-decoration: none;
   margin-botton: 45px;
 `
+
+const AddToGuideButtonStyles = `
+  display: none;
+`
+
+const responsiveAddToGuideButtonStyles = `
+  display: block;
+  position: fixed;
+  bottom: 50px;
+  right: 0px;
+`
+
+const StyledIcon = styled(Icon)`
+  width: 20px;
+  height: 20px;
+  align-self: center;
+  cursor: pointer;
+`
+
+const AddToGuideButton = ({ onClickAddToGuide }) => (
+  <RoundedButton
+    type={'floating'}
+    padding='even'
+    margin='medium'
+    width='40px'
+    height='40px'
+    onClick={onClickAddToGuide}
+    buttonProps={AddToGuideButtonStyles}
+    responsiveButtonProps={responsiveAddToGuideButtonStyles}
+  >
+    <StyledIcon name='addLarge'/>
+  </RoundedButton>
+)
 
 class Story extends Component {
   static propTypes = {
@@ -149,14 +184,15 @@ class Story extends Component {
             onClickAddToGuide={onClickAddToGuide}
             isStory
           />
-            <StoryContentRenderer story={story} />
-            {this.renderHashtags()}
-            {story.locationInfo && story.locationInfo.latitude && story.locationInfo.longitude &&
-              <MapContainer>
-                <GoogleMap stories={ [story] } />
-              </MapContainer>
-            }
-            <FeedItemMetaInfo feedItem={story} />
+          <StoryContentRenderer story={story} />
+          {this.renderHashtags()}
+          {story.locationInfo && story.locationInfo.latitude && story.locationInfo.longitude &&
+            <MapContainer>
+              <GoogleMap stories={ [story] } />
+            </MapContainer>
+          }
+          <FeedItemMetaInfo feedItem={story} />
+          <AddToGuideButton onClickAddToGuide={onClickAddToGuide}/>
           <FeedItemActionBar
             feedItem={story}
             isStory

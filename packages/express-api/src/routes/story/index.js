@@ -85,7 +85,6 @@ router.post('/', hasValidOauth, endpointWrapper(create))
 
 router.get(
   '/guide/:guideId',
-  hasValidOauth,
   endpointWrapper(getGuideStories)
 )
 

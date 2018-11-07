@@ -1,5 +1,5 @@
 import express from 'express'
-import {hasValidOauth, hasClientId} from '../../middleware'
+import {hasValidOauth} from '../../middleware'
 import endpointWrapper from '../../utils/endpointWrapper'
 import create from './create'
 import update from './update'
@@ -27,7 +27,6 @@ router.put('/:guideId',
 )
 
 router.get('/:guideId',
-  hasValidOauth,
   endpointWrapper(getGuide)
 )
 
@@ -37,7 +36,6 @@ router.delete('/:guideId',
 )
 
 router.get('/user/:userId',
-  hasValidOauth,
   endpointWrapper(getUserGuides)
 )
 
@@ -47,7 +45,6 @@ router.get('/user/:userId/feed',
 )
 
 router.get('/category/:categoryId',
-  hasValidOauth,
   endpointWrapper(getCategoryGuides)
 )
 

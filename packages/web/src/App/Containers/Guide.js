@@ -37,7 +37,7 @@ const ContentWrapper = styled.div`
   margin: 0 auto;
   padding-left: 80px;
   padding-right: 80px;
-  max-width: 960px;
+  max-width: 800px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding: 0;
   }
@@ -107,7 +107,6 @@ class Guide extends Component {
     getGuideStories: PropTypes.func,
     onClickGuideLike: PropTypes.func,
     onClickGuideUnLike: PropTypes.func,
-    openGlobalModal: PropTypes.func,
   }
 
   state = { activeTab: 'OVERVIEW' }
@@ -239,9 +238,8 @@ class Guide extends Component {
       reroute,
       sessionUserId,
       isFollowing,
-      // isBookmarked,
       isLiked,
-      openGlobalModal,
+      // isBookmarked,
     } = this.props
     const { activeTab } = this.state
 
@@ -312,7 +310,6 @@ class Guide extends Component {
             onClickShare={this._onClickShare}
             userId={sessionUserId}
             reroute={reroute}
-            openGlobalModal={openGlobalModal}
           />
         </ContentWrapper>
         <Footer hideOnTablet={true} />

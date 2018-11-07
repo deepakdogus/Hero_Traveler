@@ -191,12 +191,12 @@ const followButtonStyles = `
   cursor: pointer;
 `
 
-const followButtonResponsiveStyles = `
+const responsiveFollowButtonStyles = `
   margin: 10px 0;
   font-size: 10px;
 `
 
-const hiddenFollowButttonResponsiveStyles = `
+const hideButttonStyles = `
   display: none;
 `
 
@@ -208,11 +208,11 @@ const addToGuideButtonStyles = `
   cursor: pointer;
 `
 
-const addToGuideButtonResponsiveStyles = `
+const responsiveAddToGuideButtonStyles = `
   margin: 10px 0;
 `
 
-const addToGuideButtonResponsiveTextStyles = `
+const responsiveAddToGuideButtonTextStyles = `
   font-size: 10px;
 `
 
@@ -315,7 +315,7 @@ export default class FeedItemHeader extends React.Component {
                       type={isFollowing ? undefined : 'blackWhite'}
                       text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
                       textProps={followButtonStyles}
-                      responsiveButtonProps={hiddenFollowButttonResponsiveStyles}
+                      responsiveButtonProps={hideButttonStyles}
                     />
                   </SpacedVerticalCenter>
                 }
@@ -343,8 +343,8 @@ export default class FeedItemHeader extends React.Component {
                 text='Add To Guide'
                 onClick={this._onClickAddToGuide}
                 textProps={addToGuideButtonStyles}
-                responsiveButtonProps={addToGuideButtonResponsiveStyles}
-                responsiveTextProps={addToGuideButtonResponsiveTextStyles}
+                responsiveButtonProps={responsiveAddToGuideButtonStyles}
+                responsiveTextProps={responsiveAddToGuideButtonTextStyles}
               />
             }
             {!isUsersFeedItem && sessionUserId &&
@@ -355,7 +355,7 @@ export default class FeedItemHeader extends React.Component {
               type={isFollowing ? undefined : 'blackWhite'}
               text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
               textProps={followButtonStyles}
-              responsiveButtonProps={followButtonResponsiveStyles}
+              responsiveButtonProps={responsiveFollowButtonStyles}
               />
             }
           </Row>

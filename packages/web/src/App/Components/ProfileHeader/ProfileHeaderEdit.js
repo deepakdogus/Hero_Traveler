@@ -48,6 +48,9 @@ const EditAvatarWrapper = styled(VerticalCenter)`
   height: 100%;
   z-index: 1;
   left: 54.5px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    left 33.5px;
+  }
 `
 
 const Container = styled.div`
@@ -149,6 +152,11 @@ const InputsWrapper = styled.div`
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     margin: 20px 0;
   }
+`
+
+const responsiveAvatarStyles = `
+  width: 100px;
+  height: 100px;
 `
 
 function getInitialState(user = {}) {
@@ -309,6 +317,7 @@ export default class ProfileHeaderEdit extends React.Component {
             type='profile'
             size='x-large'
             isProfileHeader={false}
+            responsiveProps={responsiveAvatarStyles}
           />
           <VerticalCenter>
             <UpdatePictureText

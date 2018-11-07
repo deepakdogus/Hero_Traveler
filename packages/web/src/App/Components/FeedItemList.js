@@ -23,7 +23,7 @@ const StyledDivider = styled(HorizontalDivider)`
 const VerticalWrapper = styled.div``
 
 const StyledRow = styled(Row)`
-  flex-wrap: ${props => props.isGuideRow ? 'nowrap' : 'wrap'};
+  flex-wrap: ${props => props.type === 'guide' ? 'nowrap' : 'wrap'};
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     margin: 0 20px !important;
   }
@@ -46,7 +46,6 @@ export default class FeedItemList extends React.Component {
     activeTab: PropTypes.string,
     feedItemCount: PropTypes.number,
     getTabInfo: PropTypes.func,
-    isGuideRow: PropTypes.bool,
   }
 
   state = {
@@ -77,7 +76,6 @@ export default class FeedItemList extends React.Component {
       isHorizontalList,
       isShowAll,
       feedItems,
-      isGuideRow,
     } = this.props
 
     const rows = feedItems.reduce((rows, feedItem, index) => {
@@ -106,13 +104,12 @@ export default class FeedItemList extends React.Component {
           type={type}
           isStory={this.isStory(feedItem)}
           isVertical={isHorizontalList}
-          isInGuideRow={isGuideRow}
         />
       ))
       return rows
     }, [])
 
-    if (isGuideRow && rows.length === 1) {
+    if (type === 'guide' && rows.length === 1) {
       return [
         ...rows,
         <GuideRowSpacer key={`spacer-${guideId}`}/>,
@@ -151,7 +148,7 @@ export default class FeedItemList extends React.Component {
       feedItems,
       isHorizontalList,
       activeTab,
-      isGuideRow,
+      type,
     } = this.props
 
     if (!feedItems || !feedItems.length) {
@@ -162,7 +159,7 @@ export default class FeedItemList extends React.Component {
     }
 
     const Wrapper = isHorizontalList ? StyledRow : VerticalWrapper
-    const wrapperProps = isHorizontalList ? { between: 'xs', isGuideRow} : {}
+    const wrapperProps = isHorizontalList ? { between: 'xs', type} : {}
     const renderedFeedItems = this.renderFeedItems()
 
     return (

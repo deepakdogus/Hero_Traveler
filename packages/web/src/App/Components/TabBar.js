@@ -12,18 +12,13 @@ const Container = styled.div`
 
 // need && hack because styled-component insertion order was placing Row styles
 // behind the styled-compoenent styles, so they weren't overwriting base styles
-const StyledRow = styled(Row)`
+const TabItems = styled(Row)`
   && {
-    flex-wrap: nowrap;
-    display: flex;
-    flex-wrap: nowrap;
     overflow-x: auto;
-    @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-      justify-content: ${props => props.overflows ? 'flex-start' : 'center'};
-      -webkit-overflow-scrolling: touch;
-      &::-webkit-scrollbar {
-        display: none;
-      }
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    &::-webkit-scrollbar {
+      display: none;
     }
   }
 `
@@ -107,12 +102,11 @@ export default class TabBar extends React.Component {
     const { whiteBG, isModal, tabs = [] } = this.props
     return (
       <Container whiteBG={whiteBG} isModal={isModal}>
-        <StyledRow
-          center='xs'
-          overflows={tabs.length > 2}
-        >
-          {this.renderTabs()}
-        </StyledRow>
+        <Row center='xs'>
+          <TabItems>
+            {this.renderTabs()}
+          </TabItems>
+        </Row>
       </Container>
     )
   }

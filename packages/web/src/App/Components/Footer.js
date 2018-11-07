@@ -78,9 +78,16 @@ const StyledIcon = styled(Icon)`
   cursor: pointer;
 `
 
+const ResponsiveContainer = styled.div`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    display: ${props => props.hideOnTablet ? 'none' : 'block'};
+  }
+`
+
 class Footer extends Component {
   static propTypes = {
     openGlobalModal: PropTypes.func,
+    hideOnTablet: PropTypes.bool,
   }
 
   openTAC = () => {
@@ -93,43 +100,45 @@ class Footer extends Component {
   render() {
     return (
       <Container fluid>
-        <SizedRow between='xs'>
-          <Row bottom='xs'>
-            {/* Hidden until after launch*/}
-            {false &&
-              <StyledLink to='/'>About Us</StyledLink>
-            }
-            <StyledPseudoLink
-              onClick={this.openTAC}
-            >
-              Terms of Service
-            </StyledPseudoLink>
-            <StyledOffsiteLink
-              href='mailto:info@herotraveler.com'
-            >
-              Contact Us
-            </StyledOffsiteLink>
-          </Row>
-          <Row middle='xs'>
-            <UnstyledLink
-              href='https://www.facebook.com/herotraveler/'
-            >
-              <StyledIcon name='facebookDark'/>
-            </UnstyledLink>
-            <Divider />
-            <UnstyledLink
-              href='https://twitter.com/HeroTraveler'
-            >
-              <StyledIcon name='twitterDark'/>
-            </UnstyledLink>
-            <Divider />
-            <UnstyledLink
-              href='https://www.instagram.com/herotraveler/'
-            >
-              <StyledIcon name='instagramDark'/>
-            </UnstyledLink>
-          </Row>
-        </SizedRow>
+        <ResponsiveContainer hideOnTablet={this.props.hideOnTablet}>
+          <SizedRow between='xs'>
+            <Row bottom='xs'>
+              {/* Hidden until after launch*/}
+              {false &&
+                <StyledLink to='/'>About Us</StyledLink>
+              }
+              <StyledPseudoLink
+                onClick={this.openTAC}
+              >
+                Terms of Service
+              </StyledPseudoLink>
+              <StyledOffsiteLink
+                href='mailto:info@herotraveler.com'
+              >
+                Contact Us
+              </StyledOffsiteLink>
+            </Row>
+            <Row middle='xs'>
+              <UnstyledLink
+                href='https://www.facebook.com/herotraveler/'
+              >
+                <StyledIcon name='facebookDark'/>
+              </UnstyledLink>
+              <Divider />
+              <UnstyledLink
+                href='https://twitter.com/HeroTraveler'
+              >
+                <StyledIcon name='twitterDark'/>
+              </UnstyledLink>
+              <Divider />
+              <UnstyledLink
+                href='https://www.instagram.com/herotraveler/'
+              >
+                <StyledIcon name='instagramDark'/>
+              </UnstyledLink>
+            </Row>
+          </SizedRow>
+        </ResponsiveContainer>
       </Container>
     )
   }

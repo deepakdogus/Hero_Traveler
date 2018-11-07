@@ -110,16 +110,8 @@ export default class FeedList extends React.Component {
     const { sessionError } = this.props
     if (sessionError && sessionError === 'Unauthorized') {
       NavActions.launchScreen({type: NavActionConst.RESET})
-      Alert.alert(
-        'Session Timed Out',
-        'Please log in again',
-        [
-          {
-            text: 'OK',
-            onPress: this.props.clearSessionError,
-          },
-        ],
-      )
+      this.props.clearSessionError()
+      NavActions.login()
     }
   }
 

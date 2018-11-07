@@ -23,7 +23,6 @@ class LaunchScreen extends React.Component {
     hasSignedUp: PropTypes.bool,
     signupFacebook: PropTypes.func,
     splashShown: PropTypes.bool,
-    resumeSession: PropTypes.func,
     sessionError: PropTypes.string,
   }
 
@@ -47,11 +46,8 @@ class LaunchScreen extends React.Component {
   }
 
   componentDidMount() {
-    const { sessionError } = this.props
-    if (sessionError && sessionError === 'Unauthorized') {
-      SplashScreen.hide()
-      this.fadeIn()
-    }
+    SplashScreen.hide()
+    this.fadeIn()
   }
 
   _signupFacebook = () => {
@@ -130,7 +126,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    resumeSession: () => dispatch(SessionActions.resumeSession()),
     signupFacebook: (...args) => dispatch(SignupActions.signupFacebook(...args)),
   }
 }

@@ -53,6 +53,8 @@ export default class Icon extends React.Component {
         return Images.iconGear
       case 'date':
         return Images.iconDate
+      case 'dateLarge':
+        return Images.iconDateLarge
       case 'audio-on':
         return Images.iconAudioOn
       case 'audio-off':
@@ -91,6 +93,8 @@ export default class Icon extends React.Component {
         return Images.iconShare
       case 'location':
         return Images.iconLocation
+      case 'locationLarge':
+        return Images.iconLocationLarge
       case 'camera':
         return Images.iconEditImageCameraLarge
       case 'video-camera':
@@ -141,6 +145,8 @@ export default class Icon extends React.Component {
         return Images.iconNavActivity
       case 'tag':
         return Images.iconTag
+      case 'tagLarge':
+        return Images.iconTagLarge
       case 'hashtag':
         return Images.iconHashtag
       case 'explore':
@@ -201,6 +207,8 @@ export default class Icon extends React.Component {
         return Images.iconSquareFlag
       case 'cost':
         return Images.iconCost
+      case 'costLarge':
+        return Images.iconCostLarge
       case 'travelTips':
         return Images.iconTravelTips
       case 'guide':
@@ -220,6 +228,8 @@ export default class Icon extends React.Component {
         return Images.iconNavNotifications
       case 'info':
         return Images.iconInfoDark
+      case 'infoLarge':
+        return Images.iconInfoDarkLarge
       default:
         return Images.iconNavProfile
     }

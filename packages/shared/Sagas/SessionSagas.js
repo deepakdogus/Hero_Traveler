@@ -36,7 +36,10 @@ export function * logout (api, action) {
         put(resultAction()),
         call(api.unsetAuth),
       ]
-    yield put(StartupActions.hideSplash())
+    yield [
+      put(StartupActions.hideSplash()),
+      put(UserActions.resetActivities()),
+    ]
   }
 }
 
@@ -88,7 +91,7 @@ export function * refreshSession(api) {
   const tokens = yield select(currentUserTokens)
   const accessToken = _.find(tokens, {type: 'access'})
   const refreshToken = _.find(tokens, {type: 'refresh'})
-  const refreshWindow = 24 * 3600
+  const refreshWindow = 24 * 3600 * 7
 
   if (accessToken.expiresIn > refreshWindow) {
     return yield put(SessionActions.refreshSessionSuccess(tokens))

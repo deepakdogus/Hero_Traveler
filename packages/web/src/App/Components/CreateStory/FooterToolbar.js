@@ -20,6 +20,10 @@ const Container = styled.div`
   }
 `
 
+const StyledRow = styled(Row)`
+  height: 75px;
+`
+
 const ButtonIconContainer = styled.div``
 
 const StyledIcon = styled(Icon)`
@@ -68,7 +72,7 @@ export default class FooterToolbar extends Component {
     } = this.props
     return (
       <ButtonIconContainer>
-        <Row middle='xs'>
+        <StyledRow middle='xs'>
           <TrashButton removeFeedItem={discardDraft} />
           <RoundedButton
             type='grey'
@@ -83,7 +87,7 @@ export default class FooterToolbar extends Component {
           {syncProgressMessage && !isDetailsView &&
             <Text>{syncProgressMessage}</Text>
           }
-        </Row>
+        </StyledRow>
       </ButtonIconContainer>
     )
   }
@@ -103,7 +107,7 @@ export default class FooterToolbar extends Component {
           <Text>{syncProgressMessage}</Text>
         }
         </Row>
-        <Row middle='xs'>
+        <StyledRow middle='xs'>
           {isDetailsView &&
           <RoundedButton
             text={'< Back'}
@@ -120,7 +124,7 @@ export default class FooterToolbar extends Component {
             width='120px'
             onClick={onRight}
           />
-        </Row>
+        </StyledRow>
       </ButtonIconContainer>
     )
   }

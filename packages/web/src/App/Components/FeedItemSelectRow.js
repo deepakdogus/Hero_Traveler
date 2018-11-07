@@ -29,15 +29,10 @@ const responsiveHorizontalMetrics = {
 }
 
 function getMetric(isVertical, metric, isResponsive) {
+  let metrics = isVertical ? verticalMetrics : horizontalMetrics
   if (isResponsive) {
-    const responsiveMetrics =
-      isVertical
-      ? responsiveVerticalMetrics
-      : responsiveHorizontalMetrics
-    return responsiveMetrics[metric] + 'px'
+    metrics = isVertical ? responsiveVerticalMetrics : responsiveHorizontalMetrics
   }
-
-  const metrics = isVertical ? verticalMetrics : horizontalMetrics
   return metrics[metric] + 'px'
 }
 

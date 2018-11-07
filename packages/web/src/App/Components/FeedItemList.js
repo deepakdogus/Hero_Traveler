@@ -23,7 +23,7 @@ const StyledDivider = styled(HorizontalDivider)`
 const VerticalWrapper = styled.div``
 
 const StyledRow = styled(Row)`
-  flex-wrap: ${props => props.type === 'guide' ? 'nowrap' : 'wrap'};
+  flex-wrap: ${props => props.type === 'guideRow' ? 'nowrap' : 'wrap'};
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     margin: 0 20px !important;
   }
@@ -101,7 +101,7 @@ export default class FeedItemList extends React.Component {
           key={feedItem.id}
           guideId={guideId}
           feedItem={feedItem}
-          type={type}
+          isGuideRow={type === 'guideRow'}
           isStory={this.isStory(feedItem)}
           isVertical={isHorizontalList}
         />
@@ -109,7 +109,7 @@ export default class FeedItemList extends React.Component {
       return rows
     }, [])
 
-    if (type === 'guide' && rows.length === 1) {
+    if (type === 'guideRow' && rows.length === 1) {
       return [
         ...rows,
         <GuideRowSpacer key={`spacer-${guideId}`}/>,

@@ -164,6 +164,7 @@ const ImageWrapper = styled.div`
   }
 `
 
+// 70.84 is for to maintain aspect ratio
 const VerticalImageContainer = styled(ImageWrapper)`
   width: auto;
   height: 0;
@@ -273,9 +274,9 @@ class FeedItemPreview extends Component {
   static propTypes = {
     feedItem: PropTypes.object,
     author: PropTypes.object,
-    type: PropTypes.string,
     guideId: PropTypes.string,
     sessionUserId: PropTypes.string,
+    isGuideRow: PropTypes.bool,
     isStory: PropTypes.bool,
     isLiked: PropTypes.bool,
     isBookmarked: PropTypes.bool,
@@ -347,7 +348,7 @@ class FeedItemPreview extends Component {
       guideId,
       feedItem,
       author,
-      type,
+      isGuideRow,
       isLiked,
       isBookmarked,
       isStory,
@@ -389,7 +390,7 @@ class FeedItemPreview extends Component {
               }
             </StyledOverlay>
           </ImageContainer>
-          <StoryInfoContainer type={type}>
+          <StoryInfoContainer isGuideRow={isGuideRow}>
             {!isStory &&
               <Top>
                 <GuideIcon name='guide' />
@@ -402,7 +403,7 @@ class FeedItemPreview extends Component {
             <Title
               onClick={this.navToFeedItem}
               isGuide={!!guideId}
-              type={type}
+              isGuideRow={isGuideRow}
             >
               {feedItem.title}
             </Title>

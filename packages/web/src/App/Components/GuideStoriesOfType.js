@@ -105,7 +105,7 @@ export default class GuideStoriesOfType extends React.Component {
                 feedItems={feedItemList}
                 isHorizontalList
                 isShowAll={isShowAll}
-                type='guide'
+                type='guideRow'
               />
             )
           })
@@ -114,7 +114,7 @@ export default class GuideStoriesOfType extends React.Component {
             feedItems={stories}
             isHorizontalList
             isShowAll={isShowAll}
-            type='guide'
+            type='guideRow'
           />
         }
         {stories.length > 2 && !isShowAll &&

@@ -17,6 +17,7 @@ import {
 import { NavLinkStyled } from '../NavLinkStyled'
 import VerticalCenter from '../VerticalCenter'
 import { FollowButtonStyle } from '../FollowFollowingRow'
+import { hasBadge } from '../Shared/Lib/badgeHelpers'
 
 const LimitedWidthRow = styled(Row)`
   align-self: center;
@@ -162,8 +163,6 @@ export default class ProfileHeaderView extends React.Component {
       unfollowUser,
     } = this.props
 
-    const hasBadge = user.role === 'contributor' || user.role === 'founding member'
-
     return (
       <Centered>
         <LimitedWidthRow center='xs'>
@@ -224,7 +223,8 @@ export default class ProfileHeaderView extends React.Component {
             </VerticalCenter>
           </SecondCol>
         </LimitedWidthRow>
-        { hasBadge && this._renderUserBadge()}
+        // @ Matthew will the below new syntax work here? Also, ellipses instead of brackets?
+        { hasBadge(user.role) && this._renderUserBadge()}
       </Centered>
     )
   }

@@ -12,6 +12,8 @@ import Loader from './Loader'
 import ConnectedFeedItemPreview from '../Containers/ConnectedFeedItemPreview'
 import TabBar from './TabBar'
 import _ from 'lodash'
+import { hasBadge } from '../Shared/Lib/badgeHelpers'
+
 
 export default class ProfileTabsAndStories extends Component {
   static propTypes = {
@@ -112,7 +114,8 @@ export default class ProfileTabsAndStories extends Component {
     // from .measure() or onLayout. So don't forget to update here if styles
     // change.
     const {user, editable} = this.props
-    const hasBadge = user.role === 'contributor' || user.role === 'founding member'
+    // @ Matthew will the below new syntax work here? Also, ellipses instead of brackets
+    hasBadge{user.role}
     let height = editable ? 237 : 219
     height += hasBadge ? 21 : 0
     height += this.props.error ? 27 : 0

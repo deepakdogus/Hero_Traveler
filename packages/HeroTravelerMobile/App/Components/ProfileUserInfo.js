@@ -15,6 +15,12 @@ import formatCount from '../Shared/Lib/formatCount'
 import TabIcon from './TabIcon'
 import Avatar from './Avatar'
 
+import { 
+  roleToIconName,
+  hasBadge,
+} from '../Shared/Lib/badgeHelpers'
+
+
 export default class ProfileUserInfo extends Component {
   static propTypes = {
     user: PropTypes.object,
@@ -164,7 +170,7 @@ export default class ProfileUserInfo extends Component {
     return (
       <View style={[styles.profileWrapper, styles.badgeRow]}>
         <TabIcon
-          name={this.props.user.role === 'contributor' ? 'contributor' : 'founder'}
+          name={roleToIconName[user.role]}
           style={{ image: styles.badgeImage }}
         />
         <Text style={styles.badgeText}>
@@ -174,17 +180,13 @@ export default class ProfileUserInfo extends Component {
     )
   }
 
-  hasBadge(){
-    const {user} = this.props
-    return user.role === 'contributor' || user.role === 'founding member'
-  }
-
   render() {
     return (
       <View style={styles.profileInfoContainer}>
         {this.renderTop()}
         {this.renderFirstRow()}
-        {this.hasBadge() && this.renderBadgeRow()}
+        // @ Matthew will the below new syntax work here? Also, ellipses instead of brackets?
+        {this.hasBadge(user.role) && this.renderBadgeRow()}
         {this.renderSecondRow()}
       </View>
     )

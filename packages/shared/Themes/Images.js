@@ -120,6 +120,7 @@ const images = {
   appleAppStoreBadge: require('../Images/ht-icons/apple-app-store-badge.svg'),
   iconContributorBadage: require('../Images/ht-icons/contributor-badge.png'),
   iconFounderBadge: require('../Images/ht-icons/founder-badge.png'),
+  iconFellowBadge: require('../Images/ht-icons/fellow-badge.png'),
   iconErrorExclamation: require('../Images/ht-icons/error.png'),
   iconInfoDark: require('../Images/ht-icons/icon_info_dark.png'),
   iconInfoDarkLarge: require('../Images/ht-icons/icon_info_dark-large.png'),

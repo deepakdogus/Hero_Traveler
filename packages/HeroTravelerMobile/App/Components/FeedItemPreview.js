@@ -12,10 +12,10 @@ import {Actions as NavActions} from 'react-native-router-flux'
 
 import formatCount from '../Shared/Lib/formatCount'
 import getImageUrl from '../Shared/Lib/getImageUrl'
-import {displayLocationPreview} from '../Shared/Lib/locationHelpers'
+import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
 import { Metrics } from '../Shared/Themes'
 import styles from './Styles/FeedItemPreviewStyle'
-import {styles as storyReadingScreenStyles} from '../Containers/Styles/StoryReadingScreenStyles'
+import { styles as storyReadingScreenStyles } from '../Containers/Styles/StoryReadingScreenStyles'
 import profileViewStyles from './Styles/ProfileViewStyles'
 import LikesComponent from './LikeComponent'
 import TrashCan from './TrashCan'
@@ -23,6 +23,10 @@ import Avatar from './Avatar'
 import FeedItemCover from './FeedItemCover'
 import TabIcon from './TabIcon'
 import GuideMap from './GuideMap'
+import { 
+  roleToIconName,
+  hasBadge,
+} from '../Shared/Lib/badgeHelpers'
 
 // FeedItems are either a Story or a Guide
 export default class FeedItemPreview extends Component {
@@ -126,11 +130,6 @@ export default class FeedItemPreview extends Component {
     this.props.onPressUnfollow(this.props.user.id)
   }
 
-  hasBadge(){
-    const {user} = this.props
-    return user.role === 'contributor' || user.role === 'founding member'
-  }
-
   renderDate(){
     const {isReadingScreen, feedItem} = this.props
     return (
@@ -174,9 +173,9 @@ export default class FeedItemPreview extends Component {
             </TouchableOpacity>
             <View style={styles.verticalCenter}>
               <TouchableOpacity onPress={this._touchUser} style={styles.profileButton}>
-                {this.hasBadge() &&
+                {hasBadge(user.role) &&
                   <TabIcon
-                    name={user.role === 'contributor' ? 'contributor' : 'founder'}
+                    name={roleToIconName[user.role]}
                     style={{
                       image: styles.badgeImage,
                       view: styles.badgeView,

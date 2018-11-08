@@ -109,6 +109,7 @@ const UserSchema = new Schema({
       Constants.USER_ROLES_BRAND_VALUE,
       Constants.USER_ROLES_CONTRIBUTOR_VALUE,
       Constants.USER_ROLES_FOUNDING_MEMBER_VALUE,
+      Constants.USER_ROLES_FELLOW_VALUE,
     ],
     default: Constants.USER_ROLES_USER_VALUE
   },

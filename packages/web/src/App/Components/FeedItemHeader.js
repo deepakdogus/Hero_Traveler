@@ -15,6 +15,11 @@ import RoundedButton from './RoundedButton'
 import Icon from './Icon'
 import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
 
+import { 
+  roleToIconName,
+  hasBadge,
+} from '../Shared/Lib/badgeHelpers'
+
 const Title = styled.p`
   margin: 0;
   font-family: ${props => props.theme.Fonts.type.montserrat};
@@ -225,7 +230,6 @@ export default class FeedItemHeader extends React.Component {
     } = this.props
 
     const mediaType = this.getMediaType()
-    const hasBadge = author.role === 'contributor' || author.role === 'founding member'
     const isUsersFeedItem = author.id === sessionUserId
 
     return (
@@ -242,10 +246,10 @@ export default class FeedItemHeader extends React.Component {
                 <ClickableContainer
                   onClick={this._profileReroute}
                 >
-                  {hasBadge &&
+                  {hasBadge{user.role} &&
                     <VerticalCenter>
                       <BadgeIcon
-                        name={author.role === 'contributor' ? 'profileBadge' : 'founderBadge'}
+                        name={roleToIconName[user.role]}
                         size='mediumSmall'
                         profileAvatar={author.profile.avatar}
                       />
@@ -253,7 +257,7 @@ export default class FeedItemHeader extends React.Component {
                   }
                   <Username
                     onClick={this._profileReroute}
-                    hasBadge={hasBadge}
+                    hasBadge={hasBadge{user.role}
                   >
                     {author.username}
                   </Username>

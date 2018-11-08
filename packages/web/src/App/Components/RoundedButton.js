@@ -41,7 +41,7 @@ function getBackgroundColor (type, colors) {
       return colors.twitterBlue
     case 'categoryFollow':
     case 'exploreCategoryFollow':
-      return colors.redLight
+      return colors.background
     case 'blackWhite':
     case 'facebook':
     case 'twitter':
@@ -80,6 +80,7 @@ function getHoverColorAndBorder (type, colors) {
     case 'lightGrey':
       return [colors.signupGreyHover, colors.signupGreyHover]
     case 'exploreCategoryFollow':
+      return [colors.backgroundHover, colors.backgroundHover]
     case 'categoryFollow':
     case 'backgroundOpaque':
     default:
@@ -112,16 +113,16 @@ const StyledButton = styled.button`
       case 'opaqueWhite':
       case 'categoryFollow':
       case 'myFeedHeaderButton':
+      case 'exploreCategoryFollow':
         return props.theme.Colors.snow
       case 'blackWhite':
-        return props.theme.Colors.photoOverlay
+        return props.theme.Colors.background
       case 'headerButton':
         return props.theme.Colors.navBarText
       case 'opaqueGrey':
         return props.theme.Colors.grey
       case 'backgroundOpaque':
         return props.theme.Colors.closeXBorder
-      case 'exploreCategoryFollow':
       default:
         return props.theme.Colors.redHighlights
     }

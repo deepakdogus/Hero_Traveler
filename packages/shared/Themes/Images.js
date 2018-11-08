@@ -36,6 +36,7 @@ const images = {
   iconContentXWhite: require('../Images/ht-icons/icon_content-x-white.png'),
   iconContentXBlack: require('../Images/ht-icons/icon_content-x-black.png'),
   iconContentPlusWhite: require('../Images/ht-icons/icon_content-plus.png'),
+  iconContentPlusWhiteLarge: require('../Images/ht-icons/icon_content-plus-large.png'),
   iconContentXDark: require('../Images/ht-icons/icon_content-x.png'),
   iconNavHome: require('../Images/ht-icons/icon_nav-home.png'),
   iconNavActivity: require('../Images/ht-icons/icon_nav-activity.png'),

@@ -15,7 +15,7 @@ export function getSize(props, defaultOverride = '25px') {
     case 'mediumSmall':
       return '18px'
     case 'extraMedium':
-      return '38px'  
+      return '38px'
     case 'medium':
       return '50px'
     case 'large':
@@ -175,10 +175,12 @@ export default class Icon extends React.Component {
         return Images.iconCreateMenuVideo
       case 'photo':
         return Images.iconCreateMenuPhoto
-      case 'profileBadge':
+      case 'contributor':
         return Images.iconProfileBadge
-      case 'founderBadge':
+      case 'founder':
         return Images.iconFounderBadge
+      case 'fellow':
+        return Images.iconFellowBadge
       case 'defaultProfile':
         return Images.iconDefaultProfile
       case 'googlePlayBadge':

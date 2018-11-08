@@ -17,7 +17,11 @@ import {
 import { NavLinkStyled } from '../NavLinkStyled'
 import VerticalCenter from '../VerticalCenter'
 import { FollowButtonStyle } from '../FollowFollowingRow'
-import { hasBadge } from '../Shared/Lib/badgeHelpers'
+import {
+  hasBadge,
+  roleToIconName,
+  roleToLabel,
+} from '../../Shared/Lib/badgeHelpers'
 
 const LimitedWidthRow = styled(Row)`
   align-self: center;
@@ -132,20 +136,15 @@ export default class ProfileHeaderView extends React.Component {
   }
 
   _renderUserBadge = () => {
-    const roleType = this.props.user.role === 'contributor'
-    ? {
-      badgeType: 'profileBadge',
-      text: 'CONTRIBUTOR',
-    } : {
-      badgeType: 'founderBadge',
-      text: 'FOUNDING MEMBER',
-    }
+    const role = this.props.user.role
 
     return (
       <BadgeContainer>
         <ClickRow onClick={this.props.openContributor}>
-          <ClickableIcon name={roleType.badgeType}/>
-          <BottomLeftText>{roleType.text}</BottomLeftText>
+          <ClickableIcon name={roleToIconName[role]}/>
+          <BottomLeftText>
+            { roleToLabel[role] }
+          </BottomLeftText>
         </ClickRow>
       </BadgeContainer>
     )
@@ -223,8 +222,7 @@ export default class ProfileHeaderView extends React.Component {
             </VerticalCenter>
           </SecondCol>
         </LimitedWidthRow>
-        // @ Matthew will the below new syntax work here? Also, ellipses instead of brackets?
-        { hasBadge(user.role) && this._renderUserBadge()}
+        { hasBadge(user.role) && this._renderUserBadge() }
       </Centered>
     )
   }

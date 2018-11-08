@@ -26,7 +26,7 @@ import Icon from './Icon'
 
 import OverlayHover from './OverlayHover'
 
-import { 
+import {
   roleToIconName,
   hasBadge,
 } from '../Shared/Lib/badgeHelpers'
@@ -412,9 +412,9 @@ class FeedItemPreview extends Component {
                     onClick={this.navToUserProfile}
                   />
                 }
-                {hasBadge{user.role} &&
+                {hasBadge(author.role) &&
                   <BadgeIcon
-                    name={roleToIconName[user.role]}
+                    name={roleToIconName[author.role]}
                     size='small'
                     profileAvatar={author.profile.avatar}
                   />

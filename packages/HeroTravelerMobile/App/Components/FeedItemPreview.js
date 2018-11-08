@@ -23,7 +23,7 @@ import Avatar from './Avatar'
 import FeedItemCover from './FeedItemCover'
 import TabIcon from './TabIcon'
 import GuideMap from './GuideMap'
-import { 
+import {
   roleToIconName,
   hasBadge,
 } from '../Shared/Lib/badgeHelpers'
@@ -78,12 +78,12 @@ export default class FeedItemPreview extends Component {
         storyId: feedItem.id,
         type: 'reset',
         navigatedFromProfile: true,
-        shouldLoadStory: false
+        shouldLoadStory: false,
       })
       NavActions.createStory_cover({
         storyId: feedItem.id,
         navigatedFromProfile: true,
-        shouldLoadStory: false
+        shouldLoadStory: false,
       })
     }
     else {
@@ -111,8 +111,8 @@ export default class FeedItemPreview extends Component {
             }
             NavActions.pop()
           },
-        }
-      ]
+        },
+      ],
    )
   }
 
@@ -135,7 +135,7 @@ export default class FeedItemPreview extends Component {
     return (
       <Text style={[
         styles.dateText,
-        isReadingScreen && styles.dateTextReading
+        isReadingScreen && styles.dateTextReading,
       ]}>
         {moment(feedItem.tripDate || feedItem.createdAt).format('LL')}
       </Text>
@@ -207,13 +207,13 @@ export default class FeedItemPreview extends Component {
                 style={[
                   profileViewStyles.blackButton,
                   isFollowing ? null : profileViewStyles.followButton,
-                  styles.followFollowingButton
+                  styles.followFollowingButton,
                 ]}
                 onPress={isFollowing ? this._onPressUnfollow : this._onPressFollow}>
                 <Text style={[
                     profileViewStyles.blackButtonText,
                     isFollowing ? null : profileViewStyles.followButtonText,
-                    styles.followFollowingText
+                    styles.followFollowingText,
                   ]}
                 >
                   {isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
@@ -247,7 +247,7 @@ export default class FeedItemPreview extends Component {
         (description && showDescription) ? styles.titleWithDescription : {},
         isReadingScreen ? styles.storyReadingTitle : {},
         (isReadingScreen && description && showDescription) ? styles.storyReadingTitleWithDescription : {},
-        titleStyle
+        titleStyle,
       ]}>
         {title}
       </Text>
@@ -305,7 +305,7 @@ export default class FeedItemPreview extends Component {
                   <TabIcon
                     name={this.props.isBookmarked ? 'bookmark-active' : 'bookmark'}
                     style={{
-                      image: styles.bookmark
+                      image: styles.bookmark,
                     }}
                   />
                 </TouchableOpacity>
@@ -374,7 +374,7 @@ export default class FeedItemPreview extends Component {
   _onPressLike = () => {
     const {
       feedItem, isStory, isGuideLiked, sessionUserId,
-      onPressStoryLike, onPressGuideLike, onPressGuideUnlike
+      onPressStoryLike, onPressGuideLike, onPressGuideUnlike,
     } = this.props
 
     if (isStory && onPressStoryLike) onPressStoryLike(feedItem)

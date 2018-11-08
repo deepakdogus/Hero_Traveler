@@ -14,7 +14,6 @@ import TabBar from './TabBar'
 import _ from 'lodash'
 import { hasBadge } from '../Shared/Lib/badgeHelpers'
 
-
 export default class ProfileTabsAndStories extends Component {
   static propTypes = {
     editable: PropTypes.bool,
@@ -50,7 +49,7 @@ export default class ProfileTabsAndStories extends Component {
   renderFeedItem = (feedItem, index) => {
     const {
       tabTypes, selectedTab, isStory,
-      editable, sessionUserId, location
+      editable, sessionUserId, location,
     } = this.props
     return (
       <ConnectedFeedItemPreview
@@ -98,7 +97,7 @@ export default class ProfileTabsAndStories extends Component {
 
   _renderProfileInfo = () => {
     const {renderProfileInfo, error} = this.props
-    let errorText = _.get(error, 'message', 'Unable to fully load user data. Please try again.');
+    let errorText = _.get(error, 'message', 'Unable to fully load user data. Please try again.')
     return (
       <View style={styles.topAreaWrapper}>
         {renderProfileInfo()}
@@ -114,10 +113,9 @@ export default class ProfileTabsAndStories extends Component {
     // from .measure() or onLayout. So don't forget to update here if styles
     // change.
     const {user, editable} = this.props
-    // @ Matthew will the below new syntax work here? Also, ellipses instead of brackets
-    hasBadge{user.role}
+
     let height = editable ? 237 : 219
-    height += hasBadge ? 21 : 0
+    height += hasBadge(user.role) ? 21 : 0
     height += this.props.error ? 27 : 0
     return height
   }
@@ -125,7 +123,7 @@ export default class ProfileTabsAndStories extends Component {
   render() {
     const {
       renderProfileInfo, feedItemsById,
-      fetchStatus, editable, isStory, onRefresh
+      fetchStatus, editable, isStory, onRefresh,
     } = this.props
 
     const isGettingStories = this.isGettingStories()
@@ -133,7 +131,7 @@ export default class ProfileTabsAndStories extends Component {
     return (
       <View style={[
         styles.profileTabsAndStoriesHeight,
-        editable ? styles.profileTabsAndStoriesRoot : styles.profileTabsAndStoriesRootWithMarginForNavbar
+        editable ? styles.profileTabsAndStoriesRoot : styles.profileTabsAndStoriesRootWithMarginForNavbar,
       ]}>
         {(this.areNoStories() || this.isFetching()) &&
           <View>

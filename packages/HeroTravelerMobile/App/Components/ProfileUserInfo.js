@@ -8,18 +8,16 @@ import {
 import { Actions as NavActions } from 'react-native-router-flux'
 
 import styles from './Styles/ProfileViewStyles'
-import { Colors } from '../Shared/Themes'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import formatCount from '../Shared/Lib/formatCount'
 
 import TabIcon from './TabIcon'
 import Avatar from './Avatar'
 
-import { 
+import {
   roleToIconName,
   hasBadge,
 } from '../Shared/Lib/badgeHelpers'
-
 
 export default class ProfileUserInfo extends Component {
   static propTypes = {
@@ -44,7 +42,7 @@ export default class ProfileUserInfo extends Component {
     NavActions.followersScreen({
       title: 'Followers',
       followersType: 'followers',
-      userId: this.props.user.id
+      userId: this.props.user.id,
     })
   }
 
@@ -52,7 +50,7 @@ export default class ProfileUserInfo extends Component {
     NavActions.followersScreen({
       title: 'Following',
       followersType: 'following',
-      userId: this.props.user.id
+      userId: this.props.user.id,
     })
   }
 
@@ -106,13 +104,13 @@ export default class ProfileUserInfo extends Component {
       <TouchableOpacity
         style={[
           styles.blackButton,
-          isFollowing ? null : styles.followButton
+          isFollowing ? null : styles.followButton,
         ]}
         onPress={isFollowing ? onPressUnfollow : onPressFollow}>
         <Text
           style={[
             styles.blackButtonText,
-            isFollowing ? null : styles.followButtonText
+            isFollowing ? null : styles.followButtonText,
           ]}
         >
           {isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
@@ -167,6 +165,7 @@ export default class ProfileUserInfo extends Component {
   }
 
   renderBadgeRow(){
+    const {user} = this.props
     return (
       <View style={[styles.profileWrapper, styles.badgeRow]}>
         <TabIcon
@@ -174,19 +173,19 @@ export default class ProfileUserInfo extends Component {
           style={{ image: styles.badgeImage }}
         />
         <Text style={styles.badgeText}>
-          {this.props.user.role.toUpperCase()}
+          {user.role.toUpperCase()}
         </Text>
       </View>
     )
   }
 
   render() {
+    const {user} = this.props
     return (
       <View style={styles.profileInfoContainer}>
         {this.renderTop()}
         {this.renderFirstRow()}
-        // @ Matthew will the below new syntax work here? Also, ellipses instead of brackets?
-        {this.hasBadge(user.role) && this.renderBadgeRow()}
+        {hasBadge(user.role) && this.renderBadgeRow()}
         {this.renderSecondRow()}
       </View>
     )

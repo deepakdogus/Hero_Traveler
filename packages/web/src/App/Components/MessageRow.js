@@ -69,6 +69,7 @@ export default class MessageRow extends Component {
       <Avatar
         avatarUrl={getImageUrl(this.props.user.profile.avatar, 'avatarLarge')}
         size='larger'
+        type='profile'
         onClick={this._profileReroute}
         responsiveProps={responsiveAvatarStyles}
       />

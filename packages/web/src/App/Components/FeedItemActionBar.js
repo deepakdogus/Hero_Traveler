@@ -40,9 +40,14 @@ const HandMadeIconMinus = styled.div`
 `
 
 const LeftActionBarIcon = styled(StyledIcon)``
+
 const BookmarkIcon = styled(StyledIcon)``
-const FacebookIcon = styled(StyledIcon)``
+
+const FacebookIcon = styled(StyledIcon)`
+  padding: 5px;
+`
 const TwitterIcon = styled(StyledIcon)``
+
 const DotsIcon = styled(StyledIcon)``
 
 const ActionBarContainer = styled(Col)`

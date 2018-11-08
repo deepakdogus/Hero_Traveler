@@ -15,7 +15,7 @@ export function getSize(props, defaultOverride = '25px') {
     case 'mediumSmall':
       return '18px'
     case 'extraMedium':
-      return '38px'  
+      return '38px'
     case 'medium':
       return '50px'
     case 'large':
@@ -151,6 +151,8 @@ export default class Icon extends React.Component {
         return Images.iconHashtag
       case 'explore':
         return Images.iconNavExplore
+      case 'search':
+        return Images.iconNavExploreLarge
       case 'story':
         return Images.iconCreateMenuStory
       case 'createStory':

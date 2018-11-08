@@ -14,6 +14,13 @@ import {
   BottomLeftText,
 } from './ProfileHeaderShared'
 import { NavLinkStyled } from '../NavLinkStyled'
+import VerticalCenter from '../VerticalCenter'
+import { FollowButtonStyle } from '../FollowFollowingRow'
+import {
+  hasBadge,
+  roleToIconName,
+  roleToLabel,
+} from '../../Shared/Lib/badgeHelpers'
 import {
   FollowButtonTextStyle,
   FollowButtonResponsiveTextStyle,
@@ -225,15 +232,8 @@ export default class ProfileHeaderView extends React.Component {
     }
   }
 
-  _renderUserBadge = (type = 'flexItem') => {
-    const roleType = this.props.user.role === 'contributor'
-    ? {
-      badgeType: 'profileBadge',
-      text: 'CONTRIBUTOR',
-    } : {
-      badgeType: 'founderBadge',
-      text: 'FOUNDING MEMBER',
-    }
+  _renderUserBadge = (type) => {
+    const role = this.props.user.role
 
     const BadgeContainer =
       type === 'absolute'
@@ -243,8 +243,10 @@ export default class ProfileHeaderView extends React.Component {
     return (
       <BadgeContainer>
         <ClickRow onClick={this.props.openContributor}>
-          <ClickableIcon name={roleType.badgeType} />
-          <BottomLeftText>{roleType.text}</BottomLeftText>
+          <ClickableIcon name={roleToIconName[role]} />
+          <BottomLeftText>
+            { roleToLabel[role].toUpperCase() }
+          </BottomLeftText>
         </ClickRow>
       </BadgeContainer>
     )
@@ -275,8 +277,6 @@ export default class ProfileHeaderView extends React.Component {
       unfollowUser,
     } = this.props
 
-    const hasBadge = user.role === 'contributor' || user.role === 'founding member'
-
     return (
       <Centered>
         <LimitedWidthRow center='xs'>
@@ -298,7 +298,7 @@ export default class ProfileHeaderView extends React.Component {
           </SecondCol>
         </LimitedWidthRow>
         <LimitedWidthRow>
-          { hasBadge
+          { hasBadge(user.role)
             ? this._renderUserBadge()
             : <Spacer />
           }
@@ -344,7 +344,7 @@ export default class ProfileHeaderView extends React.Component {
             </StyledButton>
           </ResponsiveCol>
         </BottomRow>
-        { hasBadge && this._renderUserBadge('absolute') }
+        { hasBadge(user.role) && this._renderUserBadge('absolute') }
         { isUsersProfile && this._renderEditIcon() }
       </Centered>
     )

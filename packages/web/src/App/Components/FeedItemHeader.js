@@ -15,6 +15,11 @@ import RoundedButton from './RoundedButton'
 import Icon from './Icon'
 import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
 
+import {
+  roleToIconName,
+  hasBadge,
+} from '../Shared/Lib/badgeHelpers'
+
 const UserInfoRow = styled(Row)`
   align-items: center;
 `
@@ -169,7 +174,6 @@ const ClickableRow = styled(Row)`
 `
 
 const BadgeIcon = styled(Icon)`
-  margin-left: ${props => props.profileAvatar ? '0' : '10'}px;
   cursor: pointer;
 `
 
@@ -272,7 +276,6 @@ export default class FeedItemHeader extends React.Component {
     } = this.props
 
     const mediaType = this.getMediaType()
-    const hasBadge = author.role === 'contributor' || author.role === 'founding member'
     const isUsersFeedItem = author.id === sessionUserId
 
     return (
@@ -290,10 +293,10 @@ export default class FeedItemHeader extends React.Component {
                 <ClickableContainer
                   onClick={this._profileReroute}
                 >
-                  {hasBadge &&
+                  {hasBadge(author.role) &&
                     <VerticalCenter>
                       <BadgeIcon
-                        name={author.role === 'contributor' ? 'profileBadge' : 'founderBadge'}
+                        name={roleToIconName[author.role]}
                         size='mediumSmall'
                         profileAvatar={author.profile.avatar}
                       />
@@ -301,7 +304,7 @@ export default class FeedItemHeader extends React.Component {
                   }
                   <Username
                     onClick={this._profileReroute}
-                    hasBadge={hasBadge}
+                    hasBadge={hasBadge(author.role)}
                   >
                     {author.username}
                   </Username>

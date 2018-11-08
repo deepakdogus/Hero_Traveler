@@ -12,10 +12,10 @@ import {Actions as NavActions} from 'react-native-router-flux'
 
 import formatCount from '../Shared/Lib/formatCount'
 import getImageUrl from '../Shared/Lib/getImageUrl'
-import {displayLocationPreview} from '../Shared/Lib/locationHelpers'
+import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
 import { Metrics } from '../Shared/Themes'
 import styles from './Styles/FeedItemPreviewStyle'
-import {styles as storyReadingScreenStyles} from '../Containers/Styles/StoryReadingScreenStyles'
+import { styles as storyReadingScreenStyles } from '../Containers/Styles/StoryReadingScreenStyles'
 import profileViewStyles from './Styles/ProfileViewStyles'
 import LikesComponent from './LikeComponent'
 import TrashCan from './TrashCan'
@@ -23,6 +23,10 @@ import Avatar from './Avatar'
 import FeedItemCover from './FeedItemCover'
 import TabIcon from './TabIcon'
 import GuideMap from './GuideMap'
+import {
+  roleToIconName,
+  hasBadge,
+} from '../Shared/Lib/badgeHelpers'
 
 // FeedItems are either a Story or a Guide
 export default class FeedItemPreview extends Component {
@@ -74,12 +78,12 @@ export default class FeedItemPreview extends Component {
         storyId: feedItem.id,
         type: 'reset',
         navigatedFromProfile: true,
-        shouldLoadStory: false
+        shouldLoadStory: false,
       })
       NavActions.createStory_cover({
         storyId: feedItem.id,
         navigatedFromProfile: true,
-        shouldLoadStory: false
+        shouldLoadStory: false,
       })
     }
     else {
@@ -107,8 +111,8 @@ export default class FeedItemPreview extends Component {
             }
             NavActions.pop()
           },
-        }
-      ]
+        },
+      ],
    )
   }
 
@@ -126,17 +130,12 @@ export default class FeedItemPreview extends Component {
     this.props.onPressUnfollow(this.props.user.id)
   }
 
-  hasBadge(){
-    const {user} = this.props
-    return user.role === 'contributor' || user.role === 'founding member'
-  }
-
   renderDate(){
     const {isReadingScreen, feedItem} = this.props
     return (
       <Text style={[
         styles.dateText,
-        isReadingScreen && styles.dateTextReading
+        isReadingScreen && styles.dateTextReading,
       ]}>
         {moment(feedItem.tripDate || feedItem.createdAt).format('LL')}
       </Text>
@@ -174,9 +173,9 @@ export default class FeedItemPreview extends Component {
             </TouchableOpacity>
             <View style={styles.verticalCenter}>
               <TouchableOpacity onPress={this._touchUser} style={styles.profileButton}>
-                {this.hasBadge() &&
+                {hasBadge(user.role) &&
                   <TabIcon
-                    name={user.role === 'contributor' ? 'contributor' : 'founder'}
+                    name={roleToIconName[user.role]}
                     style={{
                       image: styles.badgeImage,
                       view: styles.badgeView,
@@ -208,13 +207,13 @@ export default class FeedItemPreview extends Component {
                 style={[
                   profileViewStyles.blackButton,
                   isFollowing ? null : profileViewStyles.followButton,
-                  styles.followFollowingButton
+                  styles.followFollowingButton,
                 ]}
                 onPress={isFollowing ? this._onPressUnfollow : this._onPressFollow}>
                 <Text style={[
                     profileViewStyles.blackButtonText,
                     isFollowing ? null : profileViewStyles.followButtonText,
-                    styles.followFollowingText
+                    styles.followFollowingText,
                   ]}
                 >
                   {isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
@@ -248,7 +247,7 @@ export default class FeedItemPreview extends Component {
         (description && showDescription) ? styles.titleWithDescription : {},
         isReadingScreen ? styles.storyReadingTitle : {},
         (isReadingScreen && description && showDescription) ? styles.storyReadingTitleWithDescription : {},
-        titleStyle
+        titleStyle,
       ]}>
         {title}
       </Text>
@@ -306,7 +305,7 @@ export default class FeedItemPreview extends Component {
                   <TabIcon
                     name={this.props.isBookmarked ? 'bookmark-active' : 'bookmark'}
                     style={{
-                      image: styles.bookmark
+                      image: styles.bookmark,
                     }}
                   />
                 </TouchableOpacity>
@@ -375,7 +374,7 @@ export default class FeedItemPreview extends Component {
   _onPressLike = () => {
     const {
       feedItem, isStory, isGuideLiked, sessionUserId,
-      onPressStoryLike, onPressGuideLike, onPressGuideUnlike
+      onPressStoryLike, onPressGuideLike, onPressGuideUnlike,
     } = this.props
 
     if (isStory && onPressStoryLike) onPressStoryLike(feedItem)

@@ -26,6 +26,11 @@ import Icon from './Icon'
 
 import OverlayHover from './OverlayHover'
 
+import {
+  roleToIconName,
+  hasBadge,
+} from '../Shared/Lib/badgeHelpers'
+
 const coverHeight = '257px'
 
 const Text = styled.span`
@@ -357,8 +362,6 @@ class FeedItemPreview extends Component {
 
     if (!feedItem || !author) return
 
-    const hasBadge = author.role === 'contributor' || author.role === 'founding member'
-
     let imageUrl
     if (feedItem.coverImage) imageUrl = getImageUrl(feedItem.coverImage)
     else if (feedItem.coverVideo) {
@@ -417,9 +420,9 @@ class FeedItemPreview extends Component {
                     onClick={this.navToUserProfile}
                   />
                 }
-                {hasBadge &&
+                {hasBadge(author.role) &&
                   <BadgeIcon
-                    name={author.role === 'contributor' ? 'profileBadge' : 'founderBadge'}
+                    name={roleToIconName[author.role]}
                     size='small'
                     profileAvatar={author.profile.avatar}
                   />

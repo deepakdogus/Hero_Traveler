@@ -201,7 +201,11 @@ class EditStory extends Component {
       saveDraftToCache,
     } = this.props
 
-    if (workingDraft.draft) saveDraftToCache(this.cleanDraft(workingDraft))
+    if (workingDraft.draft) {
+      saveDraftToCache(this.cleanDraft(workingDraft))
+      this.setState({draftSaveMessage: 'Saving Draft'})
+      setTimeout(() => this.setState({draftSaveMessage: ''}), 1000)
+    }
     else {
       const isRepublishing = !workingDraft.draft && subPath === 'details'
       this.props.updateDraft(
@@ -369,7 +373,7 @@ class EditStory extends Component {
           isDetailsView={subPath === 'details'}
           onRight={this.onRight}
           onLeft={this.onLeft}
-          syncProgressMessage={syncProgressMessage}
+          syncProgressMessage={this.state.draftSaveMessage || syncProgressMessage}
         />
         <Modal
           isOpen={!!error.title}

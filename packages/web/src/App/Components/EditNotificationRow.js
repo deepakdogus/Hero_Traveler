@@ -7,8 +7,8 @@ import HorizontalDivider from './HorizontalDivider'
 import {Row} from './FlexboxGrid'
 import {Colors} from '../Shared/Themes'
 
-import 'react-ios-switch/build/bundle.css';
-import Switch from 'react-ios-switch';
+import 'react-ios-switch/build/bundle.css'
+import Switch from 'react-ios-switch'
 
 const Container = styled.div`
   margin: ${props => props.margin ? props.margin : '0'};
@@ -21,14 +21,22 @@ const NotificationTitle = styled.p`
   letter-spacing: .2px;
   margin: 0;
   color: ${props => props.theme.Colors.grey};
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin-left: 25px;
+  }
 `
 
 const RowSpacer = styled.div`
   padding: 6px 0px;
 `
 
-export default class EditNotificationRow extends Component {
+const StyledSwitch = styled(Switch)`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin-right: 25px;
+  }
+`
 
+export default class EditNotificationRow extends Component {
   static propTypes = {
     text: PropTypes.string,
     index: PropTypes.number,
@@ -52,7 +60,7 @@ export default class EditNotificationRow extends Component {
   renderSwitch = () => {
     return (
       <VerticalCenter>
-        <Switch
+        <StyledSwitch
           checked={this.props.checked}
           index={this.props.index}
           disabled={null}

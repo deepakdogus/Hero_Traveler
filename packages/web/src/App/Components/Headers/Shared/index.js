@@ -46,6 +46,7 @@ export const LoginLink = styled.a`
   color: #ffffff;
   letter-spacing: .6px;
   font-size: 13px;
+  padding-left: 10px;
   display: none;
   ${mediaMax.phone`display: inline;`}
 `

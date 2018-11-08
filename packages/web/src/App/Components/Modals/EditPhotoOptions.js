@@ -3,8 +3,9 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import Icon from '../Icon'
-import {Row} from '../FlexboxGrid'
+import { Row } from '../FlexboxGrid'
 import VerticalCenter from '../VerticalCenter'
+import { getAcceptedFormats } from '../../Utils/uploadFile'
 
 const Container = styled.div``
 
@@ -50,7 +51,7 @@ export default class EditPhotoOptions extends React.Component {
     const {
       onCrop,
       onUpload,
-      hasLoadedImage
+      hasLoadedImage,
     } = this.props
 
     return (
@@ -65,7 +66,7 @@ export default class EditPhotoOptions extends React.Component {
               type='file'
               id='image_upload'
               onChange={onUpload}
-              accept={'image/*'}
+              accept={getAcceptedFormats('image')}
             />
           </ModalRow>
         </label>
@@ -81,6 +82,3 @@ export default class EditPhotoOptions extends React.Component {
     )
   }
 }
-
-
-

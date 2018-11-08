@@ -15,7 +15,11 @@ import Inbox from '../Modals/Inbox'
 import InboxThread from '../Modals/InboxThread'
 import ProfileBio from '../Modals/ProfileBio'
 
-const Container = styled.div``
+const Container = styled.div`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 0 15px;
+  }
+`
 
 export default class ProfileHeader extends React.Component {
   static propTypes = {
@@ -23,6 +27,7 @@ export default class ProfileHeader extends React.Component {
     isEdit: PropTypes.bool,
     isUsersProfile: PropTypes.bool,
     toProfileView: PropTypes.func,
+    openGlobalModal: PropTypes.func,
   }
 
   constructor(props) {

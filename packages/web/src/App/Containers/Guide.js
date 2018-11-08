@@ -47,9 +47,19 @@ const MetaInfoContainer = styled.div`
   padding-left: 0px;
   padding-right: 0px;
 `
-const ConditionalHorizontalDivider = styled(HorizontalDivider)`
+
+const DescriptionContainer = styled(MetaInfoContainer)``
+
+const StyledDivider = styled(HorizontalDivider)`
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    display: none;
+    margin: 0 20px;
+  }
+`
+
+const ConditionalDivider = styled(StyledDivider)`
+  display: none;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    display: block;
   }
 `
 
@@ -59,6 +69,10 @@ const Spacer = styled.div`
 
 const Description = styled(BodyText)`
   padding: 0 45px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0 20px;
+    margin-bottom: 35px;
+  }
 `
 
 const HashtagText = styled.p`
@@ -87,7 +101,6 @@ class Guide extends Component {
     match: PropTypes.object,
     onClickComments: PropTypes.func,
     onClickFlag: PropTypes.func,
-
     guide: PropTypes.object,
     guideStories: PropTypes.arrayOf(PropTypes.object),
     getGuide: PropTypes.func,
@@ -225,8 +238,8 @@ class Guide extends Component {
       reroute,
       sessionUserId,
       isFollowing,
-      // isBookmarked,
       isLiked,
+      // isBookmarked,
     } = this.props
     const { activeTab } = this.state
 
@@ -262,13 +275,16 @@ class Guide extends Component {
           { guide &&
             guide.description &&
             activeTab === 'OVERVIEW' &&
-            <Description>{guide.description}</Description>
+            <DescriptionContainer>
+              <Description>{guide.description}</Description>
+              <ConditionalDivider color='light-grey'/>
+            </DescriptionContainer>
           }
           {this.renderHashtags()}
           {activeTab === 'OVERVIEW' &&
             <MetaInfoContainer>
               <FeedItemMetaInfo feedItem={guide}/>
-              <ConditionalHorizontalDivider color='light-grey'/>
+              <StyledDivider color='light-grey'/>
             </MetaInfoContainer>
           }
           {this.shouldDisplay('SEE') &&

@@ -18,8 +18,6 @@ const StyledVideo = styled.video`
   max-width: 100%;
 `
 
-
-
 class Video extends React.Component {
   static propTypes = {
     src: PropTypes.string,
@@ -41,8 +39,8 @@ class Video extends React.Component {
 
   showErrorAlert = () => {
     const {onError} = this.props
-    let alertMessage = "There was a problem processing your video."
-    if (onError) alertMessage = alertMessage += "\nPlease reformat your file and try again."
+    let alertMessage = 'There was a problem processing your video.'
+    if (onError) alertMessage = alertMessage += '\nPlease reformat your file and try again.'
     alert(alertMessage)
     if (onError) onError()
   }
@@ -59,10 +57,10 @@ class Video extends React.Component {
       <VideoWithControls
         ref={this.setRef}
         onError={this.showErrorAlert}
-        autoPlay={type==='cover'}
+        autoPlay={type === 'cover'}
         controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
       >
-        <source src={src} type="video/webm" />
+        <source src={src} type='video/webm' />
       </VideoWithControls>
     :
       <VideoWrapper>

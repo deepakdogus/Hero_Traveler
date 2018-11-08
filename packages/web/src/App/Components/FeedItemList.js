@@ -22,7 +22,17 @@ const StyledDivider = styled(HorizontalDivider)`
 
 const VerticalWrapper = styled.div``
 
-const StyledRow = styled(Row)``
+const StyledRow = styled(Row)`
+  flex-wrap: ${props => props.type === 'guideRow' ? 'nowrap' : 'wrap'};
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 0 20px !important;
+  }
+`
+
+const GuideRowSpacer = styled.div`
+  flex-basis: 385.5px;
+  padding-left: 20px;
+`
 
 const itemsPerPage = 10
 
@@ -68,7 +78,7 @@ export default class FeedItemList extends React.Component {
       feedItems,
     } = this.props
 
-    return feedItems.reduce((rows, feedItem, index) => {
+    const rows = feedItems.reduce((rows, feedItem, index) => {
       /*
         We only need the first 4 elements for suggestions
         We will improve this check to allow 'pagination' will carousel scroll
@@ -91,13 +101,22 @@ export default class FeedItemList extends React.Component {
           key={feedItem.id}
           guideId={guideId}
           feedItem={feedItem}
-          type={type}
+          isGuideRow={type === 'guideRow'}
           isStory={this.isStory(feedItem)}
           isVertical={isHorizontalList}
         />
       ))
       return rows
     }, [])
+
+    if (type === 'guideRow' && rows.length === 1) {
+      return [
+        ...rows,
+        <GuideRowSpacer key={`spacer-${guideId}`}/>,
+      ]
+    }
+
+    return rows
   }
 
   loadFeedItems = (page) => {
@@ -129,6 +148,7 @@ export default class FeedItemList extends React.Component {
       feedItems,
       isHorizontalList,
       activeTab,
+      type,
     } = this.props
 
     if (!feedItems || !feedItems.length) {
@@ -139,17 +159,21 @@ export default class FeedItemList extends React.Component {
     }
 
     const Wrapper = isHorizontalList ? StyledRow : VerticalWrapper
-    const wrapperProps = isHorizontalList ? { between: 'xs'} : {}
+    const wrapperProps = isHorizontalList ? { between: 'xs', type} : {}
+    const renderedFeedItems = this.renderFeedItems()
 
     return (
       <Wrapper {...wrapperProps}>
-        <InfiniteScroll
-          pageStart={1}
-          loadMore={this.loadFeedItems}
-          hasMore={this.state.hasMore}
-        >
-          {this.renderFeedItems()}
-        </InfiniteScroll>
+        {!isHorizontalList
+          ? (<InfiniteScroll
+            pageStart={1}
+            loadMore={this.loadFeedItems}
+            hasMore={this.state.hasMore}
+          >
+            {renderedFeedItems}
+          </InfiniteScroll>)
+          : renderedFeedItems
+        }
       </Wrapper>
     )
   }

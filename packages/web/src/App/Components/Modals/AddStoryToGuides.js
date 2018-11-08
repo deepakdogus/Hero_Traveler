@@ -17,7 +17,6 @@ import RoundedButton from '../RoundedButton'
 import {
   RightTitle,
   StyledVerticalCenter,
-  RightModalCloseX,
 } from './Shared'
 
 import Icon from '../Icon'
@@ -25,9 +24,12 @@ import Icon from '../Icon'
 const Container = styled.div``
 const CategoryRowsContainer = styled.div``
 
+
 const CreateContainer = styled.div`
-  padding: 8px 30px;
+  padding: 10px 20px;
   cursor: pointer;
+  border: ${props => `0 solid ${props.theme.Colors.dividerGrey}`};
+  border-width: 1px 0 1px;
   &:hover {
     background-color: ${props => props.theme.Colors.onHoverGrey};
   }
@@ -41,6 +43,11 @@ const CreateIconContainer = styled(VerticalCenter)`
   border-color: ${props => props.theme.Colors.redLight};
   border-style: dashed;
   border-width: 1px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    width: 67px;
+    height: 50px;
+    border: none;
+  }
 `
 
 const StyledIcon = styled(Icon)`
@@ -54,15 +61,46 @@ const CreateText = styled.p`
   color: ${props => props.theme.Colors.redLight};
   letter-spacing: .2px;
   margin: 0;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 15px;
+  }
 `
 
 const ReplacementContainer = styled(DefaultContainer)`
-  padding: 5px 30px 5px;
+  padding: 10px 20px;
   cursor: pointer;
+  border: ${props => `0 solid ${props.theme.Colors.dividerGrey}`};
+  border-width: 0 0 1px;
   &:hover {
     background-color: ${props => props.theme.Colors.onHoverGrey};
   }
 `
+
+const ResponsiveCloseBar = styled(VerticalCenter)`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: ${props => props.theme.Colors.snow};
+    border-top: 1px solid ${props => props.theme.Colors.navBarText};
+    > * {
+      padding: 20px 0;
+    }
+  }
+`
+
+const ResponsiveSpacer = styled.div`
+  display: none;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    display: block;
+    height: 80px;
+  }
+`
+
+const RowProps = {
+  'justify-content' : 'space-between',
+  'flex-wrap' : 'nowrap',
+}
 
 class AddStoryToGuides extends SharedComponent {
   renderImage() {
@@ -144,25 +182,27 @@ class AddStoryToGuides extends SharedComponent {
   render() {
     return (
       <Container>
-        <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
-        <RightTitle>ADD TO GUIDE</RightTitle>
-        <CreateContainer onClick={this.createGuideReroute}>
-          <SpaceBetweenRow
-            renderImage={this.renderImage}
-            renderText={this.renderText}
-            renderRight={this.renderRight}
+        <RightTitle>ADD TO A GUIDE</RightTitle>
+          <CreateContainer onClick={this.createGuideReroute}>
+            <SpaceBetweenRow
+              renderImage={this.renderImage}
+              renderText={this.renderText}
+              renderRight={this.renderRight}
+              rowProps={RowProps}
+            />
+          </CreateContainer>
+          <CategoryRowsContainer>
+            {this.renderGuides()}
+          </CategoryRowsContainer>
+          <ResponsiveSpacer/>
+        <ResponsiveCloseBar>
+          <CenteredButtons
+            buttonsToRender={[
+              this.cancelButton,
+              this.saveButton,
+            ]}
           />
-        </CreateContainer>
-        <CategoryRowsContainer>
-          {this.renderGuides()}
-        </CategoryRowsContainer>
-        <CenteredButtons
-          buttonsToRender={[
-            this.cancelButton,
-            this.saveButton,
-          ]}
-        >
-        </CenteredButtons>
+        </ResponsiveCloseBar>
       </Container>
     )
   }

@@ -6,7 +6,9 @@ import Icon from '../Icon'
 import {SubTitle, Input, CloseXContainer} from './Shared'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import getVideoUrl from '../../Shared/Lib/getVideoUrl'
-import uploadFile from '../../Utils/uploadFile'
+import uploadFile, {
+  getAcceptedFormats,
+} from '../../Utils/uploadFile'
 import {VerticalCenterStyles} from '../VerticalCenter'
 import Video from '../Video'
 
@@ -186,6 +188,7 @@ export default class AddCoverTitles extends React.Component {
 
   _onCoverChange = (event) => {
     uploadFile(event, this, (file) => {
+      if (!file) return
       let update = file.type.includes('video')
       ? {
         'coverVideo': file,
@@ -202,9 +205,10 @@ export default class AddCoverTitles extends React.Component {
     })
   }
 
-  _onCoverRemove = (event) => {
+  removeCover = (event) => {
     this.props.onInputChange({
       'coverImage': undefined,
+      'coverVideo': undefined,
     })
   }
 
@@ -217,7 +221,7 @@ export default class AddCoverTitles extends React.Component {
     have an identical local state. Will try to revise later
     */
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     })
   }
 
@@ -266,10 +270,10 @@ export default class AddCoverTitles extends React.Component {
     const coverImage = this.getCoverImage()
     const coverVideo = this.getCoverVideo()
 
-    let acceptProp = 'image/*'
+    let acceptProp = getAcceptedFormats('image')
     let coverTypeText = 'COVER PHOTO'
     if (!isGuide) {
-      acceptProp += ', video/*'
+      acceptProp = getAcceptedFormats('both')
       coverTypeText += ' OR VIDEO'
     }
 
@@ -337,6 +341,7 @@ export default class AddCoverTitles extends React.Component {
             <Video
               src={coverVideo}
               type={'cover'}
+              onError={this.removeCover}
               withPrettyControls
             />
           </LimitedWidthContainer>

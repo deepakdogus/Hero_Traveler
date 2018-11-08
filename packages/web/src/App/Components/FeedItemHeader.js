@@ -116,7 +116,7 @@ const CoverCaption = styled.p`
   font-size: 14px;
   color: ${props => props.theme.Colors.bioGrey};
   letter-spacing: .2px;
-  margin-top: 0px;
+  margin: 20px 0 0 0;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 12px;
   }
@@ -254,6 +254,7 @@ export default class FeedItemHeader extends React.Component {
       unfollowUser,
       followUser,
       isStory,
+      isDraft,
       shouldHideCover,
       onClickAddToGuide,
     } = this.props
@@ -322,7 +323,7 @@ export default class FeedItemHeader extends React.Component {
                 </ClickableRow>
               </VerticalCenter>
             }
-            {onClickAddToGuide &&
+            {onClickAddToGuide && !isDraft &&
               <RoundedButton
                 margin='noRight'
                 padding='smallEven'

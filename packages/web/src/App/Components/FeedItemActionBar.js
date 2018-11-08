@@ -176,7 +176,7 @@ export default class StoryActionBar extends React.Component {
           {isStory &&
               <ClickableWrapper>
                 <StyledIcon
-                  name='report'
+                  name='flag'
                   onClick={this._onClickFlag}
                 />
               </ClickableWrapper>

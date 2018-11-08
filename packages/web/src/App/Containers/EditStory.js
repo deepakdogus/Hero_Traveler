@@ -257,6 +257,7 @@ class EditStory extends Component {
     if (!isFieldSame('title', workingDraft, originalDraft)) cleanedDraft.title = _.trim(cleanedDraft.title)
     if (!isFieldSame('description', workingDraft, originalDraft)) cleanedDraft.description = _.trim(cleanedDraft.description)
     if (!isFieldSame('coverCaption', workingDraft, originalDraft)) cleanedDraft.coverCaption = _.trim(cleanedDraft.coverCaption)
+    if (!cleanedDraft.tripDate) cleanedDraft.tripDate = Date.now()
     cleanedDraft.draftjsContent = this.getEditorState()
     return cleanedDraft
   }

@@ -111,7 +111,7 @@ const EnlargedIcon = styled(IconWithMargin)`
   height: 35px;
 `
 
-const HashtagIcon = styled(IconWithMargin)``
+const HashtagIcon = styled(EnlargedIcon)``
 
 export const IconWrapper = styled.div`
   width: 35px;

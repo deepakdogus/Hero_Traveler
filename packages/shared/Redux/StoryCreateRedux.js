@@ -30,12 +30,21 @@ const { Types, Creators } = createActions({
   incrementSyncProgress: ['steps'],
   syncError: null,
   resetSync: null,
+  uploadImage: ['uri', 'id'],
+  uploadImageSuccess: ['file', 'id'],
+  uploadImageFailure: ['error', 'id'],
 })
 
 export const StoryCreateTypes = Types
 export default Creators
 
 /* ------------- Initial State ------------- */
+
+const initialImageUpload = {
+  file: null,
+  id: null,
+  error: null,
+}
 
 export const INITIAL_STATE = Immutable({
   draft: null,
@@ -50,6 +59,9 @@ export const INITIAL_STATE = Immutable({
   fetchStatus: {
     loaded: false,
     fetching: false
+  },
+  imageUpload: {
+    ...initialImageUpload
   }
 })
 
@@ -184,7 +196,31 @@ export const editStoryFailure = (state, {error, cachedStory}) => {
   })
 }
 
+export const uploadImageInit = (state) => {
+  return state.merge({
+    imageUpload: {
+      ...initialImageUpload,
+    }
+  })
+}
 
+export const uploadImageSuccess = (state, {file, id}) => {
+  return state.merge({
+    imageUpload: {
+      file,
+      id,
+    }
+  })
+}
+
+export const uploadImageFailure = (state, {error, id}) => {
+  return state.merge({
+    imageUpload: {
+      error,
+      id,
+    }
+  })
+}
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -211,4 +247,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.INCREMENT_SYNC_PROGRESS]: incrementSyncProgress,
   [Types.SYNC_ERROR]: syncError,
   [Types.RESET_SYNC]: resetSync,
+  [Types.UPLOAD_IMAGE]: uploadImageInit,
+  [Types.UPLOAD_IMAGE_SUCCESS]: uploadImageSuccess,
+  [Types.UPLOAD_IMAGE_FAILURE]: uploadImageFailure
 })

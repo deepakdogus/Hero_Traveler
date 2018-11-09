@@ -139,6 +139,24 @@ const extractUploadData = (uploadData) => {
   return baseObject
 }
 
+// to be used on web only to deal with orientation
+export function * uploadImage(api, {uri, id}) {
+  const cloudinaryImage = yield CloudinaryAPI.uploadMediaFile(
+    pathAsFileObject(uri),
+    'image',
+  )
+  if (typeof cloudinaryImage.data === "string") {
+    cloudinaryImage.data = JSON.parse(cloudinaryImage.data)
+  }
+
+  if (cloudinaryImage.data.error) {
+    yield put(StoryCreateActions.uploadImageFailure(cloudinaryImage.data.error, id))
+  }
+  else {
+    yield put(StoryCreateActions.uploadImageSuccess(cloudinaryImage.data, id))
+  }
+}
+
 export function * createCover(api, draft, isGuide){
   const videoFileUri =
     draft.coverVideo && draft.coverVideo.uri && isLocalMediaAsset(draft.coverVideo.uri)

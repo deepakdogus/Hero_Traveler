@@ -167,6 +167,7 @@ function isNewStory(props, nextProps) {
 export default class AddCoverTitles extends React.Component {
   static propTypes = {
     onInputChange: PropTypes.func,
+    uploadImage: PropTypes.func,
     workingDraft: PropTypes.object,
     isGuide: PropTypes.bool,
   }
@@ -189,19 +190,16 @@ export default class AddCoverTitles extends React.Component {
   _onCoverChange = (event) => {
     uploadFile(event, this, (file) => {
       if (!file) return
-      let update = file.type.includes('video')
-      ? {
-        'coverVideo': file,
-        'coverImage': null,
-        'coverType': 'video',
+      if (file.type.includes('video')) {
+        this.props.onInputChange({
+          'coverVideo': file,
+          'coverImage': null,
+          'coverType': 'video',
+        })
       }
-      : {
-        'coverImage': file,
-        'coverVideo': null,
-        'coverType': 'image',
+      else {
+        this.props.uploadImage(file.uri, 'coverImage')
       }
-      // refactor later to differentiate between image and video
-      this.props.onInputChange(update)
     })
   }
 

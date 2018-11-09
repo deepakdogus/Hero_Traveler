@@ -28,12 +28,11 @@ const Container = styled.div`
   }
 `
 
+const wrapperMaxWidth = 800
 const ContentWrapper = styled.div`
   position: relative;
   margin: 0 auto;
-  padding-left: 80px;
-  padding-right: 80px;
-  max-width: 800px;
+  max-width: ${wrapperMaxWidth}px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding: 0;
   }
@@ -209,6 +208,7 @@ class Story extends Component {
               reroute={reroute}
               onClickShare={this._onClickShare}
               onClickFlag={this._onClickFlag}
+              wrapperMaxWidth={wrapperMaxWidth}
             />
           }
         </ContentWrapper>

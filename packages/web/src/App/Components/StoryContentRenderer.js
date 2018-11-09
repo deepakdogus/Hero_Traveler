@@ -25,8 +25,8 @@ export const BodyText = styled.p`
   color: ${props => props.theme.Colors.grey};
   letter-spacing: 0.6px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding-left: 45px;
-    padding-right: 45px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 `
 
@@ -41,8 +41,8 @@ const HeaderOne = styled.h1`
     text-transform: uppercase;
   }
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding-left: 45px;
-    padding-right: 45px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 `
 

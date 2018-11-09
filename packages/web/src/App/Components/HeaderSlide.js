@@ -46,7 +46,7 @@ const Subtitle = styled.p`
 
 const BottomContainer = styled.div`
   position: absolute;
-  bottom: 10px;
+  bottom: 20px;
   width: 100%;
   z-index: 1;
 `

@@ -11,7 +11,11 @@ import TermsAndConditions from './TermsAndConditions'
 import Privacy from './Privacy'
 import UXActions from '../../Redux/UXRedux'
 
-const Container = styled.div``
+const Container = styled.div`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding-top: 20px;
+  }
+`
 
 export const tabbarObj = {
   FAQ: 'FAQ',

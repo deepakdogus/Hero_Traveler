@@ -26,6 +26,9 @@ const ContentWrapper = styled.div``
 
 const FeedItemListWrapper = styled.div`
   margin: 50px 7% 0;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 0;
+  }
 `
 
 const ListWrapper = styled.div`

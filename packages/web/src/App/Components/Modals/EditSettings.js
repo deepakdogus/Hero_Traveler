@@ -7,6 +7,7 @@ import InputWithLabel from '../InputWithLabel'
 import CenteredButtons from '../CenteredButtons'
 import VerticalCenter from '../VerticalCenter'
 import RoundedButton from '../RoundedButton'
+import HorizontalDivider from '../../Components/HorizontalDivider'
 import EditMessages from './EditMessages'
 import UserActions from '../../Shared/Redux/Entities/Users'
 
@@ -16,11 +17,17 @@ const InputContainer = styled.div`
   font-family: ${props => props.theme.Fonts.type.base};
   font-style: none;
   letter-spacing: .2px;
-  padding: 25px;
+  padding: 0 25px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0;
+  }
 `
 
 const DeleteContainer = styled.div`
   padding: 25px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0;
+  }
 `
 
 const DeleteTextContainer = styled.div`
@@ -29,18 +36,32 @@ const DeleteTextContainer = styled.div`
   color: ${props => props.theme.Colors.signupGrey};
   padding-top: 15px;
   font-size: 15px;
+  max-width: 400px;
+  text-align: center;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding-top: 8px;
+    margin: 0 25px;
+  }
 `
 
 const DeleteButton = styled.div`
   font-family: ${props => props.theme.Fonts.type.base};
   font-size: 18px;
   color: ${props => props.theme.Colors.redHighlights};
-  border: solid;
-  border-color: ${props => props.theme.Colors.dividerGrey};
-  border-width: 0 0 1px;
   padding-bottom: 8px;
-  width: 100%;
   letter-spacing: .2px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 21.5px 0;
+    margin-left: 25px;
+  }
+`
+
+const StyledDivider = styled(HorizontalDivider)`
+  border-bottom-width: 1.1px;
+  margin-top: 0;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    width: 100%;
+  }
 `
 
 const accountInputs = [
@@ -269,6 +290,7 @@ class EditSettings extends React.Component{
             value={this.state[inputObj.id]}
             fontColor={fontColor}
           />
+          <StyledDivider color={'light-grey'}/>
         </InputContainer>
       )
     })
@@ -278,6 +300,7 @@ class EditSettings extends React.Component{
     return (
       <DeleteContainer>
         <DeleteButton onClick={this.showDeleteAccountOptions}>Delete Account</DeleteButton>
+        <StyledDivider color={'light-grey'}/>
         {!!this.state.showDeleteAccountConfirmation &&
         <DeleteTextContainer>
         We’re sorry to see you go. Once your account is deleted, all of your content will be permanently gone.

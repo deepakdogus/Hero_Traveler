@@ -27,7 +27,7 @@ function getPadding(props) {
   return '2px 6px 3px'
 }
 
-function getBackgroundColor (type, colors) {
+function getPrimaryColor (type, colors) {
   switch(type) {
     case 'grey':
       return colors.btnGreyBackground
@@ -51,6 +51,15 @@ function getBackgroundColor (type, colors) {
     case 'headerButton':
     case 'backgroundOpaque':
       return colors.backgroundOpaque
+    default:
+      return colors.redHighlights
+  }
+}
+
+function getSecondaryColor (type, colors) {
+  switch(type) {
+    case 'floating':
+      return colors.backgroundTintLow
     default:
       return colors.redHighlights
   }
@@ -128,11 +137,19 @@ const StyledButton = styled.button`
   }};
   margin: ${props => getMargin};
   padding: ${props => getPadding};
-  background-color: ${props => getBackgroundColor(props.type, props.theme.Colors)};
+  background-color: ${props => getPrimaryColor(props.type, props.theme.Colors)};
   width: ${props => props.width || 'inherit'};
+  box-shadow: ${props => props.type === 'floating'
+    ? `0px 2px 6px 0px ${getSecondaryColor(props.type, props.theme.Colors)}`
+    : 'initial'
+  };
   &:hover {
     background:  ${props => getHoverColorAndBorder(props.type, props.theme.Colors)[0]};
     border-color:  ${props => getHoverColorAndBorder(props.type, props.theme.Colors)[1]};
+  }
+  ${props => props.buttonProps}
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    ${props => props.responsiveButtonProps}
   }
 `
 const Text = styled.p`
@@ -156,6 +173,11 @@ const Text = styled.p`
   }};
   margin: ${props => `${props.type === 'navbar' ? '3.5' : '2.5'}px 10px`};
   letter-spacing: .6px;
+  white-space: nowrap;
+  ${props => props.textProps}
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    ${props => props.responsiveTextProps}
+  }
 `
 
 /*
@@ -173,16 +195,20 @@ export default class RoundedButton extends React.Component {
     padding: PropTypes.string,
     height: PropTypes.string,
     textProps: PropTypes.string,
+    responsiveTextProps: PropTypes.string,
   }
 
   renderContent() {
-    const {text, children, type, textProps} = this.props
+    const {text, children, type, textProps, responsiveTextProps} = this.props
     let RenderText = Text
 
-    if (textProps) RenderText = styled(Text)`${textProps}`
     if (children) return children
     else return (
-      <RenderText type={type}>
+      <RenderText
+        type={type}
+        textProps={textProps}
+        responsiveTextProps={responsiveTextProps}
+      >
         {text}
       </RenderText>
     )

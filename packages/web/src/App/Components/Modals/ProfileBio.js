@@ -2,11 +2,16 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import {RightTitle, RightModalCloseX, Text} from './Shared'
-import {Row} from '../FlexboxGrid'
+import { RightTitle, RightModalCloseX, Text } from './Shared'
+import { Row } from '../FlexboxGrid'
 import Icon from '../Icon'
 
-const Container = styled.div``
+const Container = styled.div`
+  width: 570px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    width: 100vw;
+  }
+`
 
 const BioContainer = styled.div`
   padding: 50px 65px;
@@ -18,8 +23,10 @@ const BioText = styled(Text)`
 `
 
 const SocialFooterContainer = styled.div`
-  padding: 0px 210px;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 
 const SocialFooterText = styled(Text)`
@@ -30,7 +37,7 @@ const SocialFooterText = styled(Text)`
 
 const StyledIcon = styled(Icon)`
   height: 25px;
-  margin-top: 10px;
+  margin: 10px;
 `
 
 const FacebookIcon = styled(StyledIcon)`

@@ -2,7 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-const Container = styled.div``
+const Container = styled.div`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin-left: 25px;
+  }
+`
 
 const StyledInputLabel = styled.label`
   font-family: ${props => props.theme.Fonts.type.base};
@@ -11,13 +15,12 @@ const StyledInputLabel = styled.label`
   font-weight: 400;
   letter-spacing: .2px;
   color:  ${props => props.fontColor === 'background' ? props.theme.Colors.background : props.theme.Colors.navBarText};
-  margin-bottom: 8px;
+  padding: 8px 0;
 `
 
 export const StyledInput = styled.input`
   font-family: ${props => props.theme.Fonts.type.base};
-  border-color: ${props => props.theme.Colors.dividerGrey};
-  border-width: 0 0 1px;
+  border: none;
   color: ${props => props.theme.Colors.background};
   font-size: 18px;
   font-weight: 600;

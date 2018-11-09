@@ -38,9 +38,22 @@ const Container = styled.div`
   cursor: pointer;
 `
 
+const rowProps = {
+  'justify-content' : 'space-between',
+}
+
+const leftProps = {
+  'max-width': '450px',
+  'align-items' : 'center',
+  'flex-wrap' : 'nowrap',
+  'tablet-max-width' : '85%'
+}
+
 const StyledUserName = styled.span`
   ${UserNameStyles},
   font-size: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 const StyledTimestamp = styled(Timestamp)`
@@ -89,7 +102,7 @@ const CommentContent = styled.p`
   color: ${props => props.theme.Colors.grey};
 `
 
-const NotificationContent = styled.p`
+const NotificationContent = styled.div`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 16px;
@@ -99,15 +112,18 @@ const NotificationContent = styled.p`
 `
 
 const StyledNotificationContent = styled(NotificationContent)`
-  width: 300px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin-right: 5px;
+    word-break: break-word;
+  }
 `
 
 const RenderImageContainer = styled.div`
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
 `
 const VisibleBulletContainer = styled.div`
   display: flex;
@@ -122,6 +138,11 @@ const VisibleBulletContainer = styled.div`
 
 const HiddenBulletContainer = styled(VisibleBulletContainer)`
   visibility: hidden;
+`
+
+const AvatarResponsiveStyle = `
+  width: 50px;
+  height: 50px;
 `
 
 const videoThumbnailOptions = {
@@ -163,6 +184,7 @@ export default class NotificationRow extends Component {
           avatarUrl={avatar ? getImageUrl(avatar, 'avatarLarge') : undefined}
           type='profile'
           size='larger'
+          responsiveProps={AvatarResponsiveStyle}
         />
       </RenderImageContainer>
     )
@@ -235,7 +257,6 @@ export default class NotificationRow extends Component {
   }
 
   render() {
-    const leftProps = { 'max-width': '450px' }
     return (
       <InteractiveContainer onClick={this._markSeen}>
         <Container
@@ -247,6 +268,7 @@ export default class NotificationRow extends Component {
             renderText={this.renderText}
             renderRight={this.renderTripImage}
             leftProps={leftProps}
+            rowProps={rowProps}
           />
         </Container>
         <StyledHorizontalDivider color='light-grey'/>

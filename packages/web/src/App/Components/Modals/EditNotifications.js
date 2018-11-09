@@ -11,6 +11,9 @@ const notificationTypes = [
 
 const Container = styled.div`
   padding: 25px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0;
+  }
 `
 export default class EditNotifications extends React.Component {
 
@@ -43,10 +46,11 @@ export default class EditNotifications extends React.Component {
       typesMap: notificationTypes.map(type => {
         if(propsToUse.userNotificationTypes.includes(type.value)){
           return {...type, isNotifying: true}
-        }else {
+        }
+        else {
           return {...type, isNotifying: false}
         }
-      })
+      }),
     })
   }
 
@@ -54,7 +58,8 @@ export default class EditNotifications extends React.Component {
     const newTypesMap = this.state.typesMap.map(type => {
       if(type.value === identifier){
         return {...type, isNotifying: !type.isNotifying}
-      }else{
+      }
+      else{
         return {...type}
       }
     })

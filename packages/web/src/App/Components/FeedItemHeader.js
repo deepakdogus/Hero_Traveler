@@ -15,6 +15,15 @@ import RoundedButton from './RoundedButton'
 import Icon from './Icon'
 import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
 
+import {
+  roleToIconName,
+  hasBadge,
+} from '../Shared/Lib/badgeHelpers'
+
+const UserInfoRow = styled(Row)`
+  align-items: center;
+`
+
 const Title = styled.p`
   margin: 0;
   font-family: ${props => props.theme.Fonts.type.montserrat};
@@ -24,8 +33,8 @@ const Title = styled.p`
   color: ${props => props.theme.Colors.background};
   letter-spacing: .6px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding-left: 45px;
-    padding-right: 45px;
+    padding-left: 20px;
+    padding-right: 20px;
     font-size: 30px;
   }
 `
@@ -33,8 +42,9 @@ const Title = styled.p`
 const GuideTitle = styled(Title)`
   margin-bottom: 35px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding-left: 45px;
-    padding-right: 45px;
+    margin-bottom: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
     font-size: 30px;
   }
 `
@@ -46,8 +56,9 @@ const Subtitle = styled.p`
   color: ${props => props.theme.Colors.grey};
   letter-spacing: .2px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding-left: 45px;
-    padding-right: 45px;
+    font-size: 18px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 `
 
@@ -58,8 +69,8 @@ const LocationText = styled(Subtitle)`
   text-transform: uppercase;
   font-weight: 600;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    margin: 0;
-    font-size: 13px;
+    font-size: 15px;
+    margin-top: 30px;
   }
 `
 
@@ -81,6 +92,12 @@ const TimeStamp = styled(RedText)`
   color: ${props => props.theme.Colors.grey};
 `
 
+const EditText = styled(RedText)`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    display: none;
+  }
+`
+
 const CoverImage = styled.img`
   width: 100%;
   text-align: center;
@@ -100,12 +117,16 @@ const CoverCaption = styled.p`
   color: ${props => props.theme.Colors.bioGrey};
   letter-spacing: .2px;
   margin-top: 0px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 12px;
+  }
 `
 
 const Container = styled.div`
   z-index: 500;
   margin: 65px auto 0;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 0 auto;
     padding-left: 0;
     padding-right: 0;
   }
@@ -121,18 +142,17 @@ const StyledDivider = styled(HorizontalDivider)`
   max-width: 960px;
   margin: 30px auto;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    border-color: transparent;
-    background-color: transparent;
-    margin-top: 0;
-    margin-bottom: 15px;
+    margin: 30px 20px;
   }
 `
 
 const TopRow = styled(Row)`
   margin-bottom: 35px !important;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding-left: 45px;
-    padding-right: 45px;
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 `
 
@@ -151,14 +171,28 @@ const ClickableRow = styled(Row)`
 `
 
 const BadgeIcon = styled(Icon)`
-  margin-left: ${props => props.profileAvatar ? '0' : '10'}px;
   cursor: pointer;
 `
 
-const followButtonStyles = `
+const responsiveAvatarStyles = `
+  width: 40px;
+  height: 40px;
+`
+
+const followButtonTextStyles = `
   font-size: 10px;
   font-weight: 600;
   cursor: pointer;
+`
+
+const responsiveFollowButtonStyles = `
+  display: block;
+  margin: 10px 0;
+  font-size: 10px;
+`
+
+const hideButtonStyles = `
+  display: none;
 `
 
 const addToGuideButtonStyles = `
@@ -225,27 +259,27 @@ export default class FeedItemHeader extends React.Component {
     } = this.props
 
     const mediaType = this.getMediaType()
-    const hasBadge = author.role === 'contributor' || author.role === 'founding member'
     const isUsersFeedItem = author.id === sessionUserId
 
     return (
       <Container>
         <TopRow between="xs">
-          <Row>
+          <UserInfoRow>
             <Avatar
               avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
               size='medium'
               onClick={this._profileReroute}
+              responsiveProps={responsiveAvatarStyles}
             />
             <SpacedVerticalCenter>
               <Row>
                 <ClickableContainer
                   onClick={this._profileReroute}
                 >
-                  {hasBadge &&
+                  {hasBadge(author.role) &&
                     <VerticalCenter>
                       <BadgeIcon
-                        name={author.role === 'contributor' ? 'profileBadge' : 'founderBadge'}
+                        name={roleToIconName[author.role]}
                         size='mediumSmall'
                         profileAvatar={author.profile.avatar}
                       />
@@ -253,7 +287,7 @@ export default class FeedItemHeader extends React.Component {
                   }
                   <Username
                     onClick={this._profileReroute}
-                    hasBadge={hasBadge}
+                    hasBadge={hasBadge(author.role)}
                   >
                     {author.username}
                   </Username>
@@ -266,14 +300,15 @@ export default class FeedItemHeader extends React.Component {
                       onClick={isFollowing ? unfollowUser : followUser}
                       type={isFollowing ? undefined : 'blackWhite'}
                       text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
-                      textProps={followButtonStyles}
+                      textProps={followButtonTextStyles}
+                      responsiveButtonProps={hideButtonStyles}
                     />
                   </SpacedVerticalCenter>
                 }
               </Row>
               <TimeStamp>{moment(feedItem.createdAt).fromNow()}</TimeStamp>
             </SpacedVerticalCenter>
-          </Row>
+          </UserInfoRow>
           <Row>
             {isUsersFeedItem &&
               <VerticalCenter>
@@ -281,9 +316,9 @@ export default class FeedItemHeader extends React.Component {
                   <PencilIcon
                     name='pencilBlack'
                   />
-                  <RedText>
+                  <EditText>
                     Edit {isStory ? 'Story' : 'Guide'}
-                  </RedText>
+                  </EditText>
                 </ClickableRow>
               </VerticalCenter>
             }
@@ -294,6 +329,19 @@ export default class FeedItemHeader extends React.Component {
                 text='Add To Guide'
                 onClick={this._onClickAddToGuide}
                 textProps={addToGuideButtonStyles}
+                responsiveButtonProps={hideButtonStyles}
+              />
+            }
+            {!isUsersFeedItem && sessionUserId &&
+              <RoundedButton
+              margin='none'
+              padding='smallEven'
+              onClick={isFollowing ? unfollowUser : followUser}
+              type={isFollowing ? undefined : 'blackWhite'}
+              text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
+              textProps={followButtonTextStyles}
+              buttonProps={hideButtonStyles}
+              responsiveButtonProps={responsiveFollowButtonStyles}
               />
             }
           </Row>

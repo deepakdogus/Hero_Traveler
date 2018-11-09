@@ -151,6 +151,8 @@ export default class Icon extends React.Component {
         return Images.iconHashtag
       case 'explore':
         return Images.iconNavExplore
+      case 'search':
+        return Images.iconNavExploreLarge
       case 'story':
         return Images.iconCreateMenuStory
       case 'createStory':

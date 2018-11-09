@@ -46,17 +46,19 @@ const ModalText = styled(Text)`
 const DefaultText = styled(VerticalCenter)`
   color: ${props => props.isActive ? props.theme.Colors.background : props.theme.Colors.navBarText};
   font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-size: 13px;
+  font-size: 15px;
   letter-spacing: .6px;
   border-bottom: ${props => !props.isOnlyTab && props.isActive ? 'solid' : 'transparent' };
   border-bottom-width: ${props => !props.isOnlyTab && props.isActive ? '5px' : '0' };
   border-bottom-color:  ${props => props.theme.Colors.redHighlights};
   border-top: 5px solid transparent;
-  margin: 0;
+  margin: 0 25px;
   padding: 22px 10px;
   min-width: ${props => props.isModal ? 'auto' : '80px'};
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 0;
     padding: ${props => props.isModal ? '0' : '13px 10px'};
+    font-size: 13px;
     border-bottom-width: ${props => !props.isOnlyTab && props.isActive ? '3px' : '0' };
   }
 `
@@ -99,7 +101,7 @@ export default class TabBar extends React.Component {
   }
 
   render() {
-    const { whiteBG, isModal, tabs = [] } = this.props
+    const { whiteBG, isModal } = this.props
     return (
       <Container whiteBG={whiteBG} isModal={isModal}>
         <Row center='xs'>

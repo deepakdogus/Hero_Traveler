@@ -19,6 +19,7 @@ import RoundedButton from './RoundedButton'
 
 const ProfileLink = styled(NavLinkStyled)`
   ${VerticalCenterStyles}
+  margin-right: 12.5px;
 `
 
 const Title = styled.p`
@@ -91,9 +92,7 @@ const Divider = styled.div`
   height: 20px;
 `
 
-const StoryInfoRow = styled(Row)`
-  padding-left: 5px;
-`
+const StoryInfoRow = styled(Row)``
 
 const videoThumbnailOptions = {
   video: true,
@@ -158,6 +157,7 @@ export default class HeaderSlide extends React.Component {
               <Avatar
                 avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
                 size='extraMedium'
+                type='profile'
               />
             </ProfileLink>
             <VerticalCenter>

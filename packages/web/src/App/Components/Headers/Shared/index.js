@@ -151,7 +151,7 @@ export const SearchNav = (props) => {
           width='32px'
         >
         <SearchIcon
-          name='explore'
+          name='search'
         />
         </StyledRoundedSearchButton>
       </ConditionalLink>

@@ -41,6 +41,7 @@ const images = {
   iconNavHome: require('../Images/ht-icons/icon_nav-home.png'),
   iconNavActivity: require('../Images/ht-icons/icon_nav-activity.png'),
   iconNavExplore: require('../Images/ht-icons/icon_nav-explore.png'),
+  iconNavExploreLarge: require('../Images/ht-icons/icon_nav-explore-large.png'),
   iconNavCreate: require('../Images/ht-icons/icon_nav-create.png'),
   iconNavProfile: require('../Images/ht-icons/icon_nav-profile.png'),
   iconDefaultProfile: require('../Images/ht-icons/icon_profile-default-avatar.png'),

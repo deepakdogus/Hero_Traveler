@@ -216,7 +216,7 @@ class Header extends React.Component {
                   width='32px'
                 >
                   <SearchIcon
-                    name='explore'
+                    name='search'
                   />
                 </StyledRoundedButton>
               </NavLink>
@@ -257,7 +257,7 @@ class Header extends React.Component {
                 height='32px'
                 width='32px'
               >
-                <SearchIcon name='explore' />
+                <SearchIcon name='search' />
               </StyledRoundedButton>
               <Divider>&nbsp;</Divider>
               <StyledRoundedLoginButton

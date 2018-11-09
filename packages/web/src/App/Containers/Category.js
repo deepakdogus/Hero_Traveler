@@ -15,6 +15,8 @@ import TabBar from '../Components/TabBar'
 import FeedItemList from '../Components/FeedItemList'
 import Footer from '../Components/Footer'
 
+import { runIfAuthed } from '../Lib/authHelpers'
+
 const tabBarTabs = ['ALL', 'SEE', 'DO', 'EAT', 'STAY', 'GUIDES']
 
 const ContentWrapper = styled.div``
@@ -43,11 +45,17 @@ class Category extends ContainerWithFeedList {
     if (!category) loadCategories()
   }
 
+  _followCategory = (categoryId) => {
+    this.props.followCategory(this.props.sessionUserId, categoryId)
+  }
+
+  _unfollowCategory = (categoryId) => {
+    this.props.unfollowCategory(this.props.sessionUserId, categoryId)
+  }
+
   render() {
     const {
       category,
-      followCategory,
-      unfollowCategory,
       isFollowingCategory,
     } = this.props
     const {selectedFeedItems} = this.getSelectedFeedItems()
@@ -56,8 +64,8 @@ class Category extends ContainerWithFeedList {
       <ContentWrapper>
         <CategoryHeader
           category={category}
-          followCategory={followCategory}
-          unfollowCategory={unfollowCategory}
+          followCategory={this._followCategory}
+          unfollowCategory={this._unfollowCategory}
           isFollowingCategory={isFollowingCategory}
         />
         <TabBar
@@ -78,12 +86,14 @@ class Category extends ContainerWithFeedList {
 
 function mapStateToProps(state, ownProps) {
   const categoryId = ownProps.match.params.categoryId
+  const sessionUserId = state.session.userId
   let isFollowingCategory = false
   if (state.session.userId) {
     isFollowingCategory = _.includes(state.signup.selectedCategories, categoryId)
   }
 
   return {
+    sessionUserId,
     categoryId,
     category: state.entities.categories.entities[categoryId],
     fetchStatus: getFetchStatus(state.entities.stories, categoryId),
@@ -105,8 +115,10 @@ function mapDispatchToProps(dispatch, ownProps) {
     },
     loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
     getGuides: () => dispatch(GuideActions.getCategoryGuides(categoryId)),
-    followCategory: (categoryId) => dispatch(SignupActions.signupFollowCategory(categoryId)),
-    unfollowCategory: (categoryId) => dispatch(SignupActions.signupUnfollowCategory(categoryId)),
+    followCategory: (sessionUserId, categoryId) =>
+      dispatch(runIfAuthed(sessionUserId, SignupActions.signupFollowCategory, [categoryId])),
+    unfollowCategory: (sessionUserId, categoryId) =>
+      dispatch(runIfAuthed(sessionUserId, SignupActions.signupUnfollowCategory, [categoryId])),
   }
 }
 

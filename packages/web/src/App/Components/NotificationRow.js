@@ -207,7 +207,7 @@ export default class NotificationRow extends Component {
           {getDescriptionText(activity)}
           {!!title &&
             <StyledUserName onClick={this.navToFeedItem}>
-              title
+              {title}
             </StyledUserName>
           }
           .
@@ -238,13 +238,13 @@ export default class NotificationRow extends Component {
       else imageUrl = getImageUrl(feedItem.coverVideo, 'optimized', videoThumbnailOptions)
 
       return (
-        <VerticalCenter>
+        <StyledVerticalCenter>
           <StyledImageContainer>
             <StyledImage
               src={imageUrl}
             />
           </StyledImageContainer>
-        </VerticalCenter>
+        </StyledVerticalCenter>
       )
     }
     else return

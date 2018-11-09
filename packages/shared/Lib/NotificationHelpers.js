@@ -43,12 +43,14 @@ export function getDescription(activity) {
 }
 
 export function getPopulatedActivity(activityId, props) {
-    const {users, stories, activities, guides} = props
-    const activity = {...activities[activityId]}
-    activity.fromUser = users[activity.fromUser]
-    if (activity.story) activity.story = stories[activity.story]
-    if (activity.guide) activity.guide = guides[activity.guide]
-    return activity
+  const {users, stories, activities, guides} = props
+  const activity = {...activities[activityId]}
+  activity.fromUser = users[activity.fromUser]
+  if (activity.comment) {
+    if (activity.comment.story) activity.story = stories[activity.comment.story]
+    if (activity.comment.guide) activity.guide = guides[activity.comment.guide]
+  }
+  return activity
 }
 
 export function getContent(activity) {

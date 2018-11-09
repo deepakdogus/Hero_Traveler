@@ -35,7 +35,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  cursor: pointer;
 `
 
 const rowProps = {
@@ -46,7 +45,7 @@ const leftProps = {
   'max-width': '450px',
   'align-items' : 'center',
   'flex-wrap' : 'nowrap',
-  'tablet-max-width' : '85%'
+  'tablet-max-width' : '85%',
 }
 
 const StyledUserName = styled.span`
@@ -62,7 +61,9 @@ const StyledTimestamp = styled(Timestamp)`
 `
 
 const InteractiveContainer = styled.div`
-  &:hover ${Container} {
+  ${Container}
+  cursor: default;
+  &:hover {
     background-color: ${props => props.theme.Colors.onHoverGrey};
   }
 `
@@ -77,6 +78,7 @@ const StyledImageContainer = styled.div`
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  cursor: pointer;
 `
 
 const StyledImage = styled.img`
@@ -162,6 +164,7 @@ export default class NotificationRow extends Component {
 
   navToFeedItem = (event) => {
     event.stopPropagation()
+    this._markSeen()
     const feedItem = this.props.activity.story || this.props.activity.guide
     const feedItemType = this.props.activity.story ? 'story' : 'guide'
     this.props.reroute(`/${feedItemType}/${feedItem.id}`)
@@ -170,6 +173,7 @@ export default class NotificationRow extends Component {
 
   navToUserProfile = (event) => {
     event.stopPropagation()
+    this._markSeen()
     this.props.reroute(`/profile/${this.props.activity.fromUser.id}/view`)
     this.props.closeModal()
   }
@@ -239,7 +243,7 @@ export default class NotificationRow extends Component {
 
       return (
         <StyledVerticalCenter>
-          <StyledImageContainer>
+          <StyledImageContainer onClick={this.navToFeedItem}>
             <StyledImage
               src={imageUrl}
             />
@@ -259,9 +263,7 @@ export default class NotificationRow extends Component {
   render() {
     return (
       <InteractiveContainer onClick={this._markSeen}>
-        <Container
-          onClick={this.props.isFeedItem ? this.navToFeedItem : this.navToUserProfile}
-          >
+        <Container>
           {this.renderSeenBullet()}
           <SpaceBetweenRow
             renderImage={this.renderImage}

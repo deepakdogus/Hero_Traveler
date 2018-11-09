@@ -36,7 +36,16 @@ const StyledTitle = styled(Title)`
   }
 `
 
+const CreatingText = styled.p`
+  color: ${props => props.theme.Colors.redHighlights};
+  margin: 0 auto;
+  padding-right: 15px;
+  height: 20px;
+  text-align: right;
+`
+
 const FooterRow = styled(Row)`
+  padding-bottom: 20px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding: 0 30px;
   }
@@ -53,6 +62,10 @@ const StyledVerticalCenter = styled(VerticalCenter)`
 */
 const StyledCenteredButtons = styled(CenteredButtons)`
   margin-right: -5px;
+`
+
+const CenteredButtonStyles = `
+  padding: 20px 0;
 `
 
 class CreateGuide extends SharedCreateGuide {
@@ -150,6 +163,7 @@ class CreateGuide extends SharedCreateGuide {
 
   render() {
     const errorMessage = _.get(this, 'props.error.message')
+    const actionVerb = this.isExistingGuide() ? 'Saving' : 'Creating'
 
     return (
       <Container>
@@ -166,6 +180,9 @@ class CreateGuide extends SharedCreateGuide {
             categories={this.props.categories}
             isGuide
           />
+          <CreatingText>
+            {this.state.creating ? `${actionVerb} Guide...` : ''}
+          </CreatingText>
           <FooterRow between='xs'>
             <StyledVerticalCenter>
               <TrashButton removeFeedItem={this.removeGuide}/>
@@ -175,6 +192,7 @@ class CreateGuide extends SharedCreateGuide {
                 this.renderButtonLeft,
                 this.renderButtonRight,
               ]}
+              textProps={CenteredButtonStyles}
             />
           </FooterRow>
         </ContentWrapper>

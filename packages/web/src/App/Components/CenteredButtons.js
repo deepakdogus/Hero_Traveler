@@ -16,6 +16,7 @@ const ButtonContainer = styled.div`
 const Centered = styled(VerticalCenter)`
   text-align: center;
   padding: 40px 0px;
+  ${props => props.textProps}
 `
 
 export default class CenteredButtons extends Component {
@@ -35,7 +36,7 @@ export default class CenteredButtons extends Component {
 
   render() {
     return (
-      <Centered>
+      <Centered {...this.props}>
         <StyledRow>
           {this.renderButtons()}
         </StyledRow>

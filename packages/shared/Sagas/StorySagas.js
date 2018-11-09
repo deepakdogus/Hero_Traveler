@@ -121,7 +121,7 @@ export function * getCategoryStories (api, {categoryId, storyType}) {
   }
 }
 
-const extractUploadData = (uploadData) => {
+export const extractUploadData = (uploadData) => {
   if (typeof uploadData === 'string') uploadData = JSON.parse(uploadData)
   const baseObject = {
     url: `${uploadData.public_id}.${uploadData.format}`,
@@ -140,7 +140,7 @@ const extractUploadData = (uploadData) => {
 }
 
 // to be used on web only to deal with orientation
-export function * uploadImage(api, {uri, id}) {
+export function * uploadImage(api, {uri, callback}) {
   const cloudinaryImage = yield CloudinaryAPI.uploadMediaFile(
     pathAsFileObject(uri),
     'image',
@@ -150,10 +150,10 @@ export function * uploadImage(api, {uri, id}) {
   }
 
   if (cloudinaryImage.data.error) {
-    yield put(StoryCreateActions.uploadImageFailure(cloudinaryImage.data.error, id))
+    yield put(StoryCreateActions.uploadImageFailure(cloudinaryImage.data.error))
   }
   else {
-    yield put(StoryCreateActions.uploadImageSuccess(cloudinaryImage.data, id))
+    callback(cloudinaryImage.data)
   }
 }
 

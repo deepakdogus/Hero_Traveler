@@ -1,4 +1,5 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import uploadFile, {
   getAcceptedFormats,
@@ -8,6 +9,8 @@ import {
 } from '../../Shared/Lib/draft-js-helpers'
 import Icon from '../Icon'
 import styled from 'styled-components'
+import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
+import { extractUploadData } from '../../Shared/Sagas/StorySagas'
 
 const HiddenInput = styled.input`
   opacity: 0;
@@ -16,8 +19,9 @@ const HiddenInput = styled.input`
   pointer-events: none;
 `
 
-export class AddMediaButton extends React.Component {
+class AddMediaButton extends React.Component {
   static propTypes = {
+    uploadImage: PropTypes.func,
     getEditorState: PropTypes.func,
     setEditorState: PropTypes.func,
     type: PropTypes.string,
@@ -28,8 +32,29 @@ export class AddMediaButton extends React.Component {
     uploadFile(event, this, (file) => {
       if (!file) return
       const {getEditorState, type} = this.props
-      const update = insertAtomicBlock(getEditorState(), type, file.uri)
-      this.props.setEditorState(update)
+
+      const updateCall = (cloudinaryFile) => {
+        let update
+        if (cloudinaryFile) {
+          const formattedFile = extractUploadData(cloudinaryFile)
+          update = insertAtomicBlock(
+            getEditorState(),
+            type,
+            formattedFile.url,
+            formattedFile.height,
+            formattedFile.width,
+          )
+        }
+        else update = insertAtomicBlock(getEditorState(), type, file.uri)
+        this.props.setEditorState(update)
+      }
+
+      if (file.type.includes('video')) {
+        updateCall()
+      }
+      else {
+        this.props.uploadImage(file.uri, updateCall)
+      }
     })
   }
 
@@ -69,7 +94,7 @@ export class AddMediaButton extends React.Component {
 
 export const AddImageButton = (props) => {
   return (
-    <AddMediaButton
+    <ConnectedAddMediaButton
       {...props}
       type="image"
     />
@@ -78,9 +103,23 @@ export const AddImageButton = (props) => {
 
 export const AddVideoButton = (props) => {
   return (
-    <AddMediaButton
+    <ConnectedAddMediaButton
       {...props}
       type="video"
     />
   )
 }
+
+function mapStateToProps(state) {
+  return {}
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    uploadImage: (file, callback) => dispatch(
+      StoryCreateActions.uploadImage(file, callback),
+    ),
+  }
+}
+
+const ConnectedAddMediaButton = connect(mapStateToProps, mapDispatchToProps)(AddMediaButton)

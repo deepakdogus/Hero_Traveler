@@ -198,7 +198,14 @@ export default class AddCoverTitles extends React.Component {
         })
       }
       else {
-        this.props.uploadImage(file.uri, 'coverImage')
+        const onSuccess = (cloudinaryFile) => {
+          this.props.onInputChange({
+            'coverVideo': null,
+            'coverImage': cloudinaryFile,
+            'coverType': 'video',
+          })
+        }
+        this.props.uploadImage(file.uri, onSuccess)
       }
     })
   }

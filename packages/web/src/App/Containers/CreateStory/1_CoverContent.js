@@ -14,21 +14,6 @@ class CreateStoryCoverContent extends Component {
     updateWorkingDraft: PropTypes.func,
     setGetEditorState: PropTypes.func,
     uploadImage: PropTypes.func,
-    imageUpload: PropTypes.object,
-  }
-
-  componentDidUpdate(prevProps) {
-    const {id, file} = this.props.imageUpload
-    if (
-      !prevProps.imageUpload.id
-      && (id && id === 'coverImage')
-    ) {
-      this.onInputChange({
-        'coverVideo': null,
-        'coverImage': file,
-        'coverType': 'video',
-      })
-    }
   }
 
   onInputChange = (update) => {
@@ -69,14 +54,13 @@ class CreateStoryCoverContent extends Component {
 function mapStateToProps(state) {
   return {
     workingDraft: {...state.storyCreate.workingDraft},
-    imageUpload: {...state.storyCreate.imageUpload},
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),
-    uploadImage: (file, type) => dispatch(StoryCreateActions.uploadImage(file, type)),
+    uploadImage: (file, callback) => dispatch(StoryCreateActions.uploadImage(file, callback)),
   }
 }
 

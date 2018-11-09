@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import _ from 'lodash'
 
 import UserActions, {getByBookmarks} from '../Shared/Redux/Entities/Users'
+import StoryCreateActions from '../Shared/Redux/StoryCreateRedux'
 import UXActions from '../Redux/UXRedux'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import StoryActions, {getByUser, getUserFetchStatus, getBookmarksFetchStatus} from '../Shared/Redux/Entities/Stories'
@@ -17,7 +18,6 @@ import ProfileHeader from '../Components/ProfileHeader/ProfileHeader'
 import TabBar from '../Components/TabBar'
 import FeedItemList from '../Components/FeedItemList'
 import Footer from '../Components/Footer'
-import Overlay from '../Components/Overlay'
 
 const tabBarTabs = ['STORIES', 'DRAFTS', 'BOOKMARKS', 'GUIDES']
 const readOnlyTabBarTabs = ['STORIES', 'GUIDES']
@@ -33,11 +33,6 @@ const FeedItemListWrapper = styled.div`
 
 const ListWrapper = styled.div`
   position: relative;
-`
-const OpaqueCover = styled(Overlay)`
-  &:after {
-    background: rgba(256, 256, 256, .8);
-  }
 `
 
 class Profile extends ContainerWithFeedList {
@@ -63,6 +58,7 @@ class Profile extends ContainerWithFeedList {
     unfollowUser: PropTypes.func,
     reroute: PropTypes.func,
     uploadMedia: PropTypes.func,
+    uploadImage: PropTypes.func,
     openGlobalModal: PropTypes.func,
   }
 
@@ -118,7 +114,7 @@ class Profile extends ContainerWithFeedList {
       match, profilesUser, sessionUserId,
       myFollowedUsers, userError,
       userUpdating, updateUser, uploadMedia,
-      openGlobalModal,
+      openGlobalModal, uploadImage,
     } = this.props
     if (!profilesUser) return null
 
@@ -143,6 +139,7 @@ class Profile extends ContainerWithFeedList {
           updateUser={updateUser}
           uploadMedia={uploadMedia}
           openGlobalModal={openGlobalModal}
+          uploadImage={uploadImage}
         />
         {!isEdit &&
           <ListWrapper>
@@ -212,6 +209,7 @@ function mapDispatchToProps(dispatch, ownProps) {
     reroute: (path) => dispatch(push(path)),
     uploadMedia: (userId, file, uploadType) => dispatch(MediaUploadActions.uploadRequest(userId, file, uploadType)),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
+    uploadImage: (file, callback) => dispatch(StoryCreateActions.uploadImage(file, callback)),
   }
 }
 

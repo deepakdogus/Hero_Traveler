@@ -179,6 +179,7 @@ export default class ProfileHeaderEdit extends React.Component {
     error: PropTypes.object,
     updateUser: PropTypes.func,
     uploadMedia: PropTypes.func,
+    uploadImage: PropTypes.func,
     toProfileView: PropTypes.func,
     updating: PropTypes.bool,
   }
@@ -257,10 +258,13 @@ export default class ProfileHeaderEdit extends React.Component {
   uploadImageToBrowser = (event) => {
     uploadFile(event, this, (file) => {
       if (!file) return
-      this.setState({
-        loadedImage: file,
-        modal: 'photoEditor',
-      })
+      const onSuccess = (cloudinaryFile) => {
+        this.setState({
+          loadedImage: cloudinaryFile,
+          modal: 'photoEditor',
+        })
+      }
+      this.props.uploadImage(file.uri, onSuccess)
     })
   }
 
@@ -300,7 +304,10 @@ export default class ProfileHeaderEdit extends React.Component {
       : minRows
     let targetedImage
 
-    if (photoType === 'avatar') targetedImage = avatarUrl
+    if (photoType === 'avatar' && !!loadedImage) {
+      targetedImage = getImageUrl(loadedImage)
+    }
+    else if (photoType === 'avatar') targetedImage = avatarUrl
     else if (photoType === 'userCover') targetedImage = getImageUrl(user.profile.cover, 'avatarLarge')
 
     return (
@@ -411,7 +418,7 @@ export default class ProfileHeaderEdit extends React.Component {
             isAvatar={photoType === 'avatar'}
             closeModal={this.closeModal}
             saveCroppedImage={this.saveCroppedImage}
-            src={loadedImage ? loadedImage.uri : targetedImage}
+            src={targetedImage}
           />
         </Modal>
       </Container>

@@ -73,14 +73,16 @@ export default class ProfileBio extends React.Component {
         <BioContainer>
           <BioText>{profile.bio}</BioText>
         </BioContainer>
-        <SocialFooterContainer>
-          <SocialFooterText>Follow me on:</SocialFooterText>
-          <Row between='xs'>
-            <FacebookIcon name='facebook-blue'/>
-            <TwitterIcon name='twitter-blue'/>
-            <InstagramIcon name='instagram'/>
-          </Row>
-        </SocialFooterContainer>
+        {/* Hidden until after launch
+          <SocialFooterContainer>
+            <SocialFooterText>Follow me on:</SocialFooterText>
+            <Row between='xs'>
+              <FacebookIcon name='facebook-blue'/>
+              <TwitterIcon name='twitter-blue'/>
+              <InstagramIcon name='instagram'/>
+            </Row>
+          </SocialFooterContainer>
+        */}
       </Container>
     )
   }

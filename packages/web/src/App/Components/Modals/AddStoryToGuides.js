@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
+import onClickOutside from 'react-onclickoutside'
 
 import UXActions from '../../Redux/UXRedux'
 import {
@@ -22,7 +23,9 @@ import {
 
 import Icon from '../Icon'
 
-const Container = styled.div``
+const Container = styled.div`
+  min-height: 100vh;
+`
 const CategoryRowsContainer = styled.div``
 
 const CreateContainer = styled.div`
@@ -177,6 +180,10 @@ class AddStoryToGuides extends SharedComponent {
     this.props.closeModal()
   }
 
+  handleClickOutside() {
+    this.props.closeModal()
+  }
+
   createGuideReroute = () => {
     this.props.reroute('/edit/guide/new')
     this.props.closeModalWithParams({storyId: this.props.storyId})
@@ -225,4 +232,4 @@ function extendedMapDispatchToProps(dispatch) {
   return mapping
 }
 
-export default connect(mapStateToProps, extendedMapDispatchToProps)(AddStoryToGuides)
+export default connect(mapStateToProps, extendedMapDispatchToProps)(onClickOutside(AddStoryToGuides))

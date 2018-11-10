@@ -90,6 +90,14 @@ class Profile extends ContainerWithFeedList {
         })
       }, 1500)
     }
+    if (location.search && location.search.indexOf('?activeTab=') !== -1) {
+      // 10 = 'activeTab' length plus 1 for the equal char
+      const activeTab = location.search
+        .substring(location.search.indexOf('activeTab') + 10)
+        .split('&')[0]
+        .toUpperCase()
+      this.setState({ activeTab })
+    }
   }
 
   componentDidMount() {

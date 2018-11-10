@@ -16,6 +16,7 @@ import CenteredButtons from '../CenteredButtons'
 import RoundedButton from '../RoundedButton'
 import {
   RightTitle,
+  RightModalCloseX,
   StyledVerticalCenter,
 } from './Shared'
 
@@ -23,7 +24,6 @@ import Icon from '../Icon'
 
 const Container = styled.div``
 const CategoryRowsContainer = styled.div``
-
 
 const CreateContainer = styled.div`
   padding: 10px 20px;
@@ -76,24 +76,27 @@ const ReplacementContainer = styled(DefaultContainer)`
   }
 `
 
-const ResponsiveCloseBar = styled(VerticalCenter)`
+const FixedCloseBar = styled(VerticalCenter)`
+  position: fixed;
+  bottom: 0;
+  width: 570px;
+  background-color: ${props => props.theme.Colors.snow};
+  border-top: 1px solid ${props => props.theme.Colors.navBarText};
+  > * {
+    padding: 20px 0;
+  }
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    position: fixed;
-    bottom: 0;
     width: 100%;
-    background-color: ${props => props.theme.Colors.snow};
-    border-top: 1px solid ${props => props.theme.Colors.navBarText};
-    > * {
-      padding: 20px 0;
-    }
   }
 `
 
-const ResponsiveSpacer = styled.div`
-  display: none;
+const Spacer = styled.div`
+  height: 80px
+`
+
+const ResponsiveRightModalCloseX = styled(RightModalCloseX)`
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    display: block;
-    height: 80px;
+    display: none;
   }
 `
 
@@ -183,26 +186,30 @@ class AddStoryToGuides extends SharedComponent {
     return (
       <Container>
         <RightTitle>ADD TO A GUIDE</RightTitle>
-          <CreateContainer onClick={this.createGuideReroute}>
-            <SpaceBetweenRow
-              renderImage={this.renderImage}
-              renderText={this.renderText}
-              renderRight={this.renderRight}
-              rowProps={RowProps}
-            />
-          </CreateContainer>
-          <CategoryRowsContainer>
-            {this.renderGuides()}
-          </CategoryRowsContainer>
-          <ResponsiveSpacer/>
-        <ResponsiveCloseBar>
+        <ResponsiveRightModalCloseX
+          name='closeDark'
+          onClick={this.props.closeModal}
+        />
+        <CreateContainer onClick={this.createGuideReroute}>
+          <SpaceBetweenRow
+            renderImage={this.renderImage}
+            renderText={this.renderText}
+            renderRight={this.renderRight}
+            rowProps={RowProps}
+          />
+        </CreateContainer>
+        <CategoryRowsContainer>
+          {this.renderGuides()}
+        </CategoryRowsContainer>
+        <Spacer/>
+        <FixedCloseBar>
           <CenteredButtons
             buttonsToRender={[
               this.cancelButton,
               this.saveButton,
             ]}
           />
-        </ResponsiveCloseBar>
+        </FixedCloseBar>
       </Container>
     )
   }

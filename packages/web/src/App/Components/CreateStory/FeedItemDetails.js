@@ -100,6 +100,11 @@ export const StyledInput = styled.input`
   }
 `
 
+const StyledCheckbox = styled.input`
+  transform: scale(1.5);
+  margin: 2px 0 0;
+`
+
 const IconWithMargin = styled(Icon)`
   margin-left: 2px;
   width: 30px;
@@ -583,7 +588,7 @@ export default class FeedItemDetails extends React.Component {
           <Container>
             <Row>
               <VerticalCenter>
-                <input
+                <StyledCheckbox
                   checked={workingDraft.isPrivate || false}
                   type='checkbox'
                   onClick={this.togglePrivacy}

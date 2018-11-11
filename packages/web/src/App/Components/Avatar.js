@@ -25,7 +25,7 @@ const StyledIcon = styled(Icon)`
   position: relative;
   right: ${props => props.isProfileHeader ? '0' : '6'}px;
   bottom: ${props => props.isProfileHeader ? '1' : '0'}px;
-  margin-left: ${props => props.isStoryPreview ? '7px' : '0'};
+  margin-right: ${props => props.isStoryPreview ? '7.5px' : '0'};
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     ${props => props.responsiveProps}
   }

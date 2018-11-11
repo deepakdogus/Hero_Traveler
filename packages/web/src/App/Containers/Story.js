@@ -28,12 +28,11 @@ const Container = styled.div`
   }
 `
 
+const wrapperMaxWidth = 800
 const ContentWrapper = styled.div`
   position: relative;
   margin: 0 auto;
-  padding-left: 80px;
-  padding-right: 80px;
-  max-width: 800px;
+  max-width: ${wrapperMaxWidth}px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding: 0;
   }
@@ -93,6 +92,7 @@ class Story extends Component {
     story: PropTypes.object,
     author: PropTypes.object,
     sessionUserId: PropTypes.string,
+    isDraft: PropTypes.bool,
     isFollowing: PropTypes.bool,
     unfollowUser: PropTypes.func,
     followUser: PropTypes.func,
@@ -163,6 +163,7 @@ class Story extends Component {
       author,
       reroute,
       sessionUserId,
+      isDraft,
       isFollowing,
       isBookmarked,
       isLiked,
@@ -183,6 +184,7 @@ class Story extends Component {
             unfollowUser={this._unfollowUser}
             onClickAddToGuide={onClickAddToGuide}
             isStory
+            isDraft={isDraft}
           />
           <StoryContentRenderer story={story} />
           {this.renderHashtags()}
@@ -192,20 +194,23 @@ class Story extends Component {
             </MapContainer>
           }
           <FeedItemMetaInfo feedItem={story} />
-          <AddToGuideButton onClickAddToGuide={onClickAddToGuide}/>
-          <FeedItemActionBar
-            feedItem={story}
-            isStory
-            isLiked={isLiked}
-            onClickLike={this._onClickLike}
-            isBookmarked={isBookmarked}
-            onClickBookmark={this._onClickBookmark}
-            onClickComments={this._onClickComments}
-            userId={sessionUserId}
-            reroute={reroute}
-            onClickShare={this._onClickShare}
-            onClickFlag={this._onClickFlag}
-          />
+          {!isDraft && <AddToGuideButton onClickAddToGuide={onClickAddToGuide}/>}
+          {!isDraft &&
+            <FeedItemActionBar
+              feedItem={story}
+              isStory
+              isLiked={isLiked}
+              onClickLike={this._onClickLike}
+              isBookmarked={isBookmarked}
+              onClickBookmark={this._onClickBookmark}
+              onClickComments={this._onClickComments}
+              userId={sessionUserId}
+              reroute={reroute}
+              onClickShare={this._onClickShare}
+              onClickFlag={this._onClickFlag}
+              wrapperMaxWidth={wrapperMaxWidth}
+            />
+          }
         </ContentWrapper>
         <Footer hideOnTablet={true}/>
       </Container>
@@ -217,6 +222,7 @@ function mapStateToProps(state, ownProps) {
   const storyId = ownProps.match.params.storyId
   const story = state.entities.stories.entities[storyId]
   const author = story ? state.entities.users.entities[story.author] : undefined
+  const isDraft = storyId.includes('local')
 
   let isFollowing
   const sessionUserId = state.session.userId
@@ -229,6 +235,7 @@ function mapStateToProps(state, ownProps) {
   return {
     story,
     author,
+    isDraft,
     isFollowing,
     sessionUserId,
     isLiked: isStoryLiked(state.entities.users, sessionUserId, storyId),

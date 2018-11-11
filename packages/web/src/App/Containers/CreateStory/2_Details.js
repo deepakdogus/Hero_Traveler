@@ -46,7 +46,7 @@ class CreateStoryCoverContent extends Component {
 function mapStateToProps(state) {
   return {
     categories: state.entities.categories.entities,
-    workingDraft: state.storyCreate.workingDraft
+    workingDraft: state.storyCreate.workingDraft,
   }
 }
 

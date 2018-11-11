@@ -7,6 +7,6 @@ export default styled.div`
   letter-spacing: .2px;
   font-style: italic;
   text-align: center;
-  margin-top: 0;
+  margin-top: 20px;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
 `

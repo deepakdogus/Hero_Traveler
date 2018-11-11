@@ -36,4 +36,3 @@ NotificationsBadge.propTypes = {
   onClick: PropTypes.func,
   styles: PropTypes.object,
 }
-

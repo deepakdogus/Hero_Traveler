@@ -140,6 +140,7 @@ class Profile extends ContainerWithFeedList {
           uploadMedia={uploadMedia}
           openGlobalModal={openGlobalModal}
           uploadImage={uploadImage}
+          sessionUserId={sessionUserId}
         />
         {!isEdit &&
           <ListWrapper>

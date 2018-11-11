@@ -151,6 +151,8 @@ export default class Icon extends React.Component {
         return Images.iconHashtag
       case 'explore':
         return Images.iconNavExplore
+      case 'search':
+        return Images.iconNavExploreLarge
       case 'story':
         return Images.iconCreateMenuStory
       case 'createStory':
@@ -184,6 +186,8 @@ export default class Icon extends React.Component {
       case 'fellow':
         return Images.iconFellowBadge
       case 'defaultProfile':
+        return Images.iconDefaultProfileLarge
+      case 'defaultProfileSmall':
         return Images.iconDefaultProfile
       case 'googlePlayBadge':
         return Images.googlePlayBadge
@@ -209,6 +213,8 @@ export default class Icon extends React.Component {
         return Images.iconSquareEmail
       case 'report':
         return Images.iconSquareFlag
+      case 'flag':
+        return Images.iconFlag
       case 'cost':
         return Images.iconCost
       case 'costLarge':

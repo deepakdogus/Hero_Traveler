@@ -121,18 +121,24 @@ class Footer extends Component {
             <Row middle='xs'>
               <UnstyledLink
                 href='https://www.facebook.com/herotraveler/'
+                target='_blank'
+                rel="noopener noreferrer"
               >
                 <StyledIcon name='facebookDark'/>
               </UnstyledLink>
               <Divider />
               <UnstyledLink
                 href='https://twitter.com/HeroTraveler'
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <StyledIcon name='twitterDark'/>
               </UnstyledLink>
               <Divider />
               <UnstyledLink
                 href='https://www.instagram.com/herotraveler/'
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <StyledIcon name='instagramDark'/>
               </UnstyledLink>

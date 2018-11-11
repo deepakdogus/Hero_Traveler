@@ -417,6 +417,7 @@ class FeedItemPreview extends Component {
                     isStoryPreview
                     avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
                     size='avatar'
+                    type='profile'
                     onClick={this.navToUserProfile}
                   />
                 }

@@ -55,7 +55,7 @@ const RedCheck = styled(Icon)`
   right: 10px;
   border-color: ${props => props.theme.Colors.snow};
   border-style: solid;
-  border-width: 1.3px;
+  border-width: 1px;
   border-radius: 50%;
   background-color: ${props => props.theme.Colors.snow};
 `

@@ -111,7 +111,7 @@ const EnlargedIcon = styled(IconWithMargin)`
   height: 35px;
 `
 
-const HashtagIcon = styled(IconWithMargin)``
+const HashtagIcon = styled(EnlargedIcon)``
 
 export const IconWrapper = styled.div`
   width: 35px;
@@ -282,7 +282,7 @@ export default class FeedItemDetails extends React.Component {
   toggleCategoryPicker = () => this.togglePicker('Category')
 
   formatTripDate = (day) => {
-    if (!day) return undefined
+    if (!day) return Moment().format('MM-DD-YYYY')
     else return Moment(day).format('MM-DD-YYYY')
   }
 
@@ -492,7 +492,7 @@ export default class FeedItemDetails extends React.Component {
             </IconWrapper>
             <StyledInput
               type='text'
-              placeholder={'MM-DD-YYYY'}
+              placeholder={this.formatTripDate()}
               value={this.formatTripDate(workingDraft.tripDate)}
               onClick={this.toggleDayPicker}
               readOnly

@@ -211,6 +211,8 @@ export default class Icon extends React.Component {
         return Images.iconSquareEmail
       case 'report':
         return Images.iconSquareFlag
+      case 'flag':
+        return Images.iconFlag
       case 'cost':
         return Images.iconCost
       case 'costLarge':

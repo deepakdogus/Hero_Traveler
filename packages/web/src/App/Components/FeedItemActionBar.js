@@ -71,13 +71,18 @@ const Count = styled.p`
   text-align: center;
 `
 
+/*
+ * At <960px width, the image begins to shrink, invaldating the default
+ * (800px / 2) + 80px right offset from center. The desktop breakpoint with
+ * percent offset from the right allows for a smooth transition.
+ */
 const AbsoluteWrapper = styled.div`
   background-color: white;
-  position: absolute;
-  top: ${props => props.isStory ? '87px' : '170px' };
-  right: 0;
-  @media (max-width: ${props => props.theme.Metrics.sizes.desktopLarge}px) {
-    left: 95%;
+  position: fixed;
+  top: ${props => props.isStory ? '214px' : '297px' };
+  right: calc(50vw - ${props => props.wrapperMaxWidth / 2 || 0}px - 80px);
+  @media (max-width: ${props => props.theme.Metrics.sizes.desktop}px) {
+    right: 1.5%;
   }
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     position: fixed;
@@ -115,6 +120,7 @@ export default class StoryActionBar extends React.Component {
     userId: PropTypes.string,
     reroute: PropTypes.func,
     onClickShare: PropTypes.func,
+    wrapperMaxWidth: PropTypes.number,
   }
 
   constructor(props){
@@ -144,10 +150,14 @@ export default class StoryActionBar extends React.Component {
       onClickLike,
       onClickComments,
       onClickShare,
+      wrapperMaxWidth,
     } = this.props
 
     return (
-      <AbsoluteWrapper isStory={isStory}>
+      <AbsoluteWrapper
+        isStory={isStory}
+        wrapperMaxWidth={wrapperMaxWidth}
+      >
         <ActionBarContainer>
           {isStory &&
             <BookmarkIcon
@@ -181,7 +191,7 @@ export default class StoryActionBar extends React.Component {
           {isStory &&
               <ClickableWrapper>
                 <StyledIcon
-                  name='report'
+                  name='flag'
                   onClick={this._onClickFlag}
                 />
               </ClickableWrapper>

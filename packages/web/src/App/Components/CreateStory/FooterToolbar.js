@@ -84,7 +84,7 @@ export default class FooterToolbar extends Component {
           >
             <StyledIcon name='createSaveLarge'/>
           </RoundedButton>
-          {syncProgressMessage && !isDetailsView &&
+          {syncProgressMessage && syncProgressMessage.includes('Saving') &&
             <Text>{syncProgressMessage}</Text>
           }
         </StyledRow>
@@ -103,7 +103,7 @@ export default class FooterToolbar extends Component {
     return (
       <ButtonIconContainer>
         <Row middle='xs'>
-        {syncProgressMessage && isDetailsView &&
+        {syncProgressMessage && syncProgressMessage.includes('Publishing') &&
           <Text>{syncProgressMessage}</Text>
         }
         </Row>

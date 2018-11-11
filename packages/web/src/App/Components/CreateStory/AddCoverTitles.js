@@ -3,20 +3,28 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import Icon from '../Icon'
-import {SubTitle, Input, CloseXContainer} from './Shared'
+import {
+  SubTitle,
+  Input,
+  CloseXContainer,
+} from './Shared'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import getVideoUrl from '../../Shared/Lib/getVideoUrl'
 import uploadFile, {
   getAcceptedFormats,
 } from '../../Utils/uploadFile'
-import {VerticalCenterStyles} from '../VerticalCenter'
+import { VerticalCenterStyles } from '../VerticalCenter'
 import Video from '../Video'
+import Loader from '../Loader'
+import { Row } from '../FlexboxGrid'
+
+const coverHeight = 350
 
 const ButtonsHorizontalCenter = styled.div`
   position: relative;
   width: 100%;
   max-width: 800px;
-  height: 350px;
+  height: ${coverHeight}px;
   margin: auto;
   ${VerticalCenterStyles}
 `
@@ -48,10 +56,10 @@ const DeleteIcon = styled(Icon)`
 
 const ImageWrapper = styled.div`
   margin: 40px auto 0;
-  padding-top: 350px;
+  padding-top: ${coverHeight}px;
   width: 100%;
   max-width: 800px;
-  max-height: 350px;
+  max-height: ${coverHeight}px;
   background-image: ${props => `url(${props.image})`};
   background-size: cover;
   position: relative;
@@ -160,6 +168,13 @@ const StyledCloseXContainer = styled(CloseXContainer)`
   z-index: 1;
 `
 
+const StyledRow = styled(Row)`
+  position: absolute;
+  z-index: -101;
+  width: 100%;
+  height: ${coverHeight}px;
+`
+
 function isNewStory(props, nextProps) {
   return (!props.workingDraft && nextProps.workingDraft) ||
   (props.workingDraft.id !== nextProps.workingDraft.id)
@@ -168,6 +183,7 @@ function isNewStory(props, nextProps) {
 export default class AddCoverTitles extends React.Component {
   static propTypes = {
     onInputChange: PropTypes.func,
+    uploadImage: PropTypes.func,
     workingDraft: PropTypes.object,
     isGuide: PropTypes.bool,
   }
@@ -190,19 +206,23 @@ export default class AddCoverTitles extends React.Component {
   _onCoverChange = (event) => {
     uploadFile(event, this, (file) => {
       if (!file) return
-      let update = file.type.includes('video')
-      ? {
-        'coverVideo': file,
-        'coverImage': null,
-        'coverType': 'video',
+      if (file.type.includes('video')) {
+        this.props.onInputChange({
+          'coverVideo': file,
+          'coverImage': null,
+          'coverType': 'video',
+        })
       }
-      : {
-        'coverImage': file,
-        'coverVideo': null,
-        'coverType': 'image',
+      else {
+        const onSuccess = (cloudinaryFile) => {
+          this.props.onInputChange({
+            'coverVideo': null,
+            'coverImage': cloudinaryFile,
+            'coverType': 'image',
+          })
+        }
+        this.props.uploadImage(file.uri, onSuccess)
       }
-      // refactor later to differentiate between image and video
-      this.props.onInputChange(update)
     })
   }
 
@@ -334,6 +354,9 @@ export default class AddCoverTitles extends React.Component {
 
     return (
       <RelativeWrapper>
+        <StyledRow center="xs">
+          <Loader />
+        </StyledRow>
         {!coverVideo &&
           <ImageWrapper image={coverImage}/>
         }

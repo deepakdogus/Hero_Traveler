@@ -8,12 +8,12 @@ import AddCoverTitles from '../../Components/CreateStory/AddCoverTitles'
 import BodyEditor from '../../Components/CreateStory/Editor'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 
-
 class CreateStoryCoverContent extends Component {
   static propTypes = {
     workingDraft: PropTypes.object,
     updateWorkingDraft: PropTypes.func,
     setGetEditorState: PropTypes.func,
+    uploadImage: PropTypes.func,
   }
 
   onInputChange = (update) => {
@@ -25,7 +25,8 @@ class CreateStoryCoverContent extends Component {
       const content = Immutable.asMutable(this.props.workingDraft.draftjsContent, {deep: true})
       if (!content.entityMap) content.entityMap = {}
       return {value: content}
-    } else {
+    }
+    else {
       return {}
     }
   }
@@ -38,6 +39,7 @@ class CreateStoryCoverContent extends Component {
         <AddCoverTitles
           onInputChange={this.onInputChange}
           workingDraft={this.props.workingDraft}
+          uploadImage={this.props.uploadImage}
         />
         <BodyEditor
           onInputChange={this.onInputChange}
@@ -58,6 +60,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),
+    uploadImage: (file, callback) => dispatch(StoryCreateActions.uploadImage(file, callback)),
   }
 }
 

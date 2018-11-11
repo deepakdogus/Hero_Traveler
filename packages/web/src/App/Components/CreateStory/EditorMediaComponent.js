@@ -14,6 +14,8 @@ import {CloseXContainer} from './Shared'
 import CloseX from '../CloseX'
 import Placeholder from './EditorCustomPlaceholder'
 import Caption from '../MediaCaption'
+import Loader from '../Loader'
+import {Row} from '../FlexboxGrid'
 
 const MediaWrapper = styled.div`
   padding-bottom: 60px;
@@ -21,10 +23,18 @@ const MediaWrapper = styled.div`
 
 const BodyMediaDiv = styled.div`
   position: relative;
+  min-height: 100px;
 `
 
 const StyledImage = styled(Image)`
   width: 100%;
+`
+
+const StyledRow = styled(Row)`
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  top: -20px;
 `
 
 export default class MediaComponent extends EditorBlock {
@@ -67,7 +77,13 @@ export default class MediaComponent extends EditorBlock {
                 onClick={this.onClickDelete}
               />
             </CloseXContainer>
-            <StyledImage src={mediaUrl} />
+            <StyledRow center="xs">
+              <Loader />
+            </StyledRow>
+            <StyledImage
+              src={mediaUrl}
+              onLoad={this.setImageLoaded}
+            />
           </BodyMediaDiv>
         )
       case 'video':

@@ -83,6 +83,7 @@ import {
   deleteStory,
   flagStory,
   getGuideStories,
+  uploadImage,
 } from './StorySagas'
 
 import {
@@ -171,6 +172,7 @@ export default function * root () {
     takeLatest(StoryCreateTypes.UPDATE_DRAFT, updateDraft, heroAPI),
     takeLatest(StoryCreateTypes.UPLOAD_COVER_IMAGE, uploadCoverImage, heroAPI),
     takeLatest(StoryCreateTypes.EDIT_STORY, loadStory, heroAPI),
+    takeLatest(StoryCreateTypes.UPLOAD_IMAGE, uploadImage, heroAPI),
 
     takeLatest(StoryTypes.STORY_REQUEST, getStory, heroAPI),
     takeLatest(StoryTypes.FEED_REQUEST, getUserFeed, heroAPI),

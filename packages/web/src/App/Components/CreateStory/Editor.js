@@ -57,7 +57,7 @@ CustomBlockTypeSelect.propTypes = {
 }
 
 const sideToolbarPlugin = createSideToolbarPlugin({
-  structure: [CustomBlockTypeSelect]
+  structure: [CustomBlockTypeSelect],
 })
 
 const { SideToolbar } = sideToolbarPlugin
@@ -65,7 +65,7 @@ const { SideToolbar } = sideToolbarPlugin
 const styleMap = {
   'BOLD': {
     fontWeight: 600,
-  }
+  },
 }
 
 export default class BodyEditor extends React.Component {

@@ -118,6 +118,11 @@ export const updateWorkingDraft = (state, {workingDraft}) => {
   if(needToChangeCoverVideo(state, workingDraft)) {
     return changeCoverVideo(state, workingDraft.coverVideo)
   } else {
+    // have to do setIn for new cloudinary images on web
+    // if we do not we never update the cover
+    if (workingDraft.coverImage) {
+      state = state.setIn(['workingDraft', 'coverImage'], workingDraft.coverImage)
+    }
     return state.merge({workingDraft}, {deep: true})
   }
 }

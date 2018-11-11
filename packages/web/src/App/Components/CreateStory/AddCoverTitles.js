@@ -3,20 +3,28 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import Icon from '../Icon'
-import {SubTitle, Input, CloseXContainer} from './Shared'
+import {
+  SubTitle,
+  Input,
+  CloseXContainer,
+} from './Shared'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import getVideoUrl from '../../Shared/Lib/getVideoUrl'
 import uploadFile, {
   getAcceptedFormats,
 } from '../../Utils/uploadFile'
-import {VerticalCenterStyles} from '../VerticalCenter'
+import { VerticalCenterStyles } from '../VerticalCenter'
 import Video from '../Video'
+import Loader from '../Loader'
+import { Row } from '../FlexboxGrid'
+
+const coverHeight = 350
 
 const ButtonsHorizontalCenter = styled.div`
   position: relative;
   width: 100%;
   max-width: 800px;
-  height: 350px;
+  height: ${coverHeight}px;
   margin: auto;
   ${VerticalCenterStyles}
 `
@@ -48,10 +56,10 @@ const DeleteIcon = styled(Icon)`
 
 const ImageWrapper = styled.div`
   margin: 40px auto 0;
-  padding-top: 350px;
+  padding-top: ${coverHeight}px;
   width: 100%;
   max-width: 800px;
-  max-height: 350px;
+  max-height: ${coverHeight}px;
   background-image: ${props => `url(${props.image})`};
   background-size: cover;
   position: relative;
@@ -157,6 +165,13 @@ const TitleInputsWrapper = styled.div`
 
 const StyledCloseXContainer = styled(CloseXContainer)`
   z-index: 1;
+`
+
+const StyledRow = styled(Row)`
+  position: absolute;
+  z-index: -101;
+  width: 100%;
+  height: ${coverHeight}px;
 `
 
 function isNewStory(props, nextProps) {
@@ -338,6 +353,9 @@ export default class AddCoverTitles extends React.Component {
 
     return (
       <RelativeWrapper>
+        <StyledRow center="xs">
+          <Loader width={50}/>
+        </StyledRow>
         {!coverVideo &&
           <ImageWrapper image={coverImage}/>
         }

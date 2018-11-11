@@ -5,6 +5,7 @@ import {Cropper} from 'react-image-cropper'
 
 import {Row} from '../FlexboxGrid'
 import RoundedButton from '../RoundedButton'
+import Loader from '../Loader'
 import {Title} from './Shared'
 
 const avataStyles = {
@@ -47,6 +48,8 @@ export default class PhotoEditor extends React.Component {
     loadedImage: PropTypes.string,
   }
 
+  state = { srcLoaded: false }
+
   handleImageLoaded = () => {
     this.setState({srcLoaded: true})
   }
@@ -60,9 +63,15 @@ export default class PhotoEditor extends React.Component {
 
   render() {
     const {isAvatar, closeModal, src} = this.props
+
     return (
       <Container>
         <StyledTitle>Edit {isAvatar ? 'Profile' : 'Cover'} Image</StyledTitle>
+        {!this.state.srcLoaded &&
+          <Row center="xs">
+            <Loader />
+          </Row>
+        }
         <Cropper
           src={src}
           ref='cropper'

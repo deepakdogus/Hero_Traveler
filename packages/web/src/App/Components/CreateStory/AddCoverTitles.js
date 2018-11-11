@@ -218,7 +218,7 @@ export default class AddCoverTitles extends React.Component {
           this.props.onInputChange({
             'coverVideo': null,
             'coverImage': cloudinaryFile,
-            'coverType': 'video',
+            'coverType': 'image',
           })
         }
         this.props.uploadImage(file.uri, onSuccess)
@@ -355,7 +355,7 @@ export default class AddCoverTitles extends React.Component {
     return (
       <RelativeWrapper>
         <StyledRow center="xs">
-          <Loader width={50}/>
+          <Loader />
         </StyledRow>
         {!coverVideo &&
           <ImageWrapper image={coverImage}/>

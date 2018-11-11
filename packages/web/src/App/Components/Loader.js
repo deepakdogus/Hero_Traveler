@@ -1,3 +1,5 @@
+// taken from https://github.com/mhnpd/react-loader-spinner
+
 import React from 'react'
 import { Colors } from '../Shared/Themes'
 

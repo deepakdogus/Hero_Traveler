@@ -45,8 +45,6 @@ export default class MediaComponent extends EditorBlock {
     direction: PropTypes.string,
   }
 
-  state = {imageSrcLoaded: false }
-
   componentWillMount = () => {
     const {url} = this.props.blockProps
     if (!url) this.onClickDelete()
@@ -74,13 +72,11 @@ export default class MediaComponent extends EditorBlock {
       case 'image':
         return (
           <BodyMediaDiv key={key}>
-            {!!this.state.imageSrcLoaded &&
-              <CloseXContainer>
-                <CloseX
-                  onClick={this.onClickDelete}
-                />
-              </CloseXContainer>
-            }
+            <CloseXContainer>
+              <CloseX
+                onClick={this.onClickDelete}
+              />
+            </CloseXContainer>
             <StyledRow center="xs">
               <Loader />
             </StyledRow>

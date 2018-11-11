@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
+import background from '../Shared/Images/explore-hero.jpg'
 import HeaderImageWrapper from './HeaderImageWrapper'
 import VerticalCenter from './VerticalCenter'
 import HorizontalDivider from './HorizontalDivider'
@@ -89,8 +90,8 @@ export default class CategoryHeader extends React.Component {
           <StyledHorizontalDivider />
           <ButtonWrapper>
             <StyledRoundedButton
-              type={isFollowingCategory ? 'blackWhite' : 'exploreCategoryFollow'}
-              text={isFollowingCategory ? 'Following' : 'Follow'}
+              type={isFollowingCategory ? '' : 'exploreCategoryFollow'}
+              text={isFollowingCategory ? 'Following' : '+ Follow'}
               textProps={textProps}
               onClick={isFollowingCategory ? this._unfollowCategory : this._followCategory}
             />

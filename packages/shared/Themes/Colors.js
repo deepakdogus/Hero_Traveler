@@ -46,6 +46,7 @@ const colors = {
   lightGrey: '#e0e0e0',
   coal: '#2d2d2d',
   background: '#1a1c21',
+  backgroundHover: '#0d0e11',
   backgroundDark: '#111216',
   photoOverlay: '#000000',
   sectionHighlight: '#343537',

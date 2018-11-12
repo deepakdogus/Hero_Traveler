@@ -23,6 +23,10 @@ const StyledArrowIcon = styled(Icon)`
   margin-right: ${props => props.name === 'arrowLeft' ? '4px' : '0'};
 `
 
+const responsiveArrowButtonStyles = `
+  margin: 10px;
+`
+
 class Arrow extends React.Component {
   static propTypes = {
     previousSlide: PropTypes.func,
@@ -39,6 +43,7 @@ class Arrow extends React.Component {
         height='48px'
         type='headerButton'
         onClick={onClickFunction}
+        responsiveButtonProps={responsiveArrowButtonStyles}
       >
         <StyledArrowIcon
           name={name}

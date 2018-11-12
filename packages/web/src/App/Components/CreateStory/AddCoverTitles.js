@@ -155,7 +155,7 @@ const StyledCoverCaptionInput = styled(StyledInput)`
 `
 
 const CoverCaptionSpacer = styled.div`
-  height: 27px;
+  height: 67px;
 `
 
 const TitleInputsWrapper = styled.div`
@@ -301,15 +301,12 @@ export default class AddCoverTitles extends React.Component {
     if (coverImage || coverVideo) return (
       <ReplaceUploadWrapper htmlFor="cover_upload_replace">
         <StyledCloseXContainer>
-            <DeleteIcon size='small' name='closeBlack' />
+          <DeleteIcon
+            size='small'
+            name='closeBlack'
+            onClick={this.removeCover}
+          />
         </StyledCloseXContainer>
-        <HiddenInput
-          type='file'
-          id='cover_upload_replace'
-          name='coverImage'
-          accept={acceptProp}
-          onChange={this._onCoverChange}
-        />
       </ReplaceUploadWrapper>
     )
     return (

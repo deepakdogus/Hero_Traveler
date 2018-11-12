@@ -32,9 +32,9 @@ export default class ExploreGrid extends Component {
   }
 
   renderRow = (category) => {
-    const categoryUrl = getImageUrl(category.image, 'optimized', {
-      width: Metrics.screenWidth/3 - 4,
-      height: Metrics.screenWidth/3 - 4,
+    const categoryUrl = getImageUrl(category.image, 'categoryThumbnail', {
+      width: Metrics.screenWidth / 3 - 4,
+      height: Metrics.screenWidth / 3 - 4,
     })
 
     return (

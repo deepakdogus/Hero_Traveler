@@ -81,7 +81,7 @@ class Tile extends React.Component {
             imageSource={
               getImageUrl(
                 category.image,
-                'optimized',
+                'categoryThumbnail',
                 {width: 400, height: 400},
               )
             }

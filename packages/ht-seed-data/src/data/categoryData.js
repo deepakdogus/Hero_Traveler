@@ -6,7 +6,7 @@ import sizeOf from 'image-size'
 import sharp from 'sharp'
 
 const distPath = path.resolve(__dirname, '../../dist/category_images')
-const imagesPath = path.resolve(__dirname, '../../resources/categories')
+const imagesPath = path.resolve(__dirname, '../../resources/categories-rectangle')
 const categoryImages = fs.readdirSync(imagesPath)
 
 function create(imageName) {
@@ -15,40 +15,33 @@ function create(imageName) {
   const baseName = path.basename(imagePath)
   const title = string(baseName.replace(path.extname(baseName), '')).titleCase().s.split('-').join(' ')
   const dimensions = sizeOf(imagePath)
-  return Promise.all([
-    sharp(imagePath)
-      .resize(240, 240)
-      .toFile(path.resolve(distPath, imageName))
-  ])
-  .then(([file]) => {
-    return {
-      "title": title,
-      "isDefault": true,
-      "image": {
-        "altText": title,
-        "original": {
-          "filename": imageName,
-          "path": `category/${dashSpacedImageName}`,
-          "width": dimensions.width,
-          "height": dimensions.height,
+  return {
+    "title": title,
+    "isDefault": true,
+    "image": {
+      "altText": title,
+      "original": {
+        "filename": imageName,
+        "path": `category/${dashSpacedImageName}`,
+        "width": dimensions.width,
+        "height": dimensions.height,
+        "meta": {
+          "mimeType": "image/jpeg"
+        }
+      },
+      "versions": {
+        "thumbnail240": {
+          "filename": 'cat-' + imageName,
+          "path": `category/thumbnail240/cat-${dashSpacedImageName}`,
+          "width": 494,
+          "height": 494,
           "meta": {
             "mimeType": "image/jpeg"
-          }
-        },
-        "versions": {
-          "thumbnail240": {
-            "filename": imageName,
-            "path": `category/thumbnail240/${dashSpacedImageName}`,
-            "width": 240,
-            "height": 240,
-            "meta": {
-              "mimeType": "image/jpeg"
-            }
           }
         }
       }
     }
-  })
+  }
 }
 
 export default function() {

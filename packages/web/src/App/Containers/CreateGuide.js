@@ -131,7 +131,7 @@ class CreateGuide extends SharedCreateGuide {
     else if (guideId) {
       reroute({
         pathname: `/profile/${sessionUserId}/view`,
-        search: '?activeTab=guides',
+        search: '?at=guides',
       })
     }
     else reroute(`/feed`)

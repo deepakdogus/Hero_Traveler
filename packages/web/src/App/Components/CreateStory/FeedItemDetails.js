@@ -101,7 +101,12 @@ export const StyledInput = styled.input`
 `
 
 const StyledCheckbox = styled.input`
-  transform: scale(1.5);
+  @supports (zoom:1.2) {
+    zoom: 1.7
+  }
+  @supports not (zoom:1.2) {
+    transform: scale(1.5);
+  }
   margin: 2px 0 0;
 `
 

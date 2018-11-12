@@ -90,10 +90,10 @@ class Profile extends ContainerWithFeedList {
         })
       }, 1500)
     }
-    if (location.search && location.search.indexOf('?activeTab=') !== -1) {
-      // 10 = 'activeTab' length plus 1 for the equal char
+    if (location.search && location.search.indexOf('?at=') !== -1) {
+      // 3 = 'at' length plus 1 for the equal char
       const activeTab = location.search
-        .substring(location.search.indexOf('activeTab') + 10)
+        .substring(location.search.indexOf('at') + 3)
         .split('&')[0]
         .toUpperCase()
       this.setState({ activeTab })

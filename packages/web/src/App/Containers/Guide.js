@@ -197,7 +197,7 @@ class Guide extends Component {
       else return false
     })
     return {
-      stories: [...storiesOfType].reverse(),
+      stories: storiesOfType,
       authors: authors,
     }
   }

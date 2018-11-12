@@ -12,7 +12,7 @@ export default async function bulkSaveStoryToGuide(storyId, isInGuide) {
     return Promise.all(guides.map(guide => {
       if (isInGuide[guide.id] && guide.stories.indexOf(storyId) === -1) {
         if (guide.stories.length) {
-          guide.stories = [...guide.stories, storyId]
+          guide.stories = [storyId, ...guide.stories]
         }
         else guide.stories = [storyId]
         return guide.save()

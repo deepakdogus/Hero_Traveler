@@ -45,6 +45,9 @@ const BookmarkIcon = styled(StyledIcon)``
 
 const FacebookIcon = styled(StyledIcon)`
   padding: 5px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0;
+  }
 `
 const TwitterIcon = styled(StyledIcon)``
 

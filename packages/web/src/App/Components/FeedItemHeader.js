@@ -269,6 +269,7 @@ export default class FeedItemHeader extends React.Component {
             <Avatar
               avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
               size='medium'
+              type='profile'
               onClick={this._profileReroute}
               responsiveProps={responsiveAvatarStyles}
             />

@@ -34,7 +34,13 @@ export const request = (state) => {
   )
 }
 
+// so that we clear categories in case default Categories got switched
+let firstLoad = false
+
 export const loadSuccess = (state, {categories = {}}) => {
+  const deep = firstLoad
+  firstLoad = true
+
   return state.merge({
     fetchStatus: {
       fetching: false,
@@ -43,7 +49,7 @@ export const loadSuccess = (state, {categories = {}}) => {
     error: null,
     entities: categories
   }, {
-    deep: true
+    deep
   })
 }
 

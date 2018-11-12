@@ -31,7 +31,7 @@ function ensureJpgExtension(uri: string): string {
     return uri
 }
 
-function getUri(image: object|string): ?string {
+function getUri(image: object|string, type: string): ?string {
   if (!image) {
     return undefined
   }
@@ -39,7 +39,10 @@ function getUri(image: object|string): ?string {
   if (typeof(image) === 'string') {
     return ensureJpgExtension(image)
   } else if (typeof(image) === 'object' && _.has(image, 'original')) {
-    const {path, folders} = image.original
+    const target = type === 'categoryThumbnail'
+      ? image.versions.thumbnail240
+      : image.original
+    let {path, folders} = target
     if (!path) {
       return undefined
     }
@@ -165,7 +168,7 @@ export default function getImageUrl(image: object|string, type: string, options:
     return midSyncSpecialCase(image, type)
   }
 
-  const uri = getUri(image)
+  const uri = getUri(image, type)
   if (!uri) {
     return undefined
   }

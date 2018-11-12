@@ -322,7 +322,10 @@ class ExploreScreen extends Component {
     }
 
     return (
-      <ScrollView style={[styles.containerWithTabbar, styles.root]}>
+      <ScrollView style={[
+        styles.containerWithTabbar,
+        styles.root,
+      ]}>
         <View style={styles.headerSearch}>
           <View style={styles.searchWrapper}>
             <TextInput

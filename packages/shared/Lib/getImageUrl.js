@@ -87,19 +87,19 @@ function getBasicImageUrlParameters(size: object): string {
 function getAvatarImageUrlParameters(size: object): string {
   return {
     f: 'auto',
-    c: 'fit',
+    c: 'fill',
+    g: 'faces',
+    q: 'auto:best',
     w: '85',
     h: '85',
   }
 }
 
 function getLargeAvatarImageUrlParameters(size: object): string {
-  return {
-    f: 'auto',
-    c: 'fit',
+  return _.merge({}, getAvatarImageUrlParameters(), {
     w: '140',
     h: '140',
-  }
+  })
 }
 
 function getNotificationImageUrlParameters(){

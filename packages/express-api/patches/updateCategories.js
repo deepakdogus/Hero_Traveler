@@ -34,8 +34,50 @@ const removeDefault = [
   'South Pacific',
 ]
 
+const newDefaults = [
+  'Backpacking',
+  'Culture',
+  'Eco',
+  'Expedition',
+  'Food And Wine',
+  'History',
+  'Hostels',
+  'Luxury',
+  'On A Budget',
+  'Style And Design',
+  'Travel For Good',
+]
+
 export default function() {
   return Promise.all(categoryImages.map(create))
+  .then(() => {
+    return Promise.all(newDefaults.map(title => {
+      return Models.Category.findOne({title})
+      .then(category => {
+        if (category) {
+          category.isDefault = false
+          return category.save()
+        }
+        else {
+          return
+        }
+      })
+    }))
+  })
+  .then(() => {
+    return Promise.all(removeDefault.map(title => {
+      return Models.Category.findOne({title})
+      .then(category => {
+        if (category) {
+          category.isDefault = true
+          return category.save()
+        }
+        else {
+          return
+        }
+      })
+    }))
+  })
 }
 
 function create(imageName) {
@@ -90,13 +132,4 @@ function create(imageName) {
     return
   })
   .catch(err => console.log("error is", err))
-  .then(() => {
-    return Promise.all(removeDefault.map(title => {
-      return Models.Category.findOne({title})
-      .then(category => {
-        category.isDefault = false
-        return category.save()
-      })
-    }))
-  })
 }

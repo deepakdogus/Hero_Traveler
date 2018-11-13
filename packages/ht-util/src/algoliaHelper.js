@@ -49,6 +49,11 @@ function updateUserIndex(user) {
   return algoliaAction(userIndex, 'partialUpdateObject', formatUserSearchObject(user))
 }
 
+function updateUsersIndex(users) {
+  return algoliaAction(userIndex, 'partialUpdateObjects', users.map(formatUserSearchObject))
+}
+
+
 // stories
 function formatStorySearchObject(story) {
   return {
@@ -120,4 +125,5 @@ export default {
   addHashtagsToIndex,
   addCategoriesToIndex,
   updateMultipleStories,
+  updateUsersIndex,
 }

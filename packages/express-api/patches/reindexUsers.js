@@ -3,5 +3,6 @@ import {algoliaHelper} from '@hero/ht-util'
 
 export default function indexUsers(){
   return User.find({})
-  .then(algoliaHelper.addUsersToIndex(users))
+  .populate('profile.avatar')
+  .then(algoliaHelper.updateUsersIndex)
 }

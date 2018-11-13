@@ -281,7 +281,7 @@ export default class ProfileHeaderEdit extends React.Component {
       about: this.state.about,
       profile: {
         fullName: this.state.fullname,
-        // avatar: this.props.user.profile.avatar,
+        avatar: this.props.user.profile.avatar,
       },
     })
   }

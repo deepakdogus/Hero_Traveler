@@ -174,7 +174,7 @@ const VerticalImageContainer = styled(ImageWrapper)`
   width: auto;
   height: 0;
   padding-bottom: 70.84%;
-  background: url(${props => props.src});
+  background: center url(${props => props.src});
   background-size: cover;
 `
 

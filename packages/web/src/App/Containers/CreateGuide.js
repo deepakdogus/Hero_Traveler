@@ -7,6 +7,7 @@ import Modal from 'react-modal'
 
 import UXActions from '../Redux/UXRedux'
 import GuideActions from '../Shared/Redux/Entities/Guides'
+import StoryCreateActions from '../Shared/Redux/StoryCreateRedux'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
 import AddCoverTitles from '../Components/CreateStory/AddCoverTitles'
 import FeedItemDetails from '../Components/CreateStory/FeedItemDetails'
@@ -176,6 +177,7 @@ class CreateGuide extends SharedCreateGuide {
           <AddCoverTitles
             onInputChange={this.updateGuide}
             workingDraft={this.state.guide}
+            uploadImage={this.props.uploadImage}
             isGuide
           />
           <FeedItemDetails
@@ -237,6 +239,9 @@ function extendedMapDispatchToProps(dispatch, ownProps) {
   }
   dispatchMapping.dismissError = () => dispatch(GuideActions.dismissError())
   dispatchMapping.getGuide = (guideId) => dispatch(GuideActions.getGuideRequest(guideId))
+  dispatchMapping.uploadImage = (file, callback) => {
+    dispatch(StoryCreateActions.uploadImage(file, callback))
+  }
   return dispatchMapping
 }
 

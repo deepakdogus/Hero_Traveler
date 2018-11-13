@@ -25,6 +25,7 @@ const TabItems = styled(Row)`
 
 const TabContainer = styled.div`
   cursor: pointer;
+  margin: 0 25px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     margin: ${props => props.isModal ? '0' : '0 10px 0 0'};
   }
@@ -52,7 +53,6 @@ const DefaultText = styled(VerticalCenter)`
   border-bottom-width: ${props => !props.isOnlyTab && props.isActive ? '5px' : '0' };
   border-bottom-color:  ${props => props.theme.Colors.redHighlights};
   border-top: 5px solid transparent;
-  margin: 0 25px;
   padding: 22px 10px;
   min-width: ${props => props.isModal ? 'auto' : '80px'};
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {

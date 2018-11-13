@@ -31,7 +31,7 @@ export default async function updateUser(req) {
       // Only admins can modify other users
       return Promise.reject(new Error('Unauthorized'));
     }
-    userPromise = Models.User.findOne({_id: req.params.id});
+    userPromise = User.get({_id: req.params.id})
   }
 
   return userPromise

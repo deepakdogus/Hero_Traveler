@@ -10,7 +10,7 @@ import getVideoUrl from '../Shared/Lib/getVideoUrl'
 import Avatar from './Avatar'
 import HeaderImageWrapper from './HeaderImageWrapper'
 import VerticalCenter, {VerticalCenterStyles} from './VerticalCenter'
-import { Row } from './FlexboxGrid';
+import { Row } from './FlexboxGrid'
 import HorizontalDivider from './HorizontalDivider'
 import Video from './Video'
 import { NavLinkStyled } from './NavLinkStyled'
@@ -33,6 +33,14 @@ const Title = styled.p`
   letter-spacing: .6px;
   text-transform: uppercase;
   margin: 0;
+  width: 90vw;
+  overflow: hidden;
+  word-break: break-word;
+  hyphens: auto;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 25px;
+    width: 80vw;
+  }
 `
 
 const Subtitle = styled.p`
@@ -43,6 +51,10 @@ const Subtitle = styled.p`
   letter-spacing: .5px;
   font-style: italic;
   margin: 0 0 10px 0;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 0;
+    font-size: 13px;
+  }
 `
 
 const BottomContainer = styled.div`
@@ -50,6 +62,9 @@ const BottomContainer = styled.div`
   bottom: 20px;
   width: 100%;
   z-index: 1;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    bottom: 10px;
+  }
 `
 
 const Centered = styled(VerticalCenter)`
@@ -57,20 +72,42 @@ const Centered = styled(VerticalCenter)`
   width: 100vw;
   height: 570px;
   top:0;
-  text-align:center;
+  text-align: center;
   z-index: 1;
+  align-items: center;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    height: 220px;
+  }
 `
 
 const StyledHorizontalDivider = styled(HorizontalDivider)`
   width: 65px;
   border-width: 1px 0 0 0;
   border-color: ${props => props.theme.Colors.whiteAlphaPt4};
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    display: none;
+  }
 `
 
 const DownArrow = styled(RotatedArrow)``
 
 const StyledRoundedButton = styled(RoundedButton)`
   align-self: center;
+`
+
+/* && hack needed here because of bug in styled-components that is placing
+ * classames in the incorrect order, causing specificity issues
+ */
+const responsiveReadMoreStyles = `
+  && {
+    width: 100px;
+    height: unset;
+    padding: 3px;
+  }
+`
+
+const responsiveReadMoreTextStyles = `
+  font-size: 10px;
 `
 
 const StoryInfo = styled.span`
@@ -80,6 +117,9 @@ const StoryInfo = styled.span`
   color: ${props => props.theme.Colors.snow};
   letter-spacing: .2px;
   display: inline-block;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 11px;
+  }
 `
 
 const Divider = styled.div`
@@ -90,9 +130,19 @@ const Divider = styled.div`
   margin-right: 7.5px;
   margin-top: .2px;
   height: 20px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    height: 12px;
+    margin-top; 2px;
+  }
 `
 
 const StoryInfoRow = styled(Row)``
+
+const responsiveAvatarProps = `
+  width: 20px;
+  height: 20px;
+  bottom: unset;
+`
 
 const videoThumbnailOptions = {
   video: true,
@@ -144,6 +194,8 @@ export default class HeaderSlide extends React.Component {
               text='READ MORE'
               width='168px'
               height='50px'
+              responsiveTextProps={responsiveReadMoreTextStyles}
+              responsiveButtonProps={responsiveReadMoreStyles}
             />
            </NavLink>
           }
@@ -158,6 +210,7 @@ export default class HeaderSlide extends React.Component {
                 avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
                 size='extraMedium'
                 type='profile'
+                responsiveProps={responsiveAvatarProps}
               />
             </ProfileLink>
             <VerticalCenter>

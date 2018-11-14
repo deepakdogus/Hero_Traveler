@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import background from '../Shared/Images/explore-hero.jpg'
 import HeaderImageWrapper from './HeaderImageWrapper'
 import VerticalCenter from './VerticalCenter'
 import HorizontalDivider from './HorizontalDivider'
@@ -24,6 +23,9 @@ const CategoryTitle = styled.p`
   letter-spacing: .6px;
   text-transform: uppercase;
   margin: 0;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 25px;
+  }
 `
 
 const Centered = styled(VerticalCenter)`
@@ -33,16 +35,25 @@ const Centered = styled(VerticalCenter)`
   top:0;
   text-align: center;
   z-index: 2;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    height: 220px;
+  }
 `
 
 const StyledHorizontalDivider = styled(HorizontalDivider)`
   width: 72px;
   border-width: 1px 0 0 0;
   border-color: ${props => props.theme.Colors.whiteAlphaPt4};
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    display: none;
+  }
 `
 
 const ButtonWrapper = styled.div`
   margin-top: 24px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 0;
+  }
 `
 
 const StyledRoundedButton = styled(RoundedButton)`
@@ -56,6 +67,20 @@ const StyledRoundedButton = styled(RoundedButton)`
 const textProps = `
   font-size: 14px;
   letter-spacing: .6px;
+`
+
+/* && hack needed here because of bug in styled-components that is placing
+ * some classames in the incorrect order, causing css specificity issues
+ */
+const responsiveFollowButtonStyles = `
+  && {
+    width: 100px;
+    padding: 3px;
+  }
+`
+
+const responsiveFollowButtonTextStyles = `
+  font-size: 10px;
 `
 
 export default class CategoryHeader extends React.Component {
@@ -92,8 +117,10 @@ export default class CategoryHeader extends React.Component {
             <StyledRoundedButton
               type={isFollowingCategory ? '' : 'exploreCategoryFollow'}
               text={isFollowingCategory ? 'Following' : '+ Follow'}
-              textProps={textProps}
               onClick={isFollowingCategory ? this._unfollowCategory : this._followCategory}
+              textProps={textProps}
+              responsiveTextProps={responsiveFollowButtonTextStyles}
+              responsiveButtonProps={responsiveFollowButtonStyles}
             />
           </ButtonWrapper>
         </Centered>

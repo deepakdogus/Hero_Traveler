@@ -14,14 +14,13 @@ const StyledHeaderImageWrapper = styled(HeaderImageWrapper)`
 export default class FeedHeader extends React.Component {
   static propTypes = {
     stories: PropTypes.arrayOf(PropTypes.object),
-    author: PropTypes.object,
-
+    users: PropTypes.object,
   }
 
-  renderSlides(stories, author) {
-    const storyKeys = Object.keys(stories);
+  renderSlides(stories) {
+    const storyKeys = Object.keys(stories)
 
-    return storyKeys.map((key, index) => {
+    return storyKeys.map((key) => {
       const story = stories[key]
       const author = this.props.users[story.author]
 

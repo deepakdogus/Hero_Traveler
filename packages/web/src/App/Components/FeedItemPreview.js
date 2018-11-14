@@ -89,6 +89,7 @@ const HorizontalStoryInfoContainer = styled(VerticalCenter)`
     flex-basis: unset;
     > * {
       padding-left: ${props => props.type === 'guide' ? '0' : '15px'};
+      padding-right: ${props => props.type === 'guide' ? '0' : '15px'};
       padding-top: 15px;
     }
   }
@@ -104,6 +105,7 @@ const VerticalStoryInfoContainer = styled(HorizontalStoryInfoContainer)`
     padding: 5px;
     > * {
       padding-left: ${props => props.type === 'guide' ? '0' : '15px'};
+      padding-right: ${props => props.type === 'guide' ? '0' : '15px'};
       padding-top: 0px;
     }
   }
@@ -151,6 +153,7 @@ const Title = styled.h3`
   cursor: pointer;
   padding: 12px 0;
   letter-spacing: .6px;
+  word-break: break-word;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding: ${props => props.type === 'guide' ? '0' : '0 15px'};
     font-size: ${props => props.type === 'guide' ? '15px' : '20px'};
@@ -256,6 +259,9 @@ const GuideIcon = styled(Icon)`
   padding-top: 7px;
   width: 17px;
   height: 17px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding-top: 0;
+  }
 `
 
 const BookmarkIcon = styled(Icon)`

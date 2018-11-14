@@ -1,20 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import RoundedButton from '../RoundedButton'
-import Icon from '../Icon'
-import getImageUrl from '../../Shared/Lib/getImageUrl'
-import VerticalCenter from '../VerticalCenter'
 import Modal from 'react-modal'
 import PhotoEditor from '../Modals/PhotoEditor'
-import uploadFile, { getAcceptedFormats } from '../../Utils/uploadFile'
-import { FieldConstraints as SignupConstants } from '../../Shared/Lib/userFormValidation'
-
+import VerticalCenter from '../VerticalCenter'
+import { Row } from '../FlexboxGrid'
 import {
   StyledAvatar,
   ButtonWrapper,
 } from './ProfileHeaderShared'
+import RoundedButton from '../RoundedButton'
+import Icon from '../Icon'
 import ResizableTextarea from '../ResizableTextarea'
+
+import { FieldConstraints as SignupConstants } from '../../Shared/Lib/userFormValidation'
+import uploadFile, { getAcceptedFormats } from '../../Utils/uploadFile'
+import getImageUrl from '../../Shared/Lib/getImageUrl'
+import _ from 'lodash'
 
 const customModalStyles = {
   content: {
@@ -95,14 +97,16 @@ const RelativeWrapper = styled.div`
   display: flex;
 `
 
-const UpdatePictureText = styled.p`
+const UpdateAvatarText = styled.span`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 600;
   letter-spacing: .2px;
   font-size: 18px;
   color: ${props => props.theme.Colors.redHighlights};
-  margin-left: 20px;
   cursor: pointer;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+   width: 100%;
+  }
 `
 
 const Label = styled.label`
@@ -166,6 +170,23 @@ const responsiveAvatarStyles = `
   height: 100px;
 `
 
+const Divider = styled.div`
+  display: inline-block;
+  width: 1px;
+  background-color: ${props => props.theme.Colors.background};
+  margin-left: 7.5px;
+  margin-right: 7.5px;
+  margin-top: 2px;
+  height: 20px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    display: none;
+  }
+`
+
+const UpdateAvatarRow = styled(Row)`
+  padding-left: 20px;
+`
+
 function getInitialState(user = {}) {
   return {
     bio: user.bio,
@@ -185,6 +206,7 @@ export default class ProfileHeaderEdit extends React.Component {
     bio: PropTypes.string,
     error: PropTypes.object,
     updateUser: PropTypes.func,
+    removeAvatar: PropTypes.func,
     uploadMedia: PropTypes.func,
     uploadImage: PropTypes.func,
     toProfileView: PropTypes.func,
@@ -203,8 +225,13 @@ export default class ProfileHeaderEdit extends React.Component {
         username: nextProps.user.username,
       })
     }
-    // If save was successful, reroute
-    if (!!this.props.updating && !nextProps.updating && !nextProps.error) {
+    // If save was successful, reroute, except when avatar image removed
+    if (
+      !!this.props.updating
+      && !nextProps.updating
+      && !nextProps.error
+      && _.isEqual(this.props.user.profile.avatar, nextProps.user.profile.avatar)
+    ) {
       this.props.toProfileView()
     }
   }
@@ -241,6 +268,10 @@ export default class ProfileHeaderEdit extends React.Component {
     this.setState(stateUpdates)
   }
 
+  removeAvatar = () => {
+    this.props.removeAvatar(this.props.user.id)
+  }
+
   uploadImageToBrowser = (event) => {
     uploadFile(event, this, (file) => {
       if (!file) return
@@ -268,7 +299,6 @@ export default class ProfileHeaderEdit extends React.Component {
       about: this.state.about,
       profile: {
         fullName: this.state.fullname,
-        avatar: this.props.user.profile.avatar,
       },
     })
   }
@@ -319,11 +349,19 @@ export default class ProfileHeaderEdit extends React.Component {
             />
             </label>
           <VerticalCenter>
+            <UpdateAvatarRow>
             <label htmlFor='image_upload'>
-              <UpdatePictureText>
-                Update profile picture
-              </UpdatePictureText>
+              <UpdateAvatarText>
+                {`${avatarUrl ? 'Update' : 'Upload'} profile picture`}
+              </UpdateAvatarText>
             </label>
+            {avatarUrl && <Divider>&nbsp;</Divider>}
+            {avatarUrl &&
+              <UpdateAvatarText onClick={this.removeAvatar}>
+                Remove
+              </UpdateAvatarText>
+            }
+            </UpdateAvatarRow>
           </VerticalCenter>
           <HiddenInput
             type='file'

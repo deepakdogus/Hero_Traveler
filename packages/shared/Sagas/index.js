@@ -51,6 +51,7 @@ import { getCategories } from './CategorySagas'
 import { getHashtags } from './HashtagSagas'
 import {
   updateUser,
+  removeAvatar,
   connectFacebook,
   deleteUser,
   getSuggestedUsers,
@@ -193,6 +194,7 @@ export default function * root () {
     takeLatest(UserTypes.LOAD_USER_SUGGESTIONS_REQUEST, getSuggestedUsers, heroAPI),
     takeLatest(UserTypes.LOAD_USER, loadUser, heroAPI),
     takeLatest(UserTypes.UPDATE_USER, updateUser, heroAPI),
+    takeLatest(UserTypes.REMOVE_AVATAR, removeAvatar, heroAPI),
     takeLatest(UserTypes.CONNECT_FACEBOOK, connectFacebook, heroAPI),
     takeLatest(UserTypes.DELETE_USER, deleteUser, heroAPI),
     takeLatest(UserTypes.LOAD_USER_FOLLOWING, loadUserFollowing, heroAPI),

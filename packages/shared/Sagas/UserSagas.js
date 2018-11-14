@@ -198,3 +198,18 @@ export function * seenActivity(api, {activityId}) {
     yield put(UserActions.activitySeenFailure(new Error('Something went wrong'), activityId))
   }
 }
+
+export function * removeAvatar(api, {userId}) {
+  const response = yield call(
+    api.removeAvatarImage,
+    userId
+  )
+  if (response.ok) {
+    yield put(UserActions.removeAvatarSuccess(response.data))
+  }
+  else {
+    yield put(UserActions.removeAvatarFailure(new Error(
+      _.get(response, 'data.message', 'Failed to update user')
+    )))
+  }
+}

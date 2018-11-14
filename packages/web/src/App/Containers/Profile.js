@@ -119,10 +119,17 @@ class Profile extends ContainerWithFeedList {
 
   render() {
     const {
-      match, profilesUser, sessionUserId,
-      myFollowedUsers, userError,
-      userUpdating, updateUser, uploadMedia,
-      openGlobalModal, uploadImage,
+      match,
+      profilesUser,
+      sessionUserId,
+      myFollowedUsers,
+      userError,
+      userUpdating,
+      updateUser,
+      removeAvatar,
+      uploadImage,
+      uploadMedia,
+      openGlobalModal,
     } = this.props
     if (!profilesUser) return null
 
@@ -145,6 +152,7 @@ class Profile extends ContainerWithFeedList {
           unfollowUser={this._unfollowUser}
           toProfileView={this._toProfileReroute}
           updateUser={updateUser}
+          removeAvatar={removeAvatar}
           uploadMedia={uploadMedia}
           openGlobalModal={openGlobalModal}
           uploadImage={uploadImage}
@@ -217,6 +225,7 @@ function mapDispatchToProps(dispatch, ownProps) {
       dispatch(runIfAuthed(sessionUserId, UserActions.unfollowUser, [sessionUserId, userIdToUnfollow])),
     reroute: (path) => dispatch(push(path)),
     uploadMedia: (userId, file, uploadType) => dispatch(MediaUploadActions.uploadRequest(userId, file, uploadType)),
+    removeAvatar: (userId) => dispatch(UserActions.removeAvatar(userId)),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
     uploadImage: (file, callback) => dispatch(StoryCreateActions.uploadImage(file, callback)),
   }

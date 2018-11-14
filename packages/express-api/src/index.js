@@ -24,8 +24,19 @@ if (process.env.NODE_ENV !== 'development') {
   })
 }
 
+const whitelist = [
+  process.env.CORS_ORIGIN,
+  process.env.CORS_ORIGIN2,
+]
+
 app.use(cors({
-  origin: process.env.CORS_ORIGIN,
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
 }))
 app.options('*', cors())
 

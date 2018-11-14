@@ -202,7 +202,7 @@ export function * seenActivity(api, {activityId}) {
 export function * removeAvatar(api, {userId}) {
   const response = yield call(
     api.removeAvatarImage,
-    userId
+    userId,
   )
   if (response.ok) {
     yield put(UserActions.removeAvatarSuccess(response.data))

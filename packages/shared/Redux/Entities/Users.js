@@ -159,10 +159,15 @@ export const removeAvatar = (state) => state.merge({
   updating: true,
 })
 
-export const removeAvatarSuccess = (state, {user}) => state.setIn(
-  ['entities', user.id, 'profile', 'avatar'],
-  null
-)
+export const removeAvatarSuccess = (state, {user}) => {
+  return state.setIn(
+    ['entities', user.id, 'profile', 'avatar'],
+    null,
+  ).merge({
+    error: null,
+    updating: false
+  })
+}
 
 export const removeAvatarFailure = (state, {error}) => {
   return state.merge({

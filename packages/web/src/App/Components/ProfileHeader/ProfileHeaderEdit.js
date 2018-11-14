@@ -218,19 +218,23 @@ export default class ProfileHeaderEdit extends React.Component {
     this.state = getInitialState(props.user)
   }
 
-  componentWillReceiveProps(nextProps){
-    if (nextProps.user.id !== this.props.user.id) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.user.id !== this.props.user.id) {
       this.setState({
-        bio: nextProps.user.bio,
-        username: nextProps.user.username,
+        bio: this.props.user.bio,
+        username: this.props.user.username,
       })
     }
-    // If save was successful, reroute, except when avatar image removed
+
+    const didSave =
+      !!prevProps.updating
+      && !this.props.updating
+      && !this.props.error
+
+    // If save was successful, reroute, except when avatar image changes
     if (
-      !!this.props.updating
-      && !nextProps.updating
-      && !nextProps.error
-      && _.isEqual(this.props.user.profile.avatar, nextProps.user.profile.avatar)
+      didSave
+      & _.isEqual(this.props.user.profile.avatar, prevProps.user.profile.avatar)
     ) {
       this.props.toProfileView()
     }

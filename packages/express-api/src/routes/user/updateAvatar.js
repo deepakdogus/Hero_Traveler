@@ -10,7 +10,7 @@ export default async function updateAvatar(req, res, next) {
 
   if (!file) {
     await Models.User.update({_id: userIdToUpdate}, {
-      $unset: {'profile.avatar': ''}
+      $unset: {'profile.avatar': ''},
     })
   }
   else {
@@ -18,13 +18,13 @@ export default async function updateAvatar(req, res, next) {
     const avatarImage = await Models.Image.create(
       formatUploadObject(
         file,
-        {purpose: 'avatar'}
+        {purpose: 'avatar'},
       )
     )
 
     await Models.User.update({_id: userIdToUpdate}, {
       $set: {
-        'profile.avatar': avatarImage._id
+        'profile.avatar': avatarImage._id,
       }
     })
   }

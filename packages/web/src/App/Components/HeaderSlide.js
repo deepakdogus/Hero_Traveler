@@ -10,7 +10,7 @@ import getVideoUrl from '../Shared/Lib/getVideoUrl'
 import Avatar from './Avatar'
 import HeaderImageWrapper from './HeaderImageWrapper'
 import VerticalCenter, {VerticalCenterStyles} from './VerticalCenter'
-import { Row } from './FlexboxGrid';
+import { Row } from './FlexboxGrid'
 import HorizontalDivider from './HorizontalDivider'
 import Video from './Video'
 import { NavLinkStyled } from './NavLinkStyled'
@@ -33,9 +33,13 @@ const Title = styled.p`
   letter-spacing: .6px;
   text-transform: uppercase;
   margin: 0;
+  width: 90vw;
+  overflow: hidden;
+  word-break: break-word;
+  hyphens: auto;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 25px;
-    width: 80%;
+    width: 80vw;
   }
 `
 

@@ -11,6 +11,9 @@ import { Images } from '../Shared/Themes'
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   ${OverlayStyles}
   overflow: hidden;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    height: 280px;
+  }
 `
 
 const Tagline = styled.p`

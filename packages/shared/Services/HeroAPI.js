@@ -364,6 +364,8 @@ const create = () => {
     .then(response => putMediaResponse(api, url, response, imageTimeout))
   }
 
+  const removeAvatarImage = (userId) => api.put(`user/${userId}/avatar`)
+
   const uploadUserCoverImage = (userId, pathToFile) => {
     const url = `user/${userId}/cover`
     return CloudinaryAPI.uploadMediaFile(pathToFile, 'image')
@@ -509,6 +511,7 @@ const create = () => {
     uploadStoryImage,
     uploadStoryVideo,
     uploadAvatarImage,
+    removeAvatarImage,
     uploadUserCoverImage,
     removeDevice,
     updateDevice,

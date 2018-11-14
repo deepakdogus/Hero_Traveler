@@ -1,21 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import RoundedButton from '../RoundedButton'
-import Icon from '../Icon'
-import getImageUrl from '../../Shared/Lib/getImageUrl'
-import VerticalCenter from '../VerticalCenter'
 import Modal from 'react-modal'
-import EditPhotoOptions from '../Modals/EditPhotoOptions'
 import PhotoEditor from '../Modals/PhotoEditor'
-import uploadFile from '../../Utils/uploadFile'
-import { FieldConstraints as SignupConstants } from '../../Shared/Lib/userFormValidation'
-
+import VerticalCenter from '../VerticalCenter'
+import { Row } from '../FlexboxGrid'
 import {
   StyledAvatar,
   ButtonWrapper,
 } from './ProfileHeaderShared'
+import RoundedButton from '../RoundedButton'
+import Icon from '../Icon'
 import ResizableTextarea from '../ResizableTextarea'
+
+import { FieldConstraints as SignupConstants } from '../../Shared/Lib/userFormValidation'
+import uploadFile, { getAcceptedFormats } from '../../Utils/uploadFile'
+import getImageUrl from '../../Shared/Lib/getImageUrl'
+import _ from 'lodash'
 
 const customModalStyles = {
   content: {
@@ -40,6 +41,7 @@ const customModalStyles = {
 const CameraIcon = styled(Icon)`
   width: 31px;
   height: 24px;
+  cursor: pointer;
 `
 
 const EditAvatarWrapper = styled(VerticalCenter)`
@@ -48,9 +50,16 @@ const EditAvatarWrapper = styled(VerticalCenter)`
   height: 100%;
   z-index: 1;
   left: 54.5px;
+  cursor: pointer;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     left 33.5px;
   }
+`
+
+const HiddenInput = styled.input`
+  opacity: 0;
+  width: 0;
+  height: 0;
 `
 
 const Container = styled.div`
@@ -88,14 +97,16 @@ const RelativeWrapper = styled.div`
   display: flex;
 `
 
-const UpdatePictureText = styled.p`
+const UpdateAvatarText = styled.span`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 600;
   letter-spacing: .2px;
   font-size: 18px;
   color: ${props => props.theme.Colors.redHighlights};
-  margin-left: 20px;
   cursor: pointer;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+   width: 100%;
+  }
 `
 
 const Label = styled.label`
@@ -159,6 +170,23 @@ const responsiveAvatarStyles = `
   height: 100px;
 `
 
+const Divider = styled.div`
+  display: inline-block;
+  width: 1px;
+  background-color: ${props => props.theme.Colors.background};
+  margin-left: 7.5px;
+  margin-right: 7.5px;
+  margin-top: 2px;
+  height: 20px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    display: none;
+  }
+`
+
+const UpdateAvatarRow = styled(Row)`
+  padding-left: 20px;
+`
+
 function getInitialState(user = {}) {
   return {
     bio: user.bio,
@@ -178,6 +206,7 @@ export default class ProfileHeaderEdit extends React.Component {
     bio: PropTypes.string,
     error: PropTypes.object,
     updateUser: PropTypes.func,
+    removeAvatar: PropTypes.func,
     uploadMedia: PropTypes.func,
     uploadImage: PropTypes.func,
     toProfileView: PropTypes.func,
@@ -189,15 +218,24 @@ export default class ProfileHeaderEdit extends React.Component {
     this.state = getInitialState(props.user)
   }
 
-  componentWillReceiveProps(nextProps){
-    if (nextProps.user.id !== this.props.user.id) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.user.id !== this.props.user.id) {
       this.setState({
-        bio: nextProps.user.bio,
-        username: nextProps.user.username,
+        bio: this.props.user.bio,
+        username: this.props.user.username,
       })
     }
-    // If save was successful, reroute
-    if (!!this.props.updating && !nextProps.updating && !nextProps.error) {
+
+    const didSave =
+      !!prevProps.updating
+      && !this.props.updating
+      && !this.props.error
+
+    // If save was successful, reroute, except when avatar image changes
+    if (
+      didSave
+      & _.isEqual(this.props.user.profile.avatar, prevProps.user.profile.avatar)
+    ) {
       this.props.toProfileView()
     }
   }
@@ -207,21 +245,6 @@ export default class ProfileHeaderEdit extends React.Component {
       modal: undefined,
       loadedImage: undefined,
     })
-  }
-
-  setOptionsState = (type) => {
-    this.setState({
-      modal: 'editPhotoOptions',
-      photoType: type,
-    })
-  }
-
-  openCoverOptions = () => {
-    this.setOptionsState('userCover')
-  }
-
-  openAvatarOptions = () => {
-    this.setOptionsState('avatar')
   }
 
   onChangeText = (event) => {
@@ -235,24 +258,22 @@ export default class ProfileHeaderEdit extends React.Component {
     this.setState({ [event.target.name]: newText })
   }
 
-  openCrop = () => {
-    this.setState({ modal: 'photoEditor'})
+  // add backend logic later
+  saveCroppedImage = async (croppedImageUrl) => {
+    // formatting into blob for upload
+    const res = await fetch(croppedImageUrl)
+    this.props.uploadMedia(
+      this.props.user.id,
+      res,
+      this.state.photoType,
+    )
+    const stateUpdates = { modal: undefined }
+    stateUpdates[this.state.photoType] = croppedImageUrl
+    this.setState(stateUpdates)
   }
 
-  // add backend logic later
-  saveCroppedImage = (croppedImageUrl) => {
-    // formatting into blob for upload
-    fetch(croppedImageUrl)
-    .then(res => {
-      this.props.uploadMedia(
-        this.props.user.id,
-        res,
-        this.state.photoType,
-      )
-      const stateUpdates = { modal: undefined }
-      stateUpdates[this.state.photoType] = croppedImageUrl
-      this.setState(stateUpdates)
-    })
+  removeAvatar = () => {
+    this.props.removeAvatar(this.props.user.id)
   }
 
   uploadImageToBrowser = (event) => {
@@ -261,6 +282,7 @@ export default class ProfileHeaderEdit extends React.Component {
       const onSuccess = (cloudinaryFile) => {
         this.setState({
           loadedImage: cloudinaryFile,
+          photoType: 'avatar',
           modal: 'photoEditor',
         })
       }
@@ -281,7 +303,6 @@ export default class ProfileHeaderEdit extends React.Component {
       about: this.state.about,
       profile: {
         fullName: this.state.fullname,
-        // avatar: this.props.user.profile.avatar,
       },
     })
   }
@@ -291,7 +312,8 @@ export default class ProfileHeaderEdit extends React.Component {
     const {
       bio,
       loadedImage,
-      modal, photoType,
+      modal,
+      photoType,
       username,
       about,
       fullname,
@@ -308,32 +330,49 @@ export default class ProfileHeaderEdit extends React.Component {
       targetedImage = getImageUrl(loadedImage)
     }
     else if (photoType === 'avatar') targetedImage = avatarUrl
-    else if (photoType === 'userCover') targetedImage = getImageUrl(user.profile.cover, 'avatarLarge')
+
+    const avatarIsClickable = () => true
 
     return (
       <Container>
         <RelativeWrapper>
-          <EditAvatarWrapper>
+          <label htmlFor='image_upload'>
+            <EditAvatarWrapper>
             <CameraIcon
               type='avatar'
               name='camera'
-              onClick={this.openAvatarOptions}
             />
-          </EditAvatarWrapper>
-          <StyledAvatar
-            avatarUrl={avatarUrl}
-            type='profile'
-            size='x-large'
-            isProfileHeader={false}
-            responsiveProps={responsiveAvatarStyles}
-          />
+            </EditAvatarWrapper>
+            <StyledAvatar
+              avatarUrl={avatarUrl}
+              type='profile'
+              size='x-large'
+              isProfileHeader={false}
+              responsiveProps={responsiveAvatarStyles}
+              onClick={avatarIsClickable}
+            />
+            </label>
           <VerticalCenter>
-            <UpdatePictureText
-              onClick={this.openAvatarOptions}
-            >
-              Update profile picture
-            </UpdatePictureText>
+            <UpdateAvatarRow>
+            <label htmlFor='image_upload'>
+              <UpdateAvatarText>
+                {`${avatarUrl ? 'Update' : 'Upload'} profile picture`}
+              </UpdateAvatarText>
+            </label>
+            {avatarUrl && <Divider>&nbsp;</Divider>}
+            {avatarUrl &&
+              <UpdateAvatarText onClick={this.removeAvatar}>
+                Remove
+              </UpdateAvatarText>
+            }
+            </UpdateAvatarRow>
           </VerticalCenter>
+          <HiddenInput
+            type='file'
+            id='image_upload'
+            onChange={this.uploadImageToBrowser}
+            accept={getAcceptedFormats('image')}
+          />
         </RelativeWrapper>
         <InputsWrapper>
           <Label>Name</Label>
@@ -396,19 +435,6 @@ export default class ProfileHeaderEdit extends React.Component {
               disabled={!username || (username.length < SignupConstants.USERNAME_MIN_LENGTH)}
             />
         </SaveCancelButtonWrapper>
-
-        <Modal
-          contentLabel='Edit Photo Options'
-          isOpen={modal === 'editPhotoOptions'}
-          onRequestClose={this.closeModal}
-          style={customModalStyles}
-        >
-          <EditPhotoOptions
-            onCrop={this.openCrop}
-            onUpload={this.uploadImageToBrowser}
-            hasLoadedImage={!!loadedImage}
-          />
-        </Modal>
         <Modal
           contentLabel='Photo Editor'
           isOpen={modal === 'photoEditor'}

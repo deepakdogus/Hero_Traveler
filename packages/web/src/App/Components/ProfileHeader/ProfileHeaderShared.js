@@ -47,6 +47,7 @@ export const Centered = styled(VerticalCenter)`
 `
 
 export const StyledAvatar = styled(Avatar)`
+  cursor: pointer;
 `
 
 export const ButtonWrapper = styled.div`

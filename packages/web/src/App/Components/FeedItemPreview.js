@@ -174,7 +174,7 @@ const VerticalImageContainer = styled(ImageWrapper)`
   width: auto;
   height: 0;
   padding-bottom: 70.84%;
-  background: url(${props => props.src});
+  background: center url(${props => props.src});
   background-size: cover;
 `
 
@@ -182,7 +182,7 @@ const HorizontalImageContainer = styled(ImageWrapper)`
   margin-right: 20px;
   width: 385.5px;
   height: 257px;
-  background: url(${props => props.src});
+  background: center url(${props => props.src});
   background-size: cover;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     margin: 0;

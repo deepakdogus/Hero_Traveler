@@ -50,6 +50,9 @@ const { Types, Creators } = createActions({
   activitySeenFailure: ['error', 'activityId'],
   clearErrors: null,
   resetActivities: null,
+  removeAvatar: ['userId'],
+  removeAvatarSuccess: ['user'],
+  removeAvatarFailure: ['error'],
 })
 
 export const UserTypes = Types
@@ -148,6 +151,28 @@ export const updateUserFailure = (state, {error}) => {
   return state.merge({
     error,
     updating: false
+  })
+}
+
+export const removeAvatar = (state) => state.merge({
+  error: null,
+  updating: true,
+})
+
+export const removeAvatarSuccess = (state, {user}) => {
+  return state.setIn(
+    ['entities', user.id, 'profile', 'avatar'],
+    null,
+  ).merge({
+    error: null,
+    updating: false
+  })
+}
+
+export const removeAvatarFailure = (state, {error}) => {
+  return state.merge({
+    error,
+    updating: false,
   })
 }
 
@@ -498,4 +523,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.EAGER_UPDATE_TOOLTIPS]: eagerUpdateTooltips,
   [Types.CLEAR_ERRORS]: clearErrors,
   [Types.RESET_ACTIVITIES]: resetActivities,
+  [Types.REMOVE_AVATAR]: removeAvatar,
+  [Types.REMOVE_AVATAR_SUCCESS]: removeAvatarSuccess,
+  [Types.REMOVE_AVATAR_FAILURE]: removeAvatarFailure,
 })

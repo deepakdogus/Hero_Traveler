@@ -27,6 +27,7 @@ if (process.env.NODE_ENV !== 'development') {
 const whitelist = [
   process.env.CORS_ORIGIN,
   process.env.CORS_ORIGIN2,
+  process.env.CORS_ORIGIN3,
 ]
 
 app.use(cors({

@@ -7,10 +7,13 @@ import UXActions from '../../Redux/UXRedux'
 import {
   Container,
   Title,
-  Text
+  Text,
+  ExteriorCloseXContainer,
 } from './Shared'
+import Icon from '../../Components/Icon'
 import RoundedButton from '../RoundedButton'
 import { Row } from '../FlexboxGrid'
+import onClickOutside from 'react-onclickoutside'
 
 class EmailVerificationConfirmation extends React.Component {
   static propTypes = {
@@ -25,9 +28,20 @@ class EmailVerificationConfirmation extends React.Component {
     closeGlobalModal()
   }
 
+  handleClickOutside = (e) => {
+    e.preventDefault()
+    this.closeModal()
+  }
+
   render() {
     return (
       <Container>
+        <ExteriorCloseXContainer>
+          <Icon
+            name='closeWhite'
+            onClick={this.handleClickOutside}
+          />
+        </ExteriorCloseXContainer>
         <Title>Email Verification</Title>
         <Text>Your email has been verified</Text>
         <Row center='xs'>
@@ -56,4 +70,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmailVerificationConfirmation)
+export default connect(mapStateToProps, mapDispatchToProps)(onClickOutside(EmailVerificationConfirmation))

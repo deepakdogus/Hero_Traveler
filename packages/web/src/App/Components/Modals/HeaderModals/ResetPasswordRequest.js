@@ -12,13 +12,16 @@ import {
   Title,
   StyledInput,
   ErrorMessage,
+  ExteriorCloseXContainer,
 } from '../../Modals/Shared'
+import Icon from '../../Icon'
+
 import {
   validate,
 } from '../../../Shared/Lib/userFormValidation'
 
 const RestyledInput = styled(StyledInput)`
-  margin: 40px 0 50px;
+  margin: 10px 0 50px;
 `
 
 class ResetPassword extends React.Component {
@@ -60,6 +63,12 @@ class ResetPassword extends React.Component {
   render() {
     return (
       <Container>
+        <ExteriorCloseXContainer>
+          <Icon
+            name='closeWhite'
+            onClick={this.handleClickOutside}
+          />
+        </ExteriorCloseXContainer>
         <Title>RESET PASSWORD</Title>
         {this.state.error &&
           <ErrorMessage>{this.state.error}</ErrorMessage>

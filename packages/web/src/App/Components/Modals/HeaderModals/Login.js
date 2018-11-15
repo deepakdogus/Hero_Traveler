@@ -16,7 +16,9 @@ import {
   HasAccount,
   SignupText,
   StyledInput,
+  ExteriorCloseXContainer,
 } from '../../Modals/Shared'
+import Icon from '../../Icon'
 
 const ForgotPasswordText = styled(Text)`
   font-size: 14px;
@@ -108,6 +110,12 @@ class Login extends React.Component {
 
     return (
       <Container>
+        <ExteriorCloseXContainer>
+          <Icon
+            name='closeWhite'
+            onClick={this.handleClickOutside}
+          />
+        </ExteriorCloseXContainer>
         <Title>Login</Title>
         <SocialMediaButton
           type='facebookSignup'

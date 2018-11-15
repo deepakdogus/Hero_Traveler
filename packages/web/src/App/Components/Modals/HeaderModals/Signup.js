@@ -19,7 +19,10 @@ import {
   Text,
   HasAccount,
   SignupText,
+  ExteriorCloseXContainer,
 } from '../Shared'
+import Icon from '../../Icon'
+
 import {
   validate,
   asyncValidate,
@@ -115,6 +118,12 @@ class Signup extends React.Component {
 
     return (
       <Container>
+        <ExteriorCloseXContainer>
+          <Icon
+            name='closeWhite'
+            onClick={this.handleClickOutside}
+          />
+        </ExteriorCloseXContainer>
         <Title>SIGN UP</Title>
         <form onSubmit={this.props.handleSubmit(this._onAttemptSignup)}>
           <SocialMediaButton

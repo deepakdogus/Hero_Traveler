@@ -8,8 +8,15 @@ const basicTextStyle = `
   letter-spacing: .2px;
 `
 
+// to be interpolated in rem
+export const modalPadding = 2
+
 export const Container = styled.div`
-  padding: 0 10px;
+  position: relative;
+  padding: ${modalPadding}rem calc(${modalPadding}rem + 10px);
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 20px;
+  }
 `
 
 export const Title = styled.p`
@@ -18,7 +25,9 @@ export const Title = styled.p`
   color: ${props => props.theme.Colors.background};
   letter-spacing: .6px;
   text-align: center;
-  font-family: ${props => props.theme.Fonts.type.montserrat}
+  font-family: ${props => props.theme.Fonts.type.montserrat};
+  padding: 30px 0;
+  margin: 0;
 `
 
 export const RightTitle = styled.p`
@@ -46,7 +55,8 @@ export const Text = styled.p`
 
 export const HasAccount = styled(Text)`
   font-size: 15px;
-  margin-top: 30px;
+  margin: 0;
+  padding: 30px 0;
 `
 
 export const SignupText = styled.span`
@@ -71,6 +81,18 @@ export const StyledInput = styled.input`
   margin-bottom: 25px;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   letter-spacing: .2px;
+`
+
+export const ExteriorCloseXContainer = styled.div`
+  position: absolute;
+  top: -27.5px;
+  right: -35px;
+  z-index: 1000;
+  height: 25px;
+  width: 25px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    display: none;
+  }
 `
 
 //RightModal Styles

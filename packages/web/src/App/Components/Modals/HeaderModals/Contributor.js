@@ -7,7 +7,9 @@ import contributorSrc from '../../../Shared/Images/ht-icons/icon_contibutor-popu
 import {
   Title,
   Text,
+  ExteriorCloseXContainer,
 } from '../../Modals/Shared'
+import Icon from '../../Icon'
 
 const Container = styled.div`
   background-color: ${props => props.theme.Colors.lightGreyAreas};
@@ -54,6 +56,12 @@ class Contributor extends React.Component {
   render() {
     return (
       <Container>
+        <ExteriorCloseXContainer>
+          <Icon
+            name='closeWhite'
+            onClick={this.handleClickOutside}
+          />
+        </ExteriorCloseXContainer>
         <Logo src={logo} alt={'Here Traveler Logo'}/>
         <RestyledTitle>CONTRIBUTOR</RestyledTitle>
         <Badge src={contributorSrc} alt={'Contributor Badge'} align='middle'/>

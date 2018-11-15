@@ -9,6 +9,7 @@ import Explore from './Explore'
 import Feed from './Feed'
 import Story from './Story'
 import Search from './Search'
+import SearchResults from './SearchResults'
 import EditStory from './EditStory'
 import SignupSocial from './Signup/SignupSocial'
 import SignupTopics from './Signup/SignupTopics'
@@ -35,6 +36,7 @@ class AppRoot extends Component {
         <Route path='/profile/:userId/view' component={Profile} />
         <AuthRoute path='/profile/:userId/edit' component={Profile}/>
         <Route path='/search' component={Search} />
+        <Route path='/results/:lat/:lng' component={SearchResults} />
       </div>
     )
   }

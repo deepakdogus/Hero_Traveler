@@ -98,7 +98,7 @@ export default class FeedItemList extends React.Component {
       }
       rows.push((
         <FeedItemPreview
-          key={feedItem.id}
+          key={feedItem._id}
           guideId={guideId}
           feedItem={feedItem}
           isGuideRow={type === 'guideRow'}

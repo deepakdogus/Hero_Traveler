@@ -70,6 +70,10 @@ function formatStorySearchObject(story) {
     hashtags: story.hashtags,
     content: story.content,
     objectID: story._id,
+    _geoloc: {
+      lat: story.locationInfo.latitude,
+      lng: story.locationInfo.longitude,
+    }
   }
 }
 

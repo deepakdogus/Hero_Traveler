@@ -359,6 +359,7 @@ class FeedItemPreview extends Component {
       guideId,
       feedItem,
       author,
+      sessionUserId,
       isGuideRow,
       isLiked,
       isBookmarked,
@@ -393,8 +394,9 @@ class FeedItemPreview extends Component {
               onClick={this.navToFeedItem}
             >
               {!!guideId &&
+                sessionUserId === author.id &&
                 <CloseXContainer onClick={this.openRemoveStoryModal}>
-                  <DeleteIcon size='small' name='closeBlack'/>
+                  <DeleteIcon size='small' name='closeBlack' />
                 </CloseXContainer>
               }
             </StyledOverlay>

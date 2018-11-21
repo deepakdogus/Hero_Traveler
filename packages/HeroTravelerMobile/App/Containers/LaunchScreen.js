@@ -7,7 +7,7 @@ import {
 } from 'react-native-router-flux'
 import SplashScreen from 'react-native-splash-screen'
 
-import SessionActions, {hasAuthData} from '../Shared/Redux/SessionRedux'
+import {hasAuthData} from '../Shared/Redux/SessionRedux'
 import SignupActions, {hasSignedUp} from '../Shared/Redux/SignupRedux'
 import RoundedButton from '../Components/RoundedButton'
 import TextButton from '../Components/TextButton'
@@ -16,7 +16,6 @@ import Loader from '../Components/Loader'
 import styles from './Styles/LaunchScreenStyles'
 
 class LaunchScreen extends React.Component {
-
   static propTypes = {
     fetching: PropTypes.bool,
     hasHeroAccessToken: PropTypes.bool,
@@ -24,13 +23,15 @@ class LaunchScreen extends React.Component {
     signupFacebook: PropTypes.func,
     splashShown: PropTypes.bool,
     sessionError: PropTypes.string,
+    fromStory: PropTypes.bool,
+    fromGuide: PropTypes.bool,
   }
 
   constructor(props) {
     super(props)
     this.state = {
       facebookLoggedIn: false,
-      animationValue: new Animated.Value(0)
+      animationValue: new Animated.Value(0),
     }
   }
 
@@ -51,7 +52,17 @@ class LaunchScreen extends React.Component {
   }
 
   _signupFacebook = () => {
-    this.props.signupFacebook();
+    this.props.signupFacebook()
+  }
+
+  _navToSignup = () => {
+    const { fromStory, fromGuide } = this.props
+    NavigationActions.signup({ fromStory, fromGuide })
+  }
+
+  _navToLogin = () => {
+    const { fromStory, fromGuide } = this.props
+    NavigationActions.login({ fromStory, fromGuide })
   }
 
   fadeIn() {
@@ -59,8 +70,8 @@ class LaunchScreen extends React.Component {
       this.state.animationValue,
       {
         toValue: 1,
-        duration: 1500
-      }
+        duration: 1500,
+      },
     ).start()
   }
 
@@ -90,7 +101,7 @@ class LaunchScreen extends React.Component {
           />
           <RoundedButton
             style={styles.email}
-            onPress={NavigationActions.signup}
+            onPress={this._navToSignup}
             icon='loginEmail'
             iconStyle={styles.emailIcon}
             text='Sign up with Email'
@@ -101,7 +112,7 @@ class LaunchScreen extends React.Component {
           <Text style={styles.tosText}>Already have an account?&nbsp;</Text>
           <TextButton
             style={[styles.tosText, styles.loginText]}
-            onPress={NavigationActions.login}
+            onPress={this._navToLogin}
             text='Log In'
           />
         </View>

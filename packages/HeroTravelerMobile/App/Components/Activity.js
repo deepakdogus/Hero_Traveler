@@ -22,20 +22,28 @@ export default class Activity extends Component {
     let { activity } = this.props
     const content = getContent(activity)
 
+    const user = activity.fromUser
+    const hasAvatar = !!user && !!user.profile && !! user.profile.avatar
+    const hasFullName = !!user && !!user.profile && !! user.profile.fullName
+
     return (
       <View style={styles.root}>
         <TouchableOpacity
           onPress={this._onPress}
         >
           <View style={styles.innerButton}>
-            <Avatar
-              style={styles.avatar}
-              avatarUrl={getImageUrl(activity.fromUser.profile.avatar, 'avatar')}
-            />
+              <Avatar
+                style={styles.avatar}
+                avatarUrl={
+                  hasAvatar
+                  ? getImageUrl(activity.fromUser.profile.avatar, 'avatar')
+                  : null
+                }
+              />
             <View style={styles.middle}>
               <Text style={styles.description}>
                 <Text style={styles.actionUserText}>
-                  {activity.fromUser.profile.fullName}
+                  {hasFullName ? activity.fromUser.profile.fullName : 'A user'}
                 </Text>
                 <Text> {getDescription(activity)}</Text>
               </Text>

@@ -18,13 +18,12 @@ export const createBranchUniversalObj = async (title, contentImageUrl, contentDe
   }
 
   const controlParams = {
-    $desktop_url: 'https://ht-web.herokuapp.com/'
+    $desktop_url: 'https://herotraveler.com/',
   }
 
   const {url} = await branchUniversalObject.generateShortUrl(linkProperties, controlParams)
   return url
 }
-
 
 export const shareLinkWithShareDialog = (contentUrl, contentDescription) => {
   const content = {
@@ -38,14 +37,7 @@ export const shareLinkWithShareDialog = (contentUrl, contentDescription) => {
       return ShareDialog.show(content)
     }
   })
-  .then(res=> {
-    if (res.isCancelled) {
-      alert('Share cancelled')
-    } else {
-      alert('Share success')
-    }
-  },
-  (err) => {
+  .catch(err => {
     alert('Share fail with error: ' + err)
   })
 }
@@ -71,12 +63,10 @@ export const createShareDialog = async (feedItem, feedItemType) => {
 export const parseNonBranchURL = (url) => {
   const obj = {}
   url = url.split('//?')[1].split('&').slice(0,-1)
-  url[1] = url[1].replace(/%20/g, " ")
+  url[1] = url[1].replace(/%20/g, ' ')
   url.map(info => {
     info = info.split('=')
     obj[info[0]] = info[1]
   })
   return obj
 }
-
-

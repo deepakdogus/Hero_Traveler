@@ -21,7 +21,6 @@ import {
   createShareDialog,
 } from '../Lib/sharingMobile'
 
-
 export const tabTypes = {
   overview: 'overview',
   see: 'see',
@@ -46,7 +45,8 @@ class GuideReadingScreen extends React.Component {
     author: PropTypes.object,
     guideStories: PropTypes.arrayOf(PropTypes.object),
     users: PropTypes.object,
-  };
+    user: PropTypes.object,
+  }
 
   constructor(props) {
     super(props)
@@ -60,11 +60,13 @@ class GuideReadingScreen extends React.Component {
     if (!guide) {
       this.getGuide()
     }
-
-
-    if (guide.stories.length !== guideStories.length) {
+    else if (guide.stories.length !== guideStories.length) {
       getGuideStories(guideId)
     }
+  }
+
+  componentDidMount = () => {
+    if (!this.props.user) NavActions.launchScreen({fromGuide: true})
   }
 
   // _onPressBookmark = () => {
@@ -128,7 +130,7 @@ class GuideReadingScreen extends React.Component {
     })
     return {
       stories: storiesOfType,
-      authors: authors
+      authors: authors,
     }
   }
 
@@ -147,8 +149,8 @@ class GuideReadingScreen extends React.Component {
   }
 
   renderBody = () => {
-    const {guide} =  this.props
-    const {selectedTab} = this.state
+    const { guide } = this.props
+    const { selectedTab } = this.state
 
     return (
       <Fragment>
@@ -217,8 +219,9 @@ class GuideReadingScreen extends React.Component {
   render () {
     const {
       guide, author, sessionUser, fetching, error,
-      isBookmarked, isGuideLiked,
+      isBookmarked, isGuideLiked, user,
     } = this.props
+    if (!user) return null
 
     return (
       <ReadingScreensOverlap
@@ -246,17 +249,21 @@ const mapStateToProps = (state, props) => {
   const {session: {userId}} = state
   let { fetching, entities: guides, error } = state.entities.guides
   const users = state.entities.users.entities
+  const user = state.entities.users.entities[userId]
   const stories = state.entities.stories.entities
   const guide = guides[props.guideId]
-  let guideStories = guide ? guide.stories.map(storyId => {
-    return stories[storyId]
-  }) : []
-  guideStories = guideStories.filter(story => !!story)
+  let guideStories = []
+  if (guide && stories) {
+    guideStories = guide.stories
+      .map(storyId => stories[storyId])
+      .filter(story => !!story)
+  }
 
   return {
     author: guide ? users[guide.author] : undefined,
     sessionUser: users[userId],
     users,
+    user,
     fetching,
     guide,
     guideStories,

@@ -1,7 +1,6 @@
 import { call, put } from 'redux-saga/effects'
 import _ from 'lodash'
 import SignupActions from '../Redux/SignupRedux'
-import OpenScreenActions from '../Redux/OpenScreenRedux'
 import SessionActions from '../Redux/SessionRedux'
 import UserActions from '../Redux/Entities/Users'
 import {
@@ -32,28 +31,29 @@ export function * signupEmail (api, action) {
     } else {
       if (response.data) {
         yield put(SignupActions.signupEmailFailure(response.data.message))
-      } else {
+      }
+      else {
         yield put(SignupActions.signupEmailFailure(response.problem))
       }
     }
-  } catch(error) {
-    yield put(SignupActions.signupEmailFailure(error))
+  } catch (err) {
+    yield put(SignupActions.signupEmailFailure(err))
   }
 }
 
 export function * signupFacebook(api, action) {
   let userResponse
   try {
-    userResponse = yield loginToFacebookAndGetUserInfo();
-  } catch(err) {
-    console.log('Facebook connect failed with error: ', err);
+    userResponse = yield loginToFacebookAndGetUserInfo()
+  } catch (err) {
+    console.log('Facebook connect failed with error: ', err)
     yield put(SignupActions.signupFacebookFailure())
-    return;
+    return
   }
 
   if (!userResponse) {
     yield put(SignupActions.signupFacebookFailure())
-    return;
+    return
   }
 
   const userPicture = !userResponse.picture.data.is_silhouette ?
@@ -67,6 +67,9 @@ export function * signupFacebook(api, action) {
     userPicture
   )
 
+  /* TODO: add explanatory comment for why a false wasSignedUp value
+  * results in a signup success action
+  */
   if (response.ok) {
     const {user, tokens, wasSignedUp} = response.data
     const accessToken = _.find(tokens, {type: 'access'})
@@ -75,9 +78,7 @@ export function * signupFacebook(api, action) {
       put(UserActions.receiveUsers({[user.id]: user})),
       put(SessionActions.initializeSession(user.id, tokens))
     ]
-    if (wasSignedUp) {
-      yield put(OpenScreenActions.openScreen('tabbar'))
-    } else {
+    if (!wasSignedUp) {
       yield put(SignupActions.signupFacebookSuccess())
     }
   } else {

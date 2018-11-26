@@ -134,20 +134,20 @@ $ open packages/HeroTravelerMobile/ios/HeroTravelerMobile.xcworkspace
 
 #### Building on Mojave with Xcode 10, RN version 0.53
 
-* open .xcodeproj file directly from hero-traveler-monorepo
+* Open .xcodeproj file directly from hero-traveler-monorepo
 * Targeting simulator will throw this error: `Build input file cannot be found: '/Users/qinguan/Desktop/reactnative/CodeCollab/node_modules/react-native/Libraries/WebSocket/libfishhook.a'`
   * To Fix: copy libfishhook.a from my ios/build/Build/Products/Debug-iphonesimulator/ and paste it into ../node_modules/react-native/Libraries/WebSocket/
 * Physical device target will get this error: `No member named '__rip' in '__darwin_arm_thread_state64'`
   * To Fix: follow steps at https://github.com/facebook/react-native/issues/20774
-* if you run into a keychain permission dialog error or ‘PhaseScriptExecution’ err, run `brew upgrade carthage` and restart your computer
+* If you run into a keychain permission dialog error or ‘PhaseScriptExecution’ err, run `brew upgrade carthage` and restart your computer
 
 ## Xcode TestFlight Deployment
 
-1. change build number
-2. product > archive (have to have target set to physical or generic device)
-3. window > organizer
-4. add description
-5. click upload
+1. Change version/build number (version must be greater than last published app version, increment build number by 1)
+2. Product > Archive (have to have target set to physical or generic device)
+3. Window > Organizer
+4. Add Description
+5. Click Distribute App
 
 ## Docker, express-api and deployment
 

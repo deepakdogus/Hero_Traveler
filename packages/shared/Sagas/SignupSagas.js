@@ -67,20 +67,15 @@ export function * signupFacebook(api, action) {
     userPicture
   )
 
-  /* TODO: add explanatory comment for why a false wasSignedUp value
-  * results in a signup success action
-  */
   if (response.ok) {
-    const {user, tokens, wasSignedUp} = response.data
+    const {user, tokens } = response.data
     const accessToken = _.find(tokens, {type: 'access'})
     yield call(api.setAuth, accessToken.value)
     yield [
       put(UserActions.receiveUsers({[user.id]: user})),
       put(SessionActions.initializeSession(user.id, tokens))
     ]
-    if (!wasSignedUp) {
-      yield put(SignupActions.signupFacebookSuccess())
-    }
+    yield put(SignupActions.signupFacebookSuccess())
   } else {
     yield put(SignupActions.signupFacebookFailure(response.data.message))
   }

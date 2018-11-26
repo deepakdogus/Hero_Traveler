@@ -4,6 +4,7 @@ import { Text, Image, ImageBackground, View, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import {
   Actions as NavigationActions,
+  ActionConst as NavActionConst,
 } from 'react-native-router-flux'
 import SplashScreen from 'react-native-splash-screen'
 
@@ -36,8 +37,19 @@ class LaunchScreen extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (!newProps.fetching && newProps.hasSignedUp) {
-      NavigationActions.signupFlow()
+    if (
+      this.state.facebookLoggedIn
+      && !newProps.fetching
+      && newProps.hasSignedUp
+    ) {
+      // if user has stored session data on device, treat as a login
+      if (this.props.hasHeroAccessToken) {
+        NavigationActions.tabbar({type: 'reset'})
+        NavigationActions.myFeed()
+      }
+      else {
+        NavigationActions.signupFlow()
+      }
     }
 
     if (this.props.splashShown && !newProps.splashShown && !this.props.hasHeroAccessToken) {
@@ -53,11 +65,11 @@ class LaunchScreen extends React.Component {
 
   _signupFacebook = () => {
     this.props.signupFacebook()
+    this.setState({facebookLoggedIn: true})
   }
 
   _navToSignup = () => {
-    const { fromStory, fromGuide } = this.props
-    NavigationActions.signup({ fromStory, fromGuide })
+    NavigationActions.signup()
   }
 
   _navToLogin = () => {

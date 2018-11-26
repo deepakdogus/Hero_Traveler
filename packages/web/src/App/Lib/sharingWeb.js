@@ -1,14 +1,11 @@
 import getImageUrl from '../Shared/Lib/getImageUrl'
+import env from '../Config/Env'
 /*global FB*/
 const branch = window.branch
 const videoThumbnailOptions = {
   video: true,
   width: 385.5,
 }
-
-const SITE_URL = process.env.NODE_ENV === 'development'
-  ? 'http://localhost:3001'
-  : 'https://herotraveler.com/'
 
 export const createDeepLinkWeb = async (feedItem, feedItemType) => {
   const { id, coverImage, coverVideo, title, description } = feedItem
@@ -23,7 +20,7 @@ export const createDeepLinkWeb = async (feedItem, feedItemType) => {
     '$canonical_url': `${feedItemType}/${id}`,
     '$canonical_identifier': 'heroTravelerWeb',
     '$locally_indexable': true,
-    '$desktop_url': SITE_URL,
+    '$desktop_url': env.SITE_URL,
   }
   coverImage
     ? data['$og_image_url'] = coverMediaURL
@@ -46,14 +43,11 @@ export const createDeepLinkWeb = async (feedItem, feedItemType) => {
       action_type: 'news.publishes',
       action_properties: JSON.stringify({
         article: {
-          'fb:app_id': '1589340484457361',
+          'fb:app_id': env.FB_APP_ID,
           'og:title': title,
           'og:url': link,
           'og:description': description,
           'og:image': coverMediaURL,
-          'al:ios:url': `com.herotraveler.herotraveler-beta://?${feedItemType}Id=${id}&title=${title}`,
-          'al:web:should_fallback': 'false',
-          'al:ios:app_store_id': '1288145566',
         },
       }),
     })

@@ -198,15 +198,32 @@ class StoryReadingScreen extends React.Component {
     this.props.requestStory(this.props.storyId)
   }
 
+  stripLinks = (draftjsContent) => {
+    const renderContent = Immutable.asMutable(draftjsContent, { deep: true })
+    const entityMap = renderContent ? renderContent.entityMap : null
+    if (renderContent && entityMap) {
+      Object.keys(renderContent.blocks).forEach(key => {
+        const block = renderContent.blocks[key]
+        if (block.entityRanges) {
+          block.entityRanges = block.entityRanges.filter(
+            entityRange => !entityMap[entityRange.key] === 'LINK',
+          )
+        }
+      })
+    }
+    return renderContent
+  }
+
   renderBody = () => {
     const {story} = this.props
+    const draftjsContent = this.stripLinks(story.draftjsContent)
     return (
       <Fragment>
         <View style={styles.divider}/>
         <View style={styles.content}>
           {!!story.draftjsContent &&
             <RNDraftJSRender
-              contentState={Immutable.asMutable(story.draftjsContent, {deep: true})}
+              contentState={draftjsContent}
               customStyles={rendererStyles}
               atomicHandler={atomicHandler}
             />

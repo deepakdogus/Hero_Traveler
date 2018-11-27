@@ -8,7 +8,7 @@ import RoundedButton from '../RoundedButton'
 import Loader from '../Loader'
 import {Title} from './Shared'
 
-const avataStyles = {
+const avatarStyles = {
   clone: {
     borderRadius: '100%',
     border: '1px dashed #88f',
@@ -76,7 +76,8 @@ export default class PhotoEditor extends React.Component {
           src={src}
           ref='cropper'
           onImgLoad={this.handleImageLoaded}
-          styles={isAvatar ? avataStyles : {}}
+          styles={isAvatar ? avatarStyles : {}}
+          allowNewSelection={false}
         />
         <ButtonRow center='xs'>
           <RoundedButton

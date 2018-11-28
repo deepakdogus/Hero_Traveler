@@ -180,7 +180,7 @@ export default class Icon extends React.Component {
       case 'photo':
         return Images.iconCreateMenuPhoto
       case 'contributor':
-        return Images.iconProfileBadge
+        return Images.iconContributorBadge
       case 'founder':
         return Images.iconFounderBadge
       case 'fellow':

@@ -367,6 +367,8 @@ class FeedItemPreview extends Component {
       isVertical,
     } = this.props
 
+    const isGuideAuthor = !!guideId && sessionUserId === author.id
+
     if (!feedItem || !author) return
 
     let imageUrl
@@ -393,8 +395,7 @@ class FeedItemPreview extends Component {
               overlayColor='black'
               onClick={this.navToFeedItem}
             >
-              {!!guideId &&
-                sessionUserId === author.id &&
+              {isGuideAuthor &&
                 <CloseXContainer onClick={this.openRemoveStoryModal}>
                   <DeleteIcon size='small' name='closeBlack' />
                 </CloseXContainer>

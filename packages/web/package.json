@@ -34,6 +34,7 @@
     "react-router-dom": "^4.1.1",
     "react-router-redux": "next",
     "react-scripts": "1.0.10",
+    "react-twitter-share-link": "^1.2.0",
     "redraft": "^0.8.0",
     "redux": "^3.6.0",
     "redux-form": "^6.5.0",

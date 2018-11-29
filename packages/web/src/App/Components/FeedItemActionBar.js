@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import ShareLink from 'react-twitter-share-link'
 import Icon from './Icon'
 import {Col} from './FlexboxGrid'
 
@@ -96,6 +97,7 @@ const AbsoluteWrapper = styled.div`
     padding: 10px 0;
     display: flex;
     flex-direction: row;
+    overflow-x: auto;
     justify-content: space-around;
     width: 100%;
     border-top: 1px solid ${props => props.theme.Colors.navBarText};
@@ -143,6 +145,11 @@ export default class StoryActionBar extends React.Component {
     this.props.onClickFlag(this.props.feedItem.id)
   }
 
+  _onClickEmail = () => {
+    const { feedItem } = this.props
+    window.location = `mailto:?subject=${feedItem.title}&body=${feedItem.description}`
+  }
+
   render () {
     const {
       feedItem,
@@ -186,10 +193,12 @@ export default class StoryActionBar extends React.Component {
             name='squareFacebookOutline'
             onClick={onClickShare}
           />
-          {/* hidden until after launch */}
-          { false &&
-            <TwitterIcon name='squareTwitterOutline'/>
-          }
+          <ShareLink link={window.location.href}>
+             {link => (
+                <a href={link} target='_blank'><TwitterIcon name='squareTwitterOutline'/></a>
+             )}
+          </ShareLink>
+            
           {/* present at top level until after launch */}
           {isStory &&
               <ClickableWrapper>
@@ -199,8 +208,7 @@ export default class StoryActionBar extends React.Component {
                 />
               </ClickableWrapper>
             }
-          {/* hidden until after launch */}
-          { false &&
+          {
             !this.state.showMore &&
             <DotsIcon
               name='dots'
@@ -208,22 +216,20 @@ export default class StoryActionBar extends React.Component {
             />
           }
         </ActionBarContainer>
-        {/* hidden until after launch */}
-        { false &&
+        {
           this.state.showMore &&
           <ActionBarContainer>
-            <StyledIcon name='google'/>
-            <StyledIcon name='tumblr'/>
-            <StyledIcon name='pinterest'/>
-            <StyledIcon name='email'/>
-            {isStory &&
-              <ClickableWrapper>
-                <StyledIcon
-                  name='report'
-                  onClick={this._onClickFlag}
-                />
-              </ClickableWrapper>
+            {/* hidden until after launch */}
+            { false &&
+              <div>
+                <StyledIcon name='google'/>
+                <StyledIcon name='tumblr'/>
+                <StyledIcon name='pinterest'/>
+              </div>
             }
+            <ClickableWrapper>
+              <StyledIcon name='email' onClick={this._onClickEmail} />
+            </ClickableWrapper>
             <HandMadeIcon onClick={this.toggleShowMore}>
               <HandMadeIconMinus />
             </HandMadeIcon>

@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import {Cropper} from 'react-image-cropper'
 
 import {Row} from '../FlexboxGrid'
 import RoundedButton from '../RoundedButton'
 import Loader from '../Loader'
 import {Title} from './Shared'
+import Cropper from '../ExtendedCropper'
 
 const avatarStyles = {
   clone: {
@@ -78,6 +78,7 @@ export default class PhotoEditor extends React.Component {
           onImgLoad={this.handleImageLoaded}
           styles={isAvatar ? avatarStyles : {}}
           allowNewSelection={false}
+          onChange={this.onChange}
         />
         <ButtonRow center='xs'>
           <RoundedButton

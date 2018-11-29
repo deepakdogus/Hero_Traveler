@@ -50,6 +50,16 @@ const customModalStyles = {
   },
 }
 
+const contributorModalStyles = _.merge(
+  {},
+  customModalStyles,
+  {
+    content: {
+      maxWidth: '380px',
+      padding: '1em',
+    },
+  },
+)
 
 export default class HeaderModals extends React.Component {
   static propTypes = {
@@ -146,7 +156,7 @@ export default class HeaderModals extends React.Component {
           isOpen={globalModalThatIsOpen === 'contributor'}
           contentLabel='Contributor'
           onRequestClose={closeModal}
-          style={customModalStyles}
+          style={contributorModalStyles}
         >
           <Contributor closeGlobalModal={closeGlobalModal} />
         </Modal>

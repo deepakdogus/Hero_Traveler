@@ -287,7 +287,7 @@ export const rendererStyles = StyleSheet.flatten({
     color: Colors.grey,
     letterSpacing: .7,
     paddingHorizontal: 15,
-    marginBottom: Metrics.section
+    marginBottom: Metrics.section,
   },
   'header-one': {
     fontSize: Fonts.size.h5,

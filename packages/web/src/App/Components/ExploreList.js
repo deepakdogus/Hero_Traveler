@@ -15,6 +15,7 @@ const Wrapper = styled.div`
   position: relative;
   display: flex;
   margin-top: 10px;
+  cursor: pointer;
   flex-direction: row;
   padding-bottom: 10px;
   border-bottom: 2px solid;

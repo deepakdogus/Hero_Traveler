@@ -8,25 +8,14 @@ import CategoryActions from '../../Shared/Redux/Entities/Categories'
 import SignupActions from '../../Shared/Redux/SignupRedux'
 import UXActions from '../../Redux/UXRedux'
 
-import RoundedButton from '../../Components/RoundedButton'
-import ExploreGrid from '../../Components/ExploreGrid'
-import { WrappedNavLink } from '../../Components/NavLinkStyled'
+import ExploreList from '../../Components/ExploreList'
 import {
   Title,
   Subtitle,
-} from './SignupSocial'
+} from '../Signup/SignupSocial'
 
 const TopicsContainer = styled.div`
   margin-bottom: 30px;
-`
-
-const NavLinkContainer = styled(TopicsContainer)`
-  width: 100%;
-  position: fixed;
-  top: 85px;
-  display: flex;
-  justify-content: flex-end;
-  z-index: 1;
 `
 
 const Container = styled.div`
@@ -39,7 +28,7 @@ const SizedDiv = styled.div`
   margin: 0 auto;
 `
 
-class SignupTopics extends Component {
+class EditTopics extends Component {
   static propTypes = {
     categories: PropTypes.object,
     fetchStatus: PropTypes.bool,
@@ -76,22 +65,13 @@ class SignupTopics extends Component {
   }
 
   render() {
-    console.log('user', this.props.user);
     return (
         <TopicsContainer>
-          <NavLinkContainer>
-            <WrappedNavLink to='/signup/social'>
-              <RoundedButton
-                text='Next >'
-                margin='none'
-              />
-            </WrappedNavLink>
-          </NavLinkContainer>
           <Container>
             <SizedDiv>
-              <Title>WELCOME!</Title>
+              <Title>CUSTOMIZE YOUR INTERESTS</Title>
               <Subtitle>Pick some topics you are interested in. We will use them to customize your reading list based on your interests.</Subtitle>
-              <ExploreGrid
+              <ExploreList
                 categories={this.props.categories}
                 onClickCategory={this._toggleCategory}
                 getIsSelected={this.getIsSelected}
@@ -129,4 +109,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignupTopics)
+export default connect(mapStateToProps, mapDispatchToProps)(EditTopics)

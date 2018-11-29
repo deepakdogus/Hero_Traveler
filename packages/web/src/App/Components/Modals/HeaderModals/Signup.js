@@ -5,23 +5,20 @@ import PropTypes from 'prop-types'
 import _ from 'lodash'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import R from 'ramda'
-import onClickOutside from 'react-onclickoutside'
 
 import UXActions from '../../../Redux/UXRedux'
 import SignupActions, {hasSignedUp} from '../../../Shared/Redux/SignupRedux'
 
+import OnClickOutsideModal from '../OnClickOutsideModal'
 import RoundedButton from '../../RoundedButton'
 import FormInput from '../../FormInput'
 import SocialMediaButton from '../Shared/SocialMediaButton'
 import {
-  Container,
   Title,
   Text,
   HasAccount,
   SignupText,
-  ExteriorCloseXContainer,
 } from '../Shared'
-import Icon from '../../Icon'
 
 import {
   validate,
@@ -64,11 +61,6 @@ class Signup extends React.Component {
     password: PropTypes.string,
     signupReduxFetching: PropTypes.bool,
     signupReduxError: PropTypes.string,
-  }
-
-  handleClickOutside = (e) => {
-    e.preventDefault()
-    this.props.closeGlobalModal()
   }
 
   _onTextChange = (event) => {
@@ -117,13 +109,7 @@ class Signup extends React.Component {
     }
 
     return (
-      <Container>
-        <ExteriorCloseXContainer>
-          <Icon
-            name='closeWhite'
-            onClick={this.handleClickOutside}
-          />
-        </ExteriorCloseXContainer>
+      <OnClickOutsideModal>
         <Title>SIGN UP</Title>
         <form onSubmit={this.props.handleSubmit(this._onAttemptSignup)}>
           <SocialMediaButton
@@ -188,7 +174,7 @@ class Signup extends React.Component {
         <HasAccount>Already have an account?
           <SignupText onClick={this.openLogin}> Login</SignupText>
         </HasAccount>
-      </Container>
+      </OnClickOutsideModal>
     )
   }
 }
@@ -236,4 +222,4 @@ export default R.compose(
       confirmPassword: '',
     },
   }),
-)(onClickOutside(Signup))
+)(Signup)

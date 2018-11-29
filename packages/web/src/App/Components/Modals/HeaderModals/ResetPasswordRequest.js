@@ -2,19 +2,17 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import onClickOutside from 'react-onclickoutside'
 
 import LoginActions from '../../../Shared/Redux/LoginRedux'
 import UXActions from '../../../Redux/UXRedux'
+
+import OnClickOutsideModal from '../OnClickOutsideModal'
 import RoundedButton from '../../RoundedButton'
 import {
-  Container,
   Title,
   StyledInput,
   ErrorMessage,
-  ExteriorCloseXContainer,
 } from '../../Modals/Shared'
-import Icon from '../../Icon'
 
 import {
   validate,
@@ -33,11 +31,6 @@ class ResetPassword extends React.Component {
   state = {
     email: '',
     error: '',
-  }
-
-  handleClickOutside = (e) => {
-    e.preventDefault()
-    this.props.closeGlobalModal()
   }
 
   _handleEmailChange = (e) => {
@@ -62,13 +55,7 @@ class ResetPassword extends React.Component {
 
   render() {
     return (
-      <Container>
-        <ExteriorCloseXContainer>
-          <Icon
-            name='closeWhite'
-            onClick={this.handleClickOutside}
-          />
-        </ExteriorCloseXContainer>
+      <OnClickOutsideModal>
         <Title>RESET PASSWORD</Title>
         {this.state.error &&
           <ErrorMessage>{this.state.error}</ErrorMessage>
@@ -86,7 +73,7 @@ class ResetPassword extends React.Component {
           height='39px'
           onClick={this._handleResetPasswordRequest}
         />
-      </Container>
+      </OnClickOutsideModal>
     )
   }
 }
@@ -101,4 +88,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   null,
   mapDispatchToProps,
-)(onClickOutside(ResetPassword))
+)(ResetPassword)

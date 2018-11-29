@@ -1,20 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
-import onClickOutside from 'react-onclickoutside'
 
 import logo from '../../../Shared/Images/ht-icons/icon_contributor-popup-logo@2x.png'
 import contributorSrc from '../../../Shared/Images/ht-icons/icon_contibutor-popup-badge@2x.png'
+
+import OnClickOutsideModal from '../OnClickOutsideModal'
 import {
   Title,
   Text,
-  ExteriorCloseXContainer,
 } from '../../Modals/Shared'
-import Icon from '../../Icon'
-
-const Container = styled.div`
-  background-color: ${props => props.theme.Colors.lightGreyAreas};
-  padding: 20px;
-`
 
 const RestyledTitle = styled(Title)`
   letter-spacing: 2.5px;
@@ -46,29 +40,13 @@ const Badge = styled(StyledImage)`
   margin: 40px auto;
 `
 
-class Contributor extends React.Component {
+const Contributor = () => (
+  <OnClickOutsideModal>
+    <Logo src={logo} alt={'Here Traveler Logo'}/>
+    <RestyledTitle>CONTRIBUTOR</RestyledTitle>
+    <Badge src={contributorSrc} alt={'Contributor Badge'} align='middle'/>
+    <Description>Become eligible to be a Hero Traveler Contributor when you publish <Italic>200 stories</Italic> or more</Description>
+  </OnClickOutsideModal>
+)
 
-  handleClickOutside = (e) => {
-    e.preventDefault()
-    this.props.closeGlobalModal()
-  }
-
-  render() {
-    return (
-      <Container>
-        <ExteriorCloseXContainer>
-          <Icon
-            name='closeWhite'
-            onClick={this.handleClickOutside}
-          />
-        </ExteriorCloseXContainer>
-        <Logo src={logo} alt={'Here Traveler Logo'}/>
-        <RestyledTitle>CONTRIBUTOR</RestyledTitle>
-        <Badge src={contributorSrc} alt={'Contributor Badge'} align='middle'/>
-        <Description>Become eligible to be a Hero Traveler Contributor when you publish <Italic>200 stories</Italic> or more</Description>
-      </Container>
-    )
-  }
-}
-
-export default onClickOutside(Contributor)
+export default Contributor

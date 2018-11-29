@@ -22,7 +22,6 @@ import Icon from '../Icon'
 import onClickOutside from 'react-onclickoutside'
 
 const StyledContainer = styled(Container)`
-  padding: ${modalPadding}rem calc(${modalPadding}rem + 10px);
   max-height: calc(100% - ${modalPadding * 2}rem);
   display: flex;
   flex-direction: column;
@@ -35,9 +34,13 @@ const StyledDivider = styled(HorizontalDivider)`
   margin: 0;
 `
 
+/* addiional breakpoint width is necessary to counterac the default auto
+ * margin of react-modal when using full-width modals with exterior elements
+ */
 const ResponsiveCloseX = styled(RightModalCloseX)`
   display: none;
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+  @media (max-width: ${props =>
+      props.theme.Metrics.sizes.tablet + (props.extraBreakpointWidth || 0)}px) {
     display: block;
   }
 `
@@ -90,8 +93,11 @@ class Documentation extends Component {
         <ResponsiveCloseX
           name='closeDark'
           onClick={this.handleClose}
+          extraBreakpointWidth={70}
         />
-        <ExteriorCloseXContainer>
+        <ExteriorCloseXContainer
+          extraBreakpointWidth={70}
+        >
           <Icon
             name='closeWhite'
             onClick={this.handleClickOutside}

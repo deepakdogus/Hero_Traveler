@@ -8,7 +8,7 @@ function hasNewCover(guide){
   (guide.coverVideo && !guide.coverVideo._id)
 }
 
-export default async function updateguide(attrs, assetFormater) {
+export default async function updateGuide(attrs, assetFormater) {
   let guide = await Guide.findById(attrs.id)
   attrs =  _.omit(attrs, 'author')
   if (hasNewCover(attrs)) await addCover(attrs, assetFormater)

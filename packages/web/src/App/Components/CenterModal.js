@@ -11,11 +11,13 @@ const customModalStyles = {
     left: 0,
     right: 0,
     margin: 'auto',
+    padding: 0,
+    overflow: 'visible',
   },
   overlay: {
     backgroundColor: 'rgba(0,0,0, .5)',
     zIndex: 100,
-  }
+  },
 }
 
 export default class CenterModal extends React.Component {

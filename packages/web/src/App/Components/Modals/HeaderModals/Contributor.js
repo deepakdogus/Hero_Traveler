@@ -17,6 +17,7 @@ const Container = styled.div`
 const RestyledTitle = styled(Title)`
   letter-spacing: 2.5px;
   margin-top: 10px;
+  padding-bottom: 0;
 `
 
 const Description = styled(Text)`

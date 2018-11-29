@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import {RightModalCloseX} from './Shared'
 import TabBar from '../TabBar'
 
 import FAQ from './FAQ'
@@ -11,9 +10,45 @@ import TermsAndConditions from './TermsAndConditions'
 import Privacy from './Privacy'
 import UXActions from '../../Redux/UXRedux'
 
-const Container = styled.div`
+import {
+  Container,
+  RightModalCloseX,
+  ExteriorCloseXContainer,
+  modalPadding,
+} from './Shared'
+import HorizontalDivider from '../HorizontalDivider'
+import Icon from '../Icon'
+
+import onClickOutside from 'react-onclickoutside'
+
+const StyledContainer = styled(Container)`
+  max-height: calc(100% - ${modalPadding * 2}rem);
+  display: flex;
+  flex-direction: column;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding-top: 20px;
+    padding: 20px;
+  }
+`
+
+const StyledDivider = styled(HorizontalDivider)`
+  margin: 0;
+`
+
+/* additional breakpoint width is necessary to counteract the default auto
+ * margin of react-modal when using full-width modals with exterior elements
+ */
+const EXTRA_WIDTH = 70
+
+const ResponsiveCloseX = styled(RightModalCloseX)`
+  display: none;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet + EXTRA_WIDTH}px) {
+    display: block;
+  }
+`
+
+const ExtraWidthExteriorCloseX = styled(ExteriorCloseXContainer)`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet + EXTRA_WIDTH}px) {
+    display: none;
   }
 `
 
@@ -54,10 +89,24 @@ class Documentation extends Component {
     else this.props.closeGlobalModal()
   }
 
+  handleClickOutside = (e) => {
+    e.preventDefault()
+    this.handleClose()
+  }
+
   render() {
     return (
-      <Container>
-        <RightModalCloseX name='closeDark' onClick={this.handleClose}/>
+      <StyledContainer>
+        <ResponsiveCloseX
+          name='closeDark'
+          onClick={this.handleClose}
+        />
+        <ExtraWidthExteriorCloseX>
+          <Icon
+            name='closeWhite'
+            onClick={this.handleClickOutside}
+          />
+        </ExtraWidthExteriorCloseX>
         <TabBar
           activeTab={this.state.activeTab}
           onClickTab={this.onClickTab}
@@ -65,10 +114,11 @@ class Documentation extends Component {
           isModal
           whiteBG
         />
+        <StyledDivider color='light-grey'/>
         {this.state.activeTab === 'FAQ' && <FAQ/>}
         {this.state.activeTab === 'Terms & Conditions' && <TermsAndConditions/>}
         {this.state.activeTab === 'Privacy Policy' && <Privacy />}
-      </Container>
+      </StyledContainer>
     )
   }
 }
@@ -82,4 +132,4 @@ const mapDispatchToPRops = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToPRops)(Documentation)
+export default connect(mapStateToProps, mapDispatchToPRops)(onClickOutside(Documentation))

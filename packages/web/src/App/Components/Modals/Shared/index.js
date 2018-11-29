@@ -8,24 +8,33 @@ const basicTextStyle = `
   letter-spacing: .2px;
 `
 
+// to be interpolated in rem
+export const modalPadding = 2
+
 export const Container = styled.div`
-  padding: 0 10px;
+  position: relative;
+  padding: ${modalPadding}rem calc(${modalPadding}rem + 10px);
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 20px;
+  }
 `
 
 export const Title = styled.p`
   font-weight: 400;
   font-size: 25px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: .6px;
+  letter-spacing: 0.6px;
   text-align: center;
-  font-family: ${props => props.theme.Fonts.type.montserrat}
+  font-family: ${props => props.theme.Fonts.type.montserrat};
+  padding: 30px 0;
+  margin: 0;
 `
 
 export const RightTitle = styled.p`
   font-weight: 400;
   font-size: 20px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: .6px;
+  letter-spacing: 0.6px;
   text-align: center;
   margin: 0;
   padding: 20px;
@@ -41,12 +50,13 @@ export const Text = styled.p`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   color: ${props => props.theme.Colors.grey};
   text-align: center;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
 `
 
 export const HasAccount = styled(Text)`
   font-size: 15px;
-  margin-top: 30px;
+  margin: 0;
+  padding: 30px 0;
 `
 
 export const SignupText = styled.span`
@@ -58,7 +68,7 @@ export const SignupText = styled.span`
   color: ${props => props.theme.Colors.redHighlights};
   display: inline;
   cursor: pointer;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
 `
 
 export const StyledInput = styled.input`
@@ -70,7 +80,19 @@ export const StyledInput = styled.input`
   border-color: ${props => props.theme.Colors.dividerGrey};
   margin-bottom: 25px;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
+`
+
+export const ExteriorCloseXContainer = styled.div`
+  position: absolute;
+  top: -27.5px;
+  right: -35px;
+  z-index: 1000;
+  height: 25px;
+  width: 25px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    display: none;
+}
 `
 
 //RightModal Styles
@@ -98,7 +120,7 @@ export const MessageContent = styled.p`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 16px;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   margin: 0;
   color: ${props => props.theme.Colors.grey};
 `
@@ -107,7 +129,7 @@ export const Timestamp = styled.p`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 14px;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   margin: 0;
   color: ${props => props.theme.Colors.grey};
 `
@@ -124,9 +146,9 @@ export const RightModalCloseX = styled(Icon)`
 export const ErrorMessage = styled(Text)`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   color: ${props => props.theme.Colors.redHighlights};
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
 `
 
 export const FetchingMessage = styled(ErrorMessage)`
-  color: ${props => props.theme.Colors.background}
+  color: ${props => props.theme.Colors.background};
 `

@@ -90,10 +90,9 @@ export const ExteriorCloseXContainer = styled.div`
   z-index: 1000;
   height: 25px;
   width: 25px;
-  @media (max-width: ${props =>
-      props.theme.Metrics.sizes.tablet + (props.extraBreakpointWidth || 0)}px) {
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     display: none;
-  }
+}
 `
 
 //RightModal Styles

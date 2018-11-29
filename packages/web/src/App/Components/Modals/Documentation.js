@@ -34,14 +34,21 @@ const StyledDivider = styled(HorizontalDivider)`
   margin: 0;
 `
 
-/* addiional breakpoint width is necessary to counterac the default auto
+/* additional breakpoint width is necessary to counteract the default auto
  * margin of react-modal when using full-width modals with exterior elements
  */
+const EXTRA_WIDTH = 70
+
 const ResponsiveCloseX = styled(RightModalCloseX)`
   display: none;
-  @media (max-width: ${props =>
-      props.theme.Metrics.sizes.tablet + (props.extraBreakpointWidth || 0)}px) {
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet + EXTRA_WIDTH}px) {
     display: block;
+  }
+`
+
+const ExtraWidthExteriorCloseX = styled(ExteriorCloseXContainer)`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet + EXTRA_WIDTH}px) {
+    display: none;
   }
 `
 
@@ -93,16 +100,13 @@ class Documentation extends Component {
         <ResponsiveCloseX
           name='closeDark'
           onClick={this.handleClose}
-          extraBreakpointWidth={70}
         />
-        <ExteriorCloseXContainer
-          extraBreakpointWidth={70}
-        >
+        <ExtraWidthExteriorCloseX>
           <Icon
             name='closeWhite'
             onClick={this.handleClickOutside}
           />
-        </ExteriorCloseXContainer>
+        </ExtraWidthExteriorCloseX>
         <TabBar
           activeTab={this.state.activeTab}
           onClickTab={this.onClickTab}

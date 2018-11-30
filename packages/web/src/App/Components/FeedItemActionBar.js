@@ -19,27 +19,6 @@ const StyledIcon = styled(Icon)`
   }
 `
 
-const HandMadeIcon = styled.div`display: block;
-  margin: auto;
-  height: 14px;
-  width: 14px;
-  border-radius: 14px;
-  border-style: solid;
-  border-color: ${props => props.theme.Colors.grey};
-  border-width: 1px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-`
-
-const HandMadeIconMinus = styled.div`
-  display: block;
-  height: 1px;
-  width: 9px;
-  background-color: ${props => props.theme.Colors.grey};
-`
-
 const LeftActionBarIcon = styled(StyledIcon)``
 
 const BookmarkIcon = styled(StyledIcon)``
@@ -51,8 +30,6 @@ const FacebookIcon = styled(StyledIcon)`
   }
 `
 const TwitterIcon = styled(StyledIcon)``
-
-const DotsIcon = styled(StyledIcon)``
 
 const ActionBarContainer = styled(Col)`
   z-index: 1;
@@ -147,7 +124,7 @@ export default class StoryActionBar extends React.Component {
 
   _onClickEmail = () => {
     const { feedItem } = this.props
-    window.location = `mailto:?subject=${feedItem.title}&body=${feedItem.description || feedItem.title}`
+    window.location = `mailto:?subject=${feedItem.title}&body=Check out this story ${window.location.href} I saw on HeroTraveler: ${feedItem.description || feedItem.title}`
   }
 
   render () {
@@ -198,43 +175,19 @@ export default class StoryActionBar extends React.Component {
                 <a href={link} target='_blank'><TwitterIcon name='squareTwitterOutline'/></a>
              )}
           </ShareLink>
-            
+          <ClickableWrapper>
+            <StyledIcon name='email' onClick={this._onClickEmail} />
+          </ClickableWrapper>
           {/* present at top level until after launch */}
           {isStory &&
-              <ClickableWrapper>
-                <StyledIcon
-                  name='flag'
-                  onClick={this._onClickFlag}
-                />
-              </ClickableWrapper>
-            }
-          {
-            !this.state.showMore &&
-            <DotsIcon
-              name='dots'
-              onClick={this.toggleShowMore}
-            />
+            <ClickableWrapper>
+              <StyledIcon
+                name='flag'
+                onClick={this._onClickFlag}
+              />
+            </ClickableWrapper>
           }
         </ActionBarContainer>
-        {
-          this.state.showMore &&
-          <ActionBarContainer>
-            {/* hidden until after launch */}
-            { false &&
-              <div>
-                <StyledIcon name='google'/>
-                <StyledIcon name='tumblr'/>
-                <StyledIcon name='pinterest'/>
-              </div>
-            }
-            <ClickableWrapper>
-              <StyledIcon name='email' onClick={this._onClickEmail} />
-            </ClickableWrapper>
-            <HandMadeIcon onClick={this.toggleShowMore}>
-              <HandMadeIconMinus />
-            </HandMadeIcon>
-          </ActionBarContainer>
-        }
       </AbsoluteWrapper>
     )
   }

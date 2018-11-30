@@ -21,6 +21,10 @@ const StyledList = styled(Grid)`
   max-width: 800px;
 `
 
+const FullWidthDiv = styled.div`
+  width: 100%;
+`
+
 const CategoryTile = styled(VerticalCenter)`
   background-image: ${props => `url(${props.imageSource})`};
   background-repeat: no-repeat;
@@ -58,21 +62,27 @@ class Tile extends React.Component {
     this.props.onClick(this.props.category.id)
   }
 
-  renderImage = (category) => (
-    <CategoryTile
-      imageSource={
-        getImageUrl(
-          category.image,
-          'categoryThumbnail',
-          {width: 400, height: 400},
-        )
-      }
-    />
-  )
+  renderImage = () => {
+    const {category} = this.props
+    return (
+      <CategoryTile
+        imageSource={
+          getImageUrl(
+            category.image,
+            'categoryThumbnail',
+            {width: 400, height: 400},
+          )
+        }
+      />
+    )
+  }
 
-  renderText = (category) => (
-    <Title>{category.title}</Title>
-  )
+  renderText = () => {
+    const {category} = this.props
+    return (
+      <Title>{category.title}</Title>
+    )
+  }
 
   renderRight = () => {
     const { isSelected } = this.props
@@ -93,15 +103,19 @@ class Tile extends React.Component {
   }
 
   render(){
-    const {category} = this.props
     return (
-      <SpaceBetweenRow
-        renderImage={() => this.renderImage(category)}
-        renderText={() => this.renderText(category)}
-        renderRight={this.renderRight}
-        leftProps={LeftProps}
-        rowProps={RowProps}
-      />
+      <FullWidthDiv>
+        <SpaceBetweenRow
+          renderImage={this.renderImage}
+          renderText={this.renderText}
+          renderRight={this.renderRight}
+          leftProps={LeftProps}
+          rowProps={RowProps}
+        />
+        <HorizontalDivider
+          color='grey'
+        />
+      </FullWidthDiv>
     )
   }
 }

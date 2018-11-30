@@ -46,7 +46,7 @@ const Title = styled.div`
   text-overflow: ellipsis;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 12px;
-    padding-left: 0px;
+    padding-left: 5px;
   }
 `
 

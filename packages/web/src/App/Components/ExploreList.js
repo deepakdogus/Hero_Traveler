@@ -2,42 +2,31 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import { Grid, Row, Col } from './FlexboxGrid'
+import { Grid, Row } from './FlexboxGrid'
 import getImageUrl from '../Shared/Lib/getImageUrl'
-import { VerticalCenterStyles } from './VerticalCenter'
+import VerticalCenter from './VerticalCenter'
+import SpaceBetweenRow from './SpaceBetweenRow'
+import RoundedButton from './RoundedButton'
+import HorizontalDivider from './HorizontalDivider'
+
+import {
+  FollowButtonTextStyle,
+  FollowButtonResponsiveTextStyle,
+  FollowButtonResponsiveButtonStyle,
+  LeftProps,
+  RowProps,
+} from './FollowFollowingRow'
 
 const StyledList = styled(Grid)`
   max-width: 800px;
 `
 
-const Wrapper = styled.div`
-  margin: 1px;
-  position: relative;
-  display: flex;
-  margin-top: 10px;
-  cursor: pointer;
-  flex-direction: row;
-  padding-bottom: 10px;
-  border-bottom: 2px solid;
-  border-color: #e6e6e6;
-`
-
-const CategoryTile = styled.div`
+const CategoryTile = styled(VerticalCenter)`
   background-image: ${props => `url(${props.imageSource})`};
   background-repeat: no-repeat;
   background-size: cover;
   height: 77px;
   width: 77px;
-`
-
-const TitleContainer = styled.div`
-  ${VerticalCenterStyles};
-  flex: 1;
-`
-
-const ActionContainer = styled.div`
-  ${VerticalCenterStyles};
-  flex: 1;
 `
 
 const Title = styled.div`
@@ -48,28 +37,13 @@ const Title = styled.div`
   color: ${props => props.theme.Colors.background};
   letter-spacing: .6px;
   margin: 0;
-  padding-left: 30px;
+  padding-left: 25px;
+  flex-shrink: 1;
+  text-overflow: ellipsis;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 12px;
+    padding-left: 0px;
   }
-`
-
-const Button = styled.div`
-  align-self: flex-end;
-  font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-weight: 600;
-  letter-spacing: .7px;
-  font-size: 18px;
-  padding: 10px;
-  width: 150px;
-  height: 20px;
-  color: ${props => props.isSelected ? props.theme.Colors.white : props.theme.Colors.background};
-  border-color: ${props => props.isSelected ? props.theme.Colors.red : props.theme.Colors.background};
-  border-style: solid;
-  border-width: 2px;
-  border-radius: 50px;
-  background-color: ${props => props.isSelected ? props.theme.Colors.red : 'transparent'};
-  cursor: pointer;
 `
 
 // created specific component to optimize speed with _onClickTile
@@ -84,33 +58,50 @@ class Tile extends React.Component {
     this.props.onClick(this.props.category.id)
   }
 
-  render(){
-    const {category, isSelected} = this.props
+  renderImage = (category) => (
+    <CategoryTile
+      imageSource={
+        getImageUrl(
+          category.image,
+          'categoryThumbnail',
+          {width: 400, height: 400},
+        )
+      }
+    />
+  )
+
+  renderText = (category) => (
+    <Title>{category.title}</Title>
+  )
+
+  renderRight = () => {
+    const { isSelected } = this.props
     return (
-      <Col xs={12}>
-        <Wrapper onClick={this._onClickTile}>
-          <CategoryTile
-            imageSource={
-              getImageUrl(
-                category.image,
-                'categoryThumbnail',
-                {width: 400, height: 400},
-              )
-            }
-          />
-          <TitleContainer
-            selected={category.selected}
-            overlayColor='black'
-          >
-            <Title>{category.title}</Title>
-          </TitleContainer>
-          <ActionContainer>
-            <Button isSelected={isSelected}>
-              {isSelected ? 'FOLLOWING' : '+FOLLOW'}
-            </Button>
-          </ActionContainer>
-        </Wrapper>
-      </Col>
+      <VerticalCenter>
+        <RoundedButton
+          text={isSelected ? 'FOLLOWING' : '+ FOLLOW'}
+          type={isSelected ? undefined : 'blackWhite'}
+          width='154px'
+          padding='even'
+          onClick={this._onClickTile}
+          textProps={FollowButtonTextStyle}
+          responsiveTextProps={FollowButtonResponsiveTextStyle}
+          responsiveButtonProps={FollowButtonResponsiveButtonStyle}
+        />
+      </VerticalCenter>
+    )
+  }
+
+  render(){
+    const {category} = this.props
+    return (
+      <SpaceBetweenRow
+        renderImage={() => this.renderImage(category)}
+        renderText={() => this.renderText(category)}
+        renderRight={this.renderRight}
+        leftProps={LeftProps}
+        rowProps={RowProps}
+      />
     )
   }
 }

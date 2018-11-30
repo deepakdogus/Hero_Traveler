@@ -147,7 +147,7 @@ export default class StoryActionBar extends React.Component {
 
   _onClickEmail = () => {
     const { feedItem } = this.props
-    window.location = `mailto:?subject=${feedItem.title}&body=${feedItem.description}`
+    window.location = `mailto:?subject=${feedItem.title}&body=${feedItem.description || feedItem.title}`
   }
 
   render () {

@@ -1,14 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import {Cropper} from 'react-image-cropper'
 
 import {Row} from '../FlexboxGrid'
 import RoundedButton from '../RoundedButton'
 import Loader from '../Loader'
 import {Title} from './Shared'
+import Cropper from '../ExtendedCropper'
 
-const avataStyles = {
+const avatarStyles = {
   clone: {
     borderRadius: '100%',
     border: '1px dashed #88f',
@@ -76,7 +76,9 @@ export default class PhotoEditor extends React.Component {
           src={src}
           ref='cropper'
           onImgLoad={this.handleImageLoaded}
-          styles={isAvatar ? avataStyles : {}}
+          styles={isAvatar ? avatarStyles : {}}
+          allowNewSelection={false}
+          onChange={this.onChange}
         />
         <ButtonRow center='xs'>
           <RoundedButton

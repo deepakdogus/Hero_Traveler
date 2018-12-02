@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-import HorizontalDivider from '../HorizontalDivider'
 import {
   Container,
   Wrapper,
@@ -50,7 +49,6 @@ export default class FAQ extends Component {
   render() {
     return (
       <Wrapper>
-        <HorizontalDivider color='light-grey'/>
         {this.renderFAQs(FAQs)}
       </Wrapper>
     )

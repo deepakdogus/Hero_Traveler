@@ -11,7 +11,11 @@ export const DocumentationTabStyles = `
 export const Container = styled.div``
 
 export const Wrapper = styled.div`
+  overflow: scroll;
   padding: 0px 15px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0;
+  }
 `
 
 export const Title = styled.p`

@@ -1,6 +1,5 @@
 import React from 'react'
 
-import HorizontalDivider from '../HorizontalDivider'
 import {
   Container,
   Wrapper,
@@ -14,7 +13,6 @@ import {
 
 const TermsAndConditions = () => (
   <Wrapper>
-    <HorizontalDivider color='light-grey'/>
     <Container>
       <Title>
         Terms of Use

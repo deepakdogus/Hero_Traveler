@@ -163,6 +163,8 @@ export default class Icon extends React.Component {
         return Images.hamburger
       case 'close':
         return Images.iconContentXWhite
+      case 'closeWhite':
+        return Images.iconContentXWhiteLarge
       case 'closeDark':
         return Images.iconContentXDark
       case 'closeBlack':

@@ -1,6 +1,6 @@
 import passport from 'passport'
 
-export default function populatesUUser(req, res, next) {
+export default function populatesUser(req, res, next) {
   return passport.authenticate('bearer', {session: false}, (err, user) => {
     if (err || !user) {
       if (err) req.err = err

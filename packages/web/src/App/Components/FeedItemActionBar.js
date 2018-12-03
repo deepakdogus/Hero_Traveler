@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import ShareLink from 'react-twitter-share-link'
 import Icon from './Icon'
 import {Col} from './FlexboxGrid'
+import { shareLinkOnTwitter } from '../Lib/sharingWeb'
 
 const StyledIcon = styled(Icon)`
   display: block;
@@ -127,6 +127,11 @@ export default class StoryActionBar extends React.Component {
     window.location = `mailto:?subject=${feedItem.title}&body=Check out this story ${window.location.href} I saw on HeroTraveler: ${feedItem.description || feedItem.title}`
   }
 
+  _onClickTwitter = async () => {
+    const { feedItem } = this.props
+    shareLinkOnTwitter(feedItem, 'story') 
+  }
+
   render () {
     const {
       feedItem,
@@ -170,11 +175,9 @@ export default class StoryActionBar extends React.Component {
             name='squareFacebookOutline'
             onClick={onClickShare}
           />
-          <ShareLink link={window.location.href}>
-             {link => (
-                <a href={link} target='_blank'><TwitterIcon name='squareTwitterOutline'/></a>
-             )}
-          </ShareLink>
+          <ClickableWrapper>
+            <TwitterIcon onClick={this._onClickTwitter} name='squareTwitterOutline'/>
+          </ClickableWrapper>
           <ClickableWrapper>
             <StyledIcon name='email' onClick={this._onClickEmail} />
           </ClickableWrapper>

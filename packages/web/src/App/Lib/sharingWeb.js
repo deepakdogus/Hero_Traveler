@@ -1,8 +1,26 @@
 import getImageUrl from '../Shared/Lib/getImageUrl'
+import env from '../Config/Env'
+
+const branch = window.branch
+
 /*global FB*/
 const videoThumbnailOptions = {
   video: true,
   width: 385.5,
+}
+
+const popupCenter = (url, title, w, h) => {
+  // Fixes dual-screen position
+  const dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : window.screenX
+  const dualScreenTop = window.screenTop != undefined ? window.screenTop : window.screenY
+
+  const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth
+  const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight
+
+  const left = ((width / 2) - (w / 2)) + dualScreenLeft
+  const top = ((height / 2) - (h / 2)) + dualScreenTop
+  
+  window.open(url, title, `toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=1,width=${w},height=${h},top=${top},left=${left}`)
 }
 
 export const createDeepLinkWeb = async (feedItem, feedItemType) => {
@@ -29,4 +47,39 @@ export const createDeepLinkWeb = async (feedItem, feedItemType) => {
   })
 }
 
+export const shareLinkOnTwitter = (feedItem, feedItemType) => {
+  const { id, coverImage, coverVideo, title, description } = feedItem
+  const coverMediaURL = coverImage
+  ? getImageUrl(coverImage)
+  : getImageUrl(coverVideo, 'optimized', videoThumbnailOptions)
 
+  const data = {
+    '$og_title': title,
+    '$og_type': 'website',
+    '$og_description': description,
+    '$canonical_url': `${feedItemType}/${id}`,
+    '$canonical_identifier': 'heroTravelerWeb',
+    '$locally_indexable': true,
+    '$desktop_url': env.SITE_URL,
+  }
+  coverImage
+    ? data['$og_image_url'] = coverMediaURL
+    : data['$og_video'] = coverMediaURL
+
+  const linkData = {
+    channel: 'twitter',
+    feature: 'share',
+    data,
+  }
+
+  branch.link(linkData, (err, link) => {
+    if (err) {
+      console.error(`Share fail with error: ${err}`)
+    }
+    const twitterUrl = `https://twitter.com/share?url=${link}&amp;text=Check this story&amp;hashtags=`
+    // popup settings
+    const width = 550
+    const height = 285
+    popupCenter(twitterUrl, 'Twitter', width, height)
+  })
+}

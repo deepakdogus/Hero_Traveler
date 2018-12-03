@@ -9,12 +9,47 @@ import _ from 'lodash'
 
 import env from '../Config/Env'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
+
 import GuideStoriesOfType from '../Components/GuideStoriesOfType'
+import HorizontalDivider from '../Components/HorizontalDivider'
 
 const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
 const STORY_INDEX = env.SEARCH_STORY_INDEX
 
-const Wrapper = styled.div``
+const Container = styled.div`
+  margin: 80px 7% 0;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 20px 0 0;
+  }
+`
+
+const ContentWrapper = styled.div`
+  position: relative;
+  margin: 0 auto;
+  max-width: 800px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0;
+  }
+`
+
+const ResultTitle = styled.div`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
+  font-weight: 700;
+  font-size: 40px;
+  color: ${props => props.theme.Colors.background};
+  text-align: center;
+  margin-bottom: 20px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 20px;
+  }
+`
+
+const StyledDivider = styled(HorizontalDivider)`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    display: block;
+    margin: 0 20px;
+  }
+`
 
 class SearchResults extends Component {
   static propTypes = {
@@ -32,7 +67,7 @@ class SearchResults extends Component {
     _.debounce(() => {
       this.helper
         .setQuery('')
-        .setQueryParameter('aroundLatLng' , '13.443182, -15.31013899999994')
+        .setQueryParameter('aroundLatLng' , '52.3555177, -1.1743197')
         .search()
     }, 300)()
   }
@@ -60,17 +95,22 @@ class SearchResults extends Component {
 
   render() {
     const {lastSearchResults} = this.state
+    // const { resultTitle } = this.props
 
     return (
-      <Wrapper>
-        {lastSearchResults.length &&
+      <Container>
+        <ContentWrapper>
+          <ResultTitle>{`Result Title`}</ResultTitle>
+          <StyledDivider color='light-grey' />
+          {!!lastSearchResults.length &&
           <GuideStoriesOfType
-            stories={lastSearchResults}
-            isShowAll={false}
-            label='ALL STORIES'
-          />
-        }
-      </Wrapper>
+              stories={lastSearchResults}
+              isShowAll={false}
+              label='STORIES'
+            />
+          }
+        </ContentWrapper>
+      </Container>
     )
   }
 }

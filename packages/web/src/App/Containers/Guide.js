@@ -80,7 +80,7 @@ const HashtagText = styled.p`
   color: ${props => props.theme.Colors.redHighlights};
   letter-spacing: .2px;
   text-decoration: none;
-  margin-botton: 45px;
+  margin-bottom: 45px;
 `
 
 class Guide extends Component {

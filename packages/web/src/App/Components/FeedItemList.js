@@ -91,7 +91,7 @@ export default class FeedItemList extends React.Component {
       if (index !== 0 && !isHorizontalList) {
         rows.push((
           <StyledDivider
-            key={`hr-${feedItem.id}`}
+            key={`hr-${feedItem._id}`}
             color={'lighter-grey'}
           />
         ))
@@ -112,7 +112,7 @@ export default class FeedItemList extends React.Component {
     if (type === 'guideRow' && rows.length === 1) {
       return [
         ...rows,
-        <GuideRowSpacer key={`spacer-${guideId}`}/>,
+        <GuideRowSpacer key={`spacer-${guideId || 0}`}/>,
       ]
     }
 

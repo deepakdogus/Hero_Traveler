@@ -1,9 +1,10 @@
 import algoliasearchModule from 'algoliasearch'
 
 const client = algoliasearchModule(process.env.ALGOLIA_ACCT_KEY, process.env.ALGOLIA_API_KEY)
+const storyIndex = client.initIndex(process.env.ALGOLIA_STORY_INDEX)
+const guideIndex = client.initIndex(process.env.ALGOLIA_GUIDE_INDEX)
 const categoryIndex = client.initIndex(process.env.ALGOLIA_CATEGORY_INDEX)
 const hashtagIndex = client.initIndex(process.env.ALGOLIA_HASHTAG_INDEX)
-const storyIndex = client.initIndex(process.env.ALGOLIA_STORY_INDEX)
 const userIndex = client.initIndex(process.env.ALGOLIA_USER_INDEX)
 userIndex.setSettings({
   searchableAttributes: [
@@ -11,6 +12,8 @@ userIndex.setSettings({
     'profile.fullName',
   ]
 })
+
+//utils
 
 // methodParam is an object for all cases but delete when it is an id
 function algoliaAction(index, method, methodParam) {
@@ -20,6 +23,16 @@ function algoliaAction(index, method, methodParam) {
       if (err) return reject(err)
       return resolve(content)
     })
+  })
+}
+
+function mapForTitleAndId(array) {
+  return array.map(item => {
+    return {
+      title: item.title,
+      _id: item.id,
+      objectID: item.id,
+    }
   })
 }
 
@@ -53,17 +66,21 @@ function updateUsersIndex(users) {
   return algoliaAction(userIndex, 'partialUpdateObjects', users.map(formatUserSearchObject))
 }
 
+function deleteUserFromIndex(userId) {
+  return algoliaAction(userIndex, 'deleteObject', userId)
+}
 
 // stories
 function formatStorySearchObject(story) {
   return {
     title: story.title,
-    author: story.author.username,
+    author: story.author.id,
     coverImage: story.coverImage,
     coverVideo: story.coverVideo,
     type: story.type,
     locationInfo: story.locationInfo,
     draftjsContent: story.draftjsContent,
+    draft: story.draft,
     currency: story.currency,
     cost: story.cost,
     _id: story._id,
@@ -81,12 +98,12 @@ function addStoryToIndex(story) {
   return algoliaAction(storyIndex, 'addObject', formatStorySearchObject(story))
 }
 
-function updateStoryIndex(story) {
-  return algoliaAction(storyIndex, 'partialUpdateObject', formatStorySearchObject(story))
+function updateStoryIndex(guide) {
+  return algoliaAction(storyIndex, 'partialUpdateObject', formatStorySearchObject(guide))
 }
 
-function updateMultipleStories(stories) {
-  const formattedStories = stories.map(formatStorySearchObject)
+function updateMultipleStories(guides) {
+  const formattedStories = guides.map(formatGuideSearchObject)
   return algoliaAction(storyIndex, 'partialUpdateObjects', formattedStories)
 }
 
@@ -94,18 +111,42 @@ function deleteStoryFromIndex(storyId) {
   return algoliaAction(storyIndex, 'deleteObject', storyId)
 }
 
-function deleteUserFromIndex(userId) {
-  return algoliaAction(userIndex, 'deleteObject', userId)
+// guides
+function formatGuideSearchObject(guide) {
+  return {
+    title: guide.title,
+    author: guide.author.id,
+    coverImage: guide.coverImage,
+    coverVideo: guide.coverVideo,
+    type: guide.type,
+    locationInfo: guide.locationInfo,
+    _id: guide._id,
+    hashtags: guide.hashtags,
+    content: guide.content,
+    objectID: guide._id,
+    _geoloc: {
+      lat: guide.locationInfo.latitude,
+      lng: guide.locationInfo.longitude,
+    }
+  }
 }
 
-function mapForTitleAndId(array) {
-  return array.map(item => {
-    return {
-      title: item.title,
-      _id: item.id,
-      objectID: item.id,
-    }
-  })
+function addGuideToIndex(guide) {
+  console.log({guide})
+  // return algoliaAction(guideIndex, 'addObject', formatGuideSearchObject(guide))
+}
+
+function updateGuideIndex(guide) {
+  return algoliaAction(guideIndex, 'partialUpdateObject', formatStorySearchObject(guide))
+}
+
+function updateMultipleGuides(guides) {
+  const formattedGuides = guides.map(formatStorySearchObject)
+  return algoliaAction(guideIndex, 'partialUpdateObjects', formattedGuides)
+}
+
+function deleteGuideFromIndex(guideId) {
+  return algoliaAction(guideIndex, 'deleteObject', guideId)
 }
 
 // hashtags
@@ -122,12 +163,16 @@ export default {
   addUserToIndex,
   addUsersToIndex,
   updateUserIndex,
+  updateUsersIndex,
+  deleteUserFromIndex,
   addStoryToIndex,
   updateStoryIndex,
+  updateMultipleStories,
   deleteStoryFromIndex,
-  deleteUserFromIndex,
+  addGuideToIndex,
+  updateGuideIndex,
+  updateMultipleGuides,
+  deleteGuideFromIndex,
   addHashtagsToIndex,
   addCategoriesToIndex,
-  updateMultipleStories,
-  updateUsersIndex,
 }

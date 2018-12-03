@@ -266,7 +266,7 @@ const GuideIcon = styled(Icon)`
 
 const BookmarkIcon = styled(Icon)`
   margin: 0 5px;
-  cursor: pointer
+  cursor: pointer;
 `
 
 const DeleteIcon = styled(Icon)`
@@ -366,7 +366,7 @@ class FeedItemPreview extends Component {
       isVertical,
     } = this.props
 
-    if (!feedItem || !author) return
+    if (!feedItem || !author) return null
 
     let imageUrl
     if (feedItem.coverImage) imageUrl = getImageUrl(feedItem.coverImage)

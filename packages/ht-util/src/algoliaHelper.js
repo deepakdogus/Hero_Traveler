@@ -114,26 +114,24 @@ function deleteStoryFromIndex(storyId) {
 // guides
 function formatGuideSearchObject(guide) {
   return {
-    title: guide.title,
+    _id: guide._id,
+    objectID: guide._id,
     author: guide.author.id,
+    title: guide.title,
+    description: guide.description,
     coverImage: guide.coverImage,
     coverVideo: guide.coverVideo,
-    type: guide.type,
-    locationInfo: guide.locationInfo,
-    _id: guide._id,
-    hashtags: guide.hashtags,
-    content: guide.content,
-    objectID: guide._id,
-    _geoloc: {
-      lat: guide.locationInfo.latitude,
-      lng: guide.locationInfo.longitude,
-    }
+    cost: guide.cost,
+    duration: guide.duration,
+    _geoloc: guide.locations.map(location => ({
+      lat: location.latitude,
+      lng: location.longitude,
+    }))
   }
 }
 
 function addGuideToIndex(guide) {
-  console.log({guide})
-  // return algoliaAction(guideIndex, 'addObject', formatGuideSearchObject(guide))
+  return algoliaAction(guideIndex, 'addObject', formatGuideSearchObject(guide))
 }
 
 function updateGuideIndex(guide) {

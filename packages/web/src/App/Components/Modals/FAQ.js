@@ -52,7 +52,7 @@ export default class FAQ extends Component {
         <HorizontalDivider color='light-grey'/>
         {this.renderFAQs(FAQs)}
         <Question>How do I post a story?</Question>
-        <Answer>Contributors are the cream of the crop, representing our most passionate users. To be labeled with the “Contributor” star on your profile, you must first publish 200 stories or more. To learn about other eligibility requirements, <a href="mailto:contributors@herotraveler.com">click here</a> / send us an email at contributors@herotraveler.com</Answer>
+        <Answer>Contributors are the cream of the crop, representing our most passionate users. To be labeled with the “Contributor” badge on your profile, you must first publish 200 stories or more. To learn about other eligibility requirements send us an email at <a href="mailto:contributors@herotraveler.com">contributors@herotraveler.com</a></Answer>
       </Wrapper>
     )
   }

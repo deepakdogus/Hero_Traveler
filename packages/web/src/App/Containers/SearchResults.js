@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {push} from 'react-router-redux'
+import { push } from 'react-router-redux'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import algoliasearchModule from 'algoliasearch'
@@ -15,6 +15,7 @@ import HorizontalDivider from '../Components/HorizontalDivider'
 
 const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
 const STORY_INDEX = env.SEARCH_STORY_INDEX
+const GUIDE_INDEX = env.SEARCH_GUIDE_INDEX
 
 const Container = styled.div`
   margin: 80px 7% 0;
@@ -57,23 +58,26 @@ class SearchResults extends Component {
     fetchStatus: PropTypes.bool,
     loadCategories: PropTypes.func,
     reroute: PropTypes.func,
+    match: PropTypes.object,
   }
 
-  state = { 'lastSearchResults': [] }
+  state = { lastSearchResults: {stories: [], guides: []} }
 
   componentWillMount() {
-    this.helper = algoliaSearchHelper(algoliasearch, STORY_INDEX)
-    this.setupSearchListeners(this.helper)
-    _.debounce(() => {
-      this.helper
-        .setQuery('')
-        .setQueryParameter('aroundLatLng' , '52.3555177, -1.1743197')
-        .search()
-    }, 300)()
+    //guides
+    this.guideHelper = algoliaSearchHelper(algoliasearch, GUIDE_INDEX)
+    this.setupSearchListeners(this.guideHelper, 'guides')
+    this.search(this.guideHelper)
+
+    //stories
+    this.storyHelper = algoliaSearchHelper(algoliasearch, STORY_INDEX)
+    this.setupSearchListeners(this.storyHelper, 'stories')
+    this.search(this.storyHelper)
   }
 
   componentWillUnmount() {
-    this.removeSearchListeners(this.helper)
+    this.removeSearchListeners(this.storyHelper)
+    this.removeSearchListeners(this.guideHelper)
   }
 
   removeSearchListeners(helper) {
@@ -81,34 +85,56 @@ class SearchResults extends Component {
     helper.removeAllListeners('search')
   }
 
-  setupSearchListeners(helper) {
+  setupSearchListeners(helper, type) {
     helper.on('result', res => {
       this.setState({
         search: false,
-        lastSearchResults: res.hits,
+        lastSearchResults: {
+          ...this.state.lastSearchResults,
+          [type]: res.hits,
+        },
       })
     })
     helper.on('search', () => {
-      this.setState({searching: true})
+      this.setState({ searching: true })
     })
   }
 
+  search(helper) {
+    helper
+      .setQuery('')
+      .setQueryParameter(
+        'aroundLatLng',
+        `${this.props.match.params.lat}, ${this.props.match.params.lng}`,
+      )
+      .setQueryParameter('hitsPerPage', 64)
+      .search()
+  }
+
   render() {
-    const {lastSearchResults} = this.state
+    const { lastSearchResults } = this.state
     // const { resultTitle } = this.props
+
 
     return (
       <Container>
         <ContentWrapper>
           <ResultTitle>{`Result Title`}</ResultTitle>
-          <StyledDivider color='light-grey' />
-          {!!lastSearchResults.length &&
-          <GuideStoriesOfType
-              stories={lastSearchResults}
+          <StyledDivider color="light-grey" />
+          {!!lastSearchResults.guides.length && (
+            <GuideStoriesOfType
+              stories={lastSearchResults.guides}
               isShowAll={false}
-              label='STORIES'
+              label="GUIDES"
             />
-          }
+          )}
+          {!!lastSearchResults.stories.length && (
+            <GuideStoriesOfType
+              stories={lastSearchResults.stories}
+              isShowAll={false}
+              label="STORIES"
+            />
+          )}
         </ContentWrapper>
       </Container>
     )
@@ -130,8 +156,11 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
-    reroute: (path) => dispatch(push(path)),
+    reroute: path => dispatch(push(path)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchResults)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SearchResults)

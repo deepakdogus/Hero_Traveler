@@ -135,11 +135,11 @@ function addGuideToIndex(guide) {
 }
 
 function updateGuideIndex(guide) {
-  return algoliaAction(guideIndex, 'partialUpdateObject', formatStorySearchObject(guide))
+  return algoliaAction(guideIndex, 'partialUpdateObject', formatGuideSearchObject(guide))
 }
 
 function updateMultipleGuides(guides) {
-  const formattedGuides = guides.map(formatStorySearchObject)
+  const formattedGuides = guides.map(formatGuideSearchObject)
   return algoliaAction(guideIndex, 'partialUpdateObjects', formattedGuides)
 }
 

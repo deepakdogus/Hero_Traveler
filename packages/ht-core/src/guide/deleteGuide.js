@@ -4,10 +4,17 @@ import {
   ActivityGuideComment,
   Comment,
 } from '../models'
+import { algoliaHelper } from '@hero/ht-util'
 
-export default function deleteGuide(guideId) {
-  return ActivityGuideComment.remove({guide: guideId})
-  .then(() => Comment.remove({guide: guideId}))
-  .then(() => ActivityGuideLike.remove({guide: guideId}))
-  .then(() => Guide.delete({_id: guideId}))
+export default async function deleteGuide(guideId) {
+  try {
+    await ActivityGuideComment.remove({ guide: guideId })
+    await Comment.remove({ guide: guideId })
+    await ActivityGuideLike.remove({ guide: guideId })
+    await Guide.delete({ _id: guideId })
+    algoliaHelper.deleteGuideFromIndex(guideId)
+    return
+  } catch (err) {
+    if (err) return new Error('Unable to delete guide')
+  }
 }

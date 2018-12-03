@@ -67,12 +67,12 @@ class SearchResults extends Component {
     //guides
     this.guideHelper = algoliaSearchHelper(algoliasearch, GUIDE_INDEX)
     this.setupSearchListeners(this.guideHelper, 'guides')
-    this.search(this.guideHelper)
+    this.search(this.guideHelper, 20)
 
     //stories
     this.storyHelper = algoliaSearchHelper(algoliasearch, STORY_INDEX)
     this.setupSearchListeners(this.storyHelper, 'stories')
-    this.search(this.storyHelper)
+    this.search(this.storyHelper, 64)
   }
 
   componentWillUnmount() {
@@ -100,21 +100,20 @@ class SearchResults extends Component {
     })
   }
 
-  search(helper) {
+  search(helper, hits) {
     helper
       .setQuery('')
       .setQueryParameter(
         'aroundLatLng',
         `${this.props.match.params.lat}, ${this.props.match.params.lng}`,
       )
-      .setQueryParameter('hitsPerPage', 64)
+      .setQueryParameter('hitsPerPage', hits)
       .search()
   }
 
   render() {
     const { lastSearchResults } = this.state
     // const { resultTitle } = this.props
-
 
     return (
       <Container>

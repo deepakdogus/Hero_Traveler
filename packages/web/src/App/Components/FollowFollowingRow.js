@@ -52,12 +52,12 @@ const ProfileDetail = styled(UserName)`
   color: ${props => props.theme.Colors.grey};
 `
 
-const LeftProps = {
+export const LeftProps = {
   'flex-wrap' : 'nowrap',
   'align-items' : 'center',
 }
 
-const RowProps = {
+export const RowProps = {
   'justify-content' : 'space-between',
   'flex-wrap' : 'nowrap',
 }

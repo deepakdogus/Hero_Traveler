@@ -249,7 +249,7 @@ const mapStateToProps = (state, props) => {
   const {session: {userId}} = state
   let { fetching, entities: guides, error } = state.entities.guides
   const users = state.entities.users.entities
-  const user = state.entities.users.entities[userId]
+  const user = users ? users[userId] : null
   const stories = state.entities.stories.entities
   const guide = guides[props.guideId]
   let guideStories = []

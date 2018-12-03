@@ -11,6 +11,7 @@ import {
   getDescription,
   getContent,
 } from '../Shared/Lib/NotificationHelpers'
+import _ from 'lodash'
 
 export default class Activity extends Component {
   static propTypes = {
@@ -21,10 +22,8 @@ export default class Activity extends Component {
   render () {
     let { activity } = this.props
     const content = getContent(activity)
-
-    const user = activity.fromUser
-    const hasAvatar = !!user && !!user.profile && !! user.profile.avatar
-    const hasFullName = !!user && !!user.profile && !! user.profile.fullName
+    const hasAvatar = !!_.get('activity.fromUser.user.profile.avatar')
+    const hasFullName = !!_.get('activity.fromUser.user.profile.fullName')
 
     return (
       <View style={styles.root}>
@@ -85,7 +84,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   innerButton: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingVertical: Metrics.baseMargin,
     paddingHorizontal: Metrics.doubleBaseMargin,
   },
@@ -98,11 +97,11 @@ const styles = StyleSheet.create({
     color: '#757575',
   },
   content: {
-    marginTop: Metrics.baseMargin / 2
+    marginTop: Metrics.baseMargin / 2,
   },
   contentText: {
     color: '#757575',
-    fontSize: 15
+    fontSize: 15,
   },
   description: {
     fontSize: 16,
@@ -111,10 +110,10 @@ const styles = StyleSheet.create({
     letterSpacing: 0.7,
   },
   avatar: {
-    marginHorizontal: Metrics.baseMargin
+    marginHorizontal: Metrics.baseMargin,
   },
   actionUserText: {
     fontWeight: '600',
     color: Colors.background,
-  }
+  },
 })

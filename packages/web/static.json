@@ -5,5 +5,9 @@
     "/**": {
       "Strict-Transport-Security": "max-age=7776000"
     }
-  }
+  },
+  "clean_urls": false,
+  "routes": {
+		"/**": "index.html"
+	}
 }

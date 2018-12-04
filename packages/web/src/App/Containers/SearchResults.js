@@ -114,6 +114,11 @@ class SearchResults extends Component {
     const { lastSearchResults } = this.state
     // const { resultTitle } = this.props
 
+    const seeItems = lastSearchResults.stories.filter(feedItem => feedItem.type === 'see')
+    const doItems = lastSearchResults.stories.filter(feedItem => feedItem.type === 'do')
+    const eatItems = lastSearchResults.stories.filter(feedItem => feedItem.type === 'eat')
+    const stayItems = lastSearchResults.stories.filter(feedItem => feedItem.type === 'stay')
+
     return (
       <Container>
         <ContentWrapper>
@@ -130,7 +135,35 @@ class SearchResults extends Component {
             <FeedItemGrid
               feedItems={lastSearchResults.stories}
               isShowAll={false}
-              label="STORIES"
+              label="ALL STORIES"
+            />
+          )}
+          {!!seeItems && (
+            <FeedItemGrid
+              feedItems={seeItems}
+              isShowAll={false}
+              label="THINGS TO SEE"
+            />
+          )}
+          {!!seeItems && (
+            <FeedItemGrid
+              feedItems={doItems}
+              isShowAll={false}
+              label="THINGS TO DO"
+            />
+          )}
+          {!!seeItems && (
+            <FeedItemGrid
+              feedItems={eatItems}
+              isShowAll={false}
+              label="THINGS TO EAT"
+            />
+          )}
+          {!!seeItems && (
+            <FeedItemGrid
+              feedItems={stayItems}
+              isShowAll={false}
+              label="PLACES TO STAY"
             />
           )}
         </ContentWrapper>

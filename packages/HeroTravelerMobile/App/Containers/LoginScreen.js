@@ -6,13 +6,12 @@ import {
   ScrollView,
   Text,
   TextInput,
-  Image,
   ImageBackground,
 } from 'react-native'
 import { connect } from 'react-redux'
 import {
   Actions as NavigationActions,
-  ActionConst as NavActionConst
+  ActionConst as NavActionConst,
 } from 'react-native-router-flux'
 
 import {Images, Colors} from '../Shared/Themes'
@@ -40,7 +39,6 @@ class Input extends React.Component {
 }
 
 class LoginScreen extends React.Component {
-
   static propTypes = {
     dispatch: PropTypes.func,
     fetching: PropTypes.bool,
@@ -49,7 +47,9 @@ class LoginScreen extends React.Component {
     error: PropTypes.string,
     goToMyFeed: PropTypes.func,
     signupFacebook: PropTypes.func,
-    clearErrors: PropTypes.func
+    clearErrors: PropTypes.func,
+    fromStory: PropTypes.bool,
+    fromGuide: PropTypes.bool,
   }
 
   constructor (props) {
@@ -62,17 +62,18 @@ class LoginScreen extends React.Component {
   }
 
   componentWillMount() {
-    this.props.clearErrors();
+    this.props.clearErrors()
   }
 
   componentWillReceiveProps (newProps) {
     if (!this.props.isLoggedIn && newProps.isLoggedIn) {
+      if (this.props.fromStory) return NavigationActions.popTo('story')
+      if (this.props.fromGuide) return NavigationActions.popTo('guide')
       this.props.goToMyFeed()
     }
   }
 
   handlePressLogin = () => {
-
     // TODO fix Ghetto check
     const conditions = _.every([
       this.state.userIdentifier,
@@ -95,7 +96,7 @@ class LoginScreen extends React.Component {
 
   _handleGraphQuery = (error, data) => {
     if (error) {
-      console.log('Error fetching data', error);
+      console.log('Error fetching data', error)
       return
     }
 
@@ -106,7 +107,7 @@ class LoginScreen extends React.Component {
       data.id,
       data.email,
       data.name,
-      userPicture
+      userPicture,
     )
   }
 
@@ -124,10 +125,10 @@ class LoginScreen extends React.Component {
     const editable = !fetching
     const textInputStyle = editable ? styles.input : styles.textInputReadonly
 
-    let errorText = this.props.error;
+    let errorText = this.props.error
 
-    if (errorText === "Unauthorized") {
-      errorText = "Invalid username, email, or password"
+    if (errorText === 'Unauthorized') {
+      errorText = 'Invalid username, email, or password'
     }
 
     return (
@@ -216,14 +217,13 @@ class LoginScreen extends React.Component {
       </ImageBackground>
     )
   }
-
 }
 
 const mapStateToProps = (state) => {
   return {
     error: state.login.error,
     fetching: state.login.fetching || state.signup.fetching,
-    isLoggedIn: state.login.isLoggedIn
+    isLoggedIn: state.login.isLoggedIn,
   }
 }
 

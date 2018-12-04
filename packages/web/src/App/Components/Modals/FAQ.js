@@ -31,7 +31,6 @@ const FAQs = [
 {q: 'How do I import a video?', a: 'After selecting the video option, simply tap at the bottom of the screen on “library” to bring up your videos from your camera roll.'},
 {q: 'Does HERO Traveler support 4K Video?', a: 'While you cannot take 4K videos within the app itself just yet, you can still import 4K videos.'},
 {q: 'How do I become a HERO Traveler Contributor?', a: 'On the HERO Traveler App, simply tap the “plus” sign at the bottom of any page to bring up the option to create a story or start filming a video.'},
-{q: 'How do I post a story?', a: 'Contributors are the cream of the crop, representing our most passionate users. To be labeled with the “Contributor” star on your profile, you must first publish 200 stories or more. To learn about other eligibility requirements, click here/ send us an email at contributors@herotraveler.com'},
 ]
 
 export default class FAQ extends Component {
@@ -50,6 +49,8 @@ export default class FAQ extends Component {
     return (
       <Wrapper>
         {this.renderFAQs(FAQs)}
+        <Question>How do I post a story?</Question>
+        <Answer>Contributors are the cream of the crop, representing our most passionate users. To be labeled with the “Contributor” badge on your profile, you must first publish 200 stories or more. To learn about other eligibility requirements send us an email at <a href="mailto:contributors@herotraveler.com">contributors@herotraveler.com</a></Answer>
       </Wrapper>
     )
   }

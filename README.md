@@ -35,7 +35,7 @@ npm run bootstrap
 * Set up a MongoDB deployment - Click 'Create new'
 * Follow the steps, choosing 'Sandbox' and appropriate settings
 * Open up your newly created DB
-* Click on the `Users` tabs and Create a new user (this will be the DB owner) 
+* Click on the `Users` tabs and Create a new user (this will be the DB owner)
 * Copy the MongoDB uri, (looks something like `mongodb://<dbuser>:<dbpassword>@ds033186.mlab.com:33186/kat_herotraveler`), fill in the username + pw for your DB owner. Set aside--you will use it later in [ENV set-up](#setting-up-your-env)
 
 ### 2. Cloudinary (Image + video storage + management)
@@ -61,7 +61,7 @@ Eager Notification URL: `https://06859835.ngrok.io/story/draft/cover-video`(just
 
 ## Setting up your ENV
 ### 1. Shell profile
-* First, get your NPM auth token, which you will have after logging into NPM registry, by opening up `~/.npmrc` and copying whatever follows authToken=	
+* First, get your NPM auth token, which you will have after logging into NPM registry, by opening up `~/.npmrc` and copying whatever follows authToken=
 * Add `export NPM_TOKEN="{^that}"` to your `.bash_profile`, `.zshrc`, or equivalent for you shell.
 * Close and reopen your shell to allow this change to take effect
 
@@ -122,7 +122,7 @@ npm run start
 ```
 _Note: Android has been neglected for the v1, and does not work yet._
 
-To run the application in development mode on your phone, open xcode with the following command: 
+To run the application in development mode on your phone, open xcode with the following command:
 
 ```bash
 $ open packages/HeroTravelerMobile/ios/HeroTravelerMobile.xcworkspace
@@ -131,6 +131,23 @@ $ open packages/HeroTravelerMobile/ios/HeroTravelerMobile.xcworkspace
 #### Dev Mode
 1. xcode --> Edit Scheme --> Make sure it's in debug mode not release mode so that you can access Dev Menu via shake gesture
 2. Make sure using ngrok if testing on device because localhost is disabled.  And make sure you use the https version of the ngrok url
+
+#### Building on Mojave with Xcode 10, RN version 0.53
+
+* Open .xcodeproj file directly from hero-traveler-monorepo
+* Targeting simulator will throw this error: `Build input file cannot be found: '/Users/qinguan/Desktop/reactnative/CodeCollab/node_modules/react-native/Libraries/WebSocket/libfishhook.a'`
+  * To Fix: copy libfishhook.a from my ios/build/Build/Products/Debug-iphonesimulator/ and paste it into ../node_modules/react-native/Libraries/WebSocket/
+* Physical device target will get this error: `No member named '__rip' in '__darwin_arm_thread_state64'`
+  * To Fix: follow steps at https://github.com/facebook/react-native/issues/20774
+* If you run into a keychain permission dialog error or ‘PhaseScriptExecution’ err, run `brew upgrade carthage` and restart your computer
+
+## Xcode TestFlight Deployment
+
+1. Change version/build number (version must be greater than last published app version, increment build number by 1)
+2. Product > Archive (have to have target set to physical or generic device)
+3. Window > Organizer
+4. Add Description
+5. Click Distribute App
 
 ## Docker, express-api and deployment
 

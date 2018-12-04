@@ -1,7 +1,7 @@
 import React from 'react'
 import {
   Scene,
-  Actions as NavActions
+  Actions as NavActions,
 } from 'react-native-router-flux'
 import _ from 'lodash'
 
@@ -29,7 +29,6 @@ import FAQScreen from '../Containers/FAQScreen'
 import PrivacyScreen from '../Components/PrivacyScreen'
 import ChangePasswordScreen from '../Containers/ChangePasswordScreen'
 import ChangeEmailScreen from '../Containers/ChangeEmailScreen'
-
 
 // Story reading & creating
 import StoryReadingScreen from '../Containers/StoryReadingScreen'
@@ -69,12 +68,12 @@ const darkNavBarProps = {
   leftButtonTextStyle: Styles.navText,
   rightButtonTextStyle: Styles.navText,
   leftButtonIconStyle: Styles.navBarBack,
-  rightButtonIconStyle: Styles.navBarBack
+  rightButtonIconStyle: Styles.navBarBack,
 }
 
 const extraPaddingDarkNavBarProps = {
   ...Styles.navBar,
-  paddingTop: 5
+  paddingTop: 5,
 }
 
 const clearNavBarProps = {
@@ -88,13 +87,13 @@ const clearNavBarProps = {
 }
 
 const redBack = {
-  leftButtonIconStyle: Styles.buttonRed
+  leftButtonIconStyle: Styles.buttonRed,
 }
 
 const tabBarProps = {
   tabs: true,
   tabBarStyle: Styles.tabBar,
-  tabBarSelectedItemStyle: Styles.tabBarActive
+  tabBarSelectedItemStyle: Styles.tabBarActive,
 }
 
 // const launchNavButton = (props) => {
@@ -177,6 +176,7 @@ export default NavActions.create(
         key='launchScreen'
         component={LaunchScreen}
         hideNavBar={false}
+        hideBackImage={true}
       />
       <Scene
         key='signup'
@@ -490,5 +490,5 @@ export default NavActions.create(
         component={EditGuideStories}
         hideNavBar
       />
-    </Scene>
+    </Scene>,
 )

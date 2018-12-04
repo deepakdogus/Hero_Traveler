@@ -69,3 +69,6 @@ typings/
 packages/web/src/App/Config/Env.js
 
 v8-compile-cache-0
+
+# Redis files
+dump.rdb

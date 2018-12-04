@@ -1,9 +1,8 @@
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import env from '../Config/Env'
 
-const branch = window.branch
-
 /*global FB*/
+const branch = window.branch
 const videoThumbnailOptions = {
   video: true,
   width: 385.5,
@@ -19,7 +18,7 @@ const popupCenter = (url, title, w, h) => {
 
   const left = ((width / 2) - (w / 2)) + dualScreenLeft
   const top = ((height / 2) - (h / 2)) + dualScreenTop
-  
+
   window.open(url, title, `toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=1,width=${w},height=${h},top=${top},left=${left}`)
 }
 
@@ -47,25 +46,32 @@ const generateShareDataFromItem = (feedItem, feedItemType) => {
 }
 
 export const createDeepLinkWeb = async (feedItem, feedItemType) => {
-  const { id, coverImage, coverVideo, title, description } = feedItem
-  const coverMediaURL = coverImage
-  ? getImageUrl(coverImage)
-  : getImageUrl(coverVideo, 'optimized', videoThumbnailOptions)
+  const data = generateShareDataFromItem(feedItem, feedItemType)
 
-  FB.ui({
-    method: 'share_open_graph',
-    action_type: 'news.publishes',
-    action_properties: JSON.stringify({
-      article: {
-        'fb:app_id': '1589340484457361',
-        'og:title': title,
-        'og:url': `https://ht-web.herokuapp.com/${feedItemType}/${id}`,
-        'og:description': description,
-        'og:image': coverMediaURL,
-        "al:ios:url": `com.herotraveler.herotraveler-beta://?${feedItemType}Id=${id}&title=${title}`,
-        "al:web:should_fallback": "false",
-        "al:ios:app_store_id": "1288145566",
-      }
+  const linkData = {
+    channel: 'facebook',
+    feature: 'share',
+    data,
+  }
+
+  branch.link(linkData, (err, link) => {
+    if (err) {
+      console.error(`Share fail with error: ${err}`)
+      return
+    }
+
+    FB.ui({
+      method: 'share_open_graph',
+      action_type: 'news.reads',
+      action_properties: JSON.stringify({
+        article: {
+          'fb:app_id': env.FB_APP_ID,
+          'og:title': data['$og_title'],
+          'og:url': link,
+          'og:description':  data['$og_description'],
+          'og:image': data['$og_image_url'] || data['$og_video'],
+        },
+      }),
     })
   })
 }

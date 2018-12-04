@@ -468,8 +468,18 @@ const mapStateToProps = (state, ownProps) => {
 
   let feedItemProps = null
   if (feedItem) {
+    /* TODO: unify author prop on algolia upon deprecating pre-Places Search
+     * versions of the RN app
+     *
+     * algolia story author = username (historical reasons)
+     * algolia story authorId = id (the quick fix solution)
+     * algolia guide author = id
+     *
+     * author = id matches existing structure when pulling from the server,
+     * so algolia story index author prop should eventually be patched to id
+     */
     feedItemProps = {
-      author: entities.users.entities[feedItem.author],
+      author: entities.users.entities[feedItem.authorId ? feedItem.authorId : feedItem.author],
       isBookmarked: isStoryBookmarked(entities.users, sessionUserId, feedItem.id),
     }
     feedItemProps.isLiked = isStory ?

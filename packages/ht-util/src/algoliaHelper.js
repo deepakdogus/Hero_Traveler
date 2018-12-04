@@ -77,7 +77,8 @@ function formatStorySearchObject(story) {
     id: story._id,
     objectID: story._id,
     title: story.title,
-    author: story.author.id,
+    author: story.author.username,
+    authorId: story.author.id,
     coverImage: story.coverImage,
     coverVideo: story.coverVideo,
     type: story.type,
@@ -99,12 +100,12 @@ function addStoryToIndex(story) {
   return algoliaAction(storyIndex, 'addObject', formatStorySearchObject(story))
 }
 
-function updateStoryIndex(guide) {
-  return algoliaAction(storyIndex, 'partialUpdateObject', formatStorySearchObject(guide))
+function updateStoryIndex(story) {
+  return algoliaAction(storyIndex, 'partialUpdateObject', formatStorySearchObject(story))
 }
 
-function updateMultipleStories(guides) {
-  const formattedStories = guides.map(formatStorySearchObject)
+function updateMultipleStories(stories) {
+  const formattedStories = stories.map(formatStorySearchObject)
   return algoliaAction(storyIndex, 'partialUpdateObjects', formattedStories)
 }
 

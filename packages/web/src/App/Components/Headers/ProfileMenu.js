@@ -64,7 +64,7 @@ class ProfileMenu extends React.Component{
   }
 
   rerouteToCustomizeInterests = () => {
-    this.rerouteAndClose('/signup/topics')
+    this.rerouteAndClose('/profile/editTopics')
   }
 
   rerouteAndClose = (routePath) => {
@@ -81,7 +81,7 @@ class ProfileMenu extends React.Component{
   }
 
   _openSaveEditsModalToCustomizeInterests = () => {
-    this._saveEditsModalHelper(this.rerouteToCustomizeInterests, '/signup/topics')
+    this._saveEditsModalHelper(this.rerouteToCustomizeInterests, '/profile/editTopics')
   }
 
   _openSaveEditsModalToExplore = () => {

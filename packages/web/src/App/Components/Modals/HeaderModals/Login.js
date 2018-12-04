@@ -1,16 +1,16 @@
-import React from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import onClickOutside from 'react-onclickoutside'
 
 import LoginActions from '../../../Shared/Redux/LoginRedux'
 import SignupActions from '../../../Shared/Redux/SignupRedux'
 import UXActions from '../../../Redux/UXRedux'
+
+import OnClickOutsideModal from '../OnClickOutsideModal'
 import RoundedButton from '../../RoundedButton'
 import SocialMediaButton from '../Shared/SocialMediaButton'
 import {
-  Container,
   Title,
   Text,
   HasAccount,
@@ -29,13 +29,14 @@ const LoginErrorText = styled(Text)`
   margin: 0;
   color: ${props => props.theme.Colors.errorRed};
 `
+
 const LoginFetchingText = styled(Text)`
   font-size: 14px;
   margin: 0;
   color: ${props => props.theme.Colors.signupGrey};
 `
 
-class Login extends React.Component {
+class Login extends Component {
   static propTypes = {
     loginReduxFetching: PropTypes.bool,
     loginReduxError: PropTypes.string,
@@ -52,11 +53,6 @@ class Login extends React.Component {
       password: '',
       localError: '',
     }
-  }
-
-  handleClickOutside = (e) => {
-    e.preventDefault()
-    this.props.closeGlobalModal()
   }
 
   onAttemptLogin = (e) => {
@@ -107,7 +103,7 @@ class Login extends React.Component {
     }
 
     return (
-      <Container>
+      <OnClickOutsideModal>
         <Title>Login</Title>
         <SocialMediaButton
           type='facebookSignup'
@@ -146,7 +142,7 @@ class Login extends React.Component {
             &nbsp;Sign up
           </SignupText>
         </HasAccount>
-      </Container>
+      </OnClickOutsideModal>
     )
   }
 }
@@ -171,4 +167,4 @@ function mapDispatchtoProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchtoProps,
-)(onClickOutside(Login))
+)(Login)

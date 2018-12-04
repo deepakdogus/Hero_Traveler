@@ -167,7 +167,7 @@ class AddStoryToGuides extends SharedComponent {
   saveButton = () => {
     return (
       <RoundedButton
-        text={'Save Changes'}
+        text={'Add to Guide'}
         margin='none'
         width='180px'
         padding='mediumEven'

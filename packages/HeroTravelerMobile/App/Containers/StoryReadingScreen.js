@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import {Text, View, Animated, TouchableOpacity, Image} from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
-import MapView from 'react-native-maps';
-import RNDraftJSRender from 'react-native-draftjs-render';
+import MapView from 'react-native-maps'
+import RNDraftJSRender from 'react-native-draftjs-render'
 import {compose, withHandlers} from 'recompose'
 import _ from 'lodash'
 
@@ -35,9 +35,9 @@ const enhanceStoryVideo = compose(
       },
       togglePlay: () => () => {
         _ref.toggle()
-      }
+      },
     }
-  })
+  }),
 )
 
 const StoryVideo = enhanceStoryVideo((props) => {
@@ -69,7 +69,7 @@ const atomicHandler = (item: Object): any => {
     const width = Metrics.screenWidth
     const height = Math.min(
       getRelativeHeight(width, item.data),
-      Metrics.maxContentHeight
+      Metrics.maxContentHeight,
     ) || Metrics.maxContentHeight
 
     switch (item.data.type) {
@@ -89,7 +89,7 @@ const atomicHandler = (item: Object): any => {
             </View>
             {!!item.text && <Text style={styles.caption}>{item.text}</Text>}
           </View>
-        );
+        )
       case 'video':
         const url = getVideoUrlFromString(item.data.url, true)
         const downloadUrl = getVideoUrlFromString(item.data.url, false)
@@ -107,7 +107,7 @@ const atomicHandler = (item: Object): any => {
           </View>
         )
       default:
-        return null;
+        return null
     }
   }
 
@@ -117,10 +117,18 @@ const atomicHandler = (item: Object): any => {
 class StoryReadingScreen extends React.Component {
   static propTypes = {
     user: PropTypes.object,
+    author: PropTypes.object,
     storyId: PropTypes.string,
     story: PropTypes.object,
     fetching: PropTypes.bool,
     error: PropTypes.object,
+    toggleBookmark: PropTypes.func,
+    isBookmarked: PropTypes.bool,
+    toggleLike: PropTypes.func,
+    isLiked: PropTypes.bool,
+    flagStory: PropTypes.func,
+    completeTooltip: PropTypes.func,
+    requestStory: PropTypes.func,
   };
 
   constructor(props) {
@@ -132,6 +140,10 @@ class StoryReadingScreen extends React.Component {
     if (!this.props.story) {
       this.getStory()
     }
+  }
+
+  componentDidMount = () => {
+    if (!this.props.user) NavActions.launchScreen({fromStory: true})
   }
 
   _onPressBookmark = () => {
@@ -167,7 +179,7 @@ class StoryReadingScreen extends React.Component {
 
   renderHashtags = () => {
     let hashtags = _.compact(this.props.story.hashtags.map((hashtag) => {
-      return "#" + hashtag.title
+      return '#' + hashtag.title
     }))
     return <Text style={[rendererStyles.unstyled, styles.sectionTextHighlight]}>{hashtags.join(', ')}</Text>
   }
@@ -198,15 +210,32 @@ class StoryReadingScreen extends React.Component {
     this.props.requestStory(this.props.storyId)
   }
 
+  stripLinks = (draftjsContent) => {
+    const renderContent = Immutable.asMutable(draftjsContent, { deep: true })
+    const entityMap = renderContent ? renderContent.entityMap : null
+    if (renderContent && entityMap) {
+      Object.keys(renderContent.blocks).forEach(key => {
+        const block = renderContent.blocks[key]
+        if (block.entityRanges) {
+          block.entityRanges = block.entityRanges.filter(
+            entityRange => !entityMap[entityRange.key] === 'LINK',
+          )
+        }
+      })
+    }
+    return renderContent
+  }
+
   renderBody = () => {
     const {story} = this.props
+    const draftjsContent = this.stripLinks(story.draftjsContent)
     return (
       <Fragment>
         <View style={styles.divider}/>
         <View style={styles.content}>
           {!!story.draftjsContent &&
             <RNDraftJSRender
-              contentState={Immutable.asMutable(story.draftjsContent, {deep: true})}
+              contentState={draftjsContent}
               customStyles={rendererStyles}
               atomicHandler={atomicHandler}
             />
@@ -232,7 +261,7 @@ class StoryReadingScreen extends React.Component {
               >
                 <MapView.Marker coordinate={{
                   latitude: story.locationInfo.latitude,
-                  longitude: story.locationInfo.longitude
+                  longitude: story.locationInfo.longitude,
                 }} />
               </MapView>
             </View>
@@ -300,6 +329,7 @@ class StoryReadingScreen extends React.Component {
       story, author, user, fetching, error,
       isBookmarked, isLiked,
     } = this.props
+    if (!user) return null
 
     return (
       <ReadingScreensOverlap
@@ -348,7 +378,7 @@ const mapDispatchToProps = (dispatch) => {
     toggleBookmark: (userId, storyId) => dispatch(StoryActions.storyBookmark(userId, storyId)),
     requestStory: (storyId) => dispatch(StoryActions.storyRequest(storyId)),
     flagStory: (userId, storyId) => dispatch(StoryActions.flagStory(userId, storyId)),
-    completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips}))
+    completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips})),
   }
 }
 

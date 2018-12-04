@@ -1,6 +1,5 @@
 import React from 'react'
 
-import HorizontalDivider from '../HorizontalDivider'
 import {
   Container,
   Wrapper,
@@ -12,7 +11,6 @@ import {
 
 const Privacy = () => (
   <Wrapper>
-    <HorizontalDivider color='light-grey'/>
       <Container>
         <Title>Privacy Policy</Title>
         <Body>

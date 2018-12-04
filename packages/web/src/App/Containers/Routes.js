@@ -13,6 +13,7 @@ import SearchResults from './SearchResults'
 import EditStory from './EditStory'
 import SignupSocial from './Signup/SignupSocial'
 import SignupTopics from './Signup/SignupTopics'
+import EditTopics from './EditProfile/EditTopics'
 import Profile from './Profile'
 import Header from './Header'
 import Guide from './Guide'
@@ -29,6 +30,7 @@ class AppRoot extends Component {
         <AuthRoute exact path='/feed' component={Feed} />
         <AuthRoute path='/signup/social' component={SignupSocial} />
         <AuthRoute path='/signup/topics' component={SignupTopics} />
+        <AuthRoute path='/profile/editTopics' component={EditTopics} />
         <AuthRoute path='/edit/guide/:guideId' component={CreateGuide} />
         <Route path='/story/:storyId' component={Story} />
         <Route path='/guide/:guideId' component={Guide} />

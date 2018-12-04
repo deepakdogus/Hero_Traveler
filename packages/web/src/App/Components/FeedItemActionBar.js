@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Icon from './Icon'
 import {Col} from './FlexboxGrid'
+import { shareLinkOnTwitter, shareLinkOnEmail } from '../Lib/sharingWeb'
 
 const StyledIcon = styled(Icon)`
   display: block;
@@ -18,27 +19,6 @@ const StyledIcon = styled(Icon)`
   }
 `
 
-const HandMadeIcon = styled.div`display: block;
-  margin: auto;
-  height: 14px;
-  width: 14px;
-  border-radius: 14px;
-  border-style: solid;
-  border-color: ${props => props.theme.Colors.grey};
-  border-width: 1px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-`
-
-const HandMadeIconMinus = styled.div`
-  display: block;
-  height: 1px;
-  width: 9px;
-  background-color: ${props => props.theme.Colors.grey};
-`
-
 const LeftActionBarIcon = styled(StyledIcon)``
 
 const BookmarkIcon = styled(StyledIcon)``
@@ -50,8 +30,6 @@ const FacebookIcon = styled(StyledIcon)`
   }
 `
 const TwitterIcon = styled(StyledIcon)``
-
-const DotsIcon = styled(StyledIcon)``
 
 const ActionBarContainer = styled(Col)`
   z-index: 1;
@@ -96,6 +74,7 @@ const AbsoluteWrapper = styled.div`
     padding: 10px 0;
     display: flex;
     flex-direction: row;
+    overflow-x: auto;
     justify-content: space-around;
     width: 100%;
     border-top: 1px solid ${props => props.theme.Colors.navBarText};
@@ -143,6 +122,16 @@ export default class StoryActionBar extends React.Component {
     this.props.onClickFlag(this.props.feedItem.id)
   }
 
+  _onClickEmail = () => {
+    const { feedItem } = this.props
+    shareLinkOnEmail(feedItem, 'story')
+  }
+
+  _onClickTwitter = async () => {
+    const { feedItem } = this.props
+    shareLinkOnTwitter(feedItem, 'story') 
+  }
+
   render () {
     const {
       feedItem,
@@ -186,49 +175,22 @@ export default class StoryActionBar extends React.Component {
             name='squareFacebookOutline'
             onClick={onClickShare}
           />
-          {/* hidden until after launch */}
-          { false &&
-            <TwitterIcon name='squareTwitterOutline'/>
-          }
+          <ClickableWrapper>
+            <TwitterIcon onClick={this._onClickTwitter} name='squareTwitterOutline'/>
+          </ClickableWrapper>
+          <ClickableWrapper>
+            <StyledIcon name='email' onClick={this._onClickEmail} />
+          </ClickableWrapper>
           {/* present at top level until after launch */}
           {isStory &&
-              <ClickableWrapper>
-                <StyledIcon
-                  name='flag'
-                  onClick={this._onClickFlag}
-                />
-              </ClickableWrapper>
-            }
-          {/* hidden until after launch */}
-          { false &&
-            !this.state.showMore &&
-            <DotsIcon
-              name='dots'
-              onClick={this.toggleShowMore}
-            />
+            <ClickableWrapper>
+              <StyledIcon
+                name='flag'
+                onClick={this._onClickFlag}
+              />
+            </ClickableWrapper>
           }
         </ActionBarContainer>
-        {/* hidden until after launch */}
-        { false &&
-          this.state.showMore &&
-          <ActionBarContainer>
-            <StyledIcon name='google'/>
-            <StyledIcon name='tumblr'/>
-            <StyledIcon name='pinterest'/>
-            <StyledIcon name='email'/>
-            {isStory &&
-              <ClickableWrapper>
-                <StyledIcon
-                  name='report'
-                  onClick={this._onClickFlag}
-                />
-              </ClickableWrapper>
-            }
-            <HandMadeIcon onClick={this.toggleShowMore}>
-              <HandMadeIconMinus />
-            </HandMadeIcon>
-          </ActionBarContainer>
-        }
       </AbsoluteWrapper>
     )
   }

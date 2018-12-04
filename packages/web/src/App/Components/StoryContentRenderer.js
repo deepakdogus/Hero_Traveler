@@ -120,11 +120,12 @@ const blocks = {
   'header-six': (children, { keys }) => children.map((child, i) => <h6 key={keys[i]}>{child}</h6>),
 }
 
+/* Pasted links are automatically made into Link entities, but we do not
+ * allow active links offiste at this time.
+ */
 const entities = {
   LINK: (children, entity, { key }) => (
-    <a key={key} href={entity.url}>
-      {children}
-    </a>
+    <StyledStrong key={key}>{children}</StyledStrong>
   ),
 }
 

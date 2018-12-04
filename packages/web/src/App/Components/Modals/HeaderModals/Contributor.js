@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import onClickOutside from 'react-onclickoutside'
 
 import logo from '../../../Shared/Images/ht-icons/icon_contributor-popup-logo@2x.png'
-import contributorSrc from '../../../Shared/Images/ht-icons/icon_contibutor-popup-badge@2x.png'
+import contributorSrc from '../../../Shared/Images/ht-icons/icon_h_contibutor-popup-badge@2x.png'
 import {
   Title,
   Text,
@@ -17,6 +17,7 @@ const Container = styled.div`
 const RestyledTitle = styled(Title)`
   letter-spacing: 2.5px;
   margin-top: 10px;
+  padding-bottom: 0;
 `
 
 const Description = styled(Text)`

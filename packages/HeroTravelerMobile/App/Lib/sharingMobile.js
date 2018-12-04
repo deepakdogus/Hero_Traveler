@@ -18,7 +18,7 @@ export const createBranchUniversalObj = async (title, contentImageUrl, contentDe
   }
 
   const controlParams = {
-    $desktop_url: 'https://herotraveler.com/',
+    $desktop_url: 'https://www.herotraveler.com/',
   }
 
   const {url} = await branchUniversalObject.generateShortUrl(linkProperties, controlParams)

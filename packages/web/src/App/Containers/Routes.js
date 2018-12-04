@@ -90,6 +90,7 @@ class AppRoot extends Component {
         <AuthRoute exact path='/feed' component={Feed} />
         <AuthRoute path='/signup/social' component={SignupSocial} />
         <AuthRoute path='/signup/topics' component={SignupTopics} />
+        <AuthRoute path='/profile/editTopics' component={EditTopics} />
         <AuthRoute path='/edit/guide/:guideId' component={CreateGuide} />
         <Route path='/story/:storyId' component={Story} />
         <Route path='/guide/:guideId' component={Guide} />

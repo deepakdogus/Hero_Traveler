@@ -18,7 +18,8 @@ export default class FeedHeader extends React.Component {
   }
 
   renderSlides(stories) {
-    const storyKeys = Object.keys(stories)
+    // limit number of slides to show to only show 5 slides on the Hero
+    const storyKeys = Object.keys(stories).slice(0, 5)
 
     return storyKeys.map((key) => {
       const story = stories[key]

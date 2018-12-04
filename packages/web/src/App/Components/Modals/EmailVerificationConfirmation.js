@@ -4,10 +4,11 @@ import { push } from 'react-router-redux'
 import PropTypes from 'prop-types'
 
 import UXActions from '../../Redux/UXRedux'
+
+import OnClickOutsideModal from './OnClickOutsideModal'
 import {
-  Container,
   Title,
-  Text
+  Text,
 } from './Shared'
 import RoundedButton from '../RoundedButton'
 import { Row } from '../FlexboxGrid'
@@ -27,7 +28,7 @@ class EmailVerificationConfirmation extends React.Component {
 
   render() {
     return (
-      <Container>
+      <OnClickOutsideModal>
         <Title>Email Verification</Title>
         <Text>Your email has been verified</Text>
         <Row center='xs'>
@@ -38,7 +39,7 @@ class EmailVerificationConfirmation extends React.Component {
             onClick={this.closeModal}
           />
         </Row>
-      </Container>
+      </OnClickOutsideModal>
     )
   }
 }
@@ -56,4 +57,7 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmailVerificationConfirmation)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(EmailVerificationConfirmation)

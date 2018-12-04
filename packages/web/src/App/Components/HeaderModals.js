@@ -4,25 +4,28 @@ import Modal from 'react-modal'
 import _ from 'lodash'
 
 import styled from 'styled-components'
+// Default Modals
 import Login from './Modals/HeaderModals/Login'
 import Signup from './Modals/HeaderModals/Signup'
 import SaveEdits from './Modals/HeaderModals/SaveEdits'
 import ResetPasswordRequest from './Modals/HeaderModals/ResetPasswordRequest'
 import ResetPasswordAttempt from './Modals/HeaderModals/ResetPasswordAttempt'
+import ChangeTempUsername from './Modals/ChangeTempUsername'
 import Contributor from './Modals/HeaderModals/Contributor'
-import Comments from './Modals/HeaderModals/Comments'
-import Settings from './Modals/Settings'
-import Documentation from './Modals/Documentation'
-import Inbox from './Modals/Inbox'
-import RightModal from './RightModal'
-import CenterModal from './CenterModal'
-import NotificationsThread from './Modals/NotificationsThread'
 import FlagStory from './Modals/FlagStory'
 import DeleteFeedItem from './Modals/DeleteFeedItem'
-import ChangeTempUsername from './Modals/ChangeTempUsername'
-import AddStoryToGuides from './Modals/AddStoryToGuides'
 import RemoveStoryFromGuide from './Modals/RemoveStoryFromGuide'
 import EmailVerificationConfirmation from './Modals/EmailVerificationConfirmation'
+// Right Modals
+import RightModal from './RightModal'
+import Settings from './Modals/Settings'
+import NotificationsThread from './Modals/NotificationsThread'
+import Comments from './Modals/HeaderModals/Comments'
+import Inbox from './Modals/Inbox'
+import AddStoryToGuides from './Modals/AddStoryToGuides'
+// Center Modals
+import CenterModal from './CenterModal'
+import Documentation from './Modals/Documentation'
 
 const Container = styled.div``
 
@@ -32,13 +35,14 @@ const customModalStyles = {
     bottom: 'auto',
     minHeight: '10rem',
     left: '50%',
-    padding: '2rem',
     position: 'fixed',
     right: 'auto',
     top: '50%',
     transform: 'translate(-50%, -50%)',
     minWidth: '20rem',
     maxWidth: '28rem',
+    overflow: 'visible',
+    padding: '0',
   },
   overlay: {
     backgroundColor: 'rgba(0, 0, 0, .5)',
@@ -51,6 +55,7 @@ const contributorModalStyles = _.merge(
   customModalStyles,
   {
     content: {
+      maxWidth: '380px',
       padding: '1em',
     },
   },

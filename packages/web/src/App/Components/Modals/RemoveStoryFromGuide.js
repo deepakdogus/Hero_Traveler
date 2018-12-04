@@ -6,9 +6,7 @@ import { connect } from 'react-redux'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
 import {Row} from '../FlexboxGrid'
 import RoundedButton from '../RoundedButton'
-import {Title} from './Shared'
-
-const Container = styled.div``
+import { Container, Title } from './Shared'
 
 const StyledTitle = styled(Title)`
   color: ${props => props.theme.Colors.background};

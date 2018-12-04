@@ -73,6 +73,9 @@ function deleteUserFromIndex(userId) {
 // stories
 function formatStorySearchObject(story) {
   return {
+    _id: story._id,
+    id: story._id,
+    objectID: story._id,
     title: story.title,
     author: story.author.id,
     coverImage: story.coverImage,
@@ -83,10 +86,8 @@ function formatStorySearchObject(story) {
     draft: story.draft,
     currency: story.currency,
     cost: story.cost,
-    _id: story._id,
     hashtags: story.hashtags,
     content: story.content,
-    objectID: story._id,
     _geoloc: {
       lat: story.locationInfo.latitude,
       lng: story.locationInfo.longitude,
@@ -103,7 +104,7 @@ function updateStoryIndex(guide) {
 }
 
 function updateMultipleStories(guides) {
-  const formattedStories = guides.map(formatGuideSearchObject)
+  const formattedStories = guides.map(formatStorySearchObject)
   return algoliaAction(storyIndex, 'partialUpdateObjects', formattedStories)
 }
 
@@ -115,6 +116,7 @@ function deleteStoryFromIndex(storyId) {
 function formatGuideSearchObject(guide) {
   return {
     _id: guide._id,
+    id: guide._id,
     objectID: guide._id,
     author: guide.author.id,
     title: guide.title,

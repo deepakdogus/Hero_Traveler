@@ -83,22 +83,22 @@ export default class FeedItemList extends React.Component {
         We only need the first 4 elements for suggestions
         We will improve this check to allow 'pagination' will carousel scroll
       */
-      if (type === 'suggestions' && index >= 4) return rows
-      if (isHorizontalList && index >= 2 && !isShowAll) return rows
-      if (index > itemsPerPage * this.state.page) return rows
+     if (type === 'suggestions' && index >= 4) return rows
+     if (isHorizontalList && index >= 2 && !isShowAll) return rows
+     if (index > itemsPerPage * this.state.page) return rows
 
       if (!feedItem) return rows
       if (index !== 0 && !isHorizontalList) {
         rows.push((
           <StyledDivider
-            key={`hr-${feedItem._id}`}
+            key={`hr-${feedItem.id}`}
             color={'lighter-grey'}
           />
         ))
       }
       rows.push((
         <FeedItemPreview
-          key={feedItem._id}
+          key={feedItem.id}
           guideId={guideId}
           feedItem={feedItem}
           isGuideRow={type === 'guideRow'}
@@ -164,16 +164,17 @@ export default class FeedItemList extends React.Component {
 
     return (
       <Wrapper {...wrapperProps}>
-        {!isHorizontalList
-          ? (<InfiniteScroll
+        {!isHorizontalList ? (
+          <InfiniteScroll
             pageStart={1}
             loadMore={this.loadFeedItems}
             hasMore={this.state.hasMore}
           >
             {renderedFeedItems}
-          </InfiniteScroll>)
-          : renderedFeedItems
-        }
+          </InfiniteScroll>
+        ) : (
+          renderedFeedItems
+        )}
       </Wrapper>
     )
   }

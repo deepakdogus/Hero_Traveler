@@ -5,12 +5,11 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import algoliasearchModule from 'algoliasearch'
 import algoliaSearchHelper from 'algoliasearch-helper'
-import _ from 'lodash'
 
 import env from '../Config/Env'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
 
-import GuideStoriesOfType from '../Components/GuideStoriesOfType'
+import FeedItemGrid from '../Components/FeedItemGrid'
 import HorizontalDivider from '../Components/HorizontalDivider'
 
 const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
@@ -27,7 +26,7 @@ const Container = styled.div`
 const ContentWrapper = styled.div`
   position: relative;
   margin: 0 auto;
-  max-width: 800px;
+  max-width: 960px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding: 0;
   }
@@ -121,15 +120,15 @@ class SearchResults extends Component {
           <ResultTitle>{`Result Title`}</ResultTitle>
           <StyledDivider color="light-grey" />
           {!!lastSearchResults.guides.length && (
-            <GuideStoriesOfType
-              stories={lastSearchResults.guides}
+            <FeedItemGrid
+              feedItems={lastSearchResults.guides}
               isShowAll={false}
               label="GUIDES"
             />
           )}
           {!!lastSearchResults.stories.length && (
-            <GuideStoriesOfType
-              stories={lastSearchResults.stories}
+            <FeedItemGrid
+              feedItems={lastSearchResults.stories}
               isShowAll={false}
               label="STORIES"
             />

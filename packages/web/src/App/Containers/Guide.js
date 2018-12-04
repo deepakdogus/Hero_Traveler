@@ -20,7 +20,7 @@ import GoogleMap from '../Components/GoogleMap'
 import FeedItemMetaInfo from '../Components/FeedItemMetaInfo'
 import FeedItemActionBar from '../Components/FeedItemActionBar'
 import TabBar from '../Components/TabBar'
-import GuideStoriesOfType from '../Components/GuideStoriesOfType'
+import FeedItemGrid from '../Components/FeedItemGrid'
 import HorizontalDivider from '../Components/HorizontalDivider'
 import Footer from '../Components/Footer'
 import { createDeepLinkWeb } from '../Lib/sharingWeb'
@@ -32,7 +32,7 @@ const Container = styled.div`
   }
 `
 
-const wrapperMaxWidth = 800
+const wrapperMaxWidth = 960
 const ContentWrapper = styled.div`
   position: relative;
   margin: 0 auto;
@@ -185,20 +185,9 @@ class Guide extends Component {
     }
   }
 
-  getStoriesAndAuthorsByType = (type) => {
-    const {guideStories, users} = this.props
-    const authors = {}
-    const storiesOfType = guideStories.filter(story => {
-      if (story.type === type) {
-        if (!authors[story.author]) authors[story.author] = users[story.author]
-        return true
-      }
-      else return false
-    })
-    return {
-      stories: storiesOfType,
-      authors: authors,
-    }
+  getStoriesByType = (type) => {
+    const { guideStories } = this.props
+    return guideStories.filter(story => story.type === type)
   }
 
   shouldDisplay = (type) => {
@@ -207,17 +196,16 @@ class Guide extends Component {
   }
 
   getGuideStoriesOfTypeProps(type) {
-    const { activeTab } = this.state
     if (type === 'OVERVIEW') return {}
     const label = type === 'STAY' ? `PLACES TO STAY` : `THINGS TO ${type}`
     // onClickShowAll={this.onClickTab}
     return {
-      guideId: this.props.guide.id,
       type,
       label,
-      isShowAll: activeTab === type,
-      ...this.getStoriesAndAuthorsByType(type.toLowerCase()),
+      isShowAll: this.state.activeTab === type,
+      feedItems: this.getStoriesByType(type.toLowerCase()),
       onClickShowAll: this.onClickTab,
+      guideId: this.props.match.params.guideId,
     }
   }
 
@@ -243,7 +231,7 @@ class Guide extends Component {
     const { activeTab } = this.state
 
     if (!guide || !author) return null
-    const selectedStoriesAndAuthors = this.getStoriesAndAuthorsByType(activeTab.toLowerCase())
+    const selectedStoriesAndAuthors = this.getStoriesByType(activeTab.toLowerCase())
 
     return (
       <Container>
@@ -260,7 +248,7 @@ class Guide extends Component {
           />
           {activeTab !== 'OVERVIEW' &&
             <GoogleMap
-              stories={selectedStoriesAndAuthors.stories}
+              stories={selectedStoriesAndAuthors}
               reroute={reroute}
             />
           }
@@ -287,16 +275,16 @@ class Guide extends Component {
             </MetaInfoContainer>
           }
           {this.shouldDisplay('SEE') &&
-            <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('SEE')} />
+            <FeedItemGrid {...this.getGuideStoriesOfTypeProps('SEE')} />
           }
           {this.shouldDisplay('DO') &&
-            <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('DO')} />
+            <FeedItemGrid {...this.getGuideStoriesOfTypeProps('DO')} />
           }
           {this.shouldDisplay('EAT') &&
-            <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('EAT')} />
+            <FeedItemGrid {...this.getGuideStoriesOfTypeProps('EAT')} />
           }
           {this.shouldDisplay('STAY') &&
-            <GuideStoriesOfType {...this.getGuideStoriesOfTypeProps('STAY')} />
+            <FeedItemGrid {...this.getGuideStoriesOfTypeProps('STAY')} />
           }
           <FeedItemActionBar
             isStory={false}

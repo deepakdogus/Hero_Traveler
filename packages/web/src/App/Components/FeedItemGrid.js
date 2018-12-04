@@ -1,14 +1,25 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 import FeedItemList from './FeedItemList'
+import FeedItemPreview from './FeedItemPreview'
+import { Row } from './FlexboxGrid'
 import HorizontalDivider from './HorizontalDivider'
 
 const Wrapper = styled.div`
   margin: 45px 0;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    margin: 0;
+    margin: 0 20px;
+  }
+`
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 25px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    grid-template-columns: 1fr 1fr;
   }
 `
 
@@ -51,75 +62,68 @@ const SeeAllText = styled.p`
   }
 `
 
-export default class GuideStoriesOfType extends React.Component {
+export default class FeedItemGrid extends Component {
   static propTypes = {
     guideId: PropTypes.string,
     label: PropTypes.string,
     type: PropTypes.string,
-    stories: PropTypes.arrayOf(PropTypes.object),
+    feedItems: PropTypes.arrayOf(PropTypes.object),
     isShowAll: PropTypes.bool,
     onClickShowAll: PropTypes.func,
     titlePadding: PropTypes.string,
+    isHorizontalList: PropTypes.bool,
   }
 
   _onClickShowAll = () => {
     this.props.onClickShowAll(null, this.props.type)
   }
 
-  /*
-  * for guides, stories must display as a row of 2-3 items, which currently
-  * requires us to use multiple single-row FeedItemList components; this logic
-  * splits a flat array of stories into a 2D array of 2-item story arrays to pass
-  * to FeedItemList components
-  *
-  * TODO: Refactor this logic into a full-fledged FeedItemGrid component
-  */
-  _renderFeedItemLists = () => {
-    const chunks = 2
-    const { stories } = this.props
-    return Array(Math.ceil(stories.length / chunks))
-      .fill()
-      .map((_, index) => index * chunks)
-      .map(begin => stories.slice(begin, begin + chunks))
+  isStory = feedItem => typeof feedItem.draft === 'boolean'
+
+  renderFeedItems = () => {
+    const {
+      isShowAll,
+      feedItems,
+      guideId,
+    } = this.props
+
+    const feedItemList = feedItems.reduce((feedItemList, feedItem, index) => {
+      if (index >= 6 && !isShowAll) return feedItemList
+      if (!feedItem) return feedItemList
+      feedItemList.push((
+        <FeedItemPreview
+          key={feedItem.id}
+          feedItem={feedItem}
+          isStory={this.isStory(feedItem)}
+          isVertical={true}
+          guideId={guideId}
+        />
+      ))
+      return feedItemList
+    }, [])
+    return feedItemList
   }
 
   render() {
     const {
-      stories,
+      feedItems,
       label,
       isShowAll,
-      guideId,
     } = this.props
 
-    if (stories.length === 0) return null
+    console.log('props: ', this.props)
+
+    if (!feedItems || feedItems.length === 0) return null
 
     return (
       <Wrapper>
         <Title>{label}</Title>
-        {isShowAll
-          ? this._renderFeedItemLists().map((feedItemList, idx) => {
-            return (
-              <FeedItemList
-                key={`${guideId}-${idx}`}
-                guideId={guideId}
-                feedItems={feedItemList}
-                isHorizontalList
-                isShowAll={isShowAll}
-                type='guideRow'
-              />
-            )
-          })
-          : <FeedItemList
-            guideId={guideId}
-            feedItems={stories}
-            isHorizontalList
-            isShowAll={isShowAll}
-            type='guideRow'
-          />
-        }
-        {stories.length > 2 && !isShowAll &&
+        <Grid>
+          {this.renderFeedItems()}
+        </Grid>
+        {feedItems.length > 6 && !isShowAll &&
           <SeeAllText onClick={this._onClickShowAll}>
-            See All ({stories.length})
+            See All ({feedItems.length})
           </SeeAllText>
         }
         {!isShowAll && <StyledDivider color='light-grey'/>}

@@ -56,10 +56,7 @@ const HorizontalMarginWrapper = styled.div`
 
 const VerticalMarginWrapper = styled(HorizontalMarginWrapper)`
   margin: 25px 0 0;
-  flex-basis: 385.5px;
-  &:nth-child(2) {
-    padding-left: 20px;
-  }
+  flex-basis: 285px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     max-width: 100%;
     margin: 0;
@@ -82,7 +79,7 @@ const VerticalWrapper = styled.div`
 const HorizontalStoryInfoContainer = styled(VerticalCenter)`
   position: relative;
   height: ${coverHeight};
-  flex-basis: 385.5px;
+  flex-basis: 285px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     height:auto;
     width: auto;
@@ -278,7 +275,7 @@ const DeleteIcon = styled(Icon)`
 
 const videoThumbnailOptions = {
   video: true,
-  width: 385.5,
+  width: 285,
 }
 
 class FeedItemPreview extends Component {

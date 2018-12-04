@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Icon from './Icon'
 import {Col} from './FlexboxGrid'
-import { shareLinkOnTwitter } from '../Lib/sharingWeb'
+import { shareLinkOnTwitter, shareLinkOnEmail } from '../Lib/sharingWeb'
 
 const StyledIcon = styled(Icon)`
   display: block;
@@ -124,7 +124,7 @@ export default class StoryActionBar extends React.Component {
 
   _onClickEmail = () => {
     const { feedItem } = this.props
-    window.location = `mailto:?subject=${feedItem.title}&body=Check out this story ${window.location.href} I saw on HeroTraveler: ${feedItem.description || feedItem.title}`
+    shareLinkOnEmail(feedItem, 'story')
   }
 
   _onClickTwitter = async () => {

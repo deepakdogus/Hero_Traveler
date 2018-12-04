@@ -23,6 +23,29 @@ const popupCenter = (url, title, w, h) => {
   window.open(url, title, `toolbar=no,status=no,menubar=no,scrollbars=yes,resizable=1,width=${w},height=${h},top=${top},left=${left}`)
 }
 
+const generateShareDataFromItem = (feedItem, feedItemType) => {
+  const { id, coverImage, coverVideo, title, description } = feedItem
+  const coverMediaURL = coverImage
+  ? getImageUrl(coverImage)
+  : getImageUrl(coverVideo, 'optimized', videoThumbnailOptions)
+
+  const data = {
+    '$og_title': title,
+    '$og_type': 'website',
+    '$og_description': description,
+    '$canonical_url': `${feedItemType}/${id}`,
+    '$canonical_identifier': 'heroTravelerWeb',
+    '$locally_indexable': true,
+    '$desktop_url': env.SITE_URL,
+  }
+
+  coverImage
+    ? data['$og_image_url'] = coverMediaURL
+    : data['$og_video'] = coverMediaURL
+
+  return data
+}
+
 export const createDeepLinkWeb = async (feedItem, feedItemType) => {
   const { id, coverImage, coverVideo, title, description } = feedItem
   const coverMediaURL = coverImage
@@ -48,23 +71,7 @@ export const createDeepLinkWeb = async (feedItem, feedItemType) => {
 }
 
 export const shareLinkOnTwitter = (feedItem, feedItemType) => {
-  const { id, coverImage, coverVideo, title, description } = feedItem
-  const coverMediaURL = coverImage
-  ? getImageUrl(coverImage)
-  : getImageUrl(coverVideo, 'optimized', videoThumbnailOptions)
-
-  const data = {
-    '$og_title': title,
-    '$og_type': 'website',
-    '$og_description': description,
-    '$canonical_url': `${feedItemType}/${id}`,
-    '$canonical_identifier': 'heroTravelerWeb',
-    '$locally_indexable': true,
-    '$desktop_url': env.SITE_URL,
-  }
-  coverImage
-    ? data['$og_image_url'] = coverMediaURL
-    : data['$og_video'] = coverMediaURL
+  const data = generateShareDataFromItem(feedItem, feedItemType)
 
   const linkData = {
     channel: 'twitter',
@@ -81,5 +88,22 @@ export const shareLinkOnTwitter = (feedItem, feedItemType) => {
     const width = 550
     const height = 285
     popupCenter(twitterUrl, 'Twitter', width, height)
+  })
+}
+
+export const shareLinkOnEmail = (feedItem, feedItemType) => {
+  const data = generateShareDataFromItem(feedItem, feedItemType)
+
+  const linkData = {
+    channel: 'email',
+    feature: 'share',
+    data,
+  }
+
+  branch.link(linkData, (err, link) => {
+    if (err) {
+      console.error(`Share fail with error: ${err}`)
+    }
+    window.location = `mailto:?subject=${feedItem.title}&body=Check out this story ${link} I saw on HeroTraveler: ${feedItem.description || feedItem.title}`
   })
 }

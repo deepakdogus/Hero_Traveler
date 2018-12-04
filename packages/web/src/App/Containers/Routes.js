@@ -1,21 +1,83 @@
 import React, {Component} from 'react'
 import {Route} from 'react-router-dom'
+import Loadable from 'react-loadable'
 
 import Session from './Session'
 
 import AuthRoute from './AuthRoute'
-import Category from './Category'
-import Explore from './Explore'
-import Feed from './Feed'
-import Story from './Story'
-import Search from './Search'
-import EditStory from './EditStory'
-import SignupSocial from './Signup/SignupSocial'
-import SignupTopics from './Signup/SignupTopics'
-import Profile from './Profile'
 import Header from './Header'
-import Guide from './Guide'
-import CreateGuide from './CreateGuide'
+
+const Explore = Loadable({
+  loader: () => import('./Explore'),
+  loading: null,
+  delay: 300,
+})
+
+const Category = Loadable({
+  loader: () => import('./Category'),
+  loading: null,
+  delay: 300,
+})
+
+const Feed = Loadable({
+  loader: () => import('./Feed'),
+  loading: null,
+  delay: 300,
+})
+
+const SignupSocial = Loadable({
+  loader: () => import('./Signup/SignupSocial'),
+  loading: null,
+  delay: 300,
+})
+
+const SignupTopics = Loadable({
+  loader: () => import('./Signup/SignupTopics'),
+  loading: null,
+  delay: 300,
+})
+
+const EditTopics = Loadable({
+  loader: () => import('./EditProfile/EditTopics'),
+  loading: null,
+  delay: 300,
+})
+
+const CreateGuide = Loadable({
+  loader: () => import('./CreateGuide'),
+  loading: null,
+  delay: 300,
+})
+
+const Story = Loadable({
+  loader: () => import('./Story'),
+  loading: null,
+  delay: 300,
+})
+
+const Guide = Loadable({
+  loader: () => import('./Guide'),
+  loading: null,
+  delay: 300,
+})
+
+const EditStory = Loadable({
+  loader: () => import('./EditStory'),
+  loading: null,
+  delay: 300,
+})
+
+const Profile = Loadable({
+  loader: () => import('./Profile'),
+  loading: null,
+  delay: 300,
+})
+
+const Search = Loadable({
+  loader: () => import('./Search'),
+  loading: null,
+  delay: 300,
+})
 
 class AppRoot extends Component {
   render() {

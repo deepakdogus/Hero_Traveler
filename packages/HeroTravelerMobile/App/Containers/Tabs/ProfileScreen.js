@@ -11,7 +11,6 @@ import getImageUrl from '../../Shared/Lib/getImageUrl'
 const VideoManager = NativeModules.VideoManager
 
 class ProfileScreen extends React.Component {
-
   shouldComponentUpdate(nextProps) {
     const shouldUpdate = _.some([
       this.props.user !== nextProps.user,
@@ -118,7 +117,7 @@ const mapStateToProps = (state) => {
     userStoriesFetchStatus: getUserFetchStatus(stories, userId),
     userStoriesById: getByUser(stories, userId),
     draftsFetchStatus: {loaded: true},
-    draftsById: stories.drafts.byId,
+    draftsById: [],
     userBookmarksById: getByBookmarks(users, userId),
     userBookmarksFetchStatus: getBookmarksFetchStatus(stories, userId),
     guideIds: guides.guideIdsByUserId ? guides.guideIdsByUserId[userId] : [],

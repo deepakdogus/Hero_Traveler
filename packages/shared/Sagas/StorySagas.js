@@ -4,6 +4,7 @@ import GuideActions from '../Redux/Entities/Guides'
 import UserActions, {isInitialAppDataLoaded, isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
 import CategoryActions from '../Redux/Entities/Categories'
 import StoryCreateActions from '../Redux/StoryCreateRedux'
+import PendingUpdatesActions from '../Redux/PendingUpdatesRedux'
 import {getNewCover} from '../Redux/helpers/coverUpload'
 import CloudinaryAPI, { moveVideoToPreCache, moveVideosFromPrecacheToCache } from '../../Services/CloudinaryAPI'
 import pathAsFileObject from '../Lib/pathAsFileObject'
@@ -232,8 +233,7 @@ function * publishDraftErrorHandling(draft, response){
   yield put(StoryCreateActions.publishDraftFailure(err))
 
   yield [
-    put(StoryActions.addDraft(draft)),
-    put(StoryActions.addBackgroundFailure(
+    put(PendingUpdatesActions.addPendingUpdate(
       draft,
       'Failed to publish',
       'publishLocalDraft',
@@ -249,11 +249,11 @@ function * updateDraftErrorHandling(draft, response){
   err.problem = response.problem
   yield [
     put(StoryCreateActions.updateDraftFailure(err)),
-    put(StoryActions.addBackgroundFailure(
+    put(PendingUpdatesActions.addPendingUpdate(
       draft,
-      'Failed to update',
-      'updateDraft',
-    ))
+      'Failed to publish',
+      'publishLocalDraft',
+    )),
   ]
 }
 
@@ -278,7 +278,7 @@ function getSyncProgressSteps(story){
 export function * publishLocalDraft (api, action) {
   const {draft} = action
   yield [
-    put(StoryActions.setRetryingBackgroundFailure(draft.id)),
+    put(PendingUpdatesActions.setRetryingUpdate(draft.id)),
     put(StoryCreateActions.initializeSyncProgress(getSyncProgressSteps(draft), 'Publishing Story'))
   ]
   const coverResponse = yield createCover(api, draft)
@@ -308,6 +308,7 @@ export function * publishDraft (api, action) {
     yield [
       put(StoryCreateActions.publishDraftSuccess(draft)),
       put(StoryActions.addUserStory(stories, draft.id)),
+      put(PendingUpdatesActions.removePendingUpdate(draft.id)),
     ]
     return
   } else yield publishDraftErrorHandling(draft, response)
@@ -336,7 +337,7 @@ export function * discardDraft (api, action) {
 export function * updateDraft (api, action) {
   const {draftId, draft, updateStoryEntity} = action
   yield [
-    put(StoryActions.setRetryingBackgroundFailure(draftId)),
+    put(PendingUpdatesActions.setRetryingUpdate(draftId)),
     put(StoryCreateActions.initializeSyncProgress(getSyncProgressSteps(draft), 'Saving Story')),
   ]
 
@@ -361,7 +362,7 @@ export function * updateDraft (api, action) {
     }
     yield [
       put(StoryCreateActions.updateDraftSuccess(story)),
-      put(StoryActions.removeBackgroundFailure(story.id)),
+      put(PendingUpdatesActions.removePendingUpdate(story.id)),
     ]
   } else yield updateDraftErrorHandling(draft, draftId)
 }

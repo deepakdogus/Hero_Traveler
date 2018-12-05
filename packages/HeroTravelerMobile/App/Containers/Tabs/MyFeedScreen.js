@@ -7,6 +7,7 @@ import SplashScreen from 'react-native-splash-screen'
 
 import {Metrics, Images} from '../../Shared/Themes'
 import StoryActions from '../../Shared/Redux/Entities/Stories'
+import PendingUpdatesActions from '../../Shared/Redux/PendingUpdatesRedux'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import ConnectedFeedList from '../../Containers/ConnectedFeedList'
@@ -210,9 +211,9 @@ const mapStateToProps = (state) => {
     userFeedById,
     fetchStatus,
     error,
-    backgroundFailures,
   } = state.entities.stories
   const feedGuidesById = state.entities.guides.feedGuidesById || []
+
   return {
     userId: state.session.userId,
     user: state.entities.users.entities[state.session.userId],
@@ -222,7 +223,7 @@ const mapStateToProps = (state) => {
     error,
     location: state.routes.scene.name,
     sync: state.storyCreate.sync,
-    backgroundFailures,
+    backgroundFailures: state.pendingUpdates.pendingUpdates,
   }
 }
 
@@ -230,7 +231,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     attemptGetUserFeedStories: (userId) => dispatch(StoryActions.feedRequest(userId)),
     attemptGetUserFeedGuides: (userId) => dispatch(GuideActions.guideFeedRequest(userId)),
-    discardUpdate: (storyId) => dispatch(StoryActions.removeBackgroundFailure(storyId)),
+    discardUpdate: (storyId) => dispatch(PendingUpdatesActions.removePendingUpdate(storyId)),
     publishLocalDraft: (story) => dispatch(StoryCreateActions.publishLocalDraft(story)),
     updateDraft: (story) => dispatch(StoryCreateActions.updateDraft(story.id, story, true)),
   }

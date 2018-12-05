@@ -22,6 +22,7 @@ const { Types, Creators } = createActions({
   loadDraftsFailure: ['error'],
   addDraft: ['draft'],
   removeDraft: ['draftId'],
+  resetDrafts: null,
   addBackgroundFailure: ['story', 'error', 'failedMethod'],
   removeBackgroundFailure: ['storyId'],
   setRetryingBackgroundFailure: ['storyId'],
@@ -298,7 +299,6 @@ export const addDraft = (state, {draft}) => {
 // removes from drafts.byId
 export const removeDraft = (state, {draftId}) => {
   if (draftId.substring(0,6) === 'local-') state = state.setIn(['entities'], state.entities.without(draftId))
-  state = removeBackgroundFailure(state, {storyId: draftId})
   const path = ['drafts', 'byId']
   return state.setIn(path, state.getIn(path, draftId).filter(id => {
     return id !== draftId
@@ -325,6 +325,11 @@ export const setRetryingBackgroundFailure = (state, {storyId}) => {
     return state.setIn(['backgroundFailures', storyId, 'status'], 'retrying')
   }
   return state
+}
+
+export const resetDrafts = (state, {storyId}) => {
+  state = state.setIn(['backgroundFailures'], {})
+  return state.setIn(['drafts'], INITIAL_STATE.drafts)
 }
 
 export const deleteStory = (state, {userId, storyId}) => {
@@ -384,6 +389,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOAD_DRAFTS_FAILURE]: loadDraftsFailure,
   [Types.ADD_DRAFT]: addDraft,
   [Types.REMOVE_DRAFT]: removeDraft,
+  [Types.RESET_DRAFTS]: resetDrafts,
   [Types.ADD_BACKGROUND_FAILURE]: addBackgroundFailure,
   [Types.REMOVE_BACKGROUND_FAILURE]: removeBackgroundFailure,
   [Types.SET_RETRYING_BACKGROUND_FAILURE]: setRetryingBackgroundFailure,

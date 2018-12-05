@@ -5,6 +5,8 @@ import LoginActions from '../Redux/LoginRedux'
 import SessionActions from '../Redux/SessionRedux'
 import StartupActions from '../Redux/StartupRedux'
 import SignupActions from '../Redux/SignupRedux'
+import PendingUpdatesActions from '../Redux/PendingUpdatesRedux'
+import StoryActions from '../Redux/Entities/Stories'
 
 const currentUserId = ({session}) => session.userId
 const currentUserTokens = ({session}) => session.tokens
@@ -28,17 +30,21 @@ export function * logout (api, action) {
   } catch(err) {
     resultAction = SessionActions.logoutFailure;
   } finally {
-    setIsLoggedIn ? yield[
-      put(resultAction(deviceType)),
-      put(setIsLoggedIn(false)),
-      call(api.unsetAuth),
-    ] : yield [
+    setIsLoggedIn
+      ? yield[
+        put(resultAction(deviceType)),
+        put(setIsLoggedIn(false)),
+        call(api.unsetAuth),
+      ]
+      : yield [
         put(resultAction()),
         call(api.unsetAuth),
       ]
     yield [
       put(StartupActions.hideSplash()),
       put(UserActions.resetActivities()),
+      put(PendingUpdatesActions.reset()),
+      put(StoryActions.resetDrafts()),
     ]
   }
 }

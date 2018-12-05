@@ -6,8 +6,9 @@ import InfiniteScroll from 'react-infinite-scroller'
 import FeedItemPreview from './FeedItemPreview'
 import FeedItemMessage from './FeedItemMessage'
 import HorizontalDivider from './HorizontalDivider'
-import { Row } from './FlexboxGrid'
 import { itemsPerQuery } from '../Containers/ContainerWithFeedList'
+
+const Wrapper = styled.div``
 
 const StyledDivider = styled(HorizontalDivider)`
   max-width: 960px;
@@ -18,20 +19,6 @@ const StyledDivider = styled(HorizontalDivider)`
     margin-top: 0;
     margin-bottom: 15px;
   }
-`
-
-const VerticalWrapper = styled.div``
-
-const StyledRow = styled(Row)`
-  flex-wrap: ${props => props.type === 'guideRow' ? 'nowrap' : 'wrap'};
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    margin: 0 20px !important;
-  }
-`
-
-const GuideRowSpacer = styled.div`
-  flex-basis: 385.5px;
-  padding-left: 20px;
 `
 
 const itemsPerPage = 10
@@ -70,25 +57,13 @@ export default class FeedItemList extends React.Component {
   }
 
   renderFeedItems = () => {
-    const {
-      guideId,
-      type,
-      isHorizontalList,
-      isShowAll,
-      feedItems,
-    } = this.props
-
+    const { guideId, feedItems } = this.props
     const rows = feedItems.reduce((rows, feedItem, index) => {
-      /*
-        We only need the first 4 elements for suggestions
-        We will improve this check to allow 'pagination' will carousel scroll
-      */
-     if (type === 'suggestions' && index >= 4) return rows
-     if (isHorizontalList && index >= 2 && !isShowAll) return rows
-     if (index > itemsPerPage * this.state.page) return rows
+      if (index > itemsPerPage * this.state.page) return rows
 
       if (!feedItem) return rows
-      if (index !== 0 && !isHorizontalList) {
+
+      if (index !== 0) {
         rows.push((
           <StyledDivider
             key={`hr-${feedItem.id}`}
@@ -96,25 +71,18 @@ export default class FeedItemList extends React.Component {
           />
         ))
       }
+
       rows.push((
         <FeedItemPreview
           key={feedItem.id}
           guideId={guideId}
           feedItem={feedItem}
-          isGuideRow={type === 'guideRow'}
           isStory={this.isStory(feedItem)}
-          isVertical={isHorizontalList}
+          type='list'
         />
       ))
       return rows
     }, [])
-
-    if (type === 'guideRow' && rows.length === 1) {
-      return [
-        ...rows,
-        <GuideRowSpacer key={`spacer-${guideId || 0}`}/>,
-      ]
-    }
 
     return rows
   }
@@ -146,9 +114,7 @@ export default class FeedItemList extends React.Component {
   render() {
     const {
       feedItems,
-      isHorizontalList,
       activeTab,
-      type,
     } = this.props
 
     if (!feedItems || !feedItems.length) {
@@ -158,23 +124,15 @@ export default class FeedItemList extends React.Component {
       return <FeedItemMessage message={noItemsMessage} />
     }
 
-    const Wrapper = isHorizontalList ? StyledRow : VerticalWrapper
-    const wrapperProps = isHorizontalList ? { between: 'xs', type} : {}
-    const renderedFeedItems = this.renderFeedItems()
-
     return (
-      <Wrapper {...wrapperProps}>
-        {!isHorizontalList ? (
-          <InfiniteScroll
-            pageStart={1}
-            loadMore={this.loadFeedItems}
-            hasMore={this.state.hasMore}
-          >
-            {renderedFeedItems}
-          </InfiniteScroll>
-        ) : (
-          renderedFeedItems
-        )}
+      <Wrapper>
+        <InfiniteScroll
+          pageStart={1}
+          loadMore={this.loadFeedItems}
+          hasMore={this.state.hasMore}
+        >
+          {this.renderFeedItems()}
+        </InfiniteScroll>
       </Wrapper>
     )
   }

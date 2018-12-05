@@ -2,15 +2,15 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import FeedItemList from './FeedItemList'
 import FeedItemPreview from './FeedItemPreview'
-import { Row } from './FlexboxGrid'
 import HorizontalDivider from './HorizontalDivider'
+
+const MAX_PREVIEW_ITEMS = 6
 
 const Wrapper = styled.div`
   margin: 45px 0;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    margin: 0 20px;
+    margin: 0;
   }
 `
 
@@ -18,8 +18,10 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-column-gap: 25px;
+  grid-row-gap: 45px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     grid-template-columns: 1fr 1fr;
+    margin: 0 20px;
   }
 `
 
@@ -35,10 +37,11 @@ const Title = styled.p`
   margin: 0;
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 600;
-  font-size: 29px;
+  font-size: 25px;
   line-height: 40px;
   letter-spacing: 0.6px;
   color: ${props => props.theme.Colors.background};
+  padding-bottom: 20px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 20px;
     padding: 15px 20px;
@@ -47,9 +50,9 @@ const Title = styled.p`
 
 const SeeAllText = styled.p`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
-  font-weight: 600;
+  font-weight: 400;
   font-size: 16px;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.7px;
   color: ${props => props.theme.Colors.redHighlights};
   cursor: pointer;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
@@ -88,15 +91,15 @@ export default class FeedItemGrid extends Component {
     } = this.props
 
     const feedItemList = feedItems.reduce((feedItemList, feedItem, index) => {
-      if (index >= 6 && !isShowAll) return feedItemList
+      if (index >= MAX_PREVIEW_ITEMS && !isShowAll) return feedItemList
       if (!feedItem) return feedItemList
       feedItemList.push((
         <FeedItemPreview
           key={feedItem.id}
           feedItem={feedItem}
           isStory={this.isStory(feedItem)}
-          isVertical={true}
           guideId={guideId}
+          type='grid'
         />
       ))
       return feedItemList
@@ -110,8 +113,6 @@ export default class FeedItemGrid extends Component {
       label,
       isShowAll,
     } = this.props
-
-    console.log('props: ', this.props)
 
     if (!feedItems || feedItems.length === 0) return null
 

@@ -205,7 +205,7 @@ class Guide extends Component {
       isShowAll: this.state.activeTab === type,
       feedItems: this.getStoriesByType(type.toLowerCase()),
       onClickShowAll: this.onClickTab,
-      guideId: this.props.match.params.guideId,
+      // guideId: this.props.match.params.guideId,
     }
   }
 

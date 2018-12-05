@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import PropTypes from 'prop-types'
-import moment from 'moment'
 
 import {
   isStoryLiked,
@@ -31,8 +30,6 @@ import {
   hasBadge,
 } from '../Shared/Lib/badgeHelpers'
 
-const coverHeight = '257px'
-
 const Text = styled.span`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
@@ -44,18 +41,14 @@ const Text = styled.span`
   }
 `
 
-const HorizontalMarginWrapper = styled.div`
-  position: relative;
+const ListMarginWrapper = styled.div`
   max-width: 960px;
   margin: auto;
   color: ${props => props.theme.Colors.lightGrey};
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    margin-bottom: 15px;
-  }
 `
 
-const VerticalMarginWrapper = styled(HorizontalMarginWrapper)`
-  margin: 25px 0 0;
+const GridMarginWrapper = styled(ListMarginWrapper)`
+  margin: 0;
   flex-basis: 285px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     max-width: 100%;
@@ -64,7 +57,7 @@ const VerticalMarginWrapper = styled(HorizontalMarginWrapper)`
   }
 `
 
-const HorizontalRowWrapper = styled(Row)`
+const ListRowWrapper = styled(Row)`
   flex-wrap: nowrap;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     flex-direction: column;
@@ -72,58 +65,49 @@ const HorizontalRowWrapper = styled(Row)`
   }
 `
 
-const VerticalWrapper = styled.div`
+const GridWrapper = styled.div`
   margin: 0;
 `
 
-const HorizontalStoryInfoContainer = styled(VerticalCenter)`
-  position: relative;
-  height: ${coverHeight};
-  flex-basis: 285px;
+const ListStoryInfoContainer = styled(VerticalCenter)`
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  flex-basis: 550px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     height:auto;
     width: auto;
     flex-basis: unset;
-    > * {
-      padding-left: ${props => props.type === 'guide' ? '0' : '15px'};
-      padding-right: ${props => props.type === 'guide' ? '0' : '15px'};
-      padding-top: 15px;
-    }
+    margin: 0 15px;
   }
 `
 
-const VerticalStoryInfoContainer = styled(HorizontalStoryInfoContainer)`
+const GridStoryInfoContainer = styled(ListStoryInfoContainer)`
   height: auto;
   margin-left: 0;
   > * {
     padding: 5px 0px
   }
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding: 5px;
     > * {
-      padding-left: ${props => props.type === 'guide' ? '0' : '15px'};
-      padding-right: ${props => props.type === 'guide' ? '0' : '15px'};
       padding-top: 0px;
     }
   }
 `
 
-const HorizontalDetailsContainer = styled(Row)`
-  padding-top: 13px;
-  position: relative;
+const ListDetailsContainer = styled(Row)`
 `
 
-const VerticalDetailsContainer = styled(HorizontalDetailsContainer)`
+const GridDetailsContainer = styled(ListDetailsContainer)`
   padding-top: 0px;
 `
 
-const HorizontalLocationPreview = styled(Text)`
+const LocationPreview = styled(Text)`
   color: ${props => props.theme.Colors.background};
   letter-spacing: .2px;
   font-size: 13px;
   font-weight: 600;
   margin-top: 6px;
-  margin-bottom: 12px;
   text-transform: uppercase;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 13px;
@@ -131,29 +115,19 @@ const HorizontalLocationPreview = styled(Text)`
   }
 `
 
-const VerticalLocationPreview = styled(HorizontalLocationPreview)`
-  margin-top: 0px;
-  margin-bottom: 0px;
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    margin-bottom: 0px;
-    font-size: 13px;
-  }
-`
-
 const Title = styled.h3`
   font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-weight: 600;
-  font-size: ${props => props.isGuide ? '20px' : '25px'};
+  font-weight: ${props => props.isList ? 600 : 500};
+  font-size: ${props => props.isList ? '25px' : '19px'};
   color: ${props => props.theme.Colors.background};
   display: inline-block;
   margin: 0;
   cursor: pointer;
-  padding: 12px 0;
   letter-spacing: .6px;
   word-break: break-word;
+  padding: 5px 0;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding: ${props => props.type === 'guide' ? '0' : '0 15px'};
-    font-size: ${props => props.type === 'guide' ? '15px' : '20px'};
+    font-size: '15px';
     hyphens: auto;
   }
   &:hover {
@@ -170,7 +144,7 @@ const ImageWrapper = styled.div`
 `
 
 // 70.84 is for to maintain aspect ratio
-const VerticalImageContainer = styled(ImageWrapper)`
+const GridImageContainer = styled(ImageWrapper)`
   width: auto;
   height: 0;
   padding-bottom: 70.84%;
@@ -178,15 +152,17 @@ const VerticalImageContainer = styled(ImageWrapper)`
   background-size: cover;
 `
 
-const HorizontalImageContainer = styled(ImageWrapper)`
+const ListImageContainer = styled(ImageWrapper)`
   margin-right: 20px;
   width: 385.5px;
   height: 257px;
   background: center url(${props => props.src});
   background-size: cover;
+  flex-shrink: 0;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     margin: 0;
-    max-width:100vw;
+    margin-bottom: 15px;
+    max-width: 100vw;
     width: 100%;
   }
 `
@@ -210,7 +186,7 @@ const CloseXContainer = styled.div`
   visibility: hidden;
 `
 
-const GuideIconText = styled(HorizontalLocationPreview)`
+const GuideIconText = styled(LocationPreview)`
   padding-left: 10px;
 `
 
@@ -218,35 +194,33 @@ const Username = styled(Text)`
   color: ${props => props.theme.Colors.redHighlights};
   cursor: pointer;
   font-size: 14px;
+  letter-spacing: 0.7px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 12px;
   }
 `
 
-const TimeStamp = styled(Text)`
-  font-size: 14px;
+const TopRow = styled(Row)`
+  height: 35px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    font-size: 12px;
+    height: 0;
   }
 `
 
-const Top = styled(Row)`
-  position: absolute;
-  top: 0;
-  left: 0;
+const MiddleRow = styled(Row)`
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  min-height: ${props => props.isList ? '135px' : 'inherit'};
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    position: relative;
+    min-height: 100px;
   }
 `
 
-const Bottom = styled(Row)`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    position: relative;
-  }
-`
+const BottomRow = styled(Row)``
+
+const UserRow = styled(Row)``
 
 const BadgeIcon = styled(Icon)`
   margin-right: 6px;
@@ -280,11 +254,11 @@ const videoThumbnailOptions = {
 
 class FeedItemPreview extends Component {
   static propTypes = {
+    type: PropTypes.string,
     feedItem: PropTypes.object,
+    sessionUserId: PropTypes.string,
     author: PropTypes.object,
     guideId: PropTypes.string,
-    sessionUserId: PropTypes.string,
-    isGuideRow: PropTypes.bool,
     isStory: PropTypes.bool,
     isLiked: PropTypes.bool,
     isBookmarked: PropTypes.bool,
@@ -294,7 +268,6 @@ class FeedItemPreview extends Component {
     onClickGuideLike: PropTypes.func,
     onClickGuideUnLike: PropTypes.func,
     openGlobalModal: PropTypes.func,
-    isVertical: PropTypes.bool,
   }
 
   defaultProps = {
@@ -357,13 +330,13 @@ class FeedItemPreview extends Component {
       feedItem,
       author,
       sessionUserId,
-      isGuideRow,
       isLiked,
       isBookmarked,
       isStory,
-      isVertical,
+      type,
     } = this.props
 
+    const isList = type === 'list'
     const isGuideAuthor = !!guideId && sessionUserId === author.id
 
     if (!feedItem || !author) return null
@@ -374,12 +347,11 @@ class FeedItemPreview extends Component {
       imageUrl = getImageUrl(feedItem.coverVideo, 'optimized', videoThumbnailOptions)
     }
 
-    const MarginWrapper = isVertical ? VerticalMarginWrapper : HorizontalMarginWrapper
-    const DirectionalWrapper = isVertical ? VerticalWrapper : HorizontalRowWrapper
-    const ImageContainer = isVertical ? VerticalImageContainer : HorizontalImageContainer
-    const StoryInfoContainer = isVertical ? VerticalStoryInfoContainer : HorizontalStoryInfoContainer
-    const DetailsContainer = isVertical ? VerticalDetailsContainer : HorizontalDetailsContainer
-    const LocationPreview = isVertical ? VerticalLocationPreview : HorizontalLocationPreview
+    const MarginWrapper = type === 'grid' ? GridMarginWrapper : ListMarginWrapper
+    const DirectionalWrapper = type === 'grid' ? GridWrapper : ListRowWrapper
+    const ImageContainer = type === 'grid' ? GridImageContainer : ListImageContainer
+    const StoryInfoContainer = type === 'grid' ? GridStoryInfoContainer : ListStoryInfoContainer
+    const DetailsContainer = type === 'grid' ? GridDetailsContainer : ListDetailsContainer
 
     return (
       <MarginWrapper>
@@ -399,26 +371,26 @@ class FeedItemPreview extends Component {
               }
             </StyledOverlay>
           </ImageContainer>
-          <StoryInfoContainer isGuideRow={isGuideRow}>
-            {!isStory &&
-              <Top>
-                <GuideIcon name='guide' />
-                <GuideIconText>Guide</GuideIconText>
-              </Top>
+          <StoryInfoContainer>
+            {isList &&
+              <TopRow>
+                {!isStory && <GuideIcon name='guide' />}
+                {!isStory && <GuideIconText>Guide</GuideIconText>}
+              </TopRow>
             }
-            {!guideId &&
-              <LocationPreview>{this.getLocationText()}</LocationPreview>
-            }
-            <Title
-              onClick={this.navToFeedItem}
-              isGuide={!!guideId}
-              isGuideRow={isGuideRow}
-            >
-              {feedItem.title}
-            </Title>
-            <DetailsContainer between='xs'>
-              <Row middle='xs'>
-                {!isVertical &&
+            <MiddleRow isList={isList}>
+              {isList &&
+                <LocationPreview>{this.getLocationText()}</LocationPreview>
+              }
+              <Title
+                onClick={this.navToFeedItem}
+                isGuide={!!guideId}
+                isList={isList}
+              >
+                {feedItem.title}
+              </Title>
+              {isList &&
+                <UserRow middle='xs'>
                   <Avatar
                     isStoryPreview
                     avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
@@ -426,34 +398,33 @@ class FeedItemPreview extends Component {
                     type='profile'
                     onClick={this.navToUserProfile}
                   />
-                }
-                {hasBadge(author.role) &&
-                  <BadgeIcon
-                    name={roleToIconName[author.role]}
-                    size='small'
-                    profileAvatar={author.profile.avatar}
-                  />
-                }
-                <Username onClick={this.navToUserProfile}>{author.username}</Username>
-                {!isVertical && <TimeStamp>, {moment(feedItem.createdAt).fromNow()}</TimeStamp>}
-              </Row>
-            </DetailsContainer>
-            {!isVertical &&
-              <Bottom>
-                <LikeComponent
-                  likes={formatCount(feedItem.counts.likes)}
-                  isLiked={isLiked}
-                  onClick={this._onClickLike}
-                  horizontal
+                  {hasBadge(author.role) &&
+                    <BadgeIcon
+                      name={roleToIconName[author.role]}
+                      size='small'
+                      profileAvatar={author.profile.avatar}
+                    />
+                  }
+                  <Username onClick={this.navToUserProfile}>{author.username}</Username>
+                </UserRow>
+              }
+            </MiddleRow>
+            <BottomRow>
+              {isList &&
+              <LikeComponent
+                likes={formatCount(feedItem.counts.likes)}
+                isLiked={isLiked}
+                onClick={this._onClickLike}
+                horizontal
+              />
+              }
+              {isList && isStory &&
+                <BookmarkIcon
+                  name={isBookmarked ? 'feedBookmarkActive' : 'feedBookmark'}
+                  onClick={this._onClickBookmark}
                 />
-                {isStory &&
-                  <BookmarkIcon
-                    name={isBookmarked ? 'feedBookmarkActive' : 'feedBookmark'}
-                    onClick={this._onClickBookmark}
-                  />
-                }
-              </Bottom>
-            }
+              }
+            </BottomRow>
           </StoryInfoContainer>
         </DirectionalWrapper>
       </MarginWrapper>
@@ -477,6 +448,7 @@ const mapStateToProps = (state, ownProps) => {
      *
      * author = id matches existing structure when pulling from the server,
      * so algolia story index author prop should eventually be patched to id
+     *
      */
     feedItemProps = {
       author: entities.users.entities[feedItem.authorId ? feedItem.authorId : feedItem.author],

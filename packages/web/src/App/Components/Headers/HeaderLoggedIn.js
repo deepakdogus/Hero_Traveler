@@ -273,7 +273,7 @@ class HeaderLoggedIn extends React.Component {
                     type='avatar'
                     size={profileAvatar ? 'avatar' : 'mediumSmall'}
                     avatarUrl={getImageUrl(profileAvatar, 'avatar')}
-                    isProfileHeader={true}
+                    isNav={true}
                   />
                 </StyledRoundedAvatarButton>
                   {globalModal === 'profileMenu' &&

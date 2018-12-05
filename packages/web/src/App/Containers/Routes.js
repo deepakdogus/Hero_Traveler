@@ -7,75 +7,77 @@ import Session from './Session'
 import AuthRoute from './AuthRoute'
 import Header from './Header'
 
+const Loading = () => null
+
 const Explore = Loadable({
   loader: () => import('./Explore'),
-  loading: null,
+  loading: Loading,
   delay: 300,
 })
 
 const Category = Loadable({
   loader: () => import('./Category'),
-  loading: null,
+  loading: Loading,
   delay: 300,
 })
 
 const Feed = Loadable({
   loader: () => import('./Feed'),
-  loading: null,
+  loading: Loading,
   delay: 300,
 })
 
 const SignupSocial = Loadable({
   loader: () => import('./Signup/SignupSocial'),
-  loading: null,
+  loading: Loading,
   delay: 300,
 })
 
 const SignupTopics = Loadable({
   loader: () => import('./Signup/SignupTopics'),
-  loading: null,
+  loading: Loading,
   delay: 300,
 })
 
 const EditTopics = Loadable({
   loader: () => import('./EditProfile/EditTopics'),
-  loading: null,
+  loading: Loading,
   delay: 300,
 })
 
 const CreateGuide = Loadable({
   loader: () => import('./CreateGuide'),
-  loading: null,
+  loading: Loading,
   delay: 300,
 })
 
 const Story = Loadable({
   loader: () => import('./Story'),
-  loading: null,
+  loading: Loading,
   delay: 300,
 })
 
 const Guide = Loadable({
   loader: () => import('./Guide'),
-  loading: null,
+  loading: Loading,
   delay: 300,
 })
 
 const EditStory = Loadable({
   loader: () => import('./EditStory'),
-  loading: null,
+  loading: Loading,
   delay: 300,
 })
 
 const Profile = Loadable({
   loader: () => import('./Profile'),
-  loading: null,
+  loading: Loading,
   delay: 300,
 })
 
 const Search = Loadable({
   loader: () => import('./Search'),
-  loading: null,
+  loading: Loading,
   delay: 300,
 })
 

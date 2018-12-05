@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import _ from 'lodash'
 import {
   ScrollView,
@@ -18,9 +19,23 @@ import ImageWrapper from '../../Components/ImageWrapper'
 import TOS from '../../Components/TosFooter'
 import styles from '../Styles/SignupScreenStyles'
 import {validate, asyncValidate} from '../../Shared/Lib/userFormValidation'
-import { FormTextInput } from '../../Components/FormTextInput';
+import { FormTextInput } from '../../Components/FormTextInput'
 
 class SignupScreen extends React.Component {
+  static propTypes = {
+    fetching: PropTypes.bool,
+    attemptSignup: PropTypes.func,
+    handleSubmit: PropTypes.func,
+    hasSignedUp: PropTypes.bool,
+    signupFacebook: PropTypes.func,
+    fullName: PropTypes.string,
+    username: PropTypes.string,
+    email: PropTypes.string,
+    password: PropTypes.string,
+    signupError: PropTypes.string,
+    fromStory: PropTypes.bool,
+    fromGuide: PropTypes.bool,
+  }
 
   componentWillReceiveProps(newProps) {
     if (!newProps.fetching && newProps.hasSignedUp) {
@@ -34,7 +49,7 @@ class SignupScreen extends React.Component {
         _.trim(this.props.fullName),
         _.trim(this.props.username),
         _.trim(this.props.email),
-        this.props.password
+        this.props.password,
       )
     }
   }
@@ -53,7 +68,7 @@ class SignupScreen extends React.Component {
             <View style={styles.section}>
               <Text style={styles.title}>SIGN UP</Text>
               <Text style={styles.instructions}>
-                Let's start by setting up your account
+                {`Let's start by setting up your account`}
               </Text>
               {this.props.signupError && <Text style={[styles.error]}>{this.props.signupError}</Text>}
             </View>
@@ -122,7 +137,6 @@ class SignupScreen extends React.Component {
   }
 }
 
-
 const selector = formValueSelector('signupForm')
 export default R.compose(
   connect(
@@ -142,9 +156,9 @@ export default R.compose(
       return {
         attemptSignup: (fullName, username, email, password) => {
           return dispatch(SignupActions.signupEmail(fullName, username, email, password))
-        }
+        },
       }
-    }
+    },
   ),
   reduxForm({
     form: 'signupForm',
@@ -157,7 +171,7 @@ export default R.compose(
       username: '',
       email: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
     },
-  })
+  }),
 )(SignupScreen)

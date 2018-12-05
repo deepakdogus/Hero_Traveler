@@ -46,14 +46,15 @@ const CameraIcon = styled(Icon)`
 
 const EditAvatarWrapper = styled(VerticalCenter)`
   position: absolute;
-  align-items: center;
+  top: 0;
+  left: 0;
   height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
   z-index: 1;
-  left: 54.5px;
+
   cursor: pointer;
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    left 33.5px;
-  }
 `
 
 const HiddenInput = styled.input`
@@ -105,7 +106,7 @@ const UpdateAvatarText = styled.span`
   color: ${props => props.theme.Colors.redHighlights};
   cursor: pointer;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-   width: 100%;
+    width: 100%;
   }
 `
 
@@ -117,6 +118,15 @@ const Label = styled.label`
   font-size: 16px;
   color: ${props => props.theme.Colors.background};
   margin: 16px 0 8px;
+`
+
+const AvatarLabel = styled.label`
+  position: relative;
+  left: 6px;
+  height: 140px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    height: 100px;
+  }
 `
 
 const BaseInputStyles = `
@@ -334,13 +344,7 @@ export default class ProfileHeaderEdit extends React.Component {
     return (
       <Container>
         <RelativeWrapper>
-          <label htmlFor='image_upload'>
-            <EditAvatarWrapper>
-            <CameraIcon
-              type='avatar'
-              name='camera'
-            />
-            </EditAvatarWrapper>
+          <AvatarLabel htmlFor='image_upload'>
             <StyledAvatar
               avatarUrl={avatarUrl}
               type='profile'
@@ -348,8 +352,15 @@ export default class ProfileHeaderEdit extends React.Component {
               isProfileHeader={false}
               responsiveProps={responsiveAvatarStyles}
               onClick={avatarIsClickable}
-            />
-            </label>
+            >
+            </StyledAvatar>
+              <EditAvatarWrapper>
+              <CameraIcon
+                type='avatar'
+                name='camera'
+              />
+            </EditAvatarWrapper>
+            </AvatarLabel>
           <VerticalCenter>
             <UpdateAvatarRow>
             <label htmlFor='image_upload'>

@@ -42,7 +42,6 @@ class Session extends Component {
     addToken('session_access', retrievedCookies, tokens)
     addToken('session_refresh', retrievedCookies, tokens)
     if (tokens.length) this.props.resumeSession(userId, tokens)
-
   }
 
   componentWillReceiveProps(nextProps) {
@@ -65,15 +64,18 @@ class Session extends Component {
           const currentDate = new Date()
           const expiresIn = token.expiresIn || 100000
           const expires = new Date(currentDate.valueOf() + expiresIn)
+          // we need to include path otherwise remove does not work properly
+          // and user's session will resume despite logging out
+          const options = { path: '/' }
           // refresh token should not expire
-          const options = token.type === 'refresh' ? { } : { expires }
+          if (token.type === 'refresh') options.expires = expires
           cookies.set(name, token.value, options)
         }
       })
     }
     else if (!nextProps.userId && !_.isEmpty(this.props.tokens)) {
       this.props.tokens.forEach(token => {
-        cookies.remove(`session_${token.type}`)
+        cookies.remove(`session_${token.type}`, { path: '/' })
       })
     }
   }

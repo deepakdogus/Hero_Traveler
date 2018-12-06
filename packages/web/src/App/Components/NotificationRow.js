@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import _ from 'lodash'
 
 import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
@@ -10,6 +9,8 @@ import {
   getContent,
   getDescriptionText,
   getFeedItemTitle,
+  getAvatar,
+  getUsername,
 } from '../Shared/Lib/NotificationHelpers'
 import Avatar from './Avatar'
 import {getSize} from './Icon'
@@ -179,7 +180,7 @@ export default class NotificationRow extends Component {
   }
 
   renderImage = () => {
-    const avatar = _.get(this, 'props.activity.fromUser.profile.avatar')
+    const avatar = getAvatar(this.props.activity)
 
     return (
       <RenderImageContainer>
@@ -206,7 +207,7 @@ export default class NotificationRow extends Component {
       <StyledVerticalCenter>
         <StyledNotificationContent>
           <StyledUserName onClick={this.navToUserProfile}>
-            {activity.fromUser.username}&nbsp;
+            {getUsername(activity)}&nbsp;
           </StyledUserName>
           {getDescriptionText(activity)}
           {!!title &&

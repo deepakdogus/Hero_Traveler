@@ -10,8 +10,9 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import {
   getDescription,
   getContent,
+  getAvatar,
+  getUsername,
 } from '../Shared/Lib/NotificationHelpers'
-import _ from 'lodash'
 
 export default class Activity extends Component {
   static propTypes = {
@@ -22,8 +23,9 @@ export default class Activity extends Component {
   render () {
     let { activity } = this.props
     const content = getContent(activity)
-    const hasAvatar = !!_.get('activity.fromUser.user.profile.avatar')
-    const hasFullName = !!_.get('activity.fromUser.user.profile.fullName')
+
+    const avatar = getAvatar(activity)
+    const username = getUsername(activity)
 
     return (
       <View style={styles.root}>
@@ -34,15 +36,15 @@ export default class Activity extends Component {
               <Avatar
                 style={styles.avatar}
                 avatarUrl={
-                  hasAvatar
-                  ? getImageUrl(activity.fromUser.profile.avatar, 'avatar')
+                  avatar
+                  ? getImageUrl(avatar, 'avatar')
                   : null
                 }
               />
             <View style={styles.middle}>
               <Text style={styles.description}>
                 <Text style={styles.actionUserText}>
-                  {hasFullName ? activity.fromUser.profile.fullName : 'A user'}
+                  {username || 'A user'}
                 </Text>
                 <Text> {getDescription(activity)}</Text>
               </Text>

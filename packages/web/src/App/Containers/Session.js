@@ -68,7 +68,7 @@ class Session extends Component {
           // and user's session will resume despite logging out
           const options = { path: '/' }
           // refresh token should not expire
-          if (token.type === 'refresh') options.expires = expires
+          if (token.type !== 'refresh') options.expires = expires
           cookies.set(name, token.value, options)
         }
       })

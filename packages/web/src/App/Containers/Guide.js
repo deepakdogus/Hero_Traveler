@@ -211,10 +211,16 @@ class Guide extends Component {
 
   getPossibleTabs = () => {
     const possibleTabs = ['OVERVIEW']
+    const typesInGuide = []
     this.props.guideStories.forEach(story => {
       const type = story.type.toUpperCase()
-      if (possibleTabs.indexOf(type) === -1) possibleTabs.push(type)
+      if (typesInGuide.indexOf(type) === -1) typesInGuide.push(type)
     })
+    // preserve order
+    if (typesInGuide.indexOf('SEE') !== -1) possibleTabs.push('SEE')
+    if (typesInGuide.indexOf('DO') !== -1) possibleTabs.push('DO')
+    if (typesInGuide.indexOf('EAT') !== -1) possibleTabs.push('EAT')
+    if (typesInGuide.indexOf('STAY') !== -1) possibleTabs.push('STAY')
     return possibleTabs
   }
 

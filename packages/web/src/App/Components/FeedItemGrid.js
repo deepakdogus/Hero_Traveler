@@ -69,6 +69,7 @@ export default class FeedItemGrid extends Component {
   static propTypes = {
     guideId: PropTypes.string,
     label: PropTypes.string,
+    showLabel: PropTypes.bool,
     type: PropTypes.string,
     feedItems: PropTypes.arrayOf(PropTypes.object),
     isShowAll: PropTypes.bool,
@@ -111,6 +112,7 @@ export default class FeedItemGrid extends Component {
     const {
       feedItems,
       label,
+      showLabel,
       isShowAll,
     } = this.props
 
@@ -118,7 +120,7 @@ export default class FeedItemGrid extends Component {
 
     return (
       <Wrapper>
-        <Title>{label}</Title>
+        {showLabel && <Title>{label}</Title>}
         <Grid>
           {this.renderFeedItems()}
         </Grid>

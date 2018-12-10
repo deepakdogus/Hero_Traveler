@@ -214,7 +214,7 @@ const MiddleRow = styled(Row)`
   justify-content: space-between;
   min-height: ${props => props.isList ? '135px' : 'inherit'};
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    min-height: 100px;
+    min-height: unset;
   }
 `
 
@@ -233,6 +233,12 @@ const GuideIcon = styled(Icon)`
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding-top: 0;
   }
+`
+
+const InlineGuideIcon = styled(Icon)`
+  padding-right: 7px;
+  width: 14px;
+  height: 14px;
 `
 
 const BookmarkIcon = styled(Icon)`
@@ -387,6 +393,7 @@ class FeedItemPreview extends Component {
                 isGuide={!!guideId}
                 isList={isList}
               >
+                {!isStory && !isList && <InlineGuideIcon name='guide' />}
                 {feedItem.title}
               </Title>
               {isList &&
@@ -423,6 +430,9 @@ class FeedItemPreview extends Component {
                   name={isBookmarked ? 'feedBookmarkActive' : 'feedBookmark'}
                   onClick={this._onClickBookmark}
                 />
+              }
+              {!isList &&
+                <Username onClick={this.navToUserProfile}>{author.username}</Username>
               }
             </BottomRow>
           </StoryInfoContainer>

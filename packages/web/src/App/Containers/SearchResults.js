@@ -11,6 +11,7 @@ import CategoryActions from '../Shared/Redux/Entities/Categories'
 
 import FeedItemGrid from '../Components/FeedItemGrid'
 import HorizontalDivider from '../Components/HorizontalDivider'
+import Footer from '../Components/Footer'
 
 const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
 const STORY_INDEX = env.SEARCH_STORY_INDEX
@@ -58,9 +59,19 @@ class SearchResults extends Component {
     loadCategories: PropTypes.func,
     reroute: PropTypes.func,
     match: PropTypes.object,
+    wentBack: PropTypes.bool,
+    lat: PropTypes.string,
+    lng: PropTypes.string,
   }
 
-  state = { lastSearchResults: {stories: [], guides: []} }
+  state = {
+    seeAllType: '',
+    seeAllLabel: '',
+    lastSearchResults: {
+      stories: [],
+      guides: [],
+    },
+  }
 
   componentWillMount() {
     //guides
@@ -74,17 +85,21 @@ class SearchResults extends Component {
     this.search(this.storyHelper, 64)
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.wentBack) this.setState({seeAllType: '', seeAllLabel: ''})
+  }
+
   componentWillUnmount() {
     this.removeSearchListeners(this.storyHelper)
     this.removeSearchListeners(this.guideHelper)
   }
 
-  removeSearchListeners(helper) {
+  removeSearchListeners = helper => {
     helper.removeAllListeners('result')
     helper.removeAllListeners('search')
   }
 
-  setupSearchListeners(helper, type) {
+  setupSearchListeners = (helper, type) => {
     helper.on('result', res => {
       this.setState({
         search: false,
@@ -99,19 +114,27 @@ class SearchResults extends Component {
     })
   }
 
-  search(helper, hits) {
+  search = (helper, hits) => {
     helper
       .setQuery('')
       .setQueryParameter(
         'aroundLatLng',
-        `${this.props.match.params.lat}, ${this.props.match.params.lng}`,
+        `${this.props.lat}, ${this.props.lng}`,
       )
       .setQueryParameter('hitsPerPage', hits)
       .search()
   }
 
+  _onClickShowAll = (seeAllType, seeAllLabel) => {
+    const { lng, reroute } = this.props
+    return () => {
+      this.setState({seeAllType, seeAllLabel})
+      reroute(`${lng}/${seeAllType}`)
+    }
+  }
+
   render() {
-    const { lastSearchResults } = this.state
+    const { lastSearchResults, seeAllType, seeAllLabel } = this.state
     // const { resultTitle } = this.props
 
     const seeItems = lastSearchResults.stories.filter(feedItem => feedItem.type === 'see')
@@ -122,51 +145,82 @@ class SearchResults extends Component {
     return (
       <Container>
         <ContentWrapper>
-          <ResultTitle>{`Result Title`}</ResultTitle>
+          <ResultTitle>
+            {
+              seeAllType
+              ? `AFRICA - ${seeAllLabel}`
+              : 'Africa'
+            }
+          </ResultTitle>
           <StyledDivider color="light-grey" />
-          {!!lastSearchResults.guides.length && (
+          {!!lastSearchResults.guides.length &&
+            (seeAllType === 'guides' ||
+             seeAllType === '') &&
             <FeedItemGrid
               feedItems={lastSearchResults.guides}
-              isShowAll={false}
+              isShowAll={seeAllType === 'guides'}
               label="GUIDES"
+              showLabel={seeAllType !== 'guides'}
+              onClickShowAll={this._onClickShowAll('guides', 'GUIDES')}
             />
-          )}
-          {!!lastSearchResults.stories.length && (
+          }
+          {!!lastSearchResults.stories.length &&
+            (seeAllType === 'stories' ||
+            seeAllType === '') &&
             <FeedItemGrid
               feedItems={lastSearchResults.stories}
-              isShowAll={false}
+              isShowAll={seeAllType === 'stories'}
               label="ALL STORIES"
+              showLabel={seeAllType !== 'stories'}
+              onClickShowAll={this._onClickShowAll('stories', 'ALL STORIES')}
             />
-          )}
-          {!!seeItems && (
+          }
+          {!!seeItems &&
+            (seeAllType === 'see' ||
+            seeAllType === '') &&
             <FeedItemGrid
               feedItems={seeItems}
-              isShowAll={false}
+              isShowAll={seeAllType === 'see'}
               label="THINGS TO SEE"
+              showLabel={seeAllType !== 'see'}
+              onClickShowAll={this._onClickShowAll('see', 'THINGS TO SEE')}
             />
-          )}
-          {!!seeItems && (
+          }
+          {!!seeItems &&
+            (seeAllType === 'do' ||
+            seeAllType === '') &&
             <FeedItemGrid
               feedItems={doItems}
-              isShowAll={false}
+              isShowAll={seeAllType === 'do'}
               label="THINGS TO DO"
+              showLabel={seeAllType !== 'do'}
+              onClickShowAll={this._onClickShowAll('do', 'THINGS TO DO')}
             />
-          )}
-          {!!seeItems && (
+          }
+          {!!seeItems &&
+            (seeAllType === 'eat' ||
+            seeAllType === '') &&
             <FeedItemGrid
               feedItems={eatItems}
-              isShowAll={false}
+              isShowAll={seeAllType === 'eat'}
               label="THINGS TO EAT"
+              showLabel={seeAllType !== 'eat'}
+              onClickShowAll={this._onClickShowAll('eat', 'THINGS TO EAT')}
             />
-          )}
-          {!!seeItems && (
+          }
+          {!!seeItems &&
+            (seeAllType === 'stay' ||
+            seeAllType === '') &&
             <FeedItemGrid
               feedItems={stayItems}
-              isShowAll={false}
+              isShowAll={seeAllType === 'stay'}
               label="PLACES TO STAY"
+              showLabel={seeAllType !== 'stay'}
+              onClickShowAll={this._onClickShowAll('stay', 'PLACES TO STAY')}
             />
-          )}
+          }
         </ContentWrapper>
+        <Footer />
       </Container>
     )
   }
@@ -181,6 +235,9 @@ function mapStateToProps(state, ownProps) {
   return {
     categories,
     categoriesFetchStatus,
+    lat: ownProps.match.params.lat,
+    lng: ownProps.match.params.lng,
+    wentBack: ownProps.history.action === 'POP',
   }
 }
 

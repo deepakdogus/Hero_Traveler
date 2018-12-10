@@ -19,7 +19,7 @@ class FailureBar extends Component {
   static propTypes = {
     failure: PropTypes.object,
     updateDraft: PropTypes.func,
-    publishLocalDraft: PropTypes.func,
+    saveLocalDraft: PropTypes.func,
     discardUpdate: PropTypes.func,
   }
 

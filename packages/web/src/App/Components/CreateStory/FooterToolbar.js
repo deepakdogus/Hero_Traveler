@@ -68,8 +68,8 @@ export default class FooterToolbar extends Component {
       discardDraft,
       updateDraft,
       syncProgressMessage,
-      isDetailsView,
     } = this.props
+
     return (
       <ButtonIconContainer>
         <StyledRow middle='xs'>

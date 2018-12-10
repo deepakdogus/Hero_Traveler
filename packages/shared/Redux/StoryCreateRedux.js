@@ -5,16 +5,13 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  registerDraft: null,
-  registerDraftSuccess: ['draft'],
-  registerDraftFailure: ['error'],
+  addLocalDraft: ['draft'],
   editStory: ['storyId', 'cachedStory'],
   editStorySuccess: ['story'],
   editStoryFailure: ['error', 'cachedStory'],
-  publishLocalDraft: ['draft'],
-  publishDraft: ['draft'],
-  publishDraftSuccess: ['draft'],
-  publishDraftFailure: ['error'],
+  saveLocalDraft: ['draft', 'saveAsDraft'],
+  saveDraftSuccess: ['draft'],
+  saveDraftFailure: ['error'],
   discardDraft: ['draftId'],
   discardDraftSuccess: ['draft'],
   discardDraftFailure: ['error'],
@@ -66,9 +63,9 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Reducers ------------- */
 export const reset = () => INITIAL_STATE
 
-export const publish = (state, { userId }) => state.merge({ error: null })
+export const saveLocalDraft = (state, { userId }) => state.merge({ error: null })
 
-export const publishSuccess = (state, {draft}) => {
+export const saveDraftSuccess = (state, {draft}) => {
   return state.merge({
     error: null,
     draft: null,
@@ -87,12 +84,9 @@ export const failureUpdating = (state, {error}) => {
       error: true
     }
   })
-
 }
 
-export const registerDraft = () => INITIAL_STATE
-
-export const registerDraftSuccess = (state, {draft}) => {
+export const addLocalDraft = (state, {draft}) => {
   return state.merge({
     draft,
     workingDraft: draft,
@@ -218,18 +212,15 @@ export const uploadImageFailure = (state, {error, id}) => {
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.PUBLISH_DRAFT]: publish,
-  [Types.PUBLISH_LOCAL_DRAFT]: publish,
-  [Types.PUBLISH_DRAFT_SUCCESS]: publishSuccess,
-  [Types.PUBLISH_DRAFT_FAILURE]: failure,
+  [Types.SAVE_LOCAL_DRAFT]: saveLocalDraft,
+  [Types.SAVE_DRAFT_SUCCESS]: saveDraftSuccess,
+  [Types.SAVE_DRAFT_FAILURE]: failure,
   [Types.DISCARD_DRAFT_SUCCESS]: reset,
   [Types.DISCARD_DRAFT_FAILURE]: failure,
   [Types.UPDATE_WORKING_DRAFT]: updateWorkingDraft,
   [Types.UPDATE_DRAFT_SUCCESS]: updateDraftSuccess,
   [Types.UPDATE_DRAFT_FAILURE]: failureUpdating,
-  [Types.REGISTER_DRAFT]: registerDraft,
-  [Types.REGISTER_DRAFT_SUCCESS]: registerDraftSuccess,
-  [Types.REGISTER_DRAFT_FAILURE]: failure,
+  [Types.ADD_LOCAL_DRAFT]: addLocalDraft,
   [Types.UPLOAD_COVER_IMAGE_SUCCESS]: uploadCoverImageSuccess,
   [Types.UPLOAD_COVER_IMAGE_FAILURE]: uploadCoverImageFailure,
   [Types.EDIT_STORY]: editStory,

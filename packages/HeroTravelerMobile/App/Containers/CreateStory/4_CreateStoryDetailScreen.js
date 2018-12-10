@@ -40,7 +40,6 @@ const dateLikeItemAsDateString = (dateLikeItem) => {
   return dateString.replace(/\s/, ', ')
 }
 
-
 const Radio = ({text, onPress, selected}) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -119,7 +118,7 @@ class CreateStoryDetailScreen extends React.Component {
       workingDraft.cost = this.state.cost;
     }
     this.next();
-    if (workingDraft.draft) this.props.publish(workingDraft)
+    if (workingDraft.draft) this.props.saveDraft(workingDraft)
     else this.saveDraft(workingDraft)
   }
 
@@ -387,7 +386,6 @@ class CreateStoryDetailScreen extends React.Component {
   }
 }
 
-
 export default connect(
   (state) => {
     return {
@@ -399,8 +397,8 @@ export default connect(
   },
   dispatch => ({
     updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),
-    publish: (story) => dispatch(StoryEditActions.publishLocalDraft(story)),
+    saveDraft: (story) => dispatch(StoryEditActions.saveLocalDraft(story)),
     update: (id, attrs) => dispatch(StoryEditActions.updateDraft(id, attrs, true)),
-    resetCreateStore: () => dispatch(StoryEditActions.resetCreateStore())
-  })
+    resetCreateStore: () => dispatch(StoryEditActions.resetCreateStore()),
+  }),
 )(CreateStoryDetailScreen)

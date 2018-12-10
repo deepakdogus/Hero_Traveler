@@ -223,20 +223,20 @@ function * uploadAtomicAssets(draft){
   return promise
 }
 
-function * publishDraftErrorHandling(draft, response){
+function * saveDraftErrorHandling(draft, response){
   let err = new Error('Failed to publish story')
   // TODO: I tried {...response, ...err} but that seemed to strip the Error instance of it's
   //       methods, maybe Object.assign(err, response) is better?
   err.status = response.status
   err.problem = response.problem
 
-  yield put(StoryCreateActions.publishDraftFailure(err))
+  yield put(StoryCreateActions.saveDraftFailure(err))
 
   yield [
     put(PendingUpdatesActions.addPendingUpdate(
       draft,
       'Failed to publish',
-      'publishLocalDraft',
+      'saveLocalDraft',
     )),
     put(StoryCreateActions.syncError()),
   ]
@@ -251,8 +251,8 @@ function * updateDraftErrorHandling(draft, response){
     put(StoryCreateActions.updateDraftFailure(err)),
     put(PendingUpdatesActions.addPendingUpdate(
       draft,
-      'Failed to publish',
-      'publishLocalDraft',
+      'Failed to update',
+      'updateDraft',
     )),
   ]
 }
@@ -275,53 +275,39 @@ function getSyncProgressSteps(story){
   return steps
 }
 
-export function * publishLocalDraft (api, action) {
-  const {draft} = action
+export function * saveLocalDraft (api, action) {
+  const {draft, saveAsDraft = false} = action
+  draft.draft = saveAsDraft
   yield [
     put(PendingUpdatesActions.setRetryingUpdate(draft.id)),
     put(StoryCreateActions.initializeSyncProgress(getSyncProgressSteps(draft), 'Publishing Story'))
   ]
   const coverResponse = yield createCover(api, draft)
   if (coverResponse.error) {
-    yield publishDraftErrorHandling(draft, coverResponse.error)
+    yield saveDraftErrorHandling(draft, coverResponse.error)
     return
   }
 
   const atomicResponse = yield uploadAtomicAssets(draft)
   if (atomicResponse && atomicResponse.error){
-    yield publishDraftErrorHandling(draft, atomicResponse.error)
+    yield saveDraftErrorHandling(draft, atomicResponse.error)
     return
   }
-  yield put(StoryCreateActions.publishDraft(draft))
-}
 
-export function * publishDraft (api, action) {
-  const {draft} = action
-  const draftStoryId = draft.id
   const response = yield call(api.createStory, draft)
   if (response.ok) {
-    moveVideosFromPrecacheToCache(draftStoryId)
+    moveVideosFromPrecacheToCache(draft.id)
     const stories = {}
     const story = response.data.story
     story.author = story.author.id
     stories[story.id] = story
     yield [
-      put(StoryCreateActions.publishDraftSuccess(draft)),
+      put(StoryCreateActions.saveDraftSuccess(draft)),
       put(StoryActions.addUserStory(stories, draft.id)),
       put(PendingUpdatesActions.removePendingUpdate(draft.id)),
     ]
     return
-  } else yield publishDraftErrorHandling(draft, response)
-}
-
-export function * registerDraft (api, action) {
-  const response = yield call(api.createDraft)
-  if (response.ok) {
-    const {data: draft} = response
-    yield put(StoryCreateActions.registerDraftSuccess(draft))
-  } else {
-    yield put(StoryCreateActions.registerDraftFailure(new Error('Failed to initialize draft')))
-  }
+  } else yield saveDraftErrorHandling(draft, response)
 }
 
 export function * discardDraft (api, action) {

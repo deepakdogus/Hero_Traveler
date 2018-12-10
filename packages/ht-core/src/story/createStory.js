@@ -36,12 +36,11 @@ export default async function createStory(storyData, assetFormater) {
   const {coverImage, coverVideo} = storyData
 
   // lets us know which Story method to follow and how to handle media assets
-  const isLocalStory = storyData.draft
+  const isLocalStory = storyData.id.startsWith('local-')
   let newStory
 
   const storyObject = {
     ...storyData,
-    draft: false,
     categories: await parseAndInsertStoryCategories(storyData.categories),
     hashtags: await parseAndInsertStoryHashtags(storyData.hashtags)
   }

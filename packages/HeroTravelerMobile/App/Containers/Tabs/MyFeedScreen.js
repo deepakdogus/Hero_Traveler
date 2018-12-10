@@ -38,7 +38,7 @@ class MyFeedScreen extends React.Component {
     storiesById: PropTypes.arrayOf(PropTypes.string),
     backgroundFailures: PropTypes.object,
     updateDraft: PropTypes.func,
-    publishLocalDraft: PropTypes.func,
+    saveLocalDraft: PropTypes.func,
     discardUpdate: PropTypes.func,
   };
 
@@ -197,7 +197,7 @@ class MyFeedScreen extends React.Component {
           sync={sync}
           failure={failure}
           updateDraft={this.props.updateDraft}
-          publishLocalDraft={this.props.publishLocalDraft}
+          saveLocalDraft={this.props.saveLocalDraft}
           discardUpdate={this.props.discardUpdate}
         />
         { bottomContent }
@@ -232,7 +232,7 @@ const mapDispatchToProps = (dispatch) => {
     attemptGetUserFeedStories: (userId) => dispatch(StoryActions.feedRequest(userId)),
     attemptGetUserFeedGuides: (userId) => dispatch(GuideActions.guideFeedRequest(userId)),
     discardUpdate: (storyId) => dispatch(PendingUpdatesActions.removePendingUpdate(storyId)),
-    publishLocalDraft: (story) => dispatch(StoryCreateActions.publishLocalDraft(story)),
+    saveLocalDraft: (story) => dispatch(StoryCreateActions.saveLocalDraft(story)),
     updateDraft: (story) => dispatch(StoryCreateActions.updateDraft(story.id, story, true)),
   }
 }

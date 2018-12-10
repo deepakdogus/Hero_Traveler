@@ -12,21 +12,22 @@ class CreateStoryScreen extends Component {
     storyId: PropTypes.string,
     cachedStory: PropTypes.object,
     userId: PropTypes.string,
-    registerDraft: PropTypes.func,
+    addLocalDraft: PropTypes.func,
     loadDraft: PropTypes.func,
     discardDraft: PropTypes.func,
     publish: PropTypes.func,
     resetCreateStore: PropTypes.func,
     reroute: PropTypes.func,
+    setWorkingDraft: PropTypes.func,
   }
 
   componentWillMount() {
     const {
       storyId, userId, cachedStory,
-      registerDraft, loadDraft, setWorkingDraft,
+      addLocalDraft, loadDraft, setWorkingDraft,
     } = this.props
     if (!storyId) {
-      registerDraft(createLocalDraft(userId))
+      addLocalDraft(createLocalDraft(userId))
     }
     // should only load publish stories since locals do not exist in DB
     else if (storyId.substring(0,6) !== 'local-'){
@@ -42,7 +43,6 @@ class CreateStoryScreen extends Component {
       <StoryCoverScreen {...this.props}/>
     )
   }
-
 }
 
 function mapStateToProps(state, props) {
@@ -58,11 +58,10 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    registerDraft: (draft) => dispatch(StoryCreateActions.registerDraftSuccess(draft)),
+    addLocalDraft: (draft) => dispatch(StoryCreateActions.addLocalDraft(draft)),
     loadDraft: (draftId, cachedStory) => dispatch(StoryCreateActions.editStory(draftId, cachedStory)),
     setWorkingDraft: (cachedStory) => dispatch(StoryCreateActions.editStorySuccess(cachedStory)),
     discardDraft: (draftId) => dispatch(StoryCreateActions.discardDraft(draftId)),
-    publish: (draft) => dispatch(StoryCreateActions.publishDraft(draft)),
     resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
   }
 }

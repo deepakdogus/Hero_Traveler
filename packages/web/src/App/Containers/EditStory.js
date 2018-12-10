@@ -69,8 +69,6 @@ class EditStory extends Component {
   static propTypes = {
     match: PropTypes.object,
     // mapped from state
-    isPublished: PropTypes.bool,
-    isRepublished: PropTypes.bool,
     subPath: PropTypes.string,
     accessToken: PropTypes.string,
     originalDraft: PropTypes.object,
@@ -79,14 +77,14 @@ class EditStory extends Component {
     userId: PropTypes.string,
     storyId: PropTypes.string,
     // dispatch methods
-    registerDraft: PropTypes.func,
+    addLocalDraft: PropTypes.func,
     loadDraft: PropTypes.func,
     setWorkingDraft: PropTypes.func,
     discardDraft: PropTypes.func,
     saveDraftToCache: PropTypes.func,
     updateDraft: PropTypes.func,
     updateWorkingDraft: PropTypes.func,
-    publish: PropTypes.func,
+    saveDraft: PropTypes.func,
     resetCreateStore: PropTypes.func,
     reroute: PropTypes.func,
     updateGlobalModalParams: PropTypes.func,
@@ -107,13 +105,13 @@ class EditStory extends Component {
   componentWillMount() {
     const {
       userId, cachedStory, storyId,
-      registerDraft, loadDraft, setWorkingDraft,
+      addLocalDraft, loadDraft, setWorkingDraft,
     } = this.props
 
     if (!storyId || storyId === 'new') {
-      registerDraft(createLocalDraft(userId))
+      addLocalDraft(createLocalDraft(userId))
     }
-    // should only load publish stories since locals do not exist in DB
+    // should only load saved stories since locals do not exist in DB
     else if (!this.isLocalStory()){
       loadDraft(storyId, cachedStory)
     }
@@ -125,21 +123,17 @@ class EditStory extends Component {
   componentDidMount() {
     const {
       userId,
-      registerDraft,
+      addLocalDraft,
       workingDraft,
     } = this.props
 
     if (workingDraft === null && this.isLocalStory()) {
-      registerDraft(createLocalDraft(userId))
+      addLocalDraft(createLocalDraft(userId))
     }
   }
 
   componentWillReceiveProps(nextProps) {
     const {match, reroute, originalDraft} = nextProps
-    if (this.hasPublished(nextProps)){
-      this.next()
-      return
-    }
     // once our draft is loaded be sure to reroute
     if (originalDraft && originalDraft.id && match.isExact) {
       reroute(`/editStory/${originalDraft.id}/cover`)
@@ -181,16 +175,6 @@ class EditStory extends Component {
 
   isLocalStory() {
     return this.props.storyId.substring(0,6) === 'local-'
-  }
-
-  hasPublished(nextProps){
-    return (!this.props.isPublished && nextProps.isPublished) ||
-    (!this.props.isRepublished && nextProps.isRepublished)
-  }
-
-  next() {
-    this.props.resetCreateStore()
-    this.props.reroute('/')
   }
 
   _updateDraft = () => {
@@ -321,7 +305,7 @@ class EditStory extends Component {
   }
 
   saveDetails = () => {
-    const {workingDraft, publish} = this.props
+    const {workingDraft, saveDraft} = this.props
     if (!workingDraft.type) {
       this.setValidationErrorState('Please include an activity')
     }
@@ -329,7 +313,7 @@ class EditStory extends Component {
       this.setValidationErrorState('Please include a location')
     }
     else if (workingDraft.draft) {
-      publish(this.cleanDraft(workingDraft))
+      saveDraft(this.cleanDraft(workingDraft))
     }
     else {
       this._updateDraft()
@@ -422,16 +406,14 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    registerDraft: (draft) => dispatch(StoryCreateActions.registerDraftSuccess(draft)),
+    addLocalDraft: (draft) => dispatch(StoryCreateActions.addLocalDraft(draft)),
     loadDraft: (draftId, cachedStory) => dispatch(StoryCreateActions.editStory(draftId, cachedStory)),
     discardDraft: (draftId) => dispatch(StoryCreateActions.discardDraft(draftId)),
     saveDraftToCache: (draft) => dispatch(StoryActions.addDraft(draft)),
     updateDraft: (draftId, attrs, doReset, isRepublishing) =>
       dispatch(StoryCreateActions.updateDraft(draftId, attrs, doReset, isRepublishing)),
     updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),
-    // Emre when you refactor this you should be able to remove publishDraft function and
-    // reducer from StoryCreateRedux
-    publish: (draft) => dispatch(StoryCreateActions.publishLocalDraft(draft)),
+    saveDraft: (draft) => dispatch(StoryCreateActions.saveLocalDraft(draft)),
     resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
     reroute: (path) => dispatch(push(path)),
     setWorkingDraft: (cachedStory) => dispatch(StoryCreateActions.editStorySuccess(cachedStory)),

@@ -66,6 +66,7 @@ class StoryCoverScreen extends Component {
     originalDraft: PropTypes.object,
     updateWorkingDraft: PropTypes.func,
     saveDraftToCache: PropTypes.func,
+    saveDraft: PropTypes.func,
     error: PropTypes.string,
   }
 
@@ -308,11 +309,13 @@ class StoryCoverScreen extends Component {
     return Promise.resolve(this.props.updateWorkingDraft(copy))
   }
 
-  // this does a hard save to the DB (if published) or to cache (if draft)
+  // this does a create or update depending on whether it is a local draft
   saveStory() {
     const draft = this.props.workingDraft
     this.cleanDraft(draft)
-    if (draft.draft) this.props.saveDraftToCache(draft)
+    if (draft.id.startsWith('local-')) {
+      this.props.saveDraft(draft, true)
+    }
     else this.props.update(draft.id, draft)
     return Promise.resolve({})
   }
@@ -724,7 +727,7 @@ export default connect((state) => {
     user: state.entities.users.entities[state.session.userId],
     originalDraft: {...state.storyCreate.draft},
     workingDraft: {...state.storyCreate.workingDraft},
-    error: state.storyCreate.error
+    error: state.storyCreate.error,
   }
 }, dispatch => ({
   updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),
@@ -736,5 +739,6 @@ export default connect((state) => {
     dispatch(UserActions.updateUser({introTooltips})),
   resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
   saveDraftToCache: (draft) => dispatch(StoryActions.addDraft(draft)),
-})
+  saveDraft: (draft, saveAsDraft) => dispatch(StoryCreateActions.saveLocalDraft(draft, saveAsDraft)),
+}),
 )(StoryCoverScreen)

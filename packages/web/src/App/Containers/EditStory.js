@@ -6,7 +6,6 @@ import _ from 'lodash'
 import Modal from 'react-modal'
 import PropTypes from 'prop-types'
 
-import StoryActions from '../Shared/Redux/Entities/Stories'
 import StoryCreateActions from '../Shared/Redux/StoryCreateRedux'
 import createLocalDraft from '../Shared/Lib/createLocalDraft'
 import AuthRoute from './AuthRoute'
@@ -81,7 +80,6 @@ class EditStory extends Component {
     loadDraft: PropTypes.func,
     setWorkingDraft: PropTypes.func,
     discardDraft: PropTypes.func,
-    saveDraftToCache: PropTypes.func,
     updateDraft: PropTypes.func,
     updateWorkingDraft: PropTypes.func,
     saveDraft: PropTypes.func,
@@ -177,20 +175,22 @@ class EditStory extends Component {
     return this.props.storyId.substring(0,6) === 'local-'
   }
 
-  _updateDraft = () => {
+  _updateDraft = (publish) => {
     const {
       originalDraft,
       workingDraft,
       subPath,
-      saveDraftToCache,
+      saveDraft,
     } = this.props
 
-    if (workingDraft.draft) {
-      saveDraftToCache(this.cleanDraft(workingDraft))
+    if (workingDraft.id.startsWith('local-')) {
+      saveDraft(this.cleanDraft(workingDraft), workingDraft.draft)
       this.setState({draftSaveMessage: 'Saving Draft'})
       setTimeout(() => this.setState({draftSaveMessage: ''}), 1000)
     }
     else {
+      const cleanedDraft = this.cleanDraft(workingDraft)
+      if (publish && cleanedDraft.draft) cleanedDraft.draft = false
       const isRepublishing = !workingDraft.draft && subPath === 'details'
       this.props.updateDraft(
         originalDraft.id,
@@ -316,7 +316,7 @@ class EditStory extends Component {
       saveDraft(this.cleanDraft(workingDraft))
     }
     else {
-      this._updateDraft()
+      this._updateDraft(true)
     }
   }
 
@@ -409,11 +409,10 @@ function mapDispatchToProps(dispatch) {
     addLocalDraft: (draft) => dispatch(StoryCreateActions.addLocalDraft(draft)),
     loadDraft: (draftId, cachedStory) => dispatch(StoryCreateActions.editStory(draftId, cachedStory)),
     discardDraft: (draftId) => dispatch(StoryCreateActions.discardDraft(draftId)),
-    saveDraftToCache: (draft) => dispatch(StoryActions.addDraft(draft)),
     updateDraft: (draftId, attrs, doReset, isRepublishing) =>
       dispatch(StoryCreateActions.updateDraft(draftId, attrs, doReset, isRepublishing)),
     updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),
-    saveDraft: (draft) => dispatch(StoryCreateActions.saveLocalDraft(draft)),
+    saveDraft: (draft, saveAsDraft) => dispatch(StoryCreateActions.saveLocalDraft(draft, saveAsDraft)),
     resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
     reroute: (path) => dispatch(push(path)),
     setWorkingDraft: (cachedStory) => dispatch(StoryCreateActions.editStorySuccess(cachedStory)),

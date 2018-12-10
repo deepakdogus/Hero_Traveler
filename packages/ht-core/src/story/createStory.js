@@ -56,7 +56,11 @@ export default async function createStory(storyData, assetFormater) {
     throw new Error('Could not find the author for this story');
   }
 
-  if (!storyObject.locationInfo.latitude) {
+  if (
+    !storyObject.draft
+    && storyObject.locationInfo
+    && !storyObject.locationInfo.latitude
+  ) {
     storyObject.locationInfo = await getLocationInfo(storyObject.locationInfo.name)
   }
 

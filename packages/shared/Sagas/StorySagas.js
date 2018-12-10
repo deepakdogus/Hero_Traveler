@@ -306,6 +306,7 @@ export function * saveLocalDraft (api, action) {
       put(StoryActions.addUserStory(stories, draft.id)),
       put(PendingUpdatesActions.removePendingUpdate(draft.id)),
     ]
+    if (!saveAsDraft) yield put(StoryActions.addUserStory(stories, draft.id))
     return
   } else yield saveDraftErrorHandling(draft, response)
 }

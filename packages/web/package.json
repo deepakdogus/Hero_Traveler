@@ -1,14 +1,14 @@
 {
-  "name": "web",
-  "version": "0.1.0",
-  "private": true,
   "dependencies": {
     "algoliasearch": "^3.24.8",
     "algoliasearch-helper": "^2.23.2",
     "apisauce": "^0.14.1",
+    "concurrently": "^3.5.0",
+    "cpx": "^1.5.0",
     "draft-js": "^0.10.5",
     "draft-js-plugins-editor": "^2.1.1",
     "draft-js-side-toolbar-plugin": "^2.0.4",
+    "fbjs": "^1.0.0",
     "history": "^4.7.2",
     "lodash": "^4.17.4",
     "material-ui": "^0.19.1",
@@ -35,6 +35,10 @@
     "react-router-dom": "^4.1.1",
     "react-router-redux": "next",
     "react-scripts": "1.0.10",
+    "reactotron-apisauce": "^1.12.2",
+    "reactotron-react-js": "^1.12.2",
+    "reactotron-redux": "^1.12.2",
+    "reactotron-redux-saga": "^1.12.2",
     "redraft": "^0.8.0",
     "redux": "^3.6.0",
     "redux-form": "^6.5.0",
@@ -42,26 +46,9 @@
     "redux-persist": "^4.1.0",
     "redux-saga": "^0.14.3",
     "reduxsauce": "^0.4.1",
+    "rimraf": "^2.6.1",
     "seamless-immutable": "^7.1.2",
     "styled-components": "^2.1.1",
     "uuid": "^3.3.2"
-  },
-  "scripts": {
-    "start": "PORT=3001 react-scripts start",
-    "build": "npm run share && react-scripts build",
-    "postbuild": "node check-service-worker.js",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "share": "rimraf src/App/shared && mkdir src/App/Shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png,svg,jpg}\" src/App/shared",
-    "share:watch": "rimraf src/App/Shared && mkdir src/App/Shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png,svg,jpg}\" src/App/Shared --watch"
-  },
-  "devDependencies": {
-    "concurrently": "^3.5.0",
-    "cpx": "^1.5.0",
-    "reactotron-apisauce": "^1.12.2",
-    "reactotron-react-js": "^1.12.2",
-    "reactotron-redux": "^1.12.2",
-    "reactotron-redux-saga": "^1.12.2",
-    "rimraf": "^2.6.1"
   }
 }

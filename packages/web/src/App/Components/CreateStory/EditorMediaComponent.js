@@ -4,7 +4,7 @@ import {
   EditorBlock,
 } from 'draft-js'
 import styled from 'styled-components'
-import cx from 'draft-js/node_modules/fbjs/lib/cx'
+
 
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import {getVideoUrlBase} from '../../Shared/Lib/getVideoUrl'
@@ -16,6 +16,8 @@ import Placeholder from './EditorCustomPlaceholder'
 import Caption from '../MediaCaption'
 import Loader from '../Loader'
 import {Row} from '../FlexboxGrid'
+
+const cx = require('draft-js/node_modules/fbjs/lib/cx');
 
 const MediaWrapper = styled.div`
   padding-bottom: 60px;

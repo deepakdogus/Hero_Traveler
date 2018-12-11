@@ -8,6 +8,7 @@ export default function encryptPassword(password) {
   }
 
   return new Promise((resolve, reject) => {
+    return resolve()
     bcrypt.hash(password, 10, (err, hash) => {
       if (err) {
         return reject(err)

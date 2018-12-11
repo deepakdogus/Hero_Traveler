@@ -130,35 +130,44 @@ class EditStory extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const {match, reroute, originalDraft} = nextProps
-    // once our draft is loaded be sure to reroute
+  componentDidUpdate(prevProps){
+    const {
+      subPath,
+      reroute,
+      match,
+      originalDraft,
+      workingDraft,
+    } = this.props
+
+    const hasCompletedSave = this.props.syncProgress > 0
+      && this.props.syncProgressSteps === this.props.syncProgress
+      && prevProps.syncProgress !== this.props.syncProgress
+
     if (originalDraft && originalDraft.id && match.isExact) {
-      reroute(`/editStory/${originalDraft.id}/cover`)
+      return reroute(`/editStory/${originalDraft.id}/cover`)
     }
     if (
-      this.props.globalModal.modalName !== 'saveEdits'
-      && nextProps.globalModal.modalName === 'saveEdits'
+      prevProps.globalModal.modalName !== 'saveEdits'
+      && this.props.globalModal.modalName === 'saveEdits'
     ) {
-      this.props.updateGlobalModalParams({
+      return this.props.updateGlobalModalParams({
         resetCreateStore: this.props.resetCreateStore,
         updateDraft: this._updateDraft,
       })
     }
-  }
 
-  componentDidUpdate(prevProps){
-    if (
-      this.props.syncProgress > 0
-      && this.props.syncProgressSteps === this.props.syncProgress
-      && prevProps.syncProgress !== this.props.syncProgress
-      && this.props.subPath === 'details'
-    ) {
-      this.props.reroute('/feed')
-      this.props.resetCreateStore()
+    if (hasCompletedSave) {
+      const prevId = _.get(prevProps, 'workingDraft.id', '')
+      const didFirstSaveAsDraft = prevId.startsWith('local-') && prevId !== workingDraft.id
+      if (this.state.saveAction === 'publish') {
+        this.props.reroute('/feed')
+        this.props.resetCreateStore()
+      }
+      else if (didFirstSaveAsDraft) {
+        reroute(`/editStory/${workingDraft.id}/${subPath}`)
+      }
     }
 
-    const { workingDraft, originalDraft } = this.props
     if (haveFieldsChanged(workingDraft, originalDraft)) {
       window.onbeforeunload = (e) => {
         e.preventDefault()
@@ -167,8 +176,15 @@ class EditStory extends Component {
     }
   }
 
+  hasCompletedSave(prevProps) {
+    return this.props.syncProgress > 0
+    && this.props.syncProgressSteps === this.props.syncProgress
+    && prevProps.syncProgress !== this.props.syncProgress
+  }
+
   componentWillUnmount(){
     window.onbeforeunload = () => null
+    this.props.resetCreateStore()
   }
 
   isLocalStory() {
@@ -183,10 +199,10 @@ class EditStory extends Component {
       saveDraft,
     } = this.props
 
+    this.setState({ saveAction: publish === true ? 'publish' : 'update' })
+
     if (workingDraft.id.startsWith('local-')) {
       saveDraft(this.cleanDraft(workingDraft), workingDraft.draft)
-      this.setState({draftSaveMessage: 'Saving Draft'})
-      setTimeout(() => this.setState({draftSaveMessage: ''}), 1000)
     }
     else {
       const cleanedDraft = this.cleanDraft(workingDraft)
@@ -313,6 +329,7 @@ class EditStory extends Component {
       this.setValidationErrorState('Please include a location')
     }
     else if (workingDraft.draft) {
+      this.setState({ saveAction: 'publish' })
       saveDraft(this.cleanDraft(workingDraft))
     }
     else {
@@ -363,7 +380,7 @@ class EditStory extends Component {
           isDetailsView={subPath === 'details'}
           onRight={this.onRight}
           onLeft={this.onLeft}
-          syncProgressMessage={this.state.draftSaveMessage || syncProgressMessage}
+          syncProgressMessage={syncProgressMessage}
         />
         <Modal
           isOpen={!!error.title}
@@ -387,19 +404,32 @@ function getSubPath(location) {
 function mapStateToProps(state, props) {
   const accessToken = _.find(state.session.tokens, {type: 'access'})
   const storyId = _.get(props, 'match.params.storyId')
+  const {
+    syncProgress,
+    syncProgressSteps,
+    message,
+  } = state.storyCreate.sync
+  const {
+    backgroundFailures,
+    entities: stories,
+  } = state.entities.stories
+
+  const syncProgressMessage = syncProgress === syncProgressSteps
+    ? ''
+    : message
 
   return {
     userId: state.session.userId,
     storyId,
-    cachedStory: state.entities.stories.entities[storyId],
+    cachedStory: stories[storyId],
     accessToken: accessToken.value,
     subPath: getSubPath(state.routes.location),
     originalDraft: state.storyCreate.draft,
     workingDraft: state.storyCreate.workingDraft,
-    syncProgress: state.storyCreate.sync.syncProgress,
-    syncProgressSteps: state.storyCreate.sync.syncProgressSteps,
-    syncProgressMessage: state.storyCreate.sync.message,
-    backgroundFailures: state.entities.stories.backgroundFailures,
+    syncProgress,
+    syncProgressSteps,
+    syncProgressMessage,
+    backgroundFailures,
     globalModal: state.ux,
   }
 }

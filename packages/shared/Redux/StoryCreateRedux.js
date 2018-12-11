@@ -1,7 +1,7 @@
 import { createReducer, createActions } from 'reduxsauce'
 import { changeCoverVideo, needToChangeCoverVideo } from './helpers/coverUpload'
 import Immutable from 'seamless-immutable'
-
+import _ from 'lodash'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
@@ -10,7 +10,7 @@ const { Types, Creators } = createActions({
   editStorySuccess: ['story'],
   editStoryFailure: ['error', 'cachedStory'],
   saveLocalDraft: ['draft', 'saveAsDraft'],
-  saveDraftSuccess: ['draft'],
+  saveDraftSuccess: ['draft', 'story'],
   saveDraftFailure: ['error'],
   discardDraft: ['draftId'],
   discardDraftSuccess: ['draft'],
@@ -65,14 +65,19 @@ export const reset = () => INITIAL_STATE
 
 export const saveLocalDraft = (state, { userId }) => state.merge({ error: null })
 
-export const saveDraftSuccess = (state, {draft}) => {
-  return state.merge({
+export const saveDraftSuccess = (state, {draft, story}) => {
+  const update = {
     error: null,
     draft: null,
     sync: {
       syncProgress: state.sync.syncProgressSteps,
-    }
-  }, {deep: true})
+    },
+  }
+  if (_.get(story, 'draft')) {
+    update.draft = story
+    update.workingDraft = story
+  }
+  return state.merge(update, {deep: true})
 }
 
 export const failure = (state, {error}) => state.merge({ error })

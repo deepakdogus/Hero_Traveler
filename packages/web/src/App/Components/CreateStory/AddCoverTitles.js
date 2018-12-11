@@ -277,8 +277,8 @@ export default class AddCoverTitles extends React.Component {
 
   // add this to properly set the value of the titleInput
   componentWillReceiveProps(nextProps) {
-    const workingDraft = {nextProps}
-    if (isNewStory(this.props, nextProps)){
+    const { workingDraft } = nextProps
+    if (isNewStory(this.props, nextProps)) {
       this.setState({
         title: workingDraft.title,
         description: workingDraft.title,

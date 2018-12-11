@@ -280,7 +280,10 @@ export function * saveLocalDraft (api, action) {
   draft.draft = saveAsDraft
   yield [
     put(PendingUpdatesActions.setRetryingUpdate(draft.id)),
-    put(StoryCreateActions.initializeSyncProgress(getSyncProgressSteps(draft), 'Publishing Story'))
+    put(StoryCreateActions.initializeSyncProgress(
+      getSyncProgressSteps(draft),
+      `${saveAsDraft ? 'Saving' : 'Publishing'} Story`
+    ))
   ]
   const coverResponse = yield createCover(api, draft)
   if (coverResponse.error) {
@@ -302,7 +305,7 @@ export function * saveLocalDraft (api, action) {
     story.author = story.author.id
     stories[story.id] = story
     yield [
-      put(StoryCreateActions.saveDraftSuccess(draft)),
+      put(StoryCreateActions.saveDraftSuccess(draft, story)),
       put(StoryActions.addUserStory(stories, draft.id)),
       put(PendingUpdatesActions.removePendingUpdate(draft.id)),
     ]

@@ -1,23 +1,91 @@
 import React, {Component} from 'react'
 import {Route} from 'react-router-dom'
+import Loadable from 'react-loadable'
 
 import Session from './Session'
 
 import AuthRoute from './AuthRoute'
-import Category from './Category'
-import Explore from './Explore'
-import Feed from './Feed'
-import Story from './Story'
-import Search from './Search'
-import SearchResults from './SearchResults'
-import EditStory from './EditStory'
-import SignupSocial from './Signup/SignupSocial'
-import SignupTopics from './Signup/SignupTopics'
-import EditTopics from './EditProfile/EditTopics'
-import Profile from './Profile'
 import Header from './Header'
-import Guide from './Guide'
-import CreateGuide from './CreateGuide'
+
+const Loading = () => null
+
+const Explore = Loadable({
+  loader: () => import('./Explore'),
+  loading: Loading,
+  delay: 300,
+})
+
+const Category = Loadable({
+  loader: () => import('./Category'),
+  loading: Loading,
+  delay: 300,
+})
+
+const Feed = Loadable({
+  loader: () => import('./Feed'),
+  loading: Loading,
+  delay: 300,
+})
+
+const SignupSocial = Loadable({
+  loader: () => import('./Signup/SignupSocial'),
+  loading: Loading,
+  delay: 300,
+})
+
+const SignupTopics = Loadable({
+  loader: () => import('./Signup/SignupTopics'),
+  loading: Loading,
+  delay: 300,
+})
+
+const EditTopics = Loadable({
+  loader: () => import('./EditProfile/EditTopics'),
+  loading: Loading,
+  delay: 300,
+})
+
+const CreateGuide = Loadable({
+  loader: () => import('./CreateGuide'),
+  loading: Loading,
+  delay: 300,
+})
+
+const Story = Loadable({
+  loader: () => import('./Story'),
+  loading: Loading,
+  delay: 300,
+})
+
+const Guide = Loadable({
+  loader: () => import('./Guide'),
+  loading: Loading,
+  delay: 300,
+})
+
+const EditStory = Loadable({
+  loader: () => import('./EditStory'),
+  loading: Loading,
+  delay: 300,
+})
+
+const Profile = Loadable({
+  loader: () => import('./Profile'),
+  loading: Loading,
+  delay: 300,
+})
+
+const Search = Loadable({
+  loader: () => import('./Search'),
+  loading: Loading,
+  delay: 300,
+})
+
+const SearchResults = Loadable({
+  loader: () => import('./SearchResults'),
+  loading: Loading,
+  delay: 300,
+})
 
 class AppRoot extends Component {
   render() {

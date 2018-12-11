@@ -6,6 +6,7 @@ export const itemsPerQuery = 100
 export default class ContainerWithFeedList extends React.Component {
   static propTypes = {
     sessionUserId: PropTypes.string,
+    loadDrafts: PropTypes.func,
     loadBookmarks: PropTypes.func,
     getGuides: PropTypes.func,
     getStories: PropTypes.func,
@@ -33,7 +34,7 @@ export default class ContainerWithFeedList extends React.Component {
   getTabInfo = (page) => {
     switch (this.state.activeTab) {
       case 'DRAFTS':
-        return // cached only so no need to fetch
+        return this.props.loadDrafts()
       case 'BOOKMARKS':
         return this.props.loadBookmarks(this.props.sessionUserId)
       case 'GUIDES':

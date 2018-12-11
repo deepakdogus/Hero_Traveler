@@ -130,6 +130,7 @@ class Profile extends ContainerWithFeedList {
       uploadImage,
       uploadMedia,
       openGlobalModal,
+      pendingDrafts,
     } = this.props
     if (!profilesUser) return null
 
@@ -137,7 +138,11 @@ class Profile extends ContainerWithFeedList {
     const isEdit = path[path.length - 1] === 'edit'
     const isUsersProfile = profilesUser.id === sessionUserId
     const isFollowing = _.includes(myFollowedUsers, profilesUser.id)
-    const {selectedFeedItems} = this.getSelectedFeedItems()
+
+    let {selectedFeedItems} = this.getSelectedFeedItems()
+    if (this.state.activeTab === 'DRAFTS') {
+      selectedFeedItems = [...pendingDrafts ,...selectedFeedItems]
+    }
 
     return (
       <ContentWrapper>
@@ -179,6 +184,14 @@ class Profile extends ContainerWithFeedList {
   }
 }
 
+function getPendingDrafts(pendingUpdates) {
+  return pendingUpdates.updateOrder.reduce((pendingDrafts, key) => {
+    const story = pendingUpdates.pendingUpdates[key].story
+    if (story.draft) pendingDrafts.push(story)
+    return pendingDrafts
+  }, [])
+}
+
 function mapStateToProps(state, ownProps) {
   const userId = ownProps.match.params.userId
   let {stories, users, guides} = state.entities
@@ -199,6 +212,7 @@ function mapStateToProps(state, ownProps) {
     guidesById: _.get(guides, `guideIdsByUserId[${userId}]`, []),
     draftsFetchStatus: stories.drafts.fetchStatus,
     draftsById: stories.drafts.byId,
+    pendingDrafts: getPendingDrafts(state.pendingUpdates),
     userBookmarksFetchStatus: getBookmarksFetchStatus(stories, userId),
     userBookmarksById: getByBookmarks(users, userId),
     error: stories.error,
@@ -217,6 +231,7 @@ function mapDispatchToProps(dispatch, ownProps) {
     updateUser: (attrs) => dispatch(UserActions.updateUser(attrs)),
     getUser: (userId) => dispatch(UserActions.loadUser(userId)),
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
+    loadDrafts: () => dispatch(StoryActions.loadDrafts()),
     loadBookmarks: () => dispatch(StoryActions.getBookmarks(targetUserId)),
     loadUserFollowing: (userId) => dispatch(UserActions.loadUserFollowing(userId)),
     followUser: (sessionUserId, userIdToFollow) =>

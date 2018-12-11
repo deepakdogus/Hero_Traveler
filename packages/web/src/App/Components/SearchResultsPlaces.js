@@ -11,11 +11,12 @@ const StyledContainer = styled(DefaultContainer)`
   padding: 10px 0px 6px;
 `
 
-export default class SearchResultsStories extends Component {
+export default class SearchResultsPlaces extends Component {
   static propTypes = {
     storySearchResults: PropTypes.object,
     navToStory: PropTypes.func,
   }
+
   constructor(props) {
     super(props)
     this.state = {}

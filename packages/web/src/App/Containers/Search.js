@@ -9,7 +9,7 @@ import env from '../Config/Env'
 import UserActions from '../Shared/Redux/Entities/Users'
 import UXActions from '../Redux/UXRedux'
 import SearchResultsPeople from '../Components/SearchResultsPeople'
-import SearchResultsStories from '../Components/SearchResultsStories'
+import SearchResultsPlaces from '../Components/SearchResultsPlaces'
 import TabBar from '../Components/TabBar'
 import {Row} from '../Components/FlexboxGrid'
 //seach
@@ -66,7 +66,7 @@ const Text = styled.p`
   cursor: pointer;
 `
 
-const tabBarTabs = ['STORIES', 'PEOPLE']
+const tabBarTabs = ['PLACES', 'PEOPLE']
 
 const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
 const STORY_INDEX = env.SEARCH_STORY_INDEX
@@ -249,7 +249,7 @@ class Search extends Component {
     }
     else {
       return (
-        <SearchResultsStories
+        <SearchResultsPlaces
           storySearchResults={this.state.lastSearchResults}
           navToStory={this._navToStory}
           navToUserProfile={this._navToUserProfile}

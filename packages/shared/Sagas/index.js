@@ -13,7 +13,7 @@ import SessionActions, { SessionTypes } from '../Redux/SessionRedux'
 import { StoryCreateTypes } from '../Redux/StoryCreateRedux'
 import { MediaUploadTypes } from '../Redux/MediaUploadRedux'
 // Entities
-import { StoryTypes } from '../Redux/Entities/Stories'
+import StoryActions, { StoryTypes } from '../Redux/Entities/Stories'
 import { CategoryTypes } from '../Redux/Entities/Categories'
 import { HashtagTypes } from '../Redux/Entities/Hashtags'
 import { UserTypes } from '../Redux/Entities/Users'
@@ -83,6 +83,8 @@ import {
   flagStory,
   getGuideStories,
   uploadImage,
+  watchPendingUpdates,
+  syncPendingUpdates,
 } from './StorySagas'
 
 import {
@@ -139,10 +141,9 @@ function * watchRefreshTokens() {
   }
 }
 
-
 export default function * root () {
   yield [
-    fork(watchRefreshTokens),
+    fork(watchPendingUpdates),
     takeLatest(StartupTypes.STARTUP, startup, heroAPI),
     takeLatest(StartupTypes.HERO_STARTUP, heroStartup, heroAPI),
     takeLatest(OpenScreenTypes.OPEN_SCREEN, openScreen),
@@ -185,6 +186,7 @@ export default function * root () {
     takeLatest(StoryTypes.DELETE_STORY, deleteStory, heroAPI),
     takeLatest(StoryTypes.GET_BOOKMARKS, getBookmarks, heroAPI),
     takeLatest(StoryTypes.FLAG_STORY, flagStory, heroAPI),
+    takeLatest(StoryTypes.SYNC_PENDING_UPDATES, syncPendingUpdates, heroAPI),
 
     // Users
     takeLatest(UserTypes.LOAD_USER_SUGGESTIONS_REQUEST, getSuggestedUsers, heroAPI),
@@ -217,6 +219,7 @@ export default function * root () {
 
     //Comments
     takeLatest(CommentTypes.GET_COMMENTS_REQUEST, getComments, heroAPI),
-    takeLatest(CommentTypes.CREATE_COMMENT_REQUEST, createComment, heroAPI)
+    takeLatest(CommentTypes.CREATE_COMMENT_REQUEST, createComment, heroAPI),
+    fork(watchRefreshTokens),
   ]
 }

@@ -1,12 +1,24 @@
-import { call, put, select } from 'redux-saga/effects'
+import {
+  call,
+  put,
+  select,
+} from 'redux-saga/effects'
+import { delay } from 'redux-saga'
 import StoryActions from '../Redux/Entities/Stories'
 import GuideActions from '../Redux/Entities/Guides'
-import UserActions, {isInitialAppDataLoaded, isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
+import UserActions, {
+  isInitialAppDataLoaded,
+  isStoryLiked,
+  isStoryBookmarked,
+} from '../Redux/Entities/Users'
 import CategoryActions from '../Redux/Entities/Categories'
 import StoryCreateActions from '../Redux/StoryCreateRedux'
 import PendingUpdatesActions from '../Redux/PendingUpdatesRedux'
 import {getNewCover} from '../Redux/helpers/coverUpload'
-import CloudinaryAPI, { moveVideoToPreCache, moveVideosFromPrecacheToCache } from '../../Services/CloudinaryAPI'
+import CloudinaryAPI, {
+  moveVideoToPreCache,
+  moveVideosFromPrecacheToCache,
+} from '../../Services/CloudinaryAPI'
 import pathAsFileObject from '../Lib/pathAsFileObject'
 import { isLocalMediaAsset } from '../Lib/getVideoUrl'
 import _ from 'lodash'
@@ -495,5 +507,45 @@ export function * deleteStory(api, {userId, storyId}){
       put(GuideActions.deleteStoryFromGuides(storyId)),
       put(UserActions.removeActivities(storyId, 'story')),
     ]
+  }
+}
+
+let firstCall = true
+export function * watchPendingUpdates() {
+  while(true) {
+    yield put(StoryActions.syncPendingUpdates())
+    const numSeconds = firstCall ? 1 : 60
+    if (firstCall) firstCall = false
+    yield call(delay, numSeconds * 1000) // every minute
+  }
+}
+
+function getIsEditing({routes}) {
+  return _.get(routes, 'location.pathname', '').indexOf('editStory') !== -1
+}
+
+function getNextPendingUpdate({pendingUpdates}) {
+  const {pendingUpdates: updates, updateOrder} = pendingUpdates
+  const nextUpdateKey = updateOrder.find(key => {
+    const pendingUpdate = updates[key]
+    if (pendingUpdate.status === 'retrying') return true
+    else if (pendingUpdate.attempts > 5) return console.log("attempts")
+    return true
+  })
+  return nextUpdateKey ? updates[nextUpdateKey] : {}
+}
+
+
+export function * syncPendingUpdates(api) {
+  const isEditing = yield select(getIsEditing)
+  if (!isEditing) {
+    const {failedMethod, story} = yield select(getNextPendingUpdate)
+    if (failedMethod && story) {
+      const mutableStory = Immutable.asMutable(story, {deep: true})
+      if (failedMethod === 'updateDraft') {
+        yield put(StoryCreateActions.updateDraft(story.id, mutableStory, true))
+      }
+      else yield put(StoryCreateActions[failedMethod](mutableStory))
+    }
   }
 }

@@ -25,7 +25,7 @@ const Tab = ({text, onPress, selected, notificationCount, width = '100%'}) => {
   return (
     <TouchableOpacity style={[
         styles.tab, selected ? styles.tabSelected : null,
-        {width}
+        {width},
       ]}
       onPress={onPress}
     >
@@ -35,7 +35,7 @@ const Tab = ({text, onPress, selected, notificationCount, width = '100%'}) => {
           style={{
             position: 'relative',
             top: -10,
-            right: -5
+            right: -5,
           }}
           count={notificationCount} />
       }
@@ -49,7 +49,6 @@ class NotificationScreen extends React.Component {
     super(props)
     this.state = { selectedTab: 0}
   }
-
 
   componentWillMount() {
     this.props.getActivity()
@@ -180,7 +179,6 @@ class NotificationScreen extends React.Component {
   }
 }
 
-
 const mapStateToProps = (state) => {
   const users = state.entities.users.entities
   const user = state.entities.users.entities[state.session.userId]
@@ -198,13 +196,13 @@ const mapStateToProps = (state) => {
       isUnread: true,
       fromUser: _.values(users)[_.random(0, users.length - 1)],
       message: 'I tried to contact you via phone, but it went straight to voicemail. I\'m concerned that our last post is not very good',
-      createdAt: moment().subtract(3, 'days').toDate()
+      createdAt: moment().subtract(3, 'days').toDate(),
     }, {
       id: 1,
       isUnread: false,
       fromUser: user,
       message: 'This is a cool app',
-      createdAt: moment().subtract(3, 'days').toDate()
+      createdAt: moment().subtract(3, 'days').toDate(),
     }],
   }
 }

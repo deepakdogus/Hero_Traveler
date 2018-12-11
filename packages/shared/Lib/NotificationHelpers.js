@@ -8,6 +8,14 @@ export const ActivityTypes = {
   guideComment: 'ActivityGuideComment',
 }
 
+export function getAvatar(activity) {
+  return _.get(activity, 'fromUser.profile.avatar')
+}
+
+export function getUsername(activity) {
+  return _.get(activity, 'fromUser.username')
+}
+
 export function isActivityIncomplete(activity) {
   return !activity.fromUser
     || (activity.kind === ActivityTypes.like && !activity.story)

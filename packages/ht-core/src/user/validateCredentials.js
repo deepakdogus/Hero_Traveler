@@ -9,7 +9,6 @@ export default function validateCredentials(userIdentfier, password) {
     ]
   })
   .then(user => {
-    console.log('user got ', user)
     if (!user) {
       return Promise.reject(new Error('User not found'))
     }

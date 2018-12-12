@@ -17,7 +17,6 @@ import {
   Logo,
   Divider,
   HamburgerIcon,
-  SearchNav,
 } from './Shared'
 import logo from '../../Shared/Images/ht-logo-white.png'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
@@ -34,16 +33,6 @@ const StyledRoundedAvatarButton = styled(RoundedButton)`
   position: relative;
   top: ${props => props.profileAvatar ? '4px' : '2.5px'};
 `
-
-const StyledRoundedCreateButton = styled(RoundedButton)`
-  position: relative;
-  bottom: ${props => props.profileAvatar ? '7px' : '2px'};
-`
-
-const CreateButtonStyleOverride = {
-  position: 'relative',
-  display: 'inline',
-}
 
 const CMSSpan = styled.span`
 	color: white;
@@ -101,30 +90,19 @@ class HeaderLoggedIn extends React.Component {
 
   renderProfileMenu = () => {
     const {
-      openGlobalModal,
       userId,
-      pathname,
       reroute,
       attemptLogout,
       globalModalParams,
-      workingDraft,
-      originalDraft,
-      openSaveEditsModal,
     } = this.props
 
     return (
       <ProfileMenu
         closeMyself={this.closeProfileMenu}
-        openGlobalModal={openGlobalModal}
         userId={userId}
         reroute={reroute}
         attemptLogout={attemptLogout}
         globalModalParams={globalModalParams}
-        haveFieldsChanged={haveFieldsChanged}
-        workingDraft={workingDraft}
-        originalDraft={originalDraft}
-        openSaveEditsModal={openSaveEditsModal}
-        pathname={pathname}
       />
     )
   }

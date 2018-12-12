@@ -8,13 +8,9 @@ import * as _ from 'lodash'
 import HeaderLoggedIn from '../Components/Headers/HeaderLoggedIn'
 import { Grid } from '../Components/FlexboxGrid'
 import { sizes } from '../Themes/Metrics'
-
-import LoginActions from '../Shared/Redux/LoginRedux'
-import StoryCreateActions from '../Shared/Redux/StoryCreateRedux'
-import UserActions from '../Shared/Redux/Entities/Users'
-import SessionActions from '../Shared/Redux/SessionRedux'
 import UXActions from '../Redux/UXRedux'
-import StoryActions from '../Shared/Redux/Entities/Stories'
+
+import SessionActions from '../Shared/Redux/SessionRedux'
 
 /*global branch*/
 
@@ -39,32 +35,14 @@ class Header extends React.Component {
     currentUserId: PropTypes.string,
     currentUserProfile: PropTypes.object,
     currentUserEmail: PropTypes.string,
-    currentUserNotificationTypes: PropTypes.arrayOf(PropTypes.string),
     isLoggedIn: PropTypes.bool,
-    loginReduxFetching: PropTypes.bool,
-    loginReduxError: PropTypes.string,
     blackHeader: PropTypes.bool,
     attemptLogout: PropTypes.func,
-    attemptChangePassword: PropTypes.func,
-    attemptGetUserFeed: PropTypes.func,
-    closeGlobalModal: PropTypes.func,
-    openGlobalModal: PropTypes.func,
-    globalModalThatIsOpen: PropTypes.string,
-    globalModalParams: PropTypes.object,
     reroute: PropTypes.func,
-    attemptUpdateUser: PropTypes.func,
-    userEntitiesUpdating: PropTypes.bool,
-    userEntitiesError: PropTypes.object,
-    activitiesById: PropTypes.array,
-    activities: PropTypes.object,
-    originalDraft: PropTypes.object,
-    workingDraft: PropTypes.object,
-    resetCreateStore: PropTypes.func,
-    markSeen: PropTypes.func,
     pathname: PropTypes.string,
     signedUp: PropTypes.bool,
-    flagStory: PropTypes.func,
-    deleteStory: PropTypes.func,
+    closeGlobalModal: PropTypes.func,
+    openGlobalModal: PropTypes.func,
   }
 
   constructor(props) {
@@ -119,41 +97,14 @@ class Header extends React.Component {
     }
   }
 
-  openLoginModal = () => {
-    this.setState({ modal: 'login' })
-  }
-
-  _resetCreateStore = () => {
-    this.props.resetCreateStore(this.props.originalDraft.id)
-  }
-
   render() {
     const {
-      isLoggedIn,
-      loginReduxFetching,
-      loginReduxError,
       attemptLogout,
-      attemptChangePassword,
-      closeGlobalModal,
-      openGlobalModal,
       currentUserId,
-      currentUserProfile,
-      currentUserEmail,
-      currentUserNotificationTypes,
-      globalModalThatIsOpen,
-      globalModalParams,
       reroute,
-      attemptUpdateUser,
-      userEntitiesUpdating,
-      userEntitiesError,
-      activitiesById,
-      activities,
-      markSeen,
       pathname,
-      workingDraft,
-      originalDraft,
-      flagStory,
-      deleteStory,
+      openGlobalModal,
+      closeGlobalModal
     } = this.props
 
     const spacerSize = '65px'
@@ -163,19 +114,11 @@ class Header extends React.Component {
         <StyledGrid fluid fixed hasBlackBackground>
           <HeaderLoggedIn
             userId={currentUserId}
-            openModal={this.openModal}
             pathname={pathname}
-            openSaveEditsModal={this.openSaveEditsModal}
-            openGlobalModal={openGlobalModal}
-            closeGlobalModal={closeGlobalModal}
             reroute={reroute}
             attemptLogout={attemptLogout}
-            activities={activities}
-            activitiesById={activitiesById}
-            resetCreateStore={this._resetCreateStore}
-            haveFieldsChanged={false}
-            workingDraft={workingDraft}
-            originalDraft={originalDraft}
+            openGlobalModal={openGlobalModal}
+            closeGlobalModal={closeGlobalModal}
           />
         </StyledGrid>
         <HeaderSpacer spacerSize={spacerSize} />
@@ -192,21 +135,13 @@ function mapStateToProps(state) {
 
   return {
     isLoggedIn: !state.session.isLoggedOut,
-    loginReduxFetching: state.login.fetching,
     loginReduxError: state.login.error,
     blackHeader: _.includes(['/', '/feed', ''], pathname) ? false : true,
     globalModalThatIsOpen: state.ux.modalName,
     globalModalParams: state.ux.params,
-    userEntitiesUpdating: state.entities.users.updating,
-    userEntitiesError: state.entities.users.error,
     currentUserId: currentUserId,
     currentUserProfile: currentUser && currentUser.profile,
     currentUserEmail: currentUser && currentUser.email,
-    currentUserNotificationTypes: currentUser && currentUser.notificationTypes,
-    activitiesById: state.entities.users.activitiesById,
-    activities: state.entities.users.activities,
-    originalDraft: state.storyCreate.draft,
-    workingDraft: state.storyCreate.workingDraft,
     pathname: pathname,
     signedUp: state.signup.signedUp,
   }
@@ -215,17 +150,9 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     attemptLogout: tokens => dispatch(SessionActions.logout(tokens)),
-    attemptChangePassword: (userId, oldPassword, newPassword) =>
-      dispatch(LoginActions.changePasswordRequest(userId, oldPassword, newPassword)),
-    attemptGetUserFeed: (userId, params) => dispatch(StoryActions.feedRequest(userId, params)),
+    reroute: route => dispatch(push(route)),
     closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
-    reroute: route => dispatch(push(route)),
-    attemptUpdateUser: updates => dispatch(UserActions.updateUser(updates)),
-    resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
-    flagStory: (sessionUserId, storyId) => dispatch(StoryActions.flagStory(sessionUserId, storyId)),
-    deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
-    markSeen: activityId => dispatch(UserActions.activitySeen(activityId)),
   }
 }
 

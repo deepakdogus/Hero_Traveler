@@ -131,6 +131,15 @@ const create = () => {
     })
   }
 
+  const loginAdmin = (username, password) => {
+    return api.post('admin/auth', {}, {
+      auth: {
+        username,
+        password
+      }
+    })
+  }
+
   const logout = (tokens) => {
     return api.post('auth/revoke', {
       tokens: tokens
@@ -450,6 +459,8 @@ const create = () => {
     return api.put(`guide/${guideId}/unlike`)
   }
 
+  const adminGetUsers = () => api.get(`admin/users`)
+
   // ------
   // STEP 3
   // ------
@@ -466,6 +477,7 @@ const create = () => {
     setAuth,
     unsetAuth,
     login,
+    loginAdmin,
     logout,
     refreshTokens,
     getMe,
@@ -532,6 +544,7 @@ const create = () => {
     getCategoryGuides,
     likeGuide,
     unlikeGuide,
+    adminGetUsers
   }
 }
 

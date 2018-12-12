@@ -36,35 +36,14 @@ class ProfileMenu extends React.Component{
   static propTypes = {
     reroute: PropTypes.func,
     closeMyself: PropTypes.func,
-    openGlobalModal: PropTypes.func,
     userId: PropTypes.string,
     attemptLogout: PropTypes.func,
     globalModalParams: PropTypes.object,
-    workingDraft: PropTypes.object,
-    originalDraft: PropTypes.object,
     openSaveEditsModal: PropTypes.func,
-    pathname: PropTypes.string,
-    haveFieldsChanged: PropTypes.func,
   }
 
   handleClickOutside = () => {
       this.props.closeMyself()
-  }
-
-  rerouteToProfile = ()=> {
-    this.rerouteAndClose(`/profile/${this.props.userId}/view`)
-  }
-
-  rerouteToExplore = () => {
-    this.rerouteAndClose('/')
-  }
-
-  rerouteToFeed = () => {
-    this.rerouteAndClose('/feed/')
-  }
-
-  rerouteToCustomizeInterests = () => {
-    this.rerouteAndClose('/profile/editTopics')
   }
 
   rerouteAndClose = (routePath) => {
@@ -72,61 +51,13 @@ class ProfileMenu extends React.Component{
     this.props.reroute(routePath)
   }
 
-  _openSaveEditsModalToProfile = () => {
-    this._saveEditsModalHelper(this.rerouteToProfile, `/profile/${this.props.userId}/view`)
+  openUsers = () => {
+    this.rerouteAndClose('/users')
   }
 
-  _openSaveEditsModalToLogout = () => {
-    this._saveEditsModalHelper(this.handleLogout, 'logout')
-  }
-
-  _openSaveEditsModalToCustomizeInterests = () => {
-    this._saveEditsModalHelper(this.rerouteToCustomizeInterests, '/profile/editTopics')
-  }
-
-  _openSaveEditsModalToExplore = () => {
-    this._saveEditsModalHelper(this.rerouteToExplore, '/')
-  }
-
-  _openSaveEditsModalToFeed = () => {
-    this._saveEditsModalHelper(this.rerouteToFeed, '/feed/')
-  }
-
-  _saveEditsModalHelper = (rerouteFunc, pathname) => {
-    const {haveFieldsChanged, workingDraft, originalDraft, openSaveEditsModal} = this.props
-    if (this._shouldOpenSaveEditsModal()){
-      rerouteFunc()
-    }
-    else if (haveFieldsChanged(workingDraft, originalDraft)) {
-      openSaveEditsModal(pathname)
-    }
-  }
-
-  _shouldOpenSaveEditsModal = () => {
-    const {haveFieldsChanged, workingDraft, originalDraft} = this.props
-    return !this.props.pathname.includes('editStory')
-      || !haveFieldsChanged(workingDraft, originalDraft)
-  }
-
-  openFAQ = () => {
-    this.openGlobalModalAndClose('documentation')
-  }
-
-  openSettings = () => {
-    this.openGlobalModalAndClose('settings')
-  }
-
-  openNotifications = () => {
-    this.openGlobalModalAndClose('notificationsThread')
-  }
-
-  handleLogout = () =>{
-    this.props.attemptLogout(this.props.userId)
-  }
-
-  openGlobalModalAndClose = (modalName) => {
+  attemptLogout = () => {
+    this.props.attemptLogout()
     this.props.closeMyself()
-    this.props.openGlobalModal(modalName)
   }
 
   render(){
@@ -134,32 +65,14 @@ class ProfileMenu extends React.Component{
 
     return(
       <Sidebar>
-        <SidebarDemiLink onClick={this._openSaveEditsModalToProfile}>
-          My Profile
-        </SidebarDemiLink>
         {globalModalParams.isHamburger &&
           <ExtraLinks>
-            <SidebarDemiLink onClick={this.openNotifications}>
-              Notifications
-            </SidebarDemiLink>
-            <SidebarDemiLink onClick={this._openSaveEditsModalToExplore}>
-              Explore
-            </SidebarDemiLink>
-            <SidebarDemiLink onClick={this._openSaveEditsModalToFeed}>
-              My Feed
+            <SidebarDemiLink onClick={this.openUsers}>
+              Users
             </SidebarDemiLink>
           </ExtraLinks>
         }
-        <SidebarDemiLink onClick={this.openSettings}>
-          Settings
-        </SidebarDemiLink>
-        <SidebarDemiLink onClick={this._openSaveEditsModalToCustomizeInterests}>
-          Customize Interests
-        </SidebarDemiLink>
-        <SidebarDemiLink onClick={this.openFAQ}>
-          FAQ
-        </SidebarDemiLink>
-        <SidebarDemiLink onClick={this._openSaveEditsModalToLogout}>
+        <SidebarDemiLink onClick={this.attemptLogout}>
           Log Out
         </SidebarDemiLink>
       </Sidebar>

@@ -12,6 +12,7 @@ import { SignupTypes } from '../Redux/SignupRedux'
 import SessionActions, { SessionTypes } from '../Redux/SessionRedux'
 import { StoryCreateTypes } from '../Redux/StoryCreateRedux'
 import { MediaUploadTypes } from '../Redux/MediaUploadRedux'
+import { AdminTypes } from '../Redux/AdminRedux'
 // Entities
 import { StoryTypes } from '../Redux/Entities/Stories'
 import { CategoryTypes } from '../Redux/Entities/Categories'
@@ -24,6 +25,7 @@ import { CommentTypes } from '../Redux/Entities/Comments'
 
 import { startup, heroStartup } from './StartupSagas'
 import {
+  loginAdmin,
   login,
   loginFacebook,
   resetPasswordRequest,
@@ -109,6 +111,10 @@ import {
   createComment
 } from './CommentsSagas'
 
+import {
+  adminGetUsers
+} from './AdminSagas'
+
 
 /* ------------- API ------------- */
 
@@ -148,6 +154,7 @@ export default function * root () {
     takeLatest(StartupTypes.STARTUP, startup, heroAPI),
     takeLatest(StartupTypes.HERO_STARTUP, heroStartup, heroAPI),
     takeLatest(OpenScreenTypes.OPEN_SCREEN, openScreen),
+    takeLatest(LoginTypes.LOGIN_ADMIN_REQUEST, loginAdmin, heroAPI),
     takeLatest(LoginTypes.LOGIN_REQUEST, login, heroAPI),
     takeLatest(LoginTypes.LOGIN_FACEBOOK, loginFacebook),
     takeLatest(LoginTypes.RESET_PASSWORD_REQUEST, resetPasswordRequest, heroAPI),
@@ -221,6 +228,9 @@ export default function * root () {
 
     //Comments
     takeLatest(CommentTypes.GET_COMMENTS_REQUEST, getComments, heroAPI),
-    takeLatest(CommentTypes.CREATE_COMMENT_REQUEST, createComment, heroAPI)
+    takeLatest(CommentTypes.CREATE_COMMENT_REQUEST, createComment, heroAPI),
+
+    //Admin
+    takeLatest(AdminTypes.ADMIN_GET_USERS, adminGetUsers, heroAPI)
   ]
 }

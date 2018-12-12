@@ -10,6 +10,7 @@ import routes from './Routes'
 export default () => {
   /* ------------- Assemble The Reducers ------------- */
   const appReducer = combineReducers({
+    admin: require('./AdminRedux').reducer,
     login: require('./LoginRedux').reducer,
     signup: require('./SignupRedux').reducer,
     session: require('./SessionRedux').reducer,

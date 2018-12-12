@@ -45,6 +45,7 @@ export function * logout (api, action) {
 
 export function * resumeSession (api, action) {
   // I believe the userId here is redundant. Added task to remove
+  yield put(SessionActions.startInitializeSession())
   let [userId, tokens]= yield [
     select(currentUserId),
     select(currentUserTokens)

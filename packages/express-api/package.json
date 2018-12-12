@@ -50,7 +50,7 @@
     "babel-preset-env": "^1.4.0",
     "babel-register": "^6.23.0",
     "dotenv": "^4.0.0",
-    "nodemon": "^1.18.8"
+    "nodemon": "1.18.7"
   },
   "nodemonConfig": {
     "ignoreRoot": [

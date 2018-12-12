@@ -193,11 +193,14 @@ UserSchema.statics = {
       emailConfirmationToken: uuid(),
       notificationTypes: defaultNotificationTypes,
     })
+  },
+  list(/* args */) {
+    return this.find(...arguments)
+      .sort({createdAt: -1})
   }
 }
 
 UserSchema.methods = {
-
   async updatePassword(password) {
     const hashedPassword = await encryptPassword(password)
     const internalAccount = _.find(this.accounts, (a) => a.kind === ACCOUNT_TYPE_EMAIL)

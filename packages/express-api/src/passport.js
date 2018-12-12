@@ -9,12 +9,11 @@ passport.use(
       console.log('passport basic strategy processing', userIdentifier, password)
       User.validateCredentials(userIdentifier, password)
         .then(user => {
-          console.log('validateCredentials processed', user)
           next(null, user)
           return null
         })
         .catch(err => {
-          console.log('Auth error', err)
+          console.log('Auth error basic strategy', err)
           next(new Error('Unauthorized'))
           return null
         })
@@ -25,14 +24,13 @@ passport.use(
 passport.use(
   new BearerStrategy(
     (accessToken, next) => {
-      console.log('passport second strategy processing', accessToken)
       User.validateAccessToken(accessToken)
         .then(user => {
           next(null, user)
           return null
         })
         .catch(err => {
-          console.log('Auth error', err)
+          console.log('Auth error bearer strategy', err)
           next(new Error('Unauthorized'))
           return null
         })

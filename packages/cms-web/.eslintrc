@@ -48,6 +48,7 @@
     "object-property-newline": ["error", { "allowMultiplePropertiesPerLine": true }],
     "padded-blocks": ["error", { "blocks": "never", "switches": "never", "classes": "never" }],
     "quotes": ["error", "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
+    "semi": ["error", "never"],
     "semi-spacing": ["error", { "before": false, "after": true }],
     "space-infix-ops": "error",
     "use-isnan": "error",

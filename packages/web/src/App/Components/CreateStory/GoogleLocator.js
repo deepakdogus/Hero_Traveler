@@ -5,12 +5,58 @@ import PropTypes from 'prop-types'
 import { formatLocationWeb } from '../../Shared/Lib/formatLocation'
 
 import HorizontalDivider from '../HorizontalDivider'
-import './Styles/GoogleLocatorStyles.css';
+import './Styles/GoogleLocatorStyles.css'
 
 const Container = styled.div`
   display: inline-block;
   margin-left: 25px;
   width: ${props => props.isGuide ? '' : '80%' };
+`
+
+const InputContainer = styled.div`
+  position: relative;
+  padding-bottom: 0px;
+  width: 100%;
+`
+
+const DropdownContainer = styled.div`
+  position: absolute;
+  top: 35px;
+  left: 0px;
+  background-color: white;
+  border: none;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  width: 320px;
+  z-index: 100;
+  margin: 10px 0px;
+`
+
+const StyledInput = styled.input`
+  display: inline-block;
+  width: 100%;
+  padding: 1px;
+  outline: none;
+  border: none;
+  font-weight: 400;
+  font-size: 18px;
+  letter-spacing: .2px;
+  color: #1a1c21;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  margin: 10px 0px;
+`
+
+const InactiveAutocompleteItemContainer = styled.div`
+  background-color: #ffffff;
+  color: #555555;
+  cursor: pointer;
+`
+
+const ActiveAutocompleteItemContainer = styled(InactiveAutocompleteItemContainer)`
+  background-color: ${props => props.theme.Colors.lightGreyAreas};
+`
+
+const AutocompleteItem = styled.div`
+  padding: 10px;
 `
 
 const StyledLocation = styled.p`
@@ -29,55 +75,13 @@ const StyledAddress = styled.p`
   letter-spacing: .2px;
   color: ${props => props.theme.Colors.grey};
   margin: 0px;
-  padding-bottom: 10px;
 `
 
 const StyledHorizontalDivider = styled(HorizontalDivider)`
-  margin: 0;
+  padding: 0;
   border-width: 1px;
+  margin: 0 10px;
 `
-
-const styles = {
-  root: {
-    position: 'relative',
-    paddingBottom: '0px',
-    width: '100%',
-  },
-  input: {
-    display: 'inline-block',
-    width: '100%',
-    padding: '1px',
-    outline: 'none',
-    border: 'none',
-    fontWeight: '400',
-    fontSize: '18px',
-    letterSpacing: '.2px',
-    color: '#1a1c21',
-    fontFamily: 'source sans pro',
-    margin: '10px 0px',
-  },
-  autocompleteContainer: {
-    position: 'absolute',
-    top: '35px',
-    left: '0px',
-    backgroundColor: 'white',
-    border: 'none',
-    boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
-    width: '320px',
-    height: '400px',
-    overflowY: 'auto',
-    zIndex: '100',
-    margin: '10px 0px',
-  },
-  autocompleteItem: {
-    backgroundColor: '#ffffff',
-    color: '#555555',
-    cursor: 'pointer',
-  },
-  autocompleteItemActive: {
-    backgroundColor: '#ffffff',
-  },
-}
 
 class GoogleLocator extends React.Component {
   static propTypes = {
@@ -86,37 +90,57 @@ class GoogleLocator extends React.Component {
     isGuide: PropTypes.bool,
   }
 
-  handleSelect = async (event) => {
-    let locationInfo = await formatLocationWeb(event, geocodeByAddress, getLatLng)
+  handleSelect = async address => {
+    let locationInfo = await formatLocationWeb(address, geocodeByAddress, getLatLng)
     this.props.onChange({locationInfo: locationInfo})
   }
 
   onChange = (address) => this.props.onChange({ location: address })
 
   render() {
-    const inputProps = {
-      value: this.props.address,
-      onChange: this.onChange,
-      placeholder: 'Add location',
-    }
-
-    const AutocompleteItem = ({ formattedSuggestion }) => (
-      <div>
-        <StyledLocation>{ formattedSuggestion.mainText }</StyledLocation>
-        <StyledAddress>{ formattedSuggestion.secondaryText }</StyledAddress>
-        <StyledHorizontalDivider color='lighter-grey' opaque/>
-      </div>
-    )
-
     return (
       <Container isGuide={this.props.isGuide}>
         <PlacesAutocomplete
-          inputProps={inputProps}
-          autocompleteItem={AutocompleteItem}
-          styles={styles}
+          value={this.props.address}
+          onChange={this.onChange}
           onSelect={this.handleSelect}
-          googleLogo={false}
-        />
+        >
+          {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+            <InputContainer>
+              <StyledInput
+                {...getInputProps({
+                  placeholder: 'Add location',
+                })}
+              />
+              <DropdownContainer>
+                {suggestions.map((suggestion, idx) => {
+                  // const { formattedSuggestion } = suggestion
+                  const AutocompleteContainer = suggestion.active
+                    ? ActiveAutocompleteItemContainer
+                    : InactiveAutocompleteItemContainer
+                  return (
+                    <AutocompleteContainer
+                      key={suggestion.placeId}
+                      {...getSuggestionItemProps(suggestion)}
+                    >
+                      <AutocompleteItem>
+                        <StyledLocation>
+                          { suggestion.formattedSuggestion.mainText }
+                        </StyledLocation>
+                        <StyledAddress>
+                          { suggestion.formattedSuggestion.secondaryText }
+                        </StyledAddress>
+                      </AutocompleteItem>
+                      {idx !== suggestions.length - 1 &&
+                        <StyledHorizontalDivider color='lighter-grey' opaque/>
+                      }
+                    </AutocompleteContainer>
+                  )
+                })}
+              </DropdownContainer>
+          </InputContainer>
+        )}
+        </PlacesAutocomplete>
       </Container>
     )
   }

@@ -8,7 +8,7 @@ const { Types, Creators } = createActions({
   updateGlobalModalParams: ['params'],
   closeGlobalModal: [''],
   closeGlobalModalWithParams: ['params'],
-  addRecentSearch: ['searchType', 'searchText', 'id'],
+  addRecentSearch: ['search'],
 })
 
 export const StartupTypes = Types
@@ -17,8 +17,8 @@ const INITIAL_STATE = Immutable({
   modalName: '',
   params: {},
   searchHistory: {
-    user: [],
-    story: [],
+    places: [],
+    people: [],
     lastSearchType: '',
     navedToId: '',
   },
@@ -37,21 +37,22 @@ export const closeGlobalModalWithParams = (state, {params = {}}) => {
   })
 }
 
-export const addRecentSearch = (state, {searchType, searchText, id}) => {
+export const addRecentSearch = (state, action) => {
+  const { id, searchType, searchText } = action.search
   const recentSearches = state.searchHistory[searchType]
   let updatedSearch = recentSearches
   const searchTextIndex = recentSearches.indexOf(searchText)
   if (searchTextIndex === -1) {
     if (recentSearches.length === 5) {
-      updatedSearch = [searchText, ...recentSearches.slice(0, 4)]
+      updatedSearch = [action.search, ...recentSearches.slice(0, 4)]
     }
     else {
-      updatedSearch = [searchText, ...recentSearches]
+      updatedSearch = [action.search, ...recentSearches]
     }
   }
   else if (searchTextIndex !== 0) {
     updatedSearch = [
-      searchText,
+      action.search,
       ...recentSearches.slice(0, searchTextIndex),
       ...recentSearches.slice(searchTextIndex + 1),
     ]

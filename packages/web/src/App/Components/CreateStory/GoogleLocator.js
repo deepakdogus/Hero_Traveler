@@ -10,7 +10,7 @@ import './Styles/GoogleLocatorStyles.css';
 const Container = styled.div`
   display: inline-block;
   margin-left: 25px;
-  width: ${props => props.isGuide ? '' : '80%' }
+  width: ${props => props.isGuide ? '' : '80%' };
 `
 
 const StyledLocation = styled.p`

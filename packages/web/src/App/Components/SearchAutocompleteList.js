@@ -2,31 +2,43 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import { Row } from '../Components/FlexboxGrid'
+import AutocompleteRow from './SearchAutocompleteRow'
 
 const Container = styled.div``
 
-const Title = styled.h3`
-  padding: 0;
+const ListTitle = styled.p`
+  padding-top: 30px;
+  font-weight: 600;
+  font-size: 20px;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  color: ${props => props.theme.Colors.background};
+  letter-spacing: 0.7px;
 `
-
-const AutocompleteRow = styled(Row)``
 
 class SearchAutocompleteList extends Component {
   static propTypes = {
     label: PropTypes.string,
     autocompleteItems: PropTypes.array,
+    navToStory: PropTypes.func,
   }
 
   render() {
-    const { label, autocompleteItems } = this.props
+    const { label, autocompleteItems, navToStory, reroute } = this.props
     if (!autocompleteItems.length) return null
+
     return (
       <Container>
-        <Title>{label}</Title>
-        {autocompleteItems.map((item, index) => (
-          <AutocompleteRow key={index}>{item}</AutocompleteRow>
-        ))}
+        <ListTitle>{label}</ListTitle>
+        {autocompleteItems.map((item, idx) => {
+          if (!item) return null
+          return (<AutocompleteRow
+            key={item.id}
+            idx={idx}
+            item={item}
+            navToStory={navToStory}
+            reroute={reroute}
+          />)
+        })}
       </Container>
     )
   }

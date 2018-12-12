@@ -95,7 +95,7 @@ export default class StorySelectRow extends Component {
   _handleStoryClick = () => {
     const {story, onSelect} = this.props
     if (onSelect) this.onSelect()
-    else this.props.navToStory(story.id || story.objectID)
+    else this.props.navToStory(story.id || story.objectID, story.title)
   }
 
   onSelect = () => {

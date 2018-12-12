@@ -62,9 +62,11 @@ class SearchResults extends Component {
     wentBack: PropTypes.bool,
     lat: PropTypes.string,
     lng: PropTypes.string,
+    location: PropTypes.ogject,
   }
 
   state = {
+    label: '',
     seeAllType: '',
     seeAllLabel: '',
     lastSearchResults: {
@@ -74,6 +76,13 @@ class SearchResults extends Component {
   }
 
   componentWillMount() {
+    const { location } = this.props
+
+    //title
+    if (location.search && location.search.indexOf('?t=') !== -1) {
+      this.setState({ label: decodeURIComponent(location.search.split('?')[1].substring(2)).toUpperCase() })
+    }
+
     //guides
     this.guideHelper = algoliaSearchHelper(algoliasearch, GUIDE_INDEX)
     this.setupSearchListeners(this.guideHelper, 'guides')
@@ -134,7 +143,7 @@ class SearchResults extends Component {
   }
 
   render() {
-    const { lastSearchResults, seeAllType, seeAllLabel } = this.state
+    const { lastSearchResults, label, seeAllType, seeAllLabel } = this.state
     // const { resultTitle } = this.props
 
     const seeItems = lastSearchResults.stories.filter(feedItem => feedItem.type === 'see')
@@ -148,8 +157,8 @@ class SearchResults extends Component {
           <ResultTitle>
             {
               seeAllType
-              ? `AFRICA - ${seeAllLabel}`
-              : 'Africa'
+              ? `${label || 'Search Results'} - ${seeAllLabel}`
+              : label
             }
           </ResultTitle>
           <StyledDivider color="light-grey" />

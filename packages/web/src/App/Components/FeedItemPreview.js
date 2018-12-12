@@ -95,13 +95,6 @@ const GridStoryInfoContainer = styled(ListStoryInfoContainer)`
   }
 `
 
-const ListDetailsContainer = styled(Row)`
-`
-
-const GridDetailsContainer = styled(ListDetailsContainer)`
-  padding-top: 0px;
-`
-
 const LocationPreview = styled(Text)`
   color: ${props => props.theme.Colors.background};
   letter-spacing: .2px;
@@ -207,12 +200,19 @@ const TopRow = styled(Row)`
   }
 `
 
-const MiddleRow = styled(Row)`
+const ListMiddleRow = styled(Row)`
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: space-between;
-  min-height: ${props => props.isList ? '135px' : 'inherit'};
+  min-height: 135px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    min-height: unset;
+  }
+`
+
+const GridMiddleRow = styled(ListMiddleRow)`
+  min-height: inherit;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     min-height: unset;
   }
@@ -357,7 +357,7 @@ class FeedItemPreview extends Component {
     const DirectionalWrapper = type === 'grid' ? GridWrapper : ListRowWrapper
     const ImageContainer = type === 'grid' ? GridImageContainer : ListImageContainer
     const StoryInfoContainer = type === 'grid' ? GridStoryInfoContainer : ListStoryInfoContainer
-    const DetailsContainer = type === 'grid' ? GridDetailsContainer : ListDetailsContainer
+    const MiddleRow = type === 'grid' ? GridMiddleRow : ListMiddleRow
 
     return (
       <MarginWrapper>
@@ -384,7 +384,7 @@ class FeedItemPreview extends Component {
                 {!isStory && <GuideIconText>Guide</GuideIconText>}
               </TopRow>
             }
-            <MiddleRow isList={isList}>
+            <MiddleRow>
               {isList &&
                 <LocationPreview>{this.getLocationText()}</LocationPreview>
               }

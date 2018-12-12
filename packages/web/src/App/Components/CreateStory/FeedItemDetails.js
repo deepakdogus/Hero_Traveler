@@ -10,12 +10,13 @@ import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checke
 import { Grid, Row } from '../FlexboxGrid'
 import Icon from '../Icon'
 import HorizontalDivider from '../HorizontalDivider'
-import GoogleLocator from './GoogleLocator'
+import FeedItemDetailsPlacesAutocomplete from './FeedItemDetailsPlacesAutocomplete'
 import ReactDayPicker from './ReactDayPicker'
 import { Title } from './Shared'
 import TagSelector from './TagSelector'
 import VerticalCenter from '../VerticalCenter'
 import Tile from './Tile'
+
 import { displayLocationDetails } from '../../Shared/Lib/locationHelpers'
 
 const Container = styled.div`
@@ -407,7 +408,7 @@ export default class FeedItemDetails extends React.Component {
             }
           </TilesWrapper>
           }
-          <GoogleLocator
+          <FeedItemDetailsPlacesAutocomplete
             onChange={this.handleLocationSelect}
             address={this.state.address}
             isGuide={true}
@@ -488,7 +489,7 @@ export default class FeedItemDetails extends React.Component {
           </IconWrapper>
           {isGuide
             ? this.renderLocations()
-            : <GoogleLocator
+            : <FeedItemDetailsPlacesAutocomplete
                 onChange={this.handleLocationSelect}
                 address={this.state.address}
               />

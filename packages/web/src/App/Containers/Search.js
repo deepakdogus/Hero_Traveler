@@ -10,6 +10,7 @@ import UserActions from '../Shared/Redux/Entities/Users'
 import HistoryActions from '../Shared/Redux/HistoryRedux'
 import { runIfAuthed } from '../Lib/authHelpers'
 
+import GoogleLocator from '../Components/GoogleLocator'
 import SearchResultsPeople from '../Components/SearchResultsPeople'
 import SearchAutocompleteList from '../Components/SearchAutocompleteList'
 import TabBar from '../Components/TabBar'
@@ -18,7 +19,6 @@ import { Row } from '../Components/FlexboxGrid'
 //seacrh
 import algoliasearchModule from 'algoliasearch'
 import algoliaSearchHelper from 'algoliasearch-helper'
-import ExtendedPlacesAutocomplete from '../Components/Extensions/ExtendedPlacesAutocomplete'
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 
 const Container = styled.div``
@@ -353,33 +353,35 @@ class Search extends Component {
     )
   }
 
-  render() {
+  renderChildren = ({ getInputProps, suggestions }) => (
+    <Container>
+      <HeaderInputContainer between='xs'>
+        <HeaderInput
+          {...getInputProps({
+            placeholder: 'Type to search',
+            className: 'header-input',
+          })}
+        />
+        <Text
+          onClick={this.resetSearchText}
+        >
+          {'Cancel'}
+        </Text>
+      </HeaderInputContainer>
+      {this.renderTab(suggestions)}
+    </Container>
+  )
+
+  render = () => {
     const { inputText, activeTab } = this.state
-    return (
-      <ExtendedPlacesAutocomplete
+    return(
+      <GoogleLocator
         value={inputText}
         onChange={this.inputFieldChange}
         shouldFetchSuggestions={activeTab === 'PLACES'}
-      >
-      {({ getInputProps, suggestions }) => (
-        <Container>
-          <HeaderInputContainer between='xs'>
-            <HeaderInput
-              {...getInputProps({
-                placeholder: 'Type to search',
-                className: 'header-input',
-              })}
-            />
-            <Text
-              onClick={this.resetSearchText}
-            >
-              {'Cancel'}
-            </Text>
-          </HeaderInputContainer>
-          {this.renderTab(suggestions)}
-        </Container>
-      )}
-      </ExtendedPlacesAutocomplete>
+        renderChildren={this.renderChildren}
+        isSearch
+      />
     )
   }
 }

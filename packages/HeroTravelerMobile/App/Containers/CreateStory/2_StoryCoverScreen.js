@@ -50,7 +50,6 @@ Utility functions
 */
 
 class StoryCoverScreen extends Component {
-
   static propTypes = {
     mediaType: PropTypes.oneOf([MediaTypes.video, MediaTypes.photo]),
     user: PropTypes.object,
@@ -104,7 +103,8 @@ class StoryCoverScreen extends Component {
       const content = Immutable.asMutable(this.props.workingDraft.draftjsContent, {deep: true})
       if (!content.entityMap) content.entityMap = {}
       return {value: content}
-    } else {
+    }
+    else {
       return {}
     }
   }
@@ -122,7 +122,7 @@ class StoryCoverScreen extends Component {
 
   onTrimError = () => {
     this.setState({
-      error: 'There\'s an issue with the video you selected. Please try another.'
+      error: 'There\'s an issue with the video you selected. Please try another.',
     })
   }
 
@@ -144,7 +144,8 @@ class StoryCoverScreen extends Component {
         validationError: 'Please add a cover and title to continue',
         activeModal: undefined,
       })
-    } else {
+    }
+    else {
       this.saveStory().then(() => {
         this.navBack()
       })
@@ -154,7 +155,8 @@ class StoryCoverScreen extends Component {
   _onLeftNo = () => {
     if (!this.isSavedDraft()) {
       this.props.discardDraft(this.props.workingDraft.id)
-    } else {
+    }
+    else {
       this.props.resetCreateStore()
     }
     this.navBack()
@@ -164,7 +166,8 @@ class StoryCoverScreen extends Component {
     const {workingDraft, originalDraft} = this.props
     if (haveFieldsChanged(workingDraft, originalDraft)) {
       this.setState({ activeModal: 'cancel' })
-    } else {
+    }
+    else {
       // If there are no changes, just close without opening the modal
       this._onLeftNo()
     }
@@ -175,7 +178,6 @@ class StoryCoverScreen extends Component {
   }
 
   renderCancel = () => {
-
     const isDraft = this.props.workingDraft.draft === true
     const title = isDraft ? 'Save Draft' : 'Save Edits'
     const message = this.isSavedDraft() ? 'Do you want to save these edits before you go?' : 'Do you want to save this story draft before you go?'
@@ -219,21 +221,23 @@ class StoryCoverScreen extends Component {
         onPress: () => {
           if (!this.isValid()) {
             this.setState({validationError: 'Please add a cover and title to save'})
-          } else {
+          }
+          else {
             this.saveStory()
           }
-        }
+        },
       }, {
         text: 'Cancel',
-        onPress: () => null
-      }]
+        onPress: () => null,
+      }],
     )
   }
 
   isValid() {
+    const {coverImage, coverVideo, title} = this.props.workingDraft
     return _.every([
-      !!this.props.workingDraft.coverImage || !!this.props.workingDraft.coverVideo,
-      !!_.trim(this.props.workingDraft.title)
+      !!coverImage || !!coverVideo,
+      !!_.trim(title),
     ])
   }
 
@@ -242,11 +246,11 @@ class StoryCoverScreen extends Component {
     if (this.props.navigatedFromProfile) {
       NavActions.tabbar({type: 'reset'})
       NavActions.profile()
-    } else {
+    }
+    else {
       NavActions.tabbar({type: 'reset'})
     }
   }
-
 
   _onRight = () => {
     const {workingDraft, originalDraft} = this.props
@@ -263,7 +267,7 @@ class StoryCoverScreen extends Component {
       isVideoSame,
       isTitleSame,
       isDescriptionSame,
-      isCoverCaptionSame
+      isCoverCaptionSame,
     ])
     // If nothing has changed, let the user go forward if they navigated back
     if (nothingHasChanged) {
@@ -322,7 +326,7 @@ class StoryCoverScreen extends Component {
 
   renderFailModal = () => {
     const {activeModal} = this.state
-    let renderProps;
+    let renderProps
     if (activeModal === 'saveFail') {
       renderProps = {
         closeModal: this.closeModal,
@@ -389,7 +393,6 @@ class StoryCoverScreen extends Component {
     this.props.updateWorkingDraft({title})
   }
 
-
   setTitleAndFocus = (title) => {
     this.setTitle(title)
     this.jumpToTitle()
@@ -434,7 +437,7 @@ class StoryCoverScreen extends Component {
         NavActions.pop()
       },
       rightTitle: 'Next',
-      onSelectMedia: this.handleAddImage
+      onSelectMedia: this.handleAddImage,
     })
   }
 
@@ -448,7 +451,7 @@ class StoryCoverScreen extends Component {
         NavActions.pop()
       },
       rightTitle: 'Next',
-      onSelectMedia: this.handleAddVideo
+      onSelectMedia: this.handleAddVideo,
     })
   }
 
@@ -481,7 +484,7 @@ class StoryCoverScreen extends Component {
 
   reportContentTouched = () => {
     this.setState({
-      contentTouched: true
+      contentTouched: true,
     })
   }
 
@@ -497,7 +500,7 @@ class StoryCoverScreen extends Component {
             ref={this.setEditorRef}
             style={{
               flex: 1,
-              minWidth: Metrics.screenWidth
+              minWidth: Metrics.screenWidth,
             }}
             customStyleMap={customStyles}
             onPressImage={this.handlePressAddImage}
@@ -517,7 +520,7 @@ class StoryCoverScreen extends Component {
   // getting rough YOffset
   onScroll = (event) => {
     // rounding offset to within 10
-    const newYOffset = (event.nativeEvent.contentOffset.y/10).toFixed()*10
+    const newYOffset = (event.nativeEvent.contentOffset.y / 10).toFixed() * 10
     if (newYOffset !== this.YOffset) {
       this.YOffset = event.nativeEvent.contentOffset.y
     }
@@ -529,7 +532,11 @@ class StoryCoverScreen extends Component {
     if (this.scrollViewRef) {
       // adding the math.max to account for sizeChange when we add a coverPhoto that is less
       // tall than default size. This prevents scrolling to negative and displaying white
-      this.scrollViewRef.scrollTo({x:0, y: Math.max(this.YOffset + diff, 5), amimated: true})
+      this.scrollViewRef.scrollTo({
+        x:0,
+        y: Math.max(this.YOffset + diff, 5),
+        amimated: true,
+      })
     }
     this.contentHeight = contentHeight
   }
@@ -545,7 +552,7 @@ class StoryCoverScreen extends Component {
     if (cover) {
       return Math.min(
         Metrics.storyCover.fullScreen.height,
-        getRelativeHeight(Metrics.screenWidth, extractCoverMetrics(cover))
+        getRelativeHeight(Metrics.screenWidth, extractCoverMetrics(cover)),
       )
     }
 
@@ -566,15 +573,15 @@ class StoryCoverScreen extends Component {
     const {error, validationError} = this.state
     const {
       title, coverCaption, description,
-      coverImage, coverVideo, id
+      coverImage, coverVideo, id,
     } = this.props.workingDraft
     const {updateWorkingDraft} = this.props
 
-    let showIntroTooltip = false;
+    let showIntroTooltip = false
     if (this.props.user && (coverImage || coverVideo)) {
       showIntroTooltip = !isTooltipComplete(
         TooltipTypes.STORY_PHOTO_EDIT,
-        this.props.user.introTooltips
+        this.props.user.introTooltips,
       )
     }
 
@@ -712,7 +719,7 @@ class StoryCoverScreen extends Component {
         {validationError &&
           <Tooltip
             onPress={this.clearError}
-            position={"title"}
+            position='title'
             text={validationError}
             onDismiss={this._dismissTooltip}
           />

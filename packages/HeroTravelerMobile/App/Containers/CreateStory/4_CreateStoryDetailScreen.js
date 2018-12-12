@@ -54,7 +54,6 @@ const Radio = ({text, onPress, selected}) => {
 }
 
 class CreateStoryDetailScreen extends React.Component {
-
   constructor(props) {
     super(props)
     this.state = {
@@ -107,23 +106,23 @@ class CreateStoryDetailScreen extends React.Component {
     const {workingDraft} = this.props
     if (!workingDraft.locationInfo || !workingDraft.type) {
       this.setState({
-        validationError: "Please add an activity type and location to continue"
+        validationError: 'Please add an activity type and location to continue',
       })
-      return;
+      return
     }
     // The numeric keyboard doesn't have a submit key and input may not
     // have been blurred prior to save. In that case we have to update
     // the working draft manually here.
     if (workingDraft.cost !== this.state.cost) {
-      workingDraft.cost = this.state.cost;
+      workingDraft.cost = this.state.cost
     }
-    this.next();
+    this.next()
     if (workingDraft.draft) this.props.saveDraft(workingDraft)
     else this.saveDraft(workingDraft)
   }
 
   _onLeft = () => {
-    this._updateCost();
+    this._updateCost()
     NavActions.pop()
   }
 
@@ -140,26 +139,26 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   _getCostPlaceholderText = (draft) => {
-    let placeholder;
+    let placeholder
     switch (draft.type) {
       case 'see':
       case 'do':
         placeholder = 'Cost'
-        break;
+        break
       case 'eat':
         placeholder = 'Cost per person'
-        break;
+        break
       case 'stay':
         placeholder = 'Cost per night'
-        break;
+        break
       default:
         placeholder = 'Cost'
-        break;
+        break
     }
     // The currency is hardcoded for now, might want to change it later.
-    let currency = draft.currency || 'USD';
+    let currency = draft.currency || 'USD'
     placeholder += ' (' + currency + ')'
-    return placeholder;
+    return placeholder
   }
 
   _closeError = () => {
@@ -206,7 +205,7 @@ class CreateStoryDetailScreen extends React.Component {
     NavActions.tagSelectorScreen({
       onDone: this._receiveCategories,
       tags: this.props.workingDraft.categories || this.state.categories,
-      tagType: 'category'
+      tagType: 'category',
     })
   }
 
@@ -214,7 +213,7 @@ class CreateStoryDetailScreen extends React.Component {
     NavActions.tagSelectorScreen({
       onDone: this._receiveHashtags,
       tags: this.props.workingDraft.hashtags || this.state.hashtags,
-      tagType: 'hashtag'
+      tagType: 'hashtag',
     })
   }
 
@@ -230,18 +229,19 @@ class CreateStoryDetailScreen extends React.Component {
       // replace this with short name?
       location: this.props.workingDraft.locationInfo
         ? this.props.workingDraft.locationInfo.name
-        : "",
+        : '',
     })
   }
 
   renderErrors() {
     if (this.state.showError) {
-      const err = this.state.error;
-      let errText;
+      const err = this.state.error
+      let errText
       if ((__DEV__ && err && err.problem && err.status)) {
-        errText = `${err.status}: ${err.problem}`;
-      } else if (err.text) {
-        errText = err.text;
+        errText = `${err.status}: ${err.problem}`
+      }
+      else if (err.text) {
+        errText = err.text
       }
       return (
         <ShadowButton
@@ -250,7 +250,7 @@ class CreateStoryDetailScreen extends React.Component {
           text={errText}
           title={err.message}
         />
-      );
+      )
     }
   }
 
@@ -376,7 +376,7 @@ class CreateStoryDetailScreen extends React.Component {
         {validationError &&
           <Tooltip
             onPress={this._touchError}
-            position={"right-nav-button"}
+            position={'right-nav-button'}
             text={validationError}
             onDismiss={this._dismissTooltip}
           />

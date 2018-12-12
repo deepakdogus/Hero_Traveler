@@ -14,7 +14,6 @@ import { connect } from 'react-redux'
 import Immutable from 'seamless-immutable'
 
 import {styles as StoryReadingScreenStyles} from '../Styles/StoryReadingScreenStyles'
-import StoryActions from '../../Shared/Redux/Entities/Stories'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import ShadowButton from '../../Components/ShadowButton'
 import Loader from '../../Components/Loader'
@@ -44,9 +43,7 @@ const MediaTypes = {
 }
 
 /*
-
 Utility functions
-
 */
 
 class StoryCoverScreen extends Component {
@@ -64,7 +61,6 @@ class StoryCoverScreen extends Component {
     workingDraft: PropTypes.object,
     originalDraft: PropTypes.object,
     updateWorkingDraft: PropTypes.func,
-    saveDraftToCache: PropTypes.func,
     saveDraft: PropTypes.func,
     error: PropTypes.string,
   }
@@ -745,7 +741,6 @@ export default connect((state) => {
   completeTooltip: (introTooltips) =>
     dispatch(UserActions.updateUser({introTooltips})),
   resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
-  saveDraftToCache: (draft) => dispatch(StoryActions.addDraft(draft)),
   saveDraft: (draft, saveAsDraft) => dispatch(StoryCreateActions.saveLocalDraft(draft, saveAsDraft)),
 }),
 )(StoryCoverScreen)

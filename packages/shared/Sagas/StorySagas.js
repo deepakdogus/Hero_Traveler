@@ -23,6 +23,7 @@ import pathAsFileObject from '../Lib/pathAsFileObject'
 import { isLocalMediaAsset } from '../Lib/getVideoUrl'
 import _ from 'lodash'
 import Immutable from 'seamless-immutable'
+import hasConnection from '../../Lib/hasConnection'
 
 const hasInitialAppDataLoaded = ({entities}, userId) => isInitialAppDataLoaded(entities.users, userId)
 const isStoryLikedSelector = ({entities}, userId, storyId) => isStoryLiked(entities.users, userId, storyId)
@@ -513,23 +514,30 @@ export function * deleteStory(api, {userId, storyId}){
 let firstCall = true
 export function * watchPendingUpdates() {
   while(true) {
-    yield put(StoryActions.syncPendingUpdates())
-    const numSeconds = firstCall ? 1 : 60
+    // triggers sync immediately then every 10 seconds
+    const numSeconds = firstCall ? 1 : 10
     if (firstCall) firstCall = false
-    yield call(delay, numSeconds * 1000) // every minute
+    yield call(delay, numSeconds * 1000)
+    yield put(StoryActions.syncPendingUpdates())
   }
 }
 
 function getIsEditing({routes}) {
-  return _.get(routes, 'location.pathname', '').indexOf('editStory') !== -1
+  const webCheck = _.get(routes, 'location.pathname', '').indexOf('editStory') !== -1
+  const sceneName = _.get(routes, 'scene.name', '')
+  const mobileCheck = sceneName.indexOf('createStory')!== -1
+    || sceneName === 'mediaSelectorScreen'
+    || sceneName === 'locationSelectorScreen'
+    || sceneName === 'tagSelectorScreen'
+    || _.get(routes, 'scene.title', '') === 'TRAVEL TIPS'
+  return webCheck || mobileCheck
 }
 
 function getNextPendingUpdate({pendingUpdates}) {
   const {pendingUpdates: updates, updateOrder} = pendingUpdates
   const nextUpdateKey = updateOrder.find(key => {
     const pendingUpdate = updates[key]
-    if (pendingUpdate.status === 'retrying') return true
-    else if (pendingUpdate.attempts > 5) return console.log("attempts")
+    if (pendingUpdate.attempts > 5) return false
     return true
   })
   return nextUpdateKey ? updates[nextUpdateKey] : {}
@@ -538,9 +546,11 @@ function getNextPendingUpdate({pendingUpdates}) {
 
 export function * syncPendingUpdates(api) {
   const isEditing = yield select(getIsEditing)
-  if (!isEditing) {
-    const {failedMethod, story} = yield select(getNextPendingUpdate)
-    if (failedMethod && story) {
+  const isConnected = yield hasConnection()
+  if (!isEditing && isConnected) {
+    const {failedMethod, story, status} = yield select(getNextPendingUpdate)
+    if (status === 'retrying') return
+    else if (failedMethod && story) {
       const mutableStory = Immutable.asMutable(story, {deep: true})
       if (failedMethod === 'updateDraft') {
         yield put(StoryCreateActions.updateDraft(story.id, mutableStory, true))

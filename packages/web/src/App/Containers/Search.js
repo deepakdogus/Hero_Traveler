@@ -8,11 +8,13 @@ import env from '../Config/Env'
 
 import UserActions from '../Shared/Redux/Entities/Users'
 import HistoryActions from '../Shared/Redux/HistoryRedux'
+import { runIfAuthed } from '../Lib/authHelpers'
 
 import SearchResultsPeople from '../Components/SearchResultsPeople'
 import SearchAutocompleteList from '../Components/SearchAutocompleteList'
 import TabBar from '../Components/TabBar'
 import { Row } from '../Components/FlexboxGrid'
+
 //seacrh
 import algoliasearchModule from 'algoliasearch'
 import algoliaSearchHelper from 'algoliasearch-helper'
@@ -231,9 +233,13 @@ class Search extends Component {
     this.props.unfollowUser(this.props.userId, userIdToUnfollow)
   }
 
-  _navToUserProfile = (userId) => {
-    this.props.addRecentSearch('people', this.state.inputText, userId)
-    this.props.reroute(`/profile/${userId}/view`)
+  _navToUserProfile = (id) => {
+    this.props.addRecentSearch({
+      searchType: 'people',
+      searchText: this.state.inputText,
+      id,
+    })
+    this.props.reroute(`/profile/${id}/view`)
   }
 
   _navToStory = ({ id, title }) => {
@@ -388,11 +394,14 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    followUser: (sessionUserID, userIdToFollow) => dispatch(UserActions.followUser(sessionUserID, userIdToFollow)),
-    unfollowUser: (sessionUserID, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserID, userIdToUnfollow)),
+    followUser: (sessionUserId, userIdToFollow) =>
+      dispatch(runIfAuthed(sessionUserId, UserActions.followUser, [sessionUserId, userIdToFollow])),
+    unfollowUser: (sessionUserId, userIdToUnfollow) =>
+      dispatch(runIfAuthed(sessionUserId, UserActions.unfollowUser, [sessionUserId, userIdToUnfollow])),
     loadUserFollowing: (sessionUserID) => dispatch(UserActions.loadUserFollowing(sessionUserID)),
     reroute: (path) => dispatch(push(path)),
     addRecentSearch: search => dispatch(HistoryActions.addRecentSearch(search)),
+
   }
 }
 

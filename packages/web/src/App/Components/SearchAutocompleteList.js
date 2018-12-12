@@ -24,6 +24,8 @@ class SearchAutocompleteList extends Component {
 
   render() {
     const { label, autocompleteItems, navigate } = this.props
+    if (!autocompleteItems.length) return null
+
     return (
       <Container>
         <ListTitle>{label}</ListTitle>

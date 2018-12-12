@@ -62,7 +62,7 @@ class SearchResults extends Component {
     wentBack: PropTypes.bool,
     lat: PropTypes.string,
     lng: PropTypes.string,
-    location: PropTypes.ogject,
+    location: PropTypes.object,
   }
 
   state = {

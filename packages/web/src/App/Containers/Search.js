@@ -16,9 +16,8 @@ import { Row } from '../Components/FlexboxGrid'
 //seacrh
 import algoliasearchModule from 'algoliasearch'
 import algoliaSearchHelper from 'algoliasearch-helper'
-import {getLatLng, geocodeByAddress} from 'react-places-autocomplete'
-
-const google = window.google
+import ExtendedPlacesAutocomplete from '../Components/Extensions/ExtendedPlacesAutocomplete'
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 
 const Container = styled.div``
 
@@ -58,6 +57,8 @@ const ContentWrapper = styled.div`
   margin: 0 auto;
 `
 
+const AutocompleteListsContainer = styled.div``
+
 const Text = styled.p`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   color: ${props => props.theme.Colors.redHighlights};
@@ -94,7 +95,6 @@ class Search extends Component {
     this.state = {
       activeTab: 'PLACES',
       lastSearchResults: {},
-      lastGoogleSearchResults: {},
       inputText: '',
     }
   }
@@ -103,7 +103,6 @@ class Search extends Component {
     this.helper = algoliaSearchHelper(algoliasearch, STORY_INDEX)
     this.setupSearchListeners(this.helper)
     this.reinitializeQuery()
-    this.googleHelper = new google.maps.places.AutocompleteService()
   }
 
   componentWillUnmount() {
@@ -135,32 +134,9 @@ class Search extends Component {
   }
 
   inputFieldChange = async event => {
-    const inputText = event.target.value
+    const inputText = event
     this.setState({ inputText })
     this._changeQuery(inputText)
-
-    if (inputText && inputText.length > 2) {
-      await this.googleHelper.getQueryPredictions(
-        { input: inputText },
-        this.updateGoogleSearchResults)
-    }
-  }
-
-  updateGoogleSearchResults = (predictions, status) => {
-    if (status != google.maps.places.PlacesServiceStatus.OK) {
-      console.error(status)
-      return
-    }
-
-    const lastGoogleSearchResults = predictions.map(prediction => {
-      if (prediction.place_id && prediction.description) return {
-        id: prediction.place_id,
-        title: prediction.description,
-        contentType: 'location',
-      }
-      return null
-    })
-    this.setState({ lastGoogleSearchResults })
   }
 
   _changeQuery = (queryText) => {
@@ -260,29 +236,49 @@ class Search extends Component {
     this.props.reroute(`/profile/${userId}/view`)
   }
 
-  _navToStory = (storyId, title) => {
+  _navToStory = ({ id, title }) => {
     this.props.addRecentSearch({
       searchType: 'places',
       searchText: this.state.inputText,
       contentType: 'story',
-      id: storyId,
+      id,
       title,
     })
-    this.props.reroute(`/story/${storyId}`)
+    this.props.reroute(`/story/${id}`)
   }
 
-  _navToLocationResults = (lat, lng) => {
-    this.props.addRecentSearch({
-      searchType: 'places',
-      searchText: this.state.inputText,
-      contentType: 'location',
-      lat,
-      lng,
-    })
-    this.props.reroute(`/results/${lat}/${lng}`)
+  _getLatLngAndNav = async item => {
+    const results = await geocodeByAddress(item.description)
+    const { lat, lng } = await getLatLng(results[0])
+    this._navToLocationResults({lat, lng, ...item })
   }
 
-  renderActiveTab = () => {
+  _navToLocationResults = ({ lat, lng, id, title }) => {
+    const { reroute, addRecentSearch } = this.props
+    if (lat && lng) {
+      addRecentSearch({
+        searchType: 'places',
+        searchText: this.state.inputText,
+        contentType: 'location',
+        id,
+        title,
+        lat,
+        lng,
+      })
+      reroute({
+        pathname: `/results/${lat}/${lng}`,
+        search: `?t=${title}`,
+      })
+    }
+  }
+
+  _navConditionally = item => {
+    item.contentType === 'story'
+      ? this._navToStory(item)
+      : this._navToLocationResults(item)
+  }
+
+  renderActiveTab = suggestions => {
     if (this.state.activeTab === 'PEOPLE') {
       return (
         <SearchResultsPeople
@@ -296,19 +292,29 @@ class Search extends Component {
       )
     }
     else {
-      if (!this.state.lastSearchResults.hits) return null
-      if (!this.state.lastGoogleSearchResults) return null
-      const autocompleteItems = [
-        ...this.state.lastSearchResults.hits,
-        ...this.state.lastGoogleSearchResults,
-      ]
+      const formattedLocations = suggestions.map(suggestion => ({
+        id: suggestion.id,
+        title: suggestion.formattedSuggestion.mainText,
+        description: suggestion.description,
+      }))
       return (
-        <SearchAutocompleteList
-          autocompleteItems={autocompleteItems}
-          navToStory = {this._navToStory}
-          navToLocationResults = {this._navToLocationResults}
-          reroute={this.props.reroute}
-        />
+        <AutocompleteListsContainer>
+          {!!formattedLocations.length &&
+            <SearchAutocompleteList
+              label='LOCATIONS'
+              autocompleteItems={formattedLocations}
+              navigate={this._getLatLngAndNav}
+            />
+          }
+          { this.state.lastSearchResults.hits &&
+            !!this.state.lastSearchResults.hits.length &&
+            <SearchAutocompleteList
+              label='STORIES'
+              autocompleteItems={this.state.lastSearchResults.hits}
+              navigate={this._navToStory}
+            />
+          }
+        </AutocompleteListsContainer>
       )
     }
   }
@@ -318,40 +324,56 @@ class Search extends Component {
       <SearchAutocompleteList
         label='RECENT SEARCHES'
         autocompleteItems={this.props.searchHistory.places}
-        navToStory = {this._navToStory}
+        navigate = {this._navConditionally}
       />
+    )
+  }
+
+  renderTab = suggestions => {
+    const { inputText, activeTab } = this.state
+    return (
+    <ContentWrapper>
+      <TabBar
+        tabs={tabBarTabs}
+        activeTab={this.state.activeTab}
+        onClickTab={this.onClickTab}
+        whiteBG
+      />
+      {(activeTab !== 'PLACES' || inputText)
+        ? this.renderActiveTab(suggestions)
+        : this.renderRecentSearches()
+      }
+    </ContentWrapper>
     )
   }
 
   render() {
     const { inputText, activeTab } = this.state
     return (
-      <Container>
-        <HeaderInputContainer between='xs'>
-          <HeaderInput
-            value={this.state.inputText}
-            onChange={this.inputFieldChange}
-            placeholder='Type to search'
-          />
-          <Text
-            onClick={this.resetSearchText}
-          >
-            {'Cancel'}
-          </Text>
-        </HeaderInputContainer>
-        <ContentWrapper>
-          <TabBar
-            tabs={tabBarTabs}
-            activeTab={this.state.activeTab}
-            onClickTab={this.onClickTab}
-            whiteBG
-          />
-          {(activeTab !== 'PLACES' || inputText)
-            ? this.renderActiveTab()
-            : this.renderRecentSearches()
-          }
-        </ContentWrapper>
-      </Container>
+      <ExtendedPlacesAutocomplete
+        value={inputText}
+        onChange={this.inputFieldChange}
+        shouldFetchSuggestions={activeTab === 'PLACES'}
+      >
+      {({ getInputProps, suggestions }) => (
+        <Container>
+          <HeaderInputContainer between='xs'>
+            <HeaderInput
+              {...getInputProps({
+                placeholder: 'Type to search',
+                className: 'header-input',
+              })}
+            />
+            <Text
+              onClick={this.resetSearchText}
+            >
+              {'Cancel'}
+            </Text>
+          </HeaderInputContainer>
+          {this.renderTab(suggestions)}
+        </Container>
+      )}
+      </ExtendedPlacesAutocomplete>
     )
   }
 }

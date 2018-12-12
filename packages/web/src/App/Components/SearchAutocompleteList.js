@@ -19,25 +19,24 @@ class SearchAutocompleteList extends Component {
   static propTypes = {
     label: PropTypes.string,
     autocompleteItems: PropTypes.array,
-    navToStory: PropTypes.func,
+    navigate: PropTypes.func,
   }
 
   render() {
-    const { label, autocompleteItems, navToStory, reroute } = this.props
-    if (!autocompleteItems.length) return null
-
+    const { label, autocompleteItems, navigate } = this.props
     return (
       <Container>
         <ListTitle>{label}</ListTitle>
         {autocompleteItems.map((item, idx) => {
           if (!item) return null
-          return (<AutocompleteRow
-            key={item.id}
-            idx={idx}
-            item={item}
-            navToStory={navToStory}
-            reroute={reroute}
-          />)
+          return (
+            <AutocompleteRow
+              key={item.id}
+              idx={idx}
+              item={item}
+              navigate={navigate}
+            />
+          )
         })}
       </Container>
     )

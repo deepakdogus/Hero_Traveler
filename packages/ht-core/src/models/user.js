@@ -64,6 +64,10 @@ const UserSchema = new Schema({
     unique: true,
     uniqueCaseInsensitive: true
   },
+  isDeleted: {
+    type: Boolean,
+    default: false
+  },
   bio: {
     type: String
   },
@@ -196,11 +200,15 @@ UserSchema.statics = {
       notificationTypes: defaultNotificationTypes,
     })
   },
-  list({ page = 1, perPage = 5, search='', sort }) {
-    const query = {}
+  list({ page = 1, perPage = 5, search='', sort, query }) {
+    let queryToApply = {}
+
+    if (query) {
+      queryToApply = query
+    }
 
     if (search !== '') {
-      query['$text'] = { $search: search }
+      queryToApply['$text'] = { $search: search }
     } 
 
     let sortToApply = {createdAt: -1}
@@ -209,10 +217,10 @@ UserSchema.statics = {
         [sort.fieldName]: sort.order
       }
     }
-    console.log('sort', sortToApply);
+
     return Promise.props({
-      count: this.count().exec(),
-      data: this.find(query)
+      count: this.count(queryToApply).exec(),
+      data: this.find(queryToApply)
         .skip((page - 1) * perPage)
         .limit(perPage)
         .sort(sortToApply)

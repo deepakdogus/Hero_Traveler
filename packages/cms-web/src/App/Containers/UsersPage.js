@@ -41,6 +41,12 @@ const FilterRow = styled.div`
   margin-bottom: 20px;
 `
 
+const Tab = styled.div`
+  cursor: pointer;
+  font-weight: ${props => props.active ? 'bold' : 'regular'};
+  color: ${props => props.active ? 'black' : '#008dff'};
+`
+
 const columns = [{
   title: 'Username',
   dataIndex: 'username',
@@ -80,6 +86,10 @@ const columns = [{
 ]
 
 class Feed extends React.Component {
+  state = {
+    activeTab: 'all',
+  }
+
   componentDidMount(){
     //get user feed on signUp and reset signUp redux
     this.props.getUsers()
@@ -108,6 +118,32 @@ class Feed extends React.Component {
       search: text,
     })
   }, 300)
+
+  _showAll = () => {
+    console.log('show all')
+    const { getUsers, params } = this.props
+    getUsers({
+      ...params,
+      query: undefined,
+    })
+    this.setState({
+      activeTab: 'all',
+    })
+  }
+
+  _showDeleted = () => {
+    console.log('show Deleted')
+    const { getUsers, params } = this.props
+    getUsers({
+      ...params,
+      query: {
+        isDeleted: true,
+      },
+    })
+    this.setState({
+      activeTab: 'deleted',
+    })
+  }
 
   render() {
     const {
@@ -141,11 +177,15 @@ class Feed extends React.Component {
         </TopRow>
         
         <MiddleRow>
-          <b>All ({total})</b>
+          <Tab active={this.state.activeTab === 'all'} onClick={this._showAll}>
+            All {this.state.activeTab === 'all' && <span>({total})</span>}
+          </Tab>
           <LeftSpaceDiv> | 
           </LeftSpaceDiv>
           <LeftSpaceDiv>
-            <a href='#'>Deleted</a>
+            <Tab active={this.state.activeTab === 'deleted'} onClick={this._showDeleted}>
+              Deleted {this.state.activeTab === 'deleted' && <span>({total})</span>}
+            </Tab>
           </LeftSpaceDiv>
         </MiddleRow>
 

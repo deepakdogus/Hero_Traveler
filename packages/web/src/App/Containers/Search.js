@@ -26,6 +26,10 @@ const Container = styled.div``
 const HeaderInputContainer = styled(Row)`
   background-color: ${props => props.theme.Colors.lightGreyAreas};
   padding: 0 30px;
+  flex-wrap: nowrap;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0 15px;
+  }
 `
 
 const HeaderInput = styled.input`
@@ -39,6 +43,10 @@ const HeaderInput = styled.input`
   outline: none;
   letter-spacing: .2px;
   color: ${props => props.theme.Colors.signupGrey};
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    height: 65px;
+    font-size: 15px;
+  }
   &::placeholder{
     color: ${props => props.theme.Colors.signupGrey};
   };
@@ -53,13 +61,20 @@ const HeaderInput = styled.input`
   };
 `
 
-const ContentWrapper = styled.div`
-  max-width: 800px;
-  padding: 0 30px;
-  margin: 0 auto;
-`
+const ContentWrapper = styled.div``
 
-const AutocompleteListsContainer = styled.div``
+// header height: 65px
+// search bar height: 122px
+// tabbar height: 73px, 50px @width < 768px
+// accounting for margins: 40px
+const ScrollingListContainer = styled.div`
+  height: calc(100vh - 65px - 122px - 73px - 40px);
+  overflow-y: scroll;
+  margin-top: 30px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    height: calc(100vh - 122px - 50px - 40px);
+  }
+`
 
 const Text = styled.p`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
@@ -72,6 +87,10 @@ const Text = styled.p`
   line-height: 122px;
   letter-spacing: .2px;
   cursor: pointer;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 15px;
+    line-height: 66px;
+  }
 `
 
 const tabBarTabs = ['PLACES', 'PEOPLE']
@@ -287,14 +306,16 @@ class Search extends Component {
   renderActiveTab = suggestions => {
     if (this.state.activeTab === 'PEOPLE') {
       return (
-        <SearchResultsPeople
-          userSearchResults={this.state.lastSearchResults}
-          userFollowing={this.props.userFollowing}
-          userId={this.props.userId}
-          followUser={this._followUser}
-          unfollowUser={this._unfollowUser}
-          navToUserProfile={this._navToUserProfile}
-        />
+        <ScrollingListContainer>
+          <SearchResultsPeople
+            userSearchResults={this.state.lastSearchResults}
+            userFollowing={this.props.userFollowing}
+            userId={this.props.userId}
+            followUser={this._followUser}
+            unfollowUser={this._unfollowUser}
+            navToUserProfile={this._navToUserProfile}
+          />
+        </ScrollingListContainer>
       )
     }
     else {
@@ -304,7 +325,7 @@ class Search extends Component {
         description: suggestion.description,
       }))
       return (
-        <AutocompleteListsContainer>
+        <ScrollingListContainer>
           {!!formattedLocations.length &&
             <SearchAutocompleteList
               label='LOCATIONS'
@@ -320,18 +341,20 @@ class Search extends Component {
               navigate={this._navToStory}
             />
           }
-        </AutocompleteListsContainer>
+        </ScrollingListContainer>
       )
     }
   }
 
   renderRecentSearches = () => {
     return (
-      <SearchAutocompleteList
-        label='RECENT SEARCHES'
-        autocompleteItems={this.props.searchHistory.places}
-        navigate = {this._navConditionally}
-      />
+      <ScrollingListContainer>
+        <SearchAutocompleteList
+          label='RECENT SEARCHES'
+          autocompleteItems={this.props.searchHistory.places}
+          navigate = {this._navConditionally}
+        />
+      </ScrollingListContainer>
     )
   }
 

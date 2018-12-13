@@ -4,10 +4,13 @@ import styled from 'styled-components'
 
 import AutocompleteRow from './SearchAutocompleteRow'
 
-const Container = styled.div``
+const Container = styled.div`
+  max-width: 800px;
+  padding: 0 30px;
+  margin: 0 auto 50px;
+`
 
 const ListTitle = styled.p`
-  padding-top: 30px;
   font-weight: 600;
   font-size: 20px;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};

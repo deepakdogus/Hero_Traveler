@@ -35,17 +35,17 @@ const StyledInput = styled.input`
   margin: 10px 0px;
   `
 
-  const DropdownContainer = styled.div`
-    position: absolute;
-    top: 35px;
-    left: 0px;
-    background-color: white;
-    border: none;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    width: 320px;
-    z-index: 100;
-    margin: 10px 0px;
-  `
+const DropdownContainer = styled.div`
+  position: absolute;
+  top: 35px;
+  left: 0px;
+  background-color: white;
+  border: none;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  width: 320px;
+  z-index: 100;
+  margin: 10px 0px;
+`
 
 const InactiveAutocompleteItemContainer = styled.div`
   background-color: #ffffff;

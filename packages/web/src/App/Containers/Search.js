@@ -135,7 +135,7 @@ class Search extends Component {
     helper.removeAllListeners('search')
   }
 
-  inputFieldChange = async event => {
+  inputFieldChange = event => {
     const inputText = event
     this.setState({ inputText })
     this._changeQuery(inputText)
@@ -359,7 +359,6 @@ class Search extends Component {
         <HeaderInput
           {...getInputProps({
             placeholder: 'Type to search',
-            className: 'header-input',
           })}
         />
         <Text

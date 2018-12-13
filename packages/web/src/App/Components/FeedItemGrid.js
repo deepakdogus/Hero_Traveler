@@ -75,7 +75,6 @@ export default class FeedItemGrid extends Component {
     isShowAll: PropTypes.bool,
     onClickShowAll: PropTypes.func,
     titlePadding: PropTypes.string,
-    isHorizontalList: PropTypes.bool,
   }
 
   _onClickShowAll = () => {
@@ -124,7 +123,7 @@ export default class FeedItemGrid extends Component {
         <Grid>
           {this.renderFeedItems()}
         </Grid>
-        {feedItems.length > 6 && !isShowAll &&
+        {feedItems.length > MAX_PREVIEW_ITEMS && !isShowAll &&
           <SeeAllText onClick={this._onClickShowAll}>
             See All ({feedItems.length})
           </SeeAllText>

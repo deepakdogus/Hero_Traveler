@@ -10,7 +10,7 @@ router.get(
   hasValidOauth,
   populatesUser,
   isAdmin,
-  endpointWrapper(getAll)
+  getAll
 )
 
 

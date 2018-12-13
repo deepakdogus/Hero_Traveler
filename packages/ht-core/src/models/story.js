@@ -213,6 +213,12 @@ StorySchema.statics = {
       .exec()
   },
 
+  getCountUserStories(userId) {
+    return this
+      .count({author: userId})
+      .exec()
+  },
+
   getSearchStory(storyId) {
     return this.findOne({
       _id: storyId

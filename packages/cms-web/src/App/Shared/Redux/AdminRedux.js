@@ -4,8 +4,8 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  adminGetUsers: null,
-  getUsersSuccess: ['data'],
+  adminGetUsers: ['params'],
+  getUsersSuccess: ['res'],
   getUsersFailure: ['error']
 })
 
@@ -19,18 +19,27 @@ export const INITIAL_STATE = Immutable({
     isLoading: false,
     list: [],
     total: 0,
-    error: null
+    error: null,
+    params: {
+      page: 1,
+      limit: 5
+    }
   }
 })
 
 /* ------------- Reducers ------------- */
 // we're attempting to login
-export const adminGetUsers = (state) => {
-
+export const adminGetUsers = (state, { params = {} }) => {
   return state.merge({
     users: {
-      isLoading: true
+      isLoading: true,
+      params: {
+        ...state.users.params,
+        ...params
+      }
     }
+  }, {
+    deep: true
   })
 }
 
@@ -43,14 +52,18 @@ export const getUsersFailure = (state, { error }) => {
   })
 }
 
-export const getUsersSuccess = (state, { data }) => {
+export const getUsersSuccess = (state, { res }) => {
   return state.merge({
     users: {
-      list: data,
-      total: data.length,
+      ...state.users,
+      list: res.data,
+      total: res.count,
       isLoading: false,
       error: null
     }
+  },
+  {
+    deep: true
   })
 }
 

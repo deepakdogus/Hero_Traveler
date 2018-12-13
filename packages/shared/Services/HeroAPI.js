@@ -459,7 +459,7 @@ const create = () => {
     return api.put(`guide/${guideId}/unlike`)
   }
 
-  const adminGetUsers = () => api.get(`admin/users`)
+  const adminGetUsers = (params) => api.get(`admin/users`, params)
 
   // ------
   // STEP 3

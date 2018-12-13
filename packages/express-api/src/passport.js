@@ -6,7 +6,6 @@ import {User} from '@hero/ht-core'
 passport.use(
   new BasicStrategy(
     (userIdentifier, password, next) => {
-      console.log('passport basic strategy processing', userIdentifier, password)
       User.validateCredentials(userIdentifier, password)
         .then(user => {
           next(null, user)
@@ -30,7 +29,6 @@ passport.use(
           return null
         })
         .catch(err => {
-          console.log('Auth error bearer strategy', err)
           next(new Error('Unauthorized'))
           return null
         })

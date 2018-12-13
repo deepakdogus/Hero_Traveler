@@ -135,6 +135,8 @@ const UserSchema = new Schema({
   }
 })
 
+UserSchema.index({username: 'text', email: 'text', 'profile.fullName': 'text'})
+
 UserSchema.virtual('isFacebookConnected')
   .get(function() {
     return this.hasFacebookAccountInfo()
@@ -194,9 +196,28 @@ UserSchema.statics = {
       notificationTypes: defaultNotificationTypes,
     })
   },
-  list(/* args */) {
-    return this.find(...arguments)
-      .sort({createdAt: -1})
+  list({ page = 1, perPage = 5, search='', sort }) {
+    const query = {}
+
+    if (search !== '') {
+      query['$text'] = { $search: search }
+    } 
+
+    let sortToApply = {createdAt: -1}
+    if (sort) {
+      sortToApply = {
+        [sort.fieldName]: sort.order
+      }
+    }
+    console.log('sort', sortToApply);
+    return Promise.props({
+      count: this.count().exec(),
+      data: this.find(query)
+        .skip((page - 1) * perPage)
+        .limit(perPage)
+        .sort(sortToApply)
+          .exec(),
+    })
   }
 }
 

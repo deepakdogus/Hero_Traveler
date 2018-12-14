@@ -5,7 +5,8 @@ import styled from 'styled-components'
 import Session from '../Containers/Session'
 import Header from '../Containers/Header'
 import Home from '../Components/Home'
-import UsersPage from '../Containers/UsersPage'
+import UsersPage from '../Containers/Users/List'
+import EditUserPage from '../Containers/Users/Edit'
 import AuthChecker from '../Containers/AuthChecker'
 
 const RouterWrapper = styled.div`
@@ -22,6 +23,7 @@ class AppRoot extends Component {
           <RouterWrapper>
             <Route exact path='/' component={Home} />
             <Route exact path='/users' component={UsersPage} />
+            <Route exact path='/users/:id' component={EditUserPage} />
           </RouterWrapper>
         </AuthChecker>
       </div>

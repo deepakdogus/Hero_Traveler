@@ -3,11 +3,12 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Table, Input, Icon, Select, Button } from 'antd'
+import { Link } from 'react-router-dom'
 import moment from 'moment'
 import debounce from 'lodash/debounce'
 import isEmpty from 'lodash/isEmpty'
 
-import AdminActions from '../Shared/Redux/AdminRedux'
+import AdminActions from '../../Shared/Redux/AdminRedux'
 
 const Option = Select.Option
 
@@ -82,18 +83,18 @@ const columns = [{
 },
 {
   title: 'Edit',
-  render: () => (<Icon type='edit' />),
+  render: (item) => (<Link to={`/users/${item.id}`}><Icon type='edit' /></Link>),
 },
 ]
 
-class Feed extends React.Component {
+class UsersList extends React.Component {
   state = {
     activeTab: 'all',
-    selectedRole: undefined
+    selectedRole: undefined,
   }
 
   componentDidMount(){
-    //get user feed on signUp and reset signUp redux
+    //get user UsersList on signUp and reset signUp redux
     this.props.getUsers()
   }
 
@@ -241,7 +242,7 @@ class Feed extends React.Component {
   }
 }
 
-Feed.propTypes = {
+UsersList.propTypes = {
   list: PropTypes.array.isRequired,
   isLoading: PropTypes.bool.isRequired,
   params: PropTypes.object.isRequired,
@@ -265,4 +266,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Feed)
+export default connect(mapStateToProps, mapDispatchToProps)(UsersList)

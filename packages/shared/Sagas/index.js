@@ -112,7 +112,8 @@ import {
 } from './CommentsSagas'
 
 import {
-  adminGetUsers
+  adminGetUsers,
+  adminGetUser
 } from './AdminSagas'
 
 
@@ -231,6 +232,7 @@ export default function * root () {
     takeLatest(CommentTypes.CREATE_COMMENT_REQUEST, createComment, heroAPI),
 
     //Admin
-    takeLatest(AdminTypes.ADMIN_GET_USERS, adminGetUsers, heroAPI)
+    takeLatest(AdminTypes.ADMIN_GET_USERS, adminGetUsers, heroAPI),
+    takeLatest(AdminTypes.ADMIN_GET_USER, adminGetUser, heroAPI)
   ]
 }

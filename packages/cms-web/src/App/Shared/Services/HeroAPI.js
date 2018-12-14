@@ -461,6 +461,8 @@ const create = () => {
 
   const adminGetUsers = (params) => api.get(`admin/users`, params)
 
+  const adminGetUser = (id) => api.get(`admin/users/${id}`)
+
   // ------
   // STEP 3
   // ------
@@ -544,7 +546,8 @@ const create = () => {
     getCategoryGuides,
     likeGuide,
     unlikeGuide,
-    adminGetUsers
+    adminGetUsers,
+    adminGetUser
   }
 }
 

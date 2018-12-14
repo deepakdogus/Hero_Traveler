@@ -22,6 +22,7 @@
     "no-console": 1,
     "react/jsx-no-bind": 2,
     "react/prop-types": 1,
+    "react/display-name": 1,
     "react/no-string-refs": 1,
     "brace-style": ["error", "stroustrup"],
     "comma-dangle": ["error", {

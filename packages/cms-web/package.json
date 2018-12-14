@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "antd": "^3.11.2",
+    "dotenv": "^6.2.0",
     "history": "^4.7.2",
     "lodash": "^4.17.4",
     "material-ui": "^0.19.1",

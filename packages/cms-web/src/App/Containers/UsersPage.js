@@ -2,13 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { Table, Input, Icon } from 'antd'
-import Immutable from 'seamless-immutable'
+import { Table, Input, Icon, Select, Button } from 'antd'
 import moment from 'moment'
 import debounce from 'lodash/debounce'
 import isEmpty from 'lodash/isEmpty'
 
 import AdminActions from '../Shared/Redux/AdminRedux'
+
+const Option = Select.Option
 
 const Wrapper = styled.div``
 
@@ -88,6 +89,7 @@ const columns = [{
 class Feed extends React.Component {
   state = {
     activeTab: 'all',
+    selectedRole: undefined
   }
 
   componentDidMount(){
@@ -113,6 +115,8 @@ class Feed extends React.Component {
     })
   }
 
+  _handleSearch = (e) => this._onSearchChange(e.target.value)
+
   _onSearchChange = debounce((text) => {
     this.props.getUsers({
       search: text,
@@ -120,7 +124,6 @@ class Feed extends React.Component {
   }, 300)
 
   _showAll = () => {
-    console.log('show all')
     const { getUsers, params } = this.props
     getUsers({
       ...params,
@@ -132,7 +135,6 @@ class Feed extends React.Component {
   }
 
   _showDeleted = () => {
-    console.log('show Deleted')
     const { getUsers, params } = this.props
     getUsers({
       ...params,
@@ -142,6 +144,23 @@ class Feed extends React.Component {
     })
     this.setState({
       activeTab: 'deleted',
+    })
+  }
+
+  _handleSelectChange = (value) => {
+    this.setState({
+      selectedRole: value,
+    })
+  }
+
+  _applyTypeFilter = () => {
+    const { params, getUsers } = this.props
+    getUsers({
+      ...params,
+      query: {
+        ...params.query,
+        role: this.state.selectedRole,
+      },
     })
   }
 
@@ -170,7 +189,7 @@ class Feed extends React.Component {
               size='small'
               type='text'
               prefix={<Icon type='search' />}
-              onChange={(e) => this._onSearchChange(e.target.value)}
+              onChange={this._handleSearch}
               placeholder='Search Users'
             />
           </SearchContainer>
@@ -192,10 +211,21 @@ class Feed extends React.Component {
         <FilterRow>
           <b>Filter by:</b>
           <LeftSpaceDiv>
-            <Input size='small' type='text' />
+            <Select
+              placeholder="user type"
+              value={this.state.selectedRole}
+              style={{
+                width: 120,
+              }}
+              onChange={this._handleSelectChange}
+            >
+              <Option value="user">User</Option>
+              <Option value="admin">Admin</Option>
+            </Select>
+
           </LeftSpaceDiv>
           <LeftSpaceDiv>
-            <button>Filter</button>
+            <Button onClick={this._applyTypeFilter}>Filter</Button>
           </LeftSpaceDiv>
         </FilterRow>
         <Table

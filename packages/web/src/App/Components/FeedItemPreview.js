@@ -266,7 +266,7 @@ const GuideIcon = styled(Icon)`
 
 const BookmarkIcon = styled(Icon)`
   margin: 0 5px;
-  cursor: pointer
+  cursor: pointer;
 `
 
 const DeleteIcon = styled(Icon)`
@@ -274,6 +274,10 @@ const DeleteIcon = styled(Icon)`
   height: 32px;
   align-self: center;
   cursor: pointer;
+`
+
+const AvatarTextStyles = `
+  margin-right: 7.5px;
 `
 
 const videoThumbnailOptions = {
@@ -423,7 +427,8 @@ class FeedItemPreview extends Component {
               <Row middle='xs'>
                 {!isVertical &&
                   <Avatar
-                    isStoryPreview
+                    iconTextProps={AvatarTextStyles}
+                    imageTextProps={AvatarTextStyles}
                     avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
                     size='avatar'
                     type='profile'

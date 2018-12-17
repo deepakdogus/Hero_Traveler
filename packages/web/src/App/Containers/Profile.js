@@ -11,6 +11,7 @@ import UXActions from '../Redux/UXRedux'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import StoryActions, {getByUser, getUserFetchStatus, getBookmarksFetchStatus} from '../Shared/Redux/Entities/Stories'
 import MediaUploadActions from '../Shared/Redux/MediaUploadRedux'
+import getPendingDrafts from '../Shared/Lib/getPendingDrafts'
 import { runIfAuthed } from '../Lib/authHelpers'
 
 import ContainerWithFeedList from './ContainerWithFeedList'
@@ -182,14 +183,6 @@ class Profile extends ContainerWithFeedList {
       </ContentWrapper>
     )
   }
-}
-
-function getPendingDrafts(pendingUpdates) {
-  return pendingUpdates.updateOrder.reduce((pendingDrafts, key) => {
-    const story = pendingUpdates.pendingUpdates[key].story
-    if (story.draft) pendingDrafts.push(story)
-    return pendingDrafts
-  }, [])
 }
 
 function mapStateToProps(state, ownProps) {

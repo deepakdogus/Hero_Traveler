@@ -35,6 +35,7 @@ class ProfileScreen extends React.Component {
     this.props.getStories(this.props.user.id)
     this.props.loadBookmarks(this.props.user.id)
     this.props.getGuides(this.props.user.id)
+    this.props.loadDrafts()
   }
 
   componentDidUpdate(prevProps) {
@@ -51,7 +52,7 @@ class ProfileScreen extends React.Component {
       case TabTypes.stories:
         return this.props.getStories(this.props.user.id)
       case TabTypes.drafts:
-        return
+        return this.props.loadDrafts()
       case TabTypes.bookmarks:
         return this.props.loadBookmarks(this.props.user.id)
     }
@@ -65,6 +66,7 @@ class ProfileScreen extends React.Component {
     const {
       user,
       draftsById,
+      pendingDraftsIds,
       userStoriesById,
       userStoriesFetchStatus,
       accessToken,
@@ -87,6 +89,7 @@ class ProfileScreen extends React.Component {
         user={user}
         stories={userStoriesById}
         drafts={draftsById}
+        pendingDraftsIds={pendingDraftsIds}
         bookmarks={userBookmarksById}
         guideIds={guideIds}
         onSelectTab={this._selectTab}
@@ -117,7 +120,8 @@ const mapStateToProps = (state) => {
     userStoriesFetchStatus: getUserFetchStatus(stories, userId),
     userStoriesById: getByUser(stories, userId),
     draftsFetchStatus: {loaded: true},
-    draftsById: [],
+    draftsById: stories.drafts.byId,
+    pendingDraftsIds: [...state.pendingUpdates.updateOrder],
     userBookmarksById: getByBookmarks(users, userId),
     userBookmarksFetchStatus: getBookmarksFetchStatus(stories, userId),
     guideIds: guides.guideIdsByUserId ? guides.guideIdsByUserId[userId] : [],
@@ -132,6 +136,7 @@ const mapDispatchToProps = (dispatch) => {
     updateUser: (attrs) => dispatch(UserActions.updateUser(attrs)),
     getUser: (userId) => dispatch(UserActions.loadUser(userId)),
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
+    loadDrafts: () => dispatch(StoryActions.loadDrafts()),
     loadBookmarks: (userId) => dispatch(StoryActions.getBookmarks(userId)),
     getGuides: (userId) => dispatch(GuideActions.getUserGuides(userId)),
   }

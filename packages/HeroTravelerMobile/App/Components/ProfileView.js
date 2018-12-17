@@ -45,6 +45,7 @@ class ProfileView extends React.Component {
     location: PropTypes.string,
     error: PropTypes.object,
     refresh: PropTypes.func,
+    onSelectTab: PropTypes.func,
   }
 
   constructor(props) {
@@ -85,6 +86,7 @@ class ProfileView extends React.Component {
   selectTab = (tab) => {
     if (this.state.selectedTab !== tab) {
       this.setState({selectedTab: tab})
+      this.props.onSelectTab(tab)
     }
   }
 
@@ -96,9 +98,11 @@ class ProfileView extends React.Component {
   _bioRef = c => this.bioInput = c
 
   getFeedItemsById() {
-    const {drafts, bookmarks, stories, guideIds} = this.props
+    const {drafts, bookmarks, stories, guideIds, pendingDraftsIds} = this.props
     if (this.state.selectedTab === TabTypes.stories) return stories
-    else if (this.state.selectedTab === TabTypes.drafts) return drafts
+    else if (this.state.selectedTab === TabTypes.drafts) {
+      return [...pendingDraftsIds, ...drafts]
+    }
     else if (this.state.selectedTab === TabTypes.bookmarks) return bookmarks
     else if (this.state.selectedTab === TabTypes.guides) return guideIds
   }

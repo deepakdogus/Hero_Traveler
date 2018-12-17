@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import softDelete from 'mongoose-delete'
 import slug from 'mongoose-slug-generator'
+import Promise from 'bluebird'
 
 export const ModelName = 'Category'
 
@@ -66,6 +67,35 @@ const CategorySchema = new mongoose.Schema({
     virtuals: true
   }
 })
+
+CategorySchema.statics = {
+  list({ page = 1, perPage = 5, search='', sort, query }) {
+    let queryToApply = {}
+
+    if (query) {
+      queryToApply = query
+    }
+
+    if (search !== '') {
+      queryToApply['$text'] = { $search: search }
+    } 
+
+    let sortToApply = {createdAt: -1}
+    if (sort) {
+      sortToApply = {
+        [sort.fieldName]: sort.order
+      }
+    }
+    return Promise.props({
+      count: this.count(queryToApply).exec(),
+      data: this.find(queryToApply)
+        .skip((page - 1) * perPage)
+        .limit(perPage)
+        .sort(sortToApply)
+          .exec(),
+    })
+  }
+}
 
 CategorySchema.pre('save', function(next) {
   if (this.counts.stories === 10) {

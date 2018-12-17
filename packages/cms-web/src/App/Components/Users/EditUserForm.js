@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Form, Input, Button, Icon, Upload, Checkbox, Select } from 'antd'
-import get from 'lodash/get'
+import mapValues from 'lodash/mapValues'
 
 const Option = Select.Option
 const FormItem = Form.Item
@@ -17,12 +17,12 @@ class EditUserForm extends React.Component {
   }
 
   handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        console.log('Received values of form: ', values)
       }
-    });
+    })
   }
 
   render() {
@@ -44,7 +44,7 @@ class EditUserForm extends React.Component {
         xs: { span: 24 },
         sm: { span: 16 },
       },
-    };
+    }
 
     return (
       <Form
@@ -57,14 +57,14 @@ class EditUserForm extends React.Component {
           {getFieldDecorator('username', {
             rules: [{ required: true, message: 'Please input username' }],
           })(
-            <Input placeholder="username" value={record.username} />
+            <Input placeholder="username" />
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="Email">
           {getFieldDecorator('email', {
             rules: [{ required: true, message: 'Please input email' }],
           })(
-            <Input placeholder="email" value={record.email} />
+            <Input placeholder="email" />
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="Password">
@@ -79,8 +79,9 @@ class EditUserForm extends React.Component {
           {getFieldDecorator('role', {
             rules: [{ required: true, message: 'Please input role' }],
           })(
-            <Select defaultValue="contributor">
+            <Select initialValue="contributor">
               <Option value="contributor">contributor</Option>
+              <Option value="admin">admin</Option>
             </Select>
           )}
         </FormItem>
@@ -152,4 +153,6 @@ EditUserForm.propTypes = {
   form: PropTypes.object.isRequired,
 }
 
-export default Form.create()(EditUserForm)
+const mapPropsToFields = ({ record }) => mapValues(record, value => Form.createFormField({ value }))
+
+export default Form.create({ mapPropsToFields })(EditUserForm)

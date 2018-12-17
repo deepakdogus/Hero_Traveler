@@ -6,11 +6,17 @@ import findIndex from 'lodash/findIndex'
 
 const { Types, Creators } = createActions({
   adminGetUsers: ['params'],
-  getUsersSuccess: ['res'],
-  getUsersFailure: ['error'],
+  adminGetUsersSuccess: ['res'],
+  adminGetUsersFailure: ['error'],
   adminGetUser: ['id'],
   adminGetUserSuccess: ['res'],
-  adminGetUserFailure: ['error']
+  adminGetUserFailure: ['error'],
+  adminGetCategories: ['params'],
+  adminGetCategoriesSuccess: ['res'],
+  adminGetCategoriesFailure: ['error'],
+  adminGetStories: ['params'],
+  adminGetStoriesSuccess: ['res'],
+  adminGetStoriesFailure: ['error'],
 })
 
 export const AdminTypes = Types
@@ -20,6 +26,26 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   users: {
+    isLoading: false,
+    list: [],
+    total: 0,
+    error: null,
+    params: {
+      page: 1,
+      limit: 5
+    }
+  },
+  categories: {
+    isLoading: false,
+    list: [],
+    total: 0,
+    error: null,
+    params: {
+      page: 1,
+      limit: 5
+    }
+  },
+  stories: {
     isLoading: false,
     list: [],
     total: 0,
@@ -46,7 +72,7 @@ export const adminGetUsers = (state, { params = {} }) => {
   })
 }
 
-export const getUsersFailure = (state, { error }) => {
+export const adminGetUsersFailure = (state, { error }) => {
   return state.merge({
     users: {
       error,
@@ -55,7 +81,7 @@ export const getUsersFailure = (state, { error }) => {
   })
 }
 
-export const getUsersSuccess = (state, { res }) => {
+export const adminGetUsersSuccess = (state, { res }) => {
   return state.merge({
     users: {
       ...state.users,
@@ -108,16 +134,97 @@ export const adminGetUserSuccess = (state, { res }) => {
   })
 }
 
+export const adminGetCategories = (state, { params = {} }) => {
+  return state.merge({
+    categories: {
+      isLoading: true,
+      params: {
+        ...state.categories.params,
+        ...params
+      }
+    }
+  }, {
+    deep: true
+  })
+}
+
+export const adminGetCategoriesFailure = (state, { error }) => {
+  return state.merge({
+    categories: {
+      error,
+      isLoading: false
+    }
+  })
+}
+
+export const adminGetCategoriesSuccess = (state, { res }) => {
+  return state.merge({
+    categories: {
+      ...state.categories,
+      list: res.data,
+      total: res.count,
+      isLoading: false,
+      error: null
+    }
+  },
+  {
+    deep: true
+  })
+}
+
+export const adminGetStories = (state, { params = {} }) => {
+  return state.merge({
+    stories: {
+      isLoading: true,
+      params: {
+        ...state.stories.params,
+        ...params
+      }
+    }
+  }, {
+    deep: true
+  })
+}
+
+export const adminGetStoriesFailure = (state, { error }) => {
+  return state.merge({
+    stories: {
+      error,
+      isLoading: false
+    }
+  })
+}
+
+export const adminGetStoriesSuccess = (state, { res }) => {
+  return state.merge({
+    stories: {
+      ...state.stories,
+      list: res.data,
+      total: res.count,
+      isLoading: false,
+      error: null
+    }
+  },
+  {
+    deep: true
+  })
+}
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.ADMIN_GET_USERS]: adminGetUsers,
-  [Types.GET_USERS_FAILURE]: getUsersFailure,
-  [Types.GET_USERS_SUCCESS]: getUsersSuccess,
+  [Types.ADMIN_GET_USERS_FAILURE]: adminGetUsersFailure,
+  [Types.ADMIN_GET_USERS_SUCCESS]: adminGetUsersSuccess,
   [Types.ADMIN_GET_USER]: adminGetUser,
   [Types.ADMIN_GET_USER_FAILURE]: adminGetUserFailure,
   [Types.ADMIN_GET_USER_SUCCESS]: adminGetUserSuccess,
+  [Types.ADMIN_GET_CATEGORIES]: adminGetCategories,
+  [Types.ADMIN_GET_CATEGORIES_FAILURE]: adminGetCategoriesFailure,
+  [Types.ADMIN_GET_CATEGORIES_SUCCESS]: adminGetCategoriesSuccess,
+  [Types.ADMIN_GET_STORIES]: adminGetStories,
+  [Types.ADMIN_GET_STORIES_FAILURE]: adminGetStoriesFailure,
+  [Types.ADMIN_GET_STORIES_SUCCESS]: adminGetStoriesSuccess,
 })
 
 /* ------------- Selectors ------------- */

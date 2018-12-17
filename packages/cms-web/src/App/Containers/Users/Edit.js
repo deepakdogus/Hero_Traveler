@@ -9,9 +9,14 @@ import get from 'lodash/get'
 import find from 'lodash/find'
 import truncate from 'lodash/truncate'
 import isEmpty from 'lodash/isEmpty'
+import values from 'lodash/values'
 
 import AdminActions from '../../Shared/Redux/AdminRedux'
+import StoryActions from '../../Shared/Redux/Entities/Stories'
+import GuideActions from '../../Shared/Redux/Entities/Guides'
 import EditUserForm from '../../Components/Users/EditUserForm'
+import UserStoriesTable from '../../Components/Users/UserStoriesTable'
+import UserGuidesTable from '../../Components/Users/UserGuidesTable'
 
 const Wrapper = styled.div``
 
@@ -68,12 +73,14 @@ class EditUser extends React.Component {
 
   componentDidMount(){
     //get user EditUser on signUp and reset signUp redux
-    const { record, getUser } = this.props
+    const { record, getUser, getStories } = this.props
+    
+    const href = window.location.href  
+    const id = href.match(/([^\/]*)\/*$/)[1]
     if (isEmpty(record)) {
-      const href = window.location.href
-      const id = href.match(/([^\/]*)\/*$/)[1]
       getUser(id)
-    }   
+    }
+    getStories(id)
   }
 
   renderTable = () => {
@@ -125,6 +132,8 @@ class EditUser extends React.Component {
     const {
       record,
       isLoading,
+      stories,
+      guides,
     } = this.props
 
     if (isLoading) return (<Centered><Spin /></Centered>)
@@ -149,8 +158,13 @@ class EditUser extends React.Component {
             </Col>
           </Row>
           <Divider/>
+          <UserStoriesTable 
+            list={stories || []}
+          />
+          <UserGuidesTable 
+            list={guides || []}
+          />
         </MainWrapper>
-        {JSON.stringify(record)}
       </Wrapper>
     )
   }
@@ -158,6 +172,8 @@ class EditUser extends React.Component {
 
 EditUser.propTypes = {
   record: PropTypes.object.isRequired,
+  stories: PropTypes.array,
+  guides: PropTypes.array,
   isLoading: PropTypes.bool.isRequired,
 }
 
@@ -166,15 +182,21 @@ function mapStateToProps(state) {
   const id = href.match(/([^\/]*)\/*$/)[1]
   const list = [...get(state, ['admin','users', 'list'], [])]
   const record = find(list, { id }) || {}
+  const stories = values(get(state, 'entities.stories.entities', []))
+  const guides = values(get(state, 'entities.guides.entities', []))
   return {
     record,
     isLoading: state.admin.users.isLoading,
+    stories,
+    guides,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     getUser: (id) => dispatch(AdminActions.adminGetUser(id)),
+    getStories: (id) => dispatch(StoryActions.fromUserRequest(id)),
+    getGuides: (id) => dispatch(GuideActions.getUserGuides(id)),
   }
 }
 

@@ -176,6 +176,33 @@ StorySchema.statics = {
       .sort({createdAt: -1})
   },
 
+  getMany({ page = 1, perPage = 5, search='', sort, query }) {
+    let queryToApply = {}
+
+    if (query) {
+      queryToApply = query
+    }
+
+    if (search !== '') {
+      queryToApply['$text'] = { $search: search }
+    } 
+
+    let sortToApply = {createdAt: -1}
+    if (sort) {
+      sortToApply = {
+        [sort.fieldName]: sort.order
+      }
+    }
+    return Promise.props({
+      count: this.count(queryToApply).exec(),
+      data: this.find(queryToApply)
+        .skip((page - 1) * perPage)
+        .limit(perPage)
+        .sort(sortToApply)
+          .exec(),
+    })
+  },
+
   getUserFeed(userId, followingIds, page = 1, perPage = 100) {
     const query = {
       draft: false,

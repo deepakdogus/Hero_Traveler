@@ -31,10 +31,6 @@ class LaunchScreen extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (!newProps.fetching && newProps.hasSignedUp) {
-      NavigationActions.signupFlow()
-    }
-
     if (this.props.splashShown && !newProps.splashShown && !this.props.hasHeroAccessToken) {
       SplashScreen.hide()
       this.fadeIn()

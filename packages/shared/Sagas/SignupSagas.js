@@ -80,6 +80,7 @@ export function * signupFacebook(api, action) {
     if (wasSignedUp) {
       yield put(OpenScreenActions.openScreen('tabbar'))
     } else {
+      yield put(OpenScreenActions.openScreen('signupFlow'))
       yield put(SignupActions.signupFacebookSuccess())
     }
   } else {

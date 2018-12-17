@@ -246,7 +246,7 @@ class CreateGuide extends SharedCreateGuide {
                     tip: styles.tooltipTip,
                   }}
                   isSmallButton
-                  text={"Verified Guides are trips you’ve taken, not ones your are planning. Other users will only see Guides which are verified."}
+                  text={'Verified Guides are trips you’ve taken, not ones you are planning. Other users will only see Guides that are verified.'}
                   onDismiss={this._completeTooltip}
                 />
               }

@@ -1,5 +1,5 @@
 import branch from 'react-native-branch'
-import { ShareDialog } from 'react-native-fbsdk'
+import { Share } from 'react-native'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 
 //creates Branch Universal Object to be passed throught the Facebook Share Dialog
@@ -25,22 +25,10 @@ export const createBranchUniversalObj = async (title, contentImageUrl, contentDe
   return url
 }
 
-export const shareLinkWithShareDialog = (contentUrl, contentDescription) => {
-  const content = {
-    contentType: 'link',
-    contentUrl: contentUrl,
-    contentDescription,
-  }
-  ShareDialog.canShow(content)
-  .then(canShow => {
-    if (canShow) {
-      return ShareDialog.show(content)
-    }
-  })
-  .catch(err => {
-    alert('Share fail with error: ' + err)
-  })
-}
+export const shareLinkWithShareDialog = (contentUrl, title) => Share.share({
+  url: contentUrl,
+  message: title,
+})
 
 export const createShareDialog = async (feedItem, feedItemType) => {
   const videoThumbnailOptions = {
@@ -57,7 +45,7 @@ export const createShareDialog = async (feedItem, feedItemType) => {
     coverMediaURL,
     description,
     `${feedItemType}/${id}`)
-  shareLinkWithShareDialog(branchUrl, description)
+  shareLinkWithShareDialog(branchUrl, title)
 }
 
 export const parseNonBranchURL = (url) => {

@@ -61,6 +61,7 @@ class Signup extends React.Component {
     password: PropTypes.string,
     signupReduxFetching: PropTypes.bool,
     signupReduxError: PropTypes.string,
+    loginFacebook: PropTypes.func,
   }
 
   _onTextChange = (event) => {
@@ -102,6 +103,7 @@ class Signup extends React.Component {
     let {
       signupReduxFetching,
       signupReduxError,
+      loginFacebook,
     } = this.props
 
     if (signupReduxError === 'NETWORK_ERROR') {
@@ -111,13 +113,14 @@ class Signup extends React.Component {
     return (
       <OnClickOutsideModal>
         <Title>SIGN UP</Title>
+        <SocialMediaButton
+          type='facebookSignup'
+          iconName='facebookLarge'
+          page='signup'
+          onClick={loginFacebook}
+        />
+        <Text>Or</Text>
         <form onSubmit={this.props.handleSubmit(this._onAttemptSignup)}>
-          <SocialMediaButton
-            type='facebookSignup'
-            iconName='facebookLarge'
-            page='signup'
-          />
-          <Text>Or</Text>
           <Field
             name='fullName'
             component={FormInput}
@@ -198,6 +201,7 @@ export default R.compose(
     },
     (dispatch) => {
       return {
+        loginFacebook: () => dispatch(SignupActions.signupFacebook()),
         onAttemptSignup: (fullName, username, email, password) => {
           return dispatch(SignupActions.signupEmail(fullName, username, email, password))
         },

@@ -8,13 +8,11 @@ import ImageWrapper from './ImageWrapper'
 const StyledImage = styled(ImageWrapper)`
   cursor: ${props => props.onClick ? 'pointer' : 'inherit'};
   position: relative;
-  right: ${props=> props.isProfileHeader || props.isNav ? '6px' : 'inherit'};
-  bottom: ${props => props.isNav ? '2px' : 'inherit'};
-  margin-right: ${props => props.isStoryPreview ? '7.5px' : '0'};
   background-image: url(${props => props.src});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  ${props => props.textProps}
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     ${props => props.responsiveProps}
   }
@@ -23,9 +21,7 @@ const StyledImage = styled(ImageWrapper)`
 const StyledIcon = styled(Icon)`
   cursor: ${props => props.onClick ? 'pointer' : undefined};
   position: relative;
-  right: ${props => props.isProfileHeader ? '6px' : 'inherit'};
-  bottom: ${props => props.isNav ? '1px' : 'inherit'};
-  margin-right: ${props => props.isStoryPreview ? '7.5px' : '0'};
+  ${props => props.textProps}
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     ${props => props.responsiveProps}
   }
@@ -37,9 +33,8 @@ export default class Avatar extends React.Component {
     size: PropTypes.string,
     onClick: PropTypes.func,
     type: PropTypes.string,
-    isStoryPreview: PropTypes.bool,
-    isProfileHeader: PropTypes.bool,
-    isNav: PropTypes.bool,
+    iconTextProps: PropTypes.string,
+    imageTextProps: PropTypes.string,
     responsiveProps: PropTypes.string,
     children: PropTypes.object,
   }
@@ -50,9 +45,8 @@ export default class Avatar extends React.Component {
       size,
       type,
       onClick,
-      isStoryPreview,
-      isProfileHeader,
-      isNav,
+      iconTextProps,
+      imageTextProps,
       responsiveProps,
       children,
     } = this.props
@@ -63,10 +57,8 @@ export default class Avatar extends React.Component {
           name={type === 'profile' ? 'defaultProfile' : 'user-circle-o'}
           size={size}
           onClick={onClick}
-          isProfileHeader={isProfileHeader}
-          isStoryPreview={isStoryPreview}
+          textProps={iconTextProps}
           responsiveProps={responsiveProps}
-          isNav={isNav}
         >
           {children}
         </StyledIcon>
@@ -78,9 +70,7 @@ export default class Avatar extends React.Component {
           src={avatarUrl}
           type={size || 'avatar'}
           onClick={onClick}
-          isProfileHeader={isProfileHeader}
-          isStoryPreview={isStoryPreview}
-          isNav={isNav}
+          textProps={imageTextProps}
           responsiveProps={responsiveProps}
         >
           {children}

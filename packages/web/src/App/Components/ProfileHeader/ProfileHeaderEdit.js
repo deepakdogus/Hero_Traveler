@@ -349,7 +349,6 @@ export default class ProfileHeaderEdit extends React.Component {
               avatarUrl={avatarUrl}
               type='profile'
               size='x-large'
-              isProfileHeader={false}
               responsiveProps={responsiveAvatarStyles}
               onClick={avatarIsClickable}
             >

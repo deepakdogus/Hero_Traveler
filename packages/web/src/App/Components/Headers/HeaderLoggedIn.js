@@ -66,6 +66,15 @@ const CreateButtonStyleOverride = {
   display: 'inline',
 }
 
+const AvatarImageTextStyles = `
+  right: 6px;
+  bottom: 2px;
+`
+
+const AvatarIconTextStyles = `
+  bottom: 1px;
+`
+
 class HeaderLoggedIn extends React.Component {
   static propTypes = {
     reroute: PropTypes.func,
@@ -273,7 +282,8 @@ class HeaderLoggedIn extends React.Component {
                     type='avatar'
                     size={profileAvatar ? 'avatar' : 'mediumSmall'}
                     avatarUrl={getImageUrl(profileAvatar, 'avatar')}
-                    isNav={true}
+                    iconTextProps={AvatarIconTextStyles}
+                    imageTextProps={AvatarImageTextStyles}
                   />
                 </StyledRoundedAvatarButton>
                   {globalModal === 'profileMenu' &&

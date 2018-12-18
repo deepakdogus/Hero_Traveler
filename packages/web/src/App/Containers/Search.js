@@ -21,6 +21,8 @@ import algoliasearchModule from 'algoliasearch'
 import algoliaSearchHelper from 'algoliasearch-helper'
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 
+const MAX_STORY_RESULTS = 10
+
 const Container = styled.div``
 
 const HeaderInputContainer = styled(Row)`
@@ -70,10 +72,20 @@ const ContentWrapper = styled.div``
 const ScrollingListContainer = styled.div`
   height: calc(100vh - 65px - 122px - 73px - 40px);
   overflow-y: scroll;
-  margin-top: 30px;
+  margin: 30px auto 0;
+  max-width: 800px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     height: calc(100vh - 122px - 50px - 40px);
   }
+`
+
+const ListTitle = styled.p`
+  font-weight: 600;
+  font-size: 20px;
+  padding: 0 30px;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  color: ${props => props.theme.Colors.background};
+  letter-spacing: 0.7px;
 `
 
 const Text = styled.p`
@@ -154,8 +166,7 @@ class Search extends Component {
     helper.removeAllListeners('search')
   }
 
-  inputFieldChange = event => {
-    const inputText = event
+  inputFieldChange = inputText => {
     this.setState({ inputText })
     this._changeQuery(inputText)
   }
@@ -184,6 +195,7 @@ class Search extends Component {
     _.debounce(() => {
       helper
         .setQuery(queryText)
+        .setQueryParameter('hitsPerPage', MAX_STORY_RESULTS)
         .search()
     }, 300)()
   }
@@ -252,13 +264,14 @@ class Search extends Component {
     this.props.unfollowUser(this.props.userId, userIdToUnfollow)
   }
 
-  _navToUserProfile = (id) => {
+  _navToUserProfile = (userId, user) => {
     this.props.addRecentSearch({
       searchType: 'people',
       searchText: this.state.inputText,
-      id,
+      id: userId,
+      ...user,
     })
-    this.props.reroute(`/profile/${id}/view`)
+    this.props.reroute(`/profile/${userId}/view`)
   }
 
   _navToStory = ({ id, title }) => {
@@ -326,20 +339,22 @@ class Search extends Component {
       }))
       return (
         <ScrollingListContainer>
-          {!!formattedLocations.length &&
+          {!!formattedLocations.length && (
             <SearchAutocompleteList
               label='LOCATIONS'
               autocompleteItems={formattedLocations}
               navigate={this._getLatLngAndNav}
             />
-          }
-          { this.state.lastSearchResults.hits &&
-            !!this.state.lastSearchResults.hits.length &&
-            <SearchAutocompleteList
-              label='STORIES'
-              autocompleteItems={this.state.lastSearchResults.hits}
-              navigate={this._navToStory}
-            />
+          )}
+          {this.state.lastSearchResults.hits
+            && !!this.state.lastSearchResults.hits.length
+            && (
+              <SearchAutocompleteList
+                label='STORIES'
+                autocompleteItems={this.state.lastSearchResults.hits}
+                navigate={this._navToStory}
+              />
+            )
           }
         </ScrollingListContainer>
       )
@@ -347,19 +362,40 @@ class Search extends Component {
   }
 
   renderRecentSearches = () => {
+    const { activeTab } = this.state
+    const { searchHistory, searchHistory: { people } } = this.props
+
+    if (activeTab === 'PLACES') {
+      return (
+        <ScrollingListContainer>
+          <SearchAutocompleteList
+            label='RECENT SEARCHES'
+            autocompleteItems={searchHistory.places}
+            navigate = {this._navConditionally}
+          />
+        </ScrollingListContainer>
+      )
+    }
+
+    // activeTab is 'PEOPLE'
+    if (!people || !people.length) return null
     return (
       <ScrollingListContainer>
-        <SearchAutocompleteList
-          label='RECENT SEARCHES'
-          autocompleteItems={this.props.searchHistory.places}
-          navigate = {this._navConditionally}
+        <ListTitle>{'RECENT SEARCHES'}</ListTitle>
+        <SearchResultsPeople
+          userSearchResults={searchHistory}
+          userFollowing={this.props.userFollowing}
+          userId={this.props.userId}
+          followUser={this._followUser}
+          unfollowUser={this._unfollowUser}
+          navToUserProfile={this._navToUserProfile}
         />
       </ScrollingListContainer>
     )
   }
 
   renderTab = suggestions => {
-    const { inputText, activeTab } = this.state
+    const { inputText } = this.state
     return (
     <ContentWrapper>
       <TabBar
@@ -368,8 +404,8 @@ class Search extends Component {
         onClickTab={this.onClickTab}
         whiteBG
       />
-      {(activeTab !== 'PLACES' || inputText)
-        ? this.renderActiveTab(suggestions)
+      {inputText
+        ? this.renderActiveTab(suggestions, inputText)
         : this.renderRecentSearches()
       }
     </ContentWrapper>
@@ -425,7 +461,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     loadUserFollowing: (sessionUserID) => dispatch(UserActions.loadUserFollowing(sessionUserID)),
     reroute: (path) => dispatch(push(path)),
     addRecentSearch: search => dispatch(HistoryActions.addRecentSearch(search)),
-
   }
 }
 

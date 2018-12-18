@@ -27,9 +27,6 @@ export default class FeedItemList extends React.Component {
   static propTypes = {
     guideId: PropTypes.string,
     feedItems: PropTypes.arrayOf(PropTypes.object),
-    type: PropTypes.string,
-    isHorizontalList: PropTypes.bool,
-    isShowAll: PropTypes.bool,
     activeTab: PropTypes.string,
     feedItemCount: PropTypes.number,
     getTabInfo: PropTypes.func,
@@ -39,8 +36,6 @@ export default class FeedItemList extends React.Component {
     page: 1,
     hasMore: true,
   }
-
-  defaultProps = { isHorizontalList: false }
 
   componentDidUpdate(prevProps) {
     const feedItemLength = this.props.feedItems.length

@@ -31,8 +31,8 @@ export default class SearchResultsPeople extends Component {
   }
 
   render() {
-    const users = this.props.userSearchResults.hits || []
-    const {userFollowing, userId} = this.props
+    const {userFollowing, userId, userSearchResults} = this.props
+    const users = userSearchResults.hits || userSearchResults.people || []
     const renderedUsers = users.map((user, index)=> {
       const isFollowing = _.get(userFollowing, `${userId}.byId`)
         ? userFollowing[userId].byId.includes(user.objectID)

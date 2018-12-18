@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import algoliasearchModule from 'algoliasearch'
 import algoliaSearchHelper from 'algoliasearch-helper'
+import formatcoords from 'formatcoords'
 
 import env from '../Config/Env'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
@@ -16,6 +17,8 @@ import Footer from '../Components/Footer'
 const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
 const STORY_INDEX = env.SEARCH_STORY_INDEX
 const GUIDE_INDEX = env.SEARCH_GUIDE_INDEX
+const MAX_STORY_RESULTS = 64
+const MAX_GUIDE_RESULTS = 20
 
 const Container = styled.div`
   margin: 80px 7% 0;
@@ -76,22 +79,32 @@ class SearchResults extends Component {
   }
 
   componentWillMount() {
-    const { location } = this.props
+    const { location, lat, lng } = this.props
 
-    //title
+    // title label
+    let label = ''
     if (location.search && location.search.indexOf('?t=') !== -1) {
-      this.setState({ label: decodeURIComponent(location.search.split('?')[1].substring(2)).toUpperCase() })
+      label = decodeURIComponent(
+        location.search.split('?')[1].substring(2),
+      ).toUpperCase()
     }
+    else {
+      label = `Near ${formatcoords(
+        Number(lat),
+        Number(lng),
+      ).format('DD MM ss X', {latLonSeparator: ', ', decimalPlaces: 2})}`
+    }
+    this.setState({ label })
 
-    //guides
+    // guides
     this.guideHelper = algoliaSearchHelper(algoliasearch, GUIDE_INDEX)
     this.setupSearchListeners(this.guideHelper, 'guides')
-    this.search(this.guideHelper, 20)
+    this.search(this.guideHelper, MAX_STORY_RESULTS)
 
-    //stories
+    // stories
     this.storyHelper = algoliaSearchHelper(algoliasearch, STORY_INDEX)
     this.setupSearchListeners(this.storyHelper, 'stories')
-    this.search(this.storyHelper, 64)
+    this.search(this.storyHelper, MAX_GUIDE_RESULTS)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -135,16 +148,33 @@ class SearchResults extends Component {
   }
 
   _onClickShowAll = (seeAllType, seeAllLabel) => {
-    const { lng, reroute } = this.props
+    const { lat, lng, reroute } = this.props
     return () => {
       this.setState({seeAllType, seeAllLabel})
-      reroute(`${lng}/${seeAllType}`)
+      reroute(`/results/${lat}/${lng}/${seeAllType}`)
     }
+  }
+
+  _shouldDisplaySection = (items, type) => {
+    const { seeAllType } = this.state
+    return !!items.length && (seeAllType === type || seeAllType === '')
+  }
+
+  renderFeedItemGrid = (type, label, items) => {
+    if (!this._shouldDisplaySection(items, type)) return null
+    return (
+      <FeedItemGrid
+        feedItems={items}
+        isShowAll={this.state.seeAllType === type}
+        label={label}
+        showLabel={this.state.seeAllType !== type}
+        onClickShowAll={this._onClickShowAll(type, label)}
+      />
+    )
   }
 
   render() {
     const { lastSearchResults, label, seeAllType, seeAllLabel } = this.state
-    // const { resultTitle } = this.props
 
     const seeItems = lastSearchResults.stories.filter(feedItem => feedItem.type === 'see')
     const doItems = lastSearchResults.stories.filter(feedItem => feedItem.type === 'do')
@@ -162,72 +192,12 @@ class SearchResults extends Component {
             }
           </ResultTitle>
           <StyledDivider color="light-grey" />
-          {!!lastSearchResults.guides.length &&
-            (seeAllType === 'guides' ||
-             seeAllType === '') &&
-            <FeedItemGrid
-              feedItems={lastSearchResults.guides}
-              isShowAll={seeAllType === 'guides'}
-              label="GUIDES"
-              showLabel={seeAllType !== 'guides'}
-              onClickShowAll={this._onClickShowAll('guides', 'GUIDES')}
-            />
-          }
-          {!!lastSearchResults.stories.length &&
-            (seeAllType === 'stories' ||
-            seeAllType === '') &&
-            <FeedItemGrid
-              feedItems={lastSearchResults.stories}
-              isShowAll={seeAllType === 'stories'}
-              label="ALL STORIES"
-              showLabel={seeAllType !== 'stories'}
-              onClickShowAll={this._onClickShowAll('stories', 'ALL STORIES')}
-            />
-          }
-          {!!seeItems &&
-            (seeAllType === 'see' ||
-            seeAllType === '') &&
-            <FeedItemGrid
-              feedItems={seeItems}
-              isShowAll={seeAllType === 'see'}
-              label="THINGS TO SEE"
-              showLabel={seeAllType !== 'see'}
-              onClickShowAll={this._onClickShowAll('see', 'THINGS TO SEE')}
-            />
-          }
-          {!!seeItems &&
-            (seeAllType === 'do' ||
-            seeAllType === '') &&
-            <FeedItemGrid
-              feedItems={doItems}
-              isShowAll={seeAllType === 'do'}
-              label="THINGS TO DO"
-              showLabel={seeAllType !== 'do'}
-              onClickShowAll={this._onClickShowAll('do', 'THINGS TO DO')}
-            />
-          }
-          {!!seeItems &&
-            (seeAllType === 'eat' ||
-            seeAllType === '') &&
-            <FeedItemGrid
-              feedItems={eatItems}
-              isShowAll={seeAllType === 'eat'}
-              label="THINGS TO EAT"
-              showLabel={seeAllType !== 'eat'}
-              onClickShowAll={this._onClickShowAll('eat', 'THINGS TO EAT')}
-            />
-          }
-          {!!seeItems &&
-            (seeAllType === 'stay' ||
-            seeAllType === '') &&
-            <FeedItemGrid
-              feedItems={stayItems}
-              isShowAll={seeAllType === 'stay'}
-              label="PLACES TO STAY"
-              showLabel={seeAllType !== 'stay'}
-              onClickShowAll={this._onClickShowAll('stay', 'PLACES TO STAY')}
-            />
-          }
+          {this.renderFeedItemGrid('guide', 'GUIDES', lastSearchResults.guides)}
+          {this.renderFeedItemGrid('stories', 'ALL STORIES', lastSearchResults.stories)}
+          {this.renderFeedItemGrid('see', 'THINGS TO SEE', seeItems)}
+          {this.renderFeedItemGrid('do', 'THINGS TO DO', doItems)}
+          {this.renderFeedItemGrid('eat', 'THINGS TO EAT', eatItems)}
+          {this.renderFeedItemGrid('see', 'PLACES TO STAY', stayItems)}
         </ContentWrapper>
         <Footer />
       </Container>

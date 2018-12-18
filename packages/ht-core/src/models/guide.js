@@ -7,6 +7,7 @@ import {ModelName as UserRef} from './user'
 import {ModelName as UploadRef} from './upload'
 import {ModelName as StoryRef} from './story'
 import {Constants} from '@hero/ht-util'
+import Promise from 'bluebird'
 export const ModelName = 'Guide'
 
 const GuideSchema = new Schema({
@@ -135,6 +136,32 @@ GuideSchema.statics = {
         ]
       })
       .exec()
+  },
+  getMany({ page = 1, perPage = 5, search='', sort, query }) {
+    let queryToApply = {}
+
+    if (query) {
+      queryToApply = query
+    }
+
+    if (search !== '') {
+      queryToApply['$text'] = { $search: search }
+    } 
+
+    let sortToApply = {createdAt: -1}
+    if (sort) {
+      sortToApply = {
+        [sort.fieldName]: sort.order
+      }
+    }
+    return Promise.props({
+      count: this.count(queryToApply).exec(),
+      data: this.find(queryToApply)
+        .skip((page - 1) * perPage)
+        .limit(perPage)
+        .sort(sortToApply)
+          .exec(),
+    })
   },
 }
 

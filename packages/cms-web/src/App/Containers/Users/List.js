@@ -101,7 +101,7 @@ class UsersList extends React.Component {
   onChange = (pagination, filters, sorter) => {
     const { params, getUsers } = this.props
     const newParams = {
-      page: pagination.page,
+      page: pagination.current,
       limit: pagination.pageSize,
     }
     if (!isEmpty(sorter)) {

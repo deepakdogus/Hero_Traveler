@@ -10,6 +10,9 @@ import UsersPage from '../Containers/Users/List'
 import EditUserPage from '../Containers/Users/Edit'
 import CategoriesPage from '../Containers/Categories/List'
 import StoriesPage from '../Containers/Stories/List'
+import GuidesPage from '../Containers/Guides/List'
+import StoriesInCategory from '../Containers/StoriesInCategory/List'
+import GuidesInCategory from '../Containers/GuidesInCategory/List'
 
 const RouterWrapper = styled.div`
   padding: 30px;
@@ -28,6 +31,9 @@ class AppRoot extends Component {
             <Route exact path='/users/:id' component={EditUserPage} />
             <Route exact path='/categories' component={CategoriesPage} />
             <Route exact path='/stories' component={StoriesPage} />
+            <Route exact path='/guides' component={GuidesPage} />
+            <Route exact path='/categories/:categoryId/stories' component={StoriesInCategory} />
+            <Route exact path='/categories/:categoryId/guides' component={GuidesInCategory} />
           </RouterWrapper>
         </AuthChecker>
       </div>

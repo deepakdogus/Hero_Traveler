@@ -1,4 +1,4 @@
-import {Category, Guide} from '@hero/ht-core'
+import {Guide} from '@hero/ht-core'
 import _ from 'lodash'
 
 export default function getAll(req, res) {
@@ -7,7 +7,7 @@ export default function getAll(req, res) {
   const search = req.query.search;
   const query = req.query.query && _.isString(req.query.query) ? JSON.parse(req.query.query) : req.query.query;
   const sort = req.query.sort && _.isString(req.query.sort) ? JSON.parse(req.query.sort) : req.query.sort;
-  Category.list({
+  Guide.getMany({
     page,
     perPage,
     search,
@@ -15,15 +15,9 @@ export default function getAll(req, res) {
     query
   })
     .then((data) => {
-      const countGuides = data.data.map(i => Guide.getCountCategoryGuides(i.id).then((count) => ({
-        ...i.toObject(),
-        numberOfGuides: count
-      })));
-      Promise.all(countGuides).then((results) => {
-        return res.json({
-          data: results,
-          count: data.count
-        });
+      return res.json({
+        data: data.data,
+        count: data.count
       });
     });
 }

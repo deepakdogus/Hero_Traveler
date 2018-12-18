@@ -115,7 +115,8 @@ import {
   adminGetUsers,
   adminGetUser,
   adminGetCategories,
-  adminGetStories
+  adminGetStories,
+  adminGetGuides
 } from './AdminSagas'
 
 
@@ -238,5 +239,6 @@ export default function * root () {
     takeLatest(AdminTypes.ADMIN_GET_USER, adminGetUser, heroAPI),
     takeLatest(AdminTypes.ADMIN_GET_CATEGORIES, adminGetCategories, heroAPI),
     takeLatest(AdminTypes.ADMIN_GET_STORIES, adminGetStories, heroAPI),
+    takeLatest(AdminTypes.ADMIN_GET_GUIDES, adminGetGuides, heroAPI),
   ]
 }

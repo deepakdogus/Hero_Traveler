@@ -52,3 +52,17 @@ export function * adminGetStories (api, action) {
     yield put(AdminActions.adminGetStoriesFailure(error))
   }
 }
+
+export function * adminGetGuides (api, action) {
+  console.log('calling adminGetGuides saga', action)
+  const { params } = action
+  const response = yield call(api.adminGetGuides, params)
+  if (response.ok && response.data && response.data.data) {
+    const { data, count } = response.data
+    yield put(AdminActions.adminGetGuidesSuccess({ data, count }))
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    yield put(AdminActions.adminGetGuidesFailure(error))
+  }
+}
+

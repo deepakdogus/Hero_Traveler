@@ -467,6 +467,8 @@ const create = () => {
 
   const adminGetStories = (params) => api.get('admin/stories', params)
 
+  const adminGetGuides = (params) => api.get('admin/guides', params)
+
   // ------
   // STEP 3
   // ------
@@ -553,7 +555,8 @@ const create = () => {
     adminGetUsers,
     adminGetUser,
     adminGetCategories,
-    adminGetStories
+    adminGetStories,
+    adminGetGuides
   }
 }
 

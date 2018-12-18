@@ -185,6 +185,18 @@ class HeaderLoggedIn extends React.Component {
               </ConditionalLink>
               <Divider>&nbsp;</Divider>
               <ConditionalLink
+                to='/guides'
+                pathname={pathname}
+                openSaveEditsModal={openSaveEditsModal}
+                isMenuLink={true}
+                haveFieldsChanged={haveFieldsChanged}
+                workingDraft={workingDraft}
+                originalDraft={originalDraft}
+              >
+                Guides
+              </ConditionalLink>
+              <Divider>&nbsp;</Divider>
+              <ConditionalLink
                 to='/discover'
                 pathname={pathname}
                 openSaveEditsModal={openSaveEditsModal}

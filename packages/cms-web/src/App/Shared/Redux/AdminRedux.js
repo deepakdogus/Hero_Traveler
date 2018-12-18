@@ -17,6 +17,9 @@ const { Types, Creators } = createActions({
   adminGetStories: ['params'],
   adminGetStoriesSuccess: ['res'],
   adminGetStoriesFailure: ['error'],
+  adminGetGuides: ['params'],
+  adminGetGuidesSuccess: ['res'],
+  adminGetGuidesFailure: ['error'],
 })
 
 export const AdminTypes = Types
@@ -46,6 +49,16 @@ export const INITIAL_STATE = Immutable({
     }
   },
   stories: {
+    isLoading: false,
+    list: [],
+    total: 0,
+    error: null,
+    params: {
+      page: 1,
+      limit: 5
+    }
+  },
+  guides: {
     isLoading: false,
     list: [],
     total: 0,
@@ -210,6 +223,44 @@ export const adminGetStoriesSuccess = (state, { res }) => {
   })
 }
 
+export const adminGetGuides = (state, { params = {} }) => {
+  return state.merge({
+    guides: {
+      isLoading: true,
+      params: {
+        ...state.guides.params,
+        ...params
+      }
+    }
+  }, {
+    deep: true
+  })
+}
+
+export const adminGetGuidesFailure = (state, { error }) => {
+  return state.merge({
+    guides: {
+      error,
+      isLoading: false
+    }
+  })
+}
+
+export const adminGetGuidesSuccess = (state, { res }) => {
+  return state.merge({
+    guides: {
+      ...state.guides,
+      list: res.data,
+      total: res.count,
+      isLoading: false,
+      error: null
+    }
+  },
+  {
+    deep: true
+  })
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -225,6 +276,9 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ADMIN_GET_STORIES]: adminGetStories,
   [Types.ADMIN_GET_STORIES_FAILURE]: adminGetStoriesFailure,
   [Types.ADMIN_GET_STORIES_SUCCESS]: adminGetStoriesSuccess,
+  [Types.ADMIN_GET_GUIDES]: adminGetGuides,
+  [Types.ADMIN_GET_GUIDES_FAILURE]: adminGetGuidesFailure,
+  [Types.ADMIN_GET_GUIDES_SUCCESS]: adminGetGuidesSuccess,
 })
 
 /* ------------- Selectors ------------- */

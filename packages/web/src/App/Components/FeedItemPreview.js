@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import PropTypes from 'prop-types'
-import moment from 'moment'
 
 import {
   isStoryLiked,
@@ -31,8 +30,6 @@ import {
   hasBadge,
 } from '../Shared/Lib/badgeHelpers'
 
-const coverHeight = '257px'
-
 const Text = styled.span`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
@@ -44,22 +41,15 @@ const Text = styled.span`
   }
 `
 
-const HorizontalMarginWrapper = styled.div`
-  position: relative;
+const ListMarginWrapper = styled.div`
   max-width: 960px;
   margin: auto;
   color: ${props => props.theme.Colors.lightGrey};
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    margin-bottom: 15px;
-  }
 `
 
-const VerticalMarginWrapper = styled(HorizontalMarginWrapper)`
-  margin: 25px 0 0;
-  flex-basis: 385.5px;
-  &:nth-child(2) {
-    padding-left: 20px;
-  }
+const GridMarginWrapper = styled(ListMarginWrapper)`
+  margin: 0;
+  flex-basis: 285px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     max-width: 100%;
     margin: 0;
@@ -67,7 +57,7 @@ const VerticalMarginWrapper = styled(HorizontalMarginWrapper)`
   }
 `
 
-const HorizontalRowWrapper = styled(Row)`
+const ListRowWrapper = styled(Row)`
   flex-wrap: nowrap;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     flex-direction: column;
@@ -75,58 +65,42 @@ const HorizontalRowWrapper = styled(Row)`
   }
 `
 
-const VerticalWrapper = styled.div`
+const GridWrapper = styled.div`
   margin: 0;
 `
 
-const HorizontalStoryInfoContainer = styled(VerticalCenter)`
-  position: relative;
-  height: ${coverHeight};
-  flex-basis: 385.5px;
+const ListStoryInfoContainer = styled(VerticalCenter)`
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  flex-basis: 550px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     height:auto;
     width: auto;
     flex-basis: unset;
-    > * {
-      padding-left: ${props => props.type === 'guide' ? '0' : '15px'};
-      padding-right: ${props => props.type === 'guide' ? '0' : '15px'};
-      padding-top: 15px;
-    }
+    margin: 0 15px;
   }
 `
 
-const VerticalStoryInfoContainer = styled(HorizontalStoryInfoContainer)`
+const GridStoryInfoContainer = styled(ListStoryInfoContainer)`
   height: auto;
   margin-left: 0;
   > * {
     padding: 5px 0px
   }
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding: 5px;
     > * {
-      padding-left: ${props => props.type === 'guide' ? '0' : '15px'};
-      padding-right: ${props => props.type === 'guide' ? '0' : '15px'};
       padding-top: 0px;
     }
   }
 `
 
-const HorizontalDetailsContainer = styled(Row)`
-  padding-top: 13px;
-  position: relative;
-`
-
-const VerticalDetailsContainer = styled(HorizontalDetailsContainer)`
-  padding-top: 0px;
-`
-
-const HorizontalLocationPreview = styled(Text)`
+const LocationPreview = styled(Text)`
   color: ${props => props.theme.Colors.background};
   letter-spacing: .2px;
   font-size: 13px;
   font-weight: 600;
   margin-top: 6px;
-  margin-bottom: 12px;
   text-transform: uppercase;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 13px;
@@ -134,29 +108,19 @@ const HorizontalLocationPreview = styled(Text)`
   }
 `
 
-const VerticalLocationPreview = styled(HorizontalLocationPreview)`
-  margin-top: 0px;
-  margin-bottom: 0px;
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    margin-bottom: 0px;
-    font-size: 13px;
-  }
-`
-
 const Title = styled.h3`
   font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-weight: 600;
-  font-size: ${props => props.isGuide ? '20px' : '25px'};
+  font-weight: ${props => props.isList ? 600 : 500};
+  font-size: ${props => props.isList ? '25px' : '19px'};
   color: ${props => props.theme.Colors.background};
   display: inline-block;
   margin: 0;
   cursor: pointer;
-  padding: 12px 0;
   letter-spacing: .6px;
   word-break: break-word;
+  padding: 5px 0;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    padding: ${props => props.type === 'guide' ? '0' : '0 15px'};
-    font-size: ${props => props.type === 'guide' ? '15px' : '20px'};
+    font-size: '15px';
     hyphens: auto;
   }
   &:hover {
@@ -173,7 +137,7 @@ const ImageWrapper = styled.div`
 `
 
 // 70.84 is for to maintain aspect ratio
-const VerticalImageContainer = styled(ImageWrapper)`
+const GridImageContainer = styled(ImageWrapper)`
   width: auto;
   height: 0;
   padding-bottom: 70.84%;
@@ -181,15 +145,17 @@ const VerticalImageContainer = styled(ImageWrapper)`
   background-size: cover;
 `
 
-const HorizontalImageContainer = styled(ImageWrapper)`
+const ListImageContainer = styled(ImageWrapper)`
   margin-right: 20px;
   width: 385.5px;
   height: 257px;
   background: center url(${props => props.src});
   background-size: cover;
+  flex-shrink: 0;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     margin: 0;
-    max-width:100vw;
+    margin-bottom: 15px;
+    max-width: 100vw;
     width: 100%;
   }
 `
@@ -213,7 +179,7 @@ const CloseXContainer = styled.div`
   visibility: hidden;
 `
 
-const GuideIconText = styled(HorizontalLocationPreview)`
+const GuideIconText = styled(LocationPreview)`
   padding-left: 10px;
 `
 
@@ -221,35 +187,40 @@ const Username = styled(Text)`
   color: ${props => props.theme.Colors.redHighlights};
   cursor: pointer;
   font-size: 14px;
+  letter-spacing: 0.7px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 12px;
   }
 `
 
-const TimeStamp = styled(Text)`
-  font-size: 14px;
+const TopRow = styled(Row)`
+  height: 35px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    font-size: 12px;
+    height: 0;
   }
 `
 
-const Top = styled(Row)`
-  position: absolute;
-  top: 0;
-  left: 0;
+const ListMiddleRow = styled(Row)`
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  min-height: 135px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    position: relative;
+    min-height: unset;
   }
 `
 
-const Bottom = styled(Row)`
-  position: absolute;
-  bottom: 0;
-  left: 0;
+const GridMiddleRow = styled(ListMiddleRow)`
+  min-height: inherit;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    position: relative;
+    min-height: unset;
   }
 `
+
+const BottomRow = styled(Row)``
+
+const UserRow = styled(Row)``
 
 const BadgeIcon = styled(Icon)`
   margin-right: 6px;
@@ -262,6 +233,12 @@ const GuideIcon = styled(Icon)`
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding-top: 0;
   }
+`
+
+const InlineGuideIcon = styled(Icon)`
+  padding-right: 7px;
+  width: 14px;
+  height: 14px;
 `
 
 const BookmarkIcon = styled(Icon)`
@@ -282,16 +259,16 @@ const AvatarTextStyles = `
 
 const videoThumbnailOptions = {
   video: true,
-  width: 385.5,
+  width: 285,
 }
 
 class FeedItemPreview extends Component {
   static propTypes = {
+    type: PropTypes.string,
     feedItem: PropTypes.object,
+    sessionUserId: PropTypes.string,
     author: PropTypes.object,
     guideId: PropTypes.string,
-    sessionUserId: PropTypes.string,
-    isGuideRow: PropTypes.bool,
     isStory: PropTypes.bool,
     isLiked: PropTypes.bool,
     isBookmarked: PropTypes.bool,
@@ -301,7 +278,6 @@ class FeedItemPreview extends Component {
     onClickGuideLike: PropTypes.func,
     onClickGuideUnLike: PropTypes.func,
     openGlobalModal: PropTypes.func,
-    isVertical: PropTypes.bool,
   }
 
   defaultProps = {
@@ -362,18 +338,24 @@ class FeedItemPreview extends Component {
     const {
       guideId,
       feedItem,
-      author,
       sessionUserId,
-      isGuideRow,
       isLiked,
       isBookmarked,
       isStory,
-      isVertical,
+      type,
     } = this.props
 
-    const isGuideAuthor = !!guideId && sessionUserId === author.id
+    const isList = type === 'list'
+    const isGuideAuthor = !!guideId && sessionUserId === this.props.author.id
 
-    if (!feedItem || !author) return
+    /*
+     * in cases where the author is retrieved from algolia, author is equal to
+     * the author username, so it is currently necessary to recreate an empty
+     * author object to avoid access errors
+     */
+    let author = {username: '', profile: {avatar: ''}, role: ''}
+    if (this.props.author) author = this.props.author
+    else author.username = feedItem.author
 
     let imageUrl
     if (feedItem.coverImage) imageUrl = getImageUrl(feedItem.coverImage)
@@ -381,12 +363,11 @@ class FeedItemPreview extends Component {
       imageUrl = getImageUrl(feedItem.coverVideo, 'optimized', videoThumbnailOptions)
     }
 
-    const MarginWrapper = isVertical ? VerticalMarginWrapper : HorizontalMarginWrapper
-    const DirectionalWrapper = isVertical ? VerticalWrapper : HorizontalRowWrapper
-    const ImageContainer = isVertical ? VerticalImageContainer : HorizontalImageContainer
-    const StoryInfoContainer = isVertical ? VerticalStoryInfoContainer : HorizontalStoryInfoContainer
-    const DetailsContainer = isVertical ? VerticalDetailsContainer : HorizontalDetailsContainer
-    const LocationPreview = isVertical ? VerticalLocationPreview : HorizontalLocationPreview
+    const MarginWrapper = type === 'grid' ? GridMarginWrapper : ListMarginWrapper
+    const DirectionalWrapper = type === 'grid' ? GridWrapper : ListRowWrapper
+    const ImageContainer = type === 'grid' ? GridImageContainer : ListImageContainer
+    const StoryInfoContainer = type === 'grid' ? GridStoryInfoContainer : ListStoryInfoContainer
+    const MiddleRow = type === 'grid' ? GridMiddleRow : ListMiddleRow
 
     return (
       <MarginWrapper>
@@ -399,33 +380,34 @@ class FeedItemPreview extends Component {
               overlayColor='black'
               onClick={this.navToFeedItem}
             >
-              {isGuideAuthor &&
+              {isGuideAuthor && (
                 <CloseXContainer onClick={this.openRemoveStoryModal}>
                   <DeleteIcon size='small' name='closeBlack' />
                 </CloseXContainer>
-              }
+              )}
             </StyledOverlay>
           </ImageContainer>
-          <StoryInfoContainer isGuideRow={isGuideRow}>
-            {!isStory &&
-              <Top>
-                <GuideIcon name='guide' />
-                <GuideIconText>Guide</GuideIconText>
-              </Top>
-            }
-            {!guideId &&
-              <LocationPreview>{this.getLocationText()}</LocationPreview>
-            }
-            <Title
-              onClick={this.navToFeedItem}
-              isGuide={!!guideId}
-              isGuideRow={isGuideRow}
-            >
-              {feedItem.title}
-            </Title>
-            <DetailsContainer between='xs'>
-              <Row middle='xs'>
-                {!isVertical &&
+          <StoryInfoContainer>
+            {isList && (
+                <TopRow>
+                  {!isStory && <GuideIcon name='guide' />}
+                  {!isStory && <GuideIconText>Guide</GuideIconText>}
+                </TopRow>
+            )}
+            <MiddleRow>
+              {isList
+                && <LocationPreview>{this.getLocationText()}</LocationPreview>
+              }
+              <Title
+                onClick={this.navToFeedItem}
+                isGuide={!!guideId}
+                isList={isList}
+              >
+                {!isStory && !isList && <InlineGuideIcon name='guide' />}
+                {feedItem.title}
+              </Title>
+              {isList && (
+                <UserRow middle='xs'>
                   <Avatar
                     iconTextProps={AvatarTextStyles}
                     imageTextProps={AvatarTextStyles}
@@ -434,34 +416,52 @@ class FeedItemPreview extends Component {
                     type='profile'
                     onClick={this.navToUserProfile}
                   />
-                }
-                {hasBadge(author.role) &&
-                  <BadgeIcon
-                    name={roleToIconName[author.role]}
-                    size='small'
-                    profileAvatar={author.profile.avatar}
-                  />
-                }
-                <Username onClick={this.navToUserProfile}>{author.username}</Username>
-                {!isVertical && <TimeStamp>, {moment(feedItem.createdAt).fromNow()}</TimeStamp>}
-              </Row>
-            </DetailsContainer>
-            {!isVertical &&
-              <Bottom>
+                  {hasBadge(author.role) && (
+                    <BadgeIcon
+                      name={roleToIconName[author.role]}
+                      size='small'
+                      profileAvatar={author.profile.avatar}
+                    />
+                  )}
+                  {author.username && (
+                      <Username
+                        onClick={this.navToUserProfile}
+                      >
+                          {author.username}
+                      </Username>
+                  )}
+                </UserRow>
+              )}
+            </MiddleRow>
+            <BottomRow>
+              {isList && (
                 <LikeComponent
                   likes={formatCount(feedItem.counts.likes)}
                   isLiked={isLiked}
                   onClick={this._onClickLike}
                   horizontal
                 />
-                {isStory &&
+              )}
+              {isList
+                && isStory
+                && (
                   <BookmarkIcon
                     name={isBookmarked ? 'feedBookmarkActive' : 'feedBookmark'}
                     onClick={this._onClickBookmark}
                   />
-                }
-              </Bottom>
-            }
+                )
+              }
+              {!isList
+                && author.username
+                && (
+                  <Username
+                    onClick={this.navToUserProfile}
+                  >
+                    {author.username}
+                  </Username>
+                )
+              }
+            </BottomRow>
           </StoryInfoContainer>
         </DirectionalWrapper>
       </MarginWrapper>
@@ -476,13 +476,24 @@ const mapStateToProps = (state, ownProps) => {
 
   let feedItemProps = null
   if (feedItem) {
+    /* TODO: unify author prop on algolia upon deprecating pre-Places Search
+     * versions of the RN app
+     *
+     * algolia story author = username (historical reasons)
+     * algolia story authorId = id (the quick fix solution)
+     * algolia guide author = id
+     *
+     * author = id matches existing structure when pulling from the server,
+     * so algolia story index author prop should eventually be patched to id
+     *
+     */
     feedItemProps = {
-      author: entities.users.entities[feedItem.author],
+      author: entities.users.entities[feedItem.authorId ? feedItem.authorId : feedItem.author],
       isBookmarked: isStoryBookmarked(entities.users, sessionUserId, feedItem.id),
     }
-    feedItemProps.isLiked = isStory ?
-    isStoryLiked(entities.users, sessionUserId, feedItem.id)
-    : isGuideLiked(entities.users, sessionUserId, feedItem.id)
+    feedItemProps.isLiked = isStory
+      ? isStoryLiked(entities.users, sessionUserId, feedItem.id)
+      : isGuideLiked(entities.users, sessionUserId, feedItem.id)
   }
 
   return {

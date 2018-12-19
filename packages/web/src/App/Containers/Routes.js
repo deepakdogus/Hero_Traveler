@@ -81,6 +81,12 @@ const Search = Loadable({
   delay: 300,
 })
 
+const SearchResults = Loadable({
+  loader: () => import('./SearchResults'),
+  loading: Loading,
+  delay: 300,
+})
+
 class AppRoot extends Component {
   render() {
     return (
@@ -100,6 +106,8 @@ class AppRoot extends Component {
         <Route path='/profile/:userId/view' component={Profile} />
         <AuthRoute path='/profile/:userId/edit' component={Profile}/>
         <Route path='/search' component={Search} />
+        <Route exact path='/results/:lat/:lng' component={SearchResults} />
+        <Route exact path='/results/:lat/:lng/:seeAllType' component={SearchResults} />
       </div>
     )
   }

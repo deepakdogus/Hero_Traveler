@@ -49,7 +49,7 @@ app.use((err, req, res, next) => {
   console.log(err)
 
   // @TODO implement standard-error
-  res.statusCode = 500;
+  res.statusCode = 500
 
   return res.json({
     message: err.message || 'There was an error processing your request.'

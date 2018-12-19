@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { algoliaHelper} from '@hero/ht-util'
 import {Guide, Story, Category, Image, Video} from '../models'
 import createCategories from '../category/create'
 
@@ -51,6 +52,8 @@ export default async function createGuide(guideData, assetFormater) {
   guideData.id = undefined
   newGuide = await Guide.create(guideObject)
   newGuide = await Guide.get({_id: newGuide.id})
+  algoliaHelper.addGuideToIndex(newGuide)
+
   return newGuide
 }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { Form, Input, Button, Icon, Upload, Checkbox, Select } from 'antd'
+import { Form, Input, Button, Icon, Upload, Checkbox, Select, message } from 'antd'
 import mapValues from 'lodash/mapValues'
 
 const Option = Select.Option
@@ -18,16 +18,22 @@ class EditUserForm extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    this.props.form.validateFields((err, values) => {
+    const { form, onSubmit } = this.props
+    form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values)
+        onSubmit(values)
+      } else {
+        message.error('Form was not submitted: please fix errors')
       }
     })
   }
 
   render() {
     const {
-      record,
+      formLoading,
+      isDeleting,
+      record
     } = this.props
 
     const { getFieldDecorator } = this.props.form
@@ -69,7 +75,7 @@ class EditUserForm extends React.Component {
         </FormItem>
         <FormItem {...formItemLayout} label="Password">
           {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'Please input password' }],
+            rules: [],
           })(
             <Input type="password" placeholder="password" />
           )}
@@ -120,7 +126,7 @@ class EditUserForm extends React.Component {
         </FormItem>
         
         <FormItem>
-          {getFieldDecorator('featuredUser', {
+          {getFieldDecorator('isFeatured', {
             valuePropName: 'checked',
             initialValue: false,
           })(
@@ -128,7 +134,7 @@ class EditUserForm extends React.Component {
           )}
         </FormItem>
         <FormItem>
-          {getFieldDecorator('makeThisUserChannel', {
+          {getFieldDecorator('isChannel', {
             valuePropName: 'checked',
             initialValue: false,
           })(
@@ -137,10 +143,18 @@ class EditUserForm extends React.Component {
         </FormItem>
         <FormItem>
           <div>
-            <ButtonStyled type="primary" htmlType="submit">Save Changes</ButtonStyled>
-            <ButtonStyled type="default" htmlType="submit">Cancel</ButtonStyled>
+            <ButtonStyled type="primary" htmlType="submit" loading={formLoading}>Save Changes</ButtonStyled>
+            <ButtonStyled type="default" onClick={this.props.handleCancel}>Cancel</ButtonStyled>
             <br/>
-            <ButtonStyled type="danger" htmlType="submit" icon="delete">Delete User</ButtonStyled>
+            <ButtonStyled
+              disabled={record.isDeleted}
+              type="danger"
+              icon="delete"
+              loading={isDeleting}
+              onClick={this.props.onDelete}
+            >
+              Delete User
+            </ButtonStyled>
           </div>
         </FormItem>
       </Form>
@@ -151,6 +165,11 @@ class EditUserForm extends React.Component {
 EditUserForm.propTypes = {
   record: PropTypes.object.isRequired,
   form: PropTypes.object.isRequired,
+  handleCancel: PropTypes.func.isRequired,
+  formLoading: PropTypes.bool.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  isDeleting: PropTypes.bool.isRequired,
 }
 
 const mapPropsToFields = ({ record }) => mapValues(record, value => Form.createFormField({ value }))

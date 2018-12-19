@@ -35,7 +35,8 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Reducers ------------- */
 export const startInitializeSession = (state) => {
   return state.merge({
-    isSessionLoading: true
+    isSessionLoading: true,
+    error: null
   })
 }
 // we're attempting to login
@@ -46,13 +47,14 @@ export const initializeSession = (state, {userId, tokens}) => {
     tokens,
     isLoggedOut: false,
     isResumingSession: false,
-    isSessionLoading: false
+    isSessionLoading: false,
+    error: null
   })
 }
 
 export const resumeSessionFailure = (state, { error }) => {
   return state.merge({
-    isSessionLoading: true,
+    isSessionLoading: false,
     error
   })
 }
@@ -97,6 +99,7 @@ export const refreshSessionSuccess = (state, {tokens}) => {
 
 export const resumeError = (state, {error}) => state.merge({
   isResumingSession: false,
+  isSessionLoading: false,
   error
 })
 

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { Table, Input, Icon, Select, Button } from 'antd'
+import { Table, Input, Icon, Select, Button, message } from 'antd'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import debounce from 'lodash/debounce'
@@ -33,6 +33,10 @@ const LeftSpaceDiv = styled.div`
   margin-left: 20px;
 `
 
+const LeftSpaceSpan = styled.div`
+  margin-left: 20px;
+`
+
 const MiddleRow = styled.div`
   display: flex;
   margin-bottom: 20px;
@@ -41,6 +45,10 @@ const MiddleRow = styled.div`
 const FilterRow = styled.div`
   display: flex;
   margin-bottom: 20px;
+`
+
+const ActionRow = styled.div`
+  margin-bottom: 16px;
 `
 
 const Tab = styled.div`
@@ -89,13 +97,19 @@ const columns = [{
 
 class UsersList extends React.Component {
   state = {
+    selectedRowKeys: [],
     activeTab: 'all',
+    isActionLoading: false,
     selectedRole: undefined,
   }
 
   componentDidMount(){
     //get user UsersList on signUp and reset signUp redux
     this.props.getUsers()
+  }
+
+  onSelectChange = (selectedRowKeys) => {
+    this.setState({ selectedRowKeys })
   }
 
   onChange = (pagination, filters, sorter) => {
@@ -165,6 +179,40 @@ class UsersList extends React.Component {
     })
   }
 
+  _applyAction = () => {
+    const { selectedRowKeys } = this.state
+    const { restoreUsers, getUsers, params } = this.props
+    this.setState({
+      isActionLoading: true,
+    })
+    new Promise((resolve, reject) => {
+      restoreUsers({
+        usernames: selectedRowKeys,
+        resolve,
+        reject,
+      })
+    }).then(() => {
+      this.setState({
+        isActionLoading: false,
+      })
+      message.success('Users were restored')
+      getUsers({
+        ...params,
+        query: {
+          isDeleted: true,
+        },
+      })
+      this.setState({
+        selectedRowKeys: [],
+      })
+    }).catch((e) => {
+      this.setState({
+        isActionLoading: false,
+      })
+      message.error('There was error restoring users')
+    })
+  }
+
   render() {
     const {
       list,
@@ -172,7 +220,12 @@ class UsersList extends React.Component {
       isLoading,
       params,
     } = this.props
-      
+    
+    const {
+      selectedRowKeys,
+      isActionLoading,
+    } = this.state
+
     const paginationProps = {
       showTotal: (totalNum, range) => `${range[0]}–${range[1]} of ${totalNum} items`,
       total,
@@ -180,6 +233,13 @@ class UsersList extends React.Component {
       pageSize: params.limit,
       position: 'both',
     }
+
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.onSelectChange,
+    }
+
+    const hasSelected = selectedRowKeys.length > 0
 
     return (
       <Wrapper>
@@ -229,7 +289,23 @@ class UsersList extends React.Component {
             <Button onClick={this._applyTypeFilter}>Filter</Button>
           </LeftSpaceDiv>
         </FilterRow>
+        {this.state.activeTab === 'deleted' &&
+          <ActionRow>
+            <Button
+              type="primary"
+              onClick={this._applyAction}
+              disabled={!hasSelected}
+              loading={isActionLoading}
+            >
+              Restore
+            </Button>
+            <LeftSpaceSpan>
+              {hasSelected ? `${selectedRowKeys.length} selected items` : ''}
+            </LeftSpaceSpan>
+          </ActionRow>
+        }
         <Table
+          rowSelection={this.state.activeTab === 'deleted' ? rowSelection : null}
           rowKey="username"
           loading={isLoading}
           columns={columns}
@@ -248,6 +324,7 @@ UsersList.propTypes = {
   params: PropTypes.object.isRequired,
   total: PropTypes.number.isRequired,
   getUsers: PropTypes.func.isRequired,
+  restoreUsers: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {
@@ -263,6 +340,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     getUsers: (params) => dispatch(AdminActions.adminGetUsers(params)),
+    restoreUsers: (payload) => dispatch(AdminActions.adminRestoreUsers(payload)),
   }
 }
 

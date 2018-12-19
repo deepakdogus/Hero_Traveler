@@ -27,6 +27,47 @@ export function * adminGetUser (api, action) {
   }
 }
 
+export function * adminPutUser (api, action) {
+  console.log('calling adminPutUser saga', action)
+  const { values, id, resolve, reject } = action.payload
+  const response = yield call(api.adminPutUser, { values, id })
+  if (response.ok && response.data) {
+    const record = response.data
+    yield put(AdminActions.adminGetUserSuccess({ record }))
+    return resolve(record)
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    return reject(error)
+  }
+}
+
+export function * adminDeleteUser (api, action) {
+  console.log('calling adminDeleteUser saga', action)
+  const { id, resolve, reject } = action.payload
+  const response = yield call(api.adminDeleteUser, id)
+  if (response.ok && response.data) {
+    const record = response.data
+    yield put(AdminActions.adminDeleteUserSuccess(id))
+    return resolve(record)
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    return reject(error)
+  }
+}
+
+export function * adminRestoreUsers (api, action) {
+  console.log('calling adminRestoreUsers saga', action)
+  const { usernames, resolve, reject } = action.payload
+  const response = yield call(api.adminRestoreUsers, usernames)
+  if (response.ok && response.data) {
+    const record = response.data
+    return resolve(record)
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    return reject(error)
+  }
+}
+
 export function * adminGetCategories (api, action) {
   console.log('calling adminGetCategories saga', action)
   const { params } = action

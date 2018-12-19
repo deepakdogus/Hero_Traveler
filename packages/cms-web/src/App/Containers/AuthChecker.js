@@ -11,7 +11,7 @@ const LoaderWrapper = styled.div`
   display: flex;
 `
 
-const AuthChecker = ({ children, userId, isSessionLoading, ...rest }) => {
+const AuthChecker = ({ children, userId, isSessionLoading, error, ...rest }) => {
   if (isSessionLoading) {
     return (
       <VerticalCenter>
@@ -21,7 +21,7 @@ const AuthChecker = ({ children, userId, isSessionLoading, ...rest }) => {
       </VerticalCenter>
     )
   }
-  return userId
+  return (userId && !error)
     ? <div>{children}</div>
     : <Login />
 }
@@ -31,6 +31,7 @@ function mapStateToProps(state) {
     isResumingSession: state.session.isResumingSession,
     userId: state.session.userId,
     isSessionLoading: state.session.isSessionLoading,
+    error: state.session.error,
   }
 }
 
@@ -42,6 +43,7 @@ AuthChecker.propTypes = {
   userId: PropTypes.string,
   isResumingSession: PropTypes.bool,
   isSessionLoading: PropTypes.bool,
+  error: PropTypes.string,
 }
 
 export default connect(mapStateToProps, null)(AuthChecker)

@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import LoginActions from '../Shared/Redux/LoginRedux'
 
 import RoundedButton from '../Components/RoundedButton'
+
 import {
   Title,
   Text,
@@ -15,6 +16,10 @@ import {
 const LoginWrapper = styled.div`
   width: 420px;
   margin: 100px auto;
+`
+
+const WhiteText = styled.div`
+  color: white;
 `
 
 const LoginErrorText = styled(Text)`
@@ -99,12 +104,13 @@ class Login extends Component {
               <LoginErrorText>{this.state.localError}</LoginErrorText>
             }
             <RoundedButton
-              text='LOGIN'
               width='100%'
               margin='none'
               height='39px'
               type='submit'
-            />
+            >
+              <WhiteText>LOGIN</WhiteText>
+            </RoundedButton>
           </form>
       </LoginWrapper>
     )

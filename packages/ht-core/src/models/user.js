@@ -129,6 +129,14 @@ const UserSchema = new Schema({
       Constants.USER_NOTIFICATION_FOLLOWER,
     ]
   }],
+  isFeatured: {
+    type: Boolean,
+    default: false
+  },
+  isChannel: {
+    type: Boolean,
+    default: false
+  },
 }, {
   timestamps: true,
   toObject: {

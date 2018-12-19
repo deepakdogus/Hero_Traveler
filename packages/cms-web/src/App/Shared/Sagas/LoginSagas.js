@@ -14,7 +14,6 @@ export function * login (api, { userIdentifier, password }) {
       userIdentifier,
       password
     )
-
     if (response.ok) {
       const {user, tokens} = response.data
       const accessToken = _.find(tokens, {type: 'access'})

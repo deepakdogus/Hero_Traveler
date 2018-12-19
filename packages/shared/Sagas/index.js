@@ -116,7 +116,10 @@ import {
   adminGetUser,
   adminGetCategories,
   adminGetStories,
-  adminGetGuides
+  adminGetGuides,
+  adminPutUser,
+  adminDeleteUser,
+  adminRestoreUsers,
 } from './AdminSagas'
 
 
@@ -237,8 +240,11 @@ export default function * root () {
     //Admin
     takeLatest(AdminTypes.ADMIN_GET_USERS, adminGetUsers, heroAPI),
     takeLatest(AdminTypes.ADMIN_GET_USER, adminGetUser, heroAPI),
+    takeLatest(AdminTypes.ADMIN_PUT_USER, adminPutUser, heroAPI),
+    takeLatest(AdminTypes.ADMIN_DELETE_USER, adminDeleteUser, heroAPI),
     takeLatest(AdminTypes.ADMIN_GET_CATEGORIES, adminGetCategories, heroAPI),
     takeLatest(AdminTypes.ADMIN_GET_STORIES, adminGetStories, heroAPI),
     takeLatest(AdminTypes.ADMIN_GET_GUIDES, adminGetGuides, heroAPI),
+    takeLatest(AdminTypes.ADMIN_RESTORE_USERS, adminRestoreUsers, heroAPI)
   ]
 }

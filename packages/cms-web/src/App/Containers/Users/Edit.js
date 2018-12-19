@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import moment from 'moment'
-import { Input, Icon, Button, Row, Col, Spin } from 'antd'
+import { Input, Icon, Button, Row, Col, Spin, message } from 'antd'
 import { Link } from 'react-router-dom'
 import get from 'lodash/get'
 import find from 'lodash/find'
@@ -69,22 +69,77 @@ const Centered = styled.div`
 
 class EditUser extends React.Component {
   state = {
+    formSubmitting: false,
+    isDeleting: false,
   }
 
   componentDidMount(){
     //get user EditUser on signUp and reset signUp redux
-    const { record, getUser, getStories } = this.props
+    const { record, getUser, getStories, id } = this.props
     
-    const href = window.location.href  
-    const id = href.match(/([^\/]*)\/*$/)[1]
     if (isEmpty(record)) {
       getUser(id)
     }
     getStories(id)
   }
 
+  handleCancel = () => {
+    const { history } = this.props
+    history.goBack()
+  }
+
+  handleDelete = () => {
+    const { deleteUser, history, id } = this.props
+    this.setState({
+      isDeleting: true,
+    })
+    new Promise((resolve, reject) => {
+      deleteUser({
+        id,
+        resolve,
+        reject,
+      })
+    }).then(() => {
+      this.setState({
+        isDeleting: false,
+      })
+      message.success('User was deleted')
+      history.goBack()
+    }).catch((e) => {
+      this.setState({
+        isDeleting: false,
+      })
+      message.error(e.toString())
+    })
+  }
+
+  handleSubmit = (values) => {
+    const { putUser, id } = this.props
+    this.setState({
+      formSubmitting: true,
+    })
+    new Promise((resolve, reject) => {
+      putUser({
+        id,
+        values,
+        resolve,
+        reject,
+      })
+    }).then(() => {
+      this.setState({
+        formSubmitting: false,
+      })
+      message.success('User was updated')
+    }).catch((e) => {
+      this.setState({
+        formSubmitting: false,
+      })
+      message.error(e.toString())
+    })
+  }
+
   renderTable = () => {
-    const { record } = this.props
+    const { record, stories, guides } = this.props
     return (
       <div>
         <SmallTitle>
@@ -116,11 +171,11 @@ class EditUser extends React.Component {
             </TrStyled>
             <TrStyled>
               <TdStyledGrey># Of Stories Published</TdStyledGrey>
-              <TdStyled></TdStyled>
+              <TdStyled>{stories.length}</TdStyled>
             </TrStyled>
             <TrStyled>
               <TdStyledGrey># Of Guides Published</TdStyledGrey>
-              <TdStyled></TdStyled>
+              <TdStyled>{guides.length}</TdStyled>
             </TrStyled>
           </tbody>
         </TableStyled>
@@ -135,6 +190,8 @@ class EditUser extends React.Component {
       stories,
       guides,
     } = this.props
+
+    const { formSubmitting, isDeleting } = this.state
 
     if (isLoading) return (<Centered><Spin /></Centered>)
 
@@ -151,6 +208,11 @@ class EditUser extends React.Component {
             <Col xs={24} md={12}>
               <EditUserForm
                 record={record}
+                handleCancel={this.handleCancel}
+                onSubmit={this.handleSubmit}
+                onDelete={this.handleDelete}
+                formLoading={formSubmitting}
+                isDeleting={isDeleting}
               />
             </Col>
             <Col xs={24} md={12}>
@@ -173,8 +235,15 @@ class EditUser extends React.Component {
 EditUser.propTypes = {
   record: PropTypes.object.isRequired,
   stories: PropTypes.array,
+  history: PropTypes.object.isRequired,
+  getUser: PropTypes.func.isRequired,
+  putUser: PropTypes.func.isRequired,
+  deleteUser: PropTypes.func.isRequired,
+  getStories: PropTypes.func.isRequired,
+  getGuides: PropTypes.func.isRequired,
   guides: PropTypes.array,
   isLoading: PropTypes.bool.isRequired,
+  id: PropTypes.string.isRequired,
 }
 
 function mapStateToProps(state) {
@@ -189,12 +258,15 @@ function mapStateToProps(state) {
     isLoading: state.admin.users.isLoading,
     stories,
     guides,
+    id,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     getUser: (id) => dispatch(AdminActions.adminGetUser(id)),
+    putUser: (payload) => dispatch(AdminActions.adminPutUser(payload)),
+    deleteUser: (payload) => dispatch(AdminActions.adminDeleteUser(payload)),
     getStories: (id) => dispatch(StoryActions.fromUserRequest(id)),
     getGuides: (id) => dispatch(GuideActions.getUserGuides(id)),
   }

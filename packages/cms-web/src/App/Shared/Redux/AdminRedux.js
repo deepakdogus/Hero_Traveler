@@ -11,6 +11,10 @@ const { Types, Creators } = createActions({
   adminGetUser: ['id'],
   adminGetUserSuccess: ['res'],
   adminGetUserFailure: ['error'],
+  adminPutUser: ['payload'],
+  adminDeleteUser: ['payload'],
+  adminDeleteUserSuccess: ['id'],
+  adminRestoreUsers: ['payload'],
   adminGetCategories: ['params'],
   adminGetCategoriesSuccess: ['res'],
   adminGetCategoriesFailure: ['error'],
@@ -122,15 +126,16 @@ export const adminGetUserFailure = (state, { error }) => {
   })
 }
 
+
 export const adminGetUserSuccess = (state, { res }) => {
   let list = [...state.getIn(['users', 'list'])]
   let total = state.getIn(['users', 'total'])
-  const userIndex = findIndex(list, { id: res.id })
-  console.log('userIndex', list, userIndex)
+  const { record } = res
+  const userIndex = findIndex(list, { id: record.id })
   if (userIndex >= 0) {
-    list[userIndex] = res.record
+    list[userIndex] = record
   } else {
-    list.push(res.record)
+    list.push(record)
     total = total + 1
   }
   return state.merge({
@@ -146,6 +151,27 @@ export const adminGetUserSuccess = (state, { res }) => {
     deep: true
   })
 }
+
+export const adminDeleteUserSuccess = (state, { id }) => {
+  let list = [...state.getIn(['users', 'list'])]
+  let total = state.getIn(['users', 'total'])
+  const userIndex = findIndex(list, { id })
+  list.splice(userIndex, 1);
+  total = total - 1
+  return state.merge({
+    users: {
+      ...state.users,
+      list,
+      total,
+      isLoading: false,
+      error: null
+    }
+  },
+  {
+    deep: true
+  })
+}
+
 
 export const adminGetCategories = (state, { params = {} }) => {
   return state.merge({
@@ -268,6 +294,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ADMIN_GET_USERS_FAILURE]: adminGetUsersFailure,
   [Types.ADMIN_GET_USERS_SUCCESS]: adminGetUsersSuccess,
   [Types.ADMIN_GET_USER]: adminGetUser,
+  [Types.ADMIN_DELETE_USER_SUCCESS]: adminDeleteUserSuccess,
   [Types.ADMIN_GET_USER_FAILURE]: adminGetUserFailure,
   [Types.ADMIN_GET_USER_SUCCESS]: adminGetUserSuccess,
   [Types.ADMIN_GET_CATEGORIES]: adminGetCategories,

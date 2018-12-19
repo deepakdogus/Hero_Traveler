@@ -23,6 +23,21 @@ import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 
 const MAX_STORY_RESULTS = 10
 
+const getCalculatedHeight = (responsive = false) => {
+  const headerHeight = 65
+  const searchBarHeight = 122
+  const tabBarHeight = responsive ? 50 : 73
+  const extraMargins = 40
+  return !responsive
+    ? `calc(100vh - ${
+        headerHeight
+        + searchBarHeight
+        + tabBarHeight
+        + extraMargins
+      }px)`
+    : `calc(100vh - ${searchBarHeight + tabBarHeight + extraMargins}px)`
+}
+
 const Container = styled.div``
 
 const HeaderInputContainer = styled(Row)`
@@ -65,17 +80,13 @@ const HeaderInput = styled.input`
 
 const ContentWrapper = styled.div``
 
-// header height: 65px
-// search bar height: 122px
-// tabbar height: 73px, 50px @width < 768px
-// accounting for margins: 40px
 const ScrollingListContainer = styled.div`
-  height: calc(100vh - 65px - 122px - 73px - 40px);
+  height: ${getCalculatedHeight()};
   overflow-y: scroll;
   margin: 30px auto 0;
   max-width: 800px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    height: calc(100vh - 122px - 50px - 40px);
+    height: ${getCalculatedHeight(true)}
   }
 `
 

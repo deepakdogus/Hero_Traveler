@@ -56,12 +56,17 @@ const Count = styled.p`
  * At <960px width, the image begins to shrink, invaldating the default
  * (800px / 2) + 80px right offset from center. The desktop breakpoint with
  * percent offset from the right allows for a smooth transition.
+ *
+ * FIXME: smoother transition for guide near the large desktop breakpoint
  */
 const AbsoluteWrapper = styled.div`
   background-color: white;
   position: fixed;
   top: ${props => props.isStory ? '214px' : '297px' };
   right: calc(50vw - ${props => props.wrapperMaxWidth / 2 || 0}px - 80px);
+  @media (max-width: ${props => props.theme.Metrics.sizes.desktopLarge}px) {
+    ${props => !props.isStory && 'right: 1.5%'};
+  }
   @media (max-width: ${props => props.theme.Metrics.sizes.desktop}px) {
     right: 1.5%;
   }
@@ -129,7 +134,7 @@ export default class StoryActionBar extends React.Component {
 
   _onClickTwitter = async () => {
     const { feedItem } = this.props
-    shareLinkOnTwitter(feedItem, 'story') 
+    shareLinkOnTwitter(feedItem, 'story')
   }
 
   render () {

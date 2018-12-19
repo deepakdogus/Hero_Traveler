@@ -8,14 +8,12 @@ import _ from 'lodash'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import UserActions from '../Shared/Redux/Entities/Users'
-import {
-  isGuideLiked,
-} from '../Shared/Redux/Entities/Users'
+import { isGuideLiked } from '../Shared/Redux/Entities/Users'
 import UXActions from '../Redux/UXRedux'
 import { runIfAuthed } from '../Lib/authHelpers'
 
 import FeedItemHeader from '../Components/FeedItemHeader'
-import {BodyText} from '../Components/StoryContentRenderer'
+import { BodyText } from '../Components/StoryContentRenderer'
 import GoogleMap from '../Components/GoogleMap'
 import FeedItemMetaInfo from '../Components/FeedItemMetaInfo'
 import FeedItemActionBar from '../Components/FeedItemActionBar'
@@ -78,7 +76,7 @@ const HashtagText = styled.p`
   font-weight: 400;
   font-size: 18px;
   color: ${props => props.theme.Colors.redHighlights};
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   text-decoration: none;
   margin-bottom: 45px;
 `
@@ -114,7 +112,7 @@ class Guide extends Component {
     if (!this.props.guide) {
       this.props.getGuide()
     }
-    else this.checkForGuideStories()
+ else this.checkForGuideStories()
   }
 
   componentDidUpdate(prevProps) {
@@ -122,24 +120,24 @@ class Guide extends Component {
   }
 
   checkForGuideStories() {
-    const {guide, guideStories, getGuideStories} = this.props
+    const { guide, guideStories, getGuideStories } = this.props
     if (guide.stories.length !== guideStories.length) {
       getGuideStories()
     }
   }
 
   _followUser = () => {
-    const {sessionUserId, author, followUser} = this.props
+    const { sessionUserId, author, followUser } = this.props
     followUser(sessionUserId, author.id)
   }
 
   _unfollowUser = () => {
-    const {sessionUserId, author, unfollowUser} = this.props
+    const { sessionUserId, author, unfollowUser } = this.props
     unfollowUser(sessionUserId, author.id)
   }
 
   _onClickLike = () => {
-    const {sessionUserId} = this.props
+    const { sessionUserId } = this.props
     if (this.props.isLiked) this.props.onClickGuideUnLike(sessionUserId)
     else this.props.onClickGuideLike(sessionUserId)
   }
@@ -152,7 +150,7 @@ class Guide extends Component {
     this.props.onClickComments(this.props.sessionUserId)
   }
 
-  _onClickFlag = (storyId) => {
+  _onClickFlag = storyId => {
     this.props.onClickFlag(this.props.sessionUserId, storyId)
   }
 
@@ -161,10 +159,10 @@ class Guide extends Component {
   }
 
   renderHashtags = () => {
-    const {guide} = this.props
+    const { guide } = this.props
     if (!guide.hashtags) return null
 
-    const hashtagMap = guide.hashtags.map((hashtag) => {
+    const hashtagMap = guide.hashtags.map(hashtag => {
       return `#${hashtag.title}`
     })
 
@@ -185,13 +183,13 @@ class Guide extends Component {
     }
   }
 
-  getStoriesByType = (type) => {
+  getStoriesByType = type => {
     const { guideStories } = this.props
     return guideStories.filter(story => story.type === type)
   }
 
-  shouldDisplay = (type) => {
-    const {activeTab} = this.state
+  shouldDisplay = type => {
+    const { activeTab } = this.state
     return activeTab === 'OVERVIEW' || activeTab === type
   }
 
@@ -205,23 +203,20 @@ class Guide extends Component {
       isShowAll: this.state.activeTab === type,
       feedItems: this.getStoriesByType(type.toLowerCase()),
       onClickShowAll: this.onClickTab,
+      showLabel: true,
       // guideId: this.props.match.params.guideId,
     }
   }
 
   getPossibleTabs = () => {
-    const possibleTabs = ['OVERVIEW']
-    const typesInGuide = []
+    const tabOrder = { OVERVIEW: 0, SEE: 1, DO: 2, EAT: 3, STAY: 4 }
+    const tabs = ['OVERVIEW']
     this.props.guideStories.forEach(story => {
       const type = story.type.toUpperCase()
-      if (typesInGuide.indexOf(type) === -1) typesInGuide.push(type)
+      if (tabs.indexOf(type) === -1) tabs.push(type)
     })
-    // preserve order
-    if (typesInGuide.indexOf('SEE') !== -1) possibleTabs.push('SEE')
-    if (typesInGuide.indexOf('DO') !== -1) possibleTabs.push('DO')
-    if (typesInGuide.indexOf('EAT') !== -1) possibleTabs.push('EAT')
-    if (typesInGuide.indexOf('STAY') !== -1) possibleTabs.push('STAY')
-    return possibleTabs
+    // preserve preset order
+    return tabs.sort((a, b) => tabOrder[a] - tabOrder[b])
   }
 
   render() {
@@ -237,7 +232,7 @@ class Guide extends Component {
     const { activeTab } = this.state
 
     if (!guide || !author) return null
-    const selectedStoriesAndAuthors = this.getStoriesByType(activeTab.toLowerCase())
+    const selectedStories = this.getStoriesByType(activeTab.toLowerCase())
 
     return (
       <Container>
@@ -252,11 +247,13 @@ class Guide extends Component {
             unfollowUser={this._unfollowUser}
             shouldHideCover={this.state.activeTab !== 'OVERVIEW'}
           />
-          {activeTab !== 'OVERVIEW' &&
-            <GoogleMap
-              stories={selectedStoriesAndAuthors}
-              reroute={reroute}
-            />
+          {activeTab !== 'OVERVIEW'
+            && (
+              <GoogleMap
+                stories={selectedStories}
+                reroute={reroute}
+              />
+            )
           }
           <TabBar
             tabs={this.getPossibleTabs()}
@@ -265,33 +262,33 @@ class Guide extends Component {
             whiteBG={true}
           />
           <Spacer />
-          { guide &&
-            guide.description &&
-            activeTab === 'OVERVIEW' &&
-            <DescriptionContainer>
-              <Description>{guide.description}</Description>
-              <ConditionalDivider color='light-grey'/>
-            </DescriptionContainer>
+          {guide
+            && guide.description
+            && activeTab === 'OVERVIEW'
+            && (
+              <DescriptionContainer>
+                <Description>{guide.description}</Description>
+                <ConditionalDivider color="light-grey" />
+              </DescriptionContainer>
+            )
           }
           {this.renderHashtags()}
-          {activeTab === 'OVERVIEW' &&
+          {activeTab === 'OVERVIEW' && (
             <MetaInfoContainer>
-              <FeedItemMetaInfo feedItem={guide}/>
-              <StyledDivider color='light-grey'/>
+              <FeedItemMetaInfo feedItem={guide} />
+              <StyledDivider color="light-grey" />
             </MetaInfoContainer>
-          }
-          {this.shouldDisplay('SEE') &&
+          )}
+          {this.shouldDisplay('SEE') && (
             <FeedItemGrid {...this.getGuideStoriesOfTypeProps('SEE')} />
-          }
-          {this.shouldDisplay('DO') &&
-            <FeedItemGrid {...this.getGuideStoriesOfTypeProps('DO')} />
-          }
-          {this.shouldDisplay('EAT') &&
+          )}
+          {this.shouldDisplay('DO') && <FeedItemGrid {...this.getGuideStoriesOfTypeProps('DO')} />}
+          {this.shouldDisplay('EAT') && (
             <FeedItemGrid {...this.getGuideStoriesOfTypeProps('EAT')} />
-          }
-          {this.shouldDisplay('STAY') &&
+          )}
+          {this.shouldDisplay('STAY') && (
             <FeedItemGrid {...this.getGuideStoriesOfTypeProps('STAY')} />
-          }
+          )}
           <FeedItemActionBar
             isStory={false}
             feedItem={guide}
@@ -314,22 +311,24 @@ class Guide extends Component {
 
 function mapStateToProps(state, ownProps) {
   const guideId = ownProps.match.params.guideId
-  const {guides, users} = state.entities
+  const { guides, users } = state.entities
   const guide = guides.entities[guideId]
   const author = guide ? users.entities[guide.author] : undefined
   const stories = state.entities.stories.entities
 
   let isFollowing
   const sessionUserId = state.session.userId
-  if (sessionUserId && author){
+  if (sessionUserId && author) {
     const myFollowedUsersObject = users.userFollowingByUserIdAndId[sessionUserId]
     const myFollowedUsers = myFollowedUsersObject ? myFollowedUsersObject.byId : undefined
     isFollowing = _.includes(myFollowedUsers, author.id)
   }
 
-  let guideStories = guide ? guide.stories.map(storyId => {
-    return stories[storyId]
-  }) : []
+  let guideStories = guide
+    ? guide.stories.map(storyId => {
+        return stories[storyId]
+      })
+    : []
   guideStories = guideStories.filter(story => !!story)
 
   return {
@@ -350,22 +349,29 @@ function mapDispatchToProps(dispatch, ownProps) {
   return {
     getGuide: () => dispatch(GuideActions.getGuideRequest(guideId)),
     getGuideStories: () => dispatch(StoryActions.getGuideStories(guideId)),
-    reroute: (path) => dispatch(push(path)),
+    reroute: path => dispatch(push(path)),
     followUser: (sessionUserId, userIdToFollow) =>
       dispatch(runIfAuthed(sessionUserId, UserActions.followUser, [sessionUserId, userIdToFollow])),
     unfollowUser: (sessionUserId, userIdToUnfollow) =>
-      dispatch(runIfAuthed(sessionUserId, UserActions.unfollowUser, [sessionUserId, userIdToUnfollow])),
-    onClickGuideLike: (sessionUserId) =>
+      dispatch(
+        runIfAuthed(sessionUserId, UserActions.unfollowUser, [sessionUserId, userIdToUnfollow]),
+      ),
+    onClickGuideLike: sessionUserId =>
       dispatch(runIfAuthed(sessionUserId, GuideActions.likeGuideRequest, [guideId, sessionUserId])),
-    onClickGuideUnLike: (sessionUserId) =>
-      dispatch(runIfAuthed(sessionUserId, GuideActions.unlikeGuideRequest, [guideId, sessionUserId])),
+    onClickGuideUnLike: sessionUserId =>
+      dispatch(
+        runIfAuthed(sessionUserId, GuideActions.unlikeGuideRequest, [guideId, sessionUserId]),
+      ),
     // onClickBookmark: (sessionUserId) =>
     //    dispatch(runIfAuthed(sessionUserId, StoryActions.storyBookmark, [sessionUserId, storyId])),
-    onClickComments: (sessionUserId) =>
+    onClickComments: sessionUserId =>
       dispatch(runIfAuthed(sessionUserId, UXActions.openGlobalModal, ['comments', { guideId }])),
     onClickFlag: (sessionUserId, storyId) =>
       dispatch(runIfAuthed(sessionUserId, UXActions.openGlobalModal, ['flagStory', { storyId }])),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Guide)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Guide)

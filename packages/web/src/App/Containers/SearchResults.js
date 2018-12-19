@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import algoliasearchModule from 'algoliasearch'
 import algoliaSearchHelper from 'algoliasearch-helper'
+import formatcoords from 'formatcoords'
 
 import env from '../Config/Env'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
@@ -16,6 +17,8 @@ import Footer from '../Components/Footer'
 const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
 const STORY_INDEX = env.SEARCH_STORY_INDEX
 const GUIDE_INDEX = env.SEARCH_GUIDE_INDEX
+const MAX_STORY_RESULTS = 64
+const MAX_GUIDE_RESULTS = 20
 
 const Container = styled.div`
   margin: 80px 7% 0;
@@ -62,6 +65,7 @@ class SearchResults extends Component {
     wentBack: PropTypes.bool,
     lat: PropTypes.string,
     lng: PropTypes.string,
+    seeAllType: PropTypes.string,
     location: PropTypes.object,
   }
 
@@ -75,23 +79,46 @@ class SearchResults extends Component {
     },
   }
 
+  typeLabels = {
+    guides: 'Guides',
+    stories: 'All Stories',
+    see: 'Things to See',
+    do: 'Things to Do',
+    eat: 'Things to Eat',
+    stay: 'Places to Stay',
+  }
+
   componentWillMount() {
-    const { location } = this.props
+    const { location, lat, lng, seeAllType } = this.props
 
-    //title
+    // title label
+    let label = ''
     if (location.search && location.search.indexOf('?t=') !== -1) {
-      this.setState({ label: decodeURIComponent(location.search.split('?')[1].substring(2)).toUpperCase() })
+      label = decodeURIComponent(
+        location.search.split('?')[1].substring(2),
+      )
     }
+    else {
+      label = `Search Results - ${formatcoords(
+        Number(lat),
+        Number(lng),
+      ).format('DD X', {latLonSeparator: ', ', decimalPlaces: 2})}`
+    }
+    this.setState({
+      label,
+      seeAllType: seeAllType || '',
+      seeAllLabel: seeAllType ? this.typeLabels[seeAllType] : '',
+    })
 
-    //guides
+    // guides
     this.guideHelper = algoliaSearchHelper(algoliasearch, GUIDE_INDEX)
     this.setupSearchListeners(this.guideHelper, 'guides')
-    this.search(this.guideHelper, 20)
+    this.search(this.guideHelper, MAX_STORY_RESULTS)
 
-    //stories
+    // stories
     this.storyHelper = algoliaSearchHelper(algoliasearch, STORY_INDEX)
     this.setupSearchListeners(this.storyHelper, 'stories')
-    this.search(this.storyHelper, 64)
+    this.search(this.storyHelper, MAX_GUIDE_RESULTS)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -135,22 +162,27 @@ class SearchResults extends Component {
   }
 
   _onClickShowAll = (seeAllType, seeAllLabel) => {
-    const { lng, reroute } = this.props
+    const { lat, lng, reroute } = this.props
     return () => {
       this.setState({seeAllType, seeAllLabel})
-      reroute(`${lng}/${seeAllType}`)
+      reroute(`/results/${lat}/${lng}/${seeAllType}?t=${
+        encodeURIComponent(this.state.label)
+      }`)
     }
+  }
+
+  _shouldDisplaySection = (items, type) => {
+    const { seeAllType } = this.state
+    return (
+      !!items
+      && !!items.length
+      && (seeAllType === type
+      || seeAllType === '')
+    )
   }
 
   render() {
     const { lastSearchResults, label, seeAllType, seeAllLabel } = this.state
-    // const { resultTitle } = this.props
-
-    const seeItems = lastSearchResults.stories.filter(feedItem => feedItem.type === 'see')
-    const doItems = lastSearchResults.stories.filter(feedItem => feedItem.type === 'do')
-    const eatItems = lastSearchResults.stories.filter(feedItem => feedItem.type === 'eat')
-    const stayItems = lastSearchResults.stories.filter(feedItem => feedItem.type === 'stay')
-
     return (
       <Container>
         <ContentWrapper>
@@ -162,72 +194,23 @@ class SearchResults extends Component {
             }
           </ResultTitle>
           <StyledDivider color="light-grey" />
-          {!!lastSearchResults.guides.length &&
-            (seeAllType === 'guides' ||
-             seeAllType === '') &&
-            <FeedItemGrid
-              feedItems={lastSearchResults.guides}
-              isShowAll={seeAllType === 'guides'}
-              label="GUIDES"
-              showLabel={seeAllType !== 'guides'}
-              onClickShowAll={this._onClickShowAll('guides', 'GUIDES')}
-            />
-          }
-          {!!lastSearchResults.stories.length &&
-            (seeAllType === 'stories' ||
-            seeAllType === '') &&
-            <FeedItemGrid
-              feedItems={lastSearchResults.stories}
-              isShowAll={seeAllType === 'stories'}
-              label="ALL STORIES"
-              showLabel={seeAllType !== 'stories'}
-              onClickShowAll={this._onClickShowAll('stories', 'ALL STORIES')}
-            />
-          }
-          {!!seeItems &&
-            (seeAllType === 'see' ||
-            seeAllType === '') &&
-            <FeedItemGrid
-              feedItems={seeItems}
-              isShowAll={seeAllType === 'see'}
-              label="THINGS TO SEE"
-              showLabel={seeAllType !== 'see'}
-              onClickShowAll={this._onClickShowAll('see', 'THINGS TO SEE')}
-            />
-          }
-          {!!seeItems &&
-            (seeAllType === 'do' ||
-            seeAllType === '') &&
-            <FeedItemGrid
-              feedItems={doItems}
-              isShowAll={seeAllType === 'do'}
-              label="THINGS TO DO"
-              showLabel={seeAllType !== 'do'}
-              onClickShowAll={this._onClickShowAll('do', 'THINGS TO DO')}
-            />
-          }
-          {!!seeItems &&
-            (seeAllType === 'eat' ||
-            seeAllType === '') &&
-            <FeedItemGrid
-              feedItems={eatItems}
-              isShowAll={seeAllType === 'eat'}
-              label="THINGS TO EAT"
-              showLabel={seeAllType !== 'eat'}
-              onClickShowAll={this._onClickShowAll('eat', 'THINGS TO EAT')}
-            />
-          }
-          {!!seeItems &&
-            (seeAllType === 'stay' ||
-            seeAllType === '') &&
-            <FeedItemGrid
-              feedItems={stayItems}
-              isShowAll={seeAllType === 'stay'}
-              label="PLACES TO STAY"
-              showLabel={seeAllType !== 'stay'}
-              onClickShowAll={this._onClickShowAll('stay', 'PLACES TO STAY')}
-            />
-          }
+          {Object.keys(this.typeLabels).map(type => {
+            const feedItems = (type === 'guides' || type === 'stories')
+              ? lastSearchResults[type]
+              : lastSearchResults.stories.filter(feedItem => feedItem.type === type)
+            if (!this._shouldDisplaySection(feedItems, type)) return null
+
+            return (
+              <FeedItemGrid
+                key={`${type}-search-grid`}
+                feedItems={feedItems}
+                isShowAll={this.state.seeAllType === type}
+                label={this.typeLabels[type].toUpperCase()}
+                showLabel={this.state.seeAllType !== type}
+                onClickShowAll={this._onClickShowAll(type, this.typeLabels[type])}
+              />
+            )
+          })}
         </ContentWrapper>
         <Footer />
       </Container>
@@ -246,6 +229,7 @@ function mapStateToProps(state, ownProps) {
     categoriesFetchStatus,
     lat: ownProps.match.params.lat,
     lng: ownProps.match.params.lng,
+    seeAllType: ownProps.match.params.seeAllType,
     wentBack: ownProps.history.action === 'POP',
   }
 }

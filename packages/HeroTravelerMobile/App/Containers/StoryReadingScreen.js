@@ -142,10 +142,6 @@ class StoryReadingScreen extends React.Component {
     }
   }
 
-  componentDidMount = () => {
-    if (!this.props.user) NavActions.launchScreen({fromStory: true})
-  }
-
   _onPressBookmark = () => {
     const {toggleBookmark, user, storyId} = this.props
     toggleBookmark(user.id, storyId)
@@ -329,7 +325,6 @@ class StoryReadingScreen extends React.Component {
       story, author, user, fetching, error,
       isBookmarked, isLiked,
     } = this.props
-    if (!user) return null
 
     return (
       <ReadingScreensOverlap

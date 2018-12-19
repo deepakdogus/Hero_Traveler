@@ -10,7 +10,7 @@ import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checke
 import { Grid, Row } from '../FlexboxGrid'
 import Icon from '../Icon'
 import HorizontalDivider from '../HorizontalDivider'
-import FeedItemDetailsPlacesAutocomplete from './FeedItemDetailsPlacesAutocomplete'
+import FeedItemDetailsLocator from './FeedItemDetailsLocator'
 import ReactDayPicker from './ReactDayPicker'
 import { Title } from './Shared'
 import TagSelector from './TagSelector'
@@ -408,7 +408,7 @@ export default class FeedItemDetails extends React.Component {
             }
           </TilesWrapper>
           }
-          <FeedItemDetailsPlacesAutocomplete
+          <FeedItemDetailsLocator
             onChange={this.handleLocationSelect}
             address={this.state.address}
             isGuide={true}
@@ -489,7 +489,7 @@ export default class FeedItemDetails extends React.Component {
           </IconWrapper>
           {isGuide
             ? this.renderLocations()
-            : <FeedItemDetailsPlacesAutocomplete
+            : <FeedItemDetailsLocator
                 onChange={this.handleLocationSelect}
                 address={this.state.address}
               />

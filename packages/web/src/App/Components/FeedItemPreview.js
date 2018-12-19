@@ -253,6 +253,10 @@ const DeleteIcon = styled(Icon)`
   cursor: pointer;
 `
 
+const AvatarTextStyles = `
+  margin-right: 7.5px;
+`
+
 const videoThumbnailOptions = {
   video: true,
   width: 285,
@@ -334,7 +338,6 @@ class FeedItemPreview extends Component {
     const {
       guideId,
       feedItem,
-      author,
       sessionUserId,
       isLiked,
       isBookmarked,
@@ -343,9 +346,16 @@ class FeedItemPreview extends Component {
     } = this.props
 
     const isList = type === 'list'
-    const isGuideAuthor = !!guideId && sessionUserId === author.id
+    const isGuideAuthor = !!guideId && sessionUserId === this.props.author.id
 
-    if (!feedItem || !author) return null
+    /*
+     * in cases where the author is retrieved from algolia, author is equal to
+     * the author username, so it is currently necessary to recreate an empty
+     * author object to avoid access errors
+     */
+    let author = {username: '', profile: {avatar: ''}, role: ''}
+    if (this.props.author) author = this.props.author
+    else author.username = feedItem.author
 
     let imageUrl
     if (feedItem.coverImage) imageUrl = getImageUrl(feedItem.coverImage)
@@ -370,23 +380,23 @@ class FeedItemPreview extends Component {
               overlayColor='black'
               onClick={this.navToFeedItem}
             >
-              {isGuideAuthor &&
+              {isGuideAuthor && (
                 <CloseXContainer onClick={this.openRemoveStoryModal}>
                   <DeleteIcon size='small' name='closeBlack' />
                 </CloseXContainer>
-              }
+              )}
             </StyledOverlay>
           </ImageContainer>
           <StoryInfoContainer>
-            {isList &&
-              <TopRow>
-                {!isStory && <GuideIcon name='guide' />}
-                {!isStory && <GuideIconText>Guide</GuideIconText>}
-              </TopRow>
-            }
+            {isList && (
+                <TopRow>
+                  {!isStory && <GuideIcon name='guide' />}
+                  {!isStory && <GuideIconText>Guide</GuideIconText>}
+                </TopRow>
+            )}
             <MiddleRow>
-              {isList &&
-                <LocationPreview>{this.getLocationText()}</LocationPreview>
+              {isList
+                && <LocationPreview>{this.getLocationText()}</LocationPreview>
               }
               <Title
                 onClick={this.navToFeedItem}
@@ -396,43 +406,60 @@ class FeedItemPreview extends Component {
                 {!isStory && !isList && <InlineGuideIcon name='guide' />}
                 {feedItem.title}
               </Title>
-              {isList &&
+              {isList && (
                 <UserRow middle='xs'>
                   <Avatar
-                    isStoryPreview
+                    iconTextProps={AvatarTextStyles}
+                    imageTextProps={AvatarTextStyles}
                     avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
                     size='avatar'
                     type='profile'
                     onClick={this.navToUserProfile}
                   />
-                  {hasBadge(author.role) &&
+                  {hasBadge(author.role) && (
                     <BadgeIcon
                       name={roleToIconName[author.role]}
                       size='small'
                       profileAvatar={author.profile.avatar}
                     />
-                  }
-                  <Username onClick={this.navToUserProfile}>{author.username}</Username>
+                  )}
+                  {author.username && (
+                      <Username
+                        onClick={this.navToUserProfile}
+                      >
+                          {author.username}
+                      </Username>
+                  )}
                 </UserRow>
-              }
+              )}
             </MiddleRow>
             <BottomRow>
-              {isList &&
-              <LikeComponent
-                likes={formatCount(feedItem.counts.likes)}
-                isLiked={isLiked}
-                onClick={this._onClickLike}
-                horizontal
-              />
-              }
-              {isList && isStory &&
-                <BookmarkIcon
-                  name={isBookmarked ? 'feedBookmarkActive' : 'feedBookmark'}
-                  onClick={this._onClickBookmark}
+              {isList && (
+                <LikeComponent
+                  likes={formatCount(feedItem.counts.likes)}
+                  isLiked={isLiked}
+                  onClick={this._onClickLike}
+                  horizontal
                 />
+              )}
+              {isList
+                && isStory
+                && (
+                  <BookmarkIcon
+                    name={isBookmarked ? 'feedBookmarkActive' : 'feedBookmark'}
+                    onClick={this._onClickBookmark}
+                  />
+                )
               }
-              {!isList &&
-                <Username onClick={this.navToUserProfile}>{author.username}</Username>
+              {!isList
+                && author.username
+                && (
+                  <Username
+                    onClick={this.navToUserProfile}
+                  >
+                    {author.username}
+                  </Username>
+                )
               }
             </BottomRow>
           </StoryInfoContainer>
@@ -464,9 +491,9 @@ const mapStateToProps = (state, ownProps) => {
       author: entities.users.entities[feedItem.authorId ? feedItem.authorId : feedItem.author],
       isBookmarked: isStoryBookmarked(entities.users, sessionUserId, feedItem.id),
     }
-    feedItemProps.isLiked = isStory ?
-    isStoryLiked(entities.users, sessionUserId, feedItem.id)
-    : isGuideLiked(entities.users, sessionUserId, feedItem.id)
+    feedItemProps.isLiked = isStory
+      ? isStoryLiked(entities.users, sessionUserId, feedItem.id)
+      : isGuideLiked(entities.users, sessionUserId, feedItem.id)
   }
 
   return {

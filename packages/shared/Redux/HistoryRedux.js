@@ -24,7 +24,9 @@ export const addRecentSearch = (state, action) => {
   let updatedSearch = [
     action.search,
     ...recentSearches.filter(
-      search => search.id !== id && search.title !== title
+      search => search.id !== id
+      && (searchType === 'people'
+      || search.title !== title)
     )
   ]
   if (updatedSearch.length >= MAX_RECENT_SEARCHES) {

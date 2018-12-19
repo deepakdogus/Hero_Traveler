@@ -71,7 +71,7 @@ class SearchResults extends Component {
 
   state = {
     label: '',
-    seeAllType: this.props.seeAllType || '',
+    seeAllType: '',
     seeAllLabel: '',
     lastSearchResults: {
       stories: [],
@@ -205,7 +205,7 @@ class SearchResults extends Component {
                 key={`${type}-search-grid`}
                 feedItems={feedItems}
                 isShowAll={this.state.seeAllType === type}
-                label={this.typeLabels[type]}
+                label={this.typeLabels[type].toUpperCase()}
                 showLabel={this.state.seeAllType !== type}
                 onClickShowAll={this._onClickShowAll(type, this.typeLabels[type])}
               />

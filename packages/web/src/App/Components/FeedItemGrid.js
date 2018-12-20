@@ -1,14 +1,27 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import FeedItemList from './FeedItemList'
+import FeedItemPreview from './FeedItemPreview'
 import HorizontalDivider from './HorizontalDivider'
+
+const MAX_PREVIEW_ITEMS = 6
 
 const Wrapper = styled.div`
   margin: 45px 0;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     margin: 0;
+  }
+`
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 25px;
+  grid-row-gap: 45px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    grid-template-columns: 1fr 1fr;
+    margin: 0 20px;
   }
 `
 
@@ -24,10 +37,11 @@ const Title = styled.p`
   margin: 0;
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 600;
-  font-size: 29px;
+  font-size: 25px;
   line-height: 40px;
   letter-spacing: 0.6px;
   color: ${props => props.theme.Colors.background};
+  padding-bottom: 20px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 20px;
     padding: 15px 20px;
@@ -36,9 +50,9 @@ const Title = styled.p`
 
 const SeeAllText = styled.p`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
-  font-weight: 600;
+  font-weight: 400;
   font-size: 16px;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.7px;
   color: ${props => props.theme.Colors.redHighlights};
   cursor: pointer;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
@@ -51,12 +65,13 @@ const SeeAllText = styled.p`
   }
 `
 
-export default class GuideStoriesOfType extends React.Component {
+export default class FeedItemGrid extends Component {
   static propTypes = {
     guideId: PropTypes.string,
     label: PropTypes.string,
+    showLabel: PropTypes.bool,
     type: PropTypes.string,
-    stories: PropTypes.arrayOf(PropTypes.object),
+    feedItems: PropTypes.arrayOf(PropTypes.object),
     isShowAll: PropTypes.bool,
     onClickShowAll: PropTypes.func,
     titlePadding: PropTypes.string,
@@ -66,60 +81,51 @@ export default class GuideStoriesOfType extends React.Component {
     this.props.onClickShowAll(null, this.props.type)
   }
 
-  /*
-  * for guides, stories must display as a row of 2-3 items, which currently
-  * requires us to use multiple single-row FeedItemList components; this logic
-  * splits a flat array of stories into a 2D array of 2-item story arrays to pass
-  * to FeedItemList components
-  *
-  * TODO: Refactor this logic into a full-fledged FeedItemGrid component
-  */
-  _renderFeedItemLists = () => {
-    const chunks = 2
-    const { stories } = this.props
-    return Array(Math.ceil(stories.length / chunks))
-      .fill()
-      .map((_, index) => index * chunks)
-      .map(begin => stories.slice(begin, begin + chunks))
+  isStory = feedItem => typeof feedItem.draft === 'boolean'
+
+  renderFeedItems = () => {
+    const {
+      isShowAll,
+      feedItems,
+      guideId,
+    } = this.props
+
+    const feedItemList = feedItems.reduce((feedItemList, feedItem, index) => {
+      if (index >= MAX_PREVIEW_ITEMS && !isShowAll) return feedItemList
+      if (!feedItem) return feedItemList
+      feedItemList.push((
+        <FeedItemPreview
+          key={feedItem.id}
+          feedItem={feedItem}
+          isStory={this.isStory(feedItem)}
+          guideId={guideId}
+          type='grid'
+        />
+      ))
+      return feedItemList
+    }, [])
+    return feedItemList
   }
 
   render() {
     const {
-      stories,
+      feedItems,
       label,
+      showLabel,
       isShowAll,
-      guideId,
     } = this.props
 
-    if (stories.length === 0) return null
+    if (!feedItems || feedItems.length === 0) return null
 
     return (
       <Wrapper>
-        <Title>{label}</Title>
-        {isShowAll
-          ? this._renderFeedItemLists().map((feedItemList, idx) => {
-            return (
-              <FeedItemList
-                key={`${guideId}-${idx}`}
-                guideId={guideId}
-                feedItems={feedItemList}
-                isHorizontalList
-                isShowAll={isShowAll}
-                type='guideRow'
-              />
-            )
-          })
-          : <FeedItemList
-            guideId={guideId}
-            feedItems={stories}
-            isHorizontalList
-            isShowAll={isShowAll}
-            type='guideRow'
-          />
-        }
-        {stories.length > 2 && !isShowAll &&
+        {showLabel && <Title>{label}</Title>}
+        <Grid>
+          {this.renderFeedItems()}
+        </Grid>
+        {feedItems.length > MAX_PREVIEW_ITEMS && !isShowAll &&
           <SeeAllText onClick={this._onClickShowAll}>
-            See All ({stories.length})
+            See All ({feedItems.length})
           </SeeAllText>
         }
         {!isShowAll && <StyledDivider color='light-grey'/>}

@@ -7,20 +7,46 @@ import PropTypes from 'prop-types'
 import env from '../Config/Env'
 
 import UserActions from '../Shared/Redux/Entities/Users'
-import UXActions from '../Redux/UXRedux'
+import HistoryActions from '../Shared/Redux/HistoryRedux'
+import { runIfAuthed } from '../Lib/authHelpers'
+
+import GoogleLocator from '../Components/GoogleLocator'
 import SearchResultsPeople from '../Components/SearchResultsPeople'
-import SearchResultsStories from '../Components/SearchResultsStories'
+import SearchAutocompleteList from '../Components/SearchAutocompleteList'
 import TabBar from '../Components/TabBar'
-import {Row} from '../Components/FlexboxGrid'
-//seach
+import { Row } from '../Components/FlexboxGrid'
+
+//seacrh
 import algoliasearchModule from 'algoliasearch'
 import algoliaSearchHelper from 'algoliasearch-helper'
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
+
+const MAX_STORY_RESULTS = 10
+
+const getCalculatedHeight = (responsive = false) => {
+  const headerHeight = 65
+  const searchBarHeight = 122
+  const tabBarHeight = responsive ? 50 : 73
+  const extraMargins = 40
+  return !responsive
+    ? `calc(100vh - ${
+        headerHeight
+        + searchBarHeight
+        + tabBarHeight
+        + extraMargins
+      }px)`
+    : `calc(100vh - ${searchBarHeight + tabBarHeight + extraMargins}px)`
+}
 
 const Container = styled.div``
 
 const HeaderInputContainer = styled(Row)`
   background-color: ${props => props.theme.Colors.lightGreyAreas};
   padding: 0 30px;
+  flex-wrap: nowrap;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0 15px;
+  }
 `
 
 const HeaderInput = styled.input`
@@ -34,6 +60,10 @@ const HeaderInput = styled.input`
   outline: none;
   letter-spacing: .2px;
   color: ${props => props.theme.Colors.signupGrey};
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    height: 65px;
+    font-size: 15px;
+  }
   &::placeholder{
     color: ${props => props.theme.Colors.signupGrey};
   };
@@ -48,9 +78,25 @@ const HeaderInput = styled.input`
   };
 `
 
-const ContentWrapper = styled.div`
+const ContentWrapper = styled.div``
+
+const ScrollingListContainer = styled.div`
+  height: ${getCalculatedHeight()};
+  overflow-y: scroll;
+  margin: 30px auto 0;
   max-width: 800px;
-  margin: 0 auto;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    height: ${getCalculatedHeight(true)}
+  }
+`
+
+const ListTitle = styled.p`
+  font-weight: 600;
+  font-size: 20px;
+  padding: 0 30px;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  color: ${props => props.theme.Colors.background};
+  letter-spacing: 0.7px;
 `
 
 const Text = styled.p`
@@ -64,9 +110,13 @@ const Text = styled.p`
   line-height: 122px;
   letter-spacing: .2px;
   cursor: pointer;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 15px;
+    line-height: 66px;
+  }
 `
 
-const tabBarTabs = ['STORIES', 'PEOPLE']
+const tabBarTabs = ['PLACES', 'PEOPLE']
 
 const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
 const STORY_INDEX = env.SEARCH_STORY_INDEX
@@ -87,7 +137,7 @@ class Search extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      activeTab: 'STORIES',
+      activeTab: 'PLACES',
       lastSearchResults: {},
       inputText: '',
     }
@@ -127,9 +177,9 @@ class Search extends Component {
     helper.removeAllListeners('search')
   }
 
-  inputFieldChange = (event) => {
-    this.setState({inputText: event.target.value})
-    this._changeQuery(event.target.value)
+  inputFieldChange = inputText => {
+    this.setState({ inputText })
+    this._changeQuery(inputText)
   }
 
   _changeQuery = (queryText) => {
@@ -156,6 +206,7 @@ class Search extends Component {
     _.debounce(() => {
       helper
         .setQuery(queryText)
+        .setQueryParameter('hitsPerPage', MAX_STORY_RESULTS)
         .search()
     }, 300)()
   }
@@ -171,7 +222,7 @@ class Search extends Component {
   }
 
   getSearchIndex(activeTab) {
-    return activeTab === 'STORIES' ? STORY_INDEX : USERS_INDEX
+    return activeTab === 'PLACES' ? STORY_INDEX : USERS_INDEX
   }
 
   changeIndex(newIndex) {
@@ -184,9 +235,9 @@ class Search extends Component {
   reinitializeQuery() {
     const {searchHistory} = this.props
     const lastSearchType = searchHistory.lastSearchType
-    const inputText = _.get(searchHistory, `${lastSearchType}[0]`)
+    const inputText = _.get(searchHistory, `${lastSearchType}[0].searchText`)
     if (inputText) {
-      const activeTab = searchHistory.lastSearchType === 'story' ? 'STORIES' : 'PEOPLE'
+      const activeTab = searchHistory.lastSearchType === 'places' ? 'PLACES' : 'PEOPLE'
       this.changeIndex(this.getSearchIndex(activeTab))
       this.setState({
         inputText,
@@ -224,62 +275,182 @@ class Search extends Component {
     this.props.unfollowUser(this.props.userId, userIdToUnfollow)
   }
 
-  _navToUserProfile = (userId) => {
-    this.props.addRecentSearch('user', this.state.inputText, userId)
+  _navToUserProfile = (userId, user) => {
+    this.props.addRecentSearch({
+      searchType: 'people',
+      searchText: this.state.inputText,
+      id: userId,
+      ...user,
+    })
     this.props.reroute(`/profile/${userId}/view`)
   }
 
-  _navToStory = (storyId) => {
-    this.props.addRecentSearch('story', this.state.inputText, storyId)
-    this.props.reroute(`/story/${storyId}`)
+  _navToStory = ({ id, title }) => {
+    this.props.addRecentSearch({
+      searchType: 'places',
+      searchText: this.state.inputText,
+      contentType: 'story',
+      id,
+      title,
+    })
+    this.props.reroute(`/story/${id}`)
   }
 
-  renderActiveTab = () => {
+  _getLatLngAndNav = async item => {
+    const results = await geocodeByAddress(item.description)
+    const { lat, lng } = await getLatLng(results[0])
+    this._navToLocationResults({lat, lng, ...item })
+  }
+
+  _navToLocationResults = ({ lat, lng, id, title }) => {
+    const { reroute, addRecentSearch } = this.props
+    if (lat && lng) {
+      addRecentSearch({
+        searchType: 'places',
+        searchText: this.state.inputText,
+        contentType: 'location',
+        id,
+        title,
+        lat,
+        lng,
+      })
+      reroute({
+        pathname: `/results/${lat}/${lng}`,
+        search: `?t=${title}`,
+      })
+    }
+  }
+
+  _navConditionally = item => {
+    item.contentType === 'story'
+      ? this._navToStory(item)
+      : this._navToLocationResults(item)
+  }
+
+  renderActiveTab = suggestions => {
     if (this.state.activeTab === 'PEOPLE') {
       return (
+        <ScrollingListContainer>
+          <SearchResultsPeople
+            userSearchResults={this.state.lastSearchResults}
+            userFollowing={this.props.userFollowing}
+            userId={this.props.userId}
+            followUser={this._followUser}
+            unfollowUser={this._unfollowUser}
+            navToUserProfile={this._navToUserProfile}
+          />
+        </ScrollingListContainer>
+      )
+    }
+    else {
+      const formattedLocations = suggestions.map(suggestion => ({
+        id: suggestion.id,
+        title: suggestion.formattedSuggestion.mainText,
+        description: suggestion.description,
+      }))
+      return (
+        <ScrollingListContainer>
+          {!!formattedLocations.length && (
+            <SearchAutocompleteList
+              label='LOCATIONS'
+              autocompleteItems={formattedLocations}
+              navigate={this._getLatLngAndNav}
+            />
+          )}
+          {this.state.lastSearchResults.hits
+            && !!this.state.lastSearchResults.hits.length
+            && (
+              <SearchAutocompleteList
+                label='STORIES'
+                autocompleteItems={this.state.lastSearchResults.hits}
+                navigate={this._navToStory}
+              />
+            )
+          }
+        </ScrollingListContainer>
+      )
+    }
+  }
+
+  renderRecentSearches = () => {
+    const { activeTab } = this.state
+    const { searchHistory, searchHistory: { people } } = this.props
+
+    if (activeTab === 'PLACES') {
+      return (
+        <ScrollingListContainer>
+          <SearchAutocompleteList
+            label='RECENT SEARCHES'
+            autocompleteItems={searchHistory.places}
+            navigate = {this._navConditionally}
+          />
+        </ScrollingListContainer>
+      )
+    }
+
+    // activeTab is 'PEOPLE'
+    if (!people || !people.length) return null
+    return (
+      <ScrollingListContainer>
+        <ListTitle>{'RECENT SEARCHES'}</ListTitle>
         <SearchResultsPeople
-          userSearchResults={this.state.lastSearchResults}
+          userSearchResults={searchHistory}
           userFollowing={this.props.userFollowing}
           userId={this.props.userId}
           followUser={this._followUser}
           unfollowUser={this._unfollowUser}
           navToUserProfile={this._navToUserProfile}
         />
-      )
-    }
-    else {
-      return (
-        <SearchResultsStories
-          storySearchResults={this.state.lastSearchResults}
-          navToStory={this._navToStory}
-          navToUserProfile={this._navToUserProfile}
-        />
-      )
-    }
+      </ScrollingListContainer>
+    )
   }
 
-  render() {
+  renderTab = suggestions => {
+    const { inputText } = this.state
     return (
-      <Container>
-        <HeaderInputContainer between='xs'>
-          <HeaderInput
-            value={this.state.inputText}
-            onChange={this.inputFieldChange}
-            placeholder='Type to search' />
-          <Text
-            onClick={this.resetSearchText}
-          >Cancel</Text>
-        </HeaderInputContainer>
-        <ContentWrapper>
-          <TabBar
-            tabs={tabBarTabs}
-            activeTab={this.state.activeTab}
-            onClickTab={this.onClickTab}
-            whiteBG
-          />
-          {this.renderActiveTab()}
-        </ContentWrapper>
-      </Container>
+    <ContentWrapper>
+      <TabBar
+        tabs={tabBarTabs}
+        activeTab={this.state.activeTab}
+        onClickTab={this.onClickTab}
+        whiteBG
+      />
+      {inputText
+        ? this.renderActiveTab(suggestions, inputText)
+        : this.renderRecentSearches()
+      }
+    </ContentWrapper>
+    )
+  }
+
+  renderChildren = ({ getInputProps, suggestions }) => (
+    <Container>
+      <HeaderInputContainer between='xs'>
+        <HeaderInput
+          {...getInputProps({
+            placeholder: 'Type to search',
+          })}
+        />
+        <Text
+          onClick={this.resetSearchText}
+        >
+          {'Cancel'}
+        </Text>
+      </HeaderInputContainer>
+      {this.renderTab(suggestions)}
+    </Container>
+  )
+
+  render = () => {
+    const { inputText, activeTab } = this.state
+    return(
+      <GoogleLocator
+        value={inputText}
+        onChange={this.inputFieldChange}
+        shouldFetchSuggestions={activeTab === 'PLACES'}
+        renderChildren={this.renderChildren}
+        isSearch
+      />
     )
   }
 }
@@ -288,17 +459,19 @@ const mapStateToProps = (state) => {
   return {
     userFollowing: state.entities.users.userFollowingByUserIdAndId,
     userId: state.session.userId,
-    searchHistory: state.ux.searchHistory,
+    searchHistory: state.history.searchHistory,
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    followUser: (sessionUserID, userIdToFollow) => dispatch(UserActions.followUser(sessionUserID, userIdToFollow)),
-    unfollowUser: (sessionUserID, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserID, userIdToUnfollow)),
+    followUser: (sessionUserId, userIdToFollow) =>
+      dispatch(runIfAuthed(sessionUserId, UserActions.followUser, [sessionUserId, userIdToFollow])),
+    unfollowUser: (sessionUserId, userIdToUnfollow) =>
+      dispatch(runIfAuthed(sessionUserId, UserActions.unfollowUser, [sessionUserId, userIdToUnfollow])),
     loadUserFollowing: (sessionUserID) => dispatch(UserActions.loadUserFollowing(sessionUserID)),
     reroute: (path) => dispatch(push(path)),
-    addRecentSearch: (type, text, id) => dispatch(UXActions.addRecentSearch(type, text, id)),
+    addRecentSearch: search => dispatch(HistoryActions.addRecentSearch(search)),
   }
 }
 

@@ -155,6 +155,27 @@ export default StyleSheet.create({
   },
   failModalMessage: {
     marginBottom: 40,
+  },
+  addToGuideTooltip: {
+    position: 'absolute',
+    top: 55,
+    right: 14,
+    backgroundColor: Colors.backgroundOpaque,
+    borderRadius: 5,
+    paddingHorizontal: 30,
+    paddingVertical: 8,
+  },
+  addToGuideTooltipArrow: {
+    position: 'absolute',
+    bottom: -30,
+    right: 70,
+    height: 30,
+    borderTopWidth: 14,
+    borderTopColor: Colors.backgroundOpaque,
+    borderLeftWidth: 8,
+    borderLeftColor: 'transparent',
+    borderRightWidth: 8,
+    borderRightColor: 'transparent',
   }
 })
 

@@ -471,9 +471,33 @@ const create = () => {
 
   const adminGetCategories = (params) => api.get('admin/categories', params)
 
+  const adminGetCategory = (id) => api.get(`admin/categories/${id}`)
+
+  const adminPutCategory = ({ id, values }) => api.put(`admin/categories/${id}`, values)
+
+  const adminDeleteCategory = (id) => api.delete(`admin/categories/${id}`)
+
+  const adminRestoreCategories = (usernames) => api.post('admin/categories/restore', { usernames })
+
   const adminGetStories = (params) => api.get('admin/stories', params)
 
+  const adminGetStory = (id) => api.get(`admin/stories/${id}`)
+
+  const adminPutStory = ({ id, values }) => api.put(`admin/stories/${id}`, values)
+
+  const adminDeleteStory = (id) => api.delete(`admin/stories/${id}`)
+
+  const adminRestoreStories = (usernames) => api.post('admin/stories/restore', { usernames })
+
   const adminGetGuides = (params) => api.get('admin/guides', params)
+
+  const adminGetGuide = (id) => api.get(`admin/guides/${id}`)
+
+  const adminPutGuide = ({ id, values }) => api.put(`admin/guides/${id}`, values)
+
+  const adminDeleteGuide = (id) => api.delete(`admin/guides/${id}`)
+
+  const adminRestoreGuides = (usernames) => api.post('admin/guides/restore', { usernames })
 
   // ------
   // STEP 3
@@ -560,12 +584,25 @@ const create = () => {
     unlikeGuide,
     adminGetUsers,
     adminGetUser,
-    adminGetCategories,
-    adminGetStories,
-    adminGetGuides,
     adminPutUser,
     adminDeleteUser,
     adminRestoreUsers,
+    adminGetStories,
+    adminGetStory,
+    adminPutStory,
+    adminDeleteStory,
+    adminRestoreStories,
+    adminGetGuides,
+    adminGetGuide,
+    adminPutGuide,
+    adminDeleteGuide,
+    adminRestoreGuides,
+    adminGetCategories,
+    adminGetCategory,
+    adminPutCategory,
+    adminDeleteCategory,
+    adminRestoreCategories,
+
   }
 }
 

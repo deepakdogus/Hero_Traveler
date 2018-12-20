@@ -21,7 +21,6 @@ class EditUserForm extends React.Component {
     const { form, onSubmit } = this.props
     form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values)
         onSubmit(values)
       } else {
         message.error('Form was not submitted: please fix errors')

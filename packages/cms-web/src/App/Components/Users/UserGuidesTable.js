@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 
 const columns = [{
   title: 'Title',
-  dataIndex: 'title',
+  render: (item) => (<Link to={`/stories/${item.id}`}>{item.title}</Link>),
   sorter: true,
 },
 {

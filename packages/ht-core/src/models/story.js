@@ -103,6 +103,10 @@ const StorySchema = new Schema({
     type: Boolean,
     default: false,
   },
+  pinned: {
+    type: Boolean,
+    default: false,
+  },
   counts: {
     likes: {
       type: Number,
@@ -196,6 +200,8 @@ StorySchema.statics = {
     return Promise.props({
       count: this.count(queryToApply).exec(),
       data: this.find(queryToApply)
+        .populate('author')
+        .populate('categories.title')
         .skip((page - 1) * perPage)
         .limit(perPage)
         .sort(sortToApply)

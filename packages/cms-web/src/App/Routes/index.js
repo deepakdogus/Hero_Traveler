@@ -9,8 +9,11 @@ import Home from '../Components/Home'
 import UsersPage from '../Containers/Users/List'
 import EditUserPage from '../Containers/Users/Edit'
 import CategoriesPage from '../Containers/Categories/List'
+import EditCategoryPage from '../Containers/Categories/Edit'
 import StoriesPage from '../Containers/Stories/List'
+import EditStoryPage from '../Containers/Stories/Edit'
 import GuidesPage from '../Containers/Guides/List'
+import EditGuidePage from '../Containers/Guides/Edit'
 import StoriesInCategory from '../Containers/StoriesInCategory/List'
 import GuidesInCategory from '../Containers/GuidesInCategory/List'
 
@@ -30,8 +33,11 @@ class AppRoot extends Component {
             <Route exact path='/users' component={UsersPage} />
             <Route exact path='/users/:id' component={EditUserPage} />
             <Route exact path='/categories' component={CategoriesPage} />
+            <Route exact path='/categories/:id' component={EditCategoryPage} />
             <Route exact path='/stories' component={StoriesPage} />
+            <Route exact path='/stories/:id' component={EditStoryPage} />
             <Route exact path='/guides' component={GuidesPage} />
+            <Route exact path='/guides/:id' component={EditGuidePage} />
             <Route exact path='/categories/:categoryId/stories' component={StoriesInCategory} />
             <Route exact path='/categories/:categoryId/guides' component={GuidesInCategory} />
           </RouterWrapper>

@@ -11,7 +11,7 @@ import truncate from 'lodash/truncate'
 import isEmpty from 'lodash/isEmpty'
 import values from 'lodash/values'
 
-import AdminActions from '../../Shared/Redux/AdminRedux'
+import AdminUserActions from '../../Shared/Redux/Admin/Users'
 import StoryActions from '../../Shared/Redux/Entities/Stories'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
 import EditUserForm from '../../Components/Users/EditUserForm'
@@ -264,9 +264,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getUser: (id) => dispatch(AdminActions.adminGetUser(id)),
-    putUser: (payload) => dispatch(AdminActions.adminPutUser(payload)),
-    deleteUser: (payload) => dispatch(AdminActions.adminDeleteUser(payload)),
+    getUser: (id) => dispatch(AdminUserActions.adminGetUser(id)),
+    putUser: (payload) => dispatch(AdminUserActions.adminPutUser(payload)),
+    deleteUser: (payload) => dispatch(AdminUserActions.adminDeleteUser(payload)),
     getStories: (id) => dispatch(StoryActions.fromUserRequest(id)),
     getGuides: (id) => dispatch(GuideActions.getUserGuides(id)),
   }

@@ -9,7 +9,7 @@ import get from 'lodash/get'
 import debounce from 'lodash/debounce'
 import isEmpty from 'lodash/isEmpty'
 
-import AdminActions from '../../Shared/Redux/AdminRedux'
+import AdminCategoriesActions from '../../Shared/Redux/Admin/Categories'
 
 const Option = Select.Option
 
@@ -283,7 +283,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getCategories: (params) => dispatch(AdminActions.adminGetCategories(params)),
+    getCategories: (params) => dispatch(AdminCategoriesActions.adminGetCategories(params)),
   }
 }
 

@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 
 const columns = [{
   title: 'Title',
-  dataIndex: 'title',
+  render: (item) => (<Link to={`/stories/${item.id}`}>{item.title}</Link>),
   sorter: true,
 },
 {
@@ -33,7 +33,6 @@ class UserStoriesTable extends React.Component {
   render() {
     const {
       list,
-      isLoading,
     } = this.props
 
     return (
@@ -43,7 +42,6 @@ class UserStoriesTable extends React.Component {
         </b>
         <Table
           rowKey="id"
-          loading={isLoading}
           columns={columns}
           dataSource={list}
           pagination={false}

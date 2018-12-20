@@ -85,6 +85,10 @@ const GuideSchema = new Schema({
     min: 1,
     max: 30,
   },
+  verified: {
+    type: Boolean,
+    default: false,
+  },
 }, {
   timestamps: true,
   toObject: {
@@ -157,6 +161,7 @@ GuideSchema.statics = {
     return Promise.props({
       count: this.count(queryToApply).exec(),
       data: this.find(queryToApply)
+        .populate('author')
         .skip((page - 1) * perPage)
         .limit(perPage)
         .sort(sortToApply)

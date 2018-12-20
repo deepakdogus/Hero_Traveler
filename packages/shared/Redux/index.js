@@ -3,6 +3,7 @@ import configureStore from './CreateStore'
 import rootSaga from '../Sagas/'
 import { reducer as formReducer } from 'redux-form'
 import entities from './Entities'
+import admin from './Admin'
 import {SessionTypes} from './SessionRedux'
 // related to nav which is device specific so not located in shared folder
 import routes from './Routes'
@@ -10,7 +11,7 @@ import routes from './Routes'
 export default () => {
   /* ------------- Assemble The Reducers ------------- */
   const appReducer = combineReducers({
-    admin: require('./AdminRedux').reducer,
+    admin,
     login: require('./LoginRedux').reducer,
     signup: require('./SignupRedux').reducer,
     session: require('./SessionRedux').reducer,

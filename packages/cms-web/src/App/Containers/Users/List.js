@@ -8,7 +8,7 @@ import moment from 'moment'
 import debounce from 'lodash/debounce'
 import isEmpty from 'lodash/isEmpty'
 
-import AdminActions from '../../Shared/Redux/AdminRedux'
+import AdminUserActions from '../../Shared/Redux/Admin/Users'
 
 const Option = Select.Option
 
@@ -339,8 +339,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getUsers: (params) => dispatch(AdminActions.adminGetUsers(params)),
-    restoreUsers: (payload) => dispatch(AdminActions.adminRestoreUsers(payload)),
+    getUsers: (params) => dispatch(AdminUserActions.adminGetUsers(params)),
+    restoreUsers: (payload) => dispatch(AdminUserActions.adminRestoreUsers(payload)),
   }
 }
 

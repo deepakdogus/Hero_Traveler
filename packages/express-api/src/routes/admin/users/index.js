@@ -9,14 +9,6 @@ import restoreUsers from './restoreUsers'
 
 const router = express.Router()
 
-router.post(
-  '/restore',
-  hasValidOauth,
-  populatesUser,
-  isAdmin,
-  endpointWrapper(restoreUsers)
-)
-
 router.get(
   '/',
   hasValidOauth,
@@ -33,7 +25,6 @@ router.get(
   endpointWrapper(getOne)
 )
 
-
 router.put(
   '/:id',
   hasValidOauth,
@@ -48,6 +39,14 @@ router.delete(
   populatesUser,
   isAdmin,
   endpointWrapper(deleteOne)
+)
+
+router.post(
+  '/restore',
+  hasValidOauth,
+  populatesUser,
+  isAdmin,
+  endpointWrapper(restoreUsers)
 )
 
 export default router

@@ -9,7 +9,7 @@ import get from 'lodash/get'
 import debounce from 'lodash/debounce'
 import isEmpty from 'lodash/isEmpty'
 
-import AdminActions from '../../Shared/Redux/AdminRedux'
+import AdminGuidesActions from '../../Shared/Redux/Admin/Guides'
 
 const Option = Select.Option
 
@@ -63,22 +63,22 @@ const columns = [{
 },
 {
   title: 'Author',
-  dataIndex: 'author',
+  dataIndex: 'author.username',
   sorter: true,
 },
 {
   title: 'User Type',
-  dataIndex: 'user_type',
+  dataIndex: 'author.role',
   sorter: true,
 },
 {
   title: 'Location',
-  dataIndex: 'location',
+  dataIndex: 'locations.0.name',
   sorter: true,
 },
 {
   title: '# Likes',
-  dataIndex: 'counts.guides',
+  dataIndex: 'counts.likes',
   sorter: true,
 },
 {
@@ -88,12 +88,17 @@ const columns = [{
 },
 {
   title: 'Status',
-  dataIndex: 'status',
+  render: (item) => {
+    if (item.flagged) return (<div>flagged</div>)
+    if (item.featured) return (<div>featured</div>)
+    if (item.pinned) return (<div>pinned</div>)
+    return (<div>draft</div>)
+  },
   sorter: true,
 },
 {
   title: 'Verified',
-  dataIndex: 'verified',
+  dataIndex: 'isVerified',
   sorter: true,
 },
 {
@@ -264,7 +269,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getGuides: (params) => dispatch(AdminActions.adminGetGuides(params)),
+    getGuides: (params) => dispatch(AdminGuidesActions.adminGetGuides(params)),
   }
 }
 

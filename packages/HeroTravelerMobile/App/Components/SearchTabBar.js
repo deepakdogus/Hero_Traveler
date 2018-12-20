@@ -31,7 +31,7 @@ class SearchTabBar extends Component {
       <Tab
         selected={this.props.selectedTabIndex === 0}
         onPress={this.props.goToPlacesTab}
-        text='STORIES'
+        text='PLACES'
       />
       <Tab
         selected={this.props.selectedTabIndex === 1}

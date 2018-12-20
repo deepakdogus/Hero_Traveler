@@ -5,22 +5,21 @@ import { ListView } from 'react-native'
 export default class List extends React.Component {
   static propTypes = {
     items: PropTypes.array,
-    renderRow: PropTypes.func.isRequired
+    renderRow: PropTypes.func.isRequired,
+    style: PropTypes.object,
   }
 
   constructor(props) {
     super(props)
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
     this.state = {
-      dataSource: ds.cloneWithRows(props.items)
+      dataSource: ds.cloneWithRows(props.items),
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.items.length !== this.props.items.length) {
-      const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
-      this.setState({dataSource: ds.cloneWithRows(nextProps.items)})
-    }
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+    this.setState({dataSource: ds.cloneWithRows(nextProps.items)})
   }
 
   render () {

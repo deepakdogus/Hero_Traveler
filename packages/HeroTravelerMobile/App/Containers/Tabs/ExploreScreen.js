@@ -14,8 +14,12 @@ import env from '../../Config/Env'
 // Search
 import algoliasearchModule from 'algoliasearch/reactnative'
 import AlgoliaSearchHelper from 'algoliasearch-helper'
+// Locations
+import RNGooglePlaces from 'react-native-google-places'
 
 import CategoryActions from '../../Shared/Redux/Entities/Categories'
+import HistoryActions from '../../Shared/Redux/HistoryRedux'
+
 import Loader from '../../Components/Loader'
 import ExploreGrid from '../../Components/ExploreGrid'
 import styles, { CategoryFeedNavActionStyles } from '../Styles/ExploreScreenStyles'
@@ -35,13 +39,16 @@ class ExploreScreen extends Component {
     categories: PropTypes.object,
     categoriesFetchStatus: PropTypes.object,
     user: PropTypes.object,
+    addRecentSearch: PropTypes.func,
   }
 
   constructor(props) {
     super(props)
     this.state = {
       lastSearchResults: null,
+      lastLocationPredictions: null,
       selectedTabIndex: null,
+      inputText: '',
     }
   }
 
@@ -114,24 +121,26 @@ class ExploreScreen extends Component {
 
   _changeQuery = (e) => {
     const helper = this.helper
-    const q = e.nativeEvent.text
-    const hasSearchText = q.length > 0
+    const inputText = e.nativeEvent.text
+    const hasSearchText = inputText.length > 0
     if (this.state.selectedTabIndex === null) {
       this.setState({
         selectedTabIndex: 0,
         hasSearchText,
+        inputText,
       })
     }
 
-    if (_.isString(q) && q.length === 0) {
+    if (_.isString(inputText) && inputText.length === 0) {
       this.setState({
         lastSearchResults: null,
+        lastLocationPredictions: null,
         searching: false,
         hasSearchText,
       })
       return
     }
-    else if (_.isString(q) && q.length < 3) {
+    else if (_.isString(inputText) && inputText.length < 3) {
       if (hasSearchText && !this.state.hasSearchText) {
         this.setState({hasSearchText})
       }
@@ -140,8 +149,15 @@ class ExploreScreen extends Component {
 
     _.debounce(() => {
       helper
-        .setQuery(q)
+        .setQuery(inputText)
         .search()
+
+      RNGooglePlaces.getAutocompletePredictions(inputText)
+        .then((predictions) => this.setState({
+          searchingLocation: false,
+          lastLocationPredictions: predictions,
+        }))
+        .catch(() => this.setState({searchingLocation: false}))
     }, 300)()
   }
 
@@ -184,6 +200,11 @@ class ExploreScreen extends Component {
     this.setState({hasSearchText: false})
   }
 
+  onPressCancel = () => {
+    this._searchInput.setNativeProps({text: ''})
+    this.setState({selectedTabIndex: null, lastSearchResults: null})
+  }
+
   // explore
   _navToCategoryFeed = category => {
     NavActions.explore_categoryFeed({
@@ -193,6 +214,8 @@ class ExploreScreen extends Component {
       navigationBarStyle: CategoryFeedNavActionStyles.navigationBarStyle,
     })
   }
+
+  setupInputRef= ref => this._searchInput = ref
 
   render () {
     const {categories = {}, categoriesFetchStatus} = this.props
@@ -217,9 +240,12 @@ class ExploreScreen extends Component {
           <SearchList
             selectedTabIndex={this.state.selectedTabIndex}
             lastSearchResults={this.state.lastSearchResults}
+            lastLocationPredictions={this.state.lastLocationPredictions}
             isSearching={this.state.searching}
+            isSearchingLocation={this.state.searchingLocation}
             userId={this.props.user.id}
             query={this.helper.state.query}
+            addRecentSearch={this.props.addRecentSearch}
           />
         </View>
       )
@@ -241,12 +267,12 @@ class ExploreScreen extends Component {
         <View style={styles.headerSearch}>
           <View style={styles.searchWrapper}>
             <TextInput
-              ref={c => this._searchInput = c}
+              ref={this.setupInputRef}
               style={styles.searchInput}
               placeholder='Search'
               placeholderTextColor='#757575'
               onFocus={this.setFocus}
-              onChange={e => this._changeQuery(e)}
+              onChange={this._changeQuery}
               onChangeText={this.checkClearResults}
               returnKeyType='search'
             />
@@ -266,10 +292,7 @@ class ExploreScreen extends Component {
             }
           </View>
           {this.state.selectedTabIndex !== null &&
-            <TouchableOpacity onPress={() => {
-              this._searchInput.setNativeProps({text: ''})
-              this.setState({selectedTabIndex: null, lastSearchResults: null})
-            }}>
+            <TouchableOpacity onPress={this.onPressCancel}>
               <View style={styles.cancelBtn}>
                 <Text style={styles.cancelBtnText}>Cancel</Text>
               </View>
@@ -306,6 +329,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
+    addRecentSearch: search => dispatch(HistoryActions.addRecentSearch(search)),
   }
 }
 

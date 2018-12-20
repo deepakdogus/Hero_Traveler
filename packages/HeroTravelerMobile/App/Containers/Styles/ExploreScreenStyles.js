@@ -60,6 +60,32 @@ export default StyleSheet.create({
     color: '#9e9e9e',
     fontFamily: Fonts.type.montserrat,
   },
+  searchTitleWrapper: {
+    height: 46,
+    marginTop: Metrics.doubleBaseMargin,
+    marginLeft: Metrics.doubleBaseMargin,
+    marginRight: Metrics.doubleBaseMargin,
+    paddingTop: Metrics.baseMargin,
+    paddingBottom: Metrics.baseMargin / 2,
+    justifyContent:'flex-end',
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.whiteAlphaPt3,
+  },
+  searchTitleText: {
+    fontSize: 16,
+    letterSpacing: 0.7,
+    fontWeight: '600',
+    color: Colors.snow,
+  },
+  searchRowItem: {
+    marginLeft: Metrics.doubleBaseMargin,
+    marginRight: Metrics.doubleBaseMargin,
+    padding: 0,
+    paddingTop: Metrics.baseMargin,
+    paddingBottom: Metrics.baseMargin,
+    paddingLeft: 0,
+    paddingRight: 0,
+  },
   titleWrapper: {
     flex: 1,
     marginVertical: Metrics.doubleBaseMargin,
@@ -187,6 +213,7 @@ export default StyleSheet.create({
     color: 'white',
     padding: Metrics.section,
     textAlign: 'center',
+    flex: 1,
   },
 })
 

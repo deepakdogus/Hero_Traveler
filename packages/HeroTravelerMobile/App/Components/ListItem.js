@@ -9,14 +9,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: Metrics.doubleBaseMargin,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.whiteAlphaPt3
+    borderBottomColor: Colors.whiteAlphaPt3,
   },
   left: {
-    marginRight: Metrics.doubleBaseMargin
+    marginRight: Metrics.doubleBaseMargin,
   },
   middle: {
     flexDirection: 'column',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   right: {
     flex: 1,
@@ -24,24 +24,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   secondaryText: {
-    marginTop: Metrics.baseMargin / 2
-  }
+    marginTop: Metrics.baseMargin / 2,
+  },
 })
 
 export default class ListItem extends Component {
-
   static propTypes = {
     onPress: PropTypes.func,
     leftElement: PropTypes.element,
     text: PropTypes.node.isRequired,
     secondaryText: PropTypes.node,
     rightElement: PropTypes.element,
+    style: PropTypes.object,
   }
 
   render() {
     const {
-      onPress, style, text,
-      leftElement, secondaryText, rightElement
+      onPress,
+      style,
+      text,
+      leftElement,
+      secondaryText,
+      rightElement,
     } = this.props
 
     return (
@@ -57,5 +61,4 @@ export default class ListItem extends Component {
       </TouchableWithoutFeedback>
     )
   }
-
 }

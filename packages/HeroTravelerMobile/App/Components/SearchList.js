@@ -1,12 +1,12 @@
 import _ from 'lodash'
-import React, { Component } from 'react'
+import React, { Component, Fragment} from 'react'
 import PropTypes from 'prop-types'
 import {
   ScrollView,
   View,
   Text,
 } from 'react-native'
-import {Actions as NavActions} from 'react-native-router-flux'
+import { Actions as NavActions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import Loader from './Loader'
@@ -20,22 +20,33 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import styles from '../Containers/Styles/ExploreScreenStyles'
 import Colors from '../Shared/Themes/Colors'
 
+const MAX_ITEMS = 5
+
 class SearchList extends Component {
   static propTypes = {
     selectedTabIndex: PropTypes.number,
     lastSearchResults: PropTypes.object,
+    lastLocationPredictions: PropTypes.array,
     isSearching: PropTypes.bool,
+    isSearchingLocation: PropTypes.bool,
     userId: PropTypes.string,
     query: PropTypes.string,
+    addRecentSearch: PropTypes.func,
   }
 
-  _navToStory = story => () => NavActions.story({
-    storyId: story._id,
-    title: this.props.query,
-  })
+  _navToSearchResults = location => () => {
+    // add to recent search
+  }
+
+  _navToStory = story => () => {
+    // add to recent search
+    NavActions.story({
+      storyId: story._id,
+      title: this.props.query,
+    })
+  }
 
   _navToUserProfile = user => () => {
-    console.log('RUNNING')
     if (user._id === this.props.userId) {
       NavActions.profile({type: 'jump'})
     }
@@ -76,19 +87,27 @@ class SearchList extends Component {
     }
   }
 
-  renderPlacesRow = (story) => {
+  renderLocationRow = location => {
     return (
       <ListItem
-        onPress={this._navToStory(story)}
-        leftElement={this.renderPlacesLeft(story)}
-        text={<Text style={styles.listItemText}>{story.title}</Text>}
-        secondaryText={<Text style={styles.listItemTextSecondary}>{story.author}</Text>}
-        rightElement={<Icon name='angle-right' color={Colors.whiteAlphaPt3} size={30} />}
+        onPress={this._navToSearchResults(location)}
+        text={<Text style={styles.listItemText}>{location.primaryText}</Text>}
+        style={styles.searchRowItem}
       />
     )
   }
 
-  renderPeopleRow = (user) => {
+  renderPlacesRow = story => {
+    return (
+      <ListItem
+        onPress={this._navToStory(story)}
+        text={<Text style={styles.listItemText}>{story.title}</Text>}
+        style={styles.searchRowItem}
+      />
+    )
+  }
+
+  renderPeopleRow = user => {
     return (
       <ListItem
         onPress={this._navToUserProfile(user)}
@@ -104,18 +123,46 @@ class SearchList extends Component {
     )
   }
 
+  renderSearchTitle = text => (
+    <View style={styles.searchTitleWrapper}>
+      <Text style={styles.searchTitleText}>{text}</Text>
+    </View>
+  )
+
   render = () => {
-    const { isSearching, selectedTabIndex, lastSearchResults } = this.props
-    const searchHits = _.get(lastSearchResults, 'hits', [])
+    const {
+      isSearching,
+      isSearchingLocation,
+      selectedTabIndex,
+      lastSearchResults,
+      lastLocationPredictions,
+    } = this.props
+    const searchHits = _.get(lastSearchResults, 'hits', []).slice(0, MAX_ITEMS)
+    const locationHits = lastLocationPredictions || []
+
     return (
       <View style={styles.scrollWrapper}>
-        {isSearching && <Loader style={styles.searchLoader} />}
-        {searchHits.length > 0 && selectedTabIndex === 0 &&
+        {(isSearching || isSearchingLocation) && <Loader style={styles.searchLoader} />}
+        {selectedTabIndex === 0 &&
           <ScrollView>
-            <List
-              items={searchHits}
-              renderRow={this.renderPlacesRow}
-            />
+            {!!locationHits.length && (
+              <Fragment>
+                {this.renderSearchTitle('LOCATIONS')}
+                <List
+                  items={lastLocationPredictions}
+                  renderRow={this.renderLocationRow}
+                />
+              </Fragment>
+            )}
+            {!!searchHits.length && (
+              <Fragment>
+                {this.renderSearchTitle('STORIES')}
+                <List
+                  items={searchHits}
+                  renderRow={this.renderPlacesRow}
+                />
+              </Fragment>
+            )}
           </ScrollView>
         }
         {searchHits.length > 0 && selectedTabIndex === 1 &&
@@ -126,9 +173,14 @@ class SearchList extends Component {
             />
           </ScrollView>
         }
-        {!isSearching && searchHits.length === 0 && selectedTabIndex === 0 &&
-          <Text style={styles.noFindText}>No stories found</Text>
-        }
+        {selectedTabIndex === 0
+          && !isSearching
+          && !isSearchingLocation
+          && !searchHits.length
+          && !locationHits.length
+          && (
+            <Text style={styles.noFindText}>No results</Text>
+        )}
         {!isSearching && searchHits.length === 0 && selectedTabIndex === 1 &&
           <Text style={styles.noFindText}>No users found</Text>
         }

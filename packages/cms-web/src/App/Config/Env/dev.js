@@ -1,5 +1,5 @@
 const devSettings = {
-  API_URL: 'http://localhost:3000',
+  API_URL: 'https://ht-api.rehashstudio.com',
   cdnBaseUrl: 'https://res.cloudinary.com/doowpavbr/',
   cloudName: 'doowpavbr',
   imagePreset: 'risx0osr',

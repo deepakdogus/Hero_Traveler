@@ -92,12 +92,12 @@ class EditGuideStories extends Component {
       <TouchableOpacity key={'tooltip'} style={{zIndex: 100}} onPress={this.dismissTooltip}>
         <Animated.View
           style={[
-            storyCoverStyles.addToGuideTooltip,
+            storyCoverStyles.slideToDeleteTooltip,
           ]}>
           <Text style={{ color: 'white' }}>
             {`Swipe left on a\nstory to delete`}
           </Text>
-          <View style={storyCoverStyles.addToGuideTooltipArrow} />
+          <View style={storyCoverStyles.slideToDeleteTooltipArrow} />
         </Animated.View>
       </TouchableOpacity>
     )

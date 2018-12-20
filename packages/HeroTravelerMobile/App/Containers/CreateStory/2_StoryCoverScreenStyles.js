@@ -156,7 +156,7 @@ export default StyleSheet.create({
   failModalMessage: {
     marginBottom: 40,
   },
-  addToGuideTooltip: {
+  slideToDeleteTooltip: {
     position: 'absolute',
     top: 55,
     right: 14,
@@ -165,7 +165,7 @@ export default StyleSheet.create({
     paddingHorizontal: 30,
     paddingVertical: 8,
   },
-  addToGuideTooltipArrow: {
+  slideToDeleteTooltipArrow: {
     position: 'absolute',
     bottom: -30,
     right: 70,

@@ -176,7 +176,19 @@ export default StyleSheet.create({
     borderLeftColor: 'transparent',
     borderRightWidth: 8,
     borderRightColor: 'transparent',
-  }
+  },
+  slideToDeleteTooltipUpArrow: {
+    position: 'absolute',
+    top: -30,
+    right: 70,
+    height: 30,
+    borderBottomWidth: 14,
+    borderBottomColor: Colors.backgroundOpaque,
+    borderLeftWidth: 8,
+    borderLeftColor: 'transparent',
+    borderRightWidth: 8,
+    borderRightColor: 'transparent',
+  },
 })
 
 export const customStyles = StyleSheet.create({

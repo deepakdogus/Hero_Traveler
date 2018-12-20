@@ -80,7 +80,7 @@ class EditGuideStories extends Component {
     this.props.completeTooltip(updatedTooltips)
   }
 
-  renderToolTip = () => {
+  renderToolTip = (hasOne) => {
     const {user} = this.props
     const showNextTooltip = !!user && !isTooltipComplete(
       TooltipTypes.SLIDE_DELETE_GUIDE,
@@ -97,7 +97,7 @@ class EditGuideStories extends Component {
           <Text style={{ color: 'white' }}>
             {`Swipe left on a\nstory to delete`}
           </Text>
-          <View style={storyCoverStyles.slideToDeleteTooltipArrow} />
+          <View style={hasOne ? storyCoverStyles.slideToDeleteTooltipUpArrow : storyCoverStyles.slideToDeleteTooltipArrow} />
         </Animated.View>
       </TouchableOpacity>
     )
@@ -122,7 +122,7 @@ class EditGuideStories extends Component {
             style={storyCoverStyles.navBarStyle}
           />
           <View style={styles.storyWrapper}>
-            {this.renderToolTip()}
+            {!!stories.length && this.renderToolTip(stories.length === 1)}
             {!!stories.length &&
               stories.map((story, idx) => {
 

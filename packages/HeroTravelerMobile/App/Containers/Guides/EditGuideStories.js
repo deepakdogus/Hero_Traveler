@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
 import React, { Component } from 'react'
 import {
+  Alert,
   Animated,
   View,
   ScrollView,
@@ -64,11 +65,24 @@ class EditGuideStories extends Component {
   removeStoryFromGuide = (storyIdToRemove) => {
     const {updateGuide, guide} = this.props
     return () => {
-      const filteredStories = guide.stories.filter((storyId) => storyIdToRemove !== storyId)
-      updateGuide({
-        id: guide.id,
-        stories: filteredStories,
-      })
+      Alert.alert(
+        `Delete Story`,
+        `Are you sure?`,
+        [
+          { text: 'Cancel' },
+          {
+            text: 'Delete',
+            style: 'destructive',
+            onPress: () => {
+              const filteredStories = guide.stories.filter((storyId) => storyIdToRemove !== storyId)
+              updateGuide({
+                id: guide.id,
+                stories: filteredStories,
+              })
+            },
+          },
+        ],
+      )
     }
   }
 
@@ -124,8 +138,7 @@ class EditGuideStories extends Component {
           <View style={styles.storyWrapper}>
             {!!stories.length && this.renderToolTip(stories.length === 1)}
             {!!stories.length &&
-              stories.map((story, idx) => {
-
+              stories.map((story) => {
                 const coverUrl = getStoryImageUrl(
                   story,
                   videoImageUrlOptions,
@@ -134,7 +147,7 @@ class EditGuideStories extends Component {
                 return (
                   <Swipeout
                     style={{backgroundColor: 'white'}}
-                    key={`story-${idx}`}
+                    key={`story-${story._id}`}
                     right={[{
                       ...deleteBtnParams,
                       onPress: this.removeStoryFromGuide(story.id),

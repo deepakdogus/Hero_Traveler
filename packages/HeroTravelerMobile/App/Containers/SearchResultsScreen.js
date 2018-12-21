@@ -30,6 +30,8 @@ class SearchResultsScreen extends Component {
   static propTypes = {
     location: PropTypes.object,
     userId: PropTypes.string,
+    addRecentSearch: PropTypes.func,
+    historyData: PropTypes.object,
   }
 
   state = {
@@ -50,11 +52,15 @@ class SearchResultsScreen extends Component {
   }
 
   async componentDidMount() {
-    // location
     try {
-      const { latitude, longitude } = await RNGooglePlaces.lookUpPlaceByID(
-        this.props.location.placeID,
-      )
+      // location
+      const { historyData, location } = this.props
+      const { latitude, longitude } =
+      (historyData.latitude && historyData.longitude)
+        ? historyData
+        : await RNGooglePlaces.lookUpPlaceByID(
+            location.placeID,
+          )
 
       // guides
       this.guideHelper = AlgoliaSearchHelper(algoliasearch, GUIDE_INDEX)
@@ -65,6 +71,13 @@ class SearchResultsScreen extends Component {
       this.storyHelper = AlgoliaSearchHelper(algoliasearch, STORY_INDEX)
       this.setupSearchListeners(this.storyHelper, 'stories')
       this.search(this.storyHelper, MAX_STORY_RESULTS, latitude, longitude)
+
+      // add to search history
+      this.props.addRecentSearch({
+        ...this.props.historyData,
+        latitude,
+        longitude,
+      })
     }
     catch (err) {
       console.error(err)
@@ -92,12 +105,15 @@ class SearchResultsScreen extends Component {
   }
 
   _navToSeeAll = (type, feedItems) => {
+    const { location, historyData, userId} = this.props
+    const title = location.primaryText || historyData.title
+
     return () => NavActions.searchResultsSeeAll({
       feedItemType: type,
       typeLabels: this.typeLabels,
       feedItems,
-      userId: this.props.userId,
-      title: `${this.props.location.primaryText} - ${this.typeLabels[type]}`,
+      userId,
+      title: `${title} - ${this.typeLabels[type]}`,
     })
   }
 
@@ -131,7 +147,7 @@ class SearchResultsScreen extends Component {
                       key={`${type}-search-grid`}
                       type={type}
                       label={this.typeLabels[type].toUpperCase()}
-                      onPressAll={this._navToSeeAll}
+                      onPressAll={this._navToSeeAll(type, feedItems)}
                       onPressAuthor={this._onPressAuthor}
                       isShowAll={false}
                       stories={feedItems}

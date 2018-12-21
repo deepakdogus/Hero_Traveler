@@ -40,6 +40,7 @@ class ExploreScreen extends Component {
     categoriesFetchStatus: PropTypes.object,
     user: PropTypes.object,
     addRecentSearch: PropTypes.func,
+    searchHistory: PropTypes.object,
   }
 
   constructor(props) {
@@ -246,6 +247,7 @@ class ExploreScreen extends Component {
             userId={this.props.user.id}
             query={this.helper.state.query}
             addRecentSearch={this.props.addRecentSearch}
+            searchHistory={this.props.searchHistory}
           />
         </View>
       )
@@ -323,6 +325,7 @@ const mapStateToProps = (state) => {
     categories,
     categoriesFetchStatus,
     error: categoriesError,
+    searchHistory: state.history.searchHistory,
   }
 }
 

@@ -37,7 +37,7 @@ export default class GuideStoriesOfType extends React.Component {
     isShowAll: PropTypes.bool,
     stories: PropTypes.arrayOf(PropTypes.object).isRequired,
     authors: PropTypes.object.isRequired,
-    onPressAll: PropTypes.func.isRequired,
+    onPressAll: PropTypes.func,
     onPressAuthor: PropTypes.func.isRequired,
     isGuide: PropTypes.bool,
   }

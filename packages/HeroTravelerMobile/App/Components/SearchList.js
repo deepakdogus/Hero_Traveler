@@ -32,26 +32,50 @@ class SearchList extends Component {
     userId: PropTypes.string,
     query: PropTypes.string,
     addRecentSearch: PropTypes.func,
+    searchHistory: PropTypes.object,
   }
 
   _navToSearchResults = location => () => {
-    // add to recent search
     NavActions.searchResults({
       location,
-      title: location.primaryText,
       userId: this.props.userId,
+      addRecentSearch: this.props.addRecentSearch,
+      historyData: {
+        searchType: 'places',
+        contentType: 'location',
+        id: location.placeID || location.id,
+        title: location.primaryText || location.title,
+        latitude: location.latitude,
+        longitude: location.longitude,
+      },
+      title: location.primaryText || location.title,
     })
   }
 
   _navToStory = story => () => {
-    // add to recent search
+    this.props.addRecentSearch({
+      searchType: 'places',
+      contentType: 'story',
+      id: story.id,
+      title: story.title,
+    })
     NavActions.story({
-      storyId: story._id,
+      storyId: story._id || story.id,
       title: story.title,
     })
   }
 
+  _navConditionally = item =>
+    item.contentType === 'story'
+      ? this._navToStory(item)
+      : this._navToSearchResults(item)
+
   _navToUserProfile = user => () => {
+    this.props.addRecentSearch({
+      searchType: 'people',
+      id: user.id,
+      ...user,
+    })
     if (user._id === this.props.userId) {
       NavActions.profile({type: 'jump'})
     }
@@ -128,6 +152,16 @@ class SearchList extends Component {
     )
   }
 
+  renderRecentSearchesRow = item => {
+    return (
+      <ListItem
+        onPress={this._navConditionally(item)}
+        text={<Text style={styles.listItemText}>{item.title}</Text>}
+        style={styles.searchRowItem}
+      />
+    )
+  }
+
   renderSearchTitle = text => (
     <View style={styles.searchTitleWrapper}>
       <Text style={styles.searchTitleText}>{text}</Text>
@@ -183,8 +217,15 @@ class SearchList extends Component {
           && !isSearchingLocation
           && !searchHits.length
           && !locationHits.length
+          && !!this.props.searchHistory.places.length
           && (
-            <Text style={styles.noFindText}>No results</Text>
+            <ScrollView>
+              {this.renderSearchTitle('RECENT SEARCHES')}
+              <List
+                items={this.props.searchHistory.places}
+                renderRow={this.renderRecentSearchesRow}
+              />
+            </ScrollView>
         )}
         {!isSearching && searchHits.length === 0 && selectedTabIndex === 1 &&
           <Text style={styles.noFindText}>No users found</Text>

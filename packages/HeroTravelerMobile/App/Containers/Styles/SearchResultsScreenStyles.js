@@ -14,7 +14,7 @@ export default StyleSheet.create({
   loader: {
     height: Metrics.screenHeight - 100 - Metrics.tabBarHeight,
   },
-  sectionContainer: {
+  scrollView: {
     flex: 1,
   },
 })

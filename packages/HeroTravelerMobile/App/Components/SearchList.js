@@ -39,6 +39,7 @@ class SearchList extends Component {
     NavActions.searchResults({
       location,
       title: location.primaryText,
+      userId: this.props.userId,
     })
   }
 

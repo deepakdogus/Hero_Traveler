@@ -11,7 +11,7 @@ import {TouchlessPlayButton} from './VideoPlayer'
 
 const defaultVideoImageOptions = {
   video: true,
-  width: storyWidth
+  width: storyWidth,
 }
 
 const defaultImageOptions = {
@@ -39,6 +39,7 @@ export default class GuideStoriesOfType extends React.Component {
     authors: PropTypes.object.isRequired,
     onPressAll: PropTypes.func.isRequired,
     onPressAuthor: PropTypes.func.isRequired,
+    isGuide: PropTypes.bool,
   }
 
   onPressAll = () => {
@@ -46,6 +47,10 @@ export default class GuideStoriesOfType extends React.Component {
   }
 
   onPressStory = (story) => {
+    if (this.props.isGuide) return () => {
+      NavActions.guide({guideId: story.id, title: story.title})
+    }
+
     return () => {
       NavActions.story({storyId: story.id, title: story.title})
     }
@@ -87,7 +92,11 @@ export default class GuideStoriesOfType extends React.Component {
             {story.title}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={this.onPressAuthor(story.author)}>
+        <TouchableOpacity onPress={this.onPressAuthor(
+          hasAuthorsObj
+            ? story.author
+            : story.authorId,
+        )}>
           <Text style={styles.author}>
             {hasAuthorsObj
               ? authors[story.author].username

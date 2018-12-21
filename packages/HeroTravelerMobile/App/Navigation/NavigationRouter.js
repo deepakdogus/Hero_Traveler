@@ -61,6 +61,7 @@ import GuideReadingScreen from '../Containers/GuideReadingScreen'
 
 // Search
 import SearchResultsScreen from '../Containers/SearchResultsScreen'
+import SearchResultsSeeAllScreen from '../Components/SearchResultsSeeAllScreen'
 
 import { Images } from '../Shared/Themes'
 
@@ -496,6 +497,15 @@ export default NavActions.create(
       <Scene
         key='searchResults'
         component={SearchResultsScreen}
+        direction='horizontal'
+        onLeft={NavActions.pop}
+        backButtonImage={Images.iconArrowLeft}
+        {..._.merge({}, clearNavBarProps, redBack)}
+        titleStyle={Styles.storyTitle}
+      />
+      <Scene
+        key='searchResultsSeeAll'
+        component={SearchResultsSeeAllScreen}
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}

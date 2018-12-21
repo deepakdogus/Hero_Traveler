@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import styles from './Styles/SearchResultsScreenStyles'
 
 import { View, ScrollView, Text} from 'react-native'
+import {Actions as NavActions} from 'react-native-router-flux'
+import {navToProfile} from '../Navigation/NavigationRouter'
 import env from '../Config/Env'
 // Search
 import algoliasearchModule from 'algoliasearch/reactnative'
@@ -27,6 +29,7 @@ const MAX_GUIDE_RESULTS = 20
 class SearchResultsScreen extends Component {
   static propTypes = {
     location: PropTypes.object,
+    userId: PropTypes.string,
   }
 
   state = {
@@ -49,7 +52,6 @@ class SearchResultsScreen extends Component {
   async componentDidMount() {
     // location
     try {
-      console.log({ placeId: this.props.location.placeID })
       const { latitude, longitude } = await RNGooglePlaces.lookUpPlaceByID(
         this.props.location.placeID,
       )
@@ -64,7 +66,7 @@ class SearchResultsScreen extends Component {
       this.setupSearchListeners(this.storyHelper, 'stories')
       this.search(this.storyHelper, MAX_STORY_RESULTS, latitude, longitude)
     }
- catch (err) {
+    catch (err) {
       console.error(err)
     }
   }
@@ -81,24 +83,34 @@ class SearchResultsScreen extends Component {
     })
   }
 
-  search = (helper, hits, lat, lng) => {
+  search = (helper, hits, latitude, longitude) => {
     helper
       .setQuery('')
-      .setQueryParameter('aroundLatLng', `${lat}, ${lng}`)
+      .setQueryParameter('aroundLatLng', `${latitude}, ${longitude}`)
       .setQueryParameter('hitsPerPage', hits)
       .search()
   }
 
-  _navToSeeAll = () => null
+  _navToSeeAll = (type, feedItems) => {
+    return () => NavActions.searchResultsSeeAll({
+      feedItemType: type,
+      typeLabels: this.typeLabels,
+      feedItems,
+      userId: this.props.userId,
+      title: `${this.props.location.primaryText} - ${this.typeLabels[type]}`,
+    })
+  }
 
-  _onPressAuthor = () => null
+  _onPressAuthor = (authorId) => {
+    const { userId } = this.props
+    if (authorId === userId) navToProfile()
+    else NavActions.readOnlyProfile({userId: authorId})
+  }
 
   _shouldDisplaySection = items => !!items && !!items.length
 
   render() {
-    const { location } = this.props
     const { isFetchingResults, lastSearchResults } = this.state
-    console.log({ location, lastSearchResults })
     return (
       <View style={styles.root}>
         {isFetchingResults ? (
@@ -107,7 +119,7 @@ class SearchResultsScreen extends Component {
           (!!lastSearchResults.stories.length
             || !!lastSearchResults.guides.length)
             ? (
-              <ScrollView style={styles.sectionContainer}>
+              <ScrollView style={styles.scrollView}>
                 {Object.keys(this.typeLabels).map(type => {
                   const feedItems = (type === 'guides' || type === 'stories')
                     ? lastSearchResults[type]

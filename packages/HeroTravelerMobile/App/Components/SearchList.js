@@ -36,13 +36,17 @@ class SearchList extends Component {
 
   _navToSearchResults = location => () => {
     // add to recent search
+    NavActions.searchResults({
+      location,
+      title: location.primaryText,
+    })
   }
 
   _navToStory = story => () => {
     // add to recent search
     NavActions.story({
       storyId: story._id,
-      title: this.props.query,
+      title: story.title,
     })
   }
 

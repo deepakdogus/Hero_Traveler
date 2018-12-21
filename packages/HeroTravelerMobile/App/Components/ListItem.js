@@ -35,7 +35,6 @@ export default class ListItem extends Component {
     text: PropTypes.node.isRequired,
     secondaryText: PropTypes.node,
     rightElement: PropTypes.element,
-    style: PropTypes.object,
   }
 
   render() {

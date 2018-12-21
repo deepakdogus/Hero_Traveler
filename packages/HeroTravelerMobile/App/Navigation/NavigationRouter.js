@@ -59,7 +59,10 @@ import CreateGuideScreen from '../Containers/Guides/CreateGuide'
 import EditGuideStories from '../Containers/Guides/EditGuideStories'
 import GuideReadingScreen from '../Containers/GuideReadingScreen'
 
-import {Images} from '../Shared/Themes'
+// Search
+import SearchResultsScreen from '../Containers/SearchResultsScreen'
+
+import { Images } from '../Shared/Themes'
 
 const darkNavBarProps = {
   navigationBarStyle: Styles.navBar,
@@ -489,6 +492,15 @@ export default NavActions.create(
         key='editGuideStories'
         component={EditGuideStories}
         hideNavBar
+      />
+      <Scene
+        key='searchResults'
+        component={SearchResultsScreen}
+        direction='horizontal'
+        onLeft={NavActions.pop}
+        backButtonImage={Images.iconArrowLeft}
+        {..._.merge({}, clearNavBarProps, redBack)}
+        titleStyle={Styles.storyTitle}
       />
     </Scene>,
 )

@@ -71,6 +71,8 @@ export default class GuideStoriesOfType extends React.Component {
     const isVideo = !!story.coverVideo
     const coverUrl = getStoryImageUrl(story)
     const {authors} = this.props
+    // quick fix to allow story items from algolia search
+    const hasAuthorsObj = !!Object.keys(authors).length
 
     return (
       <View key={story.id} style={styles.storyView}>
@@ -87,7 +89,10 @@ export default class GuideStoriesOfType extends React.Component {
         </TouchableOpacity>
         <TouchableOpacity onPress={this.onPressAuthor(story.author)}>
           <Text style={styles.author}>
-            {authors[story.author].username}
+            {hasAuthorsObj
+              ? authors[story.author].username
+              : story.author
+            }
           </Text>
         </TouchableOpacity>
       </View>

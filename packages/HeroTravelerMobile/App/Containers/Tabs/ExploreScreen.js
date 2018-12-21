@@ -198,12 +198,16 @@ class ExploreScreen extends Component {
 
   resetSearchText = () => {
     this._searchInput.setNativeProps({text: ''})
-    this.setState({hasSearchText: false})
+    this.setState({
+      hasSearchText: false,
+      lastSearchResults: null,
+      lastLocationPredictions: null,
+    })
   }
 
   onPressCancel = () => {
     this._searchInput.setNativeProps({text: ''})
-    this.setState({selectedTabIndex: null, lastSearchResults: null})
+    this.setState({ selectedTabIndex: null })
   }
 
   // explore

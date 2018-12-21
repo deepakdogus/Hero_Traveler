@@ -73,7 +73,7 @@ class SearchList extends Component {
   _navToUserProfile = user => () => {
     this.props.addRecentSearch({
       searchType: 'people',
-      id: user.id,
+      id: user._id,
       ...user,
     })
     if (user._id === this.props.userId) {
@@ -227,9 +227,17 @@ class SearchList extends Component {
               />
             </ScrollView>
         )}
-        {!isSearching && searchHits.length === 0 && selectedTabIndex === 1 &&
-          <Text style={styles.noFindText}>No users found</Text>
-        }
+        {!isSearching && searchHits.length === 0
+          && selectedTabIndex === 1
+          && !!this.props.searchHistory.people.length
+          && (
+            <ScrollView>
+              <List
+                items={this.props.searchHistory.people}
+                renderRow={this.renderPeopleRow}
+              />
+            </ScrollView>
+        )}
       </View>
     )
   }

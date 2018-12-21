@@ -152,6 +152,7 @@ class SearchResultsScreen extends Component {
                       isShowAll={false}
                       stories={feedItems}
                       authors={{}}
+                      isGuide={type === 'guides'}
                     />
                   )
                 })}

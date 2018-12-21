@@ -8,6 +8,7 @@ import {styles as StoryReadingScreenStyles} from '../Containers/Styles/StoryRead
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import ImageWrapper from './ImageWrapper'
 import {TouchlessPlayButton} from './VideoPlayer'
+import TabIcon from './TabIcon'
 
 const defaultVideoImageOptions = {
   video: true,
@@ -75,7 +76,7 @@ export default class GuideStoriesOfType extends React.Component {
   renderStory = (story) => {
     const isVideo = !!story.coverVideo
     const coverUrl = getStoryImageUrl(story)
-    const {authors} = this.props
+    const { authors, isGuide } = this.props
     // quick fix to allow story items from algolia search
     const hasAuthorsObj = !!Object.keys(authors).length
 
@@ -88,9 +89,17 @@ export default class GuideStoriesOfType extends React.Component {
             style={styles.image}
           />
          {isVideo && this.renderPlayButton()}
-          <Text style={styles.title}>
-            {story.title}
-          </Text>
+         <View style={styles.titleContainer}>
+          {isGuide &&
+            (<TabIcon name='guide' style={{
+                view: styles.guideIcon,
+                image: styles.guideIconImage,
+              } }/>
+            )}
+            <Text style={styles.title}>
+              {story.title}
+            </Text>
+        </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={this.onPressAuthor(
           hasAuthorsObj

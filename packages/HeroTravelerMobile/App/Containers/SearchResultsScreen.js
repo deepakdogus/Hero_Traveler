@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styles from './Styles/SearchResultsScreenStyles'
 
-import { View, ScrollView, Text} from 'react-native'
+import { View, ScrollView, Text } from 'react-native'
 import {Actions as NavActions} from 'react-native-router-flux'
 import {navToProfile} from '../Navigation/NavigationRouter'
 import env from '../Config/Env'

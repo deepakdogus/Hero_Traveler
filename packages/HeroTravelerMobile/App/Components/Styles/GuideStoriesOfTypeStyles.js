@@ -51,14 +51,19 @@ export default StyleSheet.create({
     width: storyWidth,
     marginBottom: Metrics.baseMargin,
   },
+  titleContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: Metrics.baseMargin,
+    marginBottom: Metrics.baseMargin * .5,
+  },
   title: {
     fontFamily: Fonts.type.montserrat,
     color: Colors.background,
     fontSize: 13,
     letterSpacing: .7,
     fontWeight: '600',
-    marginTop: Metrics.baseMargin,
-    marginBottom: Metrics.baseMargin * .5,
   },
   author: {
     fontFamily: Fonts.type.montserrat,
@@ -79,5 +84,12 @@ export default StyleSheet.create({
     height: storyHeight,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  guideIcon: {
+    width: 15,
+  },
+  guideIconImage: {
+    height: 12,
+    width: 12,
   },
 })

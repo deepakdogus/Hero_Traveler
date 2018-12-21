@@ -7,6 +7,7 @@ import { Input, Icon, Button, Row, Col, Spin, message } from 'antd'
 import { Link } from 'react-router-dom'
 import get from 'lodash/get'
 import find from 'lodash/find'
+import filter from 'lodash/filter'
 import truncate from 'lodash/truncate'
 import isEmpty from 'lodash/isEmpty'
 import values from 'lodash/values'
@@ -75,12 +76,13 @@ class EditUser extends React.Component {
 
   componentDidMount(){
     //get user EditUser on signUp and reset signUp redux
-    const { record, getUser, getStories, id } = this.props
+    const { record, getUser, getStories, getGuides, id } = this.props
     
     if (isEmpty(record)) {
       getUser(id)
     }
     getStories(id)
+    getGuides(id)
   }
 
   handleCancel = () => {
@@ -251,8 +253,8 @@ function mapStateToProps(state) {
   const id = href.match(/([^\/]*)\/*$/)[1]
   const list = [...get(state, ['admin','users', 'list'], [])]
   const record = find(list, { id }) || {}
-  const stories = values(get(state, 'entities.stories.entities', []))
-  const guides = values(get(state, 'entities.guides.entities', []))
+  const stories = filter(values(get(state, 'entities.stories.entities', [])), { author: id })
+  const guides = filter(values(get(state, 'entities.guides.entities', [])), { author: id })
   return {
     record,
     isLoading: state.admin.users.isLoading,

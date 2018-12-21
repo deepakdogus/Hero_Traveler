@@ -38,6 +38,7 @@ const { Types, Creators } = createActions({
   deleteStory: ['userId', 'storyId'],
   deleteStorySuccess: ['userId', 'storyId'],
   getGuideStories: ['guideId'],
+  receiveStoriesByGuide: ['guideId', 'storiesByGuide']
 })
 
 export const StoryTypes = Types
@@ -55,6 +56,7 @@ export const INITIAL_STATE = Immutable({
   userFeedById: [],
   userStoryFeedCount: 9999999999,
   storiesByUserAndId: {},
+  storiesByGuide: {},
   storiesByCategoryAndId: {},
   backgroundFailures: {},
   fetchStatus: initialFetchStatus(),
@@ -210,6 +212,13 @@ export const failure = (state, {error}) =>
 
 export const updateEntities = (state, {stories = {}}) => {
   return state.merge({entities: stories}, {deep: true})
+}
+
+export const receiveStoriesByGuide = (state, { guideId, storiesByGuide }) => {
+  return state.setIn(
+    ['storiesByGuide', guideId],
+    storiesByGuide
+  )
 }
 
 export const addUserStory = (state, {stories = {}, draftId}) => {
@@ -395,4 +404,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_BOOKMARKS]: getBookmarks,
   [Types.GET_BOOKMARKS_SUCCESS]: getBookmarksSuccess,
   [Types.GET_BOOKMARKS_FAILURE]: getBookmarksFailure,
+  [Types.RECEIVE_STORIES_BY_GUIDE]: receiveStoriesByGuide,
 })

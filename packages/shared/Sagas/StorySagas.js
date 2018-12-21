@@ -79,7 +79,7 @@ export function * getUserStories (api, {userId}) {
       put(UserActions.receiveUsers(entities.users)),
       put(CategoryActions.receiveCategories(entities.categories)),
       put(StoryActions.receiveStories(entities.stories)),
-      put(StoryActions.fromUserSuccess(userId, result)),
+      put(StoryActions.fromUserSuccess(userId, result, entities)),
     ]
   } else {
     yield put(StoryActions.fromUserFailure(userId, new Error('Failed to get stories for user')))
@@ -482,11 +482,12 @@ export function * loadDrafts(api) {
 export function * getGuideStories(api, {guideId}) {
   const response = yield call(api.getGuideStories, guideId)
   if (response.ok) {
-    const {entities} = response.data
+    const {entities, result} = response.data
     yield [
       put(UserActions.receiveUsers(entities.users)),
       put(CategoryActions.receiveCategories(entities.categories)),
       put(StoryActions.receiveStories(entities.stories)),
+      put(StoryActions.receiveStoriesByGuide(guideId, result)),
     ]
   }
   // no fail case... worse case they will see less stories

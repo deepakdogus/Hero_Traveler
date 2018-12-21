@@ -73,11 +73,12 @@ class EditGuide extends React.Component {
 
   componentDidMount(){
     //get user EditGuide on signUp and reset signUp redux
-    const { record, getGuide, id } = this.props
+    const { record, getGuide, getStories, id } = this.props
     
     if (isEmpty(record)) {
       getGuide(id)
     }
+    getStories(id)
   }
 
   handleCancel = () => {
@@ -163,7 +164,7 @@ class EditGuide extends React.Component {
             <TrStyled>
               <TdStyledGrey>Location</TdStyledGrey>
               <TdStyled>
-                {get(record, 'location.name')}
+                {get(record, 'locations.0.name')}
               </TdStyled>
             </TrStyled>
             <TrStyled>
@@ -253,7 +254,7 @@ function mapStateToProps(state) {
   const id = href.match(/([^\/]*)\/*$/)[1]
   const list = [...get(state, ['admin','guides', 'list'], [])]
   const record = find(list, { id }) || {}
-  const stories = values(get(state, 'entities.stories.entities', []))
+  const stories = values(get(state, ['entities', 'guides', 'storiesByGuide', id], []))
   return {
     record,
     isLoading: state.admin.guides.isLoading,

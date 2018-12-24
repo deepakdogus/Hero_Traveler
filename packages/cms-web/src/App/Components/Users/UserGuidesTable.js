@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 
 const columns = [{
   title: 'Title',
-  render: (item) => (<Link to={`/stories/${item.id}`}>{item.title}</Link>),
+  render: (item) => (<Link to={`/guides/${item.id}`}>{item.title}</Link>),
   sorter: true,
 },
 {
@@ -23,7 +23,7 @@ const columns = [{
 },
 {
   title: 'Edit',
-  render: (item) => (<Link to={`/stories/${item.id}`}><Icon type='edit' /></Link>),
+  render: (item) => (<Link to={`/guides/${item.id}`}><Icon type='edit' /></Link>),
 },
 ]
 

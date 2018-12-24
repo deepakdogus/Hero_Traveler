@@ -4,14 +4,18 @@ import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
 import React, { Component } from 'react'
 import {
+  Animated,
   View,
   ScrollView,
   StyleSheet,
+  Text,
+  TouchableOpacity,
 } from 'react-native'
 import Swipeout from 'react-native-swipeout'
 
 import storyCoverStyles from '../CreateStory/2_StoryCoverScreenStyles'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
+import UserActions from '../../Shared/Redux/Entities/Users'
 import NavBar from '../CreateStory/NavBar'
 import GuideListItem from '../../Components/GuideListItem'
 import {imageHeight, imageWidth} from '../../Components/Styles/GuideListItemStyles'
@@ -20,6 +24,7 @@ import {
   Colors,
 } from '../../Shared/Themes'
 import { getStoryImageUrl } from '../../Components/GuideStoriesOfType'
+import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTimeTooltips'
 
 const deleteBtnParams = {
   text: 'Delete',
@@ -40,9 +45,11 @@ const imageUrlOptions = {
 
 class EditGuideStories extends Component {
   static propTypes = {
+    user: PropTypes.object,
     updateGuide: PropTypes.func,
     stories: PropTypes.arrayOf(PropTypes.object),
     guide: PropTypes.object,
+    completeTooltip: PropTypes.func,
   }
 
   onDone = () => {
@@ -65,6 +72,37 @@ class EditGuideStories extends Component {
     }
   }
 
+  dismissTooltip = () => {
+    const updatedTooltips = this.props.user.introTooltips.concat({
+      name: TooltipTypes.SLIDE_DELETE_GUIDE,
+      seen: true,
+    })
+    this.props.completeTooltip(updatedTooltips)
+  }
+
+  renderToolTip = (hasOne) => {
+    const {user} = this.props
+    const showNextTooltip = !!user && !isTooltipComplete(
+      TooltipTypes.SLIDE_DELETE_GUIDE,
+      user.introTooltips,
+    )
+    if (!showNextTooltip) return null
+
+    return (
+      <TouchableOpacity key={'tooltip'} style={{zIndex: 100}} onPress={this.dismissTooltip}>
+        <Animated.View
+          style={[
+            storyCoverStyles.slideToDeleteTooltip,
+          ]}>
+          <Text style={{ color: 'white' }}>
+            {`Swipe left on a\nstory to delete`}
+          </Text>
+          <View style={hasOne ? storyCoverStyles.slideToDeleteTooltipUpArrow : storyCoverStyles.slideToDeleteTooltipArrow} />
+        </Animated.View>
+      </TouchableOpacity>
+    )
+  }
+
   render = () => {
     const {stories} = this.props
     return (
@@ -84,6 +122,7 @@ class EditGuideStories extends Component {
             style={storyCoverStyles.navBarStyle}
           />
           <View style={styles.storyWrapper}>
+            {!!stories.length && this.renderToolTip(stories.length === 1)}
             {!!stories.length &&
               stories.map((story, idx) => {
 
@@ -110,6 +149,7 @@ class EditGuideStories extends Component {
                 )
               })
             }
+            
           </View>
         </ScrollView>
       </View>
@@ -121,15 +161,18 @@ const mapStateToProps = (state, props) => {
   const guide = state.entities.guides.entities[props.guideId]
   const allStories = state.entities.stories.entities
   const stories = _.compact(guide.stories.map((storyId) => allStories[storyId]))
+  const {session: {userId}} = state
 
   return {
     guide,
     stories,
+    user: state.entities.users.entities[userId],
   }
 }
 
 const mapDispatchToProps = dispatch => ({
   updateGuide: guide => dispatch(GuideActions.updateGuide(guide)),
+  completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips})),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditGuideStories)

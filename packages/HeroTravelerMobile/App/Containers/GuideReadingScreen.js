@@ -45,7 +45,6 @@ class GuideReadingScreen extends React.Component {
     author: PropTypes.object,
     guideStories: PropTypes.arrayOf(PropTypes.object),
     users: PropTypes.object,
-    user: PropTypes.object,
   }
 
   constructor(props) {
@@ -63,10 +62,6 @@ class GuideReadingScreen extends React.Component {
     else if (guide.stories.length !== guideStories.length) {
       getGuideStories(guideId)
     }
-  }
-
-  componentDidMount = () => {
-    if (!this.props.user) NavActions.launchScreen({fromGuide: true})
   }
 
   // _onPressBookmark = () => {
@@ -219,9 +214,8 @@ class GuideReadingScreen extends React.Component {
   render () {
     const {
       guide, author, sessionUser, fetching, error,
-      isBookmarked, isGuideLiked, user,
+      isBookmarked, isGuideLiked,
     } = this.props
-    if (!user) return null
 
     return (
       <ReadingScreensOverlap
@@ -249,7 +243,6 @@ const mapStateToProps = (state, props) => {
   const {session: {userId}} = state
   let { fetching, entities: guides, error } = state.entities.guides
   const users = state.entities.users.entities
-  const user = users ? users[userId] : null
   const stories = state.entities.stories.entities
   const guide = guides[props.guideId]
   let guideStories = []
@@ -263,7 +256,6 @@ const mapStateToProps = (state, props) => {
     author: guide ? users[guide.author] : undefined,
     sessionUser: users[userId],
     users,
-    user,
     fetching,
     guide,
     guideStories,

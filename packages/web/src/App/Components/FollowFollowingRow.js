@@ -97,7 +97,7 @@ export default class FollowFollowingRow extends Component {
 
   _handleProfileClick = () => {
     const {user, onProfileClick} = this.props
-    if (onProfileClick) onProfileClick(user.id || user._id)
+    if (onProfileClick) onProfileClick(user.id || user._id, user)
   }
 
   getOnclick = () => {

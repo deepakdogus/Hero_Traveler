@@ -1,8 +1,14 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { View, StatusBar, Linking } from 'react-native'
 import HockeyApp from 'react-native-hockeyapp'
 import { connect } from 'react-redux'
-import { Router } from 'react-native-router-flux'
+import {
+  Router,
+  Actions as NavActions,
+  ActionConst as NavActionConst,
+} from 'react-native-router-flux'
+import branch from 'react-native-branch'
 
 // import PerfMonitor from 'react-native/Libraries/Performance/RCTRenderingPerf'
 
@@ -12,15 +18,24 @@ import StartupActions from '../Shared/Redux/StartupRedux'
 import LoginActions from '../Shared/Redux/LoginRedux'
 import styles from './Styles/RootContainerStyles'
 import deeplinkToAction from '../Shared/Lib/deeplinkToAction'
+import { parseNonBranchURL } from '../Lib/sharingMobile'
 
 const ConnectedRouter = connect()(Router)
 
 class RootContainer extends Component {
+  static propTypes = {
+    isLoggedIn: PropTypes.bool,
+    started: PropTypes.bool,
+    location: PropTypes.string,
+    heroStartup: PropTypes.func,
+    openScreen: PropTypes.func,
+    verifyEmail: PropTypes.func,
+  }
 
   constructor(props) {
     super(props)
     this.state = {
-      initialUrl: null
+      initialUrl: null,
     }
   }
 
@@ -31,14 +46,16 @@ class RootContainer extends Component {
   async componentDidMount() {
     // PerfMonitor.toggle();
     // setTimeout(() => {
-    //   PerfMonitor.start();
-    //   setTimeout(() => {
-    //     PerfMonitor.stop();
-    //   }, 14000);
-    // }, 5000);
+      //   PerfMonitor.start();
+      //   setTimeout(() => {
+        //     PerfMonitor.stop();
+        //   }, 14000);
+        // }, 5000);
+
+    this._initializeDeepLinking()
 
     HockeyApp.start()
-    Linking.addEventListener('url', this._handleOpenURL);
+    Linking.addEventListener('url', this._handleOpenURL)
     return Linking.getInitialURL().then((url) => {
       this.setState({initialUrl: url})
     })
@@ -51,7 +68,7 @@ class RootContainer extends Component {
   }
 
   componentWillUnmount() {
-    Linking.removeEventListener('url', this._handleOpenURL);
+    Linking.removeEventListener('url', this._handleOpenURL)
   }
 
   _handleOpenURL = (event) => {
@@ -62,15 +79,57 @@ class RootContainer extends Component {
     if (!this.props.isLoggedIn && isPasswordReset) {
       this.props.openScreen('resetPassword', {
         type: 'push',
-        token: urlObj.id
+        token: urlObj.id,
       })
-    } else if (this.props.isLoggedIn && isPasswordReset) {
+    }
+    else if (this.props.isLoggedIn && isPasswordReset) {
       alert('You must logout to reset a password from an email link')
-    } else if (this.props.isLoggedIn && isEmailVerify) {
+    }
+    else if (this.props.isLoggedIn && isEmailVerify) {
       this.props.verifyEmail(urlObj.id)
-    } else if (!this.props.isLoggedIn && isEmailVerify) {
+    }
+    else if (!this.props.isLoggedIn && isEmailVerify) {
       alert('You must be logged in to verify your email address')
     }
+  }
+
+   //deep linking logic
+   _initializeDeepLinking = () => {
+    branch.subscribe(({ error, params }) => {
+      if (error) {
+        console.error('Error from Branch: ' + error)
+        return
+      }
+      if (!this.props.isLoggedIn) return
+      if (params['+non_branch_link']) {
+        //facebook/twitter (non-branch) link routing
+        let obj = parseNonBranchURL(params['+non_branch_link'])
+        obj['storyId']
+          ? this._navToStoryFromOutsideLink(obj['storyId'], obj['title'])
+          : this._navToGuideFromOutsideLink(obj['guideId'], obj['title'])
+        return
+      }
+      if (!params['+clicked_branch_link']) {
+        return
+      }
+      //branch deep link routing
+      const title = params.$og_title
+      const feedItemType = params.$canonical_url.split('/')[0]
+      const feedItemId = params.$canonical_url.split('/')[1]
+      feedItemType === 'story'
+        ? this._navToStoryFromOutsideLink(feedItemId, title)
+        : this._navToGuideFromOutsideLink(feedItemId, title)
+    })
+  }
+
+  _navToStoryFromOutsideLink = (storyId, title) => {
+    NavActions.tabbar({type: NavActionConst.RESET})
+    NavActions.story({ storyId, title })
+  }
+
+  _navToGuideFromOutsideLink = (guideId, title) => {
+    NavActions.tabbar({type: NavActionConst.RESET})
+    NavActions.guide({ guideId, title })
   }
 
   isDarkBar() {

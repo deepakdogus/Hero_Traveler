@@ -33,8 +33,6 @@ class SignupScreen extends React.Component {
     email: PropTypes.string,
     password: PropTypes.string,
     signupError: PropTypes.string,
-    fromStory: PropTypes.bool,
-    fromGuide: PropTypes.bool,
   }
 
   componentWillReceiveProps(newProps) {

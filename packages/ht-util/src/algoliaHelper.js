@@ -1,9 +1,10 @@
 import algoliasearchModule from 'algoliasearch'
 
 const client = algoliasearchModule(process.env.ALGOLIA_ACCT_KEY, process.env.ALGOLIA_API_KEY)
+const storyIndex = client.initIndex(process.env.ALGOLIA_STORY_INDEX)
+const guideIndex = client.initIndex(process.env.ALGOLIA_GUIDE_INDEX)
 const categoryIndex = client.initIndex(process.env.ALGOLIA_CATEGORY_INDEX)
 const hashtagIndex = client.initIndex(process.env.ALGOLIA_HASHTAG_INDEX)
-const storyIndex = client.initIndex(process.env.ALGOLIA_STORY_INDEX)
 const userIndex = client.initIndex(process.env.ALGOLIA_USER_INDEX)
 userIndex.setSettings({
   searchableAttributes: [
@@ -11,6 +12,8 @@ userIndex.setSettings({
     'profile.fullName',
   ]
 })
+
+//utils
 
 // methodParam is an object for all cases but delete when it is an id
 function algoliaAction(index, method, methodParam) {
@@ -20,6 +23,16 @@ function algoliaAction(index, method, methodParam) {
       if (err) return reject(err)
       return resolve(content)
     })
+  })
+}
+
+function mapForTitleAndId(array) {
+  return array.map(item => {
+    return {
+      title: item.title,
+      _id: item.id,
+      objectID: item.id,
+    }
   })
 }
 
@@ -53,23 +66,33 @@ function updateUsersIndex(users) {
   return algoliaAction(userIndex, 'partialUpdateObjects', users.map(formatUserSearchObject))
 }
 
+function deleteUserFromIndex(userId) {
+  return algoliaAction(userIndex, 'deleteObject', userId)
+}
 
 // stories
 function formatStorySearchObject(story) {
   return {
+    _id: story._id,
+    id: story._id,
+    objectID: story._id,
     title: story.title,
     author: story.author.username,
+    authorId: story.author.id,
     coverImage: story.coverImage,
     coverVideo: story.coverVideo,
     type: story.type,
     locationInfo: story.locationInfo,
     draftjsContent: story.draftjsContent,
+    draft: story.draft,
     currency: story.currency,
     cost: story.cost,
-    _id: story._id,
     hashtags: story.hashtags,
     content: story.content,
-    objectID: story._id,
+    _geoloc: {
+      lat: story.locationInfo.latitude,
+      lng: story.locationInfo.longitude,
+    }
   }
 }
 
@@ -90,18 +113,41 @@ function deleteStoryFromIndex(storyId) {
   return algoliaAction(storyIndex, 'deleteObject', storyId)
 }
 
-function deleteUserFromIndex(userId) {
-  return algoliaAction(userIndex, 'deleteObject', userId)
+// guides
+function formatGuideSearchObject(guide) {
+  return {
+    _id: guide._id,
+    id: guide._id,
+    objectID: guide._id,
+    author: guide.author.id,
+    title: guide.title,
+    description: guide.description,
+    coverImage: guide.coverImage,
+    coverVideo: guide.coverVideo,
+    cost: guide.cost,
+    duration: guide.duration,
+    _geoloc: guide.locations.map(location => ({
+      lat: location.latitude,
+      lng: location.longitude,
+    }))
+  }
 }
 
-function mapForTitleAndId(array) {
-  return array.map(item => {
-    return {
-      title: item.title,
-      _id: item.id,
-      objectID: item.id,
-    }
-  })
+function addGuideToIndex(guide) {
+  return algoliaAction(guideIndex, 'addObject', formatGuideSearchObject(guide))
+}
+
+function updateGuideIndex(guide) {
+  return algoliaAction(guideIndex, 'partialUpdateObject', formatGuideSearchObject(guide))
+}
+
+function updateMultipleGuides(guides) {
+  const formattedGuides = guides.map(formatGuideSearchObject)
+  return algoliaAction(guideIndex, 'partialUpdateObjects', formattedGuides)
+}
+
+function deleteGuideFromIndex(guideId) {
+  return algoliaAction(guideIndex, 'deleteObject', guideId)
 }
 
 // hashtags
@@ -118,12 +164,16 @@ export default {
   addUserToIndex,
   addUsersToIndex,
   updateUserIndex,
+  updateUsersIndex,
+  deleteUserFromIndex,
   addStoryToIndex,
   updateStoryIndex,
+  updateMultipleStories,
   deleteStoryFromIndex,
-  deleteUserFromIndex,
+  addGuideToIndex,
+  updateGuideIndex,
+  updateMultipleGuides,
+  deleteGuideFromIndex,
   addHashtagsToIndex,
   addCategoriesToIndex,
-  updateMultipleStories,
-  updateUsersIndex,
 }

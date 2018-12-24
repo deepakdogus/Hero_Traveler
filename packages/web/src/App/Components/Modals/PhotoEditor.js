@@ -6,7 +6,7 @@ import {Row} from '../FlexboxGrid'
 import RoundedButton from '../RoundedButton'
 import Loader from '../Loader'
 import {Title} from './Shared'
-import Cropper from '../ExtendedCropper'
+import Cropper from '../Extensions/ExtendedCropper'
 
 const avatarStyles = {
   clone: {
@@ -27,7 +27,7 @@ const avatarStyles = {
 const Container = styled.div``
 
 const StyledTitle = styled(Title)`
-  color: ${props => props.theme.Colors.background}
+  color: ${props => props.theme.Colors.background};
   font-size: 18px;
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 400;

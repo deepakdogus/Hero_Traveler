@@ -1,4 +1,14 @@
 import devSettings from './dev'
 import prodSettings from './prod'
+import stgSettings from './stg'
 
-export default process.env.NODE_ENV === 'development' ? devSettings : prodSettings
+let env
+if (process.env.NODE_ENV === 'staging') {
+  env = stgSettings 
+} else if (process.env.NODE_ENV === 'production') {
+  env = prodSettings
+} else {
+  env = devSettings
+}
+
+export default env

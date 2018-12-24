@@ -1,5 +1,5 @@
 const devSettings = {
-  API_URL: 'http://18.191.167.26:3000/',
+  API_URL: 'http://ht-api-stg-dev.us-east-2.elasticbeanstalk.com/',
   cdnBaseUrl: 'https://res.cloudinary.com/doowpavbr/',
   cloudName: 'doowpavbr',
   imagePreset: 'risx0osr',

@@ -21,7 +21,8 @@ export default () => {
     mediaUpload: require('./MediaUploadRedux').reducer,
     routes,
     entities,
-    ux: require('../../Redux/UXRedux').reducer
+    ux: require('../../Redux/UXRedux').reducer,
+    history: require('./HistoryRedux').reducer,
   })
 
   const rootReducer = (state, action) => {

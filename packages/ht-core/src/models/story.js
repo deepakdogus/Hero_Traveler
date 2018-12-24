@@ -141,6 +141,10 @@ const StorySchema = new Schema({
   travelTips: {
     type: String,
   },
+  isDeleted: {
+    type: Boolean,
+    default: false
+  },
 }, {
   timestamps: true,
   toObject: {

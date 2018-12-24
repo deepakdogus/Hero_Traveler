@@ -102,21 +102,10 @@ export const adminGetUserSuccess = (state, { res }) => {
 }
 
 export const adminDeleteUserSuccess = (state, { id }) => {
-  let list = [...state.getIn(['list'])]
-  let total = state.getIn(['total'])
+  const list = [...state.getIn(['list'])]
   const userIndex = findIndex(list, { id })
-  list.splice(userIndex, 1);
-  total = total - 1
-  return state.merge({
-    ...state,
-    list,
-    total,
-    isLoading: false,
-    error: null
-  },
-  {
-    deep: true
-  })
+    
+  return state.setIn(['list', userIndex, 'isDeleted'], true)
 }
 
 /* ------------- Hookup Reducers To Types ------------- */

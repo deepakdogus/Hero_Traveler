@@ -15,6 +15,7 @@ const { Types, Creators } = createActions({
   adminDeleteCategory: ['payload'],
   adminDeleteCategorySuccess: ['id'],
   adminRestoreCategories: ['payload'],
+  adminUploadCategoryImage: ['payload']
 })
 
 export const AdminCategoryTypes = Types
@@ -106,18 +107,7 @@ export const adminDeleteCategorySuccess = (state, { id }) => {
   let list = [...state.getIn(['list'])]
   let total = state.getIn(['total'])
   const index = findIndex(list, { id })
-  list.splice(index, 1);
-  total = total - 1
-  return state.merge({
-    ...state,
-    list,
-    total,
-    isLoading: false,
-    error: null
-  },
-  {
-    deep: true
-  })
+  return state.setIn(['list', index, 'isDeleted'], true)
 }
 
 /* ------------- Hookup Reducers To Types ------------- */

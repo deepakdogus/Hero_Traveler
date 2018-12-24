@@ -57,8 +57,8 @@ export function * adminDeleteGuide (api, action) {
 
 export function * adminRestoreGuides (api, action) {
   console.log('calling adminRestoreGuides saga', action)
-  const { usernames, resolve, reject } = action.payload
-  const response = yield call(api.adminRestoreGuides, usernames)
+  const { ids, resolve, reject } = action.payload
+  const response = yield call(api.adminRestoreGuides, ids)
   if (response.ok && response.data) {
     const record = response.data
     return resolve(record)

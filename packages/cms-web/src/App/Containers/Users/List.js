@@ -104,8 +104,8 @@ class UsersList extends React.Component {
   }
 
   componentDidMount(){
-    //get user UsersList on signUp and reset signUp redux
-    this.props.getUsers()
+    const { getUsers } = this.props 
+    getUsers()
   }
 
   onSelectChange = (selectedRowKeys) => {

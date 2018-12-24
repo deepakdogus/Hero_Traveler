@@ -1,5 +1,5 @@
 const stgSettings = {
-  API_URL: 'http://ht-api-stg-dev.us-east-2.elasticbeanstalk.com/',
+  API_URL: 'https://ht-api-stg.u-sh.co',
   cdnBaseUrl: 'https://res.cloudinary.com/doowpavbr/',
   cloudName: 'doowpavbr',
   imagePreset: 'risx0osr',

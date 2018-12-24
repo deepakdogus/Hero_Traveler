@@ -57,8 +57,22 @@ export function * adminDeleteCategory (api, action) {
 
 export function * adminRestoreCategories (api, action) {
   console.log('calling adminRestoreCategories saga', action)
-  const { usernames, resolve, reject } = action.payload
-  const response = yield call(api.adminRestoreCategories, usernames)
+  const { ids, resolve, reject } = action.payload
+  const response = yield call(api.adminRestoreCategories, ids)
+  if (response.ok && response.data) {
+    const record = response.data
+    return resolve(record)
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    return reject(error)
+  }
+}
+
+export function * adminUploadCategoryImage (api, action) {
+  console.log('calling uploadImage saga', action)
+  const { fileObj, resolve, reject } = action.payload
+  const response = yield call(api.uploadGenericImage, fileObj)
+  console.log('response', response)
   if (response.ok && response.data) {
     const record = response.data
     return resolve(record)

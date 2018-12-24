@@ -9,7 +9,7 @@ import get from 'lodash/get'
 import debounce from 'lodash/debounce'
 import isEmpty from 'lodash/isEmpty'
 
-import AdminActions from '../../Shared/Redux/AdminRedux'
+import AdminGuidesActions from '../../Shared/Redux/Admin/Guides'
 
 const Option = Select.Option
 
@@ -169,6 +169,19 @@ class GuidesInCategoryList extends React.Component {
     })
   }
 
+  _showFlagged = () => {
+    const { getGuides, params } = this.props
+    getGuides({
+      ...params,
+      query: {
+        flagged: true,
+      },
+    })
+    this.setState({
+      activeTab: 'flagged',
+    })
+  }
+
   _handleSelectChange = (value) => {
     this.setState({
       selectedRole: value,
@@ -232,7 +245,7 @@ class GuidesInCategoryList extends React.Component {
           <LeftSpaceDiv> | 
           </LeftSpaceDiv>
           <LeftSpaceDiv>
-            <Tab active={this.state.activeTab === 'flagged'} onClick={this._showAll}>
+            <Tab active={this.state.activeTab === 'flagged'} onClick={this._showFlagged}>
               Flagged {this.state.activeTab === 'flagged' && <span>({total})</span>}
             </Tab>
           </LeftSpaceDiv>
@@ -278,7 +291,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getGuides: (params) => dispatch(AdminActions.adminGetGuides(params)),
+    getGuides: (params) => dispatch(AdminGuidesActions.adminGetGuides(params)),
   }
 }
 

@@ -106,18 +106,7 @@ export const adminDeleteGuideSuccess = (state, { id }) => {
   let list = [...state.getIn(['list'])]
   let total = state.getIn(['total'])
   const index = findIndex(list, { id })
-  list.splice(index, 1);
-  total = total - 1
-  return state.merge({
-    ...state,
-    list,
-    total,
-    isLoading: false,
-    error: null
-  },
-  {
-    deep: true
-  })
+  return state.setIn(['list', index, 'isDeleted'], true)
 }
 
 /* ------------- Hookup Reducers To Types ------------- */

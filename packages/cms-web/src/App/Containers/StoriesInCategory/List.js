@@ -9,7 +9,7 @@ import get from 'lodash/get'
 import debounce from 'lodash/debounce'
 import isEmpty from 'lodash/isEmpty'
 
-import AdminActions from '../../Shared/Redux/AdminRedux'
+import AdminStoriesActions from '../../Shared/Redux/Admin/Stories'
 
 const Option = Select.Option
 
@@ -169,6 +169,19 @@ class StoriesInCategoryList extends React.Component {
     })
   }
 
+  _showFlagged = () => {
+    const { getStories, params } = this.props
+    getStories({
+      ...params,
+      query: {
+        flagged: true,
+      },
+    })
+    this.setState({
+      activeTab: 'flagged',
+    })
+  }
+
   _handleSelectChange = (value) => {
     this.setState({
       selectedRole: value,
@@ -232,7 +245,7 @@ class StoriesInCategoryList extends React.Component {
           <LeftSpaceDiv> | 
           </LeftSpaceDiv>
           <LeftSpaceDiv>
-            <Tab active={this.state.activeTab === 'flagged'} onClick={this._showAll}>
+            <Tab active={this.state.activeTab === 'flagged'} onClick={this._showFlagged}>
               Flagged {this.state.activeTab === 'flagged' && <span>({total})</span>}
             </Tab>
           </LeftSpaceDiv>
@@ -278,7 +291,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getStories: (params) => dispatch(AdminActions.adminGetStories(params)),
+    getStories: (params) => dispatch(AdminStoriesActions.adminGetStories(params)),
   }
 }
 

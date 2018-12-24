@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { Table, Input, Icon, Select, Button } from 'antd'
+import { Table, Input, Icon, Select, Button, message } from 'antd'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import get from 'lodash/get'
@@ -48,6 +48,14 @@ const Tab = styled.div`
   cursor: pointer;
   font-weight: ${props => props.active ? 'bold' : 'regular'};
   color: ${props => props.active ? 'black' : '#008dff'};
+`
+
+const ActionRow = styled.div`
+  margin-bottom: 16px;
+`
+
+const LeftSpaceSpan = styled.div`
+  margin-left: 20px;
 `
 
 const columns = [{
@@ -111,13 +119,15 @@ const columns = [{
 
 class CategoriesList extends React.Component {
   state = {
+    selectedRowKeys: [],
     activeTab: 'all',
-    selectedRole: undefined,
+    selectedFilter: undefined,
+    isActionLoading: false,
   }
 
   componentDidMount(){
-    //get user CategoriesList on signUp and reset signUp redux
-    this.props.getCategories()
+    const { getCategories } = this.props 
+    getCategories()
   }
 
   onChange = (pagination, filters, sorter) => {
@@ -172,19 +182,69 @@ class CategoriesList extends React.Component {
 
   _handleSelectChange = (value) => {
     this.setState({
-      selectedRole: value,
+      selectedFilter: value,
     })
   }
 
   _applyTypeFilter = () => {
     const { params, getCategories } = this.props
-    getCategories({
-      ...params,
-      query: {
-        ...params.query,
-        role: this.state.selectedRole,
-      },
+    const { selectedFilter } = this.state
+    if (selectedFilter === 'all') {
+      getCategories({
+        ...params,
+        query: {
+          ...params.query,
+          featured: undefined,
+        },
+      })
+    }
+    else {
+      getCategories({
+        ...params,
+        query: {
+          ...params.query,
+          featured: true,
+        },
+      })
+    }
+  }
+
+  _applyAction = () => {
+    const { selectedRowKeys } = this.state
+    const { restoreCategories, getCategories, params } = this.props
+    this.setState({
+      isActionLoading: true,
     })
+    new Promise((resolve, reject) => {
+      restoreCategories({
+        ids: selectedRowKeys,
+        resolve,
+        reject,
+      })
+    }).then(() => {
+      this.setState({
+        isActionLoading: false,
+      })
+      message.success('Categories were restored')
+      getCategories({
+        ...params,
+        query: {
+          isDeleted: true,
+        },
+      })
+      this.setState({
+        selectedRowKeys: [],
+      })
+    }).catch((e) => {
+      this.setState({
+        isActionLoading: false,
+      })
+      message.error('There was error restoring categories')
+    })
+  }
+
+  onSelectChange = (selectedRowKeys) => {
+    this.setState({ selectedRowKeys })
   }
 
   render() {
@@ -194,7 +254,12 @@ class CategoriesList extends React.Component {
       isLoading,
       params,
     } = this.props
-      
+
+    const {
+      selectedRowKeys,
+      isActionLoading,
+    } = this.state
+
     const paginationProps = {
       showTotal: (totalNum, range) => `${range[0]}–${range[1]} of ${totalNum} items`,
       total,
@@ -202,6 +267,13 @@ class CategoriesList extends React.Component {
       pageSize: params.limit,
       position: 'both',
     }
+
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.onSelectChange,
+    }
+
+    const hasSelected = selectedRowKeys.length > 0
 
     return (
       <Wrapper>
@@ -236,13 +308,14 @@ class CategoriesList extends React.Component {
           <LeftSpaceDiv>
             <Select
               placeholder="featured"
-              value={this.state.selectedRole}
+              value={this.state.selectedFilter}
               style={{
                 width: 120,
               }}
               onChange={this._handleSelectChange}
             >
               <Option value="featured">featured</Option>
+              <Option value="all">all</Option>
             </Select>
 
           </LeftSpaceDiv>
@@ -250,7 +323,23 @@ class CategoriesList extends React.Component {
             <Button onClick={this._applyTypeFilter}>Filter</Button>
           </LeftSpaceDiv>
         </FilterRow>
+        {this.state.activeTab === 'deleted' &&
+          <ActionRow>
+            <Button
+              type="primary"
+              onClick={this._applyAction}
+              disabled={!hasSelected}
+              loading={isActionLoading}
+            >
+              Restore
+            </Button>
+            <LeftSpaceSpan>
+              {hasSelected ? `${selectedRowKeys.length} selected items` : ''}
+            </LeftSpaceSpan>
+          </ActionRow>
+        }
         <Table
+          rowSelection={this.state.activeTab === 'deleted' ? rowSelection : null}
           rowKey="id"
           loading={isLoading}
           columns={columns}
@@ -269,6 +358,7 @@ CategoriesList.propTypes = {
   params: PropTypes.object.isRequired,
   total: PropTypes.number.isRequired,
   getCategories: PropTypes.func.isRequired,
+  restoreCategories: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {
@@ -284,6 +374,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     getCategories: (params) => dispatch(AdminCategoriesActions.adminGetCategories(params)),
+    restoreCategories: (payload) => dispatch(AdminCategoriesActions.adminRestoreCategories(payload)),
   }
 }
 

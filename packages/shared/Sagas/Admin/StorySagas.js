@@ -57,8 +57,8 @@ export function * adminDeleteStory (api, action) {
 
 export function * adminRestoreStories (api, action) {
   console.log('calling adminRestoreStories saga', action)
-  const { usernames, resolve, reject } = action.payload
-  const response = yield call(api.adminRestoreStories, usernames)
+  const { ids, resolve, reject } = action.payload
+  const response = yield call(api.adminRestoreStories, ids)
   if (response.ok && response.data) {
     const record = response.data
     return resolve(record)

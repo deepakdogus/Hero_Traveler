@@ -9,7 +9,7 @@ import get from 'lodash/get'
 import debounce from 'lodash/debounce'
 import isEmpty from 'lodash/isEmpty'
 
-import AdminStoryActions from '../../Shared/Redux/Admin/Stories'
+import AdminStoriesActions from '../../Shared/Redux/Admin/Stories'
 
 const Option = Select.Option
 
@@ -48,6 +48,14 @@ const Tab = styled.div`
   cursor: pointer;
   font-weight: ${props => props.active ? 'bold' : 'regular'};
   color: ${props => props.active ? 'black' : '#008dff'};
+`
+
+const ActionRow = styled.div`
+  margin-bottom: 16px;
+`
+
+const LeftSpaceSpan = styled.div`
+  margin-left: 20px;
 `
 
 const columns = [{
@@ -111,11 +119,13 @@ class StoriesList extends React.Component {
   state = {
     activeTab: 'all',
     selectedRole: undefined,
+    selectedRowKeys: [],
+    isActionLoading: false,
   }
 
   componentDidMount(){
-    //get user StoriesList on signUp and reset signUp redux
-    this.props.getStories()
+    const { getStories } = this.props 
+    getStories()
   }
 
   onChange = (pagination, filters, sorter) => {
@@ -168,6 +178,19 @@ class StoriesList extends React.Component {
     })
   }
 
+  _showFlagged = () => {
+    const { getStories, params } = this.props
+    getStories({
+      ...params,
+      query: {
+        flagged: true,
+      },
+    })
+    this.setState({
+      activeTab: 'flagged',
+    })
+  }
+
   _handleSelectChange = (value) => {
     this.setState({
       selectedRole: value,
@@ -193,6 +216,11 @@ class StoriesList extends React.Component {
       params,
     } = this.props
       
+    const {
+      selectedRowKeys,
+      isActionLoading,
+    } = this.state
+
     const paginationProps = {
       showTotal: (totalNum, range) => `${range[0]}–${range[1]} of ${totalNum} items`,
       total,
@@ -200,6 +228,13 @@ class StoriesList extends React.Component {
       pageSize: params.limit,
       position: 'both',
     }
+
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.onSelectChange,
+    }
+
+    const hasSelected = selectedRowKeys.length > 0
 
     return (
       <Wrapper>
@@ -223,7 +258,7 @@ class StoriesList extends React.Component {
           <LeftSpaceDiv> | 
           </LeftSpaceDiv>
           <LeftSpaceDiv>
-            <Tab active={this.state.activeTab === 'flagged'} onClick={this._showAll}>
+            <Tab active={this.state.activeTab === 'flagged'} onClick={this._showFlagged}>
               Flagged {this.state.activeTab === 'flagged' && <span>({total})</span>}
             </Tab>
           </LeftSpaceDiv>
@@ -236,7 +271,24 @@ class StoriesList extends React.Component {
           </LeftSpaceDiv>
         </MiddleRow>
 
+        {this.state.activeTab === 'deleted' &&
+          <ActionRow>
+            <Button
+              type="primary"
+              onClick={this._applyAction}
+              disabled={!hasSelected}
+              loading={isActionLoading}
+            >
+              Restore
+            </Button>
+            <LeftSpaceSpan>
+              {hasSelected ? `${selectedRowKeys.length} selected items` : ''}
+            </LeftSpaceSpan>
+          </ActionRow>
+        }
+
         <Table
+          rowSelection={this.state.activeTab === 'deleted' ? rowSelection : null}
           rowKey="id"
           loading={isLoading}
           columns={columns}
@@ -269,7 +321,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getStories: (params) => dispatch(AdminStoryActions.adminGetStories(params)),
+    getStories: (params) => dispatch(AdminStoriesActions.adminGetStories(params)),
+    restoreStories: (payload) => dispatch(AdminStoriesActions.adminRestoreStories(payload)),
   }
 }
 

@@ -132,6 +132,22 @@ class EditCategory extends React.Component {
     })
   }
 
+  handleUpload = (fileObj) => {
+    const { uploadImage, id } = this.props
+    console.log('fileObj', fileObj)
+    new Promise((resolve, reject) => {
+      uploadImage({
+        fileObj,
+        resolve,
+        reject,
+      })
+    }).then(() => {
+      message.success('File was uploaded')
+    }).catch((e) => {
+      message.error(e.toString())
+    })
+  }
+
   renderTable = () => {
     const { record } = this.props
     return (
@@ -203,6 +219,7 @@ class EditCategory extends React.Component {
                 onDelete={this.handleDelete}
                 formLoading={formSubmitting}
                 isDeleting={isDeleting}
+                onUpload={this.handleUpload}
               />
             </Col>
             <Col xs={24} md={12}>
@@ -242,6 +259,7 @@ function mapDispatchToProps(dispatch) {
     getCategory: (id) => dispatch(AdminCategoryActions.adminGetCategory(id)),
     putCategory: (payload) => dispatch(AdminCategoryActions.adminPutCategory(payload)),
     deleteCategory: (payload) => dispatch(AdminCategoryActions.adminDeleteCategory(payload)),
+    uploadImage: (payload) => dispatch(AdminCategoryActions.adminUploadCategoryImage(payload)),
   }
 }
 

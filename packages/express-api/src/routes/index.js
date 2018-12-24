@@ -14,4 +14,6 @@ export default function bootstrapRoutes(app) {
   app.use('/hashtag', HashtagRoutes)
   app.use('/guide', GuideRoutes)
   app.use('/admin', AdminRoutes)
+
+  app.get('/', (req, res) => res.json({ success: true }))
 }

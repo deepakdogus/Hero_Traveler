@@ -89,6 +89,10 @@ const GuideSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  isDeleted: {
+    type: Boolean,
+    default: false
+  },
 }, {
   timestamps: true,
   toObject: {

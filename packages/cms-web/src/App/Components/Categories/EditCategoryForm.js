@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Form, Input, Button, Icon, Upload, Checkbox, message } from 'antd'
 import mapValues from 'lodash/mapValues'
+import SingleFileUpload from '../Upload'
 
 const FormItem = Form.Item
 
@@ -21,17 +22,23 @@ class EditCategoryForm extends React.Component {
     form.validateFields((err, values) => {
       if (!err) {
         onSubmit(values)
-      } else {
+      }
+      else {
         message.error('Form was not submitted: please fix errors')
       }
     })
+  }
+
+  handleHeroUpload = (file) => {
+    const { onUpload } = this.props
+    onUpload(file)
   }
 
   render() {
     const {
       formLoading,
       isDeleting,
-      record
+      record,
     } = this.props
 
     const { getFieldDecorator } = this.props.form
@@ -67,34 +74,14 @@ class EditCategoryForm extends React.Component {
         <FormItem {...formItemLayout} label="Channel Thumbnail">
           {getFieldDecorator('channelThumbnail', {
           })(
-            <Upload
-              name="avatar"
-              listType="picture-card"
-              className="avatar-uploader"
-              showUploadList={false}
-              action="//jsonplaceholder.typicode.com/posts/"
-              beforeUpload={() => {}}
-              onChange={() => {}}
-            >
-              {uploadButton}
-            </Upload>
+            <SingleFileUpload onUpload={() => {}} />
           )}
         </FormItem>
 
         <FormItem {...formItemLayout} label="Channel Hero Image">
           {getFieldDecorator('channelHeroImage', {
           })(
-            <Upload
-              name="avatar"
-              listType="picture-card"
-              className="avatar-uploader"
-              showUploadList={false}
-              action="//jsonplaceholder.typicode.com/posts/"
-              beforeUpload={() => {}}
-              onChange={() => {}}
-            >
-              {uploadButton}
-            </Upload>
+            <SingleFileUpload onUpload={this.handleHeroUpload} />
           )}
         </FormItem>
         

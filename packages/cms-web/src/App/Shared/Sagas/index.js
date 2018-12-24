@@ -128,6 +128,7 @@ import {
   adminPutCategory,
   adminDeleteCategory,
   adminRestoreCategories,
+  adminUploadCategoryImage,
 } from './Admin/CategorySagas'
 
 import {
@@ -272,6 +273,7 @@ export default function * root () {
     takeLatest(AdminCategoryTypes.ADMIN_PUT_CATEGORY, adminPutCategory, heroAPI),
     takeLatest(AdminCategoryTypes.ADMIN_DELETE_CATEGORY, adminDeleteCategory, heroAPI),
     takeLatest(AdminCategoryTypes.ADMIN_RESTORE_CATEGORIES, adminRestoreCategories, heroAPI),
+    takeLatest(AdminCategoryTypes.ADMIN_UPLOAD_CATEGORY_IMAGE, adminUploadCategoryImage, heroAPI),
 
     takeLatest(AdminStoryTypes.ADMIN_GET_STORIES, adminGetStories, heroAPI),
     takeLatest(AdminStoryTypes.ADMIN_GET_STORY, adminGetStory, heroAPI),
@@ -284,5 +286,6 @@ export default function * root () {
     takeLatest(AdminGuideTypes.ADMIN_PUT_GUIDE, adminPutGuide, heroAPI),
     takeLatest(AdminGuideTypes.ADMIN_DELETE_GUIDE, adminDeleteGuide, heroAPI),
     takeLatest(AdminGuideTypes.ADMIN_RESTORE_GUIDES, adminRestoreGuides, heroAPI),
+
   ]
 }

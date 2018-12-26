@@ -10,6 +10,7 @@ import debounce from 'lodash/debounce'
 import isEmpty from 'lodash/isEmpty'
 
 import AdminCategoriesActions from '../../Shared/Redux/Admin/Categories'
+import Images from '../../Themes/Images'
 
 const Option = Select.Option
 
@@ -56,6 +57,11 @@ const ActionRow = styled.div`
 
 const LeftSpaceSpan = styled.div`
   margin-left: 20px;
+`
+
+const SquareImg = styled.img`
+  height: 90px;
+  width: 90px;
 `
 
 const columns = [{
@@ -109,7 +115,7 @@ const columns = [{
 },
 {
   title: 'Image',
-  render: (item) => (<img src={get(item, 'versions.thumbnail240.path')} />),
+  render: (item) => (<SquareImg src={get(item, 'channelThumbnail', Images.placeholder)} />),
 },
 {
   title: 'Edit',

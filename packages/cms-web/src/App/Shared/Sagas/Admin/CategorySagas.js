@@ -2,7 +2,6 @@ import { call, put } from 'redux-saga/effects'
 import AdminActions from '../../Redux/Admin/Categories'
 
 export function * adminGetCategories (api, action) {
-  console.log('calling adminGetCategories saga', action)
   const { params } = action
   const response = yield call(api.adminGetCategories, params)
   if (response.ok && response.data && response.data.data) {
@@ -15,7 +14,6 @@ export function * adminGetCategories (api, action) {
 }
 
 export function * adminGetCategory (api, action) {
-  console.log('calling adminGetCategory saga', action)
   const { id } = action
   const response = yield call(api.adminGetCategory, id)
   if (response.ok && response.data) {
@@ -28,7 +26,6 @@ export function * adminGetCategory (api, action) {
 }
 
 export function * adminPutCategory (api, action) {
-  console.log('calling adminPutCategory saga', action)
   const { values, id, resolve, reject } = action.payload
   const response = yield call(api.adminPutCategory, { values, id })
   if (response.ok && response.data) {
@@ -42,7 +39,6 @@ export function * adminPutCategory (api, action) {
 }
 
 export function * adminDeleteCategory (api, action) {
-  console.log('calling adminDeleteCategory saga', action)
   const { id, resolve, reject } = action.payload
   const response = yield call(api.adminDeleteCategory, id)
   if (response.ok && response.data) {
@@ -56,7 +52,6 @@ export function * adminDeleteCategory (api, action) {
 }
 
 export function * adminRestoreCategories (api, action) {
-  console.log('calling adminRestoreCategories saga', action)
   const { ids, resolve, reject } = action.payload
   const response = yield call(api.adminRestoreCategories, ids)
   if (response.ok && response.data) {
@@ -68,14 +63,27 @@ export function * adminRestoreCategories (api, action) {
   }
 }
 
-export function * adminUploadCategoryImage (api, action) {
-  console.log('calling uploadImage saga', action)
-  const { fileObj, resolve, reject } = action.payload
-  const response = yield call(api.uploadGenericImage, fileObj)
-  console.log('response', response)
+export function * adminUploadCategoryHeroImage (api, action) {
+  const { fileObj, category, resolve, reject } = action.payload
+  const response = yield call(api.adminUploadCategoryHeroImage, fileObj, category)
   if (response.ok && response.data) {
     const record = response.data
-    return resolve(record)
+    yield put(AdminActions.adminGetCategorySuccess({ record }))
+    return resolve(response)
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    return reject(error)
+  }
+}
+
+
+export function * adminUploadCategoryChannelImage (api, action) {
+  const { fileObj, category, resolve, reject } = action.payload
+  const response = yield call(api.adminUploadCategoryChannelImage, fileObj, category)
+  if (response.ok && response.data) {
+    const record = response.data
+    yield put(AdminActions.adminGetCategorySuccess({ record }))
+    return resolve(response)
   } else {
     const error = response.data ? response.data.message : 'Error fetching data'
     return reject(error)

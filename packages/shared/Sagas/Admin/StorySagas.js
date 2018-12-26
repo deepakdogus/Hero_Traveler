@@ -2,7 +2,6 @@ import { call, put } from 'redux-saga/effects'
 import AdminActions from '../../Redux/Admin/Stories'
 
 export function * adminGetStories (api, action) {
-  console.log('calling adminGetStories saga', action)
   const { params } = action
   const response = yield call(api.adminGetStories, params)
   if (response.ok && response.data && response.data.data) {
@@ -15,7 +14,6 @@ export function * adminGetStories (api, action) {
 }
 
 export function * adminGetStory (api, action) {
-  console.log('calling adminGetStory saga', action)
   const { id } = action
   const response = yield call(api.adminGetStory, id)
   if (response.ok && response.data) {
@@ -28,7 +26,6 @@ export function * adminGetStory (api, action) {
 }
 
 export function * adminPutStory (api, action) {
-  console.log('calling adminPutStory saga', action)
   const { values, id, resolve, reject } = action.payload
   const response = yield call(api.adminPutStory, { values, id })
   if (response.ok && response.data) {
@@ -42,7 +39,6 @@ export function * adminPutStory (api, action) {
 }
 
 export function * adminDeleteStory (api, action) {
-  console.log('calling adminDeleteStory saga', action)
   const { id, resolve, reject } = action.payload
   const response = yield call(api.adminDeleteStory, id)
   if (response.ok && response.data) {
@@ -56,7 +52,6 @@ export function * adminDeleteStory (api, action) {
 }
 
 export function * adminRestoreStories (api, action) {
-  console.log('calling adminRestoreStories saga', action)
   const { ids, resolve, reject } = action.payload
   const response = yield call(api.adminRestoreStories, ids)
   if (response.ok && response.data) {

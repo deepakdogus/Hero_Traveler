@@ -16,6 +16,7 @@ import { AdminUserTypes } from '../Redux/Admin/Users'
 import { AdminCategoryTypes } from '../Redux/Admin/Categories'
 import { AdminGuideTypes } from '../Redux/Admin/Guides'
 import { AdminStoryTypes } from '../Redux/Admin/Stories'
+import { AdminStatsTypes } from '../Redux/Admin/Stats'
 // Entities
 import { StoryTypes } from '../Redux/Entities/Stories'
 import { CategoryTypes } from '../Redux/Entities/Categories'
@@ -120,6 +121,8 @@ import {
   adminPutUser,
   adminDeleteUser,
   adminRestoreUsers,
+  adminUploadUserHeroImage,
+  adminUploadUserChannelImage,
 } from './Admin/UserSagas'
 
 import {
@@ -128,7 +131,8 @@ import {
   adminPutCategory,
   adminDeleteCategory,
   adminRestoreCategories,
-  adminUploadCategoryImage,
+  adminUploadCategoryHeroImage,
+  adminUploadCategoryChannelImage,
 } from './Admin/CategorySagas'
 
 import {
@@ -146,6 +150,11 @@ import {
   adminDeleteGuide,
   adminRestoreGuides,
 } from './Admin/GuideSagas'
+
+import { 
+  adminGetNewStats,
+  adminGetTotalStats,
+} from './Admin/StatsSagas'
 
 /* ------------- API ------------- */
 
@@ -267,13 +276,16 @@ export default function * root () {
     takeLatest(AdminUserTypes.ADMIN_PUT_USER, adminPutUser, heroAPI),
     takeLatest(AdminUserTypes.ADMIN_DELETE_USER, adminDeleteUser, heroAPI),
     takeLatest(AdminUserTypes.ADMIN_RESTORE_USERS, adminRestoreUsers, heroAPI),
+    takeLatest(AdminUserTypes.ADMIN_UPLOAD_USER_HERO_IMAGE, adminUploadUserHeroImage, heroAPI),
+    takeLatest(AdminUserTypes.ADMIN_UPLOAD_USER_CHANNEL_IMAGE, adminUploadUserChannelImage, heroAPI),
 
     takeLatest(AdminCategoryTypes.ADMIN_GET_CATEGORIES, adminGetCategories, heroAPI),
     takeLatest(AdminCategoryTypes.ADMIN_GET_CATEGORY, adminGetCategory, heroAPI),
     takeLatest(AdminCategoryTypes.ADMIN_PUT_CATEGORY, adminPutCategory, heroAPI),
     takeLatest(AdminCategoryTypes.ADMIN_DELETE_CATEGORY, adminDeleteCategory, heroAPI),
     takeLatest(AdminCategoryTypes.ADMIN_RESTORE_CATEGORIES, adminRestoreCategories, heroAPI),
-    takeLatest(AdminCategoryTypes.ADMIN_UPLOAD_CATEGORY_IMAGE, adminUploadCategoryImage, heroAPI),
+    takeLatest(AdminCategoryTypes.ADMIN_UPLOAD_CATEGORY_HERO_IMAGE, adminUploadCategoryHeroImage, heroAPI),
+    takeLatest(AdminCategoryTypes.ADMIN_UPLOAD_CATEGORY_CHANNEL_IMAGE, adminUploadCategoryChannelImage, heroAPI),
 
     takeLatest(AdminStoryTypes.ADMIN_GET_STORIES, adminGetStories, heroAPI),
     takeLatest(AdminStoryTypes.ADMIN_GET_STORY, adminGetStory, heroAPI),
@@ -287,5 +299,7 @@ export default function * root () {
     takeLatest(AdminGuideTypes.ADMIN_DELETE_GUIDE, adminDeleteGuide, heroAPI),
     takeLatest(AdminGuideTypes.ADMIN_RESTORE_GUIDES, adminRestoreGuides, heroAPI),
 
+    takeLatest(AdminStatsTypes.ADMIN_GET_TOTAL_STATS, adminGetTotalStats, heroAPI),
+    takeLatest(AdminStatsTypes.ADMIN_GET_NEW_STATS, adminGetNewStats, heroAPI),
   ]
 }

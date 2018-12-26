@@ -66,6 +66,12 @@ const CategorySchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  channelHeroImage: {
+    type: String,
+  },
+  channelThumbnail: {
+    type: String,
+  },
 }, {
   timestamps: true,
   toObject: {

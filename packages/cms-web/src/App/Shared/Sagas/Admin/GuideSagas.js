@@ -2,7 +2,6 @@ import { call, put } from 'redux-saga/effects'
 import AdminActions from '../../Redux/Admin/Guides'
 
 export function * adminGetGuides (api, action) {
-  console.log('calling adminGetGuides saga', action)
   const { params } = action
   const response = yield call(api.adminGetGuides, params)
   if (response.ok && response.data && response.data.data) {
@@ -15,7 +14,6 @@ export function * adminGetGuides (api, action) {
 }
 
 export function * adminGetGuide (api, action) {
-  console.log('calling adminGetGuide saga', action)
   const { id } = action
   const response = yield call(api.adminGetGuide, id)
   if (response.ok && response.data) {
@@ -28,7 +26,6 @@ export function * adminGetGuide (api, action) {
 }
 
 export function * adminPutGuide (api, action) {
-  console.log('calling adminPutGuide saga', action)
   const { values, id, resolve, reject } = action.payload
   const response = yield call(api.adminPutGuide, { values, id })
   if (response.ok && response.data) {
@@ -42,7 +39,6 @@ export function * adminPutGuide (api, action) {
 }
 
 export function * adminDeleteGuide (api, action) {
-  console.log('calling adminDeleteGuide saga', action)
   const { id, resolve, reject } = action.payload
   const response = yield call(api.adminDeleteGuide, id)
   if (response.ok && response.data) {
@@ -56,7 +52,6 @@ export function * adminDeleteGuide (api, action) {
 }
 
 export function * adminRestoreGuides (api, action) {
-  console.log('calling adminRestoreGuides saga', action)
   const { ids, resolve, reject } = action.payload
   const response = yield call(api.adminRestoreGuides, ids)
   if (response.ok && response.data) {

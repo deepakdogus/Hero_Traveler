@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { Form, Input, Button, Icon, Upload, Checkbox, message } from 'antd'
+import { Form, Input, Button, Checkbox, message } from 'antd'
 import mapValues from 'lodash/mapValues'
 import SingleFileUpload from '../Upload'
 
@@ -30,8 +30,13 @@ class EditCategoryForm extends React.Component {
   }
 
   handleHeroUpload = (file) => {
-    const { onUpload } = this.props
-    onUpload(file)
+    const { onHeroUpload } = this.props
+    return onHeroUpload(file)
+  }
+
+  handleChannelUpload = (file) => {
+    const { onChannelUpload } = this.props
+    return onChannelUpload(file)
   }
 
   render() {
@@ -42,13 +47,6 @@ class EditCategoryForm extends React.Component {
     } = this.props
 
     const { getFieldDecorator } = this.props.form
-
-    const uploadButton = (
-      <div>
-        <Icon type={this.state.loading ? 'loading' : 'plus'} />
-        <div className="ant-upload-text">Upload</div>
-      </div>
-    )
 
     const formItemLayout = {
       wrapperCol: {
@@ -71,17 +69,19 @@ class EditCategoryForm extends React.Component {
             <Input placeholder="title" />
           )}
         </FormItem>
-        <FormItem {...formItemLayout} label="Channel Thumbnail">
+        <FormItem {...formItemLayout} label="Thumbnail Image">
           {getFieldDecorator('channelThumbnail', {
           })(
-            <SingleFileUpload onUpload={() => {}} />
+            <SingleFileUpload onUpload={this.handleChannelUpload} />
           )}
         </FormItem>
 
-        <FormItem {...formItemLayout} label="Channel Hero Image">
+        <FormItem {...formItemLayout} label="Hero Image">
           {getFieldDecorator('channelHeroImage', {
           })(
-            <SingleFileUpload onUpload={this.handleHeroUpload} />
+            <SingleFileUpload
+              onUpload={this.handleHeroUpload}
+            />
           )}
         </FormItem>
         
@@ -121,6 +121,8 @@ EditCategoryForm.propTypes = {
   formLoading: PropTypes.bool.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
+  onHeroUpload: PropTypes.func.isRequired,
+  onChannelUpload: PropTypes.func.isRequired,
   isDeleting: PropTypes.bool.isRequired,
 }
 

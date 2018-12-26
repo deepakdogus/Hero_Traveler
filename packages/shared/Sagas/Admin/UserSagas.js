@@ -2,7 +2,6 @@ import { call, put } from 'redux-saga/effects'
 import AdminActions from '../../Redux/Admin/Users'
 
 export function * adminGetUsers (api, action) {
-  console.log('calling adminGetUsers saga', action)
   const { params } = action
   const response = yield call(api.adminGetUsers, params)
   if (response.ok && response.data && response.data.data) {
@@ -15,7 +14,6 @@ export function * adminGetUsers (api, action) {
 }
 
 export function * adminGetUser (api, action) {
-  console.log('calling adminGetUser saga', action)
   const { id } = action
   const response = yield call(api.adminGetUser, id)
   if (response.ok && response.data) {
@@ -28,7 +26,6 @@ export function * adminGetUser (api, action) {
 }
 
 export function * adminPutUser (api, action) {
-  console.log('calling adminPutUser saga', action)
   const { values, id, resolve, reject } = action.payload
   const response = yield call(api.adminPutUser, { values, id })
   if (response.ok && response.data) {
@@ -42,7 +39,6 @@ export function * adminPutUser (api, action) {
 }
 
 export function * adminDeleteUser (api, action) {
-  console.log('calling adminDeleteUser saga', action)
   const { id, resolve, reject } = action.payload
   const response = yield call(api.adminDeleteUser, id)
   if (response.ok && response.data) {
@@ -56,12 +52,38 @@ export function * adminDeleteUser (api, action) {
 }
 
 export function * adminRestoreUsers (api, action) {
-  console.log('calling adminRestoreUsers saga', action)
   const { usernames, resolve, reject } = action.payload
   const response = yield call(api.adminRestoreUsers, usernames)
   if (response.ok && response.data) {
     const record = response.data
     return resolve(record)
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    return reject(error)
+  }
+}
+
+export function * adminUploadUserHeroImage (api, action) {
+  const { fileObj, category, resolve, reject } = action.payload
+  const response = yield call(api.adminUploadUserHeroImage, fileObj, category)
+  if (response.ok && response.data) {
+    const record = response.data
+    yield put(AdminActions.adminGetUserSuccess({ record }))
+    return resolve(response)
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    return reject(error)
+  }
+}
+
+
+export function * adminUploadUserChannelImage (api, action) {
+  const { fileObj, category, resolve, reject } = action.payload
+  const response = yield call(api.adminUploadUserChannelImage, fileObj, category)
+  if (response.ok && response.data) {
+    const record = response.data
+    yield put(AdminActions.adminGetUserSuccess({ record }))
+    return resolve(response)
   } else {
     const error = response.data ? response.data.message : 'Error fetching data'
     return reject(error)

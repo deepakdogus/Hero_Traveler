@@ -15,7 +15,8 @@ const { Types, Creators } = createActions({
   adminDeleteCategory: ['payload'],
   adminDeleteCategorySuccess: ['id'],
   adminRestoreCategories: ['payload'],
-  adminUploadCategoryImage: ['payload']
+  adminUploadCategoryHeroImage: ['payload'],
+  adminUploadCategoryChannelImage: ['payload']
 })
 
 export const AdminCategoryTypes = Types

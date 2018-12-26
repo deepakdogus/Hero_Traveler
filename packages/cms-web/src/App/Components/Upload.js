@@ -1,13 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
 
-import { Upload, Icon, message } from 'antd'
+import { Upload, Icon, Modal, message } from 'antd'
 
-function getBase64(img, callback) {
-  const reader = new FileReader()
-  reader.addEventListener('load', () => callback(reader.result))
-  reader.readAsDataURL(img)
-}
+const FullWidthImg = styled.img`
+  width: 100%;
+`
 
 function beforeUpload(file) {
   const isJPG = file.type === 'image/jpeg'
@@ -19,39 +18,74 @@ function beforeUpload(file) {
   if (!isLt2M) {
     message.error('Image must smaller than 5MB!')
   }
-  return isJPG && isPNG && isLt2M
+  return (isJPG || isPNG) && isLt2M
 }
 
 class SingleFileUpload extends React.Component {
   state = {
     loading: false,
+    previewVisible: false,
+    previewImage: '',
+    fileList: [],
   }
 
-  handleChange = (info) => {
-    if (info.file.status === 'uploading') {
-      this.setState({ loading: true })
-      return
-    }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, imageUrl => this.setState({
-        imageUrl,
+  componentDidMount = () => {
+    const { value } = this.props
+    if (!value || value === '') return
+    const { fileList } = this.state
+    this.setState({
+      fileList: [{
+        uid: fileList.length + 1,
+        name: 'image',
+        status: 'done',
+        url: value,
+      }],
+    })
+  }
+
+  UNSAFE_componentWillReceiveProps = (nextProps) => {
+    if (nextProps.value !== this.props.value) {
+      const { fileList } = this.state
+      this.setState({
+        fileList: [{
+          uid: fileList.length + 1,
+          name: 'image',
+          status: 'done',
+          url: nextProps.value,
+        }],
         loading: false,
-      }))
+      })
     }
   }
 
   handleUpload = (handledFileProps) => {
+    this.setState({ loading: true })
     const { onUpload } = this.props
     const { file } = handledFileProps
     const reader = new FileReader()
-
+    
     reader.onload = (event) => {
       file.uri = reader.result
       onUpload(file)
+        .then(() => {
+          message.success('File was uploaded')
+        })
+        .catch((e) => {
+          message.error(`Error uploading file: ${e.toString()}`)
+          this.setState({ loading: false })
+        })
     }
     reader.readAsDataURL(file)
   }
+
+  handlePreview = (file) => {
+    this.setState({
+      previewImage: file.url || file.thumbUrl,
+      previewVisible: true,
+    })
+  }
+
+  handleCancel = () => this.setState({ previewVisible: false })
 
   render() {
     const uploadButton = (
@@ -60,25 +94,31 @@ class SingleFileUpload extends React.Component {
         <div className="ant-upload-text">Upload</div>
       </div>
     )
-    const imageUrl = this.state.imageUrl
+    const { previewVisible, previewImage, fileList } = this.state
     return (
-      <Upload
-        name="image"
-        listType="picture-card"
-        className="image-uploader"
-        showUploadList
-        customRequest={this.handleUpload}
-        beforeUpload={beforeUpload}
-        onChange={this.handleChange}
-      >
-        {imageUrl ? <img src={imageUrl} alt="image" /> : uploadButton}
-      </Upload>
+      <div>
+        <Upload
+          name="image"
+          listType="picture-card"
+          className="image-uploader"
+          fileList={fileList}
+          customRequest={this.handleUpload}
+          handlePreview={this.handlePreview}
+          beforeUpload={beforeUpload}
+        >
+          {fileList.length > 1 ? null : uploadButton}
+        </Upload>
+        <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+          <FullWidthImg alt="example" src={previewImage} />
+        </Modal>
+      </div>
     )
   }
 }
 
 SingleFileUpload.propTypes = {
   onUpload: PropTypes.func.isRequired,
+  value: PropTypes.string,
 }
 
 export default SingleFileUpload

@@ -479,6 +479,30 @@ const create = () => {
 
   const adminRestoreCategories = (ids) => api.post('admin/categories/restore', { ids })
 
+  const adminUploadCategoryHeroImage = (pathToFile, category) => {
+    return CloudinaryAPI.uploadMediaFile(pathToFile, 'image')
+    .then((response) => {
+      const imageUrl = response.data.secure_url
+      const categoryToSave = {
+        ...category,
+        channelHeroImage: imageUrl
+      }
+      return api.put(`admin/categories/${category.id}`, categoryToSave)
+    })
+  }
+
+  const adminUploadCategoryChannelImage = (pathToFile, category) => {
+    return CloudinaryAPI.uploadMediaFile(pathToFile, 'image')
+    .then((response) => {
+      const imageUrl = response.data.secure_url
+      const categoryToSave = {
+        ...category,
+        channelThumbnail: imageUrl
+      }
+      return api.put(`admin/categories/${category.id}`, categoryToSave)
+    })
+  }
+
   const adminGetStories = (params) => api.get('admin/stories', params)
 
   const adminGetStory = (id) => api.get(`admin/stories/${id}`)
@@ -499,9 +523,9 @@ const create = () => {
 
   const adminRestoreGuides = (ids) => api.post('admin/guides/restore', { ids })
 
-  const uploadGenericImage = (pathToFile) => {
-    return CloudinaryAPI.uploadMediaFile(pathToFile, 'image')
-  }
+  const adminGetTotalStats = () => api.get('admin/stats/total')
+
+  const adminGetNewStats = (params) => api.get('admin/stats/new', params)
 
   // ------
   // STEP 3
@@ -606,7 +630,10 @@ const create = () => {
     adminPutCategory,
     adminDeleteCategory,
     adminRestoreCategories,
-    uploadGenericImage
+    adminUploadCategoryHeroImage,
+    adminUploadCategoryChannelImage,
+    adminGetTotalStats,
+    adminGetNewStats
   }
 }
 

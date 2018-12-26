@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import moment from 'moment'
-import { Input, Icon, Button, Row, Col, Spin, message } from 'antd'
+import { Row, Col, Spin, message } from 'antd'
 import { Link } from 'react-router-dom'
 import get from 'lodash/get'
 import find from 'lodash/find'
@@ -132,20 +132,38 @@ class EditCategory extends React.Component {
     })
   }
 
-  handleUpload = (fileObj) => {
-    const { uploadImage, id } = this.props
-    console.log('fileObj', fileObj)
-    new Promise((resolve, reject) => {
-      uploadImage({
+  handleHeroUpload = (fileObj) => {
+    const { uploadHeroImage, record } = this.props
+    this.setState({
+      formSubmitting: true,
+    })
+    return new Promise((resolve, reject) => {
+      uploadHeroImage({
         fileObj,
+        category: record,
         resolve,
         reject,
       })
-    }).then(() => {
-      message.success('File was uploaded')
-    }).catch((e) => {
-      message.error(e.toString())
+    }).finally(() => this.setState({
+      formSubmitting: false,
+    }))
+  }
+
+  handleChannelUpload = (fileObj) => {
+    const { uploadChannelImage, record } = this.props
+    this.setState({
+      formSubmitting: true,
     })
+    return new Promise((resolve, reject) => {
+      uploadChannelImage({
+        fileObj,
+        category: record,
+        resolve,
+        reject,
+      })
+    }).finally(() => this.setState({
+      formSubmitting: false,
+    }))
   }
 
   renderTable = () => {
@@ -219,7 +237,8 @@ class EditCategory extends React.Component {
                 onDelete={this.handleDelete}
                 formLoading={formSubmitting}
                 isDeleting={isDeleting}
-                onUpload={this.handleUpload}
+                onHeroUpload={this.handleHeroUpload}
+                onChannelUpload={this.handleChannelUpload}
               />
             </Col>
             <Col xs={24} md={12}>
@@ -239,6 +258,8 @@ EditCategory.propTypes = {
   putCategory: PropTypes.func.isRequired,
   deleteCategory: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  uploadHeroImage: PropTypes.func.isRequired,
+  uploadChannelImage: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
 }
 
@@ -259,7 +280,8 @@ function mapDispatchToProps(dispatch) {
     getCategory: (id) => dispatch(AdminCategoryActions.adminGetCategory(id)),
     putCategory: (payload) => dispatch(AdminCategoryActions.adminPutCategory(payload)),
     deleteCategory: (payload) => dispatch(AdminCategoryActions.adminDeleteCategory(payload)),
-    uploadImage: (payload) => dispatch(AdminCategoryActions.adminUploadCategoryImage(payload)),
+    uploadHeroImage: (payload) => dispatch(AdminCategoryActions.adminUploadCategoryHeroImage(payload)),
+    uploadChannelImage: (payload) => dispatch(AdminCategoryActions.adminUploadCategoryChannelImage(payload)),
   }
 }
 

@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { Form, Input, Button, Icon, Upload, Checkbox, Select, message } from 'antd'
+import { Form, Input, Button, Icon, Checkbox, Select, message } from 'antd'
 import mapValues from 'lodash/mapValues'
+import SingleFileUpload from '../Upload'
 
 const Option = Select.Option
 const FormItem = Form.Item
@@ -22,27 +23,31 @@ class EditUserForm extends React.Component {
     form.validateFields((err, values) => {
       if (!err) {
         onSubmit(values)
-      } else {
+      }
+      else {
         message.error('Form was not submitted: please fix errors')
       }
     })
+  }
+
+  handleHeroUpload = (file) => {
+    const { onHeroUpload } = this.props
+    return onHeroUpload(file)
+  }
+
+  handleChannelUpload = (file) => {
+    const { onChannelUpload } = this.props
+    return onChannelUpload(file)
   }
 
   render() {
     const {
       formLoading,
       isDeleting,
-      record
+      record,
     } = this.props
 
     const { getFieldDecorator } = this.props.form
-
-    const uploadButton = (
-      <div>
-        <Icon type={this.state.loading ? 'loading' : 'plus'} />
-        <div className="ant-upload-text">Upload</div>
-      </div>
-    )
 
     const formItemLayout = {
       wrapperCol: {
@@ -90,37 +95,19 @@ class EditUserForm extends React.Component {
             </Select>
           )}
         </FormItem>
-        <FormItem {...formItemLayout} label="Channel Thumbnail">
+        <FormItem {...formItemLayout} label="Channel Thumbnail Image">
           {getFieldDecorator('channelThumbnail', {
           })(
-            <Upload
-              name="avatar"
-              listType="picture-card"
-              className="avatar-uploader"
-              showUploadList={false}
-              action="//jsonplaceholder.typicode.com/posts/"
-              beforeUpload={() => {}}
-              onChange={() => {}}
-            >
-              {uploadButton}
-            </Upload>
+            <SingleFileUpload onUpload={this.handleChannelUpload} />
           )}
         </FormItem>
 
         <FormItem {...formItemLayout} label="Channel Hero Image">
           {getFieldDecorator('channelHeroImage', {
           })(
-            <Upload
-              name="avatar"
-              listType="picture-card"
-              className="avatar-uploader"
-              showUploadList={false}
-              action="//jsonplaceholder.typicode.com/posts/"
-              beforeUpload={() => {}}
-              onChange={() => {}}
-            >
-              {uploadButton}
-            </Upload>
+            <SingleFileUpload
+              onUpload={this.handleHeroUpload}
+            />
           )}
         </FormItem>
         
@@ -169,6 +156,8 @@ EditUserForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   isDeleting: PropTypes.bool.isRequired,
+  onHeroUpload: PropTypes.func.isRequired,
+  onChannelUpload: PropTypes.func.isRequired,
 }
 
 const mapPropsToFields = ({ record }) => mapValues(record, value => Form.createFormField({ value }))

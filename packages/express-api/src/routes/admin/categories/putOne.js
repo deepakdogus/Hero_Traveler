@@ -1,5 +1,4 @@
 import {Category} from '@hero/ht-core'
-import {Constants} from '@hero/ht-util'
 import _ from 'lodash'
 
 

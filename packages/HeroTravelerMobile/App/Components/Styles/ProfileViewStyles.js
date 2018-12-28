@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { ApplicationStyles, Fonts, Colors, Metrics } from '../../Shared/Themes/'
+import { isIPhoneX } from '../../Themes/Metrics'
 
 const avatarImageSize = 95
 const coverInnerHeight = 370
@@ -14,10 +15,10 @@ export const feedItemHeight = Metrics.screenHeight - coverInnerHeight - tabNavEd
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
-    backgroundColor: Colors.clear
+    backgroundColor: Colors.clear,
   },
   profileTabsAndStoriesHeight: {
-    height: Metrics.screenHeight
+    height: Metrics.screenHeight,
   },
   profileTabsAndStoriesRoot: {
     marginTop: 20,
@@ -27,13 +28,14 @@ export default StyleSheet.create({
   },
   gradientWrapper: {
     flex: 1,
-    backgroundColor: Colors.clear
+    backgroundColor: Colors.clear,
   },
   topRightContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     margin: Metrics.baseMargin,
     marginBottom: 5,
+    marginTop: isIPhoneX() ? 25 : Metrics.baseMargin,
   },
   editButton: {
     marginRight: 15,
@@ -49,11 +51,13 @@ export default StyleSheet.create({
     height: 23,
     width: 23,
     tintColor: Colors.signupGrey,
+    marginTop: isIPhoneX() ? 15 : 0,
   },
   pencilImageIcon: {
     height: 22,
     width: 22,
     tintColor: Colors.signupGrey,
+    marginTop: isIPhoneX() ? 15 : 0,
   },
   readingViewTop: {
     height: 20,
@@ -125,14 +129,14 @@ export default StyleSheet.create({
   editTitleWrapper: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   editTitle: {
     width: Metrics.screenWidth - avatarImageSize - 2 * Metrics.section - 10 - 5 - 14,
     textAlign: 'left',
   },
   editPencilImage: {
-    tintColor: 'grey'
+    tintColor: 'grey',
   },
   editPencilView: {
     paddingVertical: 3,
@@ -166,7 +170,7 @@ export default StyleSheet.create({
     left: 30,
   },
   tabs: {
-    flex: 1
+    flex: 1,
   },
   storyTitleStyle: {
     fontSize: 18,
@@ -175,12 +179,12 @@ export default StyleSheet.create({
   subtitleStyle: {
     fontSize: 13,
     letterSpacing: .7,
-    fontWeight: '300'
+    fontWeight: '300',
   },
   editBio: {
     fontWeight: '600',
     fontSize: 16,
-    marginVertical: Metrics.baseMargin
+    marginVertical: Metrics.baseMargin,
   },
   readBioText: {
     fontFamily: Fonts.type.montserrat,
@@ -196,7 +200,7 @@ export default StyleSheet.create({
     fontWeight: '400',
   },
   spinnerWrapper: {
-    marginTop: Metrics.doubleSection
+    marginTop: Metrics.doubleSection,
   },
   noStories: {
     marginTop: Metrics.doubleSection,
@@ -256,7 +260,7 @@ export default StyleSheet.create({
     fontWeight: '600',
     fontSize: 8,
     color: Colors.background,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   feedList: {
     height: Metrics.screenHeight - Metrics.tabBarHeight,

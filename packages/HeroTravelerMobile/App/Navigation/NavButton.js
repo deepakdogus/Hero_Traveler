@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import { TouchableOpacity, Text } from 'react-native'
 import TabIcon from '../Components/TabIcon'
 import Styles from './Styles/NavButtonStyles'
+import { isIPhoneX } from '../Themes/Metrics'
 
 export default class NavButton extends React.Component {
-
   static propTypes = {
     iconName: PropTypes.string,
     text: PropTypes.string,
@@ -13,12 +13,14 @@ export default class NavButton extends React.Component {
     onLeft: PropTypes.func,
   }
 
+  iPhoneXStyles = isIPhoneX() ? { marginTop: 45 } : {}
+
   render () {
-    const {iconName, onRight, onLeft, text, style = {}} = this.props
+    const {onRight, onLeft, text, style = {}} = this.props
     const TabIconInstance = (
       <TabIcon
         name={ this.props.iconName }
-        style={{image: [Styles.image, style.icon || {} ] }}
+        style={{image: [Styles.image, style.icon || {}, this.iPhoneXStyles] }}
       />)
 
     return (

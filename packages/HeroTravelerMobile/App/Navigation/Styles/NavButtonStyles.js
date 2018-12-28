@@ -1,4 +1,5 @@
 import {Colors, Fonts} from '../../Shared/Themes/'
+import { isIPhoneX } from '../../Themes/Metrics'
 
 export default {
   navButtonText: {
@@ -13,7 +14,8 @@ export default {
     flexDirection: 'row',
   },
   image: {
-    height: 21, 
+    height: 21,
     width: 13,
-  }
+    marginTop: isIPhoneX() ? 15 : 0,
+  },
 }

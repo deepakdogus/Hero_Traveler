@@ -1,50 +1,63 @@
 import {Colors, Metrics, Fonts} from '../../Shared/Themes/'
+import { isIPhoneX } from '../../Themes/Metrics'
 
 export default {
   container: {
-    flex: 1
+    flex: 1,
   },
   navBar: {
     backgroundColor: Colors.background,
     borderBottomWidth: 0,
-    height: Metrics.navBarHeight
+    height: Metrics.navBarHeight,
   },
   navBarTitle: {
-    color: Colors.navBarText
+    color: Colors.navBarText,
+    marginTop: isIPhoneX() ? 15 : 0,
   },
   navBarClear: {
     backgroundColor: Colors.clear,
-    borderBottomWidth: 0
+    borderBottomWidth: 0,
   },
   navBarWhite: {
-    height: Metrics.navBarHeight - 15,
+    height: isIPhoneX() ? Metrics.navBarHeight : Metrics.navBarHeight - 15,
     backgroundColor: Colors.snow,
     borderStyle: 'solid',
     borderBottomWidth: 1,
     borderBottomColor: Colors.dividerGrey,
+    paddingTop: isIPhoneX() ? 15 : 0,
   },
   tabBar: {
     backgroundColor: Colors.tabBar,
+    height: Metrics.tabBarHeight,
+  },
+  tabBarItemContainer: {
+    height: Metrics.tabBarHeight,
+    justifyContent: isIPhoneX() ? 'flex-start' : 'center',
+    paddingTop: isIPhoneX() ? 20 : 0,
   },
   tabBarActive: {
     backgroundColor: Colors.sectionHighlight,
+    alignItems: 'center',
   },
   navText: {
     fontFamily: Fonts.type.montserrat,
     fontSize: 16,
-    color: Colors.navBarText
+    color: Colors.navBarText,
+    marginTop: isIPhoneX() ? 15 : 0,
   },
   navTitle: {
     fontFamily: Fonts.type.montserrat,
     color: Colors.snow,
-    fontSize: 18
+    fontSize: 18,
+    marginTop: isIPhoneX() ? 15 : 0,
   },
   navBarBack: {
-    tintColor: 'white'
+    tintColor: 'white',
+    marginTop: isIPhoneX() ? 15 : 0,
   },
   browseGuest: {
     fontSize: 12,
-    color: Colors.snow
+    color: Colors.snow,
   },
   doneFollow: {
     color: Colors.red,
@@ -67,9 +80,10 @@ export default {
       width: Math.round(Metrics.screenWidth / 5),
       flex: 1,
       flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-    }
+      justifyContent:  'center',
+      alignItems: isIPhoneX() ? 'flex-start' : 'center',
+      marginTop: isIPhoneX() ? -8 : 0,
+    },
   },
   storyTitle: {
     fontFamily: Fonts.type.sourceSansPro,

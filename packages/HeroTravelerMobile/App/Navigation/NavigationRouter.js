@@ -94,6 +94,7 @@ const tabBarProps = {
   tabs: true,
   tabBarStyle: Styles.tabBar,
   tabBarSelectedItemStyle: Styles.tabBarActive,
+  tabBarIconContainerStyle: Styles.tabBarItemContainer,
 }
 
 // const launchNavButton = (props) => {

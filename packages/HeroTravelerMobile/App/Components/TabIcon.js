@@ -6,6 +6,7 @@ import {connect} from 'react-redux'
 import {Images} from '../Shared/Themes'
 
 import NotificationBadge from './NotificationBadge'
+import { isIPhoneX } from '../Themes/Metrics';
 
 class TabIcon extends React.Component {
 
@@ -132,6 +133,12 @@ class TabIcon extends React.Component {
     notificationCount: PropTypes.number,
   }
 
+  // corrects vertical alignment of activity icon in nav bar on iPhone X
+  // FIXME: get a new iconNavActivity icon with no extra space
+  navBarStyle = name => ({
+    marginTop: (name === 'activity' && isIPhoneX()) ? -3 : 0,
+  })
+
   render() {
     const { style = {}, name, notificationCount } = this.props
     return (
@@ -140,13 +147,13 @@ class TabIcon extends React.Component {
       >
         <Image
           source={this.getIconSource(name)}
-          style={style.image || {}}
+          style={[style.image, this.navBarStyle(name)] || {}}
         />
         {name === 'activity' && notificationCount > 0 &&
           <NotificationBadge count={notificationCount} />
         }
       </View>
-    );
+    )
   }
 }
 

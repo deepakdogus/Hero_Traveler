@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { ApplicationStyles, Colors, Metrics } from '../../Shared/Themes/'
+import { isIPhoneX } from '../../Themes/Metrics'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
@@ -13,9 +14,11 @@ export default StyleSheet.create({
     alignItems: 'center'
   },
   logo: {
-    marginTop: Metrics.baseMargin * 1.5,
     width: 148,
-    height: 30
+    height: 30,
+    marginTop: isIPhoneX()
+      ? Metrics.baseMargin * 1.5 + 15
+      : Metrics.baseMargin * 1.5,
   },
   scrollItemFullScreen: {
     flex: 1,

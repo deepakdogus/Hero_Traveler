@@ -44,7 +44,6 @@ const Tab = ({text, onPress, selected, notificationCount, width = '100%'}) => {
 }
 
 class NotificationScreen extends React.Component {
-
   constructor(props){
     super(props)
     this.state = { selectedTab: 0}
@@ -57,7 +56,7 @@ class NotificationScreen extends React.Component {
   componentDidMount() {
     // We can assume that it's safe to clear the notifications count
     // from the app icon.
-    PushNotification.setApplicationIconBadgeNumber(0);
+    PushNotification.setApplicationIconBadgeNumber(0)
   }
 
   _pressActivity = (activityId, seen) => {
@@ -65,21 +64,21 @@ class NotificationScreen extends React.Component {
     if (!seen) {
       markSeen(activityId)
     }
-    let activity = activities[activityId];
+    let activity = activities[activityId]
     switch (activity.kind) {
       case ActivityTypes.follow:
-        NavActions.readOnlyProfile({userId: activities[activityId].fromUser});
-        break;
+        NavActions.readOnlyProfile({userId: activities[activityId].fromUser})
+        break
       case ActivityTypes.comment:
       case ActivityTypes.like:
         let story = stories[
           activities[activityId].story
-        ];
+        ]
         NavActions.story({
           storyId: story._id,
           title: displayLocationPreview(story.locationInfo),
         })
-        break;
+        break
       case ActivityTypes.guideLike:
       case ActivityTypes.guideComment:
         let guide = guides[
@@ -100,7 +99,7 @@ class NotificationScreen extends React.Component {
 
     if (nextProps.activities) {
       _.map(nextProps.activities, (activity) => {
-        if (!activity.seen) nextProps.markSeen(activity._id);
+        if (!activity.seen) nextProps.markSeen(activity._id)
       })
     }
   }
@@ -128,7 +127,8 @@ class NotificationScreen extends React.Component {
       content = (
         <Loader spinnerColor={Colors.blackoutTint} />
       )
-    } else if (this.state.selectedTab === 1 ) {
+    }
+    else if (this.state.selectedTab === 1 ) {
       content = (
         <ThreadList
           threads={threads}

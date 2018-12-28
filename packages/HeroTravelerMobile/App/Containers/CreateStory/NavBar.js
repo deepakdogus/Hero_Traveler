@@ -5,6 +5,7 @@ import TextButton from '../../Components/TextButton'
 import TabIcon from '../../Components/TabIcon'
 import {Metrics, Colors, Fonts} from '../../Shared/Themes'
 import NavButtonStyles from '../../Navigation/Styles/NavButtonStyles'
+import { isIPhoneX } from '../../Themes/Metrics'
 
 const styles = StyleSheet.create({
   root: {
@@ -12,7 +13,7 @@ const styles = StyleSheet.create({
     paddingTop: Metrics.baseMargin,
     backgroundColor: Colors.background,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   text: {
     fontFamily: Fonts.type.montserrat,
@@ -20,17 +21,18 @@ const styles = StyleSheet.create({
     color: Colors.red,
   },
   title: {
-    flex: 1/3,
+    flex: 1 / 3,
+    marginTop: isIPhoneX() ? 15 : 0,
   },
   titleText: {
     textAlign: 'center',
     color: Colors.white,
   },
   row: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   left: {
-    flex: 1/3,
+    flex: 1 / 3,
     flexDirection: 'row',
   },
   leftText: {
@@ -39,23 +41,24 @@ const styles = StyleSheet.create({
     color: Colors.white,
   },
   right: {
-    flex: 1/3,
+    flex: 1 / 3,
     flexDirection: 'row',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   rightText: {
     textAlign: 'right',
     paddingRight: Metrics.doubleBaseMargin,
+    marginTop: isIPhoneX() ? 15 : 0,
   },
   leftBtn: {
-    tintColor: Colors.white
+    tintColor: Colors.white,
   },
   inactiveText: {
-    opacity: .5,
+    opacity: 0.5,
     color: Colors.navBarText,
   },
   inactiveBtn: {
-    opacity: .2,
+    opacity: 0.2,
     tintColor: Colors.navBarText,
   },
   leftIconStyle: {
@@ -69,7 +72,6 @@ const styles = StyleSheet.create({
 })
 
 export default class NavBar extends Component {
-
   render() {
     const { style,
         leftTitle, leftIcon, leftTextStyle, leftIconStyle, onLeft,

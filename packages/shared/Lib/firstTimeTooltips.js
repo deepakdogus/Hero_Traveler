@@ -7,6 +7,7 @@ export const Types = {
   STORY_CREATE_CATEGORIES: 'story_create_categories',
   STORY_CREATE_HASHTAGS: 'story_create_hashtags',
   ADD_TO_GUIDE: 'add_to_guide',
+  SLIDE_DELETE_GUIDE: 'slide_delete_guide',
   GUIDE_IS_VERIFIED: 'guide_is_verified',
 }
 

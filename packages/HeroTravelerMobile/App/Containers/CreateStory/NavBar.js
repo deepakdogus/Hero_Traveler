@@ -80,23 +80,24 @@ export default class NavBar extends Component {
         rightTitle, rightIcon, rightTextStyle, onRight, isRightValid = true } = this.props
     return (
       <View style={[styles.root, style]}>
-        {(leftTitle || leftIcon) &&
+        {(leftTitle || leftIcon) && (
           <View style={styles.left}>
             <TouchableOpacity onPress={onLeft} style={styles.row}>
-              {leftIcon &&
+              {leftIcon && (
                 <TabIcon
                   style={{ image: [styles.leftIconStyle, styles.leftBtn, leftIconStyle] }}
                   name={leftIcon}/>
-              }
-              {leftTitle &&
+              )}
+              {leftTitle && (
                 <Text style={[styles.text, styles.leftText, leftTextStyle]}>
-                  {leftTitle
-                }</Text>}
+                  {leftTitle}
+                </Text>
+              )}
             </TouchableOpacity>
           </View>
-        }
+        )}
 
-        {title &&
+        {title && (
           <View style={styles.title}>
             {!onTitle && <Text style={[styles.text, styles.titleText, titleStyle || {}]}>{title}</Text>}
             {onTitle && <TextButton
@@ -106,23 +107,23 @@ export default class NavBar extends Component {
               {title}
             </TextButton>}
           </View>
-        }
+        )}
 
-        {rightTitle &&
+        {rightTitle && (
           <View style={styles.right}>
             <TouchableOpacity onPress={onRight} style={styles.row}>
               <Text style={[styles.text, styles.rightText, rightTextStyle, isRightValid ? {} : styles.inactiveText]}>
                 {rightTitle}
               </Text>
-              {rightIcon && rightIcon !== 'none' &&
+              {rightIcon && rightIcon !== 'none' && (
                 <TabIcon
                   style={{image: [styles.rightIconStyle, isRightValid ? {} : styles.inactiveBtn]}}
                   name={rightIcon}
                 />
-              }
+              )}
             </TouchableOpacity>
           </View>
-        }
+        )}
       </View>
     )
   }

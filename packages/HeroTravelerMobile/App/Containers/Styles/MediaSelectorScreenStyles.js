@@ -22,7 +22,7 @@ export default StyleSheet.create({
   },
   tabbarButton: {
     height: 55,
-    flex: .5,
+    flex: 0.5,
   },
   tabbarText: {
     flex: 1,
@@ -35,20 +35,20 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.montserrat,
   },
   tabbarTextNotSelected: {
-    color: Colors.grey
+    color: Colors.grey,
   },
   imageWrapper: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   image: {
     position: 'absolute',
     top: 0,
     bottom: 0,
     left: 0,
-    right: 0
+    right: 0,
   },
   retakeButtonText: {
     color: Colors.white,
@@ -68,12 +68,12 @@ export default StyleSheet.create({
   notAuthorizedWrapper: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   notAuthorizedText: {
     ...ApplicationStyles.screen.titleText,
     color: Colors.navBarText,
-    textAlign: "center",
+    textAlign: 'center',
     padding: 20,
-  }
+  },
 })

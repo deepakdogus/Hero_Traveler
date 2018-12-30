@@ -8,7 +8,7 @@ import Avatar from '../Components/Avatar'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import {Colors} from '../Shared/Themes'
 import styles, { listHeight } from './Styles/CommentsScreenStyles'
-import CommentActions from '../Shared/Redux/Entities/Comments';
+import CommentActions from '../Shared/Redux/Entities/Comments'
 
 const Comment = ({avatarUrl, name, comment, timestamp}) => {
   return (
@@ -66,7 +66,7 @@ class CommentsScreen extends React.Component {
   handleSend = () => {
     // blur to hide keyboard
 
-    if (this.state.text.trim().length=== 0) return
+    if (this.state.text.trim().length === 0) return
 
     this.input.blur()
     this.props.storyId
@@ -120,10 +120,10 @@ class CommentsScreen extends React.Component {
           onContentSizeChange={this._onContentSizeChange}
           style={[
             styles.list,
-            this.state.isFocused ? {height: listHeight - 295} : {}
+            this.state.isFocused ? {height: listHeight - 295} : {},
           ]}>
         {comments && comments.map(comment => {
-          return(
+          return (
             <Comment
               avatar={getImageUrl(comment.user.profile.avatar, 'avatar')}
               name={comment.user.profile.fullName}
@@ -131,7 +131,8 @@ class CommentsScreen extends React.Component {
               timestamp={moment(comment.createdAt).fromNow()}
               key={comment.createdAt.toString()}
             />
-            )})}
+          )
+        })}
         </ScrollView>
         <View>
           <View style={styles.inputGroupWrapper}>

@@ -6,10 +6,9 @@ import {connect} from 'react-redux'
 import {Images} from '../Shared/Themes'
 
 import NotificationBadge from './NotificationBadge'
-import { isIPhoneX } from '../Themes/Metrics';
+import { isIPhoneX } from '../Themes/Metrics'
 
 class TabIcon extends React.Component {
-
   getIconSource(name) {
     switch (name) {
       case 'pencil':
@@ -149,9 +148,9 @@ class TabIcon extends React.Component {
           source={this.getIconSource(name)}
           style={[style.image, this.navBarStyle(name)] || {}}
         />
-        {name === 'activity' && notificationCount > 0 &&
+        {name === 'activity' && notificationCount > 0 && (
           <NotificationBadge count={notificationCount} />
-        }
+        )}
       </View>
     )
   }
@@ -161,8 +160,8 @@ const mapStateToProps = (state, props) => {
   if (props.name === 'activity') {
     const activities = state.entities.users.activities
     const unseenActivityCount = _.keys(activities).reduce((count, key) => {
-      const increment = activities[key].seen ? 0 : 1;
-      return count + increment;
+      const increment = activities[key].seen ? 0 : 1
+      return count + increment
     }, 0)
 
     /*

@@ -19,12 +19,11 @@ export default {
     borderBottomWidth: 0,
   },
   navBarWhite: {
-    height: isIPhoneX() ? Metrics.navBarHeight : Metrics.navBarHeight - 15,
+    height: Metrics.navBarHeight - 15,
     backgroundColor: Colors.snow,
     borderStyle: 'solid',
     borderBottomWidth: 1,
     borderBottomColor: Colors.dividerGrey,
-    paddingTop: isIPhoneX() ? 15 : 0,
   },
   tabBar: {
     backgroundColor: Colors.tabBar,

@@ -8,10 +8,13 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     borderTopWidth: 20,
-    borderTopColor: Colors.background
+    borderTopColor: Colors.background,
   },
   containerWithNavbar: {
-    ...ApplicationStyles.screen.containerWithNavbar
+    ...ApplicationStyles.screen.containerWithNavbar,
+  },
+  contentContainer: {
+    flex: 1,
   },
   errorButton: {
     position: 'absolute',
@@ -26,12 +29,12 @@ export default StyleSheet.create({
     flex: 1,
   },
   spaceView: {
-    height: third
+    height: third,
   },
   loaderText: {
     color: 'white',
     fontSize: 18,
-    fontFamily: Fonts.type.montserrat
+    fontFamily: Fonts.type.montserrat,
   },
   titlesWrapper: {
     marginHorizontal: 20,
@@ -48,7 +51,7 @@ export default StyleSheet.create({
   description: {
     fontFamily: Fonts.type.sourceSansPro,
     fontWeight: '400',
-    letterSpacing: .7,
+    letterSpacing: 0.7,
     color: Colors.grey,
     fontSize: 18,
     marginTop: 5,
@@ -82,11 +85,11 @@ export default StyleSheet.create({
   },
   addTitleView: {
     height: third,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   navBarStyle: {
     height: Metrics.navBarHeight - 10,
-    paddingTop: 0
+    paddingTop: 0,
   },
   navBarRightTextStyle: {
     paddingRight: 10,
@@ -94,13 +97,13 @@ export default StyleSheet.create({
   angleDownIcon: {
     height: 20,
     alignItems: 'center',
-    marginVertical: Metrics.baseMargin / 2
+    marginVertical: Metrics.baseMargin / 2,
   },
   editorWrapper: {
-    backgroundColor: Colors.snow
+    backgroundColor: Colors.snow,
   },
   loadingText: {
-    color: Colors.white
+    color: Colors.white,
   },
   loading: {
     position: 'absolute',
@@ -116,7 +119,7 @@ export default StyleSheet.create({
     width: Metrics.screenWidth,
   },
   toolbarAvoiding: {
-    height: Metrics.editorToolbarHeight
+    height: Metrics.editorToolbarHeight,
   },
   modalTitle: {
     textAlign: 'center',
@@ -133,7 +136,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     height: 50,
     alignItems: 'center',
-    borderTopWidth: .5,
+    borderTopWidth: 0.5,
     borderTopColor: Colors.lightGrey,
   },
   modalBtn: {
@@ -143,7 +146,7 @@ export default StyleSheet.create({
     height: 50,
   },
   modalBtnLeft: {
-    borderRightWidth: .5,
+    borderRightWidth: 0.5,
     borderRightColor: Colors.lightGrey,
   },
   modalBtnText: {
@@ -155,7 +158,7 @@ export default StyleSheet.create({
   },
   failModalMessage: {
     marginBottom: 40,
-  }
+  },
 })
 
 export const customStyles = StyleSheet.create({
@@ -176,8 +179,8 @@ export const customStyles = StyleSheet.create({
   'header-one': {
     fontSize: 21,
     fontWeight: '600',
-    color: '#1a1c21'
-  }
+    color: '#1a1c21',
+  },
 })
 
 export const modalWrapperStyles = {

@@ -1,17 +1,15 @@
 import React from 'react'
 import {
   ScrollView,
-  View,
-  Text
+  Text,
 } from 'react-native'
 
-import {Colors} from '../Shared/Themes'
 import styles from './Styles/FAQScreenStyles'
 
 export default class FAQScreen extends React.Component {
   render () {
     return (
-      <ScrollView style={styles.scrollViewWrapper}>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
           <Text style={styles.questionText}>
             What is HERO Traveler?
           </Text>
@@ -60,7 +58,7 @@ export default class FAQScreen extends React.Component {
           </Text>
           <Text style={styles.answerText}>
             Contributors are the cream of the crop, representing our most passionate users. To be labeled with the “Contributor” star on your profile, you must first publish 200 stories or more. To learn about other eligibility requirements, click here/ send us an email at contributors@herotraveler.com 
-          </Text>                
+          </Text>
       </ScrollView>
     )
   }

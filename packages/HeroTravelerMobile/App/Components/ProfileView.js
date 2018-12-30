@@ -31,7 +31,6 @@ const ViewOnlyTabTypes = {
 }
 
 class ProfileView extends React.Component {
-
   static defaultProps = {
     onPressFollow: () => {},
     bookmarksFetchStatus: {},
@@ -66,7 +65,7 @@ class ProfileView extends React.Component {
   componentWillReceiveProps(newProps) {
     if ((this.props.location !== newProps.location) && (this.state.selectedTab !== TabTypes.stories)) {
       this.setState({
-        selectedTab: TabTypes.stories
+        selectedTab: TabTypes.stories,
       })
     }
     if (!this.hasCompletedNoStoriesTooltip() && newProps.stories.length){
@@ -114,7 +113,7 @@ class ProfileView extends React.Component {
   renderProfileInfo = () => {
     const {
       user, editable,
-      isFollowing, onPressFollow, onPressUnfollow
+      isFollowing, onPressFollow, onPressUnfollow,
     } = this.props
     return (
       <ProfileUserInfo
@@ -134,7 +133,7 @@ class ProfileView extends React.Component {
   hasCompletedNoStoriesTooltip() {
     return isTooltipComplete(
       TooltipTypes.PROFILE_NO_STORIES,
-      this.props.user.introTooltips
+      this.props.user.introTooltips,
     )
   }
 
@@ -149,11 +148,13 @@ class ProfileView extends React.Component {
     const {editable, location, stories, user, userId, onRefresh} = this.props
     const {selectedTab} = this.state
 
-    let showTooltip = editable &&
-      !stories.length && !this.hasCompletedNoStoriesTooltip()
+    let showTooltip
+      = editable && !stories.length && !this.hasCompletedNoStoriesTooltip()
+
+    const rootStyles = editable ? styles.flexOne : styles.flexOneReadOnly
 
     return (
-      <View style={styles.flexOne}>
+      <View style={rootStyles}>
         <View style={styles.gradientWrapper}>
           <ProfileTabsAndStories
             editable={editable}
@@ -172,29 +173,29 @@ class ProfileView extends React.Component {
             onRefresh={onRefresh}
           />
         </View>
-        {this.state.error &&
+        {this.state.error && (
           <ShadowButton
             style={styles.errorButton}
             onPress={this._clearError}
             text={this.state.error}
           />
-        }
-        {showTooltip &&
+        )}
+        {showTooltip && (
           <Tooltip
             position='bottom-center'
             text={"Looks like you don't have any stories.\nPublish your first story now!"}
             onDismiss={this._completeTooltip}
           />
-        }
+        )}
       </View>
     )
   }
 }
 
 const mapStateToProps = (state) => {
-  const userId = state.session.userId;
+  const userId = state.session.userId
   // If the signup process is not completed, a user can still login but they don't have some entities set.
-  const hasBookmarks = !!state.entities.stories.bookmarks && !!state.entities.stories.bookmarks[userId];
+  const hasBookmarks = !!state.entities.stories.bookmarks && !!state.entities.stories.bookmarks[userId]
   return {
     userId,
     location: state.routes.scene.name,
@@ -211,4 +212,3 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileView)
-

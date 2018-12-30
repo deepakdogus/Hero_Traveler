@@ -3,8 +3,8 @@ import { Dimensions, Platform, PixelRatio } from 'react-native'
 const { width, height } = Dimensions.get('window')
 
 export const isIPhoneX = () =>
-  Platform.OS === 'ios' &&
-  (isIPhoneXSize({ width, height }) || isIPhoneXrSize({ width, height }))
+  Platform.OS === 'ios'
+  && (isIPhoneXSize({ width, height }) || isIPhoneXrSize({ width, height }))
 
 export const isIPhoneXSize = dim => dim.height == 812 || dim.width == 812
 
@@ -30,7 +30,7 @@ const getTabBarHeight = () => {
 // Used via Metrics.baseMargin
 const mobileMetrics = {
   screenWidth: width < height ? width : height,
-  screenHeight: width < height ? height : width,
+  screenHeight: width < height ? height + (isIPhoneX() ? 50 : 0) : width,
   navBarHeight: getNavBarHeight(),
   tabBarHeight: getTabBarHeight(),
   pixelRatio: PixelRatio.get(),

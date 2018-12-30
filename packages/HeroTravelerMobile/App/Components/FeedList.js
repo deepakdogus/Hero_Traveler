@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import {
     RefreshControl,
     requireNativeComponent,
-    Alert,
 } from 'react-native'
 import reactMixin from 'react-mixin'
 import ScrollResponder from '../../node_modules/react-native/Libraries/Components/ScrollResponder'
@@ -210,20 +209,16 @@ export default class FeedList extends React.Component {
           refreshing={false} // workaround to prevent it from persisting
           onRefresh={this.props.onRefresh}
         />
-        {
-          renderHeaderContent ?
-          (<NativeFeedHeader headerHeight={headerContentHeight} sticky={false}>{
-            renderHeaderContent}
-          </NativeFeedHeader>) :
-          null
-        }
-        { renderSectionHeader ?
-          (<NativeFeedHeader headerHeight={50} sticky={true}>
+        {renderHeaderContent ? (
+          <NativeFeedHeader headerHeight={headerContentHeight} sticky={false}>
+            {renderHeaderContent}
+          </NativeFeedHeader>
+        ) : null}
+        {renderSectionHeader ? (
+          <NativeFeedHeader headerHeight={50} sticky={true}>
             {renderSectionHeader}
-          </NativeFeedHeader>) :
-          null
-        }
-
+          </NativeFeedHeader>
+        ) : null}
         {feedItemViews}
       </NativeFeed>
     )

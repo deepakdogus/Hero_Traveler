@@ -12,9 +12,7 @@ import Loader from '../Components/Loader'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import styles from './Styles/ProfileScreenStyles'
 
-
 class ReadOnlyProfileScreen extends Component {
-
   static propTypes = {
     userId: PropTypes.string.isRequired,
     attemptRefreshUser: PropTypes.func.isRequired,
@@ -109,7 +107,7 @@ const mapStateToProps = (state, props) => {
     guideIds: guides.guideIdsByUserId ? guides.guideIdsByUserId[props.userId] : [],
     guidesFetchStatus: guides.fetchStatus,
     userFetchStatus: users.fetchStatus,
-    myFollowedUsers: getFollowers(users, 'following', authedUser.id)
+    myFollowedUsers: getFollowers(users, 'following', authedUser.id),
   }
 }
 

@@ -35,7 +35,6 @@ export default StyleSheet.create({
     justifyContent: 'flex-end',
     margin: Metrics.baseMargin,
     marginBottom: 5,
-    marginTop: isIPhoneX() ? 25 : Metrics.baseMargin,
   },
   editButton: {
     marginRight: 15,
@@ -51,13 +50,11 @@ export default StyleSheet.create({
     height: 23,
     width: 23,
     tintColor: Colors.signupGrey,
-    marginTop: isIPhoneX() ? 15 : 0,
   },
   pencilImageIcon: {
     height: 22,
     width: 22,
     tintColor: Colors.signupGrey,
-    marginTop: isIPhoneX() ? 15 : 0,
   },
   readingViewTop: {
     height: 20,
@@ -69,7 +66,7 @@ export default StyleSheet.create({
     marginLeft: 5,
     flexDirection: 'column',
     marginBottom: 5,
-    minHeight: 108
+    minHeight: 108,
   },
   italicText: {
     fontFamily: Fonts.type.sourceSansPro,
@@ -267,6 +264,10 @@ export default StyleSheet.create({
     marginBottom: Metrics.tabBarHeight + Metrics.baseMargin,
   },
   flexOne: {
+    flex: 1,
+    marginTop: isIPhoneX() ? 15 : 0,
+  },
+  flexOneReadOnly: {
     flex: 1,
   },
   navbarStyle: {

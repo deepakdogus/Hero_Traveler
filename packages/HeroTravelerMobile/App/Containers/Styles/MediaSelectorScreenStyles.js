@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native'
-import { ApplicationStyles, Colors, Fonts } from '../../Shared/Themes/'
+import { ApplicationStyles, Colors, Fonts, Metrics } from '../../Shared/Themes/'
+import { isIPhoneX } from '../../Themes/Metrics'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
@@ -8,7 +9,7 @@ export default StyleSheet.create({
     backgroundColor: Colors.background,
   },
   tabbar: {
-    height: 55,
+    height: Metrics.tabBarHeight,
     flex: 1,
     position: 'absolute',
     bottom: 0,
@@ -16,8 +17,8 @@ export default StyleSheet.create({
     right: 0,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'center',
-    backgroundColor: Colors.background
+    alignItems: isIPhoneX() ? 'flex-start' : 'center',
+    backgroundColor: Colors.background,
   },
   tabbarButton: {
     height: 55,
@@ -74,5 +75,5 @@ export default StyleSheet.create({
     color: Colors.navBarText,
     textAlign: "center",
     padding: 20,
-  }  
+  }
 })

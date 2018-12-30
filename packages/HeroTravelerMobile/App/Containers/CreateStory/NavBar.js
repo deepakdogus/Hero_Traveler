@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
   left: {
     flex: 1 / 3,
     flexDirection: 'row',
+    marginTop: isIPhoneX() ? 15 : 0,
   },
   leftText: {
     textAlign: 'left',
@@ -44,11 +45,11 @@ const styles = StyleSheet.create({
     flex: 1 / 3,
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    marginTop: isIPhoneX() ? 15 : 0,
   },
   rightText: {
     textAlign: 'right',
     paddingRight: Metrics.doubleBaseMargin,
-    marginTop: isIPhoneX() ? 15 : 0,
   },
   leftBtn: {
     tintColor: Colors.white,

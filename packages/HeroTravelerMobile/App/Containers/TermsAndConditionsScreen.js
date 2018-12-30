@@ -1,7 +1,7 @@
 import React from 'react'
 import {
   ScrollView,
-  Text
+  Text,
 } from 'react-native'
 
 import styles from './Styles/TermsAndConditionsScreenStyles'
@@ -9,7 +9,7 @@ import styles from './Styles/TermsAndConditionsScreenStyles'
 export default class TermsAndConditionsScreen extends React.Component {
   render () {
     return (
-      <ScrollView style={styles.scrollViewWrapper}>
+      <ScrollView contentContainerStyle={styles.scrollViewContent} >
           <Text style={styles.titleText}>
             Terms of Use
           </Text>

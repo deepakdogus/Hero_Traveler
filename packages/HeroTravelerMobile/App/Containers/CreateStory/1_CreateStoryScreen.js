@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import StoryCoverScreen from './2_StoryCoverScreen'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import createLocalDraft from '../../Shared/Lib/createLocalDraft'
+import isLocalDraft from '../../Shared/Lib/isLocalDraft'
 
 class CreateStoryScreen extends Component {
   static propTypes = {
@@ -30,7 +31,7 @@ class CreateStoryScreen extends Component {
       addLocalDraft(createLocalDraft(userId))
     }
     // should only load publish stories since locals do not exist in DB
-    else if (storyId.substring(0,6) !== 'local-'){
+    else if (isLocalDraft(storyId)) {
       loadDraft(storyId, cachedStory)
     }
     else {
@@ -47,9 +48,10 @@ class CreateStoryScreen extends Component {
 
 function mapStateToProps(state, props) {
   const accessToken = _.find(state.session.tokens, {type: 'access'})
+
   return {
     userId: state.session.userId,
-    cachedStory: state.entities.stories.entities[props.storyId],
+    cachedStory: _.get(state, `pendingUpdates.pendingUpdates[${props.storyId}].story`),
     accessToken: accessToken.value,
     draft: state.storyCreate.draft,
     workingDraft: state.storyCreate.workingDraft,

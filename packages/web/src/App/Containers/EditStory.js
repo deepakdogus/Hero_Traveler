@@ -8,6 +8,7 @@ import PropTypes from 'prop-types'
 
 import StoryCreateActions from '../Shared/Redux/StoryCreateRedux'
 import createLocalDraft from '../Shared/Lib/createLocalDraft'
+import isLocalDraft from '../Shared/Lib/isLocalDraft'
 import AuthRoute from './AuthRoute'
 import UXActions from '../Redux/UXRedux'
 import CreateStoryCoverContent from './CreateStory/1_CoverContent'
@@ -158,7 +159,7 @@ class EditStory extends Component {
 
     if (hasCompletedSave) {
       const prevId = _.get(prevProps, 'workingDraft.id', '')
-      const didFirstSaveAsDraft = prevId.startsWith('local-') && prevId !== workingDraft.id
+      const didFirstSaveAsDraft = isLocalDraft(prevId) && prevId !== workingDraft.id
       if (this.state.saveAction === 'publish') {
         this.props.reroute('/feed')
         this.props.resetCreateStore()
@@ -188,7 +189,7 @@ class EditStory extends Component {
   }
 
   isLocalStory() {
-    return this.props.storyId.substring(0,6) === 'local-'
+    return isLocalDraft(this.props.storyId)
   }
 
   _updateDraft = (publish) => {
@@ -201,7 +202,7 @@ class EditStory extends Component {
 
     this.setState({ saveAction: publish === true ? 'publish' : 'update' })
 
-    if (workingDraft.id.startsWith('local-')) {
+    if (isLocalDraft(workingDraft.id)) {
       saveDraft(this.cleanDraft(workingDraft), workingDraft.draft)
     }
     else {

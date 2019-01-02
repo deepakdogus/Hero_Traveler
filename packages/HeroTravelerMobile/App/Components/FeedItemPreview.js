@@ -12,6 +12,7 @@ import {Actions as NavActions} from 'react-native-router-flux'
 
 import formatCount from '../Shared/Lib/formatCount'
 import getImageUrl from '../Shared/Lib/getImageUrl'
+import isLocalDraft from '../Shared/Lib/isLocalDraft'
 import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
 import { Metrics } from '../Shared/Themes'
 import styles from './Styles/FeedItemPreviewStyle'
@@ -70,24 +71,25 @@ export default class FeedItemPreview extends Component {
     isFeed: true,
   }
 
+  navToStoryEdit = () => {
+    const storyId = this.props.feedItem.id
+    NavActions.createStoryFlow({
+      storyId,
+      type: 'reset',
+      navigatedFromProfile: true,
+      shouldLoadStory: false,
+    })
+    NavActions.createStory_cover({
+      storyId,
+      navigatedFromProfile: true,
+      shouldLoadStory: false,
+    })
+  }
+
   _touchEdit = () => {
     const {isStory, feedItem} = this.props
-    if (isStory) {
-      NavActions.createStoryFlow({
-        storyId: feedItem.id,
-        type: 'reset',
-        navigatedFromProfile: true,
-        shouldLoadStory: false,
-      })
-      NavActions.createStory_cover({
-        storyId: feedItem.id,
-        navigatedFromProfile: true,
-        shouldLoadStory: false,
-      })
-    }
-    else {
-      NavActions.createGuide({ guideId: feedItem.id })
-    }
+    if (isStory) this.navToStoryEdit()
+    else NavActions.createGuide({ guideId: feedItem.id })
   }
 
   _touchTrash = () => {
@@ -329,8 +331,11 @@ export default class FeedItemPreview extends Component {
   }
 
   getOnPress = () => {
-    const {isStory, onPressStory, onPressGuide} = this.props
-    return isStory ? onPressStory : onPressGuide
+    const {isStory, onPressStory, onPressGuide, feedItem} = this.props
+    if (!isStory) return onPressGuide
+    return isLocalDraft(feedItem.id)
+      ? this.navToStoryEdit
+      : onPressStory
   }
 
   render () {

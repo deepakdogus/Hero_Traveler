@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
 import changeCountOfType from '../helpers/changeCountOfTypeHelper'
+import isLocalDraft from '../../Lib/isLocalDraft'
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -299,7 +300,7 @@ export const addDraft = (state, {draft}) => {
 // if local id removes from story entities if present
 // removes from drafts.byId
 export const removeDraft = (state, {draftId}) => {
-  if (draftId.substring(0,6) === 'local-') state = state.setIn(['entities'], state.entities.without(draftId))
+  if (isLocalDraft(draftId)) state = state.setIn(['entities'], state.entities.without(draftId))
   const path = ['drafts', 'byId']
   return state.setIn(path, state.getIn(path, draftId).filter(id => {
     return id !== draftId

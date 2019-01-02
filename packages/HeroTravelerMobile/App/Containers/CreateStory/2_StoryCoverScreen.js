@@ -22,6 +22,7 @@ import styles, {customStyles, modalWrapperStyles} from './2_StoryCoverScreenStyl
 import NavBar from './NavBar'
 import getRelativeHeight, {extractCoverMetrics} from '../../Shared/Lib/getRelativeHeight'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTimeTooltips'
+import isLocalDraft from '../../Shared/Lib/isLocalDraft'
 import {trimVideo} from '../../Shared/Lib/mediaHelpers'
 import UserActions from '../../Shared/Redux/Entities/Users'
 import Modal from '../../Components/Modal'
@@ -313,7 +314,7 @@ class StoryCoverScreen extends Component {
   saveStory() {
     const draft = this.props.workingDraft
     this.cleanDraft(draft)
-    if (draft.id.startsWith('local-')) {
+    if (isLocalDraft(draft.id)) {
       this.props.saveDraft(draft, true)
     }
     else this.props.update(draft.id, draft)
@@ -688,7 +689,7 @@ class StoryCoverScreen extends Component {
           </KeyboardTrackingView>
         }
         {this.state.activeModal === 'cancel' && this.renderCancel()}
-        {this.state.activeModal === 'saveFail' || (this.hasNoDraft() && this.props.error)
+        {this.state.activeModal === 'saveFail' || (this.hasNoDraft() && !!this.props.error)
           && this.renderFailModal()
         }
         {this.isUploading() &&
@@ -730,7 +731,7 @@ export default connect((state) => {
     user: state.entities.users.entities[state.session.userId],
     originalDraft: {...state.storyCreate.draft},
     workingDraft: {...state.storyCreate.workingDraft},
-    error: state.storyCreate.error,
+    error: state.storyCreate.error || '',
   }
 }, dispatch => ({
   updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),

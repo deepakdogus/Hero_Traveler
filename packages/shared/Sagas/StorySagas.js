@@ -547,6 +547,7 @@ function getNextPendingUpdate({pendingUpdates}) {
 export function * syncPendingUpdates(api) {
   const isEditing = yield select(getIsEditing)
   const isConnected = yield hasConnection()
+  // disabled to test local draft features
   if (!isEditing && isConnected && false) {
     const {failedMethod, story, status} = yield select(getNextPendingUpdate)
     if (status === 'retrying') return

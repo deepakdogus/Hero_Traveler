@@ -63,7 +63,6 @@ export const SignupText = styled.span`
   ${basicTextStyle};
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-size: 15px;
-  margin-top: 15px;
   font-weight: 600;
   color: ${props => props.theme.Colors.redHighlights};
   display: inline;
@@ -78,9 +77,11 @@ export const StyledInput = styled.input`
   padding-bottom: 5px;
   border-width: 0 0 1px;
   border-color: ${props => props.theme.Colors.dividerGrey};
+  border-radius: 0;
   margin-bottom: 25px;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   letter-spacing: 0.2px;
+  box-sizing : border-box;
 `
 
 export const ExteriorCloseXContainer = styled.div`
@@ -92,7 +93,7 @@ export const ExteriorCloseXContainer = styled.div`
   width: 25px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     display: none;
-}
+  }
 `
 
 //RightModal Styles

@@ -5,6 +5,7 @@ import {
   View,
 } from 'react-native'
 import { connect } from 'react-redux'
+import _ from 'lodash'
 
 import HeroAPI from '../Shared/Services/HeroAPI'
 import ProfileUserInfo from './ProfileUserInfo'
@@ -31,7 +32,6 @@ const ViewOnlyTabTypes = {
 }
 
 class ProfileView extends React.Component {
-
   static defaultProps = {
     onPressFollow: () => {},
     bookmarksFetchStatus: {},
@@ -67,7 +67,7 @@ class ProfileView extends React.Component {
   componentWillReceiveProps(newProps) {
     if ((this.props.location !== newProps.location) && (this.state.selectedTab !== TabTypes.stories)) {
       this.setState({
-        selectedTab: TabTypes.stories
+        selectedTab: TabTypes.stories,
       })
     }
     if (!this.hasCompletedNoStoriesTooltip() && newProps.stories.length){
@@ -98,7 +98,13 @@ class ProfileView extends React.Component {
   _bioRef = c => this.bioInput = c
 
   getFeedItemsById() {
-    const {drafts, bookmarks, stories, guideIds, pendingDraftsIds} = this.props
+    const {
+      stories,
+      drafts = [],
+      pendingDraftsIds = [],
+      bookmarks,
+      guideIds,
+    } = this.props
     if (this.state.selectedTab === TabTypes.stories) return stories
     else if (this.state.selectedTab === TabTypes.drafts) {
       return [...pendingDraftsIds, ...drafts]
@@ -118,7 +124,7 @@ class ProfileView extends React.Component {
   renderProfileInfo = () => {
     const {
       user, editable,
-      isFollowing, onPressFollow, onPressUnfollow
+      isFollowing, onPressFollow, onPressUnfollow,
     } = this.props
     return (
       <ProfileUserInfo
@@ -196,9 +202,10 @@ class ProfileView extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const userId = state.session.userId;
+  const userId = state.session.userId
   // If the signup process is not completed, a user can still login but they don't have some entities set.
-  const hasBookmarks = !!state.entities.stories.bookmarks && !!state.entities.stories.bookmarks[userId];
+  const hasBookmarks = _.has(state, `entities.stories.bookmarks[${userId}]`)
+
   return {
     userId,
     location: state.routes.scene.name,

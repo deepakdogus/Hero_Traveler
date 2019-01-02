@@ -57,7 +57,6 @@ export default class FeedItemPreview extends Component {
     areInRenderLocation: PropTypes.bool,
     deleteGuide: PropTypes.func,
     deleteStory: PropTypes.func,
-    removeDraft: PropTypes.func,
     onPressFollow: PropTypes.func,
     onPressUnfollow: PropTypes.func,
     isAuthor: PropTypes.bool,
@@ -92,7 +91,7 @@ export default class FeedItemPreview extends Component {
   }
 
   _touchTrash = () => {
-    const { deleteStory, removeDraft, feedItem, user, isStory, deleteGuide} = this.props
+    const { deleteStory, feedItem, user, isStory, deleteGuide} = this.props
     Alert.alert(
       `Delete ${isStory ? 'Story' : 'Guide'}`,
       `Are you sure you want to delete this ${isStory ? 'story' : 'guide'}?`,
@@ -103,8 +102,7 @@ export default class FeedItemPreview extends Component {
           style: 'destructive',
           onPress: () => {
             if (isStory) {
-              if (feedItem.draft) removeDraft(feedItem.id)
-              else deleteStory(user.id, feedItem.id)
+              deleteStory(user.id, feedItem.id)
             }
             else {
               deleteGuide(feedItem.id)

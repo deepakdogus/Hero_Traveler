@@ -245,7 +245,7 @@ export const loadDrafts = (state) => {
         fetching: true,
         loaded: false
       },
-      byId: []
+      byId: state.drafts.byId,
     }
   })
 }

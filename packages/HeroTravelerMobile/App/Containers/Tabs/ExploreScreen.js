@@ -207,7 +207,11 @@ class ExploreScreen extends Component {
 
   onPressCancel = () => {
     this._searchInput.setNativeProps({text: ''})
-    this.setState({ selectedTabIndex: null })
+    this.setState({
+      selectedTabIndex: null,
+      lastSearchResults: null,
+      lastLocationPredictions: null,
+   })
   }
 
   // explore
@@ -226,7 +230,10 @@ class ExploreScreen extends Component {
     const {categories = {}, categoriesFetchStatus} = this.props
     let content
 
-    const showSearch = this.state.lastSearchResults || this.state.selectedTabIndex !== null
+    const showSearch =
+      this.state.lastSearchResults
+      || this.state.lastLocationPredictions
+      || this.state.selectedTabIndex !== null
     const categoriesArray = _.values(categories)
 
     if (categoriesFetchStatus.fetching && !categoriesArray.length) {

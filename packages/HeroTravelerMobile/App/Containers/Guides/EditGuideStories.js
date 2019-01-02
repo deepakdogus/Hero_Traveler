@@ -24,7 +24,7 @@ import {
   Colors,
 } from '../../Shared/Themes'
 
-import { getStoryImageUrl } from '../../Components/GuideStoriesOfType'
+import { getStoryImageUrl } from '../../Components/FeedItemsOfType'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTimeTooltips'
 
 const deleteBtnParams = {

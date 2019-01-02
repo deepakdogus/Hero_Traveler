@@ -85,7 +85,6 @@ class ExploreScreen extends Component {
   }
 
   // search
-
   hasDeletedStory(nextProps) {
     const oldLength = Object.keys(this.props.stories).length
     const newLength = Object.keys(nextProps.stories).length
@@ -211,7 +210,7 @@ class ExploreScreen extends Component {
       selectedTabIndex: null,
       lastSearchResults: null,
       lastLocationPredictions: null,
-   })
+    })
   }
 
   // explore

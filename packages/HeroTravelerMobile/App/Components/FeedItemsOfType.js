@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 
-import styles, {storyWidth, storyHeight} from './Styles/GuideStoriesOfTypeStyles'
+import styles, {storyWidth, storyHeight} from './Styles/FeedItemsOfTypeStyles'
 import {styles as StoryReadingScreenStyles} from '../Containers/Styles/StoryReadingScreenStyles'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import ImageWrapper from './ImageWrapper'
@@ -31,7 +31,7 @@ export function getStoryImageUrl(
       : getImageUrl(story.coverImage, 'optimized', imageOptions)
 }
 
-export default class GuideStoriesOfType extends React.Component {
+export default class FeedItemsOfType extends React.Component {
   static propTypes = {
     label: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
@@ -89,17 +89,18 @@ export default class GuideStoriesOfType extends React.Component {
             style={styles.image}
           />
          {isVideo && this.renderPlayButton()}
-         <View style={styles.titleContainer}>
-          {isGuide &&
-            (<TabIcon name='guide' style={{
-                view: styles.guideIcon,
-                image: styles.guideIconImage,
-              } }/>
+          <View style={styles.titleContainer}>
+            {isGuide && (
+              <TabIcon name='guide' style={{
+                  view: styles.guideIcon,
+                  image: styles.guideIconImage,
+                }}
+              />
             )}
-            <Text style={styles.title}>
-              {story.title}
-            </Text>
-        </View>
+              <Text style={styles.title}>
+                {story.title}
+              </Text>
+          </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={this.onPressAuthor(
           hasAuthorsObj

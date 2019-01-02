@@ -10,9 +10,9 @@ import memoize from 'memoize-one'
 import {Actions as NavActions} from 'react-native-router-flux'
 
 import ImageWrapper from './ImageWrapper'
-import {getStoryImageUrl} from './GuideStoriesOfType'
+import {getStoryImageUrl} from './FeedItemsOfType'
 import styles from './Styles/GuideMapStyles'
-import {storyWidth, storyHeight} from './Styles/GuideStoriesOfTypeStyles'
+import {storyWidth, storyHeight} from './Styles/FeedItemsOfTypeStyles'
 import {displayLocation} from '../Shared/Lib/locationHelpers'
 
 const videoImageOptions = {

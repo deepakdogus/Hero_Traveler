@@ -86,36 +86,6 @@ class SearchList extends Component {
     }
   }
 
-  renderPlacesLeft = (story) => {
-    if (story.coverImage) {
-      return (
-        <ImageWrapper
-          cached={true}
-          resizeMode='cover'
-          source={{uri: getImageUrl(story.coverImage, 'basic')}}
-          style={styles.thumbnailImage}
-        />
-      )
-    }
-    else {
-      return (
-        <View style={styles.videoCoverWrapper}>
-          <ImageWrapper
-            cached={true}
-            resizeMode='cover'
-            source={{uri: getImageUrl(story.coverVideo, 'video', {video: true})}}
-            style={styles.thumbnailImage}
-          >
-          </ImageWrapper>
-          <PlayButton
-            size='tiny'
-            style={styles.PlayButton}
-          />
-        </View>
-      )
-    }
-  }
-
   renderLocationRow = location => {
     return (
       <ListItem

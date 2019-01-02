@@ -12,7 +12,7 @@ import AlgoliaSearchHelper from 'algoliasearch-helper'
 // Locations
 import RNGooglePlaces from 'react-native-google-places'
 
-import FeedItemsOfType from '../Components/GuideStoriesOfType'
+import FeedItemsOfType from '../Components/FeedItemsOfType'
 import Loader from '../Components/Loader'
 
 import Colors from '../Shared/Themes/Colors'

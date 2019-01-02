@@ -38,10 +38,6 @@ class LocationScreen extends Component {
       searching: false,
       predictions: [],
       locations: this.props.locations,
-      // currentLocation: {
-      //   latitude: 0,
-      //   longitude: 0,
-      // },
     }
   }
 
@@ -50,46 +46,13 @@ class LocationScreen extends Component {
     if (location && location.length >= 3) {
       this._onChangeText(location)
     }
-
-    // this._getUserLocation()
   }
-
-    // _getUserLocation = async () => {
-    //   // FIXME: code works if user allows Location services, but currently
-    //   // we're not prompting them for it
-    //   // requestAuthorization not seeming to work currenty, probably need a
-    //   // permissions library
-    //   navigator.geolocation.setRNConfiguration({skipPermissionRequests: true})
-    //   await navigator.geolocation.requestAuthorization()
-    //   navigator.geolocation.getCurrentPosition(
-    //     position => {
-    //       console.log('IN SUCCESS CALLBACK: ', position)
-    //       const { latitude, longitude } = position.coords
-    //       this.setState({
-    //         currentLocation: {
-    //           latitude,
-    //           longitude,
-    //         },
-    //       })
-    //     },
-    //     err => console.error(err),
-    //     {
-    //       timeout: 5000,
-    //     },
-    //   )
-    // }
 
   _onChangeText = async (text) => {
     this.setState({text})
-    // const { currentLocation: { latitude, longitude } } = this.state
     if (text.length <= 2) return
     this.setState({searching: true})
     RNGooglePlaces.getAutocompletePredictions(text)
-    // RNGooglePlaces.getAutocompletePredictions(text, {
-    //   latitude,
-    //   longitude,
-    //   radius: 1000,
-    // })
       .then((predictions) => this.setState({searching: false, predictions}))
       .catch(() => this.setState({searching: false}))
   }
@@ -116,7 +79,7 @@ class LocationScreen extends Component {
 
   onSubmit = () => {
     if (this.state.predictions.length || this.props.isMultiSelect) return
-    else this.props.onSelectLocation({"name": this.state.text})
+    else this.props.onSelectLocation({'name': this.state.text})
   }
 
   renderPlaces() {
@@ -198,7 +161,7 @@ class LocationScreen extends Component {
           </View>
           <ScrollView style={styles.scrollView} keyboardShouldPersistTaps='always'>
             {!!locations.length && this.renderSelectedLocations()}
-            {searching  &&
+            {searching &&
               <Loader style={styles.spinner} spinnerColor={Colors.blackoutTint} />
             }
             {!searching && !!predictions.length && this.renderPlaces()}

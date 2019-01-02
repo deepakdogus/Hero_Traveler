@@ -15,7 +15,7 @@ import ReadingScreensOverlap from '../Components/ReadingScreensOverlap'
 import ReadingDetails from '../Components/ReadingDetails'
 import TabBar from '../Components/TabBar'
 import {navToProfile} from '../Navigation/NavigationRouter'
-import GuideStoriesOfType from '../Components/GuideStoriesOfType'
+import FeedItemsOfType from '../Components/FeedItemsOfType'
 import {styles} from './Styles/StoryReadingScreenStyles'
 import {
   createShareDialog,
@@ -168,7 +168,7 @@ class GuideReadingScreen extends React.Component {
           </Fragment>
         }
         {this.shouldDisplay(tabTypes.see) &&
-          <GuideStoriesOfType
+          <FeedItemsOfType
             type={tabTypes.see}
             label={'THINGS TO SEE'}
             onPressAll={this.selectTab}
@@ -178,7 +178,7 @@ class GuideReadingScreen extends React.Component {
           />
         }
         {this.shouldDisplay(tabTypes.do) &&
-          <GuideStoriesOfType
+          <FeedItemsOfType
             type={tabTypes.do}
             label={'THINGS TO DO'}
             onPressAll={this.selectTab}
@@ -188,7 +188,7 @@ class GuideReadingScreen extends React.Component {
           />
         }
         {this.shouldDisplay(tabTypes.eat) &&
-          <GuideStoriesOfType
+          <FeedItemsOfType
             type={tabTypes.eat}
             label={'PLACES TO EAT'}
             onPressAll={this.selectTab}
@@ -198,7 +198,7 @@ class GuideReadingScreen extends React.Component {
           />
         }
         {this.shouldDisplay(tabTypes.stay) &&
-          <GuideStoriesOfType
+          <FeedItemsOfType
             type={tabTypes.stay}
             label={'PLACES TO STAY'}
             onPressAll={this.selectTab}

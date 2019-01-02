@@ -19,7 +19,7 @@ import {
   Metrics,
   Colors,
 } from '../../Shared/Themes'
-import { getStoryImageUrl } from '../../Components/GuideStoriesOfType'
+import { getStoryImageUrl } from '../../Components/FeedItemsOfType'
 
 const deleteBtnParams = {
   text: 'Delete',

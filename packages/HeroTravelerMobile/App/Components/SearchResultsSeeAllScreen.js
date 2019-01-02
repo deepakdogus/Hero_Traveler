@@ -5,7 +5,7 @@ import {Actions as NavActions} from 'react-native-router-flux'
 import {navToProfile} from '../Navigation/NavigationRouter'
 import styles from '../Containers/Styles/SearchResultsScreenStyles'
 
-import FeedItemsOfType from './GuideStoriesOfType'
+import FeedItemsOfType from './FeedItemsOfType'
 
 class SearchResultsSeeAllScreen extends Component {
   static propTypes = {

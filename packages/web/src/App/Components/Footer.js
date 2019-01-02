@@ -22,7 +22,7 @@ const Container = styled.div`
   width: 100%;
   margin: 80px 0 25px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    margin: 40px 0 0;
+    margin: 40px 0 25px;
   }
 `
 

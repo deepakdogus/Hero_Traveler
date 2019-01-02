@@ -55,6 +55,9 @@ export const Logo = styled.img`
   height: 30px;
   margin-top: 6px;
   margin-left: 20px;
+  @supports(margin: max(0px)) {
+    margin-left: max(20px, env(safe-area-inset-left));
+  }
 `
 
 export const Divider = styled.div`
@@ -74,6 +77,9 @@ export const Divider = styled.div`
 export const StyledRoundedLoginButton = styled(RoundedButton)`
   margin-left: 10px;
   margin-right: 20px;
+  @supports(margin: max(0px)) {
+    margin-right: max(20px, env(safe-area-inset-right));
+  }
   display: inline;
   ${mediaMax.phone`display: none;`}
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
@@ -92,6 +98,9 @@ export const HamburgerIcon = styled(Icon)`
   height: 30px;
   width: 30px;
   margin: 8px;
+  @supports(margin: max(0px)) {
+    margin-right: max(8px, env(safe-area-inset-right));
+  }
   display: none;
   ${mediaMax.desktop`display: inline;`}
 `
@@ -111,11 +120,11 @@ export const MenuLink = (props) => {
         letterSpacing: '.6px',
         borderBottomWidth: '3px',
         borderBottomColor: 'transparent',
-        borderBottomStyle: 'solid'
+        borderBottomStyle: 'solid',
       }}
       activeStyle={{
         borderBottomWidth: '3px',
-        borderBottomColor: 'red'
+        borderBottomColor: 'red',
       }}
       to={props.to}
     >

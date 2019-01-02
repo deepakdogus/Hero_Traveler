@@ -117,8 +117,10 @@ class CreateStoryDetailScreen extends React.Component {
       workingDraft.cost = this.state.cost
     }
     this.next()
-    workingDraft.draft = false
-    if (workingDraft.draft) this.props.saveDraft(workingDraft)
+    if (workingDraft.draft) {
+      workingDraft.draft = false
+      this.props.saveDraft(workingDraft)
+    }
     else this.saveDraft(workingDraft)
   }
 

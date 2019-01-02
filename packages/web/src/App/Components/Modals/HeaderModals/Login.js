@@ -113,8 +113,18 @@ class Login extends Component {
         />
         <Text>Or</Text>
           <form onSubmit={this.onAttemptLogin}>
-            <StyledInput placeholder='Username OR Email' onChange={this.setUserIdentifier}/>
-            <StyledInput placeholder='Password' onChange={this.setPassword} type='password'/>
+            <StyledInput
+              placeholder='Username OR Email'
+              onChange={this.setUserIdentifier}
+              type='text'
+              name='field'
+            />
+            <StyledInput
+              placeholder='Password'
+              onChange={this.setPassword}
+              type='password'
+              name='field'
+            />
             {loginReduxFetching && (
               <LoginFetchingText>Signing In ...</LoginFetchingText>
             )}

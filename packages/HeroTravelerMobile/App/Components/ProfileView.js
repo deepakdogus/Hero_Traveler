@@ -107,7 +107,10 @@ class ProfileView extends React.Component {
     } = this.props
     if (this.state.selectedTab === TabTypes.stories) return stories
     else if (this.state.selectedTab === TabTypes.drafts) {
-      return [...pendingDraftsIds, ...drafts]
+      const filteredPendingIds = pendingDraftsIds.filter(id => {
+        return drafts.indexOf(id) === -1
+      })
+      return [...filteredPendingIds, ...drafts]
     }
     else if (this.state.selectedTab === TabTypes.bookmarks) return bookmarks
     else if (this.state.selectedTab === TabTypes.guides) return guideIds

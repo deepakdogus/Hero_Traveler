@@ -11,7 +11,7 @@ import isLocalDraft from '../../Shared/Lib/isLocalDraft'
 class CreateStoryScreen extends Component {
   static propTypes = {
     storyId: PropTypes.string,
-    cachedStory: PropTypes.object,
+    story: PropTypes.object,
     userId: PropTypes.string,
     addLocalDraft: PropTypes.func,
     loadDraft: PropTypes.func,
@@ -24,7 +24,7 @@ class CreateStoryScreen extends Component {
 
   componentWillMount() {
     const {
-      storyId, userId, cachedStory,
+      storyId, userId, story,
       addLocalDraft, loadDraft, setWorkingDraft,
     } = this.props
     if (!storyId) {
@@ -32,10 +32,10 @@ class CreateStoryScreen extends Component {
     }
     // should only load publish stories since locals do not exist in DB
     else if (isLocalDraft(storyId)) {
-      loadDraft(storyId, cachedStory)
+      loadDraft(storyId, story)
     }
     else {
-      setWorkingDraft(cachedStory)
+      setWorkingDraft(story)
     }
   }
 
@@ -49,9 +49,12 @@ class CreateStoryScreen extends Component {
 function mapStateToProps(state, props) {
   const accessToken = _.find(state.session.tokens, {type: 'access'})
 
+  const pendingDraft = _.get(state, `pendingUpdates.pendingUpdates[${props.storyId}].story`)
+  const savedStory = state.entities.stories.entities[props.storyId]
+
   return {
     userId: state.session.userId,
-    cachedStory: _.get(state, `pendingUpdates.pendingUpdates[${props.storyId}].story`),
+    story: savedStory || pendingDraft,
     accessToken: accessToken.value,
     draft: state.storyCreate.draft,
     workingDraft: state.storyCreate.workingDraft,
@@ -61,8 +64,8 @@ function mapStateToProps(state, props) {
 function mapDispatchToProps(dispatch) {
   return {
     addLocalDraft: (draft) => dispatch(StoryCreateActions.addLocalDraft(draft)),
-    loadDraft: (draftId, cachedStory) => dispatch(StoryCreateActions.editStory(draftId, cachedStory)),
-    setWorkingDraft: (cachedStory) => dispatch(StoryCreateActions.editStorySuccess(cachedStory)),
+    loadDraft: (draftId, story) => dispatch(StoryCreateActions.editStory(draftId, story)),
+    setWorkingDraft: (story) => dispatch(StoryCreateActions.editStorySuccess(story)),
     discardDraft: (draftId) => dispatch(StoryCreateActions.discardDraft(draftId)),
     resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
   }

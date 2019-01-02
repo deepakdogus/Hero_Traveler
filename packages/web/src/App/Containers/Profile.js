@@ -142,7 +142,11 @@ class Profile extends ContainerWithFeedList {
 
     let {selectedFeedItems} = this.getSelectedFeedItems()
     if (this.state.activeTab === 'DRAFTS') {
-      selectedFeedItems = [...pendingDrafts ,...selectedFeedItems]
+      const selectedFeedItemsIds = selectedFeedItems.map(item => item.id)
+      const filteredPendingDrafts = pendingDrafts.filter(draft => {
+        return selectedFeedItemsIds.indexOf(draft.id) === -1
+      })
+      selectedFeedItems = [...filteredPendingDrafts, ...selectedFeedItems]
     }
 
     return (

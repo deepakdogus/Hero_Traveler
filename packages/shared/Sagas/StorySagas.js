@@ -319,12 +319,13 @@ export function * saveLocalDraft (api, action) {
     stories[story.id] = story
     yield [
       put(StoryCreateActions.saveDraftSuccess(draft, story)),
-      put(StoryActions.addUserStory(stories, draft.id)),
       put(PendingUpdatesActions.removePendingUpdate(draft.id)),
     ]
     if (!saveAsDraft) yield put(StoryActions.addUserStory(stories, draft.id))
-    return
-  } else yield saveDraftErrorHandling(draft, response)
+  }
+  else {
+    yield saveDraftErrorHandling(draft, response)
+  }
 }
 
 export function * discardDraft (api, action) {

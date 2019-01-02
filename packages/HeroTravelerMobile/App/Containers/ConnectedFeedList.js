@@ -14,11 +14,8 @@ const mapStateToProps = (state, ownProps) => {
     const getStoryFromEntities = (storyId) => _.get(entities, `stories.entities[${storyId}]`)
     if (ownProps.isDraft) {
       mapFunc = (storyId) => {
-        return _.get(
-          state.pendingUpdates,
-          `pendingUpdates[${storyId}].story`,
-          getStoryFromEntities(storyId),
-        )
+        return getStoryFromEntities(storyId)
+          || _.get(state.pendingUpdates, `pendingUpdates[${storyId}].story`)
       }
     }
     else mapFunc = getStoryFromEntities

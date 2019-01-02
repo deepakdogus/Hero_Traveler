@@ -44,14 +44,13 @@ const MapContainer = styled.div`
 
 const HashtagText = styled.p`
   margin: 0;
-  padding-top 30px;
+  padding-top: 30px;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
   font-size: 18px;
   color: ${props => props.theme.Colors.redHighlights};
   letter-spacing: .2px;
   text-decoration: none;
-  margin-botton: 45px;
 `
 
 const AddToGuideButtonStyles = `

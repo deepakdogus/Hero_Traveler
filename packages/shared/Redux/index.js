@@ -20,7 +20,8 @@ export default () => {
     routes,
     entities,
     pendingUpdates: require('./PendingUpdatesRedux').reducer,
-    ux: require('../../Redux/UXRedux').reducer
+    ux: require('../../Redux/UXRedux').reducer,
+    history: require('./HistoryRedux').reducer,
   })
 
   const rootReducer = (state, action) => {

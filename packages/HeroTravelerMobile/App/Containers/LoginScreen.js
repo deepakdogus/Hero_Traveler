@@ -48,8 +48,6 @@ class LoginScreen extends React.Component {
     goToMyFeed: PropTypes.func,
     signupFacebook: PropTypes.func,
     clearErrors: PropTypes.func,
-    fromStory: PropTypes.bool,
-    fromGuide: PropTypes.bool,
   }
 
   constructor (props) {
@@ -66,11 +64,7 @@ class LoginScreen extends React.Component {
   }
 
   componentWillReceiveProps (newProps) {
-    if (!this.props.isLoggedIn && newProps.isLoggedIn) {
-      if (this.props.fromStory) return NavigationActions.popTo('story')
-      if (this.props.fromGuide) return NavigationActions.popTo('guide')
-      this.props.goToMyFeed()
-    }
+    if (!this.props.isLoggedIn && newProps.isLoggedIn) this.props.goToMyFeed()
   }
 
   handlePressLogin = () => {

@@ -47,27 +47,15 @@ class MyFeedScreen extends React.Component {
     this.state = {
       refreshing: false,
       selectedTab: tabTypes.stories,
-      needsRefresh: false,
     }
   }
 
   componentDidMount() {
-    if (!this.props.userId) {
-      this.setState({ needsRefresh: true })
-    }
-
     if (!this.isPendingUpdate()) {
       this.props.attemptGetUserFeedStories(this.props.userId)
       this.props.attemptGetUserFeedGuides(this.props.userId)
     }
     SplashScreen.hide()
-  }
-
-  componentDidUpdate() {
-    if (this.state.needsRefresh && this.props.userId) {
-      this._onRefresh()
-      this.setState({needsRefresh: false})
-    }
   }
 
   isPendingUpdate() {
@@ -90,7 +78,6 @@ class MyFeedScreen extends React.Component {
       !_.isEqual(this.props.sync, nextProps.sync),
       !_.isEqual(this.props.backgroundFailures, nextProps.backgroundFailures),
       this.state.selectedTab !== nextState.selectedTab,
-      this.state.needsRefresh,
     ])
 
     return shouldUpdate

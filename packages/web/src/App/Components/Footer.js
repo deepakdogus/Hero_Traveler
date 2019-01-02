@@ -127,7 +127,7 @@ class Footer extends Component {
   render() {
     return (
       <Container fluid>
-        <ResponsiveContainer hideOnTablzet={this.props.hideOnTablet}>
+        <ResponsiveContainer hideOnTablet={this.props.hideOnTablet}>
           <SizedRow between='xs'>
             <LinkRow bottom='xs'>
               {/* Hidden until after launch*/}

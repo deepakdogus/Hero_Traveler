@@ -298,6 +298,7 @@ export function * saveLocalDraft (api, action) {
       `${saveAsDraft ? 'Saving' : 'Publishing'} Story`
     ))
   ]
+
   const coverResponse = yield createCover(api, draft)
   if (coverResponse.error) {
     yield saveDraftErrorHandling(draft, coverResponse.error)
@@ -514,6 +515,12 @@ export function * deleteStory(api, {userId, storyId}){
 
 let firstCall = true
 export function * watchPendingUpdates() {
+  // adding delay to give time to rehydrate
+  yield call(delay, 5 * 1000)
+  // resetting pendingUpdates status on app launch to ensure no updates are
+  // permanently set as retrying
+  yield put(PendingUpdatesActions.resetStatuses())
+  yield call(delay, 5 * 1000)
   while(true) {
     // triggers sync immediately then every 10 seconds
     const numSeconds = firstCall ? 1 : 10
@@ -548,8 +555,7 @@ function getNextPendingUpdate({pendingUpdates}) {
 export function * syncPendingUpdates(api) {
   const isEditing = yield select(getIsEditing)
   const isConnected = yield hasConnection()
-  // disabled to test local draft features
-  if (!isEditing && isConnected && false) {
+  if (!isEditing && isConnected) {
     const {failedMethod, story, status} = yield select(getNextPendingUpdate)
     if (status === 'retrying') return
     else if (failedMethod && story) {

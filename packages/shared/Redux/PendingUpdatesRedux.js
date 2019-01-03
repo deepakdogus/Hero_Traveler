@@ -7,6 +7,7 @@ const { Types, Creators } = createActions({
   addPendingUpdate: ['story', 'error', 'failedMethod'],
   removePendingUpdate: ['draftId'],
   setRetryingUpdate: ['storyId'],
+  resetStatuses: null,
   reset: null,
 })
 
@@ -56,6 +57,15 @@ export const setRetryingUpdate = (state, {storyId}) => {
   return state
 }
 
+export const resetStatuses = state => {
+  const {updateOrder, pendingUpdates} = state
+  return updateOrder.reduce((workingState, id) => {
+    const pendingUpdate = pendingUpdates[id]
+    if (pendingUpdate.status !== 'retrying') return workingState
+    return workingState.setIn(['pendingUpdates', id, 'status'], 'failed')
+  }, state)
+}
+
 export const reset = (state) => INITIAL_STATE
 
 /* ------------- Hookup Reducers To Types ------------- */
@@ -65,4 +75,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.REMOVE_PENDING_UPDATE]: removePendingUpdate,
   [Types.SET_RETRYING_UPDATE]: setRetryingUpdate,
   [Types.RESET]: reset,
+  [Types.RESET_STATUSES]: resetStatuses,
 })

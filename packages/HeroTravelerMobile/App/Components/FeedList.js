@@ -119,8 +119,10 @@ export default class FeedList extends React.Component {
     let feedItemViews = []
 
     const {
-      targetEntities, renderSectionHeader,
-      renderHeaderContent, headerContentHeight,
+      targetEntities,
+      renderSectionHeader,
+      renderHeaderContent,
+      headerContentHeight,
     } = this.props
 
     const imageOptions = {
@@ -134,10 +136,6 @@ export default class FeedList extends React.Component {
 
     const entitiesInfo = targetEntities.map((entity) => {
       let totalPadding = Metrics.feedCell.padding
-
-      if (entity && entity.description && !entity.locations) {
-        totalPadding += Metrics.feedCell.descriptionPadding
-      }
 
       if (entity && entity.coverImage) {
         return {
@@ -182,7 +180,6 @@ export default class FeedList extends React.Component {
     return (
       <NativeFeed
         style={[styles.container, this.props.style]}
-        cellSeparatorHeight={Metrics.feedCell.separator}
         storyInfos={entitiesInfo}
         numPreloadBehindCells={2}
         numPreloadAheadCells={3}

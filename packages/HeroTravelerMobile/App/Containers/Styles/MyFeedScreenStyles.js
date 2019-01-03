@@ -5,7 +5,7 @@ import { isIPhoneX } from '../../Themes/Metrics'
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
-    backgroundColor: Colors.backgroundDark,
+    backgroundColor: Colors.feedDividerGrey,
   },
   fakeNavBar: {
     height: Metrics.navBarHeight - 8, // 120 === 88 nav + 40 tabbar - 8, per mocks
@@ -49,7 +49,7 @@ export default StyleSheet.create({
     height: isIPhoneX() ? 60 : 45,
   },
   searchWrapper: {
-    marginTop: isIPhoneX() ? Metrics.baseMargin + 15 : Metrics.baseMargin,
+    marginTop: isIPhoneX() ? Metrics.baseMargin + 25 : Metrics.baseMargin,
     flex: 1,
     height: Metrics.searchBarHeight,
     backgroundColor: Colors.feedDividerGrey,

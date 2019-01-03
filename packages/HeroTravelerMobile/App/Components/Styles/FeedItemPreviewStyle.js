@@ -5,7 +5,13 @@ export default StyleSheet.create({
   ...ApplicationStyles.screen,
   contentContainer: {
     flex: 1,
-    flexDirection: 'column'
+    flexDirection: 'column',
+    backgroundColor: Colors.feedDividerGrey,
+  },
+  cardView: {
+    width: '92.8%',
+    alignSelf: 'center',
+    marginTop: 20,
   },
   caption: {},
   title: {
@@ -31,7 +37,7 @@ export default StyleSheet.create({
   },
   userContent: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   leftUserContent: {
     flexDirection: 'row',
@@ -41,20 +47,20 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   avatar: {
-    marginRight: Metrics.baseMargin
+    marginRight: Metrics.baseMargin,
   },
   username: {
     color: Colors.redHighlights,
     fontWeight: '400',
     fontSize: 11,
-    letterSpacing: .7,
-    fontFamily: Fonts.type.sourceSansPro
+    letterSpacing: 0.7,
+    fontFamily: Fonts.type.sourceSansPro,
   },
   usernameReading: {
     fontSize: 13,
   },
   previewUserContainer: {
-    minHeight: 60,
+    minHeight: 45,
   },
   userContainer: {
     paddingVertical: 10,
@@ -64,12 +70,16 @@ export default StyleSheet.create({
     backgroundColor: Colors.snow,
   },
   bottomContainer: {
-    paddingTop: 20,
-    paddingBottom: 15,
+    paddingVertical: 15,
+  },
+  roundedBottomContainer: {
+    borderBottomLeftRadius: 6,
+    borderBottomRightRadius: 6,
+    marginTop: -20,
   },
   dateText: {
     fontSize: 12,
-    letterSpacing: .5,
+    letterSpacing: 0.5,
     color: Colors.grey,
     marginRight: 5,
     fontFamily: Fonts.type.sourceSansPro,
@@ -80,10 +90,11 @@ export default StyleSheet.create({
   locationText: {
     fontFamily: Fonts.type.sourceSansPro,
     fontWeight: '600',
-    letterSpacing: .7,
+    letterSpacing: 0.7,
     fontSize: 12,
+    lineHeight: 25,
     color: Colors.background,
-    maxWidth: Metrics.screenWidth - 2 * 15 - 42 // metrics of other elements in location text area
+    maxWidth: Metrics.screenWidth - 2 * 15 - 42, // metrics of other elements in location text area
   },
   lastRow: {
     flexDirection: 'row',
@@ -99,6 +110,7 @@ export default StyleSheet.create({
   },
   bookmarkContainer: {
     marginRight: 10,
+    justifyContent: 'center',
   },
   bookmark: {
     width: 14,
@@ -124,13 +136,6 @@ export default StyleSheet.create({
     height: 12,
   },
   badgeView: {
-    marginRight: 5
-  },
-  separator: {
-    height: 10,
-    backgroundColor: Colors.feedDividerGrey,
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
+    marginRight: 5,
   },
 })

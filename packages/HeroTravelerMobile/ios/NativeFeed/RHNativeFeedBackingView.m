@@ -39,7 +39,7 @@
   _heights = @[];
   _separatorHeight = 0.f;
   
-  _backgroundColor = [UIColor whiteColor];
+  _backgroundColor = [UIColor colorWithWhite:0.935f alpha:1.f];
   _titleColor = [UIColor colorWithWhite:0.935f alpha:1.f]; //[UIColor lightGrayColor];
   _separatorColor = [UIColor colorWithWhite:0.929411f alpha:1.f];
 
@@ -121,7 +121,7 @@
   
   UIGraphicsBeginImageContextWithOptions(fullSize, NO, [UIScreen mainScreen].scale);
   
-  UIColor* _backgroundColor = [UIColor whiteColor];
+  UIColor* _backgroundColor = [UIColor colorWithWhite:0.935f alpha:1.f];
   UIColor* _titleColor = [UIColor colorWithWhite:0.935f alpha:1.f]; //[UIColor lightGrayColor];
   UIColor* _separatorColor = [UIColor colorWithWhite:0.929411f alpha:1.f];
   

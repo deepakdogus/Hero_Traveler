@@ -5,6 +5,7 @@ export default StyleSheet.create({
   root: {
     flex: 1,
     flexDirection: 'row',
+    alignItems: 'center',
   },
   iconPencil: {
     tintColor: Colors.grey,
@@ -14,5 +15,5 @@ export default StyleSheet.create({
   },
   iconTrash: {
     tintColor: Colors.grey,
-  }
+  },
 })

@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {View, Image} from 'react-native'
+import { View, Image } from 'react-native'
 import _ from 'lodash'
-import {connect} from 'react-redux'
-import {Images} from '../Shared/Themes'
+import { connect } from 'react-redux'
+import { Images } from '../Shared/Themes'
 
 import NotificationBadge from './NotificationBadge'
 
@@ -142,17 +142,18 @@ class TabIcon extends React.Component {
     }
   }
 
-  getSelectedStyle = () => ({transform: [{scaleX: 0.5}, {scaleY: 0.5}]})
+  getTabStyle = name =>
+    'myFeed explore createStory activity profile'.indexOf(name) !== -1
+      ? { transform: [{ scaleX: 0.5 }, { scaleY: 0.5 }] }
+      : {}
 
   render() {
-    const { style = {}, name, notificationCount, selected} = this.props
+    const { style = {}, name, notificationCount, selected } = this.props
     return (
-      <View
-        style={style.view}
-      >
+      <View style={style.view}>
         <Image
           source={this.getIconSource(`${name}${selected ? '-active' : ''}`)}
-          style={[style.image, selected ? this.getSelectedStyle() : {}] || {}}
+          style={[style.image, this.getTabStyle(name)] || {}}
         />
         {name === 'activity' && notificationCount > 0 && (
           <NotificationBadge count={notificationCount} />
@@ -174,7 +175,7 @@ const mapStateToProps = (state, props) => {
       We will need a similar logic once we add message threads.
       So notificationCount will be unseenActivityCount + unreadThreadCount
     */
-    return { notificationCount: unseenActivityCount}
+    return { notificationCount: unseenActivityCount }
   }
   return {
     notificationCount: 0,
@@ -185,4 +186,7 @@ const mapDispatchToProps = () => {
   return {}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TabIcon)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(TabIcon)

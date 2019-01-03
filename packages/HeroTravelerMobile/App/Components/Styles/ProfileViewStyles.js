@@ -274,6 +274,6 @@ export default StyleSheet.create({
     paddingTop: 15,
   },
   tabStyle: {
-    width: Metrics.screenWidth * 0.3,
+    width: Metrics.screenWidth * 0.4,
   },
 })

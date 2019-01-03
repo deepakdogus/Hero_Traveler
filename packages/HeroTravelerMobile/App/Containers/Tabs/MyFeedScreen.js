@@ -1,11 +1,11 @@
 import _ from 'lodash'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, Image } from 'react-native'
+import { View, TouchableOpacity, TextInput, Text } from 'react-native'
 import { connect } from 'react-redux'
 import SplashScreen from 'react-native-splash-screen'
 
-import {Metrics, Images} from '../../Shared/Themes'
+import { Metrics } from '../../Shared/Themes'
 import StoryActions from '../../Shared/Redux/Entities/Stories'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
@@ -15,11 +15,12 @@ import styles from '../Styles/MyFeedScreenStyles'
 import NoStoriesMessage from '../../Components/NoStoriesMessage'
 import BackgroundPublishingBars from '../../Components/BackgroundPublishingBars'
 import TabBar from '../../Components/TabBar'
+import TabIcon from '../../Components/TabIcon'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
 
 const tabTypes = {
-  stories: 'stories',
+  following: 'following',
   guides: 'guides',
 }
 
@@ -45,7 +46,8 @@ class MyFeedScreen extends React.Component {
     super(props)
     this.state = {
       refreshing: false,
-      selectedTab: tabTypes.stories,
+      selectedTab: tabTypes.following,
+      hasSearchText: false,
     }
   }
 
@@ -77,6 +79,7 @@ class MyFeedScreen extends React.Component {
       !_.isEqual(this.props.sync, nextProps.sync),
       !_.isEqual(this.props.backgroundFailures, nextProps.backgroundFailures),
       this.state.selectedTab !== nextState.selectedTab,
+      this.state.hasSearchText !== nextState.hasSearchText,
     ])
 
     return shouldUpdate
@@ -113,7 +116,7 @@ class MyFeedScreen extends React.Component {
       <ConnectedFeedItemPreview
         index={index}
         isFeed={true}
-        isStory={this.state.selectedTab === tabTypes.stories}
+        isStory={this.state.selectedTab === tabTypes.following}
         feedItem={feedItem}
         height={imageHeight}
         userId={this.props.userId}
@@ -146,12 +149,28 @@ class MyFeedScreen extends React.Component {
     )
   }
 
+  _setupInputRef = ref => this._searchInput = ref
+
+  _changeQuery = (e) => {
+    const q = e.nativeEvent.text
+    const hasSearchText = q.length > 0
+    this.setState({
+      hasSearchText,
+    })
+  }
+
+  cancelSearch = () => {
+    // this.setState({
+    //   hasSearchText: false,
+    // })
+  }
+
   render () {
     let {storiesById, fetchStatus, sync, feedGuidesById} = this.props
     const {selectedTab} = this.state
     let bottomContent
 
-    const isStoriesSelected = selectedTab === tabTypes.stories
+    const isStoriesSelected = selectedTab === tabTypes.following
     const failure = this.getFirstBackgroundFailure()
 
     if (
@@ -177,7 +196,42 @@ class MyFeedScreen extends React.Component {
     return (
       <View style={[styles.containerWithTabbar, styles.root]}>
         <View style={styles.fakeNavBar}>
-          <Image source={Images.whiteLogo} style={styles.logo} />
+          <View style={styles.headerSearch}>
+            <View style={styles.searchWrapper}>
+              <TextInput
+                ref={this._setupInputRef}
+                style={styles.searchInput}
+                placeholder='Search'
+                placeholderTextColor='#757575'
+                // onFocus={this.setFocus}
+                onChange={this._changeQuery}
+                // onChangeText={this.checkClearResults}
+                returnKeyType='search'
+              />
+              { this.state.hasSearchText && (
+                <TouchableOpacity
+                  style={styles.InputXPosition}
+                  onPress={this.resetSearchText}
+                >
+                  <TabIcon
+                    name='closeDark'
+                    style={{
+                      view: styles.InputXView,
+                      image: styles.InputXIcon,
+                    }}
+                  />
+                </TouchableOpacity>
+              )}
+            </View>
+          {this.state.hasSearchText && (
+            <TouchableOpacity
+              onPress={this.cancelSearch}>
+              <View style={styles.cancelBtn}>
+                <Text style={styles.cancelBtnText}>Cancel</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+          </View>
         </View>
         <BackgroundPublishingBars
           sync={sync}

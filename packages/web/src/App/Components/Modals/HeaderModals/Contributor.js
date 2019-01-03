@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import onClickOutside from 'react-onclickoutside'
 
-import logo from '../../../Shared/Images/ht-icons/icon_contributor-popup-logo@2x.png'
+import { Images } from '../../../Shared/Themes'
 import contributorSrc from '../../../Shared/Images/ht-icons/icon_h_contibutor-popup-badge@2x.png'
 import {
   Title,
@@ -25,7 +25,7 @@ const Description = styled(Text)`
 `
 
 const Italic = styled.em`
-  color: ${props => props.theme.Colors.redHighlights}
+  color: ${props => props.theme.Colors.redHighlights};
 `
 
 const StyledImage = styled.img`
@@ -46,7 +46,6 @@ const Badge = styled(StyledImage)`
 `
 
 class Contributor extends React.Component {
-
   handleClickOutside = (e) => {
     e.preventDefault()
     this.props.closeGlobalModal()
@@ -55,7 +54,7 @@ class Contributor extends React.Component {
   render() {
     return (
       <Container>
-        <Logo src={logo} alt={'Here Traveler Logo'}/>
+        <Logo src={Images.blackLogoLarge} alt={'Hero Traveler Logo'}/>
         <RestyledTitle>CONTRIBUTOR</RestyledTitle>
         <Badge src={contributorSrc} alt={'Contributor Badge'} align='middle'/>
         <Description>Become eligible to be a Hero Traveler Contributor when you publish <Italic>200 stories</Italic> or more</Description>

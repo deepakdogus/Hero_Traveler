@@ -7,16 +7,16 @@ import Tab from './Tab'
 const styles = StyleSheet.create({
   wrapper: {
     alignItems: 'center',
-    backgroundColor: Colors.feedDividerGrey,
-    height: 50,
+    backgroundColor: Colors.snow,
+    height: 40,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.navBarText,
+    borderBottomColor: Colors.feedDividerGrey,
   },
   scrollView: {
     alignItems: 'center',
     flex: 1,
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 })
 
 export default class TabBar extends Component {
@@ -39,7 +39,7 @@ export default class TabBar extends Component {
           key={index}
           style={tabStyle}
           text={key.toUpperCase()}
-          selected={activeTab===tabs[key]}
+          selected={activeTab === tabs[key]}
           onPress={this._onCickTab(tabs[key])}
         />
       )

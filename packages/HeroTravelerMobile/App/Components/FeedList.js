@@ -215,7 +215,7 @@ export default class FeedList extends React.Component {
           </NativeFeedHeader>
         ) : null}
         {renderSectionHeader ? (
-          <NativeFeedHeader headerHeight={50} sticky={true}>
+          <NativeFeedHeader headerHeight={40} sticky={true}>
             {renderSectionHeader}
           </NativeFeedHeader>
         ) : null}

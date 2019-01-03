@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {
   StyleSheet,
   Text,
@@ -13,9 +14,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     width: Metrics.screenWidth * 0.18,
-    backgroundColor: Colors.feedDividerGrey,
+    backgroundColor: Colors.snow,
     borderBottomWidth: 3,
-    borderBottomColor: Colors.feedDividerGrey,
+    borderBottomColor: Colors.snow,
   },
   tabSelected: {
     borderBottomColor: Colors.red,
@@ -33,18 +34,17 @@ const styles = StyleSheet.create({
   },
 })
 
-const Tab = ({ text, onPress, selected, style }) => {
-  return (
+const Tab = ({ text, onPress, selected, style }) => (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={[
         styles.tab,
         selected ? styles.tabSelected : null,
-        style
+        style,
       ]}>
         <Text
           style={[
             styles.tabText,
-            selected ? styles.tabTextSelected : null
+            selected ? styles.tabTextSelected : null,
           ]}
         >
           {text}
@@ -52,6 +52,12 @@ const Tab = ({ text, onPress, selected, style }) => {
       </View>
     </TouchableWithoutFeedback>
   )
+
+Tab.propTypes = {
+  text: PropTypes.string,
+  onPress: PropTypes.func,
+  selected: PropTypes.bool,
+  style: PropTypes.object,
 }
 
 export default Tab

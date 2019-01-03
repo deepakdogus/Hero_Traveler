@@ -26,17 +26,14 @@ export default {
     borderBottomColor: Colors.dividerGrey,
   },
   tabBar: {
-    backgroundColor: Colors.tabBar,
+    backgroundColor: Colors.snow,
     height: Metrics.tabBarHeight,
+    borderTopWidth: 1,
+    borderTopColor: Colors.feedDividerGrey,
   },
   tabBarItemContainer: {
     height: Metrics.tabBarHeight,
     justifyContent: isIPhoneX() ? 'flex-start' : 'center',
-    paddingTop: isIPhoneX() ? 20 : 0,
-  },
-  tabBarActive: {
-    backgroundColor: Colors.sectionHighlight,
-    alignItems: 'center',
   },
   navText: {
     fontFamily: Fonts.type.montserrat,
@@ -81,7 +78,9 @@ export default {
       flexDirection: 'row',
       justifyContent:  'center',
       alignItems: isIPhoneX() ? 'flex-start' : 'center',
-      marginTop: isIPhoneX() ? -8 : 0,
+    },
+    image: {
+      transform: [{scaleX: 0.5}, {scaleY: 0.5}],
     },
   },
   storyTitle: {
@@ -90,5 +89,10 @@ export default {
     letterSpacing: .7,
     fontSize: 15,
     color: Colors.background,
+  },
+  tabIcon: {
+    image: {
+      transform: [{scaleX: 0.5}, {scaleY: 0.5}],
+    },
   },
 }

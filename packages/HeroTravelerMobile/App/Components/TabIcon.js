@@ -6,9 +6,18 @@ import {connect} from 'react-redux'
 import {Images} from '../Shared/Themes'
 
 import NotificationBadge from './NotificationBadge'
-import { isIPhoneX } from '../Themes/Metrics'
 
 class TabIcon extends React.Component {
+  static propTypes = {
+    name: PropTypes.string,
+    style: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.array,
+    ]),
+    notificationCount: PropTypes.number,
+    selected: PropTypes.bool,
+  }
+
   getIconSource(name) {
     switch (name) {
       case 'pencil':
@@ -67,8 +76,12 @@ class TabIcon extends React.Component {
         return Images.iconLoginEmail
       case 'myFeed':
         return Images.iconNavHome
+      case 'myFeed-active':
+        return Images.iconNavHomeActive
       case 'activity':
         return Images.iconNavActivity
+      case 'activity-active':
+        return Images.iconNavActivityActive
       case 'tag':
         return Images.iconTag
       case 'hashtag':
@@ -79,10 +92,14 @@ class TabIcon extends React.Component {
         return Images.iconCost
       case 'explore':
         return Images.iconNavExplore
+      case 'explore-active':
+        return Images.iconNavExploreActive
       case 'createMenuStory':
         return Images.iconCreateMenuStory
       case 'createStory':
         return Images.iconNavCreate
+      case 'createStory-active':
+        return Images.iconNavCreateActive
       case 'close':
         return Images.iconContentXWhite
       case 'closeDark':
@@ -117,36 +134,25 @@ class TabIcon extends React.Component {
         return Images.iconErrorExclamation
       case 'info':
         return Images.iconInfoDark
+      case 'profile-active':
+        return Images.iconNavProfileActive
       case 'profile':
       default:
         return Images.iconNavProfile
     }
   }
 
-  static propTypes = {
-    name: PropTypes.string,
-    style: PropTypes.oneOfType([
-      PropTypes.object,
-      PropTypes.array,
-    ]),
-    notificationCount: PropTypes.number,
-  }
-
-  // corrects vertical alignment of activity icon in nav bar on iPhone X
-  // FIXME: get a new iconNavActivity icon with no extra space
-  navBarStyle = name => ({
-    marginTop: (name === 'activity' && isIPhoneX()) ? -3 : 0,
-  })
+  getSelectedStyle = () => ({transform: [{scaleX: 0.5}, {scaleY: 0.5}]})
 
   render() {
-    const { style = {}, name, notificationCount } = this.props
+    const { style = {}, name, notificationCount, selected} = this.props
     return (
       <View
         style={style.view}
       >
         <Image
-          source={this.getIconSource(name)}
-          style={[style.image, this.navBarStyle(name)] || {}}
+          source={this.getIconSource(`${name}${selected ? '-active' : ''}`)}
+          style={[style.image, selected ? this.getSelectedStyle() : {}] || {}}
         />
         {name === 'activity' && notificationCount > 0 && (
           <NotificationBadge count={notificationCount} />

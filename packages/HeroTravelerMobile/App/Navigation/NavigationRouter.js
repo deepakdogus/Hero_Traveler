@@ -93,7 +93,6 @@ const redBack = {
 const tabBarProps = {
   tabs: true,
   tabBarStyle: Styles.tabBar,
-  tabBarSelectedItemStyle: Styles.tabBarActive,
   tabBarIconContainerStyle: Styles.tabBarItemContainer,
 }
 
@@ -349,12 +348,14 @@ export default NavActions.create(
           renderBackButton={alwaysNull}
           hideNavBar={true}
           onPress={navToMyFeed}
+          style={Styles.tabIcon}
         />
         <Scene
           key='explore'
           icon={TabIcon}
           hideNavBar={false}
           onPress={navToExplore}
+          style={Styles.tabIcon}
         >
           <Scene
             key='explore_grid'
@@ -387,6 +388,7 @@ export default NavActions.create(
           title='Notifications'
           {...darkNavBarProps}
           navigationBarStyle={extraPaddingDarkNavBarProps}
+          style={Styles.tabIcon}
         />
         <Scene
           key='profile'
@@ -394,6 +396,7 @@ export default NavActions.create(
           component={ProfileScreen}
           hideNavBar
           onPress={navToProfile}
+          style={Styles.tabIcon}
         />
       </Scene>
       <Scene

@@ -48,13 +48,13 @@ class LocationScreen extends Component {
     }
   }
 
-  _onChangeText = async (text) => {
+  _onChangeText = text => {
     this.setState({text})
     if (text.length <= 2) return
     this.setState({searching: true})
     RNGooglePlaces.getAutocompletePredictions(text)
-      .then((predictions) => this.setState({searching: false, predictions}))
-      .catch(() => this.setState({searching: false}))
+    .then((predictions) => this.setState({searching: false, predictions}))
+    .catch(() => this.setState({searching: false}))
   }
 
   selectLocation = (placeID) => () => {

@@ -32,7 +32,6 @@ class SearchResultsSeeAllScreen extends Component {
             onPressAuthor={this._onPressAuthor}
             isShowAll={true}
             feedItems={feedItems}
-            authors={{}}
             isGuide={feedItemType === 'guides'}
           />
         </ScrollView>

@@ -74,7 +74,7 @@ export default class FeedItemsOfType extends Component {
               const coverUrl = getFeedItemImageURL(feedItem)
 
               // db and algolia use differently named properties for author id
-              const hasAuthorsObj = !!Object.keys(authors).length
+              const hasAuthorsObj = authors && !!Object.keys(authors).length
               const authorId = hasAuthorsObj
                 ? feedItem.author
                 : feedItem.authorId

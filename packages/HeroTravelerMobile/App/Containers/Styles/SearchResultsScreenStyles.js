@@ -17,4 +17,12 @@ export default StyleSheet.create({
   scrollView: {
     flex: 1,
   },
+  noResultsContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  noResultsText: {
+    fontWeight: '500',
+  },
 })

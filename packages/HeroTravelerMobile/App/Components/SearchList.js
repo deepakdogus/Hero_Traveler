@@ -12,8 +12,6 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import Loader from './Loader'
 import List from './List'
 import ListItem from './ListItem'
-import ImageWrapper from './ImageWrapper'
-import { PlayButton } from './VideoPlayer'
 import Avatar from './Avatar'
 
 import getImageUrl from '../Shared/Lib/getImageUrl'
@@ -145,9 +143,19 @@ class SearchList extends Component {
       selectedTabIndex,
       lastSearchResults,
       lastLocationPredictions,
+      searchHistory,
     } = this.props
     const searchHits = _.get(lastSearchResults, 'hits', []).slice(0, MAX_ITEMS)
     const locationHits = lastLocationPredictions || []
+    const showRecentPlacesSearches = !isSearching
+      && !isSearchingLocation
+      && !searchHits.length
+      && !locationHits.length
+      && !!searchHistory.places.length
+
+    const showRecentPeopleSearches = !isSearching
+      && searchHits.length === 0
+      && !!searchHistory.people.length
 
     return (
       <View style={styles.scrollWrapper}>
@@ -182,28 +190,19 @@ class SearchList extends Component {
             />
           </ScrollView>
         }
-        {selectedTabIndex === 0
-          && !isSearching
-          && !isSearchingLocation
-          && !searchHits.length
-          && !locationHits.length
-          && !!this.props.searchHistory.places.length
-          && (
-            <ScrollView>
-              {this.renderSearchTitle('RECENT SEARCHES')}
-              <List
-                items={this.props.searchHistory.places}
-                renderRow={this.renderRecentSearchesRow}
-              />
-            </ScrollView>
+        {selectedTabIndex === 0 && showRecentPlacesSearches && (
+          <ScrollView>
+            {this.renderSearchTitle('RECENT SEARCHES')}
+            <List
+              items={searchHistory.places}
+              renderRow={this.renderRecentSearchesRow}
+            />
+          </ScrollView>
         )}
-        {!isSearching && searchHits.length === 0
-          && selectedTabIndex === 1
-          && !!this.props.searchHistory.people.length
-          && (
+        {selectedTabIndex === 1 && showRecentPeopleSearches && (
             <ScrollView>
               <List
-                items={this.props.searchHistory.people}
+                items={searchHistory.people}
                 renderRow={this.renderPeopleRow}
               />
             </ScrollView>

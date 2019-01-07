@@ -1,21 +1,19 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import styles from './Styles/SearchResultsScreenStyles'
-
 import { View, ScrollView, Text } from 'react-native'
-import {Actions as NavActions} from 'react-native-router-flux'
-import {navToProfile} from '../Navigation/NavigationRouter'
-import env from '../Config/Env'
+import { Actions as NavActions } from 'react-native-router-flux'
 // Search
 import algoliasearchModule from 'algoliasearch/reactnative'
 import AlgoliaSearchHelper from 'algoliasearch-helper'
 // Locations
 import RNGooglePlaces from 'react-native-google-places'
 
+import env from '../Config/Env'
+import Colors from '../Shared/Themes/Colors'
+import styles from './Styles/SearchResultsScreenStyles'
+import { navToProfile } from '../Navigation/NavigationRouter'
 import FeedItemsOfType from '../Components/FeedItemsOfType'
 import Loader from '../Components/Loader'
-
-import Colors from '../Shared/Themes/Colors'
 
 const algoliasearch = algoliasearchModule(
   env.SEARCH_APP_NAME,
@@ -127,43 +125,44 @@ class SearchResultsScreen extends Component {
 
   render() {
     const { isFetchingResults, lastSearchResults } = this.state
+
+    const hasResults = !!lastSearchResults.stories.length
+      && !!lastSearchResults.guides.length
+
     return (
       <View style={styles.root}>
-        {isFetchingResults ? (
+        {isFetchingResults && (
           <Loader style={styles.loader} spinnerColor={Colors.blackoutTint} />
-        ) : (
-          (!!lastSearchResults.stories.length
-            || !!lastSearchResults.guides.length)
-            ? (
-              <ScrollView style={styles.scrollView}>
-                {Object.keys(this.typeLabels).map(type => {
-                  const feedItems = (type === 'guides' || type === 'stories')
-                    ? lastSearchResults[type]
-                    : lastSearchResults.stories.filter(feedItem => feedItem.type === type)
-                  if (!this._shouldDisplaySection(feedItems)) return null
+        )}
+        {!isFetchingResults && hasResults && (
+          <ScrollView style={styles.scrollView}>
+            {Object.keys(this.typeLabels).map(type => {
+              const feedItems = (type === 'guides' || type === 'stories')
+                ? lastSearchResults[type]
+                : lastSearchResults.stories.filter(feedItem => feedItem.type === type)
+              if (!this._shouldDisplaySection(feedItems)) return null
 
-                  return (
-                    <FeedItemsOfType
-                      key={`${type}-search-grid`}
-                      type={type}
-                      label={this.typeLabels[type].toUpperCase()}
-                      onPressAll={this._navToSeeAll(type, feedItems)}
-                      onPressAuthor={this._onPressAuthor}
-                      isShowAll={false}
-                      feedItems={feedItems}
-                      authors={{}}
-                      isGuide={type === 'guides'}
-                    />
-                  )
-                })}
-              </ScrollView>
-            ) : (
-              <View style={styles.noResultsContainer}>
-                <Text style={styles.noResultsText}>
-                  {'No results for this search'}
-                </Text>
-              </View>
-            )
+              return (
+                <FeedItemsOfType
+                  key={`${type}-search-grid`}
+                  type={type}
+                  label={this.typeLabels[type].toUpperCase()}
+                  onPressAll={this._navToSeeAll(type, feedItems)}
+                  onPressAuthor={this._onPressAuthor}
+                  isShowAll={false}
+                  feedItems={feedItems}
+                  isGuide={type === 'guides'}
+                />
+              )
+            })}
+          </ScrollView>
+        )}
+        {!isFetchingResults && !hasResults && (
+          <View style={styles.noResultsContainer}>
+            <Text style={styles.noResultsText}>
+              {'No results for this search'}
+            </Text>
+          </View>
         )}
       </View>
     )

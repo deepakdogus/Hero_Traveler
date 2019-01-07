@@ -86,6 +86,7 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   guideIcon: {
+    marginTop: 1,
     width: 15,
   },
   guideIconImage: {

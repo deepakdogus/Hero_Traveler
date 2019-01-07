@@ -9,24 +9,24 @@ export default StyleSheet.create({
   },
   center: {
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   message: {
     fontSize: 24,
-    color: '#fff'
+    color: Colors.snow,
   },
   tabs: {
-    flex: 1
+    flex: 1,
   },
   tabnav: {
     height: 50,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: Colors.lightGreyAreas
+    backgroundColor: Colors.lightGreyAreas,
   },
   tabContent: {
     flex: 1,
-    paddingTop: Metrics.baseMargin
+    paddingTop: Metrics.baseMargin,
   },
   tab: {
     flexDirection: 'row',
@@ -38,21 +38,21 @@ export default StyleSheet.create({
   },
   tabText: {
     fontFamily: Fonts.type.montserrat,
-    color: '#bdbdbd',
+    color: Colors.grey,
     fontSize: 13,
     letterSpacing: 1.2,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   tabSelected: {
-    borderBottomColor: Colors.red
+    borderBottomColor: Colors.red,
   },
   tabTextSelected: {
     fontFamily: Fonts.type.montserrat,
-    color: '#757575',
+    color: Colors.grey,
     fontSize: 13,
     letterSpacing: 1.2,
   },
   activityList: {
-    flex: 1
-  }
+    flex: 1,
+  },
 })

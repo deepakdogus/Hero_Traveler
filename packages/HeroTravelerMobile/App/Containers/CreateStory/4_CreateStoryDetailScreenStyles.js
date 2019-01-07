@@ -6,7 +6,7 @@ export default StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: Colors.snow,
-    marginHorizontal: Metrics.doubleBaseMargin
+    marginHorizontal: Metrics.doubleBaseMargin,
   },
   wrapper: {
     flex: 1,
@@ -31,9 +31,9 @@ export default StyleSheet.create({
   },
   fieldLabelLong: {
     flexGrow: 1,
-    width: "100%",
+    width: '100%',
     marginBottom: Metrics.baseMargin / 2,
-    fontSize: 14
+    fontSize: 14,
   },
   fieldIcon: {
     marginRight: Metrics.doubleBaseMargin,
@@ -45,12 +45,12 @@ export default StyleSheet.create({
     color: Colors.background,
     fontSize: 16,
     marginBottom: 10,
-    height: 30
+    height: 30,
   },
   tagStyle: {
     flexGrow: 1,
     fontSize: 16,
-    minHeight: 30
+    minHeight: 30,
   },
   tagStyleText: {
     fontSize: 16,
@@ -61,16 +61,16 @@ export default StyleSheet.create({
     color: Colors.navBarText,
   },
   longInput: {
-    flexDirection: "row",
-    flexWrap: "nowrap",
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
     flexGrow: 1,
-    minHeight: 30
+    minHeight: 30,
   },
   longInputText: {
     flexGrow: 1,
     fontSize: 16,
     color: Colors.background,
-    marginBottom: 20
+    marginBottom: 20,
   },
   travelTipsWrapper: {
     marginTop: Metrics.baseMargin * 2,
@@ -79,7 +79,7 @@ export default StyleSheet.create({
   },
   travelTipsPreview: {
     flexGrow: 1,
-    width: "100%",
+    width: '100%',
   },
   travelTipsPreviewText: {
     borderWidth: 1,
@@ -88,7 +88,7 @@ export default StyleSheet.create({
     minHeight: 90,
   },
   travelTipsPreviewTextDimmed: {
-    color: Colors.grey
+    color: Colors.grey,
   },
   currency: {
     flexShrink: 1,
@@ -99,7 +99,7 @@ export default StyleSheet.create({
   },
   radioGroup: {
     flexDirection: 'row',
-    flex: 1
+    flex: 1,
   },
   radio: {
     flex: 1,
@@ -112,17 +112,17 @@ export default StyleSheet.create({
     borderRadius: 100,
     width: 15,
     height: 15,
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.snow,
     borderWidth: 1.5,
     borderColor: Colors.navBarText,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   radioBtnInner: {
     borderRadius: 100,
     width: 7,
     height: 7,
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.snow,
   },
   radioBtnActiveBorder: {
     borderColor: Colors.redHighlights,
@@ -141,14 +141,14 @@ export default StyleSheet.create({
     backgroundColor: Colors.clear,
   },
   draftButtonText: {
-    color: Colors.red
+    color: Colors.red,
   },
   loader: {
     position: 'absolute',
     top: 0,
     bottom: 0,
     left: 0,
-    right: 0
+    right: 0,
   },
   dateWrapper: {
     position: 'absolute',
@@ -165,7 +165,7 @@ export default StyleSheet.create({
     borderColor: Colors.navBarText,
     borderWidth: 1,
     padding: Metrics.baseMargin,
-    marginBottom: Metrics.section
+    marginBottom: Metrics.section,
   },
   videoDescription: {
     height: 100,

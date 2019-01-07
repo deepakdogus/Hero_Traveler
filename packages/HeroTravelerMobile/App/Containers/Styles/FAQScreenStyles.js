@@ -23,7 +23,7 @@ export default StyleSheet.create({
     marginBottom: Metrics.section * .5,
   },
   answerText: {
-    color: '#757575',
+    color: Colors.grey,
     fontSize: 16,
     marginHorizontal: Metrics.section,
     marginBottom: Metrics.section,

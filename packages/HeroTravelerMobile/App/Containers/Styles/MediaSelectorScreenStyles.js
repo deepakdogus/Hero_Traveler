@@ -51,7 +51,7 @@ export default StyleSheet.create({
     right: 0,
   },
   retakeButtonText: {
-    color: Colors.white,
+    color: Colors.snow,
     fontSize: 13,
     fontFamily: Fonts.type.montserrat,
   },

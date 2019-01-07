@@ -10,13 +10,13 @@ const styles = StyleSheet.create({
     right: -10,
     borderRadius: 8,
     paddingHorizontal: 3,
-    paddingVertical: 1
+    paddingVertical: 1,
   },
   text: {
-    color: Colors.white,
+    color: Colors.snow,
     fontSize: 9,
-    marginRight: 1
-  }
+    marginRight: 1,
+  },
 })
 
 export default function NotificationBadge({count, style}) {

@@ -346,7 +346,7 @@ export default class RNDraftJs extends Component {
           </NativeEditor>
         </View>
       </View>
-    );
+    )
   }
 }
 
@@ -367,22 +367,22 @@ const blockFontTypes = {
   headerOne: {
     fontSize: 21,
     fontWeight: '600',
-    color: processColor('#1a1c21'),
+    color: processColor(Colors.background),
   },
   headerTwo: {
-    fontSize: 22
+    fontSize: 22,
   },
   headerThree: {
-    fontSize: 22
+    fontSize: 22,
   },
   headerFour: {
-    fontSize: 22
+    fontSize: 22,
   },
   headerFive: {
-    fontSize: 22
+    fontSize: 22,
   },
   headerSix: {
-    fontSize: 22
+    fontSize: 22,
   },
   blockquote: {
   },
@@ -418,7 +418,7 @@ const inlineStyleFontTypes = {
   },
   STRIKETHROUGH: {
     textDecoration: 'line-through',
-  }
+  },
 }
 
 const styles = StyleSheet.create({
@@ -451,7 +451,7 @@ const styles = StyleSheet.create({
   },
   instructions: {
     textAlign: 'center',
-    color: '#333333',
+    color: Colors.steel,
     marginBottom: 5,
   },
   draftTest: {
@@ -472,5 +472,5 @@ const styles = StyleSheet.create({
   videoView: {
     width: Metrics.screenWidth,
     height: 200,
-  }
-});
+  },
+})

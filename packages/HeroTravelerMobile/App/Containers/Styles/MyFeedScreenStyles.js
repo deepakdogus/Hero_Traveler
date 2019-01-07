@@ -31,7 +31,7 @@ export default StyleSheet.create({
   },
   message: {
     fontSize: 16,
-    color: '#fff',
+    color: Colors.snow,
     paddingVertical: 7,
     textAlign: 'center',
   },
@@ -73,7 +73,7 @@ export default StyleSheet.create({
     paddingRight: 0,
   },
   cancelBtnText: {
-    color: '#9e9e9e',
+    color: Colors.signupGrey,
     fontFamily: Fonts.type.montserrat,
   },
   InputXPosition: {

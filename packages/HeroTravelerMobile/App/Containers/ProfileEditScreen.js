@@ -131,9 +131,9 @@ class ProfileEditScreen extends React.Component {
     NavActions.mediaSelectorScreen({
       mediaType: 'photo',
       title: 'Edit Avatar',
-      titleStyle: {color: Colors.white},
+      titleStyle: {color: Colors.snow},
       leftTitle: 'Cancel',
-      leftTextStyle: {color: Colors.white},
+      leftTextStyle: {color: Colors.snow},
       onLeft: () => NavActions.pop(),
       rightTitle: 'Done',
       rightIcon: 'none',

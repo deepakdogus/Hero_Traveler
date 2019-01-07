@@ -19,7 +19,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     fontSize: 15,
-    color: '#757575',
+    color: Colors.grey,
     fontWeight: '300',
     flexGrow: 2,
     marginLeft: Metrics.baseMargin,

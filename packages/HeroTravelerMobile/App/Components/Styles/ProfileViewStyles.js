@@ -206,7 +206,7 @@ export default StyleSheet.create({
     textAlign: 'center',
   },
   errorText: {
-    color: '#757575',
+    color: Colors.grey,
     textAlign: 'center',
     fontFamily: Fonts.type.montserrat,
     marginBottom: 10,

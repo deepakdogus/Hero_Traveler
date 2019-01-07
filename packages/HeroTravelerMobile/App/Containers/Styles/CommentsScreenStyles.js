@@ -37,7 +37,7 @@ export default StyleSheet.create({
   commentText: {
     fontFamily: Fonts.type.base,
     fontSize: 16,
-    color: '#757575',
+    color: Colors.grey,
     fontWeight: '300',
     letterSpacing: 0.7,
   },
@@ -54,7 +54,7 @@ export default StyleSheet.create({
   timestamp: {
     fontFamily: Fonts.type.base,
     fontSize: 12,
-    color: '#757575',
+    color: Colors.grey,
     fontWeight: '300',
     letterSpacing: 0.7,
     textAlign: 'right',
@@ -86,7 +86,7 @@ export default StyleSheet.create({
     borderRadius: 6,
     borderWidth: 1,
     borderColor: Colors.navBarText,
-    color: '#757575',
+    color: Colors.grey,
     paddingLeft: 9,
     minHeight: 35,
   },

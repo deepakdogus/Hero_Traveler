@@ -5,35 +5,35 @@ export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
     backgroundColor: Colors.background,
-    flex: 1
+    flex: 1,
   },
   lightBG: {
     backgroundColor: Colors.snow,
     // minHeight: Metrics.screenHeight
   },
   emptyMessage: {
-    marginTop: Metrics.doubleSection
+    marginTop: Metrics.doubleSection,
   },
   emptyMessageText: {
     textAlign: 'center',
     fontSize: 16,
-    color: Colors.steel
+    color: Colors.steel,
   },
   header: {
-    marginBottom: Metrics.section
+    marginBottom: Metrics.section,
   },
   sectionHeader: {
     fontFamily: Fonts.type.montserrat,
     fontSize: 15,
     backgroundColor: Colors.lightGreyAreas,
     padding: Metrics.baseMargin,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   title: {
     ...Fonts.style.title,
     fontSize: 16,
     textAlign: 'center',
-    color: Colors.snow
+    color: Colors.snow,
   },
   subtitle: {
     ...Fonts.style.instructions,
@@ -43,16 +43,16 @@ export default StyleSheet.create({
 
   connectSocialText: {
     fontSize: 15,
-    color: '#757575',
+    color: Colors.grey,
     fontWeight: '300',
     flexGrow: 2,
-    marginLeft: Metrics.baseMargin
+    marginLeft: Metrics.baseMargin,
   },
   isConnectedText: {
     color: Colors.red,
-    marginRight: Metrics.baseMargin
+    marginRight: Metrics.baseMargin,
   },
   connectWrapper: {
-    flexDirection: 'row'
-  }
+    flexDirection: 'row',
+  },
 })

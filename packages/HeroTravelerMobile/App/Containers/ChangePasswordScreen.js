@@ -71,7 +71,7 @@ class ChangePasswordScreen extends React.Component {
             <TextInput
               style={styles.input}
               placeholder='Current Password'
-              placeholderTextColor='#757575'
+              placeholderTextColor={Colors.grey}
               autoFocus
               value={this.state.currentText}
               autoCapitalize='none'
@@ -85,7 +85,7 @@ class ChangePasswordScreen extends React.Component {
             <TextInput
               style={styles.input}
               placeholder='New Password'
-              placeholderTextColor='#757575'
+              placeholderTextColor={Colors.grey}
               autoFocus
               value={this.state.newText}
               autoCapitalize='none'

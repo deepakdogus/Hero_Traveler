@@ -72,11 +72,11 @@ export default class ThreadListItem extends Component {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    borderBottomColor: '#bdbdbd',
+    borderBottomColor: Colors.grey,
     borderBottomWidth: 1,
   },
   innerButton: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingVertical: Metrics.baseMargin,
     paddingHorizontal: Metrics.doubleBaseMargin,
   },
@@ -86,23 +86,23 @@ const styles = StyleSheet.create({
   },
   usernameText: {
     color: Colors.background,
-    fontWeight: '600'
+    fontWeight: '600',
   },
   dateText: {
     flex: .25,
     marginLeft: Metrics.baseMargin,
-    color: '#757575',
+    color: Colors.grey,
     fontSize: 12,
-    textAlign: 'right'
+    textAlign: 'right',
   },
   messageText: {
     fontSize: 16,
-    color: '#757575',
+    color: Colors.grey,
   },
   avatar: {
-    marginHorizontal: Metrics.baseMargin
+    marginHorizontal: Metrics.baseMargin,
   },
   actionUserText: {
-    fontWeight: 'bold'
-  }
+    fontWeight: 'bold',
+  },
 })

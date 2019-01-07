@@ -25,20 +25,20 @@ export default StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 18,
-    marginRight: Metrics.baseMargin
+    marginRight: Metrics.baseMargin,
   },
   nameWrapper: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   name: {
     fontSize: 15,
     fontWeight: '400',
-    color: Colors.background
+    color: Colors.background,
   },
   followerCount: {
     fontWeight: '300',
     fontSize: 14,
-    color: '#757575'
+    color: Colors.grey,
   },
   selectedFollowersButton: {
     borderColor: Colors.red,

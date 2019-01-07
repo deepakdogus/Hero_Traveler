@@ -4,7 +4,7 @@ import { ApplicationStyles, Fonts, Colors, Metrics } from '../../Shared/Themes/'
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
-    backgroundColor: Colors.backgroundDark,
+    backgroundColor: Colors.dividerGrey,
     paddingTop: Metrics.navBarHeight,
   },
   noStoriesWrapper: {
@@ -19,7 +19,7 @@ export default StyleSheet.create({
   },
   message: {
     fontSize: 16,
-    color: '#fff',
+    color: Colors.snow,
     paddingVertical: 7,
     textAlign: 'center',
   },

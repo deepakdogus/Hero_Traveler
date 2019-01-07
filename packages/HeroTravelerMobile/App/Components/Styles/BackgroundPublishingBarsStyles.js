@@ -3,7 +3,7 @@ import { Fonts, Colors, Metrics } from '../../Shared/Themes/'
 
 export default StyleSheet.create({
   container: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.snow,
     minHeight: 32,
     width: Metrics.screenWidth,
     flexDirection: 'column',

@@ -5,7 +5,7 @@ import { View, TouchableOpacity, TextInput, Text } from 'react-native'
 import { connect } from 'react-redux'
 import SplashScreen from 'react-native-splash-screen'
 
-import { Metrics } from '../../Shared/Themes'
+import { Metrics, Colors } from '../../Shared/Themes'
 import StoryActions from '../../Shared/Redux/Entities/Stories'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
@@ -202,7 +202,7 @@ class MyFeedScreen extends React.Component {
                 ref={this._setupInputRef}
                 style={styles.searchInput}
                 placeholder='Search'
-                placeholderTextColor='#757575'
+                placeholderTextColor={Colors.grey}
                 // onFocus={this.setFocus}
                 onChange={this._changeQuery}
                 // onChangeText={this.checkClearResults}

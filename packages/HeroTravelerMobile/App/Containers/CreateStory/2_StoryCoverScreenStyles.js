@@ -103,7 +103,7 @@ export default StyleSheet.create({
     backgroundColor: Colors.snow,
   },
   loadingText: {
-    color: Colors.white,
+    color: Colors.snow,
   },
   loading: {
     position: 'absolute',
@@ -212,7 +212,7 @@ export const customStyles = StyleSheet.create({
   'header-one': {
     fontSize: 21,
     fontWeight: '600',
-    color: '#1a1c21',
+    color: Colors.background,
   },
 })
 

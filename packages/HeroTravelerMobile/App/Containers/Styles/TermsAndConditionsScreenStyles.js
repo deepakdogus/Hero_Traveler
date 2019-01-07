@@ -44,13 +44,13 @@ export default StyleSheet.create({
     fontWeight: '900',
   },
   bodyText: {
-    color: '#757575',
+    color: Colors.grey,
     fontSize: 16,
     marginHorizontal: Metrics.section,
     marginBottom: Metrics.section,
   },
   OLbodyText: {
-    color: '#757575',
+    color: Colors.grey,
     fontSize: 16,
     marginHorizontal: Metrics.section,
     marginBottom: Metrics.section,

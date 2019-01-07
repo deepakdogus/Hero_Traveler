@@ -63,27 +63,13 @@ export function * adminRestoreCategories (api, action) {
   }
 }
 
-export function * adminUploadCategoryHeroImage (api, action) {
-  const { fileObj, category, resolve, reject } = action.payload
-  const response = yield call(api.adminUploadCategoryHeroImage, fileObj, category)
-  if (response.ok && response.data) {
-    const record = response.data
+export function * adminPostCategory (api, action) {
+  const { values, resolve, reject } = action.payload
+  const response = yield call(api.adminPostCategory, { values })
+  if (response.data && response.data.length) {
+    const record = response.data[0]
     yield put(AdminActions.adminGetCategorySuccess({ record }))
-    return resolve(response)
-  } else {
-    const error = response.data ? response.data.message : 'Error fetching data'
-    return reject(error)
-  }
-}
-
-
-export function * adminUploadCategoryChannelImage (api, action) {
-  const { fileObj, category, resolve, reject } = action.payload
-  const response = yield call(api.adminUploadCategoryChannelImage, fileObj, category)
-  if (response.ok && response.data) {
-    const record = response.data
-    yield put(AdminActions.adminGetCategorySuccess({ record }))
-    return resolve(response)
+    return resolve(record)
   } else {
     const error = response.data ? response.data.message : 'Error fetching data'
     return reject(error)

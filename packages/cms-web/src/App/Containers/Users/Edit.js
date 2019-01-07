@@ -140,40 +140,6 @@ class EditUser extends React.Component {
     })
   }
 
-  handleHeroUpload = (fileObj) => {
-    const { uploadHeroImage, record } = this.props
-    this.setState({
-      formSubmitting: true,
-    })
-    return new Promise((resolve, reject) => {
-      uploadHeroImage({
-        fileObj,
-        category: record,
-        resolve,
-        reject,
-      })
-    }).finally(() => this.setState({
-      formSubmitting: false,
-    }))
-  }
-
-  handleChannelUpload = (fileObj) => {
-    const { uploadChannelImage, record } = this.props
-    this.setState({
-      formSubmitting: true,
-    })
-    return new Promise((resolve, reject) => {
-      uploadChannelImage({
-        fileObj,
-        category: record,
-        resolve,
-        reject,
-      })
-    }).finally(() => this.setState({
-      formSubmitting: false,
-    }))
-  }
-
   renderTable = () => {
     const { record, stories, guides } = this.props
     return (
@@ -249,8 +215,6 @@ class EditUser extends React.Component {
                 onDelete={this.handleDelete}
                 formLoading={formSubmitting}
                 isDeleting={isDeleting}
-                onHeroUpload={this.handleHeroUpload}
-                onChannelUpload={this.handleChannelUpload}
               />
             </Col>
             <Col xs={24} md={12}>
@@ -281,8 +245,6 @@ EditUser.propTypes = {
   getGuides: PropTypes.func.isRequired,
   guides: PropTypes.array,
   isLoading: PropTypes.bool.isRequired,
-  uploadHeroImage: PropTypes.func.isRequired,
-  uploadChannelImage: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
 }
 
@@ -309,8 +271,6 @@ function mapDispatchToProps(dispatch) {
     deleteUser: (payload) => dispatch(AdminUserActions.adminDeleteUser(payload)),
     getStories: (id) => dispatch(StoryActions.fromUserRequest(id)),
     getGuides: (id) => dispatch(GuideActions.getUserGuides(id)),
-    uploadHeroImage: (payload) => dispatch(AdminUserActions.adminUploadUserHeroImage(payload)),
-    uploadChannelImage: (payload) => dispatch(AdminUserActions.adminUploadUserChannelImage(payload)),
   }
 }
 

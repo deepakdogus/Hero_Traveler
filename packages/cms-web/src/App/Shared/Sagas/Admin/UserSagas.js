@@ -62,30 +62,3 @@ export function * adminRestoreUsers (api, action) {
     return reject(error)
   }
 }
-
-export function * adminUploadUserHeroImage (api, action) {
-  const { fileObj, category, resolve, reject } = action.payload
-  const response = yield call(api.adminUploadUserHeroImage, fileObj, category)
-  if (response.ok && response.data) {
-    const record = response.data
-    yield put(AdminActions.adminGetUserSuccess({ record }))
-    return resolve(response)
-  } else {
-    const error = response.data ? response.data.message : 'Error fetching data'
-    return reject(error)
-  }
-}
-
-
-export function * adminUploadUserChannelImage (api, action) {
-  const { fileObj, category, resolve, reject } = action.payload
-  const response = yield call(api.adminUploadUserChannelImage, fileObj, category)
-  if (response.ok && response.data) {
-    const record = response.data
-    yield put(AdminActions.adminGetUserSuccess({ record }))
-    return resolve(response)
-  } else {
-    const error = response.data ? response.data.message : 'Error fetching data'
-    return reject(error)
-  }
-}

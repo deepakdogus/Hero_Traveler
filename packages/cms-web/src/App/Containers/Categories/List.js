@@ -328,6 +328,9 @@ class CategoriesList extends React.Component {
           <LeftSpaceDiv>
             <Button onClick={this._applyTypeFilter}>Filter</Button>
           </LeftSpaceDiv>
+          <LeftSpaceDiv>
+            <Link to='/newCategory'><Button type="primary">Create Category</Button></Link>
+          </LeftSpaceDiv>
         </FilterRow>
         {this.state.activeTab === 'deleted' &&
           <ActionRow>

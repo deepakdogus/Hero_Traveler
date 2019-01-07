@@ -101,8 +101,8 @@ class HomePage extends React.Component {
     new Promise((resolve, reject) => {
       getNew({
         params: {
-          dateFrom: dates[0],
-          dateTill: dates[1],
+          dateFrom: dates[0].format('YYYY/MM/DD'),
+          dateTill: dates[1].format('YYYY/MM/DD'),
         },
         resolve,
         reject,

@@ -120,9 +120,7 @@ import {
   adminGetUser,
   adminPutUser,
   adminDeleteUser,
-  adminRestoreUsers,
-  adminUploadUserHeroImage,
-  adminUploadUserChannelImage,
+  adminRestoreUsers
 } from './Admin/UserSagas'
 
 import {
@@ -131,8 +129,7 @@ import {
   adminPutCategory,
   adminDeleteCategory,
   adminRestoreCategories,
-  adminUploadCategoryHeroImage,
-  adminUploadCategoryChannelImage,
+  adminPostCategory,
 } from './Admin/CategorySagas'
 
 import {
@@ -276,16 +273,13 @@ export default function * root () {
     takeLatest(AdminUserTypes.ADMIN_PUT_USER, adminPutUser, heroAPI),
     takeLatest(AdminUserTypes.ADMIN_DELETE_USER, adminDeleteUser, heroAPI),
     takeLatest(AdminUserTypes.ADMIN_RESTORE_USERS, adminRestoreUsers, heroAPI),
-    takeLatest(AdminUserTypes.ADMIN_UPLOAD_USER_HERO_IMAGE, adminUploadUserHeroImage, heroAPI),
-    takeLatest(AdminUserTypes.ADMIN_UPLOAD_USER_CHANNEL_IMAGE, adminUploadUserChannelImage, heroAPI),
 
     takeLatest(AdminCategoryTypes.ADMIN_GET_CATEGORIES, adminGetCategories, heroAPI),
     takeLatest(AdminCategoryTypes.ADMIN_GET_CATEGORY, adminGetCategory, heroAPI),
     takeLatest(AdminCategoryTypes.ADMIN_PUT_CATEGORY, adminPutCategory, heroAPI),
     takeLatest(AdminCategoryTypes.ADMIN_DELETE_CATEGORY, adminDeleteCategory, heroAPI),
     takeLatest(AdminCategoryTypes.ADMIN_RESTORE_CATEGORIES, adminRestoreCategories, heroAPI),
-    takeLatest(AdminCategoryTypes.ADMIN_UPLOAD_CATEGORY_HERO_IMAGE, adminUploadCategoryHeroImage, heroAPI),
-    takeLatest(AdminCategoryTypes.ADMIN_UPLOAD_CATEGORY_CHANNEL_IMAGE, adminUploadCategoryChannelImage, heroAPI),
+    takeLatest(AdminCategoryTypes.ADMIN_POST_CATEGORY, adminPostCategory, heroAPI),
 
     takeLatest(AdminStoryTypes.ADMIN_GET_STORIES, adminGetStories, heroAPI),
     takeLatest(AdminStoryTypes.ADMIN_GET_STORY, adminGetStory, heroAPI),

@@ -1,8 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import get from 'lodash/get'
 
 import { Upload, Icon, Modal, message } from 'antd'
+
+import CloudinaryAPI from '../Services/CloudinaryAPI'
 
 const FullWidthImg = styled.img`
   width: 100%;
@@ -60,15 +63,16 @@ class SingleFileUpload extends React.Component {
 
   handleUpload = (handledFileProps) => {
     this.setState({ loading: true })
-    const { onUpload } = this.props
+    const { onChange } = this.props
     const { file } = handledFileProps
     const reader = new FileReader()
     
     reader.onload = (event) => {
       file.uri = reader.result
-      onUpload(file)
-        .then(() => {
+      CloudinaryAPI.uploadMediaFile(file, 'image')
+        .then((response) => {
           message.success('File was uploaded')
+          onChange(get(response, 'data.secure_url'))
         })
         .catch((e) => {
           message.error(`Error uploading file: ${e.toString()}`)
@@ -117,8 +121,12 @@ class SingleFileUpload extends React.Component {
 }
 
 SingleFileUpload.propTypes = {
-  onUpload: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
   value: PropTypes.string,
+}
+
+SingleFileUpload.defaultProps = {
+  onChange: () => {},
 }
 
 export default SingleFileUpload

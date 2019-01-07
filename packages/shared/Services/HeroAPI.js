@@ -475,33 +475,11 @@ const create = () => {
 
   const adminPutCategory = ({ id, values }) => api.put(`admin/categories/${id}`, values)
 
+  const adminPostCategory = ({ values }) => api.post(`admin/categories`, values)
+
   const adminDeleteCategory = (id) => api.delete(`admin/categories/${id}`)
 
   const adminRestoreCategories = (ids) => api.post('admin/categories/restore', { ids })
-
-  const adminUploadCategoryHeroImage = (pathToFile, category) => {
-    return CloudinaryAPI.uploadMediaFile(pathToFile, 'image')
-    .then((response) => {
-      const imageUrl = response.data.secure_url
-      const categoryToSave = {
-        ...category,
-        channelHeroImage: imageUrl
-      }
-      return api.put(`admin/categories/${category.id}`, categoryToSave)
-    })
-  }
-
-  const adminUploadCategoryChannelImage = (pathToFile, category) => {
-    return CloudinaryAPI.uploadMediaFile(pathToFile, 'image')
-    .then((response) => {
-      const imageUrl = response.data.secure_url
-      const categoryToSave = {
-        ...category,
-        channelThumbnail: imageUrl
-      }
-      return api.put(`admin/categories/${category.id}`, categoryToSave)
-    })
-  }
 
   const adminGetStories = (params) => api.get('admin/stories', params)
 
@@ -628,10 +606,9 @@ const create = () => {
     adminGetCategories,
     adminGetCategory,
     adminPutCategory,
+    adminPostCategory,
     adminDeleteCategory,
     adminRestoreCategories,
-    adminUploadCategoryHeroImage,
-    adminUploadCategoryChannelImage,
     adminGetTotalStats,
     adminGetNewStats
   }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Form, Input, Button, Checkbox, message } from 'antd'
 import mapValues from 'lodash/mapValues'
-import SingleFileUpload from '../Upload'
+import SingleFileUpload from '../SingleFileUpload'
 
 const FormItem = Form.Item
 
@@ -27,16 +27,6 @@ class EditCategoryForm extends React.Component {
         message.error('Form was not submitted: please fix errors')
       }
     })
-  }
-
-  handleHeroUpload = (file) => {
-    const { onHeroUpload } = this.props
-    return onHeroUpload(file)
-  }
-
-  handleChannelUpload = (file) => {
-    const { onChannelUpload } = this.props
-    return onChannelUpload(file)
   }
 
   render() {
@@ -72,16 +62,14 @@ class EditCategoryForm extends React.Component {
         <FormItem {...formItemLayout} label="Thumbnail Image">
           {getFieldDecorator('channelThumbnail', {
           })(
-            <SingleFileUpload onUpload={this.handleChannelUpload} />
+            <SingleFileUpload />
           )}
         </FormItem>
 
         <FormItem {...formItemLayout} label="Hero Image">
           {getFieldDecorator('channelHeroImage', {
           })(
-            <SingleFileUpload
-              onUpload={this.handleHeroUpload}
-            />
+            <SingleFileUpload />
           )}
         </FormItem>
         
@@ -98,7 +86,7 @@ class EditCategoryForm extends React.Component {
             <ButtonStyled type="primary" htmlType="submit" loading={formLoading}>Save Changes</ButtonStyled>
             <ButtonStyled type="default" onClick={this.props.handleCancel}>Cancel</ButtonStyled>
             <br/>
-            <ButtonStyled
+            {this.props.onDelete && <ButtonStyled
               disabled={record.isDeleted}
               type="danger"
               icon="delete"
@@ -106,7 +94,7 @@ class EditCategoryForm extends React.Component {
               onClick={this.props.onDelete}
             >
               Delete Category
-            </ButtonStyled>
+            </ButtonStyled>}
           </div>
         </FormItem>
       </Form>
@@ -115,15 +103,18 @@ class EditCategoryForm extends React.Component {
 }
 
 EditCategoryForm.propTypes = {
-  record: PropTypes.object.isRequired,
+  record: PropTypes.object,
   form: PropTypes.object.isRequired,
   handleCancel: PropTypes.func.isRequired,
   formLoading: PropTypes.bool.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  onHeroUpload: PropTypes.func.isRequired,
-  onChannelUpload: PropTypes.func.isRequired,
-  isDeleting: PropTypes.bool.isRequired,
+  onDelete: PropTypes.func,
+  isDeleting: PropTypes.bool,
+}
+
+EditCategoryForm.defaultProps = {
+  record: {},
+  isDeleting: false,
 }
 
 const mapPropsToFields = ({ record }) => mapValues(record, value => Form.createFormField({ value }))

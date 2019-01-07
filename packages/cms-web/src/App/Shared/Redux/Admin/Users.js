@@ -14,9 +14,7 @@ const { Types, Creators } = createActions({
   adminPutUser: ['payload'],
   adminDeleteUser: ['payload'],
   adminDeleteUserSuccess: ['id'],
-  adminRestoreUsers: ['payload'],
-  adminUploadUserHeroImage: ['payload'],
-  adminUploadUserChannelImage: ['payload']
+  adminRestoreUsers: ['payload']
 })
 
 export const AdminUserTypes = Types

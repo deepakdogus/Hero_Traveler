@@ -4,6 +4,7 @@ import endpointWrapper from '../../../utils/endpointWrapper'
 import getAll from './getAll'
 import getOne from './getOne'
 import putOne from './putOne'
+import postOne from './postOne'
 import deleteOne from './deleteOne'
 import restoreCategories from './restoreCategories'
 
@@ -31,6 +32,14 @@ router.put(
   populatesUser,
   isAdmin,
   endpointWrapper(putOne)
+)
+
+router.post(
+  '/',
+  hasValidOauth,
+  populatesUser,
+  isAdmin,
+  endpointWrapper(postOne)
 )
 
 router.delete(

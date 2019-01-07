@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Form, Input, Button, Icon, Checkbox, Select, message } from 'antd'
 import mapValues from 'lodash/mapValues'
-import SingleFileUpload from '../Upload'
+import SingleFileUpload from '../SingleFileUpload'
 
 const Option = Select.Option
 const FormItem = Form.Item
@@ -28,16 +28,6 @@ class EditUserForm extends React.Component {
         message.error('Form was not submitted: please fix errors')
       }
     })
-  }
-
-  handleHeroUpload = (file) => {
-    const { onHeroUpload } = this.props
-    return onHeroUpload(file)
-  }
-
-  handleChannelUpload = (file) => {
-    const { onChannelUpload } = this.props
-    return onChannelUpload(file)
   }
 
   render() {
@@ -98,16 +88,14 @@ class EditUserForm extends React.Component {
         <FormItem {...formItemLayout} label="Channel Thumbnail Image">
           {getFieldDecorator('channelThumbnail', {
           })(
-            <SingleFileUpload onUpload={this.handleChannelUpload} />
+            <SingleFileUpload />
           )}
         </FormItem>
 
         <FormItem {...formItemLayout} label="Channel Hero Image">
           {getFieldDecorator('channelHeroImage', {
           })(
-            <SingleFileUpload
-              onUpload={this.handleHeroUpload}
-            />
+            <SingleFileUpload />
           )}
         </FormItem>
         
@@ -156,8 +144,6 @@ EditUserForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   isDeleting: PropTypes.bool.isRequired,
-  onHeroUpload: PropTypes.func.isRequired,
-  onChannelUpload: PropTypes.func.isRequired,
 }
 
 const mapPropsToFields = ({ record }) => mapValues(record, value => Form.createFormField({ value }))

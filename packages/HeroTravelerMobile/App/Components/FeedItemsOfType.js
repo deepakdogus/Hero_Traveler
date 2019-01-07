@@ -34,7 +34,7 @@ export default class FeedItemsOfType extends Component {
     type: PropTypes.string.isRequired,
     isShowAll: PropTypes.bool,
     feedItems: PropTypes.arrayOf(PropTypes.object).isRequired,
-    authors: PropTypes.object.isRequired,
+    authors: PropTypes.object,
     onPressAll: PropTypes.func,
     onPressAuthor: PropTypes.func.isRequired,
     isGuide: PropTypes.bool,

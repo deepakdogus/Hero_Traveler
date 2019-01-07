@@ -124,7 +124,7 @@ class GuideReadingScreen extends React.Component {
       else return false
     })
     return {
-      stories: storiesOfType,
+      feedItems: storiesOfType,
       authors: authors,
     }
   }

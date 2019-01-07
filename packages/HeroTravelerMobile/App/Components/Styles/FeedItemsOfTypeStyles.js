@@ -4,8 +4,8 @@ import { Fonts, Colors, Metrics } from '../../Shared/Themes'
 // Don't forget to update ProfileTabAndStories.getHeaderHeight() if
 // related styles change. (username, about, badge, error, etc.)
 
-export const storyWidth = (Metrics.screenWidth - 2 * Metrics.section - Metrics.section) / 2
-export const storyHeight = storyWidth / 16 * 9
+export const feedItemWidth = (Metrics.screenWidth - 2 * Metrics.section - Metrics.section) / 2
+export const feedItemHeight = feedItemWidth / 16 * 9
 
 export default StyleSheet.create({
   wrapper: {
@@ -41,14 +41,14 @@ export default StyleSheet.create({
     textAlign: 'center',
     fontWeight: '600',
   },
-  storiesWrapper: {
+  feedItemsWrapper: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
   },
-  storyView: {
-    width: storyWidth,
+  feedItemView: {
+    width: feedItemWidth,
     marginBottom: Metrics.baseMargin,
   },
   titleContainer: {
@@ -72,16 +72,16 @@ export default StyleSheet.create({
     letterSpacing: .7,
   },
   image: {
-    height: storyHeight,
-    width: storyWidth,
+    height: feedItemHeight,
+    width: feedItemWidth,
   },
   playButtonAbsolute: {
     position: 'absolute',
     width: '100%',
-    height: storyHeight,
+    height: feedItemHeight,
   },
   playButtonCenter: {
-    height: storyHeight,
+    height: feedItemHeight,
     justifyContent: 'center',
     alignItems: 'center',
   },

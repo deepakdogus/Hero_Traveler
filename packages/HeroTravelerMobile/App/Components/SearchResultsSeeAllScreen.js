@@ -31,7 +31,7 @@ class SearchResultsSeeAllScreen extends Component {
             label={typeLabels[feedItemType].toUpperCase()}
             onPressAuthor={this._onPressAuthor}
             isShowAll={true}
-            stories={feedItems}
+            feedItems={feedItems}
             authors={{}}
             isGuide={feedItemType === 'guides'}
           />

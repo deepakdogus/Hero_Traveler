@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 
-import styles, {storyWidth, storyHeight} from './Styles/FeedItemsOfTypeStyles'
+import styles, {feedItemWidth, feedItemHeight} from './Styles/FeedItemsOfTypeStyles'
 import {styles as StoryReadingScreenStyles} from '../Containers/Styles/StoryReadingScreenStyles'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import ImageWrapper from './ImageWrapper'
@@ -12,23 +12,23 @@ import TabIcon from './TabIcon'
 
 const defaultVideoImageOptions = {
   video: true,
-  width: storyWidth,
+  width: feedItemWidth,
 }
 
 const defaultImageOptions = {
-  width: storyWidth,
-  height: storyHeight,
+  width: feedItemWidth,
+  height: feedItemHeight,
 }
 
-export function getStoryImageUrl(
-  story,
+export function getFeedItemImageURL(
+  feedItem,
   videoImageOptions = defaultVideoImageOptions,
   imageOptions = defaultImageOptions,
 ) {
-    const isVideo = !!story.coverVideo
+    const isVideo = !!feedItem.coverVideo
     return isVideo
-      ? getImageUrl(story.coverVideo, 'optimized', videoImageOptions)
-      : getImageUrl(story.coverImage, 'optimized', imageOptions)
+      ? getImageUrl(feedItem.coverVideo, 'optimized', videoImageOptions)
+      : getImageUrl(feedItem.coverImage, 'optimized', imageOptions)
 }
 
 export default class FeedItemsOfType extends React.Component {
@@ -36,7 +36,7 @@ export default class FeedItemsOfType extends React.Component {
     label: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     isShowAll: PropTypes.bool,
-    stories: PropTypes.arrayOf(PropTypes.object).isRequired,
+    feedItems: PropTypes.arrayOf(PropTypes.object).isRequired,
     authors: PropTypes.object.isRequired,
     onPressAll: PropTypes.func,
     onPressAuthor: PropTypes.func.isRequired,
@@ -47,13 +47,13 @@ export default class FeedItemsOfType extends React.Component {
     this.props.onPressAll(this.props.type)
   }
 
-  onPressStory = (story) => {
+  onPressFeedItem = feedItem => {
     if (this.props.isGuide) return () => {
-      NavActions.guide({guideId: story.id, title: story.title})
+      NavActions.guide({guideId: feedItem.id, title: feedItem.title})
     }
 
     return () => {
-      NavActions.story({storyId: story.id, title: story.title})
+      NavActions.story({storyId: feedItem.id, title: feedItem.title})
     }
   }
 
@@ -73,16 +73,16 @@ export default class FeedItemsOfType extends React.Component {
     )
   }
 
-  renderStory = (story) => {
-    const isVideo = !!story.coverVideo
-    const coverUrl = getStoryImageUrl(story)
+  renderFeedItem = feedItem => {
+    const isVideo = !!feedItem.coverVideo
+    const coverUrl = getFeedItemImageURL(feedItem)
     const { authors, isGuide } = this.props
-    // quick fix to allow story items from algolia search
+    // quick fix to allow feedItems from algolia search
     const hasAuthorsObj = !!Object.keys(authors).length
 
     return (
-      <View key={story.id} style={styles.storyView}>
-        <TouchableOpacity onPress={this.onPressStory(story)}>
+      <View key={feedItem.id} style={styles.feedItemView}>
+        <TouchableOpacity onPress={this.onPressFeedItem(feedItem)}>
           <ImageWrapper
             cached
             source={{uri: coverUrl}}
@@ -98,19 +98,19 @@ export default class FeedItemsOfType extends React.Component {
               />
             )}
               <Text style={styles.title}>
-                {story.title}
+                {feedItem.title}
               </Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={this.onPressAuthor(
           hasAuthorsObj
-            ? story.author
-            : story.authorId,
+            ? feedItem.author
+            : feedItem.authorId,
         )}>
           <Text style={styles.author}>
             {hasAuthorsObj
-              ? authors[story.author].username
-              : story.author
+              ? authors[feedItem.author].username
+              : feedItem.author
             }
           </Text>
         </TouchableOpacity>
@@ -119,9 +119,9 @@ export default class FeedItemsOfType extends React.Component {
   }
 
   render () {
-    const {label, stories, isShowAll} = this.props
+    const {label, feedItems, isShowAll} = this.props
 
-    if (stories.length === 0) return null
+    if (feedItems.length === 0) return null
 
     return (
       <Fragment>
@@ -133,17 +133,17 @@ export default class FeedItemsOfType extends React.Component {
           <Text style={styles.label}>
             {label}
           </Text>
-          <View style={styles.storiesWrapper}>
-            {stories.map((story, index) => {
+          <View style={styles.feedItemsWrapper}>
+            {feedItems.map((feedItem, index) => {
               if (!isShowAll && index >= 4) return null
-              return this.renderStory(story)
+              return this.renderFeedItem(feedItem)
             })}
           </View>
-          {!isShowAll && stories.length > 4 &&
+          {!isShowAll && feedItems.length > 4 &&
             <TouchableOpacity onPress={this.onPressAll}>
               <View style={styles.seeAllView}>
                 <Text style={styles.seeAll}>
-                  See all ({stories.length})
+                  See all ({feedItems.length})
                 </Text>
               </View>
             </TouchableOpacity>

@@ -150,7 +150,7 @@ class SearchResultsScreen extends Component {
                       onPressAll={this._navToSeeAll(type, feedItems)}
                       onPressAuthor={this._onPressAuthor}
                       isShowAll={false}
-                      stories={feedItems}
+                      feedItems={feedItems}
                       authors={{}}
                       isGuide={type === 'guides'}
                     />

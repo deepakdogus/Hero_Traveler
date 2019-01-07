@@ -24,7 +24,7 @@ import {
   Colors,
 } from '../../Shared/Themes'
 
-import { getStoryImageUrl } from '../../Components/FeedItemsOfType'
+import { getFeedItemImageURL } from '../../Components/FeedItemsOfType'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTimeTooltips'
 
 const deleteBtnParams = {
@@ -126,7 +126,7 @@ class EditGuideStories extends Component {
             {!!stories.length && this.renderToolTip(stories.length === 1)}
             {!!stories.length &&
               stories.map((story, idx) => {
-                const coverUrl = getStoryImageUrl(
+                const coverUrl = getFeedItemImageURL(
                   story,
                   videoImageUrlOptions,
                   imageUrlOptions,

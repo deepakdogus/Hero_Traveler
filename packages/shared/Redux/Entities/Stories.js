@@ -20,7 +20,7 @@ const { Types, Creators } = createActions({
   fromCategoryFailure: ['categoryId', 'error'],
   loadDrafts: null,
   loadDraftsSuccess: ['draftsById'],
-  loadDraftsFailure: ['error'],
+  loadDraftsFailure: ['error', 'userId'],
   addDraft: ['draft'],
   removeDraft: ['draftId'],
   resetDrafts: null,
@@ -39,7 +39,9 @@ const { Types, Creators } = createActions({
   addUserStory: ['stories', 'draftId'],
   deleteStory: ['userId', 'storyId'],
   deleteStorySuccess: ['userId', 'storyId'],
+  removeDeletedStories: ['deleteStories'],
   getGuideStories: ['guideId'],
+  getDeletedStories: ['userId'],
   syncPendingUpdates: null,
 })
 
@@ -263,9 +265,9 @@ export const loadDraftsSuccess = (state, {draftsById}) => {
   })
 }
 
-export const loadDraftsFailure = (state, {error}) => {
+export const loadDraftsFailure = (state, {error, userId}) => {
   const derivedById = _.values(state.entities).filter(story => {
-    return story.draft
+    return story.draft && story.author === userId
   }).map(story => story.id)
   return state.merge({
     drafts: {
@@ -347,6 +349,19 @@ export const deleteStorySuccess = (state, {userId, storyId}) => {
   return newState.setIn(path, _.without(state.getIn(path), storyId))
 }
 
+export const removeDeletedStories = (state, {deleteStories = [ {} ] }) => {
+  return deleteStories.reduce((workingState, story) => {
+    const cachedStory = state.entities[story.id]
+    if (cachedStory) {
+      return deleteStorySuccess(state, {
+        userId: cachedStory.author,
+        storyId: story.id,
+      })
+    }
+    return workingState
+  }, state)
+}
+
 /* ------------- Selectors ------------- */
 
 export const getByCategory = (state, categoryId) => {
@@ -391,6 +406,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOAD_DRAFTS_FAILURE]: loadDraftsFailure,
   [Types.ADD_DRAFT]: addDraft,
   [Types.REMOVE_DRAFT]: removeDraft,
+  [Types.REMOVE_DELETED_STORIES]: removeDeletedStories,
   [Types.RESET_DRAFTS]: resetDrafts,
   [Types.ADD_BACKGROUND_FAILURE]: addBackgroundFailure,
   [Types.REMOVE_BACKGROUND_FAILURE]: removeBackgroundFailure,

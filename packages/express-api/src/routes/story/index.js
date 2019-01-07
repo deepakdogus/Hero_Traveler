@@ -19,6 +19,7 @@ import createComment from './createComment'
 import deleteStory from './deleteStory'
 import flagStory from './flagStory'
 import getGuideStories from './getGuideStories'
+import findDeletedStories from './findDeletedStories'
 
 import getDraft from './draft/get'
 import findDrafts from './draft/find'
@@ -41,6 +42,7 @@ router.get('/user/:userId/like/v2', hasValidOauth, endpointWrapper(getUserLikes)
 router.get('/user/:userId/like', hasValidOauth, endpointWrapper(getUserLikesOld))
 router.get('/category/:categoryId', endpointWrapper(getCategoryStories))
 router.get('/user/:userId/bookmark', hasValidOauth, endpointWrapper(getBookmarks))
+router.get('/user/:userId/deleted', hasValidOauth, endpointWrapper(findDeletedStories))
 
 // webhook for uploading a video
 router.post('/draft/cover-video', endpointWrapper(uploadDraftCoverVideoWebhook))

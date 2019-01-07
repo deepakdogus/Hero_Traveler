@@ -9,6 +9,7 @@ const { Types, Creators } = createActions({
   setRetryingUpdate: ['storyId'],
   resetStatuses: null,
   reset: null,
+  checkIfDeleted: ['usersDeletedStories'],
 })
 
 export const LocakDraftTypes = Types
@@ -66,6 +67,17 @@ export const resetStatuses = state => {
   }, state)
 }
 
+// getting deleted stories so we can remove from pendingDrafts in case a DB
+// draft got deleted on another device and we still have a pendingDraft locally
+export const checkIfDeleted = (state, {usersDeletedStories = [ {} ] }) => {
+  const {updateOrder, pendingUpdates} = state
+  return usersDeletedStories.reduce((workingState, story) => {
+    const id = story.id
+    if (updateOrder.indexOf(id) === -1) return workingState
+    return removePendingUpdate(state, {draftId: id})
+  }, state)
+}
+
 export const reset = (state) => INITIAL_STATE
 
 /* ------------- Hookup Reducers To Types ------------- */
@@ -76,4 +88,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SET_RETRYING_UPDATE]: setRetryingUpdate,
   [Types.RESET]: reset,
   [Types.RESET_STATUSES]: resetStatuses,
+  [Types.CHECK_IF_DELETED]: checkIfDeleted,
 })

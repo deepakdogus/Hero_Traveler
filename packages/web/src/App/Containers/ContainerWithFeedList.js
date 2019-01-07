@@ -6,6 +6,7 @@ export const itemsPerQuery = 100
 export default class ContainerWithFeedList extends React.Component {
   static propTypes = {
     sessionUserId: PropTypes.string,
+    getDeletedStories: PropTypes.func,
     loadDrafts: PropTypes.func,
     loadBookmarks: PropTypes.func,
     getGuides: PropTypes.func,
@@ -34,6 +35,8 @@ export default class ContainerWithFeedList extends React.Component {
   getTabInfo = (page) => {
     switch (this.state.activeTab) {
       case 'DRAFTS':
+        // used to purge pendingUpdates of removed stories
+        this.props.getDeletedStories()
         return this.props.loadDrafts()
       case 'BOOKMARKS':
         return this.props.loadBookmarks(this.props.sessionUserId)

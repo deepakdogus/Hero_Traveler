@@ -229,6 +229,7 @@ function mapDispatchToProps(dispatch, ownProps) {
     getUser: (userId) => dispatch(UserActions.loadUser(userId)),
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
     loadDrafts: () => dispatch(StoryActions.loadDrafts()),
+    getDeletedStories: () => dispatch(StoryActions.getDeletedStories(targetUserId)),
     loadBookmarks: () => dispatch(StoryActions.getBookmarks(targetUserId)),
     loadUserFollowing: (userId) => dispatch(UserActions.loadUserFollowing(userId)),
     followUser: (sessionUserId, userIdToFollow) =>

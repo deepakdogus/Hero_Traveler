@@ -8,7 +8,7 @@ import SignupActions from '../Redux/SignupRedux'
 import PendingUpdatesActions from '../Redux/PendingUpdatesRedux'
 import StoryActions from '../Redux/Entities/Stories'
 
-const currentUserId = ({session}) => session.userId
+export const currentUserId = ({session}) => session.userId
 const currentUserTokens = ({session}) => session.tokens
 
 // attempts to signup with email

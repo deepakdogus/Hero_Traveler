@@ -208,6 +208,10 @@ const create = () => {
     .then(response => safeNormalize(response, [Story]))
   }
 
+  const getUsersDeletedStories = (userId) => {
+    return api.get(`story/user/${userId}/deleted`)
+  }
+
   const getCategoryStories = (categoryId, params = {}) => {
     return api.get(`story/category/${categoryId}`, params)
     .then(response => safeNormalize(response, [Story]))
@@ -483,6 +487,7 @@ const create = () => {
     getCategories,
     getHashtags,
     getUserStories,
+    getUsersDeletedStories,
     getCategoryStories,
     getSuggestedUsers,
     getUserFollowers,

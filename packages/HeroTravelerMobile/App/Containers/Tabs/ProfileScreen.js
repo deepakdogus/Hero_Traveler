@@ -36,6 +36,7 @@ class ProfileScreen extends React.Component {
     this.props.loadBookmarks(this.props.user.id)
     this.props.getGuides(this.props.user.id)
     this.props.loadDrafts()
+    this.props.getDeletedStories(this.props.user.id)
   }
 
   componentDidUpdate(prevProps) {
@@ -52,6 +53,7 @@ class ProfileScreen extends React.Component {
       case TabTypes.stories:
         return this.props.getStories(this.props.user.id)
       case TabTypes.drafts:
+        this.props.getDeletedStories(this.props.user.id)
         return this.props.loadDrafts()
       case TabTypes.bookmarks:
         return this.props.loadBookmarks(this.props.user.id)
@@ -137,6 +139,7 @@ const mapDispatchToProps = (dispatch) => {
     getUser: (userId) => dispatch(UserActions.loadUser(userId)),
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
     loadDrafts: () => dispatch(StoryActions.loadDrafts()),
+    getDeletedStories: (userId) => dispatch(StoryActions.getDeletedStories(userId)),
     loadBookmarks: (userId) => dispatch(StoryActions.getBookmarks(userId)),
     getGuides: (userId) => dispatch(GuideActions.getUserGuides(userId)),
   }

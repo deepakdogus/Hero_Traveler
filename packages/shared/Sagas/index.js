@@ -85,6 +85,7 @@ import {
   uploadImage,
   watchPendingUpdates,
   syncPendingUpdates,
+  getDeletedStories,
 } from './StorySagas'
 
 import {
@@ -187,6 +188,7 @@ export default function * root () {
     takeLatest(StoryTypes.GET_BOOKMARKS, getBookmarks, heroAPI),
     takeLatest(StoryTypes.FLAG_STORY, flagStory, heroAPI),
     takeLatest(StoryTypes.SYNC_PENDING_UPDATES, syncPendingUpdates, heroAPI),
+    takeLatest(StoryTypes.GET_DELETED_STORIES, getDeletedStories, heroAPI),
 
     // Users
     takeLatest(UserTypes.LOAD_USER_SUGGESTIONS_REQUEST, getSuggestedUsers, heroAPI),

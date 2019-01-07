@@ -24,6 +24,7 @@ import { isLocalMediaAsset } from '../Lib/getVideoUrl'
 import _ from 'lodash'
 import Immutable from 'seamless-immutable'
 import hasConnection from '../../Lib/hasConnection'
+import { currentUserId } from './SessionSagas'
 
 const hasInitialAppDataLoaded = ({entities}, userId) => isInitialAppDataLoaded(entities.users, userId)
 const isStoryLikedSelector = ({entities}, userId, storyId) => isStoryLiked(entities.users, userId, storyId)
@@ -481,7 +482,11 @@ export function * loadDrafts(api) {
     ]
     yield put(StoryActions.loadDraftsSuccess(result))
   } else {
-    yield put(StoryActions.loadDraftsFailure(new Error('Failed to load drafts')))
+    const userId = yield select(currentUserId)
+    yield put(StoryActions.loadDraftsFailure(
+      new Error('Failed to load drafts'),
+      userId,
+    ))
   }
 }
 
@@ -509,6 +514,16 @@ export function * deleteStory(api, {userId, storyId}){
       put(StoryActions.deleteStorySuccess(userId, storyId)),
       put(GuideActions.deleteStoryFromGuides(storyId)),
       put(UserActions.removeActivities(storyId, 'story')),
+    ]
+  }
+}
+
+export function * getDeletedStories(api, {userId}) {
+  const response = yield call(api.getUsersDeletedStories, userId)
+  if (response.ok) {
+    yield [
+      put(PendingUpdatesActions.checkIfDeleted(response.data)),
+      put(StoryActions.removeDeletedStories(response.data)),
     ]
   }
 }

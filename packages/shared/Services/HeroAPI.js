@@ -37,6 +37,11 @@ function putMediaResponse(api, url, response, timeout){
 
 function safeNormalize(response, schema, path = 'data'){
   if (!response.ok) return response
+  if (!_.get(response, path)) {
+    response.ok = false
+    response.problem = 'No data'
+    return response
+  }
   return Object.assign({}, response, {
     data: normalize(_.get(response, path), schema)
   })

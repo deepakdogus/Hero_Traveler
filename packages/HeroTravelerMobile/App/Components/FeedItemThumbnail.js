@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 
-import styles from './Styles/FeedItemsOfTypeStyles'
+import styles from './Styles/FeedItemsThumbnailStyles'
 import ImageWrapper from './ImageWrapper'
 import {TouchlessPlayButton} from './VideoPlayer'
 import TabIcon from './TabIcon'

@@ -63,7 +63,10 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Reducers ------------- */
 export const reset = () => INITIAL_STATE
 
-export const saveLocalDraft = (state, { userId }) => state.merge({ error: null })
+export const saveDraft = (state, { draft }) => state.merge({
+  error: null,
+  draftToBeSaved: draft,
+})
 
 export const saveDraftSuccess = (state, {draft, story}) => {
   const update = {
@@ -217,12 +220,13 @@ export const uploadImageFailure = (state, {error, id}) => {
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.SAVE_LOCAL_DRAFT]: saveLocalDraft,
+  [Types.SAVE_LOCAL_DRAFT]: saveDraft,
   [Types.SAVE_DRAFT_SUCCESS]: saveDraftSuccess,
   [Types.SAVE_DRAFT_FAILURE]: failure,
   [Types.DISCARD_DRAFT_SUCCESS]: reset,
   [Types.DISCARD_DRAFT_FAILURE]: failure,
   [Types.UPDATE_WORKING_DRAFT]: updateWorkingDraft,
+  [Types.UPDATE_DRAFT]: saveDraft,
   [Types.UPDATE_DRAFT_SUCCESS]: updateDraftSuccess,
   [Types.UPDATE_DRAFT_FAILURE]: failureUpdating,
   [Types.ADD_LOCAL_DRAFT]: addLocalDraft,

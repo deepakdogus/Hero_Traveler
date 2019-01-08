@@ -61,6 +61,7 @@ class Header extends React.Component {
     activities: PropTypes.object,
     originalDraft: PropTypes.object,
     workingDraft: PropTypes.object,
+    draftToBeSaved: PropTypes.object,
     resetCreateStore: PropTypes.func,
     markSeen: PropTypes.func,
     pathname: PropTypes.string,
@@ -164,15 +165,21 @@ class Header extends React.Component {
   }
 
   openSaveEditsModal = path => {
+    const {workingDraft, originalDraft, draftToBeSaved, pathname} = this.props
+
     if (
-      this.props.workingDraft
-      && this.props.pathname.includes('editStory')
-      && haveFieldsChanged(this.props.workingDraft, this.props.originalDraft)
+      workingDraft
+      && pathname.includes('editStory')
+      && haveFieldsChanged(workingDraft, originalDraft)
+      && (draftToBeSaved && haveFieldsChanged(workingDraft, draftToBeSaved))
     ) {
       this.setState({
         nextPathAfterSave: path,
       })
       this.props.openGlobalModal('saveEdits')
+    }
+    else {
+      this.props.reroute(path)
     }
   }
 
@@ -314,6 +321,7 @@ function mapStateToProps(state) {
     activities: state.entities.users.activities,
     originalDraft: state.storyCreate.draft,
     workingDraft: state.storyCreate.workingDraft,
+    draftToBeSaved: state.storyCreate.draftToBeSaved,
     pathname: pathname,
     signedUp: state.signup.signedUp,
   }

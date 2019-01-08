@@ -44,6 +44,14 @@ export default class FeedItemsOfType extends Component {
     this.props.onPressAll(this.props.type)
   }
 
+  /*
+   * hasAuthorsObj is true if feedItems/authors are populated from db
+   *
+   * db and algolia feedItems use differently named properties for author id
+   * and username:
+   *    algolia: { feedItem: { author: username, authorId: id } }
+   *    db: { feeditem: { author: id } } (no username, access thru authors obj)
+   */
   renderFeedItems = () => {
     const { feedItems, isShowAll, authors, isGuide, onPressAuthor} = this.props
     return feedItems.map((feedItem, index) => {
@@ -52,7 +60,6 @@ export default class FeedItemsOfType extends Component {
       const isVideo = !!feedItem.coverVideo
       const coverUrl = getFeedItemImageURL(feedItem)
 
-      // db and algolia use differently named properties for author id
       const hasAuthorsObj = authors && !!Object.keys(authors).length
       const authorId = hasAuthorsObj
         ? feedItem.author

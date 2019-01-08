@@ -572,7 +572,7 @@ function getNextPendingUpdate({pendingUpdates}) {
   const {pendingUpdates: updates, updateOrder} = pendingUpdates
   const nextUpdateKey = updateOrder.find(key => {
     const pendingUpdate = updates[key]
-    if (pendingUpdate.attempts > 5) return false
+    if (pendingUpdate.failCount >= 5) return false
     return true
   })
   return nextUpdateKey ? updates[nextUpdateKey] : {}

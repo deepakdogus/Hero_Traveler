@@ -1,5 +1,6 @@
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
+import _ from 'lodash'
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -10,6 +11,7 @@ const { Types, Creators } = createActions({
   resetStatuses: null,
   reset: null,
   checkIfDeleted: ['usersDeletedStories'],
+  resetFailCount: ['storyId'],
 })
 
 export const LocakDraftTypes = Types
@@ -24,12 +26,15 @@ export const INITIAL_STATE = Immutable({
 })
 
 export const addPendingUpdate = (state, {story, error, failedMethod, status}) => {
+  let failCount = _.get(state, `pendingUpdates[${story.id}].failCount`, 0)
+  if (status === 'failed') failCount++
   const updateById = {
     [story.id]: {
       story: story,
       error,
       failedMethod,
       status,
+      failCount,
     }
   }
   state = state.merge({pendingUpdates: updateById}, {deep: true})
@@ -85,6 +90,10 @@ export const checkIfDeleted = (state, {usersDeletedStories = [ {} ] }) => {
   }, state)
 }
 
+export const resetFailCount = (state, {storyId}) => {
+  return state.setIn(['pendingUpdates', storyId, 'failCount'], 0)
+}
+
 export const reset = (state) => INITIAL_STATE
 
 /* ------------- Hookup Reducers To Types ------------- */
@@ -96,4 +105,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.RESET]: reset,
   [Types.RESET_STATUSES]: resetStatuses,
   [Types.CHECK_IF_DELETED]: checkIfDeleted,
+  [Types.RESET_FAIL_COUNT]: resetFailCount,
 })

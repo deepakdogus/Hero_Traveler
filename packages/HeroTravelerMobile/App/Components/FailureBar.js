@@ -19,12 +19,14 @@ class FailureBar extends Component {
     failure: PropTypes.object,
     updateDraft: PropTypes.func,
     saveLocalDraft: PropTypes.func,
+    resetFailCount: PropTypes.func,
     discardUpdate: PropTypes.func,
   }
 
   retry = () => {
     const {story, failedMethod} = this.props.failure
     this.props[failedMethod](Immutable.asMutable(story, {deep: true}))
+    this.props.resetFailCount(story.id)
   }
 
   discard = () => {

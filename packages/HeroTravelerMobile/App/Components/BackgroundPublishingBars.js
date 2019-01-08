@@ -10,10 +10,18 @@ class BackgroundPublishingBars extends Component {
     updateDraft: PropTypes.func,
     saveLocalDraft: PropTypes.func,
     discardUpdate: PropTypes.func,
+    resetFailCount: PropTypes.func,
   }
 
   render() {
-    const {sync, failure, updateDraft, saveLocalDraft, discardUpdate} = this.props
+    const {
+      sync,
+      failure,
+      updateDraft,
+      saveLocalDraft,
+      discardUpdate,
+      resetFailCount,
+    } = this.props
     const hideProgressBar = sync.syncProgressSteps === 0
       || sync.syncProgressSteps === sync.syncProgress
       || sync.error
@@ -28,6 +36,7 @@ class BackgroundPublishingBars extends Component {
           updateDraft={updateDraft}
           saveLocalDraft={saveLocalDraft}
           discardUpdate={discardUpdate}
+          resetFailCount={resetFailCount}
         />
       )
     }

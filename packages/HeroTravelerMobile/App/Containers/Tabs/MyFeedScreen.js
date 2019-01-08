@@ -36,10 +36,12 @@ class MyFeedScreen extends React.Component {
     sync: PropTypes.object,
     fetchStatus: PropTypes.object,
     storiesById: PropTypes.arrayOf(PropTypes.string),
-    backgroundFailures: PropTypes.object,
+    pendingUpdates: PropTypes.object,
     updateDraft: PropTypes.func,
     saveLocalDraft: PropTypes.func,
     discardUpdate: PropTypes.func,
+    resetFailCount: PropTypes.func,
+    updateOrder: PropTypes.arrayOf(PropTypes.string),
   };
 
   constructor(props) {
@@ -76,7 +78,7 @@ class MyFeedScreen extends React.Component {
       this.props.fetchStatus !== nextProps.fetchStatus,
       this.props.error !== nextProps.error,
       !_.isEqual(this.props.sync, nextProps.sync),
-      !_.isEqual(this.props.backgroundFailures, nextProps.backgroundFailures),
+      !_.isEqual(this.props.pendingUpdates, nextProps.pendingUpdates),
       this.state.selectedTab !== nextState.selectedTab,
     ])
 
@@ -127,8 +129,14 @@ class MyFeedScreen extends React.Component {
   }
 
   getFirstBackgroundFailure() {
-    const backgroundFailures = this.props.backgroundFailures
-    return backgroundFailures[Object.keys(backgroundFailures)[0]]
+    const { pendingUpdates, updateOrder } = this.props
+    const firstFailureKey = updateOrder.find(key => {
+      const pendingUpdate = pendingUpdates[key]
+      if (pendingUpdate.failCount >= 5) return true
+      return false
+    })
+    if (firstFailureKey) return pendingUpdates[firstFailureKey]
+    return undefined
   }
 
   selectTab = (selectedTab) => {
@@ -186,6 +194,7 @@ class MyFeedScreen extends React.Component {
           updateDraft={this.props.updateDraft}
           saveLocalDraft={this.props.saveLocalDraft}
           discardUpdate={this.props.discardUpdate}
+          resetFailCount={this.props.resetFailCount}
         />
         { bottomContent }
       </View>
@@ -210,7 +219,8 @@ const mapStateToProps = (state) => {
     error,
     location: state.routes.scene.name,
     sync: state.storyCreate.sync,
-    backgroundFailures: state.pendingUpdates.pendingUpdates,
+    pendingUpdates: state.pendingUpdates.pendingUpdates,
+    updateOrder: state.pendingUpdates.updateOrder,
   }
 }
 
@@ -219,6 +229,7 @@ const mapDispatchToProps = (dispatch) => {
     attemptGetUserFeedStories: (userId) => dispatch(StoryActions.feedRequest(userId)),
     attemptGetUserFeedGuides: (userId) => dispatch(GuideActions.guideFeedRequest(userId)),
     discardUpdate: (storyId) => dispatch(PendingUpdatesActions.removePendingUpdate(storyId)),
+    resetFailCount: (storyId) => dispatch(PendingUpdatesActions.resetFailCount(storyId)),
     saveLocalDraft: (story) => dispatch(StoryCreateActions.saveLocalDraft(story)),
     updateDraft: (story) => dispatch(StoryCreateActions.updateDraft(story.id, story, true)),
   }

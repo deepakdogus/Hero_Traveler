@@ -215,6 +215,13 @@ export default StyleSheet.create({
     textAlign: 'center',
     flex: 1,
   },
+  noResults: {
+    alignItems: 'center',
+    padding: 30,
+  },
+  noResultsText: {
+    color: Colors.snow,
+  },
 })
 
 export const CategoryFeedNavActionStyles = StyleSheet.create({

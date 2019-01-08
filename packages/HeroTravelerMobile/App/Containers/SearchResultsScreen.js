@@ -33,7 +33,8 @@ class SearchResultsScreen extends Component {
   }
 
   state = {
-    isFetchingResults: true,
+    isFetchingGuideResults: true,
+    isFetchingStoryResults: true,
     lastSearchResults: {
       stories: [],
       guides: [],
@@ -84,22 +85,28 @@ class SearchResultsScreen extends Component {
 
   setupSearchListeners = (helper, type) => {
     helper.on('result', res => {
-      this.setState({
-        isFetchingResults: false,
-        lastSearchResults: {
+      const lastSearchResults = {
           ...this.state.lastSearchResults,
           [type]: res.hits,
-        },
-      })
+      }
+      type === 'guides'
+        ? this.setState({
+            isFetchingGuideResults: false,
+            lastSearchResults,
+          })
+        : this.setState({
+            isFetchingStoryResults: false,
+            lastSearchResults,
+        })
     })
   }
 
   search = (helper, hits, latitude, longitude) => {
     helper
-      .setQuery('')
-      .setQueryParameter('aroundLatLng', `${latitude}, ${longitude}`)
-      .setQueryParameter('hitsPerPage', hits)
-      .search()
+    .setQuery('')
+    .setQueryParameter('aroundLatLng', `${latitude}, ${longitude}`)
+    .setQueryParameter('hitsPerPage', hits)
+    .search()
   }
 
   _navToSeeAll = (type, feedItems) => {
@@ -124,7 +131,13 @@ class SearchResultsScreen extends Component {
   _shouldDisplaySection = items => !!items && !!items.length
 
   render() {
-    const { isFetchingResults, lastSearchResults } = this.state
+    const {
+      isFetchingGuideResults,
+      isFetchingStoryResults,
+      lastSearchResults,
+    } = this.state
+
+    const isFetchingResults = isFetchingGuideResults || isFetchingStoryResults
 
     const hasResults = !!lastSearchResults.stories.length
       && !!lastSearchResults.guides.length

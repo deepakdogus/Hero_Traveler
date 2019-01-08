@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import React, { Component, Fragment} from 'react'
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import {
   ScrollView,
@@ -26,11 +26,11 @@ class SearchList extends Component {
     lastSearchResults: PropTypes.object,
     lastLocationPredictions: PropTypes.array,
     isSearching: PropTypes.bool,
-    isSearchingLocation: PropTypes.bool,
     userId: PropTypes.string,
     query: PropTypes.string,
     addRecentSearch: PropTypes.func,
     searchHistory: PropTypes.object,
+    hasSearchText: PropTypes.bool,
   }
 
   _navToSearchResults = location => () => {
@@ -75,9 +75,9 @@ class SearchList extends Component {
       ...user,
     })
     if (user._id === this.props.userId) {
-      NavActions.profile({type: 'jump'})
+      NavActions.profile({ type: 'jump' })
     }
-    else {
+ else {
       NavActions.readOnlyProfile({
         userId: user._id,
       })
@@ -115,7 +115,9 @@ class SearchList extends Component {
           />
         }
         text={<Text style={styles.listItemText}>{user.username}</Text>}
-        rightElement={<Icon name='angle-right' color={Colors.whiteAlphaPt3} size={30} />}
+        rightElement={
+          <Icon name="angle-right" color={Colors.whiteAlphaPt3} size={30} />
+        }
       />
     )
   }
@@ -136,76 +138,91 @@ class SearchList extends Component {
     </View>
   )
 
+  renderResultsSection = (title, items, renderFunc) => (
+    <Fragment>
+      {this.renderSearchTitle(title)}
+      <List items={items} renderRow={renderFunc} />
+    </Fragment>
+  )
+
+  renderNoResults = () => (
+    <View style={styles.noResults}>
+      <Text style={styles.noResultsText}>{'No results'}</Text>
+    </View>
+  )
+
   render = () => {
     const {
       isSearching,
-      isSearchingLocation,
       selectedTabIndex,
       lastSearchResults,
       lastLocationPredictions,
       searchHistory,
+      hasSearchText,
+      query,
     } = this.props
     const searchHits = _.get(lastSearchResults, 'hits', []).slice(0, MAX_ITEMS)
     const locationHits = lastLocationPredictions || []
-    const showRecentPlacesSearches = !isSearching
-      && !isSearchingLocation
+
+    const hasNoResults =
+      !isSearching
       && !searchHits.length
       && !locationHits.length
-      && !!searchHistory.places.length
 
-    const showRecentPeopleSearches = !isSearching
-      && searchHits.length === 0
+    const showRecentPlacesSearches =
+      hasNoResults
+      && !!searchHistory.places.length
+      && (!hasSearchText || query.length < 3)
+
+    const showRecentPeopleSearches =
+      hasNoResults
       && !!searchHistory.people.length
+      && (!hasSearchText || query.length < 3)
+
+    const showNoResults = hasNoResults && hasSearchText && query.length >= 3
 
     return (
       <View style={styles.scrollWrapper}>
-        {(isSearching || isSearchingLocation) && <Loader style={styles.searchLoader} />}
-        {selectedTabIndex === 0 &&
+        {isSearching && <Loader style={styles.searchLoader} />}
+        {!isSearching && selectedTabIndex === 0 && (
           <ScrollView>
-            {!!locationHits.length && (
-              <Fragment>
-                {this.renderSearchTitle('LOCATIONS')}
-                <List
-                  items={lastLocationPredictions}
-                  renderRow={this.renderLocationRow}
-                />
-              </Fragment>
-            )}
-            {!!searchHits.length && (
-              <Fragment>
-                {this.renderSearchTitle('STORIES')}
-                <List
-                  items={searchHits}
-                  renderRow={this.renderPlacesRow}
-                />
-              </Fragment>
-            )}
-          </ScrollView>
-        }
-        {searchHits.length > 0 && selectedTabIndex === 1 &&
-          <ScrollView>
-            <List
-              items={searchHits}
-              renderRow={this.renderPeopleRow}
-            />
-          </ScrollView>
-        }
-        {selectedTabIndex === 0 && showRecentPlacesSearches && (
-          <ScrollView>
-            {this.renderSearchTitle('RECENT SEARCHES')}
-            <List
-              items={searchHistory.places}
-              renderRow={this.renderRecentSearchesRow}
-            />
+            {!!locationHits.length &&
+              this.renderResultsSection(
+                'LOCATIONS',
+                lastLocationPredictions,
+                this.renderLocationRow,
+              )}
+            {!!searchHits.length &&
+              this.renderResultsSection(
+                'STORIES',
+                searchHits,
+                this.renderPlacesRow,
+              )}
+            {showRecentPlacesSearches &&
+              this.renderResultsSection(
+                'RECENT SEARCHES',
+                searchHistory.places,
+                this.renderRecentSearchesRow,
+              )}
+            {!showRecentPlacesSearches && showNoResults && this.renderNoResults()}
           </ScrollView>
         )}
-        {selectedTabIndex === 1 && showRecentPeopleSearches && (
-            <ScrollView>
+        {!isSearching && selectedTabIndex === 1 && (
+          <ScrollView>
+            {searchHits.length > 0 && (
+              <List
+                items={searchHits}
+                renderRow={this.renderPeopleRow}
+              />
+            )}
+            {showRecentPeopleSearches && (
               <List
                 items={searchHistory.people}
                 renderRow={this.renderPeopleRow}
               />
-            </ScrollView>
+            )}
+            {!showRecentPeopleSearches && showNoResults && this.renderNoResults()}
+          </ScrollView>
         )}
       </View>
     )

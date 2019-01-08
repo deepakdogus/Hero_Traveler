@@ -44,14 +44,43 @@ export default class FeedItemsOfType extends Component {
     this.props.onPressAll(this.props.type)
   }
 
+  renderFeedItems = () => {
+    const { feedItems, isShowAll, authors, isGuide, onPressAuthor} = this.props
+    return feedItems.map((feedItem, index) => {
+      if (!isShowAll && index >= 4) return null
+
+      const isVideo = !!feedItem.coverVideo
+      const coverUrl = getFeedItemImageURL(feedItem)
+
+      // db and algolia use differently named properties for author id
+      const hasAuthorsObj = authors && !!Object.keys(authors).length
+      const authorId = hasAuthorsObj
+        ? feedItem.author
+        : feedItem.authorId
+      const username = hasAuthorsObj
+        ? authors[feedItem.author].username
+        : feedItem.author
+
+      return (
+        <FeedItemThumbnail
+          key={feedItem.id}
+          feedItem={feedItem}
+          coverUrl={coverUrl}
+          isVideo={isVideo}
+          isGuide={isGuide}
+          authorId={authorId}
+          username={username}
+          onPressAuthor={onPressAuthor}
+        />
+      )
+    })
+  }
+
   render () {
     const {
       label,
       feedItems,
       isShowAll,
-      authors,
-      onPressAuthor,
-      isGuide,
     } = this.props
 
     if (feedItems.length === 0) return null
@@ -67,34 +96,7 @@ export default class FeedItemsOfType extends Component {
             {label}
           </Text>
           <View style={styles.feedItemsWrapper}>
-            {feedItems.map((feedItem, index) => {
-              if (!isShowAll && index >= 4) return null
-
-              const isVideo = !!feedItem.coverVideo
-              const coverUrl = getFeedItemImageURL(feedItem)
-
-              // db and algolia use differently named properties for author id
-              const hasAuthorsObj = authors && !!Object.keys(authors).length
-              const authorId = hasAuthorsObj
-                ? feedItem.author
-                : feedItem.authorId
-              const username = hasAuthorsObj
-                ? authors[feedItem.author].username
-                : feedItem.author
-
-              return (
-                <FeedItemThumbnail
-                  key={feedItem.id}
-                  feedItem={feedItem}
-                  coverUrl={coverUrl}
-                  isVideo={isVideo}
-                  isGuide={isGuide}
-                  authorId={authorId}
-                  username={username}
-                  onPressAuthor={onPressAuthor}
-                />
-              )
-            })}
+            {this.renderFeedItems()}
           </View>
           {!isShowAll && feedItems.length > 4 &&
             <TouchableOpacity onPress={this.onPressAll}>

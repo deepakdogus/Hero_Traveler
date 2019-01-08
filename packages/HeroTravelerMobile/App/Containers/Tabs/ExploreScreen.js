@@ -94,12 +94,12 @@ class ExploreScreen extends Component {
   setupSearchListeners(helper) {
     helper.on('result', res => {
       this.setState({
-        searching: false,
+        searchingAlgolia: false,
         lastSearchResults: res,
       })
     })
     helper.on('search', () => {
-      this.setState({searching: true})
+      this.setState({searchingAlgolia: true})
     })
   }
 
@@ -123,7 +123,8 @@ class ExploreScreen extends Component {
     const helper = this.helper
     const inputText = e.nativeEvent.text
     const hasSearchText = inputText.length > 0
-    if (this.state.selectedTabIndex === null) {
+    const { selectedTabIndex } = this.state
+    if (selectedTabIndex === null) {
       this.setState({
         selectedTabIndex: 0,
         hasSearchText,
@@ -135,7 +136,7 @@ class ExploreScreen extends Component {
       this.setState({
         lastSearchResults: null,
         lastLocationPredictions: null,
-        searching: false,
+        searchingAlgolia: false,
         hasSearchText,
       })
       return
@@ -149,15 +150,18 @@ class ExploreScreen extends Component {
 
     _.debounce(() => {
       helper
-        .setQuery(inputText)
-        .search()
+      .setQuery(inputText)
+      .search()
 
-      RNGooglePlaces.getAutocompletePredictions(inputText)
+      if (selectedTabIndex === 0) {
+        this.setState({ searchingGoogle: true })
+        RNGooglePlaces.getAutocompletePredictions(inputText)
         .then((predictions) => this.setState({
-          searchingLocation: false,
+          searchingGoogle: false,
           lastLocationPredictions: predictions,
         }))
-        .catch(() => this.setState({searchingLocation: false}))
+        .catch(() => this.setState({searchingGoogle: false}))
+      }
     }, 300)()
   }
 
@@ -170,7 +174,7 @@ class ExploreScreen extends Component {
     const textValue = this._searchInput._lastNativeText
     if (textValue && textValue.length >= 3) {
       this.setState({
-        searching: true,
+        searchingAlgolia: true,
         selectedTabIndex,
         lastSearchResults: null,
       })
@@ -252,10 +256,10 @@ class ExploreScreen extends Component {
             selectedTabIndex={this.state.selectedTabIndex}
             lastSearchResults={this.state.lastSearchResults}
             lastLocationPredictions={this.state.lastLocationPredictions}
-            isSearching={this.state.searching}
-            isSearchingLocation={this.state.searchingLocation}
+            isSearching={this.state.searchingAlgolia || this.state.searchingGoogle}
             userId={this.props.user.id}
             query={this.helper.state.query}
+            hasSearchText={this.state.hasSearchText}
             addRecentSearch={this.props.addRecentSearch}
             searchHistory={this.props.searchHistory}
           />

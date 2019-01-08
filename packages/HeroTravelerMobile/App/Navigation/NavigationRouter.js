@@ -63,10 +63,10 @@ import {Images} from '../Shared/Themes'
 
 const darkNavBarProps = {
   navigationBarStyle: Styles.navBar,
-  titleStyle: [Styles.navText, Styles.navTitle],
-  backButtonTextStyle: Styles.navText,
-  leftButtonTextStyle: Styles.navText,
-  rightButtonTextStyle: Styles.navText,
+  titleStyle: [Styles.darkNavText, Styles.darkNavTitle],
+  backButtonTextStyle: Styles.darkNavText,
+  leftButtonTextStyle: Styles.darkNavText,
+  rightButtonTextStyle: Styles.darkNavText,
   leftButtonIconStyle: Styles.navBarBack,
   rightButtonIconStyle: Styles.navBarBack,
 }
@@ -78,10 +78,10 @@ const extraPaddingDarkNavBarProps = {
 
 const clearNavBarProps = {
   navigationBarStyle: Styles.navBarClear,
-  titleStyle: [Styles.navText, Styles.navTitle],
-  backButtonTextStyle: Styles.navText,
-  leftButtonTextStyle: Styles.navText,
-  rightButtonTextStyle: Styles.navText,
+  titleStyle: [Styles.lightNavText, Styles.lightNavTitle],
+  backButtonTextStyle: Styles.lightNavText,
+  leftButtonTextStyle: Styles.lightNavText,
+  rightButtonTextStyle: Styles.lightNavText,
   leftButtonIconStyle: Styles.navBarBack,
   rightButtonIconStyle: Styles.navBarBack,
 }
@@ -113,19 +113,21 @@ const tabBarProps = {
 
 // const launchOnRight = () => __DEV__ ? NavActions.guestExplore() : alert('Browse as guest')
 
-const topicsRightBtn = (props) => {
-  return (<NavButton
-    onRight={props.onRight}
+const topicsRightBtn = ({ onRight }) => (
+  <NavButton
+    onRight={onRight}
     text='Next'
-    iconName='arrowRightRed'/>)
-}
+    iconName='arrowRightRed'
+  />
+)
 
-const socialRightBtn = (props) => {
-  return (<NavButton
-    onRight={props.onRight}
+const socialRightBtn = ({ onRight }) => (
+  <NavButton
+    onRight={onRight}
     text='Done'
-    iconName='arrowRightRed'/>)
-}
+    iconName='arrowRightRed'
+  />
+)
 
 const alwaysNull = () => null
 
@@ -186,7 +188,7 @@ export default NavActions.create(
       />
       <Scene
         key='signupFlow'
-        {...darkNavBarProps}
+        {...clearNavBarProps}
       >
         <Scene
           initial

@@ -9,18 +9,22 @@ export default {
     backgroundColor: Colors.background,
     borderBottomWidth: 0,
     height: Metrics.navBarHeight,
+    paddingTop: isIPhoneX() ? 15 : 0,
   },
   navBarTitle: {
     color: Colors.navBarText,
-    marginTop: isIPhoneX() ? 15 : 0,
+    // marginTop: isIPhoneX() ? 15 : 0,
   },
   navBarClear: {
     backgroundColor: Colors.clear,
     borderBottomWidth: 0,
+    height: Metrics.navBarHeight,
+    paddingTop: isIPhoneX() ? 15 : 0,
   },
   navBarWhite: {
-    height: Metrics.navBarHeight - 15,
+    height: Metrics.navBarHeight,
     backgroundColor: Colors.snow,
+    paddingTop: isIPhoneX() ? 15 : 0,
     borderStyle: 'solid',
     borderBottomWidth: 1,
     borderBottomColor: Colors.dividerGrey,
@@ -35,17 +39,23 @@ export default {
     height: Metrics.tabBarHeight,
     justifyContent: isIPhoneX() ? 'flex-start' : 'center',
   },
-  navText: {
+  darkNavText: {
     fontFamily: Fonts.type.montserrat,
     fontSize: 16,
     color: Colors.navBarText,
     marginTop: isIPhoneX() ? 15 : 0,
   },
-  navTitle: {
-    fontFamily: Fonts.type.montserrat,
-    color: Colors.snow,
+  darkNavTitle: {
     fontSize: 18,
+  },
+  lightNavText: {
+    fontFamily: Fonts.type.montserrat,
+    color: Colors.background,
+    fontSize: 16,
     marginTop: isIPhoneX() ? 15 : 0,
+  },
+  lightNavTitle: {
+    fontSize: 18,
   },
   navBarBack: {
     tintColor: 'white',

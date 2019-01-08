@@ -136,7 +136,7 @@ class RootContainer extends Component {
     const location = this.props.location
     return location
       && (
-        location.indexOf('signup') !== -1
+        location == 'signup'
         || location === 'launchScreen'
         || location === 'login'
       )

@@ -27,6 +27,7 @@ import Avatar from '../../Components/Avatar'
 import ImageWrapper from '../../Components/ImageWrapper'
 import {PlayButton} from '../../Components/VideoPlayer'
 import TabIcon from '../../Components/TabIcon'
+import TabBar from '../../Components/TabBar'
 
 const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
 const STORY_INDEX = env.SEARCH_STORY_INDEX
@@ -40,12 +41,18 @@ const Tab = ({text, onPress, selected}) => {
   )
 }
 
+const tabTypes = {
+  channels: 'channels',
+  categories: 'categories',
+}
+
 class ExploreScreen extends Component {
   constructor(props) {
     super(props)
     this.state = {
       lastSearchResults: null,
-      selectedTabIndex: null
+      selectedTabIndex: null,
+      selectedTab: tabTypes.categories,
     }
   }
 
@@ -174,6 +181,22 @@ class ExploreScreen extends Component {
     if (text.length <= 2) {
       this.setState({lastSearchResults: null})
     }
+  }
+
+  selectTab = (selectedTab) => {
+    this.setState({selectedTab})
+  }
+
+  renderTabs(){
+    const {selectedTab} = this.state
+    return (
+      <TabBar
+        tabs={tabTypes}
+        activeTab={selectedTab}
+        onClickTab={this.selectTab}
+        tabStyle={styles.tabStyle}
+      />
+    )
   }
 
   resetSearchText = () => {
@@ -307,70 +330,67 @@ class ExploreScreen extends Component {
       content = this.renderSearchSection()
     } else {
       content = (
-        <ExploreGrid
-          onPress={(category) => {
-            NavActions.explore_categoryFeed({
-              categoryId: category.id,
-              title: category.title,
-              leftButtonIconStyle: CategoryFeedNavActionStyles.leftButtonIconStyle,
-              navigationBarStyle: CategoryFeedNavActionStyles.navigationBarStyle,
-            })
-          }}
-          categories={catagoriesArray}
-        />
+        <ScrollView>
+          <ExploreGrid
+            onPress={(category) => {
+              NavActions.explore_categoryFeed({
+                categoryId: category.id,
+                title: category.title,
+                leftButtonIconStyle: CategoryFeedNavActionStyles.leftButtonIconStyle,
+                navigationBarStyle: CategoryFeedNavActionStyles.navigationBarStyle,
+              })
+            }}
+            categories={catagoriesArray}
+          />
+        </ScrollView>
       )
     }
 
     return (
-      <ScrollView style={[
-        styles.containerWithTabbar,
-        styles.root,
-      ]}>
-        <View style={styles.headerSearch}>
-          <View style={styles.searchWrapper}>
-            <TextInput
-              ref={c => this._searchInput = c}
-              style={styles.searchInput}
-              placeholder='Search'
-              placeholderTextColor='#757575'
-              onFocus={this.setFocus}
-              onChange={e => this._changeQuery(e)}
-              onChangeText={this.checkClearResults}
-              returnKeyType='search'
-            />
-            { this.state.hasSearchText &&
-            <TouchableOpacity
-              style={styles.InputXPosition}
-              onPress={this.resetSearchText}
-            >
-              <TabIcon
-                name='closeDark'
-                style={{
-                  view: styles.InputXView,
-                  image: styles.InputXIcon,
-                }}
+      <View style={[styles.containerWithTabbar, styles.root]}>
+        <View style={styles.fakeNavBar}>
+          <View style={styles.headerSearch}>
+            <View style={styles.searchWrapper}>
+              <TextInput
+                ref={c => this._searchInput = c}
+                style={styles.searchInput}
+                placeholder='Places &amp; People'
+                placeholderTextColor={Colors.grey}
+                onFocus={this.setFocus}
+                onChange={e => this._changeQuery(e)}
+                onChangeText={this.checkClearResults}
+                returnKeyType='search'
               />
-            </TouchableOpacity>
+              { this.state.hasSearchText &&
+              <TouchableOpacity
+                style={styles.InputXPosition}
+                onPress={this.resetSearchText}
+              >
+                <TabIcon
+                  name='closeDark'
+                  style={{
+                    view: styles.InputXView,
+                    image: styles.InputXIcon,
+                  }}
+                />
+              </TouchableOpacity>
+              }
+            </View>
+            {this.state.selectedTabIndex !== null &&
+              <TouchableOpacity onPress={() => {
+                this._searchInput.setNativeProps({text: ''})
+                this.setState({selectedTabIndex: null, lastSearchResults: null})
+              }}>
+                <View style={styles.cancelBtn}>
+                  <Text style={styles.cancelBtnText}>Cancel</Text>
+                </View>
+              </TouchableOpacity>
             }
           </View>
-          {this.state.selectedTabIndex !== null &&
-            <TouchableOpacity onPress={() => {
-              this._searchInput.setNativeProps({text: ''})
-              this.setState({selectedTabIndex: null, lastSearchResults: null})
-            }}>
-              <View style={styles.cancelBtn}>
-                <Text style={styles.cancelBtnText}>Cancel</Text>
-              </View>
-            </TouchableOpacity>
-          }
         </View>
-        {!showSearch &&
-          <View style={styles.titleWrapper}>
-            <Text style={styles.title}>EXPLORE</Text>
-          </View>
-        }
+        {!showSearch && this.renderTabs()}
         {content}
-      </ScrollView>
+      </View>
     )
   }
 }

@@ -9,7 +9,7 @@ export default StyleSheet.create({
     backgroundColor: Colors.feedDividerGrey,
   },
   cardView: {
-    width: '92.8%',
+    width: `${Metrics.feedMargin}%`,
     alignSelf: 'center',
     marginTop: 20,
   },

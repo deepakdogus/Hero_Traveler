@@ -5,10 +5,13 @@ import { isIPhoneX } from '../../Themes/Metrics'
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: Colors.background,
-    paddingTop: Metrics.baseMargin * 2,
+    backgroundColor: Colors.snow,
+  },
+  fakeNavBar: {
+    height: Metrics.navBarHeight - 8, // 120 === 88 nav + 40 tabbar - 8, per mocks
+    backgroundColor: Colors.snow,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   loader: {
     height: Metrics.screenHeight - 100 - Metrics.tabBarHeight,
@@ -30,10 +33,10 @@ export default StyleSheet.create({
     height: isIPhoneX() ? 60 : 45,
   },
   searchWrapper: {
-    marginTop: isIPhoneX() ? Metrics.baseMargin + 15 : Metrics.baseMargin,
+    marginTop: isIPhoneX() ? Metrics.baseMargin + 25 : Metrics.baseMargin,
     flex: 1,
     height: Metrics.searchBarHeight,
-    backgroundColor: '#424242',
+    backgroundColor: Colors.feedDividerGrey,
     opacity: .6,
     paddingLeft: Metrics.baseMargin / 2,
     paddingRight: Metrics.baseMargin / 2,
@@ -58,7 +61,7 @@ export default StyleSheet.create({
     paddingRight: 0,
   },
   cancelBtnText: {
-    color: '#9e9e9e',
+    color: Colors.signupGrey,
     fontFamily: Fonts.type.montserrat,
   },
   titleWrapper: {
@@ -109,11 +112,12 @@ export default StyleSheet.create({
     flex: 1,
   },
   tabnav: {
-    height: 46,
+    height: 40,
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: Colors.whiteAlphaPt15,
-    marginTop: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.feedDividerGrey,
   },
   tab: {
     justifyContent: 'center',
@@ -124,8 +128,9 @@ export default StyleSheet.create({
   },
   tabText: {
     fontFamily: Fonts.type.montserrat,
-    color: '#9e9e9e',
+    color: Colors.signupGrey,
     fontSize: 13,
+    fontWeight: '600',
     letterSpacing: 1.2,
     textAlign: 'center',
   },
@@ -134,7 +139,7 @@ export default StyleSheet.create({
   },
   tabTextSelected: {
     fontFamily: Fonts.type.montserrat,
-    color: Colors.white,
+    color: Colors.background,
     fontSize: 13,
     letterSpacing: 1.2,
   },
@@ -189,10 +194,13 @@ export default StyleSheet.create({
     padding: Metrics.section,
     textAlign: 'center',
   },
+  tabStyle: {
+    width: Metrics.screenWidth * 0.4,
+  },
 })
 
 export const CategoryFeedNavActionStyles = StyleSheet.create({
-  leftButtonIconStyle: {tintColor: Colors.navBarText},
+  leftButtonIconStyle: { tintColor: Colors.navBarText },
   navigationBarStyle: {
     paddingTop: 5,
     borderBottomWidth: 0,

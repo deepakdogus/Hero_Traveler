@@ -1,23 +1,28 @@
 import { StyleSheet } from 'react-native'
-import { ApplicationStyles, Fonts, Colors, Metrics } from '../../Shared/Themes/'
+import { ApplicationStyles, Fonts, Colors } from '../../Shared/Themes/'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
-    backgroundColor: Colors.background
+    backgroundColor: Colors.snow,
   },
   header: {
-    marginBottom: Metrics.section
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.feedDividerGrey,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 60,
   },
   title: {
     ...Fonts.style.title,
     fontSize: 16,
     textAlign: 'center',
-    color: Colors.snow
+    color: Colors.background,
   },
   subtitle: {
     ...Fonts.style.instructions,
     fontSize: 16,
     textAlign: 'center',
-  }
+    color: Colors.grey,
+  },
 })

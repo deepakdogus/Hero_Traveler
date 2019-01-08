@@ -251,6 +251,7 @@ function * saveDraftErrorHandling(draft, response){
       draft,
       'Failed to publish',
       'saveLocalDraft',
+      'failed'
     )),
     put(StoryCreateActions.syncError()),
   ]
@@ -267,6 +268,7 @@ function * updateDraftErrorHandling(draft, response){
       draft,
       'Failed to update',
       'updateDraft',
+      'failed'
     )),
   ]
 }
@@ -293,7 +295,12 @@ export function * saveLocalDraft (api, action) {
   const {draft, saveAsDraft = false} = action
   draft.draft = saveAsDraft
   yield [
-    put(PendingUpdatesActions.setRetryingUpdate(draft.id)),
+    put(PendingUpdatesActions.addPendingUpdate(
+      draft,
+      'Failed to publish',
+      'saveLocalDraft',
+      'retrying',
+    )),
     put(StoryCreateActions.initializeSyncProgress(
       getSyncProgressSteps(draft),
       `${saveAsDraft ? 'Saving' : 'Publishing'} Story`
@@ -343,7 +350,12 @@ export function * discardDraft (api, action) {
 export function * updateDraft (api, action) {
   const {draftId, draft, updateStoryEntity} = action
   yield [
-    put(PendingUpdatesActions.setRetryingUpdate(draftId)),
+    put(PendingUpdatesActions.addPendingUpdate(
+      draft,
+      'Failed to update',
+      'updateDraft',
+      'retrying',
+    )),
     put(StoryCreateActions.initializeSyncProgress(getSyncProgressSteps(draft), 'Saving Story')),
   ]
 

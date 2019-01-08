@@ -4,7 +4,7 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  addPendingUpdate: ['story', 'error', 'failedMethod'],
+  addPendingUpdate: ['story', 'error', 'failedMethod', 'status'],
   removePendingUpdate: ['draftId'],
   setRetryingUpdate: ['storyId'],
   resetStatuses: null,
@@ -23,13 +23,13 @@ export const INITIAL_STATE = Immutable({
   pendingUpdates: {},
 })
 
-export const addPendingUpdate = (state, {story, error, failedMethod}) => {
+export const addPendingUpdate = (state, {story, error, failedMethod, status}) => {
   const updateById = {
     [story.id]: {
       story: story,
       error,
       failedMethod,
-      status: 'failed',
+      status,
     }
   }
   state = state.merge({pendingUpdates: updateById}, {deep: true})
@@ -37,6 +37,13 @@ export const addPendingUpdate = (state, {story, error, failedMethod}) => {
   let updateOrder = state.updateOrder
   if (updateOrder.indexOf(story.id) === -1) {
     updateOrder = [story.id, ...updateOrder]
+  }
+  else if (status === 'failed') {
+    // ensures we rotate through pending updates
+    updateOrder = updateOrder.filter(id => {
+      return id !== story.id
+    })
+    updateOrder = [...updateOrder, story.id]
   }
   return state.merge({ updateOrder })
 }

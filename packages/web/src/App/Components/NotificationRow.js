@@ -9,6 +9,7 @@ import {
   getContent,
   getDescriptionText,
   getFeedItemTitle,
+  getFeedItemImageUrl,
   getAvatar,
   getUsername,
 } from '../Shared/Lib/NotificationHelpers'
@@ -158,7 +159,6 @@ const videoThumbnailOptions = {
 export default class NotificationRow extends Component {
   static propTypes = {
     activity: PropTypes.object,
-    isFeedItem: PropTypes.bool,
     reroute: PropTypes.func,
     closeModal: PropTypes.func,
     markSeen: PropTypes.func,
@@ -232,22 +232,16 @@ export default class NotificationRow extends Component {
   }
 
   renderTripImage = () => {
-    const { isFeedItem, activity } = this.props
-    if (isFeedItem) {
-      const feedItem = activity.story || activity.guide
-      let imageUrl
-      if (feedItem.coverImage) imageUrl = getImageUrl(feedItem.coverImage, 'thumbnail')
-      else imageUrl = getImageUrl(feedItem.coverVideo, 'optimized', videoThumbnailOptions)
-
-      return (
-        <StyledVerticalCenter>
-          <StyledImageContainer onClick={this.navToFeedItem}>
-            <StyledImage src={imageUrl} />
-          </StyledImageContainer>
-        </StyledVerticalCenter>
-      )
-    }
- else return
+    const { activity } = this.props
+    const imageUrl = getFeedItemImageUrl(activity, videoThumbnailOptions)
+    if (!imageUrl) return null
+    return (
+      <StyledVerticalCenter>
+        <StyledImageContainer onClick={this.navToFeedItem}>
+          <StyledImage src={imageUrl} />
+        </StyledImageContainer>
+      </StyledVerticalCenter>
+    )
   }
 
   _markSeen = () => {

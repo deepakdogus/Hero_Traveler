@@ -6,7 +6,6 @@ import { push } from 'react-router-redux'
 
 import UserActions from '../../Shared/Redux/Entities/Users'
 import {
-  ActivityTypes,
   isActivityIncomplete,
   getPopulatedActivity,
 } from '../../Shared/Lib/NotificationHelpers'
@@ -31,7 +30,6 @@ class NotificationsThread extends React.Component {
 
   renderNotificationRows = () => {
     const {
-      activities,
       activitiesById,
       closeModal,
       reroute,
@@ -39,26 +37,19 @@ class NotificationsThread extends React.Component {
     } = this.props
 
     return activitiesById.map(id => {
-      const activity = activities[id]
       const populatedActivity = getPopulatedActivity(id, this.props)
-
       if (isActivityIncomplete(populatedActivity)) return null
 
       return (
         <NotificationRow
           key={id}
           activity={populatedActivity}
-          isFeedItem={this.isFeedItem(activity)}
           reroute={reroute}
           closeModal={closeModal}
           markSeen={markSeen}
         />
       )
     })
-  }
-
-  isFeedItem = activity => {
-    return activity.kind !== ActivityTypes.follow
   }
 
   render() {

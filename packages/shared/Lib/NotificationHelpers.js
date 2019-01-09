@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import getImageUrl from './getImageUrl'
 
 export const ActivityTypes = {
   like: 'ActivityStoryLike',
@@ -8,28 +9,26 @@ export const ActivityTypes = {
   guideComment: 'ActivityGuideComment',
 }
 
-export function getAvatar(activity) {
-  return _.get(activity, 'fromUser.profile.avatar')
-}
+export const getAvatar = activity => _.get(activity, 'fromUser.profile.avatar')
 
-export function getUsername(activity) {
-  return _.get(activity, 'fromUser.username')
-}
+export const getUsername = activity => _.get(activity, 'fromUser.username')
 
-export function isActivityIncomplete(activity) {
-  return !activity.fromUser
-    || (activity.kind === ActivityTypes.like && !activity.story)
-    || (activity.kind === ActivityTypes.follow && !activity.user)
-    || (activity.kind === ActivityTypes.comment && !activity.story)
-    || (activity.kind === ActivityTypes.guideLike && !activity.guide)
-    || (activity.kind === ActivityTypes.guideComment && !activity.guide)
-}
+export const getUserId = activity => _.get(activity, 'fromUser.id')
 
-export function getFeedItemTitle(activity) {
-  return _.get(activity, 'story.title') || _.get(activity, 'guide.title', '')
-}
+export const isActivityIncomplete = activity =>
+  !activity.fromUser
+  || (activity.kind === ActivityTypes.like && !activity.story)
+  || (activity.kind === ActivityTypes.follow && !activity.user)
+  || (activity.kind === ActivityTypes.comment && !activity.story)
+  || (activity.kind === ActivityTypes.guideLike && !activity.guide)
+  || (activity.kind === ActivityTypes.guideComment && !activity.guide)
 
-export function getDescriptionText(activity) {
+
+export const getFeedItemTitle = activity =>
+  _.get(activity, 'story.title')
+  || _.get(activity, 'guide.title', '')
+
+export const getDescriptionText = activity => {
   switch (activity.kind) {
     case ActivityTypes.follow:
       return `is now following you`
@@ -46,11 +45,10 @@ export function getDescriptionText(activity) {
   }
 }
 
-export function getDescription(activity) {
-  return getDescriptionText(activity) + getFeedItemTitle(activity) + '.'
-}
+export const getDescription = activity =>
+  `${getDescriptionText(activity)} ${getFeedItemTitle(activity)}.`
 
-export function getPopulatedActivity(activityId, props) {
+export const getPopulatedActivity = (activityId, props) => {
   const {users, stories, activities, guides} = props
   const activity = {...activities[activityId]}
   activity.fromUser = users[activity.fromUser]
@@ -63,7 +61,7 @@ export function getPopulatedActivity(activityId, props) {
   return activity
 }
 
-export function getContent(activity) {
+export const getContent = activity => {
   switch (activity.kind) {
     case ActivityTypes.comment:
     case ActivityTypes.guideComment:
@@ -72,3 +70,18 @@ export function getContent(activity) {
       return ''
   }
 }
+
+export const getFeedItemImageUrl = (activity, videoThumbnailOptions) => {
+  let imageUrl
+  if (activity.kind === ActivityTypes.follow) return
+
+  const feedItem = activity.story || activity.guide
+  if (feedItem.coverImage) imageUrl = getImageUrl(feedItem.coverImage, 'thumbnail')
+  else imageUrl = getImageUrl(feedItem.coverVideo, 'optimized', videoThumbnailOptions)
+
+  return imageUrl
+}
+
+export const getHasVideo = activity =>
+  !!_.get(activity, 'story.coverVideo')
+  || !!_.get(activity, 'guide.coverVideo', '')

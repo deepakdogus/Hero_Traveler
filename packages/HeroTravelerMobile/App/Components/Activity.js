@@ -1,12 +1,13 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import moment from 'moment'
 
 import { Colors, Metrics } from '../Shared/Themes/'
 import Avatar from '../Components/Avatar'
+import ImageWrapper from '../Components/ImageWrapper'
+import { PlayButton } from '../Components/VideoPlayer'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import {
   getDescriptionText,
@@ -14,16 +15,35 @@ import {
   getAvatar,
   getUsername,
   getUserId,
-  ActivityTypes,
   getFeedItemTitle,
+  getFeedItemImageUrl,
+  getHasVideo,
+  ActivityTypes,
 } from '../Shared/Lib/NotificationHelpers'
 import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
+
+const videoThumbnailOptions = {
+  video: true,
+  width: 100,
+  height: 100,
+}
 
 export default class Activity extends Component {
   static propTypes = {
     onPress: PropTypes.func,
     activity: PropTypes.object,
     markSeen: PropTypes.func,
+  }
+
+  state = { imageUrl: '' }
+
+  componentDidMount = () => {
+    // only fetch image one time for performance
+    const imageUrl = getFeedItemImageUrl(
+      this.props.activity,
+      videoThumbnailOptions,
+    )
+    if (imageUrl) this.setState({imageUrl})
   }
 
   _markSeen = () => {
@@ -53,11 +73,14 @@ export default class Activity extends Component {
   }
 
   render() {
-    let { activity } = this.props
-    const content = getContent(activity)
+    const { activity } = this.props
+    const { imageUrl } = this.state
 
+    const content = getContent(activity)
     const avatar = getAvatar(activity)
     const username = getUsername(activity)
+
+    const hasVideo = getHasVideo(activity)
 
     return (
       <View style={styles.root}>
@@ -92,9 +115,39 @@ export default class Activity extends Component {
                 {moment(activity.createdAt).fromNow()}
               </Text>
             </View>
-            {!activity.seen && (
-              <Icon name="circle" size={10} color={Colors.redLight} />
-            )}
+            <View style={styles.right}>
+              {!!imageUrl && (
+                  <TouchableOpacity
+                    style={styles.coverWrapper}
+                    onPress={this._navToReadingScreen}
+                  >
+                    {!hasVideo && (
+                      <ImageWrapper
+                        cached={true}
+                        resizeMode='cover'
+                        source={{uri: imageUrl}}
+                        style={styles.thumbnailImage}
+                      />
+                    )}
+                    {hasVideo && (
+                      <Fragment>
+                        <ImageWrapper
+                          cached={true}
+                          resizeMode='cover'
+                          source={{uri: imageUrl}}
+                          style={styles.thumbnailImage}
+                        />
+                        <PlayButton
+                          size='tiny'
+                          style={styles.playButton}
+                          onPress={this._navToReadingScreen}
+                        />
+                      </Fragment>
+                    )}
+                  </TouchableOpacity>
+                )
+              }
+            </View>
           </View>
         </TouchableOpacity>
       </View>
@@ -110,12 +163,14 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
+    flex: 1,
     paddingVertical: 15,
     paddingHorizontal: 15,
+    width: Metrics.screenWidth,
   },
   middle: {
-    width: Metrics.screenWidth - 40 * 1.5 - Metrics.doubleBaseMargin * 2 - 50,
-    marginLeft: Metrics.baseMargin,
+    marginHorizontal: Metrics.baseMargin,
+    flex: 1,
   },
   dateText: {
     marginTop: Metrics.baseMargin / 2,
@@ -141,5 +196,17 @@ const styles = StyleSheet.create({
   actionText: {
     fontWeight: '600',
     color: Colors.background,
+  },
+  coverWrapper: {
+    position: 'relative',
+  },
+  thumbnailImage: {
+    height: 40,
+    width: 40,
+  },
+  playButton: {
+    position: 'absolute',
+    marginHorizontal: 10,
+    marginTop: 10,
   },
 })

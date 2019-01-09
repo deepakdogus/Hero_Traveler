@@ -25,6 +25,7 @@ class BackgroundPublishingBars extends Component {
     const hideProgressBar = sync.syncProgressSteps === 0
       || sync.syncProgressSteps === sync.syncProgress
       || sync.error
+      || failure
 
     if (!hideProgressBar) {
       return ( <ProgressBar {...sync} /> )

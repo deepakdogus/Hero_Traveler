@@ -131,7 +131,7 @@ class MyFeedScreen extends React.Component {
   getFirstBackgroundFailure() {
     const { pendingUpdates, updateOrder } = this.props
     const firstFailureKey = updateOrder.find(key => {
-      const pendingUpdate = pendingUpdates[key]
+      const pendingUpdate = pendingUpdates[key] || {}
       if (pendingUpdate.failCount >= 5) return true
       return false
     })

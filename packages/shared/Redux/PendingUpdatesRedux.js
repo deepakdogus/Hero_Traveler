@@ -28,16 +28,14 @@ export const INITIAL_STATE = Immutable({
 export const addPendingUpdate = (state, {story, error, failedMethod, status}) => {
   let failCount = _.get(state, `pendingUpdates[${story.id}].failCount`, 0)
   if (status === 'failed') failCount++
-  const updateById = {
-    [story.id]: {
-      story: story,
-      error,
-      failedMethod,
-      status,
-      failCount,
-    }
+  const pendingUpdate = {
+    story: story,
+    error,
+    failedMethod,
+    status,
+    failCount,
   }
-  state = state.merge({pendingUpdates: updateById}, {deep: true})
+  state = state.setIn(['pendingUpdates', story.id], pendingUpdate)
 
   let updateOrder = state.updateOrder
   if (updateOrder.indexOf(story.id) === -1) {

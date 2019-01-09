@@ -179,13 +179,16 @@ export function * createCover(api, draft, isGuide){
     : undefined
   const isImageCover = draft.coverImage
   const cover = getNewCover(draft.coverImage, draft.coverVideo)
+
   if (!cover) return draft
   const cloudinaryCover = yield CloudinaryAPI.uploadMediaFile(cover, isImageCover ? 'image' : 'video')
   // Web and mobile receive two different responses.
   if (typeof cloudinaryCover.data === "string") {
     cloudinaryCover.data = JSON.parse(cloudinaryCover.data)
   }
+
   if (cloudinaryCover.data.error) return cloudinaryCover.data
+  if (cloudinaryCover.error) return cloudinaryCover
   if (isImageCover) draft.coverImage = cloudinaryCover.data
   else draft.coverVideo = cloudinaryCover.data
   if (!isGuide) yield put(StoryCreateActions.incrementSyncProgress())

@@ -552,8 +552,8 @@ export function * watchPendingUpdates() {
   yield put(PendingUpdatesActions.resetStatuses())
   yield call(delay, 5 * 1000)
   while(true) {
-    // triggers sync immediately then every 10 seconds
-    const numSeconds = firstCall ? 1 : 10
+    // triggers sync immediately then every 30 seconds
+    const numSeconds = firstCall ? 1 : 30
     if (firstCall) firstCall = false
     yield call(delay, numSeconds * 1000)
     yield put(StoryActions.syncPendingUpdates())

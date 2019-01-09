@@ -57,8 +57,7 @@ export default async function createStory(storyData, assetFormater) {
   }
 
   if (
-    !storyObject.draft
-    && storyObject.locationInfo
+    storyObject.locationInfo
     && !storyObject.locationInfo.latitude
   ) {
     storyObject.locationInfo = await getLocationInfo(storyObject.locationInfo.name)

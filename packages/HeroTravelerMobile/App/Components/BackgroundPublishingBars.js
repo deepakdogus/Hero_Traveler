@@ -22,6 +22,7 @@ class BackgroundPublishingBars extends Component {
       discardUpdate,
       resetFailCount,
     } = this.props
+
     const hideProgressBar = sync.syncProgressSteps === 0
       || sync.syncProgressSteps === sync.syncProgress
       || sync.error

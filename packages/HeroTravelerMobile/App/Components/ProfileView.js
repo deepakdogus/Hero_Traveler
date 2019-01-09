@@ -46,6 +46,24 @@ class ProfileView extends React.Component {
     error: PropTypes.object,
     refresh: PropTypes.func,
     onSelectTab: PropTypes.func,
+    user: PropTypes.object,
+    accessToken: PropTypes.string,
+    completeTooltip: PropTypes.func,
+    stories: PropTypes.arrayOf(PropTypes.string),
+    drafts: PropTypes.arrayOf(PropTypes.string),
+    pendingDraftsIds: PropTypes.arrayOf(PropTypes.string),
+    bookmarks: PropTypes.arrayOf(PropTypes.string),
+    guideIds: PropTypes.arrayOf(PropTypes.string),
+    fetchStatus: PropTypes.object,
+    draftsFetchStatus: PropTypes.object,
+    bookmarksFetchStatus: PropTypes.object,
+    guidesFetchStatus: PropTypes.object,
+    editable: PropTypes.bool,
+    isFollowing: PropTypes.bool,
+    onPressFollow: PropTypes.func,
+    onPressUnfollow: PropTypes.func,
+    onRefresh: PropTypes.func,
+    bookmarksError: PropTypes.object,
   }
 
   constructor(props) {
@@ -105,6 +123,7 @@ class ProfileView extends React.Component {
       bookmarks,
       guideIds,
     } = this.props
+
     if (this.state.selectedTab === TabTypes.stories) return stories
     else if (this.state.selectedTab === TabTypes.drafts) {
       const filteredPendingIds = pendingDraftsIds.filter(id => {

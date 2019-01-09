@@ -51,8 +51,6 @@ export const addPendingUpdate = (state, {story, error, failedMethod, status}) =>
   return state.merge({ updateOrder })
 }
 
-// if local id removes from story entities if present
-// removes from drafts.byId
 export const removePendingUpdate = (state, {draftId}) => {
   state = state.setIn(['pendingUpdates'], state.pendingUpdates.without(draftId))
   const path = ['updateOrder']

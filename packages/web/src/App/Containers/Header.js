@@ -171,6 +171,8 @@ class Header extends React.Component {
       workingDraft
       && pathname.includes('editStory')
       && haveFieldsChanged(workingDraft, originalDraft)
+      // extra check to ensure we dont show modal after they click save and nav away
+      // without making further edits to the draft
       && (draftToBeSaved && haveFieldsChanged(workingDraft, draftToBeSaved))
     ) {
       this.setState({

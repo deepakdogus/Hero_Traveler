@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import React from 'react'
+import PropTypes from 'prop-types'
 import {
   ScrollView,
   View,
@@ -54,6 +55,16 @@ const Radio = ({text, onPress, selected}) => {
 }
 
 class CreateStoryDetailScreen extends React.Component {
+  static propTypes = {
+    workingDraft: PropTypes.object,
+    story: PropTypes.object,
+    updateWorkingDraft: PropTypes.func,
+    saveDraft: PropTypes.func,
+    accessToken: PropTypes.object,
+    update: PropTypes.func,
+    resetCreateStore: PropTypes.func,
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -116,12 +127,12 @@ class CreateStoryDetailScreen extends React.Component {
     if (workingDraft.cost !== this.state.cost) {
       workingDraft.cost = this.state.cost
     }
-    this.next()
     if (workingDraft.draft) {
       workingDraft.draft = false
       this.props.saveDraft(workingDraft)
     }
     else this.saveDraft(workingDraft)
+    this.next()
   }
 
   _onLeft = () => {

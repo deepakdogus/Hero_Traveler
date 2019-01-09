@@ -13,15 +13,12 @@ import {
   getUsername,
 } from '../Shared/Lib/NotificationHelpers'
 import Avatar from './Avatar'
-import {getSize} from './Icon'
+import { getSize } from './Icon'
 import HorizontalDivider from './HorizontalDivider'
-import {
-  UserNameStyles,
-  Timestamp,
-} from './Modals/Shared'
+import { UserNameStyles, Timestamp } from './Modals/Shared'
 import SpaceBetweenRow from './SpaceBetweenRow'
 
-let avatarWidth = getSize({size: 'larger'})
+let avatarWidth = getSize({ size: 'larger' })
 avatarWidth = Number(avatarWidth.substring(0, avatarWidth.length - 2))
 
 const relevantMetrics = {
@@ -39,22 +36,25 @@ const Container = styled.div`
 `
 
 const rowProps = {
-  'justify-content' : 'space-between',
+  'justify-content': 'space-between',
 }
 
 const leftProps = {
   'max-width': '450px',
-  'align-items' : 'center',
-  'flex-wrap' : 'nowrap',
-  'tablet-max-width' : '85%',
+  'align-items': 'center',
+  'flex-wrap': 'nowrap',
+  'tablet-max-width': '85%',
 }
 
 const StyledUserName = styled.span`
-  ${UserNameStyles},
+  ${UserNameStyles}
   font-size: 16px;
   overflow: hidden;
   text-overflow: ellipsis;
+  word-break: break-word;
 `
+
+const StyledTitle = styled(StyledUserName)``
 
 const StyledTimestamp = styled(Timestamp)`
   font-size: 12px;
@@ -75,6 +75,7 @@ const StyledHorizontalDivider = styled(HorizontalDivider)`
 const StyledImageContainer = styled.div`
   width: ${relevantMetrics.imageWidth}px;
   height: ${relevantMetrics.imageWidth}px;
+  margin-right: 22px; /* 15px + 7px notification dot width */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -100,7 +101,7 @@ const CommentContent = styled.p`
   font-weight: 400;
   font-size: 16px;
   flex-wrap: wrap;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   margin: 0;
   color: ${props => props.theme.Colors.grey};
 `
@@ -109,7 +110,7 @@ const NotificationContent = styled.div`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 16px;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   margin: 0;
   color: ${props => props.theme.Colors.background};
 `
@@ -163,7 +164,7 @@ export default class NotificationRow extends Component {
     markSeen: PropTypes.func,
   }
 
-  navToFeedItem = (event) => {
+  navToFeedItem = event => {
     event.stopPropagation()
     this._markSeen()
     const feedItem = this.props.activity.story || this.props.activity.guide
@@ -172,7 +173,7 @@ export default class NotificationRow extends Component {
     this.props.closeModal()
   }
 
-  navToUserProfile = (event) => {
+  navToUserProfile = event => {
     event.stopPropagation()
     this._markSeen()
     this.props.reroute(`/profile/${this.props.activity.fromUser.id}/view`)
@@ -187,8 +188,8 @@ export default class NotificationRow extends Component {
         <StyledAvatar
           onClick={this.navToUserProfile}
           avatarUrl={avatar ? getImageUrl(avatar, 'avatarLarge') : undefined}
-          type='profile'
-          size='larger'
+          type="profile"
+          size="larger"
           responsiveProps={AvatarResponsiveStyle}
         />
       </RenderImageContainer>
@@ -196,8 +197,8 @@ export default class NotificationRow extends Component {
   }
 
   renderSeenBullet = () => {
-    if (this.props.activity.seen) return ( <HiddenBulletContainer /> )
-    else return ( <VisibleBulletContainer /> )
+    if (this.props.activity.seen) return <HiddenBulletContainer />
+    else return <VisibleBulletContainer />
   }
 
   renderText = () => {
@@ -210,21 +211,20 @@ export default class NotificationRow extends Component {
             {getUsername(activity)}&nbsp;
           </StyledUserName>
           {getDescriptionText(activity)}
-          {!!title &&
-            <StyledUserName onClick={this.navToFeedItem}>
+          {!!title && (
+            <StyledTitle onClick={this.navToFeedItem}>
               {title}
-            </StyledUserName>
-          }
+            </StyledTitle>
+          )}
           .
         </StyledNotificationContent>
-        {!!activity.comment &&
-          <CommentContent>
-            {getContent(activity)}
-          </CommentContent>
-        }
+        {!!activity.comment && (
+          <CommentContent>{getContent(activity)}</CommentContent>
+        )}
         <StyledTimestamp
-          margin='none'
-          width='50px' >
+          margin="none"
+          width="50px"
+        >
           {moment(activity.createdAt).fromNow()}
         </StyledTimestamp>
       </StyledVerticalCenter>
@@ -232,10 +232,7 @@ export default class NotificationRow extends Component {
   }
 
   renderTripImage = () => {
-    const {
-      isFeedItem,
-      activity,
-    } = this.props
+    const { isFeedItem, activity } = this.props
     if (isFeedItem) {
       const feedItem = activity.story || activity.guide
       let imageUrl
@@ -245,14 +242,12 @@ export default class NotificationRow extends Component {
       return (
         <StyledVerticalCenter>
           <StyledImageContainer onClick={this.navToFeedItem}>
-            <StyledImage
-              src={imageUrl}
-            />
+            <StyledImage src={imageUrl} />
           </StyledImageContainer>
         </StyledVerticalCenter>
       )
     }
-    else return
+ else return
   }
 
   _markSeen = () => {
@@ -274,7 +269,7 @@ export default class NotificationRow extends Component {
             rowProps={rowProps}
           />
         </Container>
-        <StyledHorizontalDivider color='light-grey'/>
+        <StyledHorizontalDivider color="light-grey" />
       </InteractiveContainer>
     )
   }

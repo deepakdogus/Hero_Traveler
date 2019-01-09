@@ -34,9 +34,9 @@ export function getDescriptionText(activity) {
     case ActivityTypes.follow:
       return `is now following you`
     case ActivityTypes.comment:
-      return  `commented on your story `
+      return `commented on your story `
     case ActivityTypes.guideComment:
-      return  `commented on your guide `
+      return `commented on your guide `
     case ActivityTypes.like:
       return `liked your story `
     case ActivityTypes.guideLike:
@@ -54,7 +54,9 @@ export function getPopulatedActivity(activityId, props) {
   const {users, stories, activities, guides} = props
   const activity = {...activities[activityId]}
   activity.fromUser = users[activity.fromUser]
-  if (activity.comment) {
+  if (activity.story) activity.story = stories[activity.story]
+  if (activity.guide) activity.guide = guides[activity.guide]
+  if (activity.kind === ActivityTypes.comment) {
     if (activity.comment.story) activity.story = stories[activity.comment.story]
     if (activity.comment.guide) activity.guide = guides[activity.comment.guide]
   }

@@ -11,7 +11,7 @@ import {
   getPopulatedActivity,
 } from '../../Shared/Lib/NotificationHelpers'
 import NotificationRow from '../NotificationRow'
-import {RightTitle, RightModalCloseX} from './Shared'
+import { RightTitle, RightModalCloseX } from './Shared'
 
 const Container = styled.div``
 
@@ -57,18 +57,21 @@ class NotificationsThread extends React.Component {
     })
   }
 
-  isFeedItem = (activity) => {
+  isFeedItem = activity => {
     return activity.kind !== ActivityTypes.follow
   }
 
   render() {
     return (
       <Container>
-        <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
+        <RightModalCloseX
+          name="closeDark"
+          onClick={this.props.closeModal}
+        />
         <RightTitle>NOTIFICATIONS</RightTitle>
-          <NotificationRowsContainer>
-            {this.renderNotificationRows()}
-          </NotificationRowsContainer>
+        <NotificationRowsContainer>
+          {this.renderNotificationRows()}
+        </NotificationRowsContainer>
       </Container>
     )
   }
@@ -87,9 +90,12 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    reroute: (route) => dispatch(push(route)),
-    markSeen: (activityId) => dispatch(UserActions.activitySeen(activityId)),
+    reroute: route => dispatch(push(route)),
+    markSeen: activityId => dispatch(UserActions.activitySeen(activityId)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NotificationsThread)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(NotificationsThread)

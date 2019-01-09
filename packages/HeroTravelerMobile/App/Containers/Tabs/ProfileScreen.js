@@ -7,6 +7,7 @@ import GuideActions from '../../Shared/Redux/Entities/Guides'
 import StoryActions, {getByUser, getUserFetchStatus, getBookmarksFetchStatus} from '../../Shared/Redux/Entities/Stories'
 import ProfileView, {TabTypes} from '../../Components/ProfileView'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
+import { getPendingDraftsIds } from '../../Shared/Lib/getPendingDrafts'
 
 const VideoManager = NativeModules.VideoManager
 
@@ -123,7 +124,7 @@ const mapStateToProps = (state) => {
     userStoriesById: getByUser(stories, userId),
     draftsFetchStatus: {loaded: true},
     draftsById: stories.drafts.byId,
-    pendingDraftsIds: [...state.pendingUpdates.updateOrder],
+    pendingDraftsIds: getPendingDraftsIds(state.pendingUpdates),
     userBookmarksById: getByBookmarks(users, userId),
     userBookmarksFetchStatus: getBookmarksFetchStatus(stories, userId),
     guideIds: guides.guideIdsByUserId ? guides.guideIdsByUserId[userId] : [],

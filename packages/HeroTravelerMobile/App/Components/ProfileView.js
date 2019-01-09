@@ -7,7 +7,6 @@ import {
 import { connect } from 'react-redux'
 import _ from 'lodash'
 
-import HeroAPI from '../Shared/Services/HeroAPI'
 import ProfileUserInfo from './ProfileUserInfo'
 import ProfileTabsAndStories from './ProfileTabsAndStories'
 import ShadowButton from './ShadowButton'
@@ -16,8 +15,6 @@ import Tooltip from './Tooltip'
 // @TODO UserActions shouldn't be in a component
 import UserActions from '../Shared/Redux/Entities/Users'
 import isTooltipComplete, {Types as TooltipTypes} from '../Shared/Lib/firstTimeTooltips'
-
-const api = HeroAPI.create()
 
 export const TabTypes = {
   stories: 'TAB_STORIES',
@@ -76,10 +73,6 @@ class ProfileView extends React.Component {
       usernameText: props.user.username || 'Enter a username',
       aboutText: props.user.about || '',
     }
-  }
-
-  componentDidMount() {
-    api.setAuth(this.props.accessToken)
   }
 
   componentWillReceiveProps(newProps) {

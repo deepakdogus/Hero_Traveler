@@ -187,8 +187,8 @@ export function * createCover(api, draft, isGuide){
     cloudinaryCover.data = JSON.parse(cloudinaryCover.data)
   }
 
-  if (cloudinaryCover.data.error) return cloudinaryCover.data
-  if (cloudinaryCover.error) return cloudinaryCover
+  if (_.get(cloudinaryCover, 'data.error')) return cloudinaryCover.data
+  if (_.get(cloudinaryCover, 'error')) return cloudinaryCover
   if (isImageCover) draft.coverImage = cloudinaryCover.data
   else draft.coverVideo = cloudinaryCover.data
   if (!isGuide) yield put(StoryCreateActions.incrementSyncProgress())

@@ -177,12 +177,6 @@ class EditStory extends Component {
     }
   }
 
-  hasCompletedSave(prevProps) {
-    return this.props.syncProgress > 0
-    && this.props.syncProgressSteps === this.props.syncProgress
-    && prevProps.syncProgress !== this.props.syncProgress
-  }
-
   componentWillUnmount(){
     window.onbeforeunload = () => null
     this.props.resetCreateStore()

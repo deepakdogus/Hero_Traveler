@@ -71,18 +71,11 @@ export const saveDraft = (state, { draft }) => state.merge({
 export const saveDraftSuccess = (state, {draft, story}) => {
   const update = {
     error: null,
-    draft: null,
     sync: {
       syncProgress: state.sync.syncProgressSteps,
     },
   }
-  // resetting story as draft + workingDraft so we get proper save checks
-  // possibly remove? What if the save is slow and they add more in the meanwhile
-  // When the success is received it will override their interim changes
-  if (_.get(story, 'draft')) {
-    update.draft = story
-    update.workingDraft = story
-  }
+
   return state.merge(update, {deep: true})
 }
 

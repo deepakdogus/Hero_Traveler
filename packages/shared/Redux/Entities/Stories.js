@@ -24,9 +24,6 @@ const { Types, Creators } = createActions({
   addDraft: ['draft'],
   removeDraft: ['draftId'],
   resetDrafts: null,
-  addBackgroundFailure: ['story', 'error', 'failedMethod'],
-  removeBackgroundFailure: ['storyId'],
-  setRetryingBackgroundFailure: ['storyId'],
   changeCountOfType: ['feedItemId', 'countType', 'isIncrement'],
   storyLike: ['userId', 'storyId'],
   flagStory: ['userId', 'storyId'],
@@ -61,7 +58,6 @@ export const INITIAL_STATE = Immutable({
   userStoryFeedCount: 9999999999,
   storiesByUserAndId: {},
   storiesByCategoryAndId: {},
-  backgroundFailures: {},
   fetchStatus: initialFetchStatus(),
   userStoriesFetchStatus: initialFetchStatus(),
   userBookmarksFetchStatus: initialFetchStatus(),
@@ -309,30 +305,7 @@ export const removeDraft = (state, {draftId}) => {
   }))
 }
 
-export const addBackgroundFailure = (state, {story, error, failedMethod}) => {
-  const failureObj = {}
-  failureObj[story.id] = {
-    story,
-    error,
-    failedMethod,
-    status: 'failed',
-  }
-  return state.merge({backgroundFailures: failureObj}, {deep: true})
-}
-
-export const removeBackgroundFailure = (state, {storyId}) => {
-  return  state.setIn(['backgroundFailures'], state.backgroundFailures.without(storyId))
-}
-
-export const setRetryingBackgroundFailure = (state, {storyId}) => {
-  if (state.backgroundFailures[storyId]){
-    return state.setIn(['backgroundFailures', storyId, 'status'], 'retrying')
-  }
-  return state
-}
-
 export const resetDrafts = (state, {storyId}) => {
-  state = state.setIn(['backgroundFailures'], {})
   return state.setIn(['drafts'], INITIAL_STATE.drafts)
 }
 
@@ -408,9 +381,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.REMOVE_DRAFT]: removeDraft,
   [Types.REMOVE_DELETED_STORIES]: removeDeletedStories,
   [Types.RESET_DRAFTS]: resetDrafts,
-  [Types.ADD_BACKGROUND_FAILURE]: addBackgroundFailure,
-  [Types.REMOVE_BACKGROUND_FAILURE]: removeBackgroundFailure,
-  [Types.SET_RETRYING_BACKGROUND_FAILURE]: setRetryingBackgroundFailure,
   [Types.CHANGE_COUNT_OF_TYPE]: changeCountOfType,
   [Types.RECEIVE_STORIES]: updateEntities,
   [Types.ADD_USER_STORY]: addUserStory,

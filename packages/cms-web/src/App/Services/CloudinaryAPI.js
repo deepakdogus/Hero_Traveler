@@ -40,7 +40,6 @@ const create = () => {
       data.append('file', fileObject.uri)
     }
     data.append('upload_preset', preset)
-    console.log('type, preset', type, preset)
     return cloudinaryApi.post(uploadURL, data)
   }
 

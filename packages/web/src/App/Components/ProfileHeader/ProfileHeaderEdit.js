@@ -345,8 +345,6 @@ export default class ProfileHeaderEdit extends React.Component {
 
     const avatarIsClickable = () => true
 
-    if (error) console.log("error.message is", error.message)
-
     return (
       <Container>
         <RelativeWrapper>

@@ -95,6 +95,31 @@ const UserSchema = new Schema({
     hidden: true,
     type: String
   },
+  channelImage: {
+    altText: String,
+    original: {
+      filename: String,
+      path: String,
+      folders: Array,
+      width: Number,
+      height: Number,
+      meta: {
+        mimeType: String
+      }
+    },
+    versions: {
+      thumbnail240: {
+        filename: String,
+        path: String,
+        folders: Array,
+        width: Number,
+        height: Number,
+        meta: {
+          mimeType: String
+        }
+      }
+    }
+  },
   counts: {
     followers: {
       type: Number,

@@ -18,9 +18,10 @@ function buildUrl(base: string, uri: string, urlParameters: object): string {
 
   if (parameters.length > 0) {
     const parameterString = parameters.join(',')
+    console.log('returning with parameters', base, parameterString, uri)
     return `${base}/${parameterString}/${uri}`
   }
-
+  console.log('base, parameters, uri', base, parameters, uri)
   return `${base}/${uri}`
 }
 
@@ -50,6 +51,7 @@ function getUri(image: object|string, type: string): ?string {
     const filename = ensureJpgExtension(_.last(path.split('/')))
     // hot fix to avoid search crashing. Need to bulk update algolia
     const folderPath = folders ? folders.join('/') : 'files'
+    console.log('getUri response', folderPath, filename)
     return `${folderPath}/${filename}`
   }
 
@@ -161,6 +163,7 @@ function midSyncSpecialCase(image, type){
 }
 
 export default function getImageUrl(image: object|string, type: string, options: object = {}): ?string {
+  console.log('image', image)
   if (isLocalMediaAsset(image) || (image && image.uri)) return image.uri || image
 
   // special cases where image has not been fully synced
@@ -188,7 +191,9 @@ export default function getImageUrl(image: object|string, type: string, options:
   }
 
   const base = options.video ? getVideoUrlBase() : getImageUrlBase()
+  console.log('base', base)
   const urlParametersFactory = imageUrlParametersFactories[type] || getOptimizedImageUrlParameters
   const urlParameters = urlParametersFactory(imageSize)
+  console.log('urlParameters', urlParameters)
   return buildUrl(base, uri, urlParameters)
 }

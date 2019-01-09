@@ -6,6 +6,7 @@ import get from 'lodash/get'
 import { Upload, Icon, Modal, message } from 'antd'
 
 import CloudinaryAPI from '../Services/CloudinaryAPI'
+import getImageUrl from '../Shared/Lib/getImageUrl'
 
 const FullWidthImg = styled.img`
   width: 100%;
@@ -13,15 +14,15 @@ const FullWidthImg = styled.img`
 
 function beforeUpload(file) {
   const isJPG = file.type === 'image/jpeg'
-  const isPNG = file.type === 'image/png'
-  if (!isJPG && !isPNG) {
+  // const isPNG = file.type === 'image/png'
+  if (!isJPG) {
     message.error('You can only upload JPG or PNG file!')
   }
   const isLt2M = file.size / 1024 / 1024 < 5
   if (!isLt2M) {
     message.error('Image must smaller than 5MB!')
   }
-  return (isJPG || isPNG) && isLt2M
+  return (isJPG) && isLt2M
 }
 
 class SingleFileUpload extends React.Component {
@@ -32,33 +33,42 @@ class SingleFileUpload extends React.Component {
     fileList: [],
   }
 
+  static getDerivedStateFromProps(props, state) {
+    if (props.value !== get(state, 'fileList.0.url')) {
+      const { fileList } = state
+      const url = props.id === 'thumbnail' ?
+        getImageUrl(props.value, 'categoryThumbnail') :
+        getImageUrl(props.value)
+      return {
+        fileList: [{
+          uid: fileList.length + 1,
+          name: 'image',
+          status: 'done',
+          url,
+        }],
+        loading: false,
+      }
+    }
+
+    // Return null to indicate no change to state.
+    return null
+  }
+
   componentDidMount = () => {
-    const { value } = this.props
-    if (!value || value === '') return
+    const { value, id } = this.props
+    if (!value) return
     const { fileList } = this.state
+    const url = id === 'thumbnail' || 'channelThumbnail' ?
+        getImageUrl(value, 'categoryThumbnail') :
+        getImageUrl(value)
     this.setState({
       fileList: [{
         uid: fileList.length + 1,
         name: 'image',
         status: 'done',
-        url: value,
+        url,
       }],
     })
-  }
-
-  UNSAFE_componentWillReceiveProps = (nextProps) => {
-    if (nextProps.value !== this.props.value) {
-      const { fileList } = this.state
-      this.setState({
-        fileList: [{
-          uid: fileList.length + 1,
-          name: 'image',
-          status: 'done',
-          url: nextProps.value,
-        }],
-        loading: false,
-      })
-    }
   }
 
   handleUpload = (handledFileProps) => {
@@ -72,7 +82,7 @@ class SingleFileUpload extends React.Component {
       CloudinaryAPI.uploadMediaFile(file, 'image')
         .then((response) => {
           message.success('File was uploaded')
-          onChange(get(response, 'data.secure_url'))
+          onChange(get(response, 'data'))
         })
         .catch((e) => {
           message.error(`Error uploading file: ${e.toString()}`)
@@ -122,7 +132,7 @@ class SingleFileUpload extends React.Component {
 
 SingleFileUpload.propTypes = {
   onChange: PropTypes.func,
-  value: PropTypes.string,
+  value: PropTypes.object,
 }
 
 SingleFileUpload.defaultProps = {

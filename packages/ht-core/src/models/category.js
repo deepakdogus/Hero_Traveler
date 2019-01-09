@@ -30,6 +30,7 @@ const CategorySchema = new mongoose.Schema({
     original: {
       filename: String,
       path: String,
+      folders: Array,
       width: Number,
       height: Number,
       meta: {
@@ -40,6 +41,7 @@ const CategorySchema = new mongoose.Schema({
       thumbnail240: {
         filename: String,
         path: String,
+        folders: Array,
         width: Number,
         height: Number,
         meta: {
@@ -65,12 +67,6 @@ const CategorySchema = new mongoose.Schema({
   isDeleted: {
     type: Boolean,
     default: false
-  },
-  channelHeroImage: {
-    type: String,
-  },
-  channelThumbnail: {
-    type: String,
   },
 }, {
   timestamps: true,

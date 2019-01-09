@@ -2,16 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import moment from 'moment'
-import { Row, Col, Spin, message } from 'antd'
+import { Row, Col, message } from 'antd'
 import { Link } from 'react-router-dom'
-import get from 'lodash/get'
-import find from 'lodash/find'
-import truncate from 'lodash/truncate'
-import isEmpty from 'lodash/isEmpty'
 
 import AdminCategoryActions from '../../Shared/Redux/Admin/Categories'
 import EditCategoryForm from '../../Components/Categories/EditCategoryForm'
+import convertUrlsToImageFormat from '../../Utils/convertUrlsToImageFormat'
 
 const Wrapper = styled.div``
 
@@ -40,6 +36,10 @@ class CreateCategory extends React.Component {
     this.setState({
       formSubmitting: true,
     })
+
+    const { thumbnail, heroImage } = values
+    values.image = convertUrlsToImageFormat(thumbnail, heroImage, 'categoryImage')
+
     new Promise((resolve, reject) => {
       postCategory({
         values,

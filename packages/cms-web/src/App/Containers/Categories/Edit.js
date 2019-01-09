@@ -12,6 +12,7 @@ import isEmpty from 'lodash/isEmpty'
 
 import AdminCategoryActions from '../../Shared/Redux/Admin/Categories'
 import EditCategoryForm from '../../Components/Categories/EditCategoryForm'
+import convertUrlsToImageFormat from '../../Utils/convertUrlsToImageFormat'
 
 const Wrapper = styled.div``
 
@@ -112,6 +113,8 @@ class EditCategory extends React.Component {
     this.setState({
       formSubmitting: true,
     })
+    const { thumbnail, heroImage } = values
+    values.image = convertUrlsToImageFormat(thumbnail, heroImage, 'categoryImage')
     new Promise((resolve, reject) => {
       putCategory({
         id,

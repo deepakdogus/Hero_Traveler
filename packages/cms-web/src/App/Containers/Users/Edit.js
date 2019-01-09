@@ -18,6 +18,7 @@ import GuideActions from '../../Shared/Redux/Entities/Guides'
 import EditUserForm from '../../Components/Users/EditUserForm'
 import UserStoriesTable from '../../Components/Users/UserStoriesTable'
 import UserGuidesTable from '../../Components/Users/UserGuidesTable'
+import convertUrlsToImageFormat from '../../Utils/convertUrlsToImageFormat'
 
 const Wrapper = styled.div``
 
@@ -120,6 +121,8 @@ class EditUser extends React.Component {
     this.setState({
       formSubmitting: true,
     })
+    const { channelThumbnail, channelHeroImage } = values
+    values.channelImage = convertUrlsToImageFormat(channelThumbnail, channelHeroImage, 'channelImage')
     new Promise((resolve, reject) => {
       putUser({
         id,

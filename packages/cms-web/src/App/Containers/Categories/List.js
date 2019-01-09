@@ -11,6 +11,7 @@ import isEmpty from 'lodash/isEmpty'
 
 import AdminCategoriesActions from '../../Shared/Redux/Admin/Categories'
 import Images from '../../Themes/Images'
+import getImageUrl from '../../Shared/Lib/getImageUrl'
 
 const Option = Select.Option
 
@@ -115,7 +116,7 @@ const columns = [{
 },
 {
   title: 'Image',
-  render: (item) => (<SquareImg src={get(item, 'channelThumbnail', Images.placeholder)} />),
+  render: (item) => (<SquareImg src={getImageUrl(get(item, 'image'), 'categoryThumbnail') || Images.placeholder} />),
 },
 {
   title: 'Edit',

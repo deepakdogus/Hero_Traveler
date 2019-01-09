@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Form, Input, Button, Checkbox, message } from 'antd'
 import mapValues from 'lodash/mapValues'
+import get from 'lodash/get'
 import SingleFileUpload from '../SingleFileUpload'
 
 const FormItem = Form.Item
@@ -60,14 +61,14 @@ class EditCategoryForm extends React.Component {
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="Thumbnail Image">
-          {getFieldDecorator('channelThumbnail', {
+          {getFieldDecorator('thumbnail', {
           })(
             <SingleFileUpload />
           )}
         </FormItem>
 
         <FormItem {...formItemLayout} label="Hero Image">
-          {getFieldDecorator('channelHeroImage', {
+          {getFieldDecorator('heroImage', {
           })(
             <SingleFileUpload />
           )}
@@ -117,6 +118,14 @@ EditCategoryForm.defaultProps = {
   isDeleting: false,
 }
 
-const mapPropsToFields = ({ record }) => mapValues(record, value => Form.createFormField({ value }))
+const mapPropsToFields = ({ record }) => {
+  const values = mapValues(record, (value, key) => {
+    if (key === 'image') return undefined
+    return Form.createFormField({ value })
+  })
+  values['thumbnail'] = Form.createFormField({ value: get(record, 'image') })
+  values['heroImage'] = Form.createFormField({ value: get(record, 'image') })
+  return values
+}
 
 export default Form.create({ mapPropsToFields })(EditCategoryForm)

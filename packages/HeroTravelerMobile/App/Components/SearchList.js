@@ -77,7 +77,7 @@ class SearchList extends Component {
     if (user._id === this.props.userId) {
       NavActions.profile({ type: 'jump' })
     }
- else {
+    else {
       NavActions.readOnlyProfile({
         userId: user._id,
       })
@@ -116,7 +116,11 @@ class SearchList extends Component {
         }
         text={<Text style={styles.listItemText}>{user.username}</Text>}
         rightElement={
-          <Icon name="angle-right" color={Colors.whiteAlphaPt3} size={30} />
+          <Icon
+            name="angle-right"
+            color={Colors.whiteAlphaPt3}
+            size={30}
+          />
         }
       />
     )
@@ -164,18 +168,15 @@ class SearchList extends Component {
     const searchHits = _.get(lastSearchResults, 'hits', []).slice(0, MAX_ITEMS)
     const locationHits = lastLocationPredictions || []
 
-    const hasNoResults =
-      !isSearching
+    const hasNoResults = !isSearching
       && !searchHits.length
       && !locationHits.length
 
-    const showRecentPlacesSearches =
-      hasNoResults
+    const showRecentPlacesSearches = hasNoResults
       && !!searchHistory.places.length
       && (!hasSearchText || query.length < 3)
 
-    const showRecentPeopleSearches =
-      hasNoResults
+    const showRecentPeopleSearches = hasNoResults
       && !!searchHistory.people.length
       && (!hasSearchText || query.length < 3)
 

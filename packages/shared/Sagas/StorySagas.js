@@ -583,14 +583,13 @@ export function * syncPendingUpdates(api) {
   const isConnected = yield hasConnection()
   if (!isEditing && isConnected) {
     const {failedMethod, story, status} = yield select(getNextPendingUpdate)
-    console.log("story is", story)
     if (status === 'retrying') return
     if (failedMethod && story) {
       const mutableStory = Immutable.asMutable(story, {deep: true})
       if (failedMethod === 'updateDraft') {
         yield put(StoryCreateActions.updateDraft(story.id, mutableStory, true))
       }
-      else yield put(StoryCreateActions[failedMethod](mutableStory))
+      else yield put(StoryCreateActions[failedMethod](mutableStory, mutableStory.draft))
     }
   }
 }

@@ -197,7 +197,7 @@ class EditStory extends Component {
     this.setState({ saveAction: publish === true ? 'publish' : 'update' })
 
     if (isLocalDraft(workingDraft.id)) {
-      saveDraft(this.cleanDraft(workingDraft), workingDraft.draft)
+      saveDraft(this.cleanDraft(workingDraft), !publish)
     }
     else {
       const cleanedDraft = this.cleanDraft(workingDraft)
@@ -325,7 +325,7 @@ class EditStory extends Component {
     }
     else if (workingDraft.draft) {
       this.setState({ saveAction: 'publish' })
-      saveDraft(this.cleanDraft(workingDraft))
+      saveDraft(this.cleanDraft(workingDraft), false)
     }
     else {
       this._updateDraft(true)

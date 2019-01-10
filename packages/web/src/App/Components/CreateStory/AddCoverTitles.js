@@ -354,10 +354,10 @@ export default class AddCoverTitles extends React.Component {
         <StyledRow center="xs">
           <Loader />
         </StyledRow>
-        {!coverVideo &&
+        {!coverVideo && (
           <ImageWrapper image={coverImage}/>
-        }
-        {coverVideo &&
+        )}
+        {coverVideo && (
           <LimitedWidthContainer>
             <Video
               src={coverVideo}
@@ -366,13 +366,13 @@ export default class AddCoverTitles extends React.Component {
               withPrettyControls
             />
           </LimitedWidthContainer>
-          }
+        )}
         <Wrapper hasMediaAsset={hasMediaAsset}>
           <ButtonsHorizontalCenter>
             {this.renderUploadButton()}
           </ButtonsHorizontalCenter>
         </Wrapper>
-        {hasMediaAsset && !isGuide &&
+        {hasMediaAsset && !isGuide && (
           <StyledCoverCaptionInput
             type='text'
             placeholder='Add a caption'
@@ -381,9 +381,9 @@ export default class AddCoverTitles extends React.Component {
             value={this.state.coverCaption}
             maxLength={100}
           />
-        }
+        )}
         {!hasMediaAsset && !isGuide && <CoverCaptionSpacer />}
-        {!isGuide &&
+        {!isGuide && (
           <TitleInputsWrapper>
             <StyledTitleTextArea
               type='text'
@@ -407,7 +407,7 @@ export default class AddCoverTitles extends React.Component {
               hasMediaAsset={hasMediaAsset}
             />
           </TitleInputsWrapper>
-        }
+        )}
       </RelativeWrapper>
     )
   }

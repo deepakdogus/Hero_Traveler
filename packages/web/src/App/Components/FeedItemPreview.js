@@ -29,6 +29,7 @@ import {
   roleToIconName,
   hasBadge,
 } from '../Shared/Lib/badgeHelpers'
+import isLocalDraft from '../Shared/Lib/isLocalDraft'
 
 const Text = styled.span`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
@@ -285,8 +286,10 @@ class FeedItemPreview extends Component {
   }
 
   navToFeedItem = () => {
-    const storyOrGuide = this.props.isStory ? 'story' : 'guide'
-    this.props.reroute(`/${storyOrGuide}/${this.props.feedItem.id}`)
+    const { isStory, feedItem } = this.props
+    const storyOrGuide = isStory ? 'story' : 'guide'
+    if (isLocalDraft(feedItem.id)) this.props.reroute(`/editStory/${feedItem.id}/cover`)
+    else this.props.reroute(`/${storyOrGuide}/${feedItem.id}`)
   }
 
   navToUserProfile = () => {

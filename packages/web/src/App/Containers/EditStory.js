@@ -73,7 +73,7 @@ class EditStory extends Component {
     accessToken: PropTypes.string,
     originalDraft: PropTypes.object,
     workingDraft: PropTypes.object,
-    cachedStory: PropTypes.object,
+    story: PropTypes.object,
     userId: PropTypes.string,
     storyId: PropTypes.string,
     // dispatch methods
@@ -103,7 +103,7 @@ class EditStory extends Component {
 
   componentWillMount() {
     const {
-      userId, cachedStory, storyId,
+      userId, story, storyId,
       addLocalDraft, loadDraft, setWorkingDraft,
     } = this.props
 
@@ -112,10 +112,10 @@ class EditStory extends Component {
     }
     // should only load saved stories since locals do not exist in DB
     else if (!this.isLocalStory()){
-      loadDraft(storyId, cachedStory)
+      loadDraft(storyId, story)
     }
     else {
-      setWorkingDraft(cachedStory)
+      setWorkingDraft(story)
     }
   }
 
@@ -123,10 +123,10 @@ class EditStory extends Component {
     const {
       userId,
       addLocalDraft,
-      workingDraft,
+      story,
     } = this.props
 
-    if (workingDraft === null && this.isLocalStory()) {
+    if (!story && this.isLocalStory()) {
       addLocalDraft(createLocalDraft(userId))
     }
   }
@@ -412,11 +412,12 @@ function mapStateToProps(state, props) {
   const syncProgressMessage = syncProgress === syncProgressSteps
     ? ''
     : message
+  const pendingDraft = _.get(state, `pendingUpdates.pendingUpdates[${storyId}].story`)
 
   return {
     userId: state.session.userId,
     storyId,
-    cachedStory: stories[storyId],
+    story: stories[storyId] || pendingDraft,
     accessToken: accessToken.value,
     subPath: getSubPath(state.routes.location),
     originalDraft: state.storyCreate.draft,
@@ -432,7 +433,7 @@ function mapStateToProps(state, props) {
 function mapDispatchToProps(dispatch) {
   return {
     addLocalDraft: (draft) => dispatch(StoryCreateActions.addLocalDraft(draft)),
-    loadDraft: (draftId, cachedStory) => dispatch(StoryCreateActions.editStory(draftId, cachedStory)),
+    loadDraft: (draftId, story) => dispatch(StoryCreateActions.editStory(draftId, story)),
     discardDraft: (draftId) => dispatch(StoryCreateActions.discardDraft(draftId)),
     updateDraft: (draftId, attrs, doReset, isRepublishing) =>
       dispatch(StoryCreateActions.updateDraft(draftId, attrs, doReset, isRepublishing)),
@@ -440,7 +441,7 @@ function mapDispatchToProps(dispatch) {
     saveDraft: (draft, saveAsDraft) => dispatch(StoryCreateActions.saveLocalDraft(draft, saveAsDraft)),
     resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
     reroute: (path) => dispatch(push(path)),
-    setWorkingDraft: (cachedStory) => dispatch(StoryCreateActions.editStorySuccess(cachedStory)),
+    setWorkingDraft: (story) => dispatch(StoryCreateActions.editStorySuccess(story)),
     updateGlobalModalParams: (params) => dispatch(UXActions.updateGlobalModalParams(params)),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
   }

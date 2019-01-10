@@ -223,6 +223,7 @@ export default NavActions.create(
           leftButtonIconStyle={Styles.buttonGrey}
           backTitle='Back'
           backButtonImage={Images.iconArrowLeft}
+          backButtonTextStyle={Styles.buttonGreyText}
           onRight={navToTabbar}
         />
       </Scene>

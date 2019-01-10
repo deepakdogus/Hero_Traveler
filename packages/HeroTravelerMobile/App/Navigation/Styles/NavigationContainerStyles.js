@@ -43,7 +43,6 @@ export default {
     fontFamily: Fonts.type.montserrat,
     fontSize: 16,
     color: Colors.navBarText,
-    marginTop: isIPhoneX() ? 15 : 0,
   },
   darkNavTitle: {
     fontSize: 18,
@@ -52,14 +51,12 @@ export default {
     fontFamily: Fonts.type.montserrat,
     color: Colors.background,
     fontSize: 16,
-    marginTop: isIPhoneX() ? 15 : 0,
   },
   lightNavTitle: {
     fontSize: 18,
   },
   navBarBack: {
     tintColor: 'white',
-    marginTop: isIPhoneX() ? 15 : 0,
   },
   browseGuest: {
     fontSize: 12,
@@ -80,6 +77,9 @@ export default {
   },
   buttonGrey: {
     tintColor: Colors.navBarText,
+  },
+  buttonGreyText: {
+    color: Colors.navBarText,
   },
   createStory: {
     view: {

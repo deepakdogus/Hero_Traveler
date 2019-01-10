@@ -12,8 +12,6 @@ export default class NavButton extends React.Component {
     onLeft: PropTypes.func,
   }
 
-  // iPhoneXStyles = isIPhoneX() ? { marginTop: 15 } : {}
-
   render() {
     const { onRight, onLeft, text, style = {} } = this.props
     const TabIconInstance = (

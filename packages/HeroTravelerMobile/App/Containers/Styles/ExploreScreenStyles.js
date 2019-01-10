@@ -8,7 +8,7 @@ export default StyleSheet.create({
     backgroundColor: Colors.snow,
   },
   fakeNavBar: {
-    height: Metrics.navBarHeight - 8, // 120 === 88 nav + 40 tabbar - 8, per mocks
+    height: Metrics.navBarHeight + 20, // 120 nav height = 60 + 40 tab bar + 20
     backgroundColor: Colors.snow,
     justifyContent: 'center',
     alignItems: 'center',

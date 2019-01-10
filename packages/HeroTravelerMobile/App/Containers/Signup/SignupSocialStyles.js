@@ -4,7 +4,7 @@ import { ApplicationStyles, Fonts, Colors, Metrics } from '../../Shared/Themes/'
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
-    backgroundColor: Colors.background,
+    backgroundColor: Colors.snow,
     flex: 1,
   },
   lightBG: {
@@ -31,16 +31,15 @@ export default StyleSheet.create({
   },
   title: {
     ...Fonts.style.title,
-    fontSize: 16,
+    fontSize: 20,
     textAlign: 'center',
-    color: Colors.snow,
+    color: Colors.background,
   },
   subtitle: {
     ...Fonts.style.instructions,
-    fontSize: 16,
+    fontSize: 15,
     textAlign: 'center',
   },
-
   connectSocialText: {
     fontSize: 15,
     color: Colors.grey,

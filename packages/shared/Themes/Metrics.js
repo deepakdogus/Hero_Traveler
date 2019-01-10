@@ -37,7 +37,7 @@ const metrics = {
         height: 415,
     },
     feed: {
-      imageTypeHeight: 390,
+      imageTypeHeight: 415,
       // videoTypeHeight: 282,
       videoTypeHeight: platformSpecificMetrics.screenWidth * 9 / 16,
     },

@@ -42,18 +42,18 @@ export default async function createStory(storyData, assetFormater) {
   const storyObject = {
     ...storyData,
     categories: await parseAndInsertStoryCategories(storyData.categories),
-    hashtags: await parseAndInsertStoryHashtags(storyData.hashtags)
+    hashtags: await parseAndInsertStoryHashtags(storyData.hashtags),
   }
 
-  const authorDetails = await getUserDetails(storyData.author);
+  const authorDetails = await getUserDetails(storyData.author)
   if (authorDetails) {
     storyObject.featured = (
-      authorDetails.role == Constants.USER_ROLES_FOUNDING_MEMBER_VALUE ||
-      authorDetails.role == Constants.USER_ROLES_CONTRIBUTOR_VALUE ||
-      authorDetails.role == Constants.USER_ROLES_FELLOW_VALUE
+      authorDetails.role == Constants.USER_ROLES_FOUNDING_MEMBER_VALUE
+      || authorDetails.role == Constants.USER_ROLES_CONTRIBUTOR_VALUE
+      || authorDetails.role == Constants.USER_ROLES_FELLOW_VALUE
     )
   } else {
-    throw new Error('Could not find the author for this story');
+    throw new Error('Could not find the author for this story')
   }
 
   if (

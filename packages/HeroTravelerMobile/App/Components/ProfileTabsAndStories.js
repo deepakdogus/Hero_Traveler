@@ -101,9 +101,9 @@ export default class ProfileTabsAndStories extends Component {
     return (
       <View style={styles.topAreaWrapper}>
         {renderProfileInfo()}
-        {!!error &&
+        {!!error && (
           <Text style={styles.errorText}>{errorText}</Text>
-        }
+        )}
       </View>
     )
   }
@@ -140,29 +140,29 @@ export default class ProfileTabsAndStories extends Component {
         styles.profileTabsAndStoriesHeight,
         editable ? styles.profileTabsAndStoriesRoot : styles.profileTabsAndStoriesRootWithMarginForNavbar,
       ]}>
-        {(hasNoStories || this.isFetching()) &&
+        {(hasNoStories || this.isFetching()) && (
           <View>
             {renderProfileInfo && this._renderProfileInfo()}
             {this.renderTabs()}
           </View>
-        }
-        {hasNoStories && fetchStatus.loaded &&
+        )}
+        {hasNoStories && fetchStatus.loaded && (
           <View style={styles.noStories}>
             <Text style={styles.noStoriesText}>{this.getNoStoriesText()}</Text>
           </View>
-        }
-        {isGettingStories &&
+        )}
+        {isGettingStories && (
           <View style={styles.spinnerWrapper}>
             <Loader
               style={styles.spinner}
               spinnerColor={Colors.background} />
           </View>
-        }
+        )}
 
-        {!hasNoStories && !isGettingStories &&
+        {!hasNoStories && !isGettingStories && (
           <ConnectedFeedList
             isStory={isStory}
-            isDraft={selectedTab === tabTypes.drafts}
+            isDraftsTab={selectedTab === tabTypes.drafts}
             style={styles.feedList}
             entitiesById={feedItemsById}
             refreshing={false}
@@ -173,7 +173,7 @@ export default class ProfileTabsAndStories extends Component {
             pagingIsDisabled
             onRefresh={onRefresh}
           />
-        }
+        )}
       </View>
     )
   }

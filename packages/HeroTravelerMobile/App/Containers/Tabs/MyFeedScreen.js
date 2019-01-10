@@ -132,8 +132,7 @@ class MyFeedScreen extends React.Component {
     const { pendingUpdates, updateOrder } = this.props
     const firstFailureKey = updateOrder.find(key => {
       const pendingUpdate = pendingUpdates[key] || {}
-      if (pendingUpdate.failCount >= 5) return true
-      return false
+      return pendingUpdate.failCount >= 5
     })
     if (firstFailureKey) return pendingUpdates[firstFailureKey]
     return undefined

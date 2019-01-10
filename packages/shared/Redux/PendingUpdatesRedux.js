@@ -25,7 +25,7 @@ export const INITIAL_STATE = Immutable({
   pendingUpdates: {},
 })
 
-export const addPendingUpdate = (state, {story, error, failedMethod, status}) => {
+export const addPendingUpdate = (state, { story, error, failedMethod, status }) => {
   let failCount = _.get(state, `pendingUpdates[${story.id}].failCount`, 0)
   if (status === 'failed') failCount++
   const pendingUpdate = {
@@ -51,7 +51,7 @@ export const addPendingUpdate = (state, {story, error, failedMethod, status}) =>
   return state.merge({ updateOrder })
 }
 
-export const removePendingUpdate = (state, {draftId}) => {
+export const removePendingUpdate = (state, { draftId }) => {
   state = state.setIn(['pendingUpdates'], state.pendingUpdates.without(draftId))
   const path = ['updateOrder']
   return state.setIn(path, state.getIn(path, draftId).filter(id => {
@@ -59,8 +59,8 @@ export const removePendingUpdate = (state, {draftId}) => {
   }))
 }
 
-export const setRetryingUpdate = (state, {storyId}) => {
-  if (state.pendingUpdates[storyId]){
+export const setRetryingUpdate = (state, { storyId }) => {
+  if (state.pendingUpdates[storyId]) {
     return state.setIn(['pendingUpdates', storyId, 'status'], 'retrying')
   }
   return state
@@ -77,16 +77,15 @@ export const resetStatuses = state => {
 
 // getting deleted stories so we can remove from pendingDrafts in case a DB
 // draft got deleted on another device and we still have a pendingDraft locally
-export const checkIfDeleted = (state, {usersDeletedStories = [ {} ] }) => {
-  const {updateOrder, pendingUpdates} = state
-  return usersDeletedStories.reduce((workingState, story) => {
-    const id = story.id
+export const checkIfDeleted = (state, { usersDeletedStories = [ {} ] }) => {
+  const {updateOrder} = state
+  return usersDeletedStories.reduce((workingState, { id }) => {
     if (updateOrder.indexOf(id) === -1) return workingState
     return removePendingUpdate(state, {draftId: id})
   }, state)
 }
 
-export const resetFailCount = (state, {storyId}) => {
+export const resetFailCount = (state, { storyId }) => {
   return state.setIn(['pendingUpdates', storyId, 'failCount'], 0)
 }
 

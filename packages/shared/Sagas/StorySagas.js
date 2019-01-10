@@ -254,7 +254,7 @@ function * saveDraftErrorHandling(draft, response){
       draft,
       'Failed to publish',
       'saveLocalDraft',
-      'failed'
+      'failed',
     )),
     put(StoryCreateActions.syncError()),
   ]
@@ -271,7 +271,7 @@ function * updateDraftErrorHandling(draft, response){
       draft,
       'Failed to update',
       'updateDraft',
-      'failed'
+      'failed',
     )),
   ]
 }
@@ -307,7 +307,7 @@ export function * saveLocalDraft (api, action) {
     put(StoryCreateActions.initializeSyncProgress(
       getSyncProgressSteps(draft),
       `${saveAsDraft ? 'Saving' : 'Publishing'} Story`
-    ))
+    )),
   ]
 
   const coverResponse = yield createCover(api, draft)
@@ -563,7 +563,7 @@ export function * watchPendingUpdates() {
 function getIsEditing({routes}) {
   const webCheck = _.get(routes, 'location.pathname', '').indexOf('editStory') !== -1
   const sceneName = _.get(routes, 'scene.name', '')
-  const mobileCheck = sceneName.indexOf('createStory')!== -1
+  const mobileCheck = sceneName.indexOf('createStory') !== -1
     || sceneName === 'mediaSelectorScreen'
     || sceneName === 'locationSelectorScreen'
     || sceneName === 'tagSelectorScreen'
@@ -571,14 +571,10 @@ function getIsEditing({routes}) {
   return webCheck || mobileCheck
 }
 
-function getNextPendingUpdate({pendingUpdates}) {
-  const {pendingUpdates: updates, updateOrder} = pendingUpdates
-  const nextUpdateKey = updateOrder.find(key => {
-    const pendingUpdate = updates[key]
-    if (pendingUpdate.failCount >= 5) return false
-    return true
-  })
-  return nextUpdateKey ? updates[nextUpdateKey] : {}
+function getNextPendingUpdate(state) {
+  const {pendingUpdates, updateOrder} = state.pendingUpdates
+  const nextUpdateKey = updateOrder.find(key => pendingUpdates[key].failCount < 5)
+  return nextUpdateKey ? pendingUpdates[nextUpdateKey] : {}
 }
 
 
@@ -587,8 +583,9 @@ export function * syncPendingUpdates(api) {
   const isConnected = yield hasConnection()
   if (!isEditing && isConnected) {
     const {failedMethod, story, status} = yield select(getNextPendingUpdate)
+    console.log("story is", story)
     if (status === 'retrying') return
-    else if (failedMethod && story) {
+    if (failedMethod && story) {
       const mutableStory = Immutable.asMutable(story, {deep: true})
       if (failedMethod === 'updateDraft') {
         yield put(StoryCreateActions.updateDraft(story.id, mutableStory, true))

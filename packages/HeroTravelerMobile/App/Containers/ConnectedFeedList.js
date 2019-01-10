@@ -12,7 +12,7 @@ const mapStateToProps = (state, ownProps) => {
   let mapFunc
   if (ownProps.isStory) {
     const getStoryFromEntities = (storyId) => _.get(entities, `stories.entities[${storyId}]`)
-    if (ownProps.isDraft) {
+    if (ownProps.isDraftsTab) {
       mapFunc = (storyId) => {
         return getStoryFromEntities(storyId)
           || _.get(state.pendingUpdates, `pendingUpdates[${storyId}].story`)

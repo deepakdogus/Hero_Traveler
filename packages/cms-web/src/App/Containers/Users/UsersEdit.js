@@ -7,14 +7,17 @@ import { Row, Col, Spin, message } from 'antd'
 import { Link } from 'react-router-dom'
 import get from 'lodash/get'
 import find from 'lodash/find'
-import values from 'lodash/values'
+import filter from 'lodash/filter'
 import truncate from 'lodash/truncate'
 import isEmpty from 'lodash/isEmpty'
+import values from 'lodash/values'
 
-import AdminGuideActions from '../../Shared/Redux/Admin/Guides'
+import AdminUserActions from '../../Shared/Redux/Admin/Users'
 import StoryActions from '../../Shared/Redux/Entities/Stories'
-import EditGuideForm from '../../Components/Guides/EditGuideForm'
-import StoriesInGuideTable from '../../Components/Stories/StoriesInGuideTable'
+import GuideActions from '../../Shared/Redux/Entities/Guides'
+import EditUserForm from '../../Components/Users/EditUserForm'
+import UserItemsTable from '../../Components/Users/UserItemsTable'
+import convertUrlsToImageFormat from '../../Utils/convertUrlsToImageFormat'
 
 const Wrapper = styled.div``
 
@@ -65,20 +68,21 @@ const Centered = styled.div`
   text-align: center;
 `
 
-class EditGuide extends React.Component {
+class EditUser extends React.Component {
   state = {
     formSubmitting: false,
     isDeleting: false,
   }
 
   componentDidMount(){
-    //get user EditGuide on signUp and reset signUp redux
-    const { record, getGuide, getStories, id } = this.props
+    //get user EditUser on signUp and reset signUp redux
+    const { record, getUser, getStories, getGuides, id } = this.props
     
     if (isEmpty(record)) {
-      getGuide(id)
+      getUser(id)
     }
     getStories(id)
+    getGuides(id)
   }
 
   handleCancel = () => {
@@ -87,12 +91,12 @@ class EditGuide extends React.Component {
   }
 
   handleDelete = () => {
-    const { deleteGuide, history, id } = this.props
+    const { deleteUser, history, id } = this.props
     this.setState({
       isDeleting: true,
     })
     new Promise((resolve, reject) => {
-      deleteGuide({
+      deleteUser({
         id,
         resolve,
         reject,
@@ -101,7 +105,7 @@ class EditGuide extends React.Component {
       this.setState({
         isDeleting: false,
       })
-      message.success('Guide was deleted')
+      message.success('User was deleted')
       history.goBack()
     }).catch((e) => {
       this.setState({
@@ -112,12 +116,14 @@ class EditGuide extends React.Component {
   }
 
   handleSubmit = (values) => {
-    const { putGuide, id } = this.props
+    const { putUser, id } = this.props
     this.setState({
       formSubmitting: true,
     })
+    const { channelThumbnail, channelHeroImage } = values
+    values.channelImage = convertUrlsToImageFormat(channelThumbnail, channelHeroImage, 'channelImage')
     new Promise((resolve, reject) => {
-      putGuide({
+      putUser({
         id,
         values,
         resolve,
@@ -127,7 +133,7 @@ class EditGuide extends React.Component {
       this.setState({
         formSubmitting: false,
       })
-      message.success('Guide was updated')
+      message.success('User was updated')
     }).catch((e) => {
       this.setState({
         formSubmitting: false,
@@ -137,55 +143,43 @@ class EditGuide extends React.Component {
   }
 
   renderTable = () => {
-    const { record } = this.props
+    const { record, stories, guides } = this.props
     return (
       <div>
         <SmallTitle>
-          Guide Stats
+          User Stats
         </SmallTitle>
         <TableStyled>
           <tbody>
             <TrStyled>
               <TdStyledGrey>Link</TdStyledGrey>
               <TdStyled>
-                <a href={`https://herotraveler.com/stories/${record.id}`}>{truncate(`herotraveler.com/stories/${record.id}`, 20)}</a>
+                <a href={`https://herotraveler.com/profile/${record.id}`}>{truncate(`herotraveler.com/profile/${record.id}`, 20)}</a>
               </TdStyled>
             </TrStyled>
             <TrStyled>
-              <TdStyledGrey>Date Published</TdStyledGrey>
+              <TdStyledGrey>Member Since</TdStyledGrey>
               <TdStyled>{moment(record.createdAt).format('YYYY/MM/DD')}</TdStyled>
             </TrStyled>
             <TrStyled>
-              <TdStyledGrey>Author</TdStyledGrey>
-              <TdStyled>
-                <Link to={`/users/${get(record, 'author.id')}`}>{get(record, 'author.username')}</Link>
-              </TdStyled>
+              <TdStyledGrey>Created On</TdStyledGrey>
+              <TdStyled></TdStyled>
             </TrStyled>
             <TrStyled>
-              <TdStyledGrey>Location</TdStyledGrey>
-              <TdStyled>
-                {get(record, 'locations.0.name')}
-              </TdStyled>
+              <TdStyledGrey># Of Followers</TdStyledGrey>
+              <TdStyled>{get(record, 'counts.followers')}</TdStyled>
             </TrStyled>
             <TrStyled>
-              <TdStyledGrey># Of Likes</TdStyledGrey>
-              <TdStyled>{get(record, 'counts.likes')}</TdStyled>
+              <TdStyledGrey>Following</TdStyledGrey>
+              <TdStyled>{get(record, 'counts.following')}</TdStyled>
             </TrStyled>
             <TrStyled>
-              <TdStyledGrey># Of Comments</TdStyledGrey>
-              <TdStyled>{get(record, 'counts.comments')}</TdStyled>
+              <TdStyledGrey># Of Stories Published</TdStyledGrey>
+              <TdStyled>{stories.length}</TdStyled>
             </TrStyled>
             <TrStyled>
-              <TdStyledGrey>Public</TdStyledGrey>
-              <TdStyled>
-                {get(record, 'public')}
-              </TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey>Verified</TdStyledGrey>
-              <TdStyled>
-                {get(record, 'verified')}
-              </TdStyled>
+              <TdStyledGrey># Of Guides Published</TdStyledGrey>
+              <TdStyled>{guides.length}</TdStyled>
             </TrStyled>
           </tbody>
         </TableStyled>
@@ -198,6 +192,7 @@ class EditGuide extends React.Component {
       record,
       isLoading,
       stories,
+      guides,
     } = this.props
 
     const { formSubmitting, isDeleting } = this.state
@@ -207,15 +202,15 @@ class EditGuide extends React.Component {
     return (
       <Wrapper>
         <Breadcrumbs>
-          <Link to="/guides">{`Guides > `}</Link>
-          <span>{get(record, 'title')}</span>
+          <Link to="/users">{`Users > `}</Link>
+          <span>{get(record, 'profile.fullName')}</span>
         </Breadcrumbs>
         <MainWrapper>
-          <Title>{get(record, 'title')}</Title>
+          <Title>{get(record, 'profile.fullName')}</Title>
           <Divider/>
           <Row gutter={16}>
             <Col xs={24} md={12}>
-              <EditGuideForm
+              <EditUserForm
                 record={record}
                 handleCancel={this.handleCancel}
                 onSubmit={this.handleSubmit}
@@ -228,48 +223,60 @@ class EditGuide extends React.Component {
               {this.renderTable()}
             </Col>
           </Row>
-          <Divider />
-          <StoriesInGuideTable 
+          <Divider/>
+          <UserItemsTable
+            type="stories"
             list={stories || []}
           />
+          {/*
+            <UserItemsTable 
+              type="guides"
+              list={guides || []}
+            />
+          */}
         </MainWrapper>
       </Wrapper>
     )
   }
 }
 
-EditGuide.propTypes = {
+EditUser.propTypes = {
   record: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
-  getGuide: PropTypes.func.isRequired,
-  putGuide: PropTypes.func.isRequired,
-  deleteGuide: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool.isRequired,
   stories: PropTypes.array,
+  history: PropTypes.object.isRequired,
+  getUser: PropTypes.func.isRequired,
+  putUser: PropTypes.func.isRequired,
+  deleteUser: PropTypes.func.isRequired,
+  getStories: PropTypes.func.isRequired,
+  getGuides: PropTypes.func.isRequired,
+  guides: PropTypes.array,
+  isLoading: PropTypes.bool.isRequired,
   id: PropTypes.string.isRequired,
 }
 
-function mapStateToProps(state) {
-  const href = window.location.href
-  const id = href.match(/([^\/]*)\/*$/)[1]
-  const list = [...get(state, ['admin','guides', 'list'], [])]
+function mapStateToProps(state, ownProps) {
+  const id = get(ownProps, 'match.params.id')
+  const list = [...get(state, ['admin','users', 'list'], [])]
   const record = find(list, { id }) || {}
-  const stories = values(get(state, ['entities', 'guides', 'storiesByGuide', id], []))
+  const stories = filter(values(get(state, 'entities.stories.entities', [])), { author: id })
+  const guides = filter(values(get(state, 'entities.guides.entities', [])), { author: id })
   return {
     record,
-    isLoading: state.admin.guides.isLoading,
+    isLoading: state.admin.users.isLoading,
     stories,
+    guides,
     id,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getGuide: (id) => dispatch(AdminGuideActions.adminGetGuide(id)),
-    putGuide: (payload) => dispatch(AdminGuideActions.adminPutGuide(payload)),
-    deleteGuide: (payload) => dispatch(AdminGuideActions.adminDeleteGuide(payload)),
-    getStories: (id) => dispatch(StoryActions.getGuideStories(id)),
+    getUser: (id) => dispatch(AdminUserActions.adminGetUser(id)),
+    putUser: (payload) => dispatch(AdminUserActions.adminPutUser(payload)),
+    deleteUser: (payload) => dispatch(AdminUserActions.adminDeleteUser(payload)),
+    getStories: (id) => dispatch(StoryActions.fromUserRequest(id)),
+    getGuides: (id) => dispatch(GuideActions.getUserGuides(id)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditGuide)
+export default connect(mapStateToProps, mapDispatchToProps)(EditUser)

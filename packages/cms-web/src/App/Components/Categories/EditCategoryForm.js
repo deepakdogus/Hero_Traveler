@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Form, Input, Button, Checkbox, message } from 'antd'
 import mapValues from 'lodash/mapValues'
 import get from 'lodash/get'
-import SingleFileUpload from '../SingleFileUpload'
+import SingleImageUpload from '../SingleImageUpload'
 
 const FormItem = Form.Item
 
@@ -63,14 +63,14 @@ class EditCategoryForm extends React.Component {
         <FormItem {...formItemLayout} label="Thumbnail Image">
           {getFieldDecorator('thumbnail', {
           })(
-            <SingleFileUpload />
+            <SingleImageUpload />
           )}
         </FormItem>
 
         <FormItem {...formItemLayout} label="Hero Image">
           {getFieldDecorator('heroImage', {
           })(
-            <SingleFileUpload />
+            <SingleImageUpload />
           )}
         </FormItem>
         

@@ -25,7 +25,7 @@ function beforeUpload(file) {
   return (isJPG) && isLt2M
 }
 
-class SingleFileUpload extends React.Component {
+class SingleImageUpload extends React.Component {
   state = {
     loading: false,
     previewVisible: false,
@@ -130,13 +130,14 @@ class SingleFileUpload extends React.Component {
   }
 }
 
-SingleFileUpload.propTypes = {
+SingleImageUpload.propTypes = {
   onChange: PropTypes.func,
   value: PropTypes.object,
+  id: PropTypes.string,
 }
 
-SingleFileUpload.defaultProps = {
+SingleImageUpload.defaultProps = {
   onChange: () => {},
 }
 
-export default SingleFileUpload
+export default SingleImageUpload

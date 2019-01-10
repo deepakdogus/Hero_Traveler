@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { Form, Input, Button, Icon, Checkbox, Select, message } from 'antd'
+import { Form, Input, Button, Checkbox, Select, message } from 'antd'
 import mapValues from 'lodash/mapValues'
-import SingleFileUpload from '../SingleFileUpload'
+import SingleImageUpload from '../SingleImageUpload'
 
 const Option = Select.Option
 const FormItem = Form.Item
@@ -88,14 +88,14 @@ class EditUserForm extends React.Component {
         <FormItem {...formItemLayout} label="Channel Thumbnail Image">
           {getFieldDecorator('channelThumbnail', {
           })(
-            <SingleFileUpload />
+            <SingleImageUpload />
           )}
         </FormItem>
 
         <FormItem {...formItemLayout} label="Channel Hero Image">
           {getFieldDecorator('channelHeroImage', {
           })(
-            <SingleFileUpload />
+            <SingleImageUpload />
           )}
         </FormItem>
         

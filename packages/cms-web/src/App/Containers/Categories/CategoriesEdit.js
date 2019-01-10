@@ -228,9 +228,8 @@ EditCategory.propTypes = {
   id: PropTypes.string.isRequired,
 }
 
-function mapStateToProps(state) {
-  const href = window.location.href
-  const id = href.match(/([^\/]*)\/*$/)[1]
+function mapStateToProps(state, ownProps) {
+  const id = get(ownProps, 'match.params.id')
   const list = [...get(state, ['admin','categories', 'list'], [])]
   const record = find(list, { id }) || {}
   return {

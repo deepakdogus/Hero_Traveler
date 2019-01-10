@@ -146,7 +146,7 @@ class Header extends React.Component {
     if (windowWidth <= tabletSize) {
       this.setState({ navbarEngaged: true })
     }
- else if (this.shouldDisengageNavbar()) {
+    else if (this.shouldDisengageNavbar()) {
       this.setState({ navbarEngaged: false })
     }
   }
@@ -157,7 +157,7 @@ class Header extends React.Component {
       if (window.scrollY > 65 && !this.state.navbarEngaged) {
         this.setState({ navbarEngaged: true })
       }
- else if (this.shouldDisengageNavbar()) {
+      else if (this.shouldDisengageNavbar()) {
         this.setState({ navbarEngaged: false })
       }
     }

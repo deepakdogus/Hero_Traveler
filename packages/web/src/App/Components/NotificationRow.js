@@ -219,7 +219,9 @@ export default class NotificationRow extends Component {
           .
         </StyledNotificationContent>
         {!!activity.comment && (
-          <CommentContent>{getContent(activity)}</CommentContent>
+          <CommentContent>
+            {getContent(activity)}
+          </CommentContent>
         )}
         <StyledTimestamp
           margin="none"

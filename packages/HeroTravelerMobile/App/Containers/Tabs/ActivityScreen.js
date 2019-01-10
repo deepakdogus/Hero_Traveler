@@ -83,14 +83,6 @@ class NotificationScreen extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // if no more backgroundFailures - focus on normal notifications
-    if (
-      this.state.selectedTab === 2
-      && (!nextProps.backgroundFailures
-        || Object.keys(nextProps.backgroundFailures).length === 0)
-    )
-      this.setState({ selectedTab: 0 })
-
     if (nextProps.activities) {
       _.map(nextProps.activities, activity => {
         if (!activity.seen) nextProps.markSeen(activity._id)
@@ -129,7 +121,7 @@ class NotificationScreen extends React.Component {
     if (fetchStatus.fetching) {
       content = <Loader spinnerColor={Colors.blackoutTint} />
     }
- else if (this.state.selectedTab === 1) {
+    else if (this.state.selectedTab === 1) {
       content = (
         <ThreadList
           threads={threads}
@@ -137,7 +129,7 @@ class NotificationScreen extends React.Component {
         />
       )
     }
- else {
+    else {
       const filteredActivities = activitiesById.filter(id => {
         const activity = getPopulatedActivity(id, this.props)
         return !isActivityIncomplete(activity)

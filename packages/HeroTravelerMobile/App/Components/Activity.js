@@ -61,11 +61,9 @@ export default class Activity extends Component {
 
   _navToReadingScreen = () => {
     const { activity } = this.props
-    const type
-      = activity.kind === ActivityTypes.like
+    const isStory = activity.kind === ActivityTypes.like
       || activity.kind === ActivityTypes.comment
-        ? 'story'
-        : 'guide'
+    const type = isStory ? 'story' : 'guide'
     NavActions[type]({
       [`${type}Id`]: activity[type]._id,
       title: displayLocationPreview(activity[type].locationInfo),
@@ -87,13 +85,14 @@ export default class Activity extends Component {
         <TouchableOpacity onPress={this._markSeen}>
           <View style={styles.container}>
             <TouchableOpacity onPress={this._navToUser}>
-              <Avatar
-                avatarUrl={avatar ? getImageUrl(avatar, 'avatar') : null}
-              />
+              <Avatar avatarUrl={avatar ? getImageUrl(avatar, 'avatar') : null} />
             </TouchableOpacity>
             <View style={styles.middle}>
               <Text style={styles.description}>
-                <Text style={styles.actionText} onPress={this._navToUser}>
+                <Text
+                  style={styles.actionText}
+                  onPress={this._navToUser}
+                >
                   {`${username} ` || 'A user '}
                 </Text>
                 <Text>{getDescriptionText(activity)}</Text>
@@ -106,7 +105,10 @@ export default class Activity extends Component {
               </Text>
               {!!content && (
                 <View style={styles.content}>
-                  <Text numberOfLines={2} style={styles.contentText}>
+                  <Text
+                    numberOfLines={2}
+                    style={styles.contentText}
+                  >
                     {content}
                   </Text>
                 </View>
@@ -117,36 +119,35 @@ export default class Activity extends Component {
             </View>
             <View style={styles.right}>
               {!!imageUrl && (
-                  <TouchableOpacity
-                    style={styles.coverWrapper}
-                    onPress={this._navToReadingScreen}
-                  >
-                    {!hasVideo && (
+                <TouchableOpacity
+                  style={styles.coverWrapper}
+                  onPress={this._navToReadingScreen}
+                >
+                  {!hasVideo && (
+                    <ImageWrapper
+                      cached={true}
+                      resizeMode='cover'
+                      source={{uri: imageUrl}}
+                      style={styles.thumbnailImage}
+                    />
+                  )}
+                  {hasVideo && (
+                    <Fragment>
                       <ImageWrapper
                         cached={true}
                         resizeMode='cover'
                         source={{uri: imageUrl}}
                         style={styles.thumbnailImage}
                       />
-                    )}
-                    {hasVideo && (
-                      <Fragment>
-                        <ImageWrapper
-                          cached={true}
-                          resizeMode='cover'
-                          source={{uri: imageUrl}}
-                          style={styles.thumbnailImage}
-                        />
-                        <PlayButton
-                          size='tiny'
-                          style={styles.playButton}
-                          onPress={this._navToReadingScreen}
-                        />
-                      </Fragment>
-                    )}
-                  </TouchableOpacity>
-                )
-              }
+                      <PlayButton
+                        size='tiny'
+                        style={styles.playButton}
+                        onPress={this._navToReadingScreen}
+                      />
+                    </Fragment>
+                  )}
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         </TouchableOpacity>

@@ -16,7 +16,10 @@ import UXActions from '../Redux/UXRedux'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import HeaderModals from '../Components/HeaderModals'
 import { sizes } from '../Themes/Metrics'
-import { haveFieldsChanged } from '../Shared/Lib/draftChangedHelpers'
+import {
+  haveFieldsChanged,
+  hasChangedSinceSave,
+} from '../Shared/Lib/draftChangedHelpers'
 import { itemsPerQuery } from './ContainerWithFeedList'
 /*global branch*/
 
@@ -168,12 +171,12 @@ class Header extends React.Component {
     const {workingDraft, originalDraft, draftToBeSaved, pathname} = this.props
 
     if (
-      workingDraft
-      && pathname.includes('editStory')
+      pathname.includes('editStory')
+      && workingDraft
       && haveFieldsChanged(workingDraft, originalDraft)
       // extra check to ensure we dont show modal after they click save and nav away
       // without making further edits to the draft
-      && (draftToBeSaved && haveFieldsChanged(workingDraft, draftToBeSaved))
+      && hasChangedSinceSave(workingDraft, draftToBeSaved)
     ) {
       this.setState({
         nextPathAfterSave: path,

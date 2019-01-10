@@ -43,8 +43,14 @@ const haveFieldsChanged = (workingDraft, comparisonDraft) => {
   )
 }
 
+const hasChangedSinceSave = (workingDraft, draftToBeSaved) => {
+  return !draftToBeSaved
+    || (draftToBeSaved && haveFieldsChanged(workingDraft, draftToBeSaved))
+}
+
 
 export {
   isFieldSame,
   haveFieldsChanged,
+  hasChangedSinceSave,
 }

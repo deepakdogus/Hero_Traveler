@@ -36,6 +36,7 @@ import {KeyboardTrackingView} from 'react-native-keyboard-tracking-view'
 import {
   isFieldSame,
   haveFieldsChanged,
+  hasChangedSinceSave,
 } from '../../Shared/Lib/draftChangedHelpers'
 
 const MediaTypes = {
@@ -64,6 +65,7 @@ class StoryCoverScreen extends Component {
     updateWorkingDraft: PropTypes.func,
     saveDraft: PropTypes.func,
     error: PropTypes.string,
+    draftToBeSaved: PropTypes.object,
   }
 
   static defaultProps = {
@@ -160,8 +162,11 @@ class StoryCoverScreen extends Component {
   }
 
   _onLeft = () => {
-    const {workingDraft, originalDraft} = this.props
-    if (haveFieldsChanged(workingDraft, originalDraft)) {
+    const {workingDraft, originalDraft, draftToBeSaved} = this.props
+    if (
+      haveFieldsChanged(workingDraft, originalDraft)
+      && hasChangedSinceSave(workingDraft, draftToBeSaved)
+    ) {
       this.setState({ activeModal: 'cancel' })
     }
     else {
@@ -731,6 +736,7 @@ export default connect((state) => {
     user: state.entities.users.entities[state.session.userId],
     originalDraft: {...state.storyCreate.draft},
     workingDraft: {...state.storyCreate.workingDraft},
+    draftToBeSaved: {...state.storyCreate.draftToBeSaved},
     error: state.storyCreate.error || '',
   }
 }, dispatch => ({

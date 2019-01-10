@@ -44,6 +44,7 @@ const initialImageUpload = {
 export const INITIAL_STATE = Immutable({
   draft: null,
   workingDraft: null,
+  draftToBeSaved: null,
   sync: {
     syncProgress: 0,
     syncProgressSteps: 0,

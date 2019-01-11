@@ -38,7 +38,9 @@ class CreateCategory extends React.Component {
     })
 
     const { thumbnail, heroImage } = values
-    values.image = convertUrlsToImageFormat(thumbnail, heroImage, 'categoryImage')
+    if (thumbnail || heroImage) {
+      values.image = convertUrlsToImageFormat(thumbnail, heroImage, 'categoryImage')
+    }
 
     new Promise((resolve, reject) => {
       postCategory({

@@ -282,6 +282,10 @@ class UsersList extends React.Component {
             >
               <Option value="user">User</Option>
               <Option value="admin">Admin</Option>
+              <Option value="brand">Brand</Option>
+              <Option value="contributor">Contributor</Option>
+              <Option value="founding member">Founding Member</Option>
+              <Option value="fellow">Fellow</Option>
             </Select>
 
           </LeftSpaceDiv>

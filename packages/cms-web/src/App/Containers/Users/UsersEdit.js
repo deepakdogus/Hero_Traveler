@@ -15,6 +15,7 @@ import values from 'lodash/values'
 import AdminUserActions from '../../Shared/Redux/Admin/Users'
 import StoryActions from '../../Shared/Redux/Entities/Stories'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
+import LoginActions from '../../Shared/Redux/LoginRedux'
 import EditUserForm from '../../Components/Users/EditUserForm'
 import UserItemsTable from '../../Components/Users/UserItemsTable'
 import convertUrlsToImageFormat from '../../Utils/convertUrlsToImageFormat'
@@ -121,7 +122,9 @@ class EditUser extends React.Component {
       formSubmitting: true,
     })
     const { channelThumbnail, channelHeroImage } = values
-    values.channelImage = convertUrlsToImageFormat(channelThumbnail, channelHeroImage, 'channelImage')
+    if (channelThumbnail || channelHeroImage) {
+      values.channelImage = convertUrlsToImageFormat(channelThumbnail, channelHeroImage, 'channelImage')
+    }
     new Promise((resolve, reject) => {
       putUser({
         id,
@@ -193,6 +196,7 @@ class EditUser extends React.Component {
       isLoading,
       stories,
       guides,
+      resetPasswordRequest,
     } = this.props
 
     const { formSubmitting, isDeleting } = this.state
@@ -217,6 +221,7 @@ class EditUser extends React.Component {
                 onDelete={this.handleDelete}
                 formLoading={formSubmitting}
                 isDeleting={isDeleting}
+                resetPasswordRequest={resetPasswordRequest}
               />
             </Col>
             <Col xs={24} md={12}>
@@ -228,12 +233,10 @@ class EditUser extends React.Component {
             type="stories"
             list={stories || []}
           />
-          {/*
-            <UserItemsTable 
-              type="guides"
-              list={guides || []}
-            />
-          */}
+          <UserItemsTable 
+            type="guides"
+            list={guides || []}
+          />
         </MainWrapper>
       </Wrapper>
     )
@@ -251,6 +254,7 @@ EditUser.propTypes = {
   getGuides: PropTypes.func.isRequired,
   guides: PropTypes.array,
   isLoading: PropTypes.bool.isRequired,
+  resetPasswordRequest: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
 }
 
@@ -276,6 +280,7 @@ function mapDispatchToProps(dispatch) {
     deleteUser: (payload) => dispatch(AdminUserActions.adminDeleteUser(payload)),
     getStories: (id) => dispatch(StoryActions.fromUserRequest(id)),
     getGuides: (id) => dispatch(GuideActions.getUserGuides(id)),
+    resetPasswordRequest: email => dispatch(LoginActions.resetPasswordRequest(email)),
   }
 }
 

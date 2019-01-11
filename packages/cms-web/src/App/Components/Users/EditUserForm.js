@@ -30,6 +30,13 @@ class EditUserForm extends React.Component {
     })
   }
 
+  resetPassword = () => {
+    const { resetPasswordRequest, form: { getFieldValue } } = this.props
+    const email = getFieldValue('email')
+    resetPasswordRequest(email)
+    message.success('Password reset email was sent to the email above')
+  }
+
   render() {
     const {
       formLoading,
@@ -68,20 +75,19 @@ class EditUserForm extends React.Component {
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="Password">
-          {getFieldDecorator('password', {
-            rules: [],
-          })(
-            <Input type="password" placeholder="password" />
-          )}
-          <a className="login-form-forgot" href="">Resend Password Reset Email</a>
+          <Button className="login-form-forgot" onClick={this.resetPassword}>Resend Password Reset Email</Button>
         </FormItem>
         <FormItem {...formItemLayout} label="Role">
           {getFieldDecorator('role', {
             rules: [{ required: true, message: 'Please input role' }],
           })(
-            <Select initialValue="contributor">
-              <Option value="contributor">contributor</Option>
-              <Option value="admin">admin</Option>
+            <Select initialValue="user">
+              <Option value="user">User</Option>
+              <Option value="admin">Admin</Option>
+              <Option value="brand">Brand</Option>
+              <Option value="contributor">Contributor</Option>
+              <Option value="founding member">Founding Member</Option>
+              <Option value="fellow">Fellow</Option>
             </Select>
           )}
         </FormItem>
@@ -144,6 +150,7 @@ EditUserForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   isDeleting: PropTypes.bool.isRequired,
+  resetPasswordRequest: PropTypes.func.isRequired,
 }
 
 const mapPropsToFields = ({ record }) => mapValues(record, value => Form.createFormField({ value }))

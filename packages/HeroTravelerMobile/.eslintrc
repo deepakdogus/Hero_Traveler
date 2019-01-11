@@ -46,6 +46,7 @@
     "no-useless-escape": "error",
     "no-whitespace-before-property": "error",
     "object-property-newline": ["error", { "allowMultiplePropertiesPerLine": true }],
+    "operator-linebreak": ["error", "before"],
     "padded-blocks": ["error", { "blocks": "never", "switches": "never", "classes": "never" }],
     "quotes": ["error", "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
     "semi": ["error", "never"],

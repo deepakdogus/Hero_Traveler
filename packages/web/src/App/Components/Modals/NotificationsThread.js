@@ -6,12 +6,11 @@ import { push } from 'react-router-redux'
 
 import UserActions from '../../Shared/Redux/Entities/Users'
 import {
-  ActivityTypes,
   isActivityIncomplete,
   getPopulatedActivity,
 } from '../../Shared/Lib/NotificationHelpers'
 import NotificationRow from '../NotificationRow'
-import {RightTitle, RightModalCloseX} from './Shared'
+import { RightTitle, RightModalCloseX } from './Shared'
 
 const Container = styled.div``
 
@@ -31,7 +30,6 @@ class NotificationsThread extends React.Component {
 
   renderNotificationRows = () => {
     const {
-      activities,
       activitiesById,
       closeModal,
       reroute,
@@ -39,16 +37,13 @@ class NotificationsThread extends React.Component {
     } = this.props
 
     return activitiesById.map(id => {
-      const activity = activities[id]
       const populatedActivity = getPopulatedActivity(id, this.props)
-
       if (isActivityIncomplete(populatedActivity)) return null
 
       return (
         <NotificationRow
           key={id}
           activity={populatedActivity}
-          isFeedItem={this.isFeedItem(activity)}
           reroute={reroute}
           closeModal={closeModal}
           markSeen={markSeen}
@@ -57,18 +52,17 @@ class NotificationsThread extends React.Component {
     })
   }
 
-  isFeedItem = (activity) => {
-    return activity.kind !== ActivityTypes.follow
-  }
-
   render() {
     return (
       <Container>
-        <RightModalCloseX name='closeDark' onClick={this.props.closeModal}/>
+        <RightModalCloseX
+          name="closeDark"
+          onClick={this.props.closeModal}
+        />
         <RightTitle>NOTIFICATIONS</RightTitle>
-          <NotificationRowsContainer>
-            {this.renderNotificationRows()}
-          </NotificationRowsContainer>
+        <NotificationRowsContainer>
+          {this.renderNotificationRows()}
+        </NotificationRowsContainer>
       </Container>
     )
   }
@@ -87,9 +81,12 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    reroute: (route) => dispatch(push(route)),
-    markSeen: (activityId) => dispatch(UserActions.activitySeen(activityId)),
+    reroute: route => dispatch(push(route)),
+    markSeen: activityId => dispatch(UserActions.activitySeen(activityId)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NotificationsThread)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(NotificationsThread)

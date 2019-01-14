@@ -46,7 +46,10 @@ class ProfileScreen extends React.Component {
       this.props.guideIds !== prevProps.guideIds
       || this.props.userStoriesById !== prevProps.userStoriesById
     ) {
-      VideoManager.cleanDrafts(this.props.draftsById)
+      VideoManager.cleanDrafts([
+        ...this.props.draftsById,
+        ...this.props.pendingDraftsIds,
+      ])
     }
   }
 

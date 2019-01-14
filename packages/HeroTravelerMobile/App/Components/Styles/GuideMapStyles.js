@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { Fonts, Colors } from '../../Shared/Themes/'
-import {storyWidth} from './GuideStoriesOfTypeStyles'
+import {storyWidth} from './FeedItemsOfTypeStyles'
 
 export default StyleSheet.create({
   mapView: {

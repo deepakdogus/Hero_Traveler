@@ -74,8 +74,6 @@
 	<string>Unused but App Store requires it</string>
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) to capture media for stories</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>$(PRODUCT_NAME) to access location for stories</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>$(PRODUCT_NAME) to access location for stories</string>
 	<key>NSMicrophoneUsageDescription</key>

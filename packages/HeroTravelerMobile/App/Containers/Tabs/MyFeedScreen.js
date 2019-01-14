@@ -94,12 +94,27 @@ class MyFeedScreen extends React.Component {
   }
 
   _showNoStories() {
+    let text = ''
+    switch(this.state.selectedTab) {
+      case 'following':
+        text = `You aren't following any users yet.`
+        break
+      case 'guide':
+        text = `There are no guides to display.`
+        break
+      case 'featured':
+      case 'trending':
+        text = `There are no ${this.state.selectedTab} stories to show right now.`
+        break
+      default:
+        text = `There is no content available. Check back later.`
+    }
     return (
       <View style={[styles.containerWithTabbar, styles.root]}>
         <View style={styles.tabWrapper}>
           {this.renderTabs()}
         </View>
-        <NoStoriesMessage text={this.state.selectedTab}/>
+        <NoStoriesMessage text={text}/>
       </View>
     )
   }

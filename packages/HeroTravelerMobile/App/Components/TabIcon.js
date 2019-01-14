@@ -136,6 +136,8 @@ class TabIcon extends React.Component {
         return Images.iconInfoDark
       case 'profile-active':
         return Images.iconNavProfileActive
+      case 'guide':
+        return Images.iconGuide
       case 'profile':
       default:
         return Images.iconNavProfile

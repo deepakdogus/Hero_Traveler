@@ -8,10 +8,12 @@ export default StyleSheet.create({
     backgroundColor: Colors.snow,
   },
   fakeNavBar: {
-    height: Metrics.navBarHeight + 20, // 120 nav height = 60 + 40 tab bar + 20
-    backgroundColor: Colors.snow,
+    // flex: 1,
+    // flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    height: Metrics.navBarHeight + 20, // 120 nav height = 60 + 40 tab bar + 20
+    backgroundColor: Colors.snow,
   },
   loader: {
     height: Metrics.screenHeight - 100 - Metrics.tabBarHeight,
@@ -56,13 +58,39 @@ export default StyleSheet.create({
     marginRight: 25,
   },
   cancelBtn: {
-    marginTop: isIPhoneX() ? 20 : 5,
+    marginTop: isIPhoneX() ? 30 : 5,
     padding: Metrics.baseMargin,
     paddingRight: 0,
   },
   cancelBtnText: {
     color: Colors.signupGrey,
     fontFamily: Fonts.type.montserrat,
+  },
+  searchTitleWrapper: {
+    height: 46,
+    marginTop: Metrics.doubleBaseMargin,
+    marginLeft: Metrics.doubleBaseMargin,
+    marginRight: Metrics.doubleBaseMargin,
+    paddingTop: Metrics.baseMargin,
+    paddingBottom: Metrics.baseMargin / 2,
+    justifyContent:'flex-end',
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.whiteAlphaPt3,
+  },
+  searchTitleText: {
+    fontSize: 16,
+    letterSpacing: 0.7,
+    fontWeight: '600',
+    color: Colors.background,
+  },
+  searchRowItem: {
+    marginLeft: Metrics.doubleBaseMargin,
+    marginRight: Metrics.doubleBaseMargin,
+    padding: 0,
+    paddingTop: Metrics.baseMargin,
+    paddingBottom: Metrics.baseMargin,
+    paddingLeft: 0,
+    paddingRight: 0,
   },
   titleWrapper: {
     flex: 1,
@@ -108,7 +136,7 @@ export default StyleSheet.create({
     textAlign: 'center',
     lineHeight: 100,
   },
-  tabs: {
+  tabsViewContainer: {
     flex: 1,
   },
   tabnav: {
@@ -196,6 +224,14 @@ export default StyleSheet.create({
   },
   tabStyle: {
     width: Metrics.screenWidth * 0.4,
+    flex: 1,
+  },
+  noResults: {
+    alignItems: 'center',
+    padding: 30,
+  },
+  noResultsText: {
+    color: Colors.snow,
   },
 })
 

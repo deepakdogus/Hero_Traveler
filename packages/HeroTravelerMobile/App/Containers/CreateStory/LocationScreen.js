@@ -48,7 +48,7 @@ class LocationScreen extends Component {
     }
   }
 
-  _onChangeText = (text) => {
+  _onChangeText = text => {
     this.setState({text})
     if (text.length <= 2) return
     this.setState({searching: true})
@@ -78,8 +78,8 @@ class LocationScreen extends Component {
   }
 
   onSubmit = () => {
-    if (this.state.predictions.length || this.props.isMultiSelect) return
-    else this.props.onSelectLocation({"name": this.state.text})
+    if (this.state.predictions.length || this.props.isMultiSelect) return
+    else this.props.onSelectLocation({'name': this.state.text})
   }
 
   renderPlaces() {
@@ -161,7 +161,7 @@ class LocationScreen extends Component {
           </View>
           <ScrollView style={styles.scrollView} keyboardShouldPersistTaps='always'>
             {!!locations.length && this.renderSelectedLocations()}
-            {searching  &&
+            {searching &&
               <Loader style={styles.spinner} spinnerColor={Colors.blackoutTint} />
             }
             {!searching && !!predictions.length && this.renderPlaces()}

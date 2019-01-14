@@ -133,7 +133,7 @@ class RootContainer extends Component {
   }
 
   isLightStatusBarText() {
-    const location = this.props.location
+    const { location } = this.props
     return location
       && (
         location == 'signup'

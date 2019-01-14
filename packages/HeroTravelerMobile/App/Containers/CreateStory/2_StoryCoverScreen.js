@@ -22,6 +22,7 @@ import styles, {customStyles, modalWrapperStyles} from './2_StoryCoverScreenStyl
 import NavBar from './NavBar'
 import getRelativeHeight, {extractCoverMetrics} from '../../Shared/Lib/getRelativeHeight'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTimeTooltips'
+import { getPendingDraftById } from '../../Shared/Lib/getPendingDrafts'
 import isLocalDraft from '../../Shared/Lib/isLocalDraft'
 import {trimVideo} from '../../Shared/Lib/mediaHelpers'
 import UserActions from '../../Shared/Redux/Entities/Users'
@@ -54,6 +55,7 @@ class StoryCoverScreen extends Component {
     user: PropTypes.object,
     story: PropTypes.object,
     storyId: PropTypes.string,
+    pendingUpdate: PropTypes.object,
     navigatedFromProfile: PropTypes.bool,
     shouldLoadStory: PropTypes.bool,
     update: PropTypes.func,
@@ -66,6 +68,7 @@ class StoryCoverScreen extends Component {
     saveDraft: PropTypes.func,
     error: PropTypes.string,
     draftToBeSaved: PropTypes.object,
+    setWorkingDraft: PropTypes.func,
   }
 
   static defaultProps = {
@@ -86,7 +89,7 @@ class StoryCoverScreen extends Component {
       videoUploading: false,
       isScrollDown: !!props.workingDraft.coverImage | !!props.workingDraft.coverVideo,
       titleHeight: 37,
-      activeModal: undefined,
+      activeModal: props.pendingUpdate ? 'existingUpdateWarning' : undefined,
       toolbarDisplay: false,
       contentTouched: false,
       coverMetrics: {},
@@ -206,6 +209,41 @@ class StoryCoverScreen extends Component {
         </View>
       </Modal>
     )
+  }
+
+  renderExistingUpdateModal = () => {
+    const customizedModalWrapperStyles = {
+      ...modalWrapperStyles,
+      height: 165,
+    }
+    return (
+      <Modal
+        closeModal={this.closeModal}
+        modalStyle={customizedModalWrapperStyles}
+      >
+        <Text style={styles.modalTitle}>You have an existing edit to this story.</Text>
+        <Text style={styles.modalMessage}>Do you want to discard these changes or continue from your last edit?</Text>
+        <View style={styles.modalBtnWrapper}>
+          <TouchableOpacity
+            style={[styles.modalBtn, styles.modalBtnLeft]}
+            onPress={this.closeModal}
+          >
+            <Text style={styles.modalBtnText}>Discard</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.modalBtn}
+            onPress={this._setWorkingDraft}
+          >
+            <Text style={styles.modalBtnText}>Continue</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+    )
+  }
+
+  _setWorkingDraft = () => {
+    this.props.setWorkingDraft(this.props.pendingUpdate)
+    this.closeModal()
   }
 
   _onTitle = () => {
@@ -697,6 +735,9 @@ class StoryCoverScreen extends Component {
         {this.state.activeModal === 'saveFail' || (this.hasNoDraft() && !!this.props.error)
           && this.renderFailModal()
         }
+        {this.state.activeModal === 'existingUpdateWarning' && (
+          this.renderExistingUpdateModal()
+        )}
         {this.isUploading() &&
           <Loader
             style={styles.loading}
@@ -732,10 +773,12 @@ class StoryCoverScreen extends Component {
 }
 
 export default connect((state) => {
+  const originalDraft = {...state.storyCreate.draft}
   return {
     user: state.entities.users.entities[state.session.userId],
-    originalDraft: {...state.storyCreate.draft},
+    originalDraft,
     workingDraft: {...state.storyCreate.workingDraft},
+    pendingUpdate: getPendingDraftById(state, originalDraft.id),
     draftToBeSaved: {...state.storyCreate.draftToBeSaved},
     error: state.storyCreate.error || '',
   }
@@ -749,5 +792,6 @@ export default connect((state) => {
     dispatch(UserActions.updateUser({introTooltips})),
   resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
   saveDraft: (draft, saveAsDraft) => dispatch(StoryCreateActions.saveLocalDraft(draft, saveAsDraft)),
+  setWorkingDraft: (story) => dispatch(StoryCreateActions.editStorySuccess(story)),
 }),
 )(StoryCoverScreen)

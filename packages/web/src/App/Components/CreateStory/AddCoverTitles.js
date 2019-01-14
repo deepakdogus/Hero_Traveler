@@ -275,15 +275,12 @@ export default class AddCoverTitles extends React.Component {
     this._onTextChange(event)
   }
 
-  // add this to properly set the value of the titleInput
   componentWillReceiveProps(nextProps) {
     const { workingDraft } = nextProps
-    if (isNewStory(this.props, nextProps)) {
-      this.setState({
-        title: workingDraft.title,
-        description: workingDraft.title,
-      })
-    }
+    this.setState({
+      title: workingDraft.title,
+      description: workingDraft.description,
+    })
   }
 
   renderUploadButton() {

@@ -73,6 +73,7 @@ export default class FeedItemPreview extends Component {
 
   navToStoryEdit = () => {
     const storyId = this.props.feedItem.id
+
     NavActions.createStoryFlow({
       storyId,
       type: 'reset',

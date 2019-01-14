@@ -22,6 +22,7 @@ import {
   haveFieldsChanged,
   isFieldSame,
 } from '../Shared/Lib/draftChangedHelpers'
+import { getPendingDraftById } from '../Shared/Lib/getPendingDrafts'
 
 export const Container = styled.div`
   display: flex;
@@ -73,6 +74,7 @@ class EditStory extends Component {
     accessToken: PropTypes.string,
     originalDraft: PropTypes.object,
     workingDraft: PropTypes.object,
+    hasPendingUpdate: PropTypes.bool,
     story: PropTypes.object,
     userId: PropTypes.string,
     storyId: PropTypes.string,
@@ -98,6 +100,12 @@ class EditStory extends Component {
     super(props)
     this.state = {
       error: {},
+    }
+    if (props.hasPendingUpdate) {
+      props.openGlobalModal(
+        'existingUpdateWarning',
+        { storyId: props.storyId },
+      )
     }
   }
 
@@ -355,7 +363,7 @@ class EditStory extends Component {
     return (
       <Container>
         <ContentWrapper>
-          { workingDraft &&
+          { workingDraft && (
             <ItemContainer>
               <AuthRoute
                 path={`${match.url}/cover`}
@@ -367,7 +375,7 @@ class EditStory extends Component {
                 component={CreateStoryDetails}
               />
             </ItemContainer>
-          }
+          )}
         </ContentWrapper>
         <FooterToolbar
           discardDraft={this._discardDraft}
@@ -412,12 +420,13 @@ function mapStateToProps(state, props) {
   const syncProgressMessage = syncProgress === syncProgressSteps
     ? ''
     : message
-  const pendingDraft = _.get(state, `pendingUpdates.pendingUpdates[${storyId}].story`)
+  const pendingDraft = getPendingDraftById(state, storyId)
 
   return {
     userId: state.session.userId,
     storyId,
     story: stories[storyId] || pendingDraft,
+    hasPendingUpdate: !!pendingDraft,
     accessToken: accessToken.value,
     subPath: getSubPath(state.routes.location),
     originalDraft: state.storyCreate.draft,

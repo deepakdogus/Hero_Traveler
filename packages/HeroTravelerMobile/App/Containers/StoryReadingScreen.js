@@ -65,7 +65,7 @@ const StoryVideo = enhanceStoryVideo((props) => {
 
 const atomicHandler = (item: Object): any => {
   if (_.get(item, 'data.type')) {
-    // if backgroundFailure getRelativeHeight returns NaN so adding failsafe
+    // if pendingDraft getRelativeHeight returns NaN so adding failsafe
     const width = Metrics.screenWidth
     const height = Math.min(
       getRelativeHeight(width, item.data),

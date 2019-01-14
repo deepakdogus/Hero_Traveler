@@ -93,11 +93,6 @@ class NotificationScreen extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
-    // if no more backgroundFailures - focus on normal notifications
-    if (this.state.selectedTab === 2 &&
-      (!nextProps.backgroundFailures || Object.keys(nextProps.backgroundFailures).length === 0)
-    ) this.setState({selectedTab: 0})
-
     if (nextProps.activities) {
       _.map(nextProps.activities, (activity) => {
         if (!activity.seen) nextProps.markSeen(activity._id);

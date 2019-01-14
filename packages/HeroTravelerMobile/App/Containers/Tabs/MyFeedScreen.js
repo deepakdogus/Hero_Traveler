@@ -128,7 +128,7 @@ class MyFeedScreen extends React.Component {
     )
   }
 
-  getFirstBackgroundFailure() {
+  getFirstPendingUpdate() {
     const { pendingUpdates, updateOrder } = this.props
     const firstFailureKey = updateOrder.find(key => {
       const pendingUpdate = pendingUpdates[key] || {}
@@ -160,7 +160,7 @@ class MyFeedScreen extends React.Component {
     let bottomContent
 
     const isStoriesSelected = selectedTab === tabTypes.stories
-    const failure = this.getFirstBackgroundFailure()
+    const failure = this.getFirstPendingUpdate()
 
     if (
       (isStoriesSelected && (!storiesById || !storiesById.length))

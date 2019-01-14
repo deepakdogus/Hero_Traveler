@@ -16,6 +16,7 @@ class ProfileScreen extends React.Component {
     const shouldUpdate = _.some([
       this.props.user !== nextProps.user,
       this.props.draftsById !== nextProps.draftsById,
+      this.props.pendingDraftsIds !== nextProps.pendingDraftsIds,
       this.props.userStoriesById !== nextProps.userStoriesById,
       this.props.userStoriesFetchStatus !== nextProps.userStoriesFetchStatus,
       this.props.userBookmarksById !== nextProps.userBookmarksById,

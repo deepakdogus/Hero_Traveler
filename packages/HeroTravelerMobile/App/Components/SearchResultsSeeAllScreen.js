@@ -25,7 +25,7 @@ class SearchResultsSeeAllScreen extends Component {
     const { feedItemType, typeLabels, feedItems } = this.props
     return (
       <View style={styles.root}>
-        <ScrollView style={styles.scrollView}>
+        <ScrollView style={styles.scrollViewNoMargin}>
           <FeedItemsOfType
             type={feedItemType}
             label={typeLabels[feedItemType].toUpperCase()}

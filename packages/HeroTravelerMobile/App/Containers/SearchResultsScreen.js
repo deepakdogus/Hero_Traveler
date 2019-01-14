@@ -54,8 +54,9 @@ class SearchResultsScreen extends Component {
     try {
       // location
       const { historyData, location } = this.props
-      const { latitude, longitude } =
-      (historyData.latitude && historyData.longitude)
+      const { latitude, longitude } = (
+        historyData.latitude && historyData.longitude
+      )
         ? historyData
         : await RNGooglePlaces.lookUpPlaceByID(
             location.placeID,
@@ -149,7 +150,7 @@ class SearchResultsScreen extends Component {
         )}
         {!isFetchingResults && hasResults && (
           <ScrollView style={styles.scrollView}>
-            {Object.keys(this.typeLabels).map(type => {
+            {Object.keys(this.typeLabels).map((type, idx) => {
               const feedItems = (type === 'guides' || type === 'stories')
                 ? lastSearchResults[type]
                 : lastSearchResults.stories.filter(feedItem => feedItem.type === type)
@@ -163,6 +164,7 @@ class SearchResultsScreen extends Component {
                   onPressAll={this._navToSeeAll(type, feedItems)}
                   onPressAuthor={this._onPressAuthor}
                   isShowAll={false}
+                  showDivider={idx !== 0}
                   feedItems={feedItems}
                   isGuide={type === 'guides'}
                 />

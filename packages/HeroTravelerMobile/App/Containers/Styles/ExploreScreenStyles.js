@@ -8,8 +8,6 @@ export default StyleSheet.create({
     backgroundColor: Colors.snow,
   },
   fakeNavBar: {
-    // flex: 1,
-    // flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     height: Metrics.navBarHeight + 20, // 120 nav height = 60 + 40 tab bar + 20
@@ -29,7 +27,6 @@ export default StyleSheet.create({
   },
   headerSearch: {
     marginHorizontal: Metrics.baseMargin,
-    // flexDirection: 'column',
     flexDirection: 'row',
     justifyContent: 'space-between',
     height: isIPhoneX() ? 60 : 45,
@@ -51,7 +48,7 @@ export default StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 13,
-    color: Colors.snow,
+    color: Colors.background,
     textAlign: 'center',
     height: Metrics.searchBarHeight,
     marginLeft: 25,
@@ -73,9 +70,9 @@ export default StyleSheet.create({
     marginRight: Metrics.doubleBaseMargin,
     paddingTop: Metrics.baseMargin,
     paddingBottom: Metrics.baseMargin / 2,
-    justifyContent:'flex-end',
+    justifyContent: 'flex-end',
     borderBottomWidth: 1,
-    borderBottomColor: Colors.whiteAlphaPt3,
+    borderBottomColor: Colors.feedDividerGrey,
   },
   searchTitleText: {
     fontSize: 16,
@@ -102,7 +99,7 @@ export default StyleSheet.create({
   title: {
     ...Fonts.style.title,
     fontSize: 16,
-    color: Colors.snow,
+    color: Colors.background,
     textAlign: 'center',
   },
   grid: {
@@ -126,7 +123,7 @@ export default StyleSheet.create({
   gridRowText: {
     fontFamily: Fonts.type.montserrat,
     fontSize: 13,
-    color: Colors.snow,
+    color: Colors.background,
     backgroundColor: 'rgba(0,0,0,.4)',
     position: 'absolute',
     top: 0,
@@ -143,7 +140,6 @@ export default StyleSheet.create({
     height: 40,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: Colors.whiteAlphaPt15,
     borderBottomWidth: 1,
     borderBottomColor: Colors.feedDividerGrey,
   },
@@ -187,7 +183,7 @@ export default StyleSheet.create({
     right: 5,
   },
   InputXView: {
-    backgroundColor: '#616161',
+    backgroundColor: Colors.clear,
     borderRadius: 100,
     justifyContent: 'center',
     height: 15,
@@ -210,7 +206,7 @@ export default StyleSheet.create({
   },
   listItemText: {
     fontSize: 15,
-    color: Colors.snow,
+    color: Colors.background,
   },
   listItemTextSecondary: {
     fontSize: 12,
@@ -231,7 +227,7 @@ export default StyleSheet.create({
     padding: 30,
   },
   noResultsText: {
-    color: Colors.snow,
+    color: Colors.background,
   },
 })
 

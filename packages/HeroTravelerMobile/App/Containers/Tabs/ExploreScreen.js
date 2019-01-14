@@ -41,19 +41,6 @@ const algoliasearch = algoliasearchModule(
 const STORY_INDEX = env.SEARCH_STORY_INDEX
 const USERS_INDEX = env.SEARCH_USER_INDEX
 
-const Tab = ({ text, onPress, selected }) => {
-  return (
-    <TouchableOpacity
-      style={[styles.tab, selected ? styles.tabSelected : null]}
-      onPress={onPress}
-    >
-      <Text style={[styles.tabText, selected ? styles.tabTextSelected : null]}>
-        {text}
-      </Text>
-    </TouchableOpacity>
-  )
-}
-
 const tabTypes = {
   channels: 'channels',
   categories: 'categories',
@@ -62,7 +49,7 @@ const tabTypes = {
 class ExploreScreen extends Component {
   static propTypes = {
     selectedTab: PropTypes.string,
-    selectedTabIndex: null,
+    selectedTabIndex: PropTypes.number,
     stories: PropTypes.object,
     loadCategories: PropTypes.func,
     categories: PropTypes.object,

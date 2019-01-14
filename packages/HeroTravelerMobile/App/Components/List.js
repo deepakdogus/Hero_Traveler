@@ -26,7 +26,8 @@ export default class List extends React.Component {
       <ListView
         dataSource={this.state.dataSource}
         renderRow={this.props.renderRow}
-        style={styles.root}
+        root={styles.root}
+        contentContainerStyle={styles.listView}
       />
     )
   }
@@ -35,5 +36,9 @@ export default class List extends React.Component {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+  },
+  listView: {
+    flex: 1,
+    justifyContent: 'center',
   },
 })

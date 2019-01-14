@@ -18,13 +18,18 @@ export default StyleSheet.create({
     backgroundColor: Colors.clear,
   },
   profileTabsAndStoriesHeight: {
+    height: Metrics.screenHeight - Metrics.tabBarHeight + 10,
+  },
+  profileTabsAndStoriesReadOnlyHeight: {
     height: Metrics.screenHeight,
   },
   profileTabsAndStoriesRoot: {
     marginTop: 20,
   },
   profileTabsAndStoriesRootWithMarginForNavbar: {
-    marginTop: Metrics.navBarHeight - 15,
+    marginTop: isIPhoneX()
+      ? Metrics.navBarHeight + 14 // 15 -1 to keep shared border @ 1px
+      : Metrics.navBarHeight - 1, // same as line above
   },
   gradientWrapper: {
     flex: 1,
@@ -40,7 +45,7 @@ export default StyleSheet.create({
     marginRight: 15,
   },
   topAreaWrapper: {
-    marginBottom: 30,
+    marginBottom: 10,
   },
   avatarWrapper: {
     flexDirection: 'column',
@@ -55,9 +60,6 @@ export default StyleSheet.create({
     height: 22,
     width: 22,
     tintColor: Colors.signupGrey,
-  },
-  readingViewTop: {
-    height: 20,
   },
   userInfoMargin: {
     marginLeft: Metrics.baseMargin,

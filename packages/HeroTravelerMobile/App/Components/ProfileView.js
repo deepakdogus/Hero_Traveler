@@ -155,7 +155,6 @@ class ProfileView extends React.Component {
 
     return (
       <View style={rootStyles}>
-        <View style={styles.gradientWrapper}>
           <ProfileTabsAndStories
             editable={editable}
             isStory={selectedTab !== TabTypes.guides}
@@ -172,7 +171,6 @@ class ProfileView extends React.Component {
             error={this.getProfileTabsAndStoriesError()}
             onRefresh={onRefresh}
           />
-        </View>
         {this.state.error && (
           <ShadowButton
             style={styles.errorButton}

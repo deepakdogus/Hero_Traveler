@@ -42,6 +42,7 @@ export default class ProfileTabsAndStories extends Component {
         activeTab={selectedTab}
         onClickTab={selectTab}
         tabStyle={styles.tabStyle}
+        largeTabBar
       />
     )
   }
@@ -101,9 +102,9 @@ export default class ProfileTabsAndStories extends Component {
     return (
       <View style={styles.topAreaWrapper}>
         {renderProfileInfo()}
-        {!!error &&
+        {!!error && (
           <Text style={styles.errorText}>{errorText}</Text>
-        }
+        )}
       </View>
     )
   }
@@ -114,7 +115,7 @@ export default class ProfileTabsAndStories extends Component {
     // change.
     const {user, editable} = this.props
 
-    let height = editable ? 237 : 219
+    let height = editable ? 217 : 179
     height += hasBadge(user.role) ? 21 : 0
     height += this.props.error ? 27 : 0
     return height
@@ -129,30 +130,31 @@ export default class ProfileTabsAndStories extends Component {
     const isGettingStories = this.isGettingStories()
 
     return (
-      <View style={[
-        styles.profileTabsAndStoriesHeight,
-        editable ? styles.profileTabsAndStoriesRoot : styles.profileTabsAndStoriesRootWithMarginForNavbar,
-      ]}>
-        {(this.areNoStories() || this.isFetching()) &&
+      <View style={
+        editable
+          ? [styles.profileTabsAndStoriesHeight, styles.profileTabsAndStoriesRoot]
+          : [styles.profileTabsAndStoriesReadOnlyHeight, styles.profileTabsAndStoriesRootWithMarginForNavbar]
+      }>
+        {(this.areNoStories() || this.isFetching()) && (
           <View>
             {renderProfileInfo && this._renderProfileInfo()}
             {this.renderTabs()}
           </View>
-        }
-        {feedItemsById.length === 0 && fetchStatus.loaded &&
+        )}
+        {feedItemsById.length === 0 && fetchStatus.loaded && (
           <View style={styles.noStories}>
             <Text style={styles.noStoriesText}>{this.getNoStoriesText()}</Text>
           </View>
-        }
-        {isGettingStories &&
+        )}
+        {isGettingStories && (
           <View style={styles.spinnerWrapper}>
             <Loader
               style={styles.spinner}
               spinnerColor={Colors.background} />
           </View>
-        }
+        )}
 
-        {feedItemsById.length !== 0 && !isGettingStories &&
+        {feedItemsById.length !== 0 && !isGettingStories && (
           <ConnectedFeedList
             isStory={isStory}
             style={styles.feedList}
@@ -165,7 +167,7 @@ export default class ProfileTabsAndStories extends Component {
             pagingIsDisabled
             onRefresh={onRefresh}
           />
-        }
+        )}
       </View>
     )
   }

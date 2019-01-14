@@ -12,6 +12,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: Colors.feedDividerGrey,
   },
+  largeWrapper: {
+    height: 50,
+    borderTopWidth: 1,
+    borderTopColor: Colors.feedDividerGrey,
+  },
   scrollView: {
     alignItems: 'center',
     flex: 1,
@@ -25,6 +30,7 @@ export default class TabBar extends Component {
     activeTab: PropTypes.string, // removing required since it can also be null
     onClickTab: PropTypes.func.isRequired,
     tabStyle: PropTypes.number, // StyleSheet.create returns numbers
+    largeTabBar: PropTypes.bool,
   }
 
   _onCickTab = (tabValue) => {
@@ -47,8 +53,9 @@ export default class TabBar extends Component {
   }
 
   render() {
+    const { largeTabBar } = this.props
     return (
-      <View style={styles.wrapper}>
+      <View style={[styles.wrapper, largeTabBar && styles.largeWrapper]}>
         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}

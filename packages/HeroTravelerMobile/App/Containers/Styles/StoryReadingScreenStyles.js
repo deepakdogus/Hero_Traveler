@@ -1,12 +1,13 @@
 import { StyleSheet } from 'react-native'
 import { ApplicationStyles, Colors, Metrics, Fonts } from '../../Shared/Themes/'
+import { isIPhoneX } from '../../Themes/Metrics'
 
 export const styles = StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
     flex: 1,
     backgroundColor: Colors.snow,
-    marginTop: Metrics.navBarHeight - 15,
+    marginTop: isIPhoneX() ? Metrics.navBarHeight + 15 : Metrics.navBarHeight,
     borderStyle: 'solid',
     borderTopWidth: 1,
     borderColor: Colors.dividerGrey,

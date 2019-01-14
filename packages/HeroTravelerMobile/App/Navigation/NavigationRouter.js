@@ -434,7 +434,7 @@ export default NavActions.create(
         leftButtonIconStyle={Styles.redHighlightTint}
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        navigationBarStyle={Styles.navBarWhite}
+        navigationBarStyle={Styles.navBarFixedHeight}
       />
       <Scene
         key='guestExplore'

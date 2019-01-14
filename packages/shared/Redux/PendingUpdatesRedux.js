@@ -54,9 +54,12 @@ export const addPendingUpdate = (state, { story, error, failedMethod, status }) 
 export const removePendingUpdate = (state, { draftId }) => {
   state = state.setIn(['pendingUpdates'], state.pendingUpdates.without(draftId))
   const path = ['updateOrder']
-  return state.setIn(path, state.getIn(path, draftId).filter(id => {
-    return id !== draftId
-  }))
+  return state.setIn(
+    path,
+    state.getIn(path, draftId).filter(id => {
+      return id !== draftId
+    })
+  )
 }
 
 export const setRetryingUpdate = (state, { storyId }) => {

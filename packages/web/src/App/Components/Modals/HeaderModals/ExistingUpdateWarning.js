@@ -66,7 +66,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    setWorkingDraft: (story) => dispatch(StoryCreateActions.editStorySuccess(story)),
+    setWorkingDraft: (story) => dispatch(StoryCreateActions.editStorySuccess(story, true)),
   }
 }
 

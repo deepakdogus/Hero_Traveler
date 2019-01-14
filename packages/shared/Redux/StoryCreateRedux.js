@@ -7,7 +7,7 @@ import _ from 'lodash'
 const { Types, Creators } = createActions({
   addLocalDraft: ['draft'],
   editStory: ['storyId', 'cachedStory'],
-  editStorySuccess: ['story'],
+  editStorySuccess: ['story', 'isPendingUpdateOverride'],
   editStoryFailure: ['error', 'cachedStory'],
   saveLocalDraft: ['draft', 'saveAsDraft'],
   saveDraftSuccess: ['draft', 'story'],
@@ -45,6 +45,7 @@ export const INITIAL_STATE = Immutable({
   draft: null,
   workingDraft: null,
   draftToBeSaved: null,
+  isPendingUpdateOverride: false,
   sync: {
     syncProgress: 0,
     syncProgressSteps: 0,
@@ -174,12 +175,13 @@ export const editStory = (state) => {
   })
 }
 
-export const editStorySuccess = (state, {story}) => {
+export const editStorySuccess = (state, { story, isPendingUpdateOverride = false }) => {
   return state.merge({
     fetchStatus: {
       loaded: true,
       fetching: false
     },
+    isPendingUpdateOverride,
     draft: story,
     workingDraft: story,
     error: false,

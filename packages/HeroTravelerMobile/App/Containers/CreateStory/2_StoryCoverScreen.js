@@ -81,6 +81,8 @@ class StoryCoverScreen extends Component {
     super(props)
     this.timeout = null
 
+    const hasPendingUpdate = props.pendingUpdate && !isLocalDraft(props.storyId)
+
     this.state = {
       file: null,
       updating: false,
@@ -89,7 +91,7 @@ class StoryCoverScreen extends Component {
       videoUploading: false,
       isScrollDown: !!props.workingDraft.coverImage | !!props.workingDraft.coverVideo,
       titleHeight: 37,
-      activeModal: props.pendingUpdate ? 'existingUpdateWarning' : undefined,
+      activeModal: hasPendingUpdate ? 'existingUpdateWarning' : undefined,
       toolbarDisplay: false,
       contentTouched: false,
       coverMetrics: {},

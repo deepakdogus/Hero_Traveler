@@ -176,8 +176,8 @@ const StyledRow = styled(Row)`
 `
 
 function isNewStory(props, nextProps) {
-  return (!props.workingDraft && nextProps.workingDraft) ||
-  (props.workingDraft.id !== nextProps.workingDraft.id)
+  return (!props.workingDraft && nextProps.workingDraft)
+  || (props.workingDraft.id !== nextProps.workingDraft.id)
 }
 
 export default class AddCoverTitles extends React.Component {
@@ -186,6 +186,7 @@ export default class AddCoverTitles extends React.Component {
     uploadImage: PropTypes.func,
     workingDraft: PropTypes.object,
     isGuide: PropTypes.bool,
+    isPendingUpdateOverride: PropTypes.bool,
   }
 
   constructor(props) {
@@ -256,14 +257,12 @@ export default class AddCoverTitles extends React.Component {
     }
 
     // set line break index so deleting first char of a newline reduces height
-    const textAreaBreakCharIdx =
-      this.state.textAreaHeight.height !== `${this.textAreaRef.scrollHeight}px`
+    const textAreaBreakCharIdx = this.state.textAreaHeight.height !== `${this.textAreaRef.scrollHeight}px`
         ? this.state.title.length + 1
         : this.state.textAreaBreakCharIdx
 
-    const textAreaHeight =
-      event.target.value.length >= this.state.title.length ||
-      event.target.value.length >= this.state.textAreaBreakCharIdx
+    const textAreaHeight = event.target.value.length >= this.state.title.length
+      || event.target.value.length >= this.state.textAreaBreakCharIdx
         ? { height: `${this.textAreaRef.scrollHeight}px` }
         : { height: `${this.textAreaRef.scrollHeight - 50 || 50}px` }
 
@@ -276,11 +275,16 @@ export default class AddCoverTitles extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { workingDraft } = nextProps
-    this.setState({
-      title: workingDraft.title,
-      description: workingDraft.description,
-    })
+    const { workingDraft, isPendingUpdateOverride } = nextProps
+    if (
+      isNewStory(this.props, nextProps)
+      || (!this.props.isPendingUpdateOverride && isPendingUpdateOverride)
+    ) {
+      this.setState({
+        title: workingDraft.title,
+        description: workingDraft.description,
+      })
+    }
   }
 
   renderUploadButton() {

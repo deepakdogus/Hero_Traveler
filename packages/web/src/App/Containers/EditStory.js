@@ -101,7 +101,7 @@ class EditStory extends Component {
     this.state = {
       error: {},
     }
-    if (props.hasPendingUpdate) {
+    if (props.hasPendingUpdate && !this.isLocalStory()) {
       props.openGlobalModal(
         'existingUpdateWarning',
         { storyId: props.storyId },

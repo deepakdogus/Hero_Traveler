@@ -28,12 +28,14 @@ export function * login (api, { userIdentifier, password }) {
         put(SessionActions.initializeSession(user.id, tokens)),
         put(LoginActions.loginSuccess()),
         put(UserActions.fetchActivities()),
-        put(SignupActions.signupGetUsersCategories())
+        put(SignupActions.signupGetUsersCategories()),
       ]
-    } else {
+    }
+    else {
       yield put(LoginActions.loginFailure(errorFormatter(response)))
     }
-  } catch (error) {
+  }
+  catch (error) {
     yield put(LoginActions.loginFailure(error))
   }
 }

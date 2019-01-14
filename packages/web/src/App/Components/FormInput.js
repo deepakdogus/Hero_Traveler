@@ -13,7 +13,7 @@ const ErrorText = styled.p`
   position: relative;
   font-size: 12px;
   padding-left: 2px;
-  color: ${props => props.theme.Colors.redHighlights}
+  color: ${props => props.theme.Colors.redHighlights};
 `
 
 export default class Input extends React.Component {
@@ -33,9 +33,9 @@ export default class Input extends React.Component {
           placeholder={placeholder}
           type={type}
         />
-        {meta.touched && !meta.active && meta.error &&
+        {meta.touched && !meta.active && meta.error && (
           <ErrorText>{meta.error}</ErrorText>
-        }
+        )}
       </InputWrapper>
     )
   }

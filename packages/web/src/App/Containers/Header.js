@@ -14,6 +14,7 @@ import UserActions from '../Shared/Redux/Entities/Users'
 import SessionActions from '../Shared/Redux/SessionRedux'
 import UXActions from '../Redux/UXRedux'
 import StoryActions from '../Shared/Redux/Entities/Stories'
+import GuideActions from '../Shared/Redux/Entities/Guides'
 import HeaderModals from '../Components/HeaderModals'
 import { sizes } from '../Themes/Metrics'
 import {
@@ -52,6 +53,7 @@ class Header extends React.Component {
     attemptLogout: PropTypes.func,
     attemptChangePassword: PropTypes.func,
     attemptGetUserFeed: PropTypes.func,
+    attemptGetUserGuides: PropTypes.func,
     closeGlobalModal: PropTypes.func,
     openGlobalModal: PropTypes.func,
     globalModalThatIsOpen: PropTypes.string,
@@ -107,13 +109,11 @@ class Header extends React.Component {
     const { currentUserId } = this.props
 
     if (currentUserId && prevProps.currentUserId !== currentUserId) {
-      this.props.attemptGetUserFeed(
-        currentUserId,
-        {
-          perPage: itemsPerQuery,
-          page: 1,
-        },
-      )
+      this.props.attemptGetUserFeed(currentUserId, {
+        perPage: itemsPerQuery,
+        page: 1,
+      })
+      this.props.attemptGetUserGuides(currentUserId)
     }
     if (!prevProps.signedUp && this.props.signedUp) {
       this.props.reroute('/signup/topics')
@@ -128,7 +128,11 @@ class Header extends React.Component {
       this.props.reroute('/')
       this.props.openGlobalModal('login')
     }
-    if (prevProps.globalModalThatIsOpen === 'documentation' && !this.props.globalModalThatIsOpen && !this.props.isLoggedIn) {
+    if (
+      prevProps.globalModalThatIsOpen === 'documentation'
+      && !this.props.globalModalThatIsOpen
+      && !this.props.isLoggedIn
+    ) {
       this.props.reroute('/')
       this.props.openGlobalModal('login')
     }
@@ -197,7 +201,7 @@ class Header extends React.Component {
   }
 
   // name correspond to icon name and button name
-  openModal = (event) => {
+  openModal = event => {
     const name = event.target.name
     let modalToOpen
     if (name === 'inbox' || name === 'loginEmail') modalToOpen = 'inbox'
@@ -242,7 +246,11 @@ class Header extends React.Component {
 
     return (
       <div>
-        <StyledGrid fluid fixed hasBlackBackground={hasBlackBackground}>
+        <StyledGrid
+          fluid
+          fixed
+          hasBlackBackground={hasBlackBackground}
+        >
           {isLoggedIn && (
             <HeaderLoggedIn
               userId={currentUserId}
@@ -338,6 +346,7 @@ function mapDispatchToProps(dispatch) {
     attemptChangePassword: (userId, oldPassword, newPassword) =>
       dispatch(LoginActions.changePasswordRequest(userId, oldPassword, newPassword)),
     attemptGetUserFeed: (userId, params) => dispatch(StoryActions.feedRequest(userId, params)),
+    attemptGetUserGuides: userId => dispatch(GuideActions.getUserGuides(userId)),
     closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
     reroute: route => dispatch(push(route)),

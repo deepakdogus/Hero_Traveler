@@ -10,7 +10,7 @@ import ImageWrapper from './ImageWrapper'
 import { getFeedItemImageURL } from './FeedItemsOfType'
 import styles from './Styles/GuideMapStyles'
 import { storyWidth, storyHeight } from './Styles/FeedItemsOfTypeStyles'
-import { displayLocation } from '../Shared/Lib/locationHelpers'
+import { displayLocationDetails } from '../Shared/Lib/locationHelpers'
 
 const videoImageOptions = {
   video: true,
@@ -73,8 +73,7 @@ class GuideMap extends Component {
           + (distance * increment) / Math.cos((lat * Math.PI) / 180)
         latLongId = lat + '-' + long
         increment++
-      }
-      while (cache.indexOf(latLongId) > -1)
+      } while (cache.indexOf(latLongId) > -1)
       cache.push(latLongId)
 
       coords[story.id] = {
@@ -121,11 +120,13 @@ class GuideMap extends Component {
     return storiesRegion
   })
 
-  onPressStory = story => () =>
-    NavActions.story({
-      storyId: story._id,
-      title: displayLocation(story.locationInfo),
-    })
+  onPressStory = story => {
+    return () =>
+      NavActions.story({
+        storyId: story._id,
+        title: displayLocationDetails(story.locationInfo),
+      })
+  }
 
   renderStoryPins = () => {
     return this.props.stories.map(story => {

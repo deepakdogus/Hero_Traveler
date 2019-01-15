@@ -328,8 +328,7 @@ export default class ProfileHeaderEdit extends React.Component {
     } = this.state
     const avatarUrl = getImageUrl(user.profile.avatar, 'avatarLarge')
     const minRows = 7
-    const bioLines =
-      (bio && typeof bio === 'string')
+    const bioLines = (bio && typeof bio === 'string')
       ? (bio.match(/\r?\n/g) || '').length + 1
       : minRows
     let targetedImage
@@ -338,6 +337,10 @@ export default class ProfileHeaderEdit extends React.Component {
       targetedImage = getImageUrl(loadedImage)
     }
     else if (photoType === 'avatar') targetedImage = avatarUrl
+
+    const isUsernameError = _.get(error, 'message', '').includes('username')
+    const isBioError = _.get(error, 'message', '').includes('Bio')
+      || (bio && bio.length > 500)
 
     const avatarIsClickable = () => true
 
@@ -400,7 +403,7 @@ export default class ProfileHeaderEdit extends React.Component {
           { !!username && username.length < SignupConstants.USERNAME_MIN_LENGTH &&
             <ErrorText>Username must be at least {SignupConstants.USERNAME_MIN_LENGTH} characters long</ErrorText>
           }
-          { !!error &&
+          { !!isUsernameError &&
             <ErrorText>Sorry, that username is already in use</ErrorText>
           }
           <Label>About</Label>
@@ -422,11 +425,15 @@ export default class ProfileHeaderEdit extends React.Component {
               placeholder='Enter your bio'
               onChange={this.onChangeText}
               rows={bioLines > minRows ? bioLines : minRows}
-              minRows={7}
+              minRows={5}
               maxRows={500}
+              maxLength={500}
               textProps={ResizableTextareaStyles}
             />
           </TextareaWrapper>
+          { !!isBioError &&
+            <ErrorText>Sorry, you‘ve exceeded the 500 character limit</ErrorText>
+          }
         </InputsWrapper>
 
         <SaveCancelButtonWrapper>

@@ -235,6 +235,7 @@ class ProfileEditScreen extends React.Component {
                   label='Bio'
                   placeholder='Tell us about yourself in detail'
                   multiline={true}
+                  maxLength={500}
                 />
               </View>
             </View>

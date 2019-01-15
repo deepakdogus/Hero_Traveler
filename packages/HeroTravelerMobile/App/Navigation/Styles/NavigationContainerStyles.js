@@ -5,20 +5,12 @@ export default {
   container: {
     flex: 1,
   },
-  navBar: {
-    backgroundColor: Colors.background,
-    borderBottomWidth: 0,
-    height: Metrics.navBarHeight,
-    paddingTop: isIPhoneX() ? 15 : 0,
-  },
   navBarTitle: {
     color: Colors.navBarText,
-    // marginTop: isIPhoneX() ? 15 : 0,
   },
   navBarClear: {
     backgroundColor: Colors.clear,
     borderBottomWidth: 0,
-    height: Metrics.navBarHeight,
     paddingTop: isIPhoneX() ? 15 : 0,
   },
   navBarFixedHeight: {
@@ -36,14 +28,6 @@ export default {
     height: Metrics.tabBarHeight,
     justifyContent: isIPhoneX() ? 'flex-start' : 'center',
   },
-  darkNavText: {
-    fontFamily: Fonts.type.montserrat,
-    fontSize: 16,
-    color: Colors.navBarText,
-  },
-  darkNavTitle: {
-    fontSize: 18,
-  },
   lightNavText: {
     fontFamily: Fonts.type.montserrat,
     color: Colors.background,
@@ -53,7 +37,7 @@ export default {
     fontSize: 18,
   },
   navBarBack: {
-    tintColor: 'white',
+    tintColor: Colors.feedDividerGrey,
   },
   browseGuest: {
     fontSize: 12,

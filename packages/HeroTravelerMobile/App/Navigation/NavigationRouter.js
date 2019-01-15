@@ -65,22 +65,7 @@ import SearchResultsSeeAllScreen from '../Components/SearchResultsSeeAllScreen'
 
 import { Images } from '../Shared/Themes'
 
-const darkNavBarProps = {
-  navigationBarStyle: Styles.navBar,
-  titleStyle: [Styles.darkNavText, Styles.darkNavTitle],
-  backButtonTextStyle: Styles.darkNavText,
-  leftButtonTextStyle: Styles.darkNavText,
-  rightButtonTextStyle: Styles.darkNavText,
-  leftButtonIconStyle: Styles.navBarBack,
-  rightButtonIconStyle: Styles.navBarBack,
-}
-
-const extraPaddingDarkNavBarProps = {
-  ...Styles.navBar,
-  paddingTop: 5,
-}
-
-const clearNavBarProps = {
+const navBarProps = {
   navigationBarStyle: Styles.navBarClear,
   titleStyle: [Styles.lightNavText, Styles.lightNavTitle],
   backButtonTextStyle: Styles.lightNavText,
@@ -172,7 +157,7 @@ const noop = () => {}
 export default NavActions.create(
     <Scene
       key='root'
-      {...clearNavBarProps}
+      {...navBarProps}
     >
         {/* Add this back when we have "Browse as a guest" functionality
             renderRightButton={launchNavButton}.
@@ -192,7 +177,7 @@ export default NavActions.create(
       />
       <Scene
         key='signupFlow'
-        {...clearNavBarProps}
+        {...navBarProps}
       >
         <Scene
           initial
@@ -248,7 +233,6 @@ export default NavActions.create(
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
         title='Change Password'
-        {...darkNavBarProps}
       />
       <Scene
         key='changeEmail'
@@ -257,7 +241,6 @@ export default NavActions.create(
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
         title='Change Email'
-        {...darkNavBarProps}
       />
       <Scene
         key='settings'
@@ -266,8 +249,6 @@ export default NavActions.create(
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
         title='Settings'
-        {...darkNavBarProps}
-        navigationBarStyle={extraPaddingDarkNavBarProps}
       />
       <Scene
         key='settings_notification'
@@ -276,8 +257,7 @@ export default NavActions.create(
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
         title='Notifications'
-        {...darkNavBarProps}
-        navigationBarStyle={extraPaddingDarkNavBarProps}
+
       />
       <Scene
         key='terms'
@@ -286,8 +266,6 @@ export default NavActions.create(
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
         title='Terms & Conditions'
-        {...darkNavBarProps}
-        navigationBarStyle={extraPaddingDarkNavBarProps}
       />
       <Scene
         key='FAQ'
@@ -296,8 +274,6 @@ export default NavActions.create(
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
         title='FAQ'
-        {...darkNavBarProps}
-        navigationBarStyle={extraPaddingDarkNavBarProps}
       />
       <Scene
         key='privacy'
@@ -305,7 +281,6 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         title='Privacy Policy'
-        {...darkNavBarProps}
       />
       <Scene
         key='resetPassword'
@@ -319,7 +294,7 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        {..._.merge({}, clearNavBarProps, redBack)}
+        {..._.merge({}, navBarProps, redBack)}
         titleStyle={Styles.storyTitle}
       />
       <Scene
@@ -328,7 +303,7 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        {..._.merge({}, clearNavBarProps, redBack)}
+        {..._.merge({}, navBarProps, redBack)}
         titleStyle={Styles.storyTitle}
       />
       <Scene
@@ -338,8 +313,6 @@ export default NavActions.create(
         onLeft={NavActions.pop}
         backButtonImage={Images.iconClose}
         title='Comments'
-        {...darkNavBarProps}
-        navigationBarStyle={extraPaddingDarkNavBarProps}
       />
       <Scene
         key='tabbar'
@@ -366,7 +339,6 @@ export default NavActions.create(
             key='explore_grid'
             initial
             component={ExploreScreen}
-            {...darkNavBarProps}
             hideNavBar={true}
           />
           <Scene
@@ -390,8 +362,7 @@ export default NavActions.create(
           icon={TabIcon}
           component={ActivityScreen}
           title='Notifications'
-          {...darkNavBarProps}
-          navigationBarStyle={extraPaddingDarkNavBarProps}
+          {...navBarProps}
         />
         <Scene
           key='profile'
@@ -443,6 +414,7 @@ export default NavActions.create(
         key='guestExplore'
         component={ExploreScreen}
         onLeft={NavActions.pop}
+        leftButtonIconStyle={Styles.redHighlightTint}
         backButtonImage={Images.iconArrowLeft}
       />
       <Scene
@@ -451,9 +423,8 @@ export default NavActions.create(
         title='Followers'
         direction='horizontal'
         onLeft={popVertical}
+        leftButtonIconStyle={Styles.redHighlightTint}
         backButtonImage={Images.iconArrowLeft}
-        {...darkNavBarProps}
-        navigationBarStyle={extraPaddingDarkNavBarProps}
       />
       <Scene
         key='mediaSelectorScreen'
@@ -502,7 +473,7 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        {..._.merge({}, clearNavBarProps, redBack)}
+        leftButtonIconStyle={Styles.redHighlightTint}
         titleStyle={Styles.storyTitle}
       />
       <Scene
@@ -511,7 +482,7 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        {..._.merge({}, clearNavBarProps, redBack)}
+        leftButtonIconStyle={Styles.redHighlightTint}
         titleStyle={Styles.storyTitle}
       />
     </Scene>,

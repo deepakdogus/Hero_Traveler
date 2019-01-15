@@ -1,11 +1,14 @@
 import { StyleSheet } from 'react-native'
 import { ApplicationStyles, Colors, Metrics, Fonts } from '../../Shared/Themes/'
+import { isIPhoneX } from '../../Themes/Metrics'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   scrollItemFullScreen: {
-    height: Metrics.screenHeight - Metrics.navBarHeight,
-    width: Metrics.screenWidth,
+    marginTop: isIPhoneX() ? Metrics.navBarHeight + 15 : Metrics.navBarHeight,
+    backgroundColor: Colors.transparent,
+    borderTopColor: Colors.feedDividerGrey,
+    borderTopWidth: 1,
   },
   center: {
     justifyContent: 'center',
@@ -22,7 +25,7 @@ export default StyleSheet.create({
     height: 50,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: Colors.lightGreyAreas,
+    backgroundColor: Colors.snow,
   },
   tabContent: {
     flex: 1,

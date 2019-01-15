@@ -9,9 +9,8 @@ import { isIPhoneX } from '../../Themes/Metrics'
 
 const styles = StyleSheet.create({
   root: {
-    height: Metrics.navBarHeight,
-    paddingTop: Metrics.baseMargin,
-    backgroundColor: Colors.background,
+    height: 80, // 80 nav height + 40 tab height = 120 total height
+    backgroundColor: Colors.snow,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -22,11 +21,13 @@ const styles = StyleSheet.create({
   },
   title: {
     flex: 1 / 3,
-    marginTop: isIPhoneX() ? 15 : 0,
   },
   titleText: {
     textAlign: 'center',
-    color: Colors.snow,
+    color: Colors.background,
+    fontSize: 18,
+    fontWeight: '700',
+    marginTop: 45,
   },
   row: {
     flexDirection: 'row',
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
   leftText: {
     textAlign: 'left',
     paddingLeft: Metrics.doubleBaseMargin,
-    color: Colors.snow,
+    color: Colors.feedDividerGrey,
   },
   right: {
     flex: 1 / 3,
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
     paddingRight: Metrics.doubleBaseMargin,
   },
   leftBtn: {
-    tintColor: Colors.snow,
+    tintColor: Colors.redHighlights,
   },
   inactiveText: {
     opacity: 0.5,
@@ -64,6 +65,7 @@ const styles = StyleSheet.create({
   },
   leftIconStyle: {
     ...NavButtonStyles.image,
+    tintColor: Colors.red,
     marginLeft: 10,
   },
   rightIconStyle: {

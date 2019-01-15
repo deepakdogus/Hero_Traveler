@@ -13,7 +13,8 @@ export default {
     flexDirection: 'row',
   },
   image: {
-    height: 21,
-    width: 13,
+    height: 15,
+    width: 9,
+    alignSelf: 'center',
   },
 }

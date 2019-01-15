@@ -5,7 +5,7 @@ export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
     backgroundColor: Colors.dividerGrey,
-    paddingTop: Metrics.navBarHeight,
+    paddingTop: Metrics.navBarHeight + 20, // +20 so overall height with tabs = 120
   },
   noStoriesWrapper: {
     flex: 1,
@@ -15,7 +15,7 @@ export default StyleSheet.create({
   },
   center: {
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   message: {
     fontSize: 16,
@@ -23,19 +23,22 @@ export default StyleSheet.create({
     paddingVertical: 7,
     textAlign: 'center',
   },
-  navbarRightTextStyle: {
+  followTextStyle: {
     fontFamily: Fonts.type.montserrat,
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: '600',
-    color: Colors.snow,
+    color: Colors.redHighlights,
+  },
+  followingTextStyle: {
+    fontFamily: Fonts.type.montserrat,
+    fontSize: 10,
+    fontWeight: '600',
+    color: Colors.background,
   },
   navbarContainer: {
     position: 'absolute',
     width: Metrics.screenWidth,
     zIndex: 100,
-  },
-  navbarLeftIconStyle: {
-    tintColor: Colors.navBarText
   },
   navbarTitleStyle: {
     fontSize: 18,
@@ -43,5 +46,8 @@ export default StyleSheet.create({
   },
   feedList: {
     height: Metrics.screenHeight - Metrics.tabBarHeight,
-  }
+  },
+  tabStyle: {
+    width: Metrics.screenWidth * 0.25,
+  },
 })

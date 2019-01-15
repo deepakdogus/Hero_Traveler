@@ -1,37 +1,46 @@
 import _ from 'lodash'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Text, View} from 'react-native'
+import { Text, View } from 'react-native'
 import { connect } from 'react-redux'
-import {Actions as NavActions} from 'react-native-router-flux'
+import { Actions as NavActions } from 'react-native-router-flux'
 
-import StoryActions, {getByCategory, getFetchStatus} from '../../Shared/Redux/Entities/Stories'
-import GuideActions  from '../../Shared/Redux/Entities/Guides'
+import StoryActions, {
+  getByCategory,
+  getFetchStatus,
+} from '../../Shared/Redux/Entities/Stories'
+import GuideActions from '../../Shared/Redux/Entities/Guides'
 import SignupActions from '../../Shared/Redux/SignupRedux'
 
 import ConnectedFeedItemPreview from '../ConnectedFeedItemPreview'
 import ConnectedFeedList from '../../Containers/ConnectedFeedList'
 import Loader from '../../Components/Loader'
 
-import {Metrics} from '../../Shared/Themes'
+import { Metrics } from '../../Shared/Themes'
 import styles from '../Styles/CategoryFeedScreenStyles'
 import NoStoriesMessage from '../../Components/NoStoriesMessage'
 import TabBar from '../../Components/TabBar'
 import NavBar from '../CreateStory/NavBar'
 
-const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight - 40
+const imageHeight
+  = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight - 40
 
 const tabTypes = {
   all: null,
-  see: "see",
-  do: "do",
-  eat: "eat",
-  stay: "stay",
-  guide: "guide",
+  see: 'see',
+  do: 'do',
+  eat: 'eat',
+  stay: 'stay',
+  guide: 'guide',
+}
+
+// removing story subtypes for now, to add back replace `restrictedTabTypes` on line 144 with `tabTypes`
+const restrictedTabTypes = {
+  stories: null,
+  guides: 'guide',
 }
 
 class CategoryFeedScreen extends React.Component {
-
   static propTypes = {
     categoryId: PropTypes.string,
     user: PropTypes.object,
@@ -53,7 +62,7 @@ class CategoryFeedScreen extends React.Component {
     super(props)
     this.state = {
       refreshing: false,
-      selectedTab: null
+      selectedTab: null,
     }
   }
 
@@ -78,29 +87,30 @@ class CategoryFeedScreen extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.state.refreshing && nextProps.fetchStatus.loaded) {
-      this.setState({refreshing: false})
+      this.setState({ refreshing: false })
     }
   }
 
   _onRefresh = () => {
-    this.setState({refreshing: true})
+    this.setState({ refreshing: true })
     this.loadData()
   }
 
   _wrapElt(elt) {
     return (
-      <View style={[styles.scrollItemFullScreen, styles.center]}>
-        {elt}
-      </View>
+      <View style={[styles.scrollItemFullScreen, styles.center]}>{elt}</View>
     )
   }
 
-  _changeTab = (selectedTab) => {
-    this.setState({
-      selectedTab
-    }, () => {
-      if (selectedTab !== tabTypes.guide) this.loadStories()
-    })
+  _changeTab = selectedTab => {
+    this.setState(
+      {
+        selectedTab,
+      },
+      () => {
+        if (selectedTab !== tabTypes.guide) this.loadStories()
+      },
+    )
   }
 
   renderFeedItem = (feedItem, index) => {
@@ -128,14 +138,14 @@ class CategoryFeedScreen extends React.Component {
   }
 
   getIsFollowingCategory = () => {
-    const {categoryId, selectedCategories} = this.props
+    const { categoryId, selectedCategories } = this.props
     return _.includes(selectedCategories, categoryId)
   }
 
-  renderTabs(){
+  renderTabs() {
     return (
       <TabBar
-        tabs={tabTypes}
+        tabs={restrictedTabTypes}
         activeTab={this.state.selectedTab}
         onClickTab={this._changeTab}
         tabStyle={styles.tabStyle}
@@ -143,7 +153,7 @@ class CategoryFeedScreen extends React.Component {
     )
   }
 
-  renderNoStories = (content) => {
+  renderNoStories = content => {
     return (
       <View style={styles.noStoriesWrapper}>
         {this.renderTabs()}
@@ -152,34 +162,48 @@ class CategoryFeedScreen extends React.Component {
     )
   }
 
-  render () {
-    let { storiesById, fetchStatus, error, title, categoryGuidesById} = this.props
-    const {selectedTab} = this.state
+  render() {
+    let {
+      storiesById,
+      fetchStatus,
+      error,
+      title,
+      categoryGuidesById,
+    } = this.props
+    const { selectedTab } = this.state
     const isFollowingCategory = this.getIsFollowingCategory()
 
     let topContent, bottomContent
 
     if (error) {
-      topContent = this._wrapElt(<Text style={styles.message}>Unable to find new content. Pull down to refresh.</Text>);
+      topContent = this._wrapElt(
+        <Text style={styles.message}>
+          Unable to find new content. Pull down to refresh.
+        </Text>,
+      )
     }
 
     if (fetchStatus.fetching && !this.state.refreshing) {
-      bottomContent = this.renderNoStories(<Loader />);
-    } else if (
+      bottomContent = this.renderNoStories(<Loader />)
+    }
+    else if (
       (selectedTab !== tabTypes.guide && _.size(storiesById) === 0)
       || (selectedTab === tabTypes.guide && _.size(categoryGuidesById === 0))
     ) {
       bottomContent = this.renderNoStories(
         <NoStoriesMessage
           text={selectedTab === tabTypes.guide ? 'guides' : 'stories'}
-        />
+        />,
       )
-    } else {
+    }
+    else {
       bottomContent = (
         <ConnectedFeedList
           isStory={selectedTab !== tabTypes.guide}
           style={styles.feedList}
-          entitiesById={selectedTab === tabTypes.guide ? categoryGuidesById : storiesById}
+          entitiesById={
+            selectedTab === tabTypes.guide ? categoryGuidesById : storiesById
+          }
           renderSectionHeader={this.renderTabs()}
           renderFeedItem={this.renderFeedItem}
           onRefresh={this._onRefresh}
@@ -194,41 +218,56 @@ class CategoryFeedScreen extends React.Component {
           title={title}
           titleStyle={styles.navbarTitleStyle}
           onLeft={this._onLeft}
-          leftIcon='arrowLeft'
+          leftIcon="arrowLeft"
           leftIconStyle={styles.navbarLeftIconStyle}
           onRight={this._onRight}
-          rightTextStyle={styles.navbarRightTextStyle}
+          rightTextStyle={
+            isFollowingCategory
+              ? styles.followingTextStyle
+              : styles.followTextStyle
+          }
           rightTitle={isFollowingCategory ? 'FOLLOWING' : '+ FOLLOW'}
           style={styles.navbarContainer}
         />
-        { topContent }
-        { bottomContent }
+        {topContent}
+        {bottomContent}
       </View>
     )
   }
 }
-
 
 const mapStateToProps = (state, props) => {
   return {
     user: state.entities.users.entities[state.session.userId],
     fetchStatus: getFetchStatus(state.entities.stories, props.categoryId),
     storiesById: getByCategory(state.entities.stories, props.categoryId),
-    categoryGuidesById: _.get(state, `entities.guides.guideIdsByCategoryId[${props.categoryId}]`, []),
+    categoryGuidesById: _.get(
+      state,
+      `entities.guides.guideIdsByCategoryId[${props.categoryId}]`,
+      [],
+    ),
     error: state.entities.stories.error,
     selectedCategories: state.signup.selectedCategories,
-    location: state.routes.scene.name
+    location: state.routes.scene.name,
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    loadCategoryGuides: (categoryId) => dispatch(GuideActions.getCategoryGuides(categoryId)),
-    loadCategoryStories: (categoryId, storyType) => dispatch(StoryActions.fromCategoryRequest(categoryId, storyType)),
-    getSelectedCategories: () => dispatch(SignupActions.signupGetUsersCategories()),
-    followCategory: () => dispatch(SignupActions.signupFollowCategory(ownProps.categoryId)),
-    unfollowCategory: () => dispatch(SignupActions.signupUnfollowCategory(ownProps.categoryId)),
+    loadCategoryGuides: categoryId =>
+      dispatch(GuideActions.getCategoryGuides(categoryId)),
+    loadCategoryStories: (categoryId, storyType) =>
+      dispatch(StoryActions.fromCategoryRequest(categoryId, storyType)),
+    getSelectedCategories: () =>
+      dispatch(SignupActions.signupGetUsersCategories()),
+    followCategory: () =>
+      dispatch(SignupActions.signupFollowCategory(ownProps.categoryId)),
+    unfollowCategory: () =>
+      dispatch(SignupActions.signupUnfollowCategory(ownProps.categoryId)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CategoryFeedScreen)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(CategoryFeedScreen)

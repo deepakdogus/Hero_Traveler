@@ -273,31 +273,31 @@ class ExploreScreen extends Component {
     if (categoriesFetchStatus.fetching && !categoriesArray.length) {
       content = <Loader style={styles.loader} />
     }
- else if (showSearch) {
-      content = (
-        <View style={styles.tabsViewContainer}>
-          <SearchTabBar
-            selectedTabIndex={this.state.selectedTabIndex}
-            goToPlacesTab={this._goToPlacesTab}
-            goToPeopleTab={this._goToPeopleTab}
-          />
-          <SearchList
-            selectedTabIndex={this.state.selectedTabIndex}
-            lastSearchResults={this.state.lastSearchResults}
-            lastLocationPredictions={this.state.lastLocationPredictions}
-            isSearching={
-              this.state.searchingAlgolia || this.state.searchingGoogle
-            }
-            userId={this.props.user.id}
-            query={this.helper.state.query}
-            hasSearchText={this.state.hasSearchText}
-            addRecentSearch={this.props.addRecentSearch}
-            searchHistory={this.props.searchHistory}
-          />
-        </View>
-      )
-    }
- else {
+    else if (showSearch) {
+          content = (
+            <View style={styles.tabsViewContainer}>
+              <SearchTabBar
+                selectedTabIndex={this.state.selectedTabIndex}
+                goToPlacesTab={this._goToPlacesTab}
+                goToPeopleTab={this._goToPeopleTab}
+              />
+              <SearchList
+                selectedTabIndex={this.state.selectedTabIndex}
+                lastSearchResults={this.state.lastSearchResults}
+                lastLocationPredictions={this.state.lastLocationPredictions}
+                isSearching={
+                  this.state.searchingAlgolia || this.state.searchingGoogle
+                }
+                userId={this.props.user.id}
+                query={this.helper.state.query}
+                hasSearchText={this.state.hasSearchText}
+                addRecentSearch={this.props.addRecentSearch}
+                searchHistory={this.props.searchHistory}
+              />
+            </View>
+          )
+        }
+    else {
       content = (
         <ScrollView>
           <ExploreGrid

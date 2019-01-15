@@ -18,10 +18,10 @@ export default StyleSheet.create({
     backgroundColor: Colors.clear,
   },
   profileTabsAndStoriesHeight: {
-    height: Metrics.screenHeight - Metrics.tabBarHeight + 10,
+    height: isIPhoneX() ? Metrics.screenHeight - Metrics.tabBarHeight + 10 : Metrics.screenHeight - 10,
   },
   profileTabsAndStoriesReadOnlyHeight: {
-    height: Metrics.screenHeight,
+    height: isIPhoneX() ? Metrics.screenHeight - 20 : Metrics.screenHeight,
   },
   profileTabsAndStoriesRoot: {
     marginTop: 20,

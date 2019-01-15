@@ -7,6 +7,7 @@ export default {
   },
   navBarTitle: {
     color: Colors.navBarText,
+  justifyContent: 'flex-end',
   },
   navBarClear: {
     backgroundColor: Colors.clear,
@@ -37,7 +38,8 @@ export default {
     fontSize: 18,
   },
   navBarBack: {
-    tintColor: Colors.feedDividerGrey,
+    tintColor: Colors.redHighlights,
+    transform: [{scaleX: 0.75}, {scaleY: 0.75}],
   },
   browseGuest: {
     fontSize: 12,

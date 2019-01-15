@@ -15,6 +15,5 @@ export default {
   image: {
     height: 15,
     width: 9,
-    alignSelf: 'center',
   },
 }

@@ -9,19 +9,20 @@ export default StyleSheet.create({
   header: {
     borderBottomWidth: 1,
     borderBottomColor: Colors.feedDividerGrey,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     height: 60,
   },
   title: {
     ...Fonts.style.title,
-    fontSize: 16,
+    fontSize: 20,
     textAlign: 'center',
     color: Colors.background,
   },
   subtitle: {
     ...Fonts.style.instructions,
-    fontSize: 16,
+    fontSize: 15,
+    fontWeight: '400',
     textAlign: 'center',
     color: Colors.grey,
   },
